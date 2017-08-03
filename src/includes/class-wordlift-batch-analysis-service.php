@@ -166,7 +166,7 @@ class Wordlift_Batch_Analysis_Service {
 		 * to the wordlift server to process it, when the requests includes
 		 * the content and the id of the post.
 		 */
-		for ( $i = 0; $i < 10; $i ++ ) {
+		for ( $i = 0; $i < 100; $i ++ ) {
 
 			$item = array_pop( $analyze_queue );
 

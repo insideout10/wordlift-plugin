@@ -143,7 +143,7 @@ class Wordlift_Sparql_Service {
 
 				// Only if this it the first buffered SPARQL, then launch the
 				// action which will be handled by the Async Task. The Async
-				// Task will take care of all the buffered files.
+				// Task will take care of all the buffered files _on shutdown_.
 				if ( 1 === $index ) {
 					do_action( 'wl_run_sparql_query', WL_REQUEST_ID );
 				}

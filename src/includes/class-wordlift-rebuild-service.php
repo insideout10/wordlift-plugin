@@ -1,15 +1,22 @@
 <?php
-
 /**
- * Define the Wordlift_Rebuild_Service class.
- */
-
-/**
+ * Services: Rebuild Service.
+ *
  * The Wordlift_Rebuild_Service allows to rebuild the Linked Data dataset from
  * scratch by clearing out data on the remote dataset, parsing all data in WordPress
  * and resending data to the remote dataset.
  *
- * @since 3.6.0
+ * @since      3.6.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes
+ */
+
+/**
+ * Define the {@link Wordlift_Rebuild_Service} class.
+ *
+ * @since      3.6.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes
  */
 class Wordlift_Rebuild_Service extends Wordlift_Listable {
 
@@ -24,6 +31,7 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 
 	/**
 	 * A {@link Wordlift_Sparql_Service} instance.
+	 *
 	 * @since  3.6.0
 	 * @access private
 	 * @var \Wordlift_Sparql_Service $sparql_service A {@link Wordlift_Sparql_Service} instance.
@@ -31,7 +39,11 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 	private $sparql_service;
 
 	/**
-	 * @var \Wordlift_Uri_Service
+	 * The {@link Wordlift_Uri_Service} instance.
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var \Wordlift_Uri_Service $uri_service The {@link Wordlift_Uri_Service} instance.
 	 */
 	private $uri_service;
 
@@ -68,10 +80,9 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 		header( 'Content-type: text/plain; charset=utf-8' );
 
 		// We start at 0 by default and get to max.
-		$offset      = $_GET['offset'] ?: 0;
-		$limit       = $_GET['limit'] ?: 1;
-		$entity_only = isset( $_GET['entity_only'] ) && '1' === $_GET['entity_only'];
-		$max         = $offset + $limit;
+		$offset = $_GET['offset'] ?: 0;
+		$limit  = $_GET['limit'] ?: 1;
+		$max    = $offset + $limit;
 
 		// If we're starting at offset 0, then delete existing URIs and data from
 		// the remote dataset.
@@ -102,7 +113,7 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 
 		// Redirect to the next chunk.
 		if ( $count == $limit ) {
-			$this->redirect( admin_url( 'admin-ajax.php?action=wl_rebuild&offset=' . ( $offset + $limit ) . '&limit=' . $limit . '&entity_only=' . ( $entity_only ? '1' : '0' ) ) );
+			$this->redirect( admin_url( 'admin-ajax.php?action=wl_rebuild&offset=' . ( $offset + $limit ) . '&limit=' . $limit ) );
 		}
 
 		echo( "Rebuild complete [ count :: $count ][ limit :: $limit ]" );
@@ -133,7 +144,7 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 			      content="0; <?php echo esc_attr( $url ); ?>">
 		</head>
 		<body>
-			Rebuilding, please wait...
+		Rebuilding, please wait...
 		</body>
 		</html>
 		<?php
@@ -155,6 +166,22 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 	 */
 	function find( $offset = 0, $limit = 10, $args = array() ) {
 
+		$terms = get_terms( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array(
+			'hide_empty' => false,
+			// Because of #334 (and the AAM plugin) we changed fields from 'id=>slug' to 'all'.
+			// An issue has been opened with the AAM plugin author as well.
+			//
+			// see https://github.com/insideout10/wordlift-plugin/issues/334
+			// see https://wordpress.org/support/topic/idslug-not-working-anymore?replies=1#post-8806863
+			'fields'     => 'all',
+		) );
+
+		$allowed_terms = array_map( function ( $term ) {
+			return $term->term_id;
+		}, array_filter( $terms, function ( $term ) {
+			return 'article' !== $term->slug;
+		} ) );
+
 		return get_posts( wp_parse_args( $args, array(
 			'offset'      => $offset,
 			'numberposts' => $limit,
@@ -164,10 +191,10 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 			'post_status' => 'any',
 			'post_type'   => Wordlift_Entity_Service::valid_entity_post_types(),
 			'tax_query'   => array(
-				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
-				'field'    => 'slug',
-				'terms'    => 'article',
-				'operator ' => 'NOT IN',
+				array(
+					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+					'terms'    => $allowed_terms,
+				),
 			),
 		) ) );
 	}

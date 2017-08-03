@@ -58,6 +58,15 @@ if ( ! class_exists( 'WP_Async_Task' ) ) {
 		protected $_body_data;
 
 		/**
+		 * A {@link Wordlift_Log_Service} instance.
+		 *
+		 * @since  3.15.0
+		 * @access private
+		 * @var \Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
+		 */
+		private $log;
+
+		/**
 		 * Constructor to wire up the necessary actions
 		 *
 		 * Which hooks the asynchronous postback happens on can be set by the
@@ -74,6 +83,9 @@ if ( ! class_exists( 'WP_Async_Task' ) ) {
 		 * @param int $auth_level The authentication level to use (see above)
 		 */
 		public function __construct( $auth_level = self::BOTH ) {
+
+			$this->log = Wordlift_Log_Service::get_logger( 'WP_Async_Task' );
+
 			if ( empty( $this->action ) ) {
 				throw new Exception( 'Action not defined for class ' . __CLASS__ );
 			}
@@ -139,6 +151,9 @@ if ( ! class_exists( 'WP_Async_Task' ) ) {
 		 * @uses wp_remote_post()
 		 */
 		public function launch_on_shutdown() {
+
+			$this->log->debug( 'Launching Async Task...' );
+
 			if ( ! empty( $this->_body_data ) ) {
 				$cookies = array();
 				foreach ( $_COOKIE as $name => $value ) {
@@ -148,7 +163,7 @@ if ( ! class_exists( 'WP_Async_Task' ) ) {
 				$request_args = array(
 					'timeout'   => 0.01,
 					'blocking'  => false,
-					'sslverify' => apply_filters( 'https_local_ssl_verify', true ),
+					'sslverify' => apply_filters( 'https_local_ssl_verify', false ),
 					'body'      => $this->_body_data,
 					'headers'   => array(
 						'cookie' => implode( '; ', $cookies ),
@@ -157,7 +172,13 @@ if ( ! class_exists( 'WP_Async_Task' ) ) {
 
 				$url = admin_url( 'admin-post.php' );
 
-				wp_remote_post( $url, $request_args );
+				$this->log->debug( "Posting URL $url..." );
+
+				$result = wp_remote_post( $url, $request_args );
+
+				if ( is_wp_error( $result ) ) {
+					$this->log->error( 'Posting URL returned an error: ' . $result->get_error_message() );
+				}
 			}
 		}
 
