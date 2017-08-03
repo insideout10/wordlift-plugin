@@ -182,11 +182,11 @@ class Wordlift_Linked_Data_Service {
 
 		$query = rl_sparql_prefixes() . "\nINSERT DATA { $sparql };";
 
-		// Add schema:url.
-		// get the entity URI and the SPARQL escaped version.
-		$uri   = $this->entity_service->get_uri( $post->ID );
-		$query .= Wordlift_Schema_Url_Property_Service::get_instance()
-		                                              ->get_insert_query( $uri, $post->ID );
+//		// Add schema:url.
+//		// get the entity URI and the SPARQL escaped version.
+//		$uri   = $this->entity_service->get_uri( $post->ID );
+//		$query .= Wordlift_Schema_Url_Property_Service::get_instance()
+//		                                              ->get_insert_query( $uri, $post->ID );
 
 		rl_execute_sparql_update_query( $query );
 	}

@@ -772,6 +772,7 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-post-meta-uri-storage.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-post-image-storage.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-post-related-storage.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-url-property-storage.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-storage-factory.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/rendition/class-wordlift-sparql-tuple-rendition.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/rendition/class-wordlift-sparql-tuple-rendition-factory.php';
@@ -941,6 +942,8 @@ class Wordlift {
 		$this->sparql_service = new Wordlift_Sparql_Service();
 
 		$schema_url_property_service = new Wordlift_Schema_Url_Property_Service( $this->sparql_service );
+		$this->property_factory      = new Wordlift_Property_Factory( $schema_url_property_service );
+		$this->property_factory->register( Wordlift_Schema_Url_Property_Service::META_KEY, $schema_url_property_service );
 
 		// Create an instance of the Notice service.
 		$this->notice_service = new Wordlift_Notice_Service();
@@ -954,8 +957,18 @@ class Wordlift {
 		// Create a new instance of the Timeline service and Timeline shortcode.
 		$this->timeline_service = new Wordlift_Timeline_Service( $this->entity_service );
 
+		$attachment_service = new Wordlift_Attachment_Service();
+
+		// Instantiate the JSON-LD service.
+		$property_getter                       = Wordlift_Property_Getter_Factory::create( $this->entity_service );
+		$this->entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $property_getter );
+		$this->post_to_jsonld_converter        = new Wordlift_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $this->configuration_service, $this->entity_post_to_jsonld_converter );
+		$this->postid_to_jsonld_converter      = new Wordlift_Postid_To_Jsonld_Converter( $this->entity_service, $this->entity_post_to_jsonld_converter, $this->post_to_jsonld_converter );
+		$this->jsonld_website_converter        = new Wordlift_Website_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $this->configuration_service, $this->entity_post_to_jsonld_converter );
+		$this->jsonld_service                  = new Wordlift_Jsonld_Service( $this->entity_service, $this->postid_to_jsonld_converter, $this->jsonld_website_converter );
+
 		/** Linked Data. */
-		$this->storage_factory   = new Wordlift_Storage_Factory( $this->entity_service, $this->user_service );
+		$this->storage_factory   = new Wordlift_Storage_Factory( $this->entity_service, $this->user_service, $property_getter );
 		$this->rendition_factory = new Wordlift_Sparql_Tuple_Rendition_Factory( $this->entity_service );
 
 		$this->schema_service = new Wordlift_Schema_Service( $this->storage_factory, $this->rendition_factory, $this->configuration_service );
@@ -1006,19 +1019,6 @@ class Wordlift {
 
 		// Create a new instance of the Redirect service.
 		$this->dashboard_service = new Wordlift_Dashboard_Service( $this->rating_service );
-
-		$this->property_factory = new Wordlift_Property_Factory( $schema_url_property_service );
-		$this->property_factory->register( Wordlift_Schema_Url_Property_Service::META_KEY, $schema_url_property_service );
-
-		$attachment_service = new Wordlift_Attachment_Service();
-
-		// Instantiate the JSON-LD service.
-		$property_getter                       = Wordlift_Property_Getter_Factory::create( $this->entity_service );
-		$this->entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $property_getter );
-		$this->post_to_jsonld_converter        = new Wordlift_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $this->configuration_service, $this->entity_post_to_jsonld_converter );
-		$this->postid_to_jsonld_converter      = new Wordlift_Postid_To_Jsonld_Converter( $this->entity_service, $this->entity_post_to_jsonld_converter, $this->post_to_jsonld_converter );
-		$this->jsonld_website_converter        = new Wordlift_Website_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $this->configuration_service, $this->entity_post_to_jsonld_converter );
-		$this->jsonld_service                  = new Wordlift_Jsonld_Service( $this->entity_service, $this->postid_to_jsonld_converter, $this->jsonld_website_converter );
 
 		// Create an instance of the Key Validation service. This service is later hooked to provide an AJAX call (only for admins).
 		$this->key_validation_service = new Wordlift_Key_Validation_Service( $this->configuration_service );

@@ -524,33 +524,39 @@ class Wordlift_Schema_Service {
 				'subtitle' => '{{id}}',
 			),
 			'linked_data'   => array(
-				//### rdfs:label.
+				//### Title to rdfs:label.
 				$this->rendition_factory->create(
 					$this->storage_factory->post_title(),
 					Wordlift_Query_Builder::RDFS_LABEL_URI,
 					null,
 					$this->language_code
 				),
-				//### dct:title.
+				//### Title to dct:title.
 				$this->rendition_factory->create(
 					$this->storage_factory->post_title(),
 					'http://purl.org/dc/terms/title',
 					null,
 					$this->language_code
 				),
-				//### rdfs:label.
+				//### Alternative title to rdfs:label.
 				$this->rendition_factory->create(
 					$this->storage_factory->post_meta( Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY ),
 					Wordlift_Query_Builder::RDFS_LABEL_URI,
 					null,
 					$this->language_code
 				),
-				//### dct:title.
+				//### Alternative title to dct:title.
 				$this->rendition_factory->create(
 					$this->storage_factory->post_meta( Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY ),
 					'http://purl.org/dc/terms/title',
 					null,
 					$this->language_code
+				),
+				//### schema:url.
+				$this->rendition_factory->create(
+					$this->storage_factory->url_property(),
+					Wordlift_Query_Builder::SCHEMA_URL_URI,
+					self::DATA_TYPE_URI
 				),
 				//### schema:description.
 				$this->rendition_factory->create(
