@@ -25,79 +25,124 @@ class Wordlift_Publisher_Service {
 	 */
 	public function count() {
 
-		// Get the global `wpdb` instance.
-		global $wpdb;
-
-		// Run the query and get the count.
-		$count = $wpdb->get_var( $wpdb->prepare(
-			'SELECT COUNT( p.id )' .
-			" FROM $wpdb->posts p" .
-			"  LEFT JOIN $wpdb->term_relationships tr" .
-			'   ON tr.object_id = p.id' .
-			"  LEFT JOIN $wpdb->term_taxonomy tt" .
-			'   ON tt.term_taxonomy_id = tr.term_taxonomy_id' .
-			"  LEFT JOIN $wpdb->terms t" .
-			'   ON t.term_id = tt.term_id' .
-			"  LEFT JOIN $wpdb->postmeta m" .
-			"   ON m.post_id = p.id AND m.meta_key = '_thumbnail_id'" .
-			"   AND t.name IN ( 'Organization', 'Person' )" .
-			'   AND tt.taxonomy = %s' .
-			' ORDER BY p.post_title',
-			Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME
+		/*
+		 * Search for entities which have a thumbnail, and are either a Person
+		 * or Organization.
+		 * Get only the ids as all we need is the count.
+		 */
+		$entities = get_posts( array(
+			'post_type' 	=> Wordlift_Entity_Service::valid_entity_post_types(),
+			'post_status'	=> 'publish',
+			'tax_query'		=> array(
+				array(
+			        'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+			        'field'    => 'slug',
+			        'terms'    => array( 'organization', 'person' ),
+					'operator' => 'IN',
+				),
+		    ),
+			'meta_query'	=> array(
+				array(
+					'key' 	  => '_thumbnail_id',
+					'compare' => 'EXISTS',
+				),
+			),
+			'fields'		=> 'ids',
 		) );
 
 		// Finally return the count.
-		return (int) $count;
+		return count( $entities );
 	}
 
 	/**
-	 * Query WP for potential publishers, i.e. {@link WP_Post}s of type `entity`
-	 * and of `wl_entity_type` (taxonomy) `Organization` or `Person`.
+	 * Search SQL filter for matching against post title only.
+	 *
+	 * @link    http://wordpress.stackexchange.com/a/11826/1685
+	 *
+	 * @since 3.15.0
+	 *
+	 * @param   string      $search
+	 * @param   WP_Query    $wp_query
+	 */
+	public function limit_search_to_title( $search, $wp_query ) {
+	    if ( ! empty( $search ) && ! empty( $wp_query->query_vars['search_terms'] ) ) {
+	        global $wpdb;
+
+	        $q = $wp_query->query_vars;
+	        $n = ! empty( $q['exact'] ) ? '' : '%';
+	        $search = array();
+	        foreach ( (array) $q['search_terms'] as $term ) {
+	            $search[] = $wpdb->prepare( "$wpdb->posts.post_title LIKE %s", $n . $wpdb->esc_like( $term ) . $n );
+			}
+
+	        if ( ! is_user_logged_in() ) {
+	            $search[] = "$wpdb->posts.post_password = ''";
+			}
+
+	        $search = ' AND ' . implode( ' AND ', $search );
+	    }
+
+	    return $search;
+	}
+
+	/**
+	 * Query WP for potential publishers, i.e. {@link WP_Post}s which are associated`
+	 * with `wl_entity_type` (taxonomy) terms of `Organization` or `Person`.
 	 *
 	 * @since 3.11.0
 	 *
 	 * @param string $filter The title filter.
 	 *
-	 * @return array An array of results.
+	 * @return array An array of results in a select2 friendly format.
 	 */
 	public function query( $filter = '' ) {
 
-		// Get the global `wpdb` instance.
-		global $wpdb;
+		// Search for the filter in the titles only.
+		add_filter( 'posts_search', array( $this, 'limit_search_to_title' ), 10, 2 );
 
-		// Run the query and get the results.
-		$results = $wpdb->get_results( $wpdb->prepare(
-			'SELECT p.id, p.post_title, t.name AS type, m.meta_value AS thumbnail_id' .
-			" FROM $wpdb->posts p" .
-			"  LEFT JOIN $wpdb->term_relationships tr" .
-			'   ON tr.object_id = p.id' .
-			"  LEFT JOIN $wpdb->term_taxonomy tt" .
-			'   ON tt.term_taxonomy_id = tr.term_taxonomy_id' .
-			"  LEFT JOIN $wpdb->terms t" .
-			'   ON t.term_id = tt.term_id' .
-			"  LEFT JOIN $wpdb->postmeta m" .
-			"   ON m.post_id = p.id AND m.meta_key = '_thumbnail_id'" .
-			'  WHERE p.post_type = %s' .
-			"   AND t.name IN ( 'Organization', 'Person' )" .
-			'   AND tt.taxonomy = %s' .
-			'   AND p.post_title LIKE %s' .
-			' ORDER BY p.post_title',
-			Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
-			'%' . $wpdb->esc_like( $filter ) . '%'
+		/*
+		 * Search for entities which have a thumbnail, and are either a Person
+		 * or Organization. Sort the results by title.
+		 */
+		$entities = get_posts( array(
+			'post_type' 	=> Wordlift_Entity_Service::valid_entity_post_types(),
+			'post_status'	=> 'publish',
+			'tax_query'		=> array(
+				array(
+			        'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+			        'field'    => 'slug',
+			        'terms'    => array( 'organization', 'person' ),
+					'operator' => 'IN',
+				),
+		    ),
+			'meta_query'	=> array(
+				array(
+					'key' 	  => '_thumbnail_id',
+					'compare' => 'EXISTS',
+				),
+			),
+			's'			   => $filter,
+			'orderby'	   => 'title',
 		) );
+
+		// Remove the search filter added before the query.
+		remove_filter( 'posts_search', array( $this, 'limit_search_to_title' ), 10, 2 );
 
 		// Set a reference to ourselves to pass to the closure.
 		$publisher_service = $this;
 
 		// Map the results in a `Select2` compatible array.
-		return array_map( function ( $item ) use ( $publisher_service ) {
+		return array_map( function ( $entity ) use ( $publisher_service ) {
+			$type = wp_get_post_terms( $entity->ID, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+			$thumb_id = get_post_thumbnail_id( $entity->ID );
+
 			return array(
-				'id'            => $item->id,
-				'text'          => $item->post_title,
-				'type'          => $item->type,
-				'thumbnail_url' => $publisher_service->get_attachment_image_url( $item->thumbnail_id ),
+				'id'            => $entity->ID,
+				'text'          => $entity->post_title,
+				'type'          => $type[0]->name,
+				'thumbnail_url' => $publisher_service->get_attachment_image_url( $thumb_id ),
 			);
-		}, $results );
+		}, $entities );
 	}
 
 	/**
