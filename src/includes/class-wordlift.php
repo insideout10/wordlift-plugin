@@ -472,15 +472,6 @@ class Wordlift {
 	private $entity_type_admin_page;
 
 	/**
-	 * The controller for the entity type metabox
-	 *
-	 * @since  3.15.0
-	 * @access private
-	 * @var \Wordlift_Admin_Entity_Type_MetaBoxe_Service $entity_type_metabox_service The {@link Wordlift_Admin_Entity_Type_MetaBoxe_Service} class.
-	 */
-	private $entity_type_metabox_service;
-
-	/**
 	 * The controller for the entity type settings admin page
 	 *
 	 * @since  3.11.0
@@ -827,13 +818,6 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-entity-list.php';
 
 		/**
-		 * The class to customize the entity list admin page.
-		 */
-		if ( is_admin() ) {
-			 require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-entity-type-metabox-service.php';
-		}
-
-		/**
 		 * The Entity Types Taxonomy Walker (transforms checkboxes into radios).
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-entity-types-taxonomy-walker.php';
@@ -1097,9 +1081,6 @@ class Wordlift {
 		// create an instance of the entity type list admin page controller.
 		$this->entity_type_admin_page = new Wordlift_Admin_Entity_Taxonomy_List_Page();
 
-		// create an instance of the entity type metabox controller.
-		$this->entity_type_metabox_service = new Wordlift_Admin_Entity_Type_MetaBox_Service();
-
 		// create an instance of the entity type etting admin page controller.
 		$this->entity_type_settings_admin_page = new Wordlift_Admin_Entity_Type_Settings();
 
@@ -1290,9 +1271,6 @@ class Wordlift {
 			$this->loader->add_filter( 'map_meta_cap', $this->entity_type_admin_page, 'restrict_super_admin', 10, 4 );
 		}
 
-		if ( is_admin() ) {
-			$this->loader->add_filter( 'wp_terms_checklist_args', $this->entity_type_metabox_service, 'wp_terms_checklist_args', 10, 2 );
-		}
 	}
 
 	/**
