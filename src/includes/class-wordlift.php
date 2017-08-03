@@ -1008,7 +1008,7 @@ class Wordlift {
 		// Create a new instance of the Redirect service.
 		$this->redirect_service    = new Wordlift_Redirect_Service( $this->entity_service );
 		$this->entity_type_service = new Wordlift_Entity_Type_Service( $this->schema_service );
-		$this->linked_data_service = new Wordlift_Linked_Data_Service( $this->entity_service, $this->entity_type_service, $this->schema_service );
+		$this->linked_data_service = new Wordlift_Linked_Data_Service( $this->entity_service, $this->entity_type_service, $this->schema_service, $this->sparql_service );
 
 		$this->entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $property_getter );
 		$this->post_to_jsonld_converter        = new Wordlift_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $this->configuration_service, $this->entity_post_to_jsonld_converter );
@@ -1182,7 +1182,9 @@ class Wordlift {
 		$this->loader->add_action( 'updated_post_meta', $this->thumbnail_service, 'added_or_updated_post_meta', 10, 4 );
 
 		// Hook posts inserts (or updates) to the user service.
-		$this->loader->add_action( 'wp_insert_post', $this->user_service, 'wp_insert_post', 10, 3 );
+		// This hook is commented out in order to prevent the plain author data
+		// to be published to the Linked Data.
+		// $this->loader->add_action( 'wp_insert_post', $this->user_service, 'wp_insert_post', 10, 3 );
 
 		// Hook the AJAX wl_timeline action to the Timeline service.
 		$this->loader->add_action( 'wp_ajax_wl_timeline', $this->timeline_service, 'ajax_timeline' );

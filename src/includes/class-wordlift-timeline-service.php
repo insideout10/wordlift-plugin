@@ -140,9 +140,11 @@ class Wordlift_Timeline_Service {
 				),
 			),
 			'tax_query'      => array(
-				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
-				'field'    => 'slug',
-				'terms'    => 'event',
+				array(
+					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+					'field'    => 'slug',
+					'terms'    => 'event',
+				),
 			),
 		) );
 	}

@@ -10,10 +10,6 @@ class Wordlift_Post_Taxonomy_Storage extends Wordlift_Storage {
 	/**
 	 * @var
 	 */
-	private $meta_key;
-	/**
-	 * @var
-	 */
 	private $taxonomy;
 
 	/**

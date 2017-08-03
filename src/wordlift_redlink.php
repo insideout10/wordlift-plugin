@@ -15,12 +15,15 @@
  */
 function rl_execute_sparql_update_query( $query, $queue = WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING ) {
 
+	$log = Wordlift_Log_Service::get_logger( 'rl_execute_sparql_update_query' );
+
 	if ( get_transient( 'DISABLE_ENTITY_PUSH' ) ) {
 		return true;
 	}
 
 	// Queue the update query.
 	if ( $queue ) {
+		$log->debug( 'Queueing query...' );
 
 		Wordlift_Sparql_Service::get_instance()->queue( $query );
 
@@ -48,13 +51,13 @@ function rl_execute_sparql_update_query( $query, $queue = WL_ENABLE_SPARQL_UPDAT
 
 		$body = ( is_wp_error( $response ) ? $response->get_error_message() : $response['body'] );
 
-		wl_write_log( "rl_execute_sparql_update_query : error [ url :: $url ][ args :: " );
-		wl_write_log( "\n" . var_export( $args, true ) );
-		wl_write_log( "[ response :: " );
-		wl_write_log( "\n" . var_export( $response, true ) );
-		wl_write_log( "][ body :: " );
-		wl_write_log( "\n" . $body );
-		wl_write_log( "]" );
+		$log->debug( "rl_execute_sparql_update_query : error [ url :: $url ][ args :: " );
+		$log->debug( "\n" . var_export( $args, true ) );
+		$log->debug( "[ response :: " );
+		$log->debug( "\n" . var_export( $response, true ) );
+		$log->debug( "][ body :: " );
+		$log->debug( "\n" . $body );
+		$log->debug( "]" );
 
 		return false;
 	}

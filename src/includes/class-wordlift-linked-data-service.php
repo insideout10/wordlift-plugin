@@ -64,6 +64,15 @@ class Wordlift_Linked_Data_Service {
 	private static $instance;
 
 	/**
+	 * The {@link Wordlift_Sparql_Service} instance.
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var \Wordlift_Sparql_Service $sparql_service The {@link Wordlift_Sparql_Service} instance.
+	 */
+	private $sparql_service;
+
+	/**
 	 * Create a {@link Wordlift_Linked_Data_Service} instance.
 	 *
 	 * @since 3.15.0
@@ -71,14 +80,16 @@ class Wordlift_Linked_Data_Service {
 	 * @param \Wordlift_Entity_Service      $entity_service      The {@link Wordlift_Entity_Service} instance.
 	 * @param \Wordlift_Entity_Type_Service $entity_type_service The {@link Wordlift_Entity_Type_Service} instance.
 	 * @param \Wordlift_Schema_Service      $schema_service      The {@link Wordlift_Schema_Service} instance.
+	 * @param \Wordlift_Sparql_Service      $sparql_service      The {@link Wordlift_Sparql_Service} instance.
 	 */
-	public function __construct( $entity_service, $entity_type_service, $schema_service ) {
+	public function __construct( $entity_service, $entity_type_service, $schema_service, $sparql_service ) {
 
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Linked_Data_Service' );
 
 		$this->entity_service      = $entity_service;
 		$this->entity_type_service = $entity_type_service;
 		$this->schema_service      = $schema_service;
+		$this->sparql_service      = $sparql_service;
 
 		self::$instance = $this;
 
@@ -147,7 +158,7 @@ class Wordlift_Linked_Data_Service {
 		// Get the delete statements.
 		$deletes      = $this->get_delete_statements( $post_id );
 		$delete_query = implode( "\n", $deletes );
-		rl_execute_sparql_update_query( $delete_query );
+		$this->sparql_service->execute( $delete_query );
 
 	}
 
@@ -159,7 +170,7 @@ class Wordlift_Linked_Data_Service {
 	 * @param int $post_id The {@link WP_Post}'s id.
 	 */
 	private function do_push( $post_id ) {
-		$this->log->debug( "Pushing post $post_id..." );
+		$this->log->debug( "Doing post $post_id push..." );
 
 		// Get the post.
 		$post = get_post( $post_id );
@@ -192,7 +203,7 @@ class Wordlift_Linked_Data_Service {
 		$insert_tuples     = $this->get_insert_tuples( $post_id );
 		$insert_query_body = implode( "\n", $insert_tuples );
 		$insert_query      = "INSERT DATA { $insert_query_body };";
-		rl_execute_sparql_update_query( $insert_query );
+		$this->sparql_service->execute( $insert_query );
 
 	}
 
