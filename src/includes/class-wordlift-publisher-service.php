@@ -41,12 +41,6 @@ class Wordlift_Publisher_Service {
 					'operator' => 'IN',
 				),
 		    ),
-			'meta_query'	=> array(
-				array(
-					'key' 	  => '_thumbnail_id',
-					'compare' => 'EXISTS',
-				),
-			),
 			'fields'		=> 'ids',
 		) );
 
@@ -115,12 +109,6 @@ class Wordlift_Publisher_Service {
 					'operator' => 'IN',
 				),
 		    ),
-			'meta_query'	=> array(
-				array(
-					'key' 	  => '_thumbnail_id',
-					'compare' => 'EXISTS',
-				),
-			),
 			's'			   => $filter,
 			'orderby'	   => 'title',
 		) );
