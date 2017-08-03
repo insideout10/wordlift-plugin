@@ -524,33 +524,39 @@ class Wordlift_Schema_Service {
 				'subtitle' => '{{id}}',
 			),
 			'linked_data'   => array(
-				//### rdfs:label.
+				//### Title to rdfs:label.
 				$this->rendition_factory->create(
 					$this->storage_factory->post_title(),
 					Wordlift_Query_Builder::RDFS_LABEL_URI,
 					null,
 					$this->language_code
 				),
-				//### dct:title.
+				//### Title to dct:title.
 				$this->rendition_factory->create(
 					$this->storage_factory->post_title(),
 					'http://purl.org/dc/terms/title',
 					null,
 					$this->language_code
 				),
-				//### rdfs:label.
+				//### Alternative title to rdfs:label.
 				$this->rendition_factory->create(
 					$this->storage_factory->post_meta( Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY ),
 					Wordlift_Query_Builder::RDFS_LABEL_URI,
 					null,
 					$this->language_code
 				),
-				//### dct:title.
+				//### Alternative title to dct:title.
 				$this->rendition_factory->create(
 					$this->storage_factory->post_meta( Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY ),
 					'http://purl.org/dc/terms/title',
 					null,
 					$this->language_code
+				),
+				//### schema:url.
+				$this->rendition_factory->create(
+					$this->storage_factory->url_property(),
+					Wordlift_Query_Builder::SCHEMA_URL_URI,
+					self::DATA_TYPE_URI
 				),
 				//### schema:description.
 				$this->rendition_factory->create(
@@ -569,6 +575,18 @@ class Wordlift_Schema_Service {
 				$this->rendition_factory->create(
 					$this->storage_factory->schema_class( $this ),
 					Wordlift_Query_Builder::RDFS_TYPE_URI,
+					self::DATA_TYPE_URI )
+				,
+				//### schema:image.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_images(),
+					Wordlift_Query_Builder::SCHEMA_IMAGE_URI,
+					self::DATA_TYPE_URI )
+				,
+				//### dct:relation.
+				$this->rendition_factory->create(
+					$this->storage_factory->relations(),
+					Wordlift_Query_Builder::DCTERMS_RELATION_URI,
 					self::DATA_TYPE_URI )
 				,
 			),
@@ -1247,6 +1265,7 @@ class Wordlift_Schema_Service {
 				'subtitle' => '{{id}}',
 			),
 			'custom_fields' => array(),
+			'linked_data'   => array(),
 		);
 
 		return $schema;
@@ -1262,25 +1281,16 @@ class Wordlift_Schema_Service {
 	public function get_all_predicates() {
 
 		// Get the custom fields.
-		$fields = array_reduce( $this->schema, function ( $carry, $item ) {
-			return array_merge( $carry, $item['custom_fields'] );
+		$renditions = array_reduce( $this->schema, function ( $carry, $item ) {
+			return array_merge( $carry, $item['linked_data'] );
 		}, array() );
 
 		// Create a new array of predicates from the custom fields. The initial
 		// array contains just the `http://www.w3.org/1999/02/22-rdf-syntax-ns#type`
 		// (a, rdf:type) predicate (use the full URI).
-		$predicates = array_reduce( $fields, function ( $carry, $item ) {
-			return array_merge( $carry, (array) $item['predicate'] );
-		}, array(
-			'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
-			'http://www.w3.org/2000/01/rdf-schema#label',
-			'http://purl.org/dc/terms/title',
-			'http://purl.org/dc/terms/relation',
-			'http://www.w3.org/2002/07/owl#sameAs',
-			'http://schema.org/description',
-			'http://schema.org/url',
-			'http://schema.org/image',
-		) );
+		$predicates = array_unique( array_reduce( $renditions, function ( $carry, $item ) {
+			return array_merge( $carry, (array) $item->get_predicate() );
+		}, array() ) );
 
 		// Finally return the predicates array.
 		return $predicates;

@@ -53,32 +53,3 @@ function wl_prefixes() {
 	return $prefixes;
 
 }
-
-/**
- * Get an array with commonly used predicates.
- *
- * @see wl_prefixes for prefixes used here.
- *
- * @return array An array of predicates.
- */
-function wl_predicates() {
-
-	return array(
-		'a',
-		'dct:references',
-		'dct:relation',
-		'dct:title',
-		'dct:subject',
-		'owl:sameAs',
-		'rdfs:label',
-		'schema:author',
-		'schema:dateModified',
-		'schema:datePublished',
-		'schema:locationCreated',
-		'schema:description',
-		'schema:image',
-		'schema:interactionCount',
-		'schema:url',
-	);
-
-}

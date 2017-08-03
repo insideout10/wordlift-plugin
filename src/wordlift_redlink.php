@@ -3,10 +3,7 @@
  * This file contains functions related to Redlink.
  */
 
-
 /**
- * Execute a query on Redlink.
- *
  * @since 3.0.0
  *
  * @uses  wl_queue_sparql_update_query() to queue a query if query buffering is on.

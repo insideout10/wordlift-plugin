@@ -29,7 +29,7 @@ class Wordlift_Sparql_Tuple_Rendition_Factory {
 	private $entity_service;
 
 	/**
-	 * Createa a {@link Wordlift_Sparql_Tuple_Rendition_Factory} instance.
+	 * Create a a {@link Wordlift_Sparql_Tuple_Rendition_Factory} instance.
 	 *
 	 * @since 3.15.0
 	 *

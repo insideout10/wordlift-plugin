@@ -204,8 +204,8 @@ function wl_save_entity( $entity_data ) {
 	$type_uri         = $entity_data['main_type'];
 	$entity_types     = isset( $entity_data['type'] ) ? $entity_data['type'] : array();
 	$description      = $entity_data['description'];
-	$images           = isset( $entity_data['image'] ) ? wl_force_to_array( $entity_data['image'] ) : array();
-	$same_as          = isset( $entity_data['sameas'] ) ? wl_force_to_array( $entity_data['sameas'] ) : array();
+	$images           = isset( $entity_data['image'] ) ? (array) $entity_data['image'] : array();
+	$same_as          = isset( $entity_data['sameas'] ) ? (array) $entity_data['sameas'] : array();
 	$related_post_id  = isset( $entity_data['related_post_id'] ) ? $entity_data['related_post_id'] : null;
 	$other_properties = isset( $entity_data['properties'] ) ? $entity_data['properties'] : array();
 

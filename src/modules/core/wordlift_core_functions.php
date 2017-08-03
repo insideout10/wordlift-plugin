@@ -9,5 +9,5 @@ function wl_core_send_json( $response ) {
 		ob_clean();
 	}
 
-	return wp_send_json( $response );
+	wp_send_json( $response );
 }

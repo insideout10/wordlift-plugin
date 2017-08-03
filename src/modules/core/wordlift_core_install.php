@@ -275,7 +275,9 @@ function wl_core_update_db_check() {
 	// Ensure the custom type and the taxonomy are registered.
 	Wordlift_Entity_Post_Type_Service::get_instance()->register();
 
-	wl_entity_type_taxonomy_register();
+	// Commenting this out because this function is already called by init
+	// with priority 0 at wordlift_entity_type.php.
+	// wl_entity_type_taxonomy_register();
 
 	// Ensure the custom taxonomy for dbpedia topics is registered
 	Wordlift_Topic_Taxonomy_Service::get_instance()->init();

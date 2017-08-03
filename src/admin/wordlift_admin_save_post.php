@@ -13,13 +13,13 @@
  *
  * Note that any status to *published* is handled by the save post routines.
  *
- * @see http://codex.wordpress.org/Post_Status_Transitions about WordPress post transitions.
+ * @see  http://codex.wordpress.org/Post_Status_Transitions about WordPress post transitions.
  *
  * @uses wl_delete_post() to delete a post when the status transitions from *published* to anything else.
  *
  * @param string $new_status The new post status
  * @param string $old_status The old post status
- * @param array $post An array with the post data
+ * @param array  $post       An array with the post data
  */
 function wl_transition_post_status( $new_status, $old_status, $post ) {
 
@@ -56,8 +56,9 @@ function rl_delete_post( $post ) {
 
 		// check if there is at least one referencing post published.
 		$is_published = array_reduce( wl_core_get_related_post_ids( $entity_id ), function ( $carry, $item ) {
-                    $post = get_post( $item );
-                    return ( $carry || ( 'publish' === $post->post_status ) );
+			$post = get_post( $item );
+
+			return ( $carry || ( 'publish' === $post->post_status ) );
 		} );
 		// set the entity to draft if no referencing posts are published.
 		if ( ! $is_published ) {
@@ -65,41 +66,16 @@ function rl_delete_post( $post ) {
 		}
 	}
 
-	// get the entity URI (valid also for posts)
-	$uri_esc = wl_sparql_escape_uri( wl_get_entity_uri( $post_id ) );
+	// Remove the post.
+	Wordlift_Linked_Data_Service::get_instance()->remove( $post_id );
 
-	wl_write_log( "rl_delete_post [ post id :: $post_id ][ uri esc :: $uri_esc ]" );
-
-	// create the SPARQL statement by joining the SPARQL prefixes and deleting any known predicate.
-	$stmt = rl_sparql_prefixes();
-	foreach ( wl_predicates() as $predicate ) {
-		$stmt .= "DELETE { <$uri_esc> $predicate ?o . } WHERE { <$uri_esc> $predicate ?o . };\n" .
-		         "DELETE { ?s $predicate <$uri_esc> . } WHERE { ?s $predicate <$uri_esc> . };\n";
-	}
-
-	// if the post is an entity and has exported properties, delete the related predicates.
-	$entity_service = Wordlift_Entity_Service::get_instance();
-	if ( $entity_service->is_entity( $post->ID ) ) {
-		$type = wl_entity_type_taxonomy_get_type( $post->ID );
-
-		if ( isset( $type['custom_fields'] ) ) {
-			foreach ( $type['custom_fields'] as $field => $params ) {
-				// TODO: enclose in <> only if predicate starts with http(s)://
-				$predicate = '<' . $params['predicate'] . '>';
-				$stmt .= "DELETE { <$uri_esc> $predicate ?o . } WHERE { <$uri_esc> $predicate ?o . };\n";
-			}
-		}
-	}
-
-	// finally execute the query.
-	rl_execute_sparql_update_query( $stmt );
 }
 
 /**
  * Update the status of a post.
  *
- * @param int $post_id The post ID
- * @param string $status The new status
+ * @param int    $post_id The post ID
+ * @param string $status  The new status
  */
 function wl_update_post_status( $post_id, $status ) {
 
