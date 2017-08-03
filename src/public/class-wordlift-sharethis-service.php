@@ -78,7 +78,8 @@ class Wordlift_ShareThis_Service {
 		global $post;
 
 		// If it's not the entity type, return.
-		if ( null === $post || ! isset( $post->post_type ) || Wordlift_Entity_Service::TYPE_NAME !== $post->post_type ) {
+		$entity_service = Wordlift_Entity_Service::get_instance();
+		if ( null === $post || ! $entity_service->is_entity( get_the_ID() ) ) {
 			return $content;
 		}
 

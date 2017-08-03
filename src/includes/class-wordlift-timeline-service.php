@@ -123,7 +123,7 @@ class Wordlift_Timeline_Service {
 
 		return get_posts( array(
 			'post__in'       => $ids,
-			'post_type'      => Wordlift_Entity_Service::TYPE_NAME,
+			'post_type'      => Wordlift_Entity_Service::valid_entity_post_type(),
 			'post_status'    => 'publish',
 			'posts_per_page' => - 1,
 			'meta_query'     => array(

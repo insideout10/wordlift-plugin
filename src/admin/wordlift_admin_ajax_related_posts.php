@@ -30,7 +30,9 @@ function wordlift_ajax_related_posts( $http_raw_data = null ) {
 
 	// If the current post is an entity, related posts to the current entity are
 	// returned.
-	if ( Wordlift_Entity_Service::TYPE_NAME === $post->post_type ) {
+	$entity_service = Wordlift_Entity_Service::get_instance();
+
+	if ( $entity_service->is_entity( $post->ID ) ) {
 		$filtering_entity_ids = array( $post_id );
 	}
 

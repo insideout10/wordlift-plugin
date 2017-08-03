@@ -222,13 +222,21 @@ class Wordlift_Entity_Service {
 		$query_args = array(
 			'posts_per_page' => 1,
 			'post_status'    => 'any',
-			'post_type'      => self::TYPE_NAME,
+			'post_type'      => Wordlift_Entity_Service::valid_entity_post_type(),
 			'meta_query'     => array(
 				array(
 					'key'     => WL_ENTITY_URL_META_NAME,
 					'value'   => $uri,
 					'compare' => '=',
 				),
+			),
+			$tax_query = array(
+			    array(
+			        'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+			        'field'    => 'slug',
+			        'terms'    => 'article',
+					'operator' => 'NOT IN',
+			    ),
 			),
 		);
 
@@ -440,9 +448,22 @@ class Wordlift_Entity_Service {
 	 */
 	public function count() {
 
-		$count = wp_count_posts( self::TYPE_NAME );
+		$posts = get_posts( array(
+			'post_type' => Wordlift_Entity_Service::valid_entity_post_type(),
+			'post_status' => 'publish',
+			'tax_query' => array(
+				array(
+					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+					'field'    => 'slug',
+					'terms'    => 'article',
+				),
+			),
+			'fields' => 'ids',
+		));
 
-		return $count->publish;
+		$count = count( $posts );
+
+		return $count;
 	}
 
 	/**
@@ -533,11 +554,9 @@ class Wordlift_Entity_Service {
 	static function valid_entity_post_type() {
 
 		// Ignore builtins in the call to avoid getting attachments.
-		$post_types = get_post_types( array( 'public' => true, '_builtin' => false ) );
-		$post_types[] = 'post';
-		$post_types[] = 'page';
+		$post_types = array( 'post', 'page', 'entity' );
 
-		return apply_filters( 'wl_valid_entity_post_types', $post_types );
+		return apply_filters( 'wl_valid_entity_post_type', $post_types );
 	}
 
 	/**

@@ -12,7 +12,6 @@
  */
 function wl_get_entity_post_ids_by_uris( $uris ) {
 
-
 	if ( empty( $uris ) ) {
 		return array();
 	}
@@ -20,7 +19,7 @@ function wl_get_entity_post_ids_by_uris( $uris ) {
 	$query = new WP_Query( array(
 			'fields'      => 'ids',
 			'post_status' => 'any',
-			'post_type'   => Wordlift_Entity_Service::TYPE_NAME,
+			'post_type'   => Wordlift_Entity_Service::valid_entity_post_type(),
 			'meta_query'  => array(
 				'relation' => 'OR',
 				array(

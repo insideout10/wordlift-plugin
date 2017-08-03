@@ -40,11 +40,9 @@ class Wordlift_Publisher_Service {
 			'   ON t.term_id = tt.term_id' .
 			"  LEFT JOIN $wpdb->postmeta m" .
 			"   ON m.post_id = p.id AND m.meta_key = '_thumbnail_id'" .
-			'  WHERE p.post_type = %s' .
 			"   AND t.name IN ( 'Organization', 'Person' )" .
 			'   AND tt.taxonomy = %s' .
 			' ORDER BY p.post_title',
-			Wordlift_Entity_Service::TYPE_NAME,
 			Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME
 		) );
 
@@ -84,7 +82,6 @@ class Wordlift_Publisher_Service {
 			'   AND tt.taxonomy = %s' .
 			'   AND p.post_title LIKE %s' .
 			' ORDER BY p.post_title',
-			Wordlift_Entity_Service::TYPE_NAME,
 			Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
 			'%' . $wpdb->esc_like( $filter ) . '%'
 		) );
