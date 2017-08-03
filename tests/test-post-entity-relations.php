@@ -235,8 +235,22 @@ class PostEntityRelationsTest extends Wordlift_Unit_Test_Case {
 		$this->assertFalse( $result );
 	}
 
-	function test_core_sql_query_builder_1() {
+	/** Enumerations for `create_posts`. */
+	const POST_AS_ARTICLE_1 = 0;
+	const POST_AS_ARTICLE_2 = 1;
+	const POST_AS_EVENT = 2;
+	const PAGE_AS_ARTICLE = 3;
+	const PAGE_AS_RECIPE = 4;
+	const ENTITY_AS_EVENT = 5;
 
+	/**
+	 * Create posts for tests.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @return array An array of test {@link WP_Post}s' ids.
+	 */
+	private function create_posts( $times = 1 ) {
 		// Create some tests cases:
 		//  - post as non-Article entity,
 		//  - post as Article entity,
@@ -246,64 +260,417 @@ class PostEntityRelationsTest extends Wordlift_Unit_Test_Case {
 
 		$posts = array();
 
-		$posts[] = $this->factory->post->create( array(
-			'post_type'   => 'post',
-			'post_status' => 'publish',
-			'tax_input'   => array(
-				Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME =>
-					$this->get_term_id_by_slug( 'article' ),
-			),
-		) );
+		for ( $i = 0; $i < $times; $i ++ ) {
+			$posts[] = $this->factory->post->create( array(
+				'post_type'   => 'post',
+				'post_status' => 'publish',
+			) );
+			$term_id = $this->get_term_id_by_slug( 'article' );
+			wp_set_post_terms( $posts[ count( $posts ) - 1 ], $term_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 
-		$posts[] = $this->factory->post->create( array(
-			'post_type'   => 'post',
-			'post_status' => 'publish',
-			'tax_input'   => array(
-				Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME =>
-					$this->get_term_id_by_slug( 'article' ),
-			),
-		) );
+			$posts[] = $this->factory->post->create( array(
+				'post_type'   => 'post',
+				'post_status' => 'publish',
+			) );
+			$term_id = $this->get_term_id_by_slug( 'article' );
+			wp_set_post_terms( $posts[ count( $posts ) - 1 ], $term_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 
-		$posts[] = $this->factory->post->create( array(
-			'post_type'   => 'post',
-			'post_status' => 'publish',
-			'tax_input'   => array(
-				Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME =>
-					$this->get_term_id_by_slug( 'event' ),
-			),
-		) );
+			$posts[] = $this->factory->post->create( array(
+				'post_type'   => 'post',
+				'post_status' => 'publish',
+			) );
+			$term_id = $this->get_term_id_by_slug( 'event' );
+			wp_set_post_terms( $posts[ count( $posts ) - 1 ], $term_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 
-		$posts[] = $this->factory->post->create( array(
-			'post_type'   => 'page',
-			'post_status' => 'publish',
-			'tax_input'   => array(
-				Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME =>
-					$this->get_term_id_by_slug( 'article' ),
-			),
-		) );
+			$posts[] = $this->factory->post->create( array(
+				'post_type'   => 'page',
+				'post_status' => 'publish',
+			) );
+			$term_id = $this->get_term_id_by_slug( 'article' );
+			wp_set_post_terms( $posts[ count( $posts ) - 1 ], $term_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 
-		$posts[] = $this->factory->post->create( array(
-			'post_type'   => 'page',
-			'post_status' => 'publish',
-			'tax_input'   => array(
-				Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME =>
-					$this->get_term_id_by_slug( 'event' ),
-			),
-		) );
+			$posts[] = $this->factory->post->create( array(
+				'post_type'   => 'page',
+				'post_status' => 'publish',
+			) );
+			$term_id = $this->get_term_id_by_slug( 'recipe' );
+			wp_set_post_terms( $posts[ count( $posts ) - 1 ], $term_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 
-		$posts[] = $this->factory->post->create( array(
-			'post_type'   => 'entity',
-			'post_status' => 'publish',
-			'tax_input'   => array(
-				Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME =>
-					$this->get_term_id_by_slug( 'event' ),
-			),
-		) );
-
-		for ( $i = 1; $i < count( $posts ); $i ++ ) {
-			$result = $this->add_relation( $posts[0], $posts[ $i ] );
-			$this->assertGreaterThan( 0, $result );
+			$posts[] = $this->factory->post->create( array(
+				'post_type'   => 'entity',
+				'post_status' => 'publish',
+			) );
+			$term_id = $this->get_term_id_by_slug( 'event' );
+			wp_set_post_terms( $posts[ count( $posts ) - 1 ], $term_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 		}
+
+		for ( $i = 0; $i < count( $posts ); $i ++ ) {
+			for ( $j = 0; $j < count( $posts ); $j ++ ) {
+				if ( $i === $j ) {
+					continue;
+				}
+				$result = $this->add_relation( $posts[ $i ], $posts[ $j ] );
+				$this->assertGreaterThan( 0, $result );
+			}
+		}
+
+		return $posts;
+	}
+
+	function test_core_sql_query_builder_1() {
+		global $wpdb;
+
+		$posts = $this->create_posts();
+
+		$sql = wl_core_sql_query_builder( array(
+			'get'        => 'posts',
+			'related_to' => $posts[1],
+			'as'         => 'subject',
+			'post_type'  => 'post',
+		) );
+
+		// Try to perform query in order to see if there are errors on db side
+		$results = $wpdb->get_results( $sql );
+		$this->assertEmpty( $wpdb->last_error );
+
+		$this->assertCount( 2, $results, 'Expect 2 articles.' );
+
+		$filtered = array_filter( $results, function ( $item ) {
+			$terms = wp_get_post_terms( $item->ID, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+
+			return in_array( $item->post_type, Wordlift_Entity_Service::valid_entity_post_types() ) && ! empty( $terms ) && 'article' === $terms[0]->slug;
+		} );
+
+		$this->assertCount( 2, $filtered, 'Expect 2 articles.' );
+
+	}
+
+	function test_core_sql_query_builder_2() {
+		global $wpdb;
+
+		$posts = $this->create_posts( 6 );
+
+		$sql = wl_core_sql_query_builder( array(
+			'first'      => 10,
+			'get'        => 'posts',
+			'related_to' => $posts[1],
+			'as'         => 'subject',
+			'post_type'  => 'post',
+		) );
+
+		// Try to perform query in order to see if there are errors on db side
+		$results = $wpdb->get_results( $sql );
+		$this->assertEmpty( $wpdb->last_error );
+
+		$this->assertCount( 10, $results, 'Expect 10 articles.' );
+
+		$filtered = array_filter( $results, function ( $item ) {
+			$terms = wp_get_post_terms( $item->ID, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+
+			return in_array( $item->post_type, Wordlift_Entity_Service::valid_entity_post_types() ) && ! empty( $terms ) && 'article' === $terms[0]->slug;
+		} );
+
+		$this->assertCount( 10, $filtered, 'Expect 10 articles.' );
+
+	}
+
+	function test_core_sql_query_builder_3() {
+		global $wpdb;
+
+		$posts = $this->create_posts( 1 );
+
+		$sql = wl_core_sql_query_builder( array(
+			'first'      => 10,
+			'get'        => 'posts',
+			'related_to' => $posts[2],
+			'as'         => 'object',
+			'post_type'  => 'post',
+		) );
+
+		// Try to perform query in order to see if there are errors on db side
+		$results = $wpdb->get_results( $sql );
+		$this->assertEmpty( $wpdb->last_error );
+
+		$this->assertCount( 3, $results, 'Expect 3 articles.' );
+
+		$filtered = array_filter( $results, function ( $item ) {
+			$terms = wp_get_post_terms( $item->ID, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+
+			return in_array( $item->post_type, Wordlift_Entity_Service::valid_entity_post_types() ) && ! empty( $terms ) && 'article' === $terms[0]->slug;
+		} );
+
+		$this->assertCount( 3, $filtered, 'Expect 3 articles.' );
+
+	}
+
+	function test_core_sql_query_builder_4() {
+		global $wpdb;
+
+		$posts = $this->create_posts( 6 );
+
+		$sql = wl_core_sql_query_builder( array(
+			'first'      => 10,
+			'get'        => 'posts',
+			'related_to' => $posts[2],
+			'as'         => 'object',
+			'post_type'  => 'post',
+		) );
+
+		// Try to perform query in order to see if there are errors on db side
+		$results = $wpdb->get_results( $sql );
+		$this->assertEmpty( $wpdb->last_error );
+
+		$this->assertCount( 10, $results, 'Expect 10 articles.' );
+
+		$filtered = array_filter( $results, function ( $item ) {
+			$terms = wp_get_post_terms( $item->ID, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+
+			return in_array( $item->post_type, Wordlift_Entity_Service::valid_entity_post_types() ) && ! empty( $terms ) && 'article' === $terms[0]->slug;
+		} );
+
+		$this->assertCount( 10, $filtered, 'Expect 10 articles.' );
+
+	}
+
+	function test_core_sql_query_builder_5() {
+		global $wpdb;
+
+		$posts = $this->create_posts( 1 );
+
+		$sql = wl_core_sql_query_builder( array(
+			'first'          => 10,
+			'get'            => 'posts',
+			'related_to'     => $posts[1],
+			'as'             => 'object',
+			'post_type'      => 'post',
+			'with_predicate' => 'what',
+		) );
+
+		// Try to perform query in order to see if there are errors on db side
+		$results = $wpdb->get_results( $sql );
+		$this->assertEmpty( $wpdb->last_error );
+
+		$this->assertCount( 2, $results, 'Expect 2 articles.' );
+
+		$filtered = array_filter( $results, function ( $item ) {
+			$terms = wp_get_post_terms( $item->ID, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+
+			return in_array( $item->post_type, Wordlift_Entity_Service::valid_entity_post_types() ) && ! empty( $terms ) && 'article' === $terms[0]->slug;
+		} );
+
+		$this->assertCount( 2, $filtered, 'Expect 2 articles.' );
+
+	}
+
+	function test_core_sql_query_builder_6() {
+		global $wpdb;
+
+		$posts = $this->create_posts( 1 );
+
+		$sql = wl_core_sql_query_builder( array(
+			'first'          => 10,
+			'get'            => 'posts',
+			'related_to'     => $posts[2],
+			'related_to__in' => array( $posts[3], $posts[4] ),
+			'post_type'      => 'post',
+			'as'             => 'object',
+		) );
+
+		// Try to perform query in order to see if there are errors on db side
+		$results = $wpdb->get_results( $sql );
+		$this->assertEmpty( $wpdb->last_error );
+
+		$this->assertCount( 0, $results, 'Expect 0 articles.' );
+
+	}
+
+	function test_core_sql_query_builder_7() {
+		global $wpdb;
+
+		$posts = $this->create_posts( 1 );
+
+		$sql = wl_core_sql_query_builder( array(
+			'first'          => 10,
+			'get'            => 'posts',
+			'related_to'     => $posts[1],
+			'as'             => 'object',
+			'post_type'      => 'post',
+			'with_predicate' => 'what',
+		) );
+
+		// Try to perform query in order to see if there are errors on db side
+		$results = $wpdb->get_results( $sql );
+		$this->assertEmpty( $wpdb->last_error );
+
+		$this->assertCount( 2, $results, 'Expect 2 articles.' );
+
+		$filtered = array_filter( $results, function ( $item ) {
+			$terms = wp_get_post_terms( $item->ID, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+
+			return in_array( $item->post_type, Wordlift_Entity_Service::valid_entity_post_types() ) && ! empty( $terms ) && 'article' === $terms[0]->slug;
+		} );
+
+		$this->assertCount( 2, $filtered, 'Expect 2 articles.' );
+
+	}
+
+	function test_core_sql_query_builder_8() {
+		global $wpdb;
+
+		$posts = $this->create_posts();
+
+		$sql = wl_core_sql_query_builder( array(
+			'first'          => 10,
+			'get'            => 'posts',
+			'related_to'     => $posts[1],
+			'related_to__in' => array( $posts[2], $posts[3] ),
+			'post_type'      => 'post',
+			'as'             => 'object',
+		) );
+
+		// Try to perform query in order to see if there are errors on db side
+		$results = $wpdb->get_results( $sql );
+		$this->assertEmpty( $wpdb->last_error );
+
+		$this->assertCount( 0, $results, 'Expect 2 articles.' );
+
+	}
+
+	function test_core_sql_query_builder_9() {
+		global $wpdb;
+
+		$posts = $this->create_posts();
+
+		$sql = wl_core_sql_query_builder( array(
+			'first'          => 10,
+			'get'            => 'posts',
+			'related_to__in' => array(
+				$posts[ self::POST_AS_ARTICLE_1 ],
+				$posts[ self::POST_AS_ARTICLE_2 ],
+			),
+			'post_type'      => 'post',
+			'as'             => 'object',
+		) );
+
+		// Try to perform query in order to see if there are errors on db side
+		$results = $wpdb->get_results( $sql );
+		$this->assertEmpty( $wpdb->last_error );
+
+		$this->assertCount( 1, $results, 'Expect 1 article.' );
+
+		$filtered = array_filter( $results, function ( $item ) {
+			$terms = wp_get_post_terms( $item->ID, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+
+			return in_array( $item->post_type, Wordlift_Entity_Service::valid_entity_post_types() ) && ! empty( $terms ) && 'article' === $terms[0]->slug;
+		} );
+
+		$this->assertCount( 1, $filtered, 'Expect 1 articles.' );
+
+	}
+
+	function test_core_sql_query_builder_10() {
+		global $wpdb;
+
+		$posts = $this->create_posts();
+
+		$sql = wl_core_sql_query_builder( array(
+			'get'            => 'posts',
+			'related_to__in' => array(
+				$posts[ self::POST_AS_ARTICLE_1 ],
+				$posts[ self::POST_AS_ARTICLE_2 ],
+			),
+			'post__not_in'   => array( $posts[ self::PAGE_AS_ARTICLE ], ),
+			'post_type'      => 'post',
+			'as'             => 'object',
+		) );
+
+		// Try to perform query in order to see if there are errors on db side
+		$results = $wpdb->get_results( $sql );
+		$this->assertEmpty( $wpdb->last_error );
+
+		$this->assertCount( 0, $results, 'Expect 1 article.' );
+
+	}
+
+	function test_core_sql_query_builder_11() {
+		global $wpdb;
+
+		$posts = $this->create_posts();
+
+		$sql = wl_core_sql_query_builder( array(
+			'get'         => 'posts',
+			'related_to'  => $posts[ self::POST_AS_ARTICLE_1 ],
+			'post_type'   => 'post',
+			'post_status' => 'draft',
+			'as'          => 'object',
+		) );
+
+		// Try to perform query in order to see if there are errors on db side
+		$results = $wpdb->get_results( $sql );
+		$this->assertEmpty( $wpdb->last_error );
+
+		$this->assertCount( 0, $results, 'Expect 1 article.' );
+
+	}
+
+	function test_core_sql_query_builder_12() {
+		global $wpdb;
+
+		$posts = $this->create_posts();
+
+		$sql = wl_core_sql_query_builder( array(
+			'get'         => 'posts',
+			'related_to'  => $posts[ self::POST_AS_ARTICLE_1 ],
+			'post_type'   => 'post',
+			'post_status' => null,
+			'as'          => 'object',
+		) );
+
+		// Try to perform query in order to see if there are errors on db side
+		$results = $wpdb->get_results( $sql );
+		$this->assertEmpty( $wpdb->last_error );
+
+		$this->assertCount( 2, $results, 'Expect 2 articles.' );
+
+		$filtered = array_filter( $results, function ( $item ) {
+			$terms = wp_get_post_terms( $item->ID, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+
+			return in_array( $item->post_type, Wordlift_Entity_Service::valid_entity_post_types() ) && ! empty( $terms ) && 'article' === $terms[0]->slug;
+		} );
+
+		$this->assertCount( 2, $filtered, 'Expect 2 articles.' );
+
+	}
+
+	function test_core_sql_query_builder_13() {
+		global $wpdb;
+
+		$posts = $this->create_posts();
+
+		$sql = wl_core_sql_query_builder( array(
+			'get'            => 'posts',
+			'related_to__in' => array(
+				$posts[ self::POST_AS_ARTICLE_1 ],
+				$posts[ self::POST_AS_ARTICLE_2 ],
+			),
+			'post__in'       => array( $posts[ self::PAGE_AS_ARTICLE ], ),
+			'post_type'      => 'post',
+			'as'             => 'object',
+		) );
+
+		// Try to perform query in order to see if there are errors on db side
+		$results = $wpdb->get_results( $sql );
+		$this->assertEmpty( $wpdb->last_error );
+
+		$this->assertCount( 1, $results, 'Expect 1 article.' );
+
+		$filtered = array_filter( $results, function ( $item ) {
+			$terms = wp_get_post_terms( $item->ID, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+
+			return in_array( $item->post_type, Wordlift_Entity_Service::valid_entity_post_types() ) && ! empty( $terms ) && 'article' === $terms[0]->slug;
+		} );
+
+		$this->assertCount( 1, $filtered, 'Expect 1 article.' );
 
 	}
 
@@ -314,7 +681,11 @@ class PostEntityRelationsTest extends Wordlift_Unit_Test_Case {
 	 */
 	private function get_term_id_by_slug( $slug ) {
 
-		return get_term_by( 'slug', $slug, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME )->term_id;
+		$term_id = get_term_by( 'slug', $slug, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME )->term_id;
+
+		$this->assertGreaterThan( 0, $term_id );
+
+		return $term_id;
 	}
 
 	private function add_relation( $source, $destination ) {
@@ -325,204 +696,6 @@ class PostEntityRelationsTest extends Wordlift_Unit_Test_Case {
 			                       ->get_classification_scope_for( $destination ),
 			$destination
 		);
-	}
-
-	function testWlCoreSqlQueryBuilder() {
-
-		// Prepare interaction with db
-		global $wpdb;
-
-		$wl_table_name = wl_core_get_relation_instances_table_name();
-
-		// Case 6 - Find all posts of type 'post' related to post / entity with ID 3 as subject
-		$args = array(
-			'get'        => 'posts',
-			'related_to' => 3,
-			'as'         => 'subject',
-			'post_type'  => 'post',
-		);
-//		$expected_sql = <<<EOF
-//SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.subject_id AND p.post_type = 'post' AND r.object_id = 3 GROUP BY p.id;
-//EOF;
-		$expected_sql = "SELECT p.* FROM wptests_posts as p JOIN wptests_wl_relation_instances as r ON p.id = r.subject_id INNER JOIN wptests_term_relationships ON (p.ID = wptests_term_relationships.object_id) AND p.post_type IN ('post', 'page', 'entity') AND r.object_id = 3 AND (\n  wptests_term_relationships.term_taxonomy_id IN (10)  \n) GROUP BY p.id;";
-		$actual_sql   = wl_core_sql_query_builder( $args );
-		echo( "###$actual_sql###" );
-		$this->assertEquals( $expected_sql, $actual_sql );
-		// Try to perform query in order to see if there are errors on db side
-		$results = $wpdb->get_results( $actual_sql );
-
-		$this->assertEmpty( $wpdb->last_error );
-
-		// Case 7 - Find all post ids of type 'post' related to post / entity with ID 3 as subject
-		$args         = array(
-			'get'        => 'post_ids',
-			'related_to' => 3,
-			'as'         => 'subject',
-			'post_type'  => 'post',
-		);
-		$expected_sql = <<<EOF
-SELECT p.id FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.subject_id AND p.post_type = 'post' AND r.object_id = 3 GROUP BY p.id;
-EOF;
-		$actual_sql   = wl_core_sql_query_builder( $args );
-		$this->assertEquals( $expected_sql, $actual_sql );
-		// Try to perform query in order to see if there are errors on db side
-		$wpdb->get_results( $actual_sql );
-		$this->assertEmpty( $wpdb->last_error );
-
-		// Case 8 - Find first ten post ids of type 'post' related to post / entity with ID 3 as subject
-		$args         = array(
-			'first'      => 10,
-			'get'        => 'posts',
-			'related_to' => 3,
-			'as'         => 'subject',
-			'post_type'  => 'post',
-		);
-		$expected_sql = <<<EOF
-SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.subject_id AND p.post_type = 'post' AND r.object_id = 3 GROUP BY p.id LIMIT 10;
-EOF;
-		$actual_sql   = wl_core_sql_query_builder( $args );
-		$this->assertEquals( $expected_sql, $actual_sql );
-		// Try to perform query in order to see if there are errors on db side
-		$wpdb->get_results( $actual_sql );
-		$this->assertEmpty( $wpdb->last_error );
-
-		// Case 9 - Find first ten post ids of type 'post' related to post / entity with ID 3 as object
-		$args         = array(
-			'first'      => 10,
-			'get'        => 'posts',
-			'related_to' => 3,
-			'as'         => 'object',
-			'post_type'  => 'post',
-		);
-		$expected_sql = <<<EOF
-SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.object_id AND p.post_type = 'post' AND r.subject_id = 3 GROUP BY p.id LIMIT 10;
-EOF;
-		$actual_sql   = wl_core_sql_query_builder( $args );
-		$this->assertEquals( $expected_sql, $actual_sql );
-		// Try to perform query in order to see if there are errors on db side
-		$wpdb->get_results( $actual_sql );
-		$this->assertEmpty( $wpdb->last_error );
-
-		// Case 10 - Find first ten post ids of type 'post' related to post / entity with ID 3 as object with predicate what
-		$args         = array(
-			'first'          => 10,
-			'get'            => 'posts',
-			'related_to'     => 3,
-			'as'             => 'object',
-			'post_type'      => 'post',
-			'with_predicate' => 'what',
-		);
-		$expected_sql = <<<EOF
-SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.object_id AND p.post_type = 'post' AND r.subject_id = 3 AND r.predicate = 'what' GROUP BY p.id LIMIT 10;
-EOF;
-		$actual_sql   = wl_core_sql_query_builder( $args );
-		$this->assertEquals( $expected_sql, $actual_sql );
-		// Try to perform query in order to see if there are errors on db side
-		$wpdb->get_results( $actual_sql );
-		$this->assertEmpty( $wpdb->last_error );
-
-		// Case 11 - Find first ten post ids of type 'post' related to post / entity with ID 3 and IN (4,5) as object with predicate what
-		$args         = array(
-			'first'          => 10,
-			'get'            => 'posts',
-			'related_to'     => 3,
-			'related_to__in' => array( '4', '5' ),
-			'post_type'      => 'post',
-			'as'             => 'object',
-		);
-		$expected_sql = <<<EOF
-SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.object_id AND p.post_type = 'post' AND r.subject_id = 3 AND r.subject_id IN (4,5) GROUP BY p.id LIMIT 10;
-EOF;
-		$actual_sql   = wl_core_sql_query_builder( $args );
-		$this->assertEquals( $expected_sql, $actual_sql );
-		// Try to perform query in order to see if there are errors on db side
-		$wpdb->get_results( $actual_sql );
-		$this->assertEmpty( $wpdb->last_error );
-
-		// Case 12 - Find first ten post ids of type 'post' related to post / entity id IN (3, 4) as object with predicate what
-		$args         = array(
-			'first'          => 10,
-			'get'            => 'posts',
-			'related_to__in' => array( '4', '5' ),
-			'post_type'      => 'post',
-			'as'             => 'object',
-		);
-		$expected_sql = <<<EOF
-SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.object_id AND p.post_type = 'post' AND r.subject_id IN (4,5) GROUP BY p.id LIMIT 10;
-EOF;
-		$actual_sql   = wl_core_sql_query_builder( $args );
-		$this->assertEquals( $expected_sql, $actual_sql );
-		// Try to perform query in order to see if there are errors on db side
-		$wpdb->get_results( $actual_sql );
-		$this->assertEmpty( $wpdb->last_error );
-
-		// Case 13 - Find post ids of type 'post' not included IN (6) related to post / entity id IN (3, 4) as object
-		$args         = array(
-			'get'            => 'posts',
-			'related_to__in' => array( '4', '5' ),
-			'post__not_in'   => array( '6' ),
-			'post_type'      => 'post',
-			'as'             => 'object',
-		);
-		$expected_sql = <<<EOF
-SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.object_id AND p.post_type = 'post' AND r.subject_id IN (4,5) AND r.object_id NOT IN (6) GROUP BY p.id;
-EOF;
-		$actual_sql   = wl_core_sql_query_builder( $args );
-		$this->assertEquals( $expected_sql, $actual_sql );
-		// Try to perform query in order to see if there are errors on db side
-		$wpdb->get_results( $actual_sql );
-		$this->assertEmpty( $wpdb->last_error );
-
-		// Case 14 - Require a specific post status
-		$args         = array(
-			'get'         => 'posts',
-			'related_to'  => 4,
-			'post_type'   => 'post',
-			'post_status' => 'draft',
-			'as'          => 'object',
-		);
-		$expected_sql = <<<EOF
-SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.object_id AND p.post_type = 'post' AND p.post_status = 'draft' AND r.subject_id = 4 GROUP BY p.id;
-EOF;
-		$actual_sql   = wl_core_sql_query_builder( $args );
-		$this->assertEquals( $expected_sql, $actual_sql );
-		// Try to perform query in order to see if there are errors on db side
-		$wpdb->get_results( $actual_sql );
-		$this->assertEmpty( $wpdb->last_error );
-
-		// Case 15 - Do not require an post status
-		$args         = array(
-			'get'         => 'posts',
-			'related_to'  => 4,
-			'post_type'   => 'post',
-			'post_status' => null,
-			'as'          => 'object',
-		);
-		$expected_sql = <<<EOF
-SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.object_id AND p.post_type = 'post' AND r.subject_id = 4 GROUP BY p.id;
-EOF;
-		$actual_sql   = wl_core_sql_query_builder( $args );
-		$this->assertEquals( $expected_sql, $actual_sql );
-		// Try to perform query in order to see if there are errors on db side
-		$wpdb->get_results( $actual_sql );
-		$this->assertEmpty( $wpdb->last_error );
-
-		// Case 16 - Find post ids of type 'post' only if included IN (6) and related to post / entity id IN (3, 4) as object
-		$args         = array(
-			'get'            => 'posts',
-			'related_to__in' => array( '4', '5' ),
-			'post__in'       => array( '6' ),
-			'post_type'      => 'post',
-			'as'             => 'object',
-		);
-		$expected_sql = <<<EOF
-SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.object_id AND p.post_type = 'post' AND r.subject_id IN (4,5) AND r.object_id IN (6) GROUP BY p.id;
-EOF;
-		$actual_sql   = wl_core_sql_query_builder( $args );
-		$this->assertEquals( $expected_sql, $actual_sql );
-		// Try to perform query in order to see if there are errors on db side
-		$wpdb->get_results( $actual_sql );
-		$this->assertEmpty( $wpdb->last_error );
 	}
 
 	function testWlCoreAddRelationInstance() {

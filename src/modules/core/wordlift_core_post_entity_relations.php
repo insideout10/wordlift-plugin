@@ -389,12 +389,7 @@ function wl_core_sql_query_builder( $args ) {
 
 	// Sql add post type filter
 	$post_types = Wordlift_Entity_Service::valid_entity_post_types();
-	if ( 1 === count( $post_types ) ) {
-		$post_type = $post_types[0];
-		$sql       .= $wpdb->prepare( ' AND p.post_type = %s AND', $post_type );
-	} else {
-		$sql .= " AND p.post_type IN ('" . join( "', '", esc_sql( $post_types ) ) . "') AND";
-	}
+	$sql        .= " AND p.post_type IN ('" . join( "', '", esc_sql( $post_types ) ) . "') AND";
 
 	// Sql add post status filter
 	if ( isset( $args['post_status'] ) && ! is_null( $args['post_status'] ) ) {
@@ -417,6 +412,8 @@ function wl_core_sql_query_builder( $args ) {
 	}
 	if ( isset( $args['related_to__in'] ) ) {
 		$sql .= " r.$filtering_column IN (" . implode( ',', $args['related_to__in'] ) . ')';
+		// The IDs used for filtering shouldn't be in the results.
+		$sql .= " AND p.ID NOT IN (" . implode( ',', $args['related_to__in'] ) . ')';
 	}
 	if ( isset( $args['post__not_in'] ) ) {
 		$sql .= ' AND r.' . $args['as'] . '_id NOT IN (' . implode( ',', $args['post__not_in'] ) . ')';
