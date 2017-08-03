@@ -43,7 +43,7 @@ function wl_entity_type_taxonomy_register() {
 		'show_in_quick_edit' => false,
 	);
 
-	register_taxonomy( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, Wordlift_Entity_Service::valid_entity_post_type(), $args );
+	register_taxonomy( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, Wordlift_Entity_Service::valid_entity_post_types(), $args );
 
 	// Add filter to change the metabox CSS class
 	add_filter( 'postbox_classes_entity_wl_entity_typediv', 'wl_admin_metaboxes_add_css_class' );

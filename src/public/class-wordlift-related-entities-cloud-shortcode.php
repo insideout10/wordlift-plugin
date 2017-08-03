@@ -54,7 +54,7 @@ class Wordlift_Related_Entities_Cloud_Shortcode extends Wordlift_Shortcode {
 	public function get_related_entities_tags() {
 
 		// Define the supported types list.
-		$supported_types = Wordlift_Entity_Service::valid_entity_post_type();
+		$supported_types = Wordlift_Entity_Service::valid_entity_post_types();
 
 		// Show nothing if not on a post or entity page.
 		if ( ! is_singular( $supported_types ) ) {

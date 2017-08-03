@@ -12,7 +12,7 @@ function wl_shortcode_chord_most_referenced_entity_id() {
 	// For each article get the entities they reference.
 	$post_ids = get_posts( array(
 		'numberposts' => 20,
-		'post_type'   => Wordlift_Entity_Service::valid_entity_post_type(),
+		'post_type'   => Wordlift_Entity_Service::valid_entity_post_types(),
 		'fields'      => 'ids', //only get post IDs
 		'post_status' => 'published',
 		'tax_query'   => array(

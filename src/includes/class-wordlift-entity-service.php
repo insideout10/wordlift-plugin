@@ -222,7 +222,7 @@ class Wordlift_Entity_Service {
 		$query_args = array(
 			'posts_per_page' => 1,
 			'post_status'    => 'any',
-			'post_type'      => Wordlift_Entity_Service::valid_entity_post_type(),
+			'post_type'      => Wordlift_Entity_Service::valid_entity_post_types(),
 			'meta_query'     => array(
 				array(
 					'key'     => WL_ENTITY_URL_META_NAME,
@@ -449,7 +449,7 @@ class Wordlift_Entity_Service {
 	public function count() {
 
 		$posts = get_posts( array(
-			'post_type' => Wordlift_Entity_Service::valid_entity_post_type(),
+			'post_type' => Wordlift_Entity_Service::valid_entity_post_types(),
 			'post_status' => 'publish',
 			'tax_query' => array(
 				array(
@@ -551,12 +551,12 @@ class Wordlift_Entity_Service {
 	 *
 	 * @return array Array containing the names of the valid post types.
 	 */
-	static function valid_entity_post_type() {
+	static function valid_entity_post_types() {
 
 		// Ignore builtins in the call to avoid getting attachments.
 		$post_types = array( 'post', 'page', 'entity' );
 
-		return apply_filters( 'wl_valid_entity_post_type', $post_types );
+		return apply_filters( 'wl_valid_entity_post_types', $post_types );
 	}
 
 	/**
@@ -573,6 +573,6 @@ class Wordlift_Entity_Service {
 	 */
 	static function is_valid_entity_post_type( $post_type ) {
 
-		return in_array( $post_type, self::valid_entity_post_type(), true );
+		return in_array( $post_type, self::valid_entity_post_types(), true );
 	}
 }

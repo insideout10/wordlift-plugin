@@ -69,7 +69,7 @@ class Wordlift_Entity_Type_Adapter {
 	 */
 	public function save_post( $post_id, $post, $update ) {
 
-		if ( ! in_array( $post->post_type, Wordlift_Entity_Service::valid_entity_post_type() ) ) {
+		if ( ! in_array( $post->post_type, Wordlift_Entity_Service::valid_entity_post_types() ) ) {
 			$this->log->debug( "Ignoring `{$post->post_type}` post type." );
 			// Bail out if the post isn't can not be an entity.
 

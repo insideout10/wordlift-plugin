@@ -123,7 +123,7 @@ class Wordlift_Timeline_Service {
 
 		return get_posts( array(
 			'post__in'       => $ids,
-			'post_type'      => Wordlift_Entity_Service::valid_entity_post_type(),
+			'post_type'      => Wordlift_Entity_Service::valid_entity_post_types(),
 			'post_status'    => 'publish',
 			'posts_per_page' => - 1,
 			'meta_query'     => array(
@@ -318,7 +318,7 @@ class Wordlift_Timeline_Service {
 		$latest_posts_ids = get_posts( array(
 			'numberposts' => 50,
 			'fields'      => 'ids', //only get post IDs
-			'post_type'   => Wordlift_Entity_Service::valid_entity_post_type(),
+			'post_type'   => Wordlift_Entity_Service::valid_entity_post_types(),
 			'post_status' => 'publish',
 		) );
 

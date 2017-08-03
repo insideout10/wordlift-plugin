@@ -162,7 +162,7 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 			'orderby'     => 'ID',
 			'order'       => 'ASC',
 			'post_status' => 'any',
-			'post_type'   => Wordlift_Entity_Service::valid_entity_post_type(),
+			'post_type'   => Wordlift_Entity_Service::valid_entity_post_types(),
 			'tax_query'   => array(
 				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
 				'field'    => 'slug',

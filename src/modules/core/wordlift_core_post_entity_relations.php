@@ -473,7 +473,7 @@ function wl_core_sql_query_builder( $args ) {
 	$sql .= $tax_sql['join'];
 
 	// Sql add post type filter
-	$post_types = Wordlift_Entity_Service::valid_entity_post_type();
+	$post_types = Wordlift_Entity_Service::valid_entity_post_types();
 	if ( 1 === count( $post_types ) ) {
 		$post_type = $post_types[0];
 		$sql .= $wpdb->prepare( ' AND p.post_type = %s AND', $post_type );
