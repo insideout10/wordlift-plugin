@@ -63,28 +63,28 @@ function wl_entity_type_taxonomy_get_type( $post_id ) {
 	return Wordlift_Entity_Type_Service::get_instance()->get( $post_id );
 }
 
-/**
- * Get the children types of given term.
- *
- * @param mixes  $term Term ID (e.g. 12) or slug (e.g. 'creative-work') or name (e.g. 'CreativeWork').
- * @param string $by   Search key. Must be one of: 'id', 'slug', 'name', or 'term_taxonomy_id'.
- */
-function wl_entity_type_taxonomy_get_term_children( $term, $by = 'name' ) {
-	// TODO: test this method
-	// NOTE: WP taxonomy terms can have only one parent. This is a WP limit.
-
-	$children_terms = array();
-
-	$term = get_term_by( $by, $term, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
-
-	if ( isset( $term->term_id ) ) {
-
-		$children_ids = get_term_children( $term->term_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
-
-		foreach ( $children_ids as $children_id ) {
-			$children_terms[] = get_term( $children_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
-		}
-	}
-
-	return $children_terms;
-}
+///**
+// * Get the children types of given term.
+// *
+// * @param mixes  $term Term ID (e.g. 12) or slug (e.g. 'creative-work') or name (e.g. 'CreativeWork').
+// * @param string $by   Search key. Must be one of: 'id', 'slug', 'name', or 'term_taxonomy_id'.
+// */
+//function wl_entity_type_taxonomy_get_term_children( $term, $by = 'name' ) {
+//	// TODO: test this method
+//	// NOTE: WP taxonomy terms can have only one parent. This is a WP limit.
+//
+//	$children_terms = array();
+//
+//	$term = get_term_by( $by, $term, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+//
+//	if ( isset( $term->term_id ) ) {
+//
+//		$children_ids = get_term_children( $term->term_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+//
+//		foreach ( $children_ids as $children_id ) {
+//			$children_terms[] = get_term( $children_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+//		}
+//	}
+//
+//	return $children_terms;
+//}

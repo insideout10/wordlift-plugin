@@ -82,90 +82,12 @@ function wl_core_add_relation_instance( $subject_id, $predicate, $object_id ) {
 }
 
 /**
- * Remove a given relation instance
- * @uses   $wpdb->delete() to perform the query
- *
- * @param int    $subject_id The post ID | The entity post ID.
- * @param string $predicate  Name of the relation: 'what' | 'where' | 'when' | 'who'
- * @param int    $object_id  The entity post ID.
- *
- * @return (boolean) False for failure. True for success.
- */
-function wl_core_delete_relation_instance( $subject_id, $predicate, $object_id ) {
-
-	// Checks on subject and object
-	if ( ! is_numeric( $subject_id ) || ! is_numeric( $object_id ) ) {
-		return false;
-	}
-
-	// Checks on the given relation
-	if ( ! wl_core_check_relation_predicate_is_supported( $predicate ) ) {
-		return false;
-	}
-
-	// Prepare interaction with db
-	global $wpdb;
-
-	wl_write_log( "Going to delete relation instace [ subject_id :: $subject_id ] [ object_id :: $object_id ] [ predicate :: $predicate ]" );
-
-	// @see ttps://codex.wordpress.org/it:Riferimento_classi/wpdb#DELETE_di_righe
-	$wpdb->delete(
-		wl_core_get_relation_instances_table_name(),
-		array(
-			'subject_id' => $subject_id,
-			'predicate'  => $predicate,
-			'object_id'  => $object_id,
-		),
-		array( '%d', '%s', '%d' )
-	);
-
-	return true;
-}
-
-/**
- * Create multiple relation instances
- * @uses   wl_add_relation_instance() to create each single instance
- *
- * @param int    $subject_id The post ID | The entity post ID.
- * @param string $predicate  Name of the relation: 'what' | 'where' | 'when' | 'who'
- * @param array  $object_ids The entity post IDs collection.
- *
- * @return (integer|boolean) Return the relation instances IDs or false
- */
-function wl_core_add_relation_instances( $subject_id, $predicate, $object_ids ) {
-
-	// Checks on subject and object
-	if ( ! is_numeric( $subject_id ) ) {
-		return false;
-	}
-
-	// Checks on the given relation
-	if ( ! wl_core_check_relation_predicate_is_supported( $predicate ) ) {
-		return false;
-	}
-
-	// Check $object_ids is an array
-	if ( ! is_array( $object_ids ) || empty( $object_ids ) ) {
-		return false;
-	}
-
-	// Call method to check and add each single relation
-	$inserted_records_ids = array();
-	foreach ( $object_ids as $object_id ) {
-		$new_record_id          = wl_core_add_relation_instance( $subject_id, $predicate, $object_id );
-		$inserted_records_ids[] = $new_record_id;
-	}
-
-	return $inserted_records_ids;
-}
-
-/**
  * Remove all relation instances for a given $subject_id and $predicate
  * If $predicate is omitted, $predicate filter is not applied
  *
  * @param int $subject_id The post ID | The entity post ID.
  *
- * @return (boolean) False for failure. True for success.
+ * @return boolean False for failure. True for success.
  */
 function wl_core_delete_relation_instances( $subject_id ) {
 
@@ -179,7 +101,7 @@ function wl_core_delete_relation_instances( $subject_id ) {
 
 	// wl_write_log( "Going to delete relation instances [ subject_id :: $subject_id ]");
 
-	// @see ttps://codex.wordpress.org/it:Riferimento_classi/wpdb#DELETE_di_righe
+	// @see https://codex.wordpress.org/it:Riferimento_classi/wpdb#DELETE_di_righe
 	$wpdb->delete(
 		wl_core_get_relation_instances_table_name(),
 		array(
@@ -223,14 +145,14 @@ function wl_core_validate_filters_for_related( $filters ) {
  * If $predicate is omitted, $predicate filter is not applied
  * @uses   wl_core_inner_get_related_entities() to perform the action
  *
- * @param int $subject_id The post ID | The entity post ID.
- * @param     $filters    Associative array formed like this:
- *                        <code>
- *                        $filters = array(
- *                        'predicate' => Name of the relation: [ null | 'what' | 'where' | 'when' | 'who' ], default is null (meaning *any* post status)
- *                        'status' => [ null | 'publish' | 'draft' | 'pending' | 'trash' ], default is null (meaning *any* post status)
- *                        );
- *                        </code>
+ * @param int   $subject_id The post ID | The entity post ID.
+ * @param array $filters    Associative array formed like this:
+ *                          <code>
+ *                          $filters = array(
+ *                          'predicate' => Name of the relation: [ null | 'what' | 'where' | 'when' | 'who' ], default is null (meaning *any* post status)
+ *                          'status' => [ null | 'publish' | 'draft' | 'pending' | 'trash' ], default is null (meaning *any* post status)
+ *                          );
+ *                          </code>
  *
  * @return array Array of post entity objects.
  */
@@ -246,8 +168,8 @@ function wl_core_get_related_entities( $subject_id, $filters = array() ) {
  * If $predicate is omitted, $predicate filter is not applied
  * @uses   wl_core_inner_get_related_entities() to perform the action
  *
- * @param int    $subject_id The post ID | The entity post ID.
- * @param arøray $filters    Associative array formed like this:
+ * @param int   $subject_id  The post ID | The entity post ID.
+ * @param array $filters     Associative array formed like this:
  *                           <code>
  *                           $filters = array(
  *                           'predicate' => Name of the relation: [ null | 'what' | 'where' | 'when' | 'who' ], default is null (meaning *any* post status)
@@ -299,14 +221,14 @@ function wl_core_inner_get_related_entities( $get, $item_id, $predicate = null, 
  * If $predicate is omitted, $predicate filter is not applied
  * @uses   wl_core_get_related_posts() to perform the action
  *
- * @param int $object_id The entity ID or the post ID.
- * @param     $filters   Associative array formed like this:
- *                       <code>
- *                       $filters = array(
- *                       'predicate' => Name of the relation: [ null | 'what' | 'where' | 'when' | 'who' ], default is null (meaning *any* post status)
- *                       'status' => [ null | 'publish' | 'draft' | 'pending' | 'trash' ], default is null (meaning *any* post status)
- *                       );
- *                       </code>
+ * @param int   $object_id The entity ID or the post ID.
+ * @param array $filters   Associative array formed like this:
+ *                         <code>
+ *                         $filters = array(
+ *                         'predicate' => Name of the relation: [ null | 'what' | 'where' | 'when' | 'who' ], default is null (meaning *any* post status)
+ *                         'status' => [ null | 'publish' | 'draft' | 'pending' | 'trash' ], default is null (meaning *any* post status)
+ *                         );
+ *                         </code>
  *
  * @return array Array of objects.
  */
@@ -322,14 +244,14 @@ function wl_core_get_related_posts( $object_id, $filters = array() ) {
  * If $predicate is omitted, $predicate filter is not applied
  * @uses   wl_core_get_related_posts() to perform the action
  *
- * @param int $object_id The entity ID or the post ID.
- * @param     $filters   Associative array formed like this:
- *                       <code>
- *                       $filters = array(
- *                       'predicate' => Name of the relation: [ null | 'what' | 'where' | 'when' | 'who' ], default is null (meaning *any* post status)
- *                       'status' => [ null | 'publish' | 'draft' | 'pending' | 'trash' ], default is null (meaning *any* post status)
- *                       );
- *                       </code>
+ * @param int   $object_id The entity ID or the post ID.
+ * @param array $filters   Associative array formed like this:
+ *                         <code>
+ *                         $filters = array(
+ *                         'predicate' => Name of the relation: [ null | 'what' | 'where' | 'when' | 'who' ], default is null (meaning *any* post status)
+ *                         'status' => [ null | 'publish' | 'draft' | 'pending' | 'trash' ], default is null (meaning *any* post status)
+ *                         );
+ *                         </code>
  *
  * @return array Array of objects.
  */
@@ -415,9 +337,9 @@ function wl_core_inner_get_related_posts( $get, $item_id, $predicate = null, $po
  * while a post type of 'entity' means a non article, instead of being used as explicit
  * post types for the query.
  *
- * @param array args Arguments to be used in the query builder.
+ * @param array $args Arguments to be used in the query builder.
  *
- * @return string | false String representing a sql statement, or false in case of error
+ * @return string|false String representing a sql statement, or false in case of error
  */
 function wl_core_sql_query_builder( $args ) {
 
@@ -434,21 +356,21 @@ function wl_core_sql_query_builder( $args ) {
 
 	if ( 'entity' === $args['post_type'] ) {
 		$tax_query = array(
-		    array(
-		        'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
-		        'field'    => 'slug',
-		        'terms'    => 'article',
+			array(
+				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				'field'    => 'slug',
+				'terms'    => 'article',
 				'operator' => 'NOT IN',
-		    ),
+			),
 		);
 	} else {
-			$tax_query = array(
-				array(
-					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
-					'field'    => 'slug',
-					'terms'    => 'article',
-				),
-			);
+		$tax_query = array(
+			array(
+				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				'field'    => 'slug',
+				'terms'    => 'article',
+			),
+		);
 	}
 
 	// Use "p" as the table to match the initial join.
@@ -476,7 +398,7 @@ function wl_core_sql_query_builder( $args ) {
 	$post_types = Wordlift_Entity_Service::valid_entity_post_type();
 	if ( 1 === count( $post_types ) ) {
 		$post_type = $post_types[0];
-		$sql .= $wpdb->prepare( ' AND p.post_type = %s AND', $post_type );
+		$sql       .= $wpdb->prepare( ' AND p.post_type = %s AND', $post_type );
 	} else {
 		$sql .= " AND p.post_type IN ('" . join( "', '", esc_sql( $post_types ) ) . "') AND";
 	}

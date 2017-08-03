@@ -8,7 +8,7 @@ function wordlift_geo_widget_shortcode( $atts, $content = null ) {
 		'height'    => '300px',
 		'latitude'  => 0.0,
 		'longitude' => 0.0,
-		'zoom'      => 5
+		'zoom'      => 5,
 
 	), $atts );
 
@@ -38,7 +38,7 @@ function wl_geo_widget_layer_shortcode( $atts ) {
 	// Extract attributes and set default values.
 	$params = shortcode_atts( array(
 		'name'  => '',
-		'label' => ''
+		'label' => '',
 	), $atts );
 
 	// Return if a SPARQL Query name hasn't been provided.
@@ -86,7 +86,7 @@ function wl_geo_widget_marker_shortcode( $atts ) {
 	// Extract attributes and set default values.
 	$params = shortcode_atts( array(
 		'latitude'  => null,
-		'longitude' => null
+		'longitude' => null,
 	), $atts );
 
 	// Return if either latitude or longitude haven't been provided.

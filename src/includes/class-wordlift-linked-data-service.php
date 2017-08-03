@@ -136,6 +136,22 @@ class Wordlift_Linked_Data_Service {
 	}
 
 	/**
+	 * Remove the specified {@link WP_Post} from the Linked Data.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @param int $post_id The {@link WP_Post}'s id.
+	 */
+	public function remove( $post_id ) {
+
+		// Get the delete statements.
+		$deletes      = $this->get_delete_statements( $post_id );
+		$delete_query = implode( "\n", $deletes );
+		rl_execute_sparql_update_query( $delete_query );
+
+	}
+
+	/**
 	 * Push an entity to the Linked Data store.
 	 *
 	 * @since 3.15.0
@@ -169,26 +185,15 @@ class Wordlift_Linked_Data_Service {
 			return;
 		}
 
-		// Get the delete statements.
-		$deletes = $this->get_delete_statements( $post_id );
-
-		// Run the delete queries.
-		rl_execute_sparql_update_query( implode( "\n", $deletes ) );
+		// First remove the post data.
+		$this->remove( $post_id );
 
 		// Get the insert statements.
-		$inserts = $this->get_insert_statements( $post_id );
-		$sparql  = implode( "\n", $inserts );
+		$insert_tuples     = $this->get_insert_tuples( $post_id );
+		$insert_query_body = implode( "\n", $insert_tuples );
+		$insert_query      = "INSERT DATA { $insert_query_body };";
+		rl_execute_sparql_update_query( $insert_query );
 
-
-		$query = rl_sparql_prefixes() . "\nINSERT DATA { $sparql };";
-
-//		// Add schema:url.
-//		// get the entity URI and the SPARQL escaped version.
-//		$uri   = $this->entity_service->get_uri( $post->ID );
-//		$query .= Wordlift_Schema_Url_Property_Service::get_instance()
-//		                                              ->get_insert_query( $uri, $post->ID );
-
-		rl_execute_sparql_update_query( $query );
 	}
 
 	/**
@@ -253,20 +258,34 @@ class Wordlift_Linked_Data_Service {
 		return array_merge( $as_subject, $as_object );
 	}
 
-	private function get_insert_statements( $post_id ) {
+	/**
+	 * Get the SPARQL insert tuples ( ?s ?p ?o ) for the specified {@link WP_Post}.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @param int $post_id The {@link WP_Post}'s id.
+	 *
+	 * @return array An array of insert tuples.
+	 */
+	private function get_insert_tuples( $post_id ) {
 
-		$type       = $this->entity_type_service->get( $post_id );
+		// Get the entity type.
+		$type = $this->entity_type_service->get( $post_id );
+
+		// Get the Linked Data properties.
 		$properties = $type['linked_data'];
 
-		$statements = array();
+		// Accumulate the tuples.
+		$tuples = array();
 		/** @var Wordlift_Sparql_Tuple_Rendition $property */
 		foreach ( $properties as $property ) {
-			foreach ( $property->get( $post_id ) as $statement ) {
-				$statements[] = $statement;
+			foreach ( $property->get( $post_id ) as $tuple ) {
+				$tuples[] = $tuple;
 			}
 		}
 
-		return $statements;
+		// Finally return the tuples.
+		return $tuples;
 	}
 
 }

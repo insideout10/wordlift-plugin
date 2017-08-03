@@ -46,6 +46,15 @@ class Wordlift_Storage_Factory {
 	private $property_getter;
 
 	/**
+	 * The singleton instance.
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var \Wordlift_Storage_Factory $instance The singleton instance.
+	 */
+	private static $instance;
+
+	/**
 	 * Create a {@link Wordlift_Storage_Factory} instance.
 	 *
 	 * @since 3.15.0
@@ -59,6 +68,20 @@ class Wordlift_Storage_Factory {
 		$this->entity_service  = $entity_service;
 		$this->user_service    = $user_service;
 		$this->property_getter = $property_getter;
+
+		self::$instance = $this;
+	}
+
+	/**
+	 * Get the singleton instance.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @return \Wordlift_Storage_Factory The singleton instance.
+	 */
+	public static function get_instance() {
+
+		return self::$instance;
 	}
 
 	/**

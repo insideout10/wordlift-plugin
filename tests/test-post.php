@@ -311,7 +311,7 @@ class PostTest extends Wordlift_Unit_Test_Case {
 	function checkEntity( $post ) {
 
 		// Get the entity URI.
-		$uri = wordlift_esc_sparql( wl_get_entity_uri( $post->ID ) );
+		$uri = Wordlift_Sparql_Service::escape( wl_get_entity_uri( $post->ID ) );
 
 		wl_write_log( "checkEntity [ post id :: $post->ID ][ uri :: $uri ]" );
 
@@ -420,7 +420,7 @@ EOF;
 		$this->assertNotNull( $post );
 
 		// Get the post Redlink URI.
-		$uri = wordlift_esc_sparql( wl_get_entity_uri( $post->ID ) );
+		$uri = Wordlift_Sparql_Service::escape( wl_get_entity_uri( $post->ID ) );
 
 		wl_write_log( "checkPost [ uri :: $uri ]" );
 
@@ -497,7 +497,7 @@ EOF;
 		$this->assertNotNull( $post );
 
 		// Get the post Redlink URI.
-		$uri = wordlift_esc_sparql( wl_get_entity_uri( $post->ID ) );
+		$uri = Wordlift_Sparql_Service::escape( wl_get_entity_uri( $post->ID ) );
 
 		// Prepare the SPARQL query to select label and URL.
 		$sparql = "SELECT DISTINCT ?uri WHERE { <$uri> dct:references ?uri . }";

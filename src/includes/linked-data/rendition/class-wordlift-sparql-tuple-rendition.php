@@ -1,33 +1,82 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: david
- * Date: 01/08/2017
- * Time: 17:17
+ * Renditions: Sparql Tuple Rendition.
+ *
+ * Renders a property (accessed using a {@link Wordlift_Storage} instance) to
+ * a tuple for use in SPARQL statements.
+ *
+ * @since      3.15.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes
  */
 
+/**
+ * Define the {@link Wordlift_Sparql_Tuple_Rendition} class.
+ *
+ * @since      3.15.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes
+ */
 class Wordlift_Sparql_Tuple_Rendition {
-	private $storage;
-	private $predicate;
+
 	/**
-	 * @var null
+	 * A {@link Wordlift_Storage} instance to read a property.
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var \Wordlift_Storage $storage A {@link Wordlift_Storage} instance to
+	 *                                 read a property.
+	 */
+	private $storage;
+
+	/**
+	 * The predicate URI.
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var string $predicate The predicate URI.
+	 */
+	private $predicate;
+
+	/**
+	 * The data type (or null if not set).
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var string|null $data_type The data type (or null if not set).
 	 */
 	private $data_type;
+
 	/**
-	 * @var null
+	 * The language (or null if not set).
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var string|null $language The language (or null if not set).
 	 */
 	private $language;
-	private $entity_service;
-
 
 	/**
-	 * Wordlift_Sparql_Tuple_Rendition constructor.
+	 * The {@link Wordlift_Entity_Service} instance.
 	 *
-	 * @param \Wordlift_Entity_Service $entity_service
-	 * @param \Wordlift_Storage        $storage
-	 * @param                          $predicate
-	 * @param null                     $data_type
-	 * @param null                     $language
+	 * @since  3.15.0
+	 * @access private
+	 * @var \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service} instance.
+	 */
+	private $entity_service;
+
+	/**
+	 * Create a {@link Wordlift_Sparql_Tuple_Rendition} instance.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @param \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service}
+	 *                                                 instance.
+	 * @param \Wordlift_Storage        $storage        The {@link Wordlift_Storage}
+	 *                                                 instance.
+	 * @param string                   $predicate      The predicate URI.
+	 * @param string|null              $data_type      The data type or null.
+	 * @param string|null              $language       The language code or null.
 	 */
 	public function __construct( $entity_service, $storage, $predicate, $data_type = null, $language = null ) {
 
@@ -72,6 +121,18 @@ class Wordlift_Sparql_Tuple_Rendition {
 				Wordlift_Sparql_Service::format( $item, $data_type, $language )
 			);
 		}, $values );
+	}
+
+	/**
+	 * Get the predicate for this {@link Wordlift_Sparql_Tuple_Rendition}.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @return string The predicate.
+	 */
+	public function get_predicate() {
+
+		return $this->predicate;
 	}
 
 }
