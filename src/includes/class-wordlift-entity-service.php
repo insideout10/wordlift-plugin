@@ -108,7 +108,7 @@ class Wordlift_Entity_Service {
 			return false;
 		}
 
-		if ( 'article' != $terms[0]->slug ) {
+		if ( 'article' !== $terms[0]->slug ) {
 			return true;
 		}
 

@@ -975,9 +975,6 @@ class Wordlift {
 		// Create an instance of the User service.
 		$this->user_service = new Wordlift_User_Service();
 
-		// Create a new instance of the Timeline service and Timeline shortcode.
-		$this->timeline_service = new Wordlift_Timeline_Service( $this->entity_service );
-
 		$attachment_service = new Wordlift_Attachment_Service();
 
 		// Instantiate the JSON-LD service.
@@ -999,6 +996,9 @@ class Wordlift {
 		$this->postid_to_jsonld_converter      = new Wordlift_Postid_To_Jsonld_Converter( $this->entity_service, $this->entity_post_to_jsonld_converter, $this->post_to_jsonld_converter );
 		$this->jsonld_website_converter        = new Wordlift_Website_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $this->configuration_service, $this->entity_post_to_jsonld_converter );
 		$this->jsonld_service                  = new Wordlift_Jsonld_Service( $this->entity_service, $this->postid_to_jsonld_converter, $this->jsonld_website_converter );
+
+		// Create a new instance of the Timeline service and Timeline shortcode.
+		$this->timeline_service = new Wordlift_Timeline_Service( $this->entity_service, $this->entity_type_service );
 
 		// Initialize the shortcodes.
 		new Wordlift_Navigator_Shortcode();

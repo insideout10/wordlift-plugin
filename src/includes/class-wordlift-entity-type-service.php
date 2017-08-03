@@ -202,6 +202,8 @@ class Wordlift_Entity_Type_Service {
 	 */
 	public function has_entity_type( $post_id, $uri = null ) {
 
+		$this->log->debug( "Checking if post $post_id has an entity type [ $uri ]..." );
+
 		// If an URI hasn't been specified just check whether we have at least
 		// one entity type.
 		if ( null === $uri ) {
@@ -209,12 +211,18 @@ class Wordlift_Entity_Type_Service {
 			// Get the post terms for the specified post ID.
 			$terms = $this->get_post_terms( $post_id );
 
+			$this->log->debug( "Post $post_id has " . count( $terms ) . ' type(s).' );
+
 			// True if there's at least one term bound to the post.
 			return ( 0 < count( $terms ) );
 		}
 
+		$has_entity_type = ( null !== $this->get_term_by_uri( $post_id, $uri ) );
+
+		$this->log->debug( "Post $post_id has $uri type: " . ( $has_entity_type ? 'yes' : 'no' ) );
+
 		// Check whether the post has an entity type with that URI.
-		return ( null !== $this->get_term_by_uri( $post_id, $uri ) );
+		return $has_entity_type;
 	}
 
 	/**

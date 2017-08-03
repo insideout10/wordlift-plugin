@@ -12,9 +12,9 @@ class Wordlift_Timeline_Service {
 	 *
 	 * @since  3.1.0
 	 * @access private
-	 * @var \Wordlift_Log_Service $log_service The Log service.
+	 * @var \Wordlift_Log_Service $log The Log service.
 	 */
-	private $log_service;
+	private $log;
 
 	/**
 	 * The Entity service.
@@ -36,6 +36,15 @@ class Wordlift_Timeline_Service {
 	private $excerpt_length;
 
 	/**
+	 * The {@link Wordlift_Entity_Type_Service} instance.
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var \Wordlift_Entity_Type_Service $entity_type_service The {@link Wordlift_Entity_Type_Service} instance.
+	 */
+	private $entity_type_service;
+
+	/**
 	 * A singleton instance of the Timeline service (useful for unit tests).
 	 *
 	 * @since  3.1.0
@@ -49,13 +58,15 @@ class Wordlift_Timeline_Service {
 	 *
 	 * @since 3.1.0
 	 *
-	 * @param \Wordlift_Entity_Service $entity_service The Entity service.
+	 * @param \Wordlift_Entity_Service      $entity_service      The Entity service.
+	 * @param \Wordlift_Entity_Type_Service $entity_type_service The {@link Wordlift_Entity_Type_Service} instance.
 	 */
-	public function __construct( $entity_service ) {
+	public function __construct( $entity_service, $entity_type_service ) {
 
-		$this->log_service = Wordlift_Log_Service::get_logger( 'Wordlift_Timeline_Service' );
+		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Timeline_Service' );
 
-		$this->entity_service = $entity_service;
+		$this->entity_service      = $entity_service;
+		$this->entity_type_service = $entity_type_service;
 
 		self::$instance = $this;
 
@@ -114,14 +125,24 @@ class Wordlift_Timeline_Service {
 
 		// If there's no entities, return an empty array right away.
 		if ( 0 === sizeof( $ids ) ) {
-			$this->log_service->trace( "No events found [ post id :: $post_id ]" );
+			$this->log->trace( "No events found [ post id :: $post_id ]" );
 
 			return array();
 		}
 
-		$this->log_service->trace( 'Getting events [ entity ids :: ' . join( ', ', $ids ) . ' ]' );
+		$this->log->trace( 'Getting events [ entity ids :: ' . join( ', ', $ids ) . ' ]' );
 
-		return get_posts( array(
+//		$entity_type_service = $this->entity_type_service;
+
+//		var_dump($ids);
+
+//		return array_map( function ( $item ) {
+//			return get_post( $item );
+//		}, array_filter( $ids, function ( $item ) use ( $entity_type_service ) {
+//			return $entity_type_service->has_entity_type( $item, 'http://schema.org/Event' );
+//		} ) );
+
+		$args = array(
 			'post__in'       => $ids,
 			'post_type'      => Wordlift_Entity_Service::valid_entity_post_types(),
 			'post_status'    => 'publish',
@@ -146,7 +167,9 @@ class Wordlift_Timeline_Service {
 					'terms'    => 'event',
 				),
 			),
-		) );
+		);
+
+		return get_posts( $args );
 	}
 
 	/**
@@ -321,6 +344,13 @@ class Wordlift_Timeline_Service {
 			'numberposts' => 50,
 			'fields'      => 'ids', //only get post IDs
 			'post_type'   => Wordlift_Entity_Service::valid_entity_post_types(),
+			'tax_query'   => array(
+				array(
+					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+					'field'    => 'slug',
+					'terms'    => 'article',
+				),
+			),
 			'post_status' => 'publish',
 		) );
 
