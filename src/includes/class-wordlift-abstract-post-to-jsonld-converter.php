@@ -4,15 +4,17 @@
  *
  * An abstract converter which provides basic post conversion.
  *
- * @since   3.10.0
- * @package Wordlift
+ * @since      3.10.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes
  */
 
 /**
  * Define the {@link Wordlift_Abstract_Post_To_Jsonld_Converter} class.
  *
- * @since   3.10.0
- * @package Wordlift
+ * @since      3.10.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes
  */
 abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Post_Converter {
 
