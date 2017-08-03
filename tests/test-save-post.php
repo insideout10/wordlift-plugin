@@ -132,9 +132,10 @@ EOF;
 		// wl_update_post_status( $post_1_id, 'publish' );
 		$this->assertCount( 2, wl_core_get_related_entity_ids( $post_1_id ) );
 
-		// check the post is published on Redlink.
+		// check the post isn't published (1 line is the header).
 		$lines = $this->getPostTriples( $post_1_id );
-		$this->assertCount( 10, $lines );
+		$this->assertCount( 1, $lines );
+
 		// check all entities published
 		$lines = $this->getPostTriples( $entity_1_id );
 		$this->assertCount( 5, $lines );
@@ -164,18 +165,18 @@ EOF;
 
 		$this->assertCount( 1, wl_core_get_related_entity_ids( $post_2_id ) );
 
-		// check post 2 is published on Redlink
+		// check post 2 isn't published.
 		$lines = $this->getPostTriples( $post_2_id );
-		$this->assertCount( 9, $lines );
+		$this->assertCount( 1, $lines );
 
 		// publish post 1
 		wl_update_post_status( $post_1_id, 'publish' );
 
 		$this->assertCount( 2, wl_core_get_related_entity_ids( $post_1_id ) );
 
-		// check post 1 is published on Redlink
+		// check post 1 isn't published.
 		$lines = $this->getPostTriples( $post_1_id );
-		$this->assertCount( 10, $lines );
+		$this->assertCount( 1, $lines );
 
 		$lines = $this->getPostTriples( $entity_1_id );
 		$this->assertCount( 5, $lines );
@@ -217,17 +218,16 @@ EOF;
 		// Publish the post (and related entities)
 		wl_update_post_status( $p_id, 'publish' );
 
-		// Verify the post triples contain a reference to the entity
+		// Verify the post triples contain a reference to the entity.
 		$lines = $this->getPostTriples( $p_id );
-
-		$this->assertCount( 9, $lines );
+		$this->assertCount( 1, $lines );
 
 		// Trash the entity
 		wl_update_post_status( $e_id, 'trash' );
 
 		// Verify the post triples does no more contain a reference to the entity
 		$lines = $this->getPostTriples( $p_id );
-		$this->assertCount( 8, $lines );
+		$this->assertCount( 1, $lines );
 		// Verify the post triples does no more contain a reference to the entity
 		$lines = $this->getPostTriples( $e_id );
 		// Verify the post triples does no more contain a reference to the entity
