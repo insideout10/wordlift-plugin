@@ -450,22 +450,64 @@ class Wordlift_Entity_Service {
 	 */
 	public function count() {
 
-		$posts = get_posts( array(
+		$posts = get_posts( self::add_criterias( array(
 			'post_type'   => Wordlift_Entity_Service::valid_entity_post_types(),
 			'post_status' => 'publish',
-			'tax_query'   => array(
-				array(
-					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
-					'field'    => 'slug',
-					'terms'    => 'article',
-				),
-			),
 			'fields'      => 'ids',
-		) );
+		) ) );
 
 		$count = count( $posts );
 
 		return $count;
+	}
+
+	/**
+	 * Add the entity filtering criterias to the arguments for a `get_posts`
+	 * call.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @param array $args The arguments for a `get_posts` call.
+	 *
+	 * @return array The arguments for a `get_posts` call.
+	 */
+	public static function add_criterias( $args ) {
+
+		return $args + array(
+				'post_type' => Wordlift_Entity_Service::valid_entity_post_types(),
+				'tax_query' => array(
+					array(
+						'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+						'terms'    => self::get_entity_terms(),
+					),
+				),
+			);
+	}
+
+	/**
+	 * Get the entity terms IDs which represent an entity.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @return array An array of terms' ids.
+	 */
+	public static function get_entity_terms() {
+
+		$terms = get_terms( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array(
+			'hide_empty' => false,
+			// Because of #334 (and the AAM plugin) we changed fields from 'id=>slug' to 'all'.
+			// An issue has been opened with the AAM plugin author as well.
+			//
+			// see https://github.com/insideout10/wordlift-plugin/issues/334
+			// see https://wordpress.org/support/topic/idslug-not-working-anymore?replies=1#post-8806863
+			'fields'     => 'all',
+		) );
+
+		return array_map( function ( $term ) {
+			return $term->term_id;
+		}, array_filter( $terms, function ( $term ) {
+			return 'article' !== $term->slug;
+		} ) );
 	}
 
 	/**

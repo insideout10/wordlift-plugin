@@ -22,7 +22,7 @@ function wl_shortcode_geomap_get_places( $post_id = null ) {
 		$related_ids = array();
 	} else {
 		$related_ids = wl_core_get_related_entity_ids( $post_id, array(
-			'status' => 'publish'
+			'status' => 'publish',
 		) );
 
 		// Also include current entity
@@ -56,13 +56,15 @@ function wl_shortcode_geomap_get_places( $post_id = null ) {
 				'key'     => Wordlift_Schema_Service::FIELD_GEO_LONGITUDE,
 				'value'   => null,
 				'compare' => '!=',
-			)
+			),
 		),
-		'tax_query'      => array(
-			'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
-			'field'    => 'slug',
-			'terms'    => 'place'
-		)
+		'tax_query'   => array(
+			array(
+				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				'field'    => 'slug',
+				'terms'    => 'place',
+			),
+		),
 	) );
 }
 
@@ -121,7 +123,7 @@ function wl_shortcode_geomap_prepare_map( $places ) {
 		$content = $content . "</a><ul>";
 		// Get the related posts (published) and print them in the popup.
 		$related_posts = wl_core_get_related_post_ids( $entity->ID, array(
-			'status' => 'publish'
+			'status' => 'publish',
 		) );
 		foreach ( $related_posts as $rp_id ) {
 
@@ -142,16 +144,19 @@ function wl_shortcode_geomap_prepare_map( $places ) {
 				'coordinates' => array(
 					// Leaflet geoJSON wants them swapped
 					$coordinates['longitude'],
-					$coordinates['latitude']
-				)
-			)
+					$coordinates['latitude'],
+				),
+			),
 		);
 
 		$pois[] = $poi;
 
 		// Formatting boundaries in a Leaflet-like format (see LatLngBounds).
 		// http://leafletjs.com/reference.html#latlngbounds
-		$boundaries[] = array( $coordinates['latitude'], $coordinates['longitude'] );
+		$boundaries[] = array(
+			$coordinates['latitude'],
+			$coordinates['longitude'],
+		);
 
 	}
 

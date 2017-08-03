@@ -166,37 +166,14 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 	 */
 	function find( $offset = 0, $limit = 10, $args = array() ) {
 
-		$terms = get_terms( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array(
-			'hide_empty' => false,
-			// Because of #334 (and the AAM plugin) we changed fields from 'id=>slug' to 'all'.
-			// An issue has been opened with the AAM plugin author as well.
-			//
-			// see https://github.com/insideout10/wordlift-plugin/issues/334
-			// see https://wordpress.org/support/topic/idslug-not-working-anymore?replies=1#post-8806863
-			'fields'     => 'all',
-		) );
-
-		$allowed_terms = array_map( function ( $term ) {
-			return $term->term_id;
-		}, array_filter( $terms, function ( $term ) {
-			return 'article' !== $term->slug;
-		} ) );
-
-		return get_posts( wp_parse_args( $args, array(
+		return get_posts( wp_parse_args( $args, Wordlift_Entity_Service::add_criterias( array(
 			'offset'      => $offset,
 			'numberposts' => $limit,
 			'fields'      => 'all',
 			'orderby'     => 'ID',
 			'order'       => 'ASC',
 			'post_status' => 'any',
-			'post_type'   => Wordlift_Entity_Service::valid_entity_post_types(),
-			'tax_query'   => array(
-				array(
-					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
-					'terms'    => $allowed_terms,
-				),
-			),
-		) ) );
+		) ) ) );
 	}
 
 }
