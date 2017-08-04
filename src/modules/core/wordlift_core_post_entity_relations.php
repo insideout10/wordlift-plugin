@@ -242,6 +242,7 @@ function wl_core_get_related_posts( $object_id, $filters = array() ) {
 /**
  * Find all post ids related to a given $object_id
  * If $predicate is omitted, $predicate filter is not applied
+ *
  * @uses   wl_core_get_related_posts() to perform the action
  *
  * @param int   $object_id The entity ID or the post ID.
@@ -259,7 +260,7 @@ function wl_core_get_related_post_ids( $object_id, $filters = array() ) {
 
 	$filters = wl_core_validate_filters_for_related( $filters );
 
-	return wl_core_inner_get_related_posts( "post_ids", $object_id, $filters['predicate'], $filters['status'] );
+	return wl_core_inner_get_related_posts( 'post_ids', $object_id, $filters['predicate'], $filters['status'] );
 }
 
 /**
@@ -267,7 +268,8 @@ function wl_core_get_related_post_ids( $object_id, $filters = array() ) {
  * If $predicate is omitted, $predicate filter is not applied
  * Not use it directly. Use wl_core_get_related_posts or wl_core_get_related_posts_ids instead.
  *
- * @param int    $object_id   The entity ID or the post ID.
+ * @param string $get
+ * @param int    $item_id
  * @param string $predicate   Name of the relation: null | 'what' | 'where' | 'when' | 'who'
  * @param string $post_status Filter by post status null | 'publish' | 'draft' | 'pending' | 'trash'. null means *any* post status
  *
@@ -281,7 +283,7 @@ function wl_core_inner_get_related_posts( $get, $item_id, $predicate = null, $po
 		return array();
 	}
 
-	if ( "entity" === $post->post_type ) {
+	if ( 'entity' === $post->post_type ) {
 		if ( $results = wl_core_get_posts( array(
 			'get'            => $get,
 			'post_type'      => 'post',
@@ -510,9 +512,6 @@ function wl_core_get_posts( $args, $returned_type = OBJECT ) {
 
 	// Build sql statement with given arguments
 	$sql_statement = wl_core_sql_query_builder( $args );
-
-	// wl_write_log( "Going to execute sql statement: $sql_statement " );
-	// $results = array();
 
 	// If ids are required, returns a one-dimensional array containing ids.
 	// Otherwise an array of associative arrays representing the post | relation object

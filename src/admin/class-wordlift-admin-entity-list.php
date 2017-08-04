@@ -1,15 +1,22 @@
 <?php
 /**
- * Customization of the entity list in wp-admin/edit.php
+ * Services: Entity List Service.
  *
- * @since   3.3.0
- * @package WordLift
+ * Customization of the entity list in wp-admin/edit.php.
+ *
+ * @since      3.3.0
+ * @package    WordLift
+ * @subpackage WordLift/admin
  */
 
 /**
- * Wordlift_Entity_List_Service Class
+ * Define the {@link Wordlift_Entity_List_Service} class.
  *
  * Handles the edit entities views.
+ *
+ * @since      3.3.0
+ * @package    WordLift
+ * @subpackage WordLift/admin
  */
 class Wordlift_Entity_List_Service {
 
@@ -141,11 +148,11 @@ class Wordlift_Entity_List_Service {
 
 		// Print select box with the 4W
 		$all_w = array(
-			"All 'W'" => __( "All 'W'", 'wordlift' ),
-			WL_WHAT_RELATION => __( 'What', 'wordlift' ),
-			WL_WHO_RELATION => __( 'Who', 'wordlift' ),
+			"All 'W'"         => __( "All 'W'", 'wordlift' ),
+			WL_WHAT_RELATION  => __( 'What', 'wordlift' ),
+			WL_WHO_RELATION   => __( 'Who', 'wordlift' ),
 			WL_WHERE_RELATION => __( 'Where', 'wordlift' ),
-			WL_WHEN_RELATION => __( 'When', 'wordlift' ),
+			WL_WHEN_RELATION  => __( 'When', 'wordlift' ),
 		);
 		echo '<select name="wl-classification-scope" id="wl-dropdown-classification-scope">';
 		foreach ( $all_w as $v => $w ) {
@@ -206,8 +213,8 @@ class Wordlift_Entity_List_Service {
 		$wl_relation_table = wl_core_get_relation_instances_table_name();
 
 		// Change WP main query clauses.
-		$clauses['join'] .= "INNER JOIN {$wl_relation_table} ON {$wpdb->posts}.ID = {$wl_relation_table}.object_id";
-		$clauses['where'] .= $wpdb->prepare( "AND {$wl_relation_table}.predicate = %s", $requested_w );
+		$clauses['join']     .= "INNER JOIN {$wl_relation_table} ON {$wpdb->posts}.ID = {$wl_relation_table}.object_id";
+		$clauses['where']    .= $wpdb->prepare( "AND {$wl_relation_table}.predicate = %s", $requested_w );
 		$clauses['distinct'] .= "DISTINCT";
 
 		return $clauses;
