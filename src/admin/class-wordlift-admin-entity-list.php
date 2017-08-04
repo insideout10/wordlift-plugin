@@ -191,7 +191,7 @@ class Wordlift_Entity_List_Service {
 			return $clauses;
 		}
 
-		if ( ! ( $screen->post_type === Wordlift_Entity_Service::TYPE_NAME && is_main_query() && isset( $_GET['wl-classification-scope'] ) ) ) {
+		if ( ! ( Wordlift_Entity_Service::TYPE_NAME === $screen->post_type && is_main_query() && isset( $_GET['wl-classification-scope'] ) ) ) {
 			return $clauses;
 		}
 
@@ -215,7 +215,53 @@ class Wordlift_Entity_List_Service {
 		// Change WP main query clauses.
 		$clauses['join']     .= "INNER JOIN {$wl_relation_table} ON {$wpdb->posts}.ID = {$wl_relation_table}.object_id";
 		$clauses['where']    .= $wpdb->prepare( "AND {$wl_relation_table}.predicate = %s", $requested_w );
-		$clauses['distinct'] .= "DISTINCT";
+		$clauses['distinct'] .= 'DISTINCT';
+
+		return $clauses;
+	}
+
+	/**
+	 * Amend the "all entities" list admin screen with entities from other
+	 * post types, not only the entities one.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @param WP_Query $query
+	 *
+	 */
+	public function pre_get_posts( $query ) {
+
+		// Run only on admin page.
+		if ( ! is_admin() ) {
+			return $clauses;
+		}
+
+		// Return safely if get_current_screen() is not defined (yet).
+		if ( false === function_exists( 'get_current_screen' ) ) {
+			return $clauses;
+		}
+
+		// Only apply on entity list page, only if this is the main query and if the wl-classification-scope query param is set.
+		$screen = get_current_screen();
+
+		// If there is any valid screen nothing to do.
+		if ( null === $screen ) {
+			return $clauses;
+		}
+
+		if ( ! ( Wordlift_Entity_Service::TYPE_NAME === $screen->post_type && is_main_query() ) ) {
+			return;
+		}
+
+		$query->set( 'post_type', Wordlift_Entity_Service::valid_entity_post_types() );
+		$query->set( 'tax_query', array(
+			array(
+				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				'field'    => 'slug',
+				'terms'    => 'article',
+				'operator' => 'NOT IN',
+			),
+		) );
 
 		return $clauses;
 	}

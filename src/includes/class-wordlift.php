@@ -1190,10 +1190,12 @@ class Wordlift {
 		// Entity listing customization (wp-admin/edit.php)
 		// Add custom columns
 		$this->loader->add_filter( 'manage_entity_posts_columns', $this->entity_list_service, 'register_custom_columns' );
-		$this->loader->add_filter( 'manage_entity_posts_custom_column', $this->entity_list_service, 'render_custom_columns', 10, 2 );
+		// no explicit entity as it prevents handling of other post types.
+		$this->loader->add_filter( 'manage_posts_custom_column', $this->entity_list_service, 'render_custom_columns', 10, 2 );
 		// Add 4W selection
 		$this->loader->add_action( 'restrict_manage_posts', $this->entity_list_service, 'restrict_manage_posts_classification_scope' );
 		$this->loader->add_filter( 'posts_clauses', $this->entity_list_service, 'posts_clauses_classification_scope' );
+		$this->loader->add_action( 'pre_get_posts', $this->entity_list_service, 'pre_get_posts' );
 
 		$this->loader->add_filter( 'wp_terms_checklist_args', $this->entity_types_taxonomy_walker, 'terms_checklist_args' );
 
