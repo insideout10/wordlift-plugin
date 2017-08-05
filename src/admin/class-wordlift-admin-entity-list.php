@@ -197,6 +197,7 @@ class Wordlift_Entity_List_Service {
 	 */
 	public function posts_clauses_classification_scope( $clauses ) {
 
+		if ( ! ( $this->is_entity_list_screen() && is_main_query() && isset( $_GET['wl-classification-scope'] ) ) ) {
 			return $clauses;
 		}
 
@@ -236,6 +237,7 @@ class Wordlift_Entity_List_Service {
 	 */
 	public function pre_get_posts( $query ) {
 
+		if ( ! ( $this->is_entity_list_screen() && is_main_query() ) ) {
 			return;
 		}
 
