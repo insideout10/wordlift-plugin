@@ -50,6 +50,41 @@ class Wordlift_Entity_List_Service {
 	}
 
 	/**
+	 * Detects if the entities list admin screen is being displayed
+	 *
+	 * @return bool True if the screen is being displayed, false otherwis.
+	 *
+	 * @since 3.15.0
+	 *
+	 */
+	private function is_entity_list_screen() {
+
+		// Run only on admin page.
+		if ( ! is_admin() ) {
+			return false;
+		}
+
+		// Return safely if get_current_screen() is not defined (yet).
+		if ( false === function_exists( 'get_current_screen' ) ) {
+			return false;
+		}
+
+		// Only apply on entity list page, only if this is the main query and if the wl-classification-scope query param is set.
+		$screen = get_current_screen();
+
+		// If there is any valid screen nothing to do.
+		if ( null === $screen ) {
+			return false;
+		}
+
+		if ( Wordlift_Entity_Service::TYPE_NAME !== $screen->post_type ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Register custom columns for entity listing in backend.
 	 *
 	 * @see   https://codex.wordpress.org/Plugin_API/Action_Reference/manage_posts_custom_column
@@ -127,18 +162,7 @@ class Wordlift_Entity_List_Service {
 	 */
 	public function restrict_manage_posts_classification_scope() {
 
-		// Return safely if get_current_screen() is not defined (yet)
-		if ( false === function_exists( 'get_current_screen' ) ) {
-			return;
-		}
-
-		$screen = get_current_screen();
-		// If there is any valid screen nothing to do
-		if ( null === $screen ) {
-			return;
-		}
-
-		if ( Wordlift_Entity_Service::TYPE_NAME !== $screen->post_type ) {
+		if ( ! $this->is_entity_list_screen() ) {
 			return;
 		}
 
@@ -173,25 +197,6 @@ class Wordlift_Entity_List_Service {
 	 */
 	public function posts_clauses_classification_scope( $clauses ) {
 
-		// Run only on admin page.
-		if ( ! is_admin() ) {
-			return $clauses;
-		}
-
-		// Return safely if get_current_screen() is not defined (yet).
-		if ( false === function_exists( 'get_current_screen' ) ) {
-			return $clauses;
-		}
-
-		// Only apply on entity list page, only if this is the main query and if the wl-classification-scope query param is set.
-		$screen = get_current_screen();
-
-		// If there is any valid screen nothing to do.
-		if ( null === $screen ) {
-			return $clauses;
-		}
-
-		if ( ! ( Wordlift_Entity_Service::TYPE_NAME === $screen->post_type && is_main_query() && isset( $_GET['wl-classification-scope'] ) ) ) {
 			return $clauses;
 		}
 
@@ -231,10 +236,40 @@ class Wordlift_Entity_List_Service {
 	 */
 	public function pre_get_posts( $query ) {
 
-		// Run only on admin page.
-		if ( ! is_admin() ) {
-			return $clauses;
+			return;
 		}
+
+		$query->set( 'post_type', Wordlift_Entity_Service::valid_entity_post_types() );
+		$query->set( 'tax_query', array(
+			array(
+				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				'field'    => 'slug',
+				'terms'    => 'article',
+				'operator' => 'NOT IN',
+			),
+		) );
+
+		return $clauses;
+	}
+
+	/**
+	 * An hack to fix wrong post type on the entities list admin screen.
+	 *
+	 * Not very clear what is the root cause for this strange behavior in wordpress,
+	 * but without this hack the wordpress code assumes we are in a kind of multi
+	 * post type management screen which cause failures with the filter form.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @param array $bulk_messages Arrays of messages, each keyed by the corresponding post type. Messages are
+	 *                             keyed with 'updated', 'locked', 'deleted', 'trashed', and 'untrashed'.
+	 * @param array $bulk_counts   Array of item counts for each message, used to build internationalized strings.
+	 *
+	 * @return array The same $bulk_message being passed.
+	 *
+	 */
+	function bulk_post_updated_messages( $bulk_messages, $bulk_counts ) {
+		global $post_type;
 
 		// Return safely if get_current_screen() is not defined (yet).
 		if ( false === function_exists( 'get_current_screen' ) ) {
@@ -253,17 +288,8 @@ class Wordlift_Entity_List_Service {
 			return;
 		}
 
-		$query->set( 'post_type', Wordlift_Entity_Service::valid_entity_post_types() );
-		$query->set( 'tax_query', array(
-			array(
-				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
-				'field'    => 'slug',
-				'terms'    => 'article',
-				'operator' => 'NOT IN',
-			),
-		) );
+		$post_type = Wordlift_Entity_Service::TYPE_NAME;
 
-		return $clauses;
+		return $bulk_messages;
 	}
-
 }
