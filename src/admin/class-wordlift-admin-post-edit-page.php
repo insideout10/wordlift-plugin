@@ -37,11 +37,12 @@ class Wordlift_Admin_Post_Edit_Page {
 	function __construct( $plugin ) {
 
 		// Define the callback.
-		$callback = array( $this, 'enqueue_scripts', );
+		$callback = array( $this, 'enqueue_scripts' );
 
 		// Set a hook to enqueue scripts only when the edit page is displayed.
 		add_action( 'admin_print_scripts-post.php', $callback );
 		add_action( 'admin_print_scripts-post-new.php', $callback );
+		add_action( 'admin_menu', array( $this, 'hide_entity_type_metabox' ) );
 
 		$this->plugin = $plugin;
 	}
@@ -58,11 +59,30 @@ class Wordlift_Admin_Post_Edit_Page {
 		// code is properly refactored.
 		wp_enqueue_script(
 			'wordlift-admin-edit-page', plugin_dir_url( __FILE__ ) . 'js/wordlift-admin-edit-page.bundle.js',
-			array( $this->plugin->get_plugin_name(), ),
+			array( $this->plugin->get_plugin_name() ),
 			$this->plugin->get_version(),
 			false
 		);
 
 	}
 
+	/**
+	 * Hide the entity type metabox from non entity edit screens if user is not
+	 * allowed to configure entity types.
+	 *
+	 * @since 3.15.0
+	 */
+	public function hide_entity_type_metabox() {
+
+		if ( ! current_user_can( 'edit_wordlift_entity' ) ) {
+
+			// loop over all the non entity post types which support entities and turn off the metabox.
+
+			foreach ( Wordlift_Entity_Service::valid_entity_post_types() as $screen ) {
+				if ( Wordlift_Entity_Service::TYPE_NAME !== $screen ) {
+					remove_meta_box( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME . 'div', $screen, 'side' );
+				}
+			}
+		}
+	}
 }
