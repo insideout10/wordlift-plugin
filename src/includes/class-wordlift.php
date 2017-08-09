@@ -508,6 +508,15 @@ class Wordlift {
 	protected $batch_analysis_service;
 
 	/**
+	 * The {@link Wordlift_Batch_Analysis_Adapter} instance.
+	 *
+	 * @since  3.14.2
+	 * @access protected
+	 * @var \Wordlift_Batch_Analysis_Adapter $batch_analysis_adapter The {@link Wordlift_Batch_Analysis_Adapter} instance.
+	 */
+	private $batch_analysis_adapter;
+
+	/**
 	 * {@link Wordlift}'s singleton instance.
 	 *
 	 * @since  3.11.2
@@ -752,11 +761,13 @@ class Wordlift {
 		/** Adapters. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-tinymce-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-newrelic-adapter.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-batch-analysis-adapter.php';
 
 		/** Async Tasks. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/wp-async-task.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-sparql-query-async-task.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-batch-analysis-request-async-task.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-batch-analysis-complete-async-task.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
@@ -996,10 +1007,13 @@ class Wordlift {
 		$this->publisher_ajax_adapter = new Wordlift_Publisher_Ajax_Adapter( $publisher_service );
 
 		/** Adapters. */
-		$this->tinymce_adapter = new Wordlift_Tinymce_Adapter( $this );
+		$this->tinymce_adapter        = new Wordlift_Tinymce_Adapter( $this );
+		$this->batch_analysis_adapter = new Wordlift_Batch_Analysis_Adapter( $this->batch_analysis_service );
 
 		/** Async Tasks. */
 		new Wordlift_Sparql_Query_Async_Task();
+		new Wordlift_Batch_Analysis_Request_Async_Task();
+		new Wordlift_Batch_Analysis_Complete_Async_Task();
 
 		/** WordPress Admin UI. */
 
@@ -1198,10 +1212,11 @@ class Wordlift {
 			$this->loader->add_filter( 'map_meta_cap', $this->entity_type_admin_page, 'enable_admin_access_pre_47', 10, 4 );
 		}
 
+		$this->loader->add_action( 'wp_async_wl_run_sparql_query', $this->sparql_service, 'run_sparql_query', 10, 1 );
+
 		/** Adapters. */
 		$this->loader->add_filter( 'mce_external_plugins', $this->tinymce_adapter, 'mce_external_plugins', 10, 1 );
-
-		$this->loader->add_action( 'wp_async_wl_run_sparql_query', $this->sparql_service, 'run_sparql_query', 10, 1 );
+		$this->loader->add_action( 'wp_ajax_wl_submit_auto_selected_posts', $this->batch_analysis_adapter, 'submit_auto_selected_posts', 10 );
 
 		// Hooks to restrict multisite super admin from manipulating entity types.
 		if ( is_multisite() ) {

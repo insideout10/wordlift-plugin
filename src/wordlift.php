@@ -59,8 +59,8 @@ function wl_write_log( $log ) {
  *
  * @since 3.0.0
  *
- * @param string|array $log    The log data.
- * @param string       $caller The calling function.
+ * @param string|array $log The log data.
+ * @param string $caller The calling function.
  */
 function wl_write_log_handler( $log, $caller = null ) {
 
@@ -195,8 +195,8 @@ add_action( 'wp_enqueue_scripts', 'wl_enqueue_scripts' );
 /**
  * Hooked to *wp_kses_allowed_html* filter, adds microdata attributes.
  *
- * @param array  $allowedtags The array with the currently configured elements and attributes.
- * @param string $context     The context.
+ * @param array $allowedtags The array with the currently configured elements and attributes.
+ * @param string $context The context.
  *
  * @return array An array which contains allowed microdata attributes.
  */
@@ -305,8 +305,8 @@ function wl_get_image_urls( $post_id ) {
 /**
  * Get a SPARQL fragment with schema:image predicates.
  *
- * @param string $uri     The URI subject of the statements.
- * @param int    $post_id The post ID.
+ * @param string $uri The URI subject of the statements.
+ * @param int $post_id The post ID.
  *
  * @return string The SPARQL fragment.
  */
@@ -320,6 +320,12 @@ function wl_get_sparql_images( $uri, $post_id ) {
 	// Add SPARQL stmts to write the schema:image.
 	$image_urls = wl_get_image_urls( $post_id );
 	foreach ( $image_urls as $image_url ) {
+
+		// Skip to the next item if the image isn't set.
+		if ( empty( $image_url ) ) {
+			continue;
+		}
+
 		$image_url_esc = wl_sparql_escape_uri( $image_url );
 		$sparql        .= " <$uri_e> schema:image <$image_url_esc> . \n";
 	}
@@ -330,8 +336,8 @@ function wl_get_sparql_images( $uri, $post_id ) {
 /**
  * Get an attachment with the specified parent post ID and source URL.
  *
- * @param int    $parent_post_id The parent post ID.
- * @param string $source_url     The source URL.
+ * @param int $parent_post_id The parent post ID.
+ * @param string $source_url The source URL.
  *
  * @return WP_Post|null A post instance or null if not found.
  */
@@ -360,7 +366,7 @@ function wl_get_attachment_for_source_url( $parent_post_id, $source_url ) {
 /**
  * Set the source URL.
  *
- * @param int    $post_id    The post ID.
+ * @param int $post_id The post ID.
  * @param string $source_url The source URL.
  */
 function wl_set_source_url( $post_id, $source_url ) {

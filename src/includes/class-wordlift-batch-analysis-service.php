@@ -73,6 +73,7 @@ class Wordlift_Batch_Analysis_Service {
 	const REQUEST_TIMESTAMP_META_KEY = '_wl_batch_analysis_request_timestamp';
 	const COMPLETE_TIMESTAMP_META_KEY = '_wl_batch_analysis_complete_timestamp';
 	const LINK_META_KEY = '_wl_batch_analysis_link';
+	const WARNING_META_KEY = '_wl_batch_analysis_warning';
 
 	/**
 	 * Option name.
@@ -141,6 +142,10 @@ class Wordlift_Batch_Analysis_Service {
 			$this,
 			'request',
 		) );
+		add_action( 'wp_async_wl_batch_analysis_complete', array(
+			$this,
+			'complete',
+		) );
 
 	}
 
@@ -158,9 +163,11 @@ class Wordlift_Batch_Analysis_Service {
 		global $wpdb;
 
 		// Submit the posts/pages and return the number of affected results.
-		return $wpdb->query( $wpdb->prepare(
+		// We're using a SQL query here because we could have potentially
+		// thousands of rows.
+		$count = $wpdb->query( $wpdb->prepare(
 			"
-			INSERT INTO $wpdb->postmeta ( post_id, meta_key, meta_value)
+			INSERT INTO $wpdb->postmeta ( post_id, meta_key, meta_value )
 			SELECT
 			p.ID, metas.*
 			FROM (
@@ -185,6 +192,11 @@ class Wordlift_Batch_Analysis_Service {
 			self::STATE_META_KEY,
 			'<[a-z]+ id="urn:enhancement-[^"]+" class="[^"]+" itemid="[^"]+">'
 		) );
+
+		do_action( 'wl_batch_analysis_request' );
+
+		// Divide the count by 3 to get the number of posts/pages queued.
+		return $count / 3;
 	}
 
 	/**
@@ -201,11 +213,14 @@ class Wordlift_Batch_Analysis_Service {
 			'fields'     => 'ids',
 			'meta_key'   => self::STATE_META_KEY,
 			'meta_value' => self::STATE_SUBMIT,
+			'orderby'    => 'ID',
 		) );
 
 		// Bail out if there are no submitted posts.
 		if ( empty( $posts ) ) {
-			$this->log->debug( 'No posts found.' );
+			$this->log->debug( 'No posts to submit found, checking for completed requests...' );
+
+			do_action( 'wl_batch_analysis_complete' );
 
 			return;
 		}
@@ -235,6 +250,90 @@ class Wordlift_Batch_Analysis_Service {
 		// to be handled by the async task.
 		do_action( 'wl_batch_analysis_request' );
 
+	}
+
+	public function complete() {
+
+		$this->log->debug( "Requesting results..." );
+
+		// By default 5 posts of any post type are returned.
+		$posts = get_posts( array(
+			'fields'     => 'ids',
+			'meta_key'   => self::STATE_META_KEY,
+			'meta_value' => self::STATE_REQUEST,
+			'orderby'    => 'ID',
+		) );
+
+		// Bail out if there are no submitted posts.
+		if ( empty( $posts ) ) {
+			$this->log->debug( 'No posts in request state found.' );
+
+			return;
+		}
+
+		// Send a request for each post.
+		foreach ( $posts as $id ) {
+			$this->log->debug( "Requesting results for post $id..." );
+
+			// Send the actual request to the remote service.
+			$response = $this->do_complete( $id );
+
+			$this->log->debug( "Results requested for post $id." );
+
+			// Set an error if we received an error.
+			if ( ! is_wp_error( $response ) && isset( $response['body'] ) ) {
+
+				$this->log->debug( "Results received for post $id." );
+
+				// Save the returned content as new revision.
+				$json = json_decode( $response['body'] );
+
+				// Continue if the content isn't set.
+				if ( ! isset( $json->content ) || empty( $json->content ) ) {
+					continue;
+				}
+
+				$content = wp_slash( $json->content );
+
+				$this->set_warning_based_on_content( $id, $content );
+
+				wp_update_post( array(
+					'ID'           => $id,
+					'post_content' => $content,
+				) );
+
+				// Update the status.
+				$this->set_state( $id, self::STATE_SUCCESS );
+
+				$this->log->debug( "Post $id updated with batch analysis results." );
+
+				continue;
+			}
+
+			// @todo: implement a kind of timeout that sets an error if the
+			// results haven't been received after a long time.
+
+		}
+
+		// Call the `wl_batch_analysis_request` action again. This is going
+		// to be handled by the async task.
+		do_action( 'wl_batch_analysis_complete' );
+
+	}
+
+	private function set_warning_based_on_content( $post_id, $content ) {
+
+		$warning = preg_match( '/\\w<[a-z]+ id="urn:enhancement-[^"]+" class="[^"]+" itemid="[^"]+">/', $content )
+		           || preg_match( '/<[a-z]+ id="urn:enhancement-[^"]+" class="[^"]+" itemid="[^"]+">\\s/', $content );
+
+		$this->set_warning( $post_id, $warning );
+
+		return $content;
+	}
+
+	private function set_warning( $post_id, $value ) {
+
+		return update_post_meta( $post_id, self::WARNING_META_KEY, true === $value ? 'yes' : 'no' );
 	}
 
 	/**
@@ -413,7 +512,7 @@ class Wordlift_Batch_Analysis_Service {
 			$id = $item['id'];
 
 			// Request the analysis for the specified post.
-			$response = $this->request_analysis( $id, $item['link'] );
+			$response = $this->do_request( $id );
 
 			// If it's an error log it.
 			if ( is_wp_error( $response ) ) {
@@ -480,7 +579,7 @@ class Wordlift_Batch_Analysis_Service {
 			'body'        => wp_json_encode( $param ),
 		) );
 
-		$this->log->warn( "Posting analysis request for post $post_id to $url..." );
+		$this->log->debug( "Posting analysis request for post $post_id to $url..." );
 
 		// Post the parameter.
 		return wp_remote_post( $url, $args );
