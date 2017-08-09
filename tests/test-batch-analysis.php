@@ -216,7 +216,7 @@ class Wordlift_Batch_Analysis_Service_Test extends Wordlift_Unit_Test_Case {
 
 	function test_submit_auto_selected_posts() {
 
-		$result_1 = $this->batch_service->submit_auto_selected_posts();
+		$result_1 = $this->batch_service->submit_auto_selected_posts( 'no' );
 
 		// A post that must fall into the auto selection.
 		$post_1 = $this->factory->post->create( array(
@@ -252,14 +252,16 @@ class Wordlift_Batch_Analysis_Service_Test extends Wordlift_Unit_Test_Case {
 			'post_type'   => 'entity',
 		) );
 
-		$result_2 = $this->batch_service->submit_auto_selected_posts();
+		$result_2 = $this->batch_service->submit_auto_selected_posts( 'no' );
 
 		// We expect 2 submitted posts/pages.
-		$this->assertEquals( 2, $result_2, 'Expect to submit only 2 posts/page.' );
+		$this->assertEquals( 6, $result_2, 'Expect to submit only 2 posts/page (3 rows each).' );
 
 		// Check that the state has been set.
 		$this->assertEquals( Wordlift_Batch_Analysis_Service::STATE_SUBMIT, $this->batch_service->get_state( $post_1 ) );
 		$this->assertEquals( Wordlift_Batch_Analysis_Service::STATE_SUBMIT, $this->batch_service->get_state( $post_5 ) );
+		$this->assertEquals( 'no', $this->batch_service->get_link( $post_1 ) );
+		$this->assertEquals( 'no', $this->batch_service->get_link( $post_5 ) );
 
 		// Check the other states.
 		$this->assertEmpty( $this->batch_service->get_state( $post_2 ) );

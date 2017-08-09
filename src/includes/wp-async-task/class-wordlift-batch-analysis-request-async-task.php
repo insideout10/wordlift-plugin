@@ -60,7 +60,7 @@ class Wordlift_Batch_Analysis_Request_Async_Task extends WP_Async_Task {
 	protected function prepare_data( $data ) {
 
 		// Return the link setting.
-		return array( 'link' => $data[0] );
+		return array();
 	}
 
 	/**
@@ -68,15 +68,8 @@ class Wordlift_Batch_Analysis_Request_Async_Task extends WP_Async_Task {
 	 */
 	protected function run_action() {
 
-		// Bail out if there's no link setting.
-		if ( ! isset( $_POST['link'] ) ) {
-			$this->log->warn( '`link` parameter not found.' );
-
-			return;
-		}
-
 		// Run the asynchronous action.
-		do_action( "wp_async_$this->action", $_POST['link'] );
+		do_action( "wp_async_$this->action" );
 
 	}
 

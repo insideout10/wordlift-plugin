@@ -194,7 +194,7 @@ class Wordlift_Batch_Analysis_Service {
 	 */
 	public function request() {
 
-		$this->log->debug( "Requesting analysis [ link :: $link ]..." );
+		$this->log->debug( "Requesting analysis..." );
 
 		// By default 5 posts of any post type are returned.
 		$posts = get_posts( array(
@@ -218,7 +218,7 @@ class Wordlift_Batch_Analysis_Service {
 			$this->set_state( $id, self::STATE_REQUEST );
 
 			// Send the actual request to the remote service.
-			$result = $this->do_request( $id, $link );
+			$result = $this->do_request( $id );
 
 			$this->log->debug( "Analysis requested for post $id." );
 
@@ -233,7 +233,7 @@ class Wordlift_Batch_Analysis_Service {
 
 		// Call the `wl_batch_analysis_request` action again. This is going
 		// to be handled by the async task.
-		do_action( 'wl_batch_analysis_request', $link );
+		do_action( 'wl_batch_analysis_request' );
 
 	}
 
@@ -299,7 +299,9 @@ class Wordlift_Batch_Analysis_Service {
 	 */
 	public function get_link( $post_id ) {
 
-		return end( get_post_meta( $post_id, self::LINK_META_KEY ) ) ?: 'default';
+		$values = get_post_meta( $post_id, self::LINK_META_KEY );
+
+		return end( $values ) ?: 'default';
 	}
 
 	/**
