@@ -882,6 +882,7 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-post-edit-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-user-profile-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-status-page.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-entity-type-admin-service.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
@@ -1077,6 +1078,7 @@ class Wordlift {
 
 		// Pages.
 		new Wordlift_Admin_Post_Edit_Page( $this );
+		new Wordlift_Entity_Type_Admin_Service();
 
 		// create an instance of the entity type list admin page controller.
 		$this->entity_type_admin_page = new Wordlift_Admin_Entity_Taxonomy_List_Page();
