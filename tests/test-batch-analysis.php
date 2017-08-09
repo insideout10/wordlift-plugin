@@ -271,4 +271,37 @@ class Wordlift_Batch_Analysis_Service_Test extends Wordlift_Unit_Test_Case {
 
 	}
 
+	public function test_batch_analysis_regex_1() {
+
+		$content = 'a<span id="urn:enhancement-xyz" class="class" itemid="http://example.org">Lorem</span>';
+
+		$warning = 0 < preg_match_all( '/\w<[a-z]+ id="urn:enhancement-[^"]+" class="[^"]+" itemid="[^"]+">/', $content )
+		           || 0 < preg_match_all( '/<[a-z]+ id="urn:enhancement-[^"]+" class="[^"]+" itemid="[^"]+">\s/', $content );
+
+		$this->assertTrue( $warning );
+
+	}
+
+	public function test_batch_analysis_regex_2() {
+
+		$content = '<span id="urn:enhancement-xyz" class="class" itemid="http://example.org"> Lorem</span>';
+
+		$warning = 0 < preg_match_all( '/\w<[a-z]+ id="urn:enhancement-[^"]+" class="[^"]+" itemid="[^"]+">/', $content )
+		           || 0 < preg_match_all( '/<[a-z]+ id="urn:enhancement-[^"]+" class="[^"]+" itemid="[^"]+">\s/', $content );
+
+		$this->assertTrue( $warning );
+
+	}
+
+	public function test_batch_analysis_regex_3() {
+
+		$content = ' <span id="urn:enhancement-xyz" class="class" itemid="http://example.org">Lorem</span>.';
+
+		$warning = 0 < preg_match_all( '/\w<[a-z]+ id="urn:enhancement-[^"]+" class="[^"]+" itemid="[^"]+">/', $content )
+		           || 0 < preg_match_all( '/<[a-z]+ id="urn:enhancement-[^"]+" class="[^"]+" itemid="[^"]+">\s/', $content );
+
+		$this->assertFalse( $warning );
+
+	}
+
 }

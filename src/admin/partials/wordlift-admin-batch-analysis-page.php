@@ -61,9 +61,14 @@
 		esc_html_e( 'Nothing is currently in queue', 'wordlift' );
 	} else {
 		echo '<ul>';
-		foreach ( $queue as $item ) {
-			$pid = $item['id'];
-			echo '<li><a href="' . get_edit_post_link( $pid ) . '">' . get_the_title( $pid ) . '</a></li>';
+		foreach ( $queue as $pid ) {
+			$cancel_link = admin_url( "admin-ajax.php?action=wl_batch_analysis_cancel&post=$pid" );
+			?>
+			<li><a href="<?php echo get_edit_post_link( $pid ) ?>"><?php
+					echo get_the_title( $pid ) ?></a> [<a
+					href="<?php echo esc_attr( $cancel_link ); ?> "><?php esc_html_e( 'Cancel', 'wordlift' ); ?></a>]
+			</li>
+			<?php
 		}
 		echo '</ul>';
 	}
@@ -75,9 +80,34 @@
 		esc_html_e( 'Nothing is currently being processed', 'wordlift' );
 	} else {
 		echo '<ul>';
-		foreach ( $queue as $item ) {
-			$pid = $item['id'];
-			echo '<li><a href="' . get_edit_post_link( $pid ) . '">' . get_the_title( $pid ) . '</a></li>';
+		foreach ( $queue as $pid ) {
+			$cancel_link = admin_url( "admin-ajax.php?action=wl_batch_analysis_cancel&post=$pid" );
+			?>
+			<li><a href="<?php echo get_edit_post_link( $pid ) ?>"><?php
+					echo get_the_title( $pid ) ?></a> [<a
+					href="<?php echo esc_attr( $cancel_link ); ?> "><?php esc_html_e( 'Cancel', 'wordlift' ); ?></a>]
+			</li>
+			<?php
+		}
+		echo '</ul>';
+	}
+	?>
+
+	<h3><?php esc_html_e( 'Posts with warnings', 'wordlift' ) ?></h3>
+	<?php
+	$queue = $this->batch_analysis_service->get_warnings();
+	if ( empty( $queue ) ) {
+		esc_html_e( 'No warnings :-)', 'wordlift' );
+	} else {
+		echo '<ul>';
+		foreach ( $queue as $pid ) {
+			$cancel_link = admin_url( "admin-ajax.php?action=wl_batch_analysis_clear_warning&post=$pid" );
+			?>
+			<li><a href="<?php echo get_edit_post_link( $pid ) ?>"><?php
+					echo get_the_title( $pid ) ?></a> [<a
+					href="<?php echo esc_attr( $cancel_link ); ?> "><?php esc_html_e( 'Clear warning', 'wordlift' ); ?></a>]
+			</li>
+			<?php
 		}
 		echo '</ul>';
 	}

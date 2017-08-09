@@ -51,4 +51,52 @@ class Wordlift_Batch_Analysis_Adapter {
 
 	}
 
+	public function submit() {
+
+		if ( ! isset( $_REQUEST['link'] ) || ! isset( $_REQUEST['post'] ) ) {
+			wp_die( 'The `link` and `post` parameters are required.' );
+		}
+
+		$count = $this->batch_analysis_service->submit( (array) $_REQUEST['post'], $_REQUEST['link'] );
+
+		// Clear any buffer.
+		ob_clean();
+
+		// Send the response.
+		wp_send_json_success( array( 'count' => $count ) );
+
+	}
+
+	public function cancel() {
+
+		if ( ! isset( $_REQUEST['post'] ) ) {
+			wp_die( 'The `post` parameter is required.' );
+		}
+
+		$count = $this->batch_analysis_service->cancel( (array) $_REQUEST['post'] );
+
+		// Clear any buffer.
+		ob_clean();
+
+		// Send the response.
+		wp_send_json_success( array( 'count' => $count ) );
+
+	}
+
+	public function clear_warning() {
+
+		if ( ! isset( $_REQUEST['post'] ) ) {
+			wp_die( 'The `post` parameter is required.' );
+		}
+
+		$this->batch_analysis_service->clear_warning( (array) $_REQUEST['post'] );
+
+		// Clear any buffer.
+		ob_clean();
+
+		// Send the response.
+		wp_send_json_success();
+
+	}
+
 }

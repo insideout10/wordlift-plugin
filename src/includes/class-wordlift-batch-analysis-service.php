@@ -149,6 +149,34 @@ class Wordlift_Batch_Analysis_Service {
 
 	}
 
+	private function get_sql( $link ) {
+		global $wpdb;
+
+		return $wpdb->prepare(
+			"
+			INSERT INTO $wpdb->postmeta ( post_id, meta_key, meta_value )
+			SELECT p.ID, metas.*
+			FROM (
+				SELECT %s, 0 FROM dual
+				UNION
+				SELECT %s, UTC_TIMESTAMP() FROM dual
+				UNION
+				SELECT %s, %s FROM dual
+			) metas, $wpdb->posts p
+			LEFT JOIN $wpdb->postmeta batch_analysis_state
+				ON batch_analysis_state.post_id = p.ID
+					AND batch_analysis_state.meta_key = %s
+			WHERE p.post_type IN ('post', 'page')
+				AND p.post_status = 'publish'
+			",
+			self::STATE_META_KEY,
+			self::SUBMIT_TIMESTAMP_META_KEY,
+			self::LINK_META_KEY,
+			$link,
+			self::STATE_META_KEY
+		);
+	}
+
 	/**
 	 * Submit for analysis all the posts/pages which do not have annotations
 	 * and haven't been analyzed before.
@@ -166,30 +194,11 @@ class Wordlift_Batch_Analysis_Service {
 		// We're using a SQL query here because we could have potentially
 		// thousands of rows.
 		$count = $wpdb->query( $wpdb->prepare(
+			$this->get_sql( $link ) .
 			"
-			INSERT INTO $wpdb->postmeta ( post_id, meta_key, meta_value )
-			SELECT
-			p.ID, metas.*
-			FROM (
-				SELECT %s, 0 FROM dual
-				UNION
-				SELECT %s, UTC_TIMESTAMP() FROM dual
-				UNION
-				SELECT %s, %s FROM dual
-			) metas, $wpdb->posts p
-			LEFT JOIN $wpdb->postmeta batch_analysis_state
-				ON batch_analysis_state.post_id = p.ID
-					AND batch_analysis_state.meta_key = %s
-			WHERE p.post_type IN ('post', 'page')
-				AND p.post_status = 'publish'
 				AND batch_analysis_state.meta_value IS NULL
 				AND p.post_content NOT REGEXP %s;
 			",
-			self::STATE_META_KEY,
-			self::SUBMIT_TIMESTAMP_META_KEY,
-			self::LINK_META_KEY,
-			$link,
-			self::STATE_META_KEY,
 			'<[a-z]+ id="urn:enhancement-[^"]+" class="[^"]+" itemid="[^"]+">'
 		) );
 
@@ -197,6 +206,39 @@ class Wordlift_Batch_Analysis_Service {
 
 		// Divide the count by 3 to get the number of posts/pages queued.
 		return $count / 3;
+	}
+
+	public function submit( $post_ids, $link ) {
+		global $wpdb;
+
+		// Submit the posts/pages and return the number of affected results.
+		// We're using a SQL query here because we could have potentially
+		// thousands of rows.
+		$count = $wpdb->query(
+			$this->get_sql( $link ) .
+			' AND p.ID IN ( ' . implode( ',', wp_parse_id_list( $post_ids ) ) . ' )'
+		);
+
+		do_action( 'wl_batch_analysis_request' );
+
+		// Divide the count by 3 to get the number of posts/pages queued.
+		return $count / 3;
+	}
+
+	public function cancel( $post_ids ) {
+		global $wpdb;
+
+		return $wpdb->query( $wpdb->prepare(
+			"
+			DELETE FROM $wpdb->postmeta
+			WHERE meta_key = %s
+				AND meta_value = %s
+				AND post_id IN ( " . implode( ',', wp_parse_id_list( $post_ids ) ) . " )
+			",
+			self::STATE_META_KEY,
+			self::STATE_REQUEST
+		) );
+
 	}
 
 	/**
@@ -293,9 +335,9 @@ class Wordlift_Batch_Analysis_Service {
 					continue;
 				}
 
-				$content = wp_slash( $json->content );
+				$this->set_warning_based_on_content( $id, $json->content );
 
-				$this->set_warning_based_on_content( $id, $content );
+				$content = wp_slash( $json->content );
 
 				wp_update_post( array(
 					'ID'           => $id,
@@ -323,17 +365,25 @@ class Wordlift_Batch_Analysis_Service {
 
 	private function set_warning_based_on_content( $post_id, $content ) {
 
-		$warning = preg_match( '/\\w<[a-z]+ id="urn:enhancement-[^"]+" class="[^"]+" itemid="[^"]+">/', $content )
-		           || preg_match( '/<[a-z]+ id="urn:enhancement-[^"]+" class="[^"]+" itemid="[^"]+">\\s/', $content );
+		$warning = 0 < preg_match_all( '/\w<[a-z]+ id="urn:enhancement-[^"]+" class="[^"]+" itemid="[^"]+">/', $content )
+		           || 0 < preg_match_all( '/<[a-z]+ id="urn:enhancement-[^"]+" class="[^"]+" itemid="[^"]+">\s/', $content );
 
 		$this->set_warning( $post_id, $warning );
 
 		return $content;
 	}
 
+	public function clear_warning( $post_ids ) {
+
+		foreach ( (array) $post_ids as $post_id ) {
+			delete_post_meta( $post_id, self::WARNING_META_KEY );
+		}
+
+	}
+
 	private function set_warning( $post_id, $value ) {
 
-		return update_post_meta( $post_id, self::WARNING_META_KEY, true === $value ? 'yes' : 'no' );
+		return update_post_meta( $post_id, self::WARNING_META_KEY, ( true === $value ? 'yes' : 'no' ) );
 	}
 
 	/**
@@ -426,16 +476,19 @@ class Wordlift_Batch_Analysis_Service {
 	/**
 	 * Get the array of post IDS waiting in the queue to start processing.
 	 *
-	 * @deprecated
 	 * @since 3.14.0
 	 *
 	 * @return array The waiting to be processed post ids queue.
 	 */
 	public function waiting_for_analysis() {
 
-		$batch = $this->get_batch_queues();
-
-		return $batch[ self::ANALYZE_QUEUE ];
+		return get_posts( array(
+			'posts_per_page' => - 1,
+			'fields'         => 'ids',
+			'post_status'    => 'any',
+			'meta_key'       => self::STATE_META_KEY,
+			'meta_value'     => self::STATE_SUBMIT,
+		) );
 	}
 
 	/**
@@ -448,9 +501,13 @@ class Wordlift_Batch_Analysis_Service {
 	 */
 	public function waiting_for_response() {
 
-		$batch = $this->get_batch_queues();
-
-		return $batch[ self::RESPONSE_QUEUE ];
+		return get_posts( array(
+			'posts_per_page' => - 1,
+			'fields'         => 'ids',
+			'post_status'    => 'any',
+			'meta_key'       => self::STATE_META_KEY,
+			'meta_value'     => self::STATE_REQUEST,
+		) );
 	}
 
 	/**
@@ -670,6 +727,17 @@ class Wordlift_Batch_Analysis_Service {
 			wp_schedule_single_event( time(), 'wl_batch_analyze' );
 		}
 
+	}
+
+	public function get_warnings() {
+
+		return get_posts( array(
+			'fields'      => 'ids',
+			'numberposts' => - 1,
+			'post_status' => 'any',
+			'meta_key'    => self::WARNING_META_KEY,
+			'meta_value'  => 'yes',
+		) );
 	}
 
 }

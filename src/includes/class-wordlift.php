@@ -1216,7 +1216,10 @@ class Wordlift {
 
 		/** Adapters. */
 		$this->loader->add_filter( 'mce_external_plugins', $this->tinymce_adapter, 'mce_external_plugins', 10, 1 );
-		$this->loader->add_action( 'wp_ajax_wl_submit_auto_selected_posts', $this->batch_analysis_adapter, 'submit_auto_selected_posts', 10 );
+		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_submit_auto_selected_posts', $this->batch_analysis_adapter, 'submit_auto_selected_posts', 10 );
+		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_submit', $this->batch_analysis_adapter, 'submit', 10 );
+		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_cancel', $this->batch_analysis_adapter, 'cancel', 10 );
+		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_clear_warning', $this->batch_analysis_adapter, 'clear_warning', 10 );
 
 		// Hooks to restrict multisite super admin from manipulating entity types.
 		if ( is_multisite() ) {
