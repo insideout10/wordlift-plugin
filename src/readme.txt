@@ -138,6 +138,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.14.2 (????-??-??) =
+* Enhancement: [#601](https://github.com/insideout10/wordlift-plugin/issues/601): Improve the Batch Analysis service.
+
 = 3.14.1 (2017-07-30) =
 * Fix: [#594](https://github.com/insideout10/wordlift-plugin/issues/594): Recipes appear as Things in the classification box.
 * Fix: [#593](https://github.com/insideout10/wordlift-plugin/issues/593): Recipes mentioned in posts/pages do not appear in the JSON-LD.
