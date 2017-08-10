@@ -581,6 +581,7 @@ class Wordlift_Batch_Analysis_Service {
 			'post_status'    => 'any',
 			'meta_key'       => self::STATE_META_KEY,
 			'meta_value'     => self::STATE_SUBMIT,
+			'orderby'        => 'ID',
 		) );
 	}
 
@@ -600,6 +601,7 @@ class Wordlift_Batch_Analysis_Service {
 			'post_status'    => 'any',
 			'meta_key'       => self::STATE_META_KEY,
 			'meta_value'     => self::STATE_REQUEST,
+			'orderby'        => 'ID',
 		) );
 	}
 
