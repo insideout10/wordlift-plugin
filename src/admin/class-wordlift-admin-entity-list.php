@@ -187,7 +187,8 @@ class Wordlift_Entity_List_Service {
 	}
 
 	/**
-	 * Server side response operations for the classification filter set in *restrict_manage_posts_classification_scope_filter*
+	 * Server side response operations for the classification filter set in
+	 * *restrict_manage_posts_classification_scope_filter*.
 	 *
 	 * @since 3.3.0
 	 *

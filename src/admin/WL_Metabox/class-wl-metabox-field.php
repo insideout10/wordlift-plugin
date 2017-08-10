@@ -1,9 +1,21 @@
 <?php
+/**
+ * Metaboxes: Field Metabox.
+ *
+ * @since      3.0.0
+ * @package    Wordlift
+ * @subpackage Wordlift/admin/WL_Metabox
+ */
 
 /**
  * All custom WL_Metabox_Field(s) must extend this class.
- * This class deals with saving the most basic data type, strings.
- * Use the methods that are useful or overwrite them if you need custom behaviour.
+ *
+ * This class deals with saving the most basic data type, strings. Use the
+ * methods that are useful or overwrite them if you need custom behaviour.
+ *
+ * @since      3.0.0
+ * @package    Wordlift
+ * @subpackage Wordlift/admin/WL_Metabox
  */
 class WL_Metabox_Field {
 

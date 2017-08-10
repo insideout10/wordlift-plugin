@@ -30,15 +30,6 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 			return null;
 		}
 
-//		// Check that the inserted URI, ID or name does not point to a saved entity.
-//		if ( is_numeric( $value ) ) {
-//			$absent_from_db = is_null( get_post( $value ) );                           // search by ID
-//		} else {
-//			// When the editor types a string in the input box, we try to find
-//			// an entity with that title and, if not found, we create that entity.
-//			$absent_from_db = $this->exists( $value );
-//		}
-
 		// Check that the inserted URI, ID or name does not point to a saved
 		// entity or when the editor types a string in the input box, we try to
 		// find an entity with that title and, if not found, we create that entity.
@@ -166,4 +157,5 @@ EOF;
 
 		return $html;
 	}
+
 }

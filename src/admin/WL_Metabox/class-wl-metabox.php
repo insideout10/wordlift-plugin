@@ -7,9 +7,9 @@
  * @subpackage Wordlift/admin/WL_Metabox
  */
 
-require_once( 'WL_Metabox_Field.php' );
+require_once( 'class-wl-metabox-field.php' );
 require_once( 'WL_Metabox_Field_date.php' );
-require_once( 'WL_Metabox_Field_uri.php' );
+require_once( 'class-wl-metabox-field-uri.php' );
 require_once( 'WL_Metabox_Field_coordinates.php' );
 require_once( 'WL_Metabox_Field_sameas.php' );
 require_once( 'WL_Metabox_Field_address.php' );
