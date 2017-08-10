@@ -138,7 +138,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.14.2 (????-??-??) =
+= 3.14.2 (2017-08-10) =
 * Enhancement: [#601](https://github.com/insideout10/wordlift-plugin/issues/601): Improve the Batch Analysis service.
 
 = 3.14.1 (2017-07-30) =
