@@ -455,9 +455,11 @@ class Wordlift_Batch_Analysis_Service {
 	 */
 	private function set_warning_based_on_content( $post_id, $content ) {
 
+		$matches = array();
+
 		// Check for suspicious interpolations.
-		$warning = 0 < preg_match_all( '/\w<[a-z]+ id="urn:enhancement-[^"]+" class="[^"]+" itemid="[^"]+">/', $content )
-		           || 0 < preg_match_all( '/<[a-z]+ id="urn:enhancement-[^"]+" class="[^"]+" itemid="[^"]+">\s/', $content );
+		$warning = 0 < preg_match_all( '/\w<[a-z]+ id="urn:enhancement-[^"]+" class="[^"]+" itemid="[^"]+">/', $content, $matches )
+		           || 0 < preg_match_all( '/<[a-z]+ id="urn:enhancement-[^"]+" class="[^"]+" itemid="[^"]+">\s/', $content, $matches );
 
 		// Set the warning flag accordingly.
 		$this->set_warning( $post_id, $warning );
