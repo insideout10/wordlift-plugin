@@ -158,6 +158,9 @@ class Wordlift_Import_Service {
 		// Finally queue the statement.
 		$this->sparql_service->execute( $stmt );
 
+		// Clear up the cache to avoid memory errors.
+		wp_cache_flush();
+
 	}
 
 	/**
@@ -168,10 +171,10 @@ class Wordlift_Import_Service {
 	 */
 	public function import_start() {
 
-		add_action( 'added_post_meta', array(
-			$this,
-			'added_post_meta',
-		), 10, 4 );
+//		add_action( 'added_post_meta', array(
+//			$this,
+//			'added_post_meta',
+//		), 10, 4 );
 
 	}
 

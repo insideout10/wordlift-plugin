@@ -122,7 +122,6 @@ function wordlift_allowed_post_tags() {
 // add allowed post tags.
 add_action( 'init', 'wordlift_allowed_post_tags' );
 
-
 /**
  * Register additional scripts for the admin UI.
  */
@@ -251,31 +250,6 @@ function wl_get_image_urls( $post_id ) {
 //
 //	return $image_urls;
 }
-
-///**
-// * Get a SPARQL fragment with schema:image predicates.
-// *
-// * @param string $uri     The URI subject of the statements.
-// * @param int    $post_id The post ID.
-// *
-// * @return string The SPARQL fragment.
-// */
-//function wl_get_sparql_images( $uri, $post_id ) {
-//
-//	$sparql = '';
-//
-//	// Get the escaped URI.
-//	$uri_e = esc_html( $uri );
-//
-//	// Add SPARQL stmts to write the schema:image.
-//	$image_urls = wl_get_image_urls( $post_id );
-//	foreach ( $image_urls as $image_url ) {
-//		$image_url_esc = Wordlift_Sparql_Service::escape_uri( $image_url );
-//		$sparql        .= " <$uri_e> schema:image <$image_url_esc> . \n";
-//	}
-//
-//	return $sparql;
-//}
 
 /**
  * Get an attachment with the specified parent post ID and source URL.

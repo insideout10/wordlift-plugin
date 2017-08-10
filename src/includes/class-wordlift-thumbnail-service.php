@@ -24,7 +24,7 @@ class Wordlift_Thumbnail_Service {
 	/**
 	 * The Log service.
 	 *
-	 * @since 3.1.5
+	 * @since  3.1.5
 	 * @access private
 	 * @var \Wordlift_Log_Service The Log service.
 	 */
@@ -46,10 +46,10 @@ class Wordlift_Thumbnail_Service {
 	 *
 	 * @since 3.1.5
 	 *
-	 * @param array $meta_ids An array of deleted metadata entry IDs.
-	 * @param int $object_id Object ID.
-	 * @param string $meta_key Meta key.
-	 * @param mixed $_meta_value Meta value.
+	 * @param array  $meta_ids    An array of deleted metadata entry IDs.
+	 * @param int    $object_id   Object ID.
+	 * @param string $meta_key    Meta key.
+	 * @param mixed  $_meta_value Meta value.
 	 */
 	public function deleted_post_meta( $meta_ids, $object_id, $meta_key, $_meta_value ) {
 
@@ -83,10 +83,10 @@ class Wordlift_Thumbnail_Service {
 	 *
 	 * @since 3.1.5
 	 *
-	 * @param int $mid The meta ID after successful update.
-	 * @param int $object_id Object ID.
-	 * @param string $meta_key Meta key.
-	 * @param mixed $_meta_value Meta value.
+	 * @param int    $mid         The meta ID after successful update.
+	 * @param int    $object_id   Object ID.
+	 * @param string $meta_key    Meta key.
+	 * @param mixed  $_meta_value Meta value.
 	 */
 	public function added_or_updated_post_meta( $mid, $object_id, $meta_key, $_meta_value ) {
 
@@ -111,6 +111,9 @@ class Wordlift_Thumbnail_Service {
 		if ( null === ( $uri = wl_get_entity_uri( $object_id ) ) ) {
 			return;
 		}
+
+		// Don't pollute the cache.
+		wp_cache_delete( $object_id, 'post_meta' );
 
 		// Get the attachment url and return if not found.
 		if ( false === ( $attachment_url = wp_get_attachment_url( $_meta_value ) ) ) {
