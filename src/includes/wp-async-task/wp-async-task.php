@@ -148,7 +148,7 @@ if ( ! class_exists( 'WP_Async_Task' ) ) {
 				$request_args = array(
 					'timeout'   => 0.01,
 					'blocking'  => false,
-					'sslverify' => apply_filters( 'https_local_ssl_verify', true ),
+					'sslverify' => apply_filters( 'https_local_ssl_verify', false ),
 					'body'      => $this->_body_data,
 					'headers'   => array(
 						'cookie' => implode( '; ', $cookies ),

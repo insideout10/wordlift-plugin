@@ -97,41 +97,6 @@ function wl_write_log_hide_key( $text ) {
 	return str_ireplace( wl_configuration_get_key(), '<hidden>', $text );
 }
 
-///**
-// * Execute the SPARQL query from the buffer saved for the specified request id.
-// *
-// * @deprecated
-// *
-// * @param int $request_id The request ID.
-// */
-//function wl_execute_saved_sparql_update_query( $request_id ) {
-//
-//	$filename = WL_TEMP_DIR . $request_id . '.sparql';
-//
-//	// If the file doesn't exist, exit.
-//	if ( ! file_exists( $filename ) ) {
-//		wl_write_log( "wl_execute_saved_sparql_update_query : file doesn't exist [ filename :: $filename ]" );
-//
-//		return;
-//	}
-//
-//	wl_write_log( "wl_execute_saved_sparql_update_query [ filename :: $filename ]" );
-//
-//	// Get the query saved in the file.
-//	$query = file_get_contents( $filename );
-//
-//	// Execute the SPARQL query.
-//	rl_execute_sparql_update_query( $query, false );
-//
-//	// Reindex the triple store.
-//	wordlift_reindex_triple_store();
-//
-//	// Delete the temporary file.
-//	unlink( $filename );
-//}
-//
-//add_action( 'wl_execute_saved_sparql_update_query', 'wl_execute_saved_sparql_update_query', 10, 1 );
-
 /**
  * Enable microdata schema.org tagging.
  * see http://vip.wordpress.com/documentation/register-additional-html-attributes-for-tinymce-and-wp-kses/
@@ -154,12 +119,8 @@ function wordlift_allowed_post_tags() {
 	}
 }
 
-// init process for button control
-//add_action( 'init', 'wordlift_buttonhooks' );
-
 // add allowed post tags.
 add_action( 'init', 'wordlift_allowed_post_tags' );
-
 
 /**
  * Register additional scripts for the admin UI.
@@ -320,6 +281,12 @@ function wl_get_sparql_images( $uri, $post_id ) {
 	// Add SPARQL stmts to write the schema:image.
 	$image_urls = wl_get_image_urls( $post_id );
 	foreach ( $image_urls as $image_url ) {
+
+		// Skip to the next item if the image isn't set.
+		if ( empty( $image_url ) ) {
+			continue;
+		}
+
 		$image_url_esc = wl_sparql_escape_uri( $image_url );
 		$sparql        .= " <$uri_e> schema:image <$image_url_esc> . \n";
 	}

@@ -63,29 +63,41 @@ function wl_entities_box_content( $post ) {
 		$relation_name = $box['id'];
 
 		// wl_write_log( "Going to related of $relation_name" );
+//
+//		// Get entity ids related to the current post for the given relation name (both draft and published entities)
+//		$draft_entity_ids   = wl_core_get_related_entity_ids( $post->ID, array(
+//			'predicate' => $relation_name,
+//			'status'    => 'draft',
+//		) );
+//		$publish_entity_ids = wl_core_get_related_entity_ids( $post->ID, array(
+//			'predicate' => $relation_name,
+//			'status'    => 'publish',
+//		) );
+//		$entity_ids         = array_unique( array_merge( $draft_entity_ids, $publish_entity_ids ) );
 
-		// Get entity ids related to the current post for the given relation name (both draft and published entities)
-		$draft_entity_ids   = wl_core_get_related_entity_ids( $post->ID, array(
-			'predicate' => $relation_name,
-			'status'    => 'draft',
-		) );
-		$publish_entity_ids = wl_core_get_related_entity_ids( $post->ID, array(
-			'predicate' => $relation_name,
-			'status'    => 'publish',
-		) );
-		$entity_ids         = array_unique( array_merge( $draft_entity_ids, $publish_entity_ids ) );
 
+//		// Transform entity ids array in entity uris array
+//		array_walk( $entity_ids, function ( &$entity_id ) {
+//			// Retrieve the entity uri for the given entity id
+//			$entity_id = wl_get_entity_uri( $entity_id );
+//		} );
+//
+		// Get the entity referenced from the post content.
+		$entity_uris = Wordlift_Content_Filter_Service::get_instance()->get_entity_uris( $post->post_content );
+
+		// Enhance current box selected entities.
+		$classification_boxes[ $i ]['selectedEntities'] = $entity_uris;
+
+		// Maps the URIs to entity posts.
+		$entity_service = Wordlift_Entity_Service::get_instance();
+		$entity_ids     = array_map( function ( $item ) use ( $entity_service ) {
+			$post = $entity_service->get_entity_post_by_uri( $item );
+
+			return $post->ID;
+		}, $entity_uris );
 		// Store the entity ids for all the 4W
 		$all_referenced_entities_ids = array_merge( $all_referenced_entities_ids, $entity_ids );
 
-		// Transform entity ids array in entity uris array
-		array_walk( $entity_ids, function ( &$entity_id ) {
-			// Retrieve the entity uri for the given entity id
-			$entity_id = wl_get_entity_uri( $entity_id );
-		} );
-
-		// Enhance current box selected entities
-		$classification_boxes[ $i ]['selectedEntities'] = $entity_ids;
 	}
 	// Json encoding for classification boxes structure
 	$classification_boxes = json_encode( $classification_boxes );
