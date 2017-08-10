@@ -74,7 +74,7 @@ class Wordlift_Batch_Analysis_Service_Test extends Wordlift_Unit_Test_Case {
 		$result_2 = $this->batch_service->submit_auto_selected_posts( 'no' );
 
 		// We expect 2 submitted posts/pages.
-		$this->assertEquals( 6, $result_2, 'Expect to submit only 2 posts/page (3 rows each).' );
+		$this->assertEquals( 2, $result_2, 'Expect to submit only 2 posts/page.' );
 
 		// Check that the state has been set.
 		$this->assertEquals( Wordlift_Batch_Analysis_Service::STATE_SUBMIT, $this->batch_service->get_state( $post_1 ) );
