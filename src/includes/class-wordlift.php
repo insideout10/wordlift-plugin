@@ -517,6 +517,24 @@ class Wordlift {
 	private $batch_analysis_adapter;
 
 	/**
+	 * The {@link Wordlift_Relation_Rebuild_Service} instance.
+	 *
+	 * @since  3.14.3
+	 * @access private
+	 * @var \Wordlift_Relation_Rebuild_Service $relation_rebuild_service The {@link Wordlift_Relation_Rebuild_Service} instance.
+	 */
+	private $relation_rebuild_service;
+
+	/**
+	 * The {@link Wordlift_Relation_Rebuild_Adapter} instance.
+	 *
+	 * @since  3.14.3
+	 * @access private
+	 * @var \Wordlift_Relation_Rebuild_Adapter $relation_rebuild_adapter The {@link Wordlift_Relation_Rebuild_Adapter} instance.
+	 */
+	private $relation_rebuild_adapter;
+
+	/**
 	 * {@link Wordlift}'s singleton instance.
 	 *
 	 * @since  3.11.2
@@ -539,7 +557,7 @@ class Wordlift {
 	public function __construct() {
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.14.2';
+		$this->version     = '3.14.3-dev';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -757,11 +775,13 @@ class Wordlift {
 		// Load the `Wordlift_Event_Entity_Page_Service` class definition.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-event-entity-page-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-batch-analysis-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-relation-rebuild-service.php';
 
 		/** Adapters. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-tinymce-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-newrelic-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-batch-analysis-adapter.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-relation-rebuild-adapter.php';
 
 		/** Async Tasks. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/wp-async-task.php';
@@ -999,16 +1019,16 @@ class Wordlift {
 		$this->jsonld_website_converter        = new Wordlift_Website_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $this->configuration_service, $this->entity_post_to_jsonld_converter );
 		$this->jsonld_service                  = new Wordlift_Jsonld_Service( $this->entity_service, $this->postid_to_jsonld_converter, $this->jsonld_website_converter );
 
-		// Create an instance of the Key Validation service. This service is later hooked to provide an AJAX call (only for admins).
-		$this->key_validation_service = new Wordlift_Key_Validation_Service( $this->configuration_service );
-
-		// Create an instance of the Publisher Service and the AJAX Adapter.
-		$publisher_service            = new Wordlift_Publisher_Service();
-		$this->publisher_ajax_adapter = new Wordlift_Publisher_Ajax_Adapter( $publisher_service );
+		$this->key_validation_service   = new Wordlift_Key_Validation_Service( $this->configuration_service );
+		$publisher_service              = new Wordlift_Publisher_Service();
+		$this->content_filter_service   = new Wordlift_Content_Filter_Service( $this->entity_service, $this->configuration_service );
+		$this->relation_rebuild_service = new Wordlift_Relation_Rebuild_Service( $this->content_filter_service, $this->entity_service );
 
 		/** Adapters. */
-		$this->tinymce_adapter        = new Wordlift_Tinymce_Adapter( $this );
-		$this->batch_analysis_adapter = new Wordlift_Batch_Analysis_Adapter( $this->batch_analysis_service );
+		$this->publisher_ajax_adapter   = new Wordlift_Publisher_Ajax_Adapter( $publisher_service );
+		$this->tinymce_adapter          = new Wordlift_Tinymce_Adapter( $this );
+		$this->batch_analysis_adapter   = new Wordlift_Batch_Analysis_Adapter( $this->batch_analysis_service );
+		$this->relation_rebuild_adapter = new Wordlift_Relation_Rebuild_Adapter( $this->relation_rebuild_service );
 
 		/** Async Tasks. */
 		new Wordlift_Sparql_Query_Async_Task();
@@ -1049,9 +1069,6 @@ class Wordlift {
 
 		// Create an instance of the install wizard.
 		$this->admin_setup = new Wordlift_Admin_Setup( $this->configuration_service, $this->key_validation_service, $this->entity_service );
-
-		// Create an instance of the content filter service.
-		$this->content_filter_service = new Wordlift_Content_Filter_Service( $this->entity_service, $this->configuration_service );
 
 		$this->category_taxonomy_service = new Wordlift_Category_Taxonomy_Service( $this->entity_post_type_service );
 
@@ -1220,6 +1237,7 @@ class Wordlift {
 		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_submit', $this->batch_analysis_adapter, 'submit', 10 );
 		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_cancel', $this->batch_analysis_adapter, 'cancel', 10 );
 		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_clear_warning', $this->batch_analysis_adapter, 'clear_warning', 10 );
+		$this->loader->add_action( 'wp_ajax_wl_relation_rebuild_process_all', $this->relation_rebuild_adapter, 'process_all', 10 );
 
 		// Hooks to restrict multisite super admin from manipulating entity types.
 		if ( is_multisite() ) {

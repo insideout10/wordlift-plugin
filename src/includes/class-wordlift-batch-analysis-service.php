@@ -249,7 +249,7 @@ class Wordlift_Batch_Analysis_Service {
 				AND batch_analysis_state.meta_value IS NULL
 				AND p.post_content NOT REGEXP %s;
 			",
-			'<[a-z]+ id="urn:enhancement-[^"]+" class="[^"]+" itemid="[^"]+">'
+			'<[a-z]+ id="urn:[^"]+" class="[^"]+" itemid="[^"]+">'
 		) );
 
 		// Request Batch Analysis (the operation is handled asynchronously).
