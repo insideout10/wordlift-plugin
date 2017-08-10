@@ -450,15 +450,12 @@ class Wordlift_Entity_Service {
 	 */
 	public function count() {
 
-		$posts = get_posts( self::add_criterias( array(
-			'post_type'   => Wordlift_Entity_Service::valid_entity_post_types(),
-			'post_status' => 'publish',
-			'fields'      => 'ids',
+		$posts = get_posts( $this->add_criterias( array(
+			'post_status' => 'any',
+			'numberposts' => - 1,
 		) ) );
 
-		$count = count( $posts );
-
-		return $count;
+		return count( $posts );
 	}
 
 	/**
@@ -601,23 +598,6 @@ class Wordlift_Entity_Service {
 		$post_types = array( 'post', 'page', self::TYPE_NAME );
 
 		return apply_filters( 'wl_valid_entity_post_types', $post_types );
-	}
-
-	/**
-	 * Determines whether a post type can be used for entities.
-	 *
-	 * Criteria is that the post type is public. The list of valid post types
-	 * can be overridden with a filter.
-	 *
-	 * @since 3.15.0
-	 *
-	 * @param string $post_type A post type name.
-	 *
-	 * @return bool Return true if the post type can be used for entities, otherwise false.
-	 */
-	static function is_valid_entity_post_type( $post_type ) {
-
-		return in_array( $post_type, self::valid_entity_post_types(), true );
 	}
 
 }

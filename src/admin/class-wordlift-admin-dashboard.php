@@ -38,15 +38,26 @@ class Wordlift_Dashboard_Service {
 	private $rating_service;
 
 	/**
+	 * The {@link Wordlift_Entity_Service} instance.
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service} instance.
+	 */
+	private $entity_service;
+
+	/**
 	 * Create a Wordlift_Entity_List_Service.
 	 *
 	 * @since 3.4.0
 	 *
 	 * @param \Wordlift_Rating_Service $rating_service A {@link Wordlift_Rating_Service} instance.
+	 * @param \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service} instance.
 	 */
-	public function __construct( $rating_service ) {
+	public function __construct( $rating_service, $entity_service ) {
 
 		$this->rating_service = $rating_service;
+		$this->entity_service = $entity_service;
 
 	}
 
@@ -154,7 +165,7 @@ EOF;
 		if ( ! $stats ) {
 			// Calculate stats
 			$stats = array(
-				'entities'        => $this->count_entities(),
+				'entities'        => $this->entity_service->count(),
 				'posts'           => $this->count_posts(),
 				'annotated_posts' => $this->count_annotated_posts(),
 				'triples'         => $this->count_triples() ?: '-',
@@ -219,20 +230,6 @@ EOF;
 
 		// Perform the query.
 		return $this->rating_service->convert_raw_score_to_percentage( $wpdb->get_var( $query ) );
-	}
-
-	/**
-	 * Calculate total number of published entities.
-	 *
-	 * @uses  https://codex.wordpress.org/it:Riferimento_funzioni/wp_count_posts
-	 *
-	 * @since 3.4.0
-	 *
-	 * @return int Total number of posts.
-	 */
-	private function count_entities() {
-
-		return (int) wp_count_posts( Wordlift_Entity_Service::TYPE_NAME )->publish;
 	}
 
 	/**

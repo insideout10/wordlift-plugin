@@ -5,8 +5,8 @@
  * Customization of the entity type display in the various admin pages.
  *
  * @since      3.15.0
- * @package    WordLift
- * @subpackage WordLift/admin
+ * @package    Wordlift
+ * @subpackage Wordlift/admin
  */
 
 /**
@@ -15,8 +15,8 @@
  * Handles the various display of entity type related info in the admin.
  *
  * @since      3.15.0
- * @package    WordLift
- * @subpackage WordLift/admin
+ * @package    Wordlift
+ * @subpackage Wordlift/admin
  */
 class Wordlift_Entity_Type_Admin_Service {
 
@@ -30,7 +30,10 @@ class Wordlift_Entity_Type_Admin_Service {
 	public function __construct() {
 
 		add_action( 'admin_init', array( $this, 'hide_entity_type_metabox' ) );
-		add_action( 'admin_init', array( $this, 'set_filters_to_hide_entity_type_from_lists' ) );
+		add_action( 'admin_init', array(
+			$this,
+			'set_filters_to_hide_entity_type_from_lists',
+		) );
 	}
 
 	/**
@@ -41,16 +44,16 @@ class Wordlift_Entity_Type_Admin_Service {
 	 */
 	public function hide_entity_type_metabox() {
 
-		if ( ! current_user_can( 'edit_wordlift_entity' ) ) {
-
-			// loop over all the non entity post types which support entities and turn off the metabox.
-
-			foreach ( Wordlift_Entity_Service::valid_entity_post_types() as $screen ) {
-				if ( Wordlift_Entity_Service::TYPE_NAME !== $screen ) {
-					remove_meta_box( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME . 'div', $screen, 'side' );
-				}
-			}
+		// Bail out if the user can edit entities.
+		if ( current_user_can( 'edit_wordlift_entity' ) ) {
+			return;
 		}
+
+		// Loop over all the non entity post types which support entities and turn off the metabox.
+		foreach ( $this->get_types_no_entity() as $type ) {
+			remove_meta_box( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME . 'div', $type, 'side' );
+		}
+
 	}
 
 	/**
@@ -62,19 +65,32 @@ class Wordlift_Entity_Type_Admin_Service {
 	 */
 	function set_filters_to_hide_entity_type_from_lists() {
 
-		if ( ! current_user_can( 'edit_wordlift_entity' ) ) {
+		// Bail out if the user can edit entities.
+		if ( current_user_can( 'edit_wordlift_entity' ) ) {
+			return;
+		}
 
-			// loop over all the non entity post types which support entities and turn off the taxonomy column.
+		// Loop over all the non entity post types which support entities and turn off the taxonomy column.
+		foreach ( $this->get_types_no_entity() as $type ) {
+			add_filter( 'manage_taxonomies_for_' . $type . '_columns', function ( $taxonomies ) {
+				unset( $taxonomies[ Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME ] );
 
-			foreach ( Wordlift_Entity_Service::valid_entity_post_types() as $post_type ) {
-				if ( Wordlift_Entity_Service::TYPE_NAME !== $post_type ) {
-					add_filter( 'manage_taxonomies_for_' . $post_type . '_columns', function ( $taxonomies ) {
-						unset( $taxonomies[ Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME ] );
-						return $taxonomies;
-					});
-				}
-			}
+				return $taxonomies;
+			} );
 		}
 
 	}
+
+	/**
+	 * Get the types which are not the entity post type.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @return array An array of types' names.
+	 */
+	private function get_types_no_entity() {
+
+		return array_diff( Wordlift_Entity_Service::valid_entity_post_types(), (array) Wordlift_Entity_Service::TYPE_NAME );
+	}
+
 }

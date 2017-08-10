@@ -1,7 +1,14 @@
 <?php
+/**
+ * Faceted Search Shortcode.
+ *
+ * @since      3.0.0
+ * @package    Wordlift
+ * @subpackage Wordlift/shortcodes
+ */
 
 /**
- * Function in charge of diplaying the [wl-faceted-search]
+ * Function in charge of diplaying the [wl-faceted-search].
  */
 function wl_shortcode_faceted_search( $atts ) {
 
@@ -34,7 +41,7 @@ function wl_shortcode_faceted_search( $atts ) {
 	$current_post = get_post();
 
 	$entity_service = Wordlift_Entity_Service::get_instance();
-	$entity_ids = ( $entity_service->is_entity( $current_post->ID ) ) ?
+	$entity_ids     = $entity_service->is_entity( $current_post->ID ) ?
 		$current_post->ID :
 		wl_core_get_related_entity_ids( $current_post->ID );
 
@@ -105,7 +112,7 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 	// the current post is used as main entity.
 	// Otherwise, current post related entities are used.
 	$entity_service = Wordlift_Entity_Service::get_instance();
-	$entity_ids = ( $entity_service->is_entity( $current_post->ID ) ) ?
+	$entity_ids     = $entity_service->is_entity( $current_post->ID ) ?
 		array( $current_post->ID ) :
 		wl_core_get_related_entity_ids( $current_post->ID );
 

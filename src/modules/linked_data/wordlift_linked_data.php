@@ -1,6 +1,10 @@
 <?php
 /**
  * The Linked Data module provides synchronization of local WordPress data with the remote Linked Data store.
+ *
+ * @since      3.0.0
+ * @package    Wordlift
+ * @subpackage Wordlift/modules/linked_data
  */
 
 require_once( 'wordlift_linked_data_images.php' );

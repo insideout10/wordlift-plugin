@@ -1,11 +1,19 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: david
- * Date: 01/08/2017
- * Time: 17:13
+ * Storage: Storage Abstract Class.
+ *
+ * @since      3.15.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes/linked-data/storage
  */
 
+/**
+ * Define the {@link Wordlift_Storage} abstract class.
+ *
+ * @since      3.15.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes/linked-data/storage
+ */
 abstract class Wordlift_Storage {
 
 	/**

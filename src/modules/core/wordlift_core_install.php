@@ -2,8 +2,9 @@
 /**
  * Provide WordLift's install functions.
  *
- * @since   3.0.0
- * @package Wordlift
+ * @since      3.0.0
+ * @package    Wordlift
+ * @subpackage Wordlfit/modules/core
  */
 
 /**
@@ -264,7 +265,7 @@ function wl_core_upgrade_db_3_14_3_15() {
 	if ( version_compare( get_option( 'wl_db_version' ), '3.15', '<=' ) ) {
 		$article = get_term_by( 'slug', 'article', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 		if ( ! $article ) {
-			$article = wp_insert_term(
+			$article    = wp_insert_term(
 				'Article',
 				Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
 				array(
@@ -280,15 +281,15 @@ function wl_core_upgrade_db_3_14_3_15() {
 		// An sql that will assign the article term to all posts and pages
 		$sql = 'INSERT INTO wp_term_relationships( object_id, term_taxonomy_id ) ' .
 		       'SELECT id, %s ' .
-			   ' FROM wp_posts ' .
-			   " WHERE post_type IN ( 'post', 'page' ) " .
-			   '       AND id NOT IN ( ' .
-			   'SELECT DISTINCT tr.object_id ' .
-			   ' FROM wp_term_relationships tr ' .
-			   '	INNER JOIN wp_term_taxonomy tt ' .
-			   '          ON tr.term_taxonomy_id = tt.term_taxonomy_id ' .
-			   "          AND tt.taxonomy = 'wl_entity_type' " .
-			   ');';
+		       ' FROM wp_posts ' .
+		       " WHERE post_type IN ( 'post', 'page' ) " .
+		       '       AND id NOT IN ( ' .
+		       'SELECT DISTINCT tr.object_id ' .
+		       ' FROM wp_term_relationships tr ' .
+		       '	INNER JOIN wp_term_taxonomy tt ' .
+		       '          ON tr.term_taxonomy_id = tt.term_taxonomy_id ' .
+		       "          AND tt.taxonomy = 'wl_entity_type' " .
+		       ');';
 
 		global $wpdb;
 		$wpdb->query( $wpdb->prepare( $sql, $article_id ) );

@@ -1,13 +1,20 @@
 <?php
-
 /**
+ * Services: Sparql Service.
+ *
  * Define the Wordlift_Sparql_Service class.
+ *
+ * @since      3.6.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes
  */
 
 /**
  * The Wordlift_Sparql_Service class provides functions related to SPARQL queries.
  *
- * @since 3.6.0
+ * @since      3.6.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes
  */
 class Wordlift_Sparql_Service {
 

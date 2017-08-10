@@ -1,6 +1,14 @@
 <?php
+/**
+ * Ajax: Related Posts.
+ *
+ * @since   3.0.0
+ * @package Wordlift
+ * @package Wordlift/admin
+ */
 
 /**
+ * Get the related posts.
  *
  * @since 3.0.0
  *

@@ -1,4 +1,11 @@
 <?php
+/**
+ * Schema API functions.
+ *
+ * @since      3.0.0
+ * @package    Wordlift
+ * @subpackage Wordlift/modules/core
+ */
 
 /**
  * Retrieves the value of the specified property for the entity.

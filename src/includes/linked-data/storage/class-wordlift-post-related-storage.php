@@ -19,14 +19,20 @@
 class Wordlift_Post_Related_Storage extends Wordlift_Storage {
 
 	/**
-	 * @var Wordlift_Entity_Service
+	 * The {@link Wordlift_Entity_Service} instance.
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service} instance.
 	 */
 	private $entity_service;
 
 	/**
-	 * Wordlift_Post_Related_Storage constructor.
+	 * Create a {@link Wordlift_Post_Related_Storage} instance.
 	 *
-	 * @param \Wordlift_Entity_Service $entity_service
+	 * @since 3.15.0
+	 *
+	 * @param \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service} instance.
 	 */
 	public function __construct( $entity_service ) {
 

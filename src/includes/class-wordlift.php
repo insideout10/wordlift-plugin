@@ -811,7 +811,7 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-relation-rebuild-service.php';
 
 		/** Linked Data. */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/intf-wordlift-storage.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-storage.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-post-meta-storage.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-post-property-storage.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-post-taxonomy-storage.php';
@@ -1065,7 +1065,7 @@ class Wordlift {
 		$this->entity_list_service = new Wordlift_Entity_List_Service( $this->rating_service );
 
 		// Create a new instance of the Redirect service.
-		$this->dashboard_service = new Wordlift_Dashboard_Service( $this->rating_service );
+		$this->dashboard_service = new Wordlift_Dashboard_Service( $this->rating_service, $this->entity_service );
 
 		// Create an instance of the Publisher Service and the AJAX Adapter.
 		$publisher_service      = new Wordlift_Publisher_Service();
@@ -1234,7 +1234,7 @@ class Wordlift {
 		$this->loader->add_action( 'restrict_manage_posts', $this->entity_list_service, 'restrict_manage_posts_classification_scope' );
 		$this->loader->add_filter( 'posts_clauses', $this->entity_list_service, 'posts_clauses_classification_scope' );
 		$this->loader->add_action( 'pre_get_posts', $this->entity_list_service, 'pre_get_posts' );
-		$this->loader->add_action( 'bulk_post_updated_messages', $this->entity_list_service, 'bulk_post_updated_messages', 10, 2 );
+		$this->loader->add_filter( 'bulk_post_updated_messages', $this->entity_list_service, 'bulk_post_updated_messages', 10, 2 );
 		$this->loader->add_filter( 'wp_terms_checklist_args', $this->entity_types_taxonomy_walker, 'terms_checklist_args' );
 
 		// Hook the PrimaShop adapter to <em>prima_metabox_entity_header_args</em> in order to add header support for

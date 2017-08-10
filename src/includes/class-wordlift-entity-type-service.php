@@ -1,16 +1,21 @@
 <?php
 /**
+ * Services: Entity Type Service.
+ *
  * Define the Entity Type Service.
  *
- * @since   3.7.0
- * @package Wordlift
+ * @since      3.7.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes
  */
 
 /**
  * The Wordlift_Entity_Type_Service provides functions to manipulate an entity
  * type.
  *
- * @since 3.7.0
+ * @since      3.7.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes
  */
 class Wordlift_Entity_Type_Service {
 
@@ -92,43 +97,40 @@ class Wordlift_Entity_Type_Service {
 
 		$post_type = get_post_type( $post_id );
 
-		if ( Wordlift_Entity_Service::is_valid_entity_post_type( $post_type ) ) {
-			// Get the type from the associated classification.
-
-			$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
-
-			if ( is_wp_error( $terms ) ) {
-				$this->log->error( "An error occurred while getting the post type for post $post_id: " . $terms->get_error_message() );
-
-				// TODO: handle error
-				return null;
-			}
-
-			// If there are not terms associated, default to article.
-			if ( 0 === count( $terms ) ) {
-				$this->log->info( "Post $post_id has no terms, returning `Article`." );
-
-				return array(
-					'uri'       => 'http://schema.org/Article',
-					'css_class' => 'wl-post',
-				);
-			}
-
-			$this->log->info( "Found {$terms[0]->slug} term for post $post_id." );
-
-			// Return the entity type with the specified id.
-			return $this->schema_service->get_schema( $terms[0]->slug );
-
-		} else {
+		// If it's not an entity post type return `Thing` by default.
+		if ( ! self::is_valid_entity_post_type( $post_type ) ) {
 			$this->log->info( "Returning `Thing` for post $post_id." );
 
-			// Everything else is considered a Creative Work.
 			return array(
 				'uri'       => 'http://schema.org/Thing',
 				'css_class' => 'wl-thing',
 			);
 		}
 
+		// Get the type from the associated classification.
+		$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+
+		if ( is_wp_error( $terms ) ) {
+			$this->log->error( "An error occurred while getting the post type for post $post_id: " . $terms->get_error_message() );
+
+			// TODO: handle error
+			return null;
+		}
+
+		// If there are not terms associated, default to article.
+		if ( 0 === count( $terms ) ) {
+			$this->log->info( "Post $post_id has no terms, returning `Article`." );
+
+			return array(
+				'uri'       => 'http://schema.org/Article',
+				'css_class' => 'wl-post',
+			);
+		}
+
+		$this->log->info( "Found {$terms[0]->slug} term for post $post_id." );
+
+		// Return the entity type with the specified id.
+		return $this->schema_service->get_schema( $terms[0]->slug );
 	}
 
 	/**
@@ -288,6 +290,24 @@ class Wordlift_Entity_Type_Service {
 
 		// Return null.
 		return null;
+	}
+
+
+	/**
+	 * Determines whether a post type can be used for entities.
+	 *
+	 * Criteria is that the post type is public. The list of valid post types
+	 * can be overridden with a filter.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @param string $post_type A post type name.
+	 *
+	 * @return bool Return true if the post type can be used for entities, otherwise false.
+	 */
+	public static function is_valid_entity_post_type( $post_type ) {
+
+		return in_array( $post_type, Wordlift_Entity_Service::valid_entity_post_types(), true );
 	}
 
 }

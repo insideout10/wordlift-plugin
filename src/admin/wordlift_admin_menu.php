@@ -1,6 +1,10 @@
 <?php
 /**
  * This file provides functions to add and configure the administration menu for WordPress.
+ *
+ * @since      3.0.0
+ * @package    Wordlift
+ * @subpackage Wordlift/admin
  */
 
 /**

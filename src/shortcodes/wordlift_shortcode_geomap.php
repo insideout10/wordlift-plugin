@@ -1,6 +1,10 @@
 <?php
 /**
  * This file provides methods for the shortcode *wl_geomap*.
+ *
+ * @since      3.0.0
+ * @package    Wordlift
+ * @subpackage Wordlift/shortcodes
  */
 
 /**

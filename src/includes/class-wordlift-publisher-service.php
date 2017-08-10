@@ -4,15 +4,17 @@
  *
  * The Publisher service provides functions to list potential publishers.
  *
- * @since   3.11.0
- * @package Wordlift
+ * @since      3.11.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes
  */
 
 /**
  * Define the {@link Wordlift_Publisher_Service} class.
  *
- * @since   3.11.0
- * @package Wordlift
+ * @since      3.11.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes
  */
 class Wordlift_Publisher_Service {
 
@@ -31,16 +33,16 @@ class Wordlift_Publisher_Service {
 		 * Get only the ids as all we need is the count.
 		 */
 		$entities = get_posts( array(
-			'post_type' 	=> Wordlift_Entity_Service::valid_entity_post_types(),
-			'post_status'	=> 'publish',
-			'tax_query'		=> array(
+			'post_type'   => Wordlift_Entity_Service::valid_entity_post_types(),
+			'post_status' => 'publish',
+			'tax_query'   => array(
 				array(
-			        'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
-			        'field'    => 'slug',
-			        'terms'    => array( 'organization', 'person' ),
+					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+					'field'    => 'slug',
+					'terms'    => array( 'organization', 'person' ),
 				),
-		    ),
-			'fields'		=> 'ids',
+			),
+			'fields'      => 'ids',
 		) );
 
 		// Finally return the count.
@@ -52,30 +54,37 @@ class Wordlift_Publisher_Service {
 	 *
 	 * @link    http://wordpress.stackexchange.com/a/11826/1685
 	 *
-	 * @since 3.15.0
+	 * @since   3.15.0
 	 *
-	 * @param   string      $search
-	 * @param   WP_Query    $wp_query
+	 * @param   string   $search
+	 * @param   WP_Query $wp_query
+	 *
+	 * @return array|string
 	 */
 	public function limit_search_to_title( $search, $wp_query ) {
-	    if ( ! empty( $search ) && ! empty( $wp_query->query_vars['search_terms'] ) ) {
-	        global $wpdb;
 
-	        $q = $wp_query->query_vars;
-	        $n = ! empty( $q['exact'] ) ? '' : '%';
-	        $search = array();
-	        foreach ( (array) $q['search_terms'] as $term ) {
-	            $search[] = $wpdb->prepare( "$wpdb->posts.post_title LIKE %s", $n . $wpdb->esc_like( $term ) . $n );
-			}
+		// Bail out if the search or the `search_terms` haven't been set.
+		if ( empty( $search ) || empty( $wp_query->query_vars['search_terms'] ) ) {
+			return $search;
+		}
 
-	        if ( ! is_user_logged_in() ) {
-	            $search[] = "$wpdb->posts.post_password = ''";
-			}
+		global $wpdb;
 
-	        $search = ' AND ' . implode( ' AND ', $search );
-	    }
+		$query_vars = $wp_query->query_vars;
+		$percent    = ! empty( $query_vars['exact'] ) ? '' : '%';
+		$search     = array();
 
-	    return $search;
+		foreach ( (array) $query_vars['search_terms'] as $term ) {
+			$search[] = $wpdb->prepare( "$wpdb->posts.post_title LIKE %s", $percent . $wpdb->esc_like( $term ) . $percent );
+		}
+
+		if ( ! is_user_logged_in() ) {
+			$search[] = "$wpdb->posts.post_password = ''";
+		}
+
+		$search = ' AND ' . implode( ' AND ', $search );
+
+		return $search;
 	}
 
 	/**
@@ -91,35 +100,41 @@ class Wordlift_Publisher_Service {
 	public function query( $filter = '' ) {
 
 		// Search for the filter in the titles only.
-		add_filter( 'posts_search', array( $this, 'limit_search_to_title' ), 10, 2 );
+		add_filter( 'posts_search', array(
+			$this,
+			'limit_search_to_title',
+		), 10, 2 );
 
 		/*
 		 * Search for entities which have a thumbnail, and are either a Person
 		 * or Organization. Sort the results by title.
 		 */
 		$entities = get_posts( array(
-			'post_type' 	=> Wordlift_Entity_Service::valid_entity_post_types(),
-			'post_status'	=> 'publish',
-			'tax_query'		=> array(
+			'post_type'   => Wordlift_Entity_Service::valid_entity_post_types(),
+			'post_status' => 'publish',
+			'tax_query'   => array(
 				array(
-			        'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
-			        'field'    => 'slug',
-			        'terms'    => array( 'organization', 'person' ),
+					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+					'field'    => 'slug',
+					'terms'    => array( 'organization', 'person' ),
 				),
-		    ),
-			's'			   => $filter,
-			'orderby'	   => 'title',
+			),
+			's'           => $filter,
+			'orderby'     => 'title',
 		) );
 
 		// Remove the search filter added before the query.
-		remove_filter( 'posts_search', array( $this, 'limit_search_to_title' ), 10, 2 );
+		remove_filter( 'posts_search', array(
+			$this,
+			'limit_search_to_title',
+		), 10, 2 );
 
 		// Set a reference to ourselves to pass to the closure.
 		$publisher_service = $this;
 
 		// Map the results in a `Select2` compatible array.
 		return array_map( function ( $entity ) use ( $publisher_service ) {
-			$type = wp_get_post_terms( $entity->ID, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+			$type     = wp_get_post_terms( $entity->ID, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 			$thumb_id = get_post_thumbnail_id( $entity->ID );
 
 			return array(

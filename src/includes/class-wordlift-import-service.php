@@ -1,14 +1,21 @@
 <?php
-
 /**
+ * Services: Import Service.
+ *
  * Define a service class which extends WP's features to support import of linked
  * data content.
+ *
+ * @since   3.6.0
+ * @package Wordlift
+ * @package Wordlift/includes
  */
 
 /**
  * Define the Wordlift_Import_Service class.
  *
- * @since 3.6.0
+ * @since   3.6.0
+ * @package Wordlift
+ * @package Wordlift/includes
  */
 class Wordlift_Import_Service {
 
@@ -171,10 +178,10 @@ class Wordlift_Import_Service {
 	 */
 	public function import_start() {
 
-//		add_action( 'added_post_meta', array(
-//			$this,
-//			'added_post_meta',
-//		), 10, 4 );
+		add_action( 'added_post_meta', array(
+			$this,
+			'added_post_meta',
+		), 10, 4 );
 
 	}
 

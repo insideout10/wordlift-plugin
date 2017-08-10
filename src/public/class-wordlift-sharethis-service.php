@@ -1,9 +1,19 @@
 <?php
+/**
+ * Services: ShareThis Service.
+ *
+ * @since      3.2.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes
+ */
 
 /**
- * A service to maintain a compatibilty layer with the ShareThis plugin (which only displays itself on pages and posts).
+ * A service to maintain a compatibility layer with the ShareThis plugin (which
+ * only displays itself on pages and posts).
  *
- * @since 3.2.0
+ * @since      3.2.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes
  */
 class Wordlift_ShareThis_Service {
 

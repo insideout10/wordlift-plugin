@@ -1,4 +1,11 @@
 <?php
+/**
+ * This file contains functions related to Redlink.
+ *
+ * @since      3.0.0
+ * @package    Wordlift
+ * @subpackage Wordlift
+ */
 
 /**
  * Get a string representing the NS prefixes for a SPARQL query.

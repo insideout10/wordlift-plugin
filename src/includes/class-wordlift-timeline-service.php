@@ -1,9 +1,18 @@
 <?php
+/**
+ * Services: Timeline Service.
+ *
+ * @since      3.1.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes
+ */
 
 /**
  * Provides functions and AJAX endpoints to support the Timeline widget.
  *
- * @since 3.1.0
+ * @since      3.1.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes
  */
 class Wordlift_Timeline_Service {
 

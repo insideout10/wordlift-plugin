@@ -1,4 +1,11 @@
 <?php
+/**
+ * Core Post Entity Relations functions.
+ *
+ * @since      3.0.0
+ * @package    Wordlift
+ * @subpackage Wordlift/modules/core
+ */
 
 /**
  * Checks if a relation is supported

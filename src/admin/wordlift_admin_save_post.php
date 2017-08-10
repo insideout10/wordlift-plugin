@@ -1,7 +1,10 @@
 <?php
-
 /**
  * This file gathers functions to execute when the post (any type) is saved or updated.
+ *
+ * @since      3.0.0
+ * @package    Wordlift
+ * @subpackage Wordlift/admin
  */
 
 /**

@@ -4,14 +4,17 @@
  *
  * This file defines the Wordlift_Schema_Service class.
  *
- * @since   3.1.0
- * @package Wordlift
+ * @since      3.1.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes
  */
 
 /**
  * Provides constants and methods related to WordLift's schema.
  *
- * @since 3.1.0
+ * @since      3.1.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes
  */
 class Wordlift_Schema_Service {
 

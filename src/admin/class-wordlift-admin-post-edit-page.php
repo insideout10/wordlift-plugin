@@ -64,4 +64,5 @@ class Wordlift_Admin_Post_Edit_Page {
 		);
 
 	}
+
 }

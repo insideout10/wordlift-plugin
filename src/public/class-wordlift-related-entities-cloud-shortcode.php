@@ -37,6 +37,7 @@ class Wordlift_Related_Entities_Cloud_Shortcode extends Wordlift_Shortcode {
 		 * Since the output is use in the widget as well, we need to have the
 		 * same class as the core tagcloud widget, to easily inherit its styling.
 		 */
+
 		return '<div class="tagcloud wl-related-entities-cloud">' .
 		       wp_generate_tag_cloud( $tags ) .
 		       '</div>';

@@ -217,6 +217,7 @@ class Wordlift_Entity_List_Service {
 		}
 
 		global $wpdb;
+
 		$wl_relation_table = wl_core_get_relation_instances_table_name();
 
 		// Change WP main query clauses.
@@ -233,7 +234,7 @@ class Wordlift_Entity_List_Service {
 	 *
 	 * @since 3.15.0
 	 *
-	 * @param WP_Query $query
+	 * @param WP_Query $query The WP_Query instance (passed by reference).
 	 *
 	 */
 	public function pre_get_posts( $query ) {
@@ -242,7 +243,10 @@ class Wordlift_Entity_List_Service {
 			return;
 		}
 
+		// Add to the post type all the types considered to be valid post types.
 		$query->set( 'post_type', Wordlift_Entity_Service::valid_entity_post_types() );
+
+		// Do not show however entities of type `Article`.
 		$query->set( 'tax_query', array(
 			array(
 				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
@@ -252,7 +256,6 @@ class Wordlift_Entity_List_Service {
 			),
 		) );
 
-		return $clauses;
 	}
 
 	/**
@@ -276,6 +279,7 @@ class Wordlift_Entity_List_Service {
 
 		// Return safely if get_current_screen() is not defined (yet).
 		if ( false === function_exists( 'get_current_screen' ) ) {
+			// @todo: fix this.
 			return $clauses;
 		}
 
@@ -284,15 +288,19 @@ class Wordlift_Entity_List_Service {
 
 		// If there is any valid screen nothing to do.
 		if ( null === $screen ) {
+			// @todo: fix this.
 			return $clauses;
 		}
 
 		if ( ! ( Wordlift_Entity_Service::TYPE_NAME === $screen->post_type && is_main_query() ) ) {
+			// @todo: fix this.
 			return;
 		}
 
+		// Reset the global post type to the entity type.
 		$post_type = Wordlift_Entity_Service::TYPE_NAME;
 
 		return $bulk_messages;
 	}
+
 }

@@ -1,4 +1,11 @@
 <?php
+/**
+ * Geo Widget.
+ *
+ * @since      3.0.0
+ * @package    Wordlift
+ * @subpackage Wordlift/modules/geo_widget
+ */
 
 function wordlift_geo_widget_shortcode( $atts, $content = null ) {
 
