@@ -73,5 +73,4 @@ EOF;
 }
 
 add_action( 'admin_print_scripts', 'wl_print_entity_type_inline_js' );
-
 add_action( 'init', 'wl_entity_type_taxonomy_register', 0 );
