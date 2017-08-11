@@ -280,7 +280,9 @@ class PostEntityRelationsTest extends Wordlift_Unit_Test_Case {
 				'post_status' => 'publish',
 			) );
 			$term_id = $this->get_term_id_by_slug( 'event' );
-			wp_set_post_terms( $posts[ count( $posts ) - 1 ], $term_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+			$result  = wp_set_post_terms( $posts[ count( $posts ) - 1 ], $term_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+			$this->assertFalse( is_wp_error( $result ) );
+			$this->assertNotFalse( $result );
 
 			$posts[] = $this->factory->post->create( array(
 				'post_type'   => 'page',
@@ -317,14 +319,14 @@ class PostEntityRelationsTest extends Wordlift_Unit_Test_Case {
 		return $posts;
 	}
 
-	function test_core_sql_query_builder_1() {
+	function test_core_sql_query_builder_01() {
 		global $wpdb;
 
 		$posts = $this->create_posts();
 
 		$sql = wl_core_sql_query_builder( array(
 			'get'        => 'posts',
-			'related_to' => $posts[1],
+			'related_to' => $posts[ self::POST_AS_ARTICLE_2 ],
 			'as'         => 'subject',
 			'post_type'  => 'post',
 		) );
@@ -332,7 +334,6 @@ class PostEntityRelationsTest extends Wordlift_Unit_Test_Case {
 		// Try to perform query in order to see if there are errors on db side
 		$results = $wpdb->get_results( $sql );
 		$this->assertEmpty( $wpdb->last_error );
-
 		$this->assertCount( 2, $results, 'Expect 2 articles.' );
 
 		$filtered = array_filter( $results, function ( $item ) {

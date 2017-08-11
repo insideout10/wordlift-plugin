@@ -32,6 +32,8 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
+		delete_option( 'wl_db_version' );
+
 		// Default behaviour: push entities to the remote Linked Data store.
 		self::turn_off_entity_push();
 
