@@ -62,7 +62,9 @@ EOF;
 
 		// create two entities
 		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $entity_1_id, 'http://schema.org/Place' );
 		$entity_2_id = wl_create_post( '', 'entity-2', uniqid( 'entity', true ), 'draft', 'entity' );
+		Wordlift_Entity_Type_Service::get_instance()->set( $entity_1_id, 'http://schema.org/Person' );
 
 		$entity_1_uri = wl_get_entity_uri( $entity_1_id );
 		$entity_2_uri = wl_get_entity_uri( $entity_2_id );
@@ -249,7 +251,7 @@ EOF;
 		// Send the query and get the response.
 		$response = rl_sparql_select( $sparql );
 
-		$this->assertFalse( is_wp_error( $response ) );
+		$this->assertFalse( is_wp_error( $response ), "The query $sparql shouldn't return an error." );
 
 		$lines = array();
 		foreach ( explode( "\n", $response['body'] ) as $line ) {
