@@ -239,7 +239,7 @@ class Wordlift_Entity_List_Service {
 	 */
 	public function pre_get_posts( $query ) {
 
-		if ( ! ( $this->is_entity_list_screen() && is_main_query() ) ) {
+		if ( ! ( $this->is_entity_list_screen() && $query->is_main_query() ) ) {
 			return;
 		}
 
