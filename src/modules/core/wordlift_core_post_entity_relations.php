@@ -394,7 +394,9 @@ function wl_core_sql_query_builder( $args ) {
 	$join_column = $args['as'] . '_id';
 
 	$sql .= " FROM $wpdb->posts as p JOIN $table_name as r ON p.id = r.$join_column";
-	$sql .= $tax_sql['join'];
+
+	// Changing left join generate by the tax query into an inner since the term relationship has to exist.
+	$sql .= str_replace( 'LEFT JOIN', 'INNER JOIN', $tax_sql['join'] );
 
 	// Sql add post type filter
 	$post_types = Wordlift_Entity_Service::valid_entity_post_types();
