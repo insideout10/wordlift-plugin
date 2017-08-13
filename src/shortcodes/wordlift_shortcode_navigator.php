@@ -36,6 +36,9 @@ function wl_shortcode_navigator_ajax() {
 	$blacklist_ids    = array( $current_post_id );
 	$related_entities = array();
 
+
+	$relation_service = Wordlift_Relation_Service::get_instance();
+
 	// Get the related entities, ordering them by WHO, WHAT, WHERE, WHEN 
 	// TODO Replace with a single query if it is possible
 	// We select in inverse order to give priority to less used entities 
@@ -48,19 +51,20 @@ function wl_shortcode_navigator_ajax() {
 		) as $predicate
 	) {
 
-		$related_entities = array_merge( $related_entities, wl_core_get_related_entities( $current_post_id, array(
-			'predicate' => $predicate,
-			'status'    => 'publish',
-		) ) );
+		$related_entities = array_merge( $related_entities,
+			$relation_service->get_objects( $current_post_id, '*', $predicate, 'publish' )
+//			wl_core_get_related_entities( $current_post_id, array(
+//					'predicate' => $predicate,
+//					'status'    => 'publish',
+//				)
+		);
 
 	}
 
 	foreach ( $related_entities as $related_entity ) {
 
 		// take the id of posts referencing the entity
-		$referencing_posts = wl_core_get_related_posts( $related_entity->ID, array(
-			'status' => 'publish',
-		) );
+		$referencing_posts = Wordlift_Relation_Service::get_instance()->get_article_subjects( $related_entity->ID, '*', null,'publish' );
 
 		// loop over them and take the first one which is not already in the $related_posts
 		foreach ( $referencing_posts as $referencing_post ) {

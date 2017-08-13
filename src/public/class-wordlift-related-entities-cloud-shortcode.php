@@ -22,6 +22,29 @@ class Wordlift_Related_Entities_Cloud_Shortcode extends Wordlift_Shortcode {
 	const SHORTCODE = 'wl_cloud';
 
 	/**
+	 * The {@link Wordlift_Relation_Service} instance.
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var \Wordlift_Relation_Service $relation_service The {@link Wordlift_Relation_Service} instance.
+	 */
+	private $relation_service;
+
+	/**
+	 * Create a {@link Wordlift_Related_Entities_Cloud_Shortcode} instance.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @param \Wordlift_Relation_Service $relation_service The {@link Wordlift_Relation_Service} instance.
+	 */
+	public function __construct( $relation_service ) {
+		parent::__construct();
+
+		$this->relation_service = $relation_service;
+
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	public function render( $atts ) {
@@ -79,7 +102,7 @@ class Wordlift_Related_Entities_Cloud_Shortcode extends Wordlift_Shortcode {
 		foreach ( $related_entities as $entity_id ) {
 
 			$connected_entities = count( wl_core_get_related_entity_ids( $entity_id, array( 'status' => 'publish' ) ) );
-			$connected_posts    = count( wl_core_get_related_posts( $entity_id, array( 'status' => 'publish' ) ) );
+			$connected_posts    = count( $this->relation_service->get_article_subjects( $entity_id, '*', null,'publish' ) );
 
 			$tags[] = (object) array(
 				'id'    => $entity_id,

@@ -598,12 +598,12 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 	public function test_post_mentioning_a_recipe() {
 
 		$post_id = $this->factory->post->create( array(
-			'type'   => 'post',
-			'status' => 'public',
+			'type'        => 'post',
+			'post_status' => 'publish',
 		) );
 
 		$recipe_post_id = $this->entity_factory->create( array(
-			'status' => 'public',
+			'post_status' => 'publish',
 		) );
 		$this->entity_type_service->set( $recipe_post_id, 'http://schema.org/Recipe' );
 

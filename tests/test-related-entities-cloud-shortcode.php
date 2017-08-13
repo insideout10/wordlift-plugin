@@ -38,7 +38,7 @@ class Wordlift_Related_Entities_Cloud_Shortcode_Test extends Wordlift_Unit_Test_
 		wl_core_add_relation_instance( $post_id2, WL_WHAT_RELATION, $entity_id2 );
 		wl_core_add_relation_instance( $entity_id2, WL_WHAT_RELATION, $entity_id3 );
 
-		$shortcode = new Wordlift_Related_Entities_Cloud_Shortcode();
+		$shortcode = new Wordlift_Related_Entities_Cloud_Shortcode( Wordlift_Relation_Service::get_instance() );
 
 		// test post with no connected entities at all
 		$this->go_to( '?p=' . $post_id );
@@ -47,7 +47,7 @@ class Wordlift_Related_Entities_Cloud_Shortcode_Test extends Wordlift_Unit_Test_
 
 		// test post with one connected entity with weight 2
 		$this->go_to( '?p=' . $post_id1 );
-		$widget = new Wordlift_Related_Entities_Cloud_Shortcode();
+		$widget = new Wordlift_Related_Entities_Cloud_Shortcode( Wordlift_Relation_Service::get_instance() );
 		$tags   = $shortcode->get_related_entities_tags();
 		$this->assertEquals( 1, count( $tags ) );
 		$this->assertEquals( 'http://example.org/?entity=entity1', $tags[0]->link );
@@ -58,7 +58,7 @@ class Wordlift_Related_Entities_Cloud_Shortcode_Test extends Wordlift_Unit_Test_
 
 		// Test post with two connected entities.
 		$this->go_to( '?p=' . $post_id2 );
-		$shortcode = new Wordlift_Related_Entities_Cloud_Shortcode();
+		$shortcode = new Wordlift_Related_Entities_Cloud_Shortcode( Wordlift_Relation_Service::get_instance() );
 		$tags      = $shortcode->get_related_entities_tags();
 		$this->assertEquals( 2, count( $tags ) );
 
@@ -77,7 +77,7 @@ class Wordlift_Related_Entities_Cloud_Shortcode_Test extends Wordlift_Unit_Test_
 
 		// Test entity page.
 		$this->go_to( '?entity=entity2' );
-		$shortcode = new Wordlift_Related_Entities_Cloud_Shortcode();
+		$shortcode = new Wordlift_Related_Entities_Cloud_Shortcode( Wordlift_Relation_Service::get_instance() );
 		$tags      = $shortcode->get_related_entities_tags();
 		$this->assertEquals( 1, count( $tags ) );
 
@@ -91,7 +91,7 @@ class Wordlift_Related_Entities_Cloud_Shortcode_Test extends Wordlift_Unit_Test_
 
 		// Test in home page context.
 		$this->go_to( '/' );
-		$shortcode = new Wordlift_Related_Entities_Cloud_Shortcode();
+		$shortcode = new Wordlift_Related_Entities_Cloud_Shortcode( Wordlift_Relation_Service::get_instance() );
 		$tags      = $shortcode->get_related_entities_tags();
 		$this->assertEquals( 0, count( $tags ) );
 

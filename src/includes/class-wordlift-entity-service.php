@@ -26,6 +26,15 @@ class Wordlift_Entity_Service {
 	private $ui_service;
 
 	/**
+	 *The {@link Wordlift_Relation_Service} instance.
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var \Wordlift_Relation_Service $relation_service The {@link Wordlift_Relation_Service} instance.
+	 */
+	private $relation_service;
+
+	/**
 	 * The entity post type name.
 	 *
 	 * @since 3.1.0
@@ -65,18 +74,18 @@ class Wordlift_Entity_Service {
 	 *
 	 * @since 3.2.0
 	 *
-	 * @param \Wordlift_UI_Service $ui_service The UI service.
+	 * @param \Wordlift_UI_Service       $ui_service       The UI service.
+	 * @param \Wordlift_Relation_Service $relation_service The {@link Wordlift_Relation_Service} instance.
 	 */
-	public function __construct( $ui_service ) {
+	public function __construct( $ui_service, $relation_service ) {
 
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Entity_Service' );
 
-		// Set the UI service.
-		$this->ui_service = $ui_service;
+		$this->ui_service       = $ui_service;
+		$this->relation_service = $relation_service;
 
 		// Set the singleton instance.
 		self::$instance = $this;
-
 	}
 
 	/**
@@ -558,7 +567,8 @@ class Wordlift_Entity_Service {
 	 */
 	public function get_related_entities( $id, $post_status = 'publish' ) {
 
-		return wl_core_inner_get_related_entities( 'post_ids', $id, null, $post_status );
+		return $this->relation_service->get_objects( $id, 'ids', null, $post_status );
+//		return wl_core_inner_get_related_entities( 'post_ids', $id, null, $post_status );
 	}
 
 	/**

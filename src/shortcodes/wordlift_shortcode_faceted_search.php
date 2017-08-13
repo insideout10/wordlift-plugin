@@ -126,15 +126,18 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 	// Retrieve requested type
 	$required_type = ( isset( $_GET['type'] ) ) ? $_GET['type'] : null;
 
-	// Set up data structures
-	$referencing_posts = wl_core_get_posts( array(
-		'get'            => 'posts',
-		'post__not_in'   => array( $current_post_id ),
-		'related_to__in' => $entity_ids,
-		'post_type'      => 'post',
-		'as'             => 'subject',
-		'post_status'    => 'publish',
-	) );
+	$referencing_posts = Wordlift_Relation_Service::get_instance()
+	                                              ->get_article_subjects( $entity_ids, '*', null, 'publish', array( $current_post_id ) );
+
+//	// Set up data structures
+//	$referencing_posts = wl_core_get_posts( array(
+//		'get'            => 'posts',
+//		'post__not_in'   => array( $current_post_id ),
+//		'related_to__in' => $entity_ids,
+//		'post_type'      => 'post',
+//		'as'             => 'subject',
+//		'post_status'    => 'publish',
+//	) );
 
 	$referencing_post_ids = array_map( function ( $p ) {
 		return $p->ID;
@@ -148,13 +151,15 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 
 		$filtered_posts = ( empty( $filtering_entity_uris ) ) ?
 			$referencing_posts :
-			wl_core_get_posts( array(
-				'get'            => 'posts',
-				'post__in'       => $referencing_post_ids,
-				'related_to__in' => wl_get_entity_post_ids_by_uris( $filtering_entity_uris ),
-				'post_type'      => 'post',
-				'as'             => 'subject',
-			) );
+			Wordlift_Relation_Service::get_instance()
+			                         ->get_article_subjects( wl_get_entity_post_ids_by_uris( $filtering_entity_uris ), '*', null, null, array(), null, $referencing_post_ids );
+//			wl_core_get_posts( array(
+//				'get'            => 'posts',
+//				'post__in'       => $referencing_post_ids,
+//				'related_to__in' => wl_get_entity_post_ids_by_uris( $filtering_entity_uris ),
+//				'post_type'      => 'post',
+//				'as'             => 'subject',
+//			) );
 
 		if ( $filtered_posts ) {
 			foreach ( $filtered_posts as $post_obj ) {

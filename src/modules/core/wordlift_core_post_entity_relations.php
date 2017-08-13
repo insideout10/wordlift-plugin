@@ -147,33 +147,36 @@ function wl_core_validate_filters_for_related( $filters ) {
 	return $filters;
 }
 
-/**
- * Find all entities related to a given $subject_id
- * If $predicate is omitted, $predicate filter is not applied
- * @uses   wl_core_inner_get_related_entities() to perform the action
- *
- * @param int   $subject_id The post ID | The entity post ID.
- * @param array $filters    Associative array formed like this:
- *                          <code>
- *                          $filters = array(
- *                          'predicate' => Name of the relation: [ null | 'what' | 'where' | 'when' | 'who' ], default is null (meaning *any* post status)
- *                          'status' => [ null | 'publish' | 'draft' | 'pending' | 'trash' ], default is null (meaning *any* post status)
- *                          );
- *                          </code>
- *
- * @return array Array of post entity objects.
- */
-function wl_core_get_related_entities( $subject_id, $filters = array() ) {
-
-	$filters = wl_core_validate_filters_for_related( $filters );
-
-	return wl_core_inner_get_related_entities( "posts", $subject_id, $filters['predicate'], $filters['status'] );
-}
+///**
+// * Find all entities related to a given $subject_id
+// * If $predicate is omitted, $predicate filter is not applied
+// * @uses   wl_core_inner_get_related_entities() to perform the action
+// *
+// * @param int   $subject_id The post ID | The entity post ID.
+// * @param array $filters    Associative array formed like this:
+// *                          <code>
+// *                          $filters = array(
+// *                          'predicate' => Name of the relation: [ null | 'what' | 'where' | 'when' | 'who' ], default is null (meaning *any* post status)
+// *                          'status' => [ null | 'publish' | 'draft' | 'pending' | 'trash' ], default is null (meaning *any* post status)
+// *                          );
+// *                          </code>
+// *
+// * @return array Array of post entity objects.
+// */
+//function wl_core_get_related_entities( $subject_id, $filters = array() ) {
+//
+//	$filters = wl_core_validate_filters_for_related( $filters );
+//
+//	return wl_core_inner_get_related_entities( "posts", $subject_id, $filters['predicate'], $filters['status'] );
+//}
 
 /**
  * Find all entity ids related to a given $subject_id
  * If $predicate is omitted, $predicate filter is not applied
- * @uses   wl_core_inner_get_related_entities() to perform the action
+ *
+ * @deprecated use Wordlift_Relation_Service::get_instance()->get_objects( $subject_id, 'ids', $predicate, $status );
+ *
+ * @uses       wl_core_inner_get_related_entities() to perform the action
  *
  * @param int   $subject_id  The post ID | The entity post ID.
  * @param array $filters     Associative array formed like this:
@@ -188,69 +191,77 @@ function wl_core_get_related_entities( $subject_id, $filters = array() ) {
  */
 function wl_core_get_related_entity_ids( $subject_id, $filters = array() ) {
 
-	$filters = wl_core_validate_filters_for_related( $filters );
+	$status    = isset( $filters['status'] ) ? $filters['status'] : null;
+	$predicate = isset( $filters['predicate'] ) ? $filters['predicate'] : null;
 
-	return wl_core_inner_get_related_entities( 'post_ids', $subject_id, $filters['predicate'], $filters['status'] );
+	return Wordlift_Relation_Service::get_instance()->get_objects( $subject_id, 'ids', $predicate, $status );
+
+//	$filters = wl_core_validate_filters_for_related( $filters );
+//
+//	return wl_core_inner_get_related_entities( 'post_ids', $subject_id, $filters['predicate'], $filters['status'] );
 }
 
-/**
- * Find all entity ids related to a given $subject_id
- * If $predicate is omitted, $predicate filter is not applied
- * Do not use it directly. Use wl_core_get_related_entities or wl_core_get_related_entity_ids instead.
- *
- * @param        $get
- * @param        $item_id
- * @param string $predicate   Name of the relation: null | 'what' | 'where' | 'when' | 'who'
- * @param string $post_status Filter by post status null | 'publish' | 'draft' | 'pending' | 'trash'. null means *any* post status
- *
- * @return array Array of ids.
- */
-function wl_core_inner_get_related_entities( $get, $item_id, $predicate = null, $post_status = null ) {
+//
+///**
+// * Find all entity ids related to a given $subject_id
+// * If $predicate is omitted, $predicate filter is not applied
+// * Do not use it directly. Use wl_core_get_related_entities or wl_core_get_related_entity_ids instead.
+// *
+// * @param        $get
+// * @param        $item_id
+// * @param string $predicate   Name of the relation: null | 'what' | 'where' | 'when' | 'who'
+// * @param string $post_status Filter by post status null | 'publish' | 'draft' | 'pending' | 'trash'. null means *any* post status
+// *
+// * @return array Array of ids.
+// */
+//function wl_core_inner_get_related_entities( $get, $item_id, $predicate = null, $post_status = null ) {
+//
+//	if ( $results = wl_core_get_posts( array(
+//		'get'            => $get,
+//		'post_type'      => 'entity',
+//		'post_status'    => $post_status,
+//		'related_to'     => $item_id,
+//		'as'             => 'object',
+//		'with_predicate' => $predicate,
+//	) )
+//	) {
+//		return $results;
+//	}
+//
+//	// If wl_core_get_posts return false then an empty array is returned
+//	return array();
+//}
 
-	if ( $results = wl_core_get_posts( array(
-		'get'            => $get,
-		'post_type'      => 'entity',
-		'post_status'    => $post_status,
-		'related_to'     => $item_id,
-		'as'             => 'object',
-		'with_predicate' => $predicate,
-	) )
-	) {
-		return $results;
-	}
-
-	// If wl_core_get_posts return false then an empty array is returned
-	return array();
-}
-
-/**
- * Find all posts related to a given $object_id
- * If $predicate is omitted, $predicate filter is not applied
- * @uses   wl_core_get_related_posts() to perform the action
- *
- * @param int   $object_id The entity ID or the post ID.
- * @param array $filters   Associative array formed like this:
- *                         <code>
- *                         $filters = array(
- *                         'predicate' => Name of the relation: [ null | 'what' | 'where' | 'when' | 'who' ], default is null (meaning *any* post status)
- *                         'status' => [ null | 'publish' | 'draft' | 'pending' | 'trash' ], default is null (meaning *any* post status)
- *                         );
- *                         </code>
- *
- * @return array Array of objects.
- */
-function wl_core_get_related_posts( $object_id, $filters = array() ) {
-
-	$filters = wl_core_validate_filters_for_related( $filters );
-
-	return wl_core_inner_get_related_posts( "posts", $object_id, $filters['predicate'], $filters['status'] );
-}
+///**
+// * Find all posts related to a given $object_id
+// * If $predicate is omitted, $predicate filter is not applied
+// * @uses   wl_core_get_related_posts() to perform the action
+// *
+// * @param int   $object_id The entity ID or the post ID.
+// * @param array $filters   Associative array formed like this:
+// *                         <code>
+// *                         $filters = array(
+// *                         'predicate' => Name of the relation: [ null | 'what' | 'where' | 'when' | 'who' ], default is null (meaning *any* post status)
+// *                         'status' => [ null | 'publish' | 'draft' | 'pending' | 'trash' ], default is null (meaning *any* post status)
+// *                         );
+// *                         </code>
+// *
+// * @return array Array of objects.
+// */
+//function wl_core_get_related_posts( $object_id, $filters = array() ) {
+//
+//	$filters = wl_core_validate_filters_for_related( $filters );
+//
+//	return wl_core_inner_get_related_posts( "posts", $object_id, $filters['predicate'], $filters['status'] );
+//}
 
 /**
  * Find all post ids related to a given $object_id
  * If $predicate is omitted, $predicate filter is not applied
  *
- * @uses   wl_core_get_related_posts() to perform the action
+ * @deprecated use Wordlift_Relation_Service::get_instance()->get_article_subjects( $object_id, 'ids', $status );
+ *
+ * @uses       wl_core_get_related_posts() to perform the action
  *
  * @param int   $object_id The entity ID or the post ID.
  * @param array $filters   Associative array formed like this:
@@ -265,61 +276,68 @@ function wl_core_get_related_posts( $object_id, $filters = array() ) {
  */
 function wl_core_get_related_post_ids( $object_id, $filters = array() ) {
 
-	$filters = wl_core_validate_filters_for_related( $filters );
+	$relation_service = Wordlift_Relation_Service::get_instance();
 
-	return wl_core_inner_get_related_posts( 'post_ids', $object_id, $filters['predicate'], $filters['status'] );
+	$status    = isset( $filters['status'] ) ? $filters['status'] : null;
+	$predicate = isset( $filters['predicate'] ) ? $filters['predicate'] : null;
+
+	return $relation_service->get_article_subjects( $object_id, 'ids', $predicate, $status );
+//
+//	$filters = wl_core_validate_filters_for_related( $filters );
+//
+//	return wl_core_inner_get_related_posts( 'post_ids', $object_id, $filters['predicate'], $filters['status'] );
 }
 
-/**
- * Find all posts related to a given $object_id
- * If $predicate is omitted, $predicate filter is not applied
- * Not use it directly. Use wl_core_get_related_posts or wl_core_get_related_posts_ids instead.
- *
- * @param string $get
- * @param int    $item_id
- * @param string $predicate   Name of the relation: null | 'what' | 'where' | 'when' | 'who'
- * @param string $post_status Filter by post status null | 'publish' | 'draft' | 'pending' | 'trash'. null means *any* post status
- *
- * @return array Array of objects.
- */
-function wl_core_inner_get_related_posts( $get, $item_id, $predicate = null, $post_status = null ) {
-
-	// Retrieve the post object
-	$post = get_post( $item_id );
-	if ( null === $post ) {
-		return array();
-	}
-
-	if ( 'entity' === $post->post_type ) {
-		if ( $results = wl_core_get_posts( array(
-			'get'            => $get,
-			'post_type'      => 'post',
-			'post_status'    => $post_status,
-			'related_to'     => $item_id,
-			'as'             => 'subject',
-			'with_predicate' => $predicate,
-		) )
-		) {
-			return $results;
-		}
-	} else {
-		if ( $results = wl_core_get_posts( array(
-			'get'            => $get,
-			'post_type'      => 'post',
-			'post_status'    => $post_status,
-			'post__not_in'   => array( $item_id ),
-			'related_to__in' => wl_core_get_related_entity_ids( $post->ID ),
-			'as'             => 'subject',
-			'with_predicate' => $predicate,
-		) )
-		) {
-			return $results;
-		}
-	}
-
-	// If wl_core_get_posts return false then an empty array is returned
-	return array();
-}
+///**
+// * Find all posts related to a given $object_id
+// * If $predicate is omitted, $predicate filter is not applied
+// * Not use it directly. Use wl_core_get_related_posts or wl_core_get_related_posts_ids instead.
+// *
+// * @param string $get
+// * @param int    $item_id
+// * @param string $predicate   Name of the relation: null | 'what' | 'where' | 'when' | 'who'
+// * @param string $post_status Filter by post status null | 'publish' | 'draft' | 'pending' | 'trash'. null means *any* post status
+// *
+// * @return array Array of objects.
+// */
+//function wl_core_inner_get_related_posts( $get, $item_id, $predicate = null, $post_status = null ) {
+//
+//	// Retrieve the post object
+//	$post = get_post( $item_id );
+//	if ( null === $post ) {
+//		return array();
+//	}
+//
+//	if ( 'entity' === $post->post_type ) {
+//		if ( $results = wl_core_get_posts( array(
+//			'get'            => $get,
+//			'post_type'      => 'post',
+//			'post_status'    => $post_status,
+//			'related_to'     => $item_id,
+//			'as'             => 'subject',
+//			'with_predicate' => $predicate,
+//		) )
+//		) {
+//			return $results;
+//		}
+//	} else {
+//		if ( $results = wl_core_get_posts( array(
+//			'get'            => $get,
+//			'post_type'      => 'post',
+//			'post_status'    => $post_status,
+//			'post__not_in'   => array( $item_id ),
+//			'related_to__in' => wl_core_get_related_entity_ids( $post->ID ),
+//			'as'             => 'subject',
+//			'with_predicate' => $predicate,
+//		) )
+//		) {
+//			return $results;
+//		}
+//	}
+//
+//	// If wl_core_get_posts return false then an empty array is returned
+//	return array();
+//}
 
 /**
  * Define a sql statement between wp_posts and wp_wl_relation_instances tables

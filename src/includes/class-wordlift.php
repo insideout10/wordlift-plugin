@@ -589,6 +589,11 @@ class Wordlift {
 	protected $rendition_factory;
 
 	/**
+	 * @var
+	 */
+	private $relation_service;
+
+	/**
 	 * {@link Wordlift}'s singleton instance.
 	 *
 	 * @since  3.11.2
@@ -679,6 +684,7 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-type-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-link-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-linked-data-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-relation-service.php';
 
 		/**
 		 * The Query builder.
@@ -993,20 +999,12 @@ class Wordlift {
 		// Create an instance of the Thumbnail service. Later it'll be hooked to post meta events.
 		$this->thumbnail_service = new Wordlift_Thumbnail_Service();
 
-		$this->sparql_service = new Wordlift_Sparql_Service();
-
+		$this->sparql_service        = new Wordlift_Sparql_Service();
 		$schema_url_property_service = new Wordlift_Schema_Url_Property_Service( $this->sparql_service );
-
-		// Create an instance of the Notice service.
-		$this->notice_service = new Wordlift_Notice_Service();
-
-		// Create an instance of the Entity service, passing the UI service to draw parts of the Entity admin page.
-		$this->entity_service = new Wordlift_Entity_Service( $this->ui_service );
-
-		// Create an instance of the User service.
-		$this->user_service = new Wordlift_User_Service();
-
-		$attachment_service = new Wordlift_Attachment_Service();
+		$this->notice_service        = new Wordlift_Notice_Service();
+		$this->relation_service      = new Wordlift_Relation_Service();
+		$this->entity_service        = new Wordlift_Entity_Service( $this->ui_service, $this->relation_service );
+		$this->user_service          = new Wordlift_User_Service();
 
 		// Instantiate the JSON-LD service.
 		$property_getter = Wordlift_Property_Getter_Factory::create( $this->entity_service );
@@ -1024,19 +1022,6 @@ class Wordlift {
 
 		// Create a new instance of the Timeline service and Timeline shortcode.
 		$this->timeline_service = new Wordlift_Timeline_Service( $this->entity_service, $this->entity_type_service );
-
-		// Initialize the shortcodes.
-		new Wordlift_Navigator_Shortcode();
-		new Wordlift_Chord_Shortcode();
-		new Wordlift_Geomap_Shortcode();
-		new Wordlift_Timeline_Shortcode();
-		new Wordlift_Related_Entities_Cloud_Shortcode();
-
-		// Initialize the SEO service.
-		new Wordlift_Seo_Service();
-
-		// Initialize the AMP service.
-		new Wordlift_AMP_Service();
 
 		$this->batch_analysis_service = new Wordlift_Batch_Analysis_Service( $this, $this->configuration_service );
 
@@ -1087,6 +1072,19 @@ class Wordlift {
 		$this->relation_rebuild_service = new Wordlift_Relation_Rebuild_Service( $this->content_filter_service, $this->entity_service );
 		$this->sample_data_service      = new Wordlift_Sample_Data_Service( $this->entity_type_service, $this->configuration_service );
 		$this->sample_data_ajax_adapter = new Wordlift_Sample_Data_Ajax_Adapter( $this->sample_data_service );
+
+		// Initialize the shortcodes.
+		new Wordlift_Navigator_Shortcode();
+		new Wordlift_Chord_Shortcode();
+		new Wordlift_Geomap_Shortcode();
+		new Wordlift_Timeline_Shortcode();
+		new Wordlift_Related_Entities_Cloud_Shortcode( $this->relation_service );
+
+		// Initialize the SEO service.
+		new Wordlift_Seo_Service();
+
+		// Initialize the AMP service.
+		new Wordlift_AMP_Service();
 
 		/** Adapters. */
 		$this->entity_type_adapter      = new Wordlift_Entity_Type_Adapter( $this->entity_type_service );

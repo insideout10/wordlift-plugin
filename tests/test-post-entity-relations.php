@@ -684,7 +684,7 @@ class PostEntityRelationsTest extends Wordlift_Unit_Test_Case {
 
 		$term_id = get_term_by( 'slug', $slug, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME )->term_id;
 
-		$this->assertGreaterThan( 0, $term_id );
+		$this->assertGreaterThan( 0, $term_id, "Term $slug must exist." );
 
 		return $term_id;
 	}
