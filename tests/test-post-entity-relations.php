@@ -764,11 +764,12 @@ class PostEntityRelationsTest extends Wordlift_Unit_Test_Case {
 		$this->assertTrue( is_numeric( $result[1] ) ); // The methods return an array of record ids
 		$this->assertCount( 2, $result );
 		$result = wl_core_get_related_entity_ids( $post_1_id );
-		$this->assertEquals( array( $entity_1_id, $entity_2_id ), $result );
+		$expected = array( $entity_1_id, $entity_2_id );
+		// comapare diff of expected and results to make order irrelevant.
+		$this->assertSame( array_diff( $expected, $result ), array_diff( $result, $expected ) );
 	}
 
 	function testWlCoreDeleteRelationInstance() {
-
 
 		// Create a post and an entity
 		$post_id   = wl_create_post( '', 'post1', 'A post' );
