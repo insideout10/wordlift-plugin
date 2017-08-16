@@ -83,12 +83,14 @@ class Wordlift_Relation_Service {
 
 		$entity_service = Wordlift_Entity_Service::get_instance();
 
-		return array_reduce( (array) $object_id, function ( $carry, $item ) use ( $entity_service ) {
+		$relation_service = $this;
+
+		return array_reduce( (array) $object_id, function ( $carry, $item ) use ( $entity_service, $relation_service ) {
 			if ( $entity_service->is_entity( $item ) ) {
 				return array_merge( $carry, (array) $item );
 			}
 
-			return array_merge( $carry, $this->get_objects( $item, 'ids' ) );
+			return array_merge( $carry, $relation_service->get_objects( $item, 'ids' ) );
 		}, array() );
 
 	}
