@@ -261,26 +261,17 @@ class Wordlift_Entity_List_Service {
 	/**
 	 * An hack to fix wrong post type on the entities list admin screen.
 	 *
-	 * Not very clear what is the root cause for this strange behavior in wordpress,
-	 * but without this hack the wordpress code assumes we are in a kind of multi
-	 * post type management screen which cause failures with the filter form.
+	 * This is hooked on the admin entity list page load hook and sets the
+	 * post type to "entity" as it is expected on that page.
 	 *
 	 * @since 3.15.0
 	 *
-	 * @param array $bulk_messages Arrays of messages, each keyed by the corresponding post type. Messages are
-	 *                             keyed with 'updated', 'locked', 'deleted', 'trashed', and 'untrashed'.
-	 * @param array $bulk_counts   Array of item counts for each message, used to build internationalized strings.
-	 *
-	 * @return array The same $bulk_message being passed.
-	 *
 	 */
-	function bulk_post_updated_messages( $bulk_messages, $bulk_counts ) {
-		global $post_type;
+	function load_edit() {
 
 		// Return safely if get_current_screen() is not defined (yet).
 		if ( false === function_exists( 'get_current_screen' ) ) {
-			// @todo: fix this.
-			return $clauses;
+			return;
 		}
 
 		// Only apply on entity list page, only if this is the main query and if the wl-classification-scope query param is set.
@@ -288,19 +279,25 @@ class Wordlift_Entity_List_Service {
 
 		// If there is any valid screen nothing to do.
 		if ( null === $screen ) {
-			// @todo: fix this.
-			return $clauses;
-		}
-
-		if ( ! ( Wordlift_Entity_Service::TYPE_NAME === $screen->post_type && is_main_query() ) ) {
-			// @todo: fix this.
 			return;
 		}
 
-		// Reset the global post type to the entity type.
-		$post_type = Wordlift_Entity_Service::TYPE_NAME;
+		if ( ! ( Wordlift_Entity_Service::TYPE_NAME === $screen->post_type && is_main_query() ) ) {
+			return;
+		}
 
-		return $bulk_messages;
+		/*
+		 * The main wp initialization sets the post type to the post type used in the main query,
+		 * but the admin edit pages fail to handle such a situation gracefully.
+		 * Since this is exactly what we do on the entity page, we have to reset
+		 * the global $post_type variable to the "entity" value after the modifications
+		 * initialization was finished.
+		 */
+		add_action('wp', function ( $wp_object ) {
+			global $post_type;
+			$post_type = Wordlift_Entity_Service::TYPE_NAME;
+		}, 10, 1);
+
 	}
 
 }
