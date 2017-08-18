@@ -28,13 +28,14 @@ class Wordlift_Publisher_Service {
 	public function count() {
 
 		/*
-		 * Search for entities which have a thumbnail, and are either a Person
+		 * Search for entities which are either a Person
 		 * or Organization.
 		 * Get only the ids as all we need is the count.
 		 */
 		$entities = get_posts( array(
 			'post_type'   => Wordlift_Entity_Service::valid_entity_post_types(),
 			'post_status' => 'publish',
+			'posts_per_page' => -1,
 			'tax_query'   => array(
 				array(
 					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
@@ -106,12 +107,13 @@ class Wordlift_Publisher_Service {
 		), 10, 2 );
 
 		/*
-		 * Search for entities which have a thumbnail, and are either a Person
-		 * or Organization. Sort the results by title.
+		 * Search for entities which are either a Person
+		 * or Organization. Sort the results by title in ascending order.
 		 */
 		$entities = get_posts( array(
 			'post_type'   => Wordlift_Entity_Service::valid_entity_post_types(),
 			'post_status' => 'publish',
+			'posts_per_page' => -1,
 			'tax_query'   => array(
 				array(
 					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
@@ -121,6 +123,7 @@ class Wordlift_Publisher_Service {
 			),
 			's'           => $filter,
 			'orderby'     => 'title',
+			'order'		  => 'ASC',
 		) );
 
 		// Remove the search filter added before the query.
