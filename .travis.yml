@@ -84,6 +84,12 @@ env:
     # SauceLabs environment vars.
     - secure: "BPMK2gsJp6pL9rQ+qJUJaCiILGI5DTn91bcEeOOguiPtg2EUMpZWG3fvyIoFJzGu8Mi7jluP60au00cmYK8QbtwJyDACqsmDRwV+1JFrl1ipZJ2R/KVksFfzsb8qOnNG9ejCSkobHj3IrR5l+bCJU2PPa9/d/lc3DFhZaNW4T3k="
     - secure: "MWJrwnQ09c+ekylfFMuky4W3V5rokJBGMXTZp5/PsDgY2eL684/77vIjUQ6tBNVrKIMhh5VbAoJ3FIY3PkbCVoz0JN3hRJ4JZNtqn1X/ABC7i0csC09ObLZO55/F2kHawPofvysdg/h9xfvd7vUQsoqd4FQcyxEzbUGmv2XenTE="
+
+    # See https://docs.codeclimate.com/v1.0/docs/travis-ci-test-coverage
+    - GIT_COMMITTED_AT=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then git log -1 --pretty=format:%ct; else git log -1 --skip 1 --pretty=format:%ct; fi)
+
+    # CodeClimate Test Coverage Key.
+    - secure: "AMguCWzHPqXvrb0oja6uYxg4vKw3uA+YEe2hBpI+cuvvkwLSISC3cf64rQv9yf3aVstnOnaZhUQ4JxCC1beYBsLRiZwPU/4QMsPYNO4HPl02YoOIXk+ZJzATSC0a3rs06gxcL9i2+Csd0zgkAL1a9tYj9r1yYP96qo+RpEYfIyw="
   matrix:
     - SCRIPT=test:php WP_VERSION=4.8
     - SCRIPT=test:php WP_VERSION=4.2
@@ -120,6 +126,11 @@ before_install:
     fi
 
 before_script:
+  # See https://docs.codeclimate.com/v1.0/docs/travis-ci-test-coverage
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
   # Install an updated version of NodeJS. Note that this cannot be put in a sh file as nvm must retain its choice.
   - . $HOME/.nvm/nvm.sh
   - nvm install 6 --reinstall-packages-from=node
@@ -139,6 +150,16 @@ after_script:
     if [[ "$SCRIPT" == "test:e2e" ]]; then
       .ci/travis/sauce_connect_stop.sh
     fi
+
+  # See https://docs.codeclimate.com/v1.0/docs/travis-ci-test-coverage
+  # 
+  # Preferably you will run test-reporter on branch update events. But
+  # if you setup travis to build PR updates only, you don't need to run
+  # the line below
+  - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
+  # In the case where travis is setup to build PR updates only,
+  # uncomment the line below
+  # - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
 # Notify our Slack channel.
 notifications:
