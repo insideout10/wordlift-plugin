@@ -201,6 +201,27 @@ function wl_core_get_related_entity_ids( $subject_id, $filters = array() ) {
 //	return wl_core_inner_get_related_entities( 'post_ids', $subject_id, $filters['predicate'], $filters['status'] );
 }
 
+/**
+ * Get the entities related to the specified {@link WP_Post}.
+ *
+ * This function is deprecated and left for compatibility with 3rd parties.
+ *
+ * @deprecated use Wordlift_Relation_Service::get_instance()->get_objects()
+ *
+ * @param int   $subject_id The {@link WP_Post}'s id.
+ * @param array $filters    An array of filters.
+ *
+ * @return array An array of {@link WP_Post}s.
+ */
+function wl_core_get_related_entities( $subject_id, $filters = array() ) {
+
+	$ids = wl_core_get_related_entity_ids( $subject_id, $filters );
+
+	return array_map( function ( $item ) {
+		return get_post( $item );
+	}, $ids );
+}
+
 //
 ///**
 // * Find all entity ids related to a given $subject_id
@@ -286,6 +307,30 @@ function wl_core_get_related_post_ids( $object_id, $filters = array() ) {
 //	$filters = wl_core_validate_filters_for_related( $filters );
 //
 //	return wl_core_inner_get_related_posts( 'post_ids', $object_id, $filters['predicate'], $filters['status'] );
+}
+
+
+/**
+ * Get the posts related to the specified entity {@link WP_Post}.
+ *
+ * This function is deprecated and left for compatibility with 3rd parties.
+ *
+ * @deprecated use Wordlift_Relation_Service::get_instance()->get_article_subjects()
+ *
+ * @param int   $subject_id The entity's {@link WP_Post}'s id. If a post/page id
+ *                          is provided, then the entities bound to that post/page
+ *                          are first loaded.
+ * @param array $filters    An array of filters.
+ *
+ * @return array An array of {@link WP_Post}s.
+ */
+function wl_core_get_related_posts( $subject_id, $filters = array() ) {
+
+	$ids = wl_core_get_related_post_ids( $subject_id, $filters );
+
+	return array_map( function ( $item ) {
+		return get_post( $item );
+	}, $ids );
 }
 
 ///**
