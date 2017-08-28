@@ -28,17 +28,66 @@ class WL_Metabox_Field {
 	 */
 	protected $log;
 
+	/**
+	 * The meta name for this field's value.
+	 *
+	 * @var string $meta_name The meta name for this field's value.
+	 */
 	public $meta_name;
+
+	/**
+	 * The custom field settings.
+	 *
+	 * @var null|array $raw_custom_field The custom field settings.
+	 */
 	public $raw_custom_field;
+
+	/**
+	 * The schema.org predicate.
+	 *
+	 * @var string $predicate The schema.org predicate.
+	 */
 	public $predicate;
+
+	/**
+	 * The field's label.
+	 *
+	 * @var string $label The field's label.
+	 */
 	public $label;
+
+	/**
+	 * The WordLift data type.
+	 *
+	 * @var string $expected_wl_type The WordLift data type.
+	 */
 	public $expected_wl_type;
+
+	/**
+	 * The RDF data type.
+	 *
+	 * @var string $expected_uri_type The RDF data type.
+	 */
 	public $expected_uri_type;
+
+	/**
+	 * The cardinality.
+	 *
+	 * @var int $cardinality The cardinality.
+	 */
 	public $cardinality;
+
+	/**
+	 * The current value.
+	 *
+	 * @var array $data The current value.
+	 */
 	public $data;
 
 	/**
-	 * @param array $args
+	 * Create a {@link WL_Metabox_Field} instance.
+	 *
+	 * @param array $args An array of parameters.
 	 */
 	public function __construct( $args ) {
 
@@ -86,8 +135,11 @@ class WL_Metabox_Field {
 			}
 
 			// Which type of entity can we accept (e.g. Place, Event, ecc.)? .
-			if ( $this->expected_wl_type === Wordlift_Schema_Service::DATA_TYPE_URI && isset( $constraints['uri_type'] ) ) {
-				$this->expected_uri_type = is_array( $constraints['uri_type'] ) ? $constraints['uri_type'] : array( $constraints['uri_type'] );
+			if ( Wordlift_Schema_Service::DATA_TYPE_URI === $this->expected_wl_type
+			     && isset( $constraints['uri_type'] ) ) {
+				$this->expected_uri_type = is_array( $constraints['uri_type'] )
+					? $constraints['uri_type']
+					: array( $constraints['uri_type'] );
 			}
 
 		}
@@ -95,6 +147,7 @@ class WL_Metabox_Field {
 
 	/**
 	 * Return nonce HTML.
+	 *
 	 * Overwrite this method in a child class to obtain custom behaviour.
 	 */
 	public function html_nonce() {
@@ -104,9 +157,10 @@ class WL_Metabox_Field {
 
 	/**
 	 * Verify nonce.
+	 *
 	 * Overwrite this method in a child class to obtain custom behaviour.
 	 *
-	 * @return boolean Nonce verification
+	 * @return boolean Nonce verification.
 	 */
 	public function verify_nonce() {
 
@@ -123,6 +177,7 @@ class WL_Metabox_Field {
 
 	/**
 	 * Load data from DB and store the resulting array in $this->data.
+	 *
 	 * Overwrite this method in a child class to obtain custom behaviour.
 	 */
 	public function get_data() {
@@ -138,12 +193,13 @@ class WL_Metabox_Field {
 	}
 
 	/**
-	 * Sanitizes data before saving to DB. Default sanitization trashes empty values.
+	 * Sanitizes data before saving to DB. Default sanitization trashes empty
+	 * values.
+	 *
 	 * Stores the sanitized values into $this->data so they can be later processed.
 	 * Overwrite this method in a child class to obtain custom behaviour.
 	 *
 	 * @param array $values Array of values to be sanitized and then stored into $this->data
-	 *
 	 */
 	public function sanitize_data( $values ) {
 
@@ -164,7 +220,9 @@ class WL_Metabox_Field {
 	}
 
 	/**
-	 * Sanitize a single value. Called from $this->sanitize_data. Default sanitization excludes empty values.
+	 * Sanitize a single value. Called from $this->sanitize_data. Default
+	 * sanitization excludes empty values.
+	 *
 	 * Overwrite this method in a child class to obtain custom behaviour.
 	 *
 	 * @return mixed Returns sanitized value, or null.
@@ -186,7 +244,10 @@ class WL_Metabox_Field {
 
 	/**
 	 * Save data to DB.
+	 *
 	 * Overwrite this method in a child class to obtain custom behaviour.
+	 *
+	 * @param array $values Array of values to be sanitized and then stored into $this->data.
 	 */
 	public function save_data( $values ) {
 
@@ -206,8 +267,11 @@ class WL_Metabox_Field {
 	}
 
 	/**
-	 * Returns the HTML tag that will contain the Field. By default the we return a <div> with data- attributes on cardinality and expected types.
+	 * Returns the HTML tag that will contain the Field. By default the we
+	 * return a <div> with data- attributes on cardinality and expected types.
+	 *
 	 * It is useful to provide data- attributes for the JS scripts.
+	 *
 	 * Overwrite this method in a child class to obtain custom behaviour.
 	 */
 	public function html_wrapper_open() {
@@ -217,7 +281,9 @@ class WL_Metabox_Field {
 
 	/**
 	 * Returns Field HTML (nonce included).
-	 * Overwrite this method (or methods called from this method) in a child class to obtain custom behaviour.
+	 *
+	 * Overwrite this method (or methods called from this method) in a child
+	 * class to obtain custom behaviour.
 	 */
 	public function html() {
 
