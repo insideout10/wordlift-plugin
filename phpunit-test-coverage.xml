@@ -18,9 +18,9 @@
     </php>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./src/</directory>
+            <directory suffix=".php">src</directory>
             <exclude>
-                <directory suffix=".php">./src/admin/partials</directory>
+                <directory suffix=".php">src/admin/partials</directory>
             </exclude>
         </whitelist>
     </filter>
