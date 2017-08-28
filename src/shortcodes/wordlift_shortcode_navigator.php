@@ -64,7 +64,7 @@ function wl_shortcode_navigator_ajax() {
 	foreach ( $related_entities as $related_entity ) {
 
 		// take the id of posts referencing the entity
-		$referencing_posts = Wordlift_Relation_Service::get_instance()->get_article_subjects( $related_entity->ID, '*', null,'publish' );
+		$referencing_posts = Wordlift_Relation_Service::get_instance()->get_article_subjects( $related_entity->ID, '*', null, 'publish' );
 
 		// loop over them and take the first one which is not already in the $related_posts
 		foreach ( $referencing_posts as $referencing_post ) {

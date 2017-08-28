@@ -69,7 +69,7 @@ class Wordlift_Relation_Service {
 	 *
 	 * @since 3.15.0
 	 *
-	 * @param int         $object_id The entity {@link WP_Post}'s id.
+	 * @param int|array   $object_id The entity {@link WP_Post}'s id.
 	 * @param string      $fields    The fields to return, 'ids' to only return ids or
 	 *                               '*' to return all fields, by default '*'.
 	 * @param null|string $predicate The predicate (who|what|...), by default all.

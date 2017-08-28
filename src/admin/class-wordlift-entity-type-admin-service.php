@@ -21,15 +21,15 @@
 class Wordlift_Entity_Type_Admin_Service {
 
 	/**
-	 * Create a Wordlift_Entity_List_Service.
+	 * Create a {@link Wordlift_Entity_List_Service} instance.
+	 *
 	 * Set up the relevant filters and actions.
 	 *
 	 * @since 3.15.0
-	 *
 	 */
 	public function __construct() {
 
-		add_action( 'admin_init', array( $this, 'hide_entity_type_metabox' ) );
+		add_action( 'admin_init', array( $this, 'hide_entity_type_metabox', ) );
 		add_action( 'admin_init', array(
 			$this,
 			'set_filters_to_hide_entity_type_from_lists',
@@ -60,8 +60,7 @@ class Wordlift_Entity_Type_Admin_Service {
 	 * Hide the entity type metabox from non entity list screens if user is not
 	 * allowed to configure entity types.
 	 *
-	 * @since 3.a5.0
-	 *
+	 * @since 3.15.0
 	 */
 	function set_filters_to_hide_entity_type_from_lists() {
 

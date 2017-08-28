@@ -116,7 +116,6 @@ class Wordlift_Entity_Types_Taxonomy_Walker extends Walker_Category_Checklist {
 	 * @param object $category The current term object.
 	 * @param int    $depth    Depth of the term in reference to parents. Default 0.
 	 * @param array  $args     An array of arguments. @see wp_terms_checklist()
-	 * @param int    $id
 	 */
 	public function end_el( &$output, $category, $depth = 0, $args = array() ) {
 		global $post;
@@ -130,5 +129,7 @@ class Wordlift_Entity_Types_Taxonomy_Walker extends Walker_Category_Checklist {
 		     || Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME !== $args['taxonomy'] ) {
 			parent::end_el( $output, $category, $depth, $args );
 		}
+
 	}
+
 }

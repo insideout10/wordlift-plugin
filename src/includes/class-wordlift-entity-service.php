@@ -117,6 +117,7 @@ class Wordlift_Entity_Service {
 			return false;
 		}
 
+		// We don't consider an `article` to be an entity.
 		if ( 'article' !== $terms[0]->slug ) {
 			return true;
 		}
