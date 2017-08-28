@@ -65,7 +65,7 @@ class Wordlift_Batch_Analysis_Service {
 	const STATE_META_KEY = '_wl_batch_analysis_state';
 	const STATE_SUBMIT = 0;
 	const STATE_REQUEST = 1;
-	//### COMPLETE states.
+	// ### COMPLETE states.
 	const STATE_SUCCESS = 2;
 	const STATE_ERROR = 2;
 
@@ -459,7 +459,7 @@ class Wordlift_Batch_Analysis_Service {
 
 		// Check for suspicious interpolations.
 		$warning = 0 < preg_match_all( '/\w<[a-z]+ id="urn:enhancement-[^"]+" class="[^"]+" itemid="[^"]+">/', $content, $matches )
-		           || 0 < preg_match_all( '/<[a-z]+ id="urn:enhancement-[^"]+" class="[^"]+" itemid="[^"]+">\s/', $content, $matches );
+				   || 0 < preg_match_all( '/<[a-z]+ id="urn:enhancement-[^"]+" class="[^"]+" itemid="[^"]+">\s/', $content, $matches );
 
 		// Set the warning flag accordingly.
 		$this->set_warning( $post_id, $warning );
@@ -532,12 +532,12 @@ class Wordlift_Batch_Analysis_Service {
 		// Update timestamps as required.
 		switch ( $value ) {
 
-			//### REQUEST state.
+			// ### REQUEST state.
 			case self::STATE_REQUEST:
 				add_post_meta( $post_id, self::REQUEST_TIMESTAMP_META_KEY, current_time( 'mysql', true ) );
 				break;
 
-			//### SUCCESS/ERROR state.
+			// ### SUCCESS/ERROR state.
 			case self::STATE_SUCCESS:
 			case self::STATE_ERROR:
 				add_post_meta( $post_id, self::COMPLETE_TIMESTAMP_META_KEY, current_time( 'mysql', true ) );
