@@ -2,17 +2,17 @@
 /**
  * Metaboxes: URI Field Metabox.
  *
- * @since   3.0.0
- * @package Wordlift
- * @package Wordlift/admin/WL_Metabox
+ * @since      3.0.0
+ * @package    Wordlift
+ * @subpackage Wordlift/admin/WL_Metabox
  */
 
 /**
  * Define the {@link WL_Metabox_Field_uri} class.
  *
- * @since   3.0.0
- * @package Wordlift
- * @package Wordlift/admin/WL_Metabox
+ * @since      3.0.0
+ * @package    Wordlift
+ * @subpackage Wordlift/admin/WL_Metabox
  */
 class WL_Metabox_Field_uri extends WL_Metabox_Field {
 
@@ -55,13 +55,13 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 
 			wl_set_entity_main_type( $new_entity_id, $type );
 
-			// Build uri for this entity
+			// Build uri for this entity.
 			$new_uri = wl_build_entity_uri( $new_entity_id );
 			wl_set_entity_uri( $new_entity_id, $new_uri );
 
 			Wordlift_Linked_Data_Service::get_instance()->push( $new_entity_id );
 
-			// Update the value that will be saved as meta
+			// Update the value that will be saved as meta.
 			$value = $new_entity_id;
 		}
 
@@ -100,9 +100,12 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 		return null !== $candidate && $entity_service->is_entity( $candidate->ID );
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function html_wrapper_open() {
 
-		// The containing <div> contains info on cardinality and expected types
+		// The containing <div> contains info on cardinality and expected types.
 		$html = "<div class='wl-field' data-cardinality='$this->cardinality'";
 
 		if ( isset( $this->expected_uri_type ) && ! is_null( $this->expected_uri_type ) ) {
@@ -119,6 +122,9 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 		return $html;
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function html_input( $default_entity_identifier ) {
 
 		if ( empty( $default_entity_identifier ) ) {
@@ -128,8 +134,9 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 		} else {
 			// @todo: we cannot be so sure this is a URI.
 			// It is an URI
-			$entity = Wordlift_Entity_Service::get_instance()
-			                                 ->get_entity_post_by_uri( $default_entity_identifier );
+			$entity = Wordlift_Entity_Service
+				::get_instance()
+				->get_entity_post_by_uri( $default_entity_identifier );
 		}
 
 		if ( ! is_null( $entity ) ) {
