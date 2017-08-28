@@ -14,6 +14,7 @@
     "test:e2e": "./node_modules/.bin/wdio wdio.conf.js",
     "test:js": "grunt travis:js",
     "test:php": "./vendor/bin/phpunit",
+    "test:php-test-coverage": "./vendor/bin/phpunit -c phpunit-test-coverage.xml",
     "test:multisite": "./vendor/bin/phpunit -c phpunit-multisite.xml",
     "webpack:watch": "webpack -w --optimize-minimize --define process.env.NODE_ENV=\"'production'\""
   },
