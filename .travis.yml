@@ -126,11 +126,6 @@ before_install:
     fi
 
 before_script:
-  # See https://docs.codeclimate.com/v1.0/docs/travis-ci-test-coverage
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
-
   # Install an updated version of NodeJS. Note that this cannot be put in a sh file as nvm must retain its choice.
   - . $HOME/.nvm/nvm.sh
   - nvm install 6 --reinstall-packages-from=node
@@ -151,15 +146,12 @@ after_script:
       .ci/travis/sauce_connect_stop.sh
     fi
 
-  # See https://docs.codeclimate.com/v1.0/docs/travis-ci-test-coverage
-  #
-  # Preferably you will run test-reporter on branch update events. But
-  # if you setup travis to build PR updates only, you don't need to run
-  # the line below
-  - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
-  # In the case where travis is setup to build PR updates only,
-  # uncomment the line below
-  # - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+after_success:
+  # Code Climate test coverage.
+  - |
+    if [[ "$SCRIPT" == "test:php" ]]; then
+      ./vendor/bin/test-reporter
+    fi
 
 # Notify our Slack channel.
 notifications:
