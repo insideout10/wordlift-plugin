@@ -103,7 +103,7 @@ services:
 before_install:
   # If we're running the PHP tests, we need a WP test site.
   - |
-    if [[ "$SCRIPT" == "test:php" || "$SCRIPT" == "test:multisite" ]]; then
+    if [[ "$SCRIPT" == "test:php" || "$SCRIPT" == "test:php-test-coverage" || "$SCRIPT" == "test:multisite" ]]; then
       bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
       composer install --dev
       phpunit --version
@@ -150,7 +150,7 @@ after_script:
 after_success:
   # Code Climate test coverage.
   - |
-    if [[ "$SCRIPT" == "test:php" ]]; then
+    if [[ "$SCRIPT" == "test:php-test-coverage" ]]; then
       ./vendor/bin/test-reporter
     fi
 
