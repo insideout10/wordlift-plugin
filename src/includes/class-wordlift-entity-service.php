@@ -26,7 +26,7 @@ class Wordlift_Entity_Service {
 	private $ui_service;
 
 	/**
-	 *The {@link Wordlift_Relation_Service} instance.
+	 * The {@link Wordlift_Relation_Service} instance.
 	 *
 	 * @since  3.15.0
 	 * @access private
@@ -157,7 +157,13 @@ class Wordlift_Entity_Service {
 		return $default;
 	}
 
-
+	/**
+	 * Check whether a {@link WP_Post} is used.
+	 *
+	 * @param int $post_id The {@link WP_Post}'s id.
+	 *
+	 * @return bool|null Null if it's not an entity, otherwise true if it's used.
+	 */
 	public function is_used( $post_id ) {
 
 		if ( false === $this->is_entity( $post_id ) ) {
@@ -569,7 +575,6 @@ class Wordlift_Entity_Service {
 	public function get_related_entities( $id, $post_status = 'publish' ) {
 
 		return $this->relation_service->get_objects( $id, 'ids', null, $post_status );
-//		return wl_core_inner_get_related_entities( 'post_ids', $id, null, $post_status );
 	}
 
 	/**
