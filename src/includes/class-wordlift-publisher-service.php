@@ -27,23 +27,22 @@ class Wordlift_Publisher_Service {
 	 */
 	public function count() {
 
-		/*
-		 * Search for entities which are either a Person
-		 * or Organization.
-		 * Get only the ids as all we need is the count.
-		 */
+		// Search for entities which are either a Person
+		// or Organization.
+
+		// Get only the ids as all we need is the count.
 		$entities = get_posts( array(
-			'post_type'   => Wordlift_Entity_Service::valid_entity_post_types(),
-			'post_status' => 'publish',
-			'posts_per_page' => -1,
-			'tax_query'   => array(
+			'post_type'      => Wordlift_Entity_Service::valid_entity_post_types(),
+			'post_status'    => 'publish',
+			'posts_per_page' => - 1,
+			'tax_query'      => array(
 				array(
 					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
 					'field'    => 'slug',
 					'terms'    => array( 'organization', 'person' ),
 				),
 			),
-			'fields'      => 'ids',
+			'fields'         => 'ids',
 		) );
 
 		// Finally return the count.
@@ -57,10 +56,10 @@ class Wordlift_Publisher_Service {
 	 *
 	 * @since   3.15.0
 	 *
-	 * @param   string   $search
-	 * @param   WP_Query $wp_query
+	 * @param   string   $search   The search string.
+	 * @param   WP_Query $wp_query The {@link WP_Query} instance.
 	 *
-	 * @return array|string
+	 * @return array|string An array of results.
 	 */
 	public function limit_search_to_title( $search, $wp_query ) {
 
@@ -111,19 +110,19 @@ class Wordlift_Publisher_Service {
 		 * or Organization. Sort the results by title in ascending order.
 		 */
 		$entities = get_posts( array(
-			'post_type'   => Wordlift_Entity_Service::valid_entity_post_types(),
-			'post_status' => 'publish',
-			'posts_per_page' => -1,
-			'tax_query'   => array(
+			'post_type'      => Wordlift_Entity_Service::valid_entity_post_types(),
+			'post_status'    => 'publish',
+			'posts_per_page' => - 1,
+			'tax_query'      => array(
 				array(
 					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
 					'field'    => 'slug',
 					'terms'    => array( 'organization', 'person' ),
 				),
 			),
-			's'           => $filter,
-			'orderby'     => 'title',
-			'order'		  => 'ASC',
+			's'              => $filter,
+			'orderby'        => 'title',
+			'order'          => 'ASC',
 		) );
 
 		// Remove the search filter added before the query.
