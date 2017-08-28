@@ -135,14 +135,13 @@ class WL_Metabox_Field {
 			}
 
 			// Which type of entity can we accept (e.g. Place, Event, ecc.)? .
-			if ( Wordlift_Schema_Service::DATA_TYPE_URI === $this->expected_wl_type
-			     && isset( $constraints['uri_type'] ) ) {
+			if ( Wordlift_Schema_Service::DATA_TYPE_URI === $this->expected_wl_type && isset( $constraints['uri_type'] ) ) {
 				$this->expected_uri_type = is_array( $constraints['uri_type'] )
 					? $constraints['uri_type']
 					: array( $constraints['uri_type'] );
 			}
-
 		}
+
 	}
 
 	/**
@@ -199,7 +198,8 @@ class WL_Metabox_Field {
 	 * Stores the sanitized values into $this->data so they can be later processed.
 	 * Overwrite this method in a child class to obtain custom behaviour.
 	 *
-	 * @param array $values Array of values to be sanitized and then stored into $this->data
+	 * @param array $values Array of values to be sanitized and then stored into
+	 *                      $this->data.
 	 */
 	public function sanitize_data( $values ) {
 
@@ -225,17 +225,21 @@ class WL_Metabox_Field {
 	 *
 	 * Overwrite this method in a child class to obtain custom behaviour.
 	 *
+	 * @param string $value The value to sanitize.
+	 *
 	 * @return mixed Returns sanitized value, or null.
 	 */
 	public function sanitize_data_filter( $value ) {
 
-		// TODO: all fields should provide their own sanitize which shouldn't be part of a UI class.
+		// TODO: all fields should provide their own sanitize which shouldn't
+		// be part of a UI class.
+
 		// If the field provides its own validation, use it.
 		if ( isset( $this->raw_custom_field['sanitize'] ) ) {
 			return call_user_func( $this->raw_custom_field['sanitize'], $value );
 		}
 
-		if ( ! is_null( $value ) && $value !== '' ) {         // do not use 'empty()' -> https://www.virendrachandak.com/techtalk/php-isset-vs-empty-vs-is_null/ .
+		if ( ! is_null( $value ) && '' !== $value ) {         // do not use 'empty()' -> https://www.virendrachandak.com/techtalk/php-isset-vs-empty-vs-is_null/ .
 			return $value;
 		}
 
@@ -260,7 +264,7 @@ class WL_Metabox_Field {
 		delete_post_meta( $entity_id, $this->meta_name );
 
 		// insert new values, respecting cardinality.
-		$single = ( $this->cardinality == 1 );
+		$single = ( 1 === $this->cardinality );
 		foreach ( $this->data as $value ) {
 			add_post_meta( $entity_id, $this->meta_name, $value, $single );
 		}
@@ -308,8 +312,8 @@ class WL_Metabox_Field {
 		}
 
 		// Print the empty <input> to add new values.
-		if ( $count === 0 ) { // } || $count < $this->cardinality ) { DO NOT print empty inputs unless requested by the editor since fields might support empty strings.
-			$html .= $this->html_input( '' );    // Will print an empty <input>
+		if ( 0 === $count ) { // } || $count < $this->cardinality ) { DO NOT print empty inputs unless requested by the editor since fields might support empty strings.
+			$html .= $this->html_input( '' );    // Will print an empty <input>.
 			$count ++;
 		}
 
@@ -327,9 +331,9 @@ class WL_Metabox_Field {
 	/**
 	 * Return a single <input> tag for the Field.
 	 *
-	 * @param mixed $value Input value
+	 * @param mixed $value Input value.
 	 *
-	 * @return string
+	 * @return string The html code fragment.
 	 */
 	public function html_input( $value ) {
 		$html = <<<EOF
