@@ -89,23 +89,24 @@ class Wordlift_Relation_Service {
 
 		$objects = $this->article_id_to_entity_id( $object_id );
 
-		$sql = "
+		$sql =
+			"
 			SELECT p.$actual_fields
 			FROM {$this->relation_table} r
 			INNER JOIN $wpdb->posts p
 				ON p.id = r.subject_id
 			"
-		       // Add the status clause.
-		       . self::and_status( $status )
-		       . self::inner_join_is_article()
-		       . self::where_object_id( $objects )
-		       // Since `object_id` can be an article ID we need to exclude it from
-		       // the results.
-		       . self::and_article_not_in( array_merge( $excludes, (array) $object_id ) )
-		       . self::and_article_in( $include )
-		       . " AND p.post_type IN ( 'post', 'page', 'entity' ) "
-		       . self::and_predicate( $predicate )
-		       . self::limit( $limit );
+			// Add the status clause.
+			. self::and_status( $status )
+			. self::inner_join_is_article()
+			. self::where_object_id( $objects )
+			// Since `object_id` can be an article ID we need to exclude it from
+			// the results.
+			. self::and_article_not_in( array_merge( $excludes, (array) $object_id ) )
+			. self::and_article_in( $include )
+			. " AND p.post_type IN ( 'post', 'page', 'entity' ) "
+			. self::and_predicate( $predicate )
+			. self::limit( $limit );
 
 		return '*' === $actual_fields ? $wpdb->get_results( $sql ) : $wpdb->get_col( $sql );
 	}
