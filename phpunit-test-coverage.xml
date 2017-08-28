@@ -20,7 +20,7 @@
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./src</directory>
             <exclude>
-                <directory suffix=".php">./src/**/partials</directory>
+                <directory suffix=".php">./src/*/partials</directory>
             </exclude>
         </whitelist>
     </filter>
