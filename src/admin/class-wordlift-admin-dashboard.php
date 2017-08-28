@@ -1,18 +1,22 @@
 <?php
-
 /**
  * Wordlift Dashboard Widget
  *
- * @since 3.4.0
+ * @since      3.4.0
+ * @package    Wordlift
+ * @subpackage Wordlift/admin
  */
 
 /**
  * Wordlift_Dashboard_Service Class
  *
  * Handles the dashboard widget.
+ *
+ * @since      3.4.0
+ * @package    Wordlift
+ * @subpackage Wordlift/admin
  */
 class Wordlift_Dashboard_Service {
-
 
 	/**
 	 * Transient Name

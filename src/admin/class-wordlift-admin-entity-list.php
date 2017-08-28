@@ -293,10 +293,10 @@ class Wordlift_Entity_List_Service {
 		 * the global $post_type variable to the "entity" value after the modifications
 		 * initialization was finished.
 		 */
-		add_action('wp', function ( $wp_object ) {
+		add_action( 'wp', function ( $wp_object ) {
 			global $post_type;
 			$post_type = Wordlift_Entity_Service::TYPE_NAME;
-		}, 10, 1);
+		}, 10, 1 );
 
 	}
 

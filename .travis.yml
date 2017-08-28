@@ -152,7 +152,7 @@ after_script:
     fi
 
   # See https://docs.codeclimate.com/v1.0/docs/travis-ci-test-coverage
-  # 
+  #
   # Preferably you will run test-reporter on branch update events. But
   # if you setup travis to build PR updates only, you don't need to run
   # the line below
