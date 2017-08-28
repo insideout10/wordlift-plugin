@@ -589,7 +589,11 @@ class Wordlift {
 	protected $rendition_factory;
 
 	/**
-	 * @var
+	 * The {@link Wordlift_Relation_Service} instance.
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var \Wordlift_Relation_Service $relation_service The {@link Wordlift_Relation_Service} instance.
 	 */
 	private $relation_service;
 
@@ -1197,11 +1201,6 @@ class Wordlift {
 
 		// Hook the updated_post_meta action to the Thumbnail service.
 		$this->loader->add_action( 'updated_post_meta', $this->thumbnail_service, 'added_or_updated_post_meta', 10, 4 );
-
-		// Hook posts inserts (or updates) to the user service.
-		// This hook is commented out in order to prevent the plain author data
-		// to be published to the Linked Data.
-		// $this->loader->add_action( 'wp_insert_post', $this->user_service, 'wp_insert_post', 10, 3 );
 
 		// Hook the AJAX wl_timeline action to the Timeline service.
 		$this->loader->add_action( 'wp_ajax_wl_timeline', $this->timeline_service, 'ajax_timeline' );
