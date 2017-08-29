@@ -26,6 +26,15 @@ class Wordlift_Entity_Service {
 	private $ui_service;
 
 	/**
+	 * The {@link Wordlift_Relation_Service} instance.
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var \Wordlift_Relation_Service $relation_service The {@link Wordlift_Relation_Service} instance.
+	 */
+	private $relation_service;
+
+	/**
 	 * The entity post type name.
 	 *
 	 * @since 3.1.0
@@ -65,18 +74,18 @@ class Wordlift_Entity_Service {
 	 *
 	 * @since 3.2.0
 	 *
-	 * @param \Wordlift_UI_Service $ui_service The UI service.
+	 * @param \Wordlift_UI_Service       $ui_service       The UI service.
+	 * @param \Wordlift_Relation_Service $relation_service The {@link Wordlift_Relation_Service} instance.
 	 */
-	public function __construct( $ui_service ) {
+	public function __construct( $ui_service, $relation_service ) {
 
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Entity_Service' );
 
-		// Set the UI service.
-		$this->ui_service = $ui_service;
+		$this->ui_service       = $ui_service;
+		$this->relation_service = $relation_service;
 
 		// Set the singleton instance.
 		self::$instance = $this;
-
 	}
 
 	/**
@@ -91,7 +100,8 @@ class Wordlift_Entity_Service {
 	}
 
 	/**
-	 * Determines whether a post is an entity or not.
+	 * Determines whether a post is an entity or not. Entity is in this context
+	 * something which is not an article.
 	 *
 	 * @since 3.1.0
 	 *
@@ -101,7 +111,18 @@ class Wordlift_Entity_Service {
 	 */
 	public function is_entity( $post_id ) {
 
-		return ( self::TYPE_NAME === get_post_type( $post_id ) );
+		$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+
+		if ( 0 === count( $terms ) ) {
+			return false;
+		}
+
+		// We don't consider an `article` to be an entity.
+		if ( 'article' !== $terms[0]->slug ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -111,15 +132,19 @@ class Wordlift_Entity_Service {
 	 *
 	 * @param integer $post_id An entity post id.
 	 *
-	 * @return string Returns an uri.
+	 * @param string  $default The default classification scope, `what` if not
+	 *                         provided.
+	 *
+	 * @return string Returns a classification scope (e.g. 'what').
 	 */
-	public function get_classification_scope_for( $post_id ) {
+	public function get_classification_scope_for( $post_id, $default = WL_WHAT_RELATION ) {
 
 		if ( false === $this->is_entity( $post_id ) ) {
-			return null;
+			return $default;
 		}
+
 		// Retrieve the entity type
-		$entity_type_arr = wl_entity_type_taxonomy_get_type( $post_id );
+		$entity_type_arr = Wordlift_Entity_Type_Service::get_instance()->get( $post_id );
 		$entity_type     = str_replace( 'wl-', '', $entity_type_arr['css_class'] );
 		// Retrieve classification boxes configuration
 		$classification_boxes = unserialize( WL_CORE_POST_CLASSIFICATION_BOXES );
@@ -129,12 +154,16 @@ class Wordlift_Entity_Service {
 			}
 		}
 
-		// or null
-		return null;
-
+		return $default;
 	}
 
-
+	/**
+	 * Check whether a {@link WP_Post} is used.
+	 *
+	 * @param int $post_id The {@link WP_Post}'s id.
+	 *
+	 * @return bool|null Null if it's not an entity, otherwise true if it's used.
+	 */
 	public function is_used( $post_id ) {
 
 		if ( false === $this->is_entity( $post_id ) ) {
@@ -211,12 +240,20 @@ class Wordlift_Entity_Service {
 		$query_args = array(
 			'posts_per_page' => 1,
 			'post_status'    => 'any',
-			'post_type'      => self::TYPE_NAME,
+			'post_type'      => Wordlift_Entity_Service::valid_entity_post_types(),
 			'meta_query'     => array(
 				array(
 					'key'     => WL_ENTITY_URL_META_NAME,
 					'value'   => $uri,
 					'compare' => '=',
+				),
+			),
+			$tax_query = array(
+				array(
+					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+					'field'    => 'slug',
+					'terms'    => 'article',
+					'operator' => 'NOT IN',
 				),
 			),
 		);
@@ -429,9 +466,61 @@ class Wordlift_Entity_Service {
 	 */
 	public function count() {
 
-		$count = wp_count_posts( self::TYPE_NAME );
+		$posts = get_posts( $this->add_criterias( array(
+			'post_status' => 'any',
+			'numberposts' => - 1,
+		) ) );
 
-		return $count->publish;
+		return count( $posts );
+	}
+
+	/**
+	 * Add the entity filtering criterias to the arguments for a `get_posts`
+	 * call.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @param array $args The arguments for a `get_posts` call.
+	 *
+	 * @return array The arguments for a `get_posts` call.
+	 */
+	public static function add_criterias( $args ) {
+
+		return $args + array(
+				'post_type' => Wordlift_Entity_Service::valid_entity_post_types(),
+				'tax_query' => array(
+					array(
+						'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+						'terms'    => self::get_entity_terms(),
+					),
+				),
+			);
+	}
+
+	/**
+	 * Get the entity terms IDs which represent an entity.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @return array An array of terms' ids.
+	 */
+	public static function get_entity_terms() {
+
+		$terms = get_terms( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array(
+			'hide_empty' => false,
+			// Because of #334 (and the AAM plugin) we changed fields from 'id=>slug' to 'all'.
+			// An issue has been opened with the AAM plugin author as well.
+			//
+			// see https://github.com/insideout10/wordlift-plugin/issues/334
+			// see https://wordpress.org/support/topic/idslug-not-working-anymore?replies=1#post-8806863
+			'fields'     => 'all',
+		) );
+
+		return array_map( function ( $term ) {
+			return $term->term_id;
+		}, array_filter( $terms, function ( $term ) {
+			return 'article' !== $term->slug;
+		} ) );
 	}
 
 	/**
@@ -485,7 +574,7 @@ class Wordlift_Entity_Service {
 	 */
 	public function get_related_entities( $id, $post_status = 'publish' ) {
 
-		return wl_core_inner_get_related_entities( 'post_ids', $id, null, $post_status );
+		return $this->relation_service->get_objects( $id, 'ids', null, $post_status );
 	}
 
 	/**
@@ -507,6 +596,24 @@ class Wordlift_Entity_Service {
 
 		// Call the `get_posts` function.
 		return get_posts( $args );
+	}
+
+	/**
+	 * The list of post type names which can be used for entities
+	 *
+	 * Criteria is that the post type is public. The list of valid post types
+	 * can be overridden with a filter.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @return array Array containing the names of the valid post types.
+	 */
+	static function valid_entity_post_types() {
+
+		// Ignore builtins in the call to avoid getting attachments.
+		$post_types = array( 'post', 'page', self::TYPE_NAME );
+
+		return apply_filters( 'wl_valid_entity_post_types', $post_types );
 	}
 
 }

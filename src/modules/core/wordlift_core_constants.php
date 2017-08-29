@@ -4,7 +4,7 @@ define( 'WL_DEFAULT_THUMBNAIL_PATH', dirname( dirname( plugin_dir_url( __FILE__ 
 define( 'WL_DEFAULT_PATH', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/' );
 
 // Database version
-define( 'WL_DB_VERSION', '3.14' );
+define( 'WL_DB_VERSION', '3.15' );
 // Custom table name
 define( 'WL_DB_RELATION_INSTANCES_TABLE_NAME', 'wl_relation_instances' );
 
@@ -20,7 +20,12 @@ define( 'WL_CORE_GET_POSTS_VALIDATION_RULES', serialize( array(
 	'as'             => array( 'object', 'subject' ),
 	'post_type'      => array( 'post', 'entity' ),
 	'post_status'    => array( 'draft', 'trash', 'publish' ),
-	'with_predicate' => array( WL_WHAT_RELATION, WL_WHEN_RELATION, WL_WHERE_RELATION, WL_WHO_RELATION ),
+	'with_predicate' => array(
+		WL_WHAT_RELATION,
+		WL_WHEN_RELATION,
+		WL_WHERE_RELATION,
+		WL_WHO_RELATION,
+	),
 ) ) );
 
 // Classification boxes configuration for angularjs edit-post widget
@@ -30,13 +35,25 @@ define( 'WL_CORE_POST_CLASSIFICATION_BOXES', serialize( array(
 	array(
 		'id'               => WL_WHAT_RELATION,
 		'label'            => 'What',
-		'registeredTypes'  => array( 'thing', 'creative-work' ),
+		'registeredTypes'  => array(
+			'thing',
+			// WLS returns the `creativework` (lowercase version of `CreativeWork`).
+			'creativework',
+			'creative-work',
+			'recipe',
+		),
 		'selectedEntities' => array(),
 	),
 	array(
 		'id'               => WL_WHO_RELATION,
 		'label'            => 'Who',
-		'registeredTypes'  => array( 'organization', 'person', 'local-business' ),
+		'registeredTypes'  => array(
+			'organization',
+			'person',
+			// WLS returns the `localbusiness` (lowercase version of `LocalBusiness`).
+			'localbusiness',
+			'local-business',
+		),
 		'selectedEntities' => array(),
 	),
 	array(

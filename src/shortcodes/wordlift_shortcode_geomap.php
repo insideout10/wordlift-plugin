@@ -1,6 +1,10 @@
 <?php
 /**
  * This file provides methods for the shortcode *wl_geomap*.
+ *
+ * @since      3.0.0
+ * @package    Wordlift
+ * @subpackage Wordlift/shortcodes
  */
 
 /**
@@ -22,9 +26,9 @@ function wl_shortcode_geomap_get_places( $post_id = null ) {
 		$related_ids = array();
 	} else {
 		$related_ids = wl_core_get_related_entity_ids( $post_id, array(
-			'status' => 'publish'
+			'status' => 'publish',
 		) );
-		
+
 		// Also include current entity
 		if ( Wordlift_Entity_Service::get_instance()->is_entity( $post_id ) ) {
 			$related_ids[] = $post_id;
@@ -42,7 +46,7 @@ function wl_shortcode_geomap_get_places( $post_id = null ) {
 	// Please note that when $place_ids is an empty array, the 'post__in' parameter is not considered in the query
 	return get_posts( array(
 		'post__in'    => $related_ids,
-		'post_type'   => Wordlift_Entity_Service::TYPE_NAME,
+		'post_type'   => Wordlift_Entity_Service::valid_entity_post_types(),
 		'nopaging'    => true,
 		'post_status' => 'publish',
 		'meta_query'  => array(
@@ -56,13 +60,15 @@ function wl_shortcode_geomap_get_places( $post_id = null ) {
 				'key'     => Wordlift_Schema_Service::FIELD_GEO_LONGITUDE,
 				'value'   => null,
 				'compare' => '!=',
-			)
+			),
 		),
-		'tax_query'      => array(
-			'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
-			'field'    => 'slug',
-			'terms'    => 'place'
-		)
+		'tax_query'   => array(
+			array(
+				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				'field'    => 'slug',
+				'terms'    => 'place',
+			),
+		),
 	) );
 }
 
@@ -121,7 +127,7 @@ function wl_shortcode_geomap_prepare_map( $places ) {
 		$content = $content . "</a><ul>";
 		// Get the related posts (published) and print them in the popup.
 		$related_posts = wl_core_get_related_post_ids( $entity->ID, array(
-			'status' => 'publish'
+			'status' => 'publish',
 		) );
 		foreach ( $related_posts as $rp_id ) {
 
@@ -142,16 +148,19 @@ function wl_shortcode_geomap_prepare_map( $places ) {
 				'coordinates' => array(
 					// Leaflet geoJSON wants them swapped
 					$coordinates['longitude'],
-					$coordinates['latitude']
-				)
-			)
+					$coordinates['latitude'],
+				),
+			),
 		);
 
 		$pois[] = $poi;
 
 		// Formatting boundaries in a Leaflet-like format (see LatLngBounds).
 		// http://leafletjs.com/reference.html#latlngbounds
-		$boundaries[] = array( $coordinates['latitude'], $coordinates['longitude'] );
+		$boundaries[] = array(
+			$coordinates['latitude'],
+			$coordinates['longitude'],
+		);
 
 	}
 

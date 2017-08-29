@@ -22,6 +22,29 @@ class Wordlift_Related_Entities_Cloud_Shortcode extends Wordlift_Shortcode {
 	const SHORTCODE = 'wl_cloud';
 
 	/**
+	 * The {@link Wordlift_Relation_Service} instance.
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var \Wordlift_Relation_Service $relation_service The {@link Wordlift_Relation_Service} instance.
+	 */
+	private $relation_service;
+
+	/**
+	 * Create a {@link Wordlift_Related_Entities_Cloud_Shortcode} instance.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @param \Wordlift_Relation_Service $relation_service The {@link Wordlift_Relation_Service} instance.
+	 */
+	public function __construct( $relation_service ) {
+		parent::__construct();
+
+		$this->relation_service = $relation_service;
+
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	public function render( $atts ) {
@@ -37,6 +60,7 @@ class Wordlift_Related_Entities_Cloud_Shortcode extends Wordlift_Shortcode {
 		 * Since the output is use in the widget as well, we need to have the
 		 * same class as the core tagcloud widget, to easily inherit its styling.
 		 */
+
 		return '<div class="tagcloud wl-related-entities-cloud">' .
 		       wp_generate_tag_cloud( $tags ) .
 		       '</div>';
@@ -54,7 +78,7 @@ class Wordlift_Related_Entities_Cloud_Shortcode extends Wordlift_Shortcode {
 	public function get_related_entities_tags() {
 
 		// Define the supported types list.
-		$supported_types = array( 'post', Wordlift_Entity_Service::TYPE_NAME );
+		$supported_types = Wordlift_Entity_Service::valid_entity_post_types();
 
 		// Show nothing if not on a post or entity page.
 		if ( ! is_singular( $supported_types ) ) {
@@ -78,7 +102,7 @@ class Wordlift_Related_Entities_Cloud_Shortcode extends Wordlift_Shortcode {
 		foreach ( $related_entities as $entity_id ) {
 
 			$connected_entities = count( wl_core_get_related_entity_ids( $entity_id, array( 'status' => 'publish' ) ) );
-			$connected_posts    = count( wl_core_get_related_posts( $entity_id, array( 'status' => 'publish' ) ) );
+			$connected_posts    = count( $this->relation_service->get_article_subjects( $entity_id, '*', null,'publish' ) );
 
 			$tags[] = (object) array(
 				'id'    => $entity_id,

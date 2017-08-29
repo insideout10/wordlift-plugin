@@ -27,13 +27,17 @@ abstract class Wordlift_Ajax_Unit_Test_Case extends WP_Ajax_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
+		delete_option( 'wl_db_version' );
+
+		wl_core_update_db_check();
+
 		// Default behaviour: push entities to the remote Linked Data store.
 		Wordlift_Unit_Test_Case::turn_off_entity_push();
 
-		$this->entity_factory = new Wordlift_UnitTest_Factory_For_Entity( $this->factory );
-
 		// Configure WordPress with the test settings.
 		wl_configure_wordpress_test();
+
+		$this->entity_factory = new Wordlift_UnitTest_Factory_For_Entity( $this->factory );
 
 	}
 

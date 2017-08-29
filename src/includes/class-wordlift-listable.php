@@ -4,12 +4,14 @@
  */
 abstract class Wordlift_Listable {
 
+	private $count = 0;
+
 	/**
 	 * List the items starting at the specified offset and up to the specified limit.
 	 *
-	 * @param int $offset The start offset.
-	 * @param int $limit The maximum number of items to return.
-	 * @param array $args Additional arguments.
+	 * @param int   $offset The start offset.
+	 * @param int   $limit  The maximum number of items to return.
+	 * @param array $args   Additional arguments.
 	 *
 	 * @return array A array of items (or an empty array if no items are found).
 	 */
@@ -17,16 +19,14 @@ abstract class Wordlift_Listable {
 
 	/**
 	 * @param callable $callback
-	 * @param array $args
-	 * @param int $offset
-	 * @param int $max
+	 * @param array    $args
+	 * @param int      $offset
+	 * @param int      $max
 	 */
 	public function process( $callback, $args = array(), $offset = 0, $max = PHP_INT_MAX ) {
 
 		// We process chunks in order to avoid using too much memory,
-		// starting at offset 0, 10 at a time.
-//		$limit = 10;
-
+		// starting at offset 0.
 		while ( 0 < sizeof( $items = $this->find( $offset, 1, $args ) ) && $offset < $max ) {
 
 			// Cycle through items and call the callback function.
@@ -40,8 +40,15 @@ abstract class Wordlift_Listable {
 			// Move to the next offset.
 			$offset += 1;
 
+			$this->count ++;
+
 		}
 
+	}
+
+	public function get_count() {
+
+		return $this->count;
 	}
 
 }

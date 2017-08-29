@@ -53,7 +53,16 @@ class Wordlift_Content_Filter_Service {
 	private $is_link_by_default;
 
 	/**
-	 * Wordlift_Content_Filter_Service constructor.
+	 * The {@link Wordlift_Content_Filter_Service} singleton instance.
+	 *
+	 * @since  3.14.2
+	 * @access private
+	 * @var \Wordlift_Content_Filter_Service $instance The {@link Wordlift_Content_Filter_Service} singleton instance.
+	 */
+	private static $instance;
+
+	/**
+	 * Create a {@link Wordlift_Content_Filter_Service} instance.
 	 *
 	 * @since 3.8.0
 	 *
@@ -65,6 +74,19 @@ class Wordlift_Content_Filter_Service {
 		$this->entity_service        = $entity_service;
 		$this->configuration_service = $configuration_service;
 
+		self::$instance = $this;
+
+	}
+
+	/**
+	 * Get the {@link Wordlift_Content_Filter_Service} singleton instance.
+	 *
+	 * @since 3.14.2
+	 * @return \Wordlift_Content_Filter_Service The {@link Wordlift_Content_Filter_Service} singleton instance.
+	 */
+	public static function get_instance() {
+
+		return self::$instance;
 	}
 
 	/**
@@ -176,4 +198,23 @@ class Wordlift_Content_Filter_Service {
 
 		return $title;
 	}
+
+	/**
+	 * Get the entity URIs (configured in the `itemid` attribute) contained in
+	 * the provided content.
+	 *
+	 * @since 3.14.2
+	 *
+	 * @param string $content The content.
+	 *
+	 * @return array An array of URIs.
+	 */
+	public function get_entity_uris( $content ) {
+
+		$matches = array();
+		preg_match_all( Wordlift_Content_Filter_Service::PATTERN, $content, $matches );
+
+		return array_unique( $matches[3] );
+	}
+
 }

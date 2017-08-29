@@ -1,9 +1,19 @@
 <?php
+/**
+ * Shortcodes: Navigator Shorcode.
+ *
+ * @since      3.5.4
+ * @package    Wordlift
+ * @subpackage Wordlift/public
+ */
 
 /**
- * The `wl_navigator` implementation.
+ * Define the {@link Wordlift_Navigator_Shortcode} class which provides the
+ * `wl_navigator` implementation.
  *
- * @since 3.5.4
+ * @since      3.5.4
+ * @package    Wordlift
+ * @subpackage Wordlift/public
  */
 class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 
@@ -20,14 +30,14 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		// Extract attributes and set default values.
 		$shortcode_atts = shortcode_atts( array(
 			'title'          => __( 'Related articles', 'wordlift' ),
-			'with_carousel'  => TRUE,
-			'squared_thumbs' => FALSE
+			'with_carousel'  => true,
+			'squared_thumbs' => false,
 		), $atts );
 
 		foreach (
 			array(
 				'with_carousel',
-				'squared_thumbs'
+				'squared_thumbs',
 			) as $att
 		) {
 
@@ -55,7 +65,7 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 				'ajax_url' => admin_url( 'admin-ajax.php' ),
 				'action'   => 'wl_navigator',
 				'post_id'  => $current_post->ID,
-				'attrs'    => $shortcode_atts
+				'attrs'    => $shortcode_atts,
 			)
 		);
 

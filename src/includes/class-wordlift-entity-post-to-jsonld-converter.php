@@ -158,6 +158,12 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 				$jsonld['geo'][ $key ]  = $value;
 				unset( $jsonld[ $key ] );
 			}
+
+			if ( 'calories' === $key ) {
+				$jsonld['nutrition']['@type'] = 'NutritionInformation';
+				$jsonld['nutrition'][ $key ]  = $value;
+				unset( $jsonld[ $key ] );
+			}
 		}
 
 		return $jsonld;

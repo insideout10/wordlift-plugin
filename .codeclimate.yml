@@ -17,6 +17,11 @@ engines:
     enabled: true
     config:
       standard: "Wordpress"
+    checks:
+      WordPress VIP RestrictedFunctions get_page_by_title_get_page_by_title:
+        enabled: false
+      WordPress VIP PostsPerPage posts_per_page_posts_per_page:
+        enabled: false
   fixme:
     enabled: false
 

@@ -1,21 +1,28 @@
 <?php
-
 /**
+ * Services: Import Service.
+ *
  * Define a service class which extends WP's features to support import of linked
  * data content.
+ *
+ * @since   3.6.0
+ * @package Wordlift
+ * @package Wordlift/includes
  */
 
 /**
  * Define the Wordlift_Import_Service class.
  *
- * @since 3.6.0
+ * @since   3.6.0
+ * @package Wordlift
+ * @package Wordlift/includes
  */
 class Wordlift_Import_Service {
 
 	/**
 	 * A {@link Wordlift_Log_Service} instance.
 	 *
-	 * @since 3.6.0
+	 * @since  3.6.0
 	 * @access private
 	 * @var \Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
 	 */
@@ -24,7 +31,7 @@ class Wordlift_Import_Service {
 	/**
 	 * A {@link Wordlift_Entity_Type_Service} instance.
 	 *
-	 * @since 3.6.0
+	 * @since  3.6.0
 	 * @access private
 	 * @var \Wordlift_Entity_Post_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
 	 */
@@ -33,7 +40,7 @@ class Wordlift_Import_Service {
 	/**
 	 * The entity service instance.
 	 *
-	 * @since 3.6.0
+	 * @since  3.6.0
 	 * @access private
 	 * @var \Wordlift_Entity_Service $entity_service The entity service instance.
 	 */
@@ -42,7 +49,7 @@ class Wordlift_Import_Service {
 	/**
 	 * The schema service instance.
 	 *
-	 * @since 3.6.0
+	 * @since  3.6.0
 	 * @access private
 	 * @var \Wordlift_Schema_Service $schema_service The schema service instance.
 	 */
@@ -53,7 +60,7 @@ class Wordlift_Import_Service {
 	/**
 	 * The dataset URI for this WordPress web site.
 	 *
-	 * @since 3.6.0
+	 * @since  3.6.0
 	 * @access private
 	 * @var string $dataset_uri The dataset URI for this WordPress web site.
 	 */
@@ -65,10 +72,10 @@ class Wordlift_Import_Service {
 	 * @since 3.6.0
 	 *
 	 * @param \Wordlift_Entity_Post_Type_Service $entity_type_service
-	 * @param \Wordlift_Entity_Service $entity_service
-	 * @param \Wordlift_Schema_Service $schema_service
-	 * @param \Wordlift_Sparql_Service $sparql_service
-	 * @param string $dataset_uri
+	 * @param \Wordlift_Entity_Service           $entity_service
+	 * @param \Wordlift_Schema_Service           $schema_service
+	 * @param \Wordlift_Sparql_Service           $sparql_service
+	 * @param string                             $dataset_uri
 	 */
 	public function __construct( $entity_type_service, $entity_service, $schema_service, $sparql_service, $dataset_uri ) {
 
@@ -90,20 +97,20 @@ class Wordlift_Import_Service {
 	 * @since 3.6.0
 	 *
 	 * @param array $postmeta An array of indexed post meta.
-	 * @param int $post_id The post ID being imported.
-	 * @param array $post An array of post properties.
+	 * @param int   $post_id  The post ID being imported.
+	 * @param array $post     An array of post properties.
 	 *
 	 * @return array An array of indexed post meta.
 	 */
 	public function wp_import_post_meta( $postmeta, $post_id, $post ) {
 
 		// If we're not dealing with entity posts, return the original post meta.
-		if ( $post['post_type'] !== $this->entity_type_service->get_post_type() ) {
+		if ( ! $this->entity_service->is_entity( $post_id ) ) {
 			return $postmeta;
 		}
 
 		// Get a reference to the entity URL meta.
-		$entity_url_meta = NULL;
+		$entity_url_meta = null;
 
 		foreach ( $postmeta as &$meta ) {
 			if ( 'entity_url' === $meta['key'] ) {
@@ -113,7 +120,7 @@ class Wordlift_Import_Service {
 		}
 
 		// If the entity URI is within the dataset URI, we don't change anything.
-		if ( NULL === $entity_url_meta || 0 === strpos( $entity_url_meta['value'], $this->dataset_uri ) ) {
+		if ( null === $entity_url_meta || 0 === strpos( $entity_url_meta['value'], $this->dataset_uri ) ) {
 			return $postmeta;
 		}
 
@@ -131,10 +138,10 @@ class Wordlift_Import_Service {
 	 *
 	 * @since 3.6.0
 	 *
-	 * @param int $mid The meta ID after successful update.
-	 * @param int $object_id Object ID.
-	 * @param string $meta_key Meta key.
-	 * @param mixed $meta_value Meta value.
+	 * @param int    $mid        The meta ID after successful update.
+	 * @param int    $object_id  Object ID.
+	 * @param string $meta_key   Meta key.
+	 * @param mixed  $meta_value Meta value.
 	 */
 	public function added_post_meta( $mid, $object_id, $meta_key, $meta_value ) {
 
@@ -142,7 +149,7 @@ class Wordlift_Import_Service {
 		$s = $this->entity_service->get_uri( $object_id );
 
 		// Get the field with the specified meta key. Return if the field is not defined.
-		if ( NULL === ( $field = $this->schema_service->get_field( $meta_key ) ) ) {
+		if ( null === ( $field = $this->schema_service->get_field( $meta_key ) ) ) {
 			return;
 		}
 
@@ -150,13 +157,16 @@ class Wordlift_Import_Service {
 		$p = $field['predicate'];
 
 		// Format the object value according to the field type.
-		$o = $this->sparql_service->format( $meta_value, $field['type'] );
+		$o = Wordlift_Sparql_Service::format( $meta_value, $field['type'] );
 
 		// Create the statement.
 		$stmt = sprintf( 'INSERT DATA { <%s> <%s> %s };', Wordlift_Sparql_Service::escape_uri( $s ), Wordlift_Sparql_Service::escape_uri( $p ), $o );
 
 		// Finally queue the statement.
 		$this->sparql_service->execute( $stmt );
+
+		// Clear up the cache to avoid memory errors.
+		wp_cache_flush();
 
 	}
 
@@ -170,7 +180,7 @@ class Wordlift_Import_Service {
 
 		add_action( 'added_post_meta', array(
 			$this,
-			'added_post_meta'
+			'added_post_meta',
 		), 10, 4 );
 
 	}
@@ -184,7 +194,7 @@ class Wordlift_Import_Service {
 
 		remove_action( 'added_post_meta', array(
 			$this,
-			'added_post_meta'
+			'added_post_meta',
 		), 10 );
 
 	}

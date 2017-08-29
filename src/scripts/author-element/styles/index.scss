@@ -3,7 +3,7 @@
   max-width: 500px;
 }
 
-.wl-select2-container, .wl-select2-dropdown {
+.wl-select2-element + span.select2-container, .wl-select2-result {
 
   &.select2-selection, .select2-selection {
     min-height: 32px;

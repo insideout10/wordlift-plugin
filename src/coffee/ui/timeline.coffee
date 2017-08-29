@@ -5,7 +5,7 @@ $.fn.extend
 
   timeline: (options) ->
 
-#
+    #
     options = $.extend {dataEndpoint: null, settings: {}}, options
 
     # Create a reference to dom wrapper element
@@ -15,7 +15,7 @@ $.fn.extend
     # See: https://github.com/NUKnightLab/TimelineJS
     buildTimeline = (data) ->
       if not data.timeline?
-        container.hide()
+        container.parent().hide()
         return
 
       # TimelineJS v3 constructor.

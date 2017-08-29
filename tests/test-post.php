@@ -212,7 +212,7 @@ class PostTest extends Wordlift_Unit_Test_Case {
 
 		// TODO: synchronize data.
 		// NOTICE: this requires a published post!
-		wl_linked_data_push_to_redlink( $post_id );
+		Wordlift_Linked_Data_Service::get_instance()->push( $post_id );
 
 		// Check that the entities are created in WordPress.
 		$this->assertCount( count( $entities ), $entity_posts );
@@ -243,9 +243,6 @@ class PostTest extends Wordlift_Unit_Test_Case {
 
 		// Check that the locally saved post data match the ones on Redlink.
 		$this->checkPost( $post_id );
-
-		// Check the post references, that they match between local and remote.
-		$this->checkPostReferences( $post_id );
 
 		// Delete the post.
 		$this->deletePost( $post_id );
@@ -311,7 +308,7 @@ class PostTest extends Wordlift_Unit_Test_Case {
 	function checkEntity( $post ) {
 
 		// Get the entity URI.
-		$uri = wordlift_esc_sparql( wl_get_entity_uri( $post->ID ) );
+		$uri = Wordlift_Sparql_Service::escape( wl_get_entity_uri( $post->ID ) );
 
 		wl_write_log( "checkEntity [ post id :: $post->ID ][ uri :: $uri ]" );
 
@@ -420,7 +417,7 @@ EOF;
 		$this->assertNotNull( $post );
 
 		// Get the post Redlink URI.
-		$uri = wordlift_esc_sparql( wl_get_entity_uri( $post->ID ) );
+		$uri = Wordlift_Sparql_Service::escape( wl_get_entity_uri( $post->ID ) );
 
 		wl_write_log( "checkPost [ uri :: $uri ]" );
 
@@ -453,81 +450,37 @@ EOF;
 			wl_write_log( "checkPost [ uri :: $uri ][ body :: $body ][ count :: $count ][ count (expected) :: 2 ]" );
 		}
 
-		// Expect only one match (headers + one row).
-		$this->assertEquals( 2, $count );
+		// Check that there's no data online: posts are not published to the
+		// Linked Data.
+		$this->assertEquals( 1, $count );
 
-		// Focus on the first row.
-		$match = $matches[1];
-
-		$author            = $match['author'];
-		$date_modified     = $match['dateModified'];
-		$date_published    = $match['datePublished'];
-		$interaction_count = $match['interactionCount'];
-		$url               = $match['url'];
-		$type              = $match['type'];
-		$label             = $match['label'];
-
-		$permalink           = get_permalink( $post_id );
-		$post_author_url     = Wordlift_User_Service::get_instance()->get_uri( $post->post_author );
-		$post_date_published = wl_tests_time_0000_to_000Z( get_post_time( 'c', false, $post ) );
-		$post_date_modified  = wl_tests_time_0000_to_000Z( wl_get_post_modified_time( $post ) );
-		$post_comment_count  = 'UserComments:' . $post->comment_count;
-		$post_entity_type    = 'http://schema.org/BlogPosting';
-		$post_title          = $post->post_title;
-
-		$this->assertEquals( $post_author_url, $author );
-		// We expect datetime not to differ more than 5 seconds.
-		$this->assertLessThan( 10, wl_tests_get_time_difference_in_seconds( $post_date_published, $date_published ) );
-		$this->assertLessThan( 10, wl_tests_get_time_difference_in_seconds( $post_date_modified, $date_modified ) );
-		$this->assertEquals( $post_comment_count, $interaction_count );
-		$this->assertEquals( $permalink, $url );
-		$this->assertEquals( $post_entity_type, $type );
-		$this->assertEquals( $post_title, $label );
-	}
-
-	/**
-	 * Check that the post is referencing the related entities.
-	 *
-	 * @param int $post_id The post ID.
-	 */
-	function checkPostReferences( $post_id ) {
-
-		// Get the post.
-		$post = get_post( $post_id );
-		$this->assertNotNull( $post );
-
-		// Get the post Redlink URI.
-		$uri = wordlift_esc_sparql( wl_get_entity_uri( $post->ID ) );
-
-		// Prepare the SPARQL query to select label and URL.
-		$sparql = "SELECT DISTINCT ?uri WHERE { <$uri> dct:references ?uri . }";
-
-		// Send the query and get the response.
-		$response = rl_sparql_select( $sparql );
-		$this->assertFalse( is_wp_error( $response ) );
-
-		$body = $response['body'];
-
-		$matches = array();
-		$count   = preg_match_all( '/^(?P<uri>[^\r]*)/im', $body, $matches, PREG_SET_ORDER );
-		$this->assertTrue( is_numeric( $count ) );
-
-		$entity_ids = wl_core_get_related_entity_ids( $post->ID );
-
-//        wl_write_log( "[ entity IDs :: " . join( ', ', $entity_ids ) . " ][ size of entity IDs :: " . sizeof( $entity_ids ) . " ][ count :: $count ][ post ID :: $post->ID ]" );
+//		// Focus on the first row.
+//		$match = $matches[1];
 //
-//        if ( $count !== ( 1 + sizeof( $entity_ids ) ) ) {
-//            wl_write_log( "[ sparql :: $sparql ][ body :: $body ]" );
-//        }
-		// Expect only one match (headers + expected entities).
-		$this->assertEquals( $count, sizeof( $entity_ids ) + 1 );
-
-		$entity_uris = wl_post_ids_to_entity_uris( $entity_ids );
-		for ( $i = 1; $i < $count; $i ++ ) {
-			$entity_uri = $matches[ $i ]['uri'];
-			// Check that the URI is in the array.
-			$this->assertTrue( in_array( $entity_uri, $entity_uris ) );
-		}
+//		$author            = $match['author'];
+//		$date_modified     = $match['dateModified'];
+//		$date_published    = $match['datePublished'];
+//		$interaction_count = $match['interactionCount'];
+//		$url               = $match['url'];
+//		$type              = $match['type'];
+//		$label             = $match['label'];
+//
+//		$permalink           = get_permalink( $post_id );
+//		$post_author_url     = Wordlift_User_Service::get_instance()->get_uri( $post->post_author );
+//		$post_date_published = wl_tests_time_0000_to_000Z( get_post_time( 'c', false, $post ) );
+//		$post_date_modified  = wl_tests_time_0000_to_000Z( wl_get_post_modified_time( $post ) );
+//		$post_comment_count  = 'UserComments:' . $post->comment_count;
+//		$post_entity_type    = 'http://schema.org/BlogPosting';
+//		$post_title          = $post->post_title;
+//
+//		$this->assertEquals( $post_author_url, $author );
+//		// We expect datetime not to differ more than 5 seconds.
+//		$this->assertLessThan( 10, wl_tests_get_time_difference_in_seconds( $post_date_published, $date_published ) );
+//		$this->assertLessThan( 10, wl_tests_get_time_difference_in_seconds( $post_date_modified, $date_modified ) );
+//		$this->assertEquals( $post_comment_count, $interaction_count );
+//		$this->assertEquals( $permalink, $url );
+//		$this->assertEquals( $post_entity_type, $type );
+//		$this->assertEquals( $post_title, $label );
 	}
 
 }

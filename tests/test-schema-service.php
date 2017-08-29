@@ -31,7 +31,7 @@ class Wordlift_Schema_Service_Test extends Wordlift_Unit_Test_Case {
 	function setUp() {
 		parent::setUp();
 
-		$this->schema_service = new Wordlift_Schema_Service();
+		$this->schema_service = $this->get_wordlift_test()->get_schema_service();
 
 	}
 

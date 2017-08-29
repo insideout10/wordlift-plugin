@@ -165,12 +165,13 @@ class Wordlift_Admin {
 		if ( null !== $post = $entity_being_edited = get_post() ) {
 
 			$params['post_id']           = $entity_being_edited->ID;
-			$params['entityBeingEdited'] = isset( $entity_being_edited->post_type ) && Wordlift_Entity_Service::TYPE_NAME == $entity_being_edited->post_type && is_numeric( get_the_ID() );
+			$entity_service = Wordlift_Entity_Service::get_instance();
+			$params['entityBeingEdited'] = isset( $entity_being_edited->post_type ) && $entity_service->is_entity( $post->ID ) && is_numeric( get_the_ID() );
 			// We add the `itemId` here to give a chance to the analysis to use it in order to tell WLS to exclude it
 			// from the results, since we don't want the current entity to be discovered by the analysis.
 			//
 			// See https://github.com/insideout10/wordlift-plugin/issues/345
-			$params['itemId'] = Wordlift_Entity_Service::get_instance()->get_uri( $entity_being_edited->ID );
+			$params['itemId'] = $entity_service->get_uri( $entity_being_edited->ID );
 
 		}
 

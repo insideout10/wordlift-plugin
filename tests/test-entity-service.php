@@ -356,7 +356,7 @@ class EntityServiceTest extends Wordlift_Unit_Test_Case {
 		$entity_service = Wordlift_Entity_Service::get_instance();
 
 		$post_id = wl_create_post( '', 'post-1', uniqid( 'post', true ), 'draft', 'post' );
-		$this->assertNull( $entity_service->get_classification_scope_for( 'post_id' ) );
+		$this->assertNull( $entity_service->get_classification_scope_for( 'post_id', null ) );
 		$entity_id = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
 		$this->assertEquals( 'what', $entity_service->get_classification_scope_for( $entity_id ) );
 		wl_set_entity_main_type( $entity_id, 'http://schema.org/Thing' );

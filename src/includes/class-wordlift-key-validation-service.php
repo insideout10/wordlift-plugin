@@ -18,6 +18,15 @@
 class Wordlift_Key_Validation_Service {
 
 	/**
+	 * A {@link Wordlift_Log_Service} instance.
+	 *
+	 * @since  3.14.0
+	 * @access private
+	 * @var \Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
+	 */
+	private $log;
+
+	/**
 	 * The {@link Wordlift_Configuration_Service} instance.
 	 *
 	 * @since  3.14.0
@@ -35,6 +44,8 @@ class Wordlift_Key_Validation_Service {
 	 */
 	public function __construct( $configuration_service ) {
 
+		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Key_Validation_Service' );
+
 		$this->configuration_service = $configuration_service;
 
 	}
@@ -50,8 +61,10 @@ class Wordlift_Key_Validation_Service {
 	 */
 	public function is_valid( $key ) {
 
+		$this->log->debug( 'Validating key...' );
+
 		// Request the dataset URI as a way to validate the key
-		$response = wp_remote_get( $this->configuration_service->get_dataset_uri( $key ), unserialize( WL_REDLINK_API_HTTP_OPTIONS ) );
+		$response = wp_remote_get( $this->configuration_service->get_accounts_by_key_dataset_uri( $key ), unserialize( WL_REDLINK_API_HTTP_OPTIONS ) );
 
 		// If the response is valid, the key is valid.
 		return ! is_wp_error( $response ) && 200 === (int) $response['response']['code'];

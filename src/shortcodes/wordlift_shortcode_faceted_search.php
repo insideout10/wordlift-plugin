@@ -1,7 +1,14 @@
 <?php
+/**
+ * Faceted Search Shortcode.
+ *
+ * @since      3.0.0
+ * @package    Wordlift
+ * @subpackage Wordlift/shortcodes
+ */
 
 /**
- * Function in charge of diplaying the [wl-faceted-search]
+ * Function in charge of diplaying the [wl-faceted-search].
  */
 function wl_shortcode_faceted_search( $atts ) {
 
@@ -28,13 +35,13 @@ function wl_shortcode_faceted_search( $atts ) {
 		);
 	}
 
-
 	// If the current post is not an entity and has no related entities
 	// than the shortcode cannot be rendered
 	// TODO Add an alert visibile only for connected admin users
 	$current_post = get_post();
 
-	$entity_ids = ( Wordlift_Entity_Service::TYPE_NAME === $current_post->post_type ) ?
+	$entity_service = Wordlift_Entity_Service::get_instance();
+	$entity_ids     = $entity_service->is_entity( $current_post->ID ) ?
 		$current_post->ID :
 		wl_core_get_related_entity_ids( $current_post->ID );
 
@@ -101,10 +108,11 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 		return;
 	}
 
-	// If the current post is an entity, 
+	// If the current post is an entity,
 	// the current post is used as main entity.
-	// Otherwise, current post related entities are used. 
-	$entity_ids = ( Wordlift_Entity_Service::TYPE_NAME === $current_post->post_type ) ?
+	// Otherwise, current post related entities are used.
+	$entity_service = Wordlift_Entity_Service::get_instance();
+	$entity_ids     = $entity_service->is_entity( $current_post->ID ) ?
 		array( $current_post->ID ) :
 		wl_core_get_related_entity_ids( $current_post->ID );
 
@@ -118,15 +126,18 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 	// Retrieve requested type
 	$required_type = ( isset( $_GET['type'] ) ) ? $_GET['type'] : null;
 
-	// Set up data structures            
-	$referencing_posts = wl_core_get_posts( array(
-		'get'            => 'posts',
-		'post__not_in'   => array( $current_post_id ),
-		'related_to__in' => $entity_ids,
-		'post_type'      => 'post',
-		'as'             => 'subject',
-		'post_status'    => 'publish',
-	) );
+	$referencing_posts = Wordlift_Relation_Service::get_instance()
+	                                              ->get_article_subjects( $entity_ids, '*', null, 'publish', array( $current_post_id ) );
+
+//	// Set up data structures
+//	$referencing_posts = wl_core_get_posts( array(
+//		'get'            => 'posts',
+//		'post__not_in'   => array( $current_post_id ),
+//		'related_to__in' => $entity_ids,
+//		'post_type'      => 'post',
+//		'as'             => 'subject',
+//		'post_status'    => 'publish',
+//	) );
 
 	$referencing_post_ids = array_map( function ( $p ) {
 		return $p->ID;
@@ -140,13 +151,15 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 
 		$filtered_posts = ( empty( $filtering_entity_uris ) ) ?
 			$referencing_posts :
-			wl_core_get_posts( array(
-				'get'            => 'posts',
-				'post__in'       => $referencing_post_ids,
-				'related_to__in' => wl_get_entity_post_ids_by_uris( $filtering_entity_uris ),
-				'post_type'      => 'post',
-				'as'             => 'subject',
-			) );
+			Wordlift_Relation_Service::get_instance()
+			                         ->get_article_subjects( wl_get_entity_post_ids_by_uris( $filtering_entity_uris ), '*', null, null, array(), null, $referencing_post_ids );
+//			wl_core_get_posts( array(
+//				'get'            => 'posts',
+//				'post__in'       => $referencing_post_ids,
+//				'related_to__in' => wl_get_entity_post_ids_by_uris( $filtering_entity_uris ),
+//				'post_type'      => 'post',
+//				'as'             => 'subject',
+//			) );
 
 		if ( $filtered_posts ) {
 			foreach ( $filtered_posts as $post_obj ) {
@@ -171,8 +184,8 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 		$subject_ids = implode( ',', $referencing_post_ids );
 
 		$query = <<<EOF
-            SELECT object_id as ID, count( object_id ) as counter 
-            FROM $table_name 
+            SELECT object_id as ID, count( object_id ) as counter
+            FROM $table_name
             WHERE subject_id IN ($subject_ids) and object_id != ($current_post_id)
             GROUP BY object_id;
 EOF;
@@ -204,4 +217,3 @@ EOF;
 
 add_action( 'wp_ajax_wl_faceted_search', 'wl_shortcode_faceted_search_ajax' );
 add_action( 'wp_ajax_nopriv_wl_faceted_search', 'wl_shortcode_faceted_search_ajax' );
-

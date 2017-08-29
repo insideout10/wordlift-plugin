@@ -76,35 +76,35 @@ class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 		$publishers_service = new Wordlift_Publisher_Service();
 
 		// create a non publisher entity to make the test more real
-		$pid = $this->factory->post->create( array(
+		$busines = $this->factory->post->create( array(
 			'post_title' => 'bla',
 			'post_type'  => 'entity',
 			'post_status' => 'publish',
 		) );
 
-		$this->entity_type_service->set( $pid, 'http://schema.org/LocalBusiness' );
+		$this->entity_type_service->set( $busines, 'http://schema.org/LocalBusiness' );
 
 		// create a person
-		$pid = $this->factory->post->create( array(
+		$person = $this->factory->post->create( array(
 			'post_title' => 'blabla',
 			'post_type'  => 'entity',
 			'post_status' => 'publish',
 		) );
 
-		$this->entity_type_service->set( $pid, 'http://schema.org/Person' );
+		$this->entity_type_service->set( $person, 'http://schema.org/Person' );
 
 		$this->assertEquals( 1 , $publishers_service->count() );
 		$this->assertEquals( 1 , count( $publishers_service->query() ) );
 		$this->assertEquals( 1 , count( $publishers_service->query( '' ) ) );
 
 		// create an organization
-		$pid = $this->factory->post->create( array(
+		$org = $this->factory->post->create( array(
 			'post_title' => 'alb',
 			'post_type'  => 'entity',
 			'post_status' => 'publish',
 		) );
 
-		$this->entity_type_service->set( $pid, 'http://schema.org/Organization' );
+		$this->entity_type_service->set( $org, 'http://schema.org/Organization' );
 
 		$this->assertEquals( 2 , $publishers_service->count() );
 		$this->assertEquals( 2 , count( $publishers_service->query() ) );
@@ -112,6 +112,48 @@ class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 
 		// test the search
 		$this->assertEquals( 1 , count( $publishers_service->query( 'bla' ) ) );
+
+		// Test that posts with the relevant entity type are also returned
+
+		// random post article
+		$blapost = $this->factory->post->create( array(
+			'post_title' => 'blabla',
+			'post_type'  => 'post',
+			'post_status' => 'publish',
+		) );
+		update_post_meta( $blapost, '_thumbnail_id', 1 );
+
+		$this->assertEquals( 2 , $publishers_service->count() );
+		$this->assertEquals( 2 , count( $publishers_service->query() ) );
+		$this->assertEquals( 2 , count( $publishers_service->query( '' ) ) );
+
+		// test the search
+		$this->assertEquals( 1 , count( $publishers_service->query( 'bla' ) ) );
+
+		// create a post person
+		$postperson = $this->factory->post->create( array(
+			'post_title' => 'oblao',
+			'post_type'  => 'post',
+			'post_status' => 'publish',
+		) );
+
+		$this->entity_type_service->set( $postperson, 'http://schema.org/Person' );
+
+		// create a post organization
+		$postorg = $this->factory->post->create( array(
+			'post_title' => 'blabla',
+			'post_type'  => 'post',
+			'post_status' => 'publish',
+		) );
+
+		$this->entity_type_service->set( $postorg, 'http://schema.org/Organization' );
+
+		$this->assertEquals( 4 , $publishers_service->count() );
+		$this->assertEquals( 4 , count( $publishers_service->query() ) );
+		$this->assertEquals( 4 , count( $publishers_service->query( '' ) ) );
+
+		// test the search
+		$this->assertEquals( 3 , count( $publishers_service->query( 'bla' ) ) );
 	}
 
 }

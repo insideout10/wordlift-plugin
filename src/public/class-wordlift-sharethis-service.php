@@ -1,9 +1,19 @@
 <?php
+/**
+ * Services: ShareThis Service.
+ *
+ * @since      3.2.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes
+ */
 
 /**
- * A service to maintain a compatibilty layer with the ShareThis plugin (which only displays itself on pages and posts).
+ * A service to maintain a compatibility layer with the ShareThis plugin (which
+ * only displays itself on pages and posts).
  *
- * @since 3.2.0
+ * @since      3.2.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes
  */
 class Wordlift_ShareThis_Service {
 
@@ -78,7 +88,8 @@ class Wordlift_ShareThis_Service {
 		global $post;
 
 		// If it's not the entity type, return.
-		if ( null === $post || ! isset( $post->post_type ) || Wordlift_Entity_Service::TYPE_NAME !== $post->post_type ) {
+		$entity_service = Wordlift_Entity_Service::get_instance();
+		if ( null === $post || ! $entity_service->is_entity( get_the_ID() ) ) {
 			return $content;
 		}
 

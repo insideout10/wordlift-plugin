@@ -193,7 +193,7 @@ class EntityImagesTest extends Wordlift_Unit_Test_Case {
 		wl_update_post_status( $entity_post->ID, 'publish' );
 		// Ensure one image - $first_featured_image - is on RL
 		$redlink_images = $this->getImageRLMetadata( $entity_post->ID );
-		$this->assertCount( 1, $redlink_images );
+		$this->assertCount( 2, $redlink_images );
 		$this->assertContains(
 			wp_get_attachment_url( $first_featured_image->ID ),
 			$redlink_images );
@@ -222,7 +222,7 @@ class EntityImagesTest extends Wordlift_Unit_Test_Case {
 
 		// Get the post Redlink URI.
 		$uri     = wl_get_entity_uri( $entity_id );
-		$uri_esc = wordlift_esc_sparql( $uri );
+		$uri_esc = Wordlift_Sparql_Service::escape( $uri );
 
 		// Prepare the SPARQL query to select images url.
 		$sparql = "SELECT ?o WHERE { <$uri_esc> <http://schema.org/image> ?o . }";

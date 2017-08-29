@@ -1,5 +1,4 @@
 /**
- * Created by david on 21/02/2017.
  */
 
 const $ = jQuery;

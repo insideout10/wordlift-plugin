@@ -209,8 +209,6 @@ class TimelineShortcodeTest extends Wordlift_Unit_Test_Case {
 		$post_1_id = wl_create_post( '', 'post-1', 'Post 1', 'publish', 'post' );
 		$post_2_id = wl_create_post( '', 'post-2', 'Post 2', 'publish', 'page' );
 
-		// Create entities (2 events and one place)
-
 		$entity_1_id = wl_create_post( "Entity 1's Text", 'entity-1', "Entity 1's Title", 'publish', 'entity' );
 		wl_set_entity_main_type( $entity_1_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
 		add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-01', true );
@@ -222,7 +220,7 @@ class TimelineShortcodeTest extends Wordlift_Unit_Test_Case {
 		add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-08', true );
 
 		$entity_3_id = wl_create_post( 'Entity 3 Text', 'entity-3', 'Entity 3 Title', 'publish', 'entity' );
-		wl_set_entity_main_type( $entity_2_id, 'http://schema.org/Place' );
+		wl_set_entity_main_type( $entity_3_id, 'http://schema.org/Place' );
 		add_post_meta( $entity_3_id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE, 45.12, true );
 		add_post_meta( $entity_3_id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, 90.3, true );
 

@@ -2,8 +2,9 @@
 /**
  * Provide WordLift's install functions.
  *
- * @since   3.0.0
- * @package Wordlift
+ * @since      3.0.0
+ * @package    Wordlift
+ * @subpackage Wordlfit/modules/core
  */
 
 /**
@@ -85,13 +86,15 @@ function wl_core_install_entity_type_data() {
 		}
 
 		// Update term with description, slug and parent
-		wp_update_term( $result['term_id'], Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array(
+		$term = wp_update_term( $result['term_id'], Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array(
 			'name'        => $term['label'],
 			'slug'        => $slug,
 			'description' => $term['description'],
 			// We give to WP taxonomy just one parent. TODO: see if can give more than one
 			'parent'      => $parent_id,
 		) );
+
+		Wordlift_Log_Service::get_instance()->trace( "Entity Type $slug installed with ID {$term['term_id']}." );
 
 	}
 
@@ -251,25 +254,74 @@ function wl_core_upgrade_db_3_12_3_14() {
 	$editors->add_cap( 'delete_private_wordlift_entities' );
 }
 
+/**
+ * Upgrade the DB structure to the one expected by the 3.15 release.
+ *
+ * Add explicit Article entity.
+ *
+ * @since 3.15.0
+ */
+function wl_core_upgrade_db_3_14_3_15() {
+	global $wpdb;
+
+	if ( version_compare( get_option( 'wl_db_version' ), '3.15', '<=' ) ) {
+		$article = get_term_by( 'slug', 'article', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		if ( ! $article ) {
+			$article    = wp_insert_term(
+				'Article',
+				Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				array(
+					'slug'        => 'article',
+					'description' => 'An Article.',
+				)
+			);
+			$article_id = $article['term_id'];
+		} else {
+			$article_id = $article->term_id;
+		}
+
+		// An sql that will assign the article term to all posts and pages
+		$wpdb->query( $wpdb->prepare(
+			"
+			INSERT INTO $wpdb->term_relationships( object_id, term_taxonomy_id )
+			SELECT id, %d
+			FROM $wpdb->posts
+			WHERE post_type IN ( 'post', 'page' )
+				AND id NOT IN
+			(
+				SELECT DISTINCT tr.object_id
+				FROM $wpdb->term_relationships tr
+				INNER JOIN $wpdb->term_taxonomy tt
+					ON tr.term_taxonomy_id = tt.term_taxonomy_id
+						AND tt.taxonomy = 'wl_entity_type'
+			)
+			",
+			$article_id
+		) );
+	}
+}
+
 // Check db status on automated plugins updates
 function wl_core_update_db_check() {
 
 	// Ensure the custom type and the taxonomy are registered.
 	Wordlift_Entity_Post_Type_Service::get_instance()->register();
 
+	// Commenting this out because this function is already called by init
+	// with priority 0 at wordlift_entity_type.php.
 	wl_entity_type_taxonomy_register();
 
 	// Ensure the custom taxonomy for dbpedia topics is registered
 	Wordlift_Topic_Taxonomy_Service::get_instance()->init();
 
-	if ( get_option( 'wl_db_version' ) != WL_DB_VERSION ) {
+	if ( get_option( 'wl_db_version' ) !== WL_DB_VERSION ) {
 		wl_core_install_entity_type_data();
 		wl_core_upgrade_db_to_1_0();
 		wl_core_upgrade_db_1_0_to_3_10();
 		wl_core_upgrade_db_3_10_3_12();
 		wl_core_upgrade_db_3_12_3_14();
+		wl_core_upgrade_db_3_14_3_15();
 		update_option( 'wl_db_version', WL_DB_VERSION );
-
 	}
 
 }
