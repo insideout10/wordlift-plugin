@@ -13,16 +13,10 @@
         </testsuite>
     </testsuites>
     <php>
-        <const name="WP_DEBUG_LOG" value="false"/>
-        <const name="WP_DEBUG_DISPLAY" value="true"/>
+        <const name="WP_DEBUG_LOG" value="true"/>
+        <const name="WP_DEBUG_DISPLAY" value="false"/>
     </php>
     <filter>
-        <!--<whitelist processUncoveredFilesFromWhitelist="true">-->
-            <!--<directory suffix=".php">./src</directory>-->
-            <!--<exclude>-->
-                <!--<directory suffix=".php">./src/*/partials</directory>-->
-            <!--</exclude>-->
-        <!--</whitelist>-->
         <blacklist>
             <directory suffix=".php">vendor</directory>
             <directory suffix=".php">tests</directory>
