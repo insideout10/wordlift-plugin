@@ -153,13 +153,35 @@ class Wordlift_Content_Filter_Service {
 		// Get the link.
 		$href = get_permalink( $post );
 
-		$title = $this->get_link_title( $post->ID, $label );
-		if ( ! empty( $title ) ) {
-			$title = ' title="' . esc_attr( $title ) . '"';
-		}
+		// Get an alternative title attribute.
+		$title_attribute = $this->get_title_attribute( $post->ID, $label );
 
 		// Return the link.
-		return "<a class='wl-entity-page-link'" . $title . " href='$href'>$label</a>";
+		return "<a class='wl-entity-page-link' $title_attribute href='$href'>$label</a>";
+	}
+
+	/**
+	 * Get a `title` attribute with an alternative label for the link.
+	 *
+	 * If an alternative title isn't available an empty string is returned.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @param int    $post_id The {@link WP_Post}'s id.
+	 * @param string $label   The main link label.
+	 *
+	 * @return string A `title` attribute with an alternative label or an empty
+	 *                string if none available.
+	 */
+	private function get_title_attribute( $post_id, $label ) {
+
+		// Get an alternative title.
+		$title = $this->get_link_title( $post_id, $label );
+		if ( ! empty( $title ) ) {
+			return 'title="' . esc_attr( $title ) . '"';
+		}
+
+		return '';
 	}
 
 	/**
@@ -167,11 +189,11 @@ class Wordlift_Content_Filter_Service {
 	 *
 	 * @since 3.15.0
 	 *
-	 * @param int		$post_id 		The post id of the post being linked.
-	 * @param string	$ignore_label 	A label to ignore.
+	 * @param int    $post_id      The post id of the post being linked.
+	 * @param string $ignore_label A label to ignore.
 	 *
-	 * @return string	The title to be used in the link. An empty string when
-	 *					there is no alternative that is not the $ignore_label.
+	 * @return string    The title to be used in the link. An empty string when
+	 *                    there is no alternative that is not the $ignore_label.
 	 */
 	function get_link_title( $post_id, $ignore_label ) {
 
