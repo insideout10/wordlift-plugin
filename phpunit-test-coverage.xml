@@ -17,14 +17,18 @@
         <const name="WP_DEBUG_DISPLAY" value="true"/>
     </php>
     <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./src</directory>
-            <exclude>
-                <directory suffix=".php">./src/*/partials</directory>
-            </exclude>
-        </whitelist>
+        <!--<whitelist processUncoveredFilesFromWhitelist="true">-->
+            <!--<directory suffix=".php">./src</directory>-->
+            <!--<exclude>-->
+                <!--<directory suffix=".php">./src/*/partials</directory>-->
+            <!--</exclude>-->
+        <!--</whitelist>-->
+        <blacklist>
+            <directory suffix=".php">vendor</directory>
+            <directory suffix=".php">tests</directory>
+        </blacklist>
     </filter>
     <logging>
-        <log type="coverage-clover" target="./build/logs/clover.xml"/>
+        <log type="coverage-clover" target="build/logs/clover.xml"/>
     </logging>
 </phpunit>
