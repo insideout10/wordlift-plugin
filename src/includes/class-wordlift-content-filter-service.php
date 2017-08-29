@@ -129,12 +129,13 @@ class Wordlift_Content_Filter_Service {
 		$label     = $matches[4];
 
 		// Get the entity post by URI.
-		if ( null === ( $post = $this->entity_service->get_entity_post_by_uri( $uri ) ) ) {
+		$post = $this->entity_service->get_entity_post_by_uri( $uri );
+		if ( null === $post ) {
 
 			// If the entity post is not found return the label w/o the markup
 			// around it.
 			//
-			// See https://github.com/insideout10/wordlift-plugin/issues/461
+			// See https://github.com/insideout10/wordlift-plugin/issues/461.
 			return $label;
 		}
 
@@ -197,7 +198,7 @@ class Wordlift_Content_Filter_Service {
 	 */
 	function get_link_title( $post_id, $ignore_label ) {
 
-		// Get possible alternative labels we can select from
+		// Get possible alternative labels we can select from.
 		$labels = $this->entity_service->get_alternative_labels( $post_id );
 
 		/*
@@ -206,13 +207,13 @@ class Wordlift_Content_Filter_Service {
 		 */
 		$labels[] = get_the_title( $post_id );
 
-		// Add some randomness to the label selection
+		// Add some randomness to the label selection.
 		shuffle( $labels );
 
 		// Select the first label which is not to be ignored.
 		$title = '';
 		foreach ( $labels as $label ) {
-			if ( strcasecmp( $label, $ignore_label ) != 0 ) {
+			if ( 0 !== strcasecmp( $label, $ignore_label ) ) {
 				$title = $label;
 				break;
 			}
