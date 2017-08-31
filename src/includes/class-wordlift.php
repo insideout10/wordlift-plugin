@@ -557,7 +557,7 @@ class Wordlift {
 	public function __construct() {
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.14.4';
+		$this->version     = '3.14.5';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -1234,6 +1234,7 @@ class Wordlift {
 		/** Adapters. */
 		$this->loader->add_filter( 'mce_external_plugins', $this->tinymce_adapter, 'mce_external_plugins', 10, 1 );
 		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_submit_auto_selected_posts', $this->batch_analysis_adapter, 'submit_auto_selected_posts', 10 );
+		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_submit_all_posts', $this->batch_analysis_adapter, 'submit_all_posts', 10 );
 		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_submit', $this->batch_analysis_adapter, 'submit', 10 );
 		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_cancel', $this->batch_analysis_adapter, 'cancel', 10 );
 		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_clear_warning', $this->batch_analysis_adapter, 'clear_warning', 10 );

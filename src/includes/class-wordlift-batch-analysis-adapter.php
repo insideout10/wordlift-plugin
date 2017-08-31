@@ -35,6 +35,11 @@ class Wordlift_Batch_Analysis_Adapter {
 
 	}
 
+	/**
+	 * Submit all the auto selected posts, i.e. non annotated posts.
+	 *
+	 * @since 3.14.2
+	 */
 	public function submit_auto_selected_posts() {
 
 		if ( ! isset( $_REQUEST['link'] ) ) {
@@ -51,6 +56,32 @@ class Wordlift_Batch_Analysis_Adapter {
 
 	}
 
+	/**
+	 * Submit all posts for analysis.
+	 *
+	 * @since 3.14.5
+	 */
+	public function submit_all_posts() {
+
+		if ( ! isset( $_REQUEST['link'] ) ) {
+			wp_die( 'The `link` parameter is required.' );
+		}
+
+		$count = $this->batch_analysis_service->submit_all_posts( $_REQUEST['link'] );
+
+		// Clear any buffer.
+		ob_clean();
+
+		// Send the response.
+		wp_send_json_success( array( 'count' => $count ) );
+
+	}
+
+	/**
+	 * Submit the specified post for batch analysis.
+	 *
+	 * @since 3.14.2
+	 */
 	public function submit() {
 
 		if ( ! isset( $_REQUEST['link'] ) || ! isset( $_REQUEST['post'] ) ) {
@@ -67,6 +98,11 @@ class Wordlift_Batch_Analysis_Adapter {
 
 	}
 
+	/**
+	 * Cancel the batch analysis for the specified post.
+	 *
+	 * @since 3.14.0
+	 */
 	public function cancel() {
 
 		if ( ! isset( $_REQUEST['post'] ) ) {
@@ -83,6 +119,11 @@ class Wordlift_Batch_Analysis_Adapter {
 
 	}
 
+	/**
+	 * Clear warnings for the specified post.
+	 *
+	 * @since 3.14.0
+	 */
 	public function clear_warning() {
 
 		if ( ! isset( $_REQUEST['post'] ) ) {
