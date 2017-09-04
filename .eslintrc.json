@@ -30,5 +30,6 @@
       "smart-tabs"
     ],
     "wpcalypso/jsx-classname-namespace": "off"
-  }
+  },
+  "ignorePattern": "/node_modules/wordlift-ui"
 }

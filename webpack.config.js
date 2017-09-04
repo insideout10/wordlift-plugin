@@ -42,7 +42,7 @@ const config = [
 				// `babel`.
 				{
 					test: /\.(js|jsx)$/,
-					use: 'babel-loader'
+					use: 'babel-loader',
 				},
 				// Stylesheets.
 				//
@@ -63,6 +63,10 @@ const config = [
 				{
 					test: /\.jpg$/,
 					use: 'file-loader'
+				},
+				{
+					test: /\.css$/,
+					loader: [ 'style-loader', 'css-loader' ]
 				}
 			]
 		},

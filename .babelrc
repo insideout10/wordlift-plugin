@@ -6,7 +6,8 @@
         "modules": false
       }
     ],
-    "react"
+    "react",
+    "stage-0"
   ],
   "plugins": [
     "transform-class-properties",

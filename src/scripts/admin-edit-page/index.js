@@ -24,6 +24,7 @@ import ReactDOM from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
+import { AutocompleteSelect } from 'wordlift-ui';
 
 /**
  * Internal dependencies
@@ -46,7 +47,7 @@ wp.wordlift.on( 'wlEntityList.loaded', function() {
 	ReactDOM.render(
 		// Following is `react-redux` syntax for binding the `store` with the
 		// container down to the components.
-		<Provider store={ store }>
+		<Provider store={store}>
 			<App />
 		</Provider>,
 		document.getElementById( 'wl-entity-list' )
@@ -64,4 +65,56 @@ wp.wordlift.on( 'wlEntityList.loaded', function() {
 	// `updateOccurrencesForEntity` event and dispatches the related action in
 	// Redux.
 	store.dispatch( UpdateOccurrencesForEntityEvent() );
+} );
+
+const loadOptions = ( input, callback ) => {
+	wp.ajax.post( 'autocomplete', { query: input } );
+
+	return { options: [] };
+};
+
+class Api {
+	constructor ({key, language}) {
+		this.key = key
+		this.language = language
+		this.autocomplete = this.autocomplete.bind(this)
+	}
+
+	autocomplete (query, callback) {
+		// Minimum 3 characters.
+		if (3 > query.length) {
+			callback(null, {options: []})
+			return
+		}
+
+		// Escape the query parameter.
+		const escapedQuery = encodeURIComponent(query)
+
+		// Prepare the URL.
+		const url = `http://localhost:8080/autocomplete?key=${this.key}&language=${this.language}&query=${escapedQuery}&limit=50`
+
+		// Clear any existing query.
+		clearTimeout(this.autocompleteTimeout)
+
+		// Send our query.
+		this.autocompleteTimeout = setTimeout(() => fetch(url)
+												  .then((response) => response.json())
+												  .then((json) => callback(null, {options: json}))
+			, 1000
+		)
+	}
+}
+
+const api = new Api({
+						key: 'QB5qXLFbhEXzlLKSONJZiYnhEDNY0EIXknfEBsgWVz1Wn3t3Qn9BNmlCmCM6AVu5',
+						language: 'en'
+					});
+
+// ### Render the sameAs metabox field autocomplete select.
+jQuery( document ).ready( function() {
+	ReactDOM.render(
+		<AutocompleteSelect loadOptions={api.autocomplete}
+							name="wl_metaboxes[entity_same_as][]" />,
+		document.getElementById( 'wl-metabox-field-sameas' )
+	)
 } );

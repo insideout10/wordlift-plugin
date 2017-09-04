@@ -58,7 +58,7 @@ class Wordlift_Admin_Post_Edit_Page {
 		// code is properly refactored.
 		wp_enqueue_script(
 			'wordlift-admin-edit-page', plugin_dir_url( __FILE__ ) . 'js/wordlift-admin-edit-page.bundle.js',
-			array( $this->plugin->get_plugin_name() ),
+			array( $this->plugin->get_plugin_name(), 'jquery' ),
 			$this->plugin->get_version(),
 			false
 		);
