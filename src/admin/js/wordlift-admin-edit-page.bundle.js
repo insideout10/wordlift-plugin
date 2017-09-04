@@ -27719,6 +27719,14 @@ function _inherits(subClass, superClass) {
   if (typeof superClass !== "function" && superClass !== null) {
     throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
   }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+}
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });
+  } else {
+    obj[key] = value;
+  }return obj;
 } /**
    * Components: Autocomplete Select.
    *
@@ -27739,6 +27747,15 @@ function _inherits(subClass, superClass) {
  * Internal dependencies.
  */
 
+/**
+ * Filters the options according to the selected options.
+ *
+ * @since 1.0.0
+ *
+ * @param options
+ * @param filter
+ * @param currentValues
+ */
 var filterOptions = function filterOptions(options, filter, currentValues) {
   // We don't care about the filter, since the filter is being applied at the API level.
   return options.filter(function (option) {
@@ -27749,6 +27766,31 @@ var filterOptions = function filterOptions(options, filter, currentValues) {
       })
     );
   });
+};
+
+var isOptionUnique = function isOptionUnique(_ref) {
+  var option = _ref.option,
+      options = _ref.options,
+      labelKey = _ref.labelKey,
+      valueKey = _ref.valueKey;
+  return options && -1 === options.findIndex(function (x) {
+    return option[valueKey] === x[valueKey];
+  });
+};
+
+var isValidNewOption = function isValidNewOption(_ref2) {
+  var label = _ref2.label;
+  return label && label.match(/^https?:\/\/.+/i);
+};
+
+var newOptionCreator = function newOptionCreator(_ref3) {
+  var _ref4;
+
+  var label = _ref3.label,
+      labelKey = _ref3.labelKey,
+      valueKey = _ref3.valueKey;
+
+  return _ref4 = {}, _defineProperty(_ref4, labelKey, label), _defineProperty(_ref4, valueKey, label), _ref4;
 };
 
 /**
@@ -27822,7 +27864,7 @@ var AutocompleteSelect = function (_React$Component) {
           valueRenderer = _props.valueRenderer,
           props = _objectWithoutProperties(_props, ['autoload', 'loadOptions', 'optionRenderer', 'valueRenderer']);
 
-      return _react2.default.createElement(_reactSelect2.default.Async, _extends({ autoload: autoload,
+      return _react2.default.createElement(_reactSelect2.default.AsyncCreatable, _extends({ autoload: autoload,
         ignoreAccents: false,
         ignoreCase: false,
         loadOptions: loadOptions,
@@ -27832,7 +27874,11 @@ var AutocompleteSelect = function (_React$Component) {
         autoBlur: true,
         multi: true,
         onChange: this.onChange,
-        value: this.state.value
+        value: this.state.value,
+        newOptionCreator: newOptionCreator,
+        isValidNewOption: isValidNewOption,
+        isOptionUnique: isOptionUnique,
+        matchProp: 'value'
       }, props));
     }
   }]);
@@ -27864,8 +27910,7 @@ AutocompleteSelect.propTypes = {
 };AutocompleteSelect.defaultProps = {
   autoload: false,
   optionRenderer: _AutocompleteResultOption2.default,
-  valueRenderer: _AutocompleteResultOption2.default,
-  filterOptions: filterOptions
+  valueRenderer: _AutocompleteResultOption2.default
 
   // Finally export the AutocompleteSelect.
 };exports.default = AutocompleteSelect;
@@ -29174,8 +29219,10 @@ var AutocompleteResultOption = function AutocompleteResultOption(_ref) {
       labels = _ref.labels,
       scope = _ref.scope,
       displayTypes = _ref.displayTypes,
-      descriptions = _ref.descriptions;
-  return _react2.default.createElement(_Wrapper2.default, null, _react2.default.createElement(_Image2.default, { src: images[0] }), _react2.default.createElement(_Label2.default, null, labels[0]), _react2.default.createElement(_Scope2.default, null, scope), _react2.default.createElement(_DisplayTypes2.default, null, displayTypes), _react2.default.createElement(_Description2.default, null, descriptions[0]));
+      descriptions = _ref.descriptions,
+      label = _ref.label;
+
+  return _react2.default.createElement(_Wrapper2.default, null, _react2.default.createElement(_Image2.default, { src: images && images[0] }), _react2.default.createElement(_Label2.default, null, labels && labels[0] || label), _react2.default.createElement(_Scope2.default, null, scope), _react2.default.createElement(_DisplayTypes2.default, null, displayTypes), _react2.default.createElement(_Description2.default, null, descriptions && descriptions[0]));
 };
 
 // Finally export the `AutocompleteResultOption`.
