@@ -589,6 +589,24 @@ class Wordlift {
 	protected $rendition_factory;
 
 	/**
+	 * The {@link Wordlift_Autocomplete_Service} instance.
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var \Wordlift_Autocomplete_Service $autocomplete_service The {@link Wordlift_Autocomplete_Service} instance.
+	 */
+	private $autocomplete_service;
+
+	/**
+	 * The {@link Wordlift_Autocomplete_Adapter} instance.
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var \Wordlift_Autocomplete_Adapter $autocomplete_adapter The {@link Wordlift_Autocomplete_Adapter} instance.
+	 */
+	private $autocomplete_adapter;
+
+	/**
 	 * The {@link Wordlift_Relation_Service} instance.
 	 *
 	 * @since  3.15.0
@@ -849,6 +867,10 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-batch-analysis-request-async-task.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-batch-analysis-complete-async-task.php';
 
+		/** Async Tasks. */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-autocomplete-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-autocomplete-adapter.php';
+
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
@@ -1102,6 +1124,10 @@ class Wordlift {
 		new Wordlift_Batch_Analysis_Request_Async_Task();
 		new Wordlift_Batch_Analysis_Complete_Async_Task();
 
+		/** WL Autocomplete. */
+		$this->autocomplete_service = new Wordlift_Autocomplete_Service( $this->configuration_service );
+		$this->autocomplete_adapter = new Wordlift_Autocomplete_Adapter( $this->autocomplete_service );
+
 		/** WordPress Admin UI. */
 
 		// UI elements.
@@ -1307,6 +1333,10 @@ class Wordlift {
 
 		$this->loader->add_action( 'wp_ajax_wl_sample_data_create', $this->sample_data_ajax_adapter, 'create' );
 		$this->loader->add_action( 'wp_ajax_wl_sample_data_delete', $this->sample_data_ajax_adapter, 'delete' );
+
+		// Handle the autocomplete request.
+		add_action( 'wp_ajax_wl_autocomplete', array( $this->autocomplete_adapter, 'wl_autocomplete') );
+		add_action( 'wp_ajax_nopriv_wl_autocomplete', array( $this->autocomplete_adapter, 'wl_autocomplete') );
 
 		// Hooks to restrict multisite super admin from manipulating entity types.
 		if ( is_multisite() ) {
