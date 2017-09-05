@@ -15,8 +15,16 @@ class Wordlift_Sanitizer {
 		//
 		// see also http://stackoverflow.com/questions/2137080/php-filter-var-filter-validate-url
 
-		if ( ! is_null( $value ) && $value !== '' ) {
-			return $value;
+		// Instead of the above do the minimal check that the value starts with http(s):// .
+
+		if ( ! is_null( $value ) && '' != $value ) {
+			$value = trim( $value );
+			if ( ( 0 === strpos( $value, 'http://' ) ) ||
+				 ( 0 === strpos( $value, 'https://' ) ) ) {
+				return $value;
+			} else {
+				return null;
+			}
 		}
 
 		return null;
