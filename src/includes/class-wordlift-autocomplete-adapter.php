@@ -36,7 +36,7 @@ class Wordlift_Autocomplete_Adapter {
 	 *
 	 * @since 3.14.2
 	 *
-	 * @param \Wordlift_Autocomplete_Service $autocomplete_service
+	 * @param \Wordlift_Autocomplete_Service $autocomplete_service The {@link Wordlift_Autocomplete_Service} instance.
 	 */
 	public function __construct( $autocomplete_service ) {
 		$this->autocomplete_service = $autocomplete_service;
@@ -46,15 +46,13 @@ class Wordlift_Autocomplete_Adapter {
 	 * Handle the autocomplete ajax request.
 	 *
 	 * @since 3.15.0
-	 *
-	 * @return string The entity base path.
 	 */
 	public function wl_autocomplete() {
 		if ( ! wp_verify_nonce( $_REQUEST['nonce'], 'wordlift_autocomplete' ) ) {
 			wp_send_json_error( array( 'message' => 'Nonce field doens\'t match' ) );
 		}
 
-		// Return 
+		// Return error if the query param si empty.
 		if ( empty( $_REQUEST['query'] ) ) {
 			wp_send_json_error( array( 'message' => 'The query param is empty!' ) );
 		}

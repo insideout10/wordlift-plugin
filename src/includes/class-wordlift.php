@@ -1335,8 +1335,8 @@ class Wordlift {
 		$this->loader->add_action( 'wp_ajax_wl_sample_data_delete', $this->sample_data_ajax_adapter, 'delete' );
 
 		// Handle the autocomplete request.
-		add_action( 'wp_ajax_wl_autocomplete', array( $this->autocomplete_adapter, 'wl_autocomplete') );
-		add_action( 'wp_ajax_nopriv_wl_autocomplete', array( $this->autocomplete_adapter, 'wl_autocomplete') );
+		add_action( 'wp_ajax_wl_autocomplete', array( $this->autocomplete_adapter, 'wl_autocomplete' ) );
+		add_action( 'wp_ajax_nopriv_wl_autocomplete', array( $this->autocomplete_adapter, 'wl_autocomplete' ) );
 
 		// Hooks to restrict multisite super admin from manipulating entity types.
 		if ( is_multisite() ) {

@@ -45,7 +45,7 @@ class Wordlift_Autocomplete_Service {
 	 *
 	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
 	 */
-	public function __construct ( $configuration_service ) {
+	public function __construct( $configuration_service ) {
 		$this->configuration_service = $configuration_service;
 		$this->log                   = Wordlift_Log_Service::get_logger( 'Wordlift_Autocomplete_Service' );
 	}
@@ -55,7 +55,7 @@ class Wordlift_Autocomplete_Service {
 	 *
 	 * @since 3.15.0
 	 *
-	 * @param string $query The search string
+	 * @param string $query The search string.
 	 *
 	 * @return array $response The API response.
 	 */
@@ -74,7 +74,7 @@ class Wordlift_Autocomplete_Service {
 	 *
 	 * @since 3.15.0
 	 *
-	 * @param string $query The search string
+	 * @param string $query The search string.
 	 *
 	 * @return string Builded url.
 	 */
