@@ -56,7 +56,7 @@ class Wordlift_Autocomplete_Adapter {
 
 		// Return error if the query param is empty.
 		if ( ! empty( $_REQUEST['query'] ) ) {
-			$query = wp_unslash( $_REQUEST['query'] );
+			$query = sanitize_text_field( wp_unslash( $_REQUEST['query'] ) );
 		} else {
 			wp_send_json_error( array(
 				'message' => 'The query param is empty!',
