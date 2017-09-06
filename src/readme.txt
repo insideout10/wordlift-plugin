@@ -137,8 +137,11 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.14.5 (2017-08-31) =
+* Enhancement: [#606](https://github.com/insideout10/wordlift-plugin/issues/606): Batch Analysis on all posts.
+
 = 3.14.4 (2017-08-30) =
-* Enhancement: [#527](https://github.com/insideout10/wordlift-plugin/issues/527): Error fetching angular-animate.min.js.
+* Fix: [#527](https://github.com/insideout10/wordlift-plugin/issues/527): Error fetching angular-animate.min.js.
 
 = 3.14.3 (2017-08-10) =
 * Enhancement: [#603](https://github.com/insideout10/wordlift-plugin/issues/603): Rebuild the relations table.
