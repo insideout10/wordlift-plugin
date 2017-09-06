@@ -48,17 +48,26 @@ class Wordlift_Autocomplete_Adapter {
 	 * @since 3.15.0
 	 */
 	public function wl_autocomplete() {
-		if ( ! wp_verify_nonce( $_REQUEST['nonce'], 'wordlift_autocomplete' ) ) {
-			wp_send_json_error( array( 'message' => 'Nonce field doens\'t match' ) );
+		if (
+			! empty( $_REQUEST['_wpnonce'] ) &&
+			! wp_verify_nonce( $_REQUEST['_wpnonce'], 'wordlift_autocomplete' )
+		) {
+			wp_send_json_error( array(
+				'message' => 'Nonce field doens\'t match'
+			) );
 		}
 
-		// Return error if the query param si empty.
-		if ( empty( $_REQUEST['query'] ) ) {
-			wp_send_json_error( array( 'message' => 'The query param is empty!' ) );
+		// Return error if the query param is empty.
+		if ( ! empty( $_REQUEST['query'] ) ) {
+			$query = wp_unslash( $_REQUEST['query'] );
+		} else {
+			wp_send_json_error( array(
+				'message' => 'The query param is empty!'
+			) );
 		}
 
 		// Make request.
-		$response = $this->autocomplete_service->make_request( $_REQUEST['query'] );
+		$response = $this->autocomplete_service->make_request( $query );
 		// Decode response body.
 		$suggestions = json_decode( wp_remote_retrieve_body( $response ), true );
 
@@ -68,10 +77,14 @@ class Wordlift_Autocomplete_Adapter {
 		// If the response is valid, then send the suggestions.
 		if ( ! is_wp_error( $response ) && 200 === (int) $response['response']['code'] ) {
 			// Echo the response.
-			wp_send_json_success( array( 'suggestions' => $suggestions ) );
+			wp_send_json_success( array(
+				'suggestions' => $suggestions
+			) );
 		} else {
 			// There is an error, so send error message.
-			wp_send_json_error( array( 'message' => __( 'Something went wrong.' ) ) );
+			wp_send_json_error( array(
+				'message' => __( 'Something went wrong.' )
+			) );
 		}
 	}
 }
