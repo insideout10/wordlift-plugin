@@ -48,10 +48,7 @@ class Wordlift_Autocomplete_Adapter {
 	 * @since 3.15.0
 	 */
 	public function wl_autocomplete() {
-		if (
-			! empty( $_REQUEST['_wpnonce'] ) &&
-			! wp_verify_nonce( $_REQUEST['_wpnonce'], 'wordlift_autocomplete' )
-		) {
+		if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'wordlift_autocomplete' ) ) {
 			wp_send_json_error( array(
 				'message' => 'Nonce field doens\'t match'
 			) );

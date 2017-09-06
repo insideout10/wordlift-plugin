@@ -22,6 +22,8 @@ engines:
         enabled: false
       WordPress VIP PostsPerPage posts_per_page_posts_per_page:
         enabled: false
+      WordPress VIP RestrictedFunctions wp_remote_get_wp_remote_get:
+        enabled: false
   fixme:
     enabled: false
 
