@@ -76,7 +76,7 @@ class Wordlift_Autocomplete_Service {
 	 *
 	 * @param string $query The search string.
 	 *
-	 * @return string Builded url.
+	 * @return string Built url.
 	 */
 	public function build_request_url( $query ) {
 		$args = array(
@@ -92,7 +92,7 @@ class Wordlift_Autocomplete_Service {
 			$this->configuration_service->get_autocomplete_url()
 		);
 
-		// return the builded url.
+		// return the built url.
 		return $request_url;
 	}
 }

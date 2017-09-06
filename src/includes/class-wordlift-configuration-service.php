@@ -439,7 +439,7 @@ class Wordlift_Configuration_Service {
 	 */
 	public function get_autocomplete_url() {
 
-		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . '/autocomplete';
+		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . 'autocomplete';
 
 	}
 
