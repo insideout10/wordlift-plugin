@@ -49,8 +49,8 @@ class Wordlift_Autocomplete_Adapter {
 	 */
 	public function wl_autocomplete() {
 		if (
-			! isset( $_REQUEST['_wpnonce'] ) ||
-			! wp_verify_nonce( $_REQUEST['_wpnonce'], 'wordlift_autocomplete' )
+			! isset( $_REQUEST['_wpnonce'] ) || // Input var okay.
+			! wp_verify_nonce( $_REQUEST['_wpnonce'], 'wordlift_autocomplete' ) // Input var okay.
 		) {
 			wp_send_json_error( array(
 				'message' => 'Nonce field doens\'t match',
@@ -58,8 +58,8 @@ class Wordlift_Autocomplete_Adapter {
 		}
 
 		// Return error if the query param is empty.
-		if ( ! empty( $_REQUEST['query'] ) ) {
-			$query = sanitize_text_field( wp_unslash( $_REQUEST['query'] ) );
+		if ( ! empty( $_REQUEST['query'] ) ) { // Input var okay.
+			$query = sanitize_text_field( wp_unslash( $_REQUEST['query'] ) ); // Input var okay.
 		} else {
 			wp_send_json_error( array(
 				'message' => 'The query param is empty!',
