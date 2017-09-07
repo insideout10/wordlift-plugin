@@ -89,6 +89,7 @@ class Wordlift_Autocomplete_Adapter {
 
 			// There is an error, so send error message.
 			wp_send_json_error( array(
+				/* translators: Placeholders: %s - the error message that will be returned. */
 				'message' => sprintf( esc_html__( '%s', 'wordlift' ), $error_message ),
 			) );
 		}
