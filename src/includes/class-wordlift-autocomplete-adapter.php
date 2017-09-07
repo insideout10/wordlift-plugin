@@ -76,7 +76,7 @@ class Wordlift_Autocomplete_Adapter {
 		if ( ! is_wp_error( $response ) && 200 === (int) $response['response']['code'] ) {
 			// Echo the response.
 			wp_send_json_success( array(
-				json_decode( wp_remote_retrieve_body( $response ), true )
+				json_decode( wp_remote_retrieve_body( $response ), true ),
 			) );
 		} else {
 			// Default error message.
