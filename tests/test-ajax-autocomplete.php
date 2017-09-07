@@ -44,7 +44,7 @@ class Wordlift_Autocomplete_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$this->assertFalse( $response->success );
 		$this->assertObjectHasAttribute( 'data', $response );
 		$this->assertObjectHasAttribute( 'message', $response->data );
-		$this->assertEquals( 'Nonce field doens\'t match', $response->data->message );
+		$this->assertEquals( 'Nonce field doens\'t match.', $response->data->message );
 	}
 
 	public function test_autocomplete_with_wrong_nonce() {
@@ -62,7 +62,7 @@ class Wordlift_Autocomplete_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$this->assertFalse( $response->success );
 		$this->assertObjectHasAttribute( 'data', $response );
 		$this->assertObjectHasAttribute( 'message', $response->data );
-		$this->assertEquals( 'Nonce field doens\'t match', $response->data->message );
+		$this->assertEquals( 'Nonce field doens\'t match.', $response->data->message );
 	}
 
 	public function test_autocomplete_with_nonce_without_query_param() {
@@ -80,7 +80,7 @@ class Wordlift_Autocomplete_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$this->assertFalse( $response->success );
 		$this->assertObjectHasAttribute( 'data', $response );
 		$this->assertObjectHasAttribute( 'message', $response->data );
-		$this->assertEquals( 'The query param is empty!', $response->data->message );
+		$this->assertEquals( 'The query param is empty.', $response->data->message );
 	}
 
 	public function test_autocomplete_with_nonce_with_empty_query_param() {
@@ -99,7 +99,7 @@ class Wordlift_Autocomplete_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$this->assertFalse( $response->success );
 		$this->assertObjectHasAttribute( 'data', $response );
 		$this->assertObjectHasAttribute( 'message', $response->data );
-		$this->assertEquals( 'The query param is empty!', $response->data->message );
+		$this->assertEquals( 'The query param is empty.', $response->data->message );
 	}
 
 	public function test_autocomplete_error_status_code() {
@@ -120,7 +120,7 @@ class Wordlift_Autocomplete_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$this->assertFalse( $response->success );
 		$this->assertObjectHasAttribute( 'data', $response );
 		$this->assertObjectHasAttribute( 'message', $response->data );
-		$this->assertEquals( 'Something went wrong.', $response->data->message );
+		$this->assertEquals( 'Error: Something went wrong.', $response->data->message );
 	}
 
 	public function test_autocomplete_wp_error() {
@@ -141,7 +141,7 @@ class Wordlift_Autocomplete_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$this->assertFalse( $response->success );
 		$this->assertObjectHasAttribute( 'data', $response );
 		$this->assertObjectHasAttribute( 'message', $response->data );
-		$this->assertEquals( 'WP Error!', $response->data->message );
+		$this->assertEquals( 'Error: WP Error!', $response->data->message );
 	}
 
 
