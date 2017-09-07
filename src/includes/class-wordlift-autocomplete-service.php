@@ -78,7 +78,7 @@ class Wordlift_Autocomplete_Service {
 	 *
 	 * @return string Built url.
 	 */
-	public function build_request_url( $query ) {
+	private function build_request_url( $query ) {
 		$args = array(
 			'key'      => $this->configuration_service->get_key(),
 			'language' => $this->configuration_service->get_language_code(),

@@ -68,8 +68,6 @@ class Wordlift_Autocomplete_Adapter {
 
 		// Make request.
 		$response = $this->autocomplete_service->make_request( $query );
-		// Decode response body.
-		$suggestions = json_decode( wp_remote_retrieve_body( $response ), true );
 
 		// Clear any buffer.
 		ob_clean();
@@ -78,12 +76,20 @@ class Wordlift_Autocomplete_Adapter {
 		if ( ! is_wp_error( $response ) && 200 === (int) $response['response']['code'] ) {
 			// Echo the response.
 			wp_send_json_success( array(
-				'suggestions' => $suggestions,
+				json_decode( wp_remote_retrieve_body( $response ), true )
 			) );
 		} else {
+			// Default error message.
+			$error_message = __( 'Something went wrong.' );
+
+			// Get the real error message if there is WP_Error.
+			if ( is_wp_error( $response ) ) {
+				$error_message = $response->get_error_message();
+			}
+
 			// There is an error, so send error message.
 			wp_send_json_error( array(
-				'message' => __( 'Something went wrong.' ),
+				'message' => $error_message,
 			) );
 		}
 	}
