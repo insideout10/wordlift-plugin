@@ -53,7 +53,7 @@ class Wordlift_Autocomplete_Adapter {
 			! wp_verify_nonce( sanitize_key( $_REQUEST['_wpnonce'] ), 'wordlift_autocomplete' ) // Input var okay.
 		) {
 			wp_send_json_error( array(
-				'message' => 'Nonce field doens\'t match',
+				'message' => __( 'Nonce field doens\'t match.', 'wordlift' ),
 			) );
 		}
 
@@ -62,7 +62,7 @@ class Wordlift_Autocomplete_Adapter {
 			$query = sanitize_text_field( wp_unslash( $_REQUEST['query'] ) ); // Input var okay.
 		} else {
 			wp_send_json_error( array(
-				'message' => 'The query param is empty!',
+				'message' => __( 'The query param is empty.', 'wordlift' ),
 			) );
 		}
 
@@ -80,7 +80,7 @@ class Wordlift_Autocomplete_Adapter {
 			) );
 		} else {
 			// Default error message.
-			$error_message = __( 'Something went wrong.' );
+			$error_message = 'Something went wrong.';
 
 			// Get the real error message if there is WP_Error.
 			if ( is_wp_error( $response ) ) {
@@ -89,7 +89,7 @@ class Wordlift_Autocomplete_Adapter {
 
 			// There is an error, so send error message.
 			wp_send_json_error( array(
-				'message' => $error_message,
+				'message' => sprintf( esc_html__( '%s', 'wordlift' ), $error_message ),
 			) );
 		}
 	}
