@@ -14,21 +14,6 @@
  * @package Wordlift
  */
 class Wordlift_Autocomplete_Test extends Wordlift_Ajax_Unit_Test_Case {
-	/**
-	 * A {@link Wordlift_Autocomplete_Service} instance.
-	 *
-	 * @since  3.15.0
-	 * @access private
-	 * @var \Wordlift_Autocomplete_Service $configuration_service A {@link Wordlift_Autocomplete_Service} instance.
-	 */
-	private $autocomplete_service;
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function setUp() {
-		parent::setUp();
-	}
 
 	public function test_autocomplete_without_nonce() {
 		$_POST['query'] = 'test';
