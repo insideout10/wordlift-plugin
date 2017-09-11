@@ -35,6 +35,11 @@
 				top.tinymce.activeEditor.execCommand( 'mceInsertContent', false, cloud_shortcode_text );
 			},
 
+			glossaryClick: function() {
+				var glossary_shortcode_text = '[wl_glossary]';
+				top.tinymce.activeEditor.execCommand( 'mceInsertContent', false, glossary_shortcode_text );
+			},
+
 			/**
 			 * @param {tinymce.Editor} ed Editor instance that the plugin is
 			 *     initialized in.
@@ -74,6 +79,10 @@
 						{
 							text: 'Entity Cloud',
 							onclick: this.cloudClick,
+						},
+						{
+							text: 'Entity Glossary',
+							onclick: this.glossaryClick,
 						},
 					];
 
@@ -151,6 +160,11 @@
 						m.add( {
 								   title: 'Entities Cloud',
 								   onclick: pluginRef.cloudClick,
+							   } );
+
+					   m.add( {
+								   title: 'Entities Glossary',
+								   onclick: pluginRef.glossaryClick,
 							   } );
 
 					} );

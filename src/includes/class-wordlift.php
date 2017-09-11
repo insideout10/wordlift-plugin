@@ -963,6 +963,11 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-related-entities-cloud-shortcode.php';
 
 		/**
+		 * The entity glossary shortcode.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-glossary-shortcode.php';
+
+		/**
 		 * The ShareThis service.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-sharethis-service.php';
@@ -1083,6 +1088,7 @@ class Wordlift {
 		new Wordlift_Geomap_Shortcode();
 		new Wordlift_Timeline_Shortcode();
 		new Wordlift_Related_Entities_Cloud_Shortcode( $this->relation_service );
+		new Wordlift_Glossary_Shortcode();
 
 		// Initialize the SEO service.
 		new Wordlift_Seo_Service();
