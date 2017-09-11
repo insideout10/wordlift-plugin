@@ -23,7 +23,7 @@ import Select2 from '../common/select2';
 					 {
 //						 containerCssClass: 'wl-select2-container'
 //						 dropdownCssClass: 'wl-select2-dropdown'
-					 } );
+				} );
 		} );
 	}
 )( jQuery );
