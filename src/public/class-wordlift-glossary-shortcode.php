@@ -69,8 +69,8 @@ class Wordlift_Glossary_Shortcode extends Wordlift_Shortcode {
 
 		$collection = array();
 		foreach ( $posts as $p ) {
-			$title = get_the_title( $p->ID );
-			$current_letter = mb_convert_case( mb_substr( $title, 0, 1 ), MB_CASE_UPPER );
+			$title = remove_accents( get_the_title( $p->ID ) );
+			$current_letter = remove_accents( mb_convert_case( mb_substr( $title, 0, 1 ), MB_CASE_UPPER ) );
 			if ( ! isset( $collection[ $current_letter ] ) ) {
 				$collection[ $current_letter ] = array();
 			}
@@ -101,7 +101,7 @@ class Wordlift_Glossary_Shortcode extends Wordlift_Shortcode {
 			// Add links to the posts.
 			foreach ( $v as $title => $post_id ) {
 				$sections .= '<div><a href="' . esc_url( get_permalink( $post_id ) ) . '">' .
-								esc_html( $title ) . '</a></div>';
+								esc_html( get_the_title( $post_id ) ) . '</a></div>';
 				if ( $atts['excerpt'] ) {
 					$post = get_post( $post_id );
 					setup_postdata( $post );
