@@ -135,7 +135,7 @@ class Wordlift_Admin {
 		 */
 
 		// Enqueue the admin scripts.
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wordlift-admin.bundle.js', array(
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/1/admin.js', array(
 			'jquery',
 			'underscore',
 			'backbone',
