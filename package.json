@@ -16,7 +16,7 @@
     "test:php": "./vendor/bin/phpunit",
     "test:php-test-coverage": "./vendor/bin/phpunit -c phpunit-test-coverage.xml",
     "test:multisite": "./vendor/bin/phpunit -c phpunit-multisite.xml",
-    "start": "webpack -w --optimize-minimize --define process.env.NODE_ENV=\"'production'\""
+    "start": "./node_modules/.bin/webpack -w --optimize-minimize --define process.env.NODE_ENV=\"'production'\""
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
