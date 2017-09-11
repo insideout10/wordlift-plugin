@@ -9871,7 +9871,7 @@ window-size@^0.2.0:
 
 "wordlift-ui@git+ssh://git@gitlab.com:wordlift/wordlift-ui.git":
   version "0.1.0"
-  resolved "git+ssh://git@gitlab.com:wordlift/wordlift-ui.git#2bfe2f67ca23423d728c0f2abeafc511efc9ccb1"
+  resolved "git+ssh://git@gitlab.com:wordlift/wordlift-ui.git#9e9c203b1ed8f07dee2a0927e92cca6b54b30d13"
 
 wordwrap@0.0.2:
   version "0.0.2"

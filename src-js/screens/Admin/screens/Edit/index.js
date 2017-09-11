@@ -1,4 +1,4 @@
-/*global wp jQuery*/
+/*global wp jQuery wlSettings*/
 /**
  * App: WordLift Admin.
  *
@@ -39,41 +39,41 @@ import UpdateOccurrencesForEntityEvent from './angular/UpdateOccurrencesForEntit
 
 // Start-up the application when the `wlEntityList` Angular directive is
 // loaded.
-wp.wordlift.on('wlEntityList.loaded', function () {
-  // Create the `store` with the reducer, using the analysis result as
-  // `initialState`.
-  const store = createStore(reducer, applyMiddleware(thunk))
+wp.wordlift.on( 'wlEntityList.loaded', function() {
+	// Create the `store` with the reducer, using the analysis result as
+	// `initialState`.
+	const store = createStore( reducer, applyMiddleware( thunk ) )
 
-  // Render the `React` tree at the `wl-entity-list` element.
-  ReactDOM.render(
-    // Following is `react-redux` syntax for binding the `store` with the
-    // container down to the components.
-    <Provider store={store}>
-      <App/>
-    </Provider>,
-    document.getElementById('wl-entity-list'),
-  )
+	// Render the `React` tree at the `wl-entity-list` element.
+	ReactDOM.render(
+		// Following is `react-redux` syntax for binding the `store` with the
+		// container down to the components.
+		<Provider store={store}>
+			<App />
+		</Provider>,
+		document.getElementById( 'wl-entity-list' ),
+	);
 
-  // Listen for annotation selections in TinyMCE and dispatch the
-  // `AnnotationEvent` action.
-  store.dispatch(AnnotationEvent())
+	// Listen for annotation selections in TinyMCE and dispatch the
+	// `AnnotationEvent` action.
+	store.dispatch( AnnotationEvent() )
 
-  // Listen for analysis results and dispatch the `receiveAnalysisResults`
-  // action when new results are received.
-  store.dispatch(ReceiveAnalysisResultsEvent())
+	// Listen for analysis results and dispatch the `receiveAnalysisResults`
+	// action when new results are received.
+	store.dispatch( ReceiveAnalysisResultsEvent() )
 
-  // Dispatch an redux-thunk action, which hooks to the legacy
-  // `updateOccurrencesForEntity` event and dispatches the related action in
-  // Redux.
-  store.dispatch(UpdateOccurrencesForEntityEvent())
-})
+	// Dispatch an redux-thunk action, which hooks to the legacy
+	// `updateOccurrencesForEntity` event and dispatches the related action in
+	// Redux.
+	store.dispatch( UpdateOccurrencesForEntityEvent() )
+} )
 
-const autocomplete = (query, callback) => {
-  // Minimum 3 characters.
-  if (3 > query.length) {
-    callback(null, {options: []})
-    return
-  }
+const autocomplete = ( query, callback ) => {
+	// Minimum 3 characters.
+	if ( 3 > query.length ) {
+		callback( null, { options: [] } )
+		return
+	}
 
 //		// Escape the query parameter.
 //		const escapedQuery = encodeURIComponent( query )
@@ -82,30 +82,39 @@ const autocomplete = (query, callback) => {
 //		const url =
 // `http://localhost:8080/autocomplete?key=${this.key}&language=${this.language}&query=${escapedQuery}&limit=50`
 
-  // Clear any existing query.
-  clearTimeout(this.autocompleteTimeout)
+	// Clear any existing query.
+	clearTimeout( this.autocompleteTimeout )
 
-  // Send our query.
-  this.autocompleteTimeout = setTimeout(
-    () => wp.ajax.post('wl_autocomplete', {query})
-      .then((response) => response.json())
-      .then((json) => callback(null, {options: json}))
-    , 1000,
-  )
-}
+	// Send our query.
+	this.autocompleteTimeout = setTimeout(
+		() => wp.ajax.post( 'wl_autocomplete', {
+			query,
+			'_wpnonce': wlSettings[ 'wl_autocomplete_nonce' ]
+		} )
+				.done( json => {
+					console.log('success', json)
+					callback( null, { options: json } )
+				} )
+				.fail( () => {
+					console.log('error')
+					callback( null, { options: [] } )
+				} )
+		, 1000,
+	)
+};
 
 //const api = new Api();
 
 // ### Render the sameAs metabox field autocomplete select.
-jQuery(document).ready(function () {
-  // Check that the document element is there.
-  if (null === document.getElementById('wl-metabox-field-sameas')) {
-    return
-  }
+jQuery( document ).ready( function() {
+	// Check that the document element is there.
+	if ( null === document.getElementById( 'wl-metabox-field-sameas' ) ) {
+		return
+	}
 
-  ReactDOM.render(
-    <AutocompleteSelect loadOptions={autocomplete}
-                        name="wl_metaboxes[entity_same_as][]"/>,
-    document.getElementById('wl-metabox-field-sameas'),
-  )
-})
+	ReactDOM.render(
+		<AutocompleteSelect loadOptions={autocomplete}
+							name="wl_metaboxes[entity_same_as][]" />,
+		document.getElementById( 'wl-metabox-field-sameas' ),
+	)
+} );

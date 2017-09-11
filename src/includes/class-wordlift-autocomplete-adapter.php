@@ -53,7 +53,7 @@ class Wordlift_Autocomplete_Adapter {
 			! wp_verify_nonce( sanitize_key( $_REQUEST['_wpnonce'] ), 'wordlift_autocomplete' ) // Input var okay.
 		) {
 			wp_send_json_error( array(
-				'message' => __( 'Nonce field doens\'t match.', 'wordlift' ),
+				'message' => __( 'Nonce field doesn\'t match.', 'wordlift' ),
 			) );
 		}
 
@@ -75,9 +75,7 @@ class Wordlift_Autocomplete_Adapter {
 		// If the response is valid, then send the suggestions.
 		if ( ! is_wp_error( $response ) && 200 === (int) $response['response']['code'] ) {
 			// Echo the response.
-			wp_send_json_success( array(
-				json_decode( wp_remote_retrieve_body( $response ), true ),
-			) );
+			wp_send_json_success( json_decode( wp_remote_retrieve_body( $response ), true ) );
 		} else {
 			// Default error message.
 			$error_message = 'Something went wrong.';

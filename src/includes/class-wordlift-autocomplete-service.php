@@ -88,7 +88,7 @@ class Wordlift_Autocomplete_Service {
 
 		// Add args to URL.
 		$request_url = add_query_arg(
-			$args,
+			urlencode_deep( $args ),
 			$this->configuration_service->get_autocomplete_url()
 		);
 
