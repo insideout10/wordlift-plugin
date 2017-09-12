@@ -52,6 +52,8 @@ class Wordlift_Glossary_Shortcode extends Wordlift_Shortcode {
 
 		$args = array(
 			'numberposts'	=> -1,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
 		);
 
 		// Limit the based entity type if needed.
