@@ -76,6 +76,15 @@ class Wordlift_Content_Filter_Service {
 
 		self::$instance = $this;
 
+		/*
+		 * Wait untill wordpress had finished initialization, and then set
+		 * the the_content filter only if we are not handling RSS feed.
+		 */
+		add_action('wp_loaded', function () {
+			if ( ! is_feed() ) {
+				add_filter( 'the_content', array( $this, 'the_content' ) );
+			}
+		});
 	}
 
 	/**
@@ -100,11 +109,6 @@ class Wordlift_Content_Filter_Service {
 	 * @return string The filtered content.
 	 */
 	public function the_content( $content ) {
-
-		// Links should be added only on the front end and not for RSS.
-		if ( is_feed() ) {
-			return $content;
-		}
 
 		// Preload the `link by default` setting.
 		$this->is_link_by_default = $this->configuration_service->is_link_by_default();
