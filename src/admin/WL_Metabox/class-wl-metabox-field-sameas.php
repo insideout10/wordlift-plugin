@@ -29,7 +29,7 @@ class WL_Metabox_Field_sameas extends WL_Metabox_Field {
 	public function save_data( $values ) {
 		// The autocomplete select may send JSON arrays in input values.
 		$merged = array_reduce( (array) $values, function ( $carry, $item ) {
-			return array_merge( $carry, mb_split("\x{2063}", wp_unslash( $item ) ) );
+			return array_merge( $carry, mb_split( "\x{2063}", wp_unslash( $item ) ) );
 		}, array() );
 
 		parent::save_data( $merged );
@@ -50,7 +50,9 @@ class WL_Metabox_Field_sameas extends WL_Metabox_Field {
 	protected function get_add_button_html( $count ) {
 
 		// Return an element where the new Autocomplete Select will attach to.
-		return '<div id="wl-metabox-field-sameas"></div>';
+		return '<p>'
+			   . esc_html__( 'Type a URL or any text to find entities from the vocabulary and the cloud:', 'wordlift' )
+			   . '</p><div id="wl-metabox-field-sameas"></div>';
 	}
 
 }
