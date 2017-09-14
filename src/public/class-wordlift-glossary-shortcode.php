@@ -120,6 +120,8 @@ class Wordlift_Glossary_Shortcode extends Wordlift_Shortcode {
 			wp_reset_postdata();
 		}
 
+		wp_enqueue_style( 'wl_glossary_shortcode_css', dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-glossary-shortcode.css' );
+
 		// Return HTML template.
 		return <<<EOF
 <div class="wl_glossary">
@@ -131,6 +133,7 @@ class Wordlift_Glossary_Shortcode extends Wordlift_Shortcode {
 	</div>
 </div>
 EOF;
+
 	}
 
 }
