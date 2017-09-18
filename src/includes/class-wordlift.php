@@ -552,7 +552,7 @@ class Wordlift {
 	 */
 	private $relation_rebuild_adapter;
 
-	/*
+	/**
 	 * The {@link Wordlift_Google_Analytics_Export_Service} instance.
 	 *
 	 * @since  3.15.0
