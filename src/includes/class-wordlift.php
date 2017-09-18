@@ -555,7 +555,7 @@ class Wordlift {
 	/*
 	 * The {@link Wordlift_Google_Analytics_Export_Service} instance.
 	 *
-	 * @since  3.13.0
+	 * @since  3.15.0
 	 * @access protected
 	 * @var \Wordlift_Google_Analytics_Export_Service $google_analytics_export_service The {@link Wordlift_Google_Analytics_Export_Service} instance.
 	 */
