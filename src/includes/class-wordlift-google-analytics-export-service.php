@@ -36,9 +36,9 @@ class Wordlift_Google_Analytics_Export_Service {
 		$path = $this->get_site_prefix();
 
 		// First, let's see if we have the data in the cache already.
-		$items = wp_cache_get( 'google_content_data' );
+		$items = get_transient( 'google_content_data' );
 
-		if ( false === $query ) {
+		if ( false === $items ) {
 			// Build sql query.
 			$items = $wpdb->get_results(
 				$wpdb->prepare(
@@ -61,9 +61,10 @@ class Wordlift_Google_Analytics_Export_Service {
 						WHERE p.post_type IN ( 'page', 'post' );",
 					$path
 				)
-			); // db call ok.
+			); // db call ok; no-cache ok.
 
-			wp_cache_set( 'google_content_data', $items, '', 300 );
+			// Set the transient, so nex time we will use it, instead creating new db request.
+			set_transient( 'google_content_data', $items, 300 );
 		}
 
 		// Output the file data.
@@ -78,8 +79,8 @@ class Wordlift_Google_Analytics_Export_Service {
 
 		// Cycle through items and add each item data to the file.
 		foreach ( $items as $item ) {
-			// Add new line i the file.
-			esc_html( "$item->post_name,$item->entity_name,$item->entity_type\n" );
+			// Add new line in the file.
+			echo esc_html( "$item->post_name,$item->entity_name,$item->entity_type\n" );
 		}
 
 		// Finally exit.
