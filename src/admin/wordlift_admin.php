@@ -1,6 +1,8 @@
 <?php
 /**
  * This file contains miscellaneous admin-functions.
+ *
+ * @package Wordlift
  */
 
 // Add the Admin menu.
@@ -16,18 +18,18 @@ require_once( 'wordlift_admin_menu.php' );
 function wl_serialize_entity( $entity ) {
 
 	$entity = ( is_numeric( $entity ) ) ? get_post( $entity ) : $entity;
-	
+
 	$type   = wl_entity_type_taxonomy_get_type( $entity->ID );
 	$images = wl_get_image_urls( $entity->ID );
 
 	return array(
-		'id'         	=> wl_get_entity_uri( $entity->ID ),
-		'label'      	=> $entity->post_title,
-		'description'	=> $entity->post_content,
-		'sameAs'     	=> wl_schema_get_value( $entity->ID, 'sameAs' ),
-		'mainType'      => str_replace( 'wl-', '', $type['css_class'] ),
-		'types'      	=> wl_get_entity_rdf_types( $entity->ID ),
-		'images' 		=> $images,
+		'id'          => wl_get_entity_uri( $entity->ID ),
+		'label'       => $entity->post_title,
+		'description' => $entity->post_content,
+		'sameAs'      => wl_schema_get_value( $entity->ID, 'sameAs' ),
+		'mainType'    => str_replace( 'wl-', '', $type['css_class'] ),
+		'types'       => wl_get_entity_rdf_types( $entity->ID ),
+		'images'      => $images,
 
 	);
 }
@@ -45,18 +47,18 @@ function wl_remove_text_annotations( $data ) {
 
 	// Remove blank elements that can interfere with annoataions removing
 	// See https://github.com/insideout10/wordlift-plugin/issues/234
-	// Just blank attributes without any attribtues are cleaned up
+	// Just blank attributes without any attribtues are cleaned up.
 	$pattern = '/<(\w+)><\/\1>/im';
 	// Remove the pattern while it is found (match nested annotations).
-	while ( 1 === preg_match( $pattern, $data['post_content'] ) ) {		
-		$data['post_content'] = preg_replace( $pattern, '$2', $data['post_content'], -1, $count ); 
+	while ( 1 === preg_match( $pattern, $data['post_content'] ) ) {
+		$data['post_content'] = preg_replace( $pattern, '$2', $data['post_content'], -1, $count );
 	}
 	// Remove text annotations
-	//    <span class="textannotation" id="urn:enhancement-777cbed4-b131-00fb-54a4-ed9b26ae57ea">
+	// <span class="textannotation" id="urn:enhancement-777cbed4-b131-00fb-54a4-ed9b26ae57ea">.
 	$pattern = '/<(\w+)[^>]*\sclass=\\\"textannotation(?![^\\"]*\sdisambiguated)[^\\"]*\\\"[^>]*>([^<]+)<\/\1>/im';
 	// Remove the pattern while it is found (match nested annotations).
-	while ( 1 === preg_match( $pattern, $data['post_content'] ) ) {		
-		$data['post_content'] = preg_replace( $pattern, '$2', $data['post_content'], -1, $count ); 
+	while ( 1 === preg_match( $pattern, $data['post_content'] ) ) {
+		$data['post_content'] = preg_replace( $pattern, '$2', $data['post_content'], -1, $count );
 	}
 	return $data;
 }
@@ -72,7 +74,33 @@ add_filter( 'wp_insert_post_data', 'wl_remove_text_annotations', '98', 1 );
  *
  * @return array The updated list of CSS classes.
  */
-function wl_admin_metaboxes_add_css_class( $classes = array() ){
-	
+function wl_admin_metaboxes_add_css_class( $classes = array() ) {
+
 	return array_merge( $classes, array( 'wl-metabox' ) );
+}
+
+
+/**
+ * Check website current permalink structure.
+ *
+ * @since 3.15.0
+ *
+ * @return bool
+ */
+function wl_check_permalink_structure() {
+	// Get current permalink structure.
+	$structure = get_option( 'permalink_structure' );
+
+	// The regular expression. It will check if the site structure contains postname.
+	$regex = '~\%postname\%~';
+
+	// Check if the site structure match the rquired one.
+	preg_match( $regex, $structure, $matches );
+
+	// Bail if the site have different structure.
+	if ( empty( $matches ) ) {
+		return false;
+	}
+
+	return true;
 }
