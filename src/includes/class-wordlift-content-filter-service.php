@@ -23,7 +23,7 @@ class Wordlift_Content_Filter_Service {
 	 *
 	 * @since 3.8.0
 	 */
-	const PATTERN = '/<(\\w+)[^<]*class="([^"]*)"\\sitemid=\"([^"]+)\"[^>]*>([^<]*)<\\/\\1>/i';
+	const PATTERN = '/<(\\w+)[^<]*class="([^"]*)"\\sitemid=\"([^"]+)\"[^>]*>([^<]*[^<\\s][^<]*)<\\/\\1>/i';
 
 	/**
 	 * A {@link Wordlift_Entity_Service} instance.
