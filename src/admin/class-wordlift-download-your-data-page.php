@@ -44,7 +44,7 @@ class Wordlift_Admin_Download_Your_Data_Page {
 			_x( 'Download Your Data', 'Menu title', 'wordlift' ),
 			'manage_options',
 			'wl_download_your_data',
-			array( $this, 'page', )
+			array( $this, 'page' )
 		);
 
 	}
@@ -73,13 +73,36 @@ class Wordlift_Admin_Download_Your_Data_Page {
 		// Get WL's key.
 		$key = $this->configuration_service->get_key();
 
-		// Get the suffix or use json by default.
-		$suffix = $_GET['out'] ?: 'json';
+		// Use json suffix by default.
+		$suffix = 'json';
 
-		// Redirect.
-		wp_redirect( WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "datasets/key=$key/dataset.$suffix" );
+		// Check if there is suffix.
+		if ( isset( $_GET['out'] ) ) { // WPCS: input var ok; CSRF ok.
+			$suffix = sanitize_text_field( wp_unslash( $_GET['out'] ) ); // WPCS: input var ok; CSRF ok.
+		}
+
+		// Create filename.
+		$filename = 'dataset.' . $suffix;
+
+		// Make the request.
+		$response = wp_remote_get( WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "datasets/key=$key/$filename" );
+
+		if ( ! is_wp_error( $response ) && 200 === (int) $response['response']['code'] ) {
+			// Get response body.
+			$body = wp_remote_retrieve_body( $response );
+
+			// Add proper file headers.
+			header( 'Content-Disposition: attachment; filename=' . $filename );
+			header( 'Content-Type: application/octet-stream; charset=' . get_bloginfo( 'charset' ) );
+
+			// Echo the response body.
+			echo $body; // WPCS: XSS OK.
+		} else {
+			// Something is not working properly, so display error message.
+			esc_html_e( 'Error: Something went wrong! Please contact administrator.', 'wordlift' );
+		}
+
+		// Exit in both cases.
 		exit;
-
 	}
-
 }
