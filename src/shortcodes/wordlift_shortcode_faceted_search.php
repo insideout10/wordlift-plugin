@@ -18,6 +18,7 @@ function wl_shortcode_faceted_search( $atts ) {
 		'show_facets'    => true,
 		'with_carousel'  => true,
 		'squared_thumbs' => false,
+		'limit'          => 20,
 
 	), $atts );
 
@@ -64,6 +65,7 @@ function wl_shortcode_faceted_search( $atts ) {
 			'action'               => 'wl_faceted_search',
 			'post_id'              => $current_post->ID,
 			'entity_ids'           => $entity_ids,
+			'limit'                => apply_filters( 'wl_faceted_search_limit', $shortcode_atts['limit'] ),
 			'div_id'               => $div_id,
 			'defaultThumbnailPath' => WL_DEFAULT_THUMBNAIL_PATH,
 			'attrs'                => $shortcode_atts,
@@ -126,18 +128,10 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 	// Retrieve requested type
 	$required_type = ( isset( $_GET['type'] ) ) ? $_GET['type'] : null;
 
-	$referencing_posts = Wordlift_Relation_Service::get_instance()
-	                                              ->get_article_subjects( $entity_ids, '*', null, 'publish', array( $current_post_id ) );
+	$limit = ( isset( $_GET['limit'] ) ) ? $_GET['limit'] : 20;
 
-//	// Set up data structures
-//	$referencing_posts = wl_core_get_posts( array(
-//		'get'            => 'posts',
-//		'post__not_in'   => array( $current_post_id ),
-//		'related_to__in' => $entity_ids,
-//		'post_type'      => 'post',
-//		'as'             => 'subject',
-//		'post_status'    => 'publish',
-//	) );
+	$referencing_posts = Wordlift_Relation_Service::get_instance()
+	                                              ->get_article_subjects( $entity_ids, '*', null, 'publish', array( $current_post_id ), $limit );
 
 	$referencing_post_ids = array_map( function ( $p ) {
 		return $p->ID;
@@ -153,13 +147,6 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 			$referencing_posts :
 			Wordlift_Relation_Service::get_instance()
 			                         ->get_article_subjects( wl_get_entity_post_ids_by_uris( $filtering_entity_uris ), '*', null, null, array(), null, $referencing_post_ids );
-//			wl_core_get_posts( array(
-//				'get'            => 'posts',
-//				'post__in'       => $referencing_post_ids,
-//				'related_to__in' => wl_get_entity_post_ids_by_uris( $filtering_entity_uris ),
-//				'post_type'      => 'post',
-//				'as'             => 'subject',
-//			) );
 
 		if ( $filtered_posts ) {
 			foreach ( $filtered_posts as $post_obj ) {
@@ -183,12 +170,18 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 
 		$subject_ids = implode( ',', $referencing_post_ids );
 
-		$query = <<<EOF
-            SELECT object_id as ID, count( object_id ) as counter
+		$query = "
+            SELECT 
+            	object_id AS ID, 
+            	count( object_id ) AS counter
             FROM $table_name
-            WHERE subject_id IN ($subject_ids) and object_id != ($current_post_id)
-            GROUP BY object_id;
-EOF;
+            WHERE 
+            	subject_id IN ($subject_ids)
+            	AND object_id != ($current_post_id)
+            GROUP BY object_id
+            LIMIT $limit;
+        ";
+
 		wl_write_log( "Going to find related entities for the current post [ post ID :: $current_post_id ] [ query :: $query ]" );
 
 		$entities = $wpdb->get_results( $query, OBJECT );
