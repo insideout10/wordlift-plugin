@@ -9,6 +9,8 @@
 
 /**
  * Function in charge of diplaying the [wl-faceted-search].
+ *
+ * @param array $atts Shortcode attributes.
  */
 function wl_shortcode_faceted_search( $atts ) {
 
@@ -30,7 +32,7 @@ function wl_shortcode_faceted_search( $atts ) {
 		) as $att
 	) {
 
-		// See http://wordpress.stackexchange.com/questions/119294/pass-boolean-value-in-shortcode
+		// See http://wordpress.stackexchange.com/questions/119294/pass-boolean-value-in-shortcode.
 		$shortcode_atts[ $att ] = filter_var(
 			$shortcode_atts[ $att ], FILTER_VALIDATE_BOOLEAN
 		);
@@ -38,7 +40,7 @@ function wl_shortcode_faceted_search( $atts ) {
 
 	// If the current post is not an entity and has no related entities
 	// than the shortcode cannot be rendered
-	// TODO Add an alert visibile only for connected admin users
+	// TODO Add an alert visibile only for connected admin users.
 	$current_post = get_post();
 
 	$entity_service = Wordlift_Entity_Service::get_instance();
@@ -84,26 +86,26 @@ function wl_shortcode_faceted_search( $atts ) {
 add_shortcode( 'wl_faceted_search', 'wl_shortcode_faceted_search' );
 
 
-/*
+/**
  * Ajax call for the faceted search widget
  */
 function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 
-	// Post ID must be defined
-	if ( ! isset( $_GET['post_id'] ) ) {
+	// Post ID must be defined.
+	if ( ! isset( $_GET['post_id'] ) ) { // WPCS: input var ok; CSRF ok.
 		wp_die( 'No post_id given' );
 
 		return;
 	}
 
-	// Extract filtering conditions
-	$filtering_entity_uris = ( null == $http_raw_data ) ? file_get_contents( "php://input" ) : $http_raw_data;
+	// Extract filtering conditions.
+	$filtering_entity_uris = ( null == $http_raw_data ) ? file_get_contents( 'php://input' ) : $http_raw_data;
 	$filtering_entity_uris = json_decode( $filtering_entity_uris );
 
-	$current_post_id = $_GET['post_id'];
+	$current_post_id = $_GET['post_id']; // WPCS: input var ok; CSRF ok.
 	$current_post    = get_post( $current_post_id );
 
-	// Post ID has to match an existing item
+	// Post ID has to match an existing item.
 	if ( null === $current_post ) {
 		wp_die( 'No valid post_id given' );
 
@@ -118,7 +120,7 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 		array( $current_post->ID ) :
 		wl_core_get_related_entity_ids( $current_post->ID );
 
-	// If there are no entities we cannot render the widget
+	// If there are no entities we cannot render the widget.
 	if ( 0 === count( $entity_ids ) ) {
 		wp_die( 'No entities available' );
 
@@ -126,12 +128,18 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 	}
 
 	// Retrieve requested type
-	$required_type = ( isset( $_GET['type'] ) ) ? $_GET['type'] : null;
+	$required_type = ( isset( $_GET['type'] ) ) ? $_GET['type'] : null; // WPCS: input var ok; CSRF ok.
 
-	$limit = ( isset( $_GET['limit'] ) ) ? $_GET['limit'] : 20;
+	$limit = ( isset( $_GET['limit'] ) ) ? $_GET['limit'] : 20; // WPCS: input var ok; CSRF ok.
 
-	$referencing_posts = Wordlift_Relation_Service::get_instance()
-	                                              ->get_article_subjects( $entity_ids, '*', null, 'publish', array( $current_post_id ), $limit );
+	$referencing_posts = Wordlift_Relation_Service::get_instance()->get_article_subjects(
+		$entity_ids,
+		'*',
+		null,
+		'publish',
+		array( $current_post_id ),
+		$limit
+	);
 
 	$referencing_post_ids = array_map( function ( $p ) {
 		return $p->ID;
@@ -145,8 +153,15 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 
 		$filtered_posts = ( empty( $filtering_entity_uris ) ) ?
 			$referencing_posts :
-			Wordlift_Relation_Service::get_instance()
-			                         ->get_article_subjects( wl_get_entity_post_ids_by_uris( $filtering_entity_uris ), '*', null, null, array(), null, $referencing_post_ids );
+			Wordlift_Relation_Service::get_instance()->get_article_subjects(
+				wl_get_entity_post_ids_by_uris( $filtering_entity_uris ),
+				'*',
+				null,
+				null,
+				array(),
+				null,
+				$referencing_post_ids
+			);
 
 		if ( $filtered_posts ) {
 			foreach ( $filtered_posts as $post_obj ) {
@@ -165,33 +180,33 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 
 		wl_write_log( "Going to find related entities for the current post [ post ID :: $current_post_id ]" );
 
-		// Retrieve Wordlift relation instances table name
+		// Retrieve Wordlift relation instances table name.
 		$table_name = wl_core_get_relation_instances_table_name();
 
 		$subject_ids = implode( ',', $referencing_post_ids );
 
 		$query = "
-            SELECT 
-            	object_id AS ID, 
-            	count( object_id ) AS counter
-            FROM $table_name
-            WHERE 
-            	subject_id IN ($subject_ids)
-            	AND object_id != ($current_post_id)
-            GROUP BY object_id
-            LIMIT $limit;
-        ";
+			SELECT 
+				object_id AS ID, 
+				count( object_id ) AS counter
+			FROM $table_name
+			WHERE 
+				subject_id IN ($subject_ids)
+				AND object_id != ($current_post_id)
+			GROUP BY object_id
+			LIMIT $limit;
+		";
 
 		wl_write_log( "Going to find related entities for the current post [ post ID :: $current_post_id ] [ query :: $query ]" );
 
-		$entities = $wpdb->get_results( $query, OBJECT );
+		$entities = $wpdb->get_results( $query, OBJECT ); // No cache ok.
 
-		wl_write_log( "Entities found " . count( $entities ) );
+		wl_write_log( 'Entities found ' . count( $entities ) );
 
 		foreach ( $entities as $obj ) {
 
 			$entity = get_post( $obj->ID );
-			// Ensure only valid and published entities are returned
+			// Ensure only valid and published entities are returned.
 			if ( ( null !== $entity ) && ( 'publish' === $entity->post_status ) ) {
 
 				$serialized_entity              = wl_serialize_entity( $entity );
@@ -201,7 +216,6 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 				$results[] = $serialized_entity;
 			}
 		}
-
 	}
 
 	wl_core_send_json( $results );
