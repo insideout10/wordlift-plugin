@@ -130,7 +130,7 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 	// Retrieve requested type
 	$required_type = ( isset( $_GET['type'] ) ) ? $_GET['type'] : null; // WPCS: input var ok; CSRF ok.
 
-	$limit = ( isset( $_GET['limit'] ) ) ? (int) $_GET['limit'] : 20;
+	$limit = ( isset( $_GET['limit'] ) ) ? (int) $_GET['limit'] : 20;  // WPCS: input var ok; CSRF ok.
 
 	$referencing_posts = Wordlift_Relation_Service::get_instance()->get_article_subjects(
 		$entity_ids,
