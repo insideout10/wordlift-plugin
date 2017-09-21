@@ -241,9 +241,6 @@ class PostTest extends Wordlift_Unit_Test_Case {
 		// Check that the locally saved entities and the remotely saved ones match.
 		$this->checkEntities( $entity_posts );
 
-		// Check that the locally saved post data match the ones on Redlink.
-		$this->checkPost( $post_id );
-
 		// Delete the post.
 		$this->deletePost( $post_id );
 
@@ -403,84 +400,6 @@ EOF;
 		$this->assertEquals( $title, $label );
 		$this->assertEquals( $permalink, $url );
 		$this->assertFalse( empty( $type ) );
-	}
-
-	/**
-	 * Check that the local post data and the remote ones match.
-	 *
-	 * @param int $post_id The post ID to check.
-	 */
-	function checkPost( $post_id ) {
-
-		// Get the post.
-		$post = get_post( $post_id );
-		$this->assertNotNull( $post );
-
-		// Get the post Redlink URI.
-		$uri = Wordlift_Sparql_Service::escape( wl_get_entity_uri( $post->ID ) );
-
-		wl_write_log( "checkPost [ uri :: $uri ]" );
-
-		// Prepare the SPARQL query to select label and URL.
-		$sparql = <<<EOF
-SELECT DISTINCT ?author ?dateModified ?datePublished ?interactionCount ?url ?type ?label
-WHERE {
-    <$uri> schema:author ?author ;
-           schema:dateModified ?dateModified ;
-           schema:datePublished ?datePublished ;
-           schema:interactionCount ?interactionCount ;
-           schema:url ?url ;
-           a ?type ;
-           rdfs:label ?label .
-}
-EOF;
-
-		// Send the query and get the response.
-		$response = rl_sparql_select( $sparql );
-		$this->assertFalse( is_wp_error( $response ) );
-
-		$body = $response['body'];
-
-		$matches = array();
-		$count   = preg_match_all( '/^(?P<author>.*),(?P<dateModified>.*),(?P<datePublished>.*),(?P<interactionCount>.*),(?P<url>.*),(?P<type>.*),(?P<label>[^\r]*)/im', $body, $matches, PREG_SET_ORDER );
-		$this->assertTrue( is_numeric( $count ) );
-
-		// Expect only one match (headers + one row).
-		if ( 2 !== $count ) {
-			wl_write_log( "checkPost [ uri :: $uri ][ body :: $body ][ count :: $count ][ count (expected) :: 2 ]" );
-		}
-
-		// Check that there's no data online: posts are not published to the
-		// Linked Data.
-		$this->assertEquals( 1, $count );
-
-//		// Focus on the first row.
-//		$match = $matches[1];
-//
-//		$author            = $match['author'];
-//		$date_modified     = $match['dateModified'];
-//		$date_published    = $match['datePublished'];
-//		$interaction_count = $match['interactionCount'];
-//		$url               = $match['url'];
-//		$type              = $match['type'];
-//		$label             = $match['label'];
-//
-//		$permalink           = get_permalink( $post_id );
-//		$post_author_url     = Wordlift_User_Service::get_instance()->get_uri( $post->post_author );
-//		$post_date_published = wl_tests_time_0000_to_000Z( get_post_time( 'c', false, $post ) );
-//		$post_date_modified  = wl_tests_time_0000_to_000Z( wl_get_post_modified_time( $post ) );
-//		$post_comment_count  = 'UserComments:' . $post->comment_count;
-//		$post_entity_type    = 'http://schema.org/BlogPosting';
-//		$post_title          = $post->post_title;
-//
-//		$this->assertEquals( $post_author_url, $author );
-//		// We expect datetime not to differ more than 5 seconds.
-//		$this->assertLessThan( 10, wl_tests_get_time_difference_in_seconds( $post_date_published, $date_published ) );
-//		$this->assertLessThan( 10, wl_tests_get_time_difference_in_seconds( $post_date_modified, $date_modified ) );
-//		$this->assertEquals( $post_comment_count, $interaction_count );
-//		$this->assertEquals( $permalink, $url );
-//		$this->assertEquals( $post_entity_type, $type );
-//		$this->assertEquals( $post_title, $label );
 	}
 
 }

@@ -222,6 +222,13 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			'name'  => $name,
 		);
 
+		// Add the sameAs values associated with the publisher.
+		$storage_factory = Wordlift_Storage_Factory::get_instance();
+		$sameas = $storage_factory->post_meta( Wordlift_Schema_Service::FIELD_SAME_AS )->get( $publisher_id );
+		if ( ! empty( $sameas ) ) {
+			$params['publisher']['sameAs'] = $sameas;
+		}
+
 		// Set the logo, only for http://schema.org/Organization as Person doesn't
 		// support the logo property.
 		//
