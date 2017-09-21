@@ -101,6 +101,11 @@ class Wordlift_Content_Filter_Service {
 	 */
 	public function the_content( $content ) {
 
+		// Links should be added only on the front end and not for RSS.
+		if ( is_feed() ) {
+			return $content;
+		}
+
 		// Preload the `link by default` setting.
 		$this->is_link_by_default = $this->configuration_service->is_link_by_default();
 

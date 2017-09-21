@@ -260,6 +260,31 @@ class Wordlift_Batch_Analysis_Service {
 	}
 
 	/**
+	 * Submit all posts for analysis.
+	 *
+	 * @since 3.14.5
+	 *
+	 * @param string $link The link setting.
+	 *
+	 * @return false|int The number of submitted {@link WP_Post}s or false on
+	 *                   error.
+	 */
+	public function submit_all_posts( $link ) {
+		global $wpdb;
+
+		// Submit the posts/pages and return the number of affected results.
+		// We're using a SQL query here because we could have potentially
+		// thousands of rows.
+		$count = $wpdb->query( $this->get_sql( $link ) );
+
+		// Request Batch Analysis (the operation is handled asynchronously).
+		do_action( 'wl_batch_analysis_request' );
+
+		// Divide the count by 3 to get the number of posts/pages queued.
+		return $count / 3;
+	}
+
+	/**
 	 * Submit the provided list of {@link WP_Post}s' ids for Batch Analysis.
 	 *
 	 * @since 3.14.2
