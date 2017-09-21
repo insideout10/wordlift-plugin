@@ -101,9 +101,9 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 		return;
 	}
 
-	// If the current post is an entity, 
+	// If the current post is an entity,
 	// the current post is used as main entity.
-	// Otherwise, current post related entities are used. 
+	// Otherwise, current post related entities are used.
 	$entity_ids = ( Wordlift_Entity_Service::TYPE_NAME === $current_post->post_type ) ?
 		array( $current_post->ID ) :
 		wl_core_get_related_entity_ids( $current_post->ID );
@@ -118,7 +118,7 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 	// Retrieve requested type
 	$required_type = ( isset( $_GET['type'] ) ) ? $_GET['type'] : null;
 
-	// Set up data structures            
+	// Set up data structures
 	$referencing_posts = wl_core_get_posts( array(
 		'get'            => 'posts',
 		'post__not_in'   => array( $current_post_id ),
@@ -168,34 +168,39 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 		// Retrieve Wordlift relation instances table name
 		$table_name = wl_core_get_relation_instances_table_name();
 
-		$subject_ids = implode( ',', $referencing_post_ids );
+		/*
+		 * Make sure we have some referenced post, otherwise the IN parts of
+		 * the SQL will pproduce an SQL error.
+		 */
+		if ( ! empty( $referencing_post_ids ) ) {
+			$subject_ids = implode( ',', $referencing_post_ids );
 
-		$query = <<<EOF
-            SELECT object_id as ID, count( object_id ) as counter 
-            FROM $table_name 
-            WHERE subject_id IN ($subject_ids) and object_id != ($current_post_id)
-            GROUP BY object_id;
+			$query = <<<EOF
+	            SELECT object_id as ID, count( object_id ) as counter
+	            FROM $table_name
+	            WHERE subject_id IN ($subject_ids) and object_id != ($current_post_id)
+	            GROUP BY object_id;
 EOF;
-		wl_write_log( "Going to find related entities for the current post [ post ID :: $current_post_id ] [ query :: $query ]" );
+			wl_write_log( "Going to find related entities for the current post [ post ID :: $current_post_id ] [ query :: $query ]" );
 
-		$entities = $wpdb->get_results( $query, OBJECT );
+			$entities = $wpdb->get_results( $query, OBJECT );
 
-		wl_write_log( "Entities found " . count( $entities ) );
+			wl_write_log( "Entities found " . count( $entities ) );
 
-		foreach ( $entities as $obj ) {
+			foreach ( $entities as $obj ) {
 
-			$entity = get_post( $obj->ID );
-			// Ensure only valid and published entities are returned
-			if ( ( null !== $entity ) && ( 'publish' === $entity->post_status ) ) {
+				$entity = get_post( $obj->ID );
+				// Ensure only valid and published entities are returned
+				if ( ( null !== $entity ) && ( 'publish' === $entity->post_status ) ) {
 
-				$serialized_entity              = wl_serialize_entity( $entity );
-				$serialized_entity['counter']   = $obj->counter;
-				$serialized_entity['createdAt'] = $entity->post_date;
+					$serialized_entity              = wl_serialize_entity( $entity );
+					$serialized_entity['counter']   = $obj->counter;
+					$serialized_entity['createdAt'] = $entity->post_date;
 
-				$results[] = $serialized_entity;
+					$results[] = $serialized_entity;
+				}
 			}
 		}
-
 	}
 
 	wl_core_send_json( $results );
@@ -204,4 +209,3 @@ EOF;
 
 add_action( 'wp_ajax_wl_faceted_search', 'wl_shortcode_faceted_search_ajax' );
 add_action( 'wp_ajax_nopriv_wl_faceted_search', 'wl_shortcode_faceted_search_ajax' );
-
