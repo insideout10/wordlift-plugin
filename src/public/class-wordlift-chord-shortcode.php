@@ -90,11 +90,11 @@ class Wordlift_Chord_Shortcode extends Wordlift_Shortcode {
 		));
 
 		// Escaping atts.
-		$esc_class  = esc_attr( 'wl-chord' );
-		$esc_id     = esc_attr( $widget_id );
-		$uniq_id    = esc_attr( uniqid() );
-		$esc_width  = esc_attr( $chord_atts['width'] );
-		$esc_height = esc_attr( $chord_atts['height'] );
+		$esc_class   = esc_attr( 'wl-chord' );
+		$esc_id      = esc_attr( $widget_id );
+		$esc_uniq_id = esc_attr( uniqid() );
+		$esc_width   = esc_attr( $chord_atts['width'] );
+		$esc_height  = esc_attr( $chord_atts['height'] );
 
 		$esc_post_id    = esc_attr( $post_id );
 		$esc_depth      = esc_attr( $chord_atts['depth'] );
@@ -105,7 +105,7 @@ class Wordlift_Chord_Shortcode extends Wordlift_Shortcode {
 		return <<<EOF
 <div class="$esc_class" 
 	id="$esc_id"
-	data-uniq-id="$uniq_id"
+	data-uniq-id="$esc_uniq_id"
 	data-post-id="$esc_post_id"
     data-depth="$esc_depth"
     data-main-color="$esc_main_color"
