@@ -143,8 +143,11 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement: [#596](https://github.com/insideout10/wordlift-plugin/issues/596): Allow regular posts/pages to be entities.
 * Enhancement: [#595](https://github.com/insideout10/wordlift-plugin/issues/595): Import may fail with many posts/entities.
 * Enhancement: [#584](https://github.com/insideout10/wordlift-plugin/issues/584): Adding aliases as link TITLE attributes.
+* Enhancement: [#583](https://github.com/insideout10/wordlift-plugin/issues/583): Add sameAs to schema.org/publisher in JSON-LD.
 * Enhancement: [#574](https://github.com/insideout10/wordlift-plugin/issues/574): WL currently adds links on headings.
 * Enhancement: [#493](https://github.com/insideout10/wordlift-plugin/issues/493): Prevent analysis in html tags: `button`.
+
+* Fix: [#610](https://github.com/insideout10/wordlift-plugin/issues/610): Typo in xsd:dateTime.
 
 = 3.14.6 (2017-09-11) =
 * Fix: [#613](https://github.com/insideout10/wordlift-plugin/issues/613): A slash too much for Angular geolocation library.
