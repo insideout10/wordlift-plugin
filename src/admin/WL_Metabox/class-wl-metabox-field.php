@@ -317,15 +317,36 @@ class WL_Metabox_Field {
 			$count ++;
 		}
 
-		// If cardiality allows it, print button to add new values.
-		if ( $count < $this->cardinality ) {
-			$html .= '<button class="button wl-add-input wl-button" type="button">Add</button>';
-		}
+		// If cardinality allows it, print button to add new values.
+		$html .= $this->get_add_button_html( $count );
 
 		// Close the HTML wrapper.
 		$html .= $this->html_wrapper_close();
 
 		return $html;
+	}
+
+	/**
+	 * Get the add button html.
+	 *
+	 * This function is protected, allowing extending class to further customize
+	 * the add button html code.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @param int $count The current number of values.
+	 *
+	 * @return string The add button html code.
+	 */
+	protected function get_add_button_html( $count ) {
+
+		// If cardinality allows it, print button to add new values.
+		if ( $count < $this->cardinality ) {
+			return '<button class="button wl-add-input wl-button" type="button">' . esc_html__( 'Add' ) . '</button>';
+		}
+
+		// Return an empty string.
+		return '';
 	}
 
 	/**

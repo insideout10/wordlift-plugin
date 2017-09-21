@@ -54,7 +54,7 @@ class WL_Metabox_Field_date extends WL_Metabox_Field {
 		$this->no_calendar = false;
 
 		// Distinguish between date and datetime
-		if ( isset( $this->raw_custom_field['export_type'] ) && 'xsd:datetime' === $this->raw_custom_field['export_type'] ) {
+		if ( isset( $this->raw_custom_field['export_type'] ) && 'xsd:dateTime' === $this->raw_custom_field['export_type'] ) {
 			$this->date_format = 'Y/m/d H:i';
 			$this->timepicker  = true;
 		} else {

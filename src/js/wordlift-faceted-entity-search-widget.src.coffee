@@ -334,7 +334,7 @@ angular.module('wordlift.facetedsearch.widget', ['wordlift.ui.carousel', 'wordli
   (configuration, $log, $http, $rootScope)->
     service = {}
     service.load = (type, conditions = [])->
-      uri = "#{configuration.ajax_url}?action=#{configuration.action}&post_id=#{configuration.post_id}&type=#{type}"
+      uri = "#{configuration.ajax_url}?action=#{configuration.action}&post_id=#{configuration.post_id}&limit=#{configuration.limit}&type=#{type}"
 
       $log.debug "Going to search #{type} with conditions"
 
