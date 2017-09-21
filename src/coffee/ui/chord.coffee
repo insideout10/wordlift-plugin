@@ -97,7 +97,7 @@ $.fn.extend
         matrix[x][y] = 1
         matrix[y][x] = 1
 
-      viz = d3.select('#' + container.attr('id')).append('svg')
+      viz = d3.select('[data-uniq-id="' + container.data('uniq-id') + '"]').append('svg');
       viz.attr('width', '100%').attr('height', '100%')
 
       # Getting dimensions in pixels.
