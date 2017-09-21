@@ -83,12 +83,12 @@ class Wordlift_Autocomplete_Service {
 			'key'      => $this->configuration_service->get_key(),
 			'language' => $this->configuration_service->get_language_code(),
 			'query'    => $query,
-			'limit'    => 50,
+			'limit'    => 100,
 		);
 
 		// Add args to URL.
 		$request_url = add_query_arg(
-			$args,
+			urlencode_deep( $args ),
 			$this->configuration_service->get_autocomplete_url()
 		);
 

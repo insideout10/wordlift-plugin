@@ -135,7 +135,7 @@ class Wordlift_Admin {
 		 */
 
 		// Enqueue the admin scripts.
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wordlift-admin.bundle.js', array(
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/1/admin.js', array(
 			'jquery',
 			'underscore',
 			'backbone',
@@ -144,28 +144,29 @@ class Wordlift_Admin {
 		// Set the basic params.
 		$params = array(
 			// @todo scripts in admin should use wp.post.
-			'ajax_url'            => admin_url( 'admin-ajax.php' ),
+			'ajax_url'              => admin_url( 'admin-ajax.php' ),
 			// @todo remove specific actions from settings.
-			'action'              => 'entity_by_title',
-			'datasetUri'          => $this->configuration_service->get_dataset_uri(),
-			'language'            => $this->configuration_service->get_language_code(),
-			'link_by_default'     => $this->configuration_service->is_link_by_default(),
+			'action'                => 'entity_by_title',
+			'datasetUri'            => $this->configuration_service->get_dataset_uri(),
+			'language'              => $this->configuration_service->get_language_code(),
+			'link_by_default'       => $this->configuration_service->is_link_by_default(),
 			// Whether the current user is allowed to create new entities.
 			//
 			// @see https://github.com/insideout10/wordlift-plugin/issues/561
-			'can_create_entities' => current_user_can( 'edit_wordlift_entities' ) ? 'yes' : 'no',
-			'l10n'                => array(
+			'can_create_entities'   => current_user_can( 'edit_wordlift_entities' ) ? 'yes' : 'no',
+			'l10n'                  => array(
 				'You already published an entity with the same name' => __( 'You already published an entity with the same name: ', 'wordlift' ),
 				'logo_selection_title'                               => __( 'WordLift Choose Logo', 'wordlift' ),
 				'logo_selection_button'                              => array( 'text' => __( 'Choose Logo', 'wordlift' ) ),
 			),
+			'wl_autocomplete_nonce' => wp_create_nonce( 'wordlift_autocomplete' ),
 		);
 
 		// Set post-related values if there's a current post.
 		if ( null !== $post = $entity_being_edited = get_post() ) {
 
 			$params['post_id']           = $entity_being_edited->ID;
-			$entity_service = Wordlift_Entity_Service::get_instance();
+			$entity_service              = Wordlift_Entity_Service::get_instance();
 			$params['entityBeingEdited'] = isset( $entity_being_edited->post_type ) && $entity_service->is_entity( $post->ID ) && is_numeric( get_the_ID() );
 			// We add the `itemId` here to give a chance to the analysis to use it in order to tell WLS to exclude it
 			// from the results, since we don't want the current entity to be discovered by the analysis.
