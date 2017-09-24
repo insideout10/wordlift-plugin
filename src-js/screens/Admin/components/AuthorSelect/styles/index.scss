@@ -3,9 +3,10 @@
   max-width: 500px;
 }
 
-.wl-select2-element + span.select2-container, .wl-select2-result {
-
-  &.select2-selection, .select2-selection {
+.wl-select2-element + span.select2-container,
+.wl-select2-result {
+  &.select2-selection,
+  .select2-selection {
     min-height: 32px;
     max-height: 32px;
     overflow-y: auto;
@@ -18,6 +19,16 @@
     background: no-repeat center;
     background-size: contain;
     margin: 4px 8px 4px 0;
+    vertical-align: top;
+  }
+
+  .wl-select2 {
+    // 340px is good for the settings screen's select2 element.
+    max-width: 340px;
+    display: inline-block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   .wl-select2-type {
@@ -48,7 +59,6 @@
 
   .select2-results__option--highlighted {
     background-color: #f5f5f5 !important;
-    color: #2E92FF !important;
+    color: #2e92ff !important;
   }
-
 }
