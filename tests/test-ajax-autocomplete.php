@@ -29,7 +29,7 @@ class Wordlift_Autocomplete_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$this->assertFalse( $response->success );
 		$this->assertObjectHasAttribute( 'data', $response );
 		$this->assertObjectHasAttribute( 'message', $response->data );
-		$this->assertEquals( 'Nonce field doens\'t match.', $response->data->message );
+		$this->assertEquals( 'Nonce field doesn\'t match.', $response->data->message );
 	}
 
 	public function test_autocomplete_with_wrong_nonce() {
