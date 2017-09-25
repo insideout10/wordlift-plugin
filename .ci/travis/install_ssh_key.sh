@@ -3,9 +3,9 @@
 (
 echo "Host gitlab.com"
 echo "    RSAAuthentication yes"
-echo "    IdentityFile $HOME/.ci/travis/id_rsa"
+echo "    IdentityFile $(pwd)/.ci/travis/id_rsa"
 )>> ~/.ssh/config
 
 cat ~/.ssh/config
 
-chmod 600 $HOME/.ci/travis/id_rsa
+chmod 600 $(pwd)/.ci/travis/id_rsa
