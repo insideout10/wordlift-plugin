@@ -2,7 +2,6 @@
 
 (
 echo "Host gitlab.com"
-echo "    UpdateHostKeys yes"
 echo "    RSAAuthentication yes"
 echo "    User git"
 echo "    IdentityFile $(pwd)/.ci/travis/id_rsa"
