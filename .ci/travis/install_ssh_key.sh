@@ -2,8 +2,9 @@
 
 (
 echo "Host gitlab.com"
-echo "    RSAAuthentication yes"
-echo "    IdentityFile $(pwd)/.ci/travis/id_rsa"
+echo "\tRSAAuthentication yes"
+echo "\tUser git"
+echo "\tIdentityFile $(pwd)/.ci/travis/id_rsa"
 )> ~/.ssh/config
 
 cat ~/.ssh/config
