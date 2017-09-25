@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Protect the key file.
-chmd 600 $(pwd)/.ci/travis/id_rsa
+chmod 600 $(pwd)/.ci/travis/id_rsa
 
 # Add the key file to the ssh config.
 (
