@@ -68,7 +68,10 @@ class Wordlift_Admin_Download_Your_Data_Page {
 	 */
 	public function download_your_data() {
 
-		ob_end_clean();
+		// Avoid PHP notices when buffer is empty.
+		if ( ob_get_contents() ) {
+			ob_end_clean();
+		}
 
 		// Get WL's key.
 		$key = $this->configuration_service->get_key();
@@ -85,7 +88,7 @@ class Wordlift_Admin_Download_Your_Data_Page {
 		$filename = 'dataset.' . $suffix;
 
 		// Make the request.
-		$response = wp_remote_get( WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "datasets/key=$key/$filename" );
+		$response = wp_safe_remote_get( WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "datasets/key=$key/$filename" );
 
 		if ( ! is_wp_error( $response ) && 200 === (int) $response['response']['code'] ) {
 			// Get response body.
@@ -96,7 +99,10 @@ class Wordlift_Admin_Download_Your_Data_Page {
 			header( "Content-Disposition: attachment; filename=$filename" );
 			header( "Content-Type: $type" );
 
-			// Echo the response body.
+			/*
+			 * Echo the response body. As this is not HTML we can not escape it
+			 * and neither sanitize it, therefor turning off the linter notice.
+			 */
 			echo $body; // WPCS: XSS OK.
 		} else {
 			// Something is not working properly, so display error message.
