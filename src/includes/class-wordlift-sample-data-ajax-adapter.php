@@ -47,7 +47,7 @@ class Wordlift_Sample_Data_Ajax_Adapter {
 	function create() {
 
 		// Clean any potential garbage before us.
-		ob_clean();
+		wl_ob_clean();
 
 		// Create the sample data.
 		$this->sample_data_service->create();
@@ -60,7 +60,7 @@ class Wordlift_Sample_Data_Ajax_Adapter {
 	function delete() {
 
 		// Clean any potential garbage before us.
-		ob_clean();
+		wl_ob_clean();
 
 		// Create the sample data.
 		$this->sample_data_service->delete();

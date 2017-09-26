@@ -20,7 +20,7 @@ class Wordlift_Relation_Rebuild_Adapter {
 
 		$this->relation_rebuild_service->process_all();
 
-		ob_clean();
+		wl_ob_clean();
 
 		wp_send_json_success( array(
 			'count' => $this->relation_rebuild_service->get_count(),

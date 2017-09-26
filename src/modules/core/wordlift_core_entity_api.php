@@ -79,7 +79,7 @@ function wl_entity_ajax_get_by_title() {
 	// See https://github.com/insideout10/wordlift-plugin/issues/438.
 	// Get the title to search.
 	if ( empty( $_POST['title'] ) && empty( $_GET['title'] ) ) {
-		ob_clean();
+		wl_ob_clean();
 		wp_send_json_error( 'The title parameter is required.' );
 	}
 
@@ -105,7 +105,7 @@ function wl_entity_ajax_get_by_title() {
 	);
 
 	// Clean any buffer.
-	ob_clean();
+	wl_ob_clean();
 
 	// Send the success response.
 	wp_send_json_success( $response );
