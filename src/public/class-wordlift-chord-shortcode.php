@@ -62,18 +62,13 @@ class Wordlift_Chord_Shortcode extends Wordlift_Shortcode {
 				return 'WordLift Chord: no entities found.';
 			}
 
-			$widget_id = 'wl_chord_global';
-
 			// Use the provided height if any, otherwise use a default of 200px.
 			//
 			// See https://github.com/insideout10/wordlift-plugin/issues/443.
 			$chord_atts['height'] = isset( $chord_atts['height'] ) ? $chord_atts['height'] : '200px';
 
 		} else {
-
 			$post_id   = get_the_ID();
-			$widget_id = 'wl_chord_' . $post_id;
-
 		}
 
 		// Adding css.
@@ -91,8 +86,7 @@ class Wordlift_Chord_Shortcode extends Wordlift_Shortcode {
 
 		// Escaping atts.
 		$esc_class   = esc_attr( 'wl-chord' );
-		$esc_id      = esc_attr( $widget_id );
-		$esc_uniq_id = esc_attr( uniqid() );
+		$esc_id      = esc_attr( uniqid( 'wl-chord-' ) );
 		$esc_width   = esc_attr( $chord_atts['width'] );
 		$esc_height  = esc_attr( $chord_atts['height'] );
 
@@ -105,7 +99,6 @@ class Wordlift_Chord_Shortcode extends Wordlift_Shortcode {
 		return <<<EOF
 <div class="$esc_class" 
 	id="$esc_id"
-	data-uniq-id="$esc_uniq_id"
 	data-post-id="$esc_post_id"
     data-depth="$esc_depth"
     data-main-color="$esc_main_color"
