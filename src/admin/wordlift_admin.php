@@ -92,7 +92,7 @@ function wl_check_permalink_structure() {
 	$structure = get_option( 'permalink_structure' );
 
 	// The regular expression. It will check if the site structure contains postname.
-	$regex = '~\%postname\%~';
+	$regex = '~^/\%postname\%/$~';
 
 	// Check if the site structure match the rquired one.
 	preg_match( $regex, $structure, $matches );
