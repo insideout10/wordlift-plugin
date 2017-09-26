@@ -33,7 +33,7 @@ class Wordlift_Google_Analytics_Export_Service {
 		global $wpdb;
 
 		// Site path (optional).
-		$path = $this->get_site_prefix();
+		$path = $this->get_site_path();
 
 		// First, let's see if we have the data in the cache already.
 		$items = get_transient( 'google_content_data' );
@@ -88,29 +88,20 @@ class Wordlift_Google_Analytics_Export_Service {
 	}
 
 	/**
-	 * Check and return site prefix if there is such.
+	 * Return site path.
 	 *
 	 * @since 3.15.0
 	 *
-	 * @return string The site prefix or empty string.
+	 * @return string The site path.
 	 */
-	public function get_site_prefix() {
-		// Get current permalink structure.
-		$structure = get_option( 'permalink_structure' );
+	public function get_site_path() {
+		// Get home url from database.
+		$home_url = home_url( '/' );
 
-		// Regular expression that will check for both prefix and %postname%.
-		// The first group in the expression will return the prefix.
-		$regex = '~(\/?.*)\%postname\%\/~';
+		// Parse the url.
+		$parsed = wp_parse_url( $home_url );
 
-		// Do the magic and collect the matches if any.
-		preg_match( $regex , $structure, $matches );
-
-		// Return the prefix if there is such.
-		if ( ! empty( $matches[1] ) ) {
-			return $matches[1];
-		}
-
-		// There is no prefix.
-		return '/';
+		// Return the path.
+		return $parsed['path'];
 	}
 }
