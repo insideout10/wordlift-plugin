@@ -90,10 +90,11 @@ class Wordlift_Admin_Download_Your_Data_Page {
 		if ( ! is_wp_error( $response ) && 200 === (int) $response['response']['code'] ) {
 			// Get response body.
 			$body = wp_remote_retrieve_body( $response );
+			$type = wp_remote_retrieve_header( $response, 'content-type' );
 
 			// Add proper file headers.
-			header( 'Content-Disposition: attachment; filename=' . $filename );
-			header( 'Content-Type: application/octet-stream; charset=' . get_bloginfo( 'charset' ) );
+			header( "Content-Disposition: attachment; filename=$filename" );
+			header( "Content-Type: $type" );
 
 			// Echo the response body.
 			echo $body; // WPCS: XSS OK.
