@@ -16,6 +16,17 @@
  * @since 3.6.0
  */
 class Wordlift_Admin_Download_Your_Data_Page {
+	/**
+	 * Allowed types.
+	 *
+	 * @since  3.16.0
+	 * @access private
+	 * @var $allowed_types array Allowed types.
+	 */
+	private $allowed_types = array(
+		'application/json;charset=UTF-8',
+		'application/rdf+xml;charset=UTF-8',
+	);
 
 	/**
 	 * A {@link Wordlift_Configuration_Service} instance.
@@ -80,8 +91,8 @@ class Wordlift_Admin_Download_Your_Data_Page {
 		$suffix = 'json';
 
 		// Check if there is suffix.
-		if ( isset( $_GET['out'] ) ) { // WPCS: input var ok; CSRF ok.
-			$suffix = sanitize_text_field( wp_unslash( $_GET['out'] ) ); // WPCS: input var ok; CSRF ok.
+		if ( isset( $_GET['out'] ) ) {
+			$suffix = sanitize_text_field( wp_unslash( $_GET['out'] ) );
 		}
 
 		// Create filename.
@@ -90,24 +101,33 @@ class Wordlift_Admin_Download_Your_Data_Page {
 		// Make the request.
 		$response = wp_safe_remote_get( WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "datasets/key=$key/$filename" );
 
-		if ( ! is_wp_error( $response ) && 200 === (int) $response['response']['code'] ) {
-			// Get response body.
-			$body = wp_remote_retrieve_body( $response );
-			$type = wp_remote_retrieve_header( $response, 'content-type' );
-
-			// Add proper file headers.
-			header( "Content-Disposition: attachment; filename=$filename" );
-			header( "Content-Type: $type" );
-
-			/*
-			 * Echo the response body. As this is not HTML we can not escape it
-			 * and neither sanitize it, therefor turning off the linter notice.
-			 */
-			echo $body; // WPCS: XSS OK.
-		} else {
+		if (
+			is_wp_error( $response ) ||
+			200 !== (int) $response['response']['code']
+		) {
 			// Something is not working properly, so display error message.
-			esc_html_e( 'Error: Something went wrong! Please contact administrator.', 'wordlift' );
+			wp_die( esc_html__( 'There was an error trying to connect to the server. Please try again later.', 'wordlift' ) );
 		}
+
+		// Get response body.
+		$body     = wp_remote_retrieve_body( $response );
+		$type     = wp_remote_retrieve_header( $response, 'content-type' );
+		$filename = 'dataset-' . date( 'Y-m-d-H-i-s' ) . '.' . $suffix;
+
+		if ( ! in_array( $type, $this->allowed_types, true ) ) {
+			// The file type is not from allowed types.
+			wp_die( esc_html__( 'The server responds, but this file type is not permitted for security reasons.', 'wordlift' ) );
+		}
+
+		// Add proper file headers.
+		header( "Content-Disposition: attachment; filename=$filename" );
+		header( "Content-Type: $type" );
+
+		/*
+		 * Echo the response body. As this is not HTML we can not escape it
+		 * and neither sanitize it, therefor turning off the linter notice.
+		 */
+		echo $body; // WPCS: XSS OK.
 
 		// Exit in both cases.
 		exit;
