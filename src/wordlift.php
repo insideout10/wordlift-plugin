@@ -69,7 +69,7 @@ function wl_write_log_handler( $log, $caller = null ) {
 	if ( true === WP_DEBUG ) {
 
 		$message = ( isset( $caller ) ? sprintf( '[%-40.40s] ', $caller ) : '' ) .
-		           ( is_array( $log ) || is_object( $log ) ? print_r( $log, true ) : wl_write_log_hide_key( $log ) );
+				   ( is_array( $log ) || is_object( $log ) ? print_r( $log, true ) : wl_write_log_hide_key( $log ) );
 
 		if ( isset( $wl_logger ) ) {
 			$wl_logger->info( $message );
@@ -212,8 +212,8 @@ function wl_get_coordinates( $post_id ) {
 function wl_get_image_urls( $post_id ) {
 
 	return Wordlift_Storage_Factory::get_instance()
-	                               ->post_images()
-	                               ->get( $post_id );
+								   ->post_images()
+								   ->get( $post_id );
 
 //	// If there is a featured image it has the priority.
 //	$featured_image_id = get_post_thumbnail_id( $post_id );
@@ -341,7 +341,7 @@ function wl_flush_rewrite_rules_hard( $hard ) {
 
 			// Get the entity URI.
 			$s = Wordlift_Sparql_Service::escape_uri( Wordlift_Entity_Service::get_instance()
-			                                                                 ->get_uri( $post->ID ) );
+																			 ->get_uri( $post->ID ) );
 
 			// Get the post URL.
 			// $url = wl_sparql_escape_uri( get_permalink( $post->ID ) );
@@ -350,7 +350,7 @@ function wl_flush_rewrite_rules_hard( $hard ) {
 			$delete_query .= "DELETE { <$s> schema:url ?u . } WHERE  { <$s> schema:url ?u . };\n";
 
 			$insert_query .= Wordlift_Schema_Url_Property_Service::get_instance()
-			                                                     ->get_insert_query( $s, $post->ID );
+																 ->get_insert_query( $s, $post->ID );
 
 		}
 
@@ -437,7 +437,7 @@ function wl_replace_item_id_with_uri( $content ) {
 
 			// Get the post bound to that item ID (looking both in the 'official' URI and in the 'same-as' .
 			$post = Wordlift_Entity_Service::get_instance()
-			                               ->get_entity_post_by_uri( $item_id );
+										   ->get_entity_post_by_uri( $item_id );
 
 			// If no entity is found, continue to the next one.
 			if ( null === $post ) {
@@ -494,7 +494,7 @@ require_once( 'shortcodes/wordlift_shortcode_faceted_search.php' );
 require_once( 'shortcodes/wordlift_shortcode_navigator.php' );
 
 require_once( 'widgets/wordlift_widget_geo.php' );
-require_once( 'widgets/wordlift_widget_chord.php' );
+require_once( 'widgets/class-wordlift-chord-widget.php' );
 require_once( 'widgets/wordlift_widget_timeline.php' );
 
 require_once( 'wordlift_redlink.php' );
