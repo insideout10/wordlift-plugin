@@ -26,6 +26,7 @@ import Switch from '../Switch';
 import Category from './Category';
 import EditLink from './EditLink';
 import ArrowToggle from '../ArrowToggle';
+import DuplicatedCategory from './DuplicatedCategory';
 
 /**
  * @inheritDoc
@@ -154,6 +155,21 @@ class EntityTile extends React.Component {
 	}
 
 	/**
+	 * Display the entity type next to the label if there is
+	 * another entity with same label but different type.
+	 *
+	 * @since 3.16.0
+	 */
+	renderType() {
+		// Check if the entity has duplications.
+		if ( this.props.entity.duplicated ) {
+			return ' ( ' + this.props.entity.mainType + ' ) ' ;
+		}
+
+		return null;
+	}
+
+	/**
 	 * Render the component.
 	 *
 	 * @since 3.11.0
@@ -171,6 +187,7 @@ class EntityTile extends React.Component {
 						{ this.props.entity.occurrences.length }</Count>
 					<Label entity={ this.props.entity }>
 						{ this.props.entity.label }</Label>
+					<DuplicatedCategory>{ this.renderType() }</DuplicatedCategory>
 					<Cloud className="fa fa-cloud"
 						   local={ this.props.entity.local } />
 				</Main>

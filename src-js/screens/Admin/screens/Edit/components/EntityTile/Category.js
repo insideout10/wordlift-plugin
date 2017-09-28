@@ -14,7 +14,7 @@ import styled from 'styled-components';
 const Category = styled.div`
 	display: inline-block;
 	position: relative;
-	top: -4px;	
+	top: -4px;
 	line-height: 16px;
 	font-size: 12px;
 `;
