@@ -19,6 +19,7 @@ vendor/
 
 .idea/
 .svn/
+*.iml
 
 # webdriver.io e2e tests screenshots.
 errorShots/
