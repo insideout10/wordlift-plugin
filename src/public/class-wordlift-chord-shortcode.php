@@ -34,6 +34,8 @@ class Wordlift_Chord_Shortcode extends Wordlift_Shortcode {
 		add_action( 'amp_post_template_css', array(
 			$this,
 			'amp_post_template_css',
+			10,
+			0,
 		) );
 
 	}
@@ -42,6 +44,8 @@ class Wordlift_Chord_Shortcode extends Wordlift_Shortcode {
 	 * Render shordcode.
 	 *
 	 * @param array $atts shortcode attributes.
+	 *
+	 * @return string The HTML output.
 	 */
 	public function render( $atts ) {
 
@@ -117,10 +121,8 @@ EOF;
 	 * See https://github.com/Automattic/amp-wp/blob/master/readme.md#custom-css
 	 *
 	 * @since 3.14.0
-	 *
-	 * @param object $amp_template The template.
 	 */
-	public function amp_post_template_css( $amp_template ) {
+	public function amp_post_template_css() {
 
 		// Hide the `wl-chord` when in AMP.
 		?>

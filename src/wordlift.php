@@ -494,7 +494,7 @@ require_once( 'shortcodes/wordlift_shortcode_faceted_search.php' );
 require_once( 'shortcodes/wordlift_shortcode_navigator.php' );
 
 require_once( 'widgets/wordlift_widget_geo.php' );
-require_once( 'widgets/wordlift_widget_chord.php' );
+require_once( 'widgets/class-wordlift-chord-widget.php' );
 require_once( 'widgets/wordlift_widget_timeline.php' );
 
 require_once( 'wordlift_redlink.php' );
