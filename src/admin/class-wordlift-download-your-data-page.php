@@ -17,15 +17,17 @@
  */
 class Wordlift_Admin_Download_Your_Data_Page {
 	/**
-	 * Allowed types.
+	 * Used to check if the requested file is supported.
 	 *
 	 * @since  3.16.0
 	 * @access private
-	 * @var $allowed_types array Allowed types.
+	 * @var $allowed_formats array Allowed formats.
 	 */
-	private $allowed_types = array(
-		'application/json;charset=UTF-8',
-		'application/rdf+xml;charset=UTF-8',
+	private $allowed_formats = array(
+		'json',
+		'rdf',
+		'ttl',
+		'n3',
 	);
 
 	/**
@@ -98,6 +100,11 @@ class Wordlift_Admin_Download_Your_Data_Page {
 		// Create filename.
 		$filename = 'dataset.' . $suffix;
 
+		if ( ! in_array( $suffix, $this->allowed_formats, true ) ) {
+			// The file type is not from allowed types.
+			wp_die( esc_html__( 'The format is not supported.', 'wordlift' ) );
+		}
+
 		// Make the request.
 		$response = wp_safe_remote_get( WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "datasets/key=$key/$filename" );
 
@@ -113,11 +120,6 @@ class Wordlift_Admin_Download_Your_Data_Page {
 		$body     = wp_remote_retrieve_body( $response );
 		$type     = wp_remote_retrieve_header( $response, 'content-type' );
 		$filename = 'dataset-' . date( 'Y-m-d-H-i-s' ) . '.' . $suffix;
-
-		if ( ! in_array( $type, $this->allowed_types, true ) ) {
-			// The file type is not from allowed types.
-			wp_die( esc_html__( 'The server responds, but this file type is not permitted for security reasons.', 'wordlift' ) );
-		}
 
 		// Add proper file headers.
 		header( "Content-Disposition: attachment; filename=$filename" );
