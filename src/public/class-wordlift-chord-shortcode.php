@@ -68,7 +68,7 @@ class Wordlift_Chord_Shortcode extends Wordlift_Shortcode {
 			$chord_atts['height'] = isset( $chord_atts['height'] ) ? $chord_atts['height'] : '200px';
 
 		} else {
-			$post_id   = get_the_ID();
+			$post_id = get_the_ID();
 		}
 
 		// Adding css.
@@ -82,13 +82,13 @@ class Wordlift_Chord_Shortcode extends Wordlift_Shortcode {
 		wp_localize_script( 'wordlift-ui', 'wl_chord_params', array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			'action'   => 'wl_chord',
-		));
+		) );
 
 		// Escaping atts.
-		$esc_class   = esc_attr( 'wl-chord' );
-		$esc_id      = esc_attr( uniqid( 'wl-chord-' ) );
-		$esc_width   = esc_attr( $chord_atts['width'] );
-		$esc_height  = esc_attr( $chord_atts['height'] );
+		$esc_class  = esc_attr( 'wl-chord' );
+		$esc_id     = esc_attr( uniqid( 'wl-chord-' ) );
+		$esc_width  = esc_attr( $chord_atts['width'] );
+		$esc_height = esc_attr( $chord_atts['height'] );
 
 		$esc_post_id    = esc_attr( $post_id );
 		$esc_depth      = esc_attr( $chord_atts['depth'] );
