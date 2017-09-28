@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Fired during plugin activation
  *
@@ -31,7 +30,7 @@ class Wordlift_Activator {
 	 */
 	public static function activate() {
 
-		// Do not let the plugin be activate on wordpress versions before 4.2.
+		// Do not let the plugin be activate on WordPress versions before 4.4.
 		$version = get_bloginfo( 'version' );
 		if ( version_compare( $version, '4.4', '<' ) ) {
 			die( esc_html__( 'The WordLift plugin requires WordPress version 4.4 or above.', 'wordlift' ) );
@@ -44,11 +43,6 @@ class Wordlift_Activator {
 		if ( empty( $key ) ) {
 			$configuration_service->set_key( '' );
 		}
-
-		// Intentionally go through the whole upgrade procedure to be DRY.
-		// The following function is called also from `init` so it's not necessary
-		// here.
-		// wl_core_update_db_check();
 
 		// If WordLift's key is not configured, set `_wl_activation_redirect` transient. We won't redirect here, because we can't give
 		// for granted that we're in a browser admin session.
