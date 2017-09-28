@@ -354,7 +354,7 @@
         if (conditions == null) {
           conditions = [];
         }
-        uri = configuration.ajax_url + "?action=" + configuration.action + "&post_id=" + configuration.post_id + "&type=" + type;
+        uri = configuration.ajax_url + "?action=" + configuration.action + "&post_id=" + configuration.post_id + "&limit=" + configuration.limit + "&type=" + type;
         $log.debug("Going to search " + type + " with conditions");
         return $http({
           method: 'post',

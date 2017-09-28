@@ -391,13 +391,13 @@ class Wordlift {
 	protected $category_taxonomy_service;
 
 	/**
-	 * The {@link Wordlift_Event_Entity_Page_Service} instance.
+	 * The {@link Wordlift_Entity_Page_Service} instance.
 	 *
 	 * @since  3.11.0
 	 * @access protected
-	 * @var \Wordlift_Event_Entity_Page_Service $event_entity_page_service The {@link Wordlift_Event_Entity_Page_Service} instance.
+	 * @var \Wordlift_Entity_Page_Service $entity_page_service The {@link Wordlift_Entity_Page_Service} instance.
 	 */
-	protected $event_entity_page_service;
+	protected $entity_page_service;
 
 	/**
 	 * The {@link Wordlift_Admin_Settings_Page_Action_Link} class.
@@ -842,8 +842,8 @@ class Wordlift {
 		// Load the `Wordlift_Category_Taxonomy_Service` class definition.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-category-taxonomy-service.php';
 
-		// Load the `Wordlift_Event_Entity_Page_Service` class definition.
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-event-entity-page-service.php';
+		// Load the `Wordlift_Entity_Page_Service` class definition.
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-page-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-batch-analysis-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-relation-rebuild-service.php';
 
@@ -1178,7 +1178,7 @@ class Wordlift {
 		// User Profile.
 		new Wordlift_Admin_User_Profile_Page( $this->author_element, $this->user_service );
 
-		$this->event_entity_page_service = new Wordlift_Event_Entity_Page_Service();
+		$this->entity_page_service = new Wordlift_Entity_Page_Service();
 
 		// Load the debug service if WP is in debug mode.
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
@@ -1401,11 +1401,11 @@ class Wordlift {
 		$this->loader->add_action( 'pre_get_posts', $this->category_taxonomy_service, 'pre_get_posts', 10, 1 );
 
 		/*
-		 * Hook the `pre_get_posts` action to the `Wordlift_Event_Entity_Page_Service`
+		 * Hook the `pre_get_posts` action to the `Wordlift_Entity_Page_Service`
 		 * in order to tweak WP's `WP_Query` to show event related entities in reverse
 		 * order of start time.
 		 */
-		$this->loader->add_action( 'pre_get_posts', $this->event_entity_page_service, 'pre_get_posts', 10, 1 );
+		$this->loader->add_action( 'pre_get_posts', $this->entity_page_service, 'pre_get_posts', 10, 1 );
 
 		$this->loader->add_action( 'wp_async_wl_run_sparql_query', $this->sparql_service, 'run_sparql_query', 10, 1 );
 
