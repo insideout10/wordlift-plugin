@@ -71,7 +71,8 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 	 */
 	public function rebuild() {
 
-		wl_ob_clean();
+		// @codingStandardsIgnoreLine direct error suppression to avoid code bloat.
+		@ob_clean();
 
 		// Give ourselves some time to process the data.
 		set_time_limit( 21600 ); // 6 hours
@@ -134,7 +135,8 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 	 */
 	private function redirect( $url ) {
 
-		wl_ob_clean();
+		// @codingStandardsIgnoreLine direct error suppression to avoid code bloat.
+		@ob_clean();
 
 		@header( 'Content-Type: text/html; charset=' . get_option( 'blog_charset' ) );
 		?>

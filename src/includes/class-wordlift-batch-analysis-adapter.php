@@ -49,7 +49,8 @@ class Wordlift_Batch_Analysis_Adapter {
 		$count = $this->batch_analysis_service->submit_auto_selected_posts( $_REQUEST['link'] );
 
 		// Clear any buffer.
-		wl_ob_clean();
+		// @codingStandardsIgnoreLine direct error suppression to avoid code bloat.
+		@ob_clean();
 
 		// Send the response.
 		wp_send_json_success( array( 'count' => $count ) );
@@ -70,7 +71,8 @@ class Wordlift_Batch_Analysis_Adapter {
 		$count = $this->batch_analysis_service->submit_all_posts( $_REQUEST['link'] );
 
 		// Clear any buffer.
-		wl_ob_clean();
+		// @codingStandardsIgnoreLine direct error suppression to avoid code bloat.
+		@ob_clean();
 
 		// Send the response.
 		wp_send_json_success( array( 'count' => $count ) );
@@ -91,7 +93,8 @@ class Wordlift_Batch_Analysis_Adapter {
 		$count = $this->batch_analysis_service->submit( (array) $_REQUEST['post'], $_REQUEST['link'] );
 
 		// Clear any buffer.
-		wl_ob_clean();
+		// @codingStandardsIgnoreLine direct error suppression to avoid code bloat.
+		@ob_clean();
 
 		// Send the response.
 		wp_send_json_success( array( 'count' => $count ) );
@@ -112,7 +115,8 @@ class Wordlift_Batch_Analysis_Adapter {
 		$count = $this->batch_analysis_service->cancel( (array) $_REQUEST['post'] );
 
 		// Clear any buffer.
-		wl_ob_clean();
+		// @codingStandardsIgnoreLine direct error suppression to avoid code bloat.
+		@ob_clean();
 
 		// Send the response.
 		wp_send_json_success( array( 'count' => $count ) );
@@ -133,7 +137,8 @@ class Wordlift_Batch_Analysis_Adapter {
 		$this->batch_analysis_service->clear_warning( (array) $_REQUEST['post'] );
 
 		// Clear any buffer.
-		wl_ob_clean();
+		// @codingStandardsIgnoreLine direct error suppression to avoid code bloat.
+		@ob_clean();
 
 		// Send the response.
 		wp_send_json_success();

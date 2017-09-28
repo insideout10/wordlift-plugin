@@ -70,7 +70,8 @@ class Wordlift_Autocomplete_Adapter {
 		$response = $this->autocomplete_service->make_request( $query );
 
 		// Clear any buffer.
-		wl_ob_clean();
+		// @codingStandardsIgnoreLine direct error suppression to avoid code bloat.
+		@ob_clean();
 
 		// If the response is valid, then send the suggestions.
 		if ( ! is_wp_error( $response ) && 200 === (int) $response['response']['code'] ) {

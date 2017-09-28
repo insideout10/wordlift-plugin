@@ -75,7 +75,8 @@ class Wordlift_Jsonld_Service {
 		//
 		// See https://github.com/insideout10/wordlift-plugin/issues/406.
 		// See https://codex.wordpress.org/AJAX_in_Plugins.
-		wl_ob_clean();
+		// @codingStandardsIgnoreLine direct error suppression to avoid code bloat.
+		@ob_clean();
 
 		// Switch to Website converter if is home page.
 		if ( isset( $_REQUEST['homepage'] ) ) {

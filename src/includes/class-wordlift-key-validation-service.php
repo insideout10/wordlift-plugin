@@ -78,7 +78,8 @@ class Wordlift_Key_Validation_Service {
 	public function validate_key() {
 
 		// Ensure we don't have garbage before us.
-		wl_ob_clean();
+		// @codingStandardsIgnoreLine direct error suppression to avoid code bloat.
+		@ob_clean();
 
 		// Check if we have a key.
 		if ( ! isset( $_POST['key'] ) ) {

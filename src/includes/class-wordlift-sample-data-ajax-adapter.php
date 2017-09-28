@@ -47,7 +47,8 @@ class Wordlift_Sample_Data_Ajax_Adapter {
 	function create() {
 
 		// Clean any potential garbage before us.
-		wl_ob_clean();
+		// @codingStandardsIgnoreLine direct error suppression to avoid code bloat.
+		@ob_clean();
 
 		// Create the sample data.
 		$this->sample_data_service->create();

@@ -47,7 +47,8 @@ class Wordlift_Publisher_Ajax_Adapter {
 	public function publisher() {
 
 		// Ensure we don't have garbage before us.
-		wl_ob_clean();
+		// @codingStandardsIgnoreLine direct error suppression to avoid code bloat.
+		@ob_clean();
 
 		// Check if the current user can `manage_options`.
 		if ( ! current_user_can( 'manage_options' ) ) {
