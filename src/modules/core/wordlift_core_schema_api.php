@@ -1,38 +1,11 @@
 <?php
-
 /**
- * Deletes the values for the specified property and post ID, where
+ * Schema API functions.
  *
- * @param $post_id       numeric The numeric post ID.
- * @param $property_name string Name of the property (e.g. name, for the http://schema.org/name property)
- *
- * @return boolean The method returns true if everything went ok, false otherwise.
+ * @since      3.0.0
+ * @package    Wordlift
+ * @subpackage Wordlift/modules/core
  */
-function wl_schema_reset_value( $post_id, $property_name ) {
-
-	// Some checks on the parameters
-	if ( ! is_numeric( $post_id ) || is_null( $property_name ) ) {
-		return false;
-	}
-
-	// Build full schema uri if necessary
-	$property_name = wl_build_full_schema_uri_from_schema_slug( $property_name );
-
-	// Get accepted properties
-	$accepted_fields = wl_entity_taxonomy_get_custom_fields( $post_id );
-
-	// Find the name of the custom-field managing the schema property
-	foreach ( $accepted_fields as $wl_constant => $field ) {
-		if ( $field['predicate'] == $property_name ) {
-
-			delete_post_meta( $post_id, $wl_constant );
-
-			return true;
-		}
-	}
-
-	return false;
-}
 
 /**
  * Retrieves the value of the specified property for the entity.
@@ -72,30 +45,6 @@ function wl_schema_get_value( $post_id, $property_name ) {
 	}
 
 	return null;
-}
-
-/**
- * Add a value of the specified property for the entity, where
- *
- * @param int    $post_id        The numeric post ID.
- * @param string $property_name  Name of the property (e.g. name, for the http://schema.org/name property).
- * @param mixed  $property_value Value to save into the property (adding to already saved).
- *
- * @return array An array of values or NULL in case of no values (or error).
- */
-function wl_schema_add_value( $post_id, $property_name, $property_value ) {
-
-	if ( ! is_array( $property_value ) ) {
-		$property_value = array( $property_value );
-	}
-
-	// Get the old values or set an empty array.
-	$old_values = wl_schema_get_value( $post_id, $property_name ) ?: array();
-
-	$merged_property_value = array_unique( array_merge( $property_value, $old_values ) );
-
-	wl_schema_set_value( $post_id, $property_name, $merged_property_value );
-
 }
 
 /**
@@ -143,14 +92,13 @@ function wl_schema_set_value( $post_id, $property_name, $property_value ) {
 	return false;
 }
 
-
 /**
  * Retrieves the entity types for the specified post ID, where
  *
- * @param $post_id numeric The numeric post ID.
+ * @param int $post_id The numeric post ID.
  *
  * @return array Array of type(s) (e.g. Type, for the http://schema.org/Type)
- * or NULL in case of no values (or error).
+ *               or NULL in case of no values (or error).
  */
 function wl_schema_get_types( $post_id ) {
 
@@ -159,7 +107,7 @@ function wl_schema_get_types( $post_id ) {
 		return null;
 	}
 
-	$type = wl_entity_type_taxonomy_get_type( $post_id );
+	$type = Wordlift_Entity_Type_Service::get_instance()->get( $post_id );
 
 	if ( isset( $type['uri'] ) ) {
 		return array( $type['uri'] );
@@ -171,8 +119,8 @@ function wl_schema_get_types( $post_id ) {
 /**
  * Sets the entity type(s) for the specified post ID. Support is now for only one type per entity.
  *
- * @param $post_id    numeric The numeric post ID
- * @param $type_names array An array of strings, each defining a type (e.g. Type, for the http://schema.org/Type)
+ * @param int   $post_id    The numeric post ID
+ * @param array $type_names An array of strings, each defining a type (e.g. Type, for the http://schema.org/Type)
  *
  * @return boolean True if everything went ok, an error string otherwise.
  */
@@ -194,38 +142,6 @@ function wl_schema_set_types( $post_id, $type_names ) {
 	// Actually sets the taxonomy type
 	wl_set_entity_main_type( $post_id, $type_names );
 
-}
-
-/**
- * Retrieves the list of supported properties for the specified type.
- * @uses wl_entity_taxonomy_get_custom_fields() to retrieve all custom fields (type properties)
- * @uses wl_build_full_schema_uri_from_schema_slug() to convert a schema slug to full uri
- *
- * @param $type_name string Name of the type (e.g. Type, for the http://schema.org/Type)
- *
- * @return array The method returns an array of supported properties for the type, e.g. (‘startDate’, ‘endDate’) for an Event.
- * You can call wl_schema_get_property_expected_type on each to know which data type they expect.
- */
-function wl_schema_get_type_properties( $type_name ) {
-
-	// Build full schema uri if necessary
-	$type_name = wl_build_full_schema_uri_from_schema_slug( $type_name );
-
-	// Get all custom fields
-	$all_types_and_fields = wl_entity_taxonomy_get_custom_fields();
-
-	$schema_root_address = 'http://schema.org/';
-	$type_properties     = array();
-
-	// Search for the entity type which has the requested name as uri
-	if ( isset( $all_types_and_fields[ $type_name ] ) ) {
-		foreach ( $all_types_and_fields[ $type_name ] as $field ) {
-			// Convert to schema slug and store in array
-			$type_properties[] = str_replace( $schema_root_address, '', $field['predicate'] );
-		}
-	}
-
-	return $type_properties;
 }
 
 /**

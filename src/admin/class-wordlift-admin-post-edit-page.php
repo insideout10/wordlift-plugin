@@ -57,8 +57,8 @@ class Wordlift_Admin_Post_Edit_Page {
 		// is scheduled to replace the older `wordlift-admin.min.js` once client-side
 		// code is properly refactored.
 		wp_enqueue_script(
-			'wordlift-admin-edit-page', plugin_dir_url( __FILE__ ) . 'js/wordlift-admin-edit-page.bundle.js',
-			array( $this->plugin->get_plugin_name(), ),
+			'wordlift-admin-edit-page', plugin_dir_url( __FILE__ ) . 'js/1/edit.js',
+			array( $this->plugin->get_plugin_name(), 'jquery' ),
 			$this->plugin->get_version(),
 			false
 		);

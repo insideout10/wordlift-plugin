@@ -7,11 +7,11 @@
  * @subpackage Wordlift/admin/WL_Metabox
  */
 
-require_once( 'WL_Metabox_Field.php' );
+require_once( 'class-wl-metabox-field.php' );
 require_once( 'WL_Metabox_Field_date.php' );
-require_once( 'WL_Metabox_Field_uri.php' );
+require_once( 'class-wl-metabox-field-uri.php' );
 require_once( 'WL_Metabox_Field_coordinates.php' );
-require_once( 'WL_Metabox_Field_sameas.php' );
+require_once( 'class-wl-metabox-field-sameas.php' );
 require_once( 'WL_Metabox_Field_address.php' );
 require_once( 'class-wordlift-metabox-field-duration.php' );
 require_once( 'class-wordlift-metabox-field-multiline.php' );
@@ -59,13 +59,25 @@ class WL_Metabox {
 	 */
 	public function add_main_metabox() {
 
+		// Build the fields we need to print.
+		$this->instantiate_fields( get_the_ID() );
+
+		// Bailout if there are no actual fields, we do not need a metabox in that case.
+		if ( empty( $this->fields ) ) {
+			return;
+		}
+
 		// Add main metabox (will print also the inner fields).
 		$id    = uniqid( 'wl-metabox-' );
 		$title = get_the_title() . ' ' . __( 'properties', 'wordlift' );
-		add_meta_box( $id, $title, array(
-			$this,
-			'html',
-		), Wordlift_Entity_Service::TYPE_NAME, 'normal', 'high' );
+
+		// WordPress 4.2 do not accept an array of screens as parameter, have to do be explicit.
+		foreach ( Wordlift_Entity_Service::valid_entity_post_types() as $screen ) {
+			add_meta_box( $id, $title, array(
+				$this,
+				'html',
+			), $screen, 'normal', 'high' );
+		}
 
 		// Add filter to change the metabox CSS class.
 		add_filter( "postbox_classes_entity_$id", 'wl_admin_metaboxes_add_css_class' );
@@ -79,9 +91,6 @@ class WL_Metabox {
 	 * @param WP_Post $post The post.
 	 */
 	public function html( $post ) {
-
-		// Build the fields we need to print.
-		$this->instantiate_fields( $post->ID );
 
 		// Loop over the fields.
 		foreach ( $this->fields as $field ) {
@@ -116,6 +125,13 @@ class WL_Metabox {
 
 		if ( isset( $entity_type ) ) {
 
+			/*
+			 * Might not have any relevant meta box field, for example for articles,
+			 * therefor make sure fields are at least an empty array to help the considered
+			 * in other functions using it.
+			 */
+			$this->fields = array();
+
 			/**
 			 * In some special case, properties must be grouped in one field (e.g. coordinates) or dealed with custom methods.
 			 * We must divide fields in two groups:
@@ -149,7 +165,6 @@ class WL_Metabox {
 				$this->add_field( $info, true );
 
 			}
-
 		}
 
 	}
@@ -285,7 +300,8 @@ class WL_Metabox {
 			}
 		}
 
-		wl_linked_data_push_to_redlink( $entity_id );
+		Wordlift_Linked_Data_Service::get_instance()->push( $entity_id );
+
 	}
 
 	/**

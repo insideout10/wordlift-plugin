@@ -1,6 +1,10 @@
 <?php
 /**
  * This file provides functions to add and configure the administration menu for WordPress.
+ *
+ * @since      3.0.0
+ * @package    Wordlift
+ * @subpackage Wordlift/admin
  */
 
 /**
@@ -22,17 +26,43 @@ function wl_admin_menu() {
 		$menu_slug,                  // menu slug
 		//'wl_admin_menu_callback',  // TODO: function callback to draw the coming dashboard
 		'wl_configuration_admin_menu_callback',
-		WP_CONTENT_URL . '/plugins/wordlift/images/svg/wl-logo-icon.svg' );  // icon URL 20x20 px	
-	
+		WP_CONTENT_URL . '/plugins/wordlift/images/svg/wl-logo-icon.svg' );  // icon URL 20x20 px
+
 	// Call hooked functions.
 	do_action( 'wl_admin_menu', $menu_slug, $capability );
-	
-	// Remove duplicate 'WordLift' subpage created by WordPress. 
+
+	// Remove duplicate 'WordLift' subpage created by WordPress.
 	remove_submenu_page( $menu_slug, $menu_slug );
-	
+
 }
 
 add_action( 'admin_menu', 'wl_admin_menu' );
+
+/**
+ * This function is called by the *admin_menu* hook to remove for the admin menu
+ * links to the entity type admin page from the menu hierarchy of all post types
+ * which are not the entity post type one.
+ *
+ * @since 3.15.0
+ */
+function wl_remove_entity_type_menu() {
+	/*
+	 * Remove from the menu links to the entity type admin page when
+	 * under non entity hierarchy.
+	 */
+	foreach ( Wordlift_Entity_Service::valid_entity_post_types() as $post_type ) {
+		// In the context of admin menues post has no explicit indication of post type in the urls.
+		if ( 'post' !== $post_type ) {
+			remove_submenu_page( 'edit.php', 'edit-tags.php?taxonomy=' . Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		}
+
+		if ( Wordlift_Entity_Service::TYPE_NAME !== $post_type ) {
+			remove_submenu_page( 'edit.php?post_type=' . $post_type, 'edit-tags.php?taxonomy=' . Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME . '&amp;post_type=' . $post_type );
+		}
+	}
+}
+
+add_action( 'admin_menu', 'wl_remove_entity_type_menu', 100 );
 
 /**
  * This function is called as a callback by the *wl_admin_menu* to display the actual page.

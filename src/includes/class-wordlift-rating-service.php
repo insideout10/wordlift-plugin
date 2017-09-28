@@ -150,6 +150,10 @@ class Wordlift_Rating_Service {
 	 */
 	public function set_rating_for( $post_id ) {
 
+		if ( ! $this->entity_service->is_entity( $post_id ) ) {
+			return;
+		}
+
 		// Calculate rating for the given post.
 		$rating = $this->calculate_rating_for( $post_id );
 

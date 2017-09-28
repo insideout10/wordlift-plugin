@@ -227,4 +227,16 @@ class Wordlift_Test extends Wordlift {
 		return $this->sparql_service;
 	}
 
+	/**
+	 * Get the {@link Wordlift_Schema_Service} instance.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @return \Wordlift_Schema_Service The {@link Wordlift_Schema_Service} instance.
+	 */
+	public function get_schema_service() {
+
+		return $this->schema_service;
+	}
+
 }

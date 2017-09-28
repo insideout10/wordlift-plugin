@@ -874,3 +874,195 @@ function wl_schema_get_property_expected_type( $property_name ) {
 
 	return $expected_types;
 }
+
+/**
+ * Retrieve entity property type, starting from the schema.org's property name
+ * or from the WL_CUSTOM_FIELD_xxx name.
+ *
+ * @param string $property_name as defined by schema.org or WL internal constants
+ *
+ * @return array containing type(s) or null (in case of error or no types).
+ */
+function wl_get_meta_type( $property_name ) {
+
+	// Property name must be defined.
+	if ( ! isset( $property_name ) || is_null( $property_name ) ) {
+		return null;
+	}
+
+	// store eventual schema name in  different variable
+	$property_schema_name = wl_build_full_schema_uri_from_schema_slug( $property_name );
+
+	// Loop over custom_fields
+	$entity_terms = wl_entity_taxonomy_get_custom_fields();
+
+	foreach ( $entity_terms as $term ) {
+
+		foreach ( $term as $wl_constant => $field ) {
+
+			// Is this the predicate we are searching for?
+			if ( isset( $field['type'] ) ) {
+				$found_predicate = isset( $field['predicate'] ) && ( $field['predicate'] == $property_schema_name );
+				$found_constant  = ( $wl_constant == $property_name );
+				if ( $found_predicate || $found_constant ) {
+					return $field['type'];
+				}
+			}
+		}
+	}
+
+	return null;
+}
+
+/**
+ * Get the modified time of the provided post. If the time is negative, return the published date.
+ *
+ * @param object $post A post instance.
+ *
+ * @return string A datetime.
+ */
+function wl_get_post_modified_time( $post ) {
+
+	$date_modified = get_post_modified_time( 'c', true, $post );
+
+	if ( '-' === substr( $date_modified, 0, 1 ) ) {
+		return get_the_time( 'c', $post );
+	}
+
+	return $date_modified;
+}
+
+/**
+ * Remove a given relation instance
+ * @uses   $wpdb->delete() to perform the query
+ *
+ * @param int    $subject_id The post ID | The entity post ID.
+ * @param string $predicate  Name of the relation: 'what' | 'where' | 'when' | 'who'
+ * @param int    $object_id  The entity post ID.
+ *
+ * @return boolean False for failure. True for success.
+ */
+function wl_core_delete_relation_instance( $subject_id, $predicate, $object_id ) {
+
+	// Checks on subject and object
+	if ( ! is_numeric( $subject_id ) || ! is_numeric( $object_id ) ) {
+		return false;
+	}
+
+	// Checks on the given relation
+	if ( ! wl_core_check_relation_predicate_is_supported( $predicate ) ) {
+		return false;
+	}
+
+	// Prepare interaction with db
+	global $wpdb;
+
+	wl_write_log( "Going to delete relation instace [ subject_id :: $subject_id ] [ object_id :: $object_id ] [ predicate :: $predicate ]" );
+
+	// @see ttps://codex.wordpress.org/it:Riferimento_classi/wpdb#DELETE_di_righe
+	$wpdb->delete(
+		wl_core_get_relation_instances_table_name(),
+		array(
+			'subject_id' => $subject_id,
+			'predicate'  => $predicate,
+			'object_id'  => $object_id,
+		),
+		array( '%d', '%s', '%d' )
+	);
+
+	return true;
+}
+
+
+/**
+ * Create multiple relation instances
+ * @uses   wl_add_relation_instance() to create each single instance
+ *
+ * @param int    $subject_id The post ID | The entity post ID.
+ * @param string $predicate  Name of the relation: 'what' | 'where' | 'when' | 'who'
+ * @param array  $object_ids The entity post IDs collection.
+ *
+ * @return integer|boolean Return the relation instances IDs or false
+ */
+function wl_core_add_relation_instances( $subject_id, $predicate, $object_ids ) {
+
+	// Checks on subject and object
+	if ( ! is_numeric( $subject_id ) ) {
+		return false;
+	}
+
+	// Checks on the given relation
+	if ( ! wl_core_check_relation_predicate_is_supported( $predicate ) ) {
+		return false;
+	}
+
+	// Check $object_ids is an array
+	if ( ! is_array( $object_ids ) || empty( $object_ids ) ) {
+		return false;
+	}
+
+	// Call method to check and add each single relation
+	$inserted_records_ids = array();
+	foreach ( $object_ids as $object_id ) {
+		$new_record_id          = wl_core_add_relation_instance( $subject_id, $predicate, $object_id );
+		$inserted_records_ids[] = $new_record_id;
+	}
+
+	return $inserted_records_ids;
+}
+
+/**
+ * Add a value of the specified property for the entity, where
+ *
+ * @param int    $post_id        The numeric post ID.
+ * @param string $property_name  Name of the property (e.g. name, for the http://schema.org/name property).
+ * @param mixed  $property_value Value to save into the property (adding to already saved).
+ *
+ * @return array An array of values or NULL in case of no values (or error).
+ */
+function wl_schema_add_value( $post_id, $property_name, $property_value ) {
+
+	if ( ! is_array( $property_value ) ) {
+		$property_value = array( $property_value );
+	}
+
+	// Get the old values or set an empty array.
+	$old_values = wl_schema_get_value( $post_id, $property_name ) ?: array();
+
+	$merged_property_value = array_unique( array_merge( $property_value, $old_values ) );
+
+	wl_schema_set_value( $post_id, $property_name, $merged_property_value );
+
+}
+
+/**
+ * Retrieves the list of supported properties for the specified type.
+ * @uses wl_entity_taxonomy_get_custom_fields() to retrieve all custom fields (type properties)
+ * @uses wl_build_full_schema_uri_from_schema_slug() to convert a schema slug to full uri
+ *
+ * @param $type_name string Name of the type (e.g. Type, for the http://schema.org/Type)
+ *
+ * @return array The method returns an array of supported properties for the type, e.g. (‘startDate’, ‘endDate’) for an Event.
+ * You can call wl_schema_get_property_expected_type on each to know which data type they expect.
+ */
+function wl_schema_get_type_properties( $type_name ) {
+
+	// Build full schema uri if necessary
+	$type_name = wl_build_full_schema_uri_from_schema_slug( $type_name );
+
+	// Get all custom fields
+	$all_types_and_fields = wl_entity_taxonomy_get_custom_fields();
+
+	$schema_root_address = 'http://schema.org/';
+	$type_properties     = array();
+
+	// Search for the entity type which has the requested name as uri
+	if ( isset( $all_types_and_fields[ $type_name ] ) ) {
+		foreach ( $all_types_and_fields[ $type_name ] as $field ) {
+			// Convert to schema slug and store in array
+			$type_properties[] = str_replace( $schema_root_address, '', $field['predicate'] );
+		}
+	}
+
+	return $type_properties;
+}

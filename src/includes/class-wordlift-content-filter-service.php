@@ -138,12 +138,13 @@ class Wordlift_Content_Filter_Service {
 		$label     = $matches[4];
 
 		// Get the entity post by URI.
-		if ( null === ( $post = $this->entity_service->get_entity_post_by_uri( $uri ) ) ) {
+		$post = $this->entity_service->get_entity_post_by_uri( $uri );
+		if ( null === $post ) {
 
 			// If the entity post is not found return the label w/o the markup
 			// around it.
 			//
-			// See https://github.com/insideout10/wordlift-plugin/issues/461
+			// See https://github.com/insideout10/wordlift-plugin/issues/461.
 			return $label;
 		}
 
@@ -162,8 +163,72 @@ class Wordlift_Content_Filter_Service {
 		// Get the link.
 		$href = get_permalink( $post );
 
+		// Get an alternative title attribute.
+		$title_attribute = $this->get_title_attribute( $post->ID, $label );
+
 		// Return the link.
-		return "<a class='wl-entity-page-link' href='$href'>$label</a>";
+		return "<a class='wl-entity-page-link' $title_attribute href='$href'>$label</a>";
+	}
+
+	/**
+	 * Get a `title` attribute with an alternative label for the link.
+	 *
+	 * If an alternative title isn't available an empty string is returned.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @param int    $post_id The {@link WP_Post}'s id.
+	 * @param string $label   The main link label.
+	 *
+	 * @return string A `title` attribute with an alternative label or an empty
+	 *                string if none available.
+	 */
+	private function get_title_attribute( $post_id, $label ) {
+
+		// Get an alternative title.
+		$title = $this->get_link_title( $post_id, $label );
+		if ( ! empty( $title ) ) {
+			return 'title="' . esc_attr( $title ) . '"';
+		}
+
+		return '';
+	}
+
+	/**
+	 * Get a string to be used as a title attribute in links to a post
+	 *
+	 * @since 3.15.0
+	 *
+	 * @param int    $post_id      The post id of the post being linked.
+	 * @param string $ignore_label A label to ignore.
+	 *
+	 * @return string    The title to be used in the link. An empty string when
+	 *                    there is no alternative that is not the $ignore_label.
+	 */
+	function get_link_title( $post_id, $ignore_label ) {
+
+		// Get possible alternative labels we can select from.
+		$labels = $this->entity_service->get_alternative_labels( $post_id );
+
+		/*
+		 * Since the original text might use an alternative label than the
+		 * Entity title, add the title itself which is not returned by the api.
+		 */
+		$labels[] = get_the_title( $post_id );
+
+		// Add some randomness to the label selection.
+		shuffle( $labels );
+
+		// Select the first label which is not to be ignored.
+		$title = '';
+		foreach ( $labels as $label ) {
+			if ( 0 !== strcasecmp( $label, $ignore_label ) ) {
+				$title = $label;
+				break;
+			}
+		}
+
+		return $title;
 	}
 
 	/**

@@ -45,6 +45,25 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 	private $configuration_service;
 
 	/**
+	 * Array of synonyms to the simulate entity title.
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var array
+	 */
+	private $synonym_labels;
+
+	/**
+	 * The post ID of a simulate entity.
+	 * Used to prevent regeneration of the post during tests, or set an explicit one.
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var int
+	 */
+	private $dummy_post_id;
+
+	/**
 	 * {@inheritdoc}
 	 */
 	public function setUp() {
@@ -80,15 +99,29 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 		// Add a filter to set the permalink to a fixed value we can test.
 		add_filter( 'post_link', array( $this, 'post_link' ), 10, 3 );
 
+		// test with no synonym
+		$this->synonym_labels = array();
+
 		// The content.
 		$content = '<span id="urn:enhancement-4b54b56d-7142-5dd3-adc6-27e51c70fdad" class="textannotation disambiguated wl-person" itemid="http://data.example.org/entity">Matt Mullenweg</span> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
 
 		// The expected content with a link.
-		$expected = '<a class=\'wl-entity-page-link\' href=\'http://example.org/link\'>Matt Mullenweg</a> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
+		$expected = '<a class=\'wl-entity-page-link\'  href=\'http://example.org/link\'>Matt Mullenweg</a> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
 
 		// Check that the expected content matches the function output.
 		$this->assertEquals( $expected, $this->content_filter_service->the_content( $content ) );
 
+		// test with synonym
+		$this->synonym_labels = array( 'Creator of WordPress' );
+
+		// The content.
+		$content = '<span id="urn:enhancement-4b54b56d-7142-5dd3-adc6-27e51c70fdad" class="textannotation disambiguated wl-person" itemid="http://data.example.org/entity">Matt Mullenweg</span> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
+
+		// The expected content with a link.
+		$expected = '<a class=\'wl-entity-page-link\' title="Creator of WordPress" href=\'http://example.org/link\'>Matt Mullenweg</a> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
+
+		// Check that the expected content matches the function output.
+		$this->assertEquals( $expected, $this->content_filter_service->the_content( $content ) );
 	}
 
 	/**
@@ -138,7 +171,58 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function get_entity_post_by_uri( $uri ) {
 
-		return $this->factory->post->create();
+		// to make sure we use only one post per test.
+		if ( empty( $this->dummy_post_id ) ) {
+			$this->dummy_post_id = $this->factory->post->create( array( 'post_title' => 'Matt Mullenweg' ) );
+		}
+
+		return get_post( $this->dummy_post_id );
+	}
+
+	/**
+	 * Mock {@link Wordlift_Entity_Service} get_alternative_labels function.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @param int $post_id Post id.
+	 *
+	 * @return mixed An array  of alternative labels.
+	 */
+	public function get_alternative_labels( $post_id ) {
+		return $this->synonym_labels;
+	}
+
+	/**
+	 * Test a the get_link_title method
+	 *
+	 * @since 3.13.0
+	 */
+	function test_get_link_title() {
+
+		// Initialize the dummy post
+		$this->dummy_post_id = $this->factory->post->create( array( 'post_title' => 'Matt Mullenweg' ) );
+		$post_id = $this->dummy_post_id;
+
+		// No synonym, label same as post title.
+		$this->synonym_labels = array();
+		$this->assertEquals( '', $this->content_filter_service->get_link_title( $post_id, 'Matt Mullenweg' ) );
+
+		// No synonym, label different from post title.
+		$this->synonym_labels = array();
+		$this->assertEquals( 'Matt Mullenweg', $this->content_filter_service->get_link_title( $post_id, 'label' ) );
+
+		// Have synonym.
+		$this->synonym_labels = array( 'WordPress Creator' );
+		$this->assertEquals( 'WordPress Creator', $this->content_filter_service->get_link_title( $post_id, 'Matt Mullenweg' ) );
+
+		// No synonym, label same as post title with different case.
+		$this->synonym_labels = array();
+		$this->assertEquals( '', $this->content_filter_service->get_link_title( $post_id, 'matt mullenweg' ) );
+
+		// No synonym, label same as synonym with different case.
+		$this->synonym_labels = array( 'Matt Mullenweg' );
+		$this->assertEquals( '', $this->content_filter_service->get_link_title( $post_id, 'matt mullenweg' ) );
+
 	}
 
 	/**
@@ -205,7 +289,7 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 		$content = '<span id="urn:enhancement-4b54b56d-7142-5dd3-adc6-27e51c70fdad" class="textannotation wl-link disambiguated wl-person" itemid="http://data.example.org/entity">Matt Mullenweg</span> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
 
 		// The expected content with a link.
-		$expected = '<a class=\'wl-entity-page-link\' href=\'http://example.org/link\'>Matt Mullenweg</a> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
+		$expected = '<a class=\'wl-entity-page-link\'  href=\'http://example.org/link\'>Matt Mullenweg</a> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
 
 		// Check that the expected content matches the function output.
 		$this->assertEquals( $expected, $this->content_filter_service->the_content( $content ) );
@@ -228,7 +312,7 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 		$content = '<span id="urn:enhancement-4b54b56d-7142-5dd3-adc6-27e51c70fdad" class="textannotation wl-link disambiguated wl-person" itemid="http://data.example.org/entity">Matt Mullenweg</span> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
 
 		// The expected content with a link.
-		$expected = '<a class=\'wl-entity-page-link\' href=\'http://example.org/link\'>Matt Mullenweg</a> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
+		$expected = '<a class=\'wl-entity-page-link\'  href=\'http://example.org/link\'>Matt Mullenweg</a> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
 
 		// Check that the expected content matches the function output.
 		$this->assertEquals( $expected, $this->content_filter_service->the_content( $content ) );
@@ -251,7 +335,7 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 		$content = '<span id="urn:enhancement-4b54b56d-7142-5dd3-adc6-27e51c70fdad" class="textannotation disambiguated wl-person" itemid="http://data.example.org/entity">Matt Mullenweg</span> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
 
 		// The expected content with a link.
-		$expected = '<a class=\'wl-entity-page-link\' href=\'http://example.org/link\'>Matt Mullenweg</a> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
+		$expected = '<a class=\'wl-entity-page-link\'  href=\'http://example.org/link\'>Matt Mullenweg</a> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
 
 		// Check that the expected content matches the function output.
 		$this->assertEquals( $expected, $this->content_filter_service->the_content( $content ) );

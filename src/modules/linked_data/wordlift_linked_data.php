@@ -1,6 +1,10 @@
 <?php
 /**
  * The Linked Data module provides synchronization of local WordPress data with the remote Linked Data store.
+ *
+ * @since      3.0.0
+ * @package    Wordlift
+ * @subpackage Wordlift/modules/linked_data
  */
 
 require_once( 'wordlift_linked_data_images.php' );
@@ -174,38 +178,12 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	}
 
 	// Push the post to Redlink.
-	wl_linked_data_push_to_redlink( $post->ID );
+	Wordlift_Linked_Data_Service::get_instance()->push( $post->ID );
 
 	add_action( 'wl_linked_data_save_post', 'wl_linked_data_save_post_and_related_entities' );
 }
 
 add_action( 'wl_linked_data_save_post', 'wl_linked_data_save_post_and_related_entities' );
-
-/**
- * Adds default schema type "Thing" as soon as an entity is created.
- */
-function wordlift_save_post_add_default_schema_type( $entity_id ) {
-
-	$entity = get_post( $entity_id );
-
-	// Avoid doing anything if post is autosave or a revision.
-
-	if ( wp_is_post_autosave( $entity ) || wp_is_post_revision( $entity ) ) {
-		return;
-	}
-
-	$entity_type = wl_schema_get_types( $entity_id );
-
-	// Assign type 'Thing' if we are dealing with an entity without type
-	if ( $entity->post_type == Wordlift_Entity_Service::TYPE_NAME && is_null( $entity_type ) ) {
-		wl_schema_set_types( $entity_id, 'Thing' );
-	}
-
-}
-
-// Priority 1 (default is 10) because we want the default type to be set as soon as possible
-// Attatched to save_post because *wl_linked_data_save_post* does not always fire
-add_action( 'save_post', 'wordlift_save_post_add_default_schema_type', 1 );
 
 /**
  * Save the specified data as an entity in WordPress. This method only create new entities. When an existing entity is
@@ -230,8 +208,8 @@ function wl_save_entity( $entity_data ) {
 	$type_uri         = $entity_data['main_type'];
 	$entity_types     = isset( $entity_data['type'] ) ? $entity_data['type'] : array();
 	$description      = $entity_data['description'];
-	$images           = isset( $entity_data['image'] ) ? wl_force_to_array( $entity_data['image'] ) : array();
-	$same_as          = isset( $entity_data['sameas'] ) ? wl_force_to_array( $entity_data['sameas'] ) : array();
+	$images           = isset( $entity_data['image'] ) ? (array) $entity_data['image'] : array();
+	$same_as          = isset( $entity_data['sameas'] ) ? (array) $entity_data['sameas'] : array();
 	$related_post_id  = isset( $entity_data['related_post_id'] ) ? $entity_data['related_post_id'] : null;
 	$other_properties = isset( $entity_data['properties'] ) ? $entity_data['properties'] : array();
 
@@ -400,7 +378,7 @@ function wl_save_entity( $entity_data ) {
 
 	// The entity is pushed to Redlink on save by the function hooked to save_post.
 	// save the entity in the triple store.
-	wl_linked_data_push_to_redlink( $post_id );
+	Wordlift_Linked_Data_Service::get_instance()->push( $post_id );
 
 	// finally return the entity post.
 	return get_post( $post_id );
@@ -453,33 +431,4 @@ function wl_linked_data_content_get_embedded_entities( $content ) {
 	// wl_write_log( "Found $count entities embedded in content" );
 
 	return $entities;
-}
-
-/**
- * Push the post with the specified ID to Redlink.
- *
- * @since 3.0.0
- *
- * @param int $post_id The post ID.
- */
-function wl_linked_data_push_to_redlink( $post_id ) {
-
-	// Get the post.
-	$post = get_post( $post_id );
-
-	// wl_write_log( "wl_linked_data_push_to_redlink [ post id :: $post_id ][ post type :: $post->post_type ]" );
-
-	// Call the method on behalf of the post type.
-	switch ( $post->post_type ) {
-		case 'entity':
-			wl_push_entity_post_to_redlink( $post );
-			break;
-		default:
-			wl_push_post_to_redlink( $post );
-	}
-
-	// Reindex the triple store if buffering is turned off.
-	if ( false === WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING ) {
-		wordlift_reindex_triple_store();
-	}
 }

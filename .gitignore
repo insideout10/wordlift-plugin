@@ -19,6 +19,7 @@ vendor/
 
 .idea/
 .svn/
+*.iml
 
 # webdriver.io e2e tests screenshots.
 errorShots/
@@ -27,3 +28,18 @@ errorShots/
 npm-debug.log
 
 tests/phpunit.bat
+
+# See https://help.github.com/ignore-files/ for more about ignoring files.
+
+# testing
+/coverage
+
+# misc
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

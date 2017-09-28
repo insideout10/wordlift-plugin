@@ -6,6 +6,10 @@ class Wordlift_Sanitizer {
 
 	/**
 	 * Only accept URIs
+	 *
+	 * @param string $value
+	 *
+	 * @return null
 	 */
 	public static function sanitize_url( $value ) {
 

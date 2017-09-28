@@ -1,6 +1,14 @@
 <?php
+/**
+ * Ajax: Related Posts.
+ *
+ * @since   3.0.0
+ * @package Wordlift
+ * @package Wordlift/admin
+ */
 
 /**
+ * Get the related posts.
  *
  * @since 3.0.0
  *
@@ -30,24 +38,16 @@ function wordlift_ajax_related_posts( $http_raw_data = null ) {
 
 	// If the current post is an entity, related posts to the current entity are
 	// returned.
-	if ( Wordlift_Entity_Service::TYPE_NAME === $post->post_type ) {
+	$entity_service = Wordlift_Entity_Service::get_instance();
+
+	if ( $entity_service->is_entity( $post->ID ) ) {
 		$filtering_entity_ids = array( $post_id );
 	}
 
 	if ( ! empty( $filtering_entity_ids ) ) {
 
-		$related_posts = wl_core_get_posts( array(
-			'get'            => 'posts',
-			'related_to__in' => $filtering_entity_ids,
-			'post__not_in'   => array( $post_id ),
-			'post_type'      => 'post',
-			'post_status'    => 'publish',
-			'as'             => 'subject',
-			// Return 10 results top.
-			//
-			// See https://github.com/insideout10/wordlift-plugin/issues/426.
-			'first'          => 5,
-		) );
+		$related_posts = Wordlift_Relation_Service::get_instance()
+		                                          ->get_article_subjects( $filtering_entity_ids, '*', null, 'publish', array( $post_id ), 5 );
 
 		foreach ( $related_posts as $post_obj ) {
 

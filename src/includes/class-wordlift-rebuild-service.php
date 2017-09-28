@@ -1,15 +1,22 @@
 <?php
-
 /**
- * Define the Wordlift_Rebuild_Service class.
- */
-
-/**
+ * Services: Rebuild Service.
+ *
  * The Wordlift_Rebuild_Service allows to rebuild the Linked Data dataset from
  * scratch by clearing out data on the remote dataset, parsing all data in WordPress
  * and resending data to the remote dataset.
  *
- * @since 3.6.0
+ * @since      3.6.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes
+ */
+
+/**
+ * Define the {@link Wordlift_Rebuild_Service} class.
+ *
+ * @since      3.6.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes
  */
 class Wordlift_Rebuild_Service extends Wordlift_Listable {
 
@@ -24,6 +31,7 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 
 	/**
 	 * A {@link Wordlift_Sparql_Service} instance.
+	 *
 	 * @since  3.6.0
 	 * @access private
 	 * @var \Wordlift_Sparql_Service $sparql_service A {@link Wordlift_Sparql_Service} instance.
@@ -31,7 +39,11 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 	private $sparql_service;
 
 	/**
-	 * @var \Wordlift_Uri_Service
+	 * The {@link Wordlift_Uri_Service} instance.
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var \Wordlift_Uri_Service $uri_service The {@link Wordlift_Uri_Service} instance.
 	 */
 	private $uri_service;
 
@@ -68,10 +80,9 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 		header( 'Content-type: text/plain; charset=utf-8' );
 
 		// We start at 0 by default and get to max.
-		$offset      = $_GET['offset'] ?: 0;
-		$limit       = $_GET['limit'] ?: 1;
-		$entity_only = isset( $_GET['entity_only'] ) && '1' === $_GET['entity_only'];
-		$max         = $offset + $limit;
+		$offset = $_GET['offset'] ?: 0;
+		$limit  = $_GET['limit'] ?: 1;
+		$max    = $offset + $limit;
 
 		// If we're starting at offset 0, then delete existing URIs and data from
 		// the remote dataset.
@@ -98,15 +109,11 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 			wl_linked_data_save_post( $post->ID );
 		}, array(
 			'post_status' => 'publish',
-			'post_type'   => $entity_only ? 'entity' : array(
-				'entity',
-				'post',
-			),
 		), $offset, $max );
 
 		// Redirect to the next chunk.
 		if ( $count == $limit ) {
-			$this->redirect( admin_url( 'admin-ajax.php?action=wl_rebuild&offset=' . ( $offset + $limit ) . '&limit=' . $limit . '&entity_only=' . ( $entity_only ? '1' : '0' ) ) );
+			$this->redirect( admin_url( 'admin-ajax.php?action=wl_rebuild&offset=' . ( $offset + $limit ) . '&limit=' . $limit ) );
 		}
 
 		echo( "Rebuild complete [ count :: $count ][ limit :: $limit ]" );
@@ -137,7 +144,7 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 			      content="0; <?php echo esc_attr( $url ); ?>">
 		</head>
 		<body>
-			Rebuilding, please wait...
+		Rebuilding, please wait...
 		</body>
 		</html>
 		<?php
@@ -159,15 +166,14 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 	 */
 	function find( $offset = 0, $limit = 10, $args = array() ) {
 
-		return get_posts( wp_parse_args( $args, array(
+		return get_posts( wp_parse_args( $args, Wordlift_Entity_Service::add_criterias( array(
 			'offset'      => $offset,
 			'numberposts' => $limit,
 			'fields'      => 'all',
 			'orderby'     => 'ID',
 			'order'       => 'ASC',
 			'post_status' => 'any',
-			'post_type'   => 'post',
-		) ) );
+		) ) ) );
 	}
 
 }

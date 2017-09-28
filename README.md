@@ -1,6 +1,6 @@
-<a href="https://travis-ci.org/insideout10/wordlift-plugin"><img align="right" src="https://travis-ci.org/insideout10/wordlift-plugin.png?branch=develop" /></a><a href="https://saucelabs.com/u/ziodave"><img align="right" src="https://saucelabs.com/buildstatus/ziodave" alt="Build Status"></a><a href="https://scrutinizer-ci.com/g/insideout10/wordlift-plugin/?branch=develop"><img align="right" src="https://scrutinizer-ci.com/g/insideout10/wordlift-plugin/badges/quality-score.png?b=develop" /></a><br/>
-
 <a href="https://wordlift.io"><img src="WordLift__logo--5.png"/></a>
+
+<a href="https://travis-ci.org/insideout10/wordlift-plugin"><img align="right" src="https://travis-ci.org/insideout10/wordlift-plugin.png?branch=develop" /></a><a href="https://saucelabs.com/u/ziodave"><img align="right" src="https://saucelabs.com/buildstatus/ziodave" alt="Build Status"></a><a href="https://scrutinizer-ci.com/g/insideout10/wordlift-plugin/?branch=develop"><img align="right" src="https://scrutinizer-ci.com/g/insideout10/wordlift-plugin/badges/quality-score.png?b=develop" /></a>[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/wordlift/wordlift)<br/>
 
 WordLift - Ordering Knowledge
 =============================
@@ -28,7 +28,7 @@ WordLift brings the power of Artificial Intelligence to beautifully organize con
 
 **WordLift** helps you organize posts and pages adding facts, links and media to build **beautifully structured websites**, for both humans and search engines. <br />
 **WordLift** lets you create, own and publish your own [knowledge graph](http://docs.wordlift.it/en/latest/key-concepts.html#knowledge-graph).<br />
-**WordLift** publishes your content as [Linked Open Data](http://docs.wordlift.it/en/latest/key-concepts.html#linked-open-data) following [Tim Berners-Lee‘s Linked Data Principles](http://www.w3.org/DesignIssues/LinkedData.html).<br />
+**WordLift** publishes your content as [Linked Open Data](https://wordlift.io/blog/en/entity/linked-data/) following [Tim Berners-Lee‘s Linked Data Principles](http://www.w3.org/DesignIssues/LinkedData.html).<br />
 
 ### <a name="features"></a> Features
 
@@ -81,7 +81,7 @@ Organizing web content around an internal vocabulary rather than traditional web
 
 ### <a name="how"></a> How does it work?
 
-To know more about how **WordLift** works, please [watch the step-by-step video tutorials](https://wordlift.io/#how-it-works) on our [website][wordlift]. <br />
+To know more about how **WordLift** works, please [watch the step-by-step video tutorials](https://wordlift.io/how-it-works/) on our [website][wordlift]. <br />
 **WordLift** works in subsequent stages. <br />
 
 1. The first step provides a **full text analysis** and suggests concepts and relationships found in open vocabularies (such as *DBpedia*, *Wikidata*, *GeoNames*, etc) to help writers **classify** and **enrich** their content and structure it for search engines like Google, according to schema.org vocabulary. <br />

@@ -3,13 +3,12 @@ Author URL: https://wordlift.io
 Plugin URL: https://wordlift.io
 Contributors: wordlift, insideout10, ziodave
 Tags: schema.org, semantic seo, seo, artificial intelligence, linked data, semantic web, content recommendation, related posts, timeline, knowledge graph, interactive map 
-
 Requires at least: 4.2
 Tested up to: 4.8
 Stable tag: {version}
 License: GPLv2 or later
 
-WordLift brings the power of Artificial Intelligence to beautifully organize content. Attract new readers and get their true attention.
+WordLift brings the power of Artificial Intelligence to organize content. Attract new readers and get their true attention with top notch semantic seo.
 
 == Description ==
 
@@ -137,6 +136,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 9. The WordLift Dashboard. Your [knowledge graph](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph) at a glance.
 
 == Changelog ==
+
+= 3.14.6 (2017-10-11) =
+* Fix: [#613](https://github.com/insideout10/wordlift-plugin/issues/613): A slash too much for Angular geolocation library.
+* Fix: [#611](https://github.com/insideout10/wordlift-plugin/issues/611): WordLift slowing down RSS feed.
 
 = 3.14.5 (2017-08-31) =
 * Enhancement: [#606](https://github.com/insideout10/wordlift-plugin/issues/606): Batch Analysis on all posts.
