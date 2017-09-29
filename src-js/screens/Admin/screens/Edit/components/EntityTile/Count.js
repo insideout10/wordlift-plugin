@@ -13,13 +13,15 @@ import styled from 'styled-components';
  * @inheritDoc
  */
 const Count = styled.div`
-	display: inline-block;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
 	position: relative;
 	margin: 4px 8px;
 	width: 16px;
 	height: 16px;
 	border-radius: 2px;
-	padding: 2px 0;
+	padding: 2px;
 	text-align: center;
 	vertical-align: top;
 	font-weight: 600;
