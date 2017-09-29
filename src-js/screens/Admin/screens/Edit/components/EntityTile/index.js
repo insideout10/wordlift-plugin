@@ -154,6 +154,19 @@ class EntityTile extends React.Component {
 	}
 
 	/**
+	 * Display occurences of current entity or plus if there are no such.
+	 *
+	 * @since 3.16.0
+	 */
+	displayEntityOccurences() {
+		if ( this.props.entity.occurrences.length ) {
+			return this.props.entity.occurrences.length;
+		}
+
+		return '+';
+	}
+
+	/**
 	 * Render the component.
 	 *
 	 * @since 3.11.0
@@ -168,7 +181,7 @@ class EntityTile extends React.Component {
 				<Main onClick={ this.onMainClick }
 					  open={ this.state.open }>
 					<Count entity={ this.props.entity }>
-						{ this.props.entity.occurrences.length }</Count>
+						{ this.displayEntityOccurences() }</Count>
 					<Label entity={ this.props.entity }>
 						{ this.props.entity.label }</Label>
 					<Cloud className="fa fa-cloud"
