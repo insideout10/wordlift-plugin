@@ -33,7 +33,9 @@ const EntityList = ( { entities, onClick, onLinkClick, onEditClick } ) => (
 	<List>
 		{
 			// Map each entity to an `EntityTile`.
-			entities.map( entity =>
+			entities
+			.sort( ( a, b ) => a.occurrences.length < b.occurrences.length )
+			.map( entity =>
 							  <EntityTile entity={ entity }
 										  tile={ { open: false } }
 										  onClick={ onClick }
