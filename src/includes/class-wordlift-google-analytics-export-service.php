@@ -29,7 +29,7 @@ class Wordlift_Google_Analytics_Export_Service {
 	public function export() {
 		// Bail if the permalink structure is different from "Post name".
 		if ( ! $this->is_postname_permalink_structure() ) {
-			wp_die( 'The current permalink structure do not allows to export your data. Please change the permalink structure to "Post name".' );
+			wp_die( 'The current permalink structure do not allow to export your data. Please change the permalink structure to "Post name".' );
 		}
 
 		// Get the global $wpdb.
