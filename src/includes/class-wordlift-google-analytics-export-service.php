@@ -36,7 +36,7 @@ class Wordlift_Google_Analytics_Export_Service {
 		$path = $this->get_site_path();
 
 		// First, let's see if we have the data in the cache already.
-		$items = get_transient( 'google_content_data' );
+		$items = get_transient( 'wl_google_content_data' );
 
 		if ( false === $items ) {
 			// Build sql query.
@@ -63,12 +63,12 @@ class Wordlift_Google_Analytics_Export_Service {
 				)
 			); // db call ok; no-cache ok.
 
-			// Set the transient, so nex time we will use it, instead creating new db request.
-			set_transient( 'google_content_data', $items, 300 );
+			// Set the transient, so next time we will use it, instead creating new db request.
+			set_transient( 'wl_google_content_data', $items, 300 );
 		}
 
 		// Output the file data.
-		ob_end_clean();
+		@ob_end_clean();
 
 		// Add proper file headers.
 		header( 'Content-Disposition: attachment; filename=wl-ga-export.csv' );
