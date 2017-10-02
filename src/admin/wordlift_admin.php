@@ -78,29 +78,3 @@ function wl_admin_metaboxes_add_css_class( $classes = array() ) {
 
 	return array_merge( $classes, array( 'wl-metabox' ) );
 }
-
-
-/**
- * Check website current permalink structure.
- *
- * @since 3.15.0
- *
- * @return bool
- */
-function wl_check_permalink_structure() {
-	// Get current permalink structure.
-	$structure = get_option( 'permalink_structure' );
-
-	// The regular expression. It will check if the site structure contains postname.
-	$regex = '~^/\%postname\%/$~';
-
-	// Check if the site structure match the rquired one.
-	preg_match( $regex, $structure, $matches );
-
-	// Bail if the site have different structure.
-	if ( empty( $matches ) ) {
-		return false;
-	}
-
-	return true;
-}

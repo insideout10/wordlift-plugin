@@ -38,10 +38,24 @@
 	</a>
 
 	<!-- Show the 'JSON-LD' button only if the constant is defined and set to true. -->
-	<?php if ( defined( 'WL_CONFIG_DOWNLOAD_GA_CONTENT_DATA' ) && WL_CONFIG_DOWNLOAD_GA_CONTENT_DATA && wl_check_permalink_structure() ) : ?>
+	<?php
+	if (
+		defined( 'WL_CONFIG_DOWNLOAD_GA_CONTENT_DATA' ) &&
+		WL_CONFIG_DOWNLOAD_GA_CONTENT_DATA
+	) :
+		$class_name = 'button wl-add-input wl-button';
+
+		if ( ! Wordlift_Google_Analytics_Export_Service::is_postname_permalink_structure() ) {
+			$class_name .= ' wl-button-disabled';
+		}
+	?>
 		<a href="<?php echo esc_url( admin_url( 'admin-ajax.php?action=wl_google_analytics_export' ) ); ?>"
-		   class="button wl-add-input wl-button">
+		   class="<?php echo esc_attr( $class_name ); ?>">
 				<?php esc_html_e( 'Google Analytics', 'wordlift' ); ?>
+
+				<?php if ( ! Wordlift_Google_Analytics_Export_Service::is_postname_permalink_structure() ) : ?>
+					<span class="wl-tooltip">To download your data, please change <br /> the site permalink structure to "Post name"</span>
+				<?php endif ?>
 		</a>
 	<?php endif ?>
 </div>
