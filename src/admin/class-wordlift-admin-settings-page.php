@@ -224,7 +224,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 		// Add the `key` field.
 		add_settings_field(
 			'wl-key',                                       // Element id used to identify the field throughout the theme.
-			_x( 'WordLift Key', 'wordlift' ),               // The label to the left of the option interface element.
+			__( 'WordLift Key', 'wordlift' ),               // The label to the left of the option interface element.
 			// The name of the function responsible for rendering the option interface.
 			array( $this->input_element, 'render', ),
 			'wl_general_settings',                          // The page on which this option will be displayed.
@@ -238,7 +238,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			'id'          => 'wl-entity-base-path',
 			'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::ENTITY_BASE_PATH_KEY . ']',
 			'value'       => $this->configuration_service->get_entity_base_path(),
-			'description' => sprintf( _x( 'All new pages created with WordLift, will be stored inside your internal vocabulary. You can customize the url pattern of these pages in the field above. Check our <a href="%s">FAQs</a> if you need more info.', 'wordlift' ), 'https://wordlift.io/wordlift-user-faqs/#10-why-and-how-should-i-customize-the-url-of-the-entity-pages-created-in-my-vocabulary' ),
+			'description' => sprintf( __( 'All new pages created with WordLift, will be stored inside your internal vocabulary. You can customize the url pattern of these pages in the field above. Check our <a href="%s">FAQs</a> if you need more info.', 'wordlift' ), 'https://wordlift.io/wordlift-user-faqs/#10-why-and-how-should-i-customize-the-url-of-the-entity-pages-created-in-my-vocabulary' ),
 		);
 
 		// The following call is very heavy on large web sites and is always run
@@ -256,7 +256,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 		// Add the `wl_entity_base_path` field.
 		add_settings_field(
 			'wl-entity-base-path',                                // ID used to identify the field throughout the theme
-			_x( 'Entity Base Path', 'wordlift' ),                 // The label to the left of the option interface element
+			__( 'Entity Base Path', 'wordlift' ),                 // The label to the left of the option interface element
 			// The name of the function responsible for rendering the option interface
 			array( $this->input_element, 'render', ),
 			'wl_general_settings',                                // The page on which this option will be displayed
@@ -267,7 +267,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 		// Add the `language_name` field.
 		add_settings_field(
 			'wl-site-language',
-			_x( 'Site Language', 'wordlift' ),
+			__( 'Site Language', 'wordlift' ),
 			array( $this->language_select_element, 'render' ),
 			'wl_general_settings',
 			'wl_general_settings_section',
@@ -283,7 +283,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 		// Add the `publisher` field.
 		add_settings_field(
 			'wl-publisher-id',
-			_x( 'Publisher', 'wordlift' ),
+			__( 'Publisher', 'wordlift' ),
 			array( $this->publisher_element, 'render' ),
 			'wl_general_settings',
 			'wl_general_settings_section',
@@ -296,7 +296,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 		// Add the `link by default` field.
 		add_settings_field(
 			'wl-link-by-default',
-			_x( 'Link by Default', 'wordlift' ),
+			__( 'Link by Default', 'wordlift' ),
 			array( $this->radio_input_element, 'render' ),
 			'wl_general_settings',
 			'wl_general_settings_section',
@@ -304,7 +304,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 				'id'          => 'wl-link-by-default',
 				'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::LINK_BY_DEFAULT . ']',
 				'value'       => $this->configuration_service->is_link_by_default() ? 'yes' : 'no',
-				'description' => _x( 'Whether to link entities by default or not. This setting applies to all the entities.', 'wordlift' ),
+				'description' => __( 'Whether to link entities by default or not. This setting applies to all the entities.', 'wordlift' ),
 			)
 		);
 

@@ -21,12 +21,10 @@ msgid "Batch Analysis"
 msgstr "Анализ на партидите"
 
 #: admin/class-wordlift-admin-settings-page.php:293
-msgctxt "wordlift"
 msgid "Link by Default"
 msgstr "Връзка по подразбиране"
 
 #: admin/class-wordlift-admin-settings-page.php:301
-msgctxt "wordlift"
 msgid "Whether to link entities by default or not. This setting applies to all the entities."
 msgstr "Създаване на връзки по подразбиране. Тази настройка се прилага върху всички единици."
 
@@ -253,7 +251,6 @@ msgid "Edit Entity term"
 msgstr "Редактиране на категорията на единицата "
 
 #: admin/class-wordlift-admin-settings-page.php:280
-msgctxt "wordlift"
 msgid "Publisher"
 msgstr "Издател"
 
@@ -262,31 +259,26 @@ msgid "Each WordLift Key can be used only in one language. Pick yours."
 msgstr "Всеки WordLift ключ може да бъде използван само на един език. Изберете вашия."
 
 #: admin/class-wordlift-admin-settings-page.php:264
-msgctxt "wordlift"
 msgid "Site Language"
 msgstr "Език на сайта"
 
 #: admin/class-wordlift-admin-settings-page.php:253
-msgctxt "wordlift"
 msgid "Entity Base Path"
 msgstr "Основен път на единицата"
 
 #: admin/class-wordlift-admin-settings-page.php:245
-msgctxt "wordlift"
 msgid "All new pages created with WordLift, will be stored inside your internal vocabulary. You can customize the url pattern of these pages in the field above. Check our <a href=\"%s\">FAQs</a> if you need more info."
 msgstr "Всички нови страници, създадени с WordLift, ще бъдат запазени във вашия вътрешен речник. Може да променяте URL структурата на тези страници в полето отгоре. Погледнете нашите <a href=\"%s\">Въпроси</a> ако имате нужда от повече информация."
 
 #: admin/class-wordlift-admin-settings-page.php:231
-msgctxt "wordlift"
 msgid "WordLift Key"
-msgstr "WordLift ключ"
+msgstr "WordLift Kлюч"
 
 #: admin/class-wordlift-admin-settings-page.php:212
 msgid "Insert the <a href=\"https://www.wordlift.io/blogger\">WordLift Key</a> you received via email."
 msgstr "Въведете <a href=\"https://www.wordlift.io/blogger\">WordLift ключа</a> който сте получили на имейл."
 
 #: admin/class-wordlift-admin-settings-page-action-link.php:61
-msgctxt "wordlift"
 msgid "Settings"
 msgstr "Настройки"
 
