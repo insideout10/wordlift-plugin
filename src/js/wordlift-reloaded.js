@@ -1329,8 +1329,19 @@
         });
       };
       service.preselect = function(analysis, annotations) {
-        var annotation, e, entity, id, l, len2, ref2, ref3, results1, textAnnotation;
+        var annotation, duplications, e, entity, id, l, label, labels, len2, ref2, ref3, ref4, ref5, ref6, results1, textAnnotation;
         $log.debug("Selecting " + annotations.length + " entity annotation(s)...");
+        labels = [];
+        duplications = [];
+        ref2 = configuration.entities;
+        for (label in ref2) {
+          e = ref2[label];
+          if (ref3 = e.label, indexOf.call(labels, ref3) < 0) {
+            labels.push(e.label);
+          } else {
+            duplications.push(e.label);
+          }
+        }
         results1 = [];
         for (l = 0, len2 = annotations.length; l < len2; l++) {
           annotation = annotations[l];
@@ -1350,12 +1361,15 @@
             analysis.annotations[textAnnotation.id] = textAnnotation;
           }
           entity = analysis.entities[annotation.uri];
-          ref2 = configuration.entities;
-          for (id in ref2) {
-            e = ref2[id];
-            if (ref3 = annotation.uri, indexOf.call(e.sameAs, ref3) >= 0) {
+          ref4 = configuration.entities;
+          for (id in ref4) {
+            e = ref4[id];
+            if (ref5 = annotation.uri, indexOf.call(e.sameAs, ref5) >= 0) {
               entity = analysis.entities[e.id];
             }
+          }
+          if (ref6 = entity.label, indexOf.call(duplications, ref6) >= 0) {
+            analysis.entities[entity.id].duplicated = true;
           }
           if (entity == null) {
             $log.warn("Entity with uri " + annotation.uri + " is missing both in analysis results and in local storage");

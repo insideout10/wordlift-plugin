@@ -277,6 +277,16 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 
       $log.debug "Selecting #{annotations.length} entity annotation(s)..."
 
+      labels = [];
+      duplications = [];
+
+      # Check for duplicate labels
+      for label, e of configuration.entities
+        if e.label not in labels
+          labels.push e.label
+        else
+          duplications.push e.label
+
       # Find the existing entities in the html
       for annotation in annotations
 
@@ -309,6 +319,10 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
         entity = analysis.entities[annotation.uri]
         for id, e of configuration.entities
           entity = analysis.entities[e.id] if annotation.uri in e.sameAs
+
+        # Add duplicate prop to entity if the title exists as different entity type
+        if entity.label in duplications
+          analysis.entities[entity.id].duplicated = true
 
         # If no entity is found we have a problem
         if not entity?
