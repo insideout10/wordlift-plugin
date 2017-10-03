@@ -73,12 +73,14 @@ class WL_Metabox_Field_sameas extends WL_Metabox_Field {
 	 */
 	protected function get_add_button_html( $count ) {
 
+		$placeholder = esc_attr_x( 'Type here the URL of an equivalent entity from another dataset.', 'sameAs metabox input', 'wordlift' );
+
 		return
 			"<label for='$this->meta_name'>"
 			. esc_html__( 'If you already know the URL of the entity that you would like to link, add it in the field below.', 'wordlift' )
 			. '</label>'
 			. '<div class="wl-input-wrapper">'
-			. "<input type='text' readonly='readonly' id='$this->meta_name' name='wl_metaboxes[$this->meta_name][]'  style='width:88%' />"
+			. "<input type='text' id='$this->meta_name' name='wl_metaboxes[$this->meta_name][]' placeholder='$placeholder' style='width:88%' />"
 			. '<button class="button wl-remove-input wl-button" type="button">Remove</button>'
 			. '</div>'
 			. parent::get_add_button_html( $count );
@@ -118,6 +120,20 @@ class WL_Metabox_Field_sameas extends WL_Metabox_Field {
 
 		// Close the HTML wrapper.
 		$html .= $this->html_wrapper_close();
+
+		return $html;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function html_input( $value ) {
+		$html = <<<EOF
+			<div class="wl-input-wrapper">
+				<input type="text" readonly="readonly" id="$this->meta_name" name="wl_metaboxes[$this->meta_name][]" value="$value" style="width:88%" />
+				<button class="button wl-remove-input wl-button" type="button">Remove</button>
+			</div>
+EOF;
 
 		return $html;
 	}

@@ -30,6 +30,7 @@ import { AutocompleteSelect } from 'wordlift-ui';
 /**
  * Internal dependencies
  */
+import './index.scss';
 import reducer from './reducers';
 import App from './components/App';
 import AnnotationEvent from './angular/AnnotationEvent';
@@ -39,7 +40,7 @@ import UpdateOccurrencesForEntityEvent from './angular/UpdateOccurrencesForEntit
 
 // Start-up the application when the `wlEntityList` Angular directive is
 // loaded.
-wp.wordlift.on('wlEntityList.loaded', function () {
+wp.wordlift.on('wlEntityList.loaded', function() {
   // Create the `store` with the reducer, using the analysis result as
   // `initialState`.
   const store = createStore(reducer, applyMiddleware(thunk));
@@ -109,7 +110,7 @@ const autocomplete = (query, callback) => {
 //const api = new Api();
 
 // ### Render the sameAs metabox field autocomplete select.
-jQuery(document).ready(function () {
+jQuery(document).ready(function() {
   // Check that the document element is there.
   if (null === document.getElementById('wl-metabox-field-sameas')) {
     return;
@@ -119,6 +120,16 @@ jQuery(document).ready(function () {
     <AutocompleteSelect
       loadOptions={autocomplete}
       name="wl_metaboxes[entity_same_as][]"
+      placeholder=""
+      searchPromptText={
+        wlSettings.l10n['Type at least 3 characters to search...']
+      }
+      loadingPlaceholder={
+        wlSettings.l10n[
+          'Please wait while we look for entities in the linked data cloud...'
+        ]
+      }
+      noResultsText={wlSettings.l10n['No results found for your search.']}
     />,
     document.getElementById('wl-metabox-field-sameas')
   );

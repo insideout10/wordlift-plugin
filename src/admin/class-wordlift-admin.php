@@ -155,9 +155,12 @@ class Wordlift_Admin {
 			// @see https://github.com/insideout10/wordlift-plugin/issues/561
 			'can_create_entities'   => current_user_can( 'edit_wordlift_entities' ) ? 'yes' : 'no',
 			'l10n'                  => array(
-				'You already published an entity with the same name' => __( 'You already published an entity with the same name: ', 'wordlift' ),
-				'logo_selection_title'                               => __( 'WordLift Choose Logo', 'wordlift' ),
-				'logo_selection_button'                              => array( 'text' => __( 'Choose Logo', 'wordlift' ) ),
+				'You already published an entity with the same name'                 => __( 'You already published an entity with the same name: ', 'wordlift' ),
+				'logo_selection_title'                                               => __( 'WordLift Choose Logo', 'wordlift' ),
+				'logo_selection_button'                                              => array( 'text' => __( 'Choose Logo', 'wordlift' ) ),
+				'Type at least 3 characters to search...'                            => _x( 'Type at least 3 characters to search...', 'Autocomplete Select', 'wordlift' ),
+				'No results found for your search.'                                  => _x( 'No results found: try changing or removing some words.', 'Autocomplete Select', 'wordlift' ),
+				'Please wait while we look for entities in the linked data cloud...' => _x( 'Please wait while we look for entities in the linked data cloud...', 'Autocomplete Select', 'wordlift' ),
 			),
 			'wl_autocomplete_nonce' => wp_create_nonce( 'wordlift_autocomplete' ),
 		);
