@@ -1,0 +1,834 @@
+# Translation of Plugins - WordLift &#8211; Rethink Your Content Marketing - Stable (latest release) in Bulgarian
+# This file is distributed under the same license as the Plugins - WordLift &#8211; Rethink Your Content Marketing - Stable (latest release) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2017-10-03 12:52:43+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/2.4.0-alpha\n"
+"Language: bg\n"
+"Project-Id-Version: Plugins - WordLift &#8211; Rethink Your Content Marketing - Stable (latest release)\n"
+
+#: admin/class-wordlift-admin-author-element.php:75
+msgid "<em>(none)</em>"
+msgstr "<em>(без)</em>"
+
+#: admin/class-wordlift-admin-batch-analysis-page.php:64
+#: admin/class-wordlift-admin-batch-analysis-page.php:72
+msgid "Batch Analysis"
+msgstr "Анализ на партидите"
+
+#: admin/class-wordlift-admin-settings-page.php:293
+msgctxt "wordlift"
+msgid "Link by Default"
+msgstr "Връзка по подразбиране"
+
+#: admin/class-wordlift-admin-settings-page.php:301
+msgctxt "wordlift"
+msgid "Whether to link entities by default or not. This setting applies to all the entities."
+msgstr "Създаване на връзки по подразбиране. Тази настройка се прилага върху всички единици."
+
+#: admin/class-wordlift-admin-user-profile-page.php:95
+msgid "Author from the vocabulary"
+msgstr "Автор на речника"
+
+#: admin/class-wordlift-admin-user-profile-page.php:105
+msgid "The entity, person or organization, from the vocabulary to associate with this author."
+msgstr "Единица, човек или организация от речника, която ще се асоциира с този автор. "
+
+#: admin/class-wordlift-admin-user-profile-page.php:112
+msgid "Can create new entities"
+msgstr "Може да създава нови единици"
+
+#: admin/class-wordlift-admin.php:86
+msgid "WordLift's key isn't set, please open the %s to set WordLift's key."
+msgstr "Ключът за WordLift не е зададен, моля отворете %s за да зададете вашия WordLift ключ."
+
+#: admin/class-wordlift-admin.php:86 admin/class-wordlift-admin.php:88
+msgid "settings page"
+msgstr "Страница за настройки"
+
+#: admin/class-wordlift-admin.php:88
+msgid "WordLift's dataset URI is not configured: please open the %s to set WordLift's key again."
+msgstr "WordLift URI на набора от данни не е конфигуриран: моля отворете %s за да зададете отново вашия WordLift ключ."
+
+#: admin/partials/wordlift-admin-batch-analysis-page.php:11
+msgid "WordLift Batch Analyze Monitor"
+msgstr "WordLift мониторинг за анализ на партидите"
+
+#: admin/partials/wordlift-admin-batch-analysis-page.php:37
+msgid "File containing URLs of posts to analyze"
+msgstr "Файлът съдържа връзки от публикации за анализиране"
+
+#: admin/partials/wordlift-admin-batch-analysis-page.php:41
+msgid "The file should contain one URL in each line."
+msgstr "Файлът трябва да съдържа по един URL на всеки ред."
+
+#: admin/partials/wordlift-admin-batch-analysis-page.php:45
+msgid "Type of entity linking"
+msgstr "Вид на връзките на единиците"
+
+#: admin/partials/wordlift-admin-batch-analysis-page.php:49
+msgid "No Link"
+msgstr "Без връзка"
+
+#: admin/partials/wordlift-admin-batch-analysis-page.php:51
+msgid "Link"
+msgstr "Връзка"
+
+#: admin/partials/wordlift-admin-batch-analysis-page.php:54
+msgid "Start"
+msgstr "Начало"
+
+#: admin/partials/wordlift-admin-batch-analysis-page.php:57
+msgid "Posts in queue"
+msgstr "Публикации на опашката"
+
+#: admin/partials/wordlift-admin-batch-analysis-page.php:61
+msgid "Nothing is currently in queue"
+msgstr "Няма нищо на опашката"
+
+#: admin/partials/wordlift-admin-batch-analysis-page.php:71
+msgid "Posts being processed"
+msgstr "Публикацията се обработва"
+
+#: admin/partials/wordlift-admin-batch-analysis-page.php:75
+msgid "Nothing is currently being processed"
+msgstr "Нищо не се обработва в момента"
+
+#: includes/class-wordlift-schema-service.php:915
+msgid "Recipe cuisine"
+msgstr "Вид кухня на рецептата"
+
+#: includes/class-wordlift-schema-service.php:926
+#: includes/class-wordlift-schema-service.php:956
+msgid "Recipe ingredient"
+msgstr "Съставки на рецептата"
+
+#: includes/class-wordlift-schema-service.php:936
+msgid "Recipe instructions"
+msgstr "Инструкции за рецептата"
+
+#: includes/class-wordlift-schema-service.php:945
+msgid "Recipe number of servings"
+msgstr "Брой порции на рецептата"
+
+#: includes/class-wordlift-schema-service.php:965
+msgid "Calories (e.g. 240 calories)"
+msgstr "Калории (например 240 калории)"
+
+#: includes/class-wordlift-schema-service.php:985
+msgid "Recipe cook time (e.g. 1:30)"
+msgstr "Време за готване (например 1:30)"
+
+#: includes/class-wordlift-schema-service.php:975
+msgid "Recipe preparation time (e.g. 1:30)"
+msgstr "Време за подготовка (например 1:30)"
+
+#: includes/class-wordlift-schema-service.php:995
+msgid "Recipe total time (e.g. 1:30)"
+msgstr "Общо време за рецептата (например 1:30)"
+
+#: includes/class-wordlift-schema-url-property-service.php:69
+msgid "Web Site(s)"
+msgstr "Уебсайт(ове)"
+
+#: shortcodes/wordlift_shortcode_faceted_search.php:64
+msgctxt "Faceted Search Widget"
+msgid "What"
+msgstr "Какво"
+
+#: shortcodes/wordlift_shortcode_faceted_search.php:65
+msgctxt "Faceted Search Widget"
+msgid "Who"
+msgstr "Кой"
+
+#: shortcodes/wordlift_shortcode_faceted_search.php:66
+msgctxt "Faceted Search Widget"
+msgid "Where"
+msgstr "Къде"
+
+#: shortcodes/wordlift_shortcode_faceted_search.php:67
+msgctxt "Faceted Search Widget"
+msgid "When"
+msgstr "Кога"
+
+#: admin/partials/wordlift-admin-status-page.php:31
+msgid "URL"
+msgstr "Връзки"
+
+#: admin/partials/wordlift-admin-status-page.php:27
+msgid "%d not found URIs; %d local entity URIs; %d remote URIs (including posts and authors)."
+msgstr "%d не бяха открити унифицирани идентификатори на ресурсите; %d локални единици унифицирани идентификатори на ресурсите; %d външни унифицирани идентификатори на ресурсите (включително публикации и автори)."
+
+#: includes/class-wordlift-activator.php:37
+msgid "The WordLift plugin requires WordPress version 4.2 or above."
+msgstr "Разширението WordLift изисква версия на WordPress 4.2 или по-голяма."
+
+#: admin/class-wordlift-admin-entity-list.php:148
+msgid "When"
+msgstr "Кога"
+
+#: admin/class-wordlift-admin-entity-list.php:147
+msgid "Where"
+msgstr "Къде"
+
+#: admin/class-wordlift-admin-entity-list.php:146
+msgid "Who"
+msgstr "Кой"
+
+#: admin/class-wordlift-admin-entity-list.php:145
+msgid "What"
+msgstr "Какво"
+
+#: widgets/wordlift_widget_timeline.php:13
+msgid "Displays entities of type event using an interactive timeline."
+msgstr "Показване на единиците от тип \"събитие\", използвайки интерактивна времева линия."
+
+#: widgets/wordlift_widget_timeline.php:12
+msgid "WordLift Timeline Widget"
+msgstr "Джаджа WordLift времева линия"
+
+#: public/class-wordlift-related-entities-cloud-widget.php:80
+msgid "Related Entities"
+msgstr "Сродни единици"
+
+#: public/class-wordlift-related-entities-cloud-widget.php:30
+msgid "Display entities related to the current post/entity in a tag cloud."
+msgstr "Показване на единиците свързани с текущата публикация/единица в облака от етикети."
+
+#: public/class-wordlift-related-entities-cloud-widget.php:27
+msgid "WordLift Entities Cloud"
+msgstr "WordLift облак от единици"
+
+#: admin/partials/wordlift-admin-settings-page.php:11
+msgid "WorldLift Settings"
+msgstr "Настройки на WorldLift"
+
+#: admin/partials/wordlift-admin-entity-type-settings.php:69
+msgid "Update"
+msgstr "Обнови"
+
+#: admin/partials/wordlift-admin-entity-type-settings.php:65
+msgid "The description to be used in the entity type archive page."
+msgstr "Описанието, което ще бъде използвано на архивната страница на типа единица."
+
+#: admin/partials/wordlift-admin-entity-type-settings.php:59
+msgid "Description"
+msgstr "Описание"
+
+#: admin/partials/wordlift-admin-entity-type-settings.php:54
+msgid "The HTML title to be used in the entity type archive page."
+msgstr "HTML заглавието, което ще бъде използвано на архивната страница на типа единица."
+
+#: admin/partials/wordlift-admin-entity-type-settings.php:48
+msgid "Title"
+msgstr "Заглавие"
+
+#: admin/partials/wordlift-admin-entity-type-settings.php:40
+msgid "Name"
+msgstr "Име"
+
+#: admin/class-wordlift-entity-type-settings.php:137
+msgid "You attempted to edit an entity type term that doesn&#8217;t exist."
+msgstr "Опитвате се да редактирате единица от тип който не съществува."
+
+#: admin/class-wordlift-entity-type-settings.php:128
+msgid "Sorry, you are not allowed to edit this item."
+msgstr "За съжаление нямате права да редактирате този артикул."
+
+#: admin/class-wordlift-entity-type-settings.php:127
+msgid "Cheatin&#8217; uh?"
+msgstr "Шмекеруваме, а?"
+
+#: admin/class-wordlift-entity-type-settings.php:109
+msgid "Settings saved"
+msgstr "Настройките са запазени"
+
+#: admin/class-wordlift-entity-type-settings.php:91
+#: admin/class-wordlift-entity-type-settings.php:92
+msgid "Edit Entity term"
+msgstr "Редактиране на категорията на единицата "
+
+#: admin/class-wordlift-admin-settings-page.php:280
+msgctxt "wordlift"
+msgid "Publisher"
+msgstr "Издател"
+
+#: admin/class-wordlift-admin-settings-page.php:273
+msgid "Each WordLift Key can be used only in one language. Pick yours."
+msgstr "Всеки WordLift ключ може да бъде използван само на един език. Изберете вашия."
+
+#: admin/class-wordlift-admin-settings-page.php:264
+msgctxt "wordlift"
+msgid "Site Language"
+msgstr "Език на сайта"
+
+#: admin/class-wordlift-admin-settings-page.php:253
+msgctxt "wordlift"
+msgid "Entity Base Path"
+msgstr "Основен път на единицата"
+
+#: admin/class-wordlift-admin-settings-page.php:245
+msgctxt "wordlift"
+msgid "All new pages created with WordLift, will be stored inside your internal vocabulary. You can customize the url pattern of these pages in the field above. Check our <a href=\"%s\">FAQs</a> if you need more info."
+msgstr "Всички нови страници, създадени с WordLift, ще бъдат запазени във вашия вътрешен речник. Може да променяте URL структурата на тези страници в полето отгоре. Погледнете нашите <a href=\"%s\">Въпроси</a> ако имате нужда от повече информация."
+
+#: admin/class-wordlift-admin-settings-page.php:231
+msgctxt "wordlift"
+msgid "WordLift Key"
+msgstr "WordLift ключ"
+
+#: admin/class-wordlift-admin-settings-page.php:212
+msgid "Insert the <a href=\"https://www.wordlift.io/blogger\">WordLift Key</a> you received via email."
+msgstr "Въведете <a href=\"https://www.wordlift.io/blogger\">WordLift ключа</a> който сте получили на имейл."
+
+#: admin/class-wordlift-admin-settings-page-action-link.php:61
+msgctxt "wordlift"
+msgid "Settings"
+msgstr "Настройки"
+
+#: admin/class-wordlift-admin-publisher-element.php:164
+msgid "Select an existing image or upload a new one"
+msgstr "Изберете от съществуващите изображения или качете ново"
+
+#: admin/class-wordlift-admin-publisher-element.php:158
+msgid "Choose the publisher's Logo"
+msgstr "Изберете лого на издателя"
+
+#: admin/class-wordlift-admin-publisher-element.php:141
+msgid "Person"
+msgstr "Личност"
+
+#: admin/class-wordlift-admin-publisher-element.php:133
+msgid "Are you publishing as an individual or as a company?"
+msgstr "Индивидуално ли публикувате или като компания?"
+
+#: admin/class-wordlift-admin-publisher-element.php:88
+msgid "Create a New Publisher"
+msgstr "Създаване на нов издател"
+
+#: admin/class-wordlift-admin-publisher-element.php:83
+msgid "Select an Existing Publisher"
+msgstr "Избиране на съществуващ издател"
+
+#: admin/class-wordlift-admin-entity-taxonomy-list-page.php:49
+msgid "SEO Settings"
+msgstr "SEO Настройки"
+
+#: admin/partials/wordlift-admin-status-page.php:25
+msgid "Status Report"
+msgstr "Доклад за състоянието"
+
+#: admin/class-wordlift-admin.php:158
+msgid "You already published an entity with the same name: "
+msgstr "Вече сте публикували единица със същото име:"
+
+#: admin/class-wordlift-admin-status-page.php:166
+msgctxt "Menu title"
+msgid "Status Report"
+msgstr "Доклад за състоянието"
+
+#: admin/class-wordlift-admin-status-page.php:154
+msgctxt "Page title"
+msgid "Status Report"
+msgstr "Доклад за състоянието"
+
+#: admin/partials/wordlift-admin-setup.php:213
+msgid "Finish"
+msgstr "Край"
+
+#: admin/partials/wordlift-admin-setup.php:208
+msgid "Add your logo"
+msgstr "Добавяне на лого"
+
+#: admin/class-wordlift-admin-publisher-element.php:152
+#: admin/partials/wordlift-admin-setup.php:198
+msgid "What's your name?"
+msgstr "Вашето име?"
+
+#: admin/class-wordlift-admin-publisher-element.php:147
+#: admin/partials/wordlift-admin-setup.php:192
+msgid "Company"
+msgstr "Компания"
+
+#: admin/partials/wordlift-admin-setup.php:185
+msgid "Personal"
+msgstr "Персонален"
+
+#: admin/partials/wordlift-admin-setup.php:177
+msgid "Are you going to publish as an individual or as a company?"
+msgstr "Индивидуално ли публикувате или като компания?"
+
+#: admin/partials/wordlift-admin-setup.php:175
+msgid "Publisher"
+msgstr "Издател"
+
+#: admin/partials/wordlift-admin-setup.php:144
+msgid "Choose your language"
+msgstr "Избор на език"
+
+#: admin/partials/wordlift-admin-setup.php:141
+msgid "Each WordLift key can be used only in one language. Pick yours."
+msgstr "Всеки WordLift ключ може да бъде използван само на един език. Изберете вашия."
+
+#: admin/partials/wordlift-admin-setup.php:139
+msgid "Language"
+msgstr "Език"
+
+#: admin/partials/wordlift-admin-setup.php:128
+msgid "Leave it empty to place your entities in the root folder of your website"
+msgstr "Оставете празно, за да поставите единиците в основната папка на вашия сайт"
+
+#: admin/partials/wordlift-admin-setup.php:122
+msgid "All new pages created with WordLift, will be stored inside your internal vocabulary. You can customize the url pattern of these pages in the field below. Check our FAQs if you need more info."
+msgstr "Всички нови страници, създадени с WordLift, ще бъдат запазени във вашия вътрешен речник. Може да променяте URL структурата на тези страници в полето отгоре. Погледнете нашите \"Въпроси\" ако имате нужда от повече информация."
+
+#: admin/partials/wordlift-admin-setup.php:112
+msgid "Grab a Key!"
+msgstr "Вземете ключ!"
+
+#: admin/partials/wordlift-admin-setup.php:103
+msgid "If you already puchased a plan, check your email, get the activation key from your inbox and insert it in the field below. Otherwise ...."
+msgstr "Ако вече сте закупили план, проверете вашия имейл, вземете ключа за активация и го добавете в полете отдолу. В противен случай ...."
+
+#: admin/partials/wordlift-admin-setup.php:101
+msgid "License Key"
+msgstr "Лицензионен ключ"
+
+#: admin/partials/wordlift-admin-setup.php:95
+#: admin/partials/wordlift-admin-setup.php:114
+#: admin/partials/wordlift-admin-setup.php:133
+#: admin/partials/wordlift-admin-setup.php:169
+msgid "Next"
+msgstr "Следващ"
+
+#: admin/partials/wordlift-admin-setup.php:92
+msgid "Learn More"
+msgstr "Прочетете повече"
+
+#: admin/partials/wordlift-admin-setup.php:86
+msgid "Content Marketing"
+msgstr "Маркетинг чрез съдържание"
+
+#: admin/partials/wordlift-admin-setup.php:81
+msgid "SEO Optimization"
+msgstr "Оптимизация за SEO"
+
+#: admin/partials/wordlift-admin-setup.php:76
+msgid "Smart Navigation"
+msgstr "Интуитивна навигация"
+
+#: admin/partials/wordlift-admin-setup.php:71
+msgid "Engagement"
+msgstr "Участие"
+
+#: admin/partials/wordlift-admin-setup.php:66
+msgid "Enrichment"
+msgstr "Обогатяване"
+
+#: admin/partials/wordlift-admin-setup.php:61
+msgid "Trustworthiness"
+msgstr "Доверие"
+
+#: admin/partials/wordlift-admin-setup.php:56
+msgid "Thank you for downloading WordLift. Now you can boost your website with a double-digit growth. WordLift helps you with:"
+msgstr "Благодарим ви, че изтеглихте WordLift. Вече може да подобрите посещенията на сайта си осезаемо. WordLift ви помага с:"
+
+#: admin/partials/wordlift-admin-setup.php:54
+msgid "Welcome"
+msgstr "Добре дошли"
+
+#: admin/class-wordlift-admin.php:160
+#: admin/partials/wordlift-admin-setup.php:40
+msgid "Choose Logo"
+msgstr "Избор на лого"
+
+#: admin/class-wordlift-admin.php:159
+#: admin/partials/wordlift-admin-setup.php:39
+msgid "WordLift Choose Logo"
+msgstr "Избор на WordLift лого"
+
+#: admin/partials/wordlift-admin-setup.php:15
+msgid "WordLift Setup"
+msgstr "Настройка на WordLift"
+
+#: admin/class-wordlift-admin-setup.php:202
+msgid "Sorry, you do not have a permission to save the settings"
+msgstr "Нямате права за запазване на настройките"
+
+#: admin/class-wordlift-admin-setup.php:157
+msgid "Action failed. Please refresh the page and retry."
+msgstr "Действието не бе успешно. Моля презаредете страницата и опитайте отново."
+
+#: admin/class-wordlift-admin-setup.php:136
+msgid "Skip Setup"
+msgstr "Пропускане на настройките"
+
+#: admin/class-wordlift-admin-setup.php:134
+msgid "Run the Setup Wizard"
+msgstr "Стартиране на \"Помощник за инсталация\""
+
+#: admin/class-wordlift-admin-setup.php:132
+msgid "Welcome to WordLift &#8211; You&lsquo;re almost ready to start"
+msgstr "Добре дошли във WordLift &#8211; Почти сте готови за започване"
+
+#: includes/class-wordlift-timeline-service.php:230
+msgid "(more&hellip;)"
+msgstr "(повече&hellip;)"
+
+#. translators: %s: Name of current post
+#: includes/class-wordlift-timeline-service.php:227
+msgid "Continue reading %s"
+msgstr "Продължете да четете %s"
+
+#: admin/partials/wordlift-admin-download-your-data.php:27
+msgid "N3"
+msgstr "N3"
+
+#: admin/partials/wordlift-admin-download-your-data.php:25
+msgctxt "File format, not the animal"
+msgid "Turtle"
+msgstr "Turtle"
+
+#: admin/partials/wordlift-admin-download-your-data.php:23
+msgid "RDF/XML"
+msgstr "RDF/XML"
+
+#: admin/partials/wordlift-admin-download-your-data.php:21
+msgid "JSON-LD"
+msgstr "JSON-LD"
+
+#: admin/partials/wordlift-admin-download-your-data.php:18
+msgid "Choose the format to download your data:"
+msgstr "Избор на формат за изтегляне на данните:"
+
+#: admin/class-wordlift-download-your-data-page.php:44
+msgctxt "Menu title"
+msgid "Download Your Data"
+msgstr "Изтегляне на данните"
+
+#: admin/class-wordlift-download-your-data-page.php:43
+#: admin/partials/wordlift-admin-download-your-data.php:17
+msgctxt "Page title"
+msgid "Download Your Data"
+msgstr "Изтегляне на данните"
+
+#. Description of the plugin/theme
+msgid "WordLift brings the power of AI to organize content, attract new readers and get their attention. To activate the plugin ​<a href=\"https://wordlift.io/\">visit our website</a>."
+msgstr "WordLift добавя силата на \"Изкуственото разузнаване\" да организирате съдържание, привличане на нови читатели и тхяното внимание. За активиране на разширението ​<a href=\"https://wordlift.io/\">посетете нашия сайт</a>."
+
+#: public/class-wordlift-navigator-shortcode.php:32
+#: shortcodes/wordlift_shortcode_faceted_search.php:10
+msgid "Related articles"
+msgstr "Свързани статии"
+
+#: includes/class-wordlift-topic-taxonomy-service.php:95
+msgid "Topics"
+msgstr "Теми"
+
+#: includes/class-wordlift-topic-taxonomy-service.php:94
+msgid "New Topic"
+msgstr "Нова тема"
+
+#: includes/class-wordlift-topic-taxonomy-service.php:93
+msgid "Add New Topic"
+msgstr "Добавяне на нова тема"
+
+#: includes/class-wordlift-topic-taxonomy-service.php:92
+msgid "Update Topic"
+msgstr "Обновяване на тема"
+
+#: includes/class-wordlift-topic-taxonomy-service.php:91
+msgid "Edit Topic"
+msgstr "Промяна на тема"
+
+#: includes/class-wordlift-topic-taxonomy-service.php:90
+msgid "Parent Topic:"
+msgstr "Родителска тема:"
+
+#: includes/class-wordlift-topic-taxonomy-service.php:89
+msgid "Parent Topic"
+msgstr "Родителска Тема"
+
+#: includes/class-wordlift-topic-taxonomy-service.php:88
+msgid "All Topics"
+msgstr "Всички теми"
+
+#: includes/class-wordlift-topic-taxonomy-service.php:87
+msgid "Search Topics"
+msgstr "Търсене на теми"
+
+#: includes/class-wordlift-topic-taxonomy-service.php:86
+msgctxt "taxonomy singular name"
+msgid "Topic"
+msgstr "Тема"
+
+#: includes/class-wordlift-topic-taxonomy-service.php:85
+msgctxt "taxonomy general name"
+msgid "Topics"
+msgstr "Теми"
+
+#: admin/class-wordlift-admin-dashboard.php:89
+msgid "triples"
+msgstr "тройни"
+
+#: admin/class-wordlift-admin-dashboard.php:83
+msgid "Your graphs size corresponds to %1$s of <a href=\"%2$s\">Wikidata</a>."
+msgstr "Размерът на графиките ви съответства на %1$s от <a href=\"%2$s\">Wikidata</a>."
+
+#: admin/class-wordlift-admin-dashboard.php:81
+msgid "triples in your graph"
+msgstr "Утрояване на графиката"
+
+#: admin/class-wordlift-admin-dashboard.php:74
+msgid "You have %1$s entities in your <a href=\"%2$s\">vocabulary</a> with an average rating of %3$s."
+msgstr "Има %1$s единици във вашия <a href=\"%2$s\">речник</a> със среден ранг от %3$s."
+
+#: admin/class-wordlift-admin-dashboard.php:72
+msgid "average entity rating"
+msgstr "среден ранг на единицата"
+
+#: admin/class-wordlift-admin-dashboard.php:64
+msgid "%1$s, of your <a href=\"%2$s\">posts</a> are annotated. This means %3$s annotated posts on %4$s."
+msgstr "%1$s, от <a href=\"%2$s\">публикациите</a> са анотирани. Това значи %3$s анотирани публикации от %4$s."
+
+#: admin/class-wordlift-admin-dashboard.php:62
+msgid "enriched posts"
+msgstr "обогатени публикации"
+
+#: includes/class-wordlift-rating-service.php:297
+#: wordlift_manual_translations.php:12
+msgid "Schema.org metadata for this entity are not completed."
+msgstr "Метаинформацията от Schema.org за тази единица не е завършена."
+
+#: includes/class-wordlift-rating-service.php:285
+#: wordlift_manual_translations.php:11
+msgid "There are no sameAs configured for this entity."
+msgstr "Няма \"sameAs\" конфигурирани за тази единица."
+
+#: includes/class-wordlift-rating-service.php:269
+#: wordlift_manual_translations.php:10
+msgid "This entity has no featured image yet."
+msgstr "Единицата все още няма главна картинка."
+
+#: includes/class-wordlift-rating-service.php:264
+#: wordlift_manual_translations.php:9
+msgid "This entity is not published. It will not appear within analysis results."
+msgstr "Единицата не е публикувана. Няма да бъде включена в анализираните резултати."
+
+#: includes/class-wordlift-rating-service.php:259
+#: wordlift_manual_translations.php:8
+msgid "There are no related entities for the current entity."
+msgstr "Няма сродни единици за текущата единица."
+
+#: includes/class-wordlift-rating-service.php:253
+#: wordlift_manual_translations.php:7
+msgid "This entity has not description."
+msgstr "Единицата няма описание."
+
+#: includes/class-wordlift-rating-service.php:248
+#: wordlift_manual_translations.php:6
+msgid "There are no related posts for the current entity."
+msgstr "Няма сродни публикации за текущата единица."
+
+#: admin/class-wordlift-admin-entity-list.php:144
+msgid "All 'W'"
+msgstr "Всички \"W\""
+
+#: admin/class-wordlift-admin-entity-list.php:69
+msgid "Rating"
+msgstr "Рейтинг"
+
+#: admin/class-wordlift-admin-entity-list.php:68
+msgid "Related Posts"
+msgstr "Сродни публикации"
+
+#: admin/class-wordlift-admin-entity-list.php:66
+msgid "Image"
+msgstr "Изображение"
+
+#: includes/class-wordlift-entity-service.php:420
+msgid "Delete"
+msgstr "Изтрий"
+
+#: includes/class-wordlift-entity-service.php:371
+msgid "Add more titles"
+msgstr "Добавяне на заглавия"
+
+#: admin/WL_Metabox/class-wl-metabox.php:64
+msgid "properties"
+msgstr "свойства"
+
+#. Author of the plugin/theme
+msgid "WordLift, Insideout10"
+msgstr "WordLift, Insideout10"
+
+#. #-#-#-#-#  wordlift-code.pot (WordLift 3.14.0)  #-#-#-#-#
+#. Plugin URI of the plugin/theme
+#. #-#-#-#-#  wordlift-code.pot (WordLift 3.14.0)  #-#-#-#-#
+#. Author URI of the plugin/theme
+msgid "https://wordlift.io"
+msgstr "https://wordlift.io"
+
+#: wordlift_entity_type_taxonomy.php:23
+msgid "Entity Types"
+msgstr "Вид на единиците"
+
+#: wordlift_entity_type_taxonomy.php:22
+msgid "New Entity Type"
+msgstr "Нов вид на единиците"
+
+#: wordlift_entity_type_taxonomy.php:21
+msgid "Add New Entity Type"
+msgstr "Добавяне на вид единица"
+
+#: wordlift_entity_type_taxonomy.php:20
+msgid "Update Entity Type"
+msgstr "Обновяване на вид на единицата"
+
+#: admin/partials/wordlift-admin-entity-type-settings.php:27
+#: wordlift_entity_type_taxonomy.php:19
+msgid "Edit Entity Type"
+msgstr "Промяна на вида на единицата"
+
+#: wordlift_entity_type_taxonomy.php:18
+msgid "Parent Entity Type:"
+msgstr "Родителски вид на единицата:"
+
+#: wordlift_entity_type_taxonomy.php:17
+msgid "Parent Entity Type"
+msgstr "Родителски вид на единицата:"
+
+#: wordlift_entity_type_taxonomy.php:16
+msgid "All Entity Types"
+msgstr "Всички типове единици"
+
+#: wordlift_entity_type_taxonomy.php:15
+msgid "Search Entity Types"
+msgstr "Търсене"
+
+#: wordlift_entity_type_taxonomy.php:14
+msgctxt "taxonomy singular name"
+msgid "Entity Type"
+msgstr "Вид на единиците"
+
+#: wordlift_entity_type_taxonomy.php:13
+msgctxt "taxonomy general name"
+msgid "Entity Types"
+msgstr "Вид на единиците"
+
+#: admin/partials/wordlift-admin-setup.php:120
+#: includes/class-wordlift-entity-post-type-service.php:123
+msgid "Vocabulary"
+msgstr "Речник"
+
+#: includes/class-wordlift-entity-post-type-service.php:121
+msgid "No entities found in the Trash"
+msgstr "Не бяха открити единици в кошчето"
+
+#: includes/class-wordlift-entity-post-type-service.php:120
+msgid "No entities found"
+msgstr "Не бяха открити единици"
+
+#: includes/class-wordlift-entity-post-type-service.php:119
+msgid "Search in Vocabulary"
+msgstr "Търсене в речника"
+
+#: includes/class-wordlift-entity-post-type-service.php:118
+msgid "View Entity"
+msgstr "Преглед"
+
+#: includes/class-wordlift-entity-post-type-service.php:117
+msgid "All Entities"
+msgstr "Всички единици"
+
+#: includes/class-wordlift-entity-post-type-service.php:116
+msgid "New Entity"
+msgstr "Нова единица"
+
+#: includes/class-wordlift-entity-post-type-service.php:115
+msgid "Edit Entity"
+msgstr "Промяна"
+
+#: includes/class-wordlift-entity-post-type-service.php:114
+msgid "Add New Entity"
+msgstr "Добавяне на нова единица"
+
+#: includes/class-wordlift-entity-post-type-service.php:113
+msgctxt "entity"
+msgid "Add New Entity"
+msgstr "Добавяне на нова единица"
+
+#: includes/class-wordlift-entity-post-type-service.php:112
+msgctxt "post type singular name"
+msgid "Entity"
+msgstr "Единица"
+
+#: includes/class-wordlift-entity-post-type-service.php:111
+msgctxt "post type general name"
+msgid "Vocabulary"
+msgstr "Речник"
+
+#: public/class-wordlift-related-entities-cloud-widget.php:45
+#: widgets/wordlift_widget_geo.php:64
+msgid "Title:"
+msgstr "Заглавие:"
+
+#: widgets/wordlift_widget_geo.php:60
+msgid "New title"
+msgstr "Ново заглавие"
+
+#: widgets/wordlift_widget_geo.php:20
+msgid "Geo Widget description"
+msgstr "Описание на Geo джаджа"
+
+#: widgets/wordlift_widget_geo.php:19
+msgid "Geo Widget"
+msgstr "Geo джаджа"
+
+#: widgets/wordlift_widget_chord.php:13
+msgid "The Chord Widget depicts the main topics of your blog in concise graph."
+msgstr "Джаджата за акорд изобразява основната тема на вашия блог в консистентна графика."
+
+#: widgets/wordlift_widget_chord.php:12
+msgid "Chord Widget"
+msgstr "Джаджа за акорд"
+
+#: admin/class-wordlift-admin-setup.php:162
+msgid "Cheatin&#8217; huh?"
+msgstr "Шмекеруваме, а?"
+
+#: modules/analyzer/wordlift_analyzer.php:21
+msgid "An error occurred while request an analysis to the remote service. Please try again later."
+msgstr "Възникна грешка при заявката за анализ до външния сървър. Моля опитайте по-късно."
+
+#: admin/wordlift_admin_menu.php:45
+msgid "You do not have sufficient permissions to access this page."
+msgstr "Нямате достатъчно права за да достъпите тази страница."
+
+#. #-#-#-#-#  wordlift-code.pot (WordLift 3.14.0)  #-#-#-#-#
+#. Plugin Name of the plugin/theme
+#: admin/class-wordlift-admin-user-profile-page.php:90
+#: admin/wordlift_admin_menu.php:19 admin/wordlift_admin_menu.php:20
+#: admin/wordlift_admin_meta_box_entities.php:36
+msgid "WordLift"
+msgstr "WordLift"
+
+#: admin/wordlift_admin_edit_post.php:31
+msgid "Test Google Rich Snippets"
+msgstr "Тестване на Google Rich Snippets"
+
+#: admin/wordlift_admin_edit_post.php:25
+msgid "View Linked Data"
+msgstr "Преглед на свързаните данни"
+
+#: admin/WL_Metabox/WL_Metabox_Field_coordinates.php:45
+msgid "Longitude"
+msgstr "Географска Дължина"
+
+#: admin/WL_Metabox/WL_Metabox_Field_coordinates.php:42
+msgid "Latitude"
+msgstr "Географска Ширина"
