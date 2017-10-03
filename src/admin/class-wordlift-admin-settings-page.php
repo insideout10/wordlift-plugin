@@ -238,6 +238,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			'id'          => 'wl-entity-base-path',
 			'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::ENTITY_BASE_PATH_KEY . ']',
 			'value'       => $this->configuration_service->get_entity_base_path(),
+			/* translators: Placeholders: %s - a link to FAQ's page. */
 			'description' => sprintf( __( 'All new pages created with WordLift, will be stored inside your internal vocabulary. You can customize the url pattern of these pages in the field above. Check our <a href="%s">FAQs</a> if you need more info.', 'wordlift' ), 'https://wordlift.io/wordlift-user-faqs/#10-why-and-how-should-i-customize-the-url-of-the-entity-pages-created-in-my-vocabulary' ),
 		);
 
