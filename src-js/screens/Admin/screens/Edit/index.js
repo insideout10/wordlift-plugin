@@ -121,6 +121,7 @@ jQuery(document).ready(function() {
       loadOptions={autocomplete}
       name="wl_metaboxes[entity_same_as][]"
       placeholder=""
+      filterOption={(option, filter) => true}
       searchPromptText={
         wlSettings.l10n['Type at least 3 characters to search...']
       }
