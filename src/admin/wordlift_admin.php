@@ -76,3 +76,60 @@ function wl_admin_metaboxes_add_css_class( $classes = array() ){
 	
 	return array_merge( $classes, array( 'wl-metabox' ) );
 }
+
+/**
+ * Adds new image size `wl_logo`. It will be used to crop & resize
+ * featured images of entity type "Oraganization".
+ * see: https://github.com/insideout10/wordlift-plugin/issues/597
+ *
+ * @since 3.16.0
+ *
+ * @return void
+ */
+function wl_after_setup_theme() {
+	// Add new image size for organization featured images.
+	add_image_size( 'wl_organization_logo', 600, 60, true );
+}
+
+add_action( 'after_setup_theme', 'wl_after_setup_theme' );
+
+/**
+ * Adds featured image metabox additional instructions
+ * when the entity type is organization.
+ * see: https://github.com/insideout10/wordlift-plugin/issues/597
+ *
+ * @since  3.16.0
+ *
+ * @param  string $content Current metabox content.
+ *
+ * @return string $content metabox content with additional instructions.
+ */
+function wl_add_featured_image_instruction( $content ) {
+	// Get the current post ID.
+	$post_id = get_the_ID();
+
+	// Bail if for some reason the post id is not set.
+	if ( empty( $post_id ) ) {
+		return $content;
+	}
+
+	// Get entity type(s).
+	$terms = wp_get_object_terms(
+		$post_id, // The post ID.
+		Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, // The taxonomy slug.
+		array(
+			'fields' => 'slugs', // We don't need all fields, but only slugs.
+		)
+	);
+
+	// Check that the entity type is "Organization".
+	if ( in_array( 'organization' , $terms, true ) ) {
+		// Add the featured image description when the type is "Organization".
+		$content .= '<p>' . esc_html__( 'Recommended image size 600px * 60px. Bigger images will be automatically cropped and resized to fit that size.', 'wordlift' ) . '</p>';
+	}
+
+	// Finally return the content.
+	return $content;
+}
+
+add_filter( 'admin_post_thumbnail_html', 'wl_add_featured_image_instruction' );
