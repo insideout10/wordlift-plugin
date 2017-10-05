@@ -137,7 +137,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.14.6 (2017-10-11) =
+= 3.14.7 (2017-10-03) =
+* Fix: [#633](https://github.com/insideout10/wordlift-plugin/issues/633): Colon in html messes the analysis.
+
+= 3.14.6 (2017-09-11) =
 * Fix: [#613](https://github.com/insideout10/wordlift-plugin/issues/613): A slash too much for Angular geolocation library.
 * Fix: [#611](https://github.com/insideout10/wordlift-plugin/issues/611): WordLift slowing down RSS feed.
 

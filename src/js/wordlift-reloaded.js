@@ -38,7 +38,7 @@
       this._htmlPositions = [];
       this._textPositions = [];
       this._text = '';
-      pattern = /([^&<>]*)(&[^&;]*;|<[!\/]?(?:[\w-]+|\[cdata\[.*?]])(?: [\w_-]+(?:="[^"]*")?)*>)([^&<>]*)/gim;
+      pattern = /((?:&(?![#\w]))*[^&<>]*)(&[^&;]*;|<[!\/]?(?:[\w-]+|\[cdata\[.*?]])(?:[\w_-]+(?:="[^"]*")?)*[^>]*>)([^&<>]*)/gim;
       textLength = 0;
       htmlLength = 0;
       while ((match = pattern.exec(this._html)) != null) {
