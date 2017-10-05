@@ -137,7 +137,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.15.0 (2017-09-21) =
+= 3.15.0 (2017-10-05) =
 * Enhancement: [#608](https://github.com/insideout10/wordlift-plugin/issues/608): Integrate the Autocomplete widget.
 * Enhancement: [#607](https://github.com/insideout10/wordlift-plugin/issues/607): Autocomplete API.
 * Enhancement: [#596](https://github.com/insideout10/wordlift-plugin/issues/596): Allow regular posts/pages to be entities.
@@ -146,6 +146,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement: [#583](https://github.com/insideout10/wordlift-plugin/issues/583): Add sameAs to schema.org/publisher in JSON-LD.
 * Enhancement: [#574](https://github.com/insideout10/wordlift-plugin/issues/574): WL currently adds links on headings.
 * Enhancement: [#493](https://github.com/insideout10/wordlift-plugin/issues/493): Prevent analysis in html tags: `button`.
+* Fix: [#628](https://github.com/insideout10/wordlift-plugin/issues/628): Check the status of Content Classification in the WordLift editor .
 * Fix: [#610](https://github.com/insideout10/wordlift-plugin/issues/610): Typo in xsd:dateTime.
 
 = 3.14.7 (2017-10-03) =
