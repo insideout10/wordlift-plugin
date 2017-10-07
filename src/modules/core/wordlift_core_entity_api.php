@@ -57,7 +57,6 @@ function wl_entity_get_by_title( $title, $autocomplete = false, $include_alias =
 		$query,
 		$title,
 		Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
-		Wordlift_Entity_Service::TYPE_NAME,
 		Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY,
 		$title,
 		Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME
