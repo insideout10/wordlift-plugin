@@ -97,6 +97,7 @@ class Wordlift_Admin_Author_Element implements Wordlift_Admin_Element {
 
 		// Queue the script which will initialize the select and style it.
 		wp_enqueue_script( 'wl-author-element', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/1/author.js', array( 'wordlift-select2' ) );
+		wp_enqueue_style( 'wl-author-element', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/1/author.css' );
 
 		// Prepare the URLs for entities which don't have logos.
 		$person_thumbnail_url       = plugin_dir_url( dirname( __FILE__ ) ) . 'images/person.png';
