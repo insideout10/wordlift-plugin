@@ -1088,7 +1088,7 @@ class Wordlift {
 		new Wordlift_Geomap_Shortcode();
 		new Wordlift_Timeline_Shortcode();
 		new Wordlift_Related_Entities_Cloud_Shortcode( $this->relation_service );
-		new Wordlift_Glossary_Shortcode();
+		new Wordlift_Glossary_Shortcode( $this->configuration_service );
 
 		// Initialize the SEO service.
 		new Wordlift_Seo_Service();
