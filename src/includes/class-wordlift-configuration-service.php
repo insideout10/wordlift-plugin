@@ -430,4 +430,17 @@ class Wordlift_Configuration_Service {
 
 	}
 
+	/**
+	 * Get the URL to perform autocomplete request.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @return string The URL to call to perform the batch analyzes.
+	 */
+	public function get_autocomplete_url() {
+
+		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . 'autocomplete';
+
+	}
+
 }

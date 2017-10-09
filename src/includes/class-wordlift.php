@@ -391,13 +391,13 @@ class Wordlift {
 	protected $category_taxonomy_service;
 
 	/**
-	 * The {@link Wordlift_Event_Entity_Page_Service} instance.
+	 * The {@link Wordlift_Entity_Page_Service} instance.
 	 *
 	 * @since  3.11.0
 	 * @access protected
-	 * @var \Wordlift_Event_Entity_Page_Service $event_entity_page_service The {@link Wordlift_Event_Entity_Page_Service} instance.
+	 * @var \Wordlift_Entity_Page_Service $entity_page_service The {@link Wordlift_Entity_Page_Service} instance.
 	 */
-	protected $event_entity_page_service;
+	protected $entity_page_service;
 
 	/**
 	 * The {@link Wordlift_Admin_Settings_Page_Action_Link} class.
@@ -589,6 +589,24 @@ class Wordlift {
 	protected $rendition_factory;
 
 	/**
+	 * The {@link Wordlift_Autocomplete_Service} instance.
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var \Wordlift_Autocomplete_Service $autocomplete_service The {@link Wordlift_Autocomplete_Service} instance.
+	 */
+	private $autocomplete_service;
+
+	/**
+	 * The {@link Wordlift_Autocomplete_Adapter} instance.
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var \Wordlift_Autocomplete_Adapter $autocomplete_adapter The {@link Wordlift_Autocomplete_Adapter} instance.
+	 */
+	private $autocomplete_adapter;
+
+	/**
 	 * The {@link Wordlift_Relation_Service} instance.
 	 *
 	 * @since  3.15.0
@@ -618,7 +636,7 @@ class Wordlift {
 	public function __construct() {
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.15.0-dev';
+		$this->version     = '3.16.0-dev';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -815,8 +833,8 @@ class Wordlift {
 		// Load the `Wordlift_Category_Taxonomy_Service` class definition.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-category-taxonomy-service.php';
 
-		// Load the `Wordlift_Event_Entity_Page_Service` class definition.
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-event-entity-page-service.php';
+		// Load the `Wordlift_Entity_Page_Service` class definition.
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-page-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-batch-analysis-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-relation-rebuild-service.php';
 
@@ -848,6 +866,10 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-sparql-query-async-task.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-batch-analysis-request-async-task.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-batch-analysis-complete-async-task.php';
+
+		/** Async Tasks. */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-autocomplete-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-autocomplete-adapter.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
@@ -1108,6 +1130,10 @@ class Wordlift {
 		new Wordlift_Batch_Analysis_Request_Async_Task();
 		new Wordlift_Batch_Analysis_Complete_Async_Task();
 
+		/** WL Autocomplete. */
+		$this->autocomplete_service = new Wordlift_Autocomplete_Service( $this->configuration_service );
+		$this->autocomplete_adapter = new Wordlift_Autocomplete_Adapter( $this->autocomplete_service );
+
 		/** WordPress Admin UI. */
 
 		// UI elements.
@@ -1148,7 +1174,7 @@ class Wordlift {
 		// User Profile.
 		new Wordlift_Admin_User_Profile_Page( $this->author_element, $this->user_service );
 
-		$this->event_entity_page_service = new Wordlift_Event_Entity_Page_Service();
+		$this->entity_page_service = new Wordlift_Entity_Page_Service();
 
 		// Load the debug service if WP is in debug mode.
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
@@ -1306,6 +1332,7 @@ class Wordlift {
 		/** Adapters. */
 		$this->loader->add_filter( 'mce_external_plugins', $this->tinymce_adapter, 'mce_external_plugins', 10, 1 );
 		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_submit_auto_selected_posts', $this->batch_analysis_adapter, 'submit_auto_selected_posts', 10 );
+		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_submit_all_posts', $this->batch_analysis_adapter, 'submit_all_posts', 10 );
 		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_submit', $this->batch_analysis_adapter, 'submit', 10 );
 		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_cancel', $this->batch_analysis_adapter, 'cancel', 10 );
 		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_clear_warning', $this->batch_analysis_adapter, 'clear_warning', 10 );
@@ -1313,6 +1340,10 @@ class Wordlift {
 
 		$this->loader->add_action( 'wp_ajax_wl_sample_data_create', $this->sample_data_ajax_adapter, 'create' );
 		$this->loader->add_action( 'wp_ajax_wl_sample_data_delete', $this->sample_data_ajax_adapter, 'delete' );
+
+		// Handle the autocomplete request.
+		add_action( 'wp_ajax_wl_autocomplete', array( $this->autocomplete_adapter, 'wl_autocomplete' ) );
+		add_action( 'wp_ajax_nopriv_wl_autocomplete', array( $this->autocomplete_adapter, 'wl_autocomplete' ) );
 
 		// Hooks to restrict multisite super admin from manipulating entity types.
 		if ( is_multisite() ) {
@@ -1363,11 +1394,11 @@ class Wordlift {
 		$this->loader->add_action( 'pre_get_posts', $this->category_taxonomy_service, 'pre_get_posts', 10, 1 );
 
 		/*
-		 * Hook the `pre_get_posts` action to the `Wordlift_Event_Entity_Page_Service`
+		 * Hook the `pre_get_posts` action to the `Wordlift_Entity_Page_Service`
 		 * in order to tweak WP's `WP_Query` to show event related entities in reverse
 		 * order of start time.
 		 */
-		$this->loader->add_action( 'pre_get_posts', $this->event_entity_page_service, 'pre_get_posts', 10, 1 );
+		$this->loader->add_action( 'pre_get_posts', $this->entity_page_service, 'pre_get_posts', 10, 1 );
 
 		$this->loader->add_action( 'wp_async_wl_run_sparql_query', $this->sparql_service, 'run_sparql_query', 10, 1 );
 
