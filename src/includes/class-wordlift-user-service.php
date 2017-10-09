@@ -79,7 +79,7 @@ class Wordlift_User_Service {
 	 *
 	 * @since 3.1.7
 	 *
-	 * @param int $user_id The user id
+	 * @param int $user_id The user id.
 	 *
 	 * @return false|string The user's URI or false in case of failure.
 	 */
@@ -305,7 +305,7 @@ class Wordlift_User_Service {
 	 *
 	 * @since 3.14.0
 	 *
-	 * @param integer $user_id The ID of the user
+	 * @param integer $user_id The ID of the user.
 	 */
 	public function deny_editor_entity_create( $user_id ) {
 
@@ -325,7 +325,7 @@ class Wordlift_User_Service {
 	 *
 	 * @since 3.14.0
 	 *
-	 * @param integer $user_id The ID of the user
+	 * @param integer $user_id The ID of the user.
 	 */
 	public function allow_editor_entity_create( $user_id ) {
 
@@ -399,11 +399,11 @@ class Wordlift_User_Service {
 	 *
 	 * @since 3.14.0
 	 *
-	 * @param array $allcaps All the capabilities of the user
-	 * @param array $cap     [0] Required capability
-	 * @param array $args    [0] Requested capability
-	 *                       [1] User ID
-	 *                       [2] Associated object ID
+	 * @param array $allcaps All the capabilities of the user.
+	 * @param array $cap     Required capabilities.
+	 * @param array $args    [0] Requested capability.
+	 *                       [1] User ID.
+	 *                       [2] Associated object ID.
 	 *
 	 * @return array The capabilities array.
 	 */
@@ -418,26 +418,32 @@ class Wordlift_User_Service {
 		 * Need protection against the case of edit_user and likes which do not
 		 * require a capability, just request one.
 		 */
-		if ( empty( $cap ) || ! isset( $cap[0] ) ) {
+		if ( empty( $cap ) ) {
 			return $allcaps;
 		}
 
-		if (
-			( 'edit_wordlift_entity' === $cap[0] ) ||
-			( 'edit_wordlift_entities' === $cap[0] ) ||
-			( 'edit_others_wordlift_entities' === $cap[0] ) ||
-			( 'publish_wordlift_entities' === $cap[0] ) ||
-			( 'read_private_wordlift_entities' === $cap[0] ) ||
-			( 'delete_wordlift_entity' === $cap[0] ) ||
-			( 'delete_wordlift_entities' === $cap[0] ) ||
-			( 'delete_others_wordlift_entities' === $cap[0] ) ||
-			( 'delete_published_wordlift_entities' === $cap[0] ) ||
-			( 'delete_private_wordlift_entities' === $cap[0] )
-		) {
-			$user_id = $args[1];
+		/*
+		 * While unlikely to be relevant for our direct usage paths, need to
+		 * loop over all capabilities in case several are specified.
+		 */
+		foreach ( $cap as $capability ) {
+			if (
+				( 'edit_wordlift_entity' === $capability ) ||
+				( 'edit_wordlift_entities' === $capability ) ||
+				( 'edit_others_wordlift_entities' === $capability ) ||
+				( 'publish_wordlift_entities' === $capability ) ||
+				( 'read_private_wordlift_entities' === $capability ) ||
+				( 'delete_wordlift_entity' === $capability ) ||
+				( 'delete_wordlift_entities' === $capability ) ||
+				( 'delete_others_wordlift_entities' === $capability ) ||
+				( 'delete_published_wordlift_entities' === $capability ) ||
+				( 'delete_private_wordlift_entities' === $capability )
+			) {
+				$user_id = $args[1];
 
-			if ( ! $this->editor_can_create_entities( $user_id ) ) {
-				$allcaps[ $cap[0] ] = false;
+				if ( ! $this->editor_can_create_entities( $user_id ) ) {
+					$allcaps[ $capability ] = false;
+				}
 			}
 		}
 
