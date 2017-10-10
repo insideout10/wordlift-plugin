@@ -32,7 +32,7 @@ class Wordlift_Google_Analytics_Export_Service {
 			wp_die( 'The current permalink structure do not allow to export your data. Please change the permalink structure to "Post name".' );
 		}
 
-		// Output the file data.
+		// Output the file data. @codingStandardsIgnoreLine
 		@ob_end_clean();
 
 		// Generate unique filename using current timestamp.
@@ -49,7 +49,6 @@ class Wordlift_Google_Analytics_Export_Service {
 		// Build the CSV file.
 		$this->create_csv();
 
-		// Finally exit.
 		wp_die();
 	}
 
@@ -149,9 +148,10 @@ class Wordlift_Google_Analytics_Export_Service {
 	 */
 	public function create_csv() {
 		// Create a file pointer connected to the output stream.
+		// Ignoring linter notices below that complain about file output which do not actually happen.
 		$file = fopen( 'php://output', 'w' );
 
-		// Add the column headers.
+		// Add the column headers. @codingStandardsIgnoreLine
 		fputcsv(
 			$file,
 			array(
@@ -163,7 +163,7 @@ class Wordlift_Google_Analytics_Export_Service {
 
 		// Cycle through items and add each item data to the file.
 		foreach ( $this->get_content_data() as $row ) {
-			// Add new line in the file.
+			// Add new line in the file. @codingStandardsIgnoreLine
 			fputcsv(
 				$file,
 				(array) $row // convert the object to array.
