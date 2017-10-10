@@ -288,6 +288,15 @@ class WL_Metabox_Field {
 	 *
 	 * Overwrite this method (or methods called from this method) in a child
 	 * class to obtain custom behaviour.
+	 *
+	 * The HTML fragment includes the following parts:
+	 * * html wrapper open.
+	 * * heading.
+	 * * nonce.
+	 * * stored values.
+	 * * an empty input when there are no stored values.
+	 * * an add button to add more values.
+	 * * html wrapper close.
 	 */
 	public function html() {
 
@@ -295,21 +304,14 @@ class WL_Metabox_Field {
 		$html = $this->html_wrapper_open();
 
 		// Label.
-		$html .= "<h3>$this->label</h3>";
+		$html .= $this->get_heading_html();
 
 		// print nonce.
 		$html .= $this->html_nonce();
 
 		// print data loaded from DB.
 		$count = 0;
-		if ( $this->data ) {
-			foreach ( $this->data as $value ) {
-				if ( $count < $this->cardinality ) {
-					$html .= $this->html_input( $value );
-				}
-				$count ++;
-			}
-		}
+		$html  .= $this->get_stored_values_html( $count );
 
 		// Print the empty <input> to add new values.
 		if ( 0 === $count ) { // } || $count < $this->cardinality ) { DO NOT print empty inputs unless requested by the editor since fields might support empty strings.
@@ -322,6 +324,44 @@ class WL_Metabox_Field {
 
 		// Close the HTML wrapper.
 		$html .= $this->html_wrapper_close();
+
+		return $html;
+	}
+
+	/**
+	 * Print the heading with the label for the metabox.
+	 *
+	 * @since 3.15.0
+	 * @return string The heading html fragment.
+	 */
+	protected function get_heading_html() {
+
+		return "<h3>$this->label</h3>";
+	}
+
+	/**
+	 * Print the stored values.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @param int $count An output value: the number of printed values.
+	 *
+	 * @return string The html fragment.
+	 */
+	protected function get_stored_values_html( &$count ) {
+
+		$html = '';
+
+		// print data loaded from DB.
+		$count = 0;
+		if ( $this->data ) {
+			foreach ( $this->data as $value ) {
+				if ( $count < $this->cardinality ) {
+					$html .= $this->html_input( $value );
+				}
+				$count ++;
+			}
+		}
 
 		return $html;
 	}

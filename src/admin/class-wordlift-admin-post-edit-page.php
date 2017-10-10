@@ -62,6 +62,7 @@ class Wordlift_Admin_Post_Edit_Page {
 			$this->plugin->get_version(),
 			false
 		);
+		wp_enqueue_style( 'wordlift-admin-edit-page', plugin_dir_url( __FILE__ ) . 'js/1/edit.css', array(), $this->plugin->get_version() );
 
 	}
 

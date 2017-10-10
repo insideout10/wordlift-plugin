@@ -28,6 +28,7 @@ class WL_Metabox_Field_sameas extends WL_Metabox_Field {
 	 */
 	public function save_data( $values ) {
 		// The autocomplete select may send JSON arrays in input values.
+		mb_regex_encoding( 'UTF-8' );
 		$merged = array_reduce( (array) $values, function ( $carry, $item ) {
 			return array_merge( $carry, mb_split( "\x{2063}", wp_unslash( $item ) ) );
 		}, array() );
@@ -47,12 +48,94 @@ class WL_Metabox_Field_sameas extends WL_Metabox_Field {
 	/**
 	 * @inheritdoc
 	 */
-	protected function get_add_button_html( $count ) {
+	protected function get_heading_html() {
 
+		// Add the select html fragment after the heading.
+		return parent::get_heading_html()
+			   . $this->get_select_html();
+	}
+
+	/**
+	 * Get the select html fragment.
+	 *
+	 * @since 3.15.0
+	 * @return string The html fragment.
+	 */
+	private function get_select_html() {
 		// Return an element where the new Autocomplete Select will attach to.
 		return '<p>'
-			   . esc_html__( 'Type a URL or any text to find entities from the vocabulary and the cloud:', 'wordlift' )
-			   . '</p><div id="wl-metabox-field-sameas"></div>';
+			   . esc_html__( 'Use the search below to link this entity with equivalent entities in the linked data cloud.', 'wordlift' )
+			   . '<div id="wl-metabox-field-sameas"></div></p>';
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	protected function get_add_button_html( $count ) {
+
+		$placeholder = esc_attr_x( 'Type here the URL of an equivalent entity from another dataset.', 'sameAs metabox input', 'wordlift' );
+
+		return
+			"<label for='$this->meta_name'>"
+			. esc_html__( 'If you already know the URL of the entity that you would like to link, add it in the field below.', 'wordlift' )
+			. '</label>'
+			. '<div class="wl-input-wrapper">'
+			. "<input type='text' id='$this->meta_name' name='wl_metaboxes[$this->meta_name][]' placeholder='$placeholder' style='width:88%' />"
+			. '<button class="button wl-remove-input wl-button" type="button">Remove</button>'
+			. '</div>'
+			. parent::get_add_button_html( $count );
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	protected function get_stored_values_html( &$count ) {
+
+		return '<p>'
+			   . parent::get_stored_values_html( $count )
+			   . '</p>';
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function html() {
+
+		// Open main <div> for the Field.
+		$html = $this->html_wrapper_open();
+
+		// Label.
+		$html .= $this->get_heading_html();
+
+		// print nonce.
+		$html .= $this->html_nonce();
+
+		// print data loaded from DB.
+		$count = 0;
+
+		// If cardinality allows it, print button to add new values.
+		$html .= $this->get_add_button_html( $count );
+
+		$html .= $this->get_stored_values_html( $count );
+
+		// Close the HTML wrapper.
+		$html .= $this->html_wrapper_close();
+
+		return $html;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function html_input( $value ) {
+		$html = <<<EOF
+			<div class="wl-input-wrapper">
+				<input type="text" readonly="readonly" id="$this->meta_name" name="wl_metaboxes[$this->meta_name][]" value="$value" style="width:88%" />
+				<button class="button wl-remove-input wl-button" type="button">Remove</button>
+			</div>
+EOF;
+
+		return $html;
 	}
 
 }

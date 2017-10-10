@@ -91,7 +91,7 @@
   min-height: 32px;
   // Border.
   border-radius: 2px;
-  // Spacing. 
+  // Spacing.
   padding: 0 !important;
   margin: 16px 0;
 
@@ -108,23 +108,6 @@
     // Text job.
     color: #4a4a4a
   }
-}
-
-// Select display.
-.select2-container--default .select2-selection--single {
-  // Prevent scrollbar.
-  overflow: hidden;
-  // Internal.
-  padding: 0 0;
-  line-height: 28px;
-  // Text job.
-  font-size: 12px;
-}
-
-// Select > Row > image
-.wl-select2-thumbnail {
-  // Spacing
-  margin-right: 8px;
 }
 
 #tabs-2 {
@@ -177,7 +160,7 @@
 }
 
 #wl-publisher-media-uploader-preview {
-  // Size. 
+  // Size.
   max-width: 256px;
   max-height: 256px;
   // Spacing.
@@ -185,3 +168,6 @@
   // Prevent thumb and btn on the same line.
   display: block;
 }
+
+// Import the styling for the Select2 element.
+@import "../../../components/AuthorSelect/styles/index";
