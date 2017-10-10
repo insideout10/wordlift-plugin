@@ -93,10 +93,16 @@ function wl_entities_box_content( $post ) {
 		$entity_ids     = array_map( function ( $item ) use ( $entity_service ) {
 			$post = $entity_service->get_entity_post_by_uri( $item );
 
-			return $post->ID;
+			// Check that the post object is not null.
+			if ( ! empty( $post->ID ) ) {
+				return $post->ID;
+			}
 		}, $entity_uris );
 		// Store the entity ids for all the 4W
 		$all_referenced_entities_ids = array_merge( $all_referenced_entities_ids, $entity_ids );
+
+		// Remove all null, false and empty strings.
+		$all_referenced_entities_ids = array_filter( $all_referenced_entities_ids );
 
 	}
 	// Json encoding for classification boxes structure
