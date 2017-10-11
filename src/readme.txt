@@ -1,8 +1,8 @@
-=== WordLift - Rethink Your Content Marketing ===
+=== WordLift - AI powered SEO ===
 Author URL: https://wordlift.io
 Plugin URL: https://wordlift.io
 Contributors: wordlift, insideout10, ziodave
-Tags: schema.org, semantic seo, seo, artificial intelligence, linked data, semantic web, content recommendation, related posts, timeline, knowledge graph, interactive map 
+Tags: schema.org, semantic seo, seo, artificial intelligence, ai, linked data, semantic web, content recommendation, related posts, timeline, knowledge graph, interactive map 
 Requires at least: 4.2
 Tested up to: 4.8
 Stable tag: {version}
@@ -81,6 +81,12 @@ Organizing web content around an internal vocabulary rather than traditional web
 **WordLift** **enriches** your content with *contextual information*, *links*, and *media*, from custom vocabularies and/or the wealth of open data available on the web, bringing your user experience to a new level of engagement. <br />
 **WordLift** **connects** content with cross-media *discovery* and *recommendations* widgets, increasing content quality, exposure, trustworthiness and readership engagement. <br />
 **WordLift** **optimizes** content, complementing the offer of plug-ins such as *SEO Ultimate* or *Yoast*, automatically adding schema.org markups to your text, allowing all search engines to properly index your pages and deliver more traffic to your site. <br />
+
+= Can you prove that WordLift improves the online visibility of websites? =
+
+We are on a mission **to improve the visibility of websites**. Testing the product’s assumptions by looking at the web metrics with a methodical approach, is a crucial part of our product development. <br />
+We recently presented **a research study** and proved that **our semantic markup, annotations and widgets improve the number of visitors, the pageviews, the time spent on page and the duration of a session with a double digit growth** on an editorial website with around 150.000 monthly visitors.<br />
+While not all websites are created equal, you can [download the result of this study](https://wordlift.io/wp-content/uploads/2017/09/wordlift-proceedings-paper-SEMANTiCS2017.pdf) and start testing WordLift yourself. It does work! <br />
 
 = How does it work? =
 
