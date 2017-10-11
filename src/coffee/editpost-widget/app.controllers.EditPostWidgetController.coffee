@@ -286,19 +286,25 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     $scope.relatedPosts = posts
 
   $scope.$on "analysisPerformed", (event, analysis) ->
+    $log.info "An analysis has been performed."
     $scope.analysis = analysis
 
     # Topic Preselect
     if $scope.configuration.topic?
+      $log.info "Preselecting topics..."
       for topic in analysis.topics
         if topic.id in $scope.configuration.topic.sameAs
           $scope.topic = topic
 
     # Preselect
     for box in $scope.configuration.classificationBoxes
-      for entityId in box.selectedEntities
-        if entity = analysis.entities[ entityId ]
+      # `selectedEntities` is not an array, but an object.
+      #
+      # See https://github.com/insideout10/wordlift-plugin/issues/646.
+      entities = box.selectedEntities # [] # Object.values( box.selectedEntities )
 
+      for entityId in entities
+        if entity = analysis.entities[ entityId ]
           if entity.occurrences.length is 0
             $log.warn "Entity #{entityId} selected as #{box.label} without valid occurrences!", entity
             continue
@@ -311,6 +317,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
         else
           $log.warn "Entity with id #{entityId} should be linked to #{box.id} but is missing"
+
     # Open content classification box
     $scope.currentSection = 'content-classification'
 

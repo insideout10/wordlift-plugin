@@ -103,7 +103,7 @@ function wl_entities_box_content( $post ) {
 	$classification_boxes = json_encode( $classification_boxes );
 
 	// Ensure there are no repetitions of the referenced entities
-	$all_referenced_entities_ids = array_unique( $all_referenced_entities_ids );
+	$all_referenced_entities_ids = array_values( array_unique( $all_referenced_entities_ids ) );
 
 	// Build the entity storage object
 	$referenced_entities_obj = array();

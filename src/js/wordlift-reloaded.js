@@ -609,9 +609,11 @@
         return $scope.relatedPosts = posts;
       });
       $scope.$on("analysisPerformed", function(event, analysis) {
-        var entity, entityId, image, k, l, len1, len2, len3, len4, m, n, ref1, ref2, ref3, ref4, ref5, topic;
+        var entities, entity, entityId, image, k, l, len1, len2, len3, len4, m, n, ref1, ref2, ref3, ref4, topic;
+        $log.info("An analysis has been performed.");
         $scope.analysis = analysis;
         if ($scope.configuration.topic != null) {
+          $log.info("Preselecting topics...");
           ref1 = analysis.topics;
           for (k = 0, len1 = ref1.length; k < len1; k++) {
             topic = ref1[k];
@@ -623,18 +625,18 @@
         ref3 = $scope.configuration.classificationBoxes;
         for (l = 0, len2 = ref3.length; l < len2; l++) {
           box = ref3[l];
-          ref4 = box.selectedEntities;
-          for (m = 0, len3 = ref4.length; m < len3; m++) {
-            entityId = ref4[m];
+          entities = box.selectedEntities;
+          for (m = 0, len3 = entities.length; m < len3; m++) {
+            entityId = entities[m];
             if (entity = analysis.entities[entityId]) {
               if (entity.occurrences.length === 0) {
                 $log.warn("Entity " + entityId + " selected as " + box.label + " without valid occurrences!", entity);
                 continue;
               }
               $scope.selectedEntities[box.id][entityId] = analysis.entities[entityId];
-              ref5 = entity.images;
-              for (n = 0, len4 = ref5.length; n < len4; n++) {
-                image = ref5[n];
+              ref4 = entity.images;
+              for (n = 0, len4 = ref4.length; n < len4; n++) {
+                image = ref4[n];
                 if (indexOf.call($scope.images, image) < 0) {
                   $scope.images.push(image);
                 }
