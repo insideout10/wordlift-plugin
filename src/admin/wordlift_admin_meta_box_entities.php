@@ -93,7 +93,10 @@ function wl_entities_box_content( $post ) {
 		$entity_ids     = array_map( function ( $item ) use ( $entity_service ) {
 			$post = $entity_service->get_entity_post_by_uri( $item );
 
-			return $post->ID;
+			// Check that the post object is not null.
+			if ( ! empty( $post->ID ) ) {
+				return $post->ID;
+			}
 		}, $entity_uris );
 		// Store the entity ids for all the 4W
 		$all_referenced_entities_ids = array_merge( $all_referenced_entities_ids, $entity_ids );
@@ -104,6 +107,9 @@ function wl_entities_box_content( $post ) {
 
 	// Ensure there are no repetitions of the referenced entities
 	$all_referenced_entities_ids = array_unique( $all_referenced_entities_ids );
+
+	// Remove all null, false and empty strings.
+	$all_referenced_entities_ids = array_filter( $all_referenced_entities_ids );
 
 	// Build the entity storage object
 	$referenced_entities_obj = array();
@@ -144,30 +150,30 @@ function wl_entities_box_content( $post ) {
 	$current_language = $configuration_service->get_language_code();
 
 	echo <<<EOF
-    <script type="text/javascript">
-        jQuery( function() {
+	<script type="text/javascript">
+		jQuery( function() {
 
-        	if ('undefined' == typeof window.wordlift) {
-            	window.wordlift = {}
-            	window.wordlift.entities = {}  		
-        	}
+			if ('undefined' == typeof window.wordlift) {
+				window.wordlift = {}
+				window.wordlift.entities = {}  		
+			}
 
-        	window.wordlift.classificationBoxes = $classification_boxes;
-        	window.wordlift.entities = $referenced_entities_obj;
-        	window.wordlift.currentPostId = $post->ID;
+			window.wordlift.classificationBoxes = $classification_boxes;
+			window.wordlift.entities = $referenced_entities_obj;
+			window.wordlift.currentPostId = $post->ID;
 			window.wordlift.currentPostUri = '$current_post_uri';
-            window.wordlift.currentPostType = '$post->post_type';
-            window.wordlift.defaultThumbnailPath = '$default_thumbnail_path';
+			window.wordlift.currentPostType = '$post->post_type';
+			window.wordlift.defaultThumbnailPath = '$default_thumbnail_path';
 			window.wordlift.defaultWordLiftPath = '$default_path';
-            window.wordlift.datasetUri = '$dataset_uri';
-            window.wordlift.currentUser = '$post_author';
-            window.wordlift.publishedDate = '$published_date';
-            window.wordlift.publishedPlace = $published_place_obj;
-            window.wordlift.topic = $topic_obj;
-            window.wordlift.currentLanguage = '$current_language';
+			window.wordlift.datasetUri = '$dataset_uri';
+			window.wordlift.currentUser = '$post_author';
+			window.wordlift.publishedDate = '$published_date';
+			window.wordlift.publishedPlace = $published_place_obj;
+			window.wordlift.topic = $topic_obj;
+			window.wordlift.currentLanguage = '$current_language';
 
-        });
-    </script>
+		});
+	</script>
 EOF;
 }
 
