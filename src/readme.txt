@@ -145,6 +145,8 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 = 3.15.1 (2017-10-07) =
 * Enhancement: [#642](https://github.com/insideout10/wordlift-plugin/issues/642): Allow to disable JSON-LD.
+* Fix: [#647](https://github.com/insideout10/wordlift-plugin/issues/647): Related posts contains duplicates.
+
 
 = 3.15.0 (2017-10-05) =
 * Enhancement: [#608](https://github.com/insideout10/wordlift-plugin/issues/608): Integrate the Autocomplete widget.
