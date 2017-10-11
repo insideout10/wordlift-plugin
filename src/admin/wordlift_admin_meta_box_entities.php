@@ -70,7 +70,7 @@ function wl_entities_box_content( $post ) {
 			$post = $entity_service->get_entity_post_by_uri( $item );
 
 			// Check that the post object is not null.
-			if ( ! empty( $post->ID ) ) {
+			if ( ! empty( $post ) ) {
 				return $post->ID;
 			}
 		}, $entity_uris );
