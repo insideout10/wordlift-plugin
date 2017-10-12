@@ -553,6 +553,15 @@ class Wordlift {
 	private $relation_rebuild_adapter;
 
 	/**
+	 * The {@link Wordlift_Google_Analytics_Export_Service} instance.
+	 *
+	 * @since  3.16.0
+	 * @access protected
+	 * @var \Wordlift_Google_Analytics_Export_Service $google_analytics_export_service The {@link Wordlift_Google_Analytics_Export_Service} instance.
+	 */
+	protected $google_analytics_export_service;
+
+	/**
 	 * {@link Wordlift}'s singleton instance.
 	 *
 	 * @since  3.15.0
@@ -853,6 +862,9 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/rendition/class-wordlift-sparql-tuple-rendition.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/rendition/class-wordlift-sparql-tuple-rendition-factory.php';
 
+		/** Services. */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-google-analytics-export-service.php';
+
 		/** Adapters. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-tinymce-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-newrelic-adapter.php';
@@ -915,11 +927,6 @@ class Wordlift {
 		 * The WordLift entity type settings admin page controller.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-entity-type-settings.php';
-
-		/**
-		 * The admin 'Download Your Data' page.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-download-your-data-page.php';
 
 		/**
 		 * The admin 'Download Your Data' page.
@@ -1117,6 +1124,9 @@ class Wordlift {
 
 		// Initialize the AMP service.
 		new Wordlift_AMP_Service();
+
+		/** Services. */
+		$this->google_analytics_export_service = new Wordlift_Google_Analytics_Export_Service();
 
 		/** Adapters. */
 		$this->entity_type_adapter      = new Wordlift_Entity_Type_Adapter( $this->entity_type_service );
@@ -1319,6 +1329,9 @@ class Wordlift {
 
 		// Hook row actions for the entity type list admin.
 		$this->loader->add_filter( 'wl_entity_type_row_actions', $this->entity_type_admin_page, 'wl_entity_type_row_actions', 10, 2 );
+
+		/** Ajax actions. */
+		$this->loader->add_action( 'wp_ajax_wl_google_analytics_export', $this->google_analytics_export_service, 'export' );
 
 		// Hook capabilities manipulation to allow access to entity type admin
 		// page  on wordpress versions before 4.7.
