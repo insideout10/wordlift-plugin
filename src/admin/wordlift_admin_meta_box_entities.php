@@ -66,7 +66,10 @@ function wl_entities_box_content( $post ) {
 
 		// Maps the URIs to entity posts.
 		$entity_service = Wordlift_Entity_Service::get_instance();
-		$entity_ids     = array_map( function ( $item ) use ( $entity_service ) {
+
+		// Replace all entity URI's with post ID's if found or null if there is no related post.
+		$entity_ids = array_map( function ( $item ) use ( $entity_service ) {
+			// Return entity post by the entity URI or null.
 			$post = $entity_service->get_entity_post_by_uri( $item );
 
 			// Check that the post object is not null.
@@ -85,6 +88,7 @@ function wl_entities_box_content( $post ) {
 	$all_referenced_entities_ids = array_unique( $all_referenced_entities_ids );
 
 	// Remove all null, false and empty strings.
+	// NULL is being returned in some cases, when there is not related post, so we need to remove it.
 	$all_referenced_entities_ids = array_filter( $all_referenced_entities_ids );
 
 	// Build the entity storage object.
