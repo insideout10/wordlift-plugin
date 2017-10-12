@@ -3,3 +3,137 @@
 	float:left;
 	margin-right:10px;
 }
+
+.wl-glossary {
+  overflow: hidden;
+  *zoom: 1;
+}
+
+.wl-glossary-letter-block {
+  overflow: hidden;
+  *zoom: 1;
+}
+
+.wl-glossary-letter-block aside {
+	font-weight: bold;
+	font-size: 24px;
+	color: #007aff;
+	padding-left: 20px;
+}
+
+.wl-glossary-selected-letter {
+  font-size: 4em;
+  margin: 0.67em 0;
+  display: block;
+  font-weight: bold;
+}
+
+.wl-glossary-alphabet-nav {
+  padding: 20px 0;
+  text-align: center;
+  z-index: 100;
+  border-bottom: 4px solid #007aff;
+}
+
+.wl-glossary-alphabet-nav .wl-active {
+  background-color: #007aff;
+  color: #fff;
+}
+
+.wl-glossary-alphabet-nav .wl-glossary-disabled {
+  color: #e6e6e6;
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  margin-right: 5px;
+  font-size: 1em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.wl-glossary-alphabet-nav a {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  margin-right: 5px;
+  font-size: 1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #999999;
+  box-shadow: none !important;
+  text-decoration: none !important;
+}
+.wl-glossary-alphabet-nav a:hover {
+  background-color: #007aff;
+  color: #fff;
+}
+.wl-glossary-alphabet-nav a span {
+  display: block;
+  margin-top: 1px;
+}
+.wl-glossary-alphabet-nav a:last-child {
+  margin-right: 0;
+}
+
+.wl-glossary-items-list {
+  list-style: none;
+  margin-bottom: 40px;
+  padding-left: 20px;
+}
+
+.wl-glossary-items-list a {
+  box-shadow: none !important;
+  text-decoration: underline !important;
+  transition: all .2s ease-in-out;
+}
+
+.wl-glossary-items-list a:hover {
+	color: #007aff;
+}
+
+.wl-glossary-grid {
+  overflow: hidden;
+  *zoom: 1;
+  margin-top: 30px;
+}
+
+.wl-right-column {
+  display: block;
+}
+
+.wl-glossary-left-column {
+  width: 100%;
+  float: left;
+  margin-right: 2.9703%;
+  display: inline;
+}
+@media screen and (min-width: 50em) {
+  .wl-glossary-left-column {
+    width: 22.77228%;
+    float: left;
+    margin-right: 2.9703%;
+    display: inline;
+  }
+}
+
+.wl-glossary-right-column {
+  width: 100%;
+  float: left;
+  margin-right: 2.9703%;
+  display: inline;
+}
+@media screen and (min-width: 50em) {
+  .wl-glossary-right-column {
+    width: 74.25743%;
+    float: right;
+    margin-right: 0;
+    *margin-left: -1.5em;
+    display: inline;
+  }
+}
+
+/*.wl-glossary-items-list li {
+  display: inline-block;
+  width: 150px;
+}*/
