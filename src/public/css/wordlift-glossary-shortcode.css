@@ -517,20 +517,20 @@ object {
   max-width: 100%;
 }
 
-.glossary-widget {
+.wl-glossary-widget {
   margin-top: 150px;
 }
 
-.letter-block {
+.wl-letter-block {
   overflow: hidden;
   *zoom: 1;
 }
 
-.glossary-selected-letter {
+.wl-glossary-selected-letter {
   font-size: 4em;
 }
 
-.glossary-alphabet-nav {
+.wl-glossary-alphabet-nav {
   position: fixed;
   top: 0;
   height: 100px;
@@ -540,11 +540,11 @@ object {
   z-index: 100;
   border-bottom: 4px solid #007aff;
 }
-.glossary-alphabet-nav .active {
+.wl-glossary-alphabet-nav .active {
   background-color: #007aff;
   color: #fff;
 }
-.glossary-alphabet-nav .disabled {
+.wl-glossary-alphabet-nav .disabled {
   color: #e6e6e6;
   display: inline-block;
   width: 25px;
@@ -555,7 +555,7 @@ object {
   text-transform: uppercase;
   text-decoration: none;
 }
-.glossary-alphabet-nav a {
+wl-glossary-alphabet-nav a {
   display: inline-block;
   width: 25px;
   height: 25px;
@@ -566,19 +566,19 @@ object {
   text-decoration: none;
   color: #999999;
 }
-.glossary-alphabet-nav a:hover {
+.wl-glossary-alphabet-nav a:hover {
   background-color: #007aff;
   color: #fff;
 }
-.glossary-alphabet-nav a span {
+.wl-glossary-alphabet-nav a span {
   display: block;
   margin-top: 1px;
 }
-.glossary-alphabet-nav a:last-child {
+.wl-glossary-alphabet-nav a:last-child {
   margin-right: 0;
 }
 
-.glossary-items-list {
+.wl-glossary-items-list {
   list-style: none;
   margin: 40px 0;
   column-count: 2;
@@ -586,7 +586,7 @@ object {
   -moz-column-count: 3;
 }
 @media screen and (min-width: 50em) {
-  .glossary-items-list {
+  .wl-glossary-items-list {
     column-count: 4;
     -webkit-column-count: 4;
     -moz-column-count: 4;
