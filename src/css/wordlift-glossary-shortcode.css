@@ -100,14 +100,6 @@
   display: block;
 }
 
-/*
-.wl-glossary-left-column {
-  width: 100%;
-  float: left;
-  margin-right: 2.9703%;
-  display: inline;
-}*/
-
 .wl-glossary-left-column {
     width: 22.77228%;
     float: left;
@@ -116,23 +108,10 @@
     clear: both;
   }
 
-/*.wl-glossary-right-column {
-  width: 100%;
-  float: left;
-  margin-right: 2.9703%;
-  display: inline;
-}*/
-
-  .wl-glossary-right-column {
+.wl-glossary-right-column {
     width: 74.25743%;
     float: right;
     margin-right: 0;
     *margin-left: -1.5em;
     display: inline;
   }
-
-
-/*.wl-glossary-items-list li {
-  display: inline-block;
-  width: 150px;
-}*/
