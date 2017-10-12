@@ -254,9 +254,9 @@ class Wordlift_Glossary_Shortcode extends Wordlift_Shortcode {
 			ksort( $v,  SORT_STRING | SORT_FLAG_CASE );
 
 			// Add letter section.
-			$sections .= '<div class="wl-letter-block" id="wl_glossary_' . esc_attr( $letter ) . '>';
-			$sections .= '<aside class="wl-left-column">' . esc_html( $this->display_format( $letter ) ) . '</aside>';
-			$sections .= '<div class="wl-right-column"><ul class="wl-glossary-items-list">';
+			$sections .= '<div class="wl-glossary-letter-block" id="wl_glossary_' . esc_attr( $letter ) . '">';
+			$sections .= '<aside class="wl-glossary-left-column">' . esc_html( $this->display_format( $letter ) ) . '</aside>';
+			$sections .= '<div class="wl-glossary-right-column"><ul class="wl-glossary-items-list">';
 
 			// Add links to the posts.
 			foreach ( $v as $title => $post_id ) {
