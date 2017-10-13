@@ -23,6 +23,11 @@ function wl_linked_data_save_post( $post_id ) {
 		return;
 	}
 
+	// Bail out if it's not an entity.
+	if ( ! Wordlift_Entity_Service::get_instance()->is_entity( $post_id ) ) {
+		return;
+	}
+
 	// unhook this function so it doesn't loop infinitely
 	remove_action( 'save_post', 'wl_linked_data_save_post' );
 
@@ -271,7 +276,7 @@ function wl_save_entity( $entity_data ) {
 
 	// Setting the alternative labels for this entity.
 	Wordlift_Entity_Service::get_instance()
-	                       ->set_alternative_labels( $post_id, $synonyms );
+						   ->set_alternative_labels( $post_id, $synonyms );
 
 	// Restore all the existing filters.
 	is_array( $wp_filter['save_post'] ) ? $wp_filter['save_post'] = $save_post_filters : $wp_filter['save_post']->callbacks = $save_post_filters;
