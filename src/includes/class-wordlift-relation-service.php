@@ -91,7 +91,7 @@ class Wordlift_Relation_Service {
 
 		$sql =
 			"
-			SELECT p.$actual_fields
+			SELECT DISTINCT p.$actual_fields
 			FROM {$this->relation_table} r
 			INNER JOIN $wpdb->posts p
 				ON p.id = r.subject_id

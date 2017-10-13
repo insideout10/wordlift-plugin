@@ -242,7 +242,12 @@ class Wordlift_Content_Filter_Service {
 		$matches = array();
 		preg_match_all( Wordlift_Content_Filter_Service::PATTERN, $content, $matches );
 
-		return array_unique( $matches[3] );
+		// We need to use `array_values` here in order to avoid further `json_encode`
+		// to turn it into an object (since if the 3rd match isn't found the index
+		// is not sequential.
+		//
+		// See https://github.com/insideout10/wordlift-plugin/issues/646.
+		return array_values( array_unique( $matches[3] ) );
 	}
 
 }
