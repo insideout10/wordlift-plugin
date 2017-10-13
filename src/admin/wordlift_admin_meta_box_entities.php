@@ -29,6 +29,11 @@ if ( is_admin() ) {
  */
 function wl_admin_add_entities_meta_box( $post_type ) {
 
+	// Bail out if the post type doesn't support a TinyMCE editor.
+	if ( ! post_type_supports( $post_type, 'editor' ) ) {
+		return;
+	}
+
 	// Add main meta box for related entities and 4W.
 	add_meta_box(
 		'wordlift_entities_box', __( 'WordLift', 'wordlift' ), 'wl_entities_box_content', $post_type, 'side', 'high'
