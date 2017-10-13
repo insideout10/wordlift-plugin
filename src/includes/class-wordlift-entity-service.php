@@ -238,17 +238,19 @@ class Wordlift_Entity_Service {
 		}
 
 		$query_args = array(
-			'posts_per_page' => 1,
-			'post_status'    => 'any',
-			'post_type'      => Wordlift_Entity_Service::valid_entity_post_types(),
-			'meta_query'     => array(
+			// See https://github.com/insideout10/wordlift-plugin/issues/654.
+			'ignore_sticky_posts' => 1,
+			'posts_per_page'      => 1,
+			'post_status'         => 'any',
+			'post_type'           => Wordlift_Entity_Service::valid_entity_post_types(),
+			'meta_query'          => array(
 				array(
 					'key'     => WL_ENTITY_URL_META_NAME,
 					'value'   => $uri,
 					'compare' => '=',
 				),
 			),
-			$tax_query = array(
+			'tax_query'           => array(
 				array(
 					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
 					'field'    => 'slug',
