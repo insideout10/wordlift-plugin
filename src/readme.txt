@@ -121,7 +121,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 2. if you deactivate the plugin instead, the vocabulary (metadata, entity and pages) will disappear from your dashboard, but everything you created is stored in your website Database in WordPress, and you will be able to download it, transfer it or re-activate it again anytime from the plugin menu. <br />
 
-3. Turning off WordLift on our side, it would be like turning off all the keys and un-publish all the linked data you’ve created, not the plug-in itself, so it will be like #1 - you could get the data back from us and re-publish it as [linked data](http://docs.wordlift.io/en/latest/key-concepts.html#linked-open-data) on your own infrastructure. <br />
+3. Turning off WordLift on our side, it would be like turning off all the keys and un-publish all the linked data you’ve created, not the plug-in itself, so it will be like #1 - you could get the data back from us and re-publish it as [linked data](https://wordlift.io/blog/en/entity/linked-data/) on your own infrastructure. <br />
 
 4. WordLift's technology is entirely open source: it takes development skills, infrastructure and some wisdom to nicely bring all the pieces together without our support. <br />
 
