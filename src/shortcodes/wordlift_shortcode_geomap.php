@@ -43,10 +43,12 @@ function wl_shortcode_geomap_get_places( $post_id = null ) {
 
 	// Retrieve all 'published' places with geo coordinates defined
 	// If $related_ids is not empty, it's used to limit query results to the current post related places
-	// Please note that when $place_ids is an empty array, the 'post__in' parameter is not considered in the query
+	// Please note that when $place_ids is an empty array, the 'post__in' parameter is not considered in the query.
 	return get_posts( array(
 		'post__in'    => $related_ids,
 		'post_type'   => Wordlift_Entity_Service::valid_entity_post_types(),
+		// Avoid sticky posts being added when post is a valid type, as sticky posts do not conform to the other parameters.
+		'ignore_sticky_posts' => 1,
 		'nopaging'    => true,
 		'post_status' => 'publish',
 		'meta_query'  => array(

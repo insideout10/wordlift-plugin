@@ -20,6 +20,8 @@ function wl_get_entity_post_ids_by_uris( $uris ) {
 			'fields'      => 'ids',
 			'post_status' => 'any',
 			'post_type'   => Wordlift_Entity_Service::valid_entity_post_types(),
+			// Avoid sticky posts being added when post is a valid type, as sticky posts do not conform to the other parameters.
+			'ignore_sticky_posts' => 1,
 			'meta_query'  => array(
 				'relation' => 'OR',
 				array(
@@ -39,7 +41,6 @@ function wl_get_entity_post_ids_by_uris( $uris ) {
 	// Get the matching entity posts.
 	$posts = $query->get_posts();
 
-	// Return the array
 	return $posts;
 }
 
