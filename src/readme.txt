@@ -143,7 +143,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.15.2 (????-??-??) =
+= 3.15.2 (2017-10-16) =
 * Fix: [#659](https://github.com/insideout10/wordlift-plugin/issues/659): Check WL compatibility with ACF.
 * Fix: [#654](https://github.com/insideout10/wordlift-plugin/issues/654): Entity Link always returning the last blog post.
 
