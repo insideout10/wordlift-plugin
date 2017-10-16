@@ -41,23 +41,35 @@ class EntityCreationViaPostCreationTest extends Wordlift_Unit_Test_Case {
 			'/assets/fake_global_post_array_with_one_entity_linked_as_what.json'
 		);
 		$_POST = $fake;
-		// Retrieve the entity uri (the first key in wl_entities associative aray)
+
+		// Retrieve the entity uri (the first key in wl_entities associative array).
 		$original_entity_uri = current( array_keys( $fake['wl_entities'] ) );
+
+		// Be sure that the entity does not exist yet
+		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $original_entity_uri );
+		$this->assertNull( $entity );
+
+		// Create the entity.
+		$entity_id = $this->entity_factory->create( array(
+			'post_title' => 'My Entity',
+		) );
+		add_post_meta( $entity_id, WL_ENTITY_URL_META_NAME, $original_entity_uri );
+
 		// Reference the entity to the post content 
 		$content = <<<EOF
     <span itemid="$original_entity_uri">My entity</span>
 EOF;
-		// Be sure that the entity does not exist yet
-		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $original_entity_uri );
-		$this->assertNull( $entity );
 		// Create a post referincing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post', 'draft' );
+
 		// Here the entity should be created instead
 		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $original_entity_uri );
 		$this->assertNotNull( $entity );
-		// Here the original uri should be properly as same_as 
+
+		// Here the original uri should be properly as same_as
 		$same_as = wl_schema_get_value( $entity->ID, 'sameAs' );
 		$this->assertContains( $original_entity_uri, $same_as );
+
 		// The entity url should be the same we expect
 		$raw_entity          = current( array_values( $fake['wl_entities'] ) );
 		$expected_entity_uri = $this->buildEntityUriForLabel( $raw_entity['label'] );

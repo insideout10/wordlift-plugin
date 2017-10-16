@@ -23,8 +23,14 @@ function wl_linked_data_save_post( $post_id ) {
 		return;
 	}
 
+	// Get the post type and check whether it supports the editor.
+	//
+	// See https://github.com/insideout10/wordlift-plugin/issues/659.
+	$post_type = get_post_type( $post_id );
+	$is_editor_supported = post_type_supports( $post_type, 'editor' );
+
 	// Bail out if it's not an entity.
-	if ( ! Wordlift_Entity_Service::get_instance()->is_entity( $post_id ) ) {
+	if ( ! $is_editor_supported ) {
 		return;
 	}
 
