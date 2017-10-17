@@ -151,10 +151,10 @@ class Wordlift {
 	 * The Entity list customization.
 	 *
 	 * @since  3.3.0
-	 * @access private
+	 * @access protected
 	 * @var \Wordlift_Entity_List_Service $entity_list_service The Entity list service.
 	 */
-	private $entity_list_service;
+	protected $entity_list_service;
 
 	/**
 	 * The Entity Types Taxonomy Walker.

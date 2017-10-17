@@ -239,4 +239,16 @@ class Wordlift_Test extends Wordlift {
 		return $this->schema_service;
 	}
 
+	/**
+	 * Get the {@link Wordlift_Entity_List_Service}.
+	 *
+	 * @since 3.15.3
+	 *
+	 * @return \Wordlift_Entity_List_Service The {@link Wordlift_Entity_List_Service} instance.
+	 */
+	public function get_entity_list_service() {
+
+		return $this->entity_list_service;
+	}
+
 }
