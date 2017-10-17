@@ -22,7 +22,7 @@ class TimelineShortcodeTest extends Wordlift_Unit_Test_Case {
 		parent::setUp();
 
 		// We don't need to check the remote Linked Data store.
-		Wordlift_Unit_Test_Case::turn_off_entity_push();;
+		Wordlift_Unit_Test_Case::turn_off_entity_push();
 
 		// Empty the blog.
 		wl_empty_blog();
@@ -30,6 +30,12 @@ class TimelineShortcodeTest extends Wordlift_Unit_Test_Case {
 		add_theme_support( 'post-thumbnails' );
 
 		$this->timeline_service = Wordlift_Timeline_Service::get_instance();
+
+		// The existence of sticky might break results due to weird way
+		// wordpress handles them in queries. Get one to exist as background noise.
+		$sticky_post_id = wl_create_post( '', 'sticky-1', uniqid( 'sticky', true ), 'publish' );
+		stick_post( $sticky_post_id );
+
 	}
 
 	/**

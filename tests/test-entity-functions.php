@@ -17,7 +17,7 @@ class EntityFunctionsTest extends Wordlift_Unit_Test_Case {
 		parent::setUp();
 
 		// We don't need to check the remote Linked Data store.
-		Wordlift_Unit_Test_Case::turn_off_entity_push();;
+		Wordlift_Unit_Test_Case::turn_off_entity_push();
 
 		// Configure WordPress with the test settings.
 		wl_configure_wordpress_test();
@@ -83,8 +83,8 @@ class EntityFunctionsTest extends Wordlift_Unit_Test_Case {
 	 * Tests the *wl_get_meta_constraints* function
 	 */
 	function testWlEntityTaxonomyGetCustomFields() {
-		// Create entity and get custom_fields by id
-		$place_id = wl_create_post( "Entity 1 Text", 'entity-1', "Entity 1 Title", 'publish', 'entity' );
+		// Create entity and get custom_fields by id.
+		$place_id = wl_create_post( 'Entity 1 Text', 'entity-1', 'Entity 1 Title', 'publish', 'entity' );
 		wl_set_entity_main_type( $place_id, 'http://schema.org/Place' );
 
 		$custom_fields = wl_entity_taxonomy_get_custom_fields( $place_id );
@@ -92,14 +92,14 @@ class EntityFunctionsTest extends Wordlift_Unit_Test_Case {
 		$this->assertArrayHasKey( Wordlift_Schema_Service::FIELD_GEO_LATITUDE, $custom_fields );
 		$this->assertArrayHasKey( Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, $custom_fields );
 		$this->assertArrayHasKey( Wordlift_Schema_Service::FIELD_ADDRESS, $custom_fields );
-		$this->assertArrayNotHasKey( Wordlift_Schema_Service::FIELD_LOCATION, $custom_fields );    // Negative test
+		$this->assertArrayNotHasKey( Wordlift_Schema_Service::FIELD_LOCATION, $custom_fields );    // Negative test.
 		$this->assertArrayHasKey( 'predicate', $custom_fields[ Wordlift_Schema_Service::FIELD_GEO_LATITUDE ] );
 		$this->assertArrayHasKey( 'type', $custom_fields[ Wordlift_Schema_Service::FIELD_GEO_LATITUDE ] );
 		$this->assertArrayHasKey( 'export_type', $custom_fields[ Wordlift_Schema_Service::FIELD_GEO_LATITUDE ] );
 
-		// Get all custom_fileds
+		// Get all custom_fileds.
 		$custom_fields = wl_entity_taxonomy_get_custom_fields();
-		$custom_fields = print_r( $custom_fields, true ); // Stringify for brevity
+		$custom_fields = print_r( $custom_fields, true ); // Stringify for brevity.
 
 		$this->assertContains( Wordlift_Schema_Service::FIELD_GEO_LATITUDE, $custom_fields );
 		$this->assertContains( Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, $custom_fields );
@@ -109,52 +109,56 @@ class EntityFunctionsTest extends Wordlift_Unit_Test_Case {
 		$this->assertContains( Wordlift_Schema_Service::FIELD_LOCATION, $custom_fields );
 	}
 
+	/**
+	 * Test the costume field inheritance
+	 */
 	function testWlEntityTaxonomyCustomFieldsInheritance() {
 
-		// Create entity and set type
-		$business_id = wl_create_post( "Entity 1 Text", 'entity-1', "Entity 1 Title", 'publish', 'entity' );
+		// Create entity and set type.
+		$business_id = wl_create_post( 'Entity 1 Text', 'entity-1', 'Entity 1 Title', 'publish', 'entity' );
 		wl_set_entity_main_type( $business_id, 'http://schema.org/LocalBusiness' );
 
-		// Get custom fields
+		// Get custom fields.
 		$custom_fields = wl_entity_taxonomy_get_custom_fields( $business_id );
 
 		// Check inherited custom fields:
-		// sameAs from Thing
+		// sameAs from Thing.
 		$this->assertArrayHasKey( Wordlift_Schema_Service::FIELD_SAME_AS, $custom_fields );
-		// latitude from Place
+		// latitude from Place.
 		$this->assertArrayHasKey( Wordlift_Schema_Service::FIELD_GEO_LATITUDE, $custom_fields );
-		// founder from Organization
+		// founder from Organization.
 		$this->assertArrayHasKey( Wordlift_Schema_Service::FIELD_FOUNDER, $custom_fields );
-		// negative test
+		// negative test.
 		$this->assertArrayNotHasKey( Wordlift_Schema_Service::FIELD_DATE_START, $custom_fields );
 	}
-
-//    function testWlEntityTaxonomyMicrodataTemplateInheritance() {
-//
-//        // Create entity and set type
-//        $business_id = wl_create_post( "Entity 1 Text", 'entity-1', "Entity 1 Title", 'publish', 'entity' );
-//        wl_set_entity_main_type( $business_id, 'http://schema.org/LocalBusiness' );
-//
-//        // Get microdata template
-//        $entity_type_details = wl_entity_type_taxonomy_get_type( $business_id );
-//        $microdata_template = $entity_type_details['microdata_template'];
-//
-//        // Check inherited microdata templates:
-//        // latitude from Place with 'itemtype="http://schema.org/GeoCoordinates"' markup
-//        $this->assertContains( 'itemtype="http://schema.org/GeoCoordinates"', $microdata_template );
-//        $this->assertContains( '{{latitude}}', $microdata_template );
-//        // founder from Organization
-//        $this->assertContains( '{{founder}}', $microdata_template );
-//        // negative test
-//        $this->assertNotContains( '{{startDate}}', $microdata_template );
-//    }
 
 	/**
 	 * Tests the *wl_get_meta_constraints* function
 	 */
 	function testEntityGetMetaConstraints() {
 
-		// TODO: complete this test
+		// TODO: complete this test.
 		$fields = wl_entity_taxonomy_get_custom_fields();
+	}
+
+	/**
+	 * Test the wl_get_entity_post_ids_by_uris function
+	 */
+	function testwl_get_entity_post_ids_by_uris() {
+
+		// The existence of sticky might break results due to weird way
+		// wordpress handles them in queries. Get one to exist as background noise.
+		$sticky_post_id = wl_create_post( '', 'sticky-1', uniqid( 'sticky', true ), 'publish' );
+		stick_post( $sticky_post_id );
+
+		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
+		wl_schema_set_value( $entity_1_id, 'sameAs', get_permalink( $entity_1_id ) );
+
+		$this->assertEquals( 0, count( wl_get_entity_post_ids_by_uris( '' ) ) );
+
+		// check that the entity is returned and only it.
+		$entities = wl_get_entity_post_ids_by_uris( array( get_permalink( $entity_1_id ) ) );
+		$this->assertCount( 1, $entities );
+		$this->assertEquals( $entity_1_id, $entities[0] );
 	}
 }

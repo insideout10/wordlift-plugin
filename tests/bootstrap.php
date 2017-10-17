@@ -2,7 +2,7 @@
 
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
 if ( ! $_tests_dir ) {
-	$_tests_dir = '/tmp/wordpress-tests-lib';
+	$_tests_dir = 'D:\wamp\www\tests\4.7\tests\phpunit';
 }
 
 require_once $_tests_dir . '/includes/functions.php';

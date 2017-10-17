@@ -33,7 +33,7 @@ class EntityServiceTest extends Wordlift_Unit_Test_Case {
 		parent::setUp();
 
 		// We don't need to check the remote Linked Data store.
-		Wordlift_Unit_Test_Case::turn_off_entity_push();;
+		Wordlift_Unit_Test_Case::turn_off_entity_push();
 
 		$this->log_service = Wordlift_Log_Service::get_logger( 'EntityServiceTest' );
 
@@ -102,7 +102,7 @@ class EntityServiceTest extends Wordlift_Unit_Test_Case {
 
 		$entity_service = Wordlift_Entity_Service::get_instance();
 
-		// Another entity
+		// Another entity.
 		$entity_id = wl_create_post( 'This is Entity 1', 'entity-1', 'Entity 1', 'publish', 'entity' );
 		wl_set_entity_main_type( $entity_id, 'http://schema.org/Thing' );
 
@@ -127,31 +127,52 @@ class EntityServiceTest extends Wordlift_Unit_Test_Case {
 		$entity_service = Wordlift_Entity_Service::get_instance();
 
 		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
-		// Retrieve the new entity uri
+		// Retrieve the new entity uri.
 		$entity_1_uri = wl_get_entity_uri( $entity_1_id );
-		// Check the is an internal uri
+		// Check the is an internal uri.
 		$this->assertTrue( $entity_service->is_internal_uri( $entity_1_uri ) );
 
-		// Look for an antity with that uri
+		// The existence of sticky might break results due to weird way
+		// wordpress handles them in queries. Get one to exist as background noise.
+		$sticky_post_id = wl_create_post( '', 'sticky-1', uniqid( 'sticky', true ), 'publish' );
+		stick_post( $sticky_post_id );
+
+		// test null returned for bad parameters.
+		$this->assertNull( $entity_service->get_entity_post_by_uri( '' ) );
+
+		// test null returned for non existing URI.
+		$this->assertNull( $entity_service->get_entity_post_by_uri( 'http://example.com/garbage' ) );
+
+		// Look for an entity with that uri.
 		$retrieved_entity = $entity_service->get_entity_post_by_uri( $entity_1_uri );
-		// Check returned entity is not null
+		// Check returned entity is not null.
 		$this->assertNotNull( $retrieved_entity );
-		// Check returned entity is the same we expect
+		// Check returned entity is the same we expect.
 		$this->assertEquals( $entity_1_id, $retrieved_entity->ID );
 
-		// Set an external uri as same as
+		// Set an external uri as same as.
 		$external_uri = 'http://dbpedia.org/resource/berlin';
-		// Check the is NOT an internal uri
+		// Check the is NOT an internal uri.
 		$this->assertFalse( $entity_service->is_internal_uri( $external_uri ) );
-		// Set this external uri as sameAs of the created entity
+		// Set this external uri as sameAs of the created entity.
 		wl_schema_set_value( $entity_1_id, 'sameAs', $external_uri );
 
-		// Look for an antity with that uri
+		// Look for an antity with that uri.
 		$retrieved_entity = $entity_service->get_entity_post_by_uri( $external_uri );
-		// Check returned entity is not null
+		// Check returned entity is not null.
 		$this->assertNotNull( $retrieved_entity );
-		// Check returned entity is the same we expect
+		// Check returned entity is the same we expect.
 		$this->assertEquals( $entity_1_id, $retrieved_entity->ID );
+
+		// All was well so far? time to test the sticky as an entity.
+		wl_set_entity_main_type( $sticky_post_id, 'http://schema.org/Thing' );
+		add_post_meta( $sticky_post_id, Wordlift_Schema_Service::FIELD_SAME_AS, get_permalink( $sticky_post_id ) );
+
+		$retrieved_entity = $entity_service->get_entity_post_by_uri( get_permalink( $sticky_post_id ) );
+		// Check returned entity is not null.
+		$this->assertNotNull( $retrieved_entity );
+		// Check returned entity is the same we expect.
+		$this->assertEquals( $sticky_post_id, $retrieved_entity->ID );
 
 	}
 
@@ -166,20 +187,20 @@ class EntityServiceTest extends Wordlift_Unit_Test_Case {
 
 		$entity_service = Wordlift_Entity_Service::get_instance();
 
-		// Create the first entity
+		// Create the first entity.
 		$entity_1_id  = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
 		$entity_1_uri = wl_get_entity_uri( $entity_1_id );
-		// Create the second entity
+		// Create the second entity.
 		$entity_2_id  = wl_create_post( '', 'entity-2', uniqid( 'entity', true ), 'draft', 'entity' );
 		$entity_2_uri = wl_get_entity_uri( $entity_2_id );
-		// Reference the first entity as sameAs for the second one
+		// Reference the first entity as sameAs for the second one.
 		wl_schema_set_value( $entity_2_id, 'sameAs', $entity_1_uri );
 
-		// Look for the first antity 
+		// Look for the first antity.
 		$retrieved_entity = $entity_service->get_entity_post_by_uri( $entity_1_uri );
-		// Check returned entity is not null
+		// Check returned entity is not null.
 		$this->assertNotNull( $retrieved_entity );
-		// Check returned entity is the same we expect
+		// Check returned entity is the same we expect.
 		$this->assertEquals( $entity_1_id, $retrieved_entity->ID );
 
 	}
@@ -192,15 +213,15 @@ class EntityServiceTest extends Wordlift_Unit_Test_Case {
 	function test_entity_usage_on_related_entities() {
 
 		$entity_service = Wordlift_Entity_Service::get_instance();
-		// Create the first entity
+		// Create the first entity.
 		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
-		// It should be not used now
+		// It should be not used now.
 		$this->assertFalse( $entity_service->is_used( $entity_1_id ) );
-		// Create the first entity
+		// Create the first entity.
 		$entity_2_id = wl_create_post( '', 'entity-2', uniqid( 'entity', true ), 'draft', 'entity' );
-		// Create a relation instance between these 2 entities
+		// Create a relation instance between these 2 entities.
 		wl_core_add_relation_instance( $entity_2_id, WL_WHAT_RELATION, $entity_1_id );
-		// It should be not used now
+		// It should be not used now.
 		$this->assertTrue( $entity_service->is_used( $entity_1_id ) );
 
 	}
@@ -213,15 +234,15 @@ class EntityServiceTest extends Wordlift_Unit_Test_Case {
 	function test_entity_usage_on_entities_used_as_meta_value() {
 
 		$entity_service = Wordlift_Entity_Service::get_instance();
-		// Create the first entity
+		// Create the first entity.
 		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
-		// It should be not used now
+		// It should be not used now.
 		$this->assertFalse( $entity_service->is_used( $entity_1_id ) );
-		// Create the first entity
+		// Create the first entity.
 		$entity_2_id = wl_create_post( '', 'entity-2', uniqid( 'entity', true ), 'draft', 'entity' );
-		// Set the current entity as same as for another entity
+		// Set the current entity as same as for another entity.
 		wl_schema_set_value( $entity_2_id, 'sameAs', wl_get_entity_uri( $entity_1_id ) );
-		// It should be used now
+		// It should be used now.
 		$this->assertTrue( $entity_service->is_used( $entity_1_id ) );
 
 	}
@@ -234,15 +255,15 @@ class EntityServiceTest extends Wordlift_Unit_Test_Case {
 	function test_entity_usage_on_referenced_entities() {
 
 		$entity_service = Wordlift_Entity_Service::get_instance();
-		// Create the first entity
+		// Create the first entity.
 		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
-		// It should be not used now
+		// It should be not used now.
 		$this->assertFalse( $entity_service->is_used( $entity_1_id ) );
-		// Create the first entity
+		// Create the first entity.
 		$post_id = wl_create_post( '', 'post-1', uniqid( 'post', true ), 'draft', 'post' );
-		// Create a relation instance between these 2 entities
+		// Create a relation instance between these 2 entities.
 		wl_core_add_relation_instance( $post_id, WL_WHAT_RELATION, $entity_1_id );
-		// It should be used now
+		// It should be used now.
 		$this->assertTrue( $entity_service->is_used( $entity_1_id ) );
 
 	}
@@ -255,7 +276,7 @@ class EntityServiceTest extends Wordlift_Unit_Test_Case {
 	function test_entity_usage_on_a_standard_post() {
 
 		$entity_service = Wordlift_Entity_Service::get_instance();
-		// Create the first entity
+		// Create the first entity.
 		$post_id = wl_create_post( '', 'post-1', uniqid( 'post', true ), 'draft', 'post' );
 		$this->assertNull( $entity_service->is_used( $post_id ) );
 
@@ -301,11 +322,11 @@ class EntityServiceTest extends Wordlift_Unit_Test_Case {
 			wl_sanitize_uri_path( $entity_name )
 		);
 
-		// Create the first entity
+		// Create the first entity.
 		$entity_id = wl_create_post( '', 'entity-1', $entity_name, 'draft', 'entity' );
-		// Check the new entity uri
+		// Check the new entity uri.
 		$this->assertEquals( $new_entity_uri, wl_get_entity_uri( $entity_id ) );
-		// Check that the uri for a new entity contains a numeric suffix
+		// Check that the uri for a new entity contains a numeric suffix.
 		$this->assertEquals(
 			$new_entity_uri . '_2',
 			Wordlift_Uri_Service::get_instance()->build_uri( $entity_name, Wordlift_Entity_Service::TYPE_NAME )
@@ -330,15 +351,15 @@ class EntityServiceTest extends Wordlift_Unit_Test_Case {
 			wl_sanitize_uri_path( $entity_name )
 		);
 
-		// Create the first entity
+		// Create the first entity.
 		$entity_id   = wl_create_post( '', 'entity-1', $entity_name, 'draft', 'entity' );
 		$schema_type = wl_entity_type_taxonomy_get_type( $entity_id );
 
 		$this->assertEquals( $schema_type['css_class'], 'wl-thing' );
 
-		// Check the new entity uri
+		// Check the new entity uri.
 		$this->assertEquals( $new_entity_uri, wl_get_entity_uri( $entity_id ) );
-		// Check that the uri for a new entity contains a numeric suffix
+		// Check that the uri for a new entity contains a numeric suffix.
 		$this->assertEquals(
 			$new_entity_uri,
 			Wordlift_Uri_Service::get_instance()->build_uri( $entity_name, Wordlift_Entity_Service::TYPE_NAME, 'wl-thing' )
@@ -396,15 +417,6 @@ class EntityServiceTest extends Wordlift_Unit_Test_Case {
 
 		// Check that the URI is good.
 		$this->assertStringEndsWith( '/entity/mozarts__geburtshaus', $uri );
-
-	}
-
-	/**
-	 * @since 3.10.0
-	 */
-	function test_get_related_entities() {
-
-		// @todo
 
 	}
 

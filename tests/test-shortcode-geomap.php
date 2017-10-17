@@ -37,6 +37,11 @@ class GeomapShortcodeTest extends Wordlift_Unit_Test_Case {
 
 		$post_id = wl_create_post( '', 'post-1', 'Post 1', 'publish', 'post' );
 
+		// The existence of sticky might break results due to weird way
+		// wordpress handles them in queries. Get one to exist as background noise.
+		$sticky_post_id = wl_create_post( '', 'sticky-1', uniqid( 'sticky', true ), 'publish' );
+		stick_post( $sticky_post_id );
+
 		$entity_1_id = wl_create_post( "Entity 1 Text", 'entity-1', "Entity 1 Title", 'publish', 'entity' );
 		wl_set_entity_main_type( $entity_1_id, 'http://schema.org/Place' );
 		add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE, 40.12, true );
@@ -124,6 +129,11 @@ class GeomapShortcodeTest extends Wordlift_Unit_Test_Case {
 		// Create two posts.
 		$post_id_1 = wl_create_post( '', 'post-1', 'Post 1', 'publish', 'post' );
 		$post_id_2 = wl_create_post( '', 'post-2', 'Post 2', 'publish', 'post' );
+
+		// The existence of sticky might break results due to weird way
+		// wordpress handles them in queries. Get one to exist as background noise.
+		$sticky_post_id = wl_create_post( '', 'sticky-1', uniqid( 'sticky', true ), 'publish' );
+		stick_post( $sticky_post_id );
 
 		// Create a place-
 		$place_id = wl_create_post( "Entity 1 Text", 'entity-1', "Entity 1 Title", 'publish', 'entity' );
