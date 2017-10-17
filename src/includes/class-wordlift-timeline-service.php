@@ -155,8 +155,6 @@ class Wordlift_Timeline_Service {
 			'post__in'       => $ids,
 			'post_type'      => Wordlift_Entity_Service::valid_entity_post_types(),
 			'post_status'    => 'publish',
-			// Avoid sticky posts being added when post is a valid type, as sticky posts do not conform to the other parameters.
-			'ignore_sticky_posts' => 1,
 			'posts_per_page' => - 1,
 			'meta_query'     => array(
 				'relation' => 'AND',
@@ -353,10 +351,8 @@ class Wordlift_Timeline_Service {
 		// Global timeline. Get entities from the latest posts.
 		$latest_posts_ids = get_posts( array(
 			'numberposts' => 50,
-			'fields'      => 'ids', //only get post IDs
+			'fields'      => 'ids', // Only get post IDs.
 			'post_type'   => Wordlift_Entity_Service::valid_entity_post_types(),
-			// Avoid sticky posts being added when post is a valid type, as sticky posts do not conform to the other parameters.
-			'ignore_sticky_posts' => 1,
 			'tax_query'   => array(
 				array(
 					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
@@ -372,7 +368,7 @@ class Wordlift_Timeline_Service {
 			return array();
 		}
 
-		// Collect entities related to latest posts
+		// Collect entities related to latest posts.
 		$entity_ids = array();
 		foreach ( $latest_posts_ids as $id ) {
 			$entity_ids = array_merge( $entity_ids, wl_core_get_related_entity_ids( $id, array(

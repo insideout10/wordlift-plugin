@@ -22,8 +22,6 @@ function wl_shortcode_chord_most_referenced_entity_id() {
 		'post_type'   => Wordlift_Entity_Service::valid_entity_post_types(),
 		'fields'      => 'ids', // Only get post IDs.
 		'post_status' => 'published',
-		// Avoid sticky posts being added when post is a valid type, as sticky posts do not conform to the other parameters.
-		'ignore_sticky_posts' => 1,
 		'tax_query'   => array(
 			array(
 				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,

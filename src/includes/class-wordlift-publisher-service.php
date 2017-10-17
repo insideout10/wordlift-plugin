@@ -34,8 +34,6 @@ class Wordlift_Publisher_Service {
 		 */
 		$entities = get_posts( array(
 			'post_type'      => Wordlift_Entity_Service::valid_entity_post_types(),
-			// Avoid sticky posts being added when post is a valid type, as sticky posts do not conform to the other parameters.
-			'ignore_sticky_posts' => 1,
 			'post_status'    => 'publish',
 			'posts_per_page' => - 1,
 			'tax_query'      => array(
@@ -115,8 +113,6 @@ class Wordlift_Publisher_Service {
 		$entities = get_posts( array(
 			'post_type'      => Wordlift_Entity_Service::valid_entity_post_types(),
 			'post_status'    => 'publish',
-			// Avoid sticky posts being added when post is a valid type, as sticky posts do not conform to the other parameters.
-			'ignore_sticky_posts' => 1,
 			'posts_per_page' => - 1,
 			'tax_query'      => array(
 				array(

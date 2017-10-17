@@ -47,8 +47,6 @@ function wl_shortcode_geomap_get_places( $post_id = null ) {
 	return get_posts( array(
 		'post__in'    => $related_ids,
 		'post_type'   => Wordlift_Entity_Service::valid_entity_post_types(),
-		// Avoid sticky posts being added when post is a valid type, as sticky posts do not conform to the other parameters.
-		'ignore_sticky_posts' => 1,
 		'nopaging'    => true,
 		'post_status' => 'publish',
 		'meta_query'  => array(

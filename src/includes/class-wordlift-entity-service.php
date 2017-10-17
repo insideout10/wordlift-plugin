@@ -238,8 +238,6 @@ class Wordlift_Entity_Service {
 		}
 
 		$query_args = array(
-			// See https://github.com/insideout10/wordlift-plugin/issues/654.
-			'ignore_sticky_posts' => 1,
 			'posts_per_page'      => 1,
 			'post_status'         => 'any',
 			'post_type'           => Wordlift_Entity_Service::valid_entity_post_types(),
@@ -274,10 +272,8 @@ class Wordlift_Entity_Service {
 			);
 		}
 
-		$query = new WP_Query( $query_args );
-
 		// Get the matching entity posts.
-		$posts = $query->get_posts();
+		$posts = get_posts( $query_args );
 
 		// Return null if no post is found.
 		if ( 0 === count( $posts ) ) {
