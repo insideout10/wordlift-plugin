@@ -23,6 +23,11 @@ function wl_shortcode_chord_most_referenced_entity_id() {
 		'fields'      => 'ids', //only get post IDs
 		'post_status' => 'published',
 		'tax_query'   => array(
+			'relation' => 'OR',
+			array(
+				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				'operator' => 'NOT EXISTS',
+			),
 			array(
 				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
 				'field'    => 'slug',
