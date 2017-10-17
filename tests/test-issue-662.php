@@ -89,7 +89,7 @@ class Wordlift_Issue_662 extends Wordlift_Unit_Test_Case {
 		$this->create_and_remove_terms();
 		$this->create_and_check_terms();
 		$post_as_entity_id = $this->create_and_set_term( 'organization' );
-		$entitiy_id        = $this->create_entity( 'person' );
+		$entity_id         = $this->create_entity( 'person' );
 
 		// Create a new query and have the entity list service manipulate it.
 		$GLOBALS['wp_the_query'] = $query = new WP_Query( array() );
@@ -103,7 +103,7 @@ class Wordlift_Issue_662 extends Wordlift_Unit_Test_Case {
 		$posts = $query->get_posts();
 		$this->assertCount( 2, $posts );
 		$this->assertEquals( $post_as_entity_id, $posts[0]->ID );
-		$this->assertEquals( $entitiy_id, $posts[1]->ID );
+		$this->assertEquals( $entity_id, $posts[1]->ID );
 
 		unset( $GLOBALS['wp_the_query'] );
 	}

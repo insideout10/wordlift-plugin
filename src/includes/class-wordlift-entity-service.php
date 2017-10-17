@@ -251,6 +251,11 @@ class Wordlift_Entity_Service {
 				),
 			),
 			'tax_query'           => array(
+				'relation' => 'AND',
+				array(
+					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+					'operator' => 'EXISTS',
+				),
 				array(
 					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
 					'field'    => 'slug',

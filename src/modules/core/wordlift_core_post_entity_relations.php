@@ -430,6 +430,11 @@ function wl_core_sql_query_builder( $args ) {
 	// to figure out the relevant sql statements to add to the join and where
 	// parts.
 	$tax_query = array(
+		'relation' => 'AND',
+		array(
+			'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+			'operator' => 'EXISTS',
+		),
 		array(
 			'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
 			'field'    => 'slug',
