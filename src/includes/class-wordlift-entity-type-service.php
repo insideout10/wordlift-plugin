@@ -93,7 +93,7 @@ class Wordlift_Entity_Type_Service {
 	 */
 	public function get( $post_id ) {
 
-		$this->log->debug( "Getting the post type for post $post_id..." );
+		$this->log->trace( "Getting the post type for post $post_id..." );
 
 		$post_type = get_post_type( $post_id );
 
@@ -127,7 +127,7 @@ class Wordlift_Entity_Type_Service {
 			);
 		}
 
-		$this->log->info( "Found {$terms[0]->slug} term for post $post_id." );
+		$this->log->debug( "Found {$terms[0]->slug} term for post $post_id." );
 
 		// Return the entity type with the specified id.
 		return $this->schema_service->get_schema( $terms[0]->slug );

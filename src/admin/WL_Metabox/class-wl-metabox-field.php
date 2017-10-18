@@ -199,7 +199,7 @@ class WL_Metabox_Field {
 		$post_id    = $this->post_id;
 		$this->data = get_post_meta( $post_id, $this->meta_name );
 
-		$this->log->info( 'Found ' . count( $this->data ) . " value(s) for meta $this->meta_name, post $post_id." );
+		$this->log->debug( 'Found ' . count( $this->data ) . " value(s) for meta $this->meta_name, post $post_id." );
 
 	}
 
@@ -285,9 +285,9 @@ class WL_Metabox_Field {
 		// insert new values, respecting cardinality.
 		$single = ( 1 === $this->cardinality );
 		foreach ( $this->data as $value ) {
-			$this->log->debug( "Saving $value to $this->meta_name for entity $entity_id..." );
+			$this->log->trace( "Saving $value to $this->meta_name for entity $entity_id..." );
 			$meta_id = add_post_meta( $entity_id, $this->meta_name, $value, $single );
-			$this->log->info( "$value to $this->meta_name for entity $entity_id saved with id $meta_id." );
+			$this->log->debug( "$value to $this->meta_name for entity $entity_id saved with id $meta_id." );
 		}
 	}
 

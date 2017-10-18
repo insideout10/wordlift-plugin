@@ -48,7 +48,7 @@ require_once( 'modules/core/wordlift_core.php' );
  */
 function wl_write_log( $log ) {
 
-	Wordlift_Log_Service::get_instance()->info( $log );
+	Wordlift_Log_Service::get_instance()->debug( $log );
 
 }
 
