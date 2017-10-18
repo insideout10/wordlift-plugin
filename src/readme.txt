@@ -144,6 +144,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 = 3.15.3 (????-??-??) =
+* Fix: [#669](https://github.com/insideout10/wordlift-plugin/issues/669): WordLift is constantly validating the key.
 * Fix: [#668](https://github.com/insideout10/wordlift-plugin/issues/668): View Linked Data on a post shows a 500.
 * Fix: [#665](https://github.com/insideout10/wordlift-plugin/issues/665): startDate and endDate are not recorded on some Events.
 * Fix: [#662](https://github.com/insideout10/wordlift-plugin/issues/662): Old articles appear in Vocabulary.
