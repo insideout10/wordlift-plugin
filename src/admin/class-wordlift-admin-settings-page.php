@@ -218,6 +218,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 		// if the key is valid, or "invalid" otherwise.
 		$validation_service = new Wordlift_Key_Validation_Service( $this->configuration_service );
 
+
 		if ( empty( $key_args['value'] ) ) {
 			$key_args['css_class'] = 'untouched';
 		} elseif ( $validation_service->is_valid( $key_args['value'] ) ) {
