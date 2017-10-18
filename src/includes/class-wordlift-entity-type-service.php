@@ -112,6 +112,7 @@ class Wordlift_Entity_Type_Service {
 			'orderby' => 'none',
 			'number' => 1,
 			'hierarchical' => false,
+			'update_term_meta_cache' => false,
 		) );
 
 		if ( is_wp_error( $terms ) ) {

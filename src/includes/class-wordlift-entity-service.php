@@ -115,6 +115,7 @@ class Wordlift_Entity_Service {
 			'orderby' => 'none',
 			'number' => 1,
 			'hierarchical' => false,
+			'update_term_meta_cache' => false,
 		) );
 
 		if ( 0 === count( $terms ) ) {
