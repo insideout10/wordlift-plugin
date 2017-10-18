@@ -144,6 +144,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 = 3.15.3 (????-??-??) =
+* Fix: [#668](https://github.com/insideout10/wordlift-plugin/issues/668): View Linked Data on a post shows a 500.
 * Fix: [#662](https://github.com/insideout10/wordlift-plugin/issues/662): Old articles appear in Vocabulary.
 
 = 3.15.2 (2017-10-16) =
