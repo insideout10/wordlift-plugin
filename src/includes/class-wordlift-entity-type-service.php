@@ -108,12 +108,16 @@ class Wordlift_Entity_Type_Service {
 		}
 
 		// Get the type from the associated classification.
-		$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array(
+			'orderby' => 'none',
+			'number' => 1,
+			'hierarchical' => false,
+		) );
 
 		if ( is_wp_error( $terms ) ) {
 			$this->log->error( "An error occurred while getting the post type for post $post_id: " . $terms->get_error_message() );
 
-			// TODO: handle error
+			// TODO: handle error.
 			return null;
 		}
 

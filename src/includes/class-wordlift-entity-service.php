@@ -111,7 +111,11 @@ class Wordlift_Entity_Service {
 	 */
 	public function is_entity( $post_id ) {
 
-		$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array(
+			'orderby' => 'none',
+			'number' => 1,
+			'hierarchical' => false,
+		) );
 
 		if ( 0 === count( $terms ) ) {
 			return false;
