@@ -85,6 +85,15 @@ class WL_Metabox_Field {
 	public $data;
 
 	/**
+	 * The current {@link WP_Post} id.
+	 *
+	 * @since 3.15.3
+	 *
+	 * @var int The current {@link WP_Post} id.
+	 */
+	private $post_id;
+
+	/**
 	 * Create a {@link WL_Metabox_Field} instance.
 	 *
 	 * @param array $args An array of parameters.
@@ -142,6 +151,11 @@ class WL_Metabox_Field {
 			}
 		}
 
+		// Save early the post id to avoid other plugins messing up with it.
+		//
+		// See https://github.com/insideout10/wordlift-plugin/issues/665.
+		$this->post_id = get_the_ID();
+
 	}
 
 	/**
@@ -181,14 +195,12 @@ class WL_Metabox_Field {
 	 */
 	public function get_data() {
 
-		$data = get_post_meta( get_the_ID(), $this->meta_name );
+		// Get the post id and load the data.
+		$post_id    = $this->post_id;
+		$this->data = get_post_meta( $post_id, $this->meta_name );
 
-		// Values are always contained in an array (makes it easier to manage cardinality).
-		if ( ! is_array( $data ) ) {
-			$data = array( $data );
-		}
+		$this->log->info( 'Found ' . count( $this->data ) . " value(s) for meta $this->meta_name, post $post_id." );
 
-		$this->data = $data;
 	}
 
 	/**
@@ -258,7 +270,14 @@ class WL_Metabox_Field {
 		// Will sanitize data and store them in $field->data.
 		$this->sanitize_data( $values );
 
-		$entity_id = get_the_ID();
+		// Bail out, if the post id isn't set in the request or isn't numeric.
+		//
+		// See https://github.com/insideout10/wordlift-plugin/issues/665.
+		if ( ! isset( $_POST['post_ID'] ) || ! is_numeric( $_POST['post_ID'] ) ) {
+			return;
+		}
+
+		$entity_id = intval( $_POST['post_ID'] );
 
 		// Take away old values.
 		delete_post_meta( $entity_id, $this->meta_name );
@@ -266,7 +285,9 @@ class WL_Metabox_Field {
 		// insert new values, respecting cardinality.
 		$single = ( 1 === $this->cardinality );
 		foreach ( $this->data as $value ) {
-			add_post_meta( $entity_id, $this->meta_name, $value, $single );
+			$this->log->debug( "Saving $value to $this->meta_name for entity $entity_id..." );
+			$meta_id = add_post_meta( $entity_id, $this->meta_name, $value, $single );
+			$this->log->info( "$value to $this->meta_name for entity $entity_id saved with id $meta_id." );
 		}
 	}
 
@@ -315,6 +336,7 @@ class WL_Metabox_Field {
 
 		// Print the empty <input> to add new values.
 		if ( 0 === $count ) { // } || $count < $this->cardinality ) { DO NOT print empty inputs unless requested by the editor since fields might support empty strings.
+			$this->log->debug( 'Going to print an empty HTML input...' );
 			$html .= $this->html_input( '' );    // Will print an empty <input>.
 			$count ++;
 		}
@@ -357,6 +379,7 @@ class WL_Metabox_Field {
 		if ( $this->data ) {
 			foreach ( $this->data as $value ) {
 				if ( $count < $this->cardinality ) {
+					$this->log->debug( "Going to print an HTML input #$count with $value..." );
 					$html .= $this->html_input( $value );
 				}
 				$count ++;
