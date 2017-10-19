@@ -37,11 +37,23 @@ class Wordlift_Relation_Service {
 	private $relation_table;
 
 	/**
+	 * A {@link Wordlift_Log_Service} instance.
+	 *
+	 * @since 3.15.3
+	 *
+	 * @var Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
+	 */
+	private $log;
+
+	/**
 	 * Create a {@link Wordlift_Relation_Service} instance.
 	 *
 	 * @since 3.15.0
 	 */
 	public function __construct() {
+
+		$this->log = Wordlift_Log_Service::get_logger( get_class() );
+
 		global $wpdb;
 
 		// The relations table.
@@ -87,7 +99,18 @@ class Wordlift_Relation_Service {
 		// The output fields.
 		$actual_fields = self::fields( $fields );
 
+		$this->log->trace( "Getting article subjects for object $object_id..." );
+
 		$objects = $this->article_id_to_entity_id( $object_id );
+
+		// If there are no related objects, return an empty array.
+		if ( empty( $objects ) ) {
+			$this->log->debug( "No entities found for object $object_id." );
+
+			return array();
+		}
+
+		$this->log->debug( count( $objects ) . " entity id(s) found for object $object_id." );
 
 		$sql =
 			"
