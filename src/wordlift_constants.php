@@ -21,7 +21,7 @@ define( 'WL_REDLINK_API_HTTP_OPTIONS', serialize( array(
 define( 'WL_REQUEST_ID', uniqid( true ) );
 
 // Set the temporary files folder.
-defined( 'WL_TEMP_DIR' ) || define( 'WL_TEMP_DIR', get_temp_dir() );
+defined( 'WL_TEMP_DIR' ) || define( 'WL_TEMP_DIR', wl_temp_dir() );
 
 define( 'WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING', 'true' !== getenv( 'WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING' ) );
 
@@ -58,4 +58,26 @@ function wl_prefixes() {
 
 	return $prefixes;
 
+}
+
+/**
+ * Get a site unique directory under the system or wordpress temporary directory.
+ * The wordpress get_temp_dir API, do not take into account that different sites
+ * might need to store segregated information from each other. We will use the
+ * site URL and blog number to create a "private" area below the temp directory
+ * provided by the wordpress API.
+ *
+ * @return string The path to the temp directory for the specific site.
+ */
+function wl_temp_dir() {
+	$tempdir = get_temp_dir();
+	$unique = md5( site_url() . get_current_blog_id() );
+	$unique_temp_dir = $tempdir . '/wl_' . $unique;
+
+	// If directory do not exist, creat it.
+	if ( ! file_exists( $unique_temp_dir ) ) {
+		mkdir( $unique_temp_dir );
+	}
+
+	return $unique_temp_dir;
 }
