@@ -61,11 +61,13 @@ function wl_prefixes() {
 }
 
 /**
- * Get a site unique directory under the system or wordpress temporary directory.
- * The wordpress get_temp_dir API, do not take into account that different sites
+ * Get a site unique directory under the system or WordPress temporary directory.
+ * The WordPress get_temp_dir API, do not take into account that different sites
  * might need to store segregated information from each other. We will use the
  * site URL and blog number to create a "private" area below the temp directory
- * provided by the wordpress API.
+ * provided by the WordPress API.
+ *
+ * @since 3.16.0
  *
  * @return string The path to the temp directory for the specific site.
  */
@@ -79,5 +81,5 @@ function wl_temp_dir() {
 		mkdir( $unique_temp_dir );
 	}
 
-	return $unique_temp_dir;
+	return $unique_temp_dir . '/';
 }
