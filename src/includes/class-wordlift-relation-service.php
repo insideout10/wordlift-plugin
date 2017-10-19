@@ -104,11 +104,29 @@ class Wordlift_Relation_Service {
 			// the results.
 			. self::and_article_not_in( array_merge( $excludes, (array) $object_id ) )
 			. self::and_article_in( $include )
-			. " AND p.post_type IN ( 'post', 'page', 'entity' ) "
+			. self::and_post_type_in()
 			. self::and_predicate( $predicate )
 			. self::limit( $limit );
 
+
 		return '*' === $actual_fields ? $wpdb->get_results( $sql ) : $wpdb->get_col( $sql );
+	}
+
+	/**
+	 * The `post_type IN` clause.
+	 *
+	 * @since 3.15.3
+	 *
+	 * @return string The `post_type IN` clause.
+	 */
+	private static function and_post_type_in() {
+
+		return " AND p.post_type IN ( '"
+			   . implode(
+				   "','",
+				   array_map( 'esc_sql', Wordlift_Entity_Service::valid_entity_post_types() )
+			   )
+			   . "' )";
 	}
 
 	/**
@@ -229,11 +247,9 @@ class Wordlift_Relation_Service {
 			"
 			// Add the status clause.
 			. self::and_status( $status )
-			. self::inner_join_is_not_article() .
-			"
-			WHERE r.object_id = %d
-				AND p.post_type IN ( 'post', 'page', 'entity' )
-			"
+			. self::inner_join_is_not_article()
+			. " WHERE r.object_id = %d "
+			. self::and_post_type_in()
 			,
 			$object_id
 		);
@@ -270,10 +286,8 @@ class Wordlift_Relation_Service {
 			// Add the status clause.
 			. self::and_status( $status )
 			. self::inner_join_is_not_article()
-			. "
-			WHERE r.subject_id = %d
-				AND p.post_type IN ( 'post', 'page', 'entity' )
-			"
+			. " WHERE r.subject_id = %d "
+			. self::and_post_type_in()
 			. self::and_predicate( $predicate )
 			,
 			$subject_id
