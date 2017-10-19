@@ -22,6 +22,8 @@ function rl_execute_sparql_update_query( $query, $queue = WL_ENABLE_SPARQL_UPDAT
 	$log = Wordlift_Log_Service::get_logger( 'rl_execute_sparql_update_query' );
 
 	if ( get_transient( 'DISABLE_ENTITY_PUSH' ) ) {
+		$log->info('Entity push is disabled.');
+
 		return true;
 	}
 

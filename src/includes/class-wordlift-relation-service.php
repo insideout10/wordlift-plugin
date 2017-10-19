@@ -99,18 +99,18 @@ class Wordlift_Relation_Service {
 		// The output fields.
 		$actual_fields = self::fields( $fields );
 
-		$this->log->trace( "Getting article subjects for object $object_id..." );
+		$this->log->trace( 'Getting article subjects for object ' . implode( ', ', (array) $object_id ) . '...' );
 
 		$objects = $this->article_id_to_entity_id( $object_id );
 
 		// If there are no related objects, return an empty array.
 		if ( empty( $objects ) ) {
-			$this->log->debug( "No entities found for object $object_id." );
+			$this->log->debug( 'No entities found for object ' . implode( ', ', (array) $object_id ) . '.' );
 
 			return array();
 		}
 
-		$this->log->debug( count( $objects ) . " entity id(s) found for object $object_id." );
+		$this->log->debug( count( $objects ) . ' entity id(s) found for object ' . implode( ', ', (array) $object_id ) . '.' );
 
 		$sql =
 			"

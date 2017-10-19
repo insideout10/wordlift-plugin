@@ -18,8 +18,12 @@ require_once( 'wordlift_linked_data_images.php' );
  */
 function wl_linked_data_save_post( $post_id ) {
 
+	$log = Wordlift_Log_Service::get_logger( 'wl_linked_data_save_post' );
+
 	// If it's not numeric exit from here.
 	if ( ! is_numeric( $post_id ) || is_numeric( wp_is_post_revision( $post_id ) ) ) {
+		$log->debug("Skipping $post_id, because id is not numeric or is a post revision.");
+
 		return;
 	}
 
@@ -31,16 +35,18 @@ function wl_linked_data_save_post( $post_id ) {
 
 	// Bail out if it's not an entity.
 	if ( ! $is_editor_supported ) {
+		$log->debug("Skipping $post_id, because $post_type doesn't support the editor (content).");
+
 		return;
 	}
 
-	// unhook this function so it doesn't loop infinitely
+	// Unhook this function so it doesn't loop infinitely.
 	remove_action( 'save_post', 'wl_linked_data_save_post' );
 
 	// raise the *wl_linked_data_save_post* event.
 	do_action( 'wl_linked_data_save_post', $post_id );
 
-	// re-hook this function
+	// Re-hook this function.
 	add_action( 'save_post', 'wl_linked_data_save_post' );
 }
 
