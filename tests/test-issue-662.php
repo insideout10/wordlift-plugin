@@ -102,8 +102,12 @@ class Wordlift_Issue_662 extends Wordlift_Unit_Test_Case {
 		// Finally get the posts, expect no posts returned.
 		$posts = $query->get_posts();
 		$this->assertCount( 2, $posts );
-		$this->assertEquals( $post_as_entity_id, $posts[0]->ID );
-		$this->assertEquals( $entity_id, $posts[1]->ID );
+		$this->assertCount( 1, array_filter( $posts, function ( $item ) use ( $post_as_entity_id ) {
+			return $post_as_entity_id === $item->ID;
+		} ) );
+		$this->assertCount( 1, array_filter( $posts, function ( $item ) use ( $entity_id ) {
+			return $entity_id === $item->ID;
+		} ) );
 
 		unset( $GLOBALS['wp_the_query'] );
 	}
