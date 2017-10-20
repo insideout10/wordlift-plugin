@@ -145,7 +145,11 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 = 3.15.3 (????-??-??) =
 * Enhancement: [#670](https://github.com/insideout10/wordlift-plugin/issues/670): Allow filtering logging levels.
+* Fix: [#677](https://github.com/insideout10/wordlift-plugin/issues/677): Sometimes authors are not correctly matched with their entities.
+* Fix: [#676](https://github.com/insideout10/wordlift-plugin/issues/676): Entity type permalinks no longer work.
+* Fix: [#674](https://github.com/insideout10/wordlift-plugin/issues/674): Improve the performance of get_entity_post_by_uri.
 * Fix: [#673](https://github.com/insideout10/wordlift-plugin/issues/673): Query error on edit screen.
+* Fix: [#672](https://github.com/insideout10/wordlift-plugin/issues/672): Local Business repeated twice in Create New Entity.
 * Fix: [#669](https://github.com/insideout10/wordlift-plugin/issues/669): WordLift is constantly validating the key.
 * Fix: [#668](https://github.com/insideout10/wordlift-plugin/issues/668): View Linked Data on a post shows a 500.
 * Fix: [#667](https://github.com/insideout10/wordlift-plugin/issues/667): Hardcoded entity post types.
