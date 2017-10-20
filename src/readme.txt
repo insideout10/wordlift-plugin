@@ -143,7 +143,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.15.3 (????-??-??) =
+= 3.15.3 (2017-10-20) =
 * Enhancement: [#670](https://github.com/insideout10/wordlift-plugin/issues/670): Allow filtering logging levels.
 * Fix: [#677](https://github.com/insideout10/wordlift-plugin/issues/677): Sometimes authors are not correctly matched with their entities.
 * Fix: [#676](https://github.com/insideout10/wordlift-plugin/issues/676): Entity type permalinks no longer work.
