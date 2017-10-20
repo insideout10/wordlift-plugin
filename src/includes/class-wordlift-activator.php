@@ -56,6 +56,8 @@ class Wordlift_Activator {
 			set_transient( '_wl_activation_redirect', true, 30 );
 		}
 
+		// Clear older caches.
+		Wordlift_Abstract_Post_To_Jsonld_Converter::flush_cache();
 	}
 
 }
