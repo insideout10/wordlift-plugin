@@ -48,7 +48,7 @@ require_once( 'modules/core/wordlift_core.php' );
  */
 function wl_write_log( $log ) {
 
-	Wordlift_Log_Service::get_instance()->info( $log );
+	Wordlift_Log_Service::get_instance()->debug( $log );
 
 }
 
@@ -527,8 +527,11 @@ load_plugin_textdomain( 'wordlift', false, '/wordlift/languages' );
  * This action is documented in includes/class-wordlift-activator.php
  */
 function activate_wordlift() {
+
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wordlift-activator.php';
 	Wordlift_Activator::activate();
+	flush_rewrite_rules();
+
 }
 
 /**
@@ -536,8 +539,11 @@ function activate_wordlift() {
  * This action is documented in includes/class-wordlift-deactivator.php
  */
 function deactivate_wordlift() {
+
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wordlift-deactivator.php';
 	Wordlift_Deactivator::deactivate();
+	flush_rewrite_rules();
+
 }
 
 register_activation_hook( __FILE__, 'activate_wordlift' );

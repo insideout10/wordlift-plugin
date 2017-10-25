@@ -167,11 +167,11 @@ class Wordlift_Batch_Analysis_Service {
 		$this->configuration_service = $configuration_service;
 		$this->log                   = Wordlift_Log_Service::get_logger( 'Wordlift_Batch_Analysis_Service' );
 
-		add_action( 'wp_async_wl_batch_analysis_request', array(
+		add_action( 'wl_async_wl_batch_analysis_request', array(
 			$this,
 			'request',
 		) );
-		add_action( 'wp_async_wl_batch_analysis_complete', array(
+		add_action( 'wl_async_wl_batch_analysis_complete', array(
 			$this,
 			'complete',
 		) );

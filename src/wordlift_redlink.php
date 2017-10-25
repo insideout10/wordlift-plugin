@@ -22,6 +22,8 @@ function rl_execute_sparql_update_query( $query, $queue = WL_ENABLE_SPARQL_UPDAT
 	$log = Wordlift_Log_Service::get_logger( 'rl_execute_sparql_update_query' );
 
 	if ( get_transient( 'DISABLE_ENTITY_PUSH' ) ) {
+		$log->info('Entity push is disabled.');
+
 		return true;
 	}
 
@@ -55,21 +57,18 @@ function rl_execute_sparql_update_query( $query, $queue = WL_ENABLE_SPARQL_UPDAT
 
 		$body = ( is_wp_error( $response ) ? $response->get_error_message() : $response['body'] );
 
-		$log->debug( "rl_execute_sparql_update_query : error [ url :: $url ][ args :: " );
-		$log->debug( "\n" . var_export( $args, true ) );
-		$log->debug( "[ response :: " );
-		$log->debug( "\n" . var_export( $response, true ) );
-		$log->debug( "][ body :: " );
-		$log->debug( "\n" . $body );
-		$log->debug( "]" );
+		$log->warn( "rl_execute_sparql_update_query : error [ url :: $url ][ args :: " );
+		$log->warn( "\n" . var_export( $args, true ) );
+		$log->warn( "[ response :: " );
+		$log->warn( "\n" . var_export( $response, true ) );
+		$log->warn( "][ body :: " );
+		$log->warn( "\n" . $body );
+		$log->warn( "]" );
 
 		return false;
 	}
 
-	if ( WP_DEBUG ) {
-		global $wl_logger;
-		$wl_logger->trace( "Query executed successfully [ query :: $query ]" );
-	}
+	$log->debug( "Query executed successfully [ query :: $query ]" );
 
 	return true;
 }

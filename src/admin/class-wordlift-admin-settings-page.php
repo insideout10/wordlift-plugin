@@ -213,18 +213,13 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			'description' => __( 'Insert the <a href="https://www.wordlift.io/blogger">WordLift Key</a> you received via email.', 'wordlift' ),
 		);
 
-		// Set the class for the key field based on the validity of the key.
-		// Class should be "untouched" for an empty (virgin) value, "valid"
-		// if the key is valid, or "invalid" otherwise.
-		$validation_service = new Wordlift_Key_Validation_Service( $this->configuration_service );
-
-		if ( empty( $key_args['value'] ) ) {
-			$key_args['css_class'] = 'untouched';
-		} elseif ( $validation_service->is_valid( $key_args['value'] ) ) {
-			$key_args['css_class'] = 'valid';
-		} else {
-			$key_args['css_class'] = 'invalid';
-		}
+		// Before we were used to validate the key beforehand, but this means
+		// an http call whenever a page is opened in the admin area. Therefore
+		// we now leave the input `untouched`, leaving to the client to update
+		// the `css_class`.
+		//
+		// See https://github.com/insideout10/wordlift-plugin/issues/669.
+		$key_args['css_class'] = 'untouched';
 
 		// Add the `key` field.
 		add_settings_field(

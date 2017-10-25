@@ -23,7 +23,16 @@ define( 'WL_REQUEST_ID', uniqid( true ) );
 // Set the temporary files folder.
 defined( 'WL_TEMP_DIR' ) || define( 'WL_TEMP_DIR', get_temp_dir() );
 
-define( 'WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING', 'true' !== getenv( 'WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING' ) );
+define( 'WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING', wl_is_sparql_update_queries_buffering_enabled() );
+
+function wl_is_sparql_update_queries_buffering_enabled() {
+
+	if ( isset( $_REQUEST['wl-async'] ) && 'false' === $_REQUEST['wl-async'] ) {
+		return false;
+	}
+
+	return 'true' !== getenv( 'WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING' );
+}
 
 // Define the meta name used to store the entity URL.
 define( 'WL_ENTITY_URL_META_NAME', 'entity_url' );

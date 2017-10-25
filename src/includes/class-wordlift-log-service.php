@@ -9,12 +9,11 @@ class Wordlift_Log_Service {
 
 	const MESSAGE_TEMPLATE = '%-6s [%-40.40s] %s';
 
-	const ERROR = 'ERROR';
-	const WARN = 'WARN';
-	const INFO = 'INFO';
-	const DEBUG = 'DEBUG';
-	const TRACE = 'TRACE';
-
+	const ERROR = 4;
+	const WARN = 3;
+	const INFO = 2;
+	const DEBUG = 1;
+	const TRACE = 0;
 
 	/**
 	 * The class related to the logs.
@@ -24,6 +23,19 @@ class Wordlift_Log_Service {
 	 * @var string $class_name The class related to the logs.
 	 */
 	private $class_name;
+
+	/**
+	 * The log levels for printing in log lines.
+	 *
+	 * @var array $levels An array of log levels.
+	 */
+	private static $levels = array(
+		self::TRACE => 'TRACE',
+		self::DEBUG => 'DEBUG',
+		self::INFO  => 'INFO',
+		self::WARN  => 'WARN',
+		self::ERROR => 'ERROR',
+	);
 
 	/**
 	 * A singleton instance for legacy logging.
@@ -75,12 +87,23 @@ class Wordlift_Log_Service {
 	 */
 	public function log( $level, $message ) {
 
-		// If we're tracing or debugging, but the debug flag isn't set, then we don't log.
-		if ( ( self::TRACE === $level || self::DEBUG === $level ) && ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) ) {
+		// Bail out if WP debug is disabled.
+		if ( $level < self::INFO && ( ! defined( 'WP_DEBUG' ) || false === WP_DEBUG ) ) {
 			return;
 		}
 
-		error_log( sprintf( self::MESSAGE_TEMPLATE, $level, $this->class_name, is_array( $message ) ? implode( ', ', $message ) : $message ) );
+		// Bail out if the log message is below the minimum log level.
+		if ( defined( 'WL_LOG_LEVEL' ) && $level < intval( WL_LOG_LEVEL ) ) {
+			return;
+		}
+
+		// Bail out if there's a filter and we don't match it.
+		if ( defined( 'WL_LOG_FILTER' ) && 1 !== preg_match( "/(^|,)$this->class_name($|,)/", WL_LOG_FILTER ) ) {
+			return;
+		}
+
+		// Finally log the message.
+		error_log( sprintf( self::MESSAGE_TEMPLATE, self::$levels[ $level ], $this->class_name, is_array( $message ) ? implode( ', ', $message ) : $message ) );
 
 	}
 

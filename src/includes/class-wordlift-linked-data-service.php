@@ -129,13 +129,6 @@ class Wordlift_Linked_Data_Service {
 			return;
 		}
 
-		// Bail out if the entity type is `Article`.
-		if ( $this->entity_type_service->has_entity_type( $post_id, 'http://schema.org/Article' ) ) {
-			$this->log->debug( "Post $post_id is an `Article`." );
-
-			return;
-		}
-
 		// Get the post and push it to the Linked Data store.
 		$this->do_push( $post_id );
 
@@ -177,21 +170,21 @@ class Wordlift_Linked_Data_Service {
 
 		// Bail out if the post isn't found.
 		if ( null === $post ) {
-			$this->log->debug( "Post $post_id not found." );
+			$this->log->warn( "Post $post_id not found." );
 
 			return;
 		}
 
 		// Bail out if the post isn't published.
 		if ( 'publish' !== $post->post_status ) {
-			$this->log->debug( "Post $post_id not published." );
+			$this->log->info( "Post $post_id not published." );
 
 			return;
 		}
 
 		// Bail out if the URI isn't valid.
 		if ( ! $this->has_valid_uri( $post_id ) ) {
-			$this->log->debug( "Post $post_id URI invalid." );
+			$this->log->warn( "Post $post_id URI invalid." );
 
 			return;
 		}

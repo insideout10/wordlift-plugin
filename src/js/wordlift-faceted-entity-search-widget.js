@@ -289,7 +289,7 @@
       $scope.supportedTypes = [
         {
           'scope': 'what',
-          'types': ['thing', 'creative-work']
+          'types': ['thing', 'creative-work', 'recipe']
         }, {
           'scope': 'who',
           'types': ['person', 'organization', 'local-business']
