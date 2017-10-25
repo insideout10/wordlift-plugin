@@ -169,7 +169,7 @@ abstract class Wordlift_Async_Task {
 				),
 			);
 
-			$url = home_url( 'wl-api' );
+			$url = get_site_url( null, 'wl-api' );
 
 			$this->log->debug( "Posting URL $url..." );
 
