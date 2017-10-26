@@ -344,7 +344,7 @@ class Wordlift_Configuration_Service {
 	 * @param string $key The key to be used
 	 *
 	 */
-	private function get_remote_dataset_uri( $key ) {
+	public function get_remote_dataset_uri( $key ) {
 
 		$this->log->trace( "Getting the remote dataset URI..." );
 
