@@ -421,7 +421,7 @@ function wl_sanitize_uri_path( $path, $char = '_' ) {
  */
 function wl_replace_item_id_with_uri( $content ) {
 
-	$log = Wordlift_Log_Service::get_logger( get_class( 'wl_replace_item_id_with_uri' ) );
+	$log = Wordlift_Log_Service::get_logger( 'wl_replace_item_id_with_uri' );
 	$log->trace( 'Replacing item IDs with URIs...' );
 
 	// Strip slashes, see https://core.trac.wordpress.org/ticket/21767

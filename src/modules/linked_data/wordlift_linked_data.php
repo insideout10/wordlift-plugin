@@ -69,7 +69,17 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 	// Ignore auto-saves
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-		$log->trace( "Doing autosave, skipping..." );
+		$log->trace( 'Doing autosave, skipping...' );
+
+		return;
+	}
+
+	//
+	$entity_service = Wordlift_Entity_Service::get_instance();
+
+	// Bail out if it's not an entity.
+	if ( ! $entity_service->is_entity( $post_id ) ) {
+		$log->debug( "Post $post_id is not an entity, skipping..." );
 
 		return;
 	}
@@ -107,7 +117,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			// Look if current entity uri matches an internal existing entity, meaning:
 			// 1. when $entity_uri is an internal uri
 			// 2. when $entity_uri is an external uri used as sameAs of an internal entity
-			$ie = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $entity_uri );
+			$ie = $entity_service->get_entity_post_by_uri( $entity_uri );
 
 			// Detect the uri depending if is an existing or a new entity
 			$uri = ( null === $ie ) ?
@@ -163,7 +173,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 		wl_core_add_relation_instance(
 			$post_id,
-			Wordlift_Entity_Service::get_instance()->get_classification_scope_for( $referenced_entity_id ),
+			$entity_service->get_classification_scope_for( $referenced_entity_id ),
 			$referenced_entity_id
 		);
 
@@ -190,7 +200,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			$uri = ( isset( $metadata_via_post[ $field ] ) ) ?
 				stripslashes( $metadata_via_post[ $field ] ) : '';
 
-			$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri );
+			$entity = $entity_service->get_entity_post_by_uri( $uri );
 
 			if ( $entity ) {
 				add_post_meta( $post->ID, $field, $entity->ID, true );
