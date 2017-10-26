@@ -20,9 +20,11 @@ function wl_linked_data_save_post( $post_id ) {
 
 	$log = Wordlift_Log_Service::get_logger( 'wl_linked_data_save_post' );
 
+	$log->trace( "Saving post $post_id to Linked Data..." );
+
 	// If it's not numeric exit from here.
 	if ( ! is_numeric( $post_id ) || is_numeric( wp_is_post_revision( $post_id ) ) ) {
-		$log->debug("Skipping $post_id, because id is not numeric or is a post revision.");
+		$log->debug( "Skipping $post_id, because id is not numeric or is a post revision." );
 
 		return;
 	}
@@ -35,7 +37,7 @@ function wl_linked_data_save_post( $post_id ) {
 
 	// Bail out if it's not an entity.
 	if ( ! $is_editor_supported ) {
-		$log->debug("Skipping $post_id, because $post_type doesn't support the editor (content).");
+		$log->debug( "Skipping $post_id, because $post_type doesn't support the editor (content)." );
 
 		return;
 	}
@@ -61,8 +63,14 @@ add_action( 'save_post', 'wl_linked_data_save_post' );
  */
 function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
+	$log = Wordlift_Log_Service::get_logger( 'wl_linked_data_save_post_and_related_entities' );
+
+	$log->trace( "Saving $post_id to Linked Data along with related entities..." );
+
 	// Ignore auto-saves
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		$log->trace( "Doing autosave, skipping..." );
+
 		return;
 	}
 
@@ -237,6 +245,8 @@ function wl_save_entity( $entity_data ) {
 
 	// Check whether an entity already exists with the provided URI.
 	if ( null !== $post = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri ) ) {
+		$log->debug( "Post already exists for URI $uri." );
+
 		return $post;
 	}
 
@@ -284,6 +294,9 @@ function wl_save_entity( $entity_data ) {
 	global $wp_filter;
 	$save_post_filters = is_array( $wp_filter['save_post'] ) ? $wp_filter['save_post'] : $wp_filter['save_post']->callbacks;
 	is_array( $wp_filter['save_post'] ) ? $wp_filter['save_post'] = array() : $wp_filter['save_post']->remove_all_filters();
+
+
+	$log->trace( 'Going to insert new post...' );
 
 	// create or update the post.
 	$post_id = wp_insert_post( $params, true );

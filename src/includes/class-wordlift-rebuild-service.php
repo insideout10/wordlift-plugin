@@ -53,7 +53,7 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 	 * @since 3.6.0
 	 *
 	 * @param \Wordlift_Sparql_Service $sparql_service A {@link Wordlift_Sparql_Service} instance used to query the remote dataset.
-	 * @param \Wordlift_Uri_Service $uri_service
+	 * @param \Wordlift_Uri_Service    $uri_service
 	 */
 	public function __construct( $sparql_service, $uri_service ) {
 
@@ -107,8 +107,10 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 		// in order to avoid memory errors.
 
 		$count = 0;
-		$this->process( function ( $post ) use ( &$count ) {
+		$log   = $this->log;
+		$this->process( function ( $post ) use ( &$count, $log ) {
 			$count ++;
+			$log->trace( "Going to save post $count, ID $post->ID..." );
 			wl_linked_data_save_post( $post->ID );
 		}, array(
 			'post_status' => 'publish',
@@ -116,9 +118,11 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 
 		// Redirect to the next chunk.
 		if ( $count == $limit ) {
+			$log->trace( 'Redirecting to post #' . ( $offset + 1 ) . '...' );
 			$this->redirect( admin_url( 'admin-ajax.php?action=wl_rebuild&offset=' . ( $offset + $limit ) . '&limit=' . $limit . '&wl-async=' . ( $asynchronous ? 'true' : 'false' ) ) );
 		}
 
+		$this->log->info( "Rebuild complete [ count :: $count ][ limit :: $limit ]" );
 		echo( "Rebuild complete [ count :: $count ][ limit :: $limit ]" );
 
 		// If we're being called as AJAX, die here.
@@ -141,15 +145,15 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 
 		@header( 'Content-Type: text/html; charset=' . get_option( 'blog_charset' ) );
 		?>
-        <html>
-        <head>
-            <meta http-equiv="refresh"
-                  content="0; <?php echo esc_attr( $url ); ?>">
-        </head>
-        <body>
-        Rebuilding, please wait...
-        </body>
-        </html>
+		<html>
+		<head>
+			<meta http-equiv="refresh"
+			      content="0; <?php echo esc_attr( $url ); ?>">
+		</head>
+		<body>
+		Rebuilding, please wait...
+		</body>
+		</html>
 		<?php
 
 		exit;
@@ -161,9 +165,9 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 	 *
 	 * @since 3.6.0
 	 *
-	 * @param int $offset The start offset.
-	 * @param int $limit The maximum number of items to return.
-	 * @param array $args Additional arguments.
+	 * @param int   $offset The start offset.
+	 * @param int   $limit  The maximum number of items to return.
+	 * @param array $args   Additional arguments.
 	 *
 	 * @return array A array of items (or an empty array if no items are found).
 	 */

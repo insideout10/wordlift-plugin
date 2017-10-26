@@ -92,11 +92,17 @@ class Wordlift_Uri_Service {
 	 */
 	public function delete_all() {
 
+		$this->log->trace( 'Going to delete all the `entity_url` post metas...' );
+
 		// Delete URIs associated with posts/entities.
 		$this->wpdb->delete( $this->wpdb->postmeta, array( 'meta_key' => 'entity_url' ) );
 
+		$this->log->trace( 'Going to delete all the `_wl_uri` user metas...' );
+
 		// Delete URIs associated with authors.
 		$this->wpdb->delete( $this->wpdb->usermeta, array( 'meta_key' => '_wl_uri' ) );
+
+		$this->log->debug( '`entity_url` post metas and `_wl_uri` user metas deleted.' );
 
 	}
 

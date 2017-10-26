@@ -232,6 +232,8 @@ class Wordlift_Entity_Service {
 	 */
 	public function get_entity_post_by_uri( $uri ) {
 
+		$this->log->trace( "Getting an entity post for URI $uri..." );
+
 		// Check if we've been provided with a value otherwise return null.
 		if ( empty( $uri ) ) {
 			return null;
@@ -294,6 +296,8 @@ class Wordlift_Entity_Service {
 
 		// Return null if no post is found.
 		if ( 0 === count( $posts ) ) {
+			$this->log->warn( "No post for URI $uri." );
+
 			return null;
 		}
 
