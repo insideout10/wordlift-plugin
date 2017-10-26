@@ -71,6 +71,15 @@ class Wordlift_Configuration_Service {
 	const LINK_BY_DEFAULT = 'link_by_default';
 
 	/**
+	 * The {@link Wordlift_Log_Service} instance.
+	 *
+	 * @since 3.16.0
+	 *
+	 * @var \Wordlift_Log_Service $log The {@link Wordlift_Log_Service} instance.
+	 */
+	private $log;
+
+	/**
 	 * The Wordlift_Configuration_Service's singleton instance.
 	 *
 	 * @since  3.6.0
@@ -86,6 +95,8 @@ class Wordlift_Configuration_Service {
 	 * @since 3.6.0
 	 */
 	public function __construct() {
+
+		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
 		self::$instance = $this;
 
@@ -162,6 +173,7 @@ class Wordlift_Configuration_Service {
 	public function set_entity_base_path( $value ) {
 
 		$this->set( 'wl_general_settings', self::ENTITY_BASE_PATH_KEY, $value );
+
 	}
 
 	/**
@@ -333,12 +345,28 @@ class Wordlift_Configuration_Service {
 	 *
 	 */
 	private function get_remote_dataset_uri( $key ) {
+
+		$this->log->trace( "Getting the remote dataset URI..." );
+
+		$url = $this->get_accounts()
+			   . "?key=" . urlencode( $key )
+			   . "&url=" . urlencode( site_url() );
+
+		$args     = wp_parse_args( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array( 'method' => 'PUT' ) );
+		$response = wp_remote_request( $url, $args );
+
 		// Request the dataset URI.
-		$response = wp_remote_get( $this->get_accounts_by_key_dataset_uri( $key ), unserialize( WL_REDLINK_API_HTTP_OPTIONS ) );
+		// $response = wp_remote_get( $this->get_accounts_by_key_dataset_uri( $key ), unserialize( WL_REDLINK_API_HTTP_OPTIONS ) );
 
 		// If the response is valid, then set the value.
 		if ( ! is_wp_error( $response ) && 200 === (int) $response['response']['code'] ) {
-			$this->set_dataset_uri( $response['body'] );
+
+			$json        = json_decode( $response['body'] );
+			$dataset_uri = $json->datasetURI;
+
+			$this->log->info( "Setting the dataset URI to $dataset_uri..." );
+
+			$this->set_dataset_uri( $dataset_uri );
 		} else {
 			$this->set_dataset_uri( '' );
 		}
@@ -391,6 +419,18 @@ class Wordlift_Configuration_Service {
 	public function get_accounts_by_key_dataset_uri( $key ) {
 
 		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "accounts/key=$key/dataset_uri";
+	}
+
+	/**
+	 * Get the `accounts` end point.
+	 *
+	 * @since 3.16.0
+	 *
+	 * @return string The `accounts` end point.
+	 */
+	public function get_accounts() {
+
+		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "accounts";
 	}
 
 	/**
