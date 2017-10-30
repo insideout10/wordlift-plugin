@@ -62,15 +62,6 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	protected $attachment_service;
 
 	/**
-	 * A {@link Wordlift_Cache_Service} instance. Used to access cached data.
-	 *
-	 * @since  3.16.0
-	 * @access private
-	 * @var \Wordlift_Cache_Service $image_data_cache A {@link Wordlift_Cache_Service} instance.
-	 */
-	static protected $image_data_cache = null;
-
-	/**
 	 * Wordlift_Post_To_Jsonld_Converter constructor.
 	 *
 	 * @since 3.10.0
@@ -86,18 +77,6 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		$this->entity_service      = $entity_service;
 		$this->user_service        = $user_service;
 		$this->attachment_service  = $attachment_service;
-		if ( is_null( self::$image_data_cache ) ) {
-			self::$image_data_cache    = new Wordlift_Cache_Service( 'json_ld_images' );
-
-			// Hook on post save to flush relevant cache.
-			add_action( 'save_post', 'Wordlift_Abstract_Post_To_Jsonld_Converter::save_post' );
-
-			// Hook on meta change to detect when featured image is change which might not
-			/// always be when the post is saved.
-			add_action( 'added_post_meta', 'Wordlift_Abstract_Post_To_Jsonld_Converter::updated_meta', 10, 4 );
-			add_action( 'updated_post_meta', 'Wordlift_Abstract_Post_To_Jsonld_Converter::updated_meta', 10, 4 );
-			add_action( 'deleted_post_meta', 'Wordlift_Abstract_Post_To_Jsonld_Converter::updated_meta', 10, 4 );
-		}
 	}
 
 	/**
@@ -105,7 +84,6 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 * found while processing the post is set in the $references array.
 	 *
 	 * @since 3.10.0
-	 *
 	 *
 	 * @param int   $post_id    The post id.
 	 * @param array $references An array of entity references.
@@ -115,7 +93,8 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	public function convert( $post_id, &$references = array() ) {
 
 		// Get the post instance.
-		if ( null === $post = get_post( $post_id ) ) {
+		$post = get_post( $post_id );
+		if ( null === $post ) {
 			// Post not found.
 			return null;
 		}
@@ -145,7 +124,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 			//
 			// No need to specify `'@type' => 'WebPage'.
 			//
-			// See https://github.com/insideout10/wordlift-plugin/issues/451
+			// See https://github.com/insideout10/wordlift-plugin/issues/451.
 			$jsonld['mainEntityOfPage'] = get_the_permalink( $post->ID );
 		};
 
@@ -187,19 +166,12 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 */
 	protected function set_images( $post, &$jsonld ) {
 
-		// First lets check if we have this cached, and if so return it.
-		$cache = self::$image_data_cache->get( $post->ID );
-		if ( $cache ) {
-			if (0 !== $cache) { // do nothing if we have no images cached.
-				return $cache;
-			}
-		}
-
 		// Prepare the attachment ids array.
 		$ids = array();
 
 		// Set the thumbnail id as first attachment id, if any.
-		if ( '' !== $thumbnail_id = get_post_thumbnail_id( $post->ID ) ) {
+		$thumbnail_id = get_post_thumbnail_id( $post->ID );
+		if ( '' !== $thumbnail_id ) {
 			$ids[] = $thumbnail_id;
 		}
 
@@ -211,11 +183,12 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 
 		// Map the attachment ids to images' data structured for schema.org use.
 		$images = array_map( function ( $item ) {
+			/*
+			 * @todo: we're not sure that we're getting attachment data here, we
+			 * should filter `false`s.
+			 */
 
-			// @todo: we're not sure that we're getting attachment data here, we
-			// should filter `false`s.
-
-			// Get the attachment data.
+			 // Get the attachment data.
 			$attachment = wp_get_attachment_image_src( $item, 'full' );
 
 			// Refactor data as per schema.org specifications.
@@ -225,11 +198,8 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 			), $attachment );
 		}, array_merge( $ids, $embeds, $gallery ) );
 
-		if ( 0 < sizeof( $images ) ) {
+		if ( 0 < count( $images ) ) {
 			$jsonld['image'] = $images;
-			self::$image_data_cache->set( $post->ID, $images, DAY_IN_SECONDS );
-		} else {
-			self::$image_data_cache->set( $post->ID, 0, DAY_IN_SECONDS );
 		}
 
 	}
@@ -250,7 +220,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		// If you specify a "width" or "height" value you should leave out
 		// 'px'. For example: "width":"4608px" should be "width":"4608".
 		//
-		// See https://github.com/insideout10/wordlift-plugin/issues/451
+		// See https://github.com/insideout10/wordlift-plugin/issues/451.
 		if ( isset( $attachment[1] ) && is_numeric( $attachment[1] ) && 0 < $attachment[1] ) {
 			$image['width'] = $attachment[1];
 		}
@@ -260,48 +230,5 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		}
 
 		return $image;
-	}
-
-	/**
-	 * Delete relevant cache when a post content is changed.
-	 *
-	 * @since 3.16.0
-	 *
-	 * @param int     $post_id The id of the post.
-	 * @param WP_Post $post    The post.
-	 */
-	static public function save_post( $post_id, $post ) {
-		self::$image_data_cache->delete( $post_id );
-	}
-
-	/**
-	 * Delete the relevant post cache when a featured image is changed.
-	 *
-	 * @since 3.16.0
-	 *
-	 * @param int    $meta_id    ID of updated metadata entry.
-	 * @param int    $object_id  Object ID.
-	 * @param string $meta_key   Meta key.
-	 * @param mixed  $meta_value Meta value.
-	 */
-	static public function updated_meta( $meta_id, $object_id, $meta_key, $meta_value ) {
-		if ( '_thumbnail_id' === $meta_key ) {
-			self::$image_data_cache->delete( $object_id );
-		}
-	}
-
-	/**
-	 * Delete all of the posts cache.
-	 *
-	 * @since 3.16.0
-	 *
-	 */
-	static public function flush_cache( ) {
-		if ( ! is_null( self::$image_data_cache ) ) {
-			self::$image_data_cache->flush( );
-		} else {
-			$t = new Wordlift_Cache_Service( 'json_ld_images' );
-			$t->flush();
-		}
 	}
 }

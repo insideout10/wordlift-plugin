@@ -13,7 +13,7 @@
  *
  * @since 3.10.0
  */
-class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld_Converter {
+class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Cached_Post_To_Jsonld_Converter {
 
 	/**
 	 * A {@link Wordlift_Configuration_Service} instance.
@@ -43,12 +43,12 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 *
 	 * @since 3.10.0
 	 *
-	 * @param \Wordlift_Entity_Type_Service              $entity_type_service   A {@link Wordlift_Entity_Type_Service} instance.
-	 * @param \Wordlift_Entity_Service                   $entity_service        A {@link Wordlift_Entity_Service} instance.
-	 * @param \Wordlift_User_Service                     $user_service          A {@link Wordlift_User_Service} instance.
-	 * @param \Wordlift_Attachment_Service               $attachment_service    A {@link Wordlift_Attachment_Service} instance.
-	 * @param \Wordlift_Configuration_Service            $configuration_service A {@link Wordlift_Configuration_Service} instance.
-	 * @param  \Wordlift_Entity_Post_To_Jsonld_Converter $entity_post_to_jsonld_converter
+	 * @param \Wordlift_Entity_Type_Service             $entity_type_service   A {@link Wordlift_Entity_Type_Service} instance.
+	 * @param \Wordlift_Entity_Service                  $entity_service        A {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_User_Service                    $user_service          A {@link Wordlift_User_Service} instance.
+	 * @param \Wordlift_Attachment_Service              $attachment_service    A {@link Wordlift_Attachment_Service} instance.
+	 * @param \Wordlift_Configuration_Service           $configuration_service A {@link Wordlift_Configuration_Service} instance.
+	 * @param \Wordlift_Entity_Post_To_Jsonld_Converter $entity_post_to_jsonld_converter
 	 */
 	public function __construct( $entity_type_service, $entity_service, $user_service, $attachment_service, $configuration_service, $entity_post_to_jsonld_converter ) {
 		parent::__construct( $entity_type_service, $entity_service, $user_service, $attachment_service );
@@ -65,7 +65,6 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 * found while processing the post is set in the $references array.
 	 *
 	 * @since 3.10.0
-	 *
 	 *
 	 * @param int   $post_id    The post id.
 	 * @param array $references An array of entity references.
@@ -101,7 +100,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		$this->set_publisher( $jsonld );
 
 		// Process the references if any.
-		if ( 0 < sizeof( $references ) ) {
+		if ( 0 < count( $references ) ) {
 
 			// Prepare the `about` and `mentions` array.
 			$about = $mentions = array();
@@ -113,7 +112,9 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 				$labels = $this->entity_service->get_labels( $reference );
 
 				// Get the entity URI.
-				$item = array( '@id' => $this->entity_service->get_uri( $reference ) );
+				$item = array(
+					'@id' => $this->entity_service->get_uri( $reference ),
+				);
 
 				// Check if the labels match any part of the title.
 				$matches = 1 === preg_match( '/' . implode( '|', $labels ) . '/', $post->post_title );
@@ -127,15 +128,14 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			}
 
 			// If we have abouts, assign them to the JSON-LD.
-			if ( 0 < sizeof( $about ) ) {
+			if ( 0 < count( $about ) ) {
 				$jsonld['about'] = $about;
 			}
 
 			// If we have mentions, assign them to the JSON-LD.
-			if ( 0 < sizeof( $mentions ) ) {
+			if ( 0 < count( $mentions ) ) {
 				$jsonld['mentions'] = $mentions;
 			}
-
 		}
 
 		/**
@@ -206,7 +206,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			return;
 		}
 
-		// Get the item id
+		// Get the item id.
 		$id = $this->entity_service->get_uri( $publisher_id );
 
 		// Get the type.
@@ -232,7 +232,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		// Set the logo, only for http://schema.org/Organization as Person doesn't
 		// support the logo property.
 		//
-		// See http://schema.org/logo
+		// See http://schema.org/logo.
 		if ( 'http://schema.org/Organization' !== $type['uri'] ) {
 			return;
 		}
@@ -249,13 +249,13 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 
 		// Copy over some useful properties.
 		//
-		// See https://developers.google.com/search/docs/data-types/articles
+		// See https://developers.google.com/search/docs/data-types/articles.
 		$params['publisher']['logo']['@type'] = 'ImageObject';
 		$params['publisher']['logo']['url']   = $attachment[0];
 		// If you specify a "width" or "height" value you should leave out
 		// 'px'. For example: "width":"4608px" should be "width":"4608".
 		//
-		// See https://github.com/insideout10/wordlift-plugin/issues/451
+		// See https://github.com/insideout10/wordlift-plugin/issues/451.
 		$params['publisher']['logo']['width']  = $attachment[1];
 		$params['publisher']['logo']['height'] = $attachment[2];
 

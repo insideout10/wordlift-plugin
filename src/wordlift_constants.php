@@ -74,9 +74,9 @@ function wl_prefixes() {
 function wl_temp_dir() {
 	$tempdir = get_temp_dir();
 	$unique = md5( site_url() . get_current_blog_id() );
-	$unique_temp_dir = $tempdir . '/wl_' . $unique;
+	$unique_temp_dir = $tempdir . 'wl_' . $unique; // $tempdir should have a trailing slash.
 
-	// If directory do not exist, creat it.
+	// If directory do not exist, create it.
 	if ( ! file_exists( $unique_temp_dir ) ) {
 		mkdir( $unique_temp_dir );
 	}

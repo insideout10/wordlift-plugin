@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Fired during plugin activation
  *
@@ -31,7 +30,7 @@ class Wordlift_Activator {
 	 */
 	public static function activate() {
 
-		// Do not let the plugin be activate on wordpress versions before 4.2.
+		// Do not let the plugin be activate on WordPress versions before 4.2.
 		$version = get_bloginfo( 'version' );
 		if ( version_compare( $version, '4.2', '<' ) ) {
 			die( __( 'The WordLift plugin requires WordPress version 4.2 or above.', 'wordlift' ) );
@@ -48,7 +47,7 @@ class Wordlift_Activator {
 		// Intentionally go through the whole upgrade procedure to be DRY.
 		// The following function is called also from `init` so it's not necessary
 		// here.
-		// wl_core_update_db_check();
+		// wl_core_update_db_check.
 
 		// If WordLift's key is not configured, set `_wl_activation_redirect` transient. We won't redirect here, because we can't give
 		// for granted that we're in a browser admin session.
@@ -57,7 +56,7 @@ class Wordlift_Activator {
 		}
 
 		// Clear older caches.
-		Wordlift_Abstract_Post_To_Jsonld_Converter::flush_cache();
+		Wordlift_Jsonld_Cache_Service::get_instance()->flush();
 	}
 
 }

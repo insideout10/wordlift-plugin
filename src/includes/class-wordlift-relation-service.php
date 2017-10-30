@@ -112,6 +112,52 @@ class Wordlift_Relation_Service {
 	}
 
 	/**
+	 * Get the subjects referencing the specified entity {@link WP_Post}.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @param int|array   $object_id The entity {@link WP_Post}'s id.
+	 * @param string      $fields    The fields to return, 'ids' to only return ids or
+	 *                               '*' to return all fields, by default '*'.
+	 * @param null|string $predicate The predicate (who|what|...), by default all.
+	 * @param null|string $status    The status, by default all.
+	 * @param array       $excludes  An array of ids to exclude from the results.
+	 * @param null|int    $limit     The maximum number of results, by default
+	 *                               no limit.
+	 * @param null|array  $include   The {@link WP_Post}s' ids to include.
+	 *
+	 * @return array|object|null Database query results
+	 */
+	public function get_subjects( $object_id, $fields = '*', $predicate = null, $status = null, $excludes = array(), $limit = null, $include = null ) {
+		global $wpdb;
+
+		// The output fields.
+		$actual_fields = self::fields( $fields );
+
+		$objects = $this->article_id_to_entity_id( $object_id );
+
+		$sql =
+			"
+			SELECT DISTINCT p.$actual_fields
+			FROM {$this->relation_table} r
+			INNER JOIN $wpdb->posts p
+				ON p.id = r.subject_id
+			"
+			// Add the status clause.
+			. self::and_status( $status )
+			. self::where_object_id( $objects )
+			// Since `object_id` can be an article ID we need to exclude it from
+			// the results.
+			. self::and_article_not_in( array_merge( $excludes, (array) $object_id ) )
+			. self::and_article_in( $include )
+			. " AND p.post_type IN ( 'post', 'page', 'entity' ) "
+			. self::and_predicate( $predicate )
+			. self::limit( $limit );
+
+		return '*' === $actual_fields ? $wpdb->get_results( $sql ) : $wpdb->get_col( $sql );
+	}
+
+	/**
 	 * Add the limit clause if specified.
 	 *
 	 * @since 3.15.0

@@ -1,8 +1,13 @@
 <?php
 /**
- * Services: Cache Service.
+ * Services: Abstract Cache Service.
  *
- * Define the cache Service.
+ * Define the Abstract cache Service.
+ *
+ * While it can be used by itself to instantiate cache controllers, the
+ * recommended design pattern is to inherit it to create a specific caching service.
+ * Specifically the abstract implementation lack good cache invalidation, something
+ * that most likely need to be part of any specific caching scheme.
  *
  * @since      3.16.0
  * @package    Wordlift
@@ -10,13 +15,13 @@
  */
 
 /**
- * The Wordlift_Cache_Service provides functions to cache information.
+ * The Wordlift_Abstract_Cache_Service provides functions to cache information.
  *
  * @since      3.16.0
  * @package    Wordlift
  * @subpackage Wordlift/includes
  */
-class Wordlift_Cache_Service {
+abstract class Wordlift_Abstract_Cache_Service {
 
 	/**
 	 * Pattern used to sanitize types and ids to ensure valid file names will be
@@ -24,7 +29,14 @@ class Wordlift_Cache_Service {
 	 *
 	 * @since  3.16.0
 	 */
-	const VALIDATION_PATTERM = '/[^a-z0-9\_]/';
+	const VALIDATION_PATTERN = '/[^a-z0-9\_]/';
+
+	/**
+	 * Suffix to be used for cache file names.
+	 *
+	 * @since  3.16.0
+	 */
+	const FILE_SUFFIX = '.wlcache';
 
 	/**
 	 * A string identifying the group of item being cached by this object.
@@ -47,11 +59,43 @@ class Wordlift_Cache_Service {
 	 */
 	public function __construct( $type ) {
 
-		$this->type = preg_replace( self::VALIDATION_PATTERM, '', $type );
+		$this->type = preg_replace( self::VALIDATION_PATTERN, '', $type );
 
 		if ( WP_DEBUG && ( $this->type !== $type ) ) {
 			throw new Exception( "type is not simple lowercase string type=$type" );
 		}
+	}
+
+	/**
+	 * Get the path of the directory under which the cache files are located.
+	 *
+	 * @return string The directory in which the cache files will be located.
+	 */
+	private function get_directory_name() {
+		$dir = WL_TEMP_DIR . $this->type;
+
+		return $dir;
+	}
+
+	/**
+	 * Get the path of a file which store data associated with a specific id.
+	 *
+	 * @param string $id The identifier of the specific data.
+	 *
+	 * @return string The directory in which the cache files will be located.
+	 */
+	private function get_filename( $id ) {
+		$dir = $this->get_directory_name();
+
+		// whoever is calling is going to try to attempt to access the file,
+		// so make sure at least the directory is there.
+		if ( ! file_exists( $dir ) ) {
+			mkdir( $dir );
+		}
+
+		$id = self::sanitize_id( $id );
+
+		return $dir . '/' . $id . self::FILE_SUFFIX;
 	}
 
 	/**
@@ -66,11 +110,7 @@ class Wordlift_Cache_Service {
 	 */
 	public function get( $id, $default = false ) {
 
-		$id = self::sanitize_id( $id );
-
-		$dir = WL_TEMP_DIR . $this->type;
-
-		$filename = $dir . '/' . $id;
+		$filename = $this->get_filename( $id );
 
 		if ( ! file_exists( $filename ) ) {
 			return $default;
@@ -105,20 +145,12 @@ class Wordlift_Cache_Service {
 	 */
 	public function set( $id, $value, $expiry ) {
 
-		$id = self::sanitize_id( $id );
-
-		$dir = WL_TEMP_DIR . $this->type;
-
-		if ( ! file_exists( $dir ) ) {
-			mkdir( $dir );
-		}
-
-		$filename = $dir . '/' . $id;
+		$filename = $this->get_filename( $id );
 
 		// Create the content saved in the file. It consist of a json of
 		// array containing the expired time and the value.
 		$content = array(
-			'expire' => (0 !== $expiry) ? 0 : time() + expiry,
+			'expire' => (0 === $expiry) ? 0 : time() + $expiry,
 			'value' => $value,
 		);
 
@@ -134,11 +166,8 @@ class Wordlift_Cache_Service {
 	 */
 	public function delete( $id ) {
 
-		$id = self::sanitize_id( $id );
+		$filename = $this->get_filename( $id );
 
-		$dir = WL_TEMP_DIR . $this->type;
-
-		$filename = $dir . '/' . $id;
 		if ( ! file_exists( $filename ) ) {
 			return;
 		}
@@ -153,14 +182,14 @@ class Wordlift_Cache_Service {
 	 */
 	public function flush() {
 
-		$dir = WL_TEMP_DIR . $this->type;
+		$dir = $this->get_directory_name();
 
 		if ( ! file_exists( $dir ) ) {
 			return;
 		}
 
-		$files = glob( "$dir/*" );
-		if ( $files ) {
+		$files = glob( "$dir/*" . self::FILE_SUFFIX );
+		if ( ! empty( $files ) ) {
 			foreach ( $files as $file ) { // iterate files.
 				if ( is_file( $file ) ) {
 					unlink( $file ); // delete file.
@@ -182,7 +211,7 @@ class Wordlift_Cache_Service {
 	 */
 	static private function sanitize_id( $id ) {
 		// sanitize proper file names from $id.
-		$s_id = preg_replace( self::VALIDATION_PATTERM, '', $id );
+		$s_id = preg_replace( self::VALIDATION_PATTERN, '', $id );
 
 		if ( WP_DEBUG && ( $s_id !== (string) $id ) ) {
 			throw new Exception( "id is not a simple lower case string id=$id" );

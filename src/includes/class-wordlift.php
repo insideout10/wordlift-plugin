@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The file that defines the core plugin class
  *
@@ -213,7 +212,7 @@ class Wordlift {
 	/**
 	 * A {@link Wordlift_Sparql_Service} instance.
 	 *
-	 * @var    3.6.0
+	 * @since    3.6.0
 	 * @access protected
 	 * @var \Wordlift_Sparql_Service $sparql_service A {@link Wordlift_Sparql_Service} instance.
 	 */
@@ -256,6 +255,7 @@ class Wordlift {
 	protected $jsonld_website_converter;
 
 	/**
+	 * A {@link Wordlift_Property_Factory} instance.
 	 *
 	 * @since  3.7.0
 	 * @access private
@@ -806,6 +806,7 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/intf-wordlift-post-converter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-abstract-post-to-jsonld-converter.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-abstract-cached-post-to-jsonld-converter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-postid-to-jsonld-converter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-post-to-jsonld-converter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-post-to-jsonld-converter.php';
@@ -864,7 +865,8 @@ class Wordlift {
 
 		/** Services. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-google-analytics-export-service.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-cache-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-abstract-cache-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-jsonld-cache-service.php';
 
 		/** Adapters. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-tinymce-adapter.php';
@@ -1080,7 +1082,7 @@ class Wordlift {
 		// Create the entity rating service.
 		$this->rating_service = new Wordlift_Rating_Service( $this->entity_service, $this->entity_type_service, $this->notice_service );
 
-		// Create entity list customization (wp-admin/edit.php)
+		// Create entity list customization (wp-admin/edit.php).
 		$this->entity_list_service = new Wordlift_Entity_List_Service( $this->rating_service );
 
 		// Create a new instance of the Redirect service.
@@ -1119,6 +1121,9 @@ class Wordlift {
 
 		// Initialize the AMP service.
 		new Wordlift_AMP_Service();
+
+		// Initialize the jsonld caching service.
+		new Wordlift_Jsonld_Cache_Service();
 
 		/** Services. */
 		$this->google_analytics_export_service = new Wordlift_Google_Analytics_Export_Service();
@@ -1167,7 +1172,7 @@ class Wordlift {
 		/** Widgets */
 		$this->related_entities_cloud_widget = new Wordlift_Related_Entities_Cloud_Widget();
 
-		//** WordPress Admin */
+		/* WordPress Admin. */
 		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page( $this->configuration_service );
 		$this->status_page             = new Wordlift_Admin_Status_Page( $this->entity_service, $this->sparql_service );
 
@@ -1260,11 +1265,11 @@ class Wordlift {
 		$this->loader->add_action( 'in_admin_header', $this->rating_service, 'in_admin_header' );
 
 		// Entity listing customization (wp-admin/edit.php)
-		// Add custom columns
+		// Add custom columns.
 		$this->loader->add_filter( 'manage_entity_posts_columns', $this->entity_list_service, 'register_custom_columns' );
 		// no explicit entity as it prevents handling of other post types.
 		$this->loader->add_filter( 'manage_posts_custom_column', $this->entity_list_service, 'render_custom_columns', 10, 2 );
-		// Add 4W selection
+		// Add 4W selection.
 		$this->loader->add_action( 'restrict_manage_posts', $this->entity_list_service, 'restrict_manage_posts_classification_scope' );
 		$this->loader->add_filter( 'posts_clauses', $this->entity_list_service, 'posts_clauses_classification_scope' );
 		$this->loader->add_action( 'pre_get_posts', $this->entity_list_service, 'pre_get_posts' );
@@ -1305,7 +1310,7 @@ class Wordlift {
 		// Hook the admin_init to the settings page.
 		$this->loader->add_action( 'admin_init', $this->settings_page, 'admin_init' );
 
-		// Hook the menu creation on the general wordlift menu creation
+		// Hook the menu creation on the general wordlift menu creation.
 		$this->loader->add_action( 'wl_admin_menu', $this->settings_page, 'admin_menu', 10, 2 );
 		if ( defined( 'WORDLIFT_BATCH' ) && WORDLIFT_BATCH ) {
 			// Add the functionality only if a flag is set in wp-config.php .
@@ -1329,7 +1334,7 @@ class Wordlift {
 		$this->loader->add_action( 'wp_ajax_wl_google_analytics_export', $this->google_analytics_export_service, 'export' );
 
 		// Hook capabilities manipulation to allow access to entity type admin
-		// page  on wordpress versions before 4.7.
+		// page  on WordPress versions before 4.7.
 		global $wp_version;
 		if ( version_compare( $wp_version, '4.7', '<' ) ) {
 			$this->loader->add_filter( 'map_meta_cap', $this->entity_type_admin_page, 'enable_admin_access_pre_47', 10, 4 );

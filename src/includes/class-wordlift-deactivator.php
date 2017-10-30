@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Fired during plugin deactivation
  *
@@ -30,7 +29,7 @@ class Wordlift_Deactivator {
 	 * @since    1.0.0
 	 */
 	public static function deactivate() {
-		Wordlift_Abstract_Post_To_Jsonld_Converter::flush_cache();
+		Wordlift_Jsonld_Cache_Service::get_instance()->flush();
 	}
 
 }
