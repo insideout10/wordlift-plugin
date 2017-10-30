@@ -18,29 +18,35 @@ require_once( 'wordlift_linked_data_images.php' );
  */
 function wl_linked_data_save_post( $post_id ) {
 
+	$log = Wordlift_Log_Service::get_logger( 'wl_linked_data_save_post' );
+
 	// If it's not numeric exit from here.
 	if ( ! is_numeric( $post_id ) || is_numeric( wp_is_post_revision( $post_id ) ) ) {
+		$log->debug("Skipping $post_id, because id is not numeric or is a post revision.");
+
 		return;
 	}
 
 	// Get the post type and check whether it supports the editor.
 	//
 	// See https://github.com/insideout10/wordlift-plugin/issues/659.
-	$post_type = get_post_type( $post_id );
+	$post_type           = get_post_type( $post_id );
 	$is_editor_supported = post_type_supports( $post_type, 'editor' );
 
 	// Bail out if it's not an entity.
 	if ( ! $is_editor_supported ) {
+		$log->debug("Skipping $post_id, because $post_type doesn't support the editor (content).");
+
 		return;
 	}
 
-	// unhook this function so it doesn't loop infinitely
+	// Unhook this function so it doesn't loop infinitely.
 	remove_action( 'save_post', 'wl_linked_data_save_post' );
 
 	// raise the *wl_linked_data_save_post* event.
 	do_action( 'wl_linked_data_save_post', $post_id );
 
-	// re-hook this function
+	// Re-hook this function.
 	add_action( 'save_post', 'wl_linked_data_save_post' );
 }
 
@@ -214,6 +220,8 @@ add_action( 'wl_linked_data_save_post', 'wl_linked_data_save_post_and_related_en
  */
 function wl_save_entity( $entity_data ) {
 
+	$log = Wordlift_Log_Service::get_logger( 'wl_save_entity' );
+
 	$uri              = $entity_data['uri'];
 	$label            = $entity_data['label'];
 	$type_uri         = $entity_data['main_type'];
@@ -305,7 +313,7 @@ function wl_save_entity( $entity_data ) {
 
 	// TODO: handle errors.
 	if ( is_wp_error( $post_id ) ) {
-		wl_write_log( ': error occurred' );
+		$log->error( 'An error occurred: ' . $post_id->get_error_message() );
 
 		// inform an error occurred.
 		return null;

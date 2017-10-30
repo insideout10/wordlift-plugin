@@ -175,12 +175,19 @@ class EntityImagesTest extends Wordlift_Unit_Test_Case {
 		// Retrieve the attachment
 		$attachments = wl_get_attachments( $entity_post->ID );
 
+		$this->assertCount( 1, $attachments );
+
 		// Ensure the entity post is in draft
 		$this->assertEquals( 'draft', $entity_post->post_status );
 		// Publish the entity post
 		wl_update_post_status( $entity_post->ID, 'publish' );
 		// Ensure one image - $attachment - is on RL
 		$redlink_images = $this->getImageRLMetadata( $entity_post->ID );
+
+		$log = Wordlift_Log_Service::get_logger( get_class() );
+
+		$log->debug( 'Found ' . count( $redlink_images ) . ' image(s).' );
+
 		$this->assertCount( 1, $redlink_images );
 		$this->assertContains(
 			wp_get_attachment_url( $attachments[0]->ID ),

@@ -101,7 +101,7 @@ function wl_entity_ajax_get_by_title() {
 	);
 
 	// Clean any buffer.
-	ob_clean();
+	@ob_clean();
 
 	// Send the success response.
 	wp_send_json_success( $response );

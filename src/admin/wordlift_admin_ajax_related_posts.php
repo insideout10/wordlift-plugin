@@ -27,7 +27,7 @@ function wordlift_ajax_related_posts( $http_raw_data = null ) {
 	$post_id = $_GET["post_id"];
 	$post    = get_post( $post_id );
 
-	wl_write_log( "Going to find posts related to current with post id: $post_id ..." );
+	Wordlift_Log_Service::get_logger( 'wordlift_ajax_related_posts' )->trace( "Going to find posts related to current with post id: $post_id ..." );
 
 	// Extract filtering conditions
 	$filtering_entity_uris = ( null == $http_raw_data ) ? file_get_contents( "php://input" ) : $http_raw_data;
@@ -47,7 +47,7 @@ function wordlift_ajax_related_posts( $http_raw_data = null ) {
 	if ( ! empty( $filtering_entity_ids ) ) {
 
 		$related_posts = Wordlift_Relation_Service::get_instance()
-		                                          ->get_article_subjects( $filtering_entity_ids, '*', null, 'publish', array( $post_id ), 5 );
+												  ->get_article_subjects( $filtering_entity_ids, '*', null, 'publish', array( $post_id ), 5 );
 
 		foreach ( $related_posts as $post_obj ) {
 

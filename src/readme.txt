@@ -143,6 +143,20 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.15.3 (2017-10-20) =
+* Enhancement: [#670](https://github.com/insideout10/wordlift-plugin/issues/670): Allow filtering logging levels.
+* Fix: [#677](https://github.com/insideout10/wordlift-plugin/issues/677): Sometimes authors are not correctly matched with their entities.
+* Fix: [#676](https://github.com/insideout10/wordlift-plugin/issues/676): Entity type permalinks no longer work.
+* Fix: [#674](https://github.com/insideout10/wordlift-plugin/issues/674): Improve the performance of get_entity_post_by_uri.
+* Fix: [#673](https://github.com/insideout10/wordlift-plugin/issues/673): Query error on edit screen.
+* Fix: [#672](https://github.com/insideout10/wordlift-plugin/issues/672): Local Business repeated twice in Create New Entity.
+* Fix: [#669](https://github.com/insideout10/wordlift-plugin/issues/669): WordLift is constantly validating the key.
+* Fix: [#668](https://github.com/insideout10/wordlift-plugin/issues/668): View Linked Data on a post shows a 500.
+* Fix: [#667](https://github.com/insideout10/wordlift-plugin/issues/667): Hardcoded entity post types.
+* Fix: [#665](https://github.com/insideout10/wordlift-plugin/issues/665): startDate and endDate are not recorded on some Events.
+* Fix: [#663](https://github.com/insideout10/wordlift-plugin/issues/663): Terms query may slow down site.
+* Fix: [#662](https://github.com/insideout10/wordlift-plugin/issues/662): Old articles appear in Vocabulary.
+
 = 3.15.2 (2017-10-16) =
 * Fix: [#659](https://github.com/insideout10/wordlift-plugin/issues/659): Check WL compatibility with ACF.
 * Fix: [#654](https://github.com/insideout10/wordlift-plugin/issues/654): Entity Link always returning the last blog post.

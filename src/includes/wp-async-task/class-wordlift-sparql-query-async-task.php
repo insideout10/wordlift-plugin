@@ -10,13 +10,13 @@
  */
 
 /**
- * Define the {@link Wordlift_Sparql_Query_Async_Task} {@link WP_Async_Task}.
+ * Define the {@link Wordlift_Sparql_Query_Async_Task} {@link Wordlift_Async_Task}.
  *
  * @since      3.13.2
  * @package    Wordlift
  * @subpackage Wordlift/includes/wp-async-task
  */
-class Wordlift_Sparql_Query_Async_Task extends WP_Async_Task {
+class Wordlift_Sparql_Query_Async_Task extends Wordlift_Async_Task {
 
 	/**
 	 * The protected $action property should be set to the action to which you
@@ -78,7 +78,7 @@ class Wordlift_Sparql_Query_Async_Task extends WP_Async_Task {
 		}
 
 		// Run the asynchronous action.
-		do_action( "wp_async_$this->action", $_POST['request_id'] );
+		do_action( "wl_async_$this->action", $_POST['request_id'] );
 
 	}
 
