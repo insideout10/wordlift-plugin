@@ -84,7 +84,9 @@ class Wordlift_Jsonld_Cache_Service extends Wordlift_Abstract_Cache_Service {
 	 * @param WP_Post $post    The post.
 	 */
 	static public function save_post( $post_id, $post ) {
-		self::$instance->invalidate_post( $post_id );
+		if (! wp_is_post_revision( $post ) && ! wp_is_post_autosave( $post ) ) {
+			self::$instance->invalidate_post( $post_id );
+		}
 	}
 
 	/**
@@ -108,7 +110,7 @@ class Wordlift_Jsonld_Cache_Service extends Wordlift_Abstract_Cache_Service {
 	 * @param int $subject_id The id of the subject post.
 	 */
 	static public function wordlift_relationship_subject_deleted( $subject_id ) {
-		self::$instance->invalidate_post( $post_id );
+		self::$instance->invalidate_post( $subject_id );
 	}
 
 	/**
@@ -144,8 +146,11 @@ class Wordlift_Jsonld_Cache_Service extends Wordlift_Abstract_Cache_Service {
 	 * @param int $post_id The id of the post.
 	 */
 	function invalidate_post( $post_id ) {
-		$this->delete( $post_id );
-		$this->invalidate_referrers( $post_id );
+		$cache = $this->get( $post_id );
+		if ( $cache ) {
+			$this->delete( $post_id );
+			$this->invalidate_referrers( $post_id );
+		}
 	}
 
 	/**
