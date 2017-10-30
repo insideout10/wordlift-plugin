@@ -51,6 +51,9 @@ class Wordlift_Jsonld_Cache_Service extends Wordlift_Abstract_Cache_Service {
 			add_action( 'added_post_meta', 'Wordlift_Jsonld_Cache_Service::updated_meta', 10, 4 );
 			add_action( 'updated_post_meta', 'Wordlift_Jsonld_Cache_Service::updated_meta', 10, 4 );
 			add_action( 'deleted_post_meta', 'Wordlift_Jsonld_Cache_Service::updated_meta', 10, 4 );
+
+			// Flush cache when wordlift settings were updated.
+			add_action( 'update_option_wl_general_settings', 'Wordlift_Jsonld_Cache_Service::update_option_wl_general_settings' );
 		}
 	}
 
@@ -94,6 +97,15 @@ class Wordlift_Jsonld_Cache_Service extends Wordlift_Abstract_Cache_Service {
 		if ( '_thumbnail_id' === $meta_key ) {
 			self::$instance->invalidate_post( $object_id );
 		}
+	}
+
+	/**
+	 * Delete the cache when wordlift settings have changed.
+	 *
+	 * @since 3.16.0
+	 */
+	static public function update_option_wl_general_settings() {
+		self::$instance->flush();
 	}
 
 	/**
