@@ -84,6 +84,8 @@ function wl_core_add_relation_instance( $subject_id, $predicate, $object_id ) {
 		array( '%d', '%s', '%d' )
 	);
 
+	do_action( 'wordlift_relationship_changed', $subject_id, $predicate, $object_id  );
+
 	// Return record id
 	return $wpdb->insert_id;
 }
@@ -116,6 +118,8 @@ function wl_core_delete_relation_instances( $subject_id ) {
 		),
 		array( '%d' )
 	);
+
+	do_action( 'wordlift_relationship_subject_deleted' , $subject_id  );
 
 	return true;
 }
