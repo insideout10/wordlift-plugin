@@ -84,7 +84,7 @@ class Wordlift_Jsonld_Cache_Service extends Wordlift_Abstract_Cache_Service {
 	 * @param WP_Post $post    The post.
 	 */
 	static public function save_post( $post_id, $post ) {
-		if (! wp_is_post_revision( $post ) && ! wp_is_post_autosave( $post ) ) {
+		if ( ! wp_is_post_revision( $post ) && ! wp_is_post_autosave( $post ) ) {
 			self::$instance->invalidate_post( $post_id );
 		}
 	}
