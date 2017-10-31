@@ -74,22 +74,15 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 		return;
 	}
 
-	//
-	$entity_service = Wordlift_Entity_Service::get_instance();
-
-	// Bail out if it's not an entity.
-	if ( ! $entity_service->is_entity( $post_id ) ) {
-		$log->debug( "Post $post_id is not an entity, skipping..." );
-
-		return;
-	}
-
 	// get the current post.
 	$post = get_post( $post_id );
 
 	remove_action( 'wl_linked_data_save_post', 'wl_linked_data_save_post_and_related_entities' );
 
 	// wl_write_log( "[ post id :: $post_id ][ autosave :: false ][ post type :: $post->post_type ]" );
+
+	// Get the entity service instance.
+	$entity_service = Wordlift_Entity_Service::get_instance();
 
 	// Store mapping between tmp new entities uris and real new entities uri
 	$entities_uri_mapping = array();
@@ -151,16 +144,20 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 	// Replace tmp uris in content post if needed
 	$updated_post_content = $post->post_content;
-	// Save each entity and store the post id.
-	foreach ( $entities_uri_mapping as $tmp_uri => $uri ) {
-		$updated_post_content = str_replace( $tmp_uri, $uri, $updated_post_content );
-	}
 
-	// Update the post content
-	wp_update_post( array(
-		'ID'           => $post->ID,
-		'post_content' => $updated_post_content,
-	) );
+	// Update the post content if we found mappings of new entities.
+	if ( ! empty( $entities_uri_mapping ) ) {
+		// Save each entity and store the post id.
+		foreach ( $entities_uri_mapping as $tmp_uri => $uri ) {
+			$updated_post_content = str_replace( $tmp_uri, $uri, $updated_post_content );
+		}
+
+		// Update the post content.
+		wp_update_post( array(
+			'ID'           => $post->ID,
+			'post_content' => $updated_post_content,
+		) );
+	}
 
 	// Extract related/referenced entities from text.
 	$disambiguated_entities = wl_linked_data_content_get_embedded_entities( $updated_post_content );

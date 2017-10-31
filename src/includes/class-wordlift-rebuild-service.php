@@ -174,12 +174,13 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 	function find( $offset = 0, $limit = 10, $args = array() ) {
 
 		return get_posts( wp_parse_args( $args, Wordlift_Entity_Service::add_criterias( array(
-			'offset'      => $offset,
-			'numberposts' => $limit,
-			'fields'      => 'all',
-			'orderby'     => 'ID',
-			'order'       => 'ASC',
-			'post_status' => 'any',
+			'offset'        => $offset,
+			'numberposts'   => $limit,
+			'fields'        => 'all',
+			'orderby'       => 'ID',
+			'order'         => 'ASC',
+			'post_status'   => 'any',
+			'cache_results' => false,
 		) ) ) );
 	}
 
