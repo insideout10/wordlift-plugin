@@ -81,5 +81,7 @@ class EntityApiTest extends Wordlift_Unit_Test_Case {
 
 		// The alias above should not be found if we don't ask for aliases
 		$this->assertCount( 0, wl_entity_get_by_title( 'an alias', false, false ) );
+
 	}
+
 }
