@@ -62,18 +62,41 @@ class Wordlift_Related_Entities_Cloud_Shortcode_Test extends Wordlift_Unit_Test_
 		$tags      = $shortcode->get_related_entities_tags();
 		$this->assertEquals( 2, count( $tags ) );
 
-		// Assume order is order of creation of entities.
-		$this->assertEquals( 'http://example.org/?entity=entity1', $tags[0]->link );
-		$this->assertEquals( 'An Entity', $tags[0]->slug );
-		$this->assertEquals( 'An Entity', $tags[0]->name );
-		$this->assertEquals( $entity_id, $tags[0]->id );
-		$this->assertEquals( 2, $tags[0]->count );
+		// Can't trust order, so have to compare results to expectations in a harder way.
+		$matched_all = true;
+		$results = array( 0 => array(
+				'slug' => 'An Entity',
+				'name' => 'An Entity',
+				'url' => 'http://example.org/?entity=entity1',
+				'count' => 2,
+			),
+			1 => array(
+				'slug' => 'Another Entity',
+				'name' => 'Another Entity',
+				'url' => 'http://example.org/?entity=entity2',
+				'count' => 2,
+			),
+		);
 
-		$this->assertEquals( 'http://example.org/?entity=entity2', $tags[1]->link );
-		$this->assertEquals( 'Another Entity', $tags[1]->slug );
-		$this->assertEquals( 'Another Entity', $tags[1]->name );
-		$this->assertEquals( $entity_id2, $tags[1]->id );
-		$this->assertEquals( 2, $tags[1]->count );
+		foreach ( array( 0 => $entity_id, 1 => $entity_id2 ) as $res_key=>$id ) {
+			// Weak compare because the entity ids are proper ints while from the API
+			// we might get strings.
+			if ( $id == $tags[0]->id ) {
+				$key = 0;
+			} elseif ( $id == $tags[1]->id ) {
+				$key = 1;
+			} else {
+				$matched_all = false;
+				break;
+			}
+
+			$this->assertEquals( $results[ $res_key ]['url'], $tags[ $key ]->link );
+			$this->assertEquals( $results[ $res_key ]['slug'], $tags[ $key ]->slug );
+			$this->assertEquals( $results[ $res_key ]['name'], $tags[ $key ]->name );
+			$this->assertEquals( $results[ $res_key ]['count'], $tags[ $key ]->count );
+		}
+
+		$this->assertTrue( $matched_all );
 
 		// Test entity page.
 		$this->go_to( '?entity=entity2' );

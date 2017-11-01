@@ -438,8 +438,9 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		//
 		$this->assertCount( 2, $jsonld['mentions'] );
-		$this->assertEquals( $entity_1_uri, $jsonld['mentions'][0]['@id'] );
-		$this->assertEquals( $entity_2_uri, $jsonld['mentions'][1]['@id'] );
+		$mentions_ids = array( $jsonld['mentions'][0]['@id'], $jsonld['mentions'][1]['@id'] );
+		$this->assertTrue( in_array( $entity_1_uri, $mentions_ids, true) );
+		$this->assertTrue( in_array( $entity_2_uri, $mentions_ids, true) );
 
 	}
 
@@ -638,8 +639,9 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		//
 		$this->assertCount( 2, $jsonld['mentions'] );
-		$this->assertEquals( $entity_1_uri, $jsonld['mentions'][0]['@id'] );
-		$this->assertEquals( $entity_2_uri, $jsonld['mentions'][1]['@id'] );
+		$mentions_ids = array( $jsonld['mentions'][0]['@id'], $jsonld['mentions'][1]['@id'] );
+		$this->assertTrue( in_array( $entity_1_uri, $mentions_ids, true) );
+		$this->assertTrue( in_array( $entity_2_uri, $mentions_ids, true) );
 
 	}
 
@@ -715,8 +717,9 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		//
 		$this->assertCount( 2, $jsonld['mentions'] );
-		$this->assertEquals( $entity_1_uri, $jsonld['mentions'][0]['@id'] );
-		$this->assertEquals( $entity_2_uri, $jsonld['mentions'][1]['@id'] );
+		$mentions_ids = array( $jsonld['mentions'][0]['@id'], $jsonld['mentions'][1]['@id'] );
+		$this->assertTrue( in_array( $entity_1_uri, $mentions_ids, true) );
+		$this->assertTrue( in_array( $entity_2_uri, $mentions_ids, true) );
 	}
 
 	/**
@@ -803,9 +806,9 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 200, $jsonld['image']['1']['height'] );
 
 		//
-		$this->assertCount( 2, $jsonld['mentions'] );
-		$this->assertEquals( $entity_1_uri, $jsonld['mentions'][0]['@id'] );
-		$this->assertEquals( $entity_2_uri, $jsonld['mentions'][1]['@id'] );
+		$mentions_ids = array( $jsonld['mentions'][0]['@id'], $jsonld['mentions'][1]['@id'] );
+		$this->assertTrue( in_array( $entity_1_uri, $mentions_ids, true) );
+		$this->assertTrue( in_array( $entity_2_uri, $mentions_ids, true) );
 	}
 
 	/**
@@ -892,8 +895,9 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		//
 		$this->assertCount( 2, $jsonld['mentions'] );
-		$this->assertEquals( $entity_1_uri, $jsonld['mentions'][0]['@id'] );
-		$this->assertEquals( $entity_2_uri, $jsonld['mentions'][1]['@id'] );
+		$mentions_ids = array( $jsonld['mentions'][0]['@id'], $jsonld['mentions'][1]['@id'] );
+		$this->assertTrue( in_array( $entity_1_uri, $mentions_ids, true) );
+		$this->assertTrue( in_array( $entity_2_uri, $mentions_ids, true) );
 	}
 
 	/**
@@ -986,8 +990,9 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		//
 		$this->assertCount( 2, $jsonld['mentions'] );
-		$this->assertEquals( $entity_1_uri, $jsonld['mentions'][0]['@id'] );
-		$this->assertEquals( $entity_2_uri, $jsonld['mentions'][1]['@id'] );
+		$mentions_ids = array( $jsonld['mentions'][0]['@id'], $jsonld['mentions'][1]['@id'] );
+		$this->assertTrue( in_array( $entity_1_uri, $mentions_ids, true) );
+		$this->assertTrue( in_array( $entity_2_uri, $mentions_ids, true) );
 
 	}
 

@@ -56,6 +56,9 @@ class Wordlift_Download_Google_Content_Data_Test extends Wordlift_Ajax_Unit_Test
 		$test_permalink_structure_2 = Wordlift_Google_Analytics_Export_Service::is_postname_permalink_structure();
 
 		$this->assertTrue( $test_permalink_structure_2 );
+
+		// since permalink is global DB setting, lets return it to default for tests that exact it to be so.
+		$this->set_permalink_structure( '' );
 	}
 
 	/**
