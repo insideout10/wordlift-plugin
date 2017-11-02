@@ -144,6 +144,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 = 3.15.4 (????-??-??) =
+* Fix: [#691](https://github.com/insideout10/wordlift-plugin/issues/691): Check WL compatibility with UX builder part of Flatsome themes.
 * Fix: [#689](https://github.com/insideout10/wordlift-plugin/issues/689): Heavy query on image attachments.
 * Fix: [#687](https://github.com/insideout10/wordlift-plugin/issues/687): Test failure with WP 4.8.3.
 * Fix: [#686](https://github.com/insideout10/wordlift-plugin/issues/686): `Wordlift_Listable` flushes the cache at every post.
