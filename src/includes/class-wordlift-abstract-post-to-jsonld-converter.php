@@ -173,8 +173,14 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 			$ids[] = $thumbnail_id;
 		}
 
+		// For the time being the following is being removed since the query
+		// initiated by `get_image_embeds` is consuming lots of CPU.
+		//
+		// See https://github.com/insideout10/wordlift-plugin/issues/689.
+		//
 		// Get the embeds, removing existing ids.
-		$embeds = array_diff( $this->attachment_service->get_image_embeds( $post->post_content ), $ids );
+		// $embeds = array_diff( $this->attachment_service->get_image_embeds( $post->post_content ), $ids );
+		$embeds = array();
 
 		// Get the gallery, removing existing ids.
 		$gallery = array_diff( $this->attachment_service->get_gallery( $post ), $ids, $embeds );

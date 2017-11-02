@@ -143,6 +143,13 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.15.4 (????-??-??) =
+* Fix: [#689](https://github.com/insideout10/wordlift-plugin/issues/689): Heavy query on image attachments.
+* Fix: [#687](https://github.com/insideout10/wordlift-plugin/issues/687): Test failure with WP 4.8.3.
+* Fix: [#686](https://github.com/insideout10/wordlift-plugin/issues/686): `Wordlift_Listable` flushes the cache at every post.
+* Fix: [#685](https://github.com/insideout10/wordlift-plugin/issues/685): `flush_rewrite_rules_hard` causes a large number of SPARQL queries.
+* Fix: [#683](https://github.com/insideout10/wordlift-plugin/issues/683): Incompatibility with Formidable Forms.
+
 = 3.15.3 (2017-10-20) =
 * Enhancement: [#670](https://github.com/insideout10/wordlift-plugin/issues/670): Allow filtering logging levels.
 * Fix: [#677](https://github.com/insideout10/wordlift-plugin/issues/677): Sometimes authors are not correctly matched with their entities.
