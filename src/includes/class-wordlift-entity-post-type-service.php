@@ -124,15 +124,15 @@ class Wordlift_Entity_Post_Type_Service {
 		);
 
 		$args = array(
-			'labels'        => $labels,
-			'description'   => 'Holds our vocabulary (set of entities) and entity specific data',
-			'public'        => true,
-			'menu_position' => 20,
+			'labels'          => $labels,
+			'description'     => 'Holds our vocabulary (set of entities) and entity specific data',
+			'public'          => true,
+			'menu_position'   => 20,
 			// after the pages menu.
 			// Add support for 'authors' and 'revisions':
 			// * see https://github.com/insideout10/wordlift-plugin/issues/395
 			// * see https://github.com/insideout10/wordlift-plugin/issues/376
-			'supports'      => array(
+			'supports'        => array(
 				'title',
 				'editor',
 				'thumbnail',
@@ -141,14 +141,35 @@ class Wordlift_Entity_Post_Type_Service {
 				'author',
 				'revisions',
 			),
-			'has_archive'   => true,
-			'menu_icon'     => WP_CONTENT_URL . '/plugins/wordlift/images/svg/wl-vocabulary-icon.svg',
+			'has_archive'     => true,
+			'menu_icon'       => WP_CONTENT_URL . '/plugins/wordlift/images/svg/wl-vocabulary-icon.svg',
 			// Although we define our slug here, we further manage linking to entities using the Wordlift_Entity_Link_Service.
-			'rewrite'       => array( 'slug' => $this->slug ),
-			'capability_type'	=> array( 'wordlift_entity', 'wordlift_entities' ),
+			'rewrite'         => array( 'slug' => $this->slug ),
+			'capability_type' => array(
+				'wordlift_entity',
+				'wordlift_entities',
+			),
+			//			'capabilities'     => array(
+			//				'read_post'              => 'read_post',
+			//				'edit_post'              => 'edit_wordlift_entity',
+			//				'delete_post'            => 'delete_wordlift_entity',
+			//				'edit_posts'             => 'edit_wordlift_entities',
+			//				'edit_others_posts'      => 'edit_others_wordlift_entities',
+			//				'publish_posts'          => 'publish_wordlift_entities',
+			//				'read_private_posts'     => 'read_private_wordlift_entities',
+			//				'create_posts'           => 'edit_wordlift_entities',
+			//				'delete_posts'           => 'delete_wordlift_entities',
+			//				'delete_others_posts'    => 'delete_others_wordlift_entities',
+			//				'delete_published_posts' => 'delete_published_wordlift_entities',
+			//				'delete_private_posts'   => 'delete_private_wordlift_entities',
+			//			),
 		);
 
 		register_post_type( $this->post_type, $args );
+
+//
+//		var_dump( $GLOBALS['wp_post_types'][ $this->post_type ] );
+//		wp_die();
 
 		// Enable WP's standard `category` taxonomy for entities.
 		//

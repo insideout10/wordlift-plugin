@@ -36,9 +36,9 @@ class Wordlift_User_Service {
 	 *
 	 * @since  3.1.7
 	 * @access private
-	 * @var \Wordlift_Log_Service $log_service The Log service.
+	 * @var \Wordlift_Log_Service $log The Log service.
 	 */
-	private $log_service;
+	private $log;
 
 	/**
 	 * The singleton instance of the User service.
@@ -56,11 +56,11 @@ class Wordlift_User_Service {
 	 */
 	public function __construct() {
 
-		$this->log_service = Wordlift_Log_Service::get_logger( 'Wordlift_User_Service' );
+		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
 		self::$instance = $this;
 
-		add_filter( 'user_has_cap', array( $this, 'has_cap' ), 10, 3 );
+		// add_filter( 'user_has_cap', array( $this, 'has_cap' ), 10, 3 );
 	}
 
 	/**
@@ -408,6 +408,7 @@ class Wordlift_User_Service {
 	 * @return array The capabilities array.
 	 */
 	public function has_cap( $allcaps, $cap, $args ) {
+
 		/*
 		 * For entity management/editing related capabilities
 		 * check that an editor was not explicitly denied (in user profile)
@@ -419,6 +420,8 @@ class Wordlift_User_Service {
 		 * require a capability, just request one.
 		 */
 		if ( empty( $cap ) || ! isset( $cap[0] ) ) {
+			$this->log->debug( 'cap or cap[0] is not set, returning allcaps.' );
+
 			return $allcaps;
 		}
 
@@ -440,6 +443,9 @@ class Wordlift_User_Service {
 				$allcaps[ $cap[0] ] = false;
 			}
 		}
+
+
+		$this->log->debug( "Returning allcaps for $cap[0]." );
 
 		return $allcaps;
 	}
