@@ -1,6 +1,6 @@
 <?php
 /**
- * Converters: Abstract cached Post to JSON-LD Converter.
+ * Converters: Abstract cached Post to JSON-LD Converter
  *
  * An abstract converter which provides basic post conversion.
  *
@@ -32,16 +32,16 @@ abstract class Wordlift_Abstract_Cached_Post_To_Jsonld_Converter extends Wordlif
 	 */
 	public function convert( $post_id, &$references = array() ) {
 
-		$cache = Wordlift_Jsonld_Cache_Service::get_instance();
+		$cache  = Wordlift_Jsonld_Cache_Service::get_instance();
 		$values = $cache->get( $post_id );
 		if ( false === $values ) { // Nothing in the cache? calculate it and cache.
-			$values = array();
+			$values               = array();
 			$values['references'] = array();
-			$values['jsonld'] = parent::convert( $post_id, $values['references'] );
+			$values['jsonld']     = parent::convert( $post_id, $values['references'] );
 			if ( null === $values['jsonld'] ) {
 				return null;
 			}
-			
+
 			// If we have referrers which might use this data, we should invalidate them.
 			// This comes before saving the cache to avoid problems with circular references.
 			$cache->invalidate_referrers( $post_id );
@@ -49,6 +49,8 @@ abstract class Wordlift_Abstract_Cached_Post_To_Jsonld_Converter extends Wordlif
 			$cache->set( $post_id, $values, 0 );
 		}
 		$references = $values['references'];
+
 		return $values['jsonld'];
 	}
+
 }

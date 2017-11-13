@@ -1,6 +1,6 @@
 <?php
 /**
- * Services: Abstract Cache Service.
+ * Services: Abstract Cache Service
  *
  * Define the Abstract cache Service.
  *
@@ -48,7 +48,7 @@ abstract class Wordlift_Abstract_Cache_Service {
 	private $type;
 
 	/**
-	 * A string holding the cache key prefix valuet.
+	 * A string holding the cache key prefix value.
 	 *
 	 * @since  3.16.0
 	 * @access private
@@ -104,6 +104,8 @@ abstract class Wordlift_Abstract_Cache_Service {
 	 * @since 3.16.0
 	 *
 	 * @param string $id The identifier of the specific data.
+	 *
+	 * @return string
 	 */
 	private function get_cache_key( $id ) {
 		return $this->cache_prefix . '-' . $id;
@@ -156,28 +158,30 @@ abstract class Wordlift_Abstract_Cache_Service {
 		// If there is an object caching plugin, we are utilize the caching APIs.
 		if ( wp_using_ext_object_cache() ) {
 			return wp_cache_get( $this->get_cache_key( $id ), 'wordlift' );
-		} else {
-			$filename = $this->get_filename( $id );
-
-			if ( ! file_exists( $filename ) ) {
-				return $default;
-			}
-
-			$content = file_get_contents( $filename );
-
-			// Content consist of a a json formatted
-			// array containing the expired time and the value.
-			$content = json_decode( $content, true );
-
-			if ( is_null( $content ) ) { // garbage found instead of proper json.
-				return $default;
-			}
-
-			if ( $content['expire'] > time() ) { // If expired.
-				return $default;
-			}
-			return $content['value'];
 		}
+
+		$filename = $this->get_filename( $id );
+
+		if ( ! file_exists( $filename ) ) {
+			return $default;
+		}
+
+		$content = file_get_contents( $filename );
+
+		// Content consist of a a json formatted
+		// array containing the expired time and the value.
+		$content = json_decode( $content, true );
+
+		if ( is_null( $content ) ) { // garbage found instead of proper json.
+			return $default;
+		}
+
+		if ( $content['expire'] > time() ) { // If expired.
+			return $default;
+		}
+
+		return $content['value'];
+
 	}
 
 	/**
@@ -185,28 +189,29 @@ abstract class Wordlift_Abstract_Cache_Service {
 	 *
 	 * @since 3.16.0
 	 *
-	 * @param string $id   A unique identifier for the information.
-	 * @param mixed  $value The value to be stored.
+	 * @param string $id     A unique identifier for the information.
+	 * @param mixed  $value  The value to be stored.
 	 * @param int    $expiry The maximum time in seconds until the item is expired.
-	 *               Special value of 0 indicates that the cache never expires.
+	 *                       Special value of 0 indicates that the cache never expires.
 	 */
 	public function set( $id, $value, $expiry ) {
 
 		// If there is an object caching plugin, we are utilize the caching APIs.
 		if ( wp_using_ext_object_cache() ) {
-			wp_cache_set( $this->get_cache_key( $id ), $value, 'wordlift' , $expiry );
-		} else {
-			$filename = $this->get_filename( $id );
-
-			// Create the content saved in the file. It consist of a json of
-			// array containing the expired time and the value.
-			$content = array(
-				'expire' => (0 === $expiry) ? 0 : time() + $expiry,
-				'value' => $value,
-			);
-
-			file_put_contents( $filename, wp_json_encode( $content ) );
+			wp_cache_set( $this->get_cache_key( $id ), $value, 'wordlift', $expiry );
 		}
+
+		$filename = $this->get_filename( $id );
+
+		// Create the content saved in the file. It consist of a json of
+		// array containing the expired time and the value.
+		$content = array(
+			'expire' => ( 0 === $expiry ) ? 0 : time() + $expiry,
+			'value'  => $value,
+		);
+
+		file_put_contents( $filename, wp_json_encode( $content ) );
+
 	}
 
 	/**
@@ -214,22 +219,24 @@ abstract class Wordlift_Abstract_Cache_Service {
 	 *
 	 * @since 3.16.0
 	 *
-	 * @param string $id   A unique identifier for the information.
+	 * @param string $id A unique identifier for the information.
 	 */
 	public function delete( $id ) {
 
 		// If there is an object caching plugin, we are utilize the caching APIs.
 		if ( wp_using_ext_object_cache() ) {
 			wp_cache_delete( $this->get_cache_key( $id ), 'wordlift' );
-		} else {
-			$filename = $this->get_filename( $id );
-
-			if ( ! file_exists( $filename ) ) {
-				return;
-			}
-
-			unlink( $filename );
 		}
+
+
+		$filename = $this->get_filename( $id );
+
+		if ( ! file_exists( $filename ) ) {
+			return;
+		}
+
+		unlink( $filename );
+
 	}
 
 	/**
@@ -244,22 +251,23 @@ abstract class Wordlift_Abstract_Cache_Service {
 		// garbage collect the old instances while we use new ones.
 		if ( wp_using_ext_object_cache() ) {
 			$this->set_new_cache_prefix();
-		} else {
-			$dir = $this->get_directory_name();
+		}
 
-			if ( ! file_exists( $dir ) ) {
-				return;
-			}
+		$dir = $this->get_directory_name();
 
-			$files = glob( "$dir/*" . self::FILE_SUFFIX );
-			if ( ! empty( $files ) ) {
-				foreach ( $files as $file ) { // iterate files.
-					if ( is_file( $file ) ) {
-						unlink( $file ); // delete file.
-					}
+		if ( ! file_exists( $dir ) ) {
+			return;
+		}
+
+		$files = glob( "$dir/*" . self::FILE_SUFFIX );
+		if ( ! empty( $files ) ) {
+			foreach ( $files as $file ) { // iterate files.
+				if ( is_file( $file ) ) {
+					unlink( $file ); // delete file.
 				}
 			}
 		}
+
 	}
 
 	/**
@@ -267,7 +275,7 @@ abstract class Wordlift_Abstract_Cache_Service {
 	 *
 	 * @since 3.16.0
 	 *
-	 * @param string $id      A unique identifier for the information.
+	 * @param string $id A unique identifier for the information.
 	 *
 	 * @return string sanitized version of $id.
 	 *
@@ -283,4 +291,5 @@ abstract class Wordlift_Abstract_Cache_Service {
 
 		return $s_id;
 	}
+
 }
