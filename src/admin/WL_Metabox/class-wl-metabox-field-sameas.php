@@ -28,10 +28,21 @@ class WL_Metabox_Field_sameas extends WL_Metabox_Field {
 	 */
 	public function save_data( $values ) {
 		// The autocomplete select may send JSON arrays in input values.
-		mb_regex_encoding( 'UTF-8' );
-		$merged = array_reduce( (array) $values, function ( $carry, $item ) {
-			return array_merge( $carry, mb_split( "\x{2063}", wp_unslash( $item ) ) );
-		}, array() );
+
+		// Only use mb_* functions when mbstring is available.
+		//
+		// See https://github.com/insideout10/wordlift-plugin/issues/693.
+		if ( extension_loaded( 'mbstring' ) ) {
+			mb_regex_encoding( 'UTF-8' );
+
+			$merged = array_reduce( (array) $values, function ( $carry, $item ) {
+				return array_merge( $carry, mb_split( "\x{2063}", wp_unslash( $item ) ) );
+			}, array() );
+		} else {
+			$merged = array_reduce( (array) $values, function ( $carry, $item ) {
+				return array_merge( $carry, preg_split( "/\x{2063}/u", wp_unslash( $item ) ) );
+			}, array() );
+		}
 
 		parent::save_data( $merged );
 	}
