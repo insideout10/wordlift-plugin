@@ -20,9 +20,11 @@ function wl_linked_data_save_post( $post_id ) {
 
 	$log = Wordlift_Log_Service::get_logger( 'wl_linked_data_save_post' );
 
+	$log->trace( "Saving post $post_id to Linked Data..." );
+
 	// If it's not numeric exit from here.
 	if ( ! is_numeric( $post_id ) || is_numeric( wp_is_post_revision( $post_id ) ) ) {
-		$log->debug("Skipping $post_id, because id is not numeric or is a post revision.");
+		$log->debug( "Skipping $post_id, because id is not numeric or is a post revision." );
 
 		return;
 	}
@@ -35,7 +37,7 @@ function wl_linked_data_save_post( $post_id ) {
 
 	// Bail out if it's not an entity.
 	if ( ! $is_editor_supported ) {
-		$log->debug("Skipping $post_id, because $post_type doesn't support the editor (content).");
+		$log->debug( "Skipping $post_id, because $post_type doesn't support the editor (content)." );
 
 		return;
 	}
@@ -61,8 +63,14 @@ add_action( 'save_post', 'wl_linked_data_save_post' );
  */
 function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
+	$log = Wordlift_Log_Service::get_logger( 'wl_linked_data_save_post_and_related_entities' );
+
+	$log->trace( "Saving $post_id to Linked Data along with related entities..." );
+
 	// Ignore auto-saves
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		$log->trace( 'Doing autosave, skipping...' );
+
 		return;
 	}
 
@@ -72,6 +80,9 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	remove_action( 'wl_linked_data_save_post', 'wl_linked_data_save_post_and_related_entities' );
 
 	// wl_write_log( "[ post id :: $post_id ][ autosave :: false ][ post type :: $post->post_type ]" );
+
+	// Get the entity service instance.
+	$entity_service = Wordlift_Entity_Service::get_instance();
 
 	// Store mapping between tmp new entities uris and real new entities uri
 	$entities_uri_mapping = array();
@@ -99,7 +110,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			// Look if current entity uri matches an internal existing entity, meaning:
 			// 1. when $entity_uri is an internal uri
 			// 2. when $entity_uri is an external uri used as sameAs of an internal entity
-			$ie = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $entity_uri );
+			$ie = $entity_service->get_entity_post_by_uri( $entity_uri );
 
 			// Detect the uri depending if is an existing or a new entity
 			$uri = ( null === $ie ) ?
@@ -133,16 +144,20 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 	// Replace tmp uris in content post if needed
 	$updated_post_content = $post->post_content;
-	// Save each entity and store the post id.
-	foreach ( $entities_uri_mapping as $tmp_uri => $uri ) {
-		$updated_post_content = str_replace( $tmp_uri, $uri, $updated_post_content );
-	}
 
-	// Update the post content
-	wp_update_post( array(
-		'ID'           => $post->ID,
-		'post_content' => $updated_post_content,
-	) );
+	// Update the post content if we found mappings of new entities.
+	if ( ! empty( $entities_uri_mapping ) ) {
+		// Save each entity and store the post id.
+		foreach ( $entities_uri_mapping as $tmp_uri => $uri ) {
+			$updated_post_content = str_replace( $tmp_uri, $uri, $updated_post_content );
+		}
+
+		// Update the post content.
+		wp_update_post( array(
+			'ID'           => $post->ID,
+			'post_content' => $updated_post_content,
+		) );
+	}
 
 	// Extract related/referenced entities from text.
 	$disambiguated_entities = wl_linked_data_content_get_embedded_entities( $updated_post_content );
@@ -155,7 +170,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 		wl_core_add_relation_instance(
 			$post_id,
-			Wordlift_Entity_Service::get_instance()->get_classification_scope_for( $referenced_entity_id ),
+			$entity_service->get_classification_scope_for( $referenced_entity_id ),
 			$referenced_entity_id
 		);
 
@@ -182,7 +197,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			$uri = ( isset( $metadata_via_post[ $field ] ) ) ?
 				stripslashes( $metadata_via_post[ $field ] ) : '';
 
-			$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri );
+			$entity = $entity_service->get_entity_post_by_uri( $uri );
 
 			if ( $entity ) {
 				add_post_meta( $post->ID, $field, $entity->ID, true );
@@ -237,6 +252,8 @@ function wl_save_entity( $entity_data ) {
 
 	// Check whether an entity already exists with the provided URI.
 	if ( null !== $post = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri ) ) {
+		$log->debug( "Post already exists for URI $uri." );
+
 		return $post;
 	}
 
@@ -284,6 +301,9 @@ function wl_save_entity( $entity_data ) {
 	global $wp_filter;
 	$save_post_filters = is_array( $wp_filter['save_post'] ) ? $wp_filter['save_post'] : $wp_filter['save_post']->callbacks;
 	is_array( $wp_filter['save_post'] ) ? $wp_filter['save_post'] = array() : $wp_filter['save_post']->remove_all_filters();
+
+
+	$log->trace( 'Going to insert new post...' );
 
 	// create or update the post.
 	$post_id = wp_insert_post( $params, true );
