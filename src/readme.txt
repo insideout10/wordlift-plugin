@@ -143,6 +143,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.15.6 (????-??-??) =
+* Fix: [#700](https://github.com/insideout10/wordlift-plugin/issues/700): WP live previews don't run when classification box is closed.
+
 = 3.15.5 (2017-11-14) =
 * Fix: [#698](https://github.com/insideout10/wordlift-plugin/issues/698): `flush_rewrite_rules` called at every request.
 
