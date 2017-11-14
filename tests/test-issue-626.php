@@ -56,13 +56,30 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 	private $sample_data_service;
 
 	/**
+	 * The {@link Wordlift_Cached_Post_Converter} instance.
+	 *
+	 * @since 3.16.0
+	 * @var \Wordlift_Cached_Post_Converter $cached_postid_to_jsonld_converter The {@link Wordlift_Cached_Post_Converter} instance.
+	 */
+	private $cached_postid_to_jsonld_converter;
+
+	/**
+	 * @var \Wordlift_Post_To_Jsonld_Converter $post_to_jsonld_converter
+	 */
+	private $post_to_jsonld_converter;
+
+	/**
 	 * @inheritdoc
 	 */
 	function setUp() {
 		parent::setUp();
 
-		$this->jsonld_service      = $this->get_wordlift_test()->get_jsonld_service();
-		$this->sample_data_service = $this->get_wordlift_test()->get_sample_data_service();
+		$wordlift_test = $this->get_wordlift_test();
+
+		$this->jsonld_service                    = $wordlift_test->get_jsonld_service();
+		$this->sample_data_service               = $wordlift_test->get_sample_data_service();
+		$this->cached_postid_to_jsonld_converter = $wordlift_test->get_cached_postid_to_jsonld_converter();
+		$this->post_to_jsonld_converter          = $wordlift_test->get_post_to_jsonld_converter();
 
 	}
 
@@ -86,8 +103,26 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 		// Check that we have a valid value.
 		$this->assertTrue( $post instanceof WP_Post );
 
-		// Get the JSON-LD.
-		$jsonld = $this->jsonld_service->get_jsonld( false, $post->ID );
+		// Get the cached response.
+		$cached_1 = $this->cached_postid_to_jsonld_converter->convert( $post->ID, $cached_references_1, $cache_1 );
+
+		// Expect the first response not to be cached.
+		$this->assertFalse( $cache_1 );
+
+		// Get the original - non-cached - response.
+		$original_1 = $this->post_to_jsonld_converter->convert( $post->ID );
+
+		// Check that the responses match.
+		$this->assertEquals( $original_1, $cached_1 );
+
+		// Call again the cached converter.
+		$this->cached_postid_to_jsonld_converter->convert( $post->ID, $cached_references_2, $cache_2 );
+
+		// Check that we have a cached response this time.
+		$this->assertTrue( $cache_2 );
+
+		// Check that the responses match.
+		$this->assertEquals( $original_1, $cached_1 );
 
 		// Delete the sample data.
 		$this->sample_data_service->delete();

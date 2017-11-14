@@ -263,4 +263,15 @@ class Wordlift_Test extends Wordlift {
 		return $this->sample_data_service;
 	}
 
+	/**
+	 * Get the {@link Wordlift_Cached_Post_Converter} instance.
+	 *
+	 * @since 3.16.0
+	 * @return \Wordlift_Cached_Post_Converter The {@link Wordlift_Cached_Post_Converter} instance.
+	 */
+	public function get_cached_postid_to_jsonld_converter() {
+
+		return $this->cached_postid_to_jsonld_converter;
+	}
+
 }

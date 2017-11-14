@@ -29,8 +29,9 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
-		//
-		$this->cache_dir      = trailingslashit( $cache_dir );
+		// Set the cache directory using the base directory provided by the caller
+		// and appending a hash for the unique site id.
+		$this->cache_dir      = trailingslashit( $cache_dir ) . md5( get_site_url() ) . '/';
 		$this->file_extension = $file_extension;
 
 		// Create the cache dir.
@@ -46,6 +47,11 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 
 		// Get the filename.
 		$filename = $this->get_filename( $id );
+
+		// Bail out if the file doesn't exist.
+		if ( ! file_exists( $filename ) ) {
+			return false;
+		}
 
 		$this->log->trace( "Trying to get cache contents for $id from $filename..." );
 
@@ -63,6 +69,44 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 		$this->log->trace( "Writing cache contents for $id to $filename..." );
 
 		file_put_contents( $filename, wp_json_encode( $contents ) );
+
+	}
+
+	function delete_cache( $id ) {
+
+		$filename = $this->get_filename( $id );
+
+		wp_delete_file( $filename );
+
+	}
+
+	function flush() {
+
+		// Bail out if the cache dir isn't set.
+		if ( empty( $this->cache_dir ) || '/' === $this->cache_dir ) {
+			return;
+		}
+
+		$handle = @opendir( $this->cache_dir );
+
+		// Bail out if the directory can't be opened.
+		if ( false === $handle ) {
+			return;
+		}
+
+		// Calculate the file extension length for matching file names.
+		$file_extension_length = strlen( $this->file_extension );
+
+		// Loop into the directory to delete files.
+		while ( false !== ( $entry = readdir( $handle ) ) ) {
+			if ( $this->file_extension === substr( $entry, - $file_extension_length ) ) {
+				$this->log->trace( "Deleting file $entry..." );
+				wp_delete_file( $entry );
+			}
+		}
+
+		// Finally closed the directory.
+		closedir( $handle );
 
 	}
 

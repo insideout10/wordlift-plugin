@@ -13,7 +13,7 @@
  *
  * @since 3.10.0
  */
-class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Cached_Post_To_Jsonld_Converter {
+class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld_Converter {
 
 	/**
 	 * A {@link Wordlift_Configuration_Service} instance.

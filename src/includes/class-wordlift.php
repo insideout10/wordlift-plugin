@@ -625,6 +625,16 @@ class Wordlift {
 	private $relation_service;
 
 	/**
+	 * The {@link Wordlift_Cached_Post_Converter} instance.
+	 *
+	 * @since  3.16.0
+	 * @access protected
+	 * @var  \Wordlift_Cached_Post_Converter $cached_postid_to_jsonld_converter The {@link Wordlift_Cached_Post_Converter} instance.
+	 *
+	 */
+	protected $cached_postid_to_jsonld_converter;
+
+	/**
 	 * {@link Wordlift}'s singleton instance.
 	 *
 	 * @since  3.11.2
@@ -1105,14 +1115,14 @@ class Wordlift {
 		$attachment_service = new Wordlift_Attachment_Service();
 
 		// Instantiate the JSON-LD service.
-		$property_getter                       = Wordlift_Property_Getter_Factory::create( $this->entity_service );
-		$this->entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $property_getter );
-		$this->post_to_jsonld_converter        = new Wordlift_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $this->configuration_service, $this->entity_post_to_jsonld_converter );
-		$this->postid_to_jsonld_converter      = new Wordlift_Postid_To_Jsonld_Converter( $this->entity_service, $this->entity_post_to_jsonld_converter, $this->post_to_jsonld_converter );
-		$this->jsonld_website_converter        = new Wordlift_Website_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $this->configuration_service, $this->entity_post_to_jsonld_converter );
-		$file_cache_service                    = new Wordlift_File_Cache_Service( WL_TEMP_DIR . 'converter/' );
-		$cached_postid_to_jsonld_converter     = new Wordlift_Cached_Post_Converter( $this->postid_to_jsonld_converter, $file_cache_service );
-		$this->jsonld_service                  = new Wordlift_Jsonld_Service( $this->entity_service, $cached_postid_to_jsonld_converter, $this->jsonld_website_converter );
+		$property_getter                         = Wordlift_Property_Getter_Factory::create( $this->entity_service );
+		$this->entity_post_to_jsonld_converter   = new Wordlift_Entity_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $property_getter );
+		$this->post_to_jsonld_converter          = new Wordlift_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $this->configuration_service, $this->entity_post_to_jsonld_converter );
+		$this->postid_to_jsonld_converter        = new Wordlift_Postid_To_Jsonld_Converter( $this->entity_service, $this->entity_post_to_jsonld_converter, $this->post_to_jsonld_converter );
+		$this->jsonld_website_converter          = new Wordlift_Website_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $this->configuration_service, $this->entity_post_to_jsonld_converter );
+		$file_cache_service                      = new Wordlift_File_Cache_Service( WL_TEMP_DIR . 'converter/' );
+		$this->cached_postid_to_jsonld_converter = new Wordlift_Cached_Post_Converter( $this->postid_to_jsonld_converter, $file_cache_service );
+		$this->jsonld_service                    = new Wordlift_Jsonld_Service( $this->entity_service, $this->cached_postid_to_jsonld_converter, $this->jsonld_website_converter );
 
 
 		$this->key_validation_service   = new Wordlift_Key_Validation_Service( $this->configuration_service );

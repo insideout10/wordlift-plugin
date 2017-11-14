@@ -11,7 +11,7 @@
  *
  * @since 3.8.0
  */
-class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Cached_Post_To_Jsonld_Converter {
+class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld_Converter {
 
 	/**
 	 * A {@link Wordlift_Property_Getter} instance.
