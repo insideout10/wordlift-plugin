@@ -143,6 +143,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.15.5 (2017-11-14) =
+* Fix: [#698](https://github.com/insideout10/wordlift-plugin/issues/698): `flush_rewrite_rules` called at every request.
+
 = 3.15.4 (2017-11-13) =
 * Fix: [#693](https://github.com/insideout10/wordlift-plugin/issues/693): Remove requirement for mbstring.
 * Fix: [#691](https://github.com/insideout10/wordlift-plugin/issues/691): Check WL compatibility with UX builder part of Flatsome themes.

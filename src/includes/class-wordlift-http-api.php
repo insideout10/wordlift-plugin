@@ -36,8 +36,14 @@ class Wordlift_Http_Api {
 
 		add_action( 'init', array( $this, 'add_rewrite_endpoint' ) );
 		add_action( 'template_redirect', array( $this, 'template_redirect' ) );
-		add_action( 'admin_post_wl_hello_world', array( $this, 'hello_world' ) );
-		add_action( 'admin_post_nopriv_wl_hello_world', array( $this, 'nopriv_hello_world' ) );
+		add_action( 'admin_post_wl_hello_world', array(
+			$this,
+			'hello_world',
+		) );
+		add_action( 'admin_post_nopriv_wl_hello_world', array(
+			$this,
+			'nopriv_hello_world',
+		) );
 
 	}
 
@@ -136,13 +142,15 @@ class Wordlift_Http_Api {
 	/**
 	 * Ensure that the rewrite rules are flushed the first time.
 	 *
+	 * @since 3.16.0 changed the value from 1 to `yes` to avoid type juggling issues.
 	 * @since 3.15.3
 	 */
 	public static function ensure_rewrite_rules_are_flushed() {
 
-		if ( 1 !== get_option( 'wl_http_api' ) ) {
+		// See https://github.com/insideout10/wordlift-plugin/issues/698.
+		if ( 'yes' !== get_option( 'wl_http_api' ) ) {
 			flush_rewrite_rules();
-			add_option( 'wl_http_api', 1 );
+			add_option( 'wl_http_api', 'yes' );
 		}
 
 	}
