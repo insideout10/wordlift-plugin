@@ -213,7 +213,7 @@ class Wordlift {
 	 * A {@link Wordlift_Sparql_Service} instance.
 	 *
 	 * @since    3.6.0
-	 * @access protected
+	 * @access   protected
 	 * @var \Wordlift_Sparql_Service $sparql_service A {@link Wordlift_Sparql_Service} instance.
 	 */
 	protected $sparql_service;
@@ -814,6 +814,11 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-jsonld-website-converter.php';
 
 		/**
+		 * Load cache-related files.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/cache/require.php';
+
+		/**
 		 * Load the content filter.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-content-filter-service.php';
@@ -1105,7 +1110,10 @@ class Wordlift {
 		$this->post_to_jsonld_converter        = new Wordlift_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $this->configuration_service, $this->entity_post_to_jsonld_converter );
 		$this->postid_to_jsonld_converter      = new Wordlift_Postid_To_Jsonld_Converter( $this->entity_service, $this->entity_post_to_jsonld_converter, $this->post_to_jsonld_converter );
 		$this->jsonld_website_converter        = new Wordlift_Website_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $this->configuration_service, $this->entity_post_to_jsonld_converter );
-		$this->jsonld_service                  = new Wordlift_Jsonld_Service( $this->entity_service, $this->postid_to_jsonld_converter, $this->jsonld_website_converter );
+		$file_cache_service                    = new Wordlift_File_Cache_Service( WL_TEMP_DIR . 'converter/' );
+		$cached_postid_to_jsonld_converter     = new Wordlift_Cached_Post_Converter( $this->postid_to_jsonld_converter, $file_cache_service );
+		$this->jsonld_service                  = new Wordlift_Jsonld_Service( $this->entity_service, $cached_postid_to_jsonld_converter, $this->jsonld_website_converter );
+
 
 		$this->key_validation_service   = new Wordlift_Key_Validation_Service( $this->configuration_service );
 		$this->content_filter_service   = new Wordlift_Content_Filter_Service( $this->entity_service, $this->configuration_service );
@@ -1359,8 +1367,14 @@ class Wordlift {
 		$this->loader->add_action( 'wp_ajax_wl_sample_data_delete', $this->sample_data_ajax_adapter, 'delete' );
 
 		// Handle the autocomplete request.
-		add_action( 'wp_ajax_wl_autocomplete', array( $this->autocomplete_adapter, 'wl_autocomplete' ) );
-		add_action( 'wp_ajax_nopriv_wl_autocomplete', array( $this->autocomplete_adapter, 'wl_autocomplete' ) );
+		add_action( 'wp_ajax_wl_autocomplete', array(
+			$this->autocomplete_adapter,
+			'wl_autocomplete',
+		) );
+		add_action( 'wp_ajax_nopriv_wl_autocomplete', array(
+			$this->autocomplete_adapter,
+			'wl_autocomplete',
+		) );
 
 		// Hooks to restrict multisite super admin from manipulating entity types.
 		if ( is_multisite() ) {
