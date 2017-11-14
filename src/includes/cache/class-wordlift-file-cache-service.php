@@ -76,6 +76,8 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 
 		$filename = $this->get_filename( $id );
 
+		$this->log->trace( "Deleting cache contents for $id, file $filename..." );
+
 		wp_delete_file( $filename );
 
 	}
@@ -86,6 +88,8 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 		if ( empty( $this->cache_dir ) || '/' === $this->cache_dir ) {
 			return;
 		}
+
+		$this->log->trace( "Flushing cache contents..." );
 
 		$handle = @opendir( $this->cache_dir );
 
@@ -100,8 +104,8 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 		// Loop into the directory to delete files.
 		while ( false !== ( $entry = readdir( $handle ) ) ) {
 			if ( $this->file_extension === substr( $entry, - $file_extension_length ) ) {
-				$this->log->trace( "Deleting file $entry..." );
-				wp_delete_file( $entry );
+				$this->log->trace( "Deleting file {$this->cache_dir}{$entry}..." );
+				wp_delete_file( $this->cache_dir . $entry );
 			}
 		}
 

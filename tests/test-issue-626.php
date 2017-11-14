@@ -81,6 +81,10 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 		$this->cached_postid_to_jsonld_converter = $wordlift_test->get_cached_postid_to_jsonld_converter();
 		$this->post_to_jsonld_converter          = $wordlift_test->get_post_to_jsonld_converter();
 
+		// Clean-up the file cache.
+		$file_cache_service = $wordlift_test->get_file_cache_service();
+		$file_cache_service->flush();
+
 	}
 
 	public function test() {

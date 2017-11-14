@@ -274,4 +274,15 @@ class Wordlift_Test extends Wordlift {
 		return $this->cached_postid_to_jsonld_converter;
 	}
 
+	/**
+	 * Get the {@link Wordlift_File_Cache_Service} instance.
+	 *
+	 * @since 3.16.0
+	 * @return \Wordlift_File_Cache_Service The {@link Wordlift_File_Cache_Service} instance.
+	 */
+	public function get_file_cache_service() {
+
+		return $this->file_cache_service;
+	}
+
 }

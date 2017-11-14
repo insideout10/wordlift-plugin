@@ -46,6 +46,36 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 
 	}
 
+	private function init_hooks() {
+
+		// Hook on post save to flush relevant cache.
+		add_action( 'save_post', array( $this, 'save_post' ) );
+
+		add_action( 'added_post_meta', array(
+			$this,
+			'changed_post_meta',
+		), 10, 2 );
+		add_action( 'updated_post_meta', array(
+			$this,
+			'changed_post_meta',
+		), 10, 2 );
+		add_action( 'deleted_post_meta', array(
+			$this,
+			'changed_post_meta',
+		), 10, 2 );
+
+		// Flush cache when wordlift settings were updated.
+		add_action( 'update_option_wl_general_settings', array(
+			$this,
+			'update_option_wl_general_settings',
+		) );
+
+//		// Invalid cache on relationship change.
+//		add_action( 'wordlift_relationship_changed', 'Wordlift_Jsonld_Cache_Service::wordlift_relationship_changed', 10, 3 );
+//		add_action( 'wordlift_relationship_subject_deleted', 'Wordlift_Jsonld_Cache_Service::wordlift_relationship_subject_deleted' );
+
+	}
+
 	/**
 	 * @inheritdoc
 	 */
@@ -66,6 +96,8 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 			// Return the contents.
 			return $contents;
 		}
+
+		$cache = false;
 
 		// Convert the the post.
 		$jsonld = $this->converter->convert( $post_id, $references );
@@ -117,6 +149,18 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 			'jsonld'     => $jsonld,
 		) );
 
+	}
+
+	public function save_post( $post_id ) {
+		$this->cache_service->delete_cache( $post_id );
+	}
+
+	public function changed_post_meta( $id, $post_id ) {
+		$this->cache_service->delete_cache( $post_id );
+	}
+
+	public function update_option_wl_general_settings() {
+		$this->cache_service->flush();
 	}
 
 }
