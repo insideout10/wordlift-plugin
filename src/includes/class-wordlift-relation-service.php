@@ -43,7 +43,7 @@ class Wordlift_Relation_Service {
 	 *
 	 * @var Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
 	 */
-	private $log;
+	private static $log;
 
 	/**
 	 * Create a {@link Wordlift_Relation_Service} instance.
@@ -52,7 +52,7 @@ class Wordlift_Relation_Service {
 	 */
 	public function __construct() {
 
-		$this->log = Wordlift_Log_Service::get_logger( get_class() );
+		self::$log = Wordlift_Log_Service::get_logger( get_class() );
 
 		global $wpdb;
 
@@ -99,18 +99,18 @@ class Wordlift_Relation_Service {
 		// The output fields.
 		$actual_fields = self::fields( $fields );
 
-		$this->log->trace( 'Getting article subjects for object ' . implode( ', ', (array) $object_id ) . '...' );
+		self::$log->trace( 'Getting article subjects for object ' . implode( ', ', (array) $object_id ) . '...' );
 
 		$objects = $this->article_id_to_entity_id( $object_id );
 
 		// If there are no related objects, return an empty array.
 		if ( empty( $objects ) ) {
-			$this->log->debug( 'No entities found for object ' . implode( ', ', (array) $object_id ) . '.' );
+			self::$log->debug( 'No entities found for object ' . implode( ', ', (array) $object_id ) . '.' );
 
 			return array();
 		}
 
-		$this->log->debug( count( $objects ) . ' entity id(s) found for object ' . implode( ', ', (array) $object_id ) . '.' );
+		self::$log->debug( count( $objects ) . ' entity id(s) found for object ' . implode( ', ', (array) $object_id ) . '.' );
 
 		$sql =
 			"
@@ -252,6 +252,12 @@ class Wordlift_Relation_Service {
 	 * @return string The WHERE clause.
 	 */
 	private static function where_object_id( $object_id ) {
+
+		if ( empty( $object_id ) ) {
+			self::$log->warn( sprintf( "%s `where_object_id` called with empty `object_id`.", var_export( debug_backtrace( false, 3 ), true ) ) );
+
+			return ' WHERE 1 = 1';
+		}
 
 		return ' WHERE r.object_id IN ( ' . implode( ',', wp_parse_id_list( (array) $object_id ) ) . ' )';
 	}

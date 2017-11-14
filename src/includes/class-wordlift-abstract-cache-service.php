@@ -57,6 +57,14 @@ abstract class Wordlift_Abstract_Cache_Service {
 	private $cache_prefix;
 
 	/**
+	 * A {@link Wordlift_Log_Service} instance.
+	 *
+	 * @since 3.16.0
+	 * @var \Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
+	 */
+	private $log;
+
+	/**
 	 * Wordlift_Cache_Service constructor.
 	 *
 	 * @param string $type   A string identifying the group of item being cached
@@ -67,6 +75,8 @@ abstract class Wordlift_Abstract_Cache_Service {
 	 * @throws Exception An exception is thrown if $type or $id are not simple strings.
 	 */
 	public function __construct( $type ) {
+
+		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
 		$this->type = preg_replace( self::VALIDATION_PATTERN, '', $type );
 
@@ -209,6 +219,8 @@ abstract class Wordlift_Abstract_Cache_Service {
 			'expire' => ( 0 === $expiry ) ? 0 : time() + $expiry,
 			'value'  => $value,
 		);
+
+		$this->log->trace( "Writing cached content to $filename..." );
 
 		file_put_contents( $filename, wp_json_encode( $content ) );
 

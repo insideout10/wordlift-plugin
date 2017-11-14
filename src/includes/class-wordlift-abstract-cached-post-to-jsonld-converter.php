@@ -34,6 +34,7 @@ abstract class Wordlift_Abstract_Cached_Post_To_Jsonld_Converter extends Wordlif
 
 		$cache  = Wordlift_Jsonld_Cache_Service::get_instance();
 		$values = $cache->get( $post_id );
+		
 		if ( false === $values ) { // Nothing in the cache? calculate it and cache.
 			$values               = array();
 			$values['references'] = array();
@@ -48,6 +49,7 @@ abstract class Wordlift_Abstract_Cached_Post_To_Jsonld_Converter extends Wordlif
 
 			$cache->set( $post_id, $values, 0 );
 		}
+
 		$references = $values['references'];
 
 		return $values['jsonld'];

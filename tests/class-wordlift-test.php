@@ -251,4 +251,16 @@ class Wordlift_Test extends Wordlift {
 		return $this->entity_list_service;
 	}
 
+	/**
+	 * Get the {@link Wordlift_Sample_Data_Service} instance.
+	 *
+	 * @since 3.16.0
+	 *
+	 * @return \Wordlift_Sample_Data_Service The {@link Wordlift_Sample_Data_Service} instance.
+	 */
+	public function get_sample_data_service() {
+
+		return $this->sample_data_service;
+	}
+
 }

@@ -21,7 +21,7 @@ class Wordlift_Jsonld_Cache_Service extends Wordlift_Abstract_Cache_Service {
 	/**
 	 * A singleton instance of the json-ld caching service.
 	 *
-	 * @since 3.16.0
+	 * @since  3.16.0
 	 * @access private
 	 * @var \Wordlift_Notice_Service $instance A singleton instance of the json-ld caching service.
 	 */
@@ -95,8 +95,8 @@ class Wordlift_Jsonld_Cache_Service extends Wordlift_Abstract_Cache_Service {
 	 * @since 3.16.0
 	 *
 	 * @param int    $subject_id The id of the subject post.
-	 * @param string $predicate The predicate.
-	 * @param int    $object_id The id of the object post.
+	 * @param string $predicate  The predicate.
+	 * @param int    $object_id  The id of the object post.
 	 */
 	static public function wordlift_relationship_changed( $subject_id, $predicate, $object_id ) {
 		self::$instance->invalidate_post( $subject_id );
@@ -161,6 +161,7 @@ class Wordlift_Jsonld_Cache_Service extends Wordlift_Abstract_Cache_Service {
 	 * @param int $post_id The id of the post.
 	 */
 	function invalidate_referrers( $post_id ) {
+		// @todo: fix the following call is raising a warning in Wordlift_Relation_Service->where_object_id.
 		$ids = Wordlift_Relation_Service::get_instance()->get_subjects( $post_id, 'ids' );
 		foreach ( $ids as $id ) {
 			// Since we are doing a recursion here lets be extra carful to avoid

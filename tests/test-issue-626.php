@@ -20,6 +20,7 @@
  * - get the JSON-LD of a post (1st time not cached),
  * - get the JSON-LD of a post (2nd time cached) ,
  * - get the JSON-LD of an entity (1st time not cached),
+ * - change publisher, invalidate cache.
  *
  *
  * @since      3.16.0
@@ -36,12 +37,60 @@
  */
 class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 
+	/**
+	 * The {@link Wordlift_JsonLd_Service} instance.
+	 *
+	 * @since 3.16.0
+	 *
+	 * @var \Wordlift_Jsonld_Service $jsonld_service The {@link Wordlift_JsonLd_Service} instance.
+	 */
 	private $jsonld_service;
 
+	/**
+	 * The {@link Wordlift_Sample_Data_Service} instance.
+	 *
+	 * @since 3.16.0
+	 *
+	 * @var \Wordlift_Sample_Data_Service $sample_data_service The {@link Wordlift_Sample_Data_Service} instance.
+	 */
+	private $sample_data_service;
+
+	/**
+	 * @inheritdoc
+	 */
 	function setUp() {
 		parent::setUp();
 
-		$this->jsonld_service = $this->get_wordlift_test()->get_jsonld_service();
+		$this->jsonld_service      = $this->get_wordlift_test()->get_jsonld_service();
+		$this->sample_data_service = $this->get_wordlift_test()->get_sample_data_service();
+
+	}
+
+	public function test() {
+
+		// Create the sample data.
+		$this->sample_data_service->create();
+
+		// Get the post #5 which is the one that binds to all the entities.
+		$posts = get_posts( array(
+			'post_name'   => 'post_5',
+			'numberposts' => 1,
+		) );
+
+		// Check that we got one post.
+		$this->assertCount( 1, $posts );
+
+		// Get the first post.
+		$post = current( $posts );
+
+		// Check that we have a valid value.
+		$this->assertTrue( $post instanceof WP_Post );
+
+		// Get the JSON-LD.
+		$jsonld = $this->jsonld_service->get_jsonld( false, $post->ID );
+
+		// Delete the sample data.
+		$this->sample_data_service->delete();
 
 	}
 
