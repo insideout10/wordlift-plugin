@@ -85,6 +85,15 @@ class WL_Metabox_Field {
 	public $data;
 
 	/**
+	 * The current {@link WP_Post} id.
+	 *
+	 * @since 3.15.3
+	 *
+	 * @var int The current {@link WP_Post} id.
+	 */
+	private $post_id;
+
+	/**
 	 * Create a {@link WL_Metabox_Field} instance.
 	 *
 	 * @param array $args An array of parameters.
@@ -142,6 +151,11 @@ class WL_Metabox_Field {
 			}
 		}
 
+		// Save early the post id to avoid other plugins messing up with it.
+		//
+		// See https://github.com/insideout10/wordlift-plugin/issues/665.
+		$this->post_id = get_the_ID();
+
 	}
 
 	/**
@@ -181,14 +195,12 @@ class WL_Metabox_Field {
 	 */
 	public function get_data() {
 
-		$data = get_post_meta( get_the_ID(), $this->meta_name );
+		// Get the post id and load the data.
+		$post_id    = $this->post_id;
+		$this->data = get_post_meta( $post_id, $this->meta_name );
 
-		// Values are always contained in an array (makes it easier to manage cardinality).
-		if ( ! is_array( $data ) ) {
-			$data = array( $data );
-		}
+		$this->log->debug( 'Found ' . count( $this->data ) . " value(s) for meta $this->meta_name, post $post_id." );
 
-		$this->data = $data;
 	}
 
 	/**
@@ -258,7 +270,14 @@ class WL_Metabox_Field {
 		// Will sanitize data and store them in $field->data.
 		$this->sanitize_data( $values );
 
-		$entity_id = get_the_ID();
+		// Bail out, if the post id isn't set in the request or isn't numeric.
+		//
+		// See https://github.com/insideout10/wordlift-plugin/issues/665.
+		if ( ! isset( $_POST['post_ID'] ) || ! is_numeric( $_POST['post_ID'] ) ) {
+			return;
+		}
+
+		$entity_id = intval( $_POST['post_ID'] );
 
 		// Take away old values.
 		delete_post_meta( $entity_id, $this->meta_name );
@@ -266,7 +285,9 @@ class WL_Metabox_Field {
 		// insert new values, respecting cardinality.
 		$single = ( 1 === $this->cardinality );
 		foreach ( $this->data as $value ) {
-			add_post_meta( $entity_id, $this->meta_name, $value, $single );
+			$this->log->trace( "Saving $value to $this->meta_name for entity $entity_id..." );
+			$meta_id = add_post_meta( $entity_id, $this->meta_name, $value, $single );
+			$this->log->debug( "$value to $this->meta_name for entity $entity_id saved with id $meta_id." );
 		}
 	}
 
@@ -288,6 +309,15 @@ class WL_Metabox_Field {
 	 *
 	 * Overwrite this method (or methods called from this method) in a child
 	 * class to obtain custom behaviour.
+	 *
+	 * The HTML fragment includes the following parts:
+	 * * html wrapper open.
+	 * * heading.
+	 * * nonce.
+	 * * stored values.
+	 * * an empty input when there are no stored values.
+	 * * an add button to add more values.
+	 * * html wrapper close.
 	 */
 	public function html() {
 
@@ -295,24 +325,18 @@ class WL_Metabox_Field {
 		$html = $this->html_wrapper_open();
 
 		// Label.
-		$html .= "<h3>$this->label</h3>";
+		$html .= $this->get_heading_html();
 
 		// print nonce.
 		$html .= $this->html_nonce();
 
 		// print data loaded from DB.
 		$count = 0;
-		if ( $this->data ) {
-			foreach ( $this->data as $value ) {
-				if ( $count < $this->cardinality ) {
-					$html .= $this->html_input( $value );
-				}
-				$count ++;
-			}
-		}
+		$html  .= $this->get_stored_values_html( $count );
 
 		// Print the empty <input> to add new values.
 		if ( 0 === $count ) { // } || $count < $this->cardinality ) { DO NOT print empty inputs unless requested by the editor since fields might support empty strings.
+			$this->log->debug( 'Going to print an empty HTML input...' );
 			$html .= $this->html_input( '' );    // Will print an empty <input>.
 			$count ++;
 		}
@@ -322,6 +346,45 @@ class WL_Metabox_Field {
 
 		// Close the HTML wrapper.
 		$html .= $this->html_wrapper_close();
+
+		return $html;
+	}
+
+	/**
+	 * Print the heading with the label for the metabox.
+	 *
+	 * @since 3.15.0
+	 * @return string The heading html fragment.
+	 */
+	protected function get_heading_html() {
+
+		return "<h3>$this->label</h3>";
+	}
+
+	/**
+	 * Print the stored values.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @param int $count An output value: the number of printed values.
+	 *
+	 * @return string The html fragment.
+	 */
+	protected function get_stored_values_html( &$count ) {
+
+		$html = '';
+
+		// print data loaded from DB.
+		$count = 0;
+		if ( $this->data ) {
+			foreach ( $this->data as $value ) {
+				if ( $count < $this->cardinality ) {
+					$this->log->debug( "Going to print an HTML input #$count with $value..." );
+					$html .= $this->html_input( $value );
+				}
+				$count ++;
+			}
+		}
 
 		return $html;
 	}

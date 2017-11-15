@@ -151,10 +151,10 @@ class Wordlift {
 	 * The Entity list customization.
 	 *
 	 * @since  3.3.0
-	 * @access private
+	 * @access protected
 	 * @var \Wordlift_Entity_List_Service $entity_list_service The Entity list service.
 	 */
-	private $entity_list_service;
+	protected $entity_list_service;
 
 	/**
 	 * The Entity Types Taxonomy Walker.
@@ -553,6 +553,15 @@ class Wordlift {
 	private $relation_rebuild_adapter;
 
 	/**
+	 * The {@link Wordlift_Google_Analytics_Export_Service} instance.
+	 *
+	 * @since  3.16.0
+	 * @access protected
+	 * @var \Wordlift_Google_Analytics_Export_Service $google_analytics_export_service The {@link Wordlift_Google_Analytics_Export_Service} instance.
+	 */
+	protected $google_analytics_export_service;
+
+	/**
 	 * {@link Wordlift}'s singleton instance.
 	 *
 	 * @since  3.15.0
@@ -636,7 +645,7 @@ class Wordlift {
 	public function __construct() {
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.15.0-dev';
+		$this->version     = '3.16.0-dev';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -700,6 +709,7 @@ class Wordlift {
 
 		/** Services. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-log-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-http-api.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-redirect-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-configuration-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-post-type-service.php';
@@ -853,6 +863,9 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/rendition/class-wordlift-sparql-tuple-rendition.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/rendition/class-wordlift-sparql-tuple-rendition-factory.php';
 
+		/** Services. */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-google-analytics-export-service.php';
+
 		/** Adapters. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-tinymce-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-newrelic-adapter.php';
@@ -862,7 +875,7 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-relation-rebuild-adapter.php';
 
 		/** Async Tasks. */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/wp-async-task.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-async-task.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-sparql-query-async-task.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-batch-analysis-request-async-task.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-batch-analysis-complete-async-task.php';
@@ -915,11 +928,6 @@ class Wordlift {
 		 * The WordLift entity type settings admin page controller.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-entity-type-settings.php';
-
-		/**
-		 * The admin 'Download Your Data' page.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-download-your-data-page.php';
 
 		/**
 		 * The admin 'Download Your Data' page.
@@ -1008,6 +1016,9 @@ class Wordlift {
 		// Instantiate a global logger.
 		global $wl_logger;
 		$wl_logger = Wordlift_Log_Service::get_logger( 'WordLift' );
+
+		// Load the `wl-api` end-point.
+		new Wordlift_Http_Api();
 
 		/** Services. */
 		// Create the configuration service.
@@ -1111,6 +1122,9 @@ class Wordlift {
 
 		// Initialize the AMP service.
 		new Wordlift_AMP_Service();
+
+		/** Services. */
+		$this->google_analytics_export_service = new Wordlift_Google_Analytics_Export_Service();
 
 		/** Adapters. */
 		$this->entity_type_adapter      = new Wordlift_Entity_Type_Adapter( $this->entity_type_service );
@@ -1314,6 +1328,9 @@ class Wordlift {
 		// Hook row actions for the entity type list admin.
 		$this->loader->add_filter( 'wl_entity_type_row_actions', $this->entity_type_admin_page, 'wl_entity_type_row_actions', 10, 2 );
 
+		/** Ajax actions. */
+		$this->loader->add_action( 'wp_ajax_wl_google_analytics_export', $this->google_analytics_export_service, 'export' );
+
 		// Hook capabilities manipulation to allow access to entity type admin
 		// page  on wordpress versions before 4.7.
 		global $wp_version;
@@ -1321,7 +1338,7 @@ class Wordlift {
 			$this->loader->add_filter( 'map_meta_cap', $this->entity_type_admin_page, 'enable_admin_access_pre_47', 10, 4 );
 		}
 
-		$this->loader->add_action( 'wp_async_wl_run_sparql_query', $this->sparql_service, 'run_sparql_query', 10, 1 );
+		$this->loader->add_action( 'wl_async_wl_run_sparql_query', $this->sparql_service, 'run_sparql_query', 10, 1 );
 
 		/** Adapters. */
 		$this->loader->add_filter( 'mce_external_plugins', $this->tinymce_adapter, 'mce_external_plugins', 10, 1 );
@@ -1394,7 +1411,7 @@ class Wordlift {
 		 */
 		$this->loader->add_action( 'pre_get_posts', $this->entity_page_service, 'pre_get_posts', 10, 1 );
 
-		$this->loader->add_action( 'wp_async_wl_run_sparql_query', $this->sparql_service, 'run_sparql_query', 10, 1 );
+		$this->loader->add_action( 'wl_async_wl_run_sparql_query', $this->sparql_service, 'run_sparql_query', 10, 1 );
 
 		// This hook have to run before the rating service, as otherwise the post might not be a proper entity when rating is done.
 		$this->loader->add_action( 'save_post', $this->entity_type_adapter, 'save_post', 9, 3 );

@@ -165,8 +165,12 @@ class Wordlift_Import_Service {
 		// Finally queue the statement.
 		$this->sparql_service->execute( $stmt );
 
+		// Removed.
+		//
+		// See https://github.com/insideout10/wordlift-plugin/issues/686.
+		//
 		// Clear up the cache to avoid memory errors.
-		wp_cache_flush();
+		// wp_cache_flush();
 
 	}
 

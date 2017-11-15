@@ -1,6 +1,8 @@
 <?php
 /**
  * This file contains WordLift-related constants.
+ *
+ * @package Wordlift
  */
 
 // Define the basic options for HTTP calls to REDLINK.
@@ -21,12 +23,21 @@ define( 'WL_REQUEST_ID', uniqid( true ) );
 // Set the temporary files folder.
 defined( 'WL_TEMP_DIR' ) || define( 'WL_TEMP_DIR', get_temp_dir() );
 
-define( 'WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING', 'true' !== getenv( 'WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING' ) );
+define( 'WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING', wl_is_sparql_update_queries_buffering_enabled() );
+
+function wl_is_sparql_update_queries_buffering_enabled() {
+
+	if ( isset( $_REQUEST['wl-async'] ) && 'false' === $_REQUEST['wl-async'] ) {
+		return false;
+	}
+
+	return 'true' !== getenv( 'WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING' );
+}
 
 // Define the meta name used to store the entity URL.
 define( 'WL_ENTITY_URL_META_NAME', 'entity_url' );
 
-// Max number of recursions when printing microdata
+// Max number of recursions when printing microdata.
 define( 'WL_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING', 3 );
 
 // 3.13.0, we use by default WLS 1.11 which provides us with the new, faster
@@ -34,6 +45,10 @@ define( 'WL_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING', 3 );
 define( 'WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE', defined( 'WORDLIFT_API_URL' ) ? WORDLIFT_API_URL . '/' : 'https://api.wordlift.it/' );
 
 define( 'WL_CONFIG_TEST_GOOGLE_RICH_SNIPPETS_URL', 'https://developers.google.com/structured-data/testing-tool/?url=' );
+
+// If is set to true, there will be additional button in 'Download Your Data' page
+// that will allow users to download their data in JSON-LD format.
+defined( 'WL_CONFIG_DOWNLOAD_GA_CONTENT_DATA' ) || define( 'WL_CONFIG_DOWNLOAD_GA_CONTENT_DATA', false );
 
 
 /**

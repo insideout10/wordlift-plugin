@@ -66,8 +66,12 @@ class Wordlift_Autocomplete_Adapter {
 			) );
 		}
 
+		// Get the exclude paramter.
+		$exclude = ! empty( $_REQUEST['exclude'] )
+			? sanitize_text_field( wp_unslash( $_REQUEST['exclude'] ) ) : '';
+
 		// Make request.
-		$response = $this->autocomplete_service->make_request( $query );
+		$response = $this->autocomplete_service->make_request( $query, $exclude );
 
 		// Clear any buffer.
 		ob_clean();

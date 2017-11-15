@@ -80,4 +80,21 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 		return $this->wordlift_test;
 	}
 
+	/**
+	 * Utility method that resets permalinks and flushes rewrites.
+	 *
+	 * @since 3.16.0
+	 *
+	 * @global WP_Rewrite $wp_rewrite
+	 *
+	 * @param string $structure Optional. Permalink structure to set. Default empty.
+	 */
+	public function set_permalink_structure( $structure = '' ) {
+		global $wp_rewrite;
+
+		$wp_rewrite->init();
+		$wp_rewrite->set_permalink_structure( $structure );
+		$wp_rewrite->flush_rules();
+	}
+
 }

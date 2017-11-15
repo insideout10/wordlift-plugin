@@ -37,11 +37,23 @@ class Wordlift_Relation_Service {
 	private $relation_table;
 
 	/**
+	 * A {@link Wordlift_Log_Service} instance.
+	 *
+	 * @since 3.15.3
+	 *
+	 * @var Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
+	 */
+	private $log;
+
+	/**
 	 * Create a {@link Wordlift_Relation_Service} instance.
 	 *
 	 * @since 3.15.0
 	 */
 	public function __construct() {
+
+		$this->log = Wordlift_Log_Service::get_logger( get_class() );
+
 		global $wpdb;
 
 		// The relations table.
@@ -87,11 +99,22 @@ class Wordlift_Relation_Service {
 		// The output fields.
 		$actual_fields = self::fields( $fields );
 
+		$this->log->trace( 'Getting article subjects for object ' . implode( ', ', (array) $object_id ) . '...' );
+
 		$objects = $this->article_id_to_entity_id( $object_id );
+
+		// If there are no related objects, return an empty array.
+		if ( empty( $objects ) ) {
+			$this->log->debug( 'No entities found for object ' . implode( ', ', (array) $object_id ) . '.' );
+
+			return array();
+		}
+
+		$this->log->debug( count( $objects ) . ' entity id(s) found for object ' . implode( ', ', (array) $object_id ) . '.' );
 
 		$sql =
 			"
-			SELECT p.$actual_fields
+			SELECT DISTINCT p.$actual_fields
 			FROM {$this->relation_table} r
 			INNER JOIN $wpdb->posts p
 				ON p.id = r.subject_id
@@ -104,11 +127,29 @@ class Wordlift_Relation_Service {
 			// the results.
 			. self::and_article_not_in( array_merge( $excludes, (array) $object_id ) )
 			. self::and_article_in( $include )
-			. " AND p.post_type IN ( 'post', 'page', 'entity' ) "
+			. self::and_post_type_in()
 			. self::and_predicate( $predicate )
 			. self::limit( $limit );
 
+
 		return '*' === $actual_fields ? $wpdb->get_results( $sql ) : $wpdb->get_col( $sql );
+	}
+
+	/**
+	 * The `post_type IN` clause.
+	 *
+	 * @since 3.15.3
+	 *
+	 * @return string The `post_type IN` clause.
+	 */
+	private static function and_post_type_in() {
+
+		return " AND p.post_type IN ( '"
+			   . implode(
+				   "','",
+				   array_map( 'esc_sql', Wordlift_Entity_Service::valid_entity_post_types() )
+			   )
+			   . "' )";
 	}
 
 	/**
@@ -229,11 +270,9 @@ class Wordlift_Relation_Service {
 			"
 			// Add the status clause.
 			. self::and_status( $status )
-			. self::inner_join_is_not_article() .
-			"
-			WHERE r.object_id = %d
-				AND p.post_type IN ( 'post', 'page', 'entity' )
-			"
+			. self::inner_join_is_not_article()
+			. " WHERE r.object_id = %d "
+			. self::and_post_type_in()
 			,
 			$object_id
 		);
@@ -270,10 +309,8 @@ class Wordlift_Relation_Service {
 			// Add the status clause.
 			. self::and_status( $status )
 			. self::inner_join_is_not_article()
-			. "
-			WHERE r.subject_id = %d
-				AND p.post_type IN ( 'post', 'page', 'entity' )
-			"
+			. " WHERE r.subject_id = %d "
+			. self::and_post_type_in()
 			. self::and_predicate( $predicate )
 			,
 			$subject_id

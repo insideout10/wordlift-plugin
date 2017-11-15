@@ -1,6 +1,7 @@
 <?php
 
 class Wordlift_Relation_Rebuild_Service extends Wordlift_Listable {
+
 	/**
 	 * @var Wordlift_Content_Filter_Service
 	 */

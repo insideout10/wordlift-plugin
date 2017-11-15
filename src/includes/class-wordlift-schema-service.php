@@ -691,7 +691,7 @@ class Wordlift_Schema_Service {
 			'linked_data'   => array(
 				// ### schema:startDate.
 				$this->rendition_factory->create(
-					$this->storage_factory->post_meta( self::FIELD_DATE_END ),
+					$this->storage_factory->post_meta( self::FIELD_DATE_START ),
 					'http://schema.org/startDate',
 					self::DATA_TYPE_DATE_TIME
 				),
