@@ -53,13 +53,13 @@ class Wordlift_Admin_Publisher_Element extends Wordlift_Admin_Author_Element {
 	 * @param \Wordlift_Admin_Select2_Element $select_element        The {@link Wordlift_Admin_Select_Element} instance.
 	 */
 	function __construct( $configuration_service, $publisher_service, $tabs_element, $select_element ) {
-		parent::__construct($publisher_service, $select_element);
+		parent::__construct( $publisher_service, $select_element );
 
 		$this->configuration_service = $configuration_service;
 		$this->publisher_service     = $publisher_service;
 
 		// Child elements.
-		$this->tabs_element   = $tabs_element;
+		$this->tabs_element = $tabs_element;
 
 	}
 
@@ -114,6 +114,12 @@ class Wordlift_Admin_Publisher_Element extends Wordlift_Admin_Author_Element {
 
 		// Get the publisher data.
 		$data = $this->publisher_service->query();
+		array_unshift( $data, array(
+			'id'            => '',
+			'text'          => _x( '(none)', 'Publisher Select in Settings Screen.', 'wordlift' ),
+			'type'          => '',
+			'thumbnail_url' => false,
+		) );
 
 		// Call the select internal render.
 		$this->do_render( $params, $publisher_id, $data );

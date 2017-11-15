@@ -239,4 +239,61 @@ class Wordlift_Test extends Wordlift {
 		return $this->schema_service;
 	}
 
+	/**
+	 * Get the {@link Wordlift_Entity_List_Service}.
+	 *
+	 * @since 3.15.3
+	 *
+	 * @return \Wordlift_Entity_List_Service The {@link Wordlift_Entity_List_Service} instance.
+	 */
+	public function get_entity_list_service() {
+
+		return $this->entity_list_service;
+	}
+
+	/**
+	 * Get the {@link Wordlift_Sample_Data_Service} instance.
+	 *
+	 * @since 3.16.0
+	 *
+	 * @return \Wordlift_Sample_Data_Service The {@link Wordlift_Sample_Data_Service} instance.
+	 */
+	public function get_sample_data_service() {
+
+		return $this->sample_data_service;
+	}
+
+	/**
+	 * Get the {@link Wordlift_Cached_Post_Converter} instance.
+	 *
+	 * @since 3.16.0
+	 * @return \Wordlift_Cached_Post_Converter The {@link Wordlift_Cached_Post_Converter} instance.
+	 */
+	public function get_cached_postid_to_jsonld_converter() {
+
+		return $this->cached_postid_to_jsonld_converter;
+	}
+
+	/**
+	 * Get the {@link Wordlift_File_Cache_Service} instance.
+	 *
+	 * @since 3.16.0
+	 * @return \Wordlift_File_Cache_Service The {@link Wordlift_File_Cache_Service} instance.
+	 */
+	public function get_file_cache_service() {
+
+		return $this->file_cache_service;
+	}
+
+	/**
+	 * Get the {@link Wordlift_Relation_Service} instance.
+	 *
+	 * @since 3.16.0
+	 * @return \Wordlift_Relation_Service The {@link Wordlift_Relation_Service} instance.
+	 */
+	public function get_relation_service() {
+
+		return $this->relation_service;
+	}
+
 }

@@ -71,6 +71,8 @@ class WL_Metabox_Field_date extends WL_Metabox_Field {
 	 */
 	public function html_input( $date ) {
 
+		$this->log->debug("Creating date input with date value $date...");
+
 		// $picker_date = ( empty( $date ) ? '' : esc_attr( date( $this->date_format, strtotime( $date ) ) ) );
 
 		return <<<EOF

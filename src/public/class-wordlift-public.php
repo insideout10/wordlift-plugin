@@ -108,9 +108,15 @@ class Wordlift_Public {
 		}
 
 		// Add flag that we are on home/blog page.
-		if ( is_home() || is_front_page()  ) {
+		if ( is_home() || is_front_page() ) {
 			$settings['isHome'] = true;
 		}
+
+		// Add the JSON-LD enabled flag, when set to false, the JSON-lD won't
+		// be loaded.
+		//
+		// @see https://github.com/insideout10/wordlift-plugin/issues/642.
+		$settings['jsonld_enabled'] = apply_filters( 'wl_jsonld_enabled', true );
 
 		// Note that we switched the js to be loaded in footer, since it is loading
 		// the json-ld representation.

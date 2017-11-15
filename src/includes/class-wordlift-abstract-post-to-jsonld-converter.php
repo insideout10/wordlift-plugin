@@ -77,7 +77,6 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		$this->entity_service      = $entity_service;
 		$this->user_service        = $user_service;
 		$this->attachment_service  = $attachment_service;
-
 	}
 
 	/**
@@ -85,7 +84,6 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 * found while processing the post is set in the $references array.
 	 *
 	 * @since 3.10.0
-	 *
 	 *
 	 * @param int   $post_id    The post id.
 	 * @param array $references An array of entity references.
@@ -95,7 +93,8 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	public function convert( $post_id, &$references = array() ) {
 
 		// Get the post instance.
-		if ( null === $post = get_post( $post_id ) ) {
+		$post = get_post( $post_id );
+		if ( null === $post ) {
 			// Post not found.
 			return null;
 		}
@@ -125,7 +124,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 			//
 			// No need to specify `'@type' => 'WebPage'.
 			//
-			// See https://github.com/insideout10/wordlift-plugin/issues/451
+			// See https://github.com/insideout10/wordlift-plugin/issues/451.
 			$jsonld['mainEntityOfPage'] = get_the_permalink( $post->ID );
 		};
 
@@ -158,6 +157,8 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 * Set the images, by looking for embedded images, for images loaded via the
 	 * gallery and for the featured image.
 	 *
+	 * Uses the cache service to store the results of this function for a day.
+	 *
 	 * @since 3.10.0
 	 *
 	 * @param WP_Post $post   The target {@link WP_Post}.
@@ -169,23 +170,31 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		$ids = array();
 
 		// Set the thumbnail id as first attachment id, if any.
-		if ( '' !== $thumbnail_id = get_post_thumbnail_id( $post->ID ) ) {
+		$thumbnail_id = get_post_thumbnail_id( $post->ID );
+		if ( '' !== $thumbnail_id ) {
 			$ids[] = $thumbnail_id;
 		}
 
+		// For the time being the following is being removed since the query
+		// initiated by `get_image_embeds` is consuming lots of CPU.
+		//
+		// See https://github.com/insideout10/wordlift-plugin/issues/689.
+		//
 		// Get the embeds, removing existing ids.
-		$embeds = array_diff( $this->attachment_service->get_image_embeds( $post->post_content ), $ids );
+		// $embeds = array_diff( $this->attachment_service->get_image_embeds( $post->post_content ), $ids );
+		$embeds = array();
 
 		// Get the gallery, removing existing ids.
 		$gallery = array_diff( $this->attachment_service->get_gallery( $post ), $ids, $embeds );
 
 		// Map the attachment ids to images' data structured for schema.org use.
 		$images = array_map( function ( $item ) {
+			/*
+			 * @todo: we're not sure that we're getting attachment data here, we
+			 * should filter `false`s.
+			 */
 
-			// @todo: we're not sure that we're getting attachment data here, we
-			// should filter `false`s.
-
-			// Get the attachment data.
+			 // Get the attachment data.
 			$attachment = wp_get_attachment_image_src( $item, 'full' );
 
 			// Refactor data as per schema.org specifications.
@@ -195,9 +204,9 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 			), $attachment );
 		}, array_merge( $ids, $embeds, $gallery ) );
 
-		if ( 0 < sizeof( $images ) ) {
+		if ( 0 < count( $images ) ) {
 			$jsonld['image'] = $images;
-		};
+		}
 
 	}
 
@@ -217,7 +226,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		// If you specify a "width" or "height" value you should leave out
 		// 'px'. For example: "width":"4608px" should be "width":"4608".
 		//
-		// See https://github.com/insideout10/wordlift-plugin/issues/451
+		// See https://github.com/insideout10/wordlift-plugin/issues/451.
 		if ( isset( $attachment[1] ) && is_numeric( $attachment[1] ) && 0 < $attachment[1] ) {
 			$image['width'] = $attachment[1];
 		}
@@ -228,5 +237,4 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 
 		return $image;
 	}
-
 }

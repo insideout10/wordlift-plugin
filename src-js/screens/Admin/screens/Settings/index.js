@@ -20,6 +20,7 @@ import Tabs from 'modules/tabs';
   $(function() {
     // Attach the WL key validator to the `#wl-key` element.
     KeyValidator('#wl-key');
+    $('#wl-key').trigger('keyup');
 
     // Attach the Media Uploader to the #wl-publisher-logo
     MediaUploader(
