@@ -149,8 +149,10 @@ class Wordlift_Http_Api {
 
 		// See https://github.com/insideout10/wordlift-plugin/issues/698.
 		if ( 'yes' !== get_option( 'wl_http_api' ) ) {
-			flush_rewrite_rules();
 			add_option( 'wl_http_api', 'yes' );
+			add_action( 'wp_loaded', function () {
+				flush_rewrite_rules();
+			} );
 		}
 
 	}
