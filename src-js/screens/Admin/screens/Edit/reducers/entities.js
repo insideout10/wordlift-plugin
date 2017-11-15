@@ -36,8 +36,6 @@ const entities = function(state = Map(), action) {
       const labels = Map( action.results.entities )
         .groupBy( (v, k) => v.label );
 
-      console.log( labels );
-
       // Return a new map of the received entities. The legacy Angular
       // app doesn't set the `link` property on the entity, therefore we
       // preset it here according to the `occurrences` settings.
