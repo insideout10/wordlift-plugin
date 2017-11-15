@@ -144,7 +144,8 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 = 3.60.0 (????-??-??) =
-* Feature: [#626](https://github.com/insideout10/wordlift-plugin/issues/626): Cache JSON-LD, introduce an explicit caching layer.
+* Enhancement: [#626](https://github.com/insideout10/wordlift-plugin/issues/626): Cache JSON-LD, introduce an explicit caching layer.
+* Enhancement: [#514](https://github.com/insideout10/wordlift-plugin/issues/514): Add the occurrences of an entity within an article by default in Content Classification.
 
 = 3.15.6 (2017-11-15) =
 * Fix: [#701](https://github.com/insideout10/wordlift-plugin/issues/701): Early rewrite rules flushing causes infinite loop.
