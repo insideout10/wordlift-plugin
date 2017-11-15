@@ -29,7 +29,10 @@ class Wordlift_Deactivator {
 	 * @since    1.0.0
 	 */
 	public static function deactivate() {
-		Wordlift_Jsonld_Cache_Service::get_instance()->flush();
+
+		// Clear caches.
+		Wordlift_File_Cache_Service::get_instance()->flush();
+
 	}
 
 }

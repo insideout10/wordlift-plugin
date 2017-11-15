@@ -1,29 +1,68 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: david
- * Date: 14.11.17
- * Time: 11:49
+ * Services: File Cache Service
+ *
+ * The File Cache Service provides on-disk caching.
+ *
+ * @since      3.16.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes/cache
  */
 
+/**
+ * Define the {@link Wordlift_File_Cache_Service} class.
+ *
+ * @since 3.16.0
+ */
 class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 
 	/**
-	 * @var
+	 * The cache directory.
+	 *
+	 * @since  3.16.0
+	 * @access private
+	 * @var string $cache_dir The root cache directory (ending with a trailing slash).
 	 */
 	private $cache_dir;
 
-	private $log;
 	/**
-	 * @var string
+	 * The file extension for cache files (e.g. `.wlcache`).
+	 *
+	 * @since  3.16.0
+	 * @access private
+	 * @var string $file_extension The file extension for cache files (e.g. `.wlcache`).
 	 */
 	private $file_extension;
 
 	/**
-	 * Wordlift_File_Cache_Service constructor.
+	 * A {@link Wordlift_Log_Service} instance.
 	 *
-	 * @param        $cache_dir
-	 * @param string $file_extension
+	 * @since  3.16.0
+	 * @access private
+	 * @var \Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
+	 */
+	private $log;
+
+	/**
+	 * The {@link Wordlift_File_Cache_Service} singleton instance.
+	 *
+	 * @since  3.16.0
+	 * @access private
+	 * @var \Wordlift_File_Cache_Service $instance The {@link Wordlift_File_Cache_Service} singleton instance.
+	 */
+	private static $instance;
+
+	/**
+	 * Create a {@link Wordlift_File_Cache_Service} instance.
+	 *
+	 * The File Cache Service requires a base cache directory (to which a unique
+	 * id for the current site will be appended) and a file extension for cache
+	 * files (by default `.wlcache`) is used.
+	 *
+	 * @since 3.16.0
+	 *
+	 * @param string $cache_dir      The base cache directory.
+	 * @param string $file_extension The file extension, by default `.wlcache`.
 	 */
 	public function __construct( $cache_dir, $file_extension = '.wlcache' ) {
 
@@ -39,10 +78,26 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 			mkdir( $this->cache_dir, 0755, true );
 		}
 
+		self::$instance = $this;
+
 		$this->log->info( "File Cache service initialized on $this->cache_dir." );
 
 	}
 
+	/**
+	 * Get the {@link Wordlift_File_Cache_Service} singleton instance.
+	 *
+	 * @since 3.16.0
+	 * @return \Wordlift_File_Cache_Service The {@link Wordlift_File_Cache_Service} singleton instance.
+	 */
+	public static function get_instance() {
+
+		return self::$instance;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
 	function get_cache( $id ) {
 
 		// Get the filename.
@@ -62,6 +117,9 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 		return $contents ?: false;
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	function set_cache( $id, $contents ) {
 
 		$filename = $this->get_filename( $id );
@@ -72,6 +130,9 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	function delete_cache( $id ) {
 
 		$filename = $this->get_filename( $id );
@@ -82,6 +143,9 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	function flush() {
 
 		// Bail out if the cache dir isn't set.
@@ -114,6 +178,15 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 
 	}
 
+	/**
+	 * Get the filename holding the cache contents for the specified `id`.
+	 *
+	 * @since 3.16.0
+	 *
+	 * @param int $id The cache `id`.
+	 *
+	 * @return string The filename.
+	 */
 	private function get_filename( $id ) {
 
 		return $this->cache_dir . md5( $id ) . $this->file_extension;

@@ -285,4 +285,15 @@ class Wordlift_Test extends Wordlift {
 		return $this->file_cache_service;
 	}
 
+	/**
+	 * Get the {@link Wordlift_Relation_Service} instance.
+	 *
+	 * @since 3.16.0
+	 * @return \Wordlift_Relation_Service The {@link Wordlift_Relation_Service} instance.
+	 */
+	public function get_relation_service() {
+
+		return $this->relation_service;
+	}
+
 }

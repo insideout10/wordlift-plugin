@@ -1,11 +1,21 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: david
- * Date: 14.11.17
- * Time: 11:07
+ * Converters: Cache Post Converter
+ *
+ * The Cached Post Converter looks for cached copies of converter results before
+ * actually calling the underlying {@link Wordlift_Post_Converter} (injected
+ * via the constructor).
+ *
+ * @since      3.16.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes/cache
  */
 
+/**
+ * Define the {@link Wordlift_Cached_Post_Converter} class.
+ *
+ * @since 3.16.0
+ */
 class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 
 	/**
@@ -48,11 +58,15 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 
 	}
 
+	/**
+	 * Hooks to catch post/post meta changes in order to invalidate the cache.
+	 *
+	 * @since 3.16.0
+	 */
 	private function init_hooks() {
 
 		// Hook on post save to flush relevant cache.
-//		add_action( 'save_post', array( $this, 'save_post' ) );
-		add_action( 'clean_post_cache', array( $this, 'save_post' ) );
+		add_action( 'save_post', array( $this, 'save_post' ) );
 
 		add_action( 'added_post_meta', array(
 			$this,

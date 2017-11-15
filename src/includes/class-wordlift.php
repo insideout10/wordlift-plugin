@@ -619,10 +619,10 @@ class Wordlift {
 	 * The {@link Wordlift_Relation_Service} instance.
 	 *
 	 * @since  3.15.0
-	 * @access private
+	 * @access protected
 	 * @var \Wordlift_Relation_Service $relation_service The {@link Wordlift_Relation_Service} instance.
 	 */
-	private $relation_service;
+	protected $relation_service;
 
 	/**
 	 * The {@link Wordlift_Cached_Post_Converter} instance.
@@ -827,7 +827,6 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/intf-wordlift-post-converter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-abstract-post-to-jsonld-converter.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-abstract-cached-post-to-jsonld-converter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-postid-to-jsonld-converter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-post-to-jsonld-converter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-post-to-jsonld-converter.php';
@@ -891,8 +890,6 @@ class Wordlift {
 
 		/** Services. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-google-analytics-export-service.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-abstract-cache-service.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-jsonld-cache-service.php';
 
 		/** Adapters. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-tinymce-adapter.php';
@@ -1153,9 +1150,6 @@ class Wordlift {
 
 		// Initialize the AMP service.
 		new Wordlift_AMP_Service();
-
-		// Initialize the jsonld caching service.
-		new Wordlift_Jsonld_Cache_Service();
 
 		/** Services. */
 		$this->google_analytics_export_service = new Wordlift_Google_Analytics_Export_Service();

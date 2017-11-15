@@ -78,6 +78,24 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 	private $file_cache_service;
 
 	/**
+	 * The {@link Wordlift_Relation_Service} instance.
+	 *
+	 * @since  3.16.0
+	 * @access private
+	 * @var \Wordlift_Relation_Service $relation_service The {@link Wordlift_Relation_Service} instance.
+	 */
+	private $relation_service;
+
+	/**
+	 * The {@link Wordlift_Entity_Service} instance.
+	 *
+	 * @since  3.16.0
+	 * @access private
+	 * @var \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service} instance.
+	 */
+	private $entity_service;
+
+	/**
 	 * @inheritdoc
 	 */
 	function setUp() {
@@ -89,18 +107,24 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 		$this->sample_data_service               = $wordlift_test->get_sample_data_service();
 		$this->cached_postid_to_jsonld_converter = $wordlift_test->get_cached_postid_to_jsonld_converter();
 		$this->post_to_jsonld_converter          = $wordlift_test->get_post_to_jsonld_converter();
+		$this->relation_service                  = $wordlift_test->get_relation_service();
+		$this->entity_service                    = $wordlift_test->get_entity_service();
 
 		// Clean-up the file cache.
 		$this->file_cache_service = $wordlift_test->get_file_cache_service();
 
 	}
 
+	/**
+	 * Test the post conversion.
+	 *
+	 * @since 3.16.0
+	 */
 	public function test() {
 
 		// Create the sample data.
 		$this->sample_data_service->create();
 
-		$this->file_cache_service->flush();
 		$this->_test_that_the_non_cached_and_the_cached_results_are_equal();
 
 		// Delete the sample data.
@@ -125,25 +149,80 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 		// Check that we have a valid value.
 		$this->assertTrue( $post instanceof WP_Post );
 
-		// Check that the post isn't cached.
-		$this->assert_cache( $post->ID, false );
-
-		// Check that the post is cached.
-		$this->assert_cache( $post->ID, true );
+		// Check that the post isn't cached the 1st time and it's cached the 2nd.
+		$this->assert_no_cache_and_then_cache( $post->ID );
 
 		// Now change the post title and check that the cache is deleted.
 		$result = wp_update_post( array(
 			'ID'         => $post->ID,
-			'post_title' => 'New title',
+			'post_title' => uniqid( 'title-' ),
 		) );
 
 		$this->assertFalse( is_wp_error( $result ) );
 
-		// Check that the post isn't cached.
-		$this->assert_cache( $post->ID, false );
+		// Check that the post isn't cached the 1st time and it's cached the 2nd.
+		$this->assert_no_cache_and_then_cache( $post->ID );
+
+		// Try adding a meta.
+		add_post_meta( $post->ID, '_meta_test', uniqid( 'meta-' ) );
+
+		// Check that the post isn't cached the 1st time and it's cached the 2nd.
+		$this->assert_no_cache_and_then_cache( $post->ID );
+
+		// Try updating a meta.
+		update_post_meta( $post->ID, '_meta_test', uniqid( 'meta-' ) );
+
+		// Check that the post isn't cached the 1st time and it's cached the 2nd.
+		$this->assert_no_cache_and_then_cache( $post->ID );
+
+		// Try deleting a meta.
+		delete_post_meta( $post->ID, '_meta_test' );
+
+		// Check that the post isn't cached the 1st time and it's cached the 2nd.
+		$this->assert_no_cache_and_then_cache( $post->ID );
+
+		// Get the current relations.
+		$relations_1 = $this->relation_service->get_objects( $post->ID );
+
+		// Delete the relations.
+		wl_core_delete_relation_instances( $post->ID );
+
+		// Check that we don't have any more relations.
+		$relations_2 = $this->relation_service->get_objects( $post->ID );
+		$this->assertCount( 0, $relations_2 );
+
+		// Check that the post isn't cached the 1st time and it's cached the 2nd.
+		$this->assert_no_cache_and_then_cache( $post->ID );
+
+		// Add back the relations.
+		foreach ( $relations_1 as $relation ) {
+			wl_core_add_relation_instance( $post->ID, $this->entity_service->get_classification_scope_for( $relation->ID ), $relation->ID );
+		}
+
+		// Check that the relations are back as before.
+		$relations_3 = $this->relation_service->get_objects( $post->ID );
+		$this->assertEquals( $relations_1, $relations_3 );
+
+		// Check that the post isn't cached the 1st time and it's cached the 2nd.
+		$this->assert_no_cache_and_then_cache( $post->ID );
+
+		// The following won't work until https://github.com/insideout10/wordlift-plugin/issues/702
+		// is resolved:
+		//		foreach ( $relations_3 as $relation ) {
+		//			wp_delete_post( $relation->ID );
+		//
+		//			// Check that the post isn't cached the 1st time and it's cached the 2nd.
+		//			$this->assert_no_cache_and_then_cache( $post->ID );
+		//		}
 
 	}
 
+	/**
+	 * Get post #5, i.e. the sample post connected to all the entities.
+	 *
+	 * @since 3.16.0
+	 * @return WP_Post Post #5.
+	 */
 	private function get_post_5() {
 
 		// Get the post #5 which is the one that binds to all the entities.
@@ -161,13 +240,34 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 		return $post;
 	}
 
+	/**
+	 * Test the conversion.
+	 *
+	 * This function will convert the provided post and check that the conversion
+	 * is either cached or non cached and that it is equal to the non cached
+	 * version.
+	 *
+	 * @since 3.16.0
+	 *
+	 * @param int  $post_id The {@link WP_Post} id.
+	 * @param bool $expect  Expect the response to be cached or not (by default cached).
+	 *
+	 * @return mixed The cached response.
+	 */
 	private function assert_cache( $post_id, $expect = true ) {
+		global $wpdb;
+
+		// Store the number of queries.
+		$num_queries = $wpdb->num_queries;
 
 		// Get the cached response.
 		$cached = $this->cached_postid_to_jsonld_converter->convert( $post_id, $cached_references, $cache );
 
 		// Expect the first response not to be cached.
 		$this->assertEquals( $expect, $cache );
+
+		// If the response is cached we expect no queries.
+		$this->assertEquals( $cache, $num_queries === $wpdb->num_queries );
 
 		// Get the original - non-cached - response.
 		$original = $this->post_to_jsonld_converter->convert( $post_id, $original_references );
@@ -176,6 +276,27 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( $original, $cached );
 		$this->assertEquals( $original_references, $cached_references );
 
+		return $cached;
+	}
+
+	/**
+	 * Calls `assert_cache` twice, the first time expects no cache, the 2nd time
+	 * expects caching.
+	 *
+	 * @since 3.16.0
+	 *
+	 * @param int $post_id The {@link WP_Post} id.
+	 *
+	 * @return mixed The cached response.
+	 */
+	private function assert_no_cache_and_then_cache( $post_id ) {
+
+		$cached_1 = $this->assert_cache( $post_id, false );
+		$cached_2 = $this->assert_cache( $post_id, true );
+
+		$this->assertEquals( $cached_1, $cached_2 );
+
+		return $cached_2;
 	}
 
 }

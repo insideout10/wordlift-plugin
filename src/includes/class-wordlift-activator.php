@@ -55,8 +55,9 @@ class Wordlift_Activator {
 			set_transient( '_wl_activation_redirect', true, 30 );
 		}
 
-		// Clear older caches.
-		Wordlift_Jsonld_Cache_Service::get_instance()->flush();
+		// Clear caches.
+		Wordlift_File_Cache_Service::get_instance()->flush();
+
 	}
 
 }
