@@ -69,6 +69,15 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 	private $post_to_jsonld_converter;
 
 	/**
+	 * The {@link Wordlift_Cache_Service} instance.
+	 *
+	 * @since  3.16.0
+	 * @access private
+	 * @var \Wordlift_Cache_Service $file_cache_service The {@link Wordlift_Cache_Service} instance.
+	 */
+	private $file_cache_service;
+
+	/**
 	 * @inheritdoc
 	 */
 	function setUp() {
@@ -82,8 +91,7 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 		$this->post_to_jsonld_converter          = $wordlift_test->get_post_to_jsonld_converter();
 
 		// Clean-up the file cache.
-		$file_cache_service = $wordlift_test->get_file_cache_service();
-		$file_cache_service->flush();
+		$this->file_cache_service = $wordlift_test->get_file_cache_service();
 
 	}
 
@@ -91,6 +99,52 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 
 		// Create the sample data.
 		$this->sample_data_service->create();
+
+		$this->file_cache_service->flush();
+		$this->_test_that_the_non_cached_and_the_cached_results_are_equal();
+
+		// Delete the sample data.
+		$this->sample_data_service->delete();
+
+	}
+
+
+	/**
+	 * In this test we create sample data and then we call the converter twice.
+	 * The first time we expect non cached data, the second time we expect cached
+	 * data and both time we expect the data to match the results we get by
+	 * calling the converter directly with no caching.
+	 *
+	 * @since 3.16.0
+	 */
+	private function _test_that_the_non_cached_and_the_cached_results_are_equal() {
+
+		// Get post #5, i.e. the post with relations to all the other entities.
+		$post = $this->get_post_5();
+
+		// Check that we have a valid value.
+		$this->assertTrue( $post instanceof WP_Post );
+
+		// Check that the post isn't cached.
+		$this->assert_cache( $post->ID, false );
+
+		// Check that the post is cached.
+		$this->assert_cache( $post->ID, true );
+
+		// Now change the post title and check that the cache is deleted.
+		$result = wp_update_post( array(
+			'ID'         => $post->ID,
+			'post_title' => 'New title',
+		) );
+
+		$this->assertFalse( is_wp_error( $result ) );
+
+		// Check that the post isn't cached.
+		$this->assert_cache( $post->ID, false );
+
+	}
+
+	private function get_post_5() {
 
 		// Get the post #5 which is the one that binds to all the entities.
 		$posts = get_posts( array(
@@ -104,34 +158,24 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 		// Get the first post.
 		$post = current( $posts );
 
-		// Check that we have a valid value.
-		$this->assertTrue( $post instanceof WP_Post );
-
-		// Get the cached response.
-		$cached_1 = $this->cached_postid_to_jsonld_converter->convert( $post->ID, $cached_references_1, $cache_1 );
-
-		// Expect the first response not to be cached.
-		$this->assertFalse( $cache_1 );
-
-		// Get the original - non-cached - response.
-		$original_1 = $this->post_to_jsonld_converter->convert( $post->ID );
-
-		// Check that the responses match.
-		$this->assertEquals( $original_1, $cached_1 );
-
-		// Call again the cached converter.
-		$this->cached_postid_to_jsonld_converter->convert( $post->ID, $cached_references_2, $cache_2 );
-
-		// Check that we have a cached response this time.
-		$this->assertTrue( $cache_2 );
-
-		// Check that the responses match.
-		$this->assertEquals( $original_1, $cached_1 );
-
-		// Delete the sample data.
-		$this->sample_data_service->delete();
-
+		return $post;
 	}
 
+	private function assert_cache( $post_id, $expect = true ) {
+
+		// Get the cached response.
+		$cached = $this->cached_postid_to_jsonld_converter->convert( $post_id, $cached_references, $cache );
+
+		// Expect the first response not to be cached.
+		$this->assertEquals( $expect, $cache );
+
+		// Get the original - non-cached - response.
+		$original = $this->post_to_jsonld_converter->convert( $post_id, $original_references );
+
+		// Check that the responses match.
+		$this->assertEquals( $original, $cached );
+		$this->assertEquals( $original_references, $cached_references );
+
+	}
 
 }

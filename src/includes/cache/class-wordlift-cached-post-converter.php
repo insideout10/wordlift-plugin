@@ -44,12 +44,15 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 		$this->converter     = $converter;
 		$this->cache_service = $cache_service;
 
+		$this->init_hooks();
+
 	}
 
 	private function init_hooks() {
 
 		// Hook on post save to flush relevant cache.
-		add_action( 'save_post', array( $this, 'save_post' ) );
+//		add_action( 'save_post', array( $this, 'save_post' ) );
+		add_action( 'clean_post_cache', array( $this, 'save_post' ) );
 
 		add_action( 'added_post_meta', array(
 			$this,
@@ -70,9 +73,9 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 			'update_option_wl_general_settings',
 		) );
 
-//		// Invalid cache on relationship change.
-//		add_action( 'wordlift_relationship_changed', 'Wordlift_Jsonld_Cache_Service::wordlift_relationship_changed', 10, 3 );
-//		add_action( 'wordlift_relationship_subject_deleted', 'Wordlift_Jsonld_Cache_Service::wordlift_relationship_subject_deleted' );
+		// Invalid cache on relationship change.
+		add_action( 'wl_relation_added', array( $this, 'relation_changed' ) );
+		add_action( 'wl_relation_deleted', array( $this, 'relation_changed' ) );
 
 	}
 
@@ -140,6 +143,18 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 		return $contents['jsonld'];
 	}
 
+	/**
+	 * Set the cache with the provided results.
+	 *
+	 * The function will prepare the provided results and will ask the {@link Wordlift_Cache_Service}
+	 * to cache them.
+	 *
+	 * @since 3.16.0
+	 *
+	 * @param int   $post_id    The {@link WP_Post} id.
+	 * @param array $references An array of references.
+	 * @param array $jsonld     A JSON-LD structure.
+	 */
 	private function set_cache( $post_id, $references, $jsonld ) {
 
 		$this->log->trace( "Caching result for post $post_id..." );
@@ -151,16 +166,56 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 
 	}
 
+	/**
+	 * Hook to 'save_post', will invalidate the cache for that post.
+	 *
+	 * @since 3.16.0
+	 *
+	 * @param int $post_id The {@link WP_Post} id.
+	 */
 	public function save_post( $post_id ) {
+		$this->log->trace( "Post $post_id saved, invalidating cache..." );
+
 		$this->cache_service->delete_cache( $post_id );
 	}
 
+	/**
+	 * Hook to meta changed for a {@link WP_Post}, will cause the cause to
+	 * invalidate.
+	 *
+	 * @since 3.16.0
+	 *
+	 * @param int $id      The {@link WP_Post} meta id.
+	 * @param int $post_id The {@link WP_Post} id.
+	 */
 	public function changed_post_meta( $id, $post_id ) {
+		$this->log->trace( "Post $post_id meta changed, invalidating cache..." );
+
 		$this->cache_service->delete_cache( $post_id );
 	}
 
+	/**
+	 * Hook to WordLift's options changes, will flush the cache.
+	 *
+	 * @since 3.16.0
+	 */
 	public function update_option_wl_general_settings() {
+		$this->log->trace( "WordLift options changed, flushing cache..." );
+
 		$this->cache_service->flush();
+	}
+
+	/**
+	 * Hook to WordLift's post/entity relation changes, will invalidate the cache.
+	 *
+	 * @since 3.16.0
+	 *
+	 * @param int $post_id The {@link WP_Post} id.
+	 */
+	public function relation_changed( $post_id ) {
+		$this->log->trace( "Post $post_id relations changed, invalidating cache..." );
+
+		$this->cache_service->delete_cache( $post_id );
 	}
 
 }

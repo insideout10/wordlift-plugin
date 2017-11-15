@@ -50,9 +50,9 @@ function wl_core_get_relation_instances_table_name() {
 /**
  * Create a single relation instance if the given instance does not exist on the table
  *
- * @param int $subject_id The post ID | The entity post ID.
- * @param string $predicate Name of the relation: 'what' | 'where' | 'when' | 'who'
- * @param int $object_id The entity post ID.
+ * @param int    $subject_id The post ID | The entity post ID.
+ * @param string $predicate  Name of the relation: 'what' | 'where' | 'when' | 'who'
+ * @param int    $object_id  The entity post ID.
  *
  * @uses   $wpdb->replace() to perform the query
  * @return integer|boolean Return then relation instance ID or false.
@@ -73,6 +73,7 @@ function wl_core_add_relation_instance( $subject_id, $predicate, $object_id ) {
 	global $wpdb;
 
 	// Checks passed. Add relation if not exists:
+	//
 	// See https://codex.wordpress.org/Class_Reference/wpdb#REPLACE_row
 	$wpdb->replace(
 		wl_core_get_relation_instances_table_name(),
@@ -84,7 +85,19 @@ function wl_core_add_relation_instance( $subject_id, $predicate, $object_id ) {
 		array( '%d', '%s', '%d' )
 	);
 
-	do_action( 'wordlift_relationship_changed', $subject_id, $predicate, $object_id  );
+	/**
+	 * Hooks: Relation Added.
+	 *
+	 * Fire a hook when a new relation between a post/entity and an entity is
+	 * added (the relation may already exists).
+	 *
+	 * @since 3.16.0
+	 *
+	 * @param int    $subject_id The subject {@link WP_Post} id.
+	 * @param string $predicate  The predicate.
+	 * @param int    $object_id  The object {@link WP_Post} id.
+	 */
+	do_action( 'wl_relation_added', $subject_id, $predicate, $object_id );
 
 	// Return record id
 	return $wpdb->insert_id;
@@ -119,7 +132,16 @@ function wl_core_delete_relation_instances( $subject_id ) {
 		array( '%d' )
 	);
 
-	do_action( 'wordlift_relationship_subject_deleted' , $subject_id  );
+	/**
+	 * Hooks: Relation Deleted.
+	 *
+	 * The hook is fired after the relations with this post/entity are deleted.
+	 *
+	 * @since 3.16.0
+	 *
+	 * @param int $subject_id The subject {@link WP_Post} id.
+	 */
+	do_action( 'wl_relation_deleted', $subject_id );
 
 	return true;
 }
@@ -182,8 +204,8 @@ function wl_core_validate_filters_for_related( $filters ) {
  *
  * @uses       wl_core_inner_get_related_entities() to perform the action
  *
- * @param int $subject_id The post ID | The entity post ID.
- * @param array $filters Associative array formed like this:
+ * @param int   $subject_id  The post ID | The entity post ID.
+ * @param array $filters     Associative array formed like this:
  *                           <code>
  *                           $filters = array(
  *                           'predicate' => Name of the relation: [ null | 'what' | 'where' | 'when' | 'who' ], default is null (meaning *any* post status)
@@ -212,8 +234,8 @@ function wl_core_get_related_entity_ids( $subject_id, $filters = array() ) {
  *
  * @deprecated use Wordlift_Relation_Service::get_instance()->get_objects()
  *
- * @param int $subject_id The {@link WP_Post}'s id.
- * @param array $filters An array of filters.
+ * @param int   $subject_id The {@link WP_Post}'s id.
+ * @param array $filters    An array of filters.
  *
  * @return array An array of {@link WP_Post}s.
  */
@@ -288,8 +310,8 @@ function wl_core_get_related_entities( $subject_id, $filters = array() ) {
  *
  * @uses       wl_core_get_related_posts() to perform the action
  *
- * @param int $object_id The entity ID or the post ID.
- * @param array $filters Associative array formed like this:
+ * @param int   $object_id The entity ID or the post ID.
+ * @param array $filters   Associative array formed like this:
  *                         <code>
  *                         $filters = array(
  *                         'predicate' => Name of the relation: [ null | 'what' | 'where' | 'when' | 'who' ], default is null (meaning *any* post status)
@@ -321,10 +343,10 @@ function wl_core_get_related_post_ids( $object_id, $filters = array() ) {
  *
  * @deprecated use Wordlift_Relation_Service::get_instance()->get_article_subjects()
  *
- * @param int $subject_id The entity's {@link WP_Post}'s id. If a post/page id
+ * @param int   $subject_id The entity's {@link WP_Post}'s id. If a post/page id
  *                          is provided, then the entities bound to that post/page
  *                          are first loaded.
- * @param array $filters An array of filters.
+ * @param array $filters    An array of filters.
  *
  * @return array An array of {@link WP_Post}s.
  */
@@ -551,7 +573,7 @@ function wl_core_sql_query_builder( $args ) {
  * @uses   wl_core_sql_query_builder() to compose the sql statement
  * @uses   wpdb() instance to perform the query
  *
- * @param array $args Arguments to be used in the query builder.
+ * @param array  $args Arguments to be used in the query builder.
  *
  * @param string $returned_type
  *

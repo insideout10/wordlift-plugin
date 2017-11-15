@@ -162,7 +162,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	// Extract related/referenced entities from text.
 	$disambiguated_entities = wl_linked_data_content_get_embedded_entities( $updated_post_content );
 
-	// Reset previously saved instances
+	// Reset previously saved instances.
 	wl_core_delete_relation_instances( $post_id );
 
 	// Save relation instances

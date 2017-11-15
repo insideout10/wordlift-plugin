@@ -56,8 +56,8 @@ class Wordlift_Jsonld_Cache_Service extends Wordlift_Abstract_Cache_Service {
 			add_action( 'update_option_wl_general_settings', 'Wordlift_Jsonld_Cache_Service::update_option_wl_general_settings' );
 
 			// Invalid cache on relationship change.
-			add_action( 'wordlift_relationship_changed', 'Wordlift_Jsonld_Cache_Service::wordlift_relationship_changed', 10, 3 );
-			add_action( 'wordlift_relationship_subject_deleted', 'Wordlift_Jsonld_Cache_Service::wordlift_relationship_subject_deleted' );
+			add_action( 'wl_relation_added', 'Wordlift_Jsonld_Cache_Service::wl_relation_added', 10, 3 );
+			add_action( 'wl_relation_deleted', 'Wordlift_Jsonld_Cache_Service::wl_relation_deleted' );
 		}
 	}
 
@@ -98,7 +98,7 @@ class Wordlift_Jsonld_Cache_Service extends Wordlift_Abstract_Cache_Service {
 	 * @param string $predicate  The predicate.
 	 * @param int    $object_id  The id of the object post.
 	 */
-	static public function wordlift_relationship_changed( $subject_id, $predicate, $object_id ) {
+	static public function wl_relation_added( $subject_id, $predicate, $object_id ) {
 		self::$instance->invalidate_post( $subject_id );
 	}
 
@@ -109,7 +109,7 @@ class Wordlift_Jsonld_Cache_Service extends Wordlift_Abstract_Cache_Service {
 	 *
 	 * @param int $subject_id The id of the subject post.
 	 */
-	static public function wordlift_relationship_subject_deleted( $subject_id ) {
+	static public function wl_relation_deleted( $subject_id ) {
 		self::$instance->invalidate_post( $subject_id );
 	}
 
