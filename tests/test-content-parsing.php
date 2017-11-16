@@ -3,23 +3,6 @@ require_once 'functions.php';
 
 class ContentParsingTest extends Wordlift_Unit_Test_Case {
 
-	/**
-	 * Set up the test.
-	 */
-	function setUp() {
-		parent::setUp();
-
-		// Configure WordPress with the test settings.
-		wl_configure_wordpress_test();
-
-		// Empty the blog.
-		wl_empty_blog();
-
-		// We don't need to check the remote Linked Data store.
-		Wordlift_Unit_Test_Case::turn_off_entity_push();;
-
-	}
-
 	function createSampleEntity() {
 		$entity_post_id = wl_create_post( 'Lorem Ipsum', 'honda', 'Honda', 'publish', 'entity' );
 		wl_schema_set_value( $entity_post_id, 'sameAs', 'http://dbpedia.org/resource/Honda' );

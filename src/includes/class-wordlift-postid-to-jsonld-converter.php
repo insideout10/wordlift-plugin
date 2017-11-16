@@ -21,6 +21,15 @@ class Wordlift_Postid_To_Jsonld_Converter implements Wordlift_Post_Converter {
 	private $post_to_jsonld_converter;
 
 	/**
+	 * A {@link Wordlift_Log_Service} instance.
+	 *
+	 * @since  3.16.0
+	 * @access private
+	 * @var \Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
+	 */
+	private $log;
+
+	/**
 	 * Wordlift_Entity_To_Jsonld_Converter constructor.
 	 *
 	 * @since 3.8.0
@@ -30,6 +39,8 @@ class Wordlift_Postid_To_Jsonld_Converter implements Wordlift_Post_Converter {
 	 * @param \Wordlift_Post_To_Jsonld_Converter        $post_to_jsonld_converter
 	 */
 	public function __construct( $entity_service, $entity_post_to_jsonld_converter, $post_to_jsonld_converter ) {
+
+		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
 		$this->entity_service                  = $entity_service;
 		$this->entity_post_to_jsonld_converter = $entity_post_to_jsonld_converter;
@@ -49,6 +60,8 @@ class Wordlift_Postid_To_Jsonld_Converter implements Wordlift_Post_Converter {
 	 * @return array|NULL A JSON-LD array representation of the post with the provided id, or NULL if not found.
 	 */
 	public function convert( $id, &$references = array() ) {
+
+		$this->log->trace( "Converting post $id..." );
 
 		return $this->entity_service->is_entity( $id )
 			// Entity.

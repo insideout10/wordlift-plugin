@@ -129,6 +129,7 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 
 		// Let's mock up $_POST data
 		$_POST = array(
+			'post_ID'                                                                  => $post->ID,
 			// Data to be saved from the Metabox
 			'wl_metaboxes'                                                             => array(
 				'coordinates'                          => array( 43.77, 11.25 ),
@@ -252,6 +253,7 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( array( $person_id ), $field->data );
 
 		// Save new DB values (third value is invalid and fourth is a new entity)
+		$_POST['post_ID'] = $post->ID;
 		$field->save_data( array(
 			$person_id,
 			'http://some-triplestore/person2',

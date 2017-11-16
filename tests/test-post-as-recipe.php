@@ -9,15 +9,6 @@
 class Wordlift_Post_As_Recipe_Test extends Wordlift_Unit_Test_Case {
 
 	/**
-	 * The {@link Wordlift_Entity_Type_Service} instance.
-	 *
-	 * @since  3.15.0
-	 * @access private
-	 * @var \Wordlift_Entity_Type_Service $entity_type_service The {@link Wordlift_Entity_Type_Service} instance.
-	 */
-	private $entity_type_service;
-
-	/**
 	 * The {@link Wordlift_Post_To_JsonLd_Converter} instance.
 	 *
 	 * @since  3.15.0
@@ -32,7 +23,6 @@ class Wordlift_Post_As_Recipe_Test extends Wordlift_Unit_Test_Case {
 	function setUp() {
 		parent::setUp();
 
-		$this->entity_type_service      = $this->get_wordlift_test()->get_entity_type_service();
 		$this->post_to_jsonld_converter = $this->get_wordlift_test()->get_post_to_jsonld_converter();
 
 	}

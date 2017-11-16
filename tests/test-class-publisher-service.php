@@ -18,8 +18,6 @@
  */
 class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 
-	private $entity_type_service;
-
 	private $entity_service;
 
 	/**
@@ -33,7 +31,6 @@ class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 
 		$wordlift = new Wordlift_Test();
 
-		$this->entity_type_service             = $wordlift->get_entity_type_service();
 		$this->entity_service                  = $wordlift->get_entity_service();
 	}
 

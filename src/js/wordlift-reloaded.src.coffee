@@ -30,7 +30,7 @@ class Traslator
     @_text = ''
 
     # Changing this regex requires changing the regex also in WLS. Update the Traslator version when changing the regex.
-    pattern = /([^&<>]*)(&[^&;]*;|<[!\/]?(?:[\w-]+|\[cdata\[.*?]])(?: [\w_-]+(?:="[^"]*")?)*>)([^&<>]*)/gim
+    pattern = /((?:&(?![#\w]))*[^&<>]*)(&[^&;]*;|<[!\/]?(?:[\w-]+|\[cdata\[.*?]])(?:[\w_-]+(?:="[^"]*")?)*[^>]*>)([^&<>]*)/gim
 
     textLength = 0
     htmlLength = 0
@@ -642,19 +642,25 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     $scope.relatedPosts = posts
 
   $scope.$on "analysisPerformed", (event, analysis) ->
+    $log.info "An analysis has been performed."
     $scope.analysis = analysis
 
     # Topic Preselect
     if $scope.configuration.topic?
+      $log.info "Preselecting topics..."
       for topic in analysis.topics
         if topic.id in $scope.configuration.topic.sameAs
           $scope.topic = topic
 
     # Preselect
     for box in $scope.configuration.classificationBoxes
-      for entityId in box.selectedEntities
-        if entity = analysis.entities[ entityId ]
+      # `selectedEntities` is not an array, but an object.
+      #
+      # See https://github.com/insideout10/wordlift-plugin/issues/646.
+      entities = box.selectedEntities # [] # Object.values( box.selectedEntities )
 
+      for entityId in entities
+        if entity = analysis.entities[ entityId ]
           if entity.occurrences.length is 0
             $log.warn "Entity #{entityId} selected as #{box.label} without valid occurrences!", entity
             continue
@@ -667,6 +673,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
         else
           $log.warn "Entity with id #{entityId} should be linked to #{box.id} but is missing"
+
     # Open content classification box
     $scope.currentSection = 'content-classification'
 
@@ -1860,43 +1867,54 @@ $(
     # This plugin has to be loaded only with the main WP "content" editor
     return unless editor.id is "content"
 
+    # The `closed` flag is a very important flag throughout the initialization
+    # of WordLift's classification box: in fact if the classification box is
+    # closed, WordLift's analysis won't run, until it gets opened.
+    closed = $('#wordlift_entities_box').hasClass('closed')
+
     # Register event depending on tinymce major version
     fireEvent = (editor, eventName, callback)->
       switch tinymce.majorVersion
         when '4' then editor.on eventName, callback
         when '3' then editor["on#{eventName}"].add callback
 
-    injector.invoke(['EditorService', '$rootScope', '$log', (EditorService, $rootScope, $log) ->
+    # We're going to disable WordPress' own live previews here until the
+    # analysis is run, we need to do this as early as possible to avoid WP
+    # already calling the live previews. But we need to do this only if the
+    # classification box is open, since the analysis won't run if it's closed.
+    #
+    # See https://github.com/insideout10/wordlift-plugin/issues/700.
+    if (!closed)
+      injector.invoke(['EditorService', '$rootScope', '$log', (EditorService, $rootScope, $log) ->
 
-      # Override wp.autosave.server.postChanged method
-      # in order to avoid unexpected warning to the user
-      if wp.autosave?
-        wp.autosave.server.postChanged = ()->
-          return false
+        # Override wp.autosave.server.postChanged method
+        # in order to avoid unexpected warning to the user
+        if wp.autosave?
+          wp.autosave.server.postChanged = ()->
+            return false
 
-      # Hack wp.mce.views to prevent shorcodes rendering
-      # starts before the analysis is properly embedded
-      # wp.mce.views uses toViews() method from WP 3.8 to 4.1
-      # and setMarkers() method from WP 4.2 to 4.3 to replace
-      # available shortcodes with coresponding views markup
-      for method in ['setMarkers', 'toViews']
-        if wp.mce.views[method]?
+        # Hack wp.mce.views to prevent shortcodes rendering starts before the
+        # analysis is properly embedded wp.mce.views uses toViews() method from WP
+        # 3.8 to 4.1 and setMarkers() method from WP 4.2 to 4.3 to replace
+        # available shortcodes with corresponding views markup.
+        for method in ['setMarkers', 'toViews']
+          if wp.mce.views[method]?
 
-          originalMethod = wp.mce.views[method]
-          $log.warn "Override wp.mce.views method #{method}() to prevent shortcodes rendering"
-          wp.mce.views[method] = (content)->
-            return content
+            originalMethod = wp.mce.views[method]
+            $log.warn "Override wp.mce.views method #{method}() to prevent shortcodes rendering"
+            wp.mce.views[method] = (content)->
+              return content
 
-          $rootScope.$on "analysisEmbedded", (event) ->
-            $log.info "Going to restore wp.mce.views method #{method}()"
-            wp.mce.views[method] = originalMethod
+            $rootScope.$on "analysisEmbedded", (event) ->
+              $log.info "Going to restore wp.mce.views method #{method}()"
+              wp.mce.views[method] = originalMethod
 
-          $rootScope.$on "analysisFailed", (event) ->
-            $log.info "Going to restore wp.mce.views method #{method}()"
-            wp.mce.views[method] = originalMethod
+            $rootScope.$on "analysisFailed", (event) ->
+              $log.info "Going to restore wp.mce.views method #{method}()"
+              wp.mce.views[method] = originalMethod
 
-          break
-    ])
+            break
+      ])
 
     # Define the callback to call to start the analysis.
     startAnalysis = () ->
@@ -1943,9 +1961,6 @@ $(
 
     # Set the initial state on the editor's body.
     editor.on('init', () -> addClassToBody())
-
-    # Check whether the postbox is closed.
-    closed = $('#wordlift_entities_box').hasClass('closed')
 
     # Start the analysis if the postbox isn't closed.
     if !closed then fireEvent( editor, 'LoadContent', startAnalysis ) else

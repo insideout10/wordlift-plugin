@@ -149,7 +149,7 @@ angular.module('wordlift.facetedsearch.widget', [
     $scope.posts = []
     $scope.facets = []
     $scope.conditions = {}
-    $scope.supportedTypes = ['thing', 'person', 'organization', 'place', 'event', 'local-business', 'creative-work']
+    $scope.supportedTypes = ['thing', 'person', 'organization', 'place', 'event', 'local-business', 'creative-work', 'recipe']
     $scope.configuration = configuration
     $scope.filteringEnabled = false
 

@@ -34,8 +34,11 @@ abstract class Wordlift_Listable {
 				call_user_func_array( $callback, array( $item ) );
 			}
 
+			// Remove the flush of the cache.
+			//
+			// See https://github.com/insideout10/wordlift-plugin/issues/686.
 			// Clean the cache to avoid memory errors.
-			wp_cache_flush();
+			// wp_cache_flush();
 
 			// Move to the next offset.
 			$offset += 1;

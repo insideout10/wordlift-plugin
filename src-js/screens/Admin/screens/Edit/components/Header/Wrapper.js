@@ -24,7 +24,7 @@ const Wrapper = styled.div`
 	overflow: hidden;
 
 	* {
-		box-sizing: border-box;
+		box-sizing: border-box !important;
 		display: inline-block;
 		width: 20%;
 		border-right: 1px solid #666;

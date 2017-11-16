@@ -1,8 +1,8 @@
-=== WordLift - Rethink Your Content Marketing ===
+=== WordLift - AI powered SEO ===
 Author URL: https://wordlift.io
 Plugin URL: https://wordlift.io
 Contributors: wordlift, insideout10, ziodave
-Tags: schema.org, semantic seo, seo, artificial intelligence, linked data, semantic web, content recommendation, related posts, timeline, knowledge graph, interactive map 
+Tags: schema.org, semantic seo, seo, artificial intelligence, ai, linked data, semantic web, content recommendation, related posts, timeline, knowledge graph, interactive map
 Requires at least: 4.4
 Tested up to: 4.8
 Requires PHP: 5.3
@@ -83,6 +83,12 @@ Organizing web content around an internal vocabulary rather than traditional web
 **WordLift** **connects** content with cross-media *discovery* and *recommendations* widgets, increasing content quality, exposure, trustworthiness and readership engagement. <br />
 **WordLift** **optimizes** content, complementing the offer of plug-ins such as *SEO Ultimate* or *Yoast*, automatically adding schema.org markups to your text, allowing all search engines to properly index your pages and deliver more traffic to your site. <br />
 
+= Can you prove that WordLift improves the online visibility of websites? =
+
+We are on a mission **to improve the visibility of websites**. Testing the product’s assumptions by looking at the web metrics with a methodical approach, is a crucial part of our product development. <br />
+We recently presented **a research study** and proved that **our semantic markup, annotations and widgets improve the number of visitors, the pageviews, the time spent on page and the duration of a session with a double digit growth** on an editorial website with around 150.000 monthly visitors.<br />
+While not all websites are created equal, you can [download the result of this study](https://wordlift.io/wp-content/uploads/2017/09/wordlift-proceedings-paper-SEMANTiCS2017.pdf) and start testing WordLift yourself. It does work! <br />
+
 = How does it work? =
 
 To know more about how **WordLift** works, please [watch the step-by-step video tutorials](https://wordlift.io/how-it-works) on our [website](https://wordlift.io). <br />
@@ -116,7 +122,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 2. if you deactivate the plugin instead, the vocabulary (metadata, entity and pages) will disappear from your dashboard, but everything you created is stored in your website Database in WordPress, and you will be able to download it, transfer it or re-activate it again anytime from the plugin menu. <br />
 
-3. Turning off WordLift on our side, it would be like turning off all the keys and un-publish all the linked data you’ve created, not the plug-in itself, so it will be like #1 - you could get the data back from us and re-publish it as [linked data](http://docs.wordlift.io/en/latest/key-concepts.html#linked-open-data) on your own infrastructure. <br />
+3. Turning off WordLift on our side, it would be like turning off all the keys and un-publish all the linked data you’ve created, not the plug-in itself, so it will be like #1 - you could get the data back from us and re-publish it as [linked data](https://wordlift.io/blog/en/entity/linked-data/) on your own infrastructure. <br />
 
 4. WordLift's technology is entirely open source: it takes development skills, infrastructure and some wisdom to nicely bring all the pieces together without our support. <br />
 
@@ -138,7 +144,70 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.14.6 (2017-10-11) =
+= 3.60.0 (????-??-??) =
+* Enhancement: [#626](https://github.com/insideout10/wordlift-plugin/issues/626): Cache JSON-LD, introduce an explicit caching layer.
+* Enhancement: [#518](https://github.com/insideout10/wordlift-plugin/issues/518): Add the type when 2 or more entities have the same title.
+* Enhancement: [#514](https://github.com/insideout10/wordlift-plugin/issues/514): Add the occurrences of an entity within an article by default in Content Classification.
+* Enhancement: [#488](https://github.com/insideout10/wordlift-plugin/issues/488): Make Download Data more user-friendly.
+* Enhancement: [#531](https://github.com/insideout10/wordlift-plugin/issues/531): When adding the second chord widget the page messes up.
+
+= 3.15.6 (2017-11-15) =
+* Fix: [#701](https://github.com/insideout10/wordlift-plugin/issues/701): Early rewrite rules flushing causes infinite loop.
+* Fix: [#700](https://github.com/insideout10/wordlift-plugin/issues/700): WP live previews don't run when classification box is closed.
+
+= 3.15.5 (2017-11-14) =
+* Fix: [#698](https://github.com/insideout10/wordlift-plugin/issues/698): `flush_rewrite_rules` called at every request.
+
+= 3.15.4 (2017-11-13) =
+* Fix: [#693](https://github.com/insideout10/wordlift-plugin/issues/693): Remove requirement for mbstring.
+* Fix: [#691](https://github.com/insideout10/wordlift-plugin/issues/691): Check WL compatibility with UX builder part of Flatsome themes.
+* Fix: [#689](https://github.com/insideout10/wordlift-plugin/issues/689): Heavy query on image attachments.
+* Fix: [#687](https://github.com/insideout10/wordlift-plugin/issues/687): Test failure with WP 4.8.3.
+* Fix: [#686](https://github.com/insideout10/wordlift-plugin/issues/686): `Wordlift_Listable` flushes the cache at every post.
+* Fix: [#685](https://github.com/insideout10/wordlift-plugin/issues/685): `flush_rewrite_rules_hard` causes a large number of SPARQL queries.
+* Fix: [#683](https://github.com/insideout10/wordlift-plugin/issues/683): Incompatibility with Formidable Forms.
+
+= 3.15.3 (2017-10-20) =
+* Enhancement: [#670](https://github.com/insideout10/wordlift-plugin/issues/670): Allow filtering logging levels.
+* Fix: [#677](https://github.com/insideout10/wordlift-plugin/issues/677): Sometimes authors are not correctly matched with their entities.
+* Fix: [#676](https://github.com/insideout10/wordlift-plugin/issues/676): Entity type permalinks no longer work.
+* Fix: [#674](https://github.com/insideout10/wordlift-plugin/issues/674): Improve the performance of get_entity_post_by_uri.
+* Fix: [#673](https://github.com/insideout10/wordlift-plugin/issues/673): Query error on edit screen.
+* Fix: [#672](https://github.com/insideout10/wordlift-plugin/issues/672): Local Business repeated twice in Create New Entity.
+* Fix: [#669](https://github.com/insideout10/wordlift-plugin/issues/669): WordLift is constantly validating the key.
+* Fix: [#668](https://github.com/insideout10/wordlift-plugin/issues/668): View Linked Data on a post shows a 500.
+* Fix: [#667](https://github.com/insideout10/wordlift-plugin/issues/667): Hardcoded entity post types.
+* Fix: [#665](https://github.com/insideout10/wordlift-plugin/issues/665): startDate and endDate are not recorded on some Events.
+* Fix: [#663](https://github.com/insideout10/wordlift-plugin/issues/663): Terms query may slow down site.
+* Fix: [#662](https://github.com/insideout10/wordlift-plugin/issues/662): Old articles appear in Vocabulary.
+
+= 3.15.2 (2017-10-16) =
+* Fix: [#659](https://github.com/insideout10/wordlift-plugin/issues/659): Check WL compatibility with ACF.
+* Fix: [#654](https://github.com/insideout10/wordlift-plugin/issues/654): Entity Link always returning the last blog post.
+
+= 3.15.1 (2017-10-12) =
+* Enhancement: [#642](https://github.com/insideout10/wordlift-plugin/issues/642): Allow to disable JSON-LD.
+* Fix: [#652](https://github.com/insideout10/wordlift-plugin/issues/652): When the user does not choose a publisher WordLift picks up the first one from the list.
+* Fix: [#647](https://github.com/insideout10/wordlift-plugin/issues/647): Related posts contains duplicates.
+* Fix: [#646](https://github.com/insideout10/wordlift-plugin/issues/646): Suggested images are missing after the update.
+* Fix: [#644](https://github.com/insideout10/wordlift-plugin/issues/644): Entities not showing in the classification box.
+
+= 3.15.0 (2017-10-05) =
+* Enhancement: [#608](https://github.com/insideout10/wordlift-plugin/issues/608): Integrate the Autocomplete widget.
+* Enhancement: [#607](https://github.com/insideout10/wordlift-plugin/issues/607): Autocomplete API.
+* Enhancement: [#596](https://github.com/insideout10/wordlift-plugin/issues/596): Allow regular posts/pages to be entities.
+* Enhancement: [#595](https://github.com/insideout10/wordlift-plugin/issues/595): Import may fail with many posts/entities.
+* Enhancement: [#584](https://github.com/insideout10/wordlift-plugin/issues/584): Adding aliases as link TITLE attributes.
+* Enhancement: [#583](https://github.com/insideout10/wordlift-plugin/issues/583): Add sameAs to schema.org/publisher in JSON-LD.
+* Enhancement: [#574](https://github.com/insideout10/wordlift-plugin/issues/574): WL currently adds links on headings.
+* Enhancement: [#493](https://github.com/insideout10/wordlift-plugin/issues/493): Prevent analysis in html tags: `button`.
+* Fix: [#628](https://github.com/insideout10/wordlift-plugin/issues/628): Check the status of Content Classification in the WordLift editor .
+* Fix: [#610](https://github.com/insideout10/wordlift-plugin/issues/610): Typo in xsd:dateTime.
+
+= 3.14.7 (2017-10-03) =
+* Fix: [#633](https://github.com/insideout10/wordlift-plugin/issues/633): Colon in html messes the analysis.
+
+= 3.14.6 (2017-09-11) =
 * Fix: [#613](https://github.com/insideout10/wordlift-plugin/issues/613): A slash too much for Angular geolocation library.
 * Fix: [#611](https://github.com/insideout10/wordlift-plugin/issues/611): WordLift slowing down RSS feed.
 

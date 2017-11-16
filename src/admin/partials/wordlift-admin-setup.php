@@ -100,7 +100,7 @@
 	<script type="text/html" id="page-1">
 		<h2 class="page-title"><?php esc_html_e( 'License Key', 'wordlift' ); ?></h2>
 		<p class="page-txt">
-			<?php esc_html_e( 'If you already puchased a plan, check your email, get the activation key from your inbox and insert it in the field below. Otherwise ....', 'wordlift' ); ?>
+			<?php esc_html_e( 'If you already purchased a plan, check your email, get the activation key from your inbox and insert it in the field below. Otherwise ....', 'wordlift' ); ?>
 		</p>
 		<input type="text" data-wl-key="wl-key" class="invalid untouched"
 		       id="key" name="key" value=""

@@ -44,11 +44,19 @@ class Wordlift_Activator {
 			$configuration_service->set_key( '' );
 		}
 
+		// Intentionally go through the whole upgrade procedure to be DRY.
+		// The following function is called also from `init` so it's not necessary
+		// here.
+		// wl_core_update_db_check.
+
 		// If WordLift's key is not configured, set `_wl_activation_redirect` transient. We won't redirect here, because we can't give
 		// for granted that we're in a browser admin session.
 		if ( '' === $configuration_service->get_key() ) {
 			set_transient( '_wl_activation_redirect', true, 30 );
 		}
+
+		// Clear caches.
+		Wordlift_File_Cache_Service::get_instance()->flush();
 
 	}
 

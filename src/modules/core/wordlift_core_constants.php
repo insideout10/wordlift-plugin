@@ -37,8 +37,6 @@ define( 'WL_CORE_POST_CLASSIFICATION_BOXES', serialize( array(
 		'label'            => 'What',
 		'registeredTypes'  => array(
 			'thing',
-			// WLS returns the `creativework` (lowercase version of `CreativeWork`).
-			'creativework',
 			'creative-work',
 			'recipe',
 		),
@@ -50,8 +48,6 @@ define( 'WL_CORE_POST_CLASSIFICATION_BOXES', serialize( array(
 		'registeredTypes'  => array(
 			'organization',
 			'person',
-			// WLS returns the `localbusiness` (lowercase version of `LocalBusiness`).
-			'localbusiness',
 			'local-business',
 		),
 		'selectedEntities' => array(),
