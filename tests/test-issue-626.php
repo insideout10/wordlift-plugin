@@ -231,7 +231,9 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 
 		// Check that the relations are back as before.
 		$relations_3 = $this->relation_service->get_objects( $post->ID );
-		$this->assertEquals( $relations_1, $relations_3, 0.0, true );
+		// We're using PHP Unit 4:
+		// assertEquals( $expected, $actual, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false )
+		$this->assertEquals( $relations_1, $relations_3, '', 0.0, 10, true );
 
 		// Check that the post isn't cached the 1st time and it's cached the 2nd.
 		$this->assert_no_cache_and_then_cache( $post->ID );
@@ -309,8 +311,8 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 	 *
 	 * @since 3.16.0
 	 *
-	 * @param int $post_id The {@link WP_Post} id.
-	 * @param bool $expect Expect the response to be cached or not (by default cached).
+	 * @param int  $post_id The {@link WP_Post} id.
+	 * @param bool $expect  Expect the response to be cached or not (by default cached).
 	 *
 	 * @return mixed The cached response.
 	 */
