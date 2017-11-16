@@ -5,7 +5,6 @@
     "phpdocumentor/phpdocumentor": "2.*",
     "codeclimate/php-test-reporter": "^0.4.4",
     "dealerdirect/phpcodesniffer-composer-installer": "*",
-    "squizlabs/php_codesniffer": "3.*",
     "wp-coding-standards/wpcs": "*",
     "wimg/php-compatibility": "*"
   },
