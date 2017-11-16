@@ -25,11 +25,6 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	private $configuration_service;
 
 	/**
-	 * @var Wordlift_Entity_Post_To_Jsonld_Converter
-	 */
-	private $entity_post_to_jsonld_converter;
-
-	/**
 	 * A {@link Wordlift_Log_Service} instance.
 	 *
 	 * @since  3.10.0
@@ -43,18 +38,16 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 *
 	 * @since 3.10.0
 	 *
-	 * @param \Wordlift_Entity_Type_Service             $entity_type_service   A {@link Wordlift_Entity_Type_Service} instance.
-	 * @param \Wordlift_Entity_Service                  $entity_service        A {@link Wordlift_Entity_Service} instance.
-	 * @param \Wordlift_User_Service                    $user_service          A {@link Wordlift_User_Service} instance.
-	 * @param \Wordlift_Attachment_Service              $attachment_service    A {@link Wordlift_Attachment_Service} instance.
-	 * @param \Wordlift_Configuration_Service           $configuration_service A {@link Wordlift_Configuration_Service} instance.
-	 * @param \Wordlift_Entity_Post_To_Jsonld_Converter $entity_post_to_jsonld_converter
+	 * @param \Wordlift_Entity_Type_Service   $entity_type_service   A {@link Wordlift_Entity_Type_Service} instance.
+	 * @param \Wordlift_Entity_Service        $entity_service        A {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_User_Service          $user_service          A {@link Wordlift_User_Service} instance.
+	 * @param \Wordlift_Attachment_Service    $attachment_service    A {@link Wordlift_Attachment_Service} instance.
+	 * @param \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
 	 */
-	public function __construct( $entity_type_service, $entity_service, $user_service, $attachment_service, $configuration_service, $entity_post_to_jsonld_converter ) {
+	public function __construct( $entity_type_service, $entity_service, $user_service, $attachment_service, $configuration_service ) {
 		parent::__construct( $entity_type_service, $entity_service, $user_service, $attachment_service );
 
-		$this->configuration_service           = $configuration_service;
-		$this->entity_post_to_jsonld_converter = $entity_post_to_jsonld_converter;
+		$this->configuration_service = $configuration_service;
 
 		// Set a reference to the logger.
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Post_To_Jsonld_Converter' );
@@ -189,7 +182,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 
 		// Return the JSON-LD for the referenced entity.
 		return array(
-			'@id'   => $author_uri,
+			'@id' => $author_uri,
 		);
 	}
 
