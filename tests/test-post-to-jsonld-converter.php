@@ -24,15 +24,6 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	private $post_to_jsonld_converter;
 
 	/**
-	 * A {@link Wordlift_Configuration_Service} instance.
-	 *
-	 * @since  3.10.0
-	 * @access private
-	 * @var \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
-	 */
-	private $configuration_service;
-
-	/**
 	 * A {@link Wordlift_Entity_Service} instance.
 	 *
 	 * @since    3.10.0
@@ -49,15 +40,6 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 * @var \Wordlift_User_Service $user_service A {@link Wordlift_User_Service} instance.
 	 */
 	private $user_service;
-
-	/**
-	 * A {@link Wordlift_Entity_Type_Service} instance.
-	 *
-	 * @since  3.10.0
-	 * @access private
-	 * @var \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
-	 */
-	private $entity_type_service;
 
 	/**
 	 * A mock-up WordPress user.
@@ -88,10 +70,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		$wordlift                       = new Wordlift_Test();
 		$this->post_to_jsonld_converter = $wordlift->get_post_to_jsonld_converter();
-		$this->configuration_service    = $wordlift->get_configuration_service();
 		$this->entity_service           = $wordlift->get_entity_service();
 		$this->user_service             = $wordlift->get_user_service();
-		$this->entity_type_service      = $wordlift->get_entity_type_service();
 
 		// Check that we have services' instances.
 		$this->assertNotNull( $this->post_to_jsonld_converter );
@@ -124,7 +104,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 0, $references );
 
 		// Check that we have ... properties, not one more than that.
-		$this->assertCount( 10, $jsonld );
+		// Since 3.16.0 we also have the publisher among the properties.
+		$this->assertCount( 11, $jsonld );
 
 		// Check the json-ld values.
 		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
@@ -164,7 +145,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 0, $references );
 
 		// Check that we have ... properties, not one more than that.
-		$this->assertCount( 10, $jsonld );
+		// Since 3.16.0 we also have the publisher among the properties.
+		$this->assertCount( 11, $jsonld );
 
 		// Check the json-ld values.
 		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
@@ -419,7 +401,9 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 2, $references );
 
 		// Check that we have ... properties, not one more than that.
-		$this->assertCount( 11, $jsonld );
+		//
+		// Since 3.16.0 we also have the publisher among the properties.
+		$this->assertCount( 12, $jsonld );
 
 		// Check the json-ld values.
 		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
@@ -481,7 +465,9 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 2, $references );
 
 		// Check that we have ... properties, not one more than that.
-		$this->assertCount( 12, $jsonld );
+		//
+		// Since 3.16.0 we also have the publisher among the properties.
+		$this->assertCount( 13, $jsonld );
 
 		// Check the json-ld values.
 		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
@@ -545,7 +531,9 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 2, $references );
 
 		// Check that we have ... properties, not one more than that.
-		$this->assertCount( 12, $jsonld );
+		//
+		// Since 3.16.0 we also have the publisher among the properties.
+		$this->assertCount( 13, $jsonld );
 
 		// Check the json-ld values.
 		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
@@ -609,7 +597,9 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 2, $references );
 
 		// Check that we have ... properties, not one more than that.
-		$this->assertCount( 12, $jsonld );
+		//
+		// Since 3.16.0 we also have the publisher among the properties.
+		$this->assertCount( 13, $jsonld );
 
 		// Check the json-ld values.
 		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
@@ -686,7 +676,9 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 2, $references );
 
 		// Check that we have ... properties, not one more than that.
-		$this->assertCount( 12, $jsonld );
+		//
+		// Since 3.16.0 we also have the publisher among the properties.
+		$this->assertCount( 13, $jsonld );
 
 		// Check the json-ld values.
 		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
@@ -768,7 +760,9 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 2, $references );
 
 		// Check that we have ... properties, not one more than that.
-		$this->assertCount( 12, $jsonld );
+		//
+		// Since 3.16.0 we also have the publisher among the properties.
+		$this->assertCount( 13, $jsonld );
 
 		// Check the json-ld values.
 		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
@@ -862,7 +856,9 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 2, $references );
 
 		// Check that we have ... properties, not one more than that.
-		$this->assertCount( 12, $jsonld );
+		//
+		// Since 3.16.0 we also have the publisher among the properties.
+		$this->assertCount( 13, $jsonld );
 
 		// Check the json-ld values.
 		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
@@ -957,7 +953,9 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 2, $references );
 
 		// Check that we have ... properties, not one more than that.
-		$this->assertCount( 12, $jsonld );
+		//
+		// Since 3.16.0 we also have the publisher among the properties.
+		$this->assertCount( 13, $jsonld );
 
 		// Check the json-ld values.
 		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
@@ -1059,11 +1057,15 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
 
 		$this->assertEquals( $entity_uri, $jsonld['author']['@id'] );
-		$this->assertEquals( 'Person', $jsonld['author']['@type'] );
-		$this->assertEquals( 'Lorem Ipsum', $jsonld['author']['description'] );
-		$this->assertEquals( 'John Smith Entity', $jsonld['author']['name'] );
-		$this->assertEquals( $entity_url, $jsonld['author']['mainEntityOfPage'] );
-		$this->assertEquals( $entity_url, $jsonld['author']['url'] );
+
+		$this->assertArraySubset( array( $entity_id ), $references );
+
+		// Since 3.16.0 the author is printed on its own.
+		//		$this->assertEquals( 'Person', $jsonld['author']['@type'] );
+		//		$this->assertEquals( 'Lorem Ipsum', $jsonld['author']['description'] );
+		//		$this->assertEquals( 'John Smith Entity', $jsonld['author']['name'] );
+		//		$this->assertEquals( $entity_url, $jsonld['author']['mainEntityOfPage'] );
+		//		$this->assertEquals( $entity_url, $jsonld['author']['url'] );
 
 	}
 
@@ -1099,11 +1101,15 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
 
 		$this->assertEquals( $entity_uri, $jsonld['author']['@id'] );
-		$this->assertEquals( 'Organization', $jsonld['author']['@type'] );
-		$this->assertEquals( 'Lorem Ipsum', $jsonld['author']['description'] );
-		$this->assertEquals( 'John Smith Entity', $jsonld['author']['name'] );
-		$this->assertEquals( $entity_url, $jsonld['author']['mainEntityOfPage'] );
-		$this->assertEquals( $entity_url, $jsonld['author']['url'] );
+
+		$this->assertArraySubset( array( $entity_id ), $references );
+
+		// Since 3.16.0 the author is printed on its own.
+		//		$this->assertEquals( 'Organization', $jsonld['author']['@type'] );
+		//		$this->assertEquals( 'Lorem Ipsum', $jsonld['author']['description'] );
+		//		$this->assertEquals( 'John Smith Entity', $jsonld['author']['name'] );
+		//		$this->assertEquals( $entity_url, $jsonld['author']['mainEntityOfPage'] );
+		//		$this->assertEquals( $entity_url, $jsonld['author']['url'] );
 
 	}
 

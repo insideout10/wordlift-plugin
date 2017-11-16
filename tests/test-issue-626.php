@@ -64,11 +64,6 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 	private $cached_postid_to_jsonld_converter;
 
 	/**
-	 * @var \Wordlift_Post_To_Jsonld_Converter $post_to_jsonld_converter
-	 */
-	private $post_to_jsonld_converter;
-
-	/**
 	 * The {@link Wordlift_Cache_Service} instance.
 	 *
 	 * @since  3.16.0
@@ -96,6 +91,24 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 	private $entity_service;
 
 	/**
+	 * The {@link \Wordlift_User_Service| instance.
+	 *
+	 * @since  3.16.0
+	 * @access private
+	 * @var \Wordlift_User_Service $user_service The {@link \Wordlift_User_Service| instance.
+	 */
+	private $user_service;
+
+	/**
+	 * The {@link Wordlift_Postid_To_Jsonld_Converter} instance.
+	 *
+	 * @since  3.16.0
+	 * @access private
+	 * @var \Wordlift_Postid_To_Jsonld_Converter $postid_to_jsonld_converter The {@link Wordlift_Postid_To_Jsonld_Converter} instance.
+	 */
+	private $postid_to_jsonld_converter;
+
+	/**
 	 * @inheritdoc
 	 */
 	function setUp() {
@@ -106,13 +119,23 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 		$this->jsonld_service                    = $wordlift_test->get_jsonld_service();
 		$this->sample_data_service               = $wordlift_test->get_sample_data_service();
 		$this->cached_postid_to_jsonld_converter = $wordlift_test->get_cached_postid_to_jsonld_converter();
-		$this->post_to_jsonld_converter          = $wordlift_test->get_post_to_jsonld_converter();
+		$this->postid_to_jsonld_converter        = $wordlift_test->get_postid_to_jsonld_converter();
 		$this->relation_service                  = $wordlift_test->get_relation_service();
 		$this->entity_service                    = $wordlift_test->get_entity_service();
+		$this->user_service                      = $wordlift_test->get_user_service();
 
 		// Clean-up the file cache.
 		$this->file_cache_service = $wordlift_test->get_file_cache_service();
 
+		add_filter( 'wp_doing_ajax', array( $this, 'not_doing_ajax' ) );
+
+	}
+
+	function tearDown() {
+
+		remove_filter( 'wp_doing_ajax', array( $this, 'not_doing_ajax' ) );
+
+		parent::tearDown();
 	}
 
 	/**
@@ -125,7 +148,12 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 		// Create the sample data.
 		$this->sample_data_service->create();
 
-		$this->_test_that_the_non_cached_and_the_cached_results_are_equal();
+		// Get post #5, i.e. the post with relations to all the other entities.
+		$post_1 = $this->get_post( 'post_5' );
+		$this->_test_that_the_non_cached_and_the_cached_results_are_equal( $post_1 );
+
+		$post_2 = $this->get_post( 'praesent_imperdiet_odio_sed_lectus_vulputate_finibus' );
+		$this->_test_that_the_non_cached_and_the_cached_results_are_equal( $post_2 );
 
 		// Delete the sample data.
 		$this->sample_data_service->delete();
@@ -140,11 +168,13 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 	 * calling the converter directly with no caching.
 	 *
 	 * @since 3.16.0
+	 *
+	 * @param \WP_Post $post The {@link WP_Post} to test.
 	 */
-	private function _test_that_the_non_cached_and_the_cached_results_are_equal() {
+	private function _test_that_the_non_cached_and_the_cached_results_are_equal( $post ) {
 
-		// Get post #5, i.e. the post with relations to all the other entities.
-		$post = $this->get_post_5();
+		// Reset the cache.
+		$this->file_cache_service->flush();
 
 		// Check that we have a valid value.
 		$this->assertTrue( $post instanceof WP_Post );
@@ -206,6 +236,36 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 		// Check that the post isn't cached the 1st time and it's cached the 2nd.
 		$this->assert_no_cache_and_then_cache( $post->ID );
 
+		// Now change the author.
+		$author_id      = $post->post_author;
+		$author_post_id = $this->user_service->get_entity( $author_id );
+		$this->assertNotEmpty( $author_post_id );
+
+		// Check that author post isn't cached and then cached.
+		$this->assert_no_cache_and_then_cache( $author_post_id );
+
+		// Update and check again.
+		wp_update_post( array(
+			'ID'         => $author_post_id,
+			'post_title' => 'Stephen King',
+		) );
+
+		// Check that author post isn't cached and then cached.
+		$this->assert_no_cache_and_then_cache( $author_post_id );
+
+		// Check that the post is still cached since the author is referenced
+		// via its URI.
+		$this->assert_cache( $post->ID, true );
+
+		// Now try updating the publisher.
+		wp_update_post( array(
+			'ID'         => $this->publisher_id,
+			'post_title' => uniqid( 'Acme Inc. ' ),
+		) );
+
+		// Check that author post isn't cached and then cached.
+		$this->assert_no_cache_and_then_cache( $post->ID );
+
 		// The following won't work until https://github.com/insideout10/wordlift-plugin/issues/702
 		// is resolved:
 		//		foreach ( $relations_3 as $relation ) {
@@ -223,11 +283,11 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 	 * @since 3.16.0
 	 * @return WP_Post Post #5.
 	 */
-	private function get_post_5() {
+	private function get_post( $post_name ) {
 
 		// Get the post #5 which is the one that binds to all the entities.
 		$posts = get_posts( array(
-			'post_name'   => 'post_5',
+			'post_name'   => $post_name,
 			'numberposts' => 1,
 		) );
 
@@ -270,7 +330,7 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( $cache, $num_queries === $wpdb->num_queries );
 
 		// Get the original - non-cached - response.
-		$original = $this->post_to_jsonld_converter->convert( $post_id, $original_references );
+		$original = $this->postid_to_jsonld_converter->convert( $post_id, $original_references );
 
 		// Check that the responses match.
 		$this->assertEquals( $original, $cached );
@@ -297,6 +357,11 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( $cached_1, $cached_2 );
 
 		return $cached_2;
+	}
+
+	public function not_doing_ajax() {
+
+		return false;
 	}
 
 }
