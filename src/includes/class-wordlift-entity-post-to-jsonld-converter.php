@@ -55,7 +55,8 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 	public function convert( $post_id, &$references = array() ) {
 
 		// Get the post instance.
-		if ( null === $post = get_post( $post_id ) ) {
+		$post = get_post( $post_id );
+		if ( null === $post ) {
 			// Post not found.
 			return null;
 		}
@@ -107,7 +108,9 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 					// The refactored converters require the entity id.
 					$references[] = $item->getID();
 
-					return array( "@id" => $url );
+					return array(
+						'@id' => $url,
+					);
 				}
 
 				return $converter->relative_to_context( $item );

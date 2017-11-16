@@ -38,6 +38,11 @@ function wl_entity_get_by_title( $title, $autocomplete = false, $include_alias =
 			 // Ensure we don't load entities from the trash, see https://github.com/insideout10/wordlift-plugin/issues/278.
 			 . "   AND p.post_status != 'trash'";
 
+	$params = array(
+		$title,
+		Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+	);
+
 	if ( $include_alias ) {
 
 		$query .= " UNION"
@@ -51,15 +56,17 @@ function wl_entity_get_by_title( $title, $autocomplete = false, $include_alias =
 				  . "    AND tr.object_id = p.ID"
 				  // Ensure we don't load entities from the trash, see https://github.com/insideout10/wordlift-plugin/issues/278.
 				  . "    AND p.post_status != 'trash'";
+
+		$params = array_merge( $params, array(
+			Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY,
+			$title,
+			Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+		) );
 	}
 
 	return $wpdb->get_results( $wpdb->prepare(
 		$query,
-		$title,
-		Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
-		Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY,
-		$title,
-		Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME
+		$params
 	) );
 }
 
@@ -101,7 +108,7 @@ function wl_entity_ajax_get_by_title() {
 	);
 
 	// Clean any buffer.
-	ob_clean();
+	@ob_clean();
 
 	// Send the success response.
 	wp_send_json_success( $response );

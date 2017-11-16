@@ -232,6 +232,8 @@ class Wordlift_Entity_Service {
 	 */
 	public function get_entity_post_by_uri( $uri ) {
 
+		$this->log->trace( "Getting an entity post for URI $uri..." );
+
 		// Check if we've been provided with a value otherwise return null.
 		if ( empty( $uri ) ) {
 			return null;
@@ -250,14 +252,25 @@ class Wordlift_Entity_Service {
 					'compare' => '=',
 				),
 			),
-			'tax_query'           => array(
-				array(
-					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
-					'field'    => 'slug',
-					'terms'    => 'article',
-					'operator' => 'NOT IN',
-				),
-			),
+			// The following query can be avoided, it's superfluous since
+			// we're looking for a post with a specific Entity URI. This query
+			// may in fact consume up to 50% of the timing necessary to load a
+			// page.
+			//
+			// See https://github.com/insideout10/wordlift-plugin/issues/674.
+			//			'tax_query'           => array(
+			//				'relation' => 'AND',
+			//				array(
+			//					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+			//					'operator' => 'EXISTS',
+			//				),
+			//				array(
+			//					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+			//					'field'    => 'slug',
+			//					'terms'    => 'article',
+			//					'operator' => 'NOT IN',
+			//				),
+			//			),
 		);
 
 		// Only if the current uri is not an internal uri, entity search is
@@ -274,18 +287,22 @@ class Wordlift_Entity_Service {
 			);
 		}
 
-		$query = new WP_Query( $query_args );
+		$posts = get_posts( $query_args );
 
-		// Get the matching entity posts.
-		$posts = $query->get_posts();
+//		$query = new WP_Query( $query_args );
+//
+//		// Get the matching entity posts.
+//		$posts = $query->get_posts();
 
 		// Return null if no post is found.
 		if ( 0 === count( $posts ) ) {
+			$this->log->warn( "No post for URI $uri." );
+
 			return null;
 		}
 
 		// Return the found post.
-		return $posts[0];
+		return current( $posts );
 	}
 
 	/**

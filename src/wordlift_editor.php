@@ -5,7 +5,7 @@
  *
  * @param $mce_css The existing comma-separated list of styles.
  *
- * @return The updated list of styles, including the custom style provided by WordLift.
+ * @return string The updated list of styles, including the custom style provided by WordLift.
  */
 function wordlift_mce_css( $mce_css ) {
 	if ( ! empty( $mce_css ) ) {

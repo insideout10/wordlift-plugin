@@ -67,9 +67,6 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 	public function setUp() {
 		parent::setUp();
 
-		// We don't need to check the remote Linked Data store.
-		Wordlift_Unit_Test_Case::turn_off_entity_push();;
-
 		$wordlift = new Wordlift_Test();
 
 		$this->entity_type_service             = $wordlift->get_entity_type_service();

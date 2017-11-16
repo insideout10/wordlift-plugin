@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The file that defines the core plugin class
  *
@@ -151,10 +150,10 @@ class Wordlift {
 	 * The Entity list customization.
 	 *
 	 * @since  3.3.0
-	 * @access private
+	 * @access protected
 	 * @var \Wordlift_Entity_List_Service $entity_list_service The Entity list service.
 	 */
-	private $entity_list_service;
+	protected $entity_list_service;
 
 	/**
 	 * The Entity Types Taxonomy Walker.
@@ -213,8 +212,8 @@ class Wordlift {
 	/**
 	 * A {@link Wordlift_Sparql_Service} instance.
 	 *
-	 * @var    3.6.0
-	 * @access protected
+	 * @since    3.6.0
+	 * @access   protected
 	 * @var \Wordlift_Sparql_Service $sparql_service A {@link Wordlift_Sparql_Service} instance.
 	 */
 	protected $sparql_service;
@@ -256,6 +255,7 @@ class Wordlift {
 	protected $jsonld_website_converter;
 
 	/**
+	 * A {@link Wordlift_Property_Factory} instance.
 	 *
 	 * @since  3.7.0
 	 * @access private
@@ -619,10 +619,29 @@ class Wordlift {
 	 * The {@link Wordlift_Relation_Service} instance.
 	 *
 	 * @since  3.15.0
-	 * @access private
+	 * @access protected
 	 * @var \Wordlift_Relation_Service $relation_service The {@link Wordlift_Relation_Service} instance.
 	 */
-	private $relation_service;
+	protected $relation_service;
+
+	/**
+	 * The {@link Wordlift_Cached_Post_Converter} instance.
+	 *
+	 * @since  3.16.0
+	 * @access protected
+	 * @var  \Wordlift_Cached_Post_Converter $cached_postid_to_jsonld_converter The {@link Wordlift_Cached_Post_Converter} instance.
+	 *
+	 */
+	protected $cached_postid_to_jsonld_converter;
+
+	/**
+	 * The {@link Wordlift_File_Cache_Service} instance.
+	 *
+	 * @since  3.16.0
+	 * @access protected
+	 * @var \Wordlift_File_Cache_Service $file_cache_service The {@link Wordlift_File_Cache_Service} instance.
+	 */
+	protected $file_cache_service;
 
 	/**
 	 * {@link Wordlift}'s singleton instance.
@@ -632,6 +651,7 @@ class Wordlift {
 	 * @var Wordlift $instance {@link Wordlift}'s singleton instance.
 	 */
 	private static $instance;
+
 
 	/**
 	 * Define the core functionality of the plugin.
@@ -709,6 +729,7 @@ class Wordlift {
 
 		/** Services. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-log-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-http-api.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-redirect-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-configuration-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-post-type-service.php';
@@ -812,6 +833,11 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-jsonld-website-converter.php';
 
 		/**
+		 * Load cache-related files.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/cache/require.php';
+
+		/**
 		 * Load the content filter.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-content-filter-service.php';
@@ -874,7 +900,7 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-relation-rebuild-adapter.php';
 
 		/** Async Tasks. */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/wp-async-task.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-async-task.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-sparql-query-async-task.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-batch-analysis-request-async-task.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-batch-analysis-complete-async-task.php';
@@ -1016,6 +1042,9 @@ class Wordlift {
 		global $wl_logger;
 		$wl_logger = Wordlift_Log_Service::get_logger( 'WordLift' );
 
+		// Load the `wl-api` end-point.
+		new Wordlift_Http_Api();
+
 		/** Services. */
 		// Create the configuration service.
 		$this->configuration_service = new Wordlift_Configuration_Service();
@@ -1079,7 +1108,7 @@ class Wordlift {
 		// Create the entity rating service.
 		$this->rating_service = new Wordlift_Rating_Service( $this->entity_service, $this->entity_type_service, $this->notice_service );
 
-		// Create entity list customization (wp-admin/edit.php)
+		// Create entity list customization (wp-admin/edit.php).
 		$this->entity_list_service = new Wordlift_Entity_List_Service( $this->rating_service );
 
 		// Create a new instance of the Redirect service.
@@ -1093,17 +1122,20 @@ class Wordlift {
 		$attachment_service = new Wordlift_Attachment_Service();
 
 		// Instantiate the JSON-LD service.
-		$property_getter                       = Wordlift_Property_Getter_Factory::create( $this->entity_service );
-		$this->entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $property_getter );
-		$this->post_to_jsonld_converter        = new Wordlift_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $this->configuration_service, $this->entity_post_to_jsonld_converter );
-		$this->postid_to_jsonld_converter      = new Wordlift_Postid_To_Jsonld_Converter( $this->entity_service, $this->entity_post_to_jsonld_converter, $this->post_to_jsonld_converter );
-		$this->jsonld_website_converter        = new Wordlift_Website_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $this->configuration_service, $this->entity_post_to_jsonld_converter );
-		$this->jsonld_service                  = new Wordlift_Jsonld_Service( $this->entity_service, $this->postid_to_jsonld_converter, $this->jsonld_website_converter );
+		$property_getter                         = Wordlift_Property_Getter_Factory::create( $this->entity_service );
+		$this->entity_post_to_jsonld_converter   = new Wordlift_Entity_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $property_getter );
+		$this->post_to_jsonld_converter          = new Wordlift_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $this->configuration_service );
+		$this->postid_to_jsonld_converter        = new Wordlift_Postid_To_Jsonld_Converter( $this->entity_service, $this->entity_post_to_jsonld_converter, $this->post_to_jsonld_converter );
+		$this->jsonld_website_converter          = new Wordlift_Website_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $this->configuration_service );
+		$this->file_cache_service                = new Wordlift_File_Cache_Service( WL_TEMP_DIR . 'converter/' );
+		$this->cached_postid_to_jsonld_converter = new Wordlift_Cached_Post_Converter( $this->postid_to_jsonld_converter, $this->file_cache_service, $this->configuration_service );
+		$this->jsonld_service                    = new Wordlift_Jsonld_Service( $this->entity_service, $this->cached_postid_to_jsonld_converter, $this->jsonld_website_converter );
+
 
 		$this->key_validation_service   = new Wordlift_Key_Validation_Service( $this->configuration_service );
 		$this->content_filter_service   = new Wordlift_Content_Filter_Service( $this->entity_service, $this->configuration_service );
 		$this->relation_rebuild_service = new Wordlift_Relation_Rebuild_Service( $this->content_filter_service, $this->entity_service );
-		$this->sample_data_service      = new Wordlift_Sample_Data_Service( $this->entity_type_service, $this->configuration_service );
+		$this->sample_data_service      = new Wordlift_Sample_Data_Service( $this->entity_type_service, $this->configuration_service, $this->user_service );
 		$this->sample_data_ajax_adapter = new Wordlift_Sample_Data_Ajax_Adapter( $this->sample_data_service );
 
 		// Initialize the shortcodes.
@@ -1166,7 +1198,7 @@ class Wordlift {
 		/** Widgets */
 		$this->related_entities_cloud_widget = new Wordlift_Related_Entities_Cloud_Widget();
 
-		//** WordPress Admin */
+		/* WordPress Admin. */
 		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page( $this->configuration_service );
 		$this->status_page             = new Wordlift_Admin_Status_Page( $this->entity_service, $this->sparql_service );
 
@@ -1259,11 +1291,11 @@ class Wordlift {
 		$this->loader->add_action( 'in_admin_header', $this->rating_service, 'in_admin_header' );
 
 		// Entity listing customization (wp-admin/edit.php)
-		// Add custom columns
+		// Add custom columns.
 		$this->loader->add_filter( 'manage_entity_posts_columns', $this->entity_list_service, 'register_custom_columns' );
 		// no explicit entity as it prevents handling of other post types.
 		$this->loader->add_filter( 'manage_posts_custom_column', $this->entity_list_service, 'render_custom_columns', 10, 2 );
-		// Add 4W selection
+		// Add 4W selection.
 		$this->loader->add_action( 'restrict_manage_posts', $this->entity_list_service, 'restrict_manage_posts_classification_scope' );
 		$this->loader->add_filter( 'posts_clauses', $this->entity_list_service, 'posts_clauses_classification_scope' );
 		$this->loader->add_action( 'pre_get_posts', $this->entity_list_service, 'pre_get_posts' );
@@ -1304,7 +1336,7 @@ class Wordlift {
 		// Hook the admin_init to the settings page.
 		$this->loader->add_action( 'admin_init', $this->settings_page, 'admin_init' );
 
-		// Hook the menu creation on the general wordlift menu creation
+		// Hook the menu creation on the general wordlift menu creation.
 		$this->loader->add_action( 'wl_admin_menu', $this->settings_page, 'admin_menu', 10, 2 );
 		if ( defined( 'WORDLIFT_BATCH' ) && WORDLIFT_BATCH ) {
 			// Add the functionality only if a flag is set in wp-config.php .
@@ -1328,13 +1360,13 @@ class Wordlift {
 		$this->loader->add_action( 'wp_ajax_wl_google_analytics_export', $this->google_analytics_export_service, 'export' );
 
 		// Hook capabilities manipulation to allow access to entity type admin
-		// page  on wordpress versions before 4.7.
+		// page  on WordPress versions before 4.7.
 		global $wp_version;
 		if ( version_compare( $wp_version, '4.7', '<' ) ) {
 			$this->loader->add_filter( 'map_meta_cap', $this->entity_type_admin_page, 'enable_admin_access_pre_47', 10, 4 );
 		}
 
-		$this->loader->add_action( 'wp_async_wl_run_sparql_query', $this->sparql_service, 'run_sparql_query', 10, 1 );
+		$this->loader->add_action( 'wl_async_wl_run_sparql_query', $this->sparql_service, 'run_sparql_query', 10, 1 );
 
 		/** Adapters. */
 		$this->loader->add_filter( 'mce_external_plugins', $this->tinymce_adapter, 'mce_external_plugins', 10, 1 );
@@ -1349,8 +1381,14 @@ class Wordlift {
 		$this->loader->add_action( 'wp_ajax_wl_sample_data_delete', $this->sample_data_ajax_adapter, 'delete' );
 
 		// Handle the autocomplete request.
-		add_action( 'wp_ajax_wl_autocomplete', array( $this->autocomplete_adapter, 'wl_autocomplete' ) );
-		add_action( 'wp_ajax_nopriv_wl_autocomplete', array( $this->autocomplete_adapter, 'wl_autocomplete' ) );
+		add_action( 'wp_ajax_wl_autocomplete', array(
+			$this->autocomplete_adapter,
+			'wl_autocomplete',
+		) );
+		add_action( 'wp_ajax_nopriv_wl_autocomplete', array(
+			$this->autocomplete_adapter,
+			'wl_autocomplete',
+		) );
 
 		// Hooks to restrict multisite super admin from manipulating entity types.
 		if ( is_multisite() ) {
@@ -1407,7 +1445,7 @@ class Wordlift {
 		 */
 		$this->loader->add_action( 'pre_get_posts', $this->entity_page_service, 'pre_get_posts', 10, 1 );
 
-		$this->loader->add_action( 'wp_async_wl_run_sparql_query', $this->sparql_service, 'run_sparql_query', 10, 1 );
+		$this->loader->add_action( 'wl_async_wl_run_sparql_query', $this->sparql_service, 'run_sparql_query', 10, 1 );
 
 		// This hook have to run before the rating service, as otherwise the post might not be a proper entity when rating is done.
 		$this->loader->add_action( 'save_post', $this->entity_type_adapter, 'save_post', 9, 3 );

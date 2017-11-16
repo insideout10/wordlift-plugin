@@ -93,7 +93,7 @@ env:
     - secure: "AMguCWzHPqXvrb0oja6uYxg4vKw3uA+YEe2hBpI+cuvvkwLSISC3cf64rQv9yf3aVstnOnaZhUQ4JxCC1beYBsLRiZwPU/4QMsPYNO4HPl02YoOIXk+ZJzATSC0a3rs06gxcL9i2+Csd0zgkAL1a9tYj9r1yYP96qo+RpEYfIyw="
   matrix:
     - SCRIPT=test:php WP_VERSION=4.8
-    - SCRIPT=test:php WP_VERSION=4.2
+    - SCRIPT=test:php WP_VERSION=4.4
 
 services:
   # Require MySQL.

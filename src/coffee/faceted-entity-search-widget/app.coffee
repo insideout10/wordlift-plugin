@@ -69,7 +69,7 @@ angular.module('wordlift.facetedsearch.widget', ['wordlift.ui.carousel', 'wordli
 
     # TODO Load dynamically 
     $scope.supportedTypes = [
-      {'scope': 'what', 'types': ['thing', 'creative-work']}
+      {'scope': 'what', 'types': ['thing', 'creative-work', 'recipe']}
       {'scope': 'who', 'types': ['person', 'organization', 'local-business']}
       {'scope': 'where', 'types': ['place']}
       {'scope': 'when', 'types': ['event']}

@@ -73,6 +73,7 @@ function wl_core_add_relation_instance( $subject_id, $predicate, $object_id ) {
 	global $wpdb;
 
 	// Checks passed. Add relation if not exists:
+	//
 	// See https://codex.wordpress.org/Class_Reference/wpdb#REPLACE_row
 	$wpdb->replace(
 		wl_core_get_relation_instances_table_name(),
@@ -83,6 +84,20 @@ function wl_core_add_relation_instance( $subject_id, $predicate, $object_id ) {
 		),
 		array( '%d', '%s', '%d' )
 	);
+
+	/**
+	 * Hooks: Relation Added.
+	 *
+	 * Fire a hook when a new relation between a post/entity and an entity is
+	 * added (the relation may already exists).
+	 *
+	 * @since 3.16.0
+	 *
+	 * @param int    $subject_id The subject {@link WP_Post} id.
+	 * @param string $predicate  The predicate.
+	 * @param int    $object_id  The object {@link WP_Post} id.
+	 */
+	do_action( 'wl_relation_added', $subject_id, $predicate, $object_id );
 
 	// Return record id
 	return $wpdb->insert_id;
@@ -116,6 +131,17 @@ function wl_core_delete_relation_instances( $subject_id ) {
 		),
 		array( '%d' )
 	);
+
+	/**
+	 * Hooks: Relation Deleted.
+	 *
+	 * The hook is fired after the relations with this post/entity are deleted.
+	 *
+	 * @since 3.16.0
+	 *
+	 * @param int $subject_id The subject {@link WP_Post} id.
+	 */
+	do_action( 'wl_relation_deleted', $subject_id );
 
 	return true;
 }
@@ -429,14 +455,35 @@ function wl_core_sql_query_builder( $args ) {
 	// Since we want Find only articles, based on the entity type, we need
 	// to figure out the relevant sql statements to add to the join and where
 	// parts.
-	$tax_query = array(
-		array(
-			'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
-			'field'    => 'slug',
-			'terms'    => 'article',
-			'operator' => 'entity' === $args['post_type'] ? 'NOT IN' : 'IN',
-		),
-	);
+	if ( 'entity' === $args['post_type'] ) {
+		$tax_query = array(
+			'relation' => 'AND',
+			array(
+				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				'operator' => 'EXISTS',
+			),
+			array(
+				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				'field'    => 'slug',
+				'terms'    => 'article',
+				'operator' => 'NOT IN',
+			),
+		);
+	} else {
+		$tax_query = array(
+			'relation' => 'OR',
+			array(
+				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				'operator' => 'NOT EXISTS',
+			),
+			array(
+				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				'field'    => 'slug',
+				'terms'    => 'article',
+			),
+		);
+	}
+
 
 	// Use "p" as the table to match the initial join.
 	$tax_sql = get_tax_sql( $tax_query, 'p', 'ID' );

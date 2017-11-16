@@ -41,6 +41,10 @@ class Wordlift_Attachment_Service {
 		// Get the filename, the extension is kept.
 		$filename = basename( $url );
 
+		// The following query is CPU-intensive, we need to review it.
+		//
+		// See https://github.com/insideout10/wordlift-plugin/issues/689.
+		//
 		// Query for attachments with the specified filename.
 		$query = new WP_Query( array(
 			'post_type'   => 'attachment',

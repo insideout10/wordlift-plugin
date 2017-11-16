@@ -18,29 +18,37 @@ require_once( 'wordlift_linked_data_images.php' );
  */
 function wl_linked_data_save_post( $post_id ) {
 
+	$log = Wordlift_Log_Service::get_logger( 'wl_linked_data_save_post' );
+
+	$log->trace( "Saving post $post_id to Linked Data..." );
+
 	// If it's not numeric exit from here.
 	if ( ! is_numeric( $post_id ) || is_numeric( wp_is_post_revision( $post_id ) ) ) {
+		$log->debug( "Skipping $post_id, because id is not numeric or is a post revision." );
+
 		return;
 	}
 
 	// Get the post type and check whether it supports the editor.
 	//
 	// See https://github.com/insideout10/wordlift-plugin/issues/659.
-	$post_type = get_post_type( $post_id );
+	$post_type           = get_post_type( $post_id );
 	$is_editor_supported = post_type_supports( $post_type, 'editor' );
 
 	// Bail out if it's not an entity.
 	if ( ! $is_editor_supported ) {
+		$log->debug( "Skipping $post_id, because $post_type doesn't support the editor (content)." );
+
 		return;
 	}
 
-	// unhook this function so it doesn't loop infinitely
+	// Unhook this function so it doesn't loop infinitely.
 	remove_action( 'save_post', 'wl_linked_data_save_post' );
 
 	// raise the *wl_linked_data_save_post* event.
 	do_action( 'wl_linked_data_save_post', $post_id );
 
-	// re-hook this function
+	// Re-hook this function.
 	add_action( 'save_post', 'wl_linked_data_save_post' );
 }
 
@@ -55,8 +63,14 @@ add_action( 'save_post', 'wl_linked_data_save_post' );
  */
 function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
+	$log = Wordlift_Log_Service::get_logger( 'wl_linked_data_save_post_and_related_entities' );
+
+	$log->trace( "Saving $post_id to Linked Data along with related entities..." );
+
 	// Ignore auto-saves
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		$log->trace( 'Doing autosave, skipping...' );
+
 		return;
 	}
 
@@ -66,6 +80,9 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	remove_action( 'wl_linked_data_save_post', 'wl_linked_data_save_post_and_related_entities' );
 
 	// wl_write_log( "[ post id :: $post_id ][ autosave :: false ][ post type :: $post->post_type ]" );
+
+	// Get the entity service instance.
+	$entity_service = Wordlift_Entity_Service::get_instance();
 
 	// Store mapping between tmp new entities uris and real new entities uri
 	$entities_uri_mapping = array();
@@ -93,7 +110,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			// Look if current entity uri matches an internal existing entity, meaning:
 			// 1. when $entity_uri is an internal uri
 			// 2. when $entity_uri is an external uri used as sameAs of an internal entity
-			$ie = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $entity_uri );
+			$ie = $entity_service->get_entity_post_by_uri( $entity_uri );
 
 			// Detect the uri depending if is an existing or a new entity
 			$uri = ( null === $ie ) ?
@@ -127,21 +144,25 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 	// Replace tmp uris in content post if needed
 	$updated_post_content = $post->post_content;
-	// Save each entity and store the post id.
-	foreach ( $entities_uri_mapping as $tmp_uri => $uri ) {
-		$updated_post_content = str_replace( $tmp_uri, $uri, $updated_post_content );
-	}
 
-	// Update the post content
-	wp_update_post( array(
-		'ID'           => $post->ID,
-		'post_content' => $updated_post_content,
-	) );
+	// Update the post content if we found mappings of new entities.
+	if ( ! empty( $entities_uri_mapping ) ) {
+		// Save each entity and store the post id.
+		foreach ( $entities_uri_mapping as $tmp_uri => $uri ) {
+			$updated_post_content = str_replace( $tmp_uri, $uri, $updated_post_content );
+		}
+
+		// Update the post content.
+		wp_update_post( array(
+			'ID'           => $post->ID,
+			'post_content' => $updated_post_content,
+		) );
+	}
 
 	// Extract related/referenced entities from text.
 	$disambiguated_entities = wl_linked_data_content_get_embedded_entities( $updated_post_content );
 
-	// Reset previously saved instances
+	// Reset previously saved instances.
 	wl_core_delete_relation_instances( $post_id );
 
 	// Save relation instances
@@ -149,7 +170,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 		wl_core_add_relation_instance(
 			$post_id,
-			Wordlift_Entity_Service::get_instance()->get_classification_scope_for( $referenced_entity_id ),
+			$entity_service->get_classification_scope_for( $referenced_entity_id ),
 			$referenced_entity_id
 		);
 
@@ -176,7 +197,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			$uri = ( isset( $metadata_via_post[ $field ] ) ) ?
 				stripslashes( $metadata_via_post[ $field ] ) : '';
 
-			$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri );
+			$entity = $entity_service->get_entity_post_by_uri( $uri );
 
 			if ( $entity ) {
 				add_post_meta( $post->ID, $field, $entity->ID, true );
@@ -214,6 +235,8 @@ add_action( 'wl_linked_data_save_post', 'wl_linked_data_save_post_and_related_en
  */
 function wl_save_entity( $entity_data ) {
 
+	$log = Wordlift_Log_Service::get_logger( 'wl_save_entity' );
+
 	$uri              = $entity_data['uri'];
 	$label            = $entity_data['label'];
 	$type_uri         = $entity_data['main_type'];
@@ -229,6 +252,8 @@ function wl_save_entity( $entity_data ) {
 
 	// Check whether an entity already exists with the provided URI.
 	if ( null !== $post = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri ) ) {
+		$log->debug( "Post already exists for URI $uri." );
+
 		return $post;
 	}
 
@@ -277,6 +302,9 @@ function wl_save_entity( $entity_data ) {
 	$save_post_filters = is_array( $wp_filter['save_post'] ) ? $wp_filter['save_post'] : $wp_filter['save_post']->callbacks;
 	is_array( $wp_filter['save_post'] ) ? $wp_filter['save_post'] = array() : $wp_filter['save_post']->remove_all_filters();
 
+
+	$log->trace( 'Going to insert new post...' );
+
 	// create or update the post.
 	$post_id = wp_insert_post( $params, true );
 
@@ -305,7 +333,7 @@ function wl_save_entity( $entity_data ) {
 
 	// TODO: handle errors.
 	if ( is_wp_error( $post_id ) ) {
-		wl_write_log( ': error occurred' );
+		$log->error( 'An error occurred: ' . $post_id->get_error_message() );
 
 		// inform an error occurred.
 		return null;

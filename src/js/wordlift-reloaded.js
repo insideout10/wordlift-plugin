@@ -1822,6 +1822,7 @@
     if (editor.id !== "content") {
       return;
     }
+    closed = $('#wordlift_entities_box').hasClass('closed');
     fireEvent = function(editor, eventName, callback) {
       switch (tinymce.majorVersion) {
         case '4':
@@ -1830,40 +1831,42 @@
           return editor["on" + eventName].add(callback);
       }
     };
-    injector.invoke([
-      'EditorService', '$rootScope', '$log', function(EditorService, $rootScope, $log) {
-        var j, len, method, originalMethod, ref, results1;
-        if (wp.autosave != null) {
-          wp.autosave.server.postChanged = function() {
-            return false;
-          };
-        }
-        ref = ['setMarkers', 'toViews'];
-        results1 = [];
-        for (j = 0, len = ref.length; j < len; j++) {
-          method = ref[j];
-          if (wp.mce.views[method] != null) {
-            originalMethod = wp.mce.views[method];
-            $log.warn("Override wp.mce.views method " + method + "() to prevent shortcodes rendering");
-            wp.mce.views[method] = function(content) {
-              return content;
+    if (!closed) {
+      injector.invoke([
+        'EditorService', '$rootScope', '$log', function(EditorService, $rootScope, $log) {
+          var j, len, method, originalMethod, ref, results1;
+          if (wp.autosave != null) {
+            wp.autosave.server.postChanged = function() {
+              return false;
             };
-            $rootScope.$on("analysisEmbedded", function(event) {
-              $log.info("Going to restore wp.mce.views method " + method + "()");
-              return wp.mce.views[method] = originalMethod;
-            });
-            $rootScope.$on("analysisFailed", function(event) {
-              $log.info("Going to restore wp.mce.views method " + method + "()");
-              return wp.mce.views[method] = originalMethod;
-            });
-            break;
-          } else {
-            results1.push(void 0);
           }
+          ref = ['setMarkers', 'toViews'];
+          results1 = [];
+          for (j = 0, len = ref.length; j < len; j++) {
+            method = ref[j];
+            if (wp.mce.views[method] != null) {
+              originalMethod = wp.mce.views[method];
+              $log.warn("Override wp.mce.views method " + method + "() to prevent shortcodes rendering");
+              wp.mce.views[method] = function(content) {
+                return content;
+              };
+              $rootScope.$on("analysisEmbedded", function(event) {
+                $log.info("Going to restore wp.mce.views method " + method + "()");
+                return wp.mce.views[method] = originalMethod;
+              });
+              $rootScope.$on("analysisFailed", function(event) {
+                $log.info("Going to restore wp.mce.views method " + method + "()");
+                return wp.mce.views[method] = originalMethod;
+              });
+              break;
+            } else {
+              results1.push(void 0);
+            }
+          }
+          return results1;
         }
-        return results1;
-      }
-    ]);
+      ]);
+    }
     startAnalysis = function() {
       return injector.invoke([
         'AnalysisService', 'EditorService', '$rootScope', '$log', function(AnalysisService, EditorService, $rootScope, $log) {
@@ -1881,7 +1884,7 @@
       ]);
     };
     addClassToBody = function() {
-      var $body, closed;
+      var $body;
       $body = $(editor.getBody());
       closed = $('#wordlift_entities_box').hasClass('closed');
       if (closed) {
@@ -1899,7 +1902,6 @@
     editor.on('init', function() {
       return addClassToBody();
     });
-    closed = $('#wordlift_entities_box').hasClass('closed');
     if (!closed) {
       fireEvent(editor, 'LoadContent', startAnalysis);
     } else {

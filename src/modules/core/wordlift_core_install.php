@@ -262,12 +262,12 @@ function wl_core_upgrade_db_3_12_3_14() {
  * @since 3.15.0
  */
 function wl_core_upgrade_db_3_14_3_15() {
-	global $wpdb;
 
 	if ( version_compare( get_option( 'wl_db_version' ), '3.15', '<=' ) ) {
 		$article = get_term_by( 'slug', 'article', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		
 		if ( ! $article ) {
-			$article    = wp_insert_term(
+			wp_insert_term(
 				'Article',
 				Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
 				array(
@@ -275,30 +275,33 @@ function wl_core_upgrade_db_3_14_3_15() {
 					'description' => 'An Article.',
 				)
 			);
-			$article_id = $article['term_id'];
-		} else {
-			$article_id = $article->term_id;
 		}
 
-		// An sql that will assign the article term to all posts and pages
-		$wpdb->query( $wpdb->prepare(
-			"
-			INSERT INTO $wpdb->term_relationships( object_id, term_taxonomy_id )
-			SELECT id, %d
-			FROM $wpdb->posts
-			WHERE post_type IN ( 'post', 'page' )
-				AND id NOT IN
-			(
-				SELECT DISTINCT tr.object_id
-				FROM $wpdb->term_relationships tr
-				INNER JOIN $wpdb->term_taxonomy tt
-					ON tr.term_taxonomy_id = tt.term_taxonomy_id
-						AND tt.taxonomy = 'wl_entity_type'
-			)
-			",
-			$article_id
-		) );
+		// The following is disabled because on large installations it may slow the
+		// web site.
+		//
+		// See https://github.com/insideout10/wordlift-plugin/issues/663.
+		//
+		//		// An sql that will assign the article term to all posts and pages
+		//		$wpdb->query( $wpdb->prepare(
+		//			"
+		//			INSERT INTO $wpdb->term_relationships( object_id, term_taxonomy_id )
+		//			SELECT id, %d
+		//			FROM $wpdb->posts
+		//			WHERE post_type IN ( 'post', 'page' )
+		//				AND id NOT IN
+		//			(
+		//				SELECT DISTINCT tr.object_id
+		//				FROM $wpdb->term_relationships tr
+		//				INNER JOIN $wpdb->term_taxonomy tt
+		//					ON tr.term_taxonomy_id = tt.term_taxonomy_id
+		//						AND tt.taxonomy = 'wl_entity_type'
+		//			)
+		//			",
+		//			$article_id
+		//		) );
 	}
+
 }
 
 // Check db status on automated plugins updates
