@@ -150,6 +150,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement: [#518](https://github.com/insideout10/wordlift-plugin/issues/518): Add the type when 2 or more entities have the same title.
 * Enhancement: [#514](https://github.com/insideout10/wordlift-plugin/issues/514): Add the occurrences of an entity within an article by default in Content Classification.
 * Enhancement: [#488](https://github.com/insideout10/wordlift-plugin/issues/488): Make Download Data more user-friendly.
+* Fix: [#666](https://github.com/insideout10/wordlift-plugin/issues/666): Chord shortcode uses a non existing post status of "published".
 * Fix: [#531](https://github.com/insideout10/wordlift-plugin/issues/531): When adding the second chord widget the page messes up.
 
 = 3.15.6 (2017-11-15) =
@@ -194,6 +195,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Fix: [#644](https://github.com/insideout10/wordlift-plugin/issues/644): Entities not showing in the classification box.
 
 = 3.15.0 (2017-10-05) =
+* Enhancement: [#625](https://github.com/insideout10/wordlift-plugin/issues/625): Add a WordPress filter to allow customers to extend the post types that can be turned into entities.
 * Enhancement: [#608](https://github.com/insideout10/wordlift-plugin/issues/608): Integrate the Autocomplete widget.
 * Enhancement: [#607](https://github.com/insideout10/wordlift-plugin/issues/607): Autocomplete API.
 * Enhancement: [#596](https://github.com/insideout10/wordlift-plugin/issues/596): Allow regular posts/pages to be entities.
