@@ -127,6 +127,15 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 		// Clean-up the file cache.
 		$this->file_cache_service = $wordlift_test->get_file_cache_service();
 
+		add_filter( 'wp_doing_ajax', array( $this, 'not_doing_ajax' ) );
+
+	}
+
+	function tearDown() {
+
+		remove_filter( 'wp_doing_ajax', array( $this, 'not_doing_ajax' ) );
+
+		parent::tearDown();
 	}
 
 	/**
@@ -348,6 +357,11 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( $cached_1, $cached_2 );
 
 		return $cached_2;
+	}
+
+	public function not_doing_ajax() {
+
+		return false;
 	}
 
 }
