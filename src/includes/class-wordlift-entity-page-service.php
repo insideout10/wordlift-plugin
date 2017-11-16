@@ -45,8 +45,8 @@ class Wordlift_Entity_Page_Service {
 		// Ignore admin side request, requests for which filters should be
 		// suppressed, and when we are not on a entity type archive page.
 		if ( is_admin() ||
-		     ! is_tax( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME ) ||
-		     ! empty( $query->query_vars['suppress_filters'] )
+			 ! is_tax( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME ) ||
+			 ! empty( $query->query_vars['suppress_filters'] )
 		) {
 			return;
 		}
@@ -70,9 +70,9 @@ class Wordlift_Entity_Page_Service {
 			 * additional filters to handle it.
 			 */
 
-			 add_filter( 'posts_join', array( $this, 'posts_join' ) );
-			 add_filter( 'posts_groupby', array( $this, 'posts_groupby' ) );
-			 add_filter( 'posts_orderby', array( $this, 'posts_orderby' ) );
+			add_filter( 'posts_join', array( $this, 'posts_join' ) );
+			add_filter( 'posts_groupby', array( $this, 'posts_groupby' ) );
+			add_filter( 'posts_orderby', array( $this, 'posts_orderby' ) );
 		}
 	}
 
@@ -90,12 +90,13 @@ class Wordlift_Entity_Page_Service {
 
 		global $wpdb;
 
-		$join_statement .= " LEFT JOIN {$wpdb->prefix}wl_relation_instances ri " .
-							'ON (ri.object_id = wp_posts.ID)';
+		$join_statement .= " LEFT JOIN {$wpdb->prefix}wl_relation_instances ri "
+						   . " ON (ri.object_id = {$wpdb->posts}.ID)";
 
 		// Remove to make sure it will not run agan in other context.
 		remove_filter( 'posts_join', array( $this, 'posts_join' ) );
-	    return $join_statement;
+
+		return $join_statement;
 	}
 
 	/**
@@ -114,7 +115,8 @@ class Wordlift_Entity_Page_Service {
 
 		// Remove to make sure it will not run agan in other context.
 		remove_filter( 'posts_groupby', array( $this, 'posts_groupby' ) );
-	    return $groupby_statement;
+
+		return $groupby_statement;
 	}
 
 	/**
@@ -129,12 +131,12 @@ class Wordlift_Entity_Page_Service {
 	 */
 	public function posts_orderby( $orderby_statement ) {
 
-	    $orderby_statement = 'COUNT( ri.object_id ) DESC, ' . $orderby_statement;
+		$orderby_statement = 'COUNT( ri.object_id ) DESC, ' . $orderby_statement;
 
 		// Remove to make sure it will not run agan in other context.
 		remove_filter( 'posts_orderby', array( $this, 'posts_orderby' ) );
 
-	    return $orderby_statement;
+		return $orderby_statement;
 	}
 
 }

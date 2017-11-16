@@ -38,7 +38,7 @@
       this._htmlPositions = [];
       this._textPositions = [];
       this._text = '';
-      pattern = /([^&<>]*)(&[^&;]*;|<[!\/]?(?:[\w-]+|\[cdata\[.*?]])(?: [\w_-]+(?:="[^"]*")?)*>)([^&<>]*)/gim;
+      pattern = /((?:&(?![#\w]))*[^&<>]*)(&[^&;]*;|<[!\/]?(?:[\w-]+|\[cdata\[.*?]])(?:[\w_-]+(?:="[^"]*")?)*[^>]*>)([^&<>]*)/gim;
       textLength = 0;
       htmlLength = 0;
       while ((match = pattern.exec(this._html)) != null) {
@@ -609,9 +609,11 @@
         return $scope.relatedPosts = posts;
       });
       $scope.$on("analysisPerformed", function(event, analysis) {
-        var entity, entityId, image, k, l, len1, len2, len3, len4, m, n, ref1, ref2, ref3, ref4, ref5, topic;
+        var entities, entity, entityId, image, k, l, len1, len2, len3, len4, m, n, ref1, ref2, ref3, ref4, topic;
+        $log.info("An analysis has been performed.");
         $scope.analysis = analysis;
         if ($scope.configuration.topic != null) {
+          $log.info("Preselecting topics...");
           ref1 = analysis.topics;
           for (k = 0, len1 = ref1.length; k < len1; k++) {
             topic = ref1[k];
@@ -623,18 +625,18 @@
         ref3 = $scope.configuration.classificationBoxes;
         for (l = 0, len2 = ref3.length; l < len2; l++) {
           box = ref3[l];
-          ref4 = box.selectedEntities;
-          for (m = 0, len3 = ref4.length; m < len3; m++) {
-            entityId = ref4[m];
+          entities = box.selectedEntities;
+          for (m = 0, len3 = entities.length; m < len3; m++) {
+            entityId = entities[m];
             if (entity = analysis.entities[entityId]) {
               if (entity.occurrences.length === 0) {
                 $log.warn("Entity " + entityId + " selected as " + box.label + " without valid occurrences!", entity);
                 continue;
               }
               $scope.selectedEntities[box.id][entityId] = analysis.entities[entityId];
-              ref5 = entity.images;
-              for (n = 0, len4 = ref5.length; n < len4; n++) {
-                image = ref5[n];
+              ref4 = entity.images;
+              for (n = 0, len4 = ref4.length; n < len4; n++) {
+                image = ref4[n];
                 if (indexOf.call($scope.images, image) < 0) {
                   $scope.images.push(image);
                 }
@@ -1820,6 +1822,7 @@
     if (editor.id !== "content") {
       return;
     }
+    closed = $('#wordlift_entities_box').hasClass('closed');
     fireEvent = function(editor, eventName, callback) {
       switch (tinymce.majorVersion) {
         case '4':
@@ -1828,40 +1831,42 @@
           return editor["on" + eventName].add(callback);
       }
     };
-    injector.invoke([
-      'EditorService', '$rootScope', '$log', function(EditorService, $rootScope, $log) {
-        var j, len, method, originalMethod, ref, results1;
-        if (wp.autosave != null) {
-          wp.autosave.server.postChanged = function() {
-            return false;
-          };
-        }
-        ref = ['setMarkers', 'toViews'];
-        results1 = [];
-        for (j = 0, len = ref.length; j < len; j++) {
-          method = ref[j];
-          if (wp.mce.views[method] != null) {
-            originalMethod = wp.mce.views[method];
-            $log.warn("Override wp.mce.views method " + method + "() to prevent shortcodes rendering");
-            wp.mce.views[method] = function(content) {
-              return content;
+    if (!closed) {
+      injector.invoke([
+        'EditorService', '$rootScope', '$log', function(EditorService, $rootScope, $log) {
+          var j, len, method, originalMethod, ref, results1;
+          if (wp.autosave != null) {
+            wp.autosave.server.postChanged = function() {
+              return false;
             };
-            $rootScope.$on("analysisEmbedded", function(event) {
-              $log.info("Going to restore wp.mce.views method " + method + "()");
-              return wp.mce.views[method] = originalMethod;
-            });
-            $rootScope.$on("analysisFailed", function(event) {
-              $log.info("Going to restore wp.mce.views method " + method + "()");
-              return wp.mce.views[method] = originalMethod;
-            });
-            break;
-          } else {
-            results1.push(void 0);
           }
+          ref = ['setMarkers', 'toViews'];
+          results1 = [];
+          for (j = 0, len = ref.length; j < len; j++) {
+            method = ref[j];
+            if (wp.mce.views[method] != null) {
+              originalMethod = wp.mce.views[method];
+              $log.warn("Override wp.mce.views method " + method + "() to prevent shortcodes rendering");
+              wp.mce.views[method] = function(content) {
+                return content;
+              };
+              $rootScope.$on("analysisEmbedded", function(event) {
+                $log.info("Going to restore wp.mce.views method " + method + "()");
+                return wp.mce.views[method] = originalMethod;
+              });
+              $rootScope.$on("analysisFailed", function(event) {
+                $log.info("Going to restore wp.mce.views method " + method + "()");
+                return wp.mce.views[method] = originalMethod;
+              });
+              break;
+            } else {
+              results1.push(void 0);
+            }
+          }
+          return results1;
         }
-        return results1;
-      }
-    ]);
+      ]);
+    }
     startAnalysis = function() {
       return injector.invoke([
         'AnalysisService', 'EditorService', '$rootScope', '$log', function(AnalysisService, EditorService, $rootScope, $log) {
@@ -1879,7 +1884,7 @@
       ]);
     };
     addClassToBody = function() {
-      var $body, closed;
+      var $body;
       $body = $(editor.getBody());
       closed = $('#wordlift_entities_box').hasClass('closed');
       if (closed) {
@@ -1897,7 +1902,6 @@
     editor.on('init', function() {
       return addClassToBody();
     });
-    closed = $('#wordlift_entities_box').hasClass('closed');
     if (!closed) {
       fireEvent(editor, 'LoadContent', startAnalysis);
     } else {

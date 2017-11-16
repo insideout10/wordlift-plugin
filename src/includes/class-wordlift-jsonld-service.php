@@ -42,6 +42,15 @@ class Wordlift_Jsonld_Service {
 	private $website_converter;
 
 	/**
+	 * The singleton instance for the JSON-LD service.
+	 *
+	 * @since 3.15.1
+	 *
+	 * @var \Wordlift_Jsonld_Service $instance The singleton instance for the JSON-LD service.
+	 */
+	private static $instance;
+
+	/**
 	 * Create a JSON-LD service.
 	 *
 	 * @since 3.8.0
@@ -56,6 +65,20 @@ class Wordlift_Jsonld_Service {
 		$this->converter         = $converter;
 		$this->website_converter = $website_converter;
 
+		self::$instance = $this;
+
+	}
+
+	/**
+	 * Get the singleton instance for the JSON-LD service.
+	 *
+	 * @since 3.15.1
+	 *
+	 * @return \Wordlift_Jsonld_Service The singleton instance for the JSON-LD service.
+	 */
+	public static function get_instance() {
+
+		return self::$instance;
 	}
 
 	/**
@@ -64,6 +87,32 @@ class Wordlift_Jsonld_Service {
 	 * @since 3.8.0
 	 */
 	public function get() {
+		// Clear the buffer to be sure someone doesn't mess with our response.
+		//
+		// See https://github.com/insideout10/wordlift-plugin/issues/406.
+		// See https://codex.wordpress.org/AJAX_in_Plugins.
+		@ob_clean();
+
+		// Get the parameter from the request.
+		$is_homepage = isset( $_REQUEST['homepage'] );
+		$post_id     = isset( $_REQUEST['id'] ) && is_numeric( $_REQUEST['id'] ) ? intval( $_REQUEST['id'] ) : null;
+
+		// Send the generated JSON-LD.
+		wp_send_json( $this->get_jsonld( $is_homepage, $post_id ) );
+
+	}
+
+	/**
+	 * Get the JSON-LD.
+	 *
+	 * @since 3.15.1
+	 *
+	 * @param bool     $is_homepage Whether the JSON-LD for the homepage is being requested.
+	 * @param int|null $post_id     The JSON-LD for the specified {@link WP_Post} id.
+	 *
+	 * @return array A JSON-LD structure.
+	 */
+	public function get_jsonld( $is_homepage = false, $post_id = null ) {
 
 		// Tell NewRelic to ignore us, otherwise NewRelic customers might receive
 		// e-mails with a low apdex score.
@@ -71,14 +120,8 @@ class Wordlift_Jsonld_Service {
 		// See https://github.com/insideout10/wordlift-plugin/issues/521
 		Wordlift_NewRelic_Adapter::ignore_apdex();
 
-		// Clear the buffer to be sure someone doesn't mess with our response.
-		//
-		// See https://github.com/insideout10/wordlift-plugin/issues/406.
-		// See https://codex.wordpress.org/AJAX_in_Plugins.
-		ob_clean();
-
 		// Switch to Website converter if is home page.
-		if ( isset( $_REQUEST['homepage'] ) ) {
+		if ( $is_homepage ) {
 			/**
 			 * Filter: 'wordlift_disable_website_json_ld' - Allow disabling of the json+ld output.
 			 *
@@ -90,17 +133,14 @@ class Wordlift_Jsonld_Service {
 				$website_converter = $this->website_converter;
 
 				// Send JSON-LD.
-				wp_send_json( $website_converter->create_schema() );
+				return $website_converter->create_schema();
 			}
 		}
 
 		// If no id has been provided return an empty array.
-		if ( ! isset( $_REQUEST['id'] ) ) {
-			wp_send_json( array() );
+		if ( ! isset( $post_id ) ) {
+			return array();
 		}
-
-		// Get the id.
-		$id = $_REQUEST['id'];
 
 		// An array of references which is captured when converting an URI to a
 		// json which we gather to further expand our json-ld.
@@ -112,7 +152,7 @@ class Wordlift_Jsonld_Service {
 		// Convert each URI to a JSON-LD array, while gathering referenced entities.
 		// in the references array.
 		$jsonld = array_merge(
-			array( $entity_to_jsonld_converter->convert( $id, $references ) ),
+			array( $entity_to_jsonld_converter->convert( $post_id, $references ) ),
 			// Convert each URI in the references array to JSON-LD. We don't output
 			// entities already output above (hence the array_diff).
 			array_map( function ( $item ) use ( $entity_to_jsonld_converter, $references ) {
@@ -124,8 +164,7 @@ class Wordlift_Jsonld_Service {
 			}, $references ) );
 
 		// Finally send the JSON-LD.
-		wp_send_json( $jsonld );
-
+		return $jsonld;
 	}
 
 }

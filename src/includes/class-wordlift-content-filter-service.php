@@ -53,6 +53,15 @@ class Wordlift_Content_Filter_Service {
 	private $is_link_by_default;
 
 	/**
+	 * A {@link Wordlift_Log_Service} instance.
+	 *
+	 * @since 3.16.0
+	 *
+	 * @var \Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
+	 */
+	private $log;
+
+	/**
 	 * The {@link Wordlift_Content_Filter_Service} singleton instance.
 	 *
 	 * @since  3.14.2
@@ -70,6 +79,8 @@ class Wordlift_Content_Filter_Service {
 	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
 	 */
 	public function __construct( $entity_service, $configuration_service ) {
+
+		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
 		$this->entity_service        = $entity_service;
 		$this->configuration_service = $configuration_service;
@@ -100,6 +111,8 @@ class Wordlift_Content_Filter_Service {
 	 * @return string The filtered content.
 	 */
 	public function the_content( $content ) {
+
+		$this->log->trace( 'Filtering content...' );
 
 		// Links should be added only on the front end and not for RSS.
 		if ( is_feed() ) {
@@ -242,7 +255,12 @@ class Wordlift_Content_Filter_Service {
 		$matches = array();
 		preg_match_all( Wordlift_Content_Filter_Service::PATTERN, $content, $matches );
 
-		return array_unique( $matches[3] );
+		// We need to use `array_values` here in order to avoid further `json_encode`
+		// to turn it into an object (since if the 3rd match isn't found the index
+		// is not sequential.
+		//
+		// See https://github.com/insideout10/wordlift-plugin/issues/646.
+		return array_values( array_unique( $matches[3] ) );
 	}
 
 }

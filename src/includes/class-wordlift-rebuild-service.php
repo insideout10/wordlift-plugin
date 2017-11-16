@@ -84,6 +84,9 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 		$limit  = $_GET['limit'] ?: 1;
 		$max    = $offset + $limit;
 
+		// Whether we should run queries asynchronously, this is handled in `wordlift_constants.php`.
+		$asynchronous = isset( $_GET['wl-async'] ) && 'true' === $_GET['wl-async'];
+
 		// If we're starting at offset 0, then delete existing URIs and data from
 		// the remote dataset.
 		if ( 0 === $offset ) {
@@ -104,8 +107,10 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 		// in order to avoid memory errors.
 
 		$count = 0;
-		$this->process( function ( $post ) use ( &$count ) {
+		$log   = $this->log;
+		$this->process( function ( $post ) use ( &$count, $log ) {
 			$count ++;
+			$log->trace( "Going to save post $count, ID $post->ID..." );
 			wl_linked_data_save_post( $post->ID );
 		}, array(
 			'post_status' => 'publish',
@@ -113,9 +118,14 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 
 		// Redirect to the next chunk.
 		if ( $count == $limit ) {
-			$this->redirect( admin_url( 'admin-ajax.php?action=wl_rebuild&offset=' . ( $offset + $limit ) . '&limit=' . $limit ) );
+			$log->trace( 'Redirecting to post #' . ( $offset + 1 ) . '...' );
+			$this->redirect( admin_url( 'admin-ajax.php?action=wl_rebuild&offset=' . ( $offset + $limit ) . '&limit=' . $limit . '&wl-async=' . ( $asynchronous ? 'true' : 'false' ) ) );
 		}
 
+		// Flush the cache.
+		Wordlift_File_Cache_Service::get_instance()->flush();
+
+		$this->log->info( "Rebuild complete [ count :: $count ][ limit :: $limit ]" );
 		echo( "Rebuild complete [ count :: $count ][ limit :: $limit ]" );
 
 		// If we're being called as AJAX, die here.
@@ -167,12 +177,13 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 	function find( $offset = 0, $limit = 10, $args = array() ) {
 
 		return get_posts( wp_parse_args( $args, Wordlift_Entity_Service::add_criterias( array(
-			'offset'      => $offset,
-			'numberposts' => $limit,
-			'fields'      => 'all',
-			'orderby'     => 'ID',
-			'order'       => 'ASC',
-			'post_status' => 'any',
+			'offset'        => $offset,
+			'numberposts'   => $limit,
+			'fields'        => 'all',
+			'orderby'       => 'ID',
+			'order'         => 'ASC',
+			'post_status'   => 'any',
+			'cache_results' => false,
 		) ) ) );
 	}
 

@@ -247,20 +247,20 @@ class Wordlift_User_Service {
 
 		// Build the delete query.
 		$query = Wordlift_Query_Builder::new_instance()->delete()
-		                               ->statement( $user_uri, Wordlift_Query_Builder::RDFS_TYPE_URI, '?o' )
-		                               ->build()
-		         . Wordlift_Query_Builder::new_instance()->delete()
-		                                 ->statement( $user_uri, Wordlift_Query_Builder::RDFS_LABEL_URI, '?o' )
-		                                 ->build()
-		         . Wordlift_Query_Builder::new_instance()->delete()
-		                                 ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_GIVEN_NAME_URI, '?o' )
-		                                 ->build()
-		         . Wordlift_Query_Builder::new_instance()->delete()
-		                                 ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_FAMILY_NAME_URI, '?o' )
-		                                 ->build()
-		         . Wordlift_Query_Builder::new_instance()->delete()
-		                                 ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_URL_URI, '?o' )
-		                                 ->build();
+									   ->statement( $user_uri, Wordlift_Query_Builder::RDFS_TYPE_URI, '?o' )
+									   ->build()
+				 . Wordlift_Query_Builder::new_instance()->delete()
+										 ->statement( $user_uri, Wordlift_Query_Builder::RDFS_LABEL_URI, '?o' )
+										 ->build()
+				 . Wordlift_Query_Builder::new_instance()->delete()
+										 ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_GIVEN_NAME_URI, '?o' )
+										 ->build()
+				 . Wordlift_Query_Builder::new_instance()->delete()
+										 ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_FAMILY_NAME_URI, '?o' )
+										 ->build()
+				 . Wordlift_Query_Builder::new_instance()->delete()
+										 ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_URL_URI, '?o' )
+										 ->build();
 
 		return $query;
 	}
@@ -288,13 +288,13 @@ class Wordlift_User_Service {
 
 		// Build the insert query.
 		$query = Wordlift_Query_Builder::new_instance()
-		                               ->insert()
-		                               ->statement( $user_uri, Wordlift_Query_Builder::RDFS_TYPE_URI, Wordlift_Query_Builder::SCHEMA_PERSON_URI )
-		                               ->statement( $user_uri, Wordlift_Query_Builder::RDFS_LABEL_URI, $user->display_name )
-		                               ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_GIVEN_NAME_URI, $user->user_firstname )
-		                               ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_FAMILY_NAME_URI, $user->user_lastname )
-		                               ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_URL_URI, ( ! empty( $user->user_url ) ? $user->user_url : get_author_posts_url( $user_id ) ) )
-		                               ->build();
+									   ->insert()
+									   ->statement( $user_uri, Wordlift_Query_Builder::RDFS_TYPE_URI, Wordlift_Query_Builder::SCHEMA_PERSON_URI )
+									   ->statement( $user_uri, Wordlift_Query_Builder::RDFS_LABEL_URI, $user->display_name )
+									   ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_GIVEN_NAME_URI, $user->user_firstname )
+									   ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_FAMILY_NAME_URI, $user->user_lastname )
+									   ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_URL_URI, ( ! empty( $user->user_url ) ? $user->user_url : get_author_posts_url( $user_id ) ) )
+									   ->build();
 
 		return $query;
 	}
@@ -418,20 +418,21 @@ class Wordlift_User_Service {
 		 * Need protection against the case of edit_user and likes which do not
 		 * require a capability, just request one.
 		 */
-		if ( empty( $cap ) ) {
+		if ( empty( $cap ) || ! isset( $cap[0] ) ) {
 			return $allcaps;
 		}
+
 		if (
-			( 'edit_wordlift_entity' == $cap[0] ) ||
-			( 'edit_wordlift_entities' == $cap[0] ) ||
-			( 'edit_others_wordlift_entities' == $cap[0] ) ||
-			( 'publish_wordlift_entities' == $cap[0] ) ||
-			( 'read_private_wordlift_entities' == $cap[0] ) ||
-			( 'delete_wordlift_entity' == $cap[0] ) ||
-			( 'delete_wordlift_entities' == $cap[0] ) ||
-			( 'delete_others_wordlift_entities' == $cap[0] ) ||
-			( 'delete_published_wordlift_entities' == $cap[0] ) ||
-			( 'delete_private_wordlift_entities' == $cap[0] )
+			( 'edit_wordlift_entity' === $cap[0] ) ||
+			( 'edit_wordlift_entities' === $cap[0] ) ||
+			( 'edit_others_wordlift_entities' === $cap[0] ) ||
+			( 'publish_wordlift_entities' === $cap[0] ) ||
+			( 'read_private_wordlift_entities' === $cap[0] ) ||
+			( 'delete_wordlift_entity' === $cap[0] ) ||
+			( 'delete_wordlift_entities' === $cap[0] ) ||
+			( 'delete_others_wordlift_entities' === $cap[0] ) ||
+			( 'delete_published_wordlift_entities' === $cap[0] ) ||
+			( 'delete_private_wordlift_entities' === $cap[0] )
 		) {
 			$user_id = $args[1];
 

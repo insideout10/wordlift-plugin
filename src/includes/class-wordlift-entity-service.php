@@ -232,30 +232,45 @@ class Wordlift_Entity_Service {
 	 */
 	public function get_entity_post_by_uri( $uri ) {
 
+		$this->log->trace( "Getting an entity post for URI $uri..." );
+
 		// Check if we've been provided with a value otherwise return null.
 		if ( empty( $uri ) ) {
 			return null;
 		}
 
 		$query_args = array(
-			'posts_per_page' => 1,
-			'post_status'    => 'any',
-			'post_type'      => Wordlift_Entity_Service::valid_entity_post_types(),
-			'meta_query'     => array(
+			// See https://github.com/insideout10/wordlift-plugin/issues/654.
+			'ignore_sticky_posts' => 1,
+			'posts_per_page'      => 1,
+			'post_status'         => 'any',
+			'post_type'           => Wordlift_Entity_Service::valid_entity_post_types(),
+			'meta_query'          => array(
 				array(
 					'key'     => WL_ENTITY_URL_META_NAME,
 					'value'   => $uri,
 					'compare' => '=',
 				),
 			),
-			$tax_query = array(
-				array(
-					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
-					'field'    => 'slug',
-					'terms'    => 'article',
-					'operator' => 'NOT IN',
-				),
-			),
+			// The following query can be avoided, it's superfluous since
+			// we're looking for a post with a specific Entity URI. This query
+			// may in fact consume up to 50% of the timing necessary to load a
+			// page.
+			//
+			// See https://github.com/insideout10/wordlift-plugin/issues/674.
+			//			'tax_query'           => array(
+			//				'relation' => 'AND',
+			//				array(
+			//					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+			//					'operator' => 'EXISTS',
+			//				),
+			//				array(
+			//					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+			//					'field'    => 'slug',
+			//					'terms'    => 'article',
+			//					'operator' => 'NOT IN',
+			//				),
+			//			),
 		);
 
 		// Only if the current uri is not an internal uri, entity search is
@@ -272,18 +287,22 @@ class Wordlift_Entity_Service {
 			);
 		}
 
-		$query = new WP_Query( $query_args );
+		$posts = get_posts( $query_args );
 
-		// Get the matching entity posts.
-		$posts = $query->get_posts();
+//		$query = new WP_Query( $query_args );
+//
+//		// Get the matching entity posts.
+//		$posts = $query->get_posts();
 
 		// Return null if no post is found.
 		if ( 0 === count( $posts ) ) {
+			$this->log->warn( "No post for URI $uri." );
+
 			return null;
 		}
 
 		// Return the found post.
-		return $posts[0];
+		return current( $posts );
 	}
 
 	/**

@@ -55,12 +55,13 @@ class Wordlift_Autocomplete_Service {
 	 *
 	 * @since 3.15.0
 	 *
-	 * @param string $query The search string.
+	 * @param string       $query   The search string.
+	 * @param array|string $exclude The exclude parameter string.
 	 *
 	 * @return array $response The API response.
 	 */
-	public function make_request( $query ) {
-		$url = $this->build_request_url( $query );
+	public function make_request( $query, $exclude = '' ) {
+		$url = $this->build_request_url( $query, $exclude );
 
 		// Make request.
 		$response = wp_remote_get( $url );
@@ -74,11 +75,12 @@ class Wordlift_Autocomplete_Service {
 	 *
 	 * @since 3.15.0
 	 *
-	 * @param string $query The search string.
+	 * @param string       $query   The search string.
+	 * @param array|string $exclude The exclude parameter.
 	 *
 	 * @return string Built url.
 	 */
-	private function build_request_url( $query ) {
+	private function build_request_url( $query, $exclude ) {
 		$args = array(
 			'key'      => $this->configuration_service->get_key(),
 			'language' => $this->configuration_service->get_language_code(),
@@ -91,6 +93,13 @@ class Wordlift_Autocomplete_Service {
 			urlencode_deep( $args ),
 			$this->configuration_service->get_autocomplete_url()
 		);
+
+		// Add the exclude parameter.
+		if ( ! empty( $exclude ) ) {
+			foreach ( (array) $exclude as $item ) {
+				$request_url .= "&exclude=" . urlencode( $item );
+			}
+		}
 
 		// return the built url.
 		return $request_url;
