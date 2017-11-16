@@ -144,12 +144,13 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.60.0 (????-??-??) =
+= 3.16.0 (????-??-??) =
+* Enhancement: [#627](https://github.com/insideout10/wordlift-plugin/issues/627): Set minimal supported wordpress version to 4.4.
 * Enhancement: [#626](https://github.com/insideout10/wordlift-plugin/issues/626): Cache JSON-LD, introduce an explicit caching layer.
 * Enhancement: [#518](https://github.com/insideout10/wordlift-plugin/issues/518): Add the type when 2 or more entities have the same title.
 * Enhancement: [#514](https://github.com/insideout10/wordlift-plugin/issues/514): Add the occurrences of an entity within an article by default in Content Classification.
 * Enhancement: [#488](https://github.com/insideout10/wordlift-plugin/issues/488): Make Download Data more user-friendly.
-* Enhancement: [#531](https://github.com/insideout10/wordlift-plugin/issues/531): When adding the second chord widget the page messes up.
+* Fix: [#531](https://github.com/insideout10/wordlift-plugin/issues/531): When adding the second chord widget the page messes up.
 
 = 3.15.6 (2017-11-15) =
 * Fix: [#701](https://github.com/insideout10/wordlift-plugin/issues/701): Early rewrite rules flushing causes infinite loop.
