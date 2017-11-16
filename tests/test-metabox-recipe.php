@@ -17,25 +17,6 @@
 class WL_Metabox_Recipe_Test extends Wordlift_Unit_Test_Case {
 
 	/**
-	 * The {@link Wordlift_Entity_Type_Service} instance.
-	 *
-	 * @since  3.14.0
-	 * @access private
-	 * @var \Wordlift_Entity_Type_Service $entity_type_service The {@link Wordlift_Entity_Type_Service} instance.
-	 */
-	private $entity_type_service;
-
-	/**
-	 * @inheritdoc
-	 */
-	function setUp() {
-		parent::setUp();
-
-		$this->entity_type_service = $this->get_wordlift_test()->get_entity_type_service();
-
-	}
-
-	/**
 	 * Test instantiating fields on a Recipe.
 	 *
 	 * @since 3.14.0

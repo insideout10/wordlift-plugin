@@ -85,9 +85,6 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		// Get the entity name.
 		$jsonld['headline'] = $post->post_title;
 
-		// Get the author.
-		$jsonld['author'] = $this->get_author( $post->post_author );
-
 		// Set the published and modified dates.
 		$jsonld['datePublished'] = get_post_time( 'Y-m-d\TH:i', true, $post, false );
 		$jsonld['dateModified']  = get_post_modified_time( 'Y-m-d\TH:i', true, $post, false );
@@ -138,6 +135,9 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			}
 		}
 
+		// Finally set the author.
+		$jsonld['author'] = $this->get_author( $post->post_author, $references );
+
 		/**
 		 * Call the `wl_post_jsonld` filter.
 		 *
@@ -160,11 +160,12 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 *
 	 * @since 3.14.0
 	 *
-	 * @param int $author_id The author {@link WP_User}'s `id`.
+	 * @param int   $author_id  The author {@link WP_User}'s `id`.
+	 * @param array $references An array of referenced entities.
 	 *
-	 * @return array A JSON-LD structure.
+	 * @return string|array A JSON-LD structure.
 	 */
-	private function get_author( $author_id ) {
+	private function get_author( $author_id, &$references ) {
 
 		// Get the entity bound to this user.
 		$entity_id = $this->user_service->get_entity( $author_id );
@@ -182,8 +183,14 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			);
 		}
 
+		// Add the author to the references.
+		$author_uri   = $this->entity_service->get_uri( $entity_id );
+		$references[] = $entity_id;
+
 		// Return the JSON-LD for the referenced entity.
-		return $this->entity_post_to_jsonld_converter->convert( $entity_id );
+		return array(
+			'@id'   => $author_uri,
+		);
 	}
 
 	/**
@@ -224,7 +231,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 
 		// Add the sameAs values associated with the publisher.
 		$storage_factory = Wordlift_Storage_Factory::get_instance();
-		$sameas = $storage_factory->post_meta( Wordlift_Schema_Service::FIELD_SAME_AS )->get( $publisher_id );
+		$sameas          = $storage_factory->post_meta( Wordlift_Schema_Service::FIELD_SAME_AS )->get( $publisher_id );
 		if ( ! empty( $sameas ) ) {
 			$params['publisher']['sameAs'] = $sameas;
 		}

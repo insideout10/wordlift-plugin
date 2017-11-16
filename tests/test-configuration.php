@@ -16,26 +16,7 @@
  */
 class Wordlift_Configuration_Test extends Wordlift_Unit_Test_Case {
 
-	/**
-	 * The {@link Wordlift_Configuration_Service} instance.
-	 *
-	 * @since  3.13.0
-	 * @access private
-	 * @var \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
-	 */
-	private $configuration_service;
-
 	private $http_request_count = 0;
-
-	/**
-	 * @inheritdoc
-	 */
-	function setUp() {
-		parent::setUp();
-
-		$this->configuration_service = $this->get_wordlift_test()->get_configuration_service();
-
-	}
 
 	function test_wl_configuration_key() {
 

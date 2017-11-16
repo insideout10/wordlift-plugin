@@ -24,15 +24,6 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	private $post_to_jsonld_converter;
 
 	/**
-	 * A {@link Wordlift_Configuration_Service} instance.
-	 *
-	 * @since  3.10.0
-	 * @access private
-	 * @var \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
-	 */
-	private $configuration_service;
-
-	/**
 	 * A {@link Wordlift_Entity_Service} instance.
 	 *
 	 * @since    3.10.0
@@ -49,15 +40,6 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 * @var \Wordlift_User_Service $user_service A {@link Wordlift_User_Service} instance.
 	 */
 	private $user_service;
-
-	/**
-	 * A {@link Wordlift_Entity_Type_Service} instance.
-	 *
-	 * @since  3.10.0
-	 * @access private
-	 * @var \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
-	 */
-	private $entity_type_service;
 
 	/**
 	 * A mock-up WordPress user.
@@ -88,10 +70,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		$wordlift                       = new Wordlift_Test();
 		$this->post_to_jsonld_converter = $wordlift->get_post_to_jsonld_converter();
-		$this->configuration_service    = $wordlift->get_configuration_service();
 		$this->entity_service           = $wordlift->get_entity_service();
 		$this->user_service             = $wordlift->get_user_service();
-		$this->entity_type_service      = $wordlift->get_entity_type_service();
 
 		// Check that we have services' instances.
 		$this->assertNotNull( $this->post_to_jsonld_converter );

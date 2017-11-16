@@ -122,6 +122,9 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 			$this->redirect( admin_url( 'admin-ajax.php?action=wl_rebuild&offset=' . ( $offset + $limit ) . '&limit=' . $limit . '&wl-async=' . ( $asynchronous ? 'true' : 'false' ) ) );
 		}
 
+		// Flush the cache.
+		Wordlift_File_Cache_Service::get_instance()->flush();
+
 		$this->log->info( "Rebuild complete [ count :: $count ][ limit :: $limit ]" );
 		echo( "Rebuild complete [ count :: $count ][ limit :: $limit ]" );
 

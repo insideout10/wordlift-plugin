@@ -36,15 +36,6 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 	private $content_filter_service;
 
 	/**
-	 * The {@link Wordlift_Configuration_Service} instance.
-	 *
-	 * @since  3.13.0
-	 * @access private
-	 * @var \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
-	 */
-	private $configuration_service;
-
-	/**
 	 * Array of synonyms to the simulate entity title.
 	 *
 	 * @since  3.15.0
@@ -73,7 +64,6 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 		Wordlift_Unit_Test_Case::turn_off_entity_push();
 
 		$this->entity_service         = $this->get_wordlift_test()->get_entity_service();
-		$this->configuration_service  = $this->get_wordlift_test()->get_configuration_service();
 		$this->content_filter_service = new Wordlift_Content_Filter_Service( $this, $this->configuration_service );
 
 	}
