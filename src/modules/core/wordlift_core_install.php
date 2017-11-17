@@ -346,7 +346,7 @@ function wl_core_update_db_check() {
 			$configuration_service->get_remote_dataset_uri( $key );
 		}
 
-		// Check if the dataset key has been store.
+		// Check if the dataset key has been stored.
 		$dataset_uri = $configuration_service->get_dataset_uri();
 
 		// If the dataset URI is empty, do not set the install version.
@@ -355,7 +355,7 @@ function wl_core_update_db_check() {
 
 			$log->info( 'Version 1 installed.' );
 		}
-		
+
 	}
 
 }

@@ -339,6 +339,7 @@ class Wordlift_Configuration_Service {
 	 * If a valid dataset uri is returned it is stored in the appropriate option,
 	 * otherwise the option is set to empty string.
 	 *
+	 * @since 3.17.0 send the site URL and get the dataset URI.
 	 * @since 3.12.0
 	 *
 	 * @param string $key The key to be used
@@ -348,6 +349,7 @@ class Wordlift_Configuration_Service {
 
 		$this->log->trace( "Getting the remote dataset URI..." );
 
+		//
 		$url = $this->get_accounts()
 			   . "?key=" . urlencode( $key )
 			   . "&url=" . urlencode( site_url() );
