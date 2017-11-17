@@ -35,16 +35,27 @@ class WL_Metabox {
 	public $fields;
 
 	/**
+	 * A {@link Wordlift_Log_Service} instance.
+	 *
+	 * @since 3.15.4
+	 *
+	 * @var \Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
+	 */
+	private $log;
+
+	/**
 	 * WL_Metabox constructor.
 	 *
 	 * @since 3.1.0
 	 */
 	public function __construct() {
 
+		$this->log = Wordlift_Log_Service::get_logger( get_class() );
+
 		// Add hooks to print metaboxes and save submitted data.
-		add_action( 'add_meta_boxes', array( &$this, 'add_main_metabox' ) );
+		add_action( 'add_meta_boxes', array( $this, 'add_main_metabox' ) );
 		add_action( 'wl_linked_data_save_post', array(
-			&$this,
+			$this,
 			'save_form_data',
 		) );
 
@@ -115,6 +126,8 @@ class WL_Metabox {
 	 * @param int $post_id The post id.
 	 */
 	public function instantiate_fields( $post_id ) {
+
+		$this->log->trace( "Instantiating fields for entity post $post_id..." );
 
 		// This function must be called only once. Not called from the constructor because WP hooks have a rococo ordering.
 		if ( isset( $this->fields ) ) {
@@ -269,11 +282,15 @@ class WL_Metabox {
 	 */
 	public function save_form_data( $entity_id ) {
 
+		$this->log->trace( "Saving form data for entity post $entity_id..." );
+
 		// Build Field objects.
 		$this->instantiate_fields( $entity_id );
 
 		// Check if WL metabox form was posted.
 		if ( ! isset( $_POST['wl_metaboxes'] ) ) {
+			$this->log->debug( "`wl_metaboxes`, skipping..." );
+
 			return;
 		}
 

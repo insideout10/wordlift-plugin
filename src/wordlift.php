@@ -15,7 +15,7 @@
  * Plugin Name:       WordLift
  * Plugin URI:        https://wordlift.io
  * Description:       WordLift brings the power of AI to organize content, attract new readers and get their attention. To activate the plugin ​<a href="https://wordlift.io/">visit our website</a>.
- * Version:           3.16.0-dev
+ * Version:           3.17.0-dev
  * Author:            WordLift, Insideout10
  * Author URI:        https://wordlift.io
  * License:           GPL-2.0+
@@ -69,7 +69,7 @@ function wl_write_log_handler( $log, $caller = null ) {
 	if ( true === WP_DEBUG ) {
 
 		$message = ( isset( $caller ) ? sprintf( '[%-40.40s] ', $caller ) : '' ) .
-		           ( is_array( $log ) || is_object( $log ) ? print_r( $log, true ) : wl_write_log_hide_key( $log ) );
+				   ( is_array( $log ) || is_object( $log ) ? print_r( $log, true ) : wl_write_log_hide_key( $log ) );
 
 		if ( isset( $wl_logger ) ) {
 			$wl_logger->info( $message );
@@ -134,15 +134,26 @@ function wordlift_admin_enqueue_scripts() {
 	wp_enqueue_style( 'wordlift-reloaded', plugin_dir_url( __FILE__ ) . 'css/wordlift-reloaded.min.css' );
 
 	wp_enqueue_script( 'jquery-ui-autocomplete' );
-	wp_enqueue_script( 'angularjs', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular.min.js' );
-	wp_enqueue_script( 'angularjs-geolocation', plugin_dir_url( __FILE__ ) . 'bower_components/angularjs-geolocation/dist/angularjs-geolocation.min.js' );
-	wp_enqueue_script( 'angularjs-touch', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular-touch.min.js' );
-	wp_enqueue_script( 'angularjs-animate', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular-animate.min.js' );
+
+	$log = Wordlift_Log_Service::get_logger( 'wordlift_admin_enqueue_scripts' );
+	$log->trace( 'Registering admin scripts...' );
+
+	// We now register angular scripts and have dependent scripts (currently
+	// only the edit post page) depend on them, to avoid potential conflicts.
+	//
+	// See https://github.com/insideout10/wordlift-plugin/issues/691.
+	$result = wp_register_script( 'wl-angular', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular.min.js' )
+			  && wp_register_script( 'wl-angular-geolocation', plugin_dir_url( __FILE__ ) . 'bower_components/angularjs-geolocation/dist/angularjs-geolocation.min.js' )
+			  && wp_register_script( 'wl-angular-touch', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular-touch.min.js' )
+			  && wp_register_script( 'wl-angular-animate', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular-animate.min.js' );
+
+	$log->debug( 'Registering angular scripts was ' . ( $result ? 'successful.' : 'unsuccessful.' ) );
 
 	// Disable auto-save for custom entity posts only
 	if ( Wordlift_Entity_Service::TYPE_NAME === get_post_type() ) {
 		wp_dequeue_script( 'autosave' );
 	}
+
 }
 
 add_action( 'admin_enqueue_scripts', 'wordlift_admin_enqueue_scripts' );
@@ -212,8 +223,8 @@ function wl_get_coordinates( $post_id ) {
 function wl_get_image_urls( $post_id ) {
 
 	return Wordlift_Storage_Factory::get_instance()
-	                               ->post_images()
-	                               ->get( $post_id );
+								   ->post_images()
+								   ->get( $post_id );
 
 //	// If there is a featured image it has the priority.
 //	$featured_image_id = get_post_thumbnail_id( $post_id );
@@ -293,80 +304,6 @@ function wl_set_source_url( $post_id, $source_url ) {
 	add_post_meta( $post_id, 'wl_source_url', $source_url );
 }
 
-
-/**
- * This function is called by the *flush_rewrite_rules_hard* hook. It recalculates the URI for all the posts.
- *
- * @since 3.0.0
- *
- * @uses  rl_sparql_prefixes() to get the SPARQL prefixes.
- * @uses  wl_get_entity_uri() to get an entity URI.
- * @uses  rl_execute_sparql_update_query() to post the DELETE and INSERT queries.
- *
- * @param bool $hard True if the rewrite involves configuration updates in Apache/IIS.
- */
-function wl_flush_rewrite_rules_hard( $hard ) {
-
-	// If WL is not yet configured, we cannot perform any update, so we exit.
-	if ( '' === wl_configuration_get_key() ) {
-		return;
-	}
-
-	// Set the initial offset and limit each call to 100 posts to avoid memory errors.
-	$offset = 0;
-	$limit  = 100;
-
-	// Get more posts if the number of returned posts matches the limit.
-	while ( $limit === ( $posts = get_posts( array(
-			'offset'      => $offset,
-			'numberposts' => $limit,
-			'orderby'     => 'ID',
-			'post_type'   => 'any',
-			'post_status' => 'publish',
-		) ) ) ) {
-
-		// Holds the delete part of the query.
-		$delete_query = rl_sparql_prefixes();
-
-		// Holds the insert part of the query.
-		$insert_query = '';
-
-		// Cycle in each post to build the query.
-		foreach ( $posts as $post ) {
-
-			// Ignore revisions.
-			if ( wp_is_post_revision( $post->ID ) ) {
-				continue;
-			}
-
-			// Get the entity URI.
-			$s = Wordlift_Sparql_Service::escape_uri( Wordlift_Entity_Service::get_instance()
-			                                                                 ->get_uri( $post->ID ) );
-
-			// Get the post URL.
-			// $url = wl_sparql_escape_uri( get_permalink( $post->ID ) );
-
-			// Prepare the DELETE and INSERT commands.
-			$delete_query .= "DELETE { <$s> schema:url ?u . } WHERE  { <$s> schema:url ?u . };\n";
-
-			$insert_query .= Wordlift_Schema_Url_Property_Service::get_instance()
-			                                                     ->get_insert_query( $s, $post->ID );
-
-		}
-
-
-		// Execute the query.
-		rl_execute_sparql_update_query( $delete_query . $insert_query );
-
-		// Advance to the next posts.
-		$offset += $limit;
-
-	}
-
-}
-
-add_filter( 'flush_rewrite_rules_hard', 'wl_flush_rewrite_rules_hard', 10, 1 );
-
 /**
  * Sanitizes an URI path by replacing the non allowed characters with an underscore.
  * @uses       sanitize_title() to manage not ASCII chars
@@ -421,7 +358,8 @@ function wl_sanitize_uri_path( $path, $char = '_' ) {
  */
 function wl_replace_item_id_with_uri( $content ) {
 
-	// wl_write_log( "wl_replace_item_id_with_uri" );
+	$log = Wordlift_Log_Service::get_logger( 'wl_replace_item_id_with_uri' );
+	$log->trace( 'Replacing item IDs with URIs...' );
 
 	// Strip slashes, see https://core.trac.wordpress.org/ticket/21767
 	$content = stripslashes( $content );
@@ -437,7 +375,7 @@ function wl_replace_item_id_with_uri( $content ) {
 
 			// Get the post bound to that item ID (looking both in the 'official' URI and in the 'same-as' .
 			$post = Wordlift_Entity_Service::get_instance()
-			                               ->get_entity_post_by_uri( $item_id );
+										   ->get_entity_post_by_uri( $item_id );
 
 			// If no entity is found, continue to the next one.
 			if ( null === $post ) {
@@ -494,7 +432,7 @@ require_once( 'shortcodes/wordlift_shortcode_faceted_search.php' );
 require_once( 'shortcodes/wordlift_shortcode_navigator.php' );
 
 require_once( 'widgets/wordlift_widget_geo.php' );
-require_once( 'widgets/wordlift_widget_chord.php' );
+require_once( 'widgets/class-wordlift-chord-widget.php' );
 require_once( 'widgets/wordlift_widget_timeline.php' );
 
 require_once( 'wordlift_redlink.php' );

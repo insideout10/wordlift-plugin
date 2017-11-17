@@ -2,9 +2,10 @@
 Author URL: https://wordlift.io
 Plugin URL: https://wordlift.io
 Contributors: wordlift, insideout10, ziodave
-Tags: schema.org, semantic seo, seo, artificial intelligence, ai, linked data, semantic web, content recommendation, related posts, timeline, knowledge graph, interactive map 
-Requires at least: 4.2
+Tags: schema.org, semantic seo, seo, artificial intelligence, ai, linked data, semantic web, content recommendation, related posts, timeline, knowledge graph, interactive map
+Requires at least: 4.4
 Tested up to: 4.8
+Requires PHP: 5.3
 Stable tag: {version}
 License: GPLv2 or later
 
@@ -143,6 +144,31 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.16.0 (????-??-??) =
+* Enhancement: [#627](https://github.com/insideout10/wordlift-plugin/issues/627): Set minimal supported wordpress version to 4.4.
+* Enhancement: [#626](https://github.com/insideout10/wordlift-plugin/issues/626): Cache JSON-LD, introduce an explicit caching layer.
+* Enhancement: [#518](https://github.com/insideout10/wordlift-plugin/issues/518): Add the type when 2 or more entities have the same title.
+* Enhancement: [#514](https://github.com/insideout10/wordlift-plugin/issues/514): Add the occurrences of an entity within an article by default in Content Classification.
+* Enhancement: [#488](https://github.com/insideout10/wordlift-plugin/issues/488): Make Download Data more user-friendly.
+* Fix: [#666](https://github.com/insideout10/wordlift-plugin/issues/666): Chord shortcode uses a non existing post status of "published".
+* Fix: [#531](https://github.com/insideout10/wordlift-plugin/issues/531): When adding the second chord widget the page messes up.
+
+= 3.15.6 (2017-11-15) =
+* Fix: [#701](https://github.com/insideout10/wordlift-plugin/issues/701): Early rewrite rules flushing causes infinite loop.
+* Fix: [#700](https://github.com/insideout10/wordlift-plugin/issues/700): WP live previews don't run when classification box is closed.
+
+= 3.15.5 (2017-11-14) =
+* Fix: [#698](https://github.com/insideout10/wordlift-plugin/issues/698): `flush_rewrite_rules` called at every request.
+
+= 3.15.4 (2017-11-13) =
+* Fix: [#693](https://github.com/insideout10/wordlift-plugin/issues/693): Remove requirement for mbstring.
+* Fix: [#691](https://github.com/insideout10/wordlift-plugin/issues/691): Check WL compatibility with UX builder part of Flatsome themes.
+* Fix: [#689](https://github.com/insideout10/wordlift-plugin/issues/689): Heavy query on image attachments.
+* Fix: [#687](https://github.com/insideout10/wordlift-plugin/issues/687): Test failure with WP 4.8.3.
+* Fix: [#686](https://github.com/insideout10/wordlift-plugin/issues/686): `Wordlift_Listable` flushes the cache at every post.
+* Fix: [#685](https://github.com/insideout10/wordlift-plugin/issues/685): `flush_rewrite_rules_hard` causes a large number of SPARQL queries.
+* Fix: [#683](https://github.com/insideout10/wordlift-plugin/issues/683): Incompatibility with Formidable Forms.
+
 = 3.15.3 (2017-10-20) =
 * Enhancement: [#670](https://github.com/insideout10/wordlift-plugin/issues/670): Allow filtering logging levels.
 * Fix: [#677](https://github.com/insideout10/wordlift-plugin/issues/677): Sometimes authors are not correctly matched with their entities.
@@ -169,6 +195,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Fix: [#644](https://github.com/insideout10/wordlift-plugin/issues/644): Entities not showing in the classification box.
 
 = 3.15.0 (2017-10-05) =
+* Enhancement: [#625](https://github.com/insideout10/wordlift-plugin/issues/625): Add a WordPress filter to allow customers to extend the post types that can be turned into entities.
 * Enhancement: [#608](https://github.com/insideout10/wordlift-plugin/issues/608): Integrate the Autocomplete widget.
 * Enhancement: [#607](https://github.com/insideout10/wordlift-plugin/issues/607): Autocomplete API.
 * Enhancement: [#596](https://github.com/insideout10/wordlift-plugin/issues/596): Allow regular posts/pages to be entities.

@@ -20,8 +20,8 @@ function wl_shortcode_chord_most_referenced_entity_id() {
 	$post_ids = get_posts( array(
 		'numberposts' => 20,
 		'post_type'   => Wordlift_Entity_Service::valid_entity_post_types(),
-		'fields'      => 'ids', //only get post IDs
-		'post_status' => 'published',
+		'fields'      => 'ids', // Only get post IDs.
+		'post_status' => 'publish',
 		'tax_query'   => array(
 			'relation' => 'OR',
 			array(

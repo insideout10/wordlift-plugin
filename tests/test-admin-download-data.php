@@ -29,6 +29,8 @@ class Wordlift_Download_Google_Content_Data_Test extends Wordlift_Ajax_Unit_Test
 	 * {@inheritdoc}
 	 */
 	function setUp() {
+		parent::setUp();
+
 		global $wp_rewrite;
 
 		if ( $wp_rewrite->permalink_structure ) {

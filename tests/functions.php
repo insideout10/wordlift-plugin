@@ -71,7 +71,6 @@ function wl_delete_post( $post_id, $force_delete = false ) {
 	// First delete the post attachments.
 	wl_delete_post_attachments( $post_id );
 
-	// Now delete the post and return the result.
 	return wp_delete_post( $post_id, $force_delete );
 }
 
@@ -139,7 +138,7 @@ function wl_delete_posts( $posts ) {
 	$success = true;
 
 	foreach ( $posts as $post ) {
-		$success &= wl_delete_post( $post->ID, true );
+		$success &= ( false !== wl_delete_post( $post->ID, true ) );
 	}
 
 	return $success;
@@ -248,11 +247,11 @@ function wl_embed_entities( $results, $content ) {
 
 		// Create the new span with the entity reference.
 		$replace = '<span class="textannotation ' . $entity_class . '" ' .
-		           'id="' . $id . '" ' .
-		           'itemid="' . $entity_id . '" ' .
-		           'itemscope="itemscope" ' .
-		           'itemtype="' . $entity_type_uri . '">' .
-		           '<span itemprop="name">' . htmlentities( $text ) . '</span></span>';
+				   'id="' . $id . '" ' .
+				   'itemid="' . $entity_id . '" ' .
+				   'itemscope="itemscope" ' .
+				   'itemtype="' . $entity_type_uri . '">' .
+				   '<span itemprop="name">' . htmlentities( $text ) . '</span></span>';
 		$content = str_replace( $full, $replace, $content );
 
 
@@ -438,8 +437,8 @@ function wl_parse_response( $json ) {
 
 			// Skip Text Annotations that do not have the selection-prefix, -suffix and selected-text.
 			if ( isset( $item->{WL_ENHANCER_NAMESPACE . ':selection-prefix'}->{'@value'} )
-			     && isset( $item->{WL_ENHANCER_NAMESPACE . ':selection-suffix'}->{'@value'} )
-			     && isset( $item->{WL_ENHANCER_NAMESPACE . ':selected-text'}->{'@value'} )
+				 && isset( $item->{WL_ENHANCER_NAMESPACE . ':selection-suffix'}->{'@value'} )
+				 && isset( $item->{WL_ENHANCER_NAMESPACE . ':selected-text'}->{'@value'} )
 			) {
 
 				$text_annotations[ $item->{'@id'} ] = array(
@@ -676,7 +675,7 @@ function rl_count_triples() {
 
 	// Set the SPARQL query.
 	$sparql = 'SELECT (COUNT(DISTINCT ?s) AS ?subjects) (COUNT(DISTINCT ?p) AS ?predicates) (COUNT(DISTINCT ?o) AS ?objects) ' .
-	          'WHERE { ?s ?p ?o }';
+			  'WHERE { ?s ?p ?o }';
 
 	// Send the request.
 	$response = rl_sparql_select( $sparql );
