@@ -17,15 +17,6 @@
 class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 	/**
-	 * A {@link Wordlift_Entity_Type_Service} instance.
-	 *
-	 * @since  3.8.0
-	 * @access private
-	 * @var Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
-	 */
-	private $entity_type_service;
-
-	/**
 	 * A {@link Wordlift_Entity_Service} instance.
 	 *
 	 * @since  3.8.0
@@ -63,7 +54,6 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 
 		$wordlift = new Wordlift_Test();
 
-		$this->entity_type_service             = $wordlift->get_entity_type_service();
 		$this->entity_service                  = $wordlift->get_entity_service();
 		$this->entity_post_to_jsonld_converter = $wordlift->get_entity_post_to_jsonld_converter();
 		$this->postid_to_jsonld_converter      = $wordlift->get_postid_to_jsonld_converter();

@@ -30,15 +30,15 @@ class Wordlift_Activator {
 	 */
 	public static function activate() {
 
-		// Do not let the plugin be activate on WordPress versions before 4.2.
+		// Do not let the plugin be activate on WordPress versions before 4.4.
 		$version = get_bloginfo( 'version' );
-		if ( version_compare( $version, '4.2', '<' ) ) {
-			die( __( 'The WordLift plugin requires WordPress version 4.2 or above.', 'wordlift' ) );
+		if ( version_compare( $version, '4.4', '<' ) ) {
+			die( esc_html__( 'The WordLift plugin requires WordPress version 4.4 or above.', 'wordlift' ) );
 		}
 
 		$configuration_service = Wordlift_Configuration_Service::get_instance();
 
-		// Create a blank application key if there is none
+		// Create a blank application key if there is none.
 		$key = $configuration_service->get_key();
 		if ( empty( $key ) ) {
 			$configuration_service->set_key( '' );

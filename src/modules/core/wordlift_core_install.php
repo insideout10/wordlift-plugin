@@ -265,7 +265,7 @@ function wl_core_upgrade_db_3_14_3_15() {
 
 	if ( version_compare( get_option( 'wl_db_version' ), '3.15', '<=' ) ) {
 		$article = get_term_by( 'slug', 'article', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
-		
+
 		if ( ! $article ) {
 			wp_insert_term(
 				'Article',
@@ -307,6 +307,8 @@ function wl_core_upgrade_db_3_14_3_15() {
 // Check db status on automated plugins updates
 function wl_core_update_db_check() {
 
+	$log = Wordlift_Log_Service::get_logger( 'wl_core_update_db_check' );
+
 	// Ensure the custom type and the taxonomy are registered.
 	Wordlift_Entity_Post_Type_Service::get_instance()->register();
 
@@ -325,6 +327,35 @@ function wl_core_update_db_check() {
 		wl_core_upgrade_db_3_12_3_14();
 		wl_core_upgrade_db_3_14_3_15();
 		update_option( 'wl_db_version', WL_DB_VERSION );
+	}
+
+	// Update to WL install level 1.
+	if ( 1 > intval( get_option( 'wl_install_version' ) ) ) {
+
+		$log->trace( 'Installing version 1...' );
+
+		// Get the configuration service and load the key.
+		$configuration_service = Wordlift_Configuration_Service::get_instance();
+		$key                   = $configuration_service->get_key();
+
+		// If the key is not empty then set the dataset URI while sending
+		// the site URL.
+		if ( ! empty( $key ) ) {
+			$log->info( 'Updating the remote dataset URI...' );
+
+			$configuration_service->get_remote_dataset_uri( $key );
+		}
+
+		// Check if the dataset key has been stored.
+		$dataset_uri = $configuration_service->get_dataset_uri();
+
+		// If the dataset URI is empty, do not set the install version.
+		if ( ! empty( $dataset_uri ) ) {
+			update_option( 'wl_install_version', 1 );
+
+			$log->info( 'Version 1 installed.' );
+		}
+
 	}
 
 }

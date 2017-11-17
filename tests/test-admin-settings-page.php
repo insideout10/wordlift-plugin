@@ -26,22 +26,12 @@ class Wordlift_Admin_Settings_Page_Test extends Wordlift_Unit_Test_Case {
 	private $settings_page;
 
 	/**
-	 * The {@link Wordlift_Entity_Type_Service} instance.
-	 *
-	 * @since  3.11.0
-	 * @access private
-	 * @var \Wordlift_Entity_Type_Service $entity_type_service The {@link Wordlift_Entity_Type_Service} instance.
-	 */
-	private $entity_type_service;
-
-	/**
 	 * @inheritdoc
 	 */
 	function setUp() {
 		parent::setUp();
 
 		$this->settings_page       = $this->get_wordlift_test()->get_settings_page();
-		$this->entity_type_service = $this->get_wordlift_test()->get_entity_type_service();
 
 	}
 

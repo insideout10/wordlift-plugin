@@ -148,17 +148,28 @@ class Wordlift_Sample_Data_Service {
 	private $configuration_service;
 
 	/**
+	 * The {@link Wordlift_User_Service} instance.
+	 *
+	 * @since  3.16.0
+	 * @access private
+	 * @var \Wordlift_User_Service $user_service The {@link Wordlift_User_Service} instance.
+	 */
+	private $user_service;
+
+	/**
 	 * Create a {@link Wordlift_Sample_Data_Service} instance.
 	 *
 	 * @since 3.12.0
 	 *
 	 * @param \Wordlift_Entity_Type_Service   $entity_type_service   The {@link Wordlift_Entity_Type_Service} instance.
 	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
+	 * @param \Wordlift_User_Service          $user_service          The {@link Wordlift_User_Service} instance.
 	 */
-	function __construct( $entity_type_service, $configuration_service ) {
+	function __construct( $entity_type_service, $configuration_service, $user_service ) {
 
 		$this->entity_type_service   = $entity_type_service;
 		$this->configuration_service = $configuration_service;
+		$this->user_service          = $user_service;
 	}
 
 	/**
@@ -181,13 +192,21 @@ class Wordlift_Sample_Data_Service {
 		// Get the dataset URI, used for replacements in the `post_content`.
 		$dataset_uri = $this->configuration_service->get_dataset_uri();
 
+		// Create the author and get its id.
+		$author_id = $this->create_author();
+
 		// Create 4 entities.
 		// Create 4 posts referencing each one entity.
 		// Create 1 post referencing all the entities.
 		foreach ( $this->samples as $sample ) {
 
 			// Get the post data.
-			$post = array_replace_recursive( $sample['post'], array( 'post_content' => str_replace( '{dataset-uri}', $dataset_uri, $sample['post']['post_content'] ) ) );
+			$post = array_replace_recursive( $sample['post'], array(
+				'post_content' => str_replace( '{dataset-uri}', $dataset_uri, $sample['post']['post_content'] ),
+			) );
+
+			// Set the author.
+			$post['post_author'] = $author_id;
 
 			// Insert the post.
 			$post_id = wp_insert_post( $post );
@@ -210,6 +229,30 @@ class Wordlift_Sample_Data_Service {
 	}
 
 	/**
+	 * Create an author to bind to posts.
+	 *
+	 * @since 3.16.0
+	 *
+	 * @return int The {@link WP_User}'s id.
+	 */
+	private function create_author() {
+
+		$user_id   = wp_create_user( 'wl-sample-data', wp_generate_password() );
+		$author_post_id = wp_insert_post( array(
+			'post_type'  => 'entity',
+			'post_title' => 'WordLift Sample Data Person',
+		) );
+		// Add a flag to signal the attachment is sample data and allow easy delete
+		// afterwards.
+		add_post_meta( $author_post_id, '_wl_sample_data', 1, true );
+
+		$this->entity_type_service->set( $author_post_id, 'http://schema.org/Person' );
+		$this->user_service->set_entity( $user_id, $author_post_id );
+
+		return $user_id;
+	}
+
+	/**
 	 * Remove the sample data from this WordPress instance.
 	 *
 	 * @since 3.12.0
@@ -219,6 +262,10 @@ class Wordlift_Sample_Data_Service {
 		$this->delete_by_type( 'post' );
 		$this->delete_by_type( 'entity' );
 		$this->delete_by_type( 'attachment' );
+
+		// Get and delete the user.
+		$user = get_user_by( 'login', 'wl-sample-data' );
+		wp_delete_user( $user->ID );
 
 	}
 

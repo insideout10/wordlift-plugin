@@ -11,22 +11,6 @@ require_once 'functions.php';
 class EntityApiTest extends Wordlift_Unit_Test_Case {
 
 	/**
-	 * Set up the test.
-	 */
-	function setUp() {
-		parent::setUp();
-
-		// We don't need to check the remote Linked Data store.
-		Wordlift_Unit_Test_Case::turn_off_entity_push();;
-
-		// Configure WordPress with the test settings.
-		wl_configure_wordpress_test();
-
-		// Empty the blog.
-		wl_empty_blog();
-	}
-
-	/**
 	 * Test the wl_entity_get_by_title method.
 	 */
 	function testGetByTitle1() {

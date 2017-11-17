@@ -35,15 +35,6 @@ class Wordlift_Admin_Publisher_Element_Test extends Wordlift_Unit_Test_Case {
 	private $entity_service;
 
 	/**
-	 * The {@link Wordlift_Configuration_Service} instance.
-	 *
-	 * @since  3.11.0
-	 * @access private
-	 * @var \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
-	 */
-	private $configuration_service;
-
-	/**
 	 * @inheritdoc
 	 */
 	function setUp() {
@@ -51,7 +42,6 @@ class Wordlift_Admin_Publisher_Element_Test extends Wordlift_Unit_Test_Case {
 
 		$this->publisher_element     = $this->get_wordlift_test()->get_publisher_element();
 		$this->entity_service        = $this->get_wordlift_test()->get_entity_service();
-		$this->configuration_service = $this->get_wordlift_test()->get_configuration_service();
 
 	}
 

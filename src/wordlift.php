@@ -15,7 +15,7 @@
  * Plugin Name:       WordLift
  * Plugin URI:        https://wordlift.io
  * Description:       WordLift brings the power of AI to organize content, attract new readers and get their attention. To activate the plugin ​<a href="https://wordlift.io/">visit our website</a>.
- * Version:           3.16.0-dev
+ * Version:           3.17.0-dev
  * Author:            WordLift, Insideout10
  * Author URI:        https://wordlift.io
  * License:           GPL-2.0+
@@ -304,80 +304,6 @@ function wl_set_source_url( $post_id, $source_url ) {
 	add_post_meta( $post_id, 'wl_source_url', $source_url );
 }
 
-
-///**
-// * This function is called by the *flush_rewrite_rules_hard* hook. It recalculates the URI for all the posts.
-// *
-// * @since 3.0.0
-// *
-// * @uses  rl_sparql_prefixes() to get the SPARQL prefixes.
-// * @uses  wl_get_entity_uri() to get an entity URI.
-// * @uses  rl_execute_sparql_update_query() to post the DELETE and INSERT queries.
-// *
-// * @param bool $hard True if the rewrite involves configuration updates in Apache/IIS.
-// */
-//function wl_flush_rewrite_rules_hard( $hard ) {
-//
-//	// If WL is not yet configured, we cannot perform any update, so we exit.
-//	if ( '' === wl_configuration_get_key() ) {
-//		return;
-//	}
-//
-//	// Set the initial offset and limit each call to 100 posts to avoid memory errors.
-//	$offset = 0;
-//	$limit  = 100;
-//
-//	// Get more posts if the number of returned posts matches the limit.
-//	while ( $limit === ( $posts = get_posts( array(
-//			'offset'      => $offset,
-//			'numberposts' => $limit,
-//			'orderby'     => 'ID',
-//			'post_type'   => 'any',
-//			'post_status' => 'publish',
-//		) ) ) ) {
-//
-//		// Holds the delete part of the query.
-//		$delete_query = rl_sparql_prefixes();
-//
-//		// Holds the insert part of the query.
-//		$insert_query = '';
-//
-//		// Cycle in each post to build the query.
-//		foreach ( $posts as $post ) {
-//
-//			// Ignore revisions.
-//			if ( wp_is_post_revision( $post->ID ) ) {
-//				continue;
-//			}
-//
-//			// Get the entity URI.
-//			$s = Wordlift_Sparql_Service::escape_uri( Wordlift_Entity_Service::get_instance()
-//																			 ->get_uri( $post->ID ) );
-//
-//			// Get the post URL.
-//			// $url = wl_sparql_escape_uri( get_permalink( $post->ID ) );
-//
-//			// Prepare the DELETE and INSERT commands.
-//			$delete_query .= "DELETE { <$s> schema:url ?u . } WHERE  { <$s> schema:url ?u . };\n";
-//
-//			$insert_query .= Wordlift_Schema_Url_Property_Service::get_instance()
-//																 ->get_insert_query( $s, $post->ID );
-//
-//		}
-//
-//
-//		// Execute the query.
-//		rl_execute_sparql_update_query( $delete_query . $insert_query );
-//
-//		// Advance to the next posts.
-//		$offset += $limit;
-//
-//	}
-//
-//}
-//
-//add_filter( 'flush_rewrite_rules_hard', 'wl_flush_rewrite_rules_hard', 10, 1 );
-
 /**
  * Sanitizes an URI path by replacing the non allowed characters with an underscore.
  * @uses       sanitize_title() to manage not ASCII chars
@@ -506,7 +432,7 @@ require_once( 'shortcodes/wordlift_shortcode_faceted_search.php' );
 require_once( 'shortcodes/wordlift_shortcode_navigator.php' );
 
 require_once( 'widgets/wordlift_widget_geo.php' );
-require_once( 'widgets/wordlift_widget_chord.php' );
+require_once( 'widgets/class-wordlift-chord-widget.php' );
 require_once( 'widgets/wordlift_widget_timeline.php' );
 
 require_once( 'wordlift_redlink.php' );
