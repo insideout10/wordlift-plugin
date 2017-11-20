@@ -2,7 +2,7 @@
 /**
  * Shortcodes: Glossary Shortcode.
  *
- * `wl_glossary` implementation.
+ * `wl_vocabulary` implementation.
  *
  * @since      3.16.0
  * @package    Wordlift
@@ -23,7 +23,7 @@ class Wordlift_Glossary_Shortcode extends Wordlift_Shortcode {
 	 *
 	 * @since  3.17.0
 	 */
-	const SHORTCODE = 'wl_glossary';
+	const SHORTCODE = 'wl_vocabulary';
 
 	/**
 	 * The {@link Wordlift_Configuration_Service} instance.
@@ -73,27 +73,6 @@ class Wordlift_Glossary_Shortcode extends Wordlift_Shortcode {
 	}
 
 	/**
-	 * Display format for a letter.
-	 *
-	 * A utility function returning the string representation of a letter
-	 * as required for output - first letter uppercase and the rest (if there are)
-	 * lower case.
-	 *
-	 * @since 3.16.0
-	 *
-	 * @param string $letter The letter, assumed to be upper case.
-	 *
-	 * @return string The letter as it should be displayed.
-	 */
-	private function display_format( $letter ) {
-		if ( 1 === mb_strlen( $letter ) ) {
-			return $letter;
-		}
-
-		return mb_substr( $letter, 0, 1 ) . mb_convert_case( mb_substr( $letter, 1 ), MB_CASE_LOWER );
-	}
-
-	/**
 	 * Render the shortcode.
 	 *
 	 * @since 3.16.0
@@ -112,100 +91,105 @@ class Wordlift_Glossary_Shortcode extends Wordlift_Shortcode {
 			return '';
 		}
 
+		wp_enqueue_style( 'wl_vocabulary_shortcode_css', dirname( plugin_dir_url( __FILE__ ) ) . '/public/css/wordlift-glossary-shortcode.css' );
+
 		// Extract attributes and set default values.
 		$atts = shortcode_atts( array(
 			// The entity type, such as `person`, `organization`, ...
-			'type'  => 'all',
+			'type'    => 'all',
 			// Limit the number of posts to 100 by default. Use -1 to remove the limit.
-			'limit' => 100,
+			'limit'   => 100,
+			// Sort by title.
+			'orderby' => 'title',
 		), $atts );
 
 		// Get the posts. Note that if a `type` is specified before, then the
 		// `tax_query` from the `add_criterias` call isn't added.
 		$posts = $this->get_posts( $atts );
 
-		// Get the alphabet and add the `#` for titles not matching any letter.
+		// Get the alphabet.
 		$language_code = $this->configuration_service->get_language_code();
-		$letters       = Wordlift_Alphabet_Service::get( $language_code ) + array( '#' );
-		$flip_letters  = array_flip( $letters ); // Small optimization for letter existence detection.
+		$alphabet      = Wordlift_Alphabet_Service::get( $language_code );
 
-		$collection = array();
-
-		foreach ( $posts as $p ) {
-			$title = remove_accents( get_the_title( $p->ID ) );
-
-			// Need to handle letters which consist of 3 and 2 characters.
-			$current_letter = mb_convert_case( mb_substr( $title, 0, 3 ), MB_CASE_UPPER );
-			if ( ! isset( $flip_letters[ $current_letter ] ) ) {
-				$current_letter = mb_convert_case( mb_substr( $title, 0, 2 ), MB_CASE_UPPER );
-				if ( ! isset( $flip_letters[ $current_letter ] ) ) {
-					$current_letter = mb_convert_case( mb_substr( $title, 0, 1 ), MB_CASE_UPPER );
-				}
-			}
-
-			// No letter matched? use the # "letter".
-			if ( ! isset( $flip_letters[ $current_letter ] ) ) {
-				$current_letter = '#';
-			}
-
-			if ( ! isset( $collection[ $current_letter ] ) ) {
-				$collection[ $current_letter ] = array();
-			}
-			$collection[ $current_letter ][ $title ] = $p->ID;
+		// Add posts to the alphabet.
+		foreach ( $posts as $post ) {
+			$this->add_to_alphabet( $alphabet, $post->ID );
 		}
 
 		// Generate the header.
-		$header = '';
-		foreach ( $letters as $letter ) {
-			$display = $this->display_format( $letter );
-			if ( ! isset( $collection[ $letter ] ) ) {
-				$header .= '<span class="wl-glossary-disabled">' . esc_html( $display ) . '</span>';
-			} else {
-				$header .= '<a href="#wl_glossary_' . esc_attr( $letter ) .
-						   '">' . esc_html( $display ) . '</a>';
-			}
-		}
+		$header = array_reduce( array_keys( $alphabet ), function ( $carry, $item ) use ( $alphabet ) {
+			$template = ( 0 === count( $alphabet[ $item ] )
+				? '<span class="wl-vocabulary-widget-disabled">%s</span>'
+				: '<a href="#wl-vocabulary-widget-%2$s">%1$s</a>' );
+
+			return $carry . sprintf( $template, esc_html( $item ), esc_attr( $item ) );
+		}, '' );
 
 		// Generate the sections.
-		$sections = '';
-		foreach ( $letters as $letter ) {
-
-			if ( ! isset( $collection[ $letter ] ) ) {
-				continue;
-			}
-
-			$v = $collection[ $letter ];
-
-			// Sort case insensitive by title.
-			ksort( $v, SORT_STRING | SORT_FLAG_CASE );
-
-			// Add letter section.
-			$sections .= '<div class="wl-glossary-letter-block" id="wl_glossary_' . esc_attr( $letter ) . '">';
-			$sections .= '<aside class="wl-glossary-left-column">' . esc_html( $this->display_format( $letter ) ) . '</aside>';
-			$sections .= '<div class="wl-glossary-right-column"><ul class="wl-glossary-items-list">';
-
-			// Add links to the posts.
-			foreach ( $v as $title => $post_id ) {
-				$sections .= '<li><a href="' . esc_url( get_permalink( $post_id ) ) . '">' .
-							 esc_html( get_the_title( $post_id ) ) . '</a></li>';
-			}
-			$sections .= '</ul></div></div>'; // Close list, right div and letter div.
-		}
-
-		wp_enqueue_style( 'wl_glossary_shortcode_css', dirname( plugin_dir_url( __FILE__ ) ) . '/public/css/wordlift-glossary-shortcode.css' );
+		$that     = $this;
+		$sections = array_reduce( array_keys( $alphabet ), function ( $carry, $item ) use ( $alphabet, $that ) {
+			return $carry . $that->get_section( $item, $alphabet[ $item ] );
+		}, '' );
 
 		// Return HTML template.
-		return <<<EOF
-<div class="wl-glossary">
-	<nav class="wl-glossary-alphabet-nav">
+		return "
+<div class='wl-vocabulary'>
+	<nav class='wl-vocabulary-alphabet-nav'>
 		$header
 	</nav>
-	<div class="wl-glossary-grid">
+	<div class='wl-vocabulary-grid'>
 		$sections
 	</div>
 </div>
-EOF;
+		";
 
+	}
+
+	/**
+	 * Generate the html code for the section.
+	 *
+	 * @since 3.17.0
+	 *
+	 * @param string $letter The section's letter.
+	 * @param array  $posts  An array of `$post_id => $post_title` associated with
+	 *                       the section.
+	 *
+	 * @return string The section html code (or an empty string if the section has
+	 *                no posts).
+	 */
+	private function get_section( $letter, $posts ) {
+
+		// Return an empty string if there are no posts.
+		if ( 0 === count( $posts ) ) {
+			return '';
+		}
+
+		return sprintf( '
+			<div class="wl-vocabulary-letter-block" id="wl-vocabulary-widget-%s">
+				<aside class="wl-vocabulary-left-column">%s</aside>
+				<div class="wl-vocabulary-right-column">
+					<ul class="wl-vocabulary-items-list">
+						%s
+					</ul>
+				</div>
+			</div>
+		', esc_attr( $letter ), esc_html( $letter ), $this->format_posts_as_list( $posts ) );
+	}
+
+	/**
+	 * Format an array post `$post_id => $post_title` as a list.
+	 *
+	 * @since 3.17.0
+	 *
+	 * @param array $posts An array of `$post_id => $post_title` key, value pairs.
+	 *
+	 * @return string A list.
+	 */
+	private function format_posts_as_list( $posts ) {
+
+		return array_reduce( array_keys( $posts ), function ( $carry, $item ) use ( $posts ) {
+			return $carry . sprintf( '<li><a href="%s">%s</a></li>', esc_attr( get_permalink( $item ) ), esc_html( $posts[ $item ] ) );
+		}, '' );
 	}
 
 	/**
@@ -241,6 +225,54 @@ EOF;
 		// `tax_query` from the `add_criterias` call isn't added.
 		return get_posts( Wordlift_Entity_Service::add_criterias( $args ) );
 
+	}
+
+	/**
+	 * Populate the alphabet with posts.
+	 *
+	 * @since 3.17.0
+	 *
+	 * @param array $alphabet An array of letters.
+	 * @param int   $post_id  The {@link WP_Post} id.
+	 */
+	private function add_to_alphabet( &$alphabet, $post_id ) {
+
+		// Get the title without accents.
+		$title = remove_accents( get_the_title( $post_id ) );
+
+		// Get the initial letter.
+		$letter = $this->get_first_letter_in_alphabet_or_hash( $alphabet, $title );
+
+		// Add the post.
+		$alphabet[ $letter ][ $post_id ] = $title;
+
+	}
+
+	/**
+	 * Find the first letter in the alphabet.
+	 *
+	 * In some alphabets a letter is a compound of letters, therefore this function
+	 * will look for groups of 2 or 3 letters in the alphabet before looking for a
+	 * single letter. In case the letter is not found a # (hash) key is returned.
+	 *
+	 * @since 3.17.0
+	 *
+	 * @param array  $alphabet An array of alphabet letters.
+	 * @param string $title    The title to match.
+	 *
+	 * @return string The initial letter or a `#` key.
+	 */
+	private function get_first_letter_in_alphabet_or_hash( $alphabet, $title ) {
+
+		// Need to handle letters which consist of 3 and 2 characters.
+		for ( $i = 3; $i > 0; $i -- ) {
+			$letter = mb_convert_case( mb_substr( $title, 0, $i ), MB_CASE_UPPER );
+			if ( isset( $alphabet[ $letter ] ) ) {
+				return $letter;
+			}
+		}
+
+		return '#';
 	}
 
 }

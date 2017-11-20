@@ -1,38 +1,38 @@
-.wl-glossary {
+.wl-vocabulary {
   overflow: hidden;
 }
 
-.wl-glossary-letter-block {
+.wl-vocabulary-letter-block {
   overflow: hidden;
 }
 
-.wl-glossary-letter-block aside {
+.wl-vocabulary-letter-block aside {
   font-weight: bold;
   font-size: 24px;
   color: #007aff;
   padding-left: 20px;
 }
 
-.wl-glossary-selected-letter {
+.wl-vocabulary-selected-letter {
   font-size: 4em;
   margin: 0.67em 0;
   display: block;
   font-weight: bold;
 }
 
-.wl-glossary-alphabet-nav {
+.wl-vocabulary-alphabet-nav {
   padding: 20px 0;
   text-align: center;
   z-index: 100;
   border-bottom: 4px solid #007aff;
 }
 
-.wl-glossary-alphabet-nav .wl-active {
+.wl-vocabulary-alphabet-nav .wl-active {
   background-color: #007aff;
   color: #fff;
 }
 
-.wl-glossary-alphabet-nav .wl-glossary-disabled {
+.wl-vocabulary-alphabet-nav .wl-vocabulary-widget-disabled {
   color: #e6e6e6;
   display: inline-block;
   width: 25px;
@@ -42,7 +42,7 @@
   font-size: 1em;
   text-decoration: none;
 }
-.wl-glossary-alphabet-nav a {
+.wl-vocabulary-alphabet-nav a {
   display: inline-block;
   padding-top: 2px;
   width: 25px;
@@ -56,35 +56,35 @@
   text-decoration: none !important;
   transition: all 0.2s ease-in-out;
 }
-.wl-glossary-alphabet-nav a:hover {
+.wl-vocabulary-alphabet-nav a:hover {
   background-color: #007aff;
   color: #fff;
 }
-.wl-glossary-alphabet-nav a span {
+.wl-vocabulary-alphabet-nav a span {
   display: block;
   margin-top: 1px;
 }
-.wl-glossary-alphabet-nav a:last-child {
+.wl-vocabulary-alphabet-nav a:last-child {
   margin-right: 0;
 }
 
-.wl-glossary-items-list {
+.wl-vocabulary-items-list {
   list-style: none;
   margin-bottom: 40px;
   padding-left: 20px;
 }
 
-.wl-glossary-items-list a {
+.wl-vocabulary-items-list a {
   box-shadow: none !important;
   text-decoration: underline !important;
   transition: all 0.2s ease-in-out;
 }
 
-.wl-glossary-items-list a:hover {
+.wl-vocabulary-items-list a:hover {
   color: #007aff;
 }
 
-.wl-glossary-grid {
+.wl-vocabulary-grid {
   overflow: hidden;
   *zoom: 1;
   margin-top: 30px;
@@ -94,7 +94,7 @@
   display: block;
 }
 
-.wl-glossary-left-column {
+.wl-vocabulary-left-column {
   width: 22.77228%;
   float: left;
   margin-right: 2.9703%;
@@ -102,7 +102,7 @@
   clear: both;
 }
 
-.wl-glossary-right-column {
+.wl-vocabulary-right-column {
   width: 74.25743%;
   float: right;
   margin-right: 0;

@@ -58,7 +58,7 @@
       },
 
       glossaryClick: function() {
-        const glossary_shortcode_text = '[wl_glossary]';
+        const glossary_shortcode_text = '[wl_vocabulary]';
         top.tinymce.activeEditor.execCommand(
           'mceInsertContent',
           false,
