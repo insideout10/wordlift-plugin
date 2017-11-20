@@ -96,7 +96,13 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 	}
 
 	/**
-	 * @inheritdoc
+	 * Get the cached response for the specified `id`.
+	 *
+	 * @since 3.16.0
+	 *
+	 * @param int $id The cache `id`.
+	 *
+	 * @return mixed|false The cached contents or false if the cache isn't found.
 	 */
 	function get_cache( $id ) {
 
@@ -118,7 +124,12 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 	}
 
 	/**
-	 * @inheritdoc
+	 * Set the cache contents for the specified `id`.
+	 *
+	 * @since 3.16.0
+	 *
+	 * @param int   $id       The cache id.
+	 * @param mixed $contents The cache contents.
 	 */
 	function set_cache( $id, $contents ) {
 
@@ -131,7 +142,11 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 	}
 
 	/**
-	 * @inheritdoc
+	 * Delete the cache for the specified `id`.
+	 *
+	 * @since 3.16.0
+	 *
+	 * @param int $id The cache `id`.
 	 */
 	function delete_cache( $id ) {
 
@@ -144,7 +159,9 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 	}
 
 	/**
-	 * @inheritdoc
+	 * Flush the whole cache.
+	 *
+	 * @since 3.16.0
 	 */
 	function flush() {
 
@@ -153,7 +170,7 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 			return;
 		}
 
-		$this->log->trace( "Flushing cache contents..." );
+		$this->log->trace( 'Flushing cache contents...' );
 
 		$handle = @opendir( $this->cache_dir );
 
@@ -167,7 +184,7 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 
 		// Loop into the directory to delete files.
 		while ( false !== ( $entry = readdir( $handle ) ) ) {
-			if ( $this->file_extension === substr( $entry, - $file_extension_length ) ) {
+			if ( substr( $entry, - $file_extension_length ) === $this->file_extension ) {
 				$this->log->trace( "Deleting file {$this->cache_dir}{$entry}..." );
 				wp_delete_file( $this->cache_dir . $entry );
 			}
