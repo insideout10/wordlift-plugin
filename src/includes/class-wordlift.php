@@ -1020,6 +1020,7 @@ class Wordlift {
 		/**
 		 * The entity glossary shortcode.
 		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-alphabet-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-glossary-shortcode.php';
 
 		/**

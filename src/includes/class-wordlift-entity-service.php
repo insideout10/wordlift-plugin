@@ -505,42 +505,61 @@ class Wordlift_Entity_Service {
 	 */
 	public static function add_criterias( $args ) {
 
+		// Build an optimal tax-query.
+		$tax_query = array(
+			'relation' => 'AND',
+			array(
+				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				'operator' => 'EXISTS',
+			),
+			array(
+				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				'field'    => 'slug',
+				'terms'    => 'article',
+				'operator' => 'NOT IN',
+			),
+		);
+
 		return $args + array(
 				'post_type' => Wordlift_Entity_Service::valid_entity_post_types(),
-				'tax_query' => array(
-					array(
-						'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
-						'terms'    => self::get_entity_terms(),
-					),
-				),
+				// Since 3.17.0: should this be faster?
+				'tax_query' => $tax_query,
+				//				'tax_query' => array(
+				//					array(
+				//						'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				//						'terms'    => self::get_entity_terms(),
+				//					),
+				//				),
 			);
 	}
 
-	/**
-	 * Get the entity terms IDs which represent an entity.
-	 *
-	 * @since 3.15.0
-	 *
-	 * @return array An array of terms' ids.
-	 */
-	public static function get_entity_terms() {
-
-		$terms = get_terms( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array(
-			'hide_empty' => false,
-			// Because of #334 (and the AAM plugin) we changed fields from 'id=>slug' to 'all'.
-			// An issue has been opened with the AAM plugin author as well.
-			//
-			// see https://github.com/insideout10/wordlift-plugin/issues/334
-			// see https://wordpress.org/support/topic/idslug-not-working-anymore?replies=1#post-8806863
-			'fields'     => 'all',
-		) );
-
-		return array_map( function ( $term ) {
-			return $term->term_id;
-		}, array_filter( $terms, function ( $term ) {
-			return 'article' !== $term->slug;
-		} ) );
-	}
+//	/**
+//	 * Get the entity terms IDs which represent an entity.
+//	 *
+//	 * @since 3.17.0 deprecated.
+//	 * @since 3.15.0
+//	 *
+//	 * @deprecated
+//	 * @return array An array of terms' ids.
+//	 */
+//	public static function get_entity_terms() {
+//
+//		$terms = get_terms( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array(
+//			'hide_empty' => false,
+//			// Because of #334 (and the AAM plugin) we changed fields from 'id=>slug' to 'all'.
+//			// An issue has been opened with the AAM plugin author as well.
+//			//
+//			// see https://github.com/insideout10/wordlift-plugin/issues/334
+//			// see https://wordpress.org/support/topic/idslug-not-working-anymore?replies=1#post-8806863
+//			'fields'     => 'all',
+//		) );
+//
+//		return array_map( function ( $term ) {
+//			return $term->term_id;
+//		}, array_filter( $terms, function ( $term ) {
+//			return 'article' !== $term->slug;
+//		} ) );
+//	}
 
 	/**
 	 * Create a new entity.

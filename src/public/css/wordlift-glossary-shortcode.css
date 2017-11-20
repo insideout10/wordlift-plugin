@@ -1,24 +1,16 @@
-.wl_glossary_header a {
-	display:block;
-	float:left;
-	margin-right:10px;
-}
-
 .wl-glossary {
   overflow: hidden;
-  *zoom: 1;
 }
 
 .wl-glossary-letter-block {
   overflow: hidden;
-  *zoom: 1;
 }
 
 .wl-glossary-letter-block aside {
-	font-weight: bold;
-	font-size: 24px;
-	color: #007aff;
-	padding-left: 20px;
+  font-weight: bold;
+  font-size: 24px;
+  color: #007aff;
+  padding-left: 20px;
 }
 
 .wl-glossary-selected-letter {
@@ -62,7 +54,7 @@
   color: #999999;
   box-shadow: none !important;
   text-decoration: none !important;
-  transition: all .2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .wl-glossary-alphabet-nav a:hover {
   background-color: #007aff;
@@ -85,11 +77,11 @@
 .wl-glossary-items-list a {
   box-shadow: none !important;
   text-decoration: underline !important;
-  transition: all .2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 
 .wl-glossary-items-list a:hover {
-	color: #007aff;
+  color: #007aff;
 }
 
 .wl-glossary-grid {
@@ -103,17 +95,16 @@
 }
 
 .wl-glossary-left-column {
-    width: 22.77228%;
-    float: left;
-    margin-right: 2.9703%;
-    display: inline;
-    clear: both;
-  }
+  width: 22.77228%;
+  float: left;
+  margin-right: 2.9703%;
+  display: inline;
+  clear: both;
+}
 
 .wl-glossary-right-column {
-    width: 74.25743%;
-    float: right;
-    margin-right: 0;
-    *margin-left: -1.5em;
-    display: inline;
-  }
+  width: 74.25743%;
+  float: right;
+  margin-right: 0;
+  display: inline;
+}
