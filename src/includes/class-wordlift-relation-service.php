@@ -131,7 +131,6 @@ class Wordlift_Relation_Service {
 			. self::and_predicate( $predicate )
 			. self::limit( $limit );
 
-
 		return '*' === $actual_fields ? $wpdb->get_results( $sql ) : $wpdb->get_col( $sql );
 	}
 

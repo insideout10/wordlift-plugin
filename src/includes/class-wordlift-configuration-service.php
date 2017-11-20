@@ -319,7 +319,7 @@ class Wordlift_Configuration_Service {
 		$new_key = isset( $new_value['key'] ) ? $new_value['key'] : '';
 
 		// If the key hasn't changed, don't do anything.
-		// WARN The 'update_option' hook is fired only if the new and old value are not equal
+		// WARN The 'update_option' hook is fired only if the new and old value are not equal.
 		if ( $old_key === $new_key ) {
 			return;
 		}
@@ -329,7 +329,7 @@ class Wordlift_Configuration_Service {
 			$this->set_dataset_uri( '' );
 		}
 
-		// make the request to the remote server
+		// make the request to the remote server.
 		$this->get_remote_dataset_uri( $new_key );
 	}
 
@@ -342,19 +342,20 @@ class Wordlift_Configuration_Service {
 	 * @since 3.17.0 send the site URL and get the dataset URI.
 	 * @since 3.12.0
 	 *
-	 * @param string $key The key to be used
-	 *
+	 * @param string $key The key to be used.
 	 */
 	public function get_remote_dataset_uri( $key ) {
 
-		$this->log->trace( "Getting the remote dataset URI..." );
+		$this->log->trace( 'Getting the remote dataset URI...' );
 
-		//
+		// Build the URL.
 		$url = $this->get_accounts()
-			   . "?key=" . urlencode( $key )
-			   . "&url=" . urlencode( site_url() );
+			   . '?key=' . rawurlencode( $key )
+			   . '&url=' . rawurlencode( site_url() );
 
-		$args     = wp_parse_args( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array( 'method' => 'PUT' ) );
+		$args     = wp_parse_args( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
+			'method' => 'PUT',
+		) );
 		$response = wp_remote_request( $url, $args );
 
 		// Request the dataset URI.
@@ -388,7 +389,6 @@ class Wordlift_Configuration_Service {
 	 * @param mixed $old_value The old option value.
 	 *
 	 * @return mixed The same value in the $value parameter
-	 *
 	 */
 	function maybe_update_dataset_uri( $value, $old_value ) {
 
@@ -402,7 +402,7 @@ class Wordlift_Configuration_Service {
 
 		if ( ! empty( $new_key ) && $new_key === $old_key && empty( $dataset_uri ) ) {
 
-			// make the request to the remote server to try to get the dataset uri
+			// make the request to the remote server to try to get the dataset uri.
 			$this->get_remote_dataset_uri( $new_key );
 		}
 
@@ -432,7 +432,7 @@ class Wordlift_Configuration_Service {
 	 */
 	public function get_accounts() {
 
-		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "accounts";
+		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . 'accounts';
 	}
 
 	/**
