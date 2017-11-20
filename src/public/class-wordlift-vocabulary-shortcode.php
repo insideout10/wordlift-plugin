@@ -16,7 +16,7 @@
  * @package    Wordlift
  * @subpackage Wordlift/includes
  */
-class Wordlift_Glossary_Shortcode extends Wordlift_Shortcode {
+class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 
 	/**
 	 * The shortcode.
@@ -91,16 +91,16 @@ class Wordlift_Glossary_Shortcode extends Wordlift_Shortcode {
 			return '';
 		}
 
-		wp_enqueue_style( 'wl_vocabulary_shortcode_css', dirname( plugin_dir_url( __FILE__ ) ) . '/public/css/wordlift-glossary-shortcode.css' );
+		wp_enqueue_style( 'wl-vocabulary-shortcode', dirname( plugin_dir_url( __FILE__ ) ) . '/public/css/wordlift-vocabulary-shortcode.css' );
 
 		// Extract attributes and set default values.
 		$atts = shortcode_atts( array(
 			// The entity type, such as `person`, `organization`, ...
-			'type'    => 'all',
+			'type'         => 'all',
 			// Limit the number of posts to 100 by default. Use -1 to remove the limit.
-			'limit'   => 100,
+			'limit'        => 100,
 			// Sort by title.
-			'orderby' => 'title',
+			'orderby'      => 'title',
 		), $atts );
 
 		// Get the posts. Note that if a `type` is specified before, then the
@@ -208,6 +208,8 @@ class Wordlift_Glossary_Shortcode extends Wordlift_Shortcode {
 			'numberposts'            => intval( $atts['limit'] ),
 			'update_post_meta_cache' => false,
 			'update_post_term_cache' => false,
+			// Exclude the publisher.
+			'post__not_in' => array( $this->configuration_service->get_publisher_id() ),
 		);
 
 		// Limit the based entity type if needed.
