@@ -122,12 +122,21 @@ class Wordlift_Content_Filter_Service {
 		// Preload the `link by default` setting.
 		$this->is_link_by_default = $this->configuration_service->is_link_by_default();
 
+		// Preload URIs.
+		$matches = array();
+		preg_match_all( self::PATTERN, $content, $matches );
+		$this->entity_service->preload_uris( $matches[3] );
+
 		// Replace each match of the entity tag with the entity link. If an error
 		// occurs fail silently returning the original content.
-		return preg_replace_callback( self::PATTERN, array(
+		$result = preg_replace_callback( self::PATTERN, array(
 			$this,
 			'link',
 		), $content ) ?: $content;
+
+		$this->entity_service->reset_uris();
+
+		return $result;
 	}
 
 	/**

@@ -144,6 +144,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.16.1 (2017-11-21) =
+* Fix: [#707](https://github.com/insideout10/wordlift-plugin/issues/707): Performance degrades in combination with Yoast.
+
 = 3.16.0 (2017-11-16) =
 * Enhancement: [#627](https://github.com/insideout10/wordlift-plugin/issues/627): Set minimal supported wordpress version to 4.4.
 * Enhancement: [#626](https://github.com/insideout10/wordlift-plugin/issues/626): Cache JSON-LD, introduce an explicit caching layer.
