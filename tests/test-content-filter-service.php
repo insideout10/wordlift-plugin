@@ -191,7 +191,7 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 
 		// Initialize the dummy post
 		$this->dummy_post_id = $this->factory->post->create( array( 'post_title' => 'Matt Mullenweg' ) );
-		$post_id = $this->dummy_post_id;
+		$post_id             = $this->dummy_post_id;
 
 		// No synonym, label same as post title.
 		$this->synonym_labels = array();
@@ -352,6 +352,30 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 
 		// Check that the expected content matches the function output.
 		$this->assertEquals( $expected, $this->content_filter_service->the_content( $content ) );
+
+	}
+
+	/**
+	 * Override the {@link Wordlift_Entity_Service} method.
+	 *
+	 * @since 3.17.0
+	 *
+	 * @param array $uris An array of URIs.
+	 */
+	public function preload_uris( $uris ) {
+
+		$this->entity_service->preload_uris( $uris );
+
+	}
+
+	/**
+	 * Reset the URIs.
+	 *
+	 * @since 3.17.0
+	 */
+	public function reset_uris() {
+
+		$this->entity_service->reset_uris();
 
 	}
 
