@@ -267,7 +267,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	 */
 	private function add_http_header( $post_id, $cache ) {
 
-		if ( ! wp_doing_ajax() ) {
+		if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX || headers_sent() ) {
 			return;
 		}
 
