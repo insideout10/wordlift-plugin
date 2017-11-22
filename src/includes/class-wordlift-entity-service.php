@@ -315,7 +315,7 @@ class Wordlift_Entity_Service {
 	 *
 	 * @return array An array of URIs.
 	 */
-	private function get_uris( $post_id ) {
+	public function get_uris( $post_id ) {
 
 		return get_post_meta( $post_id, WL_ENTITY_URL_META_NAME )
 			   + get_post_meta( $post_id, Wordlift_Schema_Service::FIELD_SAME_AS );
