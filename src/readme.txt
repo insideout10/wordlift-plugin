@@ -144,6 +144,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.16.2 (2017-11-23) =
+* Fix: [#709](https://github.com/insideout10/wordlift-plugin/issues/709): Missing links on front-end.
+
 = 3.16.1 (2017-11-21) =
 * Fix: [#707](https://github.com/insideout10/wordlift-plugin/issues/707): Performance degrades in combination with Yoast.
 
