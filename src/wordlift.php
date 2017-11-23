@@ -164,6 +164,11 @@ function wl_enqueue_scripts() {
 
 add_action( 'wp_enqueue_scripts', 'wl_enqueue_scripts' );
 
+add_action( 'rest_api_init', function () {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wordlift-rest-posts-controller.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wordlift-rest-terms-controller.php';
+});
+
 /**
  * Hooked to *wp_kses_allowed_html* filter, adds microdata attributes.
  *
