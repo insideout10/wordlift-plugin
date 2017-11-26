@@ -243,6 +243,13 @@ class Wordlift_Entity_Service {
 	 */
 	public function preload_uris( $uris ) {
 
+		// Bail out if there are no URIs.
+		if ( 0 === count( $uris ) ) {
+			return;
+		}
+
+		$this->log->trace( 'Preloading ' . count( $uris ) . ' URI(s)...' );
+
 		$that          = $this;
 		$external_uris = array_filter( $uris, function ( $item ) use ( $that ) {
 			return ! $that->is_internal_uri( $item );
@@ -251,6 +258,7 @@ class Wordlift_Entity_Service {
 		$query_args = array(
 			// See https://github.com/insideout10/wordlift-plugin/issues/654.
 			'ignore_sticky_posts' => 1,
+			'cache_results'       => false,
 			'numberposts'         => - 1,
 			'post_status'         => 'any',
 			'post_type'           => Wordlift_Entity_Service::valid_entity_post_types(),

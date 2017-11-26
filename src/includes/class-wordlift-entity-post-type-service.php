@@ -35,6 +35,15 @@ class Wordlift_Entity_Post_Type_Service {
 	private $slug;
 
 	/**
+	 * A {@link Wordlift_Log_Service} instance.
+	 *
+	 * @since  3.16.3
+	 * @access private
+	 * @var \Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
+	 */
+	private $log;
+
+	/**
 	 * A singleton instance of the entity type service.
 	 *
 	 * @since  3.6.0
@@ -52,6 +61,8 @@ class Wordlift_Entity_Post_Type_Service {
 	 * @param string $slug      The entity type slug, if the slug is empty, the default slug will be used.
 	 */
 	public function __construct( $post_type, $slug ) {
+
+		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
 		$this->post_type = $post_type;
 
@@ -107,6 +118,8 @@ class Wordlift_Entity_Post_Type_Service {
 	 */
 	public function register() {
 
+		$this->log->debug( "Registering post type $this->post_type..." );
+
 		$labels = array(
 			'name'               => _x( 'Vocabulary', 'post type general name', 'wordlift' ),
 			'singular_name'      => _x( 'Entity', 'post type singular name', 'wordlift' ),
@@ -124,15 +137,15 @@ class Wordlift_Entity_Post_Type_Service {
 		);
 
 		$args = array(
-			'labels'        => $labels,
-			'description'   => 'Holds our vocabulary (set of entities) and entity specific data',
-			'public'        => true,
-			'menu_position' => 20,
+			'labels'          => $labels,
+			'description'     => 'Holds our vocabulary (set of entities) and entity specific data',
+			'public'          => true,
+			'menu_position'   => 20,
 			// after the pages menu.
 			// Add support for 'authors' and 'revisions':
 			// * see https://github.com/insideout10/wordlift-plugin/issues/395
 			// * see https://github.com/insideout10/wordlift-plugin/issues/376
-			'supports'      => array(
+			'supports'        => array(
 				'title',
 				'editor',
 				'thumbnail',
@@ -141,11 +154,14 @@ class Wordlift_Entity_Post_Type_Service {
 				'author',
 				'revisions',
 			),
-			'has_archive'   => true,
-			'menu_icon'     => WP_CONTENT_URL . '/plugins/wordlift/images/svg/wl-vocabulary-icon.svg',
+			'has_archive'     => true,
+			'menu_icon'       => WP_CONTENT_URL . '/plugins/wordlift/images/svg/wl-vocabulary-icon.svg',
 			// Although we define our slug here, we further manage linking to entities using the Wordlift_Entity_Link_Service.
-			'rewrite'       => array( 'slug' => $this->slug ),
-			'capability_type'	=> array( 'wordlift_entity', 'wordlift_entities' ),
+			'rewrite'         => array( 'slug' => $this->slug ),
+			'capability_type' => array(
+				'wordlift_entity',
+				'wordlift_entities',
+			),
 		);
 
 		register_post_type( $this->post_type, $args );

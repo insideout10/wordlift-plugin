@@ -665,7 +665,7 @@ class Wordlift {
 	public function __construct() {
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.16.2';
+		$this->version     = '3.16.3-alpha2';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -1421,7 +1421,9 @@ class Wordlift {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 		// Hook the content filter service to add entity links.
-		$this->loader->add_filter( 'the_content', $this->content_filter_service, 'the_content' );
+		if ( ! defined( 'WL_DISABLE_CONTENT_FILTER' ) || ! WL_DISABLE_CONTENT_FILTER ) {
+			$this->loader->add_filter( 'the_content', $this->content_filter_service, 'the_content' );
+		}
 
 		// Hook the AJAX wl_timeline action to the Timeline service.
 		$this->loader->add_action( 'wp_ajax_nopriv_wl_timeline', $this->timeline_service, 'ajax_timeline' );

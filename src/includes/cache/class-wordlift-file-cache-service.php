@@ -80,7 +80,7 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 
 		self::$instance = $this;
 
-		$this->log->info( "File Cache service initialized on $this->cache_dir." );
+		$this->log->debug( "File Cache service initialized on $this->cache_dir." );
 
 	}
 

@@ -112,7 +112,7 @@ class Wordlift_Content_Filter_Service {
 	 */
 	public function the_content( $content ) {
 
-		$this->log->trace( 'Filtering content...' );
+		$this->log->trace( "Filtering content [ " . ( is_singular() ? 'yes' : 'no' ) . " ]..." );
 
 		// Links should be added only on the front end and not for RSS.
 		if ( is_feed() ) {
@@ -125,6 +125,13 @@ class Wordlift_Content_Filter_Service {
 		// Preload URIs.
 		$matches = array();
 		preg_match_all( self::PATTERN, $content, $matches );
+
+		// Bail out if there are no URIs.
+		if ( 0 === count( $matches[3] ) ) {
+			return $content;
+		}
+
+		// Preload the URIs.
 		$this->entity_service->preload_uris( $matches[3] );
 
 		// Replace each match of the entity tag with the entity link. If an error

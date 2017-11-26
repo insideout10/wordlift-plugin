@@ -15,7 +15,7 @@
  * Plugin Name:       WordLift
  * Plugin URI:        https://wordlift.io
  * Description:       WordLift brings the power of AI to organize content, attract new readers and get their attention. To activate the plugin ​<a href="https://wordlift.io/">visit our website</a>.
- * Version:           3.16.2
+ * Version:           3.16.3-alpha2
  * Author:            WordLift, Insideout10
  * Author URI:        https://wordlift.io
  * License:           GPL-2.0+
@@ -466,8 +466,15 @@ load_plugin_textdomain( 'wordlift', false, '/wordlift/languages' );
  */
 function activate_wordlift() {
 
+	$log = Wordlift_Log_Service::get_logger( 'activate_wordlift' );
+
+	$log->info( 'Activating WordLift...' );
+
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wordlift-activator.php';
 	Wordlift_Activator::activate();
+
+	// Ensure the post type is registered before flushing the rewrite rules.
+	Wordlift_Entity_Post_Type_Service::get_instance()->register();
 	flush_rewrite_rules();
 
 }
