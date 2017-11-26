@@ -35,12 +35,13 @@ class Wordlift_Entity_Service {
 	private $relation_service;
 
 	/**
-	 * An array of URIs to post ID valid for the current request.
+	 * The {@link Wordlift_Entity_Uri_Service} instance.
 	 *
-	 * @since 3.16.1
-	 * @var array $uri_to_post An array of URIs to post ID valid for the current request.
+	 * @since  3.16.3
+	 * @access private
+	 * @var \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service} instance.
 	 */
-	private $uri_to_post;
+	private $entity_uri_service;
 
 	/**
 	 * The entity post type name.
@@ -82,17 +83,17 @@ class Wordlift_Entity_Service {
 	 *
 	 * @since 3.2.0
 	 *
-	 * @param \Wordlift_UI_Service       $ui_service       The UI service.
-	 * @param \Wordlift_Relation_Service $relation_service The {@link Wordlift_Relation_Service} instance.
+	 * @param \Wordlift_UI_Service         $ui_service         The UI service.
+	 * @param \Wordlift_Relation_Service   $relation_service   The {@link Wordlift_Relation_Service} instance.
+	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service} instance.
 	 */
-	public function __construct( $ui_service, $relation_service ) {
+	public function __construct( $ui_service, $relation_service, $entity_uri_service ) {
 
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Entity_Service' );
 
-		$this->ui_service       = $ui_service;
-		$this->relation_service = $relation_service;
-
-		$this->reset_uris();
+		$this->ui_service         = $ui_service;
+		$this->relation_service   = $relation_service;
+		$this->entity_uri_service = $entity_uri_service;
 
 		// Set the singleton instance.
 		self::$instance = $this;
@@ -218,123 +219,12 @@ class Wordlift_Entity_Service {
 	}
 
 	/**
-	 * Determines whether a given uri is an internal uri or not.
-	 *
-	 * @since 3.3.2
-	 *
-	 * @param int $uri An uri.
-	 *
-	 * @return true if the uri internal to the current dataset otherwise false.
-	 */
-	public function is_internal_uri( $uri ) {
-
-		return ( 0 === strrpos( $uri, wl_configuration_get_redlink_dataset_uri() ) );
-	}
-
-	/**
-	 * Preload the provided URIs in the local cache.
-	 *
-	 * This function will populate the local `$uri_to_post` array by running a
-	 * single query with all the URIs and returning the mappings in the array.
-	 *
-	 * @since 3.16.1
-	 *
-	 * @param array $uris An array of URIs.
-	 */
-	public function preload_uris( $uris ) {
-
-		// Bail out if there are no URIs.
-		if ( 0 === count( $uris ) ) {
-			return;
-		}
-
-		$this->log->trace( 'Preloading ' . count( $uris ) . ' URI(s)...' );
-
-		$that          = $this;
-		$external_uris = array_filter( $uris, function ( $item ) use ( $that ) {
-			return ! $that->is_internal_uri( $item );
-		} );
-
-		$query_args = array(
-			// See https://github.com/insideout10/wordlift-plugin/issues/654.
-			'ignore_sticky_posts' => 1,
-			'cache_results'       => false,
-			'numberposts'         => - 1,
-			'post_status'         => 'any',
-			'post_type'           => Wordlift_Entity_Service::valid_entity_post_types(),
-			'meta_query'          => array(
-				array(
-					'key'     => WL_ENTITY_URL_META_NAME,
-					'value'   => $uris,
-					'compare' => 'IN',
-				),
-			),
-		);
-
-		// Only if the current uri is not an internal uri, entity search is
-		// performed also looking at sameAs values.
-		//
-		// This solve issues like https://github.com/insideout10/wordlift-plugin/issues/237
-		if ( 0 < count( $external_uris ) ) {
-
-			$query_args['meta_query']['relation'] = 'OR';
-			$query_args['meta_query'][]           = array(
-				'key'     => Wordlift_Schema_Service::FIELD_SAME_AS,
-				'value'   => $external_uris,
-				'compare' => 'IN',
-			);
-
-		}
-
-		// Get the posts.
-		$posts = get_posts( $query_args );
-
-		// Populate the array. We reinitialize the array on purpose because
-		// we don't want these data to long live.
-		$this->uri_to_post = array_reduce( $posts, function ( $carry, $item ) use ( $that ) {
-			return $carry
-				   // Get the URI related to the post and fill them with the item id.
-				   + array_fill_keys( $that->get_uris( $item->ID ), $item );
-		}, array() );
-
-		// Add the not found URIs.
-		$this->uri_to_post += array_fill_keys( $uris, null );
-
-		$this->log->debug( count( $this->uri_to_post ) . " URI(s) preloaded." );
-
-	}
-
-	/**
-	 * Reset the URI to post local cache.
-	 *
-	 * @since 3.16.1
-	 */
-	public function reset_uris() {
-
-		$this->uri_to_post = array();
-
-	}
-
-	/**
-	 * Get all the URIs (item id and same as) related to a post.
-	 *
-	 * @since 3.16.1
-	 *
-	 * @param int $post_id The {@link WP_Post) id.
-	 *
-	 * @return array An array of URIs.
-	 */
-	public function get_uris( $post_id ) {
-
-		return get_post_meta( $post_id, WL_ENTITY_URL_META_NAME )
-			   + get_post_meta( $post_id, Wordlift_Schema_Service::FIELD_SAME_AS );
-	}
-
-
-	/**
 	 * Find entity posts by the entity URI. Entity as searched by their entity URI or same as.
 	 *
-	 * @since 3.2.0
+	 * @since      3.16.3 deprecated in favor of Wordlift_Entity_Uri_Service->get_entity( $uri );
+	 * @since      3.2.0
+	 *
+	 * @deprecated in favor of Wordlift_Entity_Uri_Service->get_entity( $uri );
 	 *
 	 * @param string $uri The entity URI.
 	 *
@@ -342,81 +232,7 @@ class Wordlift_Entity_Service {
 	 */
 	public function get_entity_post_by_uri( $uri ) {
 
-		$this->log->trace( "Getting an entity post for URI $uri..." );
-
-		// Check if we've been provided with a value otherwise return null.
-		if ( empty( $uri ) ) {
-			return null;
-		}
-
-		// If the URI is cached, return the cached post.
-		if ( array_key_exists( $uri, $this->uri_to_post ) ) {
-			$this->log->debug( "Returning cached post for $uri..." );
-
-			return $this->uri_to_post[ $uri ];
-		}
-
-		$this->log->debug( "Querying post for $uri..." );
-
-		$query_args = array(
-			// See https://github.com/insideout10/wordlift-plugin/issues/654.
-			'ignore_sticky_posts' => 1,
-			'posts_per_page'      => 1,
-			'post_status'         => 'any',
-			'post_type'           => Wordlift_Entity_Service::valid_entity_post_types(),
-			'meta_query'          => array(
-				array(
-					'key'     => WL_ENTITY_URL_META_NAME,
-					'value'   => $uri,
-					'compare' => '=',
-				),
-			),
-			// The following query can be avoided, it's superfluous since
-			// we're looking for a post with a specific Entity URI. This query
-			// may in fact consume up to 50% of the timing necessary to load a
-			// page.
-			//
-			// See https://github.com/insideout10/wordlift-plugin/issues/674.
-			//			'tax_query'           => array(
-			//				'relation' => 'AND',
-			//				array(
-			//					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
-			//					'operator' => 'EXISTS',
-			//				),
-			//				array(
-			//					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
-			//					'field'    => 'slug',
-			//					'terms'    => 'article',
-			//					'operator' => 'NOT IN',
-			//				),
-			//			),
-		);
-
-		// Only if the current uri is not an internal uri, entity search is
-		// performed also looking at sameAs values.
-		//
-		// This solve issues like https://github.com/insideout10/wordlift-plugin/issues/237
-		if ( ! $this->is_internal_uri( $uri ) ) {
-
-			$query_args['meta_query']['relation'] = 'OR';
-			$query_args['meta_query'][]           = array(
-				'key'     => Wordlift_Schema_Service::FIELD_SAME_AS,
-				'value'   => $uri,
-				'compare' => '=',
-			);
-		}
-
-		$posts = get_posts( $query_args );
-
-		// Return null if no post is found.
-		if ( 0 === count( $posts ) ) {
-			$this->log->warn( "No post for URI $uri." );
-
-			return null;
-		}
-
-		// Return the found post.
-		return current( $posts );
+		return $this->entity_uri_service->get_entity( $uri );
 	}
 
 	/**

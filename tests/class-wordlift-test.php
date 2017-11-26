@@ -296,4 +296,15 @@ class Wordlift_Test extends Wordlift {
 		return $this->relation_service;
 	}
 
+	/**
+	 * Get the {@link Wordlift_Entity_Uri_Service} instance.
+	 *
+	 * @since 3.16.3
+	 * @return \Wordlift_Entity_Uri_Service The {@link Wordlift_Entity_Uri_Service} instance.
+	 */
+	public function get_entity_uri_service() {
+
+		return $this->entity_uri_service;
+	}
+
 }

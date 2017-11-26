@@ -22,7 +22,7 @@ interface Wordlift_Cache_Service {
 	 *
 	 * @since 3.16.0
 	 *
-	 * @param int $id The cache `id`.
+	 * @param string $id The cache `id`.
 	 *
 	 * @return mixed|false The cached contents or false if the cache isn't found.
 	 */
@@ -33,8 +33,8 @@ interface Wordlift_Cache_Service {
 	 *
 	 * @since 3.16.0
 	 *
-	 * @param int   $id       The cache id.
-	 * @param mixed $contents The cache contents.
+	 * @param string $id       The cache id.
+	 * @param mixed  $contents The cache contents.
 	 */
 	function set_cache( $id, $contents );
 
@@ -44,7 +44,7 @@ interface Wordlift_Cache_Service {
 	 *
 	 * @since 3.16.0
 	 *
-	 * @param int $id The cache `id`.
+	 * @param string $id The cache `id`.
 	 */
 	function delete_cache( $id );
 

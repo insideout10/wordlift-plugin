@@ -644,6 +644,15 @@ class Wordlift {
 	protected $file_cache_service;
 
 	/**
+	 * The {@link Wordlift_Entity_Uri_Service} instance.
+	 *
+	 * @since  3.16.3
+	 * @access protected
+	 * @var \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service} instance.
+	 */
+	protected $entity_uri_service;
+
+	/**
 	 * {@link Wordlift}'s singleton instance.
 	 *
 	 * @since  3.11.2
@@ -651,7 +660,6 @@ class Wordlift {
 	 * @var Wordlift $instance {@link Wordlift}'s singleton instance.
 	 */
 	private static $instance;
-
 
 	/**
 	 * Define the core functionality of the plugin.
@@ -772,6 +780,7 @@ class Wordlift {
 		/**
 		 * The Entity service.
 		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-uri-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-service.php';
 
 		// Add the entity rating service.
@@ -1065,7 +1074,8 @@ class Wordlift {
 		$schema_url_property_service = new Wordlift_Schema_Url_Property_Service( $this->sparql_service );
 		$this->notice_service        = new Wordlift_Notice_Service();
 		$this->relation_service      = new Wordlift_Relation_Service();
-		$this->entity_service        = new Wordlift_Entity_Service( $this->ui_service, $this->relation_service );
+		$this->entity_uri_service    = new Wordlift_Entity_Uri_Service( $this->configuration_service );
+		$this->entity_service        = new Wordlift_Entity_Service( $this->ui_service, $this->relation_service, $this->entity_uri_service );
 		$this->user_service          = new Wordlift_User_Service();
 
 		// Instantiate the JSON-LD service.
@@ -1133,7 +1143,7 @@ class Wordlift {
 
 
 		$this->key_validation_service   = new Wordlift_Key_Validation_Service( $this->configuration_service );
-		$this->content_filter_service   = new Wordlift_Content_Filter_Service( $this->entity_service, $this->configuration_service );
+		$this->content_filter_service   = new Wordlift_Content_Filter_Service( $this->entity_service, $this->configuration_service, $this->entity_uri_service );
 		$this->relation_rebuild_service = new Wordlift_Relation_Rebuild_Service( $this->content_filter_service, $this->entity_service );
 		$this->sample_data_service      = new Wordlift_Sample_Data_Service( $this->entity_type_service, $this->configuration_service, $this->user_service );
 		$this->sample_data_ajax_adapter = new Wordlift_Sample_Data_Ajax_Adapter( $this->sample_data_service );

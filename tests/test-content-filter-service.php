@@ -55,6 +55,15 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 	private $dummy_post_id;
 
 	/**
+	 * The {@link Wordlift_Entity_Uri_Service} instance.
+	 *
+	 * @since  3.16.3
+	 * @access private
+	 * @var \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service} instance.
+	 */
+	private $entity_uri_service;
+
+	/**
 	 * {@inheritdoc}
 	 */
 	public function setUp() {
@@ -63,8 +72,10 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 		// We don't need to check the remote Linked Data store.
 		Wordlift_Unit_Test_Case::turn_off_entity_push();
 
-		$this->entity_service         = $this->get_wordlift_test()->get_entity_service();
-		$this->content_filter_service = new Wordlift_Content_Filter_Service( $this, $this->configuration_service );
+		$wordlift_test                = $this->get_wordlift_test();
+		$this->entity_service         = $wordlift_test->get_entity_service();
+		$this->entity_uri_service     = $wordlift_test->get_entity_uri_service();
+		$this->content_filter_service = new Wordlift_Content_Filter_Service( $this, $this->configuration_service, $this->entity_uri_service );
 
 	}
 
@@ -364,7 +375,7 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function preload_uris( $uris ) {
 
-		$this->entity_service->preload_uris( $uris );
+		$this->entity_uri_service->preload_uris( $uris );
 
 	}
 
@@ -375,7 +386,7 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function reset_uris() {
 
-		$this->entity_service->reset_uris();
+		$this->entity_uri_service->reset_uris();
 
 	}
 
