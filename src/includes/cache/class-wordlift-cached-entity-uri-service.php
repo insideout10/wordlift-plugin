@@ -82,7 +82,7 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 		parent::preload_uris( $uris_to_cache );
 
 		// Store them in cache.
-		foreach ( $uris_to_cache as $uri => $post ) {
+		foreach ( $this->uri_to_post as $uri => $post ) {
 			$this->set_cache( $uri, $post );
 		}
 
