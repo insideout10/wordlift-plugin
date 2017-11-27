@@ -44,13 +44,16 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 	private $log;
 
 	/**
-	 * The {@link Wordlift_File_Cache_Service} singleton instance.
+	 * The {@link Wordlift_File_Cache_Service} registered instances.
 	 *
-	 * @since  3.16.0
+	 * Each {@link Wordlift_File_Cache_Service} adds itself to the registered
+	 * instances.
+	 *
+	 * @since  3.16.3
 	 * @access private
-	 * @var \Wordlift_File_Cache_Service $instance The {@link Wordlift_File_Cache_Service} singleton instance.
+	 * @var array $instances An array of {@link Wordlift_File_Cache_Service} instances.
 	 */
-	private static $instance;
+	private static $instances = array();
 
 	/**
 	 * Create a {@link Wordlift_File_Cache_Service} instance.
@@ -78,21 +81,11 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 			mkdir( $this->cache_dir, 0755, true );
 		}
 
-		self::$instance = $this;
+		// Add ourselves to the list of instances.
+		self::$instances[] = $this;
 
 		$this->log->debug( "File Cache service initialized on $this->cache_dir." );
 
-	}
-
-	/**
-	 * Get the {@link Wordlift_File_Cache_Service} singleton instance.
-	 *
-	 * @since 3.16.0
-	 * @return \Wordlift_File_Cache_Service The {@link Wordlift_File_Cache_Service} singleton instance.
-	 */
-	public static function get_instance() {
-
-		return self::$instance;
 	}
 
 	/**
@@ -100,13 +93,13 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 	 */
 	function get_cache( $id ) {
 
-		// Get the filename.
-		$filename = $this->get_filename( $id );
-
-		// Bail out if the file doesn't exist.
-		if ( ! file_exists( $filename ) ) {
+		// Bail out if we don't have the cache.
+		if ( ! $this->has_cache( $id ) ) {
 			return false;
 		}
+
+		// Get the filename.
+		$filename = $this->get_filename( $id );
 
 		$this->log->trace( "Trying to get cache contents for $id from $filename..." );
 
@@ -115,6 +108,18 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 
 		// Return false if decoding failed, otherwise the decoded contents.
 		return $contents ?: false;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	function has_cache( $id ) {
+
+		// Get the filename.
+		$filename = $this->get_filename( $id );
+
+		// Bail out if the file doesn't exist.
+		return file_exists( $filename );
 	}
 
 	/**
@@ -153,7 +158,7 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 			return;
 		}
 
-		$this->log->trace( "Flushing cache contents..." );
+		$this->log->trace( "Flushing cache contents from $this->cache_dir..." );
 
 		$handle = @opendir( $this->cache_dir );
 
@@ -175,6 +180,14 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 
 		// Finally closed the directory.
 		closedir( $handle );
+
+	}
+
+	public static function flush_all() {
+
+		foreach ( self::$instances as $instance ) {
+			$instance->flush();
+		}
 
 	}
 

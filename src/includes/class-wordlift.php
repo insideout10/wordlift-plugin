@@ -1074,9 +1074,11 @@ class Wordlift {
 		$schema_url_property_service = new Wordlift_Schema_Url_Property_Service( $this->sparql_service );
 		$this->notice_service        = new Wordlift_Notice_Service();
 		$this->relation_service      = new Wordlift_Relation_Service();
-		$this->entity_uri_service    = new Wordlift_Entity_Uri_Service( $this->configuration_service );
-		$this->entity_service        = new Wordlift_Entity_Service( $this->ui_service, $this->relation_service, $this->entity_uri_service );
-		$this->user_service          = new Wordlift_User_Service();
+
+		$entity_uri_cache_service = new Wordlift_File_Cache_Service( WL_TEMP_DIR . 'entity_uri/' );
+		$this->entity_uri_service = new Wordlift_Cached_Entity_Uri_Service( $this->configuration_service, $entity_uri_cache_service );
+		$this->entity_service     = new Wordlift_Entity_Service( $this->ui_service, $this->relation_service, $this->entity_uri_service );
+		$this->user_service       = new Wordlift_User_Service();
 
 		// Instantiate the JSON-LD service.
 		$property_getter = Wordlift_Property_Getter_Factory::create( $this->entity_service );

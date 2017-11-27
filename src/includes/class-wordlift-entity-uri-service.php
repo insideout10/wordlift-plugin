@@ -42,7 +42,7 @@ class Wordlift_Entity_Uri_Service {
 	 * @access private
 	 * @var array $uri_to_post An array of URIs to post ID valid for the current request.
 	 */
-	private $uri_to_post;
+	protected $uri_to_post;
 
 	/**
 	 * Create a {@link Wordlift_Entity_Uri_Service} instance.
@@ -120,9 +120,12 @@ class Wordlift_Entity_Uri_Service {
 		// Populate the array. We reinitialize the array on purpose because
 		// we don't want these data to long live.
 		$this->uri_to_post = array_reduce( $posts, function ( $carry, $item ) use ( $that ) {
+			$uris = get_post_meta( $item->ID, WL_ENTITY_URL_META_NAME )
+					+ get_post_meta( $item->ID, Wordlift_Schema_Service::FIELD_SAME_AS );
+
 			return $carry
 				   // Get the URI related to the post and fill them with the item id.
-				   + array_fill_keys( $that->get_uris( $item->ID ), $item );
+				   + array_fill_keys( $uris, $item );
 		}, array() );
 
 		// Add the not found URIs.
@@ -141,21 +144,6 @@ class Wordlift_Entity_Uri_Service {
 
 		$this->uri_to_post = array();
 
-	}
-
-	/**
-	 * Get all the URIs (item id and same as) related to a post.
-	 *
-	 * @since 3.16.3
-	 *
-	 * @param int $post_id The {@link WP_Post) id.
-	 *
-	 * @return array An array of URIs.
-	 */
-	public function get_uris( $post_id ) {
-
-		return get_post_meta( $post_id, WL_ENTITY_URL_META_NAME )
-			   + get_post_meta( $post_id, Wordlift_Schema_Service::FIELD_SAME_AS );
 	}
 
 	/**

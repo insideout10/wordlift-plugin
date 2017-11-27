@@ -123,7 +123,7 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 		}
 
 		// Flush the cache.
-		Wordlift_File_Cache_Service::get_instance()->flush();
+		Wordlift_File_Cache_Service::flush_all();
 
 		$this->log->info( "Rebuild complete [ count :: $count ][ limit :: $limit ]" );
 		echo( "Rebuild complete [ count :: $count ][ limit :: $limit ]" );

@@ -29,6 +29,17 @@ interface Wordlift_Cache_Service {
 	function get_cache( $id );
 
 	/**
+	 * Check whether we have cached results for the provided id.
+	 *
+	 * @since 3.16.3
+	 *
+	 * @param string $id The cache `id`.
+	 *
+	 * @return bool True if we have cached results otherwise false.
+	 */
+	function has_cache( $id );
+
+	/**
 	 * Set the cache contents for the specified `id`.
 	 *
 	 * @since 3.16.0
