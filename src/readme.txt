@@ -144,7 +144,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.16.3 (????-??-??) =
+= 3.16.3 (2017-11-28) =
 * Fix: [#711](https://github.com/insideout10/wordlift-plugin/issues/711): Performance issues with content_filter.
 
 = 3.16.2 (2017-11-23) =
