@@ -57,5 +57,7 @@ exclude_paths:
   - "src/admin/js/flatpickr/**/*"
   - "src/admin/js/select2/**/*"
   - "src/timelinejs/**/*"
+  - "src/js-client/**/*"
+  - "src/js/**/*"
 #- spec/**/*
 #- vendor/**/*
