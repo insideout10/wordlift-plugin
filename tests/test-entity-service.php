@@ -27,6 +27,15 @@ class EntityServiceTest extends Wordlift_Unit_Test_Case {
 	private $log_service;
 
 	/**
+	 * The {@link Wordlift_Entity_Uri_Service} instance.
+	 *
+	 * @since  3.16.3
+	 * @access private
+	 * @var \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service} instance.
+	 */
+	private $entity_uri_service;
+
+	/**
 	 * Set up the test.
 	 */
 	function setUp() {
@@ -40,7 +49,8 @@ class EntityServiceTest extends Wordlift_Unit_Test_Case {
 		wl_configure_wordpress_test();
 		wl_empty_blog();
 
-		$this->entity_service = Wordlift_Entity_Service::get_instance();
+		$this->entity_service     = Wordlift_Entity_Service::get_instance();
+		$this->entity_uri_service = $this->get_wordlift_test()->get_entity_uri_service();
 
 	}
 
@@ -130,7 +140,7 @@ class EntityServiceTest extends Wordlift_Unit_Test_Case {
 		// Retrieve the new entity uri
 		$entity_1_uri = wl_get_entity_uri( $entity_1_id );
 		// Check the is an internal uri
-		$this->assertTrue( $entity_service->is_internal_uri( $entity_1_uri ) );
+		$this->assertTrue( $this->entity_uri_service->is_internal( $entity_1_uri ) );
 
 		// Look for an antity with that uri
 		$retrieved_entity = $entity_service->get_entity_post_by_uri( $entity_1_uri );
@@ -142,7 +152,7 @@ class EntityServiceTest extends Wordlift_Unit_Test_Case {
 		// Set an external uri as same as
 		$external_uri = 'http://dbpedia.org/resource/berlin';
 		// Check the is NOT an internal uri
-		$this->assertFalse( $entity_service->is_internal_uri( $external_uri ) );
+		$this->assertFalse( $this->entity_uri_service->is_internal( $external_uri ) );
 		// Set this external uri as sameAs of the created entity
 		wl_schema_set_value( $entity_1_id, 'sameAs', $external_uri );
 

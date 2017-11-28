@@ -53,6 +53,15 @@ class Wordlift_Content_Filter_Service {
 	private $is_link_by_default;
 
 	/**
+	 * The {@link Wordlift_Entity_Uri_Service} instance.
+	 *
+	 * @since  3.16.3
+	 * @access private
+	 * @var \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service} instance.
+	 */
+	private $entity_uri_service;
+
+	/**
 	 * A {@link Wordlift_Log_Service} instance.
 	 *
 	 * @since 3.16.0
@@ -77,13 +86,15 @@ class Wordlift_Content_Filter_Service {
 	 *
 	 * @param \Wordlift_Entity_Service        $entity_service        The {@link Wordlift_Entity_Service} instance.
 	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
+	 * @param \Wordlift_Entity_Uri_Service    $entity_uri_service    The {@link Wordlift_Entity_Uri_Service} instance.
 	 */
-	public function __construct( $entity_service, $configuration_service ) {
+	public function __construct( $entity_service, $configuration_service, $entity_uri_service ) {
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
 		$this->entity_service        = $entity_service;
 		$this->configuration_service = $configuration_service;
+		$this->entity_uri_service    = $entity_uri_service;
 
 		self::$instance = $this;
 
@@ -112,7 +123,7 @@ class Wordlift_Content_Filter_Service {
 	 */
 	public function the_content( $content ) {
 
-		$this->log->trace( 'Filtering content...' );
+		$this->log->trace( "Filtering content [ " . ( is_singular() ? 'yes' : 'no' ) . " ]..." );
 
 		// Links should be added only on the front end and not for RSS.
 		if ( is_feed() ) {
@@ -125,7 +136,14 @@ class Wordlift_Content_Filter_Service {
 		// Preload URIs.
 		$matches = array();
 		preg_match_all( self::PATTERN, $content, $matches );
-		$this->entity_service->preload_uris( $matches[3] );
+
+		// Bail out if there are no URIs.
+		if ( 0 === count( $matches[3] ) ) {
+			return $content;
+		}
+
+		// Preload the URIs.
+		$this->entity_uri_service->preload_uris( $matches[3] );
 
 		// Replace each match of the entity tag with the entity link. If an error
 		// occurs fail silently returning the original content.
@@ -134,7 +152,7 @@ class Wordlift_Content_Filter_Service {
 			'link',
 		), $content ) ?: $content;
 
-		$this->entity_service->reset_uris();
+		$this->entity_uri_service->reset_uris();
 
 		return $result;
 	}

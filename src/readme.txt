@@ -148,6 +148,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement: [#682](https://github.com/insideout10/wordlift-plugin/issues/682): Capture the web site URL.
 * Enhancement: [#587](https://github.com/insideout10/wordlift-plugin/issues/587): Vocabulary Widget.
 
+= 3.16.3 (2017-11-28) =
+* Fix: [#711](https://github.com/insideout10/wordlift-plugin/issues/711): Performance issues with content_filter.
+
 = 3.16.2 (2017-11-23) =
 * Fix: [#709](https://github.com/insideout10/wordlift-plugin/issues/709): Missing links on front-end.
 
