@@ -46,6 +46,9 @@ class Wordlift_Batch_Analysis_Adapter {
 			wp_die( 'The `link` parameter is required.' );
 		}
 
+		// Check whether the post type was added and sets the analysis post type.
+		$this->maybe_set_analysis_post_type();
+
 		$count = $this->batch_analysis_service->submit_auto_selected_posts( $_REQUEST['link'] );
 
 		// Clear any buffer.
@@ -67,6 +70,9 @@ class Wordlift_Batch_Analysis_Adapter {
 			wp_die( 'The `link` parameter is required.' );
 		}
 
+		// Check whether the post type was added and sets the analysis post type.
+		$this->maybe_set_analysis_post_type();
+
 		$count = $this->batch_analysis_service->submit_all_posts( $_REQUEST['link'] );
 
 		// Clear any buffer.
@@ -87,6 +93,9 @@ class Wordlift_Batch_Analysis_Adapter {
 		if ( ! isset( $_REQUEST['link'] ) || ! isset( $_REQUEST['post'] ) ) {
 			wp_die( 'The `link` and `post` parameters are required.' );
 		}
+
+		// Check whether the post type was added and sets the analysis post type.
+		$this->maybe_set_analysis_post_type();
 
 		$count = $this->batch_analysis_service->submit( (array) $_REQUEST['post'], $_REQUEST['link'] );
 
@@ -138,6 +147,17 @@ class Wordlift_Batch_Analysis_Adapter {
 		// Send the response.
 		wp_send_json_success();
 
+	}
+
+	/**
+	 * Set the analysis post type if the param is set in the request
+	 *
+	 * @since 3.17.0
+	 */
+	public function maybe_set_analysis_post_type() {
+		if ( isset( $_REQUEST['post_type'] ) ) {
+			$this->batch_analysis_service->set_post_type( $_REQUEST['post_type'] );
+		}
 	}
 
 }
