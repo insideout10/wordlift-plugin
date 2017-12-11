@@ -399,10 +399,23 @@ class Wordlift_Batch_Analysis_Service {
 
 				$content = wp_slash( $json->content );
 
-				wp_update_post( array(
-					'ID'           => $id,
-					'post_content' => $content,
-				) );
+				// Post array with the new anotated content.
+				$data = array(
+					'ID'           => $id, // The post ID.
+					'post_content' => $content, // New annotated post content.
+				);
+
+				/**
+				 * Filter: 'wl_batch_analysis_update_post_content' - Allow third parties to perform additional actions when the post content is updated.
+				 *
+				 * @since  3.17.0
+				 * @api arr $data Postarr with post id and the new post content.
+				 * @api int $id Current post ID.
+				 */
+				$data = apply_filters( 'wl_batch_analysis_update_post_content', $data, $id );
+
+				// Update the post content.
+				wp_update_post( $data );
 
 				// Update the status.
 				$this->set_state( $id, self::STATE_SUCCESS );
