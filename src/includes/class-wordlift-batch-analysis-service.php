@@ -436,6 +436,8 @@ class Wordlift_Batch_Analysis_Service {
 
 				// Continue if the content isn't set.
 				if ( ! isset( $json->content ) || empty( $json->content ) ) {
+					// The post content is empty, so is should be marked as completed.
+					$this->set_state( $id, self::STATE_ERROR );
 					continue;
 				}
 
