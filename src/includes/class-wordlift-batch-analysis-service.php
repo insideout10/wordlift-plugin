@@ -735,14 +735,14 @@ class Wordlift_Batch_Analysis_Service {
 	}
 
 	/**
-	 * Check whether the term has entity type associated and set default term if it doens't.
+	 * Check whether the term has entity type associated and set default term if it hasn't.
 	 *
 	 * @since 3.17.0
 	 *
 	 * @param int $id The post id.
 	 */
 	public function maybe_set_default_term( $id ) {
-		// Check wheter the post has any of the WordLift types.
+		// Check whether the post has any of the WordLift entity types.
 		$has_term = has_term( '', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, $id );
 
 		// Bail if the term is associated with entity types already.
