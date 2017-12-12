@@ -453,6 +453,9 @@ class Wordlift_Batch_Analysis_Service {
 
 				$this->log->debug( "Post $id updated with batch analysis results." );
 
+				// Set default entity type term for posts that didn't have any.
+				$this->maybe_set_default_term( $id );
+
 				continue;
 			}
 
@@ -729,6 +732,26 @@ class Wordlift_Batch_Analysis_Service {
 			'meta_key'    => self::WARNING_META_KEY,
 			'meta_value'  => 'yes',
 		) );
+	}
+
+	/**
+	 * Check whether the term has entity type associated and set default term if it doens't.
+	 *
+	 * @since 3.17.0
+	 *
+	 * @param int $id The post id.
+	 */
+	public function maybe_set_default_term( $id ) {
+		// Check wheter the post has any of the WordLift types.
+		$has_term = has_term( '', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, $id );
+
+		// Bail if the term is associated with entity types already.
+		if ( ! empty( $has_term ) ) {
+			return;
+		}
+
+		// Set the default `article` term.
+		$response = wp_set_object_terms( $id, 'article', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 	}
 
 }
