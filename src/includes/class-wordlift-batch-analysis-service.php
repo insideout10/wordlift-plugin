@@ -266,25 +266,28 @@ class Wordlift_Batch_Analysis_Service {
 			self::STATE_META_KEY,
 			self::SUBMIT_TIMESTAMP_META_KEY,
 			self::LINK_META_KEY,
-			$this->params['link'],
+			$this->get_link_options(
+				$this->params['link'],
+				$this->params['minOccurrences']
+			),
 			self::STATE_META_KEY
 		);
 		// @codingStandardsIgnoreEnd
 	}
 
 	/**
-	 * Submit the provided list of {@link WP_Post}s' ids for Batch Analysis.
+	 * Submit posts for Batch Analysis.
 	 *
 	 * @since 3.14.2
 	 *
 	 * @return int The number of submitted {@link WP_Post}s or false on error.
 	 */
 	public function submit() {
-		global $wpdb;
-
-		// Submit the posts/pages and return the number of affected results.
-		// We're using a SQL query here because we could have potentially
-		// thousands of rows.
+ 		global $wpdb;
+  
+  		// Submit the posts/pages and return the number of affected results.
+  		// We're using a SQL query here because we could have potentially
+  		// thousands of rows.
 		$count = $wpdb->query( $this->get_sql() ); // WPCS: cache ok, db call ok.
 
 		// Request Batch Analysis (the operation is handled asynchronously).
@@ -604,13 +607,13 @@ class Wordlift_Batch_Analysis_Service {
 	 *
 	 * @param int $post_id The {@link WP_Post}'s id.
 	 *
-	 * @return string The link setting or `default` if not set.
+	 * @return array The link settings.
 	 */
-	public function get_link( $post_id ) {
+	public function get_post_link_options( $post_id ) {
 
 		$values = get_post_meta( $post_id, self::LINK_META_KEY );
 
-		return end( $values ) ?: 'default';
+		return end( $values ) ?: array( 'links' => 'default', 'minOccurrences' => 1 );
 	}
 
 	/**
@@ -674,22 +677,24 @@ class Wordlift_Batch_Analysis_Service {
 		}
 
 		// Get the link setting.
-		$link = $this->get_link( $post_id );
+		$link_options = $this->get_post_link_options( $post_id );
 
-		$this->log->debug( "Sending analysis request for post $post_id [ link :: $link ]..." );
+		$this->log->debug( 'Sending analysis request for post $post_id [ link :: ' . $link_options['links'] . ', minOccurrences :: ' . $link_options['minOccurrences'] . ' ] ...' );
 
 		// Get the batch analysis URL.
 		$url = $this->configuration_service->get_batch_analysis_url();
 
 		// Prepare the POST parameters.
-		$param = array(
-			'id'              => $post->ID,
-			'key'             => $this->configuration_service->get_key(),
-			'content'         => $post->post_content,
-			'contentLanguage' => $this->configuration_service->get_language_code(),
-			'version'         => $this->plugin->get_version(),
-			'links'           => $link,
-			'scope'           => 'local',
+		$param = array_merge(
+			array(
+				'id'              => $post->ID,
+				'key'             => $this->configuration_service->get_key(),
+				'content'         => $post->post_content,
+				'contentLanguage' => $this->configuration_service->get_language_code(),
+				'version'         => $this->plugin->get_version(),
+				'scope'           => 'local',
+			),
+			$link_options // Post link options.
 		);
 
 		// Get the HTTP options.
@@ -764,12 +769,13 @@ class Wordlift_Batch_Analysis_Service {
 		// Build params array and check if param exists.
 		// @codingStandardsIgnoreStart, Ignore phpcs indentation errors.
 		$params = array(
-			'link'         => ( isset( $request['link'] ) )         ? $request['link']            : null,
-			'autoselected' => ( isset( $request['autoselected'] ) ) ? $request['autoselected']    : null,
-			'include'      => ( isset( $request['include'] ) )      ? (array) $request['include'] : null,
-			'exclude'      => ( isset( $request['exclude'] ) )      ? (array) $request['exclude'] : null,
-			'from'         => ( isset( $request['from'] ) )         ? $request['from']            : null,
-			'to'           => ( isset( $request['to'] ) )           ? $request['to']              : null,
+			'link'           => ( isset( $request['link'] ) )           ? $request['link']            : null,
+			'autoselected'   => ( isset( $request['autoselected'] ) )   ? $request['autoselected']    : null,
+			'include'        => ( isset( $request['include'] ) )        ? (array) $request['include'] : null,
+			'exclude'        => ( isset( $request['exclude'] ) )        ? (array) $request['exclude'] : null,
+			'from'           => ( isset( $request['from'] ) )           ? $request['from']            : null,
+			'to'             => ( isset( $request['to'] ) )             ? $request['to']              : null,
+			'minOccurrences' => ( isset( $request['minOccurrences'] ) ) ? $request['minOccurrences']  : null,
 		);
 		// @codingStandardsIgnoreEnd
 
@@ -893,4 +899,21 @@ class Wordlift_Batch_Analysis_Service {
 		$response = wp_set_object_terms( $id, 'article', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 	}
 
+	/**
+	 * Get the link options that will be used by WordLift server when doing the Batch Analysis.
+	 *
+	 * @param string $link The link setting ('yes'/'no').
+	 *
+	 * @param int $min_occurrences Minimum occurrences to perform analysis
+	 *
+	 * @return array An array of link options.
+	 */
+	public function get_link_options( $link, $min_occurrences ) {
+		$link_options = array(
+			'links'         => $link, // Link options.
+			'minOccurrences' => $min_occurrences, // Minimum occurrences
+		);
+
+		return serialize( $link_options );
+	}
 }
