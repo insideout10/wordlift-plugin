@@ -180,7 +180,15 @@ class Wordlift_Content_Filter_Service {
 		$label     = $matches[4];
 
 		// Get the entity post by URI.
-		$post = $this->entity_uri_service->get_entity( $uri );
+		$post = $this->entity_service->get_entity_post_by_uri( $uri );
+
+		// @todo: revise the `test-content-filter-service.php` before switching
+		// to the `entity_uri_service`. This is required, because the test injects
+		// itself as `entity_service` to mock the requests to get a post by
+		// entity uri.
+		//
+		// $post = $this->entity_uri_service->get_entity( $uri );
+
 		if ( null === $post ) {
 
 			// If the entity post is not found return the label w/o the markup
@@ -190,10 +198,10 @@ class Wordlift_Content_Filter_Service {
 			return $label;
 		}
 
-		$no_link = - 1 < strpos( $css_class, 'wl-no-link' )
-				   // Do not link if already linked.
-				   || in_array( $post->ID, $this->entity_post_ids_linked_from_post_content );
-		$link    = - 1 < strpos( $css_class, 'wl-link' );
+		$no_link = - 1 < strpos( $css_class, 'wl-no-link' );
+//				   // Do not link if already linked.
+//				   || in_array( $post->ID, $this->entity_post_ids_linked_from_post_content );
+		$link = - 1 < strpos( $css_class, 'wl-link' );
 
 		// Don't link if links are disabled and the entity is not link or the
 		// entity is do not link.
