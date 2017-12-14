@@ -124,6 +124,12 @@ class Wordlift_Entity_Service {
 
 		$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 
+		if ( is_wp_error( $terms ) ) {
+			$this->log->error( "Cannot get the terms for post $post_id: " . $terms->get_error_message() );
+
+			return false;
+		}
+
 		if ( 0 === count( $terms ) ) {
 			return false;
 		}
