@@ -145,6 +145,15 @@ class Wordlift_Batch_Analysis_Service {
 	private $configuration_service;
 
 	/**
+	 * The {@link Wordlift_File_Cache_Service} instance.
+	 *
+	 * @since  3.17.0
+	 * @access protected
+	 * @var \Wordlift_File_Cache_Service $file_cache_service The {@link Wordlift_File_Cache_Service} instance.
+	 */
+	private $file_cache_service;
+
+	/**
 	 * A {@link Wordlift_Log_Service} instance.
 	 *
 	 * @since  3.14.2
@@ -160,11 +169,13 @@ class Wordlift_Batch_Analysis_Service {
 	 *
 	 * @param \Wordlift                       $plugin                The {@link Wordlift} plugin instance.
 	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
+	 * @param \Wordlift_File_Cache_Service    $file_cache_service    The {@link Wordlift_File_Cache_Service} instance.
 	 */
-	public function __construct( $plugin, $configuration_service ) {
+	public function __construct( $plugin, $configuration_service, $file_cache_service ) {
 
 		$this->plugin                = $plugin;
 		$this->configuration_service = $configuration_service;
+		$this->file_cache_service    = $file_cache_service;
 		$this->log                   = Wordlift_Log_Service::get_logger( 'Wordlift_Batch_Analysis_Service' );
 
 		add_action( 'wl_async_wl_batch_analysis_request', array(
@@ -450,6 +461,9 @@ class Wordlift_Batch_Analysis_Service {
 
 				// Update the status.
 				$this->set_state( $id, self::STATE_SUCCESS );
+
+				// Invalidating the cache for the current post.
+				// $this->file_cache_service->delete_cache( $id );
 
 				$this->log->debug( "Post $id updated with batch analysis results." );
 
