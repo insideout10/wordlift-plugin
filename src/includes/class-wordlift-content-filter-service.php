@@ -199,8 +199,8 @@ class Wordlift_Content_Filter_Service {
 		}
 
 		$no_link = - 1 < strpos( $css_class, 'wl-no-link' );
-//				   // Do not link if already linked.
-//				   || in_array( $post->ID, $this->entity_post_ids_linked_from_post_content );
+				   // Do not link if already linked.
+				   || in_array( $post->ID, $this->entity_post_ids_linked_from_post_content );
 		$link = - 1 < strpos( $css_class, 'wl-link' );
 
 		// Don't link if links are disabled and the entity is not link or the
