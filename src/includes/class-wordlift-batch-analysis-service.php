@@ -463,7 +463,7 @@ class Wordlift_Batch_Analysis_Service {
 				$this->set_state( $id, self::STATE_SUCCESS );
 
 				// Invalidating the cache for the current post.
-				// $this->file_cache_service->delete_cache( $id );
+				$this->file_cache_service->delete_cache( $id );
 
 				$this->log->debug( "Post $id updated with batch analysis results." );
 
