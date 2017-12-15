@@ -198,7 +198,7 @@ class Wordlift_Content_Filter_Service {
 			return $label;
 		}
 
-		$no_link = - 1 < strpos( $css_class, 'wl-no-link' );
+		$no_link = - 1 < strpos( $css_class, 'wl-no-link' )
 				   // Do not link if already linked.
 				   || in_array( $post->ID, $this->entity_post_ids_linked_from_post_content );
 		$link = - 1 < strpos( $css_class, 'wl-link' );
