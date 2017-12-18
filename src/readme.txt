@@ -144,7 +144,8 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.16.3 (2017-12-14) =
+= 3.16.4 (2017-12-14) =
+* Enhancement: [#739](https://github.com/insideout10/wordlift-plugin/issues/739): Change the color/background of the wizard's "grab a key" button and link it to the Pricing page.
 * Enhancement: [#736](https://github.com/insideout10/wordlift-plugin/issues/736): Add an option to link only the first entity occurrence.
 * Enhancement: [#735](https://github.com/insideout10/wordlift-plugin/issues/735): Remove the number of occurrences and sort by occurrences descending.
 * Fix: [#733](https://github.com/insideout10/wordlift-plugin/issues/733): JSON-LD shouldn't load on non-entity pages.
