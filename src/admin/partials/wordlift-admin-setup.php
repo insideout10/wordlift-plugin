@@ -106,11 +106,12 @@
 		       id="key" name="key" value=""
 		       autocomplete="off" placeholder="Activation Key">
 		<div class="btn-wrapper">
-			<a
-				href="https://wordlift.io/?utm_campaign=wl_activation_grab_the_key#plan-and-price"
+			<a id="btn-grab-a-key"
+				href="https://wordlift.io/pricing/?utm_campaign=wl_activation_grab_the_key"
 				target="_tab"
-				class="button"><?php esc_html_e( 'Grab a Key!', 'wordlift' ); ?></a><input
-				type="button" data-wl-next="wl-next" class="wl-default-action"
+				class="button wl-default-action"><?php esc_html_e( 'Grab a Key!', 'wordlift' ); ?></a><input
+				id="btn-license-key-next"
+				type="button" data-wl-next="wl-next" class="button"
 				value="<?php esc_attr_e( 'Next', 'wordlift' ); ?>">
 		</div>
 	</script>
