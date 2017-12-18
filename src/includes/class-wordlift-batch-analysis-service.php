@@ -199,15 +199,23 @@ class Wordlift_Batch_Analysis_Service {
 	private function get_sql() {
 		global $wpdb;
 
-		// Prepare the statement:
-		//  1. Insert into `postmeta` the meta keys and values:
-		//    a) state meta, with value of SUBMIT (0),
-		//    b) submit timestamp, with value of UTC timestamp,
-		//    c) link meta, with the provided value.
-		//  2. Join the current state value, can be used for filters by other
-		//     functions.
-		//  3. Filter by `post`/`page` types.
-		//  4. Filter by `publish` status.
+		/*
+		Prepare the statement:
+			1. Insert into `postmeta` the meta keys and values:
+				a) state meta, with value of SUBMIT (0),
+				b) submit timestamp, with value of UTC timestamp,
+				c) link meta, with the provided value.
+			2. Join the current state value, can be used for filters by other functions.
+			3. Filter by `post`/`page` types.
+			4. Filter by `publish` status.
+			5. Filter by `post_content` where autoselect includes/excludes posts with/without annotations.
+			6. Filter by `post_date_gmt` where `post_date_gmt` is the date from where analysis will start.
+			7. Filter by `post_date_gmt` where `post_date_gmt` is the date where analysis will end.
+			8. Filter by `post_id` where `include` is the posts id to include.
+			9. Filter by `post_id` where `exclude` is the posts id to exclude.
+		*/
+
+		// @codingStandardsIgnoreStart, Ignore phpcs sanitation errors.
 		return $wpdb->prepare(
 			"
 			INSERT INTO $wpdb->postmeta ( post_id, meta_key, meta_value )
@@ -225,10 +233,10 @@ class Wordlift_Batch_Analysis_Service {
 			WHERE p.post_type IN ('post', 'page')
 				AND p.post_status = 'publish'
 			"
-			. self::exclude_autoselected( $this->params['autoselected'] ) // Added.
+			. self::exclude_autoselected( $this->params['autoselected'] )
 			. self::and_post_date_from( $this->params['from'] )
 			. self::and_post_date_to( $this->params['to'] )
-			. self::include_posts( $this->params['include'] ) // Added.
+			. self::include_posts( $this->params['include'] )
 			. self::exclude_posts( $this->params['exclude'] )
 			,
 			self::STATE_META_KEY,
@@ -237,6 +245,7 @@ class Wordlift_Batch_Analysis_Service {
 			$this->params['link'],
 			self::STATE_META_KEY
 		);
+		// @codingStandardsIgnoreEnd
 	}
 
 	/**
@@ -252,7 +261,7 @@ class Wordlift_Batch_Analysis_Service {
 		// Submit the posts/pages and return the number of affected results.
 		// We're using a SQL query here because we could have potentially
 		// thousands of rows.
-		$count = $wpdb->query( $this->get_sql() );
+		$count = $wpdb->query( $this->get_sql() ); // WPCS: cache ok, db call ok.
 
 		// Request Batch Analysis (the operation is handled asynchronously).
 		do_action( 'wl_batch_analysis_request' );
@@ -284,7 +293,7 @@ class Wordlift_Batch_Analysis_Service {
 			",
 			self::STATE_META_KEY,
 			self::STATE_REQUEST
-		) );
+		) ); // WPCS: cache ok, db call ok.
 
 	}
 
@@ -295,7 +304,7 @@ class Wordlift_Batch_Analysis_Service {
 	 */
 	public function request() {
 
-		$this->log->debug( "Requesting analysis..." );
+		$this->log->debug( 'Requesting analysis...' );
 
 		// By default 5 posts of any post type are returned.
 		$posts = get_posts( array(
@@ -332,7 +341,6 @@ class Wordlift_Batch_Analysis_Service {
 
 				$this->set_state( $id, self::STATE_ERROR );
 			}
-
 		}
 
 		// Call the `wl_batch_analysis_request` action again. This is going
@@ -348,7 +356,7 @@ class Wordlift_Batch_Analysis_Service {
 	 */
 	public function complete() {
 
-		$this->log->debug( "Requesting results..." );
+		$this->log->debug( 'Requesting results...' );
 
 		// By default 5 posts of any post type are returned.
 		$posts = get_posts( array(
@@ -406,7 +414,6 @@ class Wordlift_Batch_Analysis_Service {
 
 			// @todo: implement a kind of timeout that sets an error if the
 			// results haven't been received after a long time.
-
 		}
 
 		// Call the `wl_batch_analysis_request` action again. This is going
@@ -688,6 +695,7 @@ class Wordlift_Batch_Analysis_Service {
 	 */
 	public function set_params( $request ) {
 		// Build params array and check if param exists.
+		// @codingStandardsIgnoreStart, Ignore phpcs indentation errors.
 		$params = array(
 			'link'         => ( isset( $request['link'] ) )         ? $request['link']            : null,
 			'autoselected' => ( isset( $request['autoselected'] ) ) ? $request['autoselected']    : null,
@@ -696,6 +704,7 @@ class Wordlift_Batch_Analysis_Service {
 			'from'         => ( isset( $request['from'] ) )         ? $request['from']            : null,
 			'to'           => ( isset( $request['to'] ) )           ? $request['to']              : null,
 		);
+		// @codingStandardsIgnoreEnd
 
 		// Set the params.
 		$this->params = $params;
@@ -712,7 +721,7 @@ class Wordlift_Batch_Analysis_Service {
 	 */
 	public static function and_post_date_from( $from ) {
 		// Bail if the param is not set.
-		if ( null == $from ) {
+		if ( null === $from ) {
 			return;
 		}
 
@@ -730,7 +739,7 @@ class Wordlift_Batch_Analysis_Service {
 	 */
 	public static function and_post_date_to( $to ) {
 		// Bail if the param is not set.
-		if ( null == $to ) {
+		if ( null === $to ) {
 			return;
 		}
 
@@ -748,7 +757,7 @@ class Wordlift_Batch_Analysis_Service {
 	 */
 	public static function include_posts( $include ) {
 		// Bail if the param is not set.
-		if ( null == $include ) {
+		if ( null === $include ) {
 			return;
 		}
 
@@ -758,7 +767,7 @@ class Wordlift_Batch_Analysis_Service {
 	/**
 	 * Exclude specific posts by ids.
 	 *
-	 * @param array $exclude Array of post ids to exclude
+	 * @param array $exclude Array of post ids to exclude.
 	 *
 	 * @since  3.17.0
 	 *
@@ -766,7 +775,7 @@ class Wordlift_Batch_Analysis_Service {
 	 */
 	public static function exclude_posts( $exclude ) {
 		// Bail if the param is not set.
-		if ( null == $exclude ) {
+		if ( null === $exclude ) {
 			return;
 		}
 
@@ -776,14 +785,16 @@ class Wordlift_Batch_Analysis_Service {
 	/**
 	 * Add a clause to analyze all auto selected posts, i.e. non annotated posts.
 	 *
-	 * @param string $autoselected The autoselected setting ('yes'/'no')
+	 * @param string $autoselected The autoselected setting ('yes'/'no').
+	 *
+	 * @since  3.17.0
 	 *
 	 * @return string The autoselect clause.
 	 */
 	public static function exclude_autoselected( $autoselected ) {
 		// Bail if the param is not set or if it's set to `no`.
 		if (
-			null == $autoselected ||
+			null === $autoselected ||
 			'no' === $autoselected
 		) {
 			return;
