@@ -127,6 +127,20 @@ class Wordlift_Batch_Analysis_Service {
 	const RESPONSE_QUEUE = 'processing';
 
 	/**
+	 * Regular expressions that match interpolation errors.
+	 *
+	 * @since  3.17.0
+	 */
+	const INTERPOLATION_PATTERN = array(
+		// Matches word before the annotation.
+		'~\w<[a-z]+ id="urn:[^"]+" class="[^"]+" itemid="[^"]+">(.*?)<\/[a-z]+>~',
+		// Matches word after the annotation.
+		'~<[a-z]+ id="urn:[^"]+" class="[^"]+" itemid="[^"]+">(.*?)<\/[a-z]+>\w~',
+		// Matches space in the beginning of annotation name.
+		'~<[a-z]+ id="urn:[^"]+" class="[^"]+" itemid="[^"]+">(\s.*?)<\/[a-z]+>~',
+	);
+
+	/**
 	 * The {@link Wordlift} plugin instance.
 	 *
 	 * @since  3.14.0
@@ -185,6 +199,16 @@ class Wordlift_Batch_Analysis_Service {
 			'complete',
 		) );
 
+		// Fix interpolation errors from Batch Analysis.
+		add_filter(
+			'wl_set_post_content_warning',
+			array(
+				$this,
+				'fix_interpolation_errors',
+			),
+			10,
+			2
+		);
 	}
 
 	/**
@@ -397,9 +421,9 @@ class Wordlift_Batch_Analysis_Service {
 					continue;
 				}
 
-				$this->set_warning_based_on_content( $id, $json->content );
+				$content = $this->set_warning_based_on_content( $json->content, $id );
 
-				$content = wp_slash( $json->content );
+				$content = wp_slash( $content );
 
 				// Post array with the new anotated content.
 				$data = array(
@@ -446,12 +470,12 @@ class Wordlift_Batch_Analysis_Service {
 	 *
 	 * @since 3.14.2
 	 *
-	 * @param int    $post_id The {@link WP_Post}'s id.
 	 * @param string $content The {@link WP_Post}'s content.
+	 * @param int    $post_id The {@link WP_Post}'s id.
 	 *
 	 * @return string The content (for chaining operations).
 	 */
-	private function set_warning_based_on_content( $post_id, $content ) {
+	private function set_warning_based_on_content( $content, $post_id ) {
 
 		$matches = array();
 
@@ -462,7 +486,32 @@ class Wordlift_Batch_Analysis_Service {
 		// Set the warning flag accordingly.
 		$this->set_warning( $post_id, $warning );
 
-		return $content;
+		/**
+		 * Filter: 'wl_set_post_content_warning' - Allow third parties to hook and modify the post content that has errors after the analysis
+		 *
+		 * @since  3.17.0
+		 * @api string $content Postarr with post id and the new post content.
+		 * @api int    $id      Post ID.
+		 */
+		return apply_filters( 'wl_set_post_content_warning', $content, $post_id );
+	}
+
+	/**
+	 * Fix interpolation errors raised by Batch Analysis
+	 *
+	 * @param string $content The {@link WP_Post}'s content.
+	 * @param int    $id      The {@link WP_Post}'s id.
+	 *
+	 * @since 3.17.0
+	 *
+	 * @return string Post content without interpolations.
+	 */
+	public function fix_interpolation_errors( $content, $id ) {
+
+		$this->log->debug( "Begin fixing post $id interpolations" );
+
+		// Remove all interpolations from the content.
+		return preg_replace( self::INTERPOLATION_PATTERN, '$1', $content );
 	}
 
 	/**
