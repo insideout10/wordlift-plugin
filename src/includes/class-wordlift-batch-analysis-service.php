@@ -154,6 +154,15 @@ class Wordlift_Batch_Analysis_Service {
 	private $log;
 
 	/**
+	 * Request params
+	 *
+	 * @since  3.17.0
+	 * @access private
+	 * @var array $params Request Params
+	 */
+	private $params;
+
+	/**
 	 * The {@link Class_Wordlift_Batch_Analys_Service} instance.
 	 *
 	 * @since 3.14.0
@@ -185,22 +194,28 @@ class Wordlift_Batch_Analysis_Service {
 	 *
 	 * @since 3.14.2
 	 *
-	 * @param string $link The link setting ('yes'/'no').
-	 *
 	 * @return string The base SQL.
 	 */
-	private function get_sql( $link ) {
+	private function get_sql() {
 		global $wpdb;
 
-		// Prepare the statement:
-		//  1. Insert into `postmeta` the meta keys and values:
-		//    a) state meta, with value of SUBMIT (0),
-		//    b) submit timestamp, with value of UTC timestamp,
-		//    c) link meta, with the provided value.
-		//  2. Join the current state value, can be used for filters by other
-		//     functions.
-		//  3. Filter by `post`/`page` types.
-		//  4. Filter by `publish` status.
+		/*
+		Prepare the statement:
+			1. Insert into `postmeta` the meta keys and values:
+				a) state meta, with value of SUBMIT (0),
+				b) submit timestamp, with value of UTC timestamp,
+				c) link meta, with the provided value.
+			2. Join the current state value, can be used for filters by other functions.
+			3. Filter by `post`/`page` types.
+			4. Filter by `publish` status.
+			5. Filter by `post_content` where autoselect includes/excludes posts with/without annotations.
+			6. Filter by `post_date_gmt` where `post_date_gmt` is the date from where analysis will start.
+			7. Filter by `post_date_gmt` where `post_date_gmt` is the date where analysis will end.
+			8. Filter by `post_id` where `include` is the posts id to include.
+			9. Filter by `post_id` where `exclude` is the posts id to exclude.
+		*/
+
+		// @codingStandardsIgnoreStart, Ignore phpcs sanitation errors.
 		return $wpdb->prepare(
 			"
 			INSERT INTO $wpdb->postmeta ( post_id, meta_key, meta_value )
@@ -217,71 +232,20 @@ class Wordlift_Batch_Analysis_Service {
 					AND batch_analysis_state.meta_key = %s
 			WHERE p.post_type IN ('post', 'page')
 				AND p.post_status = 'publish'
-			",
+			"
+			. self::exclude_autoselected( $this->params['autoselected'] )
+			. self::and_post_date_from( $this->params['from'] )
+			. self::and_post_date_to( $this->params['to'] )
+			. self::include_posts( $this->params['include'] )
+			. self::exclude_posts( $this->params['exclude'] )
+			,
 			self::STATE_META_KEY,
 			self::SUBMIT_TIMESTAMP_META_KEY,
 			self::LINK_META_KEY,
-			$link,
+			$this->params['link'],
 			self::STATE_META_KEY
 		);
-	}
-
-	/**
-	 * Submit for analysis all the posts/pages which do not have annotations
-	 * and haven't been analyzed before.
-	 *
-	 * @since 3.14.2
-	 *
-	 * @param string $link The link setting.
-	 *
-	 * @return false|int The number of submitted {@link WP_Post}s or false on
-	 *                   error.
-	 */
-	public function submit_auto_selected_posts( $link ) {
-		global $wpdb;
-
-		// Submit the posts/pages and return the number of affected results.
-		// We're using a SQL query here because we could have potentially
-		// thousands of rows.
-		$count = $wpdb->query( $wpdb->prepare(
-			$this->get_sql( $link ) .
-			"
-				AND batch_analysis_state.meta_value IS NULL
-				AND p.post_content NOT REGEXP %s;
-			",
-			'<[a-z]+ id="urn:[^"]+" class="[^"]+" itemid="[^"]+">'
-		) );
-
-		// Request Batch Analysis (the operation is handled asynchronously).
-		do_action( 'wl_batch_analysis_request' );
-
-		// Divide the count by 3 to get the number of posts/pages queued.
-		return $count / 3;
-	}
-
-	/**
-	 * Submit all posts for analysis.
-	 *
-	 * @since 3.14.5
-	 *
-	 * @param string $link The link setting.
-	 *
-	 * @return false|int The number of submitted {@link WP_Post}s or false on
-	 *                   error.
-	 */
-	public function submit_all_posts( $link ) {
-		global $wpdb;
-
-		// Submit the posts/pages and return the number of affected results.
-		// We're using a SQL query here because we could have potentially
-		// thousands of rows.
-		$count = $wpdb->query( $this->get_sql( $link ) );
-
-		// Request Batch Analysis (the operation is handled asynchronously).
-		do_action( 'wl_batch_analysis_request' );
-
-		// Divide the count by 3 to get the number of posts/pages queued.
-		return $count / 3;
+		// @codingStandardsIgnoreEnd
 	}
 
 	/**
@@ -289,22 +253,15 @@ class Wordlift_Batch_Analysis_Service {
 	 *
 	 * @since 3.14.2
 	 *
-	 * @param int|array $post_ids A single {@link WP_Post}'s id or an array of
-	 *                            {@link WP_Post}s' ids.
-	 * @param string    $link     The link setting.
-	 *
 	 * @return int The number of submitted {@link WP_Post}s or false on error.
 	 */
-	public function submit( $post_ids, $link ) {
+	public function submit() {
 		global $wpdb;
 
 		// Submit the posts/pages and return the number of affected results.
 		// We're using a SQL query here because we could have potentially
 		// thousands of rows.
-		$count = $wpdb->query(
-			$this->get_sql( $link ) .
-			' AND p.ID IN ( ' . implode( ',', wp_parse_id_list( $post_ids ) ) . ' )'
-		);
+		$count = $wpdb->query( $this->get_sql() ); // WPCS: cache ok, db call ok.
 
 		// Request Batch Analysis (the operation is handled asynchronously).
 		do_action( 'wl_batch_analysis_request' );
@@ -336,7 +293,7 @@ class Wordlift_Batch_Analysis_Service {
 			",
 			self::STATE_META_KEY,
 			self::STATE_REQUEST
-		) );
+		) ); // WPCS: cache ok, db call ok.
 
 	}
 
@@ -347,7 +304,7 @@ class Wordlift_Batch_Analysis_Service {
 	 */
 	public function request() {
 
-		$this->log->debug( "Requesting analysis..." );
+		$this->log->debug( 'Requesting analysis...' );
 
 		// By default 5 posts of any post type are returned.
 		$posts = get_posts( array(
@@ -384,7 +341,6 @@ class Wordlift_Batch_Analysis_Service {
 
 				$this->set_state( $id, self::STATE_ERROR );
 			}
-
 		}
 
 		// Call the `wl_batch_analysis_request` action again. This is going
@@ -400,7 +356,7 @@ class Wordlift_Batch_Analysis_Service {
 	 */
 	public function complete() {
 
-		$this->log->debug( "Requesting results..." );
+		$this->log->debug( 'Requesting results...' );
 
 		// By default 5 posts of any post type are returned.
 		$posts = get_posts( array(
@@ -458,7 +414,6 @@ class Wordlift_Batch_Analysis_Service {
 
 			// @todo: implement a kind of timeout that sets an error if the
 			// results haven't been received after a long time.
-
 		}
 
 		// Call the `wl_batch_analysis_request` action again. This is going
@@ -729,6 +684,126 @@ class Wordlift_Batch_Analysis_Service {
 			'meta_key'    => self::WARNING_META_KEY,
 			'meta_value'  => 'yes',
 		) );
+	}
+
+	/**
+	 * Set the query params from users request.
+	 *
+	 * @param array $request Array of request params.
+	 *
+	 * @since 3.17.0
+	 */
+	public function set_params( $request ) {
+		// Build params array and check if param exists.
+		// @codingStandardsIgnoreStart, Ignore phpcs indentation errors.
+		$params = array(
+			'link'         => ( isset( $request['link'] ) )         ? $request['link']            : null,
+			'autoselected' => ( isset( $request['autoselected'] ) ) ? $request['autoselected']    : null,
+			'include'      => ( isset( $request['include'] ) )      ? (array) $request['include'] : null,
+			'exclude'      => ( isset( $request['exclude'] ) )      ? (array) $request['exclude'] : null,
+			'from'         => ( isset( $request['from'] ) )         ? $request['from']            : null,
+			'to'           => ( isset( $request['to'] ) )           ? $request['to']              : null,
+		);
+		// @codingStandardsIgnoreEnd
+
+		// Set the params.
+		$this->params = $params;
+	}
+
+	/**
+	 * Add the start date clause.
+	 *
+	 * @param  string $from The date where the analisys should start.
+	 *
+	 * @since  3.17.0
+	 *
+	 * @return string The start `post_date_gmt` clause
+	 */
+	public static function and_post_date_from( $from ) {
+		// Bail if the param is not set.
+		if ( null === $from ) {
+			return;
+		}
+
+		return " AND p.post_date_gmt > '" . $from . "'";
+	}
+
+	/**
+	 * Add the end date clause.
+	 *
+	 * @param  string $to The end date where the analysis should end.
+	 *
+	 * @since  3.17.0
+	 *
+	 * @return string The end `post_date_gmt` clause.
+	 */
+	public static function and_post_date_to( $to ) {
+		// Bail if the param is not set.
+		if ( null === $to ) {
+			return;
+		}
+
+		return " AND p.post_date_gmt < '" . $to . "'";
+	}
+
+	/**
+	 * Include specific posts by their id in the analysis.
+	 *
+	 * @param array $include Array of post ids to include.
+	 *
+	 * @since  3.17.0
+	 *
+	 * @return string The posts IN clause.
+	 */
+	public static function include_posts( $include ) {
+		// Bail if the param is not set.
+		if ( null === $include ) {
+			return;
+		}
+
+		return ' AND p.ID IN ( ' . implode( ',', wp_parse_id_list( $include ) ) . ' )';
+	}
+
+	/**
+	 * Exclude specific posts by ids.
+	 *
+	 * @param array $exclude Array of post ids to exclude.
+	 *
+	 * @since  3.17.0
+	 *
+	 * @return string The posts NOT IN clause.
+	 */
+	public static function exclude_posts( $exclude ) {
+		// Bail if the param is not set.
+		if ( null === $exclude ) {
+			return;
+		}
+
+		return ' AND p.ID NOT IN ( ' . implode( ',', wp_parse_id_list( $exclude ) ) . ' )';
+	}
+
+	/**
+	 * Add a clause to analyze all auto selected posts, i.e. non annotated posts.
+	 *
+	 * @param string $autoselected The autoselected setting ('yes'/'no').
+	 *
+	 * @since  3.17.0
+	 *
+	 * @return string The autoselect clause.
+	 */
+	public static function exclude_autoselected( $autoselected ) {
+		// Bail if the param is not set or if it's set to `no`.
+		if (
+			null === $autoselected ||
+			'no' === $autoselected
+		) {
+			return;
+		}
+
+		return "
+			AND batch_analysis_state.meta_value IS NULL
+			AND p.post_content NOT REGEXP '<[a-z]+ id=\"urn:[^\"]+\" class=\"[^\"]+\" itemid=\"[^\"]+\">';
+		";
 	}
 
 }

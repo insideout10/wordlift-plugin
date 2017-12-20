@@ -36,59 +36,19 @@ class Wordlift_Batch_Analysis_Adapter {
 	}
 
 	/**
-	 * Submit all the auto selected posts, i.e. non annotated posts.
-	 *
-	 * @since 3.14.2
-	 */
-	public function submit_auto_selected_posts() {
-
-		if ( ! isset( $_REQUEST['link'] ) ) {
-			wp_die( 'The `link` parameter is required.' );
-		}
-
-		$count = $this->batch_analysis_service->submit_auto_selected_posts( $_REQUEST['link'] );
-
-		// Clear any buffer.
-		ob_clean();
-
-		// Send the response.
-		wp_send_json_success( array( 'count' => $count ) );
-
-	}
-
-	/**
-	 * Submit all posts for analysis.
-	 *
-	 * @since 3.14.5
-	 */
-	public function submit_all_posts() {
-
-		if ( ! isset( $_REQUEST['link'] ) ) {
-			wp_die( 'The `link` parameter is required.' );
-		}
-
-		$count = $this->batch_analysis_service->submit_all_posts( $_REQUEST['link'] );
-
-		// Clear any buffer.
-		ob_clean();
-
-		// Send the response.
-		wp_send_json_success( array( 'count' => $count ) );
-
-	}
-
-	/**
-	 * Submit the specified post for batch analysis.
+	 * Submit the posts for batch analysis.
 	 *
 	 * @since 3.14.2
 	 */
 	public function submit() {
 
-		if ( ! isset( $_REQUEST['link'] ) || ! isset( $_REQUEST['post'] ) ) {
-			wp_die( 'The `link` and `post` parameters are required.' );
+		if ( ! isset( $_REQUEST['link'] ) ) {
+			wp_die( 'The `link` parameter is required.' );
 		}
 
-		$count = $this->batch_analysis_service->submit( (array) $_REQUEST['post'], $_REQUEST['link'] );
+		$this->batch_analysis_service->set_params( $_REQUEST );
+
+		$count = $this->batch_analysis_service->submit();
 
 		// Clear any buffer.
 		ob_clean();
