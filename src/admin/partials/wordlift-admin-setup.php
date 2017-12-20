@@ -224,7 +224,7 @@
 	   class="fa fa-times wl-close"></a>
 
 	<header>
-		<h1><img src="../../images/logo-wl-transparent-240x90.png alt="WordLift"></h1>
+		<h1><img src="../../images/logo-wl-transparent-240x90.png" alt="WordLift"></h1>
 		<img
 			src="<?php echo plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'images/shapes.png'; ?>" />
 	</header>
