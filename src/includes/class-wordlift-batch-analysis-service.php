@@ -263,7 +263,7 @@ class Wordlift_Batch_Analysis_Service {
 			WHERE p.post_type = %s
 				AND p.post_status = 'publish'
 			"
-			. self::exclude_autoselected( $this->params['autoselected'] )
+			. self::include_annotated( $this->params['include_annotated'] )
 			. self::and_post_date_from( $this->params['from'] )
 			. self::and_post_date_to( $this->params['to'] )
 			. self::include_posts( $this->params['include'] )
@@ -343,7 +343,7 @@ class Wordlift_Batch_Analysis_Service {
 			'meta_key'   => self::STATE_META_KEY,
 			'meta_value' => self::STATE_SUBMIT,
 			'orderby'    => 'ID',
-			'post_type'  => $this->params['post_type'],
+			'post_type'  => 'any',
 		) );
 
 		// Bail out if there are no submitted posts.
@@ -396,7 +396,7 @@ class Wordlift_Batch_Analysis_Service {
 			'meta_key'   => self::STATE_META_KEY,
 			'meta_value' => self::STATE_REQUEST,
 			'orderby'    => 'ID',
-			'post_type'  => $this->params['post_type'],
+			'post_type'  => 'any',
 		) );
 
 		// Bail out if there are no submitted posts.
@@ -778,14 +778,14 @@ class Wordlift_Batch_Analysis_Service {
 		// Build params array and check if param exists.
 		// @codingStandardsIgnoreStart, Ignore phpcs indentation errors.
 		$params = array(
-			'link'           => ( isset( $request['link'] ) )           ? $request['link']            : null,
-			'autoselected'   => ( isset( $request['autoselected'] ) )   ? $request['autoselected']    : null,
-			'include'        => ( isset( $request['include'] ) )        ? (array) $request['include'] : null,
-			'exclude'        => ( isset( $request['exclude'] ) )        ? (array) $request['exclude'] : null,
-			'from'           => ( isset( $request['from'] ) )           ? $request['from']            : null,
-			'to'             => ( isset( $request['to'] ) )             ? $request['to']              : null,
-			'minOccurrences' => ( isset( $request['minOccurrences'] ) ) ? $request['minOccurrences']  : 1,
-			'post_type'      => ( isset( $request['post_type'] ) )      ? $request['post_type']       : 'post',
+			'link'              => ( isset( $request['link'] ) )                ? $request['link']              : null,
+			'include_annotated' => ( isset( $request['include_annotated'] ) )   ? $request['include_annotated'] : null,
+			'include'           => ( isset( $request['include'] ) )             ? (array) $request['include']   : null,
+			'exclude'           => ( isset( $request['exclude'] ) )             ? (array) $request['exclude']   : null,
+			'from'              => ( isset( $request['from'] ) )                ? $request['from']              : null,
+			'to'                => ( isset( $request['to'] ) )                  ? $request['to']                : null,
+			'minOccurrences'    => ( isset( $request['min_occurrences'] ) )     ? $request['min_occurrences']   : 1,
+			'post_type'         => ( isset( $request['post_type'] ) )           ? $request['post_type']         : 'post',
 		);
 		// @codingStandardsIgnoreEnd
 
@@ -868,17 +868,17 @@ class Wordlift_Batch_Analysis_Service {
 	/**
 	 * Add a clause to analyze all auto selected posts, i.e. non annotated posts.
 	 *
-	 * @param string $autoselected The autoselected setting ('yes'/'no').
+	 * @param string $include The include setting ('yes'/'no').
 	 *
 	 * @since  3.17.0
 	 *
 	 * @return string The autoselect clause.
 	 */
-	public static function exclude_autoselected( $autoselected ) {
+	public static function include_annotated( $include ) {
 		// Bail if the param is not set or if it's set to `no`.
 		if (
-			null === $autoselected ||
-			'no' === $autoselected
+			! empty( $include ) &&
+			'yes' === $include
 		) {
 			return;
 		}
@@ -920,7 +920,7 @@ class Wordlift_Batch_Analysis_Service {
 	 */
 	public function get_link_options( $link, $min_occurrences ) {
 		$link_options = array(
-			'links'         => $link, // Link options.
+			'links'          => $link, // Link options.
 			'minOccurrences' => $min_occurrences, // Minimum occurrences
 		);
 
