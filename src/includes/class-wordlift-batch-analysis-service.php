@@ -926,4 +926,13 @@ class Wordlift_Batch_Analysis_Service {
 
 		return serialize( $link_options );
 	}
+
+	/**
+	 * Returns configuration params.
+	 *
+	 * @return array Array of configuration params
+	 */
+	public function get_params() {
+		return $this->params;
+	}
 }
