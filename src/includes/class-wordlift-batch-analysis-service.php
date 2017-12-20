@@ -283,11 +283,11 @@ class Wordlift_Batch_Analysis_Service {
 	 * @return int The number of submitted {@link WP_Post}s or false on error.
 	 */
 	public function submit() {
- 		global $wpdb;
-  
-  		// Submit the posts/pages and return the number of affected results.
-  		// We're using a SQL query here because we could have potentially
-  		// thousands of rows.
+		global $wpdb;
+
+		// Submit the posts/pages and return the number of affected results.
+		// We're using a SQL query here because we could have potentially
+		// thousands of rows.
 		$count = $wpdb->query( $this->get_sql() ); // WPCS: cache ok, db call ok.
 
 		// Request Batch Analysis (the operation is handled asynchronously).
@@ -775,7 +775,7 @@ class Wordlift_Batch_Analysis_Service {
 			'exclude'        => ( isset( $request['exclude'] ) )        ? (array) $request['exclude'] : null,
 			'from'           => ( isset( $request['from'] ) )           ? $request['from']            : null,
 			'to'             => ( isset( $request['to'] ) )             ? $request['to']              : null,
-			'minOccurrences' => ( isset( $request['minOccurrences'] ) ) ? $request['minOccurrences']  : null,
+			'minOccurrences' => ( isset( $request['minOccurrences'] ) ) ? $request['minOccurrences']  : 1,
 		);
 		// @codingStandardsIgnoreEnd
 
