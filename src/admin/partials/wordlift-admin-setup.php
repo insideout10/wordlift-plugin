@@ -224,9 +224,8 @@
 	   class="fa fa-times wl-close"></a>
 
 	<header>
-		<h1><strong>Word</strong>Lift</h1>
-		<img
-			src="<?php echo plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'images/shapes.png'; ?>" />
+		<h1><img class="wizard-logo" src="<?php echo plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'images/logo-wl-transparent-240x90.png'; ?>" /></h1>
+		<img class="shapes" src="<?php echo plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'images/shapes.png'; ?>" />
 	</header>
 
 
