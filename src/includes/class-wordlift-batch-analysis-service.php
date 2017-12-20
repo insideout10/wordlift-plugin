@@ -154,6 +154,15 @@ class Wordlift_Batch_Analysis_Service {
 	private $log;
 
 	/**
+	 * Post type to be analysed.
+	 *
+	 * @since  3.17.0
+	 * @access private
+	 * @var string $post_type Post type to be analyzed.
+	 */
+	private $post_type;
+
+	/**
 	 * The {@link Class_Wordlift_Batch_Analys_Service} instance.
 	 *
 	 * @since 3.14.0
@@ -215,14 +224,15 @@ class Wordlift_Batch_Analysis_Service {
 			LEFT JOIN $wpdb->postmeta batch_analysis_state
 				ON batch_analysis_state.post_id = p.ID
 					AND batch_analysis_state.meta_key = %s
-			WHERE p.post_type IN ('post', 'page')
+			WHERE p.post_type = %s
 				AND p.post_status = 'publish'
 			",
 			self::STATE_META_KEY,
 			self::SUBMIT_TIMESTAMP_META_KEY,
 			self::LINK_META_KEY,
 			$link,
-			self::STATE_META_KEY
+			self::STATE_META_KEY,
+			$this->get_post_type()
 		);
 	}
 
@@ -355,6 +365,7 @@ class Wordlift_Batch_Analysis_Service {
 			'meta_key'   => self::STATE_META_KEY,
 			'meta_value' => self::STATE_SUBMIT,
 			'orderby'    => 'ID',
+			'post_type'  => 'any', // Add any because posts from multiple posts types may be waiting.
 		) );
 
 		// Bail out if there are no submitted posts.
@@ -408,6 +419,7 @@ class Wordlift_Batch_Analysis_Service {
 			'meta_key'   => self::STATE_META_KEY,
 			'meta_value' => self::STATE_REQUEST,
 			'orderby'    => 'ID',
+			'post_type'  => 'any', // Add any because posts from multiple posts types may be waiting.
 		) );
 
 		// Bail out if there are no submitted posts.
@@ -607,6 +619,7 @@ class Wordlift_Batch_Analysis_Service {
 			'meta_key'       => self::STATE_META_KEY,
 			'meta_value'     => self::STATE_SUBMIT,
 			'orderby'        => 'ID',
+			'post_type'      => 'any', // Add any because posts from multiple posts types may be waiting.
 		) );
 	}
 
@@ -627,6 +640,7 @@ class Wordlift_Batch_Analysis_Service {
 			'meta_key'       => self::STATE_META_KEY,
 			'meta_value'     => self::STATE_REQUEST,
 			'orderby'        => 'ID',
+			'post_type'      => 'any', // Add any because posts from multiple posts types may be waiting.
 		) );
 	}
 
@@ -728,7 +742,30 @@ class Wordlift_Batch_Analysis_Service {
 			'post_status' => 'any',
 			'meta_key'    => self::WARNING_META_KEY,
 			'meta_value'  => 'yes',
+			'post_type'   => 'any', // Add any because posts from multiple posts types may have warnings.
 		) );
 	}
 
+	/**
+	 * Set the post type which posts have to be analyzes.
+	 *
+	 * @param string $post_type The post type to set.
+	 *
+	 * @since 3.17.0
+	 */
+	public function set_post_type( $post_type ) {
+		$this->post_type = $post_type;
+	}
+
+	/**
+	 * Returns the post type that should be analyzed.
+	 *
+	 * @since 3.17.0
+	 *
+	 * @return string $post_type The post type which posts have to be analyzed.
+	 */
+	public function get_post_type() {
+		// Return post if the post types are not set.
+		return ( ! empty( $this->post_type ) ) ? $this->post_type : 'post';
+	}
 }
