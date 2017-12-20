@@ -46,7 +46,7 @@ class Wordlift_Batch_Analysis_Adapter {
 			wp_die( 'The `link` parameter is required.' );
 		}
 
-		$count = $this->batch_analysis_service->submit_auto_selected_posts( $_REQUEST['link'] );
+		$count = $this->batch_analysis_service->submit_auto_selected_posts( $_REQUEST['link'], $this->get_minimum_occurrences() );
 
 		// Clear any buffer.
 		ob_clean();
@@ -67,7 +67,7 @@ class Wordlift_Batch_Analysis_Adapter {
 			wp_die( 'The `link` parameter is required.' );
 		}
 
-		$count = $this->batch_analysis_service->submit_all_posts( $_REQUEST['link'] );
+		$count = $this->batch_analysis_service->submit_all_posts( $_REQUEST['link'], $this->get_minimum_occurrences() );
 
 		// Clear any buffer.
 		ob_clean();
@@ -88,7 +88,7 @@ class Wordlift_Batch_Analysis_Adapter {
 			wp_die( 'The `link` and `post` parameters are required.' );
 		}
 
-		$count = $this->batch_analysis_service->submit( (array) $_REQUEST['post'], $_REQUEST['link'] );
+		$count = $this->batch_analysis_service->submit( (array) $_REQUEST['post'], $_REQUEST['link'], $this->get_minimum_occurrences() );
 
 		// Clear any buffer.
 		ob_clean();
@@ -138,6 +138,15 @@ class Wordlift_Batch_Analysis_Adapter {
 		// Send the response.
 		wp_send_json_success();
 
+	}
+
+	/**
+	 * Returns the minimum occurrences required for post to be anotated.
+	 *
+	 * @return int Minimum occurrences
+	 */
+	public function get_minimum_occurrences() {
+		return ( isset( $_REQUEST['minOccurrences'] ) ) ? (int) $_REQUEST['minOccurrences'] : 1;
 	}
 
 }
