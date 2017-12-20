@@ -223,6 +223,12 @@ class Wordlift_Batch_Analysis_Service {
 	private function get_sql() {
 		global $wpdb;
 
+		// Get the link options.
+		$link_options = $this->get_link_options(
+			$this->params['link'],
+			$this->params['minOccurrences']
+		);
+
 		/*
 		Prepare the statement:
 			1. Insert into `postmeta` the meta keys and values:
@@ -254,7 +260,7 @@ class Wordlift_Batch_Analysis_Service {
 			LEFT JOIN $wpdb->postmeta batch_analysis_state
 				ON batch_analysis_state.post_id = p.ID
 					AND batch_analysis_state.meta_key = %s
-			WHERE p.post_type IN ('post', 'page')
+			WHERE p.post_type = %s
 				AND p.post_status = 'publish'
 			"
 			. self::exclude_autoselected( $this->params['autoselected'] )
@@ -266,11 +272,9 @@ class Wordlift_Batch_Analysis_Service {
 			self::STATE_META_KEY,
 			self::SUBMIT_TIMESTAMP_META_KEY,
 			self::LINK_META_KEY,
-			$this->get_link_options(
-				$this->params['link'],
-				$this->params['minOccurrences']
-			),
-			self::STATE_META_KEY
+			$link_options,
+			self::STATE_META_KEY,
+			$this->params['post_type']
 		);
 		// @codingStandardsIgnoreEnd
 	}
@@ -339,6 +343,7 @@ class Wordlift_Batch_Analysis_Service {
 			'meta_key'   => self::STATE_META_KEY,
 			'meta_value' => self::STATE_SUBMIT,
 			'orderby'    => 'ID',
+			'post_type'  => $this->params['post_type'],
 		) );
 
 		// Bail out if there are no submitted posts.
@@ -391,6 +396,7 @@ class Wordlift_Batch_Analysis_Service {
 			'meta_key'   => self::STATE_META_KEY,
 			'meta_value' => self::STATE_REQUEST,
 			'orderby'    => 'ID',
+			'post_type'  => $this->params['post_type'],
 		) );
 
 		// Bail out if there are no submitted posts.
@@ -632,6 +638,7 @@ class Wordlift_Batch_Analysis_Service {
 			'meta_key'       => self::STATE_META_KEY,
 			'meta_value'     => self::STATE_SUBMIT,
 			'orderby'        => 'ID',
+			'post_type'      => 'any', // Add any because posts from multiple posts types may be waiting.
 		) );
 	}
 
@@ -652,6 +659,7 @@ class Wordlift_Batch_Analysis_Service {
 			'meta_key'       => self::STATE_META_KEY,
 			'meta_value'     => self::STATE_REQUEST,
 			'orderby'        => 'ID',
+			'post_type'      => 'any', // Add any because posts from multiple posts types may be waiting.
 		) );
 	}
 
@@ -755,6 +763,7 @@ class Wordlift_Batch_Analysis_Service {
 			'post_status' => 'any',
 			'meta_key'    => self::WARNING_META_KEY,
 			'meta_value'  => 'yes',
+			'post_type'   => 'any', // Add any because posts from multiple posts types may be waiting.
 		) );
 	}
 
@@ -776,6 +785,7 @@ class Wordlift_Batch_Analysis_Service {
 			'from'           => ( isset( $request['from'] ) )           ? $request['from']            : null,
 			'to'             => ( isset( $request['to'] ) )             ? $request['to']              : null,
 			'minOccurrences' => ( isset( $request['minOccurrences'] ) ) ? $request['minOccurrences']  : 1,
+			'post_type'      => ( isset( $request['post_type'] ) )      ? $request['post_type']       : 'post',
 		);
 		// @codingStandardsIgnoreEnd
 
