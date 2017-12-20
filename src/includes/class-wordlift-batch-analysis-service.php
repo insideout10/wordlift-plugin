@@ -705,7 +705,6 @@ class Wordlift_Batch_Analysis_Service {
 	}
 
 	/**
-<<<<<<< HEAD
 	 * Set the query params from users request.
 	 *
 	 * @param array $request Array of request params.
