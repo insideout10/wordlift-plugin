@@ -133,9 +133,9 @@ class Wordlift_Batch_Analysis_Service {
 	 */
 	const INTERPOLATION_PATTERN = array(
 		// Matches word before the annotation.
-		'~\w<[a-z]+ id="urn:[^"]+" class="[^"]+" itemid="[^"]+">(.*?)<\/[a-z]+>~',
+		'~(\w)<[a-z]+ id="urn:[^"]+" class="[^"]+" itemid="[^"]+">(.*?)<\/[a-z]+>~',
 		// Matches word after the annotation.
-		'~<[a-z]+ id="urn:[^"]+" class="[^"]+" itemid="[^"]+">(.*?)<\/[a-z]+>\w~',
+		'~<[a-z]+ id="urn:[^"]+" class="[^"]+" itemid="[^"]+">(.*?)<\/[a-z]+>(\w)~',
 		// Matches space in the beginning of annotation name.
 		'~<[a-z]+ id="urn:[^"]+" class="[^"]+" itemid="[^"]+">(\s.*?)<\/[a-z]+>~',
 	);
@@ -484,7 +484,7 @@ class Wordlift_Batch_Analysis_Service {
 	 *
 	 * @return string The content (for chaining operations).
 	 */
-	private function set_warning_based_on_content( $content, $post_id ) {
+	protected function set_warning_based_on_content( $content, $post_id ) {
 
 		$matches = array();
 
@@ -520,7 +520,7 @@ class Wordlift_Batch_Analysis_Service {
 		$this->log->debug( "Begin fixing post $id interpolations" );
 
 		// Remove all interpolations from the content.
-		return preg_replace( self::INTERPOLATION_PATTERN, '$1', $content );
+		return preg_replace( self::INTERPOLATION_PATTERN, '$1$2', $content );
 	}
 
 	/**
@@ -906,7 +906,7 @@ class Wordlift_Batch_Analysis_Service {
 		}
 
 		// Set the default `article` term.
-		$response = wp_set_object_terms( $id, 'article', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		return wp_set_object_terms( $id, 'article', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 	}
 
 	/**
