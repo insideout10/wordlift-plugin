@@ -181,9 +181,6 @@ class EntityTile extends React.Component {
         tabIndex="0"
       >
         <Main onClick={this.onMainClick} open={this.state.open}>
-          <Count entity={this.props.entity}>
-            {this.displayEntityOccurences()}
-          </Count>
           <Label entity={this.props.entity}>
             {this.props.entity.label}
             <MainType entity={this.props.entity}>

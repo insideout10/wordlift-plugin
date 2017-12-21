@@ -27,6 +27,11 @@ const Wrapper = styled.li`
 	transition: all 100ms linear;
 	// Prevent dotted outline in FF
 	outline: 0;
+	
+	// Since we removed the box with the number of occurrences we need to pad left.
+	//
+	// See https://github.com/insideout10/wordlift-plugin/issues/735
+	padding-left: 12px;
 
 	&:hover {
 		transform: scale( ${ props => 0 < props.entity.occurrences.length ? 1 : 1.01 } ); 
