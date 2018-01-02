@@ -98,10 +98,8 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 			'update_option_wl_general_settings',
 		) );
 
-		add_action( 'update_option_permalink_structure', array(
-			$this,
-			'permalink_structure_changed',
-		), 10, 2 );
+		// Flushes the cache when permalink structure is changed.
+		add_action( 'update_option_permalink_structure', array( $this, 'permalinks_structure_changed' ) );
 
 		// Invalid cache on relationship change.
 		add_action( 'wl_relation_added', array( $this, 'relation_changed' ) );
@@ -251,9 +249,9 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	/**
 	 * Hook when permalinks are changed, will flush the cache.
 	 *
-	 * @since 3.18.0
+	 * @since 3.17.0
 	 */
-	public function permalink_structure_changed() {
+	public function permalinks_structure_changed() {
 		$this->log->trace( "Permalinks structure changed, flushing cache..." );
 
 		$this->cache_service->flush();
