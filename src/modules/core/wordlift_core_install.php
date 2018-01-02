@@ -229,6 +229,7 @@ function wl_core_upgrade_db_3_12_3_14() {
 	$admins = get_role( 'administrator' );
 
 	$admins->add_cap( 'edit_wordlift_entity' );
+	$admins->add_cap( 'read_wordlift_entity' );
 	$admins->add_cap( 'edit_wordlift_entities' );
 	$admins->add_cap( 'edit_others_wordlift_entities' );
 	$admins->add_cap( 'publish_wordlift_entities' );
@@ -243,6 +244,7 @@ function wl_core_upgrade_db_3_12_3_14() {
 	$editors = get_role( 'editor' );
 
 	$editors->add_cap( 'edit_wordlift_entity' );
+	$editors->add_cap( 'read_wordlift_entity' );
 	$editors->add_cap( 'edit_wordlift_entities' );
 	$editors->add_cap( 'edit_others_wordlift_entities' );
 	$editors->add_cap( 'publish_wordlift_entities' );
