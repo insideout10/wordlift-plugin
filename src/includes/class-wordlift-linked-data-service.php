@@ -278,8 +278,14 @@ class Wordlift_Linked_Data_Service {
 		// Get the entity type.
 		$type = $this->entity_type_service->get( $post_id );
 
-		// Get the Linked Data properties.
-		$properties = $type['linked_data'];
+		/**
+		 * Filter: 'wl_tuple_properties' - Allow third parties to hook and add additional tuples.
+		 *
+		 * @since 3.17.0
+		 * @api   arr $type['linked_data'] A {@link Wordlift_Sparql_Tuple_Rendition} instances.
+		 * @api   \Wordlift_Entity_Type_Service $entity_type_service The {@link Wordlift_Entity_Type_Service} instance.
+		 */
+		$properties = apply_filters( 'wl_tuple_properties', $type['linked_data'], $this->entity_service );
 
 		// Accumulate the tuples.
 		$tuples = array();
