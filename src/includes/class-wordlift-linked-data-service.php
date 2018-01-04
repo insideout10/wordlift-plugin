@@ -284,8 +284,9 @@ class Wordlift_Linked_Data_Service {
 		 * @since 3.17.0
 		 * @api   arr $type['linked_data'] A {@link Wordlift_Sparql_Tuple_Rendition} instances.
 		 * @api   \Wordlift_Entity_Type_Service $entity_type_service The {@link Wordlift_Entity_Type_Service} instance.
+		 * @api   int $post_id The {@link WP_Post}'s id.
 		 */
-		$properties = apply_filters( 'wl_tuple_properties', $type['linked_data'], $this->entity_service );
+		$properties = apply_filters( 'wl_tuple_properties', $type['linked_data'], $this->entity_service, $post_id );
 
 		// Accumulate the tuples.
 		$tuples = array();
