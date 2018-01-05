@@ -92,11 +92,11 @@ class Wordlift_Batch_Analysis_Service {
 	const COMPLETE_TIMESTAMP_META_KEY = '_wl_batch_analysis_complete_timestamp';
 
 	/**
-	 * The link setting meta key. A post may have more than one setting.
+	 * The options setting meta key. A post may have more than one setting.
 	 *
 	 * @since 3.14.2
 	 */
-	const LINK_META_KEY = '_wl_batch_analysis_link';
+	const BATCH_ANALYSIS_OPTIONS_META_KEY = '_wl_batch_analysis_options';
 
 	/**
 	 * The warning timestamp meta key. A post has only zero/one value.
@@ -233,6 +233,42 @@ class Wordlift_Batch_Analysis_Service {
 			'to'                => null,
 			'post_type'         => 'post',
 		) );
+
+		// Validation.
+		if ( ! in_array( $params['link'], array( 'default', 'yes', 'no' ) ) ) {
+			wp_die( '`link` must be one of the following: `default`, `yes` or `no`.' );
+		}
+
+		if ( ! is_numeric( $params['min_occurrences'] ) || 1 > $params['min_occurrences'] ) {
+			wp_die( '`min_occurrences` must greater or equal 1.' );
+		}
+
+		// Submit the posts/pages and return the number of affected results.
+		// We're using a SQL query here because we could have potentially
+		// thousands of rows.
+		$count = $wpdb->query( Wordlift_Batch_Analysis_Sql_Helper::get_sql( $params ) ); // WPCS: cache ok, db call ok.
+
+		// Request Batch Analysis (the operation is handled asynchronously).
+		do_action( 'wl_batch_analysis_request' );
+
+		// Divide the count by 3 to get the number of posts/pages queued.
+		return $count / 3;
+	}
+
+	public function submit_posts( $args ) {
+		global $wpdb;
+
+		// Parse the parameters.
+		$params = wp_parse_args( $args, array(
+			'link'            => 'default',
+			'min_occurrences' => 1,
+			'ids'             => array(),
+		) );
+
+		// Validation.
+		if ( empty( $params['ids'] ) ) {
+			wp_die( '`ids` cannot be empty.' );
+		}
 
 		// Submit the posts/pages and return the number of affected results.
 		// We're using a SQL query here because we could have potentially
@@ -502,19 +538,19 @@ class Wordlift_Batch_Analysis_Service {
 		return update_post_meta( $post_id, self::WARNING_META_KEY, ( true === $value ? 'yes' : 'no' ) );
 	}
 
-	/**
-	 * Get the post/page batch analysis state.
-	 *
-	 * @since 3.14.2
-	 *
-	 * @param int $post_id The {@link WP_Post}'s id.
-	 *
-	 * @return int|string The post state or an empty string if not set.
-	 */
-	public function get_state( $post_id ) {
-
-		return get_post_meta( $post_id, self::STATE_META_KEY, true );
-	}
+//	/**
+//	 * Get the post/page batch analysis state.
+//	 *
+//	 * @since 3.14.2
+//	 *
+//	 * @param int $post_id The {@link WP_Post}'s id.
+//	 *
+//	 * @return int|string The post state or an empty string if not set.
+//	 */
+//	public function get_state( $post_id ) {
+//
+//		return get_post_meta( $post_id, self::STATE_META_KEY, true );
+//	}
 
 	/**
 	 * Set the post/page batch analysis state.
@@ -527,7 +563,7 @@ class Wordlift_Batch_Analysis_Service {
 	 * @return int|bool Meta ID if the key didn't exist, true on successful update,
 	 *                  false on failure.
 	 */
-	public function set_state( $post_id, $value ) {
+	private function set_state( $post_id, $value ) {
 
 		// Update the state.
 		$result = update_post_meta( $post_id, self::STATE_META_KEY, $value );
@@ -552,7 +588,7 @@ class Wordlift_Batch_Analysis_Service {
 	}
 
 	/**
-	 * Get the link setting for a {@link WP_Post}.
+	 * Get the options setting for a {@link WP_Post}.
 	 *
 	 * If there are multiple link settings, only the last one is returned.
 	 *
@@ -562,9 +598,9 @@ class Wordlift_Batch_Analysis_Service {
 	 *
 	 * @return array The link settings.
 	 */
-	public function get_link_options( $post_id ) {
+	private function get_options( $post_id ) {
 
-		$values = get_post_meta( $post_id, self::LINK_META_KEY );
+		$values = get_post_meta( $post_id, self::BATCH_ANALYSIS_OPTIONS_META_KEY );
 
 		return end( $values ) ?: array(
 			'links'           => 'default',
@@ -637,7 +673,7 @@ class Wordlift_Batch_Analysis_Service {
 		}
 
 		// Get the link setting.
-		$link_options = $this->get_link_options( $post_id );
+		$link_options = $this->get_options( $post_id );
 
 		$this->log->debug( 'Sending analysis request for post $post_id [ link :: ' . $link_options['links'] . ', min_occurrences :: ' . $link_options['min_occurrences'] . ' ] ...' );
 
@@ -726,7 +762,7 @@ class Wordlift_Batch_Analysis_Service {
 	 *
 	 * @param int $id The {@link WP_Post}'s id.
 	 */
-	public function maybe_set_default_term( $id ) {
+	private function maybe_set_default_term( $id ) {
 		// Check whether the post has any of the WordLift entity types.
 		$has_term = has_term( '', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, $id );
 

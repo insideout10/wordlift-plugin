@@ -1,18 +1,24 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: david
- * Date: 05.01.18
- * Time: 12:43
+ * Helpers: Batch Analysis Sql Helper.
+ *
+ * A Helper class to provide SQL statements to the {@link Wordlift_Batch_Analysis_Service}.
+ *
+ * @since      3.17.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes/batch-analysis
  */
 
 class Wordlift_Batch_Analysis_Sql_Helper {
 
-
 	/**
 	 * Get the base SQL statement to submit a post for Batch Analysis.
 	 *
-	 * Functions may use this base SQL and add their own filters.
+	 * Functions may use this base SQL and add their own filters. This function
+	 * should be `private` and only used by the {@link Wordlift_Batch_Analysis_Service}
+	 * `submit` function. But since we want to maintain compatibility with PHP 5.3
+	 * and we couldn't use traits to hide the function from the Wordlift_Batch_Analysis_Service
+	 * we used a Helper function.
 	 *
 	 * @since 3.14.2
 	 *
@@ -21,13 +27,6 @@ class Wordlift_Batch_Analysis_Sql_Helper {
 	 * @return string The base SQL.
 	 */
 	public static function get_sql( $args ) {
-		global $wpdb;
-
-		// Get the link options.
-		$link_options = serialize( array(
-			'link'            => $args['link'],
-			'min_occurrences' => $args['min_occurrences'],
-		) );
 
 		/*
 		Prepare the statement:
@@ -46,6 +45,50 @@ class Wordlift_Batch_Analysis_Sql_Helper {
 		*/
 
 		// @codingStandardsIgnoreStart, Ignore phpcs sanitation errors.
+		return self::get_base_query( $args )
+			   . " WHERE p.post_type IN ('" . join( "', '", array_map( 'esc_sql', (array) $args['post_type'] ) ) . "')"
+			   . "  AND p.post_status = 'publish'"
+			   . Wordlift_Batch_Analysis_Sql_Helper::and_include_annotated( $args['include_annotated'] )
+			   . Wordlift_Batch_Analysis_Sql_Helper::and_post_date_from( $args['from'] )
+			   . Wordlift_Batch_Analysis_Sql_Helper::and_post_date_to( $args['to'] )
+			   . Wordlift_Batch_Analysis_Sql_Helper::and_exclude_posts( $args['exclude'] );
+		// @codingStandardsIgnoreEnd
+	}
+
+	public static function get_sql_for_ids( $args ) {
+
+		/*
+		Prepare the statement:
+			1. Insert into `postmeta` the meta keys and values:
+				a) state meta, with value of SUBMIT (0),
+				b) submit timestamp, with value of UTC timestamp,
+				c) link meta, with the provided value.
+			2. Join the current state value, can be used for filters by other functions.
+			3. Filter by `post`/`page` types.
+			4. Filter by `publish` status.
+			5. Filter by `post_content` where autoselect includes/excludes posts with/without annotations.
+			6. Filter by `post_date_gmt` where `post_date_gmt` is the date from where analysis will start.
+			7. Filter by `post_date_gmt` where `post_date_gmt` is the date where analysis will end.
+			8. Filter by `post_id` where `include` is the posts id to include.
+			9. Filter by `post_id` where `exclude` is the posts id to exclude.
+		*/
+
+		// @codingStandardsIgnoreStart, Ignore phpcs sanitation errors.
+
+		return self::get_base_query( $args )
+			   . ' WHERE p.id IN (' . implode( ', ', wp_parse_id_list( $args['ids'] ) ) . ')';
+		// @codingStandardsIgnoreEnd
+	}
+
+	private static function get_base_query( $args ) {
+		global $wpdb;
+
+		// Get the link options.
+		$link_options = serialize( array(
+			'link'            => $args['link'],
+			'min_occurrences' => $args['min_occurrences'],
+		) );
+
 		return $wpdb->prepare(
 			"INSERT INTO $wpdb->postmeta ( post_id, meta_key, meta_value )"
 			// Populate 3 metas for the batch analysis request using a SQL
@@ -58,26 +101,12 @@ class Wordlift_Batch_Analysis_Sql_Helper {
 			. '	  UNION'
 			. '	 SELECT %s, %s FROM dual'               // LINK_META_KEY.
 			. '	) metas'
-			. ", $wpdb->posts p"
-			// This was for consumption by clients, removing to simplify.
-			//			. " LEFT JOIN $wpdb->postmeta batch_analysis_state"
-			//			. '	 ON batch_analysis_state.post_id = p.ID'
-			//			. "   AND batch_analysis_state.meta_key = %s"
-			. " WHERE p.post_type = IN ('" . join( "', '", array_map( 'esc_sql', $args['post_type'] ) ) . "')"
-			. "  AND p.post_status = 'publish'"
-			. Wordlift_Batch_Analysis_Sql_Helper::and_include_annotated( $args['include_annotated'] )
-			. Wordlift_Batch_Analysis_Sql_Helper::and_post_date_from( $args['from'] )
-			. Wordlift_Batch_Analysis_Sql_Helper::and_post_date_to( $args['to'] )
-			. Wordlift_Batch_Analysis_Sql_Helper::and_include_posts( $args['include'] )
-			. Wordlift_Batch_Analysis_Sql_Helper::and_exclude_posts( $args['exclude'] )
-			,
+			. ", $wpdb->posts p",
 			Wordlift_Batch_Analysis_Service::STATE_META_KEY,
 			Wordlift_Batch_Analysis_Service::SUBMIT_TIMESTAMP_META_KEY,
-			Wordlift_Batch_Analysis_Service::LINK_META_KEY,
-			$link_options,
-			Wordlift_Batch_Analysis_Service::STATE_META_KEY
+			Wordlift_Batch_Analysis_Service::BATCH_ANALYSIS_OPTIONS_META_KEY,
+			$link_options
 		);
-		// @codingStandardsIgnoreEnd
 	}
 
 	/**
@@ -89,15 +118,15 @@ class Wordlift_Batch_Analysis_Sql_Helper {
 	 *
 	 * @return string The `post_content` clause.
 	 */
-	public static function and_include_annotated( $include ) {
+	private static function and_include_annotated( $include ) {
 
 		// Bail out with an empty string if we include all the posts.
-		if ( $include ) {
+		if ( true === $include ) {
 			return '';
 		}
 
 		// Filter out already annotated posts.
-		return " AND p.post_content NOT REGEXP '<[a-z]+ id=\"urn:[^\"]+\" class=\"[^\"]+\" itemid=\"[^\"]+\">';";
+		return " AND p.post_content NOT REGEXP '<[a-z]+ id=\"urn:[^\"]+\" class=\"[^\"]+\" itemid=\"[^\"]+\">'";
 	}
 
 	/**
@@ -109,7 +138,7 @@ class Wordlift_Batch_Analysis_Sql_Helper {
 	 *
 	 * @return string The start `post_date_gmt` clause
 	 */
-	public static function and_post_date_from( $value ) {
+	private static function and_post_date_from( $value ) {
 
 		// Bail out if the `from` isn't specified.
 		if ( null === $value ) {
@@ -132,7 +161,7 @@ class Wordlift_Batch_Analysis_Sql_Helper {
 	 *
 	 * @return string The end `post_date_gmt` clause
 	 */
-	public static function and_post_date_to( $value ) {
+	private static function and_post_date_to( $value ) {
 
 		// Bail out if the `from` isn't specified.
 		if ( null === $value ) {
@@ -155,10 +184,10 @@ class Wordlift_Batch_Analysis_Sql_Helper {
 	 *
 	 * @return string The posts IN clause.
 	 */
-	public static function and_include_posts( $include ) {
+	private static function and_include_posts( $include ) {
 
 		// Bail if the param is not set.
-		if ( null === $include ) {
+		if ( empty( $include ) ) {
 			return '';
 		}
 
@@ -174,10 +203,10 @@ class Wordlift_Batch_Analysis_Sql_Helper {
 	 *
 	 * @return string The posts NOT IN clause.
 	 */
-	public static function and_exclude_posts( $exclude ) {
+	private static function and_exclude_posts( $exclude ) {
 
 		// Bail if the param is not set.
-		if ( null === $exclude ) {
+		if ( empty( $exclude ) ) {
 			return '';
 		}
 
@@ -200,7 +229,10 @@ class Wordlift_Batch_Analysis_Sql_Helper {
 	private static function get_mysql_date_string( $value ) {
 
 		// Try to convert the value to a date, GMT timezone.
-		$date = date_create_from_format( 'Y-m-d\TH:i:sT', $value, date_timezone_get( 'GMT' ) );
+		$date = date_create_from_format( 'Y-m-d\TH:i:sT', $value );
+
+		// Convert the DateTime timezone to `GMT`.
+		$date->setTimezone( timezone_open( 'GMT' ) );
 
 		// Stop if the conversion failed.
 		if ( false === $date ) {
