@@ -879,7 +879,8 @@ class Wordlift {
 
 		// Load the `Wordlift_Entity_Page_Service` class definition.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-page-service.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-batch-analysis-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/batch-analysis/class-wordlift-batch-analysis-sql-helper.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/batch-analysis/class-wordlift-batch-analysis-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-relation-rebuild-service.php';
 
 		/** Linked Data. */
@@ -905,7 +906,7 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-newrelic-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-sample-data-ajax-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-type-adapter.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-batch-analysis-adapter.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/batch-analysis/class-wordlift-batch-analysis-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-relation-rebuild-adapter.php';
 
 		/** Async Tasks. */
