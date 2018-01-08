@@ -143,6 +143,8 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 = 3.17.0 (????-??-??) =
+* Enhancement: [#724](https://github.com/insideout10/wordlift-plugin/issues/724): Batch Analysis updates train.
+
 * Enhancement: [#682](https://github.com/insideout10/wordlift-plugin/issues/682): Capture the web site URL.
 * Enhancement: [#587](https://github.com/insideout10/wordlift-plugin/issues/587): Vocabulary Widget.
 
