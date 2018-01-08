@@ -180,13 +180,16 @@ class Wordlift_Sparql_Service {
 		// Get the SPARQL SELECT URL.
 		$url = wl_configuration_get_query_select_url() . urlencode( $sparql );
 
+		$http_options = unserialize( WL_REDLINK_API_HTTP_OPTIONS );
+
 		/**
-		 * Filter: 'wl_sparql_query_http_args' - Allow third parties to hook and add additional HTTP args.
+		 * Filter: 'wl_sparql_select_http_args' - Allow third parties to hook and add additional HTTP args.
 		 *
 		 * @since 3.17.0
-		 * @api   arr Current http options.
+		 *
+		 * @param   array $http_options Current http options.
 		 */
-		$args = apply_filters( 'wl_sparql_query_http_args', unserialize( WL_REDLINK_API_HTTP_OPTIONS ) );
+		$args = apply_filters( 'wl_sparql_select_http_args', $http_options );
 
 		return wp_remote_get( $url, $args );
 	}

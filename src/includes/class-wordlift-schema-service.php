@@ -1299,7 +1299,8 @@ class Wordlift_Schema_Service {
 		 * Filter: 'wl_schema_predicates' - Allow third parties to hook and add additional predicates.
 		 *
 		 * @since  3.17.0
-		 * @api arr $predicates Schema.org predicates.
+		 *
+		 * @param array $predicates Schema.org predicates.
 		 */
 		return apply_filters( 'wl_schema_predicates', $predicates );
 	}
