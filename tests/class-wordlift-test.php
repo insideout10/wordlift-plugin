@@ -307,4 +307,16 @@ class Wordlift_Test extends Wordlift {
 		return $this->entity_uri_service;
 	}
 
+	/**
+	 * Get the {@link Wordlift_Batch_Analysis_Service} instance.
+	 *
+	 * @since 3.17.0
+	 *
+	 * @return \Wordlift_Batch_Analysis_Service The {@link Wordlift_Batch_Analysis_Service} instance.
+	 */
+	public function get_batch_analysis_service() {
+
+		return $this->batch_analysis_service;
+	}
+
 }

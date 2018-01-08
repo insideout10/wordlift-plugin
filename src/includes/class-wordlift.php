@@ -879,7 +879,8 @@ class Wordlift {
 
 		// Load the `Wordlift_Entity_Page_Service` class definition.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-page-service.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-batch-analysis-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/batch-analysis/class-wordlift-batch-analysis-sql-helper.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/batch-analysis/class-wordlift-batch-analysis-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-relation-rebuild-service.php';
 
 		/** Linked Data. */
@@ -905,7 +906,7 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-newrelic-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-sample-data-ajax-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-type-adapter.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-batch-analysis-adapter.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/batch-analysis/class-wordlift-batch-analysis-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-relation-rebuild-adapter.php';
 
 		/** Async Tasks. */
@@ -1082,6 +1083,7 @@ class Wordlift {
 		$this->relation_service      = new Wordlift_Relation_Service();
 
 		$entity_uri_cache_service = new Wordlift_File_Cache_Service( WL_TEMP_DIR . 'entity_uri/' );
+		$this->file_cache_service = new Wordlift_File_Cache_Service( WL_TEMP_DIR . 'converter/' );
 		$this->entity_uri_service = new Wordlift_Cached_Entity_Uri_Service( $this->configuration_service, $entity_uri_cache_service );
 		$this->entity_service     = new Wordlift_Entity_Service( $this->ui_service, $this->relation_service, $this->entity_uri_service );
 		$this->user_service       = new Wordlift_User_Service();
@@ -1103,7 +1105,7 @@ class Wordlift {
 		// Create a new instance of the Timeline service and Timeline shortcode.
 		$this->timeline_service = new Wordlift_Timeline_Service( $this->entity_service, $this->entity_type_service );
 
-		$this->batch_analysis_service = new Wordlift_Batch_Analysis_Service( $this, $this->configuration_service );
+		$this->batch_analysis_service = new Wordlift_Batch_Analysis_Service( $this, $this->configuration_service, $this->file_cache_service );
 
 		$this->entity_types_taxonomy_walker = new Wordlift_Entity_Types_Taxonomy_Walker();
 
@@ -1145,7 +1147,6 @@ class Wordlift {
 		$this->post_to_jsonld_converter          = new Wordlift_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $this->configuration_service );
 		$this->postid_to_jsonld_converter        = new Wordlift_Postid_To_Jsonld_Converter( $this->entity_service, $this->entity_post_to_jsonld_converter, $this->post_to_jsonld_converter );
 		$this->jsonld_website_converter          = new Wordlift_Website_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $this->configuration_service );
-		$this->file_cache_service                = new Wordlift_File_Cache_Service( WL_TEMP_DIR . 'converter/' );
 		$this->cached_postid_to_jsonld_converter = new Wordlift_Cached_Post_Converter( $this->postid_to_jsonld_converter, $this->file_cache_service, $this->configuration_service );
 		$this->jsonld_service                    = new Wordlift_Jsonld_Service( $this->entity_service, $this->cached_postid_to_jsonld_converter, $this->jsonld_website_converter );
 
@@ -1389,9 +1390,8 @@ class Wordlift {
 
 		/** Adapters. */
 		$this->loader->add_filter( 'mce_external_plugins', $this->tinymce_adapter, 'mce_external_plugins', 10, 1 );
-		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_submit_auto_selected_posts', $this->batch_analysis_adapter, 'submit_auto_selected_posts', 10 );
-		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_submit_all_posts', $this->batch_analysis_adapter, 'submit_all_posts', 10 );
 		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_submit', $this->batch_analysis_adapter, 'submit', 10 );
+		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_submit_posts', $this->batch_analysis_adapter, 'submit_posts', 10 );
 		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_cancel', $this->batch_analysis_adapter, 'cancel', 10 );
 		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_clear_warning', $this->batch_analysis_adapter, 'clear_warning', 10 );
 		$this->loader->add_action( 'wp_ajax_wl_relation_rebuild_process_all', $this->relation_rebuild_adapter, 'process_all', 10 );

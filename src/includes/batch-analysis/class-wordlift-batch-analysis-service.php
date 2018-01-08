@@ -92,11 +92,11 @@ class Wordlift_Batch_Analysis_Service {
 	const COMPLETE_TIMESTAMP_META_KEY = '_wl_batch_analysis_complete_timestamp';
 
 	/**
-	 * The link setting meta key. A post may have more than one setting.
+	 * The options setting meta key. A post may have more than one setting.
 	 *
 	 * @since 3.14.2
 	 */
-	const LINK_META_KEY = '_wl_batch_analysis_link';
+	const BATCH_ANALYSIS_OPTIONS_META_KEY = '_wl_batch_analysis_options';
 
 	/**
 	 * The warning timestamp meta key. A post has only zero/one value.
@@ -127,6 +127,20 @@ class Wordlift_Batch_Analysis_Service {
 	const RESPONSE_QUEUE = 'processing';
 
 	/**
+	 * Regular expressions that match interpolation errors.
+	 *
+	 * @since  3.17.0
+	 */
+	const INTERPOLATION_PATTERNS = array(
+		// Matches word before the annotation.
+		'~(\w)<[a-z]+ id="urn:[^"]+" class="[^"]+" itemid="[^"]+">(.*?)<\/[a-z]+>~',
+		// Matches word after the annotation.
+		'~<[a-z]+ id="urn:[^"]+" class="[^"]+" itemid="[^"]+">(.*?)<\/[a-z]+>(\w)~',
+		// Matches space in the beginning of annotation name.
+		'~<[a-z]+ id="urn:[^"]+" class="[^"]+" itemid="[^"]+">(\s)(.*?)<\/[a-z]+>~',
+	);
+
+	/**
 	 * The {@link Wordlift} plugin instance.
 	 *
 	 * @since  3.14.0
@@ -145,6 +159,15 @@ class Wordlift_Batch_Analysis_Service {
 	private $configuration_service;
 
 	/**
+	 * The {@link Wordlift_Cache_Service} instance.
+	 *
+	 * @since  3.17.0
+	 * @access protected
+	 * @var \Wordlift_Cache_Service $cache_service The {@link Wordlift_Cache_Service} instance.
+	 */
+	private $cache_service;
+
+	/**
 	 * A {@link Wordlift_Log_Service} instance.
 	 *
 	 * @since  3.14.2
@@ -160,12 +183,15 @@ class Wordlift_Batch_Analysis_Service {
 	 *
 	 * @param \Wordlift                       $plugin                The {@link Wordlift} plugin instance.
 	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
+	 * @param \Wordlift_Cache_Service         $cache_service         The {@link Wordlift_Cache_Service} instance.
 	 */
-	public function __construct( $plugin, $configuration_service ) {
+	public function __construct( $plugin, $configuration_service, $cache_service ) {
+
+		$this->log                   = Wordlift_Log_Service::get_logger( 'Wordlift_Batch_Analysis_Service' );
 
 		$this->plugin                = $plugin;
 		$this->configuration_service = $configuration_service;
-		$this->log                   = Wordlift_Log_Service::get_logger( 'Wordlift_Batch_Analysis_Service' );
+		$this->cache_service         = $cache_service;
 
 		add_action( 'wl_async_wl_batch_analysis_request', array(
 			$this,
@@ -179,132 +205,102 @@ class Wordlift_Batch_Analysis_Service {
 	}
 
 	/**
-	 * Get the base SQL statement to submit a post for Batch Analysis.
-	 *
-	 * Functions may use this base SQL and add their own filters.
+	 * Submit posts for Batch Analysis.
 	 *
 	 * @since 3.14.2
 	 *
-	 * @param string $link The link setting ('yes'/'no').
+	 * @param array       $args               {
+	 *                                        A list of options for the Batch Analysis.
 	 *
-	 * @return string The base SQL.
-	 */
-	private function get_sql( $link ) {
-		global $wpdb;
-
-		// Prepare the statement:
-		//  1. Insert into `postmeta` the meta keys and values:
-		//    a) state meta, with value of SUBMIT (0),
-		//    b) submit timestamp, with value of UTC timestamp,
-		//    c) link meta, with the provided value.
-		//  2. Join the current state value, can be used for filters by other
-		//     functions.
-		//  3. Filter by `post`/`page` types.
-		//  4. Filter by `publish` status.
-		return $wpdb->prepare(
-			"
-			INSERT INTO $wpdb->postmeta ( post_id, meta_key, meta_value )
-			SELECT p.ID, metas.*
-			FROM (
-				SELECT %s, 0 FROM dual
-				UNION
-				SELECT %s, UTC_TIMESTAMP() FROM dual
-				UNION
-				SELECT %s, %s FROM dual
-			) metas, $wpdb->posts p
-			LEFT JOIN $wpdb->postmeta batch_analysis_state
-				ON batch_analysis_state.post_id = p.ID
-					AND batch_analysis_state.meta_key = %s
-			WHERE p.post_type IN ('post', 'page')
-				AND p.post_status = 'publish'
-			",
-			self::STATE_META_KEY,
-			self::SUBMIT_TIMESTAMP_META_KEY,
-			self::LINK_META_KEY,
-			$link,
-			self::STATE_META_KEY
-		);
-	}
-
-	/**
-	 * Submit for analysis all the posts/pages which do not have annotations
-	 * and haven't been analyzed before.
-	 *
-	 * @since 3.14.2
-	 *
-	 * @param string $link The link setting.
-	 *
-	 * @return false|int The number of submitted {@link WP_Post}s or false on
-	 *                   error.
-	 */
-	public function submit_auto_selected_posts( $link ) {
-		global $wpdb;
-
-		// Submit the posts/pages and return the number of affected results.
-		// We're using a SQL query here because we could have potentially
-		// thousands of rows.
-		$count = $wpdb->query( $wpdb->prepare(
-			$this->get_sql( $link ) .
-			"
-				AND batch_analysis_state.meta_value IS NULL
-				AND p.post_content NOT REGEXP %s;
-			",
-			'<[a-z]+ id="urn:[^"]+" class="[^"]+" itemid="[^"]+">'
-		) );
-
-		// Request Batch Analysis (the operation is handled asynchronously).
-		do_action( 'wl_batch_analysis_request' );
-
-		// Divide the count by 3 to get the number of posts/pages queued.
-		return $count / 3;
-	}
-
-	/**
-	 * Submit all posts for analysis.
-	 *
-	 * @since 3.14.5
-	 *
-	 * @param string $link The link setting.
-	 *
-	 * @return false|int The number of submitted {@link WP_Post}s or false on
-	 *                   error.
-	 */
-	public function submit_all_posts( $link ) {
-		global $wpdb;
-
-		// Submit the posts/pages and return the number of affected results.
-		// We're using a SQL query here because we could have potentially
-		// thousands of rows.
-		$count = $wpdb->query( $this->get_sql( $link ) );
-
-		// Request Batch Analysis (the operation is handled asynchronously).
-		do_action( 'wl_batch_analysis_request' );
-
-		// Divide the count by 3 to get the number of posts/pages queued.
-		return $count / 3;
-	}
-
-	/**
-	 * Submit the provided list of {@link WP_Post}s' ids for Batch Analysis.
-	 *
-	 * @since 3.14.2
-	 *
-	 * @param int|array $post_ids A single {@link WP_Post}'s id or an array of
-	 *                            {@link WP_Post}s' ids.
-	 * @param string    $link     The link setting.
+	 * @type string       $link               Either `default`, `no` or `yes` (`default` is used if not specified):
+	 *                                        * `default` doesn't set the link option - entities
+	 *                                           will be linked if configured so in WordLift settings.
+	 *                                        * `yes` links the entities.
+	 *                                        * `no` doesn't link the entities.
+	 *                                        This value is forwarded to WLS' Batch Analysis end-point.
+	 * @type int          $min_occurrences    The minimum number of occurrences to select
+	 *                                        an entity. Default `1`.
+	 * @type bool         $include_annotated  Whether to include annotated posts in selection.
+	 *                                        Default `false`.
+	 * @type array|int    $include            Explicitly include the specified {@link WP_Post}s.
+	 * @type array|int    $exclude            Explicitly exclude the specified {@link WP_Post}s.
+	 * @type string|null  $from               An optional date from filter (used in `post_date_gmt`).
+	 * @type string|null  $to                 An optional date from filter (used in `post_date_gmt`).
+	 * @type array|string $post_type          Specify the post type(s), by default only `post`.
+	 *                      }
 	 *
 	 * @return int The number of submitted {@link WP_Post}s or false on error.
 	 */
-	public function submit( $post_ids, $link ) {
+	public function submit( $args ) {
 		global $wpdb;
+
+		// Parse the parameters.
+		$params = wp_parse_args( $args, array(
+			'link'              => 'default',
+			'min_occurrences'   => 1,
+			'include_annotated' => false,
+			'exclude'           => array(),
+			'from'              => null,
+			'to'                => null,
+			'post_type'         => 'post',
+		) );
+
+		// Validation.
+		if ( ! in_array( $params['link'], array( 'default', 'yes', 'no' ) ) ) {
+			wp_die( '`link` must be one of the following: `default`, `yes` or `no`.' );
+		}
+
+		if ( ! is_numeric( $params['min_occurrences'] ) || 1 > $params['min_occurrences'] ) {
+			wp_die( '`min_occurrences` must greater or equal 1.' );
+		}
 
 		// Submit the posts/pages and return the number of affected results.
 		// We're using a SQL query here because we could have potentially
 		// thousands of rows.
-		$count = $wpdb->query(
-			$this->get_sql( $link ) .
-			' AND p.ID IN ( ' . implode( ',', wp_parse_id_list( $post_ids ) ) . ' )'
-		);
+		$count = $wpdb->query( Wordlift_Batch_Analysis_Sql_Helper::get_sql( $params ) ); // WPCS: cache ok, db call ok.
+
+		// Request Batch Analysis (the operation is handled asynchronously).
+		do_action( 'wl_batch_analysis_request' );
+
+		// Divide the count by 3 to get the number of posts/pages queued.
+		return $count / 3;
+	}
+
+	/**
+	 * Submit one or more {@link WP_Posts} for Batch Analysis.
+	 *
+	 * @param array    $args            {
+	 *                                  An array of arguments.
+	 *
+	 * @type string    $link            The link option: `default`, `yes` or
+	 *                                  `no`. If not set `default`.
+	 * @type int       $min_occurrences The minimum number of occurrences. If
+	 *                                  not set `1`.
+	 * @type array|int $ids             An array of {@link WP_Post}s' ids or one
+	 *                                  single numeric {@link WP_Post} id.
+	 *                    }
+	 *
+	 * @return float|int
+	 */
+	public function submit_posts( $args ) {
+		global $wpdb;
+
+		// Parse the parameters.
+		$params = wp_parse_args( $args, array(
+			'link'            => 'default',
+			'min_occurrences' => 1,
+			'ids'             => array(),
+		) );
+
+		// Validation.
+		if ( empty( $params['ids'] ) ) {
+			wp_die( '`ids` cannot be empty.' );
+		}
+
+		// Submit the posts/pages and return the number of affected results.
+		// We're using a SQL query here because we could have potentially
+		// thousands of rows.
+		$count = $wpdb->query( Wordlift_Batch_Analysis_Sql_Helper::get_sql_for_ids( $params ) ); // WPCS: cache ok, db call ok.
 
 		// Request Batch Analysis (the operation is handled asynchronously).
 		do_action( 'wl_batch_analysis_request' );
@@ -331,12 +327,13 @@ class Wordlift_Batch_Analysis_Service {
 			"
 			DELETE FROM $wpdb->postmeta
 			WHERE meta_key = %s
-				AND meta_value = %s
-				AND post_id IN ( " . implode( ',', wp_parse_id_list( $post_ids ) ) . " )
+				AND meta_value IN ( %d, %d )
+				AND post_id IN( " . implode( ',', wp_parse_id_list( $post_ids ) ) . " )
 			",
 			self::STATE_META_KEY,
+			self::STATE_SUBMIT,
 			self::STATE_REQUEST
-		) );
+		) ); // WPCS: cache ok, db call ok.
 
 	}
 
@@ -347,7 +344,7 @@ class Wordlift_Batch_Analysis_Service {
 	 */
 	public function request() {
 
-		$this->log->debug( "Requesting analysis..." );
+		$this->log->debug( 'Requesting analysis...' );
 
 		// By default 5 posts of any post type are returned.
 		$posts = get_posts( array(
@@ -355,6 +352,7 @@ class Wordlift_Batch_Analysis_Service {
 			'meta_key'   => self::STATE_META_KEY,
 			'meta_value' => self::STATE_SUBMIT,
 			'orderby'    => 'ID',
+			'post_type'  => 'any',
 		) );
 
 		// Bail out if there are no submitted posts.
@@ -368,19 +366,15 @@ class Wordlift_Batch_Analysis_Service {
 
 		// Send a request for each post.
 		foreach ( $posts as $id ) {
-			$this->log->debug( "Requesting analysis for post $id..." );
 
-			// Change the state to `REQUEST`.
-			$this->set_state( $id, self::STATE_REQUEST );
+			$this->log->debug( "Requesting analysis for post $id..." );
 
 			// Send the actual request to the remote service.
 			$result = $this->do_request( $id );
 
-			$this->log->debug( "Analysis requested for post $id." );
-
 			// Set an error if we received an error.
 			if ( is_wp_error( $result ) ) {
-				$this->log->error( "Analysis request for post $id returned {$result->get_error_message()}." );
+				$this->log->error( "An error occurred while requesting a batch analysis for post $id: " . $result->get_error_message() );
 
 				$this->set_state( $id, self::STATE_ERROR );
 			}
@@ -400,7 +394,7 @@ class Wordlift_Batch_Analysis_Service {
 	 */
 	public function complete() {
 
-		$this->log->debug( "Requesting results..." );
+		$this->log->debug( 'Requesting results...' );
 
 		// By default 5 posts of any post type are returned.
 		$posts = get_posts( array(
@@ -408,6 +402,7 @@ class Wordlift_Batch_Analysis_Service {
 			'meta_key'   => self::STATE_META_KEY,
 			'meta_value' => self::STATE_REQUEST,
 			'orderby'    => 'ID',
+			'post_type'  => 'any',
 		) );
 
 		// Bail out if there are no submitted posts.
@@ -424,41 +419,61 @@ class Wordlift_Batch_Analysis_Service {
 			// Send the actual request to the remote service.
 			$response = $this->do_complete( $id );
 
-			$this->log->debug( "Results requested for post $id." );
-
-			// Set an error if we received an error.
-			if ( ! is_wp_error( $response ) && isset( $response['body'] ) ) {
-
-				$this->log->debug( "Results received for post $id." );
-
-				// Save the returned content as new revision.
-				$json = json_decode( $response['body'] );
-
-				// Continue if the content isn't set.
-				if ( ! isset( $json->content ) || empty( $json->content ) ) {
-					continue;
-				}
-
-				$this->set_warning_based_on_content( $id, $json->content );
-
-				$content = wp_slash( $json->content );
-
-				wp_update_post( array(
-					'ID'           => $id,
-					'post_content' => $content,
-				) );
-
-				// Update the status.
-				$this->set_state( $id, self::STATE_SUCCESS );
-
-				$this->log->debug( "Post $id updated with batch analysis results." );
-
+			// Move to the next item if we don't have a reply for this one.
+			if ( is_wp_error( $response ) || ! isset( $response['body'] ) ) {
 				continue;
 			}
 
+			$this->log->debug( "Results received for post $id." );
+
+			// Save the returned content as new revision.
+			$json = json_decode( $response['body'] );
+
+			// Continue if the content isn't set.
+			if ( empty( $json->content ) ) {
+				// The post content is empty, so is should be marked as completed.
+				$this->log->error( "An error occurred while decoding the batch analysis response for post $id." );
+
+				$this->set_state( $id, self::STATE_ERROR );
+				continue;
+			}
+
+			// Set the warning flag if needed.
+			$this->set_warning_based_on_content( $json->content, $id );
+
+			// Get the content, cleaned up if there are interpolation errors.
+			$pre_content = $this->fix_interpolation_errors( $json->content, $id );
+
+			/**
+			 * Filter: 'wl_batch_analysis_update_post_content' - Allow third
+			 * parties to perform additional actions when the post content is
+			 * updated.
+			 *
+			 * @since  3.17.0
+			 * @api    string $data The {@link WP_Post}'s content.
+			 * @api    int    $id   The {@link WP_Post}'s id.
+			 */
+			$content = apply_filters( 'wl_batch_analysis_update_post_content', $pre_content, $id );
+
+			// Update the post content.
+			wp_update_post( array(
+				'ID'           => $id,
+				'post_content' => wp_slash( $content ),
+			) );
+
+			// Update the status.
+			$this->set_state( $id, self::STATE_SUCCESS );
+
+			// Invalidating the cache for the current post.
+			$this->cache_service->delete_cache( $id );
+
+			$this->log->debug( "Post $id updated with batch analysis results." );
+
+			// Set default entity type term for posts that didn't have any.
+			$this->maybe_set_default_term( $id );
+
 			// @todo: implement a kind of timeout that sets an error if the
 			// results haven't been received after a long time.
-
 		}
 
 		// Call the `wl_batch_analysis_request` action again. This is going
@@ -473,23 +488,49 @@ class Wordlift_Batch_Analysis_Service {
 	 *
 	 * @since 3.14.2
 	 *
-	 * @param int    $post_id The {@link WP_Post}'s id.
 	 * @param string $content The {@link WP_Post}'s content.
+	 * @param int    $post_id The {@link WP_Post}'s id.
 	 *
 	 * @return string The content (for chaining operations).
 	 */
-	private function set_warning_based_on_content( $post_id, $content ) {
-
-		$matches = array();
+	protected function set_warning_based_on_content( $content, $post_id ) {
 
 		// Check for suspicious interpolations.
-		$warning = 0 < preg_match_all( '/\w<[a-z]+ id="urn:enhancement-[^"]+" class="[^"]+" itemid="[^"]+">/', $content, $matches )
-				   || 0 < preg_match_all( '/<[a-z]+ id="urn:enhancement-[^"]+" class="[^"]+" itemid="[^"]+">\s/', $content, $matches );
+		$is_warning = $this->has_interpolation_errors( $content );
 
 		// Set the warning flag accordingly.
-		$this->set_warning( $post_id, $warning );
+		$this->set_warning( $post_id, $is_warning );
 
-		return $content;
+	}
+
+	private function has_interpolation_errors( $content ) {
+		$matches = array();
+
+		return 0 < preg_match_all( '/\w<[a-z]+ id="urn:enhancement - [^"]+" class="[^"]+ " itemid="[^"]+" >/', $content, $matches )
+			   || 0 < preg_match_all( ' /<[ a - z ] + id = "urn:enhancement-[^"]+ " class="[^"]+" itemid = "[^"]+ ">\s/', $content, $matches );
+	}
+
+	/**
+	 * Fix interpolation errors raised by Batch Analysis
+	 *
+	 * @param string $content The {@link WP_Post}'s content.
+	 * @param int    $id      The {@link WP_Post}'s id.
+	 *
+	 * @since 3.17.0
+	 *
+	 * @return string Post content without interpolations.
+	 */
+	private function fix_interpolation_errors( $content, $id ) {
+
+		// Bail out if there are no interpolation errors.
+		if ( ! $this->has_interpolation_errors( $content ) ) {
+			return $content;
+		}
+
+		$this->log->debug( "Fixing post $id interpolations..." );
+
+		// Remove all interpolations from the content.
+		return preg_replace( self::INTERPOLATION_PATTERNS, '$1$2', $content );
 	}
 
 	/**
@@ -524,19 +565,19 @@ class Wordlift_Batch_Analysis_Service {
 		return update_post_meta( $post_id, self::WARNING_META_KEY, ( true === $value ? 'yes' : 'no' ) );
 	}
 
-	/**
-	 * Get the post/page batch analysis state.
-	 *
-	 * @since 3.14.2
-	 *
-	 * @param int $post_id The {@link WP_Post}'s id.
-	 *
-	 * @return int|string The post state or an empty string if not set.
-	 */
-	public function get_state( $post_id ) {
-
-		return get_post_meta( $post_id, self::STATE_META_KEY, true );
-	}
+//	/**
+//	 * Get the post/page batch analysis state.
+//	 *
+//	 * @since 3.14.2
+//	 *
+//	 * @param int $post_id The {@link WP_Post}'s id.
+//	 *
+//	 * @return int|string The post state or an empty string if not set.
+//	 */
+//	public function get_state( $post_id ) {
+//
+//		return get_post_meta( $post_id, self::STATE_META_KEY, true );
+//	}
 
 	/**
 	 * Set the post/page batch analysis state.
@@ -549,7 +590,7 @@ class Wordlift_Batch_Analysis_Service {
 	 * @return int|bool Meta ID if the key didn't exist, true on successful update,
 	 *                  false on failure.
 	 */
-	public function set_state( $post_id, $value ) {
+	private function set_state( $post_id, $value ) {
 
 		// Update the state.
 		$result = update_post_meta( $post_id, self::STATE_META_KEY, $value );
@@ -574,7 +615,7 @@ class Wordlift_Batch_Analysis_Service {
 	}
 
 	/**
-	 * Get the link setting for a {@link WP_Post}.
+	 * Get the options setting for a {@link WP_Post}.
 	 *
 	 * If there are multiple link settings, only the last one is returned.
 	 *
@@ -582,13 +623,16 @@ class Wordlift_Batch_Analysis_Service {
 	 *
 	 * @param int $post_id The {@link WP_Post}'s id.
 	 *
-	 * @return string The link setting or `default` if not set.
+	 * @return array The link settings.
 	 */
-	public function get_link( $post_id ) {
+	private function get_options( $post_id ) {
 
-		$values = get_post_meta( $post_id, self::LINK_META_KEY );
+		$values = get_post_meta( $post_id, self::BATCH_ANALYSIS_OPTIONS_META_KEY );
 
-		return end( $values ) ?: 'default';
+		return end( $values ) ?: array(
+			'links'           => 'default',
+			'min_occurrences' => 1,
+		);
 	}
 
 	/**
@@ -607,6 +651,8 @@ class Wordlift_Batch_Analysis_Service {
 			'meta_key'       => self::STATE_META_KEY,
 			'meta_value'     => self::STATE_SUBMIT,
 			'orderby'        => 'ID',
+			'post_type'      => 'any',
+			// Add any because posts from multiple posts types may be waiting.
 		) );
 	}
 
@@ -627,6 +673,8 @@ class Wordlift_Batch_Analysis_Service {
 			'meta_key'       => self::STATE_META_KEY,
 			'meta_value'     => self::STATE_REQUEST,
 			'orderby'        => 'ID',
+			'post_type'      => 'any',
+			// Add any because posts from multiple posts types may be waiting.
 		) );
 	}
 
@@ -641,6 +689,9 @@ class Wordlift_Batch_Analysis_Service {
 	 */
 	private function do_request( $post_id ) {
 
+		// Change the state to `REQUEST`.
+		$this->set_state( $post_id, self::STATE_REQUEST );
+
 		// Get the post.
 		$post = get_post( $post_id );
 
@@ -652,22 +703,23 @@ class Wordlift_Batch_Analysis_Service {
 		}
 
 		// Get the link setting.
-		$link = $this->get_link( $post_id );
+		$options = $this->get_options( $post_id );
 
-		$this->log->debug( "Sending analysis request for post $post_id [ link :: $link ]..." );
+		$this->log->debug( 'Sending analysis request for post $post_id [ link :: ' . $options['link'] . ', min_occurrences :: ' . $options['min_occurrences'] . ' ] ...' );
 
 		// Get the batch analysis URL.
 		$url = $this->configuration_service->get_batch_analysis_url();
 
 		// Prepare the POST parameters.
-		$param = array(
+		$params = array(
 			'id'              => $post->ID,
 			'key'             => $this->configuration_service->get_key(),
 			'content'         => $post->post_content,
 			'contentLanguage' => $this->configuration_service->get_language_code(),
 			'version'         => $this->plugin->get_version(),
-			'links'           => $link,
 			'scope'           => 'local',
+			'link'            => $options['link'],
+			'minOccurrences'  => $options['min_occurrences'],
 		);
 
 		// Get the HTTP options.
@@ -679,7 +731,7 @@ class Wordlift_Batch_Analysis_Service {
 			),
 			// we need to downgrade the HTTP version in this case since chunked encoding is dumping numbers in the response.
 			'httpversion' => '1.0',
-			'body'        => wp_json_encode( $param ),
+			'body'        => wp_json_encode( $params ),
 		) );
 
 		$this->log->debug( "Posting analysis request for post $post_id to $url..." );
@@ -703,7 +755,7 @@ class Wordlift_Batch_Analysis_Service {
 
 		if ( null === $post ) {
 			// Post was possibly deleted, just bailout.
-			return new WP_Error( 0, "Post $post_id not found." );
+			return new WP_Error( 0, "Post $post_id not found . " );
 		}
 
 		$url = $this->configuration_service->get_batch_analysis_url();
@@ -728,7 +780,30 @@ class Wordlift_Batch_Analysis_Service {
 			'post_status' => 'any',
 			'meta_key'    => self::WARNING_META_KEY,
 			'meta_value'  => 'yes',
+			'post_type'   => 'any',
+			// Add any because posts from multiple posts types may be waiting.
 		) );
+	}
+
+	/**
+	 * Check whether the term has entity type associated and set default term if it hasn't.
+	 *
+	 * @since 3.17.0
+	 *
+	 * @param int $id The {@link WP_Post}'s id.
+	 */
+	private function maybe_set_default_term( $id ) {
+		// Check whether the post has any of the WordLift entity types.
+		$has_term = has_term( '', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, $id );
+
+		// Bail if the term is associated with entity types already.
+		if ( ! empty( $has_term ) ) {
+			return;
+		}
+
+		// Set the default `article` term.
+		wp_set_object_terms( $id, 'article', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+
 	}
 
 }

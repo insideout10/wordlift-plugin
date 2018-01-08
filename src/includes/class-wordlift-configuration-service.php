@@ -361,18 +361,31 @@ class Wordlift_Configuration_Service {
 		// Request the dataset URI.
 		// $response = wp_remote_get( $this->get_accounts_by_key_dataset_uri( $key ), unserialize( WL_REDLINK_API_HTTP_OPTIONS ) );
 
-		// If the response is valid, then set the value.
-		if ( ! is_wp_error( $response ) && 200 === (int) $response['response']['code'] ) {
+		// The response is an error.
+		if ( is_wp_error( $response ) ) {
+			$this->log->error( 'An error occurred setting the dataset URI: ' . $response->get_error_message() );
 
-			$json        = json_decode( $response['body'] );
-			$dataset_uri = $json->datasetURI;
-
-			$this->log->info( "Setting the dataset URI to $dataset_uri..." );
-
-			$this->set_dataset_uri( $dataset_uri );
-		} else {
 			$this->set_dataset_uri( '' );
+
+			return;
 		}
+
+		// The response is not OK.
+		if ( 200 !== (int) $response['response']['code'] ) {
+			$this->log->error( "Unexpected status code when opening URL $url: " . $response['response']['code'] );
+
+			$this->set_dataset_uri( '' );
+
+			return;
+		}
+
+		$json        = json_decode( $response['body'] );
+		$dataset_uri = $json->datasetURI;
+
+		$this->log->info( "Setting the dataset URI to $dataset_uri..." );
+
+		$this->set_dataset_uri( $dataset_uri );
+
 	}
 
 	/**
