@@ -231,6 +231,10 @@ class Wordlift_Batch_Analysis_Sql_Helper {
 		// Try to convert the value to a date, GMT timezone.
 		$date = date_create_from_format( 'Y-m-d\TH:i:sT', $value );
 
+		if ( false === $date ) {
+			wp_die( "Invalid date format, use `Y-m-d'T'H:i:sT`." );
+		}
+
 		// Convert the DateTime timezone to `GMT`.
 		$date->setTimezone( timezone_open( 'GMT' ) );
 

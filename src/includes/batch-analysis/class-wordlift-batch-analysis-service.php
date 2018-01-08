@@ -197,24 +197,24 @@ class Wordlift_Batch_Analysis_Service {
 	 *
 	 * @since 3.14.2
 	 *
-	 * @param array        $args              {
+	 * @param array       $args               {
 	 *                                        A list of options for the Batch Analysis.
 	 *
-	 * @type string        $link              Either `default`, `no` or `yes` (`default` is used if not specified):
+	 * @type string       $link               Either `default`, `no` or `yes` (`default` is used if not specified):
 	 *                                        * `default` doesn't set the link option - entities
 	 *                                           will be linked if configured so in WordLift settings.
 	 *                                        * `yes` links the entities.
 	 *                                        * `no` doesn't link the entities.
 	 *                                        This value is forwarded to WLS' Batch Analysis end-point.
-	 * @type int           $min_occurrences   The minimum number of occurrences to select
+	 * @type int          $min_occurrences    The minimum number of occurrences to select
 	 *                                        an entity. Default `1`.
-	 * @type bool          $include_annotated Whether to include annotated posts in selection.
+	 * @type bool         $include_annotated  Whether to include annotated posts in selection.
 	 *                                        Default `false`.
-	 * @type array|int     $include           Explicitly include the specified {@link WP_Post}s.
-	 * @type array|int     $exclude           Explicitly exclude the specified {@link WP_Post}s.
-	 * @type DateTime|null $from              An optional date from filter (used in `post_date_gmt`).
-	 * @type DateTime|null $to                An optional date from filter (used in `post_date_gmt`).
-	 * @type array|string  $post_type         Specify the post type(s), by default only `post`.
+	 * @type array|int    $include            Explicitly include the specified {@link WP_Post}s.
+	 * @type array|int    $exclude            Explicitly exclude the specified {@link WP_Post}s.
+	 * @type string|null  $from               An optional date from filter (used in `post_date_gmt`).
+	 * @type string|null  $to                 An optional date from filter (used in `post_date_gmt`).
+	 * @type array|string $post_type          Specify the post type(s), by default only `post`.
 	 *                      }
 	 *
 	 * @return int The number of submitted {@link WP_Post}s or false on error.
@@ -227,7 +227,6 @@ class Wordlift_Batch_Analysis_Service {
 			'link'              => 'default',
 			'min_occurrences'   => 1,
 			'include_annotated' => false,
-			'include'           => array(),
 			'exclude'           => array(),
 			'from'              => null,
 			'to'                => null,
@@ -255,6 +254,22 @@ class Wordlift_Batch_Analysis_Service {
 		return $count / 3;
 	}
 
+	/**
+	 * Submit one or more {@link WP_Posts} for Batch Analysis.
+	 *
+	 * @param array    $args            {
+	 *                                  An array of arguments.
+	 *
+	 * @type string    $link            The link option: `default`, `yes` or
+	 *                                  `no`. If not set `default`.
+	 * @type int       $min_occurrences The minimum number of occurrences. If
+	 *                                  not set `1`.
+	 * @type array|int $ids             An array of {@link WP_Post}s' ids or one
+	 *                                  single numeric {@link WP_Post} id.
+	 *                    }
+	 *
+	 * @return float|int
+	 */
 	public function submit_posts( $args ) {
 		global $wpdb;
 
@@ -273,7 +288,7 @@ class Wordlift_Batch_Analysis_Service {
 		// Submit the posts/pages and return the number of affected results.
 		// We're using a SQL query here because we could have potentially
 		// thousands of rows.
-		$count = $wpdb->query( Wordlift_Batch_Analysis_Sql_Helper::get_sql( $params ) ); // WPCS: cache ok, db call ok.
+		$count = $wpdb->query( Wordlift_Batch_Analysis_Sql_Helper::get_sql_for_ids( $params ) ); // WPCS: cache ok, db call ok.
 
 		// Request Batch Analysis (the operation is handled asynchronously).
 		do_action( 'wl_batch_analysis_request' );
@@ -300,10 +315,11 @@ class Wordlift_Batch_Analysis_Service {
 			"
 			DELETE FROM $wpdb->postmeta
 			WHERE meta_key = %s
-							  AND meta_value = %s
-												AND post_id IN( " . implode( ',', wp_parse_id_list( $post_ids ) ) . " )
+				AND meta_value IN ( %d, %d )
+				AND post_id IN( " . implode( ',', wp_parse_id_list( $post_ids ) ) . " )
 			",
 			self::STATE_META_KEY,
+			self::STATE_SUBMIT,
 			self::STATE_REQUEST
 		) ); // WPCS: cache ok, db call ok.
 
@@ -338,23 +354,19 @@ class Wordlift_Batch_Analysis_Service {
 
 		// Send a request for each post.
 		foreach ( $posts as $id ) {
-			$this->log->debug( "Requesting analysis for post $id..." );
 
-			// Change the state to `REQUEST`.
-			$this->set_state( $id, self::STATE_REQUEST );
+			$this->log->debug( "Requesting analysis for post $id..." );
 
 			// Send the actual request to the remote service.
 			$result = $this->do_request( $id );
 
-			$this->log->debug( "Analysis requested for post $id . " );
-
 			// Set an error if we received an error.
 			if ( is_wp_error( $result ) ) {
-				$this->log->error( "Analysis request for post $id returned {
-			$result->get_error_message()}." );
+				$this->log->error( "An error occurred while requesting a batch analysis for post $id: " . $result->get_error_message() );
 
 				$this->set_state( $id, self::STATE_ERROR );
 			}
+
 		}
 
 		// Call the `wl_batch_analysis_request` action again. This is going
@@ -662,20 +674,23 @@ class Wordlift_Batch_Analysis_Service {
 	 */
 	private function do_request( $post_id ) {
 
+		// Change the state to `REQUEST`.
+		$this->set_state( $post_id, self::STATE_REQUEST );
+
 		// Get the post.
 		$post = get_post( $post_id );
 
 		// Bail out if the post isn't found.
 		if ( null === $post ) {
-			$this->log->warn( "Post $post_id not found . " );
+			$this->log->warn( "Post $post_id not found." );
 
-			return new WP_Error( 0, "Cannot find post $post_id . " );
+			return new WP_Error( 0, "Cannot find post $post_id." );
 		}
 
 		// Get the link setting.
-		$link_options = $this->get_options( $post_id );
+		$options = $this->get_options( $post_id );
 
-		$this->log->debug( 'Sending analysis request for post $post_id [ link :: ' . $link_options['links'] . ', min_occurrences :: ' . $link_options['min_occurrences'] . ' ] ...' );
+		$this->log->debug( 'Sending analysis request for post $post_id [ link :: ' . $options['link'] . ', min_occurrences :: ' . $options['min_occurrences'] . ' ] ...' );
 
 		// Get the batch analysis URL.
 		$url = $this->configuration_service->get_batch_analysis_url();
@@ -688,8 +703,8 @@ class Wordlift_Batch_Analysis_Service {
 			'contentLanguage' => $this->configuration_service->get_language_code(),
 			'version'         => $this->plugin->get_version(),
 			'scope'           => 'local',
-			'link'            => $link_options['link'],
-			'minOccurrences'  => $link_options['min_occurrences'],
+			'link'            => $options['link'],
+			'minOccurrences'  => $options['min_occurrences'],
 		);
 
 		// Get the HTTP options.
