@@ -144,7 +144,6 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 = 3.17.0 (????-??-??) =
 * Enhancement: [#724](https://github.com/insideout10/wordlift-plugin/issues/724): Batch Analysis updates train.
-
 * Enhancement: [#682](https://github.com/insideout10/wordlift-plugin/issues/682): Capture the web site URL.
 * Enhancement: [#587](https://github.com/insideout10/wordlift-plugin/issues/587): Vocabulary Widget.
 
@@ -152,6 +151,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement: [#739](https://github.com/insideout10/wordlift-plugin/issues/739): Change the color/background of the wizard's "grab a key" button and link it to the Pricing page.
 * Enhancement: [#736](https://github.com/insideout10/wordlift-plugin/issues/736): Add an option to link only the first entity occurrence.
 * Enhancement: [#735](https://github.com/insideout10/wordlift-plugin/issues/735): Remove the number of occurrences and sort by occurrences descending.
+* Enhancement: [#599](https://github.com/insideout10/wordlift-plugin/issues/599): Revising the order of the proposed entities in the WordLift Edit Widget.
 * Fix: [#733](https://github.com/insideout10/wordlift-plugin/issues/733): JSON-LD shouldn't load on non-entity pages.
 
 = 3.16.3 (2017-11-28) =
