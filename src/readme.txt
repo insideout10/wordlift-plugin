@@ -153,6 +153,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement: [#716](https://github.com/insideout10/wordlift-plugin/issues/716): Batch Analysis should invalidate caches.
 * Enhancement: [#682](https://github.com/insideout10/wordlift-plugin/issues/682): Capture the web site URL.
 * Enhancement: [#587](https://github.com/insideout10/wordlift-plugin/issues/587): Vocabulary Widget.
+* Fix: [#743](https://github.com/insideout10/wordlift-plugin/issues/743): New permalink structure not reflected in JSON-LD.
 
 = 3.16.4 (2017-12-14) =
 * Enhancement: [#739](https://github.com/insideout10/wordlift-plugin/issues/739): Change the color/background of the wizard's "grab a key" button and link it to the Pricing page.
