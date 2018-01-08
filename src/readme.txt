@@ -143,6 +143,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 = 3.17.0 (????-??-??) =
+* Enhancement: [#726](https://github.com/insideout10/wordlift-plugin/issues/726): Set correct post types to Batch Analysis.
 * Enhancement: [#724](https://github.com/insideout10/wordlift-plugin/issues/724): Batch Analysis updates train.
 * Enhancement: [#723](https://github.com/insideout10/wordlift-plugin/issues/723): Batch Analysis extend link option with first only.
 * Enhancement: [#722](https://github.com/insideout10/wordlift-plugin/issues/722): Batch Analysis hooks for entities added to a post.
@@ -154,6 +155,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement: [#682](https://github.com/insideout10/wordlift-plugin/issues/682): Capture the web site URL.
 * Enhancement: [#587](https://github.com/insideout10/wordlift-plugin/issues/587): Vocabulary Widget.
 * Fix: [#743](https://github.com/insideout10/wordlift-plugin/issues/743): New permalink structure not reflected in JSON-LD.
+* Fix: [#729](https://github.com/insideout10/wordlift-plugin/issues/729): Batch Analysis - Infinite loop when post content is not set.
 
 = 3.16.4 (2017-12-14) =
 * Enhancement: [#739](https://github.com/insideout10/wordlift-plugin/issues/739): Change the color/background of the wizard's "grab a key" button and link it to the Pricing page.
