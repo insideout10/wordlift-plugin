@@ -144,6 +144,13 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 = 3.17.0 (????-??-??) =
 * Enhancement: [#724](https://github.com/insideout10/wordlift-plugin/issues/724): Batch Analysis updates train.
+* Enhancement: [#723](https://github.com/insideout10/wordlift-plugin/issues/723): Batch Analysis extend link option with first only.
+* Enhancement: [#722](https://github.com/insideout10/wordlift-plugin/issues/722): Batch Analysis hooks for entities added to a post.
+* Enhancement: [#721](https://github.com/insideout10/wordlift-plugin/issues/721): Batch Analysis minimum occurrences filter.
+* Enhancement: [#720](https://github.com/insideout10/wordlift-plugin/issues/720): Batch Analysis post submission selection filters.
+* Enhancement: [#719](https://github.com/insideout10/wordlift-plugin/issues/719): Batch Analysis must set the default entity term.
+* Enhancement: [#717](https://github.com/insideout10/wordlift-plugin/issues/717): AutoFix interpolation errors resulting from Batch Analysis.
+* Enhancement: [#716](https://github.com/insideout10/wordlift-plugin/issues/716): Batch Analysis should invalidate caches.
 * Enhancement: [#682](https://github.com/insideout10/wordlift-plugin/issues/682): Capture the web site URL.
 * Enhancement: [#587](https://github.com/insideout10/wordlift-plugin/issues/587): Vocabulary Widget.
 
