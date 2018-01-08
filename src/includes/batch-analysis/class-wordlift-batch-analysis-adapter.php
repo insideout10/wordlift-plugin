@@ -42,15 +42,35 @@ class Wordlift_Batch_Analysis_Adapter {
 	 */
 	public function submit() {
 
-		if ( ! isset( $_REQUEST['link'] ) ) {
-			wp_die( 'The `link` parameter is required.' );
-		}
-
 		// Get the parameters from the $_REQUEST.
 		$params = self::create_params_from_request();
 
 		// Submit the request.
 		$count = $this->batch_analysis_service->submit( $params );
+
+		// Clear any buffer.
+		ob_clean();
+
+		// Send the response.
+		wp_send_json_success( array( 'count' => $count ) );
+
+	}
+
+	/**
+	 * Submit the posts for batch analysis.
+	 *
+	 * @since 3.14.2
+	 */
+	public function submit_posts() {
+
+		if ( empty( $_REQUEST['post'] ) ) {
+			wp_send_json_error( 'The `post` parameter is required.' );
+		}
+
+		$ids = wp_parse_id_list( $_REQUEST['post'] );
+
+		// Submit the request.
+		$count = $this->batch_analysis_service->submit_posts( $ids );
 
 		// Clear any buffer.
 		ob_clean();
@@ -81,8 +101,6 @@ class Wordlift_Batch_Analysis_Adapter {
 			'min_occurrences'   => isset( $_REQUEST['min_occurrences'] ) && is_numeric( $_REQUEST['min_occurrences'] ) ? intval( $_REQUEST['min_occurrences'] ) : 1,
 			// Set the `post_type` to `post` if none provided.
 			'post_type'         => isset( $_REQUEST['post_type'] ) ? (array) $_REQUEST['post_type'] : 'post',
-			// Set the include array.
-			'include'           => isset( $_REQUEST['include'] ) ? (array) $_REQUEST['include'] : array(),
 			// Set the exclude array.
 			'exclude'           => isset( $_REQUEST['exclude'] ) ? (array) $_REQUEST['exclude'] : array(),
 			// Set the `from` date, or null if not provided.
@@ -90,6 +108,7 @@ class Wordlift_Batch_Analysis_Adapter {
 			// Set the `to` date, or null if not provided.
 			'to'                => isset( $_REQUEST['to'] ) ? $_REQUEST['to'] : null,
 		);
+
 		// @codingStandardsIgnoreEnd
 
 		return $params;

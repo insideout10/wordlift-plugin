@@ -1391,6 +1391,7 @@ class Wordlift {
 		/** Adapters. */
 		$this->loader->add_filter( 'mce_external_plugins', $this->tinymce_adapter, 'mce_external_plugins', 10, 1 );
 		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_submit', $this->batch_analysis_adapter, 'submit', 10 );
+		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_submit_posts', $this->batch_analysis_adapter, 'submit_posts', 10 );
 		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_cancel', $this->batch_analysis_adapter, 'cancel', 10 );
 		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_clear_warning', $this->batch_analysis_adapter, 'clear_warning', 10 );
 		$this->loader->add_action( 'wp_ajax_wl_relation_rebuild_process_all', $this->relation_rebuild_adapter, 'process_all', 10 );
