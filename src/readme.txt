@@ -9,7 +9,7 @@ Requires PHP: 5.3
 Stable tag: {version}
 License: GPLv2 or later
 
-WordLift brings the power of Artificial Intelligence to organize content. Attract new readers and get their true attention with top notch semantic seo.
+WordLift brings the power of Artificial Intelligence to organize content. Attract new readers and get their true attention with top notch Semantic SEO.
 
 == Description ==
 
@@ -17,8 +17,6 @@ WordLift brings the power of Artificial Intelligence to organize content. Attrac
 > **WordLift** is a lightweight plugin that brings **state-of-the-art semantic technologies** to the hands of any bloggers and publishers. <br />
 > **WordLift**, without requiring any technical skills, helps you produce richer content and organize it around your audience. <br />
 > **WordLift** is **available to all for a monthly fee**. Find out more and [get your activation key](https://wordlift.io) directly on our website. <br />
-
-[vimeo https://vimeo.com/197899438]
 
 **WordLift** helps you organize posts and pages adding facts, links and media to build **beautifully structured websites**, for both humans and search engines. <br />
 **WordLift** lets you create, own and publish your own [knowledge graph](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph).<br />
@@ -39,15 +37,12 @@ WordLift brings the power of Artificial Intelligence to organize content. Attrac
 = WordLift brings to your publishing workflow =
 _____________
 
-
 * The technology to **self-organize content** using publicly or privately available [knowledge graphs](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph) <br />
 * An easy way to **build datasets** and **full data ownership** <br />
 * Support for creating web content using **contextually relevant information** <br />
 * Valued and **free to use photos and illustrations** from the Commons community ranging from maps to astronomical imagery to photographs, artworks and more <br />
 * New means to drive business growth with **meaningful content discovery paths** <br />
 * Content tagging for **better SEO** <br />
-
-[vimeo http://vimeo.com/164538710]
 
 = Supported languages =
 _____________
@@ -68,6 +63,9 @@ The Plug-in is built on **open source software**.
 > Find out more and [get your activation key](https://wordlift.io) directly on our website. <br />
 
 == Frequently Asked Questions ==
+
+> Find here the Frequently Asked Questions. Also look into our docs:
+http://docs.wordlift.io/
 
 = Who is WordLift for? =
 
@@ -145,8 +143,16 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 = 3.17.0 (????-??-??) =
+* Enhancement: [#724](https://github.com/insideout10/wordlift-plugin/issues/724): Batch Analysis updates train.
 * Enhancement: [#682](https://github.com/insideout10/wordlift-plugin/issues/682): Capture the web site URL.
 * Enhancement: [#587](https://github.com/insideout10/wordlift-plugin/issues/587): Vocabulary Widget.
+
+= 3.16.4 (2017-12-14) =
+* Enhancement: [#739](https://github.com/insideout10/wordlift-plugin/issues/739): Change the color/background of the wizard's "grab a key" button and link it to the Pricing page.
+* Enhancement: [#736](https://github.com/insideout10/wordlift-plugin/issues/736): Add an option to link only the first entity occurrence.
+* Enhancement: [#735](https://github.com/insideout10/wordlift-plugin/issues/735): Remove the number of occurrences and sort by occurrences descending.
+* Enhancement: [#599](https://github.com/insideout10/wordlift-plugin/issues/599): Revising the order of the proposed entities in the WordLift Edit Widget.
+* Fix: [#733](https://github.com/insideout10/wordlift-plugin/issues/733): JSON-LD shouldn't load on non-entity pages.
 
 = 3.16.3 (2017-11-28) =
 * Fix: [#711](https://github.com/insideout10/wordlift-plugin/issues/711): Performance issues with content_filter.

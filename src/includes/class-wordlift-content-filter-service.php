@@ -52,6 +52,8 @@ class Wordlift_Content_Filter_Service {
 	 */
 	private $is_link_by_default;
 
+	private $entity_post_ids_linked_from_post_content = array();
+
 	/**
 	 * The {@link Wordlift_Entity_Uri_Service} instance.
 	 *
@@ -133,6 +135,10 @@ class Wordlift_Content_Filter_Service {
 		// Preload the `link by default` setting.
 		$this->is_link_by_default = $this->configuration_service->is_link_by_default();
 
+		// Reset the array of of entity post ids linked from the post content.
+		// This is used to avoid linking more the once the same post.
+		$this->entity_post_ids_linked_from_post_content = array();
+
 		// Preload URIs.
 		$matches = array();
 		preg_match_all( self::PATTERN, $content, $matches );
@@ -175,6 +181,14 @@ class Wordlift_Content_Filter_Service {
 
 		// Get the entity post by URI.
 		$post = $this->entity_service->get_entity_post_by_uri( $uri );
+
+		// @todo: revise the `test-content-filter-service.php` before switching
+		// to the `entity_uri_service`. This is required, because the test injects
+		// itself as `entity_service` to mock the requests to get a post by
+		// entity uri.
+		//
+		// $post = $this->entity_uri_service->get_entity( $uri );
+
 		if ( null === $post ) {
 
 			// If the entity post is not found return the label w/o the markup
@@ -184,8 +198,10 @@ class Wordlift_Content_Filter_Service {
 			return $label;
 		}
 
-		$no_link = - 1 < strpos( $css_class, 'wl-no-link' );
-		$link    = - 1 < strpos( $css_class, 'wl-link' );
+		$no_link = - 1 < strpos( $css_class, 'wl-no-link' )
+				   // Do not link if already linked.
+				   || in_array( $post->ID, $this->entity_post_ids_linked_from_post_content );
+		$link = - 1 < strpos( $css_class, 'wl-link' );
 
 		// Don't link if links are disabled and the entity is not link or the
 		// entity is do not link.
@@ -195,6 +211,10 @@ class Wordlift_Content_Filter_Service {
 		if ( $dont_link ) {
 			return $label;
 		}
+
+		// Add the entity post id to the array of already linked entities, so that
+		// only the first entity occurrence is linked.
+		$this->entity_post_ids_linked_from_post_content[] = $post->ID;
 
 		// Get the link.
 		$href = get_permalink( $post );

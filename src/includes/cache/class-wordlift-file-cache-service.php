@@ -121,8 +121,9 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 	 *
 	 * @since 3.16.0
 	 *
-	 * @param int   $id       The cache id.
-	 * @param mixed $contents The cache contents.
+	 * @param int $id The cache id.
+	 *
+	 * @return bool True if the `id` has a cache.
 	 */
 	function has_cache( $id ) {
 
