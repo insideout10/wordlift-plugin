@@ -19,7 +19,7 @@ const Main = styled.div`
 	left: ${ props => props.open ? '-248px' : 0 };
 	top: 0;
 	box-sizing: border-box;
-	width: 248px;
+	width: 236px;
 	min-height: 24px;
 	transition: left 200ms ease;
 `;

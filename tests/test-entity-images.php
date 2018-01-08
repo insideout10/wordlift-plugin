@@ -237,6 +237,10 @@ class EntityImagesTest extends Wordlift_Unit_Test_Case {
 		// Send the query and get the response.
 		$response = rl_sparql_select( $sparql );
 
+		if (is_wp_error( $response )) {
+			var_dump($response);
+		}
+
 		$this->assertFalse( is_wp_error( $response ) );
 
 		$lines = array();

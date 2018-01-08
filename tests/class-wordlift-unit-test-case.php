@@ -78,9 +78,14 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 		// Set up the publisher.
 		$this->setup_publisher();
 
+		add_filter( 'wp_doing_ajax', '__return_false' );
+
 	}
 
 	function tearDown() {
+
+		remove_filter( 'wp_doing_ajax', '__return_false' );
+
 		$this->teardown_publisher();
 
 		parent::tearDown();
