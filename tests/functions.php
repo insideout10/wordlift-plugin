@@ -640,14 +640,16 @@ function wl_configure_wordpress_test() {
 
 	// If the WordLift key is set, then we'll configure it, otherwise we configure Redlink.
 	if ( false === getenv( 'WORDLIFT_KEY' ) ) {
-		die( "WordLift's key is required, set the `WORDLIFT_KEY` environment." );
+		echo( "WordLift's key is required, set the `WORDLIFT_KEY` environment." );
+		die( 1 );
 	}
 
 	// When setting the WordLift Key, the Redlink dataset URI is provisioned by WordLift Server.
 	$configuration_service->set_key( getenv( 'WORDLIFT_KEY' ) );
 	$dataset_uri = $configuration_service->get_dataset_uri();
 	if ( empty( $dataset_uri ) ) {
-		die( 'The dataset URI is not set (maybe the WordLift key is not valid?)' );
+		echo( 'The dataset URI is not set (maybe the WordLift key is not valid?)' );
+		die( 2 );
 	}
 
 }
