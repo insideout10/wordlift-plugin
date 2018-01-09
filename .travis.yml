@@ -70,25 +70,24 @@ addons:
 
 env:
   global:
+    # WordLift's options, needed for testing.
+    - WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING=true
+    - WL_SSL_VERIFY_ENABLED=true
+    - WL_SSL_V1_FORCED=true
+
     # WordLift's Key on Production environment.
     # - secure: "NB4P/P1/Gzje1/mOseVZqkIdaxI5vEgnlUUEmNRBtAT0CMt3c3pLSfzRtKrFfuJzoXpahxf8pC1R+Ljjf+QCC+2ECqjGCPSSv1tIj0L/H+c9UtbpPQIwD6kv7dPBYedZ6eNAgGjK1DXhrAuSnNaYJrZ35N6tv06B0KmniY6pJnk="
 
     ### WordLift's Test Environment.
     # - Key:
     - secure: "MDY3A9GxNd3XXnV+vXd9XACWecyMGYfkQU97dY/W+IbDpD1fBE6F61OXNIM2lCZwxJ2GtOnlhX9YcB1Xdrqi4wzwTe1C2hp3QaCs51x7Bo9I7F9ufFR0vm7hE8Tlq6jGH3WqC4Vudajm3+JHlskIaFQSUowEyVcNk+ww/lo84ag="
+
     # - API URL:
     - secure: "mFdEBX3lGkoNUTPVVwJbX82RqDA10AYg17Eg88Mj2U00dQKiS7pKkK5tShQvGBM0+lFvp/RVI8z12BS5T9kMxWjYpaLy0z8g7lSIfJQHHV8c7LMljBzh5T2NbcYGA8vyC/CTo73XbMLgFgaaug0LYIMw/GgBuZkmmB2pEe6OEUY="
+    ###
 
     # CodeClimate Repository Token.
     - secure: "Fo6kJNe7LNHPfj6fBIyqOI7Zkm2DZwV7IH8jTGvZF5UkPvJiUyjN13z1TRXOohUYvigITZduF0f2I3MaxkAEpb/d5e2yf/Zu7x/nlRQzcSWM9zPMuW+oJG/b+s2m9F65uYkOIi1J5vI7w/G888zGS9LzSgwh4mXxeG1bm3b4EGw="
-
-    # WordLift's Key.
-    # Disabled, since we're using a key from up above: - secure: "exGT91J35T9zhTHMTmAkdAeMkUm+Xju8yrx3hyxHuAXt6rpwOGFPoeabRLlyj70+DmSMUK3b63yvwofqNtCoBgeNpRmXh9YIGmIZKYQdexD1vtYe6D1fvKM+7/08Z5dlIvQcSJX2gsDzZNQMVcRd0k9OrwrRN5TDZLjIWxBR70M="
-
-    # WordLift's options, needed for testing.
-    - WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING=true
-    - WL_SSL_VERIFY_ENABLED=true
-    - WL_SSL_V1_FORCED=true
 
     # SauceLabs environment vars.
     - secure: "BPMK2gsJp6pL9rQ+qJUJaCiILGI5DTn91bcEeOOguiPtg2EUMpZWG3fvyIoFJzGu8Mi7jluP60au00cmYK8QbtwJyDACqsmDRwV+1JFrl1ipZJ2R/KVksFfzsb8qOnNG9ejCSkobHj3IrR5l+bCJU2PPa9/d/lc3DFhZaNW4T3k="
