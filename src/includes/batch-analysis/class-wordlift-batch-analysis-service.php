@@ -131,7 +131,7 @@ class Wordlift_Batch_Analysis_Service {
 	 *
 	 * @since  3.17.0
 	 */
-	const INTERPOLATION_PATTERNS = array(
+	private static $interpolation_patterns = array(
 		// Matches word before the annotation.
 		'~(\w)<[a-z]+ id="urn:[^"]+" class="[^"]+" itemid="[^"]+">(.*?)<\/[a-z]+>~',
 		// Matches word after the annotation.
@@ -530,7 +530,7 @@ class Wordlift_Batch_Analysis_Service {
 		$this->log->debug( "Fixing post $id interpolations..." );
 
 		// Remove all interpolations from the content.
-		return preg_replace( self::INTERPOLATION_PATTERNS, '$1$2', $content );
+		return preg_replace( self::$interpolation_patterns, '$1$2', $content );
 	}
 
 	/**
