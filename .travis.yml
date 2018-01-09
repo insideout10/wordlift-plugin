@@ -70,22 +70,22 @@ addons:
 
 env:
   global:
-    # WordLift's options, needed for testing.
+    # WordLift options, needed for testing.
     - WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING=true
     - WL_SSL_VERIFY_ENABLED=true
     - WL_SSL_V1_FORCED=true
 
-    # WordLift's Test Key.
-    - secure: "BsNDrVpXrjLPBBswcPZXuNDjutg5xk6aCRRd3uCClcSHqzfmJ2Y8f+r8A0rEaL8L6vPWD496jcIPJAwR0D9IVAramJn+WaQ/y3h7WjxPJjIBGuBZHfST52LgtyUPjYnZSNGjuf6sEaxu7YoSnQOJNa9+SgBHhRXsOsthKlW1OKo="
+    # WordLift Test Key.
+    - secure: "g18HCJuCU1qN5NnhIttwV0obz71mZNZzT1RPIOhaBcMOhMZ/QsDER15xVzflHSq+x/leJoer0YFCG0iuIt7mla++mON1R2rITQToqMGIklbiktT9uVx/4ns8frYQRVd+mPXcQExbj/yzNRGQgq19yFU53xgrZVWmvaRuclHQDlM="
 
-    # WordLift's Test API URL.
-    - secure: "chAxWLu2iKOJV8oHFSEGKXiWzmOuiOSz0ppe5KwH1xgn10mFAHkGXNmpIPvJd+y6oJ/0GAlr+qkxkE3Fvx15zrOScp0EsSdySTwUbYpcAlab9UZKvOdOiHt5U1xC8vjBSHeoQVqmsspvSNblKw5yorIbWpNoKNbAi+UiQqEQcHw="
+    # WordLift Test API URL.
+    - secure: "QVEH7GwZJR9nWnEKq99QZATwsppd+3eKHcGtZeAKcxaScW6tOnyJRzLR3pKi1M5PK2azdgu9ZuYxk6RRjO6gEGQhqVa9yrWhwXv4KmKeOUdszRW2gH0uQ1cQEU4Stjibppq+sHzRSC6di3yrLWxdfc+5HZHAj8uut5ISpFV3Ozc="
 
     # CodeClimate Repository Token.
     - secure: "Fo6kJNe7LNHPfj6fBIyqOI7Zkm2DZwV7IH8jTGvZF5UkPvJiUyjN13z1TRXOohUYvigITZduF0f2I3MaxkAEpb/d5e2yf/Zu7x/nlRQzcSWM9zPMuW+oJG/b+s2m9F65uYkOIi1J5vI7w/G888zGS9LzSgwh4mXxeG1bm3b4EGw="
 
     # CodeClimate Test Coverage Key.
-    - secure: "AMguCWzHPqXvrb0oja6uYxg4vKw3uA+YEe2hBpI+cuvvkwLSISC3cf64rQv9yf3aVstnOnaZhUQ4JxCC1beYBsLRiZwPU/4QMsPYNO4HPl02YoOIXk+ZJzATSC0a3rs06gxcL9i2+Csd0zgkAL1a9tYj9r1yYP96qo+RpEYfIyw="
+    - secure: "VP6tz2/pCk3sZx0/iwwzCVHqRIyvh5gePeryogUkR9bD3OG/C177ZWWlJ6ODClIOAMpcKyozs6xvGVtSRn3YT4LbQhF67zP9O0i9Yka84huV9PfXeaZwovG3mULxuSVsvYmlmTmSoX3wvkbrkkxH4YY+Vmz6k4scWanfGd2J9j4="
 
     # SauceLabs environment vars.
     - secure: "BPMK2gsJp6pL9rQ+qJUJaCiILGI5DTn91bcEeOOguiPtg2EUMpZWG3fvyIoFJzGu8Mi7jluP60au00cmYK8QbtwJyDACqsmDRwV+1JFrl1ipZJ2R/KVksFfzsb8qOnNG9ejCSkobHj3IrR5l+bCJU2PPa9/d/lc3DFhZaNW4T3k="
