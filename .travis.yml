@@ -75,19 +75,17 @@ env:
     - WL_SSL_VERIFY_ENABLED=true
     - WL_SSL_V1_FORCED=true
 
-    # WordLift's Key on Production environment.
-    # "NB4P/P1/Gzje1/mOseVZqkIdaxI5vEgnlUUEmNRBtAT0CMt3c3pLSfzRtKrFfuJzoXpahxf8pC1R+Ljjf+QCC+2ECqjGCPSSv1tIj0L/H+c9UtbpPQIwD6kv7dPBYedZ6eNAgGjK1DXhrAuSnNaYJrZ35N6tv06B0KmniY6pJnk="
+    # WordLift's Test Key.
+    - secure: "BsNDrVpXrjLPBBswcPZXuNDjutg5xk6aCRRd3uCClcSHqzfmJ2Y8f+r8A0rEaL8L6vPWD496jcIPJAwR0D9IVAramJn+WaQ/y3h7WjxPJjIBGuBZHfST52LgtyUPjYnZSNGjuf6sEaxu7YoSnQOJNa9+SgBHhRXsOsthKlW1OKo="
 
-    ### WordLift's Test Environment.
-    # * Key:
-    - secure: "MDY3A9GxNd3XXnV+vXd9XACWecyMGYfkQU97dY/W+IbDpD1fBE6F61OXNIM2lCZwxJ2GtOnlhX9YcB1Xdrqi4wzwTe1C2hp3QaCs51x7Bo9I7F9ufFR0vm7hE8Tlq6jGH3WqC4Vudajm3+JHlskIaFQSUowEyVcNk+ww/lo84ag="
-
-    # * API URL:
-    - secure: "mFdEBX3lGkoNUTPVVwJbX82RqDA10AYg17Eg88Mj2U00dQKiS7pKkK5tShQvGBM0+lFvp/RVI8z12BS5T9kMxWjYpaLy0z8g7lSIfJQHHV8c7LMljBzh5T2NbcYGA8vyC/CTo73XbMLgFgaaug0LYIMw/GgBuZkmmB2pEe6OEUY="
-    ###
+    # WordLift's Test API URL.
+    - secure: "chAxWLu2iKOJV8oHFSEGKXiWzmOuiOSz0ppe5KwH1xgn10mFAHkGXNmpIPvJd+y6oJ/0GAlr+qkxkE3Fvx15zrOScp0EsSdySTwUbYpcAlab9UZKvOdOiHt5U1xC8vjBSHeoQVqmsspvSNblKw5yorIbWpNoKNbAi+UiQqEQcHw="
 
     # CodeClimate Repository Token.
     - secure: "Fo6kJNe7LNHPfj6fBIyqOI7Zkm2DZwV7IH8jTGvZF5UkPvJiUyjN13z1TRXOohUYvigITZduF0f2I3MaxkAEpb/d5e2yf/Zu7x/nlRQzcSWM9zPMuW+oJG/b+s2m9F65uYkOIi1J5vI7w/G888zGS9LzSgwh4mXxeG1bm3b4EGw="
+
+    # CodeClimate Test Coverage Key.
+    - secure: "AMguCWzHPqXvrb0oja6uYxg4vKw3uA+YEe2hBpI+cuvvkwLSISC3cf64rQv9yf3aVstnOnaZhUQ4JxCC1beYBsLRiZwPU/4QMsPYNO4HPl02YoOIXk+ZJzATSC0a3rs06gxcL9i2+Csd0zgkAL1a9tYj9r1yYP96qo+RpEYfIyw="
 
     # SauceLabs environment vars.
     - secure: "BPMK2gsJp6pL9rQ+qJUJaCiILGI5DTn91bcEeOOguiPtg2EUMpZWG3fvyIoFJzGu8Mi7jluP60au00cmYK8QbtwJyDACqsmDRwV+1JFrl1ipZJ2R/KVksFfzsb8qOnNG9ejCSkobHj3IrR5l+bCJU2PPa9/d/lc3DFhZaNW4T3k="
@@ -96,8 +94,9 @@ env:
     # See https://docs.codeclimate.com/v1.0/docs/travis-ci-test-coverage
     - GIT_COMMITTED_AT=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then git log -1 --pretty=format:%ct; else git log -1 --skip 1 --pretty=format:%ct; fi)
 
-    # CodeClimate Test Coverage Key.
-    - secure: "AMguCWzHPqXvrb0oja6uYxg4vKw3uA+YEe2hBpI+cuvvkwLSISC3cf64rQv9yf3aVstnOnaZhUQ4JxCC1beYBsLRiZwPU/4QMsPYNO4HPl02YoOIXk+ZJzATSC0a3rs06gxcL9i2+Csd0zgkAL1a9tYj9r1yYP96qo+RpEYfIyw="
+    # WordLift's Key on Production environment.
+    # NB4P/P1/Gzje1/mOseVZqkIdaxI5vEgnlUUEmNRBtAT0CMt3c3pLSfzRtKrFfuJzoXpahxf8pC1R+Ljjf+QCC+2ECqjGCPSSv1tIj0L/H+c9UtbpPQIwD6kv7dPBYedZ6eNAgGjK1DXhrAuSnNaYJrZ35N6tv06B0KmniY6pJnk=
+
   matrix:
     - SCRIPT=test:php WP_VERSION=4.9
     - SCRIPT=test:php WP_VERSION=4.4
