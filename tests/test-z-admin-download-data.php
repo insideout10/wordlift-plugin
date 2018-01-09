@@ -10,6 +10,8 @@
 /**
  * Define the {@link Wordlift_Download_Google_Content_Data_Test} class.
  *
+ * @group   ajax
+ *
  * @since      3.16.0
  * @package    Wordlift
  * @subpackage Wordlift/tests

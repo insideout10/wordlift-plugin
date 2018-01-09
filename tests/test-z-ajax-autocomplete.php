@@ -10,6 +10,8 @@
  * Class Wordlift_Autocomplete_Test
  * Extend Wordlift_Ajax_Unit_Test_Case
  *
+ * @group   ajax
+ *
  * @since   3.15.0
  * @package Wordlift
  */
@@ -20,8 +22,9 @@ class Wordlift_Autocomplete_Test extends Wordlift_Ajax_Unit_Test_Case {
 
 		try {
 			$this->_handleAjax( 'wl_autocomplete' );
-		} catch ( WPAjaxDieContinueException $e ) {}
-	 
+		} catch ( WPAjaxDieContinueException $e ) {
+		}
+
 		$response = json_decode( $this->_last_response );
 
 		$this->assertInternalType( 'object', $response );
@@ -38,7 +41,8 @@ class Wordlift_Autocomplete_Test extends Wordlift_Ajax_Unit_Test_Case {
 
 		try {
 			$this->_handleAjax( 'wl_autocomplete' );
-		} catch ( WPAjaxDieContinueException $e ) {}
+		} catch ( WPAjaxDieContinueException $e ) {
+		}
 
 		$response = json_decode( $this->_last_response );
 
@@ -56,7 +60,8 @@ class Wordlift_Autocomplete_Test extends Wordlift_Ajax_Unit_Test_Case {
 
 		try {
 			$this->_handleAjax( 'wl_autocomplete' );
-		} catch ( WPAjaxDieContinueException $e ) {}
+		} catch ( WPAjaxDieContinueException $e ) {
+		}
 
 		$response = json_decode( $this->_last_response );
 
@@ -75,7 +80,8 @@ class Wordlift_Autocomplete_Test extends Wordlift_Ajax_Unit_Test_Case {
 
 		try {
 			$this->_handleAjax( 'wl_autocomplete' );
-		} catch ( WPAjaxDieContinueException $e ) {}
+		} catch ( WPAjaxDieContinueException $e ) {
+		}
 
 		$response = json_decode( $this->_last_response );
 
@@ -92,11 +98,15 @@ class Wordlift_Autocomplete_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$_POST['_wpnonce'] = wp_create_nonce( 'wordlift_autocomplete' );
 		$_POST['query']    = 'test';
 
-		add_filter( 'pre_http_request', array( $this, 'return_error_code' ), 100 );
+		add_filter( 'pre_http_request', array(
+			$this,
+			'return_error_code',
+		), 100 );
 
 		try {
 			$this->_handleAjax( 'wl_autocomplete' );
-		} catch ( WPAjaxDieContinueException $e ) {}
+		} catch ( WPAjaxDieContinueException $e ) {
+		}
 
 		$response = json_decode( $this->_last_response );
 
@@ -113,11 +123,15 @@ class Wordlift_Autocomplete_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$_POST['_wpnonce'] = wp_create_nonce( 'wordlift_autocomplete' );
 		$_POST['query']    = 'test';
 
-		add_filter( 'pre_http_request', array( $this, 'return_wp_error' ), 100 );
+		add_filter( 'pre_http_request', array(
+			$this,
+			'return_wp_error',
+		), 100 );
 
 		try {
 			$this->_handleAjax( 'wl_autocomplete' );
-		} catch ( WPAjaxDieContinueException $e ) {}
+		} catch ( WPAjaxDieContinueException $e ) {
+		}
 
 		$response = json_decode( $this->_last_response );
 

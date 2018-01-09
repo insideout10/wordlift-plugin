@@ -5,12 +5,13 @@
  * @since   3.0.0
  * @package Wordlift
  */
-require_once 'functions.php';
 
 /**
  * Class FacetedSearchShortcodeTest
  * Extend WP_Ajax_UnitTestCase
  * See https://codesymphony.co/wp-ajax-plugin-unit-testing/
+ *
+ * @group   ajax
  *
  * @since   3.0.0
  * @package Wordlift
