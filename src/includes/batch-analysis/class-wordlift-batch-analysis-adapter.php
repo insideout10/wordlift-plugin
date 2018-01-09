@@ -112,8 +112,8 @@ class Wordlift_Batch_Analysis_Adapter {
 		// Build params array and check if param exists.
 		// @codingStandardsIgnoreStart, Ignore phpcs indentation errors.
 		$params = array(
-			// Get the `link` parameter, or use `default` if not provided.
-			'link'              => isset( $_REQUEST['link'] ) ? $_REQUEST['link'] : 'default',
+			// Get the `links` parameter, or use `default` if not provided.
+			'links'             => isset( $_REQUEST['links'] ) ? $_REQUEST['links'] : 'default',
 			// If `include_annotated` is set to `yes`, the set the parameter to true.
 			'include_annotated' => isset( $_REQUEST['include_annotated'] ) && 'yes' === $_REQUEST['include_annotated'],
 			// Set the minimum amount of occurrences, use `1` by default.

@@ -221,7 +221,7 @@ class Wordlift_Batch_Analysis_Sql_Helper_Test extends Wordlift_Unit_Test_Case {
 
 		return wp_parse_args( $args, array(
 			'post_type'         => 'post',
-			'link'              => 'default',
+			'links'             => 'default',
 			'min_occurrences'   => 1,
 			'include_annotated' => false,
 			'from'              => null,

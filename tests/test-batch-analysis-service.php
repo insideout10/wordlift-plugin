@@ -55,7 +55,7 @@ class Wordlift_Batch_Analysis_Service_Test extends Wordlift_Unit_Test_Case {
 			$options = get_post_meta( $id, Wordlift_Batch_Analysis_Service::BATCH_ANALYSIS_OPTIONS_META_KEY, true );
 
 			$this->assertEquals( array(
-				'link'            => 'default',
+				'links'           => 'default',
 				'min_occurrences' => 1,
 			), $options );
 		}
@@ -66,7 +66,7 @@ class Wordlift_Batch_Analysis_Service_Test extends Wordlift_Unit_Test_Case {
 
 		$post_ids = $this->factory->post->create_many( 2 );
 
-		$count = $this->batch_analysis_service->submit( array( 'link' => 'yes' ) );
+		$count = $this->batch_analysis_service->submit( array( 'links' => 'yes' ) );
 
 		$this->assertEquals( 2, $count );
 
@@ -74,7 +74,7 @@ class Wordlift_Batch_Analysis_Service_Test extends Wordlift_Unit_Test_Case {
 			$options = get_post_meta( $id, Wordlift_Batch_Analysis_Service::BATCH_ANALYSIS_OPTIONS_META_KEY, true );
 
 			$this->assertEquals( array(
-				'link'            => 'yes',
+				'links'           => 'yes',
 				'min_occurrences' => 1,
 			), $options );
 		}
@@ -85,7 +85,7 @@ class Wordlift_Batch_Analysis_Service_Test extends Wordlift_Unit_Test_Case {
 
 		$post_ids = $this->factory->post->create_many( 2 );
 
-		$count = $this->batch_analysis_service->submit( array( 'link' => 'no' ) );
+		$count = $this->batch_analysis_service->submit( array( 'links' => 'no' ) );
 
 		$this->assertEquals( 2, $count );
 
@@ -93,7 +93,7 @@ class Wordlift_Batch_Analysis_Service_Test extends Wordlift_Unit_Test_Case {
 			$options = get_post_meta( $id, Wordlift_Batch_Analysis_Service::BATCH_ANALYSIS_OPTIONS_META_KEY, true );
 
 			$this->assertEquals( array(
-				'link'            => 'no',
+				'links'           => 'no',
 				'min_occurrences' => 1,
 			), $options );
 		}
@@ -107,7 +107,7 @@ class Wordlift_Batch_Analysis_Service_Test extends Wordlift_Unit_Test_Case {
 
 		$this->factory->post->create_many( 2 );
 
-		$this->batch_analysis_service->submit( array( 'link' => 'unknown' ) );
+		$this->batch_analysis_service->submit( array( 'links' => 'unknown' ) );
 
 	}
 
@@ -123,7 +123,7 @@ class Wordlift_Batch_Analysis_Service_Test extends Wordlift_Unit_Test_Case {
 			$options = get_post_meta( $id, Wordlift_Batch_Analysis_Service::BATCH_ANALYSIS_OPTIONS_META_KEY, true );
 
 			$this->assertEquals( array(
-				'link'            => 'default',
+				'links'           => 'default',
 				'min_occurrences' => 1,
 			), $options );
 		}
@@ -142,7 +142,7 @@ class Wordlift_Batch_Analysis_Service_Test extends Wordlift_Unit_Test_Case {
 			$options = get_post_meta( $id, Wordlift_Batch_Analysis_Service::BATCH_ANALYSIS_OPTIONS_META_KEY, true );
 
 			$this->assertEquals( array(
-				'link'            => 'default',
+				'links'           => 'default',
 				'min_occurrences' => 2,
 			), $options );
 		}
@@ -676,7 +676,7 @@ class Wordlift_Batch_Analysis_Service_Test extends Wordlift_Unit_Test_Case {
 	public function test_request_link_yes_minimum_occurrences_two() {
 
 		$this->_test_request( array(
-			'link'            => 'yes',
+			'links'           => 'yes',
 			'min_occurrences' => 2,
 		) );
 
@@ -779,7 +779,7 @@ class Wordlift_Batch_Analysis_Service_Test extends Wordlift_Unit_Test_Case {
 			$this->assertEquals( 'application/json; charset=UTF-8', $request['headers']['Content-type'] );
 
 			$body = json_decode( $request['body'] );
-			$this->assertEquals( isset( $args['link'] ) ? $args['link'] : 'default', $body->link );
+			$this->assertEquals( isset( $args['links'] ) ? $args['links'] : 'default', $body->link );
 			$this->assertEquals( isset( $args['min_occurrences'] ) ? $args['min_occurrences'] : 1, $body->minOccurrences );
 			$this->assertTrue( in_array( $body->id, $posts ) );
 

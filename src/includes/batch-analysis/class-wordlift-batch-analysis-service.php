@@ -187,7 +187,7 @@ class Wordlift_Batch_Analysis_Service {
 	 */
 	public function __construct( $plugin, $configuration_service, $cache_service ) {
 
-		$this->log                   = Wordlift_Log_Service::get_logger( 'Wordlift_Batch_Analysis_Service' );
+		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Batch_Analysis_Service' );
 
 		$this->plugin                = $plugin;
 		$this->configuration_service = $configuration_service;
@@ -236,7 +236,7 @@ class Wordlift_Batch_Analysis_Service {
 
 		// Parse the parameters.
 		$params = wp_parse_args( $args, array(
-			'link'              => 'default',
+			'links'             => 'default',
 			'min_occurrences'   => 1,
 			'include_annotated' => false,
 			'exclude'           => array(),
@@ -246,7 +246,7 @@ class Wordlift_Batch_Analysis_Service {
 		) );
 
 		// Validation.
-		if ( ! in_array( $params['link'], array( 'default', 'yes', 'no' ) ) ) {
+		if ( ! in_array( $params['links'], array( 'default', 'yes', 'no' ) ) ) {
 			wp_die( '`link` must be one of the following: `default`, `yes` or `no`.' );
 		}
 
@@ -287,7 +287,7 @@ class Wordlift_Batch_Analysis_Service {
 
 		// Parse the parameters.
 		$params = wp_parse_args( $args, array(
-			'link'            => 'default',
+			'links'           => 'default',
 			'min_occurrences' => 1,
 			'ids'             => array(),
 		) );
@@ -705,7 +705,7 @@ class Wordlift_Batch_Analysis_Service {
 		// Get the link setting.
 		$options = $this->get_options( $post_id );
 
-		$this->log->debug( 'Sending analysis request for post $post_id [ link :: ' . $options['link'] . ', min_occurrences :: ' . $options['min_occurrences'] . ' ] ...' );
+		$this->log->debug( 'Sending analysis request for post $post_id [ links :: ' . $options['links'] . ', min_occurrences :: ' . $options['min_occurrences'] . ' ] ...' );
 
 		// Get the batch analysis URL.
 		$url = $this->configuration_service->get_batch_analysis_url();
@@ -718,7 +718,7 @@ class Wordlift_Batch_Analysis_Service {
 			'contentLanguage' => $this->configuration_service->get_language_code(),
 			'version'         => $this->plugin->get_version(),
 			'scope'           => 'local',
-			'link'            => $options['link'],
+			'links'           => $options['links'],
 			'minOccurrences'  => $options['min_occurrences'],
 		);
 
