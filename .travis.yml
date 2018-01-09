@@ -70,8 +70,13 @@ addons:
 
 env:
   global:
-    # WordLift's Key and something else.
+    # WordLift's Key.
     - secure: "NB4P/P1/Gzje1/mOseVZqkIdaxI5vEgnlUUEmNRBtAT0CMt3c3pLSfzRtKrFfuJzoXpahxf8pC1R+Ljjf+QCC+2ECqjGCPSSv1tIj0L/H+c9UtbpPQIwD6kv7dPBYedZ6eNAgGjK1DXhrAuSnNaYJrZ35N6tv06B0KmniY6pJnk="
+
+    # WordLift's API URL.
+    - secure: "mFdEBX3lGkoNUTPVVwJbX82RqDA10AYg17Eg88Mj2U00dQKiS7pKkK5tShQvGBM0+lFvp/RVI8z12BS5T9kMxWjYpaLy0z8g7lSIfJQHHV8c7LMljBzh5T2NbcYGA8vyC/CTo73XbMLgFgaaug0LYIMw/GgBuZkmmB2pEe6OEUY="
+
+    # CodeClimate Repository Token.
     - secure: "Fo6kJNe7LNHPfj6fBIyqOI7Zkm2DZwV7IH8jTGvZF5UkPvJiUyjN13z1TRXOohUYvigITZduF0f2I3MaxkAEpb/d5e2yf/Zu7x/nlRQzcSWM9zPMuW+oJG/b+s2m9F65uYkOIi1J5vI7w/G888zGS9LzSgwh4mXxeG1bm3b4EGw="
 
     # WordLift's Key.
@@ -137,6 +142,14 @@ before_script:
   - npm install -g grunt-cli
   # Install Node dependencies.
   - npm install
+  # Code Climate test coverage.
+  - |
+    if [[ "$SCRIPT" == "test:php-test-coverage" ]]; then
+      curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+      chmod +x ./cc-test-reporter
+      ./cc-test-reporter before-build
+    fi
+
 
 # Finally launch the script.
 script: npm run $SCRIPT
@@ -147,12 +160,10 @@ after_script:
     if [[ "$SCRIPT" == "test:e2e" ]]; then
       .ci/travis/sauce_connect_stop.sh
     fi
-
-after_success:
   # Code Climate test coverage.
   - |
     if [[ "$SCRIPT" == "test:php-test-coverage" ]]; then
-      ./vendor/bin/test-reporter
+      ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
     fi
 
 # Notify our Slack channel.

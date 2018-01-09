@@ -41,8 +41,9 @@ define( 'WL_ENTITY_URL_META_NAME', 'entity_url' );
 define( 'WL_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING', 3 );
 
 // Use the WordLift API URL set on the command line.
-if ( false !== getenv( 'WORDLIFT_API_URL' ) && ! defined( 'WORDLIFT_API_URL' ) ) {
-	define( 'WORDLIFT_API_URL', getenv( 'WORDLIFT_API_URL' ) );
+$env_wordlift_api_url = getenv( 'WORDLIFT_API_URL' );
+if ( ! defined( 'WORDLIFT_API_URL' ) && ! empty( $env_wordlift_api_url ) ) {
+	define( 'WORDLIFT_API_URL', $env_wordlift_api_url );
 }
 
 // 3.13.0, we use by default WLS 1.11 which provides us with the new, faster
@@ -86,8 +87,8 @@ function wl_prefixes() {
  * @return string The path to the temp directory for the specific site.
  */
 function wl_temp_dir() {
-	$tempdir = get_temp_dir();
-	$unique = md5( site_url() . get_current_blog_id() );
+	$tempdir         = get_temp_dir();
+	$unique          = md5( site_url() . get_current_blog_id() );
 	$unique_temp_dir = $tempdir . 'wl_' . $unique; // $tempdir should have a trailing slash.
 
 	// If directory do not exist, create it.
