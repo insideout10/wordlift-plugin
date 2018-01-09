@@ -1,7 +1,7 @@
 (function($, settings) {
   'use strict';
 
-  $(function() {
+  window.addEventListener('load', function() {
     // Check if the JSON-LD is disabled, i.e. if there's a `jsonld_enabled`
     // setting explicitly defined with a value different from '1'.
     if (

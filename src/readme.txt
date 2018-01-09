@@ -158,6 +158,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Fix: [#743](https://github.com/insideout10/wordlift-plugin/issues/743): New permalink structure not reflected in JSON-LD.
 * Fix: [#729](https://github.com/insideout10/wordlift-plugin/issues/729): Batch Analysis - Infinite loop when post content is not set.
 
+= 3.16.5 (2018-01-08) =
+* Fix: [#753](https://github.com/insideout10/wordlift-plugin/issues/753): JSON-LD doesn't show up in SDTT.
+
 = 3.16.4 (2017-12-14) =
 * Enhancement: [#739](https://github.com/insideout10/wordlift-plugin/issues/739): Change the color/background of the wizard's "grab a key" button and link it to the Pricing page.
 * Enhancement: [#736](https://github.com/insideout10/wordlift-plugin/issues/736): Add an option to link only the first entity occurrence.
