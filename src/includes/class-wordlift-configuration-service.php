@@ -361,6 +361,8 @@ class Wordlift_Configuration_Service {
 		// Request the dataset URI.
 		// $response = wp_remote_get( $this->get_accounts_by_key_dataset_uri( $key ), unserialize( WL_REDLINK_API_HTTP_OPTIONS ) );
 
+		var_dump($response);
+
 		// The response is an error.
 		if ( is_wp_error( $response ) ) {
 			$this->log->error( 'An error occurred setting the dataset URI: ' . $response->get_error_message() );
