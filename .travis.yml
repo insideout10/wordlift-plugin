@@ -70,10 +70,13 @@ addons:
 
 env:
   global:
-    # WordLift's Key.
-    - secure: "NB4P/P1/Gzje1/mOseVZqkIdaxI5vEgnlUUEmNRBtAT0CMt3c3pLSfzRtKrFfuJzoXpahxf8pC1R+Ljjf+QCC+2ECqjGCPSSv1tIj0L/H+c9UtbpPQIwD6kv7dPBYedZ6eNAgGjK1DXhrAuSnNaYJrZ35N6tv06B0KmniY6pJnk="
+    # WordLift's Key on Production environment.
+    # - secure: "NB4P/P1/Gzje1/mOseVZqkIdaxI5vEgnlUUEmNRBtAT0CMt3c3pLSfzRtKrFfuJzoXpahxf8pC1R+Ljjf+QCC+2ECqjGCPSSv1tIj0L/H+c9UtbpPQIwD6kv7dPBYedZ6eNAgGjK1DXhrAuSnNaYJrZ35N6tv06B0KmniY6pJnk="
 
-    # WordLift's API URL.
+    ### WordLift's Test Environment.
+    # - Key:
+    - secure: "MDY3A9GxNd3XXnV+vXd9XACWecyMGYfkQU97dY/W+IbDpD1fBE6F61OXNIM2lCZwxJ2GtOnlhX9YcB1Xdrqi4wzwTe1C2hp3QaCs51x7Bo9I7F9ufFR0vm7hE8Tlq6jGH3WqC4Vudajm3+JHlskIaFQSUowEyVcNk+ww/lo84ag="
+    # - API URL:
     - secure: "mFdEBX3lGkoNUTPVVwJbX82RqDA10AYg17Eg88Mj2U00dQKiS7pKkK5tShQvGBM0+lFvp/RVI8z12BS5T9kMxWjYpaLy0z8g7lSIfJQHHV8c7LMljBzh5T2NbcYGA8vyC/CTo73XbMLgFgaaug0LYIMw/GgBuZkmmB2pEe6OEUY="
 
     # CodeClimate Repository Token.
