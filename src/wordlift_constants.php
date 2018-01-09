@@ -40,11 +40,10 @@ define( 'WL_ENTITY_URL_META_NAME', 'entity_url' );
 // Max number of recursions when printing microdata.
 define( 'WL_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING', 3 );
 
-//// Use the WordLift API URL set on the command line.
-//$env_wordlift_api_url = getenv( 'WORDLIFT_API_URL' );
-//if ( ! defined( 'WORDLIFT_API_URL' ) && ! empty( $env_wordlift_api_url ) ) {
-//	define( 'WORDLIFT_API_URL', $env_wordlift_api_url );
-//}
+// Use the WordLift API URL set on the command line.
+if ( ! defined( 'WORDLIFT_API_URL' ) && false !== getenv( 'WORDLIFT_API_URL' ) ) {
+	define( 'WORDLIFT_API_URL', getenv( 'WORDLIFT_API_URL' ) );
+}
 
 // 3.13.0, we use by default WLS 1.11 which provides us with the new, faster
 // chunked analysis.
