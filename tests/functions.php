@@ -648,7 +648,7 @@ function wl_configure_wordpress_test() {
 	$configuration_service->set_key( getenv( 'WORDLIFT_KEY' ) );
 	$dataset_uri = $configuration_service->get_dataset_uri();
 	if ( empty( $dataset_uri ) ) {
-		echo( 'The dataset URI is not set (maybe the WordLift key is not valid?)' );
+		echo( 'The dataset URI is not set (maybe the WordLift key is not valid?). Using ' . WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . ' as API URL.' );
 		die( 2 );
 	}
 
