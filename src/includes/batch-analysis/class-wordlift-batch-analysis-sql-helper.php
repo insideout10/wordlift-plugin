@@ -85,7 +85,7 @@ class Wordlift_Batch_Analysis_Sql_Helper {
 
 		// Get the link options.
 		$link_options = serialize( array(
-			'link'            => $args['link'],
+			'links'           => $args['links'],
 			'min_occurrences' => $args['min_occurrences'],
 		) );
 
