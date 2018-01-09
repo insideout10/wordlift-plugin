@@ -17,10 +17,22 @@
 class Wordlift_Batch_Analysis_Adapter {
 
 	/**
-	 * @var Wordlift_Batch_Analysis_Service
+	 * A {@link Wordlift_Log_Service} instance.
+	 *
+	 * @since  3.17.0
+	 * @access private
+	 * @var \Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
+	 */
+	private $log;
+
+	/**
+	 * The {@link Wordlift_Batch_Analysis_Service} instance.
+	 *
+	 * @since  3.17.0
+	 * @access private
+	 * @var \Wordlift_Batch_Analysis_Service $batch_analysis_service The {@link Wordlift_Batch_Analysis_Service} instance.
 	 */
 	private $batch_analysis_service;
-
 
 	/**
 	 * Wordlift_Batch_Analysis_Adapter constructor.
@@ -30,6 +42,8 @@ class Wordlift_Batch_Analysis_Adapter {
 	 * @param \Wordlift_Batch_Analysis_Service $batch_analysis_service
 	 */
 	public function __construct( $batch_analysis_service ) {
+
+		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
 		$this->batch_analysis_service = $batch_analysis_service;
 
@@ -63,14 +77,19 @@ class Wordlift_Batch_Analysis_Adapter {
 	 */
 	public function submit_posts() {
 
+		$this->log->trace( 'Received Batch Analysis request for posts...' );
+
 		if ( empty( $_REQUEST['post'] ) ) {
+			$this->log->error( 'Batch Analysis request for posts missing the post(s) id.' );
+
 			wp_send_json_error( 'The `post` parameter is required.' );
 		}
 
-		$ids = wp_parse_id_list( $_REQUEST['post'] );
+		// Get the parameters from the $_REQUEST.
+		$params = self::create_params_from_request();
 
 		// Submit the request.
-		$count = $this->batch_analysis_service->submit_posts( $ids );
+		$count = $this->batch_analysis_service->submit_posts( $params );
 
 		// Clear any buffer.
 		ob_clean();
@@ -107,6 +126,8 @@ class Wordlift_Batch_Analysis_Adapter {
 			'from'              => isset( $_REQUEST['from'] ) ? $_REQUEST['from'] : null,
 			// Set the `to` date, or null if not provided.
 			'to'                => isset( $_REQUEST['to'] ) ? $_REQUEST['to'] : null,
+			//
+			'ids'               => isset( $_REQUEST['post'] ) ? wp_parse_id_list( (array) $_REQUEST['post'] ) : array(),
 		);
 
 		// @codingStandardsIgnoreEnd
