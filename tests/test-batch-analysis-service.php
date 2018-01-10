@@ -779,7 +779,7 @@ class Wordlift_Batch_Analysis_Service_Test extends Wordlift_Unit_Test_Case {
 			$this->assertEquals( 'application/json; charset=UTF-8', $request['headers']['Content-type'] );
 
 			$body = json_decode( $request['body'] );
-			$this->assertEquals( isset( $args['links'] ) ? $args['links'] : 'default', $body->link );
+			$this->assertEquals( isset( $args['links'] ) ? $args['links'] : 'default', $body->links );
 			$this->assertEquals( isset( $args['min_occurrences'] ) ? $args['min_occurrences'] : 1, $body->minOccurrences );
 			$this->assertTrue( in_array( $body->id, $posts ) );
 
