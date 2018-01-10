@@ -490,8 +490,6 @@ class Wordlift_Batch_Analysis_Service {
 	 *
 	 * @param string $content The {@link WP_Post}'s content.
 	 * @param int    $post_id The {@link WP_Post}'s id.
-	 *
-	 * @return string The content (for chaining operations).
 	 */
 	protected function set_warning_based_on_content( $content, $post_id ) {
 
@@ -506,8 +504,11 @@ class Wordlift_Batch_Analysis_Service {
 	private function has_interpolation_errors( $content ) {
 		$matches = array();
 
-		return 0 < preg_match_all( '/\w<[a-z]+ id="urn:enhancement - [^"]+" class="[^"]+ " itemid="[^"]+" >/', $content, $matches )
-			   || 0 < preg_match_all( ' /<[ a - z ] + id = "urn:enhancement-[^"]+ " class="[^"]+" itemid = "[^"]+ ">\s/', $content, $matches );
+		// eg:
+		// r-pro<span id="urn:local-text-annotation-oxbgy6139gnjgk1n0oxnq9zg62py29pf" class="textannotation disambiguated wl-thing" itemid="http://data.wordlift.it/be2/entity/developing_country">ne region, has shoul</span>dere
+
+		return 0 < preg_match_all( '/\w<[a-z]+ id="urn:[^"]+" class="[^"]+" itemid="[^"]+">/', $content, $matches )
+			   || 0 < preg_match_all( ' /<[a-z]+ id="urn:[^"]+ " class="[^"]+" itemid="[^"]+">\s/', $content, $matches );
 	}
 
 	/**
@@ -524,6 +525,8 @@ class Wordlift_Batch_Analysis_Service {
 
 		// Bail out if there are no interpolation errors.
 		if ( ! $this->has_interpolation_errors( $content ) ) {
+			$this->log->trace( "No interpolation errors found for post $id." );
+
 			return $content;
 		}
 
