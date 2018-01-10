@@ -50,13 +50,14 @@ class Wordlift_Admin_Input_Element implements Wordlift_Admin_Element {
 		 * Name intentionally do not have a default as it has to be in SyncEvent
 		 * with form handling code
 		 */
-		$params = wp_parse_args( $args, array(
+		$pre_params = wp_parse_args( $args, array(
 			'id'          => uniqid( 'wl-input-' ),
 			'value'       => '',
 			'readonly'    => false,
 			'css_class'   => '',
 			'description' => '',
 		) );
+		$params     = apply_filters( 'wl_admin_input_element_params', $pre_params );
 
 		// Set the readonly and class attributes and the description.
 		$readonly    = $params['readonly'] ? ' readonly="readonly"' : '';

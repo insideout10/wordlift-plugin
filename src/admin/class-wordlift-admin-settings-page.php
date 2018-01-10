@@ -241,7 +241,17 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			'description' => sprintf( _x( 'All new pages created with WordLift, will be stored inside your internal vocabulary. You can customize the url pattern of these pages in the field above. Check our <a href="%s">FAQs</a> if you need more info.', 'wordlift' ), 'https://wordlift.io/wordlift-user-faqs/#10-why-and-how-should-i-customize-the-url-of-the-entity-pages-created-in-my-vocabulary' ),
 		);
 
-		$entity_base_path_args['readonly'] = 0 < $this->entity_service->count();
+		// The following call is very heavy on large web sites and is always run
+		// also when not needed:
+		//  $entity_base_path_args['readonly'] = 0 < $this->entity_service->count();
+		//
+		// It is now replaced by a filter to add the `readonly` flag to the
+		// input element when this is actually rendered.
+		add_filter( 'wl_admin_input_element_params', array(
+			$this,
+			'entity_path_input_element_params',
+		) );
+
 
 		// Add the `wl_entity_base_path` field.
 		add_settings_field(
@@ -298,6 +308,30 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			)
 		);
 
+	}
+
+	/**
+	 * Filter the {@link Wordlift_Admin_Input_Element} in order to add the
+	 * `readonly` flag to the `wl-entity-base-path` input.
+	 *
+	 * @since 3.17.0
+	 *
+	 * @param array $args An array of {@link Wordlift_Admin_Input_Element} parameters.
+	 *
+	 * @return array The updated array.
+	 */
+	public function entity_path_input_element_params( $args ) {
+
+		// Bail out if it's not the `wl-entity-base-path`).
+		if ( 'wl-entity-base-path' !== $args['id'] ) {
+			return $args;
+		}
+
+		// Set the readonly flag according to the entities count.
+		$args['readonly'] = 0 < $this->entity_service->count();
+
+		// Return the updated args.
+		return $args;
 	}
 
 	/**
