@@ -311,6 +311,9 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 				'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::COUNTRY . ']',
 				'value'       => $this->configuration_service->get_country_code(),
 				'description' => __( 'Please choose the country', 'wordlift' ),
+				'data'        => array(
+					'country-codes' => json_encode( Wordlift_Countries::get_country_language_pairs() ),
+				),
 			)
 		);
 
