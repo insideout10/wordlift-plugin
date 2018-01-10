@@ -25,11 +25,11 @@ class Wordlift_Admin_Select2_Element implements Wordlift_Admin_Element {
 
 		// Enqueue select2 library js and css.
 		// Underscore is needed for Select2's `templateResult` and `templateSelection` templates.
-		wp_enqueue_script( 'wordlift-select2', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/select2/js/select2' . ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ? '.min' : '' ) . '.js', array(
+		wp_enqueue_script( 'wordlift-select2', plugin_dir_url( dirname( __FILE__ ) ) . '../admin/js/select2/js/select2' . ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ? '.min' : '' ) . '.js', array(
 			'jquery',
 			'underscore',
 		), '4.0.3' );
-		wp_enqueue_style( 'wordlift-select2', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/select2/css/select2' . ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ? '.min' : '' ) . '.css', array(), '4.0.3' );
+		wp_enqueue_style( 'wordlift-select2', plugin_dir_url( dirname( __FILE__ ) ) . '../admin/js/select2/css/select2' . ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ? '.min' : '' ) . '.css', array(), '4.0.3' );
 
 
 		// Parse the arguments and merge with default values.
