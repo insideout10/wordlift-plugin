@@ -989,8 +989,8 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/intf-wordlift-admin-element.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/class-wordlift-admin-input-element.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/class-wordlift-admin-input-radio-element.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/class-wordlift-admin-select2-element.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/class-wordlift-admin-select-element.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/class-wordlift-admin-select2-element.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/class-wordlift-admin-language-select-element.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/class-wordlift-admin-country-select-element.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/class-wordlift-admin-tabs-element.php';
@@ -1366,6 +1366,9 @@ class Wordlift {
 
 		// Hook the AJAX wl_validate_key action to the Key Validation service.
 		$this->loader->add_action( 'wp_ajax_wl_validate_key', $this->key_validation_service, 'validate_key' );
+
+		// Hook the AJAX wl_update_country_options action to the countries.
+		// $this->loader->add_action( 'wp_ajax_wl_update_country_options', new Wordlift_Countries, 'get_countries' );
 
 		// Hook the `admin_init` function to the Admin Setup.
 		$this->loader->add_action( 'admin_init', $this->admin_setup, 'admin_init' );

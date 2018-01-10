@@ -8,6 +8,7 @@
  */
 import './styles/index.scss';
 import KeyValidator from 'modules/key-validator';
+import CountryValidator from 'modules/country-validator';
 import MediaUploader from 'modules/media-uploader';
 import Tabs from 'modules/tabs';
 
@@ -21,6 +22,8 @@ import Tabs from 'modules/tabs';
     // Attach the WL key validator to the `#wl-key` element.
     KeyValidator('#wl-key');
     $('#wl-key').trigger('keyup');
+
+    CountryValidator('#wl-country-code', '#wl-site-language');
 
     // Attach the Media Uploader to the #wl-publisher-logo
     MediaUploader(

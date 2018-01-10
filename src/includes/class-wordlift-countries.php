@@ -174,15 +174,28 @@ class Wordlift_Countries {
 	 *
 	 * @since 3.18.0
 	 *
+	 * @param bool|string $lang The language code we are looking for.
+	 *
 	 * @return array An array with country code => country name pairs.
 	 */
-	public static function get_countries() {
+	public static function get_countries( $lang = false ) {
 		// Lazily load the countries.
 		if ( null === self::$countries ) {
 
 			// Get the country names from WP's own (multisite) function.
 			foreach ( self::$codes as $key => $languages ) {
-				self::$countries[ $key ] = self::format_country_code( $key );
+				if (
+					// Process all countries if there is no language specified.
+					empty( $lang ) || 
+					
+					// Or if there are no langugage limitations for current country.
+					empty( self::$codes[ $key ] ) || 
+					
+					// Or if the language code exists for current country.
+					! empty( $lang ) && in_array( $lang, self::$codes[ $key ] ) 
+				) {
+					self::$countries[ $key ] = self::format_country_code( $key );
+				}
 			}
 
 			// Sort by country name.
@@ -205,7 +218,6 @@ class Wordlift_Countries {
 	 */
 	private static function format_country_code( $code = '' ) {
 		$code          = strtolower( substr( $code, 0, 2 ) );
-
 		$country_codes = array(
 			'af' => 'Afghanistan',
 			'ax' => '\u00c5land Islands',
@@ -470,6 +482,17 @@ class Wordlift_Countries {
 		$country_codes = apply_filters( 'country_code', $country_codes, $code );
 
 		return strtr( $code, $country_codes );
+	}
+
+	/**
+	 * Returns the country language pairs
+	 *
+	 * @since 3.18.0
+	 *
+	 * @return array Country language pairs
+	 */
+	public static function get_country_language_pairs()	{
+		return self::$codes;
 	}
 
 }

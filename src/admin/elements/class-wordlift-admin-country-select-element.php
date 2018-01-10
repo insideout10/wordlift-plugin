@@ -20,7 +20,7 @@ class Wordlift_Admin_Country_Select_Element extends Wordlift_Admin_Select_Elemen
 	/**
 	 * @inheritdoc
 	 */
-	public function render_options( $current_value ) {
+	public function render_options( $params ) {
 		// Print all the supported countries, preselecting the one configured
 		// in WP (or United Kingdom if not supported). We now use the `Wordlift_Countries`
 		// class which provides the list of countries supported by WordLift.
@@ -31,7 +31,7 @@ class Wordlift_Admin_Country_Select_Element extends Wordlift_Admin_Select_Elemen
 		$countries = Wordlift_Countries::get_countries();
 
 		// If we support WP's configured language, then use that, otherwise use English by default.
-		$language = isset( $countries[ $current_value ] ) ? $current_value : 'uk';
+		$language = isset( $countries[ $params['value'] ] ) ? $params['value'] : 'uk';
 
 		foreach ( $countries as $code => $label ) :
 		?>
@@ -44,5 +44,4 @@ class Wordlift_Admin_Country_Select_Element extends Wordlift_Admin_Select_Elemen
 		<?php
 		endforeach;
 	}
-
 }

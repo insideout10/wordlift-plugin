@@ -22,6 +22,8 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 	 * @inheritdoc
 	 */
 	public function render( $args ) {
+		// Some select fields may need custom script/styles to work.
+		$this->enqueue_resources();
 
 		// Parse the arguments and merge with default values.
 		$params = wp_parse_args(
@@ -30,7 +32,10 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 				'id'          => uniqid( 'wl-input-' ),
 				'name'        => uniqid( 'wl-input-' ),
 				'value'       => '',
+				'class'       => '',
 				'description' => false,
+				'data'        => array(),
+				'options'     => array(),
 			)
 		);
 
@@ -40,8 +45,10 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 		<select
 			id="<?php echo esc_attr( $params['id'] ); ?>"
 		    name="<?php echo esc_attr( $params['name'] ); ?>"
+		    class="<?php echo esc_attr( $params['class'] ); ?>"
+		    <?php echo $this->print_data_attributes( $params['data'] ) ?>
 		>
-			<?php $this->render_options( $params['value'] ); ?>
+			<?php $this->render_options( $params ); ?>
 		</select>
 		<?php
 		// Print the field description.
@@ -51,13 +58,54 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 	}
 
 	/**
-	 * Abstract method that renders the select options.
-	 * 
+	 * Adds data attributes to select element.
+	 *
+	 * We need to use method here, because different select elements
+	 * may have different data attributes.
+	 *
 	 * @since 3.18.0
-	 * 
-	 * @param string $current_value Select selected option.
+	 *
+	 * @return string $output The data attributes or empty string
+	 */
+	private function print_data_attributes( $data ) {
+		// The output.
+		$output = '';
+
+		// Bail is there are no data attributes.
+		if ( empty( $data ) ) {
+			return $output;
+		}
+
+		// Loop throught all data attributes and build the output string.
+		foreach ( $data as $name => $value ) {
+			$output .= sprintf(
+				'data-%s="%s" ',
+				$name,
+				esc_attr( $value )
+			);
+		}
+
+		// Finally return the output escaped.
+		return $output;
+	}
+
+	/**
+	 * Prints specific resources(scripts/styles) if the select requires them.
+	 *
+	 * @since 3.18.0
+	 *
+	 * @return void
+	 */
+	protected function enqueue_resources(){}
+
+	/**
+	 * Abstract method that renders the select options.
+	 *
+	 * @since 3.18.0
+	 *
+	 * @param array $params Select params.
 	 * 
 	 * @return Prints the select options.
 	 */
-	abstract function render_options( $current_value );
+	abstract function render_options( $params );
 }

@@ -112,16 +112,21 @@ class Wordlift_Admin_Author_Element implements Wordlift_Admin_Element {
 			'id'                 => $params['id'],
 			// Name.
 			'name'               => $params['name'],
+			// Class
+			'class'              => 'wl-select2-element',
 			// The selected id.
 			'value'              => $current_post_id,
 			// The selected item (must be in the options for Select2 to display it).
 			'options'            => $current_post ? array( $current_post->ID => $current_post->post_title ) : array(),
-			// The list of available options.
-			'data'               => $data,
-			// The HTML template for each option.
-			'template-result'    => "<div class='wl-select2-result'><span class='wl-select2-thumbnail' style='background-image: url( <%= obj.thumbnail_url || ( 'Organization' === obj.type ? '$organization_thumbnail_url' : '$person_thumbnail_url' ) %> );'>&nbsp;</span><span class='wl-select2'><%= obj.text %></span><span class='wl-select2-type'><%= obj.type %></span></div>",
-			// The HTML template for the selected option.
-			'template-selection' => "<div class='wl-select2-selection'><span class='wl-select2-thumbnail' style='background-image: url( <%= obj.thumbnail_url || ( 'Organization' === obj.type ? '$organization_thumbnail_url' : '$person_thumbnail_url' ) %> );'>&nbsp;</span><span class='wl-select2'><%= obj.text %></span><span class='wl-select2-type'><%= obj.type %></span></div>",
+			// Data attributes
+			'data'               => array(
+				// The list of available options.
+				'wl-select2-data'               => json_encode( $data ),
+				// The HTML template for each option.
+				'wl-select2-template-result'    => "<div class='wl-select2-result'><span class='wl-select2-thumbnail' style='background-image: url( <%= obj.thumbnail_url || ( 'Organization' === obj.type ? '$organization_thumbnail_url' : '$person_thumbnail_url' ) %> );'>&nbsp;</span><span class='wl-select2'><%= obj.text %></span><span class='wl-select2-type'><%= obj.type %></span></div>",
+				// The HTML template for the selected option.
+				'wl-select2-template-selection' => "<div class='wl-select2-selection'><span class='wl-select2-thumbnail' style='background-image: url( <%= obj.thumbnail_url || ( 'Organization' === obj.type ? '$organization_thumbnail_url' : '$person_thumbnail_url' ) %> );'>&nbsp;</span><span class='wl-select2'><%= obj.text %></span><span class='wl-select2-type'><%= obj.type %></span></div>",
+			)
 		) );
 
 		// Finally return the element instance.
