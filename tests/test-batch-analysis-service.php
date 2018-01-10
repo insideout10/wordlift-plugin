@@ -802,7 +802,7 @@ The Asia-Pacific Disaster Report 2017 published by UNESCAP highlights that devel
 The UNESCAP Training Workshop is an effort to promote such cooperation. As experts from the nine participating countries share their experiences, learning and future plans, everyone in the room is motivated to do more once they reach back home. An area where a wide disparity is observed is the use of <span id="urn:local-text-annotation-o0ly5yjqgz8g7t7kuk43iw16v2ec2feq" class="textannotation disambiguated wl-thing" itemid="http://data.wordlift.it/be2/entity/technology">technology</span> to manage disasters. While a few <span id="urn:local-text-annotation-agrjae6fk87d45n7djmqblmvvt45j3w5" class="textannotation disambiguated wl-thing" itemid="http://data.wordlift.it/be2/entity/developing_country">developing economies</span> have started actually walking the talk, others seem to be still grappling with the intricacies of ideating and implementation. The gap between the industry and academia seems to a daunting issue here. However, the future seems bright. With everyone on board agreeing with the fact that <span id="urn:local-text-annotation-k7riikpnba2cx4zv8ev343a431ap9fxg" class="textannotation disambiguated wl-thing" itemid="http://data.wordlift.it/be2/entity/technology">technology</span> is the answer to most of the worries, we can expect to see happier faces in this part of the world sooner!
 EOF
 			, $results[0]->post_content );
-		
+
 	}
 
 	/**
