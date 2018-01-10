@@ -73,6 +73,15 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	private $language_select_element;
 
 	/**
+	 * The {@link Wordlift_Admin_Country_Select_Element} element renderer.
+	 *
+	 * @since  3.18.0
+	 * @access private
+	 * @var \Wordlift_Admin_Country_Select_Element $country_select_element The {@link Wordlift_Admin_Country_Select_Element} element renderer.
+	 */
+	private $country_select_element;
+
+	/**
 	 * A {@link Wordlift_Admin_Publisher_Element} element renderer.
 	 *
 	 * @since  3.11.0
@@ -90,10 +99,19 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 * @param \Wordlift_Entity_Service                $entity_service
 	 * @param \Wordlift_Admin_Input_Element           $input_element
 	 * @param \Wordlift_Admin_Language_Select_Element $language_select_element
+	 * @param \Wordlift_Admin_Country_Select_Element  $country_select_element
 	 * @param \Wordlift_Admin_Publisher_Element       $publisher_element
 	 * @param \Wordlift_Admin_Radio_Input_Element     $radio_input_element
 	 */
-	function __construct( $configuration_service, $entity_service, $input_element, $language_select_element, $publisher_element, $radio_input_element ) {
+	function __construct(
+		$configuration_service,
+		$entity_service,
+		$input_element,
+		$language_select_element,
+		$country_select_element,
+		$publisher_element,
+		$radio_input_element
+	) {
 
 		$this->configuration_service = $configuration_service;
 		$this->entity_service        = $entity_service;
@@ -102,6 +120,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 		$this->input_element           = $input_element;
 		$this->radio_input_element     = $radio_input_element;
 		$this->language_select_element = $language_select_element;
+		$this->country_select_element  = $country_select_element;
 		$this->publisher_element       = $publisher_element;
 
 		self::$instance = $this;
@@ -277,6 +296,21 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 				'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::LANGUAGE . ']',
 				'value'       => $this->configuration_service->get_language_code(),
 				'description' => __( 'Each WordLift Key can be used only in one language. Pick yours.', 'wordlift' ),
+			)
+		);
+
+		// Add the `country_code` field.
+		add_settings_field(
+			'wl-country-code',
+			_x( 'Country', 'wordlift' ),
+			array( $this->country_select_element, 'render' ),
+			'wl_general_settings',
+			'wl_general_settings_section',
+			array(
+				'id'          => 'wl-country-code',
+				'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::COUNTRY . ']',
+				'value'       => $this->configuration_service->get_country_code(),
+				'description' => __( 'Please choose the country', 'wordlift' ),
 			)
 		);
 
