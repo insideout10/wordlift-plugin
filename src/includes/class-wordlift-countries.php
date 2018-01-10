@@ -196,7 +196,7 @@ class Wordlift_Countries {
 	/**
 	 * Returns the country for a country code. This function is a clone of WP's function provided in `ms.php`.
 	 *
-	 * @since 3.9.3
+	 * @since 3.18.0
 	 *
 	 * @param string $code Optional. The two-letter country code. Default empty.
 	 *
@@ -462,10 +462,10 @@ class Wordlift_Countries {
 		/**
 		 * Filters the country codes.
 		 *
-		 * @since MU
+		 * @since 3.18.0
 		 *
-		 * @param array $country_codes Key/value pair of country codes where key is the short version.
-		 * @param string $code A two-letter designation of the country.
+		 * @param array  $country_codes Key/value pair of country codes where key is the short version.
+		 * @param string $code          A two-letter designation of the country.
 		 */
 		$country_codes = apply_filters( 'country_code', $country_codes, $code );
 
