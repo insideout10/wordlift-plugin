@@ -420,7 +420,7 @@ class Wordlift_Batch_Analysis_Service {
 			$response = $this->do_complete( $id );
 
 			// Move to the next item if we don't have a reply for this one.
-			if ( is_wp_error( $response ) || ! isset( $response['body'] ) ) {
+			if ( is_wp_error( $response ) || 200 !== (int) $response['response']['code'] || ! isset( $response['body'] ) ) {
 				continue;
 			}
 
