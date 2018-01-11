@@ -27,8 +27,10 @@ class Wordlift_Admin_Country_Select_Element extends Wordlift_Admin_Select_Elemen
 		//
 		// https://github.com/insideout10/wordlift-plugin/issues/713
 
+		$lang = ( isset( $params['lang'] ) ) ? $params['lang'] : false;
+
 		// Get WordLift's supported countries.
-		$countries = Wordlift_Countries::get_countries();
+		$countries = Wordlift_Countries::get_countries( $lang );
 
 		// If we support WP's configured language, then use that, otherwise use English by default.
 		$language = isset( $countries[ $params['value'] ] ) ? $params['value'] : 'uk';
@@ -43,5 +45,29 @@ class Wordlift_Admin_Country_Select_Element extends Wordlift_Admin_Select_Elemen
 			</option>
 		<?php
 		endforeach;
+	}
+
+	/**
+	 * Returns select options html.
+	 *
+	 * @since 3.18.0
+	 *
+	 * @return string $html Select options or empty string if required params are not set.
+	 */
+	public function get_options_html() {
+		$html = '';
+
+
+		// Check whether the required params are set.
+		if ( ! empty( $_POST['lang'] ) && ! empty( $_POST['value'] ) ) {
+			ob_start();
+			// Get the new options.
+			$this->render_options( $_POST );
+
+			$html = ob_get_clean();
+		}
+
+		// Return the html.
+		wp_send_json_success( $html );
 	}
 }
