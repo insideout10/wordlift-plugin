@@ -50,6 +50,8 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 		>
 			<?php $this->render_options( $params ); ?>
 		</select>
+
+		<small class="wl-select-notices"></small><!-- /.wl-select-notices -->
 		<?php
 		// Print the field description.
 		echo $description;

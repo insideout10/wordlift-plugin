@@ -7,11 +7,6 @@
  * @since 3.18.0
  */
 
-/**
- * Internal dependencies
- */
-import delay from './delay'
-
 // Map $ to jQuery.
 const $ = jQuery
 
@@ -22,42 +17,46 @@ const $ = jQuery
  * @param {string} selector     The element selector.
  * @param {string} langSelector The selector that we wil listen to update the countries.
  */
-const CountryValidator = (selector, langSelector) => {
-  $(langSelector).on('change', function () {
-    // Get a jQuery reference to the object.
-    const $this     = $(this)
-    const $selector = $(selector)
+const CountryValidator = (countrySelector, langSelector) => {
+  $(countrySelector + ', ' + langSelector).on('change', function () {
+    // Get jQuery references to the required object.
+    const $languageSelect = $(langSelector)
+    const $countrySelect  = $(countrySelector)
+    const $notices        = $countrySelect.siblings('.wl-select-notices')
 
-    const newOptons = [];
-    const country   = $selector.val();
-    const options   = $selector.data('country-codes')
-    const lang      = $this.val();
+    // Get values.
+    const selectedCountry = $countrySelect.val();
+    const options         = $countrySelect.data('country-codes')
+    const selectedLang    = $languageSelect.val();
 
-    // Bail if the currently selected country allows all languages.
-    // Or if the language code exists in country allowed language codes.
-    // if (
-    //     // If the lang attributes are empty,
-    //     // then all languages are allowed.
-    //     ! options[ lang ].length ||
-    //     // The language code exists in country object.
-    //     options[ lang ].indexOf( lang ) !== -1
-    //   ) {
-    //   return;
-    // }
-
-    console.log(options);
+    // Notify the user that the selected country doens't support the chosen language.
+    if (
+        // Check that the country code exists in predefined country codes.
+        typeof( options[ selectedCountry ] ) !== 'undefined' &&
+        // And there are predefined languages for chosen country.
+        options[ selectedCountry ].length &&
+        // And chosen language doesn't exists
+        options[ selectedCountry ].indexOf( selectedLang ) === -1
+    ) {
+      // Add notice.
+      $notices.html( 'The selected language is not supported in this country.</br>Please choose another country or langugage.' );
+    } else {
+      // Remove the notice.
+      $notices.html( '' );
+    }
 
     // Post the validation request.
     wp.ajax.post(
       'wl_update_country_options',
-      {lang: lang}
+      {
+        lang: selectedLang,
+        value: selectedCountry
+      }
     )
     .done(function (data) {
-      console.log(data);
       // Update the country select with new options
-      $selector.html(data);
+      $countrySelect.html(data);
     })
-
   })
 }
 

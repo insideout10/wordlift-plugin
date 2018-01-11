@@ -1368,7 +1368,7 @@ class Wordlift {
 		$this->loader->add_action( 'wp_ajax_wl_validate_key', $this->key_validation_service, 'validate_key' );
 
 		// Hook the AJAX wl_update_country_options action to the countries.
-		// $this->loader->add_action( 'wp_ajax_wl_update_country_options', new Wordlift_Countries, 'get_countries' );
+		$this->loader->add_action( 'wp_ajax_wl_update_country_options', $this->country_select_element, 'get_options_html' );
 
 		// Hook the `admin_init` function to the Admin Setup.
 		$this->loader->add_action( 'admin_init', $this->admin_setup, 'admin_init' );
