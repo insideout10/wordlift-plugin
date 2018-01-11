@@ -57,7 +57,6 @@ class Wordlift_Admin_Country_Select_Element extends Wordlift_Admin_Select_Elemen
 	public function get_options_html() {
 		$html = '';
 
-
 		// Check whether the required params are set.
 		if ( ! empty( $_POST['lang'] ) && ! empty( $_POST['value'] ) ) {
 			ob_start();
