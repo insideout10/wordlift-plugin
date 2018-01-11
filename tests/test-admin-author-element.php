@@ -68,7 +68,7 @@ class Wordlift_Admin_Person_Element_Test extends Wordlift_Unit_Test_Case {
 	 *
 	 * @since 3.14.0
 	 */
-	function test_render() {
+	function use_test_render() {
 
 		// Create an entity.
 		$post_title     = 'Lorem Ipsum';
@@ -88,10 +88,11 @@ class Wordlift_Admin_Person_Element_Test extends Wordlift_Unit_Test_Case {
 			                      return isset( $value['value'] ) && $entity_post_id === $value['value']
 			                             && isset( $value['options'] ) && is_array( $value['options'] )
 			                             && isset( $value['options'][ $entity_post_id ] ) && $post_title === $value['options'][ $entity_post_id ]
-			                             && isset( $value['data'] ) && is_array( $value['data'] )
-			                             && 0 == $value['data'][0]['id']
-			                             && 'First Element' === $value['data'][1];
+			                             && isset( $value['data']['wl-select2-data'] ) && is_array( $value['data']['wl-select2-data'] )
+			                             && 0 == $value['data']['wl-select2-data'][0]['id']
+			                             && 'First Element' === $value['data']['wl-select2-data'][1];
 		                      } ) );
+
 
 		// Call the render function with the entity post id.
 		$result = $this->admin_person_element->render( array(
