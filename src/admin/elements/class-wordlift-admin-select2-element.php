@@ -26,7 +26,7 @@ class Wordlift_Admin_Select2_Element extends Wordlift_Admin_Select_Element {
 		?>
 			<option
 				value="<?php echo esc_attr( $value ); ?>"
-				<?php selected( $params['value'], $value ) ?>
+				<?php selected( $params['value'], $value ); ?>
 				>
 				<?php echo esc_html( $label ); ?>
 			</option>

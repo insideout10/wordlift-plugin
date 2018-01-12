@@ -39,9 +39,9 @@ class Wordlift_Admin_Country_Select_Element extends Wordlift_Admin_Select_Elemen
 		?>
 			<option
 				value="<?php echo esc_attr( $code ); ?>"
-				<?php echo selected( $code, $language, false ) ?>
+				<?php echo selected( $code, $language, false ); ?>
 			>
-				<?php echo esc_html( $label ) ?>
+				<?php echo esc_html( $label ); ?>
 			</option>
 		<?php
 		endforeach;
@@ -52,16 +52,16 @@ class Wordlift_Admin_Country_Select_Element extends Wordlift_Admin_Select_Elemen
 	 *
 	 * @since 3.18.0
 	 *
-	 * @return string $html Select options or empty string if required params are not set.
+	 * @return void Echoes select options or empty string if required params are not set.
 	 */
 	public function get_options_html() {
 		$html = '';
 
 		// Check whether the required params are set.
-		if ( ! empty( $_POST['lang'] ) && ! empty( $_POST['value'] ) ) {
+		if ( ! empty( $_POST['lang'] ) && ! empty( $_POST['value'] ) ) { // WPCS: CSRF, input var, sanitization ok.
 			ob_start();
 			// Get the new options.
-			$this->render_options( $_POST );
+			$this->render_options( $_POST ); // WPCS: CSRF, input var, sanitization ok.
 
 			$html = ob_get_clean();
 		}

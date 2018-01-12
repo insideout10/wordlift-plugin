@@ -136,38 +136,66 @@ class Wordlift_Admin_Publisher_Element extends Wordlift_Admin_Author_Element {
 	public function create( $params ) {
 		?>
 		<p>
-			<strong><?php esc_html_e( 'Are you publishing as an individual or as a company?', 'wordlift' ) ?></strong>
+			<strong><?php esc_html_e( 'Are you publishing as an individual or as a company?', 'wordlift' ); ?></strong>
 		</p>
+
 		<p id="wl-publisher-type">
 			<span>
-				<input id="wl-publisher-person" type="radio"
-				       name="wl_publisher[type]" value="person"
-				       checked="checked">
-				<label for="wl-publisher-person"><?php
-					esc_html_e( 'Person', 'wordlift' ) ?></label>
+				<input
+					id="wl-publisher-person"
+					type="radio"
+					name="wl_publisher[type]"
+					value="person"
+					checked="checked"
+				>
+
+				<label for="wl-publisher-person">
+					<?php esc_html_e( 'Person', 'wordlift' ); ?>
+				</label>
 			</span>
+
 			<span>
-				<input id="wl-publisher-company" type="radio"
-				       name="wl_publisher[type]" value="organization"">
-				<label for="wl-publisher-company"><?php
-					esc_html_e( 'Company', 'wordlift' ) ?></label>
+				<input
+					id="wl-publisher-company"
+					type="radio"
+					name="wl_publisher[type]"
+					value="organization"
+				>
+
+				<label for="wl-publisher-company">
+					<?php esc_html_e( 'Company', 'wordlift' ); ?>
+				</label>
 			</span>
 		</p>
+
 		<p id="wl-publisher-name">
-			<input type="text" name="wl_publisher[name]"
-			       placeholder="<?php echo esc_attr__( "What's your name?", 'wordlift' ) ?>">
+			<input
+				type="text"
+				name="wl_publisher[name]"
+				placeholder="<?php echo esc_attr__( "What's your name?", 'wordlift' ); ?>"
+			>
 		</p>
+
 		<div id="wl-publisher-logo">
-			<input type="hidden" id="wl-publisher-media-uploader-id"
-			       name="wl_publisher[thumbnail_id]" />
+			<input
+				type="hidden"
+				id="wl-publisher-media-uploader-id"
+				name="wl_publisher[thumbnail_id]"
+			/>
+
 			<p>
-				<b><?php esc_html_e( "Choose the publisher's Logo", 'wordlift' ) ?></b>
+				<b><?php esc_html_e( "Choose the publisher's Logo", 'wordlift' ); ?></b>
 			</p>
+
 			<p>
 				<img id="wl-publisher-media-uploader-preview" />
-				<button type="button" class="button"
-				        id="wl-publisher-media-uploader"><?php
-					esc_html_e( 'Select an existing image or upload a new one', 'wordlift' ); ?></button>
+
+				<button
+					type="button"
+					class="button"
+					id="wl-publisher-media-uploader">
+					<?php esc_html_e( 'Select an existing image or upload a new one', 'wordlift' ); ?>
+				</button>
 			</p>
 		</div>
 		<?php

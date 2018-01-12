@@ -20,14 +20,13 @@ const $ = jQuery
 const CountryValidator = (countrySelector, langSelector) => {
   $(countrySelector + ', ' + langSelector).on('change', function () {
     // Get jQuery references to the required object.
-    const $languageSelect = $(langSelector)
     const $countrySelect  = $(countrySelector)
     const $notices        = $countrySelect.siblings('.wl-select-notices')
 
     // Get values.
     const selectedCountry = $countrySelect.val();
     const options         = $countrySelect.data('country-codes')
-    const selectedLang    = $languageSelect.val();
+    const selectedLang    = $(langSelector).val();
 
     // Notify the user that the selected country doens't support the chosen language.
     if (

@@ -37,9 +37,9 @@ class Wordlift_Admin_Language_Select_Element extends Wordlift_Admin_Select_Eleme
 		?>
 			<option
 				value="<?php echo esc_attr( $code ); ?>"
-				<?php echo selected( $code, $language, false ) ?>
+				<?php echo selected( $code, $language, false ); ?>
 			>
-				<?php echo esc_html( $label ) ?>
+				<?php echo esc_html( $label ); ?>
 			</option>
 		<?php
 		endforeach;
