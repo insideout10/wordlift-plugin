@@ -4,6 +4,7 @@
 
 .wl-vocabulary-letter-block {
   overflow: hidden;
+  padding-top: 30px;
 }
 
 .wl-vocabulary-letter-block aside {
@@ -87,7 +88,7 @@
 .wl-vocabulary-grid {
   overflow: hidden;
   *zoom: 1;
-  margin-top: 30px;
+  margin-bottom: 30px;
 }
 
 .wl-right-column {
