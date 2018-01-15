@@ -30,7 +30,7 @@ class Traslator
     @_text = ''
 
     # Changing this regex requires changing the regex also in WLS. Update the Traslator version when changing the regex.
-    pattern = /((?:&(?![#\w]))*[^&<>]*)(&[^&;]*;|<[!\/]?(?:[\w-]+|\[cdata\[.*?]])(?:[\w_-]+(?:="[^"]*")?)*[^>]*>)([^&<>]*)/gim
+    pattern = /((?:&(?![#\w]))*[^&<>]*)(&[^&;]*;|<[!\/]?(?:[\w-]+|\[cdata\[.*?]])(?: [\w_-]+(?:="[^"]*")?)*[^>]*>)([^&<>]*)/gim
 
     textLength = 0
     htmlLength = 0
