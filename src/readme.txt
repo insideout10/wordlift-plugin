@@ -142,6 +142,8 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.18.0 (????-??-??) =
+
 = 3.17.0 (2018-01-15) =
 * Enhancement: [#750](https://github.com/insideout10/wordlift-plugin/issues/750): Add filters to allow adding custom schema.org properties.
 * Enhancement: [#726](https://github.com/insideout10/wordlift-plugin/issues/726): Set correct post types to Batch Analysis.
