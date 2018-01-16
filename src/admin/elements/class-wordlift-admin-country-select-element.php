@@ -17,6 +17,19 @@
  * @subpackage Wordlift/admin
  */
 class Wordlift_Admin_Country_Select_Element extends Wordlift_Admin_Select_Element {
+
+	/**
+	 * Adds a filter that will add data `country-codes` attrbiute to the country select
+	 * to allow front-end validation.
+	 *
+	 * @since 3.18.0
+	 *
+	 */
+	public function __construct() {
+		// Adds the country codes as data attribute to allow front-end validation.
+		add_filter( 'wl_admin_select_element_data_attributes', array( $this, 'add_country_codes_data' ), 10, 1 );
+	}
+
 	/**
 	 * @inheritdoc
 	 */
@@ -68,5 +81,23 @@ class Wordlift_Admin_Country_Select_Element extends Wordlift_Admin_Select_Elemen
 
 		// Return the html.
 		wp_send_json_success( $html );
+	}
+
+	/**
+	 * Modify the field data attributes by adding`country-code`
+	 * to existing attributes.
+	 *
+	 * @param array $attributes Current data attributes.
+	 *
+	 * @since 3.18.0
+	 *
+	 * @return array $attributes Modified attributes.
+	 */
+	public function add_country_codes_data( $attributes )	{
+		// Add the country codes.
+		$attributes['country-codes'] = json_encode( Wordlift_Countries::get_country_language_pairs() );
+
+		// Return the attributes.
+		return $attributes;
 	}
 }
