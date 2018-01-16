@@ -47,6 +47,11 @@ class Wordlift_Batch_Analysis_Adapter {
 
 		$this->batch_analysis_service = $batch_analysis_service;
 
+		add_action( 'wp_ajax_wl_batch_analysis_complete', array(
+			$this,
+			'complete',
+		) );
+
 	}
 
 	/**
@@ -99,6 +104,14 @@ class Wordlift_Batch_Analysis_Adapter {
 
 	}
 
+	public function complete() {
+
+		$this->batch_analysis_service->complete();
+
+		wp_send_json_success();
+
+	}
+
 
 	/**
 	 * A helper function to create the parameters from the $_REQUEST.
@@ -113,21 +126,21 @@ class Wordlift_Batch_Analysis_Adapter {
 		// @codingStandardsIgnoreStart, Ignore phpcs indentation errors.
 		$params = array(
 			// Get the `links` parameter, or use `default` if not provided.
-			'links'             => isset( $_REQUEST['links'] ) ? $_REQUEST['links'] : 'default',
+			'links' => isset( $_REQUEST['links'] ) ? $_REQUEST['links'] : 'default',
 			// If `include_annotated` is set to `yes`, the set the parameter to true.
 			'include_annotated' => isset( $_REQUEST['include_annotated'] ) && 'yes' === $_REQUEST['include_annotated'],
 			// Set the minimum amount of occurrences, use `1` by default.
-			'min_occurrences'   => isset( $_REQUEST['min_occurrences'] ) && is_numeric( $_REQUEST['min_occurrences'] ) ? intval( $_REQUEST['min_occurrences'] ) : 1,
+			'min_occurrences' => isset( $_REQUEST['min_occurrences'] ) && is_numeric( $_REQUEST['min_occurrences'] ) ? intval( $_REQUEST['min_occurrences'] ) : 1,
 			// Set the `post_type` to `post` if none provided.
-			'post_type'         => isset( $_REQUEST['post_type'] ) ? (array) $_REQUEST['post_type'] : 'post',
+			'post_type' => isset( $_REQUEST['post_type'] ) ? (array) $_REQUEST['post_type'] : 'post',
 			// Set the exclude array.
-			'exclude'           => isset( $_REQUEST['exclude'] ) ? (array) $_REQUEST['exclude'] : array(),
+			'exclude' => isset( $_REQUEST['exclude'] ) ? (array) $_REQUEST['exclude'] : array(),
 			// Set the `from` date, or null if not provided.
-			'from'              => isset( $_REQUEST['from'] ) ? $_REQUEST['from'] : null,
+			'from' => isset( $_REQUEST['from'] ) ? $_REQUEST['from'] : null,
 			// Set the `to` date, or null if not provided.
-			'to'                => isset( $_REQUEST['to'] ) ? $_REQUEST['to'] : null,
+			'to' => isset( $_REQUEST['to'] ) ? $_REQUEST['to'] : null,
 			//
-			'ids'               => isset( $_REQUEST['post'] ) ? wp_parse_id_list( (array) $_REQUEST['post'] ) : array(),
+			'ids' => isset( $_REQUEST['post'] ) ? wp_parse_id_list( (array) $_REQUEST['post'] ) : array(),
 		);
 
 		// @codingStandardsIgnoreEnd
