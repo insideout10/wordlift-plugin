@@ -93,7 +93,7 @@ class Wordlift_Admin_Country_Select_Element extends Wordlift_Admin_Select_Elemen
 	 *
 	 * @return array $attributes Modified attributes.
 	 */
-	public function add_country_codes_data( $attributes )	{
+	public function add_country_codes_data( $attributes ) {
 		// Add the country codes.
 		$attributes['country-codes'] = json_encode( Wordlift_Countries::get_country_language_pairs() );
 
