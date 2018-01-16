@@ -33,6 +33,7 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 				'name'        => uniqid( 'wl-input-' ),
 				'value'       => '',
 				'class'       => '',
+				'notice'      => '',
 				'description' => false,
 				'data'        => array(),
 				'options'     => array(),
@@ -48,8 +49,13 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 			<?php $this->render_options( $params ); ?>
 		</select>
 
-		<small class="wl-select-notices"></small><!-- /.wl-select-notices -->
+		<?php if ( ! empty( $params['notice'] ) ) : ?>
+			<small class="wl-select-notices">
+				<?php echo $params['notice']; ?>
+			</small>
 		<?php
+		endif;
+
 		// Print the field description.
 		echo $this->get_description( $params['description'] );
 

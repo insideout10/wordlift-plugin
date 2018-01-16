@@ -84,7 +84,10 @@
 
   .wl-select-notices {
     color: #ff0000;
-    display: block;
+    display: none;
+    &.visible {
+      display: block;
+    }
   }
 
 }
@@ -126,7 +129,8 @@
 }
 
 #wl-publisher-name input,
-#wl-site-language {
+#wl-site-language,
+#wl-country-code {
   // Size
   width: 100%;
   max-width: 480px;

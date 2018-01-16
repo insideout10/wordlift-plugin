@@ -37,11 +37,11 @@ const CountryValidator = (countrySelector, langSelector) => {
         // And chosen language doesn't exists
         options[ selectedCountry ].indexOf( selectedLang ) === -1
     ) {
-      // Add notice.
-      $notices.html( 'The selected language is not supported in this country.</br>Please choose another country or langugage.' );
+      // Show the notice.
+      $notices.addClass( 'visible' );
     } else {
-      // Remove the notice.
-      $notices.html( '' );
+      // Hide the notice.
+      $notices.removeClass( 'visible' );
     }
 
     // Post the validation request.
