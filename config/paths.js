@@ -60,6 +60,8 @@ module.exports = {
     'src-js/screens/Admin/screens/TinyMCE/index.js'),
   appAdminSettingsScreen: resolveApp(
     'src-js/screens/Admin/screens/Settings/index.js'),
+  appAdminKeywordsScreen: resolveApp(
+    'src-js/screens/Admin/screens/Keywords/index.js'),
   appAdminAuthorSelectComponent: resolveApp(
     'src-js/screens/Admin/components/AuthorSelect/index.js'),
 }
