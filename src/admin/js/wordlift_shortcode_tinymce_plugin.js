@@ -210,7 +210,7 @@
         return {
           longname: 'WordLift Shortcodes',
           author: 'WordLift',
-          version: '3.17.1'
+          version: '3.17.2'
         };
       }
     } );

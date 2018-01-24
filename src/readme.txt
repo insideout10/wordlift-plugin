@@ -142,6 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.17.2 (2018-02-24) =
+* Fix: [#758](https://github.com/insideout10/wordlift-plugin/issues/758): amp_post_template_css causes PHP Warning.
+
 = 3.17.1 (2018-01-15) =
 * Fix: [#756](https://github.com/insideout10/wordlift-plugin/issues/756): Analysis results corrupted when text contains a script tag.
 
