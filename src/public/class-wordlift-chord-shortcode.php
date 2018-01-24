@@ -34,8 +34,6 @@ class Wordlift_Chord_Shortcode extends Wordlift_Shortcode {
 		add_action( 'amp_post_template_css', array(
 			$this,
 			'amp_post_template_css',
-			10,
-			0,
 		) );
 
 	}
@@ -122,7 +120,7 @@ EOF;
 	 *
 	 * @since 3.14.0
 	 */
-	public function amp_post_template_css() {
+	public function amp_post_template_css( $amp_template ) {
 
 		// Hide the `wl-chord` when in AMP.
 		?>
