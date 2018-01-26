@@ -1,0 +1,32 @@
+.ant-table table {
+	border: 1px solid #b6b6b6;
+	border-radius: 0!important;
+}
+
+.ant-table-content .ant-table-thead > tr > th {
+	background: #f7f7f7;
+	padding: 10px;
+}
+
+.ant-table-content .ant-table-tbody > tr > td {
+	padding: 7px;
+}
+
+.ant-table-content .ant-table-tbody > tr:nth-child(odd) {
+	background: #fff;
+}
+
+.ant-table-content .ant-table-tbody > tr:nth-child(even) {
+	background: #f0f7ff;
+}
+
+.anticon {
+	padding-right: 5px;
+}
+
+.anticon.anticon-caret-down {
+	color: #ff4a4a;
+}
+.anticon.anticon-caret-up {
+	color: #7ed321;
+}

@@ -11,6 +11,7 @@
     "url": "https://github.com/insideout10/wordlift-plugin"
   },
   "dependencies": {
+    "antd": "^3.1.4",
     "autoprefixer": "7.1.2",
     "babel-core": "6.25.0",
     "babel-eslint": "7.2.3",
