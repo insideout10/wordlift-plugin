@@ -14,7 +14,7 @@ import React from 'react';
  *
  * @since 3.18.0
  */
-class Link extends React.PureComponent {
+class Link extends React.Component {
 
 	/**
 	 * @inheritDoc

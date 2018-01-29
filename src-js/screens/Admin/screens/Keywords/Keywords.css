@@ -24,9 +24,9 @@
 	padding-right: 5px;
 }
 
-.anticon.anticon-caret-down {
+.ant-table-tbody .anticon.anticon-caret-down {
 	color: #ff4a4a;
 }
-.anticon.anticon-caret-up {
+.ant-table-tbody .anticon.anticon-caret-up {
 	color: #7ed321;
 }
