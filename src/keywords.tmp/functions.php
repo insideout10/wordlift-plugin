@@ -7,8 +7,8 @@ function add_keyword() {
 	wp_send_json_success();
 }
 
-add_action( 'wp_ajax_nopriv_load_keywords', 'load_keywords' );
-add_action( 'wp_ajax_load_keywords', 'load_keywords' );
+add_action( 'wp_ajax_nopriv_wl_get_keyword_rows', 'load_keywords' );
+add_action( 'wp_ajax_wl_get_keyword_rows', 'load_keywords' );
 function load_keywords() {
 	$response = array(
 		array(
