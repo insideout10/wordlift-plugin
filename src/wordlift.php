@@ -35,6 +35,9 @@ require_once( 'wordlift_constants.php' );
 // Load modules.
 require_once( 'modules/core/wordlift_core.php' );
 
+// Temporary keywords.
+require_once( 'keywords.tmp/functions.php' );
+
 /**
  * Log to the debug.log file.
  *
