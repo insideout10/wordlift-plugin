@@ -286,9 +286,18 @@ class Wordlift {
 	 *
 	 * @since  3.14.0
 	 * @access protected
-	 * @var \Wordlift_Batch_Analysis_Page $sbatch_analysis_page The 'WordLift batcch analysis' page.
+	 * @var \Wordlift_Batch_Analysis_Page $batch_analysis_page The 'WordLift batcch analysis' page.
 	 */
 	protected $batch_analysis_page;
+
+	/**
+	 * The 'WordLift Search Rankings' page.
+	 *
+	 * @since  3.18.0
+	 * @access protected
+	 * @var \Wordlift_Search_Rankings_Page $search_rankings_page The 'WordLift Search Rankings' page..
+	 */
+	protected $search_rankings_page;
 
 	/**
 	 * The install wizard page.
@@ -984,6 +993,7 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-batch-analysis-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-page-action-link.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-search-rankings-page.php';
 
 		/** Admin Pages */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-post-edit-page.php';
@@ -1203,6 +1213,7 @@ class Wordlift {
 
 		$this->settings_page             = new Wordlift_Admin_Settings_Page( $this->configuration_service, $this->entity_service, $this->input_element, $this->language_select_element, $this->publisher_element, $this->radio_input_element );
 		$this->batch_analysis_page       = new Wordlift_Batch_Analysis_Page( $this->batch_analysis_service );
+		$this->search_rankings_page       = new Wordlift_Search_Rankings_Page();
 		$this->settings_page_action_link = new Wordlift_Admin_Settings_Page_Action_Link( $this->settings_page );
 
 		// Pages.
@@ -1340,6 +1351,7 @@ class Wordlift {
 		$this->loader->add_action( 'admin_menu', $this->download_your_data_page, 'admin_menu', 100, 0 );
 		$this->loader->add_action( 'admin_menu', $this->status_page, 'admin_menu', 100, 0 );
 		$this->loader->add_action( 'admin_menu', $this->entity_type_settings_admin_page, 'admin_menu', 100, 0 );
+		$this->loader->add_action( 'admin_menu', $this->search_rankings_page, 'admin_menu', 10, 0 );
 
 		// Hook the admin-ajax.php?action=wl_download_your_data&out=xyz links.
 		$this->loader->add_action( 'wp_ajax_wl_download_your_data', $this->download_your_data_page, 'download_your_data', 10 );
