@@ -305,32 +305,23 @@ class Wordlift_Configuration_Service {
 	}
 
 	/**
-	 * Intercept the change of the WordLift key in order to set the dataset URI.
+	 * Intercept the change of the WordLift options( key, language & country ) in order to set the dataset URI.
 	 *
 	 * @since 3.11.0
 	 *
 	 * @param array $old_value The old settings.
 	 * @param array $new_value The new settings.
 	 */
-	public function update_key( $old_value, $new_value ) {
-
-		// Check the old key value and the new one. We're going to ask for the dataset URI only if the key has changed.
-		$old_key = isset( $old_value['key'] ) ? $old_value['key'] : '';
-		$new_key = isset( $new_value['key'] ) ? $new_value['key'] : '';
-
-		// If the key hasn't changed, don't do anything.
-		// WARN The 'update_option' hook is fired only if the new and old value are not equal.
-		if ( $old_key === $new_key ) {
-			return;
-		}
-
-		// If the key is empty, empty the dataset URI.
-		if ( '' === $new_key ) {
-			$this->set_dataset_uri( '' );
-		}
+	public function update_options( $old_value, $new_value ) {
+		// Get the new settings.
+		$options = array(
+			'key'      => isset( $new_value['key'] ) ? $new_value['key'] : '',
+			'language' => isset( $new_value['site_language'] ) ? $new_value['site_language'] : '',
+			'country'  => isset( $new_value['country_code'] ) ? $new_value['country_code'] : '',
+		);
 
 		// make the request to the remote server.
-		$this->get_remote_dataset_uri( $new_key );
+		$this->get_remote_dataset_uri( $options );
 	}
 
 	/**
@@ -342,20 +333,27 @@ class Wordlift_Configuration_Service {
 	 * @since 3.17.0 send the site URL and get the dataset URI.
 	 * @since 3.12.0
 	 *
-	 * @param string $key The key to be used.
+	 * @param array  $options The dataset options.
 	 */
-	public function get_remote_dataset_uri( $key ) {
+	public function get_remote_dataset_uri( $options ) {
+
+		// Add the site url to the params.
+		// It's added here because this way it will cover, both option update
+		// and submitting the same key withour dataset_uri.
+		$options['url'] = site_url();
 
 		$this->log->trace( 'Getting the remote dataset URI...' );
 
 		// Build the URL.
-		$url = $this->get_accounts()
-			   . '?key=' . rawurlencode( $key )
-			   . '&url=' . rawurlencode( site_url() );
+		$url = add_query_arg(
+			array_map( 'rawurlencode' , $options),
+			$this->get_accounts()
+		);
 
-		$args     = wp_parse_args( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
+		$args = wp_parse_args( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
 			'method' => 'PUT',
 		) );
+
 		$response = wp_remote_request( $url, $args );
 
 		// The response is an error.
@@ -413,7 +411,7 @@ class Wordlift_Configuration_Service {
 		if ( ! empty( $new_key ) && $new_key === $old_key && empty( $dataset_uri ) ) {
 
 			// make the request to the remote server to try to get the dataset uri.
-			$this->get_remote_dataset_uri( $new_key );
+			$this->get_remote_dataset_uri( array( 'key' => $new_key ) );
 		}
 
 		return $value;
@@ -487,11 +485,38 @@ class Wordlift_Configuration_Service {
 	 *
 	 * @since 3.15.0
 	 *
-	 * @return string The URL to call to perform the batch analyzes.
+	 * @return string The URL to call to perform autocomplete request.
 	 */
 	public function get_autocomplete_url() {
 
 		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . 'autocomplete';
+
+	}
+
+	/**
+	 * Get the URL to perform keyword row request.
+	 * Row request are made to get/add keyword(s).
+	 *
+	 * @since 3.18.0
+	 *
+	 * @return string The URL to call to perform keywords request.
+	 */
+	public function get_keyword_rows_url() {
+
+		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . 'keyword-rows';
+
+	}
+
+	/**
+	 * Get the URL to perform single keyword request.
+	 *
+	 * @since 3.18.0
+	 *
+	 * @return string The URL to call to perform keyword.
+	 */
+	public function get_keywords_url( $keyword='' ) {
+
+		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "keywords/$keyword";
 
 	}
 

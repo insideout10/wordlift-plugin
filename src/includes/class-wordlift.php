@@ -625,6 +625,24 @@ class Wordlift {
 	private $autocomplete_adapter;
 
 	/**
+	 * The {@link Wordlift_Keywords_Service} instance.
+	 *
+	 * @since  3.18.0
+	 * @access private
+	 * @var \Wordlift_Keywords_Service $keywords_service The {@link Wordlift_Keywords_Service} instance.
+	 */
+	private $keywords_service;
+
+	/**
+	 * The {@link Wordlift_Keywords_Adapter} instance.
+	 *
+	 * @since  3.18.0
+	 * @access private
+	 * @var \Wordlift_Keywords_Adapter $keywords_adapter The {@link Wordlift_Keywords_Adapter} instance.
+	 */
+	private $keywords_adapter;
+
+	/**
 	 * The {@link Wordlift_Relation_Service} instance.
 	 *
 	 * @since  3.15.0
@@ -888,9 +906,16 @@ class Wordlift {
 
 		// Load the `Wordlift_Entity_Page_Service` class definition.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-page-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-relation-rebuild-service.php';
+
+		/** Batch Analysis. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/batch-analysis/class-wordlift-batch-analysis-sql-helper.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/batch-analysis/class-wordlift-batch-analysis-service.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-relation-rebuild-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/batch-analysis/class-wordlift-batch-analysis-adapter.php';
+
+		/** Keywords. */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/keywords/class-wordlift-keywords-adapter.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/keywords/class-wordlift-keywords-service.php';
 
 		/** Linked Data. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-storage.php';
@@ -915,7 +940,6 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-newrelic-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-sample-data-ajax-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-type-adapter.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/batch-analysis/class-wordlift-batch-analysis-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-relation-rebuild-adapter.php';
 
 		/** Async Tasks. */
@@ -1200,6 +1224,10 @@ class Wordlift {
 		$this->autocomplete_service = new Wordlift_Autocomplete_Service( $this->configuration_service );
 		$this->autocomplete_adapter = new Wordlift_Autocomplete_Adapter( $this->autocomplete_service );
 
+		/** Keywords. */
+		$this->keywords_service = new Wordlift_Keywords_Service( $this->configuration_service );
+		$this->keywords_adapter = new Wordlift_Keywords_Adapter( $this->keywords_service );
+
 		/** WordPress Admin UI. */
 
 		// UI elements.
@@ -1377,7 +1405,7 @@ class Wordlift {
 
 		// Hook key update.
 		$this->loader->add_action( 'pre_update_option_wl_general_settings', $this->configuration_service, 'maybe_update_dataset_uri', 10, 2 );
-		$this->loader->add_action( 'update_option_wl_general_settings', $this->configuration_service, 'update_key', 10, 2 );
+		$this->loader->add_action( 'update_option_wl_general_settings', $this->configuration_service, 'update_options', 10, 2 );
 
 		// Add additional action links to the WordLift plugin in the plugins page.
 		$this->loader->add_filter( 'plugin_action_links_wordlift/wordlift.php', $this->settings_page_action_link, 'action_links', 10, 1 );
@@ -1406,7 +1434,11 @@ class Wordlift {
 		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_submit_posts', $this->batch_analysis_adapter, 'submit_posts' );
 		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_cancel', $this->batch_analysis_adapter, 'cancel' );
 		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_clear_warning', $this->batch_analysis_adapter, 'clear_warning' );
-		$this->loader->add_action( 'wp_ajax_wl_relation_rebuild_process_all', $this->relation_rebuild_adapter, 'process_all' );
+
+		/** Keywords */
+		$this->loader->add_action( 'wp_ajax_wl_get_keyword_rows', $this->keywords_adapter, 'get_rows' );
+		$this->loader->add_action( 'wp_ajax_add_keyword', $this->keywords_adapter, 'add_keyword' );
+		$this->loader->add_action( 'wp_ajax_delete_keyword', $this->keywords_adapter, 'delete_keyword' );
 
 		$this->loader->add_action( 'wp_ajax_wl_sample_data_create', $this->sample_data_ajax_adapter, 'create' );
 		$this->loader->add_action( 'wp_ajax_wl_sample_data_delete', $this->sample_data_ajax_adapter, 'delete' );
@@ -1482,6 +1514,11 @@ class Wordlift {
 
 		// This hook have to run before the rating service, as otherwise the post might not be a proper entity when rating is done.
 		$this->loader->add_action( 'save_post', $this->entity_type_adapter, 'save_post', 9, 3 );
+
+		/** Keywords */
+		$this->loader->add_action( 'wp_ajax_nopriv_wl_get_keyword_rows', $this->keywords_adapter, 'get_rows' );
+		$this->loader->add_action( 'wp_ajax_nopriv_add_keyword', $this->keywords_adapter, 'add_keyword' );
+		$this->loader->add_action( 'wp_ajax_nopriv_delete_keyword', $this->keywords_adapter, 'delete_keyword' );
 
 	}
 
