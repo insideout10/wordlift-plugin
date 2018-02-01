@@ -8,13 +8,13 @@
  */
 
 /**
- * Define the {@link Wordlift_Keyword} class.
+ * Define the {@link Wordlift_Keyword_Adapter} class.
  *
  * @since      3.18.0
  * @package    Wordlift
  * @subpackage Wordlift/includes
  */
-class Wordlift_Keyword {
+class Wordlift_Keyword_Adapter {
 
 	/**
 	 * A {@link Wordlift_Log_Service} instance.
@@ -26,11 +26,11 @@ class Wordlift_Keyword {
 	private $log;
 
 	/**
-	 * The {@link Wordlift_HTTP_Client} instance.
+	 * The {@link Wordlift_Http_Client} instance.
 	 *
 	 * @since  3.18.0
 	 * @access private
-	 * @var \Wordlift_HTTP_Client $http_client The {@link Wordlift_HTTP_Client} instance.
+	 * @var \Wordlift_Http_Client $http_client The {@link Wordlift_Http_Client} instance.
 	 */
 	private $http_client;
 
@@ -44,12 +44,12 @@ class Wordlift_Keyword {
 	private $configuration_service;
 
 	/**
-	 * Wordlift_Keyword constructor.
+	 * Wordlift_Keyword_Adapter constructor.
 	 *
 	 * @since 3.18.0
 	 *
 	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
-	 * @param \Wordlift_HTTP_Client $http_client The {@link Wordlift_HTTP_Client} instance.
+	 * @param \Wordlift_Http_Client           $http_client           The {@link Wordlift_Http_Client} instance.
 	 */
 	public function __construct( $configuration_service, $http_client ) {
 

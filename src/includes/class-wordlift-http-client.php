@@ -8,13 +8,13 @@
  */
 
 /**
- * Define the {@link Wordlift_HTTP_Client} class.
+ * Define the {@link Wordlift_Http_Client} class.
  *
  * @since      3.18.0
  * @package    Wordlift
  * @subpackage Wordlift/includes
  */
-class Wordlift_HTTP_Client {
+class Wordlift_Http_Client {
 	/**
 	 * A {@link Wordlift_Log_Service} instance.
 	 *
@@ -34,7 +34,7 @@ class Wordlift_HTTP_Client {
 	public $configuration_service;
 
 	/**
-	 * Wordlift_HTTP_Client constructor.
+	 * Wordlift_Http_Client constructor.
 	 *
 	 * @since 3.18.0
 	 *
