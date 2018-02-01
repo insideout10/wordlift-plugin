@@ -313,6 +313,14 @@ class Wordlift_Configuration_Service {
 	 * @param array $new_value The new settings.
 	 */
 	public function update_options( $old_value, $new_value ) {
+
+		// Empty the dataset URI if no key has been provided.
+		if ( empty( $new_value['key'] ) ) {
+			$this->set_dataset_uri( '' );
+
+			return;
+		}
+
 		// Get the new settings.
 		$options = array(
 			'key'      => isset( $new_value['key'] ) ? $new_value['key'] : '',
@@ -322,6 +330,7 @@ class Wordlift_Configuration_Service {
 
 		// make the request to the remote server.
 		$this->get_remote_dataset_uri( $options );
+
 	}
 
 	/**
@@ -333,22 +342,19 @@ class Wordlift_Configuration_Service {
 	 * @since 3.17.0 send the site URL and get the dataset URI.
 	 * @since 3.12.0
 	 *
-	 * @param array  $options The dataset options.
+	 * @param array $options The dataset options.
 	 */
 	public function get_remote_dataset_uri( $options ) {
 
 		// Add the site url to the params.
 		// It's added here because this way it will cover, both option update
-		// and submitting the same key withour dataset_uri.
+		// and submitting the same key without dataset_uri.
 		$options['url'] = site_url();
 
 		$this->log->trace( 'Getting the remote dataset URI...' );
 
 		// Build the URL.
-		$url = add_query_arg(
-			array_map( 'rawurlencode' , $options),
-			$this->get_accounts()
-		);
+		$url = add_query_arg( $options, $this->get_accounts() );
 
 		$args = wp_parse_args( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
 			'method' => 'PUT',
@@ -512,11 +518,15 @@ class Wordlift_Configuration_Service {
 	 *
 	 * @since 3.18.0
 	 *
+	 * @param string $keyword The (optional) keyword.
+	 *
 	 * @return string The URL to call to perform keyword.
 	 */
-	public function get_keywords_url( $keyword='' ) {
+	public function get_keywords_url( $keyword = '' ) {
 
-		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "keywords/$keyword";
+		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE
+			   . 'keywords/'
+			   . rawurlencode( $keyword );
 
 	}
 

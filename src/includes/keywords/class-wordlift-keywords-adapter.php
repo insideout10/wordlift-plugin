@@ -56,7 +56,8 @@ class Wordlift_Keywords_Adapter {
 	 */
 	public function get_rows() {
 		// Submit the request.
-		$response = $this->keywords_service->make_request( $this->keywords_service->configuration_service->get_keyword_rows_url() );
+		$response = $this->keywords_service
+			->make_request( $this->keywords_service->configuration_service->get_keyword_rows_url() );
 
 		$this->send_json_response( $response );
 
@@ -79,7 +80,8 @@ class Wordlift_Keywords_Adapter {
 			$this->keywords_service->configuration_service->get_keywords_url(), // Request url.
 			'POST', // Request method.
 			array(
-				'value' => sanitize_text_field( wp_unslash( $_REQUEST['keyword'] ) ), // Request methods.
+				'value' => sanitize_text_field( wp_unslash( $_REQUEST['keyword'] ) ),
+				// Request methods.
 			)
 		);
 
@@ -118,7 +120,7 @@ class Wordlift_Keywords_Adapter {
 	 *
 	 * @param array $response Server response.
 	 */
-	public function send_json_response( $response ) {
+	public function handle_response( $response ) {
 		// Clear any buffer.
 		ob_clean();
 
@@ -126,21 +128,25 @@ class Wordlift_Keywords_Adapter {
 		if ( ! is_wp_error( $response ) && 200 === (int) $response['response']['code'] ) {
 			// Echo the response.
 			wp_send_json_success( json_decode( wp_remote_retrieve_body( $response ), true ) );
-		} else {
-			// Default error message.
-			$error_message = $response['response']['message'];
 
-			// Get the real error message if there is WP_Error.
-			if ( is_wp_error( $response ) ) {
-				$error_message = $response->get_error_message();
-			}
-
-			// There is an error, so send error message.
-			wp_send_json_error( array(
-				/* translators: Placeholders: %s - the error message that will be returned. */
-				'message' => sprintf( esc_html__( 'Error: %s', 'wordlift' ), $error_message ),
-			) );
+			return;
 		}
+
+		// Get the real error message if there is WP_Error.
+		if ( isset( $response['response']['message'] ) ) {
+			$error_message = $response['response']['message'];
+		} elseif ( is_wp_error( $response ) ) {
+			$error_message = $response->get_error_message();
+		} else {
+			$error_message = 'Unknown Error';
+		}
+
+		// There is an error, so send error message.
+		wp_send_json_error( array(
+			/* translators: Placeholders: %s - the error message that will be returned. */
+			'message' => sprintf( esc_html__( 'Error: %s', 'wordlift' ), $error_message ),
+		) );
+
 	}
 
 }

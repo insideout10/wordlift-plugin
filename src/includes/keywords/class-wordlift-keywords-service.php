@@ -60,7 +60,7 @@ class Wordlift_Keywords_Service {
 	 * @return array The API response.
 	 */
 	public function make_request( $url, $method = 'GET', $params = array() ) {
-		// Add the WL key to keywrods url.
+		// Add the WL key to keywords url.
 		$new_url = add_query_arg(
 			array(
 				'key' => $this->configuration_service->get_key(),
