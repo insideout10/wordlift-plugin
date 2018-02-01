@@ -73,6 +73,15 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	private $language_select_element;
 
 	/**
+	 * A {@link Wordlift_Admin_Country_Select_Element} element renderer.
+	 *
+	 * @since  3.18.0
+	 * @access private
+	 * @var \Wordlift_Admin_Country_Select_Element $country_select_element A {@link Wordlift_Admin_Country_Select_Element} element renderer.
+	 */
+	private $country_select_element;
+
+	/**
 	 * A {@link Wordlift_Admin_Publisher_Element} element renderer.
 	 *
 	 * @since  3.11.0
@@ -86,14 +95,23 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 *
 	 * @since 3.11.0
 	 *
-	 * @param \Wordlift_Configuration_Service         $configuration_service
-	 * @param \Wordlift_Entity_Service                $entity_service
-	 * @param \Wordlift_Admin_Input_Element           $input_element
-	 * @param \Wordlift_Admin_Language_Select_Element $language_select_element
-	 * @param \Wordlift_Admin_Publisher_Element       $publisher_element
-	 * @param \Wordlift_Admin_Radio_Input_Element     $radio_input_element
+	 * @param \Wordlift_Configuration_Service         $configuration_service   A {@link Wordlift_Configuration_Service} instance.
+	 * @param \Wordlift_Entity_Service                $entity_service          A {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_Admin_Input_Element           $input_element           A {@link Wordlift_Admin_Input_Element} element renderer.
+	 * @param \Wordlift_Admin_Language_Select_Element $language_select_element A {@link Wordlift_Admin_Language_Select_Element} element renderer.
+	 * @param \Wordlift_Admin_Country_Select_Element  $country_select_element  A {@link Wordlift_Admin_Country_Select_Element} element renderer.
+	 * @param \Wordlift_Admin_Publisher_Element       $publisher_element       A {@link Wordlift_Admin_Publisher_Element} element renderer.
+	 * @param \Wordlift_Admin_Radio_Input_Element     $radio_input_element     A {@link Wordlift_Admin_Radio_Input_Element} element renderer.
 	 */
-	function __construct( $configuration_service, $entity_service, $input_element, $language_select_element, $publisher_element, $radio_input_element ) {
+	function __construct(
+		$configuration_service,
+		$entity_service,
+		$input_element,
+		$language_select_element,
+		$country_select_element,
+		$publisher_element,
+		$radio_input_element
+	) {
 
 		$this->configuration_service = $configuration_service;
 		$this->entity_service        = $entity_service;
@@ -102,6 +120,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 		$this->input_element           = $input_element;
 		$this->radio_input_element     = $radio_input_element;
 		$this->language_select_element = $language_select_element;
+		$this->country_select_element  = $country_select_element;
 		$this->publisher_element       = $publisher_element;
 
 		self::$instance = $this;
@@ -195,7 +214,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 		register_setting(
 			'wl_general_settings',
 			'wl_general_settings',
-			array( $this, 'sanitize_callback', )
+			array( $this, 'sanitize_callback' )
 		);
 
 		// Add the general settings section.
@@ -226,7 +245,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			'wl-key',                                       // Element id used to identify the field throughout the theme.
 			_x( 'WordLift Key', 'wordlift' ),               // The label to the left of the option interface element.
 			// The name of the function responsible for rendering the option interface.
-			array( $this->input_element, 'render', ),
+			array( $this->input_element, 'render' ),
 			'wl_general_settings',                          // The page on which this option will be displayed.
 			'wl_general_settings_section',                  // The name of the section to which this field belongs.
 			$key_args                                       // The array of arguments to pass to the callback. In this case, just a description.
@@ -243,7 +262,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 
 		// The following call is very heavy on large web sites and is always run
 		// also when not needed:
-		//  $entity_base_path_args['readonly'] = 0 < $this->entity_service->count();
+		// $entity_base_path_args['readonly'] = 0 < $this->entity_service->count();
 		//
 		// It is now replaced by a filter to add the `readonly` flag to the
 		// input element when this is actually rendered.
@@ -252,15 +271,14 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			'entity_path_input_element_params',
 		) );
 
-
 		// Add the `wl_entity_base_path` field.
 		add_settings_field(
-			'wl-entity-base-path',                                // ID used to identify the field throughout the theme
-			_x( 'Entity Base Path', 'wordlift' ),                 // The label to the left of the option interface element
-			// The name of the function responsible for rendering the option interface
-			array( $this->input_element, 'render', ),
-			'wl_general_settings',                                // The page on which this option will be displayed
-			'wl_general_settings_section',                        // The name of the section to which this field belongs
+			'wl-entity-base-path',                                // ID used to identify the field throughout the theme.
+			_x( 'Entity Base Path', 'wordlift' ),                 // The label to the left of the option interface element.
+			// The name of the function responsible for rendering the option interface.
+			array( $this->input_element, 'render' ),
+			'wl_general_settings',                                // The page on which this option will be displayed.
+			'wl_general_settings_section',                        // The name of the section to which this field belongs.
 			$entity_base_path_args
 		);
 
@@ -277,6 +295,22 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 				'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::LANGUAGE . ']',
 				'value'       => $this->configuration_service->get_language_code(),
 				'description' => __( 'Each WordLift Key can be used only in one language. Pick yours.', 'wordlift' ),
+			)
+		);
+
+		// Add the `country_code` field.
+		add_settings_field(
+			'wl-country-code',
+			_x( 'Country', 'wordlift' ),
+			array( $this->country_select_element, 'render' ),
+			'wl_general_settings',
+			'wl_general_settings_section',
+			array(
+				'id'          => 'wl-country-code',
+				'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::COUNTRY . ']',
+				'value'       => $this->configuration_service->get_country_code(),
+				'description' => __( 'Please select a country.', 'wordlift' ),
+				'notice'      => __( 'The selected language is not supported in this country.</br>Please choose another country or language.', 'wordlift' ),
 			)
 		);
 
@@ -348,11 +382,14 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 */
 	function sanitize_callback( $input ) {
 
+		// Validate the selected country.
+		$this->validate_country();
+
 		// Check whether a publisher name has been set.
-		if ( isset( $_POST['wl_publisher'] ) && ! empty( $_POST['wl_publisher']['name'] ) ) {
-			$name         = $_POST['wl_publisher']['name'];
-			$type         = $_POST['wl_publisher']['type'];
-			$thumbnail_id = $_POST['wl_publisher']['thumbnail_id'] ?: null;
+		if ( isset( $_POST['wl_publisher'] ) && ! empty( $_POST['wl_publisher']['name'] ) ) { // WPCS: CSRF, input var, sanitization ok.
+			$name         = $_POST['wl_publisher']['name']; // WPCS: CSRF, input var, sanitization ok.
+			$type         = $_POST['wl_publisher']['type']; // WPCS: CSRF, input var, sanitization ok.
+			$thumbnail_id = $_POST['wl_publisher']['thumbnail_id'] ?: null; // WPCS: CSRF, input var, sanitization ok.
 
 			// Set the type URI, either http://schema.org/Person or http://schema.org/Organization.
 			$type_uri = sprintf( 'http://schema.org/%s', 'organization' === $type ? 'Organization' : 'Person' );
@@ -363,6 +400,42 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 		}
 
 		return $input;
+	}
+
+	/**
+	 * Check whether the currently selected country supports the site language
+	 *
+	 * @since 3.18.0
+	 *
+	 * @return void
+	 */
+	private function validate_country() {
+		// Bail is for some reason the country and language are not set.
+		if (
+			empty( $_POST['wl_general_settings']['site_language'] ) && // WPCS: CSRF, input var, sanitization ok.
+			empty( $_POST['wl_general_settings']['country_code'] ) // WPCS: CSRF, input var, sanitization ok.
+		) {
+			return;
+		}
+
+		// Get the values.
+		$language = $_POST['wl_general_settings']['site_language']; // WPCS: CSRF, input var, sanitization ok.
+		$country  = $_POST['wl_general_settings']['country_code']; // WPCS: CSRF, input var, sanitization ok.
+		$countries = Wordlift_Countries::get_country_language_pairs();
+
+		// Check whether the chosen country has language limitations
+		// and whether the chosen language is supported for that country.
+		if (
+			! empty( $countries[ $country ] ) &&
+			! in_array( $language, $countries[ $country ] )
+		) {
+			// Otherwise add an error.
+			add_settings_error(
+				'wl-country-code',
+				esc_attr( 'settings_updated' ),
+				_x( 'The selected language is not supported for the currently chosen country. Please choose another country or langugage.', 'wordlift' )
+			);
+		}
 	}
 
 }
