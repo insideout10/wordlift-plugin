@@ -21,7 +21,7 @@ function* createKeyword({ payload: keyword }) {
   console.log(`Creating Keyword "${keyword}"...`);
 
   try {
-    const result = yield call(request, 'add_keyword', { keyword });
+    const result = yield call(request, 'wl_add_keyword', { keyword });
     console.info(`Keyword "${result}" created.`);
   } catch (error) {
     console.error(`An error occurred: ${error}`, error);
@@ -32,7 +32,7 @@ function* deleteKeyword({ payload: keyword }) {
   console.log(`Deleting Keyword "${keyword}"...`);
 
   try {
-    const result = yield call(request, 'delete_keyword', { keyword });
+    const result = yield call(request, 'wl_delete_keyword', { keyword });
     console.info(`Keyword "${result}" deleted.`);
   } catch (error) {
     console.error(`An error occurred: ${error}`, error);

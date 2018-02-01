@@ -137,7 +137,7 @@ class Wordlift_Keyword_Adapter {
 		ob_clean();
 
 		// If the response is valid, then send the suggestions.
-		if ( ! is_wp_error( $response ) && 200 === (int) $response['response']['code'] ) {
+		if ( ! is_wp_error( $response ) && 2 === (int) ( $response['response']['code'] / 100 ) ) {
 			// Echo the response.
 			wp_send_json_success( json_decode( wp_remote_retrieve_body( $response ), true ) );
 
