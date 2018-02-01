@@ -1,6 +1,6 @@
 <?php
 /**
- * Adapters: Keywords Adapter.
+ * Adapters: WordLift Keyword.
  *
  * @since      3.18.0
  * @package    Wordlift
@@ -8,13 +8,13 @@
  */
 
 /**
- * Define the {@link Wordlift_Keywords_Adapter} class.
+ * Define the {@link Wordlift_Keyword} class.
  *
  * @since      3.18.0
  * @package    Wordlift
  * @subpackage Wordlift/includes
  */
-class Wordlift_Keywords_Adapter {
+class Wordlift_Keyword {
 
 	/**
 	 * A {@link Wordlift_Log_Service} instance.
@@ -26,26 +26,38 @@ class Wordlift_Keywords_Adapter {
 	private $log;
 
 	/**
-	 * The {@link Wordlift_Keywords_Service} instance.
+	 * The {@link Wordlift_HTTP_Client} instance.
 	 *
 	 * @since  3.18.0
 	 * @access private
-	 * @var \Wordlift_Keywords_Service $keywords_service The {@link Wordlift_Keywords_Service} instance.
+	 * @var \Wordlift_HTTP_Client $http_client The {@link Wordlift_HTTP_Client} instance.
 	 */
-	private $keywords_service;
+	private $http_client;
 
 	/**
-	 * Wordlift_Keywords_Adapter constructor.
+	 * The {@link Wordlift_Configuration_Service} instance.
+	 *
+	 * @since  3.18.0
+	 * @access private
+	 * @var \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
+	 */
+	private $configuration_service;
+
+	/**
+	 * Wordlift_Keyword constructor.
 	 *
 	 * @since 3.18.0
 	 *
-	 * @param \Wordlift_Keywords_Service $keywords_service
+	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
+	 * @param \Wordlift_HTTP_Client $http_client The {@link Wordlift_HTTP_Client} instance.
 	 */
-	public function __construct( $keywords_service ) {
+	public function __construct( $configuration_service, $http_client ) {
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
-		$this->keywords_service = $keywords_service;
+		$this->http_client = $http_client;
+
+		$this->configuration_service = $configuration_service;
 
 	}
 
@@ -54,10 +66,10 @@ class Wordlift_Keywords_Adapter {
 	 *
 	 * @since 3.18.0
 	 */
-	public function get_rows() {
+	public function get_keyword_rows() {
 		// Submit the request.
-		$response = $this->keywords_service
-			->make_request( $this->keywords_service->configuration_service->get_keyword_rows_url() );
+		$response = $this->http_client
+			->do_request( $this->configuration_service->get_keyword_rows_url() );
 
 		$this->send_json_response( $response );
 
@@ -68,7 +80,7 @@ class Wordlift_Keywords_Adapter {
 	 *
 	 * @since 3.18.0
 	 */
-	public function add_keyword() {
+	public function create() {
 
 		// Bail if the required params are empty.
 		if ( empty( $_REQUEST['keyword'] ) ) {
@@ -76,8 +88,8 @@ class Wordlift_Keywords_Adapter {
 		}
 
 		// Submit the request.
-		$response = $this->keywords_service->make_request(
-			$this->keywords_service->configuration_service->get_keywords_url(), // Request url.
+		$response = $this->http_client->do_request(
+			$this->configuration_service->get_keywords_url(), // Request url.
 			'POST', // Request method.
 			array(
 				'value' => sanitize_text_field( wp_unslash( $_REQUEST['keyword'] ) ),
@@ -94,7 +106,7 @@ class Wordlift_Keywords_Adapter {
 	 *
 	 * @since 3.18.0
 	 */
-	public function delete_keyword() {
+	public function delete() {
 
 		// Bail if the required params are empty.
 		if ( empty( $_REQUEST['keyword'] ) ) {
@@ -104,8 +116,8 @@ class Wordlift_Keywords_Adapter {
 		$keyword = sanitize_text_field( wp_unslash( $_REQUEST['keyword'] ) );
 
 		// Submit the request.
-		$response = $this->keywords_service->make_request(
-			$this->keywords_service->configuration_service->get_keywords_url( $keyword ),
+		$response = $this->http_client->do_request(
+			$this->configuration_service->get_keywords_url( $keyword ),
 			'DELETE'
 		);
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Services: Keywords Service.
+ * Services: HTTP Client.
  *
  * @since      3.18.0
  * @package    Wordlift
@@ -8,13 +8,13 @@
  */
 
 /**
- * Define the {@link Wordlift_Keywords_Service} class.
+ * Define the {@link Wordlift_HTTP_Client} class.
  *
  * @since      3.18.0
  * @package    Wordlift
  * @subpackage Wordlift/includes
  */
-class Wordlift_Keywords_Service {
+class Wordlift_HTTP_Client {
 	/**
 	 * A {@link Wordlift_Log_Service} instance.
 	 *
@@ -34,7 +34,7 @@ class Wordlift_Keywords_Service {
 	public $configuration_service;
 
 	/**
-	 * Wordlift_Keywords_Adapter constructor.
+	 * Wordlift_HTTP_Client constructor.
 	 *
 	 * @since 3.18.0
 	 *
@@ -49,7 +49,7 @@ class Wordlift_Keywords_Service {
 	}
 
 	/**
-	 * Make request to the server to perform keywords action.
+	 * Make request to the server.
 	 *
 	 * @since 3.18.0
 	 *
@@ -59,7 +59,7 @@ class Wordlift_Keywords_Service {
 	 *
 	 * @return array The API response.
 	 */
-	public function make_request( $url, $method = 'GET', $params = array() ) {
+	public function do_request( $url, $method = 'GET', $params = array() ) {
 		// Add the WL key to keywords url.
 		$new_url = add_query_arg(
 			array(

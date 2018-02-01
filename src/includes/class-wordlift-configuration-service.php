@@ -409,15 +409,28 @@ class Wordlift_Configuration_Service {
 		// Check the old key value and the new one. Here we're only handling the
 		// case where the key hasn't changed and the dataset URI isn't set. The
 		// other case, i.e. a new key is inserted, is handled at `update_key`.
-		$old_key = isset( $old_value['key'] ) ? $old_value['key'] : '';
-		$new_key = isset( $value['key'] ) ? $value['key'] : '';
+		$old_options = array(
+			'key'      => isset( $old_value['key'] ) ? $old_value['key'] : '',
+			'language' => isset( $old_value['site_language'] ) ? $old_value['site_language'] : '',
+			'country'  => isset( $old_value['country_code'] ) ? $old_value['country_code'] : '',
+		);
 
+		$new_options = array(
+			'key'      => isset( $value['key'] ) ? $value['key'] : '',
+			'language' => isset( $value['site_language'] ) ? $value['site_language'] : '',
+			'country'  => isset( $value['country_code'] ) ? $value['country_code'] : '',
+		);
+
+		// Get the dataset uri.
 		$dataset_uri = $this->get_dataset_uri();
 
-		if ( ! empty( $new_key ) && $new_key === $old_key && empty( $dataset_uri ) ) {
-
+		if (
+			! empty( $new_options['key'] ) &&
+			$old_options === $new_options &&
+			empty( $dataset_uri )
+		) {
 			// make the request to the remote server to try to get the dataset uri.
-			$this->get_remote_dataset_uri( array( 'key' => $new_key ) );
+			$this->get_remote_dataset_uri( $new_options );
 		}
 
 		return $value;

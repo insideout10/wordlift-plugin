@@ -625,22 +625,22 @@ class Wordlift {
 	private $autocomplete_adapter;
 
 	/**
-	 * The {@link Wordlift_Keywords_Service} instance.
+	 * The {@link Wordlift_HTTP_Client} instance.
 	 *
 	 * @since  3.18.0
 	 * @access private
-	 * @var \Wordlift_Keywords_Service $keywords_service The {@link Wordlift_Keywords_Service} instance.
+	 * @var \Wordlift_HTTP_Client $http_client The {@link Wordlift_HTTP_Client} instance.
 	 */
-	private $keywords_service;
+	private $http_client;
 
 	/**
-	 * The {@link Wordlift_Keywords_Adapter} instance.
+	 * The {@link Wordlift_Keyword} instance.
 	 *
 	 * @since  3.18.0
 	 * @access private
-	 * @var \Wordlift_Keywords_Adapter $keywords_adapter The {@link Wordlift_Keywords_Adapter} instance.
+	 * @var \Wordlift_Keyword $keyword The {@link Wordlift_Keyword} instance.
 	 */
-	private $keywords_adapter;
+	private $keyword;
 
 	/**
 	 * The {@link Wordlift_Relation_Service} instance.
@@ -914,8 +914,10 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/batch-analysis/class-wordlift-batch-analysis-adapter.php';
 
 		/** Keywords. */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/keywords/class-wordlift-keywords-adapter.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/keywords/class-wordlift-keywords-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-keyword.php';
+
+		/** HTTP Client. */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-http-client.php';
 
 		/** Linked Data. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-storage.php';
@@ -1225,8 +1227,8 @@ class Wordlift {
 		$this->autocomplete_adapter = new Wordlift_Autocomplete_Adapter( $this->autocomplete_service );
 
 		/** Keywords. */
-		$this->keywords_service = new Wordlift_Keywords_Service( $this->configuration_service );
-		$this->keywords_adapter = new Wordlift_Keywords_Adapter( $this->keywords_service );
+		$this->http_client = new Wordlift_HTTP_Client( $this->configuration_service );
+		$this->keyword = new Wordlift_Keyword( $this->configuration_service, $this->http_client );
 
 		/** WordPress Admin UI. */
 
@@ -1436,9 +1438,9 @@ class Wordlift {
 		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_clear_warning', $this->batch_analysis_adapter, 'clear_warning' );
 
 		/** Keywords */
-		$this->loader->add_action( 'wp_ajax_wl_get_keyword_rows', $this->keywords_adapter, 'get_rows' );
-		$this->loader->add_action( 'wp_ajax_add_keyword', $this->keywords_adapter, 'add_keyword' );
-		$this->loader->add_action( 'wp_ajax_delete_keyword', $this->keywords_adapter, 'delete_keyword' );
+		$this->loader->add_action( 'wp_ajax_wl_get_keyword_rows', $this->keyword, 'get_keyword_rows' );
+		$this->loader->add_action( 'wp_ajax_wl_add_keyword', $this->keyword, 'create' );
+		$this->loader->add_action( 'wp_ajax_wl_delete_keyword', $this->keyword, 'delete' );
 
 		$this->loader->add_action( 'wp_ajax_wl_sample_data_create', $this->sample_data_ajax_adapter, 'create' );
 		$this->loader->add_action( 'wp_ajax_wl_sample_data_delete', $this->sample_data_ajax_adapter, 'delete' );
@@ -1516,9 +1518,9 @@ class Wordlift {
 		$this->loader->add_action( 'save_post', $this->entity_type_adapter, 'save_post', 9, 3 );
 
 		/** Keywords */
-		$this->loader->add_action( 'wp_ajax_nopriv_wl_get_keyword_rows', $this->keywords_adapter, 'get_rows' );
-		$this->loader->add_action( 'wp_ajax_nopriv_add_keyword', $this->keywords_adapter, 'add_keyword' );
-		$this->loader->add_action( 'wp_ajax_nopriv_delete_keyword', $this->keywords_adapter, 'delete_keyword' );
+		$this->loader->add_action( 'wp_ajax_nopriv_wl_get_keyword_rows', $this->keyword, 'get_keyword_rows' );
+		$this->loader->add_action( 'wp_ajax_nopriv_wl_add_keyword', $this->keyword, 'create' );
+		$this->loader->add_action( 'wp_ajax_nopriv_wl_delete_keyword', $this->keyword, 'delete' );
 
 	}
 
