@@ -85,7 +85,7 @@ class Wordlift_Keywords_Adapter {
 			)
 		);
 
-		$this->send_json_response( $response );
+		$this->handle_response( $response );
 
 	}
 
@@ -109,7 +109,7 @@ class Wordlift_Keywords_Adapter {
 			'DELETE'
 		);
 
-		$this->send_json_response( $response );
+		$this->handle_response( $response );
 
 	}
 
