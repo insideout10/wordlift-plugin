@@ -10,7 +10,7 @@ import {
 function* loadKeywords() {
   try {
     const rows = yield call(request, 'wl_get_keyword_rows');
-    yield put(loadKeywordsSuccess(rows.data));
+    yield put(loadKeywordsSuccess(rows));
   } catch (error) {
     console.error(`An error occurred: ${error}`, error);
     yield put(loadKeywordsFailure(error));

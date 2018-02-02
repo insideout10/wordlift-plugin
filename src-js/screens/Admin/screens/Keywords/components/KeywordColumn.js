@@ -1,7 +1,7 @@
 const KeywordColumn = {
   title: 'Keywords',
-  dataIndex: 'keyword',
-  key: 'keyword'
+  dataIndex: 'value',
+  key: 'value'
 };
 
 export default KeywordColumn;

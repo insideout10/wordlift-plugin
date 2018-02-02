@@ -71,7 +71,7 @@ class Wordlift_Keyword_Adapter {
 		$response = $this->http_client
 			->do_request( $this->configuration_service->get_keyword_rows_url() );
 
-		$this->send_json_response( $response );
+		$this->handle_response( $response );
 
 	}
 

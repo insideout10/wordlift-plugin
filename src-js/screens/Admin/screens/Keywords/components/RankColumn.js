@@ -8,7 +8,13 @@ const RankColumn = {
   render: (text, record) => {
     return (
       <span>
-        <Icon type={'POSITIVE' === record.trend ? 'caret-up' : 'caret-down'} />
+        {'stable' === record.trend ? (
+          <span>=</span>
+        ) : (
+          <Icon
+            type={'positive' === record.trend ? 'caret-up' : 'caret-down'}
+          />
+        )}
         {text}
       </span>
     );

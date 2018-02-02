@@ -64,7 +64,7 @@ class Wordlift_Search_Rankings_Page extends Wordlift_Admin_Page {
 	public function enqueue_scripts() {
 
 		// JavaScript required for the keywords page.
-		wp_enqueue_script( 'wordlift-admin-keywords-page', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/1/keywords.js', array(), false, true );
+		wp_enqueue_script( 'wordlift-admin-keywords-page', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/1/keywords.js', array( 'wp-util' ), false, true );
 		wp_enqueue_style( 'wordlift-admin-keywords-page', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/1/keywords.css' );
 
 	}
