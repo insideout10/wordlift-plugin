@@ -10,7 +10,7 @@
  */
 function wl_save_image( $url ) {
 
-	$parts = parse_url( $url );
+	$parts = wp_parse_url( $url );
 	$path  = $parts['path'];
 
 	// Get the bare filename (filename w/o the extension).
@@ -58,16 +58,16 @@ function wl_save_image( $url ) {
 	switch ( $content_type ) {
 		case 'image/jpeg':
 		case 'image/jpg':
-			$extension = ".jpg";
+			$extension = '.jpg';
 			break;
 		case 'image/svg+xml':
-			$extension = ".svg";
+			$extension = '.svg';
 			break;
 		case 'image/gif':
-			$extension = ".gif";
+			$extension = '.gif';
 			break;
 		case 'image/png':
-			$extension = ".png";
+			$extension = '.png';
 			break;
 		default:
 			$extension = '';
@@ -79,8 +79,6 @@ function wl_save_image( $url ) {
 
 	// Store the data locally.
 	file_put_contents( $image_full_path, wp_remote_retrieve_body( $response ) );
-
-	// wl_write_log( "wl_save_image [ url :: $url ][ content type :: $content_type ][ image full path :: $image_full_path ][ image full url :: $image_full_url ]\n" );
 
 	// Return the path.
 	return array(
