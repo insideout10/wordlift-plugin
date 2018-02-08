@@ -387,6 +387,10 @@ function wl_save_entity( $entity_data ) {
 		// Save the image and get the local path.
 		$image = wl_save_image( $image_remote_url );
 
+		if ( false === $image ) {
+			continue;
+		}
+
 		// Get the local URL.
 		$filename     = $image['path'];
 		$url          = $image['url'];

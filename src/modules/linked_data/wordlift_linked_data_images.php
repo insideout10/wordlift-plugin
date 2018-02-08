@@ -5,8 +5,8 @@
  *
  * @param string $url The image remote URL.
  *
- * @return array An array with information about the saved image (*path*: the local path to the image, *url*: the local
- * url, *content_type*: the image content type)
+ * @return array|false An array with information about the saved image (*path*: the local path to the image, *url*: the local
+ * url, *content_type*: the image content type) or false on error.
  */
 function wl_save_image( $url ) {
 
@@ -19,10 +19,8 @@ function wl_save_image( $url ) {
 	// Get the base dir.
 	$wp_upload_dir = wp_upload_dir();
 
-	// Custom WL directory for uploads.
+	// Set the upload directory and URL.
 	$upload_dir = $wp_upload_dir['basedir'] . '/wl' . $wp_upload_dir['subdir'];
-
-	// Wl upload url.
 	$upload_url = $wp_upload_dir['baseurl'] . '/wl' . $wp_upload_dir['subdir'];
 
 	// Get the full path to the local filename.
@@ -33,23 +31,25 @@ function wl_save_image( $url ) {
 	// Create the WL directory.
 	$is_directory_created = wp_mkdir_p( $upload_dir );
 
-	// Bail if the directory still doesn't exists.
+	// Bail out if the directory still doesn't exists.
 	if ( empty( $is_directory_created ) ) {
 		wl_write_log( "wl_save_image : failed creating upload dir $upload_dir \n" );
-		return;
+
+		return false;
 	};
 
 	// Request the remote file.
 	$response = wp_remote_get( $url );
 
-	// Bail if the response is not ok.
+	// Bail out if the response is not ok.
 	if (
-		is_wp_error( $response ) ||
-		200 !== (int) $response['response']['code'] ||
-		! isset( $response['body'] )
+		is_wp_error( $response )
+		|| 200 !== (int) $response['response']['code']
+		|| ! isset( $response['body'] )
 	) {
 		wl_write_log( "wl_save_image : error fetching image $url \n" );
-		return;
+
+		return false;
 	}
 
 	// Get the content type of response.
@@ -61,8 +61,9 @@ function wl_save_image( $url ) {
 			$extension = '.jpg';
 			break;
 		case 'image/svg+xml':
-			$extension = '.svg';
-			break;
+			// SVG not supported anymore:
+			// https://github.com/insideout10/wordlift-plugin/issues/325
+			return false;
 		case 'image/gif':
 			$extension = '.gif';
 			break;
@@ -70,12 +71,13 @@ function wl_save_image( $url ) {
 			$extension = '.png';
 			break;
 		default:
-			$extension = '';
+			// Do not support unknown mime types.
+			return false;
 	}
 
 	// Complete the local filename.
 	$image_full_path .= $extension;
-	$image_full_url .= $extension;
+	$image_full_url  .= $extension;
 
 	// Store the data locally.
 	file_put_contents( $image_full_path, wp_remote_retrieve_body( $response ) );
@@ -86,4 +88,5 @@ function wl_save_image( $url ) {
 		'url'          => $image_full_url,
 		'content_type' => $content_type,
 	);
+
 }
