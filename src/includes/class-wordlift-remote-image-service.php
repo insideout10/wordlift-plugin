@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Define a class that handle and upload all images from external sources.
  *
@@ -6,14 +7,6 @@
  * @package Wordlift
  */
 class Wordlift_Remote_Image_Service {
-	/**
-	 * The entity post type.
-	 *
-	 * @since  3.18.0
-	 * @access private
-	 * @var array $http_response Response from the HTTP request.
-	 */
-	private static $http_response = array();
 
 	/**
 	 * Save the image with the specified URL locally.
@@ -26,6 +19,7 @@ class Wordlift_Remote_Image_Service {
 	 * url, *content_type*: the image content type) or false on error.
 	 */
 	public static function save_from_url( $url ) {
+
 		// Load `WP_Filesystem`.
 		WP_Filesystem();
 		global $wp_filesystem;
@@ -54,15 +48,17 @@ class Wordlift_Remote_Image_Service {
 			return false;
 		};
 
+		$response = self::get_response( $url );
+
 		// Bail if the response is not set.
-		if ( ! self::set_response( $url ) ) {
+		if ( false === $response ) {
 			wl_write_log( "save_image_from_url : failed to fetch the response from: $url \n" );
 
 			return false;
 		}
 
 		// Get the content type of response.
-		$content_type = wp_remote_retrieve_header( self::$http_response, 'content-type' );
+		$content_type = wp_remote_retrieve_header( $response, 'content-type' );
 
 		// Get the file extension.
 		$extension = self::get_extension_from_content_type( $content_type );
@@ -77,7 +73,7 @@ class Wordlift_Remote_Image_Service {
 		$image_full_url  .= $extension;
 
 		// Store the data locally.
-		$wp_filesystem->put_contents( $image_full_path, wp_remote_retrieve_body( self::$http_response ) );
+		$wp_filesystem->put_contents( $image_full_path, wp_remote_retrieve_body( $response ) );
 
 		// Return the path.
 		return array(
@@ -85,7 +81,6 @@ class Wordlift_Remote_Image_Service {
 			'url'          => $image_full_url,
 			'content_type' => $content_type,
 		);
-
 	}
 
 	/**
@@ -99,30 +94,20 @@ class Wordlift_Remote_Image_Service {
 	 * false on fail or if the content type is not supported.
 	 */
 	private static function get_extension_from_content_type( $content_type ) {
-		// Bail if the content type is now set.
-		if ( empty( $content_type ) ) {
-			return false;
-		}
 
 		// Get the extension type.
 		switch ( $content_type ) {
 			case 'image/jpeg':
 			case 'image/jpg':
-				$extension = '.jpg';
-				break;
+				return '.jpg';
 			case 'image/gif':
-				$extension = '.gif';
-				break;
+				return '.gif';
 			case 'image/png':
-				$extension = '.png';
-				break;
-			default:
-				// Do not support unknown mime types.
-				return false;
+				return '.png';
 		}
 
 		// Return the extension.
-		return $extension;
+		return false;
 	}
 
 	/**
@@ -132,9 +117,9 @@ class Wordlift_Remote_Image_Service {
 	 *
 	 * @since 3.18.0
 	 *
-	 * @return bool True on success and false on failure.
+	 * @return false|array True on success and false on failure.
 	 */
-	private static function set_response( $url ) {
+	private static function get_response( $url ) {
 		// Request the remote file.
 		$response = wp_remote_get( $url );
 
@@ -150,8 +135,7 @@ class Wordlift_Remote_Image_Service {
 		}
 
 		// Set the response.
-		self::$http_response = $response;
-
-		return true;
+		return $response;
 	}
+
 }
