@@ -247,14 +247,6 @@ class PostTest extends Wordlift_Unit_Test_Case {
 		self::turn_off_entity_push();
 	}
 
-	function testSaveImage() {
-
-
-		wl_save_image( 'http://upload.wikimedia.org/wikipedia/commons/a/a6/Flag_of_Rome.svg' );
-
-		wl_save_image( 'https://usercontent.googleapis.com/freebase/v1/image/m/04js6kc?maxwidth=4096&maxheight=4096' );
-	}
-
 	/**
 	 * Create a test post.
 	 * @return int

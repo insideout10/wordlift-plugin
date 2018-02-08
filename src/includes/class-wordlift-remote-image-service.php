@@ -95,7 +95,7 @@ class Wordlift_Remote_Image_Service {
 	 */
 	private static function get_extension_from_content_type( $content_type ) {
 
-		// Get the extension type.
+		// Return the extension if match.
 		switch ( $content_type ) {
 			case 'image/jpeg':
 			case 'image/jpg':
@@ -106,7 +106,7 @@ class Wordlift_Remote_Image_Service {
 				return '.png';
 		}
 
-		// Return the extension.
+		// Otherwise return false.
 		return false;
 	}
 
