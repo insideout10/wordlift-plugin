@@ -919,6 +919,8 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-autocomplete-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-autocomplete-adapter.php';
 
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-remote-image-service.php';
+
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
@@ -1238,6 +1240,8 @@ class Wordlift {
 			new Wordlift_Debug_Service( $this->entity_service, $uri_service );
 		}
 
+		// Remote Image Service.
+		new Wordlift_Remote_Image_Service();
 	}
 
 	/**

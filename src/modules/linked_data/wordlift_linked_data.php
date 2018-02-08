@@ -7,7 +7,7 @@
  * @subpackage Wordlift/modules/linked_data
  */
 
-require_once( 'wordlift_linked_data_images.php' );
+require_once plugin_dir_path( dirname( __FILE__ ) ) . '../includes/class-wordlift-remote-image-service.php';
 
 /**
  * Receive events from post saves, and split them according to the post type.
@@ -385,7 +385,7 @@ function wl_save_entity( $entity_data ) {
 		}
 
 		// Save the image and get the local path.
-		$image = wl_save_image( $image_remote_url );
+		$image = save_from_url( $image_remote_url );
 
 		if ( false === $image ) {
 			continue;
