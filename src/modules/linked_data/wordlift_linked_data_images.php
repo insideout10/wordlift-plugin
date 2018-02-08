@@ -14,32 +14,45 @@ function wl_save_image( $url ) {
 	$path  = $parts['path'];
 
 	// Get the bare filename (filename w/o the extension).
-	// Sanitize filename before saving the current image as attachment
-	// See https://codex.wordpress.org/Function_Reference/sanitize_file_name
-	$basename = sanitize_file_name( pathinfo( $path, PATHINFO_FILENAME ) . '-' . uniqid( date( 'YmdH-' ) ) );
-
-	// Chunk the bare name to get a subpath.
-	$chunks = chunk_split( strtolower( $basename ), 3, DIRECTORY_SEPARATOR );
+	$basename = pathinfo( $path, PATHINFO_FILENAME );
 
 	// Get the base dir.
 	$wp_upload_dir = wp_upload_dir();
-	$base_dir      = $wp_upload_dir['basedir'];
-	$base_url      = $wp_upload_dir['baseurl'];
+
+	// Custom WL directory for uploads.
+	$upload_dir = $wp_upload_dir['basedir'] . '/wl' . $wp_upload_dir['subdir'];
+
+	// Wl upload url.
+	$upload_url = $wp_upload_dir['baseurl'] . '/wl' . $wp_upload_dir['subdir'];
 
 	// Get the full path to the local filename.
-	$image_path      = '/' . $chunks;
-	$image_full_path = $base_dir . $image_path;
-	$image_full_url  = $base_url . $image_path;
+	$image_path      = '/' . $basename;
+	$image_full_path = $upload_dir . $image_path;
+	$image_full_url  = $upload_url . $image_path;
 
-	// Create the folders.
-	if ( ! ( file_exists( $image_full_path ) && is_dir( $image_full_path ) ) ) {
-		if ( false === mkdir( $image_full_path, 0777, true ) ) {
-			wl_write_log( "wl_save_image : failed creating dir [ image full path :: $image_full_path ]\n" );
-		}
+	// Create the WL directory.
+	$is_directory_created = wp_mkdir_p( $upload_dir );
+
+	// Bail if the directory still doesn't exists.
+	if ( empty( $is_directory_created ) ) {
+		wl_write_log( "wl_save_image : failed creating upload dir $upload_dir \n" );
+		return;
 	};
 
 	// Request the remote file.
-	$response     = wp_remote_get( $url );
+	$response = wp_remote_get( $url );
+
+	// Bail if the response is not ok.
+	if (
+		is_wp_error( $response ) ||
+		200 !== (int) $response['response']['code'] ||
+		! isset( $response['body'] )
+	) {
+		wl_write_log( "wl_save_image : error fetching image $url \n" );
+		return;
+	}
+
+	// Get the content type of response.
 	$content_type = wp_remote_retrieve_header( $response, 'content-type' );
 
 	switch ( $content_type ) {
@@ -61,8 +74,8 @@ function wl_save_image( $url ) {
 	}
 
 	// Complete the local filename.
-	$image_full_path .= $basename . $extension;
-	$image_full_url .= $basename . $extension;
+	$image_full_path .= $extension;
+	$image_full_url .= $extension;
 
 	// Store the data locally.
 	file_put_contents( $image_full_path, wp_remote_retrieve_body( $response ) );
