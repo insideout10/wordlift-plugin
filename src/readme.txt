@@ -143,6 +143,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 = 3.18.0 (????-??-??) =
+* Fix: [#702](https://github.com/insideout10/wordlift-plugin/issues/702): Delete post relation instaces from `wl_relation_instances` table when the post is trashed.
 * Enhancement: [#715](https://github.com/insideout10/wordlift-plugin/issues/715): Add custom `wl` directory in wp-uploads to store the images from public clouds.
 
 = 3.17.2 (2018-02-24) =
