@@ -30,6 +30,10 @@ function wl_transition_post_status( $new_status, $old_status, $post ) {
 
 	// transition from *published* to any other status: delete the post.
 	if ( 'publish' === $old_status && 'publish' !== $new_status ) {
+		// Remove all relation instances for the current post from `wl_relation_instances`.
+		wl_core_delete_relation_instances( $post->ID );
+
+		// Delete the post from the triple store.
 		rl_delete_post( $post );
 	}
 
