@@ -77,8 +77,8 @@ class Wordlift_Admin_Input_Element_Test extends Wordlift_Unit_Test_Case {
 		) );
 
 		// Check that the css class has been set.
-		$this->assertTrue( - 1 < strpos( $output, ' class="' . $css_class . '"' ) );
-		$this->assertTrue( - 1 < strpos( $output, ' value="' . $value . '"' ) );
+		$this->assertTrue( - 1 < strpos( $output, 'class="' . $css_class . '"' ) );
+		$this->assertTrue( - 1 < strpos( $output, 'value="' . $value . '"' ) );
 
 	}
 

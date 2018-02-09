@@ -170,6 +170,18 @@ class Wordlift_Test extends Wordlift {
 	}
 
 	/**
+	 * Get the {@link Wordlift_Admin_Country_Select_Element} element renderer.
+	 *
+	 * @since 3.18.0
+	 *
+	 * @return \Wordlift_Admin_Country_Select_Element The {@link Wordlift_Admin_Country_Select_Element} element renderer.
+	 */
+	public function get_country_select_element() {
+
+		return $this->country_select_element;
+	}
+
+	/**
 	 * Get the {@link Wordlift_Admin_Publisher_Element} element renderer.
 	 *
 	 * @since 3.11.0

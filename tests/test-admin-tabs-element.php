@@ -82,11 +82,11 @@ class Wordlift_Admin_Tabs_Element_Test extends Wordlift_Unit_Test_Case {
 
 		// Test default.
 		$output = $this->get_rendered_output( array() );
-		$this->assertTrue( - 1 < strpos( $output, ' data-active="0"' ) );
+		$this->assertTrue( - 1 < strpos( $output, 'data-active="0"' ) );
 
 		// Test value.
 		$output = $this->get_rendered_output( array( 'active' => 2 ) );
-		$this->assertTrue( - 1 < strpos( $output, ' data-active="2"' ) );
+		$this->assertTrue( - 1 < strpos( $output, 'data-active="2"' ) );
 
 	}
 

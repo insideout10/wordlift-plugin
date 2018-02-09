@@ -44,7 +44,6 @@ class Wordlift_Admin_Input_Element implements Wordlift_Admin_Element {
 	 * @return $this|Wordlift_Admin_Element
 	 */
 	public function render( $args ) {
-
 		/*
 		 * Parse the arguments and merge with default values.
 		 * Name intentionally do not have a default as it has to be in SyncEvent
@@ -66,16 +65,16 @@ class Wordlift_Admin_Input_Element implements Wordlift_Admin_Element {
 
 		?>
 
-		<input type="text"
-		       id="<?php echo esc_attr( $params['id'] ); ?>"
-		       name="<?php echo esc_attr( $params['name'] ); ?>"
-		       value="<?php echo esc_attr( $params['value'] ); ?>"
+		<input
+			type="text"
+			id="<?php echo esc_attr( $params['id'] ); ?>"
+			name="<?php echo esc_attr( $params['name'] ); ?>"
+			value="<?php echo esc_attr( $params['value'] ); ?>"
 			<?php echo $readonly; ?>
 			<?php echo $css_class; ?>
 		/>
-		<?php echo $description; ?>
-
 		<?php
+		echo $description;
 
 		return $this;
 	}

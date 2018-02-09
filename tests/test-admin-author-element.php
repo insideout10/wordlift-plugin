@@ -50,14 +50,14 @@ class Wordlift_Admin_Person_Element_Test extends Wordlift_Unit_Test_Case {
 		parent::setUp();
 
 		$this->publisher_service = $this->getMockBuilder( 'Wordlift_Publisher_Service' )
-		                                ->disableOriginalConstructor()
-		                                ->setMethods( array( 'query' ) )
-		                                ->getMock();
+										->disableOriginalConstructor()
+										->setMethods( array( 'query' ) )
+										->getMock();
 
 		$this->select2_element = $this->getMockBuilder( 'Wordlift_Admin_Select2_Element' )
-		                              ->disableOriginalConstructor()
-		                              ->setMethods( array( 'render' ) )
-		                              ->getMock();
+									  ->disableOriginalConstructor()
+									  ->setMethods( array( 'render' ) )
+									  ->getMock();
 
 		$this->admin_person_element = new Wordlift_Admin_Author_Element( $this->publisher_service, $this->select2_element );
 
@@ -78,20 +78,26 @@ class Wordlift_Admin_Person_Element_Test extends Wordlift_Unit_Test_Case {
 
 		// Check that the publisher service gets called.
 		$this->publisher_service->expects( $this->once() )
-		                        ->method( 'query' )
-		                        ->willReturn( array( 'First Element' ) );
+								->method( 'query' )
+								->willReturn( array( 'First Element' ) );
 
 		// Check that the select2 element gets called.
 		$this->select2_element->expects( $this->once() )
-		                      ->method( 'render' )
-		                      ->with( $this->callback( function ( $value ) use ( $entity_post_id, $post_title ) {
-			                      return isset( $value['value'] ) && $entity_post_id === $value['value']
-			                             && isset( $value['options'] ) && is_array( $value['options'] )
-			                             && isset( $value['options'][ $entity_post_id ] ) && $post_title === $value['options'][ $entity_post_id ]
-			                             && isset( $value['data'] ) && is_array( $value['data'] )
-			                             && 0 == $value['data'][0]['id']
-			                             && 'First Element' === $value['data'][1];
-		                      } ) );
+							->method( 'render' )
+							->with( $this->callback( function ( $value ) use ( $entity_post_id, $post_title ) {
+								if ( isset( $value['data']['wl-select2-data'] ) ) {
+									$data = json_decode( $value['data']['wl-select2-data'], true );
+								}
+
+								return
+									isset( $value['value'] ) && $entity_post_id === $value['value'] &&
+									isset( $value['options'] ) && is_array( $value['options'] ) &&
+									isset( $value['options'][ $entity_post_id ] ) && $post_title === $value['options'][ $entity_post_id ] &&
+									isset( $data ) && is_array( $data ) &&
+									0 == $data[0]['id'] &&
+									'First Element' === $data[1];
+							} ) );
+
 
 		// Call the render function with the entity post id.
 		$result = $this->admin_person_element->render( array(

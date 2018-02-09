@@ -66,7 +66,7 @@ class Wordlift_Admin_Select2_Element_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( $count, $matches[0] );
 
 		// Check that the first option is selected.
-		$this->assertEquals( 1, preg_match( '/<option\s+value="0"\s+selected=\'selected\'>/', $output ) );
+ 		$this->assertEquals( 1, preg_match( '/<option\s+value="0"\s+selected=\'selected\'\s+>/', $output ) );
 
 	}
 
@@ -87,7 +87,9 @@ class Wordlift_Admin_Select2_Element_Test extends Wordlift_Unit_Test_Case {
 		// Render Select2.
 		ob_start();
 		$this->select2_element->render( array(
-			'data' => $data,
+			'data' => array(
+				'wl-select2-data' => json_encode( $data ),
+			),
 		) );
 		$output = ob_get_clean();
 
@@ -114,8 +116,10 @@ class Wordlift_Admin_Select2_Element_Test extends Wordlift_Unit_Test_Case {
 		// Render Select2.
 		ob_start();
 		$this->select2_element->render( array(
-			'template-result'    => $template_result,
-			'template-selection' => $template_selection,
+			'data' => array(
+				'wl-select2-template-result'    => $template_result,
+				'wl-select2-template-selection' => $template_selection,
+			)
 		) );
 		$output = ob_get_clean();
 
