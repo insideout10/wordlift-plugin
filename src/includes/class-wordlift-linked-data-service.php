@@ -18,6 +18,7 @@
  */
 class Wordlift_Linked_Data_Service {
 
+	//<editor-fold desc="## FIELDS">
 	/**
 	 * A {@link Wordlift_Log_Service} instance.
 	 *
@@ -55,15 +56,6 @@ class Wordlift_Linked_Data_Service {
 	private $schema_service;
 
 	/**
-	 * The {@link Wordlift_Linked_Data_Service} singleton instance.
-	 *
-	 * @since  3.15.0
-	 * @access private
-	 * @var \Wordlift_Linked_Data_Service $instance The {@link Wordlift_Linked_Data_Service} singleton instance.
-	 */
-	private static $instance;
-
-	/**
 	 * The {@link Wordlift_Sparql_Service} instance.
 	 *
 	 * @since  3.15.0
@@ -71,6 +63,16 @@ class Wordlift_Linked_Data_Service {
 	 * @var \Wordlift_Sparql_Service $sparql_service The {@link Wordlift_Sparql_Service} instance.
 	 */
 	private $sparql_service;
+
+	/**
+	 * The {@link Wordlift_Linked_Data_Service} singleton instance.
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var \Wordlift_Linked_Data_Service $instance The {@link Wordlift_Linked_Data_Service} singleton instance.
+	 */
+	private static $instance;
+	//</editor-fold>
 
 	/**
 	 * Create a {@link Wordlift_Linked_Data_Service} instance.
