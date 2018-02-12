@@ -28,6 +28,8 @@
  */
 class Wordlift {
 
+	//<editor-fold desc="## FIELDS">
+
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
 	 * the plugin.
@@ -660,6 +662,7 @@ class Wordlift {
 	 * @var Wordlift $instance {@link Wordlift}'s singleton instance.
 	 */
 	private static $instance;
+	//</editor-fold>
 
 	/**
 	 * Define the core functionality of the plugin.
@@ -678,6 +681,11 @@ class Wordlift {
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
+
+		// If we're in `WP_CLI` load the related files.
+		if ( class_exists( 'WP_CLI' ) ) {
+			$this->load_cli_dependencies();
+		}
 
 		self::$instance = $this;
 
@@ -1515,6 +1523,22 @@ class Wordlift {
 	 */
 	public function get_version() {
 		return $this->version;
+	}
+
+	/**
+	 * Load dependencies for WP-CLI.
+	 *
+	 * @since 3.18.0
+	 * @throws Exception
+	 */
+	private function load_cli_dependencies() {
+
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'cli/class-wordlift-push-reference-data-command.php';
+
+		$push_reference_data_command = new Wordlift_Push_Reference_Data_Command( $this->relation_service, $this->entity_service, $this->sparql_service, $this->configuration_service );
+
+		WP_CLI::add_command( 'wl references push', $push_reference_data_command );
+
 	}
 
 }

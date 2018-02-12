@@ -428,4 +428,17 @@ class Wordlift_Relation_Service {
 		);
 	}
 
+	public function find_all_grouped_by_subject_id() {
+		global $wpdb;
+
+		return $wpdb->get_results(
+			"
+			SELECT subject_id, GROUP_CONCAT( DISTINCT object_id ORDER BY object_id SEPARATOR ',' ) AS object_ids
+			FROM $this->relation_table
+			GROUP BY subject_id
+			"
+		);
+
+	}
+
 }
