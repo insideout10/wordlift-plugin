@@ -1535,7 +1535,7 @@ class Wordlift {
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'cli/class-wordlift-push-reference-data-command.php';
 
-		$push_reference_data_command = new Wordlift_Push_Reference_Data_Command( $this->relation_service, $this->entity_service, $this->sparql_service, $this->configuration_service );
+		$push_reference_data_command = new Wordlift_Push_Reference_Data_Command( $this->relation_service, $this->entity_service, $this->sparql_service, $this->configuration_service, $this->entity_type_service );
 
 		WP_CLI::add_command( 'wl references push', $push_reference_data_command );
 
