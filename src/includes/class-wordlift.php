@@ -655,6 +655,15 @@ class Wordlift {
 	protected $entity_uri_service;
 
 	/**
+	 * The {@link Wordlift_References_Service} instance.
+	 *
+	 * @since  3.18.0
+	 * @access protected
+	 * @var \Wordlift_References_Service $entity_uri_service The {@link Wordlift_References_Service} instance.
+	 */
+	protected $references_service;
+
+	/**
 	 * {@link Wordlift}'s singleton instance.
 	 *
 	 * @since  3.11.2
@@ -753,6 +762,7 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-link-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-linked-data-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-relation-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-references-service.php';
 
 		/**
 		 * The Query builder.
@@ -901,6 +911,7 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-post-meta-uri-storage.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-post-image-storage.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-post-related-storage.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-post-references-storage.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-url-property-storage.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-storage-factory.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/rendition/class-wordlift-sparql-tuple-rendition.php';
@@ -1242,6 +1253,15 @@ class Wordlift {
 
 		$this->entity_page_service = new Wordlift_Entity_Page_Service();
 
+
+		$this->references_service = new Wordlift_References_Service(
+			$this->entity_service,
+			$this->sparql_service,
+			$this->configuration_service,
+			$this->storage_factory,
+			$this->rendition_factory
+		);
+
 		// Load the debug service if WP is in debug mode.
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-debug-service.php';
@@ -1420,6 +1440,15 @@ class Wordlift {
 			$this->autocomplete_adapter,
 			'wl_autocomplete',
 		) );
+
+		// Hook to update the references on create/delete new relation.
+		$this->loader->add_action( 'wl_relation_added', $this->references_service, 'add_reference', 10, 3 );
+		$this->loader->add_action( 'wl_relation_deleted', $this->references_service, 'delete_reference',  10, 1 );
+
+		// Update the predicates so that the non-entity triples will be deleted.
+		$this->loader->add_filter( 'wl_schema_predicates', $this->references_service, 'update_predicates' );
+		// Change the tuples for non-entity posts.
+		$this->loader->add_filter( 'wl_insert_tuples_properties', $this->references_service, 'add_non_entity_tuples', 10, 3 );
 
 		// Hooks to restrict multisite super admin from manipulating entity types.
 		if ( is_multisite() ) {

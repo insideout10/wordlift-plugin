@@ -123,14 +123,6 @@ class Wordlift_Linked_Data_Service {
 
 		$this->log->debug( "Pushing post $post_id..." );
 
-		// Bail out if it's not an entity: we do NOT publish non entities or
-		// entities of type `Article`s.
-		if ( ! $this->entity_service->is_entity( $post_id ) ) {
-			$this->log->debug( "Post $post_id is not an entity." );
-
-			return;
-		}
-
 		// Get the post and push it to the Linked Data store.
 		$this->do_push( $post_id );
 
