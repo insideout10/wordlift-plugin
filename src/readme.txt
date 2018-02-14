@@ -142,6 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.17.3 (????-??-??) =
+* Fix: [#766](https://github.com/insideout10/wordlift-plugin/issues/766): Performance loss on Cache update due to `wp_set_post_lock`.
+
 = 3.17.2 (2018-02-24) =
 * Fix: [#758](https://github.com/insideout10/wordlift-plugin/issues/758): amp_post_template_css causes PHP Warning.
 
