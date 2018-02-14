@@ -149,7 +149,7 @@ class Wordlift_References_Service {
 			// ),
 			// ### dcterms:references.
 			$this->rendition_factory->create(
-				new Wordlift_Post_References_Storage( $this->entity_service ),
+				new Wordlift_Post_Related_Storage( $this->entity_service ),
 				Wordlift_Query_Builder::DCTERMS_REFERENCES_URI,
 				Wordlift_Schema_Service::DATA_TYPE_URI,
 				$language_code

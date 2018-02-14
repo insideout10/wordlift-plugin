@@ -197,8 +197,9 @@ function wl_core_validate_filters_for_related( $filters ) {
 //}
 
 /**
- * Find all entity ids related to a given $subject_id
- * If $predicate is omitted, $predicate filter is not applied
+ * Find all entity ids related to a given $subject_id.
+ *
+ * If $predicate is omitted, $predicate filter is not applied.
  *
  * @deprecated use Wordlift_Relation_Service::get_instance()->get_objects( $subject_id, 'ids', $predicate, $status );
  *

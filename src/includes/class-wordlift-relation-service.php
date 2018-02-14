@@ -428,6 +428,13 @@ class Wordlift_Relation_Service {
 		);
 	}
 
+	/**
+	 * Find all the subject IDs and their referenced/related object IDs. The
+	 * object IDs are returned as comma separated IDs in the `object_ids` key.
+	 *
+	 * @since 3.18.0
+	 * @return mixed Database query results
+	 */
 	public function find_all_grouped_by_subject_id() {
 		global $wpdb;
 

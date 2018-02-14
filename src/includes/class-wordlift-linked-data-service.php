@@ -123,6 +123,14 @@ class Wordlift_Linked_Data_Service {
 
 		$this->log->debug( "Pushing post $post_id..." );
 
+		// @since 3.18.0 we don't check anymore if the post is an entity, i.e.
+		// we removed the following:
+		//		if ( ! $this->entity_service->is_entity( $post_id ) ) {
+		//			$this->log->debug( "Post $post_id is not an entity." );
+		//
+		//			return;
+		//		}
+
 		// Get the post and push it to the Linked Data store.
 		$this->do_push( $post_id );
 

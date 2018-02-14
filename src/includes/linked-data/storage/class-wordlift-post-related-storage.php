@@ -12,6 +12,9 @@
 /**
  * Define the {@link Wordlift_Post_Related_Storage} class.
  *
+ * This class retrieves data from the `wl_relation_instances` table which is
+ * relevant both for `relations` and `references`.
+ *
  * @since      3.15.0
  * @package    Wordlift
  * @subpackage Wordlift/includes/linked-data/storage
@@ -42,6 +45,9 @@ class Wordlift_Post_Related_Storage extends Wordlift_Storage {
 
 	/**
 	 * Get the property value.
+	 *
+	 * There is no filter for entities or posts, the returned data here can
+	 * be used for `relations` and `references` according to the client.
 	 *
 	 * @since 3.15.0
 	 *

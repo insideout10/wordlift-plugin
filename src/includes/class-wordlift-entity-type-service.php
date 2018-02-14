@@ -77,6 +77,18 @@ class Wordlift_Entity_Type_Service {
 	/**
 	 * Get the types associated with the specified entity post id.
 	 *
+	 * We have a strategy to define the entity type, given that everything is
+	 * an entity, i.e. also posts/pages and custom post types.
+	 *
+	 * @since 3.18.0 the cases are the following:
+	 *  1. the post has a term from the Entity Types Taxonomy: the term defines
+	 *     the entity type, e.g. Organization, Person, ...
+	 *  2. the post doesn't have a term from the Entity Types Taxonomy:
+	 *      a) the post is a `wl_entity` custom post type, then the post is
+	 *           assigned the `Thing` entity type by default.
+	 *      b) the post is not a `wl_entity` custom post type then it is
+	 *          assigned the `WebPage` entity type by default.
+	 *
 	 * @since 3.7.0
 	 *
 	 * @param int $post_id The post id.
