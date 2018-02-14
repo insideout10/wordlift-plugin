@@ -404,6 +404,7 @@ class Wordlift_Schema_Service {
 			'place'         => $this->get_place_schema(),
 			'localbusiness' => $this->get_local_business_schema(),
 			'recipe'        => $this->get_recipe_schema(),
+			'webpage'       => $this->get_webpage_schema(),
 		);
 
 		// Create a singleton instance of the Schema service, useful to provide static functions to global functions.
@@ -591,6 +592,50 @@ class Wordlift_Schema_Service {
 					$this->storage_factory->relations(),
 					Wordlift_Query_Builder::DCTERMS_RELATION_URI,
 					self::DATA_TYPE_URI
+				),
+			),
+		);
+
+	}
+
+	/**
+	 * Get the 'webpage' schema.
+	 *
+	 * @return array An array with the schema configuration.
+	 *
+	 * @since 3.18.0
+	 */
+	private function get_webpage_schema() {
+
+		return array(
+			'css_class'     => 'wl-webpage',
+			'uri'           => 'http://schema.org/WebPage',
+			'linked_data'   => array(
+				// ### schema:headline.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_title(),
+					'http://schema.org/headline',
+					null,
+					$this->language_code
+				),
+				// ### schema:url.
+				$this->rendition_factory->create(
+					$this->storage_factory->url_property(),
+					Wordlift_Query_Builder::SCHEMA_URL_URI,
+					self::DATA_TYPE_URI
+				),
+				// ### rdf:type.
+				$this->rendition_factory->create(
+					$this->storage_factory->schema_class( $this ),
+					Wordlift_Query_Builder::RDFS_TYPE_URI,
+					self::DATA_TYPE_URI
+				),
+				// ### dcterms:references.
+				$this->rendition_factory->create(
+					$this->storage_factory->relations(),
+					Wordlift_Query_Builder::DCTERMS_REFERENCES_URI,
+					self::DATA_TYPE_URI,
+					$this->language_code
 				),
 			),
 		);

@@ -109,14 +109,12 @@ class Wordlift_Entity_Type_Service {
 
 		$post_type = get_post_type( $post_id );
 
-		// If it's not an entity post type return `Thing` by default.
+		// If it's not an entity post type return `WebPage` by default.
 		if ( ! self::is_valid_entity_post_type( $post_type ) ) {
-			$this->log->info( "Returning `Thing` for post $post_id." );
+			$this->log->info( "Returning `WebPage` for post $post_id." );
 
-			return array(
-				'uri'       => 'http://schema.org/Thing',
-				'css_class' => 'wl-thing',
-			);
+			// Return the entity type with the specified id.
+			return $this->schema_service->get_schema( 'webpage' );
 		}
 
 		// Get the type from the associated classification.
@@ -131,11 +129,11 @@ class Wordlift_Entity_Type_Service {
 
 		// If there are not terms associated, default to article.
 		if ( 0 === count( $terms ) ) {
-			$this->log->debug( "Post $post_id has no terms, returning `Article`." );
+			$this->log->debug( "Post $post_id has no terms, returning `Thing`." );
 
 			return array(
-				'uri'       => 'http://schema.org/Article',
-				'css_class' => 'wl-post',
+				'uri'       => 'http://schema.org/Thing',
+				'css_class' => 'wl-thing',
 			);
 		}
 

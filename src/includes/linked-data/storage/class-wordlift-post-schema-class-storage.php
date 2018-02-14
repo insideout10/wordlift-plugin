@@ -54,14 +54,16 @@ class Wordlift_Post_Schema_Class_Storage extends Wordlift_Post_Taxonomy_Storage 
 	public function get( $post_id ) {
 		$terms = parent::get( $post_id );
 
-		$schema_service = $this->schema_service;
+		// Get the schema by term slug if the terms are not empty.
+		// Otherwise fallback to webpage, which means that the post is not an entity.
+		if ( ! empty( $terms ) ) {
+			$schema = $this->schema_service->get_schema( $terms[0]->slug );
+		} else {
+			$schema = $this->schema_service->get_schema( 'webpage' );
+		}
 
-		return array_map( function ( $item ) use ( $schema_service ) {
-			$schema = $schema_service->get_schema( $item->slug );
-
-			return $schema['uri'];
-		}, $terms );
-
+		// Finally return the schema uri.
+		return $schema['uri'];
 	}
 
 }
