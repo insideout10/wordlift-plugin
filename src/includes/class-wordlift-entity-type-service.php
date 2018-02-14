@@ -131,10 +131,8 @@ class Wordlift_Entity_Type_Service {
 		if ( 0 === count( $terms ) ) {
 			$this->log->debug( "Post $post_id has no terms, returning `Thing`." );
 
-			return array(
-				'uri'       => 'http://schema.org/Thing',
-				'css_class' => 'wl-thing',
-			);
+			// Return the entity type with the specified id.
+			return $this->schema_service->get_schema( 'thing' );
 		}
 
 		$this->log->debug( "Found {$terms[0]->slug} term for post $post_id." );
