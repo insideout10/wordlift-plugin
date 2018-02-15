@@ -107,16 +107,6 @@ class Wordlift_Entity_Type_Service {
 
 		$this->log->trace( "Getting the post type for post $post_id..." );
 
-		$post_type = get_post_type( $post_id );
-
-		// If it's not an entity post type return `WebPage` by default.
-		if ( ! self::is_valid_entity_post_type( $post_type ) ) {
-			$this->log->info( "Returning `WebPage` for post $post_id." );
-
-			// Return the entity type with the specified id.
-			return $this->schema_service->get_schema( 'webpage' );
-		}
-
 		// Get the type from the associated classification.
 		$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 
@@ -127,18 +117,29 @@ class Wordlift_Entity_Type_Service {
 			return null;
 		}
 
-		// If there are not terms associated, default to article.
-		if ( 0 === count( $terms ) ) {
-			$this->log->debug( "Post $post_id has no terms, returning `Thing`." );
+		// Return the schema type if there is a term found.
+		if ( 0 !== count( $terms ) ) {
+			$this->log->debug( "Found {$terms[0]->slug} term for post $post_id." );
 
 			// Return the entity type with the specified id.
-			return $this->schema_service->get_schema( 'thing' );
+			return $this->schema_service->get_schema( $terms[0]->slug );
 		}
 
-		$this->log->debug( "Found {$terms[0]->slug} term for post $post_id." );
+		// Get the post type.
+		$post_type = get_post_type( $post_id );
+
+		// If it's not an entity post type return `WebPage` by default.
+		if ( ! self::is_valid_entity_post_type( $post_type ) ) {
+			$this->log->info( "Returning `WebPage` for post $post_id." );
+
+			// Return the entity type with the specified id.
+			return $this->schema_service->get_schema( 'webpage' );
+		}
+
+		$this->log->debug( "Post $post_id has no terms, returning `Thing`." );
 
 		// Return the entity type with the specified id.
-		return $this->schema_service->get_schema( $terms[0]->slug );
+		return $this->schema_service->get_schema( 'thing' );
 	}
 
 	/**
