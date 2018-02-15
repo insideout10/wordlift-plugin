@@ -304,6 +304,45 @@ function wl_core_upgrade_db_3_14_3_15() {
 
 }
 
+/**
+ * Upgrade the DB structure to the one expected by the 3.18 release.
+ *
+ * Add the references property to all non-entity posts that referencing entities.
+ *
+ * @since 3.18.0
+ */
+function wl_core_upgrade_db_3_17_3_18() {
+	global $wpdb;
+
+	if ( version_compare( get_option( 'wl_db_version' ), '3.18', '<=' ) ) {
+
+		$result = $wpdb->get_results(
+			"
+			SELECT DISTINCT p.ID AS id
+			FROM $wpdb->posts AS p
+				INNER JOIN {$wpdb->prefix}wl_relation_instances ri
+				ON ( ri.subject_id = p.ID )
+			WHERE p.post_type NOT IN ( 'post', 'page' )
+				AND p.post_status = 'publish'
+				AND p.ID NOT IN
+			(
+				SELECT DISTINCT tr.object_id
+				FROM $wpdb->term_relationships AS tr
+				INNER JOIN $wpdb->term_taxonomy AS tt
+					ON tr.term_taxonomy_id = tt.term_taxonomy_id
+						AND tt.taxonomy = 'wl_entity_type'
+			)
+			"
+		);
+
+		// Loop through all ids and add the relations.
+		foreach ( $result as $item ) {
+			$this->linked_data_service->push( $item->id );
+		}
+	}
+
+}
+
 // Check db status on automated plugins updates
 function wl_core_update_db_check() {
 
