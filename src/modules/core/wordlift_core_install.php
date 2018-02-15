@@ -262,20 +262,24 @@ function wl_core_upgrade_db_3_12_3_14() {
  * @since 3.15.0
  */
 function wl_core_upgrade_db_3_14_3_15() {
+	// @since 3.18.0
+	// We've removed the following version coparison
+	// because we need `article` term on lower and upper DB versions
+	// And since the autsetup `article` entity to posts id disabled.
+	//
+	// 		if ( version_compare( get_option( 'wl_db_version' ), '3.14', '>' ) ) {
+	$article = get_term_by( 'slug', 'article', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 
-	if ( version_compare( get_option( 'wl_db_version' ), '3.15', '<=' ) ) {
-		$article = get_term_by( 'slug', 'article', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
-
-		if ( ! $article ) {
-			wp_insert_term(
-				'Article',
-				Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
-				array(
-					'slug'        => 'article',
-					'description' => 'An Article.',
-				)
-			);
-		}
+	if ( ! $article ) {
+		wp_insert_term(
+			'Article',
+			Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+			array(
+				'slug'        => 'article',
+				'description' => 'An Article.',
+			)
+		);
+	}
 
 		// The following is disabled because on large installations it may slow the
 		// web site.
@@ -300,7 +304,6 @@ function wl_core_upgrade_db_3_14_3_15() {
 		//			",
 		//			$article_id
 		//		) );
-	}
 
 }
 
