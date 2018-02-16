@@ -9,6 +9,10 @@
 
 /**
  * Install known types in WordPress.
+ *
+ * @param int $db_version Current db version.
+ *
+ * @return void
  */
 function wl_core_install_entity_type_data( $db_version ) {
 
@@ -108,11 +112,15 @@ function wl_core_install_entity_type_data( $db_version ) {
 }
 
 /**
- * Install known types in WordPress.
+ * Install custom relations table.
+ *
+ * @param int $db_version Current db version.
+ *
+ * @return void
  */
 function wl_core_install_create_relation_instance_table( $db_version ) {
 
-	// Bails if the db version has been already set.
+	// Bail if the db version has been already set.
 	if ( ! empty( $db_version ) ) {
 		return;
 	}
@@ -148,7 +156,11 @@ EOF;
  *
  * Flatten the hierarchy of the entity type taxonomy terms.
  *
+ * @param int $db_version Current db version.
+ *
  * @since 3.10.0
+ *
+ * @return void
  */
 function wl_core_upgrade_db__1_0_0__3_10_0( $db_version ) {
 
@@ -187,7 +199,11 @@ function wl_core_upgrade_db__1_0_0__3_10_0( $db_version ) {
  * Flush rewrite rules to support immediate integration with automattic's
  * AMP plugin.
  *
+ * @param int $db_version Current db version.
+ *
  * @since 3.12.0
+ *
+ * @return void
  */
 function wl_core_upgrade_db__3_10_0__3_12_0( $db_version ) {
 
@@ -207,10 +223,13 @@ function wl_core_upgrade_db__3_10_0__3_12_0( $db_version ) {
 
 /**
  * Upgrade the DB structure to the one expected by the 3.14 release.
- *
  * Add Recipe entity.
  *
+ * @param int $db_version Current db version.
+ *
  * @since 3.14.0
+ *
+ * @return void
  */
 function wl_core_upgrade_db__3_12_0__3_14_0( $db_version ) {
 
@@ -268,10 +287,13 @@ function wl_core_upgrade_db__3_12_0__3_14_0( $db_version ) {
 
 /**
  * Upgrade the DB structure to the one expected by the 3.15 release.
- *
  * Add explicit Article entity.
  *
+ * @param int $db_version Current db version.
+ *
  * @since 3.15.0
+ *
+ * @return void
  */
 function wl_core_upgrade_db__3_14_0__3_15_0( $db_version ) {
 
@@ -306,7 +328,7 @@ function wl_core_upgrade_db__3_14_0__3_15_0( $db_version ) {
 /**
  * Trigger references rebuild for versions lower than 3.18.0
  *
- * @param int $db_version Current db version
+ * @param int $db_version Current db version.
  *
  * @since 3.18.0
  *
