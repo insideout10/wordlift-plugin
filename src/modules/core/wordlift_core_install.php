@@ -10,7 +10,12 @@
 /**
  * Install known types in WordPress.
  */
-function wl_core_install_entity_type_data() {
+function wl_core_install_entity_type_data( $db_version ) {
+
+	// Bails if the db version has been already set.
+	if ( ! empty( $db_version ) ) {
+		return;
+	}
 
 	Wordlift_Log_Service::get_instance()->debug( 'Installing Entity Type data...' );
 
@@ -105,50 +110,36 @@ function wl_core_install_entity_type_data() {
 /**
  * Install known types in WordPress.
  */
-function wl_core_install_create_relation_instance_table() {
+function wl_core_install_create_relation_instance_table( $db_version ) {
+
+	// Bails if the db version has been already set.
+	if ( ! empty( $db_version ) ) {
+		return;
+	}
 
 	global $wpdb;
-	// global $wl_db_version;
-	$installed_version = get_option( 'wl_db_version' );
 
-	if ( WL_DB_VERSION != $installed_version ) {
-		$table_name      = $wpdb->prefix . WL_DB_RELATION_INSTANCES_TABLE_NAME;
-		$charset_collate = $wpdb->get_charset_collate();
+	$table_name      = $wpdb->prefix . WL_DB_RELATION_INSTANCES_TABLE_NAME;
+	$charset_collate = $wpdb->get_charset_collate();
 
-		// Sql statement for the relation instances custom table
-		$sql = <<<EOF
-			CREATE TABLE $table_name (
-  				id int(11) NOT NULL AUTO_INCREMENT,
-  				subject_id int(11) NOT NULL,
-  				predicate char(10) NOT NULL,
-  				object_id int(11) NOT NULL,
-  				UNIQUE KEY id (id),
-  				KEY subject_id_index (subject_id),
-  				KEY object_id_index (object_id)
-			) $charset_collate;
+	// Sql statement for the relation instances custom table
+	$sql = <<<EOF
+		CREATE TABLE $table_name (
+				id int(11) NOT NULL AUTO_INCREMENT,
+				subject_id int(11) NOT NULL,
+				predicate char(10) NOT NULL,
+				object_id int(11) NOT NULL,
+				UNIQUE KEY id (id),
+				KEY subject_id_index (subject_id),
+				KEY object_id_index (object_id)
+		) $charset_collate;
 EOF;
 
-		// @see: https://codex.wordpress.org/Creating_Tables_with_Plugins
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-		$results = dbDelta( $sql );
+	// @see: https://codex.wordpress.org/Creating_Tables_with_Plugins
+	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+	$results = dbDelta( $sql );
 
-		wl_write_log( $results );
-
-		update_option( 'wl_db_version', WL_DB_VERSION );
-	}
-}
-
-/**
- * Upgrade the DB structure to the one expected by the 1.0 release
- *
- * @since 3.10.0
- *
- */
-function wl_core_upgrade_db_to_1_0() {
-
-	if ( ! get_option( 'wl_db_version' ) ) {
-		wl_core_install_create_relation_instance_table();
-	}
+	wl_write_log( $results );
 
 }
 
@@ -159,31 +150,32 @@ function wl_core_upgrade_db_to_1_0() {
  *
  * @since 3.10.0
  */
-function wl_core_upgrade_db_1_0_to_3_10() {
+function wl_core_upgrade_db__1_0_0__3_10_0( $db_version ) {
 
-	// If the DB version is less than 3.10, than flatten the txonomy.
-	if ( version_compare( get_option( 'wl_db_version' ), '3.9', '<=' ) ) {
+	// If the DB version is less than 3.10, than flatten the taxonomy.
+	if ( version_compare( $db_version, '3.10', '>' ) ) {
+		return;
+	}
 
-		$term_slugs = array(
-			'thing',
-			'creative-work',
-			'event',
-			'organization',
-			'person',
-			'place',
-			'localbusiness',
-		);
+	$term_slugs = array(
+		'thing',
+		'creative-work',
+		'event',
+		'organization',
+		'person',
+		'place',
+		'localbusiness',
+	);
 
-		foreach ( $term_slugs as $slug ) {
+	foreach ( $term_slugs as $slug ) {
 
-			$term = get_term_by( 'slug', $slug, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		$term = get_term_by( 'slug', $slug, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 
-			// Set the term's parent to 0.
-			if ( $term ) {
-				wp_update_term( $term->term_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array(
-					'parent' => 0,
-				) );
-			}
+		// Set the term's parent to 0.
+		if ( $term ) {
+			wp_update_term( $term->term_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array(
+				'parent' => 0,
+			) );
 		}
 	}
 
@@ -197,7 +189,12 @@ function wl_core_upgrade_db_1_0_to_3_10() {
  *
  * @since 3.12.0
  */
-function wl_core_upgrade_db_3_10_3_12() {
+function wl_core_upgrade_db__3_10_0__3_12_0( $db_version ) {
+
+	// Bail if the version id lower than 3.12.
+	if ( version_compare( $db_version, '3.12', '<' ) ) {
+		return;
+	}
 	/*
 	 * As this upgrade functionality runs on the init hook, and the AMP plugin
 	 * initialization does the same, avoid possible race conditions by
@@ -215,15 +212,30 @@ function wl_core_upgrade_db_3_10_3_12() {
  *
  * @since 3.14.0
  */
-function wl_core_upgrade_db_3_12_3_14() {
-	$result = wp_insert_term(
-		'Recipe',
-		Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
-		array(
-			'slug'        => 'recipe',
-			'description' => 'A Recipe.',
-		)
-	);
+function wl_core_upgrade_db__3_12_0__3_14_0( $db_version ) {
+
+	// Bail if the version exists and it's lower than 3.15.
+	if (
+		! empty( $db_version ) && // We need the `recipe` entity term for new installs too.
+		version_compare( $db_version, '3.14', '<' )
+	) {
+		return;
+	}
+
+	// Check whether the `recipe` term exists.
+	$recipe = get_term_by( 'slug', 'article', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+
+	// The recipe term doesn't exists, so create it.
+	if ( empty( $recipe ) ) {
+		$result = wp_insert_term(
+			'Recipe',
+			Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+			array(
+				'slug'        => 'recipe',
+				'description' => 'A Recipe.',
+			)
+		);
+	}
 
 	// Assign capabilities to manipulate entities to admins.
 	$admins = get_role( 'administrator' );
@@ -261,61 +273,59 @@ function wl_core_upgrade_db_3_12_3_14() {
  *
  * @since 3.15.0
  */
-function wl_core_upgrade_db_3_14_3_15() {
+function wl_core_upgrade_db__3_14_0__3_15_0( $db_version ) {
 
-	if ( version_compare( get_option( 'wl_db_version' ), '3.15', '<=' ) ) {
-		$article = get_term_by( 'slug', 'article', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
-
-		if ( ! $article ) {
-			wp_insert_term(
-				'Article',
-				Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
-				array(
-					'slug'        => 'article',
-					'description' => 'An Article.',
-				)
-			);
-		}
-
-		// The following is disabled because on large installations it may slow the
-		// web site.
-		//
-		// See https://github.com/insideout10/wordlift-plugin/issues/663.
-		//
-		//		// An sql that will assign the article term to all posts and pages
-		//		$wpdb->query( $wpdb->prepare(
-		//			"
-		//			INSERT INTO $wpdb->term_relationships( object_id, term_taxonomy_id )
-		//			SELECT id, %d
-		//			FROM $wpdb->posts
-		//			WHERE post_type IN ( 'post', 'page' )
-		//				AND id NOT IN
-		//			(
-		//				SELECT DISTINCT tr.object_id
-		//				FROM $wpdb->term_relationships tr
-		//				INNER JOIN $wpdb->term_taxonomy tt
-		//					ON tr.term_taxonomy_id = tt.term_taxonomy_id
-		//						AND tt.taxonomy = 'wl_entity_type'
-		//			)
-		//			",
-		//			$article_id
-		//		) );
+	// Bail if the version exists and it's lower than 3.15.
+	if (
+		! empty( $db_version ) && // We need the `article` entity term for new installs too.
+		version_compare( $db_version, '3.15', '<' )
+	) {
+		return;
 	}
 
+	// Check whether the `article` term exists.
+	$article = get_term_by( 'slug', 'article', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+
+	// The `article` term doesn't exists, so create it.
+	if ( empty( $article ) ) {
+		wp_insert_term(
+			'Article',
+			Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+			array(
+				'slug'        => 'article',
+				'description' => 'An Article.',
+			)
+		);
+	}
+
+	// The following is disabled because on large installations it may slow the
+	// web site.
+	// See: https://github.com/insideout10/wordlift-plugin/commit/fa3cfe296c60828b434897f12a01ead021045fca#diff-b6b016ed02839e76bcfe4a5491f3aa2eR280
 }
+
 
 // Check db status on automated plugins updates
 function wl_core_update_db_check() {
 
-	if ( get_option( 'wl_db_version' ) !== WL_DB_VERSION ) {
-		wl_core_install_entity_type_data();
-		wl_core_upgrade_db_to_1_0();
-		wl_core_upgrade_db_1_0_to_3_10();
-		wl_core_upgrade_db_3_10_3_12();
-		wl_core_upgrade_db_3_12_3_14();
-		wl_core_upgrade_db_3_14_3_15();
-		update_option( 'wl_db_version', WL_DB_VERSION );
+	// Get the current `wl_db_version`.
+	$db_version = get_option( 'wl_db_version' );
+
+	// Bail if the db version hasn't been updated.
+	if ( $db_version === WL_DB_VERSION ) {
+		return;
 	}
+
+	// Run upgrade functions.
+	wl_core_install_entity_type_data( $db_version );
+	wl_core_install_create_relation_instance_table( $db_version );
+	wl_core_upgrade_db__1_0_0__3_10_0( $db_version );
+	wl_core_upgrade_db__3_10_0__3_12_0( $db_version );
+	wl_core_upgrade_db__3_12_0__3_14_0( $db_version );
+	wl_core_upgrade_db__3_14_0__3_15_0( $db_version );
+
+
+	// Finally bump the db version.
+	update_option( 'wl_db_version', WL_DB_VERSION );
 
 }
 
