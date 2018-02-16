@@ -307,11 +307,6 @@ function wl_core_upgrade_db_3_14_3_15() {
 // Check db status on automated plugins updates
 function wl_core_update_db_check() {
 
-	$log = Wordlift_Log_Service::get_logger( 'wl_core_update_db_check' );
-
-	// Ensure the custom type and the taxonomy are registered.
-	Wordlift_Entity_Post_Type_Service::get_instance()->register();
-
 	if ( get_option( 'wl_db_version' ) !== WL_DB_VERSION ) {
 		wl_core_install_entity_type_data();
 		wl_core_upgrade_db_to_1_0();
@@ -322,35 +317,52 @@ function wl_core_update_db_check() {
 		update_option( 'wl_db_version', WL_DB_VERSION );
 	}
 
-	// Update to WL install level 1.
-	if ( 1 > intval( get_option( 'wl_install_version' ) ) ) {
-
-		$log->trace( 'Installing version 1...' );
-
-		// Get the configuration service and load the key.
-		$configuration_service = Wordlift_Configuration_Service::get_instance();
-		$key                   = $configuration_service->get_key();
-
-		// If the key is not empty then set the dataset URI while sending
-		// the site URL.
-		if ( ! empty( $key ) ) {
-			$log->info( 'Updating the remote dataset URI...' );
-
-			$configuration_service->get_remote_dataset_uri( $key );
-		}
-
-		// Check if the dataset key has been stored.
-		$dataset_uri = $configuration_service->get_dataset_uri();
-
-		// If the dataset URI is empty, do not set the install version.
-		if ( ! empty( $dataset_uri ) ) {
-			update_option( 'wl_install_version', 1 );
-
-			$log->info( 'Version 1 installed.' );
-		}
-
-	}
-
 }
 
-add_action( 'init', 'wl_core_update_db_check', 11 ); // need taxonomies and post type to be defined first
+/**
+ * Ensure that for first time installsthe dataset uri will be configured.
+ *
+ * @since 3.18.0
+ *
+ * @return void
+ */
+function install_wl_version_1() {
+	// Update to WL install level 1.
+	if ( intval( get_option( 'wl_install_version' ) ) >= 1 ) {
+		return;
+	}
+
+	$log = Wordlift_Log_Service::get_logger( 'wl_core_update_db_check' );
+
+	$log->trace( 'Installing version 1...' );
+
+	// Get the configuration service and load the key.
+	$configuration_service = Wordlift_Configuration_Service::get_instance();
+	$key                   = $configuration_service->get_key();
+
+	// If the key is not empty then set the dataset URI while sending
+	// the site URL.
+	if ( ! empty( $key ) ) {
+		$log->info( 'Updating the remote dataset URI...' );
+
+		$configuration_service->get_remote_dataset_uri( $key );
+	}
+
+	// Check if the dataset key has been stored.
+	$dataset_uri = $configuration_service->get_dataset_uri();
+
+	// If the dataset URI is empty, do not set the install version.
+	if ( empty( $dataset_uri ) ) {
+		$log->info( 'Setting dataset URI filed: the dataset URI is empty.' );
+
+		return;
+	}
+
+	// Update the `wl_install_version` option to prevent future dataset setup.
+	update_option( 'wl_install_version', 1 );
+
+	$log->info( 'Version 1 installed.' );
+}
+
+add_action( 'init', 'install_wl_version_1', 11 );
+add_action( 'init', 'wl_core_update_db_check', 11 );
