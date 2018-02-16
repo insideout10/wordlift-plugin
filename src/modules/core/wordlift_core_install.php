@@ -303,6 +303,26 @@ function wl_core_upgrade_db__3_14_0__3_15_0( $db_version ) {
 	// See: https://github.com/insideout10/wordlift-plugin/commit/fa3cfe296c60828b434897f12a01ead021045fca#diff-b6b016ed02839e76bcfe4a5491f3aa2eR280
 }
 
+/**
+ * Trigger references rebuild for versions lower than 3.18.0
+ *
+ * @param int $db_version Current db version
+ *
+ * @since 3.18.0
+ *
+ * @return void
+ */
+function wl_core_upgrade_db__3_15_0__3_18_0( $db_version ) {
+
+	// Bail if the version is lower than 3.18.
+	if ( version_compare( $db_version, '3.18', '<' ) ) {
+		return;
+	}
+
+	// Trigger the rebuild services for db versions lower than 3.18.
+	do_action( 'wl_rebuild_references' );
+}
+
 
 // Check db status on automated plugins updates
 function wl_core_update_db_check() {
@@ -322,6 +342,7 @@ function wl_core_update_db_check() {
 	wl_core_upgrade_db__3_10_0__3_12_0( $db_version );
 	wl_core_upgrade_db__3_12_0__3_14_0( $db_version );
 	wl_core_upgrade_db__3_14_0__3_15_0( $db_version );
+	wl_core_upgrade_db__3_15_0__3_18_0( $db_version );
 
 
 	// Finally bump the db version.
