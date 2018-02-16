@@ -86,7 +86,9 @@ class Wordlift_Entity_Type_Service {
 	 *  2. the post doesn't have a term from the Entity Types Taxonomy:
 	 *      a) the post is a `wl_entity` custom post type, then the post is
 	 *           assigned the `Thing` entity type by default.
-	 *      b) the post is not a `wl_entity` custom post type then it is
+	 *      b) the post is a `post` post type, then the post is
+	 *           assigned the `Article` entity type by default.
+	 *      c) the post is a custom post type then it is
 	 *          assigned the `WebPage` entity type by default.
 	 *
 	 * @since 3.7.0
@@ -107,24 +109,6 @@ class Wordlift_Entity_Type_Service {
 
 		$this->log->trace( "Getting the post type for post $post_id..." );
 
-		// Get the type from the associated classification.
-		$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
-
-		if ( is_wp_error( $terms ) ) {
-			$this->log->error( "An error occurred while getting the post type for post $post_id: " . $terms->get_error_message() );
-
-			// TODO: handle error
-			return null;
-		}
-
-		// Return the schema type if there is a term found.
-		if ( 0 !== count( $terms ) ) {
-			$this->log->debug( "Found {$terms[0]->slug} term for post $post_id." );
-
-			// Return the entity type with the specified id.
-			return $this->schema_service->get_schema( $terms[0]->slug );
-		}
-
 		// Get the post type.
 		$post_type = get_post_type( $post_id );
 
@@ -136,10 +120,39 @@ class Wordlift_Entity_Type_Service {
 			return $this->schema_service->get_schema( 'webpage' );
 		}
 
-		$this->log->debug( "Post $post_id has no terms, returning `Thing`." );
+		// Get the type from the associated classification.
+		$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 
-		// Return the entity type with the specified id.
-		return $this->schema_service->get_schema( 'thing' );
+		if ( is_wp_error( $terms ) ) {
+			$this->log->error( "An error occurred while getting the post type for post $post_id: " . $terms->get_error_message() );
+
+			// TODO: handle error
+			return null;
+		}
+
+		// Return the schema type if there is a term found.
+		if ( ! empty( $terms ) ) {
+			$this->log->debug( "Found {$terms[0]->slug} term for post $post_id." );
+
+			// Return the entity type with the specified id.
+			return $this->schema_service->get_schema( $terms[0]->slug );
+		}
+
+		// Return "Thing" schema type for entities.
+		if ( 'wl_entity' === $post_type ) {
+
+			$this->log->debug( "Post $post_id has no terms, but it's a `wl_entity` type, returning `Thing`." );
+
+			// Return the entity type with the specified id.
+			return $this->schema_service->get_schema( 'thing' );
+		}
+
+		$this->log->debug( "Post $post_id has no terms, and it's a `post` type, returning `Article`." );
+
+		// Return "Article" schema type for posts.
+		return $this->schema_service->get_schema( 'article' );
+
+
 	}
 
 	/**
