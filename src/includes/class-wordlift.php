@@ -111,6 +111,15 @@ class Wordlift {
 	private $topic_taxonomy_service;
 
 	/**
+	 * The Entity Types Taxonomy service.
+	 *
+	 * @since  3.18.0
+	 * @access private
+	 * @var \Wordlift_Entity_Types_Taxonomy_Service The Entity Types Taxonomy service.
+	 */
+	private $entity_types_taxonomy_service;
+
+	/**
 	 * The User service.
 	 *
 	 * @since  3.1.7
@@ -1111,7 +1120,8 @@ class Wordlift {
 
 		$this->entity_types_taxonomy_walker = new Wordlift_Entity_Types_Taxonomy_Walker();
 
-		$this->topic_taxonomy_service = new Wordlift_Topic_Taxonomy_Service();
+		$this->topic_taxonomy_service        = new Wordlift_Topic_Taxonomy_Service();
+		$this->entity_types_taxonomy_service = new Wordlift_Entity_Types_Taxonomy_Service();
 
 		// Create an instance of the ShareThis service, later we hook it to the_content and the_excerpt filters.
 		$this->sharethis_service = new Wordlift_ShareThis_Service();
@@ -1282,8 +1292,9 @@ class Wordlift {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
-		// Hook the init action to the Topic Taxonomy service.
+		// Hook the init action to taxonomy services.
 		$this->loader->add_action( 'init', $this->topic_taxonomy_service, 'init', 0 );
+		$this->loader->add_action( 'init', $this->entity_types_taxonomy_service, 'init', 0 );
 
 		// Hook the deleted_post_meta action to the Thumbnail service.
 		$this->loader->add_action( 'deleted_post_meta', $this->thumbnail_service, 'deleted_post_meta', 10, 4 );

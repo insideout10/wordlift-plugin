@@ -222,7 +222,7 @@ function wl_entity_taxonomy_get_custom_fields( $entity_id = null ) {
 	}
 
 	// Return custom fields for this specific entity's type.
-	$type = wl_entity_type_taxonomy_get_type( $entity_id );
+	$type = Wordlift_Entity_Type_Service::get_instance()->get( $entity_id );
 
 	if ( ! isset( $type['custom_fields'] ) ) {
 		return array();

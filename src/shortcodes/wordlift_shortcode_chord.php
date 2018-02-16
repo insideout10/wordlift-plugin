@@ -150,7 +150,7 @@ function wl_shortcode_chord_get_graph( $data ) {
 		}
 
 		// Get the entity taxonomy bound to this post (if there's no taxonomy, no stylesheet will be set).
-		$term = wl_entity_type_taxonomy_get_type( $item );
+		$term = Wordlift_Entity_Type_Service::get_instance()->get( $item );
 
 		// The following log may create a circular loop.
 		// wl_write_log( "wl_shortcode_chord_get_graph [ post id :: $post->ID ][ term :: " . var_export( $term, true ) . " ]" );
