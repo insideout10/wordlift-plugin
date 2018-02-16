@@ -28,7 +28,9 @@ class Wordlift_References_Rebuild_Service extends Wordlift_Listable {
 
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_References_Rebuild_Service' );
 
-		$this->linked_data_service    = $linked_data_service;
+		$this->linked_data_service = $linked_data_service;
+
+		add_action( 'wl_rebuild_references', array( $this, 'rebuild' ) );
 
 	}
 
