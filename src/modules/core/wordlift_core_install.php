@@ -319,29 +319,10 @@ function wl_core_upgrade_db_3_17_3_18() {
 
 	if ( version_compare( get_option( 'wl_db_version' ), '3.18', '<=' ) ) {
 
-		$result = $wpdb->get_results(
-			"
-			SELECT DISTINCT p.ID AS id
-			FROM $wpdb->posts AS p
-				INNER JOIN {$wpdb->prefix}wl_relation_instances ri
-				ON ( ri.subject_id = p.ID )
-			WHERE p.post_type NOT IN ( 'post', 'page' )
-				AND p.post_status = 'publish'
-				AND p.ID NOT IN
-			(
-				SELECT DISTINCT tr.object_id
-				FROM $wpdb->term_relationships AS tr
-				INNER JOIN $wpdb->term_taxonomy AS tt
-					ON tr.term_taxonomy_id = tt.term_taxonomy_id
-						AND tt.taxonomy = 'wl_entity_type'
-			)
-			"
-		);
-
 		// Loop through all ids and add the relations.
-		foreach ( $result as $item ) {
-			$this->linked_data_service->push( $item->id );
-		}
+		// foreach ( $result as $item ) {
+		// 	$this->linked_data_service->push( $item->id );
+		// }
 	}
 
 }

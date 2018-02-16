@@ -555,6 +555,15 @@ class Wordlift {
 	private $relation_rebuild_adapter;
 
 	/**
+	 * The {@link Wordlift_References_Rebuild_Service} instance.
+	 *
+	 * @since  3.18.0
+	 * @access private
+	 * @var \Wordlift_References_Rebuild_Service $references_rebuild_service The {@link Wordlift_References_Rebuild_Service} instance.
+	 */
+	private $references_rebuild_service;
+
+	/**
 	 * The {@link Wordlift_Google_Analytics_Export_Service} instance.
 	 *
 	 * @since  3.16.0
@@ -823,20 +832,19 @@ class Wordlift {
 		 * The WordLift URI service.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-uri-service.php';
-
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-listable.php';
-
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-property-factory.php';
-
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-sample-data-service.php';
 
 		/**
 		 * The WordLift rebuild service, used to rebuild the remote dataset using the local data.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-rebuild-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/rebuild/class-wordlift-listable.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/rebuild/class-wordlift-rebuild-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/rebuild/class-wordlift-references-rebuild-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/rebuild/class-wordlift-relation-rebuild-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/rebuild/class-wordlift-relation-rebuild-adapter.php';
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/properties/class-wordlift-property-getter-factory.php';
-
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-attachment-service.php';
 
 		/**
@@ -889,7 +897,6 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-page-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/batch-analysis/class-wordlift-batch-analysis-sql-helper.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/batch-analysis/class-wordlift-batch-analysis-service.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-relation-rebuild-service.php';
 
 		/** Linked Data. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-storage.php';
@@ -915,7 +922,6 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-sample-data-ajax-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-type-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/batch-analysis/class-wordlift-batch-analysis-adapter.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-relation-rebuild-adapter.php';
 
 		/** Async Tasks. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-async-task.php';
@@ -1132,9 +1138,6 @@ class Wordlift {
 
 		$uri_service = new Wordlift_Uri_Service( $GLOBALS['wpdb'] );
 
-		// Create a Rebuild Service instance, which we'll later bound to an ajax call.
-		$this->rebuild_service = new Wordlift_Rebuild_Service( $this->sparql_service, $uri_service );
-
 		// Create the entity rating service.
 		$this->rating_service = new Wordlift_Rating_Service( $this->entity_service, $this->entity_type_service, $this->notice_service );
 
@@ -1161,11 +1164,12 @@ class Wordlift {
 		$this->jsonld_service                    = new Wordlift_Jsonld_Service( $this->entity_service, $this->cached_postid_to_jsonld_converter, $this->jsonld_website_converter );
 
 
-		$this->key_validation_service   = new Wordlift_Key_Validation_Service( $this->configuration_service );
-		$this->content_filter_service   = new Wordlift_Content_Filter_Service( $this->entity_service, $this->configuration_service, $this->entity_uri_service );
-		$this->relation_rebuild_service = new Wordlift_Relation_Rebuild_Service( $this->content_filter_service, $this->entity_service );
-		$this->sample_data_service      = new Wordlift_Sample_Data_Service( $this->entity_type_service, $this->configuration_service, $this->user_service );
-		$this->sample_data_ajax_adapter = new Wordlift_Sample_Data_Ajax_Adapter( $this->sample_data_service );
+		$this->key_validation_service     = new Wordlift_Key_Validation_Service( $this->configuration_service );
+		$this->content_filter_service     = new Wordlift_Content_Filter_Service( $this->entity_service, $this->configuration_service, $this->entity_uri_service );
+		$this->relation_rebuild_service   = new Wordlift_Relation_Rebuild_Service( $this->content_filter_service, $this->entity_service );
+		$this->sample_data_service        = new Wordlift_Sample_Data_Service( $this->entity_type_service, $this->configuration_service, $this->user_service );
+		$this->sample_data_ajax_adapter   = new Wordlift_Sample_Data_Ajax_Adapter( $this->sample_data_service );
+		$this->references_rebuild_service = new Wordlift_References_Rebuild_Service( $this->linked_data_service );
 
 		// Initialize the shortcodes.
 		new Wordlift_Navigator_Shortcode();
@@ -1190,6 +1194,13 @@ class Wordlift {
 		$this->tinymce_adapter          = new Wordlift_Tinymce_Adapter( $this );
 		$this->batch_analysis_adapter   = new Wordlift_Batch_Analysis_Adapter( $this->batch_analysis_service );
 		$this->relation_rebuild_adapter = new Wordlift_Relation_Rebuild_Adapter( $this->relation_rebuild_service );
+
+		// Create a Rebuild Service instance, which we'll later bound to an ajax call.
+		$this->rebuild_service = new Wordlift_Rebuild_Service(
+			$this->sparql_service,
+			$uri_service,
+			$this->references_rebuild_service
+		);
 
 		/** Async Tasks. */
 		new Wordlift_Sparql_Query_Async_Task();
