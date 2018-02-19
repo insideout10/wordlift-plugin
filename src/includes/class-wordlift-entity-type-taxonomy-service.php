@@ -4,7 +4,7 @@
  *
  * @since 3.1.0
  */
-class Wordlift_Entity_Types_Taxonomy_Service {
+class Wordlift_Entity_Type_Taxonomy_Service {
 
 	// @@todo: rename using singular.
 
@@ -52,7 +52,7 @@ class Wordlift_Entity_Types_Taxonomy_Service {
 		);
 
 		register_taxonomy(
-			Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, // Taxonomy name.
+			Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, // Taxonomy name.
 			Wordlift_Entity_Service::valid_entity_post_types(), // Taxonomy post types.
 			$args // Taxonomy args.
 		);

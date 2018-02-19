@@ -53,11 +53,11 @@ function wl_remove_entity_type_menu() {
 	foreach ( Wordlift_Entity_Service::valid_entity_post_types() as $post_type ) {
 		// In the context of admin menues post has no explicit indication of post type in the urls.
 		if ( 'post' !== $post_type ) {
-			remove_submenu_page( 'edit.php', 'edit-tags.php?taxonomy=' . Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+			remove_submenu_page( 'edit.php', 'edit-tags.php?taxonomy=' . Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		}
 
 		if ( Wordlift_Entity_Service::TYPE_NAME !== $post_type ) {
-			remove_submenu_page( 'edit.php?post_type=' . $post_type, 'edit-tags.php?taxonomy=' . Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME . '&amp;post_type=' . $post_type );
+			remove_submenu_page( 'edit.php?post_type=' . $post_type, 'edit-tags.php?taxonomy=' . Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME . '&amp;post_type=' . $post_type );
 		}
 	}
 }

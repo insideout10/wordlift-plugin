@@ -115,7 +115,7 @@ class Wordlift {
 	 *
 	 * @since  3.18.0
 	 * @access private
-	 * @var \Wordlift_Entity_Types_Taxonomy_Service The Entity Types Taxonomy service.
+	 * @var \Wordlift_Entity_Type_Taxonomy_Service The Entity Types Taxonomy service.
 	 */
 	private $entity_types_taxonomy_service;
 
@@ -784,7 +784,7 @@ class Wordlift {
 		/**
 		 * The Entity Types Taxonomy service.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-types-taxonomy-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-type-taxonomy-service.php';
 
 		/**
 		 * The Entity service.
@@ -1121,7 +1121,7 @@ class Wordlift {
 		$this->entity_types_taxonomy_walker = new Wordlift_Entity_Types_Taxonomy_Walker();
 
 		$this->topic_taxonomy_service        = new Wordlift_Topic_Taxonomy_Service();
-		$this->entity_types_taxonomy_service = new Wordlift_Entity_Types_Taxonomy_Service();
+		$this->entity_types_taxonomy_service = new Wordlift_Entity_Type_Taxonomy_Service();
 
 		// Create an instance of the ShareThis service, later we hook it to the_content and the_excerpt filters.
 		$this->sharethis_service = new Wordlift_ShareThis_Service();

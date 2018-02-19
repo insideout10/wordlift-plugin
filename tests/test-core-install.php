@@ -25,7 +25,7 @@ class Wordlift_Core_Install_Test extends Wordlift_Unit_Test_Case {
 	 */
 	function test_3_14_0_recipe() {
 
-		$term = get_term_by( 'slug', 'Recipe', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		$term = get_term_by( 'slug', 'Recipe', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 		$this->isInstanceOf( 'WP_Term', $term );
 

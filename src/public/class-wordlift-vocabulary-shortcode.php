@@ -216,7 +216,7 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 		if ( 'all' !== $atts['type'] ) {
 			$args['tax_query'] = array(
 				array(
-					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+					'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 					'field'    => 'slug',
 					'terms'    => $atts['type'],
 				),

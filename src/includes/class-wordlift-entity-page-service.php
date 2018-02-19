@@ -45,14 +45,14 @@ class Wordlift_Entity_Page_Service {
 		// Ignore admin side request, requests for which filters should be
 		// suppressed, and when we are not on a entity type archive page.
 		if ( is_admin() ||
-			 ! is_tax( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME ) ||
+			 ! is_tax( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ) ||
 			 ! empty( $query->query_vars['suppress_filters'] )
 		) {
 			return;
 		}
 
 		// Events should be sorted by start date in descending order.
-		if ( is_tax( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, 'event' ) ) {
+		if ( is_tax( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, 'event' ) ) {
 
 			// Update the query to use the start time meta and desc order.
 			$meta_query[] = array(

@@ -156,7 +156,7 @@ class Wordlift_Storage_Factory {
 	 */
 	public function schema_class( $schema_service ) {
 
-		return new Wordlift_Post_Schema_Class_Storage( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, $schema_service );
+		return new Wordlift_Post_Schema_Class_Storage( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, $schema_service );
 
 	}
 

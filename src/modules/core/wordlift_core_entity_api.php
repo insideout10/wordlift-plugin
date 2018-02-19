@@ -40,7 +40,7 @@ function wl_entity_get_by_title( $title, $autocomplete = false, $include_alias =
 
 	$params = array(
 		$title,
-		Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+		Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 	);
 
 	if ( $include_alias ) {
@@ -60,7 +60,7 @@ function wl_entity_get_by_title( $title, $autocomplete = false, $include_alias =
 		$params = array_merge( $params, array(
 			Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY,
 			$title,
-			Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+			Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 		) );
 	}
 

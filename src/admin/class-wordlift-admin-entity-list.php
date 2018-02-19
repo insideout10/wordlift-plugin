@@ -250,11 +250,11 @@ class Wordlift_Entity_List_Service {
 		$query->set( 'tax_query', array(
 			'relation' => 'AND',
 			array(
-				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 				'operator' => 'EXISTS',
 			),
 			array(
-				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 				'field'    => 'slug',
 				'terms'    => 'article',
 				'operator' => 'NOT IN',

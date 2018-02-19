@@ -266,21 +266,21 @@ class PostEntityRelationsTest extends Wordlift_Unit_Test_Case {
 				'post_status' => 'publish',
 			) );
 			$term_id = $this->get_term_id_by_slug( 'article' );
-			wp_set_post_terms( $posts[ count( $posts ) - 1 ], $term_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+			wp_set_post_terms( $posts[ count( $posts ) - 1 ], $term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 			$posts[] = $this->factory->post->create( array(
 				'post_type'   => 'post',
 				'post_status' => 'publish',
 			) );
 			$term_id = $this->get_term_id_by_slug( 'article' );
-			wp_set_post_terms( $posts[ count( $posts ) - 1 ], $term_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+			wp_set_post_terms( $posts[ count( $posts ) - 1 ], $term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 			$posts[] = $this->factory->post->create( array(
 				'post_type'   => 'post',
 				'post_status' => 'publish',
 			) );
 			$term_id = $this->get_term_id_by_slug( 'event' );
-			$result  = wp_set_post_terms( $posts[ count( $posts ) - 1 ], $term_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+			$result  = wp_set_post_terms( $posts[ count( $posts ) - 1 ], $term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 			$this->assertFalse( is_wp_error( $result ) );
 			$this->assertNotFalse( $result );
 
@@ -289,21 +289,21 @@ class PostEntityRelationsTest extends Wordlift_Unit_Test_Case {
 				'post_status' => 'publish',
 			) );
 			$term_id = $this->get_term_id_by_slug( 'article' );
-			wp_set_post_terms( $posts[ count( $posts ) - 1 ], $term_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+			wp_set_post_terms( $posts[ count( $posts ) - 1 ], $term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 			$posts[] = $this->factory->post->create( array(
 				'post_type'   => 'page',
 				'post_status' => 'publish',
 			) );
 			$term_id = $this->get_term_id_by_slug( 'recipe' );
-			wp_set_post_terms( $posts[ count( $posts ) - 1 ], $term_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+			wp_set_post_terms( $posts[ count( $posts ) - 1 ], $term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 			$posts[] = $this->factory->post->create( array(
 				'post_type'   => 'entity',
 				'post_status' => 'publish',
 			) );
 			$term_id = $this->get_term_id_by_slug( 'event' );
-			wp_set_post_terms( $posts[ count( $posts ) - 1 ], $term_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+			wp_set_post_terms( $posts[ count( $posts ) - 1 ], $term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		}
 
 		for ( $i = 0; $i < count( $posts ); $i ++ ) {
@@ -337,7 +337,7 @@ class PostEntityRelationsTest extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 2, $results, 'Expect 2 articles.' );
 
 		$filtered = array_filter( $results, function ( $item ) {
-			$terms = wp_get_post_terms( $item->ID, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+			$terms = wp_get_post_terms( $item->ID, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 			return in_array( $item->post_type, Wordlift_Entity_Service::valid_entity_post_types() ) && ! empty( $terms ) && 'article' === $terms[0]->slug;
 		} );
@@ -366,7 +366,7 @@ class PostEntityRelationsTest extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 10, $results, 'Expect 10 articles.' );
 
 		$filtered = array_filter( $results, function ( $item ) {
-			$terms = wp_get_post_terms( $item->ID, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+			$terms = wp_get_post_terms( $item->ID, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 			return in_array( $item->post_type, Wordlift_Entity_Service::valid_entity_post_types() ) && ! empty( $terms ) && 'article' === $terms[0]->slug;
 		} );
@@ -395,7 +395,7 @@ class PostEntityRelationsTest extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 3, $results, 'Expect 3 articles.' );
 
 		$filtered = array_filter( $results, function ( $item ) {
-			$terms = wp_get_post_terms( $item->ID, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+			$terms = wp_get_post_terms( $item->ID, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 			return in_array( $item->post_type, Wordlift_Entity_Service::valid_entity_post_types() ) && ! empty( $terms ) && 'article' === $terms[0]->slug;
 		} );
@@ -424,7 +424,7 @@ class PostEntityRelationsTest extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 10, $results, 'Expect 10 articles.' );
 
 		$filtered = array_filter( $results, function ( $item ) {
-			$terms = wp_get_post_terms( $item->ID, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+			$terms = wp_get_post_terms( $item->ID, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 			return in_array( $item->post_type, Wordlift_Entity_Service::valid_entity_post_types() ) && ! empty( $terms ) && 'article' === $terms[0]->slug;
 		} );
@@ -454,7 +454,7 @@ class PostEntityRelationsTest extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 2, $results, 'Expect 2 articles.' );
 
 		$filtered = array_filter( $results, function ( $item ) {
-			$terms = wp_get_post_terms( $item->ID, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+			$terms = wp_get_post_terms( $item->ID, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 			return in_array( $item->post_type, Wordlift_Entity_Service::valid_entity_post_types() ) && ! empty( $terms ) && 'article' === $terms[0]->slug;
 		} );
@@ -506,7 +506,7 @@ class PostEntityRelationsTest extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 2, $results, 'Expect 2 articles.' );
 
 		$filtered = array_filter( $results, function ( $item ) {
-			$terms = wp_get_post_terms( $item->ID, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+			$terms = wp_get_post_terms( $item->ID, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 			return in_array( $item->post_type, Wordlift_Entity_Service::valid_entity_post_types() ) && ! empty( $terms ) && 'article' === $terms[0]->slug;
 		} );
@@ -560,7 +560,7 @@ class PostEntityRelationsTest extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 1, $results, 'Expect 1 article.' );
 
 		$filtered = array_filter( $results, function ( $item ) {
-			$terms = wp_get_post_terms( $item->ID, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+			$terms = wp_get_post_terms( $item->ID, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 			return in_array( $item->post_type, Wordlift_Entity_Service::valid_entity_post_types() ) && ! empty( $terms ) && 'article' === $terms[0]->slug;
 		} );
@@ -634,7 +634,7 @@ class PostEntityRelationsTest extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 2, $results, 'Expect 2 articles.' );
 
 		$filtered = array_filter( $results, function ( $item ) {
-			$terms = wp_get_post_terms( $item->ID, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+			$terms = wp_get_post_terms( $item->ID, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 			return in_array( $item->post_type, Wordlift_Entity_Service::valid_entity_post_types() ) && ! empty( $terms ) && 'article' === $terms[0]->slug;
 		} );
@@ -666,7 +666,7 @@ class PostEntityRelationsTest extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 1, $results, 'Expect 1 article.' );
 
 		$filtered = array_filter( $results, function ( $item ) {
-			$terms = wp_get_post_terms( $item->ID, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+			$terms = wp_get_post_terms( $item->ID, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 			return in_array( $item->post_type, Wordlift_Entity_Service::valid_entity_post_types() ) && ! empty( $terms ) && 'article' === $terms[0]->slug;
 		} );
@@ -682,7 +682,7 @@ class PostEntityRelationsTest extends Wordlift_Unit_Test_Case {
 	 */
 	private function get_term_id_by_slug( $slug ) {
 
-		$term_id = get_term_by( 'slug', $slug, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME )->term_id;
+		$term_id = get_term_by( 'slug', $slug, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME )->term_id;
 
 		$this->assertGreaterThan( 0, $term_id, "Term $slug must exist." );
 

@@ -797,7 +797,7 @@ class Wordlift_Batch_Analysis_Service {
 	 */
 	private function maybe_set_default_term( $id ) {
 		// Check whether the post has any of the WordLift entity types.
-		$has_term = has_term( '', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, $id );
+		$has_term = has_term( '', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, $id );
 
 		// Bail if the term is associated with entity types already.
 		if ( ! empty( $has_term ) ) {
@@ -805,7 +805,7 @@ class Wordlift_Batch_Analysis_Service {
 		}
 
 		// Set the default `article` term.
-		wp_set_object_terms( $id, 'article', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		wp_set_object_terms( $id, 'article', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 	}
 

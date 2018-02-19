@@ -59,13 +59,13 @@ function wl_core_install_entity_type_data( $db_version ) {
 	foreach ( $terms as $slug => $term ) {
 
 		// Create the term if it does not exist, then get its ID
-		$term_id = term_exists( $slug, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		$term_id = term_exists( $slug, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 		if ( 0 == $term_id || is_null( $term_id ) ) {
-			$result = wp_insert_term( $slug, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+			$result = wp_insert_term( $slug, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		} else {
 			$term_id = $term_id['term_id'];
-			$result  = get_term( $term_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, ARRAY_A );
+			$result  = get_term( $term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, ARRAY_A );
 		}
 
 		// Check for errors.
@@ -81,7 +81,7 @@ function wl_core_install_entity_type_data( $db_version ) {
 
 		$parent_ids = array();
 		foreach ( $term['parents'] as $parent_slug ) {
-			$parent_id    = get_term_by( 'slug', $parent_slug, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+			$parent_id    = get_term_by( 'slug', $parent_slug, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 			$parent_ids[] = intval( $parent_id->term_id );  // Note: int casting is suggested by Codex: http://codex.wordpress.org/Function_Reference/get_term_by
 		}
 
@@ -95,7 +95,7 @@ function wl_core_install_entity_type_data( $db_version ) {
 		}
 
 		// Update term with description, slug and parent
-		$term = wp_update_term( $result['term_id'], Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array(
+		$term = wp_update_term( $result['term_id'], Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
 			'name'        => $term['label'],
 			'slug'        => $slug,
 			'description' => $term['description'],
@@ -181,11 +181,11 @@ function wl_core_upgrade_db__1_0_0__3_10_0( $db_version ) {
 
 	foreach ( $term_slugs as $slug ) {
 
-		$term = get_term_by( 'slug', $slug, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		$term = get_term_by( 'slug', $slug, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 		// Set the term's parent to 0.
 		if ( $term ) {
-			wp_update_term( $term->term_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array(
+			wp_update_term( $term->term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
 				'parent' => 0,
 			) );
 		}
@@ -242,13 +242,13 @@ function wl_core_upgrade_db__3_12_0__3_14_0( $db_version ) {
 	}
 
 	// Check whether the `recipe` term exists.
-	$recipe = get_term_by( 'slug', 'article', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+	$recipe = get_term_by( 'slug', 'article', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 	// The recipe term doesn't exists, so create it.
 	if ( empty( $recipe ) ) {
 		$result = wp_insert_term(
 			'Recipe',
-			Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+			Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 			array(
 				'slug'        => 'recipe',
 				'description' => 'A Recipe.',
@@ -306,13 +306,13 @@ function wl_core_upgrade_db__3_14_0__3_15_0( $db_version ) {
 	}
 
 	// Check whether the `article` term exists.
-	$article = get_term_by( 'slug', 'article', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+	$article = get_term_by( 'slug', 'article', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 	// The `article` term doesn't exists, so create it.
 	if ( empty( $article ) ) {
 		wp_insert_term(
 			'Article',
-			Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+			Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 			array(
 				'slug'        => 'article',
 				'description' => 'An Article.',
