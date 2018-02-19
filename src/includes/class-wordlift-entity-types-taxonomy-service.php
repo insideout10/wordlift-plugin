@@ -6,6 +6,8 @@
  */
 class Wordlift_Entity_Types_Taxonomy_Service {
 
+	// @@todo: rename using singular.
+
 	const TAXONOMY_NAME = 'wl_entity_type';
 
 	/**
