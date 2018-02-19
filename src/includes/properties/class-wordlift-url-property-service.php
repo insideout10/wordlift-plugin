@@ -14,6 +14,9 @@ class Wordlift_Url_Property_Service extends Wordlift_Simple_Property_Service {
 
 			return '<permalink>' === $item ? get_permalink( $post_id ) : $item;
 		}, parent::get( $post_id, $meta_key ) );
+
+		// @todo: ensure that parent::get( $post_id, $meta_key ) has the
+		// `<permalink>` otherwise add it.
 	}
 
 }

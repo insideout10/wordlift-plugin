@@ -109,6 +109,7 @@ class Wordlift_Linked_Data_Service {
 		return self::$instance;
 	}
 
+	//<editor-fold desc="## FUNCTIONS">
 	/**
 	 * Push a {@link WP_Post} to the Linked Data store.
 	 *
@@ -309,5 +310,6 @@ class Wordlift_Linked_Data_Service {
 		// Finally return the tuples.
 		return $tuples;
 	}
+	//</editor-fold>
 
 }

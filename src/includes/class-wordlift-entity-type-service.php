@@ -112,6 +112,22 @@ class Wordlift_Entity_Type_Service {
 		// Get the post type.
 		$post_type = get_post_type( $post_id );
 
+		// @@todo:
+		// valid entity post type {
+
+		//  1st check:
+		//  has term return the term
+
+		//  2nd check:
+		//  it's a `post`/`page` then return `Article`
+
+		//  3rd check:
+		//  it's a valid entity post type, then return `Thing`
+
+		// }
+
+		// otherwise return WebPage.
+
 		// If it's not an entity post type return `WebPage` by default.
 		if ( ! self::is_valid_entity_post_type( $post_type ) ) {
 			$this->log->info( "Returning `WebPage` for post $post_id." );
