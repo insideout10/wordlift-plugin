@@ -48,30 +48,19 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 	private $uri_service;
 
 	/**
-	 * The {@link Wordlift_References_Rebuild_Service} instance.
-	 *
-	 * @since  3.18.0
-	 * @access private
-	 * @var \Wordlift_References_Rebuild_Service $references_rebuild_service The {@link Wordlift_References_Rebuild_Service} instance.
-	 */
-	private $references_rebuild_service;
-
-	/**
 	 * Create an instance of Wordlift_Rebuild_Service.
 	 *
 	 * @since 3.6.0
 	 *
 	 * @param \Wordlift_Sparql_Service             $sparql_service A {@link Wordlift_Sparql_Service} instance used to query the remote dataset.
 	 * @param \Wordlift_Uri_Service                $uri_service
-	 * @param \Wordlift_References_Rebuild_Service $references_rebuild_service
 	 */
-	public function __construct( $sparql_service, $uri_service, $references_rebuild_service ) {
+	public function __construct( $sparql_service, $uri_service ) {
 
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Rebuild_Service' );
 
-		$this->sparql_service             = $sparql_service;
-		$this->uri_service                = $uri_service;
-		$this->references_rebuild_service = $references_rebuild_service;
+		$this->sparql_service = $sparql_service;
+		$this->uri_service    = $uri_service;
 	}
 
 	/**
@@ -133,15 +122,14 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 			$this->redirect( admin_url( 'admin-ajax.php?action=wl_rebuild&offset=' . ( $offset + $limit ) . '&limit=' . $limit . '&wl-async=' . ( $asynchronous ? 'true' : 'false' ) ) );
 		}
 
-		// Rebuild the relations.
-		$this->references_rebuild_service->rebuild();
-		$relations_rebuilt = $this->references_rebuild_service->get_count();
-
 		// Flush the cache.
 		Wordlift_File_Cache_Service::flush_all();
 
-		$this->log->info( "Rebuild complete [ count :: $count ][ relations:: $relations_rebuilt ][ limit :: $limit ]" );
-		echo( "Rebuild complete [ count :: $count ][ relations:: $relations_rebuilt ][ limit :: $limit ]" );
+		$this->log->info( "Rebuild complete [ count :: $count ][ limit :: $limit ]" );
+		echo( "Rebuild complete [ count :: $count ][ limit :: $limit ]" );
+
+		// Rebuilding the references.
+		do_action( 'wp_ajax_wl_rebuild_references' );
 
 		// If we're being called as AJAX, die here.
 		if ( DOING_AJAX ) {
@@ -157,7 +145,7 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 	 *
 	 * @param string $url The URL to redirect to.
 	 */
-	private function redirect( $url ) {
+	public function redirect( $url ) {
 
 		ob_clean();
 

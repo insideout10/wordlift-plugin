@@ -148,15 +148,12 @@ class Wordlift_Storage_Factory {
 	 *
 	 * @since 3.15.0
 	 *
-	 * @param \Wordlift_Schema_Service $schema_service The {@link Wordlift_Schema_Service}
-	 *                                                 instance.
-	 *
 	 * @return Wordlift_Post_Schema_Class_Storage A {@link Wordlift_Post_Schema_Class_Storage}
 	 *                                    instance.
 	 */
-	public function schema_class( $schema_service ) {
+	public function schema_class() {
 
-		return new Wordlift_Post_Schema_Class_Storage( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, $schema_service );
+		return new Wordlift_Post_Schema_Class_Storage();
 
 	}
 

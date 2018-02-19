@@ -404,7 +404,7 @@ class Wordlift_Schema_Service {
 			'place'         => $this->get_place_schema(),
 			'localbusiness' => $this->get_local_business_schema(),
 			'recipe'        => $this->get_recipe_schema(),
-			'webpage'       => $this->get_webpage_schema(),
+			'web-page'      => $this->get_web_page_schema(),
 		);
 
 		// Create a singleton instance of the Schema service, useful to provide static functions to global functions.
@@ -577,7 +577,7 @@ class Wordlift_Schema_Service {
 				),
 				// ### rdf:type.
 				$this->rendition_factory->create(
-					$this->storage_factory->schema_class( $this ),
+					$this->storage_factory->schema_class(),
 					Wordlift_Query_Builder::RDFS_TYPE_URI,
 					self::DATA_TYPE_URI
 				),
@@ -599,13 +599,13 @@ class Wordlift_Schema_Service {
 	}
 
 	/**
-	 * Get the 'webpage' schema.
+	 * Get the 'web-page' schema.
 	 *
 	 * @return array An array with the schema configuration.
 	 *
 	 * @since 3.18.0
 	 */
-	private function get_webpage_schema() {
+	private function get_web_page_schema() {
 
 		return array(
 			'css_class'     => 'wl-webpage',
@@ -626,7 +626,7 @@ class Wordlift_Schema_Service {
 				),
 				// ### rdf:type.
 				$this->rendition_factory->create(
-					$this->storage_factory->schema_class( $this ),
+					$this->storage_factory->schema_class(),
 					Wordlift_Query_Builder::RDFS_TYPE_URI,
 					self::DATA_TYPE_URI
 				),

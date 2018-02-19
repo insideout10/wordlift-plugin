@@ -555,13 +555,13 @@ class Wordlift {
 	private $relation_rebuild_adapter;
 
 	/**
-	 * The {@link Wordlift_References_Rebuild_Service} instance.
+	 * The {@link Wordlift_Reference_Rebuild_Service} instance.
 	 *
 	 * @since  3.18.0
 	 * @access private
-	 * @var \Wordlift_References_Rebuild_Service $references_rebuild_service The {@link Wordlift_References_Rebuild_Service} instance.
+	 * @var \Wordlift_Reference_Rebuild_Service $reference_rebuild_service The {@link Wordlift_Reference_Rebuild_Service} instance.
 	 */
-	private $references_rebuild_service;
+	private $reference_rebuild_service;
 
 	/**
 	 * The {@link Wordlift_Google_Analytics_Export_Service} instance.
@@ -840,7 +840,7 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/rebuild/class-wordlift-listable.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/rebuild/class-wordlift-rebuild-service.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/rebuild/class-wordlift-references-rebuild-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/rebuild/class-wordlift-reference-rebuild-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/rebuild/class-wordlift-relation-rebuild-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/rebuild/class-wordlift-relation-rebuild-adapter.php';
 
@@ -1169,7 +1169,7 @@ class Wordlift {
 		$this->relation_rebuild_service   = new Wordlift_Relation_Rebuild_Service( $this->content_filter_service, $this->entity_service );
 		$this->sample_data_service        = new Wordlift_Sample_Data_Service( $this->entity_type_service, $this->configuration_service, $this->user_service );
 		$this->sample_data_ajax_adapter   = new Wordlift_Sample_Data_Ajax_Adapter( $this->sample_data_service );
-		$this->references_rebuild_service = new Wordlift_References_Rebuild_Service( $this->linked_data_service );
+		$this->reference_rebuild_service  = new Wordlift_Reference_Rebuild_Service( $this->linked_data_service, $this->entity_service );
 
 		// Initialize the shortcodes.
 		new Wordlift_Navigator_Shortcode();
@@ -1199,7 +1199,7 @@ class Wordlift {
 		$this->rebuild_service = new Wordlift_Rebuild_Service(
 			$this->sparql_service,
 			$uri_service,
-			$this->references_rebuild_service
+			$this->reference_rebuild_service
 		);
 
 		/** Async Tasks. */
@@ -1358,6 +1358,7 @@ class Wordlift {
 
 		// Hook the AJAX wl_rebuild action to the Rebuild Service.
 		$this->loader->add_action( 'wp_ajax_wl_rebuild', $this->rebuild_service, 'rebuild' );
+		$this->loader->add_action( 'wp_ajax_wl_rebuild_references', $this->reference_rebuild_service, 'rebuild' );
 
 		// Hook the menu to the Download Your Data page.
 		$this->loader->add_action( 'admin_menu', $this->download_your_data_page, 'admin_menu', 100, 0 );

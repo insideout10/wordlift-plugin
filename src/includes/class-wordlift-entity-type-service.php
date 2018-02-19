@@ -112,28 +112,11 @@ class Wordlift_Entity_Type_Service {
 		// Get the post type.
 		$post_type = get_post_type( $post_id );
 
-		// @@todo:
-		// valid entity post type {
-
-		//  1st check:
-		//  has term return the term
-
-		//  2nd check:
-		//  it's a `post`/`page` then return `Article`
-
-		//  3rd check:
-		//  it's a valid entity post type, then return `Thing`
-
-		// }
-
-		// otherwise return WebPage.
-
-		// If it's not an entity post type return `WebPage` by default.
+		// Return `web-page` for non entities.
 		if ( ! self::is_valid_entity_post_type( $post_type ) ) {
-			$this->log->info( "Returning `WebPage` for post $post_id." );
+			$this->log->info( "Returning `web-page` for post $post_id." );
 
-			// Return the entity type with the specified id.
-			return $this->schema_service->get_schema( 'webpage' );
+			return $this->schema_service->get_schema( 'web-page' );
 		}
 
 		// Get the type from the associated classification.
@@ -154,20 +137,19 @@ class Wordlift_Entity_Type_Service {
 			return $this->schema_service->get_schema( $terms[0]->slug );
 		}
 
-		// Return "Thing" schema type for entities.
-		if ( 'wl_entity' === $post_type ) {
+		// If it's a page or post return `Article`.
+		if ( in_array( $post_type , array( 'post', 'page' ) ) ) {
+			$this->log->debug( "Post $post_id has no terms, and it's a `post` type, returning `Article`." );
 
-			$this->log->debug( "Post $post_id has no terms, but it's a `wl_entity` type, returning `Thing`." );
-
-			// Return the entity type with the specified id.
-			return $this->schema_service->get_schema( 'thing' );
+			// Return "Article" schema type for posts.
+			return $this->schema_service->get_schema( 'article' );
 		}
 
-		$this->log->debug( "Post $post_id has no terms, and it's a `post` type, returning `Article`." );
+		// Return "Thing" schema type for entities.
+		$this->log->debug( "Post $post_id has no terms, but it's a `wl_entity` type, returning `Thing`." );
 
-		// Return "Article" schema type for posts.
-		return $this->schema_service->get_schema( 'article' );
-
+		// Return the entity type with the specified id.
+		return $this->schema_service->get_schema( 'thing' );
 
 	}
 
