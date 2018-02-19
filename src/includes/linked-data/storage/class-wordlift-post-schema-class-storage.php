@@ -38,6 +38,10 @@ class Wordlift_Post_Schema_Class_Storage extends Wordlift_Post_Taxonomy_Storage 
 	public function __construct( $taxonomy, $schema_service ) {
 		parent::__construct( $taxonomy );
 
+		// @@todo: get the Entity Type Service here to get the correct
+		// schema class. There's no need anymore to extend the
+		// Wordlift_Post_Taxonomy_Storage.
+
 		$this->schema_service = $schema_service;
 
 	}
@@ -53,6 +57,9 @@ class Wordlift_Post_Schema_Class_Storage extends Wordlift_Post_Taxonomy_Storage 
 	 */
 	public function get( $post_id ) {
 		$terms = parent::get( $post_id );
+
+		// @@todo: use Wordlift_Entity_Type_Service here to get the correct
+		// schema class.
 
 		// Get the schema by term slug if the terms are not empty.
 		// Otherwise fallback to webpage, which means that the post is not an entity.
