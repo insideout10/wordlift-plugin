@@ -105,7 +105,7 @@ class Wordlift_Schema_Url_Property_Service extends Wordlift_Property_Service {
 
 		// If the property has never been set, we set its default value the first
 		// time to <permalink>.
-		if ( 0 === count( $values ) ) {
+		if ( empty( $values ) ) {
 			return array( '<permalink>' );
 		}
 
@@ -187,7 +187,7 @@ class Wordlift_Schema_Url_Property_Service extends Wordlift_Property_Service {
 		$this->add_filter_get_post_metadata();
 
 		// If we must return a single value, but we don't have a value, then return an empty string.
-		if ( $single && ( is_null( $new_value ) || 0 === count( $new_value ) ) ) {
+		if ( $single && ( is_null( $new_value ) || empty( $new_value ) ) ) {
 			return '';
 		}
 

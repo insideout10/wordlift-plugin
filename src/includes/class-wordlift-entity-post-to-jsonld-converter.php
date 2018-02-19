@@ -92,7 +92,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 			// for that property.
 			$value = $this->property_getter->get( $post->ID, $key );
 
-			if ( 0 === count( $value ) ) {
+			if ( empty( $value ) ) {
 				continue;
 			}
 

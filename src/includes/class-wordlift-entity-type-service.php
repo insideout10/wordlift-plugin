@@ -118,7 +118,7 @@ class Wordlift_Entity_Type_Service {
 		}
 
 		// If there are not terms associated, default to article.
-		if ( 0 === count( $terms ) ) {
+		if ( empty( $terms ) ) {
 			$this->log->debug( "Post $post_id has no terms, returning `Article`." );
 
 			return array(

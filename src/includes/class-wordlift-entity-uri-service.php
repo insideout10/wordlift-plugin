@@ -198,7 +198,7 @@ class Wordlift_Entity_Uri_Service {
 		$posts = get_posts( $query_args );
 
 		// Return null if no post is found.
-		if ( 0 === count( $posts ) ) {
+		if ( empty( $posts ) ) {
 			$this->log->warn( "No post for URI $uri." );
 
 			return null;
