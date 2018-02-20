@@ -106,7 +106,7 @@ class Wordlift_DB_Upgrade_Test extends WP_UnitTestCase {
 		update_option( 'wl_db_version', '1.0' );
 
 		// now call the upgrade routine and check that everything is Flatten
-		wl_core_upgrade_db__1_0_0__3_10_0( '1.0' );
+		Wordlift_Install_3_10_0::get_instance()->install();
 
 		$slugs = array(
 			'thing',
@@ -137,7 +137,7 @@ class Wordlift_DB_Upgrade_Test extends WP_UnitTestCase {
 		update_option( 'wl_db_version', '3.10' );
 
 		// now call the upgrade routine and check that the dummy term still has a parent
-		wl_core_upgrade_db__1_0_0__3_10_0( '3.10' );
+		Wordlift_Install_3_10_0::get_instance()->install();
 
 		$term = get_term_by( 'slug', 'dummy', 'wl_entity_type' );
 		$this->assertEquals( 1, $term->parent );

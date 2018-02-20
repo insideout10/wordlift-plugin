@@ -26,6 +26,15 @@ class Wordlift_Install_1_0_0 implements Wordlift_Install {
 	private $log;
 
 	/**
+	 * The singleton instance.
+	 *
+	 * @since  3.18.0
+	 * @access private
+	 * @var \Wordlift_Install_1_0_0 $instance A {@link Wordlift_Install_1_0_0} instance.
+	 */
+	private static $instance;
+
+	/**
 	 * The WordLift entity type terms.
 	 *
 	 * @since  3.18.0
@@ -70,6 +79,18 @@ class Wordlift_Install_1_0_0 implements Wordlift_Install {
 	 */
 	public function __construct() {
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Install_1_0_0' );
+
+		self::$instance = $this;
+	}
+
+	/**
+	 * Get the singleton instance.
+	 *
+	 * @since 3.18.0
+	 */
+	public static function get_instance() {
+
+		return self::$instance;
 	}
 
 	/**
