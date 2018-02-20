@@ -928,6 +928,7 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-sparql-query-async-task.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-batch-analysis-request-async-task.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-batch-analysis-complete-async-task.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-push-references-async-task.php';
 
 		/** Async Tasks. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-autocomplete-service.php';
@@ -1206,6 +1207,8 @@ class Wordlift {
 		new Wordlift_Sparql_Query_Async_Task();
 		new Wordlift_Batch_Analysis_Request_Async_Task();
 		new Wordlift_Batch_Analysis_Complete_Async_Task();
+		new Wordlift_Batch_Analysis_Complete_Async_Task();
+		new Wordlift_Push_References_Async_Task();
 
 		/** WL Autocomplete. */
 		$this->autocomplete_service = new Wordlift_Autocomplete_Service( $this->configuration_service );

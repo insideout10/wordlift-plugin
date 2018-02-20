@@ -51,6 +51,11 @@ class Wordlift_Reference_Rebuild_Service extends Wordlift_Rebuild_Service {
 		$this->linked_data_service = $linked_data_service;
 		$this->entity_service      = $entity_service;
 		$this->relation_service    = $relation_service;
+
+		add_action( 'wl_async_wl_push_references', array(
+			$this,
+			'push_references',
+		) );
 	}
 
 	public function rebuild() {
@@ -153,6 +158,8 @@ class Wordlift_Reference_Rebuild_Service extends Wordlift_Rebuild_Service {
 			// Push the references.
 			$this->linked_data_service->push( $post->ID );
 		}
+
+		do_action( 'wl_push_references' );
 
 	}
 
