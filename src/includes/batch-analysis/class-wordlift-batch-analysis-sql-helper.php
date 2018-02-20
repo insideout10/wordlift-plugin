@@ -27,6 +27,7 @@ class Wordlift_Batch_Analysis_Sql_Helper {
 	 * @return string The base SQL.
 	 */
 	public static function get_sql( $args ) {
+		global $wpdb;
 
 		/*
 		Prepare the statement:
@@ -45,7 +46,7 @@ class Wordlift_Batch_Analysis_Sql_Helper {
 		*/
 
 		// @codingStandardsIgnoreStart, Ignore phpcs sanitation errors.
-		return self::get_base_query( $args )
+		return "SELECT p.ID FROM $wpdb->posts p"
 			   . " WHERE p.post_type IN ('" . join( "', '", array_map( 'esc_sql', (array) $args['post_type'] ) ) . "')"
 			   . "  AND p.post_status = 'publish'"
 			   . Wordlift_Batch_Analysis_Sql_Helper::and_include_annotated( $args['include_annotated'] )
@@ -56,6 +57,7 @@ class Wordlift_Batch_Analysis_Sql_Helper {
 	}
 
 	public static function get_sql_for_ids( $args ) {
+		global $wpdb;
 
 		/*
 		Prepare the statement:
@@ -75,38 +77,8 @@ class Wordlift_Batch_Analysis_Sql_Helper {
 
 		// @codingStandardsIgnoreStart, Ignore phpcs sanitation errors.
 
-		return self::get_base_query( $args )
-			   . ' WHERE p.id IN (' . implode( ', ', wp_parse_id_list( $args['ids'] ) ) . ')';
+		return "SELECT p.ID FROM $wpdb->posts p WHERE p.id IN (" . implode( ', ', wp_parse_id_list( $args['ids'] ) ) . ")";
 		// @codingStandardsIgnoreEnd
-	}
-
-	private static function get_base_query( $args ) {
-		global $wpdb;
-
-		// Get the link options.
-		$link_options = serialize( array(
-			'links'           => $args['links'],
-			'min_occurrences' => $args['min_occurrences'],
-		) );
-
-		return $wpdb->prepare(
-			"INSERT INTO $wpdb->postmeta ( post_id, meta_key, meta_value )"
-			// Populate 3 metas for the batch analysis request using a SQL
-			// statement: each meta contains a state for the batch analysis
-			// request.
-			. ' SELECT p.ID, metas.* FROM ('
-			. '  SELECT %s, 0 FROM dual'                // STATE_META_KEY.
-			. '   UNION'
-			. '	 SELECT %s, UTC_TIMESTAMP() FROM dual'  // SUBMIT_TIMESTAMP_META_KEY.
-			. '	  UNION'
-			. '	 SELECT %s, %s FROM dual'               // LINK_META_KEY.
-			. '	) metas'
-			. ", $wpdb->posts p",
-			Wordlift_Batch_Analysis_Service::STATE_META_KEY,
-			Wordlift_Batch_Analysis_Service::SUBMIT_TIMESTAMP_META_KEY,
-			Wordlift_Batch_Analysis_Service::BATCH_ANALYSIS_OPTIONS_META_KEY,
-			$link_options
-		);
 	}
 
 	/**
