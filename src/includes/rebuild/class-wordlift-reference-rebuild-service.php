@@ -61,11 +61,13 @@ class Wordlift_Reference_Rebuild_Service extends Wordlift_Rebuild_Service {
 		// and will cycle through all the posts w/ a very small memory footprint
 		// in order to avoid memory errors.
 
-		$count          = 0;
-		$log            = $this->log;
-		$entity_service = $this->entity_service;
+		$count               = 0;
+		$log                 = $this->log;
+		$entity_service      = $this->entity_service;
+		$linked_data_service = $this->linked_data_service;
+
 		$this->process(
-			function ( $post_id ) use ( &$count, $log, $entity_service ) {
+			function ( $post_id ) use ( &$count, $log, $entity_service, $linked_data_service ) {
 				$count ++;
 
 				if ( $entity_service->is_entity( $post_id ) ) {
@@ -74,7 +76,7 @@ class Wordlift_Reference_Rebuild_Service extends Wordlift_Rebuild_Service {
 				}
 
 				$log->trace( "Going to save post $count, ID $post_id..." );
-				$this->linked_data_service->push( $post_id );
+				$linked_data_service->push( $post_id );
 			},
 			array(),
 			$offset,
@@ -88,8 +90,8 @@ class Wordlift_Reference_Rebuild_Service extends Wordlift_Rebuild_Service {
 			$this->redirect( $url );
 		}
 
-		$this->log->info( "References rebuild complete [ count :: $count ][ limit :: $limit ]" );
-		echo( "References rebuild complete [ count :: $count ][ limit :: $limit ]" );
+		$this->log->info( "Rebuild complete" );
+		echo( "Rebuild complete" );
 
 		// If we're being called as AJAX, die here.
 		if ( DOING_AJAX ) {

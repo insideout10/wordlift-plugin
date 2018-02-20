@@ -125,17 +125,8 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 		// Flush the cache.
 		Wordlift_File_Cache_Service::flush_all();
 
-		$this->log->info( "Rebuild complete [ count :: $count ][ limit :: $limit ]" );
-		echo( "Rebuild complete [ count :: $count ][ limit :: $limit ]" );
-
-		// Rebuilding the references.
-		do_action( 'wp_ajax_wl_rebuild_references' );
-
-		// If we're being called as AJAX, die here.
-		if ( DOING_AJAX ) {
-			wp_die();
-		}
-
+		// Rebuild also the references.
+		$this->redirect( admin_url( 'admin-ajax.php?action=wl_rebuild_references') );
 	}
 
 	/**
