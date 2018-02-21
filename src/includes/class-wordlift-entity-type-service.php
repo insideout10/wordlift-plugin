@@ -122,15 +122,8 @@ class Wordlift_Entity_Type_Service {
 		// Get the type from the associated classification.
 		$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 
-		if ( is_wp_error( $terms ) ) {
-			$this->log->error( "An error occurred while getting the post type for post $post_id: " . $terms->get_error_message() );
-
-			// TODO: handle error
-			return null;
-		}
-
 		// Return the schema type if there is a term found.
-		if ( ! empty( $terms ) ) {
+		if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
 			$this->log->debug( "Found {$terms[0]->slug} term for post $post_id." );
 
 			// Return the entity type with the specified id.
@@ -138,7 +131,7 @@ class Wordlift_Entity_Type_Service {
 		}
 
 		// If it's a page or post return `Article`.
-		if ( in_array( $post_type , array( 'post', 'page' ) ) ) {
+		if ( in_array( $post_type, array( 'post', 'page' ) ) ) {
 			$this->log->debug( "Post $post_id has no terms, and it's a `post` type, returning `Article`." );
 
 			// Return "Article" schema type for posts.
