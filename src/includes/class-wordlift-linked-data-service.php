@@ -240,7 +240,8 @@ class Wordlift_Linked_Data_Service {
 	private function get_delete_statements( $post_id ) {
 
 		// Get the entity URI.
-		$uri = $this->entity_service->get_uri( $post_id );
+		$uri            = $this->entity_service->get_uri( $post_id );
+		$all_predicates = $this->schema_service->get_all_predicates();
 
 		// Prepare the delete statements with the entity as subject.
 		$as_subject = array_map( function ( $item ) use ( $uri ) {
@@ -249,7 +250,7 @@ class Wordlift_Linked_Data_Service {
 				->delete()
 				->statement( $uri, $item, '?o' )
 				->build();
-		}, $this->schema_service->get_all_predicates() );
+		}, $all_predicates );
 
 		// Prepare the delete statements with the entity as object.
 		$as_object = array_map( function ( $item ) use ( $uri ) {
@@ -258,7 +259,7 @@ class Wordlift_Linked_Data_Service {
 				->delete()
 				->statement( '?s', $item, $uri, Wordlift_Query_Builder::OBJECT_URI )
 				->build();
-		}, $this->schema_service->get_all_predicates() );
+		}, $all_predicates );
 
 		// Merge the delete statements and return them.
 		return array_merge( $as_subject, $as_object );
@@ -297,7 +298,7 @@ class Wordlift_Linked_Data_Service {
 
 		// Accumulate the tuples.
 		$tuples = array();
-		/** @var Wordlift_Sparql_Tuple_Rendition $property A {@link Wordlift_Sparql_Tuple_Rendition} instance. */
+		/** @var Wordlift_Default_Sparql_Tuple_Rendition $property A {@link Wordlift_Sparql_Tuple_Rendition} instance. */
 		foreach ( $properties as $property ) {
 			foreach ( $property->get( $post_id ) as $tuple ) {
 				$tuples[] = $tuple;

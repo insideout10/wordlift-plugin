@@ -46,16 +46,17 @@ class Wordlift_Sparql_Tuple_Rendition_Factory {
 	 *
 	 * @since 3.15.0
 	 *
-	 * @param \Wordlift_Storage $storage   A {@link Wordlift_Storage} instance.
-	 * @param string            $predicate A predicate (e.g. `http://schema.org/name`).
-	 * @param string|null       $data_type A data-type.
-	 * @param string|null       $language  A language code (e.g. `en`).
+	 * @param \Wordlift_Storage $storage    A {@link Wordlift_Storage} instance.
+	 * @param string            $predicate  A predicate (e.g. `http://schema.org/name`).
+	 * @param string|null       $data_type  A data-type.
+	 * @param string|null       $language   A language code (e.g. `en`).
+	 * @param string|null       $uri_suffix The URI suffix.
 	 *
-	 * @return \Wordlift_Sparql_Tuple_Rendition A {@link Wordlift_Sparql_Tuple_Rendition} instance.
+	 * @return \Wordlift_Default_Sparql_Tuple_Rendition A {@link Wordlift_Sparql_Tuple_Rendition} instance.
 	 */
-	public function create( $storage, $predicate, $data_type = null, $language = null ) {
+	public function create( $storage, $predicate, $data_type = null, $language = null, $uri_suffix = null ) {
 
-		return new Wordlift_Sparql_Tuple_Rendition( $this->entity_service, $storage, $predicate, $data_type, $language );
+		return new Wordlift_Default_Sparql_Tuple_Rendition( $this->entity_service, $storage, $predicate, $data_type, $language, $uri_suffix );
 	}
 
 }

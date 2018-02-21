@@ -17,7 +17,7 @@
  * @package    Wordlift
  * @subpackage Wordlift/includes
  */
-class Wordlift_Sparql_Tuple_Rendition {
+class Wordlift_Default_Sparql_Tuple_Rendition implements Wordlift_Sparql_Tuple_Rendition {
 
 	/**
 	 * A {@link Wordlift_Storage} instance to read a property.
@@ -66,6 +66,14 @@ class Wordlift_Sparql_Tuple_Rendition {
 	private $entity_service;
 
 	/**
+	 * The URI suffix.
+	 *
+	 * @since 3.18.0
+	 * @var null|string $uri_suffix The URI suffix or null if no suffix is required.
+	 */
+	private $uri_suffix;
+
+	/**
 	 * Create a {@link Wordlift_Sparql_Tuple_Rendition} instance.
 	 *
 	 * @since 3.15.0
@@ -77,14 +85,16 @@ class Wordlift_Sparql_Tuple_Rendition {
 	 * @param string                   $predicate      The predicate URI.
 	 * @param string|null              $data_type      The data type or null.
 	 * @param string|null              $language       The language code or null.
+	 * @param string|null              $uri_suffix     The URI suffix, used for example for 2nd level entities, like location.
 	 */
-	public function __construct( $entity_service, $storage, $predicate, $data_type = null, $language = null ) {
+	public function __construct( $entity_service, $storage, $predicate, $data_type = null, $language = null, $uri_suffix = null ) {
 
 		$this->entity_service = $entity_service;
 		$this->storage        = $storage;
 		$this->predicate      = $predicate;
 		$this->data_type      = $data_type;
 		$this->language       = $language;
+		$this->uri_suffix     = $uri_suffix;
 
 	}
 
@@ -100,7 +110,8 @@ class Wordlift_Sparql_Tuple_Rendition {
 	public function get( $post_id ) {
 
 		// Get the entity URI.
-		$uri = $this->entity_service->get_uri( $post_id );
+		$uri = $this->entity_service->get_uri( $post_id )
+			   . ( ! empty( $this->uri_suffix ) ? $this->uri_suffix : '' );
 
 		// Get the predicate, data type and language.
 		$predicate = $this->predicate;

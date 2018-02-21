@@ -1049,7 +1049,54 @@ class Wordlift_Schema_Service {
 					'input_field' => 'address',
 				),
 			),
-			'linked_data'   => array(),
+			'linked_data'   => array(
+
+				// ### schema:streetAddress.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( self::FIELD_ADDRESS ),
+					Wordlift_Query_Builder::SCHEMA_STREET_ADDRESS,
+					null,
+					$this->language_code,
+					'/address'
+				),
+
+				// ### schema:postOfficeBoxNumber.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( self::FIELD_ADDRESS_POSTAL_CODE ),
+					'http://schema.org/postOfficeBoxNumber',
+					null,
+					null,
+					'/address'
+				),
+
+				// ### schema:addressLocality.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( self::FIELD_ADDRESS_LOCALITY ),
+					'http://schema.org/addressLocality',
+					null,
+					$this->language_code,
+					'/address'
+				),
+
+				// ### schema:addressRegion.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( self::FIELD_ADDRESS_REGION ),
+					'http://schema.org/addressRegion',
+					null,
+					$this->language_code,
+					'/address'
+				),
+
+				// ### schema:addressCountry.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( self::FIELD_ADDRESS_COUNTRY ),
+					'http://schema.org/addressCountry',
+					null,
+					$this->language_code,
+					'/address'
+				),
+
+			),
 			'templates'     => array(
 				'subtitle' => '{{id}}',
 			),

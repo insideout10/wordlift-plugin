@@ -129,6 +129,11 @@ class Wordlift_Query_Builder {
 	const RDFS_LABEL_URI = 'http://www.w3.org/2000/01/rdf-schema#label';
 
 	/**
+	 * @since 3.18.0
+	 */
+	const SCHEMA_STREET_ADDRESS = 'http://schema.org/streetAddress';
+
+	/**
 	 * Hold the template (INSERT or DELETE).
 	 *
 	 * @since  3.1.7
