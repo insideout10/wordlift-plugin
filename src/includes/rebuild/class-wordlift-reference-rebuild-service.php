@@ -159,8 +159,6 @@ class Wordlift_Reference_Rebuild_Service extends Wordlift_Rebuild_Service {
 			$this->linked_data_service->push( $post->ID );
 		}
 
-		do_action( 'wl_push_references' );
-
 	}
 
 }
