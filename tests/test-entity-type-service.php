@@ -57,7 +57,7 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 			'post_type' => 'entity',
 		) );
 
-		wp_set_object_terms( $entity_id, 'person', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		wp_set_object_terms( $entity_id, 'person', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 		$schema = $entity_type_service->get( $entity_id );
 
@@ -91,7 +91,7 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 
 		$post_id = $this->factory->post->create();
 
-		wp_set_object_terms( $post_id, 'thing', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		wp_set_object_terms( $post_id, 'thing', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 		$schema = $entity_type_service->get( $post_id );
 
@@ -132,7 +132,7 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 			'post_type' => 'property',
 		) );
 
-		wp_set_object_terms( $post_id, 'thing', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		wp_set_object_terms( $post_id, 'thing', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 		$schema = $entity_type_service->get( $post_id );
 
@@ -184,7 +184,7 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 			'post_type' => 'property',
 		) );
 
-		wp_set_object_terms( $post_id, 'person', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		wp_set_object_terms( $post_id, 'person', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 		$schema = $entity_type_service->get( $post_id );
 
