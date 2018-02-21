@@ -55,7 +55,7 @@ class Wordlift_Post_As_Recipe_Test extends Wordlift_Unit_Test_Case {
 			'order'          => 'desc',
 			'tax_query'      => array(
 				array(
-					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+					'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 					'field'    => 'slug',
 					'terms'    => 'article',
 				),
@@ -104,7 +104,7 @@ class Wordlift_Post_As_Recipe_Test extends Wordlift_Unit_Test_Case {
 			'order'          => 'desc',
 			'tax_query'      => array(
 				array(
-					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+					'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 					'field'    => 'slug',
 					'terms'    => 'recipe',
 				),

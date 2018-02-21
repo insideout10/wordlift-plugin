@@ -342,7 +342,7 @@ class EntityServiceTest extends Wordlift_Unit_Test_Case {
 
 		// Create the first entity
 		$entity_id   = wl_create_post( '', 'entity-1', $entity_name, 'draft', 'entity' );
-		$schema_type = wl_entity_type_taxonomy_get_type( $entity_id );
+		$schema_type = Wordlift_Entity_Type_Service::get_instance()->get( $entity_id );
 
 		$this->assertEquals( $schema_type['css_class'], 'wl-thing' );
 

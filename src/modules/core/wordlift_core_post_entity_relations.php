@@ -460,11 +460,11 @@ function wl_core_sql_query_builder( $args ) {
 		$tax_query = array(
 			'relation' => 'AND',
 			array(
-				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 				'operator' => 'EXISTS',
 			),
 			array(
-				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 				'field'    => 'slug',
 				'terms'    => 'article',
 				'operator' => 'NOT IN',
@@ -474,11 +474,11 @@ function wl_core_sql_query_builder( $args ) {
 		$tax_query = array(
 			'relation' => 'OR',
 			array(
-				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 				'operator' => 'NOT EXISTS',
 			),
 			array(
-				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 				'field'    => 'slug',
 				'terms'    => 'article',
 			),

@@ -717,7 +717,7 @@ class Wordlift_Batch_Analysis_Service_Test extends Wordlift_Unit_Test_Case {
 
 		// Check that the default taxonomy term is assigned.
 		foreach ( $posts as $post_id ) {
-			$terms = wp_get_post_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+			$terms = wp_get_post_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 			$this->assertCount( 1, $terms );
 			$this->assertEquals( 'article', $terms[0]->slug );
 		}

@@ -154,7 +154,6 @@ class Wordlift_Storage_Factory {
 	public function schema_class() {
 
 		return new Wordlift_Post_Schema_Class_Storage();
-
 	}
 
 	/**

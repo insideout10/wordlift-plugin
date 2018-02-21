@@ -121,7 +121,7 @@ class Wordlift_Issue_662 extends Wordlift_Unit_Test_Case {
 
 		// Remove WordLift's taxonomy from the post, and clean up the cache
 		// to pick up the changes.
-		wp_delete_object_term_relationships( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		wp_delete_object_term_relationships( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		wp_cache_flush();
 
 		$this->add_term( $post_id, $slug );
@@ -131,10 +131,10 @@ class Wordlift_Issue_662 extends Wordlift_Unit_Test_Case {
 
 	private function add_term( $post_id, $slug ) {
 
-		wp_add_object_terms( $post_id, $slug, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		wp_add_object_terms( $post_id, $slug, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 		// Get the terms bound to the post.
-		$terms = get_the_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		$terms = get_the_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		$this->assertCount( 1, $terms );
 
 		// Check that the `Article` term has been bound automatically to the
@@ -160,11 +160,11 @@ class Wordlift_Issue_662 extends Wordlift_Unit_Test_Case {
 
 		// Remove WordLift's taxonomy from the post, and clean up the cache
 		// to pick up the changes.
-		wp_delete_object_term_relationships( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		wp_delete_object_term_relationships( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		wp_cache_flush();
 
 		// Check that the taxonomy has been removed.
-		$terms = get_the_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		$terms = get_the_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		$this->assertFalse( $terms );
 
 		return $post_id;
@@ -183,7 +183,7 @@ class Wordlift_Issue_662 extends Wordlift_Unit_Test_Case {
 		$this->assertGreaterThan( 0, $post_id );
 
 		// Get the terms bound to the post.
-		$terms = get_the_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		$terms = get_the_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		$this->assertCount( 1, $terms );
 
 		// Check that the `Article` term has been bound automatically to the

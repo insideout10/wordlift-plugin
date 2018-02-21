@@ -182,7 +182,7 @@ class Wordlift_Uri_Service {
 		}
 
 		// If schema_type is equal to schema org type of post x, then the new uri is returned
-		$schema_post_type = wl_entity_type_taxonomy_get_type( $post_id );
+		$schema_post_type = Wordlift_Entity_Type_Service::get_instance()->get( $post_id );
 
 		// @todo: we shouldn't rely on css classes to take such decisions.
 		if ( $schema_type === $schema_post_type['css_class'] ) {

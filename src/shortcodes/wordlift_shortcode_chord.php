@@ -25,11 +25,11 @@ function wl_shortcode_chord_most_referenced_entity_id() {
 		'tax_query'   => array(
 			'relation' => 'OR',
 			array(
-				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 				'operator' => 'NOT EXISTS',
 			),
 			array(
-				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 				'field'    => 'slug',
 				'terms'    => 'article',
 			),
@@ -150,7 +150,7 @@ function wl_shortcode_chord_get_graph( $data ) {
 		}
 
 		// Get the entity taxonomy bound to this post (if there's no taxonomy, no stylesheet will be set).
-		$term = wl_entity_type_taxonomy_get_type( $item );
+		$term = Wordlift_Entity_Type_Service::get_instance()->get( $item );
 
 		// The following log may create a circular loop.
 		// wl_write_log( "wl_shortcode_chord_get_graph [ post id :: $post->ID ][ term :: " . var_export( $term, true ) . " ]" );

@@ -51,7 +51,7 @@ class Wordlift_Entity_Type_Admin_Service {
 
 		// Loop over all the non entity post types which support entities and turn off the metabox.
 		foreach ( $this->get_types_no_entity() as $type ) {
-			remove_meta_box( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME . 'div', $type, 'side' );
+			remove_meta_box( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME . 'div', $type, 'side' );
 		}
 
 	}
@@ -72,7 +72,7 @@ class Wordlift_Entity_Type_Admin_Service {
 		// Loop over all the non entity post types which support entities and turn off the taxonomy column.
 		foreach ( $this->get_types_no_entity() as $type ) {
 			add_filter( 'manage_taxonomies_for_' . $type . '_columns', function ( $taxonomies ) {
-				unset( $taxonomies[ Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME ] );
+				unset( $taxonomies[ Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ] );
 
 				return $taxonomies;
 			} );

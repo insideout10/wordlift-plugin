@@ -113,6 +113,15 @@ class Wordlift {
 	private $topic_taxonomy_service;
 
 	/**
+	 * The Entity Types Taxonomy service.
+	 *
+	 * @since  3.18.0
+	 * @access private
+	 * @var \Wordlift_Entity_Type_Taxonomy_Service The Entity Types Taxonomy service.
+	 */
+	private $entity_types_taxonomy_service;
+
+	/**
 	 * The User service.
 	 *
 	 * @since  3.1.7
@@ -346,6 +355,15 @@ class Wordlift {
 	 * @var \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
 	 */
 	protected $configuration_service;
+
+	/**
+	 * A {@link Wordlift_Install_Service} instance.
+	 *
+	 * @since  3.18.0
+	 * @access protected
+	 * @var \Wordlift_Install_Service $install_service A {@link Wordlift_Install_Service} instance.
+	 */
+	protected $install_service;
 
 	/**
 	 * A {@link Wordlift_Entity_Type_Service} instance.
@@ -752,6 +770,15 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-sanitizer.php';
 
+		/** Installs. */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-1-0-0.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-10-0.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-12-0.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-14-0.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-15-0.php';
+
 		/** Services. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-log-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-http-api.php';
@@ -792,7 +819,7 @@ class Wordlift {
 		/**
 		 * The Entity Types Taxonomy service.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-types-taxonomy-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-type-taxonomy-service.php';
 
 		/**
 		 * The Entity service.
@@ -1078,6 +1105,9 @@ class Wordlift {
 		// Load the `wl-api` end-point.
 		new Wordlift_Http_Api();
 
+		// Load the Install Service.
+		$this->install_service = new Wordlift_Install_Service();
+
 		/** Services. */
 		// Create the configuration service.
 		$this->configuration_service = new Wordlift_Configuration_Service();
@@ -1126,7 +1156,8 @@ class Wordlift {
 
 		$this->entity_types_taxonomy_walker = new Wordlift_Entity_Types_Taxonomy_Walker();
 
-		$this->topic_taxonomy_service = new Wordlift_Topic_Taxonomy_Service();
+		$this->topic_taxonomy_service        = new Wordlift_Topic_Taxonomy_Service();
+		$this->entity_types_taxonomy_service = new Wordlift_Entity_Type_Taxonomy_Service();
 
 		// Create an instance of the ShareThis service, later we hook it to the_content and the_excerpt filters.
 		$this->sharethis_service = new Wordlift_ShareThis_Service();
@@ -1304,8 +1335,9 @@ class Wordlift {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
-		// Hook the init action to the Topic Taxonomy service.
+		// Hook the init action to taxonomy services.
 		$this->loader->add_action( 'init', $this->topic_taxonomy_service, 'init', 0 );
+		$this->loader->add_action( 'init', $this->entity_types_taxonomy_service, 'init', 0 );
 
 		// Hook the deleted_post_meta action to the Thumbnail service.
 		$this->loader->add_action( 'deleted_post_meta', $this->thumbnail_service, 'deleted_post_meta', 10, 4 );
@@ -1456,6 +1488,7 @@ class Wordlift {
 
 		// Register the entity post type.
 		$this->loader->add_action( 'init', $this->entity_post_type_service, 'register' );
+		$this->loader->add_action( 'init', $this->install_service, 'install' );
 
 		// Bind the link generation and handling hooks to the entity link service.
 		$this->loader->add_filter( 'post_type_link', $this->entity_link_service, 'post_type_link', 10, 4 );
