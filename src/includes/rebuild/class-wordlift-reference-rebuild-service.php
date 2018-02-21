@@ -19,15 +19,6 @@ class Wordlift_Reference_Rebuild_Service extends Wordlift_Rebuild_Service {
 	private $entity_service;
 
 	/**
-	 * The {@link Wordlift_Relation_Service} instance.
-	 *
-	 * @since  3.18.0
-	 * @access private
-	 * @var \Wordlift_Relation_Service $relation_service The {@link Wordlift_Relation_Service} instance.
-	 */
-	private $relation_service;
-
-	/**
 	 * A {@link Wordlift_Log_Service} instance.
 	 *
 	 * @since  3.18.0
@@ -42,7 +33,6 @@ class Wordlift_Reference_Rebuild_Service extends Wordlift_Rebuild_Service {
 	 *
 	 * @param \Wordlift_Entity_Service       $entity_service       The {@link Wordlift_Entity_Service} instance.
 	 * @param \Wordlift_Linked_Data_Service  $linked_data_service  The {@link Wordlift_Linked_Data_Service} instance.
-	 * @param \Wordlift_Relation_Service     $relation_service     The {@link Wordlift_Relation_Service} instance.
 	 */
 	public function __construct( $linked_data_service, $entity_service, $relation_service ) {
 
@@ -50,12 +40,6 @@ class Wordlift_Reference_Rebuild_Service extends Wordlift_Rebuild_Service {
 
 		$this->linked_data_service = $linked_data_service;
 		$this->entity_service      = $entity_service;
-		$this->relation_service    = $relation_service;
-
-		add_action( 'wl_async_wl_push_references', array(
-			$this,
-			'push_references',
-		) );
 	}
 
 	public function rebuild() {
@@ -130,34 +114,6 @@ class Wordlift_Reference_Rebuild_Service extends Wordlift_Rebuild_Service {
 			$limit,
 			$offset
 		) );
-
-	}
-
-	/**
-	 * Creates references for articles *referencing* entities
-	 *
-	 * @since 3.18.0
-	 *
-	 * @return void
-	 */
-	public function push_references() {
-		// Get relations.
-		$relations = $this->relation_service->find_all_grouped_by_subject_id();
-
-		// Loop through all relations and push the references.
-		foreach ( $relations as $relation ) {
-
-			$post = get_post( $relation->subject_id );
-
-			// Bail out if it's an entity: we're only interested in articles
-			// *referencing* entities.
-			if ( $this->entity_service->is_entity( $post->ID ) ) {
-				continue;
-			}
-
-			// Push the references.
-			$this->linked_data_service->push( $post->ID );
-		}
 
 	}
 

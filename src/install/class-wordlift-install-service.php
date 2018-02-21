@@ -64,6 +64,7 @@ class Wordlift_Install_Service {
 			new Wordlift_Install_3_12_0(),
 			new Wordlift_Install_3_14_0(),
 			new Wordlift_Install_3_15_0(),
+			new Wordlift_Install_3_18_0(),
 		);
 
 		/** @var Wordlift_Install $install */
@@ -71,7 +72,7 @@ class Wordlift_Install_Service {
 			// Get the install version.
 			$version = $install->get_version();
 
-			if ( version_compare( $version, $this->get_current_version(), '>=' ) ) {
+			if ( version_compare( $version, $this->get_current_version(), '>' ) ) {
 				// Install version.
 				$install->install();
 
