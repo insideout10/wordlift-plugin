@@ -19,7 +19,7 @@ class Wordlift_Batch_Analysis_Sql_Helper_Test extends Wordlift_Unit_Test_Case {
 		// 1 post type.
 		$sql = Wordlift_Batch_Analysis_Sql_Helper::get_sql( self::get_args( array( 'post_type' => 'post' ) ) );
 
-		$this->assertEquals( "INSERT INTO wptests_postmeta ( post_id, meta_key, meta_value ) SELECT p.ID, metas.* FROM (  SELECT '_wl_batch_analysis_state', 0 FROM dual   UNION	 SELECT '_wl_batch_analysis_submit_timestamp', UTC_TIMESTAMP() FROM dual	  UNION	 SELECT '_wl_batch_analysis_options', 'a:2:{s:5:\\\"links\\\";s:7:\\\"default\\\";s:15:\\\"min_occurrences\\\";i:1;}' FROM dual	) metas, wptests_posts p WHERE p.post_type IN ('post')  AND p.post_status = 'publish' AND p.post_content NOT REGEXP '<[a-z]+ id=\"urn:[^\"]+\" class=\"[^\"]+\" itemid=\"[^\"]+\">'",
+		$this->assertEquals( "SELECT p.ID FROM wptests_posts p WHERE p.post_type IN ('post')  AND p.post_status = 'publish' AND p.post_content NOT REGEXP '<[a-z]+ id=\"urn:[^\"]+\" class=\"[^\"]+\" itemid=\"[^\"]+\">'",
 			$sql );
 	}
 
@@ -32,7 +32,7 @@ class Wordlift_Batch_Analysis_Sql_Helper_Test extends Wordlift_Unit_Test_Case {
 			),
 		) ) );
 
-		$this->assertEquals( "INSERT INTO wptests_postmeta ( post_id, meta_key, meta_value ) SELECT p.ID, metas.* FROM (  SELECT '_wl_batch_analysis_state', 0 FROM dual   UNION	 SELECT '_wl_batch_analysis_submit_timestamp', UTC_TIMESTAMP() FROM dual	  UNION	 SELECT '_wl_batch_analysis_options', 'a:2:{s:5:\\\"links\\\";s:7:\\\"default\\\";s:15:\\\"min_occurrences\\\";i:1;}' FROM dual	) metas, wptests_posts p WHERE p.post_type IN ('post', 'page')  AND p.post_status = 'publish' AND p.post_content NOT REGEXP '<[a-z]+ id=\"urn:[^\"]+\" class=\"[^\"]+\" itemid=\"[^\"]+\">'",
+		$this->assertEquals( "SELECT p.ID FROM wptests_posts p WHERE p.post_type IN ('post', 'page')  AND p.post_status = 'publish' AND p.post_content NOT REGEXP '<[a-z]+ id=\"urn:[^\"]+\" class=\"[^\"]+\" itemid=\"[^\"]+\">'",
 			$sql );
 	}
 
@@ -44,7 +44,7 @@ class Wordlift_Batch_Analysis_Sql_Helper_Test extends Wordlift_Unit_Test_Case {
 			'include_annotated' => true,
 		) ) );
 
-		$this->assertEquals( "INSERT INTO wptests_postmeta ( post_id, meta_key, meta_value ) SELECT p.ID, metas.* FROM (  SELECT '_wl_batch_analysis_state', 0 FROM dual   UNION	 SELECT '_wl_batch_analysis_submit_timestamp', UTC_TIMESTAMP() FROM dual	  UNION	 SELECT '_wl_batch_analysis_options', 'a:2:{s:5:\\\"links\\\";s:7:\\\"default\\\";s:15:\\\"min_occurrences\\\";i:1;}' FROM dual	) metas, wptests_posts p WHERE p.post_type IN ('post')  AND p.post_status = 'publish'",
+		$this->assertEquals( "SELECT p.ID FROM wptests_posts p WHERE p.post_type IN ('post')  AND p.post_status = 'publish'",
 			$sql );
 
 	}
@@ -56,7 +56,7 @@ class Wordlift_Batch_Analysis_Sql_Helper_Test extends Wordlift_Unit_Test_Case {
 			'include_annotated' => 'yes',
 		) ) );
 
-		$this->assertEquals( "INSERT INTO wptests_postmeta ( post_id, meta_key, meta_value ) SELECT p.ID, metas.* FROM (  SELECT '_wl_batch_analysis_state', 0 FROM dual   UNION	 SELECT '_wl_batch_analysis_submit_timestamp', UTC_TIMESTAMP() FROM dual	  UNION	 SELECT '_wl_batch_analysis_options', 'a:2:{s:5:\\\"links\\\";s:7:\\\"default\\\";s:15:\\\"min_occurrences\\\";i:1;}' FROM dual	) metas, wptests_posts p WHERE p.post_type IN ('post')  AND p.post_status = 'publish' AND p.post_content NOT REGEXP '<[a-z]+ id=\"urn:[^\"]+\" class=\"[^\"]+\" itemid=\"[^\"]+\">'",
+		$this->assertEquals( "SELECT p.ID FROM wptests_posts p WHERE p.post_type IN ('post')  AND p.post_status = 'publish' AND p.post_content NOT REGEXP '<[a-z]+ id=\"urn:[^\"]+\" class=\"[^\"]+\" itemid=\"[^\"]+\">'",
 			$sql );
 
 	}
@@ -68,7 +68,7 @@ class Wordlift_Batch_Analysis_Sql_Helper_Test extends Wordlift_Unit_Test_Case {
 			'include_annotated' => false,
 		) ) );
 
-		$this->assertEquals( "INSERT INTO wptests_postmeta ( post_id, meta_key, meta_value ) SELECT p.ID, metas.* FROM (  SELECT '_wl_batch_analysis_state', 0 FROM dual   UNION	 SELECT '_wl_batch_analysis_submit_timestamp', UTC_TIMESTAMP() FROM dual	  UNION	 SELECT '_wl_batch_analysis_options', 'a:2:{s:5:\\\"links\\\";s:7:\\\"default\\\";s:15:\\\"min_occurrences\\\";i:1;}' FROM dual	) metas, wptests_posts p WHERE p.post_type IN ('post')  AND p.post_status = 'publish' AND p.post_content NOT REGEXP '<[a-z]+ id=\"urn:[^\"]+\" class=\"[^\"]+\" itemid=\"[^\"]+\">'",
+		$this->assertEquals( "SELECT p.ID FROM wptests_posts p WHERE p.post_type IN ('post')  AND p.post_status = 'publish' AND p.post_content NOT REGEXP '<[a-z]+ id=\"urn:[^\"]+\" class=\"[^\"]+\" itemid=\"[^\"]+\">'",
 			$sql );
 
 	}
@@ -80,7 +80,7 @@ class Wordlift_Batch_Analysis_Sql_Helper_Test extends Wordlift_Unit_Test_Case {
 			'from' => '2018-01-01T00:00:00+00:00',
 		) ) );
 
-		$this->assertEquals( "INSERT INTO wptests_postmeta ( post_id, meta_key, meta_value ) SELECT p.ID, metas.* FROM (  SELECT '_wl_batch_analysis_state', 0 FROM dual   UNION	 SELECT '_wl_batch_analysis_submit_timestamp', UTC_TIMESTAMP() FROM dual	  UNION	 SELECT '_wl_batch_analysis_options', 'a:2:{s:5:\\\"links\\\";s:7:\\\"default\\\";s:15:\\\"min_occurrences\\\";i:1;}' FROM dual	) metas, wptests_posts p WHERE p.post_type IN ('post')  AND p.post_status = 'publish' AND p.post_content NOT REGEXP '<[a-z]+ id=\"urn:[^\"]+\" class=\"[^\"]+\" itemid=\"[^\"]+\">' AND p.post_date_gmt >= '2018-01-01 00:00:00'",
+		$this->assertEquals( "SELECT p.ID FROM wptests_posts p WHERE p.post_type IN ('post')  AND p.post_status = 'publish' AND p.post_content NOT REGEXP '<[a-z]+ id=\"urn:[^\"]+\" class=\"[^\"]+\" itemid=\"[^\"]+\">' AND p.post_date_gmt >= '2018-01-01 00:00:00'",
 			$sql );
 
 	}
@@ -92,7 +92,7 @@ class Wordlift_Batch_Analysis_Sql_Helper_Test extends Wordlift_Unit_Test_Case {
 			'from' => '2018-01-01T00:00:00+02:00',
 		) ) );
 
-		$this->assertEquals( "INSERT INTO wptests_postmeta ( post_id, meta_key, meta_value ) SELECT p.ID, metas.* FROM (  SELECT '_wl_batch_analysis_state', 0 FROM dual   UNION	 SELECT '_wl_batch_analysis_submit_timestamp', UTC_TIMESTAMP() FROM dual	  UNION	 SELECT '_wl_batch_analysis_options', 'a:2:{s:5:\\\"links\\\";s:7:\\\"default\\\";s:15:\\\"min_occurrences\\\";i:1;}' FROM dual	) metas, wptests_posts p WHERE p.post_type IN ('post')  AND p.post_status = 'publish' AND p.post_content NOT REGEXP '<[a-z]+ id=\"urn:[^\"]+\" class=\"[^\"]+\" itemid=\"[^\"]+\">' AND p.post_date_gmt >= '2017-12-31 22:00:00'",
+		$this->assertEquals( "SELECT p.ID FROM wptests_posts p WHERE p.post_type IN ('post')  AND p.post_status = 'publish' AND p.post_content NOT REGEXP '<[a-z]+ id=\"urn:[^\"]+\" class=\"[^\"]+\" itemid=\"[^\"]+\">' AND p.post_date_gmt >= '2017-12-31 22:00:00'",
 			$sql );
 
 	}
@@ -104,7 +104,7 @@ class Wordlift_Batch_Analysis_Sql_Helper_Test extends Wordlift_Unit_Test_Case {
 			'to' => '2018-01-01T00:00:00+00:00',
 		) ) );
 
-		$this->assertEquals( "INSERT INTO wptests_postmeta ( post_id, meta_key, meta_value ) SELECT p.ID, metas.* FROM (  SELECT '_wl_batch_analysis_state', 0 FROM dual   UNION	 SELECT '_wl_batch_analysis_submit_timestamp', UTC_TIMESTAMP() FROM dual	  UNION	 SELECT '_wl_batch_analysis_options', 'a:2:{s:5:\\\"links\\\";s:7:\\\"default\\\";s:15:\\\"min_occurrences\\\";i:1;}' FROM dual	) metas, wptests_posts p WHERE p.post_type IN ('post')  AND p.post_status = 'publish' AND p.post_content NOT REGEXP '<[a-z]+ id=\"urn:[^\"]+\" class=\"[^\"]+\" itemid=\"[^\"]+\">' AND p.post_date_gmt <= '2018-01-01 00:00:00'",
+		$this->assertEquals( "SELECT p.ID FROM wptests_posts p WHERE p.post_type IN ('post')  AND p.post_status = 'publish' AND p.post_content NOT REGEXP '<[a-z]+ id=\"urn:[^\"]+\" class=\"[^\"]+\" itemid=\"[^\"]+\">' AND p.post_date_gmt <= '2018-01-01 00:00:00'",
 			$sql );
 
 	}
@@ -116,7 +116,7 @@ class Wordlift_Batch_Analysis_Sql_Helper_Test extends Wordlift_Unit_Test_Case {
 			'to' => '2018-01-01T00:00:00+02:00',
 		) ) );
 
-		$this->assertEquals( "INSERT INTO wptests_postmeta ( post_id, meta_key, meta_value ) SELECT p.ID, metas.* FROM (  SELECT '_wl_batch_analysis_state', 0 FROM dual   UNION	 SELECT '_wl_batch_analysis_submit_timestamp', UTC_TIMESTAMP() FROM dual	  UNION	 SELECT '_wl_batch_analysis_options', 'a:2:{s:5:\\\"links\\\";s:7:\\\"default\\\";s:15:\\\"min_occurrences\\\";i:1;}' FROM dual	) metas, wptests_posts p WHERE p.post_type IN ('post')  AND p.post_status = 'publish' AND p.post_content NOT REGEXP '<[a-z]+ id=\"urn:[^\"]+\" class=\"[^\"]+\" itemid=\"[^\"]+\">' AND p.post_date_gmt <= '2017-12-31 22:00:00'",
+		$this->assertEquals( "SELECT p.ID FROM wptests_posts p WHERE p.post_type IN ('post')  AND p.post_status = 'publish' AND p.post_content NOT REGEXP '<[a-z]+ id=\"urn:[^\"]+\" class=\"[^\"]+\" itemid=\"[^\"]+\">' AND p.post_date_gmt <= '2017-12-31 22:00:00'",
 			$sql );
 
 	}
@@ -128,7 +128,7 @@ class Wordlift_Batch_Analysis_Sql_Helper_Test extends Wordlift_Unit_Test_Case {
 			'include' => null,
 		) ) );
 
-		$this->assertEquals( "INSERT INTO wptests_postmeta ( post_id, meta_key, meta_value ) SELECT p.ID, metas.* FROM (  SELECT '_wl_batch_analysis_state', 0 FROM dual   UNION	 SELECT '_wl_batch_analysis_submit_timestamp', UTC_TIMESTAMP() FROM dual	  UNION	 SELECT '_wl_batch_analysis_options', 'a:2:{s:5:\\\"links\\\";s:7:\\\"default\\\";s:15:\\\"min_occurrences\\\";i:1;}' FROM dual	) metas, wptests_posts p WHERE p.post_type IN ('post')  AND p.post_status = 'publish' AND p.post_content NOT REGEXP '<[a-z]+ id=\"urn:[^\"]+\" class=\"[^\"]+\" itemid=\"[^\"]+\">'",
+		$this->assertEquals( "SELECT p.ID FROM wptests_posts p WHERE p.post_type IN ('post')  AND p.post_status = 'publish' AND p.post_content NOT REGEXP '<[a-z]+ id=\"urn:[^\"]+\" class=\"[^\"]+\" itemid=\"[^\"]+\">'",
 			$sql );
 
 	}
@@ -140,7 +140,7 @@ class Wordlift_Batch_Analysis_Sql_Helper_Test extends Wordlift_Unit_Test_Case {
 			'include' => array(),
 		) ) );
 
-		$this->assertEquals( "INSERT INTO wptests_postmeta ( post_id, meta_key, meta_value ) SELECT p.ID, metas.* FROM (  SELECT '_wl_batch_analysis_state', 0 FROM dual   UNION	 SELECT '_wl_batch_analysis_submit_timestamp', UTC_TIMESTAMP() FROM dual	  UNION	 SELECT '_wl_batch_analysis_options', 'a:2:{s:5:\\\"links\\\";s:7:\\\"default\\\";s:15:\\\"min_occurrences\\\";i:1;}' FROM dual	) metas, wptests_posts p WHERE p.post_type IN ('post')  AND p.post_status = 'publish' AND p.post_content NOT REGEXP '<[a-z]+ id=\"urn:[^\"]+\" class=\"[^\"]+\" itemid=\"[^\"]+\">'",
+		$this->assertEquals( "SELECT p.ID FROM wptests_posts p WHERE p.post_type IN ('post')  AND p.post_status = 'publish' AND p.post_content NOT REGEXP '<[a-z]+ id=\"urn:[^\"]+\" class=\"[^\"]+\" itemid=\"[^\"]+\">'",
 			$sql );
 
 	}
@@ -152,7 +152,7 @@ class Wordlift_Batch_Analysis_Sql_Helper_Test extends Wordlift_Unit_Test_Case {
 			'ids' => 1,
 		) ) );
 
-		$this->assertEquals( "INSERT INTO wptests_postmeta ( post_id, meta_key, meta_value ) SELECT p.ID, metas.* FROM (  SELECT '_wl_batch_analysis_state', 0 FROM dual   UNION	 SELECT '_wl_batch_analysis_submit_timestamp', UTC_TIMESTAMP() FROM dual	  UNION	 SELECT '_wl_batch_analysis_options', 'a:2:{s:5:\\\"links\\\";s:7:\\\"default\\\";s:15:\\\"min_occurrences\\\";i:1;}' FROM dual	) metas, wptests_posts p WHERE p.id IN (1)",
+		$this->assertEquals( "SELECT p.ID FROM wptests_posts p WHERE p.id IN (1)",
 			$sql );
 
 	}
@@ -164,7 +164,7 @@ class Wordlift_Batch_Analysis_Sql_Helper_Test extends Wordlift_Unit_Test_Case {
 			'ids' => array( 1, 2 ),
 		) ) );
 
-		$this->assertEquals( "INSERT INTO wptests_postmeta ( post_id, meta_key, meta_value ) SELECT p.ID, metas.* FROM (  SELECT '_wl_batch_analysis_state', 0 FROM dual   UNION	 SELECT '_wl_batch_analysis_submit_timestamp', UTC_TIMESTAMP() FROM dual	  UNION	 SELECT '_wl_batch_analysis_options', 'a:2:{s:5:\\\"links\\\";s:7:\\\"default\\\";s:15:\\\"min_occurrences\\\";i:1;}' FROM dual	) metas, wptests_posts p WHERE p.id IN (1, 2)",
+		$this->assertEquals( "SELECT p.ID FROM wptests_posts p WHERE p.id IN (1, 2)",
 			$sql );
 
 	}
@@ -176,7 +176,7 @@ class Wordlift_Batch_Analysis_Sql_Helper_Test extends Wordlift_Unit_Test_Case {
 			'exclude' => null,
 		) ) );
 
-		$this->assertEquals( "INSERT INTO wptests_postmeta ( post_id, meta_key, meta_value ) SELECT p.ID, metas.* FROM (  SELECT '_wl_batch_analysis_state', 0 FROM dual   UNION	 SELECT '_wl_batch_analysis_submit_timestamp', UTC_TIMESTAMP() FROM dual	  UNION	 SELECT '_wl_batch_analysis_options', 'a:2:{s:5:\\\"links\\\";s:7:\\\"default\\\";s:15:\\\"min_occurrences\\\";i:1;}' FROM dual	) metas, wptests_posts p WHERE p.post_type IN ('post')  AND p.post_status = 'publish' AND p.post_content NOT REGEXP '<[a-z]+ id=\"urn:[^\"]+\" class=\"[^\"]+\" itemid=\"[^\"]+\">'",
+		$this->assertEquals( "SELECT p.ID FROM wptests_posts p WHERE p.post_type IN ('post')  AND p.post_status = 'publish' AND p.post_content NOT REGEXP '<[a-z]+ id=\"urn:[^\"]+\" class=\"[^\"]+\" itemid=\"[^\"]+\">'",
 			$sql );
 
 	}
@@ -188,7 +188,7 @@ class Wordlift_Batch_Analysis_Sql_Helper_Test extends Wordlift_Unit_Test_Case {
 			'exclude' => array(),
 		) ) );
 
-		$this->assertEquals( "INSERT INTO wptests_postmeta ( post_id, meta_key, meta_value ) SELECT p.ID, metas.* FROM (  SELECT '_wl_batch_analysis_state', 0 FROM dual   UNION	 SELECT '_wl_batch_analysis_submit_timestamp', UTC_TIMESTAMP() FROM dual	  UNION	 SELECT '_wl_batch_analysis_options', 'a:2:{s:5:\\\"links\\\";s:7:\\\"default\\\";s:15:\\\"min_occurrences\\\";i:1;}' FROM dual	) metas, wptests_posts p WHERE p.post_type IN ('post')  AND p.post_status = 'publish' AND p.post_content NOT REGEXP '<[a-z]+ id=\"urn:[^\"]+\" class=\"[^\"]+\" itemid=\"[^\"]+\">'",
+		$this->assertEquals( "SELECT p.ID FROM wptests_posts p WHERE p.post_type IN ('post')  AND p.post_status = 'publish' AND p.post_content NOT REGEXP '<[a-z]+ id=\"urn:[^\"]+\" class=\"[^\"]+\" itemid=\"[^\"]+\">'",
 			$sql );
 
 	}
@@ -200,7 +200,7 @@ class Wordlift_Batch_Analysis_Sql_Helper_Test extends Wordlift_Unit_Test_Case {
 			'exclude' => 1,
 		) ) );
 
-		$this->assertEquals( "INSERT INTO wptests_postmeta ( post_id, meta_key, meta_value ) SELECT p.ID, metas.* FROM (  SELECT '_wl_batch_analysis_state', 0 FROM dual   UNION	 SELECT '_wl_batch_analysis_submit_timestamp', UTC_TIMESTAMP() FROM dual	  UNION	 SELECT '_wl_batch_analysis_options', 'a:2:{s:5:\\\"links\\\";s:7:\\\"default\\\";s:15:\\\"min_occurrences\\\";i:1;}' FROM dual	) metas, wptests_posts p WHERE p.post_type IN ('post')  AND p.post_status = 'publish' AND p.post_content NOT REGEXP '<[a-z]+ id=\"urn:[^\"]+\" class=\"[^\"]+\" itemid=\"[^\"]+\">' AND p.ID NOT IN ( 1 )",
+		$this->assertEquals( "SELECT p.ID FROM wptests_posts p WHERE p.post_type IN ('post')  AND p.post_status = 'publish' AND p.post_content NOT REGEXP '<[a-z]+ id=\"urn:[^\"]+\" class=\"[^\"]+\" itemid=\"[^\"]+\">' AND p.ID NOT IN ( 1 )",
 			$sql );
 
 	}
@@ -212,7 +212,7 @@ class Wordlift_Batch_Analysis_Sql_Helper_Test extends Wordlift_Unit_Test_Case {
 			'exclude' => array( 1, 2 ),
 		) ) );
 
-		$this->assertEquals( "INSERT INTO wptests_postmeta ( post_id, meta_key, meta_value ) SELECT p.ID, metas.* FROM (  SELECT '_wl_batch_analysis_state', 0 FROM dual   UNION	 SELECT '_wl_batch_analysis_submit_timestamp', UTC_TIMESTAMP() FROM dual	  UNION	 SELECT '_wl_batch_analysis_options', 'a:2:{s:5:\\\"links\\\";s:7:\\\"default\\\";s:15:\\\"min_occurrences\\\";i:1;}' FROM dual	) metas, wptests_posts p WHERE p.post_type IN ('post')  AND p.post_status = 'publish' AND p.post_content NOT REGEXP '<[a-z]+ id=\"urn:[^\"]+\" class=\"[^\"]+\" itemid=\"[^\"]+\">' AND p.ID NOT IN ( 1,2 )",
+		$this->assertEquals( "SELECT p.ID FROM wptests_posts p WHERE p.post_type IN ('post')  AND p.post_status = 'publish' AND p.post_content NOT REGEXP '<[a-z]+ id=\"urn:[^\"]+\" class=\"[^\"]+\" itemid=\"[^\"]+\">' AND p.ID NOT IN ( 1,2 )",
 			$sql );
 
 	}
