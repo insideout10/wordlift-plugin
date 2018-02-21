@@ -75,10 +75,11 @@ class Wordlift_Install_Service {
 				// Install version.
 				$install->install();
 
-				// Bump the `wl_db_version`.
-				update_option( 'wl_db_version', $version );
 			}
 		}
+
+		// Bump the `wl_db_version`.
+		update_option( 'wl_db_version', $version );
 	}
 
 	/**

@@ -14,25 +14,11 @@
  * @package    Wordlift
  * @subpackage Wordlift/install
  */
-class Wordlift_Install_1_0_0 implements Wordlift_Install {
-
+class Wordlift_Install_1_0_0 extends Wordlift_Install {
 	/**
-	 * A {@link Wordlift_Log_Service} instance.
-	 *
-	 * @since  3.18.0
-	 * @access private
-	 * @var \Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
+	 * @inheritdoc
 	 */
-	private $log;
-
-	/**
-	 * The singleton instance.
-	 *
-	 * @since  3.18.0
-	 * @access private
-	 * @var \Wordlift_Install_1_0_0 $instance A {@link Wordlift_Install_1_0_0} instance.
-	 */
-	private static $instance;
+	protected static $version = '1.0.0';
 
 	/**
 	 * The WordLift entity type terms.
@@ -41,7 +27,7 @@ class Wordlift_Install_1_0_0 implements Wordlift_Install {
 	 * @access private
 	 * @var array $terms The entity type terms.
 	 */
-	private $terms = array(
+	private static $terms = array(
 		'thing'         => array(
 			'label'       => 'Thing',
 			'description' => 'A generic thing (something that doesn\'t fit in the previous definitions.',
@@ -73,39 +59,9 @@ class Wordlift_Install_1_0_0 implements Wordlift_Install {
 	);
 
 	/**
-	 * Wordlift_Install_Service constructor.
-	 *
-	 * @since 3.18.0
-	 */
-	public function __construct() {
-		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Install_1_0_0' );
-
-		self::$instance = $this;
-	}
-
-	/**
-	 * Get the singleton instance.
-	 *
-	 * @since 3.18.0
-	 */
-	public static function get_instance() {
-
-		return self::$instance;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function get_version() {
-		return '1.0.0';
-	}
-
-	/**
 	 * @inheritdoc
 	 */
 	public function install() {
-		$this->log->trace( 'Installing version 1.0.0...' );
-
 		// Srt the dataset uri.
 		$this->set_dataset_uri();
 
@@ -114,8 +70,6 @@ class Wordlift_Install_1_0_0 implements Wordlift_Install {
 
 		// Create relations table.
 		$this->create_relation_instance_table();
-
-		$this->log->debug( 'Version 1.0.0 installed.' );
 	}
 
 	/**
@@ -130,7 +84,7 @@ class Wordlift_Install_1_0_0 implements Wordlift_Install {
 
 		// Set the taxonomy data.
 		// Note: parent types must be defined before child types.
-		foreach ( $this->terms as $slug => $term ) {
+		foreach ( self::$terms as $slug => $term ) {
 
 			// Check whether the term exists and create it if it doesn't.
 			$term_id = $this->get_term_or_create_if_not_exists( $slug );
@@ -190,7 +144,7 @@ EOF;
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		$results = dbDelta( $sql );
 
-		wl_write_log( $results );
+		$this->log->info( $results );
 
 	}
 
@@ -248,7 +202,7 @@ EOF;
 
 		// Check for errors.
 		if ( is_wp_error( $maybe_term ) ) {
-			wl_write_log( 'wl_install_entity_type_data [ ' . $maybe_term->get_error_message() . ' ]' );
+			$this->log->info( 'wl_install_entity_type_data [ ' . $maybe_term->get_error_message() . ' ]' );
 			return false;
 		}
 
