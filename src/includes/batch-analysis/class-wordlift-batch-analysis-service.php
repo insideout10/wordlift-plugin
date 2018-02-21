@@ -256,7 +256,7 @@ class Wordlift_Batch_Analysis_Service {
 		$query = Wordlift_Batch_Analysis_Sql_Helper::get_sql( $params );
 
 		// Set the post metas and get the value of the posts.
-		$submitted_posts = $this->set_posts_meta( $params, $query );
+		$submitted_posts = $this->update_posts_meta( $params, $query );
 
 		// Request Batch Analysis (the operation is handled asynchronously).
 		do_action( 'wl_batch_analysis_request' );
@@ -298,7 +298,7 @@ class Wordlift_Batch_Analysis_Service {
 		$query = Wordlift_Batch_Analysis_Sql_Helper::get_sql_for_ids( $params );
 
 		// Set the post metas and get the value of the posts.
-		$submitted_posts = $this->set_posts_meta( $params, $query );
+		$submitted_posts = $this->update_posts_meta( $params, $query );
 
 		// Request Batch Analysis (the operation is handled asynchronously).
 		do_action( 'wl_batch_analysis_request' );
@@ -317,7 +317,7 @@ class Wordlift_Batch_Analysis_Service {
 	 *
 	 * @return int The number of posts found/submitted.
 	 */
-	public function set_posts_meta( $params, $query ) {
+	public function update_posts_meta( $params, $query ) {
 		global $wpdb;
 
 		// Get the link options.
