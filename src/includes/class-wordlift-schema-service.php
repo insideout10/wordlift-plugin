@@ -256,6 +256,13 @@ class Wordlift_Schema_Service {
 	const FIELD_OFFERS = 'wl_schema_offers';
 
 	/**
+	 * The 'availablity' field name.
+	 *
+	 * @since 3.18.0
+	 */
+	const FIELD_AVAILABILITY = 'wl_schema_availability';
+
+	/**
 	 * The 'URI' data type name.
 	 *
 	 * @since 3.1.0
@@ -1391,6 +1398,12 @@ class Wordlift_Schema_Service {
 				'subtitle' => '{{id}}',
 			),
 			'custom_fields' => array(
+				self::FIELD_AVAILABILITY => array(
+					'predicate'   => 'http://schema.org/availability',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+				),
 				self::FIELD_DATE_START => array(
 					'predicate'   => 'http://schema.org/availabilityStarts',
 					'type'        => self::DATA_TYPE_DATE,
@@ -1405,6 +1418,12 @@ class Wordlift_Schema_Service {
 				),
 			),
 			'linked_data'   => array(
+				// ### schema:availability.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( self::FIELD_AVAILABILITY ),
+					'http://schema.org/availability',
+					null
+				),
 				// ### schema:availabilityStarts.
 				$this->rendition_factory->create(
 					$this->storage_factory->post_meta( self::FIELD_DATE_START ),
