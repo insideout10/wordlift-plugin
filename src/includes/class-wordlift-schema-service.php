@@ -1330,6 +1330,11 @@ class Wordlift_Schema_Service {
 	 */
 	public function get_all_predicates() {
 
+		// @@todo #752: instead of returning only predicates here, we could
+		// return also a new `get_uri_suffix` method, so that the
+		// `Wordlift_Linked_Data_Service->get_delete_statements()` function
+		// can create the proper URIs.
+
 		// Get the custom fields.
 		$renditions = array_reduce( $this->schema, function ( $carry, $item ) {
 			return array_merge( $carry, $item['linked_data'] );

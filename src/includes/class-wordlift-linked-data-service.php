@@ -239,8 +239,16 @@ class Wordlift_Linked_Data_Service {
 	 */
 	private function get_delete_statements( $post_id ) {
 
+		// @@todo #752: we should delete also the dependencies like the
+		// `/address`.
+
 		// Get the entity URI.
 		$uri            = $this->entity_service->get_uri( $post_id );
+
+		// @@todo #752: `Wordlift_Schema_Service->get_all_predicates()` could
+		// actually return an array `'uri_prefix' => '...', 'predicate' => '...'`
+		// so that the subject in the following statements can be a dependent
+		// entity.
 		$all_predicates = $this->schema_service->get_all_predicates();
 
 		// Prepare the delete statements with the entity as subject.
