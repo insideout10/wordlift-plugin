@@ -263,6 +263,27 @@ class Wordlift_Schema_Service {
 	const FIELD_AVAILABILITY = 'wl_schema_availability';
 
 	/**
+	 * The 'inventoryLevel' field name.
+	 *
+	 * @since 3.18.0
+	 */
+	const FIELD_INVENTORY_LEVEL = 'wl_schema_inventory_level';
+
+	/**
+	 * The 'price' field name.
+	 *
+	 * @since 3.18.0
+	 */
+	const FIELD_PRICE = 'wl_schema_price';
+
+	/**
+	 * The 'priceCurrency' field name.
+	 *
+	 * @since 3.18.0
+	 */
+	const FIELD_PRICE_CURRENCY = 'wl_schema_price_currency';
+
+	/**
 	 * The 'URI' data type name.
 	 *
 	 * @since 3.1.0
@@ -1416,6 +1437,24 @@ class Wordlift_Schema_Service {
 					'export_type' => 'xsd:dateTime',
 					'constraints' => '',
 				),
+				self::FIELD_INVENTORY_LEVEL => array(
+					'predicate'   => 'http://schema.org/inventoryLevel',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:integer',
+					'constraints' => '',
+				),
+				self::FIELD_PRICE => array(
+					'predicate'   => 'http://schema.org/price',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:integer',
+					'constraints' => '',
+				),
+				self::FIELD_PRICE_CURRENCY => array(
+					'predicate'   => 'http://schema.org/priceCurrency',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+				),
 			),
 			'linked_data'   => array(
 				// ### schema:availability.
@@ -1435,6 +1474,24 @@ class Wordlift_Schema_Service {
 					$this->storage_factory->post_meta( self::FIELD_DATE_END ),
 					'http://schema.org/availabilityEnds',
 					self::DATA_TYPE_DATE_TIME
+				),
+				// ### schema:inventoryLevel.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( self::FIELD_INVENTORY_LEVEL ),
+					'http://schema.org/inventoryLevel',
+					self::DATA_TYPE_INTEGER
+				),
+				// ### schema:price.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( self::FIELD_PRICE ),
+					'http://schema.org/price',
+					self::DATA_TYPE_INTEGER
+				),
+				// ### schema:priceCurrency.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( self::FIELD_PRICE_CURRENCY ),
+					'http://schema.org/priceCurrency',
+					null
 				),
 			),
 		);
