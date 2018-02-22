@@ -242,6 +242,13 @@ class Wordlift_Schema_Service {
 	const FIELD_TOTAL_TIME = 'wl_schema_total_time';
 
 	/**
+	 * The 'performer' field name.
+	 *
+	 * @since 3.18.0
+	 */
+	const FIELD_PERFORMER = 'wl_schema_performer';
+
+	/**
 	 * The 'URI' data type name.
 	 *
 	 * @since 3.1.0
@@ -753,6 +760,15 @@ class Wordlift_Schema_Service {
 						'cardinality' => INF,
 					),
 				),
+				self::FIELD_PERFORMER => array(
+					'predicate'   => 'http://schema.org/performer',
+					'type'        => self::DATA_TYPE_URI,
+					'export_type' => 'http://schema.org/Person',
+					'constraints' => array(
+						'uri_type'    => array( 'Person', 'Organization' ),
+						'cardinality' => INF,
+					),
+				),
 			),
 			'linked_data'   => array(
 				// ### schema:startDate.
@@ -771,6 +787,12 @@ class Wordlift_Schema_Service {
 				$this->rendition_factory->create(
 					$this->storage_factory->post_meta_to_uri( self::FIELD_LOCATION ),
 					'http://schema.org/location',
+					self::DATA_TYPE_URI
+				),
+				// ### schema:performer.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta_to_uri( self::FIELD_PERFORMER ),
+					'http://schema.org/performer',
 					self::DATA_TYPE_URI
 				),
 			),
