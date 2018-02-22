@@ -249,6 +249,13 @@ class Wordlift_Schema_Service {
 	const FIELD_PERFORMER = 'wl_schema_performer';
 
 	/**
+	 * The 'offers' field name.
+	 *
+	 * @since 3.18.0
+	 */
+	const FIELD_OFFERS = 'wl_schema_offers';
+
+	/**
 	 * The 'URI' data type name.
 	 *
 	 * @since 3.1.0
@@ -317,6 +324,13 @@ class Wordlift_Schema_Service {
 	 * @since 3.1.0
 	 */
 	const SCHEMA_EVENT_TYPE = 'http://schema.org/Event';
+
+	/**
+	 * The schema.org Offer type URI.
+	 *
+	 * @since 3.18.0
+	 */
+	const SCHEMA_OFFER_TYPE = 'http://schema.org/Offer';
 
 	/**
 	 * The Schema service singleton instance.
@@ -412,6 +426,7 @@ class Wordlift_Schema_Service {
 			'localbusiness' => $this->get_local_business_schema(),
 			'recipe'        => $this->get_recipe_schema(),
 			'web-page'      => $this->get_web_page_schema(),
+			'offer'         => $this->get_offer_schema(),
 		);
 
 		// Create a singleton instance of the Schema service, useful to provide static functions to global functions.
@@ -769,6 +784,15 @@ class Wordlift_Schema_Service {
 						'cardinality' => INF,
 					),
 				),
+				self::FIELD_OFFERS => array(
+					'predicate'   => 'http://schema.org/offers',
+					'type'        => self::DATA_TYPE_URI,
+					'export_type' => 'http://schema.org/Offer',
+					'constraints' => array(
+						'uri_type'    => array( 'Offer' ),
+						'cardinality' => INF,
+					),
+				),
 			),
 			'linked_data'   => array(
 				// ### schema:startDate.
@@ -793,6 +817,12 @@ class Wordlift_Schema_Service {
 				$this->rendition_factory->create(
 					$this->storage_factory->post_meta_to_uri( self::FIELD_PERFORMER ),
 					'http://schema.org/performer',
+					self::DATA_TYPE_URI
+				),
+				// ### schema:offers.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta_to_uri( self::FIELD_OFFERS ),
+					'http://schema.org/offers',
 					self::DATA_TYPE_URI
 				),
 			),
@@ -1335,6 +1365,63 @@ class Wordlift_Schema_Service {
 
 		// Merge the custom fields with those provided by the parent schema.
 		$parent_schema           = $this->get_creative_work_schema();
+		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $parent_schema['custom_fields'] );
+		$schema['linked_data']   = array_merge( $schema['linked_data'], $parent_schema['linked_data'] );
+
+		return $schema;
+	}
+
+	/**
+	 * Get the 'offer' schema.
+	 *
+	 * @return array An array with the schema configuration.
+	 *
+	 * @since 3.18.0
+	 */
+	private function get_offer_schema() {
+
+		$schema = array(
+			'label'         => 'Offer',
+			'description'   => 'An offer. ',
+			'parents'       => array( 'thing' ),
+			'css_class'     => 'wl-offer',
+			'uri'           => self::SCHEMA_OFFER_TYPE,
+			'same_as'       => array(),
+			'templates'     => array(
+				'subtitle' => '{{id}}',
+			),
+			'custom_fields' => array(
+				self::FIELD_DATE_START => array(
+					'predicate'   => 'http://schema.org/availabilityStarts',
+					'type'        => self::DATA_TYPE_DATE,
+					'export_type' => 'xsd:dateTime',
+					'constraints' => '',
+				),
+				self::FIELD_DATE_END   => array(
+					'predicate'   => 'http://schema.org/availabilityEnds',
+					'type'        => self::DATA_TYPE_DATE,
+					'export_type' => 'xsd:dateTime',
+					'constraints' => '',
+				),
+			),
+			'linked_data'   => array(
+				// ### schema:availabilityStarts.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( self::FIELD_DATE_START ),
+					'http://schema.org/availabilityStarts',
+					self::DATA_TYPE_DATE_TIME
+				),
+				// ### schema:availabilityEnds.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( self::FIELD_DATE_END ),
+					'http://schema.org/availabilityEnds',
+					self::DATA_TYPE_DATE_TIME
+				),
+			),
+		);
+
+		// Merge the custom fields with those provided by the thing schema.
+		$parent_schema           = $this->get_thing_schema();
 		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $parent_schema['custom_fields'] );
 		$schema['linked_data']   = array_merge( $schema['linked_data'], $parent_schema['linked_data'] );
 
