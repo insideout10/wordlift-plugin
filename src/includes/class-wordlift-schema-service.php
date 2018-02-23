@@ -1423,37 +1423,40 @@ class Wordlift_Schema_Service {
 					'predicate'   => 'http://schema.org/availability',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
-					'constraints' => '',
-				),
-				self::FIELD_DATE_START => array(
-					'predicate'   => 'http://schema.org/availabilityStarts',
-					'type'        => self::DATA_TYPE_DATE,
-					'export_type' => 'xsd:dateTime',
-					'constraints' => '',
-				),
-				self::FIELD_DATE_END   => array(
-					'predicate'   => 'http://schema.org/availabilityEnds',
-					'type'        => self::DATA_TYPE_DATE,
-					'export_type' => 'xsd:dateTime',
-					'constraints' => '',
-				),
-				self::FIELD_INVENTORY_LEVEL => array(
-					'predicate'   => 'http://schema.org/inventoryLevel',
-					'type'        => self::DATA_TYPE_STRING,
-					'export_type' => 'xsd:integer',
-					'constraints' => '',
+					'metabox'     => array(
+						'class' => 'Wordlift_Metabox_Field_Integer',
+					),
 				),
 				self::FIELD_PRICE => array(
 					'predicate'   => 'http://schema.org/price',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:integer',
-					'constraints' => '',
+					'metabox'     => array(
+						'class' => 'Wordlift_Metabox_Field_Integer',
+					),
 				),
 				self::FIELD_PRICE_CURRENCY => array(
 					'predicate'   => 'http://schema.org/priceCurrency',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
-					'constraints' => '',
+				),
+				self::FIELD_DATE_START => array(
+					'predicate'   => 'http://schema.org/availabilityStarts',
+					'type'        => self::DATA_TYPE_DATE,
+					'export_type' => 'xsd:dateTime',
+				),
+				self::FIELD_DATE_END   => array(
+					'predicate'   => 'http://schema.org/availabilityEnds',
+					'type'        => self::DATA_TYPE_DATE,
+					'export_type' => 'xsd:dateTime',
+				),
+				self::FIELD_INVENTORY_LEVEL => array(
+					'predicate'   => 'http://schema.org/inventoryLevel',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:integer',
+					'metabox'     => array(
+						'class' => 'Wordlift_Metabox_Field_Integer',
+					),
 				),
 			),
 			'linked_data'   => array(
