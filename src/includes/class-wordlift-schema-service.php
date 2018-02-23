@@ -1330,11 +1330,6 @@ class Wordlift_Schema_Service {
 	 */
 	public function get_all_predicates() {
 
-		// @@todo #752: instead of returning only predicates here, we could
-		// return also a new `get_uri_suffix` method, so that the
-		// `Wordlift_Linked_Data_Service->get_delete_statements()` function
-		// can create the proper URIs.
-
 		// Get the custom fields.
 		$renditions = array_reduce( $this->schema, function ( $carry, $item ) {
 			return array_merge( $carry, $item['linked_data'] );
@@ -1343,7 +1338,6 @@ class Wordlift_Schema_Service {
 		// Create a new array of predicates from the custom fields. The initial
 		// array contains just the `http://www.w3.org/1999/02/22-rdf-syntax-ns#type`
 		// (a, rdf:type) predicate (use the full URI).
-
 		$predicates = array_unique( // Remove duplicates.
 			// Loop through all renditions and return array of predicate and suffix.
 			array_map( function ( $item ) {
