@@ -243,7 +243,7 @@ class Wordlift_Linked_Data_Service {
 		// `/address`.
 
 		// Get the entity URI.
-		$uri            = $this->entity_service->get_uri( $post_id );
+		$uri = $this->entity_service->get_uri( $post_id );
 
 		// @@todo #752: `Wordlift_Schema_Service->get_all_predicates()` could
 		// actually return an array `'uri_prefix' => '...', 'predicate' => '...'`
@@ -256,7 +256,7 @@ class Wordlift_Linked_Data_Service {
 			return Wordlift_Query_Builder
 				::new_instance()
 				->delete()
-				->statement( $uri, $item, '?o' )
+				->statement( $uri . $item['uri_prefix'], $item['predicate'], '?o' )
 				->build();
 		}, $all_predicates );
 
@@ -265,7 +265,7 @@ class Wordlift_Linked_Data_Service {
 			return Wordlift_Query_Builder
 				::new_instance()
 				->delete()
-				->statement( '?s', $item, $uri, Wordlift_Query_Builder::OBJECT_URI )
+				->statement( '?s', $item['predicate'], $uri . $item['uri_prefix'], Wordlift_Query_Builder::OBJECT_URI )
 				->build();
 		}, $all_predicates );
 

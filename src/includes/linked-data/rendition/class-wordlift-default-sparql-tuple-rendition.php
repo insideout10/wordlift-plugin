@@ -146,4 +146,15 @@ class Wordlift_Default_Sparql_Tuple_Rendition implements Wordlift_Sparql_Tuple_R
 		return $this->predicate;
 	}
 
+	/**
+	 * Get the uri suffix for this {@link Wordlift_Sparql_Tuple_Rendition}.
+	 *
+	 * @since 3.18.0
+	 *
+	 * @return string The uri suffix.
+	 */
+	public function get_uri_suffix() {
+		return ( ! empty( $this->uri_suffix ) ? $this->uri_suffix : '' );
+	}
+
 }

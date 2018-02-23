@@ -1343,9 +1343,17 @@ class Wordlift_Schema_Service {
 		// Create a new array of predicates from the custom fields. The initial
 		// array contains just the `http://www.w3.org/1999/02/22-rdf-syntax-ns#type`
 		// (a, rdf:type) predicate (use the full URI).
-		$predicates = array_unique( array_reduce( $renditions, function ( $carry, $item ) {
-			return array_merge( $carry, (array) $item->get_predicate() );
-		}, array() ) );
+
+		$predicates = array_unique( // Remove duplicates.
+			// Loop through all renditions and return array of predicate and suffix.
+			array_map( function ( $item ) {
+				return array(
+					'predicate'  => $item->get_predicate(), // Get the predicate.
+					'uri_prefix' => $item->get_uri_suffix(), // Get the suffix.
+				);
+			}, $renditions ),
+			SORT_REGULAR
+		);
 
 		/**
 		 * Filter: 'wl_schema_predicates' - Allow third parties to hook and add additional predicates.
