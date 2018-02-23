@@ -1424,7 +1424,18 @@ class Wordlift_Schema_Service {
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'metabox'     => array(
-						'class' => 'Wordlift_Metabox_Field_Integer',
+						'class' => 'Wordlift_Metabox_Field_Select',
+					),
+					'options' => array(
+						'Discontinued',
+						'InStock',
+						'InStoreOnly',
+						'LimitedAvailability',
+						'OnlineOnly',
+						'OutOfStock',
+						'PreOrder',
+						'PreSale',
+						'SoldOut',
 					),
 				),
 				self::FIELD_PRICE => array(

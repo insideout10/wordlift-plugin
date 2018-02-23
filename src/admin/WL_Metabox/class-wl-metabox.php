@@ -16,6 +16,7 @@ require_once( 'WL_Metabox_Field_address.php' );
 require_once( 'class-wordlift-metabox-field-duration.php' );
 require_once( 'class-wordlift-metabox-field-multiline.php' );
 require_once( 'class-wordlift-metabox-field-integer.php' );
+require_once( 'class-wordlift-metabox-field-select.php' );
 
 /**
  * Define the {@link WL_Metabox} class.
