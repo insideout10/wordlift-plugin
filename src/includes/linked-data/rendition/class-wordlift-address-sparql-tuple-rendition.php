@@ -1,14 +1,95 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: david
- * Date: 26.02.18
- * Time: 10:10
+ * Renditions: Sparql Tuple Rendition.
+ *
+ * Renders a property (accessed using a {@link Wordlift_Storage} instance) to
+ * a tuple for use in SPARQL statements.
+ *
+ * @since      3.18.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes
+ */
+
+/**
+ * Define the {@link Wordlift_Sparql_Tuple_Rendition} class.
+ *
+ * @since      3.18.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes
  */
 
 class Wordlift_Address_Sparql_Tuple_Rendition implements Wordlift_Sparql_Tuple_Rendition {
-
+	/**
+	 * The PostalAddress entity renditions.
+	 *
+	 * @since 3.18.0
+	 * @access private
+	 * @var array $renditions The PostalAddress entity renditions.
+	 */
 	private $renditions;
+
+	/**
+	 * Create a {@link Wordlift_Address_Sparql_Tuple_Rendition} instance.
+	 *
+	 * @since 3.18.0
+	 *
+	 * @param \Wordlift_Sparql_Tuple_Rendition_Factory $rendition_factory The {@link Wordlift_Sparql_Tuple_Rendition_Factory}
+	 *                                                                    instance.
+	 * @param \Wordlift_Storage                        $storage           The {@link Wordlift_Storage}
+	 *                                                                    instance.
+	 * @param string|null                              $language          The language code or null.
+	 */
+	function __construct( $rendition_factory, $storage, $language_code ) {
+
+		$this->renditions = array(
+			// ### schema:streetAddress.
+			$rendition_factory->create(
+				$storage->post_meta( Wordlift_Schema_Service::FIELD_ADDRESS ),
+				Wordlift_Query_Builder::SCHEMA_STREET_ADDRESS,
+				null,
+				$language_code,
+				'/address'
+			),
+
+			// ### schema:postOfficeBoxNumber.
+			$rendition_factory->create(
+				$storage->post_meta( Wordlift_Schema_Service::FIELD_ADDRESS_POSTAL_CODE ),
+				'http://schema.org/postOfficeBoxNumber',
+				null,
+				null,
+				'/address'
+			),
+
+			// ### schema:addressLocality.
+			$rendition_factory->create(
+				$storage->post_meta( Wordlift_Schema_Service::FIELD_ADDRESS_LOCALITY ),
+				'http://schema.org/addressLocality',
+				null,
+				$language_code,
+				'/address'
+			),
+
+			// ### schema:addressRegion.
+			$rendition_factory->create(
+				$storage->post_meta( Wordlift_Schema_Service::FIELD_ADDRESS_REGION ),
+				'http://schema.org/addressRegion',
+				null,
+				$language_code,
+				'/address'
+			),
+
+			// ### schema:addressCountry.
+			$rendition_factory->create(
+				$storage->post_meta( Wordlift_Schema_Service::FIELD_ADDRESS_COUNTRY ),
+				'http://schema.org/addressCountry',
+				null,
+				$language_code,
+				'/address'
+			),
+		);
+
+	}
+
 
 	/**
 	 * Get tuple representations for the specified {@link WP_Post}.
@@ -19,90 +100,64 @@ class Wordlift_Address_Sparql_Tuple_Rendition implements Wordlift_Sparql_Tuple_R
 	 *
 	 * @return array An array of tuples.
 	 */
-	function get( $post_id ) {
-		// TODO: Implement get() method.
-
+	public function get( $post_id ) {
 		$tuples = array();
+
 		/** @var Wordlift_Sparql_Tuple_Rendition $rendition */
 		foreach ( $this->renditions as $rendition ) {
-			array_merge( $tuples, $rendition->get( $post_id ) );
+			$tuples = array_merge( $tuples, $rendition->get( $post_id ) );
 		}
 
-		if (empty($tuples)) return array();
+		// Add a reference to the main entity if the tuples are not empty.
+		if ( ! empty( $tuples ) ) {
+			// Get the main entity uri.
+			$post_uri = Wordlift_Entity_Service::get_instance()->get_uri( $post_id );
 
+			// Push the reference.
+			$tuples[] = '<' . $post_uri . '> <http://schema.org/address> <' . $post_uri . '/address> . ';
+		};
 
-
-		return array_merge( $tuples, '<uri> <http://schema.org/address> <uri/address>');
+		// Finally return the tuples.
+		return $tuples;
 	}
 
-	function __construct( $rendition_factory, $storage_factory, $language_code ) {
+	/**
+	 * Get the delete statement for current post id.
+	 *
+	 * @since 3.18.0
+	 *
+	 * @param int $post_id The post id.
+	 *
+	 * @return array An array containing delete statements for both
+	 * 				 the uri as subject and object.
+	 */
+	public function get_delete_statement( $post_id ) {
+		$deletes = array();
 
-		$this->renditions = array(
+		// Get the main entity uri.
+		$post_uri = Wordlift_Entity_Service::get_instance()->get_uri( $post_id );
 
-			// ### schema:streetAddress.
-			$rendition_factory->create(
-				$storage_factory->post_meta( Wordlift_Schema_Service::FIELD_ADDRESS ),
-				Wordlift_Query_Builder::SCHEMA_STREET_ADDRESS,
-				null,
-				$language_code,
-				'/address'
-			),
+		// Loop through all renditions and generate the delete statements.
+		foreach ( $this->renditions as $rendition ) {
+			// Get the entity URI.
+			$deletes = array_merge( $deletes, $rendition->get_delete_statement( $post_id ) );
+		}
 
-			// ### schema:postOfficeBoxNumber.
-			$rendition_factory->create(
-				$storage_factory->post_meta( Wordlift_Schema_Service::FIELD_ADDRESS_POSTAL_CODE ),
-				'http://schema.org/postOfficeBoxNumber',
-				null,
-				null,
-				'/address'
-			),
-
-			// ### schema:addressLocality.
-			$rendition_factory->create(
-				$storage_factory->post_meta( Wordlift_Schema_Service::FIELD_ADDRESS_LOCALITY ),
-				'http://schema.org/addressLocality',
-				null,
-				$language_code,
-				'/address'
-			),
-
-			// ### schema:addressRegion.
-			$rendition_factory->create(
-				$storage_factory->post_meta( Wordlift_Schema_Service::FIELD_ADDRESS_REGION ),
-				'http://schema.org/addressRegion',
-				null,
-				$language_code,
-				'/address'
-			),
-
-			// ### schema:addressCountry.
-			$rendition_factory->create(
-				$storage_factory->post_meta( Wordlift_Schema_Service::FIELD_ADDRESS_COUNTRY ),
-				'http://schema.org/addressCountry',
-				null,
-				$language_code,
-				'/address'
-			),
+		// Finally merge the deletes with main entity address delete statement.
+		return array_merge(
+			$deletes,
+			array(
+				// The delete statements with the entity as subject.
+				Wordlift_Query_Builder::new_instance()
+					->delete()
+					->statement( $post_uri, 'http://schema.org/address', '?o' )
+					->build(),
+				// The delete statements with the entity as object.
+				Wordlift_Query_Builder::new_instance()
+					->delete()
+					->statement( '?s', 'http://schema.org/address', $post_uri, Wordlift_Query_Builder::OBJECT_URI )
+					->build(),
+			)
 		);
-
 	}
-
-	function get_predicate() {
-
-		return array_filter( array_map( function ( $item ) {
-			return $item->get_predicate();
-		}, $this->renditions ), function ( $item ) {
-			return null !== $item;
-		} );
-	}
-
-	function get_uri_suffix() {
-
-		return array_filter( array_map( function ( $item ) {
-			return $item->get_uri_suffix();
-		}, $this->renditions ), function ( $item ) {
-			return null !== $item;
-		} );
-	}
-
 }

@@ -231,40 +231,33 @@ class Wordlift_Linked_Data_Service {
 	/**
 	 * Get the delete statements.
 	 *
-	 * @since 3.15.0
+	 * @since 3.18.0
 	 *
 	 * @param int $post_id The {@link WP_Post}'s id.
 	 *
 	 * @return array An array of delete statements.
 	 */
 	private function get_delete_statements( $post_id ) {
+		// Init the delete statements array.
+		$delete_statements = array();
 
-		// Get the entity URI.
-		$uri = $this->entity_service->get_uri( $post_id );
+		foreach ( $this->schema_service->get_renditions() as $rendition ) {
+			// Push the rendition delete statement to deletes.
+			$delete_statements = array_merge(
+				$delete_statements,
+				(array) $rendition->get_delete_statement( $post_id )
+			);
+		}
 
-		// Get predicates.
-		$all_predicates = $this->schema_service->get_all_predicates();
-
-		// Prepare the delete statements with the entity as subject.
-		$as_subject = array_map( function ( $item ) use ( $uri ) {
-			return Wordlift_Query_Builder
-				::new_instance()
-				->delete()
-				->statement( $uri . $item['uri_prefix'], $item['predicate'], '?o' )
-				->build();
-		}, $all_predicates );
-
-		// Prepare the delete statements with the entity as object.
-		$as_object = array_map( function ( $item ) use ( $uri ) {
-			return Wordlift_Query_Builder
-				::new_instance()
-				->delete()
-				->statement( '?s', $item['predicate'], $uri . $item['uri_prefix'], Wordlift_Query_Builder::OBJECT_URI )
-				->build();
-		}, $all_predicates );
-
-		// Merge the delete statements and return them.
-		return array_merge( $as_subject, $as_object );
+		/**
+		 * Filter: 'wl_delete_statements' - Allow third parties to hook and add additional delete statements.
+		 *
+		 * @since 3.18.0
+		 *
+		 * @param array $delete_statements Schema.org delete statements.
+		 * @param int $post_id             The current post ID.
+		 */
+		return apply_filters( 'wl_delete_statements', array_unique( $delete_statements ), $post_id );
 	}
 
 	/**

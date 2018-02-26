@@ -52,7 +52,7 @@ class Wordlift_Sparql_Tuple_Rendition_Factory {
 	 * @param string|null       $language   A language code (e.g. `en`).
 	 * @param string|null       $uri_suffix The URI suffix.
 	 *
-	 * @return \Wordlift_Default_Sparql_Tuple_Rendition A {@link Wordlift_Sparql_Tuple_Rendition} instance.
+	 * @return \Wordlift_Default_Sparql_Tuple_Rendition A {@link Wordlift_Default_Sparql_Tuple_Rendition} instance.
 	 */
 	public function create( $storage, $predicate, $data_type = null, $language = null, $uri_suffix = null ) {
 

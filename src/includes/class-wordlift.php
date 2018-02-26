@@ -899,6 +899,7 @@ class Wordlift {
 		/** Linked Data Rendition. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/rendition/intf-wordlift-sparql-tuple-rendition.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/rendition/class-wordlift-default-sparql-tuple-rendition.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/rendition/class-wordlift-address-sparql-tuple-rendition.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/rendition/class-wordlift-sparql-tuple-rendition-factory.php';
 
 		/** Services. */

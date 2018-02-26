@@ -1,6 +1,6 @@
 <?php
 /**
- * Interfaces: Sparql Tuple Rendition
+ * Abstract: Wordlift Sparql Tuple Rendition
  *
  * @since      3.18.0
  * @package    Wordlift
@@ -11,7 +11,6 @@
  * Define the {@link Wordlift_Sparql_Tuple_Rendition} interface.
  */
 interface Wordlift_Sparql_Tuple_Rendition {
-
 	/**
 	 * Get tuple representations for the specified {@link WP_Post}.
 	 *
@@ -21,17 +20,16 @@ interface Wordlift_Sparql_Tuple_Rendition {
 	 *
 	 * @return array An array of tuples.
 	 */
-	function get( $post_id );
-
-	function get_predicate();
-
-	function get_uri_suffix();
+	public function get( $post_id );
 
 	/**
+	 * Get delete statement for current post uri.
+	 *
+	 * @since 3.18.0
+	 *
 	 * @param $post_id
 	 *
 	 * @return array An array of delete tuples (`<...> <...> ?o` and `?s <...> <...>`).
 	 */
-	function delete( $post_id );
-
+	public function get_delete_statement( $post_id );
 }

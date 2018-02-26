@@ -454,6 +454,27 @@ class Wordlift_Schema_Service {
 	}
 
 	/**
+	 * Get all renditions for each WordLift's schema.
+	 *
+	 * @since 3.18.0
+	 *
+	 * @return array An array with the schema renditions.
+	 */
+	public function get_renditions() {
+		// Get the custom fields.
+		$renditions = array_reduce(
+			$this->schema,
+			function ( $carry, $item ) {
+				return array_merge( $carry, $item['linked_data'] );
+			},
+			array()
+		);
+
+		// Return the schemas.
+		return $renditions;
+	}
+
+	/**
 	 * Get the WordLift's schema.
 	 *
 	 * @param string $name The schema name.
@@ -1275,47 +1296,6 @@ class Wordlift_Schema_Service {
 		);
 
 		return $schema;
-	}
-
-	/**
-	 * Get all the predicates.
-	 *
-	 * @since 3.15.0
-	 *
-	 * @return array An array of predicates.
-	 */
-	public function get_all_predicates() {
-
-		// Get the custom fields.
-		$renditions = array_reduce( $this->schema, function ( $carry, $item ) {
-			return array_merge( $carry, $item['linked_data'] );
-		}, array() );
-
-
-		// Create a new array of predicates from the custom fields. The initial
-		// array contains just the `http://www.w3.org/1999/02/22-rdf-syntax-ns#type`
-		// (a, rdf:type) predicate (use the full URI).
-		$predicates = array_unique( // Remove duplicates.
-		// Loop through all renditions and return array of predicate and suffix.
-			array_map( function ( $item ) {
-				return array(
-					'predicate'  => $item->get_predicate(),
-					// Get the predicate.
-					'uri_prefix' => $item->get_uri_suffix(),
-					// Get the suffix.
-				);
-			}, $renditions ),
-			SORT_REGULAR
-		);
-
-		/**
-		 * Filter: 'wl_schema_predicates' - Allow third parties to hook and add additional predicates.
-		 *
-		 * @since  3.17.0
-		 *
-		 * @param array $predicates Schema.org predicates.
-		 */
-		return apply_filters( 'wl_schema_predicates', $predicates );
 	}
 
 }
