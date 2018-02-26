@@ -50,7 +50,7 @@ class Wordlift_Push_References_Async_Task extends Wordlift_Async_Task {
 	public function __construct( $auth_level = self::BOTH ) {
 		parent::__construct( $auth_level );
 
-		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Batch_Analysis_Complete_Async_Task' );
+		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Push_References_Async_Task' );
 
 	}
 
