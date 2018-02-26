@@ -2,8 +2,8 @@
 /**
  * Interfaces: Sparql Tuple Rendition
  *
- * @since 3.18.0
- * @package Wordlift
+ * @since      3.18.0
+ * @package    Wordlift
  * @subpackage Wordlift/includes/linked_data/rendition
  */
 
@@ -21,6 +21,17 @@ interface Wordlift_Sparql_Tuple_Rendition {
 	 *
 	 * @return array An array of tuples.
 	 */
-	 function get( $post_id );
+	function get( $post_id );
+
+	function get_predicate();
+
+	function get_uri_suffix();
+
+	/**
+	 * @param $post_id
+	 *
+	 * @return array An array of delete tuples (`<...> <...> ?o` and `?s <...> <...>`).
+	 */
+	function delete( $post_id );
 
 }

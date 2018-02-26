@@ -1050,51 +1050,7 @@ class Wordlift_Schema_Service {
 				),
 			),
 			'linked_data'   => array(
-
-				// ### schema:streetAddress.
-				$this->rendition_factory->create(
-					$this->storage_factory->post_meta( self::FIELD_ADDRESS ),
-					Wordlift_Query_Builder::SCHEMA_STREET_ADDRESS,
-					null,
-					$this->language_code,
-					'/address'
-				),
-
-				// ### schema:postOfficeBoxNumber.
-				$this->rendition_factory->create(
-					$this->storage_factory->post_meta( self::FIELD_ADDRESS_POSTAL_CODE ),
-					'http://schema.org/postOfficeBoxNumber',
-					null,
-					null,
-					'/address'
-				),
-
-				// ### schema:addressLocality.
-				$this->rendition_factory->create(
-					$this->storage_factory->post_meta( self::FIELD_ADDRESS_LOCALITY ),
-					'http://schema.org/addressLocality',
-					null,
-					$this->language_code,
-					'/address'
-				),
-
-				// ### schema:addressRegion.
-				$this->rendition_factory->create(
-					$this->storage_factory->post_meta( self::FIELD_ADDRESS_REGION ),
-					'http://schema.org/addressRegion',
-					null,
-					$this->language_code,
-					'/address'
-				),
-
-				// ### schema:addressCountry.
-				$this->rendition_factory->create(
-					$this->storage_factory->post_meta( self::FIELD_ADDRESS_COUNTRY ),
-					'http://schema.org/addressCountry',
-					null,
-					$this->language_code,
-					'/address'
-				),
+				new Wordlift_Address_Sparql_Tuple_Rendition( $this->rendition_factory, $this->storage_factory, $this->language_code ),
 
 			),
 			'templates'     => array(
@@ -1335,15 +1291,18 @@ class Wordlift_Schema_Service {
 			return array_merge( $carry, $item['linked_data'] );
 		}, array() );
 
+
 		// Create a new array of predicates from the custom fields. The initial
 		// array contains just the `http://www.w3.org/1999/02/22-rdf-syntax-ns#type`
 		// (a, rdf:type) predicate (use the full URI).
 		$predicates = array_unique( // Remove duplicates.
-			// Loop through all renditions and return array of predicate and suffix.
+		// Loop through all renditions and return array of predicate and suffix.
 			array_map( function ( $item ) {
 				return array(
-					'predicate'  => $item->get_predicate(), // Get the predicate.
-					'uri_prefix' => $item->get_uri_suffix(), // Get the suffix.
+					'predicate'  => $item->get_predicate(),
+					// Get the predicate.
+					'uri_prefix' => $item->get_uri_suffix(),
+					// Get the suffix.
 				);
 			}, $renditions ),
 			SORT_REGULAR
