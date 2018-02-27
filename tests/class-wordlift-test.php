@@ -319,4 +319,15 @@ class Wordlift_Test extends Wordlift {
 		return $this->batch_analysis_service;
 	}
 
+	/**
+	 * Get the {@link Wordlift_Linked_Data_Service} instance.
+	 *
+	 * @since 3.18.0
+	 * @return \Wordlift_Linked_Data_Service The {@link Wordlift_Linked_Data_Service} instance.
+	 */
+	public function get_linked_data_service() {
+
+		return $this->linked_data_service;
+	}
+
 }
