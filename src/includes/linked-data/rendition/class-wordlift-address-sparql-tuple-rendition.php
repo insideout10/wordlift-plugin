@@ -50,11 +50,19 @@ class Wordlift_Address_Sparql_Tuple_Rendition implements Wordlift_Sparql_Tuple_R
 				$language_code,
 				'/address'
 			),
-
 			// ### schema:postOfficeBoxNumber.
 			$rendition_factory->create(
-				$storage->post_meta( Wordlift_Schema_Service::FIELD_ADDRESS_POSTAL_CODE ),
+				$storage->post_meta( Wordlift_Schema_Service::FIELD_ADDRESS_PO_BOX ),
 				'http://schema.org/postOfficeBoxNumber',
+				null,
+				null,
+				'/address'
+			),
+
+			// ### schema:postalCode.
+			$rendition_factory->create(
+				$storage->post_meta( Wordlift_Schema_Service::FIELD_ADDRESS_POSTAL_CODE ),
+				'http://schema.org/postalCode',
 				null,
 				null,
 				'/address'
