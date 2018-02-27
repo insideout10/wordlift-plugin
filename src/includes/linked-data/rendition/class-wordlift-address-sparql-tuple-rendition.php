@@ -21,7 +21,7 @@ class Wordlift_Address_Sparql_Tuple_Rendition implements Wordlift_Sparql_Tuple_R
 	/**
 	 * The PostalAddress entity renditions.
 	 *
-	 * @since 3.18.0
+	 * @since  3.18.0
 	 * @access private
 	 * @var array $renditions The PostalAddress entity renditions.
 	 */
@@ -109,8 +109,7 @@ class Wordlift_Address_Sparql_Tuple_Rendition implements Wordlift_Sparql_Tuple_R
 		);
 
 	}
-
-
+	
 	/**
 	 * Get tuple representations for the specified {@link WP_Post}.
 	 *
@@ -190,26 +189,18 @@ class Wordlift_Address_Sparql_Tuple_Rendition implements Wordlift_Sparql_Tuple_R
 		// Get the main entity uri.
 		$uri = $this->entity_service->get_uri( $post_id );
 
-		// Biuld and return the address delete triples.
+		// Build and return the address delete triples.
 		return array(
 			// Push the address reference.
-			sprintf( '?s <%s/address> <%s> . ',
-				'http://schema.org/address',
-				Wordlift_Sparql_Service::escape_uri( $uri )
-			),
-			sprintf( '<%s> <%s> ?o . ',
+			sprintf( '<%1$s> <%s> <%1$s/address> . ',
 				Wordlift_Sparql_Service::escape_uri( $uri ),
 				'http://schema.org/address'
 			),
 
 			// Push the delete PostalAddress rdf:type.
-			sprintf( '?s <%s> <%s> . ',
-				Wordlift_Query_Builder::RDFS_TYPE_URI,
+			sprintf( '<%1$s/address> a <%s> . ',
+				Wordlift_Sparql_Service::escape_uri( $uri ),
 				'http://schema.org/PostalAddress'
-			),
-			sprintf( '<%s> <%s> ?o . ',
-				'http://schema.org/PostalAddress',
-				Wordlift_Query_Builder::RDFS_TYPE_URI
 			),
 		);
 
