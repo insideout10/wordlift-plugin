@@ -241,12 +241,20 @@ class Wordlift_Linked_Data_Service {
 		// Init the delete statements array.
 		$delete_statements = array();
 
+		$delete_query = '';
+
+		// @@todo: use `get_delete_triples`.
+
 		foreach ( $this->schema_service->get_renditions() as $rendition ) {
 			// Push the rendition delete statement to deletes.
 			$delete_statements = array_merge(
 				$delete_statements,
 				(array) $rendition->get_delete_statement( $post_id )
 			);
+
+			$triples = array_reduce( $rendition->get_delete_triples( $post_id ), function ($carry, $item) {
+				return "DELETE { $item } WHERE { $item } \n";
+			}, $delete_query );
 		}
 
 		/**
@@ -255,7 +263,7 @@ class Wordlift_Linked_Data_Service {
 		 * @since 3.18.0
 		 *
 		 * @param array $delete_statements Schema.org delete statements.
-		 * @param int $post_id             The current post ID.
+		 * @param int   $post_id           The current post ID.
 		 */
 		return apply_filters( 'wl_delete_statements', array_unique( $delete_statements ), $post_id );
 	}

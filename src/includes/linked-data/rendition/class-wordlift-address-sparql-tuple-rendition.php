@@ -122,7 +122,8 @@ class Wordlift_Address_Sparql_Tuple_Rendition implements Wordlift_Sparql_Tuple_R
 			$post_uri = Wordlift_Entity_Service::get_instance()->get_uri( $post_id );
 
 			// Push the reference.
-			$tuples[] = '<' . $post_uri . '> <http://schema.org/address> <' . $post_uri . '/address> . ';
+			$tuples[] = "<$post_uri> <http://schema.org/address> <$post_uri/address> . ";
+			$tuples[] = "<$post_uri/address> a <http://schema.org/PostalAddress> . ";
 		};
 
 		// Finally return the tuples.
@@ -139,6 +140,8 @@ class Wordlift_Address_Sparql_Tuple_Rendition implements Wordlift_Sparql_Tuple_R
 	 * @return array An array containing delete statements for both
 	 * 				 the uri as subject and object.
 	 */
+
+	// @@todo: change to `get_delete_triples`.
 	public function get_delete_statement( $post_id ) {
 		$deletes = array();
 

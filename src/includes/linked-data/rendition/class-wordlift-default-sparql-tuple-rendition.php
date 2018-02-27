@@ -110,6 +110,7 @@ class Wordlift_Default_Sparql_Tuple_Rendition implements Wordlift_Sparql_Tuple_R
 	 */
 	public function get( $post_id ) {
 
+		// @@todo: fix, $uri_suffix might be null.
 		// Get the entity URI.
 		$uri = $this->entity_service->get_uri( $post_id ) . $this->uri_suffix;
 
@@ -145,6 +146,8 @@ class Wordlift_Default_Sparql_Tuple_Rendition implements Wordlift_Sparql_Tuple_R
 	 * 				 the uri as subject and object.
 	 */
 	public function get_delete_statement( $post_id ) {
+
+		// @@todo: change to `get_delete_triples`.
 
 		// Get the entity URI.
 		$uri = $this->entity_service->get_uri( $post_id ) . $this->uri_suffix;

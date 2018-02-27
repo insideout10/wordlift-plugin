@@ -20,6 +20,7 @@ interface Wordlift_Sparql_Tuple_Rendition {
 	 *
 	 * @return array An array of tuples.
 	 */
+	// @@todo: rename to `get_insert_triples`.
 	public function get( $post_id );
 
 	/**
@@ -31,5 +32,6 @@ interface Wordlift_Sparql_Tuple_Rendition {
 	 *
 	 * @return array An array of delete tuples (`<...> <...> ?o` and `?s <...> <...>`).
 	 */
+	// @@todo: rename to `get_delete_triples`.
 	public function get_delete_statement( $post_id );
 }
