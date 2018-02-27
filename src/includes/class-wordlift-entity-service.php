@@ -130,7 +130,7 @@ class Wordlift_Entity_Service {
 			return false;
 		}
 
-		if ( 0 === count( $terms ) ) {
+		if ( empty( $terms ) ) {
 			return false;
 		}
 

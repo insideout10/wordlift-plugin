@@ -118,7 +118,7 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 
 		// Generate the header.
 		$header = array_reduce( array_keys( $alphabet ), function ( $carry, $item ) use ( $alphabet ) {
-			$template = ( 0 === count( $alphabet[ $item ] )
+			$template = ( empty( $alphabet[ $item ] )
 				? '<span class="wl-vocabulary-widget-disabled">%s</span>'
 				: '<a href="#wl-vocabulary-widget-%2$s">%1$s</a>' );
 
