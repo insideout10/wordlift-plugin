@@ -95,7 +95,7 @@ class Wordlift_Default_Sparql_Tuple_Rendition implements Wordlift_Sparql_Tuple_R
 		$this->predicate      = $predicate;
 		$this->data_type      = $data_type;
 		$this->language       = $language;
-		$this->uri_suffix     = $uri_suffix;
+		$this->uri_suffix     = ( ! is_null( $uri_suffix ) ) ? $uri_suffix : '';
 
 	}
 
@@ -108,9 +108,7 @@ class Wordlift_Default_Sparql_Tuple_Rendition implements Wordlift_Sparql_Tuple_R
 	 *
 	 * @return array An array of tuples.
 	 */
-	public function get( $post_id ) {
-
-		// @@todo: fix, $uri_suffix might be null.
+	public function get_insert_triples( $post_id ) {
 		// Get the entity URI.
 		$uri = $this->entity_service->get_uri( $post_id ) . $this->uri_suffix;
 
@@ -143,51 +141,23 @@ class Wordlift_Default_Sparql_Tuple_Rendition implements Wordlift_Sparql_Tuple_R
 	 * @param int $post_id The post id.
 	 *
 	 * @return array An array containing delete statements for both
-	 * 				 the uri as subject and object.
+	 *               the uri as subject and object.
 	 */
-	public function get_delete_statement( $post_id ) {
-
-		// @@todo: change to `get_delete_triples`.
-
+	public function get_delete_triples( $post_id ) {
 		// Get the entity URI.
 		$uri = $this->entity_service->get_uri( $post_id ) . $this->uri_suffix;
 
 		return array(
-			// The delete statements with the entity as subject.
-			Wordlift_Query_Builder::new_instance()
-				->delete()
-				->statement( $uri, $this->predicate, '?o' )
-				->build(),
-			// The delete statements with the entity as object.
-			Wordlift_Query_Builder::new_instance()
-				->delete()
-				->statement( '?s', $this->predicate, $uri, Wordlift_Query_Builder::OBJECT_URI )
-				->build(),
+			// As object.
+			sprintf( '<%s> <%s> ?o',
+				Wordlift_Sparql_Service::escape_uri( $uri ),
+				Wordlift_Sparql_Service::escape_uri( $this->predicate )
+			),
+			// As subject.
+			sprintf( '?s <%s> <%s>',
+				Wordlift_Sparql_Service::escape_uri( $this->predicate ),
+				Wordlift_Sparql_Service::escape_uri( $uri )
+			),
 		);
-
 	}
-
-	/**
-	 * Get the predicate for this {@link Wordlift_Sparql_Tuple_Rendition}.
-	 *
-	 * @since 3.15.0
-	 *
-	 * @return string The predicate.
-	 */
-	private function get_predicate() {
-
-		return $this->predicate;
-	}
-
-	/**
-	 * Get the uri suffix for this {@link Wordlift_Sparql_Tuple_Rendition}.
-	 *
-	 * @since 3.18.0
-	 *
-	 * @return string The uri suffix.
-	 */
-	private function get_uri_suffix() {
-		return ( ! empty( $this->uri_suffix ) ? $this->uri_suffix : '' );
-	}
-
 }

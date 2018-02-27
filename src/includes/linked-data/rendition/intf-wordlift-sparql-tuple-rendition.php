@@ -18,20 +18,18 @@ interface Wordlift_Sparql_Tuple_Rendition {
 	 *
 	 * @param int $post_id The {@link WP_Post}'s id.
 	 *
-	 * @return array An array of tuples.
+	 * @return array An array of triples.
 	 */
-	// @@todo: rename to `get_insert_triples`.
-	public function get( $post_id );
+	public function get_insert_triples( $post_id );
 
 	/**
 	 * Get delete statement for current post uri.
 	 *
 	 * @since 3.18.0
 	 *
-	 * @param $post_id
+	 * @param int $post_id The post id.
 	 *
-	 * @return array An array of delete tuples (`<...> <...> ?o` and `?s <...> <...>`).
+	 * @return array An array of delete triples (`<...> <...> ?o` and `?s <...> <...>`).
 	 */
-	// @@todo: rename to `get_delete_triples`.
-	public function get_delete_statement( $post_id );
+	public function get_delete_triples( $post_id );
 }

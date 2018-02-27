@@ -59,4 +59,18 @@ class Wordlift_Sparql_Tuple_Rendition_Factory {
 		return new Wordlift_Default_Sparql_Tuple_Rendition( $this->entity_service, $storage, $predicate, $data_type, $language, $uri_suffix );
 	}
 
+	/**
+	 * Create an address rendition.
+	 *
+	 * @since 3.18.0
+	 *
+	 * @param \Wordlift_Storage $storage    A {@link Wordlift_Storage} instance.
+	 * @param string|null       $language   A language code (e.g. `en`).
+	 *
+	 * @return \Wordlift_Address_Sparql_Tuple_Rendition A {@link Wordlift_Address_Sparql_Tuple_Rendition} instance.
+	 */
+	public function create_address( $storage, $language = null ) {
+
+		return new Wordlift_Address_Sparql_Tuple_Rendition( $this->entity_service, $this, $storage, $language );
+	}
 }

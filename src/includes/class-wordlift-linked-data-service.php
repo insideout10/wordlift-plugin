@@ -140,22 +140,6 @@ class Wordlift_Linked_Data_Service {
 	}
 
 	/**
-	 * Remove the specified {@link WP_Post} from the Linked Data.
-	 *
-	 * @since 3.15.0
-	 *
-	 * @param int $post_id The {@link WP_Post}'s id.
-	 */
-	public function remove( $post_id ) {
-
-		// Get the delete statements.
-		$deletes      = $this->get_delete_statements( $post_id );
-		$delete_query = implode( "\n", $deletes );
-		$this->sparql_service->execute( $delete_query );
-
-	}
-
-	/**
 	 * Push an entity to the Linked Data store.
 	 *
 	 * @since 3.15.0
@@ -192,12 +176,8 @@ class Wordlift_Linked_Data_Service {
 		// First remove the post data.
 		$this->remove( $post_id );
 
-		// Get the insert statements.
-		$insert_tuples     = $this->get_insert_tuples( $post_id );
-		$insert_query_body = implode( "\n", $insert_tuples );
-		$insert_query      = "INSERT DATA { $insert_query_body };";
-		$this->sparql_service->execute( $insert_query );
-
+		// Then execute the insert query.
+		$this->insert( $post_id );
 	}
 
 	/**
@@ -229,6 +209,47 @@ class Wordlift_Linked_Data_Service {
 	}
 
 	/**
+	 * Remove the specified {@link WP_Post} from the Linked Data.
+	 *
+	 * @since 3.18.0
+	 *
+	 * @param int $post_id The {@link WP_Post}'s id.
+	 */
+	public function remove( $post_id ) {
+		$delete_query = '';
+
+		// Get the delete statements.
+		$triples = $this->get_delete_triples( $post_id );
+
+		// Loop through all triples and add the statement to delete query.
+		foreach ( $triples as $item ) {
+			$delete_query .= "DELETE { $item } WHERE { $item }; \n";
+		}
+
+		$this->sparql_service->execute( $delete_query );
+	}
+
+	/**
+	 * Insert the specific {@link WP_Post} to Linked Data store.
+	 *
+	 * @since 3.18.0
+	 *
+	 * @param int $post_id The {@link WP_Post}'s id.
+	 */
+	public function insert( $post_id ) {
+		// Get the insert statements.
+		$insert_triples = $this->get_insert_triples( $post_id );
+
+		// Convert all statements to single string.
+		$insert_query_body = implode( "\n", $insert_triples );
+
+		// Build the insert query.
+		$insert_query = "INSERT DATA { $insert_query_body };";
+
+		$this->sparql_service->execute( $insert_query );
+	}
+
+	/**
 	 * Get the delete statements.
 	 *
 	 * @since 3.18.0
@@ -237,35 +258,27 @@ class Wordlift_Linked_Data_Service {
 	 *
 	 * @return array An array of delete statements.
 	 */
-	private function get_delete_statements( $post_id ) {
-		// Init the delete statements array.
-		$delete_statements = array();
+	private function get_delete_triples( $post_id ) {
+		$delete_triples = array();
 
-		$delete_query = '';
-
-		// @@todo: use `get_delete_triples`.
-
+		// Loop through all renditions and get the triples.
 		foreach ( $this->schema_service->get_renditions() as $rendition ) {
-			// Push the rendition delete statement to deletes.
-			$delete_statements = array_merge(
-				$delete_statements,
-				(array) $rendition->get_delete_statement( $post_id )
+			// Push the rendition delete triple to $delete_triples.
+			$delete_triples = array_merge(
+				$delete_triples,
+				(array) $rendition->get_delete_triples( $post_id )
 			);
-
-			$triples = array_reduce( $rendition->get_delete_triples( $post_id ), function ($carry, $item) {
-				return "DELETE { $item } WHERE { $item } \n";
-			}, $delete_query );
 		}
 
 		/**
-		 * Filter: 'wl_delete_statements' - Allow third parties to hook and add additional delete statements.
+		 * Filter: 'wl_delete_triples' - Allow third parties to hook and add additional delete triples.
 		 *
 		 * @since 3.18.0
 		 *
-		 * @param array $delete_statements Schema.org delete statements.
-		 * @param int   $post_id           The current post ID.
+		 * @param array $delete_triples Delete triples.
+		 * @param int   $post_id        The current post ID.
 		 */
-		return apply_filters( 'wl_delete_statements', array_unique( $delete_statements ), $post_id );
+		return apply_filters( 'wl_delete_triples', array_unique( $delete_triples ), $post_id );
 	}
 
 	/**
@@ -277,7 +290,7 @@ class Wordlift_Linked_Data_Service {
 	 *
 	 * @return array An array of insert tuples.
 	 */
-	private function get_insert_tuples( $post_id ) {
+	private function get_insert_triples( $post_id ) {
 
 		// Get the entity type.
 		$type = $this->entity_type_service->get( $post_id );
@@ -288,22 +301,23 @@ class Wordlift_Linked_Data_Service {
 		/**
 		 * Get the INSERT tuples properties.
 		 *
-		 * The `wl_insert_tuples_properties` filter allows 3rd parties to extend
+		 * The `wl_insert_triples` filter allows 3rd parties to extend
 		 * the list of tuples for SPARQL INSERT statements.
 		 *
 		 * @since 3.17.0
+		 * @since 3.18.0 The hook has been renamed from `wl_insert_tuples_properties` to `wl_insert_triples`.
 		 *
 		 * @param array                         $linked_data         A {@link Wordlift_Sparql_Tuple_Rendition} instances.
 		 * @param \Wordlift_Entity_Type_Service $entity_type_service The {@link Wordlift_Entity_Type_Service} instance.
 		 * @param int                           $post_id             The {@link WP_Post}'s id.
 		 */
-		$properties = apply_filters( 'wl_insert_tuples_properties', $linked_data, $this->entity_service, $post_id );
+		$properties = apply_filters( 'wl_insert_triples', $linked_data, $this->entity_service, $post_id );
 
 		// Accumulate the tuples.
 		$tuples = array();
 		/** @var Wordlift_Default_Sparql_Tuple_Rendition $property A {@link Wordlift_Sparql_Tuple_Rendition} instance. */
 		foreach ( $properties as $property ) {
-			foreach ( $property->get( $post_id ) as $tuple ) {
+			foreach ( $property->get_insert_triples( $post_id ) as $tuple ) {
 				$tuples[] = $tuple;
 			}
 		}

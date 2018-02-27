@@ -528,7 +528,7 @@ class Wordlift_Schema_Service {
 			'same_as'       => array( '*' ),
 			// set as default.
 			'custom_fields' => array(
-				self::FIELD_SAME_AS                            => array(
+				self::FIELD_SAME_AS => array(
 					'predicate'   => 'http://schema.org/sameAs',
 					'type'        => self::DATA_TYPE_URI,
 					'export_type' => 'http://schema.org/Thing',
@@ -540,7 +540,7 @@ class Wordlift_Schema_Service {
 				),
 				// Add the schema:url property.
 				Wordlift_Schema_Url_Property_Service::META_KEY => Wordlift_Schema_Url_Property_Service::get_instance()
-																									  ->get_compat_definition(),
+																										->get_compat_definition(),
 			),
 			// {{sameAs}} not present in the microdata template,
 			// because it is treated separately in *wl_content_embed_item_microdata*
@@ -1071,8 +1071,10 @@ class Wordlift_Schema_Service {
 				),
 			),
 			'linked_data'   => array(
-				new Wordlift_Address_Sparql_Tuple_Rendition( $this->rendition_factory, $this->storage_factory, $this->language_code ),
-
+				$this->rendition_factory->create_address(
+					$this->storage_factory,
+					$this->language_code
+				),
 			),
 			'templates'     => array(
 				'subtitle' => '{{id}}',

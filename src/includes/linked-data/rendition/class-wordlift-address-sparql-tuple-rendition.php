@@ -17,7 +17,6 @@
  * @package    Wordlift
  * @subpackage Wordlift/includes
  */
-
 class Wordlift_Address_Sparql_Tuple_Rendition implements Wordlift_Sparql_Tuple_Rendition {
 	/**
 	 * The PostalAddress entity renditions.
@@ -29,17 +28,30 @@ class Wordlift_Address_Sparql_Tuple_Rendition implements Wordlift_Sparql_Tuple_R
 	private $renditions;
 
 	/**
+	 * The {@link Wordlift_Entity_Service} instance.
+	 *
+	 * @since  3.18.0
+	 * @access private
+	 * @var \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service} instance.
+	 */
+	private $entity_service;
+
+	/**
 	 * Create a {@link Wordlift_Address_Sparql_Tuple_Rendition} instance.
 	 *
 	 * @since 3.18.0
 	 *
-	 * @param \Wordlift_Sparql_Tuple_Rendition_Factory $rendition_factory The {@link Wordlift_Sparql_Tuple_Rendition_Factory}
+	 * @param \Wordlift_Entity_Service                 $entity_service    The {@link Wordlift_Entity_Service}.
+	 *
+	 * @param \Wordlift_Sparql_Tuple_Rendition_Factory $rendition_factory The {@link Wordlift_Sparql_Tuple_Rendition_Factory}.
 	 *                                                                    instance.
 	 * @param \Wordlift_Storage                        $storage           The {@link Wordlift_Storage}
 	 *                                                                    instance.
 	 * @param string|null                              $language          The language code or null.
 	 */
-	function __construct( $rendition_factory, $storage, $language_code ) {
+	public function __construct( $entity_service, $rendition_factory, $storage, $language ) {
+
+		$this->entity_service = $entity_service;
 
 		$this->renditions = array(
 			// ### schema:streetAddress.
@@ -47,7 +59,7 @@ class Wordlift_Address_Sparql_Tuple_Rendition implements Wordlift_Sparql_Tuple_R
 				$storage->post_meta( Wordlift_Schema_Service::FIELD_ADDRESS ),
 				Wordlift_Query_Builder::SCHEMA_STREET_ADDRESS,
 				null,
-				$language_code,
+				$language,
 				'/address'
 			),
 			// ### schema:postOfficeBoxNumber.
@@ -73,7 +85,7 @@ class Wordlift_Address_Sparql_Tuple_Rendition implements Wordlift_Sparql_Tuple_R
 				$storage->post_meta( Wordlift_Schema_Service::FIELD_ADDRESS_LOCALITY ),
 				'http://schema.org/addressLocality',
 				null,
-				$language_code,
+				$language,
 				'/address'
 			),
 
@@ -82,7 +94,7 @@ class Wordlift_Address_Sparql_Tuple_Rendition implements Wordlift_Sparql_Tuple_R
 				$storage->post_meta( Wordlift_Schema_Service::FIELD_ADDRESS_REGION ),
 				'http://schema.org/addressRegion',
 				null,
-				$language_code,
+				$language,
 				'/address'
 			),
 
@@ -91,7 +103,7 @@ class Wordlift_Address_Sparql_Tuple_Rendition implements Wordlift_Sparql_Tuple_R
 				$storage->post_meta( Wordlift_Schema_Service::FIELD_ADDRESS_COUNTRY ),
 				'http://schema.org/addressCountry',
 				null,
-				$language_code,
+				$language,
 				'/address'
 			),
 		);
@@ -106,28 +118,35 @@ class Wordlift_Address_Sparql_Tuple_Rendition implements Wordlift_Sparql_Tuple_R
 	 *
 	 * @param int $post_id The {@link WP_Post}'s id.
 	 *
-	 * @return array An array of tuples.
+	 * @return array An array of triples.
 	 */
-	public function get( $post_id ) {
-		$tuples = array();
+	public function get_insert_triples( $post_id ) {
+		$triples = array();
 
 		/** @var Wordlift_Sparql_Tuple_Rendition $rendition */
 		foreach ( $this->renditions as $rendition ) {
-			$tuples = array_merge( $tuples, $rendition->get( $post_id ) );
+			$triples = array_merge( $triples, $rendition->get_insert_triples( $post_id ) );
 		}
 
-		// Add a reference to the main entity if the tuples are not empty.
-		if ( ! empty( $tuples ) ) {
+		// Add a reference to the main entity if the triples are not empty.
+		if ( ! empty( $triples ) ) {
 			// Get the main entity uri.
-			$post_uri = Wordlift_Entity_Service::get_instance()->get_uri( $post_id );
+			$uri = $this->entity_service->get_uri( $post_id );
 
 			// Push the reference.
-			$tuples[] = "<$post_uri> <http://schema.org/address> <$post_uri/address> . ";
-			$tuples[] = "<$post_uri/address> a <http://schema.org/PostalAddress> . ";
+			$triples[] = sprintf( '<%1$s> <%2$s> <%1$s/address> . ',
+				Wordlift_Sparql_Service::escape_uri( $uri ),
+				'http://schema.org/address'
+			);
+
+			$triples[] = sprintf( '<%s/address> a <%s> . ',
+				Wordlift_Sparql_Service::escape_uri( $uri ),
+				'http://schema.org/PostalAddress'
+			);
 		};
 
-		// Finally return the tuples.
-		return $tuples;
+		// Finally return the triples.
+		return $triples;
 	}
 
 	/**
@@ -137,38 +156,62 @@ class Wordlift_Address_Sparql_Tuple_Rendition implements Wordlift_Sparql_Tuple_R
 	 *
 	 * @param int $post_id The post id.
 	 *
-	 * @return array An array containing delete statements for both
-	 * 				 the uri as subject and object.
+	 * @return array An array of delete triples for current tuple renditions.
 	 */
-
-	// @@todo: change to `get_delete_triples`.
-	public function get_delete_statement( $post_id ) {
+	public function get_delete_triples( $post_id ) {
 		$deletes = array();
-
-		// Get the main entity uri.
-		$post_uri = Wordlift_Entity_Service::get_instance()->get_uri( $post_id );
 
 		// Loop through all renditions and generate the delete statements.
 		foreach ( $this->renditions as $rendition ) {
-			// Get the entity URI.
-			$deletes = array_merge( $deletes, $rendition->get_delete_statement( $post_id ) );
+			// Generate delete triples for each rendition.
+			$deletes = array_merge(
+				$deletes,
+				// Get the triple from current rendition.
+				$rendition->get_delete_triples( $post_id )
+			);
 		}
 
-		// Finally merge the deletes with main entity address delete statement.
-		return array_merge(
-			$deletes,
-			array(
-				// The delete statements with the entity as subject.
-				Wordlift_Query_Builder::new_instance()
-					->delete()
-					->statement( $post_uri, 'http://schema.org/address', '?o' )
-					->build(),
-				// The delete statements with the entity as object.
-				Wordlift_Query_Builder::new_instance()
-					->delete()
-					->statement( '?s', 'http://schema.org/address', $post_uri, Wordlift_Query_Builder::OBJECT_URI )
-					->build(),
-			)
+		// Return the delete statements along with delete statements for
+		// address reference and PostalAddress rdf:type.
+		return array_merge( $deletes, $this->get_address_delete_triples( $post_id ) );
+	}
+
+	/**
+	 * Provide delete triples for address reference
+	 * and PostalAddress rdf:type.
+	 *
+	 * @since 3.18.0
+	 *
+	 * @param int $post_id The post id.
+	 *
+	 * @return array An arary of additional delete triples.
+	 */
+	private function get_address_delete_triples( $post_id ) {
+		// Get the main entity uri.
+		$uri = $this->entity_service->get_uri( $post_id );
+
+		// Biuld and return the address delete triples.
+		return array(
+			// Push the address reference.
+			sprintf( '?s <%s/address> <%s> . ',
+				'http://schema.org/address',
+				Wordlift_Sparql_Service::escape_uri( $uri )
+			),
+			sprintf( '<%s> <%s> ?o . ',
+				Wordlift_Sparql_Service::escape_uri( $uri ),
+				'http://schema.org/address'
+			),
+
+			// Push the delete PostalAddress rdf:type.
+			sprintf( '?s <%s> <%s> . ',
+				Wordlift_Query_Builder::RDFS_TYPE_URI,
+				'http://schema.org/PostalAddress'
+			),
+			sprintf( '<%s> <%s> ?o . ',
+				'http://schema.org/PostalAddress',
+				Wordlift_Query_Builder::RDFS_TYPE_URI
+			),
 		);
+
 	}
 }
