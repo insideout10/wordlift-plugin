@@ -2,7 +2,7 @@
 
 /**
  * Tests: Entity Type Service
- * 
+ *
  * @since      3.18.0
  * @package    Wordlift
  * @subpackage Wordlift/tests

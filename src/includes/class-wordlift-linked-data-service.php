@@ -239,7 +239,7 @@ class Wordlift_Linked_Data_Service {
 	 *
 	 * @param int $post_id The {@link WP_Post}'s id.
 	 */
-	public function insert( $post_id ) {
+	private function insert( $post_id ) {
 		// Get the insert statements.
 		$insert_triples = $this->get_insert_triples( $post_id );
 

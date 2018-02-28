@@ -13,7 +13,7 @@
  *
  * @since 3.18.0
  */
-class WordLift_Triples_Test extends Wordlift_Unit_Test_Case {
+class Wordlift_Triples_Test extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * The Schema service.
@@ -38,12 +38,14 @@ class WordLift_Triples_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function setUp() {
 		parent::setUp();
+
 		$this->schema_service = $this->get_wordlift_test()->get_schema_service();
 		$this->entity_service = $this->get_wordlift_test()->get_entity_service();
+
 	}
 
 	/**
-	 * Check that place triples doens't contain address triples.
+	 * Check that place triples doesn't contain address triples.
 	 *
 	 * @since 3.18.0
 	 *
@@ -63,8 +65,8 @@ class WordLift_Triples_Test extends Wordlift_Unit_Test_Case {
 		update_post_meta( $entity_id, 'wl_address_postal_code', '9001' );
 
 		// Set place entity type to the entity.
-		$term = get_term_by( 'slug', 'event', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
-		wp_set_post_terms( $entity_id, $term->term_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		$term = get_term_by( 'slug', 'event', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+		wp_set_post_terms( $entity_id, $term->term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 		// Get the entity uri.
 		$uri = $this->entity_service->get_uri( $entity_id );
@@ -114,8 +116,8 @@ class WordLift_Triples_Test extends Wordlift_Unit_Test_Case {
 		update_post_meta( $entity_id, 'wl_address_post_office_box', $post_office_box_meta );
 
 		// Set place entity type to the entity.
-		$term = get_term_by( 'slug', 'place', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
-		wp_set_post_terms( $entity_id, $term->term_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		$term = get_term_by( 'slug', 'place', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+		wp_set_post_terms( $entity_id, $term->term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 		// Get the entity uri.
 		$uri = $this->entity_service->get_uri( $entity_id );
