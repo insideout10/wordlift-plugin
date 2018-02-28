@@ -330,4 +330,26 @@ class Wordlift_Test extends Wordlift {
 		return $this->linked_data_service;
 	}
 
+	/**
+	 * Get the {@link Wordlift_Sparql_Tuple_Rendition_Factory} instance.
+	 *
+	 * @since 3.18.0
+	 * @return \Wordlift_Sparql_Tuple_Rendition_Factory The {@link Wordlift_Sparql_Tuple_Rendition_Factory} instance.
+	 */
+	public function get_rendition_factory() {
+
+		return $this->rendition_factory;
+	}
+
+	/**
+	 * Get the {@link Wordlift_Storage_Factory} instance.
+	 *
+	 * @since 3.18.0
+	 * @return \Wordlift_Storage_Factory The {@link Wordlift_Storage_Factory} instance.
+	 */
+	public function get_storage_factory() {
+
+		return $this->storage_factory;
+	}
+
 }
