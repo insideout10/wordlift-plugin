@@ -79,10 +79,13 @@ class Wordlift_Default_Sparql_Tuple_Rendition_Test extends Wordlift_Unit_Test_Ca
 
 		// Get delete triples
 		$delete_triples   = $legal_name->get_delete_triples( $entity_id );
-		$insert_triples   = $legal_name->get_insert_triples( $entity_id );
 
+		// Test the delete triples.
 		$this->assertContains( "<$uri> <http://schema.org/legalName> ?o", $delete_triples );
 		$this->assertContains( "?s <http://schema.org/legalName> <$uri>", $delete_triples );
+
+		// Test the insert trimples.
+		$insert_triples   = $legal_name->get_insert_triples( $entity_id );
 		$this->assertContains( "<$uri> <http://schema.org/legalName> \"Lorem Ipsum\" . ", $insert_triples );
 	}
 	

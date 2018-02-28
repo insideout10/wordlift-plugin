@@ -71,26 +71,12 @@ class Wordlift_Address_Sparql_Tuple_Rendition_Test extends Wordlift_Unit_Test_Ca
 			'post_status' => 'publish',
 		) );
 
-		// Set the post meta values.
-		$address_meta         = 'Sunshine str 15';
-		$postal_code_meta     = 9000;
-		$country_meta         = 'Italy';
-		$locality_meta        = 'Rome';
-		$post_office_box_meta = 1234;
-
-		// Add address post meta.
-		update_post_meta( $entity_id, 'wl_address', $address_meta );
-		update_post_meta( $entity_id, 'wl_address_postal_code', $postal_code_meta );
-		update_post_meta( $entity_id, 'wl_address_country', $country_meta );
-		update_post_meta( $entity_id, 'wl_address_locality', $locality_meta );
-		update_post_meta( $entity_id, 'wl_address_post_office_box', $post_office_box_meta );
-
 		// Set the entity terms.
 		$term   = get_term_by( 'slug', 'place', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		wp_set_post_terms( $entity_id, $term->term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 		// Get delete triples
-		$delete_triples   = $this->address_rendition->get_delete_triples( $entity_id );
+		$delete_triples = $this->address_rendition->get_delete_triples( $entity_id );
 
 		// Get the entity uris.
 		$uri   = $this->entity_service->get_uri( $entity_id );
@@ -102,6 +88,8 @@ class Wordlift_Address_Sparql_Tuple_Rendition_Test extends Wordlift_Unit_Test_Ca
 		$this->assertContains( "<$uri/address> <http://schema.org/addressLocality> ?o", $delete_triples );
 		$this->assertContains( "<$uri/address> <http://schema.org/addressRegion> ?o", $delete_triples );
 		$this->assertContains( "<$uri/address> <http://schema.org/addressCountry> ?o", $delete_triples );
+		$this->assertContains( "<$uri> <http://schema.org/address> <$uri/address> . ", $delete_triples );
+		$this->assertContains( "<$uri/address> a <http://schema.org/PostalAddress> . ", $delete_triples );
 	}
 
 	/**

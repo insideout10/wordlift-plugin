@@ -192,13 +192,13 @@ class Wordlift_Address_Sparql_Tuple_Rendition implements Wordlift_Sparql_Tuple_R
 		// Build and return the address delete triples.
 		return array(
 			// Push the address reference.
-			sprintf( '<%1$s> <%s> <%1$s/address> . ',
+			sprintf( '<%1$s> <%2$s> <%1$s/address> . ',
 				Wordlift_Sparql_Service::escape_uri( $uri ),
 				'http://schema.org/address'
 			),
 
 			// Push the delete PostalAddress rdf:type.
-			sprintf( '<%1$s/address> a <%s> . ',
+			sprintf( '<%s/address> a <%s> . ',
 				Wordlift_Sparql_Service::escape_uri( $uri ),
 				'http://schema.org/PostalAddress'
 			),
