@@ -43,6 +43,9 @@ class Wordlift_Property_Getter_Factory {
 			Wordlift_Schema_Service::FIELD_KNOWS,
 			Wordlift_Schema_Service::FIELD_BIRTH_PLACE,
 			Wordlift_Schema_Service::FIELD_AFFILIATION,
+			Wordlift_Schema_Service::FIELD_PERFORMER,
+			Wordlift_Schema_Service::FIELD_OFFERS,
+			Wordlift_Schema_Service::FIELD_ITEM_OFFERED,
 		) );
 		$property_getter->register( new Wordlift_Location_Property_Service( $entity_service ), array(
 			Wordlift_Schema_Service::FIELD_LOCATION,

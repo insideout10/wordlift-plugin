@@ -237,7 +237,6 @@ class WL_Metabox {
 			// Build Field with a custom class (e.g. WL_Metabox_Field_date).
 			$field_class = 'WL_Metabox_Field_' . key( $args );
 
-
 		} else {
 
 			// Simple fields (string, uri, boolean, etc.).

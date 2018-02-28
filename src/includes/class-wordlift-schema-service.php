@@ -284,6 +284,41 @@ class Wordlift_Schema_Service {
 	const FIELD_PRICE_CURRENCY = 'wl_schema_price_currency';
 
 	/**
+	 * The 'availabilityStarts' field name.
+	 *
+	 * @since 3.18.0
+	 */
+	const FIELD_AVAILABILITY_STARTS = 'wl_schema_availability_starts';
+
+	/**
+	 * The 'availabilityEnds' field name.
+	 *
+	 * @since 3.18.0
+	 */
+	const FIELD_AVAILABILITY_ENDS = 'wl_schema_availability_ends';
+
+	/**
+	 * The 'validFrom' field name.
+	 *
+	 * @since 3.18.0
+	 */
+	const FIELD_VALID_FROM = 'wl_schema_valid_from';
+
+	/**
+	 * The 'priceValidUntil' field name.
+	 *
+	 * @since 3.18.0
+	 */
+	const FIELD_PRICE_VALID_UNTIL = 'wl_schema_valid_until';
+
+	/**
+	 * The 'itemOffered' field name.
+	 *
+	 * @since 3.18.0
+	 */
+	const FIELD_ITEM_OFFERED = 'wl_schema_item_offered';
+
+	/**
 	 * The 'URI' data type name.
 	 *
 	 * @since 3.1.0
@@ -1451,12 +1486,12 @@ class Wordlift_Schema_Service {
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 				),
-				self::FIELD_DATE_START => array(
+				self::FIELD_AVAILABILITY_STARTS => array(
 					'predicate'   => 'http://schema.org/availabilityStarts',
 					'type'        => self::DATA_TYPE_DATE,
 					'export_type' => 'xsd:dateTime',
 				),
-				self::FIELD_DATE_END   => array(
+				self::FIELD_AVAILABILITY_ENDS => array(
 					'predicate'   => 'http://schema.org/availabilityEnds',
 					'type'        => self::DATA_TYPE_DATE,
 					'export_type' => 'xsd:dateTime',
@@ -1469,6 +1504,28 @@ class Wordlift_Schema_Service {
 						'class' => 'Wordlift_Metabox_Field_Integer',
 					),
 				),
+				self::FIELD_VALID_FROM => array(
+					'predicate'   => 'http://schema.org/validFrom',
+					'type'        => self::DATA_TYPE_DATE,
+					'export_type' => 'xsd:dateTime',
+				),
+				self::FIELD_PRICE_VALID_UNTIL => array(
+					'predicate'   => 'http://schema.org/priceValidUntil',
+					'type'        => self::DATA_TYPE_DATE,
+					'export_type' => 'xsd:dateTime',
+				),
+				self::FIELD_ITEM_OFFERED => array(
+					'predicate'   => 'http://schema.org/itemOffered',
+					'type'        => self::DATA_TYPE_URI,
+					'export_type' => 'http://schema.org/Event',
+					'constraints' => array(
+						'uri_type'    => array(
+							'Event',
+							'Thing',
+						),
+						'cardinality' => INF,
+					),
+				),
 			),
 			'linked_data'   => array(
 				// ### schema:availability.
@@ -1479,13 +1536,13 @@ class Wordlift_Schema_Service {
 				),
 				// ### schema:availabilityStarts.
 				$this->rendition_factory->create(
-					$this->storage_factory->post_meta( self::FIELD_DATE_START ),
+					$this->storage_factory->post_meta( self::FIELD_AVAILABILITY_STARTS ),
 					'http://schema.org/availabilityStarts',
 					self::DATA_TYPE_DATE_TIME
 				),
 				// ### schema:availabilityEnds.
 				$this->rendition_factory->create(
-					$this->storage_factory->post_meta( self::FIELD_DATE_END ),
+					$this->storage_factory->post_meta( self::FIELD_AVAILABILITY_ENDS ),
 					'http://schema.org/availabilityEnds',
 					self::DATA_TYPE_DATE_TIME
 				),
@@ -1506,6 +1563,24 @@ class Wordlift_Schema_Service {
 					$this->storage_factory->post_meta( self::FIELD_PRICE_CURRENCY ),
 					'http://schema.org/priceCurrency',
 					null
+				),
+				// ### schema:validFrom.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( self::FIELD_VALID_FROM ),
+					'http://schema.org/validFrom',
+					null
+				),
+				// ### schema:priceValidUntil.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( self::FIELD_PRICE_VALID_UNTIL ),
+					'http://schema.org/priceValidUntil',
+					null
+				),
+				// ### schema:itemOffered.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta_to_uri( self::FIELD_ITEM_OFFERED ),
+					'http://schema.org/itemOffered',
+					self::DATA_TYPE_URI
 				),
 			),
 		);

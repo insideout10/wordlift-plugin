@@ -16,7 +16,7 @@
  * @since   3.18.0
  * @package Wordlift
  */
-class Wordlift_Metabox_Field_integer extends WL_Metabox_Field {
+class Wordlift_Metabox_Field_Integer extends WL_Metabox_Field {
 	/**
 	 * @inheritdoc
 	 */
