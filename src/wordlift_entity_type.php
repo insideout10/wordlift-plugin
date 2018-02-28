@@ -20,7 +20,7 @@ function wl_set_entity_main_type( $post_id, $type_uri ) {
  */
 function wl_print_entity_type_inline_js() {
 
-	$terms = get_terms( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array(
+	$terms = get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
 		'hide_empty' => FALSE,
 	) );
 
@@ -73,4 +73,3 @@ EOF;
 }
 
 add_action( 'admin_print_scripts', 'wl_print_entity_type_inline_js' );
-add_action( 'init', 'wl_entity_type_taxonomy_register', 0 );

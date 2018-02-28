@@ -18,6 +18,7 @@
  */
 class Wordlift_Linked_Data_Service {
 
+	//<editor-fold desc="## FIELDS">
 	/**
 	 * A {@link Wordlift_Log_Service} instance.
 	 *
@@ -55,15 +56,6 @@ class Wordlift_Linked_Data_Service {
 	private $schema_service;
 
 	/**
-	 * The {@link Wordlift_Linked_Data_Service} singleton instance.
-	 *
-	 * @since  3.15.0
-	 * @access private
-	 * @var \Wordlift_Linked_Data_Service $instance The {@link Wordlift_Linked_Data_Service} singleton instance.
-	 */
-	private static $instance;
-
-	/**
 	 * The {@link Wordlift_Sparql_Service} instance.
 	 *
 	 * @since  3.15.0
@@ -71,6 +63,16 @@ class Wordlift_Linked_Data_Service {
 	 * @var \Wordlift_Sparql_Service $sparql_service The {@link Wordlift_Sparql_Service} instance.
 	 */
 	private $sparql_service;
+
+	/**
+	 * The {@link Wordlift_Linked_Data_Service} singleton instance.
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var \Wordlift_Linked_Data_Service $instance The {@link Wordlift_Linked_Data_Service} singleton instance.
+	 */
+	private static $instance;
+	//</editor-fold>
 
 	/**
 	 * Create a {@link Wordlift_Linked_Data_Service} instance.
@@ -107,6 +109,7 @@ class Wordlift_Linked_Data_Service {
 		return self::$instance;
 	}
 
+	//<editor-fold desc="## FUNCTIONS">
 	/**
 	 * Push a {@link WP_Post} to the Linked Data store.
 	 *
@@ -121,13 +124,13 @@ class Wordlift_Linked_Data_Service {
 
 		$this->log->debug( "Pushing post $post_id..." );
 
-		// Bail out if it's not an entity: we do NOT publish non entities or
-		// entities of type `Article`s.
-		if ( ! $this->entity_service->is_entity( $post_id ) ) {
-			$this->log->debug( "Post $post_id is not an entity." );
-
-			return;
-		}
+		// @since 3.18.0 we don't check anymore if the post is an entity, i.e.
+		// we removed the following:
+		//		if ( ! $this->entity_service->is_entity( $post_id ) ) {
+		//			$this->log->debug( "Post $post_id is not an entity." );
+		//
+		//			return;
+		//		}
 
 		// Get the post and push it to the Linked Data store.
 		$this->do_push( $post_id );
@@ -325,5 +328,6 @@ class Wordlift_Linked_Data_Service {
 		// Finally return the tuples.
 		return $tuples;
 	}
+	//</editor-fold>
 
 }

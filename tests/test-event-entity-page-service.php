@@ -59,7 +59,7 @@ class Wordlift_Event_Entity_Page_Service_Test extends Wordlift_Unit_Test_Case {
 		$query = new WP_Query( array(
 			'tax_query' => array(
 				array(
-					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+					'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 					'field'    => 'slug',
 					'terms'    => 'event',
 				),
@@ -122,7 +122,7 @@ class Wordlift_Event_Entity_Page_Service_Test extends Wordlift_Unit_Test_Case {
 		$entity_type_service->set( $entity_3_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
 		add_post_meta( $entity_3_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-21', true );
 
-		$this->go_to( '?' . Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME . '=event' );
+		$this->go_to( '?' . Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME . '=event' );
 
 		global $wp_the_query;
 

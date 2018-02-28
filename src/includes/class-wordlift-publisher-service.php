@@ -37,7 +37,7 @@ class Wordlift_Publisher_Service {
 			'posts_per_page' => - 1,
 			'tax_query'      => array(
 				array(
-					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+					'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 					'field'    => 'slug',
 					'terms'    => array( 'organization', 'person' ),
 				),
@@ -115,7 +115,7 @@ class Wordlift_Publisher_Service {
 			'posts_per_page' => - 1,
 			'tax_query'      => array(
 				array(
-					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+					'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 					'field'    => 'slug',
 					'terms'    => array( 'organization', 'person' ),
 				),
@@ -136,7 +136,7 @@ class Wordlift_Publisher_Service {
 
 		// Map the results in a `Select2` compatible array.
 		return array_map( function ( $entity ) use ( $publisher_service ) {
-			$type     = wp_get_post_terms( $entity->ID, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+			$type     = wp_get_post_terms( $entity->ID, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 			$thumb_id = get_post_thumbnail_id( $entity->ID );
 
 			return array(

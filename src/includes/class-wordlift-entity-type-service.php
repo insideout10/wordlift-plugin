@@ -77,6 +77,20 @@ class Wordlift_Entity_Type_Service {
 	/**
 	 * Get the types associated with the specified entity post id.
 	 *
+	 * We have a strategy to define the entity type, given that everything is
+	 * an entity, i.e. also posts/pages and custom post types.
+	 *
+	 * @since 3.18.0 the cases are the following:
+	 *  1. the post has a term from the Entity Types Taxonomy: the term defines
+	 *     the entity type, e.g. Organization, Person, ...
+	 *  2. the post doesn't have a term from the Entity Types Taxonomy:
+	 *      a) the post is a `wl_entity` custom post type, then the post is
+	 *           assigned the `Thing` entity type by default.
+	 *      b) the post is a `post` post type, then the post is
+	 *           assigned the `Article` entity type by default.
+	 *      c) the post is a custom post type then it is
+	 *          assigned the `WebPage` entity type by default.
+	 *
 	 * @since 3.7.0
 	 *
 	 * @param int $post_id The post id.
@@ -95,42 +109,41 @@ class Wordlift_Entity_Type_Service {
 
 		$this->log->trace( "Getting the post type for post $post_id..." );
 
+		// Get the post type.
 		$post_type = get_post_type( $post_id );
 
-		// If it's not an entity post type return `Thing` by default.
+		// Return `web-page` for non entities.
 		if ( ! self::is_valid_entity_post_type( $post_type ) ) {
-			$this->log->info( "Returning `Thing` for post $post_id." );
+			$this->log->info( "Returning `web-page` for post $post_id." );
 
-			return array(
-				'uri'       => 'http://schema.org/Thing',
-				'css_class' => 'wl-thing',
-			);
+			return $this->schema_service->get_schema( 'web-page' );
 		}
 
 		// Get the type from the associated classification.
-		$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
-		if ( is_wp_error( $terms ) ) {
-			$this->log->error( "An error occurred while getting the post type for post $post_id: " . $terms->get_error_message() );
+		// Return the schema type if there is a term found.
+		if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
+			$this->log->debug( "Found {$terms[0]->slug} term for post $post_id." );
 
-			// TODO: handle error
-			return null;
+			// Return the entity type with the specified id.
+			return $this->schema_service->get_schema( $terms[0]->slug );
 		}
 
-		// If there are not terms associated, default to article.
-		if ( 0 === count( $terms ) ) {
-			$this->log->debug( "Post $post_id has no terms, returning `Article`." );
+		// If it's a page or post return `Article`.
+		if ( in_array( $post_type, array( 'post', 'page' ) ) ) {
+			$this->log->debug( "Post $post_id has no terms, and it's a `post` type, returning `Article`." );
 
-			return array(
-				'uri'       => 'http://schema.org/Article',
-				'css_class' => 'wl-post',
-			);
+			// Return "Article" schema type for posts.
+			return $this->schema_service->get_schema( 'article' );
 		}
 
-		$this->log->debug( "Found {$terms[0]->slug} term for post $post_id." );
+		// Return "Thing" schema type for entities.
+		$this->log->debug( "Post $post_id has no terms, but it's a `wl_entity` type, returning `Thing`." );
 
 		// Return the entity type with the specified id.
-		return $this->schema_service->get_schema( $terms[0]->slug );
+		return $this->schema_service->get_schema( 'thing' );
+
 	}
 
 	/**
@@ -147,7 +160,7 @@ class Wordlift_Entity_Type_Service {
 		if ( empty( $type_uri ) ) {
 			$this->log->debug( "Removing entity type for post $post_id..." );
 
-			wp_set_object_terms( $post_id, null, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+			wp_set_object_terms( $post_id, null, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 			return;
 		}
@@ -155,7 +168,7 @@ class Wordlift_Entity_Type_Service {
 		$this->log->debug( "Setting entity type for post $post_id..." );
 
 		// Get all the terms bound to the wl_entity_type taxonomy.
-		$terms = get_terms( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array(
+		$terms = get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
 			'hide_empty' => false,
 			// Because of #334 (and the AAM plugin) we changed fields from 'id=>slug' to 'all'.
 			// An issue has been opened with the AAM plugin author as well.
@@ -181,7 +194,7 @@ class Wordlift_Entity_Type_Service {
 
 				$this->log->debug( "Setting entity type [ post id :: $post_id ][ term id :: $term_id ][ term slug :: $term_slug ][ type uri :: {$type['uri']} ][ type css class :: {$type['css_class']} ]" );
 
-				wp_set_object_terms( $post_id, (int) $term_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+				wp_set_object_terms( $post_id, (int) $term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 				return;
 			}
@@ -238,7 +251,7 @@ class Wordlift_Entity_Type_Service {
 	 */
 	private function get_post_terms( $post_id ) {
 
-		return wp_get_post_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array(
+		return wp_get_post_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
 			'hide_empty' => false,
 			// Because of #334 (and the AAM plugin) we changed fields from 'id=>slug' to 'all'.
 			// An issue has been opened with the AAM plugin author as well.

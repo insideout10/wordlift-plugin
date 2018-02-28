@@ -118,7 +118,7 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 
 		// Generate the header.
 		$header = array_reduce( array_keys( $alphabet ), function ( $carry, $item ) use ( $alphabet ) {
-			$template = ( 0 === count( $alphabet[ $item ] )
+			$template = ( empty( $alphabet[ $item ] )
 				? '<span class="wl-vocabulary-widget-disabled">%s</span>'
 				: '<a href="#wl-vocabulary-widget-%2$s">%1$s</a>' );
 
@@ -216,7 +216,7 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 		if ( 'all' !== $atts['type'] ) {
 			$args['tax_query'] = array(
 				array(
-					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+					'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 					'field'    => 'slug',
 					'terms'    => $atts['type'],
 				),

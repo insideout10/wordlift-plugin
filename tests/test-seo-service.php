@@ -27,14 +27,14 @@ class Test_Wordlift_Seo_Service extends Wordlift_Unit_Test_Case {
 
 		// Test with no SEO settings ate all.
 		// Use event as representative sample.
-		$term = get_term_by( 'name', 'event', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		$term = get_term_by( 'name', 'event', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		$this->assertEquals( $term->name, 'Event' );
 		$this->assertEquals( $term->description, 'An event.' );
 
 		// Test with empty settings.
 		// Use person as representative sample.
 		update_option( 'wl_entity_type_settings', array() );
-		$term = get_term_by( 'name', 'person', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		$term = get_term_by( 'name', 'person', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		$this->assertEquals( $term->name, 'Person' );
 		$this->assertEquals( $term->description, 'A person (or a music artist).' );
 
@@ -48,7 +48,7 @@ class Test_Wordlift_Seo_Service extends Wordlift_Unit_Test_Case {
 	 */
 	function test_with_configuration() {
 
-		$term = get_term_by( 'name', 'event', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		$term = get_term_by( 'name', 'event', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		$test = array(
 			'title'       => 'test name',
 			'description' => 'test description',
@@ -58,7 +58,7 @@ class Test_Wordlift_Seo_Service extends Wordlift_Unit_Test_Case {
 		update_option( 'wl_entity_type_settings', array( $term->term_id => $test ) );
 
 		// Now get the term again and compare.
-		$term = get_term_by( 'name', 'event', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		$term = get_term_by( 'name', 'event', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		$this->assertEquals( $term->name, 'test name' );
 		$this->assertEquals( $term->description, 'test description' );
 
@@ -76,7 +76,7 @@ class Test_Wordlift_Seo_Service extends Wordlift_Unit_Test_Case {
 
 		set_current_screen( 'edit.php' );
 
-		$term = get_term_by( 'name', 'event', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		$term = get_term_by( 'name', 'event', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		$test = array(
 			'title'       => 'test name',
 			'description' => 'test description',
@@ -86,7 +86,7 @@ class Test_Wordlift_Seo_Service extends Wordlift_Unit_Test_Case {
 		update_option( 'wl_entity_type_settings', array( $term->term_id => $test ) );
 
 		// Now get the term again and compare.
-		$term_2 = get_term_by( 'name', 'event', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		$term_2 = get_term_by( 'name', 'event', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		$this->assertEquals( $term->term_id, $term_2->term_id );
 		$this->assertEquals( 'Event', $term_2->name );
 		$this->assertEquals( 'An event.', $term_2->description );

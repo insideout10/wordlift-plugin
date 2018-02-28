@@ -45,9 +45,10 @@ function wl_shortcode_faceted_search( $atts ) {
 
 	$entity_service = Wordlift_Entity_Service::get_instance();
 	$entity_ids     = $entity_service->is_entity( $current_post->ID ) ?
-		$current_post->ID :
+		array( $current_post->ID ) :
 		wl_core_get_related_entity_ids( $current_post->ID );
 
+	// Bail if there are no entity ids.
 	if ( 0 === count( $entity_ids ) ) {
 		return '';
 	}

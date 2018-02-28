@@ -136,7 +136,7 @@ class EntityFunctionsTest extends Wordlift_Unit_Test_Case {
 //        wl_set_entity_main_type( $business_id, 'http://schema.org/LocalBusiness' );
 //
 //        // Get microdata template
-//        $entity_type_details = wl_entity_type_taxonomy_get_type( $business_id );
+//        $entity_type_details = Wordlift_Entity_Type_Service::get_instance()->get( $business_id );
 //        $microdata_template = $entity_type_details['microdata_template'];
 //
 //        // Check inherited microdata templates:

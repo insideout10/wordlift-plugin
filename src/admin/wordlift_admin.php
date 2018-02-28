@@ -19,7 +19,7 @@ function wl_serialize_entity( $entity ) {
 
 	$entity = ( is_numeric( $entity ) ) ? get_post( $entity ) : $entity;
 
-	$type   = wl_entity_type_taxonomy_get_type( $entity->ID );
+	$type   = Wordlift_Entity_Type_Service::get_instance()->get( $entity->ID );
 	$images = wl_get_image_urls( $entity->ID );
 
 	return array(

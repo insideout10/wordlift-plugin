@@ -122,7 +122,7 @@ class Wordlift_Entity_Service {
 	 */
 	public function is_entity( $post_id ) {
 
-		$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 		if ( is_wp_error( $terms ) ) {
 			$this->log->error( "Cannot get the terms for post $post_id: " . $terms->get_error_message() );
@@ -130,7 +130,7 @@ class Wordlift_Entity_Service {
 			return false;
 		}
 
-		if ( 0 === count( $terms ) ) {
+		if ( empty( $terms ) ) {
 			return false;
 		}
 
@@ -445,11 +445,11 @@ class Wordlift_Entity_Service {
 		$tax_query = array(
 			'relation' => 'AND',
 			array(
-				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 				'operator' => 'EXISTS',
 			),
 			array(
-				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 				'field'    => 'slug',
 				'terms'    => 'article',
 				'operator' => 'NOT IN',
@@ -462,7 +462,7 @@ class Wordlift_Entity_Service {
 				'tax_query' => $tax_query,
 				//				'tax_query' => array(
 				//					array(
-				//						'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				//						'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 				//						'terms'    => self::get_entity_terms(),
 				//					),
 				//				),
@@ -480,7 +480,7 @@ class Wordlift_Entity_Service {
 //	 */
 //	public static function get_entity_terms() {
 //
-//		$terms = get_terms( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array(
+//		$terms = get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
 //			'hide_empty' => false,
 //			// Because of #334 (and the AAM plugin) we changed fields from 'id=>slug' to 'all'.
 //			// An issue has been opened with the AAM plugin author as well.

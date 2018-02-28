@@ -31,7 +31,7 @@ class AjaxRelatedPostsTest extends Wordlift_Ajax_Unit_Test_Case {
 		// Create 2 posts and 2 entities
 		$entity_1_id = wl_create_post( '', 'entity0', 'An Entity', 'draft', 'entity' );
 		Wordlift_Entity_Type_Service::get_instance()->set( $entity_1_id, 'http://schema.org/Event' );
-		$terms = wp_get_post_terms( $entity_1_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		$terms = wp_get_post_terms( $entity_1_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		$this->assertCount( 1, $terms, 'The entity must have 1 term set.' );
 
 		$post_1_id = wl_create_post( '', 'post1', 'A post', 'publish' );

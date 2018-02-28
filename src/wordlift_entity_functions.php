@@ -203,7 +203,7 @@ function wl_entity_taxonomy_get_custom_fields( $entity_id = null ) {
 
 		// Return all custom fields.
 		// Get taxonomy terms
-		$terms = get_terms( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array( 'hide_empty' => 0 ) );
+		$terms = get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'hide_empty' => 0 ) );
 
 		if ( is_wp_error( $terms ) ) {
 			return null;
@@ -222,7 +222,7 @@ function wl_entity_taxonomy_get_custom_fields( $entity_id = null ) {
 	}
 
 	// Return custom fields for this specific entity's type.
-	$type = wl_entity_type_taxonomy_get_type( $entity_id );
+	$type = Wordlift_Entity_Type_Service::get_instance()->get( $entity_id );
 
 	if ( ! isset( $type['custom_fields'] ) ) {
 		return array();

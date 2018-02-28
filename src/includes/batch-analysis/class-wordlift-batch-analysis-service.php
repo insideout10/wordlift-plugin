@@ -232,8 +232,6 @@ class Wordlift_Batch_Analysis_Service {
 	 * @return int The number of submitted {@link WP_Post}s or false on error.
 	 */
 	public function submit( $args ) {
-		global $wpdb;
-
 		// Parse the parameters.
 		$params = wp_parse_args( $args, array(
 			'links'             => 'default',
@@ -254,16 +252,17 @@ class Wordlift_Batch_Analysis_Service {
 			wp_die( '`min_occurrences` must greater or equal 1.' );
 		}
 
-		// Submit the posts/pages and return the number of affected results.
-		// We're using a SQL query here because we could have potentially
-		// thousands of rows.
-		$count = $wpdb->query( Wordlift_Batch_Analysis_Sql_Helper::get_sql( $params ) ); // WPCS: cache ok, db call ok.
+		// Get the sql query.
+		$query = Wordlift_Batch_Analysis_Sql_Helper::get_sql( $params );
+
+		// Set the post metas and get the value of the posts.
+		$submitted_posts = $this->update_posts_meta( $params, $query );
 
 		// Request Batch Analysis (the operation is handled asynchronously).
 		do_action( 'wl_batch_analysis_request' );
 
-		// Divide the count by 3 to get the number of posts/pages queued.
-		return $count / 3;
+		// Return the count of the posts.
+		return $submitted_posts;
 	}
 
 	/**
@@ -283,8 +282,6 @@ class Wordlift_Batch_Analysis_Service {
 	 * @return float|int
 	 */
 	public function submit_posts( $args ) {
-		global $wpdb;
-
 		// Parse the parameters.
 		$params = wp_parse_args( $args, array(
 			'links'           => 'default',
@@ -297,16 +294,55 @@ class Wordlift_Batch_Analysis_Service {
 			wp_die( '`ids` cannot be empty.' );
 		}
 
-		// Submit the posts/pages and return the number of affected results.
-		// We're using a SQL query here because we could have potentially
-		// thousands of rows.
-		$count = $wpdb->query( Wordlift_Batch_Analysis_Sql_Helper::get_sql_for_ids( $params ) ); // WPCS: cache ok, db call ok.
+		// Get the query,
+		$query = Wordlift_Batch_Analysis_Sql_Helper::get_sql_for_ids( $params );
+
+		// Set the post metas and get the value of the posts.
+		$submitted_posts = $this->update_posts_meta( $params, $query );
 
 		// Request Batch Analysis (the operation is handled asynchronously).
 		do_action( 'wl_batch_analysis_request' );
 
-		// Divide the count by 3 to get the number of posts/pages queued.
-		return $count / 3;
+		// Return the count of the posts.
+		return $submitted_posts;
+	}
+
+	/**
+	 * Add metas to the posts that should be analysed.
+	 *
+	 * @param array  $params The request params.
+	 * @param string $query  The mysql query.
+	 *
+	 * @since 3.18.0
+	 *
+	 * @return int The number of posts found/submitted.
+	 */
+	public function update_posts_meta( $params, $query ) {
+		global $wpdb;
+
+		// Get the link options.
+		$link_options = array(
+			'links'           => $params['links'],
+			'min_occurrences' => $params['min_occurrences'],
+		);
+
+		// Get the posts that should be submitted for analysis.
+		$posts = $wpdb->get_results( $query ); // WPCS: cache ok, db call ok.
+
+		// Bail if there are no posts found.
+		if ( empty( $posts ) ) {
+			return 0;
+		}
+
+		// Add the post metas.
+		foreach ( $posts as $p ) {
+			add_post_meta( $p->ID, self::STATE_META_KEY, 0 );
+			add_post_meta( $p->ID, self::SUBMIT_TIMESTAMP_META_KEY, gmdate( 'Y-m-d H:i:s' ) );
+			add_post_meta( $p->ID, self::BATCH_ANALYSIS_OPTIONS_META_KEY, $link_options );
+		}
+
+		// Finally return the posts count.
+		return count( $posts );
 	}
 
 	/**
@@ -797,7 +833,7 @@ class Wordlift_Batch_Analysis_Service {
 	 */
 	private function maybe_set_default_term( $id ) {
 		// Check whether the post has any of the WordLift entity types.
-		$has_term = has_term( '', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, $id );
+		$has_term = has_term( '', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, $id );
 
 		// Bail if the term is associated with entity types already.
 		if ( ! empty( $has_term ) ) {
@@ -805,7 +841,7 @@ class Wordlift_Batch_Analysis_Service {
 		}
 
 		// Set the default `article` term.
-		wp_set_object_terms( $id, 'article', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		wp_set_object_terms( $id, 'article', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 	}
 

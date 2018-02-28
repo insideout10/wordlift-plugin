@@ -60,7 +60,8 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 		parent::setUp();
 
 		delete_option( 'wl_db_version' );
-		wl_core_update_db_check();
+
+		Wordlift_Install_Service::get_instance()->install();
 
 		// Default behaviour: push entities to the remote Linked Data store.
 		self::turn_off_entity_push();

@@ -29,7 +29,7 @@ abstract class Wordlift_Ajax_Unit_Test_Case extends WP_Ajax_UnitTestCase {
 
 		delete_option( 'wl_db_version' );
 
-		wl_core_update_db_check();
+		Wordlift_Install_Service::get_instance()->install();
 
 		// Default behaviour: push entities to the remote Linked Data store.
 		Wordlift_Unit_Test_Case::turn_off_entity_push();

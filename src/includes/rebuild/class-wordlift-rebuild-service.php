@@ -52,8 +52,8 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 	 *
 	 * @since 3.6.0
 	 *
-	 * @param \Wordlift_Sparql_Service $sparql_service A {@link Wordlift_Sparql_Service} instance used to query the remote dataset.
-	 * @param \Wordlift_Uri_Service    $uri_service
+	 * @param \Wordlift_Sparql_Service             $sparql_service A {@link Wordlift_Sparql_Service} instance used to query the remote dataset.
+	 * @param \Wordlift_Uri_Service                $uri_service
 	 */
 	public function __construct( $sparql_service, $uri_service ) {
 
@@ -125,14 +125,8 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 		// Flush the cache.
 		Wordlift_File_Cache_Service::flush_all();
 
-		$this->log->info( "Rebuild complete [ count :: $count ][ limit :: $limit ]" );
-		echo( "Rebuild complete [ count :: $count ][ limit :: $limit ]" );
-
-		// If we're being called as AJAX, die here.
-		if ( DOING_AJAX ) {
-			wp_die();
-		}
-
+		// Rebuild also the references.
+		$this->redirect( admin_url( 'admin-ajax.php?action=wl_rebuild_references') );
 	}
 
 	/**
@@ -142,7 +136,7 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 	 *
 	 * @param string $url The URL to redirect to.
 	 */
-	private function redirect( $url ) {
+	public function redirect( $url ) {
 
 		ob_clean();
 
@@ -175,7 +169,6 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 	 * @return array A array of items (or an empty array if no items are found).
 	 */
 	function find( $offset = 0, $limit = 10, $args = array() ) {
-
 		return get_posts( wp_parse_args( $args, Wordlift_Entity_Service::add_criterias( array(
 			'offset'        => $offset,
 			'numberposts'   => $limit,

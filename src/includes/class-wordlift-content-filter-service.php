@@ -144,7 +144,7 @@ class Wordlift_Content_Filter_Service {
 		preg_match_all( self::PATTERN, $content, $matches );
 
 		// Bail out if there are no URIs.
-		if ( 0 === count( $matches[3] ) ) {
+		if ( empty( $matches[3] ) ) {
 			return $content;
 		}
 

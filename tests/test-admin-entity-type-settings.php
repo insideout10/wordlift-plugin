@@ -25,7 +25,7 @@ class Test_Wordlift_Admin_Entity_Type_Settings_Service extends Wordlift_Unit_Tes
 
 		$settings_service = new Wordlift_Admin_Entity_Type_Settings();
 
-		$term = get_term_by( 'slug', 'event', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		$term = get_term_by( 'slug', 'event', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 		$this->assertFalse( false === $term );
 
@@ -55,7 +55,7 @@ class Test_Wordlift_Admin_Entity_Type_Settings_Service extends Wordlift_Unit_Tes
 	function test_partial_rendering() {
 		// Test with no overriding settings.
 
-		$term = get_term_by( 'name', 'event', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		$term = get_term_by( 'name', 'event', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 		$this->assertFalse( false === $term );
 

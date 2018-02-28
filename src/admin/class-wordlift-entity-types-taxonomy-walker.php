@@ -38,7 +38,7 @@ class Wordlift_Entity_Types_Taxonomy_Walker extends Walker_Category_Checklist {
 	 */
 	function terms_checklist_args( $args ) {
 
-		if ( ! isset( $args['taxonomy'] ) || Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME !== $args['taxonomy'] ) {
+		if ( ! isset( $args['taxonomy'] ) || Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME !== $args['taxonomy'] ) {
 			return $args;
 		}
 
@@ -102,7 +102,7 @@ class Wordlift_Entity_Types_Taxonomy_Walker extends Walker_Category_Checklist {
 
 		if ( Wordlift_Entity_Service::TYPE_NAME !== $post->post_type
 		     || 'article' !== $category->slug
-		     || Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME !== $args['taxonomy'] ) {
+		     || Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME !== $args['taxonomy'] ) {
 			parent::start_el( $output, $category, $depth, $args, $id );
 		}
 	}
@@ -126,7 +126,7 @@ class Wordlift_Entity_Types_Taxonomy_Walker extends Walker_Category_Checklist {
 
 		if ( Wordlift_Entity_Service::TYPE_NAME !== $post->post_type
 		     || 'article' !== $category->slug
-		     || Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME !== $args['taxonomy'] ) {
+		     || Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME !== $args['taxonomy'] ) {
 			parent::end_el( $output, $category, $depth, $args );
 		}
 

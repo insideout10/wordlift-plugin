@@ -129,9 +129,18 @@ class Wordlift_Query_Builder {
 	const RDFS_LABEL_URI = 'http://www.w3.org/2000/01/rdf-schema#label';
 
 	/**
+	 * The schema.org `streetAddress` property.
+	 *
 	 * @since 3.18.0
 	 */
 	const SCHEMA_STREET_ADDRESS = 'http://schema.org/streetAddress';
+
+	/**
+	 * The schema.org headline.
+	 *
+	 * @since 3.18.0
+	 */
+	const SCHEMA_HEADLINE_URI = 'http://schema.org/headline';
 
 	/**
 	 * Hold the template (INSERT or DELETE).
@@ -263,7 +272,7 @@ class Wordlift_Query_Builder {
 	public function build() {
 
 		// If there are no statements return an empty string.
-		if ( 0 === count( $this->statements ) ) {
+		if ( empty( $this->statements ) ) {
 			return '';
 		}
 
