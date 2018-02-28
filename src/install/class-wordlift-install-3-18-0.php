@@ -36,6 +36,7 @@ class Wordlift_Install_3_18_0 extends Wordlift_Install {
 	 * @inheritdoc
 	 */
 	public function install() {
+		$this->add_editors_read_wordlift_entity_capability();
 		do_action( 'wl_push_references' );
 	}
 
@@ -67,6 +68,23 @@ class Wordlift_Install_3_18_0 extends Wordlift_Install {
 			Wordlift_Linked_Data_Service::get_instance()->push( $post->ID );
 		}
 
+	}
+
+	/**
+	 * Add additional `read_wordlift_entity` capability to editors.
+	 *
+	 * @since 3.18.0
+	 *
+	 * @return void
+	 */
+	public function add_editors_read_wordlift_entity_capability() {
+		// Get the editor roles.
+		$admins  = get_role( 'administrator' );
+		$editors = get_role( 'editor' );
+
+		// Add read capability.
+		$admins->add_cap( 'read_wordlift_entity' );
+		$editor->add_cap( 'read_wordlift_entity' );
 	}
 
 }
