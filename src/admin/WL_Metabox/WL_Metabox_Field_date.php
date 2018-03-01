@@ -73,14 +73,25 @@ class WL_Metabox_Field_date extends WL_Metabox_Field {
 
 		$this->log->debug("Creating date input with date value $date...");
 
-		// $picker_date = ( empty( $date ) ? '' : esc_attr( date( $this->date_format, strtotime( $date ) ) ) );
-
-		return <<<EOF
+		ob_start();
+		?>
 			<div class="wl-input-wrapper">
-				<input type="text" class="$this->meta_name" name="wl_metaboxes[$this->meta_name][]" value="$date" style="width:88%" />
-				<button class="button wl-remove-input wl-button" type="button">Remove</button>
+				<input
+					type="text"
+					class="<?php echo esc_attr( $this->meta_name ); ?>"
+					name="wl_metaboxes[<?php echo $this->meta_name ?>][]"
+					value="<?php echo $date ?>"
+					style="width:88%"
+				/>
+
+				<button class="button wl-remove-input wl-button" type="button">
+					<?php esc_html_e( 'Remove', 'wordlift' ); ?>
+				</button>
 			</div>
-EOF;
+		<?php
+		$html = ob_get_clean();
+
+		return $html;
 	}
 
 	public function html_wrapper_close() {
@@ -94,22 +105,24 @@ EOF;
 		//
 		// See https://github.com/trentrichardson/jQuery-Timepicker-Addon
 		// See in http://trentrichardson.com/examples/timepicker.
-		$html = <<<EOF
+		ob_start();
+		?>
 			<script type='text/javascript'>
 				( function( $ ) {
 
 					$( function() {
 
 						$( '.$this->meta_name[type=text]' ).flatpickr( {
-							enableTime: $timepicker,
-							noCalendar: $no_calendar,
+							enableTime: <?php echo $timepicker; ?>,
+							noCalendar: <?php echo $no_calendar; ?>,
 							time_24hr: true,
-							dateFormat: $date_format
+							dateFormat: <?php echo $date_format; ?>
 						 } );
 					} );
 				} ) ( jQuery );
 			</script>
-EOF;
+		<?php
+		$html = ob_get_clean();
 
 		$html .= parent::html_wrapper_close();
 

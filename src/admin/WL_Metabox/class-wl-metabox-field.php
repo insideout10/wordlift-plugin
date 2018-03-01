@@ -420,12 +420,23 @@ class WL_Metabox_Field {
 	 * @return string The html code fragment.
 	 */
 	public function html_input( $value ) {
-		$html = <<<EOF
+		ob_start();
+		?>
 			<div class="wl-input-wrapper">
-				<input type="text" id="$this->meta_name" name="wl_metaboxes[$this->meta_name][]" value="$value" style="width:88%" />
-				<button class="button wl-remove-input wl-button" type="button">Remove</button>
+				<input
+					type="text"
+					id="<?php echo esc_attr( $this->meta_name ); ?>"
+					name="wl_metaboxes[<?php echo $this->meta_name ?>][]"
+					value="<?php echo esc_attr( $value ); ?>"
+					style="width:88%"
+				/>
+
+				<button class="button wl-remove-input wl-button" type="button">
+					<?php esc_html_e( 'Remove', 'wordlift' ); ?>
+				</button>
 			</div>
-EOF;
+		<?php
+		$html = ob_get_clean();
 
 		return $html;
 	}

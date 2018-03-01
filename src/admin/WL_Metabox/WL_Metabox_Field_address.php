@@ -68,26 +68,36 @@ class WL_Metabox_Field_address extends WL_Metabox_Field {
 	 * @return string Field HTML
 	 */
 	public function html() {
-
+		ob_start();
 		// Open main <div> for the Field, then insert label and nonce
-		$html = <<<EOF
+		?>
 			<div class='wl-field'>
-			<h3>$this->label</h3>
-			{$this->html_nonce()}
-EOF;
+			<h3><?php echo $this->label ?></h3>
+			<?php echo $this->html_nonce() ?>
 
+		<?php
 		// print data loaded from DB
-		foreach ( $this->subfields as $subfield ) {
-			
+		foreach ( $this->subfields as $subfield ) :
 			$value = isset( $subfield->data[0] )? $subfield->data[0] : '';
-			
-			$html .= <<<EOF
+		?>
 			<div class="wl-input-wrapper">
-				<label for="wl_metaboxes[$this->meta_name][$subfield->meta_name]" style="display:inline-block; width:20%;">$subfield->label</label>
-				<input type="text" name="wl_metaboxes[$this->meta_name][$subfield->meta_name]" value="$value" style="width:78%;" />
+				<label
+					for="wl_metaboxes[<?php echo $this->meta_name ?>][<?php echo $subfield->meta_name ?>]"
+					style="display:inline-block; width:20%;"
+				>
+					<?php echo $subfield->label ?>
+				</label>
+
+				<input
+					type="text"
+					name="wl_metaboxes[<?php echo $this->meta_name ?>][<?php echo $subfield->meta_name ?>]"
+					value="<?php echo $value; ?>"
+					style="width:78%;"
+				/>
 			</div>
-EOF;
-		}
+		<?php
+		endforeach;
+		$html = ob_get_clean();
 
 		// Close the HTML wrapper
 		$html .= $this->html_wrapper_close();
@@ -95,5 +105,3 @@ EOF;
 		return $html;
 	}
 }
-
-

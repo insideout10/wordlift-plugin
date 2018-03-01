@@ -153,14 +153,30 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 		// The visible <input> has the human readable value (i.e. entity name or uri)
 		// and is accompained by an hidden <input> tag, passed to the server,
 		// that contains the raw value (i.e. the uri or entity id).
-		$html = <<<EOF
+		ob_start();
+		?>
 			<div class="wl-input-wrapper wl-autocomplete-wrapper">
-				<input type="text" class="$this->meta_name wl-autocomplete" value="$label" style="width:88%" />
-				<input type="hidden" class="$this->meta_name" name="wl_metaboxes[$this->meta_name][]" value="$value" />
-				<button class="button wl-remove-input wl-button" type="button">Remove</button>
+				<input
+					type="text"
+					class="<?php echo esc_attr( $this->meta_name ); ?> wl-autocomplete"
+					value="<?php echo esc_attr( $label ); ?>"
+					style="width:88%"
+				/>
+				<input
+					type="hidden"
+					class="<?php echo esc_attr( $this->meta_name ); ?>"
+					name="wl_metaboxes[<?php echo $this->meta_name ?>][]"
+					value="<?php echo esc_attr( $value ); ?>"
+				/>
+
+				<button class="button wl-remove-input wl-button" type="button">
+					<?php esc_html_e( 'Remove', 'wordlift' ); ?>
+				</button>
+
 				<div class="wl-input-notice"></div>
 			</div>
-EOF;
+		<?php
+		$html = ob_get_clean();
 
 		return $html;
 	}
