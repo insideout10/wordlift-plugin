@@ -10,10 +10,12 @@
 class Wordlift_Linked_Data_Service_Test extends Wordlift_Unit_Test_Case {
 
 	private $sparql_service;
+	private $entity_service;
 
 	function setUp() {
 		parent::setUp();
 
+		$this->entity_service = $this->get_wordlift_test()->get_entity_service();
 		// Create a mock sparql service.
 		$this->sparql_service = $this->getMockBuilder( 'Wordlift_Sparql_Service' )
 									 ->disableOriginalConstructor()
@@ -41,10 +43,12 @@ class Wordlift_Linked_Data_Service_Test extends Wordlift_Unit_Test_Case {
 			$this->get_wordlift_test()->get_schema_service(),
 			$this->sparql_service );
 
+		$uri = $this->entity_service->get_uri( $post_id );
+
 		// Load the expected function parameter for the sparql service `execute`
 		// function. Beware that the results may change in the future if we
 		// add new predicates to the schema service or renditions.
-		$expected = file_get_contents( __DIR__ . '/assets/linked_data_service__remove__1.sparql' );
+		$expected = str_replace( 'POST_URI' , $uri, file_get_contents( __DIR__ . '/assets/linked_data_service__remove__1.sparql' ) );
 
 		// Declare our expectation for the `execute` function to be called once
 		// with the above parameter.
