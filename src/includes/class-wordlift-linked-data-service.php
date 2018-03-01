@@ -285,13 +285,13 @@ class Wordlift_Linked_Data_Service {
 	}
 
 	/**
-	 * Get the SPARQL insert tuples ( ?s ?p ?o ) for the specified {@link WP_Post}.
+	 * Get the SPARQL insert triples ( ?s ?p ?o ) for the specified {@link WP_Post}.
 	 *
 	 * @since 3.15.0
 	 *
 	 * @param int $post_id The {@link WP_Post}'s id.
 	 *
-	 * @return array An array of insert tuples.
+	 * @return array An array of insert triples.
 	 */
 	private function get_insert_triples( $post_id ) {
 
@@ -299,13 +299,22 @@ class Wordlift_Linked_Data_Service {
 		$type = $this->entity_type_service->get( $post_id );
 
 		// Get the `linked_data` parameter.
-		$linked_data = $type['linked_data'];
+		$properties = $type['linked_data'];
+
+		// Accumulate the triples.
+		$triples = array();
+		/** @var Wordlift_Default_Sparql_Tuple_Rendition $property A {@link Wordlift_Sparql_Tuple_Rendition} instance. */
+		foreach ( $properties as $property ) {
+			foreach ( $property->get_insert_triples( $post_id ) as $triple ) {
+				$triples[] = $triple;
+			}
+		}
 
 		/**
-		 * Get the INSERT tuples properties.
+		 * Get the INSERT triples properties.
 		 *
 		 * The `wl_insert_triples` filter allows 3rd parties to extend
-		 * the list of tuples for SPARQL INSERT statements.
+		 * the list of triples for SPARQL INSERT statements.
 		 *
 		 * @since 3.17.0
 		 * @since 3.18.0 The hook has been renamed from `wl_insert_tuples_properties` to `wl_insert_triples`.
@@ -314,19 +323,7 @@ class Wordlift_Linked_Data_Service {
 		 * @param \Wordlift_Entity_Type_Service $entity_type_service The {@link Wordlift_Entity_Type_Service} instance.
 		 * @param int                           $post_id             The {@link WP_Post}'s id.
 		 */
-		$properties = apply_filters( 'wl_insert_triples', $linked_data, $this->entity_service, $post_id );
-
-		// Accumulate the tuples.
-		$tuples = array();
-		/** @var Wordlift_Default_Sparql_Tuple_Rendition $property A {@link Wordlift_Sparql_Tuple_Rendition} instance. */
-		foreach ( $properties as $property ) {
-			foreach ( $property->get_insert_triples( $post_id ) as $tuple ) {
-				$tuples[] = $tuple;
-			}
-		}
-
-		// Finally return the tuples.
-		return $tuples;
+		return apply_filters( 'wl_insert_triples', $triples, $this->entity_service, $post_id );
 	}
 	//</editor-fold>
 
