@@ -96,6 +96,21 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 		// Bind the place to the location property.
 		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_LOCATION, $place_id );
 
+		// Create a person entity post and bind it to the performer property.
+		$performer_id = $this->factory->post->create( array( 'post_type' => 'entity' ) );
+		$this->entity_type_service->set( $performer_id, 'http://schema.org/Person' );
+		$performer_uri = $this->entity_service->get_uri( $performer_id );
+
+		// Bind the person to the performer property.
+		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_PERFORMER, $performer_id );
+
+		// Create a offer entity post and bind it to the offers property.
+		$offer_id = $this->factory->post->create( array( 'post_type' => 'entity' ) );
+		$this->entity_type_service->set( $offer_id, 'http://schema.org/Offer' );
+		$offer_uri = $this->entity_service->get_uri( $offer_id );
+
+		// Bind the offer to the offers property.
+		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_OFFERS, $offer_id );
 
 		$post       = get_post( $event_id );
 		$references = array();
@@ -125,6 +140,14 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 
 		$this->assertArrayHasKey( 'sameAs', $jsonld );
 		$this->assertEquals( $same_as, $jsonld['sameAs'] );
+
+		$this->assertArrayHasKey( 'performer', $jsonld );
+		$this->assertArrayHasKey( '@id', $jsonld['performer'] );
+		$this->assertEquals( $performer_uri, $jsonld['performer']['@id'] );
+
+		$this->assertArrayHasKey( 'offers', $jsonld );
+		$this->assertArrayHasKey( '@id', $jsonld['offers'] );
+		$this->assertEquals( $offer_uri, $jsonld['offers']['@id'] );
 
 		$this->assertArrayHasKey( 'location', $jsonld );
 		$this->assertArrayHasKey( '@id', $jsonld['location'] );
@@ -635,4 +658,101 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 
 	}
 
+	/**
+	 * Test the conversion of an offer entity {@link WP_Post} to a JSON-LD array.
+	 *
+	 * @since 3.18.0
+	 *
+	 */
+	public function test_offer_conversion() {
+
+		// Create an entity post and assign it the Offer type.
+		$name     = rand_str();
+		$offer_id = $this->factory->post->create( array(
+			'post_title' => $name,
+			'post_type'  => 'entity',
+		) );
+		$this->entity_type_service->set( $offer_id, 'http://schema.org/Offer' );
+		$offer_uri = $this->entity_service->get_uri( $offer_id );
+
+		$thing_id = $this->factory->post->create( array( 'post_type' => 'entity' ) );
+		$this->entity_type_service->set( $thing_id, 'http://schema.org/Thing' );
+
+		// Create the property values.
+		$availability_start_date = date( 'Y/m/d', 1576800000 );
+		$availability_end_date   = date( 'Y/m/d', 3153600000 );
+		$valid_from_date         = date( 'Y/m/d', 1953600000 );
+		$valid_until_date        = date( 'Y/m/d', 2253600000 );
+		$availability            = 'InStock';
+		$price                   = 18;
+		$inventory               = 3;
+		$currency                = 'EUR';
+		$thing_uri               = $this->entity_service->get_uri( $thing_id );
+
+		// Update post metas.
+		add_post_meta( $offer_id, Wordlift_Schema_Service::FIELD_AVAILABILITY, $availability );
+		add_post_meta( $offer_id, Wordlift_Schema_Service::FIELD_AVAILABILITY_STARTS, $availability_start_date );
+		add_post_meta( $offer_id, Wordlift_Schema_Service::FIELD_AVAILABILITY_ENDS, $availability_end_date );
+		add_post_meta( $offer_id, Wordlift_Schema_Service::FIELD_INVENTORY_LEVEL, $inventory );
+		add_post_meta( $offer_id, Wordlift_Schema_Service::FIELD_PRICE, $price );
+		add_post_meta( $offer_id, Wordlift_Schema_Service::FIELD_PRICE_CURRENCY, $currency );
+		add_post_meta( $offer_id, Wordlift_Schema_Service::FIELD_VALID_FROM, $valid_from_date );
+		add_post_meta( $offer_id, Wordlift_Schema_Service::FIELD_PRICE_VALID_UNTIL, $valid_until_date );
+		add_post_meta( $offer_id, Wordlift_Schema_Service::FIELD_ITEM_OFFERED, $thing_uri );
+
+		// Set a random sameAs.
+		$same_as = 'http://example.org/aRandomSameAs';
+		add_post_meta( $offer_id, Wordlift_Schema_Service::FIELD_SAME_AS, $same_as );
+
+		$post       = get_post( $offer_id );
+		$references = array();
+		$jsonld     = $this->entity_post_to_jsonld_converter->convert( $post->ID, $references );
+
+		$this->assertTrue( is_array( $jsonld ) );
+		$this->assertArrayHasKey( '@context', $jsonld );
+		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
+
+		$this->assertArrayHasKey( '@id', $jsonld );
+		$this->assertEquals( $offer_uri, $jsonld['@id'] );
+
+		$this->assertArrayHasKey( '@type', $jsonld );
+		$this->assertEquals( 'Offer', $jsonld['@type'] );
+
+		$this->assertArrayHasKey( 'name', $jsonld );
+		$this->assertEquals( $name, $jsonld['name'] );
+
+		$this->assertArrayHasKey( 'availability', $jsonld );
+		$this->assertEquals( $availability, $jsonld['availability'] );
+
+		$this->assertArrayHasKey( 'price', $jsonld );
+		$this->assertEquals( $price, $jsonld['price'] );
+
+		$this->assertArrayHasKey( 'priceCurrency', $jsonld );
+		$this->assertEquals( $currency, $jsonld['priceCurrency'] );
+
+		$this->assertArrayHasKey( 'availabilityStarts', $jsonld );
+		$this->assertEquals( $availability_start_date, $jsonld['availabilityStarts'] );
+
+		$this->assertArrayHasKey( 'availabilityEnds', $jsonld );
+		$this->assertEquals( $availability_end_date, $jsonld['availabilityEnds'] );
+
+		$this->assertArrayHasKey( 'inventoryLevel', $jsonld );
+		$this->assertEquals( $inventory, $jsonld['inventoryLevel'] );
+
+		$this->assertArrayHasKey( 'validFrom', $jsonld );
+		$this->assertEquals( $valid_from_date, $jsonld['validFrom'] );
+
+		$this->assertArrayHasKey( 'priceValidUntil', $jsonld );
+		$this->assertEquals( $valid_until_date, $jsonld['priceValidUntil'] );
+
+		$this->assertArrayHasKey( 'url', $jsonld );
+		$this->assertEquals( get_permalink( $offer_id ), $jsonld['url'] );
+
+		$this->assertArrayHasKey( 'sameAs', $jsonld );
+		$this->assertEquals( $same_as, $jsonld['sameAs'] );
+
+		$this->assertArrayHasKey( 'itemOffered', $jsonld );
+		$this->assertEquals( $thing_uri, $jsonld['itemOffered'] );
+
+	}
 }
