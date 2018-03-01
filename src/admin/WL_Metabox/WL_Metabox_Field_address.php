@@ -68,7 +68,7 @@ class WL_Metabox_Field_address extends WL_Metabox_Field {
 	 * @return string Field HTML
 	 */
 	public function html() {
-		ob_start();
+		@ob_start();
 		// Open main <div> for the Field, then insert label and nonce
 		?>
 			<div class='wl-field'>

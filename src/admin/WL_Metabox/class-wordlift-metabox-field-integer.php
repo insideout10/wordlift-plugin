@@ -21,7 +21,7 @@ class Wordlift_Metabox_Field_Integer extends WL_Metabox_Field {
 	 * @inheritdoc
 	 */
 	public function html_input( $text ) {
-		ob_start();
+		@ob_start();
 		?>
 			<div class="wl-input-wrapper">
 				<input

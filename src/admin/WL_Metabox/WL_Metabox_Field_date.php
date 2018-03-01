@@ -105,7 +105,7 @@ class WL_Metabox_Field_date extends WL_Metabox_Field {
 		//
 		// See https://github.com/trentrichardson/jQuery-Timepicker-Addon
 		// See in http://trentrichardson.com/examples/timepicker.
-		ob_start();
+		@ob_start();
 		?>
 			<script type='text/javascript'>
 				( function( $ ) {

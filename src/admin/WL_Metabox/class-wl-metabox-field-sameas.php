@@ -139,7 +139,7 @@ class WL_Metabox_Field_sameas extends WL_Metabox_Field {
 	 * @inheritdoc
 	 */
 	public function html_input( $value ) {
-		ob_start();
+		@ob_start();
 		?>
 			<div class="wl-input-wrapper">
 				<input

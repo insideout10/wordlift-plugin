@@ -153,7 +153,7 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 		// The visible <input> has the human readable value (i.e. entity name or uri)
 		// and is accompained by an hidden <input> tag, passed to the server,
 		// that contains the raw value (i.e. the uri or entity id).
-		ob_start();
+		@ob_start();
 		?>
 			<div class="wl-input-wrapper wl-autocomplete-wrapper">
 				<input

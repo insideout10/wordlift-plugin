@@ -420,7 +420,7 @@ class WL_Metabox_Field {
 	 * @return string The html code fragment.
 	 */
 	public function html_input( $value ) {
-		ob_start();
+		@ob_start();
 		?>
 			<div class="wl-input-wrapper">
 				<input
