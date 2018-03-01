@@ -1,0 +1,41 @@
+<?php
+/**
+ * Tests: Integer Field Metabox Test.
+ *
+ * @since      3.18.0
+ * @package    Wordlift
+ * @subpackage Wordlift/tests
+ */
+
+/**
+ * Test the {@link Wordlift_Metabox_Field_Integer} class.
+ *
+ * @since      3.18.0
+ * @package    Wordlift
+ * @subpackage Wordlift/tests
+ */
+class Wordlift_Metabox_Field_Integer_Test extends Wordlift_Unit_Test_Case {
+
+	/**
+	 * Test sanitization usually done during updated. Value should match
+	 * the regex.
+	 *
+	 * @since 3.18.0
+	 * @group metabox
+	 */
+	function test_html_input() {
+
+		// Initialize the field.
+		$field = new Wordlift_Metabox_Field_Integer( array( 'wl_integer' => array() ) );
+
+		// Get the HTML output.
+		$output = $field->html_input( 'integer' );
+
+		// Get the expected html.
+		$expected = file_get_contents( __DIR__ . '/assets/metabox-integer.html' );
+
+		$this->assertEquals( $output, $expected );
+
+	}
+
+}

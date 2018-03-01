@@ -9,7 +9,22 @@
 
 class Wordlift_Linked_Data_Service_Test extends Wordlift_Unit_Test_Case {
 
+	/**
+	 * The {@link Wordlift_Sparql_Service} instance to test.
+	 *
+	 * @since  3.18.0
+	 * @access private
+	 * @var \Wordlift_Sparql_Service $sparql_service The {@link Wordlift_Sparql_Service} instance to test.
+	 */
 	private $sparql_service;
+
+	/**
+	 * A {@link Wordlift_Entity_Service} instance.
+	 *
+	 * @since  3.18.0
+	 * @access private
+	 * @var Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
+	 */
 	private $entity_service;
 
 	function setUp() {
