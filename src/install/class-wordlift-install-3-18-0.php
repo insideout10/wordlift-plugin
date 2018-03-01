@@ -36,6 +36,7 @@ class Wordlift_Install_3_18_0 extends Wordlift_Install {
 	 * @inheritdoc
 	 */
 	public function install() {
+		$this->add_offer_entity_type();
 		do_action( 'wl_push_references' );
 	}
 
@@ -67,6 +68,34 @@ class Wordlift_Install_3_18_0 extends Wordlift_Install {
 			Wordlift_Linked_Data_Service::get_instance()->push( $post->ID );
 		}
 
+	}
+
+	/**
+	 * Adds the new `Offer` entity type.
+	 *
+	 * @since 3.18.0
+	 *
+	 * @return void
+	 */
+	public function add_offer_entity_type()	{
+		// Check whether the `offer` term exists.
+		$offer = get_term_by(
+			'slug',
+			'offer',
+			Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME
+		);
+
+		// The `offer` term doesn't exists, so create it.
+		if ( empty( $offer ) ) {
+			wp_insert_term(
+				'Offer',
+				Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
+				array(
+					'slug'        => 'offer',
+					'description' => 'An Offer.',
+				)
+			);
+		}
 	}
 
 }
