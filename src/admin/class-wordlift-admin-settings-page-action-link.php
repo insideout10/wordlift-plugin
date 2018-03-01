@@ -58,7 +58,7 @@ class Wordlift_Admin_Settings_Page_Action_Link {
 
 		// Add our own link to the list of links.
 		return array_merge( $links, array(
-			sprintf( "<a href='$url'>%s</a>", _x( 'Settings', 'wordlift' ) ),
+			sprintf( "<a href='$url'>%s</a>", __( 'Settings', 'wordlift' ) ),
 		) );
 	}
 
