@@ -17,8 +17,8 @@
 class Wordlift_Metabox_Field_Integer_Test extends Wordlift_Unit_Test_Case {
 
 	/**
-	 * Test sanitization usually done during updated. Value should match
-	 * the regex.
+	 * Test that the integer field is rendered properly
+	 * along with all attributes and "Remove" button.
 	 *
 	 * @since 3.18.0
 	 * @group metabox

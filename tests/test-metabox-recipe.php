@@ -20,6 +20,7 @@ class WL_Metabox_Recipe_Test extends Wordlift_Unit_Test_Case {
 	 * Test instantiating fields on a Recipe.
 	 *
 	 * @since 3.14.0
+	 * @group metabox
 	 */
 	function test_instantiate_fields() {
 
@@ -56,6 +57,8 @@ class WL_Metabox_Recipe_Test extends Wordlift_Unit_Test_Case {
 	 * @param string $name   The meta name.
 	 *
 	 * @return WL_Metabox_Field|null The {@link WL_Metabox_Field} or null if not found.
+	 *
+	 * @group metabox
 	 */
 	private function get_by_meta_name( $fields, $name ) {
 

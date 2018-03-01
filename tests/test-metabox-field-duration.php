@@ -21,6 +21,7 @@ class Wordlift_Metabox_Field_Duration_Test extends Wordlift_Unit_Test_Case {
 	 * the regex.
 	 *
 	 * @since 3.14.0
+	 * @group metabox
 	 */
 	function test_sanitize_data_filter() {
 

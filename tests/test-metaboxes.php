@@ -26,8 +26,10 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 		wl_empty_blog();
 	}
 
-	/*
+	/**
 	 * Test the WL_Metabox obj is built properly
+	 *
+	 * @group metabox
 	 */
 	function testWL_Metabox_constructor() {
 
@@ -44,8 +46,10 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 		) ) );
 	}
 
-	/*
+	/**
 	 * Test the WL_Metabox fields are built properly
+	 *
+	 * @group metabox
 	 */
 	function testWL_Metabox_fields_instantiation() {
 
@@ -89,8 +93,10 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( $sameAs_field_obj, $metabox->fields[3] );
 	}
 
-	/*
+	/**
 	 * Test the WL_Metabox field grouping mechanism
+	 *
+	 * @group metabox
 	 */
 	function testWL_Metabox_group_properties_by_input_field() {
 
@@ -110,8 +116,10 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 		$this->assertArrayHasKey( 'sameas', $simple_and_grouped_fields[1] );                               // Special/grouped Field
 	}
 
-	/*
+	/**
 	 * Test the WL_Metabox $_POST saving mechanism
+	 *
+	 * @group metabox
 	 */
 	function testWL_Metabox_save_form_data() {
 
@@ -169,8 +177,10 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 	// TODO: Test base class WL_Metabox_Field :(
 
 
-	/*
+	/**
 	 * Test the WL_Metabox_Field_uri obj is built properly
+	 *
+	 * @group metabox
 	 */
 	function testWL_Metabox_Field_uri_constructor() {
 
@@ -205,8 +215,10 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 //		$this->assertEquals( $emptyField, (array) $field );
 	}
 
-	/*
+	/**
 	 * Test the WL_Metabox_Field_uri obj print correctly html
+	 *
+	 * @group metabox
 	 */
 	function testWL_Metabox_Field_uri_html() {
 
@@ -225,8 +237,10 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 		$this->assertContains( 'button class="button wl-add-input wl-button"', $html );                              // Add button
 	}
 
-	/*
+	/**
 	 * Test the WL_Metabox_Field loads and saves data correcly
+	 *
+	 * @group metabox
 	 */
 	function testWL_Metabox_Field_uri_data() {
 
