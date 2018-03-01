@@ -78,7 +78,7 @@ class Wordlift_Install_3_18_0 extends Wordlift_Install {
 	 *
 	 * @return void
 	 */
-	public function add_offer_entity_type()	{
+	public function add_offer_entity_type() {
 		// Check whether the `offer` term exists.
 		$offer = get_term_by(
 			'slug',
