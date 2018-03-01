@@ -21,17 +21,15 @@ class Wordlift_Metabox_Field_Integer extends WL_Metabox_Field {
 	 * @inheritdoc
 	 */
 	public function html_input( $text ) {
-		$esc_meta_name = esc_attr( $this->meta_name );
-
 		ob_start();
 		?>
 			<div class="wl-input-wrapper">
 				<input
 					type="number"
-					id="<?php echo $esc_meta_name ?>"
-					class="<?php echo $esc_meta_name ?>"
+					id="<?php echo esc_attr( $this->meta_name ); ?>"
+					class="<?php echo esc_attr( $this->meta_name ); ?>"
 					value="<?php echo esc_attr( $text ) ?>"
-					name="wl_metaboxes[<?php echo $esc_meta_name; ?>][]"
+					name="wl_metaboxes[<?php echo $this->meta_name; ?>][]"
 					style="width:88%"
 					min="0"
 				/>

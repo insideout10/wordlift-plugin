@@ -22,13 +22,11 @@ class Wordlift_Metabox_Field_Select extends WL_Metabox_Field {
 	 * @inheritdoc
 	 */
 	public function html_input( $text ) {
-		$esc_meta_name = esc_attr( $this->meta_name );
-
 		ob_start();
 		?>
 		<div class="wl-input-wrapper">
 
-			<select name="wl_metaboxes[<?php echo $this->meta_name ?>]" id="<?php echo $esc_meta_name; ?>" style="width:88%;">
+			<select name="wl_metaboxes[<?php echo $this->meta_name ?>]" id="<?php echo esc_attr( $this->meta_name ); ?>" style="width:88%;">
 				<?php foreach ( $this->raw_custom_field['options'] as $option => $label ): ?>
 
 					<option value="<?php echo esc_attr( $option ); ?>" <?php selected( $text, $option ); ?>>
