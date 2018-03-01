@@ -155,6 +155,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Fix: [#702](https://github.com/insideout10/wordlift-plugin/issues/702): When a post is deleted the wl_relation_instances table isn't updated.
 * Fix: [#681](https://github.com/insideout10/wordlift-plugin/issues/681): Permalink in vocabulary editor returns to editor.
 
+= 3.17.3 (2018-02-14) =
+* Fix: [#766](https://github.com/insideout10/wordlift-plugin/issues/766): Performance loss on Cache update due to `wp_set_post_lock`.
+
 = 3.17.2 (2018-01-24) =
 * Fix: [#758](https://github.com/insideout10/wordlift-plugin/issues/758): amp_post_template_css causes PHP Warning.
 

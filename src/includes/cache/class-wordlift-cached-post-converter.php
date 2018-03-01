@@ -51,6 +51,21 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	private $configuration_service;
 
 	/**
+	 * A list of meta keys that do not cause the cache to update.
+	 *
+	 * @since 3.17.3
+	 * @var array An array of ignored meta keys.
+	 */
+	private static $ignored_meta_keys = array(
+		'_edit_lock',
+		'_edit_last',
+		'_wp_page_template',
+		'_wp_attachment_is_custom_background',
+		'_wp_attachment_backup_sizes',
+		'_wp_attachment_is_custom_header',
+	);
+
+	/**
 	 * Wordlift_Cached_Post_Converter constructor.
 	 *
 	 * @param \Wordlift_Post_Converter        $converter             The {@link Wordlift_Post_Converter} implementation.
@@ -82,15 +97,15 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 		add_action( 'added_post_meta', array(
 			$this,
 			'changed_post_meta',
-		), 10, 2 );
+		), 10, 3 );
 		add_action( 'updated_post_meta', array(
 			$this,
 			'changed_post_meta',
-		), 10, 2 );
+		), 10, 3 );
 		add_action( 'deleted_post_meta', array(
 			$this,
 			'changed_post_meta',
-		), 10, 2 );
+		), 10, 3 );
 
 		// Flush cache when wordlift settings were updated.
 		add_action( 'update_option_wl_general_settings', array(
@@ -99,7 +114,10 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 		) );
 
 		// Flushes the cache when permalink structure is changed.
-		add_action( 'update_option_permalink_structure', array( $this, 'permalinks_structure_changed' ) );
+		add_action( 'update_option_permalink_structure', array(
+			$this,
+			'permalinks_structure_changed',
+		) );
 
 		// Invalid cache on relationship change.
 		add_action( 'wl_relation_added', array( $this, 'relation_changed' ) );
@@ -220,12 +238,19 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	 *
 	 * @since 3.16.0
 	 *
-	 * @param int $id      The {@link WP_Post} meta id.
-	 * @param int $post_id The {@link WP_Post} id.
+	 * @param int    $id       The {@link WP_Post} meta id.
+	 * @param int    $post_id  The {@link WP_Post} id.
+	 * @param string $meta_key The meta key.
 	 */
-	public function changed_post_meta( $id, $post_id ) {
+	public function changed_post_meta( $id, $post_id, $meta_key ) {
 
-		$this->log->trace( "Post $post_id meta changed, invalidating cache..." );
+		if ( in_array( $meta_key, self::$ignored_meta_keys ) ) {
+			$this->log->trace( "Post $post_id meta $meta_key ignored." );
+
+			return;
+		}
+
+		$this->log->trace( "Post $post_id meta $meta_key changed, invalidating cache..." );
 
 		// Delete the single cache file.
 		$this->cache_service->delete_cache( $post_id );
