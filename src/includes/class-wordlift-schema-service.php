@@ -1462,15 +1462,15 @@ class Wordlift_Schema_Service {
 						'class' => 'Wordlift_Metabox_Field_Select',
 					),
 					'options' => array(
-						'Discontinued',
-						'InStock',
-						'InStoreOnly',
-						'LimitedAvailability',
-						'OnlineOnly',
-						'OutOfStock',
-						'PreOrder',
-						'PreSale',
-						'SoldOut',
+						'Discontinued'        => 'Discontinued',
+						'InStock'             => 'In Stock',
+						'InStoreOnly'         => 'In Store Only',
+						'LimitedAvailability' => 'Limited Availability',
+						'OnlineOnly'          => 'Online Only',
+						'OutOfStock'          => 'Out of Stock',
+						'PreOrder'            => 'Pre Order',
+						'PreSale'             => 'Pre Sale',
+						'SoldOut'             => 'Sold Out',
 					),
 				),
 				self::FIELD_PRICE => array(
@@ -1517,7 +1517,7 @@ class Wordlift_Schema_Service {
 				self::FIELD_ITEM_OFFERED => array(
 					'predicate'   => 'http://schema.org/itemOffered',
 					'type'        => self::DATA_TYPE_URI,
-					'export_type' => 'http://schema.org/Event',
+					'export_type' => 'http://schema.org/Thing',
 					'constraints' => array(
 						'uri_type'    => array(
 							'Event',
@@ -1527,7 +1527,7 @@ class Wordlift_Schema_Service {
 					),
 				),
 			),
-			'linked_data'   => array(
+			'linked_data' => array(
 				// ### schema:availability.
 				$this->rendition_factory->create(
 					$this->storage_factory->post_meta( self::FIELD_AVAILABILITY ),

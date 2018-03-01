@@ -22,15 +22,30 @@ class Wordlift_Metabox_Field_Integer extends WL_Metabox_Field {
 	 */
 	public function html_input( $text ) {
 		$esc_meta_name = esc_attr( $this->meta_name );
-		$esc_text      = esc_attr( $text );
 
-		$html = <<<EOF
+		ob_start();
+		?>
 			<div class="wl-input-wrapper">
-				<input type="number" id="$esc_meta_name" class="$esc_meta_name" value="$esc_text" name="wl_metaboxes[$esc_meta_name][]" style="width:88%" min="0"/>
-				<button class="button wl-remove-input wl-button" type="button">Remove</button>
+				<input
+					type="number"
+					id="<?php echo $esc_meta_name ?>"
+					class="<?php echo $esc_meta_name ?>"
+					value="<?php echo esc_attr( $text ) ?>"
+					name="wl_metaboxes[<?php echo $esc_meta_name; ?>][]"
+					style="width:88%"
+					min="0"
+				/>
+
+				<button class="button wl-remove-input wl-button" type="button">
+					<?php esc_html_e( 'Remove', 'wordlift' ); ?>
+				</button>
+
 				<div class="wl-input-notice"></div>
 			</div>
-EOF;
+
+		<?php
+		$html = ob_get_clean();
+
 		return $html;
 	}
 }
