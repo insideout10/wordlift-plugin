@@ -142,6 +142,8 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.19.0 (????-??-??) =
+
 = 3.18.0 (????-??-??) =
 * Enhancement: [#769](https://github.com/insideout10/wordlift-plugin/issues/769): Move `wl_insert_triples` at the end of `get_insert_triples`.
 * Enhancement: [#768](https://github.com/insideout10/wordlift-plugin/issues/768): Refactor `wordlift_core_install.php`.
