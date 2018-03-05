@@ -99,10 +99,11 @@ class Wordlift_Schema_Service_Test extends Wordlift_Unit_Test_Case {
 	 * @return void
 	 */
 	public function test_get_field_email() {
+
 		// Init the expected properties.
 		$expected = array(
 			'predicate'   => 'http://schema.org/email',
-			'type'        => $this->schema_service::DATA_TYPE_STRING,
+			'type'        => Wordlift_Schema_Service::DATA_TYPE_STRING,
 			'export_type' => 'xsd:string',
 			'constraints' => '',
 		);
@@ -125,7 +126,7 @@ class Wordlift_Schema_Service_Test extends Wordlift_Unit_Test_Case {
 		// Init the expected properties.
 		$expected = array(
 			'predicate'   => 'http://schema.org/streetAddress',
-			'type'        => $this->schema_service::DATA_TYPE_STRING,
+			'type'        => Wordlift_Schema_Service::DATA_TYPE_STRING,
 			'export_type' => 'xsd:string',
 			'constraints' => '',
 			'input_field' => 'address',
