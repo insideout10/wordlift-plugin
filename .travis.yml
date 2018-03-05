@@ -1,12 +1,12 @@
 # We need `sudo` because we're going to install Apache with PHP.
 # See https://docs.travis-ci.com/user/ci-environment/#Virtualization-environments
 sudo: required
-#dist: precise
+dist: precise
 
 # Set the language to PHP since we're going to setup a WordPress web site.
 language: php
 php:
-# - '5.3'
+ - '5.3'
  - '5.4'
  - '5.5'
  - '5.6'
