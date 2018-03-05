@@ -6,7 +6,7 @@ sudo: required
 # Set the language to PHP since we're going to setup a WordPress web site.
 language: php
 php:
- - '5.3'
+# - '5.3'
  - '5.4'
  - '5.5'
  - '5.6'
