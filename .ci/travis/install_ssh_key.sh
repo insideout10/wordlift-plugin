@@ -16,4 +16,5 @@ echo "gitlab.com,52.167.219.168 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAy
 cat ~/.ssh/config
 
 echo "Testing repository clone..."
-git clone git@gitlab.com:wordlift/wordlift-ui.git /tmp/wordlift-ui
+git clone git@gitlab.com:wordlift/wordlift-ui.git /tmp/wordlift-ui 2> /tmp/git.log
+cat /tmp/git.log
