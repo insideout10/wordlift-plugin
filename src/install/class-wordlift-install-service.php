@@ -27,6 +27,14 @@ class Wordlift_Install_Service {
 	 */
 	private static $instance;
 
+	/**
+	 * A {@link Wordlift_Log_Service} instance.
+	 *
+	 * @since  3.18.0
+	 * @access private
+	 * @var \Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
+	 */
+	private $log;
 
 	/**
 	 * Wordlift_Install_Service constructor.
@@ -36,6 +44,9 @@ class Wordlift_Install_Service {
 	public function __construct() {
 
 		self::$instance = $this;
+
+		$this->log = Wordlift_Log_Service::get_logger( get_class() );
+
 	}
 
 	/**
@@ -67,20 +78,29 @@ class Wordlift_Install_Service {
 			new Wordlift_Install_3_18_0(),
 		);
 
+		$version = null;
+
 		/** @var Wordlift_Install $install */
 		foreach ( $installs as $install ) {
 			// Get the install version.
 			$version = $install->get_version();
 
 			if ( version_compare( $version, $this->get_current_version(), '>' ) ) {
+				$this->log->debug( "Current version is {$this->get_current_version()}, installing v$version..." );
 				// Install version.
 				$install->install();
 
+				$this->log->info( "v$version installed." );
+
 			}
+
 		}
 
 		// Bump the `wl_db_version`.
-		update_option( 'wl_db_version', $version );
+		if ( null !== $version ) {
+			update_option( 'wl_db_version', $version );
+		}
+
 	}
 
 	/**
