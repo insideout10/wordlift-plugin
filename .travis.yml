@@ -29,9 +29,6 @@ matrix:
     - php: 7.0
       env: SCRIPT=test:php-test-coverage WP_VERSION=4.9
     # WordPress nightly.
-    # Additional PHP Unit tests, PHP 7.2, WP 4.9 (WP 4.2 isn't compatible with PHP 7.x).
-    - php: 7.2
-      env: SCRIPT=test:php WP_VERSION=4.9
     - php: 5.6
       env: SCRIPT=test:php WP_VERSION=nightly
     # JavaScript unit tests.
@@ -41,6 +38,9 @@ matrix:
     - php: 5.6
       env: SCRIPT=test:multisite WP_VERSION=4.9
   allow_failures:
+    # Additional PHP Unit tests, PHP 7.2, WP 4.9 (WP 4.2 isn't compatible with PHP 7.x).
+    - php: 7.2
+      env: SCRIPT=test:php WP_VERSION=4.9
     # JavaScript end-to-end tests.
     - php: 5.6
       env: SCRIPT=test:e2e
