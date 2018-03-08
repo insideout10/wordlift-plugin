@@ -96,11 +96,13 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 		// Extract attributes and set default values.
 		$atts = shortcode_atts( array(
 			// The entity type, such as `person`, `organization`, ...
-			'type'         => 'all',
+			'type'    => 'all',
 			// Limit the number of posts to 100 by default. Use -1 to remove the limit.
-			'limit'        => 100,
+			'limit'   => 100,
 			// Sort by title.
-			'orderby'      => 'title',
+			'orderby' => 'title',
+			// Allow to specify the category ID.
+			'cat'     => '',
 		), $atts );
 
 		// Get the posts. Note that if a `type` is specified before, then the
@@ -205,7 +207,7 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 
 		// The default arguments for the query.
 		$args = array(
-			'numberposts'            => intval( $atts['limit'] ),
+			'posts_per_page'         => intval( $atts['limit'] ),
 			'update_post_meta_cache' => false,
 			'update_post_term_cache' => false,
 			// Exclude the publisher.
@@ -221,6 +223,10 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 					'terms'    => $atts['type'],
 				),
 			);
+		}
+
+		if ( ! empty( $atts['cat'] )  ) {
+			$args['cat'] = $atts['cat'];
 		}
 
 		// Get the posts. Note that if a `type` is specified before, then the
