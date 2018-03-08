@@ -141,15 +141,21 @@ class Wordlift_Vocabulary_Shortcode_Test extends Wordlift_Unit_Test_Case {
 			)
 		);
 
+		$posts_data = array(
+			get_the_permalink( $post_1 ) => get_the_title( $post_1 ),
+			get_the_permalink( $post_2 ) => get_the_title( $post_2 ),
+		);
+
 		// Test the markup.
 		$this->assertNotNull( $markup );
 
-		$this->assertContains( get_the_title( $post_1 ), $markup );
-		$this->assertContains( get_the_title( $post_2 ), $markup );
-		$this->assertNotContains( get_the_title( $post_3 ), $markup );
+		// Check that the posts are included in the markup.
+		foreach ( $posts_data as $permalink => $title ) {
+			$this->assertContains( $title, $markup );
+			$this->assertContains( $permalink, $markup );
+		}
 
-		$this->assertContains( get_permalink( $post_1 ), $markup );
-		$this->assertContains( get_permalink( $post_2 ), $markup );
+		$this->assertNotContains( get_the_title( $post_3 ), $markup );
 		$this->assertNotContains( get_permalink( $post_3 ), $markup );
 	}
 
@@ -192,9 +198,8 @@ class Wordlift_Vocabulary_Shortcode_Test extends Wordlift_Unit_Test_Case {
 		wp_set_object_terms( $post_2, 'thing', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		wp_set_object_terms( $post_3, 'event', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
-		// Set the category to the first two posts.
+		// Set the category to the first post.
 		wp_set_object_terms( $post_1, $cat_id, 'category' );
-		wp_set_object_terms( $post_2, $cat_id, 'category' );
 
 		// Get the shortcode markup
 		$vacabulary = new Wordlift_Vocabulary_Shortcode( $this->configuration_service );
