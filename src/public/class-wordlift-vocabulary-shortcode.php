@@ -94,16 +94,18 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 		wp_enqueue_style( 'wl-vocabulary-shortcode', dirname( plugin_dir_url( __FILE__ ) ) . '/public/css/wordlift-vocabulary-shortcode.css' );
 
 		// Extract attributes and set default values.
-		$atts = shortcode_atts( array(
-			// The entity type, such as `person`, `organization`, ...
-			'type'    => 'all',
-			// Limit the number of posts to 100 by default. Use -1 to remove the limit.
-			'limit'   => 100,
-			// Sort by title.
-			'orderby' => 'title',
-			// Allow to specify the category ID.
-			'cat'     => '',
-		), $atts );
+		$atts = shortcode_atts(
+			array(
+				// The entity type, such as `person`, `organization`, ...
+				'type'    => 'all',
+				// Limit the number of posts to 100 by default. Use -1 to remove the limit.
+				'limit'   => 100,
+				// Sort by title.
+				'orderby' => 'title',
+				// Allow to specify the category ID.
+				'cat'     => '',
+			), $atts
+		);
 
 		// Get the posts. Note that if a `type` is specified before, then the
 		// `tax_query` from the `add_criterias` call isn't added.
@@ -118,32 +120,38 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 			$this->add_to_alphabet( $alphabet, $post->ID );
 		}
 
+		$header   = '';
+		$sections = '';
+
 		// Generate the header.
-		$header = array_reduce( array_keys( $alphabet ), function ( $carry, $item ) use ( $alphabet ) {
-			$template = ( empty( $alphabet[ $item ] )
+		foreach ( $alphabet as $item => $translations ) {
+			$template = ( empty( $translations )
 				? '<span class="wl-vocabulary-widget-disabled">%s</span>'
 				: '<a href="#wl-vocabulary-widget-%2$s">%1$s</a>' );
 
-			return $carry . sprintf( $template, esc_html( $item ), esc_attr( $item ) );
-		}, '' );
+			$header .= sprintf( $template, esc_html( $item ), esc_attr( $item ) );
+		}
 
 		// Generate the sections.
-		$that     = $this;
-		$sections = array_reduce( array_keys( $alphabet ), function ( $carry, $item ) use ( $alphabet, $that ) {
-			return $carry . $that->get_section( $item, $alphabet[ $item ] );
-		}, '' );
+		foreach ( $alphabet as $item => $translations ) {
+			$sections .= $this->get_section( $item, $translations );
+		}
 
 		// Return HTML template.
-		return "
-<div class='wl-vocabulary'>
-	<nav class='wl-vocabulary-alphabet-nav'>
-		$header
-	</nav>
-	<div class='wl-vocabulary-grid'>
-		$sections
-	</div>
-</div>
-		";
+		ob_start();
+		?>
+			<div class='wl-vocabulary'>
+				<nav class='wl-vocabulary-alphabet-nav'>
+					<?php echo $header; ?>
+				</nav>
+				<div class='wl-vocabulary-grid'>
+					<?php echo $sections; ?>
+				</div>
+			</div>
+		<?php
+		$html = ob_get_clean();
+
+		return $html;
 
 	}
 
@@ -166,7 +174,8 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 			return '';
 		}
 
-		return sprintf( '
+		return sprintf(
+			'
 			<div class="wl-vocabulary-letter-block" id="wl-vocabulary-widget-%s">
 				<aside class="wl-vocabulary-left-column">%s</aside>
 				<div class="wl-vocabulary-right-column">
@@ -175,7 +184,8 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 					</ul>
 				</div>
 			</div>
-		', esc_attr( $letter ), esc_html( $letter ), $this->format_posts_as_list( $posts ) );
+		', esc_attr( $letter ), esc_html( $letter ), $this->format_posts_as_list( $posts )
+		);
 	}
 
 	/**
@@ -189,9 +199,11 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	 */
 	private function format_posts_as_list( $posts ) {
 
-		return array_reduce( array_keys( $posts ), function ( $carry, $item ) use ( $posts ) {
-			return $carry . sprintf( '<li><a href="%s">%s</a></li>', esc_attr( get_permalink( $item ) ), esc_html( $posts[ $item ] ) );
-		}, '' );
+		return array_reduce(
+			array_keys( $posts ), function ( $carry, $item ) use ( $posts ) {
+				return $carry . sprintf( '<li><a href="%s">%s</a></li>', esc_attr( get_permalink( $item ) ), esc_html( $posts[ $item ] ) );
+			}, ''
+		);
 	}
 
 	/**
@@ -211,7 +223,7 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 			'update_post_meta_cache' => false,
 			'update_post_term_cache' => false,
 			// Exclude the publisher.
-			'post__not_in' => array( $this->configuration_service->get_publisher_id() ),
+			'post__not_in'           => array( $this->configuration_service->get_publisher_id() ),
 		);
 
 		// Limit the based entity type if needed.
@@ -225,7 +237,7 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 			);
 		}
 
-		if ( ! empty( $atts['cat'] )  ) {
+		if ( ! empty( $atts['cat'] ) ) {
 			$args['cat'] = $atts['cat'];
 		}
 
