@@ -165,7 +165,7 @@ EOF;
 		if ( ! empty( $key ) ) {
 			$this->log->info( 'Updating the remote dataset URI...' );
 
-			$configuration_service->get_remote_dataset_uri( $key );
+			$configuration_service->get_remote_dataset_uri( array( 'key' => $key, ) );
 		}
 
 		// Check if the dataset key has been stored.
