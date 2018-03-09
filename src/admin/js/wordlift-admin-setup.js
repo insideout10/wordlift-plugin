@@ -387,6 +387,7 @@
     // The list of validation, one for each step.
     var validations = [
       alwaysValid,
+      alwaysValid,
       function() {
         // At first load the input has an `untouched` class to prevent
         // showing the `valid`/`invalid` indicator until the user actually
@@ -411,8 +412,10 @@
       alwaysValid
     ];
 
+    console.log(validations);
+
     // Add the pages.
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < 6; i++) {
       controller.add($('#page-' + i).html(), validations[i]);
     }
 
