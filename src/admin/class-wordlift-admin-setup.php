@@ -229,6 +229,7 @@ class Wordlift_Admin_Setup {
 		// `key`, holding WL's key,
 		// `vocabulary`, holding the vocabulary path,
 		// `language`, with the language code (e.g. `en`),
+		// `send_diagnostic`, the user preferences about sharing data with us.
 		// `user_type`, the user type either `personal` or `company`,
 		// `name`, with the `personal` or `company`'s name,
 		// `logo`, the attachment id for the `personal` or `company` entity.
@@ -241,6 +242,13 @@ class Wordlift_Admin_Setup {
 
 		// Store the site's language:
 		$this->configuration_service->set_language_code( $params['language'] );
+
+		// Store the preferences in variable, because if the checkbox is not checked
+		// the `share-diagnostic` will not exists in `$params` array.
+		$share_diagnostic_preferences = ( ! empty( $params['share-diagnostic'] ) ) ? 'yes' : 'no' ;
+
+		// Store the diagnostic preferences:
+		$this->configuration_service->set_diagnostic_preferences( $share_diagnostic_preferences );
 
 		// Set the type URI, either http://schema.org/Person or http://schema.org/Organization.
 		$type_uri = sprintf( 'http://schema.org/%s', 'organization' === $params['user_type'] ? 'Organization' : 'Person' );

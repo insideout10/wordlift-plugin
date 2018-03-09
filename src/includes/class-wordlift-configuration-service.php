@@ -71,6 +71,13 @@ class Wordlift_Configuration_Service {
 	const LINK_BY_DEFAULT = 'link_by_default';
 
 	/**
+	 * The user preferences about sharing data option.
+	 *
+	 * @since 3.19.0
+	 */
+	const SEND_DIAGNOSTIC = 'send_diagnostic';
+
+	/**
 	 * The {@link Wordlift_Log_Service} instance.
 	 *
 	 * @since 3.16.0
@@ -249,6 +256,19 @@ class Wordlift_Configuration_Service {
 	public function set_language_code( $value ) {
 
 		$this->set( 'wl_general_settings', self::LANGUAGE, $value );
+
+	}
+
+	/**
+	 * Set the user preferences about sharing diagnostic with us.
+	 *
+	 * @since 3.9.0
+	 *
+	 * @param string $value The user preferences(yes/no).
+	 */
+	public function set_diagnostic_preferences( $value ) {
+
+		$this->set( 'wl_general_settings', self::SEND_DIAGNOSTIC, $value );
 
 	}
 
