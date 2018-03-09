@@ -143,6 +143,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 = 3.18.0 (????-??-??) =
+* Enhancement: [#772](https://github.com/insideout10/wordlift-plugin/issues/772): Vocabulary Widget: allow entity grouping by category.
+* Enhancement: [#771](https://github.com/insideout10/wordlift-plugin/issues/771): Allow markup in text annotations.
+* Enhancement: [#770](https://github.com/insideout10/wordlift-plugin/issues/770): Autocomplete field: `urldecode` entity permalinks from dbpedia.
 * Enhancement: [#769](https://github.com/insideout10/wordlift-plugin/issues/769): Move `wl_insert_triples` at the end of `get_insert_triples`.
 * Enhancement: [#768](https://github.com/insideout10/wordlift-plugin/issues/768): Refactor `wordlift_core_install.php`.
 * Enhancement: [#760](https://github.com/insideout10/wordlift-plugin/issues/760): Add a reference to the articles being annotated with an entity in the rdf graph.
