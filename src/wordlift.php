@@ -490,8 +490,20 @@ function deactivate_wordlift() {
 
 }
 
+/**
+ * The code that runs during plugin uninstall.
+ * This action is documented in includes/class-wordlift-uninstaller.php
+ */
+function uninstall_wordlift() {
+
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wordlift-uninstaller.php';
+	Wordlift_Uninstaller::uninstall();
+
+}
+
 register_activation_hook( __FILE__, 'activate_wordlift' );
 register_deactivation_hook( __FILE__, 'deactivate_wordlift' );
+register_uninstall_hook( __FILE__, 'uninstall_wordlift' );
 
 /**
  * The core plugin class that is used to define internationalization,

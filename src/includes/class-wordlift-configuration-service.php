@@ -262,13 +262,26 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Set the user preferences about sharing diagnostic with us.
 	 *
-	 * @since 3.9.0
+	 * @since 3.19.0
 	 *
 	 * @param string $value The user preferences(yes/no).
 	 */
 	public function set_diagnostic_preferences( $value ) {
 
 		$this->set( 'wl_general_settings', self::SEND_DIAGNOSTIC, $value );
+
+	}
+
+	/**
+	 * Get the user preferences about sharing diagnostic.
+	 *
+	 * @since 3.19.0
+	 *
+	 * @param string The user preferences(yes/no) to share diagnostic.
+	 */
+	public function get_diagnostic_preferences() {
+
+		return $this->get( 'wl_general_settings', self::SEND_DIAGNOSTIC );
 
 	}
 
