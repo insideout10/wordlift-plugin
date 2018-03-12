@@ -754,6 +754,9 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-loader.php';
 
+		// The class responsible for plugin uninstall.
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-deactivator-feedback.php';
+
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
@@ -1482,6 +1485,10 @@ class Wordlift {
 			$this->loader->add_filter( 'map_meta_cap', $this->entity_type_admin_page, 'restrict_super_admin', 10, 4 );
 		}
 
+		$deactivator_feedback = new Wordlift_Deactivator_Feedback();
+
+		add_action( 'admin_footer', array( $deactivator_feedback, 'render_feedback_popup' ) );
+		add_action( 'admin_enqueue_scripts', array( $deactivator_feedback, 'enqueue_popup_scripts' ) );
 	}
 
 	/**
