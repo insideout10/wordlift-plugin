@@ -1485,10 +1485,11 @@ class Wordlift {
 			$this->loader->add_filter( 'map_meta_cap', $this->entity_type_admin_page, 'restrict_super_admin', 10, 4 );
 		}
 
-		$deactivator_feedback = new Wordlift_Deactivator_Feedback();
+		$deactivator_feedback = new Wordlift_Deactivator_Feedback( $this->configuration_service );
 
 		add_action( 'admin_footer', array( $deactivator_feedback, 'render_feedback_popup' ) );
 		add_action( 'admin_enqueue_scripts', array( $deactivator_feedback, 'enqueue_popup_scripts' ) );
+		add_action( 'wp_ajax_wl_uninstall_feedback', array( $deactivator_feedback, 'wl_uninstall_feedback' ) );
 	}
 
 	/**

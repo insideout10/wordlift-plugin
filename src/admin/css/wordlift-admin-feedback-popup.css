@@ -28,6 +28,11 @@
 	padding: 50px 50px 20px;
 }
 
+.wl-errors {
+	text-align: center;
+	color: red;
+}
+
 .wl-modal-footer{
 	padding: 20px 50px 30px;
 	border-top: 1px solid #b3b3b3;

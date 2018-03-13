@@ -528,4 +528,17 @@ class Wordlift_Configuration_Service {
 
 	}
 
+	/**
+	 * Get the URL to perform feedback deactivation request.
+	 *
+	 * @since 3.19.0
+	 *
+	 * @return string The URL to call to perform the feedback deactivation request.
+	 */
+	public function get_deactivation_feedback_url() {
+
+		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . '/api/feedbacks';
+
+	}
+
 }

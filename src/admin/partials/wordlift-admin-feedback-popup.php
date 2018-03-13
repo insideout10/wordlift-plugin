@@ -80,9 +80,9 @@ $reasons = array(
 									<?php
 									if ( ! empty( $reason['message']['field'] ) ) {
 										if ( $reason['message']['field'] === 'text' ) {
-											echo '<input type="text" name="wl-reason-info"/>';
+											echo '<input type="text" name="wl-reason-info" class="wl-reason-info"/>';
 										} else {
-											echo '<textarea name="wl-reason-info"></textarea>';
+											echo '<textarea name="wl-reason-info" class="wl-reason-info"></textarea>';
 										}
 									}
 									echo wpautop( $reason['message']['text'] )
@@ -93,6 +93,8 @@ $reasons = array(
 					<?php endforeach ?>
 				</ul>
 			</div>
+
+			<div class="wl-errors"></div>
 		</div>
 
 		<div class="wl-modal-footer">
@@ -106,6 +108,6 @@ $reasons = array(
 			<div class="clear"></div>
 		</div>
 
-		<input type="hidden" name="wl_feedback_nonce" class="wl_feedback_nonce" value="<?php echo wp_create_nonce( 'wl_ajax_nonce' ) ?>">
+		<input type="hidden" name="wl_feedback_nonce" class="wl_feedback_nonce" value="<?php echo wp_create_nonce( 'wl_feedback_nonce' ) ?>">
 	</div>
 </div>
