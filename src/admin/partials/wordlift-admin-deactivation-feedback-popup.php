@@ -108,6 +108,11 @@ $reasons = array(
 			<div class="clear"></div>
 		</div>
 
-		<input type="hidden" name="wl_feedback_nonce" class="wl_feedback_nonce" value="<?php echo wp_create_nonce( 'wl_feedback_nonce' ) ?>">
+		<input
+			type="hidden"
+			name="wl_deactivation_feedback_nonce"
+			class="wl_deactivation_feedback_nonce"
+			value="<?php echo wp_create_nonce( 'wl_deactivation_feedback_nonce' ) ?>"
+		>
 	</div>
 </div>

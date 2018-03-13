@@ -60,7 +60,7 @@ class Wordlift_Deactivator_Feedback {
 	 *
 	 * @return  bool `true` if we have permissions, false otherwise.
 	 */
-	public function has_permission_to_show_popup() {
+	private function has_permission_to_show_popup() {
 		// Get the current page.
 		global $pagenow;
 
@@ -96,7 +96,7 @@ class Wordlift_Deactivator_Feedback {
 			return;
 		}
 		// Include the partial.
-		include plugin_dir_path( __FILE__ ) . '../admin/partials/wordlift-admin-feedback-popup.php';
+		include plugin_dir_path( __FILE__ ) . '../admin/partials/wordlift-admin-deactivation-feedback-popup.php';
 	}
 
 	/**
@@ -118,18 +118,18 @@ class Wordlift_Deactivator_Feedback {
 	}
 
 	/**
-	 * Handle the uninstall ajax call
+	 * Handle the deactivation ajax call
 	 * and perform a request to external server.
 	 *
 	 * @version 3.19.0
 	 *
 	 * @return  void
 	 */
-	public function wl_uninstall_feedback() {
+	public function wl_deactivation_feedback() {
 		// Bail if the nonce is not valid.
 		if (
-			empty( $_POST['bws_ajax_nonce'] ) || // The nonce doens't exists.
-			! wp_verify_nonce( $_POST['bws_ajax_nonce'], 'wl_feedback_nonce' ) // The nonce is invalid.
+			empty( $_POST['wl_deactivation_feedback_nonce'] ) || // The nonce doens't exists.
+			! wp_verify_nonce( $_POST['wl_deactivation_feedback_nonce'], 'wl_deactivation_feedback_nonce' ) // The nonce is invalid.
 		) {
 			wp_send_json_error( __( 'Nonce Security Check Failed!', 'wordlift' ) );
 		}

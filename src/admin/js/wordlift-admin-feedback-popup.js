@@ -1,9 +1,9 @@
 /* 
- * This file contains utilities for uninstall feedback popup.
+ * This file contains utilities for deactivation feedback popup.
  */
 
 jQuery( document ).ready( function ( $ ) {
-	// Add uninstall listenter.
+	// Add deactivation listenter.
 	var deactivationLink;
 	var reasonParent;
 	var reason;
@@ -36,10 +36,10 @@ jQuery( document ).ready( function ( $ ) {
 			url       : settings.ajaxUrl,
 			method    : 'POST',
 			data      : {
-				'action'		  : 'wl_uninstall_feedback',
-				'reason_id'		  : reason,
-				'additional_info' : reasonParent.find( '.wl-reason-info' ).val(),
-				'bws_ajax_nonce'  : $('.wl_feedback_nonce').val()
+				'action'		  				 : 'wl_deactivation_feedback',
+				'reason_id'		  				 : reason,
+				'additional_info' 				 : reasonParent.find( '.wl-reason-info' ).val(),
+				'wl_deactivation_feedback_nonce' : $('.wl_deactivation_feedback_nonce').val()
 			},
 			beforeSend: function() {
 				// Add indicator that the request going to be made.

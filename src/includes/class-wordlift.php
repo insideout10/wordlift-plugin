@@ -1489,7 +1489,7 @@ class Wordlift {
 
 		add_action( 'admin_footer', array( $deactivator_feedback, 'render_feedback_popup' ) );
 		add_action( 'admin_enqueue_scripts', array( $deactivator_feedback, 'enqueue_popup_scripts' ) );
-		add_action( 'wp_ajax_wl_uninstall_feedback', array( $deactivator_feedback, 'wl_uninstall_feedback' ) );
+		add_action( 'wp_ajax_wl_deactivation_feedback', array( $deactivator_feedback, 'wl_deactivation_feedback' ) );
 	}
 
 	/**
