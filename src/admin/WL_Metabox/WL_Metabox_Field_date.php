@@ -112,7 +112,7 @@ class WL_Metabox_Field_date extends WL_Metabox_Field {
 
 					$( function() {
 
-						$( '.$this->meta_name[type=text]' ).flatpickr( {
+						$( '.<?php echo $this->meta_name; ?>[type=text]' ).flatpickr( {
 							enableTime: <?php echo $timepicker; ?>,
 							noCalendar: <?php echo $no_calendar; ?>,
 							time_24hr: true,
