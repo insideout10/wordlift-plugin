@@ -12,7 +12,7 @@ $reasons = array(
 		'text'    => __( 'It misses some important feature to me', 'wordlift' ),
 		'message' => array(
 			'field' => 'text',
-			'text'  => __( 'Tell us what this feature is', 'wordlift' ),
+			'text'  => __( 'Tell us what this feature is.', 'wordlift' ),
 		),
 	),
 	array(
@@ -28,7 +28,7 @@ $reasons = array(
 		'text'    => __( 'I found another tool that I like better', 'wordlift' ),
 		'message' => array(
 			'field' => 'text',
-			'text'  => __( 'Please tell us some more details', 'wordlift' ),
+			'text'  => __( 'Please tell us some more details.', 'wordlift' ),
 		),
 	),
 	array(
@@ -38,10 +38,6 @@ $reasons = array(
 	array(
 		'id'      => 'SOMETHING_DIDNT_WORK',
 		'text'    => __( 'Something didn\'t work right', 'wordlift' ),
-		'message' => array(
-			'field' => 'textarea',
-			'text'  => __( 'Tell us what went wrong.', 'wordlift' ),
-		),
 	),
 	array(
 		'id'      => 'ANOTHER_REASON',
@@ -94,6 +90,17 @@ $reasons = array(
 				</ul>
 			</div>
 
+			<div class="notes">
+				<p>
+					<?php
+					printf(
+						__( 'Important notice: Uninstalling the plugin will delete your vocabulary.<br>Maybe you would like to <a href="%s" target="_blank">download your data</a> first.', 'wordlift' ),
+						add_query_arg( array( 'page' => 'wl_download_your_data' ), admin_url( 'admin.php' ) )
+					);
+					?>
+				</p>
+			</div>
+
 			<div class="wl-errors"></div>
 		</div>
 
@@ -112,7 +119,7 @@ $reasons = array(
 			type="hidden"
 			name="wl_deactivation_feedback_nonce"
 			class="wl_deactivation_feedback_nonce"
-			value="<?php echo wp_create_nonce( 'wl_deactivation_feedback_nonce' ) ?>"
+			value="<?php echo wp_create_nonce( 'wl_deactivation_feedback_nonce' ); ?>"
 		>
 	</div>
 </div>

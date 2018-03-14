@@ -80,6 +80,11 @@
 	padding: 0;
 }
 
+.notes {
+	color: red;
+	text-align: center;
+}
+
 .wl-modal-deactivation-feedback .additional-info input,
 .wl-modal-deactivation-feedback .additional-info textarea {
 	width: 100%;
