@@ -104,6 +104,7 @@ class Wordlift_Redirect_Service {
 
 		// Perform the redirect
 		wp_safe_redirect( $redirect_url );
+		exit;
 	}
 
 	/**
