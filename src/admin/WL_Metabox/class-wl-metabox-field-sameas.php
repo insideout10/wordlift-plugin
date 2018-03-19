@@ -44,6 +44,9 @@ class WL_Metabox_Field_sameas extends WL_Metabox_Field {
 			}, array() );
 		}
 
+		// Convert all escaped special characters to their original.
+		$merged = array_map( 'urldecode', $merged );
+
 		parent::save_data( $merged );
 	}
 

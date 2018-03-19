@@ -16,7 +16,7 @@
  * @package    Wordlift
  * @subpackage Wordlift/install
  */
-class Wordlift_Install {
+abstract class Wordlift_Install {
 
 	/**
 	 * A {@link Wordlift_Log_Service} instance.
@@ -27,6 +27,8 @@ class Wordlift_Install {
 	 */
 	protected $log;
 
+	protected static $version = '0.0.0';
+
 	/**
 	 * Wordlift_Install_Service constructor.
 	 *
@@ -36,7 +38,7 @@ class Wordlift_Install {
 
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Install_' . str_replace( '.', '_', static::$version ) );
 
-		$this->log->trace( 'Installing version ' . static::$version . ' ...' );
+		$this->log->trace( 'Install package v' . static::$version . ' loaded.' );
 	}
 
 	/**
@@ -47,4 +49,7 @@ class Wordlift_Install {
 	public function get_version() {
 		return static::$version;
 	}
+
+	abstract public function install();
+
 }

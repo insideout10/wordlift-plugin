@@ -119,10 +119,6 @@ EOF;
 	// Test case more generic derived from issue https://github.com/insideout10/wordlift-plugin/issues/234
 	function testRemoveAnnotationWithMarkupInside() {
 
-		$this->markTestSkipped(
-			'Markup within annotation is not allowed at the moment'
-		);
-
 		$content          = <<<EOF
 Sono nato a <span id="urn:enhancement-69d1fcf5-878b-4462-68f4-8066eb93c0f9" class="textannotation">R<em>o</em>ma</span>.
 EOF;
