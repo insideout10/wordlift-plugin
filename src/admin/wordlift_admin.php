@@ -19,6 +19,13 @@ function wl_serialize_entity( $entity ) {
 
 	$entity = ( is_numeric( $entity ) ) ? get_post( $entity ) : $entity;
 
+	// Bail if the entity doesn't exists.
+	// In some cases we have `wl_topic` meta
+	// pointing to an entity that has been deleted.
+	if ( empty( $entity ) ) {
+		return;
+	}
+
 	$type   = Wordlift_Entity_Type_Service::get_instance()->get( $entity->ID );
 	$images = wl_get_image_urls( $entity->ID );
 
