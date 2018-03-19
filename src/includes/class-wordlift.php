@@ -1138,7 +1138,7 @@ class Wordlift {
 		$this->file_cache_service = new Wordlift_File_Cache_Service( WL_TEMP_DIR . 'converter/' );
 		$this->entity_uri_service = new Wordlift_Cached_Entity_Uri_Service( $this->configuration_service, $entity_uri_cache_service );
 		$this->entity_service     = new Wordlift_Entity_Service( $this->ui_service, $this->relation_service, $this->entity_uri_service );
-		$this->user_service       = new Wordlift_User_Service();
+		$this->user_service       = new Wordlift_User_Service( $this->sparql_service, $this->entity_service );
 
 		// Instantiate the JSON-LD service.
 		$property_getter = Wordlift_Property_Getter_Factory::create( $this->entity_service );
@@ -1462,6 +1462,10 @@ class Wordlift {
 
 		$this->loader->add_action( 'wp_ajax_wl_sample_data_create', $this->sample_data_ajax_adapter, 'create' );
 		$this->loader->add_action( 'wp_ajax_wl_sample_data_delete', $this->sample_data_ajax_adapter, 'delete' );
+
+
+		$this->loader->add_action( 'update_user_metadata', $this->user_service, 'update_user_metadata', 10, 5 );
+		$this->loader->add_action( 'delete_user_metadata', $this->user_service, 'delete_user_metadata', 10, 5 );
 
 		// Handle the autocomplete request.
 		add_action( 'wp_ajax_wl_autocomplete', array(
