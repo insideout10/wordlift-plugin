@@ -1114,6 +1114,70 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	/**
+	 * Test that when the author is changed in user settings
+	 * the author triple is also changed in jsonld.
+	 *
+	 * @since 3.18.0
+	 */
+	public function test_a_post_with_a_user_when_the_author_is_updated() {
+
+		$author_id = $this->factory->user->create(
+			array(
+				'display_name' => 'John Smith',
+			)
+		);
+
+		$entity_id = $this->entity_factory->create(
+			array(
+				'post_title'   => 'John Smith Entity',
+				'post_excerpt' => 'Lorem Ipsum',
+			)
+		);
+
+		$entity_id_2 = $this->entity_factory->create(
+			array(
+				'post_title'   => 'John Smith Entity 2',
+				'post_excerpt' => 'Lorem Ipsum 2',
+			)
+		);
+
+		$author_uri   = $this->user_service->get_uri( $author_id );
+		$entity_uri   = $this->entity_service->get_uri( $entity_id );
+		$entity_uri_2 = $this->entity_service->get_uri( $entity_id_2 );
+		$this->entity_type_service->set( $entity_id, 'http://schema.org/Person' );
+
+		$this->assertGreaterThan( 0, $this->user_service->set_entity( $author_id, $entity_id ) );
+
+		// Create a post that includes an img of an attachment and an external URL.
+		$post = $this->factory->post->create_and_get(
+			array(
+				'post_author' => $author_id,
+			)
+		);
+
+		$references = array();
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+
+		$this->assertEquals( $entity_uri, $jsonld['author']['@id'] );
+		$this->assertArraySubset( array( $entity_id ), $references );
+
+		// Change the user author and test again that is has changed in jsonld.
+		$this->assertGreaterThan( 0, $this->user_service->set_entity( $author_id, $entity_id_2 ) );
+
+		$references_2 = array();
+		$jsonld_2     = $this->post_to_jsonld_converter->convert( $post->ID, $references_2 );
+
+		$this->assertEquals( $entity_uri_2, $jsonld_2['author']['@id'] );
+		$this->assertArraySubset( array( $entity_id_2 ), $references_2 );
+
+		// Delete the author entity and check that the author triple is properly generated.
+		delete_user_meta( $author_id, Wordlift_User_Service::ENTITY_META_KEY );
+		$jsonld_3 = $this->post_to_jsonld_converter->convert( $post->ID );
+		$this->assertEquals( $author_uri, $jsonld_3['author']['@id'] );
+
+	}
+
+	/**
 	 * Test that the `wl_post_jsonld` filter is not called on inexistent posts.
 	 *
 	 * @since 3.14.0
