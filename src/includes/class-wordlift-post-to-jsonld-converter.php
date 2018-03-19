@@ -106,8 +106,14 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 					'@id' => $this->entity_service->get_uri( $reference ),
 				);
 
+				$escaped_lables = array_map(
+					function( $value ) {
+						return preg_quote( $value, '/' );
+					}, $labels
+				);
+
 				// Check if the labels match any part of the title.
-				$matches = 1 === preg_match( '/' . implode( '|', $labels ) . '/', $post->post_title );
+				$matches = 1 === preg_match( '/' . implode( '|', $escaped_lables ) . '/', $post->post_title );
 
 				// If the title matches, assign the entity to the about, otherwise to the mentions.
 				if ( $matches ) {
