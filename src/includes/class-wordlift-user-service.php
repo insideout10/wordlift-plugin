@@ -126,42 +126,6 @@ class Wordlift_User_Service {
 	}
 
 	/**
-	 * Receives wp_insert_post events.
-	 *
-	 * @since 3.1.7
-	 *
-	 * @param int     $post_id Post ID.
-	 * @param WP_Post $post    Post object.
-	 * @param bool    $update  Whether this is an existing post being updated or not.
-	 */
-	public function wp_insert_post( $post_id, $post, $update ) {
-
-		// If the post is not published, return.
-		if ( 'publish' !== get_post_status( $post_id ) ) {
-			return;
-		}
-
-		// We expect a numeric author id.
-		if ( ! is_numeric( $post->post_author ) ) {
-			return;
-		}
-
-		// Get the delete query,or return in case of failure.
-		if ( false === ( $delete = $this->get_delete_query( $post->post_author ) ) ) {
-			return;
-		}
-
-		// Get the insert query,or return in case of failure.
-		if ( false === ( $insert = $this->get_insert_query( $post->post_author ) ) ) {
-			return;
-		}
-
-		// Send the query to the triple store.
-		rl_execute_sparql_update_query( $delete . $insert );
-
-	}
-
-	/**
 	 * Set the `id` of the entity representing a {@link WP_User}.
 	 *
 	 * If the `id` is set to 0 (or less) then the meta is deleted.
@@ -187,7 +151,7 @@ class Wordlift_User_Service {
 	 *
 	 * @param int $user_id The {@link WP_User}'s `id`.
 	 *
-	 * @return string The entity {@link WP_Post} `id` or an empty string if not set.
+	 * @return string|false The entity {@link WP_Post} `id` or an empty string if not set or false if the object id is invalid
 	 */
 	public function get_entity( $user_id ) {
 
@@ -484,24 +448,25 @@ class Wordlift_User_Service {
 	 *                or if the author has not changed.
 	 */
 	public function update_user_metadata( $null, $object_id, $meta_key, $meta_value, $prev_value ) {
-		// Bail if the metakey is not the author meta.
+		// Bail if the meta key is not the author meta.
 		if ( $meta_key !== Wordlift_User_Service::ENTITY_META_KEY ) {
 			return null;
 		}
 
-		// Check wheather the user is associated with any of the existing publishers/
+		// Check whether the user is associated with any of the existing publishers/
 		$entity_id = $this->get_entity( $object_id );
 
-		// Get the old uri if the entity is set..
-		if ( ! empty( $entity_id ) ) {
-			$old_uri = $this->entity_service->get_uri( $entity_id );
+		if ( false === $entity_id ) {
+			// An error occurred.
+			$this->log_service->error( "An error occurred: entity_id can't be false." );
+
+			return;
 		}
 
-		// Finally fallback to the user default uri
-		// if for some reason the uri is empty.
-		if ( empty( $old_uri ) ) {
-			$old_uri = $this->get_uri( $object_id );
-		}
+		// Get the old uri if the entity is set..
+		$old_uri = ! empty( $entity_id )
+			? $this->entity_service->get_uri( $entity_id )
+			: $this->get_uri( $object_id );
 
 		// Get the new user uri's.
 		$new_uri = $this->entity_service->get_uri( $meta_value );
@@ -521,28 +486,33 @@ class Wordlift_User_Service {
 	 * @since   3.18.0
 	 *
 	 * @param   null   $null
-	 * @param   int    $object_id  The user ID.
-	 * @param   string $meta_key   The meta key name.
-	 * @param   mixed  $meta_value Meta value.
-	 * @param   bool   $delete_all Whether to delete the matching metadata entries
+	 * @param   int    $object_id   The user ID.
+	 * @param   string $meta_key    The meta key name.
+	 * @param   mixed  $meta_value  Meta value.
+	 * @param   bool   $delete_all  Whether to delete the matching metadata entries
 	 *                              for all objects.
 	 *
 	 * @return  null Null if the `meta_key` is not `Wordlift_User_Service::ENTITY_META_KEY`
 	 *               or if the author has not changed.
 	 */
 	public function delete_user_metadata( $null, $object_id, $meta_key, $meta_value, $delete_all ) {
-		// Bail if the metakey is not the author meta.
+		// Bail if the meta key is not the author meta.
 		if ( $meta_key !== Wordlift_User_Service::ENTITY_META_KEY ) {
 			return null;
 		}
 
-		// Check wheather the user is associated with any of the existing publishers/
+		// Check whether the user is associated with any of the existing publishers/
 		$entity_id = $this->get_entity( $object_id );
 
-		// Get the old uri if the entity is set.
-		if ( ! empty( $entity_id ) ) {
-			$old_uri = $this->entity_service->get_uri( $entity_id );
+		if ( false === $entity_id ) {
+			// An error occurred.
+			$this->log_service->error( "An error occurred: entity_id can't be false." );
+
+			return;
 		}
+
+		// Get the old uri if the entity is set.
+		$old_uri = $this->entity_service->get_uri( $entity_id );
 
 		$new_uri = $this->get_uri( $object_id );
 
@@ -558,9 +528,12 @@ class Wordlift_User_Service {
 	 * @param   string $old_uri The old uri to remove.
 	 * @param   string $new_uri The new uri to add.
 	 */
-	public function update_author( $old_uri, $new_uri )	{
+	private function update_author( $old_uri, $new_uri ) {
 		// Bail in case one of the uris is empty.
-		if ( empty( $old_uri ) && empty( $new_uri ) ) {
+		if ( empty( $old_uri ) || empty( $new_uri ) ) {
+			// An error occurred.
+			$this->log_service->error( "An error occurred: old_uri and/or new_uri can't be null." );
+
 			return;
 		}
 
@@ -576,6 +549,8 @@ class Wordlift_User_Service {
 		);
 
 		// Execute the query and update the author.
-        $this->sparql_service->execute( $query, false );
+		$this->sparql_service->execute( $query );
+
 	}
+
 }
