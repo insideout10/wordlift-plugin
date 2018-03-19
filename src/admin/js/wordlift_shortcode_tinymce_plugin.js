@@ -150,7 +150,7 @@
             title: 'WordLift Widgets',
             image:
             tinymce.plugins.wl_shortcodes.pluginUrl +
-            '/../images/svg/wl-logo-icon.svg?ver=3.18.0-dev'
+            '/../images/svg/wl-logo-icon.svg?ver=3.18.0-rc1'
             // If SplitButton, must define onclick to avoid error
             //onclick: function(){ /* OPEN YOURSELF ?? */  }
           } );
@@ -210,7 +210,7 @@
         return {
           longname: 'WordLift Shortcodes',
           author: 'WordLift',
-          version: '3.18.0-dev'
+          version: '3.18.0-rc1'
         };
       }
     } );
