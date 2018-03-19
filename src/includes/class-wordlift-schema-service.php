@@ -614,7 +614,7 @@ class Wordlift_Schema_Service {
 			'same_as'       => array( '*' ),
 			// set as default.
 			'custom_fields' => array(
-				self::FIELD_SAME_AS => array(
+				self::FIELD_SAME_AS                            => array(
 					'predicate'   => 'http://schema.org/sameAs',
 					'type'        => self::DATA_TYPE_URI,
 					'export_type' => 'http://schema.org/Thing',
@@ -626,7 +626,7 @@ class Wordlift_Schema_Service {
 				),
 				// Add the schema:url property.
 				Wordlift_Schema_Url_Property_Service::META_KEY => Wordlift_Schema_Url_Property_Service::get_instance()
-																										->get_compat_definition(),
+																									  ->get_compat_definition(),
 			),
 			// {{sameAs}} not present in the microdata template,
 			// because it is treated separately in *wl_content_embed_item_microdata*
@@ -714,9 +714,9 @@ class Wordlift_Schema_Service {
 	private function get_web_page_schema() {
 
 		return array(
-			'css_class'     => 'wl-webpage',
-			'uri'           => 'http://schema.org/WebPage',
-			'linked_data'   => array(
+			'css_class'   => 'wl-webpage',
+			'uri'         => 'http://schema.org/WebPage',
+			'linked_data' => array(
 				// ### schema:headline.
 				$this->rendition_factory->create(
 					$this->storage_factory->post_title(),
@@ -838,7 +838,7 @@ class Wordlift_Schema_Service {
 						'cardinality' => INF,
 					),
 				),
-				self::FIELD_PERFORMER => array(
+				self::FIELD_PERFORMER  => array(
 					'predicate'   => 'http://schema.org/performer',
 					'type'        => self::DATA_TYPE_URI,
 					'export_type' => 'http://schema.org/Person',
@@ -847,7 +847,7 @@ class Wordlift_Schema_Service {
 						'cardinality' => INF,
 					),
 				),
-				self::FIELD_OFFERS => array(
+				self::FIELD_OFFERS     => array(
 					'predicate'   => 'http://schema.org/offers',
 					'type'        => self::DATA_TYPE_URI,
 					'export_type' => 'http://schema.org/Offer',
@@ -1454,14 +1454,14 @@ class Wordlift_Schema_Service {
 				'subtitle' => '{{id}}',
 			),
 			'custom_fields' => array(
-				self::FIELD_AVAILABILITY => array(
+				self::FIELD_AVAILABILITY        => array(
 					'predicate'   => 'http://schema.org/availability',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'metabox'     => array(
 						'class' => 'Wordlift_Metabox_Field_Select',
 					),
-					'options' => array(
+					'options'     => array(
 						'Discontinued'        => esc_html__( 'Discontinued', 'wordlift' ),
 						'InStock'             => esc_html__( 'In Stock', 'wordlift' ),
 						'InStoreOnly'         => esc_html__( 'In Store Only', 'wordlift' ),
@@ -1473,7 +1473,7 @@ class Wordlift_Schema_Service {
 						'SoldOut'             => esc_html__( 'Sold Out', 'wordlift' ),
 					),
 				),
-				self::FIELD_PRICE => array(
+				self::FIELD_PRICE               => array(
 					'predicate'   => 'http://schema.org/price',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:integer',
@@ -1481,7 +1481,7 @@ class Wordlift_Schema_Service {
 						'class' => 'Wordlift_Metabox_Field_Integer',
 					),
 				),
-				self::FIELD_PRICE_CURRENCY => array(
+				self::FIELD_PRICE_CURRENCY      => array(
 					'predicate'   => 'http://schema.org/priceCurrency',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
@@ -1491,12 +1491,12 @@ class Wordlift_Schema_Service {
 					'type'        => self::DATA_TYPE_DATE,
 					'export_type' => 'xsd:dateTime',
 				),
-				self::FIELD_AVAILABILITY_ENDS => array(
+				self::FIELD_AVAILABILITY_ENDS   => array(
 					'predicate'   => 'http://schema.org/availabilityEnds',
 					'type'        => self::DATA_TYPE_DATE,
 					'export_type' => 'xsd:dateTime',
 				),
-				self::FIELD_INVENTORY_LEVEL => array(
+				self::FIELD_INVENTORY_LEVEL     => array(
 					'predicate'   => 'http://schema.org/inventoryLevel',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:integer',
@@ -1504,17 +1504,17 @@ class Wordlift_Schema_Service {
 						'class' => 'Wordlift_Metabox_Field_Integer',
 					),
 				),
-				self::FIELD_VALID_FROM => array(
+				self::FIELD_VALID_FROM          => array(
 					'predicate'   => 'http://schema.org/validFrom',
 					'type'        => self::DATA_TYPE_DATE,
 					'export_type' => 'xsd:dateTime',
 				),
-				self::FIELD_PRICE_VALID_UNTIL => array(
+				self::FIELD_PRICE_VALID_UNTIL   => array(
 					'predicate'   => 'http://schema.org/priceValidUntil',
 					'type'        => self::DATA_TYPE_DATE,
 					'export_type' => 'xsd:dateTime',
 				),
-				self::FIELD_ITEM_OFFERED => array(
+				self::FIELD_ITEM_OFFERED        => array(
 					'predicate'   => 'http://schema.org/itemOffered',
 					'type'        => self::DATA_TYPE_URI,
 					'export_type' => 'http://schema.org/Thing',
@@ -1527,7 +1527,7 @@ class Wordlift_Schema_Service {
 					),
 				),
 			),
-			'linked_data' => array(
+			'linked_data'   => array(
 				// ### schema:availability.
 				$this->rendition_factory->create(
 					$this->storage_factory->post_meta( self::FIELD_AVAILABILITY ),
@@ -1613,7 +1613,34 @@ class Wordlift_Schema_Service {
 				'subtitle' => '{{id}}',
 			),
 			'custom_fields' => array(),
-			'linked_data'   => array(),
+			'linked_data'   => array(
+				// ### schema:headline.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_title(),
+					'http://schema.org/headline',
+					null,
+					$this->language_code
+				),
+				// ### schema:url.
+				$this->rendition_factory->create(
+					$this->storage_factory->url_property(),
+					Wordlift_Query_Builder::SCHEMA_URL_URI,
+					self::DATA_TYPE_URI
+				),
+				// ### rdf:type.
+				$this->rendition_factory->create(
+					$this->storage_factory->schema_class(),
+					Wordlift_Query_Builder::RDFS_TYPE_URI,
+					self::DATA_TYPE_URI
+				),
+				// ### dcterms:references.
+				$this->rendition_factory->create(
+					$this->storage_factory->relations(),
+					Wordlift_Query_Builder::DCTERMS_REFERENCES_URI,
+					self::DATA_TYPE_URI,
+					$this->language_code
+				),
+			),
 		);
 
 		return $schema;

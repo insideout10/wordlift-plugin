@@ -124,7 +124,7 @@ class Wordlift_Entity_Type_Service {
 
 		// Return the schema type if there is a term found.
 		if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
-			$this->log->debug( "Found {$terms[0]->slug} term for post $post_id." );
+			$this->log->debug( "Found `{$terms[0]->slug}` term for post $post_id." );
 
 			// Return the entity type with the specified id.
 			return $this->schema_service->get_schema( $terms[0]->slug );

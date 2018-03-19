@@ -22,8 +22,7 @@ function wl_admin_permalink_html( $html, $post_id, $new_title, $new_slug ) {
 	// Show the View Linked Data button only for entities.
 	//
 	// See https://github.com/insideout10/wordlift-plugin/issues/668.
-	if ( $entity_service->is_entity( $post_id )
-		 && 'publish' === get_post_status( $post_id )
+	if ( 'publish' === get_post_status( $post_id )
 		 && $uri = $entity_service->get_uri( $post_id ) ) {
 
 		$lod_view_href = 'http://lodview.it/lodview/?IRI=' . urlencode( $uri );

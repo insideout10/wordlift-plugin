@@ -110,6 +110,7 @@ class Wordlift_Linked_Data_Service {
 	}
 
 	//<editor-fold desc="## FUNCTIONS">
+
 	/**
 	 * Push a {@link WP_Post} to the Linked Data store.
 	 *
@@ -229,6 +230,8 @@ class Wordlift_Linked_Data_Service {
 			$delete_query .= "DELETE { $item } WHERE { $item }; \n";
 		}
 
+		$this->log->trace( "Delete Query generated [ $delete_query ]." );
+
 		$this->sparql_service->execute( $delete_query );
 	}
 
@@ -248,6 +251,8 @@ class Wordlift_Linked_Data_Service {
 
 		// Build the insert query.
 		$insert_query = "INSERT DATA { $insert_query_body };";
+
+		$this->log->trace( "Insert Query generated [ $insert_query ]." );
 
 		$this->sparql_service->execute( $insert_query );
 	}
@@ -303,12 +308,15 @@ class Wordlift_Linked_Data_Service {
 
 		// Accumulate the triples.
 		$triples = array();
+
 		/** @var Wordlift_Default_Sparql_Tuple_Rendition $property A {@link Wordlift_Sparql_Tuple_Rendition} instance. */
 		foreach ( $properties as $property ) {
 			foreach ( $property->get_insert_triples( $post_id ) as $triple ) {
 				$triples[] = $triple;
 			}
 		}
+
+		$this->log->trace( count( $properties ) . ' properties and ' . count( $triples ) . " triples found for post $post_id." );
 
 		/**
 		 * Get the INSERT triples properties.
