@@ -136,7 +136,7 @@ EOF;
 
 		// check the post isn't published (1 line is the header).
 		$lines = $this->getPostTriples( $post_1_id );
-		$this->assertCount( 1, $lines );
+		$this->assertCount( 6, $lines );
 
 		// check all entities published
 		$lines = $this->getPostTriples( $entity_1_id );
@@ -169,7 +169,7 @@ EOF;
 
 		// check post 2 isn't published.
 		$lines = $this->getPostTriples( $post_2_id );
-		$this->assertCount( 1, $lines );
+		$this->assertCount( 5, $lines );
 
 		// publish post 1
 		wl_update_post_status( $post_1_id, 'publish' );
@@ -178,7 +178,7 @@ EOF;
 
 		// check post 1 isn't published.
 		$lines = $this->getPostTriples( $post_1_id );
-		$this->assertCount( 1, $lines );
+		$this->assertCount( 6, $lines );
 
 		$lines = $this->getPostTriples( $entity_1_id );
 		$this->assertCount( 5, $lines );
@@ -222,14 +222,14 @@ EOF;
 
 		// Verify the post triples contain a reference to the entity.
 		$lines = $this->getPostTriples( $p_id );
-		$this->assertCount( 1, $lines );
+		$this->assertCount( 5, $lines );
 
 		// Trash the entity
 		wl_update_post_status( $e_id, 'trash' );
 
 		// Verify the post triples does no more contain a reference to the entity
 		$lines = $this->getPostTriples( $p_id );
-		$this->assertCount( 1, $lines );
+		$this->assertCount( 4, $lines );
 		// Verify the post triples does no more contain a reference to the entity
 		$lines = $this->getPostTriples( $e_id );
 		// Verify the post triples does no more contain a reference to the entity
