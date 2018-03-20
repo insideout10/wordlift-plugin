@@ -1,0 +1,116 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+
+.wl-alternative-label {
+    position: relative;
+    border: 0;
+    padding: 0;
+}
+
+.wl-alternative-label label {
+    color: #777;
+    font-size: 1.7em;
+    padding: 11px 10px;
+    cursor: text;
+}
+
+.wl-alternative-label input {
+    padding: 3px 8px;
+    font-size: 1.7em;
+    line-height: 100%;
+    height: 1.7em;
+    width: 100%;
+    outline: none;
+    margin: 0 0 3px;
+    background-color: #fff;
+}
+
+.wl-alternative-label .button.wl-delete-button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 3px;
+    cursor: pointer;
+    height: auto;
+}
+
+/* wp-admin/edit.php */
+#wl_column_thumbnail {
+    width: 60px;
+}
+
+#wl_column_related_posts {
+    width: 100px;
+}
+
+#wl-dropdown-classification-scope option {
+    text-transform: capitalize;
+}
+
+#wl_column_rating {
+    width: 100px;
+    text-align: center;
+}
+
+.wl-traffic-light {
+    display: block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 50%;
+    margin: 5px auto;
+    color: #fff;
+    font-weight: bold;
+    font-size: 0.8em;
+}
+
+.wl_column_rating {
+    text-align: center;
+}
+
+.wl-tl-1 {
+    background-color: #f00;
+}
+
+.wl-tl-2 {
+    background-color: #f90;
+}
+
+.wl-tl-3 {
+    background-color: #6c0;
+}
+
+/* The default WP style doesn't work well in responsive with our multi-column list.
+ * See https://github.com/insideout10/wordlift-plugin/issues/353
+ */
+@media screen and (max-width: 782px) {
+    .post-type-entity .wp-list-table tr:not(.inline-edit-row):not(.no-items) .column-wl_column_thumbnail {
+        display: none;
+    }
+}
+
+/* Hide the virtual page in the admin menu that we create for WL's setup. */
+#adminmenu a[href=wl-setup], #adminmenu a[href='admin.php?page=wl_status_report'] {
+    display: none;
+}
+
+/*
+ * styles related to the entity type list admin page.
+ * the expand the table on behalf of the blank left space
+ * usually used to "add", and style the title link in a non link styling
+ * to prevent it from confusing.
+ */
+.taxonomy-wl_entity_type #col-right {
+    width: 100% !important;
+}
+
+.taxonomy-wl_entity_type #col-left {
+    display: none !important;
+}
+
+.taxonomy-wl_entity_type .row-title, .taxonomy-wl_entity_type .row-title:hover {
+    color: gray;
+    cursor: default;
+}

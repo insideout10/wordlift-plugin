@@ -1,0 +1,15 @@
+<!--  ERROR MESSAGE  -->
+<div class="wl-{{item.level}}" ng-repeat="item in messages" wl-hide-after="30000">
+  <div class="wl-{{item.level}}-wrap-icon">
+    <img ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-{{item.level}}-icon.svg" class="wl-{{item.level}}-icon">
+  </div>
+  <div class="wl-{{item.level}}-wrap-msg">
+    <p class="wl-{{item.level}}-msg">
+      {{ item.text }}
+    </p>
+  </div>
+  <div class="wl-{{item.level}}-close-btn" ng-click="removeMsg($index)">
+    <span></span>
+    <span></span>
+  </div>
+</div>

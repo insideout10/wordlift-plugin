@@ -1,0 +1,47 @@
+<!-- RELATED POST -->
+<div class="wl-tab-lead">
+  <div class="wl-tab-lead-wrap" ng-click="toggleCurrentSection('related-posts')">
+    <h1 class="wl-tab-lead-text">
+      Related posts
+    </h1>
+    <div class="wl-tab-lead-text wl-tab-lead-btn"
+      ng-class="{ 'wl-open' : isCurrentSection('related-posts'), 'wl-close' : !isCurrentSection('related-posts') }">
+      <!-- display a triangle -->
+    </div>
+  </div>
+</div>
+
+<div
+  ng-show="isCurrentSection('related-posts')"
+  class="wl-widget-posts wl-tab-wrap">
+  <div class="wl-widget-post-wrap" ng-repeat="post in relatedPosts">
+    <div class="wl-widget-post-img">
+      <img ng-src="{{post.thumbnail}}" wl-fallback="{{configuration.defaultThumbnailPath}}" />
+    </div>
+
+    <!-- POST DETAILS -->
+    <div class="wl-widget-post-details">
+
+      <!-- POST TITLE -->
+      <h1 class="wl-widget-post-title">
+          {{post.post_title}}
+      </h1>
+
+      <!-- COPY LINK -->
+      <wl-clipboard
+      text="post.permalink"
+      class="wl-widget-post-link wl-widget-post-link-copied">
+
+      <span class="wl-widget-post-link-text-copy">
+        COPY LINK
+      </span>
+
+      <span class="wl-widget-post-link-text-copied">
+        LINK COPIED
+      </span>
+
+      </wl-clipboard>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,459 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WordLift 3.0\n"
+"POT-Creation-Date: 2016-02-19 21:49+0100\n"
+"PO-Revision-Date: 2016-02-19 21:49+0100\n"
+"Last-Translator: David Riccitelli <david@insideout.io>\n"
+"Language-Team: InsideOut10 <wordpress@insideout.io>\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.6\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../admin/WL_Metabox/WL_Metabox.php:55
+msgid "properties"
+msgstr ""
+
+#: ../admin/WL_Metabox/WL_Metabox_Field_coordinates.php:42
+msgid "Latitude"
+msgstr ""
+
+#: ../admin/WL_Metabox/WL_Metabox_Field_coordinates.php:45
+msgid "Longitude"
+msgstr ""
+
+#: ../admin/class-wordlift-admin-dashboard.php:64
+msgid "enriched posts"
+msgstr ""
+
+#: ../admin/class-wordlift-admin-dashboard.php:66
+#, php-format
+msgid ""
+"%1$s, of your <a href=\"%2$s\">posts</a> are annotated. This means %3$s "
+"annotated posts on %4$s."
+msgstr ""
+"%1$s, of your <a href=\"%2$s\">posts</a> have been enriched with WordLift. "
+"This means %3$s enriched posts out of a total of %4$s."
+
+#: ../admin/class-wordlift-admin-dashboard.php:74
+msgid "average entity rating"
+msgstr ""
+
+#: ../admin/class-wordlift-admin-dashboard.php:76
+#, php-format
+msgid ""
+"You have %1$s entities in your <a href=\"%2$s\">vocabulary</a> with an "
+"average rating of %3$s."
+msgstr ""
+"You have %1$s entities in your <a href=\"%2$s\">vocabulary</a> with an "
+"average rating of %3$s."
+
+#: ../admin/class-wordlift-admin-dashboard.php:83
+msgid "triples in your graph"
+msgstr ""
+
+#: ../admin/class-wordlift-admin-dashboard.php:85
+#, php-format
+msgid "Your graphs size corresponds to %1$s of <a href=\"%2$s\">Wikidata</a>."
+msgstr ""
+"The size of your knowledge graph corresponds to %1$s of the size of <a href="
+"\"%2$s\">Wikidata</a>"
+
+#: ../admin/class-wordlift-admin-dashboard.php:91
+msgid "triples"
+msgstr ""
+
+#: ../admin/class-wordlift-admin-entity-list.php:67
+msgid "Image"
+msgstr ""
+
+#: ../admin/class-wordlift-admin-entity-list.php:69
+msgid "Related Posts"
+msgstr "Related Posts"
+
+#: ../admin/class-wordlift-admin-entity-list.php:70
+msgid "Rating"
+msgstr ""
+
+#: ../admin/class-wordlift-admin-entity-list.php:143
+msgid "All 'W'"
+msgstr ""
+
+#: ../admin/wordlift_admin_edit_post.php:25
+msgid "View Linked Data"
+msgstr ""
+
+#: ../admin/wordlift_admin_edit_post.php:31
+msgid "Test Google Rich Snippets"
+msgstr "Test Google Rich Snippets"
+
+#: ../admin/wordlift_admin_menu.php:19 ../admin/wordlift_admin_menu.php:20
+#, fuzzy
+msgid "WordLift"
+msgstr "WordLift Settings"
+
+#: ../admin/wordlift_admin_menu.php:45
+#: ../modules/configuration/wordlift_configuration.php:45
+msgid "You do not have sufficient permissions to access this page."
+msgstr ""
+
+#: ../admin/wordlift_admin_meta_box_entities.php:35
+msgid "Wordlift"
+msgstr ""
+
+#: ../includes/class-wordlift-entity-service.php:508
+msgid "Add more titles"
+msgstr "Add synonym"
+
+#: ../includes/class-wordlift-entity-service.php:752
+msgid "Delete"
+msgstr ""
+
+#: ../modules/analyzer/wordlift_analyzer.php:20
+msgid ""
+"An error occurred while request an analysis to the remote service. Please "
+"try again later."
+msgstr ""
+
+#: ../modules/configuration/configuration.php:12
+#: ../modules/configuration/configuration.php:16
+#, fuzzy
+msgid "WordLift Configuration"
+msgstr "WordLift Settings"
+
+#: ../modules/configuration/configuration.php:51
+#: ../modules/prefixes/prefixes.php:51
+msgid "Overview"
+msgstr ""
+
+#: ../modules/configuration/configuration.php:53
+#: ../modules/prefixes/prefixes.php:53
+msgid ""
+"\n"
+"<ul>\n"
+"\t<li><strong>What it does:</strong> Lorem ipsum dolor sit amet, consectetur "
+"adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna "
+"aliqua.</li>\n"
+"\t<li><strong>Why it helps:</strong> Lorem ipsum dolor sit amet, consectetur "
+"adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna "
+"aliqua.</li>\n"
+"\t<li><strong>How to use it:</strong> Lorem ipsum dolor sit amet, "
+"consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et "
+"dolore magna aliqua.</li>\n"
+"</ul>\n"
+"\n"
+"<p>If there are no 404 errors in the log, this is good and means there's no "
+"action required on your part.</p>\n"
+msgstr ""
+
+#: ../modules/configuration/wordlift_configuration.php:24
+#: ../modules/configuration/wordlift_configuration.php:25
+msgid "Settings"
+msgstr ""
+
+#: ../modules/configuration/wordlift_configuration.php:126
+#, fuzzy
+msgid "WordLift Key"
+msgstr "WordLift Settings"
+
+#: ../modules/configuration/wordlift_configuration.php:134
+msgid "Insert the WordLift Key"
+msgstr ""
+
+#: ../modules/configuration/wordlift_configuration.php:140
+#, fuzzy
+msgid "Site Language"
+msgstr "Site Language (two letters ISO code)"
+
+#: ../modules/configuration/wordlift_configuration.php:148
+#, fuzzy
+msgid "The site language"
+msgstr "Site Language (two letters ISO code)"
+
+#: ../modules/configuration/wordlift_configuration.php:171
+msgid "API URL"
+msgstr ""
+
+#: ../modules/configuration/wordlift_configuration.php:179
+msgid "The API URL"
+msgstr ""
+
+#: ../modules/configuration/wordlift_configuration.php:185
+msgid "Redlink Key"
+msgstr ""
+
+#: ../modules/configuration/wordlift_configuration.php:193
+msgid "The Redlink key"
+msgstr ""
+
+#: ../modules/configuration/wordlift_configuration.php:199
+msgid "Redlink User Id"
+msgstr ""
+
+#: ../modules/configuration/wordlift_configuration.php:207
+msgid "The Redlink User Id"
+msgstr ""
+
+#: ../modules/configuration/wordlift_configuration.php:213
+#, fuzzy
+msgid "Redlink Dataset name"
+msgstr "Dataset name"
+
+#: ../modules/configuration/wordlift_configuration.php:221
+msgid "The Redlink Dataset Name"
+msgstr ""
+
+#: ../modules/configuration/wordlift_configuration.php:227
+msgid "Redlink Dataset URI"
+msgstr ""
+
+#: ../modules/configuration/wordlift_configuration.php:235
+msgid "The Redlink Dataset URI"
+msgstr ""
+
+#: ../modules/configuration/wordlift_configuration.php:241
+msgid "Redlink Application Name"
+msgstr ""
+
+#: ../modules/configuration/wordlift_configuration.php:249
+msgid "The Redlink Application Name"
+msgstr ""
+
+#: ../modules/configuration/wordlift_configuration.php:440
+msgid "application-key-not-set"
+msgstr ""
+"WordLift application key is not set. Please <a target=\"_blank\" href=\"%1$s"
+"\">signup</a> and we will get in contact with you to send you the key."
+
+#: ../modules/configuration/wordlift_configuration.php:446
+msgid "Dataset URI missing in configuration"
+msgstr ""
+"WordLift Dataset URI is missing in configuration. Please check your WordLift "
+"key."
+
+#: ../modules/prefixes/prefixes.php:12 ../modules/prefixes/prefixes.php:16
+msgid "Prefixes"
+msgstr ""
+
+#: ../shortcodes/wordlift_shortcode_faceted_search.php:10
+#: ../shortcodes/wordlift_shortcode_navigator.php:100
+msgid "Related articles"
+msgstr ""
+
+#: ../widgets/wordlift_widget_chord.php:12
+msgid "Chord Widget"
+msgstr ""
+
+#: ../widgets/wordlift_widget_chord.php:13
+msgid "The Chord Widget depicts the main topics of your blog in concise graph."
+msgstr ""
+
+#: ../widgets/wordlift_widget_geo.php:19
+msgid "Geo Widget"
+msgstr ""
+
+#: ../widgets/wordlift_widget_geo.php:20
+msgid "Geo Widget description"
+msgstr ""
+
+#: ../widgets/wordlift_widget_geo.php:60
+msgid "New title"
+msgstr ""
+
+#: ../widgets/wordlift_widget_geo.php:64
+msgid "Title:"
+msgstr ""
+
+#: ../widgets/wordlift_widget_timeline.php:13
+msgid "Timeline Widget"
+msgstr ""
+
+#: ../widgets/wordlift_widget_timeline.php:14
+msgid "The Timeline widget displays event-entities on a timeline."
+msgstr ""
+
+#: ../wordlift_entity_type.php:9
+msgctxt "post type general name"
+msgid "Vocabulary"
+msgstr ""
+
+#: ../wordlift_entity_type.php:10
+msgctxt "post type singular name"
+msgid "Entity"
+msgstr ""
+
+#: ../wordlift_entity_type.php:11
+msgctxt "entity"
+msgid "Add New Entity"
+msgstr ""
+
+#: ../wordlift_entity_type.php:12
+msgid "Add New Entity"
+msgstr ""
+
+#: ../wordlift_entity_type.php:13
+msgid "Edit Entity"
+msgstr ""
+
+#: ../wordlift_entity_type.php:14
+msgid "New Entity"
+msgstr ""
+
+#: ../wordlift_entity_type.php:15
+msgid "All Entities"
+msgstr ""
+
+#: ../wordlift_entity_type.php:16
+msgid "View Entity"
+msgstr ""
+
+#: ../wordlift_entity_type.php:17
+msgid "Search in Vocabulary"
+msgstr ""
+
+#: ../wordlift_entity_type.php:18
+msgid "No entities found"
+msgstr ""
+
+#: ../wordlift_entity_type.php:19
+msgid "No entities found in the Trash"
+msgstr ""
+
+#: ../wordlift_entity_type.php:21
+msgid "Vocabulary"
+msgstr ""
+
+#: ../wordlift_entity_type_taxonomy.php:13
+msgctxt "taxonomy general name"
+msgid "Entity Types"
+msgstr ""
+
+#: ../wordlift_entity_type_taxonomy.php:14
+msgctxt "taxonomy singular name"
+msgid "Entity Type"
+msgstr ""
+
+#: ../wordlift_entity_type_taxonomy.php:15
+msgid "Search Entity Types"
+msgstr ""
+
+#: ../wordlift_entity_type_taxonomy.php:16
+msgid "All Entity Types"
+msgstr ""
+
+#: ../wordlift_entity_type_taxonomy.php:17
+msgid "Parent Entity Type"
+msgstr ""
+
+#: ../wordlift_entity_type_taxonomy.php:18
+msgid "Parent Entity Type:"
+msgstr ""
+
+#: ../wordlift_entity_type_taxonomy.php:19
+msgid "Edit Entity Type"
+msgstr ""
+
+#: ../wordlift_entity_type_taxonomy.php:20
+msgid "Update Entity Type"
+msgstr ""
+
+#: ../wordlift_entity_type_taxonomy.php:21
+msgid "Add New Entity Type"
+msgstr ""
+
+#: ../wordlift_entity_type_taxonomy.php:22
+msgid "New Entity Type"
+msgstr ""
+
+#: ../wordlift_entity_type_taxonomy.php:23
+msgid "Entity Types"
+msgstr ""
+
+#: ../wordlift_manual_translations.php:6
+msgid "There are no related posts for the current entity."
+msgstr "Every entity should be linked to one or more related posts."
+
+#: ../wordlift_manual_translations.php:7
+msgid "This entity has not description."
+msgstr "Add a description to improve the ranking of this entity.  "
+
+#: ../wordlift_manual_translations.php:8
+msgid "There are no related entities for the current entity."
+msgstr ""
+"Select the highlighted entities in the description to create relationships "
+"with other entities. "
+
+#: ../wordlift_manual_translations.php:9
+msgid ""
+"This entity is not published. It will not appear within analysis results."
+msgstr ""
+"This entity has not been published yet. It will appear in the analysis "
+"results as soon as you publish it. "
+
+#: ../wordlift_manual_translations.php:10
+msgid "This entity has no featured image yet."
+msgstr "Add a featured image to improve the quality of the entity."
+
+#: ../wordlift_manual_translations.php:11
+msgid "There are no sameAs configured for this entity."
+msgstr ""
+"Add <em>sameAs</em> links to improve the value of the entity. You can use "
+"urls from DBpedia, Freebase, Wikidata and others."
+
+#: ../wordlift_manual_translations.php:12
+msgid "Schema.org metadata for this entity are not completed."
+msgstr "Complete all the properties of the entity to increase its visibility."
+
+#~ msgid "Entity URL"
+#~ msgstr "Entity URL"
+
+#~ msgid "entity-url-label"
+#~ msgstr "The entity URL:"
+
+#, fuzzy
+#~ msgid "Dataset"
+#~ msgstr "Dataset name"
+
+#, fuzzy
+#~ msgctxt "post type singular name"
+#~ msgid "Analysis"
+#~ msgstr "Analysis Name"
+
+#, fuzzy
+#~ msgid "Entity Type URI"
+#~ msgstr "Entity URL"
+
+#~ msgid "main-settings-title"
+#~ msgstr "Main Settings"
+
+#~ msgid "application-key"
+#~ msgstr "Application Key"
+
+#~ msgid "user-id"
+#~ msgstr "User ID"
+
+#~ msgid "dataset-base-uri"
+#~ msgstr "Dataset URI (e.g. http://rdf.salzburgerland.com/dataset)"
+
+#~ msgid "main-settings-description"
+#~ msgstr "Configure here the main settings:"
+
+#, fuzzy
+#~ msgid "entity-same-as-label"
+#~ msgstr "The entity URL:"
+
+#, fuzzy
+#~ msgid "entity-types-label"
+#~ msgstr "The entity URL:"
+
+#~ msgid "entities-admin-page-title"
+#~ msgstr "Entities"
+
+#~ msgid "entities-admin-menu-title"
+#~ msgstr "Entities"

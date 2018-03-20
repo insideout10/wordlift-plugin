@@ -1,0 +1,47 @@
+{
+  "name": "TimelineJS",
+  "version": "2.32.0",
+  "homepage": "http://timeline.knightlab.com",
+  "authors": [
+    "Zach Wise <zach@digitalartwork.net>",
+    "NUKnightLab"
+  ],
+  "description": "A Storytelling Timeline built in JavaScript.",
+  "main": [
+    "build/js/timeline.js",
+    "build/css/timeline.css",
+    "build/embed/index.html",
+    "build/js/storyjs-embed.js",
+    "build/js/storyjs-embed-generator.js",
+    "build/js/storyjs-embed-cdn.js"
+  ],
+  "keywords": [
+    "timeline",
+    "storytelling",
+    "timelinejs",
+    "timeline.js",
+    "history",
+    "googledocs",
+    "storify"
+  ],
+  "repository": {
+  "type": "git",
+  "url": "git@github.com:NUKnightLab/TimelineJS.git"
+  },
+  "license": "MPL v2.0",
+  "ignore": [
+    "examples",
+    "source",
+    "tests",
+    "website",
+    ".gitignore",
+    ".gitmodules",
+    "CHANGELOG",
+    "DEVELOPER.md",
+    "README.markdown",
+    "codekit-config.json",
+    "config.json",
+    "fabfile.py",
+    "requirements.txt"
+  ]
+}
