@@ -50,15 +50,39 @@ class Wordlift_User_Service {
 	private static $instance;
 
 	/**
+	 * The {@link Wordlift_Sparql_Service} instance.
+	 *
+	 * @since  3.18.0
+	 * @access private
+	 * @var \Wordlift_Sparql_Service $sparql_service The {@link Wordlift_Sparql_Service} instance.
+	 */
+	private $sparql_service;
+
+	/**
+	 * The Entity service.
+	 *
+	 * @since  3.18.0
+	 * @access private
+	 * @var \Wordlift_Entity_Service $entity_service The Entity service.
+	 */
+	private $entity_service;
+
+	/**
 	 * Create an instance of the User service.
 	 *
 	 * @since 3.1.7
+	 *
+	 * @param \Wordlift_Sparql_Service $sparql_service The {@link Wordlift_Sparql_Service} instance.
+	 * @param \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service} instance.
 	 */
-	public function __construct() {
+	public function __construct( $sparql_service, $entity_service ) {
 
 		$this->log_service = Wordlift_Log_Service::get_logger( 'Wordlift_User_Service' );
 
 		self::$instance = $this;
+
+		$this->sparql_service = $sparql_service;
+		$this->entity_service = $entity_service;
 
 		add_filter( 'user_has_cap', array( $this, 'has_cap' ), 10, 3 );
 	}
@@ -102,42 +126,6 @@ class Wordlift_User_Service {
 	}
 
 	/**
-	 * Receives wp_insert_post events.
-	 *
-	 * @since 3.1.7
-	 *
-	 * @param int     $post_id Post ID.
-	 * @param WP_Post $post    Post object.
-	 * @param bool    $update  Whether this is an existing post being updated or not.
-	 */
-	public function wp_insert_post( $post_id, $post, $update ) {
-
-		// If the post is not published, return.
-		if ( 'publish' !== get_post_status( $post_id ) ) {
-			return;
-		}
-
-		// We expect a numeric author id.
-		if ( ! is_numeric( $post->post_author ) ) {
-			return;
-		}
-
-		// Get the delete query,or return in case of failure.
-		if ( false === ( $delete = $this->get_delete_query( $post->post_author ) ) ) {
-			return;
-		}
-
-		// Get the insert query,or return in case of failure.
-		if ( false === ( $insert = $this->get_insert_query( $post->post_author ) ) ) {
-			return;
-		}
-
-		// Send the query to the triple store.
-		rl_execute_sparql_update_query( $delete . $insert );
-
-	}
-
-	/**
 	 * Set the `id` of the entity representing a {@link WP_User}.
 	 *
 	 * If the `id` is set to 0 (or less) then the meta is deleted.
@@ -163,7 +151,7 @@ class Wordlift_User_Service {
 	 *
 	 * @param int $user_id The {@link WP_User}'s `id`.
 	 *
-	 * @return string The entity {@link WP_Post} `id` or an empty string if not set.
+	 * @return string|false The entity {@link WP_Post} `id` or an empty string if not set or false if the object id is invalid
 	 */
 	public function get_entity( $user_id ) {
 
@@ -443,4 +431,126 @@ class Wordlift_User_Service {
 
 		return $allcaps;
 	}
+
+	/**
+	 * Hook on update user meta to check if the user author has changed.
+	 * If so we need to execute sparql query that will update all user posts author triple.
+	 *
+	 * @since   3.18.0
+	 *
+	 * @param   null   $null
+	 * @param   int    $object_id  The user ID.
+	 * @param   string $meta_key   The meta key name.
+	 * @param   mixed  $meta_value Meta value.
+	 * @param   mixed  $prev_value The previous metadata value.
+	 *
+	 * @return  null Null if the `meta_key` is not `Wordlift_User_Service::ENTITY_META_KEY`
+	 *                or if the author has not changed.
+	 */
+	public function update_user_metadata( $null, $object_id, $meta_key, $meta_value, $prev_value ) {
+		// Bail if the meta key is not the author meta.
+		if ( $meta_key !== Wordlift_User_Service::ENTITY_META_KEY ) {
+			return null;
+		}
+
+		// Check whether the user is associated with any of the existing publishers/
+		$entity_id = $this->get_entity( $object_id );
+
+		if ( false === $entity_id ) {
+			// An error occurred.
+			$this->log_service->error( "An error occurred: entity_id can't be false." );
+
+			return;
+		}
+
+		// Get the old uri if the entity is set..
+		$old_uri = ! empty( $entity_id )
+			? $this->entity_service->get_uri( $entity_id )
+			: $this->get_uri( $object_id );
+
+		// Get the new user uri's.
+		$new_uri = $this->entity_service->get_uri( $meta_value );
+
+		// Bail if the uri is the same.
+		if ( $old_uri === $new_uri ) {
+			return null;
+		}
+
+		$this->update_author( $old_uri, $new_uri );
+	}
+
+	/**
+	 * Hook on delete user meta to execute sparql query
+	 * that will update all user posts author triple.
+	 *
+	 * @since   3.18.0
+	 *
+	 * @param   null   $null
+	 * @param   int    $object_id   The user ID.
+	 * @param   string $meta_key    The meta key name.
+	 * @param   mixed  $meta_value  Meta value.
+	 * @param   bool   $delete_all  Whether to delete the matching metadata entries
+	 *                              for all objects.
+	 *
+	 * @return  null Null if the `meta_key` is not `Wordlift_User_Service::ENTITY_META_KEY`
+	 *               or if the author has not changed.
+	 */
+	public function delete_user_metadata( $null, $object_id, $meta_key, $meta_value, $delete_all ) {
+		// Bail if the meta key is not the author meta.
+		if ( $meta_key !== Wordlift_User_Service::ENTITY_META_KEY ) {
+			return null;
+		}
+
+		// Check whether the user is associated with any of the existing publishers/
+		$entity_id = $this->get_entity( $object_id );
+
+		if ( false === $entity_id ) {
+			// An error occurred.
+			$this->log_service->error( "An error occurred: entity_id can't be false." );
+
+			return;
+		}
+
+		// Get the old uri if the entity is set.
+		$old_uri = $this->entity_service->get_uri( $entity_id );
+
+		$new_uri = $this->get_uri( $object_id );
+
+		$this->update_author( $old_uri, $new_uri );
+
+	}
+
+	/**
+	 * Update the schema:author when the user author is changed.
+	 *
+	 * @since   3.18.0
+	 *
+	 * @param   string $old_uri The old uri to remove.
+	 * @param   string $new_uri The new uri to add.
+	 */
+	private function update_author( $old_uri, $new_uri ) {
+		// Bail in case one of the uris is empty.
+		if ( empty( $old_uri ) || empty( $new_uri ) ) {
+			// An error occurred.
+			$this->log_service->error( "An error occurred: old_uri and/or new_uri can't be null." );
+
+			return;
+		}
+
+		// Build the update query.
+		$query = sprintf(
+			'DELETE { ?s <%1$s> <%2$s> } INSERT { ?s <%1$s> <%3$s> } WHERE { ?s <%1$s> <%2$s> }',
+			// Schema:author triple.
+			$this->sparql_service->escape_uri( Wordlift_Query_Builder::SCHEMA_AUTHOR_URI ),
+			// Old author uri to remove,
+			$this->sparql_service->escape_uri( $old_uri ),
+			// New author uri to add,
+			$this->sparql_service->escape_uri( $new_uri )
+		);
+
+		// Execute the query and update the author.
+		$this->sparql_service->execute( $query );
+
+	}
+
 }

@@ -16,7 +16,7 @@
  * @package    Wordlift
  * @subpackage Wordlift/includes/linked-data/storage
  */
-class Wordlift_Post_Schema_Class_Storage {
+class Wordlift_Post_Schema_Class_Storage extends Wordlift_Storage {
 
 	/**
 	 * Get the schema class for the specified {@link WP_Post}.

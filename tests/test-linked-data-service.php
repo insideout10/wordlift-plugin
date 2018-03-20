@@ -63,13 +63,13 @@ class Wordlift_Linked_Data_Service_Test extends Wordlift_Unit_Test_Case {
 		// Load the expected function parameter for the sparql service `execute`
 		// function. Beware that the results may change in the future if we
 		// add new predicates to the schema service or renditions.
-		$expected = str_replace( 'POST_URI' , $uri, file_get_contents( __DIR__ . '/assets/linked_data_service__remove__1.sparql' ) );
+		$expected = str_replace( 'POST_URI', $uri, file_get_contents( __DIR__ . '/assets/linked_data_service__remove__1.sparql' ) );
 
 		// Declare our expectation for the `execute` function to be called once
 		// with the above parameter.
 		$this->sparql_service->expects( $this->once() )
-					   ->method( 'execute' )
-					   ->with( $this->equalTo( $expected ) );
+							 ->method( 'execute' )
+							 ->with( $this->equalTo( $expected ) );
 
 		// Call the `remove` function to test it.
 		$linked_data_service->remove( $post_id );

@@ -144,7 +144,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 = 3.19.0 (????-??-??) =
 
-= 3.18.0 (????-??-??) =
+= 3.18.0 (2018-03-20) =
+* Enhancement: [#772](https://github.com/insideout10/wordlift-plugin/issues/772): Vocabulary Widget: allow entity grouping by category.
+* Enhancement: [#771](https://github.com/insideout10/wordlift-plugin/issues/771): Allow markup in text annotations.
+* Enhancement: [#770](https://github.com/insideout10/wordlift-plugin/issues/770): Autocomplete field: `urldecode` entity permalinks from dbpedia.
 * Enhancement: [#769](https://github.com/insideout10/wordlift-plugin/issues/769): Move `wl_insert_triples` at the end of `get_insert_triples`.
 * Enhancement: [#768](https://github.com/insideout10/wordlift-plugin/issues/768): Refactor `wordlift_core_install.php`.
 * Enhancement: [#760](https://github.com/insideout10/wordlift-plugin/issues/760): Add a reference to the articles being annotated with an entity in the rdf graph.
@@ -153,9 +156,15 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement: [#715](https://github.com/insideout10/wordlift-plugin/issues/715): Image storage strategy.
 * Enhancement: [#634](https://github.com/insideout10/wordlift-plugin/issues/634): Add bulgarian translations.
 * Enhancement: [#325](https://github.com/insideout10/wordlift-plugin/issues/325): Disable importing SVGs from analysis.
+* Fix: [#777](https://github.com/insideout10/wordlift-plugin/issues/777): WordLift Entities-Box: Wrong Link in "Open in vocabulary".
+* Fix: [#776](https://github.com/insideout10/wordlift-plugin/issues/776): JSON-LD generation raises a warning.
+* Fix: [#773](https://github.com/insideout10/wordlift-plugin/issues/773): PHPUnit compatibility issue with php 7.2.
 * Fix: [#752](https://github.com/insideout10/wordlift-plugin/issues/752): 2nd level properties not added to the cloud dataset.
 * Fix: [#702](https://github.com/insideout10/wordlift-plugin/issues/702): When a post is deleted the wl_relation_instances table isn't updated.
 * Fix: [#681](https://github.com/insideout10/wordlift-plugin/issues/681): Permalink in vocabulary editor returns to editor.
+
+= 3.17.3 (2018-02-14) =
+* Fix: [#766](https://github.com/insideout10/wordlift-plugin/issues/766): Performance loss on Cache update due to `wp_set_post_lock`.
 
 = 3.17.2 (2018-01-24) =
 * Fix: [#758](https://github.com/insideout10/wordlift-plugin/issues/758): amp_post_template_css causes PHP Warning.
