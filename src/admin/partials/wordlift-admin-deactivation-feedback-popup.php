@@ -63,7 +63,7 @@ $reasons = array(
 
 				<ul>
 					<?php foreach ( $reasons as $reason ) : ?>
-						<li class="">
+						<li class="wl-reason-item">
 							<label>
 								<input type="radio" name="wl-reason" class="wl-reason" value="<?php echo esc_attr( $reason['id'] ); ?>"/>
 								<span class="description">
