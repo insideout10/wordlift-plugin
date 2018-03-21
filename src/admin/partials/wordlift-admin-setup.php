@@ -56,7 +56,7 @@
 
 <div class="wl-container">
 
-	<a href="<?php echo esc_url( admin_url() ); ?> "
+	<a href="<?php echo esc_url( admin_url() ); ?>"
 	   class="fa fa-times wl-close"></a>
 
 	<header>

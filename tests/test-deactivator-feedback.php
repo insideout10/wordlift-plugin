@@ -42,8 +42,7 @@ class Wordlift_Deactivator_Feedback_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function setUp() {
 
-		$this->wordlift_test         = new Wordlift_Test();
-		$this->configuration_service = $this->wordlift_test->get_configuration_service();
+		$this->configuration_service = $this->get_wordlift_test()->get_configuration_service();
 		$this->deactivator_feedback  = new Wordlift_Deactivator_Feedback( $this->configuration_service );
 
 	}

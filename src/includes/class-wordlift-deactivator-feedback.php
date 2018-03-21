@@ -66,17 +66,16 @@ class Wordlift_Deactivator_Feedback {
 
 		// Bail if the user doesn't have permissions
 		// or if it's not the plugins page.
-		if ( $pagenow !== 'plugins.php' ) {
+		if ( 'plugins.php' !== $pagenow ) {
 			return false;
 		}
 
 		// Get the user preferences. We shouldn't show the feedback popup
 		// if we don't have permissions for that.
-		$configuration_service = Wordlift_Configuration_Service::get_instance();
-		$user_preferences      = $configuration_service->get_diagnostic_preferences();
+		$user_preferences      = $this->configuration_service->get_diagnostic_preferences();
 
 		// Bail. We don't have preferences to show the popup.
-		if ( $user_preferences !== 'yes' ) {
+		if ( 'yes' !== $user_preferences ) {
 			return false;
 		}
 
@@ -168,7 +167,7 @@ class Wordlift_Deactivator_Feedback {
 		$message = wp_remote_retrieve_response_message( $response );
 
 		// Add message to the error log if the response code is not 200.
-		if ( $code !== 200 ) {
+		if ( 200 === $code ) {
 			// Write the error in the logs.
 			$this->log->error( 'An error occurred while requesting a feedback endpoint error_code: ' . $code . ' message: ' . $message );
 		}
