@@ -37,8 +37,6 @@ abstract class Wordlift_Install {
 	public function __construct() {
 
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Install_' . str_replace( '.', '_', static::$version ) );
-
-		$this->log->trace( 'Install package v' . static::$version . ' loaded.' );
 	}
 
 	/**
