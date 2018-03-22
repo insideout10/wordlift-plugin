@@ -39,14 +39,6 @@
 	text-align: right;
 }
 
-.additional-info {
-	display: none;
-}
-
-.additional-info.visible {
-	display: block;
-}
-
 .wl-modal-deactivation-feedback {
 	padding: 0 50px 50px;
 }
@@ -80,6 +72,15 @@
 	padding: 0;
 }
 
+.additional-info {
+	display: none;
+}
+
+.wl-modal-deactivation-feedback .wl-reason-item.selected .additional-info {
+	display: block;
+}
+
+
 .notes {
 	color: red;
 	text-align: center;
@@ -90,10 +91,6 @@
 	width: 100%;
 	line-height: 25px;
 	border: 1px solid #b3b3b3;
-}
-
-.wl-modal-deactivation-feedback .additional-info textarea {
-	width: 60%;
 }
 
 .wl-modal-deactivation-feedback .additional-info p {

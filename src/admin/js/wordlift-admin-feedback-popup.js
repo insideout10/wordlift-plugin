@@ -3,97 +3,61 @@
  */
 
 jQuery(document).ready(function($) {
-  // Add deactivation listener.
-  const deactivationLink = $(
-    '#the-list .active[data-plugin="wordlift/wordlift.php"] .deactivate a'
-  ).attr('href');
-  var reasonParent;
-  var reason;
+	// Add deactivation listener.
+	const deactivationButton = $( '#the-list .active[data-plugin="wordlift/wordlift.php"] .deactivate a' );
 
-  $(
-    '#the-list .active[data-plugin="wordlift/wordlift.php"] .deactivate a'
-  ).click(function(e) {
-    e.preventDefault();
+	// Display the feedback popup on deactivation button click.
+	deactivationButton.click(function(e) {
+		e.preventDefault();
 
-    $('.wl-modal-deactivation-feedback').addClass('visible');
-  });
+		$('.wl-modal-deactivation-feedback').addClass('visible');
+	});
 
-  $('.wl-reason').on('change', function() {
-    //  	console.log($(this));
-    //    reasonParent = $(this).parents('li');
-    //    reason = $(this).val();
+	// Mark the reason item as selected on deactivation reason change.
+	$('.wl-reason').on('change', function() {
+		// Mark the current item as selected.
+		$( this )
+			.parents( '.wl-reason-item' )
+			.addClass( 'selected' )
+			// Remove the selected state from the siblings.
+			.siblings()
+			.removeClass( 'selected' );
+	});
 
-    $('.wl-modal-deactivation-feedback .additional-info').removeClass(
-      'visible'
-    );
+	$('.wl-modal-button-deactivate').on('click', function(e) {
+		e.preventDefault();
 
-    $(this)
-      .parents('label')
-      .find('~ .additional-info')
-      .addClass('visible');
-  });
+		// Send the data to the backend service.
+		wp.ajax.post(
+			'wl_deactivation_feedback',
+			{
+				reason_id: $('.wl-reason-item.selected .wl-reason').val(), // The reason for deactivation.
+				additional_info: $('.wl-reason-item.selected .wl-reason-info').val(), // The additional info.
+				wl_deactivation_feedback_nonce: $('.wl_deactivation_feedback_nonce').val() // The nonce verification.
+			}
+		)
+        .done( function ( response ) {
+			// Redirect if we have success state.
+			return ( window.location.href = deactivationButton.attr( 'href' ) );
+        })
+        .fail( function( response ) {
+			if ( response.length ) {
+				// Display the errors to the user.
+				$('.wl-errors').html('<p>' + response + '</p>');
+			}
+		});
+	});
 
-  $('.wl-modal-button-deactivate').on('click', function(e) {
-    e.preventDefault();
+	// Close the popup by clicking outside of the body
+	// or on "Cancel" button.
+	$( '.wl-modal-deactivation-feedback, .wl-modal-button-close' ).on('click', function(e) {
+		e.preventDefault();
 
-    // Deactivate if the user hasn't selected any reason.
-    if (typeof reason === 'undefined') {
-      return (window.location.href = deactivationLink);
-    }
+		$(this).removeClass('visible');
+	});
 
-    $.ajax({
-      url: settings.ajaxUrl,
-      method: 'POST',
-      data: {
-        action: 'wl_deactivation_feedback',
-        reason_id: reason,
-        additional_info: reasonParent.find('.wl-reason-info').val(),
-        wl_deactivation_feedback_nonce: $(
-          '.wl_deactivation_feedback_nonce'
-        ).val()
-      },
-      beforeSend: function() {
-        // Add indicator that the request going to be made.
-        $('.wl-modal-button-deactivate')
-          .addClass('disabled')
-          .text('Processing ...');
-      },
-      success: function(response) {
-        // Redirect if we have success state.
-        if (response.success) {
-          return (window.location.href = deactivationLink);
-        }
-
-        // Display the errors to the user.
-        $('.wl-errors').html('<p>' + response.data + '</p>');
-      },
-      error: function(xhr, status, error) {
-        if (error.length) {
-          // Display the errors to the user.
-          $('.wl-errors').html('<p>' + error + '</p>');
-        }
-      },
-      complete: function() {
-        // Return the button to initial state.
-        $('.wl-modal-button-deactivate')
-          .removeClass('disabled')
-          .text('Deactivate');
-      }
-    });
-  });
-
-  // Close the popup by clicking outside of the body
-  // or on "Cancel" button.
-  $(
-    '.wl-modal-deactivation-feedback, .wl-modal-button-close'
-  ).on('click', function(e) {
-    e.preventDefault();
-
-    $(this).removeClass('visible');
-  });
-
-  // Prevent the popup from bubbling.
-  $('.wl-modal-body, .wl-modal-button-deactivate').on('click', function(e) {
-    e.stopPropagation();
-  });
+	// Prevent the popup from bubbling.
+	$('.wl-modal-body, .wl-modal-button-deactivate').on('click', function(e) {
+		e.stopPropagation();
+	});
 });

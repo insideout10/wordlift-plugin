@@ -412,8 +412,6 @@
       alwaysValid
     ];
 
-    console.log(validations);
-
     // Add the pages.
     for (var i = 0; i < 6; i++) {
       controller.add($('#page-' + i).html(), validations[i]);

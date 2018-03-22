@@ -63,9 +63,16 @@ $reasons = array(
 
 				<ul>
 					<?php foreach ( $reasons as $reason ) : ?>
-						<li class="wl-reason-item">
+						<li class="wl-reason-item <?php echo ( $reason['id'] == 'I_DONT_USE_IT' ) ? 'selected' : '' ; ?>">
 							<label>
-								<input type="radio" name="wl-reason" class="wl-reason" value="<?php echo esc_attr( $reason['id'] ); ?>"/>
+								<input
+									type="radio"
+									name="wl-reason"
+									class="wl-reason"
+									<?php checked( 'I_DONT_USE_IT', $reason['id'], true ); ?>
+									value="<?php echo esc_attr( $reason['id'] ); ?>"
+								/>
+
 								<span class="description">
 									<?php echo $reason['text']; ?>		
 								</span>

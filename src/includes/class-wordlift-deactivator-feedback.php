@@ -72,7 +72,7 @@ class Wordlift_Deactivator_Feedback {
 
 		// Get the user preferences. We shouldn't show the feedback popup
 		// if we don't have permissions for that.
-		$user_preferences      = $this->configuration_service->get_diagnostic_preferences();
+		$user_preferences = $this->configuration_service->get_diagnostic_preferences();
 
 		// Bail. We don't have preferences to show the popup.
 		if ( 'yes' !== $user_preferences ) {
@@ -110,10 +110,9 @@ class Wordlift_Deactivator_Feedback {
 		if ( ! $this->has_permission_to_show_popup() ) {
 			return;
 		}
+
 		wp_enqueue_style( 'wordlift-admin-feedback-popup', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/css/wordlift-admin-feedback-popup.css', array() );
 		wp_enqueue_script( 'wordlift-admin-feedback-popup', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/wordlift-admin-feedback-popup.js', array( 'jquery' ) );
-
-		wp_localize_script( 'wordlift-admin-feedback-popup', 'settings', array( 'ajaxUrl' => admin_url( 'admin-ajax.php' ) ) );
 	}
 
 	/**
