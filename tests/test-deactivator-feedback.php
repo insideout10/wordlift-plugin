@@ -41,6 +41,7 @@ class Wordlift_Deactivator_Feedback_Test extends Wordlift_Unit_Test_Case {
 	 * {@inheritdoc}
 	 */
 	public function setUp() {
+		parent::setUp();
 
 		$this->configuration_service = $this->get_wordlift_test()->get_configuration_service();
 		$this->deactivator_feedback  = new Wordlift_Deactivator_Feedback( $this->configuration_service );
@@ -132,11 +133,12 @@ class Wordlift_Deactivator_Feedback_Test extends Wordlift_Unit_Test_Case {
 		$markup = ob_get_clean();
 
 		foreach ( $reason_ids as $id ) {
-			$this->assertContains(
-				'<input type="radio" name="wl-reason" class="wl-reason" value="' . esc_attr( $id ) . '"/>',
+			$this->assertRegExp(
+				'/\<input\s+type="radio"\s+name="wl-reason"\s+class="wl-reason"\s+(checked=\'checked\')?\s+value="' . esc_attr( $id ) . '"\s+\/>/',
 				$markup
 			);
 		}
+
 	}
 
 	/**
