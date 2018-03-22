@@ -309,6 +309,21 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			)
 		);
 
+		// Add the `diagnostic data` field.
+		add_settings_field(
+			'wl-send-diagnostic',
+			__( 'Send Diagnostic Data', 'wordlift' ),
+			array( $this->radio_input_element, 'render' ),
+			'wl_general_settings',
+			'wl_general_settings_section',
+			array(
+				'id'          => 'wl-send-diagnostic',
+				'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::SEND_DIAGNOSTIC . ']',
+				'value'       => 'yes' === $this->configuration_service->get_diagnostic_preferences() ? 'yes' : 'no',
+				'description' => __( 'Whether to send diagnostic data or not.', 'wordlift' ),
+			)
+		);
+
 	}
 
 	/**
