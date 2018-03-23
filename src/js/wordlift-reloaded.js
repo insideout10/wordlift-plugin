@@ -51,7 +51,12 @@
         if (/^&[^&;]*;$/gim.test(htmlElem)) {
           textLength += 1;
         }
-        htmlLength += htmlPre.length + htmlElem.length;
+        htmlLength += htmlPre.length;
+        if (!htmlElem.startsWith('</')) {
+          this._htmlPositions.push(htmlLength);
+          this._textPositions.push(textLength);
+        }
+        htmlLength += htmlElem.length;
         this._htmlPositions.push(htmlLength);
         this._textPositions.push(textLength);
         textLength += textPost.length;

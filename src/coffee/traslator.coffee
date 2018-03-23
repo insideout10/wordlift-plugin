@@ -54,8 +54,14 @@ class Traslator
       if /^&[^&;]*;$/gim.test htmlElem
         textLength += 1
 
+      htmlLength += htmlPre.length
+
+      if not htmlElem.startsWith('</')
+        @_htmlPositions.push htmlLength
+        @_textPositions.push textLength
+
       # For html add the length of the html element.
-      htmlLength += htmlPre.length + htmlElem.length
+      htmlLength += htmlElem.length
 
       # Add the position.
       @_htmlPositions.push htmlLength
