@@ -279,7 +279,7 @@ class Wordlift_Configuration_Service {
 	 */
 	public function get_diagnostic_preferences() {
 
-		return $this->get( 'wl_general_settings', self::SEND_DIAGNOSTIC, 'yes' );
+		return $this->get( 'wl_general_settings', self::SEND_DIAGNOSTIC, 'no' );
 
 	}
 

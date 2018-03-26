@@ -9,7 +9,7 @@ $too_complicate_reason_label = sprintf(
 $reasons = array(
 	array(
 		'id'      => 'TOO_COMPLICATED',
-		'text'    => __( 'It was too complicated and unclear to me', 'wordlift' ),
+		'text'    => esc_html__( 'It was too complicated and unclear to me', 'wordlift' ),
 		'message' => array(
 			'text' => sprintf(
 				esc_html__( 'Need help? We are ready to answer your questions. %s', 'wordlift' ),
@@ -19,42 +19,42 @@ $reasons = array(
 	),
 	array(
 		'id'      => 'NOT_ENOUGH_FEATURES',
-		'text'    => __( 'It misses some important feature to me', 'wordlift' ),
+		'text'    => esc_html__( 'It misses some important feature to me', 'wordlift' ),
 		'message' => array(
 			'field' => 'text',
-			'text'  => __( 'Tell us what this feature is.', 'wordlift' ),
+			'text'  => esc_html__( 'Tell us what this feature is.', 'wordlift' ),
 		),
 	),
 	array(
 		'id'      => 'COSTS_TOO_MUCH',
-		'text'    => __( 'It costs too much', 'wordlift' ),
+		'text'    => esc_html__( 'It costs too much', 'wordlift' ),
 		'message' => array(
 			'field' => 'text',
-			'text'  => __( 'How much you would like to pay?', 'wordlift' ),
+			'text'  => esc_html__( 'How much you would like to pay?', 'wordlift' ),
 		),
 	),
 	array(
 		'id'      => 'FOUND_ANOTHER_TOOL',
-		'text'    => __( 'I found another tool that I like better', 'wordlift' ),
+		'text'    => esc_html__( 'I found another tool that I like better', 'wordlift' ),
 		'message' => array(
 			'field' => 'text',
-			'text'  => __( 'Please tell us some more details.', 'wordlift' ),
+			'text'  => esc_html__( 'Please tell us some more details.', 'wordlift' ),
 		),
 	),
 	array(
 		'id'   => 'I_DONT_USE_IT',
-		'text' => __( 'I\'m not using it right now', 'wordlift' ),
+		'text' => esc_html__( 'I\'m not using it right now', 'wordlift' ),
 	),
 	array(
-		'id'      => 'SOMETHING_DIDNT_WORK',
-		'text'    => __( 'Something didn\'t work right', 'wordlift' ),
+		'id'   => 'SOMETHING_DIDNT_WORK',
+		'text' => esc_html__( 'Something didn\'t work right', 'wordlift' ),
 	),
 	array(
 		'id'      => 'ANOTHER_REASON',
-		'text'    => __( 'Another reason', 'wordlift' ),
+		'text'    => esc_html__( 'Another reason', 'wordlift' ),
 		'message' => array(
 			'field' => 'textarea',
-			'text'  => __( 'Please tell us the reason so we can improve it.', 'wordlift' ),
+			'text'  => esc_html__( 'Please tell us the reason so we can improve it.', 'wordlift' ),
 		),
 	),
 );
@@ -73,7 +73,7 @@ $reasons = array(
 
 				<ul>
 					<?php foreach ( $reasons as $reason ) : ?>
-						<li class="wl-reason-item <?php echo ( $reason['id'] == 'I_DONT_USE_IT' ) ? 'selected' : '' ; ?>">
+						<li class="wl-reason-item <?php echo ( $reason['id'] == 'I_DONT_USE_IT' ) ? 'selected' : ''; ?>">
 							<label>
 								<input
 									type="radio"
