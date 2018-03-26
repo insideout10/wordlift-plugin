@@ -32,7 +32,7 @@ jQuery( document ).ready( function ( $ ) {
 
 		// Take previous, delete values and copy it at the end
 		var alreadyPresentInputs = field.find( '.wl-input-wrapper' ).size();
-		var latestInput = field.find( '.wl-input-wrapper' ).last();
+		var latestInput = field.find( '.wl-input-wrapper:not(.wl-input-wrapper-readonly)' ).last();
 
 		// Don't trasgress cardinality
 		var canAddInput = (
