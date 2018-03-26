@@ -245,7 +245,7 @@ class Wordlift_Admin_Setup {
 
 		// Store the preferences in variable, because if the checkbox is not checked
 		// the `share-diagnostic` will not exists in `$params` array.
-		$share_diagnostic_preferences = ( ! empty( $params['share-diagnostic'] ) ) ? 'yes' : 'no' ;
+		$share_diagnostic_preferences = empty( $params['share-diagnostic'] ) ? 'no' : 'yes' ;
 
 		// Store the diagnostic preferences:
 		$this->configuration_service->set_diagnostic_preferences( $share_diagnostic_preferences );

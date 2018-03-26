@@ -6,7 +6,21 @@
 
 	<p class="page-txt">
 		<?php
-			esc_html_e( 'If you already purchased a plan, check your email, get the activation key from your inbox and insert it in the field below. Otherwise ....', 'wordlift' ); 
+		$grab_a_key_link = sprintf(
+			'<a target="_blank" href="%s">%s</a>',
+			esc_attr__( 'https://wordlift.io/pricing', 'wordlift' ),
+			esc_html__( 'grab a key', 'wordlift' )
+		);
+
+		echo sprintf(
+			esc_html__(
+				'If you already purchased a plan, check your email, get the'
+				. ' activation key from your inbox and insert it in the'
+				. ' field below. Otherwise %s!',
+				'wordlift'
+			),
+			$grab_a_key_link
+		);
 		?>
 	</p>
 	<input
@@ -17,7 +31,7 @@
 		name="key"
 		value=""
 		autocomplete="off"
-		placeholder="Activation Key"
+		placeholder="<?php echo esc_attr_x( 'License Key', 'Input text placeholder', 'wordlift' ); ?>"
 	>
 	
 	<div class="btn-wrapper">

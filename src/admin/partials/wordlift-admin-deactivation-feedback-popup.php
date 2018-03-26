@@ -1,10 +1,20 @@
 <?php
+$too_complicate_reason_label = sprintf(
+	'<a target="_blank" href="%s">%s</a>',
+	/* translators: the link https://wordlift.io/contact-us/ should be changed to language version of the page */
+	esc_attr__( 'https://wordlift.io/contact-us/', 'wordlift' ),
+	esc_html__( 'Contact Us', 'wordlift' )
+);
+
 $reasons = array(
 	array(
 		'id'      => 'TOO_COMPLICATED',
 		'text'    => __( 'It was too complicated and unclear to me', 'wordlift' ),
 		'message' => array(
-			'text' => __( 'Need help? We are ready to answer your questions.', 'wordlift' ) . ' <a href="https://wordlift.io/contact-us/" target="_blank">' . __( 'Contact Us', 'wordlift' ) . '</a>',
+			'text' => sprintf(
+				esc_html__( 'Need help? We are ready to answer your questions. %s', 'wordlift' ),
+				$too_complicate_reason_label
+			),
 		),
 	),
 	array(

@@ -276,12 +276,10 @@ class Wordlift_Configuration_Service {
 	 * Get the user preferences about sharing diagnostic.
 	 *
 	 * @since 3.19.0
-	 *
-	 * @param string The user preferences(yes/no) to share diagnostic.
 	 */
 	public function get_diagnostic_preferences() {
 
-		return $this->get( 'wl_general_settings', self::SEND_DIAGNOSTIC );
+		return $this->get( 'wl_general_settings', self::SEND_DIAGNOSTIC, 'yes' );
 
 	}
 
