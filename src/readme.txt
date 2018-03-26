@@ -143,6 +143,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 = 3.18.1 (????-??-??) =
+* Fix: [#785](https://github.com/insideout10/wordlift-plugin/issues/785): Entity properties: Adding additional sameAs creates readonly input field.
 * Fix: [#783](https://github.com/insideout10/wordlift-plugin/issues/783): Navigator garbled on mobile views.
 * Fix: [#782](https://github.com/insideout10/wordlift-plugin/issues/782): Nested spans when using shift + return.
 * Fix: [#780](https://github.com/insideout10/wordlift-plugin/issues/780): Missing colons cause issue with minifier.
