@@ -141,8 +141,8 @@ function wl_entities_box_content( $post ) {
 		jQuery( function() {
 
 			if ('undefined' == typeof window.wordlift) {
-				window.wordlift = {}
-				window.wordlift.entities = {}  		
+				window.wordlift = {};
+				window.wordlift.entities = {};  		
 			}
 
 			window.wordlift.classificationBoxes = $classification_boxes;
