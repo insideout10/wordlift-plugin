@@ -119,7 +119,6 @@
 			);
 			?>
 
-			<?php esc_html_e( 'If you already purchased a plan, check your email, get the activation key from your inbox and insert it in the field below. Otherwise ....', 'wordlift' ); ?>
 		</p>
 		<input type="text" data-wl-key="wl-key" class="invalid untouched"
 		       id="key" name="key" value=""
