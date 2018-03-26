@@ -148,7 +148,7 @@ class WL_Metabox_Field_sameas extends WL_Metabox_Field {
 				<input
 					type="text"
 					readonly="readonly"
-					id="$this->meta_name"
+					id="<?php echo $this->meta_name ?>"
 					name="wl_metaboxes[<?php echo $this->meta_name ?>][]"
 					value="<?php echo $value ?>"
 					style="width:88%"
