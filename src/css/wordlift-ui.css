@@ -2361,7 +2361,8 @@
 .wl-carousel .wl-panes .wl-carousel-item {
   float: left;
   margin: 0;
-  padding: 0.6em 0em;
+  padding: 0.6em 0;
+  min-width: 100px;
 }
 .wl-carousel img {
   display: block;
@@ -2512,6 +2513,7 @@
   cursor: pointer;
 }
 .wl-navigator-widget {
+  display: block;
   font-size: inherit;
   padding: 0;
   margin: 0.6em 0;
@@ -2521,13 +2523,24 @@
   font-weight: bold;
 }
 .wl-navigator-widget .wl-wrapper {
+  display: block;
   position: relative;
   overflow: hidden;
 }
+.wl-navigator-widget .wl-wrapper .wl-carousel {
+  display: block;
+}
+.wl-navigator-widget .wl-wrapper .wl-carousel .wl-panes {
+  display: block;
+}
 .wl-navigator-widget .wl-posts {
+  display: block;
   padding: 0;
   margin: 0;
   background-color: #fff;
+}
+.wl-navigator-widget .wl-posts .wl-item-wrapper div {
+  display: block;
 }
 .wl-navigator-widget .wl-posts .wl-entity-wrapper {
   padding: 1em 0;

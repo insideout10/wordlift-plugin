@@ -1,4 +1,6 @@
 .wl-navigator-widget {
+  // see https://github.com/insideout10/wordlift-plugin/issues/783.
+  display: block;
 
   font-size: inherit;
 
@@ -11,21 +13,40 @@
   }
 
   .wl-wrapper {
+    // see https://github.com/insideout10/wordlift-plugin/issues/783.
+    display: block;
+
     position: relative;
     overflow: hidden;
+
+    .wl-carousel {
+      // see https://github.com/insideout10/wordlift-plugin/issues/783.
+      display: block;
+
+      .wl-panes {
+        // see https://github.com/insideout10/wordlift-plugin/issues/783.
+        display: block;
+      }
+    }
   }
 
   .wl-posts {
+    // see https://github.com/insideout10/wordlift-plugin/issues/783.
+    display: block;
+
     padding: 0;
     margin: 0;
     background-color: #fff;
 
     .wl-item-wrapper {
 
+      div {
+        // see https://github.com/insideout10/wordlift-plugin/issues/783.
+        display: block;
+      }
     }
 
     .wl-entity-wrapper {
-
       padding: 1em 0;
       margin: 0;
 
