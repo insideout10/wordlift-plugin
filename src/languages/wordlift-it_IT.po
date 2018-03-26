@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Plugins - WordLift &#8211; AI powered SEO - Stable "
 "(latest release)\n"
-"POT-Creation-Date: 2018-03-26 13:21+0200\n"
-"PO-Revision-Date: 2018-03-26 13:31+0200\n"
+"POT-Creation-Date: 2018-03-26 15:06+0200\n"
+"PO-Revision-Date: 2018-03-26 15:06+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: it\n"
@@ -14,8 +14,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Poedit 2.0.6\n"
-"X-Poedit-KeywordsList: __;_e;_n;_x;_ex;_nx;esc_attr__;esc_attr_e;esc_html__;"
-"esc_html_e;esc_html_x;_n_noop;_nx_noop;translate_nooped_plural\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c,;_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;"
+"esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SearchPath-0: .\n"
 
@@ -43,6 +44,11 @@ msgid ""
 msgstr ""
 "Usa la funzione di ricerca qui sotto per linkare questa entità con le entità "
 "equivalenti nel linked data cloud."
+
+#: admin/WL_Metabox/class-wl-metabox-field-sameas.php:90
+msgctxt "sameAs metabox input"
+msgid "Type here the URL of an equivalent entity from another dataset."
+msgstr "Digital qui la URL di una entità equivalente da un altro dataset."
 
 #: admin/WL_Metabox/class-wl-metabox-field-sameas.php:94
 msgid ""
@@ -127,22 +133,18 @@ msgid "All 'W'"
 msgstr "Tutte le \"W\""
 
 #: admin/class-wordlift-admin-entity-list.php:176
-#: shortcodes/wordlift_shortcode_faceted_search.php:76
 msgid "What"
 msgstr "Che cosa"
 
 #: admin/class-wordlift-admin-entity-list.php:177
-#: shortcodes/wordlift_shortcode_faceted_search.php:77
 msgid "Who"
 msgstr "Chi"
 
 #: admin/class-wordlift-admin-entity-list.php:178
-#: shortcodes/wordlift_shortcode_faceted_search.php:78
 msgid "Where"
 msgstr "Dove"
 
 #: admin/class-wordlift-admin-entity-list.php:179
-#: shortcodes/wordlift_shortcode_faceted_search.php:79
 msgid "When"
 msgstr "Quando"
 
@@ -160,8 +162,8 @@ msgstr "Crea un nuovo Publisher"
 
 #: admin/class-wordlift-admin-publisher-element.php:119
 #, fuzzy
-#| msgctxt "Publisher Select in Settings Screen."
 #| msgid "(none)"
+msgctxt "Publisher Select in Settings Screen."
 msgid "(none)"
 msgstr "(nessuno)"
 
@@ -174,12 +176,12 @@ msgid "Person"
 msgstr "Persona"
 
 #: admin/class-wordlift-admin-publisher-element.php:153
-#: admin/partials/wordlift-admin-setup.php:211
+#: admin/partials/wordlift-admin-setup.php:212
 msgid "Company"
 msgstr "Società"
 
 #: admin/class-wordlift-admin-publisher-element.php:158
-#: admin/partials/wordlift-admin-setup.php:217
+#: admin/partials/wordlift-admin-setup.php:218
 msgid "What's your name?"
 msgstr "Come ti chiami?"
 
@@ -232,7 +234,7 @@ msgid "Each WordLift Key can be used only in one language. Pick yours."
 msgstr "Ogni WordLift Key può essere usata solo per una lingua. Scegli la tua."
 
 #: admin/class-wordlift-admin-settings-page.php:287
-#: admin/partials/wordlift-admin-setup.php:194
+#: admin/partials/wordlift-admin-setup.php:195
 msgid "Publisher"
 msgstr "Editore"
 
@@ -273,8 +275,12 @@ msgid "Sorry, you do not have a permission to save the settings"
 msgstr "Siamo spiacenti, non hai i permessi per salvare le impostazioni"
 
 #: admin/class-wordlift-admin-status-page.php:154
+msgctxt "Page title"
+msgid "Status Report"
+msgstr "Resoconto di status"
+
 #: admin/class-wordlift-admin-status-page.php:166
-#: admin/partials/wordlift-admin-status-page.php:25
+msgctxt "Menu title"
 msgid "Status Report"
 msgstr "Resoconto di status"
 
@@ -301,12 +307,11 @@ msgid "Can create new entities"
 msgstr "Può creare nuove entità"
 
 #: admin/class-wordlift-admin.php:86
-#, fuzzy, php-format
-#| msgid "WordLift's key isn't set, please open the %s to set WordLift's key."
+#, php-format
 msgid "WordLift's key isn't set, please open the %s to set WordLift's key."
 msgstr ""
-"La chiave di WordLift non è impostata, per favore apri la per impostare la "
-"chiave di WordLift. "
+"La chiave di WordLift non è impostata, per favore apri la %s per impostarla "
+"chiave di WordLift."
 
 #: admin/class-wordlift-admin.php:86 admin/class-wordlift-admin.php:88
 msgid "settings page"
@@ -339,30 +344,37 @@ msgstr "Seleziona il Logo"
 #, fuzzy
 #| msgctxt "Autocomplete Select"
 #| msgid "Type at least 3 characters to search..."
+msgctxt "Autocomplete Select"
 msgid "Type at least 3 characters to search..."
 msgstr "Digita almeno 3 caratteri per cominciare la ricerca&hellip;"
 
 #: admin/class-wordlift-admin.php:162
 #, fuzzy
-#| msgctxt "Autocomplete Select"
 #| msgid "No results found: try changing or removing some words."
+msgctxt "Autocomplete Select"
 msgid "No results found: try changing or removing some words."
 msgstr ""
-"Nessun risultato trovato: prova a modificare e eliminare qualche parola."
+"Nessun risultato trovato: prova a modificare o eliminare qualche parola."
 
 #: admin/class-wordlift-admin.php:163
 #, fuzzy
 #| msgctxt "Autocomplete Select"
 #| msgid "Please wait while we look for entities in the linked data cloud..."
+msgctxt "Autocomplete Select"
 msgid "Please wait while we look for entities in the linked data cloud..."
 msgstr "Aspetta che cerchiamo le entità nel linked data cloud&hellip;"
 
 #: admin/class-wordlift-download-your-data-page.php:56
-#: admin/class-wordlift-download-your-data-page.php:57
 #: admin/partials/wordlift-admin-download-your-data.php:17
+msgctxt "Page title"
+msgid "Download Your Data"
+msgstr "Scarica i tuoi dati"
+
+#: admin/class-wordlift-download-your-data-page.php:57
 #, fuzzy
 #| msgctxt "Menu title"
 #| msgid "Download Your Data"
+msgctxt "Menu title"
 msgid "Download Your Data"
 msgstr "Scarica i tuoi dati"
 
@@ -449,6 +461,7 @@ msgstr "RDF/XML"
 #, fuzzy
 #| msgctxt "File format, not the animal"
 #| msgid "Turtle"
+msgctxt "File format, not the animal"
 msgid "Turtle"
 msgstr "Turtle"
 
@@ -538,21 +551,19 @@ msgid "Learn More"
 msgstr "Scopri di più"
 
 #: admin/partials/wordlift-admin-setup.php:95
-#: admin/partials/wordlift-admin-setup.php:133
-#: admin/partials/wordlift-admin-setup.php:152
-#: admin/partials/wordlift-admin-setup.php:188
+#: admin/partials/wordlift-admin-setup.php:134
+#: admin/partials/wordlift-admin-setup.php:153
+#: admin/partials/wordlift-admin-setup.php:189
 msgid "Next"
 msgstr "Avanti"
 
 #: admin/partials/wordlift-admin-setup.php:101
 msgid "License Key"
-msgstr "License Key"
+msgstr "Licenza"
 
 #: admin/partials/wordlift-admin-setup.php:107
-#, fuzzy
-#| msgid "https://wordlift.io"
 msgid "https://wordlift.io/pricing"
-msgstr "https://wordlift.io"
+msgstr "https://wordlift.io/piani/?lang=it"
 
 #: admin/partials/wordlift-admin-setup.php:108
 msgid "grab a key"
@@ -562,20 +573,27 @@ msgstr "ottieni una chiave"
 #, php-format
 msgid ""
 "If you already purchased a plan, check your email, get the activation key "
-"from your inbox and insert it in the  field below. Otherwise %s!"
+"from your inbox and insert it in the field below. Otherwise %s!"
 msgstr ""
+"Se hai già acquistato un piano, controlla la tua e-mail, copia la Key di "
+"attivazione dal messaggio che ti abbiamo inviato e inseriscila nel campo qui "
+"sotto. In caso contrario %s!"
 
-#: admin/partials/wordlift-admin-setup.php:130
+#: admin/partials/wordlift-admin-setup.php:126
+msgctxt "Input text placeholder"
+msgid "License Key"
+msgstr "Chiave di licenza"
+
+#: admin/partials/wordlift-admin-setup.php:131
 msgid "Grab a Key!"
-msgstr "Ottieni una Key!"
+msgstr "Ottieni una chiave!"
 
-#: admin/partials/wordlift-admin-setup.php:139
-#: includes/class-wordlift-entity-post-type-service.php:124
+#: admin/partials/wordlift-admin-setup.php:140
 #: includes/class-wordlift-entity-post-type-service.php:136
 msgid "Vocabulary"
 msgstr "Vocabolario"
 
-#: admin/partials/wordlift-admin-setup.php:141
+#: admin/partials/wordlift-admin-setup.php:142
 msgid ""
 "All new pages created with WordLift, will be stored inside your internal "
 "vocabulary. You can customize the url pattern of these pages in the field "
@@ -586,42 +604,46 @@ msgstr ""
 "pagine attraverso il campo qui sotto. Controlla le nostre FAQ se hai bisogno "
 "di maggiori informazioni."
 
-#: admin/partials/wordlift-admin-setup.php:147
+#: admin/partials/wordlift-admin-setup.php:148
 msgid ""
 "Leave it empty to place your entities in the root folder of your website"
 msgstr ""
 "Lascia il campo vuoto se vuoi posizionare le tue entità nella cartella "
 "principale del tuo sito web"
 
-#: admin/partials/wordlift-admin-setup.php:158
+#: admin/partials/wordlift-admin-setup.php:159
 msgid "Language"
 msgstr "Lingua"
 
-#: admin/partials/wordlift-admin-setup.php:160
+#: admin/partials/wordlift-admin-setup.php:161
 msgid "Each WordLift key can be used only in one language. Pick yours."
 msgstr ""
 "Ciascuna Key di WordLift può essere usata solo per una lingua. Seleziona la "
 "tua."
 
-#: admin/partials/wordlift-admin-setup.php:163
+#: admin/partials/wordlift-admin-setup.php:164
 msgid "Choose your language"
 msgstr "Scegli la tua lingua"
 
-#: admin/partials/wordlift-admin-setup.php:196
+#: admin/partials/wordlift-admin-setup.php:197
 msgid "Are you going to publish as an individual or as a company?"
 msgstr "Pubblicherai come autore individuale oppure a nome di una società?"
 
-#: admin/partials/wordlift-admin-setup.php:204
+#: admin/partials/wordlift-admin-setup.php:205
 msgid "Personal"
 msgstr "Personale"
 
-#: admin/partials/wordlift-admin-setup.php:227
+#: admin/partials/wordlift-admin-setup.php:228
 msgid "Add your logo"
 msgstr "Aggiungi il tuo logo"
 
-#: admin/partials/wordlift-admin-setup.php:232
+#: admin/partials/wordlift-admin-setup.php:233
 msgid "Finish"
 msgstr "Fine"
+
+#: admin/partials/wordlift-admin-status-page.php:25
+msgid "Status Report"
+msgstr "Resoconto di status"
 
 #: admin/partials/wordlift-admin-status-page.php:27
 #, php-format
@@ -667,14 +689,24 @@ msgstr "Il parametro \"query\" è vuoto."
 msgid "Error: %s"
 msgstr "Errore: %s"
 
+#: includes/class-wordlift-entity-post-type-service.php:124
+msgctxt "post type general name"
+msgid "Vocabulary"
+msgstr "Vocabolario"
+
 #: includes/class-wordlift-entity-post-type-service.php:125
 #, fuzzy
 #| msgctxt "post type singular name"
 #| msgid "Entity"
+msgctxt "post type singular name"
 msgid "Entity"
 msgstr "Entità"
 
 #: includes/class-wordlift-entity-post-type-service.php:126
+msgctxt "entity"
+msgid "Add New Entity"
+msgstr "Aggiungi una nuova Entità"
+
 #: includes/class-wordlift-entity-post-type-service.php:127
 msgid "Add New Entity"
 msgstr "Aggiungi una nuova Entità"
@@ -716,16 +748,16 @@ msgid "Delete"
 msgstr "Eliminare"
 
 #: includes/class-wordlift-entity-type-taxonomy-service.php:21
-#: includes/class-wordlift-entity-type-taxonomy-service.php:31
+msgctxt "taxonomy general name"
 msgid "Entity Types"
 msgstr "Tipi di Entità"
 
 #: includes/class-wordlift-entity-type-taxonomy-service.php:22
 #, fuzzy
-#| msgctxt "taxonomy singular name"
 #| msgid "Entity Type"
+msgctxt "taxonomy singular name"
 msgid "Entity Type"
-msgstr "Tipo dell'Entità"
+msgstr "Tipo di Entità"
 
 #: includes/class-wordlift-entity-type-taxonomy-service.php:23
 msgid "Search Entity Types"
@@ -754,6 +786,10 @@ msgstr "Aggiungi nuovo tipo di Entità"
 #: includes/class-wordlift-entity-type-taxonomy-service.php:30
 msgid "New Entity Type"
 msgstr "Nuovo tipo di Entità"
+
+#: includes/class-wordlift-entity-type-taxonomy-service.php:31
+msgid "Entity Types"
+msgstr "Tipi di Entità"
 
 #: includes/class-wordlift-rating-service.php:252
 #: wordlift_manual_translations.php:6
@@ -877,7 +913,7 @@ msgid "(more&hellip;)"
 msgstr "(altro&hellip;)"
 
 #: includes/class-wordlift-topic-taxonomy-service.php:85
-#: includes/class-wordlift-topic-taxonomy-service.php:95
+msgctxt "taxonomy general name"
 msgid "Topics"
 msgstr "Argomenti"
 
@@ -885,6 +921,7 @@ msgstr "Argomenti"
 #, fuzzy
 #| msgctxt "taxonomy singular name"
 #| msgid "Topic"
+msgctxt "taxonomy singular name"
 msgid "Topic"
 msgstr "Argomento"
 
@@ -920,6 +957,10 @@ msgstr "Aggiungi nuovo argomento"
 msgid "New Topic"
 msgstr "Nuovo argomento"
 
+#: includes/class-wordlift-topic-taxonomy-service.php:95
+msgid "Topics"
+msgstr "Argomenti"
+
 #: modules/analyzer/wordlift_analyzer.php:21
 msgid ""
 "An error occurred while request an analysis to the remote service. Please "
@@ -950,49 +991,69 @@ msgstr "Titolo"
 msgid "Related Entities"
 msgstr "Entità Correlate"
 
+#: shortcodes/wordlift_shortcode_faceted_search.php:76
+msgctxt "Faceted Search Widget"
+msgid "What"
+msgstr "Che cosa"
+
+#: shortcodes/wordlift_shortcode_faceted_search.php:77
+msgctxt "Faceted Search Widget"
+msgid "Who"
+msgstr "Chi"
+
+#: shortcodes/wordlift_shortcode_faceted_search.php:78
+msgctxt "Faceted Search Widget"
+msgid "Where"
+msgstr "Dove"
+
+#: shortcodes/wordlift_shortcode_faceted_search.php:79
+msgctxt "Faceted Search Widget"
+msgid "When"
+msgstr "Quando"
+
 #: timelinejs/js/timeline-min.js:11 timelinejs/js/timeline-min.js:12
 #: timelinejs/js/timeline.js:6812 timelinejs/js/timeline.js:7198
 msgid "loading"
-msgstr ""
+msgstr "caricamento"
 
 #: timelinejs/js/timeline-min.js:12 timelinejs/js/timeline-min.js:14
 #: timelinejs/js/timeline.js:7203 timelinejs/js/timeline.js:7205
 #: timelinejs/js/timeline.js:13096 timelinejs/js/timeline.js:13105
 msgid "error"
-msgstr ""
+msgstr "errore"
 
 #: timelinejs/js/timeline-min.js:12 timelinejs/js/timeline.js:7639
 msgid "flickr_notfound_err"
-msgstr ""
+msgstr "flickr_notfound_err"
 
 #: timelinejs/js/timeline-min.js:12 timelinejs/js/timeline.js:7968
 msgid "imgur_invalidurl_err"
-msgstr ""
+msgstr "imgur_invalidurl_err"
 
 #: timelinejs/js/timeline-min.js:12 timelinejs/js/timeline.js:8427
 msgid "spotify_invalid_url"
-msgstr ""
+msgstr "spotify_invalid_url"
 
 #: timelinejs/js/timeline-min.js:12 timelinejs/js/timeline.js:8695
 #: timelinejs/js/timeline.js:8801
 msgid "twitter_load_err"
-msgstr ""
+msgstr "twitter_load_err"
 
 #: timelinejs/js/timeline-min.js:12 timelinejs/js/timeline.js:8784
 msgid "twitterembed_invalidurl_err"
-msgstr ""
+msgstr "twitterembed_invalidurl_err"
 
 #: timelinejs/js/timeline-min.js:12 timelinejs/js/timeline.js:9102
 msgid "wikipedia_load_err"
-msgstr ""
+msgstr "wikipedia_load_err"
 
 #: timelinejs/js/timeline-min.js:12 timelinejs/js/timeline.js:9144
 msgid "wikipedia"
-msgstr ""
+msgstr "Wikipedia"
 
 #: timelinejs/js/timeline-min.js:13 timelinejs/js/timeline.js:10236
 msgid "swipe_to_navigate"
-msgstr ""
+msgstr "swipe_to_navigate"
 
 #: widgets/class-wordlift-chord-widget.php:20
 msgid "Chord Widget"
@@ -1024,53 +1085,8 @@ msgstr "WordLift Timeline Widget"
 msgid "Displays entities of type event using an interactive timeline."
 msgstr "Mostra le entità di tipo evento con una timeline interattiva."
 
-#~ msgctxt "sameAs metabox input"
-#~ msgid "Type here the URL of an equivalent entity from another dataset."
-#~ msgstr "Digital qui la URL di una entità equivalente da un altro dataset."
-
-#~ msgctxt "Faceted Search Widget"
-#~ msgid "What"
-#~ msgstr "Che cosa"
-
-#~ msgctxt "Faceted Search Widget"
-#~ msgid "Who"
-#~ msgstr "Chi"
-
-#~ msgctxt "Faceted Search Widget"
-#~ msgid "Where"
-#~ msgstr "Dove"
-
-#~ msgctxt "Faceted Search Widget"
-#~ msgid "When"
-#~ msgstr "Quando"
-
-#~ msgctxt "Menu title"
-#~ msgid "Status Report"
-#~ msgstr "Resoconto di status"
-
-#~ msgctxt "Page title"
-#~ msgid "Status Report"
-#~ msgstr "Resoconto di status"
-
-#~ msgctxt "Page title"
-#~ msgid "Download Your Data"
-#~ msgstr "Scarica i tuoi dati"
-
-#~ msgctxt "taxonomy general name"
-#~ msgid "Topics"
-#~ msgstr "Argomenti"
+#~ msgid "Activation Key"
+#~ msgstr "Chiave di attivazione"
 
 #~ msgid "WordLift, Insideout10"
 #~ msgstr "WordLift, Insideout10"
-
-#~ msgctxt "taxonomy general name"
-#~ msgid "Entity Types"
-#~ msgstr "Tipi di Entità"
-
-#~ msgctxt "entity"
-#~ msgid "Add New Entity"
-#~ msgstr "Aggiungi una nuova Entità"
-
-#~ msgctxt "post type general name"
-#~ msgid "Vocabulary"
-#~ msgstr "Vocabolario"

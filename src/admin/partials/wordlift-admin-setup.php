@@ -105,13 +105,13 @@
 			$grab_a_key_link = sprintf(
 				'<a target="_blank" href="%s">%s</a>',
 				esc_attr__( 'https://wordlift.io/pricing', 'wordlift' ),
-				esc_html_x( 'grab a key', 'The "grab a key" link in the set-up screen.', 'wordlift' )
+				esc_html__( 'grab a key', 'wordlift' )
 			);
 
 			echo sprintf(
 				esc_html__(
 					'If you already purchased a plan, check your email, get the'
-					. ' activation key from your inbox and insert it in the '
+					. ' activation key from your inbox and insert it in the'
 					. ' field below. Otherwise %s!',
 					'wordlift'
 				),
@@ -122,7 +122,8 @@
 		</p>
 		<input type="text" data-wl-key="wl-key" class="invalid untouched"
 		       id="key" name="key" value=""
-		       autocomplete="off" placeholder="Activation Key">
+		       autocomplete="off"
+		       placeholder="<?php echo esc_attr_x( 'License Key', 'Input text placeholder', 'wordlift' ); ?>">
 		<div class="btn-wrapper">
 			<a id="btn-grab-a-key"
 			   href="https://wordlift.io/pricing/?utm_campaign=wl_activation_grab_the_key"
