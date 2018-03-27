@@ -14,7 +14,7 @@ jQuery(document).ready(function($) {
 	});
 
 	// Mark the reason item as selected on deactivation reason change.
-	$('.wl-reason').on('change', function() {
+	$('.wl-code').on('change', function() {
 		// Mark the current item as selected.
 		$( this )
 			.parents( '.wl-reason-item' )
@@ -31,8 +31,8 @@ jQuery(document).ready(function($) {
 		wp.ajax.post(
 			'wl_deactivation_feedback',
 			{
-				reason_id: $('.wl-reason-item.selected .wl-reason').val(), // The reason for deactivation.
-				additional_info: $('.wl-reason-item.selected .wl-reason-info').val(), // The additional info.
+				code: $('.wl-reason-item.selected .wl-code').val(), // The reason code for deactivation.
+				details: $('.wl-reason-item.selected .wl-details').val(), // The additional info.
 				wl_deactivation_feedback_nonce: $('.wl_deactivation_feedback_nonce').val() // The nonce verification.
 			}
 		)

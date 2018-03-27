@@ -134,24 +134,24 @@ class Wordlift_Deactivator_Feedback {
 
 		// We allow user to deactivate without providing a reason
 		// so bail and send success response.
-		if ( empty( $_POST['reason_id'] ) ) {
+		if ( empty( $_POST['code'] ) ) {
 			wp_send_json_success();
 		}
 
 		// Prepare the options.
 		$options = array(
 			// The deactivation reason.
-			'reason_id'   => $_POST['reason_id'],
+			'code'             => $_POST['code'],
 			// Additional information if provided.
-			'reason_info' => ( ! empty( $_POST['additional_info'] ) ) ? $_POST['additional_info'] : '',
+			'details'          => ( ! empty( $_POST['details'] ) ) ? $_POST['details'] : '',
 			// The website url.
-			'url'         => get_bloginfo( 'url' ),
+			'url'              => get_bloginfo( 'url' ),
 			// WP version.
-			'wp_version'  => get_bloginfo( 'version' ),
+			'wordpressVersion' => get_bloginfo( 'version' ),
 			// WL version.
-			'version'     => get_option( 'wl_db_version' ),
+			'wordliftVersion'  => get_option( 'wl_db_version' ),
 			// The admin email.
-			'email'       => get_bloginfo( 'admin_email' ),
+			'email'            => get_bloginfo( 'admin_email' ),
 		);
 
 		$response = wp_remote_post(

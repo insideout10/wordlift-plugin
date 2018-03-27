@@ -77,8 +77,8 @@ $reasons = array(
 							<label>
 								<input
 									type="radio"
-									name="wl-reason"
-									class="wl-reason"
+									name="wl-code"
+									class="wl-code"
 									<?php checked( 'I_DONT_USE_IT', $reason['id'], true ); ?>
 									value="<?php echo esc_attr( $reason['id'] ); ?>"
 								/>
@@ -93,9 +93,9 @@ $reasons = array(
 									<?php
 									if ( ! empty( $reason['message']['field'] ) ) {
 										if ( $reason['message']['field'] === 'text' ) {
-											echo '<input type="text" name="wl-reason-info" class="wl-reason-info"/>';
+											echo '<input type="text" name="wl-details" class="wl-details"/>';
 										} else {
-											echo '<textarea name="wl-reason-info" class="wl-reason-info"></textarea>';
+											echo '<textarea name="wl-details" class="wl-details"></textarea>';
 										}
 									}
 									echo wpautop( $reason['message']['text'] )
