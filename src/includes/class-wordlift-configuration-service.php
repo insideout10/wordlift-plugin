@@ -535,7 +535,7 @@ class Wordlift_Configuration_Service {
 	 */
 	public function get_deactivation_feedback_url() {
 
-		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . '/api/feedbacks';
+		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . 'feedbacks';
 
 	}
 

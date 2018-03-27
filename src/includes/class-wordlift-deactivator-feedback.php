@@ -157,8 +157,9 @@ class Wordlift_Deactivator_Feedback {
 		$response = wp_remote_post(
 			$this->configuration_service->get_deactivation_feedback_url(),
 			array(
-				'method' => 'POST',
-				'body'   => $options,
+				'method'  => 'POST',
+				'body'    => json_encode( $options ),
+				'headers' => array( 'Content-Type' => 'application/json; charset=utf-8' ),
 			)
 		);
 
@@ -166,7 +167,7 @@ class Wordlift_Deactivator_Feedback {
 		$message = wp_remote_retrieve_response_message( $response );
 
 		// Add message to the error log if the response code is not 200.
-		if ( 200 === $code ) {
+		if ( 201 !== $code ) {
 			// Write the error in the logs.
 			$this->log->error( 'An error occurred while requesting a feedback endpoint error_code: ' . $code . ' message: ' . $message );
 		}
