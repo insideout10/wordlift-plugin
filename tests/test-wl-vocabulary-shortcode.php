@@ -37,8 +37,6 @@ class Wordlift_Vocabulary_Shortcode_Test extends Wordlift_Unit_Test_Case {
 	 * Test the default configuration.
 	 *
 	 * @since 3.18.0
-	 *
-	 * @return void
 	 */
 	function test_default_configuration() {
 
@@ -93,8 +91,6 @@ class Wordlift_Vocabulary_Shortcode_Test extends Wordlift_Unit_Test_Case {
 	 * Test the category param.
 	 *
 	 * @since 3.18.0
-	 *
-	 * @return void
 	 */
 	function test_cat_param() {
 
@@ -163,8 +159,6 @@ class Wordlift_Vocabulary_Shortcode_Test extends Wordlift_Unit_Test_Case {
 	 * Test together the limit and cat params.
 	 *
 	 * @since 3.18.0
-	 *
-	 * @return void
 	 */
 	function test_cat_and_limit_params_together() {
 
@@ -222,5 +216,56 @@ class Wordlift_Vocabulary_Shortcode_Test extends Wordlift_Unit_Test_Case {
 		$this->assertContains( get_permalink( $post_1 ), $markup );
 		$this->assertNotContains( get_permalink( $post_2 ), $markup );
 		$this->assertNotContains( get_permalink( $post_3 ), $markup );
+	}
+
+	/**
+	 * Test the `order` param
+	 * By default entities should be alphabetically sorted.
+	 *
+	 * @since 3.19.0
+	 */
+	function test_order_param() {
+
+		// Create posts to test against
+		$post_1 = $this->factory->post->create(
+			array(
+				'post_type'   => 'post',
+				'post_status' => 'publish',
+				'post_title'  => 'French',
+			)
+		);
+
+		$post_2 = $this->factory->post->create(
+			array(
+				'post_type'   => 'post',
+				'post_status' => 'publish',
+				'post_title'  => 'Friday',
+			)
+		);
+
+		$post_3 = $this->factory->post->create(
+			array(
+				'post_type'   => 'post',
+				'post_status' => 'publish',
+				'post_title'  => 'France',
+			)
+		);
+
+		// Set the entity_type term to posts.
+		wp_set_object_terms( $post_1, 'person', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+		wp_set_object_terms( $post_2, 'thing', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+		wp_set_object_terms( $post_3, 'event', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+
+		// Get the shortcode markup
+		$vacabulary = new Wordlift_Vocabulary_Shortcode( $this->configuration_service );
+		$markup     = $vacabulary->render( array() );
+
+		// Prepate the regular expression.
+		$pattern = '/<li><a href="http:\/\/example\.org\/\?p=\d+">France<\/a><\/li><li><a href="http:\/\/example\.org\/\?p=\d+">French<\/a><\/li><li><a href="http:\/\/example\.org\/\?p=\d+">Friday<\/a><\/li>/';
+
+		// Check that the entities are alphabetically sorted,
+		// as they shoul be by default.
+		$this->assertRegExp( $pattern, $markup);
+
 	}
 }
