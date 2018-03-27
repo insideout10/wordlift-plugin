@@ -144,6 +144,15 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 = 3.19.0 (????-??-??) =
 
+= 3.18.1 (2018-03-27) =
+* Fix: [#785](https://github.com/insideout10/wordlift-plugin/issues/785): Entity properties: Adding additional sameAs creates readonly input field.
+* Fix: [#784](https://github.com/insideout10/wordlift-plugin/issues/784): Accents not showing up properly on setup wizard.
+* Fix: [#783](https://github.com/insideout10/wordlift-plugin/issues/783): Navigator garbled on mobile views.
+* Fix: [#782](https://github.com/insideout10/wordlift-plugin/issues/782): Nested spans when using shift + return.
+* Fix: [#780](https://github.com/insideout10/wordlift-plugin/issues/780): Missing colons cause issue with minifier.
+* Fix: [#779](https://github.com/insideout10/wordlift-plugin/issues/779): Remove logger from `Wordlift_Install`.
+* Fix: [#778](https://github.com/insideout10/wordlift-plugin/issues/778): Vocabulary Shortcode doesn't sort alphabetically.
+
 = 3.18.0 (2018-03-20) =
 * Enhancement: [#772](https://github.com/insideout10/wordlift-plugin/issues/772): Vocabulary Widget: allow entity grouping by category.
 * Enhancement: [#771](https://github.com/insideout10/wordlift-plugin/issues/771): Allow markup in text annotations.

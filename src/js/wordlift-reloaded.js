@@ -9,6 +9,8 @@
 
     Traslator.prototype._textPositions = [];
 
+    Traslator.prototype._htmlFragments = [];
+
     Traslator.prototype._html = '';
 
     Traslator.prototype._text = '';
@@ -37,6 +39,7 @@
       var htmlElem, htmlLength, htmlPost, htmlPre, htmlProcessed, match, pattern, ref, textLength, textPost, textPre;
       this._htmlPositions = [];
       this._textPositions = [];
+      this._htmlFragments = [];
       this._text = '';
       pattern = /((?:&(?![#\w]))*[^&<>]*)(&[^&;]*;|<[!\/]?(?:[\w-]+|\[cdata\[.*?]])(?: [\w_-]+(?:="[^"]*")?)*[^>]*>)([^&<>]*)/gim;
       textLength = 0;
@@ -51,9 +54,16 @@
         if (/^&[^&;]*;$/gim.test(htmlElem)) {
           textLength += 1;
         }
-        htmlLength += htmlPre.length + htmlElem.length;
+        htmlLength += htmlPre.length;
+        if (htmlElem.startsWith('<br')) {
+          this._htmlPositions.push(htmlLength);
+          this._textPositions.push(textLength);
+          this._htmlFragments.push(htmlElem);
+        }
+        htmlLength += htmlElem.length;
         this._htmlPositions.push(htmlLength);
         this._textPositions.push(textLength);
+        this._htmlFragments.push(htmlElem);
         textLength += textPost.length;
         htmlLength += htmlPost.length;
         htmlProcessed = '';
@@ -81,6 +91,9 @@
         }
         htmlPos = this._htmlPositions[i];
         textPos = this._textPositions[i];
+        if (pos === this._textPositions[i] && this._htmlFragments[i].startsWith('<br')) {
+          break;
+        }
       }
       return htmlPos + pos - textPos;
     };

@@ -3,6 +3,7 @@ class Traslator
   # Hold the html and textual positions.
   _htmlPositions: []
   _textPositions: []
+  _htmlFragments: []
 
 # Hold the html and text contents.
   _html: ''
@@ -27,6 +28,7 @@ class Traslator
   parse: ->
     @_htmlPositions = []
     @_textPositions = []
+    @_htmlFragments = []
     @_text = ''
 
     # Changing this regex requires changing the regex also in WLS. Update the Traslator version when changing the regex.
@@ -54,12 +56,21 @@ class Traslator
       if /^&[^&;]*;$/gim.test htmlElem
         textLength += 1
 
+      htmlLength += htmlPre.length
+
+      if htmlElem.startsWith('<br')
+        # console.log "Adding intermediate position: html #{htmlLength}, text #{textLength}."
+        @_htmlPositions.push htmlLength
+        @_textPositions.push textLength
+        @_htmlFragments.push htmlElem
+
       # For html add the length of the html element.
-      htmlLength += htmlPre.length + htmlElem.length
+      htmlLength += htmlElem.length
 
       # Add the position.
       @_htmlPositions.push htmlLength
       @_textPositions.push textLength
+      @_htmlFragments.push htmlElem
 
       textLength += textPost.length
       htmlLength += htmlPost.length
@@ -80,12 +91,13 @@ class Traslator
       @_htmlPositions.unshift 0
       @_textPositions.unshift 0
 
-#    console.log '=============================='
-#    console.log @_html
-#    console.log @_text
-#    console.log @_htmlPositions
-#    console.log @_textPositions
-#    console.log '=============================='
+    # console.log 'Parsing complete', { html: @_html, text: @_text, htmlPositions: @_htmlPositions, textPositions: @_textPositions }
+#    # console.log '=============================='
+#    # console.log @_html
+#    # console.log @_text
+#    # console.log @_htmlPositions
+#    # console.log @_textPositions
+#    # console.log '=============================='
 
 # Get the html position, given a text position.
   text2html: (pos) ->
@@ -96,8 +108,10 @@ class Traslator
       break if pos < @_textPositions[i]
       htmlPos = @_htmlPositions[i]
       textPos = @_textPositions[i]
+      break if pos is @_textPositions[i] and @_htmlFragments[i].startsWith('<br')
 
-    #    dump "#{htmlPos} + #{pos} - #{textPos}"
+    # console.log "Text Position #{pos} converted to #{htmlPos + pos - textPos}.", { htmlPosition: htmlPos, textPosition: textPos }
+
     htmlPos + pos - textPos
 
 # Get the text position, given an html position.
@@ -116,7 +130,7 @@ class Traslator
       htmlPos = @_htmlPositions[i]
       textPos = @_textPositions[i]
 
-    #    console.log "#{textPos} + #{pos} - #{htmlPos}"
+    #    # console.log "#{textPos} + #{pos} - #{htmlPos}"
     textPos + pos - htmlPos
 
 # Insert an Html fragment at the specified location.
@@ -124,10 +138,12 @@ class Traslator
 
 #    dump @_htmlPositions
 #    dump @_textPositions
-#    console.log "[ fragment :: #{fragment} ][ pos text :: #{pos.text} ]"
+#    # console.log "[ fragment :: #{fragment} ][ pos text :: #{pos.text} ]"
     htmlPos = @text2html pos.text
 
     @_html = @_html.substring(0, htmlPos) + fragment + @_html.substring(htmlPos)
+
+    # console.debug "Html fragment #{fragment} inserted at #{htmlPos} (text #{pos.text}), new html:\n#{@_html}"
 
     # Reparse
     @parse()

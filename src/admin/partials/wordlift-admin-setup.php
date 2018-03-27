@@ -29,7 +29,7 @@
 
 	//Get wp_permalink structure
 	$permalink_structure = get_option( 'permalink_structure' );
-	
+
 	// Set configuration settings.
 	wp_localize_script( 'wordlift-admin-setup', '_wlAdminSetup', array(
 		'ajaxUrl'   => parse_url( self_admin_url( 'admin-ajax.php' ), PHP_URL_PATH ),
@@ -100,16 +100,35 @@
 	<script type="text/html" id="page-1">
 		<h2 class="page-title"><?php esc_html_e( 'License Key', 'wordlift' ); ?></h2>
 		<p class="page-txt">
-			<?php esc_html_e( 'If you already purchased a plan, check your email, get the activation key from your inbox and insert it in the field below. Otherwise ....', 'wordlift' ); ?>
+
+			<?php
+			$grab_a_key_link = sprintf(
+				'<a target="_blank" href="%s">%s</a>',
+				esc_attr__( 'https://wordlift.io/pricing', 'wordlift' ),
+				esc_html__( 'grab a key', 'wordlift' )
+			);
+
+			echo sprintf(
+				esc_html__(
+					'If you already purchased a plan, check your email, get the'
+					. ' activation key from your inbox and insert it in the'
+					. ' field below. Otherwise %s!',
+					'wordlift'
+				),
+				$grab_a_key_link
+			);
+			?>
+
 		</p>
 		<input type="text" data-wl-key="wl-key" class="invalid untouched"
 		       id="key" name="key" value=""
-		       autocomplete="off" placeholder="Activation Key">
+		       autocomplete="off"
+		       placeholder="<?php echo esc_attr_x( 'License Key', 'Input text placeholder', 'wordlift' ); ?>">
 		<div class="btn-wrapper">
 			<a id="btn-grab-a-key"
-				href="https://wordlift.io/pricing/?utm_campaign=wl_activation_grab_the_key"
-				target="_tab"
-				class="button wl-default-action"><?php esc_html_e( 'Grab a Key!', 'wordlift' ); ?></a><input
+			   href="https://wordlift.io/pricing/?utm_campaign=wl_activation_grab_the_key"
+			   target="_tab"
+			   class="button wl-default-action"><?php esc_html_e( 'Grab a Key!', 'wordlift' ); ?></a><input
 				id="btn-license-key-next"
 				type="button" data-wl-next="wl-next" class="button"
 				value="<?php esc_attr_e( 'Next', 'wordlift' ); ?>">
@@ -224,8 +243,11 @@
 	   class="fa fa-times wl-close"></a>
 
 	<header>
-		<h1><img class="wizard-logo" src="<?php echo plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'images/logo-wl-transparent-240x90.png'; ?>" /></h1>
-		<img class="shapes" src="<?php echo plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'images/shapes.png'; ?>" />
+		<h1><img class="wizard-logo"
+		         src="<?php echo plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'images/logo-wl-transparent-240x90.png'; ?>" />
+		</h1>
+		<img class="shapes"
+		     src="<?php echo plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'images/shapes.png'; ?>" />
 	</header>
 
 
