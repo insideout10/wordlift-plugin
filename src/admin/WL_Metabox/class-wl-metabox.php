@@ -319,6 +319,17 @@ class WL_Metabox {
 			}
 		}
 
+		/**
+		 * Filter: 'wl_save_form_pre_push_entity' - Allow to hook right
+		 * before the triples are pushed to the linked dataset.
+		 *
+		 * @since  3.18.2
+		 *
+		 * @param  int $entity_id The entity id.
+		 * @param  int $id        The post data.
+		 */
+		do_action( 'wl_save_form_pre_push_entity', $entity_id, $_POST );
+
 		Wordlift_Linked_Data_Service::get_instance()->push( $entity_id );
 
 	}
