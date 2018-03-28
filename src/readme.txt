@@ -142,7 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.18.2 (????-??-??) =
+= 3.18.2 (2018-03-28) =
+* Enhancement: [#788](https://github.com/insideout10/wordlift-plugin/issues/788): Add hook to `save_form_data` for wl metaboxes.
+* Fix: [#789](https://github.com/insideout10/wordlift-plugin/issues/789): Entities set to draft when associated articles or entities are set to draft.
 * Fix: [#778](https://github.com/insideout10/wordlift-plugin/issues/778): Vocabulary Shortcode doesn't sort alphabetically.
 
 = 3.18.1 (2018-03-27) =
