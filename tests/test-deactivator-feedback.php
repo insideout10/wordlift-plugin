@@ -134,7 +134,7 @@ class Wordlift_Deactivator_Feedback_Test extends Wordlift_Unit_Test_Case {
 
 		foreach ( $reason_ids as $id ) {
 			$this->assertRegExp(
-				'/\<input\s+type="radio"\s+name="wl-reason"\s+class="wl-reason"\s+(checked=\'checked\')?\s+value="' . esc_attr( $id ) . '"\s+\/>/',
+				'/\<input\s+type="radio"\s+name="wl-code"\s+class="wl-code"\s+(checked=\'checked\')?\s+value="' . esc_attr( $id ) . '"\s+\/>/',
 				$markup
 			);
 		}
