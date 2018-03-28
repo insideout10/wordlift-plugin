@@ -58,21 +58,6 @@ function rl_delete_post( $post ) {
 
 	$post_id = ( is_numeric( $post ) ? $post : $post->ID );
 
-	// hide all entities that are not referenced by any published post.
-	foreach ( wl_core_get_related_entity_ids( $post_id ) as $entity_id ) {
-
-		// check if there is at least one referencing post published.
-		$is_published = array_reduce( wl_core_get_related_post_ids( $entity_id ), function ( $carry, $item ) {
-			$post = get_post( $item );
-
-			return ( $carry || ( 'publish' === $post->post_status ) );
-		} );
-		// set the entity to draft if no referencing posts are published.
-		if ( ! $is_published ) {
-			wl_update_post_status( $entity_id, 'draft' );
-		}
-	}
-
 	// Remove the post.
 	Wordlift_Linked_Data_Service::get_instance()->remove( $post_id );
 
