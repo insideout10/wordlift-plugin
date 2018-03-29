@@ -1405,6 +1405,16 @@ class Wordlift_Schema_Service {
 					$this->storage_factory->post_meta( self::FIELD_RECIPE_INGREDIENT ),
 					'http://schema.org/recipeIngredient'
 				),
+				// ### schema:recipeInstructions.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( self::FIELD_RECIPE_INSTRUCTIONS ),
+					'http://schema.org/recipeInstructions'
+				),
+				// ### schema:recipeYield.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( self::FIELD_RECIPE_YIELD ),
+					'http://schema.org/recipeYield'
+				),
 				// ### schema:prepTime.
 				$this->rendition_factory->create(
 					$this->storage_factory->post_meta( self::FIELD_PREP_TIME ),
