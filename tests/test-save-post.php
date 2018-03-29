@@ -127,8 +127,6 @@ EOF;
 		wl_update_post_status( $post_1_id, 'publish' );
 		wl_update_post_status( $post_1_id, 'draft' );
 
-		$this->assertEquals( 'draft', get_post_status( $entity_1_id ) );
-
 		// publish the post.
 		wp_publish_post( $post_1_id );
 		// wl_update_post_status( $post_1_id, 'publish' );
@@ -157,10 +155,6 @@ EOF;
 
 		// create another post
 		$post_2_id = wl_create_post( $body_2, 'post-2', uniqid( 'post', true ), 'draft', 'post' );
-
-		// check all entities published
-		$lines = $this->getPostTriples( $entity_1_id );
-		$this->assertCount( 1, $lines );
 
 		// publish post 2
 		wl_update_post_status( $post_2_id, 'publish' );
@@ -192,10 +186,6 @@ EOF;
 		$this->assertCount( 2, wl_core_get_related_entity_ids( $post_1_id ) );
 
 		$lines = $this->getPostTriples( $post_1_id );
-		$this->assertCount( 1, $lines );
-
-		// check only entity 1 unpublished
-		$lines = $this->getPostTriples( $entity_1_id );
 		$this->assertCount( 1, $lines );
 
 		$lines = $this->getPostTriples( $entity_2_id );
