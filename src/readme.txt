@@ -142,6 +142,8 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.18.3 (????-??-??) =
+
 = 3.18.2 (2018-03-28) =
 * Enhancement: [#788](https://github.com/insideout10/wordlift-plugin/issues/788): Add hook to `save_form_data` for wl metaboxes.
 * Fix: [#789](https://github.com/insideout10/wordlift-plugin/issues/789): Entities set to draft when associated articles or entities are set to draft.
@@ -169,6 +171,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement: [#325](https://github.com/insideout10/wordlift-plugin/issues/325): Disable importing SVGs from analysis.
 * Fix: [#777](https://github.com/insideout10/wordlift-plugin/issues/777): WordLift Entities-Box: Wrong Link in "Open in vocabulary".
 * Fix: [#776](https://github.com/insideout10/wordlift-plugin/issues/776): JSON-LD generation raises a warning.
+* Fix: [#774](https://github.com/insideout10/wordlift-plugin/issues/774): Changes on Author from vocabulary not updated in JSON-LD markup of existing posts.
 * Fix: [#773](https://github.com/insideout10/wordlift-plugin/issues/773): PHPUnit compatibility issue with php 7.2.
 * Fix: [#752](https://github.com/insideout10/wordlift-plugin/issues/752): 2nd level properties not added to the cloud dataset.
 * Fix: [#702](https://github.com/insideout10/wordlift-plugin/issues/702): When a post is deleted the wl_relation_instances table isn't updated.
