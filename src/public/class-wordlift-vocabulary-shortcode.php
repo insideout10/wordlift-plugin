@@ -91,7 +91,9 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 			return '';
 		}
 
+		// Add the shortcode required assets.
 		wp_enqueue_style( 'wl-vocabulary-shortcode', dirname( plugin_dir_url( __FILE__ ) ) . '/public/css/wordlift-vocabulary-shortcode.css' );
+		wp_enqueue_script( 'wl-vocabulary-js', plugin_dir_url( __FILE__ ) . 'js/wordlift-glossary-shortcode.js', array( 'jquery' ) );
 
 		// Extract attributes and set default values.
 		$atts = shortcode_atts(
