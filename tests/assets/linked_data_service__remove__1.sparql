@@ -10,6 +10,10 @@ DELETE { <POST_URI> <http://www.w3.org/2000/01/rdf-schema#label> ?o } WHERE { <P
 DELETE { ?s <http://www.w3.org/2000/01/rdf-schema#label> <POST_URI> } WHERE { ?s <http://www.w3.org/2000/01/rdf-schema#label> <POST_URI> }; 
 DELETE { <POST_URI> <http://purl.org/dc/terms/title> ?o } WHERE { <POST_URI> <http://purl.org/dc/terms/title> ?o }; 
 DELETE { ?s <http://purl.org/dc/terms/title> <POST_URI> } WHERE { ?s <http://purl.org/dc/terms/title> <POST_URI> }; 
+DELETE { <POST_URI> <http://schema.org/name> ?o } WHERE { <POST_URI> <http://schema.org/name> ?o }; 
+DELETE { ?s <http://schema.org/name> <POST_URI> } WHERE { ?s <http://schema.org/name> <POST_URI> }; 
+DELETE { <POST_URI> <http://schema.org/alternateName> ?o } WHERE { <POST_URI> <http://schema.org/alternateName> ?o }; 
+DELETE { ?s <http://schema.org/alternateName> <POST_URI> } WHERE { ?s <http://schema.org/alternateName> <POST_URI> }; 
 DELETE { <POST_URI> <http://schema.org/description> ?o } WHERE { <POST_URI> <http://schema.org/description> ?o }; 
 DELETE { ?s <http://schema.org/description> <POST_URI> } WHERE { ?s <http://schema.org/description> <POST_URI> }; 
 DELETE { <POST_URI> <http://www.w3.org/2002/07/owl#sameAs> ?o } WHERE { <POST_URI> <http://www.w3.org/2002/07/owl#sameAs> ?o }; 
