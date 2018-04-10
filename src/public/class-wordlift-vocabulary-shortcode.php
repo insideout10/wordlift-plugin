@@ -216,14 +216,23 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	 * @return array An array of {@link WP_Post}s.
 	 */
 	private function get_posts( $atts ) {
+		// Build custom orderby param.
+		$orderby = array(
+			// We need first to sort by post date, to prevent only one
+			// letter in vocabulary when there are many posts.
+			// Then respect the user order param.
+			//
+			// See https://github.com/insideout10/wordlift-plugin/issues/794.
+			'post_date'      => 'DESC',
+			$atts['orderby'] => 'ASC',
+		);
 
 		// The default arguments for the query.
 		$args = array(
 			'posts_per_page'         => intval( $atts['limit'] ),
 			'update_post_meta_cache' => false,
 			'update_post_term_cache' => false,
-			'orderby'                => $atts['orderby'],
-			'order'                  => 'ASC',
+			'orderby'                => $orderby,
 			// Exclude the publisher.
 			'post__not_in'           => array( $this->configuration_service->get_publisher_id() ),
 		);
