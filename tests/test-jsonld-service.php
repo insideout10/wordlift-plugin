@@ -574,6 +574,35 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$this->assertEquals( $publisher->post_title, $response['publisher']['name'] );
 	}
 
+	public function test_jsonld_with_html_entities() {
+		$name        = 'Wordlift\'s blog';
+		$description = 'Sample description" with\'s single\'s quote';
+
+		// Set our page as homepage & update the site description
+		update_option( 'blogdescription', $description );
+		update_option( 'blogname', $name );
+
+		// Set up a default request
+		$_GET['action']   = 'wl_jsonld';
+		$_GET['homepage'] = 'true';
+
+		// Make the request
+		try {
+			$this->_handleAjax( 'wl_jsonld' );
+		} catch ( WPAjaxDieContinueException $e ) {
+			unset( $e );
+		}
+
+		$response = json_decode( $this->_last_response, 1 );
+
+		$this->assertArrayHasKey( 'name', $response );
+		$this->assertEquals( $name, $response['name'] );
+
+		$this->assertArrayHasKey( 'alternateName', $response );
+		$this->assertEquals( $description, $response['alternateName'] );
+
+	}
+
 	/**
 	 * Test the filter `wl_jsonld_search_url`.
 	 *
