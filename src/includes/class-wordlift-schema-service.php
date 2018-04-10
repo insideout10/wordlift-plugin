@@ -478,7 +478,7 @@ class Wordlift_Schema_Service {
 
 		// Set the taxonomy data.
 		// Note: parent types must be defined before child types.
-		$this->schema = array(
+		$schemas = array(
 			'article'       => $this->get_article_schema(),
 			'thing'         => $this->get_thing_schema(),
 			'creative-work' => $this->get_creative_work_schema(),
@@ -491,6 +491,15 @@ class Wordlift_Schema_Service {
 			'web-page'      => $this->get_web_page_schema(),
 			'offer'         => $this->get_offer_schema(),
 		);
+
+		/**
+		 * Allow third parties to hook and extend the default schemas.
+		 *
+		 * @since  3.19.0
+		 *
+		 * @param  string $search_url The search URL for this site with a `{search_term_string}` variable.
+		 */
+		$this->schema = apply_filters( 'wl_schema_service_schemas', $schemas );
 
 		// Create a singleton instance of the Schema service, useful to provide static functions to global functions.
 		self::$instance = $this;

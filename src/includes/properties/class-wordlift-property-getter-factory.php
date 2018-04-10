@@ -36,8 +36,7 @@ class Wordlift_Property_Getter_Factory {
 	 */
 	public static function create( $entity_service ) {
 
-		$property_getter = new Wordlift_Property_Getter( new Wordlift_Simple_Property_Service() );
-		$property_getter->register( new Wordlift_Entity_Property_Service( $entity_service ), array(
+		$entity_properties = apply_filters( 'wl_property_getter_entity_properties', array(
 			Wordlift_Schema_Service::FIELD_FOUNDER,
 			Wordlift_Schema_Service::FIELD_AUTHOR,
 			Wordlift_Schema_Service::FIELD_KNOWS,
@@ -46,7 +45,10 @@ class Wordlift_Property_Getter_Factory {
 			Wordlift_Schema_Service::FIELD_PERFORMER,
 			Wordlift_Schema_Service::FIELD_OFFERS,
 			Wordlift_Schema_Service::FIELD_ITEM_OFFERED,
-		) );
+		));
+
+		$property_getter = new Wordlift_Property_Getter( new Wordlift_Simple_Property_Service() );
+		$property_getter->register( new Wordlift_Entity_Property_Service( $entity_service ), $entity_properties );
 		$property_getter->register( new Wordlift_Location_Property_Service( $entity_service ), array(
 			Wordlift_Schema_Service::FIELD_LOCATION,
 		) );

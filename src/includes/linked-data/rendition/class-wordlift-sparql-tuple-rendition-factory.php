@@ -29,6 +29,15 @@ class Wordlift_Sparql_Tuple_Rendition_Factory {
 	private $entity_service;
 
 	/**
+	 * The singleton instance.
+	 *
+	 * @since  3.19.0
+	 * @access private
+	 * @var \Wordlift_Sparql_Tuple_Rendition_Factory $instance The singleton instance.
+	 */
+	private static $instance;
+
+	/**
 	 * Create a a {@link Wordlift_Sparql_Tuple_Rendition_Factory} instance.
 	 *
 	 * @since 3.15.0
@@ -39,6 +48,20 @@ class Wordlift_Sparql_Tuple_Rendition_Factory {
 
 		$this->entity_service = $entity_service;
 
+		self::$instance = $this;
+
+	}
+
+	/**
+	 * Get the singleton instance.
+	 *
+	 * @since 3.19.0
+	 *
+	 * @return \Wordlift_Sparql_Tuple_Rendition_Factory The singleton instance.
+	 */
+	public static function get_instance() {
+
+		return self::$instance;
 	}
 
 	/**
