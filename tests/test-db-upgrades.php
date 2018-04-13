@@ -12,8 +12,7 @@
  * @since   3.10.0
  * @package Wordlift
  */
-class Wordlift_DB_Upgrade_Test extends WP_UnitTestCase {
-
+class Wordlift_DB_Upgrade_Test extends Wordlift_Unit_Test_Case {
 	/**
 	 * Test the 1.0 to 3.10 DB upgrade.
 	 *
@@ -103,11 +102,10 @@ class Wordlift_DB_Upgrade_Test extends WP_UnitTestCase {
 			) );
 		}
 
-		update_option( 'wl_db_version', '1.0' );
+		update_option( 'wl_db_version', '1.0.0' );
 
 		// now call the upgrade routine and check that everything is Flatten
 		Wordlift_Install_Service::get_instance()->install();
-
 
 		$slugs = array(
 			'thing',
@@ -160,5 +158,68 @@ class Wordlift_DB_Upgrade_Test extends WP_UnitTestCase {
 		foreach ( $caps_to_test as $cap ) {
 			$this->assertTrue( user_can( $user->ID, $cap ) );
 		}
+	}
+
+	/**
+	 * Test that the article term is set to all posts
+	 * from `wl_relation_instances` that doens't have `article` term.
+	 *
+	 * @since  3.18.3
+	 */
+	public function test_3_18_0_to_3_18_3_upgrade()	{
+		$post_id = $this->factory->post->create( array(
+			'post_type'  => 'post',
+		) );
+
+		$entity_id = $this->factory->post->create( array(
+			'post_type'  => 'entity',
+		) );
+
+		// Add relation between entity and post.
+		wl_core_add_relation_instance(
+			$post_id,
+			'what',
+			$entity_id
+		);
+
+		// Check that by default `article` term is set to posts.
+		$this->assertTrue( $this->has_term( $post_id ) );
+
+		// Remove the article term.
+		wp_remove_object_terms(
+			$post_id,
+			'article',
+			Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME
+		);
+
+		// Check that the term is no
+		$this->assertFalse( $this->has_term( $post_id ) );
+
+		// Bind the update to 3.18.3
+		update_option( 'wl_db_version', '3.18.0' );
+
+		// now call the upgrade routine and check that everything is Flatten
+		Wordlift_Install_Service::get_instance()->install();
+
+		// Check that the post has `article` term after the update.
+		$this->assertTrue( $this->has_term( $post_id ) );
+
+	}
+
+	/**
+	 * Check if a post has `article` entity type term.
+	 *
+	 * @since  3.18.3
+	 *
+	 * @param  int  $post_id The post id.
+	 *
+	 * @return boolean True if the term exists, false on failure.
+	 */
+	public function has_term( $post_id ) {
+		return has_term(
+			'article',
+			Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
+			$post_id
+		);
 	}
 }

@@ -33,8 +33,7 @@ class Wordlift_Install_3_18_3 extends Wordlift_Install {
 	 *
 	 * @since 3.18.3
 	 *
-	 * @return mixed false on failure or if the `article` doesn't exists
-					 int on success.
+	 * @return mixed False if the `article` doesn't exists.
 	 */
 	public function set_article_term_to_posts() {
 		// Load the global $wpdb;
@@ -54,32 +53,36 @@ class Wordlift_Install_3_18_3 extends Wordlift_Install {
 
 		// Set `article` term to all posts that exists in
 		// `wl_relation_instances` table and don't have `article` term set.
-		$result = $wpdb->query(
+		$post_ids = $wpdb->get_results(
 			$wpdb->prepare(
 				"
-				INSERT INTO $wpdb->term_relationships ( object_id, term_taxonomy_id, term_order )
-					SELECT DISTINCT p.ID, %1\$d, 0
-					FROM $wpdb->posts AS p
-					INNER JOIN {$wpdb->prefix}wl_relation_instances AS ri 
-						ON p.ID = ri.subject_id
-					WHERE p.post_status = 'publish'
-					AND p.post_type = '%2\$s'
-					AND (
-						p.ID NOT IN (
-							SELECT object_id
-							FROM $wpdb->term_relationships
-							WHERE term_taxonomy_id IN (%1\$d)
-						)
+				SELECT DISTINCT p.ID
+				FROM $wpdb->posts AS p
+				INNER JOIN {$wpdb->prefix}wl_relation_instances AS ri
+					ON p.ID = ri.subject_id
+				WHERE p.post_status = 'publish'
+				AND p.post_type = '%s'
+				AND (
+					p.ID NOT IN (
+						SELECT object_id
+						FROM $wpdb->term_relationships
+						WHERE term_taxonomy_id IN (%d)
 					)
+				)
 				",
-				$term->term_id,
 				'post',
 				$term->term_id
 			)
 		);
 
-		// Return the result of the query.
-		return $result;
+		// Loop through all posts and set `article` term for each one.
+		foreach ($post_ids as $p) {
+			wp_set_object_terms(
+				(int) $p->ID,
+				$term->term_id,
+				Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME
+			);
+		}
 	}
 
 }
