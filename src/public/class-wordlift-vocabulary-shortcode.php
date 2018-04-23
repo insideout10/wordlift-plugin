@@ -44,6 +44,15 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	private $log;
 
 	/**
+	 * The vocabulary id
+	 *
+	 * @since  3.18.3
+	 * @access private
+	 * @var int $vocabulary_id The vocabulary unique id.
+	 */
+	private static $vocabulary_id = 0;
+
+	/**
 	 * Create a {@link Wordlift_Glossary_Shortcode} instance.
 	 *
 	 * @since 3.16.0
@@ -123,18 +132,21 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 		$header   = '';
 		$sections = '';
 
+		// Get unique id for each vocabulary shortcode.
+		$vocabulary_id = self::get_and_increment_vocabulary_id();
+
 		// Generate the header.
 		foreach ( $alphabet as $item => $translations ) {
 			$template = ( empty( $translations )
 				? '<span class="wl-vocabulary-widget-disabled">%s</span>'
-				: '<a href="#wl-vocabulary-widget-%2$s">%1$s</a>' );
+				: '<a href="#wl-vocabulary-%3$d-%2$s">%1$s</a>' );
 
-			$header .= sprintf( $template, esc_html( $item ), esc_attr( $item ) );
+			$header .= sprintf( $template, esc_html( $item ), esc_attr( $item ), $vocabulary_id );
 		}
 
 		// Generate the sections.
 		foreach ( $alphabet as $item => $translations ) {
-			$sections .= $this->get_section( $item, $translations );
+			$sections .= $this->get_section( $item, $translations, $vocabulary_id );
 		}
 
 		// Return HTML template.
@@ -160,14 +172,15 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	 *
 	 * @since 3.17.0
 	 *
-	 * @param string $letter The section's letter.
-	 * @param array  $posts  An array of `$post_id => $post_title` associated with
-	 *                       the section.
+	 * @param string $letter         The section's letter.
+	 * @param array  $posts          An array of `$post_id => $post_title` associated with
+	 *                               the section.
+	 * @param int    $vocabulary_id  Unique vocabulary id.
 	 *
 	 * @return string The section html code (or an empty string if the section has
 	 *                no posts).
 	 */
-	private function get_section( $letter, $posts ) {
+	private function get_section( $letter, $posts, $vocabulary_id ) {
 
 		// Return an empty string if there are no posts.
 		if ( 0 === count( $posts ) ) {
@@ -176,7 +189,7 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 
 		return sprintf(
 			'
-			<div class="wl-vocabulary-letter-block" id="wl-vocabulary-widget-%s">
+			<div class="wl-vocabulary-letter-block" id="wl-vocabulary-%d-%s">
 				<aside class="wl-vocabulary-left-column">%s</aside>
 				<div class="wl-vocabulary-right-column">
 					<ul class="wl-vocabulary-items-list">
@@ -184,7 +197,7 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 					</ul>
 				</div>
 			</div>
-		', esc_attr( $letter ), esc_html( $letter ), $this->format_posts_as_list( $posts )
+		', $vocabulary_id, esc_attr( $letter ), esc_html( $letter ), $this->format_posts_as_list( $posts )
 		);
 	}
 
@@ -304,6 +317,17 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 		}
 
 		return '#';
+	}
+
+	/**
+	 * Get and increment the `$vocabulary_id`.
+	 *
+	 * @since  3.18.3
+	 *
+	 * @return int The incremented vocabulary id.
+	 */
+	private static function get_and_increment_vocabulary_id() {
+		return self::$vocabulary_id++;
 	}
 
 }
