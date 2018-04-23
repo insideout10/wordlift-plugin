@@ -76,6 +76,7 @@ class Wordlift_Install_Service {
 			new Wordlift_Install_3_14_0(),
 			new Wordlift_Install_3_15_0(),
 			new Wordlift_Install_3_18_0(),
+			new Wordlift_Install_3_18_3(),
 		);
 
 		$version = null;
