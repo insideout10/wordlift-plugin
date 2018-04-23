@@ -162,9 +162,12 @@ EOF;
 		// create another post
 		$post_2_id = wl_create_post( $body_2, 'post-2', uniqid( 'post', true ), 'draft', 'post' );
 
-		// check all entities published
+		// We don't want anymore the entity to be in draft when referencing posts
+		// are set to draft.
+		//
+		// See https://github.com/insideout10/wordlift-plugin/issues/789
 		$lines = $this->getPostTriples( $entity_1_id );
-		$this->assertCount( 1, $lines );
+		$this->assertCount( 5, $lines );
 
 		// publish post 2
 		wl_update_post_status( $post_2_id, 'publish' );
@@ -198,9 +201,12 @@ EOF;
 		$lines = $this->getPostTriples( $post_1_id );
 		$this->assertCount( 1, $lines );
 
-		// check only entity 1 unpublished
+		// We don't want anymore the entity to be in draft when referencing posts
+		// are set to draft.
+		//
+		// See https://github.com/insideout10/wordlift-plugin/issues/789
 		$lines = $this->getPostTriples( $entity_1_id );
-		$this->assertCount( 1, $lines );
+		$this->assertCount( 5, $lines );
 
 		$lines = $this->getPostTriples( $entity_2_id );
 		$this->assertCount( 5, $lines );
