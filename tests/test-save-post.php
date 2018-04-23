@@ -127,7 +127,11 @@ EOF;
 		wl_update_post_status( $post_1_id, 'publish' );
 		wl_update_post_status( $post_1_id, 'draft' );
 
-		$this->assertEquals( 'draft', get_post_status( $entity_1_id ) );
+		// We don't want anymore the entity to be in draft when referencing posts
+		// are set to draft.
+		//
+		// See https://github.com/insideout10/wordlift-plugin/issues/789
+		$this->assertEquals( 'publish', get_post_status( $entity_1_id ) );
 
 		// publish the post.
 		wp_publish_post( $post_1_id );
