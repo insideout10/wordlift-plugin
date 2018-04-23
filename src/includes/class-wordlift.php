@@ -1411,6 +1411,8 @@ class Wordlift {
 
 		// Hook the AJAX wl_jsonld action to the JSON-LD service.
 		$this->loader->add_action( 'wp_ajax_wl_jsonld', $this->jsonld_service, 'get' );
+		$this->loader->add_action( 'admin_post_wl_jsonld', $this->jsonld_service, 'get' );
+		$this->loader->add_action( 'admin_post_nopriv_wl_jsonld', $this->jsonld_service, 'get' );
 
 		// Hook the AJAX wl_validate_key action to the Key Validation service.
 		$this->loader->add_action( 'wp_ajax_wl_validate_key', $this->key_validation_service, 'validate_key' );

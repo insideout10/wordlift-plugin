@@ -35,7 +35,7 @@
     }
 
     // Request the JSON-LD data.
-    $.get(settings.ajaxUrl, requestData, function(data) {
+    $.get(settings.apiUrl, requestData, function(data) {
       // Append the data in the page head.
       $('head').append(
         '<script type="application/ld+json">' +
