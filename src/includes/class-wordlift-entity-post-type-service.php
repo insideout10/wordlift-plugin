@@ -162,6 +162,9 @@ class Wordlift_Entity_Post_Type_Service {
 				'wordlift_entity',
 				'wordlift_entities',
 			),
+			'capabilities' => array(
+				'delete_posts' => 'delete_wordlift_entities',
+			)
 		);
 
 		register_post_type( $this->post_type, $args );
