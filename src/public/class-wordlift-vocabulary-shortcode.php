@@ -139,7 +139,7 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 		foreach ( $alphabet as $item => $translations ) {
 			$template = ( empty( $translations )
 				? '<span class="wl-vocabulary-widget-disabled">%s</span>'
-				: '<a href="#wl-vocabulary-%3$s-%2$s">%1$s</a>' );
+				: '<a href="#wl-vocabulary-%3$d-%2$s">%1$s</a>' );
 
 			$header .= sprintf( $template, esc_html( $item ), esc_attr( $item ), $vocabulary_id );
 		}
@@ -189,7 +189,7 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 
 		return sprintf(
 			'
-			<div class="wl-vocabulary-letter-block" id="wl-vocabulary-%s-%s">
+			<div class="wl-vocabulary-letter-block" id="wl-vocabulary-%d-%s">
 				<aside class="wl-vocabulary-left-column">%s</aside>
 				<div class="wl-vocabulary-right-column">
 					<ul class="wl-vocabulary-items-list">
