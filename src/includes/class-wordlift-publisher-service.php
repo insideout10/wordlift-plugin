@@ -214,15 +214,22 @@ class Wordlift_Publisher_Service {
 		$terms = wp_get_post_terms(
 			$post_id, // The post id.
 			Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, // The taxonomy slug.
-				array(
-				'fields' => 'slugs', // We don't need all fields, but only slugs.
+			array(
+				'fields' => 'slugs',
+				// We don't need all fields, but only slugs.
 			)
 		);
 
 		// Check that the entity type is "Organization".
-		if ( in_array( 'organization' , $terms, true ) ) {
+		if ( in_array( 'organization', $terms, true ) ) {
 			// Add the featured image description when the type is "Organization".
-			$content .= '<p>' . esc_html__( 'Recommended image size 600px * 60px. Bigger images will be automatically resized to fit that size.', 'wordlift' ) . '</p>';
+
+			$link = sprintf( '<a target="_blank" href="%s">%s</a>',
+				esc_attr__( 'https://developers.google.com/search/docs/data-types/article#logo-guidelines', 'wordlift' ),
+				esc_html__( 'AMP logo guidelines', 'wordlift' ) );
+			$content .= sprintf( '<p>'
+								 . esc_html_x( 'According to the %s, the logo should fit in a 60x600px rectangle, and either be exactly 60px high (preferred), or exactly 600px wide. For example, 450x45px would not be acceptable, even though it fits in the 600x60px rectangle. To comply with the guidelines, WordLift will automatically resize the Featured Image for structured data formats.', 'After "According to the" goes the link to the "AMP logo guidelines".', 'wordlift' )
+								 . '</p>', $link );
 		}
 
 		// Finally return the content.
