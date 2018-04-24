@@ -662,6 +662,20 @@ class Wordlift_Schema_Service {
 					null,
 					$this->language_code
 				),
+				// ### Title to schema:name.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_title(),
+					'http://schema.org/name',
+					null,
+					$this->language_code
+				),
+				// ### Alternative title to schema:alterName.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY ),
+					'http://schema.org/alternateName',
+					null,
+					$this->language_code
+				),
 				// ### schema:url.
 				$this->rendition_factory->create(
 					$this->storage_factory->url_property(),

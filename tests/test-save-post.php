@@ -138,11 +138,11 @@ EOF;
 
 		// check all entities published
 		$lines = $this->getPostTriples( $entity_1_id );
-		$this->assertCount( 5, $lines );
+		$this->assertCount( 6, $lines );
 		$this->assertEquals( 'publish', get_post_status( $entity_1_id ) );
 
 		$lines = $this->getPostTriples( $entity_2_id );
-		$this->assertCount( 5, $lines );
+		$this->assertCount( 6, $lines );
 		$this->assertEquals( 'publish', get_post_status( $entity_2_id ) );
 
 		// unpublish the post.
@@ -175,10 +175,10 @@ EOF;
 		$this->assertCount( 6, $lines );
 
 		$lines = $this->getPostTriples( $entity_1_id );
-		$this->assertCount( 5, $lines );
+		$this->assertCount( 6, $lines );
 
 		$lines = $this->getPostTriples( $entity_2_id );
-		$this->assertCount( 5, $lines );
+		$this->assertCount( 6, $lines );
 
 		// unpublish post 1
 
@@ -189,7 +189,7 @@ EOF;
 		$this->assertCount( 1, $lines );
 
 		$lines = $this->getPostTriples( $entity_2_id );
-		$this->assertCount( 5, $lines );
+		$this->assertCount( 6, $lines );
 
 		self::turn_off_entity_push();
 
