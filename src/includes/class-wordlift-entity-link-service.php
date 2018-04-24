@@ -21,7 +21,6 @@
  *     b) for pages, to wp_unique_post_slug_is_bad_hierarchical_slug.
  *     If we find that the slug (postname) is already used, we tell WordPress, which in turn will append a sequential number.
  *
- *
  * @since 3.6.0
  */
 class Wordlift_Entity_Link_Service {
@@ -140,20 +139,16 @@ class Wordlift_Entity_Link_Service {
 	public function wp_unique_post_slug_is_bad_flat_slug( $bad_slug, $slug, $post_type ) {
 
 		// The list of post types that might have conflicting slugs.
-		$post_types = array(
-			'post',
-			'page',
-			$this->entity_type_service->get_post_type(),
-		);
+		$post_types = Wordlift_Entity_Service::valid_entity_post_types();
 
 		// Ignore post types different from the ones we need to check.
 		if ( ! in_array( $post_type, $post_types ) ) {
 			return $bad_slug;
 		}
 
-		$exists = $this->slug_exists( $slug, array_diff( $post_types, array( $post_type ) ) );
+		$exists = $this->slug_exists( $slug, $post_types );
 
-		$this->log->debug( "Checking if a slug exists [ post type :: $post_type ][ slug :: $slug ][ exists :: " . ( $exists ? "yes" : "no" ) . " ]" );
+		$this->log->debug( "Checking if a slug exists [ post type :: $post_type ][ slug :: $slug ][ exists :: " . ( $exists ? 'yes' : 'no' ) . ' ]' );
 
 		return $exists;
 	}
@@ -179,7 +174,7 @@ class Wordlift_Entity_Link_Service {
 
 		// We redirect the call to the flat hook, this means that this check is going to solve also the 6-years old issue
 		// about overlapping slugs among pages and posts:
-		//  https://core.trac.wordpress.org/ticket/13459
+		// https://core.trac.wordpress.org/ticket/13459
 		return $this->wp_unique_post_slug_is_bad_flat_slug( $bad_slug, $slug, $post_type );
 	}
 
@@ -195,6 +190,32 @@ class Wordlift_Entity_Link_Service {
 	 */
 	private function slug_exists( $slug, $post_types ) {
 		global $wpdb;
+
+		// Loop through all post types and check
+		// whether they have archive pages and if
+		// the archive slug matches the post slug.
+		foreach ( $post_types as $post_type ) {
+
+			// Get the post type object for current post type.
+			$post_type_object = get_post_type_object( $post_type );
+
+			if (
+				// Check whetherthe post type object is not empty.
+				! empty( $post_type_object ) &&
+				// And the post type has archive page.
+				$post_type_object->has_archive &&
+				// And `rewrite` options exists..
+				! empty( $post_type_object->rewrite ) &&
+				// And the `rewrite` slug property is not empty.
+				! empty( $post_type_object->rewrite['slug'] ) &&
+				// And if the rewrite slug equals to the slug.
+				$post_type_object->rewrite['slug'] === $slug
+			) {
+				// Return true which means that the slug is already in use.
+				return true;
+			}
+
+		}
 
 		// Post slugs must be unique across all posts.
 		$check_sql = "SELECT post_name FROM $wpdb->posts WHERE post_name = %s AND post_type IN ('" . implode( "', '", array_map( 'esc_sql', $post_types ) ) . "') LIMIT 1";

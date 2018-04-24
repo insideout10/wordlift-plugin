@@ -15,6 +15,57 @@ class Wordlift_Entity_Link_Service_Test extends Wordlift_Unit_Test_Case {
 
 	}
 
+	public function test_post_with_archive_slug() {
+		// We will test our custom post type archive slug.
+		$post_title = 'entity';
+
+		// insert a post and make sure the ID is ok
+		$post = get_post( wp_insert_post( array(
+			'post_author'  => 1,
+			'post_status'  => 'publish',
+			'post_content' => rand_str(),
+			'post_title'   => $post_title,
+			'post_type'    => 'post',
+		) ) );
+
+		// Check that the post title has the -2 suffix
+		$this->assertEquals( $post_title . '-2', $post->post_name );
+	}
+
+	public function test_entity_with_archive_slug() {
+		// We will test our custom post type archive slug.
+		$post_title = 'entity';
+
+		// insert a entity and make sure the ID is ok
+		$entity = get_post( wp_insert_post( array(
+			'post_author'  => 1,
+			'post_status'  => 'publish',
+			'post_content' => rand_str(),
+			'post_title'   => $post_title,
+			'post_type'    => 'entity',
+		) ) );
+
+		// Check that the entity title has the -2 suffix
+		$this->assertEquals( $post_title . '-2', $entity->post_name );
+	}
+
+	public function test_page_with_archive_slug() {
+		// We will test our custom page type archive slug.
+		$post_title = 'entity';
+
+		// insert a page and make sure the ID is ok
+		$page = get_post( wp_insert_post( array(
+			'post_author'  => 1,
+			'post_status'  => 'publish',
+			'post_content' => rand_str(),
+			'post_title'   => $post_title,
+			'post_type'    => 'page',
+		) ) );
+
+		// Check that the page title has the -2 suffix
+		$this->assertEquals( $post_title . '-2', $page->post_name );
+	}
+
 	/**
 	 * Try creating a post then an entity with the same title and check that the entity post name receives the -2 suffix.
 	 */
