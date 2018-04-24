@@ -19,6 +19,26 @@
 class Wordlift_Publisher_Service {
 
 	/**
+	 * The {@link Wordlift_Configuration_Service} instance.
+	 *
+	 * @since  3.19.0
+	 * @access private
+	 * @var \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
+	 */
+	private $configuration_service;
+
+	/**
+	 * The {@link Wordlift_Publisher_Service} instance.
+	 *
+	 * @since 3.19.0
+	 *
+	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
+	 */
+	public function __construct( $configuration_service ) {
+		$this->configuration_service = $configuration_service;
+	}
+
+	/**
 	 * Counts the number of potential publishers.
 	 *
 	 * @since 3.11.0
@@ -163,6 +183,50 @@ class Wordlift_Publisher_Service {
 		$image = wp_get_attachment_image_src( $attachment_id, $size );
 
 		return isset( $image['0'] ) ? $image['0'] : false;
+	}
+
+	/**
+	 * Add additional instructions to featured image metabox
+	 * when the entity type is the publisher.
+	 *
+	 * @since  3.19.0
+	 *
+	 * @param  string $content Current metabox content.
+	 *
+	 * @return string $content metabox content with additional instructions.
+	 */
+	public function add_featured_image_instruction( $content ) {
+		// Get the current post ID.
+		$post_id = get_the_ID();
+
+		// Get the publisher id.
+		$publisher_id = $this->configuration_service->get_publisher_id();
+
+
+		// Bail if for some reason the post id is not set.
+		if (
+			empty( $post_id ) ||
+			$post_id !== (int) $publisher_id
+		) {
+			return $content;
+		}
+
+		$terms = wp_get_post_terms(
+			$post_id, // The post id.
+			Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, // The taxonomy slug.
+				array(
+				'fields' => 'slugs', // We don't need all fields, but only slugs.
+			)
+		);
+
+		// Check that the entity type is "Organization".
+		if ( in_array( 'organization' , $terms, true ) ) {
+			// Add the featured image description when the type is "Organization".
+			$content .= '<p>' . esc_html__( 'Recommended image size 600px * 60px. Bigger images will be automatically resized to fit that size.', 'wordlift' ) . '</p>';
+		}
+
+		// Finally return the content.
+		return $content;
 	}
 
 }
