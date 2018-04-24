@@ -194,6 +194,13 @@ class Wordlift_Entity_Link_Service {
 		// Loop through all post types and check
 		// whether they have archive pages and if
 		// the archive slug matches the post slug.
+		//
+		// Note that the condition below checks only post types used by WordLift.
+		// We don't check other post types for archive pages,
+		// because this is a job of WordPress.
+		//
+		// There is a open ticket that should solve this, when it's merged:
+		// https://core.trac.wordpress.org/ticket/13459
 		foreach ( $post_types as $post_type ) {
 
 			// Get the post type object for current post type.
@@ -218,9 +225,17 @@ class Wordlift_Entity_Link_Service {
 		}
 
 		// Post slugs must be unique across all posts.
-		$check_sql = "SELECT post_name FROM $wpdb->posts WHERE post_name = %s AND post_type IN ('" . implode( "', '", array_map( 'esc_sql', $post_types ) ) . "') LIMIT 1";
+		$check_sql = $wpdb->prepare(
+			"SELECT post_name
+			FROM $wpdb->posts
+			WHERE post_name = %s
+			AND post_type IN ('" . implode( "', '", array_map( 'esc_sql', $post_types ) ) . "')
+			LIMIT 1
+			",
+			$slug
+		);
 
-		return null !== $wpdb->get_var( $wpdb->prepare( $check_sql, $slug ) );
+		return null !== $wpdb->get_var( $check_sql );
 	}
 
 }
