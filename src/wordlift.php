@@ -453,12 +453,6 @@ require_once( 'admin/wordlift_admin_ajax_related_posts.php' );
 // Load the wl_chord TinyMCE button and configuration dialog.
 require_once( 'admin/wordlift_admin_shortcodes.php' );
 
-// load languages.
-// TODO: the following call gives for granted that the plugin is in the wordlift directory,
-//       we're currently doing this because wordlift is symbolic linked.
-load_plugin_textdomain( 'wordlift', false, '/wordlift/languages' );
-
-
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-wordlift-activator.php
