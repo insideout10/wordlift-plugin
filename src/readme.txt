@@ -143,6 +143,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 = 3.18.3 (2018-04-23) =
+* Fix: [#802](https://github.com/insideout10/wordlift-plugin/issues/802): Use set user language (user locale) as base for WordLift translations in backend.
 * Fix: [#800](https://github.com/insideout10/wordlift-plugin/issues/800): Use wl-api instead of wp-admin/admin-ajax.php for json-ld calls.
 * Fix: [#797](https://github.com/insideout10/wordlift-plugin/issues/797): Assign the default Article taxonomy term to existing posts.
 * Fix: [#794](https://github.com/insideout10/wordlift-plugin/issues/794): Vocabulary only shows # and A.
