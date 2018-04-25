@@ -164,7 +164,7 @@ class Wordlift_Jsonld_Service {
 			}, $references ) );
 
 		// Finally send the JSON-LD.
-		return $jsonld;
+		 return apply_filters( 'wl_json_ld', $jsonld );
 	}
 
 }
