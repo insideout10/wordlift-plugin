@@ -110,7 +110,7 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 				// Limit the number of posts to 100 by default. Use -1 to remove the limit.
 				'limit'   => 100,
 				// Sort by title.
-				'orderby' => 'title',
+				'orderby' => 'post_date',
 				// Allow to specify the category ID.
 				'cat'     => '',
 			), $atts
@@ -146,6 +146,8 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 
 		// Generate the sections.
 		foreach ( $alphabet as $item => $translations ) {
+			// Order the translations alphabetically.
+			sort( $translations );
 			$sections .= $this->get_section( $item, $translations, $vocabulary_id );
 		}
 
@@ -229,23 +231,12 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	 * @return array An array of {@link WP_Post}s.
 	 */
 	private function get_posts( $atts ) {
-		// Build custom orderby param.
-		$orderby = array(
-			// We need first to sort by post date, to prevent only one
-			// letter in vocabulary when there are many posts.
-			// Then respect the user order param.
-			//
-			// See https://github.com/insideout10/wordlift-plugin/issues/794.
-			'post_date'      => 'DESC',
-			$atts['orderby'] => 'ASC',
-		);
-
 		// The default arguments for the query.
 		$args = array(
 			'posts_per_page'         => intval( $atts['limit'] ),
 			'update_post_meta_cache' => false,
 			'update_post_term_cache' => false,
-			'orderby'                => $orderby,
+			'orderby'                => $atts['orderby'],
 			// Exclude the publisher.
 			'post__not_in'           => array( $this->configuration_service->get_publisher_id() ),
 		);
