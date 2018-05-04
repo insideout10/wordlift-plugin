@@ -111,6 +111,8 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 				'limit'   => 100,
 				// Sort by title.
 				'orderby' => 'post_date',
+				// Sort DESC.
+				'order'   => 'DESC',
 				// Allow to specify the category ID.
 				'cat'     => '',
 			), $atts
@@ -147,7 +149,7 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 		// Generate the sections.
 		foreach ( $alphabet as $item => $translations ) {
 			// Order the translations alphabetically.
-			sort( $translations );
+			asort( $translations );
 			$sections .= $this->get_section( $item, $translations, $vocabulary_id );
 		}
 
@@ -237,6 +239,7 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 			'update_post_meta_cache' => false,
 			'update_post_term_cache' => false,
 			'orderby'                => $atts['orderby'],
+			'order'                  => $atts['order'],
 			// Exclude the publisher.
 			'post__not_in'           => array( $this->configuration_service->get_publisher_id() ),
 		);
