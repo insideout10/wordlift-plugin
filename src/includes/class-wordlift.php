@@ -682,6 +682,15 @@ class Wordlift {
 	protected $entity_uri_service;
 
 	/**
+	 * The {@link Wordlift_Publisher_Service} instance.
+	 *
+	 * @since  3.19.0
+	 * @access protected
+	 * @var \Wordlift_Publisher_Service $publisher_service The {@link Wordlift_Publisher_Service} instance.
+	 */
+	protected $publisher_service;
+
+	/**
 	 * {@link Wordlift}'s singleton instance.
 	 *
 	 * @since  3.11.2
@@ -998,11 +1007,6 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard.php';
 
-        /**
-         * The WordLift Latest News Dashboard service.
-         */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard-latest-news.php';
-
 		/**
 		 * The admin 'Install wizard' page.
 		 */
@@ -1190,8 +1194,8 @@ class Wordlift {
 		$this->dashboard_service = new Wordlift_Dashboard_Service( $this->rating_service, $this->entity_service );
 
 		// Create an instance of the Publisher Service and the AJAX Adapter.
-		$publisher_service      = new Wordlift_Publisher_Service();
-		$this->property_factory = new Wordlift_Property_Factory( $schema_url_property_service );
+		$this->publisher_service = new Wordlift_Publisher_Service( $this->configuration_service );
+		$this->property_factory  = new Wordlift_Property_Factory( $schema_url_property_service );
 		$this->property_factory->register( Wordlift_Schema_Url_Property_Service::META_KEY, $schema_url_property_service );
 
 		$attachment_service = new Wordlift_Attachment_Service();
@@ -1206,12 +1210,12 @@ class Wordlift {
 		$this->jsonld_service                    = new Wordlift_Jsonld_Service( $this->entity_service, $this->cached_postid_to_jsonld_converter, $this->jsonld_website_converter );
 
 
-		$this->key_validation_service     = new Wordlift_Key_Validation_Service( $this->configuration_service );
-		$this->content_filter_service     = new Wordlift_Content_Filter_Service( $this->entity_service, $this->configuration_service, $this->entity_uri_service );
-		$this->relation_rebuild_service   = new Wordlift_Relation_Rebuild_Service( $this->content_filter_service, $this->entity_service );
-		$this->sample_data_service        = new Wordlift_Sample_Data_Service( $this->entity_type_service, $this->configuration_service, $this->user_service );
-		$this->sample_data_ajax_adapter   = new Wordlift_Sample_Data_Ajax_Adapter( $this->sample_data_service );
-		$this->reference_rebuild_service  = new Wordlift_Reference_Rebuild_Service( $this->linked_data_service, $this->entity_service, $this->relation_service );
+		$this->key_validation_service    = new Wordlift_Key_Validation_Service( $this->configuration_service );
+		$this->content_filter_service    = new Wordlift_Content_Filter_Service( $this->entity_service, $this->configuration_service, $this->entity_uri_service );
+		$this->relation_rebuild_service  = new Wordlift_Relation_Rebuild_Service( $this->content_filter_service, $this->entity_service );
+		$this->sample_data_service       = new Wordlift_Sample_Data_Service( $this->entity_type_service, $this->configuration_service, $this->user_service );
+		$this->sample_data_ajax_adapter  = new Wordlift_Sample_Data_Ajax_Adapter( $this->sample_data_service );
+		$this->reference_rebuild_service = new Wordlift_Reference_Rebuild_Service( $this->linked_data_service, $this->entity_service, $this->relation_service );
 
 		// Initialize the shortcodes.
 		new Wordlift_Navigator_Shortcode();
@@ -1227,14 +1231,12 @@ class Wordlift {
 		// Initialize the AMP service.
 		new Wordlift_AMP_Service();
 
-        new Wordlift_Dashboard_Latest_News();
-
 		/** Services. */
 		$this->google_analytics_export_service = new Wordlift_Google_Analytics_Export_Service();
 
 		/** Adapters. */
 		$this->entity_type_adapter      = new Wordlift_Entity_Type_Adapter( $this->entity_type_service );
-		$this->publisher_ajax_adapter   = new Wordlift_Publisher_Ajax_Adapter( $publisher_service );
+		$this->publisher_ajax_adapter   = new Wordlift_Publisher_Ajax_Adapter( $this->publisher_service );
 		$this->tinymce_adapter          = new Wordlift_Tinymce_Adapter( $this );
 		$this->batch_analysis_adapter   = new Wordlift_Batch_Analysis_Adapter( $this->batch_analysis_service );
 		$this->relation_rebuild_adapter = new Wordlift_Relation_Rebuild_Adapter( $this->relation_rebuild_service );
@@ -1242,8 +1244,7 @@ class Wordlift {
 		// Create a Rebuild Service instance, which we'll later bound to an ajax call.
 		$this->rebuild_service = new Wordlift_Rebuild_Service(
 			$this->sparql_service,
-			$uri_service,
-			$this->reference_rebuild_service
+			$uri_service
 		);
 
 		/** Async Tasks. */
@@ -1265,8 +1266,8 @@ class Wordlift {
 		$this->select2_element         = new Wordlift_Admin_Select2_Element();
 		$this->language_select_element = new Wordlift_Admin_Language_Select_Element();
 		$tabs_element                  = new Wordlift_Admin_Tabs_Element();
-		$this->publisher_element       = new Wordlift_Admin_Publisher_Element( $this->configuration_service, $publisher_service, $tabs_element, $this->select2_element );
-		$this->author_element          = new Wordlift_Admin_Author_Element( $publisher_service, $this->select2_element );
+		$this->publisher_element       = new Wordlift_Admin_Publisher_Element( $this->configuration_service, $this->publisher_service, $tabs_element, $this->select2_element );
+		$this->author_element          = new Wordlift_Admin_Author_Element( $this->publisher_service, $this->select2_element );
 
 		$this->settings_page             = new Wordlift_Admin_Settings_Page( $this->configuration_service, $this->entity_service, $this->input_element, $this->language_select_element, $this->publisher_element, $this->radio_input_element );
 		$this->batch_analysis_page       = new Wordlift_Batch_Analysis_Page( $this->batch_analysis_service );
@@ -1426,6 +1427,8 @@ class Wordlift {
 
 		// Hook the admin_init to the settings page.
 		$this->loader->add_action( 'admin_init', $this->settings_page, 'admin_init' );
+
+		$this->loader->add_filter( 'admin_post_thumbnail_html', $this->publisher_service, 'add_featured_image_instruction' );
 
 		// Hook the menu creation on the general wordlift menu creation.
 		$this->loader->add_action( 'wl_admin_menu', $this->settings_page, 'admin_menu', 10, 2 );
