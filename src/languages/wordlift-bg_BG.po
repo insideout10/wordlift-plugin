@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Plugins - WordLift &#8211; AI powered SEO - Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2018-03-21 14:51:29+0000\n"
+"PO-Revision-Date: 2018-05-04 11:07:04+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -14,15 +14,15 @@ msgstr ""
 #: admin/partials/wordlift-admin-setup.php:126
 msgctxt "Input text placeholder"
 msgid "License Key"
-msgstr ""
+msgstr "Лицензионен ключ"
 
 #: admin/partials/wordlift-admin-setup.php:108
 msgid "grab a key"
-msgstr ""
+msgstr "получете ключ"
 
 #: admin/partials/wordlift-admin-setup.php:107
 msgid "https://wordlift.io/pricing"
-msgstr ""
+msgstr "https://wordlift.io/pricing"
 
 #: includes/class-wordlift-schema-service.php:1473
 msgid "Sold Out"
