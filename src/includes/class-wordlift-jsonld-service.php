@@ -97,8 +97,11 @@ class Wordlift_Jsonld_Service {
 		$is_homepage = isset( $_REQUEST['homepage'] );
 		$post_id     = isset( $_REQUEST['id'] ) && is_numeric( $_REQUEST['id'] ) ? intval( $_REQUEST['id'] ) : null;
 
+		// Get the jsonld.
+		$jsonld = apply_filters( 'wl_json_ld', $this->get_jsonld( $is_homepage, $post_id ) );
+
 		// Send the generated JSON-LD.
-		wp_send_json( $this->get_jsonld( $is_homepage, $post_id ) );
+		wp_send_json( $jsonld );
 
 	}
 
@@ -164,7 +167,7 @@ class Wordlift_Jsonld_Service {
 			}, $references ) );
 
 		// Finally send the JSON-LD.
-		 return apply_filters( 'wl_json_ld', $jsonld );
+		return $jsonld;
 	}
 
 }

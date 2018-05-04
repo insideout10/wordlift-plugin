@@ -499,7 +499,7 @@ class Wordlift_Schema_Service {
 		 *
 		 * @param  string $search_url The search URL for this site with a `{search_term_string}` variable.
 		 */
-		$this->schema = apply_filters( 'wl_schema_service_schemas', $schemas );
+		$this->schema = apply_filters( 'wl_schemas', $schemas );
 
 		// Create a singleton instance of the Schema service, useful to provide static functions to global functions.
 		self::$instance = $this;
