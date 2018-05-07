@@ -265,7 +265,7 @@ class Wordlift_Vocabulary_Shortcode_Test extends Wordlift_Unit_Test_Case {
 
 		// Check that the entities are alphabetically sorted,
 		// as they shoul be by default.
-		$this->assertRegExp( $pattern, $markup);
+		$this->assertRegExp( $pattern, $markup );
 
 	}
 }
