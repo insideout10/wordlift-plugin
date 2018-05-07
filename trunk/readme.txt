@@ -6,7 +6,7 @@ Tags: schema.org, semantic seo, seo, artificial intelligence, ai, linked data, s
 Requires at least: 4.4
 Tested up to: 4.9
 Requires PHP: 5.3
-Stable tag: 3.18.3
+Stable tag: 3.18.2
 License: GPLv2 or later
 
 WordLift brings the power of Artificial Intelligence to organize content. Attract new readers and get their true attention with top notch Semantic SEO.
