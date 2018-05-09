@@ -146,7 +146,7 @@ class Wordlift_Entity_Link_Service {
 			return $bad_slug;
 		}
 
-		$exists = $this->slug_exists( $slug, $post_types );
+		$exists = $this->slug_exists( $slug, $post_types, $post_type );
 
 		$this->log->debug( "Checking if a slug exists [ post type :: $post_type ][ slug :: $slug ][ exists :: " . ( $exists ? 'yes' : 'no' ) . ' ]' );
 
@@ -185,10 +185,11 @@ class Wordlift_Entity_Link_Service {
 	 *
 	 * @param string $slug       The slug.
 	 * @param array  $post_types An array of post types.
+	 * @param array  $post_type  Post type.
 	 *
 	 * @return bool True if the slug exists, otherwise false.
 	 */
-	private function slug_exists( $slug, $post_types ) {
+	private function slug_exists( $slug, $post_types, $post_type ) {
 		global $wpdb;
 
 		// Loop through all post types and check
@@ -221,7 +222,6 @@ class Wordlift_Entity_Link_Service {
 				// Return true which means that the slug is already in use.
 				return true;
 			}
-
 		}
 
 		// Post slugs must be unique across all posts.
@@ -229,7 +229,7 @@ class Wordlift_Entity_Link_Service {
 			"SELECT post_name
 			FROM $wpdb->posts
 			WHERE post_name = %s
-			AND post_type IN ('" . implode( "', '", array_map( 'esc_sql', $post_types ) ) . "')
+			AND post_type IN ('" . implode( "', '", array_map( 'esc_sql', array_diff( $post_types, array( $post_type ) ) ) ) . "')
 			LIMIT 1
 			",
 			$slug
