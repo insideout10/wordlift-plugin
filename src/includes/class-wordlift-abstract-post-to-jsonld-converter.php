@@ -188,29 +188,35 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		$gallery = array_diff( $this->attachment_service->get_gallery( $post ), $ids, $embeds );
 
 		// Map the attachment ids to images' data structured for schema.org use.
-		$images = array_map( function ( $item ) {
-			/*
-			 * @todo: we're not sure that we're getting attachment data here, we
-			 * should filter `false`s.
-			 */
+		$images = array_filter(
+			array_map(
+				function ( $item ) {
+					/*
+					* @todo: we're not sure that we're getting attachment data here, we
+					* should filter `false`s.
+					*/
 
-			 // Get the attachment data.
-			$attachment = wp_get_attachment_image_src( $item, 'full' );
+					// Get the attachment data.
+					$attachment = wp_get_attachment_image_src( $item, 'full' );
 
-			// Bail if image is not found.
-			// In some cases, you can delete the image from the database
-			// or from uploads dir, but the image id still exists as featured image
-			// or in [gallery] shortcode.
-			if ( empty( $attachment[0] ) ) {
-				return null;
-			}
+					// Bail if image is not found.
+					// In some cases, you can delete the image from the database
+					// or from uploads dir, but the image id still exists as featured image
+					// or in [gallery] shortcode.
+					if ( empty( $attachment[0] ) ) {
+						return null;
+					}
 
-			// Refactor data as per schema.org specifications.
-			return Wordlift_Abstract_Post_To_Jsonld_Converter::set_image_size( array(
-				'@type' => 'ImageObject',
-				'url'   => $attachment[0],
-			), $attachment );
-		}, array_merge( $ids, $embeds, $gallery ) );
+					// Refactor data as per schema.org specifications.
+					return Wordlift_Abstract_Post_To_Jsonld_Converter::set_image_size(
+						array(
+							'@type' => 'ImageObject',
+							'url'   => $attachment[0],
+						), $attachment
+					);
+				}, array_merge( $ids, $embeds, $gallery )
+			)
+		);
 
 		if ( 0 < count( $images ) ) {
 			$jsonld['image'] = $images;
