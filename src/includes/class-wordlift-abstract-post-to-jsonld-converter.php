@@ -197,6 +197,14 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 			 // Get the attachment data.
 			$attachment = wp_get_attachment_image_src( $item, 'full' );
 
+			// Bail if image is not found.
+			// In some cases, you can delete the image from the database
+			// or from uploads dir, but the image id still exists as featured image
+			// or in [gallery] shortcode.
+			if ( empty( $attachment[0] ) ) {
+				return null;
+			}
+
 			// Refactor data as per schema.org specifications.
 			return Wordlift_Abstract_Post_To_Jsonld_Converter::set_image_size( array(
 				'@type' => 'ImageObject',
