@@ -242,6 +242,34 @@ class Wordlift_Schema_Service {
 	const FIELD_TOTAL_TIME = 'wl_schema_total_time';
 
 	/**
+	 * The 'recipeCategory' field name.
+	 *
+	 * @since 3.19.0
+	 */
+	const FIELD_RECIPE_CATEGORY = 'wl_schema_recipe_category';
+
+	/**
+	 * The 'keywords' field name.
+	 *
+	 * @since 3.19.0
+	 */
+	const FIELD_RECIPE_KEYWORDS = 'wl_schema_recipe_keywords';
+
+	/**
+	 * The 'reviewCount' field name.
+	 *
+	 * @since 3.19.0
+	 */
+	const FIELD_RECIPE_REVIEW_COUNT = 'wl_schema_recipe_review_count';
+
+	/**
+	 * The 'ratingValue' field name.
+	 *
+	 * @since 3.19.0
+	 */
+	const FIELD_RECIPE_RATING_VALUE = 'wl_schema_recipe_rating_value';
+
+	/**
 	 * The 'performer' field name.
 	 *
 	 * @since 3.18.0
@@ -1407,6 +1435,39 @@ class Wordlift_Schema_Service {
 						'label' => __( 'Recipe total time (e.g. 1:30)', 'wordlift' ),
 					),
 				),
+				self::FIELD_RECIPE_CATEGORY  => array(
+					'predicate'   => 'http://schema.org/recipeCategory',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+					'metabox'     => array(
+						'label' => __( 'The category of the recipe—for example, appetizer, entree, etc.', 'wordlift' ),
+					),
+				),
+				self::FIELD_RECIPE_KEYWORDS  => array(
+					'predicate'   => 'http://schema.org/keywords',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+					'metabox'     => array(
+						'label' => __( 'Keywords or tags used to describe this content. Multiple entries in a keywords list are typically delimited by commas.', 'wordlift' ),
+					),
+				),
+				self::FIELD_RECIPE_REVIEW_COUNT  => array(
+					'predicate'   => 'http://schema.org/reviewCount',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+				),
+				self::FIELD_RECIPE_RATING_VALUE  => array(
+					'predicate'   => 'http://schema.org/ratingValue',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+					'metabox'     => array(
+						'label' => __( 'Rating between 1 and 5', 'wordlift' ),
+					),
+				),
 			),
 			'linked_data'   => array(
 				// ### schema:recipeCuisine.
@@ -1429,6 +1490,16 @@ class Wordlift_Schema_Service {
 					$this->storage_factory->post_meta( self::FIELD_RECIPE_YIELD ),
 					'http://schema.org/recipeYield'
 				),
+				// ### schema:recipeCategory.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( self::FIELD_RECIPE_CATEGORY ),
+					'http://schema.org/recipeCategory'
+				),
+				// ### schema:keywords.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( self::FIELD_RECIPE_KEYWORDS ),
+					'http://schema.org/keywords'
+				),
 				// ### schema:prepTime.
 				$this->rendition_factory->create(
 					$this->storage_factory->post_meta( self::FIELD_PREP_TIME ),
@@ -1446,6 +1517,10 @@ class Wordlift_Schema_Service {
 					$this->storage_factory->post_meta( self::FIELD_TOTAL_TIME ),
 					'http://schema.org/totalTime',
 					self::DATA_TYPE_DURATION
+				),
+				$this->rendition_factory->create_aggregate_rating(
+					$this->storage_factory,
+					$this->language_code
 				),
 			),
 		);
