@@ -361,8 +361,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 4, $jsonld['publisher']['logo'] );
 		$this->assertEquals( 'ImageObject', $jsonld['publisher']['logo']['@type'] );
 		$this->assertEquals( $attachment_url, $jsonld['publisher']['logo']['url'] );
-		$this->assertEquals( 200, $jsonld['publisher']['logo']['width'] );
-		$this->assertEquals( 100, $jsonld['publisher']['logo']['height'] );
+		$this->assertEquals( 120, $jsonld['publisher']['logo']['width'] );
+		$this->assertEquals( 60, $jsonld['publisher']['logo']['height'] );
 
 	}
 

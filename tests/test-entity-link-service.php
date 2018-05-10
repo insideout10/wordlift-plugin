@@ -107,7 +107,7 @@ class Wordlift_Entity_Link_Service_Test extends Wordlift_Unit_Test_Case {
 			'post_status'  => 'publish',
 			'post_content' => rand_str(),
 			'post_title'   => $post_title,
-			'post_type'    => 'entity',
+			'post_type'    => 'page',
 		) ) );
 
 		// insert a post and make sure the ID is ok
