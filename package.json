@@ -60,6 +60,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
+    "coffee:build": "grunt build",
+    "coffee:watch": "grunt watch",
     "test": "node scripts/test.js --env=jsdom",
     "test:e2e": "./node_modules/.bin/wdio wdio.conf.js",
     "test:js": "grunt travis:js",

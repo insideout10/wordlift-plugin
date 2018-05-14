@@ -1161,12 +1161,14 @@
       service.parse = function(data) {
         var annotation, annotationId, dt, ea, em, entity, id, index, l, len2, len3, localEntity, local_confidence, m, ref10, ref11, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9;
         dt = this._defaultType;
-        data.topics = data.topics.map(function(topic) {
-          topic.id = topic.uri;
-          topic.occurrences = [];
-          topic.mainType = dt;
-          return topic;
-        });
+        if (data.topics != null) {
+          data.topics = data.topics.map(function(topic) {
+            topic.id = topic.uri;
+            topic.occurrences = [];
+            topic.mainType = dt;
+            return topic;
+          });
+        }
         $log.debug("Found " + (Object.keys(configuration.entities).length) + " entities in configuration...", configuration);
         ref2 = configuration.entities;
         for (id in ref2) {
@@ -1913,7 +1915,21 @@
       return addClassToBody();
     });
     editor.on('init', function() {
-      return addClassToBody();
+      var broadcastEditorSelection;
+      addClassToBody();
+      broadcastEditorSelection = function() {
+        var selection;
+        selection = editor.selection.getContent({
+          format: 'text'
+        });
+        return wp.wordlift.trigger('editorSelectionChanged', selection);
+      };
+      editor.on('Click', function() {
+        return broadcastEditorSelection();
+      });
+      return editor.on('KeyUp', function() {
+        return broadcastEditorSelection();
+      });
     });
     if (!closed) {
       fireEvent(editor, 'LoadContent', startAnalysis);

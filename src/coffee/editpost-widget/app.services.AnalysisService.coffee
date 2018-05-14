@@ -107,11 +107,12 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 #        data.topics = []
       dt = @._defaultType
 
-      data.topics = data.topics.map (topic)->
-        topic.id = topic.uri
-        topic.occurrences = []
-        topic.mainType = dt
-        topic
+      if data.topics?
+        data.topics = data.topics.map (topic)->
+          topic.id = topic.uri
+          topic.occurrences = []
+          topic.mainType = dt
+          topic
 
       $log.debug "Found #{Object.keys(configuration.entities).length} entities in configuration...", configuration
 

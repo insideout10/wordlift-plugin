@@ -1152,11 +1152,12 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 #        data.topics = []
       dt = @._defaultType
 
-      data.topics = data.topics.map (topic)->
-        topic.id = topic.uri
-        topic.occurrences = []
-        topic.mainType = dt
-        topic
+      if data.topics?
+        data.topics = data.topics.map (topic)->
+          topic.id = topic.uri
+          topic.occurrences = []
+          topic.mainType = dt
+          topic
 
       $log.debug "Found #{Object.keys(configuration.entities).length} entities in configuration...", configuration
 
@@ -1976,7 +1977,25 @@ $(
     )
 
     # Set the initial state on the editor's body.
-    editor.on('init', () -> addClassToBody())
+    editor.on('init', () ->
+      addClassToBody()
+
+      # Send a broadcast when the editor selection changes.
+      #
+      # See https://github.com/insideout10/wordlift-plugin/issues/467
+      broadcastEditorSelection = () ->
+        selection = editor.selection.getContent({format: 'text'})
+        wp.wordlift.trigger 'editorSelectionChanged', selection
+
+      # The following two events appear to be most reliable to detect selection changes:
+      editor.on('Click', () -> broadcastEditorSelection() )
+      editor.on('KeyUp', () -> broadcastEditorSelection() )
+      # The following three events are not reliable to detect selection changes:
+      #        editor.on('MouseUp', () -> broadcastEditorSelection() )
+      #        editor.on('KeyUp', () -> broadcastEditorSelection() )
+      #        editor.on('NodeChange', () -> broadcastEditorSelection() )
+
+    )
 
     # Start the analysis if the postbox isn't closed.
     if !closed then fireEvent( editor, 'LoadContent', startAnalysis ) else
