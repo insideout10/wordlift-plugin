@@ -33,9 +33,10 @@
 <div class="wl-widget-global-bottom-wrap" ng-hide="currentEntity || analysisFailed">
 
     <!-- CLASSIFICATION BOX  -->
-    <div
-            ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-classification-box.html?ver=3.13.3'">
-    </div>
+    <div id="wl-entity-list" wl-entity-list="wl-entity-list"></div>
+    <!--<div-->
+            <!--ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-classification-box.html?ver=3.13.3'">-->
+    <!--</div>-->
 
     <!-- ARTICLE METADATA -->
     <div

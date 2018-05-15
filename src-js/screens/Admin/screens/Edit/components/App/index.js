@@ -18,6 +18,7 @@ import React from 'react';
 import Wrapper from './Wrapper';
 import Header from '../Header';
 import VisibleEntityList from '../../containers/VisibleEntityList';
+import Accordion from '../Accordion';
 
 /**
  * Define the {@link App}.
@@ -26,10 +27,12 @@ import VisibleEntityList from '../../containers/VisibleEntityList';
  * @return {Function} The `render` function.
  */
 const App = () => (
-	<Wrapper>
-		<Header />
-		<VisibleEntityList />
-	</Wrapper>
+    <Wrapper>
+        <Accordion open={true} label="Content classification">
+            <Header/>
+            <VisibleEntityList/>
+        </Accordion>
+    </Wrapper>
 );
 
 // Finally export the `App`.
