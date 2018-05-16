@@ -11,22 +11,22 @@
 /**
  * External dependencies
  */
-import React from 'react';
+import React from "react";
 
 /**
  * Internal dependencies
  */
-import Wrapper from './Wrapper';
-import Main from './Main';
-import Count from './Count';
-import Label from './Label';
-import MainType from './MainType';
-import Cloud from './Cloud';
-import Drawer from './Drawer';
-import Switch from '../Switch';
-import Category from './Category';
-import EditLink from './EditLink';
-import ArrowToggle from '../ArrowToggle';
+import Wrapper from "./Wrapper";
+import Main from "./Main";
+import Count from "./Count";
+import Label from "./Label";
+import MainType from "./MainType";
+import Cloud from "./Cloud";
+import Drawer from "./Drawer";
+import Switch from "../Switch";
+import Category from "./Category";
+import EditLink from "./EditLink";
+import ArrowToggle from "../ArrowToggle";
 
 /**
  * @inheritDoc
@@ -153,18 +153,18 @@ class EntityTile extends React.Component {
     this.setWrapperRef = element;
   }
 
-  /**
-   * Display occurences of current entity or plus if there are no such.
-   *
-   * @since 3.16.0
-   */
-  displayEntityOccurences() {
-    if (this.props.entity.occurrences.length) {
-      return this.props.entity.occurrences.length;
-    }
-
-    return '+';
-  }
+  // /**
+  //  * Display occurences of current entity or plus if there are no such.
+  //  *
+  //  * @since 3.16.0
+  //  */
+  // displayEntityOccurences() {
+  //   if (this.props.entity.occurrences.length) {
+  //     return this.props.entity.occurrences.length;
+  //   }
+  //
+  //   return '+';
+  // }
 
   /**
    * Render the component.
@@ -194,7 +194,7 @@ class EntityTile extends React.Component {
             onClick={this.onSwitchClick}
             selected={this.props.entity.link}
           >
-            Link{' '}
+            Link{" "}
           </Switch>
           <Category>{this.props.entity.mainType}</Category>
           <EditLink

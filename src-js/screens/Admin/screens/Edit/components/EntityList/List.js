@@ -14,7 +14,7 @@ import styled from 'styled-components';
  */
 const List = styled.ul`
 	margin: 0 auto;
-	padding-top: 16px;
+	padding-bottom: 8px;
 `;
 
 // Finally export the `List` component.

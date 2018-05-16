@@ -36,6 +36,7 @@ import App from './components/App';
 import AnnotationEvent from './angular/AnnotationEvent';
 import ReceiveAnalysisResultsEvent from './angular/ReceiveAnalysisResultsEvent';
 import UpdateOccurrencesForEntityEvent from './angular/UpdateOccurrencesForEntityEvent';
+import EditorSelectionChangedEvent from './angular/EditorSelectionChangedEvent';
 // import log from '../modules/log';
 
 // Start-up the application when the `wlEntityList` Angular directive is
@@ -67,6 +68,9 @@ wp.wordlift.on('wlEntityList.loaded', function() {
   // `updateOccurrencesForEntity` event and dispatches the related action in
   // Redux.
   store.dispatch(UpdateOccurrencesForEntityEvent());
+
+  // Dispatch the `editorSelectionChanged` action with the new editor selection.
+  store.dispatch(EditorSelectionChangedEvent());
 });
 
 const autocomplete = (query, callback) => {

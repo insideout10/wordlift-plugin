@@ -10,15 +10,17 @@
 /**
  * External dependencies
  */
-import React from 'react';
+import React from "react";
 
 /**
  * Internal dependencies
  */
-import Wrapper from './Wrapper';
-import Header from '../Header';
-import VisibleEntityList from '../../containers/VisibleEntityList';
-import Accordion from '../Accordion';
+import Wrapper from "./Wrapper";
+import Header from "../Header";
+import VisibleEntityList from "../../containers/VisibleEntityList";
+import Accordion from "../Accordion";
+import AddEntityButton from "../../containers/AddEntityButton";
+import EntitySelect from "../AutoCompleteEntitySelect";
 
 /**
  * Define the {@link App}.
@@ -27,12 +29,14 @@ import Accordion from '../Accordion';
  * @return {Function} The `render` function.
  */
 const App = () => (
-    <Wrapper>
-        <Accordion open={true} label="Content classification">
-            <Header/>
-            <VisibleEntityList/>
-        </Accordion>
-    </Wrapper>
+  <Wrapper>
+    <AddEntityButton label="Add Entity" icon="+" />
+    <EntitySelect />
+    <Accordion open={true} label="Content classification">
+      <Header />
+      <VisibleEntityList />
+    </Accordion>
+  </Wrapper>
 );
 
 // Finally export the `App`.
