@@ -15,6 +15,7 @@ import saga from "./sagas";
 import SelectItem from "./Item/SelectItem";
 import CreateItem from "./Item/CreateItem";
 import Input from "./Input";
+import EditPostWidgetController from "../../angular/EditPostWidgetController";
 
 // Create the saga middleware.
 const sagaMiddleware = createSagaMiddleware();
@@ -57,7 +58,14 @@ class AutoCompleteEntitySelect extends Component {
             onChange={e => this.setFilter(e.target.value)}
           />
           <SelectContainer Item={SelectItem}>
-            <CreateItem label={`Create ${this.props.filter}...`}/>
+            <CreateItem
+              label={`Create ${this.props.filter}...`}
+              onClick={() =>
+                EditPostWidgetController().$apply(
+                  EditPostWidgetController().setCurrentEntity(undefined, undefined, this.props.filter)
+                )
+              }
+            />
           </SelectContainer>
         </div>
       </Provider>

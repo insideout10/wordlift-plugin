@@ -9,6 +9,9 @@ const Wrapper = styled.ul`
   max-height: 200px;
   background: #fff;
   position: absolute;
+  z-index: 1000;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 `;
 
 export default Wrapper;

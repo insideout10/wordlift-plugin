@@ -20,7 +20,7 @@ import Header from "../Header";
 import VisibleEntityList from "../../containers/VisibleEntityList";
 import Accordion from "../Accordion";
 import AddEntityButton from "../../containers/AddEntityButton";
-import EntitySelect from "../AutoCompleteEntitySelect";
+import AddEntitySelect from "../../containers/AddEntitySelect";
 
 /**
  * Define the {@link App}.
@@ -31,7 +31,7 @@ import EntitySelect from "../AutoCompleteEntitySelect";
 const App = () => (
   <Wrapper>
     <AddEntityButton label="Add Entity" icon="+" />
-    <EntitySelect />
+    <AddEntitySelect />
     <Accordion open={true} label="Content classification">
       <Header />
       <VisibleEntityList />
