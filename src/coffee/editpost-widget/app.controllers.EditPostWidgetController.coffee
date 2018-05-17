@@ -130,7 +130,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     $scope.currentEntityType = undefined
 
   $scope.storeCurrentEntity = ()->
-    $log.debug { currentEntity: $scope.currentEntity }
 
     unless $scope.currentEntity.mainType
       $scope.addMsg 'Select an entity type.', 'error'

@@ -24,6 +24,15 @@ const store = createStore(reducer, applyMiddleware(sagaMiddleware));
 // Run the saga.
 sagaMiddleware.run(saga);
 
+const getMainType = types => {
+  for (let i = 0; i < window.wordlift.types.length; i++) {
+    const type = window.wordlift.types[i];
+
+    if (-1 < types.indexOf(type.uri)) return type.slug;
+  }
+  return "thing";
+};
+
 /**
  * A clickable `SelectItem`.
  *
@@ -45,8 +54,9 @@ const ClickableSelectItem = props => (
         ctrl.currentEntity.id = item.id;
         ctrl.currentEntity.images = item.images;
         ctrl.currentEntity.label = item.label;
-        ctrl.currentEntity.mainType = "thing";
-        ctrl.currentEntity.types = item.type;
+        ctrl.currentEntity.mainType = getMainType(item.types);
+        ctrl.currentEntity.types = item.types;
+        ctrl.currentEntity.sameAs = item.sameAss;
         ctrl.storeCurrentEntity();
       });
     }}
