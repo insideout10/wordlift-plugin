@@ -30,7 +30,6 @@ import EntityTile from "../EntityTile";
  * @constructor
  */
 const EntityList = ({ entities, onClick, onLinkClick, onEditClick }) => {
-  console.log({ entities });
   return (
     <List>
       {// Map each entity to an `EntityTile`.

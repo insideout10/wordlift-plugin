@@ -24,6 +24,35 @@ const store = createStore(reducer, applyMiddleware(sagaMiddleware));
 // Run the saga.
 sagaMiddleware.run(saga);
 
+/**
+ * A clickable `SelectItem`.
+ *
+ * @since 3.18.4
+ *
+ * @param props
+ * @returns {*}
+ * @constructor
+ */
+const ClickableSelectItem = props => (
+  <SelectItem
+    {...props}
+    onClick={() => {
+      const item = props.item;
+      const ctrl = EditPostWidgetController();
+      ctrl.$apply(() => {
+        ctrl.setCurrentEntity();
+        ctrl.currentEntity.description = item.descriptions[0];
+        ctrl.currentEntity.id = item.id;
+        ctrl.currentEntity.images = item.images;
+        ctrl.currentEntity.label = item.label;
+        ctrl.currentEntity.mainType = "thing";
+        ctrl.currentEntity.types = item.type;
+        ctrl.storeCurrentEntity();
+      });
+    }}
+  />
+);
+
 class AutoCompleteEntitySelect extends Component {
   constructor(props) {
     super(props);
@@ -51,18 +80,27 @@ class AutoCompleteEntitySelect extends Component {
   render() {
     return (
       <Provider store={store}>
-        <div style={{ width: "250px" }}>
+        <div
+          style={{
+            width: "250px",
+            display: this.props.visible ? "block" : "none"
+          }}
+        >
           <Input
             type="text"
             defaultValue={this.props.filter}
             onChange={e => this.setFilter(e.target.value)}
           />
-          <SelectContainer Item={SelectItem}>
+          <SelectContainer Item={ClickableSelectItem}>
             <CreateItem
               label={`Create ${this.props.filter}...`}
               onClick={() =>
                 EditPostWidgetController().$apply(
-                  EditPostWidgetController().setCurrentEntity(undefined, undefined, this.props.filter)
+                  EditPostWidgetController().setCurrentEntity(
+                    undefined,
+                    undefined,
+                    this.props.filter
+                  )
                 )
               }
             />

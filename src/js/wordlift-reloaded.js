@@ -478,8 +478,11 @@
         return $scope.currentEntityType = void 0;
       };
       $scope.storeCurrentEntity = function() {
+        $log.debug({
+          currentEntity: $scope.currentEntity
+        });
         if (!$scope.currentEntity.mainType) {
-          $scope.addMsg('Please do not forgive to specify a type for this entity!', 'error');
+          $scope.addMsg('Select an entity type.', 'error');
           return;
         }
         switch ($scope.currentEntityType) {
