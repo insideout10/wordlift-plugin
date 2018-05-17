@@ -45,7 +45,7 @@
     "react-dev-utils": "^5",
     "react-dom": "^16",
     "react-redux": "^5.0.6",
-    "react-select": "^1.0.0-rc.7",
+    "react-select": "^1.2",
     "redux": "^3.7.2",
     "redux-actions": "^2.3.2",
     "redux-saga": "^0.16.0",

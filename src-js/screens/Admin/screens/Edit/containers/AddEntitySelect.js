@@ -9,12 +9,12 @@ import EntitySelect from "../components/AutoCompleteEntitySelect";
  * @inheritDoc
  */
 const mapStateToProps = state => {
+  const selection =
+    "undefined" !== typeof state.editor.selection ? state.editor.selection : "";
+
   return {
-    visible: "" !== state.editor.selection,
-    filter:
-      "undefined" !== typeof state.editor.selection
-        ? state.editor.selection
-        : ""
+    visible: "" !== selection,
+    filter: selection
   };
 };
 

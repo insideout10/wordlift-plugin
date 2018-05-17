@@ -1,12 +1,10 @@
-import styled from "styled-components";
+import React from "react";
+import Wrapper from "./Wrapper";
 
-const Input = styled.input`
-  width: 100%;
-  box-sizing: border-box;
-  line-height: 16px;
-  padding: 4px 12px;
-  font-size: 12px;
-  font-weight: 600;
-`;
+const Input = props => (
+  <Wrapper>
+    <input {...props} />
+  </Wrapper>
+);
 
 export default Input;
