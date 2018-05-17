@@ -478,9 +478,6 @@
         return $scope.currentEntityType = void 0;
       };
       $scope.storeCurrentEntity = function() {
-        $log.debug({
-          currentEntity: $scope.currentEntity
-        });
         if (!$scope.currentEntity.mainType) {
           $scope.addMsg('Select an entity type.', 'error');
           return;
@@ -1523,15 +1520,10 @@
       });
       service = {
         hasSelection: function() {
-          var ed, pattern;
+          var ed;
           ed = EditorAdapter.getEditor();
           if (ed != null) {
             if (ed.selection.isCollapsed()) {
-              return false;
-            }
-            pattern = /<([\/]*[a-z]+)[^<]*>/;
-            if (pattern.test(ed.selection.getContent())) {
-              $log.warn("The selection overlaps html code");
               return false;
             }
             return true;

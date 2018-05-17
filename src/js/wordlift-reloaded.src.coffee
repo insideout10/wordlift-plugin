@@ -502,7 +502,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     $scope.currentEntityType = undefined
 
   $scope.storeCurrentEntity = ()->
-    $log.debug { currentEntity: $scope.currentEntity }
 
     unless $scope.currentEntity.mainType
       $scope.addMsg 'Select an entity type.', 'error'
@@ -1501,10 +1500,10 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
         if ed?
           if ed.selection.isCollapsed()
             return false
-          pattern = /<([\/]*[a-z]+)[^<]*>/
-          if pattern.test ed.selection.getContent()
-            $log.warn "The selection overlaps html code"
-            return false
+
+#          if /<([\/]*[a-z]+)[^<]*>/.test ed.selection.getContent()
+#            $log.warn "The selection overlaps html code"
+#            return false
           return true
 
         false
@@ -1524,6 +1523,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       createTextAnnotationFromCurrentSelection: ()->
 # A reference to the editor.
         ed = EditorAdapter.getEditor()
+
         # If the current selection is collapsed / blank, then nothing to do
         if ed.selection.isCollapsed()
           $log.warn "Invalid selection! The text annotation cannot be created"
@@ -1532,6 +1532,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
         # Retrieve the selected text
         # Notice that toString() method of browser native selection obj is used
         text = "#{ed.selection.getSel()}"
+
         # Create the text annotation
         textAnnotation = AnalysisService.createAnnotation {
           text: text
@@ -1539,16 +1540,20 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
 
         # Prepare span wrapper for the new text annotation
         textAnnotationSpan = "<span id=\"#{textAnnotation.id}\" class=\"textannotation unlinked selected\">#{ed.selection.getContent()}</span>#{INVISIBLE_CHAR}"
+
         # Update the content within the editor
         ed.selection.setContent textAnnotationSpan
 
         # Retrieve the current heml content
         content = EditorAdapter.getHTML() # ed.getContent format: 'raw'
+
         # Create a Traslator instance
         traslator = Traslator.create content
+
         # Retrieve the index position of the new span
         htmlPosition = content.indexOf(textAnnotationSpan);
-        # Detect the coresponding text position
+
+        # Detect the corresponding text position
         textPosition = traslator.html2text htmlPosition
 
         # Set start & end text annotation properties

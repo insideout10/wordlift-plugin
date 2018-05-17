@@ -49,7 +49,9 @@ const ClickableSelectItem = props => (
       const item = props.item;
       const ctrl = EditPostWidgetController();
       ctrl.$apply(() => {
+        // Create the text annotation.
         ctrl.setCurrentEntity();
+        // Update the entity data.
         ctrl.currentEntity.description = item.descriptions[0];
         ctrl.currentEntity.id = item.id;
         ctrl.currentEntity.images = item.images;
@@ -57,6 +59,7 @@ const ClickableSelectItem = props => (
         ctrl.currentEntity.mainType = getMainType(item.types);
         ctrl.currentEntity.types = item.types;
         ctrl.currentEntity.sameAs = item.sameAss;
+        // Save the entity.
         ctrl.storeCurrentEntity();
       });
     }}
