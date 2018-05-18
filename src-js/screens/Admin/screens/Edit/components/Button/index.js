@@ -5,10 +5,11 @@ import React from "react";
 
 import Wrapper from "./Wrapper";
 
-const Button = ({ label, icon, disabled }) => (
+const Button = ({ label, icon, disabled, children }) => (
   <Wrapper disabled={disabled}>
-      <div>{label}</div>
-      <div>{icon}</div>
+    {/*<div>{label}</div>*/}
+    {/*<div>{icon}</div>*/}
+    {children}
   </Wrapper>
 );
 

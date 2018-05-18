@@ -2,6 +2,7 @@ import styled, { css } from "styled-components";
 import { darken } from "polished";
 
 const Wrapper = styled.div`
+    white-space: initial;
     line-height: 14px;
     color: white;
     padding: 10px;

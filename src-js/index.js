@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import "./screens/Admin/screens/Keywords";
 import Button from "./screens/Admin/screens/Edit/components/Button";
 import AddEntitySelect from "./screens/Admin/screens/Edit/containers/AddEntitySelect";
+import AddEntity from "./screens/Admin/screens/Edit/components/AddEntity";
 
 class App extends Component {
   constructor(props) {
@@ -30,6 +31,7 @@ class App extends Component {
         <div>
           <Button label="I am a Button" icon="+" />
           <Button label="I am disabled" disabled={true} icon="+" />
+          <AddEntity />
           <div style={{ width: "250px" }}>
             <AddEntitySelect />
           </div>

@@ -1,0 +1,22 @@
+import styled from "styled-components";
+
+const Wrapper = styled.div`
+  padding: 8px 0 6px;
+  border-bottom: 2px solid #007aff;
+  display: inline-block;
+  width: 100%;
+  margin-bottom: -6px;
+
+  input {
+    border: 0;
+    float: left;
+    width: calc( 100% - 36px );
+    font-family: BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu,
+      Cantarell, "Helvetica Neue", sans-serif;
+    line-height: 20px;
+    font-size: 14px;
+    padding: 0 6px;
+  }
+`;
+
+export default Wrapper;
