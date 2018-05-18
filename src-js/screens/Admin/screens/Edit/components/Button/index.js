@@ -5,10 +5,8 @@ import React from "react";
 
 import Wrapper from "./Wrapper";
 
-const Button = ({ label, icon, disabled, children }) => (
-  <Wrapper disabled={disabled}>
-    {/*<div>{label}</div>*/}
-    {/*<div>{icon}</div>*/}
+const Button = ({ children, ...props }) => (
+  <Wrapper {...props}>
     {children}
   </Wrapper>
 );

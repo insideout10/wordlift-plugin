@@ -3,14 +3,11 @@ import React from "react";
 import Input from "../Input";
 import List from "../List";
 
-const Select = () => (
+const Select = ({ open, onCancel, onInputChange, children }) => (
   <div>
-    <Input />
-    <List>
-      <div>Item 1</div>
-      <div>Item 1</div>
-      <div>Item 1</div>
-      <div>Item 1</div>
+    <Input onCancel={onCancel} onInputChange={onInputChange} />
+    <List open={open}>
+      {children}
     </List>
   </div>
 );

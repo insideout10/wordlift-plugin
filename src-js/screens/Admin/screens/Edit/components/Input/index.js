@@ -3,10 +3,10 @@ import React from "react";
 import Wrapper from "./Wrapper";
 import X from "./X";
 
-const Input = props => (
+const Input = ({ onCancel, onInputChange, ...props }) => (
   <Wrapper>
-    <input {...props} />
-    <X />
+    <input onChange={e => onInputChange(e.target.value)} {...props} />
+    <X onClick={onCancel} />
   </Wrapper>
 );
 

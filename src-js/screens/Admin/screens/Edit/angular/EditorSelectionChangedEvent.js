@@ -12,7 +12,7 @@
 /**
  * Internal dependencies
  */
-import {editorSelectionChanged} from '../actions'
+import { editorSelectionChanged } from "../actions";
 
 /**
  * Define the `EditorSelectionChangedEvent` event.
@@ -21,17 +21,17 @@ import {editorSelectionChanged} from '../actions'
  * @returns {Function} The redux-thunk function.
  */
 function EditorSelectionChangedEvent() {
-    return function (dispatch) {
-        // Hook other events.
-        wp.wordlift.on('editorSelectionChanged', function (selection) {
-            // Asynchronously call the dispatch. We need this because we
-            // might be inside a reducer call.
-            setTimeout(function () {
-                dispatch(editorSelectionChanged(selection))
-            }, 0)
-        })
-    }
+  return function(dispatch) {
+    // Hook other events.
+    wp.wordlift.on("editorSelectionChanged", function(selection) {
+      // Asynchronously call the dispatch. We need this because we
+      // might be inside a reducer call.
+      setTimeout(function() {
+        dispatch(editorSelectionChanged(selection));
+      }, 0);
+    });
+  };
 }
 
 // Finally export the function.
-export default EditorSelectionChangedEvent
+export default EditorSelectionChangedEvent;

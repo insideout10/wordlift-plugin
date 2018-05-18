@@ -9,7 +9,6 @@ const X = styled.div`
   display: inline-block;
   text-align: center;
   line-height: 20px;
-  float: right;
   cursor: pointer;
 
   &::after {

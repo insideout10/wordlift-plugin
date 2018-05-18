@@ -28,14 +28,7 @@ class App extends Component {
   render() {
     return (
       <Provider store={this.store}>
-        <div>
-          <Button label="I am a Button" icon="+" />
-          <Button label="I am disabled" disabled={true} icon="+" />
-          <AddEntity />
-          <div style={{ width: "250px" }}>
-            <AddEntitySelect />
-          </div>
-        </div>
+        <AddEntity />
       </Provider>
     );
   }

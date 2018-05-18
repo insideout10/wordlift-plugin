@@ -5,12 +5,11 @@ const Wrapper = styled.div`
   border-bottom: 2px solid #007aff;
   display: inline-block;
   width: 100%;
-  margin-bottom: -6px;
 
-  input {
+  > input {
     border: 0;
     float: left;
-    width: calc( 100% - 36px );
+    width: calc(100% - 36px) !important;
     font-family: BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu,
       Cantarell, "Helvetica Neue", sans-serif;
     line-height: 20px;

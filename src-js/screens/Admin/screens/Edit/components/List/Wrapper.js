@@ -17,9 +17,15 @@ const Wrapper = styled.ul`
     Cantarell, "Helvetica Neue", sans-serif;
   line-height: 20px;
   font-size: 14px;
+  position: absolute;
+  width: calc(100% - 1px);
+  margin-left: 1px;
+  overflow-x: hidden;
+  z-index: 1001;
+
+  display: ${props => (props.open ? "block" : "none")};
 
   > li {
-    padding: 8px 4px;
     cursor: pointer;
 
     &:hover {
