@@ -7,7 +7,8 @@ import {
   createEntityRequest,
   createEntitySuccess,
   setValue,
-  loadItemsSuccess
+  loadItemsSuccess,
+  close
 } from "./actions";
 import { autocomplete } from "./api";
 import EditPostWidgetController from "../../angular/EditPostWidgetController";
@@ -49,6 +50,10 @@ function* addEntity({ payload }) {
   yield put(addEntitySuccess());
 }
 
+function* requestClose() {
+  yield put(close());
+}
+
 const getMainType = types => {
   for (let i = 0; i < window.wordlift.types.length; i++) {
     const type = window.wordlift.types[i];
@@ -64,6 +69,10 @@ function* saga() {
   yield takeEvery(createEntityRequest, createEntity);
 
   yield takeEvery(addEntityRequest, addEntity);
+
+  yield takeEvery(createEntitySuccess, requestClose);
+
+  yield takeEvery(addEntitySuccess, requestClose);
 }
 
 export default saga;
