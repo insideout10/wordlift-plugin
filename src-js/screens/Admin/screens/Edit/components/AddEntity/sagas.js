@@ -24,6 +24,8 @@ import { autocomplete } from "./api";
 import EditPostWidgetController from "../../angular/EditPostWidgetController";
 
 function* loadItems({ payload }) {
+  if ("undefined" === typeof payload || "" === payload) return;
+
   yield call(delay, 500);
 
   const language =

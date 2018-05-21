@@ -21,10 +21,10 @@ import DisplayTypes from "./DisplayTypes";
  */
 const SelectItem = ({ item, ...props }) => (
   <Wrapper {...props}>
-    <Label>{item.label}</Label>
+    <Label title={item.label}>{item.label}</Label>
     <Cloud className="fa fa-cloud" local={"local" === item.scope ? 1 : 0} />
     {0 < item.descriptions.length && (
-      <Description>{item.descriptions[0]}</Description>
+      <Description title={item.descriptions[0]}>{item.descriptions[0]}</Description>
     )}
     <DisplayTypes>{item.displayTypes}</DisplayTypes>
   </Wrapper>

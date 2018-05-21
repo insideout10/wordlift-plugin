@@ -7,7 +7,16 @@ import Wrapper from "./Wrapper";
 
 const Button = ({ children, label, ...props }) => (
   <Wrapper {...props}>
-    {label}
+    <div
+      style={{
+        width: "calc(100% - 16px)",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap"
+      }}
+    >
+      {label}
+    </div>
     {children}
   </Wrapper>
 );
