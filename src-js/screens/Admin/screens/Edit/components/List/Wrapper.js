@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { lighten } from "polished";
 
 const Wrapper = styled.ul`
   background: white;
@@ -11,7 +10,7 @@ const Wrapper = styled.ul`
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  max-height: 200px;
+  max-height: 280px;
   overflow-y: scroll;
   font-family: BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu,
     Cantarell, "Helvetica Neue", sans-serif;
@@ -27,9 +26,11 @@ const Wrapper = styled.ul`
 
   > li {
     cursor: pointer;
+    margin-bottom: 0;
+    padding-bottom: 4px;
 
     &:hover {
-      background-color: ${lighten(0.3, "#007aff")};
+      background-color: rgba(46, 146, 255, 0.2);
     }
   }
 `;

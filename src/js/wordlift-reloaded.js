@@ -1919,10 +1919,7 @@
         });
         return wp.wordlift.trigger('editorSelectionChanged', selection);
       };
-      editor.on('Click', function() {
-        return broadcastEditorSelection();
-      });
-      return editor.on('KeyUp', function() {
+      return editor.on('selectionchange', function() {
         return broadcastEditorSelection();
       });
     });

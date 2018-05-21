@@ -31,8 +31,12 @@ export const reducer = handleActions(
       items: action.payload
     }),
     [close]: state => ({ ...state, open: false }),
-    [open]: state => ({ ...state, open: true }),
-    [setValue]: (state, action) => ({ ...state, value: action.payload })
+    [open]: state => ({ ...state, open: state.enabled }),
+    [setValue]: (state, action) => ({
+      ...state,
+      value: action.payload,
+      enabled: "undefined" !== typeof action.payload && "" !== action.payload
+    })
   },
-  { open: false, items: [] }
+  { open: false, items: [], value: "", enabled: false }
 );

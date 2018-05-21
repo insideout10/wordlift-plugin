@@ -1,11 +1,12 @@
 import { connect } from "react-redux";
 
 import EntitySelect from "./EntitySelect";
-import { close, setValue } from "./actions";
 import {
+  close,
+  setValue,
   addEntityRequest,
   createEntityRequest
-} from "../AutoCompleteEntitySelect/actions";
+} from "./actions";
 
 const mapStateToProps = ({ open, value, items }) => ({ open, value, items });
 

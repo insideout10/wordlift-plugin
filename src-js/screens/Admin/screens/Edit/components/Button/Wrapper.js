@@ -21,7 +21,7 @@ const Wrapper = styled.div`
     }
 
     ${props =>
-      !props.disabled &&
+      props.enabled &&
       css`
         background-color: #007aff;
         cursor: pointer;
@@ -40,7 +40,7 @@ const Wrapper = styled.div`
       `}
     
     ${props =>
-      props.disabled &&
+      !props.enabled &&
       css`
         background-color: #cbcbcb;
         cursor: initial;

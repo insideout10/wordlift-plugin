@@ -3,6 +3,8 @@ import React from "react";
 import Wrapper from "./Wrapper";
 import Label from "./Label";
 import Cloud from "../../EntityTile/Cloud";
+import Description from "./Description";
+import DisplayTypes from "./DisplayTypes";
 
 /**
  * The `local` attribute is handled as such:
@@ -21,6 +23,10 @@ const SelectItem = ({ item, ...props }) => (
   <Wrapper {...props}>
     <Label>{item.label}</Label>
     <Cloud className="fa fa-cloud" local={"local" === item.scope ? 1 : 0} />
+    {0 < item.descriptions.length && (
+      <Description>{item.descriptions[0]}</Description>
+    )}
+    <DisplayTypes>{item.displayTypes}</DisplayTypes>
   </Wrapper>
 );
 

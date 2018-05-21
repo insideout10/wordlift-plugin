@@ -11,7 +11,7 @@ const EntitySelect = ({
   value,
   ...props
 }) => (
-  <Select {...props}>
+  <Select value={value} {...props}>
     {[<CreateItem key={1000} label={value} onClick={() => createEntity(value)} />].concat(
       items.map((item, index) => (
         <SelectItem key={index} item={item} onClick={() => selectEntity(item)} />
