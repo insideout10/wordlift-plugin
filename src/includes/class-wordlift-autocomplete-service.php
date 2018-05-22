@@ -55,13 +55,15 @@ class Wordlift_Autocomplete_Service {
 	 *
 	 * @since 3.15.0
 	 *
-	 * @param string       $query   The search string.
+	 * @param string $query The search string.
 	 * @param array|string $exclude The exclude parameter string.
+	 * @param string $scope The search scope: "local" will search only in the local dataset; "cloud" will search also
+	 *                      in Wikipedia. By default is "cloud".
 	 *
 	 * @return array $response The API response.
 	 */
-	public function make_request( $query, $exclude = '' ) {
-		$url = $this->build_request_url( $query, $exclude );
+	public function make_request( $query, $exclude = '', $scope = 'cloud' ) {
+		$url = $this->build_request_url( $query, $exclude, $scope );
 
 		// Make request.
 		$response = wp_remote_get( $url );
@@ -75,16 +77,19 @@ class Wordlift_Autocomplete_Service {
 	 *
 	 * @since 3.15.0
 	 *
-	 * @param string       $query   The search string.
+	 * @param string $query The search string.
 	 * @param array|string $exclude The exclude parameter.
-	 *
+	 * @param string $scope The search scope: "local" will search only in the local dataset; "cloud" will search also
+	 *                      in Wikipedia. By default is "cloud".
+
 	 * @return string Built url.
 	 */
-	private function build_request_url( $query, $exclude ) {
+	private function build_request_url( $query, $exclude, $scope ) {
 		$args = array(
 			'key'      => $this->configuration_service->get_key(),
 			'language' => $this->configuration_service->get_language_code(),
 			'query'    => $query,
+			'scope'    => $scope,
 			'limit'    => 100,
 		);
 

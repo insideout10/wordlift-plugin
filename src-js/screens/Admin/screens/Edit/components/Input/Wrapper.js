@@ -8,6 +8,7 @@ const Wrapper = styled.div`
 
   > input {
     border: 0;
+    outline: none;
     float: left;
     width: calc(100% - 36px) !important;
     font-family: BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu,

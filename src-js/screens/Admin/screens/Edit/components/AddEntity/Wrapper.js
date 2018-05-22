@@ -2,10 +2,11 @@ import React from "react";
 import styled from "styled-components";
 
 const VerticalContainer = styled.div`
-  width: 100%;
   position: relative;
   overflow-y: visible;
   margin-bottom: 8px;
+  width: calc(100% + 6px);
+  margin-left: -3px;
 `;
 
 const HorizontalContainer = styled.div`

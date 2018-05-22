@@ -4,18 +4,20 @@ const X = styled.div`
   font-family: sans-serif;
   background-color: #007aff;
   color: white;
-  width: 20px;
-  height: 20px;
+  width: 12px;
+  height: 12px;
   display: inline-block;
   text-align: center;
-  line-height: 20px;
+  line-height: 12px;
+  font-size: 12px;
+  padding: 1px;
   cursor: pointer;
   border-radius: 100%;
   transform: rotate(45deg);
 
   &::after {
     content: "+";
-    font-size: 20px;
+    font-size: 12px;
     width: 100%;
     height: 100%;
   }

@@ -7,7 +7,10 @@ export function autocomplete(query, language, ...excludes) {
       // eslint-disable-next-line
       _wpnonce: wlSettings["wl_autocomplete_nonce"],
       // eslint-disable-next-line
-      exclude: wlSettings.itemId
+      exclude: wlSettings.itemId,
+      // eslint-disable-next-line
+      scope: "undefined" !== wlSettings["can_create_entities"] && "yes" === wlSettings["can_create_entities"]
+        ? "cloud" : "local",
     });
   } else {
     const url = new URL("http://localhost:8080/wordlift-api/autocomplete");
