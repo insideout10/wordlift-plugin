@@ -486,6 +486,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
           $scope.addMsg 'Select a text or an existing annotation in order to create a new entity. Text selections are valid only if they do not overlap other existing annotation', 'error'
           $scope.unsetCurrentEntity()
           return
+
         if $scope.annotation?
           # Retrieve the current annotation
           annotation = $scope.analysis.annotations[ $scope.annotation ]
@@ -503,7 +504,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.storeCurrentEntity = ()->
 
     unless $scope.currentEntity.mainType
-      $scope.addMsg 'Please do not forgive to specify a type for this entity!', 'error'
+      $scope.addMsg 'Select an entity type.', 'error'
       return
 
     switch $scope.currentEntityType
@@ -849,7 +850,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
       onReset: '&'
       box: '='
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.13.3'
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.18.4'
 
     link: ($scope, $element, $attrs, $ctrl) ->  
 
@@ -972,7 +973,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', [])
     scope:
       entity: '='
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.13.3'
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.18.4'
 ])
 angular.module('wordlift.editpost.widget.services.EditorAdapter', [
   'wordlift.editpost.widget.services.EditorAdapter'
@@ -1152,11 +1153,12 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 #        data.topics = []
       dt = @._defaultType
 
-      data.topics = data.topics.map (topic)->
-        topic.id = topic.uri
-        topic.occurrences = []
-        topic.mainType = dt
-        topic
+      if data.topics?
+        data.topics = data.topics.map (topic)->
+          topic.id = topic.uri
+          topic.occurrences = []
+          topic.mainType = dt
+          topic
 
       $log.debug "Found #{Object.keys(configuration.entities).length} entities in configuration...", configuration
 
@@ -1498,10 +1500,10 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
         if ed?
           if ed.selection.isCollapsed()
             return false
-          pattern = /<([\/]*[a-z]+)[^<]*>/
-          if pattern.test ed.selection.getContent()
-            $log.warn "The selection overlaps html code"
-            return false
+
+#          if /<([\/]*[a-z]+)[^<]*>/.test ed.selection.getContent()
+#            $log.warn "The selection overlaps html code"
+#            return false
           return true
 
         false
@@ -1521,6 +1523,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       createTextAnnotationFromCurrentSelection: ()->
 # A reference to the editor.
         ed = EditorAdapter.getEditor()
+
         # If the current selection is collapsed / blank, then nothing to do
         if ed.selection.isCollapsed()
           $log.warn "Invalid selection! The text annotation cannot be created"
@@ -1529,6 +1532,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
         # Retrieve the selected text
         # Notice that toString() method of browser native selection obj is used
         text = "#{ed.selection.getSel()}"
+
         # Create the text annotation
         textAnnotation = AnalysisService.createAnnotation {
           text: text
@@ -1536,16 +1540,20 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
 
         # Prepare span wrapper for the new text annotation
         textAnnotationSpan = "<span id=\"#{textAnnotation.id}\" class=\"textannotation unlinked selected\">#{ed.selection.getContent()}</span>#{INVISIBLE_CHAR}"
+
         # Update the content within the editor
         ed.selection.setContent textAnnotationSpan
 
         # Retrieve the current heml content
         content = EditorAdapter.getHTML() # ed.getContent format: 'raw'
+
         # Create a Traslator instance
         traslator = Traslator.create content
+
         # Retrieve the index position of the new span
         htmlPosition = content.indexOf(textAnnotationSpan);
-        # Detect the coresponding text position
+
+        # Detect the corresponding text position
         textPosition = traslator.html2text htmlPosition
 
         # Set start & end text annotation properties
@@ -1843,7 +1851,7 @@ $(
   	<div
       id="wordlift-edit-post-wrapper"
       ng-controller="EditPostWidgetController"
-      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.13.3'">
+      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.18.4'">
     </div>
   """)
   .appendTo('#wordlift-edit-post-outer-wrapper')
@@ -1875,6 +1883,11 @@ $(
     $rootScope.$on 'geoLocationStatusUpdated', (event, status) ->
       css = if status then 'wl-spinner-running' else ''
       $('.wl-widget-spinner svg').attr 'class', css
+
+    wp.wordlift.on 'loading', ( status ) ->
+      css = if status then 'wl-spinner-running' else ''
+      $('.wl-widget-spinner svg').attr 'class', css
+
   ])
 
   # Add WordLift as a plugin of the TinyMCE editor.
@@ -1976,7 +1989,19 @@ $(
     )
 
     # Set the initial state on the editor's body.
-    editor.on('init', () -> addClassToBody())
+    editor.on('init', () ->
+      addClassToBody()
+
+      # Send a broadcast when the editor selection changes.
+      #
+      # See https://github.com/insideout10/wordlift-plugin/issues/467
+      broadcastEditorSelection = () ->
+        selection = editor.selection.getContent({format: 'text'})
+        wp.wordlift.trigger 'editorSelectionChanged', selection
+
+      editor.on('selectionchange', () -> broadcastEditorSelection() )
+
+    )
 
     # Start the analysis if the postbox isn't closed.
     if !closed then fireEvent( editor, 'LoadContent', startAnalysis ) else

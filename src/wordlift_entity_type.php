@@ -5,7 +5,7 @@
  *
  * @deprecated use Wordlift_Entity_Type_Service::get_instance()->set( $post_id, $type_uri )
  *
- * @param int    $post_id  The numeric post ID.
+ * @param int $post_id The numeric post ID.
  * @param string $type_uri A type URI.
  */
 function wl_set_entity_main_type( $post_id, $type_uri ) {
@@ -21,7 +21,7 @@ function wl_set_entity_main_type( $post_id, $type_uri ) {
 function wl_print_entity_type_inline_js() {
 
 	$terms = get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
-		'hide_empty' => FALSE,
+		'hide_empty' => false,
 	) );
 
 	echo <<<EOF
@@ -50,6 +50,7 @@ EOF;
 				'uri'       => $type['uri'],
 				'css'       => $type['css_class'],
 				'sameAs'    => $type['same_as'],
+				'slug'      => $term->slug,
 				'templates' => ( isset( $type['templates'] ) ? $type['templates'] : array() ),
 			) );
 

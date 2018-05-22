@@ -87,3 +87,15 @@ export const toggleLink = ( entity ) => (
 export const updateOccurrencesForEntity = ( entityId, occurrences ) => (
 	{ type: types.UPDATE_OCCURRENCES_FOR_ENTITY, entityId, occurrences }
 );
+
+/**
+ * The `editorSelectionChanged` action is dispatched when the editor text selection
+ * changes.
+ *
+ * @since 3.18.4
+ * @param {string} selection The editor text selection.
+ * @returns {{type: string, selection: *}}
+ */
+export const editorSelectionChanged = ( selection ) => (
+	{ type: types.EDITOR_SELECTION_CHANGED, selection }
+);

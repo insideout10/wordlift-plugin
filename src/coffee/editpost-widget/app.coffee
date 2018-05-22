@@ -27,7 +27,7 @@ $(
   	<div
       id="wordlift-edit-post-wrapper"
       ng-controller="EditPostWidgetController"
-      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.13.3'">
+      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.18.4'">
     </div>
   """)
   .appendTo('#wordlift-edit-post-outer-wrapper')
@@ -59,6 +59,11 @@ $(
     $rootScope.$on 'geoLocationStatusUpdated', (event, status) ->
       css = if status then 'wl-spinner-running' else ''
       $('.wl-widget-spinner svg').attr 'class', css
+
+    wp.wordlift.on 'loading', ( status ) ->
+      css = if status then 'wl-spinner-running' else ''
+      $('.wl-widget-spinner svg').attr 'class', css
+
   ])
 
   # Add WordLift as a plugin of the TinyMCE editor.
@@ -160,7 +165,19 @@ $(
     )
 
     # Set the initial state on the editor's body.
-    editor.on('init', () -> addClassToBody())
+    editor.on('init', () ->
+      addClassToBody()
+
+      # Send a broadcast when the editor selection changes.
+      #
+      # See https://github.com/insideout10/wordlift-plugin/issues/467
+      broadcastEditorSelection = () ->
+        selection = editor.selection.getContent({format: 'text'})
+        wp.wordlift.trigger 'editorSelectionChanged', selection
+
+      editor.on('selectionchange', () -> broadcastEditorSelection() )
+
+    )
 
     # Start the analysis if the postbox isn't closed.
     if !closed then fireEvent( editor, 'LoadContent', startAnalysis ) else

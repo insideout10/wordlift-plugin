@@ -9,14 +9,15 @@
 /**
  * External dependencies
  */
-import { combineReducers } from 'redux';
+import { combineReducers } from "redux";
 
 /**
  * Internal dependencies
  */
-import entities from './entities';
-import annotationFilter from './annotationFilter';
-import visibilityFilter from './visibilityFilter';
+import entities from "./entities";
+import annotationFilter from "./annotationFilter";
+import visibilityFilter from "./visibilityFilter";
+import editor from "./editor";
 
 /**
  * Define the root reducer.
@@ -24,12 +25,12 @@ import visibilityFilter from './visibilityFilter';
  * @since 3.11.0
  * @type {Reducer<S>}
  */
-const rootReducer = combineReducers(
-	{
-		entities,
-		annotationFilter,
-		visibilityFilter
-	} );
+const rootReducer = combineReducers({
+  entities,
+  annotationFilter,
+  visibilityFilter,
+  editor
+});
 
 // Finally export the root reducer.
 export default rootReducer;
