@@ -52,3 +52,12 @@ export const RECEIVE_ANALYSIS_RESULTS = 'RECEIVE_ANALYSIS_RESULTS';
 export const SET_CURRENT_ENTITY = 'SET_CURRENT_ENTITY';
 
 export const SET_ENTITY_FILTER = 'SET_ENTITY_FILTER';
+
+/**
+ * Define the `EDITOR_SELECTION_CHANGED` action name, fired when the selection has changed
+ * in the main editor.
+ *
+ * @since 3.18.4
+ * @type {string}
+ */
+export const EDITOR_SELECTION_CHANGED = 'EDITOR_SELECTION_CHANGED';

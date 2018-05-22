@@ -2642,9 +2642,6 @@
   stroke-width: 14;
   stroke-dasharray: 50 100;
 }
-#wordlift_entities_box {
-  background-color: #F5F5F5;
-}
 #wordlift_entities_box h1,
 #wordlift_entities_box h2,
 #wordlift_entities_box h3,
@@ -2719,6 +2716,7 @@ h1.wl-tab-lead-text {
   margin-bottom: 0;
 }
 .wl-tab-lead .wl-tab-lead-wrap {
+  cursor: pointer;
   display: -webkit-flex;
   display: -moz-flex;
   display: -ms-flex;
@@ -2746,8 +2744,7 @@ h1.wl-tab-lead-text {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   background-color: #FFFFFF;
-  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-          box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  border: 1px solid #eee;
   -webkit-transition: all 200ms ease-out;
           transition: all 200ms ease-out;
 }
@@ -3278,23 +3275,9 @@ h3.ui-sortable-handle {
   animation: wlTHink;
 }
 .wl-widget-spinner {
-  display: -webkit-inline-flex;
-  display: -moz-inline-flex;
-  display: -ms-inline-flex;
-  display: -o-inline-flex;
-  display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-  -ms-flex-pack: end;
-  justify-content: flex-end;
-  width: 160px;
   height: 20px;
-  -webkit-transform: translateY(3px);
-      -ms-transform: translateY(3px);
-          transform: translateY(3px);
   float: right;
+  font-size: 0;
 }
 .wl-widget-spinner svg {
   display: inline-block;

@@ -10,6 +10,10 @@ DELETE { <POST_URI> <http://www.w3.org/2000/01/rdf-schema#label> ?o } WHERE { <P
 DELETE { ?s <http://www.w3.org/2000/01/rdf-schema#label> <POST_URI> } WHERE { ?s <http://www.w3.org/2000/01/rdf-schema#label> <POST_URI> }; 
 DELETE { <POST_URI> <http://purl.org/dc/terms/title> ?o } WHERE { <POST_URI> <http://purl.org/dc/terms/title> ?o }; 
 DELETE { ?s <http://purl.org/dc/terms/title> <POST_URI> } WHERE { ?s <http://purl.org/dc/terms/title> <POST_URI> }; 
+DELETE { <POST_URI> <http://schema.org/name> ?o } WHERE { <POST_URI> <http://schema.org/name> ?o }; 
+DELETE { ?s <http://schema.org/name> <POST_URI> } WHERE { ?s <http://schema.org/name> <POST_URI> }; 
+DELETE { <POST_URI> <http://schema.org/alternateName> ?o } WHERE { <POST_URI> <http://schema.org/alternateName> ?o }; 
+DELETE { ?s <http://schema.org/alternateName> <POST_URI> } WHERE { ?s <http://schema.org/alternateName> <POST_URI> }; 
 DELETE { <POST_URI> <http://schema.org/description> ?o } WHERE { <POST_URI> <http://schema.org/description> ?o }; 
 DELETE { ?s <http://schema.org/description> <POST_URI> } WHERE { ?s <http://schema.org/description> <POST_URI> }; 
 DELETE { <POST_URI> <http://www.w3.org/2002/07/owl#sameAs> ?o } WHERE { <POST_URI> <http://www.w3.org/2002/07/owl#sameAs> ?o }; 
@@ -64,6 +68,10 @@ DELETE { <POST_URI> <http://schema.org/recipeCuisine> ?o } WHERE { <POST_URI> <h
 DELETE { ?s <http://schema.org/recipeCuisine> <POST_URI> } WHERE { ?s <http://schema.org/recipeCuisine> <POST_URI> }; 
 DELETE { <POST_URI> <http://schema.org/recipeIngredient> ?o } WHERE { <POST_URI> <http://schema.org/recipeIngredient> ?o }; 
 DELETE { ?s <http://schema.org/recipeIngredient> <POST_URI> } WHERE { ?s <http://schema.org/recipeIngredient> <POST_URI> }; 
+DELETE { <POST_URI> <http://schema.org/recipeInstructions> ?o } WHERE { <POST_URI> <http://schema.org/recipeInstructions> ?o }; 
+DELETE { ?s <http://schema.org/recipeInstructions> <POST_URI> } WHERE { ?s <http://schema.org/recipeInstructions> <POST_URI> }; 
+DELETE { <POST_URI> <http://schema.org/recipeYield> ?o } WHERE { <POST_URI> <http://schema.org/recipeYield> ?o }; 
+DELETE { ?s <http://schema.org/recipeYield> <POST_URI> } WHERE { ?s <http://schema.org/recipeYield> <POST_URI> }; 
 DELETE { <POST_URI> <http://schema.org/prepTime> ?o } WHERE { <POST_URI> <http://schema.org/prepTime> ?o }; 
 DELETE { ?s <http://schema.org/prepTime> <POST_URI> } WHERE { ?s <http://schema.org/prepTime> <POST_URI> }; 
 DELETE { <POST_URI> <http://schema.org/cookTime> ?o } WHERE { <POST_URI> <http://schema.org/cookTime> ?o }; 

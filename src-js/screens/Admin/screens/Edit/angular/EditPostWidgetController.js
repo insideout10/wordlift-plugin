@@ -8,7 +8,7 @@
  */
 
 // Cache the instance.
-let scope
+let scope;
 
 /**
  * Get the `EditPostWidgetController`'s scope.
@@ -18,12 +18,14 @@ let scope
  *     instance.
  * @constructor
  */
-function EditPostWidgetController () {
+function EditPostWidgetController() {
   // Return the cached instance or get the instance and cache it.
-  return scope ? scope : scope = angular.element(
-    jQuery('[ng-controller="EditPostWidgetController"]'),
-  ).scope()
+  return scope
+    ? scope
+    : (scope = angular
+        .element(jQuery('[ng-controller="EditPostWidgetController"]'))
+        .scope());
 }
 
 // Finally export the function.
-export default EditPostWidgetController
+export default EditPostWidgetController;

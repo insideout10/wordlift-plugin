@@ -249,7 +249,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		}
 
 		// Get the image URL.
-		if ( false === $attachment = wp_get_attachment_image_src( $thumbnail_id, 'full' ) ) {
+		if ( false === $attachment = wp_get_attachment_image_src( $thumbnail_id, array( 600, 60 ) ) ) {
 			return;
 		}
 

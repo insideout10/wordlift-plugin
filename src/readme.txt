@@ -143,6 +143,27 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 = 3.19.0 (????-??-??) =
+* Enhancement: [#801](https://github.com/insideout10/wordlift-plugin/issues/801): Using _vocabulary_ as slug conflicts with the Vocabulary archive page.
+* Enhancement: [#795](https://github.com/insideout10/wordlift-plugin/issues/795): Display latest blog posts from our Website.
+* Enhancement: [#787](https://github.com/insideout10/wordlift-plugin/issues/787): Add schema:recipeInstructions and schema:recipeYield to the linked dataset.
+* Enhancement: [#786](https://github.com/insideout10/wordlift-plugin/issues/786): Add schema:name and schema:alternateName to linked dataset.
+* Enhancement: [#597](https://github.com/insideout10/wordlift-plugin/issues/597): Publisher's Logo width and height.
+
+
+= 3.18.4 (2018-05-14) =
+* Enhancement: [#467](https://github.com/insideout10/wordlift-plugin/issues/467): Manually select an entity.
+* Fix: [#806](https://github.com/insideout10/wordlift-plugin/issues/806): Image in JSON-LD is null.
+* Fix: [#802](https://github.com/insideout10/wordlift-plugin/issues/802): Use set user language (user locale) as base for WordLift translations in backend.
+
+= 3.18.3 (2018-04-23) =
+* Fix: [#802](https://github.com/insideout10/wordlift-plugin/issues/802): Use set user language (user locale) as base for WordLift translations in backend.
+* Fix: [#800](https://github.com/insideout10/wordlift-plugin/issues/800): Use wl-api instead of wp-admin/admin-ajax.php for json-ld calls.
+* Fix: [#797](https://github.com/insideout10/wordlift-plugin/issues/797): Assign the default Article taxonomy term to existing posts.
+* Fix: [#794](https://github.com/insideout10/wordlift-plugin/issues/794): Vocabulary only shows # and A.
+* Fix: [#793](https://github.com/insideout10/wordlift-plugin/issues/793): HTML encoded entities in JSON-LD.
+* Fix: [#792](https://github.com/insideout10/wordlift-plugin/issues/792): WordLift enqueues a custom jQuery UI CSS.
+* Fix: [#791](https://github.com/insideout10/wordlift-plugin/issues/791): Notice on Vocabulary Menu.
+* Fix: [#790](https://github.com/insideout10/wordlift-plugin/issues/790): Two glossary widgets on the same page are not working as expected.
 
 = 3.18.2 (2018-03-28) =
 * Enhancement: [#788](https://github.com/insideout10/wordlift-plugin/issues/788): Add hook to `save_form_data` for wl metaboxes.
@@ -171,6 +192,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement: [#325](https://github.com/insideout10/wordlift-plugin/issues/325): Disable importing SVGs from analysis.
 * Fix: [#777](https://github.com/insideout10/wordlift-plugin/issues/777): WordLift Entities-Box: Wrong Link in "Open in vocabulary".
 * Fix: [#776](https://github.com/insideout10/wordlift-plugin/issues/776): JSON-LD generation raises a warning.
+* Fix: [#774](https://github.com/insideout10/wordlift-plugin/issues/774): Changes on Author from vocabulary not updated in JSON-LD markup of existing posts.
 * Fix: [#773](https://github.com/insideout10/wordlift-plugin/issues/773): PHPUnit compatibility issue with php 7.2.
 * Fix: [#752](https://github.com/insideout10/wordlift-plugin/issues/752): 2nd level properties not added to the cloud dataset.
 * Fix: [#702](https://github.com/insideout10/wordlift-plugin/issues/702): When a post is deleted the wl_relation_instances table isn't updated.

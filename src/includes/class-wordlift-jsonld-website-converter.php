@@ -31,8 +31,8 @@ class Wordlift_Website_Jsonld_Converter extends Wordlift_Post_To_Jsonld_Converte
 			'@context'      => 'http://schema.org',
 			'@type'         => 'WebSite',
 			'@id'           => "$home_url#website",
-			'name'          => get_bloginfo( 'name' ),
-			'alternateName' => get_bloginfo( 'description' ),
+			'name'          => html_entity_decode( get_bloginfo( 'name' ), ENT_QUOTES ),
+			'alternateName' => html_entity_decode( get_bloginfo( 'description' ), ENT_QUOTES ),
 			'url'           => $home_url,
 		);
 
