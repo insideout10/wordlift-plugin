@@ -144,6 +144,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 = 3.19.0 (????-??-??) =
 * Enhancement: [#801](https://github.com/insideout10/wordlift-plugin/issues/801): Using _vocabulary_ as slug conflicts with the Vocabulary archive page.
+* Enhancement: [#795](https://github.com/insideout10/wordlift-plugin/issues/795): Display latest blog posts from our Website.
 * Enhancement: [#787](https://github.com/insideout10/wordlift-plugin/issues/787): Add schema:recipeInstructions and schema:recipeYield to the linked dataset.
 * Enhancement: [#786](https://github.com/insideout10/wordlift-plugin/issues/786): Add schema:name and schema:alternateName to linked dataset.
 * Enhancement: [#597](https://github.com/insideout10/wordlift-plugin/issues/597): Publisher's Logo width and height.
