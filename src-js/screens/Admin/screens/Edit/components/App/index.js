@@ -21,6 +21,9 @@ import VisibleEntityList from "../../containers/VisibleEntityList";
 import Accordion from "../Accordion";
 import AddEntity from "../../components/AddEntity";
 
+// eslint-disable-next-line
+const canCreateEntities = "undefined" !== wlSettings["can_create_entities"] && "yes" === wlSettings["can_create_entities"];
+
 /**
  * Define the {@link App}.
  *
@@ -29,7 +32,7 @@ import AddEntity from "../../components/AddEntity";
  */
 const App = () => (
   <Wrapper>
-    <AddEntity />
+    <AddEntity showCreate={canCreateEntities} />
     <Accordion open={true} label="Content classification">
       <Header />
       <VisibleEntityList />

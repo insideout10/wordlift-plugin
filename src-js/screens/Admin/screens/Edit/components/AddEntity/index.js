@@ -20,13 +20,13 @@ const store = createStore(reducer, applyMiddleware(sagaMiddleware));
 // Run the saga.
 sagaMiddleware.run(saga);
 
-const AddEntity = () => (
+const AddEntity = ({showCreate}) => (
   <Provider store={store}>
     <WrapperContainer>
       <ButtonContainer>
         <Arrow height="8px" color="white" />
       </ButtonContainer>
-      <EntitySelectContainer />
+      <EntitySelectContainer showCreate={showCreate} />
     </WrapperContainer>
   </Provider>
 );
