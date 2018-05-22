@@ -2,10 +2,11 @@ import styled from "styled-components";
 
 const Wrapper = styled.ul`
   background: white;
-  border-top: 0;
-  border-bottom: 1px solid #007aff;
-  border-left: 1px solid #007aff;
-  border-right: 1px solid #007aff;
+  // border-top: 0;
+  // border-bottom: 1px solid #007aff;
+  // border-left: 1px solid #007aff;
+  // border-right: 1px solid #007aff;
+  border: 1px solid #007aff;
   box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
   padding: 0;
   margin: 0;
@@ -17,8 +18,10 @@ const Wrapper = styled.ul`
   line-height: 20px;
   font-size: 14px;
   position: absolute;
-  width: calc(100% - 1px);
-  margin-left: 1px;
+  // width: calc(100% - 1px);
+  // margin-left: 1px;
+  width: 110%;
+  margin-left: -5%;
   overflow-x: hidden;
   z-index: 1001;
 

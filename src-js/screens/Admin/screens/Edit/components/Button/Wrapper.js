@@ -3,9 +3,9 @@ import { darken } from "polished";
 
 const Wrapper = styled.div`
     white-space: initial;
-    line-height: 14px;
+    line-height: 16px;
     color: white;
-    padding: 10px;
+    padding: 8px 8px 6px;
     margin-bottom: 10px;
     font-family: BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
     font-size: 14px;

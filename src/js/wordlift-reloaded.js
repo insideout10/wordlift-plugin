@@ -1821,7 +1821,12 @@
         css = status ? 'wl-spinner-running' : '';
         return $('.wl-widget-spinner svg').attr('class', css);
       });
-      return $rootScope.$on('geoLocationStatusUpdated', function(event, status) {
+      $rootScope.$on('geoLocationStatusUpdated', function(event, status) {
+        var css;
+        css = status ? 'wl-spinner-running' : '';
+        return $('.wl-widget-spinner svg').attr('class', css);
+      });
+      return wp.wordlift.on('loading', function(status) {
         var css;
         css = status ? 'wl-spinner-running' : '';
         return $('.wl-widget-spinner svg').attr('class', css);

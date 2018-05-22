@@ -10,9 +10,12 @@ const X = styled.div`
   text-align: center;
   line-height: 20px;
   cursor: pointer;
+  border-radius: 100%;
+  transform: rotate(45deg);
 
   &::after {
-    content: "x";
+    content: "+";
+    font-size: 20px;
     width: 100%;
     height: 100%;
   }

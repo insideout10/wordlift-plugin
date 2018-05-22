@@ -28,12 +28,19 @@ function* loadItems({ payload }) {
 
   yield call(delay, 500);
 
+  // eslint-disable-next-line
+  "undefined" !== typeof wp.wordlift && wp.wordlift.trigger('loading', true );
+
   const language =
     // eslint-disable-next-line
     "undefined" !== typeof wlSettings.language ? wlSettings.language : "en";
   const items = yield call(autocomplete, payload, language);
 
   yield put(loadItemsSuccess(items));
+
+  // eslint-disable-next-line
+  "undefined" !== typeof wp.wordlift && wp.wordlift.trigger('loading', false );
+
 }
 
 function* createEntity({ payload }) {

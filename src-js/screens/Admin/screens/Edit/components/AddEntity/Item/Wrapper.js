@@ -5,7 +5,6 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   position: relative;
   margin: 0 auto;
-  width: 248px;
   min-height: 32px;
   color: rgb(102, 102, 102);
 `;
