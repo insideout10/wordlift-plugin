@@ -144,6 +144,11 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 = 3.19.0 (????-??-??) =
 
+= 3.18.4 (2018-05-14) =
+* Enhancement: [#467](https://github.com/insideout10/wordlift-plugin/issues/467): Manually select an entity.
+* Fix: [#806](https://github.com/insideout10/wordlift-plugin/issues/806): Image in JSON-LD is null.
+* Fix: [#802](https://github.com/insideout10/wordlift-plugin/issues/802): Use set user language (user locale) as base for WordLift translations in backend.
+
 = 3.18.3 (2018-04-23) =
 * Fix: [#802](https://github.com/insideout10/wordlift-plugin/issues/802): Use set user language (user locale) as base for WordLift translations in backend.
 * Fix: [#800](https://github.com/insideout10/wordlift-plugin/issues/800): Use wl-api instead of wp-admin/admin-ajax.php for json-ld calls.

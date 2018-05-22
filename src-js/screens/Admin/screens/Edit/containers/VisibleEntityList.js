@@ -12,13 +12,13 @@
 /**
  * External dependencies
  */
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 
 /**
  * Internal dependencies
  */
-import { setCurrentEntity, toggleEntity, toggleLink } from '../actions';
-import EntityList from '../components/EntityList';
+import { setCurrentEntity, toggleEntity, toggleLink } from "../actions";
+import EntityList from "../components/EntityList";
 
 /**
  * Filters the provided map of entities according to the specified filter.
@@ -30,29 +30,33 @@ import EntityList from '../components/EntityList';
  * @param {string} filter The filter.
  * @returns {Object} The filtered keyed-map of entities.
  */
-const getVisibleEntities = ( entities, annotation, filter ) => {
-	switch ( filter ) {
-		// When showing an annotation, we check that the annotation id is
-		// present as key in the annotations property.
-		case 'SHOW_ANNOTATION':
-			return entities.filter( x => annotation in x.annotations );
-		case 'SHOW_WHO':
-			return entities.filter( x => 'who' === x.w );
-		case 'SHOW_WHERE':
-			return entities.filter( x => 'where' === x.w );
-		case 'SHOW_WHEN':
-			return entities.filter( x => 'when' === x.w );
-		case 'SHOW_WHAT':
-			return entities.filter( x => 'what' === x.w );
-		default:
-			// When showing all the entities, show only the shortlisted ones,
-			// i.e. the most relevant. The `shortlist` flag is set in the
-			// `entities` reducer and is assigned to the first 20 entities
-			// ordered by descending confidence.
-			//
-			// We also show selected entities.
-			return entities.filter( x => x.shortlist || 0 < x.occurrences.length );
-	}
+const getVisibleEntities = (entities, annotation, filter) => {
+  switch (filter) {
+    // When showing an annotation, we check that the annotation id is
+    // present as key in the annotations property.
+    case "SHOW_ANNOTATION":
+      return entities.filter(
+        x => "undefined" !== typeof x.annotations && annotation in x.annotations
+      );
+    case "SHOW_WHO":
+      return entities.filter(x => "undefined" !== typeof x.w && "who" === x.w);
+    case "SHOW_WHERE":
+      return entities.filter(
+        x => "undefined" !== typeof x.w && "where" === x.w
+      );
+    case "SHOW_WHEN":
+      return entities.filter(x => "undefined" !== typeof x.w && "when" === x.w);
+    case "SHOW_WHAT":
+      return entities.filter(x => "undefined" !== typeof x.w && "what" === x.w);
+    default:
+      // When showing all the entities, show only the shortlisted ones,
+      // i.e. the most relevant. The `shortlist` flag is set in the
+      // `entities` reducer and is assigned to the first 20 entities
+      // ordered by descending confidence.
+      //
+      // We also show selected entities.
+      return entities.filter(x => x.shortlist || 0 < x.occurrences.length);
+  }
 };
 
 /**
@@ -63,12 +67,14 @@ const getVisibleEntities = ( entities, annotation, filter ) => {
  * @param {object} state A state instance.
  * @returns {{entities}} An object with the list of entities.
  */
-const mapStateToProps = ( state ) => {
-	return {
-		entities: getVisibleEntities(
-			state.entities, state.annotationFilter, state.visibilityFilter
-		)
-	};
+const mapStateToProps = state => {
+  return {
+    entities: getVisibleEntities(
+      state.entities,
+      state.annotationFilter,
+      state.visibilityFilter
+    )
+  };
 };
 
 /**
@@ -79,35 +85,35 @@ const mapStateToProps = ( state ) => {
  * @returns {{onClick: (Function), onLinkClick: (Function)}} A list of
  *     dispatchers.
  */
-const mapDispatchToProps = ( dispatch ) => {
-	return {
-		/**
-		 * The `onClick` dispatchers used by `EntityTile` component.
-		 *
-		 * @since 3.11.0
-		 * @param {Object} entity The entity instance being clicked.
-		 */
-		onClick: ( entity ) => {
-			dispatch( toggleEntity( entity ) );
-		},
+const mapDispatchToProps = dispatch => {
+  return {
+    /**
+     * The `onClick` dispatchers used by `EntityTile` component.
+     *
+     * @since 3.11.0
+     * @param {Object} entity The entity instance being clicked.
+     */
+    onClick: entity => {
+      dispatch(toggleEntity(entity));
+    },
 
-		/**
-		 * The `onLinkClick` function is called when the Link switch is
-		 * clicked.
-		 * This function will toggle the link/no link on the entity's
-		 * occurrences.
-		 *
-		 * @since 3.11.0
-		 * @param {Object} entity The entity.
-		 */
-		onLinkClick: ( entity ) => {
-			dispatch( toggleLink( entity ) );
-		},
+    /**
+     * The `onLinkClick` function is called when the Link switch is
+     * clicked.
+     * This function will toggle the link/no link on the entity's
+     * occurrences.
+     *
+     * @since 3.11.0
+     * @param {Object} entity The entity.
+     */
+    onLinkClick: entity => {
+      dispatch(toggleLink(entity));
+    },
 
-		onEditClick: ( entity ) => {
-			dispatch( setCurrentEntity( entity ) );
-		}
-	};
+    onEditClick: entity => {
+      dispatch(setCurrentEntity(entity));
+    }
+  };
 };
 
 /**
@@ -117,10 +123,9 @@ const mapDispatchToProps = ( dispatch ) => {
  *
  * @since 3.11.0
  */
-const VisibleEntityList = connect(
-	mapStateToProps,
-	mapDispatchToProps
-)( EntityList );
+const VisibleEntityList = connect(mapStateToProps, mapDispatchToProps)(
+  EntityList
+);
 
 // Finally export the `VisibleEntityList`.
 export default VisibleEntityList;

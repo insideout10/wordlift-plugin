@@ -114,6 +114,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
           $scope.addMsg 'Select a text or an existing annotation in order to create a new entity. Text selections are valid only if they do not overlap other existing annotation', 'error'
           $scope.unsetCurrentEntity()
           return
+
         if $scope.annotation?
           # Retrieve the current annotation
           annotation = $scope.analysis.annotations[ $scope.annotation ]
@@ -131,7 +132,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.storeCurrentEntity = ()->
 
     unless $scope.currentEntity.mainType
-      $scope.addMsg 'Please do not forgive to specify a type for this entity!', 'error'
+      $scope.addMsg 'Select an entity type.', 'error'
       return
 
     switch $scope.currentEntityType

@@ -24,6 +24,7 @@ function wl_ajax_analyze_action() {
 		wp_send_json_error( array(
 			'code'    => $e->getCode(),
 			'message' => $e->getMessage(),
+			'trace'   => $e->getTraceAsString()
 		) );
 	}
 
