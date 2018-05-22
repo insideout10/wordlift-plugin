@@ -138,6 +138,8 @@ class Wordlift_Deactivator_Feedback {
 			wp_send_json_success();
 		}
 
+		$plugin_data = get_plugin_data( plugin_dir_path( dirname( __FILE__ ) ) . 'wordlift.php', false, false );
+
 		// Prepare the options.
 		$options = array(
 			// The deactivation reason.
@@ -149,7 +151,7 @@ class Wordlift_Deactivator_Feedback {
 			// WP version.
 			'wordpressVersion' => get_bloginfo( 'version' ),
 			// WL version.
-			'wordliftVersion'  => get_option( 'wl_db_version' ),
+			'wordliftVersion'  => $plugin_data['Version'],
 			// The admin email.
 			'email'            => get_bloginfo( 'admin_email' ),
 		);
