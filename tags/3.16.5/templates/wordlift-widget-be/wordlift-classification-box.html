@@ -1,0 +1,18 @@
+<!-- CLASSIFICATION BOX  -->
+<div class="wl-tab-lead">
+	<div class="wl-tab-lead-wrap"
+	     ng-click="toggleCurrentSection('content-classification')">
+		<h1 class="wl-tab-lead-text">
+			Content classification
+		</h1>
+		<!-- isRunning can be used to show / hide a loader accordngly to the analysis status -->
+		<div class="wl-tab-lead-text wl-tab-lead-btn"
+		     ng-class="{ 'wl-open' : isCurrentSection('content-classification'), 'wl-close' : !isCurrentSection('content-classification') }">
+			<!-- display a triangle -->
+		</div>
+	</div>
+</div>
+
+<div class="wl-tab-wrap" ng-show="isCurrentSection('content-classification')">
+	<div id="wl-entity-list" wl-entity-list="wl-entity-list"></div>
+</div>

@@ -21,8 +21,3 @@ dist/
 .idea/
 *.iml
 
-# svn folders
-assets/
-trunk/
-tags/
-branches/
