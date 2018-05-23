@@ -31,7 +31,7 @@ class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 
 		$wordlift = new Wordlift_Test();
 
-		$this->entity_service                  = $wordlift->get_entity_service();
+		$this->entity_service = $wordlift->get_entity_service();
 	}
 
 	/**
@@ -41,26 +41,26 @@ class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 	 */
 	function test_nopublishers() {
 
-		$publishers_service = new Wordlift_Publisher_Service();
+		$publishers_service = new Wordlift_Publisher_Service( $this->configuration_service );
 
 		// with nothing in the DB
-		$this->assertEquals( 0 , $publishers_service->count() );
-		$this->assertEquals( 0 , count( $publishers_service->query() ) );
-		$this->assertEquals( 0 , count( $publishers_service->query( 'bla' ) ) );
+		$this->assertEquals( 0, $publishers_service->count() );
+		$this->assertEquals( 0, count( $publishers_service->query() ) );
+		$this->assertEquals( 0, count( $publishers_service->query( 'bla' ) ) );
 
 		// now with some unrelated entity
 
 		$pid = $this->factory->post->create( array(
-			'post_title' => 'bla',
-			'post_type'  => 'entity',
+			'post_title'  => 'bla',
+			'post_type'   => 'entity',
 			'post_status' => 'publish',
 		) );
 
 		$this->entity_type_service->set( $pid, 'http://schema.org/LocalBusiness' );
 
-		$this->assertEquals( 0 , $publishers_service->count() );
-		$this->assertEquals( 0 , count( $publishers_service->query() ) );
-		$this->assertEquals( 0 , count( $publishers_service->query( 'bla' ) ) );
+		$this->assertEquals( 0, $publishers_service->count() );
+		$this->assertEquals( 0, count( $publishers_service->query() ) );
+		$this->assertEquals( 0, count( $publishers_service->query( 'bla' ) ) );
 	}
 
 	/**
@@ -70,12 +70,12 @@ class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 	 */
 	function test_publishers() {
 
-		$publishers_service = new Wordlift_Publisher_Service();
+		$publishers_service = new Wordlift_Publisher_Service( $this->configuration_service );
 
 		// create a non publisher entity to make the test more real
 		$busines = $this->factory->post->create( array(
-			'post_title' => 'bla',
-			'post_type'  => 'entity',
+			'post_title'  => 'bla',
+			'post_type'   => 'entity',
 			'post_status' => 'publish',
 		) );
 
@@ -83,54 +83,54 @@ class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 
 		// create a person
 		$person = $this->factory->post->create( array(
-			'post_title' => 'blabla',
-			'post_type'  => 'entity',
+			'post_title'  => 'blabla',
+			'post_type'   => 'entity',
 			'post_status' => 'publish',
 		) );
 
 		$this->entity_type_service->set( $person, 'http://schema.org/Person' );
 
-		$this->assertEquals( 1 , $publishers_service->count() );
-		$this->assertEquals( 1 , count( $publishers_service->query() ) );
-		$this->assertEquals( 1 , count( $publishers_service->query( '' ) ) );
+		$this->assertEquals( 1, $publishers_service->count() );
+		$this->assertEquals( 1, count( $publishers_service->query() ) );
+		$this->assertEquals( 1, count( $publishers_service->query( '' ) ) );
 
 		// create an organization
 		$org = $this->factory->post->create( array(
-			'post_title' => 'alb',
-			'post_type'  => 'entity',
+			'post_title'  => 'alb',
+			'post_type'   => 'entity',
 			'post_status' => 'publish',
 		) );
 
 		$this->entity_type_service->set( $org, 'http://schema.org/Organization' );
 
-		$this->assertEquals( 2 , $publishers_service->count() );
-		$this->assertEquals( 2 , count( $publishers_service->query() ) );
-		$this->assertEquals( 2 , count( $publishers_service->query( '' ) ) );
+		$this->assertEquals( 2, $publishers_service->count() );
+		$this->assertEquals( 2, count( $publishers_service->query() ) );
+		$this->assertEquals( 2, count( $publishers_service->query( '' ) ) );
 
 		// test the search
-		$this->assertEquals( 1 , count( $publishers_service->query( 'bla' ) ) );
+		$this->assertEquals( 1, count( $publishers_service->query( 'bla' ) ) );
 
 		// Test that posts with the relevant entity type are also returned
 
 		// random post article
 		$blapost = $this->factory->post->create( array(
-			'post_title' => 'blabla',
-			'post_type'  => 'post',
+			'post_title'  => 'blabla',
+			'post_type'   => 'post',
 			'post_status' => 'publish',
 		) );
 		update_post_meta( $blapost, '_thumbnail_id', 1 );
 
-		$this->assertEquals( 2 , $publishers_service->count() );
-		$this->assertEquals( 2 , count( $publishers_service->query() ) );
-		$this->assertEquals( 2 , count( $publishers_service->query( '' ) ) );
+		$this->assertEquals( 2, $publishers_service->count() );
+		$this->assertEquals( 2, count( $publishers_service->query() ) );
+		$this->assertEquals( 2, count( $publishers_service->query( '' ) ) );
 
 		// test the search
-		$this->assertEquals( 1 , count( $publishers_service->query( 'bla' ) ) );
+		$this->assertEquals( 1, count( $publishers_service->query( 'bla' ) ) );
 
 		// create a post person
 		$postperson = $this->factory->post->create( array(
-			'post_title' => 'oblao',
-			'post_type'  => 'post',
+			'post_title'  => 'oblao',
+			'post_type'   => 'post',
 			'post_status' => 'publish',
 		) );
 
@@ -138,19 +138,19 @@ class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 
 		// create a post organization
 		$postorg = $this->factory->post->create( array(
-			'post_title' => 'blabla',
-			'post_type'  => 'post',
+			'post_title'  => 'blabla',
+			'post_type'   => 'post',
 			'post_status' => 'publish',
 		) );
 
 		$this->entity_type_service->set( $postorg, 'http://schema.org/Organization' );
 
-		$this->assertEquals( 4 , $publishers_service->count() );
-		$this->assertEquals( 4 , count( $publishers_service->query() ) );
-		$this->assertEquals( 4 , count( $publishers_service->query( '' ) ) );
+		$this->assertEquals( 4, $publishers_service->count() );
+		$this->assertEquals( 4, count( $publishers_service->query() ) );
+		$this->assertEquals( 4, count( $publishers_service->query( '' ) ) );
 
 		// test the search
-		$this->assertEquals( 3 , count( $publishers_service->query( 'bla' ) ) );
+		$this->assertEquals( 3, count( $publishers_service->query( 'bla' ) ) );
 	}
 
 }
