@@ -142,7 +142,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.19.0 (2018-05-22) =
+= 3.19.0 (2018-05-26) =
 * Enhancement: [#801](https://github.com/insideout10/wordlift-plugin/issues/801): Using _vocabulary_ as slug conflicts with the Vocabulary archive page.
 * Enhancement: [#795](https://github.com/insideout10/wordlift-plugin/issues/795): Display latest blog posts from our Website.
 * Enhancement: [#787](https://github.com/insideout10/wordlift-plugin/issues/787): Add schema:recipeInstructions and schema:recipeYield to the linked dataset.
@@ -150,11 +150,12 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement: [#767](https://github.com/insideout10/wordlift-plugin/issues/767): Develop a mechanism to get feedback after deactivation of the plugin.
 * Enhancement: [#597](https://github.com/insideout10/wordlift-plugin/issues/597): Publisher's Logo width and height.
 
-
-= 3.18.4 (2018-05-14) =
+= 3.18.5 (2018-05-26) =
 * Enhancement: [#467](https://github.com/insideout10/wordlift-plugin/issues/467): Manually select an entity.
 * Fix: [#806](https://github.com/insideout10/wordlift-plugin/issues/806): Image in JSON-LD is null.
-* Fix: [#802](https://github.com/insideout10/wordlift-plugin/issues/802): Use set user language (user locale) as base for WordLift translations in backend.
+
+= 3.18.4 (2018-05-23) =
+* Fix: [#808](https://github.com/insideout10/wordlift-plugin/issues/808): JSON-LD returning null elements.
 
 = 3.18.3 (2018-04-23) =
 * Fix: [#802](https://github.com/insideout10/wordlift-plugin/issues/802): Use set user language (user locale) as base for WordLift translations in backend.

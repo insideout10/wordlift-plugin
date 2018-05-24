@@ -38,10 +38,10 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 *
 	 * @since 3.10.0
 	 *
-	 * @param \Wordlift_Entity_Type_Service   $entity_type_service   A {@link Wordlift_Entity_Type_Service} instance.
-	 * @param \Wordlift_Entity_Service        $entity_service        A {@link Wordlift_Entity_Service} instance.
-	 * @param \Wordlift_User_Service          $user_service          A {@link Wordlift_User_Service} instance.
-	 * @param \Wordlift_Attachment_Service    $attachment_service    A {@link Wordlift_Attachment_Service} instance.
+	 * @param \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
+	 * @param \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_User_Service $user_service A {@link Wordlift_User_Service} instance.
+	 * @param \Wordlift_Attachment_Service $attachment_service A {@link Wordlift_Attachment_Service} instance.
 	 * @param \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
 	 */
 	public function __construct( $entity_type_service, $entity_service, $user_service, $attachment_service, $configuration_service ) {
@@ -59,7 +59,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 *
 	 * @since 3.10.0
 	 *
-	 * @param int   $post_id    The post id.
+	 * @param int $post_id The post id.
 	 * @param array $references An array of entity references.
 	 *
 	 * @return array A JSON-LD array.
@@ -107,7 +107,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 				);
 
 				$escaped_lables = array_map(
-					function( $value ) {
+					function ( $value ) {
 						return preg_quote( $value, '/' );
 					}, $labels
 				);
@@ -144,8 +144,8 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		 *
 		 * @since 3.14.0
 		 *
-		 * @param array $jsonld     The JSON-LD structure.
-		 * @param int   $post_id    The {@link WP_Post} `id`.
+		 * @param array $jsonld The JSON-LD structure.
+		 * @param int $post_id The {@link WP_Post} `id`.
 		 * @param array $references The array of referenced entities.
 		 */
 		return apply_filters( 'wl_post_jsonld', $jsonld, $post_id, $references );
@@ -159,7 +159,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 *
 	 * @since 3.14.0
 	 *
-	 * @param int   $author_id  The author {@link WP_User}'s `id`.
+	 * @param int $author_id The author {@link WP_User}'s `id`.
 	 * @param array $references An array of referenced entities.
 	 *
 	 * @return string|array A JSON-LD structure.
@@ -170,7 +170,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		$entity_id = $this->user_service->get_entity( $author_id );
 
 		// If there's no entity bound return a simple author structure.
-		if ( empty( $entity_id ) ) {
+		if ( empty( $entity_id ) || 'publish' !== get_post_status( $entity_id ) ) {
 
 			$author     = get_the_author_meta( 'display_name', $author_id );
 			$author_uri = $this->user_service->get_uri( $author_id );
