@@ -55,8 +55,8 @@ class Wordlift_Jsonld_Service {
 	 *
 	 * @since 3.8.0
 	 *
-	 * @param \Wordlift_Entity_Service           $entity_service    A {@link Wordlift_Entity_Service} instance.
-	 * @param \Wordlift_Post_Converter           $converter         A {@link Wordlift_Uri_To_Jsonld_Converter} instance.
+	 * @param \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_Post_Converter $converter A {@link Wordlift_Uri_To_Jsonld_Converter} instance.
 	 * @param \Wordlift_Website_Jsonld_Converter $website_converter A {@link Wordlift_Website_Jsonld_Converter} instance.
 	 */
 	public function __construct( $entity_service, $converter, $website_converter ) {
@@ -98,8 +98,33 @@ class Wordlift_Jsonld_Service {
 		$post_id     = isset( $_REQUEST['id'] ) && is_numeric( $_REQUEST['id'] ) ? intval( $_REQUEST['id'] ) : null;
 
 		// Send the generated JSON-LD.
-		wp_send_json( $this->get_jsonld( $is_homepage, $post_id ) );
+		$this->send_jsonld( $this->get_jsonld( $is_homepage, $post_id ) );
 
+	}
+
+	/**
+	 * A close of WP's own `wp_send_json` function which uses `application/ld+json` as content type.
+	 *
+	 * @since 3.18.5
+	 *
+	 * @param mixed $response Variable (usually an array or object) to encode as JSON,
+	 *                           then print and die.
+	 * @param int $status_code The HTTP status code to output.
+	 */
+	private function send_jsonld( $response, $status_code = null ) {
+		@header( 'Content-Type: application/ld+json; charset=' . get_option( 'blog_charset' ) );
+		if ( null !== $status_code ) {
+			status_header( $status_code );
+		}
+		echo wp_json_encode( $response );
+
+		if ( wp_doing_ajax() ) {
+			wp_die( '', '', array(
+				'response' => null,
+			) );
+		} else {
+			die;
+		}
 	}
 
 	/**
@@ -107,8 +132,8 @@ class Wordlift_Jsonld_Service {
 	 *
 	 * @since 3.15.1
 	 *
-	 * @param bool     $is_homepage Whether the JSON-LD for the homepage is being requested.
-	 * @param int|null $post_id     The JSON-LD for the specified {@link WP_Post} id.
+	 * @param bool $is_homepage Whether the JSON-LD for the homepage is being requested.
+	 * @param int|null $post_id The JSON-LD for the specified {@link WP_Post} id.
 	 *
 	 * @return array A JSON-LD structure.
 	 */
@@ -165,6 +190,25 @@ class Wordlift_Jsonld_Service {
 
 		// Finally send the JSON-LD.
 		return $jsonld;
+	}
+
+	/**
+	 * Write the JSON-LD in the head.
+	 *
+	 * This function isn't actually used, but may be used to quickly enable writing the JSON-LD synchronously to the
+	 * document head, using the `wp_head` hook.
+	 *
+	 * @since 3.18.5
+	 */
+	public function wp_head() {
+
+		// Determine whether this is the home page or whether we're displaying a single post.
+		$is_homepage = is_home() || is_front_page();
+		$post_id     = is_singular() ? get_the_ID() : null;
+
+		$jsonld = json_encode( $this->get_jsonld( $is_homepage, $post_id ) );
+		?>
+        <script type="application/ld+json"><?php echo $jsonld; ?></script><?php
 	}
 
 }
