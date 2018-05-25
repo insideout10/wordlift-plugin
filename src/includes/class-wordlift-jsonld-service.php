@@ -113,15 +113,9 @@ class Wordlift_Jsonld_Service {
 	 */
 	private function send_jsonld( $response, $status_code = null ) {
 		@header( 'Content-Type: application/ld+json; charset=' . get_option( 'blog_charset' ) );
-		if ( null !== $status_code ) {
-			status_header( $status_code );
-		}
 		echo wp_json_encode( $response );
-
-		if ( wp_doing_ajax() ) {
-			wp_die( '', '', array(
-				'response' => null,
-			) );
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+			wp_die();
 		} else {
 			die;
 		}
