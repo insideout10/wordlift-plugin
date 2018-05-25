@@ -142,6 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.18.5 (2018-05-25) =
+* Fix: [#810](https://github.com/insideout10/wordlift-plugin/issues/810): JSON-LD returning null elements.
+
 = 3.18.4 (2018-05-23) =
 * Fix: [#808](https://github.com/insideout10/wordlift-plugin/issues/808): JSON-LD returning null elements.
 
