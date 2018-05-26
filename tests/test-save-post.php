@@ -167,7 +167,7 @@ EOF;
 		//
 		// See https://github.com/insideout10/wordlift-plugin/issues/789
 		$lines = $this->getPostTriples( $entity_1_id );
-		$this->assertCount( 5, $lines );
+		$this->assertCount( 6, $lines, "Unexpected lines: " . var_export( $lines, true ) );
 
 		// publish post 2
 		wl_update_post_status( $post_2_id, 'publish' );
@@ -206,7 +206,7 @@ EOF;
 		//
 		// See https://github.com/insideout10/wordlift-plugin/issues/789
 		$lines = $this->getPostTriples( $entity_1_id );
-		$this->assertCount( 5, $lines );
+		$this->assertCount( 6, $lines, "Unexpected lines: " . var_export( $lines, true ) );
 
 		$lines = $this->getPostTriples( $entity_2_id );
 		$this->assertCount( 6, $lines );
