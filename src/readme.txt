@@ -142,6 +142,8 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.20.0 (????-??-??) =
+
 = 3.19.0 (2018-05-26) =
 * Enhancement: [#801](https://github.com/insideout10/wordlift-plugin/issues/801): Using _vocabulary_ as slug conflicts with the Vocabulary archive page.
 * Enhancement: [#795](https://github.com/insideout10/wordlift-plugin/issues/795): Display latest blog posts from our Website.
