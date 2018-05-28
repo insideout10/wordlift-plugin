@@ -146,7 +146,10 @@ class Wordlift_Entity_Link_Service {
 			return $bad_slug;
 		}
 
-		$exists = $this->slug_exists( $slug, $post_types );
+//		$exists = $this->slug_exists( $slug, $post_types );
+
+		// We remove the request post type since WordPress is already checking that the slug doesn't conflict.
+		$exists = $this->slug_exists( $slug, array_diff( $post_types, array( $post_type ) ) );
 
 		$this->log->debug( "Checking if a slug exists [ post type :: $post_type ][ slug :: $slug ][ exists :: " . ( $exists ? 'yes' : 'no' ) . ' ]' );
 
