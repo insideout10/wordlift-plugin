@@ -6,7 +6,7 @@ const Wrapper = styled.div`
     line-height: 16px;
     color: white;
     padding: 11px 8px 6px;
-    min-height: 37px;
+    min-height: 40px;
     margin-bottom: 10px;
     font-family: BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
     font-size: 14px;
