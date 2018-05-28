@@ -146,7 +146,8 @@ class Wordlift_Entity_Link_Service {
 			return $bad_slug;
 		}
 
-		$exists = $this->slug_exists( $slug, $post_types );
+		// We remove the request post type since WordPress is already checking that the slug doesn't conflict.
+		$exists = $this->slug_exists( $slug, array_diff( $post_types, array( $post_type ) ) );
 
 		$this->log->debug( "Checking if a slug exists [ post type :: $post_type ][ slug :: $slug ][ exists :: " . ( $exists ? 'yes' : 'no' ) . ' ]' );
 
@@ -201,13 +202,14 @@ class Wordlift_Entity_Link_Service {
 		//
 		// There is a open ticket that should solve this, when it's merged:
 		// https://core.trac.wordpress.org/ticket/13459
-		foreach ( $post_types as $post_type ) {
+		$all_post_types = Wordlift_Entity_Service::valid_entity_post_types();
+		foreach ( $all_post_types as $post_type ) {
 
 			// Get the post type object for current post type.
 			$post_type_object = get_post_type_object( $post_type );
 
 			if (
-				// Check whetherthe post type object is not empty.
+				// Check whether the post type object is not empty.
 				! empty( $post_type_object ) &&
 				// And the post type has archive page.
 				$post_type_object->has_archive &&
