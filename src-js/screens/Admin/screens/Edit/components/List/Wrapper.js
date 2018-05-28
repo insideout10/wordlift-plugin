@@ -21,7 +21,7 @@ const Wrapper = styled.ul`
   // width: calc(100% - 1px);
   // margin-left: 1px;
   width: 110%;
-  margin-left: -5%;
+  margin-left: calc( -5% + 1px );
   overflow-x: hidden;
   z-index: 1001;
 
