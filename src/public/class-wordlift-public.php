@@ -46,7 +46,7 @@ class Wordlift_Public {
 	 * @since    1.0.0
 	 *
 	 * @param      string $plugin_name The name of the plugin.
-	 * @param      string $version     The version of this plugin.
+	 * @param      string $version The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
 
@@ -97,6 +97,24 @@ class Wordlift_Public {
 		 * class.
 		 */
 
+		$settings = self::get_settings();
+
+		// Note that we switched the js to be loaded in footer, since it is loading
+		// the json-ld representation.
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/bundle.js', array(), $this->version, true );
+		wp_localize_script( $this->plugin_name, 'wlSettings', $settings );
+
+	}
+
+	/**
+	 * Get the settings array.
+	 *
+	 * @since 3.19.1
+	 *
+	 * @return array An array with the settings.
+	 */
+	public static function get_settings() {
+
 		// Prepare a settings array for client-side functions.
 		$settings = array(
 			'ajaxUrl' => admin_url( 'admin-ajax.php' ),
@@ -125,11 +143,7 @@ class Wordlift_Public {
 		// @see https://github.com/insideout10/wordlift-plugin/issues/642.
 		$settings['jsonld_enabled'] = apply_filters( 'wl_jsonld_enabled', $jsonld_enabled );
 
-		// Note that we switched the js to be loaded in footer, since it is loading
-		// the json-ld representation.
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wordlift-public.js', array( 'jquery' ), $this->version, true );
-		wp_localize_script( $this->plugin_name, 'wlSettings', $settings );
-
+		return $settings;
 	}
 
 }

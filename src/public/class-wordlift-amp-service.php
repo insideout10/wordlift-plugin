@@ -51,9 +51,35 @@ class Wordlift_AMP_Service {
 
 	}
 
+	/**
+	 * Hook to the `amp_post_template_footer` function to output our **async** script to AMP.
+	 *
+	 * We're **asynchronous** as requested by the AMP specs:
+	 *
+	 * ```
+	 * Among the biggest optimizations is the fact that it makes everything that comes from external resources
+	 * asynchronous, so nothing in the page can block anything from rendering.
+	 * ```
+	 *
+	 * See https://www.ampproject.org/learn/overview/
+	 *
+	 * @since 3.19.1
+	 */
 	function amp_post_template_footer() {
 
-		echo('<script async src="wordpress"></script>');
+		// Prepare the JavaScript URL.
+		$url = plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/bundle.js';
+
+		$settings = Wordlift_Public::get_settings();
+
+		// Force the jsonld_enabled setting to be 1 or 0 as this is what the script expects and wp_json_encode
+		// may return `true` / `false`.
+		$settings['jsonld_enabled'] = $settings['jsonld_enabled'] ? '1' : '0';
+
+		$settings_as_string = wp_json_encode( $settings );
+
+		echo "<script>window.wlSettings = $settings_as_string;</script>";
+		echo "<script async src='$url'></script>";
 
 	}
 
