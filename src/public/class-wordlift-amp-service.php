@@ -32,6 +32,8 @@ class Wordlift_AMP_Service {
 				$this,
 				'register_entity_cpt_with_amp_plugin',
 			) );
+
+			add_action( 'amp_post_template_footer', array( $this, 'amp_post_template_footer' ) );
 		}
 
 	}
@@ -46,6 +48,12 @@ class Wordlift_AMP_Service {
 		if ( defined( 'AMP_QUERY_VAR' ) ) {
 			add_post_type_support( 'entity', AMP_QUERY_VAR );
 		}
+
+	}
+
+	function amp_post_template_footer() {
+
+		echo('<script async src="wordpress"></script>');
 
 	}
 
