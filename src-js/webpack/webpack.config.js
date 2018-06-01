@@ -9,8 +9,7 @@ const path = require("path");
 
 module.exports = {
   entry: {
-    bundle: "./src/index.js",
-    "bundle-legacy": ["whatwg-fetch", "./src/index.js"]
+    bundle: "./src/index.js"
   },
   output: {
     filename: "[name].js",

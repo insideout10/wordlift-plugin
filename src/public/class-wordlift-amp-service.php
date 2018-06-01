@@ -68,7 +68,7 @@ class Wordlift_AMP_Service {
 	function amp_post_template_footer() {
 
 		// Prepare the JavaScript URL.
-		$url = plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/bundle.js';
+		$url = plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/bundle.js?ver=' . Wordlift::get_instance()->get_version();
 
 		$settings = Wordlift_Public::get_settings();
 
