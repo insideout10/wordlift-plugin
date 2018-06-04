@@ -501,7 +501,7 @@ class Wordlift_Schema_Service {
 		 *
 		 * @param    array $schemas The array of schemas.
 		 */
-		$this->schema = add_filter( 'wl_schemas', $schemas );
+		$this->schema = apply_filters( 'wl_schemas', $schemas );
 
 		// Create a singleton instance of the Schema service, useful to provide static functions to global functions.
 		self::$instance = $this;
