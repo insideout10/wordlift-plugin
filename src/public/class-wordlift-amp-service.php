@@ -22,19 +22,31 @@
 class Wordlift_AMP_Service {
 
 	/**
-	 * @inheritdoc
+	 * The {@link \Wordlift_Jsonld_Service} instance.
+	 *
+	 * @since 3.19.1
+	 * @access private
+	 * @var \Wordlift_Jsonld_Service $jsonld_service The {@link \Wordlift_Jsonld_Service} instance.
 	 */
-	function __construct() {
+	private $jsonld_service;
+
+	/**
+	 * Create a {@link Wordlift_AMP_Service} instance.
+	 * @since 3.19.1
+	 *
+	 * @param \Wordlift_Jsonld_Service $jsonld_service
+	 */
+	function __construct( $jsonld_service ) {
+
+		$this->jsonld_service = $jsonld_service;
 
 		// Integrate with automattic's AMP plugin if it is available
-		if ( defined( 'AMP__VERSION' ) ) {
-			add_action( 'amp_init', array(
-				$this,
-				'register_entity_cpt_with_amp_plugin',
-			) );
-
-			add_action( 'amp_post_template_footer', array( $this, 'amp_post_template_footer' ) );
+		if ( ! defined( 'AMP__VERSION' ) ) {
+			return;
 		}
+
+		add_action( 'amp_init', array( $this, 'register_entity_cpt_with_amp_plugin', ) );
+		add_action( 'amp_post_template_footer', array( $this, 'amp_post_template_footer', ) );
 
 	}
 
@@ -67,20 +79,16 @@ class Wordlift_AMP_Service {
 	 */
 	function amp_post_template_footer() {
 
-		// Prepare the JavaScript URL.
-		$url = plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/bundle.js?ver=' . Wordlift::get_instance()->get_version();
+		// Determine whether this is the home page or whether we're displaying a single post.
+		$is_homepage = is_home() || is_front_page();
+		$post_id     = is_singular() ? get_the_ID() : null;
 
-		$settings = Wordlift_Public::get_settings();
+		// Get the actual value.
+		$jsonld = wp_json_encode( $this->jsonld_service->get_jsonld( $is_homepage, $post_id ) );
 
-		// Force the jsonld_enabled setting to be 1 or 0 as this is what the script expects and wp_json_encode
-		// may return `true` / `false`.
-		$settings['jsonld_enabled'] = $settings['jsonld_enabled'] ? '1' : '0';
-
-		$settings_as_string = wp_json_encode( $settings );
-
-		echo "<script>window.wlSettings = $settings_as_string;</script>";
-		echo "<script async src='$url'></script>";
-
+		?>
+        <script type="application/ld+json"><?php echo $jsonld; ?></script>
+		<?php
 	}
 
 }
