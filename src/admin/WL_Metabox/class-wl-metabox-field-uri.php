@@ -139,14 +139,15 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 				->get_entity_post_by_uri( $default_entity_identifier );
 		}
 
-		if ( ! is_null( $entity ) ) {
-			$label = $entity->post_title;
-			$value = $entity->ID;
-		} else {
-			// No ID and no internal uri. Just leave as is.
-			$label = $default_entity_identifier;
-			$value = $default_entity_identifier;
+		// Bail out if the entity is not found.
+        //
+        // See https://github.com/insideout10/wordlift-plugin/issues/818
+		if ( ! empty( $default_entity_identifier ) && is_null( $entity ) ) {
+		    return '';
 		}
+
+		$label = $entity->post_title;
+		$value = $entity->ID;
 
 		// Write saved value in page
 		// The <input> tags host the meta value.
@@ -155,26 +156,26 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 		// that contains the raw value (i.e. the uri or entity id).
 		@ob_start();
 		?>
-			<div class="wl-input-wrapper wl-autocomplete-wrapper">
-				<input
-					type="text"
-					class="<?php echo esc_attr( $this->meta_name ); ?> wl-autocomplete"
-					value="<?php echo esc_attr( $label ); ?>"
-					style="width:88%"
-				/>
-				<input
-					type="hidden"
-					class="<?php echo esc_attr( $this->meta_name ); ?>"
-					name="wl_metaboxes[<?php echo $this->meta_name ?>][]"
-					value="<?php echo esc_attr( $value ); ?>"
-				/>
+        <div class="wl-input-wrapper wl-autocomplete-wrapper">
+            <input
+                    type="text"
+                    class="<?php echo esc_attr( $this->meta_name ); ?> wl-autocomplete"
+                    value="<?php echo esc_attr( $label ); ?>"
+                    style="width:88%"
+            />
+            <input
+                    type="hidden"
+                    class="<?php echo esc_attr( $this->meta_name ); ?>"
+                    name="wl_metaboxes[<?php echo $this->meta_name ?>][]"
+                    value="<?php echo esc_attr( $value ); ?>"
+            />
 
-				<button class="button wl-remove-input wl-button" type="button">
-					<?php esc_html_e( 'Remove', 'wordlift' ); ?>
-				</button>
+            <button class="button wl-remove-input wl-button" type="button">
+				<?php esc_html_e( 'Remove', 'wordlift' ); ?>
+            </button>
 
-				<div class="wl-input-notice"></div>
-			</div>
+            <div class="wl-input-notice"></div>
+        </div>
 		<?php
 		$html = ob_get_clean();
 

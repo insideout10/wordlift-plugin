@@ -380,9 +380,20 @@ class WL_Metabox_Field {
 			foreach ( $this->data as $value ) {
 				if ( $count < $this->cardinality ) {
 					$this->log->debug( "Going to print an HTML input #$count with $value..." );
-					$html .= $this->html_input( $value );
+					$fragment = $this->html_input( $value );
+
+					// If the fragment is empty, continue to the next one. This is necessary because the
+                    // metabox may reference an invalid value which would cause the metabox not to print,
+                    // returning an empty html fragment.
+                    //
+                    // See https://github.com/insideout10/wordlift-plugin/issues/818
+					if ( '' === $fragment ) {
+						continue;
+					}
+
+					$html .= $fragment;
+					$count ++;
 				}
-				$count ++;
 			}
 		}
 
@@ -422,19 +433,19 @@ class WL_Metabox_Field {
 	public function html_input( $value ) {
 		@ob_start();
 		?>
-			<div class="wl-input-wrapper">
-				<input
-					type="text"
-					id="<?php echo esc_attr( $this->meta_name ); ?>"
-					name="wl_metaboxes[<?php echo $this->meta_name ?>][]"
-					value="<?php echo esc_attr( $value ); ?>"
-					style="width:88%"
-				/>
+        <div class="wl-input-wrapper">
+            <input
+                    type="text"
+                    id="<?php echo esc_attr( $this->meta_name ); ?>"
+                    name="wl_metaboxes[<?php echo $this->meta_name ?>][]"
+                    value="<?php echo esc_attr( $value ); ?>"
+                    style="width:88%"
+            />
 
-				<button class="button wl-remove-input wl-button" type="button">
-					<?php esc_html_e( 'Remove', 'wordlift' ); ?>
-				</button>
-			</div>
+            <button class="button wl-remove-input wl-button" type="button">
+				<?php esc_html_e( 'Remove', 'wordlift' ); ?>
+            </button>
+        </div>
 		<?php
 		$html = ob_get_clean();
 
