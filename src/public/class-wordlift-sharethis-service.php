@@ -77,7 +77,7 @@ class Wordlift_ShareThis_Service {
 	 *
 	 * @since 3.2.0
 	 *
-	 * @param string $tag     The filter tag.
+	 * @param string $tag The filter tag.
 	 * @param string $content The post content.
 	 *
 	 * @return string The updated post content.
@@ -86,6 +86,13 @@ class Wordlift_ShareThis_Service {
 
 		// Get the current post.
 		global $post;
+
+		// Bail out if the current entity is a post/page since this is already handled by ShareThis.
+		//
+		// See https://github.com/insideout10/wordlift-plugin/issues/819
+		if ( 'post' === $post->post_type || 'page' === $post->post_type ) {
+			return $content;
+		}
 
 		// If it's not the entity type, return.
 		$entity_service = Wordlift_Entity_Service::get_instance();
