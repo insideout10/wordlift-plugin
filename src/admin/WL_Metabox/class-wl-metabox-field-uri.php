@@ -139,15 +139,15 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 				->get_entity_post_by_uri( $default_entity_identifier );
 		}
 
-		// Bail out if the entity is not found.
-        //
-        // See https://github.com/insideout10/wordlift-plugin/issues/818
+		// Bail out if an entity id has been provided by the entity is not found.
+		//
+		// See https://github.com/insideout10/wordlift-plugin/issues/818
 		if ( ! empty( $default_entity_identifier ) && is_null( $entity ) ) {
-		    return '';
+			return '';
 		}
 
-		$label = $entity->post_title;
-		$value = $entity->ID;
+		$label = is_null( $entity ) ? '' : $entity->post_title;
+		$value = is_null( $entity ) ? '' : $entity->ID;
 
 		// Write saved value in page
 		// The <input> tags host the meta value.
