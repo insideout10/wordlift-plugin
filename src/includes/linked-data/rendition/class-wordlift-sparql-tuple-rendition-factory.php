@@ -29,6 +29,15 @@ class Wordlift_Sparql_Tuple_Rendition_Factory {
 	private $entity_service;
 
 	/**
+	 * The {@link Wordlift_Sparql_Tuple_Rendition_Factory} singleton instance.
+	 *
+	 * @since 3.19.1
+	 * @access private
+	 * @var \Wordlift_Sparql_Tuple_Rendition_Factory $instance The {@link Wordlift_Sparql_Tuple_Rendition_Factory} singleton instance.
+	 */
+	private static $instance;
+
+	/**
 	 * Create a a {@link Wordlift_Sparql_Tuple_Rendition_Factory} instance.
 	 *
 	 * @since 3.15.0
@@ -39,6 +48,20 @@ class Wordlift_Sparql_Tuple_Rendition_Factory {
 
 		$this->entity_service = $entity_service;
 
+		self::$instance = $this;
+
+	}
+
+	/**
+	 * Get the {@link Wordlift_Sparql_Tuple_Rendition_Factory} singleton instance.
+	 *
+	 * @since 3.19.1
+	 *
+	 * @return \Wordlift_Sparql_Tuple_Rendition_Factory The {@link Wordlift_Sparql_Tuple_Rendition_Factory} singleton instance.
+	 */
+	public static function get_instance() {
+
+		return self::$instance;
 	}
 
 	/**
@@ -46,11 +69,11 @@ class Wordlift_Sparql_Tuple_Rendition_Factory {
 	 *
 	 * @since 3.15.0
 	 *
-	 * @param \Wordlift_Storage $storage    A {@link Wordlift_Storage} instance.
-	 * @param string            $predicate  A predicate (e.g. `http://schema.org/name`).
-	 * @param string|null       $data_type  A data-type.
-	 * @param string|null       $language   A language code (e.g. `en`).
-	 * @param string|null       $uri_suffix The URI suffix.
+	 * @param \Wordlift_Storage $storage A {@link Wordlift_Storage} instance.
+	 * @param string $predicate A predicate (e.g. `http://schema.org/name`).
+	 * @param string|null $data_type A data-type.
+	 * @param string|null $language A language code (e.g. `en`).
+	 * @param string|null $uri_suffix The URI suffix.
 	 *
 	 * @return \Wordlift_Default_Sparql_Tuple_Rendition A {@link Wordlift_Default_Sparql_Tuple_Rendition} instance.
 	 */
@@ -64,8 +87,8 @@ class Wordlift_Sparql_Tuple_Rendition_Factory {
 	 *
 	 * @since 3.18.0
 	 *
-	 * @param \Wordlift_Storage $storage    A {@link Wordlift_Storage} instance.
-	 * @param string|null       $language   A language code (e.g. `en`).
+	 * @param \Wordlift_Storage $storage A {@link Wordlift_Storage} instance.
+	 * @param string|null $language A language code (e.g. `en`).
 	 *
 	 * @return \Wordlift_Address_Sparql_Tuple_Rendition A {@link Wordlift_Address_Sparql_Tuple_Rendition} instance.
 	 */

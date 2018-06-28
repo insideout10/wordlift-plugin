@@ -463,9 +463,9 @@ class Wordlift_Schema_Service {
 	 *
 	 * @since 3.1.0
 	 *
-	 * @param \Wordlift_Storage_Factory                $storage_factory       The {@link Wordlift_Post_Property_Storage_Factory} instance.
-	 * @param \Wordlift_Sparql_Tuple_Rendition_Factory $rendition_factory     The {@link Wordlift_Sparql_Tuple_Rendition_Factory} instance.
-	 * @param \Wordlift_Configuration_Service          $configuration_service The {@link Wordlift_Configuration_Service} instance.
+	 * @param \Wordlift_Storage_Factory $storage_factory The {@link Wordlift_Post_Property_Storage_Factory} instance.
+	 * @param \Wordlift_Sparql_Tuple_Rendition_Factory $rendition_factory The {@link Wordlift_Sparql_Tuple_Rendition_Factory} instance.
+	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
 	 */
 	public function __construct( $storage_factory, $rendition_factory, $configuration_service ) {
 
@@ -476,9 +476,7 @@ class Wordlift_Schema_Service {
 		$this->configuration_service = $configuration_service;
 		$this->language_code         = $this->configuration_service->get_language_code();
 
-		// Set the taxonomy data.
-		// Note: parent types must be defined before child types.
-		$this->schema = array(
+		$schemas = array(
 			'article'       => $this->get_article_schema(),
 			'thing'         => $this->get_thing_schema(),
 			'creative-work' => $this->get_creative_work_schema(),
@@ -491,6 +489,19 @@ class Wordlift_Schema_Service {
 			'web-page'      => $this->get_web_page_schema(),
 			'offer'         => $this->get_offer_schema(),
 		);
+
+		// Set the taxonomy data.
+		// Note: parent types must be defined before child types.
+		/**
+		 * Alter the configured schemas.
+		 *
+		 * Enable 3rd parties to alter WordLift's schemas array.
+		 *
+		 * @since  3.19.1
+		 *
+		 * @param    array $schemas The array of schemas.
+		 */
+		$this->schema = apply_filters( 'wl_schemas', $schemas );
 
 		// Create a singleton instance of the Schema service, useful to provide static functions to global functions.
 		self::$instance = $this;
@@ -626,7 +637,7 @@ class Wordlift_Schema_Service {
 				),
 				// Add the schema:url property.
 				Wordlift_Schema_Url_Property_Service::META_KEY => Wordlift_Schema_Url_Property_Service::get_instance()
-																									  ->get_compat_definition(),
+				                                                                                      ->get_compat_definition(),
 			),
 			// {{sameAs}} not present in the microdata template,
 			// because it is treated separately in *wl_content_embed_item_microdata*

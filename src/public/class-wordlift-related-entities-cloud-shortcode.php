@@ -99,10 +99,10 @@ class Wordlift_Related_Entities_Cloud_Shortcode extends Wordlift_Shortcode {
 		 */
 		$tags = array();
 
-		foreach ( $related_entities as $entity_id ) {
+		foreach ( array_unique( $related_entities ) as $entity_id ) {
 
 			$connected_entities = count( wl_core_get_related_entity_ids( $entity_id, array( 'status' => 'publish' ) ) );
-			$connected_posts    = count( $this->relation_service->get_article_subjects( $entity_id, '*', null,'publish' ) );
+			$connected_posts    = count( $this->relation_service->get_article_subjects( $entity_id, '*', null, 'publish' ) );
 
 			$tags[] = (object) array(
 				'id'    => $entity_id,

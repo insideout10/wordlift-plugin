@@ -88,7 +88,7 @@ class Wordlift_Log_Service {
 	public function log( $level, $message ) {
 
 		// Bail out if WordLift log level isn't defined, and WP debug is disabled.
-		if ( ! defined( 'WL_LOG_LEVEL' ) && $level < self::INFO
+		if ( ! defined( 'WL_LOG_LEVEL' ) && $level < self::ERROR
 			 && ( ! defined( 'WP_DEBUG' ) || false === WP_DEBUG ) ) {
 			return;
 		}

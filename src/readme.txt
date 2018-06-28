@@ -144,6 +144,13 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 = 3.20.0 (????-??-??) =
 
+= 3.19.1 (2018-06-28) =
+* Enhancement: [#815](https://github.com/insideout10/wordlift-plugin/issues/815): Add wl_schemas hook.
+* Enhancement: [#813](https://github.com/insideout10/wordlift-plugin/issues/813): Disable logging by default.
+* Enhancement: [#671](https://github.com/insideout10/wordlift-plugin/issues/671): Add WordLift JSON-LD markup to AMP pages.
+* Fix: [#819](https://github.com/insideout10/wordlift-plugin/issues/819): When a post is converted into entity, ShareThis social sharing icons are duplicated.
+* Fix: [#818](https://github.com/insideout10/wordlift-plugin/issues/818): Deleted entities appear as numbers in metaboxes.
+
 = 3.19.0 (2018-05-26) =
 * Enhancement: [#801](https://github.com/insideout10/wordlift-plugin/issues/801): Using _vocabulary_ as slug conflicts with the Vocabulary archive page.
 * Enhancement: [#795](https://github.com/insideout10/wordlift-plugin/issues/795): Display latest blog posts from our Website.

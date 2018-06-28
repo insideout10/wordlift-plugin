@@ -1233,7 +1233,7 @@ class Wordlift {
 		new Wordlift_Seo_Service();
 
 		// Initialize the AMP service.
-		new Wordlift_AMP_Service();
+		new Wordlift_AMP_Service( $this->jsonld_service );
 
 		/** Services. */
 		$this->google_analytics_export_service = new Wordlift_Google_Analytics_Export_Service();

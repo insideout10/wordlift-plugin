@@ -114,7 +114,7 @@ class Wordlift_Jsonld_Service {
 	private function send_jsonld( $response, $status_code = null ) {
 		@header( 'Content-Type: application/ld+json; charset=' . get_option( 'blog_charset' ) );
 		echo wp_json_encode( $response );
-		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+		if ( apply_filters( 'wp_doing_ajax', defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
 			wp_die();
 		} else {
 			die;

@@ -151,7 +151,7 @@ abstract class Wordlift_Async_Task {
 	 */
 	public function launch_on_shutdown() {
 
-		$this->log->debug( 'Launching Async Task...' );
+		$this->log->debug( "Launching Async Task [ action :: $this->action ]..." );
 
 		if ( ! empty( $this->_body_data ) ) {
 			$cookies = array();
@@ -178,6 +178,7 @@ abstract class Wordlift_Async_Task {
 			if ( is_wp_error( $result ) ) {
 				$this->log->error( 'Posting URL returned an error: ' . $result->get_error_message() );
 			}
+
 		}
 	}
 

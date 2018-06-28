@@ -10,7 +10,7 @@ composer.phar
 composer.lock
 vendor/
 
-/node_modules
+node_modules/
 
 # folders belonging to the svn branch
 /build
