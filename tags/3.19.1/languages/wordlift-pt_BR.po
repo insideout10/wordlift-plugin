@@ -1,0 +1,1159 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WordLift 3\n"
+"POT-Creation-Date: 2018-05-30 16:01+0200\n"
+"PO-Revision-Date: 2018-06-06 09:39+0200\n"
+"Last-Translator: David Riccitelli <david@insideout.io>\n"
+"Language-Team: WordLift <hello@wordlift.io>\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.8\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;esc_html_e;esc_html__\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../admin/WL_Metabox/WL_Metabox_Field_coordinates.php:42
+msgid "Latitude"
+msgstr "Latitude"
+
+#: ../admin/WL_Metabox/WL_Metabox_Field_coordinates.php:45
+msgid "Longitude"
+msgstr "Longitude"
+
+#: ../admin/WL_Metabox/WL_Metabox_Field_date.php:88
+#: ../admin/WL_Metabox/class-wl-metabox-field-sameas.php:158
+#: ../admin/WL_Metabox/class-wl-metabox-field-uri.php:173
+#: ../admin/WL_Metabox/class-wl-metabox-field.php:435
+#: ../admin/WL_Metabox/class-wordlift-metabox-field-integer.php:38
+#: ../admin/WL_Metabox/class-wordlift-metabox-field-multiline.php:36
+msgid "Remove"
+msgstr "Remover"
+
+#: ../admin/WL_Metabox/class-wl-metabox-field-sameas.php:81
+msgid ""
+"Use the search below to link this entity with equivalent entities in the "
+"linked data cloud."
+msgstr ""
+"Use a pesquisa abaixo para relacionar esta entidade com entidades "
+"equivalentes na nuvem de dados linkados."
+
+#: ../admin/WL_Metabox/class-wl-metabox-field-sameas.php:94
+msgid ""
+"If you already know the URL of the entity that you would like to link, add "
+"it in the field below."
+msgstr ""
+"Se você já conhece a URL da entidade que você gostaria de relacionar, "
+"adicione-a ao campo abaixo."
+
+#: ../admin/WL_Metabox/class-wl-metabox-field.php:408
+msgid "Add"
+msgstr "Adicionar"
+
+#: ../admin/WL_Metabox/class-wl-metabox.php:85
+msgid "properties"
+msgstr "propriedades"
+
+#: ../admin/class-wordlift-admin-author-element.php:75
+msgid "<em>(none)</em>"
+msgstr "<em>(nenhum)</em>"
+
+#: ../admin/class-wordlift-admin-batch-analysis-page.php:64
+#: ../admin/class-wordlift-admin-batch-analysis-page.php:72
+msgid "Batch Analysis"
+msgstr "Análise em Lote"
+
+#: ../admin/class-wordlift-admin-dashboard.php:77
+msgid "enriched posts"
+msgstr "posts enriquecidos"
+
+#: ../admin/class-wordlift-admin-dashboard.php:79
+#, php-format
+msgid ""
+"%1$s, of your <a href=\"%2$s\">posts</a> are annotated. This means %3$s "
+"annotated posts on %4$s."
+msgstr ""
+"%1$s, dos seus <a href=\"%2$s\">posts</a> foram enriquecidos com o WordLift. "
+"Isto representa %3$s posts do total de %4$s."
+
+#: ../admin/class-wordlift-admin-dashboard.php:87
+msgid "average entity rating"
+msgstr "nota média da entidade"
+
+#: ../admin/class-wordlift-admin-dashboard.php:89
+#, php-format
+msgid ""
+"You have %1$s entities in your <a href=\"%2$s\">vocabulary</a> with an "
+"average rating of %3$s."
+msgstr ""
+"Você tem %1$s entidades no seu <a href=\"%2$s\">vocabulário</a> com uma nota "
+"média de %3$s."
+
+#: ../admin/class-wordlift-admin-dashboard.php:96
+msgid "triples in your graph"
+msgstr "triplos no seu grafo"
+
+#: ../admin/class-wordlift-admin-dashboard.php:98
+#, php-format
+msgid "Your graphs size corresponds to %1$s of <a href=\"%2$s\">Wikidata</a>."
+msgstr ""
+"O tamanho do seu grafo de conhecimento corresponde a %1$s do tamanho da <a "
+"href=\"%2$s\">Wikidata</a>."
+
+#: ../admin/class-wordlift-admin-dashboard.php:104
+msgid "triples"
+msgstr "triplos"
+
+#: ../admin/class-wordlift-admin-entity-list.php:108
+msgid "Image"
+msgstr "Imagem"
+
+#: ../admin/class-wordlift-admin-entity-list.php:110
+msgid "Related Posts"
+msgstr "Posts Relacionados"
+
+#: ../admin/class-wordlift-admin-entity-list.php:111
+msgid "Rating"
+msgstr "Classificação"
+
+#: ../admin/class-wordlift-admin-entity-list.php:175
+msgid "All 'W'"
+msgstr "Todo \"W\""
+
+#: ../admin/class-wordlift-admin-entity-list.php:176
+msgid "What"
+msgstr "O que"
+
+#: ../admin/class-wordlift-admin-entity-list.php:177
+msgid "Who"
+msgstr "Quem"
+
+#: ../admin/class-wordlift-admin-entity-list.php:178
+msgid "Where"
+msgstr "Onde"
+
+#: ../admin/class-wordlift-admin-entity-list.php:179
+msgid "When"
+msgstr "Quando"
+
+#: ../admin/class-wordlift-admin-entity-taxonomy-list-page.php:49
+msgid "SEO Settings"
+msgstr "Configurações de SEO"
+
+#: ../admin/class-wordlift-admin-publisher-element.php:83
+msgid "Select an Existing Publisher"
+msgstr ""
+
+#: ../admin/class-wordlift-admin-publisher-element.php:88
+msgid "Create a New Publisher"
+msgstr ""
+
+#: ../admin/class-wordlift-admin-publisher-element.php:119
+msgctxt "Publisher Select in Settings Screen."
+msgid "(none)"
+msgstr ""
+
+#: ../admin/class-wordlift-admin-publisher-element.php:139
+msgid "Are you publishing as an individual or as a company?"
+msgstr ""
+
+#: ../admin/class-wordlift-admin-publisher-element.php:147
+msgid "Person"
+msgstr "Pessoa"
+
+#: ../admin/class-wordlift-admin-publisher-element.php:153
+#: ../admin/partials/admin-setup/step-6.php:38
+msgid "Company"
+msgstr "Empresa"
+
+#: ../admin/class-wordlift-admin-publisher-element.php:164
+msgid "Choose the publisher's Logo"
+msgstr ""
+
+#: ../admin/class-wordlift-admin-publisher-element.php:170
+msgid "Select an existing image or upload a new one"
+msgstr ""
+
+#: ../admin/class-wordlift-admin-settings-page-action-link.php:61
+msgid "Settings"
+msgstr "Configurações"
+
+#: ../admin/class-wordlift-admin-settings-page.php:213
+msgid ""
+"Insert the <a href=\"https://www.wordlift.io/blogger\">WordLift Key</a> you "
+"received via email."
+msgstr ""
+
+#: ../admin/class-wordlift-admin-settings-page.php:227
+msgid "WordLift Key"
+msgstr "Chave do WordLift"
+
+#: ../admin/class-wordlift-admin-settings-page.php:242
+#, php-format
+msgid ""
+"All new pages created with WordLift, will be stored inside your internal "
+"vocabulary. You can customize the url pattern of these pages in the field "
+"above. Check our <a href=\"%s\">FAQs</a> if you need more info."
+msgstr ""
+
+#: ../admin/class-wordlift-admin-settings-page.php:260
+msgid "Entity Base Path"
+msgstr ""
+
+#: ../admin/class-wordlift-admin-settings-page.php:271
+msgid "Site Language"
+msgstr "Idioma do Site"
+
+#: ../admin/class-wordlift-admin-settings-page.php:280
+msgid "Each WordLift Key can be used only in one language. Pick yours."
+msgstr ""
+
+#: ../admin/class-wordlift-admin-settings-page.php:287
+#: ../admin/partials/admin-setup/step-6.php:4
+msgid "Publisher"
+msgstr ""
+
+#: ../admin/class-wordlift-admin-settings-page.php:300
+msgid "Link by Default"
+msgstr ""
+
+#: ../admin/class-wordlift-admin-settings-page.php:308
+msgid ""
+"Whether to link entities by default or not. This setting applies to all the "
+"entities."
+msgstr ""
+
+#: ../admin/class-wordlift-admin-settings-page.php:315
+msgid "Send Diagnostic Data"
+msgstr ""
+
+#: ../admin/class-wordlift-admin-settings-page.php:323
+msgid "Whether to send diagnostic data or not."
+msgstr ""
+
+#: ../admin/class-wordlift-admin-setup.php:132
+msgid "Welcome to WordLift &#8211; You&lsquo;re almost ready to start"
+msgstr ""
+
+#: ../admin/class-wordlift-admin-setup.php:134
+msgid "Run the Setup Wizard"
+msgstr ""
+
+#: ../admin/class-wordlift-admin-setup.php:136
+msgid "Skip Setup"
+msgstr ""
+
+#: ../admin/class-wordlift-admin-setup.php:157
+msgid "Action failed. Please refresh the page and retry."
+msgstr ""
+
+#: ../admin/class-wordlift-admin-setup.php:162
+msgid "Cheatin&#8217; huh?"
+msgstr ""
+
+#: ../admin/class-wordlift-admin-setup.php:202
+msgid "Sorry, you do not have a permission to save the settings"
+msgstr ""
+
+#: ../admin/class-wordlift-admin-status-page.php:154
+msgctxt "Page title"
+msgid "Status Report"
+msgstr ""
+
+#: ../admin/class-wordlift-admin-status-page.php:166
+msgctxt "Menu title"
+msgid "Status Report"
+msgstr ""
+
+#: ../admin/class-wordlift-admin-user-profile-page.php:90
+#: ../admin/wordlift_admin_menu.php:23 ../admin/wordlift_admin_menu.php:24
+#: ../admin/wordlift_admin_meta_box_entities.php:39
+msgid "WordLift"
+msgstr "WordLift"
+
+#: ../admin/class-wordlift-admin-user-profile-page.php:95
+msgid "Author from the vocabulary"
+msgstr ""
+
+#: ../admin/class-wordlift-admin-user-profile-page.php:105
+msgid ""
+"The entity, person or organization, from the vocabulary to associate with "
+"this author."
+msgstr ""
+
+#: ../admin/class-wordlift-admin-user-profile-page.php:112
+msgid "Can create new entities"
+msgstr "Pode criar novas entidades"
+
+#: ../admin/class-wordlift-admin.php:86
+#, php-format
+msgid "WordLift's key isn't set, please open the %s to set WordLift's key."
+msgstr ""
+
+#: ../admin/class-wordlift-admin.php:86 ../admin/class-wordlift-admin.php:88
+msgid "settings page"
+msgstr "página de configurações"
+
+#: ../admin/class-wordlift-admin.php:88
+#, php-format
+msgid ""
+"WordLift's dataset URI is not configured: please open the %s to set "
+"WordLift's key again."
+msgstr ""
+
+#: ../admin/class-wordlift-admin.php:165
+msgid "You already published an entity with the same name: "
+msgstr ""
+
+#: ../admin/class-wordlift-admin.php:166
+#: ../admin/partials/wordlift-admin-setup.php:39
+msgid "WordLift Choose Logo"
+msgstr "Escolha o Logotipo WordLift"
+
+#: ../admin/class-wordlift-admin.php:167
+#: ../admin/partials/wordlift-admin-setup.php:40
+msgid "Choose Logo"
+msgstr "Escolha o Logotipo"
+
+#: ../admin/class-wordlift-admin.php:168
+msgctxt "Autocomplete Select"
+msgid "Type at least 3 characters to search..."
+msgstr ""
+
+#: ../admin/class-wordlift-admin.php:169
+msgctxt "Autocomplete Select"
+msgid "No results found: try changing or removing some words."
+msgstr ""
+
+#: ../admin/class-wordlift-admin.php:170
+msgctxt "Autocomplete Select"
+msgid "Please wait while we look for entities in the linked data cloud..."
+msgstr ""
+
+#: ../admin/class-wordlift-download-your-data-page.php:56
+msgctxt "Page title"
+msgid "Download Your Data"
+msgstr "Faça o Download de Seus Dados"
+
+#: ../admin/class-wordlift-download-your-data-page.php:57
+msgctxt "Menu title"
+msgid "Download Your Data"
+msgstr "Faça o Download de Seus Dados"
+
+#: ../admin/class-wordlift-download-your-data-page.php:105
+msgid "The format is not supported."
+msgstr "Este formato não é suportado."
+
+#: ../admin/class-wordlift-download-your-data-page.php:116
+msgid ""
+"There was an error trying to connect to the server. Please try again later."
+msgstr ""
+
+#: ../admin/class-wordlift-entity-type-settings.php:91
+#: ../admin/class-wordlift-entity-type-settings.php:92
+msgid "Edit Entity term"
+msgstr "Editar o termo da Entidade"
+
+#: ../admin/class-wordlift-entity-type-settings.php:109
+msgid "Settings saved"
+msgstr "Configurações salvas"
+
+#: ../admin/class-wordlift-entity-type-settings.php:127
+msgid "Cheatin&#8217; uh?"
+msgstr ""
+
+#: ../admin/class-wordlift-entity-type-settings.php:128
+msgid "Sorry, you are not allowed to edit this item."
+msgstr "Desculpe, você não tem autorização para editar este item."
+
+#: ../admin/class-wordlift-entity-type-settings.php:137
+msgid "You attempted to edit an entity type term that doesn&#8217;t exist."
+msgstr ""
+
+#: ../admin/partials/admin-setup/step-1.php:4
+msgid "Welcome"
+msgstr "Seja bem vindo"
+
+#: ../admin/partials/admin-setup/step-1.php:8
+msgid ""
+"Thank you for downloading WordLift. Now you can boost your website with a "
+"double-digit growth. WordLift helps you with:"
+msgstr ""
+
+#: ../admin/partials/admin-setup/step-1.php:14
+msgid "Trustworthiness"
+msgstr ""
+
+#: ../admin/partials/admin-setup/step-1.php:19
+msgid "Enrichment"
+msgstr "Enriquecimento"
+
+#: ../admin/partials/admin-setup/step-1.php:24
+msgid "Engagement"
+msgstr "Engajamento"
+
+#: ../admin/partials/admin-setup/step-1.php:29
+msgid "Smart Navigation"
+msgstr "Navegação Inteligente"
+
+#: ../admin/partials/admin-setup/step-1.php:34
+msgid "SEO Optimization"
+msgstr "Otimização de SEO"
+
+#: ../admin/partials/admin-setup/step-1.php:39
+msgid "Content Marketing"
+msgstr "Marketing de Conteúdo"
+
+#: ../admin/partials/admin-setup/step-1.php:49
+msgid "Learn More"
+msgstr "Aprenda Mais"
+
+#: ../admin/partials/admin-setup/step-2.php:4
+msgid "Diagnostic"
+msgstr "Diagnóstico"
+
+#: ../admin/partials/admin-setup/step-2.php:9
+msgid ""
+"Help us improve our product by automatically sending diagnostic and usage "
+"data."
+msgstr ""
+
+#: ../admin/partials/admin-setup/step-2.php:20
+msgid "Share diagnostic data"
+msgstr ""
+
+#: ../admin/partials/admin-setup/step-2.php:25
+msgid "About our privacy policy..."
+msgstr ""
+
+#: ../admin/partials/admin-setup/step-3.php:4
+msgid "License Key"
+msgstr ""
+
+#: ../admin/partials/admin-setup/step-3.php:12
+msgid "grab a key"
+msgstr ""
+
+#: ../admin/partials/admin-setup/step-3.php:17
+#, php-format
+msgid ""
+"If you already purchased a plan, check your email, get the activation key "
+"from your inbox and insert it in the field below. Otherwise %s!"
+msgstr ""
+
+#: ../admin/partials/admin-setup/step-3.php:43
+msgid "Grab a Key!"
+msgstr ""
+
+#: ../admin/partials/admin-setup/step-4.php:4
+#: ../includes/class-wordlift-entity-post-type-service.php:136
+msgid "Vocabulary"
+msgstr "Vocabulário"
+
+#: ../admin/partials/admin-setup/step-4.php:8
+msgid ""
+"All new pages created with WordLift, will be stored inside your internal "
+"vocabulary. You can customize the url pattern of these pages in the field "
+"below. Check our FAQs if you need more info."
+msgstr ""
+
+#: ../admin/partials/admin-setup/step-4.php:22
+msgid ""
+"Leave it empty to place your entities in the root folder of your website"
+msgstr ""
+
+#: ../admin/partials/admin-setup/step-5.php:4
+msgid "Language"
+msgstr "Idioma"
+
+#: ../admin/partials/admin-setup/step-5.php:8
+msgid "Each WordLift key can be used only in one language. Pick yours."
+msgstr ""
+
+#: ../admin/partials/admin-setup/step-6.php:8
+msgid "Are you going to publish as an individual or as a company?"
+msgstr ""
+
+#: ../admin/partials/admin-setup/step-6.php:23
+msgid "Personal"
+msgstr ""
+
+#: ../admin/partials/admin-setup/step-6.php:68
+msgid "Add your logo"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-batch-analysis-page.php:11
+msgid "WordLift Batch Analyze Monitor"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-batch-analysis-page.php:17
+msgid "Posts in queue"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-batch-analysis-page.php:20
+msgid "Nothing is currently in queue"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-batch-analysis-page.php:28
+#: ../admin/partials/wordlift-admin-batch-analysis-page.php:49
+#: ../admin/partials/wordlift-admin-deactivation-feedback-popup.php:126
+msgid "Cancel"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-batch-analysis-page.php:38
+msgid "Posts being processed"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-batch-analysis-page.php:41
+msgid "Nothing is currently being processed"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-batch-analysis-page.php:60
+msgid "Posts with warnings"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-batch-analysis-page.php:63
+msgid "No warnings :-)"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-batch-analysis-page.php:71
+msgid "Clear warning"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-deactivation-feedback-popup.php:6
+msgid "Contact Us"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-deactivation-feedback-popup.php:12
+msgid "It was too complicated and unclear to me"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-deactivation-feedback-popup.php:15
+#, php-format
+msgid "Need help? We are ready to answer your questions. %s"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-deactivation-feedback-popup.php:22
+msgid "It misses some important feature to me"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-deactivation-feedback-popup.php:25
+msgid "Tell us what this feature is."
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-deactivation-feedback-popup.php:30
+msgid "It costs too much"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-deactivation-feedback-popup.php:33
+msgid "How much you would like to pay?"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-deactivation-feedback-popup.php:38
+msgid "I found another tool that I like better"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-deactivation-feedback-popup.php:41
+msgid "Please tell us some more details."
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-deactivation-feedback-popup.php:46
+msgid "I'm not using it right now"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-deactivation-feedback-popup.php:50
+msgid "Something didn't work right"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-deactivation-feedback-popup.php:54
+msgid "Another reason"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-deactivation-feedback-popup.php:57
+msgid "Please tell us the reason so we can improve it."
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-deactivation-feedback-popup.php:66
+msgid "We're sorry to see you go!"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-deactivation-feedback-popup.php:71
+msgid "If you have a moment, please let us know why you are deactivating"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-deactivation-feedback-popup.php:114
+#, php-format
+msgid ""
+"Important notice: Uninstalling the plugin will delete your vocabulary."
+"<br>Maybe you would like to <a href=\"%s\" target=\"_blank\">download your "
+"data</a> first."
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-deactivation-feedback-popup.php:130
+msgid "Deactivate"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-download-your-data.php:18
+msgid "Choose the format to download your data:"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-download-your-data.php:22
+msgid "JSON-LD"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-download-your-data.php:27
+msgid "RDF/XML"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-download-your-data.php:37
+msgid "N3"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-download-your-data.php:54
+msgid "Google Analytics"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-entity-type-settings.php:27
+#: ../includes/class-wordlift-entity-type-taxonomy-service.php:27
+msgid "Edit Entity Type"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-entity-type-settings.php:40
+msgid "Name"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-entity-type-settings.php:48
+msgid "Title"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-entity-type-settings.php:54
+msgid "The HTML title to be used in the entity type archive page."
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-entity-type-settings.php:59
+msgid "Description"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-entity-type-settings.php:65
+msgid "The description to be used in the entity type archive page."
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-entity-type-settings.php:69
+msgid "Update"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-news-widget.php:14
+msgid "More posts"
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-settings-page.php:11
+msgid "WorldLift Settings"
+msgstr "Configurações do WordLift"
+
+#: ../admin/partials/wordlift-admin-setup.php:15
+msgid "WordLift Setup"
+msgstr "Configuração inicial do WordLift"
+
+#: ../admin/partials/wordlift-admin-status-page.php:25
+msgid "Status Report"
+msgstr "Reporte de Status"
+
+#: ../admin/partials/wordlift-admin-status-page.php:27
+#, php-format
+msgid ""
+"%d not found URIs; %d local entity URIs; %d remote URIs (including posts and "
+"authors)."
+msgstr ""
+
+#: ../admin/partials/wordlift-admin-status-page.php:31
+msgid "URL"
+msgstr "URL"
+
+#: ../admin/wordlift_admin_edit_post.php:30
+msgid "View Linked Data"
+msgstr ""
+
+#: ../admin/wordlift_admin_edit_post.php:38
+msgid "Test Google Rich Snippets"
+msgstr "Test Google Rich Snippets"
+
+#: ../admin/wordlift_admin_menu.php:75
+msgid "You do not have sufficient permissions to access this page."
+msgstr ""
+
+#: ../includes/class-wordlift-activator.php:36
+msgid "The WordLift plugin requires WordPress version 4.4 or above."
+msgstr ""
+
+#: ../includes/class-wordlift-autocomplete-adapter.php:56
+msgid "Nonce field doesn't match."
+msgstr ""
+
+#: ../includes/class-wordlift-autocomplete-adapter.php:65
+msgid "The query param is empty."
+msgstr "O parâmetro de pesquisa é nulo."
+
+#: ../includes/class-wordlift-autocomplete-adapter.php:98
+#, php-format
+msgid "Error: %s"
+msgstr "Erro: %s"
+
+#: ../includes/class-wordlift-deactivator-feedback.php:132
+msgid "Nonce Security Check Failed!"
+msgstr ""
+
+#: ../includes/class-wordlift-entity-post-type-service.php:124
+msgctxt "post type general name"
+msgid "Vocabulary"
+msgstr "Vocabulário"
+
+#: ../includes/class-wordlift-entity-post-type-service.php:125
+msgctxt "post type singular name"
+msgid "Entity"
+msgstr "Entidade"
+
+#: ../includes/class-wordlift-entity-post-type-service.php:126
+msgctxt "entity"
+msgid "Add New Entity"
+msgstr "Adicionar Nova Entidade"
+
+#: ../includes/class-wordlift-entity-post-type-service.php:127
+msgid "Add New Entity"
+msgstr "Adicionar Nova Entidade"
+
+#: ../includes/class-wordlift-entity-post-type-service.php:128
+msgid "Edit Entity"
+msgstr "Editar Entidade"
+
+#: ../includes/class-wordlift-entity-post-type-service.php:129
+msgid "New Entity"
+msgstr "Nova Entidade"
+
+#: ../includes/class-wordlift-entity-post-type-service.php:130
+msgid "All Entities"
+msgstr "Todas as Entidades"
+
+#: ../includes/class-wordlift-entity-post-type-service.php:131
+msgid "View Entity"
+msgstr "Visualizar Entidade"
+
+#: ../includes/class-wordlift-entity-post-type-service.php:132
+msgid "Search in Vocabulary"
+msgstr ""
+
+#: ../includes/class-wordlift-entity-post-type-service.php:133
+msgid "No entities found"
+msgstr ""
+
+#: ../includes/class-wordlift-entity-post-type-service.php:134
+msgid "No entities found in the Trash"
+msgstr ""
+
+#: ../includes/class-wordlift-entity-service.php:363
+msgid "Add more titles"
+msgstr "Adicionar mais títulos"
+
+#: ../includes/class-wordlift-entity-service.php:412
+msgid "Delete"
+msgstr "Deletar"
+
+#: ../includes/class-wordlift-entity-type-taxonomy-service.php:21
+msgctxt "taxonomy general name"
+msgid "Entity Types"
+msgstr ""
+
+#: ../includes/class-wordlift-entity-type-taxonomy-service.php:22
+msgctxt "taxonomy singular name"
+msgid "Entity Type"
+msgstr ""
+
+#: ../includes/class-wordlift-entity-type-taxonomy-service.php:23
+msgid "Search Entity Types"
+msgstr ""
+
+#: ../includes/class-wordlift-entity-type-taxonomy-service.php:24
+msgid "All Entity Types"
+msgstr ""
+
+#: ../includes/class-wordlift-entity-type-taxonomy-service.php:25
+msgid "Parent Entity Type"
+msgstr ""
+
+#: ../includes/class-wordlift-entity-type-taxonomy-service.php:26
+msgid "Parent Entity Type:"
+msgstr ""
+
+#: ../includes/class-wordlift-entity-type-taxonomy-service.php:28
+msgid "Update Entity Type"
+msgstr ""
+
+#: ../includes/class-wordlift-entity-type-taxonomy-service.php:29
+msgid "Add New Entity Type"
+msgstr ""
+
+#: ../includes/class-wordlift-entity-type-taxonomy-service.php:30
+msgid "New Entity Type"
+msgstr ""
+
+#: ../includes/class-wordlift-entity-type-taxonomy-service.php:31
+msgid "Entity Types"
+msgstr ""
+
+#: ../includes/class-wordlift-publisher-service.php:229
+msgid "AMP logo guidelines"
+msgstr ""
+
+#: ../includes/class-wordlift-rating-service.php:252
+#: ../wordlift_manual_translations.php:6
+msgid "There are no related posts for the current entity."
+msgstr "Não há posts relacionados para a entidade atual."
+
+#: ../includes/class-wordlift-rating-service.php:257
+#: ../wordlift_manual_translations.php:7
+msgid "This entity has not description."
+msgstr "Esta entidade não tem descrição."
+
+#: ../includes/class-wordlift-rating-service.php:263
+#: ../wordlift_manual_translations.php:8
+msgid "There are no related entities for the current entity."
+msgstr "Não há entidades relacionadas a esta entidade."
+
+#: ../includes/class-wordlift-rating-service.php:268
+#: ../wordlift_manual_translations.php:9
+msgid ""
+"This entity is not published. It will not appear within analysis results."
+msgstr ""
+"Esta entidade não foi publicada. Ela não aparecerá nos resultados de "
+"análises."
+
+#: ../includes/class-wordlift-rating-service.php:273
+#: ../wordlift_manual_translations.php:10
+msgid "This entity has no featured image yet."
+msgstr "Esta entidade não tem uma imagem de destaque ainda."
+
+#: ../includes/class-wordlift-rating-service.php:289
+#: ../wordlift_manual_translations.php:11
+msgid "There are no sameAs configured for this entity."
+msgstr ""
+
+#: ../includes/class-wordlift-rating-service.php:301
+#: ../wordlift_manual_translations.php:12
+msgid "Schema.org metadata for this entity are not completed."
+msgstr "A metadata do Schema.org para esta entidade não foi completada."
+
+#: ../includes/class-wordlift-schema-service.php:1327
+msgid "Recipe cuisine"
+msgstr ""
+
+#: ../includes/class-wordlift-schema-service.php:1338
+#: ../includes/class-wordlift-schema-service.php:1368
+msgid "Recipe ingredient"
+msgstr ""
+
+#: ../includes/class-wordlift-schema-service.php:1348
+msgid "Recipe instructions"
+msgstr ""
+
+#: ../includes/class-wordlift-schema-service.php:1357
+msgid "Recipe number of servings"
+msgstr ""
+
+#: ../includes/class-wordlift-schema-service.php:1377
+msgid "Calories (e.g. 240 calories)"
+msgstr ""
+
+#: ../includes/class-wordlift-schema-service.php:1387
+msgid "Recipe preparation time (e.g. 1:30)"
+msgstr ""
+
+#: ../includes/class-wordlift-schema-service.php:1397
+msgid "Recipe cook time (e.g. 1:30)"
+msgstr ""
+
+#: ../includes/class-wordlift-schema-service.php:1407
+msgid "Recipe total time (e.g. 1:30)"
+msgstr ""
+
+#: ../includes/class-wordlift-schema-service.php:1489
+msgid "Discontinued"
+msgstr ""
+
+#: ../includes/class-wordlift-schema-service.php:1490
+msgid "In Stock"
+msgstr ""
+
+#: ../includes/class-wordlift-schema-service.php:1491
+msgid "In Store Only"
+msgstr ""
+
+#: ../includes/class-wordlift-schema-service.php:1492
+msgid "Limited Availability"
+msgstr ""
+
+#: ../includes/class-wordlift-schema-service.php:1493
+msgid "Online Only"
+msgstr ""
+
+#: ../includes/class-wordlift-schema-service.php:1494
+msgid "Out of Stock"
+msgstr ""
+
+#: ../includes/class-wordlift-schema-service.php:1495
+msgid "Pre Order"
+msgstr ""
+
+#: ../includes/class-wordlift-schema-service.php:1496
+msgid "Pre Sale"
+msgstr ""
+
+#: ../includes/class-wordlift-schema-service.php:1497
+msgid "Sold Out"
+msgstr ""
+
+#: ../includes/class-wordlift-schema-url-property-service.php:69
+msgid "Web Site(s)"
+msgstr ""
+
+#: ../includes/class-wordlift-timeline-service.php:261
+#, php-format
+msgid "Continue reading %s"
+msgstr ""
+
+#: ../includes/class-wordlift-timeline-service.php:264
+msgid "(more&hellip;)"
+msgstr ""
+
+#: ../includes/class-wordlift-topic-taxonomy-service.php:85
+msgctxt "taxonomy general name"
+msgid "Topics"
+msgstr ""
+
+#: ../includes/class-wordlift-topic-taxonomy-service.php:86
+msgctxt "taxonomy singular name"
+msgid "Topic"
+msgstr ""
+
+#: ../includes/class-wordlift-topic-taxonomy-service.php:87
+msgid "Search Topics"
+msgstr ""
+
+#: ../includes/class-wordlift-topic-taxonomy-service.php:88
+msgid "All Topics"
+msgstr ""
+
+#: ../includes/class-wordlift-topic-taxonomy-service.php:89
+msgid "Parent Topic"
+msgstr ""
+
+#: ../includes/class-wordlift-topic-taxonomy-service.php:90
+msgid "Parent Topic:"
+msgstr ""
+
+#: ../includes/class-wordlift-topic-taxonomy-service.php:91
+msgid "Edit Topic"
+msgstr ""
+
+#: ../includes/class-wordlift-topic-taxonomy-service.php:92
+msgid "Update Topic"
+msgstr ""
+
+#: ../includes/class-wordlift-topic-taxonomy-service.php:93
+msgid "Add New Topic"
+msgstr ""
+
+#: ../includes/class-wordlift-topic-taxonomy-service.php:94
+msgid "New Topic"
+msgstr ""
+
+#: ../includes/class-wordlift-topic-taxonomy-service.php:95
+msgid "Topics"
+msgstr ""
+
+#: ../js/wordlift-ui.min.js:1
+msgid "No data found for the chord."
+msgstr ""
+
+#: ../modules/analyzer/wordlift_analyzer.php:21
+msgid ""
+"An error occurred while request an analysis to the remote service. Please "
+"try again later."
+msgstr ""
+
+#: ../public/class-wordlift-navigator-shortcode.php:32
+#: ../shortcodes/wordlift_shortcode_faceted_search.php:19
+msgid "Related articles"
+msgstr ""
+
+#: ../public/class-wordlift-related-entities-cloud-widget.php:27
+msgid "WordLift Entities Cloud"
+msgstr "Nuvem de Entidades do WordLift"
+
+#: ../public/class-wordlift-related-entities-cloud-widget.php:30
+msgid "Display entities related to the current post/entity in a tag cloud."
+msgstr ""
+
+#: ../public/class-wordlift-related-entities-cloud-widget.php:45
+#: ../widgets/wordlift_widget_geo.php:64
+msgid "Title:"
+msgstr "Título:"
+
+#: ../public/class-wordlift-related-entities-cloud-widget.php:80
+msgid "Related Entities"
+msgstr "Entidades Relacionadas"
+
+#: ../shortcodes/wordlift_shortcode_faceted_search.php:76
+msgctxt "Faceted Search Widget"
+msgid "What"
+msgstr ""
+
+#: ../shortcodes/wordlift_shortcode_faceted_search.php:77
+msgctxt "Faceted Search Widget"
+msgid "Who"
+msgstr ""
+
+#: ../shortcodes/wordlift_shortcode_faceted_search.php:78
+msgctxt "Faceted Search Widget"
+msgid "Where"
+msgstr ""
+
+#: ../shortcodes/wordlift_shortcode_faceted_search.php:79
+msgctxt "Faceted Search Widget"
+msgid "When"
+msgstr ""
+
+#: ../timelinejs/js/timeline-min.js:11 ../timelinejs/js/timeline-min.js:12
+#: ../timelinejs/js/timeline.js:6812 ../timelinejs/js/timeline.js:7198
+msgid "loading"
+msgstr "carregando"
+
+#: ../timelinejs/js/timeline-min.js:12 ../timelinejs/js/timeline-min.js:14
+#: ../timelinejs/js/timeline.js:7203 ../timelinejs/js/timeline.js:7205
+#: ../timelinejs/js/timeline.js:13096 ../timelinejs/js/timeline.js:13105
+msgid "error"
+msgstr "erro"
+
+#: ../timelinejs/js/timeline-min.js:12 ../timelinejs/js/timeline.js:7639
+msgid "flickr_notfound_err"
+msgstr ""
+
+#: ../timelinejs/js/timeline-min.js:12 ../timelinejs/js/timeline.js:7968
+msgid "imgur_invalidurl_err"
+msgstr ""
+
+#: ../timelinejs/js/timeline-min.js:12 ../timelinejs/js/timeline.js:8427
+msgid "spotify_invalid_url"
+msgstr ""
+
+#: ../timelinejs/js/timeline-min.js:12 ../timelinejs/js/timeline.js:8695
+#: ../timelinejs/js/timeline.js:8801
+msgid "twitter_load_err"
+msgstr ""
+
+#: ../timelinejs/js/timeline-min.js:12 ../timelinejs/js/timeline.js:8784
+msgid "twitterembed_invalidurl_err"
+msgstr ""
+
+#: ../timelinejs/js/timeline-min.js:12 ../timelinejs/js/timeline.js:9102
+msgid "wikipedia_load_err"
+msgstr ""
+
+#: ../timelinejs/js/timeline-min.js:12 ../timelinejs/js/timeline.js:9144
+msgid "wikipedia"
+msgstr "wikipedia"
+
+#: ../timelinejs/js/timeline-min.js:13 ../timelinejs/js/timeline.js:10236
+msgid "swipe_to_navigate"
+msgstr ""
+
+#: ../widgets/class-wordlift-chord-widget.php:20
+msgid "Chord Widget"
+msgstr ""
+
+#: ../widgets/class-wordlift-chord-widget.php:22
+msgid "The Chord Widget depicts the main topics of your blog in concise graph."
+msgstr ""
+
+#: ../widgets/wordlift_widget_geo.php:19
+msgid "Geo Widget"
+msgstr ""
+
+#: ../widgets/wordlift_widget_geo.php:20
+msgid "Geo Widget description"
+msgstr ""
+
+#: ../widgets/wordlift_widget_geo.php:60
+msgid "New title"
+msgstr "Novo título"
+
+#: ../widgets/wordlift_widget_timeline.php:12
+msgid "WordLift Timeline Widget"
+msgstr ""
+
+#: ../widgets/wordlift_widget_timeline.php:13
+msgid "Displays entities of type event using an interactive timeline."
+msgstr ""
+
+#, fuzzy
+#~ msgid "The site language"
+#~ msgstr "Site Language (two letters ISO code)"
+
+#, fuzzy
+#~ msgid "Redlink Dataset name"
+#~ msgstr "Dataset name"
+
+#~ msgid "application-key-not-set"
+#~ msgstr ""
+#~ "WordLift application key is not set. Please <a target=\"_blank\" href="
+#~ "\"%1$s\">signup</a> and we will get in contact with you to send you the "
+#~ "key."
+
+#~ msgid "Dataset URI missing in configuration"
+#~ msgstr ""
+#~ "WordLift Dataset URI is missing in configuration. Please check your "
+#~ "WordLift key."
+
+#~ msgid "Entity URL"
+#~ msgstr "Entity URL"
+
+#~ msgid "entity-url-label"
+#~ msgstr "The entity URL:"
+
+#, fuzzy
+#~ msgid "Dataset"
+#~ msgstr "Dataset name"
+
+#, fuzzy
+#~ msgid "Entity Type URI"
+#~ msgstr "Entity URL"
+
+#~ msgid "main-settings-title"
+#~ msgstr "Main Settings"
+
+#~ msgid "application-key"
+#~ msgstr "Application Key"
+
+#~ msgid "user-id"
+#~ msgstr "User ID"
+
+#~ msgid "dataset-base-uri"
+#~ msgstr "Dataset URI (e.g. http://rdf.salzburgerland.com/dataset)"
+
+#~ msgid "main-settings-description"
+#~ msgstr "Configure here the main settings:"
+
+#, fuzzy
+#~ msgid "entity-same-as-label"
+#~ msgstr "The entity URL:"
+
+#, fuzzy
+#~ msgid "entity-types-label"
+#~ msgstr "The entity URL:"
+
+#~ msgid "entities-admin-page-title"
+#~ msgstr "Entities"
+
+#~ msgid "entities-admin-menu-title"
+#~ msgstr "Entities"
