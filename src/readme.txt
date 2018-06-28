@@ -142,7 +142,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.19.1 (2018-06-04) =
+= 3.19.1 (2018-06-28) =
 * Enhancement: [#815](https://github.com/insideout10/wordlift-plugin/issues/815): Add wl_schemas hook.
 * Enhancement: [#813](https://github.com/insideout10/wordlift-plugin/issues/813): Disable logging by default.
 * Enhancement: [#671](https://github.com/insideout10/wordlift-plugin/issues/671): Add WordLift JSON-LD markup to AMP pages.
