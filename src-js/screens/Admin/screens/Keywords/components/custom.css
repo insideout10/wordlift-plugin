@@ -1,0 +1,51 @@
+.treemap__hierarchy {
+  border-bottom: 4px solid #F1F1F1;
+  border-right: 4px solid #F1F1F1;
+}
+
+.treemap__hierarchy__tile {
+  background: white;
+  border-top: 4px solid #F1F1F1;
+  border-left: 4px solid #F1F1F1;
+  box-sizing: border-box;
+  padding: 8px;
+}
+
+.tile {
+  position: relative;
+  text-align: left;
+  color: #BABABA;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.tile__label {
+  color: #008AFF;
+  text-decoration: none;
+}
+
+.tile__label:hover {
+  text-decoration: underline;
+}
+
+.tile__type {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  line-height: 20px;
+}
+
+.tile__score {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+
+  background: url(star.png) repeat-x;
+  display: block;
+  background-size: 20px;
+  font-size: 0;
+  height: 20px;
+  width: 100px;
+}

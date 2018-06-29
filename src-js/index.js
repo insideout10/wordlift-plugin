@@ -3,8 +3,9 @@ import ReactDOM from "react-dom";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 
-import "./screens/Admin/screens/Keywords";
 import AddEntity from "./screens/Admin/screens/Edit/components/AddEntity";
+import Treemap from "./screens/Admin/screens/Keywords/components/Treemap";
+import renderTile from "./screens/Admin/screens/Keywords/renderTile";
 
 class App extends Component {
   constructor(props) {
@@ -35,3 +36,16 @@ class App extends Component {
 }
 
 ReactDOM.render(<App />, document.getElementById("button"));
+
+// Treemap.
+ReactDOM.render(
+  <Treemap
+    url="complete.json"
+    width="1350"
+    height="500"
+    minTileWidth="150"
+    minTileHeight="100"
+    tileRenderCallback={renderTile}
+  />,
+  document.getElementById("treemap")
+);
