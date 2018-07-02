@@ -5,9 +5,9 @@ function toType(uri) {
 }
 
 function renderTile(node) {
-  if (node.data && node.data.entity) {
+  if (node.data && node.data.entity && node.data.score) {
     node.data.entity.type = toType(node.data.entity.type);
-    node.data.entity.width = `${node.data.entity.score * 100}px`;
+    node.data.entity.width = `${node.data.score.value * 35}px`;
   }
 
   return Mustache.render(
@@ -16,7 +16,7 @@ function renderTile(node) {
         <div class="tile">
           <a href="/wp-admin/admin-ajax.php?action=wl_locate&uri={{itemId}}" class="tile__label">{{label}}</a>
           <div class="tile__type">{{type}}</div>
-          <div class="tile__score" style="width: {{width}};">{{score}}</div>
+          <div class="tile__score" style="width: {{width}}; max-width: 100px;"></div>
         </div>
         {{/entity}}
         {{^entity}}{{name}}{{/entity}}
