@@ -55,7 +55,6 @@ function RenderStrategy(el, tileRenderCallback) {
     clear(treemapEl);
 
     hierarchy.children.forEach(node => {
-      console.debug("Adding element...");
       const div = document.createElement("div");
       div.className = "treemap__hierarchy__tile";
       div.style.position = "absolute";
@@ -64,7 +63,7 @@ function RenderStrategy(el, tileRenderCallback) {
       div.style.top = node.y0 + "px";
       div.style.height = Math.round(node.y1 - node.y0) + "px";
       div.style.boxSizing = "border-box";
-      div.innerHTML = tileRenderCallback(node);
+      div.innerHTML = tileRenderCallback(node, div);
 
       if (node.listeners && node.listeners.click) {
         div.addEventListener("click", node.listeners.click);

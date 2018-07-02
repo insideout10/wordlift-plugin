@@ -4,14 +4,19 @@ function toType(uri) {
   return uri.substring(uri.lastIndexOf("/") + 1);
 }
 
-function renderTile(node) {
-  if (node.data && node.data.entity && node.data.score) {
-    node.data.entity.type = toType(node.data.entity.type);
-    node.data.entity.width = `${node.data.score.value * 35}px`;
-  }
+function renderTile({ click }) {
+  return function(node, elem) {
+    if (node.data && node.data.entity && node.data.score) {
+      node.data.entity.type = toType(node.data.entity.type);
+      node.data.entity.width = `${node.data.score.value * 35}px`;
 
-  return Mustache.render(
-    `
+      // Hook the click event.
+      console.debug({ elem });
+      elem.addEventListener("click", () => click(node, arguments));
+    }
+
+    return Mustache.render(
+      `
         {{#entity}}
         <div class="tile">
           <a href="/wp-admin/admin-ajax.php?action=wl_locate&uri={{itemId}}" class="tile__label">{{label}}</a>
@@ -21,8 +26,9 @@ function renderTile(node) {
         {{/entity}}
         {{^entity}}{{name}}{{/entity}}
     `,
-    node.data
-  );
+      node.data
+    );
+  };
 }
 
 export default renderTile;
