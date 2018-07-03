@@ -143,6 +143,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 = 3.19.2 (????-??-??) =
+* Fix: [#820](https://github.com/insideout10/wordlift-plugin/issues/820): wl-api lost when plugin deactivated and activated back again.
 
 = 3.19.1 (2018-06-28) =
 * Enhancement: [#815](https://github.com/insideout10/wordlift-plugin/issues/815): Add wl_schemas hook.

@@ -36,6 +36,8 @@ class Wordlift_Http_Api {
 
 		add_action( 'init', array( $this, 'add_rewrite_endpoint' ) );
 		add_action( 'template_redirect', array( $this, 'template_redirect' ) );
+
+		//region SAMPLE ACTIONS.
 		add_action( 'admin_post_wl_hello_world', array(
 			$this,
 			'hello_world',
@@ -44,6 +46,7 @@ class Wordlift_Http_Api {
 			$this,
 			'nopriv_hello_world',
 		) );
+		//endregion
 
 	}
 
@@ -154,6 +157,21 @@ class Wordlift_Http_Api {
 				flush_rewrite_rules();
 			} );
 		}
+
+	}
+
+	/**
+	 * Called by {@see activate_wordlift}, resets the `wl_http_api` option flag in order to force WordLift to
+	 * reinitialize the `wl-api` route.
+	 *
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/820 related issue.
+	 *
+	 * @since 3.19.2
+	 */
+	public static function activate() {
+
+		// Force the plugin to reinitialize the rewrite rules.
+		update_option( 'wl_http_api', 'no' );
 
 	}
 
