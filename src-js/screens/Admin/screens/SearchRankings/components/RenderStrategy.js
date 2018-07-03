@@ -4,7 +4,7 @@ function RenderStrategy(el, tileRenderCallback) {
 
   // Define the treemap width and height according to the container height
   // and taking into consideration the toolbar height.
-  const treemapWidth = el.clientWidth;
+  const treemapWidth = el.clientWidth - 4;
   const treemapHeight = el.clientHeight - toolbarHeight;
 
   // The stack of hierarchies.

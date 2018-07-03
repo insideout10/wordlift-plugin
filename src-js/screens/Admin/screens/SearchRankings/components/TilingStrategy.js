@@ -31,7 +31,7 @@ class TilingStrategy {
   }
 
   tile(node, x0, y0, x1, y1) {
-    console.debug("Tiling starting...", { node, x0, y0, x1, y1 });
+    // console.debug("Tiling starting...", { node, x0, y0, x1, y1 });
 
     if (0 === x0 && 0 === y0) {
       const containerWidth = x1 - x0;
@@ -42,7 +42,7 @@ class TilingStrategy {
 
     this.delegatingTilingStrategy(node, x0, y0, x1, y1);
 
-    console.debug("Tiling complete.", { node, x0, y0, x1, y1 });
+    // console.debug("Tiling complete.", { node, x0, y0, x1, y1 });
   }
 
   collect(node, containerWidth, containerHeight) {
@@ -56,8 +56,8 @@ class TilingStrategy {
       // Recalculate the total.
       node.sum(this.scoreFn);
 
-      console.debug(
-        "Minimum width and height: ",
+      // console.debug(
+      //   "Minimum width and height: ",
         (isMinimumWidthAndHeight = u(
           t(
             node,
@@ -67,8 +67,8 @@ class TilingStrategy {
           ),
           this.minWidth,
           this.minHeight
-        ))
-      );
+        ));
+      // );
 
       collectedNodes.splice(0, 0, node.children.pop());
     }

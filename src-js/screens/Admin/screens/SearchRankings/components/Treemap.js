@@ -3,8 +3,8 @@ import { treemapSquarify } from "d3-hierarchy";
 import TreemapAdapter from "./TreemapAdapter";
 import TilingStrategy from "./TilingStrategy";
 import RenderStrategy from "./RenderStrategy";
-import style from "./Treemap.css";
-import customStyle from "./custom.css";
+import "./Treemap.css";
+import "./custom.css";
 
 function scoreFn(data) {
   return undefined === data.score || null === data.score
@@ -31,7 +31,6 @@ function Treemap(props) {
   return (
     <div
       ref={el => bind(el, props)}
-      className={{ style, customStyle }}
       style={{
         width: `100%`,
         height: `${props.height}px`,

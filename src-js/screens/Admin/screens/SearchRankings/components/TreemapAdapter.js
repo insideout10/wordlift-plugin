@@ -2,7 +2,7 @@ import { hierarchy as d3hierarchy, treemap } from "d3-hierarchy";
 
 class TreemapAdapter {
   constructor(tilingStrategy, renderStrategy, scoreFn) {
-    console.debug("Creating new TreemapAdapter instance...");
+    // console.debug("Creating new TreemapAdapter instance...");
 
     this.update = this.update.bind(this);
 
@@ -16,12 +16,12 @@ class TreemapAdapter {
   }
 
   load(url) {
-    console.debug(`Loading ${url}...`);
+    // console.debug(`Loading ${url}...`);
 
     fetch(url)
       .then(response => response.json())
       .then(json => {
-        console.debug(`${url} loaded.`, { json });
+        // console.debug(`${url} loaded.`, { json });
 
         this.treemap = treemap()
           .size([this.renderStrategy.width, this.renderStrategy.height])
