@@ -1,10 +1,17 @@
+/**
+ * Apps: Search Rankings.
+ *
+ * The Search Rankings application.
+ *
+ * @since 3.20.0
+ */
+//region ## IMPORTS
 // External dependencies.
 import React from "react";
 import { connect, Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import createSagaMiddleware from "redux-saga";
 import { Seq } from "immutable";
-import numeral from "numeral";
 
 // Internal dependencies.
 import EntityHeading from "./containers/EntityHeading";
@@ -15,6 +22,7 @@ import rootSaga from "./sagas";
 import TableBody from "../../components/Table/TableBody";
 import RankingPanel from "./containers/RankingPanel";
 import RankingTableRow from "./components/RankingTableRow";
+//endregion
 
 //region ## SAGA
 const sagaMiddleware = createSagaMiddleware();
