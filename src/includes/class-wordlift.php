@@ -691,6 +691,15 @@ class Wordlift {
 	protected $publisher_service;
 
 	/**
+	 * The Search Rankings page.
+	 *
+	 * @since 3.20.0
+	 * @access protected
+	 * @var \Wordlift_Admin_Search_Rankings_Page $admin_search_rankings_page The Search Rankings page.
+	 */
+	protected $admin_search_rankings_page;
+
+	/**
 	 * {@link Wordlift}'s singleton instance.
 	 *
 	 * @since  3.11.2
@@ -698,6 +707,7 @@ class Wordlift {
 	 * @var Wordlift $instance {@link Wordlift}'s singleton instance.
 	 */
 	private static $instance;
+
 	//</editor-fold>
 
 	/**
@@ -960,6 +970,7 @@ class Wordlift {
 
 		/** Services. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-google-analytics-export-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-api-service.php';
 
 		/** Adapters. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-tinymce-adapter.php';
@@ -975,7 +986,7 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-batch-analysis-complete-async-task.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-push-references-async-task.php';
 
-		/** Async Tasks. */
+		/** Autocomplete. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-autocomplete-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-autocomplete-adapter.php';
 
@@ -1051,6 +1062,7 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-post-edit-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-user-profile-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-status-page.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-search-rankings-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-entity-type-admin-service.php';
 
 		/**
@@ -1129,6 +1141,7 @@ class Wordlift {
 		/** Services. */
 		// Create the configuration service.
 		$this->configuration_service = new Wordlift_Configuration_Service();
+		new Wordlift_Api_Service( $this->configuration_service );
 
 		// Create an entity type service instance. It'll be later bound to the init action.
 		$this->entity_post_type_service = new Wordlift_Entity_Post_Type_Service( Wordlift_Entity_Service::TYPE_NAME, $this->configuration_service->get_entity_base_path() );
@@ -1287,6 +1300,8 @@ class Wordlift {
 		// create an instance of the entity type etting admin page controller.
 		$this->entity_type_settings_admin_page = new Wordlift_Admin_Entity_Type_Settings();
 
+		$this->admin_search_rankings_page = new Wordlift_Admin_Search_Rankings_Page();
+
 		/** Widgets */
 		$this->related_entities_cloud_widget = new Wordlift_Related_Entities_Cloud_Widget();
 
@@ -1442,6 +1457,7 @@ class Wordlift {
 			// Add the functionality only if a flag is set in wp-config.php .
 			$this->loader->add_action( 'wl_admin_menu', $this->batch_analysis_page, 'admin_menu', 10, 2 );
 		}
+		$this->loader->add_action( 'wl_admin_menu', $this->admin_search_rankings_page, 'admin_menu' );
 
 		// Hook key update.
 		$this->loader->add_action( 'pre_update_option_wl_general_settings', $this->configuration_service, 'maybe_update_dataset_uri', 10, 2 );

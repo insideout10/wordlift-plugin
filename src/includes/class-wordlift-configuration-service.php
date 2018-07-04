@@ -127,8 +127,8 @@ class Wordlift_Configuration_Service {
 	 *
 	 * @since 3.6.0
 	 *
-	 * @param string $option  The option name.
-	 * @param string $key     A key in the option value array.
+	 * @param string $option The option name.
+	 * @param string $key A key in the option value array.
 	 * @param string $default The default value in case the key is not found (by default an empty string).
 	 *
 	 * @return mixed The configuration value or the default value if not found.
@@ -146,8 +146,8 @@ class Wordlift_Configuration_Service {
 	 * @since 3.9.0
 	 *
 	 * @param string $option Name of option to retrieve. Expected to not be SQL-escaped.
-	 * @param string $key    The value key.
-	 * @param mixed  $value  The value.
+	 * @param string $key The value key.
+	 * @param mixed $value The value.
 	 */
 	private function set( $option, $key, $value ) {
 
@@ -381,8 +381,8 @@ class Wordlift_Configuration_Service {
 
 		// Build the URL.
 		$url = $this->get_accounts()
-			   . '?key=' . rawurlencode( $key )
-			   . '&url=' . rawurlencode( site_url() );
+		       . '?key=' . rawurlencode( $key )
+		       . '&url=' . rawurlencode( site_url() );
 
 		$args     = wp_parse_args( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
 			'method' => 'PUT',
@@ -426,7 +426,7 @@ class Wordlift_Configuration_Service {
 	 *
 	 * @since 3.12.0
 	 *
-	 * @param mixed $value     The new, unserialized option value.
+	 * @param mixed $value The new, unserialized option value.
 	 * @param mixed $old_value The old option value.
 	 *
 	 * @return mixed The same value in the $value parameter
@@ -537,6 +537,18 @@ class Wordlift_Configuration_Service {
 
 		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . 'feedbacks';
 
+	}
+
+	/**
+	 * Get the base API URL.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @return string The base API URL.
+	 */
+	public function get_api_url() {
+
+		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE;
 	}
 
 }
