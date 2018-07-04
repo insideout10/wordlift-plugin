@@ -5,13 +5,13 @@ function toType(uri) {
 }
 
 function renderTile({ click }) {
+
   return function(node, elem) {
     if (node.data && node.data.entity && node.data.score) {
       node.data.entity.type = toType(node.data.entity.type);
       node.data.entity.width = `${node.data.score.value * 35}px`;
 
       // Hook the click event.
-      console.debug({ elem });
       elem.addEventListener("click", () => click(node, arguments));
     }
 

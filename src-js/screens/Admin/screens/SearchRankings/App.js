@@ -13,37 +13,22 @@ import Treemap from "./components/Treemap";
 import reducer, { clickTile } from "./actions";
 import rootSaga from "./sagas";
 import TableBody from "../../components/Table/TableBody";
-import TableRow from "../../components/Table/TableRow";
-import TableDataCell from "../../components/Table/TableDataCell";
-import Panel from "../../components/Panel";
+import RankingPanel from "./containers/RankingPanel";
+import RankingTableRow from "./components/RankingTableRow";
 
+//region ## SAGA
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(reducer, applyMiddleware(sagaMiddleware));
 sagaMiddleware.run(rootSaga);
+//endregion
 
 const tileClick = tile => store.dispatch(clickTile(tile));
-
-const RankingPanel = connect(state => ({
-  display: null !== state.node ? "initial" : "none"
-}))(Panel);
 
 const rankingSelector = state =>
   null !== state.node ? state.node.score.rankings : [];
 const RankingTableBody = connect(state => ({
   rows: new Seq(rankingSelector(state))
 }))(TableBody);
-
-const RankingTableRow = ({ row: { keyword, rank, url, type, weight } }) => (
-  <TableRow>
-    <TableDataCell>
-      <strong>{keyword}</strong>
-    </TableDataCell>
-    <TableDataCell style={{ textAlign: "right" }}>{rank}</TableDataCell>
-    <TableDataCell>{url}</TableDataCell>
-    <TableDataCell>{type}</TableDataCell>
-    <TableDataCell>{numeral(weight).format("0.000")}</TableDataCell>
-  </TableRow>
-);
 
 const App = () => (
   <Provider store={store}>
@@ -70,7 +55,7 @@ const App = () => (
                 Type
               </th>
               <th scope="col" style={{ width: "50px" }}>
-                Weight
+                Score
               </th>
             </tr>
           </thead>

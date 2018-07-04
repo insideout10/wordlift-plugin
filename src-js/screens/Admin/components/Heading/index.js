@@ -9,8 +9,6 @@
 // External dependencies.
 import React from "react";
 
-const Heading = ({ title, visible }) => (
-  <h2 style={{ display: visible ? "block" : "none" }}>{title}</h2>
-);
+const Heading = ({ title }) => <h2>{title}</h2>;
 
 export default Heading;

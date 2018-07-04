@@ -9,8 +9,7 @@ import Heading from "../../../components/Heading";
 import { connect } from "react-redux";
 
 const mapStateToProps = state => ({
-  title: null !== state.node ? `Entity ${state.node.entity.label}` : "",
-  visible: null !== state.node
+  title: null !== state.node ? `Entity ${state.node.entity.label}` : ""
 });
 
 const EntityHeading = connect(mapStateToProps)(Heading);
