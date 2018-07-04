@@ -10,9 +10,9 @@ function u(node, minWidth, minHeight) {
     const width = child.x1 - child.x0;
     const height = child.y1 - child.y0;
     if (minWidth > width || minHeight > height) {
-      console.debug(
-        `Node ${i} is too small [ ${width} over ${minWidth} ][ ${height} over ${minHeight} ].`
-      );
+      // console.debug(
+      //   `Node ${i} is too small [ ${width} over ${minWidth} ][ ${height} over ${minHeight} ].`
+      // );
       return false;
     }
   }
@@ -96,7 +96,7 @@ class TilingStrategy {
   createOthersNode(nodes) {
     const node = nodes[0];
     const othersNode = node.copy();
-    othersNode.data = { name: "Other..." };
+    othersNode.data = { name: "...", other: true };
     othersNode.parent = node;
     othersNode.children = nodes;
     othersNode.children.forEach(n => n.depth++);

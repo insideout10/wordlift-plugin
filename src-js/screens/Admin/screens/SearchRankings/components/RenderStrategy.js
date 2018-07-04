@@ -41,9 +41,9 @@ function RenderStrategy(el, tileRenderCallback) {
       const div = document.createElement("div");
       div.innerText = stack[i].data.name;
       div.addEventListener("click", () => {
-        console.debug(`Before splicing at ${i}...`, Object.assign({}, stack));
+        // console.debug(`Before splicing at ${i}...`, Object.assign({}, stack));
         stack.splice(i);
-        console.debug(`After splicing at ${i}...`, Object.assign({}, stack));
+        // console.debug(`After splicing at ${i}...`, Object.assign({}, stack));
         render(level);
       });
       toolbarEl.appendChild(div);
@@ -56,7 +56,9 @@ function RenderStrategy(el, tileRenderCallback) {
 
     hierarchy.children.forEach(node => {
       const div = document.createElement("div");
-      div.className = "treemap__hierarchy__tile";
+      div.className =
+        "treemap__hierarchy__tile" +
+        (node.data.other ? " treemap__hierarchy__tile--other" : "");
       div.style.position = "absolute";
       div.style.left = node.x0 + "px";
       div.style.width = Math.round(node.x1 - node.x0) + "px";

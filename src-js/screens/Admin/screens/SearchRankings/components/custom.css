@@ -12,6 +12,26 @@
   cursor: pointer;
 }
 
+.treemap__hierarchy__tile--other {
+  /** Hide the text in the other tile. */
+  font-size: 0;
+}
+
+.treemap__hierarchy__tile--other::after {
+  /** Make the other tile display three periods (...). */
+  content: "...";
+  display: inline-block;
+  font-weight: 600;
+  font-size: 100px;
+  line-height: 100px;
+  text-align: right;
+  position: absolute;
+  bottom: -2px;
+  right: 8px;
+  letter-spacing: -4px;
+  color: #008aff;
+}
+
 .tile {
   position: relative;
   text-align: left;
@@ -29,6 +49,7 @@
 }
 
 .tile__label:hover {
+  color: #008aff;
   text-decoration: underline;
 }
 

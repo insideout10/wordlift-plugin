@@ -15,12 +15,17 @@ import rootSaga from "./sagas";
 import TableBody from "../../components/Table/TableBody";
 import TableRow from "../../components/Table/TableRow";
 import TableDataCell from "../../components/Table/TableDataCell";
+import Panel from "../../components/Panel";
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(reducer, applyMiddleware(sagaMiddleware));
 sagaMiddleware.run(rootSaga);
 
 const tileClick = tile => store.dispatch(clickTile(tile));
+
+const RankingPanel = connect(state => ({
+  display: null !== state.node ? "initial" : "none"
+}))(Panel);
 
 const rankingSelector = state =>
   null !== state.node ? state.node.score.rankings : [];
@@ -51,25 +56,27 @@ const App = () => (
         minTileHeight="100"
         tileRenderCallback={renderTile({ click: tileClick })}
       />
-      <EntityHeading />
-      <table className="wp-list-table widefat fixed striped">
-        <thead>
-          <tr>
-            <th scope="col">Keyword</th>
-            <th scope="col" style={{ width: "40px" }}>
-              Rank
-            </th>
-            <th scope="col">Ranking Page</th>
-            <th scope="col" style={{ width: "100px" }}>
-              Type
-            </th>
-            <th scope="col" style={{ width: "50px" }}>
-              Weight
-            </th>
-          </tr>
-        </thead>
-        <RankingTableBody TableRow={RankingTableRow} />
-      </table>
+      <RankingPanel>
+        <EntityHeading />
+        <table className="wp-list-table widefat fixed striped">
+          <thead>
+            <tr>
+              <th scope="col">Keyword</th>
+              <th scope="col" style={{ width: "40px" }}>
+                Rank
+              </th>
+              <th scope="col">Ranking Page</th>
+              <th scope="col" style={{ width: "100px" }}>
+                Type
+              </th>
+              <th scope="col" style={{ width: "50px" }}>
+                Weight
+              </th>
+            </tr>
+          </thead>
+          <RankingTableBody TableRow={RankingTableRow} />
+        </table>
+      </RankingPanel>
     </div>
   </Provider>
 );
