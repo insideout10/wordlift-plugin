@@ -47,6 +47,7 @@ define( 'WL_CORE_POST_CLASSIFICATION_BOXES', serialize( array(
 			'organization',
 			'person',
 			'local-business',
+			'localbusiness',
 		),
 		'selectedEntities' => array(),
 	),
