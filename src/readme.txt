@@ -143,6 +143,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 = 3.19.2 (????-??-??) =
+* Fix: [#823](https://github.com/insideout10/wordlift-plugin/issues/823): logo not available in referenced publisher.
 * Fix: [#821](https://github.com/insideout10/wordlift-plugin/issues/821): wordlift-public.css is included but file empty.
 * Fix: [#820](https://github.com/insideout10/wordlift-plugin/issues/820): wl-api lost when plugin deactivated and activated back again.
 * Fix: [#814](https://github.com/insideout10/wordlift-plugin/issues/814): Enforce styles in TinyMCE.
