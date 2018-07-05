@@ -3,7 +3,7 @@
   "description":
     "WordLift brings the power of Artificial Intelligence to organize content. Attract new readers and get their true attention with top notch semantic seo.",
   "private": true,
-  "version": "3.19.2-dev",
+  "version": "3.19.2-rc1",
   "author": "WordLift",
   "homepage": "https://wordift.io/",
   "license": "GPL-3.0",
