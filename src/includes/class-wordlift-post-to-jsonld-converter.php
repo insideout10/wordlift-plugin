@@ -244,7 +244,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		}
 
 		// Get the publisher logo.
-		$publisher_logo = self::get_publisher_logo( $post->ID );
+		$publisher_logo = $this->get_publisher_logo( $post->ID );
 
 		// Bail out if the publisher logo isn't set.
 		if ( false === $publisher_logo ) {
@@ -282,13 +282,15 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 * @return array|false Returns an array with the `url`, `width` and `height` for the publisher logo or false in case
 	 *  of errors.
 	 */
-	private static function get_publisher_logo( $post_id ) {
+	private function get_publisher_logo( $post_id ) {
 
 		// Get the featured image for the post.
 		$thumbnail_id = get_post_thumbnail_id( $post_id );
 
 		// Bail out if thumbnail not available.
 		if ( empty( $thumbnail_id ) ) {
+			$this->log->info( "Featured image not set for post $post_id." );
+
 			return false;
 		}
 
@@ -300,6 +302,8 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 
 		// Bail out if the file isn't set.
 		if ( ! isset( $metadata['file'] ) ) {
+			$this->log->warn( "Featured image file not found for post $post_id." );
+
 			return false;
 		}
 
@@ -308,12 +312,16 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 
 		// Bail out if the file isn't found.
 		if ( ! file_exists( $path ) ) {
+			$this->log->warn( "Featured image file $path doesn't exist for post $post_id." );
+
 			return false;
 		}
 
 		// Try to get the image editor and bail out if the editor cannot be instantiated.
 		$original_file_editor = wp_get_image_editor( $path );
 		if ( is_wp_error( $original_file_editor ) ) {
+			$this->log->warn( "Cannot instantiate WP Image Editor on file $path for post $post_id." );
+
 			return false;
 		}
 
@@ -330,6 +338,8 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		// Try to get the image editor and bail out if the editor cannot be instantiated.
 		$publisher_logo_editor = wp_get_image_editor( $publisher_logo_path );
 		if ( is_wp_error( $publisher_logo_editor ) ) {
+			$this->log->warn( "Cannot instantiate WP Image Editor on file $publisher_logo_path for post $post_id." );
+
 			return false;
 		}
 

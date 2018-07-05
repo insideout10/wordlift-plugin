@@ -276,14 +276,21 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 *
 	 * @since 3.10
 	 *
-	 * @param    string  $filename The filename the attachement should have
-	 * @param    integer $width    The width of the image
-	 * @param    integer $height   The height of the image
-	 * @param    integer $post_id  The ID of the post to associated with the attachment
+	 * @param    string $filename The filename the attachement should have
+	 * @param    integer $width The width of the image
+	 * @param    integer $height The height of the image
+	 * @param    integer $post_id The ID of the post to associated with the attachment
 	 *
 	 * @return    integer        The ID of the attachment created
 	 **/
 	private function make_dummy_attachment( $filename, $width, $height, $post_id ) {
+
+		// Get the mock file.
+		$real_filename = dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'image.png';
+
+		// Copy the mock file to the uploads folder.
+		$upload_dir = wp_upload_dir();
+		copy( $real_filename, $upload_dir['basedir'] . DIRECTORY_SEPARATOR . $filename );
 
 		// Create an attachment.
 		$attachment_id = $this->factory->attachment->create_object( $filename, $post_id, array(
@@ -358,10 +365,13 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( $publisher->post_title, $jsonld['publisher']['name'] );
 
 		// Check the logo.
+		$expected_attachment_url = substr( $attachment_url, 0, strrpos( $attachment_url, '.' ) )
+		                           . '--publisher-logo'
+		                           . substr( $attachment_url, strrpos( $attachment_url, '.' ) );
 		$this->assertCount( 4, $jsonld['publisher']['logo'] );
 		$this->assertEquals( 'ImageObject', $jsonld['publisher']['logo']['@type'] );
-		$this->assertEquals( $attachment_url, $jsonld['publisher']['logo']['url'] );
-		$this->assertEquals( 120, $jsonld['publisher']['logo']['width'], "Width doesn't match for $attachment_url.");
+		$this->assertEquals( $expected_attachment_url, $jsonld['publisher']['logo']['url'] );
+		$this->assertEquals( 86, $jsonld['publisher']['logo']['width'], "Width doesn't match for $attachment_url." );
 		$this->assertEquals( 60, $jsonld['publisher']['logo']['height'] );
 
 	}
@@ -727,7 +737,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$post      = $this->factory->post->create_and_get( array(
 			'post_author'  => $this->author->ID,
 			'post_content' => 'text <img src="' . $attachment2_url . '">' . "\n" .
-							  'more text <a href=""><img src="http://example.org">text</a>',
+			                  'more text <a href=""><img src="http://example.org">text</a>',
 		) );
 		$post_uri  = $this->entity_service->get_uri( $post->ID );
 		$permalink = get_permalink( $post->ID );
@@ -822,8 +832,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$post      = $this->factory->post->create_and_get( array(
 			'post_author'  => $this->author->ID,
 			'post_content' => 'text <img src="' . $attachment2_url . '">' . "\n" .
-							  'more text <a href=""><img src="http://example.org">text</a>' .
-							  '[gallery] plain text',
+			                  'more text <a href=""><img src="http://example.org">text</a>' .
+			                  '[gallery] plain text',
 		) );
 		$post_uri  = $this->entity_service->get_uri( $post->ID );
 		$permalink = get_permalink( $post->ID );
@@ -919,8 +929,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$post      = $this->factory->post->create_and_get( array(
 			'post_author'  => $this->author->ID,
 			'post_content' => 'text <img src="' . $attachment2_url . '">' . "\n" .
-							  'more text <a href=""><img src="http://example.org">text</a>' .
-							  '[gallery ids="' . $attachment3_id . ',' . $attachment2_id . ',8905"] plain text',
+			                  'more text <a href=""><img src="http://example.org">text</a>' .
+			                  '[gallery ids="' . $attachment3_id . ',' . $attachment2_id . ',8905"] plain text',
 		) );
 		$post_uri  = $this->entity_service->get_uri( $post->ID );
 		$permalink = get_permalink( $post->ID );
