@@ -515,8 +515,6 @@ function run_wordlift() {
 	$plugin = new Wordlift();
 	$plugin->run();
 
-	do_action( 'wl_run_complete' );
-
 }
 
 run_wordlift();

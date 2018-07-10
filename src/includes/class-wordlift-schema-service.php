@@ -463,9 +463,9 @@ class Wordlift_Schema_Service {
 	 *
 	 * @since 3.1.0
 	 *
-	 * @param \Wordlift_Storage_Factory $storage_factory The {@link Wordlift_Post_Property_Storage_Factory} instance.
+	 * @param \Wordlift_Storage_Factory                $storage_factory The {@link Wordlift_Post_Property_Storage_Factory} instance.
 	 * @param \Wordlift_Sparql_Tuple_Rendition_Factory $rendition_factory The {@link Wordlift_Sparql_Tuple_Rendition_Factory} instance.
-	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
+	 * @param \Wordlift_Configuration_Service          $configuration_service The {@link Wordlift_Configuration_Service} instance.
 	 */
 	public function __construct( $storage_factory, $rendition_factory, $configuration_service ) {
 
@@ -505,6 +505,20 @@ class Wordlift_Schema_Service {
 
 		// Create a singleton instance of the Schema service, useful to provide static functions to global functions.
 		self::$instance = $this;
+
+		// Hook the `init` to allow plugins to add their schemas.
+		add_action( 'init', array( $this, 'init' ) );
+
+	}
+
+	/**
+	 * Hook to the `init`, allow late binding plugins to add their schema.
+	 *
+	 * @since 3.19.2
+	 */
+	public function init() {
+
+		$this->schema = apply_filters( 'wl_schemas_init', $this->schema );
 
 	}
 
