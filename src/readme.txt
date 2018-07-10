@@ -142,7 +142,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.19.2 (????-??-??) =
+= 3.19.2 (2018-07-10) =
 * Fix: [#825](https://github.com/insideout10/wordlift-plugin/issues/825): faceted search loads large images while it could load thumbnails.
 * Fix: [#824](https://github.com/insideout10/wordlift-plugin/issues/824): LocalBusiness entity type not recognized by the AutoComplete
 * Fix: [#823](https://github.com/insideout10/wordlift-plugin/issues/823): logo not available in referenced publisher.
