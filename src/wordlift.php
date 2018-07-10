@@ -60,7 +60,7 @@ function wl_write_log( $log ) {
  * @since 3.0.0
  *
  * @param string|array $log The log data.
- * @param string $caller The calling function.
+ * @param string       $caller The calling function.
  */
 function wl_write_log_handler( $log, $caller = null ) {
 
@@ -167,7 +167,7 @@ add_action( 'wp_enqueue_scripts', 'wl_enqueue_scripts' );
 /**
  * Hooked to *wp_kses_allowed_html* filter, adds microdata attributes.
  *
- * @param array $allowedtags The array with the currently configured elements and attributes.
+ * @param array  $allowedtags The array with the currently configured elements and attributes.
  * @param string $context The context.
  *
  * @return array An array which contains allowed microdata attributes.
@@ -265,7 +265,7 @@ function wl_get_image_urls( $post_id ) {
 /**
  * Get an attachment with the specified parent post ID and source URL.
  *
- * @param int $parent_post_id The parent post ID.
+ * @param int    $parent_post_id The parent post ID.
  * @param string $source_url The source URL.
  *
  * @return WP_Post|null A post instance or null if not found.
@@ -295,7 +295,7 @@ function wl_get_attachment_for_source_url( $parent_post_id, $source_url ) {
 /**
  * Set the source URL.
  *
- * @param int $post_id The post ID.
+ * @param int    $post_id The post ID.
  * @param string $source_url The source URL.
  */
 function wl_set_source_url( $post_id, $source_url ) {
@@ -514,6 +514,8 @@ function run_wordlift() {
 
 	$plugin = new Wordlift();
 	$plugin->run();
+
+	do_action( 'wl_run_complete' );
 
 }
 
