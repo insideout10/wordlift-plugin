@@ -57,7 +57,11 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		// Enqueue common shortcode scripts.
 		$this->enqueue_scripts();
 
-		wp_enqueue_style( 'wordlift-ui', dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-ui.min.css' );
+		// Use the registered style which define an optional dependency to font-awesome.
+		//
+		// @see https://github.com/insideout10/wordlift-plugin/issues/699
+		//		wp_enqueue_style( 'wordlift-ui', dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-ui.min.css' );
+		wp_enqueue_style( 'wordlift-ui' );
 
 		$navigator_id = uniqid( 'wl-navigator-widget-' );
 
