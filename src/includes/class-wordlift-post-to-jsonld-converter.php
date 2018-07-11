@@ -243,13 +243,11 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			return;
 		}
 
-		// Get the logo, WP < 4.4 way: only post ID accepted here.
-		if ( '' === $thumbnail_id = get_post_thumbnail_id( $post->ID ) ) {
-			return;
-		}
+		// Get the publisher logo.
+		$publisher_logo = $this->get_publisher_logo( $post->ID );
 
-		// Get the image URL.
-		if ( false === $attachment = wp_get_attachment_image_src( $thumbnail_id, array( 600, 60 ) ) ) {
+		// Bail out if the publisher logo isn't set.
+		if ( false === $publisher_logo ) {
 			return;
 		}
 
@@ -257,14 +255,103 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		//
 		// See https://developers.google.com/search/docs/data-types/articles.
 		$params['publisher']['logo']['@type'] = 'ImageObject';
-		$params['publisher']['logo']['url']   = $attachment[0];
+		$params['publisher']['logo']['url']   = $publisher_logo['url'];
+
 		// If you specify a "width" or "height" value you should leave out
 		// 'px'. For example: "width":"4608px" should be "width":"4608".
 		//
 		// See https://github.com/insideout10/wordlift-plugin/issues/451.
-		$params['publisher']['logo']['width']  = $attachment[1];
-		$params['publisher']['logo']['height'] = $attachment[2];
+		$params['publisher']['logo']['width']  = $publisher_logo['width'];
+		$params['publisher']['logo']['height'] = $publisher_logo['height'];
 
+	}
+
+	/**
+	 * Get the publisher logo structure.
+	 *
+	 * The function returns false when the publisher logo cannot be determined, i.e.:
+	 *  - the post has no featured image.
+	 *  - the featured image has no file.
+	 *  - a wp_image_editor instance cannot be instantiated on the original file or on the publisher logo file.
+	 *
+	 * @param int $post_id The post id.
+	 *
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/823 related issue.
+	 *
+	 * @since 3.19.2
+	 * @return array|false Returns an array with the `url`, `width` and `height` for the publisher logo or false in case
+	 *  of errors.
+	 */
+	private function get_publisher_logo( $post_id ) {
+
+		// Get the featured image for the post.
+		$thumbnail_id = get_post_thumbnail_id( $post_id );
+
+		// Bail out if thumbnail not available.
+		if ( empty( $thumbnail_id ) ) {
+			$this->log->info( "Featured image not set for post $post_id." );
+
+			return false;
+		}
+
+		// Get the uploads base URL.
+		$uploads_dir = wp_upload_dir();
+
+		// Get the attachment metadata.
+		$metadata = wp_get_attachment_metadata( $thumbnail_id );
+
+		// Bail out if the file isn't set.
+		if ( ! isset( $metadata['file'] ) ) {
+			$this->log->warn( "Featured image file not found for post $post_id." );
+
+			return false;
+		}
+
+		// Retrieve the relative filename, e.g. "2018/05/logo_publisher.png"
+		$path = $uploads_dir['basedir'] . DIRECTORY_SEPARATOR . $metadata['file'];
+
+		// Bail out if the file isn't found.
+		if ( ! file_exists( $path ) ) {
+			$this->log->warn( "Featured image file $path doesn't exist for post $post_id." );
+
+			return false;
+		}
+
+		// Try to get the image editor and bail out if the editor cannot be instantiated.
+		$original_file_editor = wp_get_image_editor( $path );
+		if ( is_wp_error( $original_file_editor ) ) {
+			$this->log->warn( "Cannot instantiate WP Image Editor on file $path for post $post_id." );
+
+			return false;
+		}
+
+		// Generate the publisher logo filename, we cannot use the `width` and `height` because we're scaling
+		// and we don't actually know the end values.
+		$publisher_logo_path = $original_file_editor->generate_filename( '-publisher-logo' );
+
+		// If the file doesn't exist yet, create it.
+		if ( ! file_exists( $publisher_logo_path ) ) {
+			$original_file_editor->resize( 600, 60 );
+			$original_file_editor->save( $publisher_logo_path );
+		}
+
+		// Try to get the image editor and bail out if the editor cannot be instantiated.
+		$publisher_logo_editor = wp_get_image_editor( $publisher_logo_path );
+		if ( is_wp_error( $publisher_logo_editor ) ) {
+			$this->log->warn( "Cannot instantiate WP Image Editor on file $publisher_logo_path for post $post_id." );
+
+			return false;
+		}
+
+		// Get the actual size.
+		$size = $publisher_logo_editor->get_size();
+
+		// Finally return the array with data.
+		return array(
+			'url'    => $uploads_dir['baseurl'] . substr( $publisher_logo_path, strlen( $uploads_dir['basedir'] ) ),
+			'width'  => $size['width'],
+			'height' => $size['height'],
+		);
 	}
 
 }

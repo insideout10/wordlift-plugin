@@ -59,7 +59,7 @@ function wl_write_log( $log ) {
  *
  * @since 3.0.0
  *
- * @param string|array $log    The log data.
+ * @param string|array $log The log data.
  * @param string       $caller The calling function.
  */
 function wl_write_log_handler( $log, $caller = null ) {
@@ -69,7 +69,7 @@ function wl_write_log_handler( $log, $caller = null ) {
 	if ( true === WP_DEBUG ) {
 
 		$message = ( isset( $caller ) ? sprintf( '[%-40.40s] ', $caller ) : '' ) .
-				   ( is_array( $log ) || is_object( $log ) ? print_r( $log, true ) : wl_write_log_hide_key( $log ) );
+		           ( is_array( $log ) || is_object( $log ) ? print_r( $log, true ) : wl_write_log_hide_key( $log ) );
 
 		if ( isset( $wl_logger ) ) {
 			$wl_logger->info( $message );
@@ -143,9 +143,9 @@ function wordlift_admin_enqueue_scripts() {
 	//
 	// See https://github.com/insideout10/wordlift-plugin/issues/691.
 	$result = wp_register_script( 'wl-angular', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular.min.js' )
-			  && wp_register_script( 'wl-angular-geolocation', plugin_dir_url( __FILE__ ) . 'bower_components/angularjs-geolocation/dist/angularjs-geolocation.min.js' )
-			  && wp_register_script( 'wl-angular-touch', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular-touch.min.js' )
-			  && wp_register_script( 'wl-angular-animate', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular-animate.min.js' );
+	          && wp_register_script( 'wl-angular-geolocation', plugin_dir_url( __FILE__ ) . 'bower_components/angularjs-geolocation/dist/angularjs-geolocation.min.js' )
+	          && wp_register_script( 'wl-angular-touch', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular-touch.min.js' )
+	          && wp_register_script( 'wl-angular-animate', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular-animate.min.js' );
 
 	$log->debug( 'Registering angular scripts was ' . ( $result ? 'successful.' : 'unsuccessful.' ) );
 
@@ -168,7 +168,7 @@ add_action( 'wp_enqueue_scripts', 'wl_enqueue_scripts' );
  * Hooked to *wp_kses_allowed_html* filter, adds microdata attributes.
  *
  * @param array  $allowedtags The array with the currently configured elements and attributes.
- * @param string $context     The context.
+ * @param string $context The context.
  *
  * @return array An array which contains allowed microdata attributes.
  */
@@ -223,8 +223,8 @@ function wl_get_coordinates( $post_id ) {
 function wl_get_image_urls( $post_id ) {
 
 	return Wordlift_Storage_Factory::get_instance()
-								   ->post_images()
-								   ->get( $post_id );
+	                               ->post_images()
+	                               ->get( $post_id );
 
 //	// If there is a featured image it has the priority.
 //	$featured_image_id = get_post_thumbnail_id( $post_id );
@@ -266,7 +266,7 @@ function wl_get_image_urls( $post_id ) {
  * Get an attachment with the specified parent post ID and source URL.
  *
  * @param int    $parent_post_id The parent post ID.
- * @param string $source_url     The source URL.
+ * @param string $source_url The source URL.
  *
  * @return WP_Post|null A post instance or null if not found.
  */
@@ -295,7 +295,7 @@ function wl_get_attachment_for_source_url( $parent_post_id, $source_url ) {
 /**
  * Set the source URL.
  *
- * @param int    $post_id    The post ID.
+ * @param int    $post_id The post ID.
  * @param string $source_url The source URL.
  */
 function wl_set_source_url( $post_id, $source_url ) {
@@ -375,7 +375,7 @@ function wl_replace_item_id_with_uri( $content ) {
 
 			// Get the post bound to that item ID (looking both in the 'official' URI and in the 'same-as' .
 			$post = Wordlift_Entity_Service::get_instance()
-										   ->get_entity_post_by_uri( $item_id );
+			                               ->get_entity_post_by_uri( $item_id );
 
 			// If no entity is found, continue to the next one.
 			if ( null === $post ) {
@@ -465,6 +465,14 @@ function activate_wordlift() {
 
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wordlift-activator.php';
 	Wordlift_Activator::activate();
+
+	/**
+	 * Tell the {@link Wordlift_Http_Api} class that we're activating, to let it run activation tasks.
+	 *
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/820 related issue.
+	 * @since 3.19.2
+	 */
+	Wordlift_Http_Api::activate();
 
 	// Ensure the post type is registered before flushing the rewrite rules.
 	Wordlift_Entity_Post_Type_Service::get_instance()->register();

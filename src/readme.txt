@@ -144,6 +144,14 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 = 3.20.0 (????-??-??) =
 
+= 3.19.2 (2018-07-10) =
+* Fix: [#825](https://github.com/insideout10/wordlift-plugin/issues/825): faceted search loads large images while it could load thumbnails.
+* Fix: [#824](https://github.com/insideout10/wordlift-plugin/issues/824): LocalBusiness entity type not recognized by the AutoComplete
+* Fix: [#823](https://github.com/insideout10/wordlift-plugin/issues/823): logo not available in referenced publisher.
+* Fix: [#821](https://github.com/insideout10/wordlift-plugin/issues/821): wordlift-public.css is included but file empty.
+* Fix: [#820](https://github.com/insideout10/wordlift-plugin/issues/820): wl-api lost when plugin deactivated and activated back again.
+* Fix: [#814](https://github.com/insideout10/wordlift-plugin/issues/814): Enforce styles in TinyMCE.
+
 = 3.19.1 (2018-06-28) =
 * Enhancement: [#815](https://github.com/insideout10/wordlift-plugin/issues/815): Add wl_schemas hook.
 * Enhancement: [#813](https://github.com/insideout10/wordlift-plugin/issues/813): Disable logging by default.

@@ -73,7 +73,13 @@ function wl_shortcode_navigator_ajax() {
 
 				$blacklist_ids[]   = $referencing_post->ID;
 				$serialized_entity = wl_serialize_entity( $related_entity );
-				$thumbnail         = wp_get_attachment_url( get_post_thumbnail_id( $referencing_post->ID, 'thumbnail' ) );
+
+				/**
+				 * Use the thumbnail.
+				 *
+				 * @see https://github.com/insideout10/wordlift-plugin/issues/825 related issue.
+				 */
+				$thumbnail           = get_the_post_thumbnail_url( $referencing_post, 'thumbnail' );
 
 				if ( $thumbnail ) {
 

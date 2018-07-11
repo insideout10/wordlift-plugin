@@ -47,11 +47,16 @@ function wordlift_ajax_related_posts( $http_raw_data = null ) {
 	if ( ! empty( $filtering_entity_ids ) ) {
 
 		$related_posts = Wordlift_Relation_Service::get_instance()
-												  ->get_article_subjects( $filtering_entity_ids, '*', null, 'publish', array( $post_id ), 5 );
+		                                          ->get_article_subjects( $filtering_entity_ids, '*', null, 'publish', array( $post_id ), 5 );
 
 		foreach ( $related_posts as $post_obj ) {
 
-			$thumbnail           = wp_get_attachment_url( get_post_thumbnail_id( $post_obj->ID, 'thumbnail' ) );
+			/**
+			 * Use the thumbnail.
+			 *
+			 * @see https://github.com/insideout10/wordlift-plugin/issues/825 related issue.
+			 */
+			$thumbnail           = get_the_post_thumbnail_url( $post_obj, 'thumbnail' );
 			$post_obj->thumbnail = ( $thumbnail ) ? $thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
 			$post_obj->link      = get_edit_post_link( $post_obj->ID, 'none' );
 			$post_obj->permalink = get_post_permalink( $post_obj->ID );

@@ -167,7 +167,12 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 		if ( $filtered_posts ) {
 			foreach ( $filtered_posts as $post_obj ) {
 
-				$thumbnail           = wp_get_attachment_url( get_post_thumbnail_id( $post_obj->ID, 'thumbnail' ) );
+				/**
+				 * Use the thumbnail.
+				 *
+				 * @see https://github.com/insideout10/wordlift-plugin/issues/825 related issue.
+				 */
+				$thumbnail           = get_the_post_thumbnail_url( $post_obj, 'thumbnail' );
 				$post_obj->thumbnail = ( $thumbnail ) ?
 					$thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
 				$post_obj->permalink = get_post_permalink( $post_obj->ID );
@@ -212,6 +217,7 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 			foreach ( $entities as $obj ) {
 
 				$entity = get_post( $obj->ID );
+
 				// Ensure only valid and published entities are returned.
 				if ( ( null !== $entity ) && ( 'publish' === $entity->post_status ) ) {
 

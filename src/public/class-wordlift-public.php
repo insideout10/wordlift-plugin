@@ -58,7 +58,9 @@ class Wordlift_Public {
 	/**
 	 * Register the stylesheets for the public-facing side of the site.
 	 *
-	 * @since    1.0.0
+	 * @since 3.19.2 The call to this function is commented out in `class-wordlift.php` because `wordlift-public.css`
+	 *               is empty.
+	 * @since 1.0.0
 	 */
 	public function enqueue_styles() {
 
@@ -74,7 +76,11 @@ class Wordlift_Public {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/wordlift-public.css', array(), $this->version, 'all' );
+		// You need to re-enable the enqueue_styles in `class-wordlift.php` to make this effective.
+		//
+		// @see https://github.com/insideout10/wordlift-plugin/issues/821
+		//
+		// wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/wordlift-public.css', array(), $this->version, 'all' );
 
 	}
 
