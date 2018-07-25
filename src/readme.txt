@@ -143,6 +143,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 = 3.19.3 (????-??-??) =
+* Fix: [#832](https://github.com/insideout10/wordlift-plugin/issues/832): angularjs may conflict with other plugins.
 * Fix: [#699](https://github.com/insideout10/wordlift-plugin/issues/699): Font Awesome on the front-end may conflict with themes.
 
 = 3.19.2 (2018-07-10) =
