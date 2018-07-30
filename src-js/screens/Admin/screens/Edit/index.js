@@ -20,28 +20,29 @@
 /**
  * External dependencies
  */
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { createStore, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux';
-import thunk from 'redux-thunk';
-import { AutocompleteSelect } from 'wordlift-ui';
+import React from "react";
+import ReactDOM from "react-dom";
+import { createStore, applyMiddleware } from "redux";
+import { Provider } from "react-redux";
+import thunk from "redux-thunk";
+import { AutocompleteSelect } from "wordlift-ui";
+import SchemaClassTree from "@wordlift/wordlift-for-schemaorg";
 
 /**
  * Internal dependencies
  */
-import './index.scss';
-import reducer from './reducers';
-import App from './components/App';
-import AnnotationEvent from './angular/AnnotationEvent';
-import ReceiveAnalysisResultsEvent from './angular/ReceiveAnalysisResultsEvent';
-import UpdateOccurrencesForEntityEvent from './angular/UpdateOccurrencesForEntityEvent';
-import EditorSelectionChangedEvent from './angular/EditorSelectionChangedEvent';
+import "./index.scss";
+import reducer from "./reducers";
+import App from "./components/App";
+import AnnotationEvent from "./angular/AnnotationEvent";
+import ReceiveAnalysisResultsEvent from "./angular/ReceiveAnalysisResultsEvent";
+import UpdateOccurrencesForEntityEvent from "./angular/UpdateOccurrencesForEntityEvent";
+import EditorSelectionChangedEvent from "./angular/EditorSelectionChangedEvent";
 // import log from '../modules/log';
 
 // Start-up the application when the `wlEntityList` Angular directive is
 // loaded.
-wp.wordlift.on('wlEntityList.loaded', function() {
+wp.wordlift.on("wlEntityList.loaded", function() {
   // Create the `store` with the reducer, using the analysis result as
   // `initialState`.
   const store = createStore(reducer, applyMiddleware(thunk));
@@ -53,7 +54,7 @@ wp.wordlift.on('wlEntityList.loaded', function() {
     <Provider store={store}>
       <App />
     </Provider>,
-    document.getElementById('wl-entity-list')
+    document.getElementById("wl-entity-list")
   );
 
   // Listen for annotation selections in TinyMCE and dispatch the
@@ -94,17 +95,17 @@ const autocomplete = (query, callback) => {
   this.autocompleteTimeout = setTimeout(
     () =>
       wp.ajax
-        .post('wl_autocomplete', {
+        .post("wl_autocomplete", {
           query,
-          _wpnonce: wlSettings['wl_autocomplete_nonce'],
+          _wpnonce: wlSettings["wl_autocomplete_nonce"],
           exclude: wlSettings.itemId
         })
         .done(json => {
-          console.log('success', json);
+          console.log("success", json);
           callback(null, { options: json });
         })
         .fail(() => {
-          console.log('error');
+          console.log("error");
           callback(null, { options: [] });
         }),
     1000
@@ -116,7 +117,7 @@ const autocomplete = (query, callback) => {
 // ### Render the sameAs metabox field autocomplete select.
 jQuery(document).ready(function() {
   // Check that the document element is there.
-  if (null === document.getElementById('wl-metabox-field-sameas')) {
+  if (null === document.getElementById("wl-metabox-field-sameas")) {
     return;
   }
 
@@ -127,15 +128,24 @@ jQuery(document).ready(function() {
       placeholder=""
       filterOption={(option, filter) => true}
       searchPromptText={
-        wlSettings.l10n['Type at least 3 characters to search...']
+        wlSettings.l10n["Type at least 3 characters to search..."]
       }
       loadingPlaceholder={
         wlSettings.l10n[
-          'Please wait while we look for entities in the linked data cloud...'
+          "Please wait while we look for entities in the linked data cloud..."
         ]
       }
-      noResultsText={wlSettings.l10n['No results found for your search.']}
+      noResultsText={wlSettings.l10n["No results found for your search."]}
     />,
-    document.getElementById('wl-metabox-field-sameas')
+    document.getElementById("wl-metabox-field-sameas")
+  );
+
+  ReactDOM.render(
+  <SchemaClassTree
+    url="http://localhost:60995/graphql"
+    selected={["thing"]}
+    open={["thing"]}
+  />,
+  document.querySelector("#wl-entity-types #wl-schema-class-tree")
   );
 });

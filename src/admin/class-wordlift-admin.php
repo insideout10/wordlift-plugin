@@ -63,11 +63,11 @@ class Wordlift_Admin {
 	 *
 	 * @since  1.0.0
 	 *
-	 * @param string $plugin_name The name of this plugin.
-	 * @param string $version The version of this plugin.
+	 * @param string                          $plugin_name The name of this plugin.
+	 * @param string                          $version The version of this plugin.
 	 * @param \Wordlift_Configuration_Service $configuration_service The configuration service.
-	 * @param \Wordlift_Notice_Service $notice_service The notice service.
-	 * @param \Wordlift_User_Service $user_service The {@link Wordlift_User_Service} instance.
+	 * @param \Wordlift_Notice_Service        $notice_service The notice service.
+	 * @param \Wordlift_User_Service          $user_service The {@link Wordlift_User_Service} instance.
 	 */
 	public function __construct( $plugin_name, $version, $configuration_service, $notice_service, $user_service ) {
 
@@ -93,8 +93,14 @@ class Wordlift_Admin {
 		// Load additional code if we're in the admin UI.
 		if ( is_admin() ) {
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard-latest-news.php';
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-entity-types-metabox.php';
 
 			new Wordlift_Dashboard_Latest_News();
+
+			$entity_types_metabox = new Wordlift_Admin_Entity_Types_Metabox();
+
+			add_action( 'add_meta_boxes', array( $entity_types_metabox, 'add_metaboxes' ) );
+
 		}
 
 	}
