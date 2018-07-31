@@ -26,7 +26,7 @@ import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import { AutocompleteSelect } from "wordlift-ui";
-import SchemaClassTree from "@wordlift/wordlift-for-schemaorg";
+import SchemaClassTree from "wordlift-for-schemaorg";
 
 /**
  * Internal dependencies
@@ -141,11 +141,11 @@ jQuery(document).ready(function() {
   );
 
   ReactDOM.render(
-  <SchemaClassTree
-    url="http://localhost:60995/graphql"
-    selected={["thing"]}
-    open={["thing"]}
-  />,
-  document.querySelector("#wl-entity-types #wl-schema-class-tree")
+    <SchemaClassTree
+      url="http://localhost:60995/graphql"
+      selected={["thing"]}
+      open={["thing"]}
+    />,
+    document.querySelector("#wl-entity-types #wl-schema-class-tree")
   );
 });

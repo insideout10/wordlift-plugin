@@ -11,7 +11,6 @@
     "url": "https://github.com/insideout10/wordlift-plugin"
   },
   "dependencies": {
-    "@wordlift/wordlift-for-schemaorg": "^1.0",
     "autoprefixer": "7.1.2",
     "babel-core": "6.25.0",
     "babel-eslint": "7.2.3",
@@ -59,6 +58,7 @@
     "webpack-dev-server": "2.7.1",
     "webpack-manifest-plugin": "1.2.1",
     "whatwg-fetch": "2.0.3",
+    "wordlift-for-schemaorg": "^1.0",
     "wordlift-ui": "git+ssh://git@gitlab.com:wordlift/wordlift-ui.git"
   },
   "scripts": {
