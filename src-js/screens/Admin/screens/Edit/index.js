@@ -1,4 +1,4 @@
-/*global wp jQuery wlSettings*/
+/*global wp jQuery */
 /**
  * App: WordLift Admin.
  *
@@ -38,7 +38,9 @@ import AnnotationEvent from "./angular/AnnotationEvent";
 import ReceiveAnalysisResultsEvent from "./angular/ReceiveAnalysisResultsEvent";
 import UpdateOccurrencesForEntityEvent from "./angular/UpdateOccurrencesForEntityEvent";
 import EditorSelectionChangedEvent from "./angular/EditorSelectionChangedEvent";
-// import log from '../modules/log';
+
+// Set a reference to the WordLift's settings stored in the window instance.
+const settings = window["wlSettings"] || {};
 
 // Start-up the application when the `wlEntityList` Angular directive is
 // loaded.
@@ -97,8 +99,8 @@ const autocomplete = (query, callback) => {
       wp.ajax
         .post("wl_autocomplete", {
           query,
-          _wpnonce: wlSettings["wl_autocomplete_nonce"],
-          exclude: wlSettings.itemId
+          _wpnonce: settings["wl_autocomplete_nonce"],
+          exclude: settings.itemId
         })
         .done(json => {
           console.log("success", json);
@@ -111,8 +113,6 @@ const autocomplete = (query, callback) => {
     1000
   );
 };
-
-//const api = new Api();
 
 // ### Render the sameAs metabox field autocomplete select.
 jQuery(document).ready(function() {
@@ -128,24 +128,63 @@ jQuery(document).ready(function() {
       placeholder=""
       filterOption={(option, filter) => true}
       searchPromptText={
-        wlSettings.l10n["Type at least 3 characters to search..."]
+        settings.l10n["Type at least 3 characters to search..."]
       }
       loadingPlaceholder={
-        wlSettings.l10n[
+        settings.l10n[
           "Please wait while we look for entities in the linked data cloud..."
         ]
       }
-      noResultsText={wlSettings.l10n["No results found for your search."]}
+      noResultsText={settings.l10n["No results found for your search."]}
     />,
     document.getElementById("wl-metabox-field-sameas")
   );
+});
 
+const toggleTerm = type => item =>
+  wp.ajax
+    .post("wl_schemaorg_term_for_post", {
+      type: type,
+      post_id: settings["post_id"],
+      slug: item["dashname"],
+      nonce: settings["wl_schemaorg_term_for_post_nonce"]
+    })
+    .done(
+      // Update the nonce.
+      json => {
+        settings["wl_schemaorg_term_for_post_nonce"] = json.nonce;
+      }
+    );
+
+/**
+ * Add the SchemaClassTree.
+ *
+ * @since 3.20.0
+ */
+window.addEventListener("load", () => {
   ReactDOM.render(
     <SchemaClassTree
-      url="http://localhost:60995/graphql"
-      selected={["thing"]}
+      loader={() =>
+        wp.ajax.post("wl_schemaorg").then(json =>
+          json["schemaClasses"].sort((a, b) => {
+            const nameA = a.name.toUpperCase();
+            const nameB = b.name.toUpperCase();
+
+            if (nameA < nameB) return -1;
+
+            if (nameA > nameB) return 1;
+
+            return 0;
+          })
+        )
+      }
+      selected={settings["entity_types"]}
       open={["thing"]}
+      onOpen={item => console.log({ open: item })}
+      onClose={item => console.log({ close: item })}
+      onSelect={toggleTerm("add")}
+      onDeselect={toggleTerm("remove")}
     />,
-    document.querySelector("#wl-entity-types #wl-schema-class-tree")
+    document.querySelector("#taxonomy-wl_entity_type #wl-schema-class-tree")
   );
 });

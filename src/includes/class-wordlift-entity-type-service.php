@@ -124,10 +124,19 @@ class Wordlift_Entity_Type_Service {
 
 		// Return the schema type if there is a term found.
 		if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
-			$this->log->debug( "Found `{$terms[0]->slug}` term for post $post_id." );
+			// Cycle through the terms and return the first one with a valid schema.
+			foreach ( $terms as $term ) {
+				$this->log->debug( "Found `{$term->slug}` term for post $post_id." );
 
-			// Return the entity type with the specified id.
-			return $this->schema_service->get_schema( $terms[0]->slug );
+				// Try to get the schema for the term.
+				$schema = $this->schema_service->get_schema( $term->slug );
+
+				// If found, return it, ignoring the other types.
+				if ( null !== $schema ) {
+					// Return the entity type with the specified id.
+					return $schema;
+				}
+			}
 		}
 
 		// If it's a page or post return `Article`.
@@ -146,12 +155,17 @@ class Wordlift_Entity_Type_Service {
 
 	}
 
+	public function get_dashnames( $post_id ) {
+
+		return wp_get_post_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'fields' => 'slugs', ) );
+	}
+
 	/**
 	 * Set the main type for the specified entity post, given the type URI.
 	 *
 	 * @since 3.8.0
 	 *
-	 * @param int    $post_id  The post id.
+	 * @param int    $post_id The post id.
 	 * @param string $type_uri The type URI.
 	 */
 	public function set( $post_id, $type_uri ) {
@@ -211,7 +225,7 @@ class Wordlift_Entity_Type_Service {
 	 * @since 3.15.0
 	 *
 	 * @param int    $post_id The {@link WP_Post}'s `id`.
-	 * @param string $uri     The entity type URI.
+	 * @param string $uri The entity type URI.
 	 *
 	 * @return bool True if an entity type is set otherwise false.
 	 */
@@ -268,7 +282,7 @@ class Wordlift_Entity_Type_Service {
 	 * @since 3.15.0
 	 *
 	 * @param int    $post_id The {@link WP_Post} id.
-	 * @param string $uri     The entity type URI.
+	 * @param string $uri The entity type URI.
 	 *
 	 * @return array|null {
 	 * An array of entity type properties or null if no term is associated

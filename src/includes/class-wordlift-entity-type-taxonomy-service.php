@@ -1,4 +1,5 @@
 <?php
+
 /**
  * The Entity Types Taxonomy service.
  *
@@ -49,6 +50,7 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 			'hierarchical'       => true,
 			'show_admin_column'  => true,
 			'show_in_quick_edit' => false,
+			'meta_box_cb'        => array( 'Wordlift_Admin_Schemaorg_Taxonomy_Metabox', 'render' ),
 		);
 
 		register_taxonomy(

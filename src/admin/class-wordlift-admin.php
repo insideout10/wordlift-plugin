@@ -93,13 +93,10 @@ class Wordlift_Admin {
 		// Load additional code if we're in the admin UI.
 		if ( is_admin() ) {
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard-latest-news.php';
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-entity-types-metabox.php';
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-schemaorg-taxonomy-metabox.php';
 
 			new Wordlift_Dashboard_Latest_News();
-
-			$entity_types_metabox = new Wordlift_Admin_Entity_Types_Metabox();
-
-			add_action( 'add_meta_boxes', array( $entity_types_metabox, 'add_metaboxes' ) );
+			new Wordlift_Admin_Schemaorg_Taxonomy_Metabox();
 
 		}
 
@@ -188,7 +185,9 @@ class Wordlift_Admin {
 			// from the results, since we don't want the current entity to be discovered by the analysis.
 			//
 			// See https://github.com/insideout10/wordlift-plugin/issues/345
-			$params['itemId'] = $entity_service->get_uri( $entity_being_edited->ID );
+			$params['itemId']                           = $entity_service->get_uri( $entity_being_edited->ID );
+			$params['entity_types']                     = Wordlift_Entity_Type_Service::get_instance()->get_dashnames( $entity_being_edited->ID );
+			$params['wl_schemaorg_term_for_post_nonce'] = wp_create_nonce( 'wl_schemaorg_term_for_post' );
 
 		}
 

@@ -995,6 +995,7 @@ class Wordlift {
 		 * The Entity Types Taxonomy Walker (transforms checkboxes into radios).
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-entity-types-taxonomy-walker.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-schemaorg-taxonomy-walker.php';
 
 		/**
 		 * The Notice service.
@@ -1114,6 +1115,10 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-widget.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-related-entities-cloud-widget.php';
 
+		/** schema.org Service */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/schemaorg/class-wordlift-schemaorg-service.php';
+		new Wordlift_Schemaorg_Service();
+
 		$this->loader = new Wordlift_Loader();
 
 		// Instantiate a global logger.
@@ -1173,6 +1178,7 @@ class Wordlift {
 		$this->batch_analysis_service = new Wordlift_Batch_Analysis_Service( $this, $this->configuration_service, $this->file_cache_service );
 
 		$this->entity_types_taxonomy_walker = new Wordlift_Entity_Types_Taxonomy_Walker();
+		$schemaorg_taxonomy_walker          = new Wordlift_Schemaorg_Taxonomy_Walker();
 
 		$this->topic_taxonomy_service        = new Wordlift_Topic_Taxonomy_Service();
 		$this->entity_types_taxonomy_service = new Wordlift_Entity_Type_Taxonomy_Service();
@@ -1395,7 +1401,7 @@ class Wordlift {
 		$this->loader->add_filter( 'posts_clauses', $this->entity_list_service, 'posts_clauses_classification_scope' );
 		$this->loader->add_action( 'pre_get_posts', $this->entity_list_service, 'pre_get_posts' );
 		$this->loader->add_action( 'load-edit.php', $this->entity_list_service, 'load_edit' );
-		$this->loader->add_filter( 'wp_terms_checklist_args', $this->entity_types_taxonomy_walker, 'terms_checklist_args' );
+//		$this->loader->add_filter( 'wp_terms_checklist_args', $this->entity_types_taxonomy_walker, 'terms_checklist_args' );
 
 		// Hook the PrimaShop adapter to <em>prima_metabox_entity_header_args</em> in order to add header support for
 		// entities.
