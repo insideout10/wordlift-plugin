@@ -78,8 +78,11 @@ function wl_shortcode_navigator_ajax() {
 				 * Use the thumbnail.
 				 *
 				 * @see https://github.com/insideout10/wordlift-plugin/issues/825 related issue.
+				 * @see https://github.com/insideout10/wordlift-plugin/issues/837
+				 *
+				 * @since 3.19.3 We're using the medium size image.
 				 */
-				$thumbnail           = get_the_post_thumbnail_url( $referencing_post, 'thumbnail' );
+				$thumbnail           = get_the_post_thumbnail_url( $referencing_post, 'medium' );
 
 				if ( $thumbnail ) {
 

@@ -145,6 +145,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 = 3.19.3 (????-??-??) =
 * Fix: [#840](https://github.com/insideout10/wordlift-plugin/issues/840): wl-api referenced using siteurl instead of homeurl.
 * Fix: [#839](https://github.com/insideout10/wordlift-plugin/issues/839): Add a setting to limit the scope for the Select in edit post screen.
+* Fix: [#837](https://github.com/insideout10/wordlift-plugin/issues/837): Use 300 width images in faceted search and navigator.
 * Fix: [#832](https://github.com/insideout10/wordlift-plugin/issues/832): angularjs may conflict with other plugins.
 * Fix: [#699](https://github.com/insideout10/wordlift-plugin/issues/699): Font Awesome on the front-end may conflict with themes.
 
