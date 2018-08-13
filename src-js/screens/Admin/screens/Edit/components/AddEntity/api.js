@@ -1,3 +1,5 @@
+const settings = window["wlSettings"];
+
 export function autocomplete(query, language, ...excludes) {
   // eslint-disable-next-line
   if ("undefined" !== wp.ajax) {
@@ -5,12 +7,11 @@ export function autocomplete(query, language, ...excludes) {
     return wp.ajax.post("wl_autocomplete", {
       query,
       // eslint-disable-next-line
-      _wpnonce: wlSettings["wl_autocomplete_nonce"],
+      _wpnonce: settings["wl_autocomplete_nonce"],
       // eslint-disable-next-line
-      exclude: wlSettings.itemId,
+      exclude: settings["itemId"],
       // eslint-disable-next-line
-      scope: "undefined" !== wlSettings["can_create_entities"] && "yes" === wlSettings["can_create_entities"]
-        ? "cloud" : "local",
+      scope: settings["autocomplete_scope"]
     });
   } else {
     const url = new URL("http://localhost:8080/wordlift-api/autocomplete");

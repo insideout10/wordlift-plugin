@@ -63,11 +63,11 @@ class Wordlift_Admin {
 	 *
 	 * @since  1.0.0
 	 *
-	 * @param string $plugin_name The name of this plugin.
-	 * @param string $version The version of this plugin.
+	 * @param string                          $plugin_name The name of this plugin.
+	 * @param string                          $version The version of this plugin.
 	 * @param \Wordlift_Configuration_Service $configuration_service The configuration service.
-	 * @param \Wordlift_Notice_Service $notice_service The notice service.
-	 * @param \Wordlift_User_Service $user_service The {@link Wordlift_User_Service} instance.
+	 * @param \Wordlift_Notice_Service        $notice_service The notice service.
+	 * @param \Wordlift_User_Service          $user_service The {@link Wordlift_User_Service} instance.
 	 */
 	public function __construct( $plugin_name, $version, $configuration_service, $notice_service, $user_service ) {
 
@@ -148,6 +148,17 @@ class Wordlift_Admin {
 			'backbone',
 		), $this->version, false );
 
+
+		$can_edit_wordlift_entities = current_user_can( 'edit_wordlift_entities' );
+
+		/*
+		 * People that can create entities will see the scope set in the wp-config.php file (by default `cloud`). People
+		 * that cannot edit create entities will always see the local entities.
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/839
+		 */
+		$autocomplete_scope = $can_edit_wordlift_entities ? WL_AUTOCOMPLETE_SCOPE : "local";
+
 		// Set the basic params.
 		$params = array(
 			// @todo scripts in admin should use wp.post.
@@ -160,7 +171,7 @@ class Wordlift_Admin {
 			// Whether the current user is allowed to create new entities.
 			//
 			// @see https://github.com/insideout10/wordlift-plugin/issues/561
-			'can_create_entities'   => current_user_can( 'edit_wordlift_entities' ) ? 'yes' : 'no',
+			'can_create_entities'   => $can_edit_wordlift_entities ? 'yes' : 'no',
 			'l10n'                  => array(
 				'You already published an entity with the same name'                 => __( 'You already published an entity with the same name: ', 'wordlift' ),
 				'logo_selection_title'                                               => __( 'WordLift Choose Logo', 'wordlift' ),
@@ -170,6 +181,7 @@ class Wordlift_Admin {
 				'Please wait while we look for entities in the linked data cloud...' => _x( 'Please wait while we look for entities in the linked data cloud...', 'Autocomplete Select', 'wordlift' ),
 			),
 			'wl_autocomplete_nonce' => wp_create_nonce( 'wordlift_autocomplete' ),
+			'autocomplete_scope'    => $autocomplete_scope,
 		);
 
 		// Set post-related values if there's a current post.
