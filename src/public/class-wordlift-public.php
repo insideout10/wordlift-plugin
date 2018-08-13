@@ -136,7 +136,7 @@ class Wordlift_Public {
 		// Prepare a settings array for client-side functions.
 		$settings = array(
 			'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-			'apiUrl'  => get_site_url( null, 'wl-api/' ),
+			'apiUrl'  => get_home_url( null, 'wl-api/' ),
 		);
 
 		// If we're in a single page, then print out the post id.
