@@ -82,7 +82,7 @@ function wl_shortcode_navigator_ajax() {
 				 *
 				 * @since 3.19.3 We're using the medium size image.
 				 */
-				$thumbnail           = get_the_post_thumbnail_url( $referencing_post, 'medium' );
+				$thumbnail = get_the_post_thumbnail_url( $referencing_post, 'medium' );
 
 				if ( $thumbnail ) {
 
