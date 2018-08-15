@@ -150,12 +150,12 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 
 		// Generate the sections.
 		foreach ( $alphabet as $item => $translations ) {
-		    // @since 3.19.3 we use `mb_strtolower` and `mb_strtoupper` with a custom function to handle sorting,
-            // since we had `AB` being placed before `Aa` with `asort`.
-            //
+			// @since 3.19.3 we use `mb_strtolower` and `mb_strtoupper` with a custom function to handle sorting,
+			// since we had `AB` being placed before `Aa` with `asort`.
+			//
 			// Order the translations alphabetically.
-            // asort( $translations );
-			usort( $translations, function ( $a, $b ) {
+			// asort( $translations );
+			uasort( $translations, function ( $a, $b ) {
 				if ( mb_strtolower( $a ) === mb_strtolower( $b )
 				     || mb_strtoupper( $a ) === mb_strtoupper( $b ) ) {
 					return 0;
