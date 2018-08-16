@@ -60,7 +60,8 @@ module.exports = function ( grunt ) {
                 SOURCE_DIR + '{js,css}/wordlift.*',
                 SOURCE_DIR + '{js,css}/wordlift-faceted-entity-search-widget.*',
                 SOURCE_DIR + '{js,css}/wordlift-reloaded.*',
-                SOURCE_DIR + '{js,css}/wordlift-ui.*'
+                SOURCE_DIR + '{js,css}/wordlift-ui.*',
+                SOURCE_DIR + 'css/wordlift-font-awesome.*'
             ],
             dynamic: {
                 dot: true,
@@ -108,7 +109,8 @@ module.exports = function ( grunt ) {
                     'wordlift.less',
                     'wordlift-ui.less',
                     'wordlift-reloaded.less',
-                    'wordlift-faceted-entity-search-widget.less'
+                    'wordlift-faceted-entity-search-widget.less',
+                    'wordlift-font-awesome.less'
                 ]
             }
         },

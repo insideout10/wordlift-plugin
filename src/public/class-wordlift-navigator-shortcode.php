@@ -47,8 +47,15 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 			);
 		}
 
+		/*
+		 * Display the navigator only on the single post/page.
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/831
+		 *
+		 * @since 3.19.3 we're using `is_singular` instead of `is_single` to allow the navigator also on pages.
+		 */
 		// avoid building the widget when there is a list of posts.
-		if ( ! is_single() ) {
+		if ( ! is_singular() ) {
 			return '';
 		}
 
@@ -57,7 +64,11 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		// Enqueue common shortcode scripts.
 		$this->enqueue_scripts();
 
-		wp_enqueue_style( 'wordlift-ui', dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-ui.min.css' );
+		// Use the registered style which define an optional dependency to font-awesome.
+		//
+		// @see https://github.com/insideout10/wordlift-plugin/issues/699
+		//		wp_enqueue_style( 'wordlift-ui', dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-ui.min.css' );
+		wp_enqueue_style( 'wordlift-ui' );
 
 		$navigator_id = uniqid( 'wl-navigator-widget-' );
 

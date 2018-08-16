@@ -55,8 +55,11 @@ function wordlift_ajax_related_posts( $http_raw_data = null ) {
 			 * Use the thumbnail.
 			 *
 			 * @see https://github.com/insideout10/wordlift-plugin/issues/825 related issue.
+			 * @see https://github.com/insideout10/wordlift-plugin/issues/837
+			 *
+			 * @since 3.19.3 We're using the medium size image.
 			 */
-			$thumbnail           = get_the_post_thumbnail_url( $post_obj, 'thumbnail' );
+			$thumbnail           = get_the_post_thumbnail_url( $post_obj, 'medium' );
 			$post_obj->thumbnail = ( $thumbnail ) ? $thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
 			$post_obj->link      = get_edit_post_link( $post_obj->ID, 'none' );
 			$post_obj->permalink = get_post_permalink( $post_obj->ID );

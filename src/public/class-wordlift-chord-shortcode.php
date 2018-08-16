@@ -73,8 +73,11 @@ class Wordlift_Chord_Shortcode extends Wordlift_Shortcode {
 			$post_id = get_the_ID();
 		}
 
-		// Adding css.
-		wp_enqueue_style( 'wordlift-ui', dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-ui.min.css' );
+		// Use the registered style which define an optional dependency to font-awesome.
+		//
+		// @see https://github.com/insideout10/wordlift-plugin/issues/699
+		//		wp_enqueue_style( 'wordlift-ui', dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-ui.min.css' );
+		wp_enqueue_style( 'wordlift-ui' );
 
 		// Adding javascript code.
 		wp_enqueue_script( 'd3', dirname( plugin_dir_url( __FILE__ ) ) . '/bower_components/d3/d3.min.js' );

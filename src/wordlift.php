@@ -158,11 +158,14 @@ function wordlift_admin_enqueue_scripts() {
 
 add_action( 'admin_enqueue_scripts', 'wordlift_admin_enqueue_scripts' );
 
-function wl_enqueue_scripts() {
-	wp_enqueue_style( 'wordlift-ui', plugin_dir_url( __FILE__ ) . 'css/wordlift-ui.min.css' );
-}
-
-add_action( 'wp_enqueue_scripts', 'wl_enqueue_scripts' );
+// We shouldn't load the wordlift-ui.min.css stylesheet when not needed.
+//
+// @see https://github.com/insideout10/wordlift-plugin/issues/699
+//function wl_enqueue_scripts() {
+//	wp_enqueue_style( 'wordlift-ui', plugin_dir_url( __FILE__ ) . 'css/wordlift-ui.min.css' );
+//}
+//
+//add_action( 'wp_enqueue_scripts', 'wl_enqueue_scripts' );
 
 /**
  * Hooked to *wp_kses_allowed_html* filter, adds microdata attributes.

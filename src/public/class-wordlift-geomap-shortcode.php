@@ -77,8 +77,11 @@ class Wordlift_Geomap_Shortcode extends Wordlift_Shortcode {
 			dirname( plugin_dir_url( __FILE__ ) ) . '/bower_components/leaflet/dist/leaflet.js'
 		);
 
-		// Add wordlift-ui css and library.
-		wp_enqueue_style( 'wordlift-ui-css', dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-ui.min.css' );
+		// Use the registered style which define an optional dependency to font-awesome.
+		//
+		// @see https://github.com/insideout10/wordlift-plugin/issues/699
+		//		wp_enqueue_style( 'wordlift-ui', dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-ui.min.css' );
+		wp_enqueue_style( 'wordlift-ui' );
 
 		$this->enqueue_scripts();
 
