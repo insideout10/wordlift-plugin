@@ -1,7 +1,6 @@
 {
-  "name": "WordLift",
-  "description":
-    "WordLift brings the power of Artificial Intelligence to organize content. Attract new readers and get their true attention with top notch semantic seo.",
+  "name": "wordlift-plugin",
+  "description": "WordLift brings the power of Artificial Intelligence to organize content. Attract new readers and get their true attention with top notch semantic seo.",
   "private": true,
   "version": "3.20.0-dev",
   "author": "WordLift",
@@ -70,13 +69,16 @@
     "test:e2e": "./node_modules/.bin/wdio wdio.conf.js",
     "test:js": "grunt travis:js",
     "test:php": "./vendor/bin/phpunit",
-    "test:php-test-coverage":
-      "./vendor/bin/phpunit -c phpunit-test-coverage.xml",
+    "test:php-test-coverage": "./vendor/bin/phpunit -c phpunit-test-coverage.xml",
     "test:multisite": "./vendor/bin/phpunit -c phpunit-multisite.xml"
   },
   "jest": {
-    "collectCoverageFrom": ["src/**/*.{js,jsx}"],
-    "setupFiles": ["<rootDir>/config/polyfills.js"],
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}"
+    ],
+    "setupFiles": [
+      "<rootDir>/config/polyfills.js"
+    ],
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.js?(x)",
       "<rootDir>/src/**/?(*.)(spec|test).js?(x)"
@@ -88,14 +90,25 @@
       "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
       "^(?!.*\\.(js|jsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
     },
-    "transformIgnorePatterns": ["[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"],
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"
+    ],
     "moduleNameMapper": {
       "^react-native$": "react-native-web"
     },
-    "moduleFileExtensions": ["web.js", "js", "json", "web.jsx", "jsx", "node"]
+    "moduleFileExtensions": [
+      "web.js",
+      "js",
+      "json",
+      "web.jsx",
+      "jsx",
+      "node"
+    ]
   },
   "babel": {
-    "presets": ["react-app"]
+    "presets": [
+      "react-app"
+    ]
   },
   "eslintConfig": {
     "extends": "react-app"

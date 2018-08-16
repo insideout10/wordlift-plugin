@@ -55,6 +55,12 @@ define( 'WL_CONFIG_TEST_GOOGLE_RICH_SNIPPETS_URL', 'https://developers.google.co
 // that will allow users to download their data in JSON-LD format.
 defined( 'WL_CONFIG_DOWNLOAD_GA_CONTENT_DATA' ) || define( 'WL_CONFIG_DOWNLOAD_GA_CONTENT_DATA', false );
 
+/*
+ * Define the default scope for autocomplete requests.
+ *
+ * @see https://github.com/insideout10/wordlift-plugin/issues/839
+ */
+defined( 'WL_AUTOCOMPLETE_SCOPE' ) || define( 'WL_AUTOCOMPLETE_SCOPE', 'cloud' );
 
 /**
  * Get an array with commonly supported prefixes.

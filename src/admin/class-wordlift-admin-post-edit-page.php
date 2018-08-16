@@ -76,7 +76,7 @@ class Wordlift_Admin_Post_Edit_Page {
 	private function is_ux_builder_editor() {
 
 		return function_exists( 'ux_builder_is_editor' )
-			   && ux_builder_is_editor();
+		       && ux_builder_is_editor();
 	}
 
 	/**
@@ -85,6 +85,13 @@ class Wordlift_Admin_Post_Edit_Page {
 	 * @since 3.11.0
 	 */
 	public function enqueue_scripts() {
+
+		// Dequeue potentially conflicting ontrapages angular scripts which any *are not* used on the edit screen.
+		//
+		// @see https://github.com/insideout10/wordlift-plugin/issues/832
+		wp_dequeue_script( 'ontrapagesAngular' );
+		wp_dequeue_script( 'ontrapagesApp' );
+		wp_dequeue_script( 'ontrapagesController' );
 
 		// Enqueue the edit screen JavaScript. The `wordlift-admin.bundle.js` file
 		// is scheduled to replace the older `wordlift-admin.min.js` once client-side

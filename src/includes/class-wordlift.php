@@ -1350,7 +1350,7 @@ class Wordlift {
 		);
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts', 11 );
 
 		// Hook the init action to taxonomy services.
 		$this->loader->add_action( 'init', $this->topic_taxonomy_service, 'init', 0 );
@@ -1526,14 +1526,7 @@ class Wordlift {
 		$this->loader->add_filter( 'wp_unique_post_slug_is_bad_flat_slug', $this->entity_link_service, 'wp_unique_post_slug_is_bad_flat_slug', 10, 3 );
 		$this->loader->add_filter( 'wp_unique_post_slug_is_bad_hierarchical_slug', $this->entity_link_service, 'wp_unique_post_slug_is_bad_hierarchical_slug', 10, 4 );
 
-		/**
-		 * Disable the `enqueue_styles` call since we don't have styles to load.
-		 *
-		 * @see https://github.com/insideout10/wordlift-plugin/issues/821 related issue.
-		 * @since 3.19.2
-		 */
-		// $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 		// Hook the content filter service to add entity links.
