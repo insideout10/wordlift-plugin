@@ -9367,8 +9367,8 @@ styled-components@^3:
     supports-color "^3.2.3"
 
 styled-components@^3.3.3:
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-3.4.1.tgz#a550783bba3a5bb9a41bf10d0e993c47d19a9125"
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-3.4.2.tgz#8f518419932327e47fe9144824e3184b3e2da95d"
   dependencies:
     buffer "^5.0.3"
     css-to-react-native "^2.0.3"
@@ -10439,9 +10439,8 @@ window-size@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.2.0.tgz#b4315bb4214a3d7058ebeee892e13fa24d98b075"
 
-wordlift-for-schemaorg@^1.0:
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/wordlift-for-schemaorg/-/wordlift-for-schemaorg-1.0.9.tgz#f0dfcdd5749883e740abc871c5eebfbe8bba7972"
+"wordlift-for-schemaorg@file:../schemaorg/src/main/js":
+  version "1.0.15"
   dependencies:
     immutable "^3.8.2"
     prop-types "^15.6.2"

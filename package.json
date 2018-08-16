@@ -1,5 +1,5 @@
 {
-  "name": "WordLift",
+  "name": "wordlift-plugin",
   "description": "WordLift brings the power of Artificial Intelligence to organize content. Attract new readers and get their true attention with top notch semantic seo.",
   "private": true,
   "version": "3.20.0-dev",
@@ -58,7 +58,7 @@
     "webpack-dev-server": "2.7.1",
     "webpack-manifest-plugin": "1.2.1",
     "whatwg-fetch": "2.0.3",
-    "wordlift-for-schemaorg": "^1.0",
+    "wordlift-for-schemaorg": "file:../schemaorg/src/main/js",
     "wordlift-ui": "git+ssh://git@gitlab.com:wordlift/wordlift-ui.git"
   },
   "scripts": {

@@ -26,7 +26,12 @@ import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import { AutocompleteSelect } from "wordlift-ui";
-import SchemaClassTree from "wordlift-for-schemaorg";
+import {
+  SchemaClassTree,
+  Form,
+  FetchLoader,
+  SelectionListener
+} from "wordlift-for-schemaorg";
 
 /**
  * Internal dependencies
@@ -162,6 +167,13 @@ const toggleTerm = type => item =>
  * @since 3.20.0
  */
 window.addEventListener("load", () => {
+  console.log({
+    SchemaClassTree,
+    Form,
+    FetchLoader,
+    SelectionListener
+  });
+  //region ## SCHEMA-CLASS-TREE
   ReactDOM.render(
     <SchemaClassTree
       loader={() =>
@@ -186,5 +198,70 @@ window.addEventListener("load", () => {
       onDeselect={toggleTerm("remove")}
     />,
     document.querySelector("#taxonomy-wl_entity_type #wl-schema-class-tree")
+  );
+  //endregion
+
+  const data = {
+    name: [
+      {
+        type: "Text",
+        value: "Name 1",
+        language: "en"
+      },
+      {
+        type: "Text",
+        value: "Nome 1",
+        language: "it"
+      },
+      {
+        type: "Text",
+        value: "Nom 1",
+        language: "fr"
+      },
+      {
+        type: "Text",
+        value: "Name 1",
+        language: "de"
+      }
+    ],
+    identifier: [
+      {
+        type: "Text",
+        value: "Identifier 1",
+        language: ""
+      },
+      {
+        type: "URL",
+        value: "http://example.org/1"
+      }
+    ]
+  };
+
+  const Reader = property => data[property.name];
+
+  const PropertyDecorator = Component => props => (
+    <Component values={Reader(props.property)} {...props} />
+  );
+
+  const PropertyInstanceDecorator = Component => props => (
+    <React.Fragment>
+      <input
+        type="hidden"
+        name={`${props.property.name}[][type]`}
+        defaultValue={props.type}
+      />
+      <Component name={`${props.property.name}[][value]`} {...props} />
+    </React.Fragment>
+  );
+
+  ReactDOM.render(
+    <Form
+      selected={settings["entity_types"]}
+      loader={FetchLoader("http://turin.wordlift.it:41660/graphql")}
+      selectionListener={SelectionListener}
+      propertyDecorator={PropertyDecorator}
+      propertyInstanceDecorator={PropertyInstanceDecorator}
+    />,
+    document.getElementById("wl-schema-properties-form")
   );
 });

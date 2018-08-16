@@ -135,11 +135,9 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 		}
 
 		$json = json_decode( $reply['body'], true );
-
-		var_dump( $json['schemaClasses'][0]['properties'] );
-
-		echo( "Hello World!" );
-
+		?>
+		<div id="wl-schema-properties-form"></div>
+		<?php
 	}
 
 }
