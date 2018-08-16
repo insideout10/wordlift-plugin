@@ -188,7 +188,7 @@ class Wordlift_Admin {
 			//
 			// See https://github.com/insideout10/wordlift-plugin/issues/345
 			$params['itemId']                           = $entity_service->get_uri( $entity_being_edited->ID );
-			$params['entity_types']                     = Wordlift_Entity_Type_Service::get_instance()->get_dashnames( $entity_being_edited->ID );
+			$params['entity_types']                     = Wordlift_Entity_Type_Service::get_instance()->get_names( $entity_being_edited->ID );
 			$params['wl_schemaorg_term_for_post_nonce'] = wp_create_nonce( 'wl_schemaorg_term_for_post' );
 			$params['wl_schemaorg_property_nonce']      = wp_create_nonce( 'wl_schemaorg_property' );
 

@@ -160,6 +160,15 @@ class Wordlift_Entity_Type_Service {
 		return wp_get_post_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'fields' => 'slugs', ) );
 	}
 
+	public function get_names( $post_id ) {
+
+		$ids = wp_get_post_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'fields' => 'ids', ) );
+
+		return array_map(function($id) {
+			return get_term_meta($id, '_wl_name', true);
+		}, $ids);
+	}
+
 	/**
 	 * Set the main type for the specified entity post, given the type URI.
 	 *

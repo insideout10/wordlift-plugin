@@ -76,7 +76,7 @@ class Wordlift_Admin_Post_Edit_Page {
 	private function is_ux_builder_editor() {
 
 		return function_exists( 'ux_builder_is_editor' )
-			   && ux_builder_is_editor();
+		       && ux_builder_is_editor();
 	}
 
 	/**
@@ -94,6 +94,8 @@ class Wordlift_Admin_Post_Edit_Page {
 			array(
 				$this->plugin->get_plugin_name(),
 				'jquery',
+				// Require wp.ajax.
+				'wp-util',
 				// Require Angular.
 				'wl-angular',
 				'wl-angular-geolocation',

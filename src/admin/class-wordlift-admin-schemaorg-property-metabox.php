@@ -36,7 +36,7 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 	public function schemaorg_property() {
 
 		// Check nonce, we don't send back a valid nonce if this one isn't valid, of course.
-		if ( ! wp_verify_nonce( $_REQUEST['nonce'], 'wl_schemaorg_property' ) ) {
+		if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'wl_schemaorg_property' ) ) {
 			wp_send_json_error( array(
 				'message' => '`nonce` missing or invalid.',
 			) );
@@ -44,28 +44,25 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 
 		$next_nonce = wp_create_nonce( 'wl_schemaorg_property' );
 
-		if ( empty( $_REQUEST['name'] ) || 1 !== preg_match( '/^[a-z0-9]+$/i', $_REQUEST['name'] ) ) {
+		if ( empty( $_REQUEST['class'] ) ) {
 			wp_send_json_error( array(
-				'nonce'   => $next_nonce,
-				'message' => '`name` missing or invalid.',
+				'_wpnonce' => $next_nonce,
+				'message'  => '`class` missing or invalid.',
 			) );
 		}
 
-		$name = $_REQUEST['name'];
+		$classes = wp_json_encode( $_REQUEST['class'] );
 
 		$query = "query {
-	schemaClasses(name: \"$name\") {
-		dashname: name(format: DASHED)
+	schemaProperties(classes: $classes) {
+		name
+		label
+		description
 		weight
-			properties{
-				label
-				dashname: name(format: DASHED)
-				description
-			ranges {
-				dashname: name(format: DASHED)
-				weight
-			}
-		}
+        ranges {
+            name
+            label
+        }
 	}
 }";
 
@@ -80,9 +77,7 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 		) );
 
 		if ( empty( $reply['body'] ) ) {
-			echo( 'error' );
-
-			return;
+			wp_send_json_error();
 		}
 
 		header( 'Content-Type: application/json; charset=UTF-8' );
@@ -101,42 +96,8 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 	}
 
 	public function render() {
-
-		$query = "query {
-	schemaClasses(name: \"Person\") {
-		dashname: name(format: DASHED)
-		weight
-			properties{
-				label
-				dashname: name(format: DASHED)
-				description
-			ranges {
-				dashname: name(format: DASHED)
-				weight
-			}
-		}
-	}
-}";
-
-		$reply = wp_remote_post( 'http://turin.wordlift.it:41660/graphql', array(
-			'headers' => array(
-				'Content-Type' => 'application/json; charset=UTF-8',
-			),
-			'body'    => wp_json_encode( array(
-				'query'     => $query,
-				'variables' => null,
-			) ),
-		) );
-
-		if ( empty( $reply['body'] ) ) {
-			echo( 'error' );
-
-			return;
-		}
-
-		$json = json_decode( $reply['body'], true );
 		?>
-		<div id="wl-schema-properties-form"></div>
+        <div id="wl-schema-properties-form"></div>
 		<?php
 	}
 

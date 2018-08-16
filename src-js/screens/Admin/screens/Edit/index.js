@@ -29,7 +29,6 @@ import { AutocompleteSelect } from "wordlift-ui";
 import {
   SchemaClassTree,
   Form,
-  FetchLoader,
   SelectionListener
 } from "wordlift-for-schemaorg";
 
@@ -167,12 +166,6 @@ const toggleTerm = type => item =>
  * @since 3.20.0
  */
 window.addEventListener("load", () => {
-  console.log({
-    SchemaClassTree,
-    Form,
-    FetchLoader,
-    SelectionListener
-  });
   //region ## SCHEMA-CLASS-TREE
   ReactDOM.render(
     <SchemaClassTree
@@ -191,7 +184,7 @@ window.addEventListener("load", () => {
         )
       }
       selected={settings["entity_types"]}
-      open={["thing"]}
+      open={["Thing"]}
       onOpen={item => console.log({ open: item })}
       onClose={item => console.log({ close: item })}
       onSelect={toggleTerm("add")}
@@ -254,10 +247,56 @@ window.addEventListener("load", () => {
     </React.Fragment>
   );
 
+  const FetchLoader = selected => {
+    console.log("Going to fetch the property data...");
+    console.log({ selected });
+    return (
+      wp.ajax
+        .post("wl_schemaorg_property", {
+          class: selected.toArray(),
+          _wpnonce: settings["wl_schemaorg_property_nonce"]
+        })
+        //   fetch(url, {
+        //     method: "POST",
+        //     body: JSON.stringify({
+        //       query: `query {
+        // 	schemaProperties(classes: ${JSON.stringify(selected)} ) {
+        // 		name
+        // 		label
+        // 		description
+        // 		weight
+        //         ranges {
+        //             name
+        //             label
+        //         }
+        // 	}
+        // }`,
+        //       variables: null
+        //     }),
+        //     headers: { "Content-Type": "application/json; charset=UTF-8" }
+        //   })
+        //     .then(response => response.json())
+        .then(json => json["schemaProperties"])
+        .then(properties =>
+          // Sort alphabetically.
+          properties.sort((a, b) => {
+            const nameA = a.name.toUpperCase();
+            const nameB = b.name.toUpperCase();
+
+            if (nameA < nameB) return -1;
+
+            if (nameA > nameB) return 1;
+
+            return 0;
+          })
+        )
+    );
+  };
+
   ReactDOM.render(
     <Form
       selected={settings["entity_types"]}
-      loader={FetchLoader("http://turin.wordlift.it:41660/graphql")}
+      loader={FetchLoader}
       selectionListener={SelectionListener}
       propertyDecorator={PropertyDecorator}
       propertyInstanceDecorator={PropertyInstanceDecorator}

@@ -11,13 +11,13 @@ class Wordlift_Schemaorg_Service {
 	public function __construct() {
 
 		add_action( 'wp_ajax_wl_sync_schemaorg', array( $this, 'load' ) );
-		add_filter( 'get_terms', array( $this, 'get_terms' ), 10, 3 );
+//		add_filter( 'get_terms', array( $this, 'get_terms' ), 10, 3 );
 
 	}
 
 	public function load() {
 
-		$reply = wp_remote_post( 'http://localhost:60995/graphql', array(
+		$reply = wp_remote_post( 'http://turin.wordlift.it:41660/graphql', array(
 			'method'  => 'POST',
 			'headers' => array(
 				'content-type' => 'application/json; charset=UTF-8',
@@ -26,12 +26,11 @@ class Wordlift_Schemaorg_Service {
 				'query'     => "
 					query {
 					schemaClasses {
-						id
 						name
 						dashname: name(format: DASHED)
 						description
 						children {
-							id
+							dashname: name(format: DASHED)
 						}
 					}
 				}'",
@@ -87,71 +86,57 @@ class Wordlift_Schemaorg_Service {
 				$term = wp_insert_term( $schema_class['name'], Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, $args );
 			}
 
-			delete_term_meta( $term['term_id'], 'parent_of' );
+			// Update the parents/children relationship.
+			delete_term_meta( $term['term_id'], '_wl_parent_of' );
 			foreach ( $schema_class['children'] as $child ) {
-				add_term_meta( $term['term_id'], 'parent_of', $child['id'] );
+				add_term_meta( $term['term_id'], '_wl_parent_of', $child['dashname'] );
 			}
 
-//			if ( 1 < count( $parents ) ) {
-//				for ( $i = 1; $i < count( $parents ); $i ++ ) {
-//					$alias_name = $schema_class['name'] . ' ' . ( $i + 1 );
-//					$alias_slug = $slug . '-' . ( $i + 1 );
-//					$alias_term = term_exists( $alias_slug, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
-//					$alias_args = array(
-//						'parent'   => $parents[ $i ],
-//						'alias_of' => $slug,
-//						'slug'     => $alias_slug,
-//					);
-//					var_dump( $alias_args );
-//					if ( null !== $alias_term ) {
-//						wp_update_term( $alias_term['term_id'], Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, $alias_args );
-//					} else {
-//						wp_insert_term( $alias_name, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, $alias_args );
-//					}
-//				}
+			// Update the term name.
+			delete_term_meta($term['term_id'], '_wl_name');
+			update_term_meta($term['term_id'], '_wl_name', $schema_class['name']);
+
+		}
+
+	}
+//
+//	private static function find_parents( $schema_classes, $child_schema_class ) {
+//		$parents = array();
+//		foreach ( $schema_classes as $schema_class ) {
+//			if ( in_array( array( 'id' => $child_schema_class['id'] ), $schema_class['children'] ) ) {
+//				$parents[] = get_term_by( 'slug', $schema_class['dashname'], Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME )->term_id;
 //			}
+//		}
+//
+//		return 0 < count( $parents ) ? $parents : array( 0 );
+//	}
 
-		}
-
-	}
-
-	private static function find_parents( $schema_classes, $child_schema_class ) {
-		$parents = array();
-		foreach ( $schema_classes as $schema_class ) {
-			if ( in_array( array( 'id' => $child_schema_class['id'] ), $schema_class['children'] ) ) {
-				$parents[] = get_term_by( 'slug', $schema_class['dashname'], Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME )->term_id;
-			}
-		}
-
-		return 0 < count( $parents ) ? $parents : array( 0 );
-	}
-
-	/**
-	 * Filters the found terms.
-	 *
-	 * @since 2.3.0
-	 * @since 4.6.0 Added the `$term_query` parameter.
-	 *
-	 * @param array         $terms Array of found terms.
-	 * @param array         $taxonomies An array of taxonomies.
-	 * @param array         $args An array of get_terms() arguments.
-	 * @param WP_Term_Query $term_query The WP_Term_Query object.
-	 */
-	public function get_terms( $terms, $taxonomies, $query_vars ) {
-
-		if ( ! in_array( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, $taxonomies ) ) {
-			return $terms;
-		}
-
-//		echo('<pre>');
-//		var_dump( $terms );
-//		var_dump( $query_vars );
-//		echo('</pre>');
-
-//		wp_die();
-
-		return $terms;
-
-	}
+//	/**
+//	 * Filters the found terms.
+//	 *
+//	 * @since 2.3.0
+//	 * @since 4.6.0 Added the `$term_query` parameter.
+//	 *
+//	 * @param array         $terms Array of found terms.
+//	 * @param array         $taxonomies An array of taxonomies.
+//	 * @param array         $args An array of get_terms() arguments.
+//	 * @param WP_Term_Query $term_query The WP_Term_Query object.
+//	 */
+//	public function get_terms( $terms, $taxonomies, $query_vars ) {
+//
+//		if ( ! in_array( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, $taxonomies ) ) {
+//			return $terms;
+//		}
+//
+////		echo('<pre>');
+////		var_dump( $terms );
+////		var_dump( $query_vars );
+////		echo('</pre>');
+//
+////		wp_die();
+//
+//		return $terms;
+//
+//	}
 
 }
