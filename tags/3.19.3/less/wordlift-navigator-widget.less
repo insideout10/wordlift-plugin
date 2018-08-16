@@ -1,0 +1,104 @@
+.wl-navigator-widget {
+  // see https://github.com/insideout10/wordlift-plugin/issues/783.
+  display: block;
+
+  font-size: inherit;
+
+  padding: 0;
+  margin: 0.6em 0;
+
+  .wl-headline {
+    margin: 0.4em 0;
+    font-weight: bold;
+  }
+
+  .wl-wrapper {
+    // see https://github.com/insideout10/wordlift-plugin/issues/783.
+    display: block;
+
+    position: relative;
+    overflow: hidden;
+
+    .wl-carousel {
+      // see https://github.com/insideout10/wordlift-plugin/issues/783.
+      display: block;
+
+      .wl-panes {
+        // see https://github.com/insideout10/wordlift-plugin/issues/783.
+        display: block;
+      }
+    }
+  }
+
+  .wl-posts {
+    // see https://github.com/insideout10/wordlift-plugin/issues/783.
+    display: block;
+
+    padding: 0;
+    margin: 0;
+    background-color: #fff;
+
+    .wl-item-wrapper {
+
+      div {
+        // see https://github.com/insideout10/wordlift-plugin/issues/783.
+        display: block;
+      }
+    }
+
+    .wl-entity-wrapper {
+      padding: 1em 0;
+      margin: 0;
+
+      h6 {
+
+        // As per Nicola's request, March 14th, 2017.
+        text-align: left;
+
+        text-transform: uppercase;
+        font-size: 0.86em;
+        padding: 0;
+        margin: 0 0.6em;
+        font-weight: bold;
+        min-height: 46px; // make the height two lines, see https://github.com/insideout10/wordlift-plugin/issues/372
+
+        a {
+          text-decoration: underline;
+        }
+
+      }
+
+      .wl-right-arrow {
+        .fa-icon(@fa-var-tags)
+      }
+
+      .wl-type {
+
+        &.wl-nv-creative-work {
+          .fa-icon(@fa-var-lightbulb-o)
+        }
+        &.wl-nv-event {
+          .fa-icon(@fa-var-calendar)
+        }
+        &.wl-nv-organization {
+          .fa-icon(@fa-var-building-o)
+        }
+        &.wl-nv-local-business {
+          .fa-icon(@fa-var-building-o)
+        }
+        &.wl-nv-person {
+          .fa-icon(@fa-var-user)
+        }
+        &.wl-nv-place {
+          .fa-icon(@fa-var-map-marker);
+        }
+        &.wl-nv-thing {
+          .fa-icon(@fa-var-file-o)
+        }
+
+        font-size: inherit !important;
+      }
+    }
+  }
+
+}
