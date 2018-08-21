@@ -15,6 +15,7 @@
  * @subpackage Wordlift/install
  */
 class Wordlift_Install_3_15_0 extends Wordlift_Install {
+
 	/**
 	 * @inheritdoc
 	 */

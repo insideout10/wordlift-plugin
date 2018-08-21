@@ -1101,11 +1101,17 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-widget.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-related-entities-cloud-widget.php';
 
-		/** schema.org Service */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/schemaorg/class-wordlift-schemaorg-service.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/schemaorg/class-wordlift-schemaorg-property-service.php';
-		new Wordlift_Schemaorg_Service();
-		$schemaorg_property_service = new Wordlift_Schemaorg_Property_Service();
+		/*
+		 * Schema.org Services.
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/835
+		 */
+		if ( WL_ALL_ENTITY_TYPES ) {
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/schemaorg/class-wordlift-schemaorg-sync-service.php';
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/schemaorg/class-wordlift-schemaorg-property-service.php';
+			new Wordlift_Schemaorg_Sync_Service();
+			new Wordlift_Schemaorg_Property_Service();
+		}
 
 		$this->loader = new Wordlift_Loader();
 

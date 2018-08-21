@@ -164,9 +164,22 @@ class Wordlift_Entity_Type_Service {
 
 		$ids = wp_get_post_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'fields' => 'ids', ) );
 
-		return array_map(function($id) {
-			return get_term_meta($id, '_wl_name', true);
-		}, $ids);
+		$camel_case_names = array_map( function ( $id ) {
+			return get_term_meta( $id, '_wl_name', true );
+		}, $ids );
+
+		/**
+		 * Filter: wl_entity_types_ids_for_post.
+		 *
+		 * Allow plugins to filter the selected entity types for a post.
+		 *
+		 * @since 3.20.0
+		 *
+		 * @param array $camel_case_names The array of entity types names in CamelCase format.
+		 * @param array $ids The array of entity types ids.
+		 * @param int   $post_id The post id.
+		 */
+		return apply_filters( 'wl_entity_types_ids_for_post', $camel_case_names, $ids, $post_id );
 	}
 
 	/**

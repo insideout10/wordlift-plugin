@@ -5220,7 +5220,7 @@ div.wp-menu-image:before #adminmenu .toplevel_page_wordlift-admin-entities.wp-me
 }
 /* metaboxes */
 .wl-metabox {
-  border-left: #007AFF 4px solid;
+  border-left: 2px solid #007AFF;
 }
 .wl-metabox .hndle span::before {
   content: "WordLift - ";

@@ -100,8 +100,8 @@ class Wordlift_Admin_Schemaorg_Taxonomy_Metabox {
                 <li class="hide-if-no-js"><a
                             href="#<?php echo $tax_name; ?>-pop"><?php echo esc_html( $taxonomy->labels->most_used ); ?></a>
                 </li>
-                <li class="hide-if-no-js"><a
-                            href="#<?php echo $tax_name; ?>-legacy"><?php echo $taxonomy->labels->all_items; ?></a>
+                <li class="hide-if-no-js"><a href="#<?php echo $tax_name; ?>-legacy">
+						<?php echo esc_html_x( 'A-Z', 'Entity Types metabox', 'wordlift' ); ?></a>
                 </li>
             </ul>
 

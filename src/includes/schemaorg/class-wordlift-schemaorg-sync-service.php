@@ -1,17 +1,34 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: david
- * Date: 03.08.18
- * Time: 22:21
+ * Services: Schema.org Sync Service.
+ *
+ * Provide the function to synchronize the Schema.org hierarchy with the local taxonomy.
+ *
+ * @since 3.20.0
+ * @package Wordlift
+ * @subpackage Wordlift/includes/schemaorg
  */
 
-class Wordlift_Schemaorg_Service {
+/**
+ * Define the Wordlift_Schemaorg_Sync_Service class.
+ *
+ * @since 3.20.0
+ */
+class Wordlift_Schemaorg_Sync_Service {
+
+	private static $instance;
 
 	public function __construct() {
 
 		add_action( 'wp_ajax_wl_sync_schemaorg', array( $this, 'load' ) );
 
+		self::$instance = $this;
+
+	}
+
+	public static function get_instance() {
+
+		return self::$instance;
 	}
 
 	public function load() {
@@ -39,35 +56,35 @@ class Wordlift_Schemaorg_Service {
 
 		if ( is_wp_error( $reply ) ) {
 			// Error.
-			return;
+			return false;
 		}
 
 		if ( ! isset( $reply['response']['code'] )
 		     || ! is_numeric( $reply['response']['code'] ) ) {
 			// Error: response code not set or invalid.
-			return;
+			return false;
 		}
 
 		if ( 2 !== (int) $reply['response']['code'] / 100 ) {
 			// Error: status code not OK.
-			return;
+			return false;
 		}
 
 		if ( ! isset( $reply['body'] ) ) {
 			// Error: body not set.
-			return;
+			return false;
 		}
 
 		$json = json_decode( $reply['body'], true );
 
 		if ( null === $json ) {
 			// Error: invalid body.
-			return;
+			return false;
 		}
 
 		if ( ! isset( $json['schemaClasses'] ) ) {
 			// Error: invalid json.
-			return;
+			return false;
 		}
 
 		foreach ( $json['schemaClasses'] as $schema_class ) {
@@ -92,11 +109,12 @@ class Wordlift_Schemaorg_Service {
 			}
 
 			// Update the term name.
-			delete_term_meta($term['term_id'], '_wl_name');
-			update_term_meta($term['term_id'], '_wl_name', $schema_class['name']);
+			delete_term_meta( $term['term_id'], '_wl_name' );
+			update_term_meta( $term['term_id'], '_wl_name', $schema_class['name'] );
 
 		}
 
+		return true;
 	}
 
 }

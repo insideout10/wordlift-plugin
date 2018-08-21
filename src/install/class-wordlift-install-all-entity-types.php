@@ -15,9 +15,31 @@
  *
  * @since 3.20.0
  */
-class Wordlift_Install_All_Entity_Types {
+class Wordlift_Install_All_Entity_Types extends Wordlift_Install {
 
-	// @@todo
+	const OPTION_NAME = 'wl_db_schemaorg_version';
 
+	/**
+	 * @inheritdoc
+	 */
+	// @@todo: increase the version number to match WordLift's version.
+	protected static $version = '3.20.0';
+
+	public function install() {
+
+		// Check that the schema isn't installed yet.
+		if ( ! WL_ALL_ENTITY_TYPES || false !== get_option( self::OPTION_NAME ) ) {
+			return;
+		}
+
+		// Get the Schema.org sync service instance.
+		$schema_sync_service = Wordlift_Schemaorg_Sync_Service::get_instance();
+
+		// Try to load the Schema.org taxonomy and, if successful, update the local Schema.org version.
+		if ( $schema_sync_service->load() ) {
+			update_option( self::OPTION_NAME, '1.0.0' );
+		}
+
+	}
 
 }

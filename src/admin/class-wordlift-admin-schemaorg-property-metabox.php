@@ -8,6 +8,35 @@
 
 class Wordlift_Admin_Schemaorg_Property_Metabox {
 
+	const UNSUPPORTED_PROPERTIES = array(
+		'additionalType',
+		'alternateName',
+		'description',
+		'disambiguatingDescription',
+		'identifier',
+		'image',
+		'mainEntityOfPage',
+		'name',
+		'potentialAction',
+		'sameAs',
+		'subjectOf',
+		'url',
+	);
+
+	const SUPPORTED_RANGES = array(
+		'Boolean',
+		'False',
+		'True',
+		'Date',
+		'DateTime',
+		'Number',
+		'Float',
+		'Integer',
+		'Time',
+		'Text',
+		'URL',
+	);
+
 	public function __construct() {
 
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ), 10, 2 );
@@ -113,10 +142,11 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 			) );
 		}
 
-		$classes = wp_json_encode( $_REQUEST['class'] );
+		$classes               = $_REQUEST['class'];
+		$classes_as_json_array = wp_json_encode( $classes );
 
 		$query = "query {
-	schemaProperties(classes: $classes) {
+	schemaProperties(classes: $classes_as_json_array) {
 		name
 		label
 		description
@@ -142,9 +172,38 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 			wp_send_json_error();
 		}
 
+
+		$json = json_decode( $reply['body'], true );
+
+
+		// Remove unsupported ranges.
+		$json['schemaProperties'] = array_map( function ( $item ) {
+			// Remove unsupported ranges.
+			$item['ranges'] = array_values( array_filter( $item['ranges'], function ( $range ) {
+				return in_array( $range['name'], Wordlift_Admin_Schemaorg_Property_Metabox::SUPPORTED_RANGES );
+			} ) );
+
+			return $item;
+		}, $json['schemaProperties'] );
+
+		// Remove unwanted properties (properties from the `Thing` entity type).
+		$json['schemaProperties'] = array_values( array_filter( $json['schemaProperties'], function ( $item ) {
+			return 0 < count( $item['ranges'] ) && ! in_array( $item['name'], Wordlift_Admin_Schemaorg_Property_Metabox::UNSUPPORTED_PROPERTIES );
+		} ) );
+
+		/**
+		 * Filter: wl_schemaorg_properties_for_classes.
+		 *
+		 * @since 3.20.0
+		 *
+		 * @param array $json A json instance as array.
+		 * @param array $classes An array of Schema.org classes.
+		 */
+		$properties = apply_filters( 'wl_schemaorg_properties_for_classes', $json, $classes );
+
 		header( 'Content-Type: application/json; charset=UTF-8' );
 		echo( '{ "success": true, "data": ' );
-		echo( $reply['body'] );
+		echo( wp_json_encode( $properties ) );
 		echo( '}' );
 
 		if ( wp_doing_ajax() ) {
