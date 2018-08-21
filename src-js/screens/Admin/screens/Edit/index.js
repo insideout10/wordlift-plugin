@@ -167,7 +167,6 @@ const toggleTerm = type => item =>
  * @since 3.20.0
  */
 window.addEventListener("load", () => {
-
   //region ## SCHEMA-CLASS-TREE
   if (
     document.querySelector("#taxonomy-wl_entity_type #wl-schema-class-tree")
@@ -202,41 +201,7 @@ window.addEventListener("load", () => {
 
   //region ## SCHEMA-PROPERTIES-FORM
   if (document.getElementById("wl-schema-properties-form")) {
-    const data = {
-      name: [
-        {
-          type: "Text",
-          value: "Name 1",
-          language: "en"
-        },
-        {
-          type: "Text",
-          value: "Nome 1",
-          language: "it"
-        },
-        {
-          type: "Text",
-          value: "Nom 1",
-          language: "fr"
-        },
-        {
-          type: "Text",
-          value: "Name 1",
-          language: "de"
-        }
-      ],
-      identifier: [
-        {
-          type: "Text",
-          value: "Identifier 1",
-          language: ""
-        },
-        {
-          type: "URL",
-          value: "http://example.org/1"
-        }
-      ]
-    };
+    const data = settings["properties"];
 
     const Reader = property => data[property.name];
 
@@ -256,7 +221,7 @@ window.addEventListener("load", () => {
           <input
             type="hidden"
             name={`_wl_prop[${props.property.name}][${uniqueId}][language]`}
-            defaultValue={props.language}
+            defaultValue={props.language || ""}
           />
           <Component
             name={`_wl_prop[${props.property.name}][${uniqueId}][value]`}

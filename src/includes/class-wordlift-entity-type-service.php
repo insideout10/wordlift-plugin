@@ -80,7 +80,9 @@ class Wordlift_Entity_Type_Service {
 	 * We have a strategy to define the entity type, given that everything is
 	 * an entity, i.e. also posts/pages and custom post types.
 	 *
-	 * @since 3.18.0 the cases are the following:
+	 * @since 3.20.0 This function will **not** return entity types introduced with 3.20.0.
+	 *
+	 * @since 3.18.0 The cases are the following:
 	 *  1. the post has a term from the Entity Types Taxonomy: the term defines
 	 *     the entity type, e.g. Organization, Person, ...
 	 *  2. the post doesn't have a term from the Entity Types Taxonomy:

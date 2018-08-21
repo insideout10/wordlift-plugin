@@ -25,23 +25,28 @@ class Wordlift_Schemaorg_Property_Service {
 
 	public function get_all( $post_id ) {
 
-		$meta = get_post_meta( $post_id );
+		$post_metas = get_post_meta( $post_id );
 
-//		var_dump( $meta );
-
-		$wl_meta = array_reduce( array_keys( $meta ), function ( $carry, $key ) use ( $meta ) {
-
-			if ( - 1 === strpos( $key, self::PREFIX ) ) {
-				return $carry;
-			}
+		$props = array();
+		foreach ( $post_metas as $key => $values ) {
 			$matches = array();
-			preg_match( $key, "/_wl_prop_(\w+)_(\d+)_(\w+)/i", $matches );
-//			var_dump( $matches );
+			if ( 1 === preg_match( "/_wl_prop_(\w+)_([\w-]+)_(\w+)/i", $key, $matches ) ) {
+				$name = $matches[1];
+				$uuid = $matches[2];
+				$key  = $matches[3];
 
-			return $carry;
-		}, array() );
+				$props[ $name ][ $uuid ][ $key ] = $values[0];
+			}
+		}
 
-		return $meta;
+		// Remove the UUIDs.
+		foreach ( $props as $name => $instance ) {
+			foreach ( $instance as $uuid => $keys ) {
+				$props[ $name ] = array_values( $instance );
+			}
+		}
+
+		return $props;
 	}
 
 	public function get_keys( $post_id ) {

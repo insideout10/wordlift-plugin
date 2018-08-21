@@ -23,20 +23,31 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 	private $property_getter;
 
 	/**
+	 * The {@link Wordlift_Schemaorg_Property_Service} or null if not provided.
+	 *
+	 * @since 3.20.0
+	 * @access private
+	 * @var null|Wordlift_Schemaorg_Property_Service The {@link Wordlift_Schemaorg_Property_Service} or null if not provided.
+	 */
+	private $schemaorg_property_service;
+
+	/**
 	 * Wordlift_Entity_To_Jsonld_Converter constructor.
 	 *
 	 * @since 3.8.0
 	 *
-	 * @param \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
-	 * @param \Wordlift_Entity_Service      $entity_service      A {@link Wordlift_Entity_Service} instance.
-	 * @param \Wordlift_User_Service        $user_service        A {@link Wordlift_User_Service} instance.
-	 * @param \Wordlift_Attachment_Service  $attachment_service  A {@link Wordlift_Attachment_Service} instance.
-	 * @param \Wordlift_Property_Getter     $property_getter     A {@link Wordlift_Property_Getter} instance.
+	 * @param \Wordlift_Entity_Type_Service        $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
+	 * @param \Wordlift_Entity_Service             $entity_service A {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_User_Service               $user_service A {@link Wordlift_User_Service} instance.
+	 * @param \Wordlift_Attachment_Service         $attachment_service A {@link Wordlift_Attachment_Service} instance.
+	 * @param \Wordlift_Property_Getter            $property_getter A {@link Wordlift_Property_Getter} instance.
+	 * @param \Wordlift_Schemaorg_Property_Service $schemaorg_property_service A {@link Wordlift_Schemaorg_Property_Service} instance.
 	 */
-	public function __construct( $entity_type_service, $entity_service, $user_service, $attachment_service, $property_getter ) {
+	public function __construct( $entity_type_service, $entity_service, $user_service, $attachment_service, $property_getter, $schemaorg_property_service = null ) {
 		parent::__construct( $entity_type_service, $entity_service, $user_service, $attachment_service );
 
-		$this->property_getter = $property_getter;
+		$this->property_getter            = $property_getter;
+		$this->schemaorg_property_service = $schemaorg_property_service;
 
 	}
 
@@ -46,7 +57,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 	 *
 	 * @since 3.8.0
 	 *
-	 * @param int   $post_id    The {@link WP_Post} id.
+	 * @param int   $post_id The {@link WP_Post} id.
 	 *
 	 * @param array $references An array of entity references.
 	 *
@@ -73,11 +84,42 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 			$jsonld['alternateName'] = $alternative_labels;
 		}
 
-		// Get the entity @type.
+		// Get the entity `@type` with custom fields set by the Wordlift_Schema_Service.
+		//
+		// This allows us to gather the basic properties as defined by the `Thing` entity type.
 		$type = $this->entity_type_service->get( $post_id );
 
 		// Get the configured type custom fields.
-		$fields = $type['custom_fields'];
+		if ( isset( $type['custom_fields'] ) ) {
+			$this->process_type_custom_fields( $jsonld, $type['custom_fields'], $post );
+		}
+
+		/*
+		 * Get the properties attached to the post.
+		 *
+		 * @since 3.20.0 We attach properties directly to the posts.
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/835
+		 */
+		if ( WL_ALL_ENTITY_TYPES ) {
+			$this->process_post_properties( $jsonld, $post_id );
+		}
+
+		return $this->post_process( $jsonld );
+	}
+
+	/**
+	 * Add data to the JSON-LD using the `custom_fields` array which contains the definitions of property
+	 * for the post entity type.
+	 *
+	 * @since 3.20.0 This code moved from the above function `convert`, used for entity types defined in
+	 *  the {@link Wordlift_Schema_Service} class.
+	 *
+	 * @param array   $jsonld The JSON-LD array.
+	 * @param array   $fields The entity types field array.
+	 * @param WP_Post $post The target {@link WP_Post} instance.
+	 */
+	private function process_type_custom_fields( &$jsonld, $fields, $post ) {
 
 		// Set a reference to use in closures.
 		$converter = $this;
@@ -99,7 +141,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 			// Map the value to the property name.
 			// If we got an array with just one value, we return that one value.
 			// If we got a Wordlift_Property_Entity_Reference we get the URL.
-			$jsonld[ $name ] = $this->make_one( array_map( function ( $item ) use ( $converter, &$references ) {
+			$jsonld[ $name ] = self::make_one( array_map( function ( $item ) use ( $converter, &$references ) {
 
 				if ( $item instanceof Wordlift_Property_Entity_Reference ) {
 
@@ -118,23 +160,43 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 
 		}
 
-		return $this->post_process( $jsonld );
 	}
 
 	/**
-	 * If the provided array of values contains only one value, then one single
-	 * value is returned, otherwise the original array is returned.
+	 * Process the properties attached to the {@link WP_Post}.
 	 *
-	 * @since  3.8.0
-	 * @access private
+	 * @since 3.20.0
 	 *
-	 * @param array $value An array of values.
-	 *
-	 * @return mixed|array A single value or the original array.
+	 * @param array $jsonld The JSON-LD array.
+	 * @param int   $post_id The target {@link WP_Post} id.
 	 */
-	private function make_one( $value ) {
+	private function process_post_properties( &$jsonld, $post_id ) {
 
-		return 1 === count( $value ) ? $value[0] : $value;
+		// Get all the props.
+		$props = $this->schemaorg_property_service->get_all( $post_id );
+
+		// Process all the props.
+		foreach ( $props as $name => $instances ) {
+
+			// Get the values.
+			$values = array_map( function ( $instance ) {
+				return $instance['value'];
+			}, $instances );
+
+			// We might receive empty values, remove them.
+			$non_empty_values = array_filter( $values, function ( $value ) {
+				return ! empty( $value );
+			} );
+
+			// Skip empty properties.
+			if ( empty( $non_empty_values ) ) {
+				continue;
+			}
+
+			// Make an array a single value when possible.
+			$jsonld[ $name ] = self::make_one( $non_empty_values );
+		}
+
 	}
 
 	/**

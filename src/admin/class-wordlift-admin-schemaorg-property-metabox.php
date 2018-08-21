@@ -8,6 +8,15 @@
 
 class Wordlift_Admin_Schemaorg_Property_Metabox {
 
+	/**
+	 * The following properties are the properties defined by the `Thing` entity type.
+	 *
+	 * Any change here must be reflected in {@link Wordlift_Entity_Post_To_Jsonld_Converter::convert()}, where
+	 * the `Thing` properties are loaded using the entity type's `custom_fields` entry provided by the
+	 * {@link Wordlift_Schema_Service}.
+	 *
+	 * @since 3.20.0
+	 */
 	const UNSUPPORTED_PROPERTIES = array(
 		'additionalType',
 		'alternateName',
@@ -119,8 +128,23 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 //			return $carry + array( $key => $_POST[ $key ] );
 //		}, array() );
 
-		var_dump( $_POST['_wl_prop'] );
-		wp_die();
+		$keys = array_filter( array_unique( array_keys( get_post_meta( $post_id ) ) ), function ( $item ) {
+			return 0 === strpos( $item, '_wl_prop_' );
+		} );
+
+		foreach ( $keys as $key ) {
+			delete_post_meta( $post_id, $key );
+		}
+
+		foreach ( $_POST['_wl_prop'] as $name => $instances ) {
+			foreach ( $instances as $uuid => $meta ) {
+				foreach ( $meta as $meta_key => $meta_value ) {
+					if ( ! empty( $meta_value ) ) {
+						add_post_meta( $post_id, "_wl_prop_{$name}_{$uuid}_{$meta_key}", $meta_value );
+					}
+				}
+			}
+		}
 
 	}
 
