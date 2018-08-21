@@ -93,12 +93,20 @@ class Wordlift_Admin {
 		// Load additional code if we're in the admin UI.
 		if ( is_admin() ) {
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard-latest-news.php';
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-schemaorg-taxonomy-metabox.php';
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-schemaorg-property-metabox.php';
 
 			new Wordlift_Dashboard_Latest_News();
-			new Wordlift_Admin_Schemaorg_Taxonomy_Metabox();
-			new Wordlift_Admin_Schemaorg_Property_Metabox();
+
+			/*
+			 * Add support for `All Entity Types`.
+			 * @see https://github.com/insideout10/wordlift-plugin/issues/835
+			 */
+			if ( WL_ALL_ENTITY_TYPES ) {
+				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-schemaorg-taxonomy-metabox.php';
+				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-schemaorg-property-metabox.php';
+
+				new Wordlift_Admin_Schemaorg_Taxonomy_Metabox();
+				new Wordlift_Admin_Schemaorg_Property_Metabox();
+			}
 
 		}
 
@@ -203,6 +211,7 @@ class Wordlift_Admin {
 			$params['entity_types']                     = Wordlift_Entity_Type_Service::get_instance()->get_names( $entity_being_edited->ID );
 			$params['wl_schemaorg_term_for_post_nonce'] = wp_create_nonce( 'wl_schemaorg_term_for_post' );
 			$params['wl_schemaorg_property_nonce']      = wp_create_nonce( 'wl_schemaorg_property' );
+			$params["properties"]                       = Wordlift_Schemaorg_Property_Service::get_instance()->get_all( $post->ID );
 
 		}
 

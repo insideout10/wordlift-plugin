@@ -50,8 +50,17 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 			'hierarchical'       => true,
 			'show_admin_column'  => true,
 			'show_in_quick_edit' => false,
-			'meta_box_cb'        => array( 'Wordlift_Admin_Schemaorg_Taxonomy_Metabox', 'render' ),
 		);
+
+		/*
+		 * If `All Entity Types` is enabled, use the new metabox.
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/835
+		 * @since 3.20.0
+		 */
+		if ( WL_ALL_ENTITY_TYPES ) {
+			$args['meta_box_cb'] = array( 'Wordlift_Admin_Schemaorg_Taxonomy_Metabox', 'render' );
+		}
 
 		register_taxonomy(
 			Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, // Taxonomy name.

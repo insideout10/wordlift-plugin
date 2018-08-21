@@ -11,6 +11,7 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 	public function __construct() {
 
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ), 10, 2 );
+		add_action( 'save_post', array( $this, 'save_post' ), 10, 1 );
 		add_action( 'wp_ajax_wl_schemaorg_property', array( $this, 'schemaorg_property' ) );
 
 	}
@@ -30,6 +31,67 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 			'normal',
 			'default'
 		);
+
+	}
+
+	public function save_post( $post_id ) {
+//		// Add nonce for security and authentication.
+//		$nonce_name   = isset( $_POST['custom_nonce'] ) ? $_POST['custom_nonce'] : '';
+//		$nonce_action = 'custom_nonce_action';
+//
+//		// Check if nonce is set.
+//		if ( ! isset( $nonce_name ) ) {
+//			return;
+//		}
+//
+//		// Check if nonce is valid.
+//		if ( ! wp_verify_nonce( $nonce_name, $nonce_action ) ) {
+//			return;
+//		}
+
+		// Check if user has permissions to save data.
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return;
+		}
+
+		/*
+		 * If this is an autosave, our form has not been submitted,
+		 * so we don't want to do anything.
+		 */
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+
+		// Check if not an autosave.
+		if ( wp_is_post_autosave( $post_id ) ) {
+			return;
+		}
+
+		// Check if not a revision.
+		if ( wp_is_post_revision( $post_id ) ) {
+			return;
+		}
+
+		// check if there was a multisite switch before
+		if ( is_multisite() && ms_is_switched() ) {
+			return;
+		}
+
+//		foreach ( $_POST as $key => $value ) {
+//			var_dump( $key );
+//		}
+//
+//
+//		$props = array_reduce( array_keys( $_POST ), function ( $carry, $key ) use ( $_POST ) {
+//			if ( 0 !== strpos( Wordlift_Schemaorg_Property_Service::PREFIX, $key ) ) {
+//				return $carry;
+//			}
+//
+//			return $carry + array( $key => $_POST[ $key ] );
+//		}, array() );
+
+		var_dump( $_POST['_wl_prop'] );
+		wp_die();
 
 	}
 

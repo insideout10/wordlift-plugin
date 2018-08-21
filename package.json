@@ -58,7 +58,7 @@
     "webpack-dev-server": "2.7.1",
     "webpack-manifest-plugin": "1.2.1",
     "whatwg-fetch": "2.0.3",
-    "wordlift-for-schemaorg": "file:../schemaorg/src/main/js",
+    "wordlift-for-schemaorg": "file:/Users/david/Developer/wordlift/schemaorg/src/main/js",
     "wordlift-ui": "git+ssh://git@gitlab.com:wordlift/wordlift-ui.git"
   },
   "scripts": {

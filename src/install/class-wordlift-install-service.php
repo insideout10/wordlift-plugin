@@ -43,6 +43,18 @@ class Wordlift_Install_Service {
 	 */
 	public function __construct() {
 
+		/** Installs. */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-1-0-0.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-10-0.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-12-0.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-14-0.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-15-0.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-18-0.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-18-3.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-all-entity-types.php';
+
+
 		self::$instance = $this;
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );

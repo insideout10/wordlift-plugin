@@ -42,6 +42,7 @@ import AnnotationEvent from "./angular/AnnotationEvent";
 import ReceiveAnalysisResultsEvent from "./angular/ReceiveAnalysisResultsEvent";
 import UpdateOccurrencesForEntityEvent from "./angular/UpdateOccurrencesForEntityEvent";
 import EditorSelectionChangedEvent from "./angular/EditorSelectionChangedEvent";
+import uuid from "./uuid";
 
 // Set a reference to the WordLift's settings stored in the window instance.
 const settings = window["wlSettings"] || {};
@@ -166,116 +167,114 @@ const toggleTerm = type => item =>
  * @since 3.20.0
  */
 window.addEventListener("load", () => {
+
   //region ## SCHEMA-CLASS-TREE
-  ReactDOM.render(
-    <SchemaClassTree
-      loader={() =>
-        wp.ajax.post("wl_schemaorg").then(json =>
-          json["schemaClasses"].sort((a, b) => {
-            const nameA = a.name.toUpperCase();
-            const nameB = b.name.toUpperCase();
-
-            if (nameA < nameB) return -1;
-
-            if (nameA > nameB) return 1;
-
-            return 0;
-          })
-        )
-      }
-      selected={settings["entity_types"]}
-      open={["Thing"]}
-      onOpen={item => console.log({ open: item })}
-      onClose={item => console.log({ close: item })}
-      onSelect={toggleTerm("add")}
-      onDeselect={toggleTerm("remove")}
-    />,
+  if (
     document.querySelector("#taxonomy-wl_entity_type #wl-schema-class-tree")
-  );
+  ) {
+    ReactDOM.render(
+      <SchemaClassTree
+        loader={() =>
+          wp.ajax.post("wl_schemaorg").then(json =>
+            json["schemaClasses"].sort((a, b) => {
+              const nameA = a.name.toUpperCase();
+              const nameB = b.name.toUpperCase();
+
+              if (nameA < nameB) return -1;
+
+              if (nameA > nameB) return 1;
+
+              return 0;
+            })
+          )
+        }
+        selected={settings["entity_types"]}
+        open={["Thing"]}
+        onOpen={item => console.log({ open: item })}
+        onClose={item => console.log({ close: item })}
+        onSelect={toggleTerm("add")}
+        onDeselect={toggleTerm("remove")}
+      />,
+      document.querySelector("#taxonomy-wl_entity_type #wl-schema-class-tree")
+    );
+  }
   //endregion
 
-  const data = {
-    name: [
-      {
-        type: "Text",
-        value: "Name 1",
-        language: "en"
-      },
-      {
-        type: "Text",
-        value: "Nome 1",
-        language: "it"
-      },
-      {
-        type: "Text",
-        value: "Nom 1",
-        language: "fr"
-      },
-      {
-        type: "Text",
-        value: "Name 1",
-        language: "de"
-      }
-    ],
-    identifier: [
-      {
-        type: "Text",
-        value: "Identifier 1",
-        language: ""
-      },
-      {
-        type: "URL",
-        value: "http://example.org/1"
-      }
-    ]
-  };
+  //region ## SCHEMA-PROPERTIES-FORM
+  if (document.getElementById("wl-schema-properties-form")) {
+    const data = {
+      name: [
+        {
+          type: "Text",
+          value: "Name 1",
+          language: "en"
+        },
+        {
+          type: "Text",
+          value: "Nome 1",
+          language: "it"
+        },
+        {
+          type: "Text",
+          value: "Nom 1",
+          language: "fr"
+        },
+        {
+          type: "Text",
+          value: "Name 1",
+          language: "de"
+        }
+      ],
+      identifier: [
+        {
+          type: "Text",
+          value: "Identifier 1",
+          language: ""
+        },
+        {
+          type: "URL",
+          value: "http://example.org/1"
+        }
+      ]
+    };
 
-  const Reader = property => data[property.name];
+    const Reader = property => data[property.name];
 
-  const PropertyDecorator = Component => props => (
-    <Component values={Reader(props.property)} {...props} />
-  );
+    const PropertyDecorator = Component => props => (
+      <Component values={Reader(props.property)} {...props} />
+    );
 
-  const PropertyInstanceDecorator = Component => props => (
-    <React.Fragment>
-      <input
-        type="hidden"
-        name={`${props.property.name}[][type]`}
-        defaultValue={props.type}
-      />
-      <Component name={`${props.property.name}[][value]`} {...props} />
-    </React.Fragment>
-  );
+    const PropertyInstanceDecorator = Component => {
+      const uniqueId = uuid();
+      return props => (
+        <React.Fragment>
+          <input
+            type="hidden"
+            name={`_wl_prop[${props.property.name}][${uniqueId}][type]`}
+            defaultValue={props.type}
+          />
+          <input
+            type="hidden"
+            name={`_wl_prop[${props.property.name}][${uniqueId}][language]`}
+            defaultValue={props.language}
+          />
+          <Component
+            name={`_wl_prop[${props.property.name}][${uniqueId}][value]`}
+            defaultValue={props.value}
+            {...props}
+          />
+        </React.Fragment>
+      );
+    };
 
-  const FetchLoader = selected => {
-    console.log("Going to fetch the property data...");
-    console.log({ selected });
-    return (
-      wp.ajax
+    const FetchLoader = selected => {
+      console.log("Going to fetch the property data...");
+      console.log({ selected });
+      return wp.ajax
         .post("wl_schemaorg_property", {
           class: selected.toArray(),
           _wpnonce: settings["wl_schemaorg_property_nonce"]
         })
-        //   fetch(url, {
-        //     method: "POST",
-        //     body: JSON.stringify({
-        //       query: `query {
-        // 	schemaProperties(classes: ${JSON.stringify(selected)} ) {
-        // 		name
-        // 		label
-        // 		description
-        // 		weight
-        //         ranges {
-        //             name
-        //             label
-        //         }
-        // 	}
-        // }`,
-        //       variables: null
-        //     }),
-        //     headers: { "Content-Type": "application/json; charset=UTF-8" }
-        //   })
-        //     .then(response => response.json())
         .then(json => json["schemaProperties"])
         .then(properties =>
           // Sort alphabetically.
@@ -289,18 +288,19 @@ window.addEventListener("load", () => {
 
             return 0;
           })
-        )
-    );
-  };
+        );
+    };
 
-  ReactDOM.render(
-    <Form
-      selected={settings["entity_types"]}
-      loader={FetchLoader}
-      selectionListener={SelectionListener}
-      propertyDecorator={PropertyDecorator}
-      propertyInstanceDecorator={PropertyInstanceDecorator}
-    />,
-    document.getElementById("wl-schema-properties-form")
-  );
+    ReactDOM.render(
+      <Form
+        selected={settings["entity_types"]}
+        loader={FetchLoader}
+        selectionListener={SelectionListener}
+        propertyDecorator={PropertyDecorator}
+        propertyInstanceDecorator={PropertyInstanceDecorator}
+      />,
+      document.getElementById("wl-schema-properties-form")
+    );
+  }
+  //endregion
 });

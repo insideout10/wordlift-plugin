@@ -782,17 +782,6 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-sanitizer.php';
 
-		/** Installs. */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-service.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-1-0-0.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-10-0.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-12-0.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-14-0.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-15-0.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-18-0.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-18-3.php';
-
 		/** Services. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-log-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-http-api.php';
@@ -960,10 +949,10 @@ class Wordlift {
 
 		/** Services. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-google-analytics-export-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-service.php';
 
 		/** Adapters. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-tinymce-adapter.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-newrelic-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-sample-data-ajax-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-type-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/batch-analysis/class-wordlift-batch-analysis-adapter.php';
@@ -974,8 +963,6 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-batch-analysis-request-async-task.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-batch-analysis-complete-async-task.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-push-references-async-task.php';
-
-		/** Async Tasks. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-autocomplete-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-autocomplete-adapter.php';
 
@@ -995,7 +982,6 @@ class Wordlift {
 		 * The Entity Types Taxonomy Walker (transforms checkboxes into radios).
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-entity-types-taxonomy-walker.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-schemaorg-taxonomy-walker.php';
 
 		/**
 		 * The Notice service.
@@ -1117,7 +1103,9 @@ class Wordlift {
 
 		/** schema.org Service */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/schemaorg/class-wordlift-schemaorg-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/schemaorg/class-wordlift-schemaorg-property-service.php';
 		new Wordlift_Schemaorg_Service();
+		$schemaorg_property_service = new Wordlift_Schemaorg_Property_Service();
 
 		$this->loader = new Wordlift_Loader();
 
@@ -1178,7 +1166,6 @@ class Wordlift {
 		$this->batch_analysis_service = new Wordlift_Batch_Analysis_Service( $this, $this->configuration_service, $this->file_cache_service );
 
 		$this->entity_types_taxonomy_walker = new Wordlift_Entity_Types_Taxonomy_Walker();
-		$schemaorg_taxonomy_walker          = new Wordlift_Schemaorg_Taxonomy_Walker();
 
 		$this->topic_taxonomy_service        = new Wordlift_Topic_Taxonomy_Service();
 		$this->entity_types_taxonomy_service = new Wordlift_Entity_Type_Taxonomy_Service();
@@ -1401,7 +1388,15 @@ class Wordlift {
 		$this->loader->add_filter( 'posts_clauses', $this->entity_list_service, 'posts_clauses_classification_scope' );
 		$this->loader->add_action( 'pre_get_posts', $this->entity_list_service, 'pre_get_posts' );
 		$this->loader->add_action( 'load-edit.php', $this->entity_list_service, 'load_edit' );
-//		$this->loader->add_filter( 'wp_terms_checklist_args', $this->entity_types_taxonomy_walker, 'terms_checklist_args' );
+
+		/*
+		 * If `All Entity Types` is disable, use the radio button Walker.
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/835
+		 */
+		if ( ! WL_ALL_ENTITY_TYPES ) {
+			$this->loader->add_filter( 'wp_terms_checklist_args', $this->entity_types_taxonomy_walker, 'terms_checklist_args' );
+		}
 
 		// Hook the PrimaShop adapter to <em>prima_metabox_entity_header_args</em> in order to add header support for
 		// entities.
