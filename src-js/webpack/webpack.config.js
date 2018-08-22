@@ -29,7 +29,7 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        exclude: /(node_modules|bower_components)/,
+        exclude: /(node_modules(?!\/wordlift-for-schemaorg)|bower_components)/,
         use: {
           loader: "babel-loader?cacheDirectory",
           options: {
@@ -44,7 +44,7 @@ module.exports = {
           process.env.NODE_ENV !== "production"
             ? "style-loader"
             : MiniCssExtractPlugin.loader,
-          "css-loader", // translates CSS into CommonJS
+          "css-loader",
           "sass-loader" // compiles Sass to CSS, using Node Sass by default
         ]
       }
@@ -55,6 +55,10 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: "[name].css"
     }),
-    new webpack.DefinePlugin({})
+    new webpack.DefinePlugin({
+      "process.env": {
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+      }
+    })
   ]
 };

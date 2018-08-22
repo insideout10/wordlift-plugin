@@ -18,69 +18,6 @@
 class Wordlift_Admin_Schemaorg_Taxonomy_Metabox {
 
 	/**
-	 * Create a {@link Wordlift_Admin_Schemaorg_Taxonomy_Metabox} instance.
-	 *
-	 * @since 3.20.0
-	 */
-	public function __construct() {
-
-		add_action( 'wp_ajax_wl_schemaorg_term_for_post', array( $this, 'schemaorg_term_for_post' ) );
-
-	}
-
-	/**
-	 * @deprecated
-	 */
-	public function schemaorg_term_for_post() {
-
-		$args = $_POST;
-
-		if ( ! wp_verify_nonce( $args['nonce'], 'wl_schemaorg_term_for_post' ) ) {
-			wp_send_json_error( 'nonce_failure' );
-		}
-
-		$next_nonce = wp_create_nonce( 'wl_schemaorg_term_for_post' );
-
-		if ( empty( $_POST['type'] )
-		     || ( 'add' !== $_POST['type'] && 'remove' !== $_POST['type'] ) ) {
-			wp_send_json_error( array(
-				'nonce'   => $next_nonce,
-				'message' => '`type` is required.',
-			) );
-		}
-
-		if ( ! isset( $_POST['post_id'] ) || ! is_numeric( $_POST['post_id'] ) ) {
-			wp_send_json_error( array(
-				'nonce'   => $next_nonce,
-				'message' => '`post_id` is required.',
-			) );
-		}
-
-		if ( empty( $_POST['slug'] ) ) {
-			wp_send_json_error( array(
-				'nonce'   => $next_nonce,
-				'message' => '`slug` is required.',
-			) );
-		}
-
-		$type    = $_POST['type'];
-		$post_id = (int) $_POST['post_id'];
-		$slug    = $_POST['slug'];
-
-
-		$result = 'add' === $type
-			? wp_add_object_terms( $post_id, $slug, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME )
-			: wp_remove_object_terms( $post_id, $slug, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
-
-		if ( is_wp_error( $result ) ) {
-			wp_send_json_error( array( 'nonce' => $next_nonce, 'message' => $result->get_error_message() ) );
-		}
-
-		wp_send_json_success( array( 'nonce' => $next_nonce ) );
-
-	}
-
-	/**
 	 * Render the metabox.
 	 *
 	 * @since 3.20.0

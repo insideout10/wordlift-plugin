@@ -8,7 +8,8 @@
   "license": "GPL-3.0",
   "private": true,
   "scripts": {
-    "build": "NODE_ENV=production webpack --mode=production"
+    "build": "NODE_ENV=production webpack --mode=production",
+    "watch": "NODE_ENV=development webpack --watch --mode=development"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
@@ -17,15 +18,20 @@
     "mini-css-extract-plugin": "^0.4.2",
     "node-sass": "^4.9.3",
     "path": "^0",
+    "postcss-loader": "^3.0.0",
     "sass-loader": "^7.1.0",
     "webpack": "^4",
     "webpack-cli": "^3.1.0"
   },
   "dependencies": {
+    "immutable": "^3",
+    "prop-types": "^15",
     "react": "^16",
     "react-dom": "^16",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
-    "whatwg-fetch": "^2"
+    "styled-components": "^3",
+    "whatwg-fetch": "^2",
+    "wordlift-for-schemaorg": "file:/Users/david/Developer/wordlift/schemaorg/src/main/js"
   }
 }

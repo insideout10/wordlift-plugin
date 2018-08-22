@@ -17,7 +17,7 @@
  * @since 3.11.0
  */
 
-/**
+/*
  * External dependencies
  */
 import React from "react";
@@ -25,19 +25,19 @@ import ReactDOM from "react-dom";
 import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
-import { AutocompleteSelect } from "wordlift-ui";
 import {
   SchemaClassTree,
   Form,
   SelectionListener
 } from "wordlift-for-schemaorg";
 
-/**
+/*
  * Internal dependencies
  */
 import "./index.scss";
 import reducer from "./reducers";
 import App from "./components/App";
+import AutocompleteSelect from "./components/Autocomplete/AutocompleteSelect";
 import AnnotationEvent from "./angular/AnnotationEvent";
 import ReceiveAnalysisResultsEvent from "./angular/ReceiveAnalysisResultsEvent";
 import UpdateOccurrencesForEntityEvent from "./angular/UpdateOccurrencesForEntityEvent";
@@ -146,21 +146,6 @@ jQuery(document).ready(function() {
   );
 });
 
-const toggleTerm = type => item =>
-  wp.ajax
-    .post("wl_schemaorg_term_for_post", {
-      type: type,
-      post_id: settings["post_id"],
-      slug: item["dashname"],
-      nonce: settings["wl_schemaorg_term_for_post_nonce"]
-    })
-    .done(
-      // Update the nonce.
-      json => {
-        settings["wl_schemaorg_term_for_post_nonce"] = json.nonce;
-      }
-    );
-
 /**
  * Add the SchemaClassTree.
  *
@@ -171,6 +156,56 @@ window.addEventListener("load", () => {
   if (
     document.querySelector("#taxonomy-wl_entity_type #wl-schema-class-tree")
   ) {
+    /**
+     * The Leaf Decorator syncs the checkbox selection with WordPress own
+     * checkboxes.
+     *
+     * @since 3.20.0
+     * @param Component The original component.
+     * @returns {function(*): *} A decorated component.
+     */
+    const leafDecorator = Component => initialProps => {
+      document
+        .querySelectorAll(
+          "#wl_entity_typechecklist, #wl_entity_typechecklist-pop"
+        )
+        .forEach(element =>
+          element.addEventListener("click", e => {
+            const input = element.querySelector(
+              'li.popular-category > label input[type="checkbox"]'
+            );
+            console.log({ e, input, value: input.value });
+          })
+        );
+
+      const { checked, item, onClick, ...props } = initialProps;
+      // The new click handler.
+      const handleClick = callback => () => {
+        document
+          // Query WordPress' own checkboxes.
+          .querySelectorAll(
+            `#in-wl_entity_type-${item.id}, #in-popular-wl_entity_type-${
+              item.id
+            }`
+          )
+          // Set them un/checked accordingly.
+          .forEach(element => (element.checked = checked));
+
+        // Finally call the original callback.
+        callback();
+      };
+      return (
+        <React.Fragment>
+          <Component
+            checked={checked}
+            item={item}
+            onClick={handleClick(onClick)}
+            {...props}
+          />
+        </React.Fragment>
+      );
+    };
+
     ReactDOM.render(
       <SchemaClassTree
         loader={() =>
@@ -189,10 +224,11 @@ window.addEventListener("load", () => {
         }
         selected={settings["entity_types"]}
         open={["Thing"]}
-        onOpen={item => console.log({ open: item })}
-        onClose={item => console.log({ close: item })}
-        onSelect={toggleTerm("add")}
-        onDeselect={toggleTerm("remove")}
+        onOpen={item => {}}
+        onClose={item => {}}
+        onSelect={item => {}}
+        onDeselect={item => {}}
+        leafDecorator={leafDecorator}
       />,
       document.querySelector("#taxonomy-wl_entity_type #wl-schema-class-tree")
     );
