@@ -58,7 +58,7 @@ module.exports = {
   // In production, we only want to load the polyfills and the app code.
   entry: {
     admin: [require.resolve('./polyfills'), paths.appAdminScreen],
-    edit: [require.resolve('./polyfills'), paths.appAdminEditScreen],
+    // edit: [require.resolve('./polyfills'), paths.appAdminEditScreen],
     tinymce: [require.resolve('./polyfills'), paths.appAdminTinyMceScreen],
     author: [require.resolve('./polyfills'), paths.appAdminAuthorSelectComponent],
     settings: [require.resolve('./polyfills'), paths.appAdminSettingsScreen],

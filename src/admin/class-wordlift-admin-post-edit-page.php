@@ -96,8 +96,15 @@ class Wordlift_Admin_Post_Edit_Page {
 		// Enqueue the edit screen JavaScript. The `wordlift-admin.bundle.js` file
 		// is scheduled to replace the older `wordlift-admin.min.js` once client-side
 		// code is properly refactored.
+		/*
+		 * edit.js has been migrated to the new webpack configuration.
+		 *
+		 * @since 3.20.0
+		 */
+		// plugin_dir_url( __FILE__ ) . 'js/1/edit.js'
+		$script_name = plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/edit';
 		wp_enqueue_script(
-			'wordlift-admin-edit-page', plugin_dir_url( __FILE__ ) . 'js/1/edit.js',
+			'wordlift-admin-edit-page', "$script_name.js",
 			array(
 				$this->plugin->get_plugin_name(),
 				'jquery',
@@ -112,7 +119,7 @@ class Wordlift_Admin_Post_Edit_Page {
 			$this->plugin->get_version(),
 			false
 		);
-		wp_enqueue_style( 'wordlift-admin-edit-page', plugin_dir_url( __FILE__ ) . 'js/1/edit.css', array(), $this->plugin->get_version() );
+		wp_enqueue_style( 'wordlift-admin-edit-page', "$script_name.css", array(), $this->plugin->get_version() );
 
 	}
 

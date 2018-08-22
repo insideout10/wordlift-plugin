@@ -53,7 +53,7 @@ module.exports = {
   publicUrl: getPublicUrl(resolveApp("package.json")),
   servedPath: getServedPath(resolveApp("package.json")),
   appAdminScreen: resolveApp("src-js/screens/Admin/index.js"),
-  appAdminEditScreen: resolveApp("src-js/screens/Admin/screens/Edit/index.js"),
+  // appAdminEditScreen: resolveApp("src-js/screens/Admin/screens/Edit/index.js"),
   appAdminTinyMceScreen: resolveApp(
     "src-js/screens/Admin/screens/TinyMCE/index.js"
   ),
