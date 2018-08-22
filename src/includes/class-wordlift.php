@@ -1110,8 +1110,10 @@ class Wordlift {
 		if ( WL_ALL_ENTITY_TYPES ) {
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/schemaorg/class-wordlift-schemaorg-sync-service.php';
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/schemaorg/class-wordlift-schemaorg-property-service.php';
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/schemaorg/class-wordlift-schemaorg-class-service.php';
 			new Wordlift_Schemaorg_Sync_Service();
 			$schemaorg_property_service = new Wordlift_Schemaorg_Property_Service();
+			new Wordlift_Schemaorg_Class_Service();
 		} else {
 			$schemaorg_property_service = null;
 		}

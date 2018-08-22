@@ -103,14 +103,14 @@ class Wordlift_Schemaorg_Sync_Service {
 			}
 
 			// Update the parents/children relationship.
-			delete_term_meta( $term['term_id'], '_wl_parent_of' );
+			delete_term_meta( $term['term_id'], Wordlift_Schemaorg_Class_Service::PARENT_OF_META_KEY );
 			foreach ( $schema_class['children'] as $child ) {
-				add_term_meta( $term['term_id'], '_wl_parent_of', $child['dashname'] );
+				add_term_meta( $term['term_id'], Wordlift_Schemaorg_Class_Service::PARENT_OF_META_KEY, $child['dashname'] );
 			}
 
 			// Update the term name.
-			delete_term_meta( $term['term_id'], '_wl_name' );
-			update_term_meta( $term['term_id'], '_wl_name', $schema_class['name'] );
+			delete_term_meta( $term['term_id'], Wordlift_Schemaorg_Class_Service::NAME_META_KEY );
+			update_term_meta( $term['term_id'], Wordlift_Schemaorg_Class_Service::NAME_META_KEY, $schema_class['name'] );
 
 		}
 

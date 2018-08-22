@@ -174,7 +174,7 @@ window.addEventListener("load", () => {
     ReactDOM.render(
       <SchemaClassTree
         loader={() =>
-          wp.ajax.post("wl_schemaorg").then(json =>
+          wp.ajax.post("wl_schemaorg_class").then(json =>
             json["schemaClasses"].sort((a, b) => {
               const nameA = a.name.toUpperCase();
               const nameB = b.name.toUpperCase();

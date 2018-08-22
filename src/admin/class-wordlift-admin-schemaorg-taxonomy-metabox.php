@@ -1,14 +1,36 @@
 <?php
+/**
+ * Metaboxes: Schema.org Taxonomy Metabox.
+ *
+ * A customized metabox for the Entity Types taxonomy, supporting the treeview for the Schema.org
+ * taxonomy.
+ *
+ * @since 3.20.0
+ * @package Wordlift
+ * @subpackage Wordlift/admin
+ */
 
+/**
+ * Define the {@link Wordlift_Admin_Schemaorg_Taxonomy_Metabox} class.
+ *
+ * @since 3.20.0
+ */
 class Wordlift_Admin_Schemaorg_Taxonomy_Metabox {
 
+	/**
+	 * Create a {@link Wordlift_Admin_Schemaorg_Taxonomy_Metabox} instance.
+	 *
+	 * @since 3.20.0
+	 */
 	public function __construct() {
 
-		add_action( 'wp_ajax_wl_schemaorg', array( $this, 'schemaorg' ) );
 		add_action( 'wp_ajax_wl_schemaorg_term_for_post', array( $this, 'schemaorg_term_for_post' ) );
 
 	}
 
+	/**
+	 * @deprecated
+	 */
 	public function schemaorg_term_for_post() {
 
 		$args = $_POST;
@@ -58,30 +80,26 @@ class Wordlift_Admin_Schemaorg_Taxonomy_Metabox {
 
 	}
 
-	public function schemaorg() {
-
-		header( 'Content-Type: application/json; charset=UTF-8' );
-
-		echo( '{"success":true, "data":' );
-		include( plugin_dir_path( __FILE__ ) . 'partials/schemaorg.min.json' );
-		echo( '}' );
-
-		if ( wp_doing_ajax() ) {
-			wp_die( '', '', array(
-				'response' => null,
-			) );
-		} else {
-			die;
-		}
-
-	}
-
+	/**
+	 * Render the metabox.
+	 *
+	 * @since 3.20.0
+	 */
 	public static function render() {
 
 		Wordlift_Admin_Schemaorg_Taxonomy_Metabox::post_categories_meta_box( get_post(), array( 'args' => array( 'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ) ) );
 
 	}
 
+	/**
+	 * A function which resembles WordPress' own to display a metabox, but which customizes the output
+	 * to display the Schema.org classes tree.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @param WP_Post $post The {@link WP_Post} being edited.
+	 * @param array   $box An array of arguments.
+	 */
 	private static function post_categories_meta_box( $post, $box ) {
 		$defaults = array( 'taxonomy' => 'category' );
 		if ( ! isset( $box['args'] ) || ! is_array( $box['args'] ) ) {
