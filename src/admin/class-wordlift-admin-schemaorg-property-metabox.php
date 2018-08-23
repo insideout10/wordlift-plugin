@@ -166,8 +166,11 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 			) );
 		}
 
-		$classes               = $_REQUEST['class'];
-		$classes_as_json_array = wp_json_encode( $classes );
+		$term_ids              = $_REQUEST['class'];
+		$class_names           = array_map( function ( $term_id ) {
+			return get_term_meta( $term_id, Wordlift_Schemaorg_Class_Service::NAME_META_KEY, true );
+		}, $term_ids );
+		$classes_as_json_array = wp_json_encode( $class_names );
 
 		$query = "query {
 	schemaProperties(classes: $classes_as_json_array) {

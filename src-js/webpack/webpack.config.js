@@ -24,6 +24,16 @@ module.exports = {
     filename: "[name].js",
     path: path.resolve(__dirname, "../../src/js/dist")
   },
+  /*
+   * Give precedence to our node_modules folder when resolving the same module.
+   *
+   * This solves duplicate issues with styled-components.
+   *
+   * @see https://www.styled-components.com/docs/faqs#why-am-i-getting-a-warning-about-several-instances-of-module-on-the-page
+   */
+  // resolve: {
+  //   modules: [path.resolve(__dirname, "node_modules"), "node_modules"]
+  // },
   devtool: "source-map",
   module: {
     rules: [
@@ -40,10 +50,12 @@ module.exports = {
       {
         test: /\.s?css$/,
         use: [
+          // We use the MiniCssExtractPlugin for both production and development
+          // since development happens inside of WordPress which loads the css
+          // files anyway (using the enqueue_scripts hook).
+          //
           // @see https://webpack.js.org/loaders/sass-loader/#extracting-style-sheets
-          process.env.NODE_ENV !== "production"
-            ? "style-loader"
-            : MiniCssExtractPlugin.loader,
+          MiniCssExtractPlugin.loader,
           "css-loader",
           "sass-loader" // compiles Sass to CSS, using Node Sass by default
         ]

@@ -157,6 +157,11 @@ class Wordlift_Entity_Type_Service {
 
 	}
 
+	public function get_ids( $post_id ) {
+
+		return wp_get_post_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'fields' => 'ids', ) );
+	}
+
 	public function get_dashnames( $post_id ) {
 
 		return wp_get_post_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'fields' => 'slugs', ) );

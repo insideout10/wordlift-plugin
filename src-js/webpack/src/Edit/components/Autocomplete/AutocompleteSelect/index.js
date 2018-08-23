@@ -9,7 +9,7 @@
 /**
  * Stylesheets.
  */
-import { AutocompleteSelect as style } from "./index.scss";
+import "./index.css";
 
 /**
  * External dependencies.
@@ -96,10 +96,8 @@ class AutocompleteSelect extends Component {
       ...props
     } = this.props;
 
-    console.log({ style });
     return (
       <Select.AsyncCreatable
-        className={style}
         autoload={autoload}
         ignoreAccents={true}
         ignoreCase={true}

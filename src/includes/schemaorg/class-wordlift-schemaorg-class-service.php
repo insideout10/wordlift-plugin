@@ -82,11 +82,10 @@ class Wordlift_Schemaorg_Class_Service {
 					'dashname'    => $term->slug,
 					'description' => $term->description,
 					'children'    => array_map( function ( $child ) {
-						// Map the slug to the CamelCase name.
-						$term            = get_term_by( 'slug', $child, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
-						$camel_case_name = get_term_meta( $term->term_id, self::NAME_META_KEY, true );
+						// Map the slug to the term id.
+						$child_term = get_term_by( 'slug', $child, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
-						return array( 'name' => $camel_case_name );
+						return array( 'id' => $child_term->term_id );
 					}, get_term_meta( $term->term_id, self::PARENT_OF_META_KEY ) ),
 				);
 
