@@ -7,9 +7,10 @@ const withProp = propName => Component =>
 
       this.is = this.is.bind(this);
       this.toggle = this.toggle.bind(this);
+      this.on = props[`on${this.capitalize(propName)}`] || (() => {});
 
       this.state = {
-        [propName]: props[propName] || []
+        [propName]: props[propName]
       };
     }
     componentDidUpdate(prevProps) {
@@ -28,6 +29,9 @@ const withProp = propName => Component =>
           ? prevState[propName].filter(value => item.id !== value)
           : prevState[propName].concat([item.id])
       }));
+
+      // `!this.is(item)` because state hasn't yet changed here.
+      this.on(item, !this.is(item));
     }
     capitalize(value) {
       return value.charAt(0).toUpperCase() + value.slice(1);

@@ -4127,7 +4127,7 @@ wide-align@^1.1.0:
     string-width "^1.0.2 || 2"
 
 "wordlift-for-schemaorg@file:../../../schemaorg/src/main/js":
-  version "1.0.28"
+  version "1.0.29"
   dependencies:
     reselect "^3.0.1"
 
