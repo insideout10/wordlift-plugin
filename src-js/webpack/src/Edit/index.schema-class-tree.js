@@ -21,11 +21,15 @@ const syncWithWordPressTaxonomyMetabox = Component =>
     constructor(props) {
       super(props);
 
+      this.getSelected = this.getSelected.bind(this);
       this.onData = this.onData.bind(this);
       this.handleSelected = this.handleSelected.bind(this);
 
       this.state = {
-        selected: props.selected || []
+        selected: document.getElementById("wl_entity_typechecklist")
+          ? // Get the selection from WordPress' own checklist.
+            this.getSelected(document.getElementById("wl_entity_typechecklist"))
+          : []
       };
     }
     componentDidMount() {
@@ -35,19 +39,26 @@ const syncWithWordPressTaxonomyMetabox = Component =>
         )
         .forEach(element =>
           element.addEventListener("click", () =>
-            this.onData(
-              Array.from(
-                element.querySelectorAll("input[type='checkbox']:checked")
-              ).map(item => parseInt(item.value))
-            )
+            this.onData(this.getSelected(element))
           )
         );
+    }
+
+    /**
+     * Return an {@link Array} of selected items.
+     *
+     * @since 3.20.0
+     * @returns {number[]} The Array of selected items' ids.
+     */
+    getSelected(element) {
+      return Array.from(
+        element.querySelectorAll("input[type='checkbox']:checked")
+      ).map(item => parseInt(item.value));
     }
     onData(selected) {
       this.setState({ selected });
     }
     handleSelected(item, selected) {
-      console.log("handleSelected", { item, selected });
       document
         // Query WordPress' own checkboxes.
         .querySelectorAll(
@@ -55,6 +66,21 @@ const syncWithWordPressTaxonomyMetabox = Component =>
         )
         // Set them un/checked accordingly.
         .forEach(element => (element.checked = selected));
+
+      this.setState(prevState => ({
+        selected: selected
+          ? prevState.selected.concat([item.id])
+          : prevState.selected.filter(value => value !== item.id)
+      }));
+    }
+    componentDidUpdate() {
+      window.postMessage(
+        {
+          type: "syncWithWordPressTaxonomyMetabox.selected",
+          payload: { selected: this.state.selected }
+        },
+        document.location.href
+      );
     }
     render() {
       // Take out `selected` from the props.
@@ -95,47 +121,9 @@ window.addEventListener("load", () => {
     return;
   }
 
-  // Set a reference to the WordLift's settings stored in the window instance.
-  const settings = window["wlSettings"] || {};
-
-  // /**
-  //  * The Leaf Decorator syncs the checkbox selection with WordPress own
-  //  * checkboxes.
-  //  *
-  //  * @since 3.20.0
-  //  * @param Component The original component.
-  //  * @returns {function(*): *} A decorated component.
-  //  */
-  // const leafDecorator = Component => initialProps => {
-  //   const { checked, item, onClick, ...props } = initialProps;
-  //   // The new click handler.
-  //   const handleClick = callback => () => {
-  //     document
-  //       // Query WordPress' own checkboxes.
-  //       .querySelectorAll(
-  //         `#in-wl_entity_type-${item.id}, #in-popular-wl_entity_type-${item.id}`
-  //       )
-  //       // Set them un/checked accordingly.
-  //       .forEach(element => (element.checked = checked));
-  //
-  //     // Finally call the original callback.
-  //     callback();
-  //   };
-  //   return (
-  //     <React.Fragment>
-  //       <Component
-  //         checked={checked}
-  //         item={item}
-  //         onClick={handleClick(onClick)}
-  //         {...props}
-  //       />
-  //     </React.Fragment>
-  //   );
-  // };
+  // // Set a reference to the WordLift's settings stored in the window instance.
+  // const settings = window["wlSettings"] || {};
 
   // Render the Schema Class Tree.
-  ReactDOM.render(
-    <DecoratedTree selected={settings["entity_types"]} />,
-    element
-  );
+  ReactDOM.render(<DecoratedTree />, element);
 });

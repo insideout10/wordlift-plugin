@@ -5,8 +5,7 @@
  */
 import React from "react";
 import ReactDOM from "react-dom";
-import Form from "wordlift-for-schemaorg/src/Schema/Properties/Form";
-import SelectionListener from "wordlift-for-schemaorg/src/Schema/Properties/SelectionListener";
+import { Form } from "wordlift-for-schemaorg";
 
 import uuid from "./uuid";
 
@@ -32,24 +31,27 @@ window.addEventListener("load", () => {
     <Component values={Reader(props.property)} {...props} />
   );
 
-  const PropertyInstanceDecorator = Component => {
+  const PropertyInstanceDecorator = Component => props => {
     const uniqueId = uuid();
-    return props => (
+    const { property, propertyValue, ...pass } = props;
+    return (
       <React.Fragment>
         <input
           type="hidden"
-          name={`_wl_prop[${props.property.name}][${uniqueId}][type]`}
-          defaultValue={props.type}
+          name={`_wl_prop[${property.name}][${uniqueId}][type]`}
+          defaultValue={propertyValue.type}
         />
         <input
           type="hidden"
-          name={`_wl_prop[${props.property.name}][${uniqueId}][language]`}
-          defaultValue={props.language || ""}
+          name={`_wl_prop[${property.name}][${uniqueId}][language]`}
+          defaultValue={propertyValue.language}
         />
         <Component
-          name={`_wl_prop[${props.property.name}][${uniqueId}][value]`}
-          defaultValue={props.value}
-          {...props}
+          {...pass}
+          property={property}
+          propertyValue={propertyValue}
+          name={`_wl_prop[${property.name}][${uniqueId}][value]`}
+          value={propertyValue.value}
         />
       </React.Fragment>
     );
@@ -58,7 +60,7 @@ window.addEventListener("load", () => {
   const FetchLoader = selected => {
     return wp.ajax
       .post("wl_schemaorg_property", {
-        class: selected.toArray(),
+        class: selected,
         _wpnonce: settings["wl_schemaorg_property_nonce"]
       })
       .then(json => json["schemaProperties"])
@@ -77,11 +79,52 @@ window.addEventListener("load", () => {
       );
   };
 
+  const syncWithSchemaClassTree = Component =>
+    class extends React.Component {
+      constructor(props) {
+        super(props);
+
+        this.state = {
+          selected: Array.from(
+            document.querySelectorAll(
+              "#wl_entity_typechecklist input[type='checkbox']:checked"
+            )
+          ).map(item => parseInt(item.value))
+        };
+      }
+      componentDidMount() {
+        // Listen for messages, specifically whether the Schema.org class selection has changed.
+        window.addEventListener(
+          "message",
+          ({ data, origin }) => {
+            console.debug("message received", { data, origin });
+
+            // Bail out if message isn't coming from our page.
+            if (0 !== document.location.href.indexOf(origin)) return;
+
+            if (
+              undefined === data.type ||
+              "syncWithWordPressTaxonomyMetabox.selected" !== data.type
+            )
+              return;
+
+            this.setState({ selected: data.payload.selected });
+          },
+          false
+        );
+      }
+
+      render() {
+        const { selected, ...props } = this.props;
+        return <Component {...props} selected={this.state.selected} />;
+      }
+    };
+
+  const DecoratedForm = syncWithSchemaClassTree(Form);
+
   ReactDOM.render(
-    <Form
-      selected={settings["entity_types"]}
+    <DecoratedForm
       loader={FetchLoader}
-      selectionListener={SelectionListener}
       propertyDecorator={PropertyDecorator}
       propertyInstanceDecorator={PropertyInstanceDecorator}
     />,
