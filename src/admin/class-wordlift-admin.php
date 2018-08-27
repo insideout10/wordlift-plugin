@@ -150,7 +150,7 @@ class Wordlift_Admin {
 		 * in that particular class.
 		 *
 		 * The Wordlift_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
+		 * between the defined Wordlift_Schemaorg_Property_Servicehooks and the functions defined in this
 		 * class.
 		 */
 
@@ -209,7 +209,15 @@ class Wordlift_Admin {
 			// See https://github.com/insideout10/wordlift-plugin/issues/345
 			$params['itemId']                      = $entity_service->get_uri( $entity_being_edited->ID );
 			$params['wl_schemaorg_property_nonce'] = wp_create_nonce( 'wl_schemaorg_property' );
-			$params['properties']                  = Wordlift_Schemaorg_Property_Service::get_instance()->get_all( $post->ID );
+
+			/*
+			 * Add the `properties` if `WL_ALL_ENTITY_TYPES` is enabled.
+			 *
+			 * @see https://github.com/insideout10/wordlift-plugin/issues/835
+			 */
+			if ( WL_ALL_ENTITY_TYPES ) {
+				$params['properties'] = Wordlift_Schemaorg_Property_Service::get_instance()->get_all( $post->ID );
+			}
 
 		}
 
