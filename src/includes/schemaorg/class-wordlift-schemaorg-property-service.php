@@ -30,7 +30,7 @@ class Wordlift_Schemaorg_Property_Service {
 		$props = array();
 		foreach ( $post_metas as $key => $values ) {
 			$matches = array();
-			if ( 1 === preg_match( "/_wl_prop_(\w+)_([\w-]+)_(\w+)/i", $key, $matches ) ) {
+			if ( 1 === preg_match( '/' . self::PREFIX . '(\w+)_([\w-]+)_(\w+)/i', $key, $matches ) ) {
 				$name = $matches[1];
 				$uuid = $matches[2];
 				$key  = $matches[3];
@@ -49,15 +49,29 @@ class Wordlift_Schemaorg_Property_Service {
 		return $props;
 	}
 
+	/**
+	 * Get the meta keys for Schema.org properties associated with the specified post.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @param int $post_id The post id.
+	 *
+	 * @return array An array of meta keys.
+	 */
 	public function get_keys( $post_id ) {
 
-		$meta = get_post_meta( $post_id );
+		// Get all the post metas to remove the `_wl_prop` ones.
+		$post_meta = get_post_meta( $post_id );
 
-		$keys = array_filter( array_keys( $meta ), function ( $key ) {
-			return 0 === strpos( $key, self::PREFIX );
+		// Get the keys.
+		$post_meta_keys = array_unique( array_keys( $post_meta ) );
+
+		// Get only the `_wl_prop` keys.
+		$prop_keys = array_filter( $post_meta_keys, function ( $item ) {
+			return 0 === strpos( $item, self::PREFIX );
 		} );
 
-		return $keys;
+		return $prop_keys;
 	}
 
 

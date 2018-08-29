@@ -58,9 +58,9 @@ window.addEventListener("load", () => {
   };
 
   const FetchLoader = selected => {
-    return wp.ajax
+    return window["wp"].ajax
       .post("wl_schemaorg_property", {
-        class: selected,
+        term_id: selected,
         _wpnonce: settings["wl_schemaorg_property_nonce"]
       })
       .then(json => json["schemaProperties"])
