@@ -59,6 +59,15 @@ class Wordlift_Admin {
 	private $user_service;
 
 	/**
+	 * The singleton instance.
+	 *
+	 * @since 3.20.0
+	 * @access private
+	 * @var \Wordlift_Admin The singleton instance.
+	 */
+	private static $instance;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since  1.0.0
@@ -110,6 +119,21 @@ class Wordlift_Admin {
 
 		}
 
+		// Set the singleton instance.
+		self::$instance = $this;
+		
+	}
+
+	/**
+	 * Get the singleton instance.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @return \Wordlift_Admin The singleton instance.
+	 */
+	public static function get_instance() {
+
+		return self::$instance;
 	}
 
 	/**

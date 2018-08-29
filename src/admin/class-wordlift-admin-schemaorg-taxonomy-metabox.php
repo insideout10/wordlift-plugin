@@ -24,7 +24,10 @@ class Wordlift_Admin_Schemaorg_Taxonomy_Metabox {
 	 */
 	public static function render() {
 
-		Wordlift_Admin_Schemaorg_Taxonomy_Metabox::post_categories_meta_box( get_post(), array( 'args' => array( 'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ) ) );
+		Wordlift_Admin_Schemaorg_Taxonomy_Metabox::post_categories_meta_box( get_post(), array(
+			'args' =>
+				array( 'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ),
+		) );
 
 	}
 

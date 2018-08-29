@@ -136,7 +136,7 @@ class Wordlift_Admin_Schemaorg_Property_Metabox_Test extends Wordlift_Unit_Test_
 		// Set up the current user.
 		$user_id = $this->factory()->user->create( array( 'role' => 'editor' ) );
 		wp_set_current_user( $user_id );
-		$this->assertTrue( current_user_can( 'edit_posts' ) );
+		$this->assertTrue( current_user_can( 'edit_wordlift_entities' ) );
 
 		// Create a post.
 		$post_id = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
