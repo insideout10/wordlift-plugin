@@ -261,7 +261,7 @@ EOF;
 		// Send the query and get the response.
 		$response = rl_sparql_select( $sparql );
 
-		$this->assertFalse( is_wp_error( $response ), "The query $sparql shouldn't return an error." );
+		$this->assertFalse( is_wp_error( $response ), "The query $sparql shouldn't return an error: " . var_export( $response, true ) );
 
 		$lines = array();
 		foreach ( explode( "\n", $response['body'] ) as $line ) {

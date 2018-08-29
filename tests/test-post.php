@@ -325,7 +325,7 @@ EOF;
 		if ( 2 !== $count ) {
 			wl_write_log( "checkEntity [ post id :: $post->ID ][ uri :: $uri ][ body :: $body ][ count :: $count ][ count (expected) :: 2 ]" );
 		}
-		$this->assertEquals( 2, $count );
+		$this->assertEquals( 2, $count, "checkEntity [ post id :: $post->ID ][ uri :: $uri ][ body :: $body ][ count :: $count ][ count (expected) :: 2 ]" );
 
 		// Focus on the first row.
 		$match = $matches[1];
@@ -349,8 +349,8 @@ EOF;
 	/**
 	 * Check the provided entity post against the remote Redlink datastore.
 	 *
-	 * @param string $uri       The entity URI.
-	 * @param string $title     The entity title.
+	 * @param string $uri The entity URI.
+	 * @param string $title The entity title.
 	 * @param string $permalink The entity permalink.
 	 */
 	function checkEntityWithData( $uri, $title, $permalink ) {

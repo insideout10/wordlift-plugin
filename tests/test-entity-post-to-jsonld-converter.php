@@ -555,7 +555,6 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 		$this->assertEquals( 'http://schema.org/LocalBusiness', $local_business_type['uri'], 'Entity type must be http://schema.org/Person.' );
 
 		$local_business_uri = $this->entity_service->get_uri( $local_business_id );
-//		var_dump( $local_business_type['custom_fields'] );
 
 		// Set the geo coordinates.
 		add_post_meta( $local_business_id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE, 12.34 );
@@ -594,14 +593,12 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 		$person_uri  = $this->entity_service->get_uri( $person_id );
 		$person_type = $this->entity_type_service->get( $person_id );
 		$this->assertEquals( 'http://schema.org/Person', $person_type['uri'], 'Entity type must be http://schema.org/Person.' );
-		// var_dump( wp_get_post_terms( $person_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ) );
 
 		// Bind the person as author of the creative work.
 		add_post_meta( $local_business_id, Wordlift_Schema_Service::FIELD_FOUNDER, $person_id );
 
 		$post       = get_post( $local_business_id );
 		$references = array();
-		echo('converting...');
 		$jsonld     = $this->entity_post_to_jsonld_converter->convert( $post->ID, $references );
 
 		$this->assertTrue( is_array( $jsonld ) );

@@ -91,7 +91,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 
 		// Get the configured type custom fields.
 		if ( isset( $type['custom_fields'] ) ) {
-			$this->process_type_custom_fields( $jsonld, $type['custom_fields'], $post );
+			$this->process_type_custom_fields( $jsonld, $type['custom_fields'], $post, $references );
 		}
 
 		/*
@@ -118,8 +118,9 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 	 * @param array   $jsonld The JSON-LD array.
 	 * @param array   $fields The entity types field array.
 	 * @param WP_Post $post The target {@link WP_Post} instance.
+	 * @param array   $references The references array.
 	 */
-	private function process_type_custom_fields( &$jsonld, $fields, $post ) {
+	private function process_type_custom_fields( &$jsonld, $fields, $post, &$references ) {
 
 		// Set a reference to use in closures.
 		$converter = $this;
