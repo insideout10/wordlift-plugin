@@ -37,7 +37,7 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 		$capabilities = array(
 			// We enable editors to change the title/description of terms:
 			//
-			// See https://github.com/insideout10/wordlift-plugin/issues/398
+			// @see https://github.com/insideout10/wordlift-plugin/issues/398.
 			'manage_terms' => 'manage_options',
 			'edit_terms'   => 'wl_entity_type_edit_term',
 			'delete_terms' => 'wl_entity_type_delete_term',
@@ -63,13 +63,14 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 		}
 
 		register_taxonomy(
-			Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, // Taxonomy name.
+			self::TAXONOMY_NAME, // Taxonomy name.
 			Wordlift_Entity_Service::valid_entity_post_types(), // Taxonomy post types.
 			$args // Taxonomy args.
 		);
 
-		// Add filter to change the metabox CSS class
+		// Add filter to change the metabox CSS class.
 		add_filter( 'postbox_classes_entity_wl_entity_typediv', 'wl_admin_metaboxes_add_css_class' );
+
 	}
 
 }

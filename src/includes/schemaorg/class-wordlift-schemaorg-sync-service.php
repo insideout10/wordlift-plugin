@@ -18,7 +18,11 @@ class Wordlift_Schemaorg_Sync_Service {
 
 	private static $instance;
 
+	private $log;
+
 	public function __construct() {
+
+		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
 		add_action( 'wp_ajax_wl_sync_schemaorg', array( $this, 'load' ) );
 
@@ -31,7 +35,14 @@ class Wordlift_Schemaorg_Sync_Service {
 		return self::$instance;
 	}
 
-	public function load() {
+	public function load_from_file() {
+
+		$contents = file_get_contents( dirname( __FILE__ ) . '/schema-classes.json' );
+
+		return $this->load( $contents );
+	}
+
+	public function load_from_url() {
 
 		$reply = wp_remote_post( 'http://turin.wordlift.it:41660/graphql', array(
 			'method'  => 'POST',
@@ -75,7 +86,12 @@ class Wordlift_Schemaorg_Sync_Service {
 			return false;
 		}
 
-		$json = json_decode( $reply['body'], true );
+		return $this->load( $reply['body'] );
+	}
+
+	private function load( $contents ) {
+
+		$json = json_decode( $contents, true );
 
 		if ( null === $json ) {
 			// Error: invalid body.
