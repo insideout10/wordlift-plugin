@@ -320,7 +320,6 @@ class Wordlift_Relation_Service {
 			,
 			$subject_id
 		);
-var_dump($sql);
 
 		return '*' === $actual_fields ? $wpdb->get_results( $sql ) : $wpdb->get_col( $sql );
 	}
