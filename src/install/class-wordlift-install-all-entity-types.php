@@ -20,10 +20,9 @@ class Wordlift_Install_All_Entity_Types extends Wordlift_Install {
 	const OPTION_NAME = 'wl_db_schemaorg_version';
 
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
-	// @@todo: increase the version number to match WordLift's version.
-	protected static $version = '3.20.0';
+	protected static $version = '0.0.0';
 
 	public function install() {
 
@@ -44,6 +43,11 @@ class Wordlift_Install_All_Entity_Types extends Wordlift_Install {
 			update_option( self::OPTION_NAME, '1.0.0' );
 		}
 
+	}
+
+	public function must_install() {
+
+		return WL_ALL_ENTITY_TYPES && version_compare( '1.0.0', get_option( self::OPTION_NAME, '0.0.0' ), '>' );
 	}
 
 }

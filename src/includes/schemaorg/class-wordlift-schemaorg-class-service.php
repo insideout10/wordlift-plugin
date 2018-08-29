@@ -28,6 +28,13 @@ class Wordlift_Schemaorg_Class_Service {
 	const NAME_META_KEY = '_wl_name';
 
 	/**
+	 * The term meta key holding the term URI.
+	 *
+	 * @since 3.20.0
+	 */
+	const URI_META_KEY = '_wl_uri';
+
+	/**
 	 * The term meta key holding the list of children terms ids.
 	 *
 	 * @since 3.20.0

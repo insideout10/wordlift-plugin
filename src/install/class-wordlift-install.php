@@ -50,4 +50,9 @@ abstract class Wordlift_Install {
 
 	abstract public function install();
 
+	public function must_install() {
+
+		return false;
+	}
+
 }

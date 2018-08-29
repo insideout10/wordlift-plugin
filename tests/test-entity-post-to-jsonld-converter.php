@@ -585,12 +585,17 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 		$country = rand_str();
 		add_post_meta( $local_business_id, Wordlift_Schema_Service::FIELD_ADDRESS_COUNTRY, $country );
 
-		$person_id = $this->factory->post->create( array( 'post_type' => 'entity' ) );
+		$person_id = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
 		$this->entity_type_service->set( $person_id, 'http://schema.org/Person' );
-		$person_uri = $this->entity_service->get_uri( $person_id );
+		$person_uri  = $this->entity_service->get_uri( $person_id );
+		$person_type = $this->entity_type_service->get( $person_id );
+		$this->assertEquals( 'http://schema.org/Person', $person_type['uri'], 'Entity type must be http://schema.org/Person.' );
+		// var_dump( wp_get_post_terms( $person_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ) );
 
 		// Bind the person as author of the creative work.
 		add_post_meta( $local_business_id, Wordlift_Schema_Service::FIELD_FOUNDER, $person_id );
+		var_dump( 'related entities:' );
+		var_dump( Wordlift_Relation_Service::get_instance()->get_objects( $local_business_id, 'ids', null, 'publish' ) );
 
 		$post       = get_post( $local_business_id );
 		$references = array();

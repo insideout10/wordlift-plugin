@@ -17,6 +17,38 @@
 class Wordlift_Attachment_Service {
 
 	/**
+	 * The singleton instance.
+	 *
+	 * @since 3.20.0
+	 * @access private
+	 * @var \Wordlift_Attachment_Service The singleton instance.
+	 */
+	private static $instance;
+
+	/**
+	 * Create a {@link Wordlift_Attachment_Service} instance.
+	 *
+	 * @since 3.20.0
+	 */
+	public function __construct() {
+
+		self::$instance = $this;
+
+	}
+
+	/**
+	 * Get the singleton instance.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @return \Wordlift_Attachment_Service The singleton instance.
+	 */
+	public static function get_instance() {
+
+		return self::$instance;
+	}
+
+	/**
 	 * Get an attachment ID given a URL.
 	 *
 	 * Inspired from https://wpscholar.com/blog/get-attachment-id-from-wp-image-url/

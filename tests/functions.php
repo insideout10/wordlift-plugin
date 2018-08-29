@@ -27,10 +27,10 @@ require_once( 'jsonld.php' );
  * Create a new post.
  *
  * @param string $content The post content.
- * @param string $slug    The post slug.
- * @param string $title   The post title.
- * @param string $status  The post status (e.g. draft, publish, pending, private, ...)
- * @param string $type    The post status (e.g. post, page, link, ...)
+ * @param string $slug The post slug.
+ * @param string $title The post title.
+ * @param string $status The post status (e.g. draft, publish, pending, private, ...)
+ * @param string $type The post status (e.g. post, page, link, ...)
  *
  * @return int|WP_Error The post ID or a WP_Error instance.
  */
@@ -61,7 +61,7 @@ function wl_create_post( $content, $slug, $title, $status = 'draft', $type = 'po
 /**
  * Delete the post and related attachments with the specified id (it's basically a proxy to wp_delete_post).
  *
- * @param int  $post_id      The post id.
+ * @param int  $post_id The post id.
  * @param bool $force_delete Whether to force delete.
  *
  * @return false|WP_Post False on failure and the post object for the deleted post success.
@@ -247,11 +247,11 @@ function wl_embed_entities( $results, $content ) {
 
 		// Create the new span with the entity reference.
 		$replace = '<span class="textannotation ' . $entity_class . '" ' .
-				   'id="' . $id . '" ' .
-				   'itemid="' . $entity_id . '" ' .
-				   'itemscope="itemscope" ' .
-				   'itemtype="' . $entity_type_uri . '">' .
-				   '<span itemprop="name">' . htmlentities( $text ) . '</span></span>';
+		           'id="' . $id . '" ' .
+		           'itemid="' . $entity_id . '" ' .
+		           'itemscope="itemscope" ' .
+		           'itemtype="' . $entity_type_uri . '">' .
+		           '<span itemprop="name">' . htmlentities( $text ) . '</span></span>';
 		$content = str_replace( $full, $replace, $content );
 
 
@@ -437,8 +437,8 @@ function wl_parse_response( $json ) {
 
 			// Skip Text Annotations that do not have the selection-prefix, -suffix and selected-text.
 			if ( isset( $item->{WL_ENHANCER_NAMESPACE . ':selection-prefix'}->{'@value'} )
-				 && isset( $item->{WL_ENHANCER_NAMESPACE . ':selection-suffix'}->{'@value'} )
-				 && isset( $item->{WL_ENHANCER_NAMESPACE . ':selected-text'}->{'@value'} )
+			     && isset( $item->{WL_ENHANCER_NAMESPACE . ':selection-suffix'}->{'@value'} )
+			     && isset( $item->{WL_ENHANCER_NAMESPACE . ':selected-text'}->{'@value'} )
 			) {
 
 				$text_annotations[ $item->{'@id'} ] = array(
@@ -677,7 +677,7 @@ function rl_count_triples() {
 
 	// Set the SPARQL query.
 	$sparql = 'SELECT (COUNT(DISTINCT ?s) AS ?subjects) (COUNT(DISTINCT ?p) AS ?predicates) (COUNT(DISTINCT ?o) AS ?objects) ' .
-			  'WHERE { ?s ?p ?o }';
+	          'WHERE { ?s ?p ?o }';
 
 	// Send the request.
 	$response = rl_sparql_select( $sparql );
@@ -938,8 +938,8 @@ function wl_get_post_modified_time( $post ) {
  * @uses   $wpdb->delete() to perform the query
  *
  * @param int    $subject_id The post ID | The entity post ID.
- * @param string $predicate  Name of the relation: 'what' | 'where' | 'when' | 'who'
- * @param int    $object_id  The entity post ID.
+ * @param string $predicate Name of the relation: 'what' | 'where' | 'when' | 'who'
+ * @param int    $object_id The entity post ID.
  *
  * @return boolean False for failure. True for success.
  */
@@ -980,7 +980,7 @@ function wl_core_delete_relation_instance( $subject_id, $predicate, $object_id )
  * @uses   wl_add_relation_instance() to create each single instance
  *
  * @param int    $subject_id The post ID | The entity post ID.
- * @param string $predicate  Name of the relation: 'what' | 'where' | 'when' | 'who'
+ * @param string $predicate Name of the relation: 'what' | 'where' | 'when' | 'who'
  * @param array  $object_ids The entity post IDs collection.
  *
  * @return integer|boolean Return the relation instances IDs or false
@@ -1015,8 +1015,8 @@ function wl_core_add_relation_instances( $subject_id, $predicate, $object_ids ) 
 /**
  * Add a value of the specified property for the entity, where
  *
- * @param int    $post_id        The numeric post ID.
- * @param string $property_name  Name of the property (e.g. name, for the http://schema.org/name property).
+ * @param int    $post_id The numeric post ID.
+ * @param string $property_name Name of the property (e.g. name, for the http://schema.org/name property).
  * @param mixed  $property_value Value to save into the property (adding to already saved).
  *
  * @return array An array of values or NULL in case of no values (or error).

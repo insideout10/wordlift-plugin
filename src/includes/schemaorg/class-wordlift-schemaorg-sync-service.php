@@ -128,6 +128,10 @@ class Wordlift_Schemaorg_Sync_Service {
 			delete_term_meta( $term['term_id'], Wordlift_Schemaorg_Class_Service::NAME_META_KEY );
 			update_term_meta( $term['term_id'], Wordlift_Schemaorg_Class_Service::NAME_META_KEY, $schema_class['name'] );
 
+			// Update the term URI.
+			delete_term_meta( $term['term_id'], Wordlift_Schemaorg_Class_Service::URI_META_KEY );
+			update_term_meta( $term['term_id'], Wordlift_Schemaorg_Class_Service::URI_META_KEY, "http://schema.org/{$schema_class['name']}" );
+
 		}
 
 		return true;

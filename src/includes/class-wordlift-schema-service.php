@@ -477,17 +477,17 @@ class Wordlift_Schema_Service {
 		$this->language_code         = $this->configuration_service->get_language_code();
 
 		$schemas = array(
-			'article'       => $this->get_article_schema(),
-			'thing'         => $this->get_thing_schema(),
-			'creative-work' => $this->get_creative_work_schema(),
-			'event'         => $this->get_event_schema(),
-			'organization'  => $this->get_organization_schema(),
-			'person'        => $this->get_person_schema(),
-			'place'         => $this->get_place_schema(),
-			'localbusiness' => $this->get_local_business_schema(),
-			'recipe'        => $this->get_recipe_schema(),
-			'web-page'      => $this->get_web_page_schema(),
-			'offer'         => $this->get_offer_schema(),
+			'article'        => $this->get_article_schema(),
+			'thing'          => $this->get_thing_schema(),
+			'creative-work'  => $this->get_creative_work_schema(),
+			'event'          => $this->get_event_schema(),
+			'organization'   => $this->get_organization_schema(),
+			'person'         => $this->get_person_schema(),
+			'place'          => $this->get_place_schema(),
+			'local-business' => $this->get_local_business_schema(),
+			'recipe'         => $this->get_recipe_schema(),
+			'web-page'       => $this->get_web_page_schema(),
+			'offer'          => $this->get_offer_schema(),
 		);
 
 		// Set the taxonomy data.

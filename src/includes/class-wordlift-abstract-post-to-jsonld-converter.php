@@ -102,7 +102,6 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		// Get the post URI @id.
 		$id = $this->entity_service->get_uri( $post->ID );
 
-
 		/*
 		 * The `types` variable holds one or more entity types. The `type` variable isn't used anymore.
 		 *

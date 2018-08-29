@@ -1,12 +1,19 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: david
- * Date: 29.08.18
- * Time: 15:03
+ * Test: Admin.
+ *
+ * Test the {@link Wordlift_Admin} class.
+ *
+ * @since 3.20.0
+ * @package Wordlift
+ * @subpackage Wordlift/tests
  */
 
-
+/**
+ * Define the Wordlift_Admin_Test class.
+ *
+ * @since 3.20.0
+ */
 class Wordlift_Admin_Test extends Wordlift_Unit_Test_Case {
 
 	/**
@@ -21,19 +28,36 @@ class Wordlift_Admin_Test extends Wordlift_Unit_Test_Case {
 		parent::tearDown();
 	}
 
-
+	/**
+	 * Test the `enqueue_scripts` function as an editor in the edit.php screen.
+	 *
+	 * @since 3.20.0
+	 */
 	public function test_enqueue_scripts_editor() {
 
 		$this->do_test( 'editor', 'cloud' );
 
 	}
 
+	/**
+	 * Test the `enqueue_scripts` function as a subscriber in the edit.php screen.
+	 *
+	 * @since 3.20.0
+	 */
 	public function test_enqueue_scripts_subscriber() {
 
 		$this->do_test( 'subscriber', 'local' );
 
 	}
 
+	/**
+	 * Function used to perform the tests.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @param string $role The user's role.
+	 * @param string $autocomplete_scope The expected autocomplete scope (`local` or `cloud`).
+	 */
 	private function do_test( $role, $autocomplete_scope ) {
 
 		global $wp_scripts;
