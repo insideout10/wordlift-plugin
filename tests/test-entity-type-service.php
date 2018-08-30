@@ -307,7 +307,7 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 		$terms_1 = wp_get_object_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'fields' => 'slugs' ) );
 
 		$this->assertCount( 1, $terms_1, 'There must be 1 term.' );
-		$this->assertContains( 'hospital', $terms_1, 'Terms must contain `hospital`.' );
+		$this->assertContains( 'hospital', $terms_1, 'Terms must contain `hospital`, got ' . var_export( $terms_1, true ) );
 
 		// Set via css class.
 		$this->entity_type_service->set( $post_id, 'wl-person' );
