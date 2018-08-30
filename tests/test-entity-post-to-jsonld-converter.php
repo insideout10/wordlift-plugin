@@ -808,8 +808,6 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 		$this->assertArrayHasKey( 'propB', $json, 'Expect the `propB` key.' );
 		$this->assertEquals( 'Value B 1', $json['propB'], 'Expect `propB` to contain `Value B 1`.' );
 
-		var_dump( $json );
-
 	}
 
 }

@@ -157,16 +157,29 @@ class Wordlift_Entity_Type_Service {
 
 	}
 
+	/**
+	 * Get the term ids of the entity types associated to the specified post.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @param int $post_id The post id.
+	 *
+	 * @return array|WP_Error An array of entity types ids or a {@link WP_Error}.
+	 */
 	public function get_ids( $post_id ) {
 
 		return wp_get_object_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'fields' => 'ids', ) );
 	}
 
-	public function get_dashnames( $post_id ) {
-
-		return wp_get_object_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'fields' => 'slugs', ) );
-	}
-
+	/**
+	 * Get the camel case names of the entity types associated to the specified post.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @param int $post_id The post id.
+	 *
+	 * @return array|WP_Error An array of entity types camel case names or a {@link WP_Error}.
+	 */
 	public function get_names( $post_id ) {
 
 		$ids = $this->get_ids( $post_id );
@@ -175,18 +188,7 @@ class Wordlift_Entity_Type_Service {
 			return get_term_meta( $id, '_wl_name', true );
 		}, $ids );
 
-		/**
-		 * Filter: wl_entity_types_ids_for_post.
-		 *
-		 * Allow plugins to filter the selected entity types for a post.
-		 *
-		 * @since 3.20.0
-		 *
-		 * @param array $camel_case_names The array of entity types names in CamelCase format.
-		 * @param array $ids The array of entity types ids.
-		 * @param int   $post_id The post id.
-		 */
-		return apply_filters( 'wl_entity_types_ids_for_post', $camel_case_names, $ids, $post_id );
+		return $camel_case_names;
 	}
 
 	/**

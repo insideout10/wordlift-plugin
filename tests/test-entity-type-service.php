@@ -1,11 +1,18 @@
 <?php
+/**
+ * Tests: Entity Type Service Test.
+ *
+ * Test the {@link Wordlift_Entity_Type_Service} class.
+ *
+ * @since 3.18.0
+ * @package Wordlift
+ * @subpackage Wordlift/tests
+ */
 
 /**
- * Tests: Entity Type Service
+ * Define the Wordlift_Entity_Type_Service_Test class.
  *
  * @since      3.18.0
- * @package    Wordlift
- * @subpackage Wordlift/tests
  */
 class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 
@@ -204,6 +211,115 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 		$types[] = 'property';
 
 		return $types;
+	}
+
+	/**
+	 * When adding support for `All Entity Types`, we need to maintain compatibility for the existing
+	 * function `get` which must return only one term.
+	 *
+	 * In this context we return the first entity type defined via the {@link Wordlift_Schema_Service}.
+	 *
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/844
+	 *
+	 * @since 3.20.0
+	 */
+	function test_get_835() {
+
+		// Entity with one Wordlift_Schema_Service defined type and others.
+		$post_1_id = $this->factory()->post->create( array(
+			'post_type' => 'entity',
+		) );
+		wp_set_object_terms( $post_1_id, array(
+			'organization',
+			'hospital',
+		), Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+
+		$type_1 = $this->entity_type_service->get( $post_1_id );
+
+		$this->assertArrayHasKey( 'uri', $type_1, 'The type must have the `uri` key.' );
+		$this->assertEquals( 'http://schema.org/Organization', $type_1['uri'], "The type's uri must be `Organization`." );
+
+		// Entity with only other types, we expect `thing`.
+		$post_2_id = $this->factory()->post->create( array(
+			'post_type' => 'entity',
+		) );
+
+		wp_set_object_terms( $post_2_id, array(
+			'hospital',
+			'medical-condition',
+		), Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+
+		$type_2 = $this->entity_type_service->get( $post_2_id );
+
+		$this->assertArrayHasKey( 'uri', $type_2, 'The type must have the `uri` key.' );
+		$this->assertEquals( 'http://schema.org/Thing', $type_2['uri'], "The type's label must be `Thing`." );
+
+	}
+
+	/**
+	 * Test the `get_ids` and `get_names` function.
+	 *
+	 * @since 3.20.0
+	 */
+	public function test_get_ids_names() {
+
+		$post_id = $this->factory()->post->create( array(
+			'post_type' => 'entity',
+		) );
+		wp_set_object_terms( $post_id, array(
+			'organization',
+			'hospital',
+		), Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+
+		$ids = $this->entity_type_service->get_ids( $post_id );
+
+		$this->assertCount( 2, $ids, 'There must be 2 ids.' );
+
+		$organization_term = get_term_by( 'slug', 'organization', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+		$this->assertNotFalse( $organization_term, '`organization` term must exit.' );
+		$this->assertContains( $organization_term->term_id, $ids, 'The `organization` term id must be present.' );
+
+		$hospital_term = get_term_by( 'slug', 'hospital', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+		$this->assertNotFalse( $hospital_term, '`hospital` term must exit.' );
+		$this->assertContains( $hospital_term->term_id, $ids, 'The `hospital` term id must be present.' );
+
+		$names = $this->entity_type_service->get_names( $post_id );
+		$this->assertCount( 2, $names, 'There must be 2 names.' );
+		$this->assertContains( 'Organization', $names, 'The `organization` term id must be present.' );
+		$this->assertContains( 'Hospital', $names, 'The `hospital` term id must be present.' );
+
+	}
+
+	public function test_set_835() {
+
+		$post_id = $this->factory()->post->create( array(
+			'post_type' => 'entity',
+		) );
+
+		// Set via URI.
+		$this->entity_type_service->set( $post_id, 'http://schema.org/Hospital' );
+
+		$terms_1 = wp_get_object_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'fields' => 'slugs' ) );
+
+		$this->assertCount( 1, $terms_1, 'There must be 1 term.' );
+		$this->assertContains( 'hospital', $terms_1, 'Terms must contain `hospital`.' );
+
+		// Set via css class.
+		$this->entity_type_service->set( $post_id, 'wl-person' );
+
+		$terms_2 = wp_get_object_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'fields' => 'slugs' ) );
+
+		$this->assertCount( 1, $terms_2, 'There must be 1 term.' );
+		$this->assertContains( 'person', $terms_2, 'Terms must contain `person`.' );
+
+		// Add via URI.
+		$this->entity_type_service->set( $post_id, 'http://schema.org/Hospital', false );
+
+		$terms_3 = wp_get_object_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'fields' => 'slugs' ) );
+
+		$this->assertContains( 'hospital', $terms_3, 'Terms must contain `hospital`.' );
+		$this->assertContains( 'person', $terms_3, 'Terms must contain `person`.' );
+
 	}
 
 }

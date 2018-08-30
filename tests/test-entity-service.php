@@ -1,12 +1,21 @@
 <?php
-require_once( 'functions.php' );
+/**
+ * Tests: Entity Service Test.
+ *
+ * Test the {@link Wordlift_Entity_Service} class.
+ *
+ * @since 3.2.0
+ *
+ * @package Wordlift
+ * @subpackage Wordlift/tests
+ */
 
 /**
- * Test the {@link Wordlift_Entity_Service}.
+ * Define the Wordlift_Entity_Service_Test class.
  *
  * @since 3.2.0
  */
-class EntityServiceTest extends Wordlift_Unit_Test_Case {
+class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * The {@link Wordlift_Entity_Service} being tested.
@@ -410,11 +419,54 @@ class EntityServiceTest extends Wordlift_Unit_Test_Case {
 	}
 
 	/**
-	 * @since 3.10.0
+	 * A post is considered an `entity` if it's not of type `article`. We might actually remove this
+	 * concept in the near future.
+	 *
+	 * Presently because of #835 (All Entity Types) it is enough that the `entity` has one type different
+	 * from `article` to be considered an entity.
+	 *
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/835
+	 *
+	 * @since 3.20.0
 	 */
-	function test_get_related_entities() {
+	function test_is_entity_835() {
 
-		// @todo
+		// No entity type, expect default of `Thing`.
+		$post_1      = $this->factory()->post->create( array(
+			'post_type' => 'entity',
+		) );
+		$is_entity_1 = $this->entity_service->is_entity( $post_1 );
+
+		$this->assertTrue( $is_entity_1, 'Expect an entity post w/o entity type terms to be considered an `entity`.' );
+
+		$post_2 = $this->factory()->post->create( array(
+			'post_type' => 'entity',
+		) );
+		wp_set_object_terms( $post_2, 'organization', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+		$is_entity_2 = $this->entity_service->is_entity( $post_2 );
+
+		$this->assertTrue( $is_entity_2, 'Expect an entity post w/ entity type terms different from `article` to be considered an `entity`.' );
+
+		$post_3 = $this->factory()->post->create( array(
+			'post_type' => 'entity',
+		) );
+		wp_set_object_terms( $post_3, array(
+			'article',
+			'organization',
+		), Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+		$is_entity_3 = $this->entity_service->is_entity( $post_3 );
+
+		$this->assertTrue( $is_entity_3, 'Expect an entity post w/ at least one entity type term different from `article` to be considered an `entity`.' );
+
+		$post_4 = $this->factory()->post->create( array(
+			'post_type' => 'entity',
+		) );
+		wp_set_object_terms( $post_4, array(
+			'article',
+		), Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+		$is_entity_4 = $this->entity_service->is_entity( $post_4 );
+
+		$this->assertFalse( $is_entity_4, 'Expect an entity post w/ one entity type term equal to `article` not to be considered an `entity`.' );
 
 	}
 
