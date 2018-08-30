@@ -1,14 +1,24 @@
 <?php
+/**
+ * Services: Entity Types Taxonomy Service.
+ *
+ * @since 3.1.0
+ * @package Wordlift
+ * @subpackage Wordlift/includes
+ */
 
 /**
- * The Entity Types Taxonomy service.
+ * Define the Wordlift_Entity_Type_Taxonomy_Service class.
  *
  * @since 3.1.0
  */
 class Wordlift_Entity_Type_Taxonomy_Service {
 
-	// @@todo: rename using singular.
-
+	/**
+	 * The WordPress taxonomy name.
+	 *
+	 * @since 1.0.0
+	 */
 	const TAXONOMY_NAME = 'wl_entity_type';
 
 	/**

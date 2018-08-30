@@ -42,6 +42,15 @@ class Wordlift_Schemaorg_Class_Service {
 	const PARENT_OF_META_KEY = '_wl_parent_of';
 
 	/**
+	 * The singleton instance.
+	 *
+	 * @since 3.20.0
+	 * @access private
+	 * @var \Wordlift_Schemaorg_Class_Service $instance The singleton instance.
+	 */
+	private static $instance;
+
+	/**
 	 * Create a {@link Wordlift_Schema_Class} instance.
 	 *
 	 * @since 3.20.0
@@ -50,6 +59,19 @@ class Wordlift_Schemaorg_Class_Service {
 
 		add_action( 'wp_ajax_wl_schemaorg_class', array( $this, 'schemaorg_class' ) );
 
+		self::$instance = $this;
+
+	}
+
+	/**
+	 * Get the singleton instance.
+	 *
+	 * @since 3.20.0
+	 * @return \Wordlift_Schemaorg_Class_Service The singleton instance.
+	 */
+	public static function get_instance() {
+
+		return self::$instance;
 	}
 
 	/**
