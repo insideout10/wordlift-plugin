@@ -281,15 +281,20 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 
 		$hospital_term = get_term_by( 'slug', 'hospital', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		$this->assertNotFalse( $hospital_term, '`hospital` term must exit.' );
-		$this->assertContains( $hospital_term->term_id, $ids, 'The `hospital` term id must be present.' );
+		$this->assertContains( $hospital_term->term_id, $ids, 'The `hospital` term id must be present, got ' . var_export( $ids, true ) );
 
 		$names = $this->entity_type_service->get_names( $post_id );
 		$this->assertCount( 2, $names, 'There must be 2 names.' );
-		$this->assertContains( 'Organization', $names, 'The `organization` term id must be present.' );
-		$this->assertContains( 'Hospital', $names, 'The `hospital` term id must be present.' );
+		$this->assertContains( 'Organization', $names, '`Organization` must be present, got ' . var_export( $names, true ) );
+		$this->assertContains( 'Hospital', $names, '`Hospital` must be present, got ' . var_export( $names, true ) );
 
 	}
 
+	/**
+	 * Test the `set` function compatibility after #835.
+	 *
+	 * @since 3.20.0
+	 */
 	public function test_set_835() {
 
 		$post_id = $this->factory()->post->create( array(
@@ -317,8 +322,8 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 
 		$terms_3 = wp_get_object_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'fields' => 'slugs' ) );
 
-		$this->assertContains( 'hospital', $terms_3, 'Terms must contain `hospital`.' );
-		$this->assertContains( 'person', $terms_3, 'Terms must contain `person`.' );
+		$this->assertContains( 'hospital', $terms_3, 'Terms must contain `hospital`, got ' . var_export( $terms_3, true ) );
+		$this->assertContains( 'person', $terms_3, 'Terms must contain `person`, got ' . var_export( $terms_3, true ) );
 
 	}
 
