@@ -67,8 +67,11 @@ class Wordlift_Schemaorg_Property_Service {
 		$post_meta_keys = array_unique( array_keys( $post_meta ) );
 
 		// Get only the `_wl_prop` keys.
-		$prop_keys = array_filter( $post_meta_keys, function ( $item ) {
-			return 0 === strpos( $item, self::PREFIX );
+		//
+		// Keep PHP 5.3 compatibility, `self` in closures doesn't exist.
+		$prefix    = self::PREFIX;
+		$prop_keys = array_filter( $post_meta_keys, function ( $item ) use ( $prefix ) {
+			return 0 === strpos( $item, $prefix );
 		} );
 
 		return $prop_keys;

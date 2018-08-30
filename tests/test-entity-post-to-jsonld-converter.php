@@ -789,7 +789,26 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 
 		$json = $this->entity_post_to_jsonld_converter->convert( $post_id );
 
-		var_dump($json);
+		$this->assertArrayHasKey( '@context', $json, 'Expect the `@context` key.' );
+		$this->assertArrayHasKey( '@id', $json, 'Expect the `@id` key.' );
+
+		$this->assertArrayHasKey( '@type', $json, 'Expect the `@type` key.' );
+		$this->assertEquals( 'Thing', $json['@type'], 'Expect the `@type` to be `Thing` since no type has been assigned.' );
+
+		$this->assertArrayHasKey( 'description', $json, 'Expect the `description` key.' );
+		$this->assertArrayHasKey( 'mainEntityOfPage', $json, 'Expect the `mainEntityOfPage` key.' );
+		$this->assertArrayHasKey( 'name', $json, 'Expect the `name` key.' );
+		$this->assertArrayHasKey( 'url', $json, 'Expect the `url` key.' );
+
+		$this->assertArrayHasKey( 'propA', $json, 'Expect the `propA` key.' );
+		$this->assertCount( 2, $json['propA'], 'Expect `propA` to have 2 items.' );
+		$this->assertContains( 'Value A 1', $json['propA'], 'Expect `propA` to contain `Value A 1`.' );
+		$this->assertContains( 'Value A 2', $json['propA'], 'Expect `propA` to contain `Value A 2`.' );
+
+		$this->assertArrayHasKey( 'propB', $json, 'Expect the `propB` key.' );
+		$this->assertEquals( 'Value B 1', $json['propB'], 'Expect `propB` to contain `Value B 1`.' );
+
+		var_dump( $json );
 
 	}
 
