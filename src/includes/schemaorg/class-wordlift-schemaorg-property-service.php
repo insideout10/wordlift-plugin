@@ -1,40 +1,89 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: david
- * Date: 16.08.18
- * Time: 16:13
+ * Services: Schema.org Property Service.
+ *
+ * Provides read functions to Schema.org properties stored with posts.
+ *
+ * @since 3.20.0
+ * @package Wordlift
+ * @subpackage Wordlift/includes/schemaorg
  */
 
+/**
+ * Define the Wordlift_Schemaorg_Property_Service class.
+ *
+ * @since 3.20.0
+ */
 class Wordlift_Schemaorg_Property_Service {
 
+	/**
+	 * The meta key prefix used to store properties. The `_` prefix makes these metas invisible in the
+	 * edit screen custom fields metabox.
+	 *
+	 * @since 3.20.0
+	 */
 	const PREFIX = "_wl_prop_";
 
+	/**
+	 * The singleton instance.
+	 *
+	 * @since 3.20.0
+	 * @access private
+	 * @var \Wordlift_Schemaorg_Property_Service $instance The singleton instance.
+	 */
 	private static $instance;
 
+	/**
+	 * Create a {@link Wordlift_Schemaorg_Property_Service} instance.
+	 *
+	 * @since 3.20.0
+	 */
 	public function __construct() {
 
 		self::$instance = $this;
 
 	}
 
+	/**
+	 * Get the singleton instance.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @return \Wordlift_Schemaorg_Property_Service The singleton instance.
+	 */
 	public static function get_instance() {
 
 		return self::$instance;
 	}
 
+	/**
+	 * Get all the properties bound to the specified post.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @param int $post_id The post id.
+	 *
+	 * @return array An array of properties instances keyed by the property name. Each property contains a
+	 *  `type` and a `value` and optionally a `language`.
+	 * }
+	 */
 	public function get_all( $post_id ) {
 
+		// Get all the post metas.
 		$post_metas = get_post_meta( $post_id );
 
+		// Cycle through them to get the Schema.org properties.
 		$props = array();
 		foreach ( $post_metas as $key => $values ) {
 			$matches = array();
+
+			// We're looking for `_wl_prop_propName_uuid_key`.
 			if ( 1 === preg_match( '/' . self::PREFIX . '(\w+)_([\w-]+)_(\w+)/i', $key, $matches ) ) {
 				$name = $matches[1];
 				$uuid = $matches[2];
 				$key  = $matches[3];
 
+				// Record the value.
 				$props[ $name ][ $uuid ][ $key ] = $values[0];
 			}
 		}
@@ -42,10 +91,12 @@ class Wordlift_Schemaorg_Property_Service {
 		// Remove the UUIDs.
 		foreach ( $props as $name => $instance ) {
 			foreach ( $instance as $uuid => $keys ) {
+				// This way we remove the `uuid`s.
 				$props[ $name ] = array_values( $instance );
 			}
 		}
 
+		// Finally return the props.
 		return $props;
 	}
 
@@ -69,13 +120,14 @@ class Wordlift_Schemaorg_Property_Service {
 		// Get only the `_wl_prop` keys.
 		//
 		// Keep PHP 5.3 compatibility, `self` in closures doesn't exist.
-		$prefix    = self::PREFIX;
-		$prop_keys = array_filter( $post_meta_keys, function ( $item ) use ( $prefix ) {
+		$prefix = self::PREFIX;
+
+		// `array_values` resets the indexes.
+		$prop_keys = array_values( array_filter( $post_meta_keys, function ( $item ) use ( $prefix ) {
 			return 0 === strpos( $item, $prefix );
-		} );
+		} ) );
 
 		return $prop_keys;
 	}
-
 
 }
