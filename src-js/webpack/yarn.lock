@@ -138,6 +138,12 @@
     "@webassemblyjs/wast-parser" "1.5.13"
     long "^3.2.0"
 
+"@wordlift/wordlift-for-schemaorg@^1.0":
+  version "1.0.41"
+  resolved "https://registry.yarnpkg.com/@wordlift/wordlift-for-schemaorg/-/wordlift-for-schemaorg-1.0.41.tgz#3296274628860bc1d4299a5077a2c9655766dc58"
+  dependencies:
+    reselect "^3.0.1"
+
 abbrev@1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
@@ -4125,11 +4131,6 @@ wide-align@^1.1.0:
   resolved "https://registry.yarnpkg.com/wide-align/-/wide-align-1.1.3.tgz#ae074e6bdc0c14a431e804e624549c633b000457"
   dependencies:
     string-width "^1.0.2 || 2"
-
-"wordlift-for-schemaorg@file:../../../schemaorg/src/main/js":
-  version "1.0.36"
-  dependencies:
-    reselect "^3.0.1"
 
 worker-farm@^1.5.2:
   version "1.6.0"

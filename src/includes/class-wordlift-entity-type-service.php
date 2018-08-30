@@ -159,12 +159,12 @@ class Wordlift_Entity_Type_Service {
 
 	public function get_ids( $post_id ) {
 
-		return wp_get_post_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'fields' => 'ids', ) );
+		return wp_get_object_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'fields' => 'ids', ) );
 	}
 
 	public function get_dashnames( $post_id ) {
 
-		return wp_get_post_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'fields' => 'slugs', ) );
+		return wp_get_object_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'fields' => 'slugs', ) );
 	}
 
 	public function get_names( $post_id ) {
@@ -228,41 +228,6 @@ class Wordlift_Entity_Type_Service {
 
 		// `$replace` is passed to decide whether to replace or append the term.
 		wp_set_object_terms( $post_id, $term->term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, ! $replace );
-
-//		// Get all the terms bound to the wl_entity_type taxonomy.
-//		$terms = get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
-//			'hide_empty' => false,
-//			// Because of #334 (and the AAM plugin) we changed fields from 'id=>slug' to 'all'.
-//			// An issue has been opened with the AAM plugin author as well.
-//			//
-//			// see https://github.com/insideout10/wordlift-plugin/issues/334
-//			// see https://wordpress.org/support/topic/idslug-not-working-anymore?replies=1#post-8806863
-//			'fields'     => 'all',
-//		) );
-//
-//		// Check which term matches the specified URI.
-//		foreach ( $terms as $term ) {
-//
-//			$term_id   = $term->term_id;
-//			$term_slug = $term->slug;
-//
-//			$this->log->trace( "Parsing term {$term->slug}..." );
-//
-//			// Load the type data.
-//			$type = $this->schema_service->get_schema( $term_slug );
-//
-//			// Set the related term ID.
-//			if ( $type_uri === $type['uri'] || $type_uri === $type['css_class'] ) {
-//
-//				$this->log->debug( "Setting entity type [ post id :: $post_id ][ term id :: $term_id ][ term slug :: $term_slug ][ type uri :: {$type['uri']} ][ type css class :: {$type['css_class']} ]" );
-//
-//				wp_set_object_terms( $post_id, (int) $term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
-//
-//				return;
-//			}
-//		}
-
-//		$this->log->error( "Type not found [ post id :: $post_id ][ type uri :: $type_uri ]" );
 
 	}
 
@@ -359,7 +324,7 @@ class Wordlift_Entity_Type_Service {
 	 */
 	private function get_post_terms( $post_id ) {
 
-		return wp_get_post_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
+		return wp_get_object_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
 			'hide_empty' => false,
 			// Because of #334 (and the AAM plugin) we changed fields from 'id=>slug' to 'all'.
 			// An issue has been opened with the AAM plugin author as well.

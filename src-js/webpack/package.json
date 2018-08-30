@@ -24,6 +24,7 @@
     "webpack-cli": "^3.1.0"
   },
   "dependencies": {
+    "@wordlift/wordlift-for-schemaorg": "^1.0",
     "immutable": "^3",
     "prop-types": "^15",
     "react": "^16",
@@ -31,7 +32,6 @@
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
     "styled-components": "^3",
-    "whatwg-fetch": "^2",
-    "wordlift-for-schemaorg": "file:/Users/david/Developer/wordlift/schemaorg/src/main/js"
+    "whatwg-fetch": "^2"
   }
 }
