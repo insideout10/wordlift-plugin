@@ -39,7 +39,7 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 	 *
 	 * @since 3.20.0
 	 */
-	const UNSUPPORTED_PROPERTIES = array(
+	private static $unsupported_properties = array(
 		'additionalType',
 		'alternateName',
 		'description',
@@ -60,7 +60,7 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 	 *
 	 * @since 3.20.0
 	 */
-	const SUPPORTED_RANGES = array(
+	private static $supported_ranges = array(
 		'Boolean',
 		'False',
 		'True',
@@ -295,7 +295,7 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 			) ),
 		) );
 
-		// If the resopnse is empty return an error.
+		// If the response is empty return an error.
 		if ( empty( $reply['body'] ) ) {
 			wp_send_json_error();
 		}
@@ -307,7 +307,7 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 		$json['schemaProperties'] = array_map( function ( $item ) {
 			// Remove unsupported ranges.
 			$item['ranges'] = array_values( array_filter( $item['ranges'], function ( $range ) {
-				return in_array( $range['name'], Wordlift_Admin_Schemaorg_Property_Metabox::SUPPORTED_RANGES );
+				return in_array( $range['name'], Wordlift_Admin_Schemaorg_Property_Metabox::$supported_ranges );
 			} ) );
 
 			return $item;
@@ -315,7 +315,7 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 
 		// Remove unwanted properties (properties from the `Thing` entity type).
 		$json['schemaProperties'] = array_values( array_filter( $json['schemaProperties'], function ( $item ) {
-			return 0 < count( $item['ranges'] ) && ! in_array( $item['name'], Wordlift_Admin_Schemaorg_Property_Metabox::UNSUPPORTED_PROPERTIES );
+			return 0 < count( $item['ranges'] ) && ! in_array( $item['name'], Wordlift_Admin_Schemaorg_Property_Metabox::$unsupported_properties );
 		} ) );
 
 		/**

@@ -760,4 +760,37 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 		$this->assertEquals( $thing_uri, $jsonld['itemOffered'] );
 
 	}
+
+	/**
+	 * Test the `convert` function using the post properties introduced with #835.
+	 *
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/835
+	 *
+	 * @since 3.20.0
+	 */
+	public function test_convert_835() {
+
+		$post_id = $this->factory()->post->create( array(
+			'post_type' => 'entity',
+		) );
+
+		$_wl_prop_ = Wordlift_Schemaorg_Property_Service::PREFIX;
+		add_post_meta( $post_id, "{$_wl_prop_}propA_1_type", 'Text' );
+		add_post_meta( $post_id, "{$_wl_prop_}propA_1_language", 'en' );
+		add_post_meta( $post_id, "{$_wl_prop_}propA_1_value", 'Value A 1' );
+
+		add_post_meta( $post_id, "{$_wl_prop_}propA_2_type", 'Text' );
+		add_post_meta( $post_id, "{$_wl_prop_}propA_2_language", 'en' );
+		add_post_meta( $post_id, "{$_wl_prop_}propA_2_value", 'Value A 2' );
+
+		add_post_meta( $post_id, "{$_wl_prop_}propB_1_type", 'Text' );
+		add_post_meta( $post_id, "{$_wl_prop_}propB_1_language", 'en' );
+		add_post_meta( $post_id, "{$_wl_prop_}propB_1_value", 'Value B 1' );
+
+		$json = $this->entity_post_to_jsonld_converter->convert( $post_id );
+
+		var_dump($json);
+
+	}
+
 }
