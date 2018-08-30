@@ -12,7 +12,7 @@
  *
  * @param string $predicate Name of the relation: 'what' | 'where' | 'when' | 'who'
  *
- * @return boolean Return true if supported, false otherwise
+ * @return bool Return true if supported, false otherwise
  */
 function wl_core_check_relation_predicate_is_supported( $predicate ) {
 
@@ -109,7 +109,7 @@ function wl_core_add_relation_instance( $subject_id, $predicate, $object_id ) {
  *
  * @param int $subject_id The post ID | The entity post ID.
  *
- * @return boolean False for failure. True for success.
+ * @return bool False for failure. True for success.
  */
 function wl_core_delete_relation_instances( $subject_id ) {
 

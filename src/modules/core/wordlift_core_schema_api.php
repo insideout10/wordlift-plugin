@@ -54,7 +54,7 @@ function wl_schema_get_value( $post_id, $property_name ) {
  * @param string $property_name  Name of the property (e.g. name, for the http://schema.org/name property)
  * @param mixed  $property_value Value to save into the property.
  *
- * @return boolean The method returns true if everything went ok, an error string otherwise.
+ * @return bool The method returns true if everything went ok, an error string otherwise.
  */
 function wl_schema_set_value( $post_id, $property_name, $property_value ) {
 
@@ -122,7 +122,7 @@ function wl_schema_get_types( $post_id ) {
  * @param int   $post_id    The numeric post ID
  * @param array $type_names An array of strings, each defining a type (e.g. Type, for the http://schema.org/Type)
  *
- * @return boolean True if everything went ok, an error string otherwise.
+ * @return bool True if everything went ok, an error string otherwise.
  */
 function wl_schema_set_types( $post_id, $type_names ) {
 

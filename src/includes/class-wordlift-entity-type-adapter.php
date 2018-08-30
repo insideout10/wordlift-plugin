@@ -64,8 +64,8 @@ class Wordlift_Entity_Type_Adapter {
 	 * @since 3.15.0
 	 *
 	 * @param int     $post_id The {@link WP_Post}'s id.
-	 * @param WP_Post $post    The {@link WP_Post} instance.
-	 * @param boolean $update  Whether it's an update.
+	 * @param WP_Post $post The {@link WP_Post} instance.
+	 * @param bool    $update Whether it's an update.
 	 */
 	public function save_post( $post_id, $post, $update ) {
 
