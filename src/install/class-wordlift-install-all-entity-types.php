@@ -17,21 +17,24 @@
  */
 class Wordlift_Install_All_Entity_Types extends Wordlift_Install {
 
-	const OPTION_NAME = 'wl_db_schemaorg_version';
+	/**
+	 * The option name for the version of the Schema.org taxonomy.
+	 *
+	 * @since 3.20.0
+	 */
+	const OPTION_NAME = 'wl_schemaorg_version';
 
 	/**
 	 * {@inheritdoc}
 	 */
 	protected static $version = '0.0.0';
 
+	/**
+	 * Perform the installation.
+	 *
+	 * @since 3.20.0
+	 */
 	public function install() {
-
-		// Check that the schema isn't installed yet.
-		if ( ! WL_ALL_ENTITY_TYPES || false !== get_option( self::OPTION_NAME ) ) {
-			$this->log->info( 'Skipping `All Entity Types` configuration.' );
-
-			return;
-		}
 
 		$this->log->info( 'Installing `All Entity Types` configuration...' );
 
@@ -45,6 +48,13 @@ class Wordlift_Install_All_Entity_Types extends Wordlift_Install {
 
 	}
 
+	/**
+	 * Whether the installation procedure must run.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @return bool True if the installation procedure must run otherwise false.
+	 */
 	public function must_install() {
 
 		return WL_ALL_ENTITY_TYPES && version_compare( '1.0.0', get_option( self::OPTION_NAME, '0.0.0' ), '>' );

@@ -101,7 +101,7 @@ class Wordlift_Schemaorg_Class_Service {
 			function ( $term ) {
 				// Do not change the following, the `name` is used to reference the correct
 				// Schema.org class (CamelCase name). Do not use WP_Term->name.
-				$camel_case_name = get_term_meta( $term->term_id, self::NAME_META_KEY, true );
+				$camel_case_name = get_term_meta( $term->term_id, Wordlift_Schemaorg_Class_Service::NAME_META_KEY, true );
 
 				return array(
 					'id'          => $term->term_id,
@@ -115,7 +115,7 @@ class Wordlift_Schemaorg_Class_Service {
 						$child_term = get_term_by( 'slug', $child, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 						return array( 'id' => $child_term->term_id );
-					}, get_term_meta( $term->term_id, self::PARENT_OF_META_KEY ) ),
+					}, get_term_meta( $term->term_id, Wordlift_Schemaorg_Class_Service::PARENT_OF_META_KEY ) ),
 				);
 
 			}, $terms );
