@@ -62,7 +62,7 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 
 		$entity_type_service = $this->get_wordlift_test()->get_entity_type_service();
 
-		$entity_id = $this->factory->post->create( array(
+		$entity_id = $this->factory()->post->create( array(
 			'post_type' => 'entity',
 		) );
 
@@ -80,7 +80,7 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 
 		$entity_type_service = $this->get_wordlift_test()->get_entity_type_service();
 
-		$entity_id = $this->factory->post->create( array(
+		$entity_id = $this->factory()->post->create( array(
 			'post_type' => 'entity',
 		) );
 
@@ -100,7 +100,7 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 
 		$entity_type_service = $this->get_wordlift_test()->get_entity_type_service();
 
-		$post_id = $this->factory->post->create();
+		$post_id = $this->factory()->post->create();
 
 		$schema = $entity_type_service->get( $post_id );
 
@@ -116,7 +116,7 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 
 		$entity_type_service = $this->get_wordlift_test()->get_entity_type_service();
 
-		$post_id = $this->factory->post->create();
+		$post_id = $this->factory()->post->create();
 
 		wp_set_object_terms( $post_id, 'thing', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
@@ -134,7 +134,7 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 
 		$entity_type_service = $this->get_wordlift_test()->get_entity_type_service();
 
-		$post_id = $this->factory->post->create( array(
+		$post_id = $this->factory()->post->create( array(
 			'post_type' => 'property',
 		) );
 
@@ -155,7 +155,7 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 
 		$entity_type_service = $this->get_wordlift_test()->get_entity_type_service();
 
-		$post_id = $this->factory->post->create( array(
+		$post_id = $this->factory()->post->create( array(
 			'post_type' => 'property',
 		) );
 
@@ -183,7 +183,7 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 			'extend_default_entity_types',
 		), 10, 1 );
 
-		$post_id = $this->factory->post->create( array(
+		$post_id = $this->factory()->post->create( array(
 			'post_type' => 'property',
 		) );
 
@@ -207,7 +207,7 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 			'extend_default_entity_types',
 		), 10, 1 );
 
-		$post_id = $this->factory->post->create( array(
+		$post_id = $this->factory()->post->create( array(
 			'post_type' => 'property',
 		) );
 

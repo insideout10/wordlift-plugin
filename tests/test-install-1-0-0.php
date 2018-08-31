@@ -61,7 +61,7 @@ class Wordlift_Install_1_0_0_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_must_install() {
 
-		$this->assertFalse( Wordlift_Install_1_0_0::get_instance()->must_install() );
+		$this->assertFalse( $this->install->must_install() );
 
 	}
 
