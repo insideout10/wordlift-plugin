@@ -17,7 +17,20 @@
 class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 
 	/**
+	 * {@inheritdoc}
+	 */
+	public function setUp() {
+
+		// Ensure the Entity Types get installed.
+		delete_option( Wordlift_Install_All_Entity_Types::OPTION_NAME );
+
+		parent::setUp();
+	}
+
+	/**
 	 * Check that the specified slug is used.
+	 *
+	 * @since 3.18.0
 	 */
 	public function test_vocabulary_slug() {
 
@@ -29,6 +42,8 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * Check that, when an empty slug is used, the default entity post type name is used.
+	 *
+	 * @since 3.18.0
 	 */
 	public function test_empty_slug() {
 
@@ -282,6 +297,9 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 		$hospital_term = get_term_by( 'slug', 'hospital', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		$this->assertNotFalse( $hospital_term, '`hospital` term must exit.' );
 		$this->assertContains( $hospital_term->term_id, $ids, 'The `hospital` term id must be present, got ' . var_export( $ids, true ) );
+
+		$hospital_term_name = get_term_meta( $hospital_term->term_id, Wordlift_Schemaorg_Class_Service::NAME_META_KEY, true );
+		$this->assertEquals( 'Hospital', $hospital_term_name, 'Expect `hospital` name to be `Hospital`.' );
 
 		$names = $this->entity_type_service->get_names( $post_id );
 		$this->assertCount( 2, $names, 'There must be 2 names.' );
