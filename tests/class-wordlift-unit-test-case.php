@@ -69,7 +69,7 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 		// Configure WordPress with the test settings.
 		wl_configure_wordpress_test();
 
-		$this->entity_factory = new Wordlift_UnitTest_Factory_For_Entity( $this->factory );
+		$this->entity_factory = new Wordlift_UnitTest_Factory_For_Entity( $this->factory() );
 
 		$this->wordlift_test = new Wordlift_Test();
 

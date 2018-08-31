@@ -804,77 +804,77 @@ function wl_tests_get_time_difference_in_seconds( $time1, $time2 ) {
 	return ( $date2->getTimestamp() - $date1->getTimestamp() );
 }
 
-/**
- * Retrieves the property expected type, according to the schema.org specifications, where:
- *
- * @param $property_name string Name of the property (e.g. name, for the http://schema.org/name property)
- *
- * @return array of allowed types or NULL in case of property not found.
- *
- * The following types are supported (defined as constants):
- * - Wordlift_Schema_Service::DATA_TYPE_DATE
- * - WL_DATA_TYPE_INTEGER
- * - Wordlift_Schema_Service::DATA_TYPE_DOUBLE
- * - WL_DATA_TYPE_BOOLEAN
- * - Wordlift_Schema_Service::DATA_TYPE_STRING
- * - Wordlift_Schema_Service::DATA_TYPE_URI
- * - a schema.org URI when the property type supports a schema.org entity (e.g. http://schema.org/Place)
- */
-function wl_schema_get_property_expected_type( $property_name ) {
-
-	// This is the actual structure of a custom_field.
-	/*
-	 * Wordlift_Schema_Service::FIELD_LOCATION       => array(
-	 *      'predicate'   => 'http://schema.org/location',
-	 *      'type'        => Wordlift_Schema_Service::DATA_TYPE_URI,
-	 *      'export_type' => 'http://schema.org/PostalAddress',
-	 *      'constraints' => array(
-	 *              'uri_type' => 'Place'
-	 *      )
-	 *  )
-	 */
-
-	// Build full schema uri if necessary
-	$property_name = wl_build_full_schema_uri_from_schema_slug( $property_name );
-
-	// Get all custom fields
-	$all_types_and_fields = wl_entity_taxonomy_get_custom_fields();
-
-	$expected_types = null;
-
-	// Search for the entity type which has the requested name as uri
-	$found = false;
-	foreach ( $all_types_and_fields as $type_fields ) {
-		foreach ( $type_fields as $field ) {
-			if ( $field['predicate'] == $property_name ) {
-
-				$expected_types = array();
-
-				// Does the property accept a specific schema type?
-				if ( isset( $field['constraints'] ) && isset( $field['constraints']['uri_type'] ) ) {
-
-					// Take note of expected schema type
-					$uri_types = ( is_array( $field['constraints']['uri_type'] ) ) ?
-						$field['constraints']['uri_type'] :
-						array( $field['constraints']['uri_type'] );
-
-					foreach ( $uri_types as $uri_type ) {
-						$expected_types[] = wl_build_full_schema_uri_from_schema_slug( $uri_type );
-					}
-
-				} else {
-					// Take note of expected type
-					$expected_types[] = $field['type'];
-				}
-
-				// We found the property
-				return $expected_types;
-			}
-		}
-	}
-
-	return $expected_types;
-}
+///**
+// * Retrieves the property expected type, according to the schema.org specifications, where:
+// *
+// * @param $property_name string Name of the property (e.g. name, for the http://schema.org/name property)
+// *
+// * @return array of allowed types or NULL in case of property not found.
+// *
+// * The following types are supported (defined as constants):
+// * - Wordlift_Schema_Service::DATA_TYPE_DATE
+// * - WL_DATA_TYPE_INTEGER
+// * - Wordlift_Schema_Service::DATA_TYPE_DOUBLE
+// * - WL_DATA_TYPE_BOOLEAN
+// * - Wordlift_Schema_Service::DATA_TYPE_STRING
+// * - Wordlift_Schema_Service::DATA_TYPE_URI
+// * - a schema.org URI when the property type supports a schema.org entity (e.g. http://schema.org/Place)
+// */
+//function wl_schema_get_property_expected_type( $property_name ) {
+//
+//	// This is the actual structure of a custom_field.
+//	/*
+//	 * Wordlift_Schema_Service::FIELD_LOCATION       => array(
+//	 *      'predicate'   => 'http://schema.org/location',
+//	 *      'type'        => Wordlift_Schema_Service::DATA_TYPE_URI,
+//	 *      'export_type' => 'http://schema.org/PostalAddress',
+//	 *      'constraints' => array(
+//	 *              'uri_type' => 'Place'
+//	 *      )
+//	 *  )
+//	 */
+//
+//	// Build full schema uri if necessary
+//	$property_name = wl_build_full_schema_uri_from_schema_slug( $property_name );
+//
+//	// Get all custom fields
+//	$all_types_and_fields = wl_entity_taxonomy_get_custom_fields();
+//
+//	$expected_types = null;
+//
+//	// Search for the entity type which has the requested name as uri
+//	$found = false;
+//	foreach ( $all_types_and_fields as $type_fields ) {
+//		foreach ( $type_fields as $field ) {
+//			if ( $field['predicate'] == $property_name ) {
+//
+//				$expected_types = array();
+//
+//				// Does the property accept a specific schema type?
+//				if ( isset( $field['constraints'] ) && isset( $field['constraints']['uri_type'] ) ) {
+//
+//					// Take note of expected schema type
+//					$uri_types = ( is_array( $field['constraints']['uri_type'] ) ) ?
+//						$field['constraints']['uri_type'] :
+//						array( $field['constraints']['uri_type'] );
+//
+//					foreach ( $uri_types as $uri_type ) {
+//						$expected_types[] = wl_build_full_schema_uri_from_schema_slug( $uri_type );
+//					}
+//
+//				} else {
+//					// Take note of expected type
+//					$expected_types[] = $field['type'];
+//				}
+//
+//				// We found the property
+//				return $expected_types;
+//			}
+//		}
+//	}
+//
+//	return $expected_types;
+//}
 
 /**
  * Retrieve entity property type, starting from the schema.org's property name
@@ -974,7 +974,6 @@ function wl_core_delete_relation_instance( $subject_id, $predicate, $object_id )
 	return true;
 }
 
-
 /**
  * Create multiple relation instances
  * @uses   wl_add_relation_instance() to create each single instance
@@ -1010,60 +1009,4 @@ function wl_core_add_relation_instances( $subject_id, $predicate, $object_ids ) 
 	}
 
 	return $inserted_records_ids;
-}
-
-/**
- * Add a value of the specified property for the entity, where
- *
- * @param int    $post_id The numeric post ID.
- * @param string $property_name Name of the property (e.g. name, for the http://schema.org/name property).
- * @param mixed  $property_value Value to save into the property (adding to already saved).
- *
- * @return array An array of values or NULL in case of no values (or error).
- */
-function wl_schema_add_value( $post_id, $property_name, $property_value ) {
-
-	if ( ! is_array( $property_value ) ) {
-		$property_value = array( $property_value );
-	}
-
-	// Get the old values or set an empty array.
-	$old_values = wl_schema_get_value( $post_id, $property_name ) ?: array();
-
-	$merged_property_value = array_unique( array_merge( $property_value, $old_values ) );
-
-	wl_schema_set_value( $post_id, $property_name, $merged_property_value );
-
-}
-
-/**
- * Retrieves the list of supported properties for the specified type.
- * @uses wl_entity_taxonomy_get_custom_fields() to retrieve all custom fields (type properties)
- * @uses wl_build_full_schema_uri_from_schema_slug() to convert a schema slug to full uri
- *
- * @param $type_name string Name of the type (e.g. Type, for the http://schema.org/Type)
- *
- * @return array The method returns an array of supported properties for the type, e.g. (‘startDate’, ‘endDate’) for an Event.
- * You can call wl_schema_get_property_expected_type on each to know which data type they expect.
- */
-function wl_schema_get_type_properties( $type_name ) {
-
-	// Build full schema uri if necessary
-	$type_name = wl_build_full_schema_uri_from_schema_slug( $type_name );
-
-	// Get all custom fields
-	$all_types_and_fields = wl_entity_taxonomy_get_custom_fields();
-
-	$schema_root_address = 'http://schema.org/';
-	$type_properties     = array();
-
-	// Search for the entity type which has the requested name as uri
-	if ( isset( $all_types_and_fields[ $type_name ] ) ) {
-		foreach ( $all_types_and_fields[ $type_name ] as $field ) {
-			// Convert to schema slug and store in array
-			$type_properties[] = str_replace( $schema_root_address, '', $field['predicate'] );
-		}
-	}
-
-	return $type_properties;
 }

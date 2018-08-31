@@ -537,7 +537,7 @@ EOF;
 		$this->assertEquals( array( $entity->ID ), $related_entity_ids );
 
 		// Verify schema type
-		$this->assertEquals( array( 'http://schema.org/Place' ), wl_schema_get_types( $entity->ID ) );
+		$this->assertEquals( array( 'Place' ), Wordlift_Entity_Type_Service::get_instance()->get_names( $entity->ID ) );
 
 		// Verify coordinates
 		$this->assertEquals( array( 43.21 ), wl_schema_get_value( $entity->ID, 'latitude' ) );

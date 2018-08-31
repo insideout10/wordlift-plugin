@@ -174,7 +174,7 @@ class EntityTest extends Wordlift_Unit_Test_Case {
 				'http://vo.dbpedia.org/resource/Tim_Berners-Lee',
 				'http://zh_min_nan.dbpedia.org/resource/Tim_Berners-Lee',
 			),
-			'synonym'        => array( 'TBL' ),
+			'synonym'         => array( 'TBL' ),
 		);
 		$entity_post  = wl_save_entity( $entity_props );
 		$this->assertNotNull( $entity_post );
@@ -198,7 +198,8 @@ class EntityTest extends Wordlift_Unit_Test_Case {
 		// Check that the type is set correctly.
 		$types = wl_get_entity_rdf_types( $entity_post->ID );
 		$this->assertEquals( 2, count( $types ) );
-		$this->assertEquals( array( 'http://schema.org/Person' ), wl_schema_get_types( $entity_post->ID ) );
+		$this->assertEquals( array( 'Person' ),
+			Wordlift_Entity_Type_Service::get_instance()->get_names( $entity_post->ID ) );
 	}
 
 	function testSavePlaceWithCoordinates() {
@@ -229,7 +230,8 @@ class EntityTest extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 0, $synonyms );
 
 		// Check that the type is set correctly.
-		$this->assertEquals( array( 'http://schema.org/Place' ), wl_schema_get_types( $entity_post->ID ) );
+		$this->assertEquals( array( 'Place' ),
+			Wordlift_Entity_Type_Service::get_instance()->get_names( $entity_post->ID ) );
 
 		// Check coordinates
 		$this->assertEquals( array( 43.21 ), wl_schema_get_value( $entity_post->ID, 'latitude' ) );
