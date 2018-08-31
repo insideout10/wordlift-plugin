@@ -9,15 +9,13 @@
  * This file covers tests related to the save-post related routines.
  */
 
-require_once 'functions.php';
-
 /**
  * Class SavePostTest.
  *
  * @since   3.0.0
  * @package Wordlift
  */
-class SavePostTest extends Wordlift_Unit_Test_Case {
+class Wordlift_Save_Post_Test extends Wordlift_Unit_Test_Case {
 
 	function test_savepostandreferencedentities() {
 

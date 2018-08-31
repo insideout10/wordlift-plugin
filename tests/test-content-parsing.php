@@ -1,7 +1,6 @@
 <?php
-require_once 'functions.php';
 
-class ContentParsingTest extends Wordlift_Unit_Test_Case {
+class Wordlift_Content_Parsing_Test extends Wordlift_Unit_Test_Case {
 
 	function createSampleEntity() {
 		$entity_post_id = wl_create_post( 'Lorem Ipsum', 'honda', 'Honda', 'publish', 'entity' );

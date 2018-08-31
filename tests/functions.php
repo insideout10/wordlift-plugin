@@ -435,15 +435,12 @@ function wl_configure_wordpress_test() {
 
 	$configuration_service = Wordlift_Configuration_Service::get_instance();
 
-	// Ensure we don't have the `wl_db_version` set.
-	delete_option( 'wl_db_version' );
-
 	add_filter( 'wl_write_log_handler', 'wl_test_get_write_log_handler' );
 
 	// Simulate WordLift activation.
 	activate_wordlift();
 
-	// If the WordLift key is set, then we'll configure it, otherwise we configure Redlink.
+	// If the WordLift key is set, then we'll configure it.
 	if ( false === getenv( 'WORDLIFT_KEY' ) ) {
 		echo( "WordLift's key is required, set the `WORDLIFT_KEY` environment." );
 		die( 1 );
@@ -452,6 +449,7 @@ function wl_configure_wordpress_test() {
 	// When setting the WordLift Key, the Redlink dataset URI is provisioned by WordLift Server.
 	$configuration_service->set_key( getenv( 'WORDLIFT_KEY' ) );
 	$dataset_uri = $configuration_service->get_dataset_uri();
+
 	if ( empty( $dataset_uri ) ) {
 		echo( 'The dataset URI is not set (maybe the WordLift key is not valid?).' );
 		die( 2 );

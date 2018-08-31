@@ -2,12 +2,12 @@
 /**
  * Class EntityTest
  */
-class EntityFunctionsTest extends Wordlift_Unit_Test_Case {
+class Wordlift_Entity_Functions_Test extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * Check entity URI building.
 	 */
-	function testEntityURIforAPost() {
+	function test_entity_uri_for_a_post() {
 
 		$post_id = wl_create_post( '', 'test', 'This is a test' );
 
@@ -19,7 +19,7 @@ class EntityFunctionsTest extends Wordlift_Unit_Test_Case {
 	/**
 	 * Check entity URI building.
 	 */
-	function testEntityURIforAnEntity() {
+	function test_entity_uri_for_an_entity() {
 
 		$post_id = wl_create_post( '', 'test', 'This is a test', 'draft', 'entity' );
 
@@ -31,7 +31,7 @@ class EntityFunctionsTest extends Wordlift_Unit_Test_Case {
 	/**
 	 * Tests the *wl_get_meta_type* function
 	 */
-	function testEntityGetMetaType() {
+	function test_entity_get_meta_type() {
 
 		$type = wl_get_meta_type( Wordlift_Schema_Service::FIELD_GEO_LATITUDE );
 		$this->assertEquals( 'double', $type );
@@ -59,7 +59,7 @@ class EntityFunctionsTest extends Wordlift_Unit_Test_Case {
 	/**
 	 * Tests the *wl_get_meta_constraints* function
 	 */
-	function testWlEntityTaxonomyGetCustomFields() {
+	function test_wl_entity_taxonomy_get_custom_fields() {
 		// Create entity and get custom_fields by id
 		$place_id = wl_create_post( "Entity 1 Text", 'entity-1', "Entity 1 Title", 'publish', 'entity' );
 		wl_set_entity_main_type( $place_id, 'http://schema.org/Place' );
@@ -86,7 +86,7 @@ class EntityFunctionsTest extends Wordlift_Unit_Test_Case {
 		$this->assertContains( Wordlift_Schema_Service::FIELD_LOCATION, $custom_fields );
 	}
 
-	function testWlEntityTaxonomyCustomFieldsInheritance() {
+	function test_wl_entity_taxonomy_custom_fields_inheritance() {
 
 		// Create entity and set type
 		$business_id = wl_create_post( "Entity 1 Text", 'entity-1', "Entity 1 Title", 'publish', 'entity' );
@@ -106,32 +106,4 @@ class EntityFunctionsTest extends Wordlift_Unit_Test_Case {
 		$this->assertArrayNotHasKey( Wordlift_Schema_Service::FIELD_DATE_START, $custom_fields );
 	}
 
-//    function testWlEntityTaxonomyMicrodataTemplateInheritance() {
-//
-//        // Create entity and set type
-//        $business_id = wl_create_post( "Entity 1 Text", 'entity-1', "Entity 1 Title", 'publish', 'entity' );
-//        wl_set_entity_main_type( $business_id, 'http://schema.org/LocalBusiness' );
-//
-//        // Get microdata template
-//        $entity_type_details = Wordlift_Entity_Type_Service::get_instance()->get( $business_id );
-//        $microdata_template = $entity_type_details['microdata_template'];
-//
-//        // Check inherited microdata templates:
-//        // latitude from Place with 'itemtype="http://schema.org/GeoCoordinates"' markup
-//        $this->assertContains( 'itemtype="http://schema.org/GeoCoordinates"', $microdata_template );
-//        $this->assertContains( '{{latitude}}', $microdata_template );
-//        // founder from Organization
-//        $this->assertContains( '{{founder}}', $microdata_template );
-//        // negative test
-//        $this->assertNotContains( '{{startDate}}', $microdata_template );
-//    }
-
-	/**
-	 * Tests the *wl_get_meta_constraints* function
-	 */
-	function testEntityGetMetaConstraints() {
-
-		// TODO: complete this test
-		$fields = wl_entity_taxonomy_get_custom_fields();
-	}
 }

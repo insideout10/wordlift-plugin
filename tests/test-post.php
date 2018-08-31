@@ -6,8 +6,6 @@
  * @package Wordlift
  */
 
-require_once 'functions.php';
-
 /**
  * We're going to perform a full-blown test here:
  *  - create a post,
@@ -22,7 +20,7 @@ require_once 'functions.php';
  * @since   3.0.0
  * @package Wordlift
  */
-class PostTest extends Wordlift_Unit_Test_Case {
+class Wordlift_Post_Test extends Wordlift_Unit_Test_Case {
 
 	// The filename pointing to the test contents.
 	const FILENAME = 'post.txt';
@@ -42,26 +40,11 @@ class PostTest extends Wordlift_Unit_Test_Case {
 	function setUp() {
 		parent::setUp();
 
-//		wl_empty_blog();
-//
-//		$this->assertEquals( 0, count( get_posts( array(
-//			'posts_per_page' => - 1,
-//			'post_type'      => 'post',
-//			'post_status'    => 'any',
-//		) ) ) );
-//		$this->assertEquals( 0, count( get_posts( array(
-//			'posts_per_page' => - 1,
-//			'post_type'      => 'entity',
-//			'post_status'    => 'any',
-//		) ) ) );
-
 		// Get the count of triples.
 		$counts = rl_count_triples();
 		$this->assertNotNull( $counts );
 		$this->assertFalse( is_wp_error( $counts ) );
-//		$this->assertEquals( 0, $counts['subjects'] );
-//		$this->assertEquals( 0, $counts['predicates'] );
-//		$this->assertEquals( 0, $counts['objects'] );
+
 	}
 
 	/**

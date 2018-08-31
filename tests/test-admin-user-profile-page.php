@@ -129,7 +129,7 @@ class Wordlift_Admin_User_Profile_Page_Test extends Wordlift_Unit_Test_Case {
 	 */
 	function test_edit_user_profile_can_edit_users() {
 
-		$target_user = $this->factory->user->create_and_get( array(
+		$target_user = $this->factory()->user->create_and_get( array(
 			'role' => 'editor',
 		) );
 
@@ -157,7 +157,7 @@ class Wordlift_Admin_User_Profile_Page_Test extends Wordlift_Unit_Test_Case {
 		                   ->with( $this->equalTo( $target_user->ID ) )
 		                   ->willReturn( true );
 
-		ob_clean();
+		ob_start();
 		$this->user_profile_page->edit_user_profile( $target_user );
 		$result = ob_get_contents();
 		ob_end_clean();

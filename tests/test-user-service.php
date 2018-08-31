@@ -8,31 +8,6 @@
 class UserServiceTest extends Wordlift_Unit_Test_Case {
 
 	/**
-	 * The Log service.
-	 *
-	 * @since  3.1.7
-	 * @access private
-	 * @var \Wordlift_Log_Service $log_service The Log service.
-	 */
-	private $log_service;
-
-	/**
-	 * Set up the test.
-	 */
-	function setUp() {
-		parent::setUp();
-
-		// We don't need to check the remote Linked Data store.
-		Wordlift_Unit_Test_Case::turn_off_entity_push();;
-
-		$this->log_service = Wordlift_Log_Service::get_logger( 'UserServiceTest' );
-
-		wl_configure_wordpress_test();
-		// wl_empty_blog();
-
-	}
-
-	/**
 	 * Test the User service.
 	 *
 	 * @since 3.1.7
