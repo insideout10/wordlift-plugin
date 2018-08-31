@@ -62,7 +62,7 @@ class Wordlift_Install_1_0_0 extends Wordlift_Install {
 	 * @inheritdoc
 	 */
 	public function install() {
-		// Srt the dataset uri.
+		// Set the dataset uri.
 		$this->set_dataset_uri();
 
 		// Create entity type terms.
@@ -173,7 +173,7 @@ EOF;
 
 		// If the dataset URI is empty, do not set the install version.
 		if ( empty( $dataset_uri ) ) {
-			$this->log->info( 'Setting dataset URI filed: the dataset URI is empty.' );
+			$this->log->info( 'Setting dataset URI failed: the dataset URI is empty.' );
 
 			return;
 		}
