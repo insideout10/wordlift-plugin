@@ -147,11 +147,15 @@ class Wordlift_Schemaorg_Sync_Service {
 		$json = json_decode( $contents, true );
 
 		if ( null === $json ) {
+			$this->log->error( 'Invalid json.' );
+
 			// Error: invalid body.
 			return false;
 		}
 
 		if ( ! isset( $json['schemaClasses'] ) ) {
+			$this->log->error( '`schemaClasses` missing from json.' );
+
 			// Error: invalid json.
 			return false;
 		}

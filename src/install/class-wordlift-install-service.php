@@ -121,11 +121,13 @@ class Wordlift_Install_Service {
 
 			if ( version_compare( $version, $this->get_current_version(), '>' )
 			     || $install->must_install() ) {
-				$this->log->debug( "Current version is {$this->get_current_version()}, installing $version..." );
+
+				$class_name = get_class( $install );
+				$this->log->debug( "Current version is {$this->get_current_version()}, installing $class_name..." );
 				// Install version.
 				$install->install();
 
-				$this->log->info( "$version installed." );
+				$this->log->info( "$class_name installed." );
 
 				// Bump the version.
 				update_option( 'wl_db_version', $version );

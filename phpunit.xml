@@ -17,6 +17,9 @@
     <php>
         <const name="WP_DEBUG_LOG" value="true"/>
         <const name="WP_DEBUG_DISPLAY" value="false"/>
-        <const name="WL_LOG_LEVEL" value="3"/>
+        <const name="WL_LOG_LEVEL" value="2"/>
     </php>
+    <listeners>
+        <listener class="JohnKary\PHPUnit\Listener\SpeedTrapListener"/>
+    </listeners>
 </phpunit>

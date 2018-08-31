@@ -43,6 +43,8 @@ class Wordlift_Install_All_Entity_Types extends Wordlift_Install {
 
 		// Try to load the Schema.org taxonomy and, if successful, update the local Schema.org version.
 		if ( $schema_sync_service->load_from_file() ) {
+			$this->log->debug( 'Updating `All Entity Types` configuration to 1.0.0.' );
+
 			update_option( self::OPTION_NAME, '1.0.0' );
 		}
 

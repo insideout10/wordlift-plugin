@@ -20,11 +20,11 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 	 * {@inheritdoc}
 	 */
 	public function setUp() {
-
-		// Ensure the Entity Types get installed.
-		delete_option( Wordlift_Install_All_Entity_Types::OPTION_NAME );
-
 		parent::setUp();
+
+		// Ensure `All Entity Types` are installed.
+		$all_entity_types = new Wordlift_Install_All_Entity_Types();
+		$all_entity_types->install();
 	}
 
 	/**
