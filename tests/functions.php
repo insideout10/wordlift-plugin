@@ -403,39 +403,11 @@ function wl_get_attachments( $post_id ) {
 }
 
 /**
- * Echo the log data to the terminal.
- *
- * @param $log The log data.
- */
-function wl_test_write_log_handler( $log ) {
-
-	if ( is_array( $log ) || is_object( $log ) ) {
-		echo( print_r( $log, true ) . "\n" );
-	} else {
-		echo( wl_write_log_hide_key( $log ) . "\n" );
-	}
-
-}
-
-/**
- * Set the log handler function name.
- *
- * @return string
- */
-function wl_test_get_write_log_handler() {
-
-	return 'wl_test_write_log_handler';
-
-}
-
-/**
  * Configure WordPress with the test settings (may vary according to the local PHP and WordPress versions).
  */
 function wl_configure_wordpress_test() {
 
 	$configuration_service = Wordlift_Configuration_Service::get_instance();
-
-	add_filter( 'wl_write_log_handler', 'wl_test_get_write_log_handler' );
 
 	// Simulate WordLift activation.
 	activate_wordlift();

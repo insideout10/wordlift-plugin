@@ -42,42 +42,11 @@ require_once( 'modules/core/wordlift_core.php' );
  *
  * @since      3.0.0
  *
- * @uses       wl_write_log_handler() to write the log output.
- *
  * @param string|mixed $log The log data.
  */
 function wl_write_log( $log ) {
 
 	Wordlift_Log_Service::get_instance()->debug( $log );
-
-}
-
-/**
- * The default log handler prints out the log.
- *
- * @deprecated
- *
- * @since 3.0.0
- *
- * @param string|array $log The log data.
- * @param string       $caller The calling function.
- */
-function wl_write_log_handler( $log, $caller = null ) {
-
-	global $wl_logger;
-
-	if ( true === WP_DEBUG ) {
-
-		$message = ( isset( $caller ) ? sprintf( '[%-40.40s] ', $caller ) : '' ) .
-		           ( is_array( $log ) || is_object( $log ) ? print_r( $log, true ) : wl_write_log_hide_key( $log ) );
-
-		if ( isset( $wl_logger ) ) {
-			$wl_logger->info( $message );
-		} else {
-			error_log( $message );
-		}
-
-	}
 
 }
 

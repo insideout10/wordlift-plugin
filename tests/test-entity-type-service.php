@@ -28,11 +28,45 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	/**
+	 * This test function gathers together all the tests, because loading the `All Entity Types` is an
+	 * expensive operation, we want to avoid to repeat it for each separate test.
+	 *
+	 * @since 3.20.0
+	 */
+	public function test() {
+
+		$this->do_test_vocabulary_slug();
+		$this->do_test_empty_slug();
+		$this->do_test_entity_with_default_entity_type();
+		$this->do_test_entity_with_set_entity_type();
+		$this->do_test_post_with_default_entity_type();
+		$this->do_test_post_with_set_entity_type();
+		$this->do_test_custom_post_type_with_default_entity_type();
+		$this->do_test_custom_post_type_with_set_entity_type();
+		$this->do_test_custom_post_type_entity_with_default_entity_type();
+		$this->do_test_custom_post_type_entity_with_set_entity_type();
+		$this->do_test_vocabulary_slug();
+		$this->do_test_empty_slug();
+		$this->do_test_entity_with_default_entity_type();
+		$this->do_test_entity_with_set_entity_type();
+		$this->do_test_post_with_default_entity_type();
+		$this->do_test_post_with_set_entity_type();
+		$this->do_test_custom_post_type_with_default_entity_type();
+		$this->do_test_custom_post_type_with_set_entity_type();
+		$this->do_test_custom_post_type_entity_with_default_entity_type();
+		$this->do_test_custom_post_type_entity_with_set_entity_type();
+		$this->do_test_get_835();
+		$this->do_test_get_ids_names();
+		$this->do_test_set_835();
+
+	}
+
+	/**
 	 * Check that the specified slug is used.
 	 *
 	 * @since 3.18.0
 	 */
-	public function test_vocabulary_slug() {
+	private function do_test_vocabulary_slug() {
 
 		$entity_type_service = new Wordlift_Entity_Post_Type_Service( 'entity', 'vocabulary' );
 
@@ -45,7 +79,7 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 	 *
 	 * @since 3.18.0
 	 */
-	public function test_empty_slug() {
+	private function do_test_empty_slug() {
 
 		$entity_type_service = new Wordlift_Entity_Post_Type_Service( 'entity', '' );
 
@@ -58,7 +92,7 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 	 *
 	 * @since 3.18.0
 	 */
-	public function test_entity_with_default_entity_type() {
+	private function do_test_entity_with_default_entity_type() {
 
 		$entity_type_service = $this->get_wordlift_test()->get_entity_type_service();
 
@@ -76,7 +110,7 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 	 *
 	 * @since 3.18.0
 	 */
-	public function test_entity_with_set_entity_type() {
+	private function do_test_entity_with_set_entity_type() {
 
 		$entity_type_service = $this->get_wordlift_test()->get_entity_type_service();
 
@@ -96,7 +130,7 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 	 *
 	 * @since 3.18.0
 	 */
-	public function test_post_with_default_entity_type() {
+	private function do_test_post_with_default_entity_type() {
 
 		$entity_type_service = $this->get_wordlift_test()->get_entity_type_service();
 
@@ -112,7 +146,7 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 	 *
 	 * @since 3.18.0
 	 */
-	public function test_post_with_set_entity_type() {
+	private function do_test_post_with_set_entity_type() {
 
 		$entity_type_service = $this->get_wordlift_test()->get_entity_type_service();
 
@@ -126,11 +160,11 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	/**
-	 * Check that the custom post types are assigned `webpage`.
+	 * Check that the custom post types are assigned `WebPage`.
 	 *
 	 * @since 3.18.0
 	 */
-	public function test_custom_post_type_with_default_entity_type() {
+	private function do_test_custom_post_type_with_default_entity_type() {
 
 		$entity_type_service = $this->get_wordlift_test()->get_entity_type_service();
 
@@ -151,7 +185,7 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 	 *
 	 * @since 3.18.0
 	 */
-	public function test_custom_post_type_with_set_entity_type() {
+	private function do_test_custom_post_type_with_set_entity_type() {
 
 		$entity_type_service = $this->get_wordlift_test()->get_entity_type_service();
 
@@ -174,22 +208,23 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 	 *
 	 * @since 3.18.0
 	 */
-	public function test_custom_post_type_entity_with_default_entity_type() {
+	private function do_test_custom_post_type_entity_with_default_entity_type() {
 
 		$entity_type_service = $this->get_wordlift_test()->get_entity_type_service();
 
-		add_filter( 'wl_valid_entity_post_types', array(
-			$this,
-			'extend_default_entity_types',
-		), 10, 1 );
+		add_filter( 'wl_valid_entity_post_types', array( $this, 'extend_default_entity_types', ) );
 
 		$post_id = $this->factory()->post->create( array(
 			'post_type' => 'property',
 		) );
 
 		$schema = $entity_type_service->get( $post_id );
+
 		// The custom post types are automatically assigned to `articles` entity type.
 		$this->assertEquals( 'http://schema.org/Article', $schema['uri'] );
+
+		remove_filter( 'wl_valid_entity_post_types', array( $this, 'extend_default_entity_types', ) );
+
 	}
 
 	/**
@@ -198,14 +233,11 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 	 *
 	 * @since 3.18.0
 	 */
-	public function test_custom_post_type_entity_with_set_entity_type() {
+	private function do_test_custom_post_type_entity_with_set_entity_type() {
 
 		$entity_type_service = $this->get_wordlift_test()->get_entity_type_service();
 
-		add_filter( 'wl_valid_entity_post_types', array(
-			$this,
-			'extend_default_entity_types',
-		), 10, 1 );
+		add_filter( 'wl_valid_entity_post_types', array( $this, 'extend_default_entity_types', ) );
 
 		$post_id = $this->factory()->post->create( array(
 			'post_type' => 'property',
@@ -218,9 +250,21 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 		// The `property` post type is not valid entity type, so setting entity type
 		// shouldn't change the schema type.
 		$this->assertEquals( 'http://schema.org/Person', $schema['uri'] );
+
+		remove_filter( 'wl_valid_entity_post_types', array( $this, 'extend_default_entity_types', ) );
+
 	}
 
-	function extend_default_entity_types( $types ) {
+	/**
+	 * Add the `property` cpt to the entity types.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @param array $types Custom post types.
+	 *
+	 * @return array Custom post types plus `property`.
+	 */
+	public function extend_default_entity_types( $types ) {
 
 		// Add `property` custom post type to wl_entity_types
 		$types[] = 'property';
@@ -238,7 +282,7 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 	 *
 	 * @since 3.20.0
 	 */
-	function test_get_835() {
+	private function do_test_get_835() {
 
 		// Entity with one Wordlift_Schema_Service defined type and others.
 		$post_1_id = $this->factory()->post->create( array(
@@ -276,7 +320,7 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 	 *
 	 * @since 3.20.0
 	 */
-	public function test_get_ids_names() {
+	private function do_test_get_ids_names() {
 
 		$post_id = $this->factory()->post->create( array(
 			'post_type' => 'entity',
@@ -313,7 +357,7 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 	 *
 	 * @since 3.20.0
 	 */
-	public function test_set_835() {
+	private function do_test_set_835() {
 
 		$post_id = $this->factory()->post->create( array(
 			'post_type' => 'entity',

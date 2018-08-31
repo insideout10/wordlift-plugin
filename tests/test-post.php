@@ -50,7 +50,7 @@ class Wordlift_Post_Test extends Wordlift_Unit_Test_Case {
 	/**
 	 * Test the plugin configuration.
 	 */
-	function testConfiguration() {
+	function test_configuration() {
 
 		// #43: https://github.com/insideout10/wordlift-plugin/issues/43
 		// We're using WordLift Server, we do not require a Redlink Key nor a Dataset Name to be set:
@@ -68,7 +68,7 @@ class Wordlift_Post_Test extends Wordlift_Unit_Test_Case {
 	/**
 	 * Test the method to count the number of triples in the remote datastore.
 	 */
-	function testCountTriples() {
+	function test_count_triples() {
 
 		// Get the count of triples.
 		$counts = rl_count_triples();
@@ -79,34 +79,13 @@ class Wordlift_Post_Test extends Wordlift_Unit_Test_Case {
 		$this->assertTrue( isset( $counts['subjects'] ) );
 		$this->assertTrue( isset( $counts['predicates'] ) );
 		$this->assertTrue( isset( $counts['objects'] ) );
-	}
 
-//	/**
-//	 * Test create a post and submit it to Redlink for analysis.
-//	 */
-//	function testRedlinkAPI() {
-//
-//		// Create the test post.
-//		$post_id = $this->createPost();
-//
-//		// Send the post for analysis.
-//		$body = wl_analyze_post( $post_id );
-//
-//		// Save the results to a file.
-//		if ( self::SAVE_REMOTE_RESPONSE ) {
-//			$output = dirname( __FILE__ ) . '/' . self::FILENAME . '.json';
-//			$result = file_put_contents( $output, $body );
-//			$this->assertFalse( false === $result );
-//		}
-//
-//		// Delete the test post.
-//		$this->deletePost( $post_id );
-//	}
+	}
 
 	/**
 	 * Test saving entities passed via a metabox.
 	 */
-	function testEntitiesViaArray() {
+	function test_entities_via_array() {
 
 		self::turn_on_entity_push();
 
@@ -222,7 +201,7 @@ class Wordlift_Post_Test extends Wordlift_Unit_Test_Case {
 		}
 
 		// Check that the locally saved entities and the remotely saved ones match.
-		$this->checkEntities( $entity_posts );
+		$this->check_entities( $entity_posts );
 
 		// Delete the post.
 		$this->deletePost( $post_id );
@@ -265,10 +244,10 @@ class Wordlift_Post_Test extends Wordlift_Unit_Test_Case {
 	 *
 	 * @param array $posts The array of entity posts.
 	 */
-	function checkEntities( $posts ) {
+	private function check_entities( $posts ) {
 
 		foreach ( $posts as $post ) {
-			$this->checkEntity( $post );
+			$this->check_entity( $post );
 		}
 	}
 
@@ -277,7 +256,7 @@ class Wordlift_Post_Test extends Wordlift_Unit_Test_Case {
 	 *
 	 * @param WP_Post $post The post to check.
 	 */
-	function checkEntity( $post ) {
+	private function check_entity( $post ) {
 
 		// Get the entity URI.
 		$uri = Wordlift_Sparql_Service::escape( wl_get_entity_uri( $post->ID ) );
@@ -329,58 +308,4 @@ EOF;
 		$this->assertFalse( empty( $type ) );
 	}
 
-	/**
-	 * Check the provided entity post against the remote Redlink datastore.
-	 *
-	 * @param string $uri The entity URI.
-	 * @param string $title The entity title.
-	 * @param string $permalink The entity permalink.
-	 */
-	function checkEntityWithData( $uri, $title, $permalink ) {
-
-		wl_write_log( "checkEntityWithData [ uri :: $uri ]" );
-
-		// Prepare the SPARQL query to select label and URL.
-		$sparql = <<<EOF
-SELECT DISTINCT ?label ?url ?type
-WHERE {
-    <$uri> rdfs:label ?label ;
-           schema:url ?url ;
-           a ?type .
-}
-EOF;
-
-		// Send the query and get the response.
-		$response = rl_sparql_select( $sparql );
-		$this->assertFalse( is_wp_error( $response ) );
-
-		$body = $response['body'];
-
-		$matches = array();
-		$count   = preg_match_all( '/^(?P<label>.*),(?P<url>.*),(?P<type>[^\r]*)/im', $body, $matches, PREG_SET_ORDER );
-		$this->assertTrue( is_numeric( $count ) );
-
-		// Expect only one match (headers + one row).
-		$this->assertEquals( 2, $count );
-
-		// Focus on the first row.
-		$match = $matches[1];
-
-		// Get the label and URL from the remote answer.
-		$label = $match['label'];
-		$url   = $match['url'];
-		$type  = $match['type'];
-
-		// Check for equality.
-		$this->assertEquals( $title, $label );
-		$this->assertEquals( $permalink, $url );
-		$this->assertFalse( empty( $type ) );
-	}
-
-}
-
-function getDatasetName() {
-	$dataset_name = "$this->dataset_name_prefix-php-" . PHP_MAJOR_VERSION . "." . PHP_MINOR_VERSION . "-wp-$this->wp_version-ms-$this->wp_multisite";
-
-	return str_replace( '.', '-', $dataset_name );
 }
