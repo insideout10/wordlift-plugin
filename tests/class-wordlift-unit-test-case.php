@@ -81,12 +81,6 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 
 	}
 
-//	function tearDown() {
-//		$this->teardown_publisher();
-//
-//		parent::tearDown();
-//	}
-
 	/**
 	 * Set up the publisher.
 	 *
@@ -100,13 +94,6 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 		) );
 		$this->entity_type_service->set( $this->publisher_id, 'http://schema.org/Person' );
 		$this->configuration_service->set_publisher_id( $this->publisher_id );
-
-	}
-
-	private function teardown_publisher() {
-
-		wp_delete_post( $this->publisher_id );
-		$this->configuration_service->set_publisher_id( null );
 
 	}
 

@@ -80,7 +80,7 @@ EOF;
 
 	}
 
-	function test_publishingunpublishingposts() {
+	function test_publishing_unpublishing_posts() {
 
 		self::turn_on_entity_push();
 
@@ -123,7 +123,7 @@ EOF;
 
 		// publish the post.
 		wp_publish_post( $post_1_id );
-		// wl_update_post_status( $post_1_id, 'publish' );
+
 		$this->assertCount( 2, wl_core_get_related_entity_ids( $post_1_id ) );
 
 		// check the post isn't published (1 line is the header).
@@ -203,7 +203,7 @@ EOF;
 
 	}
 
-	function test_redlinkisupdatedwhenrelatedentityistrashed() {
+	function test_updated_when_related_entity_is_trashed() {
 
 		self::turn_on_entity_push();
 

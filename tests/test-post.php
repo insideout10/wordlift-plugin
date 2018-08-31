@@ -85,12 +85,10 @@ class Wordlift_Post_Test extends Wordlift_Unit_Test_Case {
 	/**
 	 * Test saving entities passed via a metabox.
 	 */
-	function test_entities_via_array() {
-
-		self::turn_on_entity_push();
+	public function test_entities_via_array() {
 
 		// Create a post.
-		$post_id = $this->createPost();
+		$post_id = $this->create_post();
 		$this->assertTrue( is_numeric( $post_id ) );
 
 		$post = get_post( $post_id );
@@ -128,9 +126,6 @@ class Wordlift_Post_Test extends Wordlift_Unit_Test_Case {
 			$label = $entity->{'http://www.w3.org/2000/01/rdf-schema#label'}->{'@value'};
 			$this->assertFalse( empty( $label ) );
 
-			// Type
-//            $type = wl_get_entity_type($entity);
-//            $this->assertFalse(empty($type));
 			// Description
 			$description = wl_get_entity_description( $entity );
 			$this->assertNotNull( $description );
@@ -206,14 +201,13 @@ class Wordlift_Post_Test extends Wordlift_Unit_Test_Case {
 		// Delete the post.
 		$this->deletePost( $post_id );
 
-		self::turn_off_entity_push();
 	}
 
 	/**
 	 * Create a test post.
 	 * @return int
 	 */
-	function createPost() {
+	public function create_post() {
 
 		// Get the post contents.
 		$input   = dirname( __FILE__ ) . '/' . self::FILENAME;

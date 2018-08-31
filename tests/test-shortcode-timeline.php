@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Class TimelineShortcodeTest
  */
@@ -70,7 +71,7 @@ class TimelineShortcodeTest extends Wordlift_Unit_Test_Case {
 	 *  * 3 Event entities of which 2 referenced by the Post
 	 *  * 1 Person entity reference by the Post
 	 */
-	function testGetEvents() {
+	function test_get_events() {
 
 		// We need to push entities to the Linked Data store for this test. We'll
 		// turn entity push back off at the end of the test.
