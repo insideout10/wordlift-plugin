@@ -19,15 +19,6 @@
 class Wordlift_Install_Service {
 
 	/**
-	 * The singleton instance.
-	 *
-	 * @since  3.18.0
-	 * @access private
-	 * @var \Wordlift_Install_Service $instance A {@link Wordlift_Install_Service} instance.
-	 */
-	private static $instance;
-
-	/**
 	 * A {@link Wordlift_Log_Service} instance.
 	 *
 	 * @since  3.18.0
@@ -35,6 +26,15 @@ class Wordlift_Install_Service {
 	 * @var \Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
 	 */
 	private $log;
+
+	/**
+	 * The singleton instance.
+	 *
+	 * @since  3.18.0
+	 * @access private
+	 * @var \Wordlift_Install_Service $instance A {@link Wordlift_Install_Service} instance.
+	 */
+	private static $instance;
 
 	/**
 	 * Wordlift_Install_Service constructor.
@@ -75,11 +75,29 @@ class Wordlift_Install_Service {
 	/**
 	 * Loop thought all versions and install the updates.
 	 *
+	 * @since 3.20.0 use a transient to avoid concurrent installation calls.
 	 * @since 3.18.0
 	 *
 	 * @return void
 	 */
 	public function install() {
+
+		if ( false === get_transient( '_wl_installing' ) ) {
+			set_transient( '_wl_installing', true, 5 * MINUTE_IN_SECONDS );
+
+			$this->do_install();
+
+			delete_transient( '_wl_installing' );
+		}
+
+	}
+
+	/**
+	 * Perform the actual installation.
+	 *
+	 * @since 3.20.0
+	 */
+	private function do_install() {
 
 		// Get the install services.
 		$installs = array(
@@ -109,13 +127,11 @@ class Wordlift_Install_Service {
 
 				$this->log->info( "$version installed." );
 
+				// Bump the version.
+				update_option( 'wl_db_version', $version );
+
 			}
 
-		}
-
-		// Bump the `wl_db_version`.
-		if ( null !== $version ) {
-			update_option( 'wl_db_version', $version );
 		}
 
 	}

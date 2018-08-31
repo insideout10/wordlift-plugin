@@ -40,7 +40,7 @@ class Wordlift_Install_All_Entity_Types_Test extends Wordlift_Unit_Test_Case {
 	function setUp() {
 		parent::setUp();
 
-		$this->install      = Wordlift_Install_All_Entity_Types::get_instance();
+		$this->install      = new Wordlift_Install_All_Entity_Types();
 		$this->option_value = get_option( Wordlift_Install_All_Entity_Types::OPTION_NAME );
 	}
 

@@ -37,36 +37,14 @@ abstract class Wordlift_Install {
 	protected static $version = '0.0.0';
 
 	/**
-	 * The singleton instance.
-	 *
-	 * @since 3.20.0
-	 * @access private
-	 * @var \Wordlift_Install $instance The singleton instance.
-	 */
-	private static $instance;
-
-	/**
 	 * Wordlift_Install_Service constructor.
 	 *
 	 * @since 3.18.0
 	 */
 	public function __construct() {
 
-		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Install_' . str_replace( '.', '_', static::$version ) );
+		$this->log = Wordlift_Log_Service::get_logger( get_class( $this ) );
 
-		self::$instance = $this;
-	}
-
-	/**
-	 * Get the singleton instance.
-	 *
-	 * @since 3.20.0
-	 *
-	 * @return \Wordlift_Install The singleton instance.
-	 */
-	public static function get_instance() {
-
-		return self::$instance;
 	}
 
 	/**
