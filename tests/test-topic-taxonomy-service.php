@@ -1,36 +1,10 @@
 <?php
-require_once( 'functions.php' );
-
 /**
  * Test the {@link TopicTaxonomyServiceTest}.
  *
  * @since 3.6.0
  */
 class TopicTaxonomyServiceTest extends Wordlift_Unit_Test_Case {
-
-	/**
-	 * The Log service.
-	 *
-	 * @since  3.6.0
-	 * @access private
-	 * @var \Wordlift_Log_Service $log_service The Log service.
-	 */
-	private $log_service;
-
-	/**
-	 * Set up the test.
-	 */
-	function setUp() {
-		parent::setUp();
-
-		// We don't need to check the remote Linked Data store.
-		Wordlift_Unit_Test_Case::turn_off_entity_push();;
-
-		$this->log_service = Wordlift_Log_Service::get_logger( 'TopicTaxonomyServiceTest' );
-		wl_configure_wordpress_test();
-		wl_empty_blog();
-
-	}
 
 	/**
 	 * Test the {@link get_or_create_term_from_topic_entity} function

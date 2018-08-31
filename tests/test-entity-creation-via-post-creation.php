@@ -3,9 +3,6 @@
 /**
  * This file covers tests related entity creation via post creation.
  */
-
-require_once 'functions.php';
-
 class EntityCreationViaPostCreationTest extends Wordlift_Unit_Test_Case {
 
 	/**
@@ -22,11 +19,6 @@ class EntityCreationViaPostCreationTest extends Wordlift_Unit_Test_Case {
 	 */
 	function setUp() {
 		parent::setUp();
-
-		// We don't need to check the remote Linked Data store.
-		Wordlift_Unit_Test_Case::turn_off_entity_push();;
-
-		wl_empty_blog();
 
 		$this->entity_service = $this->get_wordlift_test()->get_entity_service();
 

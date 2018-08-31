@@ -1,34 +1,9 @@
 <?php
-require_once 'functions.php';
 
 /**
  * Class EntityImagesTest
  */
 class EntityImagesTest extends Wordlift_Unit_Test_Case {
-
-	/**
-	 * Set up the test.
-	 */
-	function setUp() {
-		parent::setUp();
-
-		// Empty the blog.
-		wl_empty_blog();
-
-		// Check that entities and posts have been deleted.
-		$this->assertEquals( 0, count( get_posts( array(
-			'posts_per_page' => - 1,
-			'post_type'      => 'post',
-			'post_status'    => 'any',
-		) ) ) );
-
-		$this->assertEquals( 0, count( get_posts( array(
-			'posts_per_page' => - 1,
-			'post_type'      => 'entity',
-			'post_status'    => 'any',
-		) ) ) );
-
-	}
 
 	function testSaveOneImage() {
 

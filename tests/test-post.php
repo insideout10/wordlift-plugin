@@ -42,18 +42,18 @@ class PostTest extends Wordlift_Unit_Test_Case {
 	function setUp() {
 		parent::setUp();
 
-		wl_empty_blog();
-
-		$this->assertEquals( 0, count( get_posts( array(
-			'posts_per_page' => - 1,
-			'post_type'      => 'post',
-			'post_status'    => 'any',
-		) ) ) );
-		$this->assertEquals( 0, count( get_posts( array(
-			'posts_per_page' => - 1,
-			'post_type'      => 'entity',
-			'post_status'    => 'any',
-		) ) ) );
+//		wl_empty_blog();
+//
+//		$this->assertEquals( 0, count( get_posts( array(
+//			'posts_per_page' => - 1,
+//			'post_type'      => 'post',
+//			'post_status'    => 'any',
+//		) ) ) );
+//		$this->assertEquals( 0, count( get_posts( array(
+//			'posts_per_page' => - 1,
+//			'post_type'      => 'entity',
+//			'post_status'    => 'any',
+//		) ) ) );
 
 		// Get the count of triples.
 		$counts = rl_count_triples();

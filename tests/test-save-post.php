@@ -19,16 +19,6 @@ require_once 'functions.php';
  */
 class SavePostTest extends Wordlift_Unit_Test_Case {
 
-	/**
-	 * Set up the test.
-	 */
-	function setUp() {
-		parent::setUp();
-
-		wl_empty_blog();
-
-	}
-
 	function test_savepostandreferencedentities() {
 
 		// create two entities

@@ -1,6 +1,4 @@
 <?php
-require_once 'functions.php';
-
 /**
  * Class TimelineShortcodeTest
  */
@@ -20,12 +18,6 @@ class TimelineShortcodeTest extends Wordlift_Unit_Test_Case {
 	 */
 	function setUp() {
 		parent::setUp();
-
-		// We don't need to check the remote Linked Data store.
-		Wordlift_Unit_Test_Case::turn_off_entity_push();;
-
-		// Empty the blog.
-		wl_empty_blog();
 
 		add_theme_support( 'post-thumbnails' );
 

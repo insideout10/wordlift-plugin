@@ -93,40 +93,6 @@ function wl_delete_post_attachments( $post_id ) {
 }
 
 /**
- * Update the content of the post with the specified ID.
- *
- * @param int    $post_id The post ID.
- * @param string $content The post content.
- *
- * @return int|WP_Error The post ID in case of success, a WP_Error in case of error.
- */
-function wl_update_post( $post_id, $content ) {
-
-	wl_write_log( "wl_update_post [ post id :: $post_id ][ content ::\n $content\n ]" );
-
-	$wp_error = null;
-	$args     = array(
-		'ID'           => $post_id,
-		'post_content' => $content,
-	);
-
-	// Return WP_Error in case of errors.
-	return wp_update_post( $args, true );
-}
-
-/**
- * Get a post with the provided ID.
- *
- * @param int $post_id The post ID.
- *
- * @return null|WP_Post Returns a WP_Post object, or null on failure.
- */
-function wl_get_post( $post_id ) {
-
-	return get_post( $post_id );
-}
-
-/**
  * Delete permanently the provided posts.
  *
  * @param array $posts An array of posts.
@@ -142,131 +108,6 @@ function wl_delete_posts( $posts ) {
 	}
 
 	return $success;
-}
-
-///**
-// * Analyze the post with the specified ID. The analysis will make use of the method *wl_ajax_analyze_action*
-// * provided by the WordLift plugin.
-// *
-// * @since 3.0.0
-// *
-// * @param int $post_id The post ID to analyze.
-// *
-// * @return string Returns null on failure, or the WP_Error, or a WP_Response with the response.
-// */
-//function wl_analyze_post( $post_id ) {
-//
-//	// Get the post contents.
-//	$post = wl_get_post( $post_id );
-//	if ( null === $post ) {
-//		return null;
-//	}
-//	$content = $post->post_content;
-//
-//	return wl_analyze_content( $content );
-//}
-
-/**
- * Embed the analysis results in the post content. It should match what happens client-side with the related function
- * in the app.services.EditorService.coffee file.
- *
- * @param array  $results The analysis results.
- * @param string $content The post content.
- *
- * @return string The content with the annotations embedded.
- */
-function wl_embed_text_annotations( $results, $content ) {
-
-	// Then get the related entities via the entity-annotations.
-	foreach ( $results['text_annotations'] as $item ) {
-		$id         = $item['id'];
-		$sel_prefix = wl_clean_up_regex( substr( $item['sel_prefix'], - 2 ) );
-		$sel_suffix = wl_clean_up_regex( substr( $item['sel_suffix'], 0, 2 ) );
-		$sel_text   = $item['sel_text'];
-
-		$pattern = "/($sel_prefix(?:<[^>]+>){0,})($sel_text)((?:<[^>]+>){0,}$sel_suffix)(?![^<]*\"[^<]*>)/i";
-		$replace = "$1<span class=\"textannotation\" id=\"$id\">$2</span>$3";
-//        $replace    = "$1<span class=\"textannotation\" id=\"$id\" typeof=\"http://fise.iks-project.eu/ontology/TextAnnotation\">$2</span>$3";
-
-//        echo "[ id :: $id ]\n";
-//        echo "[ sel_prefix :: $sel_prefix ]\n";
-//        echo "[ sel_suffix :: $sel_suffix ]\n";
-//        echo "[ sel_text :: $sel_text ]\n";
-//        echo "[ pattern :: $pattern ]\n";
-//        echo "[ replace :: $replace ]\n";
-//        echo "[ content length (before) :: " . strlen( $content ) . " ]\n";
-
-		// Update the content.
-		$content = preg_replace( $pattern, $replace, $content );
-
-//        echo "[ content length (after) :: " . strlen( $content ) . " ]\n";
-	}
-
-	return $content;
-}
-
-/**
- * @param $results
- * @param $content
- *
- * @return null Null in case of failure.
- */
-function wl_embed_entities( $results, $content ) {
-
-	// Prepare the regex pattern.
-	$pattern = '/<span class="textannotation" id="([^"]+)"[^>]*>([^<]+)<\/span>/im';
-	// This var will contain the output matches.
-	$matches = array();
-
-	// Return null if no match found.
-	if ( false === preg_match_all( $pattern, $content, $matches, PREG_SET_ORDER ) ) {
-		return null;
-	}
-
-	// For each match, embed the related entity.
-	foreach ( $matches as $match ) {
-		$full = $match[0];
-		$id   = $match[1];
-		$text = $match[2];
-
-//        echo "[ id :: $id ][ text :: $text ]\n";
-
-		$text_annotation = $results['text_annotations'][ $id ];
-		$entities        = $text_annotation['entities'];
-
-//        echo "[ text annotation :: " . $text_annotation['id'] . "][ entities count :: " . count( $entities ) . " ]\n";
-
-		$entity_annotation = wl_get_entity_annotation_best_match( $entities );
-
-		// Get the entity, its ID and type.
-		$entity          = $entity_annotation['entity'];
-		$entity_id       = $entity->{'@id'};
-		$entity_type     = wl_get_entity_type( $entity );
-		$entity_class    = $entity_type['class'];
-		$entity_type_uri = $entity_type['uri'];
-
-		// Create the new span with the entity reference.
-		$replace = '<span class="textannotation ' . $entity_class . '" ' .
-		           'id="' . $id . '" ' .
-		           'itemid="' . $entity_id . '" ' .
-		           'itemscope="itemscope" ' .
-		           'itemtype="' . $entity_type_uri . '">' .
-		           '<span itemprop="name">' . htmlentities( $text ) . '</span></span>';
-		$content = str_replace( $full, $replace, $content );
-
-
-//        echo "[ id :: $id ]\n";
-//        echo "[ sel_prefix :: $sel_prefix ]\n";
-//        echo "[ sel_suffix :: $sel_suffix ]\n";
-//        echo "[ sel_text :: $sel_text ]\n";
-//        echo "[ pattern :: $pattern ]\n";
-//        echo "[ replace :: $replace ]\n";
-//        echo "[ content length (before) :: " . strlen( $content ) . " ]\n";
-//        echo "[ entity id :: $entity_id ][ entity type :: $entity_type ]\n";
-
-	}
-
-	return $content;
 }
 
 /**
@@ -357,25 +198,6 @@ function wl_freebase_image_url( $image_link ) {
 	};
 
 	return null;
-}
-
-/**
- * Clean up a string to be used for a regex fragment.
- *
- * @param string $fragment The fragment to cleanup.
- *
- * @return mixed The cleaned up fragment.
- */
-function wl_clean_up_regex( $fragment ) {
-	$fragment = str_replace( '\\', '\\\\', $fragment );
-	$fragment = str_replace( '\(', '\\(', $fragment );
-	$fragment = str_replace( '\)', '\\)', $fragment );
-	$fragment = str_replace( '\n', '\\n?', $fragment );
-	$fragment = str_replace( '-', '\\-', $fragment );
-	$fragment = str_replace( '\x20', '\\s', $fragment );
-	$fragment = str_replace( '\xa0', '&nbsp;', $fragment );
-
-	return $fragment;
 }
 
 /**
@@ -491,23 +313,6 @@ function wl_parse_response( $json ) {
 		'entity_annotations' => $entity_annotations,
 		'entities'           => $entities,
 	);
-}
-
-/**
- * Get an array of entity URIs given their post IDs.
- *
- * @param array $post_ids The post IDs.
- *
- * @return array An array of entity URIs.
- */
-function wl_post_ids_to_entity_uris( $post_ids ) {
-
-	$uris = array();
-	foreach ( $post_ids as $id ) {
-		array_push( $uris, wl_get_entity_uri( $id ) );
-	}
-
-	return $uris;
 }
 
 /**
@@ -775,108 +580,6 @@ function wl_tests_get_relation_instances_for( $post_id, $predicate = null ) {
 }
 
 /**
- * Replace the midnight in the format of +00:00 to .000Z to allow testing time results from WordLift Server / Redlink.
- *
- * @param $time string A time format with +00:00
- *
- * @return string A time format with .000Z
- *
- * @since 3.0.0
- */
-function wl_tests_time_0000_to_000Z( $time ) {
-	return preg_replace( '/\+00:00$/', '.000Z', $time );
-}
-
-
-/**
- * Return the time difference in seconds between two times (time2 is expected to be later than time1).
- *
- * @param $time1
- * @param $time2
- *
- * @return int
- */
-function wl_tests_get_time_difference_in_seconds( $time1, $time2 ) {
-
-	$date1 = date_create( $time1 );
-	$date2 = date_create( $time2 );
-
-	return ( $date2->getTimestamp() - $date1->getTimestamp() );
-}
-
-///**
-// * Retrieves the property expected type, according to the schema.org specifications, where:
-// *
-// * @param $property_name string Name of the property (e.g. name, for the http://schema.org/name property)
-// *
-// * @return array of allowed types or NULL in case of property not found.
-// *
-// * The following types are supported (defined as constants):
-// * - Wordlift_Schema_Service::DATA_TYPE_DATE
-// * - WL_DATA_TYPE_INTEGER
-// * - Wordlift_Schema_Service::DATA_TYPE_DOUBLE
-// * - WL_DATA_TYPE_BOOLEAN
-// * - Wordlift_Schema_Service::DATA_TYPE_STRING
-// * - Wordlift_Schema_Service::DATA_TYPE_URI
-// * - a schema.org URI when the property type supports a schema.org entity (e.g. http://schema.org/Place)
-// */
-//function wl_schema_get_property_expected_type( $property_name ) {
-//
-//	// This is the actual structure of a custom_field.
-//	/*
-//	 * Wordlift_Schema_Service::FIELD_LOCATION       => array(
-//	 *      'predicate'   => 'http://schema.org/location',
-//	 *      'type'        => Wordlift_Schema_Service::DATA_TYPE_URI,
-//	 *      'export_type' => 'http://schema.org/PostalAddress',
-//	 *      'constraints' => array(
-//	 *              'uri_type' => 'Place'
-//	 *      )
-//	 *  )
-//	 */
-//
-//	// Build full schema uri if necessary
-//	$property_name = wl_build_full_schema_uri_from_schema_slug( $property_name );
-//
-//	// Get all custom fields
-//	$all_types_and_fields = wl_entity_taxonomy_get_custom_fields();
-//
-//	$expected_types = null;
-//
-//	// Search for the entity type which has the requested name as uri
-//	$found = false;
-//	foreach ( $all_types_and_fields as $type_fields ) {
-//		foreach ( $type_fields as $field ) {
-//			if ( $field['predicate'] == $property_name ) {
-//
-//				$expected_types = array();
-//
-//				// Does the property accept a specific schema type?
-//				if ( isset( $field['constraints'] ) && isset( $field['constraints']['uri_type'] ) ) {
-//
-//					// Take note of expected schema type
-//					$uri_types = ( is_array( $field['constraints']['uri_type'] ) ) ?
-//						$field['constraints']['uri_type'] :
-//						array( $field['constraints']['uri_type'] );
-//
-//					foreach ( $uri_types as $uri_type ) {
-//						$expected_types[] = wl_build_full_schema_uri_from_schema_slug( $uri_type );
-//					}
-//
-//				} else {
-//					// Take note of expected type
-//					$expected_types[] = $field['type'];
-//				}
-//
-//				// We found the property
-//				return $expected_types;
-//			}
-//		}
-//	}
-//
-//	return $expected_types;
-//}
-
-/**
  * Retrieve entity property type, starting from the schema.org's property name
  * or from the WL_CUSTOM_FIELD_xxx name.
  *
@@ -913,24 +616,6 @@ function wl_get_meta_type( $property_name ) {
 	}
 
 	return null;
-}
-
-/**
- * Get the modified time of the provided post. If the time is negative, return the published date.
- *
- * @param object $post A post instance.
- *
- * @return string A datetime.
- */
-function wl_get_post_modified_time( $post ) {
-
-	$date_modified = get_post_modified_time( 'c', true, $post );
-
-	if ( '-' === substr( $date_modified, 0, 1 ) ) {
-		return get_the_time( 'c', $post );
-	}
-
-	return $date_modified;
 }
 
 /**

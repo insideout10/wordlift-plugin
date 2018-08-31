@@ -27,15 +27,6 @@ class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 	private $entity_service;
 
 	/**
-	 * The Log service.
-	 *
-	 * @since  3.2.0
-	 * @access private
-	 * @var \Wordlift_Log_Service $log_service The Log service.
-	 */
-	private $log_service;
-
-	/**
 	 * The {@link Wordlift_Entity_Uri_Service} instance.
 	 *
 	 * @since  3.16.3
@@ -49,14 +40,6 @@ class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 	 */
 	function setUp() {
 		parent::setUp();
-
-		// We don't need to check the remote Linked Data store.
-		Wordlift_Unit_Test_Case::turn_off_entity_push();;
-
-		$this->log_service = Wordlift_Log_Service::get_logger( 'EntityServiceTest' );
-
-		wl_configure_wordpress_test();
-		wl_empty_blog();
 
 		$this->entity_service     = Wordlift_Entity_Service::get_instance();
 		$this->entity_uri_service = $this->get_wordlift_test()->get_entity_uri_service();

@@ -1,30 +1,10 @@
 <?php
-require_once 'functions.php';
 require_once( dirname( __FILE__ ) . '/../src/admin/WL_Metabox/class-wl-metabox.php' );
 
 /**
  * Class MetaboxTest
  */
 class MetaboxTest extends Wordlift_Unit_Test_Case {
-
-	/**
-	 * Set up the test.
-	 */
-	function setUp() {
-		parent::setUp();
-
-		// We don't need to check the remote Linked Data store.
-		Wordlift_Unit_Test_Case::turn_off_entity_push();;
-
-		// Configure WordPress with the test settings.
-		wl_configure_wordpress_test();
-
-		// Reset data on the remote dataset.
-//		rl_empty_dataset();
-
-		// Empty the blog.
-		wl_empty_blog();
-	}
 
 	/**
 	 * Test the WL_Metabox obj is built properly

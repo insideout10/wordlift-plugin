@@ -1,21 +1,6 @@
 <?php
-require_once 'functions.php';
 
 class PostEntityRelationsTest extends Wordlift_Unit_Test_Case {
-
-	/**
-	 * Set up the test.
-	 */
-	function setUp() {
-		parent::setUp();
-
-		// We don't need to check the remote Linked Data store.
-		Wordlift_Unit_Test_Case::turn_off_entity_push();;
-
-		wl_configure_wordpress_test();
-
-		wl_empty_blog();
-	}
 
 	function testFindByURI() {
 
