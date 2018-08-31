@@ -93,9 +93,7 @@ class Wordlift_Schemaorg_Class_Service {
 
 		// Since we want to be compatible with WP 4.4, we use the pre-4.5.0 style when
 		// calling `get_terms`.
-		$terms = get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
-			'hide_empty' => false,
-		) );
+		$terms = get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'get' => 'all', ) );
 
 		// PHP 5.3 compat.
 		$name_meta_key      = Wordlift_Schemaorg_Class_Service::NAME_META_KEY;

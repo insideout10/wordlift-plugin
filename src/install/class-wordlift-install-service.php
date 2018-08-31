@@ -123,7 +123,9 @@ class Wordlift_Install_Service {
 			     || $install->must_install() ) {
 
 				$class_name = get_class( $install );
-				$this->log->debug( "Current version is {$this->get_current_version()}, installing $class_name..." );
+
+				$this->log->info( "Current version is {$this->get_current_version()}, installing $class_name..." );
+
 				// Install version.
 				$install->install();
 

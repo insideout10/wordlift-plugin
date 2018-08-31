@@ -477,34 +477,6 @@ class Wordlift_Entity_Service {
 			);
 	}
 
-//	/**
-//	 * Get the entity terms IDs which represent an entity.
-//	 *
-//	 * @since 3.17.0 deprecated.
-//	 * @since 3.15.0
-//	 *
-//	 * @deprecated
-//	 * @return array An array of terms' ids.
-//	 */
-//	public static function get_entity_terms() {
-//
-//		$terms = get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
-//			'hide_empty' => false,
-//			// Because of #334 (and the AAM plugin) we changed fields from 'id=>slug' to 'all'.
-//			// An issue has been opened with the AAM plugin author as well.
-//			//
-//			// see https://github.com/insideout10/wordlift-plugin/issues/334
-//			// see https://wordpress.org/support/topic/idslug-not-working-anymore?replies=1#post-8806863
-//			'fields'     => 'all',
-//		) );
-//
-//		return array_map( function ( $term ) {
-//			return $term->term_id;
-//		}, array_filter( $terms, function ( $term ) {
-//			return 'article' !== $term->slug;
-//		} ) );
-//	}
-
 	/**
 	 * Create a new entity.
 	 *

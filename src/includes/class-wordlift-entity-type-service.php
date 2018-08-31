@@ -260,10 +260,10 @@ class Wordlift_Entity_Type_Service {
 	 */
 	private function get_term_by_uri( $uri ) {
 
-		$terms = get_terms( array(
-			'hide_empty' => false,
+		$terms = get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
+			'fields'     => 'all',
+			'get'        => 'all',
 			'number'     => 1,
-			'taxonomy'   => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 			'meta_query' => array(
 				array(
 					// Don't use a reference to Wordlift_Schemaorg_Class_Service, unless

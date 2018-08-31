@@ -24,6 +24,28 @@ if ( 'true' === getenv( 'WL_SSL_V1_FORCED' ) ) {
 require_once( 'jsonld.php' );
 
 /**
+ * Compatibility for WP 4.4.
+ *
+ * @since 3.20.0
+ */
+if ( ! class_exists( 'WPDieException' ) && ! function_exists( 'wp_die_handler' ) ) {
+	class WPDieException extends Exception {
+	}
+
+	function wp_die_handler( $message ) {
+		if ( ! is_scalar( $message ) ) {
+			$message = '0';
+		}
+
+		throw new WPDieException( $message );
+	}
+
+	add_filter( 'wp_die_handler', function () {
+		return 'wp_die_handler';
+	} );
+}
+
+/**
  * Create a new post.
  *
  * @param string $content The post content.

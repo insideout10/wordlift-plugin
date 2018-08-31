@@ -105,7 +105,7 @@ class Wordlift_Batch_Analysis_Service_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_submit_link_unknown_value() {
 
-		$this->factory->post->create_many( 2 );
+		$this->factory()->post->create_many( 2 );
 
 		$this->batch_analysis_service->submit( array( 'links' => 'unknown' ) );
 
