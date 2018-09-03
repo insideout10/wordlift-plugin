@@ -59,13 +59,6 @@ class Wordlift_Entity_Type_Service {
 
 		$this->schema_service = $schema_service;
 
-		/*
-		 * Listen for `get_object_terms` filter.
-		 *
-         * @since 3.20.0
-		 */
-		add_filter( 'get_object_terms', array( $this, 'get_object_terms' ), 10, 4 );
-
 		self::$instance = $this;
 
 	}
@@ -371,70 +364,6 @@ class Wordlift_Entity_Type_Service {
 
 		// Return null.
 		return false;
-	}
-
-	/**
-	 * Filter the terms for a given object or objects.
-	 *
-	 * @since 3.20.0
-	 *
-	 * @param array $terms An array of terms for the given object or objects.
-	 * @param array $object_id_array Array of object IDs for which `$terms` were retrieved.
-	 * @param array $taxonomy_array Array of taxonomies from which `$terms` were retrieved.
-	 * @param array $args An array of arguments for retrieving terms for the given
-	 *                               object(s). See wp_get_object_terms() for details.
-	 *
-	 * @return array $terms An array of terms for the given object or objects.
-	 */
-	public function get_object_terms( $terms, $object_id_array, $taxonomy_array, $args ) {
-
-		// Bail out, if the `wl_entity_type` taxonomy is not included.
-		if ( ! in_array( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, $taxonomy_array ) ) {
-			return $terms;
-		}
-
-		// Bail out if dealing with more than one object instance (avoid performance issues).
-		if ( 1 < count( $object_id_array ) ) {
-			return $terms;
-		}
-
-		// Bail out if terms have been found.
-		if ( 1 < count( $terms ) ) {
-			return $terms;
-		}
-
-		// Bail out if we're not dealing with a post.
-		$post = get_post( $object_id_array[0] );
-		if ( null === $post ) {
-			return $terms;
-		}
-
-		// You cannot call `$this->get(...)` or `wp_get_object_terms` here because we're inside the hook
-		// itself.
-		if ( ! self::is_valid_entity_post_type( $post->post_type ) ) {
-			$default_term_slug = 'web-page';
-		} elseif ( in_array( $post->post_type, array( 'post', 'page', ) ) ) {
-			$default_term_slug = 'article';
-		} else {
-			$default_term_slug = 'thing';
-		}
-
-		// Get the default term for this post.
-		$default_term = $this->get_term_by_slug( $default_term_slug );
-
-		/**
-		 * Allow 3rd parties to override the default terms.
-		 *
-		 * @since 3.20.0
-		 *
-		 * @param array $default_terms The array of default terms.
-		 * @param int   $object_id The object id.
-		 *
-		 * @return array An array of default terms.
-		 */
-		$default_terms = apply_filters( 'wl_default_entity_types_for_object', array( $default_term ), $object_id_array[0] );
-
-		return $default_terms;
 	}
 
 
