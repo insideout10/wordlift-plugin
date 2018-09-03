@@ -79,6 +79,8 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 		// Set up the publisher.
 		$this->setup_publisher();
 
+		_wl_test_set_wp_die_handler();
+
 	}
 
 	/**

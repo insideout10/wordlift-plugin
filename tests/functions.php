@@ -28,22 +28,35 @@ require_once( 'jsonld.php' );
  *
  * @since 3.20.0
  */
-if ( ! class_exists( 'WPDieException' ) && ! function_exists( 'wp_die_handler' ) ) {
-	class WPDieException extends Exception {
-	}
+function _wl_test_set_wp_die_handler() {
+//	if ( ! class_exists( 'WPDieException' ) && ! function_exists( '_wl_test_wp_die_handler' ) ) {
+//		class WPDieException extends Exception {
+//		}
+//
+//		function _wl_test_wp_die_handler( $message ) {
+//			if ( ! is_scalar( $message ) ) {
+//				$message = '0';
+//			}
+//
+//			throw new WPDieException( $message );
+//		}
+//
+//		add_filter( 'wp_die_ajax_handler', function () {
+//			return '_wl_test_wp_die_handler';
+//		}, PHP_INT_MAX );
+//
+//		add_filter( 'wp_die_xmlrpc_handler', function () {
+//			return '_wl_test_wp_die_handler';
+//		}, PHP_INT_MAX );
+//	}
+//
+//
+//	add_filter( 'wp_die_handler', function () {
+//		return '_wl_test_wp_die_handler';
+//	}, 1 );
 
-	function wp_die_handler( $message ) {
-		if ( ! is_scalar( $message ) ) {
-			$message = '0';
-		}
-
-		throw new WPDieException( $message );
-	}
-
-	add_filter( 'wp_die_handler', function () {
-		return 'wp_die_handler';
-	} );
 }
+
 
 /**
  * Create a new post.

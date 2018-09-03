@@ -105,6 +105,9 @@ class Wordlift_Batch_Analysis_Service_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_submit_link_unknown_value() {
 
+		global $wp_filter;
+		var_dump( $wp_filter['wp_die_handler'] );
+
 		$this->factory()->post->create_many( 2 );
 
 		$this->batch_analysis_service->submit( array( 'links' => 'unknown' ) );
@@ -878,8 +881,8 @@ EOF
 	 * @since 3.17.0
 	 *
 	 * @param bool   $preempt The previous `$preempt` value.
-	 * @param array  $r       A request array.
-	 * @param string $url     A request URL.
+	 * @param array  $r A request array.
+	 * @param string $url A request URL.
 	 *
 	 * @return bool The `$preempt` value.
 	 */

@@ -366,6 +366,55 @@ class Wordlift_Entity_Type_Service {
 		return false;
 	}
 
+	/**
+	 * Filter the terms for a given object or objects.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @param array $terms An array of terms for the given object or objects.
+	 * @param array $object_id_array Array of object IDs for which `$terms` were retrieved.
+	 * @param array $taxonomy_array Array of taxonomies from which `$terms` were retrieved.
+	 * @param array $args An array of arguments for retrieving terms for the given
+	 *                               object(s). See wp_get_object_terms() for details.
+	 *
+	 * @return array $terms An array of terms for the given object or objects.
+	 */
+	public function get_object_terms( $terms, $object_id_array, $taxonomy_array, $args ) {
+
+		// Bail out, if the `wl_entity_type` taxonomy is not included.
+		if ( ! in_array( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, $taxonomy_array ) ) {
+			return $terms;
+		}
+
+		// Bail out if dealing with more than one object instance (avoid performance issues).
+		if ( 1 < count( $object_id_array ) ) {
+			return $terms;
+		}
+
+		// Bail out if terms have been found.
+		if ( 1 < count( $terms ) ) {
+			return $terms;
+		}
+
+		// Get the default term for this post.
+		$schema_term  = $this->get( $object_id_array[0] );
+		$default_term = $this->get_term_by_uri( $schema_term['uri'] );
+
+		/**
+		 * Allow 3rd parties to override the default terms.
+		 *
+		 * @since 3.20.0
+		 *
+		 * @param array $default_terms The array of default terms.
+		 * @param int   $object_id The object id.
+		 *
+		 * @return array An array of default terms.
+		 */
+		$default_terms = apply_filters( 'wl_default_entity_types_for_object', array( $default_term ), $object_id_array[0] );
+
+		return $default_terms;
+	}
+
 
 	/**
 	 * Determines whether a post type can be used for entities.
