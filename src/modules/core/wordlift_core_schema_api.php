@@ -54,7 +54,7 @@ function wl_schema_get_value( $post_id, $property_name ) {
  * @param string $property_name  Name of the property (e.g. name, for the http://schema.org/name property)
  * @param mixed  $property_value Value to save into the property.
  *
- * @return bool The method returns true if everything went ok, an error string otherwise.
+ * @return boolean The method returns true if everything went ok, an error string otherwise.
  */
 function wl_schema_set_value( $post_id, $property_name, $property_value ) {
 
@@ -92,57 +92,57 @@ function wl_schema_set_value( $post_id, $property_name, $property_value ) {
 	return false;
 }
 
-///**
-// * Retrieves the entity types for the specified post ID, where
-// *
-// * @param int $post_id The numeric post ID.
-// *
-// * @return array Array of type(s) (e.g. Type, for the http://schema.org/Type)
-// *               or NULL in case of no values (or error).
-// */
-//function wl_schema_get_types( $post_id ) {
-//
-//	// Some checks on the parameters
-//	if ( ! is_numeric( $post_id ) ) {
-//		return null;
-//	}
-//
-//	$type = Wordlift_Entity_Type_Service::get_instance()->get( $post_id );
-//
-//	if ( isset( $type['uri'] ) ) {
-//		return array( $type['uri'] );
-//	}
-//
-//	return null;
-//}
+/**
+ * Retrieves the entity types for the specified post ID, where
+ *
+ * @param int $post_id The numeric post ID.
+ *
+ * @return array Array of type(s) (e.g. Type, for the http://schema.org/Type)
+ *               or NULL in case of no values (or error).
+ */
+function wl_schema_get_types( $post_id ) {
 
-///**
-// * Sets the entity type(s) for the specified post ID. Support is now for only one type per entity.
-// *
-// * @param int   $post_id    The numeric post ID
-// * @param array $type_names An array of strings, each defining a type (e.g. Type, for the http://schema.org/Type)
-// *
-// * @return bool True if everything went ok, an error string otherwise.
-// */
-//function wl_schema_set_types( $post_id, $type_names ) {
-//
-//	// Some checks on the parameters
-//	if ( ! is_numeric( $post_id ) || empty( $type_names ) || is_null( $type_names ) ) {
-//		return null;
-//	}
-//
-//	// TODO: support more than one type.
-//	if ( is_array( $type_names ) ) {
-//		$type_names = $type_names[0];
-//	}
-//
-//	// Get the schema URI (e.g. http://schema.org/Thing)
-//	$type_names = wl_build_full_schema_uri_from_schema_slug( $type_names );
-//
-//	// Actually sets the taxonomy type
-//	wl_set_entity_main_type( $post_id, $type_names );
-//
-//}
+	// Some checks on the parameters
+	if ( ! is_numeric( $post_id ) ) {
+		return null;
+	}
+
+	$type = Wordlift_Entity_Type_Service::get_instance()->get( $post_id );
+
+	if ( isset( $type['uri'] ) ) {
+		return array( $type['uri'] );
+	}
+
+	return null;
+}
+
+/**
+ * Sets the entity type(s) for the specified post ID. Support is now for only one type per entity.
+ *
+ * @param int   $post_id    The numeric post ID
+ * @param array $type_names An array of strings, each defining a type (e.g. Type, for the http://schema.org/Type)
+ *
+ * @return boolean True if everything went ok, an error string otherwise.
+ */
+function wl_schema_set_types( $post_id, $type_names ) {
+
+	// Some checks on the parameters
+	if ( ! is_numeric( $post_id ) || empty( $type_names ) || is_null( $type_names ) ) {
+		return null;
+	}
+
+	// TODO: support more than one type.
+	if ( is_array( $type_names ) ) {
+		$type_names = $type_names[0];
+	}
+
+	// Get the schema URI (e.g. http://schema.org/Thing)
+	$type_names = wl_build_full_schema_uri_from_schema_slug( $type_names );
+
+	// Actually sets the taxonomy type
+	wl_set_entity_main_type( $post_id, $type_names );
+
+}
 
 /**
  * Build full schema uri starting from a slug. If the uri is already correct, nothing is done.

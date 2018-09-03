@@ -59,6 +59,13 @@ class Wordlift_Entity_Type_Service {
 
 		$this->schema_service = $schema_service;
 
+		/*
+		 * Listen for `get_object_terms` filter.
+		 *
+         * @since 3.20.0
+		 */
+		add_filter( 'get_object_terms', array( $this, 'get_object_terms' ), 10, 4 );
+
 		self::$instance = $this;
 
 	}
@@ -396,9 +403,24 @@ class Wordlift_Entity_Type_Service {
 			return $terms;
 		}
 
+		// Bail out if we're not dealing with a post.
+		$post = get_post( $object_id_array[0] );
+		if ( null === $post ) {
+			return $terms;
+		}
+
+		// You cannot call `$this->get(...)` or `wp_get_object_terms` here because we're inside the hook
+		// itself.
+		if ( ! self::is_valid_entity_post_type( $post->post_type ) ) {
+			$default_term_slug = 'web-page';
+		} elseif ( in_array( $post->post_type, array( 'post', 'page', ) ) ) {
+			$default_term_slug = 'article';
+		} else {
+			$default_term_slug = 'thing';
+		}
+
 		// Get the default term for this post.
-		$schema_term  = $this->get( $object_id_array[0] );
-		$default_term = $this->get_term_by_uri( $schema_term['uri'] );
+		$default_term = $this->get_term_by_slug( $default_term_slug );
 
 		/**
 		 * Allow 3rd parties to override the default terms.
