@@ -230,8 +230,7 @@ class Wordlift_Admin_Schemaorg_Property_Metabox {
 			foreach ( $instances as $uuid => $meta ) {
 				foreach ( $meta as $meta_key => $meta_value ) {
 					if ( ! empty( $meta_value ) ) {
-						$sanitized = sanitize_textarea_field( $meta_value );
-						add_post_meta( $post_id, Wordlift_Schemaorg_Property_Service::PREFIX . "{$name}_{$uuid}_{$meta_key}", $sanitized );
+						add_post_meta( $post_id, Wordlift_Schemaorg_Property_Service::PREFIX . "{$name}_{$uuid}_{$meta_key}", $meta_value );
 					}
 				}
 			}
