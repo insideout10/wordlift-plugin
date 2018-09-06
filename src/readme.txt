@@ -142,6 +142,8 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.19.4 (????-??-??) =
+
 = 3.19.3 (2018-08-16) =
 * Enhancement: [#839](https://github.com/insideout10/wordlift-plugin/issues/839): Add a setting to limit the scope for the Select in edit post screen.
 * Enhancement: [#837](https://github.com/insideout10/wordlift-plugin/issues/837): Use 300 width images in faceted search and navigator.
