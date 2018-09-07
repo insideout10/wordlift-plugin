@@ -29,9 +29,16 @@ function wl_linked_data_save_post( $post_id ) {
 
 	// Get the post type and check whether it supports the editor.
 	//
-	// See https://github.com/insideout10/wordlift-plugin/issues/659.
+	// @see https://github.com/insideout10/wordlift-plugin/issues/659.
 	$post_type           = get_post_type( $post_id );
-	$is_editor_supported = post_type_supports( $post_type, 'editor' );
+	/**
+	 * Use `wl_post_type_supports_editor` which calls a filter to allow 3rd parties to change the setting.
+	 *
+	 * @since 3.19.4
+	 *
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/847.
+	 */
+	$is_editor_supported = wl_post_type_supports_editor( $post_type );
 
 	// Bail out if it's not an entity.
 	if ( ! $is_editor_supported ) {

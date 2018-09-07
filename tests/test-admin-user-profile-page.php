@@ -112,9 +112,10 @@ class Wordlift_Admin_User_Profile_Page_Test extends Wordlift_Unit_Test_Case {
 		$this->user_service->expects( $this->never() )
 		                   ->method( 'get_entity' );
 
-		ob_clean();
+		ob_start();
 		$this->user_profile_page->edit_user_profile( $target_user );
-		$result = ob_get_clean();
+		$result = ob_get_contents();
+		ob_end_clean();
 
 		$this->assertEmpty( $result, 'There must be no output.' );
 
@@ -156,9 +157,10 @@ class Wordlift_Admin_User_Profile_Page_Test extends Wordlift_Unit_Test_Case {
 		                   ->with( $this->equalTo( $target_user->ID ) )
 		                   ->willReturn( true );
 
-		ob_clean();
+		ob_start();
 		$this->user_profile_page->edit_user_profile( $target_user );
-		$result = ob_get_clean();
+		$result = ob_get_contents();
+		ob_end_clean();
 
 		$this->assertNotEmpty( $result, 'There must be some output.' );
 
