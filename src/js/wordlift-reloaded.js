@@ -996,6 +996,10 @@
           return tinyMCE.get(id);
         },
         getHTML: function(id) {
+          var ref;
+          if (id == null) {
+            id = (ref = window['wlSettings']['default_editor_id']) != null ? ref : 'content';
+          }
           return service.getEditor(id).getContent({
             format: 'raw'
           });
