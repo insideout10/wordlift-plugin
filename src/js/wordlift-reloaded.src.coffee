@@ -992,7 +992,7 @@ angular.module('wordlift.editpost.widget.services.EditorAdapter', [
     #
     # @param string id The editor's id (by default 'content').
     # @return The editor instance.
-    getEditor: (id = 'content') ->
+    getEditor: (id = window['wlSettings']['default_editor_id'] ? 'content') ->
       tinyMCE.get(id)
 
     # Get the HTML code in the specified editor (by default 'content').

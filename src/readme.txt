@@ -143,6 +143,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 = 3.19.4 (????-??-??) =
+* Enhancement: [#848](https://github.com/insideout10/wordlift-plugin/issues/848): add a filter to allow 3rd parties to change the TinyMCE editor id.
 
 = 3.19.3 (2018-08-16) =
 * Enhancement: [#839](https://github.com/insideout10/wordlift-plugin/issues/839): Add a setting to limit the scope for the Select in edit post screen.

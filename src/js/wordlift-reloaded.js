@@ -989,8 +989,9 @@
       var service;
       service = {
         getEditor: function(id) {
+          var ref;
           if (id == null) {
-            id = 'content';
+            id = (ref = window['wlSettings']['default_editor_id']) != null ? ref : 'content';
           }
           return tinyMCE.get(id);
         },
