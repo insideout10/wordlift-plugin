@@ -1001,7 +1001,7 @@ angular.module('wordlift.editpost.widget.services.EditorAdapter', [
     #
     # @param string id The editor's id (by default 'content').
     # @return The editor's HTML content.
-    getHTML: (id) ->
+    getHTML: (id = window['wlSettings']['default_editor_id'] ? 'content') ->
       service.getEditor(id).getContent format: 'raw'
 
   # Finally return the service.
