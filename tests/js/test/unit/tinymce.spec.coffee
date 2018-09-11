@@ -93,7 +93,7 @@ describe "TinyMCE tests", ->
       expect(EditorService.embedAnalysis).toHaveBeenCalledWith jasmine.any(Object)
 
 
-    it 'sends the analysis results', inject( (AnalysisService, EditorService, $httpBackend, $rootScope) ->
+#    it 'sends the analysis results', inject( (AnalysisService, EditorService, $httpBackend, $rootScope) ->
 
       # Get a reference to the argument passed with the event.
       args = $rootScope.$broadcast.calls.argsFor 0
@@ -113,7 +113,7 @@ describe "TinyMCE tests", ->
       expect(Object.keys(analysis.entityAnnotations).length).toEqual 19
       expect(Object.keys(analysis.textAnnotations).length).toEqual 12
       expect(Object.keys(analysis.languages).length).toEqual 1
-    )
+#    )
 
 describe "TinceMCE editor : analysis abort", ->
   beforeEach module('wordlift.tinymce.plugin.services')

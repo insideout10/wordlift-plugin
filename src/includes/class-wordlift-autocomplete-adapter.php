@@ -71,7 +71,7 @@ class Wordlift_Autocomplete_Adapter {
 			? sanitize_text_field( wp_unslash( $_REQUEST['exclude'] ) ) : '';
 
 		$scope = ! empty( $_REQUEST['scope'] )
-			? sanitize_text_field( wp_unslash( $_REQUEST['scope'] ) ) : '';
+			? sanitize_text_field( wp_unslash( $_REQUEST['scope'] ) ) : WL_AUTOCOMPLETE_SCOPE;
 
 		// Make request.
 		$response = $this->autocomplete_service->make_request( $query, $exclude, $scope );

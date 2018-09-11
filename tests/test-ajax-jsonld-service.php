@@ -109,11 +109,14 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 
 		// Create a location entity post and bind it to the location property.
 		$name              = rand_str();
-		$local_business_id = $this->factory->post->create( array(
+		$local_business_id = $this->factory()->post->create( array(
 			'post_title' => $name,
 			'post_type'  => 'entity',
 		) );
 		$this->entity_type_service->set( $local_business_id, 'http://schema.org/LocalBusiness' );
+		$local_business_type = $this->entity_type_service->get( $local_business_id );
+		$this->assertEquals( 'http://schema.org/LocalBusiness', $local_business_type['uri'] );
+
 		$local_business_uri = $this->entity_service->get_uri( $local_business_id );
 
 		// Set the geo coordinates.
@@ -148,8 +151,12 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$country = rand_str();
 		add_post_meta( $local_business_id, Wordlift_Schema_Service::FIELD_ADDRESS_COUNTRY, $country );
 
-		$person_id = $this->factory->post->create( array( 'post_type' => 'entity', ) );
+		$person_id = $this->factory()->post->create( array( 'post_type' => 'entity', ) );
 		$this->entity_type_service->set( $person_id, 'http://schema.org/Person' );
+
+		$person_type = $this->entity_type_service->get( $person_id );
+		$this->assertEquals( 'http://schema.org/Person', $person_type['uri'] );
+
 		$person_uri = $this->entity_service->get_uri( $person_id );
 
 		// Bind the person as author of the creative work.
@@ -169,7 +176,7 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$response = json_decode( $this->_last_response );
 
 		$this->assertTrue( is_array( $response ) );
-		$this->assertCount( 2, $response );
+		$this->assertCount( 2, $response, "Expected a `LocalBusiness` and a `Person`." );
 
 		$jsonld_1 = get_object_vars( $response[0] );
 

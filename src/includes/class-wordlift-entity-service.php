@@ -83,8 +83,8 @@ class Wordlift_Entity_Service {
 	 *
 	 * @since 3.2.0
 	 *
-	 * @param \Wordlift_UI_Service         $ui_service         The UI service.
-	 * @param \Wordlift_Relation_Service   $relation_service   The {@link Wordlift_Relation_Service} instance.
+	 * @param \Wordlift_UI_Service         $ui_service The UI service.
+	 * @param \Wordlift_Relation_Service   $relation_service The {@link Wordlift_Relation_Service} instance.
 	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service} instance.
 	 */
 	public function __construct( $ui_service, $relation_service, $entity_uri_service ) {
@@ -134,9 +134,17 @@ class Wordlift_Entity_Service {
 			return false;
 		}
 
-		// We don't consider an `article` to be an entity.
-		if ( 'article' !== $terms[0]->slug ) {
-			return true;
+		/*
+		 * We don't consider an `article` to be an entity.
+		 *
+		 * @since 3.20.0 At least one associated mustn't be an `article`.
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/835
+		 */
+		foreach ( $terms as $term ) {
+			if ( 'article' !== $term->slug ) {
+				return true;
+			}
 		}
 
 		return false;
@@ -250,8 +258,8 @@ class Wordlift_Entity_Service {
 	 * @since 3.2.0
 	 *
 	 * @param int     $post_id Post ID.
-	 * @param WP_Post $post    Post object.
-	 * @param bool    $update  Whether this is an existing post being updated or not.
+	 * @param WP_Post $post Post object.
+	 * @param bool    $update Whether this is an existing post being updated or not.
 	 */
 	public function save_post( $post_id, $post, $update ) {
 
@@ -283,7 +291,7 @@ class Wordlift_Entity_Service {
 	 *
 	 * @since 3.2.0
 	 *
-	 * @param int   $post_id    The post id.
+	 * @param int   $post_id The post id.
 	 * @param array $alt_labels An array of labels.
 	 */
 	public function set_alternative_labels( $post_id, $alt_labels ) {
@@ -469,43 +477,15 @@ class Wordlift_Entity_Service {
 			);
 	}
 
-//	/**
-//	 * Get the entity terms IDs which represent an entity.
-//	 *
-//	 * @since 3.17.0 deprecated.
-//	 * @since 3.15.0
-//	 *
-//	 * @deprecated
-//	 * @return array An array of terms' ids.
-//	 */
-//	public static function get_entity_terms() {
-//
-//		$terms = get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
-//			'hide_empty' => false,
-//			// Because of #334 (and the AAM plugin) we changed fields from 'id=>slug' to 'all'.
-//			// An issue has been opened with the AAM plugin author as well.
-//			//
-//			// see https://github.com/insideout10/wordlift-plugin/issues/334
-//			// see https://wordpress.org/support/topic/idslug-not-working-anymore?replies=1#post-8806863
-//			'fields'     => 'all',
-//		) );
-//
-//		return array_map( function ( $term ) {
-//			return $term->term_id;
-//		}, array_filter( $terms, function ( $term ) {
-//			return 'article' !== $term->slug;
-//		} ) );
-//	}
-
 	/**
 	 * Create a new entity.
 	 *
 	 * @since 3.9.0
 	 *
-	 * @param string $name     The entity name.
+	 * @param string $name The entity name.
 	 * @param string $type_uri The entity's type URI.
-	 * @param null   $logo     The entity logo id (or NULL if none).
-	 * @param string $status   The post status, by default 'publish'.
+	 * @param null   $logo The entity logo id (or NULL if none).
+	 * @param string $status The post status, by default 'publish'.
 	 *
 	 * @return int|WP_Error The entity post id or a {@link WP_Error} in case the `wp_insert_post` call fails.
 	 */
@@ -541,7 +521,7 @@ class Wordlift_Entity_Service {
 	 *
 	 * @since 3.10.0
 	 *
-	 * @param int    $id          The post id.
+	 * @param int    $id The post id.
 	 * @param string $post_status The target post status (default = publish).
 	 *
 	 * @return array An array of post ids.

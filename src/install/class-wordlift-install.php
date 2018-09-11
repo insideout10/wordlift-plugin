@@ -27,6 +27,13 @@ abstract class Wordlift_Install {
 	 */
 	protected $log;
 
+	/**
+	 * The default install version. Overridden by the installation packages.
+	 *
+	 * @since 3.18.0
+	 * @access protected
+	 * @var string $version The install version.
+	 */
 	protected static $version = '0.0.0';
 
 	/**
@@ -36,7 +43,8 @@ abstract class Wordlift_Install {
 	 */
 	public function __construct() {
 
-		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Install_' . str_replace( '.', '_', static::$version ) );
+		$this->log = Wordlift_Log_Service::get_logger( get_class( $this ) );
+
 	}
 
 	/**
@@ -48,6 +56,25 @@ abstract class Wordlift_Install {
 		return static::$version;
 	}
 
+	/**
+	 * Run the install procedure. This function must be implemented by superclasses.
+	 *
+	 * @since 3.18.0
+	 *
+	 * @return mixed The result.
+	 */
 	abstract public function install();
+
+	/**
+	 * A custom procedure run by the caller to determine whether the install procedure must be run.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @return bool True if the procedure must run.
+	 */
+	public function must_install() {
+
+		return false;
+	}
 
 }

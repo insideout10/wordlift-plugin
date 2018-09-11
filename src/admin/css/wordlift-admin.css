@@ -118,3 +118,7 @@
 .wp-admin.post-type-entity .categorydiv #wl_entity_type-all {
     max-height: 220px;
 }
+
+#wl-schemaorg-property.postbox, #wl_entity_typediv.postbox {
+    border-left: 2px solid #007AFF;
+}

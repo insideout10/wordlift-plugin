@@ -45,7 +45,7 @@ class Wordlift_Batch_Analysis_Service_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_submit_default_values() {
 
-		$post_ids = $this->factory->post->create_many( 2 );
+		$post_ids = $this->factory()->post->create_many( 2 );
 
 		$count = $this->batch_analysis_service->submit( array() );
 
@@ -64,7 +64,7 @@ class Wordlift_Batch_Analysis_Service_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_submit_link_yes() {
 
-		$post_ids = $this->factory->post->create_many( 2 );
+		$post_ids = $this->factory()->post->create_many( 2 );
 
 		$count = $this->batch_analysis_service->submit( array( 'links' => 'yes' ) );
 
@@ -83,7 +83,7 @@ class Wordlift_Batch_Analysis_Service_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_submit_link_no() {
 
-		$post_ids = $this->factory->post->create_many( 2 );
+		$post_ids = $this->factory()->post->create_many( 2 );
 
 		$count = $this->batch_analysis_service->submit( array( 'links' => 'no' ) );
 
@@ -105,7 +105,7 @@ class Wordlift_Batch_Analysis_Service_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_submit_link_unknown_value() {
 
-		$this->factory->post->create_many( 2 );
+		$this->factory()->post->create_many( 2 );
 
 		$this->batch_analysis_service->submit( array( 'links' => 'unknown' ) );
 
@@ -113,7 +113,7 @@ class Wordlift_Batch_Analysis_Service_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_submit_min_occurrences_one() {
 
-		$post_ids = $this->factory->post->create_many( 2 );
+		$post_ids = $this->factory()->post->create_many( 2 );
 
 		$count = $this->batch_analysis_service->submit( array( 'min_occurrences' => 1 ) );
 
@@ -132,7 +132,7 @@ class Wordlift_Batch_Analysis_Service_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_submit_min_occurrences_greater_than_one() {
 
-		$post_ids = $this->factory->post->create_many( 2 );
+		$post_ids = $this->factory()->post->create_many( 2 );
 
 		$count = $this->batch_analysis_service->submit( array( 'min_occurrences' => 2 ) );
 
@@ -154,7 +154,7 @@ class Wordlift_Batch_Analysis_Service_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_submit_min_occurrences_not_a_number() {
 
-		$this->factory->post->create_many( 2 );
+		$this->factory()->post->create_many( 2 );
 
 		$this->batch_analysis_service->submit( array( 'min_occurrences' => 'a' ) );
 
@@ -165,7 +165,7 @@ class Wordlift_Batch_Analysis_Service_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_submit_min_occurrences_less_than_one() {
 
-		$this->factory->post->create_many( 2 );
+		$this->factory()->post->create_many( 2 );
 
 		$this->batch_analysis_service->submit( array( 'min_occurrences' => 0 ) );
 
@@ -878,8 +878,8 @@ EOF
 	 * @since 3.17.0
 	 *
 	 * @param bool   $preempt The previous `$preempt` value.
-	 * @param array  $r       A request array.
-	 * @param string $url     A request URL.
+	 * @param array  $r A request array.
+	 * @param string $url A request URL.
 	 *
 	 * @return bool The `$preempt` value.
 	 */
@@ -916,9 +916,9 @@ EOF
 	 */
 	private function create_test_posts() {
 
-		$this->factory->post->create_many( 10 );
+		$this->factory()->post->create_many( 10 );
 
-		$post_1_id = $this->factory->post->create( array(
+		$post_1_id = $this->factory()->post->create( array(
 			'post_type'     => 'post',
 			'post_content'  => '<span id="urn:ex:test" class="annotation" itemid="http://example.org/ex">',
 			'post_date'     => '2017-06-01 00:00:00',
@@ -926,28 +926,28 @@ EOF
 
 		) );
 
-		$post_2_id = $this->factory->post->create( array(
+		$post_2_id = $this->factory()->post->create( array(
 			'post_type'     => 'post',
 			'post_content'  => '',
 			'post_date'     => '2017-06-01 00:00:00',
 			'post_date_gmt' => '2017-06-01 00:00:00',
 		) );
 
-		$post_3_id = $this->factory->post->create( array(
+		$post_3_id = $this->factory()->post->create( array(
 			'post_type'     => 'page',
 			'post_content'  => '',
 			'post_date'     => '2017-06-01 00:00:00',
 			'post_date_gmt' => '2017-06-01 00:00:00',
 		) );
 
-		$post_4_id = $this->factory->post->create( array(
+		$post_4_id = $this->factory()->post->create( array(
 			'post_type'     => 'post',
 			'post_content'  => '',
 			'post_date'     => '2017-01-01 00:00:00',
 			'post_date_gmt' => '2017-01-01 00:00:00',
 		) );
 
-		$post_5_id = $this->factory->post->create( array(
+		$post_5_id = $this->factory()->post->create( array(
 			'post_type'     => 'post',
 			'post_content'  => '',
 			'post_date'     => '2018-01-01 00:00:00',

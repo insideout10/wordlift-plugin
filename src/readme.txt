@@ -143,6 +143,23 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 = 3.20.0 (????-??-??) =
+* Enhancement: [#835](https://github.com/insideout10/wordlift-plugin/issues/835): Add the all entity types metabox.
+
+= 3.19.3 (2018-08-16) =
+* Enhancement: [#839](https://github.com/insideout10/wordlift-plugin/issues/839): Add a setting to limit the scope for the Select in edit post screen.
+* Enhancement: [#837](https://github.com/insideout10/wordlift-plugin/issues/837): Use 300 width images in faceted search and navigator.
+* Fix: [#840](https://github.com/insideout10/wordlift-plugin/issues/840): wl-api referenced using siteurl instead of homeurl.
+* Fix: [#832](https://github.com/insideout10/wordlift-plugin/issues/832): angularjs may conflict with other plugins.
+* Fix: [#831](https://github.com/insideout10/wordlift-plugin/issues/831): Allow navigator on pages.
+* Fix: [#699](https://github.com/insideout10/wordlift-plugin/issues/699): Font Awesome on the front-end may conflict with themes.
+
+= 3.19.2 (2018-07-10) =
+* Fix: [#825](https://github.com/insideout10/wordlift-plugin/issues/825): faceted search loads large images while it could load thumbnails.
+* Fix: [#824](https://github.com/insideout10/wordlift-plugin/issues/824): LocalBusiness entity type not recognized by the AutoComplete
+* Fix: [#823](https://github.com/insideout10/wordlift-plugin/issues/823): logo not available in referenced publisher.
+* Fix: [#821](https://github.com/insideout10/wordlift-plugin/issues/821): wordlift-public.css is included but file empty.
+* Fix: [#820](https://github.com/insideout10/wordlift-plugin/issues/820): wl-api lost when plugin deactivated and activated back again.
+* Fix: [#814](https://github.com/insideout10/wordlift-plugin/issues/814): Enforce styles in TinyMCE.
 
 = 3.19.1 (2018-06-28) =
 * Enhancement: [#815](https://github.com/insideout10/wordlift-plugin/issues/815): Add wl_schemas hook.

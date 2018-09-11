@@ -102,7 +102,7 @@ function wl_get_entity_uri( $post_id ) {
  * Save the entity URI for the provided post ID.
  *
  * @param int    $post_id The post ID.
- * @param string $uri     The post URI.
+ * @param string $uri The post URI.
  *
  * @return bool True if successful, otherwise false.
  */
@@ -131,7 +131,7 @@ function wl_get_entity_rdf_types( $post_id ) {
 /**
  * Set the types for the entity with the specified post ID.
  *
- * @param int   $post_id   The entity post ID.
+ * @param int   $post_id The entity post ID.
  * @param array $type_uris An array of type URIs.
  */
 function wl_set_entity_rdf_types( $post_id, $type_uris = array() ) {
@@ -203,7 +203,7 @@ function wl_entity_taxonomy_get_custom_fields( $entity_id = null ) {
 
 		// Return all custom fields.
 		// Get taxonomy terms
-		$terms = get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'hide_empty' => 0 ) );
+		$terms = get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'get' => 'all' ) );
 
 		if ( is_wp_error( $terms ) ) {
 			return null;
@@ -212,8 +212,13 @@ function wl_entity_taxonomy_get_custom_fields( $entity_id = null ) {
 		$custom_fields = array();
 		foreach ( $terms as $term ) {
 			// Get custom_fields
-			$term_options                          = Wordlift_Schema_Service::get_instance()
-			                                                                ->get_schema( $term->slug );
+			$term_options = Wordlift_Schema_Service::get_instance()
+			                                       ->get_schema( $term->slug );
+
+			if ( ! isset( $term_options['uri'] ) || ! isset( $term_options['custom_fields'] ) ) {
+				continue;
+			}
+
 			$custom_fields[ $term_options['uri'] ] = $term_options['custom_fields'];
 		}
 

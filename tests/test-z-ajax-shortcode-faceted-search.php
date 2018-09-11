@@ -18,18 +18,6 @@
  */
 class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 
-	/**
-	 * Set up the test.
-	 */
-	function setUp() {
-		parent::setUp();
-		// Configure WordPress with the test settings.
-		wl_configure_wordpress_test();
-
-		Wordlift_Unit_Test_Case::turn_off_entity_push();;
-
-	}
-
 	public function testDataSelectionWithoutAnEntityId() {
 		$this->setExpectedException( 'WPAjaxDieStopException', 'No post_id given' );
 		$this->_handleAjax( 'wl_faceted_search' );

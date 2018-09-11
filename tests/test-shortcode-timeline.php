@@ -1,5 +1,4 @@
 <?php
-require_once 'functions.php';
 
 /**
  * Class TimelineShortcodeTest
@@ -20,12 +19,6 @@ class TimelineShortcodeTest extends Wordlift_Unit_Test_Case {
 	 */
 	function setUp() {
 		parent::setUp();
-
-		// We don't need to check the remote Linked Data store.
-		Wordlift_Unit_Test_Case::turn_off_entity_push();;
-
-		// Empty the blog.
-		wl_empty_blog();
 
 		add_theme_support( 'post-thumbnails' );
 
@@ -78,7 +71,7 @@ class TimelineShortcodeTest extends Wordlift_Unit_Test_Case {
 	 *  * 3 Event entities of which 2 referenced by the Post
 	 *  * 1 Person entity reference by the Post
 	 */
-	function testGetEvents() {
+	function test_get_events() {
 
 		// We need to push entities to the Linked Data store for this test. We'll
 		// turn entity push back off at the end of the test.

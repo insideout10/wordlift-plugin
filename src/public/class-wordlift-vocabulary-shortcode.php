@@ -77,8 +77,10 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	private static function are_requirements_satisfied() {
 
 		return function_exists( 'mb_strlen' ) &&
-			   function_exists( 'mb_substr' ) &&
-			   function_exists( 'mb_convert_case' );
+		       function_exists( 'mb_substr' ) &&
+		       function_exists( 'mb_strtolower' ) &&
+		       function_exists( 'mb_strtoupper' ) &&
+		       function_exists( 'mb_convert_case' );
 	}
 
 	/**
@@ -148,22 +150,33 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 
 		// Generate the sections.
 		foreach ( $alphabet as $item => $translations ) {
+			// @since 3.19.3 we use `mb_strtolower` and `mb_strtoupper` with a custom function to handle sorting,
+			// since we had `AB` being placed before `Aa` with `asort`.
+			//
 			// Order the translations alphabetically.
-			asort( $translations );
+			// asort( $translations );
+			uasort( $translations, function ( $a, $b ) {
+				if ( mb_strtolower( $a ) === mb_strtolower( $b )
+				     || mb_strtoupper( $a ) === mb_strtoupper( $b ) ) {
+					return 0;
+				}
+
+				return ( mb_strtolower( $a ) < mb_strtolower( $b ) ) ? - 1 : 1;
+			} );
 			$sections .= $this->get_section( $item, $translations, $vocabulary_id );
 		}
 
 		// Return HTML template.
 		ob_start();
 		?>
-			<div class='wl-vocabulary'>
-				<nav class='wl-vocabulary-alphabet-nav'>
-					<?php echo $header; ?>
-				</nav>
-				<div class='wl-vocabulary-grid'>
-					<?php echo $sections; ?>
-				</div>
-			</div>
+        <div class='wl-vocabulary'>
+            <nav class='wl-vocabulary-alphabet-nav'>
+				<?php echo $header; ?>
+            </nav>
+            <div class='wl-vocabulary-grid'>
+				<?php echo $sections; ?>
+            </div>
+        </div>
 		<?php
 		$html = ob_get_clean();
 
@@ -176,10 +189,10 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	 *
 	 * @since 3.17.0
 	 *
-	 * @param string $letter         The section's letter.
-	 * @param array  $posts          An array of `$post_id => $post_title` associated with
+	 * @param string $letter The section's letter.
+	 * @param array  $posts An array of `$post_id => $post_title` associated with
 	 *                               the section.
-	 * @param int    $vocabulary_id  Unique vocabulary id.
+	 * @param int    $vocabulary_id Unique vocabulary id.
 	 *
 	 * @return string The section html code (or an empty string if the section has
 	 *                no posts).
@@ -218,8 +231,8 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 
 		return array_reduce(
 			array_keys( $posts ), function ( $carry, $item ) use ( $posts ) {
-				return $carry . sprintf( '<li><a href="%s">%s</a></li>', esc_attr( get_permalink( $item ) ), esc_html( $posts[ $item ] ) );
-			}, ''
+			return $carry . sprintf( '<li><a href="%s">%s</a></li>', esc_attr( get_permalink( $item ) ), esc_html( $posts[ $item ] ) );
+		}, ''
 		);
 	}
 
@@ -271,7 +284,7 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	 * @since 3.17.0
 	 *
 	 * @param array $alphabet An array of letters.
-	 * @param int   $post_id  The {@link WP_Post} id.
+	 * @param int   $post_id The {@link WP_Post} id.
 	 */
 	private function add_to_alphabet( &$alphabet, $post_id ) {
 
@@ -296,7 +309,7 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	 * @since 3.17.0
 	 *
 	 * @param array  $alphabet An array of alphabet letters.
-	 * @param string $title    The title to match.
+	 * @param string $title The title to match.
 	 *
 	 * @return string The initial letter or a `#` key.
 	 */
@@ -321,7 +334,7 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	 * @return int The incremented vocabulary id.
 	 */
 	private static function get_and_increment_vocabulary_id() {
-		return self::$vocabulary_id++;
+		return self::$vocabulary_id ++;
 	}
 
 }

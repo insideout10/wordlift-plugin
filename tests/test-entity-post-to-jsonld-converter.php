@@ -551,6 +551,9 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 			'post_type'  => 'entity',
 		) );
 		$this->entity_type_service->set( $local_business_id, 'http://schema.org/LocalBusiness' );
+		$local_business_type = $this->entity_type_service->get( $local_business_id );
+		$this->assertEquals( 'http://schema.org/LocalBusiness', $local_business_type['uri'], 'Entity type must be http://schema.org/Person.' );
+
 		$local_business_uri = $this->entity_service->get_uri( $local_business_id );
 
 		// Set the geo coordinates.
@@ -585,9 +588,11 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 		$country = rand_str();
 		add_post_meta( $local_business_id, Wordlift_Schema_Service::FIELD_ADDRESS_COUNTRY, $country );
 
-		$person_id = $this->factory->post->create( array( 'post_type' => 'entity' ) );
+		$person_id = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
 		$this->entity_type_service->set( $person_id, 'http://schema.org/Person' );
-		$person_uri = $this->entity_service->get_uri( $person_id );
+		$person_uri  = $this->entity_service->get_uri( $person_id );
+		$person_type = $this->entity_type_service->get( $person_id );
+		$this->assertEquals( 'http://schema.org/Person', $person_type['uri'], 'Entity type must be http://schema.org/Person.' );
 
 		// Bind the person as author of the creative work.
 		add_post_meta( $local_business_id, Wordlift_Schema_Service::FIELD_FOUNDER, $person_id );
@@ -755,4 +760,54 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 		$this->assertEquals( $thing_uri, $jsonld['itemOffered'] );
 
 	}
+
+	/**
+	 * Test the `convert` function using the post properties introduced with #835.
+	 *
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/835
+	 *
+	 * @since 3.20.0
+	 */
+	public function test_convert_835() {
+
+		$post_id = $this->factory()->post->create( array(
+			'post_type' => 'entity',
+		) );
+
+		$_wl_prop_ = Wordlift_Schemaorg_Property_Service::PREFIX;
+		add_post_meta( $post_id, "{$_wl_prop_}propA_1_type", 'Text' );
+		add_post_meta( $post_id, "{$_wl_prop_}propA_1_language", 'en' );
+		add_post_meta( $post_id, "{$_wl_prop_}propA_1_value", 'Value A 1' );
+
+		add_post_meta( $post_id, "{$_wl_prop_}propA_2_type", 'Text' );
+		add_post_meta( $post_id, "{$_wl_prop_}propA_2_language", 'en' );
+		add_post_meta( $post_id, "{$_wl_prop_}propA_2_value", 'Value A 2' );
+
+		add_post_meta( $post_id, "{$_wl_prop_}propB_1_type", 'Text' );
+		add_post_meta( $post_id, "{$_wl_prop_}propB_1_language", 'en' );
+		add_post_meta( $post_id, "{$_wl_prop_}propB_1_value", 'Value B 1' );
+
+		$json = $this->entity_post_to_jsonld_converter->convert( $post_id );
+
+		$this->assertArrayHasKey( '@context', $json, 'Expect the `@context` key.' );
+		$this->assertArrayHasKey( '@id', $json, 'Expect the `@id` key.' );
+
+		$this->assertArrayHasKey( '@type', $json, 'Expect the `@type` key.' );
+		$this->assertEquals( 'Thing', $json['@type'], 'Expect the `@type` to be `Thing` since no type has been assigned.' );
+
+		$this->assertArrayHasKey( 'description', $json, 'Expect the `description` key.' );
+		$this->assertArrayHasKey( 'mainEntityOfPage', $json, 'Expect the `mainEntityOfPage` key.' );
+		$this->assertArrayHasKey( 'name', $json, 'Expect the `name` key.' );
+		$this->assertArrayHasKey( 'url', $json, 'Expect the `url` key.' );
+
+		$this->assertArrayHasKey( 'propA', $json, 'Expect the `propA` key.' );
+		$this->assertCount( 2, $json['propA'], 'Expect `propA` to have 2 items.' );
+		$this->assertContains( 'Value A 1', $json['propA'], 'Expect `propA` to contain `Value A 1`.' );
+		$this->assertContains( 'Value A 2', $json['propA'], 'Expect `propA` to contain `Value A 2`.' );
+
+		$this->assertArrayHasKey( 'propB', $json, 'Expect the `propB` key.' );
+		$this->assertEquals( 'Value B 1', $json['propB'], 'Expect `propB` to contain `Value B 1`.' );
+
+	}
+
 }

@@ -6,6 +6,8 @@
         convertNoticesToExceptions="true"
         convertWarningsToExceptions="true"
         beStrictAboutTestsThatDoNotTestAnything="true"
+        stopOnError="false"
+        stopOnFailure="false"
 >
     <testsuites>
         <testsuite>
@@ -15,5 +17,9 @@
     <php>
         <const name="WP_DEBUG_LOG" value="true"/>
         <const name="WP_DEBUG_DISPLAY" value="false"/>
+        <const name="WL_LOG_LEVEL" value="1"/>
     </php>
+    <listeners>
+        <listener class="JohnKary\PHPUnit\Listener\SpeedTrapListener"/>
+    </listeners>
 </phpunit>

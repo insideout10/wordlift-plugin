@@ -57,18 +57,12 @@ module.exports = {
   devtool: shouldUseSourceMap ? "source-map" : false,
   // In production, we only want to load the polyfills and the app code.
   entry: {
-    admin: [require.resolve("./polyfills"), paths.appAdminScreen],
-    edit: [require.resolve("./polyfills"), paths.appAdminEditScreen],
-    tinymce: [require.resolve("./polyfills"), paths.appAdminTinyMceScreen],
-    author: [
-      require.resolve("./polyfills"),
-      paths.appAdminAuthorSelectComponent
-    ],
-    settings: [require.resolve("./polyfills"), paths.appAdminSettingsScreen],
-    "search-rankings": [
-      require.resolve("./polyfills"),
-      paths.appAdminSearchRankingsScreen
-    ]
+    admin: [require.resolve('./polyfills'), paths.appAdminScreen],
+    // edit: [require.resolve('./polyfills'), paths.appAdminEditScreen],
+    tinymce: [require.resolve('./polyfills'), paths.appAdminTinyMceScreen],
+    author: [require.resolve('./polyfills'), paths.appAdminAuthorSelectComponent],
+    settings: [require.resolve('./polyfills'), paths.appAdminSettingsScreen],
+    keywords: [require.resolve('./polyfills'), paths.appAdminKeywordsScreen],
   },
   output: {
     // The build folder.

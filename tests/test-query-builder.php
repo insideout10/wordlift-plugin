@@ -1,37 +1,10 @@
 <?php
-require_once( 'functions.php' );
-
 /**
  * Test the {@link Wordlift_Query_Builder}.
  *
  * @since 3.1.7
  */
-class QueryBuilderTest extends Wordlift_Unit_Test_Case {
-
-	/**
-	 * The Log service.
-	 *
-	 * @since  3.1.7
-	 * @access private
-	 * @var \Wordlift_Log_Service $log_service The Log service.
-	 */
-	private $log_service;
-
-	/**
-	 * Set up the test.
-	 */
-	function setUp() {
-		parent::setUp();
-
-		// We don't need to check the remote Linked Data store.
-		Wordlift_Unit_Test_Case::turn_off_entity_push();;
-
-		$this->log_service = Wordlift_Log_Service::get_logger( 'QueryBuilderTest' );
-
-		wl_configure_wordpress_test();
-		// wl_empty_blog();
-
-	}
+class Wordlift_Query_Builder_Test extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * Test the Query builder.
@@ -56,7 +29,7 @@ class QueryBuilderTest extends Wordlift_Unit_Test_Case {
 			                               ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_FAMILY_NAME_URI, $user->user_lastname )
 			                               ->build();
 
-			$this->log_service->info( $query );
+			$this->assertNotEmpty( $query );
 
 		}
 
@@ -84,7 +57,7 @@ class QueryBuilderTest extends Wordlift_Unit_Test_Case {
 			                                 ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_FAMILY_NAME_URI, '?o' )
 			                                 ->build();
 
-			$this->log_service->info( $query );
+			$this->assertNotEmpty( $query );
 
 		}
 	}

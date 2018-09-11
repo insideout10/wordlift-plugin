@@ -58,13 +58,14 @@ class Wordlift_Public {
 	/**
 	 * Register the stylesheets for the public-facing side of the site.
 	 *
-	 * @since    1.0.0
+	 * @since 3.19.3 Register the `wordlift-ui` css.
+	 * @since 3.19.2 The call to this function is commented out in `class-wordlift.php` because `wordlift-public.css`
+	 *               is empty.
+	 * @since 1.0.0
 	 */
 	public function enqueue_styles() {
 
 		/**
-		 * This function is provided for demonstration purposes only.
-		 *
 		 * An instance of this class should be passed to the run() function
 		 * defined in Wordlift_Loader as all of the hooks are defined
 		 * in that particular class.
@@ -74,7 +75,24 @@ class Wordlift_Public {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/wordlift-public.css', array(), $this->version, 'all' );
+		/**
+		 * Add the `wordlift-font-awesome` unless some 3rd party sets the flag to false.
+		 *
+		 * @since 3.19.3
+		 *
+		 * @param bool $include Whether to include or not font-awesome (default true).
+		 */
+		$deps = apply_filters( 'wl_include_font_awesome', true )
+			? array( 'wordlift-font-awesome' )
+			: array();
+		wp_register_style( 'wordlift-font-awesome', plugin_dir_url( dirname( __FILE__ ) ) . 'css/wordlift-font-awesome' . ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ? '.min' : '' ) . '.css', array(), $this->version, 'all' );
+		wp_register_style( 'wordlift-ui', plugin_dir_url( dirname( __FILE__ ) ) . 'css/wordlift-ui' . ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ? '.min' : '' ) . '.css', $deps, $this->version, 'all' );
+
+		// You need to re-enable the enqueue_styles in `class-wordlift.php` to make this effective.
+		//
+		// @see https://github.com/insideout10/wordlift-plugin/issues/821
+		//
+		// wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/wordlift-public.css', array(), $this->version, 'all' );
 
 	}
 
@@ -118,7 +136,7 @@ class Wordlift_Public {
 		// Prepare a settings array for client-side functions.
 		$settings = array(
 			'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-			'apiUrl'  => get_site_url( null, 'wl-api/' ),
+			'apiUrl'  => get_home_url( null, 'wl-api/' ),
 		);
 
 		// If we're in a single page, then print out the post id.

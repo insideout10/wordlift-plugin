@@ -114,12 +114,13 @@ class Wordlift_DB_Upgrade_Test extends Wordlift_Unit_Test_Case {
 			'organization',
 			'person',
 			'place',
-			'localbusiness',
+			'local-business',
 		);
 
 		foreach ( $slugs as $slug ) {
 			$term = get_term_by( 'slug', $slug, 'wl_entity_type' );
-			$this->assertEquals( 0, $term->parent );
+			$this->assertNotFalse( $term, "Term $slug must exist." );
+			$this->assertEquals( 0, $term->parent, "Term $slug parent must be 0." );
 		}
 
 	}
@@ -166,13 +167,13 @@ class Wordlift_DB_Upgrade_Test extends Wordlift_Unit_Test_Case {
 	 *
 	 * @since  3.18.3
 	 */
-	public function test_3_18_0_to_3_18_3_upgrade()	{
+	public function test_3_18_0_to_3_18_3_upgrade() {
 		$post_id = $this->factory->post->create( array(
-			'post_type'  => 'post',
+			'post_type' => 'post',
 		) );
 
 		$entity_id = $this->factory->post->create( array(
-			'post_type'  => 'entity',
+			'post_type' => 'entity',
 		) );
 
 		// Add relation between entity and post.
@@ -211,7 +212,7 @@ class Wordlift_DB_Upgrade_Test extends Wordlift_Unit_Test_Case {
 	 *
 	 * @since  3.18.3
 	 *
-	 * @param  int  $post_id The post id.
+	 * @param  int $post_id The post id.
 	 *
 	 * @return boolean True if the term exists, false on failure.
 	 */

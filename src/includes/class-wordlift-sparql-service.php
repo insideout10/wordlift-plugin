@@ -118,6 +118,8 @@ class Wordlift_Sparql_Service {
 	 * @since 3.13.2
 	 *
 	 * @param string $stmt The SPARQL statement.
+	 *
+	 * @throws Exception
 	 */
 	public function queue( $stmt ) {
 

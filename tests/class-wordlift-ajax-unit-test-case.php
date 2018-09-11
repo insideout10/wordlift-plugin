@@ -37,7 +37,7 @@ abstract class Wordlift_Ajax_Unit_Test_Case extends WP_Ajax_UnitTestCase {
 		// Configure WordPress with the test settings.
 		wl_configure_wordpress_test();
 
-		$this->entity_factory = new Wordlift_UnitTest_Factory_For_Entity( $this->factory );
+		$this->entity_factory = new Wordlift_UnitTest_Factory_For_Entity( $this->factory() );
 
 		// Disable WordPress updates to avoid filtered wp_remote_* requests to
 		// WordPress' own servers to fail miserably.

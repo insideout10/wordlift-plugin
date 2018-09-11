@@ -66,20 +66,20 @@ class Wordlift_Address_Sparql_Tuple_Rendition_Test extends Wordlift_Unit_Test_Ca
 	public function test_get_delete_triples() {
 
 		// Create an entity.
-		$entity_id = $this->factory->post->create( array(
+		$entity_id = $this->factory()->post->create( array(
 			'post_type'   => 'entity',
 			'post_status' => 'publish',
 		) );
 
 		// Set the entity terms.
-		$term   = get_term_by( 'slug', 'place', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+		$term = get_term_by( 'slug', 'place', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		wp_set_post_terms( $entity_id, $term->term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 		// Get delete triples
 		$delete_triples = $this->address_rendition->get_delete_triples( $entity_id );
 
 		// Get the entity uris.
-		$uri   = $this->entity_service->get_uri( $entity_id );
+		$uri = $this->entity_service->get_uri( $entity_id );
 
 		// Check that there are delete triples for address.
 		$this->assertContains( "<$uri/address> <http://schema.org/streetAddress> ?o", $delete_triples );
@@ -100,8 +100,8 @@ class Wordlift_Address_Sparql_Tuple_Rendition_Test extends Wordlift_Unit_Test_Ca
 	 * @return void
 	 */
 	public function test_get_insert_triples() {
-	// Create an entity.
-		$entity_id = $this->factory->post->create( array(
+		// Create an entity.
+		$entity_id = $this->factory()->post->create( array(
 			'post_type'   => 'entity',
 			'post_status' => 'publish',
 		) );
@@ -140,4 +140,5 @@ class Wordlift_Address_Sparql_Tuple_Rendition_Test extends Wordlift_Unit_Test_Ca
 		$this->assertContains( "<$uri/address> a <http://schema.org/PostalAddress> . ", $insert_triples );
 
 	}
+
 }

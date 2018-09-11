@@ -59,15 +59,24 @@ class Wordlift_Admin {
 	private $user_service;
 
 	/**
+	 * The singleton instance.
+	 *
+	 * @since 3.20.0
+	 * @access private
+	 * @var \Wordlift_Admin The singleton instance.
+	 */
+	private static $instance;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since  1.0.0
 	 *
-	 * @param string $plugin_name The name of this plugin.
-	 * @param string $version The version of this plugin.
+	 * @param string                          $plugin_name The name of this plugin.
+	 * @param string                          $version The version of this plugin.
 	 * @param \Wordlift_Configuration_Service $configuration_service The configuration service.
-	 * @param \Wordlift_Notice_Service $notice_service The notice service.
-	 * @param \Wordlift_User_Service $user_service The {@link Wordlift_User_Service} instance.
+	 * @param \Wordlift_Notice_Service        $notice_service The notice service.
+	 * @param \Wordlift_User_Service          $user_service The {@link Wordlift_User_Service} instance.
 	 */
 	public function __construct( $plugin_name, $version, $configuration_service, $notice_service, $user_service ) {
 
@@ -102,8 +111,34 @@ class Wordlift_Admin {
 			$search_rankings_service = new Wordlift_Admin_Search_Rankings_Service( Wordlift_Api_Service::get_instance() );
 			new Wordlift_Admin_Search_Rankings_Ajax_Adapter( $search_rankings_service );
 
+			/*
+			 * Add support for `All Entity Types`.
+			 * @see https://github.com/insideout10/wordlift-plugin/issues/835
+			 */
+			if ( WL_ALL_ENTITY_TYPES ) {
+				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-schemaorg-taxonomy-metabox.php';
+				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-schemaorg-property-metabox.php';
+
+				new Wordlift_Admin_Schemaorg_Property_Metabox( Wordlift_Schemaorg_Property_Service::get_instance() );
+			}
+
 		}
 
+		// Set the singleton instance.
+		self::$instance = $this;
+
+	}
+
+	/**
+	 * Get the singleton instance.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @return \Wordlift_Admin The singleton instance.
+	 */
+	public static function get_instance() {
+
+		return self::$instance;
 	}
 
 	/**
@@ -144,7 +179,7 @@ class Wordlift_Admin {
 		 * in that particular class.
 		 *
 		 * The Wordlift_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
+		 * between the defined Wordlift_Schemaorg_Property_Servicehooks and the functions defined in this
 		 * class.
 		 */
 
@@ -154,6 +189,17 @@ class Wordlift_Admin {
 			'underscore',
 			'backbone',
 		), $this->version, false );
+
+
+		$can_edit_wordlift_entities = current_user_can( 'edit_wordlift_entities' );
+
+		/*
+		 * People that can create entities will see the scope set in the wp-config.php file (by default `cloud`). People
+		 * that cannot edit create entities will always see the local entities.
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/839
+		 */
+		$autocomplete_scope = $can_edit_wordlift_entities ? WL_AUTOCOMPLETE_SCOPE : "local";
 
 		// Set the basic params.
 		$params = array(
@@ -167,7 +213,7 @@ class Wordlift_Admin {
 			// Whether the current user is allowed to create new entities.
 			//
 			// @see https://github.com/insideout10/wordlift-plugin/issues/561
-			'can_create_entities'   => current_user_can( 'edit_wordlift_entities' ) ? 'yes' : 'no',
+			'can_create_entities'   => $can_edit_wordlift_entities ? 'yes' : 'no',
 			'l10n'                  => array(
 				'You already published an entity with the same name'                 => __( 'You already published an entity with the same name: ', 'wordlift' ),
 				'logo_selection_title'                                               => __( 'WordLift Choose Logo', 'wordlift' ),
@@ -177,6 +223,7 @@ class Wordlift_Admin {
 				'Please wait while we look for entities in the linked data cloud...' => _x( 'Please wait while we look for entities in the linked data cloud...', 'Autocomplete Select', 'wordlift' ),
 			),
 			'wl_autocomplete_nonce' => wp_create_nonce( 'wordlift_autocomplete' ),
+			'autocomplete_scope'    => $autocomplete_scope,
 		);
 
 		// Set post-related values if there's a current post.
@@ -189,7 +236,17 @@ class Wordlift_Admin {
 			// from the results, since we don't want the current entity to be discovered by the analysis.
 			//
 			// See https://github.com/insideout10/wordlift-plugin/issues/345
-			$params['itemId'] = $entity_service->get_uri( $entity_being_edited->ID );
+			$params['itemId']                      = $entity_service->get_uri( $entity_being_edited->ID );
+			$params['wl_schemaorg_property_nonce'] = wp_create_nonce( 'wl_schemaorg_property' );
+
+			/*
+			 * Add the `properties` if `WL_ALL_ENTITY_TYPES` is enabled.
+			 *
+			 * @see https://github.com/insideout10/wordlift-plugin/issues/835
+			 */
+			if ( WL_ALL_ENTITY_TYPES ) {
+				$params['properties'] = Wordlift_Schemaorg_Property_Service::get_instance()->get_all( $post->ID );
+			}
 
 		}
 

@@ -19,15 +19,6 @@
 class Wordlift_Install_Service {
 
 	/**
-	 * The singleton instance.
-	 *
-	 * @since  3.18.0
-	 * @access private
-	 * @var \Wordlift_Install_Service $instance A {@link Wordlift_Install_Service} instance.
-	 */
-	private static $instance;
-
-	/**
 	 * A {@link Wordlift_Log_Service} instance.
 	 *
 	 * @since  3.18.0
@@ -37,11 +28,33 @@ class Wordlift_Install_Service {
 	private $log;
 
 	/**
+	 * The singleton instance.
+	 *
+	 * @since  3.18.0
+	 * @access private
+	 * @var \Wordlift_Install_Service $instance A {@link Wordlift_Install_Service} instance.
+	 */
+	private static $instance;
+
+	/**
 	 * Wordlift_Install_Service constructor.
 	 *
 	 * @since 3.18.0
 	 */
 	public function __construct() {
+
+		/** Installs. */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-1-0-0.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-10-0.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-12-0.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-14-0.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-15-0.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-18-0.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-18-3.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-20-0.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-all-entity-types.php';
+
 
 		self::$instance = $this;
 
@@ -62,11 +75,29 @@ class Wordlift_Install_Service {
 	/**
 	 * Loop thought all versions and install the updates.
 	 *
+	 * @since 3.20.0 use a transient to avoid concurrent installation calls.
 	 * @since 3.18.0
 	 *
 	 * @return void
 	 */
 	public function install() {
+
+		if ( false === get_transient( '_wl_installing' ) ) {
+			set_transient( '_wl_installing', true, 5 * MINUTE_IN_SECONDS );
+
+			$this->do_install();
+
+			delete_transient( '_wl_installing' );
+		}
+
+	}
+
+	/**
+	 * Perform the actual installation.
+	 *
+	 * @since 3.20.0
+	 */
+	private function do_install() {
 
 		// Get the install services.
 		$installs = array(
@@ -77,6 +108,8 @@ class Wordlift_Install_Service {
 			new Wordlift_Install_3_15_0(),
 			new Wordlift_Install_3_18_0(),
 			new Wordlift_Install_3_18_3(),
+			new Wordlift_Install_3_20_0(),
+			new Wordlift_Install_All_Entity_Types(),
 		);
 
 		$version = null;
@@ -86,20 +119,23 @@ class Wordlift_Install_Service {
 			// Get the install version.
 			$version = $install->get_version();
 
-			if ( version_compare( $version, $this->get_current_version(), '>' ) ) {
-				$this->log->debug( "Current version is {$this->get_current_version()}, installing v$version..." );
+			if ( version_compare( $version, $this->get_current_version(), '>' )
+			     || $install->must_install() ) {
+
+				$class_name = get_class( $install );
+
+				$this->log->info( "Current version is {$this->get_current_version()}, installing $class_name..." );
+
 				// Install version.
 				$install->install();
 
-				$this->log->info( "v$version installed." );
+				$this->log->info( "$class_name installed." );
+
+				// Bump the version.
+				update_option( 'wl_db_version', $version );
 
 			}
 
-		}
-
-		// Bump the `wl_db_version`.
-		if ( null !== $version ) {
-			update_option( 'wl_db_version', $version );
 		}
 
 	}

@@ -74,8 +74,8 @@ class Wordlift_Vocabulary_Shortcode_Test extends Wordlift_Unit_Test_Case {
 		);
 
 		// Get the shortcode markup
-		$vacabulary = new Wordlift_Vocabulary_Shortcode( $this->configuration_service );
-		$markup     = $vacabulary->render( array() );
+		$vocabulary = new Wordlift_Vocabulary_Shortcode( $this->configuration_service );
+		$markup     = $vocabulary->render( array() );
 
 		// Test the markup.
 		$this->assertNotNull( $markup );
@@ -83,7 +83,7 @@ class Wordlift_Vocabulary_Shortcode_Test extends Wordlift_Unit_Test_Case {
 		// Check that the posts are included in the markup.
 		foreach ( $posts_data as $permalink => $title ) {
 			$this->assertContains( $title, $markup );
-			$this->assertContains( $permalink, $markup );
+			$this->assertContains( $permalink, $markup, "No link $permalink found for $title." );
 		}
 	}
 
@@ -129,8 +129,8 @@ class Wordlift_Vocabulary_Shortcode_Test extends Wordlift_Unit_Test_Case {
 		wp_set_object_terms( $post_2, $cat_id, 'category' );
 
 		// Get the shortcode markup
-		$vacabulary = new Wordlift_Vocabulary_Shortcode( $this->configuration_service );
-		$markup     = $vacabulary->render(
+		$vocabulary = new Wordlift_Vocabulary_Shortcode( $this->configuration_service );
+		$markup     = $vocabulary->render(
 			array(
 				'cat'     => $cat_id,
 				'orderby' => 'ID',
@@ -196,8 +196,8 @@ class Wordlift_Vocabulary_Shortcode_Test extends Wordlift_Unit_Test_Case {
 		wp_set_object_terms( $post_1, $cat_id, 'category' );
 
 		// Get the shortcode markup
-		$vacabulary = new Wordlift_Vocabulary_Shortcode( $this->configuration_service );
-		$markup     = $vacabulary->render(
+		$vocabulary = new Wordlift_Vocabulary_Shortcode( $this->configuration_service );
+		$markup     = $vocabulary->render(
 			array(
 				'limit'   => 1,
 				'cat'     => $cat_id,
@@ -257,8 +257,8 @@ class Wordlift_Vocabulary_Shortcode_Test extends Wordlift_Unit_Test_Case {
 		wp_set_object_terms( $post_3, 'event', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 		// Get the shortcode markup
-		$vacabulary = new Wordlift_Vocabulary_Shortcode( $this->configuration_service );
-		$markup     = $vacabulary->render( array() );
+		$vocabulary = new Wordlift_Vocabulary_Shortcode( $this->configuration_service );
+		$markup     = $vocabulary->render( array() );
 
 		// Prepate the regular expression.
 		$pattern = '/<li><a href="http:\/\/example\.org\/\?p=\d+">France<\/a><\/li><li><a href="http:\/\/example\.org\/\?p=\d+">French<\/a><\/li><li><a href="http:\/\/example\.org\/\?p=\d+">Friday<\/a><\/li>/';

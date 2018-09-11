@@ -62,7 +62,7 @@ class Wordlift_Install_1_0_0 extends Wordlift_Install {
 	 * @inheritdoc
 	 */
 	public function install() {
-		// Srt the dataset uri.
+		// Set the dataset uri.
 		$this->set_dataset_uri();
 
 		// Create entity type terms.
@@ -89,7 +89,7 @@ class Wordlift_Install_1_0_0 extends Wordlift_Install {
 			// Check whether the term exists and create it if it doesn't.
 			$term_id = $this->get_term_or_create_if_not_exists( $slug );
 
-			// Bail if the term doens't exists or it's not created.
+			// Bail if the term doesn't exists or it's not created.
 			if ( empty( $term_id ) ) {
 				continue;
 			}
@@ -102,7 +102,7 @@ class Wordlift_Install_1_0_0 extends Wordlift_Install {
 					'name'        => $term['label'],
 					'slug'        => $slug,
 					'description' => $term['description'],
-					// We give to WP taxonomy just one parent. TODO: see if can give more than one.
+					// We give to WP taxonomy just one parent.
 					'parent'      => 0,
 				)
 			);
@@ -144,7 +144,7 @@ EOF;
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		$results = dbDelta( $sql );
 
-		$this->log->info( $results );
+		$this->log->trace( 'create_relation_instance_table :: ' . var_export( $results, true ) );
 
 	}
 
@@ -165,18 +165,9 @@ EOF;
 		if ( ! empty( $key ) ) {
 			$this->log->info( 'Updating the remote dataset URI...' );
 
-			$configuration_service->get_remote_dataset_uri( array( 'key' => $key, ) );
+			$configuration_service->get_remote_dataset_uri( $key );
 		}
 
-		// Check if the dataset key has been stored.
-		$dataset_uri = $configuration_service->get_dataset_uri();
-
-		// If the dataset URI is empty, do not set the install version.
-		if ( empty( $dataset_uri ) ) {
-			$this->log->info( 'Setting dataset URI filed: the dataset URI is empty.' );
-
-			return;
-		}
 	}
 
 	/**
@@ -203,6 +194,7 @@ EOF;
 		// Check for errors.
 		if ( is_wp_error( $maybe_term ) ) {
 			$this->log->info( 'wl_install_entity_type_data [ ' . $maybe_term->get_error_message() . ' ]' );
+
 			return false;
 		}
 

@@ -93,7 +93,13 @@ class WL_Metabox {
 		}
 
 		// Add filter to change the metabox CSS class.
-		add_filter( "postbox_classes_entity_$id", 'wl_admin_metaboxes_add_css_class' );
+		//
+		// @since 3.20.0 Since we support post types other than `entity` for entities, we need to set the `screen`
+		//  dynamically according to the `get_current_screen()` function.
+		$current_screen = get_current_screen();
+		$screen         = $current_screen ? $current_screen->post_type : 'entity';
+		add_filter( "postbox_classes_{$screen}_$id", 'wl_admin_metaboxes_add_css_class' );
+
 	}
 
 	/**
@@ -225,7 +231,7 @@ class WL_Metabox {
 	 * Add a Field to the current Metabox, based on the description of the Field.
 	 * This method is a rude factory for Field objects.
 	 *
-	 * @param array $args    The field's information.
+	 * @param array $args The field's information.
 	 * @param bool  $grouped Flag to distinguish between simple and grouped fields.
 	 */
 	public function add_field( $args, $grouped = false ) {
@@ -326,7 +332,7 @@ class WL_Metabox {
 		 * @since  3.18.2
 		 *
 		 * @param  int $entity_id The entity id.
-		 * @param  int $id        The post data.
+		 * @param  int $id The post data.
 		 */
 		do_action( 'wl_save_form_pre_push_entity', $entity_id, $_POST );
 

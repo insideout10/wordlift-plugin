@@ -69,7 +69,7 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 		// Configure WordPress with the test settings.
 		wl_configure_wordpress_test();
 
-		$this->entity_factory = new Wordlift_UnitTest_Factory_For_Entity( $this->factory );
+		$this->entity_factory = new Wordlift_UnitTest_Factory_For_Entity( $this->factory() );
 
 		$this->wordlift_test = new Wordlift_Test();
 
@@ -79,13 +79,8 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 		// Set up the publisher.
 		$this->setup_publisher();
 
-	}
+		_wl_test_set_wp_die_handler();
 
-	function tearDown() {
-
-		$this->teardown_publisher();
-
-		parent::tearDown();
 	}
 
 	/**
@@ -101,13 +96,6 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 		) );
 		$this->entity_type_service->set( $this->publisher_id, 'http://schema.org/Person' );
 		$this->configuration_service->set_publisher_id( $this->publisher_id );
-
-	}
-
-	private function teardown_publisher() {
-
-		wp_delete_post( $this->publisher_id );
-		$this->configuration_service->set_publisher_id( null );
 
 	}
 

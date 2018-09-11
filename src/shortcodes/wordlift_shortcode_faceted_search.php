@@ -55,7 +55,10 @@ function wl_shortcode_faceted_search( $atts ) {
 
 	$div_id = 'wordlift-faceted-entity-search-widget';
 
-	wp_enqueue_style( 'wordlift-faceted-search', dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-faceted-entity-search-widget.min.css' );
+	$deps = apply_filters( 'wl_include_font_awesome', true )
+		? array( 'wordlift-font-awesome' )
+		: array();
+	wp_enqueue_style( 'wordlift-faceted-search', dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-faceted-entity-search-widget.min.css', $deps, Wordlift::get_instance()->get_version() );
 	wp_enqueue_script( 'angularjs', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular.min.js' );
 	wp_enqueue_script( 'angularjs-touch', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular-touch.min.js' );
 
@@ -167,7 +170,15 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 		if ( $filtered_posts ) {
 			foreach ( $filtered_posts as $post_obj ) {
 
-				$thumbnail           = wp_get_attachment_url( get_post_thumbnail_id( $post_obj->ID, 'thumbnail' ) );
+				/**
+				 * Use the thumbnail.
+				 *
+				 * @see https://github.com/insideout10/wordlift-plugin/issues/825 related issue.
+				 * @see https://github.com/insideout10/wordlift-plugin/issues/837
+				 *
+				 * @since 3.19.3 We're using the medium size image.
+				 */
+				$thumbnail           = get_the_post_thumbnail_url( $post_obj, 'medium' );
 				$post_obj->thumbnail = ( $thumbnail ) ?
 					$thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
 				$post_obj->permalink = get_post_permalink( $post_obj->ID );
@@ -212,6 +223,7 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 			foreach ( $entities as $obj ) {
 
 				$entity = get_post( $obj->ID );
+
 				// Ensure only valid and published entities are returned.
 				if ( ( null !== $entity ) && ( 'publish' === $entity->post_status ) ) {
 

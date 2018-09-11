@@ -55,9 +55,9 @@ class Wordlift_Autocomplete_Service {
 	 *
 	 * @since 3.15.0
 	 *
-	 * @param string $query The search string.
+	 * @param string       $query The search string.
 	 * @param array|string $exclude The exclude parameter string.
-	 * @param string $scope The search scope: "local" will search only in the local dataset; "cloud" will search also
+	 * @param string       $scope The search scope: "local" will search only in the local dataset; "cloud" will search also
 	 *                      in Wikipedia. By default is "cloud".
 	 *
 	 * @return array $response The API response.
@@ -77,11 +77,11 @@ class Wordlift_Autocomplete_Service {
 	 *
 	 * @since 3.15.0
 	 *
-	 * @param string $query The search string.
+	 * @param string       $query The search string.
 	 * @param array|string $exclude The exclude parameter.
-	 * @param string $scope The search scope: "local" will search only in the local dataset; "cloud" will search also
+	 * @param string       $scope The search scope: "local" will search only in the local dataset; "cloud" will search also
 	 *                      in Wikipedia. By default is "cloud".
-
+	 *
 	 * @return string Built url.
 	 */
 	private function build_request_url( $query, $exclude, $scope ) {

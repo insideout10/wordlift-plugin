@@ -32,12 +32,12 @@ class Wordlift_Install_Test extends Wordlift_Unit_Test_Case {
 			'organization',
 			'person',
 			'place',
-			'localbusiness',
+			'local-business',
 		);
 
 		foreach ( $slugs as $slug ) {
 			$term = get_term_by( 'slug', $slug, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
-			$this->assertNotNull( $term );
+			$this->assertNotFalse( $term );
 			$this->assertEquals( 0, $term->parent );
 		}
 

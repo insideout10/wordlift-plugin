@@ -5,8 +5,6 @@
  * @since 3.7.2
  */
 
-require_once( 'functions.php' );
-
 /**
  * This class tests the {@link Wordlift_Uri_Service} class.
  *

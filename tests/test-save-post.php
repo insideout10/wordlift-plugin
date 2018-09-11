@@ -9,25 +9,13 @@
  * This file covers tests related to the save-post related routines.
  */
 
-require_once 'functions.php';
-
 /**
  * Class SavePostTest.
  *
  * @since   3.0.0
  * @package Wordlift
  */
-class SavePostTest extends Wordlift_Unit_Test_Case {
-
-	/**
-	 * Set up the test.
-	 */
-	function setUp() {
-		parent::setUp();
-
-		wl_empty_blog();
-
-	}
+class Wordlift_Save_Post_Test extends Wordlift_Unit_Test_Case {
 
 	function test_savepostandreferencedentities() {
 
@@ -92,7 +80,7 @@ EOF;
 
 	}
 
-	function test_publishingunpublishingposts() {
+	function test_publishing_unpublishing_posts() {
 
 		self::turn_on_entity_push();
 
@@ -135,7 +123,7 @@ EOF;
 
 		// publish the post.
 		wp_publish_post( $post_1_id );
-		// wl_update_post_status( $post_1_id, 'publish' );
+
 		$this->assertCount( 2, wl_core_get_related_entity_ids( $post_1_id ) );
 
 		// check the post isn't published (1 line is the header).
@@ -215,7 +203,7 @@ EOF;
 
 	}
 
-	function test_redlinkisupdatedwhenrelatedentityistrashed() {
+	function test_updated_when_related_entity_is_trashed() {
 
 		self::turn_on_entity_push();
 
@@ -261,7 +249,7 @@ EOF;
 		// Send the query and get the response.
 		$response = rl_sparql_select( $sparql );
 
-		$this->assertFalse( is_wp_error( $response ), "The query $sparql shouldn't return an error." );
+		$this->assertFalse( is_wp_error( $response ), "The query $sparql shouldn't return an error: " . var_export( $response, true ) );
 
 		$lines = array();
 		foreach ( explode( "\n", $response['body'] ) as $line ) {

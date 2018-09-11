@@ -3,12 +3,11 @@
 /**
  * Test Entity functions from the modules/core/wordlift_core_entity.php file.
  */
-require_once 'functions.php';
 
 /**
  * Class EntityTest
  */
-class EntityApiTest extends Wordlift_Unit_Test_Case {
+class Wordlift_Entity_Api_Test extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * Test the wl_entity_get_by_title method.

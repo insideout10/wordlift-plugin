@@ -463,9 +463,9 @@ class Wordlift_Schema_Service {
 	 *
 	 * @since 3.1.0
 	 *
-	 * @param \Wordlift_Storage_Factory $storage_factory The {@link Wordlift_Post_Property_Storage_Factory} instance.
+	 * @param \Wordlift_Storage_Factory                $storage_factory The {@link Wordlift_Post_Property_Storage_Factory} instance.
 	 * @param \Wordlift_Sparql_Tuple_Rendition_Factory $rendition_factory The {@link Wordlift_Sparql_Tuple_Rendition_Factory} instance.
-	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
+	 * @param \Wordlift_Configuration_Service          $configuration_service The {@link Wordlift_Configuration_Service} instance.
 	 */
 	public function __construct( $storage_factory, $rendition_factory, $configuration_service ) {
 
@@ -477,17 +477,17 @@ class Wordlift_Schema_Service {
 		$this->language_code         = $this->configuration_service->get_language_code();
 
 		$schemas = array(
-			'article'       => $this->get_article_schema(),
-			'thing'         => $this->get_thing_schema(),
-			'creative-work' => $this->get_creative_work_schema(),
-			'event'         => $this->get_event_schema(),
-			'organization'  => $this->get_organization_schema(),
-			'person'        => $this->get_person_schema(),
-			'place'         => $this->get_place_schema(),
-			'localbusiness' => $this->get_local_business_schema(),
-			'recipe'        => $this->get_recipe_schema(),
-			'web-page'      => $this->get_web_page_schema(),
-			'offer'         => $this->get_offer_schema(),
+			'article'        => $this->get_article_schema(),
+			'thing'          => $this->get_thing_schema(),
+			'creative-work'  => $this->get_creative_work_schema(),
+			'event'          => $this->get_event_schema(),
+			'organization'   => $this->get_organization_schema(),
+			'person'         => $this->get_person_schema(),
+			'place'          => $this->get_place_schema(),
+			'local-business' => $this->get_local_business_schema(),
+			'recipe'         => $this->get_recipe_schema(),
+			'web-page'       => $this->get_web_page_schema(),
+			'offer'          => $this->get_offer_schema(),
 		);
 
 		// Set the taxonomy data.
@@ -505,6 +505,20 @@ class Wordlift_Schema_Service {
 
 		// Create a singleton instance of the Schema service, useful to provide static functions to global functions.
 		self::$instance = $this;
+
+		// Hook the `init` to allow plugins to add their schemas.
+		add_action( 'init', array( $this, 'init' ) );
+
+	}
+
+	/**
+	 * Hook to the `init`, allow late binding plugins to add their schema.
+	 *
+	 * @since 3.19.2
+	 */
+	public function init() {
+
+		$this->schema = apply_filters( 'wl_schemas_init', $this->schema );
 
 	}
 

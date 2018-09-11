@@ -173,7 +173,7 @@ class WL_Metabox_Field {
 	 *
 	 * Overwrite this method in a child class to obtain custom behaviour.
 	 *
-	 * @return boolean Nonce verification.
+	 * @return bool Nonce verification.
 	 */
 	public function verify_nonce() {
 

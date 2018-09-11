@@ -67,9 +67,9 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 * @since 3.10.0
 	 *
 	 * @param \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
-	 * @param \Wordlift_Entity_Service      $entity_service      A {@link Wordlift_Entity_Service} instance.
-	 * @param \Wordlift_User_Service        $user_service        A {@link Wordlift_User_Service} instance.
-	 * @param \Wordlift_Attachment_Service  $attachment_service  A {@link Wordlift_Attachment_Service} instance.
+	 * @param \Wordlift_Entity_Service      $entity_service A {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_User_Service        $user_service A {@link Wordlift_User_Service} instance.
+	 * @param \Wordlift_Attachment_Service  $attachment_service A {@link Wordlift_Attachment_Service} instance.
 	 */
 	public function __construct( $entity_type_service, $entity_service, $user_service, $attachment_service ) {
 
@@ -85,7 +85,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 *
 	 * @since 3.10.0
 	 *
-	 * @param int   $post_id    The post id.
+	 * @param int   $post_id The post id.
 	 * @param array $references An array of entity references.
 	 *
 	 * @return array A JSON-LD array.
@@ -102,14 +102,22 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		// Get the post URI @id.
 		$id = $this->entity_service->get_uri( $post->ID );
 
-		// Get the entity @type. We consider `post` BlogPostings.
-		$type = $this->entity_type_service->get( $post_id );
+		/*
+		 * The `types` variable holds one or more entity types. The `type` variable isn't used anymore.
+		 *
+		 * @since 3.20.0 We support more than one entity type.
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/835
+		 */
+		//		// Get the entity @type. We consider `post` BlogPostings.
+		//		$type = $this->entity_type_service->get( $post_id );
+		$types = $this->entity_type_service->get_names( $post_id );
 
 		// Prepare the response.
 		$jsonld = array(
 			'@context'    => self::CONTEXT,
 			'@id'         => $id,
-			'@type'       => $this->relative_to_context( $type['uri'] ),
+			'@type'       => self::make_one( $types ),
 			'description' => Wordlift_Post_Excerpt_Helper::get_text_excerpt( $post ),
 		);
 
@@ -161,7 +169,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 *
 	 * @since 3.10.0
 	 *
-	 * @param WP_Post $post   The target {@link WP_Post}.
+	 * @param WP_Post $post The target {@link WP_Post}.
 	 * @param array   $jsonld The JSON-LD array.
 	 */
 	protected function set_images( $post, &$jsonld ) {
@@ -225,12 +233,30 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	}
 
 	/**
+	 * If the provided array of values contains only one value, then one single
+	 * value is returned, otherwise the original array is returned.
+	 *
+	 * @since 3.20.0 The function has been moved from {@link Wordlift_Entity_Post_To_Jsonld_Converter} to
+	 *  {@link Wordlift_Abstract_Post_To_Jsonld_Converter}.
+	 * @since  3.8.0
+	 * @access private
+	 *
+	 * @param array $value An array of values.
+	 *
+	 * @return mixed|array A single value or the original array.
+	 */
+	protected static function make_one( $value ) {
+
+		return 1 === count( $value ) ? $value[0] : $value;
+	}
+
+	/**
 	 * Process the provided array by adding the width / height if the values
 	 * are available and are greater than 0.
 	 *
 	 * @since 3.14.0
 	 *
-	 * @param array $image      The `ImageObject` array.
+	 * @param array $image The `ImageObject` array.
 	 * @param array $attachment The attachment array.
 	 *
 	 * @return array The enriched `ImageObject` array.

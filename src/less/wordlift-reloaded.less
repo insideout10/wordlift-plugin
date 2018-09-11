@@ -27,7 +27,7 @@
 
   &.wl-button-disabled {
     cursor: default !important;
-    background-color: fade( @wl-brand-color, 30% ) !important;
+    background-color: fade(@wl-brand-color, 30%) !important;
 
     &:active {
       pointer-events: none;
@@ -809,7 +809,7 @@ div.wp-menu-image:before #adminmenu .toplevel_page_wordlift-admin-entities,
 
 /* metaboxes */
 .wl-metabox {
-  border-left: @wl-brand-color 4px solid;
+  border-left: 2px solid @wl-brand-color;
 
   .hndle span::before {
     content: "WordLift - ";
@@ -866,14 +866,19 @@ svg.wl-logo-svg {
   }
 }
 
-#wl_entity_type-tabs {
-  .hide-if-no-js {
-    display: none;
-  }
-}
+// We now show the entity types tabs, since we allow multiple selections.
+//
+// @see https://github.com/insideout10/wordlift-plugin/issues/835
+// @since 3.2.0
+//
+//#wl_entity_type-tabs {
+//  .hide-if-no-js {
+//    display: none;
+//  }
+//}
 
 // The TinyMCE editor.
-body#tinymce {
+body#tinymce, .mce-content-body, body#tinymce p, .mce-content-body p {
 
   // Editor loading.p
   &[contenteditable=false] {
@@ -936,11 +941,11 @@ body#tinymce {
     background-color: transparent;
     box-shadow: none;
 
-      // Selected entities are highlighted gray.
-      &.selected {
-        color: initial;
-        background-color: initial;
-      }
+    // Selected entities are highlighted gray.
+    &.selected {
+      color: initial;
+      background-color: initial;
+    }
 
   }
 }

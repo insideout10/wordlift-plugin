@@ -5,6 +5,7 @@
   "author.css.map": "author.css.map",
   "author.js": "author.js",
   "author.js.map": "author.js.map",
+<<<<<<< HEAD
   "edit.css": "edit.css",
   "edit.css.map": "edit.css.map",
   "edit.js": "edit.js",
@@ -14,6 +15,12 @@
   "search-rankings.css.map": "search-rankings.css.map",
   "search-rankings.js": "search-rankings.js",
   "search-rankings.js.map": "search-rankings.js.map",
+=======
+  "keywords.css": "keywords.css",
+  "keywords.css.map": "keywords.css.map",
+  "keywords.js": "keywords.js",
+  "keywords.js.map": "keywords.js.map",
+>>>>>>> develop
   "settings.css": "settings.css",
   "settings.css.map": "settings.css.map",
   "settings.js": "settings.js",
