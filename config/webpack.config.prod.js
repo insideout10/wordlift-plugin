@@ -62,7 +62,7 @@ module.exports = {
     tinymce: [require.resolve('./polyfills'), paths.appAdminTinyMceScreen],
     author: [require.resolve('./polyfills'), paths.appAdminAuthorSelectComponent],
     settings: [require.resolve('./polyfills'), paths.appAdminSettingsScreen],
-    keywords: [require.resolve('./polyfills'), paths.appAdminKeywordsScreen],
+    "search-rankings": [require.resolve('./polyfills'), paths.appAdminSearchRankingsScreen],
   },
   output: {
     // The build folder.
