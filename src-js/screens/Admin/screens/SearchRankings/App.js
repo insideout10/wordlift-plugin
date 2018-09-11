@@ -54,7 +54,7 @@ const App = () => (
         <table className="wp-list-table widefat fixed striped">
           <thead>
             <tr>
-              <th scope="col">Keyword</th>
+              <th scope="col">Query</th>
               <th scope="col" style={{ width: "40px" }}>
                 Rank
               </th>
