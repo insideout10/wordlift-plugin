@@ -298,7 +298,7 @@ class Wordlift_Configuration_Service {
 	 */
 	public function get_country_code() {
 
-		return $this->get( 'wl_general_settings', self::COUNTRY, 'uk' );
+		return $this->get( 'wl_general_settings', self::COUNTRY, 'us' );
 	}
 
 	/**
@@ -369,7 +369,12 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Intercept the change of the WordLift key in order to set the dataset URI.
 	 *
+	 *
+	 * @since 3.20.0 as of #761, we save settings every time a key is set, not only when the key changes, so to
+	 *               store the configuration parameters such as country or language.
 	 * @since 3.11.0
+	 *
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/761
 	 *
 	 * @param array $old_value The old settings.
 	 * @param array $new_value The new settings.
@@ -377,14 +382,14 @@ class Wordlift_Configuration_Service {
 	public function update_key( $old_value, $new_value ) {
 
 		// Check the old key value and the new one. We're going to ask for the dataset URI only if the key has changed.
-		$old_key = isset( $old_value['key'] ) ? $old_value['key'] : '';
+		// $old_key = isset( $old_value['key'] ) ? $old_value['key'] : '';
 		$new_key = isset( $new_value['key'] ) ? $new_value['key'] : '';
 
 		// If the key hasn't changed, don't do anything.
 		// WARN The 'update_option' hook is fired only if the new and old value are not equal.
-		if ( $old_key === $new_key ) {
-			return;
-		}
+		//		if ( $old_key === $new_key ) {
+		//			return;
+		//		}
 
 		// If the key is empty, empty the dataset URI.
 		if ( '' === $new_key ) {
@@ -413,7 +418,9 @@ class Wordlift_Configuration_Service {
 		// Build the URL.
 		$url = $this->get_accounts()
 		       . '?key=' . rawurlencode( $key )
-		       . '&url=' . rawurlencode( site_url() );
+		       . '&url=' . rawurlencode( site_url() )
+		       . '&country=' . $this->get_country_code()
+		       . '&language=' . $this->get_language_code();
 
 		$args     = wp_parse_args( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
 			'method' => 'PUT',
