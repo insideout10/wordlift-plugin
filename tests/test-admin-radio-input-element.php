@@ -37,14 +37,15 @@ class Wordlift_Admin_Radio_Input_Element_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	/**
-	* Helper function to capture the result of "rendering"
-	* done by the tested object.
-	*
-	* @since 3.19.0
-	*
-	* @param 	array 	The parameters to pass to the renderer.
-	* @return 	string 	The rendered HTML output
-	*/
+	 * Helper function to capture the result of "rendering"
+	 * done by the tested object.
+	 *
+	 * @since 3.19.0
+	 *
+	 * @param    array    The parameters to pass to the renderer.
+	 *
+	 * @return    string    The rendered HTML output
+	 */
 	function get_rendered_output( $args ) {
 		// Capture the output.
 		ob_start();
@@ -79,7 +80,7 @@ class Wordlift_Admin_Radio_Input_Element_Test extends Wordlift_Unit_Test_Case {
 		// Check that the css class has been set.
 		$this->assertTrue( - 1 < strpos( $output, ' class="' . $css_class . '"' ) );
 		$this->assertTrue( - 1 < strpos( $output, ' id="' . $id . '"' ) );
-		$this->assertTrue( - 1 < strpos( $output, ' name="test"' ) );
+		$this->assertTrue( - 1 < strpos( $output, ' name="test"' ), 'Expecting name="test", got ' . $output );
 
 	}
 
@@ -93,11 +94,11 @@ class Wordlift_Admin_Radio_Input_Element_Test extends Wordlift_Unit_Test_Case {
 		// Render the input element.
 		$output = $this->get_rendered_output( array(
 			'value' => 'yes',
-			'name' => 'test',
+			'name'  => 'test',
 		) );
 
-		$this->assertRegExp( '/value="yes"\s+checked=\'checked\'/' , $output );
-		$this->assertRegExp( '/value="no"\s+\/>/' , $output );
+		$this->assertRegExp( '/value="yes"\s+checked=\'checked\'/', $output );
+		$this->assertRegExp( '/value="no"\s+\/>/', $output );
 
 	}
 
@@ -115,51 +116,51 @@ class Wordlift_Admin_Radio_Input_Element_Test extends Wordlift_Unit_Test_Case {
 
 		// Test no description with empty string.
 		$output = $this->get_rendered_output( array(
-				'description' => '',
-			 	'name' => 'test',
+			'description' => '',
+			'name'        => 'test',
 		) );
 
 		$this->assertFalse( strpos( $output, '<p>' ) );
 
 		// Test simple text description.
 		$output = $this->get_rendered_output( array(
-				'description' => 'simple test',
-			 	'name' => 'test',
+			'description' => 'simple test',
+			'name'        => 'test',
 		) );
 
-		$this->assertTrue( -1 < strpos( $output, 'simple test' ) );
+		$this->assertTrue( - 1 < strpos( $output, 'simple test' ) );
 
 		// Test description requiring html escaping.
 		$output = $this->get_rendered_output( array(
-				'description' => 'simple & test',
-				'name' => 'test',
+			'description' => 'simple & test',
+			'name'        => 'test',
 		) );
 
-		$this->assertTrue( -1 < strpos( $output, 'simple &amp; test' ) );
+		$this->assertTrue( - 1 < strpos( $output, 'simple &amp; test' ) );
 
 		// Test description with a link.
 		$output = $this->get_rendered_output( array(
-				'description' => 'some <a href="">text</a> and more',
-				'name' => 'test',
+			'description' => 'some <a href="">text</a> and more',
+			'name'        => 'test',
 		) );
 
-		$this->assertTrue( -1 < strpos( $output, 'some <a href="">text</a> and more' ) );
+		$this->assertTrue( - 1 < strpos( $output, 'some <a href="">text</a> and more' ) );
 
 		// Test non allowed html elements removed from description.
 		$output = $this->get_rendered_output( array(
-				'description' => 'some <a href="">text<span>oops</span></a> and more',
-				'name' => 'test',
+			'description' => 'some <a href="">text<span>oops</span></a> and more',
+			'name'        => 'test',
 		) );
 
-		$this->assertTrue( -1 < strpos( $output, 'some <a href="">textoops</a> and more' ) );
+		$this->assertTrue( - 1 < strpos( $output, 'some <a href="">textoops</a> and more' ) );
 
 		// Test non allowed attributes removed from description.
 		$output = $this->get_rendered_output( array(
-				'description' => 'some <a href="" onclick="">text</a> and more',
-				'name' => 'test',
+			'description' => 'some <a href="" onclick="">text</a> and more',
+			'name'        => 'test',
 		) );
 
-		$this->assertTrue( -1 < strpos( $output, 'some <a href="">text</a> and more' ) );
+		$this->assertTrue( - 1 < strpos( $output, 'some <a href="">text</a> and more' ) );
 	}
 
 }

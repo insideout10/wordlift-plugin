@@ -23,15 +23,15 @@ class Wordlift_Admin_Radio_Input_Element implements Wordlift_Admin_Element {
 	 *
 	 * @since      3.13.0
 	 *
-	 * @param array $args        {
+	 * @param array $args {
 	 *                           An array of arguments.
 	 *
-	 * @type string $name        The name attribute of the input element. Mandatory.
-	 * @type string $id          The id attribute of the input element. Optional,
+	 * @type string $name The name attribute of the input element. Mandatory.
+	 * @type string $id The id attribute of the input element. Optional,
 	 *                           randomly generated one is used if not supplied.
-	 * @type string $value       The value of the input element. Optional, defaults
+	 * @type string $value The value of the input element. Optional, defaults
 	 *                           to empty string.
-	 * @type string $css_class   The class attribute for the input element. If empty
+	 * @type string $css_class The class attribute for the input element. If empty
 	 *                           string no class attribute will be added. Optional,
 	 *                           defaults to empty string.
 	 * @type string $description The description text to be displayed below the element.
@@ -61,18 +61,16 @@ class Wordlift_Admin_Radio_Input_Element implements Wordlift_Admin_Element {
 
 		?>
 
-		<input
-			type="radio" id="<?php echo esc_attr( $params['id'] ); ?>"
-			name="<?php echo esc_attr( $params['name'] ); ?>"
-			value="yes" <?php echo $css_class; ?>
+        <input type="radio" id="<?php echo esc_attr( $params['id'] ); ?>"
+               name="<?php echo esc_attr( $params['name'] ); ?>"
+               value="yes" <?php echo $css_class; ?>
 			<?php checked( $value, 'yes' ); ?>
-		/> Yes
-		<input
-			type="radio" id="<?php echo esc_attr( $params['id'] ); ?>"
-			name="<?php echo esc_attr( $params['name'] ); ?>"
-			value="no" <?php echo $css_class; ?>
+        /> Yes
+        <input type="radio" id="<?php echo esc_attr( $params['id'] ); ?>"
+               name="<?php echo esc_attr( $params['name'] ); ?>"
+               value="no" <?php echo $css_class; ?>
 			<?php checked( $value, 'no' ); ?>
-		/> No
+        /> No
 
 		<?php
 		echo $description;
