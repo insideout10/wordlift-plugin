@@ -50,6 +50,13 @@ class Wordlift_Configuration_Service {
 	const LANGUAGE = 'site_language';
 
 	/**
+	 * WordLift's configured country code.
+	 *
+	 * @since 3.18.0
+	 */
+	const COUNTRY = 'country_code';
+
+	/**
 	 * The publisher entity post ID option name.
 	 *
 	 * @since 3.9.0
@@ -147,7 +154,7 @@ class Wordlift_Configuration_Service {
 	 *
 	 * @param string $option Name of option to retrieve. Expected to not be SQL-escaped.
 	 * @param string $key The value key.
-	 * @param mixed $value The value.
+	 * @param mixed  $value The value.
 	 */
 	private function set( $option, $key, $value ) {
 
@@ -280,6 +287,30 @@ class Wordlift_Configuration_Service {
 	public function get_diagnostic_preferences() {
 
 		return $this->get( 'wl_general_settings', self::SEND_DIAGNOSTIC, 'no' );
+	}
+
+	/**
+	 * Get WordLift's configured country code, by default 'uk'.
+	 *
+	 * @since 3.18.0
+	 *
+	 * @return string WordLift's configured country code ('uk' by default).
+	 */
+	public function get_country_code() {
+
+		return $this->get( 'wl_general_settings', self::COUNTRY, 'uk' );
+	}
+
+	/**
+	 * Set WordLift's country code.
+	 *
+	 * @since 3.18.0
+	 *
+	 * @param string $value WordLift's country code.
+	 */
+	public function set_country_code( $value ) {
+
+		$this->set( 'wl_general_settings', self::COUNTRY, $value );
 
 	}
 

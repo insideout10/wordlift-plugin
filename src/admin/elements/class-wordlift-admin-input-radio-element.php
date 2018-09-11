@@ -42,7 +42,6 @@ class Wordlift_Admin_Radio_Input_Element implements Wordlift_Admin_Element {
 	 * @return $this|Wordlift_Admin_Element
 	 */
 	public function render( $args ) {
-
 		/*
 		 * Parse the arguments and merge with default values.
 		 * Name intentionally do not have a default as it has to be in SyncEvent
@@ -62,18 +61,22 @@ class Wordlift_Admin_Radio_Input_Element implements Wordlift_Admin_Element {
 
 		?>
 
-		<input type="radio" id="<?php echo esc_attr( $params['id'] ); ?>"
-		       name="<?php echo esc_attr( $params['name'] ); ?>"
-		       value="yes" <?php echo $css_class; ?>
-			<?php checked( $value, 'yes' ); ?> /> Yes
-		<input type="radio" id="<?php echo esc_attr( $params['id'] ); ?>"
-		       name="<?php echo esc_attr( $params['name'] ); ?>"
-		       value="no" <?php echo $css_class; ?>
-			<?php checked( $value, 'no' ); ?>/> No
-
-		<?php echo $description; ?>
+		<input
+			type="radio" id="<?php echo esc_attr( $params['id'] ); ?>"
+			name="<?php echo esc_attr( $params['name'] ); ?>"
+			value="yes" <?php echo $css_class; ?>
+			<?php checked( $value, 'yes' ); ?>
+		/> Yes
+		<input
+			type="radio" id="<?php echo esc_attr( $params['id'] ); ?>"
+			name="<?php echo esc_attr( $params['name'] ); ?>"
+			value="no" <?php echo $css_class; ?>
+			<?php checked( $value, 'no' ); ?>
+		/> No
 
 		<?php
+		echo $description;
+
 		return $this;
 	}
 
