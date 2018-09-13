@@ -491,6 +491,7 @@ function deactivate_wordlift() {
 
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wordlift-deactivator.php';
 	Wordlift_Deactivator::deactivate();
+	Wordlift_Http_Api::deactivate();
 	flush_rewrite_rules();
 
 }

@@ -175,4 +175,17 @@ class Wordlift_Http_Api {
 
 	}
 
+	/**
+	 * Delete the option when the plugin is deactivated.
+	 *
+	 * @since 3.19.4
+	 *
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/846
+	 */
+	public static function deactivate() {
+
+		delete_option( 'wl_http_api' );
+
+	}
+
 }
