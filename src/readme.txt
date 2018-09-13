@@ -145,6 +145,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 = 3.19.4 (????-??-??) =
 * Enhancement: [#848](https://github.com/insideout10/wordlift-plugin/issues/848): add a filter to allow 3rd parties to change the TinyMCE editor id.
 * Enhancement: [#847](https://github.com/insideout10/wordlift-plugin/issues/847): add a filter to allow 3rd parties to force the classification to load.
+* Enhancement: [#843](https://github.com/insideout10/wordlift-plugin/issues/843): add a window global object with WLP version.
 * Fix: [#846](https://github.com/insideout10/wordlift-plugin/issues/846): on deactivate ensure to delete the wl-api option.
 
 = 3.19.3 (2018-08-16) =

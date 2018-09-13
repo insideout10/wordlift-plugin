@@ -122,6 +122,17 @@ class Wordlift_Public {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/bundle.js', array(), $this->version, true );
 		wp_localize_script( $this->plugin_name, 'wlSettings', $settings );
 
+		/*
+		 * Add WordLift's version.
+		 *
+		 * @since 3.19.4
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/843.
+		 */
+		wp_localize_script( $this->plugin_name, 'wordlift', array(
+			'version' => $this->version,
+		) );
+
 	}
 
 	/**
