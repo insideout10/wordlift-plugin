@@ -61,11 +61,11 @@ class Wordlift_Push_Reference_Data_Command {
 	 *
 	 * @since 3.18.0
 	 *
-	 * @param \Wordlift_Relation_Service      $relation_service      The {@link Wordlift_Relation_Service} instance.
-	 * @param \Wordlift_Entity_Service        $entity_service        The {@link Wordlift_Entity_Service} instance.
-	 * @param \Wordlift_Sparql_Service        $sparql_service        The {@link Wordlift_Sparql_Service} instance.
+	 * @param \Wordlift_Relation_Service      $relation_service The {@link Wordlift_Relation_Service} instance.
+	 * @param \Wordlift_Entity_Service        $entity_service The {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_Sparql_Service        $sparql_service The {@link Wordlift_Sparql_Service} instance.
 	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
-	 * @param \Wordlift_Entity_Type_Service   $entity_type_service   The {@link Wordlift_Entity_Type_Service} instance.
+	 * @param \Wordlift_Entity_Type_Service   $entity_type_service The {@link Wordlift_Entity_Type_Service} instance.
 	 */
 	public function __construct( $relation_service, $entity_service, $sparql_service, $configuration_service, $entity_type_service ) {
 
@@ -79,7 +79,7 @@ class Wordlift_Push_Reference_Data_Command {
 
 	public function __invoke( $args ) {
 
-		$relations = $this->relation_service->find_all_grouped_by_subject_id();
+		$relations    = $this->relation_service->find_all_grouped_by_subject_id();
 		$progress_bar = \WP_CLI\Utils\make_progress_bar( 'Processing...', count( $relations ) );
 
 		foreach ( $relations as $relation ) {
@@ -104,7 +104,7 @@ class Wordlift_Push_Reference_Data_Command {
 
 			// Prepare the DELETE query to delete existing data.
 			$query = self::get_delete_query( $uri )
-					 . $this->get_insert_query( $post, $uri, explode( ',', $relation->object_ids ) );
+			         . $this->get_insert_query( $post, $uri, explode( ',', $relation->object_ids ) );
 
 			$this->sparql_service->execute( $query, false );
 
@@ -117,21 +117,21 @@ class Wordlift_Push_Reference_Data_Command {
 	private static function get_delete_query( $uri ) {
 
 		return Wordlift_Query_Builder
-				   ::new_instance()
-				   ->delete()->statement( $uri, Wordlift_Query_Builder::DCTERMS_REFERENCES_URI, '?o' )
-				   ->build()
-			   . Wordlift_Query_Builder
-				   ::new_instance()
-				   ->delete()->statement( $uri, Wordlift_Query_Builder::RDFS_TYPE_URI, '?o' )
-				   ->build()
-			   . Wordlift_Query_Builder
-				   ::new_instance()
-				   ->delete()->statement( $uri, Wordlift_Query_Builder::SCHEMA_HEADLINE_URI, '?o' )
-				   ->build()
-			   . Wordlift_Query_Builder
-				   ::new_instance()
-				   ->delete()->statement( $uri, Wordlift_Query_Builder::SCHEMA_URL_URI, '?o' )
-				   ->build();
+			       ::new_instance()
+			       ->delete()->statement( $uri, Wordlift_Query_Builder::DCTERMS_REFERENCES_URI, '?o' )
+			       ->build()
+		       . Wordlift_Query_Builder
+			       ::new_instance()
+			       ->delete()->statement( $uri, Wordlift_Query_Builder::RDFS_TYPE_URI, '?o' )
+			       ->build()
+		       . Wordlift_Query_Builder
+			       ::new_instance()
+			       ->delete()->statement( $uri, Wordlift_Query_Builder::SCHEMA_HEADLINE_URI, '?o' )
+			       ->build()
+		       . Wordlift_Query_Builder
+			       ::new_instance()
+			       ->delete()->statement( $uri, Wordlift_Query_Builder::SCHEMA_URL_URI, '?o' )
+			       ->build();
 	}
 
 	private function get_insert_query( $post, $uri, $object_ids ) {
@@ -139,11 +139,21 @@ class Wordlift_Push_Reference_Data_Command {
 		$language_code = $this->configuration_service->get_language_code();
 		$type          = $this->entity_type_service->get( $post->ID );
 
-		$builder = Wordlift_Query_Builder
+		/*
+		 * When inserting the schema:url property in the triple store, we want to use the production
+		 * URL, i.e. we must take into consideration that the current URL is a staging one and that
+		 * 3rd parties may want to update the URL with a production one.
+		 *
+		 * @since 3.20.0
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/850.
+		 */
+		$permalink = Wordlift_Post_Adapter::get_production_permalink( $post->ID );
+		$builder   = Wordlift_Query_Builder
 			::new_instance()
 			->insert()
 			->statement( $uri, Wordlift_Query_Builder::SCHEMA_HEADLINE_URI, $post->post_title, Wordlift_Query_Builder::OBJECT_VALUE, null, $language_code )
-			->statement( $uri, Wordlift_Query_Builder::SCHEMA_URL_URI, get_permalink( $post->ID ) )
+			->statement( $uri, Wordlift_Query_Builder::SCHEMA_URL_URI, $permalink )
 			->statement( $uri, Wordlift_Query_Builder::RDFS_TYPE_URI, $type['uri'] );
 
 		$entity_service = $this->entity_service;

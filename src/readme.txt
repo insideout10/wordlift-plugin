@@ -138,11 +138,12 @@ You can open your datasets to the public, attaching to it a free or a commercial
 6. The [Navigator Widget](http://docs.wordlift.io/en/latest/discover.html#the-navigator-widget) providing content-recommendations.
 7. The [Faceted Search Widget](http://docs.wordlift.io/en/latest/discover.html#the-faceted-search-widget).
 8. The [Chord Widget](http://docs.wordlift.io/en/latest/discover.html#the-chord-widget).
-9. The WordLift Dashboard. Your [knowledge graph](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph) at a glance.
+9. The WordLifthttps://github.com/insideout10/wordlift-plugin/issues/850 Dashboard. Your [knowledge graph](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph) at a glance.
 
 == Changelog ==
 
 = 3.20.0 (????-??-??) =
+* Enhancement: [#850](https://github.com/insideout10/wordlift-plugin/issues/850): allow 3rd parties to change the site URL and post permalink.
 * Enhancement: [#835](https://github.com/insideout10/wordlift-plugin/issues/835): Add the all entity types metabox.
 
 = 3.19.3 (2018-08-16) =
