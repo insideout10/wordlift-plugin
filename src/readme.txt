@@ -147,6 +147,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement: [#847](https://github.com/insideout10/wordlift-plugin/issues/847): add a filter to allow 3rd parties to force the classification to load.
 * Enhancement: [#843](https://github.com/insideout10/wordlift-plugin/issues/843): add a window global object with WLP version.
 * Enhancement: [#842](https://github.com/insideout10/wordlift-plugin/issues/842): Exclude WordLift public bundle from WP Rocket defer.
+* Enhancement: [#841](https://github.com/insideout10/wordlift-plugin/issues/841): UTF-8 BOM sequence in paths.
 * Fix: [#846](https://github.com/insideout10/wordlift-plugin/issues/846): on deactivate ensure to delete the wl-api option.
 
 = 3.19.3 (2018-08-16) =

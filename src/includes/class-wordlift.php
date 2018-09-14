@@ -216,7 +216,7 @@ class Wordlift {
 	 *
 	 * @since  3.6.0
 	 * @access private
-	 * @var \Wordlift_Entity_Link_Service
+	 * @var \Wordlift_Entity_Link_Service $entity_link_service The {@link Wordlift_Entity_Link_Service} instance.
 	 */
 	private $entity_link_service;
 

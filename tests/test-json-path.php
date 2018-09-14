@@ -1,13 +1,8 @@
 <?php
 /**
- * Test for the Prefixes module.
- */
-require_once( 'functions.php' );
-
-/**
  * Class JsonPathTest
  */
-class JsonPathTest extends Wordlift_Unit_Test_Case {
+class Wordlift_Json_Path_Test extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * Set up the test.

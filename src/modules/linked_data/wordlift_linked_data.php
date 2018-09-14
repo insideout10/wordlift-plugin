@@ -30,7 +30,7 @@ function wl_linked_data_save_post( $post_id ) {
 	// Get the post type and check whether it supports the editor.
 	//
 	// @see https://github.com/insideout10/wordlift-plugin/issues/659.
-	$post_type           = get_post_type( $post_id );
+	$post_type = get_post_type( $post_id );
 	/**
 	 * Use `wl_post_type_supports_editor` which calls a filter to allow 3rd parties to change the setting.
 	 *
@@ -242,8 +242,15 @@ function wl_save_entity( $entity_data ) {
 
 	$log = Wordlift_Log_Service::get_logger( 'wl_save_entity' );
 
-	$uri              = $entity_data['uri'];
-	$label            = $entity_data['label'];
+	$uri = $entity_data['uri'];
+	/*
+	 * Data is coming from a $_POST, sanitize it.
+	 *
+	 * @since 3.19.4
+	 *
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/841
+	 */
+	$label            = preg_replace( '/\xEF\xBB\xBF/', '', sanitize_text_field( $entity_data['label'] ) );
 	$type_uri         = $entity_data['main_type'];
 	$entity_types     = isset( $entity_data['type'] ) ? $entity_data['type'] : array();
 	$description      = $entity_data['description'];
@@ -315,7 +322,7 @@ function wl_save_entity( $entity_data ) {
 
 	// Setting the alternative labels for this entity.
 	Wordlift_Entity_Service::get_instance()
-						   ->set_alternative_labels( $post_id, $synonyms );
+	                       ->set_alternative_labels( $post_id, $synonyms );
 
 	// Restore all the existing filters.
 	is_array( $wp_filter['save_post'] ) ? $wp_filter['save_post'] = $save_post_filters : $wp_filter['save_post']->callbacks = $save_post_filters;
