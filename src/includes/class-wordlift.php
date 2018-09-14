@@ -967,6 +967,7 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-sample-data-ajax-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-type-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/batch-analysis/class-wordlift-batch-analysis-adapter.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-wprocket-adapter.php';
 
 		/** Async Tasks. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-async-task.php';
@@ -1244,6 +1245,15 @@ class Wordlift {
 		$this->tinymce_adapter          = new Wordlift_Tinymce_Adapter( $this );
 		$this->batch_analysis_adapter   = new Wordlift_Batch_Analysis_Adapter( $this->batch_analysis_service );
 		$this->relation_rebuild_adapter = new Wordlift_Relation_Rebuild_Adapter( $this->relation_rebuild_service );
+
+		/*
+		 * Exclude our public js from WP-Rocket.
+		 *
+		 * @since 3.19.4
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/842.
+		 */
+		new Wordlift_WpRocket_Adapter();
 
 		// Create a Rebuild Service instance, which we'll later bound to an ajax call.
 		$this->rebuild_service = new Wordlift_Rebuild_Service(
