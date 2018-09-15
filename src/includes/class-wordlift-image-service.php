@@ -23,10 +23,10 @@ class Wordlift_Image_Service {
 	 * The image ratios and sizes.
 	 *
 	 * @since 3.19.4
-	 * @access private
+	 * @access public
 	 * @var array $sizes The image ratios and sizes.
 	 */
-	private static $sizes = array(
+	public static $sizes = array(
 		'16x9' => array( 1200, 675 ),
 		'4x3'  => array( 1200, 900 ),
 		'1x1'  => array( 1200, 1200 ),
