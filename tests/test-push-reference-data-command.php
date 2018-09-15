@@ -29,13 +29,15 @@ class Wordlift_Push_Reference_Data_Command_Test extends Wordlift_Unit_Test_Case 
 	public function setUp() {
 		parent::setUp();
 
-		$this->command = new Wordlift_Push_Reference_Data_Command(
-			Wordlift_Relation_Service::get_instance(),
-			Wordlift_Entity_Service::get_instance(),
-			Wordlift_Sparql_Service::get_instance(),
-			Wordlift_Configuration_Service::get_instance(),
-			Wordlift_Entity_Type_Service::get_instance()
-		);
+		if ( class_exists( 'Wordlift_Push_Reference_Data_Command' ) ) {
+			$this->command = new Wordlift_Push_Reference_Data_Command(
+				Wordlift_Relation_Service::get_instance(),
+				Wordlift_Entity_Service::get_instance(),
+				Wordlift_Sparql_Service::get_instance(),
+				Wordlift_Configuration_Service::get_instance(),
+				Wordlift_Entity_Type_Service::get_instance()
+			);
+		}
 
 	}
 
