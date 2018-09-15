@@ -803,6 +803,7 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-link-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-linked-data-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-relation-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-image-service.php';
 
 		/**
 		 * The Query builder.
@@ -1238,6 +1239,7 @@ class Wordlift {
 
 		/** Services. */
 		$this->google_analytics_export_service = new Wordlift_Google_Analytics_Export_Service();
+		new Wordlift_Image_Service();
 
 		/** Adapters. */
 		$this->entity_type_adapter      = new Wordlift_Entity_Type_Adapter( $this->entity_type_service );

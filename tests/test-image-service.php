@@ -14,7 +14,7 @@
  * @package    Wordlift
  * @subpackage Wordlift/tests
  */
-class Wordlift_Image_Service extends Wordlift_Unit_Test_Case {
+class Wordlift_Image_Service_Test extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * Test failures.

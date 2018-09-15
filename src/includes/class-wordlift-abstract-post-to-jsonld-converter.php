@@ -67,9 +67,9 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 * @since 3.10.0
 	 *
 	 * @param \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
-	 * @param \Wordlift_Entity_Service      $entity_service      A {@link Wordlift_Entity_Service} instance.
-	 * @param \Wordlift_User_Service        $user_service        A {@link Wordlift_User_Service} instance.
-	 * @param \Wordlift_Attachment_Service  $attachment_service  A {@link Wordlift_Attachment_Service} instance.
+	 * @param \Wordlift_Entity_Service      $entity_service A {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_User_Service        $user_service A {@link Wordlift_User_Service} instance.
+	 * @param \Wordlift_Attachment_Service  $attachment_service A {@link Wordlift_Attachment_Service} instance.
 	 */
 	public function __construct( $entity_type_service, $entity_service, $user_service, $attachment_service ) {
 
@@ -85,7 +85,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 *
 	 * @since 3.10.0
 	 *
-	 * @param int   $post_id    The post id.
+	 * @param int   $post_id The post id.
 	 * @param array $references An array of entity references.
 	 *
 	 * @return array A JSON-LD array.
@@ -161,7 +161,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 *
 	 * @since 3.10.0
 	 *
-	 * @param WP_Post $post   The target {@link WP_Post}.
+	 * @param WP_Post $post The target {@link WP_Post}.
 	 * @param array   $jsonld The JSON-LD array.
 	 */
 	protected function set_images( $post, &$jsonld ) {
@@ -188,36 +188,58 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		$gallery = array_diff( $this->attachment_service->get_gallery( $post ), $ids, $embeds );
 
 		// Map the attachment ids to images' data structured for schema.org use.
-		$images = array_filter(
-			array_map(
-				function ( $item ) {
+		$images_with_sizes = array_filter(
+			array_reduce( array_merge( $ids, $embeds, $gallery ),
+				function ( $carry, $item ) {
 					/*
 					* @todo: we're not sure that we're getting attachment data here, we
 					* should filter `false`s.
 					*/
 
+					$sources = array_merge(
+						Wordlift_Image_Service::get_sources( $item ),
+						array( wp_get_attachment_image_src( $item, 'full' ) )
+					);
+
+					$sources_with_image = array_filter( $sources, function ( $source ) {
+						return ! empty( $source[0] );
+					} );
+
 					// Get the attachment data.
-					$attachment = wp_get_attachment_image_src( $item, 'full' );
+					// $attachment = wp_get_attachment_image_src( $item, 'full' );
+
+					// var_dump( array( "sources-$item" => Wordlift_Image_Service::get_sources( $item ) ) );
 
 					// Bail if image is not found.
 					// In some cases, you can delete the image from the database
 					// or from uploads dir, but the image id still exists as featured image
 					// or in [gallery] shortcode.
-					if ( empty( $attachment[0] ) ) {
-						return null;
+//					if ( empty( $attachment[0] ) ) {
+					if ( empty( $sources_with_image ) ) {
+						return $carry;
 					}
 
-					// Refactor data as per schema.org specifications.
-					return Wordlift_Abstract_Post_To_Jsonld_Converter::set_image_size(
-						array(
-							'@type' => 'ImageObject',
-							'url'   => $attachment[0],
-						), $attachment
+					// Merge the arrays.
+					return array_merge(
+						$carry,
+						$sources_with_image
 					);
-				}, array_merge( $ids, $embeds, $gallery )
-			)
+				}
+				// Initial array.
+				, array() )
 		);
 
+		// Refactor data as per schema.org specifications.
+		$images = array_map( function ( $attachment ) {
+			return Wordlift_Abstract_Post_To_Jsonld_Converter::set_image_size(
+				array(
+					'@type' => 'ImageObject',
+					'url'   => $attachment[0],
+				), $attachment
+			);
+		}, $images_with_sizes );
+
+		// Add images if present.
 		if ( 0 < count( $images ) ) {
 			$jsonld['image'] = $images;
 		}
@@ -230,7 +252,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 *
 	 * @since 3.14.0
 	 *
-	 * @param array $image      The `ImageObject` array.
+	 * @param array $image The `ImageObject` array.
 	 * @param array $attachment The attachment array.
 	 *
 	 * @return array The enriched `ImageObject` array.
