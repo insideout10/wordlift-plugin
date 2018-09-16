@@ -24,6 +24,41 @@ if ( 'true' === getenv( 'WL_SSL_V1_FORCED' ) ) {
 require_once( 'jsonld.php' );
 
 /**
+ * Compatibility for WP 4.4.
+ *
+ * @since 3.19.4
+ */
+function _wl_test_set_wp_die_handler() {
+	global $wp_filter;
+	if ( ! class_exists( 'WPDieException' ) ) {
+		class WPDieException extends Exception {
+		}
+	}
+
+	if ( ! function_exists( '_wl_test_wp_die_handler' ) ) {
+		function _wl_test_wp_die_handler( $message ) {
+			if ( ! is_scalar( $message ) ) {
+				$message = '0';
+			}
+
+			throw new WPDieException( $message );
+		}
+
+	}
+
+	unset( $wp_filter['wp_die_ajax_handler'] );
+	add_filter( 'wp_die_ajax_handler', function () {
+		return '_wl_test_wp_die_handler';
+	});
+
+	unset( $wp_filter['wp_die_handler'] );
+	add_filter( 'wp_die_handler', function () {
+		return '_wl_test_wp_die_handler';
+	});
+
+}
+
+/**
  * Create a new post.
  *
  * @param string $content The post content.
