@@ -27,7 +27,7 @@ $(
   	<div
       id="wordlift-edit-post-wrapper"
       ng-controller="EditPostWidgetController"
-      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.19.4-dev'">
+      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.19.4'">
     </div>
   """)
   .appendTo('#wordlift-edit-post-outer-wrapper')
@@ -44,7 +44,7 @@ $(
       <svg transform-origin="10 10" id="wl-widget-spinner-enterprise">
         <polygon points="3,10 6.5,4 13.4,4 16.9,10 13.4,16 6.5,16" class="wl-enterprise-shape"></polygon>
       </svg>
-    </div> 
+    </div>
   """)
   .appendTo('#wordlift_entities_box .ui-sortable-handle')
 

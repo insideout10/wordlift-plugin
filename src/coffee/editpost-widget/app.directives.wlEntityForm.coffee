@@ -7,9 +7,9 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
       onReset: '&'
       box: '='
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.19.4-dev'
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.19.4'
 
-    link: ($scope, $element, $attrs, $ctrl) ->  
+    link: ($scope, $element, $attrs, $ctrl) ->
 
       $scope.configuration = configuration
       $scope.currentCategory = undefined
@@ -41,31 +41,31 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
 
 
       $scope.unsetCurrentCategory = ()->
-        $scope.currentCategory = undefined 
-        # Entity type has to be reset too        
+        $scope.currentCategory = undefined
+        # Entity type has to be reset too
         $scope.entity?.mainType = undefined
 
       $scope.isSameAsOf = (sameAs)->
         sameAs.id in $scope.entity.sameAs
-      
+
       $scope.addSameAs = (sameAs)->
-        
+
         unless $scope.entity?.sameAs
           $scope.entity?.sameAs = []
-        
-        if sameAs.id in $scope.entity.sameAs 
+
+        if sameAs.id in $scope.entity.sameAs
           index = $scope.entity.sameAs.indexOf sameAs.id
           $scope.entity.sameAs.splice index, 1
         else
           $scope.entity?.sameAs.push sameAs.id
-      
+
       $scope.setType = (entityType)->
         return if entityType is $scope.entity?.mainType
         $scope.entity?.mainType = entityType
-      
+
       $scope.isCurrentType = (entityType)->
         return $scope.entity?.mainType is entityType
-        
+
       $scope.getAvailableTypes = ()->
         return configuration.getTypesForCategoryId $scope.currentCategory
 
@@ -79,14 +79,14 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
 
       $scope.hasOccurences = ()->
         $scope.entity.occurrences?.length > 0
-      
+
       $scope.setSameAs = (uri)->
         $scope.entity.sameAs = uri
 
       $scope.isInternal = ()->
-        configuration.isInternal $scope.entity?.id 
+        configuration.isInternal $scope.entity?.id
 
       $scope.isNew = (uri)->
-        return !/^(f|ht)tps?:\/\//i.test $scope.entity?.id 
+        return !/^(f|ht)tps?:\/\//i.test $scope.entity?.id
 
 ])
