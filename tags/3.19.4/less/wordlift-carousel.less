@@ -1,0 +1,69 @@
+@import 'wordlift-functions.less';
+
+.wl-carousel {
+
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  border: transparent 1px solid !important;
+
+  &.active {
+    border-top: #ccc 1px solid !important;
+    border-bottom: #ccc 1px solid !important;
+  }
+
+  .wl-panes {
+    position: relative;
+    overflow: hidden;
+    left: 0;
+    transition-property: left;
+    transition-duration: 0.3s;
+    transition-timing-function: linear;
+  }
+
+  .wl-panes .wl-carousel-item {
+    float: left;
+    margin: 0;
+    padding: 0.6em 0;
+    min-width: 100px;
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .wl-carousel-arrows {
+
+    position: absolute;
+    text-align: center;
+    font-weight: bold;
+    padding: 0 0.3em;
+
+    right: 0;
+    bottom: 0.6em;
+
+    &.active {
+      border: #ccc 1px solid !important;
+    }
+
+    &:hover {
+      color: #000 !important;
+    }
+
+    .wl-angle {
+      font-size: 18px !important;
+      color: inherit;
+      cursor: pointer;
+
+      &.left {
+        .fa-icon(@fa-var-caret-left);
+      }
+      &.right {
+        .fa-icon(@fa-var-caret-right);
+      }
+
+    }
+  }
+}
