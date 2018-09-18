@@ -30,7 +30,7 @@ if ( is_admin() ) {
 function wl_admin_add_entities_meta_box( $post_type ) {
 
 	// Bail out if the post type doesn't support a TinyMCE editor.
-	if ( ! post_type_supports( $post_type, 'editor' ) ) {
+	if ( ! wl_post_type_supports_editor( $post_type ) ) {
 		return;
 	}
 
@@ -41,6 +41,31 @@ function wl_admin_add_entities_meta_box( $post_type ) {
 }
 
 add_action( 'add_meta_boxes', 'wl_admin_add_entities_meta_box' );
+
+/**
+ * Whether the post type supports the editor UI.
+ *
+ * @see https://github.com/insideout10/wordlift-plugin/issues/847
+ *
+ * @param string $post_type The post type.
+ *
+ * @return bool True if the editor UI is supported otherwise false.
+ */
+function wl_post_type_supports_editor( $post_type ) {
+
+	$default = post_type_supports( $post_type, 'editor' );
+
+	/**
+	 * Allow 3rd parties to force the classification to load.
+	 *
+	 * @since 3.19.4
+	 *
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/847.
+	 *
+	 * @param bool $default The preset value as gathered by the `post_type_supports` call.
+	 */
+	return apply_filters( 'wl_post_type_supports_editor', $default, $post_type );
+}
 
 /**
  * Displays the meta box contents (called by *add_meta_box* callback).

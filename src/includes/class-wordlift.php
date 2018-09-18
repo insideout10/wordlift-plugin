@@ -216,7 +216,7 @@ class Wordlift {
 	 *
 	 * @since  3.6.0
 	 * @access private
-	 * @var \Wordlift_Entity_Link_Service
+	 * @var \Wordlift_Entity_Link_Service $entity_link_service The {@link Wordlift_Entity_Link_Service} instance.
 	 */
 	private $entity_link_service;
 
@@ -712,7 +712,7 @@ class Wordlift {
 	public function __construct() {
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.20.0-dev2';
+		$this->version     = '3.20.0-dev3';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -792,6 +792,7 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-link-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-linked-data-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-relation-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-image-service.php';
 
 		/**
 		 * The Query builder.
@@ -957,6 +958,7 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-sample-data-ajax-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-type-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/batch-analysis/class-wordlift-batch-analysis-adapter.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-wprocket-adapter.php';
 
 		/** Async Tasks. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-async-task.php';
@@ -1241,6 +1243,7 @@ class Wordlift {
 
 		/** Services. */
 		$this->google_analytics_export_service = new Wordlift_Google_Analytics_Export_Service();
+		new Wordlift_Image_Service();
 
 		/** Adapters. */
 		$this->entity_type_adapter      = new Wordlift_Entity_Type_Adapter( $this->entity_type_service );
@@ -1248,6 +1251,15 @@ class Wordlift {
 		$this->tinymce_adapter          = new Wordlift_Tinymce_Adapter( $this );
 		$this->batch_analysis_adapter   = new Wordlift_Batch_Analysis_Adapter( $this->batch_analysis_service );
 		$this->relation_rebuild_adapter = new Wordlift_Relation_Rebuild_Adapter( $this->relation_rebuild_service );
+
+		/*
+		 * Exclude our public js from WP-Rocket.
+		 *
+		 * @since 3.19.4
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/842.
+		 */
+		new Wordlift_WpRocket_Adapter();
 
 		// Create a Rebuild Service instance, which we'll later bound to an ajax call.
 		$this->rebuild_service = new Wordlift_Rebuild_Service(

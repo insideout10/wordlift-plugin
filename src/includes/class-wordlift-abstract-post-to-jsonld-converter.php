@@ -196,36 +196,58 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		$gallery = array_diff( $this->attachment_service->get_gallery( $post ), $ids, $embeds );
 
 		// Map the attachment ids to images' data structured for schema.org use.
-		$images = array_filter(
-			array_map(
-				function ( $item ) {
+		$images_with_sizes = array_filter(
+			array_reduce( array_merge( $ids, $embeds, $gallery ),
+				function ( $carry, $item ) {
 					/*
 					* @todo: we're not sure that we're getting attachment data here, we
 					* should filter `false`s.
 					*/
 
+					$sources = array_merge(
+						Wordlift_Image_Service::get_sources( $item ),
+						array( wp_get_attachment_image_src( $item, 'full' ) )
+					);
+
+					$sources_with_image = array_filter( $sources, function ( $source ) {
+						return ! empty( $source[0] );
+					} );
+
 					// Get the attachment data.
-					$attachment = wp_get_attachment_image_src( $item, 'full' );
+					// $attachment = wp_get_attachment_image_src( $item, 'full' );
+
+					// var_dump( array( "sources-$item" => Wordlift_Image_Service::get_sources( $item ) ) );
 
 					// Bail if image is not found.
 					// In some cases, you can delete the image from the database
 					// or from uploads dir, but the image id still exists as featured image
 					// or in [gallery] shortcode.
-					if ( empty( $attachment[0] ) ) {
-						return null;
+//					if ( empty( $attachment[0] ) ) {
+					if ( empty( $sources_with_image ) ) {
+						return $carry;
 					}
 
-					// Refactor data as per schema.org specifications.
-					return Wordlift_Abstract_Post_To_Jsonld_Converter::set_image_size(
-						array(
-							'@type' => 'ImageObject',
-							'url'   => $attachment[0],
-						), $attachment
+					// Merge the arrays.
+					return array_merge(
+						$carry,
+						$sources_with_image
 					);
-				}, array_merge( $ids, $embeds, $gallery )
-			)
+				}
+				// Initial array.
+				, array() )
 		);
 
+		// Refactor data as per schema.org specifications.
+		$images = array_map( function ( $attachment ) {
+			return Wordlift_Abstract_Post_To_Jsonld_Converter::set_image_size(
+				array(
+					'@type' => 'ImageObject',
+					'url'   => $attachment[0],
+				), $attachment
+			);
+		}, $images_with_sizes );
+
+		// Add images if present.
 		if ( 0 < count( $images ) ) {
 			$jsonld['image'] = $images;
 		}

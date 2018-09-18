@@ -119,8 +119,19 @@ class Wordlift_Public {
 
 		// Note that we switched the js to be loaded in footer, since it is loading
 		// the json-ld representation.
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/bundle.js', array(), $this->version, true );
+		wp_enqueue_script( $this->plugin_name, self::get_public_js_url(), array(), $this->version, true );
 		wp_localize_script( $this->plugin_name, 'wlSettings', $settings );
+
+		/*
+		 * Add WordLift's version.
+		 *
+		 * @since 3.19.4
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/843.
+		 */
+		wp_localize_script( $this->plugin_name, 'wordlift', array(
+			'version' => $this->version,
+		) );
 
 	}
 
@@ -162,6 +173,23 @@ class Wordlift_Public {
 		$settings['jsonld_enabled'] = apply_filters( 'wl_jsonld_enabled', $jsonld_enabled );
 
 		return $settings;
+	}
+
+	/**
+	 * Get the public JavaScript URL.
+	 *
+	 * Using this function is encouraged, since the public JavaScript is also used by the {@link Wordlift_WpRocket_Adapter}
+	 * in order to avoid breaking optimizations.
+	 *
+	 * @since 3.19.4
+	 *
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/842.
+	 *
+	 * @return string The URL to the public JavaScript.
+	 */
+	public static function get_public_js_url() {
+
+		return plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/bundle.js';
 	}
 
 }
