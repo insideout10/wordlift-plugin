@@ -993,10 +993,6 @@
           if (id == null) {
             id = (ref = window['wlSettings']['default_editor_id']) != null ? ref : 'content';
           }
-          console.log({
-            wp: wp
-          });
-          console.log('TinyMCE requested.');
           return tinyMCE.get((ref1 = typeof wp !== "undefined" && wp !== null ? (ref2 = wp.hooks) != null ? ref2.applyFilters('wl_default_editor_id', id) : void 0 : void 0) != null ? ref1 : id);
         },
         getHTML: function(id) {
