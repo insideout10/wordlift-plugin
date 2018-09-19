@@ -89,7 +89,13 @@ function wl_entities_box_content( $post ) {
 		$relation_name = $box['id'];
 
 		// Get the entity referenced from the post content.
-		$entity_uris = Wordlift_Content_Filter_Service::get_instance()->get_entity_uris( $post->post_content );
+		/*
+		 * Allow 3rd parties to provide another post content.
+		 *
+		 * @since 3.20.0
+		 */
+		$post_content = apply_filters( 'wl_post_content', $post->post_content, $post );
+		$entity_uris = Wordlift_Content_Filter_Service::get_instance()->get_entity_uris( $post_content );
 
 		// Enhance current box selected entities.
 		$classification_boxes[ $i ]['selectedEntities'] = $entity_uris;
