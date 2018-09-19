@@ -993,7 +993,9 @@ angular.module('wordlift.editpost.widget.services.EditorAdapter', [
     # @param string id The editor's id (by default 'content').
     # @return The editor instance.
     getEditor: (id = window['wlSettings']['default_editor_id'] ? 'content') ->
-      tinyMCE.get(id)
+      console.log { wp: wp }
+      console.log 'TinyMCE requested.'
+      tinyMCE.get( wp?.hooks?.applyFilters( 'wl_default_editor_id', id ) ? id )
 
     # Get the HTML code in the specified editor (by default 'content').
     #
@@ -1893,8 +1895,17 @@ $(
   # Add WordLift as a plugin of the TinyMCE editor.
   tinymce.PluginManager.add 'wordlift', (editor, url) ->
 
+    # Get the editor id from the `wlSettings` or use `content`.
+    defaultEditorId = window['wlSettings']?['default_editor_id']? ? 'content'
+
+    # Allow 3rd parties to change the editor id.
+    #
+    # @see https://github.com/insideout10/wordlift-plugin/issues/850.
+    # @see https://github.com/insideout10/wordlift-plugin/issues/851.
+    editorId = wp?.hooks?.applyFilters( 'wl_default_editor_id', defaultEditorId )
+
     # This plugin has to be loaded only with the main WP "content" editor
-    return unless editor.id is "content"
+    return unless editor.id is editorId
 
     # The `closed` flag is a very important flag throughout the initialization
     # of WordLift's classification box: in fact if the classification box is

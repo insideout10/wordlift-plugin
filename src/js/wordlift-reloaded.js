@@ -989,11 +989,15 @@
       var service;
       service = {
         getEditor: function(id) {
-          var ref;
+          var ref, ref1, ref2;
           if (id == null) {
             id = (ref = window['wlSettings']['default_editor_id']) != null ? ref : 'content';
           }
-          return tinyMCE.get(id);
+          console.log({
+            wp: wp
+          });
+          console.log('TinyMCE requested.');
+          return tinyMCE.get((ref1 = typeof wp !== "undefined" && wp !== null ? (ref2 = wp.hooks) != null ? ref2.applyFilters('wl_default_editor_id', id) : void 0 : void 0) != null ? ref1 : id);
         },
         getHTML: function(id) {
           var ref;
@@ -1838,8 +1842,10 @@
       });
     }
   ]), tinymce.PluginManager.add('wordlift', function(editor, url) {
-    var addClassToBody, closed, fireEvent, startAnalysis;
-    if (editor.id !== "content") {
+    var addClassToBody, closed, defaultEditorId, editorId, fireEvent, ref, ref1, ref2, startAnalysis;
+    defaultEditorId = (ref = ((ref1 = window['wlSettings']) != null ? ref1['default_editor_id'] : void 0) != null) != null ? ref : 'content';
+    editorId = typeof wp !== "undefined" && wp !== null ? (ref2 = wp.hooks) != null ? ref2.applyFilters('wl_default_editor_id', defaultEditorId) : void 0 : void 0;
+    if (editor.id !== editorId) {
       return;
     }
     closed = $('#wordlift_entities_box').hasClass('closed');
@@ -1854,16 +1860,16 @@
     if (!closed) {
       injector.invoke([
         'EditorService', '$rootScope', '$log', function(EditorService, $rootScope, $log) {
-          var j, len, method, originalMethod, ref, results1;
+          var j, len, method, originalMethod, ref3, results1;
           if (wp.autosave != null) {
             wp.autosave.server.postChanged = function() {
               return false;
             };
           }
-          ref = ['setMarkers', 'toViews'];
+          ref3 = ['setMarkers', 'toViews'];
           results1 = [];
-          for (j = 0, len = ref.length; j < len; j++) {
-            method = ref[j];
+          for (j = 0, len = ref3.length; j < len; j++) {
+            method = ref3[j];
             if (wp.mce.views[method] != null) {
               originalMethod = wp.mce.views[method];
               $log.warn("Override wp.mce.views method " + method + "() to prevent shortcodes rendering");
