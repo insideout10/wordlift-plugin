@@ -91,7 +91,34 @@ class Wordlift_Entity_Type_Adapter {
 		if ( 'entity' === $post->post_type ) {
 			$this->entity_type_service->set( $post_id, 'http://schema.org/Thing' );
 		} else {
-			$this->entity_type_service->set( $post_id, apply_filters( 'wl_default_entity_type_for_post_type', 'http://schema.org/Article', $post->post_type ) );
+			/**
+			 * Get the default entity type.
+			 *
+			 * @since 3.20.0
+			 *
+			 * @param string $entity_type The preset entity type.
+			 * @param string $post_type The post type.
+			 */
+			$default_entity_type = apply_filters( 'wl_default_entity_type_for_post_type', 'http://schema.org/Article', $post->post_type );
+
+			/**
+			 * Get the default entity types.
+			 *
+			 * Adding support to assign more than one entity type.
+			 *
+			 * @since 3.20.0
+			 *
+			 * @see Wordlift_Mapping_Service
+			 *
+			 * @param array  $entity_types The default entity types.
+			 * @param string $post_type The post type.
+			 */
+			$entity_types = apply_filters( 'wl_default_entity_types_for_post_type', array( $default_entity_type ), $post->post_type );
+
+			// Set the entity type.
+			foreach ( $entity_types as $entity_type ) {
+				$this->entity_type_service->set( $post_id, $entity_type, false );
+			}
 		}
 
 	}
