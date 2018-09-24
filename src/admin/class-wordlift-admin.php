@@ -107,6 +107,9 @@ class Wordlift_Admin {
 
 			/*
 			 * Add support for `All Entity Types`.
+			 *
+			 * @since 3.20.0
+			 *
 			 * @see https://github.com/insideout10/wordlift-plugin/issues/835
 			 */
 			if ( WL_ALL_ENTITY_TYPES ) {
@@ -114,6 +117,13 @@ class Wordlift_Admin {
 				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-schemaorg-property-metabox.php';
 
 				new Wordlift_Admin_Schemaorg_Property_Metabox( Wordlift_Schemaorg_Property_Service::get_instance() );
+
+				/*
+				 * The `Mappings` admin page.
+				 */
+				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-mappings-page.php';
+				new Wordlift_Admin_Mappings_Page();
+
 			}
 
 		}

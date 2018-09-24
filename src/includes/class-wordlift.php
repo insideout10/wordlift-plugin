@@ -1336,11 +1336,12 @@ class Wordlift {
 		 *
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/852.
 		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-batch-action.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/mapping/class-wordlift-mapping-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/mapping/class-wordlift-mapping-ajax-adapter.php';
 
 		// Create an instance of the Mapping Service and assign it to the Ajax Adapter.
-		new Wordlift_Mapping_Ajax_Adapter( new Wordlift_Mapping_Service() );
+		new Wordlift_Mapping_Ajax_Adapter( new Wordlift_Mapping_Service( Wordlift_Entity_Type_Service::get_instance() ) );
 	}
 
 	/**

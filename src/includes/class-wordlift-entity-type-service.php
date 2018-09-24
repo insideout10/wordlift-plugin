@@ -258,7 +258,7 @@ class Wordlift_Entity_Type_Service {
 	 * @return false|WP_Term WP_Term instance on success. Will return false if `$taxonomy` does not exist
 	 *                             or `$term` was not found.
 	 */
-	private function get_term_by_uri( $uri ) {
+	public function get_term_by_uri( $uri ) {
 
 		$terms = get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
 			'fields'     => 'all',
