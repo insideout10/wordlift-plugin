@@ -142,6 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.19.5 (????-??-??) =
+* Enhancement: [#855](https://github.com/insideout10/wordlift-plugin/issues/855): Rebuild compatibility with Polylang plugin.
+
 = 3.19.4 (2018-09-18) =
 * Enhancement: [#848](https://github.com/insideout10/wordlift-plugin/issues/848): add a filter to allow 3rd parties to change the TinyMCE editor id.
 * Enhancement: [#847](https://github.com/insideout10/wordlift-plugin/issues/847): add a filter to allow 3rd parties to force the classification to load.
