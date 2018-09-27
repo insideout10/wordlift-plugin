@@ -171,16 +171,6 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 	 */
 	function find( $offset = 0, $limit = 10, $args = array() ) {
 
-		/*
-		 * Remove the polylang hooks, if any, since they add a requirement for an entity to be bound to the language
-		 * taxonomy.
-		 *
-		 * @since 3.19.5
-		 *
-		 * @see https://github.com/insideout10/wordlift-plugin/issues/855.
-		 */
-		$this->remove_polylang();
-
 		$actual_args = wp_parse_args( $args, Wordlift_Entity_Service::add_criterias( array(
 			'offset'        => $offset,
 			'numberposts'   => $limit,
@@ -194,31 +184,6 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 		$this->log->trace( 'Using ' . var_export( $actual_args, true ) );
 
 		return get_posts( $actual_args );
-	}
-
-	/**
-	 * Remove the polylang hooks.
-	 *
-	 * @since 3.19.5
-	 *
-	 * @see https://github.com/insideout10/wordlift-plugin/issues/855.
-	 */
-	private function remove_polylang() {
-		global $wp_filter;
-
-		if ( ! isset( $wp_filter['parse_query']->callbacks ) ) {
-			return;
-		}
-
-		foreach ( $wp_filter['parse_query']->callbacks as $priority => $callbacks ) {
-			foreach ( $callbacks as $callback => $value ) {
-				if ( 1 === preg_match( '/\w+parse(?:_main)?_query$/', $callback ) ) {
-					unset( $wp_filter['parse_query']->callbacks[ $priority ][ $callback ] );
-				}
-			}
-
-		}
-
 	}
 
 }
