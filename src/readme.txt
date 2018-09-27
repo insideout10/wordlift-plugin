@@ -142,7 +142,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.19.5 (????-??-??) =
+= 3.19.5 (2018-09-27) =
 * Enhancement: [#855](https://github.com/insideout10/wordlift-plugin/issues/855): Rebuild compatibility with Polylang plugin.
 
 = 3.19.4 (2018-09-18) =
