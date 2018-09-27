@@ -11,7 +11,7 @@ class Wordlift_Batch_Action {
 
 	public static function process( $post_type, $offset, $query, $callback ) {
 
-		$posts_per_page = 50;
+		$posts_per_page = 10;
 
 		$args = array_merge(
 			self::get_args( $post_type, $query ),
