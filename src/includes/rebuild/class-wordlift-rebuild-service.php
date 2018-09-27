@@ -160,16 +160,18 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 	/**
 	 * List the items starting at the specified offset and up to the specified limit.
 	 *
+     * @since 3.19.5 remove Polylang hooks.
 	 * @since 3.6.0
 	 *
 	 * @param int   $offset The start offset.
-	 * @param int   $limit  The maximum number of items to return.
-	 * @param array $args   Additional arguments.
+	 * @param int   $limit The maximum number of items to return.
+	 * @param array $args Additional arguments.
 	 *
 	 * @return array A array of items (or an empty array if no items are found).
 	 */
 	function find( $offset = 0, $limit = 10, $args = array() ) {
-		return get_posts( wp_parse_args( $args, Wordlift_Entity_Service::add_criterias( array(
+
+		$actual_args = wp_parse_args( $args, Wordlift_Entity_Service::add_criterias( array(
 			'offset'        => $offset,
 			'numberposts'   => $limit,
 			'fields'        => 'all',
@@ -177,7 +179,11 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 			'order'         => 'ASC',
 			'post_status'   => 'any',
 			'cache_results' => false,
-		) ) ) );
+		) ) );
+
+		$this->log->trace( 'Using ' . var_export( $actual_args, true ) );
+
+		return get_posts( $actual_args );
 	}
 
 }
