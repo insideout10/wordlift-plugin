@@ -1,0 +1,80 @@
+@import 'font-awesome.less';
+@import 'colors.less';
+@import 'wordlift-functions.less';
+@import 'wordlift-carousel.less';
+@import 'wordlift-card.less';
+@import 'wordlift-label.less';
+@import 'wordlift-navigator-widget.less';
+
+path.wl-person {
+  fill: @wl-person-color;
+}
+
+path.wl-place {
+  fill: @wl-place-color;
+}
+
+path.wl-creative-work {
+  fill: @wl-creative-work-color;
+}
+
+path.wl-organization {
+  fill: @wl-organization-color;
+}
+
+path.wl-local-business {
+  fill: @wl-organization-color;
+}
+
+path.wl-event {
+  fill: @wl-event-color;
+}
+
+path.wl-thing {
+  fill: @wl-thing-color;
+}
+
+a.wl-entity-page-link {
+  text-decoration: none !important;
+  border-bottom: #666 1px dotted;
+}
+
+.wl-floating-wrapper {
+  border-top: #ccc 1px solid;
+  padding-top: 1em;
+}
+
+@media screen and (max-width: 460px) {
+  .wl-floating-item-wrapper {
+    width: 100% !important;
+  }
+}
+
+.wl-floating-item-wrapper {
+  width: 25%;
+  display: inline-block;
+  vertical-align: top;
+  padding: 0 0.3em;
+
+  h6 {
+    margin: 0 !important;
+  }
+
+  .wl-card-title {
+    padding: 0.6em 0 !important;
+  }
+}
+
+// Set the default width and height for the wl-timeline component. They can be further customized using the shortcode.
+.wl-timeline-container {
+  width: 100%;
+  height: 300px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  *, *:before, *:after {
+    -webkit-box-sizing: initial;
+    box-sizing: initial;
+  }
+
+}
