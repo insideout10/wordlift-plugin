@@ -141,7 +141,30 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		// Get the entities referenced by this post and set it to the `references`
 		// array so that the caller can do further processing, such as printing out
 		// more of those references.
-		$references = $this->entity_service->get_related_entities( $post->ID );
+		$references_without_locations = $this->entity_service->get_related_entities( $post->ID );
+
+		/*
+		 * Add the locations to the references.
+		 *
+		 * @since 3.19.5
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/858.
+		 */
+		// A reference to use in closure.
+		$entity_type_service = $this->entity_type_service;
+		$locations           = array_reduce( $references_without_locations, function ( $carry, $post_id ) use ( $entity_type_service ) {
+			// @see https://schema.org/location for the schema.org types using the `location` property.
+			if ( ! $entity_type_service->has_entity_type( $post_id, 'http://schema.org/Action' )
+			     && ! $entity_type_service->has_entity_type( $post_id, 'http://schema.org/Event' )
+			     && ! $entity_type_service->has_entity_type( $post_id, 'http://schema.org/Organization' ) ) {
+				return $carry;
+			}
+
+			return array_merge( $carry, get_post_meta( $post_id, Wordlift_Schema_Service::FIELD_LOCATION ) );
+		}, array() );
+
+		// Merge the references with the referenced locations if any.
+		$references = array_unique( array_merge( $references_without_locations, $locations ) );
 
 		return $jsonld;
 	}
