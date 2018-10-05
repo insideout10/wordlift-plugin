@@ -712,7 +712,7 @@ class Wordlift {
 	public function __construct() {
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.20.0-dev6';
+		$this->version     = '3.20.0-dev7';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -1342,6 +1342,17 @@ class Wordlift {
 
 		// Create an instance of the Mapping Service and assign it to the Ajax Adapter.
 		new Wordlift_Mapping_Ajax_Adapter( new Wordlift_Mapping_Service( Wordlift_Entity_Type_Service::get_instance() ) );
+
+		/*
+		 * Batch Operations. They're similar to Batch Actions but do not require working on post types.
+		 *
+		 * Eventually Batch Actions will become Batch Operations.
+		 *
+		 * @since 3.20.0
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/batch/intf-wordlift-batch-operation.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/batch/class-wordlift-batch-operation-ajax-adapter.php';
+
 	}
 
 	/**

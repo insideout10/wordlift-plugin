@@ -59,6 +59,15 @@ class Wordlift_Admin {
 	private $user_service;
 
 	/**
+	 * The {@link Wordlift_Batch_Operation_Ajax_Adapter} instance.
+	 *
+	 * @since 3.20.0
+	 * @access private
+	 * @var \Wordlift_Batch_Operation_Ajax_Adapter $sync_batch_operation_ajax_adapter The {@link Wordlift_Batch_Operation_Ajax_Adapter} instance.
+	 */
+	private $sync_batch_operation_ajax_adapter;
+
+	/**
 	 * The singleton instance.
 	 *
 	 * @since 3.19.4
@@ -123,6 +132,15 @@ class Wordlift_Admin {
 				 */
 				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-mappings-page.php';
 				new Wordlift_Admin_Mappings_Page();
+
+				/*
+				 * Allow sync'ing the schema.org taxonomy with the schema.org json file.
+				 *
+				 * @since 3.20.0
+				 */
+				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/schemaorg/class-wordlift-schemaorg-sync-batch-operation.php';
+
+				$this->sync_batch_operation_ajax_adapter = new Wordlift_Batch_Operation_Ajax_Adapter( new Wordlift_Schemaorg_Sync_Batch_Operation(), 'wl_schemaorg_sync' );
 
 			}
 
@@ -268,7 +286,7 @@ class Wordlift_Admin {
 		}
 
 		// Finally output the params as `wlSettings` for JavaScript code.
-		wp_localize_script( $this->plugin_name, 'wlSettings', $params );
+		wp_localize_script( $this->plugin_name, 'wlSettings', apply_filters( 'wl_admin_settings', $params ) );
 
 	}
 

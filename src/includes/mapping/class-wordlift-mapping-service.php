@@ -135,6 +135,23 @@ class Wordlift_Mapping_Service {
 		return isset( $this->options[ $post_type ] ) ? $this->options[ $post_type ] : $default;
 	}
 
+	/**
+	 * Update the post type with the entity types, starting at the specified offset.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @param string $post_type The post type.
+	 * @param array  $entity_types The entity types.
+	 * @param int    $offset The offset (0 by default).
+	 *
+	 * @return array {
+	 * The result array.
+	 *
+	 * @type int     $current The current offset.
+	 * @type int     $next The next offset.
+	 * @type int     $count The total element count.
+	 * }
+	 */
 	public function update( $post_type, $entity_types, $offset = 0 ) {
 
 		$entity_type_service = $this->entity_type_service;
@@ -147,6 +164,16 @@ class Wordlift_Mapping_Service {
 		} );
 	}
 
+	/**
+	 * Count the number of posts that need to be assigned with the entity types.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @param string $post_type The post type.
+	 * @param array  $entity_types An array of entity types.
+	 *
+	 * @return int The number of posts to be assigned with entity types.
+	 */
 	public function count( $post_type, $entity_types ) {
 
 		$tax_query = $this->get_tax_query( $entity_types );
@@ -154,7 +181,15 @@ class Wordlift_Mapping_Service {
 		return Wordlift_Batch_Action::count( $post_type, $tax_query );
 	}
 
-
+	/**
+	 * Get the taxonomy query for the specified entity types.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @param array $entity_types The entity types.
+	 *
+	 * @return array The tax query.
+	 */
 	private function get_tax_query( $entity_types ) {
 
 		$entity_type_service = $this->entity_type_service;
