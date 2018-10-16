@@ -69,7 +69,7 @@ class Wordlift_Mapping_Ajax_Adapter {
 		$entity_types = $_REQUEST['entity_types'];
 
 		// Get the offset.
-		$offset = intval( $_REQUEST['offset'] );
+		$offset = isset( $_REQUEST['offset'] ) ? intval( $_REQUEST['offset'] ) : 0;
 
 		// Update and get the results.
 		$result           = $this->mapping_service->update( $post_type, $entity_types, $offset );

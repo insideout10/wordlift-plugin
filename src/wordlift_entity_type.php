@@ -47,7 +47,7 @@ EOF;
 				'label'     => $term_name,
 				'uri'       => $type['uri'],
 				'css'       => $type['css_class'],
-				'sameAs'    => $type['same_as'],
+				'sameAs'    => isset( $type['same_as'] ) ? $type['same_as'] : array(),
 				'slug'      => $term->slug,
 				'templates' => ( isset( $type['templates'] ) ? $type['templates'] : array() ),
 			) );
