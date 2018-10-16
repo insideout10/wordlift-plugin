@@ -51,7 +51,15 @@ class Wordlift_Post_Adapter {
 
 		$post = get_post( $this->post_id );
 
-		return str_word_count( strip_tags( strip_shortcodes( $post->post_content ) ) );
+		/*
+		 * Apply the `wl_post_content` filter, in case 3rd parties want to change the post content, e.g.
+		 * because the content is written elsewhere.
+		 *
+		 * @since 3.20.0
+		 */
+		$post_content = apply_filters( 'wl_post_content', $post->post_content, $post );
+
+		return str_word_count( strip_tags( strip_shortcodes( $post_content ) ) );
 	}
 
 	/**
