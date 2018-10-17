@@ -142,6 +142,8 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.19.6 (????-??-??) =
+
 = 3.19.5 (2018-10-01) =
 * Enhancement: [#858](https://github.com/insideout10/wordlift-plugin/issues/858): WMT and SDTT complain about wrong `@type` for `location` bound `Place`s.
 * Enhancement: [#855](https://github.com/insideout10/wordlift-plugin/issues/855): Rebuild compatibility with Polylang plugin.
