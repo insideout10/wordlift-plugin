@@ -1,30 +1,30 @@
-# Set the well-known $ reference to jQuery.
-$ = jQuery
+(($, angular) =>
+#  # Set the well-known $ reference to jQuery.
+#  $ = jQuery
 
-# Create the main AngularJS module, and set it dependent on controllers and directives.
-angular.module('wordlift.editpost.widget', [
-  'ngAnimate'
-  'wordlift.ui.carousel'
-  'wordlift.utils.directives'
-  'wordlift.editpost.widget.providers.ConfigurationProvider',
-  'wordlift.editpost.widget.controllers.EditPostWidgetController',
-  'wordlift.editpost.widget.directives.wlClassificationBox',
-  'wordlift.editpost.widget.directives.wlEntityList',
-  'wordlift.editpost.widget.directives.wlEntityForm',
-  'wordlift.editpost.widget.directives.wlEntityTile',
-  'wordlift.editpost.widget.directives.wlEntityInputBox',
-  'wordlift.editpost.widget.services.AnalysisService',
-  'wordlift.editpost.widget.services.EditorService',
-  'wordlift.editpost.widget.services.RelatedPostDataRetrieverService'
-])
+  # Create the main AngularJS module, and set it dependent on controllers and directives.
+  angular.module('wordlift.editpost.widget', [
+    'ngAnimate'
+    'wordlift.ui.carousel'
+    'wordlift.utils.directives'
+    'wordlift.editpost.widget.providers.ConfigurationProvider',
+    'wordlift.editpost.widget.controllers.EditPostWidgetController',
+    'wordlift.editpost.widget.directives.wlClassificationBox',
+    'wordlift.editpost.widget.directives.wlEntityList',
+    'wordlift.editpost.widget.directives.wlEntityForm',
+    'wordlift.editpost.widget.directives.wlEntityTile',
+    'wordlift.editpost.widget.directives.wlEntityInputBox',
+    'wordlift.editpost.widget.services.AnalysisService',
+    'wordlift.editpost.widget.services.EditorService',
+    'wordlift.editpost.widget.services.RelatedPostDataRetrieverService'
+  ])
 
-.config((configurationProvider)->
-  configurationProvider.setConfiguration window.wordlift
-)
+  .config((configurationProvider)->
+    configurationProvider.setConfiguration window.wordlift
+  )
 
-$(
   container = $("""
-  	<div
+    <div
       id="wordlift-edit-post-wrapper"
       ng-controller="EditPostWidgetController"
       ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.19.6'">
@@ -48,7 +48,8 @@ $(
   """)
   .appendTo('#wordlift_entities_box .ui-sortable-handle')
 
-  injector = angular.bootstrap $('#wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']
+  console.log "bootstrapping WordLift app..."
+  injector = angular.bootstrap document.getElementById('wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']
 
   # Update spinner
   injector.invoke(['$rootScope', '$log', ($rootScope, $log) ->
@@ -216,4 +217,4 @@ $(
       ])
     )
 
-)
+)(jQuery, window.angular)
