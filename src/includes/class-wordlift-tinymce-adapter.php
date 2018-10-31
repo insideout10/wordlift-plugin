@@ -57,7 +57,8 @@ class Wordlift_Tinymce_Adapter {
 		}
 
 		// Add our own JavaScript file to TinyMCE's extensions.
-		$plugins['wordlift']      = plugin_dir_url( dirname( __FILE__ ) ) . 'js/wordlift-reloaded.' . ( defined( 'WL_DEBUG' ) && WL_DEBUG ? '' : 'min.' ) . 'js?ver=' . $version;
+		// DO NOT use the minified version, it'll yield errors with AngularJS.
+		$plugins['wordlift']      = plugin_dir_url( dirname( __FILE__ ) ) . 'js/wordlift-reloaded.js?ver=' . $version;
 		$plugins['wl_shortcodes'] = plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/wordlift_shortcode_tinymce_plugin.js?ver=' . $version;
 		$plugins['wl_tinymce']    = plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/1/tinymce.js?ver=' . $version;
 
