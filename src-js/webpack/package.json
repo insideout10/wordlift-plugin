@@ -30,6 +30,7 @@
     "react": "^16",
     "react-dom": "^16",
     "react-redux": "^5.0.7",
+    "react-select": "^1",
     "redux": "^4.0.0",
     "styled-components": "^3",
     "whatwg-fetch": "^2"
