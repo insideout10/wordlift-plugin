@@ -1267,13 +1267,11 @@ class Wordlift {
 			$uri_service
 		);
 
-		if ( is_admin() ) {
-			/** Async Tasks. */
-			new Wordlift_Sparql_Query_Async_Task();
-			new Wordlift_Batch_Analysis_Request_Async_Task();
-			new Wordlift_Batch_Analysis_Complete_Async_Task();
-			new Wordlift_Push_References_Async_Task();
-		}
+		/** Async Tasks. */
+		new Wordlift_Sparql_Query_Async_Task();
+		new Wordlift_Batch_Analysis_Request_Async_Task();
+		new Wordlift_Batch_Analysis_Complete_Async_Task();
+		new Wordlift_Push_References_Async_Task();
 
 		/** WL Autocomplete. */
 		$this->autocomplete_service = new Wordlift_Autocomplete_Service( $this->configuration_service );
