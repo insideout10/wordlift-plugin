@@ -29,10 +29,16 @@ class Wordlift_Post_Schema_Class_Storage extends Wordlift_Storage {
 	 */
 	public function get( $post_id ) {
 
-		$schema = Wordlift_Entity_Type_Service::get_instance()->get( $post_id );
+		// Get the type names (CamelCase).
+		$names = Wordlift_Entity_Type_Service::get_instance()->get_names( $post_id );
+
+		// Prepend the `schema.org` base URI.
+		$uris = array_map( function( $item ) {
+			return "http://schema.org/$item";
+		}, $names );
 
 		// Finally return the schema uri.
-		return $schema['uri'];
+		return $uris;
 	}
 
 }
