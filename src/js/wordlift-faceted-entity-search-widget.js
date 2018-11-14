@@ -133,6 +133,10 @@
     }
   ]);
 
+  if ("undefined" === typeof angular) {
+    return;
+  }
+
   angular.module('wordlift.utils.directives', []).directive('wlOnError', [
     '$parse', '$window', '$log', function($parse, $window, $log) {
       return {
@@ -192,7 +196,7 @@
           onCopied: '&'
         },
         transclude: true,
-        template: "<span \n  class=\"wl-widget-post-link\" \n  ng-class=\"{'wl-widget-post-link-copied' : $copied}\"\n  ng-click=\"copyToClipboard()\">\n  <ng-transclude></ng-transclude>\n  <input type=\"text\" ng-value=\"text\" />\n</span>",
+        template: "<span\n  class=\"wl-widget-post-link\"\n  ng-class=\"{'wl-widget-post-link-copied' : $copied}\"\n  ng-click=\"copyToClipboard()\">\n  <ng-transclude></ng-transclude>\n  <input type=\"text\" ng-value=\"text\" />\n</span>",
         link: function($scope, $element, $attrs, $ctrl) {
           $scope.$copied = false;
           $scope.node = $element.find('input');

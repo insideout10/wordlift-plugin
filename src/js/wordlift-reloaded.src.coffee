@@ -156,6 +156,9 @@ class Traslator
   getText: ->
     @_text
 window.Traslator = Traslator
+# Bail out if angular isn't available in page.
+return if "undefined" == typeof angular
+
 angular.module('wordlift.utils.directives', [])
 # See https://github.com/angular/angular.js/blob/master/src/ng/directive/ngEventDirs.js
 .directive('wlOnError', ['$parse', '$window', '$log', ($parse, $window, $log)->
@@ -850,7 +853,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
       onReset: '&'
       box: '='
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.20.0-dev10'
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.20.0-dev11'
 
     link: ($scope, $element, $attrs, $ctrl) ->
 
@@ -973,7 +976,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', [])
     scope:
       entity: '='
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.20.0-dev10'
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.20.0-dev11'
 ])
 angular.module('wordlift.editpost.widget.services.EditorAdapter', [
   'wordlift.editpost.widget.services.EditorAdapter'
@@ -1851,7 +1854,7 @@ $(
   	<div
       id="wordlift-edit-post-wrapper"
       ng-controller="EditPostWidgetController"
-      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.20.0-dev10'">
+      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.20.0-dev11'">
     </div>
   """)
   .appendTo('#wordlift-edit-post-outer-wrapper')
