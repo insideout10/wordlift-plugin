@@ -125,8 +125,6 @@ class Wordlift_Sparql_Service {
 	 */
 	public function queue( $stmt ) {
 
-		self::$log->debug( var_export( debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 50 ), true ) );
-
 		// Get a temporary filename.
 		$filename = $this->get_temporary_file_for_sparql();
 
