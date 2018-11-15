@@ -139,6 +139,17 @@ class Wordlift_Entity_Type_Service {
 					return $schema;
 				}
 			}
+
+			/*
+			 * When a schema isn't found, we return `thing`. Schema may not be found because
+			 * the new schema classes that we support since #852 aren't configured in the schema
+			 * service.
+			 *
+			 * https://github.com/insideout10/wordlift-plugin/issues/852
+			 *
+			 * @since 3.20.0
+			 */
+			return $this->schema_service->get_schema( 'thing' );
 		}
 
 		// If it's a page or post return `Article`.
