@@ -30,8 +30,9 @@ const store = createStore(reducer, applyMiddleware(sagaMiddleware));
 sagaMiddleware.run(rootSaga);
 //endregion
 
+const actionWpUrl = window.ajaxurl + '?action=wl_search_rankings';
 const tileClick = tile => store.dispatch(clickTile(tile));
-
+const tileSelect = () => store.getState();
 const rankingSelector = state =>
   null !== state.node ? state.node.score.rankings : [];
 const RankingTableBody = connect(state => ({
@@ -42,12 +43,12 @@ const App = () => (
   <Provider store={store}>
     <div>
       <Treemap
-        url="complete.json"
+        url={actionWpUrl}
         width="100%"
         height="500"
         minTileWidth="150"
         minTileHeight="100"
-        tileRenderCallback={renderTile({ click: tileClick })}
+        tileRenderCallback={renderTile({ click: tileClick, select: tileSelect })}
       />
       <RankingPanel>
         <EntityHeading />

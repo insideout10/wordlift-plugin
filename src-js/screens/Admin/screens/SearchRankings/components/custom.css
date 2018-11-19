@@ -4,7 +4,7 @@
 }
 
 .treemap__hierarchy__tile {
-  background: white;
+  background-color: #fff;
   border-top: 4px solid #f1f1f1;
   border-left: 4px solid #f1f1f1;
   box-sizing: border-box;
@@ -30,6 +30,14 @@
   right: 8px;
   letter-spacing: -4px;
   color: #008aff;
+}
+
+.treemap__hierarchy .treemap__hierarchy__tile--selected {
+  background-color: #007aff;
+}
+
+.treemap__hierarchy__tile--selected .tile__label {
+  color: #fff;
 }
 
 .tile {
@@ -61,7 +69,6 @@
   position: absolute;
   bottom: 0;
   right: 0;
-
   background: url(star.svg) repeat-x;
   display: block;
   background-size: 20px;
