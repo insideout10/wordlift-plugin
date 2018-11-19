@@ -64,3 +64,6 @@ define( 'WL_CORE_POST_CLASSIFICATION_BOXES', serialize( array(
 		'selectedEntities' => array(),
 	),
 ) ) );
+
+// Default namespace for wp-json
+define( 'WL_REST_ROUTE_DEFAULT_NAMESPACE', 'wordlift/v1' );

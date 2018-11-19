@@ -55,6 +55,26 @@ function wl_shortcode_faceted_search( $atts ) {
 
 	$div_id = 'wordlift-faceted-entity-search-widget';
 
+	// Conditionally return wl_amp_faceted_search if in amp mode
+	if( function_exists('is_amp_endpoint') && is_amp_endpoint() ) {
+		return wl_amp_faceted_search(
+			array(
+				'post_id'              => $current_post->ID,
+				'entity_ids'           => $entity_ids,
+				'limit'                => apply_filters( 'wl_faceted_search_limit', $shortcode_atts['limit'] ),
+				'div_id'               => $div_id,
+				'defaultThumbnailPath' => WL_DEFAULT_THUMBNAIL_PATH,
+				'attrs'                => $shortcode_atts,
+				'l10n'                 => array(
+					'what'  => _x( 'What', 'Faceted Search Widget', 'wordlift' ),
+					'who'   => _x( 'Who', 'Faceted Search Widget', 'wordlift' ),
+					'where' => _x( 'Where', 'Faceted Search Widget', 'wordlift' ),
+					'when'  => _x( 'When', 'Faceted Search Widget', 'wordlift' ),
+				),
+			)
+		);
+	}
+
 	$deps = apply_filters( 'wl_include_font_awesome', true )
 		? array( 'wordlift-font-awesome' )
 		: array();
@@ -87,13 +107,61 @@ function wl_shortcode_faceted_search( $atts ) {
 	return '<div id="' . $div_id . '" style="width:100%"></div>';
 }
 
+/**
+ * Function in charge of diplaying the [wl-faceted-search] in amp mode
+ *
+ * @param array $options Same attributes that would have been passed 
+ * to wp_localize_script in non-amp mode
+ */
+function wl_amp_faceted_search( $options ) {
+	
+	$wp_json_base = get_rest_url() . WL_REST_ROUTE_DEFAULT_NAMESPACE;
+	$query_keys = array('post_id', 'limit');
+	$query = array();
+	foreach($query_keys as $query_key){
+		$query[$query_key] = $options[$query_key];
+	}
+
+	if ( strpos($wp_json_base, 'wp-json/' . WL_REST_ROUTE_DEFAULT_NAMESPACE) ){
+		$delimiter = '?';
+	} else {
+		$delimiter = '&';
+	}
+
+	// Use a protocol-relative URL as amp-list spec says that URL's protocol must be HTTPS.
+	// This is a hackish way, but this works for http and https URLs
+	$wp_json_url = str_replace(array('http:', 'https:'), '', $wp_json_base) . '/faceted-search' . $delimiter . http_build_query($query);
+
+	return '<amp-list width="auto"
+    	height="300"
+    	layout="fixed-height"
+    	src="'.$wp_json_url.'">
+    <template type="amp-mustache">  
+	  <amp-carousel 
+	  	height="300"
+	  	layout="fixed-height"
+	  	type="carousel">
+	  {{#values}}
+	  	<div>
+		<amp-img src="{{images}}"
+			height="225"
+			layout="flex-item"
+			alt="{{label}}"></amp-img>
+		<div class="caption"><a href="{{id}}">{{label}}</a></div> 
+		</div>	
+      {{/values}}
+      </amp-carousel>
+    </template>
+    </amp-list>';
+
+}
+
 add_shortcode( 'wl_faceted_search', 'wl_shortcode_faceted_search' );
 
-
 /**
- * Ajax call for the faceted search widget
+ * Shared function between Ajax call and wp-json for the faceted search widget
  */
-function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
+function wl_shortcode_faceted_search_data( $http_raw_data = null ) {
 
 	// Post ID must be defined.
 	if ( ! isset( $_GET['post_id'] ) ) { // WPCS: input var ok; CSRF ok.
@@ -237,9 +305,43 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 		}
 	}
 
+	return $results;
+
+}
+
+/**
+ * Ajax call for the faceted search widget
+ */
+function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
+
+	$results = wl_shortcode_faceted_search_data( $http_raw_data );
 	wl_core_send_json( $results );
 
 }
 
 add_action( 'wp_ajax_wl_faceted_search', 'wl_shortcode_faceted_search_ajax' );
 add_action( 'wp_ajax_nopriv_wl_faceted_search', 'wl_shortcode_faceted_search_ajax' );
+
+/**
+ * wp-json call for the faceted search widget
+ */
+function wl_shortcode_faceted_search_wp_json( $http_raw_data = null ) {
+
+	$results = wl_shortcode_faceted_search_data( $http_raw_data );
+	if ( ob_get_contents() ) {
+		ob_clean();
+	}
+	return array(
+		'items' => array( 
+			array('values' => $results) 
+		)
+	);
+
+}
+
+add_action( 'rest_api_init', function () {
+	register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/faceted-search', array(
+	  'methods' => 'GET',
+	  'callback' => 'wl_shortcode_faceted_search_wp_json',
+	) );
+  } );
