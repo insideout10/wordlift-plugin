@@ -132,26 +132,27 @@ function wl_amp_faceted_search( $options ) {
 	// This is a hackish way, but this works for http and https URLs
 	$wp_json_url = str_replace(array('http:', 'https:'), '', $wp_json_base) . '/faceted-search' . $delimiter . http_build_query($query);
 
-	return '<amp-list width="auto"
+	return '
+	<amp-list width="auto"
     	height="300"
     	layout="fixed-height"
     	src="'.$wp_json_url.'">
-    <template type="amp-mustache">  
-	  <amp-carousel 
-	  	height="300"
-	  	layout="fixed-height"
-	  	type="carousel">
-	  {{#values}}
-	  	<div>
-		<amp-img src="{{images}}"
-			height="225"
-			layout="flex-item"
-			alt="{{label}}"></amp-img>
-		<div class="caption"><a href="{{id}}">{{label}}</a></div> 
-		</div>	
-      {{/values}}
-      </amp-carousel>
-    </template>
+		<template type="amp-mustache">  
+			<amp-carousel 
+				height="300"
+				layout="fixed-height"
+				type="carousel">
+			{{#values}}
+				<div style="width: 300px; height:300px">
+				<amp-img src="{{images}}"
+					height="225"
+					layout="flex-item"
+					alt="{{label}}"></amp-img>
+				<div style="white-space:normal!important"><a href="{{id}}">{{label}}</a></div> 
+				</div>	
+			{{/values}}
+			</amp-carousel>
+		</template>
     </amp-list>';
 
 }
