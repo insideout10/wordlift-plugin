@@ -7,12 +7,14 @@
  * @subpackage Wordlift/shortcodes
  */
 
+require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-amp-service.php';
+
 /**
  * Function in charge of diplaying the [wl-faceted-search].
  *
  * @param array $atts Shortcode attributes.
  */
-function wl_shortcode_faceted_search( $atts ) {
+function wl_web_shortcode_faceted_search( $atts ) {
 
 	// Extract attributes and set default values.
 	$shortcode_atts = shortcode_atts( array(
@@ -55,26 +57,6 @@ function wl_shortcode_faceted_search( $atts ) {
 
 	$div_id = 'wordlift-faceted-entity-search-widget';
 
-	// Conditionally return wl_amp_faceted_search if in amp mode
-	if( Wordlift_AMP_Service::is_amp_endpoint() ) {
-		return wl_amp_faceted_search(
-			array(
-				'post_id'              => $current_post->ID,
-				'entity_ids'           => $entity_ids,
-				'limit'                => apply_filters( 'wl_faceted_search_limit', $shortcode_atts['limit'] ),
-				'div_id'               => $div_id,
-				'defaultThumbnailPath' => WL_DEFAULT_THUMBNAIL_PATH,
-				'attrs'                => $shortcode_atts,
-				'l10n'                 => array(
-					'what'  => _x( 'What', 'Faceted Search Widget', 'wordlift' ),
-					'who'   => _x( 'Who', 'Faceted Search Widget', 'wordlift' ),
-					'where' => _x( 'Where', 'Faceted Search Widget', 'wordlift' ),
-					'when'  => _x( 'When', 'Faceted Search Widget', 'wordlift' ),
-				),
-			)
-		);
-	}
-
 	$deps = apply_filters( 'wl_include_font_awesome', true )
 		? array( 'wordlift-font-awesome' )
 		: array();
@@ -108,19 +90,60 @@ function wl_shortcode_faceted_search( $atts ) {
 }
 
 /**
- * Function in charge of diplaying the [wl-faceted-search] in amp mode
+ * Function in charge of diplaying the [wl-faceted-search].
  *
- * @param array $options Same attributes that would have been passed 
- * to wp_localize_script in non-amp mode
+ * @param array $atts Shortcode attributes.
+ * 
+ * @since 3.20.0
+ * 
+ * @return String <amp-list><template><amp-carousel> tags
  */
-function wl_amp_faceted_search( $options ) {
+function wl_amp_shortcode_faceted_search( $atts ) {
+
+	// Extract attributes and set default values.
+	$shortcode_atts = shortcode_atts( array(
+		'title'          => __( 'Related articles', 'wordlift' ),
+		'show_facets'    => true,
+		'with_carousel'  => true,
+		'squared_thumbs' => false,
+		'limit'          => 20,
+
+	), $atts );
+
+	foreach (
+		array(
+			'show_facets',
+			'with_carousel',
+			'squared_thumbs',
+		) as $att
+	) {
+
+		// See http://wordpress.stackexchange.com/questions/119294/pass-boolean-value-in-shortcode.
+		$shortcode_atts[ $att ] = filter_var(
+			$shortcode_atts[ $att ], FILTER_VALIDATE_BOOLEAN
+		);
+	}
+
+	// If the current post is not an entity and has no related entities
+	// than the shortcode cannot be rendered
+	// TODO Add an alert visibile only for connected admin users.
+	$current_post = get_post();
+
+	$entity_service = Wordlift_Entity_Service::get_instance();
+	$entity_ids     = $entity_service->is_entity( $current_post->ID ) ?
+		array( $current_post->ID ) :
+		wl_core_get_related_entity_ids( $current_post->ID );
+
+	// Bail if there are no entity ids.
+	if ( 0 === count( $entity_ids ) ) {
+		return '';
+	}
 	
 	$wp_json_base = get_rest_url() . WL_REST_ROUTE_DEFAULT_NAMESPACE;
-	$query_keys = array('post_id', 'limit');
-	$query = array();
-	foreach($query_keys as $query_key){
-		$query[$query_key] = $options[$query_key];
-	}
+	$query = array(
+		'post_id'	=> $current_post->ID,
+		'limit'		=> apply_filters( 'wl_faceted_search_limit', $shortcode_atts['limit'] ),
+	);
 
 	if ( strpos($wp_json_base, 'wp-json/' . WL_REST_ROUTE_DEFAULT_NAMESPACE) ){
 		$delimiter = '?';
@@ -157,7 +180,16 @@ function wl_amp_faceted_search( $options ) {
 
 }
 
+function wl_shortcode_faceted_search( $atts ) {
+	if( Wordlift_AMP_Service::is_amp_endpoint() ) {
+		return wl_amp_shortcode_faceted_search( $atts );
+	} else {
+		return wl_web_shortcode_faceted_search( $atts );
+	}
+}
+
 add_shortcode( 'wl_faceted_search', 'wl_shortcode_faceted_search' );
+
 
 /**
  * Shared function between Ajax call and wp-json for the faceted search widget
