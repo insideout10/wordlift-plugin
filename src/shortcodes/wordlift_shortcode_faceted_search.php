@@ -180,12 +180,20 @@ function wl_amp_shortcode_faceted_search( $atts ) {
 
 }
 
+/**
+ * Function in charge of diplaying the [wl-faceted-search].
+ * Handles conditional display of right shortcode based on amp mode
+ *
+ * @param array $atts Shortcode attributes.
+ */
 function wl_shortcode_faceted_search( $atts ) {
+
 	if( Wordlift_AMP_Service::is_amp_endpoint() ) {
 		return wl_amp_shortcode_faceted_search( $atts );
 	} else {
 		return wl_web_shortcode_faceted_search( $atts );
 	}
+	
 }
 
 add_shortcode( 'wl_faceted_search', 'wl_shortcode_faceted_search' );
