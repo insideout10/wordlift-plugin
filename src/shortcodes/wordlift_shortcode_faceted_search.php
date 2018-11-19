@@ -56,7 +56,7 @@ function wl_shortcode_faceted_search( $atts ) {
 	$div_id = 'wordlift-faceted-entity-search-widget';
 
 	// Conditionally return wl_amp_faceted_search if in amp mode
-	if( function_exists('is_amp_endpoint') && is_amp_endpoint() ) {
+	if( Wordlift_AMP_Service::is_amp_endpoint() ) {
 		return wl_amp_faceted_search(
 			array(
 				'post_id'              => $current_post->ID,
