@@ -160,7 +160,7 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 
 		$this->log->trace( "Deleting cache contents for $id, file $filename..." );
 
-		wp_delete_file( $filename );
+		@unlink( $filename );
 
 	}
 
@@ -192,7 +192,7 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 		while ( false !== ( $entry = readdir( $handle ) ) ) {
 			if ( substr( $entry, - $file_extension_length ) === $this->file_extension ) {
 				$this->log->trace( "Deleting file {$this->cache_dir}{$entry}..." );
-				wp_delete_file( $this->cache_dir . $entry );
+				@unlink( $this->cache_dir . $entry );
 			}
 		}
 

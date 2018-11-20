@@ -81,7 +81,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertNotNull( $this->entity_type_service );
 
 		// Create some more mock-up data.
-		$this->author     = $this->factory->user->create_and_get();
+		$this->author     = $this->factory()->user->create_and_get();
 		$this->author_uri = $this->user_service->get_uri( $this->author->ID );
 
 	}
@@ -93,7 +93,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_a_post_without_entities() {
 
-		$post      = $this->factory->post->create_and_get( array( 'post_author' => $this->author->ID ) );
+		$post      = $this->factory()->post->create_and_get( array( 'post_author' => $this->author->ID ) );
 		$post_uri  = $this->entity_service->get_uri( $post->ID );
 		$permalink = get_permalink( $post->ID );
 
@@ -131,7 +131,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_a_page_without_entities() {
 
-		$post      = $this->factory->post->create_and_get( array(
+		$post      = $this->factory()->post->create_and_get( array(
 			'post_type'   => 'page',
 			'post_author' => $this->author->ID,
 		) );
@@ -186,7 +186,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		$this->assertEquals( $publisher->ID, $this->configuration_service->get_publisher_id() );
 
-		$post      = $this->factory->post->create_and_get( array( 'post_author' => $this->author->ID ) );
+		$post      = $this->factory()->post->create_and_get( array( 'post_author' => $this->author->ID ) );
 		$post_uri  = $this->entity_service->get_uri( $post->ID );
 		$permalink = get_permalink( $post->ID );
 
@@ -235,7 +235,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		$this->configuration_service->set_publisher_id( $publisher->ID );
 
-		$post      = $this->factory->post->create_and_get( array( 'post_author' => $this->author->ID ) );
+		$post      = $this->factory()->post->create_and_get( array( 'post_author' => $this->author->ID ) );
 		$post_uri  = $this->entity_service->get_uri( $post->ID );
 		$permalink = get_permalink( $post->ID );
 
@@ -276,7 +276,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 *
 	 * @since 3.10
 	 *
-	 * @param    string $filename The filename the attachement should have
+	 * @param    string  $filename The filename the attachement should have
 	 * @param    integer $width The width of the image
 	 * @param    integer $height The height of the image
 	 * @param    integer $post_id The ID of the post to associated with the attachment
@@ -293,7 +293,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		copy( $real_filename, $upload_dir['basedir'] . DIRECTORY_SEPARATOR . $filename );
 
 		// Create an attachment.
-		$attachment_id = $this->factory->attachment->create_object( $filename, $post_id, array(
+		$attachment_id = $this->factory()->attachment->create_object( $filename, $post_id, array(
 			'post_mime_type' => 'image/jpeg',
 			'post_type'      => 'attachment',
 		) );
@@ -330,7 +330,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$attachment_url = wp_get_attachment_url( $attachment_id );
 
 		// Create a random post.
-		$post      = $this->factory->post->create_and_get( array( 'post_author' => $this->author->ID ) );
+		$post      = $this->factory()->post->create_and_get( array( 'post_author' => $this->author->ID ) );
 		$post_uri  = $this->entity_service->get_uri( $post->ID );
 		$permalink = get_permalink( $post->ID );
 
@@ -384,7 +384,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	public function test_a_post_with_entities() {
 
 		// Create a post.
-		$post      = $this->factory->post->create_and_get( array( 'post_author' => $this->author->ID ) );
+		$post      = $this->factory()->post->create_and_get( array( 'post_author' => $this->author->ID ) );
 		$post_uri  = $this->entity_service->get_uri( $post->ID );
 		$permalink = get_permalink( $post->ID );
 
@@ -445,7 +445,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	public function test_a_post_with_one_mentions_and_one_about() {
 
 		// Create a post.
-		$post      = $this->factory->post->create_and_get( array(
+		$post      = $this->factory()->post->create_and_get( array(
 			'post_title'  => 'Lorem Ipsum',
 			'post_author' => $this->author->ID,
 		) );
@@ -510,7 +510,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	public function test_a_post_with_one_mentions_and_one_about_with_synonym() {
 
 		// Create a post.
-		$post      = $this->factory->post->create_and_get( array(
+		$post      = $this->factory()->post->create_and_get( array(
 			'post_title'  => 'Lorem Ipsum',
 			'post_author' => $this->author->ID,
 		) );
@@ -575,7 +575,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_a_post_with_featured_image_and_entities() {
 		// Create a post.
-		$post      = $this->factory->post->create_and_get( array( 'post_author' => $this->author->ID ) );
+		$post      = $this->factory()->post->create_and_get( array( 'post_author' => $this->author->ID ) );
 		$post_uri  = $this->entity_service->get_uri( $post->ID );
 		$permalink = get_permalink( $post->ID );
 
@@ -650,7 +650,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_a_post_with_attached_images_and_entities() {
 		// Create a post.
-		$post      = $this->factory->post->create_and_get( array( 'post_author' => $this->author->ID ) );
+		$post      = $this->factory()->post->create_and_get( array( 'post_author' => $this->author->ID ) );
 		$post_uri  = $this->entity_service->get_uri( $post->ID );
 		$permalink = get_permalink( $post->ID );
 
@@ -729,12 +729,12 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	public function test_a_post_with_embedded_images_and_entities() {
 
 		// Attach an image attached to some other post.
-		$other_post      = $this->factory->post->create_and_get( array( 'post_author' => $this->author->ID ) );
+		$other_post      = $this->factory()->post->create_and_get( array( 'post_author' => $this->author->ID ) );
 		$attachment_id   = $this->make_dummy_attachment( 'otherimage.jpg', 300, 200, $other_post->ID );
 		$attachment2_url = wp_get_attachment_url( $attachment_id );
 
 		// Create a post that include an img of an attachment and an external URL
-		$post      = $this->factory->post->create_and_get( array(
+		$post      = $this->factory()->post->create_and_get( array(
 			'post_author'  => $this->author->ID,
 			'post_content' => 'text <img src="' . $attachment2_url . '">' . "\n" .
 			                  'more text <a href=""><img src="http://example.org">text</a>',
@@ -824,12 +824,12 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_a_post_with_attached_gallery_images_and_entities() {
 		// attache an image  attached to some other post
-		$other_post      = $this->factory->post->create_and_get( array( 'post_author' => $this->author->ID ) );
+		$other_post      = $this->factory()->post->create_and_get( array( 'post_author' => $this->author->ID ) );
 		$attachment_id   = $this->make_dummy_attachment( 'otherimage.jpg', 300, 200, $other_post->ID );
 		$attachment2_url = wp_get_attachment_url( $attachment_id );
 
 		// Create a post that incluse an img of an attachment and an external URL
-		$post      = $this->factory->post->create_and_get( array(
+		$post      = $this->factory()->post->create_and_get( array(
 			'post_author'  => $this->author->ID,
 			'post_content' => 'text <img src="' . $attachment2_url . '">' . "\n" .
 			                  'more text <a href=""><img src="http://example.org">text</a>' .
@@ -839,7 +839,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$permalink = get_permalink( $post->ID );
 
 		// attache an image  attached to same post
-		$other_post      = $this->factory->post->create_and_get( array( 'post_author' => $this->author->ID ) );
+		$other_post      = $this->factory()->post->create_and_get( array( 'post_author' => $this->author->ID ) );
 		$attachment3_id  = $this->make_dummy_attachment( 'gallery.jpg', 150, 150, $post->ID );
 		$attachment3_url = wp_get_attachment_url( $attachment3_id );
 
@@ -917,7 +917,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_a_post_with_gallery_images_and_entities() {
 		// attache an image  attached to some other post
-		$other_post      = $this->factory->post->create_and_get( array( 'post_author' => $this->author->ID ) );
+		$other_post      = $this->factory()->post->create_and_get( array( 'post_author' => $this->author->ID ) );
 		$attachment2_id  = $this->make_dummy_attachment( 'otherimage.jpg', 300, 200, $other_post->ID );
 		$attachment2_url = wp_get_attachment_url( $attachment2_id );
 
@@ -926,7 +926,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$attachment3_url = wp_get_attachment_url( $attachment3_id );
 
 		// Create a post that incluse an img of an attachment and an external URL
-		$post      = $this->factory->post->create_and_get( array(
+		$post      = $this->factory()->post->create_and_get( array(
 			'post_author'  => $this->author->ID,
 			'post_content' => 'text <img src="' . $attachment2_url . '">' . "\n" .
 			                  'more text <a href=""><img src="http://example.org">text</a>' .
@@ -936,7 +936,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$permalink = get_permalink( $post->ID );
 
 		// attache an to same post, should not be in json-ld
-		$other_post      = $this->factory->post->create_and_get( array( 'post_author' => $this->author->ID ) );
+		$other_post      = $this->factory()->post->create_and_get( array( 'post_author' => $this->author->ID ) );
 		$attachment4_id  = $this->make_dummy_attachment( 'gallery.jpg', 150, 150, $post->ID );
 		$attachment4_url = wp_get_attachment_url( $attachment3_id );
 
@@ -1015,13 +1015,13 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_a_post_with_a_user_without_a_representing_entity() {
 
-		$author_id  = $this->factory->user->create( array(
+		$author_id  = $this->factory()->user->create( array(
 			'display_name' => 'John Smith',
 		) );
 		$author_uri = $this->user_service->get_uri( $author_id );
 
 		// Create a post that includes an img of an attachment and an external URL.
-		$post = $this->factory->post->create_and_get( array(
+		$post = $this->factory()->post->create_and_get( array(
 			'post_author' => $author_id,
 		) );
 
@@ -1042,7 +1042,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_a_post_with_a_user_with_a_representing_person_entity() {
 
-		$author_id  = $this->factory->user->create( array(
+		$author_id  = $this->factory()->user->create( array(
 			'display_name' => 'John Smith',
 		) );
 		$author_uri = $this->user_service->get_uri( $author_id );
@@ -1058,7 +1058,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertGreaterThan( 0, $this->user_service->set_entity( $author_id, $entity_id ) );
 
 		// Create a post that includes an img of an attachment and an external URL.
-		$post = $this->factory->post->create_and_get( array(
+		$post = $this->factory()->post->create_and_get( array(
 			'post_author' => $author_id,
 		) );
 
@@ -1086,7 +1086,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_a_post_with_a_user_with_a_representing_organization_entity() {
 
-		$author_id  = $this->factory->user->create( array(
+		$author_id  = $this->factory()->user->create( array(
 			'display_name' => 'John Smith',
 		) );
 		$author_uri = $this->user_service->get_uri( $author_id );
@@ -1102,7 +1102,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertGreaterThan( 0, $this->user_service->set_entity( $author_id, $entity_id ) );
 
 		// Create a post that includes an img of an attachment and an external URL.
-		$post = $this->factory->post->create_and_get( array(
+		$post = $this->factory()->post->create_and_get( array(
 			'post_author' => $author_id,
 		) );
 
@@ -1131,7 +1131,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_a_post_with_a_user_when_the_author_is_updated() {
 
-		$author_id = $this->factory->user->create(
+		$author_id = $this->factory()->user->create(
 			array(
 				'display_name' => 'John Smith',
 			)
@@ -1159,7 +1159,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertGreaterThan( 0, $this->user_service->set_entity( $author_id, $entity_id ) );
 
 		// Create a post that includes an img of an attachment and an external URL.
-		$post = $this->factory->post->create_and_get(
+		$post = $this->factory()->post->create_and_get(
 			array(
 				'post_author' => $author_id,
 			)
@@ -1225,7 +1225,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 			return $jsonld;
 		} );
 
-		$post_id = $this->factory->post->create();
+		$post_id = $this->factory()->post->create();
 
 		$result = $this->post_to_jsonld_converter->convert( $post_id );
 
@@ -1236,6 +1236,47 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertTrue( $result['check'] );
 
 		$this->assertEquals( 1, $called, 'Filter `wl_post_jsonld` is called once.' );
+
+	}
+
+	public function test_issue_858() {
+
+		// Create a post.
+		$post_id = $this->factory()->post->create();
+
+		// Create an event to bind to the post.
+		$event_post_id = $this->factory()->post->create( array(
+			'post_type' => 'entity',
+		) );
+		$this->entity_type_service->set( $event_post_id, 'http://schema.org/Event' );
+
+		// Check that the event type is set.
+		$this->assertTrue( $this->entity_type_service->has_entity_type( $event_post_id, 'http://schema.org/Event' ) );
+
+		// Create a place to bind to the event.
+		$place_post_id = $this->factory()->post->create( array(
+			'post_type' => 'entity',
+		) );
+		$this->entity_type_service->set( $place_post_id, 'http://schema.org/Place' );
+
+		// Bind the place as location for the event.
+		add_post_meta( $event_post_id, Wordlift_Schema_Service::FIELD_LOCATION, $place_post_id );
+
+		// Check that the place type id set.
+		$this->assertTrue( $this->entity_type_service->has_entity_type( $place_post_id, 'http://schema.org/Place' ) );
+
+		// Connect the event to the post and the place to the event.
+		wl_core_add_relation_instances( $post_id, 'when', array( $event_post_id ) );
+		wl_core_add_relation_instances( $event_post_id, 'where', array( $place_post_id ) );
+
+		// Convert the post to json-ld.
+		$references = array();
+		$this->post_to_jsonld_converter->convert( $post_id, $references );
+
+		// Check that the references contain both the event and the place.
+		$this->assertContains( $event_post_id, $references, 'References must contain the event post id.' );
+		$this->assertContains( $place_post_id, $references, 'References must contain the place post id.' );
+		$this->assertCount( 2, $references, 'References must be 2.' );
 
 	}
 

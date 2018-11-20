@@ -38,10 +38,10 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 *
 	 * @since 3.10.0
 	 *
-	 * @param \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
-	 * @param \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
-	 * @param \Wordlift_User_Service $user_service A {@link Wordlift_User_Service} instance.
-	 * @param \Wordlift_Attachment_Service $attachment_service A {@link Wordlift_Attachment_Service} instance.
+	 * @param \Wordlift_Entity_Type_Service   $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
+	 * @param \Wordlift_Entity_Service        $entity_service A {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_User_Service          $user_service A {@link Wordlift_User_Service} instance.
+	 * @param \Wordlift_Attachment_Service    $attachment_service A {@link Wordlift_Attachment_Service} instance.
 	 * @param \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
 	 */
 	public function __construct( $entity_type_service, $entity_service, $user_service, $attachment_service, $configuration_service ) {
@@ -59,7 +59,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 *
 	 * @since 3.10.0
 	 *
-	 * @param int $post_id The post id.
+	 * @param int   $post_id The post id.
 	 * @param array $references An array of entity references.
 	 *
 	 * @return array A JSON-LD array.
@@ -106,14 +106,12 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 					'@id' => $this->entity_service->get_uri( $reference ),
 				);
 
-				$escaped_lables = array_map(
-					function ( $value ) {
-						return preg_quote( $value, '/' );
-					}, $labels
-				);
+				$escaped_labels = array_map( function ( $value ) {
+					return preg_quote( $value, '/' );
+				}, $labels );
 
 				// Check if the labels match any part of the title.
-				$matches = 1 === preg_match( '/' . implode( '|', $escaped_lables ) . '/', $post->post_title );
+				$matches = 1 === preg_match( '/' . implode( '|', $escaped_labels ) . '/', $post->post_title );
 
 				// If the title matches, assign the entity to the about, otherwise to the mentions.
 				if ( $matches ) {
@@ -145,7 +143,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		 * @since 3.14.0
 		 *
 		 * @param array $jsonld The JSON-LD structure.
-		 * @param int $post_id The {@link WP_Post} `id`.
+		 * @param int   $post_id The {@link WP_Post} `id`.
 		 * @param array $references The array of referenced entities.
 		 */
 		return apply_filters( 'wl_post_jsonld', $jsonld, $post_id, $references );
@@ -159,7 +157,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 *
 	 * @since 3.14.0
 	 *
-	 * @param int $author_id The author {@link WP_User}'s `id`.
+	 * @param int   $author_id The author {@link WP_User}'s `id`.
 	 * @param array $references An array of referenced entities.
 	 *
 	 * @return string|array A JSON-LD structure.

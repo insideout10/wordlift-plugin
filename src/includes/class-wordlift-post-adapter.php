@@ -32,7 +32,7 @@ class Wordlift_Post_Adapter {
 	 *
 	 * @param integer $post_id the post ID of the post the adopter relates to.
 	 */
-	function __construct( $post_id ) {
+	public function __construct( $post_id ) {
 
 		$this->post_id = $post_id;
 
@@ -52,6 +52,32 @@ class Wordlift_Post_Adapter {
 		$post = get_post( $this->post_id );
 
 		return str_word_count( strip_tags( strip_shortcodes( $post->post_content ) ) );
+	}
+
+	/**
+	 * Get the {@link WP_Post} permalink allowing 3rd parties to alter the URL.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @param int $post_id Post ID.
+	 *
+	 * @return string The post permalink.
+	 */
+	public static function get_production_permalink( $post_id ) {
+
+		/**
+		 * The `wl_production_permalink` filter allows to change the permalink, this is useful in contexts
+		 * when the production environment is copied over from a staging environment with staging
+		 * URLs.
+		 *
+		 * @since 3.20.0
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/850
+		 *
+		 * @param string $permalink_url The default permalink.
+		 * @param int    $post_id The post id.
+		 */
+		return apply_filters( 'wl_production_permalink', get_permalink( $post_id ), $post_id );
 	}
 
 }

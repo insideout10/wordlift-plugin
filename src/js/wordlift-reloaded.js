@@ -832,7 +832,7 @@
           box: '='
         },
         templateUrl: function() {
-          return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.19.3-rc3';
+          return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.19.5';
         },
         link: function($scope, $element, $attrs, $ctrl) {
           $scope.configuration = configuration;
@@ -978,7 +978,7 @@
           entity: '='
         },
         templateUrl: function() {
-          return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.19.3-rc3';
+          return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.19.5';
         }
       };
     }
@@ -989,12 +989,17 @@
       var service;
       service = {
         getEditor: function(id) {
+          var ref, ref1, ref2;
           if (id == null) {
-            id = 'content';
+            id = (ref = window['wlSettings']['default_editor_id']) != null ? ref : 'content';
           }
-          return tinyMCE.get(id);
+          return tinyMCE.get((ref1 = typeof wp !== "undefined" && wp !== null ? (ref2 = wp.hooks) != null ? ref2.applyFilters('wl_default_editor_id', id) : void 0 : void 0) != null ? ref1 : id);
         },
         getHTML: function(id) {
+          var ref;
+          if (id == null) {
+            id = (ref = window['wlSettings']['default_editor_id']) != null ? ref : 'content';
+          }
           return service.getEditor(id).getContent({
             format: 'raw'
           });
@@ -1814,7 +1819,7 @@
     return configurationProvider.setConfiguration(window.wordlift);
   });
 
-  $(container = $("<div\n      id=\"wordlift-edit-post-wrapper\"\n      ng-controller=\"EditPostWidgetController\"\n      ng-include=\"configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.19.3-rc3'\">\n    </div>").appendTo('#wordlift-edit-post-outer-wrapper'), spinner = $("<div class=\"wl-widget-spinner\">\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-blogger\">\n    <circle cx=\"10\" cy=\"10\" r=\"6\" class=\"wl-blogger-shape\"></circle>\n  </svg>\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-editorial\">\n    <rect x=\"4\" y=\"4\" width=\"12\" height=\"12\" class=\"wl-editorial-shape\"></rect>\n  </svg>\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-enterprise\">\n    <polygon points=\"3,10 6.5,4 13.4,4 16.9,10 13.4,16 6.5,16\" class=\"wl-enterprise-shape\"></polygon>\n  </svg>\n</div> ").appendTo('#wordlift_entities_box .ui-sortable-handle'), injector = angular.bootstrap($('#wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']), injector.invoke([
+  $(container = $("<div\n      id=\"wordlift-edit-post-wrapper\"\n      ng-controller=\"EditPostWidgetController\"\n      ng-include=\"configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.19.5'\">\n    </div>").appendTo('#wordlift-edit-post-outer-wrapper'), spinner = $("<div class=\"wl-widget-spinner\">\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-blogger\">\n    <circle cx=\"10\" cy=\"10\" r=\"6\" class=\"wl-blogger-shape\"></circle>\n  </svg>\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-editorial\">\n    <rect x=\"4\" y=\"4\" width=\"12\" height=\"12\" class=\"wl-editorial-shape\"></rect>\n  </svg>\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-enterprise\">\n    <polygon points=\"3,10 6.5,4 13.4,4 16.9,10 13.4,16 6.5,16\" class=\"wl-enterprise-shape\"></polygon>\n  </svg>\n</div>").appendTo('#wordlift_entities_box .ui-sortable-handle'), injector = angular.bootstrap($('#wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']), injector.invoke([
     '$rootScope', '$log', function($rootScope, $log) {
       $rootScope.$on('analysisServiceStatusUpdated', function(event, status) {
         var css;
@@ -1833,8 +1838,10 @@
       });
     }
   ]), tinymce.PluginManager.add('wordlift', function(editor, url) {
-    var addClassToBody, closed, fireEvent, startAnalysis;
-    if (editor.id !== "content") {
+    var addClassToBody, closed, defaultEditorId, editorId, fireEvent, ref, ref1, ref2, startAnalysis;
+    defaultEditorId = (ref = ((ref1 = window['wlSettings']) != null ? ref1['default_editor_id'] : void 0) != null) != null ? ref : 'content';
+    editorId = typeof wp !== "undefined" && wp !== null ? (ref2 = wp.hooks) != null ? ref2.applyFilters('wl_default_editor_id', defaultEditorId) : void 0 : void 0;
+    if (editor.id !== editorId) {
       return;
     }
     closed = $('#wordlift_entities_box').hasClass('closed');
@@ -1849,16 +1856,16 @@
     if (!closed) {
       injector.invoke([
         'EditorService', '$rootScope', '$log', function(EditorService, $rootScope, $log) {
-          var j, len, method, originalMethod, ref, results1;
+          var j, len, method, originalMethod, ref3, results1;
           if (wp.autosave != null) {
             wp.autosave.server.postChanged = function() {
               return false;
             };
           }
-          ref = ['setMarkers', 'toViews'];
+          ref3 = ['setMarkers', 'toViews'];
           results1 = [];
-          for (j = 0, len = ref.length; j < len; j++) {
-            method = ref[j];
+          for (j = 0, len = ref3.length; j < len; j++) {
+            method = ref3[j];
             if (wp.mce.views[method] != null) {
               originalMethod = wp.mce.views[method];
               $log.warn("Override wp.mce.views method " + method + "() to prevent shortcodes rendering");

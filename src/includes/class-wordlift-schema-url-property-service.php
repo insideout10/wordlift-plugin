@@ -129,35 +129,35 @@ class Wordlift_Schema_Url_Property_Service extends Wordlift_Property_Service {
 		return $value;
 	}
 
-	/**
-	 * Generate an insert query that inserts the schema:url values for the specified
-	 * post.
-	 *
-	 * @since 3.6.0
-	 *
-	 * @param string $s       The subject URI.
-	 * @param int    $post_id The post id.
-	 *
-	 * @return string The insert query or an empty string.
-	 */
-	public function get_insert_query( $s, $post_id ) {
-
-		// If we have no value, return an empty string (no query).
-		if ( null === ( $values = $this->get( $post_id ) ) ) {
-			return '';
-		}
-
-		// Create the insert query.
-		$q = Wordlift_Query_Builder::new_instance()->insert();
-
-		// Add each schema:url, replacing <permalink> with the actual post permalink.
-		foreach ( $values as $value ) {
-			$q = $q->statement( $s, $this->get_rdf_predicate(), '<permalink>' === $value ? get_permalink( $post_id ) : $value, Wordlift_Query_Builder::OBJECT_URI );
-		}
-
-		// Build and return the query.
-		return $q->build();
-	}
+//	/**
+//	 * Generate an insert query that inserts the schema:url values for the specified
+//	 * post.
+//	 *
+//	 * @since 3.6.0
+//	 *
+//	 * @param string $s       The subject URI.
+//	 * @param int    $post_id The post id.
+//	 *
+//	 * @return string The insert query or an empty string.
+//	 */
+//	public function get_insert_query( $s, $post_id ) {
+//
+//		// If we have no value, return an empty string (no query).
+//		if ( null === ( $values = $this->get( $post_id ) ) ) {
+//			return '';
+//		}
+//
+//		// Create the insert query.
+//		$q = Wordlift_Query_Builder::new_instance()->insert();
+//
+//		// Add each schema:url, replacing <permalink> with the actual post permalink.
+//		foreach ( $values as $value ) {
+//			$q = $q->statement( $s, $this->get_rdf_predicate(), '<permalink>' === $value ? get_permalink( $post_id ) : $value, Wordlift_Query_Builder::OBJECT_URI );
+//		}
+//
+//		// Build and return the query.
+//		return $q->build();
+//	}
 
 	/**
 	 * Get direct calls to read this meta and alter the response according to our

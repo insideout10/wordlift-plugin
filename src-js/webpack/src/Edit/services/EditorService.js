@@ -12,7 +12,7 @@
  *
  * @since 3.11.0
  */
-const instances = []
+const instances = [];
 
 /**
  * The `EditorService` class provides access to the in-page TinyMCE editor.
@@ -27,11 +27,23 @@ class EditorService {
    * @param {string} [id=content] The editor id, by default `content`.
    * @return {Object} A TinyMCE editor instance.
    */
-  get (id = 'content') {
-    return instances[id] ? instances[id] : instances[id] = tinyMCE.get(id)
-  }
+  get(id = window["wlSettings"]["default_editor_id"]) {
+    // Get the editor id from the `wlSettings` or use `content`.
 
+    // Allow 3rd parties to change the editor id.
+    //
+    // @see https://github.com/insideout10/wordlift-plugin/issues/850.
+    // @see https://github.com/insideout10/wordlift-plugin/issues/851.
+    const editorId = window["wp"].hooks.applyFilters(
+      "wl_default_editor_id",
+      id
+    );
+
+    return instances[editorId]
+      ? instances[editorId]
+      : (instances[editorId] = tinyMCE.get(editorId));
+  }
 }
 
 // Finally export the `EditorService`.
-export default new EditorService()
+export default new EditorService();
