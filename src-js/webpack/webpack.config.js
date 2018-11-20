@@ -18,7 +18,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 module.exports = {
   entry: {
     bundle: "./src/Public/index.js",
-    edit: "./src/Edit/index.js"
+    edit: "./src/Edit/index.js",
+    term: "./src/Term/index.js"
   },
   output: {
     filename: "[name].js",

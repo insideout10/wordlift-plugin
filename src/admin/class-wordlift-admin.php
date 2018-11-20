@@ -142,6 +142,14 @@ class Wordlift_Admin {
 
 				$this->sync_batch_operation_ajax_adapter = new Wordlift_Batch_Operation_Ajax_Adapter( new Wordlift_Schemaorg_Sync_Batch_Operation(), 'wl_schemaorg_sync' );
 
+				/*
+				 * Add the {@link Wordlift_Admin_Term_Adapter}.
+				 *
+				 * @since 3.20.0
+				 */
+				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-term-adapter.php';
+				new Wordlift_Admin_Term_Adapter();
+
 			}
 
 		}
