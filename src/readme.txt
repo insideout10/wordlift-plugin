@@ -143,6 +143,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 = 3.19.6 (????-??-??) =
+* Fix: [#870](https://github.com/insideout10/wordlift-plugin/issues/870): PHP errors: file_put_contents(/tmp) and mkdir permission denied.
 * Fix: [#865](https://github.com/insideout10/wordlift-plugin/issues/865): Content Egg's angular clashes with WordLift's angular.
 
 = 3.19.5 (2018-10-01) =

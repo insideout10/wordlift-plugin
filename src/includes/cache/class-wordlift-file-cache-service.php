@@ -78,7 +78,7 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 
 		// Create the cache dir.
 		if ( ! file_exists( $this->cache_dir ) ) {
-			mkdir( $this->cache_dir, 0755, true );
+			@mkdir( $this->cache_dir, 0755, true );
 		}
 
 		// Add ourselves to the list of instances.
@@ -143,7 +143,7 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 
 		$this->log->trace( "Writing cache contents for $id to $filename..." );
 
-		file_put_contents( $filename, wp_json_encode( $contents ) );
+		@file_put_contents( $filename, wp_json_encode( $contents ) );
 
 	}
 
