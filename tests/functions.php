@@ -26,7 +26,7 @@ require_once( 'jsonld.php' );
 /**
  * Compatibility for WP 4.4.
  *
- * @since 3.20.0
+ * @since 3.19.4
  */
 function _wl_test_set_wp_die_handler() {
 	global $wp_filter;
@@ -44,27 +44,19 @@ function _wl_test_set_wp_die_handler() {
 			throw new WPDieException( $message );
 		}
 
-//		add_filter( 'wp_die_ajax_handler', function () {
-//			return '_wl_test_wp_die_handler';
-//		}, PHP_INT_MAX );
-//
-//		add_filter( 'wp_die_xmlrpc_handler', function () {
-//			return '_wl_test_wp_die_handler';
-//		}, PHP_INT_MAX );
 	}
 
 	unset( $wp_filter['wp_die_ajax_handler'] );
 	add_filter( 'wp_die_ajax_handler', function () {
 		return '_wl_test_wp_die_handler';
-	});
+	} );
 
 	unset( $wp_filter['wp_die_handler'] );
 	add_filter( 'wp_die_handler', function () {
 		return '_wl_test_wp_die_handler';
-	});
+	} );
 
 }
-
 
 /**
  * Create a new post.
@@ -133,24 +125,6 @@ function wl_delete_post_attachments( $post_id ) {
 			wl_write_log( "wl_delete_post_attachments : error [ post id :: $post_id ]" );
 		}
 	}
-}
-
-/**
- * Delete permanently the provided posts.
- *
- * @param array $posts An array of posts.
- *
- * @return bool True if successful otherwise false.
- */
-function wl_delete_posts( $posts ) {
-
-	$success = true;
-
-	foreach ( $posts as $post ) {
-		$success &= ( false !== wl_delete_post( $post->ID, true ) );
-	}
-
-	return $success;
 }
 
 /**
@@ -395,37 +369,6 @@ function wl_get_entity_annotation_best_match( $entity_annotations ) {
 	} );
 
 	return $entity_annotations[0];
-}
-
-/**
- * Erase all posts and entity posts from the blog.
- */
-function wl_empty_blog() {
-
-	// Delete existing pages, posts and entities.
-	wl_delete_posts( get_posts( array(
-		'posts_per_page' => - 1,
-		'post_type'      => array(
-			'post',
-			'page',
-			'entity',
-		),
-		'post_status'    => 'any',
-	) ) );
-
-	wl_delete_users();
-
-}
-
-/**
- * Delete all the users from the blog.
- */
-function wl_delete_users() {
-
-	$users = get_users();
-	foreach ( $users as $user ) {
-		wp_delete_user( $user->ID );
-	}
 }
 
 /**

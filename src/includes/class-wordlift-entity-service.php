@@ -466,14 +466,16 @@ class Wordlift_Entity_Service {
 
 		return $args + array(
 				'post_type' => Wordlift_Entity_Service::valid_entity_post_types(),
-				// Since 3.17.0: should this be faster?
+				/*
+				 * Ensure compatibility with Polylang.
+				 *
+				 * @see https://github.com/insideout10/wordlift-plugin/issues/855.
+				 * @see https://wordpress.org/support/topic/parse_query-filter-adds-language-taxonomy-to-query/.
+				 *
+				 * @since 3.19.5
+				 */
+				'lang'      => '',
 				'tax_query' => $tax_query,
-				//				'tax_query' => array(
-				//					array(
-				//						'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
-				//						'terms'    => self::get_entity_terms(),
-				//					),
-				//				),
 			);
 	}
 

@@ -65,7 +65,7 @@ class Wordlift_Sparql_Service {
 	 *
 	 * @since 3.6.0
 	 *
-	 * @param string $stmt  The SPARQL statement.
+	 * @param string $stmt The SPARQL statement.
 	 * @param bool   $queue Whether to queue the statement for asynchronous
 	 *                      execution.
 	 */
@@ -202,8 +202,8 @@ class Wordlift_Sparql_Service {
 	 *
 	 * @since 3.6.0
 	 *
-	 * @param string      $value    The value.
-	 * @param string      $type     The value type.
+	 * @param string      $value The value.
+	 * @param string      $type The value type.
 	 * @param string|null $language The language tag or null if not set.
 	 *
 	 * @return string The formatted value for SPARQL statements.
@@ -247,7 +247,16 @@ class Wordlift_Sparql_Service {
 				return sprintf( '"%s"^^xsd:string', self::escape( $value ) );
 
 			case Wordlift_Schema_Service::DATA_TYPE_URI:
-				return sprintf( '<%s>', self::escape_uri( $value ) );
+				/**
+				 * Allow 3rd parties to change the uri.
+				 *
+				 * @since 3.20.0
+				 *
+				 * @see https://github.com/insideout10/wordlift-plugin/issues/850
+				 *
+				 * @param string $uri The uri.
+				 */
+				return sprintf( '<%s>', self::escape_uri( apply_filters( 'wl_production_uri', $value ) ) );
 
 			case null:
 				$language_tag = ( null !== $language ? "@$language" : '' );

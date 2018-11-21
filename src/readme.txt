@@ -143,7 +143,22 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 = 3.20.0 (????-??-??) =
+* Enhancement: [#851](https://github.com/insideout10/wordlift-plugin/issues/851): add a filter to allow 3rd parties to change the TinyMCE editor id via JavaScript.
+* Enhancement: [#850](https://github.com/insideout10/wordlift-plugin/issues/850): allow 3rd parties to change the site URL and post permalink.
 * Enhancement: [#835](https://github.com/insideout10/wordlift-plugin/issues/835): Add the all entity types metabox.
+
+= 3.19.5 (2018-10-01) =
+* Enhancement: [#858](https://github.com/insideout10/wordlift-plugin/issues/858): WMT and SDTT complain about wrong `@type` for `location` bound `Place`s.
+* Enhancement: [#855](https://github.com/insideout10/wordlift-plugin/issues/855): Rebuild compatibility with Polylang plugin.
+
+= 3.19.4 (2018-09-18) =
+* Enhancement: [#848](https://github.com/insideout10/wordlift-plugin/issues/848): add a filter to allow 3rd parties to change the TinyMCE editor id.
+* Enhancement: [#847](https://github.com/insideout10/wordlift-plugin/issues/847): add a filter to allow 3rd parties to force the classification to load.
+* Enhancement: [#843](https://github.com/insideout10/wordlift-plugin/issues/843): add a window global object with WLP version.
+* Enhancement: [#842](https://github.com/insideout10/wordlift-plugin/issues/842): Exclude WordLift public bundle from WP Rocket defer.
+* Enhancement: [#830](https://github.com/insideout10/wordlift-plugin/issues/830): Improve image markup on AMP pages to enhance the appearance in Google Search results.
+* Fix: [#846](https://github.com/insideout10/wordlift-plugin/issues/846): on deactivate ensure to delete the wl-api option.
+* Fix: [#841](https://github.com/insideout10/wordlift-plugin/issues/841): UTF-8 BOM sequence in paths.
 
 = 3.19.3 (2018-08-16) =
 * Enhancement: [#839](https://github.com/insideout10/wordlift-plugin/issues/839): Add a setting to limit the scope for the Select in edit post screen.

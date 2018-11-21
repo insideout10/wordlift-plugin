@@ -415,10 +415,21 @@ class Wordlift_Configuration_Service {
 
 		$this->log->trace( 'Getting the remote dataset URI...' );
 
+		/**
+		 * Allow 3rd parties to change the site_url.
+		 *
+		 * @since 3.20.0
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/850
+		 *
+		 * @param string $site_url The site url.
+		 */
+		$site_url = apply_filters( 'wl_production_site_url', site_url() );
+
 		// Build the URL.
 		$url = $this->get_accounts()
 		       . '?key=' . rawurlencode( $key )
-		       . '&url=' . rawurlencode( site_url() )
+		       . '&url=' . rawurlencode( $site_url )
 		       . '&country=' . $this->get_country_code()
 		       . '&language=' . $this->get_language_code();
 
