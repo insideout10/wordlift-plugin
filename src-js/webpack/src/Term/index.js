@@ -9,6 +9,11 @@ import ReactDOM from "react-dom";
  */
 import AutocompleteSelect from "../Edit/components/Autocomplete/AutocompleteSelect";
 
+/*
+ * Styles
+ */
+import "../Edit/index.scss";
+
 // Set a reference to the WordLift's settings stored in the window instance.
 const settings = window["wlSettings"] || {};
 
@@ -44,7 +49,7 @@ const autocomplete = (query, callback) => {
 
 // ### Render the sameAs metabox field autocomplete select.
 window.addEventListener("load", () => {
-  const element = document.getElementById("wl-metabox-field-sameas");
+  const element = document.getElementById("wl-term-entity-id");
 
   // Check that the document element is there.
   if (null === element) {
@@ -54,7 +59,7 @@ window.addEventListener("load", () => {
   ReactDOM.render(
     <AutocompleteSelect
       loadOptions={autocomplete}
-      name="wl_metaboxes[entity_same_as][]"
+      name="wl_entity_id[]"
       placeholder=""
       filterOption={(option, filter) => true}
       searchPromptText={
@@ -63,7 +68,7 @@ window.addEventListener("load", () => {
       loadingPlaceholder={
         settings.l10n[
           "Please wait while we look for entities in the linked data cloud..."
-          ]
+        ]
       }
       noResultsText={settings.l10n["No results found for your search."]}
     />,

@@ -362,5 +362,9 @@ a.Select-value-label:focus {
   to {
     -webkit-transform: rotate(1turn); } }
 
+#entity_same_as::placeholder {
+  color: #aaa;
+  font-size: 12px; }
+
 
 /*# sourceMappingURL=term.css.map*/
