@@ -1,6 +1,15 @@
 <?php
+/**
+ * Services: URL Property.
+ *
+ * @since 3.8.0
+ * @package Wordlift
+ * @subpackage Wordlift/includes/properties
+ */
 
 /**
+ * Define the Wordlift_Url_Property_Service class.
+ *
  * @since 3.8.0
  */
 class Wordlift_Url_Property_Service extends Wordlift_Simple_Property_Service {
@@ -22,7 +31,14 @@ class Wordlift_Url_Property_Service extends Wordlift_Simple_Property_Service {
 
 		// Convert <permalink> in actual permalink values.
 		return array_map( function ( $item ) use ( $post_id ) {
-			return '<permalink>' === $item ? get_permalink( $post_id ) : $item;
+			/*
+			 * If `<permalink>` get the production permalink.
+			 *
+			 * @since 3.20.0
+			 *
+			 * @see https://github.com/insideout10/wordlift-plugin/issues/850.
+			 */
+			return '<permalink>' === $item ? Wordlift_Post_Adapter::get_production_permalink( $post_id ) : $item;
 		}, $urls );
 	}
 

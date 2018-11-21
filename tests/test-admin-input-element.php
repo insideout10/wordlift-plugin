@@ -164,6 +164,7 @@ class Wordlift_Admin_Input_Element_Test extends Wordlift_Unit_Test_Case {
 		) );
 
 		$this->assertTrue( - 1 < strpos( $output, 'some <a href="">text</a> and more' ) );
+
 	}
 
 }

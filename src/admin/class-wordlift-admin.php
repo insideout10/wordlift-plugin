@@ -61,9 +61,9 @@ class Wordlift_Admin {
 	/**
 	 * The singleton instance.
 	 *
-	 * @since 3.20.0
+	 * @since 3.19.4
 	 * @access private
-	 * @var \Wordlift_Admin The singleton instance.
+	 * @var Wordlift_Admin $instance The singleton instance.
 	 */
 	private static $instance;
 
@@ -132,7 +132,7 @@ class Wordlift_Admin {
 	/**
 	 * Get the singleton instance.
 	 *
-	 * @since 3.20.0
+	 * @since 3.19.4
 	 *
 	 * @return \Wordlift_Admin The singleton instance.
 	 */
@@ -224,6 +224,19 @@ class Wordlift_Admin {
 			),
 			'wl_autocomplete_nonce' => wp_create_nonce( 'wordlift_autocomplete' ),
 			'autocomplete_scope'    => $autocomplete_scope,
+			/**
+			 * Allow 3rd parties to define the default editor id. This turns useful if 3rd parties load
+			 * or change the TinyMCE id.
+			 *
+			 * The editor id is currently referenced by `src/coffee/editpost-widget/app.services.EditorAdapter.coffee`.
+			 *
+			 * @since 3.19.4
+			 *
+			 * @see https://github.com/insideout10/wordlift-plugin/issues/848
+			 *
+			 * @param string $editor The default editor id, by default `content`.
+			 */
+			'default_editor_id'     => apply_filters( 'wl_default_editor_id', 'content' ),
 		);
 
 		// Set post-related values if there's a current post.

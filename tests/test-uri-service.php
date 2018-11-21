@@ -3,6 +3,8 @@
  * Test the {@link Wordlift_Uri_Service}.
  *
  * @since 3.7.2
+ * @package Wordlift
+ * @subpackage Wordlift/tests
  */
 
 /**
@@ -10,7 +12,7 @@
  *
  * @since 3.7.2
  */
-class UriServiceTest extends Wordlift_Unit_Test_Case {
+class Uri_Service_Test extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * The {@link Wordlift_Uri_Service} to test.

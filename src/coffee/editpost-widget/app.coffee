@@ -27,7 +27,7 @@ $(
   	<div
       id="wordlift-edit-post-wrapper"
       ng-controller="EditPostWidgetController"
-      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.19.3-rc3'">
+      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.19.5'">
     </div>
   """)
   .appendTo('#wordlift-edit-post-outer-wrapper')
@@ -44,7 +44,7 @@ $(
       <svg transform-origin="10 10" id="wl-widget-spinner-enterprise">
         <polygon points="3,10 6.5,4 13.4,4 16.9,10 13.4,16 6.5,16" class="wl-enterprise-shape"></polygon>
       </svg>
-    </div> 
+    </div>
   """)
   .appendTo('#wordlift_entities_box .ui-sortable-handle')
 
@@ -69,8 +69,17 @@ $(
   # Add WordLift as a plugin of the TinyMCE editor.
   tinymce.PluginManager.add 'wordlift', (editor, url) ->
 
+    # Get the editor id from the `wlSettings` or use `content`.
+    defaultEditorId = window['wlSettings']?['default_editor_id']? ? 'content'
+
+    # Allow 3rd parties to change the editor id.
+    #
+    # @see https://github.com/insideout10/wordlift-plugin/issues/850.
+    # @see https://github.com/insideout10/wordlift-plugin/issues/851.
+    editorId = wp?.hooks?.applyFilters( 'wl_default_editor_id', defaultEditorId )
+
     # This plugin has to be loaded only with the main WP "content" editor
-    return unless editor.id is "content"
+    return unless editor.id is editorId
 
     # The `closed` flag is a very important flag throughout the initialization
     # of WordLift's classification box: in fact if the classification box is

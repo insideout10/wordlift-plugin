@@ -850,9 +850,9 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
       onReset: '&'
       box: '='
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.19.3-rc3'
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.19.5'
 
-    link: ($scope, $element, $attrs, $ctrl) ->  
+    link: ($scope, $element, $attrs, $ctrl) ->
 
       $scope.configuration = configuration
       $scope.currentCategory = undefined
@@ -884,31 +884,31 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
 
 
       $scope.unsetCurrentCategory = ()->
-        $scope.currentCategory = undefined 
-        # Entity type has to be reset too        
+        $scope.currentCategory = undefined
+        # Entity type has to be reset too
         $scope.entity?.mainType = undefined
 
       $scope.isSameAsOf = (sameAs)->
         sameAs.id in $scope.entity.sameAs
-      
+
       $scope.addSameAs = (sameAs)->
-        
+
         unless $scope.entity?.sameAs
           $scope.entity?.sameAs = []
-        
-        if sameAs.id in $scope.entity.sameAs 
+
+        if sameAs.id in $scope.entity.sameAs
           index = $scope.entity.sameAs.indexOf sameAs.id
           $scope.entity.sameAs.splice index, 1
         else
           $scope.entity?.sameAs.push sameAs.id
-      
+
       $scope.setType = (entityType)->
         return if entityType is $scope.entity?.mainType
         $scope.entity?.mainType = entityType
-      
+
       $scope.isCurrentType = (entityType)->
         return $scope.entity?.mainType is entityType
-        
+
       $scope.getAvailableTypes = ()->
         return configuration.getTypesForCategoryId $scope.currentCategory
 
@@ -922,15 +922,15 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
 
       $scope.hasOccurences = ()->
         $scope.entity.occurrences?.length > 0
-      
+
       $scope.setSameAs = (uri)->
         $scope.entity.sameAs = uri
 
       $scope.isInternal = ()->
-        configuration.isInternal $scope.entity?.id 
+        configuration.isInternal $scope.entity?.id
 
       $scope.isNew = (uri)->
-        return !/^(f|ht)tps?:\/\//i.test $scope.entity?.id 
+        return !/^(f|ht)tps?:\/\//i.test $scope.entity?.id
 
 ])
 
@@ -973,7 +973,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', [])
     scope:
       entity: '='
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.19.3-rc3'
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.19.5'
 ])
 angular.module('wordlift.editpost.widget.services.EditorAdapter', [
   'wordlift.editpost.widget.services.EditorAdapter'
@@ -992,8 +992,8 @@ angular.module('wordlift.editpost.widget.services.EditorAdapter', [
     #
     # @param string id The editor's id (by default 'content').
     # @return The editor instance.
-    getEditor: (id = 'content') ->
-      tinyMCE.get(id)
+    getEditor: (id = window['wlSettings']['default_editor_id'] ? 'content') ->
+      tinyMCE.get( wp?.hooks?.applyFilters( 'wl_default_editor_id', id ) ? id )
 
     # Get the HTML code in the specified editor (by default 'content').
     #
@@ -1001,7 +1001,7 @@ angular.module('wordlift.editpost.widget.services.EditorAdapter', [
     #
     # @param string id The editor's id (by default 'content').
     # @return The editor's HTML content.
-    getHTML: (id) ->
+    getHTML: (id = window['wlSettings']['default_editor_id'] ? 'content') ->
       service.getEditor(id).getContent format: 'raw'
 
   # Finally return the service.
@@ -1851,7 +1851,7 @@ $(
   	<div
       id="wordlift-edit-post-wrapper"
       ng-controller="EditPostWidgetController"
-      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.19.3-rc3'">
+      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.19.5'">
     </div>
   """)
   .appendTo('#wordlift-edit-post-outer-wrapper')
@@ -1868,7 +1868,7 @@ $(
       <svg transform-origin="10 10" id="wl-widget-spinner-enterprise">
         <polygon points="3,10 6.5,4 13.4,4 16.9,10 13.4,16 6.5,16" class="wl-enterprise-shape"></polygon>
       </svg>
-    </div> 
+    </div>
   """)
   .appendTo('#wordlift_entities_box .ui-sortable-handle')
 
@@ -1893,8 +1893,17 @@ $(
   # Add WordLift as a plugin of the TinyMCE editor.
   tinymce.PluginManager.add 'wordlift', (editor, url) ->
 
+    # Get the editor id from the `wlSettings` or use `content`.
+    defaultEditorId = window['wlSettings']?['default_editor_id']? ? 'content'
+
+    # Allow 3rd parties to change the editor id.
+    #
+    # @see https://github.com/insideout10/wordlift-plugin/issues/850.
+    # @see https://github.com/insideout10/wordlift-plugin/issues/851.
+    editorId = wp?.hooks?.applyFilters( 'wl_default_editor_id', defaultEditorId )
+
     # This plugin has to be loaded only with the main WP "content" editor
-    return unless editor.id is "content"
+    return unless editor.id is editorId
 
     # The `closed` flag is a very important flag throughout the initialization
     # of WordLift's classification box: in fact if the classification box is

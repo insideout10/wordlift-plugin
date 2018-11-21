@@ -217,75 +217,75 @@ class Wordlift_User_Service {
 		return update_user_meta( $user_id, self::URI_META_KEY, $user_uri );
 	}
 
-	/**
-	 * Get the delete query.
-	 *
-	 * @since 3.1.7
-	 *
-	 * @param int $user_id The user id.
-	 *
-	 * @return false|string The delete query or false in case of failure.
-	 */
-	private function get_delete_query( $user_id ) {
+//	/**
+//	 * Get the delete query.
+//	 *
+//	 * @since 3.1.7
+//	 *
+//	 * @param int $user_id The user id.
+//	 *
+//	 * @return false|string The delete query or false in case of failure.
+//	 */
+//	private function get_delete_query( $user_id ) {
+//
+//		// Get the URI, return if there's none.
+//		if ( false === ( $user_uri = $this->get_uri( $user_id ) ) ) {
+//			return false;
+//		}
+//
+//		// Build the delete query.
+//		$query = Wordlift_Query_Builder::new_instance()->delete()
+//									   ->statement( $user_uri, Wordlift_Query_Builder::RDFS_TYPE_URI, '?o' )
+//									   ->build()
+//				 . Wordlift_Query_Builder::new_instance()->delete()
+//										 ->statement( $user_uri, Wordlift_Query_Builder::RDFS_LABEL_URI, '?o' )
+//										 ->build()
+//				 . Wordlift_Query_Builder::new_instance()->delete()
+//										 ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_GIVEN_NAME_URI, '?o' )
+//										 ->build()
+//				 . Wordlift_Query_Builder::new_instance()->delete()
+//										 ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_FAMILY_NAME_URI, '?o' )
+//										 ->build()
+//				 . Wordlift_Query_Builder::new_instance()->delete()
+//										 ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_URL_URI, '?o' )
+//										 ->build();
+//
+//		return $query;
+//	}
 
-		// Get the URI, return if there's none.
-		if ( false === ( $user_uri = $this->get_uri( $user_id ) ) ) {
-			return false;
-		}
-
-		// Build the delete query.
-		$query = Wordlift_Query_Builder::new_instance()->delete()
-									   ->statement( $user_uri, Wordlift_Query_Builder::RDFS_TYPE_URI, '?o' )
-									   ->build()
-				 . Wordlift_Query_Builder::new_instance()->delete()
-										 ->statement( $user_uri, Wordlift_Query_Builder::RDFS_LABEL_URI, '?o' )
-										 ->build()
-				 . Wordlift_Query_Builder::new_instance()->delete()
-										 ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_GIVEN_NAME_URI, '?o' )
-										 ->build()
-				 . Wordlift_Query_Builder::new_instance()->delete()
-										 ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_FAMILY_NAME_URI, '?o' )
-										 ->build()
-				 . Wordlift_Query_Builder::new_instance()->delete()
-										 ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_URL_URI, '?o' )
-										 ->build();
-
-		return $query;
-	}
-
-	/**
-	 * Get the insert query.
-	 *
-	 * @since 3.1.7
-	 *
-	 * @param int $user_id The user id.
-	 *
-	 * @return false|string The insert query or false in case of failure.
-	 */
-	private function get_insert_query( $user_id ) {
-
-		// Get the URI, return if there's none.
-		if ( false === ( $user_uri = $this->get_uri( $user_id ) ) ) {
-			return false;
-		}
-
-		// Try to get the user data, in case of failure return false.
-		if ( false === ( $user = get_userdata( $user_id ) ) ) {
-			return false;
-		};
-
-		// Build the insert query.
-		$query = Wordlift_Query_Builder::new_instance()
-									   ->insert()
-									   ->statement( $user_uri, Wordlift_Query_Builder::RDFS_TYPE_URI, Wordlift_Query_Builder::SCHEMA_PERSON_URI )
-									   ->statement( $user_uri, Wordlift_Query_Builder::RDFS_LABEL_URI, $user->display_name )
-									   ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_GIVEN_NAME_URI, $user->user_firstname )
-									   ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_FAMILY_NAME_URI, $user->user_lastname )
-									   ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_URL_URI, ( ! empty( $user->user_url ) ? $user->user_url : get_author_posts_url( $user_id ) ) )
-									   ->build();
-
-		return $query;
-	}
+//	/**
+//	 * Get the insert query.
+//	 *
+//	 * @since 3.1.7
+//	 *
+//	 * @param int $user_id The user id.
+//	 *
+//	 * @return false|string The insert query or false in case of failure.
+//	 */
+//	private function get_insert_query( $user_id ) {
+//
+//		// Get the URI, return if there's none.
+//		if ( false === ( $user_uri = $this->get_uri( $user_id ) ) ) {
+//			return false;
+//		}
+//
+//		// Try to get the user data, in case of failure return false.
+//		if ( false === ( $user = get_userdata( $user_id ) ) ) {
+//			return false;
+//		};
+//
+//		// Build the insert query.
+//		$query = Wordlift_Query_Builder::new_instance()
+//									   ->insert()
+//									   ->statement( $user_uri, Wordlift_Query_Builder::RDFS_TYPE_URI, Wordlift_Query_Builder::SCHEMA_PERSON_URI )
+//									   ->statement( $user_uri, Wordlift_Query_Builder::RDFS_LABEL_URI, $user->display_name )
+//									   ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_GIVEN_NAME_URI, $user->user_firstname )
+//									   ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_FAMILY_NAME_URI, $user->user_lastname )
+//									   ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_URL_URI, ( ! empty( $user->user_url ) ? $user->user_url : get_author_posts_url( $user_id ) ) )
+//									   ->build();
+//
+//		return $query;
+//	}
 
 	/**
 	 * Mark an editor user as denied from editing entities.
