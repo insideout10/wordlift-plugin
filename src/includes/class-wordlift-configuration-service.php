@@ -429,7 +429,7 @@ class Wordlift_Configuration_Service {
 		// Build the URL.
 		$url = $this->get_accounts()
 		       . '?key=' . rawurlencode( $key )
-		       . '&url=' . rawurlencode( site_url() )
+		       . '&url=' . rawurlencode( $site_url )
 		       . '&country=' . $this->get_country_code()
 		       . '&language=' . $this->get_language_code();
 
