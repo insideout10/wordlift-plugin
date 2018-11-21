@@ -27,7 +27,7 @@ class Wordlift_Install_All_Entity_Types extends Wordlift_Install {
 	/**
 	 * {@inheritdoc}
 	 */
-	protected static $version = '0.0.0';
+	protected static $version = '3.20.0';
 
 	/**
 	 * Perform the installation.

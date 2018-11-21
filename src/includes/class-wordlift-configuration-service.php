@@ -54,7 +54,7 @@ class Wordlift_Configuration_Service {
 	 *
 	 * @since 3.18.0
 	 */
-	const COUNTRY = 'country_code';
+	const COUNTRY_CODE = 'country_code';
 
 	/**
 	 * The publisher entity post ID option name.
@@ -83,6 +83,13 @@ class Wordlift_Configuration_Service {
 	 * @since 3.19.0
 	 */
 	const SEND_DIAGNOSTIC = 'send_diagnostic';
+
+	/**
+	 * The package type configuration key.
+	 *
+	 * @since 3.20.0
+	 */
+	const PACKAGE_TYPE = 'package_type';
 
 	/**
 	 * The {@link Wordlift_Log_Service} instance.
@@ -298,7 +305,7 @@ class Wordlift_Configuration_Service {
 	 */
 	public function get_country_code() {
 
-		return $this->get( 'wl_general_settings', self::COUNTRY, 'us' );
+		return $this->get( 'wl_general_settings', self::COUNTRY_CODE, 'us' );
 	}
 
 	/**
@@ -310,7 +317,7 @@ class Wordlift_Configuration_Service {
 	 */
 	public function set_country_code( $value ) {
 
-		$this->set( 'wl_general_settings', self::COUNTRY, $value );
+		$this->set( 'wl_general_settings', self::COUNTRY_CODE, $value );
 
 	}
 
@@ -367,6 +374,30 @@ class Wordlift_Configuration_Service {
 	}
 
 	/**
+	 * Get the package type.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @return string The package type or an empty string if not set.
+	 */
+	public function get_package_type() {
+
+		return $this->get( 'wl_advanced_settings', self::PACKAGE_TYPE, null );
+	}
+
+	/**
+	 * Set the package type.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @param string $value The package type.
+	 */
+	public function set_package_type( $value ) {
+
+		$this->set( 'wl_advanced_settings', self::PACKAGE_TYPE, $value );
+	}
+
+	/**
 	 * Intercept the change of the WordLift key in order to set the dataset URI.
 	 *
 	 *
@@ -413,7 +444,7 @@ class Wordlift_Configuration_Service {
 	 */
 	public function get_remote_dataset_uri( $key ) {
 
-		$this->log->trace( 'Getting the remote dataset URI...' );
+		$this->log->trace( 'Getting the remote dataset URI and package type...' );
 
 		/**
 		 * Allow 3rd parties to change the site_url.
@@ -452,16 +483,24 @@ class Wordlift_Configuration_Service {
 			$this->log->error( "Unexpected status code when opening URL $url: " . $response['response']['code'] );
 
 			$this->set_dataset_uri( '' );
+			$this->set_package_type( null );
 
 			return;
 		}
 
-		$json        = json_decode( $response['body'] );
-		$dataset_uri = $json->datasetURI;
+		/*
+		 * We also store the package type.
+		 *
+		 * @since 3.20.0
+		 */
+		$json         = json_decode( $response['body'] );
+		$dataset_uri  = $json->datasetURI;
+		$package_type = isset( $json->packageType ) ? $json->packageType : null;
 
-		$this->log->info( "Setting the dataset URI to $dataset_uri..." );
+		$this->log->info( "Updating [ dataset uri :: $dataset_uri ][ package type :: $package_type ]..." );
 
 		$this->set_dataset_uri( $dataset_uri );
+		$this->set_package_type( $package_type );
 
 	}
 

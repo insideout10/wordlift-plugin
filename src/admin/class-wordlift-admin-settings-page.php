@@ -308,7 +308,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			'wl_general_settings_section',
 			array(
 				'id'          => 'wl-country-code',
-				'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::COUNTRY . ']',
+				'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::COUNTRY_CODE . ']',
 				'value'       => $this->configuration_service->get_country_code(),
 				'description' => __( 'Please select a country.', 'wordlift' ),
 				'notice'      => __( 'The selected language is not supported in this country.</br>Please choose another country or language.', 'wordlift' ),
