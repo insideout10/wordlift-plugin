@@ -1,203 +1,11 @@
 <?php
 /**
- * Faceted Search Shortcode.
+ * This file provides functions for the shortcode `wl_faceted_search`.
  *
  * @since      3.0.0
  * @package    Wordlift
  * @subpackage Wordlift/shortcodes
  */
-
-require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-amp-service.php';
-
-/**
- * Function in charge of diplaying the [wl-faceted-search].
- *
- * @param array $atts Shortcode attributes.
- */
-function wl_web_shortcode_faceted_search( $atts ) {
-
-	// Extract attributes and set default values.
-	$shortcode_atts = shortcode_atts( array(
-		'title'          => __( 'Related articles', 'wordlift' ),
-		'show_facets'    => true,
-		'with_carousel'  => true,
-		'squared_thumbs' => false,
-		'limit'          => 20,
-
-	), $atts );
-
-	foreach (
-		array(
-			'show_facets',
-			'with_carousel',
-			'squared_thumbs',
-		) as $att
-	) {
-
-		// See http://wordpress.stackexchange.com/questions/119294/pass-boolean-value-in-shortcode.
-		$shortcode_atts[ $att ] = filter_var(
-			$shortcode_atts[ $att ], FILTER_VALIDATE_BOOLEAN
-		);
-	}
-
-	// If the current post is not an entity and has no related entities
-	// than the shortcode cannot be rendered
-	// TODO Add an alert visibile only for connected admin users.
-	$current_post = get_post();
-
-	$entity_service = Wordlift_Entity_Service::get_instance();
-	$entity_ids     = $entity_service->is_entity( $current_post->ID ) ?
-		array( $current_post->ID ) :
-		wl_core_get_related_entity_ids( $current_post->ID );
-
-	// Bail if there are no entity ids.
-	if ( 0 === count( $entity_ids ) ) {
-		return '';
-	}
-
-	$div_id = 'wordlift-faceted-entity-search-widget';
-
-	$deps = apply_filters( 'wl_include_font_awesome', true )
-		? array( 'wordlift-font-awesome' )
-		: array();
-	wp_enqueue_style( 'wordlift-faceted-search', dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-faceted-entity-search-widget.min.css', $deps, Wordlift::get_instance()->get_version() );
-	wp_enqueue_script( 'angularjs', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular.min.js' );
-	wp_enqueue_script( 'angularjs-touch', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular-touch.min.js' );
-
-	wp_enqueue_script( 'wordlift-faceted-search', dirname( plugin_dir_url( __FILE__ ) ) . '/js/wordlift-faceted-entity-search-widget.min.js' );
-
-	wp_localize_script(
-		'wordlift-faceted-search',
-		'wl_faceted_search_params', array(
-			'ajax_url'             => admin_url( 'admin-ajax.php' ),
-			'action'               => 'wl_faceted_search',
-			'post_id'              => $current_post->ID,
-			'entity_ids'           => $entity_ids,
-			'limit'                => apply_filters( 'wl_faceted_search_limit', $shortcode_atts['limit'] ),
-			'div_id'               => $div_id,
-			'defaultThumbnailPath' => WL_DEFAULT_THUMBNAIL_PATH,
-			'attrs'                => $shortcode_atts,
-			'l10n'                 => array(
-				'what'  => _x( 'What', 'Faceted Search Widget', 'wordlift' ),
-				'who'   => _x( 'Who', 'Faceted Search Widget', 'wordlift' ),
-				'where' => _x( 'Where', 'Faceted Search Widget', 'wordlift' ),
-				'when'  => _x( 'When', 'Faceted Search Widget', 'wordlift' ),
-			),
-		)
-	);
-
-	return '<div id="' . $div_id . '" style="width:100%"></div>';
-}
-
-/**
- * Function in charge of diplaying the [wl-faceted-search].
- *
- * @param array $atts Shortcode attributes.
- * 
- * @since 3.20.0
- * 
- * @return String <amp-list><template><amp-carousel> tags
- */
-function wl_amp_shortcode_faceted_search( $atts ) {
-
-	// Extract attributes and set default values.
-	$shortcode_atts = shortcode_atts( array(
-		'title'          => __( 'Related articles', 'wordlift' ),
-		'show_facets'    => true,
-		'with_carousel'  => true,
-		'squared_thumbs' => false,
-		'limit'          => 20,
-
-	), $atts );
-
-	foreach (
-		array(
-			'show_facets',
-			'with_carousel',
-			'squared_thumbs',
-		) as $att
-	) {
-
-		// See http://wordpress.stackexchange.com/questions/119294/pass-boolean-value-in-shortcode.
-		$shortcode_atts[ $att ] = filter_var(
-			$shortcode_atts[ $att ], FILTER_VALIDATE_BOOLEAN
-		);
-	}
-
-	// If the current post is not an entity and has no related entities
-	// than the shortcode cannot be rendered
-	// TODO Add an alert visibile only for connected admin users.
-	$current_post = get_post();
-
-	$entity_service = Wordlift_Entity_Service::get_instance();
-	$entity_ids     = $entity_service->is_entity( $current_post->ID ) ?
-		array( $current_post->ID ) :
-		wl_core_get_related_entity_ids( $current_post->ID );
-
-	// Bail if there are no entity ids.
-	if ( 0 === count( $entity_ids ) ) {
-		return '';
-	}
-	
-	$wp_json_base = get_rest_url() . WL_REST_ROUTE_DEFAULT_NAMESPACE;
-	$query = array(
-		'post_id'	=> $current_post->ID,
-		'limit'		=> apply_filters( 'wl_faceted_search_limit', $shortcode_atts['limit'] ),
-	);
-
-	if ( strpos($wp_json_base, 'wp-json/' . WL_REST_ROUTE_DEFAULT_NAMESPACE) ){
-		$delimiter = '?';
-	} else {
-		$delimiter = '&';
-	}
-
-	// Use a protocol-relative URL as amp-list spec says that URL's protocol must be HTTPS.
-	// This is a hackish way, but this works for http and https URLs
-	$wp_json_url = str_replace(array('http:', 'https:'), '', $wp_json_base) . '/faceted-search' . $delimiter . http_build_query($query);
-
-	return '
-	<amp-list width="auto"
-    	height="300"
-    	layout="fixed-height"
-    	src="'.$wp_json_url.'">
-		<template type="amp-mustache">  
-			<amp-carousel 
-				height="300"
-				layout="fixed-height"
-				type="carousel">
-			{{#values}}
-				<div style="width: 300px; height:300px">
-				<amp-img src="{{images}}"
-					height="225"
-					layout="flex-item"
-					alt="{{label}}"></amp-img>
-				<div style="white-space:normal!important"><a href="{{id}}">{{label}}</a></div> 
-				</div>	
-			{{/values}}
-			</amp-carousel>
-		</template>
-    </amp-list>';
-
-}
-
-/**
- * Function in charge of diplaying the [wl-faceted-search].
- * Handles conditional display of right shortcode based on amp mode
- *
- * @param array $atts Shortcode attributes.
- */
-function wl_shortcode_faceted_search( $atts ) {
-
-	if( Wordlift_AMP_Service::is_amp_endpoint() ) {
-		return wl_amp_shortcode_faceted_search( $atts );
-	} else {
-		return wl_web_shortcode_faceted_search( $atts );
-	}
-	
-}
-
-add_shortcode( 'wl_faceted_search', 'wl_shortcode_faceted_search' );
-
 
 /**
  * Shared function between Ajax call and wp-json for the faceted search widget
@@ -232,6 +40,8 @@ function wl_shortcode_faceted_search_data( $http_raw_data = null ) {
 	$entity_ids     = $entity_service->is_entity( $current_post->ID ) ?
 		array( $current_post->ID ) :
 		wl_core_get_related_entity_ids( $current_post->ID );
+	
+	$wl_relation 	= $entity_service->get_classification_scope_for( $current_post->ID, 'when' );
 
 	// If there are no entities we cannot render the widget.
 	if ( 0 === count( $entity_ids ) ) {
@@ -345,6 +155,8 @@ function wl_shortcode_faceted_search_data( $http_raw_data = null ) {
 			}
 		}
 	}
+
+	$results[] = $entity_ids;
 
 	return $results;
 

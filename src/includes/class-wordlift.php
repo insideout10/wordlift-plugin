@@ -1086,6 +1086,11 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-vocabulary-shortcode.php';
 
 		/**
+		 * Faceted Search shortcode.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-faceted-search-shortcode.php';		
+
+		/**
 		 * The ShareThis service.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-sharethis-service.php';
@@ -1234,6 +1239,7 @@ class Wordlift {
 		new Wordlift_Timeline_Shortcode();
 		new Wordlift_Related_Entities_Cloud_Shortcode( $this->relation_service );
 		new Wordlift_Vocabulary_Shortcode( $this->configuration_service );
+		new Wordlift_Faceted_Search_Shortcode();
 
 		// Initialize the SEO service.
 		new Wordlift_Seo_Service();

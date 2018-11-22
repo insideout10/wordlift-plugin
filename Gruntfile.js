@@ -110,7 +110,8 @@ module.exports = function ( grunt ) {
                     'wordlift-ui.less',
                     'wordlift-reloaded.less',
                     'wordlift-faceted-entity-search-widget.less',
-                    'wordlift-font-awesome.less'
+                    'wordlift-font-awesome.less',
+                    'wordlift-amp-custom.less'
                 ]
             }
         },
