@@ -215,7 +215,6 @@ body .wl-container, body .wl-container * {
 /* line 209, src/admin/css/wordlift-admin-setup.sass */
 .wl-container .viewport ul {
   list-style: none;
-  white-space: nowrap;
   margin: 0;
   padding: 0;
   display: block;
@@ -266,7 +265,6 @@ body .wl-container, body .wl-container * {
 .wl-container ul.page-list li {
   height: 40px;
   width: 150px;
-  white-space: nowrap;
   font-size: 14px;
   line-height: 40px;
 }
@@ -499,4 +497,16 @@ body .wl-container, body .wl-container * {
   transform: scale(0.995) translateY(0px);
 }
 
+/* line 494, src/admin/css/wordlift-admin-setup.sass */
+.wl-select-notices {
+  color: #ff0000;
+  font-size: 0.7em;
+  margin-top: 10px;
+  display: none;
+}
+
+/* line 497, src/admin/css/wordlift-admin-setup.sass */
+.wl-select-notices.visible {
+  display: block;
+}
 /*# sourceMappingURL=wordlift-admin-setup.css.map */

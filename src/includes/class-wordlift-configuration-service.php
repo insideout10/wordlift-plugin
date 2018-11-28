@@ -297,11 +297,11 @@ class Wordlift_Configuration_Service {
 	}
 
 	/**
-	 * Get WordLift's configured country code, by default 'uk'.
+	 * Get WordLift's configured country code, by default 'us'.
 	 *
 	 * @since 3.18.0
 	 *
-	 * @return string WordLift's configured country code ('uk' by default).
+	 * @return string WordLift's configured country code ('us' by default).
 	 */
 	public function get_country_code() {
 

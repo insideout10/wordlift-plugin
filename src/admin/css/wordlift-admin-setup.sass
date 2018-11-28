@@ -209,7 +209,6 @@ body
     ul
       // Reset default.
       list-style: none
-      white-space: nowrap
       margin: 0
       padding: 0
       // Positioning childs.
@@ -268,8 +267,6 @@ body
       // Reset default.
       height: 40px
       width: 150px
-      // Preventing new lines.
-      white-space: nowrap
       // Text job.
       font-size: 14px
       line-height: 40px
@@ -490,3 +487,11 @@ body
       box-shadow: 0 5px 10px -5px rgba(0, 0, 0, .25), 0 15px 20px -15px rgba(0, 0, 0, .25)
     &:active
       transform: scale(0.995) translateY(0px)
+
+.wl-select-notices 
+    color: #ff0000;
+    font-size: 0.7em;
+    margin-top: 10px;
+    display: none;
+    &.visible
+      display: block;

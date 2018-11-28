@@ -1,43 +1,45 @@
 <!-- Pane 5 content -->
 <script type="text/html" id="page-4">
 	<h2 class="page-title">
-		<?php esc_html_e( 'Language', 'wordlift' ); ?>	
+		<?php esc_html_e( 'Language and Target Country', 'wordlift' ); ?>	
 	</h2>
 
 	<p class="page-txt">
 		<?php esc_html_e( 'Each WordLift key can be used only in one language. Pick yours.', 'wordlift' ); ?>
 	</p>
 
-	<select
-		id="language"
-		name="language"
-		placeholder="<?php esc_attr_e( 'Choose your language', 'wordlift' ); ?>"
-	>
-		<?php
+    <?php
+    // Get WP's locale.
+    $locale = get_locale();
 
-		// Get WordLift's supported languages.
-		$languages = Wordlift_Languages::get_languages();
+    // Get the language locale part.
+    $parts = explode( '_', $locale );
+    $language = isset( $parts[0] ) ? $parts[0] : '';
 
-		// Get WP's locale.
-		$locale = get_locale();
+    // Render language select element
+    $language_select->render(
+        array(
+            'id'                 => 'wl-site-language',
+            'name'          => 'wl-site-language',
+            'value'           => $language,
+        )
+    );
+    ?>
 
-		// Get the language locale part.
-		$parts = explode( '_', $locale );
+    <br>
 
-		// If we support WP's configured language, then use that, otherwise use English by default.
-		$language = isset( $languages[ $parts[0] ] ) ? $parts[0] : 'en';
-
-		// Print all the supported language, preselecting the one configured in WP (or English if not supported).
-		foreach ( $languages as $code => $label ) :
-		?>
-			<option
-				value="<?php echo esc_attr( $code ); ?>"
-				<?php echo selected( $code, $language, false ); ?>
-			>
-				<?php echo esc_html( $label ); ?>
-			</option>
-		<?php endforeach; ?>
-	</select>
+    <?php
+	// Render country select element
+    $country_select->render(
+        array(
+				'id'                 => 'wl-country-code',
+				'name'          => 'wl-country-code',
+                'lang'             => $language,
+				'value'           => isset( $parts[1] ) ? strtolower( $parts[1] ) : '',
+				'notice'         => __( 'The selected language is not supported in this country.</br>Please choose another country or language.', 'wordlift' ),
+			)
+    );
+    ?>
 
 	<div class="btn-wrapper">
 		<input

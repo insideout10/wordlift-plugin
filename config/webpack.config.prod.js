@@ -63,6 +63,7 @@ module.exports = {
     author: [require.resolve('./polyfills'), paths.appAdminAuthorSelectComponent],
     settings: [require.resolve('./polyfills'), paths.appAdminSettingsScreen],
     "search-rankings": [require.resolve('./polyfills'), paths.appAdminSearchRankingsScreen],
+    setup: [require.resolve('./polyfills'), paths.appAdminSetupScreen],    
   },
   output: {
     // The build folder.

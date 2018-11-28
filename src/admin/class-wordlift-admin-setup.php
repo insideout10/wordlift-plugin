@@ -55,16 +55,36 @@ class Wordlift_Admin_Setup {
 	 */
 	private $entity_service;
 
+    /**
+	 * A {@link Wordlift_Admin_Language_Select_Element} element renderer.
+	 *
+	 * @since  3.11.0
+	 * @access private
+	 * @var \Wordlift_Admin_Language_Select_Element $language_select_element A {@link Wordlift_Admin_Language_Select_Element} element renderer.
+	 */
+	private $language_select_element;
+
+	/**
+	 * A {@link Wordlift_Admin_Country_Select_Element} element renderer.
+	 *
+	 * @since  3.18.0
+	 * @access private
+	 * @var \Wordlift_Admin_Country_Select_Element $country_select_element A {@link Wordlift_Admin_Country_Select_Element} element renderer.
+	 */
+	private $country_select_element;
+
 	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    3.9.0
 	 *
-	 * @param Wordlift_Configuration_Service  $configuration_service  A {@link Wordlift_Configuration_Service} instance.
-	 * @param Wordlift_Key_Validation_Service $key_validation_service A {@link Wordlift_Key_Validation_Service} instance.
-	 * @param Wordlift_Entity_Service         $entity_service         A {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_Configuration_Service  $configuration_service  A {@link Wordlift_Configuration_Service} instance.
+	 * @param \Wordlift_Key_Validation_Service $key_validation_service A {@link Wordlift_Key_Validation_Service} instance.
+	 * @param \Wordlift_Entity_Service         $entity_service         A {@link Wordlift_Entity_Service} instance.
+     * @param \Wordlift_Admin_Language_Select_Element $language_select_element A {@link Wordlift_Admin_Language_Select_Element} element renderer.
+	 * @param \Wordlift_Admin_Country_Select_Element  $country_select_element  A {@link Wordlift_Admin_Country_Select_Element} element renderer.
 	 */
-	public function __construct( $configuration_service, $key_validation_service, $entity_service ) {
+	public function __construct( $configuration_service, $key_validation_service, $entity_service, $language_select_element, $country_select_element ) {
 
 		// Set a reference to the configuration service.
 		$this->configuration_service = $configuration_service;
@@ -74,6 +94,10 @@ class Wordlift_Admin_Setup {
 
 		// Set a reference to the entity service.
 		$this->entity_service = $entity_service;
+
+        // Set a reference to the UI elements language and country.
+		$this->language_select_element = $language_select_element;
+		$this->country_select_element  = $country_select_element;
 
 		// Hook to some WP's events:
 		// When WP is loaded check whether the user decided to skip the set-up, i.e. don't show us even if WL is not set up.
@@ -211,6 +235,9 @@ class Wordlift_Admin_Setup {
 			exit;
 		}
 
+        $language_select = $this->language_select_element;
+		$country_select = $this->country_select_element;
+		
 		include plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/wordlift-admin-setup.php';
 
 		exit;
@@ -239,9 +266,12 @@ class Wordlift_Admin_Setup {
 
 		// Store the vocabulary path:
 		$this->configuration_service->set_entity_base_path( $params['vocabulary'] );
-
+//error_log('storing: ' . var_dump($params));
 		// Store the site's language:
-		$this->configuration_service->set_language_code( $params['language'] );
+		$this->configuration_service->set_language_code( $params['wl-site-language'] );
+
+        // Store the site's country:
+		$this->configuration_service->set_country_code( $params['wl-country-code'] );
 
 		// Store the preferences in variable, because if the checkbox is not checked
 		// the `share-diagnostic` will not exists in `$params` array.

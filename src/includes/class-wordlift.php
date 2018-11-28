@@ -1345,7 +1345,7 @@ class Wordlift {
 		$this->status_page             = new Wordlift_Admin_Status_Page( $this->entity_service, $this->sparql_service );
 
 		// Create an instance of the install wizard.
-		$this->admin_setup = new Wordlift_Admin_Setup( $this->configuration_service, $this->key_validation_service, $this->entity_service );
+		$this->admin_setup = new Wordlift_Admin_Setup( $this->configuration_service, $this->key_validation_service, $this->entity_service, $this->language_select_element, $this->country_select_element );
 
 		$this->category_taxonomy_service = new Wordlift_Category_Taxonomy_Service( $this->entity_post_type_service );
 
