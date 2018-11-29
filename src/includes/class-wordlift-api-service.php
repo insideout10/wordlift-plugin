@@ -90,7 +90,7 @@ class Wordlift_Api_Service {
 	 *
 	 * @param array|WP_Error $result The result of an http call.
 	 *
-	 * @return string|WP_Error A {@link WP_Error} instance or the actual response content.
+	 * @return string|object|WP_Error A {@link WP_Error} instance or the actual response content.
 	 */
 	private static function get_message_or_error( $result ) {
 
@@ -121,14 +121,26 @@ class Wordlift_Api_Service {
 		return isset( $result['body'] ) ? self::try_json_decode( $result ) : '';
 	}
 
+	/**
+	 * Try to decode the json response
+	 *
+	 * @since 3.20.0
+	 * @param array $result The response array.
+	 *
+	 * @return array|mixed|object The decoded response or the original response body.
+	 */
 	private static function try_json_decode( $result ) {
 
+		// Get the headers.
 		$headers = $result['headers']->getAll();
 
-		if ( ! isset( $headers['content-type'] ) || 0 !== strpos( strtolower( $headers['content-type'] ), 'application/json' ) ) {
+		// If it's not an `application/json` return the plain response body.
+		if ( ! isset( $headers['content-type'] )
+		     || 0 !== strpos( strtolower( $headers['content-type'] ), 'application/json' ) ) {
 			return $result['body'];
 		}
 
+		// Decode an return the structured result.
 		return json_decode( $result['body'] );
 	}
 
