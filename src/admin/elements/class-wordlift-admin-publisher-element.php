@@ -48,9 +48,9 @@ class Wordlift_Admin_Publisher_Element extends Wordlift_Admin_Author_Element {
 	 * @since 3.11.0
 	 *
 	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
-	 * @param \Wordlift_Publisher_Service     $publisher_service     The {@link Wordlift_Publisher_Service} instance.
-	 * @param \Wordlift_Admin_Tabs_Element    $tabs_element          The {@link Wordlift_Admin_Tabs_Element} instance.
-	 * @param \Wordlift_Admin_Select2_Element $select_element        The {@link Wordlift_Admin_Select_Element} instance.
+	 * @param \Wordlift_Publisher_Service     $publisher_service The {@link Wordlift_Publisher_Service} instance.
+	 * @param \Wordlift_Admin_Tabs_Element    $tabs_element The {@link Wordlift_Admin_Tabs_Element} instance.
+	 * @param \Wordlift_Admin_Select2_Element $select_element The {@link Wordlift_Admin_Select_Element} instance.
 	 */
 	function __construct( $configuration_service, $publisher_service, $tabs_element, $select_element ) {
 		parent::__construct( $publisher_service, $select_element );
@@ -135,69 +135,69 @@ class Wordlift_Admin_Publisher_Element extends Wordlift_Admin_Author_Element {
 	 */
 	public function create( $params ) {
 		?>
-		<p>
-			<strong><?php esc_html_e( 'Are you publishing as an individual or as a company?', 'wordlift' ); ?></strong>
-		</p>
+        <p>
+            <strong><?php esc_html_e( 'Are you publishing as an individual or as a company?', 'wordlift' ); ?></strong>
+        </p>
 
-		<p id="wl-publisher-type">
+        <p id="wl-publisher-type">
 			<span>
 				<input
-					id="wl-publisher-person"
-					type="radio"
-					name="wl_publisher[type]"
-					value="person"
-					checked="checked"
-				>
+                        id="wl-publisher-person"
+                        type="radio"
+                        name="wl_publisher[type]"
+                        value="person"
+                        checked="checked"
+                >
 
 				<label for="wl-publisher-person">
 					<?php esc_html_e( 'Person', 'wordlift' ); ?>
 				</label>
 			</span>
 
-			<span>
+            <span>
 				<input
-					id="wl-publisher-company"
-					type="radio"
-					name="wl_publisher[type]"
-					value="organization"
-				>
+                        id="wl-publisher-company"
+                        type="radio"
+                        name="wl_publisher[type]"
+                        value="organization"
+                >
 
 				<label for="wl-publisher-company">
 					<?php esc_html_e( 'Company', 'wordlift' ); ?>
 				</label>
 			</span>
-		</p>
+        </p>
 
-		<p id="wl-publisher-name">
-			<input
-				type="text"
-				name="wl_publisher[name]"
-				placeholder="<?php echo esc_attr__( "What's your name?", 'wordlift' ); ?>"
-			>
-		</p>
+        <p id="wl-publisher-name">
+            <input
+                    type="text"
+                    name="wl_publisher[name]"
+                    placeholder="<?php echo esc_attr__( "What's your name?", 'wordlift' ); ?>"
+            >
+        </p>
 
-		<div id="wl-publisher-logo">
-			<input
-				type="hidden"
-				id="wl-publisher-media-uploader-id"
-				name="wl_publisher[thumbnail_id]"
-			/>
+        <div id="wl-publisher-logo">
+            <input
+                    type="hidden"
+                    id="wl-publisher-media-uploader-id"
+                    name="wl_publisher[thumbnail_id]"
+            />
 
-			<p>
-				<b><?php esc_html_e( "Choose the publisher's Logo", 'wordlift' ); ?></b>
-			</p>
+            <p>
+                <b><?php esc_html_e( "Choose the publisher's Logo", 'wordlift' ); ?></b>
+            </p>
 
-			<p>
-				<img id="wl-publisher-media-uploader-preview" />
+            <p>
+                <img id="wl-publisher-media-uploader-preview"/>
 
-				<button
-					type="button"
-					class="button"
-					id="wl-publisher-media-uploader">
+                <button
+                        type="button"
+                        class="button"
+                        id="wl-publisher-media-uploader">
 					<?php esc_html_e( 'Select an existing image or upload a new one', 'wordlift' ); ?>
-				</button>
-			</p>
-		</div>
+                </button>
+            </p>
+        </div>
 		<?php
 	}
 
