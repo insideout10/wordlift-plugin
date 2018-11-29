@@ -76,8 +76,8 @@ class Wordlift_Api_Service {
 		$value = wp_remote_get( $url, array(
 			'user-agent' => self::get_user_agent(),
 			'headers'    => array(
-				'X-Authorization' => $this->configuration_service->get_key()
-			)
+				'X-Authorization' => $this->configuration_service->get_key(),
+			),
 		) );
 
 		return self::get_message_or_error( $value );
@@ -125,6 +125,7 @@ class Wordlift_Api_Service {
 	 * Try to decode the json response
 	 *
 	 * @since 3.20.0
+	 *
 	 * @param array $result The response array.
 	 *
 	 * @return array|mixed|object The decoded response or the original response body.
