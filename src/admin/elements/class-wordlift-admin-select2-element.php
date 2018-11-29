@@ -23,13 +23,13 @@ class Wordlift_Admin_Select2_Element extends Wordlift_Admin_Select_Element {
 	public function render_options( $params ) {
 		// Loop through all params and add the options.
 		foreach ( $params['options'] as $value => $label ) :
-		?>
-			<option
-				value="<?php echo esc_attr( $value ); ?>"
+			?>
+            <option
+                    value="<?php echo esc_attr( $value ); ?>"
 				<?php selected( $params['value'], $value ); ?>
-				>
+            >
 				<?php echo esc_html( $label ); ?>
-			</option>
+            </option>
 		<?php
 		endforeach;
 	}
