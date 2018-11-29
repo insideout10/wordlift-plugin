@@ -383,10 +383,10 @@ class WL_Metabox_Field {
 					$fragment = $this->html_input( $value );
 
 					// If the fragment is empty, continue to the next one. This is necessary because the
-                    // metabox may reference an invalid value which would cause the metabox not to print,
-                    // returning an empty html fragment.
-                    //
-                    // See https://github.com/insideout10/wordlift-plugin/issues/818
+					// metabox may reference an invalid value which would cause the metabox not to print,
+					// returning an empty html fragment.
+					//
+					// See https://github.com/insideout10/wordlift-plugin/issues/818
 					if ( '' === $fragment ) {
 						continue;
 					}
