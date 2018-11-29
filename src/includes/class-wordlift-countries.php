@@ -479,6 +479,7 @@ class Wordlift_Countries {
 	 *                then the first two letters of $code is returned.
 	 */
 	private static function format_country_code( $code = '' ) {
+
 		$code = strtolower( substr( $code, 0, 2 ) );
 		/**
 		 * Filters the country codes.
@@ -486,7 +487,7 @@ class Wordlift_Countries {
 		 * @since 3.18.0
 		 *
 		 * @param array  $country_codes Key/value pair of country codes where key is the short version.
-		 * @param string $code          A two-letter designation of the country.
+		 * @param string $code A two-letter designation of the country.
 		 */
 		$country_codes = apply_filters( 'country_code', self::$country_codes, $code );
 
@@ -494,13 +495,14 @@ class Wordlift_Countries {
 	}
 
 	/**
-	 * Returns the country language pairs
+	 * Returns the country language pairs.
 	 *
 	 * @since 3.18.0
 	 *
-	 * @return array Country language pairs
+	 * @return array The country language pairs.
 	 */
-	public static function get_country_language_pairs() {
+	public static function get_codes() {
+
 		return self::$codes;
 	}
 
