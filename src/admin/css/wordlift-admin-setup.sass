@@ -30,6 +30,7 @@ body
 
   .radio-wrapper label
     cursor: pointer
+    white-space: nowrap
 
   // Hide the "clear all" cross. See http://stackoverflow.com/questions/14007655/remove-ie10s-clear-field-x-button-on-certain-inputs
   input::-ms-clear
@@ -88,9 +89,9 @@ body
       // Size.
       width: 60px
       height: 16px
-      
-    img.wizard-logo 
-      // Size. 
+
+    img.wizard-logo
+      // Size.
       width: 125px
       height: 47px
       margin-top: -10px
@@ -248,7 +249,7 @@ body
     position: relative
     margin: auto auto 16px
     // Size.
-    // Commented in order to fix a space problem when adding a logo. 
+    // Commented in order to fix a space problem when adding a logo.
     // max-width: 400px
     // Text job.
     font-weight: 200
@@ -320,7 +321,7 @@ body
   input[type="text"]#key,
   input[type="text"]#vocabulary,
   input[type="text"]#name
-    // Those classes are added to 
+    // Those classes are added to
     padding-right: 34px
 
     &.invalid, &.valid
@@ -488,10 +489,11 @@ body
     &:active
       transform: scale(0.995) translateY(0px)
 
-.wl-select-notices 
-    color: #ff0000;
-    font-size: 0.7em;
-    margin-top: 10px;
-    display: none;
+.wl-select-notices
+    color: #870c25
+    font-size: 0.9em
+    font-weight: 700
+    margin-top: 10px
+    display: none
     &.visible
-      display: block;
+      display: block
