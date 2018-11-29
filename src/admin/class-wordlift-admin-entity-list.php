@@ -121,7 +121,7 @@ class Wordlift_Entity_List_Service {
 	 *
 	 * @since 3.3.0
 	 *
-	 * @param string $column    the current column.
+	 * @param string $column The current column.
 	 * @param int    $entity_id An entity post id.
 	 */
 	public function render_custom_columns( $column, $entity_id ) {
@@ -260,7 +260,6 @@ class Wordlift_Entity_List_Service {
 				'operator' => 'NOT IN',
 			),
 		) );
-
 
 	}
 
