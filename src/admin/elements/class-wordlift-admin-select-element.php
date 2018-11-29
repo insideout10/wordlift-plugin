@@ -40,14 +40,14 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 			)
 		);
 		?>
-		<select
-			id="<?php echo esc_attr( $params['id'] ); ?>"
-			name="<?php echo esc_attr( $params['name'] ); ?>"
-			class="<?php echo esc_attr( $params['class'] ); ?>"
+        <select
+                id="<?php echo esc_attr( $params['id'] ); ?>"
+                name="<?php echo esc_attr( $params['name'] ); ?>"
+                class="<?php echo esc_attr( $params['class'] ); ?>"
 			<?php echo $this->get_data_attributes( $params['data'] ); ?>
-		>
+        >
 			<?php $this->render_options( $params ); ?>
-		</select>
+        </select>
 
 		<?php
 		// Print the notice message if there is such.
@@ -131,6 +131,7 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 		 * parties to modify the field data attrbutes.
 		 *
 		 * @since  3.18.0
+		 *
 		 * @param  array $pre_attributes Array of the field data attributes.
 		 */
 		$attributes = apply_filters( 'wl_admin_select_element_data_attributes', $pre_attributes );
@@ -160,7 +161,9 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 	 *
 	 * @return void
 	 */
-	protected function enqueue_resources(){}
+	protected function enqueue_resources() {
+
+	}
 
 	/**
 	 * Abstract method that renders the select options.
@@ -172,4 +175,5 @@ abstract class Wordlift_Admin_Select_Element implements Wordlift_Admin_Element {
 	 * @return Prints the select options.
 	 */
 	abstract function render_options( $params );
+
 }
