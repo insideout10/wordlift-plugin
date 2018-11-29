@@ -95,23 +95,15 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 *
 	 * @since 3.11.0
 	 *
-	 * @param \Wordlift_Configuration_Service         $configuration_service   A {@link Wordlift_Configuration_Service} instance.
-	 * @param \Wordlift_Entity_Service                $entity_service          A {@link Wordlift_Entity_Service} instance.
-	 * @param \Wordlift_Admin_Input_Element           $input_element           A {@link Wordlift_Admin_Input_Element} element renderer.
+	 * @param \Wordlift_Configuration_Service         $configuration_service A {@link Wordlift_Configuration_Service} instance.
+	 * @param \Wordlift_Entity_Service                $entity_service A {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_Admin_Input_Element           $input_element A {@link Wordlift_Admin_Input_Element} element renderer.
 	 * @param \Wordlift_Admin_Language_Select_Element $language_select_element A {@link Wordlift_Admin_Language_Select_Element} element renderer.
-	 * @param \Wordlift_Admin_Country_Select_Element  $country_select_element  A {@link Wordlift_Admin_Country_Select_Element} element renderer.
-	 * @param \Wordlift_Admin_Publisher_Element       $publisher_element       A {@link Wordlift_Admin_Publisher_Element} element renderer.
-	 * @param \Wordlift_Admin_Radio_Input_Element     $radio_input_element     A {@link Wordlift_Admin_Radio_Input_Element} element renderer.
+	 * @param \Wordlift_Admin_Country_Select_Element  $country_select_element A {@link Wordlift_Admin_Country_Select_Element} element renderer.
+	 * @param \Wordlift_Admin_Publisher_Element       $publisher_element A {@link Wordlift_Admin_Publisher_Element} element renderer.
+	 * @param \Wordlift_Admin_Radio_Input_Element     $radio_input_element A {@link Wordlift_Admin_Radio_Input_Element} element renderer.
 	 */
-	function __construct(
-		$configuration_service,
-		$entity_service,
-		$input_element,
-		$language_select_element,
-		$country_select_element,
-		$publisher_element,
-		$radio_input_element
-	) {
+	function __construct( $configuration_service, $entity_service, $input_element, $language_select_element, $country_select_element, $publisher_element, $radio_input_element ) {
 
 		$this->configuration_service = $configuration_service;
 		$this->entity_service        = $entity_service;
@@ -419,14 +411,13 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	}
 
 	/**
-	 * Check whether the currently selected country supports the site language
+	 * Check whether the currently selected country supports the site language.
 	 *
 	 * @since 3.18.0
-	 *
-	 * @return void
 	 */
 	private function validate_country() {
-		// Bail is for some reason the country and language are not set.
+
+		// Bail out if for some reason the country and language are not set.
 		if (
 			empty( $_POST['wl_general_settings']['site_language'] ) && // WPCS: CSRF, input var, sanitization ok.
 			empty( $_POST['wl_general_settings']['country_code'] ) // WPCS: CSRF, input var, sanitization ok.
@@ -437,19 +428,19 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 		// Get the values.
 		$language = $_POST['wl_general_settings']['site_language']; // WPCS: CSRF, input var, sanitization ok.
 		$country  = $_POST['wl_general_settings']['country_code']; // WPCS: CSRF, input var, sanitization ok.
-		$countries = Wordlift_Countries::get_country_language_pairs();
+		$codes    = Wordlift_Countries::get_codes();
 
 		// Check whether the chosen country has language limitations
 		// and whether the chosen language is supported for that country.
 		if (
-			! empty( $countries[ $country ] ) &&
-			! in_array( $language, $countries[ $country ] )
+			! empty( $codes[ $country ] ) &&
+			! in_array( $language, $codes[ $country ] )
 		) {
 			// Otherwise add an error.
 			add_settings_error(
 				'wl-country-code',
 				esc_attr( 'settings_updated' ),
-				_x( 'The selected language is not supported for the currently chosen country. Please choose another country or langugage.', 'wordlift' )
+				_x( 'The selected language is not supported for the currently chosen country. Please choose another country or language.', 'wordlift' )
 			);
 		}
 	}
