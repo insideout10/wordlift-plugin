@@ -1,5 +1,19 @@
 <?php
+/**
+ * Pages: Search Rankings.
+ *
+ * Display the Search Rankings page.
+ *
+ * @since 3.20.0
+ * @package Wordlift
+ * @subpackage Wordlift/admin
+ */
 
+/**
+ * Define the {@link Wordlift_Admin_Search_Rankings_Page} class.
+ *
+ * @since 3.20.0
+ */
 class Wordlift_Admin_Search_Rankings_Page extends Wordlift_Admin_Page {
 
 	/**
@@ -7,7 +21,7 @@ class Wordlift_Admin_Search_Rankings_Page extends Wordlift_Admin_Page {
 	 */
 	function get_page_title() {
 
-		return _x( 'Search Rankings', 'Page title', 'wordlift' );
+		return _x( 'Search Rankings', 'Search Rankings', 'wordlift' );
 	}
 
 	/**
@@ -15,7 +29,7 @@ class Wordlift_Admin_Search_Rankings_Page extends Wordlift_Admin_Page {
 	 */
 	function get_menu_title() {
 
-		return _x( 'Search Rankings', 'Menu title', 'wordlift' );
+		return _x( 'Search Rankings', 'Search Rankings', 'wordlift' );
 	}
 
 	/**
