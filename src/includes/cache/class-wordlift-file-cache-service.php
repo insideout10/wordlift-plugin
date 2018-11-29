@@ -64,7 +64,7 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 	 *
 	 * @since 3.16.0
 	 *
-	 * @param string $cache_dir      The base cache directory.
+	 * @param string $cache_dir The base cache directory.
 	 * @param string $file_extension The file extension, by default `.wlcache`.
 	 */
 	public function __construct( $cache_dir, $file_extension = '.wlcache' ) {
