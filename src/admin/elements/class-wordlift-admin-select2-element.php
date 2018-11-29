@@ -17,6 +17,7 @@
  * @subpackage Wordlift/admin
  */
 class Wordlift_Admin_Select2_Element extends Wordlift_Admin_Select_Element {
+    
 	/**
 	 * @inheritdoc
 	 */
