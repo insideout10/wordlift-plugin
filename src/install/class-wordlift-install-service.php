@@ -112,7 +112,10 @@ class Wordlift_Install_Service {
 			new Wordlift_Install_3_18_3(),
 			new Wordlift_Install_3_19_5(),
 			new Wordlift_Install_3_20_0(),
-			new Wordlift_Install_All_Entity_Types(),
+			/*
+			 * This should be enabled with #852.
+			 */
+			// new Wordlift_Install_All_Entity_Types(),
 			new Wordlift_Install_Package_Type(),
 		);
 
