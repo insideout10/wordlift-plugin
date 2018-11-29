@@ -245,7 +245,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 					// In some cases, you can delete the image from the database
 					// or from uploads dir, but the image id still exists as featured image
 					// or in [gallery] shortcode.
-//					if ( empty( $attachment[0] ) ) {
+					//					if ( empty( $attachment[0] ) ) {
 					if ( empty( $sources_with_image ) ) {
 						return $carry;
 					}
