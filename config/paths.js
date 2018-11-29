@@ -65,5 +65,8 @@ module.exports = {
   ),
   appAdminAuthorSelectComponent: resolveApp(
     "src-js/screens/Admin/components/AuthorSelect/index.js"
+  ),
+  appAdminSetupScreen: resolveApp(
+    "src-js/screens/Admin/screens/Setup/index.js"
   )
 };

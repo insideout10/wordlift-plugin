@@ -25,7 +25,7 @@
 		'wp-admin',
 		'wl-font-awesome',
 	) );
-	wp_enqueue_script( 'wordlift-admin-setup', plugin_dir_url( dirname( __FILE__ ) ) . 'js/wordlift-admin-setup.js', array( 'jquery' ) );
+	wp_enqueue_script( 'wordlift-admin-setup', plugin_dir_url( dirname( __FILE__ ) ) . 'js/1/setup.js', array( 'jquery' ) );
 
 	//Get wp_permalink structure
 	$permalink_structure = get_option( 'permalink_structure' );
