@@ -93,13 +93,14 @@ class Wordlift_Admin_Post_Edit_Page {
 		wp_dequeue_script( 'ontrapagesApp' );
 		wp_dequeue_script( 'ontrapagesController' );
 
-		// Enqueue the edit screen JavaScript. The `wordlift-admin.bundle.js` file
-		// is scheduled to replace the older `wordlift-admin.min.js` once client-side
-		// code is properly refactored.
 		/*
-		 * edit.js has been migrated to the new webpack configuration.
+		 * Enqueue the edit screen JavaScript. The `wordlift-admin.bundle.js` file
+		 * is scheduled to replace the older `wordlift-admin.min.js` once client-side
+		 * code is properly refactored.
 		 *
-		 * @since 3.20.0
+		 * @link https://github.com/insideout10/wordlift-plugin/issues/761
+		 *
+		 * @since 3.20.0 edit.js has been migrated to the new webpack configuration.
 		 */
 		// plugin_dir_url( __FILE__ ) . 'js/1/edit.js'
 		$script_name = plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/edit';
