@@ -43,7 +43,7 @@ class Wordlift_Admin_Author_Element implements Wordlift_Admin_Element {
 	 * @since 3.14.0
 	 *
 	 * @param \Wordlift_Publisher_Service     $publisher_service The {@link Wordlift_Publisher_Service} instance.
-	 * @param \Wordlift_Admin_Select2_Element $select_element    The {@link Wordlift_Admin_Select_Element} instance.
+	 * @param \Wordlift_Admin_Select2_Element $select_element The {@link Wordlift_Admin_Select_Element} instance.
 	 */
 	function __construct( $publisher_service, $select_element ) {
 
@@ -87,9 +87,9 @@ class Wordlift_Admin_Author_Element implements Wordlift_Admin_Element {
 	 *
 	 * @since 3.14.0
 	 *
-	 * @param array $params          The array of parameters from the `render` function.
+	 * @param array $params The array of parameters from the `render` function.
 	 * @param int   $current_post_id The currently selected {@link WP_Post} `id`.
-	 * @param array $data            An array of Select2 options.
+	 * @param array $data An array of Select2 options.
 	 *
 	 * @return \Wordlift_Admin_Author_Element $this Return this element.
 	 */
@@ -109,17 +109,17 @@ class Wordlift_Admin_Author_Element implements Wordlift_Admin_Element {
 		// Finally render the Select.
 		$this->select_element->render( array(
 			// Id.
-			'id'                 => $params['id'],
+			'id'      => $params['id'],
 			// Name.
-			'name'               => $params['name'],
+			'name'    => $params['name'],
 			// Class names.
-			'class'              => 'wl-select2-element',
+			'class'   => 'wl-select2-element',
 			// The selected id.
-			'value'              => $current_post_id,
+			'value'   => $current_post_id,
 			// The selected item (must be in the options for Select2 to display it).
-			'options'            => $current_post ? array( $current_post->ID => $current_post->post_title ) : array(),
+			'options' => $current_post ? array( $current_post->ID => $current_post->post_title ) : array(),
 			// Data attributes.
-			'data'               => array(
+			'data'    => array(
 				// The list of available options.
 				'wl-select2-data'               => json_encode( $data ),
 				// The HTML template for each option.
