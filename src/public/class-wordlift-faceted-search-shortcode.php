@@ -111,7 +111,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 			? array( 'wordlift-font-awesome' )
 			: array();
 		wp_enqueue_style( 'wordlift-faceted-search', dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-faceted-entity-search-widget.min.css', $deps, Wordlift::get_instance()->get_version() );
-		wp_enqueue_script( 'wordlift-faceted-search', dirname( plugin_dir_url( __FILE__ ) ) . '/js/wordlift-faceted-entity-search-widget.min.js' );
+		wp_enqueue_script( 'wordlift-faceted-search', dirname( plugin_dir_url( __FILE__ ) ) . '/js/wordlift-faceted-entity-search-widget.js' );
 
 		wp_localize_script(
 			'wordlift-faceted-search',
@@ -164,11 +164,33 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 		if ( 0 === count( $entity_ids ) ) {
 			return '';
 		}
+
+		$div_id = 'wordlift-faceted-entity-search-widget';
+
+		// Inject amp specific styles inline
+		add_action( 'amp_post_template_css', array(
+			$this,
+			'amp_post_template_css',
+		) );
 		
 		$wp_json_base = get_rest_url() . WL_REST_ROUTE_DEFAULT_NAMESPACE;
-		$query = array(
+
+		$query_posts = array(
 			'post_id'	=> $current_post->ID,
 			'limit'		=> apply_filters( 'wl_faceted_search_limit', $shortcode_atts['limit'] ),
+			'type'		=> 'posts'
+		);
+
+		$query_facets = array(
+			'post_id'	=> $current_post->ID,
+			'limit'		=> apply_filters( 'wl_faceted_search_limit', $shortcode_atts['limit'] ),
+			'type'		=> 'facets',
+			'l10n'      => array(
+				'what'  => _x( 'What', 'Faceted Search Widget', 'wordlift' ),
+				'who'   => _x( 'Who', 'Faceted Search Widget', 'wordlift' ),
+				'where' => _x( 'Where', 'Faceted Search Widget', 'wordlift' ),
+				'when'  => _x( 'When', 'Faceted Search Widget', 'wordlift' ),
+			)
 		);
 
 		if ( strpos($wp_json_base, 'wp-json/' . WL_REST_ROUTE_DEFAULT_NAMESPACE) ){
@@ -179,37 +201,62 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 
 		// Use a protocol-relative URL as amp-list spec says that URL's protocol must be HTTPS.
 		// This is a hackish way, but this works for http and https URLs
-		$wp_json_url = str_replace(array('http:', 'https:'), '', $wp_json_base) . '/faceted-search' . $delimiter . http_build_query($query);
+		$wp_json_url_posts = str_replace(array('http:', 'https:'), '', $wp_json_base) . '/faceted-search' . $delimiter . http_build_query($query_posts);
+		$wp_json_url_facets = str_replace(array('http:', 'https:'), '', $wp_json_base) . '/faceted-search' . $delimiter . http_build_query($query_facets);
 
-		add_action( 'amp_post_template_css', array(
-			$this,
-			'amp_post_template_css',
-		) );
-
-		return '
-		<amp-list width="auto"
-			height="300"
-			layout="fixed-height"
-			src="'.$wp_json_url.'">
-			<template type="amp-mustache">  
-				<amp-carousel 
-					height="300"
-					layout="fixed-height"
-					type="carousel">
-				{{#values}}
-					<div style="height: 300px; width: 300px;">
-					<amp-img src="{{images}}"
-						height="200"
-						width="auto"
+		/*
+		 * Notes about amp code:
+		 * 
+		 * amp-list src is the only way to do an xhr fetch so we need it for both facets and posts
+		 * amp-list src needs to have items array which amp-list renders within template
+		 * amp-list does not support dynamic resizing. It needs a layout but as of not we have not specified any layout for .wl-facets amp-list
+		 * CSS classes and most styles are kept consistant with web layout
+		 */
+		return <<<HTML
+		<div id="{$div_id}" class="wl-amp-fs">
+			<amp-accordion>
+				<section expanded>
+					<h3 class="wl-headline">{$shortcode_atts['title']}</h3>
+					<amp-list 
+						class="wl-facets" 
+						src="{$wp_json_url_facets}">
+						<template type="amp-mustache">  
+							<div class="wl-facets-container">
+								<h5>{{l10n}}</h5>
+								<ul>
+								{{#data}}
+									<li>{{label}}</li>
+								{{/data}}
+								</ul>
+							</div>	
+						</template>
+					</amp-list>
+				</section>
+			</amp-accordion>
+			<amp-list width="auto"
+				height="250"
+				layout="fixed-height"
+				src="{$wp_json_url_posts}">
+				<template type="amp-mustache">  
+					<amp-carousel 
+						height="220"
 						layout="fixed-height"
-						alt="{{label}}"></amp-img>
-					<div style="white-space:normal"><a href="{{id}}">{{label}}</a></div> 
-					</div>	
-				{{/values}}
-				</amp-carousel>
-			</template>
-		</amp-list>';
-
+						type="carousel">
+					{{#values}}
+						<div class="wl-card">
+							<amp-img src="{{thumbnail}}"
+								width="4"
+								height="3"
+								layout="responsive"
+								alt="{{post_title}}"></amp-img>
+							<div class="wl-card-title"><a href="{{permalink}}">{{post_title}}</a></div> 
+						</div>	
+					{{/values}}
+					</amp-carousel>
+				</template>
+			</amp-list>
+		</div>
+HTML;
 	}
 
 	/**
