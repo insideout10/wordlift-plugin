@@ -8,7 +8,7 @@
  */
 
 /**
- * Define the
+ * Define the Wordlift_Configuration_Test class.
  *
  * @since      3.0.0
  * @package    Wordlift
@@ -155,9 +155,41 @@ class Wordlift_Configuration_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	/**
+	 * Test setting/getting the country code.
+	 *
+	 * @since 3.20.0
+	 */
+	public function test_country_code() {
+
+		$country_code = $this->configuration_service->get_country_code();
+
+		$this->configuration_service->set_country_code( 'test' );
+		$this->assertEquals( 'test', $this->configuration_service->get_country_code(), 'Value must match.' );
+
+		$this->configuration_service->set_country_code( $country_code );
+
+	}
+
+	/**
+	 * Test setting/getting the country code.
+	 *
+	 * @since 3.20.0
+	 */
+	public function test_package_type() {
+
+		$package_type = $this->configuration_service->get_package_type();
+
+		$this->configuration_service->set_package_type( 'test' );
+		$this->assertEquals( 'test', $this->configuration_service->get_package_type(), 'Value must match.' );
+
+		$this->configuration_service->set_package_type( $package_type );
+
+	}
+
+	/**
 	 * @param bool   $preempt Whether to preempt an HTTP request return. Default false.
-	 * @param array  $r       HTTP request arguments.
-	 * @param string $url     The request URL.
+	 * @param array  $r HTTP request arguments.
+	 * @param string $url The request URL.
 	 *
 	 * @return bool
 	 */

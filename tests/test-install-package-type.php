@@ -13,7 +13,7 @@
  * @since 3.20.0
  *
  */
-class Test_Wordlift_Install_Package_Type extends Wordlift_Unit_Test_Case {
+class Wordlift_Install_Package_Type_Test extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * Test that `must_install` returns true.

@@ -26,9 +26,9 @@ class Wordlift_Countries {
 	 * `get_countries` function.
 	 *
 	 * @since 3.18.0
-	 * @var array|null An array of country codes => country names pairs or NULL if not initialized yet.
+	 * @var array An array of country codes => country names pairs or NULL if not initialized yet.
 	 */
-	private static $countries = null;
+	private static $countries = array();
 
 	/**
 	 * The list of supported country codes.
@@ -434,38 +434,41 @@ class Wordlift_Countries {
 	 *
 	 * @since 3.18.0
 	 *
-	 * @param bool|string $lang The language code we are looking for.
+	 * @param string $lang Optional. The language code we are looking for. Default `any`.
 	 *
 	 * @return array An array with country code => country name pairs.
 	 */
-	public static function get_countries( $lang = false ) {
+	public static function get_countries( $lang = 'any' ) {
+
 		// Lazily load the countries.
-		if ( ! is_null( self::$countries ) ) {
-			return self::$countries;
+		if ( isset( self::$countries[ $lang ] ) ) {
+			return self::$countries[ $lang ];
 		}
+
+		// Prepare the array.
+		self::$countries[ $lang ] = array();
 
 		// Get the country names from WP's own (multisite) function.
 		foreach ( self::$codes as $key => $languages ) {
 			if (
 				// Process all countries if there is no language specified.
-				empty( $lang ) ||
+				'any' === $lang ||
 
-				// Or if there are no langugage limitations for current country.
+				// Or if there are no language limitations for current country.
 				empty( self::$codes[ $key ] ) ||
 
 				// Or if the language code exists for current country.
 				! empty( $lang ) && in_array( $lang, self::$codes[ $key ] )
 			) {
-				self::$countries[ $key ] = self::format_country_code( $key );
+				self::$countries[ $lang ][ $key ] = self::format_country_code( $key );
 			}
 		}
 
 		// Sort by country name.
-		asort( self::$countries );
+		asort( self::$countries[ $lang ] );
 
 		// We don't sort here because `asort` returns bool instead of sorted array.
-		return self::$countries;
-
+		return self::$countries[ $lang ];
 	}
 
 	/**
