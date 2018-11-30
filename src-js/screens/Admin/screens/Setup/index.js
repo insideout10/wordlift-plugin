@@ -5,8 +5,8 @@
 /**
  * Internal dependencies
  */
-import CountryValidator from 'modules/country-validator';
-import delay from 'modules/delay';
+import CountryValidator from "modules/country-validator";
+import delay from "modules/delay";
 
 /**
  * Add support for `.wl-key` `input`s.
@@ -23,24 +23,23 @@ import delay from 'modules/delay';
      */
     const bind = function() {
       // Key validation: attach to all the input with a `wl-key` class.
-      $('input[data-wl-key]').on('keyup', function() {
+      $("input[data-wl-key]").on("keyup", function() {
         // Get a jQuery reference to the object.
         const $this = $(this);
         // By default the button is hidden.
-        const $grabAKeyButton = $('#btn-grab-a-key');
-        const $licenseKeyNextButton = $('#btn-license-key-next');
+        const $grabAKeyButton = $("#btn-grab-a-key");
+        const $licenseKeyNextButton = $("#btn-license-key-next");
 
         // Remove any preexisting states, including the `untouched` class
         // which is set initially to prevent displaying the
         // `valid`/`invalid` indicator.
-        $this.removeClass('untouched valid invalid');
+        $this.removeClass("untouched valid invalid");
 
         // Delay execution of the validation.
         delay($this, function() {
-
           // It doesn't matter if the key is valid/invalid, at this point
           // we don't what to show the Next button as default.
-          $licenseKeyNextButton.removeClass('wl-default-action');
+          $licenseKeyNextButton.removeClass("wl-default-action");
           $grabAKeyButton.show();
 
           // Post the validation request.
@@ -52,10 +51,10 @@ import delay from 'modules/delay';
               // If the key is valid then set the process class.
               if (data && data.valid) {
                 $grabAKeyButton.hide();
-                $licenseKeyNextButton.addClass('wl-default-action');
-                $this.addClass('valid');
+                $licenseKeyNextButton.addClass("wl-default-action");
+                $this.addClass("valid");
               } else {
-                $this.addClass('invalid');
+                $this.addClass("invalid");
               }
             });
         });
@@ -65,21 +64,21 @@ import delay from 'modules/delay';
       // Prevent non valid keys from being entered and perform a validation
       // while user types (we don't want '-' and '_' as last characters, we
       // require at least one valid character).
-      $('input[data-wl-vocabulary]')
-        .on('keypress', function(e) {
+      $("input[data-wl-vocabulary]")
+        .on("keypress", function(e) {
           // If the pressed key is invalid, cancel it.
           if (!/^[a-z0-9\-_]$/i.test(e.key)) {
             return e.preventDefault();
           }
         })
-        .on('keyup', function() {
+        .on("keyup", function() {
           // Set a jQuery reference to the element.
           var $this = $(this);
 
           // Remove any preexisting states, including the `untouched` class
           // which is set initially to prevent displaying the
           // `valid`/`invalid` indicator.
-          $this.removeClass('untouched valid invalid');
+          $this.removeClass("untouched valid invalid");
 
           // Delay the check for a valid path.
           delay($this, function() {
@@ -88,12 +87,12 @@ import delay from 'modules/delay';
             // structure is set as '/%postname%/'
             if (
               (0 === $this.val().length &&
-                '/%postname%/' === settings.permalink) ||
+                "/%postname%/" === settings.permalink) ||
               /^[a-z0-9]+(?:[a-z0-9\-_]*[a-z0-9]+)?$/i.test($this.val())
             ) {
-              $this.addClass('valid');
+              $this.addClass("valid");
             } else {
-              $this.addClass('invalid');
+              $this.addClass("invalid");
             }
           });
 
@@ -101,40 +100,40 @@ import delay from 'modules/delay';
         });
 
       // Country validation
-      CountryValidator('#wl-country-code', '#wl-site-language');
-  
+      CountryValidator("#wl-country-code", "#wl-site-language");
+
       // Check that a name has been provided.
-      $('input[data-wl-name]').on('keyup', function() {
+      $("input[data-wl-name]").on("keyup", function() {
         // Set a jQuery reference to the element.
         var $this = $(this);
 
         // Remove any preexisting states, including the `untouched` class
         // which is set initially to prevent displaying the
         // `valid`/`invalid` indicator.
-        $this.removeClass('untouched valid invalid');
+        $this.removeClass("untouched valid invalid");
 
         // Delay the check for a valid path.
         delay($this, function() {
           // An empty value or a value starting/ending with an alphanumeric
           // character.
           if (0 < $this.val().length) {
-            $this.addClass('valid');
+            $this.addClass("valid");
           } else {
-            $this.addClass('invalid');
+            $this.addClass("invalid");
           }
         });
       });
 
       // Media upload.
-      $('div[data-wl-logo]').each(function() {
+      $("div[data-wl-logo]").each(function() {
         // A jQuery reference to the "add logo" button.
-        var $add = $('a[data-wl-add-logo]', this);
+        var $add = $("a[data-wl-add-logo]", this);
 
         // A jQuery reference to the logo preview.
-        var $preview = $('.wl-logo-preview', this);
+        var $preview = $(".wl-logo-preview", this);
 
         // A jQuery reference to the logo input element.
-        var $input = $('input[name=logo]', this);
+        var $input = $("input[name=logo]", this);
 
         // Create a WP media uploader.
         var uploader = global.wp.media({
@@ -144,26 +143,26 @@ import delay from 'modules/delay';
 
           // Tell the modal to show only images.
           library: {
-            type: 'image'
+            type: "image"
           }
         });
 
         // Add logo.
-        $add.on('click', function() {
+        $add.on("click", function() {
           // Catch `select` events on the uploader.
           uploader
-            .on('select', function() {
+            .on("select", function() {
               // Get the selected attachment.
               var attachment = uploader
                 .state()
-                .get('selection')
+                .get("selection")
                 .first()
                 .toJSON();
 
               // Set the selected image as background for the div. We use a
               // background to keep the ratio in a limited size constraint.
               $preview
-                .css('background-image', 'url(' + attachment.url + ')')
+                .css("background-image", "url(" + attachment.url + ")")
                 .show();
 
               // Set the logo id.
@@ -176,12 +175,12 @@ import delay from 'modules/delay';
         });
 
         // Remove logo.
-        $('a[data-wl-remove-logo]').on('click', function() {
+        $("a[data-wl-remove-logo]").on("click", function() {
           // Remove the preview.
-          $preview.css('background-image', 'none').hide();
+          $preview.css("background-image", "none").hide();
 
           // Unset the logo id.
-          $input.val('');
+          $input.val("");
 
           // Show the add logo link.
           $add.show();
@@ -189,14 +188,14 @@ import delay from 'modules/delay';
       });
 
       // Catch form submits and cancel them if the name is not properly set.
-      $('form').on('submit', function(e) {
+      $("form").on("submit", function(e) {
         // At first load the input has an `untouched` class to prevent
         // showing the `valid`/`invalid` indicator until the user actually
         // touches the input.
-        $('input[data-wl-name]').removeClass('untouched');
+        $("input[data-wl-name]").removeClass("untouched");
 
         // Check that we have one valid name.
-        if (1 !== $('input.valid[data-wl-name]').length) {
+        if (1 !== $("input.valid[data-wl-name]").length) {
           e.preventDefault();
         }
       });
@@ -215,7 +214,7 @@ import delay from 'modules/delay';
       var panes = [];
 
       // Append ourselves to the container.
-      this.$elem = $('<ul></ul>').appendTo($container);
+      this.$elem = $("<ul></ul>").appendTo($container);
 
       // Create a {@link PaneIndicator}.
       new PaneIndicator(this).$elem.insertBefore($container);
@@ -238,7 +237,7 @@ import delay from 'modules/delay';
         var pane = new Pane(that, html, validate);
 
         // Append the pane within a list item.
-        $('<li></li>')
+        $("<li></li>")
           .appendTo(that.$elem)
           .append(pane.$elem);
 
@@ -246,7 +245,7 @@ import delay from 'modules/delay';
         panes.push(pane);
 
         // Trigger a pane added event with the added pane.
-        that.$elem.trigger('paneAdd', pane);
+        that.$elem.trigger("paneAdd", pane);
       };
 
       /**
@@ -262,28 +261,28 @@ import delay from 'modules/delay';
         }
 
         // If the index is in the range move the viewport to it.
-        that.$elem.css('margin-left', -$container.width() * index);
+        that.$elem.css("margin-left", -$container.width() * index);
 
         // Update the current index.
         currentIndex = index;
 
         // Trigger an pane change event with the index of the current pane.
-        that.$elem.trigger('paneChange', index);
+        that.$elem.trigger("paneChange", index);
       };
 
       // Catch 'previous' events to move to the previous pane.
-      this.$elem.on('previous', function(e, pane) {
+      this.$elem.on("previous", function(e, pane) {
         goTo(panes.indexOf(pane) - 1);
       });
 
       // Catch 'next' events to move to the next pane.
-      this.$elem.on('next', function(e, pane) {
+      this.$elem.on("next", function(e, pane) {
         goTo(panes.indexOf(pane) + 1);
       });
 
       // When the window resizes, also the viewport size might change, so we
       // ask the container to go back to the current index.
-      $(window).on('resize', function() {
+      $(window).on("resize", function() {
         // Delay the execution to avoid repeated actions.
         delay($container, function() {
           // Move again to the current index.
@@ -308,19 +307,19 @@ import delay from 'modules/delay';
       var that = this;
 
       // The pane element.
-      this.$elem = $('<div></div>').append(html);
+      this.$elem = $("<div></div>").append(html);
 
       // Hook to the next element and raise a 'next' event when clicked.
-      $('[data-wl-next]', that.$elem).on('click', function() {
+      $("[data-wl-next]", that.$elem).on("click", function() {
         if (validate()) {
-          controller.$elem.trigger('next', that);
+          controller.$elem.trigger("next", that);
         }
       });
 
       // Hook to the previous element raise a 'previous' event when clicked.
-      $('[data-wl-previous]', that.$elem).on('click', function() {
+      $("[data-wl-previous]", that.$elem).on("click", function() {
         if (validate()) {
-          controller.$elem.trigger('previous', that);
+          controller.$elem.trigger("previous", that);
         }
       });
     };
@@ -342,23 +341,23 @@ import delay from 'modules/delay';
 
       // Attach to the add and change elements.
       controller.$elem
-        .on('paneAdd', function(e, pane) {
+        .on("paneAdd", function(e, pane) {
           // Append a list item and add the 'active' class to the
           // first element.
-          $('<li></li>')
-            .addClass(0 === $('li', that.$elem).length ? 'active' : '')
+          $("<li></li>")
+            .addClass(0 === $("li", that.$elem).length ? "active" : "")
             .appendTo(that.$elem);
         })
-        .on('paneChange', function(e, index) {
-          $('li', that.$elem).removeClass('active');
-          $('li', that.$elem)
+        .on("paneChange", function(e, index) {
+          $("li", that.$elem).removeClass("active");
+          $("li", that.$elem)
             .eq(index)
-            .addClass('active');
+            .addClass("active");
         });
     };
 
     // Create a controller and attach it to the viewport.
-    var controller = new Controller($('.viewport'));
+    var controller = new Controller($(".viewport"));
 
     /**
      * Always return true to validation requests.
@@ -379,19 +378,19 @@ import delay from 'modules/delay';
         // At first load the input has an `untouched` class to prevent
         // showing the `valid`/`invalid` indicator until the user actually
         // touches the input.
-        $('input[data-wl-key]').removeClass('untouched');
+        $("input[data-wl-key]").removeClass("untouched");
 
         // The WL key is valid when we have one `.wl-key` marked as valid.
-        return 1 === $('input.valid[data-wl-key]').length;
+        return 1 === $("input.valid[data-wl-key]").length;
       },
       function() {
         // At first load the input has an `untouched` class to prevent
         // showing the `valid`/`invalid` indicator until the user actually
         // touches the input.
-        $('input[data-wl-vocabulary]').removeClass('untouched');
+        $("input[data-wl-vocabulary]").removeClass("untouched");
 
         // The vocabulary path is valid when the input is marked valid.
-        return 1 === $('input.valid[data-wl-vocabulary]').length;
+        return 1 === $("input.valid[data-wl-vocabulary]").length;
       },
       alwaysValid,
       // Validation for the last step happens with the form submit, see the
@@ -401,7 +400,7 @@ import delay from 'modules/delay';
 
     // Add the pages.
     for (var i = 0; i < 6; i++) {
-      controller.add($('#page-' + i).html(), validations[i]);
+      controller.add($("#page-" + i).html(), validations[i]);
     }
 
     // Finally bind additional functions.
