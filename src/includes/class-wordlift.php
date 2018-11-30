@@ -1351,6 +1351,17 @@ class Wordlift {
 
 		// Remote Image Service.
 		new Wordlift_Remote_Image_Service();
+
+		/*
+		 * Add the Search Keywords taxonomy to manage the Search Keywords on WLS.
+		 *
+		 * @link https://github.com/insideout10/wordlift-plugin/issues/761
+		 *
+		 * @since 3.20.0
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/search-keywords/class-wordlift-search-keyword-taxonomy.php';
+		new Wordlift_Search_Keyword_Taxonomy();
+
 	}
 
 	/**
