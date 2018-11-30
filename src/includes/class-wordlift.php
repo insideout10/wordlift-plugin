@@ -700,15 +700,6 @@ class Wordlift {
 	protected $publisher_service;
 
 	/**
-	 * The Search Rankings page.
-	 *
-	 * @since 3.20.0
-	 * @access protected
-	 * @var \Wordlift_Admin_Search_Rankings_Page $admin_search_rankings_page The Search Rankings page.
-	 */
-	protected $admin_search_rankings_page;
-
-	/**
 	 * {@link Wordlift}'s singleton instance.
 	 *
 	 * @since  3.11.2
@@ -1332,10 +1323,8 @@ class Wordlift {
 		// create an instance of the entity type list admin page controller.
 		$this->entity_type_admin_page = new Wordlift_Admin_Entity_Taxonomy_List_Page();
 
-		// create an instance of the entity type etting admin page controller.
+		// create an instance of the entity type setting admin page controller.
 		$this->entity_type_settings_admin_page = new Wordlift_Admin_Entity_Type_Settings();
-
-		$this->admin_search_rankings_page = new Wordlift_Admin_Search_Rankings_Page();
 
 		/** Widgets */
 		$this->related_entities_cloud_widget = new Wordlift_Related_Entities_Cloud_Widget();
@@ -1503,7 +1492,18 @@ class Wordlift {
 			// Add the functionality only if a flag is set in wp-config.php .
 			$this->loader->add_action( 'wl_admin_menu', $this->batch_analysis_page, 'admin_menu', 10, 2 );
 		}
-		$this->loader->add_action( 'wl_admin_menu', $this->admin_search_rankings_page, 'admin_menu' );
+
+		/*
+		 * Display the `Wordlift_Admin_Search_Rankings_Page` page.
+		 *
+		 * @link https://github.com/insideout10/wordlift-plugin/issues/761
+		 *
+		 * @since 3.20.0
+		 */
+		if ( in_array( $this->configuration_service->get_package_type(), array( 'editorial', 'business' ) ) ) {
+			$admin_search_rankings_page = new Wordlift_Admin_Search_Rankings_Page();
+			$this->loader->add_action( 'wl_admin_menu', $admin_search_rankings_page, 'admin_menu' );
+		}
 
 		// Hook key update.
 		$this->loader->add_action( 'pre_update_option_wl_general_settings', $this->configuration_service, 'maybe_update_dataset_uri', 10, 2 );

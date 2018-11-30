@@ -45,7 +45,7 @@ class Wordlift_Admin_Search_Rankings_Ajax_Adapter {
 	 *
 	 * @since 3.20.0
 	 */
-	function search_rankings() {
+	public function search_rankings() {
 
 		@header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
 		$value = $this->service->get();
@@ -56,6 +56,7 @@ class Wordlift_Admin_Search_Rankings_Ajax_Adapter {
 			wp_send_json_success( $value );
 		}
 
+		// We use this to maintain compatibility with WP 4.4.0.
 		if ( apply_filters( 'wp_doing_ajax', defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
 			wp_die();
 		} else {
