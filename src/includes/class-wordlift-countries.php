@@ -434,15 +434,16 @@ class Wordlift_Countries {
 	 *
 	 * @since 3.18.0
 	 *
-	 * @param string $lang Optional. The language code we are looking for. Default `any`.
+	 * @param string|false $lang Optional. The language code we are looking for. Default `any`.
 	 *
 	 * @return array An array with country code => country name pairs.
 	 */
-	public static function get_countries( $lang = 'any' ) {
+	public static function get_countries( $lang = false ) {
 
 		// Lazily load the countries.
-		if ( isset( self::$countries[ $lang ] ) ) {
-			return self::$countries[ $lang ];
+		$lang_key = false === $lang ? 'any' : $lang;
+		if ( isset( self::$countries[ $lang_key ] ) ) {
+			return self::$countries[ $lang_key ];
 		}
 
 		// Prepare the array.
@@ -452,7 +453,7 @@ class Wordlift_Countries {
 		foreach ( self::$codes as $key => $languages ) {
 			if (
 				// Process all countries if there is no language specified.
-				'any' === $lang ||
+				empty( $lang ) ||
 
 				// Or if there are no language limitations for current country.
 				empty( self::$codes[ $key ] ) ||
@@ -460,15 +461,15 @@ class Wordlift_Countries {
 				// Or if the language code exists for current country.
 				! empty( $lang ) && in_array( $lang, self::$codes[ $key ] )
 			) {
-				self::$countries[ $lang ][ $key ] = self::format_country_code( $key );
+				self::$countries[ $lang_key ][ $key ] = self::format_country_code( $key );
 			}
 		}
 
 		// Sort by country name.
-		asort( self::$countries[ $lang ] );
+		asort( self::$countries[ $lang_key ] );
 
 		// We don't sort here because `asort` returns bool instead of sorted array.
-		return self::$countries[ $lang ];
+		return self::$countries[ $lang_key ];
 	}
 
 	/**

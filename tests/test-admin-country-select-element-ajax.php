@@ -55,7 +55,7 @@ class Wordlift_Admin_Country_Select_Element_Ajax_Test extends Wordlift_Ajax_Unit
 	 */
 	public function test_get_options_html_unknown_lang() {
 		$_POST['lang']  = 'zzz';
-		$_POST['value'] = 'us';
+		$_POST['value'] = 'uk';
 
 		try {
 			$this->_handleAjax( 'wl_update_country_options' );
@@ -65,7 +65,7 @@ class Wordlift_Admin_Country_Select_Element_Ajax_Test extends Wordlift_Ajax_Unit
 		$response = json_decode( $this->_last_response, true );
 
 		$matches = array();
-		preg_match_all( '/<option\s+value="us"\s+selected=\'selected\'/', $response['data'], $matches );
+		preg_match_all( '/<option\s+value="uk"\s+selected=\'selected\'/', $response['data'], $matches );
 
 		$this->assertCount( 1, $matches[0] );
 
