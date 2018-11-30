@@ -73,14 +73,14 @@ class Wordlift_Api_Service {
 		$url = $this->configuration_service->get_api_url() . $path;
 
 		// Get the response value.
-		$value = wp_remote_get( $url, array(
+		$response = wp_remote_get( $url, array(
 			'user-agent' => self::get_user_agent(),
 			'headers'    => array(
 				'X-Authorization' => $this->configuration_service->get_key(),
 			),
 		) );
 
-		return self::get_message_or_error( $value );
+		return self::get_message_or_error( $response );
 	}
 
 	/**
@@ -88,37 +88,32 @@ class Wordlift_Api_Service {
 	 *
 	 * @since 3.20.0
 	 *
-	 * @param array|WP_Error $result The result of an http call.
+	 * @param array|WP_Error $response The response of an http call.
 	 *
 	 * @return string|object|WP_Error A {@link WP_Error} instance or the actual response content.
 	 */
-	private static function get_message_or_error( $result ) {
+	private static function get_message_or_error( $response ) {
 
 		// Result is WP_Error.
-		if ( is_wp_error( $result ) ) {
-			return $result;
+		if ( is_wp_error( $response ) ) {
+			return $response;
 		}
-
-		// `response` not set.
-		if ( ! isset( $result['response'] ) ) {
-			return new WP_Error( 0, "Invalid Response" );
-		}
-
-		// Get the response.
-		$response = $result['response'];
 
 		// `code` not set or not numeric.
-		if ( ! isset( $response['code'] ) || ! is_numeric( $response['code'] ) ) {
-			return new WP_Error( 0, $response['message'] );
+		$code    = wp_remote_retrieve_response_code( $response );
+		$message = @wp_remote_retrieve_response_message( $response );
+
+		if ( empty( $code ) || ! is_numeric( $code ) ) {
+			return new WP_Error( 0, $message );
 		}
 
 		// Code not 2xx.
-		if ( 2 !== intval( $response['code'] / 100 ) ) {
-			return new WP_Error( $response['code'], $response['message'] );
+		if ( 2 !== intval( $code / 100 ) ) {
+			return new WP_Error( $code, $message );
 		}
 
 		// Everything's fine, return the message.
-		return isset( $result['body'] ) ? self::try_json_decode( $result ) : '';
+		return self::try_json_decode( $response );
 	}
 
 	/**
@@ -126,25 +121,31 @@ class Wordlift_Api_Service {
 	 *
 	 * @since 3.20.0
 	 *
-	 * @param array $result The response array.
+	 * @param array $response The response array.
 	 *
 	 * @return array|mixed|object The decoded response or the original response body.
 	 */
-	private static function try_json_decode( $result ) {
+	private static function try_json_decode( $response ) {
 
 		// Get the headers.
-		$headers = $result['headers']->getAll();
+		$content_type = wp_remote_retrieve_header( $response, 'content-type' );
+		$body         = wp_remote_retrieve_body( $response );
 
 		// If it's not an `application/json` return the plain response body.
-		if ( ! isset( $headers['content-type'] )
-		     || 0 !== strpos( strtolower( $headers['content-type'] ), 'application/json' ) ) {
-			return $result['body'];
+		if ( 0 !== strpos( strtolower( $content_type ), 'application/json' ) ) {
+			return $body;
 		}
 
-		// Decode an return the structured result.
-		return json_decode( $result['body'] );
+		// Decode and return the structured result.
+		return json_decode( $body );
 	}
 
+	/**
+	 * Get the User Agent.
+	 *
+	 * @since 3.20.0
+	 * @return string The user-agent string.
+	 */
 	private static function get_user_agent() {
 
 		// Get WL version.
