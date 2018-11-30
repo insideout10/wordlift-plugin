@@ -164,7 +164,7 @@ class Wordlift_Install_Package_Type_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function pre_http_request( $preempt, $r, $url ) {
 
-		$this->assertEquals( 1, preg_match( '/^https:\/\/api\.wordlift\.it\/accounts\?key=\w+\&url=[\w%\.]+\&country=\w{2}\&language=\w{2}$/', $url ), 'URL pattern must match, this is the URL call WLS expects.' );
+		$this->assertEquals( 1, preg_match( '/^https:\/\/api\.wordlift\.it\/accounts\?key=\w+\&url=[\w%\.]+\&country=\w{2}\&language=\w{2}$/', $url ), "URL pattern must match, this is the URL call WLS expects. Got $url." );
 		$this->assertArraySubset( array( 'method' => 'PUT' ), $r, 'Expect method to be `PUT`.' );
 
 		$dataset_uri = $this->configuration_service->get_dataset_uri();
