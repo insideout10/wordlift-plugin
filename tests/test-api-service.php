@@ -1,20 +1,36 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: david
- * Date: 2018-11-30
- * Time: 12:03
+ * Tests: Api Service.
+ *
+ * @since 3.20.0
+ * @package Wordlift
+ * @subpackage Wordlift/tests
  */
 
-
+/**
+ * Define the Wordlift_Api_Service_Test class.
+ *
+ * @since 3.20.0
+ */
 class Wordlift_Api_Service_Test extends Wordlift_Unit_Test_Case {
 
+	//region ## TESTS
+	/**
+	 * Test the singleton instance.
+	 *
+	 * @since 3.20.0
+	 */
 	public function test_get_instance() {
 
 		$this->assertTrue( Wordlift_Api_Service::get_instance() instanceof Wordlift_Api_Service, 'Singleton instance must be a `Wordlift_Api_Service`.' );
 
 	}
 
+	/**
+	 * Test getting a JSON reply.
+	 *
+	 * @since 3.20.0
+	 */
 	public function test_get_json() {
 
 		add_filter( 'pre_http_request', array( $this, 'pre_http_request__test_get_json' ), 10, 3 );
@@ -28,6 +44,11 @@ class Wordlift_Api_Service_Test extends Wordlift_Unit_Test_Case {
 
 	}
 
+	/**
+	 * Test getting a plain text reply.
+	 *
+	 * @since 3.20.0
+	 */
 	public function test_get_plain_text() {
 
 		add_filter( 'pre_http_request', array( $this, 'pre_http_request__test_get_text' ), 10, 3 );
@@ -40,7 +61,11 @@ class Wordlift_Api_Service_Test extends Wordlift_Unit_Test_Case {
 
 	}
 
-
+	/**
+	 * Test an invalid http status code.
+	 *
+	 * @since 3.20.0
+	 */
 	public function test_get_invalid_http_status_code() {
 
 		add_filter( 'pre_http_request', array( $this, 'pre_http_request__test_get_invalid_http_status_code' ), 10, 3 );
@@ -53,6 +78,11 @@ class Wordlift_Api_Service_Test extends Wordlift_Unit_Test_Case {
 
 	}
 
+	/**
+	 * Test a WP_Error reply.
+	 *
+	 * @since 3.20.0
+	 */
 	public function test_get_error_response() {
 
 		add_filter( 'pre_http_request', array( $this, 'pre_http_request__test_get_error_response' ), 10, 3 );
@@ -64,7 +94,9 @@ class Wordlift_Api_Service_Test extends Wordlift_Unit_Test_Case {
 		remove_filter( 'pre_http_request', array( $this, 'pre_http_request__test_get_error_response' ) );
 
 	}
+	//endregion
 
+	//region ## FILTERS.
 	/**
 	 * Mock the response for the `install` call.
 	 *
@@ -166,5 +198,6 @@ class Wordlift_Api_Service_Test extends Wordlift_Unit_Test_Case {
 		$this->assertTrue( isset( $r['headers']['X-Authorization'] ), 'The `X-Authorization` header must be set.' );
 
 	}
+	//endregion
 
 }
