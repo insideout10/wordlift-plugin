@@ -167,13 +167,17 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		<div id="{$navigator_id}" class="wl-navigator-widget">
 			<h3 class="wl-headline">{$shortcode_atts['title']}</h3>
 			<amp-list 
-				layout="fixed"
-				height="200"
-				width="500"
+				layout="fixed-height"
+				height="300"
 				src="{$wp_json_url_posts}">
 				<template type="amp-mustache">
-					<div style="width: 25%; display: inline-block">
+					<div style="width: 23%; display: inline-block">
 						<a href="{{entity.permalink}}">{{entity.label}}</a>
+						<amp-img 
+							width="4"
+							height="3"
+							layout="responsive"
+							src="{{post.thumbnail}}"></amp-img>
 						<a href="{{post.permalink}}">{{post.title}}</a>
 					</div>
 				</template>
