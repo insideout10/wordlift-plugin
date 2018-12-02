@@ -8,11 +8,11 @@
  */
 
 /**
- * The Navigator Ajax function.
+ * The Navigator data function.
  *
  * @since 3.0.0
  */
-function wl_shortcode_navigator_ajax() {
+function wl_shortcode_navigator_data() {
 
 	// Post ID must be defined
 	if ( ! isset( $_GET['post_id'] ) ) {
@@ -107,10 +107,46 @@ function wl_shortcode_navigator_ajax() {
 	}
 
 	// Return first 4 results in json accordingly to 4 columns layout
-	wl_core_send_json(
-		array_slice( array_reverse( $results ), 0, 4 )
-	);
+	return array_slice( array_reverse( $results ), 0, 4 );
+
+}
+
+/**
+ * The Navigator Ajax function.
+ *
+ * @since 3.20.0
+ */
+function wl_shortcode_navigator_ajax() {
+
+	$results = wl_shortcode_navigator_data();
+	wl_core_send_json($results);
+
 }
 
 add_action( 'wp_ajax_wl_navigator', 'wl_shortcode_navigator_ajax' );
 add_action( 'wp_ajax_nopriv_wl_navigator', 'wl_shortcode_navigator_ajax' );
+
+/**
+ * wp-json call for the navigator widget
+ */
+function wl_shortcode_navigator_wp_json() {
+
+	$results = wl_shortcode_navigator_data();
+	if ( ob_get_contents() ) {
+		ob_clean();
+	}
+	return array(
+		'items' => $results
+	);
+
+}
+
+/**
+ * Adding `rest_api_init` action for amp backend of navigator
+ */
+add_action( 'rest_api_init', function () {
+	register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/navigator', array(
+	  'methods' => 'GET',
+	  'callback' => 'wl_shortcode_navigator_wp_json',
+	) );
+} );
