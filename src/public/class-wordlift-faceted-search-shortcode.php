@@ -233,7 +233,9 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 					</amp-list>
 				</section>
 			</amp-accordion>
-			<amp-list width="auto"
+			<amp-list 
+				media="(min-width: 461px)"
+				width="auto"
 				height="250"
 				layout="fixed-height"
 				src="{$wp_json_url_posts}">
@@ -255,6 +257,30 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 					</amp-carousel>
 				</template>
 			</amp-list>
+			<amp-list 
+				media="(max-width: 460px)"
+				width="auto"
+				height="300"
+				layout="fixed-height"
+				src="{$wp_json_url_posts}">
+				<template type="amp-mustache">  
+					<amp-carousel 
+						height="270"
+						layout="fixed-height"
+						type="carousel">
+					{{#values}}
+						<div class="wl-card">
+							<amp-img src="{{thumbnail}}"
+								width="4"
+								height="3"
+								layout="responsive"
+								alt="{{post_title}}"></amp-img>
+							<div class="wl-card-title"><a href="{{permalink}}">{{post_title}}</a></div> 
+						</div>	
+					{{/values}}
+					</amp-carousel>
+				</template>
+			</amp-list>			
 		</div>
 HTML;
 	}

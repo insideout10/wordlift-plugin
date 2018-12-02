@@ -72,6 +72,11 @@
   font-size: 0.8em;
   width: 27%;
 }
+@media screen and (max-width: 460px) {
+  #wordlift-faceted-entity-search-widget .wl-card {
+    width: 100% !important;
+  }
+}
 #wordlift-faceted-entity-search-widget .wl-card .wl-card-title {
   padding: 0.6em;
   position: relative;
