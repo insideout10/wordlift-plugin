@@ -241,6 +241,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 				src="{$wp_json_url_posts}">
 				<template type="amp-mustache">  
 					<amp-carousel 
+						class="wl-amp-carousel"
 						height="220"
 						layout="fixed-height"
 						type="carousel">
@@ -265,9 +266,10 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 				src="{$wp_json_url_posts}">
 				<template type="amp-mustache">  
 					<amp-carousel 
+						class="wl-amp-carousel"
 						height="270"
 						layout="fixed-height"
-						type="carousel">
+						type="slides">
 					{{#values}}
 						<div class="wl-card">
 							<amp-img src="{{thumbnail}}"
