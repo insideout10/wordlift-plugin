@@ -136,7 +136,9 @@ function wl_shortcode_navigator_wp_json() {
 		ob_clean();
 	}
 	return array(
-		'items' => $results
+		'items' => array( 
+			array('values' => $results)
+		)
 	);
 
 }
