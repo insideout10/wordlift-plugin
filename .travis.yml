@@ -147,6 +147,8 @@ before_script:
   # - npm install
   # Install yarn.
   - curl -o- -L https://yarnpkg.com/install.sh | bash
+  # Reload the path.
+  - source ~/.bashrc
   - # Install grunt.
   - yarn global add grunt-cli
   # Install local packages.
