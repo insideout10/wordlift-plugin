@@ -114,7 +114,7 @@ class Wordlift_Api_Service_Test extends Wordlift_Unit_Test_Case {
 
 		return array(
 			'response' => array( 'code' => 200 ),
-			'headers'  => new Requests_Response_Headers( array( 'content-type' => 'application/json' ) ),
+			'headers'  => array( 'content-type' => 'application/json' ),
 			'body'     => '{ "example": "json" }',
 		);
 	}
@@ -136,7 +136,7 @@ class Wordlift_Api_Service_Test extends Wordlift_Unit_Test_Case {
 
 		return array(
 			'response' => array( 'code' => 200 ),
-			'headers'  => new Requests_Response_Headers( array( 'content-type' => 'text/plain' ) ),
+			'headers'  => array( 'content-type' => 'text/plain' ),
 			'body'     => 'lorem ipsum',
 		);
 	}
@@ -158,7 +158,7 @@ class Wordlift_Api_Service_Test extends Wordlift_Unit_Test_Case {
 
 		return array(
 			'response' => array( 'code' => 500 ),
-			'headers'  => new Requests_Response_Headers( array( 'content-type' => 'text/plain' ) ),
+			'headers'  => array( 'content-type' => 'text/plain' ),
 			'body'     => 'lorem ipsum',
 		);
 	}

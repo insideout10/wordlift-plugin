@@ -171,7 +171,7 @@ class Wordlift_Install_Package_Type_Test extends Wordlift_Unit_Test_Case {
 
 		return array(
 			'response' => array( 'code' => 200 ),
-			'headers'  => new Requests_Response_Headers( array( 'content-type' => 'application/json' ) ),
+			'headers'  => array( 'content-type' => 'application/json' ),
 			'body'     => '{ "datasetURI": "' . $dataset_uri . '", "packageType": "mock_package_type" }',
 		);
 	}
