@@ -142,9 +142,15 @@ before_script:
   - nvm use 6
   - node --version
   # Legacy (required by test:js and test:php).
-  - npm install -g grunt-cli
+  # - npm install -g grunt-cli
   # Install Node dependencies.
-  - npm install
+  # - npm install
+  # Install yarn.
+  - curl -o- -L https://yarnpkg.com/install.sh | bash
+  - # Install grunt.
+  - yarn global add grunt-cli
+  # Install local packages.
+  - yarn install
   # Code Climate test coverage.
   - |
     if [[ "$SCRIPT" == "test:php-test-coverage" ]]; then
@@ -155,7 +161,8 @@ before_script:
 
 
 # Finally launch the script.
-script: npm run $SCRIPT
+# script: npm run $SCRIPT
+script: yarn run $SCRIPT
 
 after_script:
   # Stop SauceConnect.
