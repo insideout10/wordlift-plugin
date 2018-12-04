@@ -34,7 +34,6 @@ class Wordlift_Admin_Search_Rankings_Service {
 	 */
 	public function __construct( $api_service ) {
 
-
 		$this->api_service = $api_service;
 	}
 

@@ -474,6 +474,7 @@ class Wordlift_Configuration_Service {
 			$this->log->error( 'An error occurred setting the dataset URI: ' . $response->get_error_message() );
 
 			$this->set_dataset_uri( '' );
+			$this->set_package_type( null );
 
 			return;
 		}

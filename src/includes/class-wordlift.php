@@ -1156,7 +1156,7 @@ class Wordlift {
 		/** Services. */
 		// Create the configuration service.
 		$this->configuration_service = new Wordlift_Configuration_Service();
-		new Wordlift_Api_Service( $this->configuration_service );
+		$api_service                 = new Wordlift_Api_Service( $this->configuration_service );
 
 		// Create an entity type service instance. It'll be later bound to the init action.
 		$this->entity_post_type_service = new Wordlift_Entity_Post_Type_Service( Wordlift_Entity_Service::TYPE_NAME, $this->configuration_service->get_entity_base_path() );
@@ -1360,7 +1360,7 @@ class Wordlift {
 		 * @since 3.20.0
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/search-keywords/class-wordlift-search-keyword-taxonomy.php';
-		new Wordlift_Search_Keyword_Taxonomy();
+		new Wordlift_Search_Keyword_Taxonomy( $api_service );
 
 	}
 

@@ -15,17 +15,46 @@
 class Wordlift_Search_Keyword_Taxonomy {
 
 	/**
-	 * Create a Wordlift_Search_Keyword_Taxonomy instance.
+	 * The taxonomy name.
 	 *
 	 * @since 3.20.0
 	 */
-	public function __construct() {
+	const TAXONOMY_NAME = 'wl_search_keywords';
+
+	/**
+	 * The {@link Wordlift_Api_Service} instance.
+	 *
+	 * @since 3.20.0
+	 * @access private
+	 * @var \Wordlift_Api_Service $api_service The {@link Wordlift_Api_Service} instance.
+	 */
+	private $api_service;
+
+	/**
+	 * Create a Wordlift_Search_Keyword_Taxonomy instance.
+	 *
+	 * @param $api_service Wordlift_Api_Service WordLift's API Service.
+	 *
+	 * @since 3.20.0
+	 */
+	public function __construct( $api_service ) {
+
+		$this->api_service = $api_service;
 
 		// Register the taxonomy.
 		add_action( 'init', array( $this, 'init' ) );
 
 		// Add the menu entry.
 		add_action( 'wl_admin_menu', array( $this, 'admin_menu' ), 30, 2 );
+
+		// Catch new terms.
+		add_action( 'created_' . self::TAXONOMY_NAME, array( $this, 'created' ) );
+
+		// Delete terms.
+		add_action( 'delete_' . self::TAXONOMY_NAME, array( $this, 'delete' ), 10, 3 );
+
+		// Catch requests to list the taxonomy terms.
+		add_filter( 'get_terms_defaults', array( $this, 'get_terms_defaults' ), 10, 2 );
 
 	}
 
@@ -67,7 +96,7 @@ class Wordlift_Search_Keyword_Taxonomy {
 			'public'             => false,
 		);
 
-		register_taxonomy( 'wl_search_keywords', null, $args );
+		register_taxonomy( self::TAXONOMY_NAME, null, $args );
 
 	}
 
@@ -83,6 +112,100 @@ class Wordlift_Search_Keyword_Taxonomy {
 
 		add_submenu_page( $menu_slug, _x( 'Search Keywords', 'taxonomy general name', 'wordlift' ), _x( 'Search Keywords', 'taxonomy general name', 'wordlift' ), $capability, 'edit-tags.php?taxonomy=wl_search_keywords', null );
 
+	}
+
+	/**
+	 * Hook to the created_{taxonomy}.
+	 *
+	 * Synchronize the keywords with the remote keywords.
+	 *
+	 * @param int $term_id Term ID.
+	 *
+	 * @since 3.20.0
+	 */
+	public function created( $term_id ) {
+
+		/** @var WP_Term $term */
+		$term = get_term( $term_id );
+
+		$this->api_service->post( 'keywords', array(
+			'value' => $term->name,
+		) );
+
+	}
+
+	/**
+	 * Delete the term
+	 *
+	 * @since 3.20.0
+	 *
+	 * @param int   $term Term ID.
+	 * @param int   $tt_id Term taxonomy ID.
+	 * @param mixed $deleted_term Copy of the already-deleted term, in the form specified
+	 *                              by the parent function. WP_Error otherwise.
+	 */
+	public function delete( $term, $tt_id, $deleted_term ) {
+
+		$term_name = is_object( $deleted_term ) ? $deleted_term->name : $deleted_term['name'];
+
+		$this->api_service->delete( 'keywords/' . rawurlencode( $term_name ) );
+
+	}
+
+
+	/**
+	 * Refresh all the taxonomy terms.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @param array $defaults An array of default get_terms() arguments.
+	 * @param array $taxonomies An array of taxonomies.
+	 *
+	 * @return array The `$defaults` array, unchanged.
+	 */
+	public function get_terms_defaults( $defaults, $taxonomies ) {
+
+		// Bail out if the request is not about our taxonomy.
+		if ( ! is_array( $taxonomies ) || ! in_array( self::TAXONOMY_NAME, $taxonomies ) ) {
+			return $defaults;
+		}
+
+		// Remove any potential loop.
+		remove_filter( 'get_terms_defaults', array( $this, 'get_terms_defaults' ) );
+		remove_action( 'created_' . self::TAXONOMY_NAME, array( $this, 'created' ) );
+		remove_action( 'delete_' . self::TAXONOMY_NAME, array( $this, 'delete' ) );
+
+		// Save all the keywords.
+		$keywords = $this->api_service->get( 'keywords' );
+		$terms    = get_terms( self::TAXONOMY_NAME, array( 'get' => 'all', ) );
+
+		// Delete terms that do not exist any more.
+		/** @var WP_Term $term */
+		foreach ( $terms as $term ) {
+			if ( ! in_array( $term->name, $keywords ) ) {
+				wp_delete_term( $term->term_id, self::TAXONOMY_NAME );
+			}
+		}
+
+		// Get the term name.
+		$term_names = array_map( function ( $term ) {
+			return $term->name;
+		}, $terms );
+
+		// Insert terms that do not exist.
+		foreach ( $keywords as $keyword ) {
+			if ( ! in_array( $keyword, $term_names ) ) {
+				wp_insert_term( $keyword, self::TAXONOMY_NAME );
+			}
+		}
+
+		// Add us back.
+		add_action( 'delete_' . self::TAXONOMY_NAME, array( $this, 'delete' ), 10, 3 );
+		add_action( 'created_' . self::TAXONOMY_NAME, array( $this, 'created' ) );
+		add_filter( 'get_terms_defaults', array( $this, 'get_terms_defaults' ), 10, 2 );
+
+
+		return $defaults;
 	}
 
 }

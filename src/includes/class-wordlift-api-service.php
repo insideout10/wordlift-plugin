@@ -84,6 +84,51 @@ class Wordlift_Api_Service {
 	}
 
 	/**
+	 * Perform a `POST` request towards the requested path.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @param string       $path The relative path.
+	 * @param array|object $body The request body (will be serialized to JSON).
+	 *
+	 * @return array|WP_Error
+	 */
+	public function post( $path, $body ) {
+
+		// Prepare the target URL.
+		$url = $this->configuration_service->get_api_url() . $path;
+
+		// Get the response value.
+		$response = wp_remote_post( $url, array(
+			'user-agent' => self::get_user_agent(),
+			'headers'    => array(
+				'Content-Type'    => 'application/json; ' . get_bloginfo( 'charset' ),
+				'X-Authorization' => $this->configuration_service->get_key(),
+			),
+			'body'       => json_encode( $body ),
+		) );
+
+		return self::get_message_or_error( $response );
+	}
+
+	public function delete( $path ) {
+
+		// Prepare the target URL.
+		$url = $this->configuration_service->get_api_url() . $path;
+
+		// Get the response value.
+		$response = wp_remote_request( $url, array(
+			'method'     => 'DELETE',
+			'user-agent' => self::get_user_agent(),
+			'headers'    => array(
+				'X-Authorization' => $this->configuration_service->get_key(),
+			),
+		) );
+
+		return self::get_message_or_error( $response );
+	}
+
+	/**
 	 * Return the {@link WP_Error} in case of error or the actual reply if successful.
 	 *
 	 * @since 3.20.0
