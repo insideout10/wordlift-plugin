@@ -31,6 +31,15 @@ class Wordlift_Search_Keyword_Taxonomy {
 	private $api_service;
 
 	/**
+	 * The singleton instance.
+	 *
+	 * @since 3.20.0
+	 * @access private
+	 * @var \Wordlift_Search_Keyword_Taxonomy $instance The singleton instance.
+	 */
+	private static $instance;
+
+	/**
 	 * Create a Wordlift_Search_Keyword_Taxonomy instance.
 	 *
 	 * @param $api_service Wordlift_Api_Service WordLift's API Service.
@@ -56,6 +65,21 @@ class Wordlift_Search_Keyword_Taxonomy {
 		// Catch requests to list the taxonomy terms.
 		add_filter( 'get_terms_defaults', array( $this, 'get_terms_defaults' ), 10, 2 );
 
+		// Set the singleton instance.
+		self::$instance = $this;
+
+	}
+
+	/**
+	 * Get the singleton instance.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @return \Wordlift_Search_Keyword_Taxonomy The singleton instance.
+	 */
+	public static function get_instance() {
+
+		return self::$instance;
 	}
 
 	/**
@@ -177,7 +201,14 @@ class Wordlift_Search_Keyword_Taxonomy {
 
 		// Save all the keywords.
 		$keywords = $this->api_service->get( 'keywords' );
-		$terms    = get_terms( self::TAXONOMY_NAME, array( 'get' => 'all', ) );
+
+		// Bail out if we received an error.
+		if ( is_wp_error( $keywords ) ) {
+			return $defaults;
+		}
+
+		// Get the local terms.
+		$terms = get_terms( self::TAXONOMY_NAME, array( 'get' => 'all', ) );
 
 		// Delete terms that do not exist any more.
 		/** @var WP_Term $term */
