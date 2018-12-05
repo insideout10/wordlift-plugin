@@ -20,8 +20,9 @@ class TreemapAdapter {
 
     fetch(url)
       .then(response => response.json())
+      .then(json => json.data)
       .then(json => {
-        // console.debug(`${url} loaded.`, { json });
+        console.info(`${url} loaded.`, { json });
 
         this.treemap = treemap()
           .size([this.renderStrategy.width, this.renderStrategy.height])
