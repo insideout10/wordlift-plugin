@@ -146,6 +146,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement: [#851](https://github.com/insideout10/wordlift-plugin/issues/851): add a filter to allow 3rd parties to change the TinyMCE editor id via JavaScript.
 * Enhancement: [#850](https://github.com/insideout10/wordlift-plugin/issues/850): allow 3rd parties to change the site URL and post permalink.
 * Enhancement: [#835](https://github.com/insideout10/wordlift-plugin/issues/835): Add the all entity types metabox.
+* Enhancement: [#761](https://github.com/insideout10/wordlift-plugin/issues/761): Search Rankings dashboard page.
 
 = 3.19.5 (2018-10-01) =
 * Enhancement: [#858](https://github.com/insideout10/wordlift-plugin/issues/858): WMT and SDTT complain about wrong `@type` for `location` bound `Place`s.
