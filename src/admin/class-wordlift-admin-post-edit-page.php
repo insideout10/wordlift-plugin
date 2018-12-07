@@ -111,11 +111,18 @@ class Wordlift_Admin_Post_Edit_Page {
 				'jquery',
 				// Require wp.ajax.
 				'wp-util',
-				// Require Angular.
-				'wl-angular',
-				'wl-angular-geolocation',
-				'wl-angular-touch',
-				'wl-angular-animate',
+				/*
+				 * Angular isn't loaded anymore remotely, but it is loaded within wordlift-reloaded.js.
+				 *
+				 * See https://github.com/insideout10/wordlift-plugin/issues/865.
+				 *
+				 * @since 3.19.6
+				 */
+				//				// Require Angular.
+				//				'wl-angular',
+				//				'wl-angular-geolocation',
+				//				'wl-angular-touch',
+				//				'wl-angular-animate',
 			),
 			$this->plugin->get_version(),
 			false
