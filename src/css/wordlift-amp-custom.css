@@ -60,6 +60,7 @@
   position: relative;
   white-space: normal;
   color: #666;
+  cursor: pointer;
 }
 amp-carousel.wl-amp-carousel {
   background: #fff;

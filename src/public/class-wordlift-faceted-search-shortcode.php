@@ -211,9 +211,21 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 		 * amp-list src needs to have items array which amp-list renders within template
 		 * amp-list does not support dynamic resizing. It needs a layout but as of not we have not specified any layout for .wl-facets amp-list
 		 * CSS classes and most styles are kept consistant with web layout
+		 * amp-state currentEntities is an array of to be shown entities
+		 * amp-state allPosts is a remote fetched state of all posts
+		 * amp-state filteredPosts is a filtered version of allPosts using currentEntities
+		 * amp-bind-macro getCurrentEntities is a re-used function within amp
+		 * All JS code in amp has to be done using limited JS expressions `see https://www.ampproject.org/docs/reference/components/amp-bind#expressions` 
 		 */
 		return <<<HTML
 		<div id="{$div_id}" class="wl-amp-fs">
+			<amp-state id="currentEntities">
+				<script type="application/json">
+					[]
+				</script>
+			</amp-state>
+			<amp-state id="allPosts" src="{$wp_json_url_posts}"></amp-state>
+			<amp-bind-macro id="getCurrentEntities" arguments="currentEntity" expression="currentEntities.includes(currentEntity) ? currentEntities.filter(entity => entity != currentEntity) : currentEntities.concat(currentEntity)" />
 			<amp-accordion>
 				<section expanded>
 					<h3 class="wl-headline">{$shortcode_atts['title']}</h3>
@@ -225,7 +237,12 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 								<h5>{{l10n}}</h5>
 								<ul>
 								{{#data}}
-									<li>{{label}}</li>
+									<li on="tap:AMP.setState({
+										currentEntities: getCurrentEntities('{{id}}'),
+										filteredPosts: {
+											values: allPosts.items[0].values.filter( posts => getCurrentEntities('{{id}}').length == 0 ? true : ( getCurrentEntities('{{id}}').some(entity => posts.entities.includes(entity)) ) )
+										}
+									})">{{label}}</li>
 								{{/data}}
 								</ul>
 							</div>	
@@ -238,7 +255,8 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 				width="auto"
 				height="250"
 				layout="fixed-height"
-				src="{$wp_json_url_posts}">
+				src="{$wp_json_url_posts}"
+				[src]="filteredPosts">
 				<template type="amp-mustache">  
 					<amp-carousel 
 						class="wl-amp-carousel"
@@ -246,7 +264,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 						layout="fixed-height"
 						type="carousel">
 					{{#values}}
-						<div class="wl-card">
+						<div class="wl-card">		
 							<amp-img src="{{thumbnail}}"
 								width="4"
 								height="3"
@@ -263,7 +281,8 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 				width="auto"
 				height="300"
 				layout="fixed-height"
-				src="{$wp_json_url_posts}">
+				src="{$wp_json_url_posts}"
+				[src]="filteredPosts">
 				<template type="amp-mustache">  
 					<amp-carousel 
 						class="wl-amp-carousel"

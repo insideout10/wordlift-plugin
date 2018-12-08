@@ -243,7 +243,7 @@ function wl_shortcode_faceted_search_data_wp_json( $http_raw_data = null ) {
 			);
 
 		if ( $filtered_posts ) {
-			foreach ( $filtered_posts as $post_obj ) {
+			foreach ( $filtered_posts as $i => $post_obj ) {
 
 				/**
 				 * Use the thumbnail.
@@ -258,7 +258,12 @@ function wl_shortcode_faceted_search_data_wp_json( $http_raw_data = null ) {
 					$thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
 				$post_obj->permalink = get_post_permalink( $post_obj->ID );
 
-				$results[] = $post_obj;
+				$results[$i] = $post_obj;
+
+				// Get Entity URLs needed for client side filtering in amp
+				foreach( Wordlift_Relation_Service::get_instance()->get_objects( $post_obj->ID, 'ids' ) as $entity_id ){
+					$results[$i]->entities[] = Wordlift_Entity_Service::get_instance()->get_uri( $entity_id );
+				}
 			}
 		}
 
