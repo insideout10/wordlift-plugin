@@ -34,10 +34,10 @@ class EditorService {
     //
     // @see https://github.com/insideout10/wordlift-plugin/issues/850.
     // @see https://github.com/insideout10/wordlift-plugin/issues/851.
-    const editorId = window["wp"].hooks.applyFilters(
+    const editorId = "undefined" !== typeof window["wp"].hooks ? window["wp"].hooks.applyFilters(
       "wl_default_editor_id",
       id
-    );
+    ) : id;
 
     return instances[editorId]
       ? instances[editorId]

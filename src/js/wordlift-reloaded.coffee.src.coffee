@@ -850,7 +850,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
       onReset: '&'
       box: '='
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.19.6'
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.20.0'
 
     link: ($scope, $element, $attrs, $ctrl) ->
 
@@ -973,7 +973,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', [])
     scope:
       entity: '='
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.19.6'
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.20.0'
 ])
 angular.module('wordlift.editpost.widget.services.EditorAdapter', [
   'wordlift.editpost.widget.services.EditorAdapter'
@@ -1851,7 +1851,7 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
     <div
       id="wordlift-edit-post-wrapper"
       ng-controller="EditPostWidgetController"
-      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.19.6'">
+      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.20.0'">
     </div>
   """)
   .appendTo('#wordlift-edit-post-outer-wrapper')
@@ -1873,7 +1873,7 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
   .appendTo('#wordlift_entities_box .ui-sortable-handle')
 
   console.log "bootstrapping WordLift app..."
-  injector = angular.bootstrap document.getElementById('wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']
+  injector = angular.bootstrap $('#wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']
 
   # Update spinner
   injector.invoke(['$rootScope', '$log', ($rootScope, $log) ->
@@ -1895,13 +1895,15 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
   tinymce.PluginManager.add 'wordlift', (editor, url) ->
 
     # Get the editor id from the `wlSettings` or use `content`.
-    defaultEditorId = window['wlSettings']?['default_editor_id']? ? 'content'
+    defaultEditorId = if "undefined" != typeof window['wlSettings']['default_editor_id'] then window['wlSettings']['default_editor_id'] else 'content'
 
     # Allow 3rd parties to change the editor id.
     #
     # @see https://github.com/insideout10/wordlift-plugin/issues/850.
     # @see https://github.com/insideout10/wordlift-plugin/issues/851.
-    editorId = wp?.hooks?.applyFilters( 'wl_default_editor_id', defaultEditorId )
+    editorId = wp?.hooks?.applyFilters( 'wl_default_editor_id', defaultEditorId ) ? defaultEditorId
+
+    console.log "Loading WordLift [ default editor :: #{defaultEditorId} ][ target editor :: #{editorId} ][ this editor :: #{editor.id} ]"
 
     # This plugin has to be loaded only with the main WP "content" editor
     return unless editor.id is editorId
