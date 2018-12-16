@@ -1,26 +1,85 @@
-import PluginIcon from "../../../../src/images/svg/wl-logo-icon.svg";
+import WordLiftIcon from "../../../../src/images/svg/wl-logo-icon.svg";
 
 const { Fragment } = wp.element;
+const { Panel, PanelBody, PanelRow } = wp.components;
 const { PluginSidebar, PluginSidebarMoreMenuItem } = wp.editPost;
 const { registerPlugin } = wp.plugins;
 
-const Component = () => (
+const PLUGIN_NAMESPACE = "wordlift";
+
+const PanelContentClassification = () => (
+    <Panel>
+        <PanelBody
+            title="Content classification"
+            initialOpen={ false }
+        >
+            <PanelRow>
+                Content classification Inputs and Labels
+            </PanelRow>
+        </PanelBody>
+    </Panel>
+);
+
+const PanelArticleMetadata = () => (
+    <Panel>
+        <PanelBody
+            title="Article metadata"
+            initialOpen={ false }
+        >
+            <PanelRow>
+                Article metadata Inputs and Labels
+            </PanelRow>
+        </PanelBody>
+    </Panel>
+);
+
+const PanelSuggestedImages = () => (
+    <Panel>
+        <PanelBody
+            title="Suggested images"
+            initialOpen={ false }
+        >
+            <PanelRow>
+                Suggested images Inputs and Labels
+            </PanelRow>
+        </PanelBody>
+    </Panel>
+);
+
+const PanelRelatedPosts = () => (
+    <Panel>
+        <PanelBody
+            title="Related posts"
+            initialOpen={ false }
+        >
+            <PanelRow>
+                Related posts Inputs and Labels
+            </PanelRow>
+        </PanelBody>
+    </Panel>
+);
+
+const WordLiftSidebar = () => (
     <Fragment>
         <PluginSidebarMoreMenuItem
-            target="wl-plugin-sidebar"
+            target="wordlift-sidebar"
+            icon={ <WordLiftIcon /> }
         >
             WordLift
         </PluginSidebarMoreMenuItem>
         <PluginSidebar
-            name="wl-plugin-sidebar"
+            name="wordlift-sidebar"
             title="WordLift"
         >
-            Content of the WordLift sidebar
+            <PanelContentClassification />
+            <PanelArticleMetadata />
+            <PanelSuggestedImages />
+            <PanelRelatedPosts />
         </PluginSidebar>
     </Fragment>
 );
 
-registerPlugin( 'wl-plugin', {
-    icon: <PluginIcon />,
-    render: Component,
+registerPlugin( PLUGIN_NAMESPACE, {
+    render: WordLiftSidebar,
+    icon: <WordLiftIcon />
 } );
