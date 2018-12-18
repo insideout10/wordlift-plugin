@@ -50,7 +50,7 @@ class Wordlift_Admin_Language_Select_Element_Test extends Wordlift_Unit_Test_Cas
 		$output = ob_get_clean();
 
 		$matches = array();
-		preg_match_all( '/<option /', $output, $matches );
+		preg_match_all( '/<option\s+/', $output, $matches );
 
 		$this->assertCount( count( Wordlift_Languages::get_languages() ), $matches[0] );
 
@@ -73,7 +73,7 @@ class Wordlift_Admin_Language_Select_Element_Test extends Wordlift_Unit_Test_Cas
 		$output = ob_get_clean();
 
 		$matches = array();
-		preg_match_all( '/<option /', $output, $matches );
+		preg_match_all( '/<option\s+/', $output, $matches );
 
 		$this->assertCount( count( Wordlift_Languages::get_languages() ), $matches[0] );
 
@@ -96,7 +96,7 @@ class Wordlift_Admin_Language_Select_Element_Test extends Wordlift_Unit_Test_Cas
 		$output = ob_get_clean();
 
 		$matches = array();
-		preg_match_all( '/<option /', $output, $matches );
+		preg_match_all( '/<option\s+/', $output, $matches );
 
 		$this->assertCount( count( Wordlift_Languages::get_languages() ), $matches[0] );
 

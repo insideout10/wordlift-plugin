@@ -95,7 +95,7 @@ function wl_entities_box_content( $post ) {
 		 * @since 3.20.0
 		 */
 		$post_content = apply_filters( 'wl_post_content', $post->post_content, $post );
-		$entity_uris = Wordlift_Content_Filter_Service::get_instance()->get_entity_uris( $post_content );
+		$entity_uris  = Wordlift_Content_Filter_Service::get_instance()->get_entity_uris( $post_content );
 
 		// Enhance current box selected entities.
 		$classification_boxes[ $i ]['selectedEntities'] = $entity_uris;
@@ -133,7 +133,7 @@ function wl_entities_box_content( $post ) {
 		$entity = wl_serialize_entity( $referenced_entity );
 		// Set a default confidence of `PHP_INT_MAX` for already annotated entities.
 		$referenced_entities_obj[ $entity['id'] ] = $entity
-													+ array( 'confidence' => PHP_INT_MAX );
+		                                            + array( 'confidence' => PHP_INT_MAX );
 	}
 
 	$referenced_entities_obj = empty( $referenced_entities_obj ) ?

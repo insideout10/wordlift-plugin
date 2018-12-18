@@ -1,4 +1,11 @@
 <?php
+/**
+ * Services: User Service.
+ *
+ * @since 3.1.7
+ * @package Wordlift
+ * @subpackage Wordlift/includes
+ */
 
 /**
  * Manage user-related functions. This class receives notifications when a post is created/updated and pushes the author's
@@ -7,6 +14,8 @@
  * only when the user creates/updates a new post).
  *
  * @since 3.1.7
+ * @package Wordlift
+ * @subpackage Wordlift/includes
  */
 class Wordlift_User_Service {
 
@@ -133,7 +142,7 @@ class Wordlift_User_Service {
 	 * @since 3.14.0
 	 *
 	 * @param int $user_id The {@link WP_User}.
-	 * @param int $value   The entity {@link WP_Post} `id`.
+	 * @param int $value The entity {@link WP_Post} `id`.
 	 *
 	 * @return bool|int  Meta ID if the key didn't exist, true on successful update, false on failure.
 	 */
@@ -207,7 +216,7 @@ class Wordlift_User_Service {
 	 *
 	 * @since 3.1.7
 	 *
-	 * @param int    $user_id  The user's id.
+	 * @param int    $user_id The user's id.
 	 * @param string $user_uri The user's uri.
 	 *
 	 * @return int|bool Meta ID if the key didn't exist, true on successful update, false on failure.
@@ -216,76 +225,6 @@ class Wordlift_User_Service {
 
 		return update_user_meta( $user_id, self::URI_META_KEY, $user_uri );
 	}
-
-//	/**
-//	 * Get the delete query.
-//	 *
-//	 * @since 3.1.7
-//	 *
-//	 * @param int $user_id The user id.
-//	 *
-//	 * @return false|string The delete query or false in case of failure.
-//	 */
-//	private function get_delete_query( $user_id ) {
-//
-//		// Get the URI, return if there's none.
-//		if ( false === ( $user_uri = $this->get_uri( $user_id ) ) ) {
-//			return false;
-//		}
-//
-//		// Build the delete query.
-//		$query = Wordlift_Query_Builder::new_instance()->delete()
-//									   ->statement( $user_uri, Wordlift_Query_Builder::RDFS_TYPE_URI, '?o' )
-//									   ->build()
-//				 . Wordlift_Query_Builder::new_instance()->delete()
-//										 ->statement( $user_uri, Wordlift_Query_Builder::RDFS_LABEL_URI, '?o' )
-//										 ->build()
-//				 . Wordlift_Query_Builder::new_instance()->delete()
-//										 ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_GIVEN_NAME_URI, '?o' )
-//										 ->build()
-//				 . Wordlift_Query_Builder::new_instance()->delete()
-//										 ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_FAMILY_NAME_URI, '?o' )
-//										 ->build()
-//				 . Wordlift_Query_Builder::new_instance()->delete()
-//										 ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_URL_URI, '?o' )
-//										 ->build();
-//
-//		return $query;
-//	}
-
-//	/**
-//	 * Get the insert query.
-//	 *
-//	 * @since 3.1.7
-//	 *
-//	 * @param int $user_id The user id.
-//	 *
-//	 * @return false|string The insert query or false in case of failure.
-//	 */
-//	private function get_insert_query( $user_id ) {
-//
-//		// Get the URI, return if there's none.
-//		if ( false === ( $user_uri = $this->get_uri( $user_id ) ) ) {
-//			return false;
-//		}
-//
-//		// Try to get the user data, in case of failure return false.
-//		if ( false === ( $user = get_userdata( $user_id ) ) ) {
-//			return false;
-//		};
-//
-//		// Build the insert query.
-//		$query = Wordlift_Query_Builder::new_instance()
-//									   ->insert()
-//									   ->statement( $user_uri, Wordlift_Query_Builder::RDFS_TYPE_URI, Wordlift_Query_Builder::SCHEMA_PERSON_URI )
-//									   ->statement( $user_uri, Wordlift_Query_Builder::RDFS_LABEL_URI, $user->display_name )
-//									   ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_GIVEN_NAME_URI, $user->user_firstname )
-//									   ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_FAMILY_NAME_URI, $user->user_lastname )
-//									   ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_URL_URI, ( ! empty( $user->user_url ) ? $user->user_url : get_author_posts_url( $user_id ) ) )
-//									   ->build();
-//
-//		return $query;
-//	}
 
 	/**
 	 * Mark an editor user as denied from editing entities.
@@ -388,8 +327,8 @@ class Wordlift_User_Service {
 	 * @since 3.14.0
 	 *
 	 * @param array $allcaps All the capabilities of the user
-	 * @param array $cap     [0] Required capability
-	 * @param array $args    [0] Requested capability
+	 * @param array $cap [0] Required capability
+	 * @param array $args [0] Requested capability
 	 *                       [1] User ID
 	 *                       [2] Associated object ID
 	 *
@@ -439,8 +378,8 @@ class Wordlift_User_Service {
 	 * @since   3.18.0
 	 *
 	 * @param   null   $null
-	 * @param   int    $object_id  The user ID.
-	 * @param   string $meta_key   The meta key name.
+	 * @param   int    $object_id The user ID.
+	 * @param   string $meta_key The meta key name.
 	 * @param   mixed  $meta_value Meta value.
 	 * @param   mixed  $prev_value The previous metadata value.
 	 *
@@ -486,10 +425,10 @@ class Wordlift_User_Service {
 	 * @since   3.18.0
 	 *
 	 * @param   null   $null
-	 * @param   int    $object_id   The user ID.
-	 * @param   string $meta_key    The meta key name.
-	 * @param   mixed  $meta_value  Meta value.
-	 * @param   bool   $delete_all  Whether to delete the matching metadata entries
+	 * @param   int    $object_id The user ID.
+	 * @param   string $meta_key The meta key name.
+	 * @param   mixed  $meta_value Meta value.
+	 * @param   bool   $delete_all Whether to delete the matching metadata entries
 	 *                              for all objects.
 	 *
 	 * @return  null Null if the `meta_key` is not `Wordlift_User_Service::ENTITY_META_KEY`

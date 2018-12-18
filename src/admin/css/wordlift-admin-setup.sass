@@ -30,6 +30,7 @@ body
 
   .radio-wrapper label
     cursor: pointer
+    white-space: nowrap
 
   // Hide the "clear all" cross. See http://stackoverflow.com/questions/14007655/remove-ie10s-clear-field-x-button-on-certain-inputs
   input::-ms-clear
@@ -88,9 +89,9 @@ body
       // Size.
       width: 60px
       height: 16px
-      
-    img.wizard-logo 
-      // Size. 
+
+    img.wizard-logo
+      // Size.
       width: 125px
       height: 47px
       margin-top: -10px
@@ -209,7 +210,6 @@ body
     ul
       // Reset default.
       list-style: none
-      white-space: nowrap
       margin: 0
       padding: 0
       // Positioning childs.
@@ -218,6 +218,7 @@ body
       transition: all 300ms ease-out
       // Ensure the `ul` fills the height, avoiding issues in IE 1x.
       height: 100%
+      white-space: nowrap
 
       li
         // Reset default.
@@ -249,7 +250,7 @@ body
     position: relative
     margin: auto auto 16px
     // Size.
-    // Commented in order to fix a space problem when adding a logo. 
+    // Commented in order to fix a space problem when adding a logo.
     // max-width: 400px
     // Text job.
     font-weight: 200
@@ -268,11 +269,10 @@ body
       // Reset default.
       height: 40px
       width: 150px
-      // Preventing new lines.
-      white-space: nowrap
       // Text job.
       font-size: 14px
       line-height: 40px
+      white-space: nowrap
 
       span
         font-size: 20px
@@ -323,7 +323,7 @@ body
   input[type="text"]#key,
   input[type="text"]#vocabulary,
   input[type="text"]#name
-    // Those classes are added to 
+    // Those classes are added to
     padding-right: 34px
 
     &.invalid, &.valid
@@ -490,3 +490,12 @@ body
       box-shadow: 0 5px 10px -5px rgba(0, 0, 0, .25), 0 15px 20px -15px rgba(0, 0, 0, .25)
     &:active
       transform: scale(0.995) translateY(0px)
+
+.wl-select-notices
+    color: #870c25
+    font-size: 0.9em
+    font-weight: 700
+    margin-top: 10px
+    display: none
+    &.visible
+      display: block
