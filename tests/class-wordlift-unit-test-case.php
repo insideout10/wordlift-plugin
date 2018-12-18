@@ -54,6 +54,15 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 	protected $publisher_id;
 
 	/**
+	 * Hold the existing screen, to switch between `in_admin` and not `in_admin` screens.
+	 *
+	 * @since 3.20.0
+	 * @access private
+	 * @var null|WP_Screen The {@link WP_Screen} before being switched.
+	 */
+	private $screen;
+
+	/**
 	 * {@inheritdoc}
 	 */
 	function setUp() {
@@ -147,6 +156,34 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 		$wp_rewrite->init();
 		$wp_rewrite->set_permalink_structure( $structure );
 		$wp_rewrite->flush_rules();
+	}
+
+	/**
+	 * Change the current screen. Call `restore_current_screen` to restore the previous current screen.
+	 *
+	 * @see WordPress' own WP_Screen tests, file tests/phpunit/tests/admin/includesScreen.php
+	 *
+	 * @since 3.20.0
+	 *
+	 * @param string $hook_name The screen hook name.
+	 */
+	public function set_current_screen( $hook_name ) {
+
+		$this->screen = get_current_screen();
+
+		set_current_screen( $hook_name );
+
+	}
+
+	/**
+	 * Restore the current screen after a `set_current_screen` call.
+	 *
+	 * @since 3.20.0
+	 */
+	public function restore_current_screen() {
+
+		$GLOBALS['current_screen'] = $this->screen;
+
 	}
 
 }

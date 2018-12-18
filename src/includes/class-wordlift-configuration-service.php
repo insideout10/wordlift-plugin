@@ -50,6 +50,13 @@ class Wordlift_Configuration_Service {
 	const LANGUAGE = 'site_language';
 
 	/**
+	 * WordLift's configured country code.
+	 *
+	 * @since 3.18.0
+	 */
+	const COUNTRY_CODE = 'country_code';
+
+	/**
 	 * The publisher entity post ID option name.
 	 *
 	 * @since 3.9.0
@@ -76,6 +83,13 @@ class Wordlift_Configuration_Service {
 	 * @since 3.19.0
 	 */
 	const SEND_DIAGNOSTIC = 'send_diagnostic';
+
+	/**
+	 * The package type configuration key.
+	 *
+	 * @since 3.20.0
+	 */
+	const PACKAGE_TYPE = 'package_type';
 
 	/**
 	 * The {@link Wordlift_Log_Service} instance.
@@ -280,6 +294,30 @@ class Wordlift_Configuration_Service {
 	public function get_diagnostic_preferences() {
 
 		return $this->get( 'wl_general_settings', self::SEND_DIAGNOSTIC, 'no' );
+	}
+
+	/**
+	 * Get WordLift's configured country code, by default 'us'.
+	 *
+	 * @since 3.18.0
+	 *
+	 * @return string WordLift's configured country code ('us' by default).
+	 */
+	public function get_country_code() {
+
+		return $this->get( 'wl_general_settings', self::COUNTRY_CODE, 'us' );
+	}
+
+	/**
+	 * Set WordLift's country code.
+	 *
+	 * @since 3.18.0
+	 *
+	 * @param string $value WordLift's country code.
+	 */
+	public function set_country_code( $value ) {
+
+		$this->set( 'wl_general_settings', self::COUNTRY_CODE, $value );
 
 	}
 
@@ -336,9 +374,38 @@ class Wordlift_Configuration_Service {
 	}
 
 	/**
+	 * Get the package type.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @return string The package type or an empty string if not set.
+	 */
+	public function get_package_type() {
+
+		return $this->get( 'wl_advanced_settings', self::PACKAGE_TYPE, null );
+	}
+
+	/**
+	 * Set the package type.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @param string $value The package type.
+	 */
+	public function set_package_type( $value ) {
+
+		$this->set( 'wl_advanced_settings', self::PACKAGE_TYPE, $value );
+	}
+
+	/**
 	 * Intercept the change of the WordLift key in order to set the dataset URI.
 	 *
+	 *
+	 * @since 3.20.0 as of #761, we save settings every time a key is set, not only when the key changes, so to
+	 *               store the configuration parameters such as country or language.
 	 * @since 3.11.0
+	 *
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/761
 	 *
 	 * @param array $old_value The old settings.
 	 * @param array $new_value The new settings.
@@ -346,14 +413,14 @@ class Wordlift_Configuration_Service {
 	public function update_key( $old_value, $new_value ) {
 
 		// Check the old key value and the new one. We're going to ask for the dataset URI only if the key has changed.
-		$old_key = isset( $old_value['key'] ) ? $old_value['key'] : '';
+		// $old_key = isset( $old_value['key'] ) ? $old_value['key'] : '';
 		$new_key = isset( $new_value['key'] ) ? $new_value['key'] : '';
 
 		// If the key hasn't changed, don't do anything.
 		// WARN The 'update_option' hook is fired only if the new and old value are not equal.
-		if ( $old_key === $new_key ) {
-			return;
-		}
+		//		if ( $old_key === $new_key ) {
+		//			return;
+		//		}
 
 		// If the key is empty, empty the dataset URI.
 		if ( '' === $new_key ) {
@@ -377,7 +444,7 @@ class Wordlift_Configuration_Service {
 	 */
 	public function get_remote_dataset_uri( $key ) {
 
-		$this->log->trace( 'Getting the remote dataset URI...' );
+		$this->log->trace( 'Getting the remote dataset URI and package type...' );
 
 		/**
 		 * Allow 3rd parties to change the site_url.
@@ -393,7 +460,9 @@ class Wordlift_Configuration_Service {
 		// Build the URL.
 		$url = $this->get_accounts()
 		       . '?key=' . rawurlencode( $key )
-		       . '&url=' . rawurlencode( $site_url );
+		       . '&url=' . rawurlencode( $site_url )
+		       . '&country=' . $this->get_country_code()
+		       . '&language=' . $this->get_language_code();
 
 		$args     = wp_parse_args( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
 			'method' => 'PUT',
@@ -405,6 +474,7 @@ class Wordlift_Configuration_Service {
 			$this->log->error( 'An error occurred setting the dataset URI: ' . $response->get_error_message() );
 
 			$this->set_dataset_uri( '' );
+			$this->set_package_type( null );
 
 			return;
 		}
@@ -414,16 +484,24 @@ class Wordlift_Configuration_Service {
 			$this->log->error( "Unexpected status code when opening URL $url: " . $response['response']['code'] );
 
 			$this->set_dataset_uri( '' );
+			$this->set_package_type( null );
 
 			return;
 		}
 
-		$json        = json_decode( $response['body'] );
-		$dataset_uri = $json->datasetURI;
+		/*
+		 * We also store the package type.
+		 *
+		 * @since 3.20.0
+		 */
+		$json         = json_decode( $response['body'] );
+		$dataset_uri  = $json->datasetURI;
+		$package_type = isset( $json->packageType ) ? $json->packageType : null;
 
-		$this->log->info( "Setting the dataset URI to $dataset_uri..." );
+		$this->log->info( "Updating [ dataset uri :: $dataset_uri ][ package type :: $package_type ]..." );
 
 		$this->set_dataset_uri( $dataset_uri );
+		$this->set_package_type( $package_type );
 
 	}
 
@@ -548,6 +626,18 @@ class Wordlift_Configuration_Service {
 
 		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . 'feedbacks';
 
+	}
+
+	/**
+	 * Get the base API URL.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @return string The base API URL.
+	 */
+	public function get_api_url() {
+
+		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE;
 	}
 
 }

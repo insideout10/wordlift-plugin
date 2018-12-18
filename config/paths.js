@@ -60,10 +60,13 @@ module.exports = {
   appAdminSettingsScreen: resolveApp(
     "src-js/screens/Admin/screens/Settings/index.js"
   ),
-  appAdminKeywordsScreen: resolveApp(
-    "src-js/screens/Admin/screens/Keywords/index.js"
+  appAdminSearchRankingsScreen: resolveApp(
+    "src-js/screens/Admin/screens/SearchRankings/index.js"
   ),
   appAdminAuthorSelectComponent: resolveApp(
     "src-js/screens/Admin/components/AuthorSelect/index.js"
+  ),
+  appAdminSetupScreen: resolveApp(
+    "src-js/screens/Admin/screens/Setup/index.js"
   )
 };

@@ -1,9 +1,18 @@
 <?php
+/**
+ * Services: Entity Service.
+ *
+ * @since 3.1.0
+ * @package Wordlift
+ * @subpackage Wordlift/includes
+ */
 
 /**
  * Provide entity-related services.
  *
  * @since 3.1.0
+ * @package Wordlift
+ * @subpackage Wordlift/includes
  */
 class Wordlift_Entity_Service {
 

@@ -15,7 +15,7 @@
  * Plugin Name:       WordLift
  * Plugin URI:        https://wordlift.io
  * Description:       WordLift brings the power of AI to organize content, attract new readers and get their attention. To activate the plugin <a href="https://wordlift.io/">visit our website</a>.
- * Version:           3.20.0-dev4
+ * Version:           3.20.0-rc1
  * Author:            WordLift, Insideout10
  * Author URI:        https://wordlift.io
  * License:           GPL-2.0+
@@ -104,19 +104,26 @@ function wordlift_admin_enqueue_scripts() {
 
 	wp_enqueue_script( 'jquery-ui-autocomplete' );
 
-	$log = Wordlift_Log_Service::get_logger( 'wordlift_admin_enqueue_scripts' );
-	$log->trace( 'Registering admin scripts...' );
-
-	// We now register angular scripts and have dependent scripts (currently
-	// only the edit post page) depend on them, to avoid potential conflicts.
-	//
-	// See https://github.com/insideout10/wordlift-plugin/issues/691.
-	$result = wp_register_script( 'wl-angular', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular.min.js' )
-	          && wp_register_script( 'wl-angular-geolocation', plugin_dir_url( __FILE__ ) . 'bower_components/angularjs-geolocation/dist/angularjs-geolocation.min.js' )
-	          && wp_register_script( 'wl-angular-touch', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular-touch.min.js' )
-	          && wp_register_script( 'wl-angular-animate', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular-animate.min.js' );
-
-	$log->debug( 'Registering angular scripts was ' . ( $result ? 'successful.' : 'unsuccessful.' ) );
+	/*
+	 * Angular isn't loaded anymore separately, it is embedded in wordlift-reloaded.js.
+	 *
+	 * See https://github.com/insideout10/wordlift-plugin/issues/865.
+	 *
+	 * @since 3.19.6
+	 */
+//	$log = Wordlift_Log_Service::get_logger( 'wordlift_admin_enqueue_scripts' );
+//	$log->trace( 'Registering admin scripts...' );
+//
+//	// We now register angular scripts and have dependent scripts (currently
+//	// only the edit post page) depend on them, to avoid potential conflicts.
+//	//
+//	// See https://github.com/insideout10/wordlift-plugin/issues/691.
+//	$result = wp_register_script( 'wl-angular', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular.min.js' )
+//	          && wp_register_script( 'wl-angular-geolocation', plugin_dir_url( __FILE__ ) . 'bower_components/angularjs-geolocation/dist/angularjs-geolocation.min.js' )
+//	          && wp_register_script( 'wl-angular-touch', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular-touch.min.js' )
+//	          && wp_register_script( 'wl-angular-animate', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular-animate.min.js' );
+//
+//	$log->debug( 'Registering angular scripts was ' . ( $result ? 'successful.' : 'unsuccessful.' ) );
 
 	// Disable auto-save for custom entity posts only
 	if ( Wordlift_Entity_Service::TYPE_NAME === get_post_type() ) {

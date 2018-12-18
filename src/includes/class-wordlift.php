@@ -465,6 +465,15 @@ class Wordlift {
 	protected $language_select_element;
 
 	/**
+	 * The {@link Wordlift_Admin_Country_Select_Element} element renderer.
+	 *
+	 * @since  3.18.0
+	 * @access protected
+	 * @var \Wordlift_Admin_Country_Select_Element $country_select_element The {@link Wordlift_Admin_Country_Select_Element} element renderer.
+	 */
+	protected $country_select_element;
+
+	/**
 	 * The {@link Wordlift_Admin_Publisher_Element} element renderer.
 	 *
 	 * @since  3.11.0
@@ -698,6 +707,7 @@ class Wordlift {
 	 * @var Wordlift $instance {@link Wordlift}'s singleton instance.
 	 */
 	private static $instance;
+
 	//</editor-fold>
 
 	/**
@@ -712,7 +722,7 @@ class Wordlift {
 	public function __construct() {
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.20.0-dev4';
+		$this->version     = '3.20.0-rc1';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -776,6 +786,11 @@ class Wordlift {
 		 * WordLift's supported languages.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-languages.php';
+
+		/**
+		 * WordLift's supported countries.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-countries.php';
 
 		/**
 		 * Provide support functions to sanitize data.
@@ -950,6 +965,7 @@ class Wordlift {
 
 		/** Services. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-google-analytics-export-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-api-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-service.php';
 
 		/** Adapters. */
@@ -966,6 +982,8 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-batch-analysis-request-async-task.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-batch-analysis-complete-async-task.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-push-references-async-task.php';
+
+		/** Autocomplete. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-autocomplete-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-autocomplete-adapter.php';
 
@@ -1024,14 +1042,16 @@ class Wordlift {
 		/**
 		 * The admin 'WordLift Settings' page.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/intf-wordlift-admin-element.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-input-element.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-input-radio-element.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-select2-element.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-language-select-element.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-tabs-element.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-author-element.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-publisher-element.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/intf-wordlift-admin-element.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/class-wordlift-admin-input-element.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/class-wordlift-admin-input-radio-element.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/class-wordlift-admin-select-element.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/class-wordlift-admin-select2-element.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/class-wordlift-admin-language-select-element.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/class-wordlift-admin-country-select-element.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/class-wordlift-admin-tabs-element.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/class-wordlift-admin-author-element.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/class-wordlift-admin-publisher-element.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-batch-analysis-page.php';
@@ -1041,6 +1061,7 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-post-edit-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-user-profile-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-status-page.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-search-rankings-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-entity-type-admin-service.php';
 
 		/**
@@ -1140,6 +1161,7 @@ class Wordlift {
 		/** Services. */
 		// Create the configuration service.
 		$this->configuration_service = new Wordlift_Configuration_Service();
+		$api_service                 = new Wordlift_Api_Service( $this->configuration_service );
 
 		// Create an entity type service instance. It'll be later bound to the init action.
 		$this->entity_post_type_service = new Wordlift_Entity_Post_Type_Service( Wordlift_Entity_Service::TYPE_NAME, $this->configuration_service->get_entity_base_path() );
@@ -1291,11 +1313,12 @@ class Wordlift {
 		$this->radio_input_element     = new Wordlift_Admin_Radio_Input_Element();
 		$this->select2_element         = new Wordlift_Admin_Select2_Element();
 		$this->language_select_element = new Wordlift_Admin_Language_Select_Element();
+		$this->country_select_element  = new Wordlift_Admin_Country_Select_Element();
 		$tabs_element                  = new Wordlift_Admin_Tabs_Element();
 		$this->publisher_element       = new Wordlift_Admin_Publisher_Element( $this->configuration_service, $this->publisher_service, $tabs_element, $this->select2_element );
 		$this->author_element          = new Wordlift_Admin_Author_Element( $this->publisher_service, $this->select2_element );
 
-		$this->settings_page             = new Wordlift_Admin_Settings_Page( $this->configuration_service, $this->entity_service, $this->input_element, $this->language_select_element, $this->publisher_element, $this->radio_input_element );
+		$this->settings_page             = new Wordlift_Admin_Settings_Page( $this->configuration_service, $this->entity_service, $this->input_element, $this->language_select_element, $this->country_select_element, $this->publisher_element, $this->radio_input_element );
 		$this->batch_analysis_page       = new Wordlift_Batch_Analysis_Page( $this->batch_analysis_service );
 		$this->settings_page_action_link = new Wordlift_Admin_Settings_Page_Action_Link( $this->settings_page );
 
@@ -1306,7 +1329,7 @@ class Wordlift {
 		// create an instance of the entity type list admin page controller.
 		$this->entity_type_admin_page = new Wordlift_Admin_Entity_Taxonomy_List_Page();
 
-		// create an instance of the entity type etting admin page controller.
+		// create an instance of the entity type setting admin page controller.
 		$this->entity_type_settings_admin_page = new Wordlift_Admin_Entity_Type_Settings();
 
 		/** Widgets */
@@ -1317,7 +1340,7 @@ class Wordlift {
 		$this->status_page             = new Wordlift_Admin_Status_Page( $this->entity_service, $this->sparql_service );
 
 		// Create an instance of the install wizard.
-		$this->admin_setup = new Wordlift_Admin_Setup( $this->configuration_service, $this->key_validation_service, $this->entity_service );
+		$this->admin_setup = new Wordlift_Admin_Setup( $this->configuration_service, $this->key_validation_service, $this->entity_service, $this->language_select_element, $this->country_select_element );
 
 		$this->category_taxonomy_service = new Wordlift_Category_Taxonomy_Service( $this->entity_post_type_service );
 
@@ -1334,6 +1357,17 @@ class Wordlift {
 
 		// Remote Image Service.
 		new Wordlift_Remote_Image_Service();
+
+		/*
+		 * Add the Search Keywords taxonomy to manage the Search Keywords on WLS.
+		 *
+		 * @link https://github.com/insideout10/wordlift-plugin/issues/761
+		 *
+		 * @since 3.20.0
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/search-keywords/class-wordlift-search-keyword-taxonomy.php';
+		new Wordlift_Search_Keyword_Taxonomy( $api_service );
+
 	}
 
 	/**
@@ -1458,6 +1492,9 @@ class Wordlift {
 		// Hook the AJAX wl_validate_key action to the Key Validation service.
 		$this->loader->add_action( 'wp_ajax_wl_validate_key', $this->key_validation_service, 'validate_key' );
 
+		// Hook the AJAX wl_update_country_options action to the countries.
+		$this->loader->add_action( 'wp_ajax_wl_update_country_options', $this->country_select_element, 'get_options_html' );
+
 		// Hook the `admin_init` function to the Admin Setup.
 		$this->loader->add_action( 'admin_init', $this->admin_setup, 'admin_init' );
 
@@ -1471,6 +1508,18 @@ class Wordlift {
 		if ( defined( 'WORDLIFT_BATCH' ) && WORDLIFT_BATCH ) {
 			// Add the functionality only if a flag is set in wp-config.php .
 			$this->loader->add_action( 'wl_admin_menu', $this->batch_analysis_page, 'admin_menu', 10, 2 );
+		}
+
+		/*
+		 * Display the `Wordlift_Admin_Search_Rankings_Page` page.
+		 *
+		 * @link https://github.com/insideout10/wordlift-plugin/issues/761
+		 *
+		 * @since 3.20.0
+		 */
+		if ( in_array( $this->configuration_service->get_package_type(), array( 'editorial', 'business' ) ) ) {
+			$admin_search_rankings_page = new Wordlift_Admin_Search_Rankings_Page();
+			$this->loader->add_action( 'wl_admin_menu', $admin_search_rankings_page, 'admin_menu' );
 		}
 
 		// Hook key update.

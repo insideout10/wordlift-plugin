@@ -98,7 +98,7 @@ class Wordlift_Schema_Location_Property_Service extends Wordlift_Property_Servic
 	public function get( $post_id ) {
 
 		// Get the schema:url values set in WP.
-		$values = get_post_meta( $post_id, self::META_KEY, FALSE );
+		$values = get_post_meta( $post_id, self::META_KEY, false );
 
 		// Finally return whatever values the editor set.
 		return $values;
@@ -113,36 +113,5 @@ class Wordlift_Schema_Location_Property_Service extends Wordlift_Property_Servic
 
 		return $value;
 	}
-
-//	/**
-//	 * Generate an insert query that inserts the schema:url values for the specified
-//	 * post.
-//	 *
-//	 * @since 3.7.0
-//	 *
-//	 * @param string $s The subject URI.
-//	 * @param int $post_id The post id.
-//	 *
-//	 * @return string The insert query or an empty string.
-//	 */
-//	public function get_insert_query( $s, $post_id ) {
-//
-//		// If we have no value, return an empty string (no query).
-//		if ( NULL === ( $values = $this->get( $post_id ) ) ) {
-//			return '';
-//		}
-//
-//		// Create the insert query.
-//		$q = Wordlift_Query_Builder::new_instance()->insert();
-//
-//		// Add each schema:url, replacing <permalink> with the actual post permalink.
-//		// TODO
-//		foreach ( $values as $value ) {
-//			$q = $q->statement( $s, $this->get_rdf_predicate(), $value, Wordlift_Query_Builder::OBJECT_URI );
-//		}
-//
-//		// Build and return the query.
-//		return $q->build();
-//	}
 
 }

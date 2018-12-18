@@ -18,7 +18,6 @@ import React from "react";
  */
 import Wrapper from "./Wrapper";
 import Main from "./Main";
-import Count from "./Count";
 import Label from "./Label";
 import MainType from "./MainType";
 import Cloud from "./Cloud";
