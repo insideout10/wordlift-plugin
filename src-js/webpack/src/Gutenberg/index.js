@@ -4,10 +4,29 @@ const { Fragment } = wp.element;
 const { Panel, PanelBody, PanelRow } = wp.components;
 const { PluginSidebar, PluginSidebarMoreMenuItem } = wp.editPost;
 const { registerPlugin } = wp.plugins;
+const { select } = wp.data;
 
 const PLUGIN_NAMESPACE = "wordlift";
 
-const PanelContentClassification = () => (
+const PanelContentClassification = () => {
+    // Temperory code to check functional AJAX call to 
+    // admin-ajax.php?action=wordlift_analyze
+    var JSONData = {
+        content: select( "core/editor" ).getCurrentPost().content,
+        contentLanguage: 'en',
+        contentType: 'text/html',
+        scope: 'all',
+        version: '1.0.0'
+    }
+    wp.apiFetch({ 
+        url: '/wp-admin/admin-ajax.php?action=wordlift_analyze',
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(JSONData)
+    }).then(console.log);
+    return(
     <Panel>
         <PanelBody
             title="Content classification"
@@ -18,7 +37,7 @@ const PanelContentClassification = () => (
             </PanelRow>
         </PanelBody>
     </Panel>
-);
+)};
 
 const PanelArticleMetadata = () => (
     <Panel>
