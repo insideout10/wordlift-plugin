@@ -1,4 +1,9 @@
+/*
+ * Internal dependencies.
+ */
+import store from "./store"
 import WordLiftIcon from "../../../../src/images/svg/wl-logo-icon.svg";
+import { ClassificationBox, ReceiveAnalysisResultsEvent } from "./index.classification-box";
 
 const { Fragment } = wp.element;
 const { Panel, PanelBody, PanelRow } = wp.components;
@@ -18,14 +23,16 @@ const PanelContentClassification = () => {
         scope: 'all',
         version: '1.0.0'
     }
-    wp.apiFetch({ 
-        url: '/wp-admin/admin-ajax.php?action=wordlift_analyze',
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(JSONData)
-    }).then(console.log);
+    // console.log(JSONData);
+    // wp.apiFetch({ 
+    //     url: '/wp-admin/admin-ajax.php?action=wordlift_analyze',
+    //     method: 'POST',
+    //     headers: {
+    //         "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(JSONData)
+    // }).then(console.log);
+    store.dispatch(ReceiveAnalysisResultsEvent(JSONData));
     return(
     <Panel>
         <PanelBody
@@ -33,7 +40,7 @@ const PanelContentClassification = () => {
             initialOpen={ false }
         >
             <PanelRow>
-                Content classification Inputs and Labels
+                <ClassificationBox />
             </PanelRow>
         </PanelBody>
     </Panel>
