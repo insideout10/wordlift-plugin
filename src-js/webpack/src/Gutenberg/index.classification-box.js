@@ -12,6 +12,8 @@ import Provider from "react-redux/es/components/Provider";
  * Internal dependencies.
  */
 import store from "./store"
+import Wrapper from "../Edit/components/App/Wrapper"
+import Header from "../Edit/components/Header"
 import VisibleEntityList from "../Edit/containers/VisibleEntityList"
 import { receiveAnalysisResults } from "../Edit/actions"
 
@@ -19,7 +21,10 @@ const { select } = wp.data;
 
 const ClassificationBox = () => (
   <Provider store={store}>
-    <VisibleEntityList />
+    <Wrapper>
+      <Header />
+      <VisibleEntityList />
+    </Wrapper>
   </Provider>
 )
 

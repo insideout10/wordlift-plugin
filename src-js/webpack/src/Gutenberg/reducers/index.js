@@ -15,6 +15,8 @@ import { combineReducers } from "redux";
  * Internal dependencies
  */
 import entities from "./entities";
+import annotationFilter from "../../Edit/reducers/annotationFilter";
+import visibilityFilter from "../../Edit/reducers/visibilityFilter";
 
 /**
  * Define the root reducer.
@@ -23,7 +25,9 @@ import entities from "./entities";
  * @type {Reducer<S>}
  */
 const rootReducer = combineReducers({
-  entities
+  entities,
+  annotationFilter,
+  visibilityFilter
 });
 
 // Finally export the root reducer.
