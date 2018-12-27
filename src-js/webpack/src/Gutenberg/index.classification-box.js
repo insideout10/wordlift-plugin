@@ -26,6 +26,22 @@ const ClassificationBox = () => (
   </Provider>
 )
 
+const ModifyResponse = (response) => {
+
+  for (var entity in response.entities) {
+    response.entities[entity].id = response.entities[entity].entityId;
+    response.entities[entity].annotations = {};
+  }
+
+  for (var annotation in response.annotations) {
+    response.annotations[annotation].entityMatches.forEach(entity => {
+      response.entities[entity.entityId].annotations[annotation] = response.annotations[annotation];
+    });
+  }
+
+  return response;
+}
+
 const ReceiveAnalysisResultsEvent = (JSONData) => {
   return function (dispatch) {
     // Asynchronously call the dispatch. We need this because we
@@ -38,8 +54,8 @@ const ReceiveAnalysisResultsEvent = (JSONData) => {
       },
       body: JSON.stringify(JSONData)
     }).then(function(response){
-      // TODO Modification of response 
-      dispatch(receiveAnalysisResults(response));
+      let modifiedResponse = ModifyResponse(response);
+      dispatch(receiveAnalysisResults(modifiedResponse));
     });
   }
 }
