@@ -17,6 +17,7 @@ import { combineReducers } from "redux";
 import entities from "./entities";
 import annotationFilter from "../../Edit/reducers/annotationFilter";
 import visibilityFilter from "../../Edit/reducers/visibilityFilter";
+import editor from "../../Edit/reducers/editor";
 
 /**
  * Define the root reducer.
@@ -27,7 +28,8 @@ import visibilityFilter from "../../Edit/reducers/visibilityFilter";
 const rootReducer = combineReducers({
   entities,
   annotationFilter,
-  visibilityFilter
+  visibilityFilter,
+  editor
 });
 
 // Finally export the root reducer.
