@@ -14,8 +14,6 @@ const { select } = wp.data;
 const PLUGIN_NAMESPACE = "wordlift";
 
 const PanelContentClassification = () => {
-    // Temperory code to check functional AJAX call to 
-    // admin-ajax.php?action=wordlift_analyze
     var JSONData = {
         content: select( "core/editor" ).getCurrentPost().content,
         contentLanguage: 'en',
@@ -23,15 +21,6 @@ const PanelContentClassification = () => {
         scope: 'all',
         version: '1.0.0'
     }
-    // console.log(JSONData);
-    // wp.apiFetch({ 
-    //     url: '/wp-admin/admin-ajax.php?action=wordlift_analyze',
-    //     method: 'POST',
-    //     headers: {
-    //         "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(JSONData)
-    // }).then(console.log);
     store.dispatch(ReceiveAnalysisResultsEvent(JSONData));
     return(
     <Panel>

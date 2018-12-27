@@ -17,8 +17,6 @@ import Header from "../Edit/components/Header"
 import VisibleEntityList from "../Edit/containers/VisibleEntityList"
 import { receiveAnalysisResults } from "../Edit/actions"
 
-const { select } = wp.data;
-
 const ClassificationBox = () => (
   <Provider store={store}>
     <Wrapper>
@@ -32,17 +30,17 @@ const ReceiveAnalysisResultsEvent = (JSONData) => {
   return function (dispatch) {
     // Asynchronously call the dispatch. We need this because we
     // might be inside a reducer call.
-      return wp.apiFetch({ 
-        url: '/wp-admin/admin-ajax.php?action=wordlift_analyze',
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(JSONData)
-      }).then(function(response){
-        console.log(response);
-        dispatch(receiveAnalysisResults(response));
-      });
+    return wp.apiFetch({ 
+      url: '/wp-admin/admin-ajax.php?action=wordlift_analyze',
+      method: 'POST',
+      headers: {
+          "Content-Type": "application/json",
+      },
+      body: JSON.stringify(JSONData)
+    }).then(function(response){
+      // TODO Modification of response 
+      dispatch(receiveAnalysisResults(response));
+    });
   }
 }
 
