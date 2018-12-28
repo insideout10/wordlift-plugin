@@ -130,7 +130,14 @@ class Wordlift_Admin_Post_Edit_Page {
 		wp_enqueue_script(
 			'wordlift-admin-edit-gutenberg',
 			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/gutenberg.js',
-			array( 'wp-i18n', 'wp-edit-post', 'wp-element', 'wp-editor', 'wp-components', 'wp-data', 'wp-plugins', 'wp-edit-post', 'wp-api' )
+			array( 
+				'wp-element', 
+				'wp-components', 
+				'wp-edit-post',
+				'wp-plugins', 
+				'wp-data',
+				'wp-annotations' 
+			)
 		);
 		wp_enqueue_style( 'wordlift-admin-edit-page', "$script_name.css", array(), $this->plugin->get_version() );
 

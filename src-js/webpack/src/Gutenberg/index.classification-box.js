@@ -17,6 +17,10 @@ import Header from "../Edit/components/Header"
 import VisibleEntityList from "../Edit/containers/VisibleEntityList"
 import { receiveAnalysisResults } from "../Edit/actions"
 
+const { dispatch } = wp.data;
+
+const PLUGIN_NAMESPACE = "wordlift";
+
 const ClassificationBox = () => (
   <Provider store={store}>
     <Wrapper>
@@ -42,6 +46,24 @@ const ModifyResponse = (response) => {
   return response;
 }
 
+const AnnonateContent = (response) => {
+
+  // Todo: jQuery(wp.data.select( 'core/editor' ).getBlocksForSerialization()[0].originalContent).text()
+
+  for (var annotation in response.annotations) {
+    dispatch( 'core/annotations' ).__experimentalAddAnnotation( {
+      source: PLUGIN_NAMESPACE,
+      blockClientId: wp.data.select( 'core/editor' ).getBlockOrder()[0],
+      richTextIdentifier: "content",
+      range: {
+          start: response.annotations[annotation].start - 1,
+          end: response.annotations[annotation].end - 1,
+      },
+    } );
+  }
+
+}
+
 const ReceiveAnalysisResultsEvent = (JSONData) => {
   return function (dispatch) {
     // Asynchronously call the dispatch. We need this because we
@@ -55,6 +77,7 @@ const ReceiveAnalysisResultsEvent = (JSONData) => {
       body: JSON.stringify(JSONData)
     }).then(function(response){
       let modifiedResponse = ModifyResponse(response);
+      AnnonateContent(modifiedResponse);
       dispatch(receiveAnalysisResults(modifiedResponse));
     });
   }
