@@ -17,7 +17,7 @@ import Header from "../Edit/components/Header"
 import VisibleEntityList from "../Edit/containers/VisibleEntityList"
 import { receiveAnalysisResults } from "../Edit/actions"
 
-const { dispatch } = wp.data;
+const { select, dispatch } = wp.data;
 
 const PLUGIN_NAMESPACE = "wordlift";
 
@@ -46,20 +46,72 @@ const ModifyResponse = (response) => {
   return response;
 }
 
+const getContentLength = (blockForSerialization) => {
+
+  if (blockForSerialization.name === 'core/paragraph'){
+    return jQuery(blockForSerialization.originalContent.trim().replace(/(\r\n\t|\n|\r\t)/gm, "")).text().length;
+  } else {
+    return blockForSerialization.originalContent.trim().replace(/(\r\n\t|\n|\r\t)/gm, "").length;
+  }
+
+}
+
+const getOffset = (blockOffset, start) => {
+
+  for(var i = blockOffset.length - 1; i > 0; i--){
+    if( i === blockOffset.length - 1 && start >= blockOffset[i].offset ) {
+      return {
+        index: i,
+        offset: blockOffset[i - 1].offset
+      }
+    }
+    if( start < blockOffset[i].offset && start >= blockOffset[i - 1].offset) {
+      return {
+        index: i - 1,
+        offset: blockOffset[i - 1].offset
+      }
+    }
+
+  }
+
+}
+
 const AnnonateContent = (response) => {
 
-  // Todo: jQuery(wp.data.select( 'core/editor' ).getBlocksForSerialization()[0].originalContent).text()
+  let blockCount = select( 'core/editor' ).getBlockCount();
+  let blockOffset = [];
+
+  for(var i = 0; i < blockCount; i++){
+    let blockContentLen = getContentLength(wp.data.select( 'core/editor' ).getBlocksForSerialization()[i]);
+    let offset = 0;
+    if(i > 0){
+      offset = blockOffset[i - 1].offset + blockOffset[i - 1].length;
+    }
+    blockOffset[i] = {
+      length: blockContentLen,
+      offset: offset
+    }
+  }
 
   for (var annotation in response.annotations) {
-    dispatch( 'core/annotations' ).__experimentalAddAnnotation( {
+
+    let start = response.annotations[annotation].start;
+    let end = response.annotations[annotation].end;
+
+    let toDispatch = {
       source: PLUGIN_NAMESPACE,
-      blockClientId: wp.data.select( 'core/editor' ).getBlockOrder()[0],
       richTextIdentifier: "content",
-      range: {
-          start: response.annotations[annotation].start - 1,
-          end: response.annotations[annotation].end - 1,
-      },
-    } );
+    }
+
+    let offset = getOffset(blockOffset, start);
+    
+    toDispatch.blockClientId = wp.data.select( 'core/editor' ).getBlockOrder()[offset.index];
+    toDispatch.range = {
+      start: start - offset.offset,
+      end: end - offset.offset,
+    }
+
+    dispatch( 'core/annotations' ).__experimentalAddAnnotation(toDispatch);
   }
 
 }

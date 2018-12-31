@@ -15,7 +15,7 @@ const PLUGIN_NAMESPACE = "wordlift";
 
 const PanelContentClassification = () => {
     var JSONData = {
-        content: select( "core/editor" ).getCurrentPost().content,
+        content: select( "core/editor" ).getCurrentPost().content.trim().replace(/(\r\n\t|\n|\r\t)/gm, ""),
         contentLanguage: 'en',
         contentType: 'text/html',
         scope: 'all',
