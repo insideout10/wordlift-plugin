@@ -15,11 +15,15 @@ const PLUGIN_NAMESPACE = "wordlift";
 
 const PanelContentClassification = () => {
     var JSONData = {
-        content: select( "core/editor" ).getCurrentPost().content.trim().replace(/(\r\n\t|\n|\r\t)/gm, ""),
         contentLanguage: 'en',
         contentType: 'text/html',
         scope: 'all',
         version: '1.0.0'
+    }
+    let blockCount = select( 'core/editor' ).getBlockCount();
+    for(var i = 0; i < blockCount; i++){
+        JSONData.content = wp.data.select( 'core/editor' ).getBlocksForSerialization()[i].originalContent;
+        store.dispatch(ReceiveAnalysisResultsEvent(JSONData, i));
     }
     store.dispatch(ReceiveAnalysisResultsEvent(JSONData));
     return(

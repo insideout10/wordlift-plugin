@@ -46,77 +46,24 @@ const ModifyResponse = (response) => {
   return response;
 }
 
-const getContentLength = (blockForSerialization) => {
-
-  if (blockForSerialization.name === 'core/paragraph'){
-    return jQuery(blockForSerialization.originalContent.trim().replace(/(\r\n\t|\n|\r\t)/gm, "")).text().length;
-  } else {
-    return blockForSerialization.originalContent.trim().replace(/(\r\n\t|\n|\r\t)/gm, "").length;
-  }
-
-}
-
-const getOffset = (blockOffset, start) => {
-
-  for(var i = blockOffset.length - 1; i > 0; i--){
-    if( i === blockOffset.length - 1 && start >= blockOffset[i].offset ) {
-      return {
-        index: i,
-        offset: blockOffset[i - 1].offset
-      }
-    }
-    if( start < blockOffset[i].offset && start >= blockOffset[i - 1].offset) {
-      return {
-        index: i - 1,
-        offset: blockOffset[i - 1].offset
-      }
-    }
-
-  }
-
-}
-
-const AnnonateContent = (response) => {
-
-  let blockCount = select( 'core/editor' ).getBlockCount();
-  let blockOffset = [];
-
-  for(var i = 0; i < blockCount; i++){
-    let blockContentLen = getContentLength(wp.data.select( 'core/editor' ).getBlocksForSerialization()[i]);
-    let offset = 0;
-    if(i > 0){
-      offset = blockOffset[i - 1].offset + blockOffset[i - 1].length;
-    }
-    blockOffset[i] = {
-      length: blockContentLen,
-      offset: offset
-    }
-  }
+const AnnonateContent = (response, blockIndex) => {
 
   for (var annotation in response.annotations) {
 
-    let start = response.annotations[annotation].start;
-    let end = response.annotations[annotation].end;
-
-    let toDispatch = {
+    dispatch( 'core/annotations' ).__experimentalAddAnnotation({
       source: PLUGIN_NAMESPACE,
       richTextIdentifier: "content",
-    }
-
-    let offset = getOffset(blockOffset, start);
-    
-    toDispatch.blockClientId = wp.data.select( 'core/editor' ).getBlockOrder()[offset.index];
-    toDispatch.range = {
-      start: start - offset.offset,
-      end: end - offset.offset,
-    }
-
-    dispatch( 'core/annotations' ).__experimentalAddAnnotation(toDispatch);
+      blockClientId: wp.data.select( 'core/editor' ).getBlockOrder()[blockIndex],
+      range: {
+        start: response.annotations[annotation].start,
+        end: response.annotations[annotation].end,
+      }
+    });
   }
 
 }
 
-const ReceiveAnalysisResultsEvent = (JSONData) => {
+const ReceiveAnalysisResultsEvent = (JSONData, blockIndex) => {
   return function (dispatch) {
     // Asynchronously call the dispatch. We need this because we
     // might be inside a reducer call.
@@ -129,7 +76,7 @@ const ReceiveAnalysisResultsEvent = (JSONData) => {
       body: JSON.stringify(JSONData)
     }).then(function(response){
       let modifiedResponse = ModifyResponse(response);
-      AnnonateContent(modifiedResponse);
+      AnnonateContent(modifiedResponse, blockIndex);
       dispatch(receiveAnalysisResults(modifiedResponse));
     });
   }
