@@ -1,4 +1,9 @@
 /*
+ * External dependencies.
+ */
+import React from "react";
+
+/*
  * Internal dependencies.
  */
 import store from "./store"
@@ -13,31 +18,50 @@ const { select } = wp.data;
 
 const PLUGIN_NAMESPACE = "wordlift";
 
-const PanelContentClassification = () => {
-    var JSONData = {
-        contentLanguage: 'en',
-        contentType: 'text/html',
-        scope: 'all',
-        version: '1.0.0'
+class PanelContentClassification extends React.Component {
+
+    constructor(props) {
+
+        super(props);
+
+        this.state = {
+            entities: null,
+        };
+
+        let JSONData = {
+            contentLanguage: 'en',
+            contentType: 'text/html',
+            scope: 'all',
+            version: '1.0.0'
+        }
+        let blockCount = select( 'core/editor' ).getBlockCount();
+        for(var i = 0; i < blockCount; i++){
+            JSONData.content = wp.data.select( 'core/editor' ).getBlocksForSerialization()[i].originalContent;
+            store.dispatch(ReceiveAnalysisResultsEvent(JSONData, i));
+        }
+
+        store.subscribe(() => {
+            this.setState({
+                entities: store.getState().entities
+            });
+        });
     }
-    let blockCount = select( 'core/editor' ).getBlockCount();
-    for(var i = 0; i < blockCount; i++){
-        JSONData.content = wp.data.select( 'core/editor' ).getBlocksForSerialization()[i].originalContent;
-        store.dispatch(ReceiveAnalysisResultsEvent(JSONData, i));
+
+    render() {
+        return (
+            <Panel>
+                <PanelBody
+                    title="Content classification"
+                    initialOpen={ true }
+                >
+                    <PanelRow>
+                        {this.state.entities && this.state.entities.size > 0 ? <ClassificationBox /> : 'Analyzing content...'}
+                    </PanelRow>
+                </PanelBody>
+            </Panel>
+        );
     }
-    store.dispatch(ReceiveAnalysisResultsEvent(JSONData));
-    return(
-    <Panel>
-        <PanelBody
-            title="Content classification"
-            initialOpen={ false }
-        >
-            <PanelRow>
-                <ClassificationBox />
-            </PanelRow>
-        </PanelBody>
-    </Panel>
-)};
+}
 
 const PanelArticleMetadata = () => (
     <Panel>

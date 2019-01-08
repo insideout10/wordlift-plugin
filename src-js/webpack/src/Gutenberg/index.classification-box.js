@@ -53,7 +53,7 @@ const AnnonateContent = (response, blockIndex) => {
     dispatch( 'core/annotations' ).__experimentalAddAnnotation({
       source: PLUGIN_NAMESPACE,
       richTextIdentifier: "content",
-      blockClientId: wp.data.select( 'core/editor' ).getBlockOrder()[blockIndex],
+      blockClientId: select( 'core/editor' ).getBlockOrder()[blockIndex],
       range: {
         start: response.annotations[annotation].start,
         end: response.annotations[annotation].end,
