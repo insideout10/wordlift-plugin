@@ -40,11 +40,18 @@ class PanelContentClassification extends React.Component {
             store.dispatch(ReceiveAnalysisResultsEvent(JSONData, i));
         }
 
-        store.subscribe(() => {
+    }
+
+    componentDidMount() {
+        this.unsubscribe = store.subscribe(() => {
             this.setState({
                 entities: store.getState().entities
             });
         });
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     render() {
