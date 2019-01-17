@@ -10,6 +10,9 @@ import store from "./store"
 import WordLiftIcon from "../../../../src/images/svg/wl-logo-icon.svg";
 import { ClassificationBox, ReceiveAnalysisResultsEvent } from "./index.classification-box";
 
+/*
+ * Packages via WordPress global
+ */
 const { Fragment } = wp.element;
 const { Panel, PanelBody, PanelRow } = wp.components;
 const { PluginSidebar, PluginSidebarMoreMenuItem } = wp.editPost;

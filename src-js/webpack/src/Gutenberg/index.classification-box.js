@@ -17,6 +17,9 @@ import Header from "../Edit/components/Header"
 import VisibleEntityList from "../Edit/containers/VisibleEntityList"
 import { receiveAnalysisResults } from "../Edit/actions"
 
+/*
+ * Packages via WordPress global
+ */
 const { select, dispatch } = wp.data;
 
 const PLUGIN_NAMESPACE = "wordlift";
@@ -52,6 +55,7 @@ const AnnonateContent = (response, blockIndex) => {
 
     dispatch( 'core/annotations' ).__experimentalAddAnnotation({
       source: PLUGIN_NAMESPACE,
+      id: response.annotations[annotation].annotationId,
       richTextIdentifier: "content",
       blockClientId: select( 'core/editor' ).getBlockOrder()[blockIndex],
       range: {
@@ -60,6 +64,24 @@ const AnnonateContent = (response, blockIndex) => {
       }
     });
   }
+
+}
+
+const PersistantlyAnnonateContent = (response, blockIndex) => {
+
+  let html = wp.data.select( "core/editor" ).getBlocks()[blockIndex].attributes.content;
+  let blockUid = wp.data.select( "core/editor" ).getBlocks()[blockIndex].clientId;
+  let value = wp.richText.create({
+    html
+  });
+  for (var annotation in response.annotations) {
+    value = wp.richText.applyFormat(value, { type: 'strong' }, response.annotations[annotation].start, response.annotations[annotation].end);
+  }
+  let block = wp.blocks.createBlock( 'core/paragraph' );
+  block.attributes.content = wp.richText.toHTMLString({
+    value
+  });
+  wp.data.dispatch( 'core/editor' ).replaceBlocks( blockUid, block );
 
 }
 
@@ -75,9 +97,14 @@ const ReceiveAnalysisResultsEvent = (JSONData, blockIndex) => {
       },
       body: JSON.stringify(JSONData)
     }).then(function(response){
-      let modifiedResponse = ModifyResponse(response);
-      AnnonateContent(modifiedResponse, blockIndex);
-      dispatch(receiveAnalysisResults(modifiedResponse));
+      if (Object.keys(response.entities).length > 0) {
+        let modifiedResponse = ModifyResponse(response);
+        PersistantlyAnnonateContent(modifiedResponse, blockIndex);
+        AnnonateContent(modifiedResponse, blockIndex);
+        dispatch(receiveAnalysisResults(modifiedResponse));
+      } else {
+        console.log(`No entities found in block ${blockIndex}`);
+      }
     });
   }
 }
