@@ -75,13 +75,23 @@ const PersistantlyAnnonateContent = (response, blockIndex) => {
     html
   });
   for (var annotation in response.annotations) {
-    value = wp.richText.applyFormat(value, { type: 'strong' }, response.annotations[annotation].start, response.annotations[annotation].end);
+    let annotationData = response.annotations[annotation];
+    let entityData = response.entities[annotationData.entityMatches[0].entityId];
+    let format = {
+      type: 'span',
+      attributes: {
+        id: annotationData.annotationId,
+        class: `textannotation disambiguated wl-${entityData.mainType}`,
+        itemid: entityData.entityId
+      }
+    }
+    value = wp.richText.applyFormat(value, format, annotationData.start, annotationData.end);
   }
   let block = wp.blocks.createBlock( 'core/paragraph' );
   block.attributes.content = wp.richText.toHTMLString({
     value
   });
-  wp.data.dispatch( 'core/editor' ).replaceBlocks( blockUid, block );
+  wp.data.dispatch( 'core/editor' ).updateBlock( blockUid, block );
 
 }
 
@@ -100,7 +110,7 @@ const ReceiveAnalysisResultsEvent = (JSONData, blockIndex) => {
       if (Object.keys(response.entities).length > 0) {
         let modifiedResponse = ModifyResponse(response);
         PersistantlyAnnonateContent(modifiedResponse, blockIndex);
-        AnnonateContent(modifiedResponse, blockIndex);
+        //AnnonateContent(modifiedResponse, blockIndex);
         dispatch(receiveAnalysisResults(modifiedResponse));
       } else {
         console.log(`No entities found in block ${blockIndex}`);
