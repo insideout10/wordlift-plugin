@@ -33,7 +33,7 @@ const ClassificationBox = () => (
   </Provider>
 )
 
-const ModifyResponse = (response) => {
+const ModifyResponse = (response, blockIndex) => {
 
   for (var entity in response.entities) {
     response.entities[entity].id = response.entities[entity].entityId;
@@ -43,6 +43,7 @@ const ModifyResponse = (response) => {
   for (var annotation in response.annotations) {
     response.annotations[annotation].entityMatches.forEach(entity => {
       response.entities[entity.entityId].annotations[annotation] = response.annotations[annotation];
+      response.entities[entity.entityId].annotations[annotation].blockIndex = blockIndex;
     });
   }
 
@@ -81,7 +82,7 @@ const PersistantlyAnnonateContent = (response, blockIndex) => {
       type: 'span',
       attributes: {
         id: annotationData.annotationId,
-        class: `textannotation disambiguated wl-${entityData.mainType}`,
+        class: `textannotation wl-${entityData.mainType}`,
         itemid: entityData.entityId
       }
     }
@@ -108,7 +109,7 @@ const ReceiveAnalysisResultsEvent = (JSONData, blockIndex) => {
       body: JSON.stringify(JSONData)
     }).then(function(response){
       if (Object.keys(response.entities).length > 0) {
-        let modifiedResponse = ModifyResponse(response);
+        let modifiedResponse = ModifyResponse(response, blockIndex);
         PersistantlyAnnonateContent(modifiedResponse, blockIndex);
         //AnnonateContent(modifiedResponse, blockIndex);
         dispatch(receiveAnalysisResults(modifiedResponse));
