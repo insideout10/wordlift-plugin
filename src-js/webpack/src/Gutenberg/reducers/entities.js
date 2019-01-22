@@ -17,7 +17,7 @@ import { Map } from 'immutable';
  */
 import * as types from '../../Edit/constants/ActionTypes';
 import EditPostWidgetController from '../../Edit/angular/EditPostWidgetController';
-import LinkService from '../../Edit/services/LinkService';
+import LinkService from '../services/LinkService';
 import WsService from '../../Edit/services/WsService';
 
 /**
@@ -82,7 +82,6 @@ const entities = function(state = Map(), action) {
     // Legacy: toggle the entity selection, fired when clicking on an
     // entity tile.
     case types.TOGGLE_ENTITY:
-      // Call the legacy AngularJS controller.
       state.get( action.entity.id )
 
       // Update the state by replacing the entity with toggled version.

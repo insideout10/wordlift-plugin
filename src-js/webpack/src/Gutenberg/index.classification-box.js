@@ -35,16 +35,19 @@ const ClassificationBox = () => (
 
 const ModifyResponse = (response, blockIndex) => {
 
-  for (var entity in response.entities) {
-    response.entities[entity].id = response.entities[entity].entityId;
-    response.entities[entity].annotations = {};
-  }
-
   for (var annotation in response.annotations) {
     response.annotations[annotation].entityMatches.forEach(entity => {
+      if (typeof response.entities[entity.entityId].annotations === 'undefined') {
+        response.entities[entity.entityId].annotations = {};
+      }
       response.entities[entity.entityId].annotations[annotation] = response.annotations[annotation];
       response.entities[entity.entityId].annotations[annotation].blockIndex = blockIndex;
     });
+  }
+
+  for (var entity in response.entities) {
+    response.entities[entity].id = response.entities[entity].entityId;
+    response.entities[entity].occurrences = Object.keys(response.entities[entity].annotations);
   }
 
   return response;
