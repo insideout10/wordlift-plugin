@@ -58,9 +58,33 @@ class LinkService {
    * @param {object} elem A DOM element.
    */
   setYesLink (elem) {
-    const dom = EditorService.get().dom
-    dom.removeClass(elem, 'wl-no-link')
-    dom.addClass(elem, 'wl-link')
+
+    wp.data.select( "core/editor" ).getBlocks().forEach( (block, blockIndex) => {
+      if(block.attributes && block.attributes.content){
+
+        let content = block.attributes.content;
+        let blockUid = block.attributes.clientId;
+        let contentElem = document.createElement('div');
+        let selector = elem.replace('urn:','urn\\3A ');
+
+        contentElem.innerHTML = content;
+        if (contentElem.querySelector('#'+selector)) {
+          contentElem.querySelector('#'+selector).classList.remove("wl-no-link");
+          contentElem.querySelector('#'+selector).classList.add("wl-link");
+  
+          let value = wp.richText.create({
+            html: contentElem.innerHTML
+          });
+          let newBlock = wp.blocks.createBlock( 'core/paragraph' );
+          newBlock.attributes.content = wp.richText.toHTMLString({
+            value
+          });
+          wp.data.dispatch( 'core/editor' ).updateBlock( blockUid, newBlock );
+        }
+
+      }
+    })
+
   }
 
   /**
@@ -70,9 +94,33 @@ class LinkService {
    * @param {object} elem A DOM element.
    */
   setNoLink (elem) {
-    const dom = EditorService.get().dom
-    dom.removeClass(elem, 'wl-link')
-    dom.addClass(elem, 'wl-no-link')
+
+    wp.data.select( "core/editor" ).getBlocks().forEach( (block, blockIndex) => {
+      if(block.attributes && block.attributes.content){
+
+        let content = block.attributes.content;
+        let blockUid = block.attributes.clientId;
+        let contentElem = document.createElement('div');
+        let selector = elem.replace('urn:','urn\\3A ');
+
+        contentElem.innerHTML = content;
+        if (contentElem.querySelector('#'+selector)) {
+          contentElem.querySelector('#'+selector).classList.remove("wl-link");
+          contentElem.querySelector('#'+selector).classList.add("wl-no-link");
+  
+          let value = wp.richText.create({
+            html: contentElem.innerHTML
+          });
+          let newBlock = wp.blocks.createBlock( 'core/paragraph' );
+          newBlock.attributes.content = wp.richText.toHTMLString({
+            value
+          });
+          wp.data.dispatch( 'core/editor' ).updateBlock( blockUid, newBlock );
+        }
+
+      }
+    })
+
   }
 
   /**
@@ -85,15 +133,26 @@ class LinkService {
    *     otherwise false.
    */
   getLink (occurrences) {
-    // return occurrences.reduce((acc, id) => {
-    //   const dom = EditorService.get().dom
+    
+    let content = '';
 
-    //   return acc || (
-    //     this.linkByDefault
-    //       ? !dom.hasClass(id, 'wl-no-link')
-    //       : dom.hasClass(id, 'wl-link')
-    //   )
-    // }, false)
+    wp.data.select( "core/editor" ).getBlocks().forEach( (block, blockIndex) => {
+      if(block.attributes && block.attributes.content){
+        content = content + block.attributes.content;
+      }
+    })
+
+    let contentElem = document.createElement('div');
+    contentElem.innerHTML = content;
+
+    return occurrences.reduce((acc, id) => {
+
+      let selector = id.replace('urn:','urn\\3A ');
+      return acc || this.linkByDefault 
+        ? !contentElem.querySelector('#'+selector+'.wl-no-link')
+        : !!contentElem.querySelector('#'+selector+'.wl-link')
+
+    }, false)
   }
 
 }

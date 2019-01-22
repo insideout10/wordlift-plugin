@@ -73,8 +73,9 @@ const AnnonateContent = (response, blockIndex) => {
 
 const PersistantlyAnnonateContent = (response, blockIndex) => {
 
-  let html = wp.data.select( "core/editor" ).getBlocks()[blockIndex].attributes.content;
-  let blockUid = wp.data.select( "core/editor" ).getBlocks()[blockIndex].clientId;
+  let currentBlock = wp.data.select( "core/editor" ).getBlocks()[blockIndex];
+  let html = currentBlock.attributes.content;
+  let blockUid = currentBlock.clientId;
   let value = wp.richText.create({
     html
   });
@@ -91,11 +92,11 @@ const PersistantlyAnnonateContent = (response, blockIndex) => {
     }
     value = wp.richText.applyFormat(value, format, annotationData.start, annotationData.end);
   }
-  let block = wp.blocks.createBlock( 'core/paragraph' );
-  block.attributes.content = wp.richText.toHTMLString({
+  let newBlock = wp.blocks.createBlock( 'core/paragraph' );
+  newBlock.attributes.content = wp.richText.toHTMLString({
     value
   });
-  wp.data.dispatch( 'core/editor' ).updateBlock( blockUid, block );
+  wp.data.dispatch( 'core/editor' ).updateBlock( blockUid, newBlock );
 
 }
 

@@ -17,7 +17,6 @@ const { Fragment } = wp.element;
 const { Panel, PanelBody, PanelRow } = wp.components;
 const { PluginSidebar, PluginSidebarMoreMenuItem } = wp.editPost;
 const { registerPlugin } = wp.plugins;
-const { select } = wp.data;
 
 const PLUGIN_NAMESPACE = "wordlift";
 
@@ -37,11 +36,15 @@ class PanelContentClassification extends React.Component {
             scope: 'all',
             version: '1.0.0'
         }
-        let blockCount = select( 'core/editor' ).getBlockCount();
-        for(var i = 0; i < blockCount; i++){
-            JSONData.content = wp.data.select( 'core/editor' ).getBlocksForSerialization()[i].originalContent;
-            store.dispatch(ReceiveAnalysisResultsEvent(JSONData, i));
-        }
+
+        wp.data.select( "core/editor" ).getBlocks().forEach( (block, blockIndex) => {
+            if(block.attributes && block.attributes.content){
+                JSONData.content = block.attributes.content;
+                store.dispatch(ReceiveAnalysisResultsEvent(JSONData, blockIndex));
+            } else {
+                console.log(`No content found in block ${blockIndex}`);
+            }
+        })
 
     }
 
