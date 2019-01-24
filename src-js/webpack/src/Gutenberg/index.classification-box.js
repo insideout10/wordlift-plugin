@@ -92,11 +92,13 @@ const PersistantlyAnnonateContent = (response, blockIndex) => {
     }
     value = wp.richText.applyFormat(value, format, annotationData.start, annotationData.end);
   }
-  let newBlock = wp.blocks.createBlock( 'core/paragraph' );
-  newBlock.attributes.content = wp.richText.toHTMLString({
-    value
-  });
-  wp.data.dispatch( 'core/editor' ).updateBlock( blockUid, newBlock );
+  wp.data.dispatch( "core/editor" ).updateBlock( blockUid, {
+    attributes: {
+      content: wp.richText.toHTMLString({
+        value
+      })
+    }
+  } );
 
 }
 

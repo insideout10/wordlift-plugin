@@ -4,25 +4,20 @@
  *
  * A service which handles the link/no link attribute for entity's occurrences.
  *
- * @since 3.11.0
+ * @since 3.21.0
  */
-
-/**
- * Internal dependencies
- */
-import EditorService from '../../Edit/services/EditorService'
 
 /**
  * Define the `LinkService` class.
  *
- * @since 3.11.0
+ * @since 3.21.0
  */
 class LinkService {
 
   /**
    * Create an `LinkService` instance.
    *
-   * @since 3.13.0
+   * @since 3.21.0
    * @param {boolean} linkByDefault Whether to link by default.
    */
   constructor (linkByDefault) {
@@ -33,7 +28,7 @@ class LinkService {
   /**
    * Set the link flag on the provided `occurrences`.
    *
-   * @since 3.11.0
+   * @since 3.21.0
    * @param {Array} occurrences An array of occurrences ids (which match dom
    *     elements).
    * @param {boolean} value True to enable linking or false to disable it.
@@ -54,7 +49,7 @@ class LinkService {
   /**
    * Switch the link on.
    *
-   * @since 3.13.0
+   * @since 3.21.0
    * @param {object} elem A DOM element.
    */
   setYesLink (elem) {
@@ -63,7 +58,7 @@ class LinkService {
       if(block.attributes && block.attributes.content){
 
         let content = block.attributes.content;
-        let blockUid = block.attributes.clientId;
+        let blockUid = block.clientId;
         let contentElem = document.createElement('div');
         let selector = elem.replace('urn:','urn\\3A ');
 
@@ -71,15 +66,11 @@ class LinkService {
         if (contentElem.querySelector('#'+selector)) {
           contentElem.querySelector('#'+selector).classList.remove("wl-no-link");
           contentElem.querySelector('#'+selector).classList.add("wl-link");
-  
-          let value = wp.richText.create({
-            html: contentElem.innerHTML
-          });
-          let newBlock = wp.blocks.createBlock( 'core/paragraph' );
-          newBlock.attributes.content = wp.richText.toHTMLString({
-            value
-          });
-          wp.data.dispatch( 'core/editor' ).updateBlock( blockUid, newBlock );
+          wp.data.dispatch( "core/editor" ).updateBlock( blockUid, {
+            attributes: {
+              content: contentElem.innerHTML
+            }
+          } );
         }
 
       }
@@ -90,7 +81,7 @@ class LinkService {
   /**
    * Switch the link off.
    *
-   * @since 3.13.0
+   * @since 3.21.0
    * @param {object} elem A DOM element.
    */
   setNoLink (elem) {
@@ -99,7 +90,7 @@ class LinkService {
       if(block.attributes && block.attributes.content){
 
         let content = block.attributes.content;
-        let blockUid = block.attributes.clientId;
+        let blockUid = block.clientId;
         let contentElem = document.createElement('div');
         let selector = elem.replace('urn:','urn\\3A ');
 
@@ -107,15 +98,11 @@ class LinkService {
         if (contentElem.querySelector('#'+selector)) {
           contentElem.querySelector('#'+selector).classList.remove("wl-link");
           contentElem.querySelector('#'+selector).classList.add("wl-no-link");
-  
-          let value = wp.richText.create({
-            html: contentElem.innerHTML
-          });
-          let newBlock = wp.blocks.createBlock( 'core/paragraph' );
-          newBlock.attributes.content = wp.richText.toHTMLString({
-            value
-          });
-          wp.data.dispatch( 'core/editor' ).updateBlock( blockUid, newBlock );
+          wp.data.dispatch( "core/editor" ).updateBlock( blockUid, {
+            attributes: {
+              content: contentElem.innerHTML
+            }
+          } );
         }
 
       }
@@ -127,7 +114,7 @@ class LinkService {
    * Get the link flag given the provided `occurrences`. A link flag is
    * considered true when at least one occurrences enables linking.
    *
-   * @since 3.11.0
+   * @since 3.21.0
    * @param {Array} occurrences An array of occurrences dom ids.
    * @return {boolean} True if at least one occurrences enables linking,
    *     otherwise false.
