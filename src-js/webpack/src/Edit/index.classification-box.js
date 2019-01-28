@@ -30,6 +30,8 @@ wp.wordlift.on("wlEntityList.loaded", function() {
   // `initialState`.
   const store = createStore(reducer, applyMiddleware(thunk, logger));
 
+  window.store1 = store;
+
   // Render the `React` tree at the `wl-entity-list` element.
   ReactDOM.render(
     // Following is `react-redux` syntax for binding the `store` with the

@@ -15,7 +15,10 @@ import store from "./store"
 import Wrapper from "../Edit/components/App/Wrapper"
 import Header from "../Edit/components/Header"
 import VisibleEntityList from "../Edit/containers/VisibleEntityList"
+import AddEntity from "../Edit/components/AddEntity";
 import { receiveAnalysisResults } from "../Edit/actions"
+
+const canCreateEntities = "undefined" !== wlSettings["can_create_entities"] && "yes" === wlSettings["can_create_entities"];
 
 /*
  * Packages via WordPress global
@@ -24,9 +27,12 @@ const { select, dispatch } = wp.data;
 
 const PLUGIN_NAMESPACE = "wordlift";
 
+window.store1 = store;
+
 const ClassificationBox = () => (
   <Provider store={store}>
     <Wrapper>
+      <AddEntity showCreate={canCreateEntities} />
       <Header />
       <VisibleEntityList />
     </Wrapper>
@@ -47,7 +53,8 @@ const ModifyResponse = (response, blockIndex) => {
 
   for (var entity in response.entities) {
     response.entities[entity].id = response.entities[entity].entityId;
-    response.entities[entity].occurrences = Object.keys(response.entities[entity].annotations);
+    //This needs to happen conditionally
+    //response.entities[entity].occurrences = Object.keys(response.entities[entity].annotations);
   }
 
   return response;
@@ -117,6 +124,7 @@ const ReceiveAnalysisResultsEvent = (JSONData, blockIndex) => {
       if (Object.keys(response.entities).length > 0) {
         let modifiedResponse = ModifyResponse(response, blockIndex);
         PersistantlyAnnonateContent(modifiedResponse, blockIndex);
+        console.log(`An analysis has been performed for block ${blockIndex}`);
         //AnnonateContent(modifiedResponse, blockIndex);
         dispatch(receiveAnalysisResults(modifiedResponse));
       } else {

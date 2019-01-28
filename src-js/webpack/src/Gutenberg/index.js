@@ -18,6 +18,28 @@ const { Panel, PanelBody, PanelRow } = wp.components;
 const { PluginSidebar, PluginSidebarMoreMenuItem } = wp.editPost;
 const { registerPlugin } = wp.plugins;
 
+const { __ } = wp.i18n;
+const { registerFormatType } = wp.richText;
+const name = 'core/superscript';
+
+const superScript = {
+	name,
+	title: __( 'Superscript' ),
+	tagName: 'sup',
+	className: null,
+	edit( { isActive, value, onChange } ) {
+        
+        console.log(value.text.substring(value.start, value.end))
+
+		return (
+			<Fragment>
+			</Fragment>
+		);
+	},
+};
+
+window.store1 = store;
+
 const PLUGIN_NAMESPACE = "wordlift";
 
 class PanelContentClassification extends React.Component {
@@ -37,9 +59,12 @@ class PanelContentClassification extends React.Component {
             version: '1.0.0'
         }
 
+        registerFormatType( name , superScript );
+
         wp.data.select( "core/editor" ).getBlocks().forEach( (block, blockIndex) => {
             if(block.attributes && block.attributes.content){
                 JSONData.content = block.attributes.content;
+                console.log(`Requesting analysis for block ${blockIndex}...`);
                 store.dispatch(ReceiveAnalysisResultsEvent(JSONData, blockIndex));
             } else {
                 console.log(`No content found in block ${blockIndex}`);

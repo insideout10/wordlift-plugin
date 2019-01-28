@@ -5,6 +5,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import createSagaMiddleware from "redux-saga";
+import logger from 'redux-logger';
 
 import ButtonContainer from "./ButtonContainer";
 import EntitySelectContainer from "./EntitySelectContainer";
@@ -15,7 +16,7 @@ import { reducer } from "./actions";
 
 // Create the saga middleware.
 const sagaMiddleware = createSagaMiddleware();
-const store = createStore(reducer, applyMiddleware(sagaMiddleware));
+const store = createStore(reducer, applyMiddleware(sagaMiddleware, logger));
 
 // Run the saga.
 sagaMiddleware.run(saga);

@@ -16,7 +16,7 @@ import { Map } from 'immutable';
  * Internal dependencies
  */
 import * as types from '../../Edit/constants/ActionTypes';
-import EditPostWidgetController from '../../Edit/angular/EditPostWidgetController';
+import EditPostWidgetController from '../controllers/EditPostWidgetController';
 import LinkService from '../services/LinkService';
 import WsService from '../../Edit/services/WsService';
 
@@ -65,24 +65,26 @@ const entities = function(state = Map(), action) {
             v.shortlist = i < 20;
             return [ k, v ];
           } )
-//          // Then resort them by label.
-//          .sortBy( x => x.label.toLowerCase() )
+         // Then resort them by label.
+         .sortBy( x => x.label.toLowerCase() )
       );
 
     // Legacy: set the current entity on the `EditPostWidgetController`.
     case types.SET_CURRENT_ENTITY:
-      // Call the `EditPostWidgetController` to set the current entity.
-      EditPostWidgetController().$apply(
-        EditPostWidgetController().setCurrentEntity( action.entity, 'entity' )
-      );
-
-      // Finally return the original state.
+      // // Call the `EditPostWidgetController` to set the current entity.
+      // EditPostWidgetController().$apply(
+      //   EditPostWidgetController().setCurrentEntity( action.entity, 'entity' )
+      // );    
+      // Update the entity in the state.
       return state;
 
     // Legacy: toggle the entity selection, fired when clicking on an
     // entity tile.
     case types.TOGGLE_ENTITY:
-      state.get( action.entity.id )
+      // Call the EditPostWidgetController.onSelectedEntityTile method
+      EditPostWidgetController.onSelectedEntityTile(
+        state.get( action.entity.id )
+      );
 
       // Update the state by replacing the entity with toggled version.
       return state;
@@ -103,9 +105,8 @@ const entities = function(state = Map(), action) {
         } )
       );
 
-    // Update the entity's occurrences. This action is dispatched following
-    // a legacy Angular event. The event is configured in the admin/index.js
-    // app.
+    // Update the entity's occurrences. This action is dispatched from
+    // within EditPostWidgetController.onSelectedEntityTile
     case types.UPDATE_OCCURRENCES_FOR_ENTITY:
       // Update the entity.
       return state.set(
