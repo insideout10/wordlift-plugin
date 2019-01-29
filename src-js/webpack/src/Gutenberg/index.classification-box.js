@@ -71,7 +71,6 @@ const ModifyResponse = (response, blockIndex) => {
     let allAnnotations = Object.keys(response.entities[entity].annotations);
     allAnnotations.forEach((annValue, annIndex) => { 
       if(disambiguated.includes(response.entities[entity].annotations[annValue].text)){
-        console.log(response.entities[entity]);
         response.entities[entity].occurrences.push(annValue);
         disambiguatedAnnotations.push(response.entities[entity].annotations[annValue]);
       }
