@@ -39,6 +39,9 @@ const ClassificationBox = () => (
   </Provider>
 )
 
+let disambiguated = [];
+let disambiguatedAnnotations = [];
+
 const ModifyResponse = (response, blockIndex) => {
 
   for (var annotation in response.annotations) {
@@ -51,10 +54,28 @@ const ModifyResponse = (response, blockIndex) => {
     });
   }
 
+  let block = wp.data.select( "core/editor" ).getBlocks()[blockIndex];
+  if(block.attributes && block.attributes.content){
+    let content = block.attributes.content;
+    let contentElem = document.createElement('div');
+    contentElem.innerHTML = content;
+    if (contentElem.querySelectorAll('.textannotation.disambiguated')) {
+      contentElem.querySelectorAll('.textannotation.disambiguated').forEach((nodeValue, nodeIndex) => { 
+        disambiguated.push(nodeValue.innerText);
+      })
+    }
+  }
+
   for (var entity in response.entities) {
     response.entities[entity].id = response.entities[entity].entityId;
-    //This needs to happen conditionally
-    //response.entities[entity].occurrences = Object.keys(response.entities[entity].annotations);
+    let allAnnotations = Object.keys(response.entities[entity].annotations);
+    allAnnotations.forEach((annValue, annIndex) => { 
+      if(disambiguated.includes(response.entities[entity].annotations[annValue].text)){
+        console.log(response.entities[entity]);
+        response.entities[entity].occurrences.push(annValue);
+        disambiguatedAnnotations.push(response.entities[entity].annotations[annValue]);
+      }
+    })
   }
 
   return response;
@@ -96,6 +117,9 @@ const PersistantlyAnnonateContent = (response, blockIndex) => {
         class: `textannotation wl-${entityData.mainType}`,
         itemid: entityData.entityId
       }
+    }
+    if(disambiguated.includes(annotationData.text)){
+      format.attributes.class += ' disambiguated';
     }
     value = wp.richText.applyFormat(value, format, annotationData.start, annotationData.end);
   }
