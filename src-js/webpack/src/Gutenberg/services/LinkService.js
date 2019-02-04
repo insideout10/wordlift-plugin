@@ -13,16 +13,15 @@
  * @since 3.21.0
  */
 class LinkService {
-
   /**
    * Create an `LinkService` instance.
    *
    * @since 3.21.0
    * @param {boolean} linkByDefault Whether to link by default.
    */
-  constructor (linkByDefault) {
+  constructor(linkByDefault) {
     // Set the `link by default` setting.
-    this.linkByDefault = linkByDefault
+    this.linkByDefault = linkByDefault;
   }
 
   /**
@@ -33,16 +32,15 @@ class LinkService {
    *     elements).
    * @param {boolean} value True to enable linking or false to disable it.
    */
-  setLink (occurrences, value) {
+  setLink(occurrences, value) {
     // If the request is to enable links, remove the `wl-no-link` class on
     // all the occurrences.
     if (value) {
-      occurrences.forEach(x => this.setYesLink(x))
-    }
-    else {
+      occurrences.forEach(x => this.setYesLink(x));
+    } else {
       // If the request is to disable links, add the `wl-no-link` class to
       // all occurrences.
-      occurrences.forEach(x => this.setNoLink(x))
+      occurrences.forEach(x => this.setNoLink(x));
     }
   }
 
@@ -52,30 +50,29 @@ class LinkService {
    * @since 3.21.0
    * @param {object} elem A DOM element.
    */
-  setYesLink (elem) {
+  setYesLink(elem) {
+    wp.data
+      .select("core/editor")
+      .getBlocks()
+      .forEach((block, blockIndex) => {
+        if (block.attributes && block.attributes.content) {
+          let content = block.attributes.content;
+          let blockUid = block.clientId;
+          let contentElem = document.createElement("div");
+          let selector = elem.replace("urn:", "urn\\3A ");
 
-    wp.data.select( "core/editor" ).getBlocks().forEach( (block, blockIndex) => {
-      if(block.attributes && block.attributes.content){
-
-        let content = block.attributes.content;
-        let blockUid = block.clientId;
-        let contentElem = document.createElement('div');
-        let selector = elem.replace('urn:','urn\\3A ');
-
-        contentElem.innerHTML = content;
-        if (contentElem.querySelector('#'+selector)) {
-          contentElem.querySelector('#'+selector).classList.remove("wl-no-link");
-          contentElem.querySelector('#'+selector).classList.add("wl-link");
-          wp.data.dispatch( "core/editor" ).updateBlock( blockUid, {
-            attributes: {
-              content: contentElem.innerHTML
-            }
-          } );
+          contentElem.innerHTML = content;
+          if (contentElem.querySelector("#" + selector)) {
+            contentElem.querySelector("#" + selector).classList.remove("wl-no-link");
+            contentElem.querySelector("#" + selector).classList.add("wl-link");
+            wp.data.dispatch("core/editor").updateBlock(blockUid, {
+              attributes: {
+                content: contentElem.innerHTML
+              }
+            });
+          }
         }
-
-      }
-    })
-
+      });
   }
 
   /**
@@ -84,30 +81,29 @@ class LinkService {
    * @since 3.21.0
    * @param {object} elem A DOM element.
    */
-  setNoLink (elem) {
+  setNoLink(elem) {
+    wp.data
+      .select("core/editor")
+      .getBlocks()
+      .forEach((block, blockIndex) => {
+        if (block.attributes && block.attributes.content) {
+          let content = block.attributes.content;
+          let blockUid = block.clientId;
+          let contentElem = document.createElement("div");
+          let selector = elem.replace("urn:", "urn\\3A ");
 
-    wp.data.select( "core/editor" ).getBlocks().forEach( (block, blockIndex) => {
-      if(block.attributes && block.attributes.content){
-
-        let content = block.attributes.content;
-        let blockUid = block.clientId;
-        let contentElem = document.createElement('div');
-        let selector = elem.replace('urn:','urn\\3A ');
-
-        contentElem.innerHTML = content;
-        if (contentElem.querySelector('#'+selector)) {
-          contentElem.querySelector('#'+selector).classList.remove("wl-link");
-          contentElem.querySelector('#'+selector).classList.add("wl-no-link");
-          wp.data.dispatch( "core/editor" ).updateBlock( blockUid, {
-            attributes: {
-              content: contentElem.innerHTML
-            }
-          } );
+          contentElem.innerHTML = content;
+          if (contentElem.querySelector("#" + selector)) {
+            contentElem.querySelector("#" + selector).classList.remove("wl-link");
+            contentElem.querySelector("#" + selector).classList.add("wl-no-link");
+            wp.data.dispatch("core/editor").updateBlock(blockUid, {
+              attributes: {
+                content: contentElem.innerHTML
+              }
+            });
+          }
         }
-
-      }
-    })
-
+      });
   }
 
   /**
@@ -119,30 +115,29 @@ class LinkService {
    * @return {boolean} True if at least one occurrences enables linking,
    *     otherwise false.
    */
-  getLink (occurrences) {
-    
-    let content = '';
+  getLink(occurrences) {
+    let content = "";
 
-    wp.data.select( "core/editor" ).getBlocks().forEach( (block, blockIndex) => {
-      if(block.attributes && block.attributes.content){
-        content = content + block.attributes.content;
-      }
-    })
+    wp.data
+      .select("core/editor")
+      .getBlocks()
+      .forEach((block, blockIndex) => {
+        if (block.attributes && block.attributes.content) {
+          content = content + block.attributes.content;
+        }
+      });
 
-    let contentElem = document.createElement('div');
+    let contentElem = document.createElement("div");
     contentElem.innerHTML = content;
 
     return occurrences.reduce((acc, id) => {
-
-      let selector = id.replace('urn:','urn\\3A ');
-      return acc || this.linkByDefault 
-        ? !contentElem.querySelector('#'+selector+'.wl-no-link')
-        : !!contentElem.querySelector('#'+selector+'.wl-link')
-
-    }, false)
+      let selector = id.replace("urn:", "urn\\3A ");
+      return acc || this.linkByDefault
+        ? !contentElem.querySelector("#" + selector + ".wl-no-link")
+        : !!contentElem.querySelector("#" + selector + ".wl-link");
+    }, false);
   }
-
 }
 
 // Finally export the `LinkService`.
-export default new LinkService('1' === wlSettings.link_by_default)
+export default new LinkService("1" === wlSettings.link_by_default);
