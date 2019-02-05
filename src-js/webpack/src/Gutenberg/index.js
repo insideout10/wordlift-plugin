@@ -8,7 +8,7 @@ import React from "react";
  */
 import store from "./store";
 import WordLiftIcon from "../../../../src/images/svg/wl-logo-icon.svg";
-import { ClassificationBox, ReceiveAnalysisResultsEvent } from "./index.classification-box";
+import { ClassificationBox, ReceiveAnalysisResultsEvent, AnnotateSelected } from "./index.classification-box";
 
 /*
  * Packages via WordPress global
@@ -20,24 +20,11 @@ const { registerPlugin } = wp.plugins;
 
 const { __ } = wp.i18n;
 const { registerFormatType } = wp.richText;
-const name = "core/superscript";
-
-const superScript = {
-  name,
-  title: __("Superscript"),
-  tagName: "sup",
-  className: null,
-  edit({ isActive, value, onChange }) {
-    console.log(value);
-    //console.log(value.text.substring(value.start, value.end))
-
-    return <Fragment />;
-  }
-};
 
 window.store1 = store;
 
 const PLUGIN_NAMESPACE = "wordlift";
+const PLUGIN_FORMAT_NAMESPACE = "wordlift/select-text";
 
 class PanelContentClassification extends React.Component {
   constructor(props) {
@@ -54,20 +41,30 @@ class PanelContentClassification extends React.Component {
       version: "1.0.0"
     };
 
-    registerFormatType(name, superScript);
-
     wp.data
       .select("core/editor")
       .getBlocks()
       .forEach((block, blockIndex) => {
+        let currentBlock = wp.data.select("core/editor").getBlocks()[blockIndex];
         if (block.attributes && block.attributes.content) {
           JSONData.content = block.attributes.content;
-          console.log(`Requesting analysis for block ${blockIndex}...`);
-          store.dispatch(ReceiveAnalysisResultsEvent(JSONData, blockIndex));
+          console.log(`Requesting analysis for block ${currentBlock.clientId}...`);
+          store.dispatch(ReceiveAnalysisResultsEvent(JSONData, currentBlock.clientId));
         } else {
-          console.log(`No content found in block ${blockIndex}`);
+          console.log(`No content found in block ${currentBlock.clientId}`);
         }
       });
+
+    registerFormatType(PLUGIN_FORMAT_NAMESPACE, {
+      name: PLUGIN_FORMAT_NAMESPACE,
+      title: PLUGIN_NAMESPACE,
+      tagName: "span",
+      className: null,
+      edit({ isActive, value, onChange }) {
+        AnnotateSelected(value.start, value.end);
+        return <Fragment />;
+      }
+    });
   }
 
   componentDidMount() {

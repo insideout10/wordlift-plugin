@@ -7,7 +7,6 @@
  * External dependencies.
  */
 import Provider from "react-redux/es/components/Provider";
-import { Map } from "immutable";
 
 /*
  * Internal dependencies.
@@ -41,7 +40,7 @@ const ClassificationBox = () => (
 
 let disambiguated = [];
 
-const ModifyResponse = (response, blockIndex) => {
+const ModifyResponse = (response, blockClientId) => {
   // Check for existing entities in store
   let existingEntities = store.getState().entities;
   if (existingEntities.size > 0) {
@@ -62,11 +61,11 @@ const ModifyResponse = (response, blockIndex) => {
         response.entities[entity.entityId].annotations = {};
       }
       response.entities[entity.entityId].annotations[annotation] = response.annotations[annotation];
-      response.entities[entity.entityId].annotations[annotation].blockIndex = blockIndex;
+      response.entities[entity.entityId].annotations[annotation].blockClientId = blockClientId;
     });
   }
 
-  let block = wp.data.select("core/editor").getBlocks()[blockIndex];
+  let block = wp.data.select("core/editor").getBlock(blockClientId);
 
   // Populate an array of all disambiguated
   if (block.attributes && block.attributes.content) {
@@ -94,13 +93,13 @@ const ModifyResponse = (response, blockIndex) => {
   return response;
 };
 
-const AnnonateContent = (response, blockIndex) => {
+const AnnonateContent = (response, blockClientId) => {
   for (var annotation in response.annotations) {
-    dispatch("core/annotations").__experimentalAddAnnotation({
+    wp.data.dispatch("core/annotations").__experimentalAddAnnotation({
       source: PLUGIN_NAMESPACE,
       id: response.annotations[annotation].annotationId,
       richTextIdentifier: "content",
-      blockClientId: select("core/editor").getBlockOrder()[blockIndex],
+      blockClientId: blockClientId,
       range: {
         start: response.annotations[annotation].start,
         end: response.annotations[annotation].end
@@ -109,8 +108,8 @@ const AnnonateContent = (response, blockIndex) => {
   }
 };
 
-const PersistantlyAnnonateContent = (response, blockIndex) => {
-  let currentBlock = wp.data.select("core/editor").getBlocks()[blockIndex];
+const PersistantlyAnnonateContent = (response, blockClientId) => {
+  let currentBlock = wp.data.select("core/editor").getBlock(blockClientId);
   let html = currentBlock.attributes.content;
   let blockUid = currentBlock.clientId;
   let value = wp.richText.create({
@@ -141,7 +140,7 @@ const PersistantlyAnnonateContent = (response, blockIndex) => {
   });
 };
 
-const ReceiveAnalysisResultsEvent = (JSONData, blockIndex) => {
+const ReceiveAnalysisResultsEvent = (JSONData, blockClientId) => {
   return function(dispatch) {
     // Asynchronously call the dispatch. We need this because we
     // might be inside a reducer call.
@@ -156,16 +155,45 @@ const ReceiveAnalysisResultsEvent = (JSONData, blockIndex) => {
       })
       .then(function(response) {
         if (Object.keys(response.entities).length > 0) {
-          let modifiedResponse = ModifyResponse(response, blockIndex);
-          PersistantlyAnnonateContent(modifiedResponse, blockIndex);
-          console.log(`An analysis has been performed for block ${blockIndex}`);
-          //AnnonateContent(modifiedResponse, blockIndex);
+          let modifiedResponse = ModifyResponse(response, blockClientId);
+          PersistantlyAnnonateContent(modifiedResponse, blockClientId);
+          console.log(`An analysis has been performed for block ${blockClientId}`);
+          //AnnonateContent(modifiedResponse, blockClientId);
           dispatch(receiveAnalysisResults(modifiedResponse));
         } else {
-          console.log(`No entities found in block ${blockIndex}`);
+          console.log(`No entities found in block ${blockClientId}`);
         }
       });
   };
 };
 
-export { ClassificationBox, ReceiveAnalysisResultsEvent };
+const AnnotateSelected = (start, end) => {
+  let selectedBlock = wp.data.select("core/editor").getSelectedBlock();
+  if (!selectedBlock) return;
+
+  let existingEntities = store.getState().entities;
+  let annotationId = undefined;
+
+  if (existingEntities.size > 0) {
+    let entitiesToCheck = existingEntities.toJS();
+
+    for (var entity in entitiesToCheck) {
+      let currEntity = entitiesToCheck[entity];
+      for (var annotation in currEntity.annotations) {
+        let currAnnotation = currEntity.annotations[annotation];
+        if (
+          currAnnotation &&
+          currAnnotation.blockClientId === selectedBlock.clientId &&
+          currAnnotation.start <= start &&
+          currAnnotation.end >= end
+        ) {
+          annotationId = currAnnotation.annotationId;
+        }
+      }
+    }
+
+    store.dispatch({ type: "ANNOTATION", annotation: annotationId });
+  }
+};
+
+export { ClassificationBox, ReceiveAnalysisResultsEvent, AnnotateSelected };

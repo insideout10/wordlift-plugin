@@ -816,13 +816,13 @@
               return Ut;
             }
           );
-        var o = n(38),
+        var o = n(37),
           i = n.n(o),
           a = n(3),
           u = n.n(a),
           c = n(26),
           s = n.n(c),
-          f = n(39),
+          f = n(38),
           l = n.n(f),
           p = n(5),
           d = n.n(p),
@@ -2781,7 +2781,7 @@
         (n = i[r]), e.indexOf(n) >= 0 || (o[n] = t[n]);
       return o;
     }
-    var c = n(40),
+    var c = n(39),
       s = n.n(c),
       f = n(22),
       l = n.n(f),
@@ -3991,7 +3991,7 @@
     "use strict";
     (function(t, r) {
       var o,
-        i = n(37);
+        i = n(36);
       o =
         "undefined" != typeof self
           ? self
@@ -5747,6 +5747,1035 @@
       })(e);
     }.call(this, n(29)));
   },
+  function(t, e, n) {
+    "use strict";
+    Object.defineProperty(e, "__esModule", { value: !0 });
+    var r,
+      o,
+      i,
+      a = ((r = [
+        "\n\tdisplay: ",
+        " !important;\n\tposition: absolute;\n\tright: 20px;\n\ttop: 8px;\n\tfont-size: 14px;\n\tline-height: 1;\n\tcolor: #cbcbcb;\n\tuser-select: none;\n\ttransition: opacity 150ms ease;\n"
+      ]),
+      (o = [
+        "\n\tdisplay: ",
+        " !important;\n\tposition: absolute;\n\tright: 20px;\n\ttop: 8px;\n\tfont-size: 14px;\n\tline-height: 1;\n\tcolor: #cbcbcb;\n\tuser-select: none;\n\ttransition: opacity 150ms ease;\n"
+      ]),
+      Object.freeze(
+        Object.defineProperties(r, { raw: { value: Object.freeze(o) } })
+      )),
+      u = n(4);
+    var c = ((i = u) && i.__esModule ? i : { default: i }).default.i(
+      a,
+      function(t) {
+        return t.local ? "none" : "inline-block";
+      }
+    );
+    e.default = c;
+  },
+  function(t, e, n) {
+    "use strict";
+    Object.defineProperty(e, "__esModule", { value: !0 });
+    var r,
+      o,
+      i,
+      a = ((r = [
+        "\n  padding: 4px 8px;\n  box-sizing: border-box;\n  position: relative;\n  margin: 0 auto;\n  min-height: 32px;\n  color: rgb(102, 102, 102);\n"
+      ]),
+      (o = [
+        "\n  padding: 4px 8px;\n  box-sizing: border-box;\n  position: relative;\n  margin: 0 auto;\n  min-height: 32px;\n  color: rgb(102, 102, 102);\n"
+      ]),
+      Object.freeze(
+        Object.defineProperties(r, { raw: { value: Object.freeze(o) } })
+      )),
+      u = n(4);
+    var c = ((i = u) && i.__esModule ? i : { default: i }).default.div(a);
+    e.default = c;
+  },
+  function(t, e, n) {
+    "use strict";
+    Object.defineProperty(e, "__esModule", { value: !0 });
+    var r,
+      o,
+      i,
+      a = ((r = [
+        '\n  display: inline-block;\n  position: relative;\n  box-sizing: border-box;\n  max-width: 180px;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  margin-top: 4px;\n  min-height: 16px;\n  line-height: 16px;\n  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,\n    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;\n  font-weight: 600;\n  font-size: 12px;\n  -moz-user-select: none;\n  hyphens: auto;\n'
+      ]),
+      (o = [
+        '\n  display: inline-block;\n  position: relative;\n  box-sizing: border-box;\n  max-width: 180px;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  margin-top: 4px;\n  min-height: 16px;\n  line-height: 16px;\n  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,\n    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;\n  font-weight: 600;\n  font-size: 12px;\n  -moz-user-select: none;\n  hyphens: auto;\n'
+      ]),
+      Object.freeze(
+        Object.defineProperties(r, { raw: { value: Object.freeze(o) } })
+      )),
+      u = n(4);
+    var c = ((i = u) && i.__esModule ? i : { default: i }).default.div(a);
+    e.default = c;
+  },
+  function(t, e, n) {
+    "use strict";
+    n.r(e);
+    var r = {};
+    n.r(r),
+      n.d(r, "TASK", function() {
+        return o.e;
+      }),
+      n.d(r, "SAGA_ACTION", function() {
+        return o.c;
+      }),
+      n.d(r, "noop", function() {
+        return o.u;
+      }),
+      n.d(r, "is", function() {
+        return o.q;
+      }),
+      n.d(r, "deferred", function() {
+        return o.l;
+      }),
+      n.d(r, "arrayOfDeffered", function() {
+        return o.g;
+      }),
+      n.d(r, "createMockTask", function() {
+        return o.j;
+      }),
+      n.d(r, "cloneableGenerator", function() {
+        return o.i;
+      }),
+      n.d(r, "asEffect", function() {
+        return u.d;
+      }),
+      n.d(r, "CHANNEL_END", function() {
+        return p;
+      });
+    var o = n(0),
+      i = n(7),
+      a = n(14),
+      u = n(2),
+      c = n(9),
+      s =
+        Object.assign ||
+        function(t) {
+          for (var e = 1; e < arguments.length; e++) {
+            var n = arguments[e];
+            for (var r in n)
+              Object.prototype.hasOwnProperty.call(n, r) && (t[r] = n[r]);
+          }
+          return t;
+        },
+      f =
+        "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
+          ? function(t) {
+              return typeof t;
+            }
+          : function(t) {
+              return t &&
+                "function" == typeof Symbol &&
+                t.constructor === Symbol &&
+                t !== Symbol.prototype
+                ? "symbol"
+                : typeof t;
+            };
+    var l = "proc first argument (Saga function result) must be an iterator",
+      p = {
+        toString: function() {
+          return "@@redux-saga/CHANNEL_END";
+        }
+      },
+      d = {
+        toString: function() {
+          return "@@redux-saga/TASK_CANCEL";
+        }
+      },
+      h = {
+        wildcard: function() {
+          return o.r;
+        },
+        default: function(t) {
+          return "symbol" === (void 0 === t ? "undefined" : f(t))
+            ? function(e) {
+                return e.type === t;
+              }
+            : function(e) {
+                return e.type === String(t);
+              };
+        },
+        array: function(t) {
+          return function(e) {
+            return t.some(function(t) {
+              return v(t)(e);
+            });
+          };
+        },
+        predicate: function(t) {
+          return function(e) {
+            return t(e);
+          };
+        }
+      };
+    function v(t) {
+      return ("*" === t
+        ? h.wildcard
+        : o.q.array(t)
+        ? h.array
+        : o.q.stringableFunc(t)
+        ? h.default
+        : o.q.func(t)
+        ? h.predicate
+        : h.default)(t);
+    }
+    var y = function(t) {
+      return { fn: t };
+    };
+    function b(t) {
+      var e =
+          arguments.length > 1 && void 0 !== arguments[1]
+            ? arguments[1]
+            : function() {
+                return o.u;
+              },
+        n =
+          arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : o.u,
+        r =
+          arguments.length > 3 && void 0 !== arguments[3] ? arguments[3] : o.u,
+        f = arguments.length > 4 && void 0 !== arguments[4] ? arguments[4] : {},
+        h = arguments.length > 5 && void 0 !== arguments[5] ? arguments[5] : {},
+        g = arguments.length > 6 && void 0 !== arguments[6] ? arguments[6] : 0,
+        m =
+          arguments.length > 7 && void 0 !== arguments[7]
+            ? arguments[7]
+            : "anonymous",
+        _ = arguments[8];
+      Object(o.h)(t, o.q.iterator, l);
+      var w = Object(o.n)(D, Object(o.z)("[...effects]", "all([...effects])")),
+        x = h.sagaMonitor,
+        O = h.logger,
+        S = h.onError,
+        k = O || o.s,
+        E = function(t) {
+          var e = t.sagaStack;
+          !e &&
+            t.stack &&
+            (e =
+              -1 !== t.stack.split("\n")[0].indexOf(t.message)
+                ? t.stack
+                : "Error: " + t.message + "\n" + t.stack),
+            k("error", "uncaught at " + m, e || t.message || t);
+        },
+        j = Object(i.f)(e),
+        C = Object.create(f);
+      T.cancel = o.u;
+      var P = (function(t, e, n, r) {
+          var i, a;
+          return (
+            (n._deferredEnd = null),
+            ((i = {})[o.e] = !0),
+            (i.id = t),
+            (i.name = e),
+            "done",
+            ((a = {}).done = a.done || {}),
+            (a.done.get = function() {
+              if (n._deferredEnd) return n._deferredEnd.promise;
+              var t = Object(o.l)();
+              return (
+                (n._deferredEnd = t),
+                n._isRunning ||
+                  (n._error ? t.reject(n._error) : t.resolve(n._result)),
+                t.promise
+              );
+            }),
+            (i.cont = r),
+            (i.joiners = []),
+            (i.cancel = z),
+            (i.isRunning = function() {
+              return n._isRunning;
+            }),
+            (i.isCancelled = function() {
+              return n._isCancelled;
+            }),
+            (i.isAborted = function() {
+              return n._isAborted;
+            }),
+            (i.result = function() {
+              return n._result;
+            }),
+            (i.error = function() {
+              return n._error;
+            }),
+            (i.setContext = function(t) {
+              Object(o.h)(t, o.q.object, Object(o.k)("task", t)),
+                o.v.assign(C, t);
+            }),
+            (function(t, e) {
+              for (var n in e) {
+                var r = e[n];
+                (r.configurable = r.enumerable = !0),
+                  "value" in r && (r.writable = !0),
+                  Object.defineProperty(t, n, r);
+              }
+            })(i, a),
+            i
+          );
+        })(g, m, t, _),
+        A = {
+          name: m,
+          cancel: function() {
+            A.isRunning && !A.isCancelled && ((A.isCancelled = !0), T(d));
+          },
+          isRunning: !0
+        },
+        I = (function(t, e, n) {
+          var r = [],
+            i = void 0,
+            a = !1;
+          function u(t) {
+            s(), n(t, !0);
+          }
+          function c(t) {
+            r.push(t),
+              (t.cont = function(c, s) {
+                a ||
+                  (Object(o.w)(r, t),
+                  (t.cont = o.u),
+                  s
+                    ? u(c)
+                    : (t === e && (i = c), r.length || ((a = !0), n(i))));
+              });
+          }
+          function s() {
+            a ||
+              ((a = !0),
+              r.forEach(function(t) {
+                (t.cont = o.u), t.cancel();
+              }),
+              (r = []));
+          }
+          return (
+            c(e),
+            {
+              addTask: c,
+              cancelAll: s,
+              abort: u,
+              getTasks: function() {
+                return r;
+              },
+              taskNames: function() {
+                return r.map(function(t) {
+                  return t.name;
+                });
+              }
+            }
+          );
+        })(0, A, M);
+      function z() {
+        t._isRunning &&
+          !t._isCancelled &&
+          ((t._isCancelled = !0), I.cancelAll(), M(d));
+      }
+      return _ && (_.cancel = z), (t._isRunning = !0), T(), P;
+      function T(e, n) {
+        if (!A.isRunning)
+          throw new Error("Trying to resume an already finished generator");
+        try {
+          var r = void 0;
+          n
+            ? (r = t.throw(e))
+            : e === d
+            ? ((A.isCancelled = !0),
+              T.cancel(),
+              (r = o.q.func(t.return) ? t.return(d) : { done: !0, value: d }))
+            : (r =
+                e === p
+                  ? o.q.func(t.return)
+                    ? t.return()
+                    : { done: !0 }
+                  : t.next(e)),
+            r.done
+              ? ((A.isMainRunning = !1), A.cont && A.cont(r.value))
+              : R(r.value, g, "", T);
+        } catch (t) {
+          A.isCancelled && E(t), (A.isMainRunning = !1), A.cont(t, !0);
+        }
+      }
+      function M(e, n) {
+        (t._isRunning = !1),
+          j.close(),
+          n
+            ? (e instanceof Error &&
+                Object.defineProperty(e, "sagaStack", {
+                  value: "at " + m + " \n " + (e.sagaStack || e.stack),
+                  configurable: !0
+                }),
+              P.cont || (e instanceof Error && S ? S(e) : E(e)),
+              (t._error = e),
+              (t._isAborted = !0),
+              t._deferredEnd && t._deferredEnd.reject(e))
+            : ((t._result = e), t._deferredEnd && t._deferredEnd.resolve(e)),
+          P.cont && P.cont(e, n),
+          P.joiners.forEach(function(t) {
+            return t.cb(e, n);
+          }),
+          (P.joiners = null);
+      }
+      function R(t, f) {
+        var l =
+            arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : "",
+          h = arguments[3],
+          b = Object(o.y)();
+        x &&
+          x.effectTriggered({
+            effectId: b,
+            parentEffectId: f,
+            label: l,
+            effect: t
+          });
+        var g = void 0;
+        function _(t, e) {
+          g ||
+            ((g = !0),
+            (h.cancel = o.u),
+            x && (e ? x.effectRejected(b, t) : x.effectResolved(b, t)),
+            h(t, e));
+        }
+        (_.cancel = o.u),
+          (h.cancel = function() {
+            if (!g) {
+              g = !0;
+              try {
+                _.cancel();
+              } catch (t) {
+                E(t);
+              }
+              (_.cancel = o.u), x && x.effectCancelled(b);
+            }
+          });
+        var O = void 0;
+        return o.q.promise(t)
+          ? q(t, _)
+          : o.q.helper(t)
+          ? L(y(t), b, _)
+          : o.q.iterator(t)
+          ? N(t, b, m, _)
+          : o.q.array(t)
+          ? w(t, b, _)
+          : (O = u.d.take(t))
+          ? (function(t, e) {
+              var n = t.channel,
+                r = t.pattern,
+                o = t.maybe;
+              n = n || j;
+              var a = function(t) {
+                return t instanceof Error
+                  ? e(t, !0)
+                  : Object(i.e)(t) && !o
+                  ? e(p)
+                  : e(t);
+              };
+              try {
+                n.take(a, v(r));
+              } catch (t) {
+                return e(t, !0);
+              }
+              e.cancel = a.cancel;
+            })(O, _)
+          : (O = u.d.put(t))
+          ? (function(t, e) {
+              var r = t.channel,
+                i = t.action,
+                u = t.resolve;
+              Object(a.a)(function() {
+                var t = void 0;
+                try {
+                  t = (r ? r.put : n)(i);
+                } catch (t) {
+                  if (r || u) return e(t, !0);
+                  E(t);
+                }
+                if (!u || !o.q.promise(t)) return e(t);
+                q(t, e);
+              });
+            })(O, _)
+          : (O = u.d.all(t))
+          ? D(O, b, _)
+          : (O = u.d.race(t))
+          ? (function(t, e, n) {
+              var r = void 0,
+                a = Object.keys(t),
+                u = {};
+              a.forEach(function(e) {
+                var c = function(u, c) {
+                  if (!r)
+                    if (c) n.cancel(), n(u, !0);
+                    else if (!Object(i.e)(u) && u !== p && u !== d) {
+                      var f;
+                      n.cancel(), (r = !0);
+                      var l = (((f = {})[e] = u), f);
+                      n(
+                        o.q.array(t)
+                          ? [].slice.call(s({}, l, { length: a.length }))
+                          : l
+                      );
+                    }
+                };
+                (c.cancel = o.u), (u[e] = c);
+              }),
+                (n.cancel = function() {
+                  r ||
+                    ((r = !0),
+                    a.forEach(function(t) {
+                      return u[t].cancel();
+                    }));
+                }),
+                a.forEach(function(n) {
+                  r || R(t[n], e, n, u[n]);
+                });
+            })(O, b, _)
+          : (O = u.d.call(t))
+          ? (function(t, e, n) {
+              var r = t.context,
+                i = t.fn,
+                a = t.args,
+                u = void 0;
+              try {
+                u = i.apply(r, a);
+              } catch (t) {
+                return n(t, !0);
+              }
+              return o.q.promise(u)
+                ? q(u, n)
+                : o.q.iterator(u)
+                ? N(u, e, i.name, n)
+                : n(u);
+            })(O, b, _)
+          : (O = u.d.cps(t))
+          ? (function(t, e) {
+              var n = t.context,
+                r = t.fn,
+                i = t.args;
+              try {
+                var a = function(t, n) {
+                  return o.q.undef(t) ? e(n) : e(t, !0);
+                };
+                r.apply(n, i.concat(a)),
+                  a.cancel &&
+                    (e.cancel = function() {
+                      return a.cancel();
+                    });
+              } catch (t) {
+                return e(t, !0);
+              }
+            })(O, _)
+          : (O = u.d.fork(t))
+          ? L(O, b, _)
+          : (O = u.d.join(t))
+          ? (function(t, e) {
+              if (t.isRunning()) {
+                var n = { task: P, cb: e };
+                (e.cancel = function() {
+                  return Object(o.w)(t.joiners, n);
+                }),
+                  t.joiners.push(n);
+              } else t.isAborted() ? e(t.error(), !0) : e(t.result());
+            })(O, _)
+          : (O = u.d.cancel(t))
+          ? (function(t, e) {
+              t === o.d && (t = P);
+              t.isRunning() && t.cancel();
+              e();
+            })(O, _)
+          : (O = u.d.select(t))
+          ? (function(t, e) {
+              var n = t.selector,
+                o = t.args;
+              try {
+                var i = n.apply(void 0, [r()].concat(o));
+                e(i);
+              } catch (t) {
+                e(t, !0);
+              }
+            })(O, _)
+          : (O = u.d.actionChannel(t))
+          ? (function(t, n) {
+              var r = t.pattern,
+                o = t.buffer,
+                a = v(r);
+              (a.pattern = r), n(Object(i.d)(e, o || c.a.fixed(), a));
+            })(O, _)
+          : (O = u.d.flush(t))
+          ? (function(t, e) {
+              t.flush(e);
+            })(O, _)
+          : (O = u.d.cancelled(t))
+          ? (function(t, e) {
+              e(!!A.isCancelled);
+            })(0, _)
+          : (O = u.d.getContext(t))
+          ? (function(t, e) {
+              e(C[t]);
+            })(O, _)
+          : (O = u.d.setContext(t))
+          ? (function(t, e) {
+              o.v.assign(C, t), e();
+            })(O, _)
+          : _(t);
+      }
+      function q(t, e) {
+        var n = t[o.a];
+        o.q.func(n)
+          ? (e.cancel = n)
+          : o.q.func(t.abort) &&
+            (e.cancel = function() {
+              return t.abort();
+            }),
+          t.then(e, function(t) {
+            return e(t, !0);
+          });
+      }
+      function N(t, o, i, a) {
+        b(t, e, n, r, C, h, o, i, a);
+      }
+      function L(t, i, u) {
+        var c = t.context,
+          s = t.fn,
+          f = t.args,
+          l = t.detached,
+          p = (function(t) {
+            var e = t.context,
+              n = t.fn,
+              r = t.args;
+            if (o.q.iterator(n)) return n;
+            var i,
+              a,
+              u = void 0,
+              c = void 0;
+            try {
+              u = n.apply(e, r);
+            } catch (t) {
+              c = t;
+            }
+            return o.q.iterator(u)
+              ? u
+              : c
+              ? Object(o.t)(function() {
+                  throw c;
+                })
+              : Object(o.t)(
+                  ((i = void 0),
+                  (a = { done: !1, value: u }),
+                  function(t) {
+                    return i ? { done: !0, value: t } : ((i = !0), a);
+                  })
+                );
+          })({ context: c, fn: s, args: f });
+        try {
+          Object(a.c)();
+          var d = b(p, e, n, r, C, h, i, s.name, l ? null : o.u);
+          l
+            ? u(d)
+            : p._isRunning
+            ? (I.addTask(d), u(d))
+            : p._error
+            ? I.abort(p._error)
+            : u(d);
+        } finally {
+          Object(a.b)();
+        }
+      }
+      function D(t, e, n) {
+        var r = Object.keys(t);
+        if (!r.length) return n(o.q.array(t) ? [] : {});
+        var a = 0,
+          u = void 0,
+          c = {},
+          f = {};
+        r.forEach(function(e) {
+          var l = function(f, l) {
+            u ||
+              (l || Object(i.e)(f) || f === p || f === d
+                ? (n.cancel(), n(f, l))
+                : ((c[e] = f),
+                  ++a === r.length &&
+                    ((u = !0),
+                    n(
+                      o.q.array(t)
+                        ? o.f.from(s({}, c, { length: r.length }))
+                        : c
+                    ))));
+          };
+          (l.cancel = o.u), (f[e] = l);
+        }),
+          (n.cancel = function() {
+            u ||
+              ((u = !0),
+              r.forEach(function(t) {
+                return f[t].cancel();
+              }));
+          }),
+          r.forEach(function(n) {
+            return R(t[n], e, n, f[n]);
+          });
+      }
+    }
+    var g =
+      "runSaga(storeInterface, saga, ...args): saga argument must be a Generator function!";
+    function m(t, e) {
+      for (
+        var n = arguments.length, r = Array(n > 2 ? n - 2 : 0), i = 2;
+        i < n;
+        i++
+      )
+        r[i - 2] = arguments[i];
+      var a = void 0;
+      o.q.iterator(t)
+        ? ((a = t), (t = e))
+        : (Object(o.h)(e, o.q.func, g),
+          (a = e.apply(void 0, r)),
+          Object(o.h)(a, o.q.iterator, g));
+      var u = t,
+        c = u.subscribe,
+        s = u.dispatch,
+        f = u.getState,
+        l = u.context,
+        p = u.sagaMonitor,
+        d = u.logger,
+        h = u.onError,
+        v = Object(o.y)();
+      p &&
+        ((p.effectTriggered = p.effectTriggered || o.u),
+        (p.effectResolved = p.effectResolved || o.u),
+        (p.effectRejected = p.effectRejected || o.u),
+        (p.effectCancelled = p.effectCancelled || o.u),
+        (p.actionDispatched = p.actionDispatched || o.u),
+        p.effectTriggered({
+          effectId: v,
+          root: !0,
+          parentEffectId: 0,
+          effect: { root: !0, saga: e, args: r }
+        }));
+      var y = b(
+        a,
+        c,
+        Object(o.A)(s),
+        f,
+        l,
+        { sagaMonitor: p, logger: d, onError: h },
+        v,
+        e.name
+      );
+      return p && p.effectResolved(v, y), y;
+    }
+    var _ = n(10),
+      w = n(24);
+    n.d(e, "runSaga", function() {
+      return m;
+    }),
+      n.d(e, "END", function() {
+        return i.a;
+      }),
+      n.d(e, "eventChannel", function() {
+        return i.d;
+      }),
+      n.d(e, "channel", function() {
+        return i.b;
+      }),
+      n.d(e, "buffers", function() {
+        return c.a;
+      }),
+      n.d(e, "takeEvery", function() {
+        return _.a;
+      }),
+      n.d(e, "takeLatest", function() {
+        return _.c;
+      }),
+      n.d(e, "throttle", function() {
+        return _.e;
+      }),
+      n.d(e, "delay", function() {
+        return o.m;
+      }),
+      n.d(e, "CANCEL", function() {
+        return o.a;
+      }),
+      n.d(e, "detach", function() {
+        return u.i;
+      }),
+      n.d(e, "effects", function() {
+        return w;
+      }),
+      n.d(e, "utils", function() {
+        return r;
+      });
+    e.default = function() {
+      var t =
+          arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {},
+        e = t.context,
+        n = void 0 === e ? {} : e,
+        r = (function(t, e) {
+          var n = {};
+          for (var r in t)
+            e.indexOf(r) >= 0 ||
+              (Object.prototype.hasOwnProperty.call(t, r) && (n[r] = t[r]));
+          return n;
+        })(t, ["context"]),
+        a = r.sagaMonitor,
+        u = r.logger,
+        c = r.onError;
+      if (o.q.func(r))
+        throw new Error(
+          "Saga middleware no longer accept Generator functions. Use sagaMiddleware.run instead"
+        );
+      if (u && !o.q.func(u))
+        throw new Error(
+          "`options.logger` passed to the Saga middleware is not a function!"
+        );
+      if (c && !o.q.func(c))
+        throw new Error(
+          "`options.onError` passed to the Saga middleware is not a function!"
+        );
+      if (r.emitter && !o.q.func(r.emitter))
+        throw new Error(
+          "`options.emitter` passed to the Saga middleware is not a function!"
+        );
+      function s(t) {
+        var e = t.getState,
+          f = t.dispatch,
+          l = Object(i.c)();
+        return (
+          (l.emit = (r.emitter || o.o)(l.emit)),
+          (s.run = m.bind(null, {
+            context: n,
+            subscribe: l.subscribe,
+            dispatch: f,
+            getState: e,
+            sagaMonitor: a,
+            logger: u,
+            onError: c
+          })),
+          function(t) {
+            return function(e) {
+              a && a.actionDispatched && a.actionDispatched(e);
+              var n = t(e);
+              return l.emit(e), n;
+            };
+          }
+        );
+      }
+      return (
+        (s.run = function() {
+          throw new Error(
+            "Before running a Saga, you must mount the Saga middleware on the Store using applyMiddleware"
+          );
+        }),
+        (s.setContext = function(t) {
+          Object(o.h)(t, o.q.object, Object(o.k)("sagaMiddleware", t)),
+            o.v.assign(n, t);
+        }),
+        s
+      );
+    };
+  },
+  function(t, e, n) {
+    "use strict";
+    function r(t) {
+      var e,
+        n = t.Symbol;
+      return (
+        "function" == typeof n
+          ? n.observable
+            ? (e = n.observable)
+            : ((e = n("observable")), (n.observable = e))
+          : (e = "@@observable"),
+        e
+      );
+    }
+    n.d(e, "a", function() {
+      return r;
+    });
+  },
+  function(t, e, n) {
+    "use strict";
+    var r = n(57),
+      o = /^ms-/;
+    t.exports = function(t) {
+      return r(t).replace(o, "-ms-");
+    };
+  },
+  function(t, e, n) {
+    t.exports = (function() {
+      "use strict";
+      return function(t) {
+        function e(e) {
+          if (e)
+            try {
+              t(e + "}");
+            } catch (t) {}
+        }
+        return function(n, r, o, i, a, u, c, s, f, l) {
+          switch (n) {
+            case 1:
+              if (0 === f && 64 === r.charCodeAt(0)) return t(r + ";"), "";
+              break;
+            case 2:
+              if (0 === s) return r + "/*|*/";
+              break;
+            case 3:
+              switch (s) {
+                case 102:
+                case 112:
+                  return t(o[0] + r), "";
+                default:
+                  return r + (0 === l ? "/*|*/" : "");
+              }
+            case -2:
+              r.split("/*|*/}").forEach(e);
+          }
+        };
+      };
+    })();
+  },
+  function(t, e, n) {
+    "use strict";
+    var r = n(19),
+      o = {
+        childContextTypes: !0,
+        contextType: !0,
+        contextTypes: !0,
+        defaultProps: !0,
+        displayName: !0,
+        getDefaultProps: !0,
+        getDerivedStateFromError: !0,
+        getDerivedStateFromProps: !0,
+        mixins: !0,
+        propTypes: !0,
+        type: !0
+      },
+      i = {
+        name: !0,
+        length: !0,
+        prototype: !0,
+        caller: !0,
+        callee: !0,
+        arguments: !0,
+        arity: !0
+      },
+      a = {};
+    a[r.ForwardRef] = {
+      $$typeof: !0,
+      render: !0,
+      defaultProps: !0,
+      displayName: !0,
+      propTypes: !0
+    };
+    var u = Object.defineProperty,
+      c = Object.getOwnPropertyNames,
+      s = Object.getOwnPropertySymbols,
+      f = Object.getOwnPropertyDescriptor,
+      l = Object.getPrototypeOf,
+      p = Object.prototype;
+    t.exports = function t(e, n, r) {
+      if ("string" != typeof n) {
+        if (p) {
+          var d = l(n);
+          d && d !== p && t(e, d, r);
+        }
+        var h = c(n);
+        s && (h = h.concat(s(n)));
+        for (
+          var v = a[e.$$typeof] || o, y = a[n.$$typeof] || o, b = 0;
+          b < h.length;
+          ++b
+        ) {
+          var g = h[b];
+          if (!(i[g] || (r && r[g]) || (y && y[g]) || (v && v[g]))) {
+            var m = f(n, g);
+            try {
+              u(e, g, m);
+            } catch (t) {}
+          }
+        }
+        return e;
+      }
+      return e;
+    };
+  },
+  function(t, e) {
+    t.exports = function(t, e) {
+      return function n() {
+        null == e && (e = t.length);
+        var r = [].slice.call(arguments);
+        return r.length >= e
+          ? t.apply(this, r)
+          : function() {
+              return n.apply(this, r.concat([].slice.call(arguments)));
+            };
+      };
+    };
+  },
+  ,
+  function(t, e, n) {
+    "use strict";
+    /*
+object-assign
+(c) Sindre Sorhus
+@license MIT
+*/ var r =
+        Object.getOwnPropertySymbols,
+      o = Object.prototype.hasOwnProperty,
+      i = Object.prototype.propertyIsEnumerable;
+    t.exports = (function() {
+      try {
+        if (!Object.assign) return !1;
+        var t = new String("abc");
+        if (((t[5] = "de"), "5" === Object.getOwnPropertyNames(t)[0]))
+          return !1;
+        for (var e = {}, n = 0; n < 10; n++)
+          e["_" + String.fromCharCode(n)] = n;
+        if (
+          "0123456789" !==
+          Object.getOwnPropertyNames(e)
+            .map(function(t) {
+              return e[t];
+            })
+            .join("")
+        )
+          return !1;
+        var r = {};
+        return (
+          "abcdefghijklmnopqrst".split("").forEach(function(t) {
+            r[t] = t;
+          }),
+          "abcdefghijklmnopqrst" === Object.keys(Object.assign({}, r)).join("")
+        );
+      } catch (t) {
+        return !1;
+      }
+    })()
+      ? Object.assign
+      : function(t, e) {
+          for (
+            var n,
+              a,
+              u = (function(t) {
+                if (null == t)
+                  throw new TypeError(
+                    "Object.assign cannot be called with null or undefined"
+                  );
+                return Object(t);
+              })(t),
+              c = 1;
+            c < arguments.length;
+            c++
+          ) {
+            for (var s in (n = Object(arguments[c])))
+              o.call(n, s) && (u[s] = n[s]);
+            if (r) {
+              a = r(n);
+              for (var f = 0; f < a.length; f++)
+                i.call(n, a[f]) && (u[a[f]] = n[a[f]]);
+            }
+          }
+          return u;
+        };
+  },
+  ,
   function(t, e, n) {
     t.exports = (function() {
       "use strict";
@@ -9339,1035 +10368,6 @@
   function(t, e, n) {
     "use strict";
     Object.defineProperty(e, "__esModule", { value: !0 });
-    var r,
-      o,
-      i,
-      a = ((r = [
-        "\n\tdisplay: ",
-        " !important;\n\tposition: absolute;\n\tright: 20px;\n\ttop: 8px;\n\tfont-size: 14px;\n\tline-height: 1;\n\tcolor: #cbcbcb;\n\tuser-select: none;\n\ttransition: opacity 150ms ease;\n"
-      ]),
-      (o = [
-        "\n\tdisplay: ",
-        " !important;\n\tposition: absolute;\n\tright: 20px;\n\ttop: 8px;\n\tfont-size: 14px;\n\tline-height: 1;\n\tcolor: #cbcbcb;\n\tuser-select: none;\n\ttransition: opacity 150ms ease;\n"
-      ]),
-      Object.freeze(
-        Object.defineProperties(r, { raw: { value: Object.freeze(o) } })
-      )),
-      u = n(4);
-    var c = ((i = u) && i.__esModule ? i : { default: i }).default.i(
-      a,
-      function(t) {
-        return t.local ? "none" : "inline-block";
-      }
-    );
-    e.default = c;
-  },
-  function(t, e, n) {
-    "use strict";
-    Object.defineProperty(e, "__esModule", { value: !0 });
-    var r,
-      o,
-      i,
-      a = ((r = [
-        "\n  padding: 4px 8px;\n  box-sizing: border-box;\n  position: relative;\n  margin: 0 auto;\n  min-height: 32px;\n  color: rgb(102, 102, 102);\n"
-      ]),
-      (o = [
-        "\n  padding: 4px 8px;\n  box-sizing: border-box;\n  position: relative;\n  margin: 0 auto;\n  min-height: 32px;\n  color: rgb(102, 102, 102);\n"
-      ]),
-      Object.freeze(
-        Object.defineProperties(r, { raw: { value: Object.freeze(o) } })
-      )),
-      u = n(4);
-    var c = ((i = u) && i.__esModule ? i : { default: i }).default.div(a);
-    e.default = c;
-  },
-  function(t, e, n) {
-    "use strict";
-    Object.defineProperty(e, "__esModule", { value: !0 });
-    var r,
-      o,
-      i,
-      a = ((r = [
-        '\n  display: inline-block;\n  position: relative;\n  box-sizing: border-box;\n  max-width: 180px;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  margin-top: 4px;\n  min-height: 16px;\n  line-height: 16px;\n  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,\n    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;\n  font-weight: 600;\n  font-size: 12px;\n  -moz-user-select: none;\n  hyphens: auto;\n'
-      ]),
-      (o = [
-        '\n  display: inline-block;\n  position: relative;\n  box-sizing: border-box;\n  max-width: 180px;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  margin-top: 4px;\n  min-height: 16px;\n  line-height: 16px;\n  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,\n    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;\n  font-weight: 600;\n  font-size: 12px;\n  -moz-user-select: none;\n  hyphens: auto;\n'
-      ]),
-      Object.freeze(
-        Object.defineProperties(r, { raw: { value: Object.freeze(o) } })
-      )),
-      u = n(4);
-    var c = ((i = u) && i.__esModule ? i : { default: i }).default.div(a);
-    e.default = c;
-  },
-  function(t, e, n) {
-    "use strict";
-    n.r(e);
-    var r = {};
-    n.r(r),
-      n.d(r, "TASK", function() {
-        return o.e;
-      }),
-      n.d(r, "SAGA_ACTION", function() {
-        return o.c;
-      }),
-      n.d(r, "noop", function() {
-        return o.u;
-      }),
-      n.d(r, "is", function() {
-        return o.q;
-      }),
-      n.d(r, "deferred", function() {
-        return o.l;
-      }),
-      n.d(r, "arrayOfDeffered", function() {
-        return o.g;
-      }),
-      n.d(r, "createMockTask", function() {
-        return o.j;
-      }),
-      n.d(r, "cloneableGenerator", function() {
-        return o.i;
-      }),
-      n.d(r, "asEffect", function() {
-        return u.d;
-      }),
-      n.d(r, "CHANNEL_END", function() {
-        return p;
-      });
-    var o = n(0),
-      i = n(7),
-      a = n(14),
-      u = n(2),
-      c = n(9),
-      s =
-        Object.assign ||
-        function(t) {
-          for (var e = 1; e < arguments.length; e++) {
-            var n = arguments[e];
-            for (var r in n)
-              Object.prototype.hasOwnProperty.call(n, r) && (t[r] = n[r]);
-          }
-          return t;
-        },
-      f =
-        "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
-          ? function(t) {
-              return typeof t;
-            }
-          : function(t) {
-              return t &&
-                "function" == typeof Symbol &&
-                t.constructor === Symbol &&
-                t !== Symbol.prototype
-                ? "symbol"
-                : typeof t;
-            };
-    var l = "proc first argument (Saga function result) must be an iterator",
-      p = {
-        toString: function() {
-          return "@@redux-saga/CHANNEL_END";
-        }
-      },
-      d = {
-        toString: function() {
-          return "@@redux-saga/TASK_CANCEL";
-        }
-      },
-      h = {
-        wildcard: function() {
-          return o.r;
-        },
-        default: function(t) {
-          return "symbol" === (void 0 === t ? "undefined" : f(t))
-            ? function(e) {
-                return e.type === t;
-              }
-            : function(e) {
-                return e.type === String(t);
-              };
-        },
-        array: function(t) {
-          return function(e) {
-            return t.some(function(t) {
-              return v(t)(e);
-            });
-          };
-        },
-        predicate: function(t) {
-          return function(e) {
-            return t(e);
-          };
-        }
-      };
-    function v(t) {
-      return ("*" === t
-        ? h.wildcard
-        : o.q.array(t)
-        ? h.array
-        : o.q.stringableFunc(t)
-        ? h.default
-        : o.q.func(t)
-        ? h.predicate
-        : h.default)(t);
-    }
-    var y = function(t) {
-      return { fn: t };
-    };
-    function b(t) {
-      var e =
-          arguments.length > 1 && void 0 !== arguments[1]
-            ? arguments[1]
-            : function() {
-                return o.u;
-              },
-        n =
-          arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : o.u,
-        r =
-          arguments.length > 3 && void 0 !== arguments[3] ? arguments[3] : o.u,
-        f = arguments.length > 4 && void 0 !== arguments[4] ? arguments[4] : {},
-        h = arguments.length > 5 && void 0 !== arguments[5] ? arguments[5] : {},
-        g = arguments.length > 6 && void 0 !== arguments[6] ? arguments[6] : 0,
-        m =
-          arguments.length > 7 && void 0 !== arguments[7]
-            ? arguments[7]
-            : "anonymous",
-        _ = arguments[8];
-      Object(o.h)(t, o.q.iterator, l);
-      var w = Object(o.n)(D, Object(o.z)("[...effects]", "all([...effects])")),
-        x = h.sagaMonitor,
-        O = h.logger,
-        S = h.onError,
-        k = O || o.s,
-        E = function(t) {
-          var e = t.sagaStack;
-          !e &&
-            t.stack &&
-            (e =
-              -1 !== t.stack.split("\n")[0].indexOf(t.message)
-                ? t.stack
-                : "Error: " + t.message + "\n" + t.stack),
-            k("error", "uncaught at " + m, e || t.message || t);
-        },
-        j = Object(i.f)(e),
-        C = Object.create(f);
-      T.cancel = o.u;
-      var P = (function(t, e, n, r) {
-          var i, a;
-          return (
-            (n._deferredEnd = null),
-            ((i = {})[o.e] = !0),
-            (i.id = t),
-            (i.name = e),
-            "done",
-            ((a = {}).done = a.done || {}),
-            (a.done.get = function() {
-              if (n._deferredEnd) return n._deferredEnd.promise;
-              var t = Object(o.l)();
-              return (
-                (n._deferredEnd = t),
-                n._isRunning ||
-                  (n._error ? t.reject(n._error) : t.resolve(n._result)),
-                t.promise
-              );
-            }),
-            (i.cont = r),
-            (i.joiners = []),
-            (i.cancel = z),
-            (i.isRunning = function() {
-              return n._isRunning;
-            }),
-            (i.isCancelled = function() {
-              return n._isCancelled;
-            }),
-            (i.isAborted = function() {
-              return n._isAborted;
-            }),
-            (i.result = function() {
-              return n._result;
-            }),
-            (i.error = function() {
-              return n._error;
-            }),
-            (i.setContext = function(t) {
-              Object(o.h)(t, o.q.object, Object(o.k)("task", t)),
-                o.v.assign(C, t);
-            }),
-            (function(t, e) {
-              for (var n in e) {
-                var r = e[n];
-                (r.configurable = r.enumerable = !0),
-                  "value" in r && (r.writable = !0),
-                  Object.defineProperty(t, n, r);
-              }
-            })(i, a),
-            i
-          );
-        })(g, m, t, _),
-        A = {
-          name: m,
-          cancel: function() {
-            A.isRunning && !A.isCancelled && ((A.isCancelled = !0), T(d));
-          },
-          isRunning: !0
-        },
-        I = (function(t, e, n) {
-          var r = [],
-            i = void 0,
-            a = !1;
-          function u(t) {
-            s(), n(t, !0);
-          }
-          function c(t) {
-            r.push(t),
-              (t.cont = function(c, s) {
-                a ||
-                  (Object(o.w)(r, t),
-                  (t.cont = o.u),
-                  s
-                    ? u(c)
-                    : (t === e && (i = c), r.length || ((a = !0), n(i))));
-              });
-          }
-          function s() {
-            a ||
-              ((a = !0),
-              r.forEach(function(t) {
-                (t.cont = o.u), t.cancel();
-              }),
-              (r = []));
-          }
-          return (
-            c(e),
-            {
-              addTask: c,
-              cancelAll: s,
-              abort: u,
-              getTasks: function() {
-                return r;
-              },
-              taskNames: function() {
-                return r.map(function(t) {
-                  return t.name;
-                });
-              }
-            }
-          );
-        })(0, A, M);
-      function z() {
-        t._isRunning &&
-          !t._isCancelled &&
-          ((t._isCancelled = !0), I.cancelAll(), M(d));
-      }
-      return _ && (_.cancel = z), (t._isRunning = !0), T(), P;
-      function T(e, n) {
-        if (!A.isRunning)
-          throw new Error("Trying to resume an already finished generator");
-        try {
-          var r = void 0;
-          n
-            ? (r = t.throw(e))
-            : e === d
-            ? ((A.isCancelled = !0),
-              T.cancel(),
-              (r = o.q.func(t.return) ? t.return(d) : { done: !0, value: d }))
-            : (r =
-                e === p
-                  ? o.q.func(t.return)
-                    ? t.return()
-                    : { done: !0 }
-                  : t.next(e)),
-            r.done
-              ? ((A.isMainRunning = !1), A.cont && A.cont(r.value))
-              : R(r.value, g, "", T);
-        } catch (t) {
-          A.isCancelled && E(t), (A.isMainRunning = !1), A.cont(t, !0);
-        }
-      }
-      function M(e, n) {
-        (t._isRunning = !1),
-          j.close(),
-          n
-            ? (e instanceof Error &&
-                Object.defineProperty(e, "sagaStack", {
-                  value: "at " + m + " \n " + (e.sagaStack || e.stack),
-                  configurable: !0
-                }),
-              P.cont || (e instanceof Error && S ? S(e) : E(e)),
-              (t._error = e),
-              (t._isAborted = !0),
-              t._deferredEnd && t._deferredEnd.reject(e))
-            : ((t._result = e), t._deferredEnd && t._deferredEnd.resolve(e)),
-          P.cont && P.cont(e, n),
-          P.joiners.forEach(function(t) {
-            return t.cb(e, n);
-          }),
-          (P.joiners = null);
-      }
-      function R(t, f) {
-        var l =
-            arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : "",
-          h = arguments[3],
-          b = Object(o.y)();
-        x &&
-          x.effectTriggered({
-            effectId: b,
-            parentEffectId: f,
-            label: l,
-            effect: t
-          });
-        var g = void 0;
-        function _(t, e) {
-          g ||
-            ((g = !0),
-            (h.cancel = o.u),
-            x && (e ? x.effectRejected(b, t) : x.effectResolved(b, t)),
-            h(t, e));
-        }
-        (_.cancel = o.u),
-          (h.cancel = function() {
-            if (!g) {
-              g = !0;
-              try {
-                _.cancel();
-              } catch (t) {
-                E(t);
-              }
-              (_.cancel = o.u), x && x.effectCancelled(b);
-            }
-          });
-        var O = void 0;
-        return o.q.promise(t)
-          ? q(t, _)
-          : o.q.helper(t)
-          ? L(y(t), b, _)
-          : o.q.iterator(t)
-          ? N(t, b, m, _)
-          : o.q.array(t)
-          ? w(t, b, _)
-          : (O = u.d.take(t))
-          ? (function(t, e) {
-              var n = t.channel,
-                r = t.pattern,
-                o = t.maybe;
-              n = n || j;
-              var a = function(t) {
-                return t instanceof Error
-                  ? e(t, !0)
-                  : Object(i.e)(t) && !o
-                  ? e(p)
-                  : e(t);
-              };
-              try {
-                n.take(a, v(r));
-              } catch (t) {
-                return e(t, !0);
-              }
-              e.cancel = a.cancel;
-            })(O, _)
-          : (O = u.d.put(t))
-          ? (function(t, e) {
-              var r = t.channel,
-                i = t.action,
-                u = t.resolve;
-              Object(a.a)(function() {
-                var t = void 0;
-                try {
-                  t = (r ? r.put : n)(i);
-                } catch (t) {
-                  if (r || u) return e(t, !0);
-                  E(t);
-                }
-                if (!u || !o.q.promise(t)) return e(t);
-                q(t, e);
-              });
-            })(O, _)
-          : (O = u.d.all(t))
-          ? D(O, b, _)
-          : (O = u.d.race(t))
-          ? (function(t, e, n) {
-              var r = void 0,
-                a = Object.keys(t),
-                u = {};
-              a.forEach(function(e) {
-                var c = function(u, c) {
-                  if (!r)
-                    if (c) n.cancel(), n(u, !0);
-                    else if (!Object(i.e)(u) && u !== p && u !== d) {
-                      var f;
-                      n.cancel(), (r = !0);
-                      var l = (((f = {})[e] = u), f);
-                      n(
-                        o.q.array(t)
-                          ? [].slice.call(s({}, l, { length: a.length }))
-                          : l
-                      );
-                    }
-                };
-                (c.cancel = o.u), (u[e] = c);
-              }),
-                (n.cancel = function() {
-                  r ||
-                    ((r = !0),
-                    a.forEach(function(t) {
-                      return u[t].cancel();
-                    }));
-                }),
-                a.forEach(function(n) {
-                  r || R(t[n], e, n, u[n]);
-                });
-            })(O, b, _)
-          : (O = u.d.call(t))
-          ? (function(t, e, n) {
-              var r = t.context,
-                i = t.fn,
-                a = t.args,
-                u = void 0;
-              try {
-                u = i.apply(r, a);
-              } catch (t) {
-                return n(t, !0);
-              }
-              return o.q.promise(u)
-                ? q(u, n)
-                : o.q.iterator(u)
-                ? N(u, e, i.name, n)
-                : n(u);
-            })(O, b, _)
-          : (O = u.d.cps(t))
-          ? (function(t, e) {
-              var n = t.context,
-                r = t.fn,
-                i = t.args;
-              try {
-                var a = function(t, n) {
-                  return o.q.undef(t) ? e(n) : e(t, !0);
-                };
-                r.apply(n, i.concat(a)),
-                  a.cancel &&
-                    (e.cancel = function() {
-                      return a.cancel();
-                    });
-              } catch (t) {
-                return e(t, !0);
-              }
-            })(O, _)
-          : (O = u.d.fork(t))
-          ? L(O, b, _)
-          : (O = u.d.join(t))
-          ? (function(t, e) {
-              if (t.isRunning()) {
-                var n = { task: P, cb: e };
-                (e.cancel = function() {
-                  return Object(o.w)(t.joiners, n);
-                }),
-                  t.joiners.push(n);
-              } else t.isAborted() ? e(t.error(), !0) : e(t.result());
-            })(O, _)
-          : (O = u.d.cancel(t))
-          ? (function(t, e) {
-              t === o.d && (t = P);
-              t.isRunning() && t.cancel();
-              e();
-            })(O, _)
-          : (O = u.d.select(t))
-          ? (function(t, e) {
-              var n = t.selector,
-                o = t.args;
-              try {
-                var i = n.apply(void 0, [r()].concat(o));
-                e(i);
-              } catch (t) {
-                e(t, !0);
-              }
-            })(O, _)
-          : (O = u.d.actionChannel(t))
-          ? (function(t, n) {
-              var r = t.pattern,
-                o = t.buffer,
-                a = v(r);
-              (a.pattern = r), n(Object(i.d)(e, o || c.a.fixed(), a));
-            })(O, _)
-          : (O = u.d.flush(t))
-          ? (function(t, e) {
-              t.flush(e);
-            })(O, _)
-          : (O = u.d.cancelled(t))
-          ? (function(t, e) {
-              e(!!A.isCancelled);
-            })(0, _)
-          : (O = u.d.getContext(t))
-          ? (function(t, e) {
-              e(C[t]);
-            })(O, _)
-          : (O = u.d.setContext(t))
-          ? (function(t, e) {
-              o.v.assign(C, t), e();
-            })(O, _)
-          : _(t);
-      }
-      function q(t, e) {
-        var n = t[o.a];
-        o.q.func(n)
-          ? (e.cancel = n)
-          : o.q.func(t.abort) &&
-            (e.cancel = function() {
-              return t.abort();
-            }),
-          t.then(e, function(t) {
-            return e(t, !0);
-          });
-      }
-      function N(t, o, i, a) {
-        b(t, e, n, r, C, h, o, i, a);
-      }
-      function L(t, i, u) {
-        var c = t.context,
-          s = t.fn,
-          f = t.args,
-          l = t.detached,
-          p = (function(t) {
-            var e = t.context,
-              n = t.fn,
-              r = t.args;
-            if (o.q.iterator(n)) return n;
-            var i,
-              a,
-              u = void 0,
-              c = void 0;
-            try {
-              u = n.apply(e, r);
-            } catch (t) {
-              c = t;
-            }
-            return o.q.iterator(u)
-              ? u
-              : c
-              ? Object(o.t)(function() {
-                  throw c;
-                })
-              : Object(o.t)(
-                  ((i = void 0),
-                  (a = { done: !1, value: u }),
-                  function(t) {
-                    return i ? { done: !0, value: t } : ((i = !0), a);
-                  })
-                );
-          })({ context: c, fn: s, args: f });
-        try {
-          Object(a.c)();
-          var d = b(p, e, n, r, C, h, i, s.name, l ? null : o.u);
-          l
-            ? u(d)
-            : p._isRunning
-            ? (I.addTask(d), u(d))
-            : p._error
-            ? I.abort(p._error)
-            : u(d);
-        } finally {
-          Object(a.b)();
-        }
-      }
-      function D(t, e, n) {
-        var r = Object.keys(t);
-        if (!r.length) return n(o.q.array(t) ? [] : {});
-        var a = 0,
-          u = void 0,
-          c = {},
-          f = {};
-        r.forEach(function(e) {
-          var l = function(f, l) {
-            u ||
-              (l || Object(i.e)(f) || f === p || f === d
-                ? (n.cancel(), n(f, l))
-                : ((c[e] = f),
-                  ++a === r.length &&
-                    ((u = !0),
-                    n(
-                      o.q.array(t)
-                        ? o.f.from(s({}, c, { length: r.length }))
-                        : c
-                    ))));
-          };
-          (l.cancel = o.u), (f[e] = l);
-        }),
-          (n.cancel = function() {
-            u ||
-              ((u = !0),
-              r.forEach(function(t) {
-                return f[t].cancel();
-              }));
-          }),
-          r.forEach(function(n) {
-            return R(t[n], e, n, f[n]);
-          });
-      }
-    }
-    var g =
-      "runSaga(storeInterface, saga, ...args): saga argument must be a Generator function!";
-    function m(t, e) {
-      for (
-        var n = arguments.length, r = Array(n > 2 ? n - 2 : 0), i = 2;
-        i < n;
-        i++
-      )
-        r[i - 2] = arguments[i];
-      var a = void 0;
-      o.q.iterator(t)
-        ? ((a = t), (t = e))
-        : (Object(o.h)(e, o.q.func, g),
-          (a = e.apply(void 0, r)),
-          Object(o.h)(a, o.q.iterator, g));
-      var u = t,
-        c = u.subscribe,
-        s = u.dispatch,
-        f = u.getState,
-        l = u.context,
-        p = u.sagaMonitor,
-        d = u.logger,
-        h = u.onError,
-        v = Object(o.y)();
-      p &&
-        ((p.effectTriggered = p.effectTriggered || o.u),
-        (p.effectResolved = p.effectResolved || o.u),
-        (p.effectRejected = p.effectRejected || o.u),
-        (p.effectCancelled = p.effectCancelled || o.u),
-        (p.actionDispatched = p.actionDispatched || o.u),
-        p.effectTriggered({
-          effectId: v,
-          root: !0,
-          parentEffectId: 0,
-          effect: { root: !0, saga: e, args: r }
-        }));
-      var y = b(
-        a,
-        c,
-        Object(o.A)(s),
-        f,
-        l,
-        { sagaMonitor: p, logger: d, onError: h },
-        v,
-        e.name
-      );
-      return p && p.effectResolved(v, y), y;
-    }
-    var _ = n(10),
-      w = n(24);
-    n.d(e, "runSaga", function() {
-      return m;
-    }),
-      n.d(e, "END", function() {
-        return i.a;
-      }),
-      n.d(e, "eventChannel", function() {
-        return i.d;
-      }),
-      n.d(e, "channel", function() {
-        return i.b;
-      }),
-      n.d(e, "buffers", function() {
-        return c.a;
-      }),
-      n.d(e, "takeEvery", function() {
-        return _.a;
-      }),
-      n.d(e, "takeLatest", function() {
-        return _.c;
-      }),
-      n.d(e, "throttle", function() {
-        return _.e;
-      }),
-      n.d(e, "delay", function() {
-        return o.m;
-      }),
-      n.d(e, "CANCEL", function() {
-        return o.a;
-      }),
-      n.d(e, "detach", function() {
-        return u.i;
-      }),
-      n.d(e, "effects", function() {
-        return w;
-      }),
-      n.d(e, "utils", function() {
-        return r;
-      });
-    e.default = function() {
-      var t =
-          arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {},
-        e = t.context,
-        n = void 0 === e ? {} : e,
-        r = (function(t, e) {
-          var n = {};
-          for (var r in t)
-            e.indexOf(r) >= 0 ||
-              (Object.prototype.hasOwnProperty.call(t, r) && (n[r] = t[r]));
-          return n;
-        })(t, ["context"]),
-        a = r.sagaMonitor,
-        u = r.logger,
-        c = r.onError;
-      if (o.q.func(r))
-        throw new Error(
-          "Saga middleware no longer accept Generator functions. Use sagaMiddleware.run instead"
-        );
-      if (u && !o.q.func(u))
-        throw new Error(
-          "`options.logger` passed to the Saga middleware is not a function!"
-        );
-      if (c && !o.q.func(c))
-        throw new Error(
-          "`options.onError` passed to the Saga middleware is not a function!"
-        );
-      if (r.emitter && !o.q.func(r.emitter))
-        throw new Error(
-          "`options.emitter` passed to the Saga middleware is not a function!"
-        );
-      function s(t) {
-        var e = t.getState,
-          f = t.dispatch,
-          l = Object(i.c)();
-        return (
-          (l.emit = (r.emitter || o.o)(l.emit)),
-          (s.run = m.bind(null, {
-            context: n,
-            subscribe: l.subscribe,
-            dispatch: f,
-            getState: e,
-            sagaMonitor: a,
-            logger: u,
-            onError: c
-          })),
-          function(t) {
-            return function(e) {
-              a && a.actionDispatched && a.actionDispatched(e);
-              var n = t(e);
-              return l.emit(e), n;
-            };
-          }
-        );
-      }
-      return (
-        (s.run = function() {
-          throw new Error(
-            "Before running a Saga, you must mount the Saga middleware on the Store using applyMiddleware"
-          );
-        }),
-        (s.setContext = function(t) {
-          Object(o.h)(t, o.q.object, Object(o.k)("sagaMiddleware", t)),
-            o.v.assign(n, t);
-        }),
-        s
-      );
-    };
-  },
-  function(t, e, n) {
-    "use strict";
-    function r(t) {
-      var e,
-        n = t.Symbol;
-      return (
-        "function" == typeof n
-          ? n.observable
-            ? (e = n.observable)
-            : ((e = n("observable")), (n.observable = e))
-          : (e = "@@observable"),
-        e
-      );
-    }
-    n.d(e, "a", function() {
-      return r;
-    });
-  },
-  function(t, e, n) {
-    "use strict";
-    var r = n(57),
-      o = /^ms-/;
-    t.exports = function(t) {
-      return r(t).replace(o, "-ms-");
-    };
-  },
-  function(t, e, n) {
-    t.exports = (function() {
-      "use strict";
-      return function(t) {
-        function e(e) {
-          if (e)
-            try {
-              t(e + "}");
-            } catch (t) {}
-        }
-        return function(n, r, o, i, a, u, c, s, f, l) {
-          switch (n) {
-            case 1:
-              if (0 === f && 64 === r.charCodeAt(0)) return t(r + ";"), "";
-              break;
-            case 2:
-              if (0 === s) return r + "/*|*/";
-              break;
-            case 3:
-              switch (s) {
-                case 102:
-                case 112:
-                  return t(o[0] + r), "";
-                default:
-                  return r + (0 === l ? "/*|*/" : "");
-              }
-            case -2:
-              r.split("/*|*/}").forEach(e);
-          }
-        };
-      };
-    })();
-  },
-  function(t, e, n) {
-    "use strict";
-    var r = n(19),
-      o = {
-        childContextTypes: !0,
-        contextType: !0,
-        contextTypes: !0,
-        defaultProps: !0,
-        displayName: !0,
-        getDefaultProps: !0,
-        getDerivedStateFromError: !0,
-        getDerivedStateFromProps: !0,
-        mixins: !0,
-        propTypes: !0,
-        type: !0
-      },
-      i = {
-        name: !0,
-        length: !0,
-        prototype: !0,
-        caller: !0,
-        callee: !0,
-        arguments: !0,
-        arity: !0
-      },
-      a = {};
-    a[r.ForwardRef] = {
-      $$typeof: !0,
-      render: !0,
-      defaultProps: !0,
-      displayName: !0,
-      propTypes: !0
-    };
-    var u = Object.defineProperty,
-      c = Object.getOwnPropertyNames,
-      s = Object.getOwnPropertySymbols,
-      f = Object.getOwnPropertyDescriptor,
-      l = Object.getPrototypeOf,
-      p = Object.prototype;
-    t.exports = function t(e, n, r) {
-      if ("string" != typeof n) {
-        if (p) {
-          var d = l(n);
-          d && d !== p && t(e, d, r);
-        }
-        var h = c(n);
-        s && (h = h.concat(s(n)));
-        for (
-          var v = a[e.$$typeof] || o, y = a[n.$$typeof] || o, b = 0;
-          b < h.length;
-          ++b
-        ) {
-          var g = h[b];
-          if (!(i[g] || (r && r[g]) || (y && y[g]) || (v && v[g]))) {
-            var m = f(n, g);
-            try {
-              u(e, g, m);
-            } catch (t) {}
-          }
-        }
-        return e;
-      }
-      return e;
-    };
-  },
-  function(t, e) {
-    t.exports = function(t, e) {
-      return function n() {
-        null == e && (e = t.length);
-        var r = [].slice.call(arguments);
-        return r.length >= e
-          ? t.apply(this, r)
-          : function() {
-              return n.apply(this, r.concat([].slice.call(arguments)));
-            };
-      };
-    };
-  },
-  ,
-  function(t, e, n) {
-    "use strict";
-    /*
-object-assign
-(c) Sindre Sorhus
-@license MIT
-*/ var r =
-        Object.getOwnPropertySymbols,
-      o = Object.prototype.hasOwnProperty,
-      i = Object.prototype.propertyIsEnumerable;
-    t.exports = (function() {
-      try {
-        if (!Object.assign) return !1;
-        var t = new String("abc");
-        if (((t[5] = "de"), "5" === Object.getOwnPropertyNames(t)[0]))
-          return !1;
-        for (var e = {}, n = 0; n < 10; n++)
-          e["_" + String.fromCharCode(n)] = n;
-        if (
-          "0123456789" !==
-          Object.getOwnPropertyNames(e)
-            .map(function(t) {
-              return e[t];
-            })
-            .join("")
-        )
-          return !1;
-        var r = {};
-        return (
-          "abcdefghijklmnopqrst".split("").forEach(function(t) {
-            r[t] = t;
-          }),
-          "abcdefghijklmnopqrst" === Object.keys(Object.assign({}, r)).join("")
-        );
-      } catch (t) {
-        return !1;
-      }
-    })()
-      ? Object.assign
-      : function(t, e) {
-          for (
-            var n,
-              a,
-              u = (function(t) {
-                if (null == t)
-                  throw new TypeError(
-                    "Object.assign cannot be called with null or undefined"
-                  );
-                return Object(t);
-              })(t),
-              c = 1;
-            c < arguments.length;
-            c++
-          ) {
-            for (var s in (n = Object(arguments[c])))
-              o.call(n, s) && (u[s] = n[s]);
-            if (r) {
-              a = r(n);
-              for (var f = 0; f < a.length; f++)
-                i.call(n, a[f]) && (u[a[f]] = n[a[f]]);
-            }
-          }
-          return u;
-        };
-  },
-  ,
-  function(t, e, n) {
-    "use strict";
-    Object.defineProperty(e, "__esModule", { value: !0 });
     var r = void 0;
     e.default = function() {
       return (
@@ -10452,7 +10452,7 @@ object-assign
      *
      * This source code is licensed under the MIT license found in the
      * LICENSE file in the root directory of this source tree.
-     */ var r = n(43),
+     */ var r = n(42),
       o = "function" == typeof Symbol && Symbol.for,
       i = o ? Symbol.for("react.element") : 60103,
       a = o ? Symbol.for("react.portal") : 60106,
@@ -11520,7 +11520,7 @@ object-assign
       a = v(n(68)),
       u = v(n(69)),
       c = v(n(70)),
-      s = v(n(33)),
+      s = v(n(32)),
       f = v(n(71)),
       l = v(n(72)),
       p = v(n(77)),
@@ -12204,7 +12204,7 @@ object-assign
     var r = h(n(3)),
       o = n(12),
       i = n(18),
-      a = h(n(36)),
+      a = h(n(35)),
       u = h(n(31)),
       c = h(n(83)),
       s = h(n(89)),
@@ -14117,8 +14117,8 @@ object-assign
     "use strict";
     Object.defineProperty(e, "__esModule", { value: !0 });
     var r = a(n(3)),
-      o = a(n(34)),
-      i = a(n(35));
+      o = a(n(33)),
+      i = a(n(34));
     function a(t) {
       return t && t.__esModule ? t : { default: t };
     }
@@ -14136,9 +14136,9 @@ object-assign
     "use strict";
     Object.defineProperty(e, "__esModule", { value: !0 });
     var r = s(n(3)),
-      o = s(n(34)),
-      i = s(n(35)),
-      a = s(n(33)),
+      o = s(n(33)),
+      i = s(n(34)),
+      a = s(n(32)),
       u = s(n(99)),
       c = s(n(100));
     function s(t) {
@@ -14319,7 +14319,7 @@ object-assign
     "use strict";
     Object.defineProperty(e, "__esModule", { value: !0 });
     var r = s(n(105)),
-      o = n(36),
+      o = n(35),
       i = n(24),
       a = n(17),
       u = n(108),
@@ -15662,7 +15662,7 @@ object-assign
         return I({}, t, (((r = {})[O(e)] = n[e]), r));
       });
     }
-    var q = n(41),
+    var q = n(40),
       N = n.n(q),
       L = function(t, e) {
         return N()(y(t, e), e.length);
@@ -15845,23 +15845,11 @@ object-assign
       v = h.PluginSidebar,
       y = h.PluginSidebarMoreMenuItem,
       b = wp.plugins.registerPlugin,
-      g = wp.i18n.__,
-      m = wp.richText.registerFormatType,
-      _ = "core/superscript",
-      w = {
-        name: _,
-        title: g("Superscript"),
-        tagName: "sup",
-        className: null,
-        edit: function(t) {
-          t.isActive;
-          var e = t.value;
-          t.onChange;
-          return console.log(e), o.default.createElement(s, null);
-        }
-      };
+      g = (wp.i18n.__, wp.richText.registerFormatType);
     window.store1 = i.default;
-    var x = (function(t) {
+    var m = "wordlift",
+      _ = "wordlift/select-text",
+      w = (function(t) {
         function e(t) {
           !(function(t, e) {
             if (!(t instanceof e))
@@ -15884,19 +15872,36 @@ object-assign
             version: "1.0.0"
           };
           return (
-            m(_, w),
             wp.data
               .select("core/editor")
               .getBlocks()
               .forEach(function(t, e) {
+                var n = wp.data.select("core/editor").getBlocks()[e];
                 t.attributes && t.attributes.content
                   ? ((r.content = t.attributes.content),
-                    console.log("Requesting analysis for block " + e + "..."),
+                    console.log(
+                      "Requesting analysis for block " + n.clientId + "..."
+                    ),
                     i.default.dispatch(
-                      (0, u.ReceiveAnalysisResultsEvent)(r, e)
+                      (0, u.ReceiveAnalysisResultsEvent)(r, n.clientId)
                     ))
-                  : console.log("No content found in block " + e);
+                  : console.log("No content found in block " + n.clientId);
               }),
+            g(_, {
+              name: _,
+              title: m,
+              tagName: "span",
+              className: null,
+              edit: function(t) {
+                t.isActive;
+                var e = t.value;
+                t.onChange;
+                return (
+                  (0, u.AnnotateSelected)(e.start, e.end),
+                  o.default.createElement(s, null)
+                );
+              }
+            }),
             n
           );
         }
@@ -15960,7 +15965,7 @@ object-assign
           e
         );
       })(),
-      O = function() {
+      x = function() {
         return o.default.createElement(
           l,
           null,
@@ -15975,7 +15980,7 @@ object-assign
           )
         );
       },
-      S = function() {
+      O = function() {
         return o.default.createElement(
           l,
           null,
@@ -15990,7 +15995,7 @@ object-assign
           )
         );
       },
-      k = function() {
+      S = function() {
         return o.default.createElement(
           l,
           null,
@@ -16001,7 +16006,7 @@ object-assign
           )
         );
       };
-    b("wordlift", {
+    b(m, {
       render: function() {
         return o.default.createElement(
           s,
@@ -16017,10 +16022,10 @@ object-assign
           o.default.createElement(
             v,
             { name: "wordlift-sidebar", title: "WordLift" },
+            o.default.createElement(w, null),
             o.default.createElement(x, null),
             o.default.createElement(O, null),
-            o.default.createElement(S, null),
-            o.default.createElement(k, null)
+            o.default.createElement(S, null)
           )
         );
       },
@@ -16081,7 +16086,7 @@ object-assign
           );
         };
       })(),
-      o = n(32),
+      o = n(44),
       i = (function(t) {
         if (t && t.__esModule) return t;
         var e = {};
@@ -16379,9 +16384,9 @@ object-assign
   function(t, e, n) {
     "use strict";
     Object.defineProperty(e, "__esModule", { value: !0 }),
-      (e.ReceiveAnalysisResultsEvent = e.ClassificationBox = void 0);
+      (e.AnnotateSelected = e.ReceiveAnalysisResultsEvent = e.ClassificationBox = void 0);
     var r = f(n(20)),
-      o = (n(32), f(n(110))),
+      o = f(n(110)),
       i = f(n(55)),
       a = f(n(59)),
       u = f(n(63)),
@@ -16434,9 +16439,11 @@ object-assign
                         (t.entities[n.entityId].annotations = {}),
                         (t.entities[n.entityId].annotations[a] =
                           t.annotations[a]),
-                        (t.entities[n.entityId].annotations[a].blockIndex = e);
+                        (t.entities[n.entityId].annotations[
+                          a
+                        ].blockClientId = e);
                     });
-                  var u = wp.data.select("core/editor").getBlocks()[e];
+                  var u = wp.data.select("core/editor").getBlock(e);
                   if (u.attributes && u.attributes.content) {
                     var c = u.attributes.content,
                       s = document.createElement("div");
@@ -16460,7 +16467,7 @@ object-assign
                   return t;
                 })(t, e);
                 !(function(t, e) {
-                  var n = wp.data.select("core/editor").getBlocks()[e],
+                  var n = wp.data.select("core/editor").getBlock(e),
                     r = n.attributes.content,
                     o = n.clientId,
                     i = wp.richText.create({ html: r });
@@ -16492,6 +16499,28 @@ object-assign
               } else console.log("No entities found in block " + e);
             });
         };
+      }),
+      (e.AnnotateSelected = function(t, e) {
+        var n = wp.data.select("core/editor").getSelectedBlock();
+        if (n) {
+          var r = o.default.getState().entities,
+            i = void 0;
+          if (r.size > 0) {
+            var a = r.toJS();
+            for (var u in a) {
+              var c = a[u];
+              for (var s in c.annotations) {
+                var f = c.annotations[s];
+                f &&
+                  f.blockClientId === n.clientId &&
+                  f.start <= t &&
+                  f.end >= e &&
+                  (i = f.annotationId);
+              }
+            }
+            o.default.dispatch({ type: "ANNOTATION", annotation: i });
+          }
+        }
       });
   }
 ]);
