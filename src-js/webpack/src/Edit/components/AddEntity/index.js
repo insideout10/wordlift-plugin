@@ -5,7 +5,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import createSagaMiddleware from "redux-saga";
-import logger from 'redux-logger';
+import logger from "redux-logger";
 
 import ButtonContainer from "./ButtonContainer";
 import EntitySelectContainer from "./EntitySelectContainer";
@@ -21,7 +21,9 @@ const store = createStore(reducer, applyMiddleware(sagaMiddleware, logger));
 // Run the saga.
 sagaMiddleware.run(saga);
 
-const AddEntity = ({showCreate}) => (
+window.store2 = store;
+
+const AddEntity = ({ showCreate }) => (
   <Provider store={store}>
     <WrapperContainer>
       <ButtonContainer>

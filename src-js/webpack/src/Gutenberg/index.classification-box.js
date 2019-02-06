@@ -1,3 +1,4 @@
+/* globals wlSettings, wp */
 /**
  * Load the Classification Box.
  *
@@ -6,7 +7,7 @@
 /*
  * External dependencies.
  */
-import Provider from "react-redux/es/components/Provider";
+import { Provider } from "react-redux";
 
 /*
  * Internal dependencies.

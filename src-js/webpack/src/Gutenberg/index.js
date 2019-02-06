@@ -1,14 +1,17 @@
+/* globals wp */
 /*
  * External dependencies.
  */
 import React from "react";
+import { Provider } from "react-redux";
 
 /*
  * Internal dependencies.
  */
 import store from "./store";
 import WordLiftIcon from "../../../../src/images/svg/wl-logo-icon.svg";
-import { ClassificationBox, ReceiveAnalysisResultsEvent, AnnotateSelected } from "./index.classification-box";
+import * as Constants from "./constants";
+import ContentClassificationContainer from "./components/ContentClassificationPanel";
 
 /*
  * Packages via WordPress global
@@ -16,82 +19,10 @@ import { ClassificationBox, ReceiveAnalysisResultsEvent, AnnotateSelected } from
 const { Fragment } = wp.element;
 const { Panel, PanelBody, PanelRow } = wp.components;
 const { PluginSidebar, PluginSidebarMoreMenuItem } = wp.editPost;
-const { registerPlugin } = wp.plugins;
-
-const { __ } = wp.i18n;
-const { registerFormatType } = wp.richText;
 
 window.store1 = store;
 
-const PLUGIN_NAMESPACE = "wordlift";
-const PLUGIN_FORMAT_NAMESPACE = "wordlift/select-text";
-
-class PanelContentClassification extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      entities: null
-    };
-
-    let JSONData = {
-      contentLanguage: "en",
-      contentType: "text/html",
-      scope: "all",
-      version: "1.0.0"
-    };
-
-    wp.data
-      .select("core/editor")
-      .getBlocks()
-      .forEach((block, blockIndex) => {
-        let currentBlock = wp.data.select("core/editor").getBlocks()[blockIndex];
-        if (block.attributes && block.attributes.content) {
-          JSONData.content = block.attributes.content;
-          console.log(`Requesting analysis for block ${currentBlock.clientId}...`);
-          store.dispatch(ReceiveAnalysisResultsEvent(JSONData, currentBlock.clientId));
-        } else {
-          console.log(`No content found in block ${currentBlock.clientId}`);
-        }
-      });
-
-    registerFormatType(PLUGIN_FORMAT_NAMESPACE, {
-      name: PLUGIN_FORMAT_NAMESPACE,
-      title: PLUGIN_NAMESPACE,
-      tagName: "span",
-      className: null,
-      edit({ isActive, value, onChange }) {
-        AnnotateSelected(value.start, value.end);
-        return <Fragment />;
-      }
-    });
-  }
-
-  componentDidMount() {
-    this.unsubscribe = store.subscribe(() => {
-      this.setState({
-        entities: store.getState().entities
-      });
-    });
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-
-  render() {
-    return (
-      <Panel>
-        <PanelBody title="Content classification" initialOpen={true}>
-          <PanelRow>
-            {this.state.entities && this.state.entities.size > 0 ? <ClassificationBox /> : "Analyzing content..."}
-          </PanelRow>
-        </PanelBody>
-      </Panel>
-    );
-  }
-}
-
+// TODO: Move these to components folder
 const PanelArticleMetadata = () => (
   <Panel>
     <PanelBody title="Article metadata" initialOpen={false}>
@@ -122,15 +53,23 @@ const WordLiftSidebar = () => (
       WordLift
     </PluginSidebarMoreMenuItem>
     <PluginSidebar name="wordlift-sidebar" title="WordLift">
-      <PanelContentClassification />
-      <PanelArticleMetadata />
-      <PanelSuggestedImages />
-      <PanelRelatedPosts />
+      <Provider store={store}>
+        <Fragment>
+          <ContentClassificationContainer />
+          <PanelArticleMetadata />
+          <PanelSuggestedImages />
+          <PanelRelatedPosts />
+        </Fragment>
+      </Provider>
     </PluginSidebar>
   </Fragment>
 );
 
-registerPlugin(PLUGIN_NAMESPACE, {
+/**
+ * Register the sidebar plugin
+ * by rendering WordLiftSidebar component
+ */
+wp.plugins.registerPlugin(Constants.PLUGIN_NAMESPACE, {
   render: WordLiftSidebar,
   icon: <WordLiftIcon />
 });

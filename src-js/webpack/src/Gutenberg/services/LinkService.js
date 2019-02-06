@@ -1,22 +1,22 @@
-/*global wlSettings*/
+/* globals wlSettings */
 /**
  * Services: Link Service.
  *
  * A service which handles the link/no link attribute for entity's occurrences.
  *
- * @since 3.21.0
+ * @since 3.2x
  */
 
 /**
  * Define the `LinkService` class.
  *
- * @since 3.21.0
+ * @since 3.2x
  */
 class LinkService {
   /**
    * Create an `LinkService` instance.
    *
-   * @since 3.21.0
+   * @since 3.2x
    * @param {boolean} linkByDefault Whether to link by default.
    */
   constructor(linkByDefault) {
@@ -27,7 +27,7 @@ class LinkService {
   /**
    * Set the link flag on the provided `occurrences`.
    *
-   * @since 3.21.0
+   * @since 3.2x
    * @param {Array} occurrences An array of occurrences ids (which match dom
    *     elements).
    * @param {boolean} value True to enable linking or false to disable it.
@@ -47,7 +47,7 @@ class LinkService {
   /**
    * Switch the link on.
    *
-   * @since 3.21.0
+   * @since 3.2x
    * @param {object} elem A DOM element.
    */
   setYesLink(elem) {
@@ -78,7 +78,7 @@ class LinkService {
   /**
    * Switch the link off.
    *
-   * @since 3.21.0
+   * @since 3.2x
    * @param {object} elem A DOM element.
    */
   setNoLink(elem) {
@@ -110,7 +110,7 @@ class LinkService {
    * Get the link flag given the provided `occurrences`. A link flag is
    * considered true when at least one occurrences enables linking.
    *
-   * @since 3.21.0
+   * @since 3.2x
    * @param {Array} occurrences An array of occurrences dom ids.
    * @return {boolean} True if at least one occurrences enables linking,
    *     otherwise false.
