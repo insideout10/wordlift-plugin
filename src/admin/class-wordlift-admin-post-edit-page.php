@@ -142,20 +142,21 @@ class Wordlift_Admin_Post_Edit_Page {
 		wp_enqueue_script(
 			'wordlift-admin-edit-gutenberg',
 			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/gutenberg.js',
-			array( 
+			array(
 				$this->plugin->get_plugin_name(),
 				'jquery',
 				'wp-util',
-				'wp-element', 
-				'wp-components', 
+				'wp-element',
+				'wp-components',
 				'wp-edit-post',
-				'wp-plugins', 
+				'wp-plugins',
 				'wp-data',
-				'wp-annotations' 
+				'wp-annotations'
 			),
 			$this->plugin->get_version(),
 			false
 		);
+		wp_enqueue_style( 'style-gutenberg', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/css/style-gutenberg.css', false );
 	}
 
 }

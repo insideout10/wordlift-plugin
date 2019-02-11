@@ -19,7 +19,7 @@ module.exports = {
   entry: {
     bundle: "./src/Public/index.js",
     edit: "./src/Edit/index.js",
-    gutenberg: "./src/Gutenberg/index.js",
+    gutenberg: "./src/Gutenberg/index.js"
   },
   output: {
     filename: "[name].js",
@@ -64,9 +64,9 @@ module.exports = {
       {
         test: /.svg$/,
         use: {
-            loader: "svg-react-loader",
-        },
-      },
+          loader: "svg-react-loader"
+        }
+      }
     ]
   },
   plugins: [
