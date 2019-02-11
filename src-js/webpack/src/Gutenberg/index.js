@@ -8,7 +8,7 @@ import { Provider } from "react-redux";
 /*
  * Internal dependencies.
  */
-import store from "./store";
+import Store1 from "./stores/Store1";
 import WordLiftIcon from "../../../../src/images/svg/wl-logo-icon.svg";
 import * as Constants from "./constants";
 import ContentClassificationContainer from "./components/ContentClassificationPanel";
@@ -20,7 +20,7 @@ const { Fragment } = wp.element;
 const { Panel, PanelBody, PanelRow } = wp.components;
 const { PluginSidebar, PluginSidebarMoreMenuItem } = wp.editPost;
 
-window.store1 = store;
+window.store1 = Store1;
 
 // TODO: Move these to components folder
 const PanelArticleMetadata = () => (
@@ -53,7 +53,7 @@ const WordLiftSidebar = () => (
       WordLift
     </PluginSidebarMoreMenuItem>
     <PluginSidebar name="wordlift-sidebar" title="WordLift">
-      <Provider store={store}>
+      <Provider store={Store1}>
         <Fragment>
           <ContentClassificationContainer />
           <PanelArticleMetadata />

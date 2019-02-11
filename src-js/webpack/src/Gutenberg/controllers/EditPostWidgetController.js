@@ -1,4 +1,7 @@
-import store from "../store";
+/*
+ * Internal dependencies.
+ */
+import Store1 from "../stores/Store1";
 import { updateOccurrencesForEntity } from "../../Edit/actions";
 
 const EditPostWidgetController = {
@@ -24,7 +27,7 @@ const EditPostWidgetController = {
     console.log(`Found ${occurrences.length} annotation(s) for entity ${entity.id}.`);
     setTimeout(function() {
       console.log(`Updating ${occurrences.length} occurrence(s) for ${entity.id}...`);
-      store.dispatch(updateOccurrencesForEntity(entity.entityId, occurrences));
+      Store1.dispatch(updateOccurrencesForEntity(entity.entityId, occurrences));
     }, 0);
   },
 

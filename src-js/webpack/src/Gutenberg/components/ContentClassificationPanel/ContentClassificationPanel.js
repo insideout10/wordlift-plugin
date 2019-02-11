@@ -18,6 +18,8 @@ import AddEntity from "../../../Edit/components/AddEntity";
 import Header from "../../../Edit/components/Header";
 import VisibleEntityList from "../../../Edit/containers/VisibleEntityList";
 import Wrapper from "../../../Edit/components/App/Wrapper";
+import Store2 from "../../stores/Store2";
+import { setValue } from "../../../Edit/components/AddEntity/actions";
 
 /*
  * Packages via WordPress global
@@ -63,8 +65,10 @@ class ContentClassificationPanel extends React.Component {
       title: Constants.PLUGIN_NAMESPACE,
       tagName: "span",
       className: null,
-      edit({ isActive, value, onChange }) {
-        AnnotateSelected(value.start, value.end);
+      edit: ({ isActive, value, onChange }) => {
+        this.props.dispatch(AnnotateSelected(value.start, value.end));
+        let selected = value.text.substring(value.start, value.end);
+        Store2.dispatch(setValue(selected));
         return <Fragment />;
       }
     });
@@ -82,7 +86,7 @@ class ContentClassificationPanel extends React.Component {
             <Wrapper>
               {this.props.entities && this.props.entities.size > 0 ? (
                 <Fragment>
-                  <AddEntity showCreate={canCreateEntities} />
+                  <AddEntity showCreate={canCreateEntities} store={Store2} />
                   <Header />
                   <VisibleEntityList />
                 </Fragment>

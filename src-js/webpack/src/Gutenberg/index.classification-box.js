@@ -12,25 +12,19 @@ import { Provider } from "react-redux";
 /*
  * Internal dependencies.
  */
-import store from "./store";
+import Store1 from "./stores/Store1";
 import Wrapper from "../Edit/components/App/Wrapper";
 import Header from "../Edit/components/Header";
 import VisibleEntityList from "../Edit/containers/VisibleEntityList";
 import AddEntity from "../Edit/components/AddEntity";
-import { receiveAnalysisResults } from "../Edit/actions";
+import { receiveAnalysisResults, setCurrentAnnotation } from "../Edit/actions";
+import * as Constants from "./constants";
 
 const canCreateEntities =
   "undefined" !== wlSettings["can_create_entities"] && "yes" === wlSettings["can_create_entities"];
 
-/*
- * Packages via WordPress global
- */
-const { select, dispatch } = wp.data;
-
-const PLUGIN_NAMESPACE = "wordlift";
-
 const ClassificationBox = () => (
-  <Provider store={store}>
+  <Provider store={Store1}>
     <Wrapper>
       <AddEntity showCreate={canCreateEntities} />
       <Header />
@@ -43,7 +37,7 @@ let disambiguated = [];
 
 const ModifyResponse = (response, blockClientId) => {
   // Check for existing entities in store
-  let existingEntities = store.getState().entities;
+  let existingEntities = Store1.getState().entities;
   if (existingEntities.size > 0) {
     let entitiesToMerge = existingEntities.toJS();
     for (var entityToMerge in entitiesToMerge) {
@@ -97,7 +91,7 @@ const ModifyResponse = (response, blockClientId) => {
 const AnnonateContent = (response, blockClientId) => {
   for (var annotation in response.annotations) {
     wp.data.dispatch("core/annotations").__experimentalAddAnnotation({
-      source: PLUGIN_NAMESPACE,
+      source: Constants.PLUGIN_NAMESPACE,
       id: response.annotations[annotation].annotationId,
       richTextIdentifier: "content",
       blockClientId: blockClientId,
@@ -145,56 +139,56 @@ const ReceiveAnalysisResultsEvent = (JSONData, blockClientId) => {
   return function(dispatch) {
     // Asynchronously call the dispatch. We need this because we
     // might be inside a reducer call.
-    return wp
-      .apiFetch({
-        url: "/wp-admin/admin-ajax.php?action=wordlift_analyze",
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(JSONData)
-      })
-      .then(function(response) {
-        if (Object.keys(response.entities).length > 0) {
-          let modifiedResponse = ModifyResponse(response, blockClientId);
-          PersistantlyAnnonateContent(modifiedResponse, blockClientId);
-          console.log(`An analysis has been performed for block ${blockClientId}`);
-          //AnnonateContent(modifiedResponse, blockClientId);
-          dispatch(receiveAnalysisResults(modifiedResponse));
-        } else {
-          console.log(`No entities found in block ${blockClientId}`);
-        }
-      });
+    wp.apiFetch({
+      url: "/wp-admin/admin-ajax.php?action=wordlift_analyze",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(JSONData)
+    }).then(function(response) {
+      if (Object.keys(response.entities).length > 0) {
+        let modifiedResponse = ModifyResponse(response, blockClientId);
+        PersistantlyAnnonateContent(modifiedResponse, blockClientId);
+        console.log(`An analysis has been performed for block ${blockClientId}`);
+        //AnnonateContent(modifiedResponse, blockClientId);
+        dispatch(receiveAnalysisResults(modifiedResponse));
+      } else {
+        console.log(`No entities found in block ${blockClientId}`);
+      }
+    });
   };
 };
 
 const AnnotateSelected = (start, end) => {
-  let selectedBlock = wp.data.select("core/editor").getSelectedBlock();
-  if (!selectedBlock) return;
+  return function(dispatch) {
+    let selectedBlock = wp.data.select("core/editor").getSelectedBlock();
+    if (!selectedBlock) return;
 
-  let existingEntities = store.getState().entities;
-  let annotationId = undefined;
+    let existingEntities = Store1.getState().entities;
+    let annotationId = undefined;
 
-  if (existingEntities.size > 0) {
-    let entitiesToCheck = existingEntities.toJS();
+    if (existingEntities.size > 0) {
+      let entitiesToCheck = existingEntities.toJS();
 
-    for (var entity in entitiesToCheck) {
-      let currEntity = entitiesToCheck[entity];
-      for (var annotation in currEntity.annotations) {
-        let currAnnotation = currEntity.annotations[annotation];
-        if (
-          currAnnotation &&
-          currAnnotation.blockClientId === selectedBlock.clientId &&
-          currAnnotation.start <= start &&
-          currAnnotation.end >= end
-        ) {
-          annotationId = currAnnotation.annotationId;
+      for (var entity in entitiesToCheck) {
+        let currEntity = entitiesToCheck[entity];
+        for (var annotation in currEntity.annotations) {
+          let currAnnotation = currEntity.annotations[annotation];
+          if (
+            currAnnotation &&
+            currAnnotation.blockClientId === selectedBlock.clientId &&
+            currAnnotation.start <= start &&
+            currAnnotation.end >= end
+          ) {
+            annotationId = currAnnotation.annotationId;
+          }
         }
       }
-    }
 
-    store.dispatch({ type: "ANNOTATION", annotation: annotationId });
-  }
+      dispatch(setCurrentAnnotation(annotationId));
+    }
+  };
 };
 
 export { ClassificationBox, ReceiveAnalysisResultsEvent, AnnotateSelected };
