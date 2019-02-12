@@ -129,7 +129,7 @@ class Wordlift_Admin {
 			 *
 			 * @see https://github.com/insideout10/wordlift-plugin/issues/879
 			 */
-			new Wordlift_Admin_Dashboard_V2();
+			new Wordlift_Admin_Dashboard_V2( $search_rankings_service );
 
 		}
 

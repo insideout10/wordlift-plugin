@@ -6,8 +6,25 @@
 class Wordlift_Admin_Dashboard_V2 {
 
 	const TODAYS_TIP = 'wl_todays_tip_data';
+	const AVERAGE_POSITION = 'wl_search_rankings_average_position';
 
-	public function __construct() {
+	/**
+	 * The {@link Wordlift_Admin_Search_Rankings_Service} instance.
+	 *
+	 * @since 3.20.0
+	 * @access private
+	 * @var \Wordlift_Admin_Search_Rankings_Service $search_rankings_service The {@link Wordlift_Admin_Search_Rankings_Service} instance.
+	 */
+	private $search_rankings_service;
+
+	/**
+	 * Wordlift_Admin_Dashboard_V2 constructor.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @param \Wordlift_Admin_Search_Rankings_Service $search_rankings_service The {@link Wordlift_Admin_Search_Rankings_Service} instance.
+	 */
+	public function __construct( $search_rankings_service ) {
 
 		add_action( 'wp_dashboard_setup', array( $this, 'dashboard_setup' ) );
 
@@ -15,6 +32,8 @@ class Wordlift_Admin_Dashboard_V2 {
 		defined( 'WL_TODAYS_TIP_JSON_URL' ) || define( 'WL_TODAYS_TIP_JSON_URL', 'https://stage.wordlift.io/blog' );
 		defined( 'WL_TODAYS_TIP_JSON_URL_IT' ) || define( 'WL_TODAYS_TIP_JSON_URL_IT', '/it/wp-json/wp/v2/posts?context=embed&per_page=1&categories=26' );
 		defined( 'WL_TODAYS_TIP_JSON_URL_EN' ) || define( 'WL_TODAYS_TIP_JSON_URL_EN', '/en/wp-json/wp/v2/posts?context=embed&per_page=1&categories=37' );
+
+		$this->search_rankings_service = $search_rankings_service;
 
 	}
 
@@ -30,8 +49,70 @@ class Wordlift_Admin_Dashboard_V2 {
 
 	public function callback() {
 
+		// Get the average position.
+		$average_position_string = $this->get_average_position();
+
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/wordlift-admin-dashboard-v2.php';
 
+	}
+
+	private function get_average_position() {
+
+		// Get the cache value.
+		$average_position = get_transient( self::AVERAGE_POSITION );
+
+		// If there's no cached value, load it.
+		if ( false === $average_position ) {
+			// Get the average position from Search Ranking Service.
+			$average_position = @$this->search_rankings_service->get_average_position();
+
+			// If there was an error return 'n/a'.
+			if ( false === $average_position ) {
+				$average_position = esc_html( _x( 'n/a', 'Dashboard', 'wordlift' ) );
+			} else {
+				// Store the value for one day.
+				set_transient( self::AVERAGE_POSITION, $average_position, 86400 ); // One day.
+			}
+
+		}
+
+		// Format the average position with one decimal.
+		return number_format( $average_position, 1 );
+	}
+
+	private function get_top_entities() {
+		global $wpdb;
+
+		$query = <<<EOF
+select p.ID, p.post_title
+     , coalesce( sum(case when obj_t.slug is null then 1 end), 0 ) entities
+     , coalesce( sum(case when obj_t.slug is not null then 1 end), 0 ) posts
+     , count( entity.subject_id ) as total
+from {$wpdb->prefix}wl_relation_instances entity
+       inner join {$wpdb->prefix}posts p
+              on entity.subject_id = p.ID
+       inner join {$wpdb->prefix}term_relationships tr
+                  on tr.object_id = entity.subject_id
+       inner join {$wpdb->prefix}term_taxonomy tt
+                  on tt.term_id = tr.term_taxonomy_id
+                    and tt.taxonomy = 'wl_entity_type'
+       inner join {$wpdb->prefix}terms t
+                  on t.term_id = tt.term_id
+                    and 'article' != t.slug
+       inner join {$wpdb->prefix}term_relationships obj_tr
+                  on obj_tr.object_id = entity.object_id
+       inner join {$wpdb->prefix}term_taxonomy obj_tt
+                  on obj_tt.term_id = obj_tr.term_taxonomy_id
+                    and obj_tt.taxonomy = 'wl_entity_type'
+       left outer join {$wpdb->prefix}terms obj_t
+                        on obj_t.term_id = obj_tt.term_id
+                          and 'article' = obj_t.slug
+group by entity.subject_id
+order by total desc
+limit 100;
+EOF;
+
+		return $wpdb->get_results( $query );
 	}
 
 	public static function get_todays_tip_block() {
