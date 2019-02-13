@@ -4,7 +4,42 @@
  *
  * @since 3.20.0
  */
+?>
+<style>
+    /* WordLift Dashboard */
+    #wl-dashboard-v2 header {
+        padding: .5em;
+        background: #f1f1f1;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
 
+    #wl-dashboard-v2 header h3 {
+        margin: 0;
+        font-weight: 500;
+    }
+
+    #wl-dashboard-v2 .dashicons {
+        color: #007aff;
+    }
+
+    #wl-dashboard-v2 .inside > div {
+        border: 1px solid #eee;
+        padding: 2px;
+        margin-bottom: 12px;
+    }
+
+    #wl-dashboard-v2 header ~ * {
+        margin: .5em;
+    }
+
+    /* Remove the margin from `p`, use the margin on the container */
+    #wl-dashboard-v2 header ~ * p {
+        margin: 0;
+    }
+</style>
+<?php
 // Print out the Today's Tip block.
 Wordlift_Admin_Dashboard_V2::get_todays_tip_block();
 
@@ -13,13 +48,19 @@ Wordlift_Admin_Dashboard_V2::get_todays_tip_block();
 ?>
 
 
+<?php
+$country_code = Wordlift_Configuration_Service::get_instance()->get_country_code()
+?>
 <div>
     <header>
         <span class="dashicons dashicons-editor-help"></span>
         <h3><?php echo __( 'Search rankings', 'wordlift' ); ?></h3>
-        <img width="16" height="16" src="<?php echo Wordlift_Countries::get_flag_url(
-			Wordlift_Configuration_Service::get_instance()->get_country_code()
-		); ?>">
+        <div class="pull-right">
+			<?php echo esc_html( __( Wordlift_Countries::get_country_name( $country_code ) ) ); ?>
+            <img width="16" height="16" src="<?php echo Wordlift_Countries::get_flag_url( $country_code ); ?>">
+            <img width="16" height="16"
+                 src="<?php echo plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . '/images/woorank-16x16.png'; ?>">
+        </div>
     </header>
 
     <div><?php echo esc_html( _x( 'Keywords', 'Dashboard', 'wordlift' ) ); ?>
@@ -48,10 +89,52 @@ Wordlift_Admin_Dashboard_V2::get_todays_tip_block();
     </div>
 </div>
 
-<h3><?php echo __( 'Enriched posts', 'wordlift' ); ?></h3>
+<div>
+    <header>
+        <span class="dashicons dashicons-editor-help"></span>
+        <h3><?php echo __( 'Enriched posts', 'wordlift' ); ?></h3>
+    </header>
+    <div>
+		<?php echo $this->dashboard_service->count_annotated_posts(); ?>
+        / <?php echo $this->dashboard_service->count_posts(); ?>
 
-<h3><?php echo __( 'Created entities', 'wordlift' ); ?></h3>
+        <a href=""><?php echo esc_html( _x( 'Enrich', 'Dashboard', 'wordlift' ) ); ?></a>
+    </div>
+</div>
 
-<h3><?php echo __( 'Average entity rating', 'wordlift' ); ?></h3>
+<div>
+    <header>
+        <span class="dashicons dashicons-editor-help"></span>
+        <h3><?php echo __( 'Created entities', 'wordlift' ); ?></h3>
+    </header>
+    <div>
+		<?php echo $this->entity_service->count(); ?>
 
-<h3><?php echo __( 'Graph data', 'wordlift' ); ?></h3>
+        <a href=""><?php echo esc_html( _x( 'Vocabulary', 'Dashboard', 'wordlift' ) ); ?></a>
+    </div>
+</div>
+
+<div>
+    <header>
+        <span class="dashicons dashicons-editor-help"></span>
+        <h3><?php echo __( 'Average entity rating', 'wordlift' ); ?></h3>
+    </header>
+    <div>
+		<?php echo $this->dashboard_service->average_entities_rating(); ?>
+
+        <a href=""><?php echo esc_html( _x( 'Pimp', 'Dashboard', 'wordlift' ) ); ?></a>
+    </div>
+</div>
+
+<div>
+    <header>
+        <span class="dashicons dashicons-editor-help"></span>
+        <h3><?php echo __( 'Graph data', 'wordlift' ); ?></h3>
+    </header>
+    <div>
+		<?php echo esc_html( _x( 'Created triples', 'Dashboard', 'wordlift' ) ); ?>
+        : <?php echo $this->dashboard_service->count_triples(); ?><br/>
+		<?php echo esc_html( _x( 'Ratio on Wikidata', 'Dashboard', 'wordlift' ) ); ?>:
+		<?php echo $this->dashboard_service->count_triples() * 100 / 947690143; ?>
+    </div>
+</div>

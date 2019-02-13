@@ -18,13 +18,28 @@ class Wordlift_Admin_Dashboard_V2 {
 	private $search_rankings_service;
 
 	/**
+	 * The {@link Wordlift_Dashboard_Service} instance.
+	 *
+	 * @var \Wordlift_Dashboard_Service $dashboard_service The {@link Wordlift_Dashboard_Service} instance.
+	 * @access private
+	 * @since 3.20.0
+	 */
+	private $dashboard_service;
+
+	/**
+	 * @var \Wordlift_Entity_Service $entity_service
+	 */
+	private $entity_service;
+
+	/**
 	 * Wordlift_Admin_Dashboard_V2 constructor.
 	 *
 	 * @since 3.20.0
 	 *
 	 * @param \Wordlift_Admin_Search_Rankings_Service $search_rankings_service The {@link Wordlift_Admin_Search_Rankings_Service} instance.
+	 * @param                                         $dashboard_service
 	 */
-	public function __construct( $search_rankings_service ) {
+	public function __construct( $search_rankings_service, $dashboard_service, $entity_service ) {
 
 		add_action( 'wp_dashboard_setup', array( $this, 'dashboard_setup' ) );
 
@@ -34,13 +49,14 @@ class Wordlift_Admin_Dashboard_V2 {
 		defined( 'WL_TODAYS_TIP_JSON_URL_EN' ) || define( 'WL_TODAYS_TIP_JSON_URL_EN', '/en/wp-json/wp/v2/posts?context=embed&per_page=1&categories=37' );
 
 		$this->search_rankings_service = $search_rankings_service;
-
+		$this->dashboard_service       = $dashboard_service;
+		$this->entity_service          = $entity_service;
 	}
 
 	public function dashboard_setup() {
 
 		wp_add_dashboard_widget(
-			'wl_dashboard_v2',
+			'wl-dashboard-v2',
 			__( 'WordLift Dashboard', 'wordlift' ),
 			array( $this, 'callback' )
 		);
@@ -68,13 +84,12 @@ class Wordlift_Admin_Dashboard_V2 {
 
 			// If there was an error return 'n/a'.
 			if ( false === $average_position ) {
-				$average_position = esc_html( _x( 'n/a', 'Dashboard', 'wordlift' ) );
-			} else {
-				// Store the value for one day.
-				set_transient( self::AVERAGE_POSITION, $average_position, 86400 ); // One day.
+				return esc_html( _x( 'n/a', 'Dashboard', 'wordlift' ) );
 			}
-
 		}
+
+		// Store the value for one day.
+		set_transient( self::AVERAGE_POSITION, $average_position, 86400 ); // One day.
 
 		// Format the average position with one decimal.
 		return number_format( $average_position, 1 );
@@ -84,15 +99,16 @@ class Wordlift_Admin_Dashboard_V2 {
 		global $wpdb;
 
 		$query = <<<EOF
-select p.ID, p.post_title
-     , coalesce( sum(case when obj_t.slug is null then 1 end), 0 ) entities
-     , coalesce( sum(case when obj_t.slug is not null then 1 end), 0 ) posts
-     , count( entity.subject_id ) as total
+select p.ID
+     , p.post_title
+     , coalesce(sum(case when obj_t.slug is null then 1 end), 0)     entities
+     , coalesce(sum(case when obj_t.slug is not null then 1 end), 0) posts
+     , count(entity.subject_id) as                                   total
 from {$wpdb->prefix}wl_relation_instances entity
        inner join {$wpdb->prefix}posts p
-              on entity.subject_id = p.ID
+                  on p.ID = entity.object_id
        inner join {$wpdb->prefix}term_relationships tr
-                  on tr.object_id = entity.subject_id
+                  on tr.object_id = entity.object_id
        inner join {$wpdb->prefix}term_taxonomy tt
                   on tt.term_id = tr.term_taxonomy_id
                     and tt.taxonomy = 'wl_entity_type'
@@ -100,14 +116,14 @@ from {$wpdb->prefix}wl_relation_instances entity
                   on t.term_id = tt.term_id
                     and 'article' != t.slug
        inner join {$wpdb->prefix}term_relationships obj_tr
-                  on obj_tr.object_id = entity.object_id
+                  on obj_tr.object_id = entity.subject_id
        inner join {$wpdb->prefix}term_taxonomy obj_tt
                   on obj_tt.term_id = obj_tr.term_taxonomy_id
                     and obj_tt.taxonomy = 'wl_entity_type'
        left outer join {$wpdb->prefix}terms obj_t
-                        on obj_t.term_id = obj_tt.term_id
-                          and 'article' = obj_t.slug
-group by entity.subject_id
+                       on obj_t.term_id = obj_tt.term_id
+                         and 'article' = obj_t.slug
+group by p.ID, p.post_title
 order by total desc
 limit 100;
 EOF;
@@ -125,13 +141,17 @@ EOF;
 		}
 		?>
 
-        <h3><?php echo __( "Today's Tip", 'wordlift' ); ?></h3>
-        <article>
-        <p><strong><?php echo esc_html( wp_strip_all_tags( $data['title'] ) ); ?></strong>
-			<?php echo esc_html( wp_strip_all_tags( $data['excerpt'] ) ); ?>
-            <a target="_blank"
-               href="<?php echo esc_attr( $data['link'] ); ?>"><?php echo esc_html( __( 'Read more', 'wordlift' ) ); ?></a>
-        </p>
+        <div>
+            <header>
+                <h3><?php echo __( "Today's Tip", 'wordlift' ); ?></h3>
+            </header>
+            <article>
+                <p><strong><?php echo esc_html( wp_strip_all_tags( $data['title'] ) ); ?></strong>
+					<?php echo esc_html( wp_strip_all_tags( $data['excerpt'] ) ); ?>
+                    <a target="_blank"
+                       href="<?php echo esc_attr( $data['link'] ); ?>"><?php echo esc_html( __( 'Read more', 'wordlift' ) ); ?></a>
+                </p>
+        </div>
 		<?php
 
 	}

@@ -801,9 +801,23 @@ class Wordlift_Countries {
 		}
 
 		return plugin_dir_url( dirname( __FILE__ ) )
-		                       . '/images/flags/16/'
-		                       . self::$country_flags[ $country_code ]
-		                       . '.png';
+		       . '/images/flags/16/'
+		       . self::$country_flags[ $country_code ]
+		       . '.png';
+	}
+
+	/**
+	 * Get a country name given a country code.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @param string $country_code The 2-letters country code.
+	 *
+	 * @return null|string The country name (in English) or null if not found.
+	 */
+	public static function get_country_name( $country_code ) {
+
+		return self::$country_codes[ $country_code ];
 	}
 
 }

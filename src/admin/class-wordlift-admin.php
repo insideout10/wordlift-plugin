@@ -129,7 +129,11 @@ class Wordlift_Admin {
 			 *
 			 * @see https://github.com/insideout10/wordlift-plugin/issues/879
 			 */
-			new Wordlift_Admin_Dashboard_V2( $search_rankings_service );
+			new Wordlift_Admin_Dashboard_V2(
+				$search_rankings_service,
+				Wordlift::get_instance()->get_dashboard_service(),
+				Wordlift_Entity_Service::get_instance()
+			);
 
 		}
 

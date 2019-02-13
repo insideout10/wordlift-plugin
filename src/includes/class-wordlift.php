@@ -721,6 +721,8 @@ class Wordlift {
 	 */
 	public function __construct() {
 
+		self::$instance = $this;
+
 		$this->plugin_name = 'wordlift';
 		$this->version     = '3.20.0-rc1';
 		$this->load_dependencies();
@@ -732,8 +734,6 @@ class Wordlift {
 		if ( class_exists( 'WP_CLI' ) ) {
 			$this->load_cli_dependencies();
 		}
-
-		self::$instance = $this;
 
 	}
 
@@ -1690,6 +1690,17 @@ class Wordlift {
 
 		WP_CLI::add_command( 'wl references push', $push_reference_data_command );
 
+	}
+
+	/**
+	 * Get the {@link \Wordlift_Dashboard_Service} to allow others to use its functions.
+	 *
+	 * @since 3.20.0
+	 * @return \Wordlift_Dashboard_Service The {@link \Wordlift_Dashboard_Service} instance.
+	 */
+	public function get_dashboard_service() {
+
+		return $this->dashboard_service;
 	}
 
 }
