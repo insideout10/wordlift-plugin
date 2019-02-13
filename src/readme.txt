@@ -142,7 +142,6 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-
 = 3.20.0 (2018-12-07) =
 * Enhancement: [#868](https://github.com/insideout10/wordlift-plugin/issues/868): Remove `wlSettings` from WP Rocket inline optimization .
 * Enhancement: [#851](https://github.com/insideout10/wordlift-plugin/issues/851): add a filter to allow 3rd parties to change the TinyMCE editor id via JavaScript.
@@ -152,6 +151,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement: [#713](https://github.com/insideout10/wordlift-plugin/issues/713): Allow to configure the target country.
 
 = 3.19.6 (2018-12-07) =
+* Fix: [#886](https://github.com/insideout10/wordlift-plugin/issues/886): Before calling `get_role` check that the role exists.
 * Fix: [#870](https://github.com/insideout10/wordlift-plugin/issues/870): PHP errors: file_put_contents(/tmp) and mkdir permission denied.
 * Fix: [#865](https://github.com/insideout10/wordlift-plugin/issues/865): Content Egg's angular clashes with WordLift's angular.
 

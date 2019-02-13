@@ -54,18 +54,28 @@ class Wordlift_Install_3_14_0 extends Wordlift_Install {
 		$admins->add_cap( 'delete_private_wordlift_entities' );
 
 		// Assign capabilities to manipulate entities to editors.
+		/*
+		 * Check that the `editor` role exists before using it.
+		 *
+		 * @since 3.19.6
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/886
+		 */
 		$editors = get_role( 'editor' );
 
-		$editors->add_cap( 'edit_wordlift_entity' );
-		$editors->add_cap( 'edit_wordlift_entities' );
-		$editors->add_cap( 'edit_others_wordlift_entities' );
-		$editors->add_cap( 'publish_wordlift_entities' );
-		$editors->add_cap( 'read_private_wordlift_entities' );
-		$editors->add_cap( 'delete_wordlift_entity' );
-		$editors->add_cap( 'delete_wordlift_entities' );
-		$editors->add_cap( 'delete_others_wordlift_entities' );
-		$editors->add_cap( 'delete_published_wordlift_entities' );
-		$editors->add_cap( 'delete_private_wordlift_entities' );
+		if ( isset( $editors ) ) {
+			$editors->add_cap( 'edit_wordlift_entity' );
+			$editors->add_cap( 'edit_wordlift_entities' );
+			$editors->add_cap( 'edit_others_wordlift_entities' );
+			$editors->add_cap( 'publish_wordlift_entities' );
+			$editors->add_cap( 'read_private_wordlift_entities' );
+			$editors->add_cap( 'delete_wordlift_entity' );
+			$editors->add_cap( 'delete_wordlift_entities' );
+			$editors->add_cap( 'delete_others_wordlift_entities' );
+			$editors->add_cap( 'delete_published_wordlift_entities' );
+			$editors->add_cap( 'delete_private_wordlift_entities' );
+		}
+
 	}
 
 }
