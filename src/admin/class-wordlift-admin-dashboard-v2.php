@@ -133,7 +133,7 @@ EOF;
 
 	public static function get_todays_tip_block() {
 
-		$data = get_transient( self::TODAYS_TIP ) ?: '<!-- non-cached -->' . @self::get_todays_tip_data();
+		$data = @self::get_todays_tip_data();
 
 		// Unable to get data from the local cache, nor from the remote URL.
 		if ( false === $data ) {
@@ -141,7 +141,7 @@ EOF;
 		}
 		?>
 
-        <div>
+        <div id="wl-todays-tip">
             <header>
                 <h3><?php echo __( "Today's Tip", 'wordlift' ); ?></h3>
             </header>
@@ -186,7 +186,7 @@ EOF;
 
 		$value = array(
 			'title'   => $json[0]['title']['rendered'],
-			'excerpt' => $json[0]['excerpt']['rendered'],
+			'excerpt' => '<!-- cached -->' . $json[0]['excerpt']['rendered'],
 			'link'    => $json[0]['link'],
 		);
 

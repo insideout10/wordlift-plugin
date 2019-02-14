@@ -801,7 +801,7 @@ class Wordlift_Countries {
 		}
 
 		return plugin_dir_url( dirname( __FILE__ ) )
-		       . '/images/flags/16/'
+		       . 'images/flags/16/'
 		       . self::$country_flags[ $country_code ]
 		       . '.png';
 	}
