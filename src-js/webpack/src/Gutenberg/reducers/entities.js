@@ -16,7 +16,7 @@ import { Map } from "immutable";
  * Internal dependencies
  */
 import * as types from "../../Edit/constants/ActionTypes";
-import EditPostWidgetController from "../controllers/EditPostWidgetController";
+import AnnotationService from "../services/AnnotationService";
 import LinkService from "../services/LinkService";
 import WsService from "../../Edit/services/WsService";
 
@@ -80,7 +80,7 @@ const entities = function(state = Map(), action) {
     // entity tile.
     case types.TOGGLE_ENTITY:
       // Call the EditPostWidgetController.onSelectedEntityTile method
-      EditPostWidgetController.onSelectedEntityTile(state.get(action.entity.id));
+      AnnotationService.onSelectedEntityTile(state.get(action.entity.id));
 
       // Update the state by replacing the entity with toggled version.
       return state;
