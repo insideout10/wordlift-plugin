@@ -1,11 +1,12 @@
+/* globals wp */
 /*
  * Internal dependencies.
  */
 import Store1 from "../stores/Store1";
 import { updateOccurrencesForEntity } from "../../Edit/actions";
 
-const EditPostWidgetController = {
-  onSelectedEntityTile(entity) {
+class EditPostWidgetController {
+  static onSelectedEntityTile(entity) {
     var action;
     action = "entitySelected";
     if (entity.occurrences.length > 0) {
@@ -29,9 +30,9 @@ const EditPostWidgetController = {
       console.log(`Updating ${occurrences.length} occurrence(s) for ${entity.id}...`);
       Store1.dispatch(updateOccurrencesForEntity(entity.entityId, occurrences));
     }, 0);
-  },
+  }
 
-  disambiguate(elem, action) {
+  static disambiguate(elem, action) {
     const disambiguateClass = "disambiguated";
 
     wp.data
@@ -58,7 +59,7 @@ const EditPostWidgetController = {
         }
       });
   }
-};
+}
 
-// Finally export the singleton object.
+// Finally export the singleton class.
 export default EditPostWidgetController;

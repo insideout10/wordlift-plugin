@@ -1,4 +1,4 @@
-/* globals wlSettings */
+/* globals wp, wlSettings */
 /**
  * Services: Link Service.
  *

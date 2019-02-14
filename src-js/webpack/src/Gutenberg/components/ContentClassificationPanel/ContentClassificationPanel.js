@@ -12,7 +12,7 @@ import React from "react";
 /**
  * Internal dependencies
  */
-import { AnnotateSelected, ReceiveAnalysisResultsEvent } from "../../index.classification-box";
+import AnnotationService from "../../services/AnnotationService";
 import * as Constants from "../../constants";
 import AddEntity from "../../../Edit/components/AddEntity";
 import Header from "../../../Edit/components/Header";
@@ -37,24 +37,16 @@ class ContentClassificationPanel extends React.Component {
   }
 
   asyncBlockAnalysis() {
-    let JSONData = {
-      contentLanguage: "en",
-      contentType: "text/html",
-      scope: "all",
-      version: "1.0.0"
-    };
-
     wp.data
       .select("core/editor")
       .getBlocks()
       .forEach((block, blockIndex) => {
-        let currentBlock = wp.data.select("core/editor").getBlocks()[blockIndex];
         if (block.attributes && block.attributes.content) {
-          JSONData.content = block.attributes.content;
-          console.log(`Requesting analysis for block ${currentBlock.clientId}...`);
-          this.props.dispatch(ReceiveAnalysisResultsEvent(JSONData, currentBlock.clientId));
+          console.log(`Requesting analysis for block ${block.clientId}...`);
+          let annotationService = new AnnotationService(block.attributes.content, block.clientId);
+          this.props.dispatch(annotationService.WordliftAnalyze());
         } else {
-          console.log(`No content found in block ${currentBlock.clientId}`);
+          console.log(`No content found in block ${block.clientId}`);
         }
       });
   }
@@ -66,7 +58,7 @@ class ContentClassificationPanel extends React.Component {
       tagName: "span",
       className: null,
       edit: ({ isActive, value, onChange }) => {
-        this.props.dispatch(AnnotateSelected(value.start, value.end));
+        this.props.dispatch(AnnotationService.AnnotateSelected(value.start, value.end));
         let selected = value.text.substring(value.start, value.end);
         Store2.dispatch(setValue(selected));
         return <Fragment />;
