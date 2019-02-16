@@ -9,18 +9,18 @@ Requires PHP: 5.3
 Stable tag: {version}
 License: GPLv2 or later
 
-WordLift brings the power of Artificial Intelligence to organize content. Attract new readers and get their true attention with top notch Semantic SEO.
+WordLift brings the power of Artificial Intelligence to optimize SEO and organize content. Attract new readers and get their true attention.
 
 == Description ==
-
-> #### WordLift - Activating the Plugin
+#### WordLift - AI-Powered SEO
+[youtube https://www.youtube.com/watch?v=dPp13Y4T00U] <br />
 > **WordLift** is a lightweight plugin that brings **state-of-the-art semantic technologies** to the hands of any bloggers and publishers. <br />
 > **WordLift**, without requiring any technical skills, helps you produce richer content and organize it around your audience. <br />
 > **WordLift** is **available to all for a monthly fee**. Find out more and [get your activation key](https://wordlift.io) directly on our website. <br />
 
 **WordLift** helps you organize posts and pages adding facts, links and media to build **beautifully structured websites**, for both humans and search engines. <br />
-**WordLift** lets you create, own and publish your own [knowledge graph](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph).<br />
-**WordLift** publishes your content as [Linked Open Data](https://wordlift.io/blog/en/entity/linked-data/) following [Tim Berners-Lee‘s Linked Data Principles](http://www.w3.org/DesignIssues/LinkedData.html).<br />
+**WordLift** lets you create, own and publish your own [knowledge graph](https://wordlift.io/blog/en/knowledge-graph-seo/).<br />
+**WordLift** publishes your content as [Linked Open Data](https://wordlift.io/blog/en/entity/linked-data/) following Tim Berners-Lee‘s Linked Data Principles.<br />
 
 = Features =
 
@@ -37,7 +37,7 @@ WordLift brings the power of Artificial Intelligence to organize content. Attrac
 = WordLift brings to your publishing workflow =
 _____________
 
-* The technology to **self-organize content** using publicly or privately available [knowledge graphs](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph) <br />
+* The technology to **self-organize content** using publicly or privately available [knowledge graphs](https://wordlift.io/blog/en/knowledge-graph-seo/) <br />
 * An easy way to **build datasets** and **full data ownership** <br />
 * Support for creating web content using **contextually relevant information** <br />
 * Valued and **free to use photos and illustrations** from the Commons community ranging from maps to astronomical imagery to photographs, artworks and more <br />
@@ -142,7 +142,6 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-
 = 3.20.0 (2018-12-07) =
 * Enhancement: [#868](https://github.com/insideout10/wordlift-plugin/issues/868): Remove `wlSettings` from WP Rocket inline optimization .
 * Enhancement: [#851](https://github.com/insideout10/wordlift-plugin/issues/851): add a filter to allow 3rd parties to change the TinyMCE editor id via JavaScript.
@@ -152,6 +151,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement: [#713](https://github.com/insideout10/wordlift-plugin/issues/713): Allow to configure the target country.
 
 = 3.19.6 (2018-12-07) =
+* Fix: [#886](https://github.com/insideout10/wordlift-plugin/issues/886): Before calling `get_role` check that the role exists.
 * Fix: [#870](https://github.com/insideout10/wordlift-plugin/issues/870): PHP errors: file_put_contents(/tmp) and mkdir permission denied.
 * Fix: [#865](https://github.com/insideout10/wordlift-plugin/issues/865): Content Egg's angular clashes with WordLift's angular.
 
