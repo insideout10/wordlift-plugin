@@ -43,8 +43,8 @@ class ContentClassificationPanel extends React.Component {
       .forEach((block, blockIndex) => {
         if (block.attributes && block.attributes.content) {
           console.log(`Requesting analysis for block ${block.clientId}...`);
-          let annotationService = new AnnotationService(block.attributes.content, block.clientId);
-          this.props.dispatch(annotationService.WordliftAnalyze());
+          let annotationService = new AnnotationService(block);
+          this.props.dispatch(annotationService.wordliftAnalyze());
         } else {
           console.log(`No content found in block ${block.clientId}`);
         }
@@ -58,8 +58,8 @@ class ContentClassificationPanel extends React.Component {
       tagName: "span",
       className: null,
       edit: ({ isActive, value, onChange }) => {
-        this.props.dispatch(AnnotationService.AnnotateSelected(value.start, value.end));
-        let selected = value.text.substring(value.start, value.end);
+        this.props.dispatch(AnnotationService.annotateSelected(value.start, value.end));
+        const selected = value.text.substring(value.start, value.end);
         Store2.dispatch(setValue(selected));
         return <Fragment />;
       }
@@ -67,7 +67,7 @@ class ContentClassificationPanel extends React.Component {
   }
 
   componentWillUnmount() {
-    wp.richText.registerFormatType(Constants.PLUGIN_FORMAT_NAMESPACE);
+    wp.richText.unregisterFormatType(Constants.PLUGIN_FORMAT_NAMESPACE);
   }
 
   render() {

@@ -22,8 +22,10 @@ const canCreateEntities =
  * @since 3.2x
  */
 class AnnotationService {
-  constructor(content, blockClientId) {
-    this.blockClientId = blockClientId;
+  constructor(block) {
+    this.block = block;
+    this.blockClientId = block.clientId;
+    this.blockContent = block.attributes.content;
     this.disambiguated = [];
     this.rawResponse = null;
     this.modifiedResponse = null;
@@ -32,11 +34,11 @@ class AnnotationService {
       contentType: "text/html",
       scope: "all",
       version: "1.0.0",
-      content: content
+      content: this.blockContent
     };
   }
 
-  ModifyResponse() {
+  modifyResponse() {
     let response = this.rawResponse;
 
     // Check for existing entities in store
@@ -63,13 +65,10 @@ class AnnotationService {
       });
     }
 
-    let block = wp.data.select("core/editor").getBlock(this.blockClientId);
-
     // Populate an array of all disambiguated
-    if (block.attributes && block.attributes.content) {
-      let content = block.attributes.content;
+    if (this.block.attributes && this.blockContent) {
       let contentElem = document.createElement("div");
-      contentElem.innerHTML = content;
+      contentElem.innerHTML = this.blockContent;
       if (contentElem.querySelectorAll(".textannotation.disambiguated")) {
         contentElem.querySelectorAll(".textannotation.disambiguated").forEach((nodeValue, nodeIndex) => {
           this.disambiguated.push(nodeValue.innerText);
@@ -91,16 +90,13 @@ class AnnotationService {
     this.modifiedResponse = response;
   }
 
-  PersistentlyAnnotateContent() {
-    let currentBlock = wp.data.select("core/editor").getBlock(this.blockClientId);
-    let html = currentBlock.attributes.content;
-    let blockUid = currentBlock.clientId;
-    let value = wp.richText.create({
-      html
+  persistentlyAnnotate() {
+    let richText = wp.richText.create({
+      html: this.blockContent
     });
     for (var annotation in this.modifiedResponse.annotations) {
-      let annotationData = this.modifiedResponse.annotations[annotation];
-      let entityData = this.modifiedResponse.entities[annotationData.entityMatches[0].entityId];
+      const annotationData = this.modifiedResponse.annotations[annotation];
+      const entityData = this.modifiedResponse.entities[annotationData.entityMatches[0].entityId];
       let format = {
         type: "span",
         attributes: {
@@ -112,18 +108,18 @@ class AnnotationService {
       if (this.disambiguated.includes(annotationData.text)) {
         format.attributes.class += " disambiguated";
       }
-      value = wp.richText.applyFormat(value, format, annotationData.start, annotationData.end);
+      richText = wp.richText.applyFormat(richText, format, annotationData.start, annotationData.end);
     }
-    wp.data.dispatch("core/editor").updateBlock(blockUid, {
+    wp.data.dispatch("core/editor").updateBlock(this.blockClientId, {
       attributes: {
         content: wp.richText.toHTMLString({
-          value
+          value: richText
         })
       }
     });
   }
 
-  WordliftAnalyze() {
+  wordliftAnalyze() {
     let _this = this;
     return function(dispatch) {
       wp.apiFetch({
@@ -136,8 +132,8 @@ class AnnotationService {
       }).then(function(response) {
         if (Object.keys(response.entities).length > 0) {
           _this.rawResponse = response;
-          _this.ModifyResponse();
-          _this.PersistentlyAnnotateContent();
+          _this.modifyResponse();
+          _this.persistentlyAnnotate();
           console.log(`An analysis has been performed for block ${_this.blockClientId}`);
           dispatch(receiveAnalysisResults(_this.modifiedResponse));
         } else {
@@ -147,12 +143,12 @@ class AnnotationService {
     };
   }
 
-  static AnnotateSelected(start, end) {
+  static annotateSelected(start, end) {
     return function(dispatch) {
-      let selectedBlock = wp.data.select("core/editor").getSelectedBlock();
+      const selectedBlock = wp.data.select("core/editor").getSelectedBlock();
       if (!selectedBlock) return;
 
-      let existingEntities = Store1.getState().entities;
+      const existingEntities = Store1.getState().entities;
       let annotationId = undefined;
 
       if (existingEntities.size > 0) {
@@ -204,7 +200,7 @@ class AnnotationService {
   }
 
   static disambiguate(elem, action) {
-    let disambiguateClass = "disambiguated";
+    const disambiguateClass = "disambiguated";
 
     wp.data
       .select("core/editor")

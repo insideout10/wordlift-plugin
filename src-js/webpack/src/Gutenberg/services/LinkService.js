@@ -56,16 +56,14 @@ class LinkService {
       .getBlocks()
       .forEach((block, blockIndex) => {
         if (block.attributes && block.attributes.content) {
-          let content = block.attributes.content;
-          let blockUid = block.clientId;
+          const selector = elem.replace("urn:", "urn\\3A ");
           let contentElem = document.createElement("div");
-          let selector = elem.replace("urn:", "urn\\3A ");
 
-          contentElem.innerHTML = content;
+          contentElem.innerHTML = block.attributes.content;
           if (contentElem.querySelector("#" + selector)) {
             contentElem.querySelector("#" + selector).classList.remove("wl-no-link");
             contentElem.querySelector("#" + selector).classList.add("wl-link");
-            wp.data.dispatch("core/editor").updateBlock(blockUid, {
+            wp.data.dispatch("core/editor").updateBlock(block.clientId, {
               attributes: {
                 content: contentElem.innerHTML
               }
@@ -87,16 +85,14 @@ class LinkService {
       .getBlocks()
       .forEach((block, blockIndex) => {
         if (block.attributes && block.attributes.content) {
-          let content = block.attributes.content;
-          let blockUid = block.clientId;
+          const selector = elem.replace("urn:", "urn\\3A ");
           let contentElem = document.createElement("div");
-          let selector = elem.replace("urn:", "urn\\3A ");
 
-          contentElem.innerHTML = content;
+          contentElem.innerHTML = block.attributes.content;
           if (contentElem.querySelector("#" + selector)) {
             contentElem.querySelector("#" + selector).classList.remove("wl-link");
             contentElem.querySelector("#" + selector).classList.add("wl-no-link");
-            wp.data.dispatch("core/editor").updateBlock(blockUid, {
+            wp.data.dispatch("core/editor").updateBlock(block.clientId, {
               attributes: {
                 content: contentElem.innerHTML
               }
@@ -131,7 +127,7 @@ class LinkService {
     contentElem.innerHTML = content;
 
     return occurrences.reduce((acc, id) => {
-      let selector = id.replace("urn:", "urn\\3A ");
+      const selector = id.replace("urn:", "urn\\3A ");
       return acc || this.linkByDefault
         ? !contentElem.querySelector("#" + selector + ".wl-no-link")
         : !!contentElem.querySelector("#" + selector + ".wl-link");
