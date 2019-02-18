@@ -6,9 +6,51 @@
  */
 ?>
 <style>
+    #wl-dashboard-v2 > .inside {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        margin: 0;
+        padding: 0 5px;
+        box-sizing: border-box;
+    }
+
+    #wl-dashboard-v2 > .inside > div {
+        flex: 100%;
+        margin: 0 5px 10px 5px
+    }
+
+    #wl-dashboard-v2 > .inside > div.wl-dashboard__block--todays-tip {
+        margin: 10px -5px 10px -5px;
+    }
+
+    #wl-dashboard-v2 > .inside > div.wl-dashboard__block--enriched-posts, #wl-dashboard-v2 > .inside > div.wl-dashboard__block--created-entities, #wl-dashboard-v2 > .inside > div.wl-dashboard__block--average-entity-rating {
+        flex: 1 0 160px;
+        box-sizing: border-box;
+        position: relative;
+    }
+
+    #wl-dashboard-v2 > .inside > div.wl-dashboard__block--enriched-posts > div.wl-dashboard__block__body
+    , #wl-dashboard-v2 > .inside > div.wl-dashboard__block--created-entities > div.wl-dashboard__block__body
+    , #wl-dashboard-v2 > .inside > div.wl-dashboard__block--average-entity-rating > div.wl-dashboard__block__body {
+        display: block;
+        font-size: 2em;
+        text-align: center;
+        min-height: 36px;
+    }
+
+    #wl-dashboard-v2 > .inside > div.wl-dashboard__block--enriched-posts > div.wl-dashboard__block__body > a:last-child
+    , #wl-dashboard-v2 > .inside > div.wl-dashboard__block--created-entities > div.wl-dashboard__block__body > a:last-child
+    , #wl-dashboard-v2 > .inside > div.wl-dashboard__block--average-entity-rating > div.wl-dashboard__block__body > a:last-child {
+        position: absolute;
+        font-size: initial;
+        right: 8px;
+        bottom: 8px;
+    }
+
     /* WordLift Dashboard */
     #wl-dashboard-v2 header {
-        padding: .5em;
+        padding: .2em;
         background: #f1f1f1;
         display: flex;
         flex-direction: row;
@@ -18,6 +60,7 @@
     #wl-dashboard-v2 header h3 {
         margin: 0;
         font-weight: 500;
+        letter-spacing: -.03em;
     }
 
     #wl-dashboard-v2 header > *:nth-child(3) {
@@ -59,14 +102,16 @@
         flex-wrap: wrap;
     }
 
-    #wl-dashboard-v2 .wl-dashboard__block__body > div
-        , #wl-dashboard__show-more ~ label > span {
+    #wl-dashboard-v2 .wl-dashboard__block__body > div, #wl-dashboard__show-more ~ label > span {
         padding: 4px 8px 4px 0;
         box-sizing: border-box;
     }
 
-    #wl-dashboard-v2 .wl-dashboard__block__body > div:nth-child(odd)
-        , #wl-dashboard__show-more ~ label > span {
+    #wl-dashboard-v2 .wl-dashboard__block--search-rankings .wl-dashboard__block__body > div {
+        flex: 1 1 50%;
+    }
+
+    #wl-dashboard-v2 .wl-dashboard__block--top-entities .wl-dashboard__block__body > div:nth-child(odd), #wl-dashboard__show-more ~ label > span {
         text-align: right;
         width: 120px;
         overflow: hidden;
@@ -74,14 +119,20 @@
         white-space: nowrap;
     }
 
-    #wl-dashboard-v2 .wl-dashboard__block__body > div:nth-child(even) {
+    <?php $blu_dot_url = plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'images/blu-dot.gif'; ?>
+    #wl-dashboard-v2 .wl-dashboard__block--top-entities .wl-dashboard__block__body > div:nth-child(even) {
         flex: calc(100% - 120px);
-        background: #ebf6ff;
+        background-color: #ebf6ff;
+        background-image: url('<?php echo $blu_dot_url; ?>'), url('<?php echo $blu_dot_url; ?>'), url('<?php echo $blu_dot_url; ?>');
+        background-position: 25% center, 50%, 75%;
+        background-size: 1px 4px;
+        background-repeat: repeat-y;
+        background-origin: content-box;
     }
 
     #wl-dashboard-v2 .wl-dashboard__block__body > label {
         flex: 100%;
-        background: linear-gradient(to right, white 120px, #ebf6ff 120px 100%);
+        /* background: linear-gradient(to right, white 120px, #ebf6ff 120px 100%); */
     }
 
     #wl-dashboard-v2 .wl-dashboard__block__body--locked {
@@ -100,6 +151,7 @@
     }
 
     #wl-dashboard-v2 .wl-dashboard__bar {
+        width: 0;
         height: 10px;
         border-radius: 0 10px 10px 0;
     }
@@ -121,22 +173,34 @@
 
     #wl-dashboard__show-more ~ label {
         color: #0073aa;
-        transition-property: border, background, color;
-        transition-duration: .05s;
-        transition-timing-function: ease-in-out;
         text-decoration: none;
+        width: auto;
+        font-weight: 500;
     }
 
-    #wl-dashboard__show-more ~ div
-        , #wl-dashboard__show-more ~ label > span:nth-child(2)
-        , #wl-dashboard__show-more:checked ~ label > span:nth-child(1) {
+    #wl-dashboard__show-more ~ div, #wl-dashboard__show-more ~ label > span:nth-child(2), #wl-dashboard__show-more:checked ~ label > span:nth-child(1) {
         display: none;
     }
 
-    #wl-dashboard__show-more:checked ~ div
-        , #wl-dashboard__show-more:checked ~ label > span:nth-child(2)
-        , #wl-dashboard__show-more ~ label > span:nth-child(1) {
-        display: block;
+    #wl-dashboard__show-more:checked ~ div, #wl-dashboard__show-more:checked ~ label > span:nth-child(2), #wl-dashboard__show-more ~ label > span:nth-child(1) {
+        display: inline-block;
+    }
+
+    #wl-dashboard-v2 .wl-dashboard__block--top-entities .wl-dashboard__block__body > div.wl-dashboard__block__body__table-header {
+        white-space: nowrap;
+        background: #fff;
+    }
+
+    #wl-dashboard-v2 .wl-dashboard__block__body__table-header > span {
+        width: 50%;
+        display: inline-block;
+        text-align: center;
+        margin-left: -25%;
+        color: #008aff;
+    }
+
+    #wl-dashboard-v2 .wl-dashboard__block__body__table-header > span:first-child, #wl-dashboard-v2 .wl-dashboard__block__body__table-header > span:last-child {
+        color: transparent;
     }
 </style>
 <?php
@@ -153,7 +217,7 @@ $configuration_service = Wordlift_Configuration_Service::get_instance();
 
 $country_code = $configuration_service->get_country_code();
 ?>
-<div>
+<div class="wl-dashboard__block wl-dashboard__block--search-rankings">
     <header>
         <span class="dashicons dashicons-editor-help"></span>
         <h3><?php echo __( 'Search rankings', 'wordlift' ); ?></h3>
@@ -182,7 +246,7 @@ $country_code = $configuration_service->get_country_code();
 	<?php } ?>
 </div>
 
-<div>
+<div class="wl-dashboard__block wl-dashboard__block--top-entities">
     <header>
         <span class="dashicons dashicons-editor-help"></span>
         <h3><?php echo __( 'Top entities', 'wordlift' ); ?></h3>
@@ -193,13 +257,23 @@ $country_code = $configuration_service->get_country_code();
 		<?php
 		$top_entities = $this->get_top_entities();
 		if ( ! empty( $top_entities ) ) {
-			$max = $top_entities[0]->total;
-			$i   = 0;
+			$max         = $top_entities[0]->total;
+			$unit        = intval( '1' . str_repeat( '0', strlen( $max ) - 1 ) );
+			$max_value   = ceil( (float) $max / $unit ) * $unit;
+			$chunk_value = $max_value / 4;
+			?>
+            <div></div>
+            <div class="wl-dashboard__block__body__table-header">
+				<?php for ( $i = 0; $i <= $max_value; $i += $chunk_value ) { ?><span><?php echo $i; ?></span><?php } ?>
+            </div>
+			<?php
+			$i = 0;
 			foreach ( $this->get_top_entities() as $post ) {
 				$permalink    = get_permalink( $post->ID );
 				$title        = $post->post_title;
-				$entities_100 = 100 * $post->entities / $max;
-				$posts_100    = 100 * $post->posts / $max;
+				$entities_100 = 100 * $post->entities / $max_value;
+				$posts_100    = 100 * $post->posts / $max_value;
+
 				?>
                 <div><a href="<?php echo esc_attr( $permalink ); ?>"><?php echo esc_html( $title ); ?></a></div>
                 <div>
@@ -229,40 +303,37 @@ $country_code = $configuration_service->get_country_code();
     </div>
 </div>
 
-<div>
+<div class="wl-dashboard__block wl-dashboard__block--enriched-posts">
     <header>
         <span class="dashicons dashicons-editor-help"></span>
         <h3><?php echo __( 'Enriched posts', 'wordlift' ); ?></h3>
     </header>
-    <div>
-		<?php echo $this->dashboard_service->count_annotated_posts(); ?>
+    <div class="wl-dashboard__block__body">
+        <a href=""><?php echo $this->dashboard_service->count_annotated_posts(); ?></a>
         / <?php echo $this->dashboard_service->count_posts(); ?>
-
         <a href=""><?php echo esc_html( _x( 'Enrich', 'Dashboard', 'wordlift' ) ); ?></a>
     </div>
 </div>
 
-<div>
+<div class="wl-dashboard__block wl-dashboard__block--created-entities">
     <header>
         <span class="dashicons dashicons-editor-help"></span>
         <h3><?php echo __( 'Created entities', 'wordlift' ); ?></h3>
     </header>
-    <div>
-		<?php echo $this->entity_service->count(); ?>
-
+    <div class="wl-dashboard__block__body">
+        <a href=""><?php echo $this->entity_service->count(); ?></a>
         <a href=""><?php echo esc_html( _x( 'Vocabulary', 'Dashboard', 'wordlift' ) ); ?></a>
     </div>
 </div>
 
-<div>
+<div class="wl-dashboard__block wl-dashboard__block--average-entity-rating">
     <header>
         <span class="dashicons dashicons-editor-help"></span>
         <h3><?php echo __( 'Average entity rating', 'wordlift' ); ?></h3>
     </header>
-    <div>
-		<?php echo $this->dashboard_service->average_entities_rating(); ?>
-
-        <a href=""><?php echo esc_html( _x( 'Pimp', 'Dashboard', 'wordlift' ) ); ?></a>
+    <div class="wl-dashboard__block__body">
+        <a href=""><?php echo $this->dashboard_service->average_entities_rating(); ?></a>
+        <a href=""><?php echo esc_html( _x( 'Boost', 'Dashboard', 'wordlift' ) ); ?></a>
     </div>
 </div>
 

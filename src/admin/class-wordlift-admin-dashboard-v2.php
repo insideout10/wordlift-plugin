@@ -141,7 +141,7 @@ EOF;
 		}
 		?>
 
-        <div id="wl-todays-tip">
+        <div id="wl-todays-tip" class="wl-dashboard__block wl-dashboard__block--todays-tip">
             <header>
                 <h3><?php echo __( "Today's Tip", 'wordlift' ); ?></h3>
             </header>
