@@ -124,7 +124,7 @@ class AnnotationService {
     let _this = this;
     return function(dispatch) {
       dispatch(processingBlockAdd(_this.blockClientId));
-      if (_this.blockContent) {
+      if (_this.blockContent && _this.block.name != "core/freeform") {
         console.log(`Requesting analysis for block ${_this.blockClientId}...`);
         wp.apiFetch({
           url: `${wlSettings["ajax_url"]}?action=wordlift_analyze`,
@@ -145,6 +145,24 @@ class AnnotationService {
           }
           dispatch(processingBlockRemove(_this.blockClientId));
         });
+      } else if (_this.block.name === "core/freeform") {
+        wp.data
+          .dispatch("core/notices")
+          .createInfoNotice("WordLift content analysis is not compatible with Classic Editor blocks. ", {
+            actions: [
+              {
+                url: "https://wordpress.org/plugins/classic-editor/",
+                label: "Switch to Classic Editor",
+                target: "_blank"
+              },
+              {
+                url: "https://ithemes.com/wp-content/uploads/2018/12/wordpress-5.0-convert-to-blocks-1024x583.png",
+                label: "Convert to Gutenberg Blocks",
+                target: "_blank"
+              }
+            ]
+          });
+        dispatch(processingBlockRemove(_this.blockClientId));
       } else {
         console.log(`No content found in block ${_this.blockClientId}`);
         dispatch(processingBlockRemove(_this.blockClientId));

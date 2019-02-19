@@ -34,10 +34,32 @@ function wl_admin_add_entities_meta_box( $post_type ) {
 		return;
 	}
 
-	// Add main meta box for related entities and 4W.
-	add_meta_box(
-		'wordlift_entities_box', __( 'WordLift', 'wordlift' ), 'wl_entities_box_content', $post_type, 'side', 'high'
-	);
+	if (!is_gutenberg()) {
+		// Add main meta box for related entities and 4W only if Gutenberg
+		add_meta_box(
+			'wordlift_entities_box', __( 'WordLift', 'wordlift' ), 'wl_entities_box_content', $post_type, 'side', 'high'
+		);
+	} else {
+		// Call wl_entities_box_content for the other things that it does.
+		wl_entities_box_content(get_post(), false);
+	}
+}
+
+function is_gutenberg() {
+	if ( function_exists( 'is_gutenberg_page' ) &&
+	     is_gutenberg_page()
+	) {
+		// The Gutenberg plugin is on.
+		return true;
+	}
+	$current_screen = get_current_screen();
+	if ( method_exists( $current_screen, 'is_block_editor' ) &&
+	     $current_screen->is_block_editor()
+	) {
+		// Gutenberg page on 5+.
+		return true;
+	}
+	return false;
 }
 
 add_action( 'add_meta_boxes', 'wl_admin_add_entities_meta_box' );
@@ -72,10 +94,10 @@ function wl_post_type_supports_editor( $post_type ) {
  *
  * @param WP_Post $post The current post.
  */
-function wl_entities_box_content( $post ) {
+function wl_entities_box_content( $post, $wrapper = true ) {
 
 	// Angularjs edit-post widget wrapper.
-	echo '<div id="wordlift-edit-post-outer-wrapper"></div>';
+	if($wrapper) echo '<div id="wordlift-edit-post-outer-wrapper"></div>';
 
 	// Angularjs edit-post widget classification boxes configuration.
 	$classification_boxes = unserialize( WL_CORE_POST_CLASSIFICATION_BOXES );
@@ -169,28 +191,24 @@ function wl_entities_box_content( $post ) {
 
 	echo <<<EOF
 	<script type="text/javascript">
-		jQuery( function() {
+		if ('undefined' == typeof window.wordlift) {
+			window.wordlift = {};
+			window.wordlift.entities = {};  		
+		}
 
-			if ('undefined' == typeof window.wordlift) {
-				window.wordlift = {};
-				window.wordlift.entities = {};  		
-			}
-
-			window.wordlift.classificationBoxes = $classification_boxes;
-			window.wordlift.entities = $referenced_entities_obj;
-			window.wordlift.currentPostId = $post->ID;
-			window.wordlift.currentPostUri = '$current_post_uri';
-			window.wordlift.currentPostType = '$post->post_type';
-			window.wordlift.defaultThumbnailPath = '$default_thumbnail_path';
-			window.wordlift.defaultWordLiftPath = '$default_path';
-			window.wordlift.datasetUri = '$dataset_uri';
-			window.wordlift.currentUser = '$post_author';
-			window.wordlift.publishedDate = '$published_date';
-			window.wordlift.publishedPlace = $published_place_obj;
-			window.wordlift.topic = $topic_obj;
-			window.wordlift.currentLanguage = '$current_language';
-
-		});
+		window.wordlift.classificationBoxes = $classification_boxes;
+		window.wordlift.entities = $referenced_entities_obj;
+		window.wordlift.currentPostId = $post->ID;
+		window.wordlift.currentPostUri = '$current_post_uri';
+		window.wordlift.currentPostType = '$post->post_type';
+		window.wordlift.defaultThumbnailPath = '$default_thumbnail_path';
+		window.wordlift.defaultWordLiftPath = '$default_path';
+		window.wordlift.datasetUri = '$dataset_uri';
+		window.wordlift.currentUser = '$post_author';
+		window.wordlift.publishedDate = '$published_date';
+		window.wordlift.publishedPlace = $published_place_obj;
+		window.wordlift.topic = $topic_obj;
+		window.wordlift.currentLanguage = '$current_language';
 	</script>
 EOF;
 }

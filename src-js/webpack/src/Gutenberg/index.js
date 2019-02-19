@@ -9,7 +9,7 @@ import { Provider } from "react-redux";
  * Internal dependencies.
  */
 import Store1 from "./stores/Store1";
-import WordLiftIcon from "../../../../src/images/svg/wl-logo-icon.svg";
+import WordLiftIcon from "./svg/wl-logo-big.svg";
 import * as Constants from "./constants";
 import ContentClassificationContainer from "./components/ContentClassificationPanel";
 
