@@ -12,6 +12,7 @@
  */
 import Store1 from "../stores/Store1";
 import { receiveAnalysisResults, setCurrentAnnotation, updateOccurrencesForEntity } from "../../Edit/actions";
+import { processingBlockAdd, processingBlockRemove } from "../actions";
 
 const canCreateEntities =
   "undefined" !== wlSettings["can_create_entities"] && "yes" === wlSettings["can_create_entities"];
@@ -25,7 +26,7 @@ class AnnotationService {
   constructor(block) {
     this.block = block;
     this.blockClientId = block.clientId;
-    this.blockContent = block.attributes.content;
+    this.blockContent = block.attributes && block.attributes.content;
     this.disambiguated = [];
     this.rawResponse = null;
     this.modifiedResponse = null;
@@ -122,24 +123,32 @@ class AnnotationService {
   wordliftAnalyze() {
     let _this = this;
     return function(dispatch) {
-      wp.apiFetch({
-        url: "/wp-admin/admin-ajax.php?action=wordlift_analyze",
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(_this.body)
-      }).then(function(response) {
-        if (Object.keys(response.entities).length > 0) {
-          _this.rawResponse = response;
-          _this.modifyResponse();
-          _this.persistentlyAnnotate();
-          console.log(`An analysis has been performed for block ${_this.blockClientId}`);
-          dispatch(receiveAnalysisResults(_this.modifiedResponse));
-        } else {
-          console.log(`No entities found in block ${_this.blockClientId}`);
-        }
-      });
+      dispatch(processingBlockAdd(_this.blockClientId));
+      if (_this.blockContent) {
+        console.log(`Requesting analysis for block ${_this.blockClientId}...`);
+        wp.apiFetch({
+          url: `${wlSettings["ajax_url"]}?action=wordlift_analyze`,
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(_this.body)
+        }).then(function(response) {
+          if (Object.keys(response.entities).length > 0) {
+            _this.rawResponse = response;
+            _this.modifyResponse();
+            _this.persistentlyAnnotate();
+            console.log(`An analysis has been performed for block ${_this.blockClientId}`);
+            dispatch(receiveAnalysisResults(_this.modifiedResponse));
+          } else {
+            console.log(`No entities found in block ${_this.blockClientId}`);
+          }
+          dispatch(processingBlockRemove(_this.blockClientId));
+        });
+      } else {
+        console.log(`No content found in block ${_this.blockClientId}`);
+        dispatch(processingBlockRemove(_this.blockClientId));
+      }
     };
   }
 

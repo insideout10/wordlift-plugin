@@ -8,6 +8,7 @@
  * External dependencies
  */
 import React from "react";
+import styled from "styled-components";
 
 /**
  * Internal dependencies
@@ -30,6 +31,15 @@ const { Panel, PanelBody, PanelRow } = wp.components;
 const canCreateEntities =
   "undefined" !== wlSettings["can_create_entities"] && "yes" === wlSettings["can_create_entities"];
 
+const LoaderWrapper = styled.div`
+  padding: 8px 0;
+  color: rgb(102, 102, 102);
+  min-height: 16px;
+  line-height: 16px;
+  font-weight: 600;
+  font-size: 12px;
+`;
+
 class ContentClassificationPanel extends React.Component {
   constructor(props) {
     super(props);
@@ -41,13 +51,8 @@ class ContentClassificationPanel extends React.Component {
       .select("core/editor")
       .getBlocks()
       .forEach((block, blockIndex) => {
-        if (block.attributes && block.attributes.content) {
-          console.log(`Requesting analysis for block ${block.clientId}...`);
-          let annotationService = new AnnotationService(block);
-          this.props.dispatch(annotationService.wordliftAnalyze());
-        } else {
-          console.log(`No content found in block ${block.clientId}`);
-        }
+        let annotationService = new AnnotationService(block);
+        this.props.dispatch(annotationService.wordliftAnalyze());
       });
   }
 
@@ -76,15 +81,17 @@ class ContentClassificationPanel extends React.Component {
         <PanelBody title="Content classification" initialOpen={true}>
           <PanelRow>
             <Wrapper>
-              {this.props.entities && this.props.entities.size > 0 ? (
-                <Fragment>
-                  <AddEntity showCreate={canCreateEntities} store={Store2} />
-                  <Header />
+              <Fragment>
+                <AddEntity showCreate={canCreateEntities} store={Store2} />
+                <Header />
+                {this.props.entities && this.props.entities.size > 0 ? (
                   <VisibleEntityList />
-                </Fragment>
-              ) : (
-                "Analyzing content..."
-              )}
+                ) : this.props.processingBlocks && this.props.processingBlocks.length === 0 ? (
+                  <LoaderWrapper>No content found</LoaderWrapper>
+                ) : (
+                  <LoaderWrapper>Analysing content...</LoaderWrapper>
+                )}
+              </Fragment>
             </Wrapper>
           </PanelRow>
         </PanelBody>
