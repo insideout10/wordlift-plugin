@@ -30,18 +30,14 @@
         position: relative;
     }
 
-    #wl-dashboard-v2 > .inside > div.wl-dashboard__block--enriched-posts > div.wl-dashboard__block__body
-    , #wl-dashboard-v2 > .inside > div.wl-dashboard__block--created-entities > div.wl-dashboard__block__body
-    , #wl-dashboard-v2 > .inside > div.wl-dashboard__block--average-entity-rating > div.wl-dashboard__block__body {
+    #wl-dashboard-v2 > .inside > div.wl-dashboard__block--enriched-posts > div.wl-dashboard__block__body, #wl-dashboard-v2 > .inside > div.wl-dashboard__block--created-entities > div.wl-dashboard__block__body, #wl-dashboard-v2 > .inside > div.wl-dashboard__block--average-entity-rating > div.wl-dashboard__block__body {
         display: block;
         font-size: 2em;
         text-align: center;
         min-height: 36px;
     }
 
-    #wl-dashboard-v2 > .inside > div.wl-dashboard__block--enriched-posts > div.wl-dashboard__block__body > a:last-child
-    , #wl-dashboard-v2 > .inside > div.wl-dashboard__block--created-entities > div.wl-dashboard__block__body > a:last-child
-    , #wl-dashboard-v2 > .inside > div.wl-dashboard__block--average-entity-rating > div.wl-dashboard__block__body > a:last-child {
+    #wl-dashboard-v2 > .inside > div.wl-dashboard__block--enriched-posts > div.wl-dashboard__block__body > a:last-child, #wl-dashboard-v2 > .inside > div.wl-dashboard__block--created-entities > div.wl-dashboard__block__body > a:last-child, #wl-dashboard-v2 > .inside > div.wl-dashboard__block--average-entity-rating > div.wl-dashboard__block__body > a:last-child {
         position: absolute;
         font-size: initial;
         right: 8px;
@@ -303,37 +299,40 @@ $country_code = $configuration_service->get_country_code();
     </div>
 </div>
 
+<?php $not_enriched_url = admin_url( 'edit.php?post_type=post&wl_enriched=no' ); ?>
 <div class="wl-dashboard__block wl-dashboard__block--enriched-posts">
     <header>
         <span class="dashicons dashicons-editor-help"></span>
         <h3><?php echo __( 'Enriched posts', 'wordlift' ); ?></h3>
     </header>
     <div class="wl-dashboard__block__body">
-        <a href=""><?php echo $this->dashboard_service->count_annotated_posts(); ?></a>
+        <a href="<?php echo $not_enriched_url; ?>"><?php echo $this->dashboard_service->count_annotated_posts(); ?></a>
         / <?php echo $this->dashboard_service->count_posts(); ?>
-        <a href=""><?php echo esc_html( _x( 'Enrich', 'Dashboard', 'wordlift' ) ); ?></a>
+        <a href="<?php echo $not_enriched_url; ?>"><?php echo esc_html( _x( 'Enrich', 'Dashboard', 'wordlift' ) ); ?></a>
     </div>
 </div>
 
+<?php $vocabulary_url = admin_url( 'edit.php?post_type=entity' ); ?>
 <div class="wl-dashboard__block wl-dashboard__block--created-entities">
     <header>
         <span class="dashicons dashicons-editor-help"></span>
         <h3><?php echo __( 'Created entities', 'wordlift' ); ?></h3>
     </header>
     <div class="wl-dashboard__block__body">
-        <a href=""><?php echo $this->entity_service->count(); ?></a>
-        <a href=""><?php echo esc_html( _x( 'Vocabulary', 'Dashboard', 'wordlift' ) ); ?></a>
+        <a href="<?php echo $vocabulary_url; ?>"><?php echo $this->entity_service->count(); ?></a>
+        <a href="<?php echo $vocabulary_url; ?>"><?php echo esc_html( _x( 'Vocabulary', 'Dashboard', 'wordlift' ) ); ?></a>
     </div>
 </div>
 
+<?php $boost_url = admin_url( 'admin.php?page=wl_search_rankings' ); ?>
 <div class="wl-dashboard__block wl-dashboard__block--average-entity-rating">
     <header>
         <span class="dashicons dashicons-editor-help"></span>
         <h3><?php echo __( 'Average entity rating', 'wordlift' ); ?></h3>
     </header>
     <div class="wl-dashboard__block__body">
-        <a href=""><?php echo $this->dashboard_service->average_entities_rating(); ?></a>
-        <a href=""><?php echo esc_html( _x( 'Boost', 'Dashboard', 'wordlift' ) ); ?></a>
+        <a href="<?php echo $boost_url; ?>"><?php echo $this->dashboard_service->average_entities_rating(); ?></a>
+        <a href="<?php echo $boost_url; ?>"><?php echo esc_html( _x( 'Boost', 'Dashboard', 'wordlift' ) ); ?></a>
     </div>
 </div>
 

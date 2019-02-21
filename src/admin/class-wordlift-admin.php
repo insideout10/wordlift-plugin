@@ -134,6 +134,7 @@ class Wordlift_Admin {
 				Wordlift::get_instance()->get_dashboard_service(),
 				Wordlift_Entity_Service::get_instance()
 			);
+			new Wordlift_Admin_Not_Enriched_Filter();
 
 		}
 
@@ -292,6 +293,7 @@ class Wordlift_Admin {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-search-rankings-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-search-rankings-ajax-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard-v2.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-not-enriched-filter.php';
 
 	}
 

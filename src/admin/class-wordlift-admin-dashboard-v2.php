@@ -51,6 +51,7 @@ class Wordlift_Admin_Dashboard_V2 {
 		$this->search_rankings_service = $search_rankings_service;
 		$this->dashboard_service       = $dashboard_service;
 		$this->entity_service          = $entity_service;
+
 	}
 
 	public function dashboard_setup() {
