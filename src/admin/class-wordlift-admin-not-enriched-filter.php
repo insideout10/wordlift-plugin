@@ -31,7 +31,7 @@ class Wordlift_Admin_Not_Enriched_Filter {
 		$url = add_query_arg( array( self::PARAMETER_NAME => 'no', 'post_type' => 'post', ), 'edit.php' );
 
 		$not_enriched_count = $wpdb->get_var( <<<EOF
-SELECT COUNT( * ) FROM $wpdb->posts p
+SELECT COUNT( 1 ) FROM $wpdb->posts p
  WHERE p.post_type = 'post'
    AND p.post_status <> 'trash' 
    AND p.post_status <> 'auto-draft'
