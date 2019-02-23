@@ -30,13 +30,6 @@ class AnnotationService {
     this.disambiguated = [];
     this.rawResponse = null;
     this.modifiedResponse = null;
-    this.body = {
-      contentLanguage: "en",
-      contentType: "text/html",
-      scope: "all",
-      version: "1.0.0",
-      content: this.blockContent
-    };
   }
 
   modifyResponse() {
@@ -126,48 +119,65 @@ class AnnotationService {
       dispatch(processingBlockAdd(_this.blockClientId));
       if (_this.blockContent && _this.block.name != "core/freeform") {
         console.log(`Requesting analysis for block ${_this.blockClientId}...`);
-        wp.apiFetch({
-          url: `${wlSettings["ajax_url"]}?action=wordlift_analyze`,
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(_this.body)
-        }).then(function(response) {
-          if (Object.keys(response.entities).length > 0) {
-            _this.rawResponse = response;
-            _this.modifyResponse();
-            _this.persistentlyAnnotate();
-            console.log(`An analysis has been performed for block ${_this.blockClientId}`);
-            dispatch(receiveAnalysisResults(_this.modifiedResponse));
-          } else {
-            console.log(`No entities found in block ${_this.blockClientId}`);
-          }
-          dispatch(processingBlockRemove(_this.blockClientId));
-        });
-      } else if (_this.block.name === "core/freeform") {
-        wp.data
-          .dispatch("core/notices")
-          .createInfoNotice("WordLift content analysis is not compatible with Classic Editor blocks. ", {
-            actions: [
-              {
-                url: "https://wordpress.org/plugins/classic-editor/",
-                label: "Switch to Classic Editor",
-                target: "_blank"
-              },
-              {
-                url: "https://ithemes.com/wp-content/uploads/2018/12/wordpress-5.0-convert-to-blocks-1024x583.png",
-                label: "Convert to Gutenberg Blocks",
-                target: "_blank"
-              }
-            ]
+        wp.apiFetch(_this.getWordliftAnalyzeRequest())
+          .then(function(response) {
+            if (Object.keys(response.entities).length > 0) {
+              _this.rawResponse = response;
+              _this.modifyResponse();
+              _this.persistentlyAnnotate();
+              console.log(`An analysis has been performed for block ${_this.blockClientId}`);
+              dispatch(receiveAnalysisResults(_this.modifiedResponse));
+            } else {
+              console.log(`No entities found in block ${_this.blockClientId}`);
+            }
+            dispatch(processingBlockRemove(_this.blockClientId));
+          })
+          .catch(function(error) {
+            console.log("Error fetching from API: ", error);
+            dispatch(processingBlockRemove(_this.blockClientId));
           });
+      } else if (_this.block.name === "core/freeform") {
+        AnnotationService.classicEditorNotice();
         dispatch(processingBlockRemove(_this.blockClientId));
       } else {
         console.log(`No content found in block ${_this.blockClientId}`);
         dispatch(processingBlockRemove(_this.blockClientId));
       }
     };
+  }
+
+  getWordliftAnalyzeRequest() {
+    return {
+      url: `${wlSettings["ajax_url"]}?action=wordlift_analyze`,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        contentLanguage: wlSettings.language,
+        contentType: "text/html",
+        scope: "all",
+        version: "1.0.0",
+        content: this.blockContent
+      })
+    };
+  }
+
+  static classicEditorNotice() {
+    wp.data
+      .dispatch("core/notices")
+      .createInfoNotice("WordLift content analysis is not compatible with Classic Editor blocks. ", {
+        actions: [
+          {
+            url: "https://wordpress.org/plugins/classic-editor/",
+            label: "Switch to Classic Editor"
+          },
+          {
+            url: "https://ithemes.com/wp-content/uploads/2018/12/wordpress-5.0-convert-to-blocks-1024x583.png",
+            label: "Convert to Gutenberg Blocks"
+          }
+        ]
+      });
   }
 
   static annotateSelected(start, end) {
