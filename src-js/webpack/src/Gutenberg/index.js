@@ -11,7 +11,8 @@ import { Provider } from "react-redux";
 import Store1 from "./stores/Store1";
 import WordLiftIcon from "./svg/wl-logo-big.svg";
 import * as Constants from "./constants";
-import ContentClassificationContainer from "./components/ContentClassificationPanel";
+import ContentClassificationPanel from "./components/ContentClassificationPanel";
+import RelatedPostsPanel from "./components/RelatedPostsPanel";
 
 /*
  * Packages via WordPress global
@@ -39,14 +40,6 @@ const PanelSuggestedImages = () => (
   </Panel>
 );
 
-const PanelRelatedPosts = () => (
-  <Panel>
-    <PanelBody title="Related posts" initialOpen={false}>
-      <PanelRow>Related posts Inputs and Labels</PanelRow>
-    </PanelBody>
-  </Panel>
-);
-
 const WordLiftSidebar = () => (
   <Fragment>
     <PluginSidebarMoreMenuItem target="wordlift-sidebar" icon={<WordLiftIcon />}>
@@ -55,10 +48,10 @@ const WordLiftSidebar = () => (
     <PluginSidebar name="wordlift-sidebar" title="WordLift">
       <Provider store={Store1}>
         <Fragment>
-          <ContentClassificationContainer />
+          <ContentClassificationPanel />
           <PanelArticleMetadata />
           <PanelSuggestedImages />
-          <PanelRelatedPosts />
+          <RelatedPostsPanel />
         </Fragment>
       </Provider>
     </PluginSidebar>

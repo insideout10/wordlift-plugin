@@ -148,6 +148,7 @@ class Wordlift_Admin_Post_Edit_Page {
 				'wp-util',
 				'wp-element',
 				'wp-components',
+				'wp-compose',
 				'wp-edit-post',
 				'wp-plugins',
 				'wp-data',
@@ -157,7 +158,6 @@ class Wordlift_Admin_Post_Edit_Page {
 			false
 		);
 		wp_enqueue_style( 'style-gutenberg', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/css/style-gutenberg.css', false );
-		remove_meta_box('wordlift_entities_box', 'post', 'side');
 	}
 
 }

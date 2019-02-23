@@ -180,6 +180,19 @@ class AnnotationService {
       });
   }
 
+  static convertClassicEditorBlocks() {
+    wp.data
+      .select("core/editor")
+      .getBlocks()
+      .forEach(function(block, blockIndex) {
+        if (block.name === "core/freeform") {
+          wp.data
+            .dispatch("core/editor")
+            .replaceBlocks(block.clientId, wp.blocks.rawHandler({ HTML: wp.blocks.getBlockContent(block) }));
+        }
+      });
+  }
+
   static annotateSelected(start, end) {
     return function(dispatch) {
       const selectedBlock = wp.data.select("core/editor").getSelectedBlock();
