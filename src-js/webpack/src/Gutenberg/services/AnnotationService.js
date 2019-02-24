@@ -30,15 +30,17 @@ class AnnotationService {
     this.disambiguated = [];
     this.rawResponse = null;
     this.modifiedResponse = null;
+    this.existingEntitiesJS = null;
   }
 
   modifyResponse() {
     let response = this.rawResponse;
 
     // Check for existing entities in store
-    let existingEntities = Store1.getState().entities;
+    const existingEntities = Store1.getState().entities;
     if (existingEntities.size > 0) {
-      let entitiesToMerge = existingEntities.toJS();
+      this.existingEntitiesJS = existingEntities.toJS();
+      let entitiesToMerge = this.existingEntitiesJS;
       for (var entityToMerge in entitiesToMerge) {
         if (response.entities[entityToMerge]) {
           response.entities[entityToMerge].annotations = entitiesToMerge[entityToMerge].annotations;
@@ -90,19 +92,22 @@ class AnnotationService {
     });
     for (var annotation in this.modifiedResponse.annotations) {
       const annotationData = this.modifiedResponse.annotations[annotation];
-      const entityData = this.modifiedResponse.entities[annotationData.entityMatches[0].entityId];
-      let format = {
-        type: "span",
-        attributes: {
-          id: annotationData.annotationId,
-          class: `textannotation wl-${entityData.mainType}`,
-          itemid: entityData.entityId
+
+      if (this.shouldAnnotate(annotationData.start, annotationData.end)) {
+        const entityData = this.modifiedResponse.entities[annotationData.entityMatches[0].entityId];
+        let format = {
+          type: "span",
+          attributes: {
+            id: annotationData.annotationId,
+            class: `textannotation wl-${entityData.mainType}`,
+            itemid: entityData.entityId
+          }
+        };
+        if (this.disambiguated.includes(annotationData.text)) {
+          format.attributes.class += " disambiguated";
         }
-      };
-      if (this.disambiguated.includes(annotationData.text)) {
-        format.attributes.class += " disambiguated";
+        richText = wp.richText.applyFormat(richText, format, annotationData.start, annotationData.end);
       }
-      richText = wp.richText.applyFormat(richText, format, annotationData.start, annotationData.end);
     }
     wp.data.dispatch("core/editor").updateBlock(this.blockClientId, {
       attributes: {
@@ -113,29 +118,44 @@ class AnnotationService {
     });
   }
 
+  shouldAnnotate(start, end) {
+    if (this.existingEntitiesJS) {
+      for (var entityToCheck in this.existingEntitiesJS) {
+        let entitiesChecked = this.existingEntitiesJS[entityToCheck].annotations;
+        for (var annotationToCheck in entitiesChecked) {
+          let annotationChecked = entitiesChecked[annotationToCheck];
+          if (
+            annotationChecked.blockClientId === this.blockClientId &&
+            annotationChecked.start === start &&
+            annotationChecked.end === end
+          ) {
+            return false;
+          }
+        }
+      }
+      return true;
+    }
+    return true;
+  }
+
   wordliftAnalyze() {
     let _this = this;
     return function(dispatch) {
       dispatch(processingBlockAdd(_this.blockClientId));
       if (_this.blockContent && _this.block.name != "core/freeform") {
         console.log(`Requesting analysis for block ${_this.blockClientId}...`);
-        wp.apiFetch(_this.getWordliftAnalyzeRequest())
-          .then(function(response) {
-            if (Object.keys(response.entities).length > 0) {
-              _this.rawResponse = response;
-              _this.modifyResponse();
-              _this.persistentlyAnnotate();
-              console.log(`An analysis has been performed for block ${_this.blockClientId}`);
-              dispatch(receiveAnalysisResults(_this.modifiedResponse));
-            } else {
-              console.log(`No entities found in block ${_this.blockClientId}`);
-            }
-            dispatch(processingBlockRemove(_this.blockClientId));
-          })
-          .catch(function(error) {
-            console.log("Error fetching from API: ", error);
-            dispatch(processingBlockRemove(_this.blockClientId));
-          });
+        wp.apiFetch(_this.getWordliftAnalyzeRequest()).then(function(response) {
+          if (Object.keys(response.entities).length > 0) {
+            _this.rawResponse = response;
+            _this.modifyResponse();
+            _this.persistentlyAnnotate();
+            console.log(`An analysis has been performed for block ${_this.blockClientId}`);
+            dispatch(receiveAnalysisResults(_this.modifiedResponse));
+          } else {
+            console.log(`No entities found in block ${_this.blockClientId}`);
+          }
+          dispatch(processingBlockRemove(_this.blockClientId));
+        });
       } else if (_this.block.name === "core/freeform") {
         AnnotationService.classicEditorNotice();
         dispatch(processingBlockRemove(_this.blockClientId));

@@ -19,11 +19,9 @@ const Heading = styled.h5`
 
 const LinkClipboardButton = withState({
   hasCopied: false
-})(({ hasCopied, setState, text }) => (
+})(({ hasCopied, setState, ...props }) => (
   <ClipboardButton
-    isSmall
-    isDefault
-    text={text}
+    {...props}
     onCopy={() => setState({ hasCopied: true })}
     onFinishCopy={() => setState({ hasCopied: false })}
   >
@@ -36,7 +34,7 @@ const Post = props => (
     <Image src={props.thumbnail} />
     <div>
       <Heading>{props.post_title}</Heading>
-      <LinkClipboardButton text={props.permalink} />
+      <LinkClipboardButton text={props.permalink} isSmall={true} isDefault={true} />
     </div>
   </React.Fragment>
 );
