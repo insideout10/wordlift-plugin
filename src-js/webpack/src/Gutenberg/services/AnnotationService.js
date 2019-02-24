@@ -2,7 +2,7 @@
 /**
  * Services: Link Service.
  *
- * A service which handles the link/no link attribute for entity's occurrences.
+ * A service which handles persistent annotations in Gutenberg and provides related static helper methods.
  *
  * @since 3.2x
  */
@@ -139,29 +139,28 @@ class AnnotationService {
   }
 
   wordliftAnalyze() {
-    let _this = this;
-    return function(dispatch) {
-      dispatch(processingBlockAdd(_this.blockClientId));
-      if (_this.blockContent && _this.block.name != "core/freeform") {
-        console.log(`Requesting analysis for block ${_this.blockClientId}...`);
-        wp.apiFetch(_this.getWordliftAnalyzeRequest()).then(function(response) {
+    return dispatch => {
+      dispatch(processingBlockAdd(this.blockClientId));
+      if (this.blockContent && this.block.name != "core/freeform") {
+        console.log(`Requesting analysis for block ${this.blockClientId}...`);
+        wp.apiFetch(this.getWordliftAnalyzeRequest()).then(response => {
           if (Object.keys(response.entities).length > 0) {
-            _this.rawResponse = response;
-            _this.modifyResponse();
-            _this.persistentlyAnnotate();
-            console.log(`An analysis has been performed for block ${_this.blockClientId}`);
-            dispatch(receiveAnalysisResults(_this.modifiedResponse));
+            this.rawResponse = response;
+            this.modifyResponse();
+            this.persistentlyAnnotate();
+            console.log(`An analysis has been performed for block ${this.blockClientId}`);
+            dispatch(receiveAnalysisResults(this.modifiedResponse));
           } else {
-            console.log(`No entities found in block ${_this.blockClientId}`);
+            console.log(`No entities found in block ${this.blockClientId}`);
           }
-          dispatch(processingBlockRemove(_this.blockClientId));
+          dispatch(processingBlockRemove(this.blockClientId));
         });
-      } else if (_this.block.name === "core/freeform") {
+      } else if (this.block.name === "core/freeform") {
         AnnotationService.classicEditorNotice();
-        dispatch(processingBlockRemove(_this.blockClientId));
+        dispatch(processingBlockRemove(this.blockClientId));
       } else {
-        console.log(`No content found in block ${_this.blockClientId}`);
-        dispatch(processingBlockRemove(_this.blockClientId));
+        console.log(`No content found in block ${this.blockClientId}`);
+        dispatch(processingBlockRemove(this.blockClientId));
       }
     };
   }

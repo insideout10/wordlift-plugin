@@ -13,6 +13,7 @@ import WordLiftIcon from "./svg/wl-logo-big.svg";
 import * as Constants from "./constants";
 import ContentClassificationPanel from "./components/ContentClassificationPanel";
 import RelatedPostsPanel from "./components/RelatedPostsPanel";
+import SuggestedImagesPanel from "./components/SuggestedImagesPanel";
 
 /*
  * Packages via WordPress global
@@ -32,14 +33,6 @@ const PanelArticleMetadata = () => (
   </Panel>
 );
 
-const PanelSuggestedImages = () => (
-  <Panel>
-    <PanelBody title="Suggested images" initialOpen={false}>
-      <PanelRow>Suggested images Inputs and Labels</PanelRow>
-    </PanelBody>
-  </Panel>
-);
-
 const WordLiftSidebar = () => (
   <Fragment>
     <PluginSidebarMoreMenuItem target="wordlift-sidebar" icon={<WordLiftIcon />}>
@@ -50,7 +43,7 @@ const WordLiftSidebar = () => (
         <Fragment>
           <ContentClassificationPanel />
           <PanelArticleMetadata />
-          <PanelSuggestedImages />
+          <SuggestedImagesPanel />
           <RelatedPostsPanel />
         </Fragment>
       </Provider>

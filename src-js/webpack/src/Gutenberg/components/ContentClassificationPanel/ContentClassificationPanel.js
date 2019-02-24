@@ -21,6 +21,7 @@ import VisibleEntityList from "../../../Edit/containers/VisibleEntityList";
 import Wrapper from "../../../Edit/components/App/Wrapper";
 import Store2 from "../../stores/Store2";
 import { setValue } from "../../../Edit/components/AddEntity/actions";
+import Spinner from "../Spinner";
 
 /*
  * Packages via WordPress global
@@ -89,7 +90,7 @@ class ContentClassificationPanel extends React.Component {
                 ) : this.props.processingBlocks && this.props.processingBlocks.length === 0 ? (
                   <LoaderWrapper>No content found</LoaderWrapper>
                 ) : (
-                  <LoaderWrapper>Analysing content...</LoaderWrapper>
+                  <Spinner />
                 )}
               </Fragment>
             </Wrapper>

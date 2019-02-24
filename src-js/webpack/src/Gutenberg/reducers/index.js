@@ -19,6 +19,7 @@ import annotationFilter from "../../Edit/reducers/annotationFilter";
 import visibilityFilter from "../../Edit/reducers/visibilityFilter";
 import editor from "../../Edit/reducers/editor";
 import processingBlocks from "./processingBlocks";
+import relatedPosts from "./relatedPosts";
 
 /**
  * Define the root reducer.
@@ -31,7 +32,8 @@ const rootReducer = combineReducers({
   annotationFilter,
   visibilityFilter,
   editor,
-  processingBlocks
+  processingBlocks,
+  relatedPosts
 });
 
 // Finally export the root reducer.
