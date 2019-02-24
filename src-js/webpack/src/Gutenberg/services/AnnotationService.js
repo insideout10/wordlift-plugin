@@ -184,16 +184,18 @@ class AnnotationService {
   }
 
   static classicEditorNotice() {
+    AnnotationService.convertClassicEditorBlocks();
     wp.data
       .dispatch("core/notices")
       .createInfoNotice("WordLift content analysis is not compatible with Classic Editor blocks. ", {
+        id: "wordlift-convert-classic-editor-blocks",
         actions: [
           {
             url: "https://wordpress.org/plugins/classic-editor/",
             label: "Switch to Classic Editor"
           },
           {
-            url: "https://ithemes.com/wp-content/uploads/2018/12/wordpress-5.0-convert-to-blocks-1024x583.png",
+            url: "javascript:window.wordlift.convertClassicEditorBlocks()",
             label: "Convert to Gutenberg Blocks"
           }
         ]
@@ -201,16 +203,22 @@ class AnnotationService {
   }
 
   static convertClassicEditorBlocks() {
-    wp.data
-      .select("core/editor")
-      .getBlocks()
-      .forEach(function(block, blockIndex) {
-        if (block.name === "core/freeform") {
-          wp.data
-            .dispatch("core/editor")
-            .replaceBlocks(block.clientId, wp.blocks.rawHandler({ HTML: wp.blocks.getBlockContent(block) }));
-        }
-      });
+    if (window.wordlift.convertClassicEditorBlocks) {
+      return;
+    }
+    window.wordlift.convertClassicEditorBlocks = function() {
+      wp.data
+        .select("core/editor")
+        .getBlocks()
+        .forEach(function(block) {
+          if (block.name === "core/freeform") {
+            wp.data
+              .dispatch("core/editor")
+              .replaceBlocks(block.clientId, wp.blocks.rawHandler({ HTML: wp.blocks.getBlockContent(block) }));
+          }
+        });
+      wp.data.dispatch("core/notices").removeNotice("wordlift-convert-classic-editor-blocks");
+    };
   }
 
   static annotateSelected(start, end) {
