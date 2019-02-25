@@ -53,9 +53,6 @@ class Wordlift_Search_Keyword_Taxonomy {
 		// Register the taxonomy.
 		add_action( 'init', array( $this, 'init' ) );
 
-		// Add the menu entry.
-		add_action( 'wl_admin_menu', array( $this, 'admin_menu' ), 30, 2 );
-
 		// Catch new terms.
 		add_action( 'created_' . self::TAXONOMY_NAME, array( $this, 'created' ) );
 
@@ -121,24 +118,6 @@ class Wordlift_Search_Keyword_Taxonomy {
 		);
 
 		register_taxonomy( self::TAXONOMY_NAME, null, $args );
-
-	}
-
-	/**
-	 * Add the menu entry.
-	 *
-	 * @since 3.20.0
-	 *
-	 * @param string $menu_slug The WordLift parent menu slug.
-	 * @param string $capability The capability.
-	 */
-	public function admin_menu( $menu_slug, $capability ) {
-
-		// add_submenu_page( $menu_slug, _x( 'Search Keywords', 'taxonomy general name', 'wordlift' ), _x( 'Search Keywords', 'taxonomy general name', 'wordlift' ), $capability, 'edit-tags.php?taxonomy=wl_search_keywords', null );
-		add_submenu_page( 'wl_admin_menu', _x( 'Search Keywords', 'taxonomy general name', 'wordlift' ), _x( 'Search Keywords', 'taxonomy general name', 'wordlift' ), 'manage_options', 'wl_search_keywords', array(
-			$this,
-			'admin_page',
-		) );
 
 	}
 
@@ -241,37 +220,6 @@ class Wordlift_Search_Keyword_Taxonomy {
 
 
 		return $defaults;
-	}
-
-	public function admin_page() {
-		?>
-        <div class="wrap" id="wl-settings-page">
-            <h2><?php esc_html_e( 'Search Keywords', 'wordlift' ); ?></h2>
-            <h2 class="nav-tab-wrapper">
-                <a class="nav-tab"
-                   href="<?php echo admin_url( 'admin.php?page=wl_configuration_admin_menu' ); ?>"><?php echo esc_html( __( 'General', 'wordlift' ) ); ?></a>
-                <a class="nav-tab nav-tab-active"
-                   href="<?php echo admin_url( 'admin.php?page=wl_search_keywords' ); ?>"><?php echo esc_html( __( 'Search Keywords', 'wordlift' ) ); ?></a>
-            </h2>
-
-            <form method="post">
-				<?php wp_nonce_field( 'update_search_keywords' );
-
-				$terms = get_terms( Wordlift_Search_Keyword_Taxonomy::TAXONOMY_NAME );
-				?>
-                <div class="textarea-wrap" id="description-wrap">
-                    <label class="prompt"
-                           for="keywords"><?php echo esc_html( __( 'Type the list of keywords, one per line.' ) ); ?></label>
-                    <textarea class="mceEditor" name="keywords" autocomplete="off" cols="15"
-                              rows="3"><?php echo implode( "\n", $terms ); ?></textarea>
-                </div>
-                <p class="submit">
-                    <input type="submit" class="button button-primary button-large"
-                           value="<?php echo esc_attr( __( 'Save', 'wordlift' ) ); ?>"/>
-                </p>
-            </form>
-        </div>
-		<?php
 	}
 
 }
