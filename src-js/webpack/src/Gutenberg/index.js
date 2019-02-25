@@ -14,24 +14,13 @@ import * as Constants from "./constants";
 import ContentClassificationPanel from "./components/ContentClassificationPanel";
 import RelatedPostsPanel from "./components/RelatedPostsPanel";
 import SuggestedImagesPanel from "./components/SuggestedImagesPanel";
+import ArticleMetadataPanel from "./components/ArticleMetadataPanel";
 
 /*
  * Packages via WordPress global
  */
 const { Fragment } = wp.element;
-const { Panel, PanelBody, PanelRow } = wp.components;
 const { PluginSidebar, PluginSidebarMoreMenuItem } = wp.editPost;
-
-window.store1 = Store1;
-
-// TODO: Move these to components folder
-const PanelArticleMetadata = () => (
-  <Panel>
-    <PanelBody title="Article metadata" initialOpen={false}>
-      <PanelRow>Article metadata Inputs and Labels</PanelRow>
-    </PanelBody>
-  </Panel>
-);
 
 const WordLiftSidebar = () => (
   <Fragment>
@@ -42,7 +31,7 @@ const WordLiftSidebar = () => (
       <Provider store={Store1}>
         <Fragment>
           <ContentClassificationPanel />
-          <PanelArticleMetadata />
+          <ArticleMetadataPanel />
           <SuggestedImagesPanel />
           <RelatedPostsPanel />
         </Fragment>
