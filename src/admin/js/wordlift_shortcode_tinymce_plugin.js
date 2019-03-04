@@ -148,12 +148,7 @@
         const c = cm.createMenuButton("wl_shortcodes_menu", {
           title: "WordLift Widgets",
           image:
-            tinymce.plugins.wl_shortcodes.pluginUrl +
-<<<<<<< HEAD
-            "/../images/svg/wl-logo-icon.svg?ver=3.20.0-dev15"
-=======
-            "/../images/svg/wl-logo-icon.svg?ver=3.20.0-rc1"
->>>>>>> develop
+            tinymce.plugins.wl_shortcodes.pluginUrl + "/../images/svg/wl-logo-icon.svg?ver=3.20.0"
           // If SplitButton, must define onclick to avoid error
           //onclick: function(){ /* OPEN YOURSELF ?? */  }
         });
@@ -213,11 +208,7 @@
       return {
         longname: "WordLift Shortcodes",
         author: "WordLift",
-<<<<<<< HEAD
-        version: "3.20.0-dev15"
-=======
-        version: "3.20.0-rc1"
->>>>>>> develop
+        version: "3.20.0-dev"
       };
     }
   });

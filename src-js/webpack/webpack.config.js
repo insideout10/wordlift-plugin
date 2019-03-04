@@ -19,11 +19,8 @@ module.exports = {
   entry: {
     bundle: "./src/Public/index.js",
     edit: "./src/Edit/index.js",
-<<<<<<< HEAD
-    term: "./src/Term/index.js"
-=======
+    term: "./src/Term/index.js",
     gutenberg: "./src/Gutenberg/index.js"
->>>>>>> develop
   },
   output: {
     filename: "[name].js",

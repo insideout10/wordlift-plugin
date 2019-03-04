@@ -15,42 +15,8 @@ angular.module('wordlift.ui.carousel', ['ngTouch']).directive('wlCarousel', [
           $scope.setItemWidth = function() {
             return $element.width() / $scope.visibleElements();
           };
-<<<<<<< HEAD
-          $scope.$on('$destroy', function() {
-            $log.debug("Destroy " + $scope.$id);
-            return $ctrl.unregisterPane($scope);
-          });
-          return $ctrl.registerPane($scope, $element, $scope.isFirst);
-        }
-      };
-    }
-  ]);
-
-  if ("undefined" === typeof angular) {
-    return;
-  }
-
-  angular.module('wordlift.utils.directives', []).directive('wlOnError', [
-    '$parse', '$window', '$log', function($parse, $window, $log) {
-      return {
-        restrict: 'A',
-        compile: function($element, $attrs) {
-          return function(scope, element) {
-            var fn;
-            fn = $parse($attrs.wlOnError);
-            return element.on('error', function(event) {
-              var callback;
-              callback = function() {
-                return fn(scope, {
-                  $event: event
-                });
-              };
-              return scope.$apply(callback);
-            });
-=======
           $scope.showControls = function() {
             return $scope.areControlsVisible = true;
->>>>>>> develop
           };
           $scope.hideControls = function() {
             return $scope.areControlsVisible = false;
@@ -109,58 +75,6 @@ angular.module('wordlift.ui.carousel', ['ngTouch']).directive('wlCarousel', [
           w.bind('resize', function() {
             return resizeFn;
           });
-<<<<<<< HEAD
-        }
-      };
-    }
-  ]).directive('wlHideAfter', [
-    '$timeout', '$log', function($timeout, $log) {
-      return {
-        restrict: 'A',
-        link: function($scope, $element, $attrs, $ctrl) {
-          var delay;
-          delay = +$attrs.wlHideAfter;
-          return $timeout(function() {
-            $log.debug("Remove msg after " + delay + " ms");
-            return $element.hide();
-          }, delay);
-        }
-      };
-    }
-  ]).directive('wlClipboard', [
-    '$timeout', '$document', '$log', function($timeout, $document, $log) {
-      return {
-        restrict: 'E',
-        scope: {
-          text: '=',
-          onCopied: '&'
-        },
-        transclude: true,
-        template: "<span\n  class=\"wl-widget-post-link\"\n  ng-class=\"{'wl-widget-post-link-copied' : $copied}\"\n  ng-click=\"copyToClipboard()\">\n  <ng-transclude></ng-transclude>\n  <input type=\"text\" ng-value=\"text\" />\n</span>",
-        link: function($scope, $element, $attrs, $ctrl) {
-          $scope.$copied = false;
-          $scope.node = $element.find('input');
-          $scope.node.css('position', 'absolute');
-          $scope.node.css('left', '-10000px');
-          return $scope.copyToClipboard = function() {
-            var selection;
-            try {
-              $document[0].body.style.webkitUserSelect = 'initial';
-              selection = $document[0].getSelection();
-              selection.removeAllRanges();
-              $scope.node.select();
-              if (!$document[0].execCommand('copy')) {
-                $log.warn("Error on clipboard copy for " + text);
-              }
-              selection.removeAllRanges();
-              $scope.$copied = true;
-              $timeout(function() {
-                $log.debug("Going to reset $copied status");
-                return $scope.$copied = false;
-              }, 3000);
-              if (angular.isFunction($scope.onCopied)) {
-                return $scope.$evalAsync($scope.onCopied());
-=======
           w.bind('load', function() {
             return resizeFn;
           });
@@ -183,7 +97,6 @@ angular.module('wordlift.ui.carousel', ['ngTouch']).directive('wlCarousel', [
               pane = ref[index];
               if (pane.scope.$id === scope.$id) {
                 unregisterPaneIndex = index;
->>>>>>> develop
               }
             }
             $scope.panes.splice(unregisterPaneIndex, 1);
@@ -278,7 +191,7 @@ angular.module('wordlift.utils.directives', []).directive('wlOnError', [
         onCopied: '&'
       },
       transclude: true,
-      template: "<span \n  class=\"wl-widget-post-link\" \n  ng-class=\"{'wl-widget-post-link-copied' : $copied}\"\n  ng-click=\"copyToClipboard()\">\n  <ng-transclude></ng-transclude>\n  <input type=\"text\" ng-value=\"text\" />\n</span>",
+      template: "<span\n  class=\"wl-widget-post-link\"\n  ng-class=\"{'wl-widget-post-link-copied' : $copied}\"\n  ng-click=\"copyToClipboard()\">\n  <ng-transclude></ng-transclude>\n  <input type=\"text\" ng-value=\"text\" />\n</span>",
       link: function($scope, $element, $attrs, $ctrl) {
         $scope.$copied = false;
         $scope.node = $element.find('input');

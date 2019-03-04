@@ -1,6 +1,3 @@
-# Bail out if angular isn't available in page.
-return if "undefined" == typeof angular
-
 angular.module('wordlift.utils.directives', [])
 # See https://github.com/angular/angular.js/blob/master/src/ng/directive/ngEventDirs.js
 .directive('wlOnError', ['$parse', '$window', '$log', ($parse, $window, $log)->

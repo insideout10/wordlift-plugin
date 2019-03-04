@@ -27,11 +27,7 @@
     <div
       id="wordlift-edit-post-wrapper"
       ng-controller="EditPostWidgetController"
-<<<<<<< HEAD
-      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.20.0-dev15'">
-=======
-      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.20.0'">
->>>>>>> develop
+      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.20.0-dev'">
     </div>
   """)
   .appendTo('#wordlift-edit-post-outer-wrapper')

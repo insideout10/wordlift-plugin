@@ -393,101 +393,6 @@ function nextUid() {
 }
 
 
-<<<<<<< HEAD
-  if ("undefined" === typeof angular) {
-    return;
-  }
-
-  angular.module('wordlift.utils.directives', []).directive('wlOnError', [
-    '$parse', '$window', '$log', function($parse, $window, $log) {
-      return {
-        restrict: 'A',
-        compile: function($element, $attrs) {
-          return function(scope, element) {
-            var fn;
-            fn = $parse($attrs.wlOnError);
-            return element.on('error', function(event) {
-              var callback;
-              callback = function() {
-                return fn(scope, {
-                  $event: event
-                });
-              };
-              return scope.$apply(callback);
-            });
-          };
-        }
-      };
-    }
-  ]).directive('wlFallback', [
-    '$window', '$log', function($window, $log) {
-      return {
-        restrict: 'A',
-        priority: 99,
-        link: function($scope, $element, $attrs, $ctrl) {
-          return $element.bind('error', function() {
-            if ($attrs.src !== $attrs.wlFallback) {
-              $log.warn("Error on " + $attrs.src + "! Going to fallback on " + $attrs.wlFallback);
-              return $attrs.$set('src', $attrs.wlFallback);
-            }
-          });
-        }
-      };
-    }
-  ]).directive('wlHideAfter', [
-    '$timeout', '$log', function($timeout, $log) {
-      return {
-        restrict: 'A',
-        link: function($scope, $element, $attrs, $ctrl) {
-          var delay;
-          delay = +$attrs.wlHideAfter;
-          return $timeout(function() {
-            $log.debug("Remove msg after " + delay + " ms");
-            return $element.hide();
-          }, delay);
-        }
-      };
-    }
-  ]).directive('wlClipboard', [
-    '$timeout', '$document', '$log', function($timeout, $document, $log) {
-      return {
-        restrict: 'E',
-        scope: {
-          text: '=',
-          onCopied: '&'
-        },
-        transclude: true,
-        template: "<span\n  class=\"wl-widget-post-link\"\n  ng-class=\"{'wl-widget-post-link-copied' : $copied}\"\n  ng-click=\"copyToClipboard()\">\n  <ng-transclude></ng-transclude>\n  <input type=\"text\" ng-value=\"text\" />\n</span>",
-        link: function($scope, $element, $attrs, $ctrl) {
-          $scope.$copied = false;
-          $scope.node = $element.find('input');
-          $scope.node.css('position', 'absolute');
-          $scope.node.css('left', '-10000px');
-          return $scope.copyToClipboard = function() {
-            var selection;
-            try {
-              $document[0].body.style.webkitUserSelect = 'initial';
-              selection = $document[0].getSelection();
-              selection.removeAllRanges();
-              $scope.node.select();
-              if (!$document[0].execCommand('copy')) {
-                $log.warn("Error on clipboard copy for " + text);
-              }
-              selection.removeAllRanges();
-              $scope.$copied = true;
-              $timeout(function() {
-                $log.debug("Going to reset $copied status");
-                return $scope.$copied = false;
-              }, 3000);
-              if (angular.isFunction($scope.onCopied)) {
-                return $scope.$evalAsync($scope.onCopied());
-              }
-            } finally {
-              $document[0].body.style.webkitUserSelect = '';
-            }
-          };
-        }
-=======
 /**
  * Set or clear the hashkey for an object.
  * @param obj object
@@ -871,7 +776,6 @@ function arrayRemove(array, value) {
       $scope.update = function(user) {
         // Example with 1 argument
         $scope.master= angular.copy(user);
->>>>>>> develop
       };
 
       $scope.reset = function() {
@@ -29141,49 +29045,6 @@ Traslator = (function() {
     return htmlPos + pos - textPos;
   };
 
-<<<<<<< HEAD
-  angular.module('wordlift.editpost.widget.directives.wlEntityForm', []).directive('wlEntityForm', [
-    'configuration', '$window', '$log', function(configuration, $window, $log) {
-      return {
-        restrict: 'E',
-        scope: {
-          entity: '=',
-          onSubmit: '&',
-          onReset: '&',
-          box: '='
-        },
-        templateUrl: function() {
-          return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.20.0-dev15';
-        },
-        link: function($scope, $element, $attrs, $ctrl) {
-          $scope.configuration = configuration;
-          $scope.currentCategory = void 0;
-          $scope.$watch('entity.id', function(entityId) {
-            var category, ref;
-            if (entityId != null) {
-              $log.debug("Entity updated to " + entityId);
-              category = configuration.getCategoryForType((ref = $scope.entity) != null ? ref.mainType : void 0);
-              $log.debug("Going to update current category to " + category);
-              return $scope.currentCategory = category;
-            }
-          });
-          $scope.onSubmitWrapper = function(e) {
-            e.preventDefault();
-            return $scope.onSubmit();
-          };
-          $scope.onResetWrapper = function(e) {
-            e.preventDefault();
-            return $scope.onReset();
-          };
-          $scope.setCurrentCategory = function(categoryId) {
-            var types;
-            $scope.currentCategory = categoryId;
-            types = configuration.getTypesForCategoryId(categoryId);
-            $log.debug("Going to check types");
-            $log.debug(types);
-            if (types.length === 1) {
-              return $scope.setType(types[0]);
-=======
   Traslator.prototype.html2text = function(pos) {
     var htmlPos, i, j, ref, textPos;
     if (pos < this._htmlPositions[0]) {
@@ -29281,7 +29142,7 @@ angular.module('wordlift.utils.directives', []).directive('wlOnError', [
         onCopied: '&'
       },
       transclude: true,
-      template: "<span \n  class=\"wl-widget-post-link\" \n  ng-class=\"{'wl-widget-post-link-copied' : $copied}\"\n  ng-click=\"copyToClipboard()\">\n  <ng-transclude></ng-transclude>\n  <input type=\"text\" ng-value=\"text\" />\n</span>",
+      template: "<span\n  class=\"wl-widget-post-link\"\n  ng-class=\"{'wl-widget-post-link-copied' : $copied}\"\n  ng-click=\"copyToClipboard()\">\n  <ng-transclude></ng-transclude>\n  <input type=\"text\" ng-value=\"text\" />\n</span>",
       link: function($scope, $element, $attrs, $ctrl) {
         $scope.$copied = false;
         $scope.node = $element.find('input');
@@ -29296,7 +29157,6 @@ angular.module('wordlift.utils.directives', []).directive('wlOnError', [
             $scope.node.select();
             if (!$document[0].execCommand('copy')) {
               $log.warn("Error on clipboard copy for " + text);
->>>>>>> develop
             }
             selection.removeAllRanges();
             $scope.$copied = true;
@@ -29745,21 +29605,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
             $log.warn("Entity with id " + entityId + " should be linked to " + box.id + " but is missing");
           }
         }
-<<<<<<< HEAD
-      };
-    }
-  ]);
-
-  angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', []).directive('wlEntityInputBox', [
-    'configuration', '$log', function(configuration, $log) {
-      return {
-        restrict: 'E',
-        scope: {
-          entity: '='
-        },
-        templateUrl: function() {
-          return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.20.0-dev15';
-=======
       }
       return $scope.currentSection = 'content-classification';
     });
@@ -29773,7 +29618,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         for (id in entities) {
           entity = entities[id];
           entityIds.push(id);
->>>>>>> develop
         }
       }
       return RelatedPostDataRetrieverService.load(entityIds);
@@ -29935,7 +29779,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', []).directive
         box: '='
       },
       templateUrl: function() {
-        return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.20.0';
+        return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.20.0-dev';
       },
       link: function($scope, $element, $attrs, $ctrl) {
         $scope.configuration = configuration;
@@ -30081,7 +29925,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', []).direc
         entity: '='
       },
       templateUrl: function() {
-        return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.20.0';
+        return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.20.0-dev';
       }
     };
   }
@@ -30906,76 +30750,6 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', []).p
           if (type.css === ("wl-" + mainType)) {
             return type.uri;
           }
-<<<<<<< HEAD
-        };
-      },
-      $get: function() {
-        return _configuration;
-      }
-    };
-    return provider;
-  });
-
-  $ = jQuery;
-
-  angular.module('wordlift.editpost.widget', ['ngAnimate', 'wordlift.ui.carousel', 'wordlift.utils.directives', 'wordlift.editpost.widget.providers.ConfigurationProvider', 'wordlift.editpost.widget.controllers.EditPostWidgetController', 'wordlift.editpost.widget.directives.wlClassificationBox', 'wordlift.editpost.widget.directives.wlEntityList', 'wordlift.editpost.widget.directives.wlEntityForm', 'wordlift.editpost.widget.directives.wlEntityTile', 'wordlift.editpost.widget.directives.wlEntityInputBox', 'wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.EditorService', 'wordlift.editpost.widget.services.RelatedPostDataRetrieverService']).config(function(configurationProvider) {
-    return configurationProvider.setConfiguration(window.wordlift);
-  });
-
-  $(container = $("<div\n      id=\"wordlift-edit-post-wrapper\"\n      ng-controller=\"EditPostWidgetController\"\n      ng-include=\"configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.20.0-dev15'\">\n    </div>").appendTo('#wordlift-edit-post-outer-wrapper'), spinner = $("<div class=\"wl-widget-spinner\">\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-blogger\">\n    <circle cx=\"10\" cy=\"10\" r=\"6\" class=\"wl-blogger-shape\"></circle>\n  </svg>\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-editorial\">\n    <rect x=\"4\" y=\"4\" width=\"12\" height=\"12\" class=\"wl-editorial-shape\"></rect>\n  </svg>\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-enterprise\">\n    <polygon points=\"3,10 6.5,4 13.4,4 16.9,10 13.4,16 6.5,16\" class=\"wl-enterprise-shape\"></polygon>\n  </svg>\n</div>").appendTo('#wordlift_entities_box .ui-sortable-handle'), injector = angular.bootstrap($('#wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']), injector.invoke([
-    '$rootScope', '$log', function($rootScope, $log) {
-      $rootScope.$on('analysisServiceStatusUpdated', function(event, status) {
-        var css;
-        css = status ? 'wl-spinner-running' : '';
-        return $('.wl-widget-spinner svg').attr('class', css);
-      });
-      $rootScope.$on('geoLocationStatusUpdated', function(event, status) {
-        var css;
-        css = status ? 'wl-spinner-running' : '';
-        return $('.wl-widget-spinner svg').attr('class', css);
-      });
-      return wp.wordlift.on('loading', function(status) {
-        var css;
-        css = status ? 'wl-spinner-running' : '';
-        return $('.wl-widget-spinner svg').attr('class', css);
-      });
-    }
-  ]), tinymce.PluginManager.add('wordlift', function(editor, url) {
-    var addClassToBody, closed, defaultEditorId, editorId, fireEvent, ref, ref1, startAnalysis;
-    defaultEditorId = "undefined" !== typeof window['wlSettings']['default_editor_id'] ? window['wlSettings']['default_editor_id'] : 'content';
-    editorId = (ref = typeof wp !== "undefined" && wp !== null ? (ref1 = wp.hooks) != null ? ref1.applyFilters('wl_default_editor_id', defaultEditorId) : void 0 : void 0) != null ? ref : defaultEditorId;
-    console.log("Loading WordLift [ default editor :: " + defaultEditorId + " ][ target editor :: " + editorId + " ][ this editor :: " + editor.id + " ]");
-    if (editor.id !== editorId) {
-      return;
-    }
-    closed = $('#wordlift_entities_box').hasClass('closed');
-    fireEvent = function(editor, eventName, callback) {
-      switch (tinymce.majorVersion) {
-        case '4':
-          return editor.on(eventName, callback);
-        case '3':
-          return editor["on" + eventName].add(callback);
-      }
-    };
-    if (!closed) {
-      injector.invoke([
-        'EditorService', '$rootScope', '$log', function(EditorService, $rootScope, $log) {
-          var j, len, method, originalMethod, ref2, results1;
-          if (wp.autosave != null) {
-            wp.autosave.server.postChanged = function() {
-              return false;
-            };
-          }
-          ref2 = ['setMarkers', 'toViews'];
-          results1 = [];
-          for (j = 0, len = ref2.length; j < len; j++) {
-            method = ref2[j];
-            if (wp.mce.views[method] != null) {
-              originalMethod = wp.mce.views[method];
-              $log.warn("Override wp.mce.views method " + method + "() to prevent shortcodes rendering");
-              wp.mce.views[method] = function(content) {
-                return content;
-=======
         }
       };
     },
@@ -30992,7 +30766,7 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', []).p
     angular.module('wordlift.editpost.widget', ['ngAnimate', 'wordlift.ui.carousel', 'wordlift.utils.directives', 'wordlift.editpost.widget.providers.ConfigurationProvider', 'wordlift.editpost.widget.controllers.EditPostWidgetController', 'wordlift.editpost.widget.directives.wlClassificationBox', 'wordlift.editpost.widget.directives.wlEntityList', 'wordlift.editpost.widget.directives.wlEntityForm', 'wordlift.editpost.widget.directives.wlEntityTile', 'wordlift.editpost.widget.directives.wlEntityInputBox', 'wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.EditorService', 'wordlift.editpost.widget.services.RelatedPostDataRetrieverService']).config(function(configurationProvider) {
       return configurationProvider.setConfiguration(window.wordlift);
     });
-    container = $("<div\n  id=\"wordlift-edit-post-wrapper\"\n  ng-controller=\"EditPostWidgetController\"\n  ng-include=\"configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.20.0'\">\n</div>").appendTo('#wordlift-edit-post-outer-wrapper');
+    container = $("<div\n  id=\"wordlift-edit-post-wrapper\"\n  ng-controller=\"EditPostWidgetController\"\n  ng-include=\"configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.20.0-dev'\">\n</div>").appendTo('#wordlift-edit-post-outer-wrapper');
     spinner = $("<div class=\"wl-widget-spinner\">\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-blogger\">\n    <circle cx=\"10\" cy=\"10\" r=\"6\" class=\"wl-blogger-shape\"></circle>\n  </svg>\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-editorial\">\n    <rect x=\"4\" y=\"4\" width=\"12\" height=\"12\" class=\"wl-editorial-shape\"></rect>\n  </svg>\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-enterprise\">\n    <polygon points=\"3,10 6.5,4 13.4,4 16.9,10 13.4,16 6.5,16\" class=\"wl-enterprise-shape\"></polygon>\n  </svg>\n</div>").appendTo('#wordlift_entities_box .ui-sortable-handle');
     console.log("bootstrapping WordLift app...");
     injector = angular.bootstrap($('#wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']);
@@ -31039,7 +30813,6 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', []).p
             if (wp.autosave != null) {
               wp.autosave.server.postChanged = function() {
                 return false;
->>>>>>> develop
               };
             }
             ref2 = ['setMarkers', 'toViews'];

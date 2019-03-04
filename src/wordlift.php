@@ -15,11 +15,7 @@
  * Plugin Name:       WordLift
  * Plugin URI:        https://wordlift.io
  * Description:       WordLift brings the power of AI to organize content, attract new readers and get their attention. To activate the plugin <a href="https://wordlift.io/">visit our website</a>.
-<<<<<<< HEAD
- * Version:           3.20.0-dev15
-=======
- * Version:           3.20.0-rc1
->>>>>>> develop
+ * Version:           3.20.0
  * Author:            WordLift, Insideout10
  * Author URI:        https://wordlift.io
  * License:           GPL-2.0+
