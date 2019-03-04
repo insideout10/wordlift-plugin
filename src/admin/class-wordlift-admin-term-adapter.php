@@ -16,17 +16,30 @@
  */
 class Wordlift_Admin_Term_Adapter {
 
+	/**
+	 * The meta key holding the entity id.
+	 *
+	 * @since 3.20.0
+	 */
 	const META_KEY = '_wl_entity_id';
 
+	/**
+	 * Create a Wordlift_Admin_Term_Adapter instance.
+	 *
+	 * @since 3.20.0
+	 */
 	public function __construct() {
 
 		add_action( 'registered_taxonomy', array( $this, 'add_action', ) );
-
 		add_action( 'edit_term', array( $this, 'edit_term', ), 10, 3 );
 
 	}
 
 	/**
+	 * Add the form fields to the entity edit screen.
+	 *
+	 * @since 3.20.0
+	 *
 	 * @param object $tag Current taxonomy term object.
 	 * @param string $taxonomy Current taxonomy slug.
 	 */
@@ -42,9 +55,9 @@ class Wordlift_Admin_Term_Adapter {
         <tr class="form-field term-name-wrap">
             <th scope="row"><label for="wl-entity-id"><?php _ex( 'Entity', 'term entity', 'wordlift' ); ?></label></th>
             <td>
-	            <?php foreach ( $values as $value ) { ?>
+				<?php foreach ( $values as $value ) { ?>
                     <input type="text" name="wl_entity_id[]" value="<?php echo esc_attr( $value ); ?>"/>
-	            <?php } ?>
+				<?php } ?>
                 <div id="wl-term-entity-id"></div>
                 <p class="description"><?php _e( 'The entity bound to the term.', 'wordlift' ); ?></p>
             </td>
@@ -52,11 +65,27 @@ class Wordlift_Admin_Term_Adapter {
 		<?php
 	}
 
+	/**
+	 * Bind the new fields to the edit term screen.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @param string $taxonomy The taxonomy name.
+	 */
 	public function add_action( $taxonomy ) {
 
 		add_action( "{$taxonomy}_edit_form_fields", array( $this, 'edit_form_fields' ), 10, 2 );
 	}
 
+	/**
+	 * Hook to the edit term to handle our own custom fields.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @param int    $term_id The term id.
+	 * @param int    $tt_id The term taxonomy id.
+	 * @param string $taxonomy The taxonomy.
+	 */
 	public function edit_term( $term_id, $tt_id, $taxonomy ) {
 
 		// Bail if the action isn't related to the term currently being edited.
