@@ -132,9 +132,12 @@
     }
 
     #wl-dashboard-v2 .wl-dashboard__block__body--locked {
-        margin: 50px;
+        margin: 2em;
         text-align: center;
-        font-size: 1.4em;
+        font-size: 1em;
+        line-height: 28px;
+        font-weight: 500;
+        display: block;
     }
 
     #wl-dashboard-v2 .wl-dashboard__legend::after {
@@ -236,23 +239,26 @@ $country_code = $configuration_service->get_country_code();
         </div>
 	<?php } else { ?>
         <div class="wl-dashboard__block__body wl-dashboard__block__body--locked">
-            <span class="dashicons dashicons-lock"></span>
-			<?php echo esc_html( _x( 'Upgrade to Editorial or Business edition to see the Search Rankings.', 'Dashboard', 'wordlift' ) ); ?>
+			<?php echo esc_html( _x( 'Search Rankings are only available to Business and Editorial users', 'Dashboard', 'wordlift' ) ); ?>
+            <a href="https://wordlift.io/upgrade" target="_blank"
+               class="button button-primary"><?php echo esc_html( __( 'Upgrade', 'wordlift' ) ); ?></a>
         </div>
 	<?php } ?>
 </div>
 
-<div class="wl-dashboard__block wl-dashboard__block--top-entities">
-    <header>
-        <span class="dashicons dashicons-editor-help"></span>
-        <h3><?php echo __( 'Top entities', 'wordlift' ); ?></h3>
-        <span class="wl-dashboard__legend wl-dashboard__legend--entities"><?php echo esc_html( _x( 'Links with entities', 'Dashboard', 'wordlift' ) ); ?></span>
-        <span class="wl-dashboard__legend wl-dashboard__legend--posts"><?php echo esc_html( _x( 'Post with entities', 'Dashboard', 'wordlift' ) ); ?></span>
-    </header>
-    <div class="wl-dashboard__block__body">
-		<?php
-		$top_entities = $this->get_top_entities();
-		if ( ! empty( $top_entities ) ) {
+<?php
+$top_entities = $this->get_top_entities();
+if ( ! empty( $top_entities ) ) {
+	?>
+    <div class="wl-dashboard__block wl-dashboard__block--top-entities">
+        <header>
+            <span class="dashicons dashicons-editor-help"></span>
+            <h3><?php echo __( 'Top entities', 'wordlift' ); ?></h3>
+            <span class="wl-dashboard__legend wl-dashboard__legend--entities"><?php echo esc_html( _x( 'Links with entities', 'Dashboard', 'wordlift' ) ); ?></span>
+            <span class="wl-dashboard__legend wl-dashboard__legend--posts"><?php echo esc_html( _x( 'Post with entities', 'Dashboard', 'wordlift' ) ); ?></span>
+        </header>
+        <div class="wl-dashboard__block__body">
+			<?php
 			$max         = $top_entities[0]->total;
 			$unit        = intval( '1' . str_repeat( '0', strlen( $max ) - 1 ) );
 			$max_value   = ceil( (float) $max / $unit ) * $unit;
@@ -294,12 +300,13 @@ $country_code = $configuration_service->get_country_code();
 					<?php
 				}
 			}
-		}
-		?>
+			?>
+        </div>
     </div>
-</div>
+	<?php
+}
 
-<?php $not_enriched_url = admin_url( 'edit.php?post_type=post&wl_enriched=no' ); ?>
+$not_enriched_url = admin_url( 'edit.php?post_type=post&wl_enriched=no' ); ?>
 <div class="wl-dashboard__block wl-dashboard__block--enriched-posts">
     <header>
         <span class="dashicons dashicons-editor-help"></span>
@@ -343,8 +350,8 @@ $country_code = $configuration_service->get_country_code();
     </header>
     <div>
 		<?php echo esc_html( _x( 'Created triples', 'Dashboard', 'wordlift' ) ); ?>
-        : <?php echo $this->dashboard_service->count_triples(); ?><br/>
+        : <?php echo number_format( $this->dashboard_service->count_triples() ); ?><br/>
 		<?php echo esc_html( _x( 'Ratio on Wikidata', 'Dashboard', 'wordlift' ) ); ?>:
-		<?php echo $this->dashboard_service->count_triples() * 100 / 947690143; ?>
+		<?php echo number_format( $this->dashboard_service->count_triples() * 100 / 947690143, 4 ); ?>%
     </div>
 </div>

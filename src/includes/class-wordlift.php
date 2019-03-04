@@ -1422,10 +1422,20 @@ class Wordlift {
 		$this->loader->add_filter( 'allowed_redirect_hosts', $this->redirect_service, 'allowed_redirect_hosts' );
 		// Hook the AJAX wordlift_redirect action to the Redirect service.
 		$this->loader->add_action( 'wp_ajax_wordlift_redirect', $this->redirect_service, 'ajax_redirect' );
+
+		/*
+		 * The old dashboard is replaced with dashboard v2.
+		 *
+		 * The old dashboard service is still loaded because its functions are used.
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/879
+		 *
+		 * @since 3.20.0
+		 */
 		// Hook the AJAX wordlift_redirect action to the Redirect service.
-		$this->loader->add_action( 'wp_ajax_wordlift_get_stats', $this->dashboard_service, 'ajax_get_stats' );
+		// $this->loader->add_action( 'wp_ajax_wordlift_get_stats', $this->dashboard_service, 'ajax_get_stats' );
 		// Hook the AJAX wordlift_redirect action to the Redirect service.
-		$this->loader->add_action( 'wp_dashboard_setup', $this->dashboard_service, 'add_dashboard_widgets' );
+		// $this->loader->add_action( 'wp_dashboard_setup', $this->dashboard_service, 'add_dashboard_widgets' );
 
 		// Hook save_post to the entity service to update custom fields (such as alternate labels).
 		// We have a priority of 9 because we want to be executed before data is sent to Redlink.
