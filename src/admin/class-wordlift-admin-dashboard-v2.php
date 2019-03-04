@@ -44,9 +44,9 @@ class Wordlift_Admin_Dashboard_V2 {
 		add_action( 'wp_dashboard_setup', array( $this, 'dashboard_setup' ) );
 
 		// Define where to access the tip.
-		defined( 'WL_TODAYS_TIP_JSON_URL' ) || define( 'WL_TODAYS_TIP_JSON_URL', 'https://stage.wordlift.io/blog' );
-		defined( 'WL_TODAYS_TIP_JSON_URL_IT' ) || define( 'WL_TODAYS_TIP_JSON_URL_IT', '/it/wp-json/wp/v2/posts?context=embed&per_page=1&categories=26' );
-		defined( 'WL_TODAYS_TIP_JSON_URL_EN' ) || define( 'WL_TODAYS_TIP_JSON_URL_EN', '/en/wp-json/wp/v2/posts?context=embed&per_page=1&categories=37' );
+		defined( 'WL_TODAYS_TIP_JSON_URL' ) || define( 'WL_TODAYS_TIP_JSON_URL', 'https://wordlift.io/blog' );
+		defined( 'WL_TODAYS_TIP_JSON_URL_IT' ) || define( 'WL_TODAYS_TIP_JSON_URL_IT', '/it/wp-json/wp/v2/posts?context=embed&per_page=1&categories=27' );
+		defined( 'WL_TODAYS_TIP_JSON_URL_EN' ) || define( 'WL_TODAYS_TIP_JSON_URL_EN', '/en/wp-json/wp/v2/posts?context=embed&per_page=1&categories=38' );
 
 		$this->search_rankings_service = $search_rankings_service;
 		$this->dashboard_service       = $dashboard_service;
@@ -54,17 +54,27 @@ class Wordlift_Admin_Dashboard_V2 {
 
 	}
 
+	/**
+	 * Set up the dashboard metabox.
+	 *
+	 * @since 3.20.0
+	 */
 	public function dashboard_setup() {
 
 		wp_add_dashboard_widget(
 			'wl-dashboard-v2',
 			__( 'WordLift Dashboard', 'wordlift' ),
-			array( $this, 'callback' )
+			array( $this, 'dashboard_setup' )
 		);
 
 	}
 
-	public function callback() {
+	/**
+	 * The dashboard setup callback.
+	 *
+	 * @since 3.20.0
+	 */
+	public function dashboard_setup_callback() {
 
 		// Get the average position.
 		$average_position_string = $this->get_average_position();
@@ -73,6 +83,13 @@ class Wordlift_Admin_Dashboard_V2 {
 
 	}
 
+	/**
+	 * Get the keyword average position.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @return string The formatted average position string (or `n/a` if not available).
+	 */
 	private function get_average_position() {
 
 		// Get the cache value.
@@ -96,6 +113,13 @@ class Wordlift_Admin_Dashboard_V2 {
 		return number_format( $average_position, 1 );
 	}
 
+	/**
+	 * Get the top entities.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @return array|object|null An array of top entities.
+	 */
 	private function get_top_entities() {
 		global $wpdb;
 
@@ -132,6 +156,11 @@ EOF;
 		return $wpdb->get_results( $query );
 	}
 
+	/**
+	 * Get the today's tip block.
+	 *
+	 * @since 3.20.0
+	 */
 	public static function get_todays_tip_block() {
 
 		$data = @self::get_todays_tip_data();
@@ -157,6 +186,13 @@ EOF;
 
 	}
 
+	/**
+	 * Get the today's tip data.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @return array|false The today's tip data or false in case of error.
+	 */
 	private static function get_todays_tip_data() {
 
 		// Return the transient.
