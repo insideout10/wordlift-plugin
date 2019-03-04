@@ -15,7 +15,6 @@ import styled from "styled-components";
  */
 import AnnotationService from "../../services/AnnotationService";
 import * as Constants from "../../constants";
-import AddEntity from "../../../Edit/components/AddEntity";
 import Header from "../../../Edit/components/Header";
 import VisibleEntityList from "../../../Edit/containers/VisibleEntityList";
 import Wrapper from "../../../Edit/components/App/Wrapper";
@@ -27,7 +26,7 @@ import Spinner from "../Spinner";
  * Packages via WordPress global
  */
 const { Fragment } = wp.element;
-const { Panel, PanelBody, PanelRow } = wp.components;
+const { Panel, PanelBody } = wp.components;
 
 const canCreateEntities =
   "undefined" !== wlSettings["can_create_entities"] && "yes" === wlSettings["can_create_entities"];
@@ -80,21 +79,18 @@ class ContentClassificationPanel extends React.Component {
     return (
       <Panel>
         <PanelBody title="Content classification" initialOpen={true}>
-          <PanelRow>
-            <Wrapper>
-              <Fragment>
-                <AddEntity showCreate={canCreateEntities} store={Store2} />
-                <Header />
-                {this.props.entities && this.props.entities.size > 0 ? (
-                  <VisibleEntityList />
-                ) : this.props.processingBlocks && this.props.processingBlocks.length === 0 ? (
-                  <LoaderWrapper>No content found</LoaderWrapper>
-                ) : (
-                  <Spinner />
-                )}
-              </Fragment>
-            </Wrapper>
-          </PanelRow>
+          <Wrapper>
+            <Fragment>
+              <Header />
+              {this.props.entities && this.props.entities.size > 0 ? (
+                <VisibleEntityList />
+              ) : this.props.processingBlocks && this.props.processingBlocks.length === 0 ? (
+                <LoaderWrapper>No content found</LoaderWrapper>
+              ) : (
+                <Spinner />
+              )}
+            </Fragment>
+          </Wrapper>
         </PanelBody>
       </Panel>
     );

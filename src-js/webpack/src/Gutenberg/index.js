@@ -15,12 +15,15 @@ import ContentClassificationPanel from "./components/ContentClassificationPanel"
 import RelatedPostsPanel from "./components/RelatedPostsPanel";
 import SuggestedImagesPanel from "./components/SuggestedImagesPanel";
 import ArticleMetadataPanel from "./components/ArticleMetadataPanel";
+import AddEntityPanel from "./components/AddEntityPanel";
 
 /*
  * Packages via WordPress global
  */
 const { Fragment } = wp.element;
 const { PluginSidebar, PluginSidebarMoreMenuItem } = wp.editPost;
+
+window.store1 = Store1;
 
 const WordLiftSidebar = () => (
   <Fragment>
@@ -30,6 +33,7 @@ const WordLiftSidebar = () => (
     <PluginSidebar name="wordlift-sidebar" title="WordLift">
       <Provider store={Store1}>
         <Fragment>
+          <AddEntityPanel />
           <ContentClassificationPanel />
           <ArticleMetadataPanel />
           <SuggestedImagesPanel />
