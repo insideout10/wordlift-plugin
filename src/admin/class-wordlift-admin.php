@@ -110,9 +110,15 @@ class Wordlift_Admin {
 
 		// Load additional code if we're in the admin UI.
 		if ( is_admin() ) {
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard-latest-news.php';
+
+			// Require the PHP files for the next code fragment.
+			self::require_files();
 
 			new Wordlift_Dashboard_Latest_News();
+
+			// Search Rankings.
+			$search_rankings_service = new Wordlift_Admin_Search_Rankings_Service( Wordlift_Api_Service::get_instance() );
+			new Wordlift_Admin_Search_Rankings_Ajax_Adapter( $search_rankings_service );
 
 			/*
 			 * Add support for `All Entity Types`.
@@ -151,6 +157,20 @@ class Wordlift_Admin {
 				new Wordlift_Admin_Term_Adapter();
 
 			}
+
+			/*
+			 * The new dashboard.
+			 *
+			 * @since 3.20.0
+			 *
+			 * @see https://github.com/insideout10/wordlift-plugin/issues/879
+			 */
+			new Wordlift_Admin_Dashboard_V2(
+				$search_rankings_service,
+				Wordlift::get_instance()->get_dashboard_service(),
+				Wordlift_Entity_Service::get_instance()
+			);
+			new Wordlift_Admin_Not_Enriched_Filter();
 
 		}
 
@@ -295,6 +315,21 @@ class Wordlift_Admin {
 
 		// Finally output the params as `wlSettings` for JavaScript code.
 		wp_localize_script( $this->plugin_name, 'wlSettings', apply_filters( 'wl_admin_settings', $params ) );
+
+	}
+
+	/**
+	 * Require files needed for the Admin UI.
+	 *
+	 * @since 3.20.0
+	 */
+	private static function require_files() {
+
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard-latest-news.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-search-rankings-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-search-rankings-ajax-adapter.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard-v2.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-not-enriched-filter.php';
 
 	}
 

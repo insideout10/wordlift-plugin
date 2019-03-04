@@ -56,15 +56,35 @@ class Wordlift_Admin_Setup {
 	private $entity_service;
 
 	/**
+	 * A {@link Wordlift_Admin_Language_Select_Element} element renderer.
+	 *
+	 * @since  3.20.0
+	 * @access private
+	 * @var \Wordlift_Admin_Language_Select_Element $language_select_element A {@link Wordlift_Admin_Language_Select_Element} element renderer.
+	 */
+	private $language_select_element;
+
+	/**
+	 * A {@link Wordlift_Admin_Country_Select_Element} element renderer.
+	 *
+	 * @since  3.20.0
+	 * @access private
+	 * @var \Wordlift_Admin_Country_Select_Element $country_select_element A {@link Wordlift_Admin_Country_Select_Element} element renderer.
+	 */
+	private $country_select_element;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    3.9.0
 	 *
-	 * @param Wordlift_Configuration_Service  $configuration_service  A {@link Wordlift_Configuration_Service} instance.
-	 * @param Wordlift_Key_Validation_Service $key_validation_service A {@link Wordlift_Key_Validation_Service} instance.
-	 * @param Wordlift_Entity_Service         $entity_service         A {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_Configuration_Service  $configuration_service  A {@link Wordlift_Configuration_Service} instance.
+	 * @param \Wordlift_Key_Validation_Service $key_validation_service A {@link Wordlift_Key_Validation_Service} instance.
+	 * @param \Wordlift_Entity_Service $entity_service  A {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_Admin_Language_Select_Element $language_select_element A {@link Wordlift_Admin_Language_Select_Element} element renderer.
+	 * @param \Wordlift_Admin_Country_Select_Element  $country_select_element  A {@link Wordlift_Admin_Country_Select_Element} element renderer.
 	 */
-	public function __construct( $configuration_service, $key_validation_service, $entity_service ) {
+	public function __construct( $configuration_service, $key_validation_service, $entity_service, $language_select_element, $country_select_element ) {
 
 		// Set a reference to the configuration service.
 		$this->configuration_service = $configuration_service;
@@ -74,6 +94,10 @@ class Wordlift_Admin_Setup {
 
 		// Set a reference to the entity service.
 		$this->entity_service = $entity_service;
+
+		// Set a reference to the UI elements language and country.
+		$this->language_select_element = $language_select_element;
+		$this->country_select_element  = $country_select_element;
 
 		// Hook to some WP's events:
 		// When WP is loaded check whether the user decided to skip the set-up, i.e. don't show us even if WL is not set up.
@@ -130,8 +154,9 @@ class Wordlift_Admin_Setup {
 		if ( '' === $this->configuration_service->get_key() && ! $this->configuration_service->is_skip_wizard() ) { ?>
 			<div id="wl-message" class="updated">
 				<p><?php esc_html_e( 'Welcome to WordLift &#8211; You&lsquo;re almost ready to start', 'wordlift' ); ?></p>
-				<p class="submit"><a href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup' ) ); ?>"
-				                     class="button-primary"><?php esc_html_e( 'Run the Setup Wizard', 'wordlift' ); ?></a>
+				<p class="submit">
+					<a href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup' ) ); ?>"
+						class="button-primary"><?php esc_html_e( 'Run the Setup Wizard', 'wordlift' ); ?></a>
 					<a class="button-secondary skip"
 					   href="<?php echo esc_url( wp_nonce_url( add_query_arg( 'wl-hide-notice', 'install' ), 'wordlift_hide_notices_nonce', '_wl_notice_nonce' ) ); ?>"><?php esc_html_e( 'Skip Setup', 'wordlift' ); ?></a>
 				</p>
@@ -141,7 +166,7 @@ class Wordlift_Admin_Setup {
 	}
 
 	/**
-	 * Handle hiding the wizard notices by user request
+	 * Handle hiding the wizard notices by user request.
 	 *
 	 * @since    3.9.0
 	 */
@@ -163,12 +188,12 @@ class Wordlift_Admin_Setup {
 		}
 
 		// Store a flag telling to skip the wizard.
-		$this->configuration_service->set_skip_wizard( TRUE );
+		$this->configuration_service->set_skip_wizard( true );
 
 	}
 
 	/**
-	 * Register the wizard page to be able to access it
+	 * Register the wizard page to be able to access it.
 	 *
 	 * @since    3.9.0
 	 */
@@ -180,7 +205,7 @@ class Wordlift_Admin_Setup {
 	}
 
 	/**
-	 * Displays the wizard page
+	 * Displays the wizard page.
 	 *
 	 * @since    3.9.0
 	 */
@@ -210,6 +235,9 @@ class Wordlift_Admin_Setup {
 
 			exit;
 		}
+
+		$language_select = $this->language_select_element;
+		$country_select = $this->country_select_element;
 
 		include plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/wordlift-admin-setup.php';
 
@@ -241,7 +269,10 @@ class Wordlift_Admin_Setup {
 		$this->configuration_service->set_entity_base_path( $params['vocabulary'] );
 
 		// Store the site's language:
-		$this->configuration_service->set_language_code( $params['language'] );
+		$this->configuration_service->set_language_code( $params['wl-site-language'] );
+
+		// Store the site's country:
+		$this->configuration_service->set_country_code( $params['wl-country-code'] );
 
 		// Store the preferences in variable, because if the checkbox is not checked
 		// the `share-diagnostic` will not exists in `$params` array.

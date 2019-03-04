@@ -54,12 +54,14 @@ class Wordlift_Admin_Post_Edit_Page {
 			return;
 		}
 
-		// Define the callback.
+		// Define the callbacks.
 		$callback = array( $this, 'enqueue_scripts', );
+		$callback_gutenberg = array( $this, 'enqueue_scripts_gutenberg', );
 
 		// Set a hook to enqueue scripts only when the edit page is displayed.
 		add_action( 'admin_print_scripts-post.php', $callback );
 		add_action( 'admin_print_scripts-post-new.php', $callback );
+		add_action( 'enqueue_block_editor_assets', $callback_gutenberg );
 
 		$this->plugin = $plugin;
 	}
@@ -93,13 +95,14 @@ class Wordlift_Admin_Post_Edit_Page {
 		wp_dequeue_script( 'ontrapagesApp' );
 		wp_dequeue_script( 'ontrapagesController' );
 
-		// Enqueue the edit screen JavaScript. The `wordlift-admin.bundle.js` file
-		// is scheduled to replace the older `wordlift-admin.min.js` once client-side
-		// code is properly refactored.
 		/*
-		 * edit.js has been migrated to the new webpack configuration.
+		 * Enqueue the edit screen JavaScript. The `wordlift-admin.bundle.js` file
+		 * is scheduled to replace the older `wordlift-admin.min.js` once client-side
+		 * code is properly refactored.
 		 *
-		 * @since 3.20.0
+		 * @link https://github.com/insideout10/wordlift-plugin/issues/761
+		 *
+		 * @since 3.20.0 edit.js has been migrated to the new webpack configuration.
 		 */
 		// plugin_dir_url( __FILE__ ) . 'js/1/edit.js'
 		$script_name = plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/edit';
@@ -110,17 +113,51 @@ class Wordlift_Admin_Post_Edit_Page {
 				'jquery',
 				// Require wp.ajax.
 				'wp-util',
-				// Require Angular.
-				'wl-angular',
-				'wl-angular-geolocation',
-				'wl-angular-touch',
-				'wl-angular-animate',
+				/*
+				 * Angular isn't loaded anymore remotely, but it is loaded within wordlift-reloaded.js.
+				 *
+				 * See https://github.com/insideout10/wordlift-plugin/issues/865.
+				 *
+				 * @since 3.19.6
+				 */
+				//				// Require Angular.
+				//				'wl-angular',
+				//				'wl-angular-geolocation',
+				//				'wl-angular-touch',
+				//				'wl-angular-animate',
 			),
 			$this->plugin->get_version(),
 			false
 		);
 		wp_enqueue_style( 'wordlift-admin-edit-page', "$script_name.css", array(), $this->plugin->get_version() );
 
+	}
+
+	/**
+	 * Enqueue scripts and styles for the gutenberg edit page.
+	 *
+	 * @since 3.21.0
+	 */
+	public function enqueue_scripts_gutenberg() {
+		wp_enqueue_script(
+			'wordlift-admin-edit-gutenberg',
+			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/gutenberg.js',
+			array(
+				$this->plugin->get_plugin_name(),
+				'jquery',
+				'wp-util',
+				'wp-element',
+				'wp-components',
+				'wp-compose',
+				'wp-edit-post',
+				'wp-plugins',
+				'wp-data',
+				'wp-annotations'
+			),
+			$this->plugin->get_version(),
+			false
+		);
+		wp_enqueue_style( 'style-gutenberg', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/css/style-gutenberg.css', false );
 	}
 
 }

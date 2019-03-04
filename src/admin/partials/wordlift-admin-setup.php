@@ -9,10 +9,10 @@
 <!doctype html>
 <html>
 <head>
-	<!-- Defining responsive ambient. -->
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Defining responsive ambient. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<title><?php esc_html_e( 'WordLift Setup', 'wordlift' ); ?></title>
+    <title><?php esc_html_e( 'WordLift Setup', 'wordlift' ); ?></title>
 
 	<?php
 
@@ -25,7 +25,7 @@
 		'wp-admin',
 		'wl-font-awesome',
 	) );
-	wp_enqueue_script( 'wordlift-admin-setup', plugin_dir_url( dirname( __FILE__ ) ) . 'js/wordlift-admin-setup.js', array( 'jquery' ) );
+	wp_enqueue_script( 'wordlift-admin-setup', plugin_dir_url( dirname( __FILE__ ) ) . 'js/1/setup.js', array( 'jquery' ) );
 
 	//Get wp_permalink structure
 	$permalink_structure = get_option( 'permalink_structure' );
@@ -47,7 +47,7 @@
 	//	do_action( 'admin_print_styles' );
 	//	do_action( 'admin_print_scripts' );
 
-	for ($i=1; $i <= 6; $i++) { 
+	for ( $i = 1; $i <= 6; $i ++ ) {
 		include 'admin-setup/step-' . $i . '.php';
 	}
 	?>
@@ -56,23 +56,23 @@
 
 <div class="wl-container">
 
-	<a href="<?php echo esc_url( admin_url() ); ?>"
-	   class="fa fa-times wl-close"></a>
+    <a href="<?php echo esc_url( admin_url() ); ?>"
+       class="fa fa-times wl-close"></a>
 
-	<header>
-		<h1><img class="wizard-logo"
-		         src="<?php echo plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'images/logo-wl-transparent-240x90.png'; ?>" />
-		</h1>
-		<img class="shapes"
-		     src="<?php echo plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'images/shapes.png'; ?>" />
-	</header>
+    <header>
+        <h1><img class="wizard-logo"
+                 src="<?php echo plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'images/logo-wl-transparent-240x90.png'; ?>"/>
+        </h1>
+        <img class="shapes"
+             src="<?php echo plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'images/shapes.png'; ?>"/>
+    </header>
 
 
-	<form method="post">
+    <form method="post">
 		<?php wp_nonce_field( 'wl-save-configuration' ); ?>
-		<input type="hidden" name="action" value="wl-save-configuration" />
-		<div class="viewport"></div>
-	</form>
+        <input type="hidden" name="action" value="wl-save-configuration"/>
+        <div class="viewport"></div>
+    </form>
 
 </div>
 

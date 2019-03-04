@@ -131,7 +131,7 @@ class Wordlift_Sparql_Service {
 		self::$log->debug( "Buffering SPARQL to file $filename..." );
 
 		// Write the contents to the temporary filename.
-		file_put_contents( $filename, $stmt . "\n", FILE_APPEND );
+		@file_put_contents( $filename, $stmt . "\n", FILE_APPEND );
 
 	}
 

@@ -82,6 +82,20 @@
     }
   }
 
+  .wl-select-notices {
+    color: #ff0000;
+    display: none;
+    &.visible {
+      display: block;
+    }
+  }
+
+  /* For the search keywords textarea. */
+  textarea {
+    width: 100%;
+    max-width: 480px;
+  }
+
 }
 
 // Styling the select wrap.
@@ -121,7 +135,8 @@
 }
 
 #wl-publisher-name input,
-#wl-site-language {
+#wl-site-language,
+#wl-country-code {
   // Size
   width: 100%;
   max-width: 480px;

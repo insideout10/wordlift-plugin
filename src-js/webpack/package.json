@@ -1,6 +1,10 @@
 {
   "name": "wordlift-plugin",
+<<<<<<< HEAD
   "version": "3.20.0-dev6",
+=======
+  "version": "3.20.0-rc1",
+>>>>>>> develop
   "description": "WordLift Plugin application for the web site public front-end.",
   "main": "index.js",
   "repository": "https://github.com/insideout10/wordlift-plugin",
@@ -21,7 +25,8 @@
     "postcss-loader": "^3.0.0",
     "sass-loader": "^7.1.0",
     "webpack": "^4",
-    "webpack-cli": "^3.1.0"
+    "webpack-cli": "^3.1.0",
+    "svg-react-loader": "^0.4.5"
   },
   "dependencies": {
     "@wordlift/wordlift-for-schemaorg": "^1.0",
@@ -32,7 +37,13 @@
     "react-redux": "^5.0.7",
     "react-select": "^1",
     "redux": "^4.0.0",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0",
     "styled-components": "^3",
     "whatwg-fetch": "^2"
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "printWidth": 120
   }
 }

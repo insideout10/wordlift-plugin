@@ -108,12 +108,21 @@ class Wordlift_Install_3_18_0 extends Wordlift_Install {
 	 */
 	public function add_editors_read_wordlift_entity_capability() {
 		// Get the editor roles.
-		$admins  = get_role( 'administrator' );
-		$editors = get_role( 'editor' );
-
-		// Add read capability.
+		$admins = get_role( 'administrator' );
 		$admins->add_cap( 'read_wordlift_entity' );
-		$editors->add_cap( 'read_wordlift_entity' );
+
+		/*
+		 * Check that the `editor` role exists before using it.
+		 *
+		 * @since 3.19.6
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/886
+		 */
+		$editors = get_role( 'editor' );
+		if ( isset( $editors ) ) {
+			$editors->add_cap( 'read_wordlift_entity' );
+		}
+
 	}
 
 }
