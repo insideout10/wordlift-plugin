@@ -19,6 +19,17 @@
 abstract class Wordlift_Admin_Page {
 
 	/**
+	 * Define the {@link Wordlift_Admin_Page} constructor.
+	 *
+	 * @since 3.20.0
+	 */
+	public function __construct() {
+
+		add_action( 'admin_menu', array( $this, 'admin_menu' ), 10, 0 );
+
+	}
+
+	/**
 	 * Get the parent slug.
 	 *
 	 * @since 3.11.0

@@ -79,12 +79,36 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		$jsonld['headline'] = $post->post_title;
 
 		// Set the published and modified dates.
-		$jsonld['datePublished'] = get_post_time( 'Y-m-d\TH:i', true, $post, false );
-		$jsonld['dateModified']  = get_post_modified_time( 'Y-m-d\TH:i', true, $post, false );
+		/*
+		 * Set the `datePublished` and `dateModified` using the local timezone.
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/887
+		 *
+		 * @since 3.20.0
+		 */
+		try {
+			$default_timezone = date_default_timezone_get();
+			date_default_timezone_set( get_option( 'timezone_string' ) );
+			$jsonld['datePublished'] = get_post_time( 'Y-m-d\TH:i:sP', false, $post );
+			$jsonld['dateModified']  = get_post_modified_time( 'Y-m-d\TH:i:sP', false, $post );
+			date_default_timezone_set( $default_timezone );
+		} catch ( Exception $e ) {
+			$jsonld['datePublished'] = get_post_time( 'Y-m-d\TH:i', true, $post, false );
+			$jsonld['dateModified']  = get_post_modified_time( 'Y-m-d\TH:i', true, $post, false );
+		}
 
 		// Get the word count for the post.
-		$post_adapter        = new Wordlift_Post_Adapter( $post_id );
-		$jsonld['wordCount'] = $post_adapter->word_count();
+		/*
+		 * Do not display the `wordCount` on a `WebPage`.
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/888
+		 *
+		 * @since 3.20.0
+		 */
+		if ( ! empty( $jsonld['@type'] ) && 'WebPage' !== $jsonld['@type'] ) {
+			$post_adapter        = new Wordlift_Post_Adapter( $post_id );
+			$jsonld['wordCount'] = $post_adapter->word_count();
+		}
 
 		// Set the publisher.
 		$this->set_publisher( $jsonld );

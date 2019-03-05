@@ -35,6 +35,7 @@ class Wordlift_Admin_Search_Rankings_Service {
 	public function __construct( $api_service ) {
 
 		$this->api_service = $api_service;
+
 	}
 
 	/**
@@ -47,6 +48,53 @@ class Wordlift_Admin_Search_Rankings_Service {
 	public function get() {
 
 		return $this->api_service->get( 'entityrank' );
+	}
+
+	/**
+	 * Get the average position of the ranking keywords.
+	 *
+	 * It's highly suggested for consumers to cache the response.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @return false|float|int
+	 */
+	public function get_average_position() {
+
+		// Get the search rankings.
+		$search_rankings = $this->get();
+
+		// In case of error or invalid response, return false.
+		if ( is_wp_error( $search_rankings )
+		     || ! isset( $search_rankings->children ) ) {
+			return false;
+		}
+
+		// Get the rankings.
+		$ranks = array();
+		foreach ( $search_rankings->children as $child ) {
+			// Skip in case of non conforming response.
+			if ( ! isset( $child->score->rankings ) ) {
+				continue;
+			}
+			foreach ( $child->score->rankings as $ranking ) {
+				// Skip in case of non confirming response.
+				if ( ! isset( $ranking->rank )
+				     || ! is_numeric( $ranking->rank ) ) {
+					continue;
+				}
+				// Accumulate the ranks.
+				$ranks[] = $ranking->rank;
+			}
+		}
+
+		// We couldn't find any data.
+		if ( empty( $ranks ) ) {
+			return false;
+		}
+
+		// Finally return the average.
+		return array_sum( $ranks ) / count( $ranks );
 	}
 
 }

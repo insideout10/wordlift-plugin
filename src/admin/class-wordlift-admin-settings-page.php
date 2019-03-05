@@ -150,7 +150,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 */
 	function get_page_title() {
 
-		return 'WorldLift Settings';
+		return 'WordLift Settings';
 	}
 
 	/**

@@ -9,18 +9,18 @@ Requires PHP: 5.3
 Stable tag: {version}
 License: GPLv2 or later
 
-WordLift brings the power of Artificial Intelligence to organize content. Attract new readers and get their true attention with top notch Semantic SEO.
+WordLift brings the power of Artificial Intelligence to optimize SEO and organize content. Attract new readers and get their true attention.
 
 == Description ==
-
-> #### WordLift - Activating the Plugin
+#### WordLift - AI-Powered SEO
+[youtube https://www.youtube.com/watch?v=dPp13Y4T00U] <br />
 > **WordLift** is a lightweight plugin that brings **state-of-the-art semantic technologies** to the hands of any bloggers and publishers. <br />
 > **WordLift**, without requiring any technical skills, helps you produce richer content and organize it around your audience. <br />
 > **WordLift** is **available to all for a monthly fee**. Find out more and [get your activation key](https://wordlift.io) directly on our website. <br />
 
 **WordLift** helps you organize posts and pages adding facts, links and media to build **beautifully structured websites**, for both humans and search engines. <br />
-**WordLift** lets you create, own and publish your own [knowledge graph](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph).<br />
-**WordLift** publishes your content as [Linked Open Data](https://wordlift.io/blog/en/entity/linked-data/) following [Tim Berners-Lee‘s Linked Data Principles](http://www.w3.org/DesignIssues/LinkedData.html).<br />
+**WordLift** lets you create, own and publish your own [knowledge graph](https://wordlift.io/blog/en/knowledge-graph-seo/).<br />
+**WordLift** publishes your content as [Linked Open Data](https://wordlift.io/blog/en/entity/linked-data/) following Tim Berners-Lee‘s Linked Data Principles.<br />
 
 = Features =
 
@@ -37,7 +37,7 @@ WordLift brings the power of Artificial Intelligence to organize content. Attrac
 = WordLift brings to your publishing workflow =
 _____________
 
-* The technology to **self-organize content** using publicly or privately available [knowledge graphs](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph) <br />
+* The technology to **self-organize content** using publicly or privately available [knowledge graphs](https://wordlift.io/blog/en/knowledge-graph-seo/) <br />
 * An easy way to **build datasets** and **full data ownership** <br />
 * Support for creating web content using **contextually relevant information** <br />
 * Valued and **free to use photos and illustrations** from the Commons community ranging from maps to astronomical imagery to photographs, artworks and more <br />
@@ -142,16 +142,27 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-
-= 3.20.0 (2018-12-07) =
+= 3.20.0 (2019-03-05) =
+* Enhancement: [#887](https://github.com/insideout10/wordlift-plugin/issues/887): Add the GMT offset to dates in JSON-LD.
+* Enhancement: [#882](https://github.com/insideout10/wordlift-plugin/issues/882): Add greek among the supported languages.
+* Enhancement: [#881](https://github.com/insideout10/wordlift-plugin/issues/881): Polylang 2.5 plugin compatibility.
+* Enhancement: [#879](https://github.com/insideout10/wordlift-plugin/issues/879): Dashboard Overhaul, Phase 1.
 * Enhancement: [#868](https://github.com/insideout10/wordlift-plugin/issues/868): Remove `wlSettings` from WP Rocket inline optimization .
+* Enhancement: [#861](https://github.com/insideout10/wordlift-plugin/issues/861): Arabic can be added as supported language.
 * Enhancement: [#851](https://github.com/insideout10/wordlift-plugin/issues/851): add a filter to allow 3rd parties to change the TinyMCE editor id via JavaScript.
 * Enhancement: [#850](https://github.com/insideout10/wordlift-plugin/issues/850): allow 3rd parties to change the site URL and post permalink.
 * Enhancement: [#835](https://github.com/insideout10/wordlift-plugin/issues/835): Add the all entity types metabox.
 * Enhancement: [#761](https://github.com/insideout10/wordlift-plugin/issues/761): Search Rankings dashboard page.
+* Enhancement: [#728](https://github.com/insideout10/wordlift-plugin/issues/728): Gutenberg Integration.
 * Enhancement: [#713](https://github.com/insideout10/wordlift-plugin/issues/713): Allow to configure the target country.
 
-= 3.19.6 (2018-12-07) =
+* Fix: [#888](https://github.com/insideout10/wordlift-plugin/issues/888): Remove `wordCount` from `WebPage` JSON-LD.
+
+= 3.19.6 (2019-03-05) =
+* Enhancement: [#875](https://github.com/insideout10/wordlift-plugin/issues/875): Provide 16:9, 4:3 and 1:1 images also for embedded media.
+* Enhancement: [#872](https://github.com/insideout10/wordlift-plugin/issues/872): Allow binding a taxonomy term to an entity.
+
+* Fix: [#886](https://github.com/insideout10/wordlift-plugin/issues/886): Before calling `get_role` check that the role exists.
 * Fix: [#870](https://github.com/insideout10/wordlift-plugin/issues/870): PHP errors: file_put_contents(/tmp) and mkdir permission denied.
 * Fix: [#865](https://github.com/insideout10/wordlift-plugin/issues/865): Content Egg's angular clashes with WordLift's angular.
 

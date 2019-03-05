@@ -55,9 +55,9 @@ class Wordlift_Image_Service_Test extends Wordlift_Unit_Test_Case {
 	 * @since 3.18.0
 	 */
 	public function test_gif() {
-		$response = Wordlift_Remote_Image_Service::save_from_url( 'https://upload.wikimedia.org/wikipedia/commons/7/70/New-Wikipedia-explode.gif' );
+		$response = Wordlift_Remote_Image_Service::save_from_url( 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Rotating_earth_%28large%29.gif/200px-Rotating_earth_%28large%29.gif' );
 
-		$this->assertInternalType( 'array', $response );
+		$this->assertInternalType( 'array', $response, 'Expecting array, instead got: ' .var_export( $response, true ) );
 		$this->assertEquals( 3, count( $response ) );
 		$this->assertEquals( 'image/gif', $response['content_type'] );
 	}

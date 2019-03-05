@@ -136,9 +136,9 @@ class Wordlift_Uri_Service {
 	 *
 	 * @since 3.5.0
 	 *
-	 * @param string  $title           A post title.
-	 * @param string  $post_type       A post type. Default value is 'entity'
-	 * @param string  $schema_type     A schema org type.
+	 * @param string  $title A post title.
+	 * @param string  $post_type A post type. Default value is 'entity'
+	 * @param string  $schema_type A schema org type.
 	 * @param integer $increment_digit A digit used to call recursively the same function.
 	 *
 	 * @return string Returns an uri.
@@ -148,10 +148,16 @@ class Wordlift_Uri_Service {
 		// Get the entity slug suffix digit
 		$suffix_digit = $increment_digit + 1;
 
-		// Get a sanitized uri for a given title
-		$entity_slug = ( 0 == $increment_digit ) ?
-			wl_sanitize_uri_path( $title ) :
-			wl_sanitize_uri_path( $title . '_' . $suffix_digit );
+		// Get a sanitized uri for a given title.
+		/*
+		 * The call takes into consideration URL encoding.
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/885
+		 *
+		 * @since 3.20.0
+		 */
+		$entity_slug = urldecode( wl_sanitize_uri_path( $title ) )
+		               . ( 0 === $increment_digit ? '' : '_' . $suffix_digit );
 
 		// Compose a candidate uri.
 		$new_entity_uri = sprintf( '%s/%s/%s',

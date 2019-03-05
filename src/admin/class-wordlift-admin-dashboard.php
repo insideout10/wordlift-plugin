@@ -158,7 +158,7 @@ EOF;
 	 */
 	public function ajax_get_stats() {
 
-		// If needed, the transient is force to reloaed
+		// If needed, the transient is force to reloaded.
 		if ( isset( $_GET['force_reload'] ) ) {
 			delete_transient( self::TRANSIENT_NAME );
 		}
@@ -219,11 +219,12 @@ EOF;
 	/**
 	 * Calculate the average entities rating.
 	 *
+	 * @since 3.20.0 this method is public.
 	 * @since 3.4.0
 	 *
 	 * @return int Average entities rating.
 	 */
-	private function average_entities_rating() {
+	public function average_entities_rating() {
 
 		// Prepare interaction with db
 		global $wpdb;

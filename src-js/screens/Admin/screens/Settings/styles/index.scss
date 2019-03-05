@@ -90,6 +90,12 @@
     }
   }
 
+  /* For the search keywords textarea. */
+  textarea {
+    width: 100%;
+    max-width: 480px;
+  }
+
 }
 
 // Styling the select wrap.
