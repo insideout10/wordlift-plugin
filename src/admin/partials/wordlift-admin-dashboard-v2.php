@@ -231,7 +231,7 @@ $country_code = $configuration_service->get_country_code();
 	if ( in_array( $configuration_service->get_package_type(), array( 'editorial', 'business' ) ) ) { ?>
         <div class="wl-dashboard__block__body">
             <div><?php echo esc_html( _x( 'Keywords', 'Dashboard', 'wordlift' ) ); ?>:
-                <a href="<?php echo admin_url( 'edit-tags.php?taxonomy=wl_search_keywords' ); ?>"><?php echo wp_count_terms( Wordlift_Search_Keyword_Taxonomy::TAXONOMY_NAME ); ?></a>
+                <a href="<?php echo admin_url( 'admin.php?page=wl_configuration_admin_menu&tab=search-keywords' ); ?>"><?php echo wp_count_terms( Wordlift_Search_Keyword_Taxonomy::TAXONOMY_NAME ); ?></a>
             </div>
             <div><?php echo esc_html( _x( 'Average position', 'Dashboard', 'wordlift' ) ); ?>:
                 <a href="<?php echo admin_url( 'admin.php?page=wl_search_rankings' ); ?>"><?php echo $average_position_string; ?></a>
