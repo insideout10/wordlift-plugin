@@ -27,21 +27,18 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 	 */
 	public function render( $atts ) {
 
-		if( Wordlift_AMP_Service::is_amp_endpoint() ) {
-			return $this->amp_shortcode( $atts );
-		} else {
-			return $this->web_shortcode( $atts );
-		}
-
+		return Wordlift_AMP_Service::is_amp_endpoint() ? $this->amp_shortcode( $atts )
+			: $this->web_shortcode( $atts );
 	}
 
 	/**
 	 * Shared function used by web_shortcode and amp_shortcode
 	 * Bootstrap logic for attributes extraction and boolean filtering
-	 * 
+	 *
 	 * @since      3.20.0
-	 * 
+	 *
 	 * @param array $atts Shortcode attributes.
+	 *
 	 * @return array $shortcode_atts
 	 */
 	private function make_shortcode_atts( $atts ) {
@@ -67,15 +64,15 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		}
 
 		return $shortcode_atts;
-
 	}
 
 	/**
 	 * Function in charge of diplaying the [wl-navigator] in web mode.
-	 * 
+	 *
 	 * @since 3.20.0
 	 *
 	 * @param array $atts Shortcode attributes.
+	 *
 	 * @return string Shortcode HTML for web
 	 */
 	private function web_shortcode( $atts ) {
@@ -121,12 +118,13 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 
 	/**
 	 * Function in charge of diplaying the [wl-faceted-search] in amp mode.
-	 * 
+	 *
 	 * @since 3.20.0
 	 *
 	 * @param array $atts Shortcode attributes.
+	 *
 	 * @return string Shortcode HTML for amp
-	 */	
+	 */
 	private function amp_shortcode( $atts ) {
 
 		// attributes extraction and boolean filtering
@@ -150,10 +148,10 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		$wp_json_base = get_rest_url() . WL_REST_ROUTE_DEFAULT_NAMESPACE;
 
 		$query_posts = array(
-			'post_id'	=> $current_post->ID
+			'post_id' => $current_post->ID,
 		);
 
-		if ( strpos($wp_json_base, 'wp-json/' . WL_REST_ROUTE_DEFAULT_NAMESPACE) ){
+		if ( strpos( $wp_json_base, 'wp-json/' . WL_REST_ROUTE_DEFAULT_NAMESPACE ) ) {
 			$delimiter = '?';
 		} else {
 			$delimiter = '&';
@@ -161,7 +159,10 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 
 		// Use a protocol-relative URL as amp-list spec says that URL's protocol must be HTTPS.
 		// This is a hackish way, but this works for http and https URLs
-		$wp_json_url_posts = str_replace(array('http:', 'https:'), '', $wp_json_base) . '/navigator' . $delimiter . http_build_query($query_posts);
+		$wp_json_url_posts = str_replace( array(
+				'http:',
+				'https:',
+			), '', $wp_json_base ) . '/navigator' . $delimiter . http_build_query( $query_posts );
 
 		return <<<HTML
 		<div id="{$navigator_id}" class="wl-navigator-widget">
@@ -221,15 +222,15 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		</div>
 HTML;
 	}
-	
+
 	/**
 	 * Customize the CSS when in AMP.
 	 * Should echo (not return) CSS code
-	 * 
+	 *
 	 * @since 3.20.0
 	 */
-	public function amp_post_template_css(){
-		echo file_get_contents(dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-amp-custom.min.css');
-	}	
+	public function amp_post_template_css() {
+		echo file_get_contents( dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-amp-custom.min.css' );
+	}
 
 }

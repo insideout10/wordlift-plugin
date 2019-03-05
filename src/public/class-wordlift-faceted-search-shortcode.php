@@ -27,21 +27,18 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 	 */
 	public function render( $atts ) {
 
-		if( Wordlift_AMP_Service::is_amp_endpoint() ) {
-			return $this->amp_shortcode( $atts );
-		} else {
-			return $this->web_shortcode( $atts );
-		}
-
+		return Wordlift_AMP_Service::is_amp_endpoint() ? $this->amp_shortcode( $atts )
+			: $this->web_shortcode( $atts );
 	}
 
 	/**
 	 * Shared function used by web_shortcode and amp_shortcode
 	 * Bootstrap logic for attributes extraction and boolean filtering
-	 * 
+	 *
 	 * @since      3.20.0
-	 * 
+	 *
 	 * @param array $atts Shortcode attributes.
+	 *
 	 * @return array $shortcode_atts
 	 */
 	private function make_shortcode_atts( $atts ) {
@@ -70,15 +67,15 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 		}
 
 		return $shortcode_atts;
-
 	}
 
 	/**
 	 * Function in charge of diplaying the [wl-faceted-search] in web mode.
-	 * 
+	 *
 	 * @since 3.20.0
 	 *
 	 * @param array $atts Shortcode attributes.
+	 *
 	 * @return string Shortcode HTML for web
 	 */
 	private function web_shortcode( $atts ) {
@@ -105,7 +102,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 
 		// Enqueue common shortcode scripts.
 		$this->enqueue_scripts();
-		
+
 		// Enqueue shortcode specific scripts and styles.
 		$deps = apply_filters( 'wl_include_font_awesome', true )
 			? array( 'wordlift-font-awesome' )
@@ -134,17 +131,17 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 		);
 
 		return '<div id="' . $div_id . '" style="width:100%"></div>';
-
 	}
 
 	/**
 	 * Function in charge of diplaying the [wl-faceted-search] in amp mode.
-	 * 
+	 *
 	 * @since 3.20.0
 	 *
 	 * @param array $atts Shortcode attributes.
+	 *
 	 * @return string Shortcode HTML for amp
-	 */	
+	 */
 	private function amp_shortcode( $atts ) {
 
 		// attributes extraction and boolean filtering
@@ -172,28 +169,28 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 			$this,
 			'amp_post_template_css',
 		) );
-		
+
 		$wp_json_base = get_rest_url() . WL_REST_ROUTE_DEFAULT_NAMESPACE;
 
 		$query_posts = array(
-			'post_id'	=> $current_post->ID,
-			'limit'		=> apply_filters( 'wl_faceted_search_limit', $shortcode_atts['limit'] ),
-			'type'		=> 'posts'
+			'post_id' => $current_post->ID,
+			'limit'   => apply_filters( 'wl_faceted_search_limit', $shortcode_atts['limit'] ),
+			'type'    => 'posts',
 		);
 
 		$query_facets = array(
-			'post_id'	=> $current_post->ID,
-			'limit'		=> apply_filters( 'wl_faceted_search_limit', $shortcode_atts['limit'] ),
-			'type'		=> 'facets',
-			'l10n'      => array(
+			'post_id' => $current_post->ID,
+			'limit'   => apply_filters( 'wl_faceted_search_limit', $shortcode_atts['limit'] ),
+			'type'    => 'facets',
+			'l10n'    => array(
 				'what'  => _x( 'What', 'Faceted Search Widget', 'wordlift' ),
 				'who'   => _x( 'Who', 'Faceted Search Widget', 'wordlift' ),
 				'where' => _x( 'Where', 'Faceted Search Widget', 'wordlift' ),
 				'when'  => _x( 'When', 'Faceted Search Widget', 'wordlift' ),
-			)
+			),
 		);
 
-		if ( strpos($wp_json_base, 'wp-json/' . WL_REST_ROUTE_DEFAULT_NAMESPACE) ){
+		if ( strpos( $wp_json_base, 'wp-json/' . WL_REST_ROUTE_DEFAULT_NAMESPACE ) ) {
 			$delimiter = '?';
 		} else {
 			$delimiter = '&';
@@ -201,12 +198,18 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 
 		// Use a protocol-relative URL as amp-list spec says that URL's protocol must be HTTPS.
 		// This is a hackish way, but this works for http and https URLs
-		$wp_json_url_posts = str_replace(array('http:', 'https:'), '', $wp_json_base) . '/faceted-search' . $delimiter . http_build_query($query_posts);
-		$wp_json_url_facets = str_replace(array('http:', 'https:'), '', $wp_json_base) . '/faceted-search' . $delimiter . http_build_query($query_facets);
+		$wp_json_url_posts  = str_replace( array(
+				'http:',
+				'https:',
+			), '', $wp_json_base ) . '/faceted-search' . $delimiter . http_build_query( $query_posts );
+		$wp_json_url_facets = str_replace( array(
+				'http:',
+				'https:',
+			), '', $wp_json_base ) . '/faceted-search' . $delimiter . http_build_query( $query_facets );
 
 		/*
 		 * Notes about amp code:
-		 * 
+		 *
 		 * amp-list src is the only way to do an xhr fetch so we need it for both facets and posts
 		 * amp-list src needs to have items array which amp-list renders within template
 		 * amp-list does not support dynamic resizing. It needs a layout but as of not we have not specified any layout for .wl-facets amp-list
@@ -215,8 +218,9 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 		 * amp-state allPosts is a remote fetched state of all posts
 		 * amp-state filteredPosts is a filtered version of allPosts using currentEntities
 		 * amp-bind-macro getCurrentEntities is a re-used function within amp
-		 * All JS code in amp has to be done using limited JS expressions `see https://www.ampproject.org/docs/reference/components/amp-bind#expressions` 
+		 * All JS code in amp has to be done using limited JS expressions `see https://www.ampproject.org/docs/reference/components/amp-bind#expressions`
 		 */
+
 		return <<<HTML
 		<div id="{$div_id}" class="wl-amp-fs">
 			<amp-state id="currentEntities">
@@ -309,11 +313,11 @@ HTML;
 	/**
 	 * Customize the CSS when in AMP.
 	 * Should echo (not return) CSS code
-	 * 
+	 *
 	 * @since 3.20.0
 	 */
-	public function amp_post_template_css(){
-		echo file_get_contents(dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-amp-custom.min.css');
+	public function amp_post_template_css() {
+		echo file_get_contents( dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-amp-custom.min.css' );
 	}
 
 }
