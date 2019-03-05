@@ -148,6 +148,8 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement: [#881](https://github.com/insideout10/wordlift-plugin/issues/881): Polylang 2.5 plugin compatibility.
 * Enhancement: [#879](https://github.com/insideout10/wordlift-plugin/issues/879): Dashboard Overhaul, Phase 1.
 * Enhancement: [#868](https://github.com/insideout10/wordlift-plugin/issues/868): Remove `wlSettings` from WP Rocket inline optimization .
+* Enhancement: [#867](https://github.com/insideout10/wordlift-plugin/issues/867): Faceted Search AMP.
+* Enhancement: [#866](https://github.com/insideout10/wordlift-plugin/issues/866): Navigator AMP.
 * Enhancement: [#861](https://github.com/insideout10/wordlift-plugin/issues/861): Arabic can be added as supported language.
 * Enhancement: [#851](https://github.com/insideout10/wordlift-plugin/issues/851): add a filter to allow 3rd parties to change the TinyMCE editor id via JavaScript.
 * Enhancement: [#850](https://github.com/insideout10/wordlift-plugin/issues/850): allow 3rd parties to change the site URL and post permalink.
