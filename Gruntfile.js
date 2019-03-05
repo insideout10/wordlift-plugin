@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports = function(grunt) {
-  var path = require("path"),
+  const path = require("path"),
     SOURCE_DIR = "src/",
     BUILD_DIR = "build/",
     config = {};
@@ -136,7 +136,8 @@ module.exports = function(grunt) {
           "wordlift-ui.less",
           "wordlift-reloaded.less",
           "wordlift-faceted-entity-search-widget.less",
-          "wordlift-font-awesome.less"
+          "wordlift-font-awesome.less",
+          "wordlift-amp-custom.less"
         ]
       }
     },
@@ -277,28 +278,6 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask("rebuild", ["clean", "build"]);
-
-  /*
-     * Automatically updates the `:dynamic` configurations
-     * so that only the changed files are updated.
-     */
-  //grunt.event.on( 'watch', function ( action, filepath, target ) {
-  //    var src;
-  //
-  //    src = [ path.relative( SOURCE_DIR, filepath ) ];
-  //
-  //    grunt.log.writeln( '[ action :: %s ][ filepath :: %s ][ target :: %s ][ source :: %s ]', action, filepath, target, src[ 0 ] );
-  //
-  //    //if ( [ 'coffee', 'less' ].indexOf( target ) > -1 ) {
-  //    //    return;
-  //    //}
-  //
-  //    if ( action === 'deleted' ) {
-  //        grunt.config( [ 'clean', 'dynamic', 'src' ], src );
-  //    } else {
-  //        grunt.config( [ 'copy', 'dynamic', 'src' ], src );
-  //    }
-  //} );
 
   // Testing tasks.
   grunt.registerMultiTask("phpunit", "Runs PHPUnit tests.", function() {

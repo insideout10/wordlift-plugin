@@ -1280,6 +1280,42 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 	}
 
+	public function test_issue_888_entity_type_not_set() {
+
+		register_post_type( 'a-cpt' );
+
+		// Create an event to bind to the post.
+		$post_id = $this->factory()->post->create( array(
+			'post_type' => 'a-cpt',
+		) );
+
+		// Convert the post to json-ld.
+		$references = array();
+		$json_ld    = $this->post_to_jsonld_converter->convert( $post_id, $references );
+
+		$this->assertArrayNotHasKey( 'wordCount', $json_ld, '`wordCount` must not be set when the entity type is unknown or `WebPage`.' );
+
+	}
+
+	public function test_issue_888_entity_type_set_to_web_page() {
+
+		register_post_type( 'a-cpt' );
+
+		// Create an event to bind to the post.
+		$post_id = $this->factory()->post->create( array(
+			'post_type' => 'a-cpt',
+		) );
+
+		$this->entity_type_service->set( $post_id, 'http://schema.org/WebPage' );
+
+		// Convert the post to json-ld.
+		$references = array();
+		$json_ld    = $this->post_to_jsonld_converter->convert( $post_id, $references );
+
+		$this->assertArrayNotHasKey( 'wordCount', $json_ld, '`wordCount` must not be set when the entity type is unknown or `WebPage`.' );
+
+	}
+
 	/**
 	 * Get the word count for a {@link WP_Post}.
 	 *

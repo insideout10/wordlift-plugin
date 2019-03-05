@@ -59,6 +59,15 @@ class Wordlift_Admin {
 	private $user_service;
 
 	/**
+	 * The {@link Wordlift_Batch_Operation_Ajax_Adapter} instance.
+	 *
+	 * @since 3.20.0
+	 * @access private
+	 * @var \Wordlift_Batch_Operation_Ajax_Adapter $sync_batch_operation_ajax_adapter The {@link Wordlift_Batch_Operation_Ajax_Adapter} instance.
+	 */
+	private $sync_batch_operation_ajax_adapter;
+
+	/**
 	 * The singleton instance.
 	 *
 	 * @since 3.19.4
@@ -113,14 +122,54 @@ class Wordlift_Admin {
 
 			/*
 			 * Add support for `All Entity Types`.
+			 *
+			 * @since 3.20.0
+			 *
 			 * @see https://github.com/insideout10/wordlift-plugin/issues/835
 			 */
 			if ( WL_ALL_ENTITY_TYPES ) {
 				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-schemaorg-taxonomy-metabox.php';
 				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-schemaorg-property-metabox.php';
 
-				new Wordlift_Admin_Schemaorg_Property_Metabox( Wordlift_Schemaorg_Property_Service::get_instance() );
+				// new Wordlift_Admin_Schemaorg_Property_Metabox( Wordlift_Schemaorg_Property_Service::get_instance() );
+				/*
+				 * The `Mappings` admin page.
+				 */
+				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-mappings-page.php';
+				new Wordlift_Admin_Mappings_Page();
+
+				/*
+				 * Allow sync'ing the schema.org taxonomy with the schema.org json file.
+				 *
+				 * @since 3.20.0
+				 */
+				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/schemaorg/class-wordlift-schemaorg-sync-batch-operation.php';
+
+				$this->sync_batch_operation_ajax_adapter = new Wordlift_Batch_Operation_Ajax_Adapter( new Wordlift_Schemaorg_Sync_Batch_Operation(), 'wl_schemaorg_sync' );
+
 			}
+
+			/*
+			 * Add the {@link Wordlift_Admin_Term_Adapter}.
+			 *
+			 * @since 3.20.0
+			 */
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-term-adapter.php';
+			new Wordlift_Admin_Term_Adapter();
+
+			/*
+			 * The new dashboard.
+			 *
+			 * @since 3.20.0
+			 *
+			 * @see https://github.com/insideout10/wordlift-plugin/issues/879
+			 */
+			new Wordlift_Admin_Dashboard_V2(
+				$search_rankings_service,
+				Wordlift::get_instance()->get_dashboard_service(),
+				Wordlift_Entity_Service::get_instance()
+			);
+			new Wordlift_Admin_Not_Enriched_Filter();
 
 		}
 
@@ -264,7 +313,7 @@ class Wordlift_Admin {
 		}
 
 		// Finally output the params as `wlSettings` for JavaScript code.
-		wp_localize_script( $this->plugin_name, 'wlSettings', $params );
+		wp_localize_script( $this->plugin_name, 'wlSettings', apply_filters( 'wl_admin_settings', $params ) );
 
 	}
 
@@ -278,6 +327,8 @@ class Wordlift_Admin {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard-latest-news.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-search-rankings-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-search-rankings-ajax-adapter.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard-v2.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-not-enriched-filter.php';
 
 	}
 

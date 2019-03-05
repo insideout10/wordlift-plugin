@@ -92,6 +92,8 @@ class Wordlift_Sparql_Service {
 
 			// Bail out if there are no files left.
 			if ( ! file_exists( $filename ) ) {
+				self::$log->trace( "$filename not found." );
+
 				break;
 			}
 

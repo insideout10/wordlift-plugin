@@ -32,16 +32,24 @@ class Wordlift_Post_Excerpt_Helper {
 	 *
 	 * @since 3.10.0
 	 *
-	 * @param WP_Post $post   The {@link WP_Post}.
+	 * @param WP_Post $post The {@link WP_Post}.
 	 * @param int     $length The desired excerpt length.
-	 * @param string  $more   The desired more string.
+	 * @param string  $more The desired more string.
 	 *
 	 * @return string The excerpt.
 	 */
 	public static function get_text_excerpt( $post, $length = 55, $more = '...' ) {
 
+		/*
+		 * Apply the `wl_post_content` filter, in case 3rd parties want to change the post content, e.g.
+		 * because the content is written elsewhere.
+		 *
+		 * @since 3.20.0
+		 */
+		$post_content = apply_filters( 'wl_post_content', $post->post_content, $post );
+
 		// Get the excerpt and trim it. Use the `post_excerpt` if available.
-		$excerpt = wp_trim_words( ! empty( $post->post_excerpt ) ? $post->post_excerpt : $post->post_content, $length, $more );
+		$excerpt = wp_trim_words( ! empty( $post->post_excerpt ) ? $post->post_excerpt : $post_content, $length, $more );
 
 		// Remove shortcodes and decode html entities.
 		return html_entity_decode( self::strip_all_shortcodes( $excerpt ) );

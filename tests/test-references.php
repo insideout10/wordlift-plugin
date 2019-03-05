@@ -50,7 +50,7 @@ class Wordlift_References_Test extends Wordlift_Unit_Test_Case {
 		// Create required posts/entities.
 		$entity_1_id         = $this->entity_factory->create( array( 'post_status' => 'publish' ) );
 		$entity_2_id         = $this->entity_factory->create( array( 'post_status' => 'publish' ) );
-		$custom_post_type_id = $this->factory->post->create( array(
+		$custom_post_type_id = $this->factory()->post->create( array(
 			'post_type'   => 'custom_post_type',
 			'post_status' => 'publish',
 		) );
@@ -77,7 +77,7 @@ class Wordlift_References_Test extends Wordlift_Unit_Test_Case {
 
 		$this->assertContains( "http://purl.org/dc/terms/references,$entity_1_uri", $lines );
 		$this->assertContains( "http://purl.org/dc/terms/references,$entity_2_uri", $lines );
-		$this->assertContains( "http://www.w3.org/1999/02/22-rdf-syntax-ns#type,http://schema.org/WebPage", $lines );
+		$this->assertContains( "http://www.w3.org/1999/02/22-rdf-syntax-ns#type,http://schema.org/WebPage", $lines, "The following lines do not match: \n" . implode( "\n", $lines ) );
 
 		self::turn_off_entity_push();
 	}

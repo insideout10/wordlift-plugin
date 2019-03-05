@@ -721,8 +721,10 @@ class Wordlift {
 	 */
 	public function __construct() {
 
+		self::$instance = $this;
+
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.20.0-rc1';
+		$this->version     = '3.20.0';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -732,8 +734,6 @@ class Wordlift {
 		if ( class_exists( 'WP_CLI' ) ) {
 			$this->load_cli_dependencies();
 		}
-
-		self::$instance = $this;
 
 	}
 
@@ -1107,6 +1107,11 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-vocabulary-shortcode.php';
 
 		/**
+		 * Faceted Search shortcode.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-faceted-search-shortcode.php';		
+
+		/**
 		 * The ShareThis service.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-sharethis-service.php';
@@ -1256,6 +1261,7 @@ class Wordlift {
 		new Wordlift_Timeline_Shortcode();
 		new Wordlift_Related_Entities_Cloud_Shortcode( $this->relation_service );
 		new Wordlift_Vocabulary_Shortcode( $this->configuration_service );
+		new Wordlift_Faceted_Search_Shortcode();
 
 		// Initialize the SEO service.
 		new Wordlift_Seo_Service();
@@ -1292,7 +1298,6 @@ class Wordlift {
 		/** Async Tasks. */
 		new Wordlift_Sparql_Query_Async_Task();
 		new Wordlift_Batch_Analysis_Request_Async_Task();
-		new Wordlift_Batch_Analysis_Complete_Async_Task();
 		new Wordlift_Batch_Analysis_Complete_Async_Task();
 		new Wordlift_Push_References_Async_Task();
 
@@ -1351,6 +1356,30 @@ class Wordlift {
 
 		// Remote Image Service.
 		new Wordlift_Remote_Image_Service();
+
+		/*
+		 * Provides mappings between post types and entity types.
+		 *
+		 * @since 3.20.0
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/852.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-batch-action.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/mapping/class-wordlift-mapping-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/mapping/class-wordlift-mapping-ajax-adapter.php';
+
+		// Create an instance of the Mapping Service and assign it to the Ajax Adapter.
+		new Wordlift_Mapping_Ajax_Adapter( new Wordlift_Mapping_Service( Wordlift_Entity_Type_Service::get_instance() ) );
+
+		/*
+		 * Batch Operations. They're similar to Batch Actions but do not require working on post types.
+		 *
+		 * Eventually Batch Actions will become Batch Operations.
+		 *
+		 * @since 3.20.0
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/batch/intf-wordlift-batch-operation.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/batch/class-wordlift-batch-operation-ajax-adapter.php';
 
 		/*
 		 * Add the Search Keywords taxonomy to manage the Search Keywords on WLS.
@@ -1422,10 +1451,20 @@ class Wordlift {
 		$this->loader->add_filter( 'allowed_redirect_hosts', $this->redirect_service, 'allowed_redirect_hosts' );
 		// Hook the AJAX wordlift_redirect action to the Redirect service.
 		$this->loader->add_action( 'wp_ajax_wordlift_redirect', $this->redirect_service, 'ajax_redirect' );
+
+		/*
+		 * The old dashboard is replaced with dashboard v2.
+		 *
+		 * The old dashboard service is still loaded because its functions are used.
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/879
+		 *
+		 * @since 3.20.0
+		 */
 		// Hook the AJAX wordlift_redirect action to the Redirect service.
-		$this->loader->add_action( 'wp_ajax_wordlift_get_stats', $this->dashboard_service, 'ajax_get_stats' );
+		// $this->loader->add_action( 'wp_ajax_wordlift_get_stats', $this->dashboard_service, 'ajax_get_stats' );
 		// Hook the AJAX wordlift_redirect action to the Redirect service.
-		$this->loader->add_action( 'wp_dashboard_setup', $this->dashboard_service, 'add_dashboard_widgets' );
+		// $this->loader->add_action( 'wp_dashboard_setup', $this->dashboard_service, 'add_dashboard_widgets' );
 
 		// Hook save_post to the entity service to update custom fields (such as alternate labels).
 		// We have a priority of 9 because we want to be executed before data is sent to Redlink.
@@ -1690,6 +1729,17 @@ class Wordlift {
 
 		WP_CLI::add_command( 'wl references push', $push_reference_data_command );
 
+	}
+
+	/**
+	 * Get the {@link \Wordlift_Dashboard_Service} to allow others to use its functions.
+	 *
+	 * @since 3.20.0
+	 * @return \Wordlift_Dashboard_Service The {@link \Wordlift_Dashboard_Service} instance.
+	 */
+	public function get_dashboard_service() {
+
+		return $this->dashboard_service;
 	}
 
 }
