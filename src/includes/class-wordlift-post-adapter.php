@@ -59,7 +59,23 @@ class Wordlift_Post_Adapter {
 		 */
 		$post_content = apply_filters( 'wl_post_content', $post->post_content, $post );
 
-		return str_word_count( strip_tags( strip_shortcodes( $post_content ) ) );
+		return self::str_word_count_utf8( strip_tags( strip_shortcodes( $post_content ) ) );
+	}
+
+	/**
+	 * Count words in the string, taking into account UTF-8 characters.
+	 *
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/884
+	 *
+	 * @since 3.20.0
+	 *
+	 * @param string $str The target string.
+	 *
+	 * @return int The number of words.
+	 */
+	private static function str_word_count_utf8( $str ) {
+		
+		return count( preg_split( '~[^\p{L}\p{N}\']+~u', $str ) );
 	}
 
 	/**
