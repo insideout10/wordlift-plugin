@@ -38,12 +38,14 @@ class Wordlift_Languages {
 	 * @var array An array of language codes.
 	 */
 	private static $codes = array(
+		'ar',
 		'be',
 		'bg',
 		'ca',
 		'cs',
 		'da',
 		'de',
+		'el',
 		'en',
 		'es',
 		'et',

@@ -8,6 +8,8 @@
  */
 
 /**
+ * Execute a SPARQL query.
+ *
  * @since 3.0.0
  *
  * @uses  wl_queue_sparql_update_query() to queue a query if query buffering is on.
@@ -16,12 +18,20 @@
  * @param bool   $queue Whether to queue the update.
  *
  * @return bool True if successful otherwise false.
+ * @throws Exception
  */
 function rl_execute_sparql_update_query( $query, $queue = WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING ) {
 
 	$log = Wordlift_Log_Service::get_logger( 'rl_execute_sparql_update_query' );
 
-	if ( get_transient( 'DISABLE_ENTITY_PUSH' ) ) {
+	/**
+	 * Disable entity push.
+	 *
+	 * @param $disable_entity_push True to disable entity push.
+	 *
+	 * @since 3.20.0
+	 */
+	if ( apply_filters( 'wl_disable_entity_push', get_transient( 'DISABLE_ENTITY_PUSH' ) ) ) {
 		$log->info('Entity push is disabled.');
 
 		return true;
@@ -48,6 +58,8 @@ function rl_execute_sparql_update_query( $query, $queue = WL_ENABLE_SPARQL_UPDAT
 		),
 		'body'    => $query,
 	) );
+
+	$log->trace( "Sending request to $url..." );
 
 	// Send the request.
 	$response = wp_remote_post( $url, $args );

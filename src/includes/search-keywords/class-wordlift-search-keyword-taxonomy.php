@@ -53,9 +53,6 @@ class Wordlift_Search_Keyword_Taxonomy {
 		// Register the taxonomy.
 		add_action( 'init', array( $this, 'init' ) );
 
-		// Add the menu entry.
-		add_action( 'wl_admin_menu', array( $this, 'admin_menu' ), 30, 2 );
-
 		// Catch new terms.
 		add_action( 'created_' . self::TAXONOMY_NAME, array( $this, 'created' ) );
 
@@ -121,20 +118,6 @@ class Wordlift_Search_Keyword_Taxonomy {
 		);
 
 		register_taxonomy( self::TAXONOMY_NAME, null, $args );
-
-	}
-
-	/**
-	 * Add the menu entry.
-	 *
-	 * @since 3.20.0
-	 *
-	 * @param string $menu_slug The WordLift parent menu slug.
-	 * @param string $capability The capability.
-	 */
-	public function admin_menu( $menu_slug, $capability ) {
-
-		add_submenu_page( $menu_slug, _x( 'Search Keywords', 'taxonomy general name', 'wordlift' ), _x( 'Search Keywords', 'taxonomy general name', 'wordlift' ), $capability, 'edit-tags.php?taxonomy=wl_search_keywords', null );
 
 	}
 

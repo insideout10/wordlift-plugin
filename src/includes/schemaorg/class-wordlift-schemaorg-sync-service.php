@@ -78,62 +78,6 @@ class Wordlift_Schemaorg_Sync_Service {
 		return $this->load( $contents );
 	}
 
-	//region ## LOAD SCHEMA.ORG CLASSES FROM URL.
-	//	/**
-//	 * Load the Schema.org classes from a URL.
-//	 *
-//	 * @since 3.20.0
-//	 *
-//	 * @return bool True if successful otherwise false.
-//	 */
-//	public function load_from_url() {
-//
-//		$reply = wp_remote_post( 'http://turin.wordlift.it:41660/graphql', array(
-//			'method'  => 'POST',
-//			'headers' => array(
-//				'content-type' => 'application/json; charset=UTF-8',
-//			),
-//			'body'    => wp_json_encode( array(
-//				'query'     => "
-//					query {
-//					schemaClasses {
-//						name
-//						dashname: name(format: DASHED)
-//						description
-//						children {
-//							dashname: name(format: DASHED)
-//						}
-//					}
-//				}'",
-//				'variables' => null,
-//			) ),
-//		) );
-//
-//		if ( is_wp_error( $reply ) ) {
-//			// Error.
-//			return false;
-//		}
-//
-//		if ( ! isset( $reply['response']['code'] )
-//		     || ! is_numeric( $reply['response']['code'] ) ) {
-//			// Error: response code not set or invalid.
-//			return false;
-//		}
-//
-//		if ( 2 !== (int) $reply['response']['code'] / 100 ) {
-//			// Error: status code not OK.
-//			return false;
-//		}
-//
-//		if ( ! isset( $reply['body'] ) ) {
-//			// Error: body not set.
-//			return false;
-//		}
-//
-//		return $this->load( $reply['body'] );
-//	}
-	//endregion
-
 	/**
 	 * Load the Schema.org classes from the provided contents.
 	 *
