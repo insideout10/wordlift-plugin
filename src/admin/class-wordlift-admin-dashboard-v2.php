@@ -64,7 +64,7 @@ class Wordlift_Admin_Dashboard_V2 {
 		wp_add_dashboard_widget(
 			'wl-dashboard-v2',
 			__( 'WordLift Dashboard', 'wordlift' ),
-			array( $this, 'dashboard_setup' )
+			array( $this, 'dashboard_setup_callback' )
 		);
 
 	}
