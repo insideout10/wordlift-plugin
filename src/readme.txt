@@ -143,11 +143,12 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 = 3.20.0 (2019-03-05) =
+* Enhancement: [#892](https://github.com/insideout10/wordlift-plugin/issues/892): Write JSON-LD of local entities bound to taxonomy terms.
 * Enhancement: [#887](https://github.com/insideout10/wordlift-plugin/issues/887): Add the GMT offset to dates in JSON-LD.
 * Enhancement: [#882](https://github.com/insideout10/wordlift-plugin/issues/882): Add greek among the supported languages.
 * Enhancement: [#881](https://github.com/insideout10/wordlift-plugin/issues/881): Polylang 2.5 plugin compatibility.
 * Enhancement: [#879](https://github.com/insideout10/wordlift-plugin/issues/879): Dashboard Overhaul, Phase 1.
-* Enhancement: [#868](https://github.com/insideout10/wordlift-plugin/issues/868): Remove `wlSettings` from WP Rocket inline optimization .
+* Enhancement: [#868](https://github.com/insideout10/wordlift-plugin/issues/868): Remove `wlSettings` from WP Rocket inline optimization.
 * Enhancement: [#867](https://github.com/insideout10/wordlift-plugin/issues/867): Faceted Search AMP.
 * Enhancement: [#866](https://github.com/insideout10/wordlift-plugin/issues/866): Navigator AMP.
 * Enhancement: [#861](https://github.com/insideout10/wordlift-plugin/issues/861): Arabic can be added as supported language.
@@ -369,7 +370,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement: [#583](https://github.com/insideout10/wordlift-plugin/issues/583): Add sameAs to schema.org/publisher in JSON-LD.
 * Enhancement: [#574](https://github.com/insideout10/wordlift-plugin/issues/574): WL currently adds links on headings.
 * Enhancement: [#493](https://github.com/insideout10/wordlift-plugin/issues/493): Prevent analysis in html tags: `button`.
-* Fix: [#628](https://github.com/insideout10/wordlift-plugin/issues/628): Check the status of Content Classification in the WordLift editor .
+* Fix: [#628](https://github.com/insideout10/wordlift-plugin/issues/628): Check the status of Content Classification in the WordLift editor.
 * Fix: [#610](https://github.com/insideout10/wordlift-plugin/issues/610): Typo in xsd:dateTime.
 
 = 3.14.7 (2017-10-03) =
