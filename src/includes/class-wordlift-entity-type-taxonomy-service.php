@@ -59,7 +59,7 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 			'capabilities'       => $capabilities,
 			'hierarchical'       => true,
 			'show_admin_column'  => true,
-			'show_in_rest'		 => true,	
+			'show_in_rest'		 => true,
 			'show_in_quick_edit' => false,
 		);
 
@@ -78,6 +78,15 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 			Wordlift_Entity_Service::valid_entity_post_types(), // Taxonomy post types.
 			$args // Taxonomy args.
 		);
+
+		/**
+		 * Register meta wl_entities_gutenberg for use in Gutenberg
+		 */
+		register_meta( 'post', 'wl_entities_gutenberg', array(
+			'show_in_rest' => true,
+			'single'       => true,
+			'type'         => 'string',
+		) );
 
 		// Add filter to change the metabox CSS class.
 		add_filter( 'postbox_classes_entity_wl_entity_typediv', 'wl_admin_metaboxes_add_css_class' );

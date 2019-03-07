@@ -13,6 +13,7 @@
 import Store1 from "../stores/Store1";
 import { receiveAnalysisResults, setCurrentAnnotation, updateOccurrencesForEntity } from "../../Edit/actions";
 import { processingBlockAdd, processingBlockRemove } from "../actions";
+import * as Constants from "../constants";
 
 const canCreateEntities =
   "undefined" !== wlSettings["can_create_entities"] && "yes" === wlSettings["can_create_entities"];
@@ -78,6 +79,8 @@ class AnnotationService {
       let allAnnotations = Object.keys(response.entities[entity].annotations);
       allAnnotations.forEach((annValue, annIndex) => {
         if (this.disambiguated.includes(response.entities[entity].annotations[annValue].text)) {
+          console.log("Adding entity to stack:", response.entities[entity]);
+          AnnotationService.addRemoveEntityMeta(response.entities[entity]);
           response.entities[entity].occurrences.push(annValue);
         }
       });
@@ -260,11 +263,15 @@ class AnnotationService {
     console.log(`Calculating occurrences for entity ${entity.id}...`);
     let occurrences = [];
     if (action === "entitySelected") {
+      console.log("Adding entity to stack:", entity);
+      AnnotationService.addRemoveEntityMeta(entity);
       for (var annotation in entity.annotations) {
         AnnotationService.disambiguate(annotation, true);
         occurrences.push(annotation);
       }
     } else {
+      console.log("Removing entity from stack:", entity);
+      AnnotationService.addRemoveEntityMeta(entity, false);
       for (var annotation in entity.annotations) {
         AnnotationService.disambiguate(annotation, false);
       }
@@ -274,6 +281,32 @@ class AnnotationService {
       console.log(`Updating ${occurrences.length} occurrence(s) for ${entity.id}...`);
       Store1.dispatch(updateOccurrencesForEntity(entity.entityId, occurrences));
     }, 0);
+  }
+
+  static addRemoveEntityMeta(entity, add = true) {
+    let existingMeta = {};
+    let rawMeta = wp.data.select("core/editor").getEditedPostAttribute("meta")[Constants.PLUGIN_META_KEY];
+    if (rawMeta) {
+      existingMeta = JSON.parse(rawMeta);
+    }
+    if (add) {
+      existingMeta[entity.entityId] = {
+        uri: entity.entityId,
+        label: entity.label,
+        description: entity.description,
+        mainType: entity.mainType,
+        types: entity.types,
+        images: entity.images,
+        sameAs: entity.sameAs
+      };
+    } else {
+      delete existingMeta[entity.entityId];
+    }
+    wp.data.dispatch("core/editor").editPost({
+      meta: {
+        wl_entities_gutenberg: JSON.stringify(existingMeta)
+      }
+    });
   }
 
   static disambiguate(elem, action) {
