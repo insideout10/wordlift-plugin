@@ -60,7 +60,7 @@ if ( 'POST' === $_SERVER['REQUEST_METHOD'] ) {
     <table class="form-table">
         <tbody>
         <tr>
-            <th scope="row"><label for="keywords"><?php echo esc_html( __( 'Search Keywords', 'wordlift' ) ); ?></label>
+            <th scope="row"><label for="keywords"><?php echo esc_html( __( 'Add keywords to track', 'wordlift' ) ); ?></label>
             </th>
             <td><textarea name="keywords" id="keywords" rows="5"
                           cols="30"><?php echo implode( "\n", $existing ); ?></textarea>
@@ -73,6 +73,6 @@ if ( 'POST' === $_SERVER['REQUEST_METHOD'] ) {
 
     <p class="submit">
         <input type="submit" class="button button-primary"
-               value="<?php echo esc_attr( __( 'Save Changes', 'wordlift' ) ); ?>"/>
+               value="<?php echo esc_attr( __( 'Add', 'wordlift' ) ); ?>"/>
     </p>
 </form>

@@ -270,8 +270,8 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 					{{#values}}
 						<div class="wl-card">		
 							<amp-img src="{{thumbnail}}"
-								width="4"
-								height="3"
+								width="2"
+								height="1"
 								layout="responsive"
 								alt="{{post_title}}"></amp-img>
 							<div class="wl-card-title"><a href="{{permalink}}">{{post_title}}</a></div> 
@@ -296,8 +296,8 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 					{{#values}}
 						<div class="wl-card">
 							<amp-img src="{{thumbnail}}"
-								width="4"
-								height="3"
+								width="2"
+								height="1"
 								layout="responsive"
 								alt="{{post_title}}"></amp-img>
 							<div class="wl-card-title"><a href="{{permalink}}">{{post_title}}</a></div> 

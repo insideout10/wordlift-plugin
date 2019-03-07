@@ -183,8 +183,8 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 						<div class="wl-card">
 							<h6 class="wl-card-header"><a href="{{entity.permalink}}">{{entity.label}}</a></h6>
 							<amp-img 
-								width="4"
-								height="3"
+								width="2"
+								height="1"
 								layout="responsive"
 								src="{{post.thumbnail}}"></amp-img>
 							<div class="wl-card-title"><a href="{{post.permalink}}">{{post.title}}</a></div> 
@@ -209,8 +209,8 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 						<div class="wl-card">
 							<h6 class="wl-card-header"><a href="{{entity.permalink}}">{{entity.label}}</a></h6>
 							<amp-img 
-								width="4"
-								height="3"
+								width="2"
+								height="1"
 								layout="responsive"
 								src="{{post.thumbnail}}"></amp-img>
 							<div class="wl-card-title"><a href="{{post.permalink}}">{{post.title}}</a></div>  
