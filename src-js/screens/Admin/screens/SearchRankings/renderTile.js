@@ -12,13 +12,13 @@ function renderTile({ click, select }) {
       node.data.entity.width = `${node.data.score.relative * 100}px`;
 
       // Hook the click event.
-      elem.addEventListener("click", () => { 
+      elem.addEventListener("click", () => {
         const state = select();
         console.debug({start:state});
         const elClassListPrev = state && state.node ? state.node.elemClassList : null;
         const elClassListNext = arguments[1].classList;
         console.debug({prev:elClassListPrev, next:elClassListNext});
-        if (elClassListPrev != elClassListNext) {
+        if (elClassListPrev !== elClassListNext) {
           console.debug('mutation');
           if (elClassListPrev) {
             elClassListPrev.remove('treemap__hierarchy__tile--selected');
