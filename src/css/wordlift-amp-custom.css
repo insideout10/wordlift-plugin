@@ -36,7 +36,7 @@
 }
 @media screen and (max-width: 460px) {
   #wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container {
-    width: 100% !important;
+    width: 100%;
   }
 }
 #wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container h5 {
@@ -63,7 +63,6 @@
   cursor: pointer;
 }
 amp-carousel.wl-amp-carousel {
-  background: #fff;
   margin: 0 -8px 0 0;
 }
 amp-carousel.wl-amp-carousel .amp-scrollable-carousel-slide {
@@ -76,7 +75,7 @@ amp-carousel.wl-amp-carousel .wl-card {
 }
 @media screen and (max-width: 460px) {
   amp-carousel.wl-amp-carousel .wl-card {
-    width: 100% !important;
+    width: 100%;
   }
 }
 amp-carousel.wl-amp-carousel .wl-card .wl-card-header {

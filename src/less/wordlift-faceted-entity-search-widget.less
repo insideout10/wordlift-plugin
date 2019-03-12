@@ -5,12 +5,6 @@
 @import 'wordlift-card.less';
 @import 'wordlift-label.less';
 
-@media screen and (max-width: 460px) {
-  .wl-facets-container {
-    width: 100% !important;
-  }
-}
-
 #wordlift-faceted-entity-search-widget {
 
   font-size: inherit;
@@ -154,5 +148,11 @@
   .wl-posts {
     padding: 0;
     margin: 0;
+  }
+}
+
+@media screen and (max-width: 460px) {
+  #wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container {
+    width: 100%;
   }
 }

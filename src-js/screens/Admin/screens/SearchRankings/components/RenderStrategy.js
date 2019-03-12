@@ -54,6 +54,22 @@ function RenderStrategy(el, tileRenderCallback) {
   function renderHierarchy(hierarchy) {
     clear(treemapEl);
 
+    // No children, display the "Add Search Keywords" button.
+    if (
+      "undefined" === typeof hierarchy.children ||
+      0 === hierarchy.children.length
+    ) {
+      const settings = window["wlSettings"];
+      const aEl = document.createElement("a");
+      aEl.className = "button button-primary";
+      aEl.href = settings["search_keywords_admin_page"];
+      aEl.innerHTML = settings.l10n["Add keywords to track"];
+
+      treemapEl.appendChild(aEl);
+
+      return el;
+    }
+
     hierarchy.children.forEach(node => {
       const div = document.createElement("div");
       div.className =

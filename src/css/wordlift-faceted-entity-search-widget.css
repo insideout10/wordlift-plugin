@@ -2506,11 +2506,6 @@
   color: #a00;
   cursor: pointer;
 }
-@media screen and (max-width: 460px) {
-  .wl-facets-container {
-    width: 100% !important;
-  }
-}
 #wordlift-faceted-entity-search-widget {
   font-size: inherit;
   padding: 0;
@@ -2733,4 +2728,9 @@
 #wordlift-faceted-entity-search-widget .wl-posts {
   padding: 0;
   margin: 0;
+}
+@media screen and (max-width: 460px) {
+  #wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container {
+    width: 100%;
+  }
 }
