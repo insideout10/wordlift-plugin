@@ -20,6 +20,10 @@ class Wordlift_Remote_Image_Service {
 	 */
 	public static function save_from_url( $url ) {
 
+		// Required for REST API calls
+		if ( ! function_exists( 'WP_Filesystem' ) ) {
+			require_once( ABSPATH . 'wp-admin/includes/file.php' );
+		}
 		// Load `WP_Filesystem`.
 		WP_Filesystem();
 		global $wp_filesystem;

@@ -295,7 +295,7 @@ class AnnotationService {
         uri: entity.entityId,
         label: entity.label,
         description: entity.description,
-        main_type: entity.mainType,
+        main_type: `wl-${entity.mainType}`,
         type: entity.types,
         image: entity.images,
         sameas: entity.sameAs

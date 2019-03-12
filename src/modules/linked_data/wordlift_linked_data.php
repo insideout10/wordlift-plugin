@@ -71,7 +71,6 @@ function wl_linked_data_rest_insert_post( $post, $request, $creating ){
 	// Ignore auto-saves
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 		$log->trace( 'Doing autosave, skipping...' );
-
 		return;
 	}
 
@@ -351,6 +350,11 @@ add_action( 'wl_linked_data_save_post', 'wl_linked_data_save_post_and_related_en
  * @return null|WP_Post A post instance or null in case of failure.
  */
 function wl_save_entity( $entity_data ) {
+
+	// Required for REST API calls
+	if ( ! function_exists( 'wp_crop_image' ) ) {
+		require_once( ABSPATH . 'wp-admin/includes/image.php' );
+	}
 
 	$log = Wordlift_Log_Service::get_logger( 'wl_save_entity' );
 
