@@ -1109,7 +1109,7 @@ class Wordlift {
 		/**
 		 * Faceted Search shortcode.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-faceted-search-shortcode.php';		
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-faceted-search-shortcode.php';
 
 		/**
 		 * The ShareThis service.
@@ -1390,6 +1390,23 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/search-keywords/class-wordlift-search-keyword-taxonomy.php';
 		new Wordlift_Search_Keyword_Taxonomy( $api_service );
+
+		/*
+		 * Load dependencies for the front-end.
+		 *
+		 * @since 3.20.0
+		 */
+		if ( ! is_admin() ) {
+			/*
+			 * Load the `Wordlift_Term_JsonLd_Adapter`.
+			 *
+			 * @see https://github.com/insideout10/wordlift-plugin/issues/892
+			 *
+			 * @since 3.20.0
+			 */
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-term-jsonld-adapter.php';
+			new Wordlift_Term_JsonLd_Adapter( $this->entity_uri_service, $this->jsonld_service );
+		}
 
 	}
 

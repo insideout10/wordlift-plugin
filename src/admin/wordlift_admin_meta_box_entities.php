@@ -34,8 +34,8 @@ function wl_admin_add_entities_meta_box( $post_type ) {
 		return;
 	}
 
-	if (!is_gutenberg()) {
-		// Add main meta box for related entities and 4W only if Gutenberg
+	if (!Wordlift_Admin::is_gutenberg()) {
+		// Add main meta box for related entities and 4W only if not Gutenberg
 		add_meta_box(
 			'wordlift_entities_box', __( 'WordLift', 'wordlift' ), 'wl_entities_box_content', $post_type, 'side', 'high'
 		);
@@ -43,23 +43,6 @@ function wl_admin_add_entities_meta_box( $post_type ) {
 		// Call wl_entities_box_content for the other things that it does.
 		wl_entities_box_content(get_post(), false);
 	}
-}
-
-function is_gutenberg() {
-	if ( function_exists( 'is_gutenberg_page' ) &&
-	     is_gutenberg_page()
-	) {
-		// The Gutenberg plugin is on.
-		return true;
-	}
-	$current_screen = get_current_screen();
-	if ( method_exists( $current_screen, 'is_block_editor' ) &&
-	     $current_screen->is_block_editor()
-	) {
-		// Gutenberg page on 5+.
-		return true;
-	}
-	return false;
 }
 
 add_action( 'add_meta_boxes', 'wl_admin_add_entities_meta_box' );

@@ -109,6 +109,7 @@ class AnnotationService {
         if (this.disambiguated.includes(annotationData.text)) {
           format.attributes.class += " disambiguated";
         }
+        richText = wp.richText.removeFormat(richText, format.type, annotationData.start, annotationData.end);
         richText = wp.richText.applyFormat(richText, format, annotationData.start, annotationData.end);
       }
     }
@@ -294,10 +295,10 @@ class AnnotationService {
         uri: entity.entityId,
         label: entity.label,
         description: entity.description,
-        mainType: entity.mainType,
-        types: entity.types,
-        images: entity.images,
-        sameAs: entity.sameAs
+        main_type: entity.mainType,
+        type: entity.types,
+        image: entity.images,
+        sameas: entity.sameAs
       };
     } else {
       delete existingMeta[entity.entityId];
