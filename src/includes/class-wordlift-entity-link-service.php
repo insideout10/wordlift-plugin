@@ -151,7 +151,7 @@ class Wordlift_Entity_Link_Service {
 
 		$this->log->debug( "Checking if a slug exists [ post type :: $post_type ][ slug :: $slug ][ exists :: " . ( $exists ? 'yes' : 'no' ) . ' ]' );
 
-		return $exists;
+		return apply_filters( 'wl_unique_post_slug_is_bad_flat_slug', $exists, $bad_slug, $slug, $post_type );
 	}
 
 	/**
