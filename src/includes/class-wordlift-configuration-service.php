@@ -78,6 +78,27 @@ class Wordlift_Configuration_Service {
 	const LINK_BY_DEFAULT = 'link_by_default';
 
 	/**
+	 * The analytics enable option.
+	 *
+	 * @since TBD
+	 */
+	const ANALYTICS_ENABLE = 'analytics_enable';
+
+	/**
+	 * The analytics entity uri dimension option.
+	 *
+	 * @since TBD
+	 */
+	const ANALYTICS_ENTITY_URI_DIMENSION = 'analytics_entity_uri_dimension';
+
+	/**
+	 * The analytics entity type dimension option.
+	 *
+	 * @since TBD
+	 */
+	const ANALYTICS_ENTITY_TYPE_DIMENSION = 'analytics_entity_type_dimension';
+
+	/**
 	 * The user preferences about sharing data option.
 	 *
 	 * @since 3.19.0
