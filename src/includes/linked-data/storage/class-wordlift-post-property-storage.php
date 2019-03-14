@@ -79,7 +79,7 @@ class Wordlift_Post_Property_Storage extends Wordlift_Storage {
 
 			// Description.
 			case self::DESCRIPTION_NO_TAGS_NO_SHORTCODES:
-				return wp_strip_all_tags( strip_shortcodes( $post->post_content ) );
+				return wp_strip_all_tags( preg_replace( '/\[[^]]+\]/', '', do_shortcode( $post->post_content ) ) );
 
 			// Author.
 			case self::AUTHOR:
