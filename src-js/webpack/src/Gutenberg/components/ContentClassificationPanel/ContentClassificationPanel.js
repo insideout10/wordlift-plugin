@@ -80,21 +80,18 @@ class ContentClassificationPanel extends React.Component {
     return (
       <Panel>
         <PanelBody title="Content classification" initialOpen={true}>
-          <PanelRow>
-            <Wrapper>
-              <Fragment>
-                <AddEntity showCreate={canCreateEntities} store={Store2} />
-                <Header />
-                {this.props.entities && this.props.entities.size > 0 ? (
-                  <VisibleEntityList />
-                ) : this.props.processingBlocks && this.props.processingBlocks.length === 0 ? (
-                  <LoaderWrapper>No content found</LoaderWrapper>
-                ) : (
-                  <Spinner />
-                )}
-              </Fragment>
-            </Wrapper>
-          </PanelRow>
+          <Wrapper>
+            <Fragment>
+              <Header />
+              {this.props.entities && this.props.entities.size > 0 ? (
+                <VisibleEntityList />
+              ) : this.props.processingBlocks && this.props.processingBlocks.length === 0 ? (
+                <LoaderWrapper>No content found</LoaderWrapper>
+              ) : (
+                <Spinner />
+              )}
+            </Fragment>
+          </Wrapper>
         </PanelBody>
       </Panel>
     );

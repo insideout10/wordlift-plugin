@@ -109,7 +109,6 @@ class AnnotationService {
         if (this.disambiguated.includes(annotationData.text)) {
           format.attributes.class += " disambiguated";
         }
-        richText = wp.richText.removeFormat(richText, format.type, annotationData.start, annotationData.end);
         richText = wp.richText.applyFormat(richText, format, annotationData.start, annotationData.end);
       }
     }
