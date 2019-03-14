@@ -144,6 +144,10 @@ class AnnotationService {
 
   wordliftAnalyze() {
     return dispatch => {
+      const processingBlocks = Store1.getState().processingBlocks;
+      if (processingBlocks.includes(this.blockClientId)) {
+        return;
+      }
       dispatch(processingBlockAdd(this.blockClientId));
       if (this.blockContent && this.block.name != "core/freeform") {
         console.log(`Requesting analysis for block ${this.blockClientId}...`);
