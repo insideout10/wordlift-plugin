@@ -429,6 +429,15 @@ class Wordlift {
 	protected $settings_page_action_link;
 
 	/**
+	 * The {@link Wordlift_Admin_Settings_Page_Action_Link} class.
+	 *
+	 * @since  3.11.0
+	 * @access protected
+	 * @var \Wordlift_Admin_Settings_Page_Action_Link $settings_page_action_link The {@link Wordlift_Admin_Settings_Page_Action_Link} class.
+	 */
+	protected $analytics_settings_page_action_link;
+
+	/**
 	 * The {@link Wordlift_Publisher_Ajax_Adapter} instance.
 	 *
 	 * @since  3.11.0
@@ -1054,8 +1063,10 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/class-wordlift-admin-publisher-element.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-page.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-analytics-settings-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-batch-analysis-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-page-action-link.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-analytics-settings-page-action-link.php';
 
 		/** Admin Pages */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-post-edit-page.php';
@@ -1321,6 +1332,8 @@ class Wordlift {
 		$this->batch_analysis_page       = new Wordlift_Batch_Analysis_Page( $this->batch_analysis_service );
 		$this->settings_page_action_link = new Wordlift_Admin_Settings_Page_Action_Link( $this->settings_page );
 
+		$this->analytics_settings_page             = new Wordlift_Admin_Analytics_Settings_Page( $this->configuration_service, $this->input_element, $this->radio_input_element );
+		$this->analytics_settings_page_action_link = new Wordlift_Admin_Analytics_Settings_Page_Action_Link( $this->analytics_settings_page );
 		// Pages.
 		new Wordlift_Admin_Post_Edit_Page( $this );
 		new Wordlift_Entity_Type_Admin_Service();
@@ -1550,11 +1563,13 @@ class Wordlift {
 
 		// Hook the admin_init to the settings page.
 		$this->loader->add_action( 'admin_init', $this->settings_page, 'admin_init' );
+		$this->loader->add_action( 'admin_init', $this->analytics_settings_page, 'admin_init' );
 
 		$this->loader->add_filter( 'admin_post_thumbnail_html', $this->publisher_service, 'add_featured_image_instruction' );
 
 		// Hook the menu creation on the general wordlift menu creation.
 		$this->loader->add_action( 'wl_admin_menu', $this->settings_page, 'admin_menu', 10, 2 );
+		$this->loader->add_action( 'wl_admin_menu', $this->analytics_settings_page, 'admin_menu', 10, 2 );
 		if ( defined( 'WORDLIFT_BATCH' ) && WORDLIFT_BATCH ) {
 			// Add the functionality only if a flag is set in wp-config.php .
 			$this->loader->add_action( 'wl_admin_menu', $this->batch_analysis_page, 'admin_menu', 10, 2 );
@@ -1578,6 +1593,7 @@ class Wordlift {
 
 		// Add additional action links to the WordLift plugin in the plugins page.
 		$this->loader->add_filter( 'plugin_action_links_wordlift/wordlift.php', $this->settings_page_action_link, 'action_links', 10, 1 );
+		$this->loader->add_filter( 'plugin_action_links_wordlift/wordlift.php', $this->analytics_settings_page_action_link, 'action_links', 10, 1 );
 
 		// Hook the AJAX `wl_publisher` action name.
 		$this->loader->add_action( 'wp_ajax_wl_publisher', $this->publisher_ajax_adapter, 'publisher' );
