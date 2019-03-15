@@ -611,6 +611,51 @@ class Wordlift_Configuration_Service {
 	}
 
 	/**
+	 * Get the 'analytics-enable' option.
+	 *
+	 * @since TBD
+	 *
+	 * @return string 'no' or 'yes' representing bool.
+	 */
+	public function is_analytics_enable() {
+		return 'yes' === $this->get( 'wl_analytics_settings', self::ANALYTICS_ENABLE, 'no' );
+	}
+
+	/**
+	 * Set the `analytics-enable` option.
+	 *
+	 * @since TBD
+	 *
+	 * @param bool $value True to enabling analytics, otherwise false.
+	 */
+	public function set_is_analytics_enable( $value ) {
+
+		$this->set( 'wl_general_settings', self::ANALYTICS_ENABLE, true === $value ? 'yes' : 'no' );
+	}
+
+	/**
+	 * Get the 'analytics-entity-uri-dimention' option.
+	 *
+	 * @since TBD
+	 *
+	 * @return int
+	 */
+	public function get_analytics_entity_uri_dimension() {
+		return (int) $this->get( 'wl_analytics_settings', self::ANALYTICS_ENTITY_URI_DIMENSION, 2 );
+	}
+
+	/**
+	 * Get the 'analytics-entity-type-dimention' option.
+	 *
+	 * @since TBD
+	 *
+	 * @return int
+	 */
+	public function get_analytics_entity_type_dimension() {
+		return $this->get( 'wl_analytics_settings', self::ANALYTICS_ENTITY_TYPE_DIMENSION, 1 );
+	}
+
+	/**
 	 * Get the URL to perform batch analyses.
 	 *
 	 * @since 3.14.0
