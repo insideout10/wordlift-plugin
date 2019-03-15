@@ -1,5 +1,17 @@
 <?php
+/**
+ * Deals with outputting the required entity and config data frontend for the
+ * plugins offsite analytics integration functions.
+ *
+ * @since      x.x.x
+ * @package    Wordlift
+ * @subpackage Wordlift/analytics
+ */
 
+/**
+ * The class that handles outputting data frontend for the analytics tracking
+ * to offise services parts of the plugin.
+ */
 class Wordlift_Analytics_Connect {
 
 	/**
