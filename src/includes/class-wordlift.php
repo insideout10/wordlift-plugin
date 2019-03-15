@@ -438,6 +438,15 @@ class Wordlift {
 	protected $analytics_settings_page_action_link;
 
 	/**
+	 * The {@link Wordlift_Analytics_Connect} class.
+	 *
+	 * @since  3.11.0
+	 * @access protected
+	 * @var \Wordlift_Analytics_Connect $analytics_connect The {@link Wordlift_Analytics_Connect} class.
+	 */
+	protected $analytics_connect;
+
+	/**
 	 * The {@link Wordlift_Publisher_Ajax_Adapter} instance.
 	 *
 	 * @since  3.11.0
@@ -998,6 +1007,9 @@ class Wordlift {
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-remote-image-service.php';
 
+		/** Analytics **/
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/analytics/class-wordlift-analytics-connect.php';
+
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
@@ -1334,6 +1346,8 @@ class Wordlift {
 
 		$this->analytics_settings_page             = new Wordlift_Admin_Analytics_Settings_Page( $this->configuration_service, $this->input_element, $this->radio_input_element );
 		$this->analytics_settings_page_action_link = new Wordlift_Admin_Analytics_Settings_Page_Action_Link( $this->analytics_settings_page );
+		$this->analytics_connect                   = new Wordlift_Analytics_Connect();
+
 		// Pages.
 		new Wordlift_Admin_Post_Edit_Page( $this );
 		new Wordlift_Entity_Type_Admin_Service();
@@ -1705,6 +1719,11 @@ class Wordlift {
 
 		// This hook have to run before the rating service, as otherwise the post might not be a proper entity when rating is done.
 		$this->loader->add_action( 'save_post', $this->entity_type_adapter, 'save_post', 9, 3 );
+
+		// Analytics Script Frontend.
+		if ( $this->configuration_service->is_analytics_enable() ) {
+			$this->loader->add_action( 'wp_enqueue_scripts', $this->analytics_connect, 'enqueue_scripts', 10 );
+		}
 
 	}
 
