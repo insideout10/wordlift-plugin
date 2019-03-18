@@ -16,14 +16,14 @@
  * @package    Wordlift
  * @subpackage Wordlift/analytics
  */
-class Wordlift_Admin_Analytics_Settings_Page extends Wordlift_Admin_Page {
+class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 
 	/**
 	 * A singleton instance of the Notice service.
 	 *
 	 * @since  x.x.x
 	 * @access private
-	 * @var \Wordlift_Admin_Analytics_Settings_Page $instance A singleton instance of a {@link Wordlift_Admin_Analytics_Settings_Page} class.
+	 * @var \Wordlift_Admin_Settings_Analytics_Page $instance A singleton instance of a {@link Wordlift_Admin_Settings_Analytics_Page} class.
 	 */
 	private static $instance;
 

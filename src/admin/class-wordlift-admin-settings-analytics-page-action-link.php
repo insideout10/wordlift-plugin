@@ -10,30 +10,30 @@
  */
 
 /**
- * Define the {@link Wordlift_Admin_Analytics_Settings_Page_Action_Link} used to add an
+ * Define the {@link Wordlift_Admin_Settings_Analytics_Page_Action_Link} used to add an
  * analytics settings page for the plugin.
  *
  * @since      x.x.x
  * @package    Wordlift
  * @subpackage Wordlift/analytics
  */
-class Wordlift_Admin_Analytics_Settings_Page_Action_Link {
+class Wordlift_Admin_Settings_Analytics_Page_Action_Link {
 
 	/**
-	 * The {@link Wordlift_Admin_Analytics_Settings_Page} instance.
+	 * The {@link Wordlift_Admin_Settings_Analytics_Page} instance.
 	 *
 	 * @since  3.11.0
 	 * @access private
-	 * @var \Wordlift_Admin_Analytics_Settings_Page $settings_page The {@link Wordlift_Admin_Analytics_Settings_Page} instance.
+	 * @var \Wordlift_Admin_Settings_Analytics_Page $settings_page The {@link Wordlift_Admin_Settings_Analytics_Page} instance.
 	 */
 	private $settings_page;
 
 	/**
-	 * Create a {@link Wordlift_Admin_Analytics_Settings_Page_Action_Link} instance.
+	 * Create a {@link Wordlift_Admin_Settings_Analytics_Page_Action_Link} instance.
 	 *
 	 * @since  3.11.0
 	 *
-	 * @param \Wordlift_Admin_Analytics_Settings_Page $settings_page The {@link Wordlift_Admin_Analytics_Settings_Page} instance.
+	 * @param \Wordlift_Admin_Settings_Analytics_Page $settings_page The {@link Wordlift_Admin_Settings_Analytics_Page} instance.
 	 */
 	public function __construct( $settings_page ) {
 
