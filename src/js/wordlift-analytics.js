@@ -66,12 +66,12 @@
 						 * Depending on the tracking object type send the data
 						 * to the correspending service.
 						 */
-						if ( 'ga' === analyticsObj.name || '__gaTracker' === analyticsObj.name ) {
+						if ( 'ga' === window.GoogleAnalyticsObject || '__gaTracker' === window.GoogleAnalyticsObject ) {
 							// This is `ga` style object.
 							for ( var i = 0; i < entitiesTotal; i++ ) {
 								sendGaEvent( analyticsObject, dimX, dimY, entities[i].label, entities[i].uri, entities[i].type );
 							}
-						} else if ('gtag' === analyticsObj.name) {
+						} else if ( 'gtag' === window.GoogleAnalyticsObject ) {
 							// This is `gtag` style object.
 							for ( var i = 0; i < entitiesTotal; i++ ) {
 								sendGtagEvent( analyticsObject, dimX, dimY, entities[i].label, entities[i].uri, entities[i].type );
