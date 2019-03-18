@@ -58,13 +58,13 @@ class Wordlift_Admin_Analytics_Settings_Page_Action_Link {
 		$url       = get_admin_url( null, $path );
 
 		// Add our own link to the list of links.
-		return array_merge( $links, array(
-			sprintf(
-				'<a href="%1$s">%2$s</a>',
-				$url,
-				__( 'Analytics Settings', 'wordlift' )
-			),
-		) );
+		// return array_merge( $links, array(
+		// 	sprintf(
+		// 		'<a href="%1$s">%2$s</a>',
+		// 		$url,
+		// 		__( 'Analytics Settings', 'wordlift' )
+		// 	),
+		// ) );
 	}
 
 }

@@ -1075,10 +1075,10 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/class-wordlift-admin-publisher-element.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-page.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-analytics-settings-page.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-analytics-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-batch-analysis-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-page-action-link.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-analytics-settings-page-action-link.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-analytics-page-action-link.php';
 
 		/** Admin Pages */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-post-edit-page.php';
@@ -1344,8 +1344,8 @@ class Wordlift {
 		$this->batch_analysis_page       = new Wordlift_Batch_Analysis_Page( $this->batch_analysis_service );
 		$this->settings_page_action_link = new Wordlift_Admin_Settings_Page_Action_Link( $this->settings_page );
 
-		$this->analytics_settings_page             = new Wordlift_Admin_Analytics_Settings_Page( $this->configuration_service, $this->input_element, $this->radio_input_element );
-		$this->analytics_settings_page_action_link = new Wordlift_Admin_Analytics_Settings_Page_Action_Link( $this->analytics_settings_page );
+		$this->analytics_settings_page             = new Wordlift_Admin_Settings_Analytics_Page( $this->configuration_service, $this->input_element, $this->radio_input_element );
+		$this->analytics_settings_page_action_link = new Wordlift_Admin_Settings_Analytics_Page_Action_Link( $this->analytics_settings_page );
 		$this->analytics_connect                   = new Wordlift_Analytics_Connect();
 
 		// Pages.
