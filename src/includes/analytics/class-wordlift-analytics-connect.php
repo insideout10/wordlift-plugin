@@ -54,7 +54,7 @@ class Wordlift_Analytics_Connect {
 		// get some values from the config service.
 		$config = array(
 			'entity_uri_dimension'  => $configuration_service->get_analytics_entity_uri_dimension(),
-			'entity_type_dimention' => $configuration_service->get_analytics_entity_type_dimension(),
+			'entity_type_dimension' => $configuration_service->get_analytics_entity_type_dimension(),
 		);
 		return $config;
 	}
