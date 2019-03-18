@@ -106,7 +106,7 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 	 */
 	public function get_page_title() {
 
-		return 'WorldLift Analytics Settings';
+		return __( 'WorldLift Analytics Settings', 'wordlift' );
 	}
 
 	/**
@@ -114,7 +114,7 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 	 */
 	public function get_menu_title() {
 
-		return 'Analytics Settings';
+		return __( 'Analytics Settings', 'wordlift' );
 	}
 
 	/**
