@@ -29,6 +29,7 @@ class AnnotationService {
     this.blockClientId = block.clientId;
     this.blockContent = block.attributes && block.attributes.content;
     this.disambiguated = [];
+    this.existingAnnotations = [];
     this.rawResponse = null;
     this.modifiedResponse = null;
     this.existingEntitiesJS = null;
@@ -109,7 +110,20 @@ class AnnotationService {
         if (this.disambiguated.includes(annotationData.text)) {
           format.attributes.class += " disambiguated";
         }
-        richText = wp.richText.applyFormat(richText, format, annotationData.start, annotationData.end);
+        // Do not persistently annotate if an active format with class textannotation is detected for same range
+        let richTextToCompare = richText;
+        richTextToCompare.start = annotationData.start;
+        richTextToCompare.end = annotationData.end;
+        const activeFormat = wp.richText.getActiveFormat(richTextToCompare, format.type);
+        if (activeFormat && activeFormat.attributes.class.indexOf("textannotation") > -1) {
+          console.log(
+            `Active format detected in range ${richTextToCompare.start} to ${richTextToCompare.end} in ${
+              this.blockClientId
+            }`
+          );
+        } else {
+          richText = wp.richText.applyFormat(richText, format, annotationData.start, annotationData.end);
+        }
       }
     }
     wp.data.dispatch("core/editor").updateBlock(this.blockClientId, {
@@ -173,6 +187,7 @@ class AnnotationService {
   }
 
   getWordliftAnalyzeRequest() {
+    this.fetchExistingAnnotations();
     return {
       url: `${wlSettings["ajax_url"]}?action=wordlift_analyze`,
       method: "POST",
@@ -184,9 +199,38 @@ class AnnotationService {
         contentType: "text/html",
         scope: "all",
         version: "1.0.0",
-        content: this.blockContent
+        content: this.blockContent,
+        annotations: this.existingAnnotations
       })
     };
+  }
+
+  fetchExistingAnnotations() {
+    let richText = wp.richText.create({
+      html: this.blockContent
+    });
+    let annotations = [];
+    let lastItem = null;
+    let lastIndex = 1;
+    richText.formats.forEach((value, index) => {
+      let uri = value[0].attributes.itemid;
+      let end = index + 1;
+      if (uri !== lastItem || index !== lastIndex) {
+        annotations.push({
+          start: index,
+          end: end,
+          uri: uri
+        });
+      } else {
+        annotations[annotations.length - 1].end = end;
+      }
+      lastItem = uri;
+      lastIndex = end;
+    });
+    annotations.forEach((value, index) => {
+      value.label = richText.text.substring(value.start, value.end);
+    });
+    this.existingAnnotations = annotations;
   }
 
   static classicEditorNotice() {
