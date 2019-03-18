@@ -167,7 +167,7 @@ class Wordlift_Admin_Analytics_Settings_Page extends Wordlift_Admin_Page {
 			'wl_analytics_settings_section',
 			array(
 				'id'          => 'wl-analytics-enable',
-				'name'        => 'wl_analytics_settings[' . $this->configuration_service::ANALYTICS_ENABLE . ']',
+				'name'        => 'wl_analytics_settings[' . Wordlift_Configuration_Service::ANALYTICS_ENABLE . ']',
 				'value'       => $this->configuration_service->is_analytics_enable() ? 'yes' : 'no',
 				'description' => __( 'Toggle on/off the default values.', 'wordlift' ),
 			)
@@ -186,7 +186,7 @@ class Wordlift_Admin_Analytics_Settings_Page extends Wordlift_Admin_Page {
 			'wl_analytics_settings_section',
 			array(
 				'id'          => 'wl-analytics-entity-uri-dimension',
-				'name'        => 'wl_analytics_settings[' . $this->configuration_service::ANALYTICS_ENTITY_URI_DIMENSION . ']',
+				'name'        => 'wl_analytics_settings[' . Wordlift_Configuration_Service::ANALYTICS_ENTITY_URI_DIMENSION . ']',
 				'type'        => 'number',
 				'value'       => $this->configuration_service->get_analytics_entity_uri_dimension(),
 				'description' => __( 'Entity URI diemsion', 'wordlift' ),
@@ -206,7 +206,7 @@ class Wordlift_Admin_Analytics_Settings_Page extends Wordlift_Admin_Page {
 			'wl_analytics_settings_section',
 			array(
 				'id'          => 'wl-analytics-entity-type-dimension',
-				'name'        => 'wl_analytics_settings[' . $this->configuration_service::ANALYTICS_ENTITY_TYPE_DIMENSION . ']',
+				'name'        => 'wl_analytics_settings[' . Wordlift_Configuration_Service::ANALYTICS_ENTITY_TYPE_DIMENSION . ']',
 				'type'        => 'number',
 				'value'       => $this->configuration_service->get_analytics_entity_type_dimension(),
 				'description' => __( 'Entity Type dimension', 'wordlift' ),
