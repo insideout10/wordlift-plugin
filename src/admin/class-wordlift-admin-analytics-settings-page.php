@@ -286,6 +286,11 @@ class Wordlift_Admin_Analytics_Settings_Page extends Wordlift_Admin_Page {
 			$output['analytics_entity_uri_dimension'] = (int) $this->validate_entity_uri( $input['analytics_entity_uri_dimension'] );
 		}
 		if ( isset( $input['analytics_entity_type_dimension'] ) ) {
+			// This dimention cannot be the same as the one set above. If it is
+			// then zero it out and it will fail validation.
+			if ( isset( $output['analytics_entity_uri_dimension'] ) && $output['analytics_entity_uri_dimension'] === (int) $input['analytics_entity_type_dimension'] ) {
+				$input['analytics_entity_type_dimension'] = 0;
+			}
 			$output['analytics_entity_type_dimension'] = (int) $this->validate_entity_type( $input['analytics_entity_type_dimension'] );
 		}
 
