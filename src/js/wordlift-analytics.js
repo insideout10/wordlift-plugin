@@ -69,12 +69,12 @@
 						if ( 'ga' === window.GoogleAnalyticsObject || '__gaTracker' === window.GoogleAnalyticsObject ) {
 							// This is `ga` style object.
 							for ( var i = 0; i < entitiesTotal; i++ ) {
-								sendGaEvent( analyticsObject, dimX, dimY, entities[i].label, entities[i].uri, entities[i].type );
+								sendGaEvent( analyticsObj, dimX, dimY, entities[i].label, entities[i].uri, entities[i].type );
 							}
 						} else if ( 'gtag' === window.GoogleAnalyticsObject ) {
 							// This is `gtag` style object.
 							for ( var i = 0; i < entitiesTotal; i++ ) {
-								sendGtagEvent( analyticsObject, dimX, dimY, entities[i].label, entities[i].uri, entities[i].type );
+								sendGtagEvent( analyticsObj, dimX, dimY, entities[i].label, entities[i].uri, entities[i].type );
 							}
 						}
 						// @TODO handle failure.
@@ -106,6 +106,7 @@
 		} else if ( window.gtag) {
 			obj = window.gtag;
 		}
+
 		return obj;
 	}
 
@@ -120,7 +121,7 @@
 	 * @param  {string} uri the uri of this entity.
 	 * @param  {string} type the entity type.
 	 */
-	function sendGaEvent( analyticsObject, dimX, dimY, label, uri, type ) {
+	function sendGaEvent( analyticsObj, dimX, dimY, label, uri, type ) {
 		// Double check we have the config object before continuing.
 		if ( 'undefined' === typeof( wordliftAnalyticsConfigData ) ) {
 			return false;
@@ -144,7 +145,7 @@
 	 * @param  {string} uri the uri of this entity.
 	 * @param  {string} type the entity type.
 	 */
-	function sendGtagEvent( analyticsObject, dimX, dimY, label, uri, type ) {
+	function sendGtagEvent( analyticsObj, dimX, dimY, label, uri, type ) {
 		// Double check we have the config object before continuing.
 		if ( 'undefined' === typeof( wordliftAnalyticsConfigData ) ) {
 			return false;
