@@ -126,11 +126,10 @@
 		if ( 'undefined' === typeof( wordliftAnalyticsConfigData ) ) {
 			return false;
 		}
-
-		analyticsObj('send', 'event', 'WordLift', 'Mentions', entity.label, 1, {
-			dim1: entity.uri,
-			dim2: entity.type,
-			nonInteraction: true
+		analyticsObj('send', 'event', 'WordLift', 'Mentions', label, 1, {
+			[dimX]: uri,
+			[dimY]: type,
+			'nonInteraction': true
 		});
 	}
 
@@ -153,10 +152,10 @@
 
 		analyticsObj('event', 'Mentions', {
 			'event_category': 'WordLift',
-			'event_label': entity.label,
+			'event_label': label,
 			'value': 1,
-			dimX: entity.uri,
-			dimY: entity.type,
+			[dimX]: uri,
+			[dimY]: type,
 			'non_interaction': true
 		});
 	}
