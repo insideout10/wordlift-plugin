@@ -49,6 +49,13 @@ class Wordlift_Analytics_Connect {
 		return $related_items;
 	}
 
+	/**
+	 * Gets the configuration data assosiated with the analytics settings. For
+	 * frontend script use primarily.
+	 *
+	 * @method get_analytics_config_data
+	 * @return array
+	 */
 	public static function get_analytics_config_data() {
 		$configuration_service = Wordlift_Configuration_Service::get_instance();
 		// get some values from the config service.

@@ -59,9 +59,9 @@ class Wordlift_Admin_Analytics_Settings_Page extends Wordlift_Admin_Page {
 	 *
 	 * @since x.x.x
 	 *
-	 * @param \Wordlift_Configuration_Service     $configuration_service
-	 * @param \Wordlift_Admin_Input_Element       $input_element
-	 * @param \Wordlift_Admin_Radio_Input_Element $radio_input_element
+	 * @param \Wordlift_Configuration_Service     $configuration_service The wordlift configuration service.
+	 * @param \Wordlift_Admin_Input_Element       $input_element         An input element class to output input boxes in a settings form.
+	 * @param \Wordlift_Admin_Radio_Input_Element $radio_input_element   A radio element input class for use in a settings form.
 	 */
 	public function __construct( $configuration_service, $input_element, $radio_input_element ) {
 
