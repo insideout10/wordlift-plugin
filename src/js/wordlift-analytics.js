@@ -55,7 +55,7 @@
 						var entities = [];
 						for ( var key in wordliftAnalyticsEntityData ) {
 							if ( wordliftAnalyticsEntityData.hasOwnProperty( key ) ) {
-								entities.push = wordliftAnalyticsEntityData[key];
+								entities.push( wordliftAnalyticsEntityData[key] );
 							}
 						}
 
