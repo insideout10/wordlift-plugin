@@ -19,7 +19,9 @@ class Wordlift_Analytics_Connect {
 	 *
 	 * @method get_analytics_event_data
 	 * @since  3.21.0
+	 *
 	 * @param  int $post_id post id we want related data for.
+	 *
 	 * @return array
 	 */
 	public static function get_analytics_event_data( $post_id ) {
@@ -50,6 +52,7 @@ class Wordlift_Analytics_Connect {
 				'label' => $label,
 			);
 		}
+
 		return $related_items;
 	}
 
@@ -68,6 +71,7 @@ class Wordlift_Analytics_Connect {
 			'entity_uri_dimension'  => $configuration_service->get_analytics_entity_uri_dimension(),
 			'entity_type_dimension' => $configuration_service->get_analytics_entity_type_dimension(),
 		);
+
 		return $config;
 	}
 
@@ -88,8 +92,9 @@ class Wordlift_Analytics_Connect {
 		/**
 		 * TODO: Look into using a constant for defining pase plugin url.
 		 */
-		wp_enqueue_script( 'wordlift-analytics', plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'js/wordlift-analytics.js', array(), '1.0.0', true );
-		wp_localize_script( 'wordlift-analytics', 'wordliftAnalyticsConfigData', $data );
-		wp_localize_script( 'wordlift-analytics', 'wordliftAnalyticsEntityData', $entity_data );
+		$plugin_name = Wordlift::get_instance()->get_plugin_name();
+		wp_enqueue_script( $plugin_name, plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'js/wordlift-analytics.js', array(), '1.0.0', true );
+		wp_localize_script( $plugin_name, 'wordliftAnalyticsConfigData', $data );
+		wp_localize_script( $plugin_name, 'wordliftAnalyticsEntityData', $entity_data );
 	}
 }
