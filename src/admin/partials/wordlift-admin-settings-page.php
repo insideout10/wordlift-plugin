@@ -2,6 +2,10 @@
 /**
  * Pages: Admin Settings page.
  *
+ * PHPCS doesn't know this file is loaded inside an existing scope. Variables
+ * aren't really global here.
+ * PHPCS:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+ *
  * @since   3.11.0
  * @package Wordlift/admin
  */
@@ -10,8 +14,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$current_tab = 'search-keywords' === filter_input( INPUT_GET, 'tab' )
-	? 'search-keywords'
+// Get a list of tabs filtered in by the classes that want to add them.
+$admin_tabs = apply_filters( 'wl_admin_page_tabs', array() );
+// Generate a list of valid tabs that we could have to validate the input against.
+$valid_tabs = array( 'search-keywords' );
+foreach ( $admin_tabs as $admin_tab ) {
+	$valid_tabs[] = $admin_tab['slug'];
+}
+$input_tab   = filter_input( INPUT_GET, 'tab' );
+$current_tab = ( in_array( $input_tab, $valid_tabs, true ) )
+	? $input_tab
 	: 'general';
 
 ?>
@@ -23,7 +35,15 @@ $current_tab = 'search-keywords' === filter_input( INPUT_GET, 'tab' )
            href="<?php echo admin_url( 'admin.php?page=wl_configuration_admin_menu' ); ?>"><?php echo esc_html( __( 'General', 'wordlift' ) ); ?></a>
         <a class="nav-tab<?php echo 'search-keywords' === $current_tab ? ' nav-tab-active' : ''; ?>"
            href="<?php echo admin_url( 'admin.php?page=wl_configuration_admin_menu&tab=search-keywords' ); ?>"><?php echo esc_html( __( 'Search Keywords', 'wordlift' ) ); ?></a>
-    </h2>
+		<?php
+		foreach ( $admin_tabs as $admin_tab ) {
+			?>
+			<a class="nav-tab<?php echo esc_attr( $admin_tab['slug'] === $current_tab ? ' nav-tab-active' : '' ); ?>"
+				href="<?php echo esc_url( admin_url( 'admin.php?page=wl_configuration_admin_menu&tab=' . $admin_tab['slug'] ) ); ?>"><?php echo esc_html( $admin_tab['title'] ); ?></a>
+			<?php
+		}
+		?>
+	</h2>
 
 	<?php require plugin_dir_path( dirname( __FILE__ ) ) . "partials/wordlift-admin-settings-$current_tab-page.php"; ?>
 

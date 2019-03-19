@@ -71,6 +71,9 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 		$this->input_element       = $input_element;
 		$this->radio_input_element = $radio_input_element;
 
+		// Adds this page to the main admin settings tabbed menu.
+		add_filter( 'wl_admin_page_tabs', array( $this, 'add_admin_page_tab' ) );
+
 		self::$instance = $this;
 	}
 
@@ -131,6 +134,32 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 	public function get_partial_name() {
 
 		return 'wordlift-admin-settings-analytics-page.php';
+	}
+
+	/**
+	 * Returns the string to use for the tab slug on main admin settings page.
+	 *
+	 * @method get_admin_page_tab_slug
+	 * @since  3.21.0
+	 * @return string
+	 */
+	public function get_admin_page_tab_slug() {
+		return 'analytics';
+	}
+
+	/**
+	 * Adds pages to the tabs menu on the main admin settings page.
+	 *
+	 * @method add_admin_page_tab
+	 * @since  3.21.0
+	 * @param  array $tabs an array of tab titles and slugs to use when building a tabbed menu on option pages.
+	 */
+	public function add_admin_page_tab( $tabs ) {
+		$tabs[] = array(
+			'title' => $this->get_menu_title(),
+			'slug'  => $this->get_admin_page_tab_slug(),
+		);
+		return $tabs;
 	}
 
 	/**
