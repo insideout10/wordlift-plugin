@@ -83,13 +83,8 @@ class ContentClassificationPanel extends React.Component {
           <Wrapper>
             <Fragment>
               <Header />
-              {this.props.entities && this.props.entities.size > 0 ? (
-                <VisibleEntityList />
-              ) : this.props.processingBlocks && this.props.processingBlocks.length === 0 ? (
-                <LoaderWrapper>No content found</LoaderWrapper>
-              ) : (
-                <Spinner />
-              )}
+              {this.props.processingBlocks && this.props.processingBlocks.length > 0 && <Spinner />}
+              {this.props.entities && this.props.entities.size > 0 && <VisibleEntityList />}
             </Fragment>
           </Wrapper>
         </PanelBody>
