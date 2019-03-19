@@ -15,7 +15,6 @@ import styled from "styled-components";
  */
 import AnnotationService from "../../services/AnnotationService";
 import * as Constants from "../../constants";
-import AddEntity from "../../../Edit/components/AddEntity";
 import Header from "../../../Edit/components/Header";
 import VisibleEntityList from "../../../Edit/containers/VisibleEntityList";
 import Wrapper from "../../../Edit/components/App/Wrapper";
@@ -44,7 +43,6 @@ const LoaderWrapper = styled.div`
 class ContentClassificationPanel extends React.Component {
   constructor(props) {
     super(props);
-    this.asyncBlockAnalysis();
   }
 
   asyncBlockAnalysis() {
@@ -55,9 +53,11 @@ class ContentClassificationPanel extends React.Component {
         let annotationService = new AnnotationService(block);
         this.props.dispatch(annotationService.wordliftAnalyze());
       });
+    this.props.dispatch(AnnotationService.analyseLocalEntities());
   }
 
   componentDidMount() {
+    this.asyncBlockAnalysis();
     wp.richText.registerFormatType(Constants.PLUGIN_FORMAT_NAMESPACE, {
       name: Constants.PLUGIN_FORMAT_NAMESPACE,
       title: Constants.PLUGIN_NAMESPACE,

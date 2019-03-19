@@ -1,4 +1,4 @@
-/* globals wp, wlSettings */
+/* globals wp, wlSettings, wordlift */
 /**
  * Services: Link Service.
  *
@@ -76,7 +76,7 @@ class AnnotationService {
 
     // Update entity occurrences based on disambiguated
     for (var entity in response.entities) {
-      response.entities[entity].id = response.entities[entity].entityId;
+      response.entities[entity].id = response.entities[entity].entityId || entity;
       let allAnnotations = Object.keys(response.entities[entity].annotations);
       allAnnotations.forEach((annValue, annIndex) => {
         if (this.disambiguated.includes(response.entities[entity].annotations[annValue].text)) {
@@ -213,24 +213,103 @@ class AnnotationService {
     let lastItem = null;
     let lastIndex = 1;
     richText.formats.forEach((value, index) => {
-      let uri = value[0].attributes.itemid;
-      let end = index + 1;
-      if (uri !== lastItem || index !== lastIndex) {
-        annotations.push({
-          start: index,
-          end: end,
-          uri: uri
-        });
-      } else {
-        annotations[annotations.length - 1].end = end;
+      if (
+        value[0].type === "span" &&
+        value[0].attributes.class.indexOf("textannotation") > -1 &&
+        value[0].attributes.class.indexOf("disambiguated") > -1
+      ) {
+        let uri = value[0].attributes.itemid;
+        let end = index + 1;
+        if (uri !== lastItem || index !== lastIndex) {
+          annotations.push({
+            start: index,
+            end: end,
+            uri: uri
+          });
+        } else {
+          annotations[annotations.length - 1].end = end;
+        }
+        lastItem = uri;
+        lastIndex = end;
       }
-      lastItem = uri;
-      lastIndex = end;
     });
     annotations.forEach((value, index) => {
       value.label = richText.text.substring(value.start, value.end);
     });
     this.existingAnnotations = annotations;
+  }
+
+  static analyseLocalEntities() {
+    return dispatch => {
+      console.log(`Found ${Object.keys(wordlift.entities).length} entities in configuration...`);
+
+      let localData = {
+        entities: wordlift.entities,
+        annotations: {}
+      };
+
+      // Get local entities from window.wordlift.entities
+      for (var entity in localData.entities) {
+        if (wordlift.currentPostUri !== entity) localData.entities[entity].id = entity;
+        if (!localData.entities[entity].label) console.log(`Label missing for entity ${entity}`);
+        if (!localData.entities[entity].description) console.log(`Description missing for entity ${entity}`);
+        localData.entities[entity].occurrences = [];
+        localData.entities[entity].annotations = {};
+      }
+
+      // Get local annotations from block content
+      wp.data
+        .select("core/editor")
+        .getBlocks()
+        .forEach((block, blockIndex) => {
+          let richText = wp.richText.create({
+            html: block.attributes && block.attributes.content
+          });
+          let lastItem = null;
+          let lastIndex = 1;
+          richText.formats.forEach((value, index) => {
+            if (
+              value[0].type === "span" &&
+              value[0].attributes.class.indexOf("textannotation") > -1 &&
+              value[0].attributes.class.indexOf("disambiguated") > -1
+            ) {
+              let uri = value[0].attributes.itemid;
+              let id = value[0].attributes.id;
+              let end = index + 1;
+              if (uri !== lastItem || index !== lastIndex) {
+                localData.annotations[id] = {
+                  start: index,
+                  end: end,
+                  blockClientId: block.clientId,
+                  annotationId: id,
+                  entityMatches: [
+                    {
+                      entityId: uri
+                    }
+                  ]
+                };
+              } else {
+                localData.annotations[id].end = end;
+              }
+              lastItem = uri;
+              lastIndex = end;
+            }
+          });
+        });
+
+      // Copy annotations data to respective entities
+      for (var annotation in localData.annotations) {
+        localData.annotations[annotation].entityMatches.forEach(entity => {
+          if (typeof localData.entities[entity.entityId].annotations === "undefined") {
+            localData.entities[entity.entityId].annotations = {};
+          }
+          localData.entities[entity.entityId].annotations[annotation] = localData.annotations[annotation];
+          localData.entities[entity.entityId].occurrences.push(annotation);
+        });
+      }
+
+      dispatch(receiveAnalysisResults(localData));
+    };
   }
 
   static classicEditorNotice() {

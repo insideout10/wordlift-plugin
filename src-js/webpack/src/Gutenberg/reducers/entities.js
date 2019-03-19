@@ -63,8 +63,8 @@ const entities = function(state = Map(), action) {
             v.shortlist = i < 20;
             return [k, v];
           })
-          // Then resort them by label.
-          .sortBy(x => x.label.toLowerCase())
+        // Then resort them by label.
+        //.sortBy(x => x.label.toLowerCase())
       );
 
     // Legacy: set the current entity on the `EditPostWidgetController`.
