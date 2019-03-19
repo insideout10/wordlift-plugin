@@ -7,6 +7,7 @@
  * PHPCS:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
  *
  * @since   3.11.0
+ * @since   3.21.0  Tabs have been filterable.
  * @package Wordlift/admin
  */
 

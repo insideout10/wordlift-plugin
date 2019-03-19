@@ -10,7 +10,7 @@
 
 /**
  * The class that handles outputting data frontend for the analytics tracking
- * to offise services parts of the plugin.
+ * to offsite services parts of the plugin.
  */
 class Wordlift_Analytics_Connect {
 
