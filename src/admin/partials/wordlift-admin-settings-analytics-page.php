@@ -8,7 +8,6 @@
 
 ?>
 <div class="wrap" id="wl-settings-page">
-	<h2><?php esc_html_e( 'WorldLift Analytics Settings', 'wordlift' ); ?></h2>
 	<?php settings_errors(); ?>
 	<form action="options.php" method="post">
 		<?php
