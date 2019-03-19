@@ -19,6 +19,9 @@ const { Panel, PanelBody, PanelRow } = wp.components;
 class RelatedPostsPanel extends React.Component {
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
     let relatedPostsService = new RelatedPostsService();
     this.props.dispatch(relatedPostsService.getPosts());
   }
