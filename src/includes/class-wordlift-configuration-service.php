@@ -80,21 +80,21 @@ class Wordlift_Configuration_Service {
 	/**
 	 * The analytics enable option.
 	 *
-	 * @since TBD
+	 * @since 3.21.0
 	 */
 	const ANALYTICS_ENABLE = 'analytics_enable';
 
 	/**
 	 * The analytics entity uri dimension option.
 	 *
-	 * @since TBD
+	 * @since 3.21.0
 	 */
 	const ANALYTICS_ENTITY_URI_DIMENSION = 'analytics_entity_uri_dimension';
 
 	/**
 	 * The analytics entity type dimension option.
 	 *
-	 * @since TBD
+	 * @since 3.21.0
 	 */
 	const ANALYTICS_ENTITY_TYPE_DIMENSION = 'analytics_entity_type_dimension';
 
@@ -613,7 +613,7 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Get the 'analytics-enable' option.
 	 *
-	 * @since TBD
+	 * @since 3.21.0
 	 *
 	 * @return string 'no' or 'yes' representing bool.
 	 */
@@ -624,7 +624,7 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Set the `analytics-enable` option.
 	 *
-	 * @since TBD
+	 * @since 3.21.0
 	 *
 	 * @param bool $value True to enabling analytics, otherwise false.
 	 */
@@ -636,7 +636,7 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Get the 'analytics-entity-uri-dimention' option.
 	 *
-	 * @since TBD
+	 * @since 3.21.0
 	 *
 	 * @return int
 	 */
@@ -647,7 +647,7 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Get the 'analytics-entity-type-dimention' option.
 	 *
-	 * @since TBD
+	 * @since 3.21.0
 	 *
 	 * @return int
 	 */

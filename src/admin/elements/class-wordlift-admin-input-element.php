@@ -40,7 +40,7 @@ class Wordlift_Admin_Input_Element implements Wordlift_Admin_Element {
 	 *                            Can include some HTML element.
 	 *                            If empty string no description will be displayed.
 	 *                            Optional, defaults to empty string.
-	 * @since *.*.* added the ability to use a $type arg.
+	 * @since 3.21.0 added the ability to use a $type arg.
 	 *
 	 * @return $this|Wordlift_Admin_Element
 	 */
