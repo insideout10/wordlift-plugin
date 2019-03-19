@@ -61,8 +61,8 @@ class Wordlift_Admin_Settings_Analytics_Page_Action_Link {
 		return array_merge( $links, array(
 			sprintf(
 				'<a href="%1$s">%2$s</a>',
-				$url,
-				__( 'Analytics Settings', 'wordlift' )
+				esc_url( $url ),
+				esc_html__( 'Analytics Settings', 'wordlift' )
 			),
 		) );
 	}
