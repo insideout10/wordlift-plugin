@@ -4,7 +4,7 @@
  *
  * Provide a `Settings` action link in the Plugins page under `WordLift`.
  *
- * @since      x.x.x
+ * @since      3.21.0
  * @package    Wordlift
  * @subpackage Wordlift/admin
  */
@@ -13,7 +13,7 @@
  * Define the {@link Wordlift_Admin_Settings_Analytics_Page_Action_Link} used to add an
  * analytics settings page for the plugin.
  *
- * @since      x.x.x
+ * @since      3.21.0
  * @package    Wordlift
  * @subpackage Wordlift/analytics
  */

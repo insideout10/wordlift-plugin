@@ -3,7 +3,7 @@
  * Deals with outputting the required entity and config data frontend for the
  * plugins offsite analytics integration functions.
  *
- * @since      x.x.x
+ * @since      3.21.0
  * @package    Wordlift
  * @subpackage Wordlift/analytics
  */
@@ -18,6 +18,7 @@ class Wordlift_Analytics_Connect {
 	 * Gets an array of related entities with their post IDs and titles.
 	 *
 	 * @method get_analytics_event_data
+	 * @since  3.21.0
 	 * @param  int $post_id post id we want related data for.
 	 * @return array
 	 */
@@ -54,6 +55,7 @@ class Wordlift_Analytics_Connect {
 	 * frontend script use primarily.
 	 *
 	 * @method get_analytics_config_data
+	 * @since  3.21.0
 	 * @return array
 	 */
 	public static function get_analytics_config_data() {
@@ -71,6 +73,7 @@ class Wordlift_Analytics_Connect {
 	 * any data we will want to use there.
 	 *
 	 * @method enqueue_scripts
+	 * @since  3.21.0
 	 */
 	public function enqueue_scripts() {
 		$entity_data = self::get_analytics_event_data( get_the_ID() );

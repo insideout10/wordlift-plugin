@@ -4,7 +4,7 @@
  *
  * Handles the WordLift admin analytics settings page.
  *
- * @since      x.x.x
+ * @since      3.21.0
  * @package    Wordlift
  * @subpackage Wordlift/analytics
  */
@@ -12,7 +12,7 @@
 /**
  * Define the {@link Wordlift_Admin_Settings_Analytics_Page} class.
  *
- * @since      x.x.x
+ * @since      3.21.0
  * @package    Wordlift
  * @subpackage Wordlift/analytics
  */
@@ -21,7 +21,7 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 	/**
 	 * A singleton instance of the Notice service.
 	 *
-	 * @since  x.x.x
+	 * @since  3.21.0
 	 * @access private
 	 * @var \Wordlift_Admin_Settings_Analytics_Page $instance A singleton instance of a {@link Wordlift_Admin_Settings_Analytics_Page} class.
 	 */
@@ -30,7 +30,7 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 	/**
 	 * A {@link Wordlift_Configuration_Service} instance.
 	 *
-	 * @since  x.x.x
+	 * @since  3.21.0
 	 * @access private
 	 * @var \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
 	 */
@@ -39,7 +39,7 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 	/**
 	 * A {@link Wordlift_Admin_Input_Element} element renderer.
 	 *
-	 * @since  x.x.x
+	 * @since  3.21.0
 	 * @access private
 	 * @var \Wordlift_Admin_Input_Element $input_element An {@link Wordlift_Admin_Input_Element} element renderer.
 	 */
@@ -48,7 +48,7 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 	/**
 	 * A {@link Wordlift_Admin_Radio_Input_Element} element renderer.
 	 *
-	 * @since  x.x.x
+	 * @since  3.21.0
 	 * @access protected
 	 * @var \Wordlift_Admin_Radio_Input_Element $radio_input_element A {@link Wordlift_Admin_Radio_Input_Element} element renderer.
 	 */
@@ -57,7 +57,7 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 	/**
 	 * Create a {@link Wordlift_Admin_Settings_Page} instance.
 	 *
-	 * @since x.x.x
+	 * @since 3.21.0
 	 *
 	 * @param \Wordlift_Configuration_Service     $configuration_service The wordlift configuration service.
 	 * @param \Wordlift_Admin_Input_Element       $input_element         An input element class to output input boxes in a settings form.
@@ -80,7 +80,7 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 	/**
 	 * Get the singleton instance of the Notice service.
 	 *
-	 * @since x.x.x
+	 * @since 3.21.0
 	 * @return \Wordlift_Admin_Settings_Page The singleton instance of the settings page service.
 	 */
 	public static function get_instance() {
@@ -167,7 +167,7 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 	 *
 	 * Called by the *admin_init* hook.
 	 *
-	 * @since x.x.x
+	 * @since 3.21.0
 	 */
 	public function admin_init() {
 
@@ -250,7 +250,7 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 	 * TODO: Needs a feedback method to pass back error messages.
 	 *
 	 * @method validate_entity_uri
-	 * @since x.x.x
+	 * @since 3.21.0
 	 * @param  string $uri a sting representing an entity ID that can be converted to a uri.
 	 * @return int
 	 */
@@ -271,7 +271,7 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 	 * TODO: Needs a feedback method to pass back error messages.
 	 *
 	 * @method validate_entity_type
-	 * @since  x.x.x
+	 * @since  3.21.0
 	 * @param  string $type This is an entity type ID in string form - really a number.
 	 * @return int
 	 */
@@ -292,7 +292,7 @@ class Wordlift_Admin_Settings_Analytics_Page extends Wordlift_Admin_Page {
 	 * If a new entity is being created for the publisher, create it and set The
 	 * publisher setting.
 	 *
-	 * @since x.x.x
+	 * @since 3.21.0
 	 *
 	 * @param array $input The configuration settings array.
 	 *
