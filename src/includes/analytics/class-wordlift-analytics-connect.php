@@ -43,8 +43,10 @@ class Wordlift_Analytics_Connect {
 		$entity_type_service = Wordlift_Entity_Type_Service::get_instance();
 		// Get the post titles of related items and connect them in an array.
 		foreach ( $related_ids as $related_id ) {
-			$type  = $entity_type_service->get( $related_id )['label'];
-			$label = $entity_service->get_labels( $related_id )[0];
+			$type  = $entity_type_service->get( $related_id );
+			$type  = $type['label'];
+			$label = $entity_service->get_labels( $related_id );
+			$label = $label[0];
 
 			$related_items[ $related_id ] = array(
 				'uri'   => $entity_service->get_uri( $related_id ),
