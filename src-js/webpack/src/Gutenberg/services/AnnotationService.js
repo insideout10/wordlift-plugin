@@ -250,7 +250,10 @@ class AnnotationService {
 
       // Get local entities from window.wordlift.entities
       for (var entity in localData.entities) {
-        if (wordlift.currentPostUri !== entity) localData.entities[entity].id = entity;
+        if (wordlift.currentPostUri !== entity) {
+          localData.entities[entity].id = entity;
+          localData.entities[entity].entityId = entity;
+        }
         if (!localData.entities[entity].label) console.log(`Label missing for entity ${entity}`);
         if (!localData.entities[entity].description) console.log(`Description missing for entity ${entity}`);
         localData.entities[entity].occurrences = [];

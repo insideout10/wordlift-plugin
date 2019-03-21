@@ -22,7 +22,8 @@ import Accordion from "../Accordion";
 import AddEntity from "../../components/AddEntity";
 
 // eslint-disable-next-line
-const canCreateEntities = "undefined" !== wlSettings["can_create_entities"] && "yes" === wlSettings["can_create_entities"];
+const canCreateEntities =
+  "undefined" !== wlSettings["can_create_entities"] && "yes" === wlSettings["can_create_entities"];
 
 /**
  * Define the {@link App}.

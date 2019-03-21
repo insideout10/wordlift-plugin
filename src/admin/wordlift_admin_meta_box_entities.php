@@ -172,8 +172,7 @@ function wl_entities_box_content( $post, $wrapper = true ) {
 	// Current language.
 	$current_language = $configuration_service->get_language_code();
 
-	echo <<<EOF
-	<script type="text/javascript">
+	$js_code =  <<<JS
 		if ('undefined' == typeof window.wordlift) {
 			window.wordlift = {};
 			window.wordlift.entities = {};  		
@@ -192,7 +191,9 @@ function wl_entities_box_content( $post, $wrapper = true ) {
 		window.wordlift.publishedPlace = $published_place_obj;
 		window.wordlift.topic = $topic_obj;
 		window.wordlift.currentLanguage = '$current_language';
-	</script>
-EOF;
+JS;
+
+	if($wrapper) echo '<script type="text/javascript">'.PHP_EOL.$js_code.PHP_EOL.'</script>';
+	wp_add_inline_script('wl-entity-metabox-utility', $js_code);
 }
 

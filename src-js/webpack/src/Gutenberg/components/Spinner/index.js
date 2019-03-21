@@ -4,7 +4,6 @@
  */
 import React from "react";
 import styled from "styled-components";
-import SuggestedImagesPanel from "../SuggestedImagesPanel";
 
 /*
  * Packages via WordPress global

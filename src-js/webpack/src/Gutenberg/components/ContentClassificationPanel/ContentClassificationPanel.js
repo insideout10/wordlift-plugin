@@ -16,7 +16,7 @@ import styled from "styled-components";
 import AnnotationService from "../../services/AnnotationService";
 import * as Constants from "../../constants";
 import Header from "../../../Edit/components/Header";
-import VisibleEntityList from "../../../Edit/containers/VisibleEntityList";
+import VisibleEntityList from "./VisibleEntityList";
 import Wrapper from "../../../Edit/components/App/Wrapper";
 import Store2 from "../../stores/Store2";
 import { setValue } from "../../../Edit/components/AddEntity/actions";
