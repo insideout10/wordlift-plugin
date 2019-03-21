@@ -1,3 +1,8 @@
+/**
+ * Internal dependencies.
+ */
+import "./analytics";
+
 // Set a reference to the WordLift settings.
 const settings = window.wlSettings;
 

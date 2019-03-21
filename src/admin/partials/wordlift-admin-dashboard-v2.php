@@ -15,6 +15,10 @@
         box-sizing: border-box;
     }
 
+    #wl-dashboard-v2.closed > .inside {
+        display: none;
+    }
+
     #wl-dashboard-v2 > .inside > div {
         flex: 100%;
         margin: 0 5px 10px 5px
