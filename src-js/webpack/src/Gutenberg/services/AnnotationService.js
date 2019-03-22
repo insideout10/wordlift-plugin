@@ -111,16 +111,14 @@ class AnnotationService {
           format.attributes.class += " disambiguated";
         }
         // Do not persistently annotate if an active format with class textannotation is detected for same range
-        let richTextToCompare = richText;
-        richTextToCompare.start = annotationData.start;
-        richTextToCompare.end = annotationData.end;
-        const activeFormat = wp.richText.getActiveFormat(richTextToCompare, format.type);
-        if (activeFormat && activeFormat.attributes.class.indexOf("textannotation") > -1) {
-          console.log(
-            `Active format detected in range ${richTextToCompare.start} to ${richTextToCompare.end} in ${
-              this.blockClientId
-            }`
-          );
+        let startFormat = richText.formats[annotationData.start];
+        if (
+          startFormat &&
+          startFormat[0].type === Constants.PLUGIN_FORMAT_NAMESPACE &&
+          startFormat[0].unregisteredAttributes &&
+          startFormat[0].unregisteredAttributes.class.indexOf("textannotation") > -1
+        ) {
+          console.log(`Existing format detected at ${annotationData.start} in ${this.blockClientId}`);
         } else {
           richText = wp.richText.applyFormat(richText, format, annotationData.start, annotationData.end);
         }
