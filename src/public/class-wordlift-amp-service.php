@@ -81,4 +81,15 @@ class Wordlift_AMP_Service {
 		return $this->jsonld_service->get_jsonld( false, $post->ID );
 	}
 
+	/**
+	 * Check if current page is amp endpoint.
+	 *
+	 * @since 3.20.0
+	 * 
+	 * @return bool
+	 */
+	public static function is_amp_endpoint() {
+		return function_exists('is_amp_endpoint') && is_amp_endpoint();
+	}
+
 }

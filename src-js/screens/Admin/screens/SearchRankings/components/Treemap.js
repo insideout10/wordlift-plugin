@@ -36,7 +36,7 @@ function Treemap(props) {
         height: `${props.height}px`,
         position: "relative"
       }}
-    />
+    >{props.children}</div>
   );
 }
 

@@ -1,4 +1,4 @@
-/* globals wp, wlSettings */
+/* globals wp, wlSettings, wordlift */
 /**
  * Services: Link Service.
  *
@@ -13,6 +13,7 @@
 import Store1 from "../stores/Store1";
 import { receiveAnalysisResults, setCurrentAnnotation, updateOccurrencesForEntity } from "../../Edit/actions";
 import { processingBlockAdd, processingBlockRemove } from "../actions";
+import * as Constants from "../constants";
 
 const canCreateEntities =
   "undefined" !== wlSettings["can_create_entities"] && "yes" === wlSettings["can_create_entities"];
@@ -28,6 +29,7 @@ class AnnotationService {
     this.blockClientId = block.clientId;
     this.blockContent = block.attributes && block.attributes.content;
     this.disambiguated = [];
+    this.existingAnnotations = [];
     this.rawResponse = null;
     this.modifiedResponse = null;
     this.existingEntitiesJS = null;
@@ -74,10 +76,12 @@ class AnnotationService {
 
     // Update entity occurrences based on disambiguated
     for (var entity in response.entities) {
-      response.entities[entity].id = response.entities[entity].entityId;
+      response.entities[entity].id = response.entities[entity].entityId || entity;
       let allAnnotations = Object.keys(response.entities[entity].annotations);
       allAnnotations.forEach((annValue, annIndex) => {
         if (this.disambiguated.includes(response.entities[entity].annotations[annValue].text)) {
+          console.log("Adding entity to stack:", response.entities[entity]);
+          AnnotationService.addRemoveEntityMeta(response.entities[entity]);
           response.entities[entity].occurrences.push(annValue);
         }
       });
@@ -106,7 +110,18 @@ class AnnotationService {
         if (this.disambiguated.includes(annotationData.text)) {
           format.attributes.class += " disambiguated";
         }
-        richText = wp.richText.applyFormat(richText, format, annotationData.start, annotationData.end);
+        // Do not persistently annotate if an active format with class textannotation is detected for same range
+        let startFormat = richText.formats[annotationData.start];
+        if (
+          startFormat &&
+          startFormat[0].type === Constants.PLUGIN_FORMAT_NAMESPACE &&
+          startFormat[0].unregisteredAttributes &&
+          startFormat[0].unregisteredAttributes.class.indexOf("textannotation") > -1
+        ) {
+          console.log(`Existing format detected at ${annotationData.start} in ${this.blockClientId}`);
+        } else {
+          richText = wp.richText.applyFormat(richText, format, annotationData.start, annotationData.end);
+        }
       }
     }
     wp.data.dispatch("core/editor").updateBlock(this.blockClientId, {
@@ -140,6 +155,10 @@ class AnnotationService {
 
   wordliftAnalyze() {
     return dispatch => {
+      const processingBlocks = Store1.getState().processingBlocks;
+      if (processingBlocks.includes(this.blockClientId)) {
+        return;
+      }
       dispatch(processingBlockAdd(this.blockClientId));
       if (this.blockContent && this.block.name != "core/freeform") {
         console.log(`Requesting analysis for block ${this.blockClientId}...`);
@@ -166,6 +185,7 @@ class AnnotationService {
   }
 
   getWordliftAnalyzeRequest() {
+    this.fetchExistingAnnotations();
     return {
       url: `${wlSettings["ajax_url"]}?action=wordlift_analyze`,
       method: "POST",
@@ -177,8 +197,119 @@ class AnnotationService {
         contentType: "text/html",
         scope: "all",
         version: "1.0.0",
-        content: this.blockContent
+        content: this.blockContent,
+        annotations: this.existingAnnotations
       })
+    };
+  }
+
+  fetchExistingAnnotations() {
+    let richText = wp.richText.create({
+      html: this.blockContent
+    });
+    let annotations = [];
+    let lastItem = null;
+    let lastIndex = 1;
+    richText.formats.forEach((value, index) => {
+      if (
+        value[0].type === "span" &&
+        value[0].attributes.class.indexOf("textannotation") > -1 &&
+        value[0].attributes.class.indexOf("disambiguated") > -1
+      ) {
+        let uri = value[0].attributes.itemid;
+        let end = index + 1;
+        if (uri !== lastItem || index !== lastIndex) {
+          annotations.push({
+            start: index,
+            end: end,
+            uri: uri
+          });
+        } else {
+          annotations[annotations.length - 1].end = end;
+        }
+        lastItem = uri;
+        lastIndex = end;
+      }
+    });
+    annotations.forEach((value, index) => {
+      value.label = richText.text.substring(value.start, value.end);
+    });
+    this.existingAnnotations = annotations;
+  }
+
+  static analyseLocalEntities() {
+    return dispatch => {
+      console.log(`Found ${Object.keys(wordlift.entities).length} entities in configuration...`);
+
+      let localData = {
+        entities: wordlift.entities,
+        annotations: {}
+      };
+
+      // Get local entities from window.wordlift.entities
+      for (var entity in localData.entities) {
+        if (wordlift.currentPostUri !== entity) {
+          localData.entities[entity].id = entity;
+          localData.entities[entity].entityId = entity;
+        }
+        if (!localData.entities[entity].label) console.log(`Label missing for entity ${entity}`);
+        if (!localData.entities[entity].description) console.log(`Description missing for entity ${entity}`);
+        localData.entities[entity].occurrences = [];
+        localData.entities[entity].annotations = {};
+      }
+
+      // Get local annotations from block content
+      wp.data
+        .select("core/editor")
+        .getBlocks()
+        .forEach((block, blockIndex) => {
+          let richText = wp.richText.create({
+            html: block.attributes && block.attributes.content
+          });
+          let lastItem = null;
+          let lastIndex = 1;
+          richText.formats.forEach((value, index) => {
+            if (
+              value[0].type === "span" &&
+              value[0].attributes.class.indexOf("textannotation") > -1 &&
+              value[0].attributes.class.indexOf("disambiguated") > -1
+            ) {
+              let uri = value[0].attributes.itemid;
+              let id = value[0].attributes.id;
+              let end = index + 1;
+              if (uri !== lastItem || index !== lastIndex) {
+                localData.annotations[id] = {
+                  start: index,
+                  end: end,
+                  blockClientId: block.clientId,
+                  annotationId: id,
+                  entityMatches: [
+                    {
+                      entityId: uri
+                    }
+                  ]
+                };
+              } else {
+                localData.annotations[id].end = end;
+              }
+              lastItem = uri;
+              lastIndex = end;
+            }
+          });
+        });
+
+      // Copy annotations data to respective entities
+      for (var annotation in localData.annotations) {
+        localData.annotations[annotation].entityMatches.forEach(entity => {
+          if (typeof localData.entities[entity.entityId].annotations === "undefined") {
+            localData.entities[entity.entityId].annotations = {};
+          }
+          localData.entities[entity.entityId].annotations[annotation] = localData.annotations[annotation];
+          localData.entities[entity.entityId].occurrences.push(annotation);
+        });
+      }
+
+      dispatch(receiveAnalysisResults(localData));
     };
   }
 
@@ -260,11 +391,15 @@ class AnnotationService {
     console.log(`Calculating occurrences for entity ${entity.id}...`);
     let occurrences = [];
     if (action === "entitySelected") {
+      console.log("Adding entity to stack:", entity);
+      AnnotationService.addRemoveEntityMeta(entity);
       for (var annotation in entity.annotations) {
         AnnotationService.disambiguate(annotation, true);
         occurrences.push(annotation);
       }
     } else {
+      console.log("Removing entity from stack:", entity);
+      AnnotationService.addRemoveEntityMeta(entity, false);
       for (var annotation in entity.annotations) {
         AnnotationService.disambiguate(annotation, false);
       }
@@ -274,6 +409,32 @@ class AnnotationService {
       console.log(`Updating ${occurrences.length} occurrence(s) for ${entity.id}...`);
       Store1.dispatch(updateOccurrencesForEntity(entity.entityId, occurrences));
     }, 0);
+  }
+
+  static addRemoveEntityMeta(entity, add = true) {
+    let existingMeta = {};
+    let rawMeta = wp.data.select("core/editor").getEditedPostAttribute("meta")[Constants.PLUGIN_META_KEY];
+    if (rawMeta) {
+      existingMeta = JSON.parse(rawMeta);
+    }
+    if (add) {
+      existingMeta[entity.entityId] = {
+        uri: entity.entityId,
+        label: entity.label,
+        description: entity.description,
+        main_type: `wl-${entity.mainType}`,
+        type: entity.types,
+        image: entity.images,
+        sameas: entity.sameAs
+      };
+    } else {
+      delete existingMeta[entity.entityId];
+    }
+    wp.data.dispatch("core/editor").editPost({
+      meta: {
+        wl_entities_gutenberg: JSON.stringify(existingMeta)
+      }
+    });
   }
 
   static disambiguate(elem, action) {

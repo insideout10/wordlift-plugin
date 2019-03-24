@@ -142,15 +142,31 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.20.0 (2018-12-07) =
-* Enhancement: [#868](https://github.com/insideout10/wordlift-plugin/issues/868): Remove `wlSettings` from WP Rocket inline optimization .
+= 3.20.0 (2019-03-05) =
+* Enhancement: [#892](https://github.com/insideout10/wordlift-plugin/issues/892): Write JSON-LD of local entities bound to taxonomy terms.
+* Enhancement: [#887](https://github.com/insideout10/wordlift-plugin/issues/887): Add the GMT offset to dates in JSON-LD.
+* Enhancement: [#882](https://github.com/insideout10/wordlift-plugin/issues/882): Add greek among the supported languages.
+* Enhancement: [#881](https://github.com/insideout10/wordlift-plugin/issues/881): Polylang 2.5 plugin compatibility.
+* Enhancement: [#879](https://github.com/insideout10/wordlift-plugin/issues/879): Dashboard Overhaul, Phase 1.
+* Enhancement: [#868](https://github.com/insideout10/wordlift-plugin/issues/868): Remove `wlSettings` from WP Rocket inline optimization.
+* Enhancement: [#867](https://github.com/insideout10/wordlift-plugin/issues/867): Faceted Search AMP.
+* Enhancement: [#866](https://github.com/insideout10/wordlift-plugin/issues/866): Navigator AMP.
+* Enhancement: [#861](https://github.com/insideout10/wordlift-plugin/issues/861): Arabic can be added as supported language.
 * Enhancement: [#851](https://github.com/insideout10/wordlift-plugin/issues/851): add a filter to allow 3rd parties to change the TinyMCE editor id via JavaScript.
 * Enhancement: [#850](https://github.com/insideout10/wordlift-plugin/issues/850): allow 3rd parties to change the site URL and post permalink.
 * Enhancement: [#835](https://github.com/insideout10/wordlift-plugin/issues/835): Add the all entity types metabox.
 * Enhancement: [#761](https://github.com/insideout10/wordlift-plugin/issues/761): Search Rankings dashboard page.
+* Enhancement: [#728](https://github.com/insideout10/wordlift-plugin/issues/728): Gutenberg Integration.
 * Enhancement: [#713](https://github.com/insideout10/wordlift-plugin/issues/713): Allow to configure the target country.
 
-= 3.19.6 (2018-12-07) =
+* Fix: [#896](https://github.com/insideout10/wordlift-plugin/issues/896): AMP Validation fails with Faceted Search Widget (QA).
+* Fix: [#895](https://github.com/insideout10/wordlift-plugin/issues/895): AMP validation fails with Navigator widget (QA).
+* Fix: [#888](https://github.com/insideout10/wordlift-plugin/issues/888): Remove `wordCount` from `WebPage` JSON-LD.
+
+= 3.19.6 (2019-03-05) =
+* Enhancement: [#875](https://github.com/insideout10/wordlift-plugin/issues/875): Provide 16:9, 4:3 and 1:1 images also for embedded media.
+* Enhancement: [#872](https://github.com/insideout10/wordlift-plugin/issues/872): Allow binding a taxonomy term to an entity.
+
 * Fix: [#886](https://github.com/insideout10/wordlift-plugin/issues/886): Before calling `get_role` check that the role exists.
 * Fix: [#870](https://github.com/insideout10/wordlift-plugin/issues/870): PHP errors: file_put_contents(/tmp) and mkdir permission denied.
 * Fix: [#865](https://github.com/insideout10/wordlift-plugin/issues/865): Content Egg's angular clashes with WordLift's angular.
@@ -356,7 +372,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement: [#583](https://github.com/insideout10/wordlift-plugin/issues/583): Add sameAs to schema.org/publisher in JSON-LD.
 * Enhancement: [#574](https://github.com/insideout10/wordlift-plugin/issues/574): WL currently adds links on headings.
 * Enhancement: [#493](https://github.com/insideout10/wordlift-plugin/issues/493): Prevent analysis in html tags: `button`.
-* Fix: [#628](https://github.com/insideout10/wordlift-plugin/issues/628): Check the status of Content Classification in the WordLift editor .
+* Fix: [#628](https://github.com/insideout10/wordlift-plugin/issues/628): Check the status of Content Classification in the WordLift editor.
 * Fix: [#610](https://github.com/insideout10/wordlift-plugin/issues/610): Typo in xsd:dateTime.
 
 = 3.14.7 (2017-10-03) =

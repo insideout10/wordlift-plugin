@@ -19,6 +19,9 @@ const { Panel, PanelBody, PanelRow } = wp.components;
 class RelatedPostsPanel extends React.Component {
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
     let relatedPostsService = new RelatedPostsService();
     this.props.dispatch(relatedPostsService.getPosts());
   }
@@ -27,8 +30,9 @@ class RelatedPostsPanel extends React.Component {
     return (
       <Panel>
         <PanelBody title="Related posts" initialOpen={false}>
+          {!this.props.relatedPosts && <Spinner />}
           {this.props.relatedPosts && this.props.relatedPosts.length === 0 ? (
-            <Spinner />
+            <PanelRow>No results found</PanelRow>
           ) : (
             this.props.relatedPosts.map(item => (
               <PanelRow key={item.ID}>

@@ -57,7 +57,6 @@ class Wordlift_Install_Service {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-all-entity-types.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-package-type.php';
 
-
 		self::$instance = $this;
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );

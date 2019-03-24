@@ -429,6 +429,24 @@ class Wordlift {
 	protected $settings_page_action_link;
 
 	/**
+	 * The {@link Wordlift_Admin_Settings_Page_Action_Link} class.
+	 *
+	 * @since  3.11.0
+	 * @access protected
+	 * @var \Wordlift_Admin_Settings_Page_Action_Link $settings_page_action_link The {@link Wordlift_Admin_Settings_Page_Action_Link} class.
+	 */
+	protected $analytics_settings_page_action_link;
+
+	/**
+	 * The {@link Wordlift_Analytics_Connect} class.
+	 *
+	 * @since  3.11.0
+	 * @access protected
+	 * @var \Wordlift_Analytics_Connect $analytics_connect The {@link Wordlift_Analytics_Connect} class.
+	 */
+	protected $analytics_connect;
+
+	/**
 	 * The {@link Wordlift_Publisher_Ajax_Adapter} instance.
 	 *
 	 * @since  3.11.0
@@ -721,8 +739,10 @@ class Wordlift {
 	 */
 	public function __construct() {
 
+		self::$instance = $this;
+
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.20.0-rc1';
+		$this->version     = '3.20.0';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -732,8 +752,6 @@ class Wordlift {
 		if ( class_exists( 'WP_CLI' ) ) {
 			$this->load_cli_dependencies();
 		}
-
-		self::$instance = $this;
 
 	}
 
@@ -989,6 +1007,9 @@ class Wordlift {
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-remote-image-service.php';
 
+		/** Analytics */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/analytics/class-wordlift-analytics-connect.php';
+
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
@@ -1054,8 +1075,10 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/elements/class-wordlift-admin-publisher-element.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-page.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-analytics-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-batch-analysis-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-page-action-link.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-analytics-page-action-link.php';
 
 		/** Admin Pages */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-post-edit-page.php';
@@ -1105,6 +1128,11 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-alphabet-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-vocabulary-shortcode.php';
+
+		/**
+		 * Faceted Search shortcode.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-faceted-search-shortcode.php';
 
 		/**
 		 * The ShareThis service.
@@ -1256,6 +1284,7 @@ class Wordlift {
 		new Wordlift_Timeline_Shortcode();
 		new Wordlift_Related_Entities_Cloud_Shortcode( $this->relation_service );
 		new Wordlift_Vocabulary_Shortcode( $this->configuration_service );
+		new Wordlift_Faceted_Search_Shortcode();
 
 		// Initialize the SEO service.
 		new Wordlift_Seo_Service();
@@ -1293,7 +1322,6 @@ class Wordlift {
 		new Wordlift_Sparql_Query_Async_Task();
 		new Wordlift_Batch_Analysis_Request_Async_Task();
 		new Wordlift_Batch_Analysis_Complete_Async_Task();
-		new Wordlift_Batch_Analysis_Complete_Async_Task();
 		new Wordlift_Push_References_Async_Task();
 
 		/** WL Autocomplete. */
@@ -1315,6 +1343,10 @@ class Wordlift {
 		$this->settings_page             = new Wordlift_Admin_Settings_Page( $this->configuration_service, $this->entity_service, $this->input_element, $this->language_select_element, $this->country_select_element, $this->publisher_element, $this->radio_input_element );
 		$this->batch_analysis_page       = new Wordlift_Batch_Analysis_Page( $this->batch_analysis_service );
 		$this->settings_page_action_link = new Wordlift_Admin_Settings_Page_Action_Link( $this->settings_page );
+
+		$this->analytics_settings_page             = new Wordlift_Admin_Settings_Analytics_Page( $this->configuration_service, $this->input_element, $this->radio_input_element );
+		$this->analytics_settings_page_action_link = new Wordlift_Admin_Settings_Analytics_Page_Action_Link( $this->analytics_settings_page );
+		$this->analytics_connect                   = new Wordlift_Analytics_Connect();
 
 		// Pages.
 		new Wordlift_Admin_Post_Edit_Page( $this );
@@ -1353,6 +1385,30 @@ class Wordlift {
 		new Wordlift_Remote_Image_Service();
 
 		/*
+		 * Provides mappings between post types and entity types.
+		 *
+		 * @since 3.20.0
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/852.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-batch-action.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/mapping/class-wordlift-mapping-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/mapping/class-wordlift-mapping-ajax-adapter.php';
+
+		// Create an instance of the Mapping Service and assign it to the Ajax Adapter.
+		new Wordlift_Mapping_Ajax_Adapter( new Wordlift_Mapping_Service( Wordlift_Entity_Type_Service::get_instance() ) );
+
+		/*
+		 * Batch Operations. They're similar to Batch Actions but do not require working on post types.
+		 *
+		 * Eventually Batch Actions will become Batch Operations.
+		 *
+		 * @since 3.20.0
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/batch/intf-wordlift-batch-operation.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/batch/class-wordlift-batch-operation-ajax-adapter.php';
+
+		/*
 		 * Add the Search Keywords taxonomy to manage the Search Keywords on WLS.
 		 *
 		 * @link https://github.com/insideout10/wordlift-plugin/issues/761
@@ -1361,6 +1417,23 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/search-keywords/class-wordlift-search-keyword-taxonomy.php';
 		new Wordlift_Search_Keyword_Taxonomy( $api_service );
+
+		/*
+		 * Load dependencies for the front-end.
+		 *
+		 * @since 3.20.0
+		 */
+		if ( ! is_admin() ) {
+			/*
+			 * Load the `Wordlift_Term_JsonLd_Adapter`.
+			 *
+			 * @see https://github.com/insideout10/wordlift-plugin/issues/892
+			 *
+			 * @since 3.20.0
+			 */
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-term-jsonld-adapter.php';
+			new Wordlift_Term_JsonLd_Adapter( $this->entity_uri_service, $this->jsonld_service );
+		}
 
 	}
 
@@ -1422,10 +1495,20 @@ class Wordlift {
 		$this->loader->add_filter( 'allowed_redirect_hosts', $this->redirect_service, 'allowed_redirect_hosts' );
 		// Hook the AJAX wordlift_redirect action to the Redirect service.
 		$this->loader->add_action( 'wp_ajax_wordlift_redirect', $this->redirect_service, 'ajax_redirect' );
+
+		/*
+		 * The old dashboard is replaced with dashboard v2.
+		 *
+		 * The old dashboard service is still loaded because its functions are used.
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/879
+		 *
+		 * @since 3.20.0
+		 */
 		// Hook the AJAX wordlift_redirect action to the Redirect service.
-		$this->loader->add_action( 'wp_ajax_wordlift_get_stats', $this->dashboard_service, 'ajax_get_stats' );
+		// $this->loader->add_action( 'wp_ajax_wordlift_get_stats', $this->dashboard_service, 'ajax_get_stats' );
 		// Hook the AJAX wordlift_redirect action to the Redirect service.
-		$this->loader->add_action( 'wp_dashboard_setup', $this->dashboard_service, 'add_dashboard_widgets' );
+		// $this->loader->add_action( 'wp_dashboard_setup', $this->dashboard_service, 'add_dashboard_widgets' );
 
 		// Hook save_post to the entity service to update custom fields (such as alternate labels).
 		// We have a priority of 9 because we want to be executed before data is sent to Redlink.
@@ -1494,11 +1577,13 @@ class Wordlift {
 
 		// Hook the admin_init to the settings page.
 		$this->loader->add_action( 'admin_init', $this->settings_page, 'admin_init' );
+		$this->loader->add_action( 'admin_init', $this->analytics_settings_page, 'admin_init' );
 
 		$this->loader->add_filter( 'admin_post_thumbnail_html', $this->publisher_service, 'add_featured_image_instruction' );
 
 		// Hook the menu creation on the general wordlift menu creation.
 		$this->loader->add_action( 'wl_admin_menu', $this->settings_page, 'admin_menu', 10, 2 );
+		$this->loader->add_action( 'wl_admin_menu', $this->analytics_settings_page, 'admin_menu', 10, 2 );
 		if ( defined( 'WORDLIFT_BATCH' ) && WORDLIFT_BATCH ) {
 			// Add the functionality only if a flag is set in wp-config.php .
 			$this->loader->add_action( 'wl_admin_menu', $this->batch_analysis_page, 'admin_menu', 10, 2 );
@@ -1522,6 +1607,7 @@ class Wordlift {
 
 		// Add additional action links to the WordLift plugin in the plugins page.
 		$this->loader->add_filter( 'plugin_action_links_wordlift/wordlift.php', $this->settings_page_action_link, 'action_links', 10, 1 );
+		$this->loader->add_filter( 'plugin_action_links_wordlift/wordlift.php', $this->analytics_settings_page_action_link, 'action_links', 10, 1 );
 
 		// Hook the AJAX `wl_publisher` action name.
 		$this->loader->add_action( 'wp_ajax_wl_publisher', $this->publisher_ajax_adapter, 'publisher' );
@@ -1634,6 +1720,11 @@ class Wordlift {
 		// This hook have to run before the rating service, as otherwise the post might not be a proper entity when rating is done.
 		$this->loader->add_action( 'save_post', $this->entity_type_adapter, 'save_post', 9, 3 );
 
+		// Analytics Script Frontend.
+		if ( $this->configuration_service->is_analytics_enable() ) {
+			$this->loader->add_action( 'wp_enqueue_scripts', $this->analytics_connect, 'enqueue_scripts', 10 );
+		}
+
 	}
 
 	/**
@@ -1690,6 +1781,17 @@ class Wordlift {
 
 		WP_CLI::add_command( 'wl references push', $push_reference_data_command );
 
+	}
+
+	/**
+	 * Get the {@link \Wordlift_Dashboard_Service} to allow others to use its functions.
+	 *
+	 * @since 3.20.0
+	 * @return \Wordlift_Dashboard_Service The {@link \Wordlift_Dashboard_Service} instance.
+	 */
+	public function get_dashboard_service() {
+
+		return $this->dashboard_service;
 	}
 
 }

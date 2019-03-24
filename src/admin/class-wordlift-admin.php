@@ -59,6 +59,15 @@ class Wordlift_Admin {
 	private $user_service;
 
 	/**
+	 * The {@link Wordlift_Batch_Operation_Ajax_Adapter} instance.
+	 *
+	 * @since 3.20.0
+	 * @access private
+	 * @var \Wordlift_Batch_Operation_Ajax_Adapter $sync_batch_operation_ajax_adapter The {@link Wordlift_Batch_Operation_Ajax_Adapter} instance.
+	 */
+	private $sync_batch_operation_ajax_adapter;
+
+	/**
 	 * The singleton instance.
 	 *
 	 * @since 3.19.4
@@ -113,14 +122,54 @@ class Wordlift_Admin {
 
 			/*
 			 * Add support for `All Entity Types`.
+			 *
+			 * @since 3.20.0
+			 *
 			 * @see https://github.com/insideout10/wordlift-plugin/issues/835
 			 */
 			if ( WL_ALL_ENTITY_TYPES ) {
 				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-schemaorg-taxonomy-metabox.php';
 				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-schemaorg-property-metabox.php';
 
-				new Wordlift_Admin_Schemaorg_Property_Metabox( Wordlift_Schemaorg_Property_Service::get_instance() );
+				// new Wordlift_Admin_Schemaorg_Property_Metabox( Wordlift_Schemaorg_Property_Service::get_instance() );
+				/*
+				 * The `Mappings` admin page.
+				 */
+				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-mappings-page.php';
+				new Wordlift_Admin_Mappings_Page();
+
+				/*
+				 * Allow sync'ing the schema.org taxonomy with the schema.org json file.
+				 *
+				 * @since 3.20.0
+				 */
+				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/schemaorg/class-wordlift-schemaorg-sync-batch-operation.php';
+
+				$this->sync_batch_operation_ajax_adapter = new Wordlift_Batch_Operation_Ajax_Adapter( new Wordlift_Schemaorg_Sync_Batch_Operation(), 'wl_schemaorg_sync' );
+
 			}
+
+			/*
+			 * Add the {@link Wordlift_Admin_Term_Adapter}.
+			 *
+			 * @since 3.20.0
+			 */
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-term-adapter.php';
+			new Wordlift_Admin_Term_Adapter();
+
+			/*
+			 * The new dashboard.
+			 *
+			 * @since 3.20.0
+			 *
+			 * @see https://github.com/insideout10/wordlift-plugin/issues/879
+			 */
+			new Wordlift_Admin_Dashboard_V2(
+				$search_rankings_service,
+				Wordlift::get_instance()->get_dashboard_service(),
+				Wordlift_Entity_Service::get_instance()
+			);
+			new Wordlift_Admin_Not_Enriched_Filter();
 
 		}
 
@@ -204,26 +253,27 @@ class Wordlift_Admin {
 		// Set the basic params.
 		$params = array(
 			// @todo scripts in admin should use wp.post.
-			'ajax_url'              => admin_url( 'admin-ajax.php' ),
+			'ajax_url'                   => admin_url( 'admin-ajax.php' ),
 			// @todo remove specific actions from settings.
-			'action'                => 'entity_by_title',
-			'datasetUri'            => $this->configuration_service->get_dataset_uri(),
-			'language'              => $this->configuration_service->get_language_code(),
-			'link_by_default'       => $this->configuration_service->is_link_by_default(),
+			'action'                     => 'entity_by_title',
+			'datasetUri'                 => $this->configuration_service->get_dataset_uri(),
+			'language'                   => $this->configuration_service->get_language_code(),
+			'link_by_default'            => $this->configuration_service->is_link_by_default(),
 			// Whether the current user is allowed to create new entities.
 			//
 			// @see https://github.com/insideout10/wordlift-plugin/issues/561
-			'can_create_entities'   => $can_edit_wordlift_entities ? 'yes' : 'no',
-			'l10n'                  => array(
+			'can_create_entities'        => $can_edit_wordlift_entities ? 'yes' : 'no',
+			'l10n'                       => array(
 				'You already published an entity with the same name'                 => __( 'You already published an entity with the same name: ', 'wordlift' ),
 				'logo_selection_title'                                               => __( 'WordLift Choose Logo', 'wordlift' ),
 				'logo_selection_button'                                              => array( 'text' => __( 'Choose Logo', 'wordlift' ) ),
 				'Type at least 3 characters to search...'                            => _x( 'Type at least 3 characters to search...', 'Autocomplete Select', 'wordlift' ),
 				'No results found for your search.'                                  => _x( 'No results found: try changing or removing some words.', 'Autocomplete Select', 'wordlift' ),
 				'Please wait while we look for entities in the linked data cloud...' => _x( 'Please wait while we look for entities in the linked data cloud...', 'Autocomplete Select', 'wordlift' ),
+				'Add keywords to track'                                              => __( 'Add Keywords to track', 'wordlift' ),
 			),
-			'wl_autocomplete_nonce' => wp_create_nonce( 'wordlift_autocomplete' ),
-			'autocomplete_scope'    => $autocomplete_scope,
+			'wl_autocomplete_nonce'      => wp_create_nonce( 'wordlift_autocomplete' ),
+			'autocomplete_scope'         => $autocomplete_scope,
 			/**
 			 * Allow 3rd parties to define the default editor id. This turns useful if 3rd parties load
 			 * or change the TinyMCE id.
@@ -236,7 +286,13 @@ class Wordlift_Admin {
 			 *
 			 * @param string $editor The default editor id, by default `content`.
 			 */
-			'default_editor_id'     => apply_filters( 'wl_default_editor_id', 'content' ),
+			'default_editor_id'          => apply_filters( 'wl_default_editor_id', 'content' ),
+			/**
+			 * Add the link to the Search Keywords admin page.
+			 *
+			 * @since 3.20.0
+			 */
+			'search_keywords_admin_page' => admin_url( 'admin.php?page=wl_configuration_admin_menu&tab=search-keywords' ),
 		);
 
 		// Set post-related values if there's a current post.
@@ -264,7 +320,7 @@ class Wordlift_Admin {
 		}
 
 		// Finally output the params as `wlSettings` for JavaScript code.
-		wp_localize_script( $this->plugin_name, 'wlSettings', $params );
+		wp_localize_script( $this->plugin_name, 'wlSettings', apply_filters( 'wl_admin_settings', $params ) );
 
 	}
 
@@ -278,7 +334,26 @@ class Wordlift_Admin {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard-latest-news.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-search-rankings-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-search-rankings-ajax-adapter.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard-v2.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-not-enriched-filter.php';
 
+	}
+
+	public static function is_gutenberg() {
+		if ( function_exists( 'is_gutenberg_page' ) &&
+		     is_gutenberg_page()
+		) {
+			// The Gutenberg plugin is on.
+			return true;
+		}
+		$current_screen = get_current_screen();
+		if ( method_exists( $current_screen, 'is_block_editor' ) &&
+		     $current_screen->is_block_editor()
+		) {
+			// Gutenberg page on 5+.
+			return true;
+		}
+		return false;
 	}
 
 }

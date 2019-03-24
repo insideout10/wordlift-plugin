@@ -40,10 +40,12 @@ class Wordlift_Admin_Input_Element implements Wordlift_Admin_Element {
 	 *                            Can include some HTML element.
 	 *                            If empty string no description will be displayed.
 	 *                            Optional, defaults to empty string.
+	 * @since 3.21.0 added the ability to use a $type arg.
 	 *
 	 * @return $this|Wordlift_Admin_Element
 	 */
 	public function render( $args ) {
+
 		/*
 		 * Parse the arguments and merge with default values.
 		 * Name intentionally do not have a default as it has to be in SyncEvent
@@ -63,18 +65,20 @@ class Wordlift_Admin_Input_Element implements Wordlift_Admin_Element {
 		$css_class   = ! empty( $params['css_class'] ) ? ' class="' . esc_attr( $params['css_class'] ) . '"' : '';
 		$description = ! empty( $params['description'] ) ? '<p>' . wp_kses( $params['description'], array( 'a' => array( 'href' => array() ) ) ) . '</p>' : '';
 
+		// allow different types of input - default to 'text'.
+		$input_type = ! empty( $params['type'] ) ? $params['type'] : 'text';
 		?>
 
-        <input
-                type="text"
-                id="<?php echo esc_attr( $params['id'] ); ?>"
-                name="<?php echo esc_attr( $params['name'] ); ?>"
-                value="<?php echo esc_attr( $params['value'] ); ?>"
+		<input type="<?php echo esc_attr( $input_type ); ?>"
+		       id="<?php echo esc_attr( $params['id'] ); ?>"
+		       name="<?php echo esc_attr( $params['name'] ); ?>"
+		       value="<?php echo esc_attr( $params['value'] ); ?>"
 			<?php echo $readonly; ?>
 			<?php echo $css_class; ?>
-        />
+		/>
+		<?php echo $description; ?>
+
 		<?php
-		echo $description;
 
 		return $this;
 	}

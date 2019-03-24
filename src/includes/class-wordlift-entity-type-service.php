@@ -139,6 +139,17 @@ class Wordlift_Entity_Type_Service {
 					return $schema;
 				}
 			}
+
+			/*
+			 * When a schema isn't found, we return `thing`. Schema may not be found because
+			 * the new schema classes that we support since #852 aren't configured in the schema
+			 * service.
+			 *
+			 * https://github.com/insideout10/wordlift-plugin/issues/852
+			 *
+			 * @since 3.20.0
+			 */
+			return $this->schema_service->get_schema( 'thing' );
 		}
 
 		// If it's a page or post return `Article`.
@@ -258,7 +269,7 @@ class Wordlift_Entity_Type_Service {
 	 * @return false|WP_Term WP_Term instance on success. Will return false if `$taxonomy` does not exist
 	 *                             or `$term` was not found.
 	 */
-	private function get_term_by_uri( $uri ) {
+	public function get_term_by_uri( $uri ) {
 
 		$terms = get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array(
 			'fields'     => 'all',

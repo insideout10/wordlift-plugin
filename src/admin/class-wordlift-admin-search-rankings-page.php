@@ -17,6 +17,15 @@
 class Wordlift_Admin_Search_Rankings_Page extends Wordlift_Admin_Page {
 
 	/**
+	 * We decide whether to load this page from {@link Wordlift} if the user subscription is editorial or business.
+	 *
+	 * @since 3.20.0
+	 */
+	public function __construct() {
+		// Do nothing. We need this because the parent class calls the `admin_menu` hook.
+	}
+
+	/**
 	 * @inheritdoc
 	 */
 	function get_page_title() {

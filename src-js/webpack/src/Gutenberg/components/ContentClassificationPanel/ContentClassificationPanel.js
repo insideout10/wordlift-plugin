@@ -43,7 +43,6 @@ const LoaderWrapper = styled.div`
 class ContentClassificationPanel extends React.Component {
   constructor(props) {
     super(props);
-    this.asyncBlockAnalysis();
   }
 
   asyncBlockAnalysis() {
@@ -54,9 +53,11 @@ class ContentClassificationPanel extends React.Component {
         let annotationService = new AnnotationService(block);
         this.props.dispatch(annotationService.wordliftAnalyze());
       });
+    this.props.dispatch(AnnotationService.analyseLocalEntities());
   }
 
   componentDidMount() {
+    this.asyncBlockAnalysis();
     wp.richText.registerFormatType(Constants.PLUGIN_FORMAT_NAMESPACE, {
       name: Constants.PLUGIN_FORMAT_NAMESPACE,
       title: Constants.PLUGIN_NAMESPACE,
@@ -82,13 +83,8 @@ class ContentClassificationPanel extends React.Component {
           <Wrapper>
             <Fragment>
               <Header />
-              {this.props.entities && this.props.entities.size > 0 ? (
-                <VisibleEntityList />
-              ) : this.props.processingBlocks && this.props.processingBlocks.length === 0 ? (
-                <LoaderWrapper>No content found</LoaderWrapper>
-              ) : (
-                <Spinner />
-              )}
+              {this.props.processingBlocks && this.props.processingBlocks.length > 0 && <Spinner />}
+              {this.props.entities && this.props.entities.size > 0 && <VisibleEntityList />}
             </Fragment>
           </Wrapper>
         </PanelBody>

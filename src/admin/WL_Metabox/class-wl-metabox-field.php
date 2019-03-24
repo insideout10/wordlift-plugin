@@ -199,8 +199,6 @@ class WL_Metabox_Field {
 		$post_id    = $this->post_id;
 		$this->data = get_post_meta( $post_id, $this->meta_name );
 
-		$this->log->debug( 'Found ' . count( $this->data ) . " value(s) for meta $this->meta_name, post $post_id." );
-
 	}
 
 	/**

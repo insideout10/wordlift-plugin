@@ -34,8 +34,8 @@ function wl_admin_add_entities_meta_box( $post_type ) {
 		return;
 	}
 
-	if (!is_gutenberg()) {
-		// Add main meta box for related entities and 4W only if Gutenberg
+	if (!Wordlift_Admin::is_gutenberg()) {
+		// Add main meta box for related entities and 4W only if not Gutenberg
 		add_meta_box(
 			'wordlift_entities_box', __( 'WordLift', 'wordlift' ), 'wl_entities_box_content', $post_type, 'side', 'high'
 		);
@@ -43,23 +43,6 @@ function wl_admin_add_entities_meta_box( $post_type ) {
 		// Call wl_entities_box_content for the other things that it does.
 		wl_entities_box_content(get_post(), false);
 	}
-}
-
-function is_gutenberg() {
-	if ( function_exists( 'is_gutenberg_page' ) &&
-	     is_gutenberg_page()
-	) {
-		// The Gutenberg plugin is on.
-		return true;
-	}
-	$current_screen = get_current_screen();
-	if ( method_exists( $current_screen, 'is_block_editor' ) &&
-	     $current_screen->is_block_editor()
-	) {
-		// Gutenberg page on 5+.
-		return true;
-	}
-	return false;
 }
 
 add_action( 'add_meta_boxes', 'wl_admin_add_entities_meta_box' );
@@ -189,8 +172,7 @@ function wl_entities_box_content( $post, $wrapper = true ) {
 	// Current language.
 	$current_language = $configuration_service->get_language_code();
 
-	echo <<<EOF
-	<script type="text/javascript">
+	$js_code =  <<<JS
 		if ('undefined' == typeof window.wordlift) {
 			window.wordlift = {};
 			window.wordlift.entities = {};  		
@@ -209,7 +191,9 @@ function wl_entities_box_content( $post, $wrapper = true ) {
 		window.wordlift.publishedPlace = $published_place_obj;
 		window.wordlift.topic = $topic_obj;
 		window.wordlift.currentLanguage = '$current_language';
-	</script>
-EOF;
+JS;
+
+	if($wrapper) echo '<script type="text/javascript">'.PHP_EOL.$js_code.PHP_EOL.'</script>';
+	wp_add_inline_script('wl-entity-metabox-utility', $js_code);
 }
 

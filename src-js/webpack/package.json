@@ -1,6 +1,6 @@
 {
   "name": "wordlift-plugin",
-  "version": "3.20.0-rc1",
+  "version": "3.20.0",
   "description": "WordLift Plugin application for the web site public front-end.",
   "main": "index.js",
   "repository": "https://github.com/insideout10/wordlift-plugin",
@@ -31,6 +31,7 @@
     "react": "^16",
     "react-dom": "^16",
     "react-redux": "^5.0.7",
+    "react-select": "^1",
     "redux": "^4.0.0",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",

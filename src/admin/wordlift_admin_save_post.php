@@ -81,6 +81,8 @@ function wl_update_post_status( $post_id, $status ) {
 		return;
 	}
 
+	wl_write_log( "wl_update_post_status, old and new post status do not match [ post ID :: $post_id ][ new status :: $status ][ old status :: $post->post_status ]." );
+
 	$wpdb->update( $wpdb->posts, array( 'post_status' => $status ), array( 'ID' => $post->ID ) );
 
 	clean_post_cache( $post->ID );

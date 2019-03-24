@@ -217,7 +217,7 @@ class Wordlift_Content_Filter_Service {
 		$this->entity_post_ids_linked_from_post_content[] = $post->ID;
 
 		// Get the link.
-		$href = get_permalink( $post );
+		$href = Wordlift_Post_Adapter::get_production_permalink( $post->ID );
 
 		// Get an alternative title attribute.
 		$title_attribute = $this->get_title_attribute( $post->ID, $label );

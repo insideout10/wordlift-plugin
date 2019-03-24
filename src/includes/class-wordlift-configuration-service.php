@@ -78,6 +78,27 @@ class Wordlift_Configuration_Service {
 	const LINK_BY_DEFAULT = 'link_by_default';
 
 	/**
+	 * The analytics enable option.
+	 *
+	 * @since 3.21.0
+	 */
+	const ANALYTICS_ENABLE = 'analytics_enable';
+
+	/**
+	 * The analytics entity uri dimension option.
+	 *
+	 * @since 3.21.0
+	 */
+	const ANALYTICS_ENTITY_URI_DIMENSION = 'analytics_entity_uri_dimension';
+
+	/**
+	 * The analytics entity type dimension option.
+	 *
+	 * @since 3.21.0
+	 */
+	const ANALYTICS_ENTITY_TYPE_DIMENSION = 'analytics_entity_type_dimension';
+
+	/**
 	 * The user preferences about sharing data option.
 	 *
 	 * @since 3.19.0
@@ -587,6 +608,51 @@ class Wordlift_Configuration_Service {
 	public function set_link_by_default( $value ) {
 
 		$this->set( 'wl_general_settings', self::LINK_BY_DEFAULT, true === $value ? 'yes' : 'no' );
+	}
+
+	/**
+	 * Get the 'analytics-enable' option.
+	 *
+	 * @since 3.21.0
+	 *
+	 * @return string 'no' or 'yes' representing bool.
+	 */
+	public function is_analytics_enable() {
+		return 'yes' === $this->get( 'wl_analytics_settings', self::ANALYTICS_ENABLE, 'no' );
+	}
+
+	/**
+	 * Set the `analytics-enable` option.
+	 *
+	 * @since 3.21.0
+	 *
+	 * @param bool $value True to enabling analytics, otherwise false.
+	 */
+	public function set_is_analytics_enable( $value ) {
+
+		$this->set( 'wl_general_settings', self::ANALYTICS_ENABLE, true === $value ? 'yes' : 'no' );
+	}
+
+	/**
+	 * Get the 'analytics-entity-uri-dimention' option.
+	 *
+	 * @since 3.21.0
+	 *
+	 * @return int
+	 */
+	public function get_analytics_entity_uri_dimension() {
+		return (int) $this->get( 'wl_analytics_settings', self::ANALYTICS_ENTITY_URI_DIMENSION, 2 );
+	}
+
+	/**
+	 * Get the 'analytics-entity-type-dimention' option.
+	 *
+	 * @since 3.21.0
+	 *
+	 * @return int
+	 */
+	public function get_analytics_entity_type_dimension() {
+		return $this->get( 'wl_analytics_settings', self::ANALYTICS_ENTITY_TYPE_DIMENSION, 1 );
 	}
 
 	/**

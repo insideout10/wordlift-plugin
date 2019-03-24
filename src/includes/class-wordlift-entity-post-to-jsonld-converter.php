@@ -105,7 +105,18 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 			$this->process_post_properties( $jsonld, $post_id );
 		}
 
-		return $this->post_process( $jsonld );
+		/**
+		 * Call the `wl_entity_jsonld` filter.
+		 *
+		 * @api
+		 *
+		 * @since 3.20.0
+		 *
+		 * @param array $jsonld The JSON-LD structure.
+		 * @param int   $post_id The {@link WP_Post} `id`.
+		 * @param array $references The array of referenced entities.
+		 */
+		return apply_filters( 'wl_entity_jsonld', $this->post_process( $jsonld ), $post_id, $references );
 	}
 
 	/**

@@ -55,10 +55,10 @@ class Wordlift_Admin_Schemaorg_Taxonomy_Metabox {
             <ul id="<?php echo $tax_name; ?>-tabs" class="category-tabs">
                 <li class="tabs"><a href="#<?php echo $tax_name; ?>-all"><?php echo $taxonomy->labels->all_items; ?></a>
                 </li>
-                <li class="hide-if-no-js"><a
+                <li><a
                             href="#<?php echo $tax_name; ?>-pop"><?php echo esc_html( $taxonomy->labels->most_used ); ?></a>
                 </li>
-                <li class="hide-if-no-js"><a href="#<?php echo $tax_name; ?>-legacy">
+                <li><a href="#<?php echo $tax_name; ?>-legacy">
 						<?php echo esc_html_x( 'A-Z', 'Entity Types metabox', 'wordlift' ); ?></a>
                 </li>
             </ul>
@@ -89,7 +89,7 @@ class Wordlift_Admin_Schemaorg_Taxonomy_Metabox {
 			<?php if ( current_user_can( $taxonomy->cap->edit_terms ) ) : ?>
                 <div id="<?php echo $tax_name; ?>-adder" class="wp-hidden-children">
                     <a id="<?php echo $tax_name; ?>-add-toggle" href="#<?php echo $tax_name; ?>-add"
-                       class="hide-if-no-js taxonomy-add-new">
+                       class="taxonomy-add-new">
 						<?php
 						/* translators: %s: add new taxonomy label */
 						printf( __( '+ %s' ), $taxonomy->labels->add_new_item );

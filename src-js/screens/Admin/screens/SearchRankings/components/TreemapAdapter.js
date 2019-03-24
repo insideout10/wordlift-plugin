@@ -16,14 +16,11 @@ class TreemapAdapter {
   }
 
   load(url) {
-    // console.debug(`Loading ${url}...`);
 
     fetch(url)
       .then(response => response.json())
       .then(json => json.data)
       .then(json => {
-        console.info(`${url} loaded.`, { json });
-
         this.treemap = treemap()
           .size([this.renderStrategy.width, this.renderStrategy.height])
           .tile(this.tilingStrategy.tile);
