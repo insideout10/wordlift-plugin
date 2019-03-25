@@ -80,7 +80,8 @@ function wl_linked_data_rest_insert_post( $post, $request, $creating ){
 	// Store mapping between tmp new entities uris and real new entities uri
 	$entities_uri_mapping = array();
 
-	$metas = $request->get_json_params()['meta'];
+	$metas = $request->get_json_params();
+	$metas = $metas['meta'];
 
 	// Ignore if no change in meta
 	if ( empty($metas) ) {
