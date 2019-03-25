@@ -142,7 +142,8 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.20.0 (2019-03-05) =
+= 3.20.0 (2019-03-25) =
+* Enhancement: [#894](https://github.com/insideout10/wordlift-plugin/issues/894): Push entity-related events to GA.
 * Enhancement: [#892](https://github.com/insideout10/wordlift-plugin/issues/892): Write JSON-LD of local entities bound to taxonomy terms.
 * Enhancement: [#887](https://github.com/insideout10/wordlift-plugin/issues/887): Add the GMT offset to dates in JSON-LD.
 * Enhancement: [#882](https://github.com/insideout10/wordlift-plugin/issues/882): Add greek among the supported languages.
