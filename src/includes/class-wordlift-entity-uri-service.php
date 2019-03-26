@@ -213,13 +213,13 @@ class Wordlift_Entity_Uri_Service {
 	 *
 	 * @since 3.16.3
 	 *
-	 * @param int $uri An uri.
+	 * @param string $uri An uri.
 	 *
 	 * @return true if the uri internal to the current dataset otherwise false.
 	 */
 	public function is_internal( $uri ) {
 
-		return ( 0 === strrpos( $uri, $this->configuration_service->get_dataset_uri() ) );
+		return ( 0 === strrpos( $uri, (string)$this->configuration_service->get_dataset_uri() ) );
 	}
 
 }

@@ -162,6 +162,7 @@ class AnnotationService {
       dispatch(processingBlockAdd(this.blockClientId));
       if (this.blockContent && this.block.name != "core/freeform") {
         console.log(`Requesting analysis for block ${this.blockClientId}...`);
+        wp.data.dispatch("core/notices").removeNotice("wordlift-convert-classic-editor-blocks");
         wp.apiFetch(this.getWordliftAnalyzeRequest()).then(response => {
           if (Object.keys(response.entities).length > 0) {
             this.rawResponse = response;
@@ -348,6 +349,14 @@ class AnnotationService {
           }
         });
       wp.data.dispatch("core/notices").removeNotice("wordlift-convert-classic-editor-blocks");
+      wp.data
+        .dispatch("core/notices")
+        .createSuccessNotice(
+          "Classic Editor converted to blocks. Toggle between settings and WordLift sidebar to initiate analysis. ",
+          {
+            id: "wordlift-convert-classic-editor-blocks"
+          }
+        );
     };
   }
 

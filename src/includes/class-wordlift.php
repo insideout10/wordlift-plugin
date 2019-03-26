@@ -1583,7 +1583,6 @@ class Wordlift {
 
 		// Hook the menu creation on the general wordlift menu creation.
 		$this->loader->add_action( 'wl_admin_menu', $this->settings_page, 'admin_menu', 10, 2 );
-		$this->loader->add_action( 'wl_admin_menu', $this->analytics_settings_page, 'admin_menu', 10, 2 );
 		if ( defined( 'WORDLIFT_BATCH' ) && WORDLIFT_BATCH ) {
 			// Add the functionality only if a flag is set in wp-config.php .
 			$this->loader->add_action( 'wl_admin_menu', $this->batch_analysis_page, 'admin_menu', 10, 2 );
