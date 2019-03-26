@@ -15,9 +15,6 @@ import { receiveAnalysisResults, setCurrentAnnotation, updateOccurrencesForEntit
 import { processingBlockAdd, processingBlockRemove } from "../actions";
 import * as Constants from "../constants";
 
-const canCreateEntities =
-  "undefined" !== wlSettings["can_create_entities"] && "yes" === wlSettings["can_create_entities"];
-
 /**
  * Define the `AnnotationService` class.
  *

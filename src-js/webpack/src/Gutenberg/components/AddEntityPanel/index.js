@@ -8,7 +8,7 @@ import React from "react";
  * Internal dependencies.
  */
 import Store2 from "../../stores/Store2";
-import AddEntity from "../../../Edit/components/AddEntity";
+import AddEntity from "./AddEntity";
 
 /*
  * Packages via WordPress global

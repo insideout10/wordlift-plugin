@@ -8,7 +8,7 @@ import logger from "redux-logger";
 /*
  * Internal dependencies.
  */
-import saga from "../../Edit/components/AddEntity/sagas";
+import saga from "../components/AddEntityPanel/AddEntity/sagas";
 import { reducer } from "../../Edit/components/AddEntity/actions";
 
 // Create the saga middleware.
