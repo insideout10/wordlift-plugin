@@ -1105,14 +1105,16 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', ['wordlift.e
       }
       return analysis;
     };
-    ref = configuration.classificationBoxes;
-    for (j = 0, len = ref.length; j < len; j++) {
-      box = ref[j];
-      ref1 = box.registeredTypes;
-      for (k = 0, len1 = ref1.length; k < len1; k++) {
-        type = ref1[k];
-        if (indexOf.call(service._supportedTypes, type) < 0) {
-          service._supportedTypes.push(type);
+    if (configuration.classificationBoxes != null) {
+      ref = configuration.classificationBoxes;
+      for (j = 0, len = ref.length; j < len; j++) {
+        box = ref[j];
+        ref1 = box.registeredTypes;
+        for (k = 0, len1 = ref1.length; k < len1; k++) {
+          type = ref1[k];
+          if (indexOf.call(service._supportedTypes, type) < 0) {
+            service._supportedTypes.push(type);
+          }
         }
       }
     }
@@ -1834,11 +1836,13 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', []).p
           css = status ? 'wl-spinner-running' : '';
           return $('.wl-widget-spinner svg').attr('class', css);
         });
-        return wp.wordlift.on('loading', function(status) {
-          var css;
-          css = status ? 'wl-spinner-running' : '';
-          return $('.wl-widget-spinner svg').attr('class', css);
-        });
+        if (wp.wordlift != null) {
+          return wp.wordlift.on('loading', function(status) {
+            var css;
+            css = status ? 'wl-spinner-running' : '';
+            return $('.wl-widget-spinner svg').attr('class', css);
+          });
+        }
       }
     ]);
     return tinymce.PluginManager.add('wordlift', function(editor, url) {

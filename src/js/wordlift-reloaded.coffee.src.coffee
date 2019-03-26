@@ -1097,10 +1097,11 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
       return analysis
 
     # Retrieve supported type from current classification boxes configuration
-    for box in configuration.classificationBoxes
-      for type in box.registeredTypes
-        if type not in service._supportedTypes
-          service._supportedTypes.push type
+    if configuration.classificationBoxes?
+      for box in configuration.classificationBoxes
+        for type in box.registeredTypes
+          if type not in service._supportedTypes
+            service._supportedTypes.push type
 
     service.createEntity = (params = {}) ->
 # Set the defalut values.
@@ -1885,9 +1886,10 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
       css = if status then 'wl-spinner-running' else ''
       $('.wl-widget-spinner svg').attr 'class', css
 
-    wp.wordlift.on 'loading', ( status ) ->
-      css = if status then 'wl-spinner-running' else ''
-      $('.wl-widget-spinner svg').attr 'class', css
+    if wp.wordlift?
+      wp.wordlift.on 'loading', ( status ) ->
+        css = if status then 'wl-spinner-running' else ''
+        $('.wl-widget-spinner svg').attr 'class', css
 
   ])
 

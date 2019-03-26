@@ -61,9 +61,10 @@
       css = if status then 'wl-spinner-running' else ''
       $('.wl-widget-spinner svg').attr 'class', css
 
-    wp.wordlift.on 'loading', ( status ) ->
-      css = if status then 'wl-spinner-running' else ''
-      $('.wl-widget-spinner svg').attr 'class', css
+    if wp.wordlift?
+      wp.wordlift.on 'loading', ( status ) ->
+        css = if status then 'wl-spinner-running' else ''
+        $('.wl-widget-spinner svg').attr 'class', css
 
   ])
 
