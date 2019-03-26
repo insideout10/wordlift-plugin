@@ -23,8 +23,6 @@ import AddEntityPanel from "./components/AddEntityPanel";
 const { Fragment } = wp.element;
 const { PluginSidebar, PluginSidebarMoreMenuItem } = wp.editPost;
 
-window.store1 = Store1;
-
 const WordLiftSidebar = () => (
   <Fragment>
     <PluginSidebarMoreMenuItem target="wordlift-sidebar" icon={<WordLiftIcon />}>

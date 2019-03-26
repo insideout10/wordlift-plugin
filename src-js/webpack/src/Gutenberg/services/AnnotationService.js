@@ -159,6 +159,7 @@ class AnnotationService {
       dispatch(processingBlockAdd(this.blockClientId));
       if (this.blockContent && this.block.name != "core/freeform") {
         console.log(`Requesting analysis for block ${this.blockClientId}...`);
+        wp.data.dispatch("core/notices").removeNotice("wordlift-convert-classic-editor-blocks");
         wp.apiFetch(this.getWordliftAnalyzeRequest()).then(response => {
           if (Object.keys(response.entities).length > 0) {
             this.rawResponse = response;
@@ -330,9 +331,10 @@ class AnnotationService {
   }
 
   static convertClassicEditorBlocks() {
-    if (window.wordlift.convertClassicEditorBlocks) {
+    if (window.wordlift.convertClassicEditorBlocks && window.wordlift.AnnotationService) {
       return;
     }
+    window.wordlift.AnnotationService = AnnotationService;
     window.wordlift.convertClassicEditorBlocks = function() {
       wp.data
         .select("core/editor")
@@ -345,6 +347,14 @@ class AnnotationService {
           }
         });
       wp.data.dispatch("core/notices").removeNotice("wordlift-convert-classic-editor-blocks");
+      wp.data
+        .select("core/editor")
+        .getBlocks()
+        .forEach((block, blockIndex) => {
+          let annotationService = new window.wordlift.AnnotationService(block);
+          window.wordlift.store1.dispatch(annotationService.wordliftAnalyze());
+        });
+      window.wordlift.store1.dispatch(AnnotationService.analyseLocalEntities());
     };
   }
 
