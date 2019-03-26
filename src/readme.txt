@@ -160,6 +160,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement: [#728](https://github.com/insideout10/wordlift-plugin/issues/728): Gutenberg Integration.
 * Enhancement: [#713](https://github.com/insideout10/wordlift-plugin/issues/713): Allow to configure the target country.
 
+* Fix: [#901](https://github.com/insideout10/wordlift-plugin/issues/901): Script error on /wp-admin/admin.php?page=filter_urls_form&id=1.
 * Fix: [#896](https://github.com/insideout10/wordlift-plugin/issues/896): AMP Validation fails with Faceted Search Widget (QA).
 * Fix: [#895](https://github.com/insideout10/wordlift-plugin/issues/895): AMP validation fails with Navigator widget (QA).
 * Fix: [#888](https://github.com/insideout10/wordlift-plugin/issues/888): Remove `wordCount` from `WebPage` JSON-LD.
