@@ -10,9 +10,10 @@ import {
   loadItemsSuccess,
   close,
   open
-} from "../../../../Edit/components/AddEntity/actions";
+} from "./actions";
 import { autocomplete } from "../../../../Edit/components/AddEntity/api";
 import EditPostWidgetController from "../../../../Edit/angular/EditPostWidgetController";
+import AnnotationService from "../../../services/AnnotationService";
 
 function* loadItems({ payload }) {
   if ("undefined" === typeof payload || "" === payload) return;
@@ -42,8 +43,19 @@ function* createEntity({ payload }) {
 }
 
 function* addEntity({ payload }) {
-  // console.log("addEntity payload:", payload);
-  // return;
+  let currentEntity = AnnotationService.createEntity();
+  currentEntity.description = payload.descriptions[0];
+  currentEntity.id = payload.id;
+  currentEntity.images = payload.images;
+  currentEntity.label = payload.label;
+  currentEntity.mainType = getMainType(payload.types);
+  currentEntity.types = payload.types;
+  currentEntity.sameAs = payload.sameAss;
+
+  console.log("currentEntity:", currentEntity);
+  AnnotationService.createTextAnnotationFromCurrentSelection();
+  return;
+
   const ctrl = EditPostWidgetController();
   ctrl.$apply(() => {
     // Create the text annotation.

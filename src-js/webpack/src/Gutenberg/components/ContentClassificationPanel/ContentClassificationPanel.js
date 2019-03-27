@@ -19,7 +19,7 @@ import Header from "../../../Edit/components/Header";
 import VisibleEntityList from "../../../Edit/containers/VisibleEntityList";
 import Wrapper from "../../../Edit/components/App/Wrapper";
 import Store2 from "../../stores/Store2";
-import { setValue } from "../../../Edit/components/AddEntity/actions";
+import { setValue } from "../../components/AddEntityPanel/AddEntity/actions";
 import Spinner from "../Spinner";
 
 /*
@@ -65,8 +65,21 @@ class ContentClassificationPanel extends React.Component {
       className: null,
       edit: ({ isActive, value, onChange }) => {
         this.props.dispatch(AnnotationService.annotateSelected(value.start, value.end));
+        const blockClientId = wp.data.select("core/editor").getSelectedBlockClientId();
         const selected = value.text.substring(value.start, value.end);
-        Store2.dispatch(setValue(selected));
+        let formats = [];
+        for (var i = value.start; i < value.end; i++) {
+          formats.push(value.formats[i]);
+        }
+        Store2.dispatch(
+          setValue({
+            value: selected,
+            start: value.start,
+            end: value.end,
+            formats,
+            blockClientId
+          })
+        );
         return <Fragment />;
       }
     });

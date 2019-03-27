@@ -1,4 +1,4 @@
-/* globals wp, wlSettings, wordlift */
+/* globals wp, wlSettings, wordlift, jQuery */
 /**
  * Services: Link Service.
  *
@@ -11,6 +11,7 @@
  * Internal dependencies.
  */
 import Store1 from "../stores/Store1";
+import Store2 from "../stores/Store2";
 import { receiveAnalysisResults, setCurrentAnnotation, updateOccurrencesForEntity } from "../../Edit/actions";
 import { processingBlockAdd, processingBlockRemove } from "../actions";
 import * as Constants from "../constants";
@@ -470,6 +471,81 @@ class AnnotationService {
           }
         }
       });
+  }
+
+  static createTextAnnotationFromCurrentSelection() {
+    const { value, start, end, blockClientId } = Store2.getState();
+    let textAnnotation, textAnnotationSpan, blockRichText, updatedBlockRichText;
+    if (value === "") {
+      console.log("Invalid selection! The text annotation cannot be created");
+      return;
+    }
+    blockRichText = wp.richText.create({
+      html: wp.data.select("core/editor").getBlock(blockClientId).attributes.content
+    });
+
+    let rawHtml = wp.data.select("core/editor").getBlock(blockClientId).attributes.content;
+    let replacedHtml = rawHtml.replace(value, "ABC");
+    console.log(wp.richText.create({ html: replacedHtml }));
+
+    // updatedBlockRichText = wp.richText.replace(blockRichText, value, "ABC");
+    // console.log(blockRichText, updatedBlockRichText);
+    // wp.data.dispatch("core/editor").updateBlock(blockClientId, {
+    //   attributes: {
+    //     content: wp.richText.toHTMLString({
+    //       value: updatedBlockRichText
+    //     })
+    //   }
+    // });
+  }
+
+  static createAnnotation(params) {
+    var defaults;
+    if (params == null) {
+      params = {};
+    }
+    defaults = {
+      id: "urn:local-text-annotation-" + AnnotationService.uniqueId(32),
+      text: "",
+      start: 0,
+      end: 0,
+      entities: [],
+      entityMatches: []
+    };
+    return jQuery.extend(defaults, params);
+  }
+
+  static createEntity(params) {
+    var defaults;
+    if (params == null) {
+      params = {};
+    }
+    defaults = {
+      id: "local-entity-" + AnnotationService.uniqueId(32),
+      label: "",
+      description: "",
+      mainType: "",
+      types: [],
+      images: [],
+      confidence: 1,
+      occurrences: [],
+      annotations: {}
+    };
+    return jQuery.extend(true, defaults, params);
+  }
+
+  static uniqueId(length) {
+    var id;
+    if (length == null) {
+      length = 8;
+    }
+    id = "";
+    while (id.length < length) {
+      id += Math.random()
+        .toString(36)
+        .substr(2);
+    }
+    return id.substr(0, length);
   }
 }
 
