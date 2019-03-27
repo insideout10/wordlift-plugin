@@ -235,7 +235,9 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 					<h3 class="wl-headline">{$shortcode_atts['title']}</h3>
 					<amp-list 
 						class="wl-facets" 
-						src="{$wp_json_url_facets}">
+						src="{$wp_json_url_facets}"
+						layout="fixed-height"
+						height="150">
 						<template type="amp-mustache">  
 							<div class="wl-facets-container">
 								<h5>{{l10n}}</h5>
