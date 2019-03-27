@@ -30053,14 +30053,16 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', ['wordlift.e
       }
       return analysis;
     };
-    ref = configuration.classificationBoxes;
-    for (j = 0, len = ref.length; j < len; j++) {
-      box = ref[j];
-      ref1 = box.registeredTypes;
-      for (k = 0, len1 = ref1.length; k < len1; k++) {
-        type = ref1[k];
-        if (indexOf.call(service._supportedTypes, type) < 0) {
-          service._supportedTypes.push(type);
+    if (configuration.classificationBoxes != null) {
+      ref = configuration.classificationBoxes;
+      for (j = 0, len = ref.length; j < len; j++) {
+        box = ref[j];
+        ref1 = box.registeredTypes;
+        for (k = 0, len1 = ref1.length; k < len1; k++) {
+          type = ref1[k];
+          if (indexOf.call(service._supportedTypes, type) < 0) {
+            service._supportedTypes.push(type);
+          }
         }
       }
     }
@@ -30782,147 +30784,151 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', []).p
           css = status ? 'wl-spinner-running' : '';
           return $('.wl-widget-spinner svg').attr('class', css);
         });
-        return wp.wordlift.on('loading', function(status) {
-          var css;
-          css = status ? 'wl-spinner-running' : '';
-          return $('.wl-widget-spinner svg').attr('class', css);
-        });
+        if (wp.wordlift != null) {
+          return wp.wordlift.on('loading', function(status) {
+            var css;
+            css = status ? 'wl-spinner-running' : '';
+            return $('.wl-widget-spinner svg').attr('class', css);
+          });
+        }
       }
     ]);
-    return tinymce.PluginManager.add('wordlift', function(editor, url) {
-      var addClassToBody, closed, defaultEditorId, editorId, fireEvent, ref, ref1, startAnalysis;
-      defaultEditorId = "undefined" !== typeof window['wlSettings']['default_editor_id'] ? window['wlSettings']['default_editor_id'] : 'content';
-      editorId = (ref = typeof wp !== "undefined" && wp !== null ? (ref1 = wp.hooks) != null ? ref1.applyFilters('wl_default_editor_id', defaultEditorId) : void 0 : void 0) != null ? ref : defaultEditorId;
-      console.log("Loading WordLift [ default editor :: " + defaultEditorId + " ][ target editor :: " + editorId + " ][ this editor :: " + editor.id + " ]");
-      if (editor.id !== editorId) {
-        return;
-      }
-      closed = $('#wordlift_entities_box').hasClass('closed');
-      fireEvent = function(editor, eventName, callback) {
-        switch (tinymce.majorVersion) {
-          case '4':
-            return editor.on(eventName, callback);
-          case '3':
-            return editor["on" + eventName].add(callback);
-        }
-      };
-      if (!closed) {
-        injector.invoke([
-          'EditorService', '$rootScope', '$log', function(EditorService, $rootScope, $log) {
-            var j, len, method, originalMethod, ref2, results1;
-            if (wp.autosave != null) {
-              wp.autosave.server.postChanged = function() {
-                return false;
-              };
-            }
-            ref2 = ['setMarkers', 'toViews'];
-            results1 = [];
-            for (j = 0, len = ref2.length; j < len; j++) {
-              method = ref2[j];
-              if (wp.mce.views[method] != null) {
-                originalMethod = wp.mce.views[method];
-                $log.warn("Override wp.mce.views method " + method + "() to prevent shortcodes rendering");
-                wp.mce.views[method] = function(content) {
-                  return content;
-                };
-                $rootScope.$on("analysisEmbedded", function(event) {
-                  $log.info("Going to restore wp.mce.views method " + method + "()");
-                  return wp.mce.views[method] = originalMethod;
-                });
-                $rootScope.$on("analysisFailed", function(event) {
-                  $log.info("Going to restore wp.mce.views method " + method + "()");
-                  return wp.mce.views[method] = originalMethod;
-                });
-                break;
-              } else {
-                results1.push(void 0);
-              }
-            }
-            return results1;
-          }
-        ]);
-      }
-      startAnalysis = function() {
-        return injector.invoke([
-          'AnalysisService', 'EditorService', '$rootScope', '$log', function(AnalysisService, EditorService, $rootScope, $log) {
-            return $rootScope.$apply(function() {
-              var html;
-              html = editor.getContent({
-                format: 'raw'
-              });
-              if ("" !== html) {
-                EditorService.updateContentEditableStatus(false);
-                return AnalysisService.perform(html);
-              }
-            });
-          }
-        ]);
-      };
-      addClassToBody = function() {
-        var $body;
-        $body = $(editor.getBody());
-        closed = $('#wordlift_entities_box').hasClass('closed');
-        if (closed) {
-          return $body.addClass('wl-postbox-closed');
-        } else {
-          return $body.removeClass('wl-postbox-closed');
-        }
-      };
-      $(document).on('postbox-toggled', function(e, postbox) {
-        if ('wordlift_entities_box' !== postbox.id) {
+    if (window['wlSettings'] != null) {
+      return tinymce.PluginManager.add('wordlift', function(editor, url) {
+        var addClassToBody, closed, defaultEditorId, editorId, fireEvent, ref, ref1, startAnalysis;
+        defaultEditorId = "undefined" !== typeof window['wlSettings']['default_editor_id'] ? window['wlSettings']['default_editor_id'] : 'content';
+        editorId = (ref = typeof wp !== "undefined" && wp !== null ? (ref1 = wp.hooks) != null ? ref1.applyFilters('wl_default_editor_id', defaultEditorId) : void 0 : void 0) != null ? ref : defaultEditorId;
+        console.log("Loading WordLift [ default editor :: " + defaultEditorId + " ][ target editor :: " + editorId + " ][ this editor :: " + editor.id + " ]");
+        if (editor.id !== editorId) {
           return;
         }
-        return addClassToBody();
-      });
-      editor.on('init', function() {
-        var broadcastEditorSelection;
-        addClassToBody();
-        broadcastEditorSelection = function() {
-          var selection;
-          selection = editor.selection.getContent({
-            format: 'text'
-          });
-          return wp.wordlift.trigger('editorSelectionChanged', selection);
+        closed = $('#wordlift_entities_box').hasClass('closed');
+        fireEvent = function(editor, eventName, callback) {
+          switch (tinymce.majorVersion) {
+            case '4':
+              return editor.on(eventName, callback);
+            case '3':
+              return editor["on" + eventName].add(callback);
+          }
         };
-        return editor.on('selectionchange', function() {
-          return broadcastEditorSelection();
-        });
-      });
-      if (!closed) {
-        fireEvent(editor, 'LoadContent', startAnalysis);
-      } else {
+        if (!closed) {
+          injector.invoke([
+            'EditorService', '$rootScope', '$log', function(EditorService, $rootScope, $log) {
+              var j, len, method, originalMethod, ref2, results1;
+              if (wp.autosave != null) {
+                wp.autosave.server.postChanged = function() {
+                  return false;
+                };
+              }
+              ref2 = ['setMarkers', 'toViews'];
+              results1 = [];
+              for (j = 0, len = ref2.length; j < len; j++) {
+                method = ref2[j];
+                if (wp.mce.views[method] != null) {
+                  originalMethod = wp.mce.views[method];
+                  $log.warn("Override wp.mce.views method " + method + "() to prevent shortcodes rendering");
+                  wp.mce.views[method] = function(content) {
+                    return content;
+                  };
+                  $rootScope.$on("analysisEmbedded", function(event) {
+                    $log.info("Going to restore wp.mce.views method " + method + "()");
+                    return wp.mce.views[method] = originalMethod;
+                  });
+                  $rootScope.$on("analysisFailed", function(event) {
+                    $log.info("Going to restore wp.mce.views method " + method + "()");
+                    return wp.mce.views[method] = originalMethod;
+                  });
+                  break;
+                } else {
+                  results1.push(void 0);
+                }
+              }
+              return results1;
+            }
+          ]);
+        }
+        startAnalysis = function() {
+          return injector.invoke([
+            'AnalysisService', 'EditorService', '$rootScope', '$log', function(AnalysisService, EditorService, $rootScope, $log) {
+              return $rootScope.$apply(function() {
+                var html;
+                html = editor.getContent({
+                  format: 'raw'
+                });
+                if ("" !== html) {
+                  EditorService.updateContentEditableStatus(false);
+                  return AnalysisService.perform(html);
+                }
+              });
+            }
+          ]);
+        };
+        addClassToBody = function() {
+          var $body;
+          $body = $(editor.getBody());
+          closed = $('#wordlift_entities_box').hasClass('closed');
+          if (closed) {
+            return $body.addClass('wl-postbox-closed');
+          } else {
+            return $body.removeClass('wl-postbox-closed');
+          }
+        };
         $(document).on('postbox-toggled', function(e, postbox) {
           if ('wordlift_entities_box' !== postbox.id) {
             return;
           }
-          return startAnalysis();
+          return addClassToBody();
         });
-      }
-      fireEvent(editor, "NodeChange", function(e) {
-        return injector.invoke([
-          'AnalysisService', 'EditorService', '$rootScope', '$log', function(AnalysisService, EditorService, $rootScope, $log) {
-            if (AnalysisService._currentAnalysis) {
-              $rootScope.$apply(function() {
-                return $rootScope.selectionStatus = EditorService.hasSelection();
-              });
+        editor.on('init', function() {
+          var broadcastEditorSelection;
+          addClassToBody();
+          broadcastEditorSelection = function() {
+            var selection;
+            selection = editor.selection.getContent({
+              format: 'text'
+            });
+            return wp.wordlift.trigger('editorSelectionChanged', selection);
+          };
+          return editor.on('selectionchange', function() {
+            return broadcastEditorSelection();
+          });
+        });
+        if (!closed) {
+          fireEvent(editor, 'LoadContent', startAnalysis);
+        } else {
+          $(document).on('postbox-toggled', function(e, postbox) {
+            if ('wordlift_entities_box' !== postbox.id) {
+              return;
             }
-            return true;
-          }
-        ]);
-      });
-      return fireEvent(editor, "Click", function(e) {
-        return injector.invoke([
-          'AnalysisService', 'EditorService', '$rootScope', '$log', function(AnalysisService, EditorService, $rootScope, $log) {
-            if (AnalysisService._currentAnalysis) {
-              $rootScope.$apply(function() {
-                return EditorService.selectAnnotation(e.target.id);
-              });
+            return startAnalysis();
+          });
+        }
+        fireEvent(editor, "NodeChange", function(e) {
+          return injector.invoke([
+            'AnalysisService', 'EditorService', '$rootScope', '$log', function(AnalysisService, EditorService, $rootScope, $log) {
+              if (AnalysisService._currentAnalysis) {
+                $rootScope.$apply(function() {
+                  return $rootScope.selectionStatus = EditorService.hasSelection();
+                });
+              }
+              return true;
             }
-            return true;
-          }
-        ]);
+          ]);
+        });
+        return fireEvent(editor, "Click", function(e) {
+          return injector.invoke([
+            'AnalysisService', 'EditorService', '$rootScope', '$log', function(AnalysisService, EditorService, $rootScope, $log) {
+              if (AnalysisService._currentAnalysis) {
+                $rootScope.$apply(function() {
+                  return EditorService.selectAnnotation(e.target.id);
+                });
+              }
+              return true;
+            }
+          ]);
+        });
       });
-    });
+    }
   };
 })(this))(jQuery, window.angular);
 

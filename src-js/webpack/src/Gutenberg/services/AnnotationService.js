@@ -242,6 +242,8 @@ class AnnotationService {
     return dispatch => {
       console.log(`Found ${Object.keys(wordlift.entities).length} entities in configuration...`);
 
+      if (Object.keys(wordlift.entities).length === 0) return;
+
       let localData = {
         entities: wordlift.entities,
         annotations: {}

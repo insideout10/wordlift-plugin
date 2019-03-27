@@ -44,7 +44,7 @@ class Wordlift_Analytics_Connect {
 		// Get the post titles of related items and connect them in an array.
 		foreach ( $related_ids as $related_id ) {
 			$type  = $entity_type_service->get( $related_id );
-			$type  = $type['label'];
+			$type  = isset( $type['uri'] ) ? $type['uri'] : 'unknown';
 			$label = $entity_service->get_labels( $related_id );
 			$label = $label[0];
 

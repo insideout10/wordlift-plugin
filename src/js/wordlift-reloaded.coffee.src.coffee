@@ -1097,10 +1097,11 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
       return analysis
 
     # Retrieve supported type from current classification boxes configuration
-    for box in configuration.classificationBoxes
-      for type in box.registeredTypes
-        if type not in service._supportedTypes
-          service._supportedTypes.push type
+    if configuration.classificationBoxes?
+      for box in configuration.classificationBoxes
+        for type in box.registeredTypes
+          if type not in service._supportedTypes
+            service._supportedTypes.push type
 
     service.createEntity = (params = {}) ->
 # Set the defalut values.
@@ -1885,171 +1886,173 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
       css = if status then 'wl-spinner-running' else ''
       $('.wl-widget-spinner svg').attr 'class', css
 
-    wp.wordlift.on 'loading', ( status ) ->
-      css = if status then 'wl-spinner-running' else ''
-      $('.wl-widget-spinner svg').attr 'class', css
+    if wp.wordlift?
+      wp.wordlift.on 'loading', ( status ) ->
+        css = if status then 'wl-spinner-running' else ''
+        $('.wl-widget-spinner svg').attr 'class', css
 
   ])
 
-  # Add WordLift as a plugin of the TinyMCE editor.
-  tinymce.PluginManager.add 'wordlift', (editor, url) ->
+  if window['wlSettings']?
+    # Add WordLift as a plugin of the TinyMCE editor.
+    tinymce.PluginManager.add 'wordlift', (editor, url) ->
 
-    # Get the editor id from the `wlSettings` or use `content`.
-    defaultEditorId = if "undefined" != typeof window['wlSettings']['default_editor_id'] then window['wlSettings']['default_editor_id'] else 'content'
+      # Get the editor id from the `wlSettings` or use `content`.
+      defaultEditorId = if "undefined" != typeof window['wlSettings']['default_editor_id'] then window['wlSettings']['default_editor_id'] else 'content'
 
-    # Allow 3rd parties to change the editor id.
-    #
-    # @see https://github.com/insideout10/wordlift-plugin/issues/850.
-    # @see https://github.com/insideout10/wordlift-plugin/issues/851.
-    editorId = wp?.hooks?.applyFilters( 'wl_default_editor_id', defaultEditorId ) ? defaultEditorId
-
-    console.log "Loading WordLift [ default editor :: #{defaultEditorId} ][ target editor :: #{editorId} ][ this editor :: #{editor.id} ]"
-
-    # This plugin has to be loaded only with the main WP "content" editor
-    return unless editor.id is editorId
-
-    # The `closed` flag is a very important flag throughout the initialization
-    # of WordLift's classification box: in fact if the classification box is
-    # closed, WordLift's analysis won't run, until it gets opened.
-    closed = $('#wordlift_entities_box').hasClass('closed')
-
-    # Register event depending on tinymce major version
-    fireEvent = (editor, eventName, callback)->
-      switch tinymce.majorVersion
-        when '4' then editor.on eventName, callback
-        when '3' then editor["on#{eventName}"].add callback
-
-    # We're going to disable WordPress' own live previews here until the
-    # analysis is run, we need to do this as early as possible to avoid WP
-    # already calling the live previews. But we need to do this only if the
-    # classification box is open, since the analysis won't run if it's closed.
-    #
-    # See https://github.com/insideout10/wordlift-plugin/issues/700.
-    if (!closed)
-      injector.invoke(['EditorService', '$rootScope', '$log', (EditorService, $rootScope, $log) ->
-
-        # Override wp.autosave.server.postChanged method
-        # in order to avoid unexpected warning to the user
-        if wp.autosave?
-          wp.autosave.server.postChanged = ()->
-            return false
-
-        # Hack wp.mce.views to prevent shortcodes rendering starts before the
-        # analysis is properly embedded wp.mce.views uses toViews() method from WP
-        # 3.8 to 4.1 and setMarkers() method from WP 4.2 to 4.3 to replace
-        # available shortcodes with corresponding views markup.
-        for method in ['setMarkers', 'toViews']
-          if wp.mce.views[method]?
-
-            originalMethod = wp.mce.views[method]
-            $log.warn "Override wp.mce.views method #{method}() to prevent shortcodes rendering"
-            wp.mce.views[method] = (content)->
-              return content
-
-            $rootScope.$on "analysisEmbedded", (event) ->
-              $log.info "Going to restore wp.mce.views method #{method}()"
-              wp.mce.views[method] = originalMethod
-
-            $rootScope.$on "analysisFailed", (event) ->
-              $log.info "Going to restore wp.mce.views method #{method}()"
-              wp.mce.views[method] = originalMethod
-
-            break
-      ])
-
-    # Define the callback to call to start the analysis.
-    startAnalysis = () ->
-      injector.invoke(['AnalysisService', 'EditorService', '$rootScope', '$log'
-        (AnalysisService, EditorService, $rootScope, $log) ->
-# execute the following commands in the angular js context.
-          $rootScope.$apply(->
-# Get the html content of the editor.
-            html = editor.getContent format: 'raw'
-
-            if "" isnt html
-              EditorService.updateContentEditableStatus false
-              AnalysisService.perform html
-# Get the text content from the Html.
-#            text = Traslator.create(html).getText()
-#            if text.match /[a-zA-Z0-9]+/
-#              # Disable tinymce editing
-#              EditorService.updateContentEditableStatus false
-#              AnalysisService.perform html
-#            else
-#              $log.warn "Blank content: nothing to do!"
-          )
-      ])
-
-    addClassToBody = () ->
-      # Get the editor body.
-      $body = $( editor.getBody() )
-
-      # Whether the postbox is closed.
-      closed = $( '#wordlift_entities_box' ).hasClass( 'closed' )
-
-      # Add or remove the class according to the postbox status.
-      if closed then $body.addClass( 'wl-postbox-closed' ) else $body.removeClass( 'wl-postbox-closed' )
-
-
-    # Add a `wl-postbox-closed` class to the editor body when the classification
-    # metabox is closed.
-    $(document).on( 'postbox-toggled', (e, postbox) ->
-      # Bail out if it's not our postbox.
-      return if 'wordlift_entities_box' isnt postbox.id
-
-      addClassToBody()
-    )
-
-    # Set the initial state on the editor's body.
-    editor.on('init', () ->
-      addClassToBody()
-
-      # Send a broadcast when the editor selection changes.
+      # Allow 3rd parties to change the editor id.
       #
-      # See https://github.com/insideout10/wordlift-plugin/issues/467
-      broadcastEditorSelection = () ->
-        selection = editor.selection.getContent({format: 'text'})
-        wp.wordlift.trigger 'editorSelectionChanged', selection
+      # @see https://github.com/insideout10/wordlift-plugin/issues/850.
+      # @see https://github.com/insideout10/wordlift-plugin/issues/851.
+      editorId = wp?.hooks?.applyFilters( 'wl_default_editor_id', defaultEditorId ) ? defaultEditorId
 
-      editor.on('selectionchange', () -> broadcastEditorSelection() )
+      console.log "Loading WordLift [ default editor :: #{defaultEditorId} ][ target editor :: #{editorId} ][ this editor :: #{editor.id} ]"
 
-    )
+      # This plugin has to be loaded only with the main WP "content" editor
+      return unless editor.id is editorId
 
-    # Start the analysis if the postbox isn't closed.
-    if !closed then fireEvent( editor, 'LoadContent', startAnalysis ) else
-      # If the postbox is closed, hook to the `postbox-toggled` event and start
-      # the analysis as soon as the postbox is opened.
+      # The `closed` flag is a very important flag throughout the initialization
+      # of WordLift's classification box: in fact if the classification box is
+      # closed, WordLift's analysis won't run, until it gets opened.
+      closed = $('#wordlift_entities_box').hasClass('closed')
+
+      # Register event depending on tinymce major version
+      fireEvent = (editor, eventName, callback)->
+        switch tinymce.majorVersion
+          when '4' then editor.on eventName, callback
+          when '3' then editor["on#{eventName}"].add callback
+
+      # We're going to disable WordPress' own live previews here until the
+      # analysis is run, we need to do this as early as possible to avoid WP
+      # already calling the live previews. But we need to do this only if the
+      # classification box is open, since the analysis won't run if it's closed.
+      #
+      # See https://github.com/insideout10/wordlift-plugin/issues/700.
+      if (!closed)
+        injector.invoke(['EditorService', '$rootScope', '$log', (EditorService, $rootScope, $log) ->
+
+          # Override wp.autosave.server.postChanged method
+          # in order to avoid unexpected warning to the user
+          if wp.autosave?
+            wp.autosave.server.postChanged = ()->
+              return false
+
+          # Hack wp.mce.views to prevent shortcodes rendering starts before the
+          # analysis is properly embedded wp.mce.views uses toViews() method from WP
+          # 3.8 to 4.1 and setMarkers() method from WP 4.2 to 4.3 to replace
+          # available shortcodes with corresponding views markup.
+          for method in ['setMarkers', 'toViews']
+            if wp.mce.views[method]?
+
+              originalMethod = wp.mce.views[method]
+              $log.warn "Override wp.mce.views method #{method}() to prevent shortcodes rendering"
+              wp.mce.views[method] = (content)->
+                return content
+
+              $rootScope.$on "analysisEmbedded", (event) ->
+                $log.info "Going to restore wp.mce.views method #{method}()"
+                wp.mce.views[method] = originalMethod
+
+              $rootScope.$on "analysisFailed", (event) ->
+                $log.info "Going to restore wp.mce.views method #{method}()"
+                wp.mce.views[method] = originalMethod
+
+              break
+        ])
+
+      # Define the callback to call to start the analysis.
+      startAnalysis = () ->
+        injector.invoke(['AnalysisService', 'EditorService', '$rootScope', '$log'
+          (AnalysisService, EditorService, $rootScope, $log) ->
+  # execute the following commands in the angular js context.
+            $rootScope.$apply(->
+  # Get the html content of the editor.
+              html = editor.getContent format: 'raw'
+
+              if "" isnt html
+                EditorService.updateContentEditableStatus false
+                AnalysisService.perform html
+  # Get the text content from the Html.
+  #            text = Traslator.create(html).getText()
+  #            if text.match /[a-zA-Z0-9]+/
+  #              # Disable tinymce editing
+  #              EditorService.updateContentEditableStatus false
+  #              AnalysisService.perform html
+  #            else
+  #              $log.warn "Blank content: nothing to do!"
+            )
+        ])
+
+      addClassToBody = () ->
+        # Get the editor body.
+        $body = $( editor.getBody() )
+
+        # Whether the postbox is closed.
+        closed = $( '#wordlift_entities_box' ).hasClass( 'closed' )
+
+        # Add or remove the class according to the postbox status.
+        if closed then $body.addClass( 'wl-postbox-closed' ) else $body.removeClass( 'wl-postbox-closed' )
+
+
+      # Add a `wl-postbox-closed` class to the editor body when the classification
+      # metabox is closed.
       $(document).on( 'postbox-toggled', (e, postbox) ->
         # Bail out if it's not our postbox.
         return if 'wordlift_entities_box' isnt postbox.id
 
-        startAnalysis()
+        addClassToBody()
       )
 
-    # Fires when the user changes node location using the mouse or keyboard in the TinyMCE editor.
-    fireEvent(editor, "NodeChange", (e) ->
-      injector.invoke(['AnalysisService', 'EditorService', '$rootScope', '$log',
-        (AnalysisService, EditorService, $rootScope, $log) ->
-          if AnalysisService._currentAnalysis
-            $rootScope.$apply(->
-              $rootScope.selectionStatus = EditorService.hasSelection()
-            )
-          true
+      # Set the initial state on the editor's body.
+      editor.on('init', () ->
+        addClassToBody()
 
-      ])
-    )
+        # Send a broadcast when the editor selection changes.
+        #
+        # See https://github.com/insideout10/wordlift-plugin/issues/467
+        broadcastEditorSelection = () ->
+          selection = editor.selection.getContent({format: 'text'})
+          wp.wordlift.trigger 'editorSelectionChanged', selection
 
-    # this event is raised when a textannotation is selected in the TinyMCE editor.
-    fireEvent(editor, "Click", (e) ->
-      injector.invoke(['AnalysisService', 'EditorService', '$rootScope', '$log',
-        (AnalysisService, EditorService, $rootScope, $log) ->
-          if AnalysisService._currentAnalysis
-            $rootScope.$apply(->
-              EditorService.selectAnnotation e.target.id
-            )
-          true
+        editor.on('selectionchange', () -> broadcastEditorSelection() )
 
-      ])
-    )
+      )
+
+      # Start the analysis if the postbox isn't closed.
+      if !closed then fireEvent( editor, 'LoadContent', startAnalysis ) else
+        # If the postbox is closed, hook to the `postbox-toggled` event and start
+        # the analysis as soon as the postbox is opened.
+        $(document).on( 'postbox-toggled', (e, postbox) ->
+          # Bail out if it's not our postbox.
+          return if 'wordlift_entities_box' isnt postbox.id
+
+          startAnalysis()
+        )
+
+      # Fires when the user changes node location using the mouse or keyboard in the TinyMCE editor.
+      fireEvent(editor, "NodeChange", (e) ->
+        injector.invoke(['AnalysisService', 'EditorService', '$rootScope', '$log',
+          (AnalysisService, EditorService, $rootScope, $log) ->
+            if AnalysisService._currentAnalysis
+              $rootScope.$apply(->
+                $rootScope.selectionStatus = EditorService.hasSelection()
+              )
+            true
+
+        ])
+      )
+
+      # this event is raised when a textannotation is selected in the TinyMCE editor.
+      fireEvent(editor, "Click", (e) ->
+        injector.invoke(['AnalysisService', 'EditorService', '$rootScope', '$log',
+          (AnalysisService, EditorService, $rootScope, $log) ->
+            if AnalysisService._currentAnalysis
+              $rootScope.$apply(->
+                EditorService.selectAnnotation e.target.id
+              )
+            true
+
+        ])
+      )
 
 )(jQuery, window.angular)
