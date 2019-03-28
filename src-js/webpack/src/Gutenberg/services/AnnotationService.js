@@ -240,6 +240,8 @@ class AnnotationService {
     return dispatch => {
       console.log(`Found ${Object.keys(wordlift.entities).length} entities in configuration...`);
 
+      if (Object.keys(wordlift.entities).length === 0) return;
+
       let localData = {
         entities: wordlift.entities,
         annotations: {}
@@ -480,20 +482,40 @@ class AnnotationService {
       console.log("Invalid selection! The text annotation cannot be created");
       return;
     }
+    textAnnotation = AnnotationService.createAnnotation({
+      text: value
+    });
     blockRichText = wp.richText.create({
       html: wp.data.select("core/editor").getBlock(blockClientId).attributes.content
     });
 
-    let rawHtml = wp.data.select("core/editor").getBlock(blockClientId).attributes.content;
-    let replacedHtml = rawHtml.replace(value, "ABC");
-    console.log(wp.richText.create({ html: replacedHtml }));
+    let format = {
+      type: "span",
+      attributes: {
+        id: textAnnotation.id,
+        class: "textannotation unlinked selected"
+      }
+    };
+    for (var i = start; i < end; i++) {
+      blockRichText.formats[i] = format;
+    }
+
+    console.log(
+      wp.richText.toHTMLString({
+        value: blockRichText
+      })
+    );
+
+    // let rawHtml = wp.data.select("core/editor").getBlock(blockClientId).attributes.content;
+    // let replacedHtml = rawHtml.replace(value, "ABC");
+    // console.log(wp.richText.create({ html: replacedHtml }));
 
     // updatedBlockRichText = wp.richText.replace(blockRichText, value, "ABC");
     // console.log(blockRichText, updatedBlockRichText);
     // wp.data.dispatch("core/editor").updateBlock(blockClientId, {
     //   attributes: {
     //     content: wp.richText.toHTMLString({
-    //       value: updatedBlockRichText
+    //       value: blockRichText
     //     })
     //   }
     // });
