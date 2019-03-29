@@ -496,29 +496,25 @@ class AnnotationService {
         class: "textannotation unlinked selected"
       }
     };
+    let blockRichTextUpdated = {
+      formats: blockRichText.formats,
+      text: blockRichText.text
+    };
     for (var i = start; i < end; i++) {
-      blockRichText.formats[i] = format;
+      if (!blockRichTextUpdated.formats[i]) {
+        blockRichTextUpdated.formats[i] = [format];
+      } else {
+        blockRichTextUpdated.formats[i][blockRichTextUpdated.formats[i].length] = format;
+      }
     }
 
-    console.log(
-      wp.richText.toHTMLString({
-        value: blockRichText
-      })
-    );
-
-    // let rawHtml = wp.data.select("core/editor").getBlock(blockClientId).attributes.content;
-    // let replacedHtml = rawHtml.replace(value, "ABC");
-    // console.log(wp.richText.create({ html: replacedHtml }));
-
-    // updatedBlockRichText = wp.richText.replace(blockRichText, value, "ABC");
-    // console.log(blockRichText, updatedBlockRichText);
-    // wp.data.dispatch("core/editor").updateBlock(blockClientId, {
-    //   attributes: {
-    //     content: wp.richText.toHTMLString({
-    //       value: blockRichText
-    //     })
-    //   }
-    // });
+    wp.data.dispatch("core/editor").updateBlock(blockClientId, {
+      attributes: {
+        content: wp.richText.toHTMLString({
+          value: blockRichText
+        })
+      }
+    });
   }
 
   static createAnnotation(params) {
