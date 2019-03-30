@@ -43,35 +43,18 @@ function* createEntity({ payload }) {
 }
 
 function* addEntity({ payload }) {
-  let currentEntity = AnnotationService.createEntity();
-  currentEntity.description = payload.descriptions[0];
-  currentEntity.id = payload.id;
-  currentEntity.images = payload.images;
-  currentEntity.label = payload.label;
-  currentEntity.mainType = getMainType(payload.types);
-  currentEntity.types = payload.types;
-  currentEntity.sameAs = payload.sameAss;
-
-  console.log("currentEntity:", currentEntity);
-  AnnotationService.createTextAnnotationFromCurrentSelection();
-  return;
-
-  const ctrl = EditPostWidgetController();
-  ctrl.$apply(() => {
-    // Create the text annotation.
-    ctrl.setCurrentEntity();
-    // Update the entity data.
-    ctrl.currentEntity.description = payload.descriptions[0];
-    ctrl.currentEntity.id = payload.id;
-    ctrl.currentEntity.images = payload.images;
-    ctrl.currentEntity.label = payload.label;
-    ctrl.currentEntity.mainType = getMainType(payload.types);
-    ctrl.currentEntity.types = payload.types;
-    ctrl.currentEntity.sameAs = payload.sameAss;
-    // Save the entity.
-    ctrl.storeCurrentEntity();
+  let currentEntity = AnnotationService.createEntity({
+    description: payload.descriptions[0],
+    id: payload.id,
+    entityId: payload.id,
+    images: payload.images,
+    label: payload.label,
+    mainType: getMainType(payload.types),
+    types: payload.types,
+    sameAs: payload.sameAss
   });
-
+  let currentAnnotation = AnnotationService.createTextAnnotationFromCurrentSelection();
+  AnnotationService.addNewEntityToAnalysis(currentEntity, currentAnnotation);
   yield put(addEntitySuccess());
 }
 

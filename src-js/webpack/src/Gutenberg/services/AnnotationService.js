@@ -393,6 +393,7 @@ class AnnotationService {
   }
 
   static onSelectedEntityTile(entity) {
+    console.log("onSelectedEntityTile entity:", entity);
     let action = "entitySelected";
     if (entity.occurrences.length > 0) {
       action = "entityDeselected";
@@ -475,15 +476,28 @@ class AnnotationService {
       });
   }
 
+  static addNewEntityToAnalysis(entity, annotation) {
+    entity.annotations[annotation.id] = annotation;
+    annotation.entityMatches.push({
+      entityId: entity.id,
+      confidence: 1
+    });
+    annotation.entities[entity.id] = entity;
+    return AnnotationService.onSelectedEntityTile(entity);
+  }
+
   static createTextAnnotationFromCurrentSelection() {
     const { value, start, end, blockClientId } = Store2.getState();
-    let textAnnotation, textAnnotationSpan, blockRichText, updatedBlockRichText;
+    let textAnnotation, blockRichText;
     if (value === "") {
       console.log("Invalid selection! The text annotation cannot be created");
       return;
     }
     textAnnotation = AnnotationService.createAnnotation({
-      text: value
+      text: value,
+      start,
+      end,
+      blockClientId
     });
     blockRichText = wp.richText.create({
       html: wp.data.select("core/editor").getBlock(blockClientId).attributes.content
@@ -496,15 +510,15 @@ class AnnotationService {
         class: "textannotation unlinked selected"
       }
     };
-    let blockRichTextUpdated = {
+    let updatedBlockRichText = {
       formats: blockRichText.formats,
       text: blockRichText.text
     };
     for (var i = start; i < end; i++) {
-      if (!blockRichTextUpdated.formats[i]) {
-        blockRichTextUpdated.formats[i] = [format];
+      if (!updatedBlockRichText.formats[i]) {
+        updatedBlockRichText.formats[i] = [format];
       } else {
-        blockRichTextUpdated.formats[i][blockRichTextUpdated.formats[i].length] = format;
+        updatedBlockRichText.formats[i][updatedBlockRichText.formats[i].length] = format;
       }
     }
 
@@ -515,6 +529,8 @@ class AnnotationService {
         })
       }
     });
+
+    return textAnnotation;
   }
 
   static createAnnotation(params) {
