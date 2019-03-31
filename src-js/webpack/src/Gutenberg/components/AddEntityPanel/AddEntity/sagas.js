@@ -55,12 +55,9 @@ function* addEntity({ payload }) {
     types: payload.types,
     sameAs: payload.sameAss
   });
-  let currentAnnotation = AnnotationService.createTextAnnotationFromCurrentSelection();
+  let currentAnnotation = AnnotationService.createTextAnnotationFromCurrentSelection(currentEntity);
   let entityAnnotationData = AnnotationService.addNewEntityToAnalysis(currentEntity, currentAnnotation);
-  //let entityIds = Object.keys(entityAnnotationData.entities);
-  //AnnotationService.onSelectedEntityTile(entityAnnotationData.entities[entityIds[0]]);
   Store1.dispatch(receiveAnalysisResults(entityAnnotationData));
-  window.testdata = entityAnnotationData;
   yield put(addEntitySuccess());
 }
 

@@ -448,7 +448,7 @@ class AnnotationService {
     };
   }
 
-  static createTextAnnotationFromCurrentSelection() {
+  static createTextAnnotationFromCurrentSelection(entityData) {
     const { value, start, end, blockClientId } = Store2.getState();
     let textAnnotation, blockRichText;
     if (value === "") {
@@ -470,7 +470,8 @@ class AnnotationService {
       type: "span",
       attributes: {
         id: textAnnotation.id,
-        class: "textannotation unlinked selected"
+        class: `textannotation disambiguated wl-${entityData.mainType}`,
+        itemid: entityData.entityId
       }
     };
     let updatedBlockRichText = {
