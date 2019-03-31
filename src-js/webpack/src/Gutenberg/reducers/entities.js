@@ -39,7 +39,7 @@ const entities = function(state = Map(), action) {
       // app doesn't set the `link` property on the entity, therefore we
       // preset it here according to the `occurrences` settings.
       // return ( || return state.mergeDeep(
-      return (
+      return state.mergeDeep(
         Map(action.results.entities)
           .map(x =>
             Object.assign({}, x, {

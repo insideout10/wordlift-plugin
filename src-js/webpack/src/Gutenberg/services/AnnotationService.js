@@ -14,6 +14,7 @@ import Store1 from "../stores/Store1";
 import Store2 from "../stores/Store2";
 import { receiveAnalysisResults, setCurrentAnnotation, updateOccurrencesForEntity } from "../../Edit/actions";
 import { processingBlockAdd, processingBlockRemove } from "../actions";
+import ConvertClassicEditorService from "./ConvertClassicEditorService";
 import * as Constants from "../constants";
 
 /**
@@ -160,7 +161,7 @@ class AnnotationService {
       dispatch(processingBlockAdd(this.blockClientId));
       if (this.blockContent && this.block.name != "core/freeform") {
         console.log(`Requesting analysis for block ${this.blockClientId}...`);
-        wp.data.dispatch("core/notices").removeNotice("wordlift-convert-classic-editor-blocks");
+        ConvertClassicEditorService.removeNotice();
         wp.apiFetch(this.getWordliftAnalyzeRequest()).then(response => {
           if (Object.keys(response.entities).length > 0) {
             this.rawResponse = response;
@@ -174,7 +175,7 @@ class AnnotationService {
           dispatch(processingBlockRemove(this.blockClientId));
         });
       } else if (this.block.name === "core/freeform") {
-        AnnotationService.classicEditorNotice();
+        ConvertClassicEditorService.showNotice();
         dispatch(processingBlockRemove(this.blockClientId));
       } else {
         console.log(`No content found in block ${this.blockClientId}`);
@@ -314,53 +315,6 @@ class AnnotationService {
     };
   }
 
-  static classicEditorNotice() {
-    AnnotationService.convertClassicEditorBlocks();
-    wp.data
-      .dispatch("core/notices")
-      .createInfoNotice("WordLift content analysis is not compatible with Classic Editor blocks. ", {
-        id: "wordlift-convert-classic-editor-blocks",
-        actions: [
-          {
-            url: "https://wordpress.org/plugins/classic-editor/",
-            label: "Switch to Classic Editor"
-          },
-          {
-            url: "javascript:window.wordlift.convertClassicEditorBlocks()",
-            label: "Convert to Gutenberg Blocks"
-          }
-        ]
-      });
-  }
-
-  static convertClassicEditorBlocks() {
-    if (window.wordlift.convertClassicEditorBlocks && window.wordlift.AnnotationService) {
-      return;
-    }
-    window.wordlift.AnnotationService = AnnotationService;
-    window.wordlift.convertClassicEditorBlocks = function() {
-      wp.data
-        .select("core/editor")
-        .getBlocks()
-        .forEach(function(block) {
-          if (block.name === "core/freeform") {
-            wp.data
-              .dispatch("core/editor")
-              .replaceBlocks(block.clientId, wp.blocks.rawHandler({ HTML: wp.blocks.getBlockContent(block) }));
-          }
-        });
-      wp.data.dispatch("core/notices").removeNotice("wordlift-convert-classic-editor-blocks");
-      wp.data
-        .select("core/editor")
-        .getBlocks()
-        .forEach((block, blockIndex) => {
-          let annotationService = new window.wordlift.AnnotationService(block);
-          window.wordlift.store1.dispatch(annotationService.wordliftAnalyze());
-        });
-      window.wordlift.store1.dispatch(AnnotationService.analyseLocalEntities());
-    };
-  }
-
   static annotateSelected(start, end) {
     return function(dispatch) {
       const selectedBlock = wp.data.select("core/editor").getSelectedBlock();
@@ -483,7 +437,15 @@ class AnnotationService {
       confidence: 1
     });
     annotation.entities[entity.id] = entity;
-    return AnnotationService.onSelectedEntityTile(entity);
+    annotation.entities[entity.id].occurrences.push(annotation.id);
+    return {
+      entities: {
+        [entity.id]: entity
+      },
+      annotations: {
+        [annotation.id]: annotation
+      }
+    };
   }
 
   static createTextAnnotationFromCurrentSelection() {
@@ -499,6 +461,7 @@ class AnnotationService {
       end,
       blockClientId
     });
+    textAnnotation.annotationId = textAnnotation.id;
     blockRichText = wp.richText.create({
       html: wp.data.select("core/editor").getBlock(blockClientId).attributes.content
     });
@@ -518,7 +481,7 @@ class AnnotationService {
       if (!updatedBlockRichText.formats[i]) {
         updatedBlockRichText.formats[i] = [format];
       } else {
-        updatedBlockRichText.formats[i][updatedBlockRichText.formats[i].length] = format;
+        updatedBlockRichText.formats[i].push(format);
       }
     }
 

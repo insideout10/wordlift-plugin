@@ -14,6 +14,8 @@ import {
 import { autocomplete } from "../../../../Edit/components/AddEntity/api";
 import EditPostWidgetController from "../../../../Edit/angular/EditPostWidgetController";
 import AnnotationService from "../../../services/AnnotationService";
+import { receiveAnalysisResults } from "../../../../Edit/actions";
+import Store1 from "../../../stores/Store1";
 
 function* loadItems({ payload }) {
   if ("undefined" === typeof payload || "" === payload) return;
@@ -54,7 +56,11 @@ function* addEntity({ payload }) {
     sameAs: payload.sameAss
   });
   let currentAnnotation = AnnotationService.createTextAnnotationFromCurrentSelection();
-  AnnotationService.addNewEntityToAnalysis(currentEntity, currentAnnotation);
+  let entityAnnotationData = AnnotationService.addNewEntityToAnalysis(currentEntity, currentAnnotation);
+  //let entityIds = Object.keys(entityAnnotationData.entities);
+  //AnnotationService.onSelectedEntityTile(entityAnnotationData.entities[entityIds[0]]);
+  Store1.dispatch(receiveAnalysisResults(entityAnnotationData));
+  window.testdata = entityAnnotationData;
   yield put(addEntitySuccess());
 }
 
