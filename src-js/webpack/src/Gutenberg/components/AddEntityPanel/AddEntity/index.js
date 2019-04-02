@@ -9,15 +9,22 @@ import EntitySelectContainer from "../../../../Edit/components/AddEntity/EntityS
 import WrapperContainer from "../../../../Edit/components/AddEntity/WrapperContainer";
 import Arrow from "../../../../Edit/components/Arrow";
 
+const { Panel, PanelBody, Notice } = wp.components;
+
 // store passed from props for Gutenberg
 const AddEntity = props => (
   <Provider store={props.store}>
-    <WrapperContainer>
-      <ButtonContainer>
-        <Arrow height="8px" color="white" />
-      </ButtonContainer>
-      <EntitySelectContainer showCreate={props.showCreate} />
-    </WrapperContainer>
+    <React.Fragment>
+      <Notice status="success" isDismissible={false}>
+        The entity was updated!
+      </Notice>
+      <WrapperContainer>
+        <ButtonContainer>
+          <Arrow height="8px" color="white" />
+        </ButtonContainer>
+        <EntitySelectContainer showCreate={props.showCreate} />
+      </WrapperContainer>
+    </React.Fragment>
   </Provider>
 );
 
