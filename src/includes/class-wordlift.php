@@ -1154,13 +1154,6 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-related-entities-cloud-widget.php';
 
 		/*
-		 * The entity locate ajax adapter.
-		 *
-		 * @since 3.20.1
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-locate-ajax-adapter.php';
-
-		/*
 		 * Schema.org Services.
 		 *
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/835
