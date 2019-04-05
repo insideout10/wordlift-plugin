@@ -1,3 +1,4 @@
+/* globals wp */
 /**
  * External dependencies.
  */
