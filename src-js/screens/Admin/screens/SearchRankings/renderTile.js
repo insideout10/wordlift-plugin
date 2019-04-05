@@ -36,7 +36,7 @@ function renderTile({ click, select }) {
       `
         {{#entity}}
         <div class="tile">
-          <a href="${window["wp"].ajax.settings.url}?action=wordlift_redirect&u={{itemId}}&to=permalink" class="tile__label">{{label}}</a>
+          <a href="${window["wp"].ajax.settings.url}?action=wordlift_redirect&uri={{itemId}}&to=edit" class="tile__label">{{label}}</a>
           <div class="tile__type">{{type}}</div>
           <div class="tile__score" style="width: {{width}};"></div>
         </div>
