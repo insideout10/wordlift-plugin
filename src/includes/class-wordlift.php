@@ -1154,6 +1154,13 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-related-entities-cloud-widget.php';
 
 		/*
+		 * The entity locate ajax adapter.
+		 *
+		 * @since 3.20.1
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-locate-ajax-adapter.php';
+
+		/*
 		 * Schema.org Services.
 		 *
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/835
@@ -1219,7 +1226,7 @@ class Wordlift {
 		$this->schema_service = new Wordlift_Schema_Service( $this->storage_factory, $this->rendition_factory, $this->configuration_service );
 
 		// Create a new instance of the Redirect service.
-		$this->redirect_service    = new Wordlift_Redirect_Service( $this->entity_service );
+		$this->redirect_service    = new Wordlift_Redirect_Service( $this->entity_uri_service );
 		$this->entity_type_service = new Wordlift_Entity_Type_Service( $this->schema_service );
 		$this->linked_data_service = new Wordlift_Linked_Data_Service( $this->entity_service, $this->entity_type_service, $this->schema_service, $this->sparql_service );
 
