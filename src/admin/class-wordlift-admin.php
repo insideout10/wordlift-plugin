@@ -220,17 +220,16 @@ class Wordlift_Admin {
 	 */
 	public function enqueue_scripts() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
+		/*
+		 * Do not load our scripts on the Filter Urls plugin admin pages.
 		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Wordlift_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Wordlift_Loader will then create the relationship
-		 * between the defined Wordlift_Schemaorg_Property_Servicehooks and the functions defined in this
-		 * class.
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/901
+		 * @since 3.20.0
 		 */
+		$screen = get_current_screen();
+		if ( is_a( $screen, 'WP_Screen' ) && 'filter-urls_page_filter_urls_form' === $screen->id ) {
+			return;
+		}
 
 		// Enqueue the admin scripts.
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/1/admin.js', array(
@@ -353,6 +352,7 @@ class Wordlift_Admin {
 			// Gutenberg page on 5+.
 			return true;
 		}
+
 		return false;
 	}
 

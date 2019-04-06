@@ -35,9 +35,10 @@ class Wordlift_Api_Service {
 	/**
 	 * Create a {@link Wordlift_Api_Service} instance.
 	 *
+	 * @param $configuration_service \Wordlift_Configuration_Service The {@link Wordlift_Configuration_Service} instance.
+	 *
 	 * @since 3.20.0
 	 *
-	 * @param $configuration_service \Wordlift_Configuration_Service The {@link Wordlift_Configuration_Service} instance.
 	 */
 	public function __construct( $configuration_service ) {
 
@@ -49,9 +50,9 @@ class Wordlift_Api_Service {
 	/**
 	 * Get the {@link Wordlift_Api_Service} singleton instance.
 	 *
+	 * @return \Wordlift_Api_Service The {@link Wordlift_Api_Service} singleton instance.
 	 * @since 3.20.0
 	 *
-	 * @return \Wordlift_Api_Service The {@link Wordlift_Api_Service} singleton instance.
 	 */
 	public static function get_instance() {
 
@@ -61,11 +62,11 @@ class Wordlift_Api_Service {
 	/**
 	 * Perform a `GET` request towards the requested path.
 	 *
-	 * @since 3.20.0
-	 *
 	 * @param string $path The relative path.
 	 *
 	 * @return array|WP_Error
+	 * @since 3.20.0
+	 *
 	 */
 	public function get( $path ) {
 
@@ -78,6 +79,14 @@ class Wordlift_Api_Service {
 			'headers'    => array(
 				'X-Authorization' => $this->configuration_service->get_key(),
 			),
+			/*
+			 * Increase the timeout from the default of 5 to 30 secs.
+			 *
+			 * @see https://github.com/insideout10/wordlift-plugin/issues/906
+			 *
+			 * @since 3.20.1
+			 */
+			'timeout'    => 30,
 		) );
 
 		return self::get_message_or_error( $response );
@@ -86,12 +95,12 @@ class Wordlift_Api_Service {
 	/**
 	 * Perform a `POST` request towards the requested path.
 	 *
-	 * @since 3.20.0
-	 *
 	 * @param string       $path The relative path.
 	 * @param array|object $body The request body (will be serialized to JSON).
 	 *
 	 * @return array|WP_Error
+	 * @since 3.20.0
+	 *
 	 */
 	public function post( $path, $body ) {
 
@@ -131,11 +140,11 @@ class Wordlift_Api_Service {
 	/**
 	 * Return the {@link WP_Error} in case of error or the actual reply if successful.
 	 *
-	 * @since 3.20.0
-	 *
 	 * @param array|WP_Error $response The response of an http call.
 	 *
 	 * @return string|object|WP_Error A {@link WP_Error} instance or the actual response content.
+	 * @since 3.20.0
+	 *
 	 */
 	private static function get_message_or_error( $response ) {
 
@@ -164,11 +173,11 @@ class Wordlift_Api_Service {
 	/**
 	 * Try to decode the json response
 	 *
-	 * @since 3.20.0
-	 *
 	 * @param array $response The response array.
 	 *
 	 * @return array|mixed|object The decoded response or the original response body.
+	 * @since 3.20.0
+	 *
 	 */
 	private static function try_json_decode( $response ) {
 
@@ -188,8 +197,8 @@ class Wordlift_Api_Service {
 	/**
 	 * Get the User Agent.
 	 *
-	 * @since 3.20.0
 	 * @return string The user-agent string.
+	 * @since 3.20.0
 	 */
 	private static function get_user_agent() {
 

@@ -4,7 +4,7 @@ Plugin URL: https://wordlift.io
 Contributors: wordlift, insideout10, ziodave
 Tags: schema.org, semantic seo, seo, artificial intelligence, ai, linked data, semantic web, content recommendation, related posts, timeline, knowledge graph, interactive map
 Requires at least: 4.4
-Tested up to: 4.9
+Tested up to: 5.1
 Requires PHP: 5.3
 Stable tag: {version}
 License: GPLv2 or later
@@ -142,6 +142,11 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.20.1 (2019-04-05) =
+* Fix: [#907](https://github.com/insideout10/wordlift-plugin/issues/907): Link in Search Rankings tile do not work.
+* Fix: [#906](https://github.com/insideout10/wordlift-plugin/issues/906): Search Rankings timeout after 5 secs.
+* Fix: [#903](https://github.com/insideout10/wordlift-plugin/issues/903): Link switch doesn't work in classification box.
+
 = 3.20.0 (2019-03-25) =
 * Enhancement: [#894](https://github.com/insideout10/wordlift-plugin/issues/894): Push entity-related events to GA.
 * Enhancement: [#892](https://github.com/insideout10/wordlift-plugin/issues/892): Write JSON-LD of local entities bound to taxonomy terms.
@@ -160,6 +165,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement: [#728](https://github.com/insideout10/wordlift-plugin/issues/728): Gutenberg Integration.
 * Enhancement: [#713](https://github.com/insideout10/wordlift-plugin/issues/713): Allow to configure the target country.
 
+* Fix: [#901](https://github.com/insideout10/wordlift-plugin/issues/901): Script error on /wp-admin/admin.php?page=filter_urls_form&id=1.
 * Fix: [#896](https://github.com/insideout10/wordlift-plugin/issues/896): AMP Validation fails with Faceted Search Widget (QA).
 * Fix: [#895](https://github.com/insideout10/wordlift-plugin/issues/895): AMP validation fails with Navigator widget (QA).
 * Fix: [#888](https://github.com/insideout10/wordlift-plugin/issues/888): Remove `wordCount` from `WebPage` JSON-LD.

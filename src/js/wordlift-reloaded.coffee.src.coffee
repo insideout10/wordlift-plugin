@@ -243,7 +243,7 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
 .directive('wlCarousel', ['$window', '$log', ($window, $log)->
   restrict: 'A'
   scope: true
-  transclude: true      
+  transclude: true
   template: """
       <div class="wl-carousel" ng-class="{ 'active' : areControlsVisible }" ng-show="panes.length > 0" ng-mouseover="showControls()" ng-mouseleave="hideControls()">
         <div class="wl-panes" ng-style="{ width: panesWidth, left: position }" ng-transclude ng-swipe-left="next()" ng-swipe-right="prev()" ></div>
@@ -254,11 +254,11 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
       </div>
   """
   controller: [ '$scope', '$element', '$attrs', '$log', ($scope, $element, $attrs, $log) ->
-      
+
     w = angular.element $window
 
     $scope.setItemWidth = ()->
-      $element.width() / $scope.visibleElements() 
+      $element.width() / $scope.visibleElements()
 
     $scope.showControls = ()->
       $scope.areControlsVisible = true
@@ -273,28 +273,28 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
 
     $scope.isActive = ()->
       $scope.isPrevArrowVisible() or $scope.isNextArrowVisible()
-        
+
     $scope.isPrevArrowVisible = ()->
       ($scope.currentPaneIndex > 0)
-    
+
     $scope.isNextArrowVisible = ()->
       ($scope.panes.length - $scope.currentPaneIndex) > $scope.visibleElements()
-    
+
     $scope.next = ()->
       if ( $scope.currentPaneIndex + $scope.visibleElements() + 1 ) > $scope.panes.length
-        return 
+        return
       $scope.position = $scope.position - $scope.itemWidth
       $scope.currentPaneIndex = $scope.currentPaneIndex + 1
 
     $scope.prev = ()->
       if $scope.currentPaneIndex is 0
-        return 
+        return
       $scope.position = $scope.position + $scope.itemWidth
       $scope.currentPaneIndex = $scope.currentPaneIndex - 1
-    
+
     $scope.setPanesWrapperWidth = ()->
       # console.debug { "Setting panes wrapper width...", Object.assign( {}, $scope ) }
-      $scope.panesWidth = ( $scope.panes.length * $scope.itemWidth ) 
+      $scope.panesWidth = ( $scope.panes.length * $scope.itemWidth )
       $scope.position = 0;
       $scope.currentPaneIndex = 0
 
@@ -322,14 +322,14 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
     ctrl.registerPane = (scope, element, first)->
       # Set the proper width for the element
       scope.setWidth $scope.itemWidth
-        
+
       pane =
         'scope': scope
         'element': element
 
       $scope.panes.push pane
       $scope.setPanesWrapperWidth()
-      
+
       #if first
       #  $log.debug "Eccolo"
       #  $log.debug $scope.panes.length
@@ -337,7 +337,7 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
       #  $scope.currentPaneIndex = $scope.panes.length
 
     ctrl.unregisterPane = (scope)->
-        
+
       unregisterPaneIndex = undefined
       for pane, index in $scope.panes
         if pane.scope.$id is scope.$id
@@ -352,7 +352,7 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
   restrict: 'EA'
   scope:
     wlFirstPane: '='
-  transclude: true 
+  transclude: true
   template: """
       <div ng-transclude></div>
   """
@@ -850,7 +850,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
       onReset: '&'
       box: '='
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.20.0-dev'
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.20.0'
 
     link: ($scope, $element, $attrs, $ctrl) ->
 
@@ -947,7 +947,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityTile', [])
     templateUrl: ()->
       configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-tile.html'
     link: ($scope, $element, $attrs, $boxCtrl) ->
-      
+
       $scope.configuration = configuration
       # Add tile to related container scope
       $boxCtrl?.addTile $scope
@@ -973,7 +973,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', [])
     scope:
       entity: '='
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.20.0-dev'
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.20.0'
 ])
 angular.module('wordlift.editpost.widget.services.EditorAdapter', [
   'wordlift.editpost.widget.services.EditorAdapter'
@@ -1097,10 +1097,11 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
       return analysis
 
     # Retrieve supported type from current classification boxes configuration
-    for box in configuration.classificationBoxes
-      for type in box.registeredTypes
-        if type not in service._supportedTypes
-          service._supportedTypes.push type
+    if configuration.classificationBoxes?
+      for box in configuration.classificationBoxes
+        for type in box.registeredTypes
+          if type not in service._supportedTypes
+            service._supportedTypes.push type
 
     service.createEntity = (params = {}) ->
 # Set the defalut values.
@@ -1651,12 +1652,12 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
 ])
 angular.module('wordlift.editpost.widget.services.RelatedPostDataRetrieverService', [])
 # Manage redlink analysis responses
-.service('RelatedPostDataRetrieverService', [ 'configuration', '$log', '$http', '$rootScope', (configuration, $log, $http, $rootScope)-> 
-  
+.service('RelatedPostDataRetrieverService', [ 'configuration', '$log', '$http', '$rootScope', (configuration, $log, $http, $rootScope)->
+
   service = {}
   service.load = ( entityIds = [] )->
     uri = "admin-ajax.php?action=wordlift_related_posts&post_id=#{configuration.currentPostId}"
-    
+
     $http(
       method: 'post'
       url: uri
@@ -1673,12 +1674,12 @@ angular.module('wordlift.editpost.widget.services.RelatedPostDataRetrieverServic
 ])
 angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geolocation'])
 # Retrieve GeoLocation coordinates and process them trough reverse geocoding
-.service('GeoLocationService', [ 'configuration', 'geolocation', '$log', '$rootScope', '$document', '$q', '$timeout', '$window', ( configuration, geolocation, $log, $rootScope, $document, $q, $timeout, $window)-> 
-  
+.service('GeoLocationService', [ 'configuration', 'geolocation', '$log', '$rootScope', '$document', '$q', '$timeout', '$window', ( configuration, geolocation, $log, $rootScope, $document, $q, $timeout, $window)->
+
   GOOGLE_MAPS_LEVEL = 'locality'
   GOOGLE_MAPS_KEY = 'AIzaSyAhsajbqNVd7ABlkZvskWIPdiX6M3OaaNM'
   GOOGLE_MAPS_API_ENDPOINT = "https://maps.googleapis.com/maps/api/js?language=#{configuration.currentLanguage}&key=#{GOOGLE_MAPS_KEY}"
-  
+
   $rootScope.$on 'error', (event, msg)->
     $log.warn "Geolocation error: #{msg}"
     $rootScope.$broadcast 'geoLocationError', msg
@@ -1700,12 +1701,12 @@ angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geoloca
     # $log.debug "Going to load #{GOOGLE_MAPS_API_ENDPOINT}"
     element.src = GOOGLE_MAPS_API_ENDPOINT
     $document[0].body.appendChild element
-    
 
-    callback = (e) ->  
-      if element.readyState and element.readyState not in ['complete', 'loaded'] 
+
+    callback = (e) ->
+      if element.readyState and element.readyState not in ['complete', 'loaded']
         return
-      
+
       $timeout(()->
         deferred.resolve(e)
       )
@@ -1714,7 +1715,7 @@ angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geoloca
     element.onreadystatechange = callback
     element.onerror = (e)->
 
-      $timeout(()-> 
+      $timeout(()->
         deferred.reject(e)
       )
 
@@ -1724,7 +1725,7 @@ angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geoloca
   # Detect Current Browser
   currentBrowser = ()->
     userAgent = $window.navigator.userAgent
-    browsers = 
+    browsers =
       chrome: /chrome/i
       safari: /safari/i
       firefox: /firefox/i
@@ -1735,20 +1736,20 @@ angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geoloca
     'unknown'
 
   service = {}
-  
-  # Used to temporaly manage this scenario 
+
+  # Used to temporaly manage this scenario
   # https://developers.google.com/web/updates/2016/04/geolocation-on-secure-contexts-only?hl=en
   service.isAllowed = ()->
     # $log.debug "Current browser #{currentBrowser()}, current protocol: #{$window.location.protocol}"
     if currentBrowser() is 'chrome'
       return $window.location.protocol is 'https:'
     true
-    
+
   service.getLocation = ()->
 
     geolocation.getLocation()
     .then (data) ->
-      
+
       $log.debug "Detected position: latitude #{data.coords.latitude}, longitude #{data.coords.longitude}"
       loadGoogleAPI()
       .then ()->
@@ -1760,15 +1761,15 @@ angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geoloca
              'lat': data.coords.latitude
              'lng': data.coords.longitude
           , (results, status)->
-            
+
             if status is google.maps.GeocoderStatus.OK
               for result in results
                 if GOOGLE_MAPS_LEVEL in result.types
                   for ac in result.address_components
                     if GOOGLE_MAPS_LEVEL in ac.types
-                      $rootScope.$broadcast "currentUserLocalityDetected", result.formatted_address, ac.long_name                                   
-                      return    
-             
+                      $rootScope.$broadcast "currentUserLocalityDetected", result.formatted_address, ac.long_name
+                      return
+
   service
 
 ])
@@ -1776,9 +1777,9 @@ angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geoloca
 
 angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
 .provider("configuration", ()->
-  
+
   _configuration = undefined
-  
+
   provider =
     setConfiguration: (configuration)->
       _configuration = configuration
@@ -1790,30 +1791,30 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
 
       	unless entityType
       	  return undefined
-      	for category in @classificationBoxes 
+      	for category in @classificationBoxes
       	  if entityType in category.registeredTypes
-      	    return category.id 
-      
+      	    return category.id
+
       # Return registered types for a given category
       _configuration.getTypesForCategoryId = (categoryId)->
-      	
+
       	unless categoryId
       	  return []
-      	for category in @classificationBoxes 
-      	  if categoryId is category.id 
+      	for category in @classificationBoxes
+      	  if categoryId is category.id
       	  	return category.registeredTypes
-      
+
       # Check if a given entity id refers to an internal entity
       _configuration.isInternal = (uri)->
       	return uri?.startsWith @datasetUri
-      
+
       # Check if a given entity id refers to an internal entity
       _configuration.getUriForType = (mainType)->
         for type in @types
           if type.css is "wl-#{mainType}"
             return type.uri
 
-      	    
+
     $get: ()->
       _configuration
 
@@ -1851,7 +1852,7 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
     <div
       id="wordlift-edit-post-wrapper"
       ng-controller="EditPostWidgetController"
-      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.20.0-dev'">
+      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.20.0'">
     </div>
   """)
   .appendTo('#wordlift-edit-post-outer-wrapper')
@@ -1885,171 +1886,173 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
       css = if status then 'wl-spinner-running' else ''
       $('.wl-widget-spinner svg').attr 'class', css
 
-    wp.wordlift.on 'loading', ( status ) ->
-      css = if status then 'wl-spinner-running' else ''
-      $('.wl-widget-spinner svg').attr 'class', css
+    if wp.wordlift?
+      wp.wordlift.on 'loading', ( status ) ->
+        css = if status then 'wl-spinner-running' else ''
+        $('.wl-widget-spinner svg').attr 'class', css
 
   ])
 
-  # Add WordLift as a plugin of the TinyMCE editor.
-  tinymce.PluginManager.add 'wordlift', (editor, url) ->
+  if window['wlSettings']?
+    # Add WordLift as a plugin of the TinyMCE editor.
+    tinymce.PluginManager.add 'wordlift', (editor, url) ->
 
-    # Get the editor id from the `wlSettings` or use `content`.
-    defaultEditorId = if "undefined" != typeof window['wlSettings']['default_editor_id'] then window['wlSettings']['default_editor_id'] else 'content'
+      # Get the editor id from the `wlSettings` or use `content`.
+      defaultEditorId = if "undefined" != typeof window['wlSettings']['default_editor_id'] then window['wlSettings']['default_editor_id'] else 'content'
 
-    # Allow 3rd parties to change the editor id.
-    #
-    # @see https://github.com/insideout10/wordlift-plugin/issues/850.
-    # @see https://github.com/insideout10/wordlift-plugin/issues/851.
-    editorId = wp?.hooks?.applyFilters( 'wl_default_editor_id', defaultEditorId ) ? defaultEditorId
-
-    console.log "Loading WordLift [ default editor :: #{defaultEditorId} ][ target editor :: #{editorId} ][ this editor :: #{editor.id} ]"
-
-    # This plugin has to be loaded only with the main WP "content" editor
-    return unless editor.id is editorId
-
-    # The `closed` flag is a very important flag throughout the initialization
-    # of WordLift's classification box: in fact if the classification box is
-    # closed, WordLift's analysis won't run, until it gets opened.
-    closed = $('#wordlift_entities_box').hasClass('closed')
-
-    # Register event depending on tinymce major version
-    fireEvent = (editor, eventName, callback)->
-      switch tinymce.majorVersion
-        when '4' then editor.on eventName, callback
-        when '3' then editor["on#{eventName}"].add callback
-
-    # We're going to disable WordPress' own live previews here until the
-    # analysis is run, we need to do this as early as possible to avoid WP
-    # already calling the live previews. But we need to do this only if the
-    # classification box is open, since the analysis won't run if it's closed.
-    #
-    # See https://github.com/insideout10/wordlift-plugin/issues/700.
-    if (!closed)
-      injector.invoke(['EditorService', '$rootScope', '$log', (EditorService, $rootScope, $log) ->
-
-        # Override wp.autosave.server.postChanged method
-        # in order to avoid unexpected warning to the user
-        if wp.autosave?
-          wp.autosave.server.postChanged = ()->
-            return false
-
-        # Hack wp.mce.views to prevent shortcodes rendering starts before the
-        # analysis is properly embedded wp.mce.views uses toViews() method from WP
-        # 3.8 to 4.1 and setMarkers() method from WP 4.2 to 4.3 to replace
-        # available shortcodes with corresponding views markup.
-        for method in ['setMarkers', 'toViews']
-          if wp.mce.views[method]?
-
-            originalMethod = wp.mce.views[method]
-            $log.warn "Override wp.mce.views method #{method}() to prevent shortcodes rendering"
-            wp.mce.views[method] = (content)->
-              return content
-
-            $rootScope.$on "analysisEmbedded", (event) ->
-              $log.info "Going to restore wp.mce.views method #{method}()"
-              wp.mce.views[method] = originalMethod
-
-            $rootScope.$on "analysisFailed", (event) ->
-              $log.info "Going to restore wp.mce.views method #{method}()"
-              wp.mce.views[method] = originalMethod
-
-            break
-      ])
-
-    # Define the callback to call to start the analysis.
-    startAnalysis = () ->
-      injector.invoke(['AnalysisService', 'EditorService', '$rootScope', '$log'
-        (AnalysisService, EditorService, $rootScope, $log) ->
-# execute the following commands in the angular js context.
-          $rootScope.$apply(->
-# Get the html content of the editor.
-            html = editor.getContent format: 'raw'
-
-            if "" isnt html
-              EditorService.updateContentEditableStatus false
-              AnalysisService.perform html
-# Get the text content from the Html.
-#            text = Traslator.create(html).getText()
-#            if text.match /[a-zA-Z0-9]+/
-#              # Disable tinymce editing
-#              EditorService.updateContentEditableStatus false
-#              AnalysisService.perform html
-#            else
-#              $log.warn "Blank content: nothing to do!"
-          )
-      ])
-
-    addClassToBody = () ->
-      # Get the editor body.
-      $body = $( editor.getBody() )
-
-      # Whether the postbox is closed.
-      closed = $( '#wordlift_entities_box' ).hasClass( 'closed' )
-
-      # Add or remove the class according to the postbox status.
-      if closed then $body.addClass( 'wl-postbox-closed' ) else $body.removeClass( 'wl-postbox-closed' )
-
-
-    # Add a `wl-postbox-closed` class to the editor body when the classification
-    # metabox is closed.
-    $(document).on( 'postbox-toggled', (e, postbox) ->
-      # Bail out if it's not our postbox.
-      return if 'wordlift_entities_box' isnt postbox.id
-
-      addClassToBody()
-    )
-
-    # Set the initial state on the editor's body.
-    editor.on('init', () ->
-      addClassToBody()
-
-      # Send a broadcast when the editor selection changes.
+      # Allow 3rd parties to change the editor id.
       #
-      # See https://github.com/insideout10/wordlift-plugin/issues/467
-      broadcastEditorSelection = () ->
-        selection = editor.selection.getContent({format: 'text'})
-        wp.wordlift.trigger 'editorSelectionChanged', selection
+      # @see https://github.com/insideout10/wordlift-plugin/issues/850.
+      # @see https://github.com/insideout10/wordlift-plugin/issues/851.
+      editorId = wp?.hooks?.applyFilters( 'wl_default_editor_id', defaultEditorId ) ? defaultEditorId
 
-      editor.on('selectionchange', () -> broadcastEditorSelection() )
+      console.log "Loading WordLift [ default editor :: #{defaultEditorId} ][ target editor :: #{editorId} ][ this editor :: #{editor.id} ]"
 
-    )
+      # This plugin has to be loaded only with the main WP "content" editor
+      return unless editor.id is editorId
 
-    # Start the analysis if the postbox isn't closed.
-    if !closed then fireEvent( editor, 'LoadContent', startAnalysis ) else
-      # If the postbox is closed, hook to the `postbox-toggled` event and start
-      # the analysis as soon as the postbox is opened.
+      # The `closed` flag is a very important flag throughout the initialization
+      # of WordLift's classification box: in fact if the classification box is
+      # closed, WordLift's analysis won't run, until it gets opened.
+      closed = $('#wordlift_entities_box').hasClass('closed')
+
+      # Register event depending on tinymce major version
+      fireEvent = (editor, eventName, callback)->
+        switch tinymce.majorVersion
+          when '4' then editor.on eventName, callback
+          when '3' then editor["on#{eventName}"].add callback
+
+      # We're going to disable WordPress' own live previews here until the
+      # analysis is run, we need to do this as early as possible to avoid WP
+      # already calling the live previews. But we need to do this only if the
+      # classification box is open, since the analysis won't run if it's closed.
+      #
+      # See https://github.com/insideout10/wordlift-plugin/issues/700.
+      if (!closed)
+        injector.invoke(['EditorService', '$rootScope', '$log', (EditorService, $rootScope, $log) ->
+
+          # Override wp.autosave.server.postChanged method
+          # in order to avoid unexpected warning to the user
+          if wp.autosave?
+            wp.autosave.server.postChanged = ()->
+              return false
+
+          # Hack wp.mce.views to prevent shortcodes rendering starts before the
+          # analysis is properly embedded wp.mce.views uses toViews() method from WP
+          # 3.8 to 4.1 and setMarkers() method from WP 4.2 to 4.3 to replace
+          # available shortcodes with corresponding views markup.
+          for method in ['setMarkers', 'toViews']
+            if wp.mce.views[method]?
+
+              originalMethod = wp.mce.views[method]
+              $log.warn "Override wp.mce.views method #{method}() to prevent shortcodes rendering"
+              wp.mce.views[method] = (content)->
+                return content
+
+              $rootScope.$on "analysisEmbedded", (event) ->
+                $log.info "Going to restore wp.mce.views method #{method}()"
+                wp.mce.views[method] = originalMethod
+
+              $rootScope.$on "analysisFailed", (event) ->
+                $log.info "Going to restore wp.mce.views method #{method}()"
+                wp.mce.views[method] = originalMethod
+
+              break
+        ])
+
+      # Define the callback to call to start the analysis.
+      startAnalysis = () ->
+        injector.invoke(['AnalysisService', 'EditorService', '$rootScope', '$log'
+          (AnalysisService, EditorService, $rootScope, $log) ->
+  # execute the following commands in the angular js context.
+            $rootScope.$apply(->
+  # Get the html content of the editor.
+              html = editor.getContent format: 'raw'
+
+              if "" isnt html
+                EditorService.updateContentEditableStatus false
+                AnalysisService.perform html
+  # Get the text content from the Html.
+  #            text = Traslator.create(html).getText()
+  #            if text.match /[a-zA-Z0-9]+/
+  #              # Disable tinymce editing
+  #              EditorService.updateContentEditableStatus false
+  #              AnalysisService.perform html
+  #            else
+  #              $log.warn "Blank content: nothing to do!"
+            )
+        ])
+
+      addClassToBody = () ->
+        # Get the editor body.
+        $body = $( editor.getBody() )
+
+        # Whether the postbox is closed.
+        closed = $( '#wordlift_entities_box' ).hasClass( 'closed' )
+
+        # Add or remove the class according to the postbox status.
+        if closed then $body.addClass( 'wl-postbox-closed' ) else $body.removeClass( 'wl-postbox-closed' )
+
+
+      # Add a `wl-postbox-closed` class to the editor body when the classification
+      # metabox is closed.
       $(document).on( 'postbox-toggled', (e, postbox) ->
         # Bail out if it's not our postbox.
         return if 'wordlift_entities_box' isnt postbox.id
 
-        startAnalysis()
+        addClassToBody()
       )
 
-    # Fires when the user changes node location using the mouse or keyboard in the TinyMCE editor.
-    fireEvent(editor, "NodeChange", (e) ->
-      injector.invoke(['AnalysisService', 'EditorService', '$rootScope', '$log',
-        (AnalysisService, EditorService, $rootScope, $log) ->
-          if AnalysisService._currentAnalysis
-            $rootScope.$apply(->
-              $rootScope.selectionStatus = EditorService.hasSelection()
-            )
-          true
+      # Set the initial state on the editor's body.
+      editor.on('init', () ->
+        addClassToBody()
 
-      ])
-    )
+        # Send a broadcast when the editor selection changes.
+        #
+        # See https://github.com/insideout10/wordlift-plugin/issues/467
+        broadcastEditorSelection = () ->
+          selection = editor.selection.getContent({format: 'text'})
+          wp.wordlift.trigger 'editorSelectionChanged', selection
 
-    # this event is raised when a textannotation is selected in the TinyMCE editor.
-    fireEvent(editor, "Click", (e) ->
-      injector.invoke(['AnalysisService', 'EditorService', '$rootScope', '$log',
-        (AnalysisService, EditorService, $rootScope, $log) ->
-          if AnalysisService._currentAnalysis
-            $rootScope.$apply(->
-              EditorService.selectAnnotation e.target.id
-            )
-          true
+        editor.on('selectionchange', () -> broadcastEditorSelection() )
 
-      ])
-    )
+      )
+
+      # Start the analysis if the postbox isn't closed.
+      if !closed then fireEvent( editor, 'LoadContent', startAnalysis ) else
+        # If the postbox is closed, hook to the `postbox-toggled` event and start
+        # the analysis as soon as the postbox is opened.
+        $(document).on( 'postbox-toggled', (e, postbox) ->
+          # Bail out if it's not our postbox.
+          return if 'wordlift_entities_box' isnt postbox.id
+
+          startAnalysis()
+        )
+
+      # Fires when the user changes node location using the mouse or keyboard in the TinyMCE editor.
+      fireEvent(editor, "NodeChange", (e) ->
+        injector.invoke(['AnalysisService', 'EditorService', '$rootScope', '$log',
+          (AnalysisService, EditorService, $rootScope, $log) ->
+            if AnalysisService._currentAnalysis
+              $rootScope.$apply(->
+                $rootScope.selectionStatus = EditorService.hasSelection()
+              )
+            true
+
+        ])
+      )
+
+      # this event is raised when a textannotation is selected in the TinyMCE editor.
+      fireEvent(editor, "Click", (e) ->
+        injector.invoke(['AnalysisService', 'EditorService', '$rootScope', '$log',
+          (AnalysisService, EditorService, $rootScope, $log) ->
+            if AnalysisService._currentAnalysis
+              $rootScope.$apply(->
+                EditorService.selectAnnotation e.target.id
+              )
+            true
+
+        ])
+      )
 
 )(jQuery, window.angular)

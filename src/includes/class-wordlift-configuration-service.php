@@ -641,18 +641,18 @@ class Wordlift_Configuration_Service {
 	 * @return int
 	 */
 	public function get_analytics_entity_uri_dimension() {
-		return (int) $this->get( 'wl_analytics_settings', self::ANALYTICS_ENTITY_URI_DIMENSION, 2 );
+		return (int) $this->get( 'wl_analytics_settings', self::ANALYTICS_ENTITY_URI_DIMENSION, 1 );
 	}
 
 	/**
-	 * Get the 'analytics-entity-type-dimention' option.
+	 * Get the 'analytics-entity-type-dimension' option.
 	 *
 	 * @since 3.21.0
 	 *
 	 * @return int
 	 */
 	public function get_analytics_entity_type_dimension() {
-		return $this->get( 'wl_analytics_settings', self::ANALYTICS_ENTITY_TYPE_DIMENSION, 1 );
+		return $this->get( 'wl_analytics_settings', self::ANALYTICS_ENTITY_TYPE_DIMENSION, 2 );
 	}
 
 	/**
