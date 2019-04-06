@@ -1,5 +1,6 @@
 import { delay, eventChannel } from "redux-saga";
 import { call, fork, put, race, select, take, takeEvery, takeLatest } from "redux-saga/effects";
+import Store2 from "../../../stores/Store2";
 
 import {
   addEntityRequest,
@@ -63,6 +64,13 @@ function* addEntity({ payload }) {
       showNotice: true
     })
   );
+  setTimeout(() => {
+    Store2.dispatch(
+      addEntitySuccess({
+        showNotice: false
+      })
+    );
+  }, 2000);
 }
 
 function* requestClose() {
