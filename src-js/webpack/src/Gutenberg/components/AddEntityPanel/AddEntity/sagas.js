@@ -58,7 +58,11 @@ function* addEntity({ payload }) {
   let currentAnnotation = AnnotationService.createTextAnnotationFromCurrentSelection(currentEntity);
   let entityAnnotationData = AnnotationService.addNewEntityToAnalysis(currentEntity, currentAnnotation);
   Store1.dispatch(receiveAnalysisResults(entityAnnotationData));
-  yield put(addEntitySuccess());
+  yield put(
+    addEntitySuccess({
+      showNotice: true
+    })
+  );
 }
 
 function* requestClose() {

@@ -40,6 +40,10 @@ export const reducer = handleActions(
       blockClientId: action.payload.blockClientId,
       formats: action.payload.formats,
       enabled: "undefined" !== typeof action.payload.value && "" !== action.payload.value
+    }),
+    [addEntitySuccess]: (state, action) => ({
+      ...state,
+      showNotice: action.payload.showNotice
     })
   },
   { open: false, items: [], value: "", enabled: false }

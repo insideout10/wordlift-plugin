@@ -170,7 +170,7 @@ class AnnotationService {
         console.log(`Requesting analysis for block ${this.blockClientId}...`);
         ConvertClassicEditorService.removeNotice();
         wp.apiFetch(this.getWordliftAnalyzeRequest()).then(response => {
-          if (Object.keys(response.entities).length > 0) {
+          if (response.entities && Object.keys(response.entities).length > 0) {
             this.rawResponse = response;
             this.modifyResponse();
             this.persistentlyAnnotate();
@@ -325,8 +325,6 @@ class AnnotationService {
           localData.entities[entity.entityId].occurrences.push(annotation);
         });
       }
-
-      console.log("localData", localData);
 
       dispatch(receiveAnalysisResults(localData));
     };

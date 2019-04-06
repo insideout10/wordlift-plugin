@@ -6,7 +6,8 @@ import React from "react";
 import { Provider } from "react-redux";
 
 import ButtonContainer from "../../../../Edit/components/AddEntity/ButtonContainer";
-import EntitySelectContainer from "../../../../Edit/components/AddEntity/EntitySelectContainer";
+import EntitySelectContainer from "./EntitySelectContainer";
+import AddEntityNoticeContainer from "./AddEntityNoticeContainer";
 import WrapperContainer from "../../../../Edit/components/AddEntity/WrapperContainer";
 import Arrow from "../../../../Edit/components/Arrow";
 
@@ -16,9 +17,7 @@ const { Panel, PanelBody, Notice } = wp.components;
 const AddEntity = props => (
   <Provider store={props.store}>
     <React.Fragment>
-      <Notice status="success" isDismissible={false}>
-        The entity was updated!
-      </Notice>
+      <AddEntityNoticeContainer />
       <WrapperContainer>
         <ButtonContainer>
           <Arrow height="8px" color="white" />
