@@ -79,7 +79,6 @@ class AnnotationService {
       let allAnnotations = Object.keys(response.entities[entity].annotations);
       allAnnotations.forEach((annValue, annIndex) => {
         if (this.disambiguated.includes(response.entities[entity].annotations[annValue].text)) {
-          console.log("Adding entity to stack:", response.entities[entity]);
           AnnotationService.addRemoveEntityMeta(response.entities[entity]);
           response.entities[entity].occurrences.push(annValue);
         }
@@ -371,14 +370,12 @@ class AnnotationService {
     console.log(`Calculating occurrences for entity ${entity.id}...`);
     let occurrences = [];
     if (action === "entitySelected") {
-      console.log("Adding entity to stack:", entity);
       AnnotationService.addRemoveEntityMeta(entity);
       for (var annotation in entity.annotations) {
         AnnotationService.disambiguate(annotation, true);
         occurrences.push(annotation);
       }
     } else {
-      console.log("Removing entity from stack:", entity);
       AnnotationService.addRemoveEntityMeta(entity, false);
       for (var annotation in entity.annotations) {
         AnnotationService.disambiguate(annotation, false);
@@ -398,6 +395,7 @@ class AnnotationService {
       existingMeta = JSON.parse(rawMeta);
     }
     if (add) {
+      console.log("Adding entity to stack:", entity);
       existingMeta[entity.entityId] = {
         uri: entity.entityId,
         label: entity.label,
@@ -408,6 +406,7 @@ class AnnotationService {
         sameas: entity.sameAs
       };
     } else {
+      console.log("Removing entity from stack:", entity);
       delete existingMeta[entity.entityId];
     }
     wp.data.dispatch("core/editor").editPost({

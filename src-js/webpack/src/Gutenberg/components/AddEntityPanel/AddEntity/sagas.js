@@ -59,6 +59,7 @@ function* addEntity({ payload }) {
   let currentAnnotation = AnnotationService.createTextAnnotationFromCurrentSelection(currentEntity);
   let entityAnnotationData = AnnotationService.addNewEntityToAnalysis(currentEntity, currentAnnotation);
   Store1.dispatch(receiveAnalysisResults(entityAnnotationData));
+  AnnotationService.addRemoveEntityMeta(currentEntity);
   yield put(
     addEntitySuccess({
       showNotice: true
