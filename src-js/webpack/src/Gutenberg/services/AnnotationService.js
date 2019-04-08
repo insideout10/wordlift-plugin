@@ -319,14 +319,13 @@ class AnnotationService {
       // Copy annotations data to respective entities
       for (var annotation in localData.annotations) {
         localData.annotations[annotation].entityMatches.forEach(entity => {
-          if (typeof localData.entities[entity.entityId] === "undefined") {
-            localData.entities[entity.entityId] = {};
+          if (typeof localData.entities[entity.entityId] !== "undefined") {
+            if (typeof localData.entities[entity.entityId].annotations === "undefined") {
+              localData.entities[entity.entityId].annotations = {};
+            }
+            localData.entities[entity.entityId].annotations[annotation] = localData.annotations[annotation];
+            localData.entities[entity.entityId].occurrences.push(annotation);
           }
-          if (typeof localData.entities[entity.entityId].annotations === "undefined") {
-            localData.entities[entity.entityId].annotations = {};
-          }
-          localData.entities[entity.entityId].annotations[annotation] = localData.annotations[annotation];
-          localData.entities[entity.entityId].occurrences.push(annotation);
         });
       }
 
