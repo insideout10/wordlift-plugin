@@ -172,6 +172,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           for (var i = 0; i < entitiesTotal; i++) {
             sendGtagEvent(analyticsObj, dimX, dimY, entities[i].label, entities[i].uri, entities[i].type);
           }
+        } else if ("gtm" === analyticsObj.__wl_type) {
+          // This is `gtag` style object.
+          for (var i = 0; i < entitiesTotal; i++) {
+            sendGtmEvent(analyticsObj, dimX, dimY, entities[i].label, entities[i].uri, entities[i].type);
+          }
         }
         // @TODO handle failure.
         // resolve to finish.
@@ -193,13 +198,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
    */
   function getAnalyticsObject() {
     var obj = false;
-    // detect GTM, GTAG, GA in that order.
-    if (window.dataLayer) {
-      obj = window.dataLayer;
-      obj.__wl_type = "gtag";
-    } else if (window.gtag) {
+    // detect GTAG, GTM, GA in that order.
+    if (window.gtag) {
       obj = window.gtag;
       obj.__wl_type = "gtag";
+    } else if (window.dataLayer) {
+      obj = window.dataLayer;
+      obj.__wl_type = "gtm";
     } else if (window.ga) {
       obj = window.ga;
       obj.__wl_type = "ga";
@@ -246,7 +251,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
    * @param  {string} type the entity type.
    */
   function sendGtagEvent(analyticsObj, dimX, dimY, label, uri, type) {
-    var _analyticsObj$push;
+    var _analyticsObj2;
 
     // Double check we have the config object before continuing.
     if ("undefined" === typeof wordliftAnalyticsConfigData) {
@@ -254,6 +259,34 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
 
     // console.log("Sending gtag event ...");
+
+    analyticsObj("event", "Mentions", (_analyticsObj2 = {
+      event_category: "WordLift",
+      event_label: label,
+      value: 1
+    }, _defineProperty(_analyticsObj2, dimX, uri), _defineProperty(_analyticsObj2, dimY, type), _defineProperty(_analyticsObj2, "non_interaction", true), _analyticsObj2));
+  }
+
+  /**
+   * Wrapper function for pushing entity analytics data to gtag.
+   *
+   * @method sendGtagEvent
+   * @param  {gtag} analyticsObject The anlytics object we push into.
+   * @param  {string} dimX the name of the first custom dimension.
+   * @param  {string} dimY the name of the second custom dimension.
+   * @param  {string} label a string to use as the label.
+   * @param  {string} uri the uri of this entity.
+   * @param  {string} type the entity type.
+   */
+  function sendGtmEvent(analyticsObj, dimX, dimY, label, uri, type) {
+    var _analyticsObj$push;
+
+    // Double check we have the config object before continuing.
+    if ("undefined" === typeof wordliftAnalyticsConfigData) {
+      return false;
+    }
+
+    // console.log("Sending gtm event ...");
 
     analyticsObj.push("event", "Mentions", (_analyticsObj$push = {
       event_category: "WordLift",
