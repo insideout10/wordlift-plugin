@@ -150,7 +150,7 @@
 
     // console.log("Sending gtag event ...");
 
-    analyticsObj("event", "Mentions", {
+    analyticsObj.push("event", "Mentions", {
       event_category: "WordLift",
       event_label: label,
       value: 1,
