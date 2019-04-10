@@ -92,8 +92,8 @@
   function getAnalyticsObject() {
     var obj = false;
     // gtag must be first.
-    if (window.gtag) {
-      obj = window.gtag;
+    if (window.dataLayer) {
+      obj = window.dataLayer;
       obj.__wl_type = "gtag";
     } else if (window.ga) {
       obj = window.ga;
