@@ -1,9 +1,12 @@
 <?php
-
 /**
  * Provides functions and AJAX endpoints to support redirects needed by the client-side layer.
  *
  * @since 3.2.0
+ * @since 3.20.1 use `filter_input` to access the $_GET variables.
+ *
+ * @package Wordlift
+ * @subpackage Wordlift/includes
  */
 class Wordlift_Redirect_Service {
 
@@ -20,13 +23,13 @@ class Wordlift_Redirect_Service {
 	private $log_service;
 
 	/**
-	 * The Entity service.
+	 * The Entity URI service.
 	 *
 	 * @since 3.2.0
 	 * @access private
-	 * @var \Wordlift_Entity_Service $entity_service The Entity service.
+	 * @var Wordlift_Entity_Uri_Service $entity_uri_service The Entity service.
 	 */
-	private $entity_service;
+	private $entity_uri_service;
 
 	/**
 	 * A singleton instance of the Redirect service (useful for unit tests).
@@ -40,15 +43,16 @@ class Wordlift_Redirect_Service {
 	/**
 	 * Create a Wordlift_Redirect_Service instance.
 	 *
+	 * @param Wordlift_Entity_Uri_Service $entity_uri_service The Entity service.
+	 *
 	 * @since 3.2.0
 	 *
-	 * @param \Wordlift_Entity_Service $entity_service The Entity service.
 	 */
-	public function __construct( $entity_service ) {
+	public function __construct( $entity_uri_service ) {
 
 		$this->log_service = Wordlift_Log_Service::get_logger( 'Wordlift_Redirect_Service' );
 
-		$this->entity_service = $entity_service;
+		$this->entity_uri_service = $entity_uri_service;
 
 		self::$instance = $this;
 
@@ -57,9 +61,9 @@ class Wordlift_Redirect_Service {
 	/**
 	 * Get the singleton instance of the Wordlift_Redirect_Service
 	 *
+	 * @return \Wordlift_Redirect_Service The singleton instance of the Wordlift_Redirect_Service.
 	 * @since 3.2.0
 	 *
-	 * @return \Wordlift_Redirect_Service The singleton instance of the Wordlift_Redirect_Service.
 	 */
 	public static function get_instance() {
 
@@ -73,33 +77,42 @@ class Wordlift_Redirect_Service {
 	 */
 	public function ajax_redirect() {
 
-		if ( !isset( $_GET['uri'] ) ) {
-			wp_die( 'Entity uri missing' );	
+		// Check the `uri` parameter.
+		if ( ! ( $entity_uri = filter_input( INPUT_GET, 'uri', FILTER_VALIDATE_URL ) ) ) {
+			wp_die( __( 'Invalid URI.', 'wordlift' ), __( 'Invalid URI.', 'wordlift' ), array(
+				'response'  => 400,
+				'back_link' => true,
+			) );
 		}
-		if ( !isset( $_GET['to'] ) ) {
-			wp_die( 'Redirect target missing' );	
+
+		// Check the `to` parameter.
+		if ( ! ( $target = filter_input( INPUT_GET, 'to' ) ) ) {
+			wp_die( __( 'Invalid `to` parameter.', 'wordlift' ), __( 'Invalid `to` parameter.', 'wordlift' ), array(
+				'response'  => 400,
+				'back_link' => true,
+			) );
 		}
-		// Get the entity uri
-		$entity_uri = $_GET['uri'];
-		// Get the redirect target
-		$target = $_GET['to'];
-		
-		if ( null === ( $entity_id = $this->entity_service->get_entity_post_by_uri( $entity_uri ) ) ) {
-    		wp_die( 'Entity not found' );
+
+		// Check if the entity exists.
+		if ( ! ( $entity = $this->entity_uri_service->get_entity( $entity_uri ) ) ) {
+			wp_die( __( 'Entity not found.', 'wordlift' ), __( 'Entity not found.', 'wordlift' ), array(
+				'response'  => 404,
+				'back_link' => true,
+			) );
 		}
 
 		switch ( $target ) {
 			case 'edit':
-				$redirect_url = get_edit_post_link( $entity_id, 'none' );
+				$redirect_url = get_edit_post_link( $entity, 'none' );
 				break;
 			case 'lod':
 				$redirect_url = self::LOD_ENDPOINT . '/lodview/?IRI=' . urlencode( $entity_uri );
 				break;
 			case 'permalink':
-				$redirect_url = get_permalink( $entity_id );
+				$redirect_url = get_permalink( $entity );
 				break;
 			default:
- 				wp_die( 'Unsupported redirect target' );
+				wp_die( 'Unsupported redirect target.' );
 		}
 
 		// Perform the redirect
@@ -115,7 +128,7 @@ class Wordlift_Redirect_Service {
 	 *
 	 * @param int $entity_id A post entity id.
 	 *
-	 * @return string permalink.
+	 * @return array permalink.
 	 */
 	public function allowed_redirect_hosts( $content ) {
 

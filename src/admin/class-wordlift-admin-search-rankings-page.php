@@ -63,7 +63,7 @@ class Wordlift_Admin_Search_Rankings_Page extends Wordlift_Admin_Page {
 	public function enqueue_scripts() {
 		parent::enqueue_scripts();
 
-		wp_enqueue_script( 'wl-admin-search-rankings', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/1/search-rankings.js', array(), Wordlift::get_instance()->get_version() );
+		wp_enqueue_script( 'wl-admin-search-rankings', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/1/search-rankings.js', array( 'wp-util' ), Wordlift::get_instance()->get_version() );
 		wp_enqueue_style( 'wl-admin-search-rankings', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/1/search-rankings.css', array(), Wordlift::get_instance()->get_version() );
 
 	}

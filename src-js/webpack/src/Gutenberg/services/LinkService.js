@@ -24,6 +24,15 @@ class LinkService {
     this.linkByDefault = linkByDefault;
   }
 
+  syncOccurrences(entity) {
+    for (var annotation in entity.annotations) {
+      if (!entity.occurrences.includes(annotation)) {
+        entity.occurrences.push(annotation);
+      }
+    }
+    return entity;
+  }
+
   /**
    * Set the link flag on the provided `occurrences`.
    *
@@ -60,9 +69,11 @@ class LinkService {
           let contentElem = document.createElement("div");
 
           contentElem.innerHTML = block.attributes.content;
-          if (contentElem.querySelector("#" + selector)) {
-            contentElem.querySelector("#" + selector).classList.remove("wl-no-link");
-            contentElem.querySelector("#" + selector).classList.add("wl-link");
+          if (contentElem.querySelectorAll("#" + selector).length > 0) {
+            contentElem.querySelectorAll("#" + selector).forEach(nodeValue => {
+              nodeValue.classList.remove("wl-no-link");
+              nodeValue.classList.add("wl-link");
+            });
             wp.data.dispatch("core/editor").updateBlock(block.clientId, {
               attributes: {
                 content: contentElem.innerHTML
@@ -89,9 +100,11 @@ class LinkService {
           let contentElem = document.createElement("div");
 
           contentElem.innerHTML = block.attributes.content;
-          if (contentElem.querySelector("#" + selector)) {
-            contentElem.querySelector("#" + selector).classList.remove("wl-link");
-            contentElem.querySelector("#" + selector).classList.add("wl-no-link");
+          if (contentElem.querySelectorAll("#" + selector).length > 0) {
+            contentElem.querySelectorAll("#" + selector).forEach(nodeValue => {
+              nodeValue.classList.remove("wl-link");
+              nodeValue.classList.add("wl-no-link");
+            });
             wp.data.dispatch("core/editor").updateBlock(block.clientId, {
               attributes: {
                 content: contentElem.innerHTML
@@ -128,9 +141,15 @@ class LinkService {
 
     return occurrences.reduce((acc, id) => {
       const selector = id.replace("urn:", "urn\\3A ");
+      if (
+        contentElem.querySelectorAll("#" + selector + ".wl-no-link").length === 0 &&
+        contentElem.querySelectorAll("#" + selector + ".wl-link").length === 0
+      ) {
+        return false;
+      }
       return acc || this.linkByDefault
-        ? !contentElem.querySelector("#" + selector + ".wl-no-link")
-        : !!contentElem.querySelector("#" + selector + ".wl-link");
+        ? !contentElem.querySelectorAll("#" + selector + ".wl-no-link").length
+        : !!contentElem.querySelectorAll("#" + selector + ".wl-link").length;
     }, false);
   }
 }

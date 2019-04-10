@@ -88,6 +88,7 @@ const entities = function(state = Map(), action) {
     // Toggle the link/no link on entity's occurrences.
     case types.TOGGLE_LINK:
       // Toggle the link on the occurrences.
+      action.entity = LinkService.syncOccurrences(action.entity);
       LinkService.setLink(action.entity.occurrences, !action.entity.link);
 
       // Update the entity in the state.
