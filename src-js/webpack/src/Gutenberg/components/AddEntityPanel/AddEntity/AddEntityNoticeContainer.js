@@ -13,7 +13,7 @@ const AddEntityNotice = ({ showNotice }) => (
   <React.Fragment>
     {showNotice && (
       <Notice status="success" isDismissible={false}>
-        The entity was added!
+        The entity was created!
       </Notice>
     )}
   </React.Fragment>
