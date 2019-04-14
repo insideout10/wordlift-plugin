@@ -63,11 +63,13 @@ class ContentClassificationPanel extends React.Component {
       title: Constants.PLUGIN_NAMESPACE,
       tagName: "span",
       className: null,
-      edit: ({ isActive, value, onChange }) => {
+      edit: ({ value }) => {
         if (value.start && value.end) {
           this.props.dispatch(AnnotationService.annotateSelected(value.start, value.end));
-          const selected = value.text.substring(value.start, value.end);
-          Store2.dispatch(setValue(selected));
+          if (value.start !== value.end) {
+            const selected = value.text.substring(value.start, value.end);
+            Store2.dispatch(setValue(selected));
+          }
         }
         return <Fragment />;
       }
