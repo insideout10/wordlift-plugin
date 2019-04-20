@@ -26,7 +26,7 @@ import Spinner from "../Spinner";
  * Packages via WordPress global
  */
 const { Fragment } = wp.element;
-const { Panel, PanelBody } = wp.components;
+const { Panel, PanelBody, PanelRow } = wp.components;
 
 const canCreateEntities =
   "undefined" !== wlSettings["can_create_entities"] && "yes" === wlSettings["can_create_entities"];
@@ -63,23 +63,27 @@ class ContentClassificationPanel extends React.Component {
       title: Constants.PLUGIN_NAMESPACE,
       tagName: "span",
       className: null,
-      edit: ({ isActive, value, onChange }) => {
-        this.props.dispatch(AnnotationService.annotateSelected(value.start, value.end));
-        const blockClientId = wp.data.select("core/editor").getSelectedBlockClientId();
-        const selected = value.text.substring(value.start, value.end);
-        let formats = [];
-        for (var i = value.start; i < value.end; i++) {
-          formats.push(value.formats[i]);
+      edit: ({ value }) => {
+        if (value.start && value.end) {
+          this.props.dispatch(AnnotationService.annotateSelected(value.start, value.end));
+          if (value.start !== value.end) {
+            const blockClientId = wp.data.select("core/editor").getSelectedBlockClientId();
+            const selected = value.text.substring(value.start, value.end);
+            let formats = [];
+            for (var i = value.start; i < value.end; i++) {
+              formats.push(value.formats[i]);
+            }
+            Store2.dispatch(
+              setValue({
+                value: selected,
+                start: value.start,
+                end: value.end,
+                formats,
+                blockClientId
+              })
+            );
+          }
         }
-        Store2.dispatch(
-          setValue({
-            value: selected,
-            start: value.start,
-            end: value.end,
-            formats,
-            blockClientId
-          })
-        );
         return <Fragment />;
       }
     });

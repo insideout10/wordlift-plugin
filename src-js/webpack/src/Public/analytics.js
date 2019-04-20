@@ -72,6 +72,11 @@
           for (var i = 0; i < entitiesTotal; i++) {
             sendGtagEvent(analyticsObj, dimX, dimY, entities[i].label, entities[i].uri, entities[i].type);
           }
+	    } else if ("gtm" === analyticsObj.__wl_type) {
+          // This is `gtag` style object.
+          for (var i = 0; i < entitiesTotal; i++) {
+            sendGtmEvent(analyticsObj, dimX, dimY, entities[i].label, entities[i].uri, entities[i].type);
+          }
         }
         // @TODO handle failure.
         // resolve to finish.
@@ -91,10 +96,13 @@
    */
   function getAnalyticsObject() {
     var obj = false;
-    // gtag must be first.
-    if (window.gtag) {
+    // detect GTAG, GTM, GA in that order.
+	if (window.gtag) {
       obj = window.gtag;
       obj.__wl_type = "gtag";
+    } else if (window.dataLayer) {
+      obj = window.dataLayer;
+      obj.__wl_type = "gtm";
     } else if (window.ga) {
       obj = window.ga;
       obj.__wl_type = "ga";
@@ -157,6 +165,35 @@
       [dimX]: uri,
       [dimY]: type,
       non_interaction: true
+    });
+  }
+
+  /**
+   * Wrapper function for pushing entity analytics data to gtag.
+   *
+   * @method sendGtagEvent
+   * @param  {gtag} analyticsObject The anlytics object we push into.
+   * @param  {string} dimX the name of the first custom dimension.
+   * @param  {string} dimY the name of the second custom dimension.
+   * @param  {string} label a string to use as the label.
+   * @param  {string} uri the uri of this entity.
+   * @param  {string} type the entity type.
+   */
+  function sendGtmEvent(analyticsObj, dimX, dimY, label, uri, type) {
+    // Double check we have the config object before continuing.
+    if ("undefined" === typeof wordliftAnalyticsConfigData) {
+      return false;
+    }
+
+    // console.log("Sending gtm event ...");
+
+    analyticsObj.push("event", "Mentions", {
+      event_category: "WordLift",
+      event_label: label,
+      value: 1,
+      [dimX]: uri,
+      [dimY]: type,
+	  non_interaction: true
     });
   }
 })();
