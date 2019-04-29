@@ -5,6 +5,7 @@ export const {
   loadItemsSuccess,
   loadItemsError,
   createEntityRequest,
+  createEntityForm,
   createEntitySuccess,
   addEntityRequest,
   addEntitySuccess,
@@ -16,6 +17,7 @@ export const {
   "LOAD_ITEMS_SUCCESS",
   "LOAD_ITEMS_ERROR",
   "CREATE_ENTITY_REQUEST",
+  "CREATE_ENTITY_FORM",
   "CREATE_ENTITY_SUCCESS",
   "ADD_ENTITY_REQUEST",
   "ADD_ENTITY_SUCCESS",
@@ -40,6 +42,13 @@ export const reducer = handleActions(
       blockClientId: action.payload.blockClientId,
       formats: action.payload.formats,
       enabled: "undefined" !== typeof action.payload.value && "" !== action.payload.value
+    }),
+    [createEntityForm]: (state, action) => ({
+      ...state,
+      showCreate: action.payload ? true : false,
+      open: false,
+      value: action.payload ? state.value : "",
+      enabled: action.payload ? true : false
     }),
     [addEntitySuccess]: (state, action) => ({
       ...state,

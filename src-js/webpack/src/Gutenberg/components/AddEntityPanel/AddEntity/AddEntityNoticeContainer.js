@@ -10,13 +10,13 @@ const { Notice } = wp.components;
 const mapStateToProps = ({ showNotice }) => ({ showNotice });
 
 const AddEntityNotice = ({ showNotice }) => (
-  <React.Fragment>
-    {showNotice && (
+  <div className="wl-notice">
+    {!showNotice && (
       <Notice status="success" isDismissible={false}>
         The entity was created!
       </Notice>
     )}
-  </React.Fragment>
+  </div>
 );
 
 export default connect(mapStateToProps)(AddEntityNotice);

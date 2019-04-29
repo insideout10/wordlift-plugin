@@ -1,6 +1,5 @@
 import { delay, eventChannel } from "redux-saga";
 import { call, fork, put, race, select, take, takeEvery, takeLatest } from "redux-saga/effects";
-import Store2 from "../../../stores/Store2";
 
 import {
   addEntityRequest,
@@ -10,13 +9,14 @@ import {
   setValue,
   loadItemsSuccess,
   close,
-  open
+  open,
+  createEntityForm
 } from "./actions";
 import { autocomplete } from "../../../../Edit/components/AddEntity/api";
-import EditPostWidgetController from "../../../../Edit/angular/EditPostWidgetController";
 import AnnotationService from "../../../services/AnnotationService";
 import { receiveAnalysisResults } from "../../../../Edit/actions";
 import Store1 from "../../../stores/Store1";
+import Store2 from "../../../stores/Store2";
 
 function* loadItems({ payload }) {
   if ("undefined" === typeof payload || "" === payload) return;
@@ -38,11 +38,31 @@ function* loadItems({ payload }) {
 }
 
 function* createEntity({ payload }) {
-  const ctrl = EditPostWidgetController();
-
-  ctrl.$apply(ctrl.setCurrentEntity(undefined, undefined, payload));
-
-  yield put(createEntitySuccess());
+  let currentEntity = AnnotationService.createEntity({
+    description: payload.description,
+    images: [],
+    label: payload.label,
+    mainType: getMainType([payload.category]),
+    types: [payload.category],
+    sameAs: []
+  });
+  let currentAnnotation = AnnotationService.createTextAnnotationFromCurrentSelection(currentEntity);
+  let entityAnnotationData = AnnotationService.addNewEntityToAnalysis(currentEntity, currentAnnotation);
+  Store1.dispatch(receiveAnalysisResults(entityAnnotationData));
+  AnnotationService.addRemoveEntityMeta(currentEntity);
+  yield put(createEntityForm(false));
+  yield put(
+    addEntitySuccess({
+      showNotice: true
+    })
+  );
+  setTimeout(() => {
+    Store2.dispatch(
+      addEntitySuccess({
+        showNotice: false
+      })
+    );
+  }, 2000);
 }
 
 function* addEntity({ payload }) {

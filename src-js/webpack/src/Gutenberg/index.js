@@ -16,6 +16,7 @@ import RelatedPostsPanel from "./components/RelatedPostsPanel";
 import SuggestedImagesPanel from "./components/SuggestedImagesPanel";
 import ArticleMetadataPanel from "./components/ArticleMetadataPanel";
 import AddEntityPanel from "./components/AddEntityPanel";
+import "./index.scss";
 
 /*
  * Packages via WordPress global

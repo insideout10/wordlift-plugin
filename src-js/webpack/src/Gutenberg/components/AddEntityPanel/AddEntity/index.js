@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import ButtonContainer from "../../../../Edit/components/AddEntity/ButtonContainer";
 import EntitySelectContainer from "./EntitySelectContainer";
 import AddEntityNoticeContainer from "./AddEntityNoticeContainer";
+import CreateEntityContainer from "./CreateEntityContainer";
 import WrapperContainer from "../../../../Edit/components/AddEntity/WrapperContainer";
 import Arrow from "../../../../Edit/components/Arrow";
 
@@ -24,6 +25,7 @@ const AddEntity = props => (
         </ButtonContainer>
         <EntitySelectContainer showCreate={props.showCreate} />
       </WrapperContainer>
+      <CreateEntityContainer />
     </React.Fragment>
   </Provider>
 );

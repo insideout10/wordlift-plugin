@@ -511,11 +511,10 @@ class AnnotationService {
   }
 
   static createAnnotation(params) {
-    var defaults;
     if (params == null) {
       params = {};
     }
-    defaults = {
+    let defaults = {
       id: "urn:local-text-annotation-" + AnnotationService.uniqueId(32),
       text: "",
       start: 0,
@@ -527,12 +526,13 @@ class AnnotationService {
   }
 
   static createEntity(params) {
-    var defaults;
     if (params == null) {
       params = {};
     }
-    defaults = {
-      id: "local-entity-" + AnnotationService.uniqueId(32),
+    let defaultId = "local-entity-" + AnnotationService.uniqueId(32);
+    let defaults = {
+      id: defaultId,
+      entityId: defaultId,
       label: "",
       description: "",
       mainType: "",
