@@ -57,11 +57,13 @@ class Wordlift_Admin_Post_Edit_Page {
 		// Define the callbacks.
 		$callback = array( $this, 'enqueue_scripts', );
 		$callback_gutenberg = array( $this, 'enqueue_scripts_gutenberg', );
+		$callback_block_categories = array($this, 'block_categories');
 
 		// Set a hook to enqueue scripts only when the edit page is displayed.
 		add_action( 'admin_print_scripts-post.php', $callback );
 		add_action( 'admin_print_scripts-post-new.php', $callback );
 		add_action( 'enqueue_block_editor_assets', $callback_gutenberg );
+		add_filter( 'block_categories', $callback_block_categories, 10, 2 );
 
 		$this->plugin = $plugin;
 	}
@@ -145,6 +147,7 @@ class Wordlift_Admin_Post_Edit_Page {
 			array(
 				$this->plugin->get_plugin_name(),
 				'jquery',
+				'wp-blocks',
 				'wp-util',
 				'wp-element',
 				'wp-components',
@@ -158,6 +161,38 @@ class Wordlift_Admin_Post_Edit_Page {
 			false
 		);
 		wp_enqueue_style( 'style-gutenberg', plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/gutenberg.css', false );
+
+		register_block_type('wordlift/faceted-search', array(
+			'editor_script' => 'wordlift-admin-edit-gutenberg',
+			'render_callback' => array( $this, 'abc_callback', ),
+			'attributes' => [
+				'id' => [
+					'default' => 1
+				],
+				'heading' => [
+					'default' => 'h2'
+				]
+			]
+		));
+	}
+
+	public function abc_callback(){
+		return 'Hello ABC';
+	}
+
+	public function block_categories( $categories, $post ) {
+		if ( $post->post_type !== 'post' ) {
+			return $categories;
+		}
+		return array_merge(
+			$categories,
+			array(
+				array(
+					'slug' => 'wordlift',
+					'title' => 'WordLift Blocks',
+				),
+			)
+		);
 	}
 
 }

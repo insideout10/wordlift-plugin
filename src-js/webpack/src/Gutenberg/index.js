@@ -23,6 +23,7 @@ import "./index.scss";
  */
 const { Fragment } = wp.element;
 const { PluginSidebar, PluginSidebarMoreMenuItem } = wp.editPost;
+const { registerBlockType } = wp.blocks;
 
 const WordLiftSidebar = () => (
   <Fragment>
@@ -50,4 +51,30 @@ const WordLiftSidebar = () => (
 wp.plugins.registerPlugin(Constants.PLUGIN_NAMESPACE, {
   render: WordLiftSidebar,
   icon: <WordLiftIcon />
+});
+
+registerBlockType(`${Constants.PLUGIN_NAMESPACE}/faceted-search`, {
+  title: "Faceted Search", // Block title.
+  category: "wordlift", //category
+  attributes: {
+    id: {
+      default: 1
+    },
+    heading: {
+      default: "h2"
+    }
+  },
+  //display the edit interface + preview
+  edit: ({ attributes, setAttributes, className, isSelected }) => {
+    // Simplify access to attributes
+    const { heading, id } = attributes;
+    return (
+      <div className={className}>
+        {heading}: {id}
+      </div>
+    );
+  },
+  save() {
+    return null; //save has to exist. This all we need
+  }
 });
