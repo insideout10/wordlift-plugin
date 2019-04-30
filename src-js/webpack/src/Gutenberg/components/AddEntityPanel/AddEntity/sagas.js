@@ -16,7 +16,6 @@ import { autocomplete } from "../../../../Edit/components/AddEntity/api";
 import AnnotationService from "../../../services/AnnotationService";
 import { receiveAnalysisResults } from "../../../../Edit/actions";
 import Store1 from "../../../stores/Store1";
-import Store2 from "../../../stores/Store2";
 
 function* loadItems({ payload }) {
   if ("undefined" === typeof payload || "" === payload) return;
@@ -51,18 +50,9 @@ function* createEntity({ payload }) {
   Store1.dispatch(receiveAnalysisResults(entityAnnotationData));
   AnnotationService.addRemoveEntityMeta(currentEntity);
   yield put(createEntityForm(false));
-  yield put(
-    addEntitySuccess({
-      showNotice: true
-    })
-  );
-  setTimeout(() => {
-    Store2.dispatch(
-      addEntitySuccess({
-        showNotice: false
-      })
-    );
-  }, 2000);
+  yield put(addEntitySuccess(true));
+  yield call(delay, 2000);
+  yield put(addEntitySuccess(false));
 }
 
 function* addEntity({ payload }) {
@@ -80,18 +70,9 @@ function* addEntity({ payload }) {
   let entityAnnotationData = AnnotationService.addNewEntityToAnalysis(currentEntity, currentAnnotation);
   Store1.dispatch(receiveAnalysisResults(entityAnnotationData));
   AnnotationService.addRemoveEntityMeta(currentEntity);
-  yield put(
-    addEntitySuccess({
-      showNotice: true
-    })
-  );
-  setTimeout(() => {
-    Store2.dispatch(
-      addEntitySuccess({
-        showNotice: false
-      })
-    );
-  }, 2000);
+  yield put(addEntitySuccess(true));
+  yield call(delay, 2000);
+  yield put(addEntitySuccess(false));
 }
 
 function* requestClose() {

@@ -11,7 +11,7 @@ const mapStateToProps = ({ showNotice }) => ({ showNotice });
 
 const AddEntityNotice = ({ showNotice }) => (
   <div className="wl-notice">
-    {!showNotice && (
+    {showNotice && (
       <Notice status="success" isDismissible={false}>
         The entity was created!
       </Notice>

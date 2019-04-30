@@ -52,7 +52,7 @@ export const reducer = handleActions(
     }),
     [addEntitySuccess]: (state, action) => ({
       ...state,
-      showNotice: action.payload.showNotice
+      showNotice: action.payload
     })
   },
   { open: false, items: [], value: "", enabled: false }
