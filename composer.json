@@ -6,7 +6,8 @@
     "codeclimate/php-test-reporter": "^0.4.4",
     "dealerdirect/phpcodesniffer-composer-installer": "*",
     "wp-coding-standards/wpcs": "*",
-    "wimg/php-compatibility": "*"
+    "wimg/php-compatibility": "*",
+    "phpcompatibility/php-compatibility": "*"
   },
   "prefer-stable": true
 }
