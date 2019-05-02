@@ -185,15 +185,17 @@
       return false;
     }
 
-    // console.log("Sending gtm event ...");
+    // console.log("Sending gtm event...");
 
-    analyticsObj.push("event", "Mentions", {
-      event_category: "WordLift",
-      event_label: label,
-      value: 1,
-      [dimX]: uri,
-      [dimY]: type,
-	  non_interaction: true
+    analyticsObj.push({
+      "event":             "Mentions",
+      "wl_event_action":   "Mentions",
+      "wl_event_category": "WordLift",
+      "wl_event_label":    label,
+      "wl_event_value":    1,
+      "wl_event_uri":      uri,
+      "wl_event_type":     type,
+	  "non_interaction":   true
     });
   }
 })();

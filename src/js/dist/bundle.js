@@ -279,20 +279,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
    * @param  {string} type the entity type.
    */
   function sendGtmEvent(analyticsObj, dimX, dimY, label, uri, type) {
-    var _analyticsObj$push;
-
     // Double check we have the config object before continuing.
     if ("undefined" === typeof wordliftAnalyticsConfigData) {
       return false;
     }
 
-    // console.log("Sending gtm event ...");
+    // console.log("Sending gtm event...");
 
-    analyticsObj.push("event", "Mentions", (_analyticsObj$push = {
-      event_category: "WordLift",
-      event_label: label,
-      value: 1
-    }, _defineProperty(_analyticsObj$push, dimX, uri), _defineProperty(_analyticsObj$push, dimY, type), _defineProperty(_analyticsObj$push, "non_interaction", true), _analyticsObj$push));
+    analyticsObj.push({
+      "event": "Mentions",
+      "wl_event_action": "Mentions",
+      "wl_event_category": "WordLift",
+      "wl_event_label": label,
+      "wl_event_value": 1,
+      "wl_event_uri": uri,
+      "wl_event_type": type,
+      "non_interaction": true
+    });
   }
 })();
 
