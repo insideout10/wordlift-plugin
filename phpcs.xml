@@ -13,11 +13,14 @@
     <!-- Exclude the Composer Vendor directory. -->
     <exclude-pattern>/vendor/*</exclude-pattern>
 
-    <!-- Exclude the Node Modules directory. -->
+    <!-- Exclude the Node Modules and Bower Components directory. -->
     <exclude-pattern>/node_modules/*</exclude-pattern>
+    <exclude-pattern>/src/bower_components/*</exclude-pattern>
 
     <!-- Exclude minified Javascript files. -->
     <exclude-pattern>*.min.js</exclude-pattern>
+
+    <exclude-pattern>/src/timelinejs/js/*</exclude-pattern>
 
     <!-- Include the WordPress-Extra standard. -->
     <rule ref="WordPress-Extra">
