@@ -54,7 +54,9 @@
     https://github.com/wimg/PHPCompatibility
     -->
     <config name="testVersion" value="5.3-"/>
-    <rule ref="PHPCompatibility"/>
+    <rule ref="PHPCompatibilityWP">
+        <include-pattern>*\.php$</include-pattern>
+    </rule>
 
     <!--
     To get the optimal benefits of using WPCS, we should add a couple of
