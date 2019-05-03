@@ -112,6 +112,11 @@ services:
 # Legacy (required by test:js and test:php).
 before_install:
   - .ci/travis/install_ssh_key.sh
+  # If we're running the PHP 5.3 compatibility reports, we need the composer deps.
+  - |
+    if [[ "$SCRIPT" == "test:php5.3-compat" ]]; then
+      composer install --dev
+    fi
   # If we're running the PHP tests, we need a WP test site.
   - |
     if [[ "$SCRIPT" == "test:php" || "$SCRIPT" == "test:php-test-coverage" || "$SCRIPT" == "test:multisite" ]]; then
