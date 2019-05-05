@@ -164,20 +164,29 @@ class Wordlift_Admin_Post_Edit_Page {
 
 		register_block_type('wordlift/faceted-search', array(
 			'editor_script' => 'wordlift-admin-edit-gutenberg',
-			'render_callback' => array( $this, 'abc_callback', ),
+			'render_callback' => array( $this, 'faceted_search_php_render', ),
 			'attributes' => [
-				'id' => [
-					'default' => 1
+				'title' => [
+					'default' => __( 'Related articles', 'wordlift' )
 				],
-				'heading' => [
-					'default' => 'h2'
+				'show_facets' => [
+					'default' => true
+				],
+				'with_carousel' => [
+					'default' => true
+				],
+				'squared_thumbs' => [
+					'default' => false
+				],
+				'limit' => [
+					'default' => 20
 				]
 			]
 		));
 	}
 
-	public function abc_callback(){
-		return 'Hello ABC';
+	public function faceted_search_php_render($attributes){
+		return '<p>' . print_r( $attributes, true ) . '</p>';
 	}
 
 	public function block_categories( $categories, $post ) {
