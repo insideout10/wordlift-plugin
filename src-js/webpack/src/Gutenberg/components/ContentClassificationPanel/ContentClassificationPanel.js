@@ -82,7 +82,7 @@ class ContentClassificationPanel extends React.Component {
             })
           );
         }
-        return <Fragment />;
+        return null;
       }
     });
   }

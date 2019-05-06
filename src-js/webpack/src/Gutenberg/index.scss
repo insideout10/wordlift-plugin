@@ -15,7 +15,8 @@
   .disambiguated {
     border-bottom: #007aff 2px solid;
   }
-  &[data-type='wordlift/faceted-search']{
+  &[data-type='wordlift/faceted-search'],
+  &[data-type='wordlift/navigator']{
     [data-block]{
       background: rgba(0,0,0,0.07);
       font-family: Consolas, Monaco, monospace;

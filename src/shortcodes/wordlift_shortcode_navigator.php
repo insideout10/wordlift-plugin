@@ -39,9 +39,9 @@ function wl_shortcode_navigator_data() {
 
 	$relation_service = Wordlift_Relation_Service::get_instance();
 
-	// Get the related entities, ordering them by WHO, WHAT, WHERE, WHEN 
+	// Get the related entities, ordering them by WHO, WHAT, WHERE, WHEN
 	// TODO Replace with a single query if it is possible
-	// We select in inverse order to give priority to less used entities 
+	// We select in inverse order to give priority to less used entities
 	foreach (
 		array(
 			WL_WHEN_RELATION,
@@ -136,7 +136,7 @@ function wl_shortcode_navigator_wp_json() {
 		ob_clean();
 	}
 	return array(
-		'items' => array( 
+		'items' => array(
 			array('values' => $results)
 		)
 	);
@@ -152,3 +152,32 @@ add_action( 'rest_api_init', function () {
 	  'callback' => 'wl_shortcode_navigator_wp_json',
 	) );
 } );
+
+add_action( 'init', function() {
+	register_block_type('wordlift/navigator', array(
+		'editor_script' => 'wordlift-admin-edit-gutenberg',
+		'render_callback' => 'wl_shortcode_navigator_block_php_render',
+		'attributes' => [
+			'title' => [
+				'type'    => 'string',
+				'default' => __( 'Related articles', 'wordlift' )
+			],
+			'with_carousel' => [
+				'type'    => 'string',
+				'default' => true
+			],
+			'squared_thumbs' => [
+				'type'    => 'string',
+				'default' => false
+			]
+		]
+	));
+} );
+
+function wl_shortcode_navigator_block_php_render($attributes){
+	$attr_code = '';
+	foreach ($attributes as $key => $value) {
+		$attr_code .= $key.'="'.$value.'" ';
+	}
+	return '[wl_navigator '.$attr_code.']';
+}
