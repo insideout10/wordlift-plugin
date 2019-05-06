@@ -194,7 +194,9 @@
       "wl_event_label":    label,
       "wl_event_value":    1,
       "wl_event_uri":      uri,
+	  "wl_index_uri":      dimX.replace( /^\D+/g, '' ),
       "wl_event_type":     type,
+	  "wl_index_type":     dimY.replace( /^\D+/g, '' ),
 	  "non_interaction":   true
     });
   }
