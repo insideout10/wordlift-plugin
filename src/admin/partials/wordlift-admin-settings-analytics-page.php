@@ -35,7 +35,10 @@
 					<li><i>wl_event_label</i></li>
 					<li><i>wl_event_value</i></li>
 					<li><i>wl_event_uri</i> <?php esc_html_e( '(which is the first custom dimension number the plugin offers)', 'wordlift' ); ?></li>
+					<li><i>wl_index_uri</i> <?php esc_html_e( '(this is the index number sent to use as the custom dimention for uri)', 'wordlift' ); ?></li>
 					<li><i>wl_event_type</i> <?php esc_html_e( '(which is the second custom dimension number the plugin offers)', 'wordlift' ); ?></li>
+					<li><i>wl_index_type</i> <?php esc_html_e( '(this is the index number sent to use as the custom dimention for type)', 'wordlift' ); ?></li>
+
 				</ol>
 			</li>
 			<li>
@@ -50,9 +53,9 @@
 					<li>
 						<?php
 						printf(
-							esc_html__( 'Set the value of each one to the %1$s and the %2$s respectively.', 'wordlift' ),
-							'<i>wl_event_uri</i>',
-							'<i>wl_event_type</i>'
+							esc_html__( 'Set the values of each one to the %1$s and the %2$s respectively.', 'wordlift' ),
+							'<i>wl_index_uri</i> - <i>wl_event_uri</i>',
+							'<i>wl_index_type</i> - <i>wl_event_type</i>'
 						);
 						?>
 					</li>
@@ -86,7 +89,7 @@
 						);
 						?>
 						<ol>
-							<li><i>event_action</i> <i>equals</i> <i>Mentions</i>.</li>
+							<li><i>event_action</i> - <i>equals</i> - <i>Mentions</i>.</li>
 						</ol>
 					</li>
 				</ol>
@@ -108,6 +111,15 @@
 						);
 						?>
 						<ol>
+							<li>
+								<?php
+								printf(
+									esc_html__( 'Set the %1$s to %2$s.', 'wordlift' ),
+									'Track Type',
+									'<i>Event</i>'
+								);
+								?>
+							</li>
 							<li>
 								<?php
 								printf(
