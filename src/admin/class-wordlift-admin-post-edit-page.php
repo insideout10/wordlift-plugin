@@ -63,7 +63,6 @@ class Wordlift_Admin_Post_Edit_Page {
 		add_action( 'admin_print_scripts-post.php', $callback );
 		add_action( 'admin_print_scripts-post-new.php', $callback );
 		add_action( 'enqueue_block_editor_assets', $callback_gutenberg );
-		add_filter( 'block_categories', $callback_block_categories, 10, 2 );
 
 		$this->plugin = $plugin;
 	}
@@ -161,47 +160,6 @@ class Wordlift_Admin_Post_Edit_Page {
 			false
 		);
 		wp_enqueue_style( 'style-gutenberg', plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/gutenberg.css', false );
-
-		register_block_type('wordlift/faceted-search', array(
-			'editor_script' => 'wordlift-admin-edit-gutenberg',
-			'render_callback' => array( $this, 'faceted_search_php_render', ),
-			'attributes' => [
-				'title' => [
-					'default' => __( 'Related articles', 'wordlift' )
-				],
-				'show_facets' => [
-					'default' => true
-				],
-				'with_carousel' => [
-					'default' => true
-				],
-				'squared_thumbs' => [
-					'default' => false
-				],
-				'limit' => [
-					'default' => 20
-				]
-			]
-		));
-	}
-
-	public function faceted_search_php_render($attributes){
-		return '<p>' . print_r( $attributes, true ) . '</p>';
-	}
-
-	public function block_categories( $categories, $post ) {
-		if ( $post->post_type !== 'post' ) {
-			return $categories;
-		}
-		return array_merge(
-			$categories,
-			array(
-				array(
-					'slug' => 'wordlift',
-					'title' => 'WordLift Blocks',
-				),
-			)
-		);
 	}
 
 }

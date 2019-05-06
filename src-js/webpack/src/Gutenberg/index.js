@@ -82,7 +82,7 @@ registerBlockType(`${Constants.PLUGIN_NAMESPACE}/faceted-search`, {
     // Simplify access to attributes
     const { title, show_facets, with_carousel, squared_thumbs, limit } = attributes;
     const onChangeTitle = newTitle => {
-      setAttributes({ content: newTitle });
+      setAttributes({ title: newTitle });
     };
     const onChangeLimit = newLimit => {
       setAttributes({ limit: newLimit });

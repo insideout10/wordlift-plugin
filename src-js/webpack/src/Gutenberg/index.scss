@@ -15,4 +15,14 @@
   .disambiguated {
     border-bottom: #007aff 2px solid;
   }
+  &[data-type='wordlift/faceted-search']{
+    [data-block]{
+      background: rgba(0,0,0,0.07);
+      font-family: Consolas, Monaco, monospace;
+      direction: ltr;
+      unicode-bidi: embed;
+      font-size: 13px;
+      padding: 5px;
+    }
+  }
 }
