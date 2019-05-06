@@ -96,32 +96,36 @@ class AnnotationService {
     });
     for (var annotation in this.modifiedResponse.annotations) {
       const annotationData = this.modifiedResponse.annotations[annotation];
+      const entityData = this.modifiedResponse.entities[annotationData.entityMatches[0].entityId];
+      let format = {
+        type: "span",
+        attributes: {
+          id: annotationData.annotationId,
+          class: `textannotation wl-${entityData.mainType}`,
+          itemid: entityData.entityId
+        }
+      };
+      if (this.disambiguated.includes(annotationData.text)) {
+        format.attributes.class += " disambiguated";
+      }
 
-      if (this.shouldAnnotate(annotationData.start, annotationData.end)) {
-        const entityData = this.modifiedResponse.entities[annotationData.entityMatches[0].entityId];
-        let format = {
-          type: "span",
-          attributes: {
-            id: annotationData.annotationId,
-            class: `textannotation wl-${entityData.mainType}`,
-            itemid: entityData.entityId
+      // Do not persistently annotate if an active format with class textannotation is detected for same range
+      let startFormat = richText.formats[annotationData.start];
+      let formatIndex = false;
+      if (startFormat) {
+        startFormat.forEach((value_v, value_i) => {
+          if (
+            value_v.type === Constants.PLUGIN_FORMAT_NAMESPACE &&
+            value_v.unregisteredAttributes &&
+            value_v.unregisteredAttributes.class.indexOf("textannotation") > -1
+          ) {
+            formatIndex = value_i;
           }
-        };
-        if (this.disambiguated.includes(annotationData.text)) {
-          format.attributes.class += " disambiguated";
-        }
-        // Do not persistently annotate if an active format with class textannotation is detected for same range
-        let startFormat = richText.formats[annotationData.start];
-        if (
-          startFormat &&
-          startFormat[0].type === Constants.PLUGIN_FORMAT_NAMESPACE &&
-          startFormat[0].unregisteredAttributes &&
-          startFormat[0].unregisteredAttributes.class.indexOf("textannotation") > -1
-        ) {
-          console.log(`Existing format detected at ${annotationData.start} in ${this.blockClientId}`);
-        } else {
-          richText = wp.richText.applyFormat(richText, format, annotationData.start, annotationData.end);
-        }
+        });
+      }
+
+      if (formatIndex === false) {
+        richText = wp.richText.applyFormat(richText, format, annotationData.start, annotationData.end);
       }
     }
     wp.data.dispatch("core/editor").updateBlock(this.blockClientId, {
@@ -212,12 +216,9 @@ class AnnotationService {
     let lastItem = null;
     let lastIndex = 1;
     richText.formats.forEach((value, index) => {
-      if (
-        value[0].type === "span" &&
-        value[0].attributes.class.indexOf("textannotation") > -1 &&
-        value[0].attributes.class.indexOf("disambiguated") > -1
-      ) {
-        let uri = value[0].attributes.itemid;
+      let formatIndex = AnnotationService.getFormatIndex(value);
+      if (formatIndex !== false) {
+        let uri = value[formatIndex].attributes.itemid;
         let end = index + 1;
         if (uri !== lastItem || index !== lastIndex) {
           annotations.push({
@@ -236,6 +237,20 @@ class AnnotationService {
       value.label = richText.text.substring(value.start, value.end);
     });
     this.existingAnnotations = annotations;
+  }
+
+  static getFormatIndex(value) {
+    let formatIndex = false;
+    value.forEach((value_v, value_i) => {
+      if (
+        value_v.type === "span" &&
+        value_v.attributes.class.indexOf("textannotation") > -1 &&
+        value_v.attributes.class.indexOf("disambiguated") > -1
+      ) {
+        formatIndex = value_i;
+      }
+    });
+    return formatIndex;
   }
 
   static analyseLocalEntities() {
@@ -272,13 +287,10 @@ class AnnotationService {
           let lastItem = null;
           let lastIndex = 1;
           richText.formats.forEach((value, index) => {
-            if (
-              value[0].type === "span" &&
-              value[0].attributes.class.indexOf("textannotation") > -1 &&
-              value[0].attributes.class.indexOf("disambiguated") > -1
-            ) {
-              let uri = value[0].attributes.itemid;
-              let id = value[0].attributes.id;
+            let formatIndex = AnnotationService.getFormatIndex(value);
+            if (formatIndex !== false) {
+              let uri = value[formatIndex].attributes.itemid;
+              let id = value[formatIndex].attributes.id;
               let end = index + 1;
               if (uri !== lastItem || index !== lastIndex) {
                 localData.annotations[id] = {
@@ -304,11 +316,13 @@ class AnnotationService {
       // Copy annotations data to respective entities
       for (var annotation in localData.annotations) {
         localData.annotations[annotation].entityMatches.forEach(entity => {
-          if (typeof localData.entities[entity.entityId].annotations === "undefined") {
-            localData.entities[entity.entityId].annotations = {};
+          if (typeof localData.entities[entity.entityId] !== "undefined") {
+            if (typeof localData.entities[entity.entityId].annotations === "undefined") {
+              localData.entities[entity.entityId].annotations = {};
+            }
+            localData.entities[entity.entityId].annotations[annotation] = localData.annotations[annotation];
+            localData.entities[entity.entityId].occurrences.push(annotation);
           }
-          localData.entities[entity.entityId].annotations[annotation] = localData.annotations[annotation];
-          localData.entities[entity.entityId].occurrences.push(annotation);
         });
       }
 

@@ -80,57 +80,53 @@ function wl_linked_data_rest_insert_post( $post, $request, $creating ){
 	// Store mapping between tmp new entities uris and real new entities uri
 	$entities_uri_mapping = array();
 
+	// Save the entities coming with POST data.
 	$metas = $request->get_json_params();
 	$metas = $metas['meta'];
 
 	// Ignore if no change in meta
-	if ( empty($metas) ) {
-		$log->trace( 'No meta data, skipping...' );
-		return;
-	}
+	if ( !empty($metas) ) {
+		$entities_via_meta = json_decode($metas['wl_entities_gutenberg'], true);
 
-	$entities_via_meta = json_decode($metas['wl_entities_gutenberg'], true);
+		foreach ( $entities_via_meta as $entity_uri => $entity ) {
 
-	//file_put_contents( WP_PLUGIN_DIR . '/wordlift/debug.txt', serialize($entities_via_meta) );
+			// Only if the current entity is created from scratch let's avoid to
+			// create more than one entity with same label & entity type.
+			$entity_type = ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) ?
+				$entity['main_type'] : null;
 
-	foreach ( $entities_via_meta as $entity_uri => $entity ) {
+			// Look if current entity uri matches an internal existing entity, meaning:
+			// 1. when $entity_uri is an internal uri
+			// 2. when $entity_uri is an external uri used as sameAs of an internal entity
+			$ie = $entity_service->get_entity_post_by_uri( $entity_uri );
 
-		// Only if the current entity is created from scratch let's avoid to
-		// create more than one entity with same label & entity type.
-		$entity_type = ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) ?
-			$entity['main_type'] : null;
+			// Detect the uri depending if is an existing or a new entity
+			$uri = ( null === $ie ) ?
+				Wordlift_Uri_Service::get_instance()->build_uri(
+					$entity['label'],
+					Wordlift_Entity_Service::TYPE_NAME,
+					$entity_type
+				) : wl_get_entity_uri( $ie->ID );
 
-		// Look if current entity uri matches an internal existing entity, meaning:
-		// 1. when $entity_uri is an internal uri
-		// 2. when $entity_uri is an external uri used as sameAs of an internal entity
-		$ie = $entity_service->get_entity_post_by_uri( $entity_uri );
+			wl_write_log( "Map $entity_uri on $uri" );
+			$entities_uri_mapping[ $entity_uri ] = $uri;
 
-		// Detect the uri depending if is an existing or a new entity
-		$uri = ( null === $ie ) ?
-			Wordlift_Uri_Service::get_instance()->build_uri(
-				$entity['label'],
-				Wordlift_Entity_Service::TYPE_NAME,
-				$entity_type
-			) : wl_get_entity_uri( $ie->ID );
+			// Local entities have a tmp uri with 'local-entity-' prefix
+			// These uris need to be rewritten here and replaced in the content
+			if ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) {
+				// Override the entity obj
+				$entity['uri'] = $uri;
+			}
 
-		wl_write_log( "Map $entity_uri on $uri" );
-		$entities_uri_mapping[ $entity_uri ] = $uri;
+			// Update entity data with related post
+			$entity['related_post_id'] = $post_id;
 
-		// Local entities have a tmp uri with 'local-entity-' prefix
-		// These uris need to be rewritten here and replaced in the content
-		if ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) {
-			// Override the entity obj
-			$entity['uri'] = $uri;
+			// Save the entity if is a new entity
+			if ( null === $ie ) {
+				wl_save_entity( $entity );
+			}
+
 		}
-
-		// Update entity data with related post
-		$entity['related_post_id'] = $post_id;
-
-		// Save the entity if is a new entity
-		if ( null === $ie ) {
-			wl_save_entity( $entity );
-		}
-
 	}
 
 	// Replace tmp uris in content post if needed

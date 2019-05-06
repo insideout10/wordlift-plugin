@@ -207,7 +207,7 @@ class Wordlift_Relation_Service {
 	private static function where_object_id( $object_id ) {
 
 		if ( empty( $object_id ) ) {
-			self::$log->warn( sprintf( "%s `where_object_id` called with empty `object_id`.", var_export( debug_backtrace( false, 3 ), true ) ) );
+			// self::$log->warn( sprintf( "%s `where_object_id` called with empty `object_id`.", var_export( debug_backtrace( false, 3 ), true ) ) );
 
 			return ' WHERE 1 = 1';
 		}

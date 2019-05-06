@@ -142,7 +142,11 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.21.0 (2019-03-27) =
+= 3.20.1 (2019-05-06) =
+* Fix: [#908](https://github.com/insideout10/wordlift-plugin/issues/908): Entities in GA isn't working when GA is loaded via GTAG.
+* Fix: [#907](https://github.com/insideout10/wordlift-plugin/issues/907): Link in Search Rankings tile do not work.
+* Fix: [#906](https://github.com/insideout10/wordlift-plugin/issues/906): Search Rankings timeout after 5 secs.
+* Fix: [#903](https://github.com/insideout10/wordlift-plugin/issues/903): Link switch doesn't work in classification box.
 
 = 3.20.0 (2019-03-25) =
 * Enhancement: [#894](https://github.com/insideout10/wordlift-plugin/issues/894): Push entity-related events to GA.
