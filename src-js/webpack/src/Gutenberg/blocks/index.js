@@ -14,7 +14,7 @@ import * as Constants from "../constants";
  * Packages via WordPress global
  */
 const { InspectorControls } = wp.editor;
-const { PanelBody, TextControl, CheckboxControl, ServerSideRender } = wp.components;
+const { PanelBody, TextControl, CheckboxControl } = wp.components;
 
 export default {
   [`${Constants.PLUGIN_NAMESPACE}/faceted-search`]: {
@@ -59,7 +59,11 @@ export default {
       };
       return (
         <div>
-          <ServerSideRender block={`${Constants.PLUGIN_NAMESPACE}/faceted-search`} attributes={attributes} />
+          <React.Fragment>
+            <h4>Wordlift Faceted Search block</h4>
+            <hr />
+            <pre style={{ fontSize: "10px" }}>{JSON.stringify(attributes, null, 2)}</pre>
+          </React.Fragment>
           <InspectorControls>
             <PanelBody title="Widget Settings" className="blocks-font-size">
               <TextControl label="Title" value={title} onChange={onChangeTitle} />
@@ -106,7 +110,11 @@ export default {
       };
       return (
         <div>
-          <ServerSideRender block={`${Constants.PLUGIN_NAMESPACE}/navigator`} attributes={attributes} />
+          <React.Fragment>
+            <h4>Wordlift Navigator block</h4>
+            <hr />
+            <pre style={{ fontSize: "10px" }}>{JSON.stringify(attributes, null, 2)}</pre>
+          </React.Fragment>
           <InspectorControls>
             <PanelBody title="Widget Settings" className="blocks-font-size">
               <TextControl label="Title" value={title} onChange={onChangeTitle} />
