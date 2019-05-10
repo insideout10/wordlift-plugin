@@ -62,7 +62,7 @@ class ContentClassificationPanel extends React.Component {
       name: Constants.PLUGIN_FORMAT_NAMESPACE,
       title: Constants.PLUGIN_NAMESPACE,
       tagName: "span",
-      className: null,
+      className: "textannotation",
       edit: ({ value }) => {
         if (value.start && value.end) {
           this.props.dispatch(AnnotationService.annotateSelected(value.start, value.end));
