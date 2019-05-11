@@ -142,6 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.20.2 (2019-05-13) =
+* Fix: Compatibility with WordPress 5.2 Gutenberg
+
 = 3.20.1 (2019-05-06) =
 * Fix: [#908](https://github.com/insideout10/wordlift-plugin/issues/908): Entities in GA isn't working when GA is loaded via GTAG.
 * Fix: [#907](https://github.com/insideout10/wordlift-plugin/issues/907): Link in Search Rankings tile do not work.
