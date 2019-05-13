@@ -1,6 +1,6 @@
 {
   "name": "wordlift-plugin",
-  "version": "3.20.0",
+  "version": "3.20.1",
   "description": "WordLift Plugin application for the web site public front-end.",
   "main": "index.js",
   "repository": "https://github.com/insideout10/wordlift-plugin",
