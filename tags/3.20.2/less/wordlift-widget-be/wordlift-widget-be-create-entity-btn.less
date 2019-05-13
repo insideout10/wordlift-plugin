@@ -1,0 +1,63 @@
+.wl-create-entity {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 20px;
+
+  .wl-create-entity-wrap.wl-create-entity-disabled {
+    background-color: @wl-input-no-active-color;
+
+    &:hover {
+      box-shadow: none;
+      transform: none;
+    }
+    &:active {
+      background-color: none;
+      box-shadow: none;
+      transform: none;
+    }
+  }
+
+  .wl-create-entity-wrap.wl-create-entity-enabled {
+    background-color: @wl-brand-color;
+    box-shadow: 0 1px 1px @wl-shadow-color;
+    cursor: pointer;
+
+    &:hover {
+      box-shadow: 0 3px 3px @wl-shadow-color;
+      transform: scale(1.01);
+    }
+    
+    &:active {
+      background-color: darken(@wl-brand-color, 2%);
+      box-shadow: 0 1px 1px @wl-shadow-color;
+      transform: scale(1);
+    }
+
+  }
+
+  .wl-create-entity-wrap {
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    margin: auto;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    min-width: 260px;
+    height: 35px;
+    box-sizing: border-box;
+    transition: @wl-anime-global-time;
+
+    .wl-crate-entity-lead {
+      color: @wl-white-color;
+    }
+  }
+}
