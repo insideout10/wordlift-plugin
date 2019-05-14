@@ -29,19 +29,30 @@ if ( is_admin() ) {
  */
 function wl_admin_add_entities_meta_box( $post_type ) {
 
+	/*
+	 * Call the `wl_can_see_classification_box` filter to determine whether we can display the classification box.
+	 *
+	 * @since 3.20.3
+	 *
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/914
+	 */
+	if ( ! apply_filters( 'wl_can_see_classification_box', true ) ) {
+		return;
+	}
+
 	// Bail out if the post type doesn't support a TinyMCE editor.
 	if ( ! wl_post_type_supports_editor( $post_type ) ) {
 		return;
 	}
 
-	if (!Wordlift_Admin::is_gutenberg()) {
+	if ( ! Wordlift_Admin::is_gutenberg() ) {
 		// Add main meta box for related entities and 4W only if not Gutenberg
 		add_meta_box(
 			'wordlift_entities_box', __( 'WordLift', 'wordlift' ), 'wl_entities_box_content', $post_type, 'side', 'high'
 		);
 	} else {
 		// Call wl_entities_box_content for the other things that it does.
-		wl_entities_box_content(get_post(), false);
+		wl_entities_box_content( get_post(), false );
 	}
 }
 
@@ -63,11 +74,12 @@ function wl_post_type_supports_editor( $post_type ) {
 	/**
 	 * Allow 3rd parties to force the classification to load.
 	 *
-	 * @since 3.19.4
+	 * @param bool $default The preset value as gathered by the `post_type_supports` call.
 	 *
 	 * @see https://github.com/insideout10/wordlift-plugin/issues/847.
 	 *
-	 * @param bool $default The preset value as gathered by the `post_type_supports` call.
+	 * @since 3.19.4
+	 *
 	 */
 	return apply_filters( 'wl_post_type_supports_editor', $default, $post_type );
 }
@@ -80,7 +92,9 @@ function wl_post_type_supports_editor( $post_type ) {
 function wl_entities_box_content( $post, $wrapper = true ) {
 
 	// Angularjs edit-post widget wrapper.
-	if($wrapper) echo '<div id="wordlift-edit-post-outer-wrapper"></div>';
+	if ( $wrapper ) {
+		echo '<div id="wordlift-edit-post-outer-wrapper"></div>';
+	}
 
 	// Angularjs edit-post widget classification boxes configuration.
 	$classification_boxes = unserialize( WL_CORE_POST_CLASSIFICATION_BOXES );
@@ -172,7 +186,7 @@ function wl_entities_box_content( $post, $wrapper = true ) {
 	// Current language.
 	$current_language = $configuration_service->get_language_code();
 
-	$js_code =  <<<JS
+	$js_code = <<<JS
 		if ('undefined' == typeof window.wordlift) {
 			window.wordlift = {};
 			window.wordlift.entities = {};  		
@@ -193,7 +207,9 @@ function wl_entities_box_content( $post, $wrapper = true ) {
 		window.wordlift.currentLanguage = '$current_language';
 JS;
 
-	if($wrapper) echo '<script type="text/javascript">'.PHP_EOL.$js_code.PHP_EOL.'</script>';
-	wp_add_inline_script('wl-entity-metabox-utility', $js_code);
+	if ( $wrapper ) {
+		echo '<script type="text/javascript">' . PHP_EOL . $js_code . PHP_EOL . '</script>';
+	}
+	wp_add_inline_script( 'wl-entity-metabox-utility', $js_code );
 }
 

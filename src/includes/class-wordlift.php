@@ -758,9 +758,9 @@ class Wordlift {
 	/**
 	 * Get the singleton instance.
 	 *
+	 * @return Wordlift The {@link Wordlift} singleton instance.
 	 * @since 3.11.2
 	 *
-	 * @return Wordlift The {@link Wordlift} singleton instance.
 	 */
 	public static function get_instance() {
 
@@ -1349,7 +1349,16 @@ class Wordlift {
 		$this->analytics_connect                   = new Wordlift_Analytics_Connect();
 
 		// Pages.
-		new Wordlift_Admin_Post_Edit_Page( $this );
+		/*
+		 * Call the `wl_can_see_classification_box` filter to determine whether we can display the classification box.
+		 *
+		 * @since 3.20.3
+		 * 
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/914
+		 */
+		if ( apply_filters( 'wl_can_see_classification_box', true ) ) {
+			new Wordlift_Admin_Post_Edit_Page( $this );
+		}
 		new Wordlift_Entity_Type_Admin_Service();
 
 		// create an instance of the entity type list admin page controller.
@@ -1739,8 +1748,8 @@ class Wordlift {
 	 * The name of the plugin used to uniquely identify it within the context of
 	 * WordPress and to define internationalization functionality.
 	 *
-	 * @since     1.0.0
 	 * @return    string    The name of the plugin.
+	 * @since     1.0.0
 	 */
 	public function get_plugin_name() {
 		return $this->plugin_name;
@@ -1749,8 +1758,8 @@ class Wordlift {
 	/**
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
-	 * @since     1.0.0
 	 * @return    Wordlift_Loader    Orchestrates the hooks of the plugin.
+	 * @since     1.0.0
 	 */
 	public function get_loader() {
 		return $this->loader;
@@ -1759,8 +1768,8 @@ class Wordlift {
 	/**
 	 * Retrieve the version number of the plugin.
 	 *
-	 * @since     1.0.0
 	 * @return    string    The version number of the plugin.
+	 * @since     1.0.0
 	 */
 	public function get_version() {
 		return $this->version;
@@ -1769,8 +1778,8 @@ class Wordlift {
 	/**
 	 * Load dependencies for WP-CLI.
 	 *
-	 * @since 3.18.0
 	 * @throws Exception
+	 * @since 3.18.0
 	 */
 	private function load_cli_dependencies() {
 
@@ -1785,8 +1794,8 @@ class Wordlift {
 	/**
 	 * Get the {@link \Wordlift_Dashboard_Service} to allow others to use its functions.
 	 *
-	 * @since 3.20.0
 	 * @return \Wordlift_Dashboard_Service The {@link \Wordlift_Dashboard_Service} instance.
+	 * @since 3.20.0
 	 */
 	public function get_dashboard_service() {
 
