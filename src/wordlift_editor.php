@@ -8,6 +8,18 @@
  * @return string The updated list of styles, including the custom style provided by WordLift.
  */
 function wordlift_mce_css( $mce_css ) {
+
+	/*
+	 * Call the `wl_can_see_classification_box` filter to determine whether we can display the classification box.
+	 *
+	 * @since 3.20.3
+	 *
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/914
+	 */
+	if ( ! apply_filters( 'wl_can_see_classification_box', true ) ) {
+		return $mce_css;
+	}
+
 	if ( ! empty( $mce_css ) ) {
 		$mce_css .= ',';
 	}

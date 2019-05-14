@@ -37,13 +37,23 @@ class Wordlift_Tinymce_Adapter {
 	/**
 	 * Load the TinyMCE plugin. This method is called by the WP mce_external_plugins hook.
 	 *
-	 * @since 3.12.0
-	 *
 	 * @param array $plugins The existing plugins array.
 	 *
 	 * @return array The modified plugins array.
+	 * @since 3.12.0
 	 */
 	function mce_external_plugins( $plugins ) {
+
+		/*
+		 * Call the `wl_can_see_classification_box` filter to determine whether we can display the classification box.
+		 *
+		 * @since 3.20.3
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/914
+		 */
+		if ( ! apply_filters( 'wl_can_see_classification_box', true ) ) {
+			return $plugins;
+		}
 
 		// Get WordLift's version as a cache killer.
 		$version = $this->plugin->get_version();
