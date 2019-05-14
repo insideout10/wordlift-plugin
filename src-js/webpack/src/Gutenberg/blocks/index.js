@@ -9,16 +9,29 @@ import React from "react";
  */
 import WordLiftIcon from "../svg/wl-logo-big.svg";
 import * as Constants from "../constants";
+import { humanize } from "../helpers";
 
 /*
  * Packages via WordPress global
  */
 const { InspectorControls } = wp.editor;
-const { PanelBody, TextControl, CheckboxControl } = wp.components;
+const { PanelBody, TextControl, CheckboxControl, RangeControl, ColorPicker } = wp.components;
+
+const BlockPreview = ({ title, attributes }) => (
+  <React.Fragment>
+    <h4>{title}</h4>
+    {Object.keys(attributes).map(key => (
+      <div style={{ fontSize: "0.8rem" }}>
+        <span style={{ width: "140px", display: "inline-block", fontWeight: "bold" }}>{humanize(key)}</span>{" "}
+        {typeof attributes[key] === "boolean" ? JSON.stringify(attributes[key]) : attributes[key]}
+      </div>
+    ))}
+  </React.Fragment>
+);
 
 export default {
   [`${Constants.PLUGIN_NAMESPACE}/faceted-search`]: {
-    title: "Faceted Search",
+    title: "Wordlift Faceted Search",
     description: "Configure Faceted Search block within your content.",
     category: "wordlift",
     icon: <WordLiftIcon />,
@@ -40,37 +53,36 @@ export default {
       }
     },
     //display the edit interface + preview
-    edit: ({ attributes, setAttributes, className, isSelected }) => {
+    edit: ({ attributes, setAttributes }) => {
       const { title, show_facets, with_carousel, squared_thumbs, limit } = attributes;
-      const onChangeTitle = newTitle => {
-        setAttributes({ title: newTitle });
-      };
-      const onChangeLimit = newLimit => {
-        setAttributes({ limit: newLimit });
-      };
-      const onChangeShowFacets = newShowFacets => {
-        setAttributes({ show_facets: newShowFacets });
-      };
-      const onChangeWithCarousel = newWithCarousel => {
-        setAttributes({ with_carousel: newWithCarousel });
-      };
-      const onChangeSquaredThumbs = newSquaredThumbs => {
-        setAttributes({ squared_thumbs: newSquaredThumbs });
-      };
       return (
         <div>
-          <React.Fragment>
-            <h4>Wordlift Faceted Search block</h4>
-            <hr />
-            <pre style={{ fontSize: "10px" }}>{JSON.stringify(attributes, null, 2)}</pre>
-          </React.Fragment>
+          <BlockPreview title="Wordlift Faceted Search" attributes={attributes} />
           <InspectorControls>
             <PanelBody title="Widget Settings" className="blocks-font-size">
-              <TextControl label="Title" value={title} onChange={onChangeTitle} />
-              <TextControl label="Limit" value={limit} type="number" onChange={onChangeLimit} />
-              <CheckboxControl label="Show Facets" checked={show_facets} onChange={onChangeShowFacets} />
-              <CheckboxControl label="With Carousel" checked={with_carousel} onChange={onChangeWithCarousel} />
-              <CheckboxControl label="Squared Thumbnails" checked={squared_thumbs} onChange={onChangeSquaredThumbs} />
+              <TextControl label="Title" value={title} onChange={title => setAttributes({ title })} />
+              <RangeControl
+                label="Limit"
+                value={limit}
+                min={2}
+                max={100}
+                onChange={limit => setAttributes({ limit })}
+              />
+              <CheckboxControl
+                label="Show Facets"
+                checked={show_facets}
+                onChange={show_facets => setAttributes({ show_facets })}
+              />
+              <CheckboxControl
+                label="With Carousel"
+                checked={with_carousel}
+                onChange={with_carousel => setAttributes({ with_carousel })}
+              />
+              <CheckboxControl
+                label="Squared Thumbnails"
+                checked={squared_thumbs}
+                onChange={squared_thumbs => setAttributes({ squared_thumbs })}
+              />
             </PanelBody>
           </InspectorControls>
         </div>
@@ -81,7 +93,7 @@ export default {
     }
   },
   [`${Constants.PLUGIN_NAMESPACE}/navigator`]: {
-    title: "Navigator",
+    title: "Wordlift Navigator",
     description: "Configure Navigator block within your content.",
     category: "wordlift",
     icon: <WordLiftIcon />,
@@ -97,29 +109,73 @@ export default {
       }
     },
     //display the edit interface + preview
-    edit: ({ attributes, setAttributes, className, isSelected }) => {
+    edit: ({ attributes, setAttributes }) => {
       const { title, with_carousel, squared_thumbs } = attributes;
-      const onChangeTitle = newTitle => {
-        setAttributes({ title: newTitle });
-      };
-      const onChangeWithCarousel = newWithCarousel => {
-        setAttributes({ with_carousel: newWithCarousel });
-      };
-      const onChangeSquaredThumbs = newSquaredThumbs => {
-        setAttributes({ squared_thumbs: newSquaredThumbs });
-      };
       return (
         <div>
-          <React.Fragment>
-            <h4>Wordlift Navigator block</h4>
-            <hr />
-            <pre style={{ fontSize: "10px" }}>{JSON.stringify(attributes, null, 2)}</pre>
-          </React.Fragment>
+          <BlockPreview title="Wordlift Navigator" attributes={attributes} />
           <InspectorControls>
             <PanelBody title="Widget Settings" className="blocks-font-size">
-              <TextControl label="Title" value={title} onChange={onChangeTitle} />
-              <CheckboxControl label="With Carousel" checked={with_carousel} onChange={onChangeWithCarousel} />
-              <CheckboxControl label="Squared Thumbnails" checked={squared_thumbs} onChange={onChangeSquaredThumbs} />
+              <TextControl label="Title" value={title} onChange={title => setAttributes({ title })} />
+              <CheckboxControl
+                label="With Carousel"
+                checked={with_carousel}
+                onChange={with_carousel => setAttributes({ with_carousel })}
+              />
+              <CheckboxControl
+                label="Squared Thumbnails"
+                checked={squared_thumbs}
+                onChange={squared_thumbs => setAttributes({ squared_thumbs })}
+              />
+            </PanelBody>
+          </InspectorControls>
+        </div>
+      );
+    },
+    save() {
+      return null; //save has to exist. This all we need
+    }
+  },
+  [`${Constants.PLUGIN_NAMESPACE}/chord`]: {
+    title: "Wordlift Chord",
+    description: "Configure Chord block within your content.",
+    category: "wordlift",
+    icon: <WordLiftIcon />,
+    attributes: {
+      width: {
+        default: "100%"
+      },
+      height: {
+        default: "500px"
+      },
+      main_color: {
+        default: "#000"
+      },
+      depth: {
+        default: 2
+      },
+      global: {
+        default: false
+      }
+    },
+    //display the edit interface + preview
+    edit: ({ attributes, setAttributes }) => {
+      const { width, height, main_color, depth, global } = attributes;
+      return (
+        <div>
+          <BlockPreview title="Wordlift Chord" attributes={attributes} />
+          <InspectorControls>
+            <PanelBody title="Widget Settings" className="blocks-font-size">
+              <TextControl label="Width" value={width} onChange={width => setAttributes({ width })} />
+              <TextControl label="Height" value={height} onChange={height => setAttributes({ height })} />
+              <ColorPicker
+                label="Main color"
+                color={main_color}
+                onChangeComplete={value => setAttributes({ main_color: value.hex })}
+                disableAlpha
+              />
+              <RangeControl label="Depth" value={depth} min={1} max={10} onChange={depth => setAttributes({ depth })} />
+              <CheckboxControl label="Global" checked={global} onChange={global => setAttributes({ global })} />
             </PanelBody>
           </InspectorControls>
         </div>

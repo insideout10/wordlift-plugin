@@ -406,39 +406,40 @@ add_action( 'rest_api_init', function () {
 	) );
 } );
 
+/**
+ * register_block_type for Gutenberg blocks
+ */
 add_action( 'init', function() {
 	register_block_type('wordlift/faceted-search', array(
 		'editor_script' => 'wordlift-admin-edit-gutenberg',
-		'render_callback' => 'wl_shortcode_faceted_search_block_php_render',
+		'render_callback' => function($attributes){
+			$attr_code = '';
+			foreach ($attributes as $key => $value) {
+				$attr_code .= $key.'="'.$value.'" ';
+			}
+			return '[wl_faceted_search '.$attr_code.']';
+		},
 		'attributes' => [
 			'title' => [
 				'type'    => 'string',
 				'default' => __( 'Related articles', 'wordlift' )
 			],
 			'show_facets' => [
-				'type'    => 'string',
+				'type'    => 'bool',
 				'default' => true
 			],
 			'with_carousel' => [
-				'type'    => 'string',
+				'type'    => 'bool',
 				'default' => true
 			],
 			'squared_thumbs' => [
-				'type'    => 'string',
+				'type'    => 'bool',
 				'default' => false
 			],
 			'limit' => [
-				'type'    => 'string',
+				'type'    => 'number',
 				'default' => 20
 			]
 		]
 	));
 } );
-
-function wl_shortcode_faceted_search_block_php_render($attributes){
-	$attr_code = '';
-	foreach ($attributes as $key => $value) {
-		$attr_code .= $key.'="'.$value.'" ';
-	}
-	return '[wl_faceted_search '.$attr_code.']';
-}

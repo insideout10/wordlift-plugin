@@ -210,3 +210,41 @@ function wl_shortcode_chord_ajax() {
 
 add_action( 'wp_ajax_wl_chord', 'wl_shortcode_chord_ajax' );
 add_action( 'wp_ajax_nopriv_wl_chord', 'wl_shortcode_chord_ajax' );
+
+/**
+ * register_block_type for Gutenberg blocks
+ */
+add_action( 'init', function() {
+	register_block_type('wordlift/chord', array(
+		'editor_script' => 'wordlift-admin-edit-gutenberg',
+		'render_callback' => function($attributes){
+			$attr_code = '';
+			foreach ($attributes as $key => $value) {
+				$attr_code .= $key.'="'.$value.'" ';
+			}
+			return '[wl_chord '.$attr_code.']';
+		},
+		'attributes' => [
+			'width' => [
+				'type'    => 'string',
+				'default' => '100%'
+			],
+			'height' => [
+				'type'    => 'string',
+				'default' => '500px'
+			],
+			'main_color' => [
+				'type'    => 'string',
+				'default' => '000'
+			],
+			'depth' => [
+				'type'    => 'number',
+				'default' => 2
+			],
+			'global' => [
+				'type'    => 'bool',
+				'default' => false
+			],
+		]
+	));
+} );

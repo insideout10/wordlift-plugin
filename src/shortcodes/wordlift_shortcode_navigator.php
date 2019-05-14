@@ -153,31 +153,32 @@ add_action( 'rest_api_init', function () {
 	) );
 } );
 
+/**
+ * register_block_type for Gutenberg blocks
+ */
 add_action( 'init', function() {
 	register_block_type('wordlift/navigator', array(
 		'editor_script' => 'wordlift-admin-edit-gutenberg',
-		'render_callback' => 'wl_shortcode_navigator_block_php_render',
+		'render_callback' => function($attributes){
+			$attr_code = '';
+			foreach ($attributes as $key => $value) {
+				$attr_code .= $key.'="'.$value.'" ';
+			}
+			return '[wl_navigator '.$attr_code.']';
+		},
 		'attributes' => [
 			'title' => [
 				'type'    => 'string',
 				'default' => __( 'Related articles', 'wordlift' )
 			],
 			'with_carousel' => [
-				'type'    => 'string',
+				'type'    => 'bool',
 				'default' => true
 			],
 			'squared_thumbs' => [
-				'type'    => 'string',
+				'type'    => 'bool',
 				'default' => false
 			]
 		]
 	));
 } );
-
-function wl_shortcode_navigator_block_php_render($attributes){
-	$attr_code = '';
-	foreach ($attributes as $key => $value) {
-		$attr_code .= $key.'="'.$value.'" ';
-	}
-	return '[wl_navigator '.$attr_code.']';
-}
