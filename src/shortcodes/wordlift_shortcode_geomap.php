@@ -194,6 +194,36 @@ function wl_shortcode_geomap_ajax() {
 add_action( 'wp_ajax_wl_geomap', 'wl_shortcode_geomap_ajax' );
 add_action( 'wp_ajax_nopriv_wl_geomap', 'wl_shortcode_geomap_ajax' );
 
+/**
+ * register_block_type for Gutenberg blocks
+ */
+add_action( 'init', function() {
+	register_block_type('wordlift/geomap', array(
+		'editor_script' => 'wordlift-admin-edit-gutenberg',
+		'render_callback' => function($attributes){
+			$attr_code = '';
+			foreach ($attributes as $key => $value) {
+				$attr_code .= $key.'="'.$value.'" ';
+			}
+			return '[wl_geomap '.$attr_code.']';
+		},
+		'attributes' => [
+			'width' => [
+				'type'    => 'string',
+				'default' => '100%'
+			],
+			'height' => [
+				'type'    => 'string',
+				'default' => '300px'
+			],
+			'global' => [
+				'type'    => 'bool',
+				'default' => false
+			],
+		]
+	));
+} );
+
 ///**
 // * Print geomap shortcode
 // *
