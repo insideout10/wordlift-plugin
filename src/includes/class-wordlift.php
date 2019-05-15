@@ -1081,7 +1081,6 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-analytics-page-action-link.php';
 
 		/** Admin Pages */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-post-edit-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-user-profile-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-status-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-search-rankings-page.php';
@@ -1353,10 +1352,11 @@ class Wordlift {
 		 * Call the `wl_can_see_classification_box` filter to determine whether we can display the classification box.
 		 *
 		 * @since 3.20.3
-		 * 
+		 *
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/914
 		 */
 		if ( apply_filters( 'wl_can_see_classification_box', true ) ) {
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-post-edit-page.php';
 			new Wordlift_Admin_Post_Edit_Page( $this );
 		}
 		new Wordlift_Entity_Type_Admin_Service();
