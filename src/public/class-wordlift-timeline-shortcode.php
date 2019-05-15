@@ -139,8 +139,8 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 			'language'                         => $this->get_locale(),
 			'ga_property_id'                   => NULL,
 			'track_events'                     => "['back_to_start','nav_next','nav_previous','zoom_in','zoom_out']",
-			'global'                           => FALSE,
 			// The following settings are unrelated to TimelineJS script.
+			'global'                           => FALSE,
 			'display_images_as'                => 'media',
 			'excerpt_length'                   => 55,
 		), $atts );
@@ -202,3 +202,37 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 	}
 
 }
+
+/**
+ * register_block_type for Gutenberg blocks
+ */
+add_action( 'init', function() {
+	register_block_type('wordlift/timeline', array(
+		'editor_script' => 'wordlift-admin-edit-gutenberg',
+		'render_callback' => function($attributes){
+			$attr_code = '';
+			foreach ($attributes as $key => $value) {
+				$attr_code .= $key.'="'.$value.'" ';
+			}
+			return '[wl_timeline '.$attr_code.']';
+		},
+		'attributes' => [
+			'display_images_as' => [
+				'type'    => 'string',
+				'default' => 'media'
+			],
+			'excerpt_length' => [
+				'type'    => 'number',
+				'default' => 55
+			],
+			'global' => [
+				'type'    => 'bool',
+				'default' => false
+			],
+			'timelinejs_options' => [
+				'type'    => 'string',
+				'default' => ''
+			]
+		]
+	));
+} );

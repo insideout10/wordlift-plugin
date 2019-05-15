@@ -1,4 +1,4 @@
-/* globals wp */
+/* globals wp, wordlift */
 /*
  * External dependencies.
  */
@@ -15,7 +15,15 @@ import { humanize } from "../helpers";
  * Packages via WordPress global
  */
 const { InspectorControls } = wp.editor;
-const { PanelBody, TextControl, CheckboxControl, RangeControl, ColorPicker, ServerSideRender } = wp.components;
+const {
+  PanelBody,
+  TextControl,
+  CheckboxControl,
+  RangeControl,
+  ColorPicker,
+  RadioControl,
+  SelectControl
+} = wp.components;
 
 const BlockPreview = ({ title, attributes }) => (
   <React.Fragment>
@@ -233,6 +241,94 @@ export default {
         <div>
           <BlockPreview title="Wordlift Entities Cloud" />
           <InspectorControls />
+        </div>
+      );
+    },
+    save() {
+      return null; //save has to exist. This all we need
+    }
+  },
+  [`${Constants.PLUGIN_NAMESPACE}/vocabulary`]: {
+    title: "Wordlift Vocabulary",
+    description: "Configure Vocabulary block within your content.",
+    category: "wordlift",
+    icon: <WordLiftIcon />,
+    attributes: {
+      type: {
+        default: "all"
+      },
+      limit: {
+        default: 100
+      },
+      orderby: {
+        default: "post_date"
+      },
+      order: {
+        default: "DESC"
+      },
+      cat: {
+        default: ""
+      }
+    },
+    //display the edit interface + preview
+    edit: ({ attributes, setAttributes }) => {
+      const { type, limit, orderby, order, cat } = attributes;
+      const typeOptions = [{ value: "all", label: "All" }];
+      const orderbyOptions = [
+        { value: "post_date", label: "Date" },
+        { value: "ID", label: "Post ID" },
+        { value: "author", label: "Author" },
+        { value: "title", label: "Title" },
+        { value: "name", label: "Name (post slug)" },
+        { value: "type", label: "Post type" },
+        { value: "date", label: "Date" },
+        { value: "modified", label: "Last modified date" },
+        { value: "parent", label: "Post/page parent ID" },
+        { value: "comment_count", label: "Number of comments" },
+        { value: "menu_order", label: "Page Order" },
+        { value: "rand", label: "Random order" },
+        { value: "none", label: "None" }
+      ];
+      const orderOptions = [{ value: "ASC", label: "Ascending" }, { value: "DESC", label: "Descending" }];
+      wordlift.types.forEach(item => {
+        typeOptions.push({
+          value: item.slug,
+          label: item.label
+        });
+      });
+      return (
+        <div>
+          <BlockPreview title="Wordlift Vocabulary" attributes={attributes} />
+          <InspectorControls>
+            <PanelBody title="Widget Settings" className="blocks-font-size">
+              <SelectControl
+                label="Type"
+                value={type}
+                onChange={type => setAttributes({ type })}
+                options={typeOptions}
+              />
+              <SelectControl
+                label="Order by"
+                value={orderby}
+                onChange={orderby => setAttributes({ orderby })}
+                options={orderbyOptions}
+              />
+              <RadioControl
+                label="Order"
+                selected={order}
+                options={orderOptions}
+                onChange={order => setAttributes({ order })}
+              />
+              <RangeControl
+                label="Limit"
+                value={limit}
+                min={-1}
+                max={200}
+                onChange={limit => setAttributes({ limit })}
+              />
+              <TextControl label="Category ID" value={cat} onChange={cat => setAttributes({ cat })} />
+            </PanelBody>
+          </InspectorControls>
         </div>
       );
     },

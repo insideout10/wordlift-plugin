@@ -19,7 +19,9 @@
   &[data-type='wordlift/navigator'],
   &[data-type='wordlift/chord'],
   &[data-type='wordlift/geomap'],
-  &[data-type='wordlift/cloud']{
+  &[data-type='wordlift/cloud'],
+  &[data-type='wordlift/vocabulary'],
+  &[data-type='wordlift/timeline']{
     [data-block]{
       background: rgba(0, 122, 255, 0.1);
       padding: 5px 10px;
