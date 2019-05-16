@@ -18,6 +18,7 @@ const { InspectorControls } = wp.editor;
 const {
   PanelBody,
   TextControl,
+  TextareaControl,
   CheckboxControl,
   RangeControl,
   ColorPicker,
@@ -327,6 +328,63 @@ export default {
                 onChange={limit => setAttributes({ limit })}
               />
               <TextControl label="Category ID" value={cat} onChange={cat => setAttributes({ cat })} />
+            </PanelBody>
+          </InspectorControls>
+        </div>
+      );
+    },
+    save() {
+      return null; //save has to exist. This all we need
+    }
+  },
+  [`${Constants.PLUGIN_NAMESPACE}/timeline`]: {
+    title: "Wordlift Timeline",
+    description: "Configure Geomap block within your content.",
+    category: "wordlift",
+    icon: <WordLiftIcon />,
+    attributes: {
+      display_images_as: {
+        default: "media"
+      },
+      excerpt_length: {
+        default: 55
+      },
+      global: {
+        default: false
+      },
+      timelinejs_options: {
+        default: JSON.stringify(wordlift.timelinejsDefaultOptions, null, 2)
+      }
+    },
+    //display the edit interface + preview
+    edit: ({ attributes, setAttributes }) => {
+      const { display_images_as, excerpt_length, global, timelinejs_options } = attributes;
+      return (
+        <div>
+          <BlockPreview title="Wordlift Timeline" attributes={attributes} />
+          <InspectorControls>
+            <PanelBody title="Widget Settings" className="blocks-font-size">
+              <RadioControl
+                label="Display images as"
+                selected={display_images_as}
+                onChange={display_images_as => setAttributes({ display_images_as })}
+                options={[{ value: "media", label: "Media" }, { value: "background", label: "Background" }]}
+              />
+              <RangeControl
+                label="Excerpt length"
+                value={excerpt_length}
+                min={10}
+                max={200}
+                onChange={excerpt_length => setAttributes({ excerpt_length })}
+              />
+              <CheckboxControl label="Global" checked={global} onChange={global => setAttributes({ global })} />
+              <TextareaControl
+                label="Timelinejs options"
+                help="Enter options as JSON string"
+                value={timelinejs_options}
+                rows={8}
+                onChange={timelinejs_options => setAttributes({ timelinejs_options })}
+              />
             </PanelBody>
           </InspectorControls>
         </div>

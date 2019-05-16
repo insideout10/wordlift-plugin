@@ -97,19 +97,8 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 
 	}
 
-	/**
-	 * Renders the Timeline.
-	 *
-	 * @since 3.1.0
-	 *
-	 * @param array $atts An array of shortcode attributes.
-	 *
-	 * @return string The rendered HTML.
-	 */
-	public function render( $atts ) {
-
-		//extract attributes and set default values
-		$settings = shortcode_atts( array(
+	public function get_timelinejs_default_options() {
+		return array(
 			'debug'                            => defined( 'WP_DEBUG' ) && WP_DEBUG,
 			'height'                           => NULL,
 			'width'                            => NULL,
@@ -138,12 +127,27 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 			'slide_default_fade'               => '0%',
 			'language'                         => $this->get_locale(),
 			'ga_property_id'                   => NULL,
-			'track_events'                     => "['back_to_start','nav_next','nav_previous','zoom_in','zoom_out']",
-			// The following settings are unrelated to TimelineJS script.
+			'track_events'                     => "['back_to_start','nav_next','nav_previous','zoom_in','zoom_out']"
+		);
+	}
+
+	/**
+	 * Renders the Timeline.
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param array $atts An array of shortcode attributes.
+	 *
+	 * @return string The rendered HTML.
+	 */
+	public function render( $atts ) {
+
+		//extract attributes and set default values
+		$settings = shortcode_atts( array_merge($this->get_timelinejs_default_options(), array(
 			'global'                           => FALSE,
 			'display_images_as'                => 'media',
-			'excerpt_length'                   => 55,
-		), $atts );
+			'excerpt_length'                   => 55
+		)), $atts );
 
 		// Load the TimelineJS stylesheets and scripts.
 		wp_enqueue_style( 'timelinejs', dirname( plugin_dir_url( __FILE__ ) ) . '/timelinejs/css/timeline.css' );
@@ -211,8 +215,13 @@ add_action( 'init', function() {
 		'editor_script' => 'wordlift-admin-edit-gutenberg',
 		'render_callback' => function($attributes){
 			$attr_code = '';
-			foreach ($attributes as $key => $value) {
-				$attr_code .= $key.'="'.$value.'" ';
+			$timelinejs_options = json_decode($attributes['timelinejs_options'], true);
+			unset($attributes['timelinejs_options']);
+			$attributes_all = array_merge($attributes, $timelinejs_options);
+			foreach ($attributes_all as $key => $value) {
+				if($value && strpos($value, '[') === false && strpos($value, ']') === false) {
+					$attr_code .= $key.'="'.$value.'" ';
+				}
 			}
 			return '[wl_timeline '.$attr_code.']';
 		},
@@ -230,8 +239,8 @@ add_action( 'init', function() {
 				'default' => false
 			],
 			'timelinejs_options' => [
-				'type'    => 'string',
-				'default' => ''
+				'type'    => 'string', // https://timeline.knightlab.com/docs/options.html
+				'default' => json_encode((new Wordlift_Timeline_Shortcode())->get_timelinejs_default_options(), JSON_PRETTY_PRINT)
 			]
 		]
 	));
