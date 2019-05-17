@@ -4,7 +4,7 @@ Plugin URL: https://wordlift.io
 Contributors: wordlift, insideout10, ziodave
 Tags: schema.org, semantic seo, seo, artificial intelligence, ai, linked data, semantic web, content recommendation, related posts, timeline, knowledge graph, interactive map
 Requires at least: 4.4
-Tested up to: 5.1
+Tested up to: 5.2
 Requires PHP: 5.3
 Stable tag: {version}
 License: GPLv2 or later
@@ -143,7 +143,8 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 = 3.20.2 (2019-05-13) =
-* Fix: Compatibility with WordPress 5.2 Gutenberg
+* Fix: [#912](https://github.com/insideout10/wordlift-plugin/issues/912): Annotations cannot be selected in Gutenberg and WP 5.2.
+* Fix: [#911](https://github.com/insideout10/wordlift-plugin/issues/911): Add GTM compatibility.
 
 = 3.20.1 (2019-05-06) =
 * Fix: [#908](https://github.com/insideout10/wordlift-plugin/issues/908): Entities in GA isn't working when GA is loaded via GTAG.
