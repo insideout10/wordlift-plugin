@@ -1,4 +1,4 @@
-/* globals wp, wlSettings, wordlift */
+/* globals wp, wlSettings, wordlift, jQuery */
 /**
  * Services: Link Service.
  *
@@ -11,12 +11,11 @@
  * Internal dependencies.
  */
 import Store1 from "../stores/Store1";
+import Store2 from "../stores/Store2";
 import { receiveAnalysisResults, setCurrentAnnotation, updateOccurrencesForEntity } from "../../Edit/actions";
 import { processingBlockAdd, processingBlockRemove } from "../actions";
+import ConvertClassicEditorService from "./ConvertClassicEditorService";
 import * as Constants from "../constants";
-
-const canCreateEntities =
-  "undefined" !== wlSettings["can_create_entities"] && "yes" === wlSettings["can_create_entities"];
 
 /**
  * Define the `AnnotationService` class.
@@ -80,7 +79,6 @@ class AnnotationService {
       let allAnnotations = Object.keys(response.entities[entity].annotations);
       allAnnotations.forEach((annValue, annIndex) => {
         if (this.disambiguated.includes(response.entities[entity].annotations[annValue].text)) {
-          console.log("Adding entity to stack:", response.entities[entity]);
           AnnotationService.addRemoveEntityMeta(response.entities[entity]);
           response.entities[entity].occurrences.push(annValue);
         }
@@ -166,9 +164,9 @@ class AnnotationService {
       dispatch(processingBlockAdd(this.blockClientId));
       if (this.blockContent && this.block.name != "core/freeform") {
         console.log(`Requesting analysis for block ${this.blockClientId}...`);
-        wp.data.dispatch("core/notices").removeNotice("wordlift-convert-classic-editor-blocks");
+        ConvertClassicEditorService.removeNotice();
         wp.apiFetch(this.getWordliftAnalyzeRequest()).then(response => {
-          if (Object.keys(response.entities).length > 0) {
+          if (response.entities && Object.keys(response.entities).length > 0) {
             this.rawResponse = response;
             this.modifyResponse();
             this.persistentlyAnnotate();
@@ -180,7 +178,7 @@ class AnnotationService {
           dispatch(processingBlockRemove(this.blockClientId));
         });
       } else if (this.block.name === "core/freeform") {
-        AnnotationService.classicEditorNotice();
+        ConvertClassicEditorService.showNotice();
         dispatch(processingBlockRemove(this.blockClientId));
       } else {
         console.log(`No content found in block ${this.blockClientId}`);
@@ -330,52 +328,6 @@ class AnnotationService {
     };
   }
 
-  static classicEditorNotice() {
-    AnnotationService.convertClassicEditorBlocks();
-    wp.data
-      .dispatch("core/notices")
-      .createInfoNotice("WordLift content analysis is not compatible with Classic Editor blocks. ", {
-        id: "wordlift-convert-classic-editor-blocks",
-        actions: [
-          {
-            url: "https://wordpress.org/plugins/classic-editor/",
-            label: "Switch to Classic Editor"
-          },
-          {
-            url: "javascript:window.wordlift.convertClassicEditorBlocks()",
-            label: "Convert to Gutenberg Blocks"
-          }
-        ]
-      });
-  }
-
-  static convertClassicEditorBlocks() {
-    if (window.wordlift.convertClassicEditorBlocks) {
-      return;
-    }
-    window.wordlift.convertClassicEditorBlocks = function() {
-      wp.data
-        .select("core/editor")
-        .getBlocks()
-        .forEach(function(block) {
-          if (block.name === "core/freeform") {
-            wp.data
-              .dispatch("core/editor")
-              .replaceBlocks(block.clientId, wp.blocks.rawHandler({ HTML: wp.blocks.getBlockContent(block) }));
-          }
-        });
-      wp.data.dispatch("core/notices").removeNotice("wordlift-convert-classic-editor-blocks");
-      wp.data
-        .dispatch("core/notices")
-        .createSuccessNotice(
-          "Classic Editor converted to blocks. Toggle between settings and WordLift sidebar to initiate analysis. ",
-          {
-            id: "wordlift-convert-classic-editor-blocks"
-          }
-        );
-    };
-  }
-
   static annotateSelected(start, end) {
     return function(dispatch) {
       const selectedBlock = wp.data.select("core/editor").getSelectedBlock();
@@ -408,6 +360,7 @@ class AnnotationService {
   }
 
   static onSelectedEntityTile(entity) {
+    console.log("onSelectedEntityTile entity:", entity);
     let action = "entitySelected";
     if (entity.occurrences.length > 0) {
       action = "entityDeselected";
@@ -416,14 +369,12 @@ class AnnotationService {
     console.log(`Calculating occurrences for entity ${entity.id}...`);
     let occurrences = [];
     if (action === "entitySelected") {
-      console.log("Adding entity to stack:", entity);
       AnnotationService.addRemoveEntityMeta(entity);
       for (var annotation in entity.annotations) {
         AnnotationService.disambiguate(annotation, true);
         occurrences.push(annotation);
       }
     } else {
-      console.log("Removing entity from stack:", entity);
       AnnotationService.addRemoveEntityMeta(entity, false);
       for (var annotation in entity.annotations) {
         AnnotationService.disambiguate(annotation, false);
@@ -443,6 +394,7 @@ class AnnotationService {
       existingMeta = JSON.parse(rawMeta);
     }
     if (add) {
+      console.log("Adding entity to stack:", entity);
       existingMeta[entity.entityId] = {
         uri: entity.entityId,
         label: entity.label,
@@ -453,6 +405,7 @@ class AnnotationService {
         sameas: entity.sameAs
       };
     } else {
+      console.log("Removing entity from stack:", entity);
       delete existingMeta[entity.entityId];
     }
     wp.data.dispatch("core/editor").editPost({
@@ -488,6 +441,122 @@ class AnnotationService {
           }
         }
       });
+  }
+
+  static addNewEntityToAnalysis(entity, annotation) {
+    entity.annotations[annotation.id] = annotation;
+    annotation.entityMatches.push({
+      entityId: entity.id,
+      confidence: 1
+    });
+    annotation.entities[entity.id] = entity;
+    annotation.entities[entity.id].occurrences.push(annotation.id);
+    return {
+      entities: {
+        [entity.id]: entity
+      },
+      annotations: {
+        [annotation.id]: annotation
+      }
+    };
+  }
+
+  static createTextAnnotationFromCurrentSelection(entityData) {
+    const { value, start, end, blockClientId } = Store2.getState();
+    let textAnnotation, blockRichText;
+    if (value === "") {
+      console.log("Invalid selection! The text annotation cannot be created");
+      return;
+    }
+    textAnnotation = AnnotationService.createAnnotation({
+      text: value,
+      start,
+      end,
+      blockClientId
+    });
+    textAnnotation.annotationId = textAnnotation.id;
+    blockRichText = wp.richText.create({
+      html: wp.data.select("core/editor").getBlock(blockClientId).attributes.content
+    });
+
+    let format = {
+      type: "span",
+      attributes: {
+        id: textAnnotation.id,
+        class: `textannotation disambiguated wl-${entityData.mainType}`,
+        itemid: entityData.entityId
+      }
+    };
+    let updatedBlockRichText = {
+      formats: blockRichText.formats,
+      text: blockRichText.text
+    };
+    for (var i = start; i < end; i++) {
+      if (!updatedBlockRichText.formats[i]) {
+        updatedBlockRichText.formats[i] = [format];
+      } else {
+        updatedBlockRichText.formats[i].push(format);
+      }
+    }
+
+    wp.data.dispatch("core/editor").updateBlock(blockClientId, {
+      attributes: {
+        content: wp.richText.toHTMLString({
+          value: blockRichText
+        })
+      }
+    });
+
+    return textAnnotation;
+  }
+
+  static createAnnotation(params) {
+    if (params == null) {
+      params = {};
+    }
+    let defaults = {
+      id: "urn:local-text-annotation-" + AnnotationService.uniqueId(32),
+      text: "",
+      start: 0,
+      end: 0,
+      entities: [],
+      entityMatches: []
+    };
+    return jQuery.extend(defaults, params);
+  }
+
+  static createEntity(params) {
+    if (params == null) {
+      params = {};
+    }
+    let defaultId = "local-entity-" + AnnotationService.uniqueId(32);
+    let defaults = {
+      id: defaultId,
+      entityId: defaultId,
+      label: "",
+      description: "",
+      mainType: "",
+      types: [],
+      images: [],
+      confidence: 1,
+      occurrences: [],
+      annotations: {}
+    };
+    return jQuery.extend(true, defaults, params);
+  }
+
+  static uniqueId(length) {
+    var id;
+    if (length == null) {
+      length = 8;
+    }
+    id = "";
+    while (id.length < length) {
+      id += Math.random()
+        .toString(36)
+        .substr(2);
+    }
+    return id.substr(0, length);
   }
 }
 

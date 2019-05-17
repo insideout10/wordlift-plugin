@@ -1,6 +1,6 @@
 <?php
 /**
- * This file provides functions for ajax and wp-json calls 
+ * This file provides functions for ajax and wp-json calls
  * required by the shortcode `wl_faceted_search`.
  *
  * @since      3.0.0
@@ -10,7 +10,7 @@
 
 /**
  * Function in charge of fetching data for [wl-faceted-search] in web mode.
- * 
+ *
  * @since		3.20.0
  * @return array $results
  */
@@ -164,7 +164,7 @@ function wl_shortcode_faceted_search_data_ajax( $http_raw_data = null ) {
 
 /**
  * Function in charge of fetching data for [wl-faceted-search] in amp mode.
- * 
+ *
  * @since		3.20.0
  * @return array $results
  */
@@ -267,7 +267,7 @@ function wl_shortcode_faceted_search_data_wp_json( $http_raw_data = null ) {
 			}
 		}
 
-		return array( 
+		return array(
 			array('values' => $results)
 		);
 
@@ -404,4 +404,42 @@ add_action( 'rest_api_init', function () {
 	  'methods' => 'GET',
 	  'callback' => 'wl_shortcode_faceted_search_wp_json',
 	) );
+} );
+
+/**
+ * register_block_type for Gutenberg blocks
+ */
+add_action( 'init', function() {
+	register_block_type('wordlift/faceted-search', array(
+		'editor_script' => 'wordlift-admin-edit-gutenberg',
+		'render_callback' => function($attributes){
+			$attr_code = '';
+			foreach ($attributes as $key => $value) {
+				$attr_code .= $key.'="'.$value.'" ';
+			}
+			return '[wl_faceted_search '.$attr_code.']';
+		},
+		'attributes' => [
+			'title' => [
+				'type'    => 'string',
+				'default' => __( 'Related articles', 'wordlift' )
+			],
+			'show_facets' => [
+				'type'    => 'bool',
+				'default' => true
+			],
+			'with_carousel' => [
+				'type'    => 'bool',
+				'default' => true
+			],
+			'squared_thumbs' => [
+				'type'    => 'bool',
+				'default' => false
+			],
+			'limit' => [
+				'type'    => 'number',
+				'default' => 20
+			]
+		]
+	));
 } );

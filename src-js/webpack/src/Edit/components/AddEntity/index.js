@@ -21,16 +21,15 @@ const store = createStore(reducer, applyMiddleware(sagaMiddleware, logger));
 // Run the saga.
 sagaMiddleware.run(saga);
 
-// store passed from out for Gutenberg, or used from const for editor
-const AddEntity = props => {
-  window.store2 = props.store ? props.store : store;
+const AddEntity = ({ showCreate }) => {
+  window.store2 = store;
   return (
-    <Provider store={props.store ? props.store : store}>
+    <Provider store={store}>
       <WrapperContainer>
         <ButtonContainer>
           <Arrow height="8px" color="white" />
         </ButtonContainer>
-        <EntitySelectContainer showCreate={props.showCreate} />
+        <EntitySelectContainer showCreate={showCreate} />
       </WrapperContainer>
     </Provider>
   );

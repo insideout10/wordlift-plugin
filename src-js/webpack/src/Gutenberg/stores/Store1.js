@@ -10,4 +10,8 @@ import logger from "redux-logger";
  */
 import reducer from "../reducers";
 
-export default createStore(reducer, applyMiddleware(thunk, logger));
+const store1 = createStore(reducer, applyMiddleware(thunk, logger));
+
+window.wordlift.store1 = store1;
+
+export default store1;

@@ -114,6 +114,9 @@ class Wordlift_Admin {
 			// Require the PHP files for the next code fragment.
 			self::require_files();
 
+			// Add Wordlift custom block category.
+			self::add_block_category();
+
 			new Wordlift_Dashboard_Latest_News();
 
 			// Search Rankings.
@@ -336,6 +339,28 @@ class Wordlift_Admin {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard-v2.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-not-enriched-filter.php';
 
+	}
+
+	/**
+	 * Add Wordlift custom block category.
+	 *
+	 * @since 3.21.0
+	 */
+	private static function add_block_category() {
+		add_filter( 'block_categories', function( $categories, $post ) {
+			if ( $post->post_type !== 'post' ) {
+				return $categories;
+			}
+			return array_merge(
+				$categories,
+				array(
+					array(
+						'slug' => 'wordlift',
+						'title' => 'WordLift Blocks',
+					),
+				)
+			);
+		}, 10, 2 );
 	}
 
 	public static function is_gutenberg() {

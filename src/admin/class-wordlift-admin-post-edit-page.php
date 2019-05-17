@@ -57,6 +57,7 @@ class Wordlift_Admin_Post_Edit_Page {
 		// Define the callbacks.
 		$callback = array( $this, 'enqueue_scripts', );
 		$callback_gutenberg = array( $this, 'enqueue_scripts_gutenberg', );
+		$callback_block_categories = array($this, 'block_categories');
 
 		// Set a hook to enqueue scripts only when the edit page is displayed.
 		add_action( 'admin_print_scripts-post.php', $callback );
@@ -145,6 +146,7 @@ class Wordlift_Admin_Post_Edit_Page {
 			array(
 				$this->plugin->get_plugin_name(),
 				'jquery',
+				'wp-blocks',
 				'wp-util',
 				'wp-element',
 				'wp-components',
@@ -157,7 +159,7 @@ class Wordlift_Admin_Post_Edit_Page {
 			$this->plugin->get_version(),
 			false
 		);
-		wp_enqueue_style( 'style-gutenberg', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/css/style-gutenberg.css', false );
+		wp_enqueue_style( 'style-gutenberg', plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/gutenberg.css', false );
 	}
 
 }

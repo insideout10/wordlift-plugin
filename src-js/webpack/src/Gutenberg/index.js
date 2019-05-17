@@ -15,6 +15,9 @@ import ContentClassificationPanel from "./components/ContentClassificationPanel"
 import RelatedPostsPanel from "./components/RelatedPostsPanel";
 import SuggestedImagesPanel from "./components/SuggestedImagesPanel";
 import ArticleMetadataPanel from "./components/ArticleMetadataPanel";
+import AddEntityPanel from "./components/AddEntityPanel";
+import Blocks from "./blocks";
+import "./index.scss";
 
 /*
  * Packages via WordPress global
@@ -30,6 +33,7 @@ const WordLiftSidebar = () => (
     <PluginSidebar name="wordlift-sidebar" title="WordLift">
       <Provider store={Store1}>
         <Fragment>
+          <AddEntityPanel />
           <ContentClassificationPanel />
           <ArticleMetadataPanel />
           <SuggestedImagesPanel />
@@ -48,3 +52,10 @@ wp.plugins.registerPlugin(Constants.PLUGIN_NAMESPACE, {
   render: WordLiftSidebar,
   icon: <WordLiftIcon />
 });
+
+/**
+ * Register all blocks (widgets)
+ */
+for (let block in Blocks) {
+  wp.blocks.registerBlockType(block, Blocks[block]);
+}

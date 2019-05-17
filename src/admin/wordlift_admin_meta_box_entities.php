@@ -185,6 +185,7 @@ function wl_entities_box_content( $post, $wrapper = true ) {
 	$published_date = get_the_time( 'Y-m-d', $post->ID );
 	// Current language.
 	$current_language = $configuration_service->get_language_code();
+	$timelinejs_default_options = json_encode((new Wordlift_Timeline_Shortcode())->get_timelinejs_default_options(), JSON_PRETTY_PRINT);
 
 	$js_code = <<<JS
 		if ('undefined' == typeof window.wordlift) {
@@ -205,6 +206,7 @@ function wl_entities_box_content( $post, $wrapper = true ) {
 		window.wordlift.publishedPlace = $published_place_obj;
 		window.wordlift.topic = $topic_obj;
 		window.wordlift.currentLanguage = '$current_language';
+		window.wordlift.timelinejsDefaultOptions = $timelinejs_default_options;
 JS;
 
 	if ( $wrapper ) {

@@ -16,10 +16,10 @@ import styled from "styled-components";
 import AnnotationService from "../../services/AnnotationService";
 import * as Constants from "../../constants";
 import Header from "../../../Edit/components/Header";
-import VisibleEntityList from "./VisibleEntityList";
+import VisibleEntityList from "../../../Edit/containers/VisibleEntityList";
 import Wrapper from "../../../Edit/components/App/Wrapper";
 import Store2 from "../../stores/Store2";
-import { setValue } from "../../../Edit/components/AddEntity/actions";
+import { setValue } from "../../components/AddEntityPanel/AddEntity/actions";
 import Spinner from "../Spinner";
 
 /*
@@ -66,10 +66,21 @@ class ContentClassificationPanel extends React.Component {
       edit: ({ value }) => {
         if (value.start && value.end) {
           this.props.dispatch(AnnotationService.annotateSelected(value.start, value.end));
-          if (value.start !== value.end) {
-            const selected = value.text.substring(value.start, value.end);
-            Store2.dispatch(setValue(selected));
+          const blockClientId = wp.data.select("core/editor").getSelectedBlockClientId();
+          const selected = value.text.substring(value.start, value.end);
+          let formats = [];
+          for (var i = value.start; i < value.end; i++) {
+            formats.push(value.formats[i]);
           }
+          Store2.dispatch(
+            setValue({
+              value: selected,
+              start: value.start,
+              end: value.end,
+              formats,
+              blockClientId
+            })
+          );
         }
         return null;
       }

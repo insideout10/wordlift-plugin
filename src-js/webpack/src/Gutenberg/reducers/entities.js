@@ -39,7 +39,7 @@ const entities = function(state = Map(), action) {
       // app doesn't set the `link` property on the entity, therefore we
       // preset it here according to the `occurrences` settings.
       // return ( || return state.mergeDeep(
-      return (
+      return state.mergeDeep(
         Map(action.results.entities)
           .map(x =>
             Object.assign({}, x, {
@@ -69,11 +69,8 @@ const entities = function(state = Map(), action) {
 
     // Legacy: set the current entity on the `EditPostWidgetController`.
     case types.SET_CURRENT_ENTITY:
-      // // Call the `EditPostWidgetController` to set the current entity.
-      // EditPostWidgetController().$apply(
-      //   EditPostWidgetController().setCurrentEntity( action.entity, 'entity' )
-      // );
-      // Update the entity in the state.
+      // Open the entity edit URL in new window
+      window.open(`${wlSettings["ajax_url"]}?action=wordlift_redirect&uri=${action.entity.id}&to=edit`, "_blank");
       return state;
 
     // Legacy: toggle the entity selection, fired when clicking on an

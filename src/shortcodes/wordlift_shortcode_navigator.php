@@ -39,9 +39,9 @@ function wl_shortcode_navigator_data() {
 
 	$relation_service = Wordlift_Relation_Service::get_instance();
 
-	// Get the related entities, ordering them by WHO, WHAT, WHERE, WHEN 
+	// Get the related entities, ordering them by WHO, WHAT, WHERE, WHEN
 	// TODO Replace with a single query if it is possible
-	// We select in inverse order to give priority to less used entities 
+	// We select in inverse order to give priority to less used entities
 	foreach (
 		array(
 			WL_WHEN_RELATION,
@@ -136,7 +136,7 @@ function wl_shortcode_navigator_wp_json() {
 		ob_clean();
 	}
 	return array(
-		'items' => array( 
+		'items' => array(
 			array('values' => $results)
 		)
 	);
@@ -151,4 +151,34 @@ add_action( 'rest_api_init', function () {
 	  'methods' => 'GET',
 	  'callback' => 'wl_shortcode_navigator_wp_json',
 	) );
+} );
+
+/**
+ * register_block_type for Gutenberg blocks
+ */
+add_action( 'init', function() {
+	register_block_type('wordlift/navigator', array(
+		'editor_script' => 'wordlift-admin-edit-gutenberg',
+		'render_callback' => function($attributes){
+			$attr_code = '';
+			foreach ($attributes as $key => $value) {
+				$attr_code .= $key.'="'.$value.'" ';
+			}
+			return '[wl_navigator '.$attr_code.']';
+		},
+		'attributes' => [
+			'title' => [
+				'type'    => 'string',
+				'default' => __( 'Related articles', 'wordlift' )
+			],
+			'with_carousel' => [
+				'type'    => 'bool',
+				'default' => true
+			],
+			'squared_thumbs' => [
+				'type'    => 'bool',
+				'default' => false
+			]
+		]
+	));
 } );

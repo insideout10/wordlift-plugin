@@ -8,14 +8,16 @@ import logger from "redux-logger";
 /*
  * Internal dependencies.
  */
-import saga from "../../Edit/components/AddEntity/sagas";
-import { reducer } from "../../Edit/components/AddEntity/actions";
+import saga from "../components/AddEntityPanel/AddEntity/sagas";
+import { reducer } from "../components/AddEntityPanel/AddEntity/actions";
 
 // Create the saga middleware.
 const sagaMiddleware = createSagaMiddleware();
-const store = createStore(reducer, applyMiddleware(sagaMiddleware, logger));
+const store2 = createStore(reducer, applyMiddleware(sagaMiddleware, logger));
 
 // Run the saga.
 sagaMiddleware.run(saga);
 
-export default store;
+window.wordlift.store2 = store2;
+
+export default store2;

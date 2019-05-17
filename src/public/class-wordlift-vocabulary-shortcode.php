@@ -338,3 +338,41 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	}
 
 }
+
+/**
+ * register_block_type for Gutenberg blocks
+ */
+add_action( 'init', function() {
+	register_block_type('wordlift/vocabulary', array(
+		'editor_script' => 'wordlift-admin-edit-gutenberg',
+		'render_callback' => function($attributes){
+			$attr_code = '';
+			foreach ($attributes as $key => $value) {
+				$attr_code .= $key.'="'.$value.'" ';
+			}
+			return '[wl_vocabulary '.$attr_code.']';
+		},
+		'attributes' => [
+			'type' => [
+				'type'    => 'string',
+				'default' => 'all'
+			],
+			'limit' => [
+				'type'    => 'number',
+				'default' => 100
+			],
+			'orderby' => [
+				'type'    => 'string',
+				'default' => 'post_date'
+			],
+			'order' => [
+				'type'    => 'string',
+				'default' => 'DESC'
+			],
+			'cat' => [
+				'type'    => 'string',
+				'default' => ''
+			],
+		]
+	));
+} );
