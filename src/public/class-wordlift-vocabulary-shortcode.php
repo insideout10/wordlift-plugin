@@ -352,27 +352,27 @@ add_action( 'init', function() {
 			}
 			return '[wl_vocabulary '.$attr_code.']';
 		},
-		'attributes' => [
-			'type' => [
+		'attributes' => array(
+			'type' => array(
 				'type'    => 'string',
 				'default' => 'all'
-			],
-			'limit' => [
+            ),
+			'limit' => array(
 				'type'    => 'number',
 				'default' => 100
-			],
-			'orderby' => [
+            ),
+			'orderby' => array(
 				'type'    => 'string',
 				'default' => 'post_date'
-			],
-			'order' => [
+            ),
+			'order' => array(
 				'type'    => 'string',
 				'default' => 'DESC'
-			],
-			'cat' => [
+            ),
+			'cat' => array(
 				'type'    => 'string',
 				'default' => ''
-			],
-		]
+            ),
+        )
 	));
 } );

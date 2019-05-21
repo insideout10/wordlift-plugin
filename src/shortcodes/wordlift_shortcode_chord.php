@@ -224,27 +224,27 @@ add_action( 'init', function() {
 			}
 			return '[wl_chord '.$attr_code.']';
 		},
-		'attributes' => [
-			'width' => [
+		'attributes' => array(
+			'width' => array(
 				'type'    => 'string',
 				'default' => '100%'
-			],
-			'height' => [
+			),
+			'height' => array(
 				'type'    => 'string',
 				'default' => '500px'
-			],
-			'main_color' => [
+			),
+			'main_color' => array(
 				'type'    => 'string',
 				'default' => '000'
-			],
-			'depth' => [
+			),
+			'depth' => array(
 				'type'    => 'number',
 				'default' => 2
-			],
-			'global' => [
+			),
+			'global' => array(
 				'type'    => 'bool',
 				'default' => false
-			],
-		]
+			),
+		)
 	));
 } );

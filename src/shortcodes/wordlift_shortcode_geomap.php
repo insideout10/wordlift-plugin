@@ -207,20 +207,20 @@ add_action( 'init', function() {
 			}
 			return '[wl_geomap '.$attr_code.']';
 		},
-		'attributes' => [
-			'width' => [
+		'attributes' => array(
+			'width' => array(
 				'type'    => 'string',
 				'default' => '100%'
-			],
-			'height' => [
+			),
+			'height' => array(
 				'type'    => 'string',
 				'default' => '300px'
-			],
-			'global' => [
+			),
+			'global' => array(
 				'type'    => 'bool',
 				'default' => false
-			],
-		]
+			),
+		)
 	));
 } );
 

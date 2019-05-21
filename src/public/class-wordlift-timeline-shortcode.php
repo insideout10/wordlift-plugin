@@ -211,6 +211,7 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
  * register_block_type for Gutenberg blocks
  */
 add_action( 'init', function() {
+	$wordlift_timeline_shortcode = new Wordlift_Timeline_Shortcode();
 	register_block_type('wordlift/timeline', array(
 		'editor_script' => 'wordlift-admin-edit-gutenberg',
 		'render_callback' => function($attributes){
@@ -225,23 +226,23 @@ add_action( 'init', function() {
 			}
 			return '[wl_timeline '.$attr_code.']';
 		},
-		'attributes' => [
-			'display_images_as' => [
+		'attributes' => array(
+			'display_images_as' => array(
 				'type'    => 'string',
 				'default' => 'media'
-			],
-			'excerpt_length' => [
+			),
+			'excerpt_length' => array(
 				'type'    => 'number',
 				'default' => 55
-			],
-			'global' => [
+			),
+			'global' => array(
 				'type'    => 'bool',
 				'default' => false
-			],
-			'timelinejs_options' => [
+			),
+			'timelinejs_options' => array(
 				'type'    => 'string', // https://timeline.knightlab.com/docs/options.html
-				'default' => json_encode((new Wordlift_Timeline_Shortcode())->get_timelinejs_default_options(), JSON_PRETTY_PRINT)
-			]
-		]
+				'default' => json_encode($wordlift_timeline_shortcode->get_timelinejs_default_options(), JSON_PRETTY_PRINT)
+			)
+		)
 	));
 } );

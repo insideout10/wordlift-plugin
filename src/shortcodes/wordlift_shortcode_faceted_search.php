@@ -419,27 +419,27 @@ add_action( 'init', function() {
 			}
 			return '[wl_faceted_search '.$attr_code.']';
 		},
-		'attributes' => [
-			'title' => [
+		'attributes' => array(
+			'title' => array(
 				'type'    => 'string',
 				'default' => __( 'Related articles', 'wordlift' )
-			],
-			'show_facets' => [
+			),
+			'show_facets' => array(
 				'type'    => 'bool',
 				'default' => true
-			],
-			'with_carousel' => [
+			),
+			'with_carousel' => array(
 				'type'    => 'bool',
 				'default' => true
-			],
-			'squared_thumbs' => [
+			),
+			'squared_thumbs' => array(
 				'type'    => 'bool',
 				'default' => false
-			],
-			'limit' => [
+			),
+			'limit' => array(
 				'type'    => 'number',
 				'default' => 20
-			]
-		]
+			)
+		)
 	));
 } );

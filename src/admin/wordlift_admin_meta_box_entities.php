@@ -185,7 +185,8 @@ function wl_entities_box_content( $post, $wrapper = true ) {
 	$published_date = get_the_time( 'Y-m-d', $post->ID );
 	// Current language.
 	$current_language = $configuration_service->get_language_code();
-	$timelinejs_default_options = json_encode((new Wordlift_Timeline_Shortcode())->get_timelinejs_default_options(), JSON_PRETTY_PRINT);
+	$wordlift_timeline_shortcode = new Wordlift_Timeline_Shortcode();
+	$timelinejs_default_options = json_encode($wordlift_timeline_shortcode->get_timelinejs_default_options(), JSON_PRETTY_PRINT);
 
 	$js_code = <<<JS
 		if ('undefined' == typeof window.wordlift) {

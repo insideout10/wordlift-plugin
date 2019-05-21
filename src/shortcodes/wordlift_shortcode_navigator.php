@@ -166,19 +166,19 @@ add_action( 'init', function() {
 			}
 			return '[wl_navigator '.$attr_code.']';
 		},
-		'attributes' => [
-			'title' => [
+		'attributes' => array(
+			'title' => array(
 				'type'    => 'string',
 				'default' => __( 'Related articles', 'wordlift' )
-			],
-			'with_carousel' => [
+			),
+			'with_carousel' => array(
 				'type'    => 'bool',
 				'default' => true
-			],
-			'squared_thumbs' => [
+			),
+			'squared_thumbs' => array(
 				'type'    => 'bool',
 				'default' => false
-			]
-		]
+			)
+		)
 	));
 } );
