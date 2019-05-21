@@ -13,10 +13,10 @@ class Wordlift_Remote_Image_Service {
 	 *
 	 * @param string $url The image remote URL.
 	 *
-	 * @since 3.18.0
-	 *
 	 * @return array|false An array with information about the saved image (*path*: the local path to the image, *url*: the local
 	 * url, *content_type*: the image content type) or false on error.
+	 * @since 3.18.0
+	 *
 	 */
 	public static function save_from_url( $url ) {
 
@@ -32,7 +32,9 @@ class Wordlift_Remote_Image_Service {
 		$parts = wp_parse_url( $url );
 
 		// Get the bare filename (filename w/o the extension).
-		$basename = pathinfo( $parts['path'], PATHINFO_FILENAME );
+		$basename = str_replace( DIRECTORY_SEPARATOR, '_', rawurldecode(
+			pathinfo( $parts['path'], PATHINFO_FILENAME )
+		) );
 
 		// Get the base dir.
 		$wp_upload_dir = wp_upload_dir();
@@ -92,10 +94,10 @@ class Wordlift_Remote_Image_Service {
 	 *
 	 * @param string $content_type File content type.
 	 *
-	 * @since 3.18.0
-	 *
 	 * @return string|bool The file extension on success and
 	 * false on fail or if the content type is not supported.
+	 * @since 3.18.0
+	 *
 	 */
 	private static function get_extension_from_content_type( $content_type ) {
 
@@ -119,9 +121,9 @@ class Wordlift_Remote_Image_Service {
 	 *
 	 * @param string $url The url to retrieve.
 	 *
+	 * @return false|array True on success and false on failure.
 	 * @since 3.18.0
 	 *
-	 * @return false|array True on success and false on failure.
 	 */
 	private static function get_response( $url ) {
 		// Request the remote file.

@@ -157,6 +157,11 @@ add_action( 'rest_api_init', function () {
  * register_block_type for Gutenberg blocks
  */
 add_action( 'init', function() {
+	// Bail out if the `register_block_type` function isn't available.
+	if ( ! function_exists( 'register_block_type' ) ) {
+		return;
+	}
+
 	register_block_type('wordlift/navigator', array(
 		'editor_script' => 'wordlift-admin-edit-gutenberg',
 		'render_callback' => function($attributes){

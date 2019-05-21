@@ -198,6 +198,12 @@ add_action( 'wp_ajax_nopriv_wl_geomap', 'wl_shortcode_geomap_ajax' );
  * register_block_type for Gutenberg blocks
  */
 add_action( 'init', function() {
+
+	// Bail out if the `register_block_type` function isn't available.
+	if ( ! function_exists( 'register_block_type' ) ) {
+		return;
+	}
+
 	register_block_type('wordlift/geomap', array(
 		'editor_script' => 'wordlift-admin-edit-gutenberg',
 		'render_callback' => function($attributes){

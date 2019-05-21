@@ -211,6 +211,11 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
  * register_block_type for Gutenberg blocks
  */
 add_action( 'init', function() {
+	// Bail out if the `register_block_type` function isn't available.
+	if ( ! function_exists( 'register_block_type' ) ) {
+		return;
+	}
+
 	$wordlift_timeline_shortcode = new Wordlift_Timeline_Shortcode();
 	register_block_type('wordlift/timeline', array(
 		'editor_script' => 'wordlift-admin-edit-gutenberg',

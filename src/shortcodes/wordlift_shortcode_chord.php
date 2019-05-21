@@ -60,14 +60,14 @@ function wl_shortcode_chord_most_referenced_entity_id() {
 /**
  * Recursive function used to retrieve related content starting from a post ID.
  *
- * @uses wl_core_get_related_post_ids() to get the list of post ids that reference an entity.
- *
  * @param int   $entity_id The entity post ID.
- * @param int   $depth     Max number of nesting levels in output.
- * @param array $related   An existing array of related entities.
- * @param int   $max_size  Max number of items.
+ * @param int   $depth Max number of nesting levels in output.
+ * @param array $related An existing array of related entities.
+ * @param int   $max_size Max number of items.
  *
  * @return array
+ * @uses wl_core_get_related_post_ids() to get the list of post ids that reference an entity.
+ *
  */
 function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = null, $max_size = 9 ) {
 
@@ -214,37 +214,44 @@ add_action( 'wp_ajax_nopriv_wl_chord', 'wl_shortcode_chord_ajax' );
 /**
  * register_block_type for Gutenberg blocks
  */
-add_action( 'init', function() {
-	register_block_type('wordlift/chord', array(
-		'editor_script' => 'wordlift-admin-edit-gutenberg',
-		'render_callback' => function($attributes){
+add_action( 'init', function () {
+
+	// Bail out if the `register_block_type` function isn't available.
+	if ( ! function_exists( 'register_block_type' ) ) {
+		return;
+	}
+
+	register_block_type( 'wordlift/chord', array(
+		'editor_script'   => 'wordlift-admin-edit-gutenberg',
+		'render_callback' => function ( $attributes ) {
 			$attr_code = '';
-			foreach ($attributes as $key => $value) {
-				$attr_code .= $key.'="'.$value.'" ';
+			foreach ( $attributes as $key => $value ) {
+				$attr_code .= $key . '="' . $value . '" ';
 			}
-			return '[wl_chord '.$attr_code.']';
+
+			return '[wl_chord ' . $attr_code . ']';
 		},
-		'attributes' => array(
-			'width' => array(
+		'attributes'      => array(
+			'width'      => array(
 				'type'    => 'string',
-				'default' => '100%'
+				'default' => '100%',
 			),
-			'height' => array(
+			'height'     => array(
 				'type'    => 'string',
-				'default' => '500px'
+				'default' => '500px',
 			),
 			'main_color' => array(
 				'type'    => 'string',
-				'default' => '000'
+				'default' => '000',
 			),
-			'depth' => array(
+			'depth'      => array(
 				'type'    => 'number',
-				'default' => 2
+				'default' => 2,
 			),
-			'global' => array(
+			'global'     => array(
 				'type'    => 'bool',
-				'default' => false
+				'default' => false,
 			),
-		)
-	));
+		),
+	) );
 } );
