@@ -87,6 +87,11 @@ class Wordlift_ShareThis_Service {
 		// Get the current post.
 		global $post;
 
+		// Bail out if the global $post instance isn't set.
+		if ( !isset( $post ) ) {
+			return $content;
+		}
+
 		// Bail out if the current entity is a post/page since this is already handled by ShareThis.
 		//
 		// See https://github.com/insideout10/wordlift-plugin/issues/819

@@ -503,7 +503,7 @@ class Wordlift_Entity_Service {
 	public function create( $name, $type_uri, $logo = null, $status = 'publish' ) {
 
 		// Create an entity for the publisher.
-		$post_id = wp_insert_post( array(
+		$post_id = @wp_insert_post( array(
 			'post_type'    => self::TYPE_NAME,
 			'post_title'   => $name,
 			'post_status'  => $status,
