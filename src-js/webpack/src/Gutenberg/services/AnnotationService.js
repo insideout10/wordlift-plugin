@@ -201,7 +201,8 @@ class AnnotationService {
         scope: "all",
         version: "1.0.0",
         content: this.blockContent,
-        annotations: this.existingAnnotations
+        annotations: this.existingAnnotations,
+        exclude: [wordlift.currentPostUri]
       })
     };
   }
