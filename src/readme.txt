@@ -142,9 +142,11 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.21.0 (2019-05-21) =
-* Enhancement: [#889](https://github.com/insideout10/wordlift-plugin/issues/889): Add Entity for Gutenberg
+= 3.21.0 (2019-06-03) =
+* Enhancement: [#889](https://github.com/insideout10/wordlift-plugin/issues/889): Add Entity for Gutenberg.
 * Enhancement: [#914](https://github.com/insideout10/wordlift-plugin/issues/914): Add a `can_see_wl_classification_box` filter.
+
+* Fix: [#916](https://github.com/insideout10/wordlift-plugin/issues/916): Current entity shows in the content analysis.
 
 = 3.20.2 (2019-05-13) =
 * Fix: [#912](https://github.com/insideout10/wordlift-plugin/issues/912): Annotations cannot be selected in Gutenberg and WP 5.2.
