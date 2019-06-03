@@ -142,6 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.22.0 (2019-06-03) =
+
+
 = 3.21.0 (2019-06-03) =
 * Enhancement: [#889](https://github.com/insideout10/wordlift-plugin/issues/889): Add Entity for Gutenberg.
 * Enhancement: [#914](https://github.com/insideout10/wordlift-plugin/issues/914): Add a `can_see_wl_classification_box` filter.
