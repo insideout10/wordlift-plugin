@@ -118,7 +118,7 @@ class Wordlift_Property_Getter_Test extends Wordlift_Unit_Test_Case {
 		/** @var Wordlift_Property_Entity_Reference[] $values */
 		$values = $this->property_getter->get( $this->post_id, Wordlift_Url_Property_Service::META_KEY );
 		$this->assertTrue( is_array( $values ) );
-		$this->assertCount( 2, $values );
+		$this->assertCount( 1, $values );
 		$this->assertContains( $expected, $values[0] );
 	}
 
