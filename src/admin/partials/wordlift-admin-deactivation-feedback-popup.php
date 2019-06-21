@@ -59,7 +59,7 @@ $reasons = array(
 	),
 );
 ?>
-<div class="wl-modal-deactivation-feedback">
+<div class="wl-modal-deactivation-feedback" style="display: none">
 	<div class="wl-modal">
 		<div class="wl-modal-body">
 			<h2>
@@ -84,10 +84,10 @@ $reasons = array(
 								/>
 
 								<span class="description">
-									<?php echo $reason['text']; ?>		
+									<?php echo $reason['text']; ?>
 								</span>
 							</label>
-							
+
 							<?php if ( ! empty( $reason['message'] ) ) : ?>
 								<div class="additional-info <?php echo ( ! empty( $reason['message']['field'] ) ) ? 'has-field' : ''; ?>">
 									<?php
@@ -125,7 +125,7 @@ $reasons = array(
 			<a href="#" class="button button-secondary wl-modal-button-close">
 				<?php _e( 'Cancel', 'wordlift' ); ?>
 			</a>
-			
+
 			<a href="#" class="button button-primary wl-modal-button-deactivate">
 				<?php _e( 'Deactivate', 'wordlift' ); ?>
 			</a>
