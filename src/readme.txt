@@ -142,10 +142,15 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.21.1 (2019-06-24) =
+* Fix: [#926](https://github.com/insideout10/wordlift-plugin/issues/926): Add a filter to disable WordLift's version output
+* Fix: [#924](https://github.com/insideout10/wordlift-plugin/issues/924): Conflict with AMPforWP Wizard installation
+* Fix: [#923](https://github.com/insideout10/wordlift-plugin/issues/923): Dashboard v2 Entity Count may consume too much memory
+* Fix: [#913](https://github.com/insideout10/wordlift-plugin/issues/913): Do not publish the local permalink if not configured
+
 = 3.21.0 (2019-06-03) =
 * Enhancement: [#889](https://github.com/insideout10/wordlift-plugin/issues/889): Add Entity for Gutenberg.
 * Enhancement: [#914](https://github.com/insideout10/wordlift-plugin/issues/914): Add a `can_see_wl_classification_box` filter.
-
 * Fix: [#916](https://github.com/insideout10/wordlift-plugin/issues/916): Current entity shows in the content analysis.
 
 = 3.20.2 (2019-05-13) =
