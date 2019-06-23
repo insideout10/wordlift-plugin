@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+
+  wordlift-plugin-tests-db:
+    image: mariadb:10.3.16
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+
+  wordlift-plugin-tests-php:
+    image: php:${PHP_VERSION}
+    depends_on:
+      - wordlift-plugin-tests-db
+    working_dir: /tmp/wordlift
+    volumes:
+      - ..:/tmp/wordlift:ro
+    command: >
+      bash -c "apt update -y && apt install -y subversion && 
+      curl -o /usr/local/bin/phpunit https://phar.phpunit.de/phpunit-7.5.9.phar &&
+      chmod 755 /usr/local/bin/phpunit &&
+      bin/install-wp-tests.sh wordlift-plugin-tests-db root password localhost ${WORDPRESS_VERSION} &&
+      WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING=true WORDLIFT_KEY=${WORDLIFT_KEY} /usr/local/bin/phpunit -c phpunit.xml ${PHPUNIT_ARGS}"
+

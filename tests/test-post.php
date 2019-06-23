@@ -269,6 +269,11 @@ EOF;
 
 		// Send the query and get the response.
 		$response = rl_sparql_select( $sparql );
+
+		if ( is_wp_error( $response ) ) {
+			$this->fail( "An error occurred while contacting the remote end-point: " . $response->get_error_message() );
+		}
+
 		$this->assertFalse( is_wp_error( $response ) );
 
 		$body = $response['body'];
