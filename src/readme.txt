@@ -147,6 +147,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Fix: [#924](https://github.com/insideout10/wordlift-plugin/issues/924): Conflict with AMPforWP Wizard installation.
 * Fix: [#923](https://github.com/insideout10/wordlift-plugin/issues/923): Dashboard v2 Entity Count may consume too much memory.
 * Fix: [#913](https://github.com/insideout10/wordlift-plugin/issues/913): Do not publish the local permalink if not configured.
+* Fix: [#930](https://github.com/insideout10/wordlift-plugin/issues/930): WordLift text editor freezes when user has a apostrophe in the name.
 
 = 3.21.0 (2019-06-03) =
 * Enhancement: [#889](https://github.com/insideout10/wordlift-plugin/issues/889): Add Entity for Gutenberg.
