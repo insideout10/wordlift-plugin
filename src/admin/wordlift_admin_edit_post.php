@@ -28,7 +28,13 @@ function wl_admin_permalink_html( $html, $post_id, $new_title, $new_slug ) {
 	     && $uri = $entity_service->get_uri( $post_id ) ) {
 
 		$lod_view_href = esc_attr( $uri );
-		$html          .= "<span id='view-post-btn'><a href='$lod_view_href' class='button button-small wl-button' target='_blank'>" .
+		/*
+		 * Add the `.html` extension to the link to have Chrome open the html version instead of RDF one.
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/931
+		 * @since 3.21.1
+		 */
+		$html          .= "<span id='view-post-btn'><a href='$lod_view_href.html' class='button button-small wl-button' target='_blank'>" .
 		                  esc_html__( 'View Linked Data', 'wordlift' ) .
 		                  "</a></span>\n";
 

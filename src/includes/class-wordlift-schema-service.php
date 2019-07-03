@@ -720,6 +720,12 @@ class Wordlift_Schema_Service {
 					'http://www.w3.org/2002/07/owl#sameAs',
 					self::DATA_TYPE_URI
 				),
+				// ### schema:sameAs.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( self::FIELD_SAME_AS ),
+					'http://schema.org/sameAs',
+					self::DATA_TYPE_URI
+				),
 				// ### rdf:type.
 				$this->rendition_factory->create(
 					$this->storage_factory->schema_class(),

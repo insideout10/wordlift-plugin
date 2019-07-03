@@ -187,6 +187,7 @@ function wl_entities_box_content( $post, $wrapper = true ) {
 	$current_language = $configuration_service->get_language_code();
 	$wordlift_timeline_shortcode = new Wordlift_Timeline_Shortcode();
 	$timelinejs_default_options = json_encode($wordlift_timeline_shortcode->get_timelinejs_default_options(), JSON_PRETTY_PRINT);
+	$addslashes_post_author = addslashes($post_author);
 
 	$js_code = <<<JS
 		if ('undefined' == typeof window.wordlift) {
@@ -197,16 +198,16 @@ function wl_entities_box_content( $post, $wrapper = true ) {
 		window.wordlift.classificationBoxes = $classification_boxes;
 		window.wordlift.entities = $referenced_entities_obj;
 		window.wordlift.currentPostId = $post->ID;
-		window.wordlift.currentPostUri = '$current_post_uri';
-		window.wordlift.currentPostType = '$post->post_type';
-		window.wordlift.defaultThumbnailPath = '$default_thumbnail_path';
-		window.wordlift.defaultWordLiftPath = '$default_path';
-		window.wordlift.datasetUri = '$dataset_uri';
-		window.wordlift.currentUser = '$post_author';
-		window.wordlift.publishedDate = '$published_date';
+		window.wordlift.currentPostUri = "$current_post_uri";
+		window.wordlift.currentPostType = "$post->post_type";
+		window.wordlift.defaultThumbnailPath = "$default_thumbnail_path";
+		window.wordlift.defaultWordLiftPath = "$default_path";
+		window.wordlift.datasetUri = "$dataset_uri";
+		window.wordlift.currentUser = "$addslashes_post_author";
+		window.wordlift.publishedDate = "$published_date";
 		window.wordlift.publishedPlace = $published_place_obj;
 		window.wordlift.topic = $topic_obj;
-		window.wordlift.currentLanguage = '$current_language';
+		window.wordlift.currentLanguage = "$current_language";
 		window.wordlift.timelinejsDefaultOptions = $timelinejs_default_options;
 JS;
 

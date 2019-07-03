@@ -124,14 +124,21 @@ class Wordlift_Public {
 
 		/*
 		 * Add WordLift's version.
+		 * Can be disabled via filter 'wl_disable_version_js' since 3.21.1
 		 *
 		 * @since 3.19.4
 		 *
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/843.
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/926.
 		 */
-		wp_localize_script( $this->plugin_name, 'wordlift', array(
-			'version' => $this->version,
-		) );
+		$show_version_default = false;
+		$show_version = apply_filters( 'wl_disable_version_js', $show_version_default );
+
+		if($show_version) {
+			wp_localize_script( $this->plugin_name, 'wordlift', array(
+				'version' => $this->version,
+			) );
+		}
 
 	}
 

@@ -18,6 +18,8 @@ DELETE { <POST_URI> <http://schema.org/description> ?o } WHERE { <POST_URI> <htt
 DELETE { ?s <http://schema.org/description> <POST_URI> } WHERE { ?s <http://schema.org/description> <POST_URI> }; 
 DELETE { <POST_URI> <http://www.w3.org/2002/07/owl#sameAs> ?o } WHERE { <POST_URI> <http://www.w3.org/2002/07/owl#sameAs> ?o }; 
 DELETE { ?s <http://www.w3.org/2002/07/owl#sameAs> <POST_URI> } WHERE { ?s <http://www.w3.org/2002/07/owl#sameAs> <POST_URI> }; 
+DELETE { <POST_URI> <http://schema.org/sameAs> ?o } WHERE { <POST_URI> <http://schema.org/sameAs> ?o }; 
+DELETE { ?s <http://schema.org/sameAs> <POST_URI> } WHERE { ?s <http://schema.org/sameAs> <POST_URI> }; 
 DELETE { <POST_URI> <http://schema.org/image> ?o } WHERE { <POST_URI> <http://schema.org/image> ?o }; 
 DELETE { ?s <http://schema.org/image> <POST_URI> } WHERE { ?s <http://schema.org/image> <POST_URI> }; 
 DELETE { <POST_URI> <http://purl.org/dc/terms/relation> ?o } WHERE { <POST_URI> <http://purl.org/dc/terms/relation> ?o }; 

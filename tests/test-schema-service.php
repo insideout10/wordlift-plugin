@@ -159,7 +159,7 @@ class Wordlift_Schema_Service_Test extends Wordlift_Unit_Test_Case {
 		$this->assertArrayHasKey( 'entity_same_as', $thing_schema['custom_fields'] );
 
 		// This value may change if we add/remove properties from `linked_data`.
-		$this->assertCount( 12, $thing_schema['linked_data'] );
+		$this->assertCount( 13, $thing_schema['linked_data'] );
 
 		// Test event schema.
 		$this->assertEquals( $event_schema['css_class'], 'wl-event' );
@@ -169,7 +169,7 @@ class Wordlift_Schema_Service_Test extends Wordlift_Unit_Test_Case {
 		$this->assertArrayHasKey( 'entity_same_as', $event_schema['custom_fields'] );
 
 		// This value may change if we add/remove properties from `linked_data`.
-		$this->assertCount( 17, $event_schema['linked_data'] );
+		$this->assertCount( 18, $event_schema['linked_data'] );
 
 	}
 

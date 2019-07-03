@@ -72,6 +72,11 @@ class Wordlift_References_Test extends Wordlift_Unit_Test_Case {
 
 		// Send the query and get the response.
 		$response = rl_sparql_select( $sparql );
+
+		if ( is_wp_error( $response ) ) {
+			$this->fail( "Call returned an error: " . $response->get_error_message() );
+		}
+
 		$body     = $response['body'];
 		$lines    = str_getcsv( $body, "\n" );
 

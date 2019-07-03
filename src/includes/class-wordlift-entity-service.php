@@ -439,6 +439,7 @@ class Wordlift_Entity_Service {
 	public function count() {
 
 		$posts = get_posts( $this->add_criterias( array(
+			'fields'      => 'ids',
 			'post_status' => 'any',
 			'numberposts' => - 1,
 		) ) );
