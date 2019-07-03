@@ -1,0 +1,124 @@
+#wordlift-faceted-entity-search-widget {
+    font-size: inherit;
+    padding: 0;
+    margin: 0.8em 0;
+    width: 100%;
+
+    amp-accordion{
+        section[expanded]{
+            .wl-headline{
+                &:after {
+                    transform: rotate(180deg);
+                }
+            }
+        }
+    }
+
+    .wl-headline {
+        position: relative;
+        margin: 0.4em 0;
+        font-weight: bold;
+        background-color: inherit;
+        padding: 0;
+        border: 0;
+        &:focus{
+            outline: none;
+        }
+        &:after {
+            content: "\25BE";
+            position: absolute;
+            right: 0;
+        }
+    }
+
+    .wl-facets {
+        margin: 0;
+        border-top: #ccc 1px solid;
+        overflow: hidden;
+
+        .wl-facets-container {
+            width: 25%;
+            float: left;
+
+            @media screen and (max-width: 460px) {
+                width: 100%;
+            }
+
+            h5 {
+                text-transform: uppercase;
+                padding: 0.3em 0 0 0;
+                margin: 0;
+                font-weight: bold;
+                color: #767676;
+            }
+
+            ul {
+                padding: 0 0 0 0.2em;
+                margin: 0.6em 0.3em;
+                font-size: .8rem;
+                list-style: none;
+                border-left: #ccc 1px dashed;
+            }
+
+            li {
+                padding: 0;
+                margin: 0 0 0.2em 0;
+                line-height: 1.2em;
+                position: relative;
+                white-space: normal;
+                color: #666;
+                cursor: pointer;
+            }
+        }
+
+    }
+
+}
+
+amp-carousel.wl-amp-carousel {
+    background: transparent;
+    margin: 0 -8px 0 0;
+
+    .amp-scrollable-carousel-slide{
+        margin:0;
+    }
+
+    .wl-card {
+        font-size: 0.8em;
+        width: 27%;
+        vertical-align: top;
+
+        @media screen and (max-width: 460px) {
+            width: 100%;
+        }
+
+        .wl-card-header {
+            text-align: left;
+            text-transform: uppercase;
+            padding: 0.6em;
+            margin: 0;
+            font-size: .9rem;
+            line-height: 1.2rem;
+            min-height: 40px;
+        }
+
+        .wl-card-title {
+            padding: 0.6em;
+            position: relative;
+            font-size: .9rem;
+            line-height: 1.2rem;
+        }
+
+        a {
+            white-space: normal;
+            color: #222;
+            text-decoration: none;
+            box-shadow: inset 0 -1px 0 rgba(15, 15, 15, 1);
+
+            &:hover{
+                color: #222;
+                box-shadow: inset 0 0 0 rgba(0, 0, 0, 0), 0 3px 0 rgba(0, 0, 0, 1);
+            }
+        }
+    }
+}
