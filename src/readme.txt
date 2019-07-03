@@ -142,7 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.21.1 (2019-06-24) =
+= 3.21.1 (2019-07-03) =
+* Fix: [#932](https://github.com/insideout10/wordlift-plugin/issues/932): Remove the Analytics Settings from the Plugins screen.
+* Fix: [#931](https://github.com/insideout10/wordlift-plugin/issues/931): Chrome downloads the RDF file when clicking on "View Linked Data".
 * Fix: [#926](https://github.com/insideout10/wordlift-plugin/issues/926): Add a filter to disable WordLift's version output.
 * Fix: [#924](https://github.com/insideout10/wordlift-plugin/issues/924): Conflict with AMPforWP Wizard installation.
 * Fix: [#923](https://github.com/insideout10/wordlift-plugin/issues/923): Dashboard v2 Entity Count may consume too much memory.
