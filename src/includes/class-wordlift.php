@@ -1615,7 +1615,14 @@ class Wordlift {
 
 		// Add additional action links to the WordLift plugin in the plugins page.
 		$this->loader->add_filter( 'plugin_action_links_wordlift/wordlift.php', $this->settings_page_action_link, 'action_links', 10, 1 );
-		$this->loader->add_filter( 'plugin_action_links_wordlift/wordlift.php', $this->analytics_settings_page_action_link, 'action_links', 10, 1 );
+
+		/*
+		 * Remove the Analytics Settings link from the plugin page.
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/932
+		 * @since 3.21.1
+		 */
+		// $this->loader->add_filter( 'plugin_action_links_wordlift/wordlift.php', $this->analytics_settings_page_action_link, 'action_links', 10, 1 );
 
 		// Hook the AJAX `wl_publisher` action name.
 		$this->loader->add_action( 'wp_ajax_wl_publisher', $this->publisher_ajax_adapter, 'publisher' );
