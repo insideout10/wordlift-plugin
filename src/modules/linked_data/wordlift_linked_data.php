@@ -10,9 +10,10 @@
 /**
  * Receive events from post saves, and split them according to the post type.
  *
+ * @param int $post_id The post id.
+ *
  * @since 3.0.0
  *
- * @param int $post_id The post id.
  */
 function wl_linked_data_save_post( $post_id ) {
 
@@ -61,9 +62,9 @@ add_action( 'save_post', 'wl_linked_data_save_post' );
 
 add_action( 'rest_insert_post', 'wl_linked_data_rest_insert_post', 10, 3 );
 
-function wl_linked_data_rest_insert_post( $post, $request, $creating ){
+function wl_linked_data_rest_insert_post( $post, $request, $creating ) {
 
-	$log = Wordlift_Log_Service::get_logger( 'wl_linked_data_save_post_and_related_entities' );
+	$log = Wordlift_Log_Service::get_logger( 'wl_linked_data_rest_insert_post' );
 
 	$post_id = $post->ID;
 	$log->trace( "Saving $post_id to Linked Data along with related entities..." );
@@ -71,6 +72,7 @@ function wl_linked_data_rest_insert_post( $post, $request, $creating ){
 	// Ignore auto-saves
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 		$log->trace( 'Doing autosave, skipping...' );
+
 		return;
 	}
 
@@ -85,8 +87,8 @@ function wl_linked_data_rest_insert_post( $post, $request, $creating ){
 	$metas = $metas['meta'];
 
 	// Ignore if no change in meta
-	if ( !empty($metas) ) {
-		$entities_via_meta = json_decode($metas['wl_entities_gutenberg'], true);
+	if ( ! empty( $metas ) ) {
+		$entities_via_meta = json_decode( $metas['wl_entities_gutenberg'], true );
 
 		foreach ( $entities_via_meta as $entity_uri => $entity ) {
 
@@ -108,7 +110,7 @@ function wl_linked_data_rest_insert_post( $post, $request, $creating ){
 					$entity_type
 				) : wl_get_entity_uri( $ie->ID );
 
-			wl_write_log( "Map $entity_uri on $uri" );
+			$log->debug( "Map $entity_uri on $uri" );
 			$entities_uri_mapping[ $entity_uri ] = $uri;
 
 			// Local entities have a tmp uri with 'local-entity-' prefix
@@ -170,15 +172,14 @@ function wl_linked_data_rest_insert_post( $post, $request, $creating ){
 /**
  * Save the post to the triple store. Also saves the entities locally and on the triple store.
  *
+ * @param int $post_id The post id being saved.
+ *
  * @since 3.0.0
  *
- * @param int $post_id The post id being saved.
  */
 function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 	$log = Wordlift_Log_Service::get_logger( 'wl_linked_data_save_post_and_related_entities' );
-
-	$log->trace( "Saving $post_id to Linked Data along with related entities..." );
 
 	// Ignore auto-saves
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
@@ -186,6 +187,8 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 		return;
 	}
+
+	$log->trace( "Saving $post_id to Linked Data along with related entities..." );
 
 	// get the current post.
 	$post = get_post( $post_id );
@@ -211,45 +214,9 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 		wl_write_log( "]" );
 
 		$entities_via_post = $_POST['wl_entities'];
-		$boxes_via_post    = $_POST['wl_boxes'];
 
 		foreach ( $entities_via_post as $entity_uri => $entity ) {
-
-			// Only if the current entity is created from scratch let's avoid to
-			// create more than one entity with same label & entity type.
-			$entity_type = ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) ?
-				$entity['main_type'] : null;
-
-			// Look if current entity uri matches an internal existing entity, meaning:
-			// 1. when $entity_uri is an internal uri
-			// 2. when $entity_uri is an external uri used as sameAs of an internal entity
-			$ie = $entity_service->get_entity_post_by_uri( $entity_uri );
-
-			// Detect the uri depending if is an existing or a new entity
-			$uri = ( null === $ie ) ?
-				Wordlift_Uri_Service::get_instance()->build_uri(
-					$entity['label'],
-					Wordlift_Entity_Service::TYPE_NAME,
-					$entity_type
-				) : wl_get_entity_uri( $ie->ID );
-
-			wl_write_log( "Map $entity_uri on $uri" );
-			$entities_uri_mapping[ $entity_uri ] = $uri;
-
-			// Local entities have a tmp uri with 'local-entity-' prefix
-			// These uris need to be rewritten here and replaced in the content
-			if ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) {
-				// Override the entity obj
-				$entity['uri'] = $uri;
-			}
-
-			// Update entity data with related post
-			$entity['related_post_id'] = $post_id;
-
-			// Save the entity if is a new entity
-			if ( null === $ie ) {
-				wl_save_entity( $entity );
-			}
+			list( $uri, $entities_uri_mapping, $entity ) = _wl_save_entity( $post_id, $entity_uri, $entity, $entities_uri_mapping );
 
 		}
 
@@ -326,6 +293,59 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	Wordlift_Linked_Data_Service::get_instance()->push( $post->ID );
 
 	add_action( 'wl_linked_data_save_post', 'wl_linked_data_save_post_and_related_entities' );
+}
+
+/**
+ * @param                         $post_id
+ * @param                         $annotation_uri
+ * @param                         $entity
+ * @param Wordlift_Entity_Service $entity_service
+ * @param array                   $entities_uri_mapping
+ *
+ * @return array
+ */
+function _wl_save_entity( $post_id, $annotation_uri, $entity, array $entities_uri_mapping ) {
+
+	$log = Wordlift_Log_Service::get_logger( '_wl_save_entity' );
+
+	// Only if the current entity is created manually let's avoid to
+	// create more than one entity with same label & entity type.
+	$is_manually_created = ( 1 === preg_match( '/^local-entity-.+/', $annotation_uri ) );
+	$entity_type         = $is_manually_created ? $entity['main_type'] : null;
+
+	// Look if current entity uri matches an internal existing entity, meaning:
+	// 1. when $annotation_uri is an internal uri
+	// 2. when $annotation_uri is an external uri used as sameAs of an internal entity
+	$existing_entity_post = Wordlift_Entity_Service::get_instance()
+	                                               ->get_entity_post_by_uri( $annotation_uri );
+
+	// Detect the uri depending if is an existing or a new entity
+	$uri = ( null === $existing_entity_post ) ?
+		Wordlift_Uri_Service::get_instance()->build_uri(
+			$entity['label'],
+			Wordlift_Entity_Service::TYPE_NAME,
+			$entity_type
+		) : wl_get_entity_uri( $existing_entity_post->ID );
+
+	$log->debug( "Map $annotation_uri on $uri" );
+	$entities_uri_mapping[ $annotation_uri ] = $uri;
+
+	// Local entities have a tmp uri with 'local-entity-' prefix
+	// These uris need to be rewritten here and replaced in the content
+	if ( $is_manually_created ) {
+		// Override the entity obj
+		$entity['uri'] = $uri;
+	}
+
+	// Update entity data with related post
+	$entity['related_post_id'] = $post_id;
+
+	// Save the entity if is a new entity
+	if ( null === $existing_entity_post ) {
+		wl_save_entity( $entity );
+	}
+
+	return array( $uri, $entities_uri_mapping, $entity );
 }
 
 add_action( 'wl_linked_data_save_post', 'wl_linked_data_save_post_and_related_entities' );
@@ -555,11 +575,11 @@ function wl_save_entity( $entity_data ) {
 /**
  * Get an array of entities from the *itemid* attributes embedded in the provided content.
  *
- * @since 3.0.0
- *
  * @param string $content The content with itemid attributes.
  *
  * @return array An array of entity posts.
+ * @since 3.0.0
+ *
  */
 function wl_linked_data_content_get_embedded_entities( $content ) {
 
