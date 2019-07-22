@@ -75,6 +75,11 @@ function wl_linked_data_rest_insert_post( $post, $request, $creating ) {
 
 		return;
 	}
+	// Bail out if WL_DISABLE_ENTITY_SAVE is true
+	if(WL_DISABLE_ENTITY_SAVE === true){
+		$log->trace( 'WL_DISABLE_ENTITY_SAVE === true, skipping...' );
+		return;
+	}
 
 	// Get the entity service instance.
 	$entity_service = Wordlift_Entity_Service::get_instance();

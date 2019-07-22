@@ -69,6 +69,13 @@ defined( 'WL_AUTOCOMPLETE_SCOPE' ) || define( 'WL_AUTOCOMPLETE_SCOPE', 'cloud' )
  */
 defined( 'WL_ALL_ENTITY_TYPES' ) || define( 'WL_ALL_ENTITY_TYPES', false );
 
+/*
+ * Enable/disable saving entities
+ *
+ * @see https://github.com/insideout10/wordlift-plugin/issues/940
+ */
+defined( 'WL_DISABLE_ENTITY_SAVE' ) || define( 'WL_DISABLE_ENTITY_SAVE', true );
+
 /**
  * Get an array with commonly supported prefixes.
  *
