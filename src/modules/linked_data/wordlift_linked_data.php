@@ -91,43 +91,7 @@ function wl_linked_data_rest_insert_post( $post, $request, $creating ) {
 		$entities_via_meta = json_decode( $metas['wl_entities_gutenberg'], true );
 
 		foreach ( $entities_via_meta as $entity_uri => $entity ) {
-
-			// Only if the current entity is created from scratch let's avoid to
-			// create more than one entity with same label & entity type.
-			$entity_type = ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) ?
-				$entity['main_type'] : null;
-
-			// Look if current entity uri matches an internal existing entity, meaning:
-			// 1. when $entity_uri is an internal uri
-			// 2. when $entity_uri is an external uri used as sameAs of an internal entity
-			$ie = $entity_service->get_entity_post_by_uri( $entity_uri );
-
-			// Detect the uri depending if is an existing or a new entity
-			$uri = ( null === $ie ) ?
-				Wordlift_Uri_Service::get_instance()->build_uri(
-					$entity['label'],
-					Wordlift_Entity_Service::TYPE_NAME,
-					$entity_type
-				) : wl_get_entity_uri( $ie->ID );
-
-			$log->debug( "Map $entity_uri on $uri" );
-			$entities_uri_mapping[ $entity_uri ] = $uri;
-
-			// Local entities have a tmp uri with 'local-entity-' prefix
-			// These uris need to be rewritten here and replaced in the content
-			if ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) {
-				// Override the entity obj
-				$entity['uri'] = $uri;
-			}
-
-			// Update entity data with related post
-			$entity['related_post_id'] = $post_id;
-
-			// Save the entity if is a new entity
-			if ( null === $ie ) {
-				wl_save_entity( $entity );
-			}
-
+			$entities_uri_mapping = _wl_save_entity( $post_id, $entity_uri, $entity, $entities_uri_mapping );
 		}
 	}
 
@@ -204,20 +168,16 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	$entities_uri_mapping = array();
 
 	// Save the entities coming with POST data.
-	if ( isset( $_POST['wl_entities'] ) && isset( $_POST['wl_boxes'] ) ) {
+	if ( isset( $_POST['wl_entities'] ) ) {
 
 		wl_write_log( "[ post id :: $post_id ][ POST(wl_entities) :: " );
 		wl_write_log( json_encode( $_POST['wl_entities'] ) );
-		wl_write_log( "]" );
-		wl_write_log( "[ post id :: $post_id ][ POST(wl_boxes) :: " );
-		wl_write_log( json_encode( $_POST['wl_boxes'], true ) );
 		wl_write_log( "]" );
 
 		$entities_via_post = $_POST['wl_entities'];
 
 		foreach ( $entities_via_post as $entity_uri => $entity ) {
-			list( $uri, $entities_uri_mapping, $entity ) = _wl_save_entity( $post_id, $entity_uri, $entity, $entities_uri_mapping );
-
+			$entities_uri_mapping = _wl_save_entity( $post_id, $entity_uri, $entity, $entities_uri_mapping );
 		}
 
 	}
@@ -299,12 +259,11 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
  * @param                         $post_id
  * @param                         $annotation_uri
  * @param                         $entity
- * @param Wordlift_Entity_Service $entity_service
  * @param array                   $entities_uri_mapping
  *
  * @return array
  */
-function _wl_save_entity( $post_id, $annotation_uri, $entity, array $entities_uri_mapping ) {
+function _wl_save_entity( $post_id, $annotation_uri, $entity, $entities_uri_mapping ) {
 
 	$log = Wordlift_Log_Service::get_logger( '_wl_save_entity' );
 
@@ -345,7 +304,7 @@ function _wl_save_entity( $post_id, $annotation_uri, $entity, array $entities_ur
 		wl_save_entity( $entity );
 	}
 
-	return array( $uri, $entities_uri_mapping, $entity );
+	return $entities_uri_mapping;
 }
 
 add_action( 'wl_linked_data_save_post', 'wl_linked_data_save_post_and_related_entities' );
