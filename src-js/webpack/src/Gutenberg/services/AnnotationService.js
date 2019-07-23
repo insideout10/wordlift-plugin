@@ -112,10 +112,11 @@ class AnnotationService {
       let formatIndex = false;
       if (startFormat) {
         startFormat.forEach((value_v, value_i) => {
+          let attributesKey = AnnotationService.getAttributesKey(value_v);
           if (
-            value_v.type === Constants.PLUGIN_FORMAT_NAMESPACE &&
-            value_v.unregisteredAttributes &&
-            value_v.unregisteredAttributes.class.indexOf("textannotation") > -1
+            value_v[attributesKey] &&
+            value_v[attributesKey].class &&
+            value_v[attributesKey].class.indexOf("textannotation") > -1
           ) {
             formatIndex = value_i;
           }
@@ -217,7 +218,8 @@ class AnnotationService {
     richText.formats.forEach((value, index) => {
       let formatIndex = AnnotationService.getFormatIndex(value);
       if (formatIndex !== false) {
-        let uri = value[formatIndex].attributes.itemid;
+        let attributesKey = AnnotationService.getAttributesKey(value[formatIndex]);
+        let uri = value[formatIndex][attributesKey].itemid;
         let end = index + 1;
         if (uri !== lastItem || index !== lastIndex) {
           annotations.push({
@@ -238,13 +240,23 @@ class AnnotationService {
     this.existingAnnotations = annotations;
   }
 
+  static getAttributesKey(parent) {
+    if (Object.keys(parent.attributes).length === 0) {
+      return "unregisteredAttributes";
+    } else {
+      return "attributes";
+    }
+  }
+
   static getFormatIndex(value) {
     let formatIndex = false;
     value.forEach((value_v, value_i) => {
+      let attributesKey = AnnotationService.getAttributesKey(value_v);
       if (
-        value_v.type === "span" &&
-        value_v.attributes.class.indexOf("textannotation") > -1 &&
-        value_v.attributes.class.indexOf("disambiguated") > -1
+        value_v[attributesKey] &&
+        value_v[attributesKey].class &&
+        value_v[attributesKey].class.indexOf("textannotation") > -1 &&
+        value_v[attributesKey].class.indexOf("disambiguated") > -1
       ) {
         formatIndex = value_i;
       }
@@ -288,8 +300,9 @@ class AnnotationService {
           richText.formats.forEach((value, index) => {
             let formatIndex = AnnotationService.getFormatIndex(value);
             if (formatIndex !== false) {
-              let uri = value[formatIndex].attributes.itemid;
-              let id = value[formatIndex].attributes.id;
+              let attributesKey = AnnotationService.getAttributesKey(value[formatIndex]);
+              let uri = value[formatIndex][attributesKey].itemid;
+              let id = value[formatIndex][attributesKey].id;
               let end = index + 1;
               if (uri !== lastItem || index !== lastIndex) {
                 localData.annotations[id] = {

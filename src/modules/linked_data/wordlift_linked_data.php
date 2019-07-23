@@ -76,10 +76,10 @@ function wl_linked_data_rest_insert_post( $post, $request, $creating ) {
 		return;
 	}
 	// Bail out if WL_DISABLE_ENTITY_SAVE is true
-	if(WL_DISABLE_ENTITY_SAVE === true){
-		$log->trace( 'WL_DISABLE_ENTITY_SAVE === true, skipping...' );
-		return;
-	}
+//	if(WL_DISABLE_ENTITY_SAVE === true){
+//		$log->trace( 'WL_DISABLE_ENTITY_SAVE === true, skipping...' );
+//		return;
+//	}
 
 	// Get the entity service instance.
 	$entity_service = Wordlift_Entity_Service::get_instance();
@@ -100,39 +100,7 @@ function wl_linked_data_rest_insert_post( $post, $request, $creating ) {
 		}
 	}
 
-	// Replace tmp uris in content post if needed
-	$updated_post_content = $post->post_content;
-
-	// Update the post content if we found mappings of new entities.
-	if ( ! empty( $entities_uri_mapping ) ) {
-		// Save each entity and store the post id.
-		foreach ( $entities_uri_mapping as $tmp_uri => $uri ) {
-			$updated_post_content = str_replace( $tmp_uri, $uri, $updated_post_content );
-		}
-
-		// Update the post content.
-		wp_update_post( array(
-			'ID'           => $post->ID,
-			'post_content' => $updated_post_content,
-		) );
-	}
-
-	// Extract related/referenced entities from text.
-	$disambiguated_entities = wl_linked_data_content_get_embedded_entities( $updated_post_content );
-
-	// Reset previously saved instances.
-	wl_core_delete_relation_instances( $post_id );
-
-	// Save relation instances
-	foreach ( array_unique( $disambiguated_entities ) as $referenced_entity_id ) {
-
-		wl_core_add_relation_instance(
-			$post_id,
-			$entity_service->get_classification_scope_for( $referenced_entity_id ),
-			$referenced_entity_id
-		);
-
-	}
+	_wl_save_relations( $post, $post_id, $entities_uri_mapping );
 
 	// Push the post to Redlink.
 	Wordlift_Linked_Data_Service::get_instance()->push( $post->ID );
@@ -187,39 +155,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 	}
 
-	// Replace tmp uris in content post if needed
-	$updated_post_content = $post->post_content;
-
-	// Update the post content if we found mappings of new entities.
-	if ( ! empty( $entities_uri_mapping ) ) {
-		// Save each entity and store the post id.
-		foreach ( $entities_uri_mapping as $tmp_uri => $uri ) {
-			$updated_post_content = str_replace( $tmp_uri, $uri, $updated_post_content );
-		}
-
-		// Update the post content.
-		wp_update_post( array(
-			'ID'           => $post->ID,
-			'post_content' => $updated_post_content,
-		) );
-	}
-
-	// Extract related/referenced entities from text.
-	$disambiguated_entities = wl_linked_data_content_get_embedded_entities( $updated_post_content );
-
-	// Reset previously saved instances.
-	wl_core_delete_relation_instances( $post_id );
-
-	// Save relation instances
-	foreach ( array_unique( $disambiguated_entities ) as $referenced_entity_id ) {
-
-		wl_core_add_relation_instance(
-			$post_id,
-			$entity_service->get_classification_scope_for( $referenced_entity_id ),
-			$referenced_entity_id
-		);
-
-	}
+	_wl_save_relations( $post, $post_id, $entities_uri_mapping );
 
 	if ( isset( $_POST['wl_entities'] ) ) {
 		// Save post metadata if available
@@ -258,6 +194,53 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	Wordlift_Linked_Data_Service::get_instance()->push( $post->ID );
 
 	add_action( 'wl_linked_data_save_post', 'wl_linked_data_save_post_and_related_entities' );
+}
+
+/**
+ * @param                         $post
+ * @param                         $post_id
+ * @param array                   $entities_uri_mapping
+ *
+ * @return void
+ */
+function _wl_save_relations( $post, $post_id, $entities_uri_mapping ){
+
+	// Replace tmp uris in content post if needed
+	$updated_post_content = $post->post_content;
+
+	// Update the post content if we found mappings of new entities.
+	if ( ! empty( $entities_uri_mapping ) ) {
+		// Save each entity and store the post id.
+		foreach ( $entities_uri_mapping as $tmp_uri => $uri ) {
+			$updated_post_content = str_replace( $tmp_uri, $uri, $updated_post_content );
+		}
+
+		// Update the post content.
+		wp_update_post( array(
+			'ID'           => $post->ID,
+			'post_content' => $updated_post_content,
+		) );
+	}
+
+	// Extract related/referenced entities from text.
+	$disambiguated_entities = wl_linked_data_content_get_embedded_entities( $updated_post_content );
+
+	// Reset previously saved instances.
+	wl_core_delete_relation_instances( $post_id );
+
+	// Get the entity service instance.
+	$entity_service = Wordlift_Entity_Service::get_instance();
+
+	// Save relation instances
+	foreach ( array_unique( $disambiguated_entities ) as $referenced_entity_id ) {
+
+		wl_core_add_relation_instance(
+			$post_id,
+			$entity_service->get_classification_scope_for( $referenced_entity_id ),
+			$referenced_entity_id
+		);
+
+	}
 }
 
 /**
