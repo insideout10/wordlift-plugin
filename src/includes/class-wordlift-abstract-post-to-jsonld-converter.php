@@ -64,12 +64,13 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	/**
 	 * Wordlift_Post_To_Jsonld_Converter constructor.
 	 *
-	 * @since 3.10.0
-	 *
 	 * @param \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
 	 * @param \Wordlift_Entity_Service      $entity_service A {@link Wordlift_Entity_Service} instance.
 	 * @param \Wordlift_User_Service        $user_service A {@link Wordlift_User_Service} instance.
 	 * @param \Wordlift_Attachment_Service  $attachment_service A {@link Wordlift_Attachment_Service} instance.
+	 *
+	 * @since 3.10.0
+	 *
 	 */
 	public function __construct( $entity_type_service, $entity_service, $user_service, $attachment_service ) {
 
@@ -83,12 +84,12 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 * Convert the provided {@link WP_Post} to a JSON-LD array. Any entity reference
 	 * found while processing the post is set in the $references array.
 	 *
-	 * @since 3.10.0
-	 *
 	 * @param int   $post_id The post id.
 	 * @param array $references An array of entity references.
 	 *
 	 * @return array A JSON-LD array.
+	 * @since 3.10.0
+	 *
 	 */
 	public function convert( $post_id, &$references = array() ) {
 
@@ -170,8 +171,17 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 			return array_merge( $carry, get_post_meta( $post_id, Wordlift_Schema_Service::FIELD_LOCATION ) );
 		}, array() );
 
+		$dataset_uri = Wordlift_Configuration_Service::get_instance()
+		                                             ->get_dataset_uri();
+		$entity_uris = Wordlift_Content_Filter_Service::get_instance()
+		                                              ->get_entity_uris( $post_content );
+		$remote_uris = array_filter( $entity_uris,
+			function ( $item ) use ( $dataset_uri ) {
+				return 0 !== stripos( $item, $dataset_uri );
+			} );
+
 		// Merge the references with the referenced locations if any.
-		$references = array_unique( array_merge( $references_without_locations, $locations ) );
+		$references = array_unique( array_merge( $references_without_locations, $locations, $remote_uris ) );
 
 		return $jsonld;
 	}
@@ -180,11 +190,11 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 * If the provided value starts with the schema.org context, we remove the schema.org
 	 * part since it is set with the '@context'.
 	 *
-	 * @since 3.10.0
-	 *
 	 * @param string $value The property value.
 	 *
 	 * @return string The property value without the context.
+	 * @since 3.10.0
+	 *
 	 */
 	public function relative_to_context( $value ) {
 
@@ -197,10 +207,11 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 *
 	 * Uses the cache service to store the results of this function for a day.
 	 *
-	 * @since 3.10.0
-	 *
 	 * @param WP_Post $post The target {@link WP_Post}.
 	 * @param array   $jsonld The JSON-LD array.
+	 *
+	 * @since 3.10.0
+	 *
 	 */
 	protected function set_images( $post, &$jsonld ) {
 
@@ -288,14 +299,14 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 * If the provided array of values contains only one value, then one single
 	 * value is returned, otherwise the original array is returned.
 	 *
+	 * @param array $value An array of values.
+	 *
+	 * @return mixed|array A single value or the original array.
 	 * @since 3.20.0 The function has been moved from {@link Wordlift_Entity_Post_To_Jsonld_Converter} to
 	 *  {@link Wordlift_Abstract_Post_To_Jsonld_Converter}.
 	 * @since  3.8.0
 	 * @access private
 	 *
-	 * @param array $value An array of values.
-	 *
-	 * @return mixed|array A single value or the original array.
 	 */
 	protected static function make_one( $value ) {
 
@@ -306,12 +317,12 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 * Process the provided array by adding the width / height if the values
 	 * are available and are greater than 0.
 	 *
-	 * @since 3.14.0
-	 *
 	 * @param array $image The `ImageObject` array.
 	 * @param array $attachment The attachment array.
 	 *
 	 * @return array The enriched `ImageObject` array.
+	 * @since 3.14.0
+	 *
 	 */
 	public static function set_image_size( $image, $attachment ) {
 
@@ -329,4 +340,5 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 
 		return $image;
 	}
+
 }

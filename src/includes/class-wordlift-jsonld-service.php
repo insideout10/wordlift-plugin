@@ -179,7 +179,11 @@ class Wordlift_Jsonld_Service {
 				// "2nd level properties" may not output here, e.g. a post
 				// mentioning an event, located in a place: the place is referenced
 				// via the `@id` but no other properties are loaded.
-				return $entity_to_jsonld_converter->convert( $item, $references );
+                if ( is_numeric( $item ) ) {
+	                return $entity_to_jsonld_converter->convert( $item, $references );
+                } else {
+                    return $remote_uri_service->get_jsonld( $item );
+                }
 			}, $references ) ) );
 
 		// Finally send the JSON-LD.
