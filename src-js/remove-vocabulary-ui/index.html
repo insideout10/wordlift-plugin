@@ -1,0 +1,176 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>Remove Vocabulary</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+  <div class="page-wrapper">
+    <div class="tile-list-wrapper">
+
+      <ul class="tile-list">
+        <li class="tile-list__item">
+          <div class="tile-list__inner">
+            <div>Tile</div>
+          </div>
+          <div class="tile-arrow-container">
+            <div class="tile-arrow"></div>
+          </div>
+        </li>
+        <li class="tile-list__item">
+          <div class="tile-list__inner">
+            <div>Tile</div>
+          </div>
+          <div class="tile-arrow-container">
+            <div class="tile-arrow"></div>
+          </div>
+        </li>
+        <li class="tile-list__item tile--highlight">
+          <div class="tile-list__inner">
+            <div>Tile</div>
+          </div>
+          <div class="tile-arrow-container">
+            <div class="tile-arrow"></div>
+          </div>
+        </li>
+        <li class="tile-list__item">
+          <div class="tile-list__inner">
+            <div>Tile</div>
+          </div>
+          <div class="tile-arrow-container">
+            <div class="tile-arrow"></div>
+          </div>
+        </li>
+        <li class="tile-list__item">
+          <div class="tile-list__inner">
+            <div>Tile</div>
+          </div>
+          <div class="tile-arrow-container">
+            <div class="tile-arrow"></div>
+          </div>
+        </li>
+        <li class="tile-list__item">
+          <div class="tile-list__inner">
+            <div>Tile</div>
+          </div>
+          <div class="tile-arrow-container">
+            <div class="tile-arrow"></div>
+          </div>
+        </li>
+        <li class="tile-list__item">
+          <div class="tile-list__inner">
+            <div>Tile</div>
+          </div>
+          <div class="tile-arrow-container">
+            <div class="tile-arrow"></div>
+          </div>
+        </li>
+        <li class="tile-list__item">
+          <div class="tile-list__inner">
+            <div>Tile</div>
+          </div>
+          <div class="tile-arrow-container">
+            <div class="tile-arrow"></div>
+          </div>
+        </li>
+        <li class="tile-list__item">
+          <div class="tile-list__inner">
+            <div>Tile</div>
+          </div>
+          <div class="tile-arrow-container">
+            <div class="tile-arrow"></div>
+          </div>
+        </li>
+      </ul>
+
+    </div>
+
+    <div class="overlay">
+      <div class="select-block-container">
+        <div>
+          <div class="select-block">
+            <input value="" placeholder="Search for matching content...">
+            <div class="select-block__btn"></div>
+          </div>
+          <!--/select-block -->
+
+          <ul class="linkable-list">
+            <li class="linkable-item">
+              <div>
+                <div class="create-new-btn">Create New Post</div>
+              </div>
+
+            </li>
+
+            <!-- <small>Matching results</small> -->
+
+            <li class="linkable-item">
+              <div class="linkable-item__block">
+                <div class="linkable-item__title">Some Linkable Content</div>
+                <div class="linkable-item__desc">Some description</div>
+                <div class="linkable-item__type">Post</div>
+              </div>
+            </li>
+
+            <li class="linkable-item">
+              <div class="linkable-item__block">
+                <div class="linkable-item__title">Some Linkable Content</div>
+                <div class="linkable-item__desc">Some description</div>
+                <div class="linkable-item__type">Category</div>
+              </div>
+            </li>
+
+            <li class="linkable-item">
+              <div class="linkable-item__block">
+                <div class="linkable-item__title">Some Linkable Content</div>
+                <div class="linkable-item__desc">Some description</div>
+                <div class="linkable-item__type">Page</div>
+              </div>
+            </li>
+
+          </ul>
+          <!-- /linkable-list -->
+        </div>
+
+      </div>
+      <!-- /select-block-container -->
+
+      <div class="create-new-post-prompt">
+        <p>Would you like to create a new Post or Page for <i><strong>Some Content</strong></i>?</p>
+        <button type="submit" class="components-button is-button is-primary" style="margin-right: 5px;">Create</button>
+        <button type="button" class="components-button is-button is-default">Cancel</button>
+      </div>
+    </div>
+    <!-- /overlay -->
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+
+      $('.tile--highlight').on('click', function() {
+        $('.tile-list-wrapper').toggleClass('active');
+        $('.overlay').toggleClass('active');
+        $(this).toggleClass('tile--active');
+        $('.select-block-container').show();
+      });
+
+      $('.create-new-btn').on('click', function() {
+        $('.select-block-container').hide();
+      });
+
+      $('.select-block__btn').on('click', function() {
+        $('.tile-list-wrapper').toggleClass('active');
+        $('.overlay').toggleClass('active');
+        $('.select-block-container').hide();
+        $('.tile-list').find('li').removeClass('tile--active');
+      });
+
+      $('.is-default').on('click', function() {
+        $('.select-block-container').show();
+      });
+
+    }); //end document.ready
+  </script>
+
+</body>
+</html>
