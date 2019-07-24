@@ -155,8 +155,27 @@ function wl_entities_box_content( $post, $wrapper = true ) {
 		                                            + array( 'confidence' => PHP_INT_MAX );
 	}
 
-	$referenced_entities_obj = empty( $referenced_entities_obj ) ?
-		'{}' : wp_json_encode( $referenced_entities_obj );
+	$configuration_service = Wordlift_Configuration_Service::get_instance();
+	$dataset_uri            = $configuration_service->get_dataset_uri();
+
+	// Add local entities
+	preg_match_all(Wordlift_Content_Filter_Service::PATTERN, $post->post_content, $matches);
+	$local_entities = array();
+	foreach ($matches[0] as $matches_key => $matches_value){
+		$url = $matches[3][$matches_key];
+		if (strpos($dataset_uri, $url) === false) {
+			$local_entities[$matches[3][$matches_key]] = array(
+				'id' => $matches[3][$matches_key],
+				'mainType' => "thing",
+				'label' => $matches[4][$matches_key]
+			);
+		}
+	}
+
+	$merged_entitles = array_merge($referenced_entities_obj, $local_entities);
+
+	$referenced_entities_obj = empty( $merged_entitles ) ?
+		'{}' : wp_json_encode( $merged_entitles );
 
 	$published_place_id  = get_post_meta(
 		$post->ID, Wordlift_Schema_Service::FIELD_LOCATION_CREATED, true
@@ -172,11 +191,10 @@ function wl_entities_box_content( $post, $wrapper = true ) {
 		wp_json_encode( wl_serialize_entity( $topic_id ) ) :
 		'undefined';
 
-	$configuration_service = Wordlift_Configuration_Service::get_instance();
+
 
 	$default_thumbnail_path = WL_DEFAULT_THUMBNAIL_PATH;
 	$default_path           = WL_DEFAULT_PATH;
-	$dataset_uri            = $configuration_service->get_dataset_uri();
 	$current_post_uri       = wl_get_entity_uri( $post->ID );
 
 	// Retrieve the current post author.
