@@ -168,26 +168,35 @@ class Wordlift_Jsonld_Service {
 		// Set a reference to the entity_to_jsonld_converter to use in the closures.
 		$entity_to_jsonld_converter = $this->converter;
 
+		// Instantiate $api_service
+		$configuration_service_io = new Wordlift_Configuration_Service_io();
+		$api_service = new Wordlift_Api_Service( $configuration_service_io );
+
+		//Wordlift_File_Cache_Service::flush_all();
+
 		// Convert each URI to a JSON-LD array, while gathering referenced entities.
 		// in the references array.
-		$jsonld = array_merge(
-			array( $entity_to_jsonld_converter->convert( $post_id, $references ) ),
-			// Convert each URI in the references array to JSON-LD. We don't output
-			// entities already output above (hence the array_diff).
-			array_filter( array_map( function ( $item ) use ( $entity_to_jsonld_converter, $references ) {
+		$jsonld_article = array( $entity_to_jsonld_converter->convert( $post_id, $references ) );
+		$jsonld_dbpedia = array_filter( array_map( function ( $item ) use ( $entity_to_jsonld_converter, $references, $api_service ) {
 
-				// "2nd level properties" may not output here, e.g. a post
-				// mentioning an event, located in a place: the place is referenced
-				// via the `@id` but no other properties are loaded.
-                if ( is_numeric( $item ) ) {
-	                return $entity_to_jsonld_converter->convert( $item, $references );
-                } else {
-                    return $remote_uri_service->get_jsonld( $item );
-                }
-			}, $references ) ) );
+			// "2nd level properties" may not output here, e.g. a post
+			// mentioning an event, located in a place: the place is referenced
+			// via the `@id` but no other properties are loaded.
+			if ( is_numeric( $item ) ) {
+				return $entity_to_jsonld_converter->convert( $item, $references );
+			} else {
+				$data = $api_service->get( 'data/'.str_replace('://', '/', $item) );
+				return $data[0];
+			}
+		}, $references ) );
+
+		// Map each externally referenced entity to Article
+		foreach ( $jsonld_dbpedia as $jsonld_dbpedia_key => $jsonld_dbpedia_value ) {
+			$jsonld_article[0]['mentions'][] = array('@id' => $jsonld_dbpedia_value->{'@id'});
+        }
 
 		// Finally send the JSON-LD.
-		return $jsonld;
+		return array_merge($jsonld_article, $jsonld_dbpedia);
 	}
 
 	/**
@@ -207,6 +216,14 @@ class Wordlift_Jsonld_Service {
 		$jsonld = json_encode( $this->get_jsonld( $is_homepage, $post_id ) );
 		?>
         <script type="application/ld+json"><?php echo $jsonld; ?></script><?php
+	}
+
+}
+
+class Wordlift_Configuration_Service_io extends Wordlift_Configuration_Service {
+
+	public function get_api_url() {
+		return 'https://api.wordlift.io/';
 	}
 
 }

@@ -185,8 +185,10 @@ class Wordlift_Api_Service {
 		$content_type = wp_remote_retrieve_header( $response, 'content-type' );
 		$body         = wp_remote_retrieve_body( $response );
 
-		// If it's not an `application/json` return the plain response body.
-		if ( 0 !== strpos( strtolower( $content_type ), 'application/json' ) ) {
+		// If it's not json return the plain response body.
+		$json_mimetypes = array('application/json','application/ld+json');
+		$content_type_tolower = strtolower( $content_type );
+		if( str_replace($json_mimetypes, '', $content_type_tolower) === $content_type_tolower ){
 			return $body;
 		}
 

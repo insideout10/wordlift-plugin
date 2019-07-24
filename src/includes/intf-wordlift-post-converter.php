@@ -22,9 +22,7 @@ interface Wordlift_Post_Converter {
 	 * Convert the specified post id.
 	 *
 	 * @param int   $post_id The post id.
-	 * @param array $references An array of posts' IDs referenced by the specified post.
-	 * @param array $cloud_uris An array of URIs referenced by the specified post. These URIs refer to entities that are
-	 *              not in the local vocabulary.
+	 * @param array $references An array of posts' IDs referenced by the specified post or URIs refer to entities.
 	 *
 	 * @return mixed The conversion result.
 	 *

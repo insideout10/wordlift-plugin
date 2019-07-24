@@ -76,13 +76,10 @@ function wl_linked_data_rest_insert_post( $post, $request, $creating ) {
 		return;
 	}
 	// Bail out if WL_DISABLE_ENTITY_SAVE is true
-//	if(WL_DISABLE_ENTITY_SAVE === true){
-//		$log->trace( 'WL_DISABLE_ENTITY_SAVE === true, skipping...' );
-//		return;
-//	}
-
-	// Get the entity service instance.
-	$entity_service = Wordlift_Entity_Service::get_instance();
+	if(WL_DISABLE_ENTITY_SAVE === true){
+		$log->trace( 'WL_DISABLE_ENTITY_SAVE === true, skipping...' );
+		return;
+	}
 
 	// Store mapping between tmp new entities uris and real new entities uri
 	$entities_uri_mapping = array();
@@ -132,11 +129,6 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 	remove_action( 'wl_linked_data_save_post', 'wl_linked_data_save_post_and_related_entities' );
 
-	// wl_write_log( "[ post id :: $post_id ][ autosave :: false ][ post type :: $post->post_type ]" );
-
-	// Get the entity service instance.
-	$entity_service = Wordlift_Entity_Service::get_instance();
-
 	// Store mapping between tmp new entities uris and real new entities uri
 	$entities_uri_mapping = array();
 
@@ -169,6 +161,9 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 		// Unlink topic taxonomy terms
 		Wordlift_Topic_Taxonomy_Service::get_instance()->unlink_topic_for( $post->ID );
+
+		// Get the entity service instance.
+		$entity_service = Wordlift_Entity_Service::get_instance();
 
 		foreach ( $fields as $field ) {
 
