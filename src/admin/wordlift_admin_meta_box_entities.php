@@ -162,10 +162,10 @@ function wl_entities_box_content( $post, $wrapper = true ) {
 	preg_match_all(Wordlift_Content_Filter_Service::PATTERN, $post->post_content, $matches);
 	$local_entities = array();
 	foreach ($matches[0] as $matches_key => $matches_value){
-		$url = $matches[3][$matches_key];
-		if (strpos($dataset_uri, $url) === false) {
-			$local_entities[$matches[3][$matches_key]] = array(
-				'id' => $matches[3][$matches_key],
+		$url_id = $matches[3][$matches_key];
+		if (strpos($dataset_uri, $url_id) === false) {
+			$local_entities[$url_id] = array(
+				'id' => $url_id,
 				'mainType' => "thing",
 				'label' => $matches[4][$matches_key]
 			);
