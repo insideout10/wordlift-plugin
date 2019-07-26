@@ -142,6 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.21.2 (2019-07-26) =
+* Fix: Supporting unregisteredAttributes with attributes in Gutenberg
+
 = 3.21.1 (2019-07-03) =
 * Fix: [#932](https://github.com/insideout10/wordlift-plugin/issues/932): Remove the Analytics Settings from the Plugins screen.
 * Fix: [#931](https://github.com/insideout10/wordlift-plugin/issues/931): Chrome downloads the RDF file when clicking on "View Linked Data".
