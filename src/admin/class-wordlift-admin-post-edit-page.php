@@ -142,7 +142,7 @@ class Wordlift_Admin_Post_Edit_Page {
 	public function enqueue_scripts_gutenberg() {
 		wp_enqueue_script(
 			'wordlift-admin-edit-gutenberg',
-			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/gutenberg.js?ver=3.21.2-rc1',
+			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/gutenberg.js?ver=3.21.2',
 			array(
 				$this->plugin->get_plugin_name(),
 				'jquery',
@@ -159,7 +159,7 @@ class Wordlift_Admin_Post_Edit_Page {
 			$this->plugin->get_version(),
 			false
 		);
-		wp_enqueue_style( 'style-gutenberg', plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/gutenberg.css?ver=3.21.2-rc1', false );
+		wp_enqueue_style( 'style-gutenberg', plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/gutenberg.css?ver=3.21.2', false );
 	}
 
 }
