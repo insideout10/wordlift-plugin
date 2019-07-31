@@ -86,18 +86,23 @@ function wl_shortcode_navigator_data() {
 
 				if ( $thumbnail ) {
 
-					$results[] = array(
+					$result = array(
 						'post'   => array(
-							'permalink' => get_post_permalink( $referencing_post->ID ),
+							'permalink' => get_permalink( $referencing_post->ID ),
 							'title'     => $referencing_post->post_title,
 							'thumbnail' => $thumbnail,
 						),
 						'entity' => array(
 							'label'     => $serialized_entity['label'],
 							'mainType'  => $serialized_entity['mainType'],
-							'permalink' => get_post_permalink( $related_entity->ID ),
+							'permalink' => get_permalink( $related_entity->ID ),
 						),
 					);
+
+					$result['post'] = apply_filters( 'wl_navigator_data_post', $result['post'], intval($referencing_post->ID) );
+					$result['entity'] = apply_filters( 'wl_navigator_data_entity', $result['entity'], intval($related_entity->ID) );
+
+					$results[] = $result;
 
 					// Be sure no more than 1 post for entity is returned
 					break;
@@ -106,8 +111,15 @@ function wl_shortcode_navigator_data() {
 		}
 	}
 
+	$results = array_reverse( $results );
+	$navigator_length = 4;
+
+	if(count($results) < $navigator_length){
+		$results = apply_filters( 'wl_navigator_data_placeholder', $results );
+	}
+
 	// Return first 4 results in json accordingly to 4 columns layout
-	return array_slice( array_reverse( $results ), 0, 4 );
+	return array_slice( $results, 0, $navigator_length );
 
 }
 
