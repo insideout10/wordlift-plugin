@@ -219,19 +219,21 @@ class AnnotationService {
       let formatIndex = AnnotationService.getFormatIndex(value);
       if (formatIndex !== false) {
         let attributesKey = AnnotationService.getAttributesKey(value[formatIndex]);
-        let uri = value[formatIndex][attributesKey].itemid;
-        let end = index + 1;
-        if (uri !== lastItem || index !== lastIndex) {
-          annotations.push({
-            start: index,
-            end: end,
-            uri: uri
-          });
-        } else {
-          annotations[annotations.length - 1].end = end;
+        if (attributesKey) {
+          let uri = value[formatIndex][attributesKey].itemid;
+          let end = index + 1;
+          if (uri !== lastItem || index !== lastIndex) {
+            annotations.push({
+              start: index,
+              end: end,
+              uri: uri
+            });
+          } else {
+            annotations[annotations.length - 1].end = end;
+          }
+          lastItem = uri;
+          lastIndex = end;
         }
-        lastItem = uri;
-        lastIndex = end;
       }
     });
     annotations.forEach((value, index) => {
@@ -241,11 +243,8 @@ class AnnotationService {
   }
 
   static getAttributesKey(parent) {
-    if (Object.keys(parent.attributes).length === 0) {
-      return "unregisteredAttributes";
-    } else {
-      return "attributes";
-    }
+    if (parent.hasOwnProperty("unregisteredAttributes")) return "unregisteredAttributes";
+    if (parent.hasOwnProperty("attributes")) return "attributes";
   }
 
   static getFormatIndex(value) {
@@ -301,26 +300,28 @@ class AnnotationService {
             let formatIndex = AnnotationService.getFormatIndex(value);
             if (formatIndex !== false) {
               let attributesKey = AnnotationService.getAttributesKey(value[formatIndex]);
-              let uri = value[formatIndex][attributesKey].itemid;
-              let id = value[formatIndex][attributesKey].id;
-              let end = index + 1;
-              if (uri !== lastItem || index !== lastIndex) {
-                localData.annotations[id] = {
-                  start: index,
-                  end: end,
-                  blockClientId: block.clientId,
-                  annotationId: id,
-                  entityMatches: [
-                    {
-                      entityId: uri
-                    }
-                  ]
-                };
-              } else {
-                localData.annotations[id].end = end;
+              if (attributesKey) {
+                let uri = value[formatIndex][attributesKey].itemid;
+                let id = value[formatIndex][attributesKey].id;
+                let end = index + 1;
+                if (uri !== lastItem || index !== lastIndex) {
+                  localData.annotations[id] = {
+                    start: index,
+                    end: end,
+                    blockClientId: block.clientId,
+                    annotationId: id,
+                    entityMatches: [
+                      {
+                        entityId: uri
+                      }
+                    ]
+                  };
+                } else {
+                  localData.annotations[id].end = end;
+                }
+                lastItem = uri;
+                lastIndex = end;
               }
-              lastItem = uri;
-              lastIndex = end;
             }
           });
         });
