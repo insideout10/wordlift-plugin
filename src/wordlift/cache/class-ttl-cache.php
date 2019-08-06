@@ -54,6 +54,11 @@ class Ttl_Cache {
 	private $log;
 
 	/**
+	 * @var array
+	 */
+	private static $caches = array();
+
+	/**
 	 * Create a {@link Ttl_Cache} with the specified TTL, default 900 secs.
 	 *
 	 * @param string $name The cache name.
@@ -77,6 +82,8 @@ class Ttl_Cache {
 
 		$this->log->trace( "Creating the cache folder {$this->cache_dir}..." );
 		wp_mkdir_p( $this->cache_dir );
+
+		self::$caches[ $name ] = $this;
 
 	}
 
@@ -111,6 +118,26 @@ class Ttl_Cache {
 		// Cache.
 		@unlink( $filename );
 		@file_put_contents( $filename, wp_json_encode( $data ) );
+
+	}
+
+	public function flush() {
+
+		$files = glob( $this->cache_dir . DIRECTORY_SEPARATOR . '*' );
+		foreach ( $files as $file ) { // iterate files
+			if ( is_file( $file ) ) {
+				@unlink( $file );
+			}
+		}
+
+	}
+
+	public static function flush_all() {
+
+		/** @var Ttl_Cache $cache */
+		foreach ( self::$caches as $cache ) {
+			$cache->flush();
+		}
 
 	}
 

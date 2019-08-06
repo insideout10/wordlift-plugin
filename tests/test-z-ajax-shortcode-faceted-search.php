@@ -6,6 +6,8 @@
  * @package Wordlift
  */
 
+use Wordlift\Cache\Ttl_Cache;
+
 /**
  * Class FacetedSearchShortcodeTest
  * Extend WP_Ajax_UnitTestCase
@@ -87,6 +89,8 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 		$_GET['post_id'] = $post_1_id;
 		$_GET['type']    = 'posts';
 
+		Ttl_Cache::flush_all();
+
 		try {
 			$this->_handleAjax( 'wl_faceted_search' );
 		} catch ( WPAjaxDieContinueException $e ) {
@@ -94,8 +98,8 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 
 		$response = json_decode( $this->_last_response );
 		$this->assertInternalType( 'array', $response );
-		// I Expect one post becouse $post_1_id should be not included in the results
-		$this->assertCount( 1, $response );
+		// I Expect one post because $post_1_id should be not included in the results.
+		$this->assertCount( 1, $response, "The response isn't right: " . var_export( $response, true ) );
 		$this->assertEquals( 'post', $response[0]->post_type );
 
 		$post_ids = array( $response[0]->ID );
