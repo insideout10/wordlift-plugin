@@ -124,6 +124,9 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 		$_GET['post_id'] = $entity_1_id;
 		$_GET['type']    = 'posts';
 
+		$cache = new Ttl_Cache( 'faceted-search' );
+		$cache->flush();
+
 		try {
 			$this->_handleAjax( 'wl_faceted_search' );
 		} catch ( WPAjaxDieContinueException $e ) {
@@ -131,7 +134,7 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 
 		$response = json_decode( $this->_last_response );
 		$this->assertInternalType( 'array', $response );
-		$this->assertCount( 0, $response );
+		$this->assertCount( 0, $response, "The response doesn't match: " . var_export( $response, true ) );
 	}
 
 	public function testPostsSelectionWithFilters() {
