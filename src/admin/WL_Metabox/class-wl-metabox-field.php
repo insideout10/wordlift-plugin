@@ -284,6 +284,8 @@ class WL_Metabox_Field {
 		$single = ( 1 === $this->cardinality );
 		foreach ( $this->data as $value ) {
 			$this->log->trace( "Saving $value to $this->meta_name for entity $entity_id..." );
+			// To avoid duplicate values
+			delete_post_meta( $entity_id, $this->meta_name, $value );
 			$meta_id = add_post_meta( $entity_id, $this->meta_name, $value, $single );
 			$this->log->debug( "$value to $this->meta_name for entity $entity_id saved with id $meta_id." );
 		}
