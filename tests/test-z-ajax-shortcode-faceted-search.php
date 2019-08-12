@@ -21,17 +21,26 @@ use Wordlift\Cache\Ttl_Cache;
 class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 
 	public function testDataSelectionWithoutAnEntityId() {
+		$cache = new Ttl_Cache( 'faceted-search' );
+		$cache->flush();
+
 		$this->setExpectedException( 'WPAjaxDieStopException', 'No post_id given' );
 		$this->_handleAjax( 'wl_faceted_search' );
 	}
 
 	public function testDataSelectionForAMissingEntity() {
+		$cache = new Ttl_Cache( 'faceted-search' );
+		$cache->flush();
+
 		$_GET['post_id'] = 1000000;
 		$this->setExpectedException( 'WPAjaxDieStopException', 'No valid post_id given' );
 		$this->_handleAjax( 'wl_faceted_search' );
 	}
 
 	public function testDataSelectionForAPostWithoutRelatedEntities() {
+		$cache = new Ttl_Cache( 'faceted-search' );
+		$cache->flush();
+
 		$post_1_id       = wl_create_post( '', 'post1', 'A post', 'publish', 'post' );
 		$_GET['post_id'] = $post_1_id;
 		$this->setExpectedException( 'WPAjaxDieStopException', 'No entities available' );
@@ -39,6 +48,8 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 	}
 
 	public function testPostsSelectionWithoutFilters() {
+		$cache = new Ttl_Cache( 'faceted-search' );
+		$cache->flush();
 
 		// Create 2 posts and 2 entities
 		$entity_1_id = wl_create_post( '', 'entity0', 'An Entity', 'draft', 'entity' );
@@ -75,6 +86,8 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 	}
 
 	public function testPostsSelectionWithoutFiltersForAStandardPost() {
+		$cache = new Ttl_Cache( 'faceted-search' );
+		$cache->flush();
 
 		// Create 2 posts and 1 entities
 		$entity_1_id = wl_create_post( '', 'entity0', 'An Entity', 'draft', 'entity' );
@@ -108,6 +121,8 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 	}
 
 	public function testPostsSelectionWithoutFiltersOnPostDrafts() {
+		$cache = new Ttl_Cache( 'faceted-search' );
+		$cache->flush();
 
 		// Create 2 posts and 2 entities
 		$entity_1_id = wl_create_post( '', 'entity0', 'An Entity', 'draft', 'entity' );
@@ -138,6 +153,8 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 	}
 
 	public function testPostsSelectionWithFilters() {
+		$cache = new Ttl_Cache( 'faceted-search' );
+		$cache->flush();
 
 		// Create 2 posts and 2 entities
 		$entity_1_id = wl_create_post( '', 'entity0', 'An Entity', 'draft', 'entity' );
@@ -176,6 +193,8 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 	}
 
 	public function testFacetsSelection() {
+		$cache = new Ttl_Cache( 'faceted-search' );
+		$cache->flush();
 
 		// Create 3 posts and 3 entities
 		$entity_1_id = wl_create_post( '', 'entity0', 'An Entity', 'publish', 'entity' );
@@ -213,6 +232,8 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 	}
 
 	public function testFacetsSelectionForStandardPost() {
+		$cache = new Ttl_Cache( 'faceted-search' );
+		$cache->flush();
 
 		// Create 2 posts and 2 entities
 		$post_1_id   = wl_create_post( '', 'post1', 'A post', 'publish' );
@@ -244,6 +265,8 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 	}
 
 	public function testFacetsSelectionLimit() {
+		$cache = new Ttl_Cache( 'faceted-search' );
+		$cache->flush();
 
 		// Create 2 posts and 2 entities
 		$post_1_id   = wl_create_post( '', 'post1', 'A post', 'publish' );
