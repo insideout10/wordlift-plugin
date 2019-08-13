@@ -159,7 +159,12 @@ class Wordlift_Admin_Post_Edit_Page {
 			$this->plugin->get_version(),
 			false
 		);
-		wp_enqueue_style( 'style-gutenberg', plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/gutenberg.css', false );
+		wp_enqueue_style(
+			'style-gutenberg',
+			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/gutenberg.css',
+			array(),
+			$this->plugin->get_version()
+		);
 	}
 
 }

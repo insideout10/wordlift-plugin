@@ -142,6 +142,11 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.21.2 (2019-08-13) =
+* Fix: Supporting unregisteredAttributes with attributes in Gutenberg.
+* Enhancement: Additional filters for Navigator: `wl_navigator_data_post`, `wl_navigator_data_entity` and `wl_navigator_data_placeholder`.
+* Enhancement: Add a caching layer to Faceted Search AJAX requests.
+
 = 3.21.1 (2019-07-03) =
 * Fix: [#932](https://github.com/insideout10/wordlift-plugin/issues/932): Remove the Analytics Settings from the Plugins screen.
 * Fix: [#931](https://github.com/insideout10/wordlift-plugin/issues/931): Chrome downloads the RDF file when clicking on "View Linked Data".

@@ -492,9 +492,53 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-wordlift.php';
  */
 function run_wordlift() {
 
+	/*
+	 * We introduce the WordLift autoloader, since we start using classes in namespaces, i.e. Wordlift\Http.
+	 *
+	 * @since 3.21.2
+	 */
+	wordlift_plugin_autoload_register();
+
 	$plugin = new Wordlift();
 	$plugin->run();
 
 }
 
 run_wordlift();
+
+/**
+ * Register our autoload routine.
+ *
+ * @throws Exception
+ * @since 3.21.2
+ */
+function wordlift_plugin_autoload_register() {
+
+	spl_autoload_register( function ( $class_name ) {
+
+		// Bail out if these are not our classes.
+		if ( 0 !== strpos( $class_name, 'Wordlift\\Cache\\' ) ) {
+			return false;
+		}
+
+		$class_name_lc = strtolower( str_replace( '_', '-', $class_name ) );
+
+		preg_match( '|^(?:(.*)\\\\)?(.+?)$|', $class_name_lc, $matches );
+
+		$path = str_replace( '\\', DIRECTORY_SEPARATOR, $matches[1] );
+		$file = 'class-' . $matches[2] . '.php';
+
+		$full_path = plugin_dir_path( __FILE__ ) . $path . DIRECTORY_SEPARATOR . $file;
+
+		if ( ! file_exists( $full_path ) ) {
+			echo( "Class $class_name not found at $full_path." );
+
+			return false;
+		}
+
+		require_once $full_path;
+
+		return true;
+	} );
+
+}

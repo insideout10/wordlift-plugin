@@ -8,11 +8,13 @@
  * @subpackage Wordlift/shortcodes
  */
 
+use Wordlift\Cache\Ttl_Cache;
+
 /**
  * Function in charge of fetching data for [wl-faceted-search] in web mode.
  *
- * @since		3.20.0
  * @return array $results
+ * @since        3.20.0
  */
 function wl_shortcode_faceted_search_data_ajax( $http_raw_data = null ) {
 
@@ -165,8 +167,8 @@ function wl_shortcode_faceted_search_data_ajax( $http_raw_data = null ) {
 /**
  * Function in charge of fetching data for [wl-faceted-search] in amp mode.
  *
- * @since		3.20.0
  * @return array $results
+ * @since        3.20.0
  */
 function wl_shortcode_faceted_search_data_wp_json( $http_raw_data = null ) {
 
@@ -258,17 +260,17 @@ function wl_shortcode_faceted_search_data_wp_json( $http_raw_data = null ) {
 					$thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
 				$post_obj->permalink = get_post_permalink( $post_obj->ID );
 
-				$results[$i] = $post_obj;
+				$results[ $i ] = $post_obj;
 
 				// Get Entity URLs needed for client side filtering in amp
-				foreach( Wordlift_Relation_Service::get_instance()->get_objects( $post_obj->ID, 'ids' ) as $entity_id ){
-					$results[$i]->entities[] = Wordlift_Entity_Service::get_instance()->get_uri( $entity_id );
+				foreach ( Wordlift_Relation_Service::get_instance()->get_objects( $post_obj->ID, 'ids' ) as $entity_id ) {
+					$results[ $i ]->entities[] = Wordlift_Entity_Service::get_instance()->get_uri( $entity_id );
 				}
 			}
 		}
 
 		return array(
-			array('values' => $results)
+			array( 'values' => $results ),
 		);
 
 	} else {
@@ -283,25 +285,25 @@ function wl_shortcode_faceted_search_data_wp_json( $http_raw_data = null ) {
 		// Response interface with l10n strings, grouped entities and empty data array
 		$serialized_entity_groups = array(
 			array(
-				'l10n' => $_GET['l10n'] ? $_GET['l10n']['what'] : 'what',
-				'entities' => array('thing', 'creative-work', 'recipe'),
-				'data' => array()
+				'l10n'     => $_GET['l10n'] ? $_GET['l10n']['what'] : 'what',
+				'entities' => array( 'thing', 'creative-work', 'recipe' ),
+				'data'     => array(),
 			),
 			array(
-				'l10n' => $_GET['l10n'] ? $_GET['l10n']['who'] : 'who',
-				'entities' => array('person', 'organization', 'local-business'),
-				'data' => array()
+				'l10n'     => $_GET['l10n'] ? $_GET['l10n']['who'] : 'who',
+				'entities' => array( 'person', 'organization', 'local-business' ),
+				'data'     => array(),
 			),
 			array(
-				'l10n' => $_GET['l10n'] ? $_GET['l10n']['where'] : 'where',
-				'entities' => array('place'),
-				'data' => array()
+				'l10n'     => $_GET['l10n'] ? $_GET['l10n']['where'] : 'where',
+				'entities' => array( 'place' ),
+				'data'     => array(),
 			),
 			array(
-				'l10n' => $_GET['l10n'] ? $_GET['l10n']['when'] : 'when',
-				'entities' => array('event'),
-				'data' => array()
-			)
+				'l10n'     => $_GET['l10n'] ? $_GET['l10n']['when'] : 'when',
+				'entities' => array( 'event' ),
+				'data'     => array(),
+			),
 		);
 
 		/*
@@ -343,7 +345,7 @@ function wl_shortcode_faceted_search_data_wp_json( $http_raw_data = null ) {
 					// Populate $serialized_entity_groups maintaining array sequence
 					foreach ( $serialized_entity_groups as $seg_key => $seg_value ) {
 						if ( in_array( $serialized_entity['mainType'], $seg_value['entities'] ) ) {
-							$serialized_entity_groups[$seg_key]['data'][] = $serialized_entity;
+							$serialized_entity_groups[ $seg_key ]['data'][] = $serialized_entity;
 						}
 					}
 				}
@@ -351,10 +353,10 @@ function wl_shortcode_faceted_search_data_wp_json( $http_raw_data = null ) {
 
 			// Clean-up $serialized_entity_groups by removing empty items and entities
 			foreach ( $serialized_entity_groups as $seg_key => $seg_value ) {
-				if( empty($seg_value['data']) ) {
-					unset($serialized_entity_groups[$seg_key]);
+				if ( empty( $seg_value['data'] ) ) {
+					unset( $serialized_entity_groups[ $seg_key ] );
 				}
-				unset($serialized_entity_groups[$seg_key]['entities']);
+				unset( $serialized_entity_groups[ $seg_key ]['entities'] );
 			}
 
 			$results = $serialized_entity_groups;
@@ -366,11 +368,30 @@ function wl_shortcode_faceted_search_data_wp_json( $http_raw_data = null ) {
 }
 
 /**
- * Ajax call for the faceted search widget
+ * Ajax call for the faceted search widget.
+ *
+ * @since 3.21.2 add a caching layer.
  */
 function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 
+	$cache = new Ttl_Cache( "faceted-search", 8 * 60 * 60 ); // 8 hours.
+
+	$cache_results = $cache->get( $http_raw_data );
+
+	if ( isset( $cache_results ) ) {
+		header( 'X-WordLift-Cache: HIT' );
+		wl_core_send_json( $cache_results );
+
+		return;
+	}
+
+	header( 'X-WordLift-Cache: MISS' );
+
 	$results = wl_shortcode_faceted_search_data_ajax( $http_raw_data );
+
+	// Put the result before sending the json to the client, since sending the json will terminate us.
+	$cache->put( $http_raw_data, $results );
+
 	wl_core_send_json( $results );
 
 }
@@ -390,8 +411,9 @@ function wl_shortcode_faceted_search_wp_json( $http_raw_data = null ) {
 	if ( ob_get_contents() ) {
 		ob_clean();
 	}
+
 	return array(
-		'items' => $results
+		'items' => $results,
 	);
 
 }
@@ -401,50 +423,51 @@ function wl_shortcode_faceted_search_wp_json( $http_raw_data = null ) {
  */
 add_action( 'rest_api_init', function () {
 	register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/faceted-search', array(
-	  'methods' => 'GET',
-	  'callback' => 'wl_shortcode_faceted_search_wp_json',
+		'methods'  => 'GET',
+		'callback' => 'wl_shortcode_faceted_search_wp_json',
 	) );
 } );
 
 /**
  * register_block_type for Gutenberg blocks
  */
-add_action( 'init', function() {
+add_action( 'init', function () {
 	// Bail out if the `register_block_type` function isn't available.
 	if ( ! function_exists( 'register_block_type' ) ) {
 		return;
 	}
 
-	register_block_type('wordlift/faceted-search', array(
-		'editor_script' => 'wordlift-admin-edit-gutenberg',
-		'render_callback' => function($attributes){
+	register_block_type( 'wordlift/faceted-search', array(
+		'editor_script'   => 'wordlift-admin-edit-gutenberg',
+		'render_callback' => function ( $attributes ) {
 			$attr_code = '';
-			foreach ($attributes as $key => $value) {
-				$attr_code .= $key.'="'.$value.'" ';
+			foreach ( $attributes as $key => $value ) {
+				$attr_code .= $key . '="' . $value . '" ';
 			}
-			return '[wl_faceted_search '.$attr_code.']';
+
+			return '[wl_faceted_search ' . $attr_code . ']';
 		},
-		'attributes' => array(
-			'title' => array(
+		'attributes'      => array(
+			'title'          => array(
 				'type'    => 'string',
-				'default' => __( 'Related articles', 'wordlift' )
+				'default' => __( 'Related articles', 'wordlift' ),
 			),
-			'show_facets' => array(
+			'show_facets'    => array(
 				'type'    => 'bool',
-				'default' => true
+				'default' => true,
 			),
-			'with_carousel' => array(
+			'with_carousel'  => array(
 				'type'    => 'bool',
-				'default' => true
+				'default' => true,
 			),
 			'squared_thumbs' => array(
 				'type'    => 'bool',
-				'default' => false
+				'default' => false,
 			),
-			'limit' => array(
+			'limit'          => array(
 				'type'    => 'number',
-				'default' => 20
-			)
-		)
-	));
+				'default' => 20,
+			),
+		),
+	) );
 } );

@@ -112,10 +112,11 @@ class AnnotationService {
       let formatIndex = false;
       if (startFormat) {
         startFormat.forEach((value_v, value_i) => {
+          let attributesKey = AnnotationService.getAttributesKey(value_v);
           if (
-            value_v.type === Constants.PLUGIN_FORMAT_NAMESPACE &&
-            value_v.unregisteredAttributes &&
-            value_v.unregisteredAttributes.class.indexOf("textannotation") > -1
+            value_v[attributesKey] &&
+            value_v[attributesKey].class &&
+            value_v[attributesKey].class.indexOf("textannotation") > -1
           ) {
             formatIndex = value_i;
           }
@@ -217,19 +218,22 @@ class AnnotationService {
     richText.formats.forEach((value, index) => {
       let formatIndex = AnnotationService.getFormatIndex(value);
       if (formatIndex !== false) {
-        let uri = value[formatIndex].attributes.itemid;
-        let end = index + 1;
-        if (uri !== lastItem || index !== lastIndex) {
-          annotations.push({
-            start: index,
-            end: end,
-            uri: uri
-          });
-        } else {
-          annotations[annotations.length - 1].end = end;
+        let attributesKey = AnnotationService.getAttributesKey(value[formatIndex]);
+        if (attributesKey) {
+          let uri = value[formatIndex][attributesKey].itemid;
+          let end = index + 1;
+          if (uri !== lastItem || index !== lastIndex) {
+            annotations.push({
+              start: index,
+              end: end,
+              uri: uri
+            });
+          } else {
+            annotations[annotations.length - 1].end = end;
+          }
+          lastItem = uri;
+          lastIndex = end;
         }
-        lastItem = uri;
-        lastIndex = end;
       }
     });
     annotations.forEach((value, index) => {
@@ -238,13 +242,20 @@ class AnnotationService {
     this.existingAnnotations = annotations;
   }
 
+  static getAttributesKey(parent) {
+    if (parent.hasOwnProperty("unregisteredAttributes")) return "unregisteredAttributes";
+    if (parent.hasOwnProperty("attributes")) return "attributes";
+  }
+
   static getFormatIndex(value) {
     let formatIndex = false;
     value.forEach((value_v, value_i) => {
+      let attributesKey = AnnotationService.getAttributesKey(value_v);
       if (
-        value_v.type === "span" &&
-        value_v.attributes.class.indexOf("textannotation") > -1 &&
-        value_v.attributes.class.indexOf("disambiguated") > -1
+        value_v[attributesKey] &&
+        value_v[attributesKey].class &&
+        value_v[attributesKey].class.indexOf("textannotation") > -1 &&
+        value_v[attributesKey].class.indexOf("disambiguated") > -1
       ) {
         formatIndex = value_i;
       }
@@ -288,26 +299,29 @@ class AnnotationService {
           richText.formats.forEach((value, index) => {
             let formatIndex = AnnotationService.getFormatIndex(value);
             if (formatIndex !== false) {
-              let uri = value[formatIndex].attributes.itemid;
-              let id = value[formatIndex].attributes.id;
-              let end = index + 1;
-              if (uri !== lastItem || index !== lastIndex) {
-                localData.annotations[id] = {
-                  start: index,
-                  end: end,
-                  blockClientId: block.clientId,
-                  annotationId: id,
-                  entityMatches: [
-                    {
-                      entityId: uri
-                    }
-                  ]
-                };
-              } else {
-                localData.annotations[id].end = end;
+              let attributesKey = AnnotationService.getAttributesKey(value[formatIndex]);
+              if (attributesKey) {
+                let uri = value[formatIndex][attributesKey].itemid;
+                let id = value[formatIndex][attributesKey].id;
+                let end = index + 1;
+                if (uri !== lastItem || index !== lastIndex) {
+                  localData.annotations[id] = {
+                    start: index,
+                    end: end,
+                    blockClientId: block.clientId,
+                    annotationId: id,
+                    entityMatches: [
+                      {
+                        entityId: uri
+                      }
+                    ]
+                  };
+                } else {
+                  localData.annotations[id].end = end;
+                }
+                lastItem = uri;
+                lastIndex = end;
               }
-              lastItem = uri;
-              lastIndex = end;
             }
           });
         });
