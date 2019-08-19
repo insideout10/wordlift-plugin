@@ -376,7 +376,7 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 
 	$cache = new Ttl_Cache( "faceted-search", 8 * 60 * 60 ); // 8 hours.
 
-	$cache_results = $cache->get( $http_raw_data );
+	$cache_results = $cache->get( $_REQUEST );
 
 	if ( isset( $cache_results ) ) {
 		header( 'X-WordLift-Cache: HIT' );
@@ -390,7 +390,7 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 	$results = wl_shortcode_faceted_search_data_ajax( $http_raw_data );
 
 	// Put the result before sending the json to the client, since sending the json will terminate us.
-	$cache->put( $http_raw_data, $results );
+	$cache->put( $_REQUEST, $results );
 
 	wl_core_send_json( $results );
 
