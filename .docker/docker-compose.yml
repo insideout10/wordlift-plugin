@@ -1,54 +1,23 @@
-version: '3'
+version: "3"
 
 services:
 
-  wordlift-plugin-db:
-    image: mariadb:10.4
-    restart: always
-    volumes:
-      - wordlift-plugin-db-data:/var/lib/mysql
-      - ./initdb:/docker-entrypoint-initdb.d:ro
+  wordlift-plugin-tests-db:
+    image: mariadb:10.3.16
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: wordpress
-      MYSQL_PASSWORD: password
 
-  wordlift-plugin-wordpress:
+  wordlift-plugin-tests-php:
+    image: php:${PHP_VERSION}
     depends_on:
-      - wordlift-plugin-db
-    image: wordpress:5.2
-    restart: always
+      - wordlift-plugin-tests-db
+    working_dir: /tmp/wordlift
     volumes:
-      - ../src:/var/www/html/wp-content/plugins/wordlift
-    environment:
-      WORDPRESS_DB_HOST: wordlift-plugin-db
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: password
-      WORDPRESS_DB_NAME: wordpress
-      WORDPRESS_CONFIG_EXTRA: |
-        # Define the site and home URLs.
-        define( 'WP_SITEURL', 'https://wordlift-plugin.localhost' );
-        define( 'WP_HOME', WP_SITEURL );
+      - ..:/tmp/wordlift:ro
+    command: >
+      bash -c "apt update -y && apt install -y subversion && 
+      curl -o /usr/local/bin/phpunit https://phar.phpunit.de/phpunit-7.5.9.phar &&
+      chmod 755 /usr/local/bin/phpunit &&
+      bin/install-wp-tests.sh wordlift-plugin-tests-db root password localhost ${WORDPRESS_VERSION} &&
+      WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING=true WORDLIFT_KEY=${WORDLIFT_KEY} /usr/local/bin/phpunit -c phpunit.xml ${PHPUNIT_ARGS}"
 
-        # Add support for the reverse proxy.
-        if ( isset( $$_SERVER['HTTP_X_FORWARDED_HOST'] ) ) {
-        	$$_SERVER['HTTP_HOST'] = $$_SERVER['HTTP_X_FORWARDED_HOST'];
-        }
-
-  wordlift-plugin-nginx:
-    depends_on:
-      - wordlift-plugin-wordpress
-    image: nginx:1.17
-    ports:
-      - "443:443"
-    volumes:
-      - ./nginx:/etc/nginx/conf.d
-    environment:
-      NGINX_HOST: wordlift-plugin-wordpress
-      NGINX_SERVER_NAME: wordlift-plugin.localhost
-    command: /bin/bash -c "envsubst '$$NGINX_HOST $$NGINX_SERVER_NAME' < /etc/nginx/conf.d/wordpress.template > /etc/nginx/conf.d/wordpress.conf && nginx -g 'daemon off;'"
-
-volumes:
-  wordlift-plugin-db-data: {}
-  wordlift-plugin-wordpress-data: {}

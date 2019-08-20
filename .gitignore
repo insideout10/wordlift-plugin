@@ -43,6 +43,3 @@ tests/phpunit.bat
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-.docker/nginx/wordlift-plugin.localhost/cert.pem
-.docker/nginx/wordlift-plugin.localhost/key.pem
