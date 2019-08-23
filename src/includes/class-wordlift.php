@@ -1152,6 +1152,9 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-widget.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-related-entities-cloud-widget.php';
 
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-context-cards.php';
+		new Wordlift_Context_Cards_Service();
+
 		/*
 		 * Schema.org Services.
 		 *
