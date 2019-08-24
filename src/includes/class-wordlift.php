@@ -1450,7 +1450,7 @@ class Wordlift {
 		 *
 		 * @since 3.22.0
 		 */
-		new Wordlift_Context_Cards_Service($this->entity_uri_service);
+		new Wordlift_Context_Cards_Service( $this->entity_uri_service );
 
 	}
 
