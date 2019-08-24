@@ -1151,9 +1151,7 @@ class Wordlift {
 		/** Widgets */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-widget.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-related-entities-cloud-widget.php';
-
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-context-cards.php';
-		new Wordlift_Context_Cards_Service();
 
 		/*
 		 * Schema.org Services.
@@ -1446,6 +1444,13 @@ class Wordlift {
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-term-jsonld-adapter.php';
 			new Wordlift_Term_JsonLd_Adapter( $this->entity_uri_service, $this->jsonld_service );
 		}
+
+		/*
+		 * Initialize the Context Cards Service
+		 *
+		 * @since 3.22.0
+		 */
+		new Wordlift_Context_Cards_Service($this->entity_uri_service);
 
 	}
 
