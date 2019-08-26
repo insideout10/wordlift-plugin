@@ -142,6 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.21.4 (2019-08-26) =
+* Fix: [#945](https://github.com/insideout10/wordlift-plugin/issues/945): Faceted Search results do not change when posts clicked.
+
 = 3.21.3 (2019-08-19) =
 * Fix: [#943](https://github.com/insideout10/wordlift-plugin/issues/943): Faceted Search caching issues.
 
