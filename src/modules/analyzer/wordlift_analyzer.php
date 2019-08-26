@@ -49,7 +49,8 @@ add_action( 'wp_ajax_wordlift_analyze', 'wl_ajax_analyze_action' );
 function wl_analyze_content( $content ) {
 
 	// Get the analyzer URL.
-	$url = wl_configuration_get_analyzer_url();
+	$url = 'http://host.docker.internal:9902/experimental/analysis/as-response'; //
+//	$url = wl_configuration_get_analyzer_url();
 
 	// Set the content type to the request content type or to text/plain by default.
 	$content_type = isset( $_SERVER['CONTENT_TYPE'] ) ? $_SERVER['CONTENT_TYPE'] : 'text/plain';
@@ -60,6 +61,10 @@ function wl_analyze_content( $content ) {
 		'headers'     => array(
 			'Accept'       => 'application/json',
 			'Content-type' => $content_type,
+			'X-Redlink-Key'=> '2F2t0tM9Vk1LInt6AlnMBftAc4lM668s1bb25b27',
+			'X-Redlink-Analyzer' => 'windowsreport',
+			'X-Wordlift-Dataset-Uri'=>'http://data.windowsreport.com/windowsreport',
+			'X-Wordlift-Language' => 'en'
 		),
 		// we need to downgrade the HTTP version in this case since chunked encoding is dumping numbers in the response.
 		'httpversion' => '1.0',

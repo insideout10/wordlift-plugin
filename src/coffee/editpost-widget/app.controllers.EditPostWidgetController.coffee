@@ -354,9 +354,10 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
       # Ensure to mark the current entity to selected entities
       $scope.selectedEntities[ scopeId ][ entity.id ] = entity
       # Concat entity images to suggested images collection
-      for image in entity.images
-        unless image in $scope.images
-          $scope.images.push image
+      if entity.images?
+        for image in entity.images
+          unless image in $scope.images
+            $scope.images.push image
     else
       # Remove current entity images from suggested images collection
       $scope.images = $scope.images.filter (img)->

@@ -229,14 +229,26 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
         traslator = Traslator.create html
 
         # Add text annotations to the html
-        for annotationId, annotation of analysis.annotations
+        annotations = Array.sort Object.values( analysis.annotations ), ( a, b ) ->
+          if a.end > b.end
+            return -1
+          else if a.end < b.end
+            return 1
+          else
+            return 0
+
+        console.log { annotations: annotations }
+
+        html = traslator.getHtml()
+
+        for annotation in annotations
 
 # If the annotation has no entity matches it could be a problem
           if annotation.entityMatches.length is 0
             $log.warn "Annotation #{annotation.text} [#{annotation.start}:#{annotation.end}] with id #{annotation.id} has no entity matches!"
             continue
 
-          element = "<span id=\"#{annotationId}\" class=\"textannotation"
+          element = "<span id=\"#{annotation.id}\" class=\"textannotation"
 
           # Add the `wl-no-link` class if it was present in the original annotation.
           element += ' wl-no-link' if -1 < annotation.cssClass?.indexOf('wl-no-link')
@@ -248,19 +260,23 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
           for em in annotation.entityMatches
             entity = analysis.entities[em.entityId]
 
-            if annotationId in entity.occurrences
+            if annotation.id in entity.occurrences
               element += " disambiguated wl-#{entity.mainType}\" itemid=\"#{entity.id}"
 
           element += "\">"
 
           # Finally insert the HTML code.
-          traslator.insertHtml element, text: annotation.start
-          traslator.insertHtml '</span>', text: annotation.end
+          # traslator.insertHtml element, text: annotation.start
+          # traslator.insertHtml '</span>', text: annotation.end
+
+          html = html.substring(0, annotation.end) + '</span>' + html.substring(annotation.end)
+          html = html.substring(0, annotation.start) + element + html.substring(annotation.start)
+
 
         # Add a zero-width no-break space after each annotation
         # to be sure that a caret container is available
         # See https://github.com/tinymce/tinymce/blob/master/js/tinymce/classes/Formatter.js#L2030
-        html = traslator.getHtml()
+        # html = traslator.getHtml()
         html = html.replace(/<\/span>/gim, "</span>#{INVISIBLE_CHAR}")
 
         $rootScope.$broadcast "analysisEmbedded"
