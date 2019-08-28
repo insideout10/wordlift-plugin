@@ -157,7 +157,7 @@ class Ttl_Cache {
 	private function get_filename( $key ) {
 
 		// Create a hash and a path to the cache file.
-		$hash     = md5( serialize( $key ) );
+		$hash     = md5( json_encode( $key ) );
 		$filename = $this->get_path( $hash );
 
 		return $filename;

@@ -375,7 +375,7 @@ function wl_shortcode_faceted_search_data_wp_json( $http_raw_data = null ) {
 function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 
 	// Get the request body. It may contain posts to filter the results.
-	$request_body = ( null === $http_raw_data ) ? file_get_contents( 'php://input' ) : $http_raw_data;
+	$request_body = ( empty( $http_raw_data ) ? file_get_contents( 'php://input' ) : $http_raw_data );
 
 	// Create the cache key.
 	$cache_key = array(
