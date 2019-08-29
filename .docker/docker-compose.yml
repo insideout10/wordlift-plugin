@@ -1,23 +1,59 @@
-version: "3"
+version: '3.7'
 
 services:
-
-  wordlift-plugin-tests-db:
-    image: mariadb:10.3.16
+  db:
+    image: mariadb:10
+    volumes:
+      - db-data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: password
 
-  wordlift-plugin-tests-php:
-    image: php:${PHP_VERSION}
+  wordpress:
+    image: wordpress:5.2
     depends_on:
-      - wordlift-plugin-tests-db
-    working_dir: /tmp/wordlift
+      - db
     volumes:
-      - ..:/tmp/wordlift:ro
-    command: >
-      bash -c "apt update -y && apt install -y subversion && 
-      curl -o /usr/local/bin/phpunit https://phar.phpunit.de/phpunit-7.5.9.phar &&
-      chmod 755 /usr/local/bin/phpunit &&
-      bin/install-wp-tests.sh wordlift-plugin-tests-db root password localhost ${WORDPRESS_VERSION} &&
-      WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING=true WORDLIFT_KEY=${WORDLIFT_KEY} /usr/local/bin/phpunit -c phpunit.xml ${PHPUNIT_ARGS}"
+      - wordpress-data:/var/www/html
+      - ../src:/var/www/html/wp-content/plugins/wordlift
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: password
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_CONFIG_EXTRA: |
+        # Define the site and home URLs.
+        define( 'WP_SITEURL', 'https://wordlift.localhost' );
+        define( 'WP_HOME', WP_SITEURL );
 
+        # Add support for the reverse proxy.
+        if ( isset( $$_SERVER['HTTP_X_FORWARDED_HOST'] ) ) {
+          $$_SERVER['HTTP_HOST'] = $$_SERVER['HTTP_X_FORWARDED_HOST'];
+        }
+
+  nginx:
+    image: nginx:1.17
+    depends_on:
+      - wordpress
+    ports:
+      - "443:443"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    environment:
+      NGINX_HOST: wordpress
+      NGINX_SERVER_NAME: wordlift.localhost
+    command: /bin/bash -c "envsubst '$$NGINX_HOST $$NGINX_SERVER_NAME' < /etc/nginx/conf.d/wordpress.template > /etc/nginx/conf.d/wordpress.conf && nginx -g 'daemon off;'"
+
+  cli:
+    image: wordpress:cli-2.2
+    depends_on:
+      - db
+    user: xfs
+    volumes:
+      - wordpress-data:/var/www/html
+
+volumes:
+  db-data:
+  wordpress-data:

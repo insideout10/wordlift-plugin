@@ -142,6 +142,12 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.21.4 (2019-08-28) =
+* Fix: [#945](https://github.com/insideout10/wordlift-plugin/issues/945): Faceted Search results do not change when posts clicked.
+
+= 3.21.3 (2019-08-19) =
+* Fix: [#943](https://github.com/insideout10/wordlift-plugin/issues/943): Faceted Search caching issues.
+
 = 3.21.2 (2019-08-13) =
 * Fix: Supporting unregisteredAttributes with attributes in Gutenberg.
 * Enhancement: Additional filters for Navigator: `wl_navigator_data_post`, `wl_navigator_data_entity` and `wl_navigator_data_placeholder`.
