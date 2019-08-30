@@ -1448,9 +1448,11 @@ class Wordlift {
 		/*
 		 * Initialize the Context Cards Service
 		 *
+		 * @link https://github.com/insideout10/wordlift-plugin/issues/934
+		 *
 		 * @since 3.22.0
 		 */
-		new Wordlift_Context_Cards_Service( $this->entity_uri_service );
+		new Wordlift_Context_Cards_Service();
 
 	}
 

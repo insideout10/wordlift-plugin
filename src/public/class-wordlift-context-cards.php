@@ -9,9 +9,8 @@
 
 class Wordlift_Context_Cards_Service {
 
-	function __construct($entity_uri_service) {
+	function __construct() {
 
-		$this->entity_uri_service = $entity_uri_service;
 		$this->endpoint = '/jsonld';
 
 		add_action( 'rest_api_init', function () {
@@ -28,7 +27,6 @@ class Wordlift_Context_Cards_Service {
 	function context_data( $request ) {
 
 		$entity_uri = $request->get_param( 'entity_url' );
-		//$entity_id = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $entity_uri );
 		$entity_id = url_to_postid( $entity_uri );
 		$jsonld = Wordlift_Jsonld_Service::get_instance()->get_jsonld( false, $entity_id );
 		return $jsonld;
