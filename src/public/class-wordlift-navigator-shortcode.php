@@ -45,23 +45,9 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 
 		// Extract attributes and set default values.
 		$shortcode_atts = shortcode_atts( array(
-			'title'          => __( 'Related articles', 'wordlift' ),
-			'with_carousel'  => true,
-			'squared_thumbs' => false,
+			'title'             => __( 'Related articles', 'wordlift' ),
+			'limit'             => 4
 		), $atts );
-
-		foreach (
-			array(
-				'with_carousel',
-				'squared_thumbs',
-			) as $att
-		) {
-
-			// See http://wordpress.stackexchange.com/questions/119294/pass-boolean-value-in-shortcode
-			$shortcode_atts[ $att ] = filter_var(
-				$shortcode_atts[ $att ], FILTER_VALIDATE_BOOLEAN
-			);
-		}
 
 		return $shortcode_atts;
 	}
