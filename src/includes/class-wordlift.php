@@ -1452,7 +1452,7 @@ class Wordlift {
 		 *
 		 * @since 3.22.0
 		 */
-		new Wordlift_Context_Cards_Service();
+		$this->context_cards_service = new Wordlift_Context_Cards_Service();
 
 	}
 
@@ -1712,6 +1712,7 @@ class Wordlift {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+		$this->loader->add_action( 'wp_enqueue_scripts', $this->context_cards_service, 'enqueue_scripts' );
 
 		// Hook the content filter service to add entity links.
 		if ( ! defined( 'WL_DISABLE_CONTENT_FILTER' ) || ! WL_DISABLE_CONTENT_FILTER ) {

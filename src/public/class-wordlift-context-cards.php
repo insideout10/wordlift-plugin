@@ -20,11 +20,9 @@ class Wordlift_Context_Cards_Service {
 			) );
 		} );
 
-		add_action( 'wp_enqueue_scripts', array($this, 'enqueue_script') );
-
 	}
 
-	function context_data( $request ) {
+	public function context_data( $request ) {
 
 		$entity_uri = $request->get_param( 'entity_url' );
 		$entity_id = url_to_postid( $entity_uri );
@@ -33,8 +31,8 @@ class Wordlift_Context_Cards_Service {
 
 	}
 
-	function enqueue_script() {
-		wp_enqueue_script( 'wordlift-cloud', plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/wordlift-cloud.js', array(), false, true );
+	public function enqueue_scripts() {
+		wp_enqueue_script( 'wordlift-cloud' );
 		wp_add_inline_script( 'wordlift-cloud', "wordliftCloud.contextCards('a.wl-entity-page-link', '".get_rest_url() . WL_REST_ROUTE_DEFAULT_NAMESPACE . $this->endpoint."')" );
 	}
 

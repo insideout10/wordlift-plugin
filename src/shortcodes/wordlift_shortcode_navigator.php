@@ -21,6 +21,9 @@ function wl_shortcode_navigator_data() {
 		return;
 	}
 
+	// Limit the results (defaults to 4)
+	$navigator_length = isset( $_GET['limit'] ) ? intval($_GET['limit']) : 4;
+
 	$current_post_id = $_GET['post_id'];
 	$current_post    = get_post( $current_post_id );
 
@@ -112,7 +115,6 @@ function wl_shortcode_navigator_data() {
 	}
 
 	$results = array_reverse( $results );
-	$navigator_length = 4;
 
 	if(count($results) < $navigator_length){
 		$results = apply_filters( 'wl_navigator_data_placeholder', $results );
