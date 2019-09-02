@@ -46,7 +46,9 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		// Extract attributes and set default values.
 		$shortcode_atts = shortcode_atts( array(
 			'title'             => __( 'Related articles', 'wordlift' ),
-			'limit'             => 4
+			'limit'             => 4,
+			'template_id'       => '',
+			'post_id'           => ''
 		), $atts );
 
 		return $shortcode_atts;
@@ -67,12 +69,12 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		$shortcode_atts = $this->make_shortcode_atts( $atts );
 
 		// avoid building the widget when no post_id is specified and there is a list of posts.
-		if ( !isset($shortcode_atts['post_id']) && !is_singular() ) {
+		if ( empty($shortcode_atts['post_id']) && !is_singular() ) {
 			return;
 		}
 
-		$post = isset($shortcode_atts['post_id']) ? get_post(intval($shortcode_atts['post_id'])) : get_post();
-		$rest_url = $post ? admin_url( 'admin-ajax.php?action=wl_navigator&post_id='.$post->ID.'&limit='.$shortcode_atts['limit'] ) : false;
+		$post = !empty($shortcode_atts['post_id']) ? get_post(intval($shortcode_atts['post_id'])) : get_post();
+		$rest_url = $post ? admin_url( sprintf('admin-ajax.php?action=wl_navigator&post_id=%s&limit=%s', $post->ID, $shortcode_atts['limit']) ) : false;
 
 		// avoid building the widget when no valid $rest_url
 		if ( !$rest_url ) {
@@ -89,7 +91,7 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 			'wl-navigator-widget',
 			$rest_url,
 			$shortcode_atts['title'],
-			isset($shortcode_atts['template_id']) ? $shortcode_atts['template_id'] : '',
+			$shortcode_atts['template_id'],
 			$shortcode_atts['limit']
 		);
 	}

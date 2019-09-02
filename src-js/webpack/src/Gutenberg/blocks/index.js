@@ -111,31 +111,38 @@ export default {
       title: {
         default: "Related articles"
       },
-      with_carousel: {
-        default: true
+      limit: {
+        default: 4
       },
-      squared_thumbs: {
-        default: false
+      template_id: {
+        default: ""
+      },
+      post_id: {
+        default: ""
       }
     },
     //display the edit interface + preview
     edit: ({ attributes, setAttributes }) => {
-      const { title, with_carousel, squared_thumbs } = attributes;
+      const { title, limit, template_id, post_id } = attributes;
       return (
         <div>
           <BlockPreview title="Wordlift Navigator" attributes={attributes} />
           <InspectorControls>
             <PanelBody title="Widget Settings" className="blocks-font-size">
               <TextControl label="Title" value={title} onChange={title => setAttributes({ title })} />
-              <CheckboxControl
-                label="With Carousel"
-                checked={with_carousel}
-                onChange={with_carousel => setAttributes({ with_carousel })}
+              <RangeControl label="Limit" value={limit} min={2} max={12} onChange={limit => setAttributes({ limit })} />
+              <TextControl
+                label="Template ID"
+                help="ID of the script tag that has mustache template to be used for navigator."
+                value={template_id}
+                onChange={template_id => setAttributes({ template_id })}
               />
-              <CheckboxControl
-                label="Squared Thumbnails"
-                checked={squared_thumbs}
-                onChange={squared_thumbs => setAttributes({ squared_thumbs })}
+              <TextControl
+                label="Post ID"
+                help="Post ID of the post of which navigator has to be shown."
+                type="number"
+                value={post_id}
+                onChange={post_id => setAttributes({ post_id })}
               />
             </PanelBody>
           </InspectorControls>

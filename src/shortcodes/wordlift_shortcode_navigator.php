@@ -190,13 +190,15 @@ add_action( 'init', function() {
 				'type'    => 'string',
 				'default' => __( 'Related articles', 'wordlift' )
 			),
-			'with_carousel' => array(
-				'type'    => 'bool',
-				'default' => true
+			'limit'      => array(
+				'type'    => 'number',
+				'default' => 4,
 			),
-			'squared_thumbs' => array(
-				'type'    => 'bool',
-				'default' => false
+			'template_id' => array(
+				'type'    => 'string'
+			),
+			'post_id'      => array(
+				'type'    => 'number'
 			)
 		)
 	));
