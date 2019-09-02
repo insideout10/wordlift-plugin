@@ -209,7 +209,7 @@
       return {
         longname: "WordLift Shortcodes",
         author: "WordLift",
-        version: "3.21.0"
+        version: "3.22.0"
       };
     }
   });
