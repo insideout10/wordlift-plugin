@@ -517,7 +517,7 @@ function wordlift_plugin_autoload_register() {
 	spl_autoload_register( function ( $class_name ) {
 
 		// Bail out if these are not our classes.
-		if ( 0 !== strpos( $class_name, 'Wordlift\\Cache\\' ) ) {
+		if ( 0 !== strpos( $class_name, 'Wordlift\\' ) ) {
 			return false;
 		}
 

@@ -1,5 +1,7 @@
 <?php
 
+use Wordlift\Analysis\Response\Analysis_Response_Ops;
+
 /**
  * Receive some content, run a remote analysis task and return the results. The content is read from the body
  * input (php://input).
@@ -24,7 +26,7 @@ function wl_ajax_analyze_action() {
 		wp_send_json_error( array(
 			'code'    => $e->getCode(),
 			'message' => $e->getMessage(),
-			'trace'   => $e->getTraceAsString()
+			'trace'   => $e->getTraceAsString(),
 		) );
 	}
 
@@ -36,15 +38,15 @@ add_action( 'wp_ajax_wordlift_analyze', 'wl_ajax_analyze_action' );
  * Analyze the provided content. The analysis will make use of the method *wl_ajax_analyze_action*
  * provided by the WordLift plugin.
  *
- * @since 1.0.0
- *
- * @uses  wl_configuration_get_analyzer_url() to get the API for the analysis.
- *
  * @param string $content The content to analyze.
  *
  * @return string Returns null on failure, or the WP_Error, or a WP_Response with the response.
  *
  * @throws Exception
+ * @uses  wl_configuration_get_analyzer_url() to get the API for the analysis.
+ *
+ * @since 1.0.0
+ *
  */
 function wl_analyze_content( $content ) {
 
@@ -59,12 +61,12 @@ function wl_analyze_content( $content ) {
 	$args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
 		'method'      => 'POST',
 		'headers'     => array(
-			'Accept'       => 'application/json',
-			'Content-type' => $content_type,
-			'X-Redlink-Key'=> '2F2t0tM9Vk1LInt6AlnMBftAc4lM668s1bb25b27',
-			'X-Redlink-Analyzer' => 'windowsreport',
-			'X-Wordlift-Dataset-Uri'=>'http://data.windowsreport.com/windowsreport',
-			'X-Wordlift-Language' => 'en'
+			'Accept'                 => 'application/json',
+			'Content-type'           => $content_type,
+			'X-Redlink-Key'          => '2F2t0tM9Vk1LInt6AlnMBftAc4lM668s1bb25b27',
+			'X-Redlink-Analyzer'     => 'windowsreport',
+			'X-Wordlift-Dataset-Uri' => 'http://data.windowsreport.com/windowsreport',
+			'X-Wordlift-Language'    => 'en',
 		),
 		// we need to downgrade the HTTP version in this case since chunked encoding is dumping numbers in the response.
 		'httpversion' => '1.0',
@@ -88,7 +90,12 @@ function wl_analyze_content( $content ) {
 
 	// If status code is OK, return the body.
 	if ( 200 === $status_code ) {
-		return $response['body'];
+
+		return Analysis_Response_Ops::create_with_response( $response )
+		                            ->make_entities_local()
+		                            ->to_string();
+
+//		return $response['body'];
 	}
 
 	// Invalid request, e.g. invalid key.
