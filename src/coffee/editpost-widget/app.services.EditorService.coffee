@@ -207,28 +207,44 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
         # Get the TinyMCE editor html content.
         html = EditorAdapter.getHTML() # ed.getContent format: 'raw'
 
+        ##
+        # @since 3.23.0 no more necessary.
         # Find existing entities.
-        entities = findEntities html
+        # entities = findEntities html
 
+        ##
+        # The following isn't anymore necessary with the new Analysis micro service since it already removes overlapping
+        # annotations.
+        # @since 3.23.0
+        #
         # Remove overlapping annotations preserving selected entities
-        AnalysisService.cleanAnnotations analysis, findPositions(entities)
+        # AnalysisService.cleanAnnotations analysis, findPositions(entities)
 
+        ##
+        # The following isn't anymore necessary because we're sending to the new Analysis micro service the editor html
+        # and the analysis micro service returns us the html positions, hence we're not removing existing annotations
+        # anymore.
+        #
+        # @since 3.23.0
+        #
         # Preselect entities found in html. We also keep track of the original
         # text annotation css classes which may turn useful when checking additional
         # classes added to the text annotation, for example the `wl-no-link` css
         # class which we use to decide whether to activate or not a link.
         # We need to keep track now of the css classes because in a while we're
         # going to remove the text annotations and put them back.
-        AnalysisService.preselect analysis, entities
+        # AnalysisService.preselect analysis, entities
 
         # Remove existing text annotations (the while-match is necessary to remove nested spans).
-        while html.match(/<(\w+)[^>]*\sclass="textannotation[^"]*"[^>]*>([^<]+)<\/\1>/gim, '$2')
-          html = html.replace(/<(\w+)[^>]*\sclass="textannotation[^"]*"[^>]*>([^<]*)<\/\1>/gim, '$2')
+        # while html.match(/<(\w+)[^>]*\sclass="textannotation[^"]*"[^>]*>([^<]+)<\/\1>/gim, '$2')
+        #  html = html.replace(/<(\w+)[^>]*\sclass="textannotation[^"]*"[^>]*>([^<]*)<\/\1>/gim, '$2')
 
         # Prepare a traslator instance that will traslate Html and Text positions.
-        traslator = Traslator.create html
+        # traslator = Traslator.create html
 
         # Add text annotations to the html
+        # @since 3.23.0 We need to sort the annotations from the last one to the first one in order to insert them into
+        #               the html without the need to recalculate positions.
         annotations = Array.sort Object.values( analysis.annotations ), ( a, b ) ->
           if a.end > b.end
             return -1
@@ -236,10 +252,6 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
             return 1
           else
             return 0
-
-        console.log { annotations: annotations }
-
-        html = traslator.getHtml()
 
         for annotation in annotations
 
@@ -278,6 +290,8 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
         # See https://github.com/tinymce/tinymce/blob/master/js/tinymce/classes/Formatter.js#L2030
         # html = traslator.getHtml()
         html = html.replace(/<\/span>/gim, "</span>#{INVISIBLE_CHAR}")
+
+        console.debug { annotations, html }
 
         $rootScope.$broadcast "analysisEmbedded"
         # Update the editor Html code.

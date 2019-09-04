@@ -1585,16 +1585,9 @@ angular.module('wordlift.editpost.widget.services.EditorService', ['wordlift.edi
       },
       embedAnalysis: (function(_this) {
         return function(analysis) {
-          var annotation, annotations, ed, element, em, entities, entity, html, isDirty, j, k, len, len1, ref, ref1, ref2, ref3, traslator;
+          var annotation, annotations, ed, element, em, entity, html, isDirty, j, k, len, len1, ref, ref1, ref2, ref3;
           ed = EditorAdapter.getEditor();
           html = EditorAdapter.getHTML();
-          entities = findEntities(html);
-          AnalysisService.cleanAnnotations(analysis, findPositions(entities));
-          AnalysisService.preselect(analysis, entities);
-          while (html.match(/<(\w+)[^>]*\sclass="textannotation[^"]*"[^>]*>([^<]+)<\/\1>/gim, '$2')) {
-            html = html.replace(/<(\w+)[^>]*\sclass="textannotation[^"]*"[^>]*>([^<]*)<\/\1>/gim, '$2');
-          }
-          traslator = Traslator.create(html);
           annotations = Array.sort(Object.values(analysis.annotations), function(a, b) {
             if (a.end > b.end) {
               return -1;
@@ -1604,10 +1597,6 @@ angular.module('wordlift.editpost.widget.services.EditorService', ['wordlift.edi
               return 0;
             }
           });
-          console.log({
-            annotations: annotations
-          });
-          html = traslator.getHtml();
           for (j = 0, len = annotations.length; j < len; j++) {
             annotation = annotations[j];
             if (annotation.entityMatches.length === 0) {
@@ -1634,6 +1623,10 @@ angular.module('wordlift.editpost.widget.services.EditorService', ['wordlift.edi
             html = html.substring(0, annotation.start) + element + html.substring(annotation.start);
           }
           html = html.replace(/<\/span>/gim, "</span>" + INVISIBLE_CHAR);
+          console.debug({
+            annotations: annotations,
+            html: html
+          });
           $rootScope.$broadcast("analysisEmbedded");
           isDirty = ed.isDirty();
           ed.setContent(html, {
