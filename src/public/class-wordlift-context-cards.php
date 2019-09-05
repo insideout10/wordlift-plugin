@@ -24,7 +24,7 @@ class Wordlift_Context_Cards_Service {
 
 	public function context_data( $request ) {
 
-		$entity_uri = $request->get_param( 'entity_url' );
+		$entity_uri = urldecode($request->get_param( 'entity_url' ));
 		$entity_id = url_to_postid( $entity_uri );
 		$jsonld = Wordlift_Jsonld_Service::get_instance()->get_jsonld( false, $entity_id );
 		return $jsonld;

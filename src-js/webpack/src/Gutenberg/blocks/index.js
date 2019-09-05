@@ -346,7 +346,7 @@ export default {
   },
   [`${Constants.PLUGIN_NAMESPACE}/timeline`]: {
     title: "Wordlift Timeline",
-    description: "Configure Geomap block within your content.",
+    description: "Configure Timeline block within your content.",
     category: "wordlift",
     icon: <WordLiftIcon />,
     attributes: {

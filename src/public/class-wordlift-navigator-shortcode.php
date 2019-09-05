@@ -88,7 +88,7 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		return sprintf(
 			'<div id="%s" class="%s" data-rest-url="%s" data-title="%s" data-template-id="%s" data-limit="%s"></div>',
 			$navigator_id,
-			'wl-navigator-widget',
+			'wl-navigator',
 			$rest_url,
 			$shortcode_atts['title'],
 			$shortcode_atts['template_id'],
