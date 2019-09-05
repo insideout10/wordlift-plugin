@@ -50,61 +50,37 @@ add_action( 'wp_ajax_wordlift_analyze', 'wl_ajax_analyze_action' );
  */
 function wl_analyze_content( $content ) {
 
-	// Get the analyzer URL.
-	$url = 'http://host.docker.internal:9902/experimental/analysis/as-response'; //
-//	$url = wl_configuration_get_analyzer_url();
-
 	// Set the content type to the request content type or to text/plain by default.
 	$content_type = isset( $_SERVER['CONTENT_TYPE'] ) ? $_SERVER['CONTENT_TYPE'] : 'text/plain';
 
-	// Prepare the request.
-	$args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
-		'method'      => 'POST',
-		'headers'     => array(
-			'Accept'                 => 'application/json',
-			'Content-type'           => $content_type,
-			'X-Redlink-Key'          => '2F2t0tM9Vk1LInt6AlnMBftAc4lM668s1bb25b27',
-			'X-Redlink-Analyzer'     => 'windowsreport',
-			'X-Wordlift-Dataset-Uri' => 'http://data.windowsreport.com/windowsreport',
-			'X-Wordlift-Language'    => 'en',
-		),
-		// we need to downgrade the HTTP version in this case since chunked encoding is dumping numbers in the response.
-		'httpversion' => '1.0',
-		'body'        => $content,
-	) );
-
-	$response = wp_remote_post( $url, $args );
+	add_filter( 'wl_api_service_api_url_path', 'wl_use_analysis_on_api_wordlift_io' );
+	$json = Wordlift_Api_Service::get_instance()
+	                            ->post_custom_content_type( 'analysis/single', $content, $content_type );
+	remove_filter( 'wl_api_service_api_url_path', 'wl_use_analysis_on_api_wordlift_io' );
 
 	// If it's an error log it.
-	if ( is_wp_error( $response ) ) {
+	if ( is_wp_error( $json ) ) {
 
-		$message = "An error occurred while requesting an analysis to $url: {$response->get_error_message()}";
+		$message = "An error occurred while requesting an analysis: {$json->get_error_message()}";
 
 		Wordlift_Log_Service::get_logger( 'wl_analyze_content' )->error( $message );
 
-		throw new Exception( $response->get_error_message(), is_numeric( $response->get_error_code() ) ? $response->get_error_code() : - 1 );
+		throw new Exception( $json->get_error_message(), is_numeric( $json->get_error_code() ) ? $json->get_error_code() : - 1 );
 	}
 
-	// Get the status code.
-	$status_code = (int) $response['response']['code'];
+	/*
+	 * We pass the response to the Analysis_Response_Ops to ensure that we make remote entities local.
+	 *
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/944
+	 * @since 3.21.5
+	 */
+	return Analysis_Response_Ops::create( $json )
+	                            ->make_entities_local()
+	                            ->to_string();
 
-	// If status code is OK, return the body.
-	if ( 200 === $status_code ) {
+}
 
-		return Analysis_Response_Ops::create_with_response( $response )
-		                            ->make_entities_local()
-		                            ->to_string();
+function wl_use_analysis_on_api_wordlift_io( $value ) {
 
-//		return $response['body'];
-	}
-
-	// Invalid request, e.g. invalid key.
-	if ( 400 === $status_code ) {
-		$error = json_decode( $response['body'] );
-
-		throw new Exception( $error->message, $error->code );
-	}
-
-	// Another generic error.
-	throw new Exception( "An error occurred.", $status_code );;
+	return preg_replace( '|https://api\.wordlift\.it/|', 'https://api.wordlift.io/', $value );
 }

@@ -40,6 +40,7 @@ class Wordlift_Activator {
 
 		// Create a blank application key if there is none.
 		$key = $configuration_service->get_key();
+
 		if ( empty( $key ) ) {
 			$configuration_service->set_key( '' );
 		}

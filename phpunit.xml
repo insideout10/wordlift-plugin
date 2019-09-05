@@ -10,7 +10,7 @@
         stopOnFailure="false"
 >
     <testsuites>
-        <testsuite>
+        <testsuite name="WordLift Plugin">
             <directory prefix="test-" suffix=".php">./tests/</directory>
         </testsuite>
     </testsuites>

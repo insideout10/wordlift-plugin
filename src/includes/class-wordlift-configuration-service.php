@@ -450,6 +450,7 @@ class Wordlift_Configuration_Service {
 
 		// make the request to the remote server.
 		$this->get_remote_dataset_uri( $new_key );
+
 	}
 
 	/**
@@ -488,6 +489,7 @@ class Wordlift_Configuration_Service {
 		$args     = wp_parse_args( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
 			'method' => 'PUT',
 		) );
+
 		$response = wp_remote_request( $url, $args );
 
 		// The response is an error.

@@ -18,6 +18,15 @@
 class Wordlift_Entity_Uri_Service {
 
 	/**
+	 * Holds the {@link Wordlift_Entity_Uri_Service} instance.
+	 *
+	 * @since 3.21.5
+	 * @access private
+	 * @var Wordlift_Entity_Uri_Service $instance The {@link Wordlift_Entity_Uri_Service} singleton.
+	 */
+	private static $instance;
+
+	/**
 	 * A {@link Wordlift_Log_Service} instance.
 	 *
 	 * @since  3.16.3
@@ -47,9 +56,10 @@ class Wordlift_Entity_Uri_Service {
 	/**
 	 * Create a {@link Wordlift_Entity_Uri_Service} instance.
 	 *
+	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
+	 *
 	 * @since 3.16.3
 	 *
-	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
 	 */
 	public function __construct( $configuration_service ) {
 
@@ -57,6 +67,19 @@ class Wordlift_Entity_Uri_Service {
 
 		$this->configuration_service = $configuration_service;
 
+		self::$instance = $this;
+
+	}
+
+	/**
+	 * Get the singleton.
+	 *
+	 * @return Wordlift_Entity_Uri_Service The singleton instance.
+	 * @since 3.21.5
+	 */
+	public static function get_instance() {
+
+		return self::$instance;
 	}
 
 	/**
@@ -65,9 +88,10 @@ class Wordlift_Entity_Uri_Service {
 	 * This function will populate the local `$uri_to_post` array by running a
 	 * single query with all the URIs and returning the mappings in the array.
 	 *
+	 * @param array $uris An array of URIs.
+	 *
 	 * @since 3.16.3
 	 *
-	 * @param array $uris An array of URIs.
 	 */
 	public function preload_uris( $uris ) {
 
@@ -120,12 +144,14 @@ class Wordlift_Entity_Uri_Service {
 		// Populate the array. We reinitialize the array on purpose because
 		// we don't want these data to long live.
 		$this->uri_to_post = array_reduce( $posts, function ( $carry, $item ) use ( $that ) {
-			$uris = get_post_meta( $item->ID, WL_ENTITY_URL_META_NAME )
-					+ get_post_meta( $item->ID, Wordlift_Schema_Service::FIELD_SAME_AS );
+			$uris = array_merge(
+				get_post_meta( $item->ID, WL_ENTITY_URL_META_NAME ),
+				get_post_meta( $item->ID, Wordlift_Schema_Service::FIELD_SAME_AS )
+			);
 
 			return $carry
-				   // Get the URI related to the post and fill them with the item id.
-				   + array_fill_keys( $uris, $item );
+			       // Get the URI related to the post and fill them with the item id.
+			       + array_fill_keys( $uris, $item );
 		}, array() );
 
 		// Add the not found URIs.
@@ -149,11 +175,11 @@ class Wordlift_Entity_Uri_Service {
 	/**
 	 * Find entity posts by the entity URI. Entity as searched by their entity URI or same as.
 	 *
-	 * @since 3.2.0
-	 *
 	 * @param string $uri The entity URI.
 	 *
 	 * @return WP_Post|null A WP_Post instance or null if not found.
+	 * @since 3.2.0
+	 *
 	 */
 	public function get_entity( $uri ) {
 
@@ -211,15 +237,15 @@ class Wordlift_Entity_Uri_Service {
 	/**
 	 * Determines whether a given uri is an internal uri or not.
 	 *
-	 * @since 3.16.3
-	 *
 	 * @param string $uri An uri.
 	 *
 	 * @return true if the uri internal to the current dataset otherwise false.
+	 * @since 3.16.3
+	 *
 	 */
 	public function is_internal( $uri ) {
 
-		return ( 0 === strrpos( $uri, (string)$this->configuration_service->get_dataset_uri() ) );
+		return ( 0 === strrpos( $uri, (string) $this->configuration_service->get_dataset_uri() ) );
 	}
 
 }
