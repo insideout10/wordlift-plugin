@@ -85,7 +85,9 @@ class LinkService {
    *     otherwise false.
    */
   getLink (occurrences) {
-    return occurrences.reduce((acc, id) => {
+    const ed = EditorService.get();
+
+    return ed && occurrences.reduce((acc, id) => {
       const dom = EditorService.get().dom
 
       return acc || (

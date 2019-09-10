@@ -36,6 +36,8 @@ const entities = function(state = Map(), action) {
       const labels = Map( action.results.entities )
         .groupBy( (v, k) => v.label );
 
+      console.log({entities: action.results.entities});
+
       // Return a new map of the received entities. The legacy Angular
       // app doesn't set the `link` property on the entity, therefore we
       // preset it here according to the `occurrences` settings.
@@ -83,11 +85,11 @@ const entities = function(state = Map(), action) {
     // entity tile.
     case types.TOGGLE_ENTITY:
       // Call the legacy AngularJS controller.
-      EditPostWidgetController().$apply(
-        EditPostWidgetController().onSelectedEntityTile(
-          state.get( action.entity.id )
-        )
-      );
+      // EditPostWidgetController().$apply(
+      //   EditPostWidgetController().onSelectedEntityTile(
+      //     state.get( action.entity.id )
+      //   )
+      // );
 
       // Update the state by replacing the entity with toggled version.
       return state;

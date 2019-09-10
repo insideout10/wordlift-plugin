@@ -178,34 +178,26 @@ class EntityTile extends React.Component {
         onBlur={this.close}
         innerRef={this.setWrapperRef}
         tabIndex="0"
+        key={this.props.entity.id}
       >
         <Main onClick={this.onMainClick} open={this.state.open}>
           <Label entity={this.props.entity}>
             {this.props.entity.label}
-            <MainType entity={this.props.entity}>
-              {this.props.entity.mainType}
-            </MainType>
+            <MainType entity={this.props.entity}>{this.props.entity.mainType}</MainType>
           </Label>
           <Cloud className="fa fa-cloud" local={this.props.entity.local} />
         </Main>
         <Drawer open={this.state.open}>
-          <Switch
-            onClick={this.onSwitchClick}
-            selected={this.props.entity.link}
-          >
+          <Switch onClick={this.onSwitchClick} selected={this.props.entity.link}>
             Link{" "}
           </Switch>
           <Category>{this.props.entity.mainType}</Category>
-          <EditLink
-            onClick={this.onEditClick}
-            edit={this.props.entity.edit}
-            className="fa fa-pencil"
-          />
+          <EditLink onClick={this.onEditClick} edit={this.props.entity.edit} className="fa fa-pencil" />
         </Drawer>
         <ArrowToggle
           onClick={this.onArrowToggleClick}
           open={this.state.open}
-          show={0 < this.props.entity.occurrences.length}
+          show={this.props.entity.occurrences && 0 < this.props.entity.occurrences.length}
         />
       </Wrapper>
     );

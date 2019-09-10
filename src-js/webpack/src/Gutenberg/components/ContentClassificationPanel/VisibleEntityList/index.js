@@ -19,6 +19,7 @@ import { connect } from "react-redux";
  */
 import { setCurrentEntity, toggleEntity, toggleLink } from "../../../../Edit/actions";
 import EntityList from "./EntityList";
+import { getEntities } from "../../../store/selectors";
 
 /**
  * Filters the provided map of entities according to the specified filter.
@@ -64,8 +65,10 @@ const getVisibleEntities = (entities, annotation, filter) => {
  * @returns {{entities}} An object with the list of entities.
  */
 const mapStateToProps = state => {
+  const entities = getEntities(state);
+
   return {
-    entities: getVisibleEntities(state.entities, state.annotationFilter, state.visibilityFilter)
+    entities: getVisibleEntities(entities, state.annotationFilter, state.visibilityFilter)
   };
 };
 

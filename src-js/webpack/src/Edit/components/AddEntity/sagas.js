@@ -1,14 +1,5 @@
-import { delay, eventChannel } from "redux-saga";
-import {
-  call,
-  fork,
-  put,
-  race,
-  select,
-  take,
-  takeEvery,
-  takeLatest
-} from "redux-saga/effects";
+import { eventChannel } from "redux-saga";
+import { call, delay, fork, put, race, select, take, takeEvery, takeLatest } from "redux-saga/effects";
 
 import {
   addEntityRequest,
@@ -29,7 +20,7 @@ function* loadItems({ payload }) {
   yield call(delay, 500);
 
   // eslint-disable-next-line
-  "undefined" !== typeof wp.wordlift && wp.wordlift.trigger('loading', true );
+  "undefined" !== typeof wp.wordlift && wp.wordlift.trigger("loading", true);
 
   const language =
     // eslint-disable-next-line
@@ -39,8 +30,7 @@ function* loadItems({ payload }) {
   yield put(loadItemsSuccess(items));
 
   // eslint-disable-next-line
-  "undefined" !== typeof wp.wordlift && wp.wordlift.trigger('loading', false );
-
+  "undefined" !== typeof wp.wordlift && wp.wordlift.trigger("loading", false);
 }
 
 function* createEntity({ payload }) {

@@ -1,4 +1,5 @@
 /*global angular jQuery*/
+
 /**
  * Angular Controllers: Edit Post Widget Controller.
  *
@@ -19,12 +20,9 @@ let scope;
  * @constructor
  */
 function EditPostWidgetController() {
+
   // Return the cached instance or get the instance and cache it.
-  return scope
-    ? scope
-    : (scope = angular
-        .element(jQuery('[ng-controller="EditPostWidgetController"]'))
-        .scope());
+  return scope ? scope : (scope = angular.element(jQuery('[ng-controller="EditPostWidgetController"]')).scope());
 }
 
 // Finally export the function.

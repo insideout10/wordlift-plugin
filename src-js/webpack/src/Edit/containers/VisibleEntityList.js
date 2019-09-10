@@ -35,15 +35,11 @@ const getVisibleEntities = (entities, annotation, filter) => {
     // When showing an annotation, we check that the annotation id is
     // present as key in the annotations property.
     case "SHOW_ANNOTATION":
-      return entities.filter(
-        x => "undefined" !== typeof x.annotations && annotation in x.annotations
-      );
+      return entities.filter(x => "undefined" !== typeof x.annotations && annotation in x.annotations);
     case "SHOW_WHO":
       return entities.filter(x => "undefined" !== typeof x.w && "who" === x.w);
     case "SHOW_WHERE":
-      return entities.filter(
-        x => "undefined" !== typeof x.w && "where" === x.w
-      );
+      return entities.filter(x => "undefined" !== typeof x.w && "where" === x.w);
     case "SHOW_WHEN":
       return entities.filter(x => "undefined" !== typeof x.w && "when" === x.w);
     case "SHOW_WHAT":
@@ -69,11 +65,7 @@ const getVisibleEntities = (entities, annotation, filter) => {
  */
 const mapStateToProps = state => {
   return {
-    entities: getVisibleEntities(
-      state.entities,
-      state.annotationFilter,
-      state.visibilityFilter
-    )
+    entities: getVisibleEntities(state.entities, state.annotationFilter, state.visibilityFilter)
   };
 };
 
@@ -123,9 +115,10 @@ const mapDispatchToProps = dispatch => {
  *
  * @since 3.11.0
  */
-const VisibleEntityList = connect(mapStateToProps, mapDispatchToProps)(
-  EntityList
-);
+const VisibleEntityList = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EntityList);
 
 // Finally export the `VisibleEntityList`.
 export default VisibleEntityList;
