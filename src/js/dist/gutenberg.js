@@ -23173,6 +23173,7 @@ var entities = function entities() {
 
     case _constants_ActionTypes__WEBPACK_IMPORTED_MODULE_2__["TOGGLE_ENTITY"]:
       // Call the legacy AngularJS controller.
+      // @@todo: reenable
       // EditPostWidgetController().$apply(
       //   EditPostWidgetController().onSelectedEntityTile(
       //     state.get( action.entity.id )
@@ -24152,9 +24153,10 @@ __webpack_require__.r(__webpack_exports__);
 var BlockOps =
 /*#__PURE__*/
 function () {
-  function BlockOps(start, end, clientId, content, dirty) {
+  function BlockOps(dispatch, start, end, clientId, content, dirty) {
     _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, BlockOps);
 
+    this._dispatch = dispatch;
     this._start = start;
     this._end = end;
     this._clientId = clientId;
@@ -24163,6 +24165,33 @@ function () {
   }
 
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(BlockOps, [{
+    key: "insertHtml",
+
+    /**
+     *
+     * @param at
+     * @param fragment
+     */
+    value: function insertHtml(at, fragment) {
+      // Insert the HTML.
+      this.content = this.content.substring(0, at) + fragment + this.content.substring(at);
+    }
+  }, {
+    key: "applyChanges",
+    value: function applyChanges() {
+      var _this = this;
+
+      if (this.dirty) {
+        this._dispatch.updateBlock(this.clientId, {
+          attributes: {
+            content: this.content
+          }
+        }).then(function () {
+          return _this._dirty = false;
+        });
+      }
+    }
+  }, {
     key: "start",
     get: function get() {
       return this._start;
@@ -24204,11 +24233,12 @@ function () {
 /*!*****************************************!*\
   !*** ./src/Gutenberg2/api/BlocksOps.js ***!
   \*****************************************/
-/*! exports provided: default */
+/*! exports provided: collectBlocks, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "collectBlocks", function() { return collectBlocks; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return BlocksOps; });
 /* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/classCallCheck.js");
 /* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__);
@@ -24224,16 +24254,15 @@ __webpack_require__.r(__webpack_exports__);
  * @param {{name, innerBlocks}[]} blocks
  */
 
-
-var collectBlocks = function collectBlocks(collector, blocks) {
+var collectBlocks = function collectBlocks(accumulator, blocks) {
   blocks.forEach(function (block) {
     if ("core/paragraph" === block.name || "core/freeform" === block.name) {
-      collector.push(block);
+      accumulator.push(block);
     }
 
-    collectBlocks(collector, block.innerBlocks);
+    collectBlocks(accumulator, block.innerBlocks);
   });
-  return collector;
+  return accumulator;
 };
 
 var BlocksOps =
@@ -24247,9 +24276,10 @@ function () {
     this._blocks = collectBlocks([], this._editor.getBlocks());
     /** @var {BlockOps[]} */
 
-    this._mappings = [];
+    this._blockOps = [];
     this._blockSeparator = ".\n";
     this._blockSeparatorLength = this._blockSeparator.length;
+    this.getHtml();
   }
 
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(BlocksOps, [{
@@ -24263,24 +24293,10 @@ function () {
         var start = cursor;
         cursor += content.length + _this._blockSeparatorLength;
 
-        _this._mappings.push(new _BlockOps__WEBPACK_IMPORTED_MODULE_2__["default"](start, cursor, block.clientId, block.attributes.content, false));
+        _this._blockOps.push(new _BlockOps__WEBPACK_IMPORTED_MODULE_2__["default"](_this._dispatch, start, cursor, block.clientId, block.attributes.content, false));
 
         return content;
       }).join(this._blockSeparator);
-    }
-  }, {
-    key: "insertHtml",
-    value: function insertHtml(at, fragment) {
-      // Get the block index at the specified position.
-      var idx = this.getBlockIndex(at); // Return if a block isn't found.
-
-      if (false === idx) return; // Get the block mapping.
-
-      var mapping = this._mappings[idx]; // Calculate the position relative to the block.
-
-      var localAt = at - mapping.start; // Insert the HTML.
-
-      mapping.content = mapping.content.substring(0, localAt) + fragment + mapping.content.substring(localAt);
     }
     /**
      * Get the block index for the specified absolute position.
@@ -24293,10 +24309,10 @@ function () {
     key: "getBlockIndex",
     value: function getBlockIndex(position) {
       // Cycle through the blocks until we found the one for the provided position.
-      for (var i = 0; i < this._mappings.length; i++) {
-        var mapping = this._mappings[i];
+      for (var i = 0; i < this._blockOps.length; i++) {
+        var blockOps = this._blockOps[i];
 
-        if (position >= mapping.start || position < mapping.end) {
+        if (position >= blockOps.start || position < blockOps.end) {
           return i;
         }
       }
@@ -24308,24 +24324,13 @@ function () {
     value: function getBlock(position) {
       var idx = this.getBlockIndex(position);
       if (false === idx) return false;
-      return this._mappings[idx];
+      return this._blockOps[idx];
     }
   }, {
     key: "applyChanges",
     value: function applyChanges() {
-      var _this2 = this;
-
-      this._mappings.forEach(function (mapping) {
-        if (mapping.dirty) {
-          var blockId = mapping.clientId;
-          var content = mapping.content;
-
-          _this2._dispatch.updateBlock(blockId, {
-            attributes: {
-              content: content
-            }
-          });
-        }
+      this._blockOps.forEach(function (blockOps) {
+        return blockOps.applyChanges();
       });
     }
   }]);
@@ -24386,16 +24391,6 @@ function () {
       };
     }
   }, {
-    key: "insertHtml",
-    value: function insertHtml(at, fragment) {
-      this._blocksOps.insertHtml(at, fragment);
-    }
-  }, {
-    key: "applyChanges",
-    value: function applyChanges() {
-      this._blocksOps.applyChanges();
-    }
-  }, {
     key: "insertAnnotation",
     value: function insertAnnotation(id, start, end) {
       var block = this._blocksOps.getBlock(start);
@@ -24404,9 +24399,33 @@ function () {
 
 
       if (false === block || false === endBlock || block !== endBlock) return false;
-      block.insertHtml(end, '</span>');
-      block.insertHtml(start, '<span id="urn:${id} class="textannotation">');
+      var relativeStart = start - block.start,
+          relativeEnd = end - block.start;
+      block.insertHtml(relativeEnd, "</span>");
+      block.insertHtml(relativeStart, "<span id=\"urn:".concat(id, "\" class=\"textannotation\">"));
       this._annotations[id] = block;
+    }
+  }, {
+    key: "toggleAnnotation",
+    value: function toggleAnnotation() {// ed.dom.addClass annotationId, "disambiguated"
+      // for type in configuration.types
+      //   ed.dom.removeClass annotationId, type.css
+      // ed.dom.removeClass annotationId, "unlinked"
+      // ed.dom.addClass annotationId, "wl-#{entity.mainType}"
+      // discardedItemId = ed.dom.getAttrib annotationId, "itemid"
+      // ed.dom.setAttrib annotationId, "itemid", entity.id
+      // discardedItemId
+    }
+  }, {
+    key: "switchOnAnnotation",
+    value: function switchOnAnnotation(id) {}
+  }, {
+    key: "switchOffAnnotation",
+    value: function switchOffAnnotation() {}
+  }, {
+    key: "applyChanges",
+    value: function applyChanges() {
+      this._blocksOps.applyChanges();
     }
   }]);
 
@@ -24839,6 +24858,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _selectors__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./selectors */ "./src/Gutenberg2/stores/selectors.js");
 /* harmony import */ var _compat__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./compat */ "./src/Gutenberg2/stores/compat.js");
 /* harmony import */ var _api_EditorOps__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../api/EditorOps */ "./src/Gutenberg2/api/EditorOps.js");
+/* harmony import */ var _api_BlocksOps__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../api/BlocksOps */ "./src/Gutenberg2/api/BlocksOps.js");
 
 
 var _marked =
@@ -24861,6 +24881,7 @@ var _wp = wp,
 /**
  * Legacy actions.
  */
+
 
 
 
@@ -24930,9 +24951,7 @@ function embedAnalysis(editorOps, response) {
     return 0;
   });
   annotations.forEach(function (annotation) {
-    var fragment = '<span id="urn:' + annotation.annotationId + '"' + ' class="textannotation">';
-    editorOps.insertHtml(annotation.end, "</span>");
-    editorOps.insertHtml(annotation.start, fragment);
+    return editorOps.insertAnnotation(annotation.annotationId, annotation.start, annotation.end);
   });
   editorOps.applyChanges();
 }

@@ -5,16 +5,16 @@
  */
 import BlockOps from "./BlockOps";
 
-const collectBlocks = (collector, blocks) => {
+export const collectBlocks = (accumulator, blocks) => {
   blocks.forEach(block => {
     if ("core/paragraph" === block.name || "core/freeform" === block.name) {
-      collector.push(block);
+      accumulator.push(block);
     }
 
-    collectBlocks(collector, block.innerBlocks);
+    collectBlocks(accumulator, block.innerBlocks);
   });
 
-  return collector;
+  return accumulator;
 };
 
 export default class BlocksOps {
@@ -23,9 +23,11 @@ export default class BlocksOps {
     this._dispatch = dispatch;
     this._blocks = collectBlocks([], this._editor.getBlocks());
     /** @var {BlockOps[]} */
-    this._mappings = [];
+    this._blockOps = [];
     this._blockSeparator = ".\n";
     this._blockSeparatorLength = this._blockSeparator.length;
+
+    this.getHtml();
   }
 
   getHtml() {
@@ -39,28 +41,13 @@ export default class BlocksOps {
             const start = cursor;
             cursor += content.length + this._blockSeparatorLength;
 
-            this._mappings.push(new BlockOps(start, cursor, block.clientId, block.attributes.content, false));
+            this._blockOps.push(
+              new BlockOps(this._dispatch, start, cursor, block.clientId, block.attributes.content, false)
+            );
 
             return content;
           })
           .join(this._blockSeparator));
-  }
-
-  insertHtml(at, fragment) {
-    // Get the block index at the specified position.
-    const idx = this.getBlockIndex(at);
-
-    // Return if a block isn't found.
-    if (false === idx) return;
-
-    // Get the block mapping.
-    const mapping = this._mappings[idx];
-
-    // Calculate the position relative to the block.
-    const localAt = at - mapping.start;
-
-    // Insert the HTML.
-    mapping.content = mapping.content.substring(0, localAt) + fragment + mapping.content.substring(localAt);
   }
 
   /**
@@ -71,10 +58,10 @@ export default class BlocksOps {
    */
   getBlockIndex(position) {
     // Cycle through the blocks until we found the one for the provided position.
-    for (let i = 0; i < this._mappings.length; i++) {
-      const mapping = this._mappings[i];
+    for (let i = 0; i < this._blockOps.length; i++) {
+      const blockOps = this._blockOps[i];
 
-      if (position >= mapping.start || position < mapping.end) {
+      if (position >= blockOps.start || position < blockOps.end) {
         return i;
       }
     }
@@ -87,18 +74,10 @@ export default class BlocksOps {
 
     if (false === idx) return false;
 
-    return this._mappings[idx];
+    return this._blockOps[idx];
   }
 
   applyChanges() {
-    this._mappings.forEach(mapping => {
-      if (mapping.dirty) {
-        const blockId = mapping.clientId;
-        const content = mapping.content;
-        this._dispatch.updateBlock(blockId, {
-          attributes: { content }
-        });
-      }
-    });
+    this._blockOps.forEach(blockOps => blockOps.applyChanges());
   }
 }

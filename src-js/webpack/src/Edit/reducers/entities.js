@@ -85,6 +85,7 @@ const entities = function(state = Map(), action) {
     // entity tile.
     case types.TOGGLE_ENTITY:
       // Call the legacy AngularJS controller.
+      // @@todo: reenable
       // EditPostWidgetController().$apply(
       //   EditPostWidgetController().onSelectedEntityTile(
       //     state.get( action.entity.id )

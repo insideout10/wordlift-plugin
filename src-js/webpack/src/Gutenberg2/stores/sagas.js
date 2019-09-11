@@ -14,6 +14,7 @@ import actions from "./actions";
 import { getEditor } from "./selectors";
 import parseAnalysisResponse from "./compat";
 import EditorOps from "../api/EditorOps";
+import { collectBlocks } from "../api/BlocksOps";
 
 function* selectEditor(action) {
   const editor = action.payload;
@@ -48,12 +49,9 @@ function embedAnalysis(editorOps, response) {
     return 0;
   });
 
-  annotations.forEach(annotation => {
-    const fragment = '<span id="urn:' + annotation.annotationId + '"' + ' class="textannotation">';
-
-    editorOps.insertHtml(annotation.end, "</span>");
-    editorOps.insertHtml(annotation.start, fragment);
-  });
+  annotations.forEach(annotation =>
+    editorOps.insertAnnotation(annotation.annotationId, annotation.start, annotation.end)
+  );
 
   editorOps.applyChanges();
 }
