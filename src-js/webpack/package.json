@@ -8,8 +8,8 @@
   "license": "GPL-3.0",
   "private": true,
   "scripts": {
-    "build": "NODE_ENV=production webpack --mode=production",
-    "watch": "NODE_ENV=development webpack --watch --mode=development"
+    "build": "wp-scripts build",
+    "start": "wp-scripts start"
   },
   "devDependencies": {
     "@babel/core": "^7.6.0",
@@ -22,10 +22,10 @@
     "sass-loader": "^8.0.0",
     "svg-react-loader": "^0.4.5",
     "webpack": "^4.39.3",
+    "webpack-bundle-analyzer": "^3.4.1",
     "webpack-cli": "^3.3.8"
   },
   "dependencies": {
-    "@wordlift/wordlift-for-schemaorg": "^1",
     "immutable": "^3",
     "prop-types": "^15",
     "react": "^16",

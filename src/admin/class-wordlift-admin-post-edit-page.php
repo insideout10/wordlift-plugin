@@ -96,6 +96,11 @@ class Wordlift_Admin_Post_Edit_Page {
 		wp_dequeue_script( 'ontrapagesApp' );
 		wp_dequeue_script( 'ontrapagesController' );
 
+		// If Gutenberg is enabled for the post, do not load the legacy edit.js.
+		if ( function_exists('use_block_editor_for_post') && use_block_editor_for_post( get_post() ) ) {
+			return;
+		}
+
 		/*
 		 * Enqueue the edit screen JavaScript. The `wordlift-admin.bundle.js` file
 		 * is scheduled to replace the older `wordlift-admin.min.js` once client-side

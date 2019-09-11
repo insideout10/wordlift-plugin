@@ -26,6 +26,6 @@ import "./index.classification-box";
 // Load the Autocomplete Select.
 import "./index.autocomplete-select";
 // Load the Schema Class Tree.
-import "./index.schema-class-tree";
+// import "./index.schema-class-tree";
 // Load the Schema Properties Form.
-import "./index.schema-property-form";
+// import "./index.schema-property-form";

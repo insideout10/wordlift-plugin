@@ -3,6 +3,8 @@
  * @param {array} collector
  * @param {{name, innerBlocks}[]} blocks
  */
+import BlockOps from "./BlockOps";
+
 const collectBlocks = (collector, blocks) => {
   blocks.forEach(block => {
     if ("core/paragraph" === block.name || "core/freeform" === block.name) {
@@ -20,6 +22,7 @@ export default class BlocksOps {
     this._editor = editor;
     this._dispatch = dispatch;
     this._blocks = collectBlocks([], this._editor.getBlocks());
+    /** @var {BlockOps[]} */
     this._mappings = [];
     this._blockSeparator = ".\n";
     this._blockSeparatorLength = this._blockSeparator.length;
@@ -36,7 +39,7 @@ export default class BlocksOps {
             const start = cursor;
             cursor += content.length + this._blockSeparatorLength;
 
-            this._mappings.push([start, cursor, block.clientId, block.attributes.content, false]);
+            this._mappings.push(new BlockOps(start, cursor, block.clientId, block.attributes.content, false));
 
             return content;
           })
@@ -44,29 +47,54 @@ export default class BlocksOps {
   }
 
   insertHtml(at, fragment) {
+    // Get the block index at the specified position.
+    const idx = this.getBlockIndex(at);
+
+    // Return if a block isn't found.
+    if (false === idx) return;
+
+    // Get the block mapping.
+    const mapping = this._mappings[idx];
+
+    // Calculate the position relative to the block.
+    const localAt = at - mapping.start;
+
+    // Insert the HTML.
+    mapping.content = mapping.content.substring(0, localAt) + fragment + mapping.content.substring(localAt);
+  }
+
+  /**
+   * Get the block index for the specified absolute position.
+   *
+   * @param {number} position The absolute position.
+   * @returns {{false}|number} The block index (zero-based) or false if not found.
+   */
+  getBlockIndex(position) {
+    // Cycle through the blocks until we found the one for the provided position.
     for (let i = 0; i < this._mappings.length; i++) {
       const mapping = this._mappings[i];
 
-      if (at < mapping[0] || at >= mapping[1]) {
-        continue;
+      if (position >= mapping.start || position < mapping.end) {
+        return i;
       }
-
-      const localAt = at - mapping[0];
-
-      mapping[3] = mapping[3].substring(0, localAt) + fragment + mapping[3].substring(localAt);
-
-      // Dirty.
-      mapping[4] = true;
     }
+
+    return false;
+  }
+
+  getBlock(position) {
+    const idx = this.getBlockIndex(position);
+
+    if (false === idx) return false;
+
+    return this._mappings[idx];
   }
 
   applyChanges() {
     this._mappings.forEach(mapping => {
-      const dirty = mapping[4];
-
-      if (dirty) {
-        const blockId = mapping[2];
-        const content = mapping[3];
+      if (mapping.dirty) {
+        const blockId = mapping.clientId;
+        const content = mapping.content;
         this._dispatch.updateBlock(blockId, {
           attributes: { content }
         });
