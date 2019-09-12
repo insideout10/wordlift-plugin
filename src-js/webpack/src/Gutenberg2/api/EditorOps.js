@@ -34,7 +34,7 @@ export default class EditorOps {
       relativeEnd = end - block.start;
 
     block.insertHtml(relativeEnd, "</span>");
-    block.insertHtml(relativeStart, `<span id="urn:${id}" class="textannotation">`);
+    block.insertHtml(relativeStart, `<span id="${id}" class="textannotation">`);
 
     this._annotations[id] = block;
   }

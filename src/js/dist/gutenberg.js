@@ -24133,6 +24133,82 @@ WlLogoBig.default = WlLogoBig;
 
 /***/ }),
 
+/***/ "./src/Gutenberg2/api/Block.js":
+/*!*************************************!*\
+  !*** ./src/Gutenberg2/api/Block.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Block; });
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/classCallCheck.js");
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js");
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__);
+
+
+
+var Block =
+/*#__PURE__*/
+function () {
+  function Block(block, dispatch) {
+    var start = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+    var end = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : -1;
+
+    _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, Block);
+
+    this._dispatch = dispatch;
+    this._block = block;
+    this._content = block.attributes.content;
+    this._start = start;
+    this._end = 0 <= end ? end : block.attributes.content.length;
+    this._dirty = false;
+  }
+
+  _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(Block, [{
+    key: "replace",
+    value: function replace(pattern, replacement) {
+      var newContent = this.content.replace(pattern, replacement); // Bail out if the content didn't change.
+
+      if (newContent === this.content) return;
+      this.content = newContent;
+    }
+  }, {
+    key: "apply",
+    value: function apply() {
+      var _this = this;
+
+      this._dispatch.updateBlockAttributes(this.clientId, {
+        content: this.content
+      }).then(function () {
+        return _this._dirty = false;
+      });
+    }
+  }, {
+    key: "content",
+    get: function get() {
+      return this._content;
+    },
+    set: function set(value) {
+      this._content = value;
+      this._dirty = true;
+    }
+  }, {
+    key: "clientId",
+    get: function get() {
+      return this._block.clientId;
+    }
+  }]);
+
+  return Block;
+}();
+
+
+
+/***/ }),
+
 /***/ "./src/Gutenberg2/api/BlockOps.js":
 /*!****************************************!*\
   !*** ./src/Gutenberg2/api/BlockOps.js ***!
@@ -24226,6 +24302,160 @@ function () {
 }();
 
 
+
+/***/ }),
+
+/***/ "./src/Gutenberg2/api/Blocks.js":
+/*!**************************************!*\
+  !*** ./src/Gutenberg2/api/Blocks.js ***!
+  \**************************************/
+/*! exports provided: Blocks */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Blocks", function() { return Blocks; });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "@babel/runtime/regenerator");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/classCallCheck.js");
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js");
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _Block__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Block */ "./src/Gutenberg2/api/Block.js");
+
+
+
+
+/**
+ *
+ * @param {{name,innerBlocks}[]} blocks
+ * @param predicate
+ * @param mapper
+ * @param accumulator
+ * @returns {Array}
+ */
+
+var collectBlocks = function collectBlocks(blocks) {
+  var predicate = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {
+    return true;
+  };
+  var accumulator = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+  blocks.forEach(function (block) {
+    // Add the block to the collection if it satisfies the predicate.
+    if (predicate(block)) {
+      accumulator.push(block);
+    } // Collect inner blocks.
+
+
+    collectBlocks(block.innerBlocks, predicate, accumulator);
+  });
+  return accumulator;
+};
+/**
+ *
+ */
+
+
+var Blocks =
+/*#__PURE__*/
+function () {
+  /**
+   *
+   * @param blocks
+   */
+  function Blocks(blocks, dispatch) {
+    _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1___default()(this, Blocks);
+
+    /** @var {Block[]} */
+    this._blocks = blocks.map(function (x) {
+      return new _Block__WEBPACK_IMPORTED_MODULE_3__["default"](x, dispatch);
+    });
+  }
+
+  _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2___default()(Blocks, [{
+    key: Symbol.iterator,
+    value:
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function value() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function value$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return this._blocks;
+
+            case 2:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, value, this);
+    })
+  }, {
+    key: "replace",
+    value: function replace(pattern, replacement) {
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = this._blocks[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var block = _step.value;
+          block.replace(pattern, replacement);
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return != null) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+    }
+  }, {
+    key: "apply",
+    value: function apply() {
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        for (var _iterator2 = this._blocks[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var block = _step2.value;
+          block.apply();
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
+            _iterator2.return();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
+      }
+    }
+  }], [{
+    key: "create",
+    value: function create(blocks, dispatch) {
+      return new this(collectBlocks(blocks, function (block) {
+        return "core/paragraph" === block.name || "core/freeform" === block.name;
+      }), dispatch);
+    }
+  }]);
+
+  return Blocks;
+}();
 
 /***/ }),
 
@@ -24402,7 +24632,7 @@ function () {
       var relativeStart = start - block.start,
           relativeEnd = end - block.start;
       block.insertHtml(relativeEnd, "</span>");
-      block.insertHtml(relativeStart, "<span id=\"urn:".concat(id, "\" class=\"textannotation\">"));
+      block.insertHtml(relativeStart, "<span id=\"".concat(id, "\" class=\"textannotation\">"));
       this._annotations[id] = block;
     }
   }, {
@@ -24433,6 +24663,170 @@ function () {
 }();
 
 
+
+/***/ }),
+
+/***/ "./src/Gutenberg2/api/utils.js":
+/*!*************************************!*\
+  !*** ./src/Gutenberg2/api/utils.js ***!
+  \*************************************/
+/*! exports provided: collectBlocks, switchOn, mergeArray */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "collectBlocks", function() { return collectBlocks; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "switchOn", function() { return switchOn; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mergeArray", function() { return mergeArray; });
+/**
+ *
+ * @param accumulator
+ * @param {{name, innerBlocks}[]} blocks
+ * @param callback
+ * @returns {*}
+ */
+function collectBlocks(accumulator, blocks) {
+  var callback = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function (x) {
+    return x;
+  };
+  blocks.forEach(function (block) {
+    if ("core/paragraph" === block.name || "core/freeform" === block.name) {
+      accumulator.push(callback(block));
+    }
+
+    collectBlocks(accumulator, block.innerBlocks);
+  });
+  return accumulator;
+}
+/**
+ *
+ * @param {{getBlocks()}} store
+ * @param {{updateBlock()}} dispatch
+ * @param replacement
+ * @returns {boolean}
+ */
+
+function replaceFirst(store, dispatch, id, replacement) {
+  var blocks = collectBlocks([], store.getBlocks());
+
+  for (var i = 0; i < blocks.length; i++) {
+    var content = blocks[i].attributes.content;
+    var regexp = new RegExp("<span id=\"".concat(id, "\" class=\"(.*?)\">"), "i");
+    var newContent = content.replace(regexp, function (match, p1) {
+      return "<span id=\"".concat(id, "\" class=\"").concat(replacement, "\">");
+    });
+    if (content === newContent) continue;
+    dispatch.updateBlock(blocks[i].clientId, {
+      attributes: {
+        content: newContent
+      }
+    });
+    return true;
+  }
+
+  return false;
+}
+
+function replaceClass(store, dispatch, id, callback) {
+  var blocks = collectBlocks([], store.getBlocks());
+
+  for (var i = 0; i < blocks.length; i++) {
+    var content = blocks[i].attributes.content;
+    var regexp = new RegExp("<span\\s+id=\"".concat(id, "\"\\s+class=\"(.*?)\""), "i");
+    var newContent = content.replace(regexp, callback);
+    if (content === newContent) continue;
+    dispatch.updateBlock(blocks[i].clientId, {
+      attributes: {
+        content: newContent
+      }
+    });
+    return true;
+  }
+
+  return false;
+}
+
+function addClass(store, dispatch, id) {
+  for (var _len = arguments.length, classNames = new Array(_len > 3 ? _len - 3 : 0), _key = 3; _key < _len; _key++) {
+    classNames[_key - 3] = arguments[_key];
+  }
+
+  return replaceClass(store, dispatch, id, function (match, attr) {
+    var cls = attr.split(/\s+/);
+
+    for (var i = 0; i < classNames.length; i++) {
+      if (-1 === cls.indexOf(classNames[i])) cls.push(classNames[i]);
+    }
+
+    return "<span id=\"".concat(id, "\" class=\"").concat(cls.join(" "), "\"");
+  });
+}
+
+function removeClass(store, dispatch, id) {
+  for (var _len2 = arguments.length, classNames = new Array(_len2 > 3 ? _len2 - 3 : 0), _key2 = 3; _key2 < _len2; _key2++) {
+    classNames[_key2 - 3] = arguments[_key2];
+  }
+
+  return replaceClass(store, dispatch, id, function (match, attr) {
+    var cls = attr.split(/\s+/).filter(function (c) {
+      return -1 === classNames.indexOf(c);
+    });
+    return "<span id=\"".concat(id, "\" class=\"").concat(cls.join(" "), "\"");
+  });
+}
+/**
+ * Set an annotation as selected (disambiguated).
+ *
+ * Adds the `disambiguated` and `wl-{type}` classes.
+ *
+ * @param {BlockOps[]} blocks
+ * @param dispatch
+ * @param {string} annotationId
+ * @param {string} type
+ * @param {string} itemId
+ * @returns {boolean}
+ */
+
+
+function switchOn(blocks, dispatch, annotationId, type, itemId) {
+  for (var i = 0; i < blocks.length; i++) {
+    var content = blocks[i].content;
+    var regexp = new RegExp("<span\\s+id=\"".concat(annotationId, "\"\\s+class=\"(.*?)\">"), "i");
+    var newContent = content.replace(regexp, function (match, classAttr) {
+      var clsToAdd = ["disambiguated", "wl-".concat(type.replace(/\s+/, "-"))];
+      var cls = mergeArray(classAttr.split(/\s+/), clsToAdd).join(" ");
+      return "<span id=\"".concat(annotationId, "\" class=\"").concat(cls, "\" itemid=\"").concat(itemId, "\">");
+    });
+    if (content === newContent) continue;
+    blocks[i].content = newContent;
+    return true;
+  }
+
+  return false;
+}
+/**
+ * Set an annotation as unselected.
+ *
+ * @param store
+ * @param dispatch
+ * @param id
+ * @param type
+ * @returns {boolean}
+ */
+
+function switchOff(store, dispatch, id, type) {
+  return removeClass(store, dispatch, id, "disambiguated", "wl-".concat(type.replace(/\s+/, "-")));
+}
+
+function mergeArray(a1, a2) {
+  var newArray = a1.splice(0);
+
+  for (var i = 0; i < a2.length; i++) {
+    if (-1 === a1.indexOf(a2[i])) newArray.push(a2[i]);
+  }
+
+  return newArray;
+}
 
 /***/ }),
 
@@ -24508,7 +24902,7 @@ function (_React$Component) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      _stores__WEBPACK_IMPORTED_MODULE_12__["default"].dispatch(_stores_actions__WEBPACK_IMPORTED_MODULE_8__["default"].selectEditor("core/editor"));
+      _stores__WEBPACK_IMPORTED_MODULE_12__["default"].dispatch(_stores_actions__WEBPACK_IMPORTED_MODULE_8__["default"].requestAnalysis());
     }
   }]);
 
@@ -24543,6 +24937,26 @@ function (_React$Component2) {
 }(react__WEBPACK_IMPORTED_MODULE_6___default.a.Component);
 
 
+
+/***/ }),
+
+/***/ "./src/Gutenberg2/constants.js":
+/*!*************************************!*\
+  !*** ./src/Gutenberg2/constants.js ***!
+  \*************************************/
+/*! exports provided: EDITOR_STORE */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EDITOR_STORE", function() { return EDITOR_STORE; });
+/**
+ * Define the G'berg editor store name.
+ *
+ * @since 3.23.0
+ * @type {string}
+ */
+var EDITOR_STORE = "core/editor";
 
 /***/ }),
 
@@ -24592,42 +25006,41 @@ registerPlugin(_Gutenberg_constants__WEBPACK_IMPORTED_MODULE_2__["default"].PLUG
 /*!******************************************!*\
   !*** ./src/Gutenberg2/stores/actions.js ***!
   \******************************************/
-/*! exports provided: editor, default */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "editor", function() { return editor; });
-/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
-/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var redux_actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! redux-actions */ "./node_modules/redux-actions/es/index.js");
+/* harmony import */ var redux_actions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux-actions */ "./node_modules/redux-actions/es/index.js");
+ // /**
+//  * Selects the editor.
+//  *
+//  * `core/editor` is the default editor.
+//  */
+// const selectEditor = createAction("SELECT_EDITOR");
+//
+// /**
+//  * Selection succeeded, receive the EditorOps.
+//  */
+// const selectEditorSucceeded = createAction("SELECT_EDITOR_SUCCEEDED");
 
-
-/**
- * Selects the editor.
- *
- * `core/editor` is the default editor.
- */
-
-var selectEditor = Object(redux_actions__WEBPACK_IMPORTED_MODULE_1__["createAction"])("SELECT_EDITOR");
-/**
- * Selection succeeded, receive the EditorOps.
- */
-
-var selectEditorSucceeded = Object(redux_actions__WEBPACK_IMPORTED_MODULE_1__["createAction"])("SELECT_EDITOR_SUCCEEDED");
 /**
  * Requests an analysis on the selected editor.
  */
 
-var requestAnalysis = Object(redux_actions__WEBPACK_IMPORTED_MODULE_1__["createAction"])("REQUEST_ANALYSIS");
-var editor = Object(redux_actions__WEBPACK_IMPORTED_MODULE_1__["handleActions"])(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()({}, selectEditorSucceeded, function (state, action) {
-  return action.payload;
-}), {
-  editor: null
-});
+var requestAnalysis = Object(redux_actions__WEBPACK_IMPORTED_MODULE_0__["createAction"])("REQUEST_ANALYSIS"); // export const editor = handleActions(
+//   {
+//     // Save the editor to the state.
+//     [selectEditorSucceeded]: (state, action) => action.payload
+//   },
+//   {
+//     editor: null
+//   }
+// );
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  selectEditor: selectEditor,
-  selectEditorSucceeded: selectEditorSucceeded,
+  // selectEditor,
+  // selectEditorSucceeded,
   requestAnalysis: requestAnalysis
 });
 
@@ -24802,15 +25215,13 @@ var registerGenericStore = wp.data.registerGenericStore;
 
 
 var initialState = {
-  editor: null,
   entities: Object(immutable__WEBPACK_IMPORTED_MODULE_3__["Map"])()
 };
 var sagaMiddleware = Object(redux_saga__WEBPACK_IMPORTED_MODULE_1__["default"])();
 var store = Object(redux__WEBPACK_IMPORTED_MODULE_0__["createStore"])(Object(redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"])({
   entities: _Edit_reducers_entities__WEBPACK_IMPORTED_MODULE_5__["default"],
   annotationFilter: _Edit_reducers_annotationFilter__WEBPACK_IMPORTED_MODULE_6__["default"],
-  visibilityFilter: _Edit_reducers_visibilityFilter__WEBPACK_IMPORTED_MODULE_7__["default"],
-  editor: _actions__WEBPACK_IMPORTED_MODULE_8__["editor"]
+  visibilityFilter: _Edit_reducers_visibilityFilter__WEBPACK_IMPORTED_MODULE_7__["default"]
 }), initialState, Object(redux__WEBPACK_IMPORTED_MODULE_0__["applyMiddleware"])(sagaMiddleware, redux_logger__WEBPACK_IMPORTED_MODULE_2__["logger"]));
 sagaMiddleware.run(_sagas__WEBPACK_IMPORTED_MODULE_10__["default"]); // Register the store with WordPress.
 
@@ -24857,20 +25268,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./actions */ "./src/Gutenberg2/stores/actions.js");
 /* harmony import */ var _selectors__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./selectors */ "./src/Gutenberg2/stores/selectors.js");
 /* harmony import */ var _compat__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./compat */ "./src/Gutenberg2/stores/compat.js");
-/* harmony import */ var _api_EditorOps__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../api/EditorOps */ "./src/Gutenberg2/api/EditorOps.js");
-/* harmony import */ var _api_BlocksOps__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../api/BlocksOps */ "./src/Gutenberg2/api/BlocksOps.js");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../constants */ "./src/Gutenberg2/constants.js");
+/* harmony import */ var _api_EditorOps__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../api/EditorOps */ "./src/Gutenberg2/api/EditorOps.js");
+/* harmony import */ var _api_utils__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../api/utils */ "./src/Gutenberg2/api/utils.js");
+/* harmony import */ var _api_BlockOps__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../api/BlockOps */ "./src/Gutenberg2/api/BlockOps.js");
+/* harmony import */ var _api_Blocks__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../api/Blocks */ "./src/Gutenberg2/api/Blocks.js");
 
 
 var _marked =
 /*#__PURE__*/
-_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(selectEditor),
+_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(requestAnalysis),
     _marked2 =
 /*#__PURE__*/
-_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(requestAnalysis),
-    _marked3 =
-/*#__PURE__*/
 _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(toggleEntity),
-    _marked4 =
+    _marked3 =
 /*#__PURE__*/
 _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(saga);
 
@@ -24878,6 +25289,9 @@ _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(saga);
 
 var _wp = wp,
     apiFetch = _wp.apiFetch;
+var _wp$data = wp.data,
+    select = _wp$data.select,
+    dispatch = _wp$data.dispatch;
 /**
  * Legacy actions.
  */
@@ -24890,37 +25304,22 @@ var _wp = wp,
 
 
 
-function selectEditor(action) {
-  var editor;
-  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function selectEditor$(_context) {
-    while (1) {
-      switch (_context.prev = _context.next) {
-        case 0:
-          editor = action.payload;
-          _context.next = 3;
-          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])(_actions__WEBPACK_IMPORTED_MODULE_4__["default"].selectEditorSucceeded(new _api_EditorOps__WEBPACK_IMPORTED_MODULE_7__["default"](editor)));
 
-        case 3:
-        case "end":
-          return _context.stop();
-      }
-    }
-  }, _marked);
-}
+ // function* selectEditor(action) {
+//   const editor = action.payload;
+//
+//   yield put(actions.selectEditorSucceeded(new EditorOps(editor)));
+// }
 
 function requestAnalysis() {
   var editorOps, request, response;
-  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function requestAnalysis$(_context2) {
+  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function requestAnalysis$(_context) {
     while (1) {
-      switch (_context2.prev = _context2.next) {
+      switch (_context.prev = _context.next) {
         case 0:
-          _context2.next = 2;
-          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["select"])(_selectors__WEBPACK_IMPORTED_MODULE_5__["getEditor"]);
-
-        case 2:
-          editorOps = _context2.sent;
+          editorOps = new _api_EditorOps__WEBPACK_IMPORTED_MODULE_8__["default"](_constants__WEBPACK_IMPORTED_MODULE_7__["EDITOR_STORE"]);
           request = editorOps.buildAnalysisRequest(window["wlSettings"]["language"], [window["wordlift"]["currentPostUri"]]);
-          _context2.next = 6;
+          _context.next = 4;
           return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["call"])(apiFetch, {
             url: "".concat(window["wlSettings"]["ajax_url"], "?action=wordlift_analyze"),
             method: "POST",
@@ -24930,18 +25329,18 @@ function requestAnalysis() {
             body: JSON.stringify(request)
           });
 
-        case 6:
-          response = _context2.sent;
+        case 4:
+          response = _context.sent;
           embedAnalysis(editorOps, response);
-          _context2.next = 10;
+          _context.next = 8;
           return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])(Object(_Edit_actions__WEBPACK_IMPORTED_MODULE_2__["receiveAnalysisResults"])(Object(_compat__WEBPACK_IMPORTED_MODULE_6__["default"])(window["wordlift"], response)));
 
-        case 10:
+        case 8:
         case "end":
-          return _context2.stop();
+          return _context.stop();
       }
     }
-  }, _marked2);
+  }, _marked);
 }
 
 function embedAnalysis(editorOps, response) {
@@ -24956,20 +25355,73 @@ function embedAnalysis(editorOps, response) {
   editorOps.applyChanges();
 }
 
-function toggleEntity(entity) {
-  var editorOps;
-  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function toggleEntity$(_context3) {
+function toggleEntity(_ref) {
+  var entity, blocks, onClassNames, annotationSelector, occurrences;
+  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function toggleEntity$(_context2) {
+    while (1) {
+      switch (_context2.prev = _context2.next) {
+        case 0:
+          entity = _ref.entity;
+          // Get the supported blocks.
+          blocks = _api_Blocks__WEBPACK_IMPORTED_MODULE_11__["Blocks"].create(select(_constants__WEBPACK_IMPORTED_MODULE_7__["EDITOR_STORE"]).getBlocks(), dispatch(_constants__WEBPACK_IMPORTED_MODULE_7__["EDITOR_STORE"]));
+          onClassNames = ["disambiguated", "wl-".concat(entity.mainType.replace(/\s/, "-"))];
+          annotationSelector = Object.values(entity.annotations).map(function (annotation) {
+            return annotation.annotationId;
+          }).join("|"); // Collect the annotations that have been switch on/off.
+
+          occurrences = [];
+
+          if (0 === entity.occurrences.length) {
+            // Switch on.
+            blocks.replace(new RegExp("<span\\s+id=\"(".concat(annotationSelector, ")\"\\sclass=\"([^\"]*)\">")), function (match, annotationId, classNames) {
+              var newClassNames = Object(_api_utils__WEBPACK_IMPORTED_MODULE_9__["mergeArray"])(classNames.split(/\s+/), onClassNames).join(" ");
+              occurrences.push(annotationId);
+              return "<span id=\"".concat(annotationId, "\" class=\"").concat(newClassNames, "\" itemid=\"").concat(entity.id, "\">");
+            });
+          } else {
+            // Switch off.
+            blocks.replace(new RegExp("<span\\s+id=\"(".concat(annotationSelector, ")\"\\sclass=\"([^\"]*)\"\\sitemid=\"[^\"]*\">")), function (match, annotationId, classNames) {
+              var newClassNames = classNames.split(/\s+/).filter(function (x) {
+                return -1 === onClassNames.indexOf(x);
+              });
+              return "<span id=\"".concat(annotationId, "\" class=\"").concat(newClassNames, "\">");
+            });
+          }
+
+          _context2.next = 8;
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])(Object(_Edit_actions__WEBPACK_IMPORTED_MODULE_2__["updateOccurrencesForEntity"])(entity.id, occurrences));
+
+        case 8:
+          // Apply the changes.
+          blocks.apply(); //
+          // Object.values(entity.annotations).forEach(annotation => {
+          //   switchOn(blocks, dispatch(EDITOR_STORE), annotation.annotationId, entity.mainType, entity.id);
+          // });
+          //
+
+          console.info({
+            toggleEntity: entity
+          });
+
+        case 10:
+        case "end":
+          return _context2.stop();
+      }
+    }
+  }, _marked2);
+}
+
+function saga() {
+  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function saga$(_context3) {
     while (1) {
       switch (_context3.prev = _context3.next) {
         case 0:
           _context3.next = 2;
-          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["select"])(_selectors__WEBPACK_IMPORTED_MODULE_5__["getEditor"]);
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeLatest"])(_actions__WEBPACK_IMPORTED_MODULE_4__["default"].requestAnalysis, requestAnalysis);
 
         case 2:
-          editorOps = _context3.sent;
-          console.info({
-            toggleEntity: entity
-          });
+          _context3.next = 4;
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeEvery"])(_Edit_constants_ActionTypes__WEBPACK_IMPORTED_MODULE_3__["TOGGLE_ENTITY"], toggleEntity);
 
         case 4:
         case "end":
@@ -24977,30 +25429,6 @@ function toggleEntity(entity) {
       }
     }
   }, _marked3);
-}
-
-function saga() {
-  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function saga$(_context4) {
-    while (1) {
-      switch (_context4.prev = _context4.next) {
-        case 0:
-          _context4.next = 2;
-          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeLatest"])(_actions__WEBPACK_IMPORTED_MODULE_4__["default"].selectEditor, selectEditor);
-
-        case 2:
-          _context4.next = 4;
-          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeLatest"])([_actions__WEBPACK_IMPORTED_MODULE_4__["default"].selectEditorSucceeded, _actions__WEBPACK_IMPORTED_MODULE_4__["default"].requestAnalysis], requestAnalysis);
-
-        case 4:
-          _context4.next = 6;
-          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeEvery"])(_Edit_constants_ActionTypes__WEBPACK_IMPORTED_MODULE_3__["TOGGLE_ENTITY"], toggleEntity);
-
-        case 6:
-        case "end":
-          return _context4.stop();
-      }
-    }
-  }, _marked4);
 }
 
 /***/ }),

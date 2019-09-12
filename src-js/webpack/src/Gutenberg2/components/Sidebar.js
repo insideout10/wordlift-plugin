@@ -22,7 +22,7 @@ class PluginSidebarContent extends React.Component {
   }
 
   componentDidMount() {
-    store.dispatch(actions.selectEditor("core/editor"));
+    store.dispatch(actions.requestAnalysis());
   }
 }
 

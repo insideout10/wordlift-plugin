@@ -16,10 +16,10 @@ import actions from "./actions";
 import selectors from "./selectors";
 import saga from "./sagas";
 
-const initialState = { editor: null, entities: Map() };
+const initialState = { entities: Map() };
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
-  combineReducers({ entities, annotationFilter, visibilityFilter, editor }),
+  combineReducers({ entities, annotationFilter, visibilityFilter }),
   initialState,
   applyMiddleware(sagaMiddleware, logger)
 );
