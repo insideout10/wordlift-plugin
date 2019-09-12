@@ -1,21 +1,4 @@
-.wl-notice .components-notice {
-  margin: 10px 0; }
-  .wl-notice .components-notice .components-notice__content {
-    margin: 5px 0; }
-
-.editor-block-list__block .textannotation {
-  background-color: rgba(46, 146, 255, 0.2);
-  cursor: pointer; }
-
-.editor-block-list__block .disambiguated {
-  border-bottom: #007aff 2px solid; }
-
-.editor-block-list__block[data-type='wordlift/faceted-search'] [data-block], .editor-block-list__block[data-type='wordlift/navigator'] [data-block], .editor-block-list__block[data-type='wordlift/chord'] [data-block], .editor-block-list__block[data-type='wordlift/geomap'] [data-block], .editor-block-list__block[data-type='wordlift/cloud'] [data-block], .editor-block-list__block[data-type='wordlift/vocabulary'] [data-block], .editor-block-list__block[data-type='wordlift/timeline'] [data-block] {
-  background: rgba(0, 122, 255, 0.1);
-  padding: 5px 10px; }
-  .editor-block-list__block[data-type='wordlift/faceted-search'] [data-block] h4, .editor-block-list__block[data-type='wordlift/navigator'] [data-block] h4, .editor-block-list__block[data-type='wordlift/chord'] [data-block] h4, .editor-block-list__block[data-type='wordlift/geomap'] [data-block] h4, .editor-block-list__block[data-type='wordlift/cloud'] [data-block] h4, .editor-block-list__block[data-type='wordlift/vocabulary'] [data-block] h4, .editor-block-list__block[data-type='wordlift/timeline'] [data-block] h4 {
-    color: #007aff;
-    border-bottom: 1px solid #007aff; }
+.wl-notice .components-notice{margin:10px 0}.wl-notice .components-notice .components-notice__content{margin:5px 0}.editor-block-list__block .textannotation{background-color:rgba(46,146,255,0.2);cursor:pointer}.editor-block-list__block .disambiguated{border-bottom:#007aff 2px solid}.editor-block-list__block[data-type='wordlift/faceted-search'] [data-block],.editor-block-list__block[data-type='wordlift/navigator'] [data-block],.editor-block-list__block[data-type='wordlift/chord'] [data-block],.editor-block-list__block[data-type='wordlift/geomap'] [data-block],.editor-block-list__block[data-type='wordlift/cloud'] [data-block],.editor-block-list__block[data-type='wordlift/vocabulary'] [data-block],.editor-block-list__block[data-type='wordlift/timeline'] [data-block]{background:rgba(0,122,255,0.1);padding:5px 10px}.editor-block-list__block[data-type='wordlift/faceted-search'] [data-block] h4,.editor-block-list__block[data-type='wordlift/navigator'] [data-block] h4,.editor-block-list__block[data-type='wordlift/chord'] [data-block] h4,.editor-block-list__block[data-type='wordlift/geomap'] [data-block] h4,.editor-block-list__block[data-type='wordlift/cloud'] [data-block] h4,.editor-block-list__block[data-type='wordlift/vocabulary'] [data-block] h4,.editor-block-list__block[data-type='wordlift/timeline'] [data-block] h4{color:#007aff;border-bottom:1px solid #007aff}
 
 
 /*# sourceMappingURL=gutenberg.css.map*/
