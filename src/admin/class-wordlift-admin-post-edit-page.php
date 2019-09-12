@@ -112,6 +112,8 @@ class Wordlift_Admin_Post_Edit_Page {
 		 */
 		// plugin_dir_url( __FILE__ ) . 'js/1/edit.js'
 		$script_name = plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/edit';
+
+		wp_enqueue_script('redux', 'https://unpkg.com/redux@latest/dist/redux.min.js');
 		wp_enqueue_script(
 			'wordlift-admin-edit-page', "$script_name.js",
 			array(

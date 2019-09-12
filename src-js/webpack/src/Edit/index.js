@@ -23,9 +23,9 @@
 import "./index.scss";
 // Load the Classification Box.
 import "./index.classification-box";
-// Load the Autocomplete Select.
-import "./index.autocomplete-select";
-// Load the Schema Class Tree.
+// // Load the Autocomplete Select.
+// import "./index.autocomplete-select";
+// // Load the Schema Class Tree.
 // import "./index.schema-class-tree";
-// Load the Schema Properties Form.
+// // Load the Schema Properties Form.
 // import "./index.schema-property-form";

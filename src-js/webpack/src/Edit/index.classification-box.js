@@ -11,8 +11,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { applyMiddleware, createStore } from "redux";
 import thunk from "redux-thunk";
-import logger from 'redux-logger';
-import Provider from "react-redux/es/components/Provider";
+import logger from "redux-logger";
+import { Provider } from "react-redux";
 
 /*
  * Internal dependencies.
