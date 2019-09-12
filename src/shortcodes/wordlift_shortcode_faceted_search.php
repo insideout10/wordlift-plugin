@@ -16,7 +16,7 @@ use Wordlift\Cache\Ttl_Cache;
  * @return array $results
  * @since        3.20.0
  */
-function wl_shortcode_faceted_search_data_ajax( $http_raw_data = null ) {
+function wl_shortcode_faceted_search_data_ajax( $request_body = null ) {
 
 	// Post ID must be defined.
 	if ( ! isset( $_GET['post_id'] ) ) { // WPCS: input var ok; CSRF ok.
@@ -26,8 +26,7 @@ function wl_shortcode_faceted_search_data_ajax( $http_raw_data = null ) {
 	}
 
 	// Extract filtering conditions.
-	$filtering_entity_uris = ( null == $http_raw_data ) ? file_get_contents( 'php://input' ) : $http_raw_data;
-	$filtering_entity_uris = json_decode( $filtering_entity_uris );
+	$filtering_entity_uris = json_decode( $request_body );
 
 	$current_post_id = $_GET['post_id']; // WPCS: input var ok; CSRF ok.
 	$current_post    = get_post( $current_post_id );
@@ -370,13 +369,23 @@ function wl_shortcode_faceted_search_data_wp_json( $http_raw_data = null ) {
 /**
  * Ajax call for the faceted search widget.
  *
+ * @since 3.21.4 fix the cache key by also using the request body.
  * @since 3.21.2 add a caching layer.
  */
 function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 
-	$cache = new Ttl_Cache( "faceted-search", 8 * 60 * 60 ); // 8 hours.
+	// Get the request body. It may contain posts to filter the results.
+	$request_body = ( empty( $http_raw_data ) ? file_get_contents( 'php://input' ) : $http_raw_data );
 
-	$cache_results = $cache->get( $_REQUEST );
+	// Create the cache key.
+	$cache_key = array(
+		'request_body'   => $request_body,
+		'request_params' => $_REQUEST,
+	);
+
+	// Create the TTL cache and try to get the results.
+	$cache         = new Ttl_Cache( "faceted-search", 8 * 60 * 60 ); // 8 hours.
+	$cache_results = $cache->get( $cache_key );
 
 	if ( isset( $cache_results ) ) {
 		header( 'X-WordLift-Cache: HIT' );
@@ -387,10 +396,10 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 
 	header( 'X-WordLift-Cache: MISS' );
 
-	$results = wl_shortcode_faceted_search_data_ajax( $http_raw_data );
+	$results = wl_shortcode_faceted_search_data_ajax( $request_body );
 
 	// Put the result before sending the json to the client, since sending the json will terminate us.
-	$cache->put( $_REQUEST, $results );
+	$cache->put( $cache_key, $results );
 
 	wl_core_send_json( $results );
 

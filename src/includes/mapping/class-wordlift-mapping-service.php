@@ -58,7 +58,7 @@ class Wordlift_Mapping_Service {
 
 		// Hook to `wl_valid_entity_post_types` and to `wl_default_entity_types_for_post_type`.
 		add_filter( 'wl_valid_entity_post_types', array( $this, 'valid_entity_post_types', ), 9 );
-		add_filter( 'wl_default_entity_types_for_post_typewl_default_entity_types_for_post_type', array(
+		add_filter( 'wl_default_entity_types_for_post_type', array(
 			$this,
 			'default_entity_types_for_post_type',
 		), 9, 2 );

@@ -1,54 +1,59 @@
-version: '3'
+version: '3.7'
 
 services:
-
-  wordlift-plugin-db:
-    image: mariadb:10.4
-    restart: always
+  db:
+    image: mariadb:10
     volumes:
-      - wordlift-plugin-db-data:/var/lib/mysql
-      - ./initdb:/docker-entrypoint-initdb.d:ro
+      - db-data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: wordpress
       MYSQL_USER: wordpress
       MYSQL_PASSWORD: password
 
-  wordlift-plugin-wordpress:
-    depends_on:
-      - wordlift-plugin-db
+  wordpress:
     image: wordpress:5.2
-    restart: always
+    depends_on:
+      - db
     volumes:
+      - wordpress-data:/var/www/html
       - ../src:/var/www/html/wp-content/plugins/wordlift
     environment:
-      WORDPRESS_DB_HOST: wordlift-plugin-db
+      WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: password
       WORDPRESS_DB_NAME: wordpress
       WORDPRESS_CONFIG_EXTRA: |
         # Define the site and home URLs.
-        define( 'WP_SITEURL', 'https://wordlift-plugin.localhost' );
+        define( 'WP_SITEURL', 'https://wordlift.localhost' );
         define( 'WP_HOME', WP_SITEURL );
 
         # Add support for the reverse proxy.
         if ( isset( $$_SERVER['HTTP_X_FORWARDED_HOST'] ) ) {
-        	$$_SERVER['HTTP_HOST'] = $$_SERVER['HTTP_X_FORWARDED_HOST'];
+          $$_SERVER['HTTP_HOST'] = $$_SERVER['HTTP_X_FORWARDED_HOST'];
         }
 
-  wordlift-plugin-nginx:
-    depends_on:
-      - wordlift-plugin-wordpress
+  nginx:
     image: nginx:1.17
+    depends_on:
+      - wordpress
     ports:
       - "443:443"
     volumes:
       - ./nginx:/etc/nginx/conf.d
     environment:
-      NGINX_HOST: wordlift-plugin-wordpress
-      NGINX_SERVER_NAME: wordlift-plugin.localhost
+      NGINX_HOST: wordpress
+      NGINX_SERVER_NAME: wordlift.localhost
     command: /bin/bash -c "envsubst '$$NGINX_HOST $$NGINX_SERVER_NAME' < /etc/nginx/conf.d/wordpress.template > /etc/nginx/conf.d/wordpress.conf && nginx -g 'daemon off;'"
 
+  cli:
+    image: wordpress:cli-2.2
+    depends_on:
+      - db
+    user: xfs
+    volumes:
+      - wordpress-data:/var/www/html
+
 volumes:
-  wordlift-plugin-db-data: {}
-  wordlift-plugin-wordpress-data: {}
+  db-data:
+  wordpress-data:
