@@ -742,7 +742,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.21.3';
+		$this->version     = '3.22.0';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -1151,6 +1151,7 @@ class Wordlift {
 		/** Widgets */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-widget.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-related-entities-cloud-widget.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-context-cards.php';
 
 		/*
 		 * Schema.org Services.
@@ -1444,6 +1445,15 @@ class Wordlift {
 			new Wordlift_Term_JsonLd_Adapter( $this->entity_uri_service, $this->jsonld_service );
 		}
 
+		/*
+		 * Initialize the Context Cards Service
+		 *
+		 * @link https://github.com/insideout10/wordlift-plugin/issues/934
+		 *
+		 * @since 3.22.0
+		 */
+		$this->context_cards_service = new Wordlift_Context_Cards_Service();
+
 	}
 
 	/**
@@ -1702,6 +1712,7 @@ class Wordlift {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+		$this->loader->add_action( 'wp_enqueue_scripts', $this->context_cards_service, 'enqueue_scripts' );
 
 		// Hook the content filter service to add entity links.
 		if ( ! defined( 'WL_DISABLE_CONTENT_FILTER' ) || ! WL_DISABLE_CONTENT_FILTER ) {
