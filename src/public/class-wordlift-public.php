@@ -140,6 +140,15 @@ class Wordlift_Public {
 			) );
 		}
 
+		/*
+		 * Register wordlift-cloud script which is shared by
+		 * Context Cards and Navigator
+		 *
+		 * @since 3.22.0
+		 *
+		 */
+		wp_register_script( 'wordlift-cloud', plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/wordlift-cloud.js', array(), true, true );
+
 	}
 
 	/**

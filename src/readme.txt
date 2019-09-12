@@ -142,6 +142,14 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.22.1 (2019-09-12) =
+* Fix: WordLift Icon missing in Gutenberg.
+
+= 3.22.0 (2019-09-12) =
+* Enhancement: [#934](https://github.com/insideout10/wordlift-plugin/issues/934): Display entity content within context cards type
+* Enhancement: [#602](https://github.com/insideout10/wordlift-plugin/issues/602): Improve the Batch Analysis.
+* Enhancement: [#404](https://github.com/insideout10/wordlift-plugin/issues/404): Enhanced Navigator Widget
+
 = 3.21.4 (2019-08-28) =
 * Fix: [#945](https://github.com/insideout10/wordlift-plugin/issues/945): Faceted Search results do not change when posts clicked.
 

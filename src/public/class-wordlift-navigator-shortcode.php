@@ -45,23 +45,11 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 
 		// Extract attributes and set default values.
 		$shortcode_atts = shortcode_atts( array(
-			'title'          => __( 'Related articles', 'wordlift' ),
-			'with_carousel'  => true,
-			'squared_thumbs' => false,
+			'title'             => __( 'Related articles', 'wordlift' ),
+			'limit'             => 4,
+			'template_id'       => '',
+			'post_id'           => ''
 		), $atts );
-
-		foreach (
-			array(
-				'with_carousel',
-				'squared_thumbs',
-			) as $att
-		) {
-
-			// See http://wordpress.stackexchange.com/questions/119294/pass-boolean-value-in-shortcode
-			$shortcode_atts[ $att ] = filter_var(
-				$shortcode_atts[ $att ], FILTER_VALIDATE_BOOLEAN
-			);
-		}
 
 		return $shortcode_atts;
 	}
@@ -80,40 +68,32 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		// attributes extraction and boolean filtering
 		$shortcode_atts = $this->make_shortcode_atts( $atts );
 
-		/*
-		 * Display the navigator only on the single post/page.
-		 *
-		 * @see https://github.com/insideout10/wordlift-plugin/issues/831
-		 *
-		 * @since 3.19.3 we're using `is_singular` instead of `is_single` to allow the navigator also on pages.
-		 */
-		// avoid building the widget when there is a list of posts.
-		if ( ! is_singular() ) {
-			return '';
+		// avoid building the widget when no post_id is specified and there is a list of posts.
+		if ( empty($shortcode_atts['post_id']) && !is_singular() ) {
+			return;
 		}
 
-		$current_post = get_post();
+		$post = !empty($shortcode_atts['post_id']) ? get_post(intval($shortcode_atts['post_id'])) : get_post();
+		$rest_url = $post ? admin_url( sprintf('admin-ajax.php?action=wl_navigator&post_id=%s&limit=%s', $post->ID, $shortcode_atts['limit']) ) : false;
 
-		// Enqueue common shortcode scripts.
-		$this->enqueue_scripts();
+		// avoid building the widget when no valid $rest_url
+		if ( !$rest_url ) {
+			return;
+		}
 
-		// Use the registered style which define an optional dependency to font-awesome.
-		//
-		// @see https://github.com/insideout10/wordlift-plugin/issues/699
-		//		wp_enqueue_style( 'wordlift-ui', dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-ui.min.css' );
-		wp_enqueue_style( 'wordlift-ui' );
-
+		wp_enqueue_script( 'wordlift-cloud' );
 		$navigator_id = uniqid( 'wl-navigator-widget-' );
+		wp_add_inline_script( 'wordlift-cloud', "wordliftCloud.navigator('#".$navigator_id."')" );
 
-		wp_localize_script( 'wordlift-ui', 'wl_navigator_params', array(
-				'ajax_url' => admin_url( 'admin-ajax.php' ),
-				'action'   => 'wl_navigator',
-				'post_id'  => $current_post->ID,
-				'attrs'    => $shortcode_atts,
-			)
+		return sprintf(
+			'<div id="%s" class="%s" data-rest-url="%s" data-title="%s" data-template-id="%s" data-limit="%s"></div>',
+			$navigator_id,
+			'wl-navigator',
+			$rest_url,
+			$shortcode_atts['title'],
+			$shortcode_atts['template_id'],
+			$shortcode_atts['limit']
 		);
-
-		return "<div id='$navigator_id' class='wl-navigator-widget'></div>";
 	}
 
 	/**

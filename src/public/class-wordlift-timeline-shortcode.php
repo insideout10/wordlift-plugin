@@ -117,7 +117,6 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 			'timenav_height_min'               => 150,
 			'marker_height_min'                => 30,
 			'marker_width_min'                 => 100,
-			'marker_padding'                   => 5,
 			'start_at_slide'                   => 0,
 			'start_at_end'                     => FALSE,
 			'menubar_height'                   => 0,

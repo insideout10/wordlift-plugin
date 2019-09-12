@@ -1,6 +1,6 @@
 {
   "name": "wordlift-plugin",
-  "version": "3.22.0-dev",
+  "version": "3.23.0-dev",
   "description": "WordLift Plugin application for the web site public front-end.",
   "main": "index.js",
   "repository": "https://github.com/insideout10/wordlift-plugin",
@@ -25,6 +25,7 @@
     "svg-react-loader": "^0.4.5"
   },
   "dependencies": {
+    "wordlift-cloud": "git+ssh://git@gitlab.com:wordlift/wordlift-navigator-js#5cc79c9ddc31bf8575eebf0b6257d4566372c2cf",
     "@wordlift/wordlift-for-schemaorg": "^1.0",
     "immutable": "^3",
     "prop-types": "^15",
