@@ -105,6 +105,9 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       $rootScope.$broadcast "updateOccurencesForEntity", entity.id, occurrences
 
     $rootScope.$on "entityDeselected", (event, entity, annotationId) ->
+
+      console.debug 'EditorService::$rootScope.$on "entityDeselected" (event)', { event, entity, annotationId }
+
       if annotationId?
         dedisambiguate annotationId, entity
       else
@@ -112,6 +115,9 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
           dedisambiguate annotation.id, entity
 
       occurrences = currentOccurrencesForEntity entity.id
+
+      console.debug 'EditorService::$rootScope.$on "entityDeselected" (event)', { occurrences }
+
       $rootScope.$broadcast "updateOccurencesForEntity", entity.id, occurrences
 
     service =

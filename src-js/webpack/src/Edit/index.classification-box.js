@@ -9,15 +9,11 @@
  */
 import React from "react";
 import ReactDOM from "react-dom";
-import { applyMiddleware, createStore } from "redux";
-import thunk from "redux-thunk";
-import logger from "redux-logger";
 import { Provider } from "react-redux";
-
 /*
  * Internal dependencies.
  */
-import reducer from "./reducers";
+import store from "./stores";
 import App from "./components/App";
 import AnnotationEvent from "./angular/AnnotationEvent";
 import ReceiveAnalysisResultsEvent from "./angular/ReceiveAnalysisResultsEvent";
@@ -29,8 +25,6 @@ import EditorSelectionChangedEvent from "./angular/EditorSelectionChangedEvent";
 wp.wordlift.on("wlEntityList.loaded", function() {
   // Create the `store` with the reducer, using the analysis result as
   // `initialState`.
-  const store = createStore(reducer, applyMiddleware(thunk, logger));
-
   window.store1 = store;
 
   // Render the `React` tree at the `wl-entity-list` element.

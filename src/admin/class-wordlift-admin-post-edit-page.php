@@ -125,7 +125,7 @@ class Wordlift_Admin_Post_Edit_Page {
 		wp_dequeue_script( 'ontrapagesController' );
 
 		// If Gutenberg is enabled for the post, do not load the legacy edit.js.
-		if ( function_exists('use_block_editor_for_post') && use_block_editor_for_post( get_post() ) ) {
+		if ( function_exists( 'use_block_editor_for_post' ) && use_block_editor_for_post( get_post() ) ) {
 			return;
 		}
 
@@ -141,7 +141,6 @@ class Wordlift_Admin_Post_Edit_Page {
 		// plugin_dir_url( __FILE__ ) . 'js/1/edit.js'
 		$script_name = plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/edit';
 
-		wp_enqueue_script('redux', 'https://unpkg.com/redux@latest/dist/redux.min.js');
 		wp_enqueue_script(
 			'wordlift-admin-edit-page', "$script_name.js",
 			array(
@@ -149,6 +148,11 @@ class Wordlift_Admin_Post_Edit_Page {
 				'jquery',
 				// Require wp.ajax.
 				'wp-util',
+				// @@todo: provide the following dependencies when we're in WP < 5.0 (i.e. when these dependencies aren't already defined).
+				'react',
+				'react-dom',
+				'wp-element',
+				'wp-polyfill'
 				/*
 				 * Angular isn't loaded anymore remotely, but it is loaded within wordlift-reloaded.js.
 				 *

@@ -29634,6 +29634,10 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
           action = 'entityDeselected';
         }
       }
+      console.info("onSelectedEntityTile", {
+        action: action,
+        entity: entity
+      });
       scopeId = configuration.getCategoryForType(entity.mainType);
       $log.debug("Action '" + action + "' on entity " + entity.id + " within " + scopeId + " scope");
       if (action === 'entitySelected') {
@@ -30115,7 +30119,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', ['wordlift.e
       return merge(defaults, params);
     };
     service.parse = function(data) {
-      var annotation, annotationId, dt, ea, em, entity, id, index, l, len2, len3, localEntity, local_confidence, m, ref10, ref11, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9;
+      var annotation, annotationId, dt, ea, em, entity, id, index, l, len2, len3, local_confidence, m, ref10, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9;
       dt = this._defaultType;
       if (data.topics != null) {
         data.topics = data.topics.map(function(topic) {
@@ -30126,14 +30130,9 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', ['wordlift.e
         });
       }
       $log.debug("Found " + (Object.keys(configuration.entities).length) + " entities in configuration...", configuration);
-      ref2 = configuration.entities;
+      ref2 = data.entities;
       for (id in ref2) {
-        localEntity = ref2[id];
-        data.entities[id] = localEntity;
-      }
-      ref3 = data.entities;
-      for (id in ref3) {
-        entity = ref3[id];
+        entity = ref2[id];
         if (configuration.currentPostUri === id) {
           delete data.entities[id];
           continue;
@@ -30147,34 +30146,33 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', ['wordlift.e
         if (!entity.sameAs) {
           $log.warn("sameAs missing for entity " + id);
           entity.sameAs = [];
-          if ((ref4 = configuration.entities[id]) != null) {
-            ref4.sameAs = [];
+          if ((ref3 = configuration.entities[id]) != null) {
+            ref3.sameAs = [];
           }
           $log.debug("Schema.org sameAs overridden for entity " + id);
         }
-        if (ref5 = entity.mainType, indexOf.call(this._supportedTypes, ref5) < 0) {
+        if (ref4 = entity.mainType, indexOf.call(this._supportedTypes, ref4) < 0) {
           $log.warn("Schema.org type " + entity.mainType + " for entity " + id + " is not supported from current classification boxes configuration");
           entity.mainType = this._defaultType;
-          if ((ref6 = configuration.entities[id]) != null) {
-            ref6.mainType = this._defaultType;
+          if ((ref5 = configuration.entities[id]) != null) {
+            ref5.mainType = this._defaultType;
           }
           $log.debug("Schema.org type overridden for entity " + id);
         }
         entity.id = id;
-        entity.occurrences = [];
         entity.annotations = {};
       }
-      ref7 = data.annotations;
-      for (id in ref7) {
-        annotation = ref7[id];
+      ref6 = data.annotations;
+      for (id in ref6) {
+        annotation = ref6[id];
         annotation.id = id;
         annotation.entities = {};
         data.annotations[id].entityMatches = (function() {
-          var l, len2, ref8, results1;
-          ref8 = annotation.entityMatches;
+          var l, len2, ref7, results1;
+          ref7 = annotation.entityMatches;
           results1 = [];
-          for (l = 0, len2 = ref8.length; l < len2; l++) {
-            ea = ref8[l];
+          for (l = 0, len2 = ref7.length; l < len2; l++) {
+            ea = ref7[l];
             if (ea.entityId in data.entities) {
               results1.push(ea);
             }
@@ -30185,9 +30183,9 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', ['wordlift.e
           delete data.annotations[id];
           continue;
         }
-        ref8 = data.annotations[id].entityMatches;
-        for (index = l = 0, len2 = ref8.length; l < len2; index = ++l) {
-          ea = ref8[index];
+        ref7 = data.annotations[id].entityMatches;
+        for (index = l = 0, len2 = ref7.length; l < len2; index = ++l) {
+          ea = ref7[index];
           if (!data.entities[ea.entityId].label) {
             data.entities[ea.entityId].label = annotation.text;
             $log.debug("Missing label retrieved from related annotation for entity " + ea.entityId);
@@ -30196,16 +30194,16 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', ['wordlift.e
           data.annotations[id].entities[ea.entityId] = data.entities[ea.entityId];
         }
       }
-      ref9 = data.entities;
-      for (id in ref9) {
-        entity = ref9[id];
-        ref10 = data.annotations;
-        for (annotationId in ref10) {
-          annotation = ref10[annotationId];
+      ref8 = data.entities;
+      for (id in ref8) {
+        entity = ref8[id];
+        ref9 = data.annotations;
+        for (annotationId in ref9) {
+          annotation = ref9[annotationId];
           local_confidence = 1;
-          ref11 = annotation.entityMatches;
-          for (m = 0, len3 = ref11.length; m < len3; m++) {
-            em = ref11[m];
+          ref10 = annotation.entityMatches;
+          for (m = 0, len3 = ref10.length; m < len3; m++) {
+            em = ref10[m];
             if ((em.entityId != null) && em.entityId === id) {
               local_confidence = em.confidence;
             }
@@ -30462,6 +30460,11 @@ angular.module('wordlift.editpost.widget.services.EditorService', ['wordlift.edi
     });
     $rootScope.$on("entityDeselected", function(event, entity, annotationId) {
       var annotation, id, occurrences, ref;
+      console.debug('EditorService::$rootScope.$on "entityDeselected" (event)', {
+        event: event,
+        entity: entity,
+        annotationId: annotationId
+      });
       if (annotationId != null) {
         dedisambiguate(annotationId, entity);
       } else {
@@ -30472,6 +30475,9 @@ angular.module('wordlift.editpost.widget.services.EditorService', ['wordlift.edi
         }
       }
       occurrences = currentOccurrencesForEntity(entity.id);
+      console.debug('EditorService::$rootScope.$on "entityDeselected" (event)', {
+        occurrences: occurrences
+      });
       return $rootScope.$broadcast("updateOccurencesForEntity", entity.id, occurrences);
     });
     service = {

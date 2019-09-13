@@ -331,7 +331,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     RelatedPostDataRetrieverService.load entityIds
 
   $scope.onSelectedEntityTile = (entity)->
-
     # Detect if the entity has to be selected or unselected
     action = 'entitySelected'
     # If bottom / up disambiguation mode is on
@@ -347,7 +346,10 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
       if entity.occurrences.length > 0
         action = 'entityDeselected'
 
+    console.info "onSelectedEntityTile", { action, entity }
+
     scopeId = configuration.getCategoryForType entity.mainType
+
     $log.debug "Action '#{action}' on entity #{entity.id} within #{scopeId} scope"
 
     if action is 'entitySelected'

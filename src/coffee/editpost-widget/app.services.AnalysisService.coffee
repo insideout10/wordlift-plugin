@@ -117,8 +117,9 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 
       $log.debug "Found #{Object.keys(configuration.entities).length} entities in configuration...", configuration
 
-      for id, localEntity of configuration.entities
-        data.entities[id] = localEntity
+      # This isn't needed anymore as it is delegated to the WP analysis end-point to merge disambiguated entities.
+#      for id, localEntity of configuration.entities
+#        data.entities[id] = localEntity
 
       for id, entity of data.entities
 
@@ -149,7 +150,8 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
           $log.debug "Schema.org type overridden for entity #{id}"
 
         entity.id = id
-        entity.occurrences = []
+        # This is not necessary anymore because Analysis_Response_Ops (in PHP) populates it.
+#        entity.occurrences = [] if not entity.occurrences?
         entity.annotations = {}
         # See #550: the confidence is set by the server.
         # entity.confidence = 1

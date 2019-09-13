@@ -703,7 +703,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     RelatedPostDataRetrieverService.load entityIds
 
   $scope.onSelectedEntityTile = (entity)->
-
     # Detect if the entity has to be selected or unselected
     action = 'entitySelected'
     # If bottom / up disambiguation mode is on
@@ -719,7 +718,10 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
       if entity.occurrences.length > 0
         action = 'entityDeselected'
 
+    console.info "onSelectedEntityTile", { action, entity }
+
     scopeId = configuration.getCategoryForType entity.mainType
+
     $log.debug "Action '#{action}' on entity #{entity.id} within #{scopeId} scope"
 
     if action is 'entitySelected'
@@ -1166,8 +1168,9 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 
       $log.debug "Found #{Object.keys(configuration.entities).length} entities in configuration...", configuration
 
-      for id, localEntity of configuration.entities
-        data.entities[id] = localEntity
+      # This isn't needed anymore as it is delegated to the WP analysis end-point to merge disambiguated entities.
+#      for id, localEntity of configuration.entities
+#        data.entities[id] = localEntity
 
       for id, entity of data.entities
 
@@ -1198,7 +1201,8 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
           $log.debug "Schema.org type overridden for entity #{id}"
 
         entity.id = id
-        entity.occurrences = []
+        # This is not necessary anymore because Analysis_Response_Ops (in PHP) populates it.
+#        entity.occurrences = [] if not entity.occurrences?
         entity.annotations = {}
         # See #550: the confidence is set by the server.
         # entity.confidence = 1
@@ -1380,6 +1384,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
     service
 
 ])
+
 # Create the main AngularJS module, and set it dependent on controllers and directives.
 angular.module('wordlift.editpost.widget.services.EditorService', [
   'wordlift.editpost.widget.services.EditorAdapter',
@@ -1487,6 +1492,9 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       $rootScope.$broadcast "updateOccurencesForEntity", entity.id, occurrences
 
     $rootScope.$on "entityDeselected", (event, entity, annotationId) ->
+
+      console.debug 'EditorService::$rootScope.$on "entityDeselected" (event)', { event, entity, annotationId }
+
       if annotationId?
         dedisambiguate annotationId, entity
       else
@@ -1494,6 +1502,9 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
           dedisambiguate annotation.id, entity
 
       occurrences = currentOccurrencesForEntity entity.id
+
+      console.debug 'EditorService::$rootScope.$on "entityDeselected" (event)', { occurrences }
+
       $rootScope.$broadcast "updateOccurencesForEntity", entity.id, occurrences
 
     service =

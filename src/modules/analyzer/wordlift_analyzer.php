@@ -74,8 +74,19 @@ function wl_analyze_content( $content ) {
 	 * @see https://github.com/insideout10/wordlift-plugin/issues/944
 	 * @since 3.21.5
 	 */
+
+	// Get the actual content sent to the analysis, so that we can pass it to the Analysis_Response_Ops to populate
+	// the occurrences for the local entities.
+	if ( 0 === strpos( $content_type, 'application/json' ) ) {
+		$request_json    = json_decode( $content, JSON_OBJECT_AS_ARRAY );
+		$request_content = $request_json['content'];
+	} else {
+		$request_content = $content;
+	}
+
 	return Analysis_Response_Ops::create( $json )
 	                            ->make_entities_local()
+	                            ->add_occurrences( $request_content )
 	                            ->to_string();
 
 }
