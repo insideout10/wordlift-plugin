@@ -24,7 +24,6 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 module.exports = {
   ...defaultConfig,
   entry: {
-    vendor: "",
     bundle: "./src/Public/index.js",
     edit: "./src/Edit/index.js",
     term: "./src/Term/index.js",

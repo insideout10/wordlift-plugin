@@ -135,7 +135,7 @@ class EntityTile extends React.Component {
    * @since 3.11.0
    */
   componentDidUpdate() {
-    if (this.state.open && this.setWrapperRef) {
+    if (this.state.open && this.setWrapperRef && this.setWrapperRef.focus) {
       this.setWrapperRef.focus();
     }
   }
@@ -150,6 +150,8 @@ class EntityTile extends React.Component {
   setWrapperRef(element) {
     // Set the reference to the wrapper.
     this.setWrapperRef = element;
+
+    console.info("setWrapperRef", { element });
   }
 
   // /**

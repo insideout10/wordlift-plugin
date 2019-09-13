@@ -39,9 +39,10 @@ class Wordlift_Admin_Post_Edit_Page {
 	/**
 	 * Create the {@link Wordlift_Admin_Post_Edit_Page} instance.
 	 *
+	 * @param \Wordlift $plugin The {@link Wordlift} plugin instance.
+	 *
 	 * @since 3.11.0
 	 *
-	 * @param \Wordlift $plugin The {@link Wordlift} plugin instance.
 	 */
 	function __construct( $plugin ) {
 
@@ -55,16 +56,38 @@ class Wordlift_Admin_Post_Edit_Page {
 		}
 
 		// Define the callbacks.
-		$callback = array( $this, 'enqueue_scripts', );
-		$callback_gutenberg = array( $this, 'enqueue_scripts_gutenberg', );
-		$callback_block_categories = array($this, 'block_categories');
+		$callback                  = array( $this, 'enqueue_scripts', );
+		$callback_gutenberg        = array( $this, 'enqueue_scripts_gutenberg', );
+		$callback_block_categories = array( $this, 'block_categories' );
 
 		// Set a hook to enqueue scripts only when the edit page is displayed.
 		add_action( 'admin_print_scripts-post.php', $callback );
 		add_action( 'admin_print_scripts-post-new.php', $callback );
+
 		add_action( 'enqueue_block_editor_assets', $callback_gutenberg );
 
 		$this->plugin = $plugin;
+	}
+
+	/**
+	 * Check whether the current post opens with G'berg or not.
+	 *
+	 * @return bool True if G'berg is used otherwise false.
+	 * @since 3.22.3
+	 */
+	function is_gutenberg_page() {
+		if ( function_exists( 'is_gutenberg_page' ) && is_gutenberg_page() ) {
+			// The Gutenberg plugin is on.
+			return true;
+		}
+
+		$current_screen = get_current_screen();
+		if ( method_exists( $current_screen, 'is_block_editor' ) && $current_screen->is_block_editor() ) {
+			// Gutenberg page on 5+.
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -88,6 +111,11 @@ class Wordlift_Admin_Post_Edit_Page {
 	 * @since 3.11.0
 	 */
 	public function enqueue_scripts() {
+
+		// Bail out if this is G'berg.
+		if ( $this->is_gutenberg_page() ) {
+			return;
+		}
 
 		// Dequeue potentially conflicting ontrapages angular scripts which any *are not* used on the edit screen.
 		//
@@ -161,7 +189,7 @@ class Wordlift_Admin_Post_Edit_Page {
 				'wp-edit-post',
 				'wp-plugins',
 				'wp-data',
-				'wp-annotations'
+				'wp-annotations',
 			),
 			$this->plugin->get_version(),
 			false
