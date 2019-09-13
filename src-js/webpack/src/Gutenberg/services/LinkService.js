@@ -1,4 +1,5 @@
 /* globals wp, wlSettings */
+
 /**
  * Services: Link Service.
  *
@@ -125,34 +126,14 @@ class LinkService {
    *     otherwise false.
    */
   getLink(occurrences) {
-    let content = "";
-
-    wp.data
-      .select("core/editor")
-      .getBlocks()
-      .forEach((block, blockIndex) => {
-        if (block.attributes && block.attributes.content) {
-          content = content + block.attributes.content;
-        }
-      });
-
-    let contentElem = document.createElement("div");
-    contentElem.innerHTML = content;
-
     return occurrences.reduce((acc, id) => {
-      const selector = id.replace("urn:", "urn\\3A ");
-      if (
-        contentElem.querySelectorAll("#" + selector + ".wl-no-link").length === 0 &&
-        contentElem.querySelectorAll("#" + selector + ".wl-link").length === 0
-      ) {
-        return false;
-      }
-      return acc || this.linkByDefault
-        ? !contentElem.querySelectorAll("#" + selector + ".wl-no-link").length
-        : !!contentElem.querySelectorAll("#" + selector + ".wl-link").length;
+      const selector = `.edit-post-visual-editor #${id.replace(":", "\\:")}`;
+      const classList = document.querySelector(selector).classList;
+
+      return acc || (this.linkByDefault ? !classList.contains("wl-no-link") : classList.contains("wl-link"));
     }, false);
   }
 }
 
 // Finally export the `LinkService`.
-export default new LinkService("1" === wlSettings.link_by_default);
+export default new LinkService("1" === wlSettings["link_by_default"]);
