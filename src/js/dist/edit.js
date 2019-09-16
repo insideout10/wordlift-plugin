@@ -28547,9 +28547,9 @@ var entities = function entities() {
       return Object(immutable__WEBPACK_IMPORTED_MODULE_1__["Map"])(action.results.entities).map(function (x) {
         return Object.assign({}, x, {
           link: _services_LinkService__WEBPACK_IMPORTED_MODULE_4__["default"].getLink(x.occurrences),
-          local: 0 === x.id.indexOf(wlSettings.datasetUri),
+          local: 0 === x.id.indexOf(wlSettings["datasetUri"]),
           w: _services_WsService__WEBPACK_IMPORTED_MODULE_5__["default"].getW(x),
-          edit: 'no' !== wlSettings.can_create_entities,
+          edit: "no" !== wlSettings["can_create_entities"],
           duplicateLabel: 1 < labels.get(x.label).count()
         });
       }) // Sort by confidence.
@@ -28573,7 +28573,7 @@ var entities = function entities() {
 
     case _constants_ActionTypes__WEBPACK_IMPORTED_MODULE_2__["SET_CURRENT_ENTITY"]:
       // Call the `EditPostWidgetController` to set the current entity.
-      Object(_angular_EditPostWidgetController__WEBPACK_IMPORTED_MODULE_3__["default"])().$apply(Object(_angular_EditPostWidgetController__WEBPACK_IMPORTED_MODULE_3__["default"])().setCurrentEntity(action.entity, 'entity')); // Finally return the original state.
+      Object(_angular_EditPostWidgetController__WEBPACK_IMPORTED_MODULE_3__["default"])().$apply(Object(_angular_EditPostWidgetController__WEBPACK_IMPORTED_MODULE_3__["default"])().setCurrentEntity(action.entity, "entity")); // Finally return the original state.
 
       return state;
     // Toggle the link/no link on entity's occurrences.

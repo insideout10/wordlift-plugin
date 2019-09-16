@@ -23139,9 +23139,9 @@ var entities = function entities() {
       return Object(immutable__WEBPACK_IMPORTED_MODULE_1__["Map"])(action.results.entities).map(function (x) {
         return Object.assign({}, x, {
           link: _services_LinkService__WEBPACK_IMPORTED_MODULE_4__["default"].getLink(x.occurrences),
-          local: 0 === x.id.indexOf(wlSettings.datasetUri),
+          local: 0 === x.id.indexOf(wlSettings["datasetUri"]),
           w: _services_WsService__WEBPACK_IMPORTED_MODULE_5__["default"].getW(x),
-          edit: 'no' !== wlSettings.can_create_entities,
+          edit: "no" !== wlSettings["can_create_entities"],
           duplicateLabel: 1 < labels.get(x.label).count()
         });
       }) // Sort by confidence.
@@ -23165,7 +23165,7 @@ var entities = function entities() {
 
     case _constants_ActionTypes__WEBPACK_IMPORTED_MODULE_2__["SET_CURRENT_ENTITY"]:
       // Call the `EditPostWidgetController` to set the current entity.
-      Object(_angular_EditPostWidgetController__WEBPACK_IMPORTED_MODULE_3__["default"])().$apply(Object(_angular_EditPostWidgetController__WEBPACK_IMPORTED_MODULE_3__["default"])().setCurrentEntity(action.entity, 'entity')); // Finally return the original state.
+      Object(_angular_EditPostWidgetController__WEBPACK_IMPORTED_MODULE_3__["default"])().$apply(Object(_angular_EditPostWidgetController__WEBPACK_IMPORTED_MODULE_3__["default"])().setCurrentEntity(action.entity, "entity")); // Finally return the original state.
 
       return state;
     // Toggle the link/no link on entity's occurrences.
@@ -25042,70 +25042,38 @@ var requestAnalysis = Object(redux_actions__WEBPACK_IMPORTED_MODULE_0__["createA
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return parseAnalysisResponse; });
-var defaultType = "thing";
-function parseAnalysisResponse(configuration, data) {
-  var annotation, annotationId, ea, em, entity, i, id, index, j, len, len1, localEntity, local_confidence, ref, ref1, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9; // TMP ... Should be done on WLS side
-  //      unless data.topics?
-  //        data.topics = []
-
-  if (data.topics != null) {
-    data.topics = data.topics.map(function (topic) {
-      topic.id = topic.uri;
-      topic.occurrences = [];
-      topic.mainType = defaultType;
-      return topic;
-    });
-  }
-
-  ref = configuration.entities;
+/* harmony default export */ __webpack_exports__["default"] = (function (data) {
+  var annotation, ea, entity, i, id, index, len, ref, ref1, ref2;
+  ref = data.entities;
 
   for (id in ref) {
-    localEntity = ref[id];
-    data.entities[id] = localEntity;
+    entity = ref[id];
+    entity.id = id;
+
+    if (entity.occurrences == null) {
+      entity.occurrences = [];
+    }
+
+    if (entity.annotations == null) {
+      entity.annotations = {};
+    }
   }
 
-  ref1 = data.entities;
+  ref1 = data.annotations;
 
   for (id in ref1) {
-    entity = ref1[id]; // Remove the current entity from the proposed entities.
-    // See https://github.com/insideout10/wordlift-plugin/issues/437
-    // See https://github.com/insideout10/wordlift-plugin/issues/345
-
-    if (configuration.currentPostUri === id) {
-      delete data.entities[id];
-      continue;
-    }
-
-    if (!entity.sameAs) {
-      entity.sameAs = [];
-
-      if ((ref2 = configuration.entities[id]) != null) {
-        ref2.sameAs = [];
-      }
-    }
-
-    entity.id = id;
-    entity.occurrences = [];
-    entity.annotations = {};
-  }
-
-  ref5 = data.annotations; // See #550: the confidence is set by the server.
-  // entity.confidence = 1
-
-  for (id in ref5) {
-    annotation = ref5[id];
+    annotation = ref1[id];
     annotation.id = id;
     annotation.entities = {}; // Filter out annotations that don't have a corresponding entity. The entities list might be filtered, in order
     // to remove the local entity.
 
     data.annotations[id].entityMatches = function () {
-      var i, len, ref6, results;
-      ref6 = annotation.entityMatches;
+      var i, len, ref2, results;
+      ref2 = annotation.entityMatches;
       results = [];
 
-      for (i = 0, len = ref6.length; i < len; i++) {
-        ea = ref6[i];
+      for (i = 0, len = ref2.length; i < len; i++) {
+        ea = ref2[i];
 
         if (ea.entityId in data.entities) {
           results.push(ea);
@@ -25123,13 +25091,18 @@ function parseAnalysisResponse(configuration, data) {
       continue;
     }
 
-    ref6 = data.annotations[id].entityMatches;
+    ref2 = data.annotations[id].entityMatches;
 
-    for (index = i = 0, len = ref6.length; i < len; index = ++i) {
-      ea = ref6[index];
+    for (index = i = 0, len = ref2.length; i < len; index = ++i) {
+      ea = ref2[index];
 
       if (!data.entities[ea.entityId].label) {
         data.entities[ea.entityId].label = annotation.text;
+        $log.debug("Missing label retrieved from related annotation for entity ".concat(ea.entityId));
+      }
+
+      if (data.entities[ea.entityId].annotations == null) {
+        data.entities[ea.entityId].annotations = {};
       }
 
       data.entities[ea.entityId].annotations[id] = annotation;
@@ -25137,31 +25110,8 @@ function parseAnalysisResponse(configuration, data) {
     }
   }
 
-  ref7 = data.entities; // TODO move this calculation on the server
-
-  for (id in ref7) {
-    entity = ref7[id];
-    ref8 = data.annotations;
-
-    for (annotationId in ref8) {
-      annotation = ref8[annotationId];
-      local_confidence = 1;
-      ref9 = annotation.entityMatches;
-
-      for (j = 0, len1 = ref9.length; j < len1; j++) {
-        em = ref9[j];
-
-        if (em.entityId != null && em.entityId === id) {
-          local_confidence = em.confidence;
-        }
-      }
-
-      entity.confidence = entity.confidence * local_confidence;
-    }
-  }
-
   return data;
-}
+});
 
 /***/ }),
 
@@ -25298,7 +25248,7 @@ var _wp$data = wp.data,
 // }
 
 function requestAnalysis() {
-  var editorOps, request, response;
+  var editorOps, request, response, parsed;
   return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function requestAnalysis$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
@@ -25318,10 +25268,15 @@ function requestAnalysis() {
         case 4:
           response = _context.sent;
           embedAnalysis(editorOps, response);
-          _context.next = 8;
-          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])(Object(_Edit_actions__WEBPACK_IMPORTED_MODULE_2__["receiveAnalysisResults"])(Object(_compat__WEBPACK_IMPORTED_MODULE_6__["default"])(window["wordlift"], response)));
+          parsed = Object(_compat__WEBPACK_IMPORTED_MODULE_6__["default"])(response);
+          console.debug({
+            response: response,
+            parsed: parsed
+          });
+          _context.next = 10;
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])(Object(_Edit_actions__WEBPACK_IMPORTED_MODULE_2__["receiveAnalysisResults"])(parsed));
 
-        case 8:
+        case 10:
         case "end":
           return _context.stop();
       }

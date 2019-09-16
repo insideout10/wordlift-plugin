@@ -1171,46 +1171,10 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', ['wordlift.e
       return merge(defaults, params);
     };
     service.parse = function(data) {
-      var annotation, annotationId, dt, ea, em, entity, id, index, l, len2, len3, local_confidence, m, ref10, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9;
-      dt = this._defaultType;
-      if (data.topics != null) {
-        data.topics = data.topics.map(function(topic) {
-          topic.id = topic.uri;
-          topic.occurrences = [];
-          topic.mainType = dt;
-          return topic;
-        });
-      }
-      $log.debug("Found " + (Object.keys(configuration.entities).length) + " entities in configuration...", configuration);
+      var annotation, ea, entity, id, index, l, len2, ref2, ref3, ref4;
       ref2 = data.entities;
       for (id in ref2) {
         entity = ref2[id];
-        if (configuration.currentPostUri === id) {
-          delete data.entities[id];
-          continue;
-        }
-        if (!entity.label) {
-          $log.warn("Label missing for entity " + id);
-        }
-        if (!entity.description) {
-          $log.warn("Description missing for entity " + id);
-        }
-        if (!entity.sameAs) {
-          $log.warn("sameAs missing for entity " + id);
-          entity.sameAs = [];
-          if ((ref3 = configuration.entities[id]) != null) {
-            ref3.sameAs = [];
-          }
-          $log.debug("Schema.org sameAs overridden for entity " + id);
-        }
-        if (ref4 = entity.mainType, indexOf.call(this._supportedTypes, ref4) < 0) {
-          $log.warn("Schema.org type " + entity.mainType + " for entity " + id + " is not supported from current classification boxes configuration");
-          entity.mainType = this._defaultType;
-          if ((ref5 = configuration.entities[id]) != null) {
-            ref5.mainType = this._defaultType;
-          }
-          $log.debug("Schema.org type overridden for entity " + id);
-        }
         entity.id = id;
         if (entity.occurrences == null) {
           entity.occurrences = [];
@@ -1219,53 +1183,19 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', ['wordlift.e
           entity.annotations = {};
         }
       }
-      ref6 = data.annotations;
-      for (id in ref6) {
-        annotation = ref6[id];
+      ref3 = data.annotations;
+      for (id in ref3) {
+        annotation = ref3[id];
         annotation.id = id;
         annotation.entities = {};
-        data.annotations[id].entityMatches = (function() {
-          var l, len2, ref7, results1;
-          ref7 = annotation.entityMatches;
-          results1 = [];
-          for (l = 0, len2 = ref7.length; l < len2; l++) {
-            ea = ref7[l];
-            if (ea.entityId in data.entities) {
-              results1.push(ea);
-            }
-          }
-          return results1;
-        })();
-        if (0 === data.annotations[id].entityMatches.length) {
-          delete data.annotations[id];
-          continue;
-        }
-        ref7 = data.annotations[id].entityMatches;
-        for (index = l = 0, len2 = ref7.length; l < len2; index = ++l) {
-          ea = ref7[index];
-          if (!data.entities[ea.entityId].label) {
-            data.entities[ea.entityId].label = annotation.text;
-            $log.debug("Missing label retrieved from related annotation for entity " + ea.entityId);
+        ref4 = data.annotations[id].entityMatches;
+        for (index = l = 0, len2 = ref4.length; l < len2; index = ++l) {
+          ea = ref4[index];
+          if (data.entities[ea.entityId].annotations == null) {
+            data.entities[ea.entityId].annotations = {};
           }
           data.entities[ea.entityId].annotations[id] = annotation;
           data.annotations[id].entities[ea.entityId] = data.entities[ea.entityId];
-        }
-      }
-      ref8 = data.entities;
-      for (id in ref8) {
-        entity = ref8[id];
-        ref9 = data.annotations;
-        for (annotationId in ref9) {
-          annotation = ref9[annotationId];
-          local_confidence = 1;
-          ref10 = annotation.entityMatches;
-          for (m = 0, len3 = ref10.length; m < len3; m++) {
-            em = ref10[m];
-            if ((em.entityId != null) && em.entityId === id) {
-              local_confidence = em.confidence;
-            }
-          }
-          entity.confidence = entity.confidence * local_confidence;
         }
       }
       return data;
@@ -1327,16 +1257,15 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', ['wordlift.e
       return $rootScope.$broadcast("analysisServiceStatusUpdated", status);
     };
     service.perform = function(content) {
-      var annotations, promise;
+      var promise;
       if (service._currentAnalysis) {
         $log.warn("Analysis already run! Nothing to do ...");
         service._updateStatus(false);
         return;
       }
       service._updateStatus(true);
-      annotations = AnnotationParser.parse(EditorAdapter.getHTML());
       $log.debug('Requesting analysis...');
-      promise = this._innerPerform(content, annotations);
+      promise = this._innerPerform(content, {});
       promise.then(function(response) {
         var result;
         if ((response.data.success != null) && !response.data.success) {
@@ -1791,6 +1720,7 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', []).p
             return category.id;
           }
         }
+        return "what";
       };
       _configuration.getTypesForCategoryId = function(categoryId) {
         var category, j, len, ref;

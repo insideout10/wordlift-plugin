@@ -42,7 +42,11 @@ function* requestAnalysis() {
 
   embedAnalysis(editorOps, response);
 
-  yield put(receiveAnalysisResults(parseAnalysisResponse(window["wordlift"], response)));
+  const parsed = parseAnalysisResponse(response);
+
+  console.debug( {response, parsed} );
+
+  yield put(receiveAnalysisResults(parsed));
 }
 
 function embedAnalysis(editorOps, response) {
