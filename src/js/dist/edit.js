@@ -24538,6 +24538,7 @@ _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(watchForS
 /*#__PURE__*/
 _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(saga);
 
+/* global wp */
 
 
 
@@ -24561,7 +24562,7 @@ function loadItems(_ref) {
 
         case 3:
           _context.next = 5;
-          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_2__["call"])(redux_saga_effects__WEBPACK_IMPORTED_MODULE_2__["delay"], 500);
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_2__["delay"])(500);
 
         case 5:
           // eslint-disable-next-line
@@ -28577,13 +28578,6 @@ var entities = function entities() {
       }) //          // Then resort them by label.
       //          .sortBy( x => x.label.toLowerCase() )
       ;
-    // Legacy: set the current entity on the `EditPostWidgetController`.
-
-    case _constants_ActionTypes__WEBPACK_IMPORTED_MODULE_2__["SET_CURRENT_ENTITY"]:
-      // Call the `EditPostWidgetController` to set the current entity.
-      Object(_angular_EditPostWidgetController__WEBPACK_IMPORTED_MODULE_3__["default"])().$apply(Object(_angular_EditPostWidgetController__WEBPACK_IMPORTED_MODULE_3__["default"])().setCurrentEntity(action.entity, "entity")); // Finally return the original state.
-
-      return state;
 
     case _constants_ActionTypes__WEBPACK_IMPORTED_MODULE_2__["TOGGLE_LINK_SUCCESS"]:
       var _action$payload = action.payload,
@@ -29079,6 +29073,9 @@ _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(toggleEnt
 _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(toggleLink),
     _marked3 =
 /*#__PURE__*/
+_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(setCurrentEntity),
+    _marked4 =
+/*#__PURE__*/
 _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(sagas);
 
 /**
@@ -29151,29 +29148,49 @@ function toggleLink(_ref) {
     }
   }, _marked2);
 }
+
+function setCurrentEntity(entity) {
+  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function setCurrentEntity$(_context3) {
+    while (1) {
+      switch (_context3.prev = _context3.next) {
+        case 0:
+          // Call the `EditPostWidgetController` to set the current entity.
+          Object(_angular_EditPostWidgetController__WEBPACK_IMPORTED_MODULE_3__["default"])().$apply(Object(_angular_EditPostWidgetController__WEBPACK_IMPORTED_MODULE_3__["default"])().setCurrentEntity(entity, "entity"));
+
+        case 1:
+        case "end":
+          return _context3.stop();
+      }
+    }
+  }, _marked3);
+}
 /**
  * Connect the side effects.
  */
 
 
 function sagas() {
-  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function sagas$(_context3) {
+  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function sagas$(_context4) {
     while (1) {
-      switch (_context3.prev = _context3.next) {
+      switch (_context4.prev = _context4.next) {
         case 0:
-          _context3.next = 2;
+          _context4.next = 2;
           return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeEvery"])(_constants_ActionTypes__WEBPACK_IMPORTED_MODULE_2__["TOGGLE_ENTITY"], toggleEntity);
 
         case 2:
-          _context3.next = 4;
+          _context4.next = 4;
           return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeEvery"])(_constants_ActionTypes__WEBPACK_IMPORTED_MODULE_2__["TOGGLE_LINK"], toggleLink);
 
         case 4:
+          _context4.next = 6;
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeEvery"])(_constants_ActionTypes__WEBPACK_IMPORTED_MODULE_2__["SET_CURRENT_ENTITY"], setCurrentEntity);
+
+        case 6:
         case "end":
-          return _context3.stop();
+          return _context4.stop();
       }
     }
-  }, _marked3);
+  }, _marked4);
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (sagas);

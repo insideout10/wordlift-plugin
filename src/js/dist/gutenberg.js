@@ -20475,6 +20475,7 @@ _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(watchForS
 /*#__PURE__*/
 _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(saga);
 
+/* global wp */
 
 
 
@@ -20498,7 +20499,7 @@ function loadItems(_ref) {
 
         case 3:
           _context.next = 5;
-          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_2__["call"])(redux_saga_effects__WEBPACK_IMPORTED_MODULE_2__["delay"], 500);
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_2__["delay"])(500);
 
         case 5:
           // eslint-disable-next-line
@@ -23169,13 +23170,6 @@ var entities = function entities() {
       }) //          // Then resort them by label.
       //          .sortBy( x => x.label.toLowerCase() )
       ;
-    // Legacy: set the current entity on the `EditPostWidgetController`.
-
-    case _constants_ActionTypes__WEBPACK_IMPORTED_MODULE_2__["SET_CURRENT_ENTITY"]:
-      // Call the `EditPostWidgetController` to set the current entity.
-      Object(_angular_EditPostWidgetController__WEBPACK_IMPORTED_MODULE_3__["default"])().$apply(Object(_angular_EditPostWidgetController__WEBPACK_IMPORTED_MODULE_3__["default"])().setCurrentEntity(action.entity, "entity")); // Finally return the original state.
-
-      return state;
 
     case _constants_ActionTypes__WEBPACK_IMPORTED_MODULE_2__["TOGGLE_LINK_SUCCESS"]:
       var _action$payload = action.payload,

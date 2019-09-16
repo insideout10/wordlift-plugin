@@ -66,14 +66,6 @@ const entities = function(state = Map(), action) {
         //          .sortBy( x => x.label.toLowerCase() )
       );
 
-    // Legacy: set the current entity on the `EditPostWidgetController`.
-    case types.SET_CURRENT_ENTITY:
-      // Call the `EditPostWidgetController` to set the current entity.
-      EditPostWidgetController().$apply(EditPostWidgetController().setCurrentEntity(action.entity, "entity"));
-
-      // Finally return the original state.
-      return state;
-
     case TOGGLE_LINK_SUCCESS:
       const { id, link } = action.payload;
 

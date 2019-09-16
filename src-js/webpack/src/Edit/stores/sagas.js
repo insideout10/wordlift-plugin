@@ -13,11 +13,11 @@ import { select, put, takeEvery } from "redux-saga/effects";
 /**
  * Internal dependencies.
  */
-import { TOGGLE_ENTITY, TOGGLE_LINK } from "../constants/ActionTypes";
+import { SET_CURRENT_ENTITY, TOGGLE_ENTITY, TOGGLE_LINK, default as types } from "../constants/ActionTypes";
 import EditPostWidgetController from "../angular/EditPostWidgetController";
 import { getEntity } from "./selectors";
 import LinkService from "../services/LinkService";
-import { toggleLinkSuccess } from '../actions'
+import { toggleLinkSuccess } from "../actions";
 
 /**
  * Handle the {@link TOGGLE_ENTITY} action.
@@ -29,26 +29,22 @@ function* toggleEntity(payload) {
   EditPostWidgetController().$apply(EditPostWidgetController().onSelectedEntityTile(entity));
 }
 
-function* toggleLink({entity}) {
+function* toggleLink({ entity }) {
   // Toggle the link/no link on entity's occurrences.
   // Toggle the link on the occurrences.
   LinkService.setLink(entity.occurrences, !entity.link);
 
-  yield put(toggleLinkSuccess({
-    id: entity.id,
-    link: LinkService.getLink(entity.occurrences)
-  }));
-  //
-  // // Update the entity in the state.
-  // return state.set(
-  //   entity.id,
-  //   // A new object instance with the existing props and the new
-  //   // occurrences.
-  //   Object.assign({}, state.get(entity.id), {
-  //     occurrences: entity.occurrences,
-  //     link: LinkService.getLink(entity.occurrences)
-  //   })
-  // );
+  yield put(
+    toggleLinkSuccess({
+      id: entity.id,
+      link: LinkService.getLink(entity.occurrences)
+    })
+  );
+}
+
+function* setCurrentEntity(entity) {
+  // Call the `EditPostWidgetController` to set the current entity.
+  EditPostWidgetController().$apply(EditPostWidgetController().setCurrentEntity(entity, "entity"));
 }
 
 /**
@@ -57,6 +53,7 @@ function* toggleLink({entity}) {
 function* sagas() {
   yield takeEvery(TOGGLE_ENTITY, toggleEntity);
   yield takeEvery(TOGGLE_LINK, toggleLink);
+  yield takeEvery(SET_CURRENT_ENTITY, setCurrentEntity);
 }
 
 export default sagas;

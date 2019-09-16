@@ -1,3 +1,5 @@
+/* global wp */
+
 import { eventChannel } from "redux-saga";
 import { call, delay, fork, put, race, select, take, takeEvery, takeLatest } from "redux-saga/effects";
 
@@ -17,7 +19,7 @@ import EditPostWidgetController from "../../angular/EditPostWidgetController";
 function* loadItems({ payload }) {
   if ("undefined" === typeof payload || "" === payload) return;
 
-  yield call(delay, 500);
+  yield delay(500);
 
   // eslint-disable-next-line
   "undefined" !== typeof wp.wordlift && wp.wordlift.trigger("loading", true);
