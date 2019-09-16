@@ -29,14 +29,63 @@ export class Blocks {
   /**
    *
    * @param blocks
+   * @param dispatch
    */
   constructor(blocks, dispatch) {
+    this._blockSeparator = ".\n";
+    this._blockSeparatorLength = this._blockSeparator.length;
     /** @var {Block[]} */
-    this._blocks = blocks.map(x => new Block(x, dispatch));
+    this._blocks = [];
+
+    let cursor = 0;
+    this._html = blocks
+      .map(block => {
+        const content = block.attributes.content;
+        const start = cursor;
+        cursor += content.length + this._blockSeparatorLength;
+
+        this._blocks.push(new Block(block, dispatch, start, cursor));
+
+        return content;
+      })
+      .join(this._blockSeparator);
+
+    console.debug("Blocks.c`tor", { html: this._html, blocks: this._blocks });
   }
 
   *[Symbol.iterator]() {
     yield this._blocks;
+  }
+
+  get html() {
+    return this._html;
+  }
+
+  /**
+   * Get the block index for the specified absolute position.
+   *
+   * @param {number} position The absolute position.
+   * @returns {{false}|number} The block index (zero-based) or false if not found.
+   */
+  getBlockIndex(position) {
+    // Cycle through the blocks until we found the one for the provided position.
+    for (let i = 0; i < this._blocks.length; i++) {
+      const block = this._blocks[i];
+
+      if (position >= block.start && position < block.end) {
+        return i;
+      }
+    }
+
+    return false;
+  }
+
+  getBlock(position) {
+    const idx = this.getBlockIndex(position);
+
+    if (false === idx) return false;
+
+    return this._blocks[idx];
   }
 
   replace(pattern, replacement) {

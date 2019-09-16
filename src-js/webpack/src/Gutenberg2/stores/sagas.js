@@ -74,7 +74,7 @@ function* toggleEntity({ entity }) {
   if (0 === entity.occurrences.length) {
     // Switch on.
     blocks.replace(
-      new RegExp(`<span\\s+id="(${annotationSelector})"\\sclass="([^"]*)">`),
+      new RegExp(`<span\\s+id="(${annotationSelector})"\\sclass="([^"]*)">`, "gi"),
       (match, annotationId, classNames) => {
         const newClassNames = mergeArray(classNames.split(/\s+/), onClassNames);
         occurrences.push(annotationId);
@@ -84,7 +84,7 @@ function* toggleEntity({ entity }) {
   } else {
     // Switch off.
     blocks.replace(
-      new RegExp(`<span\\s+id="(${annotationSelector})"\\sclass="([^"]*)"\\sitemid="[^"]*">`),
+      new RegExp(`<span\\s+id="(${annotationSelector})"\\sclass="([^"]*)"\\sitemid="[^"]*">`, "gi"),
       (match, annotationId, classNames) => {
         const newClassNames = classNames.split(/\s+/).filter(x => -1 === onClassNames.indexOf(x));
         return `<span id="${annotationId}" class="${newClassNames.join(" ")}">`;
@@ -110,7 +110,7 @@ function* toggleLink({ entity }) {
   const link = !entity.link;
 
   blocks.replace(
-    new RegExp(`<span\\s+id="(${annotationSelector})"\\sclass="([^"]*)"\\sitemid="([^"]*)">`),
+    new RegExp(`<span\\s+id="(${annotationSelector})"\\sclass="([^"]*)"\\sitemid="([^"]*)">`, "gi"),
     (match, annotationId, classNames) => {
       // Remove existing `wl-link` / `wl-no-link` classes.
       const newClassNames = classNames.split(/\s+/).filter(x => -1 === cssClasses.indexOf(x));

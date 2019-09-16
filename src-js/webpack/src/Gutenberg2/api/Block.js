@@ -21,6 +21,25 @@ export default class Block {
     return this._block.clientId;
   }
 
+  get start() {
+    return this._start;
+  }
+
+  get end() {
+    return this._end;
+  }
+
+  insertHtml(at, fragment) {
+    // Insert the HTML.
+    const newContent = this.content.substring(0, at) + fragment + this.content.substring(at);
+
+    // Bail out if the content didn't change.
+    if (newContent === this.content) return;
+
+    this.content = newContent;
+    this._dirty = true;
+  }
+
   replace(pattern, replacement) {
     const newContent = this.content.replace(pattern, replacement);
 
@@ -28,9 +47,13 @@ export default class Block {
     if (newContent === this.content) return;
 
     this.content = newContent;
+    this._dirty = true;
   }
 
   apply() {
-    this._dispatch.updateBlockAttributes(this.clientId, { content: this.content }).then(() => (this._dirty = false));
+    if (this._dirty) {
+      console.debug("Block.apply", { content: this.content });
+      this._dispatch.updateBlockAttributes(this.clientId, { content: this.content }).then(() => (this._dirty = false));
+    }
   }
 }

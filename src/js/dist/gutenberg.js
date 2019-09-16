@@ -24161,23 +24161,40 @@ function () {
   }
 
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(Block, [{
+    key: "insertHtml",
+    value: function insertHtml(at, fragment) {
+      // Insert the HTML.
+      var newContent = this.content.substring(0, at) + fragment + this.content.substring(at); // Bail out if the content didn't change.
+
+      if (newContent === this.content) return;
+      this.content = newContent;
+      this._dirty = true;
+    }
+  }, {
     key: "replace",
     value: function replace(pattern, replacement) {
       var newContent = this.content.replace(pattern, replacement); // Bail out if the content didn't change.
 
       if (newContent === this.content) return;
       this.content = newContent;
+      this._dirty = true;
     }
   }, {
     key: "apply",
     value: function apply() {
       var _this = this;
 
-      this._dispatch.updateBlockAttributes(this.clientId, {
-        content: this.content
-      }).then(function () {
-        return _this._dirty = false;
-      });
+      if (this._dirty) {
+        console.debug("Block.apply", {
+          content: this.content
+        });
+
+        this._dispatch.updateBlockAttributes(this.clientId, {
+          content: this.content
+        }).then(function () {
+          return _this._dirty = false;
+        });
+      }
     }
   }, {
     key: "content",
@@ -24193,73 +24210,6 @@ function () {
     get: function get() {
       return this._block.clientId;
     }
-  }]);
-
-  return Block;
-}();
-
-
-
-/***/ }),
-
-/***/ "./src/Gutenberg2/api/BlockOps.js":
-/*!****************************************!*\
-  !*** ./src/Gutenberg2/api/BlockOps.js ***!
-  \****************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return BlockOps; });
-/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/classCallCheck.js");
-/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js");
-/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__);
-
-
-
-var BlockOps =
-/*#__PURE__*/
-function () {
-  function BlockOps(dispatch, start, end, clientId, content, dirty) {
-    _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, BlockOps);
-
-    this._dispatch = dispatch;
-    this._start = start;
-    this._end = end;
-    this._clientId = clientId;
-    this._content = content;
-    this._dirty = dirty;
-  }
-
-  _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(BlockOps, [{
-    key: "insertHtml",
-
-    /**
-     *
-     * @param at
-     * @param fragment
-     */
-    value: function insertHtml(at, fragment) {
-      // Insert the HTML.
-      this.content = this.content.substring(0, at) + fragment + this.content.substring(at);
-    }
-  }, {
-    key: "applyChanges",
-    value: function applyChanges() {
-      var _this = this;
-
-      if (this.dirty) {
-        this._dispatch.updateBlock(this.clientId, {
-          attributes: {
-            content: this.content
-          }
-        }).then(function () {
-          return _this._dirty = false;
-        });
-      }
-    }
   }, {
     key: "start",
     get: function get() {
@@ -24270,28 +24220,9 @@ function () {
     get: function get() {
       return this._end;
     }
-  }, {
-    key: "clientId",
-    get: function get() {
-      return this._clientId;
-    }
-  }, {
-    key: "content",
-    get: function get() {
-      return this._content;
-    },
-    set: function set(value) {
-      this._content = value;
-      this._dirty = true;
-    }
-  }, {
-    key: "dirty",
-    get: function get() {
-      return this._dirty;
-    }
   }]);
 
-  return BlockOps;
+  return Block;
 }();
 
 
@@ -24355,13 +24286,31 @@ function () {
   /**
    *
    * @param blocks
+   * @param dispatch
    */
   function Blocks(blocks, dispatch) {
+    var _this = this;
+
     _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1___default()(this, Blocks);
 
+    this._blockSeparator = ".\n";
+    this._blockSeparatorLength = this._blockSeparator.length;
     /** @var {Block[]} */
-    this._blocks = blocks.map(function (x) {
-      return new _Block__WEBPACK_IMPORTED_MODULE_3__["default"](x, dispatch);
+
+    this._blocks = [];
+    var cursor = 0;
+    this._html = blocks.map(function (block) {
+      var content = block.attributes.content;
+      var start = cursor;
+      cursor += content.length + _this._blockSeparatorLength;
+
+      _this._blocks.push(new _Block__WEBPACK_IMPORTED_MODULE_3__["default"](block, dispatch, start, cursor));
+
+      return content;
+    }).join(this._blockSeparator);
+    console.debug("Blocks.c`tor", {
+      html: this._html,
+      blocks: this._blocks
     });
   }
 
@@ -24384,6 +24333,34 @@ function () {
         }
       }, value, this);
     })
+  }, {
+    key: "getBlockIndex",
+
+    /**
+     * Get the block index for the specified absolute position.
+     *
+     * @param {number} position The absolute position.
+     * @returns {{false}|number} The block index (zero-based) or false if not found.
+     */
+    value: function getBlockIndex(position) {
+      // Cycle through the blocks until we found the one for the provided position.
+      for (var i = 0; i < this._blocks.length; i++) {
+        var block = this._blocks[i];
+
+        if (position >= block.start && position < block.end) {
+          return i;
+        }
+      }
+
+      return false;
+    }
+  }, {
+    key: "getBlock",
+    value: function getBlock(position) {
+      var idx = this.getBlockIndex(position);
+      if (false === idx) return false;
+      return this._blocks[idx];
+    }
   }, {
     key: "replace",
     value: function replace(pattern, replacement) {
@@ -24438,6 +24415,11 @@ function () {
         }
       }
     }
+  }, {
+    key: "html",
+    get: function get() {
+      return this._html;
+    }
   }], [{
     key: "create",
     value: function create(blocks, dispatch) {
@@ -24449,119 +24431,6 @@ function () {
 
   return Blocks;
 }();
-
-/***/ }),
-
-/***/ "./src/Gutenberg2/api/BlocksOps.js":
-/*!*****************************************!*\
-  !*** ./src/Gutenberg2/api/BlocksOps.js ***!
-  \*****************************************/
-/*! exports provided: collectBlocks, default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "collectBlocks", function() { return collectBlocks; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return BlocksOps; });
-/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/classCallCheck.js");
-/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js");
-/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _BlockOps__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./BlockOps */ "./src/Gutenberg2/api/BlockOps.js");
-
-
-
-/**
- *
- * @param {array} collector
- * @param {{name, innerBlocks}[]} blocks
- */
-
-var collectBlocks = function collectBlocks(accumulator, blocks) {
-  blocks.forEach(function (block) {
-    if ("core/paragraph" === block.name || "core/freeform" === block.name) {
-      accumulator.push(block);
-    }
-
-    collectBlocks(accumulator, block.innerBlocks);
-  });
-  return accumulator;
-};
-
-var BlocksOps =
-/*#__PURE__*/
-function () {
-  function BlocksOps(editor, dispatch) {
-    _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, BlocksOps);
-
-    this._editor = editor;
-    this._dispatch = dispatch;
-    this._blocks = collectBlocks([], this._editor.getBlocks());
-    /** @var {BlockOps[]} */
-
-    this._blockOps = [];
-    this._blockSeparator = ".\n";
-    this._blockSeparatorLength = this._blockSeparator.length;
-    this.getHtml();
-  }
-
-  _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(BlocksOps, [{
-    key: "getHtml",
-    value: function getHtml() {
-      var _this = this;
-
-      var cursor = 0;
-      return this.html ? this.html : this.html = this._blocks.map(function (block) {
-        var content = block.attributes.content;
-        var start = cursor;
-        cursor += content.length + _this._blockSeparatorLength;
-
-        _this._blockOps.push(new _BlockOps__WEBPACK_IMPORTED_MODULE_2__["default"](_this._dispatch, start, cursor, block.clientId, block.attributes.content, false));
-
-        return content;
-      }).join(this._blockSeparator);
-    }
-    /**
-     * Get the block index for the specified absolute position.
-     *
-     * @param {number} position The absolute position.
-     * @returns {{false}|number} The block index (zero-based) or false if not found.
-     */
-
-  }, {
-    key: "getBlockIndex",
-    value: function getBlockIndex(position) {
-      // Cycle through the blocks until we found the one for the provided position.
-      for (var i = 0; i < this._blockOps.length; i++) {
-        var blockOps = this._blockOps[i];
-
-        if (position >= blockOps.start || position < blockOps.end) {
-          return i;
-        }
-      }
-
-      return false;
-    }
-  }, {
-    key: "getBlock",
-    value: function getBlock(position) {
-      var idx = this.getBlockIndex(position);
-      if (false === idx) return false;
-      return this._blockOps[idx];
-    }
-  }, {
-    key: "applyChanges",
-    value: function applyChanges() {
-      this._blockOps.forEach(function (blockOps) {
-        return blockOps.applyChanges();
-      });
-    }
-  }]);
-
-  return BlocksOps;
-}();
-
-
 
 /***/ }),
 
@@ -24579,11 +24448,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js");
 /* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _BlocksOps__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./BlocksOps */ "./src/Gutenberg2/api/BlocksOps.js");
+/* harmony import */ var _Blocks__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Blocks */ "./src/Gutenberg2/api/Blocks.js");
 
 
 
 /* global wp */
+
+/**
+ * WordPress dependencies.
+ */
 
 var _wp$data = wp.data,
     dispatch = _wp$data.dispatch,
@@ -24598,7 +24471,9 @@ function () {
     // Holds the annotations to blocks mappings.
     this._annotations = {};
     this._editor = select(editor);
-    this._blocksOps = new _BlocksOps__WEBPACK_IMPORTED_MODULE_2__["default"](this._editor, dispatch(editor));
+    /** @field {Blocks} _blocks */
+
+    this._blocks = _Blocks__WEBPACK_IMPORTED_MODULE_2__["Blocks"].create(this._editor.getBlocks(), dispatch(editor));
   }
 
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(EditorOps, [{
@@ -24609,46 +24484,35 @@ function () {
         contentType: "text/html",
         scope: "all",
         version: "1.0.0",
-        content: this._blocksOps.getHtml(),
+        content: this._blocks.html,
         exclude: exclude
       };
     }
   }, {
     key: "insertAnnotation",
     value: function insertAnnotation(id, start, end) {
-      var block = this._blocksOps.getBlock(start);
+      var block = this._blocks.getBlock(start);
 
-      var endBlock = this._blocksOps.getBlock(end); // @@todo: add support for different blocks, i.e. an annotation which crosses boundaries.
+      var endBlock = this._blocks.getBlock(end); // @@todo: add support for different blocks, i.e. an annotation which crosses boundaries.
 
 
       if (false === block || false === endBlock || block !== endBlock) return false;
       var relativeStart = start - block.start,
           relativeEnd = end - block.start;
+      console.log("EditorOps.insertAnnotation", {
+        id: id,
+        start: start,
+        end: end,
+        clientId: block.clientId
+      });
       block.insertHtml(relativeEnd, "</span>");
       block.insertHtml(relativeStart, "<span id=\"".concat(id, "\" class=\"textannotation\">"));
       this._annotations[id] = block;
     }
   }, {
-    key: "toggleAnnotation",
-    value: function toggleAnnotation() {// ed.dom.addClass annotationId, "disambiguated"
-      // for type in configuration.types
-      //   ed.dom.removeClass annotationId, type.css
-      // ed.dom.removeClass annotationId, "unlinked"
-      // ed.dom.addClass annotationId, "wl-#{entity.mainType}"
-      // discardedItemId = ed.dom.getAttrib annotationId, "itemid"
-      // ed.dom.setAttrib annotationId, "itemid", entity.id
-      // discardedItemId
-    }
-  }, {
-    key: "switchOnAnnotation",
-    value: function switchOnAnnotation(id) {}
-  }, {
-    key: "switchOffAnnotation",
-    value: function switchOffAnnotation() {}
-  }, {
     key: "applyChanges",
     value: function applyChanges() {
-      this._blocksOps.applyChanges();
+      this._blocks.apply();
     }
   }]);
 
@@ -25203,14 +25067,14 @@ function toggleEntity(_ref) {
 
           if (0 === entity.occurrences.length) {
             // Switch on.
-            blocks.replace(new RegExp("<span\\s+id=\"(".concat(annotationSelector, ")\"\\sclass=\"([^\"]*)\">")), function (match, annotationId, classNames) {
+            blocks.replace(new RegExp("<span\\s+id=\"(".concat(annotationSelector, ")\"\\sclass=\"([^\"]*)\">"), "gi"), function (match, annotationId, classNames) {
               var newClassNames = Object(_api_utils__WEBPACK_IMPORTED_MODULE_8__["mergeArray"])(classNames.split(/\s+/), onClassNames);
               occurrences.push(annotationId);
               return "<span id=\"".concat(annotationId, "\" class=\"").concat(newClassNames.join(" "), "\" itemid=\"").concat(entity.id, "\">");
             });
           } else {
             // Switch off.
-            blocks.replace(new RegExp("<span\\s+id=\"(".concat(annotationSelector, ")\"\\sclass=\"([^\"]*)\"\\sitemid=\"[^\"]*\">")), function (match, annotationId, classNames) {
+            blocks.replace(new RegExp("<span\\s+id=\"(".concat(annotationSelector, ")\"\\sclass=\"([^\"]*)\"\\sitemid=\"[^\"]*\">"), "gi"), function (match, annotationId, classNames) {
               var newClassNames = classNames.split(/\s+/).filter(function (x) {
                 return -1 === onClassNames.indexOf(x);
               });
@@ -25246,7 +25110,7 @@ function toggleLink(_ref2) {
           annotationSelector = Object(_api_utils__WEBPACK_IMPORTED_MODULE_8__["makeEntityAnnotationsSelector"])(entity);
           cssClasses = ["wl-link", "wl-no-link"];
           link = !entity.link;
-          blocks.replace(new RegExp("<span\\s+id=\"(".concat(annotationSelector, ")\"\\sclass=\"([^\"]*)\"\\sitemid=\"([^\"]*)\">")), function (match, annotationId, classNames) {
+          blocks.replace(new RegExp("<span\\s+id=\"(".concat(annotationSelector, ")\"\\sclass=\"([^\"]*)\"\\sitemid=\"([^\"]*)\">"), "gi"), function (match, annotationId, classNames) {
             // Remove existing `wl-link` / `wl-no-link` classes.
             var newClassNames = classNames.split(/\s+/).filter(function (x) {
               return -1 === cssClasses.indexOf(x);
