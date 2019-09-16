@@ -23334,7 +23334,7 @@ var withProps = function withProps() {
 /*!***********************************!*\
   !*** ./src/Edit/actions/index.js ***!
   \***********************************/
-/*! exports provided: setCurrentAnnotation, receiveAnalysisResults, setCurrentEntity, setEntityVisibility, toggleEntity, toggleLink, updateOccurrencesForEntity, editorSelectionChanged */
+/*! exports provided: setCurrentAnnotation, receiveAnalysisResults, setCurrentEntity, setEntityVisibility, toggleEntity, toggleLink, updateOccurrencesForEntity, editorSelectionChanged, toggleLinkSuccess */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -23347,7 +23347,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "toggleLink", function() { return toggleLink; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateOccurrencesForEntity", function() { return updateOccurrencesForEntity; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "editorSelectionChanged", function() { return editorSelectionChanged; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "toggleLinkSuccess", function() { return toggleLinkSuccess; });
 /* harmony import */ var _constants_ActionTypes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants/ActionTypes */ "./src/Edit/constants/ActionTypes.js");
+/* harmony import */ var redux_actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! redux-actions */ "./node_modules/redux-actions/es/index.js");
 /**
  * Actions.
  *
@@ -23359,6 +23361,8 @@ __webpack_require__.r(__webpack_exports__);
 /**
  * Internal dependencies
  */
+
+
 
 /**
  * Set the current annotation. If `undefined` no annotation is selected.
@@ -23473,6 +23477,7 @@ var editorSelectionChanged = function editorSelectionChanged(selection) {
     selection: selection
   };
 };
+var toggleLinkSuccess = Object(redux_actions__WEBPACK_IMPORTED_MODULE_1__["createAction"])(_constants_ActionTypes__WEBPACK_IMPORTED_MODULE_0__["TOGGLE_LINK_SUCCESS"]);
 
 /***/ }),
 
@@ -27487,7 +27492,7 @@ function (_React$PureComponent) {
 /*!*******************************************!*\
   !*** ./src/Edit/constants/ActionTypes.js ***!
   \*******************************************/
-/*! exports provided: ANNOTATION, TOGGLE_ENTITY, UPDATE_OCCURRENCES_FOR_ENTITY, TOGGLE_LINK, RECEIVE_ANALYSIS_RESULTS, SET_CURRENT_ENTITY, SET_ENTITY_FILTER, EDITOR_SELECTION_CHANGED */
+/*! exports provided: ANNOTATION, TOGGLE_ENTITY, UPDATE_OCCURRENCES_FOR_ENTITY, TOGGLE_LINK, RECEIVE_ANALYSIS_RESULTS, SET_CURRENT_ENTITY, SET_ENTITY_FILTER, EDITOR_SELECTION_CHANGED, TOGGLE_LINK_SUCCESS */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27500,6 +27505,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_CURRENT_ENTITY", function() { return SET_CURRENT_ENTITY; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ENTITY_FILTER", function() { return SET_ENTITY_FILTER; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EDITOR_SELECTION_CHANGED", function() { return EDITOR_SELECTION_CHANGED; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TOGGLE_LINK_SUCCESS", function() { return TOGGLE_LINK_SUCCESS; });
 /**
  * Define the `ANNOTATION` action name, used when an annotation is (de)selected
  * in TinyMCE.
@@ -27507,7 +27513,7 @@ __webpack_require__.r(__webpack_exports__);
  * @since 3.11.0
  * @type {string}
  */
-var ANNOTATION = 'ANNOTATION';
+var ANNOTATION = "ANNOTATION";
 /**
  * Define the `TOGGLE_ENTITY` action name, used when the selection state of an
  * an entity must be toggled on / off.
@@ -27516,7 +27522,7 @@ var ANNOTATION = 'ANNOTATION';
  * @type {string}
  */
 
-var TOGGLE_ENTITY = 'TOGGLE_ENTITY';
+var TOGGLE_ENTITY = "TOGGLE_ENTITY";
 /**
  * Define the `UPDATE_OCCURRENCES_FOR_ENTITY` action name, used to catch
  * `updateOccur(r)encesForEntity` events from the legacy Angular application.
@@ -27525,7 +27531,7 @@ var TOGGLE_ENTITY = 'TOGGLE_ENTITY';
  * @type {string}
  */
 
-var UPDATE_OCCURRENCES_FOR_ENTITY = 'UPDATE_OCCURRENCES_FOR_ENTITY';
+var UPDATE_OCCURRENCES_FOR_ENTITY = "UPDATE_OCCURRENCES_FOR_ENTITY";
 /**
  * Define the `TOGGLE_LINK` action name, used to enable/disable linking an
  * entity.
@@ -27534,7 +27540,7 @@ var UPDATE_OCCURRENCES_FOR_ENTITY = 'UPDATE_OCCURRENCES_FOR_ENTITY';
  * @type {string}
  */
 
-var TOGGLE_LINK = 'TOGGLE_LINK';
+var TOGGLE_LINK = "TOGGLE_LINK";
 /**
  * Define the `RECEIVE_ANALYSIS_RESULTS` action name, fired when analysis
  * results are received.
@@ -27543,7 +27549,7 @@ var TOGGLE_LINK = 'TOGGLE_LINK';
  * @type {string}
  */
 
-var RECEIVE_ANALYSIS_RESULTS = 'RECEIVE_ANALYSIS_RESULTS';
+var RECEIVE_ANALYSIS_RESULTS = "RECEIVE_ANALYSIS_RESULTS";
 /**
  * Define the `SET_CURRENT_ENTITY` action name, fired to edit an entity inline.
  *
@@ -27551,8 +27557,8 @@ var RECEIVE_ANALYSIS_RESULTS = 'RECEIVE_ANALYSIS_RESULTS';
  * @type {string}
  */
 
-var SET_CURRENT_ENTITY = 'SET_CURRENT_ENTITY';
-var SET_ENTITY_FILTER = 'SET_ENTITY_FILTER';
+var SET_CURRENT_ENTITY = "SET_CURRENT_ENTITY";
+var SET_ENTITY_FILTER = "SET_ENTITY_FILTER";
 /**
  * Define the `EDITOR_SELECTION_CHANGED` action name, fired when the selection has changed
  * in the main editor.
@@ -27561,7 +27567,8 @@ var SET_ENTITY_FILTER = 'SET_ENTITY_FILTER';
  * @type {string}
  */
 
-var EDITOR_SELECTION_CHANGED = 'EDITOR_SELECTION_CHANGED';
+var EDITOR_SELECTION_CHANGED = "EDITOR_SELECTION_CHANGED";
+var TOGGLE_LINK_SUCCESS = "TOGGLE_LINK_SUCCESS";
 
 /***/ }),
 
@@ -28521,6 +28528,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 /**
  * Define the reducers.
  *
@@ -28576,17 +28584,15 @@ var entities = function entities() {
       Object(_angular_EditPostWidgetController__WEBPACK_IMPORTED_MODULE_3__["default"])().$apply(Object(_angular_EditPostWidgetController__WEBPACK_IMPORTED_MODULE_3__["default"])().setCurrentEntity(action.entity, "entity")); // Finally return the original state.
 
       return state;
-    // Toggle the link/no link on entity's occurrences.
 
-    case _constants_ActionTypes__WEBPACK_IMPORTED_MODULE_2__["TOGGLE_LINK"]:
-      // Toggle the link on the occurrences.
-      _services_LinkService__WEBPACK_IMPORTED_MODULE_4__["default"].setLink(action.entity.occurrences, !action.entity.link); // Update the entity in the state.
-
-      return state.set(action.entity.id, // A new object instance with the existing props and the new
+    case _constants_ActionTypes__WEBPACK_IMPORTED_MODULE_2__["TOGGLE_LINK_SUCCESS"]:
+      var _action$payload = action.payload,
+          id = _action$payload.id,
+          link = _action$payload.link;
+      return state.set(id, // A new object instance with the existing props and the new
       // occurrences.
-      Object.assign({}, state.get(action.entity.id), {
-        occurrences: action.entity.occurrences,
-        link: _services_LinkService__WEBPACK_IMPORTED_MODULE_4__["default"].getLink(action.entity.occurrences)
+      Object.assign({}, state.get(id), {
+        link: link
       }));
     // Update the entity's occurrences. This action is dispatched following
     // a legacy Angular event. The event is configured in the admin/index.js
@@ -29061,12 +29067,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _constants_ActionTypes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../constants/ActionTypes */ "./src/Edit/constants/ActionTypes.js");
 /* harmony import */ var _angular_EditPostWidgetController__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../angular/EditPostWidgetController */ "./src/Edit/angular/EditPostWidgetController.js");
 /* harmony import */ var _selectors__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./selectors */ "./src/Edit/stores/selectors.js");
+/* harmony import */ var _services_LinkService__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../services/LinkService */ "./src/Edit/services/LinkService.js");
+/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../actions */ "./src/Edit/actions/index.js");
 
 
 var _marked =
 /*#__PURE__*/
 _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(toggleEntity),
     _marked2 =
+/*#__PURE__*/
+_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(toggleLink),
+    _marked3 =
 /*#__PURE__*/
 _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(sagas);
 
@@ -29084,6 +29095,8 @@ _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(sagas);
 /**
  * Internal dependencies.
  */
+
+
 
 
 
@@ -29114,25 +29127,53 @@ function toggleEntity(payload) {
     }
   }, _marked);
 }
+
+function toggleLink(_ref) {
+  var entity;
+  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function toggleLink$(_context2) {
+    while (1) {
+      switch (_context2.prev = _context2.next) {
+        case 0:
+          entity = _ref.entity;
+          // Toggle the link/no link on entity's occurrences.
+          // Toggle the link on the occurrences.
+          _services_LinkService__WEBPACK_IMPORTED_MODULE_5__["default"].setLink(entity.occurrences, !entity.link);
+          _context2.next = 4;
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])(Object(_actions__WEBPACK_IMPORTED_MODULE_6__["toggleLinkSuccess"])({
+            id: entity.id,
+            link: _services_LinkService__WEBPACK_IMPORTED_MODULE_5__["default"].getLink(entity.occurrences)
+          }));
+
+        case 4:
+        case "end":
+          return _context2.stop();
+      }
+    }
+  }, _marked2);
+}
 /**
  * Connect the side effects.
  */
 
 
 function sagas() {
-  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function sagas$(_context2) {
+  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function sagas$(_context3) {
     while (1) {
-      switch (_context2.prev = _context2.next) {
+      switch (_context3.prev = _context3.next) {
         case 0:
-          _context2.next = 2;
+          _context3.next = 2;
           return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeEvery"])(_constants_ActionTypes__WEBPACK_IMPORTED_MODULE_2__["TOGGLE_ENTITY"], toggleEntity);
 
         case 2:
+          _context3.next = 4;
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeEvery"])(_constants_ActionTypes__WEBPACK_IMPORTED_MODULE_2__["TOGGLE_LINK"], toggleLink);
+
+        case 4:
         case "end":
-          return _context2.stop();
+          return _context3.stop();
       }
     }
-  }, _marked2);
+  }, _marked3);
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (sagas);

@@ -5,7 +5,7 @@
  * @since 3.11.0
  * @type {string}
  */
-export const ANNOTATION = 'ANNOTATION';
+export const ANNOTATION = "ANNOTATION";
 
 /**
  * Define the `TOGGLE_ENTITY` action name, used when the selection state of an
@@ -14,7 +14,7 @@ export const ANNOTATION = 'ANNOTATION';
  * @since 3.11.0
  * @type {string}
  */
-export const TOGGLE_ENTITY = 'TOGGLE_ENTITY';
+export const TOGGLE_ENTITY = "TOGGLE_ENTITY";
 
 /**
  * Define the `UPDATE_OCCURRENCES_FOR_ENTITY` action name, used to catch
@@ -23,7 +23,7 @@ export const TOGGLE_ENTITY = 'TOGGLE_ENTITY';
  * @since 3.11.0
  * @type {string}
  */
-export const UPDATE_OCCURRENCES_FOR_ENTITY = 'UPDATE_OCCURRENCES_FOR_ENTITY';
+export const UPDATE_OCCURRENCES_FOR_ENTITY = "UPDATE_OCCURRENCES_FOR_ENTITY";
 
 /**
  * Define the `TOGGLE_LINK` action name, used to enable/disable linking an
@@ -32,7 +32,7 @@ export const UPDATE_OCCURRENCES_FOR_ENTITY = 'UPDATE_OCCURRENCES_FOR_ENTITY';
  * @since 3.11.0
  * @type {string}
  */
-export const TOGGLE_LINK = 'TOGGLE_LINK';
+export const TOGGLE_LINK = "TOGGLE_LINK";
 
 /**
  * Define the `RECEIVE_ANALYSIS_RESULTS` action name, fired when analysis
@@ -41,7 +41,7 @@ export const TOGGLE_LINK = 'TOGGLE_LINK';
  * @since 3.11.0
  * @type {string}
  */
-export const RECEIVE_ANALYSIS_RESULTS = 'RECEIVE_ANALYSIS_RESULTS';
+export const RECEIVE_ANALYSIS_RESULTS = "RECEIVE_ANALYSIS_RESULTS";
 
 /**
  * Define the `SET_CURRENT_ENTITY` action name, fired to edit an entity inline.
@@ -49,9 +49,9 @@ export const RECEIVE_ANALYSIS_RESULTS = 'RECEIVE_ANALYSIS_RESULTS';
  * @since 3.11.0
  * @type {string}
  */
-export const SET_CURRENT_ENTITY = 'SET_CURRENT_ENTITY';
+export const SET_CURRENT_ENTITY = "SET_CURRENT_ENTITY";
 
-export const SET_ENTITY_FILTER = 'SET_ENTITY_FILTER';
+export const SET_ENTITY_FILTER = "SET_ENTITY_FILTER";
 
 /**
  * Define the `EDITOR_SELECTION_CHANGED` action name, fired when the selection has changed
@@ -60,4 +60,6 @@ export const SET_ENTITY_FILTER = 'SET_ENTITY_FILTER';
  * @since 3.18.4
  * @type {string}
  */
-export const EDITOR_SELECTION_CHANGED = 'EDITOR_SELECTION_CHANGED';
+export const EDITOR_SELECTION_CHANGED = "EDITOR_SELECTION_CHANGED";
+
+export const TOGGLE_LINK_SUCCESS = "TOGGLE_LINK_SUCCESS";

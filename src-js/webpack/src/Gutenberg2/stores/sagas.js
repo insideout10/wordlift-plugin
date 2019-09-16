@@ -1,30 +1,27 @@
 /* global wp */
 
+/**
+ * External dependencies.
+ */
 import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
 
+/**
+ * WordPress dependencies.
+ */
 const { apiFetch } = wp;
 const { select, dispatch } = wp.data;
 
 /**
- * Legacy actions.
+ * Internal dependencies.
  */
-import { receiveAnalysisResults, updateOccurrencesForEntity } from "../../Edit/actions";
-import { TOGGLE_ENTITY } from "../../Edit/constants/ActionTypes";
-
+import { receiveAnalysisResults, toggleLinkSuccess, updateOccurrencesForEntity } from "../../Edit/actions";
+import { TOGGLE_ENTITY, TOGGLE_LINK, TOGGLE_LINK_SUCCESS } from "../../Edit/constants/ActionTypes";
 import actions from "./actions";
-import { getEditor } from "./selectors";
 import parseAnalysisResponse from "./compat";
 import { EDITOR_STORE } from "../constants";
 import EditorOps from "../api/EditorOps";
-import { collectBlocks, mergeArray, switchOn } from "../api/utils";
-import BlockOps from "../api/BlockOps";
+import { makeEntityAnnotationsSelector, mergeArray } from "../api/utils";
 import { Blocks } from "../api/Blocks";
-
-// function* selectEditor(action) {
-//   const editor = action.payload;
-//
-//   yield put(actions.selectEditorSucceeded(new EditorOps(editor)));
-// }
 
 function* requestAnalysis() {
   const editorOps = new EditorOps(EDITOR_STORE);
@@ -43,8 +40,6 @@ function* requestAnalysis() {
   embedAnalysis(editorOps, response);
 
   const parsed = parseAnalysisResponse(response);
-
-  console.debug( {response, parsed} );
 
   yield put(receiveAnalysisResults(parsed));
 }
@@ -70,9 +65,8 @@ function* toggleEntity({ entity }) {
 
   const onClassNames = ["disambiguated", `wl-${entity.mainType.replace(/\s/, "-")}`];
 
-  const annotationSelector = Object.values(entity.annotations)
-    .map(annotation => annotation.annotationId)
-    .join("|");
+  // Build a css selector to select all the annotations for the provided entity.
+  const annotationSelector = makeEntityAnnotationsSelector(entity);
 
   // Collect the annotations that have been switch on/off.
   const occurrences = [];
@@ -82,9 +76,9 @@ function* toggleEntity({ entity }) {
     blocks.replace(
       new RegExp(`<span\\s+id="(${annotationSelector})"\\sclass="([^"]*)">`),
       (match, annotationId, classNames) => {
-        const newClassNames = mergeArray(classNames.split(/\s+/), onClassNames).join(" ");
+        const newClassNames = mergeArray(classNames.split(/\s+/), onClassNames);
         occurrences.push(annotationId);
-        return `<span id="${annotationId}" class="${newClassNames}" itemid="${entity.id}">`;
+        return `<span id="${annotationId}" class="${newClassNames.join(" ")}" itemid="${entity.id}">`;
       }
     );
   } else {
@@ -93,7 +87,7 @@ function* toggleEntity({ entity }) {
       new RegExp(`<span\\s+id="(${annotationSelector})"\\sclass="([^"]*)"\\sitemid="[^"]*">`),
       (match, annotationId, classNames) => {
         const newClassNames = classNames.split(/\s+/).filter(x => -1 === onClassNames.indexOf(x));
-        return `<span id="${annotationId}" class="${newClassNames}">`;
+        return `<span id="${annotationId}" class="${newClassNames.join(" ")}">`;
       }
     );
   }
@@ -102,12 +96,34 @@ function* toggleEntity({ entity }) {
 
   // Apply the changes.
   blocks.apply();
-  //
-  // Object.values(entity.annotations).forEach(annotation => {
-  //   switchOn(blocks, dispatch(EDITOR_STORE), annotation.annotationId, entity.mainType, entity.id);
-  // });
-  //
-  console.info({ toggleEntity: entity });
+}
+
+function* toggleLink({ entity }) {
+  // Get the supported blocks.
+  const blocks = Blocks.create(select(EDITOR_STORE).getBlocks(), dispatch(EDITOR_STORE));
+
+  // Build a css selector to select all the annotations for the provided entity.
+  const annotationSelector = makeEntityAnnotationsSelector(entity);
+
+  const cssClasses = ["wl-link", "wl-no-link"];
+
+  const link = !entity.link;
+
+  blocks.replace(
+    new RegExp(`<span\\s+id="(${annotationSelector})"\\sclass="([^"]*)"\\sitemid="([^"]*)">`),
+    (match, annotationId, classNames) => {
+      // Remove existing `wl-link` / `wl-no-link` classes.
+      const newClassNames = classNames.split(/\s+/).filter(x => -1 === cssClasses.indexOf(x));
+      // Add the `wl-link` / `wl-no-link` class according to the desired outcome.
+      newClassNames.push(link ? "wl-link" : "wl-no-link");
+      return `<span id="${annotationId}" class="${newClassNames.join(" ")}" itemid="${entity.id}">`;
+    }
+  );
+
+  // Apply the changes.
+  blocks.apply();
+
+  yield put(toggleLinkSuccess({ id: entity.id, link }));
 }
 
 export default function* saga() {
@@ -115,4 +131,5 @@ export default function* saga() {
   // yield takeLatest([actions.selectEditorSucceeded, actions.requestAnalysis], requestAnalysis);
   yield takeLatest(actions.requestAnalysis, requestAnalysis);
   yield takeEvery(TOGGLE_ENTITY, toggleEntity);
+  yield takeEvery(TOGGLE_LINK, toggleLink);
 }

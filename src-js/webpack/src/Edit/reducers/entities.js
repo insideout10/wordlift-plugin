@@ -11,7 +11,6 @@
  * External dependencies
  */
 import { Map } from "immutable";
-
 /**
  * Internal dependencies
  */
@@ -19,6 +18,7 @@ import * as types from "../constants/ActionTypes";
 import EditPostWidgetController from "../angular/EditPostWidgetController";
 import LinkService from "../services/LinkService";
 import WsService from "../services/WsService";
+import { TOGGLE_LINK_SUCCESS } from "../constants/ActionTypes";
 
 /**
  * Define the reducers.
@@ -74,20 +74,14 @@ const entities = function(state = Map(), action) {
       // Finally return the original state.
       return state;
 
-    // Toggle the link/no link on entity's occurrences.
-    case types.TOGGLE_LINK:
-      // Toggle the link on the occurrences.
-      LinkService.setLink(action.entity.occurrences, !action.entity.link);
+    case TOGGLE_LINK_SUCCESS:
+      const { id, link } = action.payload;
 
-      // Update the entity in the state.
       return state.set(
-        action.entity.id,
+        id,
         // A new object instance with the existing props and the new
         // occurrences.
-        Object.assign({}, state.get(action.entity.id), {
-          occurrences: action.entity.occurrences,
-          link: LinkService.getLink(action.entity.occurrences)
-        })
+        Object.assign({}, state.get(id), { link })
       );
 
     // Update the entity's occurrences. This action is dispatched following

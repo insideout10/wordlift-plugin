@@ -19477,7 +19477,7 @@ module.exports = function(originalModule) {
 /*!***********************************!*\
   !*** ./src/Edit/actions/index.js ***!
   \***********************************/
-/*! exports provided: setCurrentAnnotation, receiveAnalysisResults, setCurrentEntity, setEntityVisibility, toggleEntity, toggleLink, updateOccurrencesForEntity, editorSelectionChanged */
+/*! exports provided: setCurrentAnnotation, receiveAnalysisResults, setCurrentEntity, setEntityVisibility, toggleEntity, toggleLink, updateOccurrencesForEntity, editorSelectionChanged, toggleLinkSuccess */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -19490,7 +19490,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "toggleLink", function() { return toggleLink; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateOccurrencesForEntity", function() { return updateOccurrencesForEntity; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "editorSelectionChanged", function() { return editorSelectionChanged; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "toggleLinkSuccess", function() { return toggleLinkSuccess; });
 /* harmony import */ var _constants_ActionTypes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../constants/ActionTypes */ "./src/Edit/constants/ActionTypes.js");
+/* harmony import */ var redux_actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! redux-actions */ "./node_modules/redux-actions/es/index.js");
 /**
  * Actions.
  *
@@ -19502,6 +19504,8 @@ __webpack_require__.r(__webpack_exports__);
 /**
  * Internal dependencies
  */
+
+
 
 /**
  * Set the current annotation. If `undefined` no annotation is selected.
@@ -19616,6 +19620,7 @@ var editorSelectionChanged = function editorSelectionChanged(selection) {
     selection: selection
   };
 };
+var toggleLinkSuccess = Object(redux_actions__WEBPACK_IMPORTED_MODULE_1__["createAction"])(_constants_ActionTypes__WEBPACK_IMPORTED_MODULE_0__["TOGGLE_LINK_SUCCESS"]);
 
 /***/ }),
 
@@ -22719,7 +22724,7 @@ function (_React$PureComponent) {
 /*!*******************************************!*\
   !*** ./src/Edit/constants/ActionTypes.js ***!
   \*******************************************/
-/*! exports provided: ANNOTATION, TOGGLE_ENTITY, UPDATE_OCCURRENCES_FOR_ENTITY, TOGGLE_LINK, RECEIVE_ANALYSIS_RESULTS, SET_CURRENT_ENTITY, SET_ENTITY_FILTER, EDITOR_SELECTION_CHANGED */
+/*! exports provided: ANNOTATION, TOGGLE_ENTITY, UPDATE_OCCURRENCES_FOR_ENTITY, TOGGLE_LINK, RECEIVE_ANALYSIS_RESULTS, SET_CURRENT_ENTITY, SET_ENTITY_FILTER, EDITOR_SELECTION_CHANGED, TOGGLE_LINK_SUCCESS */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -22732,6 +22737,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_CURRENT_ENTITY", function() { return SET_CURRENT_ENTITY; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ENTITY_FILTER", function() { return SET_ENTITY_FILTER; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EDITOR_SELECTION_CHANGED", function() { return EDITOR_SELECTION_CHANGED; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TOGGLE_LINK_SUCCESS", function() { return TOGGLE_LINK_SUCCESS; });
 /**
  * Define the `ANNOTATION` action name, used when an annotation is (de)selected
  * in TinyMCE.
@@ -22739,7 +22745,7 @@ __webpack_require__.r(__webpack_exports__);
  * @since 3.11.0
  * @type {string}
  */
-var ANNOTATION = 'ANNOTATION';
+var ANNOTATION = "ANNOTATION";
 /**
  * Define the `TOGGLE_ENTITY` action name, used when the selection state of an
  * an entity must be toggled on / off.
@@ -22748,7 +22754,7 @@ var ANNOTATION = 'ANNOTATION';
  * @type {string}
  */
 
-var TOGGLE_ENTITY = 'TOGGLE_ENTITY';
+var TOGGLE_ENTITY = "TOGGLE_ENTITY";
 /**
  * Define the `UPDATE_OCCURRENCES_FOR_ENTITY` action name, used to catch
  * `updateOccur(r)encesForEntity` events from the legacy Angular application.
@@ -22757,7 +22763,7 @@ var TOGGLE_ENTITY = 'TOGGLE_ENTITY';
  * @type {string}
  */
 
-var UPDATE_OCCURRENCES_FOR_ENTITY = 'UPDATE_OCCURRENCES_FOR_ENTITY';
+var UPDATE_OCCURRENCES_FOR_ENTITY = "UPDATE_OCCURRENCES_FOR_ENTITY";
 /**
  * Define the `TOGGLE_LINK` action name, used to enable/disable linking an
  * entity.
@@ -22766,7 +22772,7 @@ var UPDATE_OCCURRENCES_FOR_ENTITY = 'UPDATE_OCCURRENCES_FOR_ENTITY';
  * @type {string}
  */
 
-var TOGGLE_LINK = 'TOGGLE_LINK';
+var TOGGLE_LINK = "TOGGLE_LINK";
 /**
  * Define the `RECEIVE_ANALYSIS_RESULTS` action name, fired when analysis
  * results are received.
@@ -22775,7 +22781,7 @@ var TOGGLE_LINK = 'TOGGLE_LINK';
  * @type {string}
  */
 
-var RECEIVE_ANALYSIS_RESULTS = 'RECEIVE_ANALYSIS_RESULTS';
+var RECEIVE_ANALYSIS_RESULTS = "RECEIVE_ANALYSIS_RESULTS";
 /**
  * Define the `SET_CURRENT_ENTITY` action name, fired to edit an entity inline.
  *
@@ -22783,8 +22789,8 @@ var RECEIVE_ANALYSIS_RESULTS = 'RECEIVE_ANALYSIS_RESULTS';
  * @type {string}
  */
 
-var SET_CURRENT_ENTITY = 'SET_CURRENT_ENTITY';
-var SET_ENTITY_FILTER = 'SET_ENTITY_FILTER';
+var SET_CURRENT_ENTITY = "SET_CURRENT_ENTITY";
+var SET_ENTITY_FILTER = "SET_ENTITY_FILTER";
 /**
  * Define the `EDITOR_SELECTION_CHANGED` action name, fired when the selection has changed
  * in the main editor.
@@ -22793,7 +22799,8 @@ var SET_ENTITY_FILTER = 'SET_ENTITY_FILTER';
  * @type {string}
  */
 
-var EDITOR_SELECTION_CHANGED = 'EDITOR_SELECTION_CHANGED';
+var EDITOR_SELECTION_CHANGED = "EDITOR_SELECTION_CHANGED";
+var TOGGLE_LINK_SUCCESS = "TOGGLE_LINK_SUCCESS";
 
 /***/ }),
 
@@ -23113,6 +23120,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 /**
  * Define the reducers.
  *
@@ -23168,17 +23176,15 @@ var entities = function entities() {
       Object(_angular_EditPostWidgetController__WEBPACK_IMPORTED_MODULE_3__["default"])().$apply(Object(_angular_EditPostWidgetController__WEBPACK_IMPORTED_MODULE_3__["default"])().setCurrentEntity(action.entity, "entity")); // Finally return the original state.
 
       return state;
-    // Toggle the link/no link on entity's occurrences.
 
-    case _constants_ActionTypes__WEBPACK_IMPORTED_MODULE_2__["TOGGLE_LINK"]:
-      // Toggle the link on the occurrences.
-      _services_LinkService__WEBPACK_IMPORTED_MODULE_4__["default"].setLink(action.entity.occurrences, !action.entity.link); // Update the entity in the state.
-
-      return state.set(action.entity.id, // A new object instance with the existing props and the new
+    case _constants_ActionTypes__WEBPACK_IMPORTED_MODULE_2__["TOGGLE_LINK_SUCCESS"]:
+      var _action$payload = action.payload,
+          id = _action$payload.id,
+          link = _action$payload.link;
+      return state.set(id, // A new object instance with the existing props and the new
       // occurrences.
-      Object.assign({}, state.get(action.entity.id), {
-        occurrences: action.entity.occurrences,
-        link: _services_LinkService__WEBPACK_IMPORTED_MODULE_4__["default"].getLink(action.entity.occurrences)
+      Object.assign({}, state.get(id), {
+        link: link
       }));
     // Update the entity's occurrences. This action is dispatched following
     // a legacy Angular event. The event is configured in the admin/index.js
@@ -24657,14 +24663,14 @@ function () {
 /*!*************************************!*\
   !*** ./src/Gutenberg2/api/utils.js ***!
   \*************************************/
-/*! exports provided: collectBlocks, switchOn, mergeArray */
+/*! exports provided: collectBlocks, mergeArray, makeEntityAnnotationsSelector */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "collectBlocks", function() { return collectBlocks; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "switchOn", function() { return switchOn; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mergeArray", function() { return mergeArray; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "makeEntityAnnotationsSelector", function() { return makeEntityAnnotationsSelector; });
 /**
  *
  * @param accumulator
@@ -24685,126 +24691,6 @@ function collectBlocks(accumulator, blocks) {
   });
   return accumulator;
 }
-/**
- *
- * @param {{getBlocks()}} store
- * @param {{updateBlock()}} dispatch
- * @param replacement
- * @returns {boolean}
- */
-
-function replaceFirst(store, dispatch, id, replacement) {
-  var blocks = collectBlocks([], store.getBlocks());
-
-  for (var i = 0; i < blocks.length; i++) {
-    var content = blocks[i].attributes.content;
-    var regexp = new RegExp("<span id=\"".concat(id, "\" class=\"(.*?)\">"), "i");
-    var newContent = content.replace(regexp, function (match, p1) {
-      return "<span id=\"".concat(id, "\" class=\"").concat(replacement, "\">");
-    });
-    if (content === newContent) continue;
-    dispatch.updateBlock(blocks[i].clientId, {
-      attributes: {
-        content: newContent
-      }
-    });
-    return true;
-  }
-
-  return false;
-}
-
-function replaceClass(store, dispatch, id, callback) {
-  var blocks = collectBlocks([], store.getBlocks());
-
-  for (var i = 0; i < blocks.length; i++) {
-    var content = blocks[i].attributes.content;
-    var regexp = new RegExp("<span\\s+id=\"".concat(id, "\"\\s+class=\"(.*?)\""), "i");
-    var newContent = content.replace(regexp, callback);
-    if (content === newContent) continue;
-    dispatch.updateBlock(blocks[i].clientId, {
-      attributes: {
-        content: newContent
-      }
-    });
-    return true;
-  }
-
-  return false;
-}
-
-function addClass(store, dispatch, id) {
-  for (var _len = arguments.length, classNames = new Array(_len > 3 ? _len - 3 : 0), _key = 3; _key < _len; _key++) {
-    classNames[_key - 3] = arguments[_key];
-  }
-
-  return replaceClass(store, dispatch, id, function (match, attr) {
-    var cls = attr.split(/\s+/);
-
-    for (var i = 0; i < classNames.length; i++) {
-      if (-1 === cls.indexOf(classNames[i])) cls.push(classNames[i]);
-    }
-
-    return "<span id=\"".concat(id, "\" class=\"").concat(cls.join(" "), "\"");
-  });
-}
-
-function removeClass(store, dispatch, id) {
-  for (var _len2 = arguments.length, classNames = new Array(_len2 > 3 ? _len2 - 3 : 0), _key2 = 3; _key2 < _len2; _key2++) {
-    classNames[_key2 - 3] = arguments[_key2];
-  }
-
-  return replaceClass(store, dispatch, id, function (match, attr) {
-    var cls = attr.split(/\s+/).filter(function (c) {
-      return -1 === classNames.indexOf(c);
-    });
-    return "<span id=\"".concat(id, "\" class=\"").concat(cls.join(" "), "\"");
-  });
-}
-/**
- * Set an annotation as selected (disambiguated).
- *
- * Adds the `disambiguated` and `wl-{type}` classes.
- *
- * @param {BlockOps[]} blocks
- * @param dispatch
- * @param {string} annotationId
- * @param {string} type
- * @param {string} itemId
- * @returns {boolean}
- */
-
-
-function switchOn(blocks, dispatch, annotationId, type, itemId) {
-  for (var i = 0; i < blocks.length; i++) {
-    var content = blocks[i].content;
-    var regexp = new RegExp("<span\\s+id=\"".concat(annotationId, "\"\\s+class=\"(.*?)\">"), "i");
-    var newContent = content.replace(regexp, function (match, classAttr) {
-      var clsToAdd = ["disambiguated", "wl-".concat(type.replace(/\s+/, "-"))];
-      var cls = mergeArray(classAttr.split(/\s+/), clsToAdd).join(" ");
-      return "<span id=\"".concat(annotationId, "\" class=\"").concat(cls, "\" itemid=\"").concat(itemId, "\">");
-    });
-    if (content === newContent) continue;
-    blocks[i].content = newContent;
-    return true;
-  }
-
-  return false;
-}
-/**
- * Set an annotation as unselected.
- *
- * @param store
- * @param dispatch
- * @param id
- * @param type
- * @returns {boolean}
- */
-
-function switchOff(store, dispatch, id, type) {
-  return removeClass(store, dispatch, id, "disambiguated", "wl-".concat(type.replace(/\s+/, "-")));
-}
-
 function mergeArray(a1, a2) {
   var newArray = a1.splice(0);
 
@@ -24813,6 +24699,11 @@ function mergeArray(a1, a2) {
   }
 
   return newArray;
+}
+function makeEntityAnnotationsSelector(entity) {
+  return Object.values(entity.annotations).map(function (annotation) {
+    return annotation.annotationId;
+  }).join("|");
 }
 
 /***/ }),
@@ -25202,13 +25093,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Edit_actions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Edit/actions */ "./src/Edit/actions/index.js");
 /* harmony import */ var _Edit_constants_ActionTypes__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../Edit/constants/ActionTypes */ "./src/Edit/constants/ActionTypes.js");
 /* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./actions */ "./src/Gutenberg2/stores/actions.js");
-/* harmony import */ var _selectors__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./selectors */ "./src/Gutenberg2/stores/selectors.js");
-/* harmony import */ var _compat__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./compat */ "./src/Gutenberg2/stores/compat.js");
-/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../constants */ "./src/Gutenberg2/constants.js");
-/* harmony import */ var _api_EditorOps__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../api/EditorOps */ "./src/Gutenberg2/api/EditorOps.js");
-/* harmony import */ var _api_utils__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../api/utils */ "./src/Gutenberg2/api/utils.js");
-/* harmony import */ var _api_BlockOps__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../api/BlockOps */ "./src/Gutenberg2/api/BlockOps.js");
-/* harmony import */ var _api_Blocks__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../api/Blocks */ "./src/Gutenberg2/api/Blocks.js");
+/* harmony import */ var _compat__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./compat */ "./src/Gutenberg2/stores/compat.js");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../constants */ "./src/Gutenberg2/constants.js");
+/* harmony import */ var _api_EditorOps__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../api/EditorOps */ "./src/Gutenberg2/api/EditorOps.js");
+/* harmony import */ var _api_utils__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../api/utils */ "./src/Gutenberg2/api/utils.js");
+/* harmony import */ var _api_Blocks__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../api/Blocks */ "./src/Gutenberg2/api/Blocks.js");
 
 
 var _marked =
@@ -25219,9 +25108,20 @@ _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(requestAn
 _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(toggleEntity),
     _marked3 =
 /*#__PURE__*/
+_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(toggleLink),
+    _marked4 =
+/*#__PURE__*/
 _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(saga);
 
 /* global wp */
+
+/**
+ * External dependencies.
+ */
+
+/**
+ * WordPress dependencies.
+ */
 
 var _wp = wp,
     apiFetch = _wp.apiFetch;
@@ -25229,7 +25129,7 @@ var _wp$data = wp.data,
     select = _wp$data.select,
     dispatch = _wp$data.dispatch;
 /**
- * Legacy actions.
+ * Internal dependencies.
  */
 
 
@@ -25241,19 +25141,13 @@ var _wp$data = wp.data,
 
 
 
- // function* selectEditor(action) {
-//   const editor = action.payload;
-//
-//   yield put(actions.selectEditorSucceeded(new EditorOps(editor)));
-// }
-
 function requestAnalysis() {
   var editorOps, request, response, parsed;
   return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function requestAnalysis$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
-          editorOps = new _api_EditorOps__WEBPACK_IMPORTED_MODULE_8__["default"](_constants__WEBPACK_IMPORTED_MODULE_7__["EDITOR_STORE"]);
+          editorOps = new _api_EditorOps__WEBPACK_IMPORTED_MODULE_7__["default"](_constants__WEBPACK_IMPORTED_MODULE_6__["EDITOR_STORE"]);
           request = editorOps.buildAnalysisRequest(window["wlSettings"]["language"], [window["wordlift"]["currentPostUri"]]);
           _context.next = 4;
           return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["call"])(apiFetch, {
@@ -25268,15 +25162,11 @@ function requestAnalysis() {
         case 4:
           response = _context.sent;
           embedAnalysis(editorOps, response);
-          parsed = Object(_compat__WEBPACK_IMPORTED_MODULE_6__["default"])(response);
-          console.debug({
-            response: response,
-            parsed: parsed
-          });
-          _context.next = 10;
+          parsed = Object(_compat__WEBPACK_IMPORTED_MODULE_5__["default"])(response);
+          _context.next = 9;
           return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])(Object(_Edit_actions__WEBPACK_IMPORTED_MODULE_2__["receiveAnalysisResults"])(parsed));
 
-        case 10:
+        case 9:
         case "end":
           return _context.stop();
       }
@@ -25304,20 +25194,19 @@ function toggleEntity(_ref) {
         case 0:
           entity = _ref.entity;
           // Get the supported blocks.
-          blocks = _api_Blocks__WEBPACK_IMPORTED_MODULE_11__["Blocks"].create(select(_constants__WEBPACK_IMPORTED_MODULE_7__["EDITOR_STORE"]).getBlocks(), dispatch(_constants__WEBPACK_IMPORTED_MODULE_7__["EDITOR_STORE"]));
-          onClassNames = ["disambiguated", "wl-".concat(entity.mainType.replace(/\s/, "-"))];
-          annotationSelector = Object.values(entity.annotations).map(function (annotation) {
-            return annotation.annotationId;
-          }).join("|"); // Collect the annotations that have been switch on/off.
+          blocks = _api_Blocks__WEBPACK_IMPORTED_MODULE_9__["Blocks"].create(select(_constants__WEBPACK_IMPORTED_MODULE_6__["EDITOR_STORE"]).getBlocks(), dispatch(_constants__WEBPACK_IMPORTED_MODULE_6__["EDITOR_STORE"]));
+          onClassNames = ["disambiguated", "wl-".concat(entity.mainType.replace(/\s/, "-"))]; // Build a css selector to select all the annotations for the provided entity.
+
+          annotationSelector = Object(_api_utils__WEBPACK_IMPORTED_MODULE_8__["makeEntityAnnotationsSelector"])(entity); // Collect the annotations that have been switch on/off.
 
           occurrences = [];
 
           if (0 === entity.occurrences.length) {
             // Switch on.
             blocks.replace(new RegExp("<span\\s+id=\"(".concat(annotationSelector, ")\"\\sclass=\"([^\"]*)\">")), function (match, annotationId, classNames) {
-              var newClassNames = Object(_api_utils__WEBPACK_IMPORTED_MODULE_9__["mergeArray"])(classNames.split(/\s+/), onClassNames).join(" ");
+              var newClassNames = Object(_api_utils__WEBPACK_IMPORTED_MODULE_8__["mergeArray"])(classNames.split(/\s+/), onClassNames);
               occurrences.push(annotationId);
-              return "<span id=\"".concat(annotationId, "\" class=\"").concat(newClassNames, "\" itemid=\"").concat(entity.id, "\">");
+              return "<span id=\"".concat(annotationId, "\" class=\"").concat(newClassNames.join(" "), "\" itemid=\"").concat(entity.id, "\">");
             });
           } else {
             // Switch off.
@@ -25325,7 +25214,7 @@ function toggleEntity(_ref) {
               var newClassNames = classNames.split(/\s+/).filter(function (x) {
                 return -1 === onClassNames.indexOf(x);
               });
-              return "<span id=\"".concat(annotationId, "\" class=\"").concat(newClassNames, "\">");
+              return "<span id=\"".concat(annotationId, "\" class=\"").concat(newClassNames.join(" "), "\">");
             });
           }
 
@@ -25334,17 +25223,9 @@ function toggleEntity(_ref) {
 
         case 8:
           // Apply the changes.
-          blocks.apply(); //
-          // Object.values(entity.annotations).forEach(annotation => {
-          //   switchOn(blocks, dispatch(EDITOR_STORE), annotation.annotationId, entity.mainType, entity.id);
-          // });
-          //
+          blocks.apply();
 
-          console.info({
-            toggleEntity: entity
-          });
-
-        case 10:
+        case 9:
         case "end":
           return _context2.stop();
       }
@@ -25352,24 +25233,66 @@ function toggleEntity(_ref) {
   }, _marked2);
 }
 
-function saga() {
-  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function saga$(_context3) {
+function toggleLink(_ref2) {
+  var entity, blocks, annotationSelector, cssClasses, link;
+  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function toggleLink$(_context3) {
     while (1) {
       switch (_context3.prev = _context3.next) {
         case 0:
-          _context3.next = 2;
-          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeLatest"])(_actions__WEBPACK_IMPORTED_MODULE_4__["default"].requestAnalysis, requestAnalysis);
+          entity = _ref2.entity;
+          // Get the supported blocks.
+          blocks = _api_Blocks__WEBPACK_IMPORTED_MODULE_9__["Blocks"].create(select(_constants__WEBPACK_IMPORTED_MODULE_6__["EDITOR_STORE"]).getBlocks(), dispatch(_constants__WEBPACK_IMPORTED_MODULE_6__["EDITOR_STORE"])); // Build a css selector to select all the annotations for the provided entity.
 
-        case 2:
-          _context3.next = 4;
-          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeEvery"])(_Edit_constants_ActionTypes__WEBPACK_IMPORTED_MODULE_3__["TOGGLE_ENTITY"], toggleEntity);
+          annotationSelector = Object(_api_utils__WEBPACK_IMPORTED_MODULE_8__["makeEntityAnnotationsSelector"])(entity);
+          cssClasses = ["wl-link", "wl-no-link"];
+          link = !entity.link;
+          blocks.replace(new RegExp("<span\\s+id=\"(".concat(annotationSelector, ")\"\\sclass=\"([^\"]*)\"\\sitemid=\"([^\"]*)\">")), function (match, annotationId, classNames) {
+            // Remove existing `wl-link` / `wl-no-link` classes.
+            var newClassNames = classNames.split(/\s+/).filter(function (x) {
+              return -1 === cssClasses.indexOf(x);
+            }); // Add the `wl-link` / `wl-no-link` class according to the desired outcome.
 
-        case 4:
+            newClassNames.push(link ? "wl-link" : "wl-no-link");
+            return "<span id=\"".concat(annotationId, "\" class=\"").concat(newClassNames.join(" "), "\" itemid=\"").concat(entity.id, "\">");
+          }); // Apply the changes.
+
+          blocks.apply();
+          _context3.next = 9;
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["put"])(Object(_Edit_actions__WEBPACK_IMPORTED_MODULE_2__["toggleLinkSuccess"])({
+            id: entity.id,
+            link: link
+          }));
+
+        case 9:
         case "end":
           return _context3.stop();
       }
     }
   }, _marked3);
+}
+
+function saga() {
+  return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function saga$(_context4) {
+    while (1) {
+      switch (_context4.prev = _context4.next) {
+        case 0:
+          _context4.next = 2;
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeLatest"])(_actions__WEBPACK_IMPORTED_MODULE_4__["default"].requestAnalysis, requestAnalysis);
+
+        case 2:
+          _context4.next = 4;
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeEvery"])(_Edit_constants_ActionTypes__WEBPACK_IMPORTED_MODULE_3__["TOGGLE_ENTITY"], toggleEntity);
+
+        case 4:
+          _context4.next = 6;
+          return Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_1__["takeEvery"])(_Edit_constants_ActionTypes__WEBPACK_IMPORTED_MODULE_3__["TOGGLE_LINK"], toggleLink);
+
+        case 6:
+        case "end":
+          return _context4.stop();
+      }
+    }
+  }, _marked4);
 }
 
 /***/ }),
