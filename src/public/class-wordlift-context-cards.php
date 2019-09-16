@@ -33,7 +33,7 @@ class Wordlift_Context_Cards_Service {
 	public function context_data( $request ) {
 
 		$entity_uri = urldecode( $request->get_param( 'entity_url' ) );
-		$entity_id  = url_to_postid( $entity_uri );
+		$entity_id  = $this->url_to_postid( $entity_uri );
 		$jsonld     = Wordlift_Jsonld_Service::get_instance()->get_jsonld( false, $entity_id );
 
 		return $jsonld;
@@ -47,6 +47,17 @@ class Wordlift_Context_Cards_Service {
 			wp_enqueue_script( 'wordlift-cloud' );
 			wp_add_inline_script( 'wordlift-cloud', "wordliftCloud.contextCards('a.wl-entity-page-link', '" . get_rest_url() . WL_REST_ROUTE_DEFAULT_NAMESPACE . $this->endpoint . "')" );
 		}
+	}
+
+	private function url_to_postid( $url ){
+		// Try with url_to_postid
+		$post_id = url_to_postid( $url );
+		if ( $post_id == 0 ) {
+			// Try with get_page_by_path
+			$post = get_page_by_path( basename( untrailingslashit( $url ) ) , OBJECT, 'entity');
+			if($post) $post_id = $post->ID;
+		}
+		return $post_id;
 	}
 
 }
