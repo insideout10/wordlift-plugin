@@ -12,7 +12,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
     # Find existing entities selected in the html content (by looking for *itemid* attributes).
     findEntities = (html) ->
 # Prepare a traslator instance that will traslate Html and Text positions.
-      traslator = Traslator.create html
+#      traslator = Traslator.create html
 
       # Set the pattern to look for *itemid* attributes.
       # pattern = /<(\w+)[^>]*\sclass="([^"]+)"\sitemid="([^"]+)"[^>]*>([^<]*)<\/\1>/gim
@@ -27,8 +27,10 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       (while match = pattern.exec html
 
         annotation =
-          start: traslator.html2text match.index
-          end: traslator.html2text (match.index + match[0].length)
+#          start: traslator.html2text match.index
+#          end: traslator.html2text (match.index + match[0].length)
+          start: match.index
+          end: match.index + match[0].length
           uri: match[3]
           label: match[4]
           cssClass: match[2]

@@ -1212,7 +1212,12 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', ['wordlift.e
           $log.debug("Schema.org type overridden for entity " + id);
         }
         entity.id = id;
-        entity.annotations = {};
+        if (entity.occurrences == null) {
+          entity.occurrences = [];
+        }
+        if (entity.annotations == null) {
+          entity.annotations = {};
+        }
       }
       ref6 = data.annotations;
       for (id in ref6) {
@@ -1408,14 +1413,13 @@ angular.module('wordlift.editpost.widget.services.EditorService', ['wordlift.edi
     var INVISIBLE_CHAR, currentOccurrencesForEntity, dedisambiguate, disambiguate, editor, findEntities, findPositions, service;
     INVISIBLE_CHAR = '\uFEFF';
     findEntities = function(html) {
-      var annotation, match, pattern, results1, traslator;
-      traslator = Traslator.create(html);
+      var annotation, match, pattern, results1;
       pattern = /<(\w+)[^>]*\sclass="([^"]+)"\s+(?:id="[^"]+"\s+)?itemid="([^"]+)"[^>]*>([^<]*)<\/\1>/gim;
       results1 = [];
       while (match = pattern.exec(html)) {
         annotation = {
-          start: traslator.html2text(match.index),
-          end: traslator.html2text(match.index + match[0].length),
+          start: match.index,
+          end: match.index + match[0].length,
           uri: match[3],
           label: match[4],
           cssClass: match[2]

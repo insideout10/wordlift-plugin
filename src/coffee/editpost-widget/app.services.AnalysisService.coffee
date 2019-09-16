@@ -151,8 +151,8 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 
         entity.id = id
         # This is not necessary anymore because Analysis_Response_Ops (in PHP) populates it.
-#        entity.occurrences = [] if not entity.occurrences?
-        entity.annotations = {}
+        entity.occurrences = [] if not entity.occurrences?
+        entity.annotations = {} if not entity.annotations?
         # See #550: the confidence is set by the server.
         # entity.confidence = 1
 

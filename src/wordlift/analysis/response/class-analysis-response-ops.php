@@ -170,8 +170,23 @@ class Analysis_Response_Ops {
 			}
 		}
 
+		// Here we're adding back some data structures required by the client-side code.
+		//
+		// We're adding:
+		//  1. the .entities[entity_id].occurrences array with the annotations' ids.
+		//  2. the .entities[entity_id].annotations[annotation_id] = { id: annotation_id } map.
+		//
+		// Before 3.23.0 this was done by the client-side code located in src/coffee/editpost-widget/app.services.AnalysisService.coffee
+		// function `preselect`, which was called by src/coffee/editpost-widget/app.services.EditorService.coffee in
+		// `embedAnalysis`.
 		foreach ( $this->json->entities as $id => $entity ) {
 			$this->json->entities->{$id}->occurrences = $occurrences[ $id ] ?: array();
+
+			foreach ( $occurrences[ $id ] as $annotation_id ) {
+				$this->json->entities->{$id}->annotations[ $annotation_id ] = array(
+					'id' => $annotation_id,
+				);
+			}
 		}
 
 		return $this;
