@@ -10,15 +10,14 @@
 /**
  * External dependencies
  */
-import { Map } from "immutable";
+import { Map } from 'immutable'
 /**
  * Internal dependencies
  */
-import * as types from "../constants/ActionTypes";
-import EditPostWidgetController from "../angular/EditPostWidgetController";
-import LinkService from "../services/LinkService";
-import WsService from "../services/WsService";
-import { TOGGLE_LINK_SUCCESS } from "../constants/ActionTypes";
+import * as types from '../constants/ActionTypes'
+import { TOGGLE_LINK_SUCCESS } from '../constants/ActionTypes'
+import LinkService from '../services/LinkService'
+import WsService from '../services/WsService'
 
 /**
  * Define the reducers.

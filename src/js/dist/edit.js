@@ -28502,9 +28502,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! immutable */ "./node_modules/immutable/dist/immutable.js");
 /* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(immutable__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _constants_ActionTypes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../constants/ActionTypes */ "./src/Edit/constants/ActionTypes.js");
-/* harmony import */ var _angular_EditPostWidgetController__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../angular/EditPostWidgetController */ "./src/Edit/angular/EditPostWidgetController.js");
-/* harmony import */ var _services_LinkService__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../services/LinkService */ "./src/Edit/services/LinkService.js");
-/* harmony import */ var _services_WsService__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../services/WsService */ "./src/Edit/services/WsService.js");
+/* harmony import */ var _services_LinkService__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../services/LinkService */ "./src/Edit/services/LinkService.js");
+/* harmony import */ var _services_WsService__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../services/WsService */ "./src/Edit/services/WsService.js");
 
 
 /*global wlSettings*/
@@ -28524,7 +28523,6 @@ __webpack_require__.r(__webpack_exports__);
 /**
  * Internal dependencies
  */
-
 
 
 
@@ -28555,9 +28553,9 @@ var entities = function entities() {
 
       return Object(immutable__WEBPACK_IMPORTED_MODULE_1__["Map"])(action.results.entities).map(function (x) {
         return Object.assign({}, x, {
-          link: _services_LinkService__WEBPACK_IMPORTED_MODULE_4__["default"].getLink(x.occurrences),
+          link: _services_LinkService__WEBPACK_IMPORTED_MODULE_3__["default"].getLink(x.occurrences),
           local: 0 === x.id.indexOf(wlSettings["datasetUri"]),
-          w: _services_WsService__WEBPACK_IMPORTED_MODULE_5__["default"].getW(x),
+          w: _services_WsService__WEBPACK_IMPORTED_MODULE_4__["default"].getW(x),
           edit: "no" !== wlSettings["can_create_entities"],
           duplicateLabel: 1 < labels.get(x.label).count()
         });
@@ -28598,7 +28596,7 @@ var entities = function entities() {
       // occurrences.
       Object.assign({}, state.get(action.entityId), {
         occurrences: action.occurrences,
-        link: _services_LinkService__WEBPACK_IMPORTED_MODULE_4__["default"].getLink(action.occurrences)
+        link: _services_LinkService__WEBPACK_IMPORTED_MODULE_3__["default"].getLink(action.occurrences)
       }));
 
     default:

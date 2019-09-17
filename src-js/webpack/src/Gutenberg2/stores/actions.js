@@ -1,34 +1,14 @@
-import { createAction, handleActions } from "redux-actions";
-
-// /**
-//  * Selects the editor.
-//  *
-//  * `core/editor` is the default editor.
-//  */
-// const selectEditor = createAction("SELECT_EDITOR");
-//
-// /**
-//  * Selection succeeded, receive the EditorOps.
-//  */
-// const selectEditorSucceeded = createAction("SELECT_EDITOR_SUCCEEDED");
+import { createAction } from "redux-actions";
+import { EDITOR_SELECTION_CHANGED } from "../../Edit/constants/ActionTypes";
 
 /**
  * Requests an analysis on the selected editor.
  */
 const requestAnalysis = createAction("REQUEST_ANALYSIS");
 
-// export const editor = handleActions(
-//   {
-//     // Save the editor to the state.
-//     [selectEditorSucceeded]: (state, action) => action.payload
-//   },
-//   {
-//     editor: null
-//   }
-// );
+const editorSelectionChanged = createAction(EDITOR_SELECTION_CHANGED);
 
 export default {
-  // selectEditor,
-  // selectEditorSucceeded,
-  requestAnalysis
+  requestAnalysis,
+  editorSelectionChanged
 };

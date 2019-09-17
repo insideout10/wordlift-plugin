@@ -11,6 +11,9 @@ import visibilityFilter from "../../Edit/reducers/visibilityFilter";
 import actions from "./actions";
 import selectors from "./selectors";
 import saga from "./sagas";
+import * as types from "../../Edit/constants/ActionTypes";
+import { EDITOR_SELECTION_CHANGED } from "../../Edit/constants/ActionTypes";
+import { editorSelectionChanged } from "../../Edit/actions";
 
 const { registerGenericStore } = wp.data;
 
@@ -32,7 +35,8 @@ registerGenericStore(Constants.EDITOR_STORE, {
   },
   getActions() {
     return {
-      requestAnalysis: (...args) => store.dispatch(actions.requestAnalysis(...args))
+      requestAnalysis: (...args) => store.dispatch(actions.requestAnalysis(...args)),
+      editorSelectionChanged: args => store.dispatch(editorSelectionChanged(args))
     };
   },
   subscribe: store.subscribe
