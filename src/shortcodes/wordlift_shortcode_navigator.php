@@ -117,7 +117,7 @@ function wl_shortcode_navigator_data() {
 
 	$results = array_reverse( $results );
 
-	if(count($results) < $navigator_length){
+	if(count($results) < ($navigator_offset + $navigator_length)){
 		$results = apply_filters( 'wl_navigator_data_placeholder', $results );
 	}
 
