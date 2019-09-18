@@ -23,6 +23,7 @@ function wl_shortcode_navigator_data() {
 
 	// Limit the results (defaults to 4)
 	$navigator_length = isset( $_GET['limit'] ) ? intval($_GET['limit']) : 4;
+	$navigator_offset = isset( $_GET['offset'] ) ? intval($_GET['offset']) : 0;
 
 	$current_post_id = $_GET['post_id'];
 	$current_post    = get_post( $current_post_id );
@@ -121,7 +122,7 @@ function wl_shortcode_navigator_data() {
 	}
 
 	// Return first 4 results in json accordingly to 4 columns layout
-	return array_slice( $results, 0, $navigator_length );
+	return array_slice( $results, $navigator_offset, $navigator_length );
 
 }
 
