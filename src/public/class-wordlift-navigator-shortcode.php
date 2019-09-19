@@ -49,7 +49,8 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 			'limit'             => 4,
 			'offset'            => 0,
 			'template_id'       => '',
-			'post_id'           => ''
+			'post_id'           => '',
+			'uniqid'            => uniqid( 'wl-navigator-widget-' )
 		), $atts );
 
 		return $shortcode_atts;
@@ -75,7 +76,8 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		}
 
 		$post = !empty($shortcode_atts['post_id']) ? get_post(intval($shortcode_atts['post_id'])) : get_post();
-		$rest_url = $post ? admin_url( sprintf('admin-ajax.php?action=wl_navigator&post_id=%s&limit=%s&offset=%s', $post->ID, $shortcode_atts['limit'], $shortcode_atts['offset']) ) : false;
+		$navigator_id = $shortcode_atts['uniqid'];
+		$rest_url = $post ? admin_url( sprintf('admin-ajax.php?action=wl_navigator&uniqid=%s&post_id=%s&limit=%s&offset=%s', $navigator_id, $post->ID, $shortcode_atts['limit'], $shortcode_atts['offset']) ) : false;
 
 		// avoid building the widget when no valid $rest_url
 		if ( !$rest_url ) {
@@ -83,7 +85,6 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		}
 
 		wp_enqueue_script( 'wordlift-cloud' );
-		$navigator_id = uniqid( 'wl-navigator-widget-' );
 		wp_add_inline_script( 'wordlift-cloud', "wordliftCloud.navigator('#".$navigator_id."')" );
 
 		return sprintf(
