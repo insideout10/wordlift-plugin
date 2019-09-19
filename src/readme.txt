@@ -142,7 +142,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.22.4 (2019-09-16) =
+= 3.22.4 (2019-09-19) =
 * Fix: Context cards json endpoint returned null for some entities.
 * Enhancement: Offset and uniqid parameter in navigator.
 
