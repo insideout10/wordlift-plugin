@@ -144,6 +144,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 = 3.22.4 (2019-09-16) =
 * Fix: Context cards json endpoint returned null for some entities.
+* Enhancement: Offset and uniqid parameter in navigator.
 
 = 3.22.3 (2019-09-13) =
 * Fix: Fix initial state of link switch in Button Drawer (Gutenberg).

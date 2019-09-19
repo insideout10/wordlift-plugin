@@ -202,6 +202,14 @@ add_action( 'init', function() {
 			),
 			'post_id'      => array(
 				'type'    => 'number'
+			),
+			'offset'      => array(
+				'type'    => 'number',
+				'default' => 0,
+			),
+			'uniqid'      => array(
+				'type'    => 'string',
+				'default' => uniqid( 'wl-navigator-widget-' ),
 			)
 		)
 	));
