@@ -23,9 +23,12 @@ function wl_shortcode_navigator_data() {
 
 	// Limit the results (defaults to 4)
 	$navigator_length = isset( $_GET['limit'] ) ? intval($_GET['limit']) : 4;
+	$navigator_offset = isset( $_GET['offset'] ) ? intval($_GET['offset']) : 0;
 
 	$current_post_id = $_GET['post_id'];
 	$current_post    = get_post( $current_post_id );
+
+	$navigator_id = $_GET['uniqid'];
 
 	// Post ID has to match an existing item
 	if ( null === $current_post ) {
@@ -102,8 +105,8 @@ function wl_shortcode_navigator_data() {
 						),
 					);
 
-					$result['post'] = apply_filters( 'wl_navigator_data_post', $result['post'], intval($referencing_post->ID) );
-					$result['entity'] = apply_filters( 'wl_navigator_data_entity', $result['entity'], intval($related_entity->ID) );
+					$result['post'] = apply_filters( 'wl_navigator_data_post', $result['post'], intval($referencing_post->ID), $navigator_id );
+					$result['entity'] = apply_filters( 'wl_navigator_data_entity', $result['entity'], intval($related_entity->ID), $navigator_id );
 
 					$results[] = $result;
 
@@ -116,12 +119,12 @@ function wl_shortcode_navigator_data() {
 
 	$results = array_reverse( $results );
 
-	if(count($results) < $navigator_length){
-		$results = apply_filters( 'wl_navigator_data_placeholder', $results );
+	if(count($results) < ($navigator_offset + $navigator_length)){
+		$results = apply_filters( 'wl_navigator_data_placeholder', $results, $navigator_id );
 	}
 
 	// Return first 4 results in json accordingly to 4 columns layout
-	return array_slice( $results, 0, $navigator_length );
+	return array_slice( $results, $navigator_offset, $navigator_length );
 
 }
 
@@ -199,6 +202,14 @@ add_action( 'init', function() {
 			),
 			'post_id'      => array(
 				'type'    => 'number'
+			),
+			'offset'      => array(
+				'type'    => 'number',
+				'default' => 0,
+			),
+			'uniqid'      => array(
+				'type'    => 'string',
+				'default' => uniqid( 'wl-navigator-widget-' ),
 			)
 		)
 	));

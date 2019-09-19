@@ -119,18 +119,31 @@ export default {
       },
       post_id: {
         default: ""
+      },
+      offset: {
+        default: 0
+      },
+      uniqid: {
+        default: ""
       }
     },
     //display the edit interface + preview
     edit: ({ attributes, setAttributes }) => {
-      const { title, limit, template_id, post_id } = attributes;
+      const { title, limit, template_id, post_id, offset, uniqid } = attributes;
       return (
         <div>
           <BlockPreview title="Wordlift Navigator" attributes={attributes} />
           <InspectorControls>
             <PanelBody title="Widget Settings" className="blocks-font-size">
               <TextControl label="Title" value={title} onChange={title => setAttributes({ title })} />
-              <RangeControl label="Limit" value={limit} min={2} max={12} onChange={limit => setAttributes({ limit })} />
+              <RangeControl label="Limit" value={limit} min={2} max={20} onChange={limit => setAttributes({ limit })} />
+              <RangeControl
+                label="Offset"
+                value={offset}
+                min={0}
+                max={20}
+                onChange={offset => setAttributes({ offset })}
+              />
               <TextControl
                 label="Template ID"
                 help="ID of the script tag that has mustache template to be used for navigator."
@@ -144,6 +157,7 @@ export default {
                 value={post_id}
                 onChange={post_id => setAttributes({ post_id })}
               />
+              <TextControl label="Unique ID" value={uniqid} onChange={uniqid => setAttributes({ uniqid })} />
             </PanelBody>
           </InspectorControls>
         </div>
