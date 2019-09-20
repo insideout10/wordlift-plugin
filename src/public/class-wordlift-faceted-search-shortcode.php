@@ -164,11 +164,8 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 
 		$div_id = 'wordlift-faceted-entity-search-widget';
 
-		// Inject amp specific styles inline
-		add_action( 'amp_post_template_css', array(
-			$this,
-			'amp_post_template_css',
-		) );
+		// Enqueue amp specific styles
+		wp_enqueue_style( 'wordlift-amp-custom', plugin_dir_url( dirname( __FILE__ ) ) . '/css/wordlift-amp-custom.min.css' );
 
 		$wp_json_base = get_rest_url() . WL_REST_ROUTE_DEFAULT_NAMESPACE;
 
@@ -310,16 +307,6 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 			</amp-list>			
 		</div>
 HTML;
-	}
-
-	/**
-	 * Customize the CSS when in AMP.
-	 * Should echo (not return) CSS code
-	 *
-	 * @since 3.20.0
-	 */
-	public function amp_post_template_css() {
-		echo file_get_contents( dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-amp-custom.min.css' );
 	}
 
 }
