@@ -119,18 +119,19 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 
 		$current_post = get_post();
 
-		// Inject amp specific styles inline
-		add_action( 'amp_post_template_css', array(
-			$this,
-			'amp_post_template_css',
-		) );
+		// Enqueue amp specific styles
+		wp_enqueue_style( 'wordlift-amp-custom', plugin_dir_url( dirname( __FILE__ ) ) . '/css/wordlift-amp-custom.min.css' );
 
-		$navigator_id = uniqid( 'wl-navigator-widget-' );
+		$post = !empty($shortcode_atts['post_id']) ? get_post(intval($shortcode_atts['post_id'])) : get_post();
+		$navigator_id = $shortcode_atts['uniqid'];
 
 		$wp_json_base = get_rest_url() . WL_REST_ROUTE_DEFAULT_NAMESPACE;
 
-		$query_posts = array(
-			'post_id' => $current_post->ID,
+		$navigator_query = array(
+			'uniqid'  => $navigator_id,
+			'post_id' => $post->ID,
+			'limit'   => $shortcode_atts['limit'],
+			'offset'  => $shortcode_atts['offset']
 		);
 
 		if ( strpos( $wp_json_base, 'wp-json/' . WL_REST_ROUTE_DEFAULT_NAMESPACE ) ) {
@@ -144,7 +145,7 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		$wp_json_url_posts = str_replace( array(
 				'http:',
 				'https:',
-			), '', $wp_json_base ) . '/navigator' . $delimiter . http_build_query( $query_posts );
+			), '', $wp_json_base ) . '/navigator' . $delimiter . http_build_query( $navigator_query );
 
 		return <<<HTML
 		<div id="{$navigator_id}" class="wl-navigator-widget">
@@ -203,16 +204,6 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 			</amp-list>	
 		</div>
 HTML;
-	}
-
-	/**
-	 * Customize the CSS when in AMP.
-	 * Should echo (not return) CSS code
-	 *
-	 * @since 3.20.0
-	 */
-	public function amp_post_template_css() {
-		echo file_get_contents( dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-amp-custom.min.css' );
 	}
 
 }
