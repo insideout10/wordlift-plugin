@@ -148,7 +148,7 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 			), '', $wp_json_base ) . '/navigator' . $delimiter . http_build_query( $navigator_query );
 
 		return <<<HTML
-		<div id="{$navigator_id}" class="wl-navigator-widget">
+		<div id="{$navigator_id}" class="wl-navigator-widget" style="width: 100%">
 			<h3 class="wl-headline">{$shortcode_atts['title']}</h3>
 			<amp-list 
 				media="(min-width: 461px)"
@@ -163,13 +163,13 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 						layout="fixed-height"
 						type="carousel">
 					{{#values}}
-						<div class="wl-card">
+						<div class="wl-card" style="min-width: 400px">
 							<h6 class="wl-card-header"><a href="{{entity.permalink}}">{{entity.label}}</a></h6>
-							<amp-img 
-								width="2"
-								height="1"
-								layout="responsive"
-								src="{{post.thumbnail}}"></amp-img>
+                            <div class="fixed-container" style="height: 220px">
+                                <amp-img class="cover"
+                                	layout="fill"
+                                    src="{{post.thumbnail}}"></amp-img>
+                            </div>
 							<div class="wl-card-title"><a href="{{post.permalink}}">{{post.title}}</a></div> 
 						</div>	
 					{{/values}}
@@ -189,13 +189,13 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 						layout="fixed-height"
 						type="slides">
 					{{#values}}
-						<div class="wl-card">
+						<div class="wl-card" style="min-width: 400px">
 							<h6 class="wl-card-header"><a href="{{entity.permalink}}">{{entity.label}}</a></h6>
-							<amp-img 
-								width="2"
-								height="1"
-								layout="responsive"
-								src="{{post.thumbnail}}"></amp-img>
+                            <div class="fixed-container" style="height: 250px">
+                                <amp-img class="cover"
+                                	layout="fill"
+                                    src="{{post.thumbnail}}"></amp-img>
+                            </div>
 							<div class="wl-card-title"><a href="{{post.permalink}}">{{post.title}}</a></div>  
 						</div>	
 					{{/values}}

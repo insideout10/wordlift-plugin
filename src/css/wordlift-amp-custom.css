@@ -94,6 +94,14 @@ amp-carousel.wl-amp-carousel .wl-card .wl-card-title {
   font-size: .9rem;
   line-height: 1.2rem;
 }
+amp-carousel.wl-amp-carousel .wl-card .fixed-container {
+  position: relative;
+  width: -webkit-calc(100% - 10px);
+  width: calc(100% - 10px);
+}
+amp-carousel.wl-amp-carousel .wl-card .fixed-container amp-img.cover img {
+  object-fit: cover;
+}
 amp-carousel.wl-amp-carousel .wl-card a {
   white-space: normal;
   color: #222;
