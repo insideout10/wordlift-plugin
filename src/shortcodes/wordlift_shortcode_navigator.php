@@ -7,6 +7,8 @@
  * @subpackage Wordlift/shortcodes
  */
 
+use Wordlift\Cache\Ttl_Cache;
+
 /**
  * The Navigator data function.
  *
@@ -14,9 +16,35 @@
  */
 function wl_shortcode_navigator_data() {
 
+	// Create the cache key.
+	$cache_key = array(
+		'request_params' => $_REQUEST,
+	);
+
+	// Create the TTL cache and try to get the results.
+	$cache         = new Ttl_Cache( "faceted-search", 8 * 60 * 60 ); // 8 hours.
+	$cache_results = $cache->get( $cache_key );
+
+	if ( isset( $cache_results ) ) {
+		header( 'X-WordLift-Cache: HIT' );
+		return $cache_results;
+	}
+
+	header( 'X-WordLift-Cache: MISS' );
+
+	$results = _wl_navigator_get_data();
+
+	// Put the result before sending the json to the client, since sending the json will terminate us.
+	$cache->put( $cache_key, $results );
+
+	return $results;
+}
+
+function _wl_navigator_get_data() {
+
 	// Post ID must be defined
 	if ( ! isset( $_GET['post_id'] ) ) {
-		wp_die( 'No post_id given' );
+		wp_send_json_error( 'No post_id given' );
 
 		return;
 	}
@@ -125,7 +153,6 @@ function wl_shortcode_navigator_data() {
 
 	// Return first 4 results in json accordingly to 4 columns layout
 	return array_slice( $results, $navigator_offset, $navigator_length );
-
 }
 
 /**
