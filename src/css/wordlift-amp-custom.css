@@ -62,24 +62,30 @@
   color: #666;
   cursor: pointer;
 }
-amp-carousel.wl-amp-carousel {
+.wl-navigator-widget {
+  width: 100%;
+}
+.wl-navigator-widget amp-carousel.wl-amp-carousel {
   background: transparent;
   margin: 0 -8px 0 0;
 }
-amp-carousel.wl-amp-carousel .amp-scrollable-carousel-slide {
+.wl-navigator-widget amp-carousel.wl-amp-carousel .amp-carousel-button {
+  z-index: 0;
+}
+.wl-navigator-widget amp-carousel.wl-amp-carousel .amp-scrollable-carousel-slide {
   margin: 0;
 }
-amp-carousel.wl-amp-carousel .wl-card {
+.wl-navigator-widget amp-carousel.wl-amp-carousel .wl-card {
   font-size: 0.8em;
   width: 27%;
   vertical-align: top;
 }
 @media screen and (max-width: 460px) {
-  amp-carousel.wl-amp-carousel .wl-card {
+  .wl-navigator-widget amp-carousel.wl-amp-carousel .wl-card {
     width: 100%;
   }
 }
-amp-carousel.wl-amp-carousel .wl-card .wl-card-header {
+.wl-navigator-widget amp-carousel.wl-amp-carousel .wl-card .wl-card-header {
   text-align: left;
   text-transform: uppercase;
   padding: 0.6em;
@@ -88,28 +94,27 @@ amp-carousel.wl-amp-carousel .wl-card .wl-card-header {
   line-height: 1.2rem;
   min-height: 40px;
 }
-amp-carousel.wl-amp-carousel .wl-card .wl-card-title {
+.wl-navigator-widget amp-carousel.wl-amp-carousel .wl-card .wl-card-title {
   padding: 0.6em;
   position: relative;
   font-size: .9rem;
   line-height: 1.2rem;
 }
-amp-carousel.wl-amp-carousel .wl-card .fixed-container {
+.wl-navigator-widget amp-carousel.wl-amp-carousel .wl-card .fixed-container {
   position: relative;
-  width: -webkit-calc(100% - 10px);
-  width: calc(100% - 10px);
+  width: 100%;
 }
-amp-carousel.wl-amp-carousel .wl-card .fixed-container amp-img.cover img {
+.wl-navigator-widget amp-carousel.wl-amp-carousel .wl-card .fixed-container amp-img.cover img {
   object-fit: cover;
 }
-amp-carousel.wl-amp-carousel .wl-card a {
+.wl-navigator-widget amp-carousel.wl-amp-carousel .wl-card a {
   white-space: normal;
   color: #222;
   text-decoration: none;
   -webkit-box-shadow: inset 0 -1px 0 #0f0f0f;
           box-shadow: inset 0 -1px 0 #0f0f0f;
 }
-amp-carousel.wl-amp-carousel .wl-card a:hover {
+.wl-navigator-widget amp-carousel.wl-amp-carousel .wl-card a:hover {
   color: #222;
   -webkit-box-shadow: inset 0 0 0 rgba(0, 0, 0, 0), 0 3px 0 #000000;
           box-shadow: inset 0 0 0 rgba(0, 0, 0, 0), 0 3px 0 #000000;
