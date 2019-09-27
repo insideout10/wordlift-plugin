@@ -78,13 +78,32 @@ class Ttl_Cache {
 		if ( DIRECTORY_SEPARATOR !== substr( $temp_dir, - strlen( DIRECTORY_SEPARATOR ) ) ) {
 			$temp_dir .= DIRECTORY_SEPARATOR;
 		}
-		$this->cache_dir = $temp_dir . 'wl.cache' . DIRECTORY_SEPARATOR . md5( $name );
+		$this->cache_dir = self::get_cache_folder() . DIRECTORY_SEPARATOR . md5( $name );
 
 		$this->log->trace( "Creating the cache folder {$this->cache_dir}..." );
 		wp_mkdir_p( $this->cache_dir );
 
 		self::$caches[ $name ] = $this;
 
+	}
+
+	/**
+	 * Get the root cache folder.
+	 *
+	 * This is useful to introduce a cache cleaning procedure which will scan and delete older stale cache files.
+	 *
+	 * @return string The root cache folder.
+	 * @since 3.22.5
+	 */
+	public static function get_cache_folder() {
+
+		// Get the temp dir and add the directory separator if missing.
+		$temp_dir = get_temp_dir();
+		if ( DIRECTORY_SEPARATOR !== substr( $temp_dir, - strlen( DIRECTORY_SEPARATOR ) ) ) {
+			$temp_dir .= DIRECTORY_SEPARATOR;
+		}
+
+		return $temp_dir . 'wl.cache';
 	}
 
 	/**

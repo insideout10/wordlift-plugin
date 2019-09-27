@@ -25,6 +25,8 @@
  */
 
 // If this file is called directly, abort.
+use Wordlift\Cache\Ttl_Cache_Cleaner;
+
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
@@ -501,6 +503,9 @@ function run_wordlift() {
 
 	$plugin = new Wordlift();
 	$plugin->run();
+
+	// Initialize the TTL Cache Cleaner.
+	new Ttl_Cache_Cleaner();
 
 }
 
