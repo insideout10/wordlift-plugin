@@ -470,6 +470,7 @@ function deactivate_wordlift() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wordlift-deactivator.php';
 	Wordlift_Deactivator::deactivate();
 	Wordlift_Http_Api::deactivate();
+	Ttl_Cache_Cleaner::deactivate();
 	flush_rewrite_rules();
 
 }

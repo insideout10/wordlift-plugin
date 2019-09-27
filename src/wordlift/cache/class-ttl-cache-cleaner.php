@@ -54,6 +54,20 @@ class Ttl_Cache_Cleaner {
 
 		add_action( 'wp_ajax_wl_ttl_cache_cleaner__cleanup', array( $this, 'cleanup' ) );
 
+		if ( is_admin() ) { // Do not bother to configure scheduled tasks while running on the front-end.
+			add_action( 'wl_ttl_cache_cleaner__cleanup', array( $this, 'cleanup' ) );
+			if ( ! wp_next_scheduled( 'wl_ttl_cache_cleaner__cleanup' ) ) {
+				wp_schedule_event( time(), 'hourly', 'wl_ttl_cache_cleaner__cleanup' );
+			}
+		}
+
+	}
+
+	public static function deactivate() {
+
+		$timestamp = wp_next_scheduled( 'wl_ttl_cache_cleaner__cleanup' );
+		wp_unschedule_event( $timestamp, 'wl_ttl_cache_cleaner__cleanup' );
+
 	}
 
 	public function cleanup() {
