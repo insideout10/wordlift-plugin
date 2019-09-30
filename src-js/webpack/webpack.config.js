@@ -37,7 +37,7 @@ module.exports = {
   // resolve: {
   //   modules: [path.resolve(__dirname, "node_modules"), "node_modules"]
   // },
-  devtool: "source-map",
+  devtool: "eval-source-map",
   module: {
     rules: [
       {

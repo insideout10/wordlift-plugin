@@ -35,22 +35,22 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 	 * Shared function used by web_shortcode and amp_shortcode
 	 * Bootstrap logic for attributes extraction and boolean filtering
 	 *
-	 * @since      3.20.0
-	 *
 	 * @param array $atts Shortcode attributes.
 	 *
 	 * @return array $shortcode_atts
+	 * @since      3.20.0
+	 *
 	 */
 	private function make_shortcode_atts( $atts ) {
 
 		// Extract attributes and set default values.
 		$shortcode_atts = shortcode_atts( array(
-			'title'             => __( 'Related articles', 'wordlift' ),
-			'limit'             => 4,
-			'offset'            => 0,
-			'template_id'       => '',
-			'post_id'           => '',
-			'uniqid'            => uniqid( 'wl-navigator-widget-' )
+			'title'       => __( 'Related articles', 'wordlift' ),
+			'limit'       => 4,
+			'offset'      => 0,
+			'template_id' => '',
+			'post_id'     => '',
+			'uniqid'      => uniqid( 'wl-navigator-widget-' ),
 		), $atts );
 
 		return $shortcode_atts;
@@ -59,11 +59,11 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 	/**
 	 * Function in charge of diplaying the [wl-navigator] in web mode.
 	 *
-	 * @since 3.20.0
-	 *
 	 * @param array $atts Shortcode attributes.
 	 *
 	 * @return string Shortcode HTML for web
+	 * @since 3.20.0
+	 *
 	 */
 	private function web_shortcode( $atts ) {
 
@@ -71,21 +71,22 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		$shortcode_atts = $this->make_shortcode_atts( $atts );
 
 		// avoid building the widget when no post_id is specified and there is a list of posts.
-		if ( empty($shortcode_atts['post_id']) && !is_singular() ) {
+		if ( empty( $shortcode_atts['post_id'] ) && ! is_singular() ) {
 			return;
 		}
 
-		$post = !empty($shortcode_atts['post_id']) ? get_post(intval($shortcode_atts['post_id'])) : get_post();
+		$post         = ! empty( $shortcode_atts['post_id'] ) ? get_post( intval( $shortcode_atts['post_id'] ) ) : get_post();
 		$navigator_id = $shortcode_atts['uniqid'];
-		$rest_url = $post ? admin_url( sprintf('admin-ajax.php?action=wl_navigator&uniqid=%s&post_id=%s&limit=%s&offset=%s', $navigator_id, $post->ID, $shortcode_atts['limit'], $shortcode_atts['offset']) ) : false;
+		$rest_url     = $post ? admin_url( sprintf( 'admin-ajax.php?action=wl_navigator&uniqid=%s&post_id=%s&limit=%s&offset=%s', $navigator_id, $post->ID, $shortcode_atts['limit'], $shortcode_atts['offset'] ) ) : false;
 
 		// avoid building the widget when no valid $rest_url
-		if ( !$rest_url ) {
+		if ( ! $rest_url ) {
 			return;
 		}
 
 		wp_enqueue_script( 'wordlift-cloud' );
-		wp_add_inline_script( 'wordlift-cloud', "wordliftCloud.navigator('#".$navigator_id."')" );
+		$json_navigator_id = json_encode( $navigator_id );
+		wp_add_inline_script( 'wordlift-cloud', "window.wlNavigators = window.wlNavigators || []; wlNavigators.push( $json_navigator_id );" );
 
 		return sprintf(
 			'<div id="%s" class="%s" data-rest-url="%s" data-title="%s" data-template-id="%s" data-limit="%s"></div>',
@@ -101,11 +102,11 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 	/**
 	 * Function in charge of diplaying the [wl-faceted-search] in amp mode.
 	 *
-	 * @since 3.20.0
-	 *
 	 * @param array $atts Shortcode attributes.
 	 *
 	 * @return string Shortcode HTML for amp
+	 * @since 3.20.0
+	 *
 	 */
 	private function amp_shortcode( $atts ) {
 
@@ -122,7 +123,7 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		// Enqueue amp specific styles
 		wp_enqueue_style( 'wordlift-amp-custom', plugin_dir_url( dirname( __FILE__ ) ) . '/css/wordlift-amp-custom.min.css' );
 
-		$post = !empty($shortcode_atts['post_id']) ? get_post(intval($shortcode_atts['post_id'])) : get_post();
+		$post         = ! empty( $shortcode_atts['post_id'] ) ? get_post( intval( $shortcode_atts['post_id'] ) ) : get_post();
 		$navigator_id = $shortcode_atts['uniqid'];
 
 		$wp_json_base = get_rest_url() . WL_REST_ROUTE_DEFAULT_NAMESPACE;
@@ -131,7 +132,7 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 			'uniqid'  => $navigator_id,
 			'post_id' => $post->ID,
 			'limit'   => $shortcode_atts['limit'],
-			'offset'  => $shortcode_atts['offset']
+			'offset'  => $shortcode_atts['offset'],
 		);
 
 		if ( strpos( $wp_json_base, 'wp-json/' . WL_REST_ROUTE_DEFAULT_NAMESPACE ) ) {
@@ -148,7 +149,7 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 			), '', $wp_json_base ) . '/navigator' . $delimiter . http_build_query( $navigator_query );
 
 		return <<<HTML
-		<div id="{$navigator_id}" class="wl-navigator-widget">
+		<div id="{$navigator_id}" class="wl-navigator-widget" style="width: 100%">
 			<h3 class="wl-headline">{$shortcode_atts['title']}</h3>
 			<amp-list 
 				media="(min-width: 461px)"
@@ -163,13 +164,13 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 						layout="fixed-height"
 						type="carousel">
 					{{#values}}
-						<div class="wl-card">
+						<div class="wl-card" style="min-width: 400px">
 							<h6 class="wl-card-header"><a href="{{entity.permalink}}">{{entity.label}}</a></h6>
-							<amp-img 
-								width="2"
-								height="1"
-								layout="responsive"
-								src="{{post.thumbnail}}"></amp-img>
+                            <div class="fixed-container" style="height: 220px">
+                                <amp-img class="cover"
+                                	layout="fill"
+                                    src="{{post.thumbnail}}"></amp-img>
+                            </div>
 							<div class="wl-card-title"><a href="{{post.permalink}}">{{post.title}}</a></div> 
 						</div>	
 					{{/values}}
@@ -189,13 +190,13 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 						layout="fixed-height"
 						type="slides">
 					{{#values}}
-						<div class="wl-card">
+						<div class="wl-card" style="min-width: 400px">
 							<h6 class="wl-card-header"><a href="{{entity.permalink}}">{{entity.label}}</a></h6>
-							<amp-img 
-								width="2"
-								height="1"
-								layout="responsive"
-								src="{{post.thumbnail}}"></amp-img>
+                            <div class="fixed-container" style="height: 250px">
+                                <amp-img class="cover"
+                                	layout="fill"
+                                    src="{{post.thumbnail}}"></amp-img>
+                            </div>
 							<div class="wl-card-title"><a href="{{post.permalink}}">{{post.title}}</a></div>  
 						</div>	
 					{{/values}}
