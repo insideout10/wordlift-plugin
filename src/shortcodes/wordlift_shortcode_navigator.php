@@ -17,11 +17,9 @@ use Wordlift\Cache\Ttl_Cache;
 function wl_shortcode_navigator_data() {
 
 	// Create the cache key.
-	$cache_key = array(
-		'request_params' => array_filter( $_REQUEST, function ( $key ) {
-			return 'uniqid' !== $key;
-		}, ARRAY_FILTER_USE_KEY ),
-	);
+	$cache_key_params = $_REQUEST;
+	unset( $cache_key_params['uniqid'] );
+	$cache_key = array( 'request_params' => $cache_key_params );
 
 	// Create the TTL cache and try to get the results.
 	$cache         = new Ttl_Cache( "navigator", 24 * 60 * 60 ); // 24 hours.

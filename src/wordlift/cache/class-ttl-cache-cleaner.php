@@ -84,11 +84,11 @@ class Ttl_Cache_Cleaner {
 
 		// Sort by size ascending.
 		usort( $files, function ( $f1, $f2 ) {
-			if ( $f1[ self::MTIME ] === $f2[ self::MTIME ] ) {
+			if ( $f1[ Ttl_Cache_Cleaner::MTIME ] === $f2[ Ttl_Cache_Cleaner::MTIME ] ) {
 				return 0;
 			}
 
-			return ( $f1[ self::MTIME ] < $f2[ self::MTIME ] ) ? - 1 : 1;
+			return ( $f1[ Ttl_Cache_Cleaner::MTIME ] < $f2[ Ttl_Cache_Cleaner::MTIME ] ) ? - 1 : 1;
 		} );
 
 		// Start removing stale files.
@@ -106,7 +106,7 @@ class Ttl_Cache_Cleaner {
 		// Calculate the size.
 		$total_size = array_reduce( $files, function ( $carry, $item ) {
 
-			return $carry + $item[ self::SIZE ];
+			return $carry + $item[ Ttl_Cache_Cleaner::SIZE ];
 		}, 0 );
 
 		// Remove files until we're within the max size.
@@ -149,7 +149,7 @@ class Ttl_Cache_Cleaner {
 	 *
 	 * @return array
 	 */
-	private function _reduce( $accumulator, $path, $handle ): array {
+	private function _reduce( $accumulator, $path, $handle ) {
 
 		while ( false !== ( $entry = readdir( $handle ) ) ) {
 
