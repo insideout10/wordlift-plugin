@@ -272,7 +272,7 @@ add_action( 'init', function () {
  */
 add_action( 'plugins_loaded', function () {
 
-	if ( ! wp_doing_ajax() || 'wl_navigator' !== $_REQUEST['action'] ) {
+	if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX || 'wl_navigator' !== $_REQUEST['action'] ) {
 		return;
 	}
 
@@ -283,7 +283,7 @@ add_action( 'plugins_loaded', function () {
 
 add_action( 'init', function () {
 
-	if ( ! wp_doing_ajax() || 'wl_navigator' !== $_REQUEST['action'] ) {
+	if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX || 'wl_navigator' !== $_REQUEST['action'] ) {
 		return;
 	}
 
