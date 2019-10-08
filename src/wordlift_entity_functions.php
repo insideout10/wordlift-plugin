@@ -199,6 +199,8 @@ function wl_set_entity_rdf_types( $post_id, $type_uris = array() ) {
  */
 function wl_entity_taxonomy_get_custom_fields( $entity_id = null ) {
 
+	$custom_fields = [];
+
 	if ( is_null( $entity_id ) ) {
 
 		// Return all custom fields.
@@ -227,12 +229,27 @@ function wl_entity_taxonomy_get_custom_fields( $entity_id = null ) {
 	}
 
 	// Return custom fields for this specific entity's type.
-	$type = Wordlift_Entity_Type_Service::get_instance()->get( $entity_id );
+	$type = Wordlift_Entity_Type_Service::get_instance()->get( $entity_id, true );
 
-	if ( ! isset( $type['custom_fields'] ) ) {
+	/**
+	 * $type is an array of array since the 2nd param to the function is `true`.
+	 * We'll store the custom fields from all schemas in the $custom_fields array.
+	 */
+	foreach ( $type as $t ) {
+		if ( isset( $t['custom_fields'] ) ) {
+			$custom_fields[] = $t['custom_fields'];
+		}
+	}
+
+	/**
+	 * Return an empty array if the $custom_fields array in empty.
+	 */
+	if ( empty( $custom_fields ) ) {
 		return array();
 	}
 
-	return $type['custom_fields'];
-
+	/**
+	 * This will merge all the sub-arrays and return a unified array of custom fields from all schemas.
+	 */
+	return call_user_func_array( 'array_merge', $custom_fields );
 }

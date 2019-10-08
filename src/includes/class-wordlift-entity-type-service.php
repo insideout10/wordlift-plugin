@@ -95,7 +95,8 @@ class Wordlift_Entity_Type_Service {
 	 *
 	 * @since 3.7.0
 	 *
-	 * @param int $post_id The post id.
+	 * @param int     $post_id  The post id.
+	 * @param boolean $multiple Doesn't break the loop if set to true and returns all found schemas.
 	 *
 	 * @return array|null {
 	 * An array of type properties or null if no term is associated
@@ -107,7 +108,12 @@ class Wordlift_Entity_Type_Service {
 	 * @type array  linked_data   An array of {@link Wordlift_Sparql_Tuple_Rendition}.
 	 * }
 	 */
-	public function get( $post_id ) {
+	public function get( $post_id, $multiple = false ) {
+
+		/**
+		 * Stores all the schemas in an array.
+		 */
+		$schema_array = [];
 
 		$this->log->trace( "Getting the post type for post $post_id..." );
 
@@ -133,11 +139,17 @@ class Wordlift_Entity_Type_Service {
 				// Try to get the schema for the term.
 				$schema = $this->schema_service->get_schema( $term->slug );
 
-				// If found, return it, ignoring the other types.
-				if ( null !== $schema ) {
+				// If found and multiple = false, return it, ignoring the other types.
+				if ( null !== $schema && false === $multiple ) {
 					// Return the entity type with the specified id.
 					return $schema;
+				} elseif ( null !== $schema && true === $multiple ) {
+					$schema_array[] = $schema;
 				}
+			}
+
+			if ( ! empty( $schema_array ) ) {
+				return $schema_array;
 			}
 
 			/*
