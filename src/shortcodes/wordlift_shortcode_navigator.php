@@ -43,6 +43,46 @@ function wl_shortcode_navigator_data() {
 	return $results;
 }
 
+/**
+ *
+ * Network navigator callback function used by network-navigator endpoint
+ *
+ * @since 3.23.0
+ *
+ * @param $request
+ *
+ * @return array
+ */
+function wl_network_navigator_wp_json($request) {
+
+	// Create the cache key.
+	$cache_key = array(
+		'request_params' => array_filter( $_REQUEST, function ( $key ) {
+			return 'uniqid' !== $key;
+		}, ARRAY_FILTER_USE_KEY ),
+	);
+
+	// Create the TTL cache and try to get the results.
+	$cache         = new Ttl_Cache( "network-navigator", 24 * 60 * 60 ); // 24 hours.
+	$cache_results = $cache->get( $cache_key );
+
+	if ( isset( $cache_results ) ) {
+		header( 'X-WordLift-Cache: HIT' );
+
+		return $cache_results;
+	}
+
+	header( 'X-WordLift-Cache: MISS' );
+
+	$results = _wl_network_navigator_get_data($request);
+
+	// Put the result before sending the json to the client, since sending the json will terminate us.
+	$cache->put( $cache_key, $results );
+
+	return $results;
+
+}
+
 function _wl_navigator_get_data() {
 
 	// Post ID must be defined
@@ -115,17 +155,7 @@ function _wl_navigator_get_data() {
 	return $results;
 }
 
-/**
- *
- * Network navigator callback function used by network-navigator endpoint
- *
- * @since 3.23.0
- *
- * @param $request
- *
- * @return array
- */
-function wl_network_navigator_wp_json($request) {
+function _wl_network_navigator_get_data($request) {
 
 	// Limit the results (defaults to 4)
 	$navigator_length = isset( $request['limit'] ) ? intval( $request['limit'] ) : 4;
