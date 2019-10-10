@@ -291,7 +291,8 @@ function _wl_network_navigator_get_results(
 	}, (array) $order_by ) );
 
 	$entities_in = implode( ',', array_map( function ( $item ) {
-		return "'".esc_sql($item)."'";
+		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri(urldecode($item));
+		if(isset($entity)) return $entity->ID;
 	}, $entities ) );
 
 	/** @noinspection SqlNoDataSourceInspection */
@@ -315,10 +316,7 @@ SELECT %3\$s, p2.ID as entity_id
         ON t.term_id = tt.term_id
             AND t.slug = 'article'
     -- select only posts with featured images.
-    INNER JOIN {$wpdb->postmeta} m
-        ON m.post_id = p.ID
-            AND m.meta_key = '_thumbnail_id'
- WHERE r1.object_id IN (SELECT ID FROM wp_posts WHERE post_title in ({$entities_in}) and post_status = 'publish' and post_type = 'entity')
+ WHERE r1.object_id IN ({$entities_in})
  -- avoid duplicates.
  GROUP BY p.ID
  ORDER BY %4\$s
