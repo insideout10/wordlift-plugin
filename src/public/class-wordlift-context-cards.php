@@ -45,18 +45,21 @@ class Wordlift_Context_Cards_Service {
 		$show_context_cards = apply_filters( 'wl_show_context_cards', $show_context_cards );
 		if ( $show_context_cards ) {
 			wp_enqueue_script( 'wordlift-cloud' );
-			wp_add_inline_script( 'wordlift-cloud', "wordliftCloud.contextCards('a.wl-entity-page-link', '" . get_rest_url() . WL_REST_ROUTE_DEFAULT_NAMESPACE . $this->endpoint . "')" );
+			wp_add_inline_script( 'wordlift-cloud', "window.addEventListener( 'load', function() { wordliftCloud.contextCards('a.wl-entity-page-link', '" . get_rest_url() . WL_REST_ROUTE_DEFAULT_NAMESPACE . $this->endpoint . "'); } );" );
 		}
 	}
 
-	private function url_to_postid( $url ){
+	private function url_to_postid( $url ) {
 		// Try with url_to_postid
 		$post_id = url_to_postid( $url );
 		if ( $post_id == 0 ) {
 			// Try with get_page_by_path
-			$post = get_page_by_path( basename( untrailingslashit( $url ) ) , OBJECT, 'entity');
-			if($post) $post_id = $post->ID;
+			$post = get_page_by_path( basename( untrailingslashit( $url ) ), OBJECT, 'entity' );
+			if ( $post ) {
+				$post_id = $post->ID;
+			}
 		}
+
 		return $post_id;
 	}
 
