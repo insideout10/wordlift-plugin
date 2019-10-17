@@ -76,10 +76,10 @@ class Wordlift_Install_Service {
 	/**
 	 * Loop thought all versions and install the updates.
 	 *
-	 * @since 3.20.0 use a transient to avoid concurrent installation calls.
+	 * @return void
 	 * @since 3.18.0
 	 *
-	 * @return void
+	 * @since 3.20.0 use a transient to avoid concurrent installation calls.
 	 */
 	public function install() {
 
@@ -88,7 +88,7 @@ class Wordlift_Install_Service {
 
 			$this->do_install();
 
-			delete_transient( '_wl_installing' );
+			@delete_transient( '_wl_installing' );
 		}
 
 	}
