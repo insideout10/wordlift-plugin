@@ -126,6 +126,18 @@ class Ttl_Cache_Cleaner {
 
 	private function reduce( $accumulator, $path ) {
 
+		/**
+		 * Bail out if the path doesn't exist.
+		 *
+		 * Avoid warnings when trying to open a path which doesn't exist.
+		 *
+		 * @since 3.23.0
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/966
+		 */
+		if ( ! file_exists( $path ) ) {
+			return $accumulator;
+		}
+
 		// Open the dir handle.
 		$handle = opendir( $path );
 

@@ -1361,7 +1361,7 @@
     "@webassemblyjs/wast-parser" "1.8.5"
     "@xtuc/long" "4.2.2"
 
-"@wordlift/wordlift-for-schemaorg@^1":
+"@wordlift/wordlift-for-schemaorg@^1.0":
   version "1.0.44"
   resolved "https://registry.yarnpkg.com/@wordlift/wordlift-for-schemaorg/-/wordlift-for-schemaorg-1.0.44.tgz#42842b91ab7e2ae7c221ad36a527a1204452a1b0"
   integrity sha512-Pc6N+CuCJMnmtlK210tfso9OGzcj7C8OsbU6lctOzFKZtbTDBEUhnrtYKHa7Y9YJk42UgZ62QVVI+dgAFa4JOA==
