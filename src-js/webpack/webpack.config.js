@@ -34,6 +34,17 @@ module.exports = {
     filename: "[name].js",
     path: path.resolve(__dirname, "../../src/js/dist")
   },
+  /*
+   * Give precedence to our node_modules folder when resolving the same module.
+   *
+   * This solves duplicate issues with styled-components.
+   *
+   * @see https://www.styled-components.com/docs/faqs#why-am-i-getting-a-warning-about-several-instances-of-module-on-the-page
+   */
+  // resolve: {
+  //   modules: [path.resolve(__dirname, "node_modules"), "node_modules"]
+  // },
+  devtool: "eval-source-map",
   module: {
     ...defaultConfig.module,
     rules: [

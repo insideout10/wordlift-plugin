@@ -142,6 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.22.5 (2019-10.09) =
+* Fix: Performance issues with Navigator on large sites.
+
 = 3.22.4 (2019-09-19) =
 * Fix: Context cards json endpoint returned null for some entities.
 * Enhancement: Offset and uniqid parameter in navigator.

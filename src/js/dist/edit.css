@@ -369,7 +369,11 @@
 }
 @-webkit-keyframes Select-animation-spin {
   to {
+<<<<<<< HEAD
     -webkit-transform: rotate(1turn);
   }
 }
+=======
+    -webkit-transform: rotate(1turn); } }
+>>>>>>> master
 

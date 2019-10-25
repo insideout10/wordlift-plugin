@@ -243,7 +243,7 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
 .directive('wlCarousel', ['$window', '$log', ($window, $log)->
   restrict: 'A'
   scope: true
-  transclude: true      
+  transclude: true
   template: """
       <div class="wl-carousel" ng-class="{ 'active' : areControlsVisible }" ng-show="panes.length > 0" ng-mouseover="showControls()" ng-mouseleave="hideControls()">
         <div class="wl-panes" ng-style="{ width: panesWidth, left: position }" ng-transclude ng-swipe-left="next()" ng-swipe-right="prev()" ></div>
@@ -254,11 +254,11 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
       </div>
   """
   controller: [ '$scope', '$element', '$attrs', '$log', ($scope, $element, $attrs, $log) ->
-      
+
     w = angular.element $window
 
     $scope.setItemWidth = ()->
-      $element.width() / $scope.visibleElements() 
+      $element.width() / $scope.visibleElements()
 
     $scope.showControls = ()->
       $scope.areControlsVisible = true
@@ -273,28 +273,28 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
 
     $scope.isActive = ()->
       $scope.isPrevArrowVisible() or $scope.isNextArrowVisible()
-        
+
     $scope.isPrevArrowVisible = ()->
       ($scope.currentPaneIndex > 0)
-    
+
     $scope.isNextArrowVisible = ()->
       ($scope.panes.length - $scope.currentPaneIndex) > $scope.visibleElements()
-    
+
     $scope.next = ()->
       if ( $scope.currentPaneIndex + $scope.visibleElements() + 1 ) > $scope.panes.length
-        return 
+        return
       $scope.position = $scope.position - $scope.itemWidth
       $scope.currentPaneIndex = $scope.currentPaneIndex + 1
 
     $scope.prev = ()->
       if $scope.currentPaneIndex is 0
-        return 
+        return
       $scope.position = $scope.position + $scope.itemWidth
       $scope.currentPaneIndex = $scope.currentPaneIndex - 1
-    
+
     $scope.setPanesWrapperWidth = ()->
       # console.debug { "Setting panes wrapper width...", Object.assign( {}, $scope ) }
-      $scope.panesWidth = ( $scope.panes.length * $scope.itemWidth ) 
+      $scope.panesWidth = ( $scope.panes.length * $scope.itemWidth )
       $scope.position = 0;
       $scope.currentPaneIndex = 0
 
@@ -322,14 +322,14 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
     ctrl.registerPane = (scope, element, first)->
       # Set the proper width for the element
       scope.setWidth $scope.itemWidth
-        
+
       pane =
         'scope': scope
         'element': element
 
       $scope.panes.push pane
       $scope.setPanesWrapperWidth()
-      
+
       #if first
       #  $log.debug "Eccolo"
       #  $log.debug $scope.panes.length
@@ -337,7 +337,7 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
       #  $scope.currentPaneIndex = $scope.panes.length
 
     ctrl.unregisterPane = (scope)->
-        
+
       unregisterPaneIndex = undefined
       for pane, index in $scope.panes
         if pane.scope.$id is scope.$id
@@ -352,7 +352,7 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
   restrict: 'EA'
   scope:
     wlFirstPane: '='
-  transclude: true 
+  transclude: true
   template: """
       <div ng-transclude></div>
   """
@@ -854,7 +854,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
       onReset: '&'
       box: '='
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.22.4'
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.22.5'
 
     link: ($scope, $element, $attrs, $ctrl) ->
 
@@ -951,7 +951,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityTile', [])
     templateUrl: ()->
       configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-tile.html'
     link: ($scope, $element, $attrs, $boxCtrl) ->
-      
+
       $scope.configuration = configuration
       # Add tile to related container scope
       $boxCtrl?.addTile $scope
@@ -977,7 +977,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', [])
     scope:
       entity: '='
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.22.4'
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.22.5'
 ])
 
 angular.module('wordlift.editpost.widget.services.EditorAdapter', [
@@ -1700,12 +1700,12 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
 
 angular.module('wordlift.editpost.widget.services.RelatedPostDataRetrieverService', [])
 # Manage redlink analysis responses
-.service('RelatedPostDataRetrieverService', [ 'configuration', '$log', '$http', '$rootScope', (configuration, $log, $http, $rootScope)-> 
-  
+.service('RelatedPostDataRetrieverService', [ 'configuration', '$log', '$http', '$rootScope', (configuration, $log, $http, $rootScope)->
+
   service = {}
   service.load = ( entityIds = [] )->
     uri = "admin-ajax.php?action=wordlift_related_posts&post_id=#{configuration.currentPostId}"
-    
+
     $http(
       method: 'post'
       url: uri
@@ -1722,12 +1722,12 @@ angular.module('wordlift.editpost.widget.services.RelatedPostDataRetrieverServic
 ])
 angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geolocation'])
 # Retrieve GeoLocation coordinates and process them trough reverse geocoding
-.service('GeoLocationService', [ 'configuration', 'geolocation', '$log', '$rootScope', '$document', '$q', '$timeout', '$window', ( configuration, geolocation, $log, $rootScope, $document, $q, $timeout, $window)-> 
-  
+.service('GeoLocationService', [ 'configuration', 'geolocation', '$log', '$rootScope', '$document', '$q', '$timeout', '$window', ( configuration, geolocation, $log, $rootScope, $document, $q, $timeout, $window)->
+
   GOOGLE_MAPS_LEVEL = 'locality'
   GOOGLE_MAPS_KEY = 'AIzaSyAhsajbqNVd7ABlkZvskWIPdiX6M3OaaNM'
   GOOGLE_MAPS_API_ENDPOINT = "https://maps.googleapis.com/maps/api/js?language=#{configuration.currentLanguage}&key=#{GOOGLE_MAPS_KEY}"
-  
+
   $rootScope.$on 'error', (event, msg)->
     $log.warn "Geolocation error: #{msg}"
     $rootScope.$broadcast 'geoLocationError', msg
@@ -1749,12 +1749,12 @@ angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geoloca
     # $log.debug "Going to load #{GOOGLE_MAPS_API_ENDPOINT}"
     element.src = GOOGLE_MAPS_API_ENDPOINT
     $document[0].body.appendChild element
-    
 
-    callback = (e) ->  
-      if element.readyState and element.readyState not in ['complete', 'loaded'] 
+
+    callback = (e) ->
+      if element.readyState and element.readyState not in ['complete', 'loaded']
         return
-      
+
       $timeout(()->
         deferred.resolve(e)
       )
@@ -1763,7 +1763,7 @@ angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geoloca
     element.onreadystatechange = callback
     element.onerror = (e)->
 
-      $timeout(()-> 
+      $timeout(()->
         deferred.reject(e)
       )
 
@@ -1773,7 +1773,7 @@ angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geoloca
   # Detect Current Browser
   currentBrowser = ()->
     userAgent = $window.navigator.userAgent
-    browsers = 
+    browsers =
       chrome: /chrome/i
       safari: /safari/i
       firefox: /firefox/i
@@ -1784,20 +1784,20 @@ angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geoloca
     'unknown'
 
   service = {}
-  
-  # Used to temporaly manage this scenario 
+
+  # Used to temporaly manage this scenario
   # https://developers.google.com/web/updates/2016/04/geolocation-on-secure-contexts-only?hl=en
   service.isAllowed = ()->
     # $log.debug "Current browser #{currentBrowser()}, current protocol: #{$window.location.protocol}"
     if currentBrowser() is 'chrome'
       return $window.location.protocol is 'https:'
     true
-    
+
   service.getLocation = ()->
 
     geolocation.getLocation()
     .then (data) ->
-      
+
       $log.debug "Detected position: latitude #{data.coords.latitude}, longitude #{data.coords.longitude}"
       loadGoogleAPI()
       .then ()->
@@ -1809,15 +1809,15 @@ angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geoloca
              'lat': data.coords.latitude
              'lng': data.coords.longitude
           , (results, status)->
-            
+
             if status is google.maps.GeocoderStatus.OK
               for result in results
                 if GOOGLE_MAPS_LEVEL in result.types
                   for ac in result.address_components
                     if GOOGLE_MAPS_LEVEL in ac.types
-                      $rootScope.$broadcast "currentUserLocalityDetected", result.formatted_address, ac.long_name                                   
-                      return    
-             
+                      $rootScope.$broadcast "currentUserLocalityDetected", result.formatted_address, ac.long_name
+                      return
+
   service
 
 ])
@@ -1839,6 +1839,7 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
 
       	unless entityType
       	  return undefined
+<<<<<<< HEAD
 
       	for category in @classificationBoxes
           if entityType in category.registeredTypes
@@ -1846,6 +1847,11 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
 
         # Return `what` by default.
         return "what"
+=======
+      	for category in @classificationBoxes
+      	  if entityType in category.registeredTypes
+      	    return category.id
+>>>>>>> master
 
       # Return registered types for a given category
       _configuration.getTypesForCategoryId = (categoryId)->
@@ -1904,7 +1910,7 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
     <div
       id="wordlift-edit-post-wrapper"
       ng-controller="EditPostWidgetController"
-      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.22.4'">
+      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.22.5'">
     </div>
   """)
   .appendTo('#wordlift-edit-post-outer-wrapper')
