@@ -13,6 +13,11 @@
   },
   "devDependencies": {
     "@babel/core": "^7.6.0",
+    "@wordpress/api-fetch": "^3.6.3",
+    "@wordpress/data": "^4.9.2",
+    "@wordpress/edit-post": "^3.8.3",
+    "@wordpress/element": "^2.8.2",
+    "@wordpress/plugins": "^2.7.2",
     "@wordpress/scripts": "^4.1.0",
     "css-loader": "^3.2.0",
     "mini-css-extract-plugin": "^0.8.0",
@@ -26,7 +31,6 @@
     "webpack-cli": "^3.3.8"
   },
   "dependencies": {
-    "wordlift-cloud": "git+ssh://git@gitlab.com:wordlift/wordlift-navigator-js#47256c37ab2ff171e543dbe1ac2dfb1ac0adfadf",
     "@wordlift/wordlift-for-schemaorg": "^1.0",
     "immutable": "^3",
     "prop-types": "^15",
@@ -40,7 +44,8 @@
     "redux-saga": "^1.0.5",
     "redux-thunk": "^2.3.0",
     "styled-components": "^4.3.2",
-    "whatwg-fetch": "^2"
+    "whatwg-fetch": "^2",
+    "wordlift-cloud": "git+ssh://git@gitlab.com:wordlift/wordlift-navigator-js#47256c37ab2ff171e543dbe1ac2dfb1ac0adfadf"
   },
   "prettier": {
     "tabWidth": 2,

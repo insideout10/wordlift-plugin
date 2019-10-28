@@ -1,11 +1,12 @@
-/* global wp */
-
-import { Blocks } from "./Blocks";
+/**
+ * WordPress dependencies
+ */
+import { dispatch, select } from "@wordpress/data";
 
 /**
- * WordPress dependencies.
+ * Internal dependencies
  */
-const { dispatch, select } = wp.data;
+import { Blocks } from "./Blocks";
 
 export default class EditorOps {
   constructor(editor) {

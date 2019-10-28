@@ -1,21 +1,19 @@
-/* global wp */
-
 /**
- * External dependencies.
+ * External dependencies
  */
 import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
 
 /**
- * WordPress dependencies.
+ * WordPress dependencies
  */
-const { apiFetch } = wp;
-const { select, dispatch } = wp.data;
+import { apiFetch } from "@wordpress/api-fetch";
+import { select, dispatch } from "@wordpress/data";
 
 /**
- * Internal dependencies.
+ * Internal dependencies
  */
 import { receiveAnalysisResults, toggleLinkSuccess, updateOccurrencesForEntity } from "../../Edit/actions";
-import { TOGGLE_ENTITY, TOGGLE_LINK, TOGGLE_LINK_SUCCESS } from "../../Edit/constants/ActionTypes";
+import { TOGGLE_ENTITY, TOGGLE_LINK } from "../../Edit/constants/ActionTypes";
 import actions from "./actions";
 import parseAnalysisResponse from "./compat";
 import { EDITOR_STORE } from "../constants";
