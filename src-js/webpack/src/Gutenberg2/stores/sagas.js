@@ -1,25 +1,26 @@
 /**
  * External dependencies
  */
-import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
+import { call, put, select, takeEvery, takeLatest } from "redux-saga/effects";
 
 /**
  * WordPress dependencies
  */
-import { apiFetch } from "@wordpress/api-fetch";
-import { select, dispatch } from "@wordpress/data";
+import apiFetch from "@wordpress/api-fetch";
+import * as data from "@wordpress/data";
 
 /**
  * Internal dependencies
  */
 import { receiveAnalysisResults, toggleLinkSuccess, updateOccurrencesForEntity } from "../../Edit/actions";
-import { TOGGLE_ENTITY, TOGGLE_LINK } from "../../Edit/constants/ActionTypes";
+import { ANNOTATION, TOGGLE_ENTITY, TOGGLE_LINK } from "../../Edit/constants/ActionTypes";
 import actions from "./actions";
 import parseAnalysisResponse from "./compat";
 import { EDITOR_STORE } from "../constants";
 import EditorOps from "../api/EditorOps";
 import { makeEntityAnnotationsSelector, mergeArray } from "../api/utils";
 import { Blocks } from "../api/Blocks";
+import { getAnnotationFilter } from "./selectors";
 
 function* requestAnalysis() {
   const editorOps = new EditorOps(EDITOR_STORE);
@@ -59,7 +60,7 @@ function embedAnalysis(editorOps, response) {
 
 function* toggleEntity({ entity }) {
   // Get the supported blocks.
-  const blocks = Blocks.create(select(EDITOR_STORE).getBlocks(), dispatch(EDITOR_STORE));
+  const blocks = Blocks.create(data.select(EDITOR_STORE).getBlocks(), data.dispatch(EDITOR_STORE));
 
   const onClassNames = ["disambiguated", `wl-${entity.mainType.replace(/\s/, "-")}`];
 
@@ -98,7 +99,7 @@ function* toggleEntity({ entity }) {
 
 function* toggleLink({ entity }) {
   // Get the supported blocks.
-  const blocks = Blocks.create(select(EDITOR_STORE).getBlocks(), dispatch(EDITOR_STORE));
+  const blocks = Blocks.create(data.select(EDITOR_STORE).getBlocks(), data.dispatch(EDITOR_STORE));
 
   // Build a css selector to select all the annotations for the provided entity.
   const annotationSelector = makeEntityAnnotationsSelector(entity);
@@ -124,10 +125,48 @@ function* toggleLink({ entity }) {
   yield put(toggleLinkSuccess({ id: entity.id, link }));
 }
 
+/**
+ * Handle `ANNOTATION` actions.
+ *
+ * When the `ANNOTATION` action is fired, the `selected` css class will be added
+ * to the selected annotation and removed from the others.
+ *
+ * The annotation id should match the element id.
+ *
+ * @since 3.23.0
+ * @param {string|undefined} annotationId The annotation id.
+ */
+function* toggleAnnotation({ annotation }) {
+  // Bail out if the annotation didn't change.
+  const selectedAnnotation = yield select(getAnnotationFilter);
+  if (annotation === selectedAnnotation) return null;
+
+  // Get the supported blocks.
+  const blocks = Blocks.create(data.select(EDITOR_STORE).getBlocks(), data.dispatch(EDITOR_STORE));
+
+  blocks.replace(
+    new RegExp(`<span\\s+id="([^"]+)"\\sclass="(textannotation(?:\\s[^"]*)?)"`, "gi"),
+    (match, annotationId, classNames) => {
+      // Get the class names removing any potential `selected` class.
+      const newClassNames = classNames.split(/\s+/).filter(x => "selected" !== x);
+
+      // Add the `selected` class if the annotation match.
+      if (annotation === annotationId) newClassNames.push("selected");
+
+      // Return the new span.
+      return `<span id="${annotationId}" class="${newClassNames.join(" ")}"`;
+    }
+  );
+
+  // Apply the changes.
+  blocks.apply();
+}
+
 export default function* saga() {
   // yield takeLatest(actions.selectEditor, selectEditor);
   // yield takeLatest([actions.selectEditorSucceeded, actions.requestAnalysis], requestAnalysis);
   yield takeLatest(actions.requestAnalysis, requestAnalysis);
   yield takeEvery(TOGGLE_ENTITY, toggleEntity);
   yield takeEvery(TOGGLE_LINK, toggleLink);
+  yield takeLatest(ANNOTATION, toggleAnnotation);
 }

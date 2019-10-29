@@ -18,6 +18,7 @@
     "@wordpress/edit-post": "^3.8.3",
     "@wordpress/element": "^2.8.2",
     "@wordpress/plugins": "^2.7.2",
+    "@wordpress/rich-text": "^3.7.2",
     "@wordpress/scripts": "^4.1.0",
     "css-loader": "^3.2.0",
     "mini-css-extract-plugin": "^0.8.0",

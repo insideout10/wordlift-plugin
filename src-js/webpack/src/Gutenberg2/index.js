@@ -28,12 +28,27 @@ import store from "./stores";
 
 import WordLiftIcon from "../Gutenberg/svg/wl-logo-big.svg";
 import "../Gutenberg/index.scss";
+import { setCurrentAnnotation } from "../Edit/actions";
+import { EDITOR_ELEMENT_ID } from "./constants";
 
 /**
  * Connect the Sidebar to the analysis to be run as soon as the component is
  * mounted.
  */
-const SidebarWithDidMountCallback = withDidMountCallback(Sidebar, () => store.dispatch(actions.requestAnalysis()));
+const SidebarWithDidMountCallback = withDidMountCallback(Sidebar, () => {
+  // Request the analysis.
+  store.dispatch(actions.requestAnalysis());
+
+  document.getElementById(EDITOR_ELEMENT_ID).addEventListener("click", e => {
+    const target = e.target;
+    // Get the annotation id or `undefined` if not selected (be aware that the
+    // `VisibilityFilter` explicitly checks for `undefined` to show all the
+    // annotations in the classification box.
+    const annotationId = target.classList.contains("textannotation") ? target.id : undefined;
+    // Bail out when it's not a text annotation.
+    store.dispatch(setCurrentAnnotation(annotationId));
+  });
+});
 
 /**
  * Register the sidebar plugin.

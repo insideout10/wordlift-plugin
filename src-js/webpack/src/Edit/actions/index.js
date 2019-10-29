@@ -17,7 +17,7 @@ import { TOGGLE_LINK_SUCCESS } from "../constants/ActionTypes";
  * Set the current annotation. If `undefined` no annotation is selected.
  *
  * @since 3.11.0
- * @param {string} annotation The annotation id or `undefined` if no annotation
+ * @param {string|undefined} annotation The annotation id or `undefined` if no annotation
  *     is selected.
  * @return {Function} The action's function.
  */
