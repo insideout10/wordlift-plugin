@@ -16,6 +16,7 @@ import { Provider } from "react-redux";
 import { PluginSidebar, PluginSidebarMoreMenuItem } from "@wordpress/edit-post";
 import { Fragment } from "@wordpress/element";
 import { registerPlugin } from "@wordpress/plugins";
+import { registerFormatType } from "@wordpress/rich-text";
 
 /**
  * Internal dependencies
@@ -39,15 +40,15 @@ const SidebarWithDidMountCallback = withDidMountCallback(Sidebar, () => {
   // Request the analysis.
   store.dispatch(actions.requestAnalysis());
 
-  document.getElementById(EDITOR_ELEMENT_ID).addEventListener("click", e => {
-    const target = e.target;
-    // Get the annotation id or `undefined` if not selected (be aware that the
-    // `VisibilityFilter` explicitly checks for `undefined` to show all the
-    // annotations in the classification box.
-    const annotationId = target.classList.contains("textannotation") ? target.id : undefined;
-    // Bail out when it's not a text annotation.
-    store.dispatch(setCurrentAnnotation(annotationId));
-  });
+  // document.getElementById(EDITOR_ELEMENT_ID).addEventListener("click", e => {
+  //   const target = e.target;
+  //   // Get the annotation id or `undefined` if not selected (be aware that the
+  //   // `VisibilityFilter` explicitly checks for `undefined` to show all the
+  //   // annotations in the classification box.
+  //   const annotationId = target.classList.contains("textannotation") ? target.id : undefined;
+  //   // Bail out when it's not a text annotation.
+  //   store.dispatch(setCurrentAnnotation(annotationId));
+  // });
 });
 
 /**
@@ -69,4 +70,18 @@ registerPlugin(PLUGIN_NAMESPACE, {
     </Fragment>
   ),
   icon: <WordLiftIcon />
+});
+
+/**
+ * @see https://developer.wordpress.org/block-editor/tutorials/format-api/1-register-format/
+ */
+console.info("Registering Format Type...");
+registerFormatType("wordlift/annotation2313212", {
+  tagName: "span",
+  className: "textannotation",
+  title: "Annotation",
+  edit: props => {
+    console.log("wordlift/annotation2313212", props);
+    return <Fragment />;
+  }
 });

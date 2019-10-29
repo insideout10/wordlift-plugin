@@ -28,6 +28,7 @@ module.exports = {
     edit: "./src/Edit/index.js",
     term: "./src/Term/index.js",
     gutenberg: "./src/Gutenberg2/index.js",
+    "tiny-mce": "./src/tiny-mce/index.js",
     "wordlift-cloud": "./src/Cloud/index.js"
   },
   output: {
