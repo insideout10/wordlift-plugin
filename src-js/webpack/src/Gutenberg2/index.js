@@ -16,7 +16,7 @@ import { Provider } from "react-redux";
 import { PluginSidebar, PluginSidebarMoreMenuItem } from "@wordpress/edit-post";
 import { Fragment } from "@wordpress/element";
 import { registerPlugin } from "@wordpress/plugins";
-import { registerFormatType } from "@wordpress/rich-text";
+import { addAction } from "@wordpress/hooks";
 
 /**
  * Internal dependencies
@@ -29,8 +29,15 @@ import store from "./stores";
 
 import WordLiftIcon from "../Gutenberg/svg/wl-logo-big.svg";
 import "../Gutenberg/index.scss";
+import "./format-type-annotation";
+import { ANNOTATION_CHANGED } from "../common/constants";
 import { setCurrentAnnotation } from "../Edit/actions";
-import { EDITOR_ELEMENT_ID } from "./constants";
+
+/**
+ * Hook WordPress' action `ANNOTATION_CHANGED` to dispatching the annotation
+ * to the store.
+ */
+addAction(ANNOTATION_CHANGED, "wordlift", payload => store.dispatch(setCurrentAnnotation(payload)));
 
 /**
  * Connect the Sidebar to the analysis to be run as soon as the component is
@@ -70,18 +77,4 @@ registerPlugin(PLUGIN_NAMESPACE, {
     </Fragment>
   ),
   icon: <WordLiftIcon />
-});
-
-/**
- * @see https://developer.wordpress.org/block-editor/tutorials/format-api/1-register-format/
- */
-console.info("Registering Format Type...");
-registerFormatType("wordlift/annotation2313212", {
-  tagName: "span",
-  className: "textannotation",
-  title: "Annotation",
-  edit: props => {
-    console.log("wordlift/annotation2313212", props);
-    return <Fragment />;
-  }
 });

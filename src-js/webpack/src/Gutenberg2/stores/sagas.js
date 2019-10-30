@@ -44,6 +44,9 @@ function* requestAnalysis() {
 }
 
 function embedAnalysis(editorOps, response) {
+  // Bail out if the response doesn't contain results.
+  if ("undefined" === typeof response || "undefined" === typeof response.annotations) return;
+
   const annotations = Object.values(response.annotations).sort(function(a1, a2) {
     if (a1.end > a2.end) return -1;
     if (a1.end < a2.end) return 1;
