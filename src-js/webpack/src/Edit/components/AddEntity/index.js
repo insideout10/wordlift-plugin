@@ -1,3 +1,5 @@
+/* global wp */
+
 /**
  * External dependencies.
  */
@@ -8,7 +10,7 @@ import createSagaMiddleware from "redux-saga";
 import logger from "redux-logger";
 
 /**
- * WordPress dependencies
+ * WordPress dependencies (we can't import it here, we're not into Gutenberg).
  */
 import { addAction } from "@wordpress/hooks";
 
@@ -32,7 +34,8 @@ sagaMiddleware.run(saga);
 
 addAction(SELECTION_CHANGED, "wordlift", ({ selection }) => store.dispatch(setValue(selection)));
 
-const AddEntity = ({ showCreate }) => {
+const AddEntity = ({ selectEntity, showCreate }) => {
+  console.debug("AddEntity", { selectEntity, showCreate });
   window.store2 = store;
   return (
     <Provider store={store}>
@@ -40,7 +43,7 @@ const AddEntity = ({ showCreate }) => {
         <ButtonContainer>
           <Arrow height="8px" color="white" />
         </ButtonContainer>
-        <EntitySelectContainer showCreate={showCreate} />
+        <EntitySelectContainer selectEntity={selectEntity} showCreate={showCreate} />
       </WrapperContainer>
     </Provider>
   );

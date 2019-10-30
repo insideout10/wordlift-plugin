@@ -26,6 +26,8 @@ import { doAction } from "@wordpress/hooks";
 import { ANNOTATION_CHANGED, SELECTION_CHANGED } from "../common/constants";
 import { isAnnotationElement } from "../common/helpers";
 
+import "./index.scss";
+
 const tinymce = global["tinymce"];
 tinymce.PluginManager.add("wl_tinymce_2", function(ed) {
   // Capture `NodeChange` events and broadcast the selected text.

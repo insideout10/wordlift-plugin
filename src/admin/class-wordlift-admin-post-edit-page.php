@@ -152,7 +152,7 @@ class Wordlift_Admin_Post_Edit_Page {
 				'react',
 				'react-dom',
 				'wp-element',
-				'wp-polyfill'
+				'wp-polyfill',
 				/*
 				 * Angular isn't loaded anymore remotely, but it is loaded within wordlift-reloaded.js.
 				 *
@@ -165,6 +165,12 @@ class Wordlift_Admin_Post_Edit_Page {
 				//				'wl-angular-geolocation',
 				//				'wl-angular-touch',
 				//				'wl-angular-animate',
+				/**
+				 * We need the `wp.hooks` global to allow the edit.js script to send actions.
+				 *
+				 * @since 3.23.0
+				 */
+				'wp-hooks',
 			),
 			$this->plugin->get_version(),
 			false

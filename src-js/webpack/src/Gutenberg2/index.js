@@ -46,20 +46,13 @@ addAction(ANNOTATION_CHANGED, "wordlift", payload => store.dispatch(setCurrentAn
 const SidebarWithDidMountCallback = withDidMountCallback(Sidebar, () => {
   // Request the analysis.
   store.dispatch(actions.requestAnalysis());
-
-  // document.getElementById(EDITOR_ELEMENT_ID).addEventListener("click", e => {
-  //   const target = e.target;
-  //   // Get the annotation id or `undefined` if not selected (be aware that the
-  //   // `VisibilityFilter` explicitly checks for `undefined` to show all the
-  //   // annotations in the classification box.
-  //   const annotationId = target.classList.contains("textannotation") ? target.id : undefined;
-  //   // Bail out when it's not a text annotation.
-  //   store.dispatch(setCurrentAnnotation(annotationId));
-  // });
 });
 
 /**
  * Register the sidebar plugin.
+ *
+ * We assign the `wl-sidebar` class name to the {@link PluginSidebar} to allow
+ * custom styling (specifically to increase the top padding, see index.scss).
  *
  * @see https://developer.wordpress.org/block-editor/tutorials/plugin-sidebar-0/plugin-sidebar-1-up-and-running/
  */
@@ -69,7 +62,7 @@ registerPlugin(PLUGIN_NAMESPACE, {
       <PluginSidebarMoreMenuItem target="wordlift-sidebar" icon={<WordLiftIcon />}>
         WordLift
       </PluginSidebarMoreMenuItem>
-      <PluginSidebar name="wordlift-sidebar" title="WordLift">
+      <PluginSidebar name="wordlift-sidebar" title="WordLift" className="wl-sidebar">
         <Provider store={store}>
           <SidebarWithDidMountCallback />
         </Provider>

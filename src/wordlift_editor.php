@@ -24,7 +24,15 @@ function wordlift_mce_css( $mce_css ) {
 		$mce_css .= ',';
 	}
 
-	$mce_css .= plugin_dir_url( __FILE__ ) . 'css/wordlift-reloaded.min.css';
+	/**
+	 * Replacing the legacy `wordlift-reloaded.min.css` with tiny-mce.css.
+	 *
+	 * tiny-mce.css is generated using the new webpack project and its rules are shared with Gutenberg.
+	 *
+	 * @author David Riccitelli <david@wordlift.io>
+	 * @since 3.23.0
+	 */
+	$mce_css .= plugin_dir_url( __FILE__ ) . 'js/dist/tiny-mce.css';
 
 	return $mce_css;
 }

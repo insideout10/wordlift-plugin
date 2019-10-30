@@ -4,14 +4,15 @@
  * @since 3.20.0
  */
 
-/*
- * External dependencies.
+/**
+ * External dependencies
  */
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-/*
- * Internal dependencies.
+
+/**
+ * Internal dependencies
  */
 import store from "./stores";
 import App from "./components/App";
@@ -22,6 +23,7 @@ import EditorSelectionChangedEvent from "./angular/EditorSelectionChangedEvent";
 
 // Start-up the application when the `wlEntityList` Angular directive is
 // loaded.
+const wp = global["wp"];
 wp.wordlift.on("wlEntityList.loaded", function() {
   // Create the `store` with the reducer, using the analysis result as
   // `initialState`.

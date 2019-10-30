@@ -11,6 +11,7 @@
  * External dependencies
  */
 import React from "react";
+import { ReactReduxContext } from "react-redux";
 
 /**
  * Internal dependencies
@@ -21,7 +22,7 @@ import VisibleEntityList from "../../containers/VisibleEntityList";
 import Accordion from "../Accordion";
 import AddEntity from "../../components/AddEntity";
 
-// eslint-disable-next-line
+const wlSettings = global["wlSettings"];
 const canCreateEntities =
   "undefined" !== wlSettings["can_create_entities"] && "yes" === wlSettings["can_create_entities"];
 
@@ -31,9 +32,9 @@ const canCreateEntities =
  * @since 3.11.0
  * @return {Function} The `render` function.
  */
-const App = () => (
+const App = (
   <Wrapper>
-    <AddEntity showCreate={canCreateEntities} />
+    <AddEntity showCreate={canCreateEntities} selectEntity={entity => console.debug(entity)} />
     <Accordion open={true} label="Content classification">
       <Header />
       <VisibleEntityList />

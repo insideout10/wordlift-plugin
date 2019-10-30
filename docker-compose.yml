@@ -12,7 +12,7 @@ services:
       MYSQL_PASSWORD: password
 
   wordpress:
-    image: wordpress:5.2
+    image: wordpress:5.0.0
     depends_on:
       - db
     volumes:
