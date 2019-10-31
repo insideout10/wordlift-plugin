@@ -142,7 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.23.0 (2019-10-17) =
+= 3.22.6 (2019-10-31) =
+* Enhancement: [#934](https://github.com/insideout10/wordlift-plugin/issues/958): Network navigator endpoint.
+* Enhancement: [#968](https://github.com/insideout10/wordlift-plugin/issues/968): Allow entities (and related media) to be published via rest
 * Fix [#966](https://github.com/insideout10/wordlift-plugin/issues/966): PHP logs Errors.
 
 = 3.22.5 (2019-10-09) =
