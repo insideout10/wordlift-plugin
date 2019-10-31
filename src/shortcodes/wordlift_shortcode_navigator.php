@@ -151,7 +151,6 @@ function _wl_navigator_get_data() {
 		$results = apply_filters( 'wl_navigator_data_placeholder', $results, $navigator_id, $navigator_offset, $navigator_length );
 	}
 
-	// Return first 4 results in json accordingly to 4 columns layout
 	return $results;
 }
 
@@ -202,18 +201,17 @@ function _wl_network_navigator_get_data($request) {
 			),
 		);
 
-		$result['post']   = apply_filters( 'wl_navigator_data_post', $result['post'], intval( $referencing_post->ID ), $navigator_id );
-		$result['entity'] = apply_filters( 'wl_navigator_data_entity', $result['entity'], intval( $referencing_post->entity_id ), $navigator_id );
+		$result['post']   = apply_filters( 'wl_network_navigator_data_post', $result['post'], intval( $referencing_post->ID ), $navigator_id );
+		$result['entity'] = apply_filters( 'wl_network_navigator_data_entity', $result['entity'], intval( $referencing_post->entity_id ), $navigator_id );
 
 		$results[] = $result;
 
 	}
 
 	if ( count( $results ) < $navigator_length ) {
-		$results = apply_filters( 'wl_navigator_data_placeholder', $results, $navigator_id, $navigator_offset, $navigator_length );
+		$results = apply_filters( 'wl_network_navigator_data_placeholder', $results, $navigator_id, $navigator_offset, $navigator_length );
 	}
 
-	// Return first 4 results in json accordingly to 4 columns layout
 	return $results;
 
 }
