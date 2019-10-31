@@ -289,7 +289,7 @@ function _wl_network_navigator_get_results(
 	$entities_in = implode( ',', array_map( function ( $item ) {
 		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri(urldecode($item));
 		if(isset($entity)) return $entity->ID;
-	}, urldecode($entities) ) );
+	}, $entities ) );
 
 	/** @noinspection SqlNoDataSourceInspection */
 	return $wpdb->get_results(
