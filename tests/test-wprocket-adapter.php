@@ -19,6 +19,7 @@ class Wordlift_WpRocket_Adapter_Test extends Wordlift_Unit_Test_Case {
 	/**
 	 * Test the `rocket_exclude_defer_js` hook.
 	 *
+	 * @since 3.23.0 Test also for wordlift-cloud.js.
 	 * @since 3.19.4
 	 */
 	public function test_exclude_defer_js() {
@@ -27,6 +28,7 @@ class Wordlift_WpRocket_Adapter_Test extends Wordlift_Unit_Test_Case {
 
 		$this->assertTrue( is_array( $excludes ), '`$excludes` must be an array.' );
 		$this->assertContains( Wordlift_Public::get_public_js_url(), $excludes, '`$excludes` must contain `/wp-content/plugins/wordlift/js/dist/bundle.js`.' );
+		$this->assertContains( Wordlift_Public::get_cloud_js_url(), $excludes, '`$excludes` must contain `/wp-content/plugins/wordlift/js/dist/wordlift-cloud.js`.' );
 
 	}
 

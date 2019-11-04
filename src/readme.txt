@@ -143,6 +143,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 = 3.23.0 (2019-10-17) =
+* Fix [#971](https://github.com/insideout10/wordlift-plugin/issues/971): Automatically exclude wordlift-cloud from WP Rocket minification.
 * Fix [#966](https://github.com/insideout10/wordlift-plugin/issues/966): PHP logs Errors.
 
 = 3.22.5 (2019-10-09) =

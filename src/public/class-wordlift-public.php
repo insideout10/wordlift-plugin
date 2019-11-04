@@ -43,10 +43,11 @@ class Wordlift_Public {
 	/**
 	 * Initialize the class and set its properties.
 	 *
+	 * @param string $plugin_name The name of the plugin.
+	 * @param string $version The version of this plugin.
+	 *
 	 * @since    1.0.0
 	 *
-	 * @param      string $plugin_name The name of the plugin.
-	 * @param      string $version The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
 
@@ -78,9 +79,10 @@ class Wordlift_Public {
 		/**
 		 * Add the `wordlift-font-awesome` unless some 3rd party sets the flag to false.
 		 *
+		 * @param bool $include Whether to include or not font-awesome (default true).
+		 *
 		 * @since 3.19.3
 		 *
-		 * @param bool $include Whether to include or not font-awesome (default true).
 		 */
 		$deps = apply_filters( 'wl_include_font_awesome', true )
 			? array( 'wordlift-font-awesome' )
@@ -132,9 +134,9 @@ class Wordlift_Public {
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/926.
 		 */
 		$show_version_default = false;
-		$show_version = apply_filters( 'wl_disable_version_js', $show_version_default );
+		$show_version         = apply_filters( 'wl_disable_version_js', $show_version_default );
 
-		if($show_version) {
+		if ( $show_version ) {
 			wp_localize_script( $this->plugin_name, 'wordlift', array(
 				'version' => $this->version,
 			) );
@@ -147,16 +149,16 @@ class Wordlift_Public {
 		 * @since 3.22.0
 		 *
 		 */
-		wp_register_script( 'wordlift-cloud', plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/wordlift-cloud.js', array(), true, true );
+		wp_register_script( 'wordlift-cloud', self::get_cloud_js_url(), array(), Wordlift::get_instance()->get_version(), true );
 
 	}
 
 	/**
 	 * Get the settings array.
 	 *
+	 * @return array An array with the settings.
 	 * @since 3.19.1
 	 *
-	 * @return array An array with the settings.
 	 */
 	public static function get_settings() {
 
@@ -197,15 +199,26 @@ class Wordlift_Public {
 	 * Using this function is encouraged, since the public JavaScript is also used by the {@link Wordlift_WpRocket_Adapter}
 	 * in order to avoid breaking optimizations.
 	 *
-	 * @since 3.19.4
-	 *
+	 * @return string The URL to the public JavaScript.
 	 * @see https://github.com/insideout10/wordlift-plugin/issues/842.
 	 *
-	 * @return string The URL to the public JavaScript.
+	 * @since 3.19.4
+	 *
 	 */
 	public static function get_public_js_url() {
 
 		return plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/bundle.js';
 	}
 
+	/**
+	 * Get the Cloud JavaScript URL.
+	 *
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/971
+	 * @since 3.23.0
+	 * @return string The URL to the Cloud JavaScript.
+	 */
+	public static function get_cloud_js_url() {
+
+		return plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/wordlift-cloud.js';
+	}
 }
