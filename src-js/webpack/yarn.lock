@@ -4932,9 +4932,9 @@ wide-align@^1.1.0:
   dependencies:
     string-width "^1.0.2 || 2"
 
-"wordlift-cloud@git+ssh://git@gitlab.com:wordlift/wordlift-navigator-js#68939c79db4ba48fb8e7b16234de9adf5c0ac883":
+"wordlift-cloud@git+ssh://git@gitlab.com:wordlift/wordlift-navigator-js#38a5ef1f2a313baf87cf523b625e1ed97a1cd793":
   version "1.0.0"
-  resolved "git+ssh://git@gitlab.com:wordlift/wordlift-navigator-js#68939c79db4ba48fb8e7b16234de9adf5c0ac883"
+  resolved "git+ssh://git@gitlab.com:wordlift/wordlift-navigator-js#38a5ef1f2a313baf87cf523b625e1ed97a1cd793"
   dependencies:
     axios "0.19.0"
     axios-cache-plugin "^0.1.0"
