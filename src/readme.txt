@@ -142,7 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.23.0 (2019-10-17) =
+= 3.23.0 (2019-11-05) =
+* Enhancement [#972](https://github.com/insideout10/wordlift-plugin/issues/972): Entity to Term link should check the sameAs values as well.
+
 * Fix [#971](https://github.com/insideout10/wordlift-plugin/issues/971): Automatically exclude wordlift-cloud from WP Rocket minification.
 * Fix [#966](https://github.com/insideout10/wordlift-plugin/issues/966): PHP logs Errors.
 
@@ -171,6 +173,8 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Fix: [#945](https://github.com/insideout10/wordlift-plugin/issues/945): Faceted Search results do not change when posts clicked.
 
 = 3.21.3 (2019-08-19) =
+* Enhancement: [#972](https://github.com/insideout10/wordlift-plugin/issues/972): Entity to Term link should check the sameAs values as well.
+
 * Fix: [#943](https://github.com/insideout10/wordlift-plugin/issues/943): Faceted Search caching issues.
 
 = 3.21.2 (2019-08-13) =

@@ -149,13 +149,14 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * Intercept the permalink call to return a fixed link we can test.
-	 * @since 3.8.0
 	 *
 	 * @param $permalink
 	 * @param $post
 	 * @param $leavename
 	 *
 	 * @return string
+	 * @since 3.8.0
+	 *
 	 */
 	public function post_link( $permalink, $post, $leavename ) {
 
@@ -165,11 +166,11 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 	/**
 	 * Mock {@link Wordlift_Entity_Service} get_entity_post_by_uri function.
 	 *
-	 * @since 3.8.0
-	 *
 	 * @param string $uri The post URI.
 	 *
 	 * @return mixed A fake post instance.
+	 * @since 3.8.0
+	 *
 	 */
 	public function get_entity_post_by_uri( $uri ) {
 
@@ -184,11 +185,11 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 	/**
 	 * Mock {@link Wordlift_Entity_Service} get_alternative_labels function.
 	 *
-	 * @since 3.15.0
-	 *
 	 * @param int $post_id Post id.
 	 *
 	 * @return mixed An array  of alternative labels.
+	 * @since 3.15.0
+	 *
 	 */
 	public function get_alternative_labels( $post_id ) {
 		return $this->synonym_labels;
@@ -370,9 +371,10 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 	/**
 	 * Override the {@link Wordlift_Entity_Service} method.
 	 *
+	 * @param array $uris An array of URIs.
+	 *
 	 * @since 3.17.0
 	 *
-	 * @param array $uris An array of URIs.
 	 */
 	public function preload_uris( $uris ) {
 
