@@ -59,13 +59,14 @@ class Wordlift_Push_Reference_Data_Command {
 	/**
 	 * Wordlift_Push_Reference_Data_Command constructor.
 	 *
-	 * @since 3.18.0
-	 *
 	 * @param \Wordlift_Relation_Service      $relation_service The {@link Wordlift_Relation_Service} instance.
 	 * @param \Wordlift_Entity_Service        $entity_service The {@link Wordlift_Entity_Service} instance.
 	 * @param \Wordlift_Sparql_Service        $sparql_service The {@link Wordlift_Sparql_Service} instance.
 	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
 	 * @param \Wordlift_Entity_Type_Service   $entity_type_service The {@link Wordlift_Entity_Type_Service} instance.
+	 *
+	 * @since 3.18.0
+	 *
 	 */
 	public function __construct( $relation_service, $entity_service, $sparql_service, $configuration_service, $entity_type_service ) {
 
@@ -148,13 +149,16 @@ class Wordlift_Push_Reference_Data_Command {
 		 *
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/850.
 		 */
-		$permalink = Wordlift_Post_Adapter::get_production_permalink( $post->ID );
-		$builder   = Wordlift_Query_Builder
+		$builder = Wordlift_Query_Builder
 			::new_instance()
 			->insert()
 			->statement( $uri, Wordlift_Query_Builder::SCHEMA_HEADLINE_URI, $post->post_title, Wordlift_Query_Builder::OBJECT_VALUE, null, $language_code )
-			->statement( $uri, Wordlift_Query_Builder::SCHEMA_URL_URI, $permalink )
 			->statement( $uri, Wordlift_Query_Builder::RDFS_TYPE_URI, $type['uri'] );
+
+		$permalink = Wordlift_Post_Adapter::get_production_permalink( $post->ID );
+		if ( ! empty( $permalink ) ) {
+			$builder->statement( $uri, Wordlift_Query_Builder::SCHEMA_URL_URI, $permalink );
+		}
 
 		$entity_service = $this->entity_service;
 		array_walk( $object_ids, function ( $item ) use ( $entity_service, $builder, $uri ) {
