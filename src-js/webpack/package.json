@@ -25,7 +25,7 @@
     "svg-react-loader": "^0.4.5"
   },
   "dependencies": {
-    "wordlift-cloud": "git+ssh://git@gitlab.com:wordlift/wordlift-navigator-js#0da4ec165174f316ea60855c46de4757e30ed469",
+    "wordlift-cloud": "git+ssh://git@gitlab.com:wordlift/wordlift-navigator-js#68939c79db4ba48fb8e7b16234de9adf5c0ac883",
     "@wordlift/wordlift-for-schemaorg": "^1.0",
     "immutable": "^3",
     "prop-types": "^15",

@@ -147,7 +147,7 @@ class Wordlift_Public {
 		 * @since 3.22.0
 		 *
 		 */
-		wp_register_script( 'wordlift-cloud', plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/wordlift-cloud.js', array(), true, true );
+		wp_register_script( 'wordlift-cloud', plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/wordlift-cloud.js', array(), false, true );
 
 	}
 
