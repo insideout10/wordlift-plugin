@@ -178,7 +178,7 @@ class EntityTile extends React.Component {
             {this.props.entity.label}
             <MainType entity={this.props.entity}>{this.props.entity.mainType}</MainType>
           </Label>
-          <Cloud className="fa fa-cloud" local={this.props.entity.local} />
+          {this.props.entity.local && <Cloud className="fa fa-cloud" />}
         </Main>
         <Drawer open={this.state.open}>
           <Switch onClick={this.onSwitchClick} selected={this.props.entity.link}>

@@ -15,7 +15,7 @@
     "@babel/core": "^7.0.0",
     "@wordpress/api-fetch": "^2.2.6",
     "@wordpress/block-library": "^2.2.10",
-    "@wordpress/components": "^7.0.4",
+    "@wordpress/components": "^8.3.2",
     "@wordpress/compose": "^3.0.0",
     "@wordpress/data": "^4.1.0",
     "@wordpress/edit-post": "^3.1.5",

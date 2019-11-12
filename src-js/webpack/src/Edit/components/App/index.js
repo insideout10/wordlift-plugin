@@ -11,7 +11,6 @@
  * External dependencies
  */
 import React from "react";
-import { ReactReduxContext } from "react-redux";
 
 /**
  * Internal dependencies
@@ -32,7 +31,7 @@ const canCreateEntities =
  * @since 3.11.0
  * @return {Function} The `render` function.
  */
-const App = (
+const App = () => (
   <Wrapper>
     <AddEntity showCreate={canCreateEntities} selectEntity={entity => console.debug(entity)} />
     <Accordion open={true} label="Content classification">

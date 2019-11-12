@@ -33,6 +33,14 @@ import { ANNOTATION_CHANGED, SELECTION_CHANGED } from "../common/constants";
  */
 let delay;
 registerFormatType("wordlift/annotation", {
+  /*
+   * The `attributes` property is undocumented as basically the `WPFormat` class.
+   *
+   * Run this in the Developer Tools > Console to see what other formats return
+   * as WPFormat:
+   *  wp.data.select( 'core/rich-text' ).getFormatTypes();
+   */
+  attributes: { id: "id" },
   tagName: "span",
   className: "textannotation",
   title: "Annotation",
@@ -49,11 +57,10 @@ registerFormatType("wordlift/annotation", {
 
     // Send the annotation change event.
     const payload =
-      "undefined" !== typeof value.activeFormats &&
-      0 < value.activeFormats.length &&
-      "undefined" !== typeof value.activeFormats[0].unregisteredAttributes &&
-      "undefined" !== typeof value.activeFormats[0].unregisteredAttributes.id
-        ? value.activeFormats[0].unregisteredAttributes.id
+      "undefined" !== typeof e.isActive &&
+      "undefined" !== typeof e.activeAttributes &&
+      "undefined" !== typeof e.activeAttributes.id
+        ? e.activeAttributes.id
         : undefined;
     doAction(ANNOTATION_CHANGED, payload);
 

@@ -1,7 +1,7 @@
 export default class Block {
   constructor(block, dispatch, start = 0, end = -1) {
-    this._dispatch = dispatch;
     this._block = block;
+    this._dispatch = dispatch;
     this._content = block.attributes.content;
     this._start = start;
     this._end = 0 <= end ? end : block.attributes.content.length;
@@ -52,8 +52,15 @@ export default class Block {
 
   apply() {
     if (this._dirty) {
-      console.debug("Block.apply", { content: this.content });
-      this._dispatch.updateBlockAttributes(this.clientId, { content: this.content }).then(() => (this._dirty = false));
+      console.debug("Block.apply", {
+        clientId: this.clientId,
+        content: this.content,
+        dispatch: this._dispatch,
+        updateBlockAttributes: this._dispatch.updateBlockAttributes
+      });
+      // WP 5.0 returns undefined to this call.
+      this._dispatch.updateBlockAttributes(this.clientId, { content: this.content });
+      this._dirty = false;
     }
   }
 }
