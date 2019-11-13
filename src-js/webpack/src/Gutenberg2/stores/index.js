@@ -19,7 +19,7 @@ import entities from "../../Edit/reducers/entities";
 import annotationFilter from "../../Edit/reducers/annotationFilter";
 import visibilityFilter from "../../Edit/reducers/visibilityFilter";
 import actions from "./actions";
-import selectors from "./selectors";
+import { getAnnotationFilter, getEditor, getEntities, getSelectedEntities } from "./selectors";
 import saga from "./sagas";
 import { editorSelectionChanged } from "../../Edit/actions";
 
@@ -36,7 +36,10 @@ sagaMiddleware.run(saga);
 registerGenericStore(EDITOR_STORE, {
   getSelectors() {
     return {
-      getEditor: (...args) => selectors.getEditor(store.getState(), ...args)
+      getAnnotationFilter: (...args) => getAnnotationFilter(store.getState(), ...args),
+      getEditor: (...args) => getEditor(store.getState(), ...args),
+      getEntities: (...args) => getEntities(store.getState(), ...args),
+      getSelectedEntities: (...args) => getSelectedEntities(store.getState(), ...args)
     };
   },
   getActions() {

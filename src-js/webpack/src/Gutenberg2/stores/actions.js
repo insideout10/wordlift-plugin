@@ -8,8 +8,6 @@ const requestAnalysis = createAction("REQUEST_ANALYSIS");
 
 const editorSelectionChanged = createAction(EDITOR_SELECTION_CHANGED);
 
-
-
 export default {
   requestAnalysis,
   editorSelectionChanged

@@ -20,7 +20,7 @@ import { EDITOR_STORE } from "../constants";
 import EditorOps from "../api/EditorOps";
 import { makeEntityAnnotationsSelector, mergeArray } from "../api/utils";
 import { Blocks } from "../api/Blocks";
-import { getAnnotationFilter } from "./selectors";
+import { getAnnotationFilter, getClassificationBlock, getSelectedEntities } from "./selectors";
 
 function* requestAnalysis() {
   const editorOps = new EditorOps(EDITOR_STORE);
@@ -95,6 +95,12 @@ function* toggleEntity({ entity }) {
   }
 
   yield put(updateOccurrencesForEntity(entity.id, occurrences));
+
+  data
+    .dispatch(EDITOR_STORE)
+    .updateBlockAttributes(getClassificationBlock().clientId, {
+      entities: (yield select(getSelectedEntities)).toArray()
+    });
 
   // Apply the changes.
   blocks.apply();

@@ -29,7 +29,8 @@ import store from "./stores";
 
 import WordLiftIcon from "../Gutenberg/svg/wl-logo-big.svg";
 import "../Gutenberg/index.scss";
-import "./format-type-annotation";
+import "./register-format-type-wordlift-annotation";
+import "./register-block-type-wordlift-classification";
 import { ANNOTATION_CHANGED } from "../common/constants";
 import { setCurrentAnnotation } from "../Edit/actions";
 
