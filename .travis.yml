@@ -6,41 +6,36 @@ dist: precise
 # Set the language to PHP since we're going to setup a WordPress web site.
 language: php
 php:
- - '5.4'
- - '5.5'
  - '5.6'
 
 # Test matrix:
-#  - PHP unit tests: PHP 5.4, 5.5, 5.6, 7.0, 7.2
+#  - PHP unit tests: 5.6, 7.0, 7.2
 #  - JavaScript unit tests
 #  - JavaScript end-to-end tests
 # @@todo: we're currently testing only the last version of WordPress, we should also test the previous ones and nightly.
 matrix:
   include:
-    # Test PHP 5.3 compatibility.
-    - php: 7.0
-      env: SCRIPT=test:php5.3-compat
     # JavaScript end-to-end tests.
     - php: 5.6
       env: SCRIPT=test:e2e
     # Additional PHP Unit tests, PHP 7.2, PHP 7.0, WP 5.1 (WP 4.2 isn't compatible with PHP 7.x).
+    - php: 7.3
+      env: SCRIPT=test:php WP_VERSION=5.3
+    #
     - php: 7.2
-      env: SCRIPT=test:php WP_VERSION=5.1
+      env: SCRIPT=test:php WP_VERSION=5.3
     #
     - php: 7.0
-      env: SCRIPT=test:php WP_VERSION=5.1
+      env: SCRIPT=test:php WP_VERSION=5.3
     # WordPress nightly.
     - php: 5.6
       env: SCRIPT=test:php WP_VERSION=nightly
     # JavaScript unit tests.
     - php: 5.6
       env: SCRIPT=test:js
-    # Additional PHP Unit tests multisite environment, PHP 5.6, WP 5.1.
+    # Additional PHP Unit tests multisite environment.
     - php: 5.6
-      env: SCRIPT=test:multisite WP_VERSION=5.1
-    # Additional PHP Unit tests specific to some users' environment, i.e. PHP 5.5 and WP 4.7.
-    - php: 5.5
-      env: SCRIPT=test:php WP_VERSION=4.7
+      env: SCRIPT=test:multisite WP_VERSION=5.3
   allow_failures:
     # JavaScript end-to-end tests.
     - php: 5.6
