@@ -606,3 +606,14 @@ function remove_save_box() {
 	remove_meta_box( 'submitdiv', 'mapping', 'side' );
 }
 add_action( 'admin_menu' , 'remove_save_box' );
+
+function wpdocs_register_meta_boxes() {
+    add_meta_box( 'wl-metabox-mapping', __( 'Mapping', 'textdomain' ), 'wpdocs_my_display_callback', 'mapping' );
+}
+add_action( 'add_meta_boxes', 'wpdocs_register_meta_boxes' );
+
+function wpdocs_my_display_callback() {
+	?>
+	<div id="wl-mapping-root"></div>
+	<?php
+}
