@@ -742,7 +742,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.22.5';
+		$this->version     = '3.22.5.1';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -1023,7 +1023,12 @@ class Wordlift {
 		/**
 		 * The Entity Types Taxonomy Walker (transforms checkboxes into radios).
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-entity-types-taxonomy-walker.php';
+		global $wp_version;
+		if ( version_compare( $wp_version, '5.3', '<' ) ) {
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-entity-types-taxonomy-walker.php';
+		} else {
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-entity-types-taxonomy-walker-5-3.php';
+		}
 
 		/**
 		 * The Notice service.

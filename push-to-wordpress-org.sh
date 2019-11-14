@@ -29,7 +29,7 @@ git checkout master -- src
 # echo "Remove dist folder..."
 # rm -fr dist
 
-VERSION=`egrep -o "Version:\s+\d+\.\d+\.\d+" $FILE | egrep -o "\d+\.\d+\.\d+"`
+VERSION=`egrep -o "Version:\s+\d+\.\d+\.\d+(\.\d+)?" $FILE | egrep -o "\d+\.\d+\.\d+(\.\d+)?"`
 
 echo $VERSION
 
