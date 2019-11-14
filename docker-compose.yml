@@ -19,6 +19,7 @@ services:
       - wordpress-data:/var/www/html
       - ./src:/var/www/html/wp-content/plugins/wordlift
     environment:
+      WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING: "true"
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: password
