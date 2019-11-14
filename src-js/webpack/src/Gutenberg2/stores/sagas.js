@@ -96,11 +96,10 @@ function* toggleEntity({ entity }) {
 
   yield put(updateOccurrencesForEntity(entity.id, occurrences));
 
-  data
-    .dispatch(EDITOR_STORE)
-    .updateBlockAttributes(getClassificationBlock().clientId, {
-      entities: (yield select(getSelectedEntities)).toArray()
-    });
+  // Send the selected entities to the WordLift Classification box.
+  data.dispatch(EDITOR_STORE).updateBlockAttributes(getClassificationBlock().clientId, {
+    entities: yield select(getSelectedEntities)
+  });
 
   // Apply the changes.
   blocks.apply();

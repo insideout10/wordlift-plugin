@@ -17,6 +17,8 @@ import { PluginSidebar, PluginSidebarMoreMenuItem } from "@wordpress/edit-post";
 import { Fragment } from "@wordpress/element";
 import { registerPlugin } from "@wordpress/plugins";
 import { addAction } from "@wordpress/hooks";
+import { dispatch } from "@wordpress/data";
+import { createBlock } from "@wordpress/blocks";
 
 /**
  * Internal dependencies
@@ -33,6 +35,8 @@ import "./register-format-type-wordlift-annotation";
 import "./register-block-type-wordlift-classification";
 import { ANNOTATION_CHANGED } from "../common/constants";
 import { setCurrentAnnotation } from "../Edit/actions";
+import { getClassificationBlock } from "./stores/selectors";
+import { EDITOR_STORE } from "./constants";
 
 /**
  * Hook WordPress' action `ANNOTATION_CHANGED` to dispatching the annotation
@@ -47,6 +51,10 @@ addAction(ANNOTATION_CHANGED, "wordlift", payload => store.dispatch(setCurrentAn
 const SidebarWithDidMountCallback = withDidMountCallback(Sidebar, () => {
   // Request the analysis.
   store.dispatch(actions.requestAnalysis());
+
+  // Add the WordLift Classification block is not yet available.
+  if ("undefined" === typeof getClassificationBlock())
+    dispatch(EDITOR_STORE).insertBlock(createBlock("wordlift/classification", {}));
 });
 
 /**

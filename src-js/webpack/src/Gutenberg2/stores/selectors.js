@@ -8,7 +8,8 @@
 /**
  * WordPress dependencies
  */
-import { select } from "@wordpress/data";
+import { dispatch, select } from "@wordpress/data";
+import { createBlock } from "@wordpress/blocks";
 
 export const getAnnotationFilter = state => state.annotationFilter;
 
@@ -17,7 +18,18 @@ export const getEditor = state => state.editor;
 export const getEntities = state => state.entities;
 
 export const getSelectedEntities = state =>
-  getEntities(state).filter(entity => "undefined" !== typeof entity.occurrences && 0 < entity.occurrences.length);
+  getEntities(state)
+    .filter(entity => "undefined" !== typeof entity.occurrences && 0 < entity.occurrences.length)
+    .map(({ description, id, label, mainType, sameAs, synonyms, types }) => ({
+      description,
+      id,
+      label,
+      mainType,
+      sameAs,
+      synonyms,
+      types
+    }))
+    .toArray();
 
 export const getClassificationBlock = () =>
   select("core/editor")

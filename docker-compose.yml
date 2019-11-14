@@ -72,7 +72,8 @@ services:
     volumes:
       - wordpress-data:/var/www/html
       - ./src:/var/www/html/wp-content/plugins/wordlift
+    tty: true
 
 volumes:
-  ? db-data
-  ? wordpress-data
+  db-data: {}
+  wordpress-data: {}

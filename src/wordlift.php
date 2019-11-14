@@ -40,11 +40,12 @@ require_once( 'modules/core/wordlift_core.php' );
 /**
  * Log to the debug.log file.
  *
- * @deprecated use Wordlift_Log_Service::get_instance()->info( $log );
+ * @param string|mixed $log The log data.
  *
  * @since      3.0.0
  *
- * @param string|mixed $log The log data.
+ * @deprecated use Wordlift_Log_Service::get_instance()->info( $log );
+ *
  */
 function wl_write_log( $log ) {
 
@@ -55,13 +56,13 @@ function wl_write_log( $log ) {
 /**
  * Hide the WordLift Key from the provided text.
  *
+ * @param string $text A text that may potentially contain a WL key.
+ *
+ * @return string A text with the key hidden.
  * @deprecated
  *
  * @since 3.0.0
  *
- * @param string $text A text that may potentially contain a WL key.
- *
- * @return string A text with the key hidden.
  */
 function wl_write_log_hide_key( $text ) {
 
@@ -195,11 +196,11 @@ function wl_get_coordinates( $post_id ) {
 /**
  * Get all the images bound to a post.
  *
- * @deprecated use Wordlift_Storage_Factory::get_instance()->post_images()->get( $post_id )
- *
  * @param int $post_id The post ID.
  *
  * @return array An array of image URLs.
+ * @deprecated use Wordlift_Storage_Factory::get_instance()->post_images()->get( $post_id )
+ *
  */
 function wl_get_image_urls( $post_id ) {
 
@@ -287,14 +288,15 @@ function wl_set_source_url( $post_id, $source_url ) {
 
 /**
  * Sanitizes an URI path by replacing the non allowed characters with an underscore.
- * @uses       sanitize_title() to manage not ASCII chars
- * @deprecated use Wordlift_Uri_Service::get_instance()->sanitize_path();
- * @see        https://codex.wordpress.org/Function_Reference/sanitize_title
  *
  * @param string $path The path to sanitize.
  * @param string $char The replacement character (by default an underscore).
  *
  * @return string The sanitized path.
+ * @uses       sanitize_title() to manage not ASCII chars
+ * @deprecated use Wordlift_Uri_Service::get_instance()->sanitize_path();
+ * @see        https://codex.wordpress.org/Function_Reference/sanitize_title
+ *
  */
 function wl_sanitize_uri_path( $path, $char = '_' ) {
 
@@ -507,6 +509,8 @@ function run_wordlift() {
 
 	// Initialize the TTL Cache Cleaner.
 	new Ttl_Cache_Cleaner();
+
+	new \Wordlift\Block_Editor\Classification_Block_Type();
 
 }
 
