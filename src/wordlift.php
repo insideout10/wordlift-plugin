@@ -598,22 +598,19 @@ function wpdocs_codex_mapping_init() {
 add_action( 'init', 'wpdocs_codex_mapping_init' );
 
 function wpse_110427_hide_title() {
-	remove_post_type_support( 'mapping', 'title' );
+	// remove_post_type_support( 'mapping', 'title' );
 }
 add_action('admin_init', 'wpse_110427_hide_title');
 
 function remove_save_box() {
-	remove_meta_box( 'submitdiv', 'mapping', 'side' );
+	// remove_meta_box( 'submitdiv', 'mapping', 'side' );
 }
 add_action( 'admin_menu' , 'remove_save_box' );
 
-function wpdocs_register_meta_boxes() {
-    add_meta_box( 'wl-metabox-mapping', __( 'Mapping', 'textdomain' ), 'wpdocs_my_display_callback', 'mapping' );
-}
-add_action( 'add_meta_boxes', 'wpdocs_register_meta_boxes' );
+add_action( 'edit_form_after_title', function() {
+    echo '<div id="wl-mapping-root"></div>';
+});
 
-function wpdocs_my_display_callback() {
-	?>
-	<div id="wl-mapping-root"></div>
-	<?php
-}
+// add_action( 'admin_init', function() {
+// 	var_dump( $_POST ); die;
+// } );

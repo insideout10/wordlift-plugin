@@ -35,6 +35,7 @@ class Wordlift_Dashboard_Latest_News {
 
 		add_action( 'admin_enqueue_scripts', function () {
 			wp_enqueue_script( 'wl-admin-dashboard', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/wordlift-admin-dashboard.js', array( 'jquery' ) );
+			wp_enqueue_script( 'wl-mapping', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/mapping/assets/dist/js/mapping.js', array(), null, true );
 		} );
 	}
 
