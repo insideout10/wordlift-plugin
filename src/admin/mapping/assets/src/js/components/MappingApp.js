@@ -3,8 +3,6 @@ import React from 'react';
 import { Rules } from './Rules';
 export const MappingContext = React.createContext();
 
-import { Modal } from './Rules';
-
 export class MappingApp extends React.Component {
 	constructor() {
 		super();
@@ -20,17 +18,19 @@ export class MappingApp extends React.Component {
 		}
 	}
 
-	andButtonHandler() {
-
-		let and = this.state.and[0] + 1;
+	andButtonHandler( event, setNumber ) {
+		let and          = this.state.and;
+		and[ setNumber ] = and[ setNumber ] + 1;
 
 		this.setState( {
-			and: [ and ]
+			and: and,
 		} );
 	}
 
 	orButtonHandler() {
-
+		this.setState( {
+			and: [...this.state.and, 1 ]
+		} )
 	}
 
 	render() {

@@ -6,17 +6,36 @@ export const Rules = () => {
 	return (
 		<MappingContext.Consumer>
 			{
-				( { and } ) => {
+				( { and, orButtonHandler } ) => {
 					let i;
 					let rows = [];
+					let outerIndex;
 					return (
-						and.map( ( item, index ) => {
-							for( i = 0; i < item; i++ ) {
-								rows.push( <RuleRow key={ i } /> )
-							}
+						<>
+							{
+								and.map( ( item, index ) => {
+									outerIndex = index;
+									rows[ index ] = [];
 
-							return rows;
-						} )
+									for( i = 0; i < item; i++ ) {
+										rows[ index ].push( <RuleRow key={ i } setNumber={ index } /> );
+									}
+								} )
+							}
+							{
+								rows.map( ( rowArray, rowArrayIndex ) => {
+									return (
+										<div key={ rowArrayIndex } className="wl-mapping__row-set">
+											{
+												rowArray.map( ( row, rowIndex ) => ( row ) )
+											}
+											<h1>OR</h1>
+										</div>
+									)
+								} )
+							}
+							<button type="button" onClick={ ( e ) => orButtonHandler( e, outerIndex ) }>Or</button>
+						</>
 					)
 				}
 			}
@@ -24,7 +43,7 @@ export const Rules = () => {
 	)
 }
 
-const RuleRow = () => (
+const RuleRow = ( { setNumber } ) => (
 	<MappingContext.Consumer>
 		{
 			( { andButtonHandler } ) => (
@@ -47,7 +66,7 @@ const RuleRow = () => (
 						<option>Post Category</option>
 					</select>
 
-					<button type="button" onClick={ andButtonHandler }>And</button>
+				<button type="button" onClick={ ( e ) => { andButtonHandler( e, setNumber ) } }>And</button>
 				</div>
 			)
 		}
