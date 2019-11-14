@@ -1023,7 +1023,12 @@ class Wordlift {
 		/**
 		 * The Entity Types Taxonomy Walker (transforms checkboxes into radios).
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-entity-types-taxonomy-walker.php';
+		global $wp_version;
+		if ( version_compare( $wp_version, '5.3', '<' ) ) {
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-entity-types-taxonomy-walker.php';
+		} else {
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-entity-types-taxonomy-walker-5-3.php';
+		}
 
 		/**
 		 * The Notice service.
