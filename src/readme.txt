@@ -4,7 +4,7 @@ Plugin URL: https://wordlift.io
 Contributors: wordlift, insideout10, ziodave
 Tags: schema.org, semantic seo, seo, artificial intelligence, ai, linked data, semantic web, content recommendation, related posts, timeline, knowledge graph, interactive map
 Requires at least: 4.4
-Tested up to: 5.2
+Tested up to: 5.3
 Requires PHP: 5.3
 Stable tag: {version}
 License: GPLv2 or later
@@ -142,8 +142,14 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.23.0 (2019-10-17) =
+= 3.23.0 (2019-11-05) =
+* Enhancement [#972](https://github.com/insideout10/wordlift-plugin/issues/972): Entity to Term link should check the sameAs values as well.
+
+* Fix [#971](https://github.com/insideout10/wordlift-plugin/issues/971): Automatically exclude wordlift-cloud from WP Rocket minification.
 * Fix [#966](https://github.com/insideout10/wordlift-plugin/issues/966): PHP logs Errors.
+
+= 3.22.5.1 (2019-11-14) =
+* Fix: [#975](https://github.com/insideout10/wordlift-plugin/issues/975): Compatibility issues with WordPress 5.3.
 
 = 3.22.5 (2019-10-09) =
 * Fix: Performance issues with Navigator on large sites.
@@ -170,6 +176,8 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Fix: [#945](https://github.com/insideout10/wordlift-plugin/issues/945): Faceted Search results do not change when posts clicked.
 
 = 3.21.3 (2019-08-19) =
+* Enhancement: [#972](https://github.com/insideout10/wordlift-plugin/issues/972): Entity to Term link should check the sameAs values as well.
+
 * Fix: [#943](https://github.com/insideout10/wordlift-plugin/issues/943): Faceted Search caching issues.
 
 = 3.21.2 (2019-08-13) =

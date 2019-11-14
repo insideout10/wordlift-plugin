@@ -29,6 +29,7 @@ services:
         if ( strpos( $$_SERVER['HTTP_X_FORWARDED_PROTO'], 'https' ) !== false ) {
         	$$_SERVER['HTTPS'] = 'on';
         }
+
         if ( isset( $$_SERVER['HTTP_X_FORWARDED_HOST'] ) ) {
           $$_SERVER['HTTP_HOST'] = $$_SERVER['HTTP_X_FORWARDED_HOST'];
         }

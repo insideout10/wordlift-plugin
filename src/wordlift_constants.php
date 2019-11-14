@@ -31,7 +31,11 @@ function wl_is_sparql_update_queries_buffering_enabled() {
 		return false;
 	}
 
-	return 'true' !== getenv( 'WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING' );
+	/**
+	 * Switching to disabled by default.
+	 */
+	// return 'true' !== getenv( 'WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING' );
+	return 'yes' === getenv( 'WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING' );
 }
 
 // Define the meta name used to store the entity URL.

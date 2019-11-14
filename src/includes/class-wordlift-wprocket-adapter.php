@@ -35,6 +35,7 @@ class Wordlift_WpRocket_Adapter {
 	/**
 	 * Hook to `rocket_exclude_defer_js` filter.
 	 *
+	 * @since 3.23.0 add the Cloud js.
 	 * @since 3.20.0 hook to `rocket_exclude_js`.
 	 * @since 3.19.4
 	 *
@@ -46,6 +47,7 @@ class Wordlift_WpRocket_Adapter {
 
 		// Exclude our own public JS.
 		$js_files[] = Wordlift_Public::get_public_js_url();
+		$js_files[] = Wordlift_Public::get_cloud_js_url();
 
 		return $js_files;
 	}

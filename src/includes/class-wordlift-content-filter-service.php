@@ -84,11 +84,12 @@ class Wordlift_Content_Filter_Service {
 	/**
 	 * Create a {@link Wordlift_Content_Filter_Service} instance.
 	 *
+	 * @param \Wordlift_Entity_Service        $entity_service The {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
+	 * @param \Wordlift_Entity_Uri_Service    $entity_uri_service The {@link Wordlift_Entity_Uri_Service} instance.
+	 *
 	 * @since 3.8.0
 	 *
-	 * @param \Wordlift_Entity_Service        $entity_service        The {@link Wordlift_Entity_Service} instance.
-	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
-	 * @param \Wordlift_Entity_Uri_Service    $entity_uri_service    The {@link Wordlift_Entity_Uri_Service} instance.
 	 */
 	public function __construct( $entity_service, $configuration_service, $entity_uri_service ) {
 
@@ -105,8 +106,8 @@ class Wordlift_Content_Filter_Service {
 	/**
 	 * Get the {@link Wordlift_Content_Filter_Service} singleton instance.
 	 *
-	 * @since 3.14.2
 	 * @return \Wordlift_Content_Filter_Service The {@link Wordlift_Content_Filter_Service} singleton instance.
+	 * @since 3.14.2
 	 */
 	public static function get_instance() {
 
@@ -117,11 +118,11 @@ class Wordlift_Content_Filter_Service {
 	 * Mangle the content by adding links to the entity pages. This function is
 	 * hooked to the 'the_content' WP's filter.
 	 *
-	 * @since 3.8.0
-	 *
 	 * @param string $content The content being filtered.
 	 *
 	 * @return string The filtered content.
+	 * @since 3.8.0
+	 *
 	 */
 	public function the_content( $content ) {
 
@@ -166,11 +167,11 @@ class Wordlift_Content_Filter_Service {
 	/**
 	 * Get the entity match and replace it with a page link.
 	 *
-	 * @since 3.8.0
-	 *
 	 * @param array $matches An array of matches.
 	 *
 	 * @return string The replaced text with the link to the entity page.
+	 * @since 3.8.0
+	 *
 	 */
 	private function link( $matches ) {
 
@@ -199,9 +200,9 @@ class Wordlift_Content_Filter_Service {
 		}
 
 		$no_link = - 1 < strpos( $css_class, 'wl-no-link' )
-				   // Do not link if already linked.
-				   || in_array( $post->ID, $this->entity_post_ids_linked_from_post_content );
-		$link = - 1 < strpos( $css_class, 'wl-link' );
+		           // Do not link if already linked.
+		           || in_array( $post->ID, $this->entity_post_ids_linked_from_post_content );
+		$link    = - 1 < strpos( $css_class, 'wl-link' );
 
 		// Don't link if links are disabled and the entity is not link or the
 		// entity is do not link.
@@ -219,6 +220,11 @@ class Wordlift_Content_Filter_Service {
 		// Get the link.
 		$href = Wordlift_Post_Adapter::get_production_permalink( $post->ID );
 
+		// Bail out if the `$href` has been reset.
+		if ( empty( $href ) ) {
+			return $label;
+		}
+
 		// Get an alternative title attribute.
 		$title_attribute = $this->get_title_attribute( $post->ID, $label );
 
@@ -231,13 +237,13 @@ class Wordlift_Content_Filter_Service {
 	 *
 	 * If an alternative title isn't available an empty string is returned.
 	 *
-	 * @since 3.15.0
-	 *
 	 * @param int    $post_id The {@link WP_Post}'s id.
-	 * @param string $label   The main link label.
+	 * @param string $label The main link label.
 	 *
 	 * @return string A `title` attribute with an alternative label or an empty
 	 *                string if none available.
+	 * @since 3.15.0
+	 *
 	 */
 	private function get_title_attribute( $post_id, $label ) {
 
@@ -253,13 +259,13 @@ class Wordlift_Content_Filter_Service {
 	/**
 	 * Get a string to be used as a title attribute in links to a post
 	 *
-	 * @since 3.15.0
-	 *
-	 * @param int    $post_id      The post id of the post being linked.
+	 * @param int    $post_id The post id of the post being linked.
 	 * @param string $ignore_label A label to ignore.
 	 *
 	 * @return string    The title to be used in the link. An empty string when
 	 *                    there is no alternative that is not the $ignore_label.
+	 * @since 3.15.0
+	 *
 	 */
 	function get_link_title( $post_id, $ignore_label ) {
 
@@ -291,11 +297,11 @@ class Wordlift_Content_Filter_Service {
 	 * Get the entity URIs (configured in the `itemid` attribute) contained in
 	 * the provided content.
 	 *
-	 * @since 3.14.2
-	 *
 	 * @param string $content The content.
 	 *
 	 * @return array An array of URIs.
+	 * @since 3.14.2
+	 *
 	 */
 	public function get_entity_uris( $content ) {
 
