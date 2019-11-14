@@ -66,7 +66,7 @@ class Wordlift_Entity_Types_Taxonomy_Walker extends Walker_Category_Checklist {
 	 *
 	 * @return string The hierarchical item output.
 	 */
-	public function walk( $elements, $max_depth, $args = array() ) {
+	public function walk( $elements, $max_depth, ...$args ) {
 
 		// `max_depth` force to -1 to display a flat taxonomy.
 		//

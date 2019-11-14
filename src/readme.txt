@@ -5,7 +5,7 @@ Contributors: wordlift, insideout10, ziodave
 Tags: schema.org, semantic seo, seo, artificial intelligence, ai, linked data, semantic web, content recommendation, related posts, timeline, knowledge graph, interactive map
 Requires at least: 4.4
 Tested up to: 5.3
-Requires PHP: 5.6
+Requires PHP: 5.3
 Stable tag: {version}
 License: GPLv2 or later
 
@@ -142,7 +142,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.22.5.1 (2019-11-13) =
+= 3.22.5.1 (2019-11-14) =
 * Fix: [#975](https://github.com/insideout10/wordlift-plugin/issues/975): Compatibility issues with WordPress 5.3.
 
 = 3.22.5 (2019-10-09) =
