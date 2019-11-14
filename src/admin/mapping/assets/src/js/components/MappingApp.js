@@ -11,26 +11,68 @@ export class MappingApp extends React.Component {
 		this.orButtonHandler = this.orButtonHandler.bind( this );
 
 		this.state = {
-			and: [1],
-			or: [0],
 			andButtonHandler: this.andButtonHandler,
 			orButtonHandler: this.orButtonHandler,
+			ruleset: [
+				[
+					{
+						set: true,
+						objectType: 'Post Category',
+						relation: 'Equal To',
+						postType: 'Post',
+					},
+					{
+						set: true,
+						objectType: 'Post Taxonomy',
+						relation: 'Less Than',
+						postType: 'Books',
+					}
+				],
+				[
+					{
+						set: true,
+						objectType: 'Post Archive',
+						relation: 'More Than',
+						postType: 'Literature',
+					}
+				]
+			],
 		}
 	}
 
 	andButtonHandler( event, setNumber ) {
-		let and          = this.state.and;
-		and[ setNumber ] = and[ setNumber ] + 1;
+		const updatedSubSet = [
+			...this.state.ruleset[ setNumber ],
+			{
+				set: false,
+				objectType: [
+					'Post Category',
+					'Post Taxonomy',
+					'Post Archive',
+				],
+				relation: [
+					'Equal To',
+					'Less Than',
+					'More Than',
+				],
+				postType: [
+					'Post',
+					'Books',
+					'Literature',
+				]
+			}
+		];
+
+		let updatedSet = this.state.ruleset;
+		updatedSet[ setNumber ] = updatedSubSet;
 
 		this.setState( {
-			and: and,
+			ruleset: updatedSet,
 		} );
 	}
 
 	orButtonHandler() {
-		this.setState( {
-			and: [...this.state.and, 1 ]
-		} )
+		
 	}
 
 	render() {

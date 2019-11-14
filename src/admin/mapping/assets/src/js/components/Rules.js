@@ -5,70 +5,54 @@ import { MappingContext } from './MappingApp';
 export const Rules = () => {
 	return (
 		<MappingContext.Consumer>
-			{
-				( { and, orButtonHandler } ) => {
-					let i;
-					let rows = [];
-					let outerIndex;
-					return (
-						<>
-							{
-								and.map( ( item, index ) => {
-									outerIndex = index;
-									rows[ index ] = [];
-
-									for( i = 0; i < item; i++ ) {
-										rows[ index ].push( <RuleRow key={ i } setNumber={ index } /> );
-									}
-								} )
-							}
-							{
-								rows.map( ( rowArray, rowArrayIndex ) => {
-									return (
-										<div key={ rowArrayIndex } className="wl-mapping__row-set">
-											{
-												rowArray.map( ( row, rowIndex ) => ( row ) )
-											}
-											<h1>OR</h1>
-										</div>
-									)
-								} )
-							}
-							<button type="button" onClick={ ( e ) => orButtonHandler( e, outerIndex ) }>Or</button>
-						</>
-					)
-				}
-			}
+			{ ( { ruleset } ) => ( 
+				ruleset.map( ( ruleSetItem, ruleSetIndex ) => {
+					return ( <div key={ ruleSetIndex } className="wl-mapping__ruleset">
+						{ ruleSetItem.map( ( ruleRow, ruleRowIndex ) => {
+							return <RuleRow key={ ruleRowIndex } ruleData={ ruleRow } setNumber={ ruleSetIndex } rowNumber={ ruleRowIndex } />
+						} ) }
+					</div> )
+				} )
+			) }
 		</MappingContext.Consumer>
 	)
 }
 
-const RuleRow = ( { setNumber } ) => (
-	<MappingContext.Consumer>
-		{
-			( { andButtonHandler } ) => (
-				<div className="wl-edit-mapping__rules-row">
-					{/* Object Type */}
-					<select name="rule-row[object-type]">
-						<option>Object Type</option>
-						<option>Post Category</option>
-					</select>
+const RuleRow = ( { ruleData, setNumber, rowNumber } ) => (
+	ruleData.set ? ( <MappingContext.Consumer>
+		{ ( { andButtonHandler } ) => (
+			<div>
+				<input defaultValue={ ruleData.objectType } />
+				<input defaultValue={ ruleData.relation } />
+				<input defaultValue={ ruleData.postType } />
+				<input type="button" value="And" onClick={ ( e ) => andButtonHandler( e, setNumber, rowNumber ) } />
+				<input type="button" value="Delete" />{ setNumber }
+			</div>
+		) }
+	</MappingContext.Consumer> ) :
+	( <div>
+		<SelectBox ruleData={ ruleData } />
+	</div> )
+);
 
-					{/* Relation */}
-					<select name="rule-row[relation]">
-						<option>Equal To</option>
-						<option>Less than</option>
-					</select>
+const SelectBox = ( { ruleData } ) => (
+	<>
+		<select>
+			{ ruleData.objectType.map( ( item, index ) => (
+				<option key={ index }>{ item }</option>
+			) ) }
+		</select>
 
-					{/* Post Type */}
-					<select name="rule-row[post-type]">
-						<option>Post Type</option>
-						<option>Post Category</option>
-					</select>
+		<select>
+			{ ruleData.relation.map( ( item, index ) => (
+				<option key={ index }>{ item }</option>
+			) ) }
+		</select>
 
-				<button type="button" onClick={ ( e ) => { andButtonHandler( e, setNumber ) } }>And</button>
-				</div>
-			)
-		}
-	</MappingContext.Consumer>
+		<select>
+			{ ruleData.postType.map( ( item, index ) => (
+				<option key={ index }>{ item }</option>
+			) ) }
+		</select>
+	</>
 );
