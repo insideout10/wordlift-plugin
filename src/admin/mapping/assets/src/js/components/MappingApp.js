@@ -62,24 +62,7 @@ export class MappingApp extends React.Component {
 	andButtonHandler( event, setNumber ) {
 		const updatedSubset = [
 			...this.state.ruleset[ setNumber ],
-			{
-				set: false,
-				objectType: [
-					'Post Category',
-					'Post Taxonomy',
-					'Post Archive',
-				],
-				relation: [
-					'Equal To',
-					'Less Than',
-					'More Than',
-				],
-				postType: [
-					'Post',
-					'Books',
-					'Literature',
-				]
-			}
+			this.state.defaultRuleset,
 		];
 
 		let updatedSet = this.state.ruleset;
@@ -101,7 +84,12 @@ export class MappingApp extends React.Component {
 	}
 
 	addRuleButtonHandler() {
-
+		this.setState( {
+			ruleset: [
+				...this.state.ruleset,
+				[ this.state.defaultRuleset ]
+			]
+		} );
 	}
 
 	render() {

@@ -8,6 +8,7 @@ export const Rules = () => {
 			{ ( { ruleset, addRuleButtonHandler } ) => ( <>
 				{ ruleset.map( ( ruleSetItem, ruleSetIndex, currentArray ) => {
 					const lastItem = currentArray.length - 1 === ruleSetIndex;
+
 					return ( <div key={ ruleSetIndex } className="wl-mapping__ruleset">
 						{ ruleSetItem.map( ( ruleRow, ruleRowIndex ) => {
 							return <RuleRow key={ ruleRowIndex } ruleData={ ruleRow } setNumber={ ruleSetIndex } rowNumber={ ruleRowIndex } />
@@ -56,22 +57,16 @@ const RuleRow = ( { ruleData, setNumber, rowNumber } ) => (
 
 const SelectBox = ( { ruleData } ) => (
 	<>
-		<select>
-			{ ruleData.objectType.map( ( item, index ) => (
-				<option key={ index }>{ item }</option>
-			) ) }
-		</select>
-
-		<select>
-			{ ruleData.relation.map( ( item, index ) => (
-				<option key={ index }>{ item }</option>
-			) ) }
-		</select>
-
-		<select>
-			{ ruleData.postType.map( ( item, index ) => (
-				<option key={ index }>{ item }</option>
-			) ) }
-		</select>
+		{
+			Object.keys( ruleData ).map( ( nestedObject, outerIndex ) => (
+				<select key={ outerIndex }>
+					{
+						Object.keys( ruleData[ nestedObject ] ).map( ( key, innerIndex ) => (
+							<option key={ innerIndex } value={ key }>{ ruleData[ nestedObject ][ key ] }</option>
+						) )
+					}
+				</select>
+			) )
+		}
 	</>
 );
