@@ -5,14 +5,16 @@ import { MappingContext } from './MappingApp';
 export const Rules = () => {
 	return (
 		<MappingContext.Consumer>
-			{ ( { ruleset } ) => ( 
-				ruleset.map( ( ruleSetItem, ruleSetIndex ) => {
+			{ ( { ruleset } ) => ( <>
+				{ ruleset.map( ( ruleSetItem, ruleSetIndex, currentArray ) => {
+					const lastItem = currentArray.length - 1 === ruleSetIndex;
 					return ( <div key={ ruleSetIndex } className="wl-mapping__ruleset">
 						{ ruleSetItem.map( ( ruleRow, ruleRowIndex ) => {
 							return <RuleRow key={ ruleRowIndex } ruleData={ ruleRow } setNumber={ ruleSetIndex } rowNumber={ ruleRowIndex } />
 						} ) }
+						{ ! lastItem && ( <h1>OR</h1> ) }
 					</div> )
-				} )
+				} ) } </>
 			) }
 		</MappingContext.Consumer>
 	)
