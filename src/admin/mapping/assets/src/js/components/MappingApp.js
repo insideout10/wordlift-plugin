@@ -13,6 +13,23 @@ export class MappingApp extends React.Component {
 		this.state = {
 			andButtonHandler: this.andButtonHandler,
 			deleteButtonHandler: this.deleteButtonHandler,
+			defaultRuleset: {
+				objectType: {
+					'post-category': 'Post Category',
+					'post-taxonomy': 'Post Taxonomy',
+					'post-archive': 'Post Archive',
+				},
+				relation: {
+					'less-than': 'Less Than',
+					'equal-to': 'Equal To',
+					'more-than': 'More Than',
+				},
+				postType: {
+					'post': 'Post',
+					'books': 'Books',
+					'literature': 'Literature',
+				}
+			},
 			ruleset: [
 				[
 					{

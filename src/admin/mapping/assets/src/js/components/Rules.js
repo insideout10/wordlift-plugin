@@ -20,11 +20,20 @@ export const Rules = () => {
 
 const RuleRow = ( { ruleData, setNumber, rowNumber } ) => (
 	ruleData.set ? ( <MappingContext.Consumer>
-		{ ( { andButtonHandler, deleteButtonHandler } ) => (
+		{ ( { andButtonHandler, deleteButtonHandler, defaultRuleset } ) => (
 			<div>
-				<input defaultValue={ ruleData.objectType } />
-				<input defaultValue={ ruleData.relation } />
-				<input defaultValue={ ruleData.postType } />
+				{
+					Object.keys( defaultRuleset ).map( ( nestedObject, outerIndex ) => (
+						<select key={ outerIndex }>
+							{
+								Object.keys( defaultRuleset[ nestedObject ] ).map( ( key, innerIndex ) => (
+									<option key={ innerIndex } value={ key }>{ defaultRuleset[ nestedObject ][ key ] }</option>
+								) )
+							}
+						</select>
+					) )
+				}
+
 				<input type="button" value="And" onClick={ ( e ) => andButtonHandler( e, setNumber ) } />
 				<input type="button" value="Delete" onClick={ ( e ) => deleteButtonHandler( e, setNumber, rowNumber ) } />{ setNumber }
 			</div>
