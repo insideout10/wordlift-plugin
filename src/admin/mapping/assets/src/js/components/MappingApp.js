@@ -8,11 +8,11 @@ export class MappingApp extends React.Component {
 		super();
 
 		this.andButtonHandler = this.andButtonHandler.bind( this );
-		this.orButtonHandler = this.orButtonHandler.bind( this );
+		this.deleteButtonHandler = this.deleteButtonHandler.bind( this );
 
 		this.state = {
 			andButtonHandler: this.andButtonHandler,
-			orButtonHandler: this.orButtonHandler,
+			deleteButtonHandler: this.deleteButtonHandler,
 			ruleset: [
 				[
 					{
@@ -41,7 +41,7 @@ export class MappingApp extends React.Component {
 	}
 
 	andButtonHandler( event, setNumber ) {
-		const updatedSubSet = [
+		const updatedSubset = [
 			...this.state.ruleset[ setNumber ],
 			{
 				set: false,
@@ -64,15 +64,21 @@ export class MappingApp extends React.Component {
 		];
 
 		let updatedSet = this.state.ruleset;
-		updatedSet[ setNumber ] = updatedSubSet;
+		updatedSet[ setNumber ] = updatedSubset;
 
 		this.setState( {
 			ruleset: updatedSet,
 		} );
 	}
 
-	orButtonHandler() {
-		
+	deleteButtonHandler( e, setNumber, rowNumber ) {
+		let ruleset = this.state.ruleset;
+		let subArrayAfterDeletion = ruleset[ setNumber ].filter( ( item, index ) => index !== rowNumber  );
+		ruleset[ setNumber ] = subArrayAfterDeletion;
+
+		this.setState( {
+			ruleset: ruleset,
+		} );
 	}
 
 	render() {

@@ -20,18 +20,26 @@ export const Rules = () => {
 
 const RuleRow = ( { ruleData, setNumber, rowNumber } ) => (
 	ruleData.set ? ( <MappingContext.Consumer>
-		{ ( { andButtonHandler } ) => (
+		{ ( { andButtonHandler, deleteButtonHandler } ) => (
 			<div>
 				<input defaultValue={ ruleData.objectType } />
 				<input defaultValue={ ruleData.relation } />
 				<input defaultValue={ ruleData.postType } />
-				<input type="button" value="And" onClick={ ( e ) => andButtonHandler( e, setNumber, rowNumber ) } />
-				<input type="button" value="Delete" />{ setNumber }
+				<input type="button" value="And" onClick={ ( e ) => andButtonHandler( e, setNumber ) } />
+				<input type="button" value="Delete" onClick={ ( e ) => deleteButtonHandler( e, setNumber, rowNumber ) } />{ setNumber }
 			</div>
 		) }
 	</MappingContext.Consumer> ) :
 	( <div>
-		<SelectBox ruleData={ ruleData } />
+		<MappingContext.Consumer>
+			{ ( { andButtonHandler, deleteButtonHandler } ) => (
+				<>
+					<SelectBox ruleData={ ruleData } />
+					<input type="button" value="And" onClick={ ( e ) => andButtonHandler( e, setNumber ) } />
+					<input type="button" value="Delete" onClick={ ( e ) => deleteButtonHandler( e, setNumber, rowNumber ) } />{ setNumber }
+				</>
+			) }
+		</MappingContext.Consumer>
 	</div> )
 );
 
