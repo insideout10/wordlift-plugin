@@ -9,10 +9,12 @@ export class MappingApp extends React.Component {
 
 		this.andButtonHandler = this.andButtonHandler.bind( this );
 		this.deleteButtonHandler = this.deleteButtonHandler.bind( this );
+		this.addRuleButtonHandler = this.addRuleButtonHandler.bind( this );
 
 		this.state = {
 			andButtonHandler: this.andButtonHandler,
 			deleteButtonHandler: this.deleteButtonHandler,
+			addRuleButtonHandler: this.addRuleButtonHandler,
 			defaultRuleset: {
 				objectType: {
 					'post-category': 'Post Category',
@@ -96,6 +98,10 @@ export class MappingApp extends React.Component {
 		this.setState( {
 			ruleset: ruleset,
 		} );
+	}
+
+	addRuleButtonHandler() {
+
 	}
 
 	render() {

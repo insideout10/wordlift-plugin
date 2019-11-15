@@ -5,7 +5,7 @@ import { MappingContext } from './MappingApp';
 export const Rules = () => {
 	return (
 		<MappingContext.Consumer>
-			{ ( { ruleset } ) => ( <>
+			{ ( { ruleset, addRuleButtonHandler } ) => ( <>
 				{ ruleset.map( ( ruleSetItem, ruleSetIndex, currentArray ) => {
 					const lastItem = currentArray.length - 1 === ruleSetIndex;
 					return ( <div key={ ruleSetIndex } className="wl-mapping__ruleset">
@@ -14,7 +14,7 @@ export const Rules = () => {
 						} ) }
 						{ ! lastItem && ( <h1>OR</h1> ) }
 					</div> )
-				} ) } </>
+				} ) } <button type="button" onClick={ addRuleButtonHandler }>Add Rule Group</button></>
 			) }
 		</MappingContext.Consumer>
 	)
