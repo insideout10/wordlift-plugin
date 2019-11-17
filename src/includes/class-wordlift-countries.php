@@ -586,20 +586,18 @@ class Wordlift_Countries {
 
 			$json_file_contents = file_get_contents( $file_name );
 			$decoded_array = json_decode( $json_file_contents, true );
-			
 			// decoded array would be null if the json_decode parses
-			// invalid content
-			if ( $decoded_array == null ) {
+			// invalid content.
+			if ( null === $decoded_array ) {
 				return array();
 			}
 			else {
 				$country_codes_map = array();
-				foreach ($decoded_array as $key => $value) {
+				foreach ( $decoded_array as $key => $value ) {
 					$country_codes_map[$key] = $value['supportedLang'];
 				}
 				return $country_codes_map;
 			}
-
 		}
 		else {
 			return array();
