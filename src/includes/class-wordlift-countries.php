@@ -581,7 +581,7 @@ class Wordlift_Countries {
 	 * 
 	 * @return array an array containing country_code => supported_languages array
 	 */
-	public static function get_codes( $file_name ){
+	public static function get_codes( $file_name ) {
 		if ( file_exists( $file_name ) ) {
 
 		}
@@ -657,18 +657,6 @@ class Wordlift_Countries {
 		$country_codes = apply_filters( 'country_code', self::$country_codes, $code );
 
 		return strtr( $code, $country_codes );
-	}
-
-	/**
-	 * Returns the country language pairs.
-	 *
-	 * @since 3.18.0
-	 *
-	 * @return array The country language pairs.
-	 */
-	public static function get_codes() {
-
-		return self::$codes;
 	}
 
 	/**
