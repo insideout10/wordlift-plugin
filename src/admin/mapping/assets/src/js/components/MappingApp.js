@@ -7,13 +7,13 @@ export class MappingApp extends React.Component {
 	constructor() {
 		super();
 
-		this.andButtonHandler = this.andButtonHandler.bind( this );
-		this.deleteButtonHandler = this.deleteButtonHandler.bind( this );
+		this.addRuleHandler = this.addRuleHandler.bind( this );
+		this.deleteRuleHandler = this.deleteRuleHandler.bind( this );
 		this.addRuleButtonHandler = this.addRuleButtonHandler.bind( this );
 
 		this.state = {
-			andButtonHandler: this.andButtonHandler,
-			deleteButtonHandler: this.deleteButtonHandler,
+			addRuleHandler: this.addRuleHandler,
+			deleteRuleHandler: this.deleteRuleHandler,
 			addRuleButtonHandler: this.addRuleButtonHandler,
 
 			wpObjects: [
@@ -55,7 +55,7 @@ export class MappingApp extends React.Component {
 		}
 	}
 
-	andButtonHandler( event, ruleSetIndex ) {
+	addRuleHandler( event, ruleSetIndex ) {
 		let savedRules = this.state.savedRules;
 		savedRules[ ruleSetIndex ].push( {} );
 
@@ -64,7 +64,7 @@ export class MappingApp extends React.Component {
 		} );
 	}
 
-	deleteButtonHandler( e, setNumber, rowNumber ) {
+	deleteRuleHandler( event, setNumber, rowNumber ) {
 
 	}
 

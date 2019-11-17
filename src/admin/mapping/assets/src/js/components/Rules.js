@@ -12,9 +12,9 @@ export const RuleSets = () => {
 
 const RuleRow = ( { ruleRowData, ruleSetIndex } ) => (
 	<MappingContext.Consumer>
-		{ ( { andButtonHandler, deleteButtonHandler  } ) => ( <div>
+		{ ( { addRuleHandler, deleteButtonHandler  } ) => ( <div>
 			<GenerateDropdown selectedValues={ ruleRowData } />
-			<button type="button" onClick={ ( e ) => andButtonHandler( e, ruleSetIndex ) }>Add</button>
+			<button type="button" onClick={ ( e ) => addRuleHandler( e, ruleSetIndex ) }>Add</button>
 			<button type="button">Delete</button>
 		</div> ) }
 	</MappingContext.Consumer>
