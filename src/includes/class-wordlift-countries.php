@@ -584,6 +584,15 @@ class Wordlift_Countries {
 	public static function get_codes_from_json_file( $file_name ) {
 		if ( file_exists( $file_name ) ) {
 
+			$json_file_contents = file_get_contents( $file_name );
+			$decoded_array = json_decode($json_file_contents, true);
+			
+			// decoded array would be null if the json_decode parses
+			// invalid content
+			if ( $decoded_array == null ) {
+				return array();
+			}
+
 		}
 		else {
 			return array();
