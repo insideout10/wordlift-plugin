@@ -579,15 +579,26 @@ class Wordlift_Countries {
 	 * 
 	 * @param string $file_name The json file where the supported country codes and language_codes are stored
 	 * 
-	 * @return array an array containing country_code => supported_languages array
+	 * @return void it populate the self::$codes from .json file
 	 */
-	public static function get_codes( $file_name ) {
+	public static function populate_codes( $file_name ) {
 		if ( file_exists( $file_name ) ) {
 
 		}
 		else {
 			return array();
 		}
+	}
+
+	/**	
+	 * Returns the country language pairs.	
+	 *	
+	 * @since 3.18.0	
+	 *	
+	 * @return array The country language pairs.	
+	 */	
+	public static function get_codes() {	
+		return self::$codes;	
 	}
 
 	/**
