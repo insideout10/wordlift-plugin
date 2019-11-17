@@ -106,6 +106,13 @@ class Wordlift_Countries {
 			'ta',
 			'te',
 		),
+		'is' => array(
+			'is',
+			'fr',
+			'da',
+			'de',
+			'es',
+		),
 		'it' => array(),
 		'jp' => array(),
 		'kh' => array(),
