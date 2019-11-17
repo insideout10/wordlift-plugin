@@ -9,12 +9,12 @@ export class MappingApp extends React.Component {
 
 		this.addRuleHandler = this.addRuleHandler.bind( this );
 		this.deleteRuleHandler = this.deleteRuleHandler.bind( this );
-		this.addRuleButtonHandler = this.addRuleButtonHandler.bind( this );
+		this.wpObjectChangeHandler = this.wpObjectChangeHandler.bind( this );
 
 		this.state = {
 			addRuleHandler: this.addRuleHandler,
 			deleteRuleHandler: this.deleteRuleHandler,
-			addRuleButtonHandler: this.addRuleButtonHandler,
+			wpObjectChangeHandler: this.wpObjectChangeHandler,
 
 			wpObjects: [
 				{
@@ -58,7 +58,7 @@ export class MappingApp extends React.Component {
 
 	addRuleHandler( event, ruleSetIndex ) {
 		let savedRules = this.state.savedRules;
-		savedRules[ ruleSetIndex ].push( {} );
+		savedRules[ ruleSetIndex ].push( { wpObject: 'postType', relation: 'equals', value: 'post', } );
 
 		this.setState( { savedRules } );
 	}
@@ -73,8 +73,11 @@ export class MappingApp extends React.Component {
 		this.setState( { savedRules } );
 	}
 
-	addRuleButtonHandler() {
-		alert('what');
+	wpObjectChangeHandler( event, ruleSetIndex, ruleIndex ) {
+		let savedRules = this.state.savedRules;
+		savedRules[ ruleSetIndex ][ ruleIndex ].wpObject = event.target.value;
+
+		this.setState( { savedRules } );
 	}
 
 	render() {

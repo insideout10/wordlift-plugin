@@ -13,26 +13,26 @@ export const RuleSets = () => {
 const RuleRow = ( { ruleRowData, ruleSetIndex, ruleRowId } ) => (
 	<MappingContext.Consumer>
 		{ ( { addRuleHandler, deleteRuleHandler  } ) => ( <div>
-			<GenerateDropdown selectedValues={ ruleRowData } ruleRowId={ ruleRowId } />
+			<GenerateDropdown ruleRowData={ ruleRowData } ruleSetIndex={ ruleSetIndex} ruleRowId={ ruleRowId } />
 			<button type="button" onClick={ ( e ) => addRuleHandler( e, ruleSetIndex ) }>Add</button>
 			<button type="button" onClick={ ( e ) => deleteRuleHandler( e, ruleSetIndex, ruleRowId ) }>Delete</button>
 		</div> ) }
 	</MappingContext.Consumer>
 );
 
-const GenerateDropdown = ( { selectedValues } ) => (
+const GenerateDropdown = ( { ruleRowData, ruleSetIndex, ruleRowId } ) => (
 	<MappingContext.Consumer>
-		{ ( { wpObjects, relations } ) => ( <>
-			<select defaultValue={ selectedValues.wpObject }>
+		{ ( { wpObjects, relations, wpObjectChangeHandler } ) => ( <>
+			<select defaultValue={ ruleRowData.wpObject } onChange={ ( e ) => wpObjectChangeHandler( e, ruleSetIndex, ruleRowId ) }>
 				{ wpObjects.map( ( wpObject, wpObjectIndex ) => <option key={ wpObjectIndex } value={ wpObject.value }>{ wpObject.label }</option> ) }
 			</select>
-			<select defaultValue={ selectedValues.relation }>
+			<select defaultValue={ ruleRowData.relation }>
 				{ Object.keys( relations ).map( ( relationKey, relationIndex ) => <option key={ relationIndex } value={ relationKey }>{ relations[ relationKey ] }</option> ) }
 			</select>
 
-			{ !! selectedValues.value ? <select defaultValue={ selectedValues.value } >
+			{ !! ruleRowData.value ? <select defaultValue={ ruleRowData.value } >
 				{ wpObjects.map( ( wpObject, wpObjectIndex ) => (
-					( wpObject.value === selectedValues.wpObject ) && wpObject.data.map( ( valueItem, valueItemIndex ) => (
+					( wpObject.value === ruleRowData.wpObject ) && wpObject.data.map( ( valueItem, valueItemIndex ) => (
 						<option key={ valueItemIndex } value={ valueItem.value }>{ valueItem.label }</option>
 					) )
 				) ) }
