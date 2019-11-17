@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Rules } from './Rules';
+import { RuleSets } from './Rules';
 export const MappingContext = React.createContext();
 
 export class MappingApp extends React.Component {
@@ -15,87 +15,67 @@ export class MappingApp extends React.Component {
 			andButtonHandler: this.andButtonHandler,
 			deleteButtonHandler: this.deleteButtonHandler,
 			addRuleButtonHandler: this.addRuleButtonHandler,
-			defaultRuleset: {
-				objectType: {
-					'post-category': 'Post Category',
-					'post-taxonomy': 'Post Taxonomy',
-					'post-archive': 'Post Archive',
+
+			wpObjects: [
+				{
+					label: 'Post Type',
+					value: 'postType',
+					data: [
+						{ value: 'post', label: 'Post' },
+						{ value: 'books', label: 'Books' },
+						{ value: 'post', label: 'Post' },
+					],
 				},
-				relation: {
-					'less-than': 'Less Than',
-					'equal-to': 'Equal To',
-					'more-than': 'More Than',
+				{
+					label: 'Category',
+					value: 'category',
+					data: [
+						{ value: 'art', label: 'Art' },
+						{ value: 'science', label: 'Science' },
+						{ value: 'history', label: 'History' },
+					],
 				},
-				postType: {
-					'post': 'Post',
-					'books': 'Books',
-					'literature': 'Literature',
-				}
+			],
+
+			relations: {
+				'equals': 'Equals',
+				'notEquals': 'Not Equals',
 			},
-			ruleset: [
+
+			savedRules: [
 				[
-					{
-						set: true,
-						objectType: 'Post Category',
-						relation: 'Equal To',
-						postType: 'Post',
-					},
-					{
-						set: true,
-						objectType: 'Post Taxonomy',
-						relation: 'Less Than',
-						postType: 'Books',
-					}
+					{ wpObject: 'postType', relation: 'equals', value: 'post', },
+					{ wpObject: 'category', relation: 'notEquals', value: 'art', },
+					{ wpObject: 'category', relation: 'equals', value: 'science', },
 				],
 				[
-					{
-						set: true,
-						objectType: 'Post Archive',
-						relation: 'More Than',
-						postType: 'Literature',
-					}
+					{ wpObject: 'category', relation: 'equals', value: 'history', },
 				]
-			],
+			]
 		}
 	}
 
-	andButtonHandler( event, setNumber ) {
-		const updatedSubset = [
-			...this.state.ruleset[ setNumber ],
-			this.state.defaultRuleset,
-		];
-
-		let updatedSet = this.state.ruleset;
-		updatedSet[ setNumber ] = updatedSubset;
+	andButtonHandler( event, ruleSetIndex ) {
+		let savedRules = this.state.savedRules;
+		savedRules[ ruleSetIndex ].push( {} );
 
 		this.setState( {
-			ruleset: updatedSet,
+			savedRules: savedRules,
 		} );
 	}
 
 	deleteButtonHandler( e, setNumber, rowNumber ) {
-		let ruleset = this.state.ruleset;
-		let subArrayAfterDeletion = ruleset[ setNumber ].filter( ( item, index ) => index !== rowNumber  );
-		ruleset[ setNumber ] = subArrayAfterDeletion;
 
-		this.setState( {
-			ruleset: ruleset,
-		} );
 	}
 
 	addRuleButtonHandler() {
-		this.setState( {
-			ruleset: [
-				...this.state.ruleset,
-				[ this.state.defaultRuleset ]
-			]
-		} );
+		alert('what');
 	}
 
 	render() {
 		return (
 			<MappingContext.Provider value={ this.state }>
-				<Rules />
+				<RuleSets />
 			</MappingContext.Provider>
 		);
 	}

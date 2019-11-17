@@ -2,71 +2,33 @@ import React from 'react';
 
 import { MappingContext } from './MappingApp';
 
-export const Rules = () => {
+export const RuleSets = () => {
 	return (
 		<MappingContext.Consumer>
-			{ ( { ruleset, addRuleButtonHandler } ) => ( <>
-				{ ruleset.map( ( ruleSetItem, ruleSetIndex, currentArray ) => {
-					const lastItem = currentArray.length - 1 === ruleSetIndex;
-
-					return ( <div key={ ruleSetIndex } className="wl-mapping__ruleset">
-						{ ruleSetItem.map( ( ruleRow, ruleRowIndex ) => {
-							return <RuleRow key={ ruleRowIndex } ruleData={ ruleRow } setNumber={ ruleSetIndex } rowNumber={ ruleRowIndex } />
-						} ) }
-						{ ! lastItem && ( <h1>OR</h1> ) }
-					</div> )
-				} ) } <button type="button" onClick={ addRuleButtonHandler }>Add Rule Group</button></>
-			) }
+			{ ( { savedRules } ) => savedRules.map( ( ruleSet, ruleSetIndex ) => <div style={ { borderBottom: '1px solid' } } key={ ruleSetIndex }>{ ruleSet.map( ( rule, ruleIndex ) => <RuleRow key={ ruleIndex } ruleRowData={ rule } ruleRowId={ ruleIndex } ruleSetIndex={ ruleSetIndex } /> ) }</div> ) }
 		</MappingContext.Consumer>
 	)
 }
 
-const RuleRow = ( { ruleData, setNumber, rowNumber } ) => (
-	ruleData.set ? ( <MappingContext.Consumer>
-		{ ( { andButtonHandler, deleteButtonHandler, defaultRuleset } ) => (
-			<div>
-				{
-					Object.keys( defaultRuleset ).map( ( nestedObject, outerIndex ) => (
-						<select key={ outerIndex }>
-							{
-								Object.keys( defaultRuleset[ nestedObject ] ).map( ( key, innerIndex ) => (
-									<option key={ innerIndex } value={ key }>{ defaultRuleset[ nestedObject ][ key ] }</option>
-								) )
-							}
-						</select>
-					) )
-				}
-
-				<input type="button" value="And" onClick={ ( e ) => andButtonHandler( e, setNumber ) } />
-				<input type="button" value="Delete" onClick={ ( e ) => deleteButtonHandler( e, setNumber, rowNumber ) } />{ setNumber }
-			</div>
-		) }
-	</MappingContext.Consumer> ) :
-	( <div>
-		<MappingContext.Consumer>
-			{ ( { andButtonHandler, deleteButtonHandler } ) => (
-				<>
-					<SelectBox ruleData={ ruleData } />
-					<input type="button" value="And" onClick={ ( e ) => andButtonHandler( e, setNumber ) } />
-					<input type="button" value="Delete" onClick={ ( e ) => deleteButtonHandler( e, setNumber, rowNumber ) } />{ setNumber }
-				</>
-			) }
-		</MappingContext.Consumer>
-	</div> )
+const RuleRow = ( { ruleRowData, ruleSetIndex } ) => (
+	<MappingContext.Consumer>
+		{ ( { andButtonHandler, deleteButtonHandler  } ) => ( <div>
+			<GenerateDropdown selectedValues={ ruleRowData } />
+			<button type="button" onClick={ ( e ) => andButtonHandler( e, ruleSetIndex ) }>Add</button>
+			<button type="button">Delete</button>
+		</div> ) }
+	</MappingContext.Consumer>
 );
 
-const SelectBox = ( { ruleData } ) => (
-	<>
-		{
-			Object.keys( ruleData ).map( ( nestedObject, outerIndex ) => (
-				<select key={ outerIndex }>
-					{
-						Object.keys( ruleData[ nestedObject ] ).map( ( key, innerIndex ) => (
-							<option key={ innerIndex } value={ key }>{ ruleData[ nestedObject ][ key ] }</option>
-						) )
-					}
-				</select>
-			) )
-		}
-	</>
+const GenerateDropdown = ( { selectedValues } ) => (
+	<MappingContext.Consumer>
+		{ ( { wpObjects, relations } ) => ( <>
+			<select defaultValue={ selectedValues.wpObject }>
+				{ wpObjects.map( ( wpObject, wpObjectIndex ) => <option key={ wpObjectIndex } value={ wpObject.value }>{ wpObject.label }</option> ) }
+			</select>
+			<select defaultValue={ selectedValues.relation }>
+				{ Object.keys( relations ).map( ( relationKey, relationIndex ) => <option key={ relationIndex } value={ relationKey }>{ relations[ relationKey ] }</option> ) }
+			</select>
+		</> ) }
+	</MappingContext.Consumer>
 );
