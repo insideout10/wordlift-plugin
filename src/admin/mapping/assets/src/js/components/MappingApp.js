@@ -59,13 +59,17 @@ export class MappingApp extends React.Component {
 		let savedRules = this.state.savedRules;
 		savedRules[ ruleSetIndex ].push( {} );
 
-		this.setState( {
-			savedRules: savedRules,
-		} );
+		this.setState( { savedRules } );
 	}
 
-	deleteRuleHandler( event, setNumber, rowNumber ) {
+	deleteRuleHandler( event, ruleSetIndex, ruleIndex ) {
+		let savedRules = this.state.savedRules;
+		let ruleSet = savedRules[ ruleSetIndex ];
+		let updatedRuleSet = ruleSet.filter( ( rule, index ) => index !== ruleIndex );
 
+		savedRules[ ruleSetIndex ] = updatedRuleSet;
+
+		this.setState( { savedRules } );
 	}
 
 	addRuleButtonHandler() {
