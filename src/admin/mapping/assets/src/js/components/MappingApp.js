@@ -23,7 +23,7 @@ export class MappingApp extends React.Component {
 					data: [
 						{ value: 'post', label: 'Post' },
 						{ value: 'books', label: 'Books' },
-						{ value: 'post', label: 'Post' },
+						{ value: 'movies', label: 'Movies' },
 					],
 				},
 				{
@@ -49,6 +49,7 @@ export class MappingApp extends React.Component {
 					{ wpObject: 'category', relation: 'equals', value: 'science', },
 				],
 				[
+					{ wpObject: 'postType', relation: 'equals', value: 'books', },
 					{ wpObject: 'category', relation: 'equals', value: 'history', },
 				]
 			]

@@ -13,7 +13,7 @@ export const RuleSets = () => {
 const RuleRow = ( { ruleRowData, ruleSetIndex, ruleRowId } ) => (
 	<MappingContext.Consumer>
 		{ ( { addRuleHandler, deleteRuleHandler  } ) => ( <div>
-			<GenerateDropdown selectedValues={ ruleRowData } />
+			<GenerateDropdown selectedValues={ ruleRowData } ruleRowId={ ruleRowId } />
 			<button type="button" onClick={ ( e ) => addRuleHandler( e, ruleSetIndex ) }>Add</button>
 			<button type="button" onClick={ ( e ) => deleteRuleHandler( e, ruleSetIndex, ruleRowId ) }>Delete</button>
 		</div> ) }
@@ -28,6 +28,14 @@ const GenerateDropdown = ( { selectedValues } ) => (
 			</select>
 			<select defaultValue={ selectedValues.relation }>
 				{ Object.keys( relations ).map( ( relationKey, relationIndex ) => <option key={ relationIndex } value={ relationKey }>{ relations[ relationKey ] }</option> ) }
+			</select>
+
+			<select defaultValue={ selectedValues.value } >
+				{ wpObjects.map( ( wpObject, wpObjectIndex ) => (
+					( wpObject.value === selectedValues.wpObject ) && wpObject.data.map( ( valueItem, valueItemIndex ) => (
+						<option key={ valueItemIndex } value={ valueItem.value }>{ valueItem.label }</option>
+					) )
+				) ) }
 			</select>
 		</> ) }
 	</MappingContext.Consumer>
