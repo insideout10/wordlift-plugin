@@ -571,6 +571,24 @@ class Wordlift_Countries {
 		'zm' => 'Zambia',
 		'zw' => 'Zimbabwe',
 	);
+	
+	/**
+	 * Get the list of WordLift's supported country codes from json file mapping country_code => languages.
+	 * 
+	 * @since 3.22.5.1
+	 * 
+	 * @param string $file_name The json file where the supported country codes and language_codes are stored
+	 * 
+	 * @return array an array containing country_code => supported_languages array
+	 */
+	public static function get_codes( $file_name ){
+		if ( file_exists( $file_name ) ) {
+
+		}
+		else {
+			return array();
+		}
+	}
 
 	/**
 	 * Get the list of WordLift's supported countries in an array with country code => country name pairs.
