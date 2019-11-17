@@ -30,13 +30,15 @@ const GenerateDropdown = ( { selectedValues } ) => (
 				{ Object.keys( relations ).map( ( relationKey, relationIndex ) => <option key={ relationIndex } value={ relationKey }>{ relations[ relationKey ] }</option> ) }
 			</select>
 
-			<select defaultValue={ selectedValues.value } >
+			{ !! selectedValues.value ? <select defaultValue={ selectedValues.value } >
 				{ wpObjects.map( ( wpObject, wpObjectIndex ) => (
 					( wpObject.value === selectedValues.wpObject ) && wpObject.data.map( ( valueItem, valueItemIndex ) => (
 						<option key={ valueItemIndex } value={ valueItem.value }>{ valueItem.label }</option>
 					) )
 				) ) }
-			</select>
+			</select> : <select>
+				{ wpObjects[ 0 ].data.map( ( valueItem, valueItemIndex ) => <option key={ valueItemIndex } value={ valueItem.value }>{ valueItem.label }</option> ) }
+			</select> }
 		</> ) }
 	</MappingContext.Consumer>
 );
