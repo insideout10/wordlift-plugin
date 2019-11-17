@@ -41,6 +41,21 @@ class Wordlift_Countries_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( $codes, array() );
 
 	}
+
+
+	/**
+	 * Test when a valid json file is given it should return proper array format.
+	 *
+	 * @since 3.22.5.1
+	 */
+	function test_given_valid_json_data_return_proper_array_format() {
+
+		// passing a valid json file
+		$codes = Wordlift_Countries::get_codes_from_json_file( __DIR__."/assets/supported-countries.json" );
+		// the method should return array of length > 0 on successful parse.
+		$this->assertNotEquals( count($codes), 0 );
+
+	}
 	
 
 }
