@@ -29,7 +29,7 @@ class Wordlift_Countries_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	/**
-	 * Test getting all the codes
+	 * Test getting all the codes for invalid json file format
 	 *
 	 * @since 3.22.5.1
 	 */
