@@ -592,6 +592,13 @@ class Wordlift_Countries {
 			if ( $decoded_array == null ) {
 				return array();
 			}
+			else {
+				$country_codes_map = array();
+				foreach ($decoded_array as $key => $value) {
+					$country_codes_map[$key] = $value['supportedLang'];
+				}
+				return $country_codes_map;
+			}
 
 		}
 		else {
