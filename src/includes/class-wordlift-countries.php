@@ -40,7 +40,7 @@ class Wordlift_Countries {
 	 *
 	 * @var array An array of country codes
 	 */
-	private static $codes = array();
+	public static $codes = array();
 
 	/**
 	 * The list of country codes.
@@ -579,9 +579,9 @@ class Wordlift_Countries {
 	 * 
 	 * @param string $file_name The json file where the supported country codes and language_codes are stored
 	 * 
-	 * @return void it populate the self::$codes from .json file
+	 * @return array An array with country code mapped to supported languages
 	 */
-	public static function populate_codes( $file_name ) {
+	public static function get_codes_from_json_file( $file_name ) {
 		if ( file_exists( $file_name ) ) {
 
 		}

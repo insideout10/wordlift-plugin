@@ -23,9 +23,24 @@ class Wordlift_Countries_Test extends Wordlift_Unit_Test_Case {
 
 		// no codes would be populated since an invalid file name is passed
 		// so it should return a empty array
-		Wordlift_Countries::populate_codes( "invalid_codes_file.json" );
+		$codes = Wordlift_Countries::get_codes_from_json_file( "invalid_codes_file.json" );
 		$this->assertEquals( Wordlift_Countries::get_codes(), array() );
 
 	}
+
+	/**
+	 * Test getting all the codes
+	 *
+	 * @since 3.22.5.1
+	 */
+	function test_given_invalid_json_file_format_should_return_empty_array() {
+
+		// no codes would be populated since an invalid file name is passed
+		// so it should return a empty array
+		$codes = Wordlift_Countries::get_codes_from_json_file( __DIR__."/assets/invalid_country_code_json.json" );
+		$this->assertEquals( $codes, array() );
+
+	}
+	
 
 }
