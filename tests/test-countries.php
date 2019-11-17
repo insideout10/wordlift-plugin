@@ -22,7 +22,7 @@ class Wordlift_Countries_Test extends Wordlift_Unit_Test_Case {
 	public function test_get_countries_any_language() {
 
 		$countries = Wordlift_Countries::get_countries();
-		$this->assertCount( 60, $countries, 'Expect 60 items.' );
+		$this->assertCount( 61, $countries, 'Expect 60 items.' );
 
 	}
 
