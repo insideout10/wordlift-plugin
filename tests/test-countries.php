@@ -13,7 +13,13 @@
  * @since 3.20.0
  */
 class Wordlift_Countries_Test extends Wordlift_Unit_Test_Case {
-
+	/**
+	 * Empty array from Wordlift_Countries::get_codes_from_json_file for edge cases.
+	 *
+	 * @since 3.22.5.1
+	 *
+	 * @var empty_array
+	 */
 	private static $empty_array = array(
 		'country_code_name_map'     => array(),
 		'country_code_language_map' => array(),

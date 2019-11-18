@@ -31,7 +31,7 @@ class Wordlift_Countries {
 	private static $countries = array();
 
 	/**
-	 * The list of supported country codes.
+	 * The list of supported country codes, this is populated by self::lazy_populate_codes_and_country_codes_array.
 	 *
 	 * WARNING! If you change the list of supported countries, *you have* to add the related flag
 	 * in the images/flags folder.
@@ -43,7 +43,7 @@ class Wordlift_Countries {
 	public static $codes = array();
 
 	/**
-	 * The list of country codes.
+	 * The list of country codes, this is populated by self::lazy_populate_codes_and_country_codes_array.
 	 *
 	 * WARNING! If you change the list of supported countries, *you have* to add the related flag
 	 * in the images/flags folder.
@@ -408,6 +408,8 @@ class Wordlift_Countries {
 
 	/**
 	 * Reset codes_and_country_codes static variable, used for testing
+	 *
+	 * @since 3.22.5.1
 	 *
 	 * @return void
 	 */
