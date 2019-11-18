@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { RuleSets } from './Rules';
+import { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } from 'constants';
 export const MappingContext = React.createContext();
 
 export class MappingApp extends React.Component {
@@ -10,11 +11,13 @@ export class MappingApp extends React.Component {
 		this.addRuleHandler = this.addRuleHandler.bind( this );
 		this.deleteRuleHandler = this.deleteRuleHandler.bind( this );
 		this.wpObjectChangeHandler = this.wpObjectChangeHandler.bind( this );
+		this.addRuleGroupHandler = this.addRuleGroupHandler.bind( this );
 
 		this.state = {
 			addRuleHandler: this.addRuleHandler,
 			deleteRuleHandler: this.deleteRuleHandler,
 			wpObjectChangeHandler: this.wpObjectChangeHandler,
+			addRuleGroupHandler: this.addRuleGroupHandler,
 
 			wpObjects: [
 				{
@@ -78,6 +81,15 @@ export class MappingApp extends React.Component {
 		savedRules[ ruleSetIndex ][ ruleIndex ].wpObject = event.target.value;
 
 		this.setState( { savedRules } );
+	}
+
+	addRuleGroupHandler() {
+		this.setState( {
+			savedRules: [
+				...this.state.savedRules,
+				[ { wpObject: 'postType', relation: 'equals', value: 'post', } ]
+			]
+		} )
 	}
 
 	render() {

@@ -5,7 +5,15 @@ import { MappingContext } from './MappingApp';
 export const RuleSets = () => {
 	return (
 		<MappingContext.Consumer>
-			{ ( { savedRules } ) => savedRules.map( ( ruleSet, ruleSetIndex ) => <div style={ { borderBottom: '1px solid' } } key={ ruleSetIndex }>{ ruleSet.map( ( rule, ruleIndex ) => <RuleRow key={ ruleIndex } ruleRowData={ rule } ruleRowId={ ruleIndex } ruleSetIndex={ ruleSetIndex } /> ) }</div> ) }
+			{ ( { savedRules, addRuleGroupHandler } ) => ( <>
+				{ savedRules.map( ( ruleSet, ruleSetIndex, currentArray ) => (
+					<div style={ { borderBottom: '1px solid' } } key={ ruleSetIndex }>
+						{ ruleSet.map( ( rule, ruleIndex ) => <RuleRow key={ ruleIndex } ruleRowData={ rule } ruleRowId={ ruleIndex } ruleSetIndex={ ruleSetIndex } /> ) }
+						{ currentArray.length - 1 !== ruleSetIndex && <h1>OR</h1> }
+					</div>
+				) ) }
+				<button type="button" onClick={ addRuleGroupHandler }>Add rule group</button>
+			</> ) }
 		</MappingContext.Consumer>
 	)
 }
