@@ -38,7 +38,7 @@ class Wordlift_Countries {
 	 *
 	 * @since 3.18.0
 	 *
-	 * @var array An array of country codes
+	 * @var array An array of country codes => supported_languages_array
 	 */
 	public static $codes = array();
 
