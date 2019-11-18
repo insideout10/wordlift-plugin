@@ -55,6 +55,7 @@ class Wordlift_Countries_Test extends Wordlift_Unit_Test_Case {
 		// the method should return array of length > 0 on successful parse.
 		$this->assertNotEquals( count($codes), 0 );
 		$this->assertTrue( array_key_exists( 'country_code_language_map', $codes ) );
+		$this->assertTrue( array_key_exists( 'country_code_name_map', $codes ) );
 
 	}
 
