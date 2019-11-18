@@ -347,6 +347,7 @@ class Wordlift_Countries {
 				$country_code_name_map [ $key ]    = $value['defaultLoc']['loc_name'];
 			}
 			$result['country_code_language_map'] = $country_code_language_map;
+			$result['country_code_name_map']     = $country_code_name_map;
 			return $result;
 		}
 	}
