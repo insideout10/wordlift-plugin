@@ -51,6 +51,10 @@ services:
         # Use dev versions of core JS and CSS files (only needed if you are modifying these core files)
         define( 'SCRIPT_DEBUG', true );
 
+        # Enable WordLift debug.
+        define( 'WL_DEBUG', WP_DEBUG );
+        define( 'WL_LOG_LEVEL', 0 );
+
   nginx:
     image: nginx:1.17
     depends_on:

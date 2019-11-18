@@ -25,7 +25,9 @@
  */
 
 // If this file is called directly, abort.
+use Wordlift\Block_Editor\Classification_Block_Type;
 use Wordlift\Cache\Ttl_Cache_Cleaner;
+use Wordlift\Post\Post_Adapter;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -510,7 +512,8 @@ function run_wordlift() {
 	// Initialize the TTL Cache Cleaner.
 	new Ttl_Cache_Cleaner();
 
-	new \Wordlift\Block_Editor\Classification_Block_Type();
+	// Load the new Post Adapter.
+	new Post_Adapter();
 
 }
 

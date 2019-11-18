@@ -104,7 +104,8 @@ class Wordlift_Log_Service {
 		}
 
 		// Bail out if there's a filter and we don't match it.
-		if ( defined( 'WL_LOG_FILTER' ) && 1 !== preg_match( "/(^|,)$this->class_name($|,)/", WL_LOG_FILTER ) ) {
+		$class_name = wp_slash( $this->class_name );
+		if ( defined( 'WL_LOG_FILTER' ) && 1 !== preg_match( "/(^|,)$class_name($|,)/", WL_LOG_FILTER ) ) {
 			return;
 		}
 
