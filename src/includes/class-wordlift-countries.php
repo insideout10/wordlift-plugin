@@ -327,7 +327,7 @@ class Wordlift_Countries {
 	 * @param  string $file_name The json file name where the supported country
 	 * and languages are present.
 	 *
-	 * @return array An Array mapping country_code => supported_languages
+	 * @return array An Array having two maps, country_code_language_map and country_code_name_map.
 	 */
 	public static function parse_country_code_json_file_to_array( $file_name ) {
 		$json_file_contents = file_get_contents( $file_name );
@@ -335,7 +335,10 @@ class Wordlift_Countries {
 		// decoded array would be null if the json_decode parses
 		// invalid content.
 		if ( null === $decoded_array ) {
-			return array();
+			return array(
+				'country_code_name_map'     => array(),
+				'country_code_language_map' => array(),
+			);
 		} else {
 			$result = array();
 			// country_code => country_language map.
@@ -358,13 +361,16 @@ class Wordlift_Countries {
 	 *
 	 * @param string $file_name The json file where the supported country codes and language_codes are stored.
 	 *
-	 * @return array An array with country code mapped to supported languages
+	 * @return array An Array having two maps, country_code_language_map and country_code_name_map.
 	 */
 	public static function get_codes_from_json_file( $file_name ) {
 		if ( file_exists( $file_name ) ) {
 			return self::parse_country_code_json_file_to_array( $file_name );
 		} else {
-			return array();
+			return array(
+				'country_code_name_map'     => array(),
+				'country_code_language_map' => array(),
+			);
 		}
 	}
 
