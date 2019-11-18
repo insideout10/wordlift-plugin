@@ -583,22 +583,20 @@ class Wordlift_Countries {
 	public static function get_codes_from_json_file( $file_name ) {
 		if ( file_exists( $file_name ) ) {
 
-			$json_file_contents = file_get_contents( $file_name );
+			$json_file_contents = wp_remote_get( $file_name );
 			$decoded_array      = json_decode( $json_file_contents, true );
 			// decoded array would be null if the json_decode parses
 			// invalid content.
 			if ( null === $decoded_array ) {
 				return array();
-			}
-			else {
+			} else {
 				$country_codes_map = array();
 				foreach ( $decoded_array as $key => $value ) {
-					$country_codes_map[$key] = $value['supportedLang'];
+					$country_codes_map[ $key ] = $value['supportedLang'];
 				}
 				return $country_codes_map;
 			}
-		}
-		else {
+		} else {
 			return array();
 		}
 	}
@@ -610,8 +608,8 @@ class Wordlift_Countries {
 	 *
 	 * @return array The country language pairs.
 	 */
-	public static function get_codes() {	
-		return self::$codes;	
+	public static function get_codes() {
+		return self::$codes;
 	}
 
 	/**
