@@ -108,10 +108,8 @@ class Post_Adapter {
 				return;
 			}
 
-			if ( is_array( $entity['sameAs'] ) ) {
-				foreach ( $entity['sameAs'] as $same_as ) {
-					add_post_meta( $entity_id, \Wordlift_Schema_Service::FIELD_SAME_AS, $same_as );
-				}
+			foreach ( $uris as $uri ) {
+				add_post_meta( $entity_id, \Wordlift_Schema_Service::FIELD_SAME_AS, $uri );
 			}
 
 			if ( is_array( $entity['label'] ) ) {
