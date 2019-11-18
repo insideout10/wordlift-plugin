@@ -337,11 +337,13 @@ class Wordlift_Countries {
 		if ( null === $decoded_array ) {
 			return array();
 		} else {
+			$result                    = array();
 			$country_code_language_map = array();
 			foreach ( $decoded_array as $key => $value ) {
-				$country_codes_map[ $key ] = $value['supportedLang'];
+				$country_code_language_map[ $key ] = $value['supportedLang'];
 			}
-			return $country_code_language_map;
+			$result['country_code_language_map'] = $country_code_language_map;
+			return $result;
 		}
 	}
 	/**
