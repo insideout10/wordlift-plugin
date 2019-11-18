@@ -7,9 +7,9 @@ export const RuleSets = () => {
 		<MappingContext.Consumer>
 			{ ( { savedRules, addRuleGroupHandler } ) => ( <>
 				{ savedRules.map( ( ruleSet, ruleSetIndex, currentArray ) => (
-					<div key={ ruleSetIndex }>
+					ruleSet.length > 0 && <div key={ ruleSetIndex }>
 						{ ruleSet.map( ( rule, ruleIndex ) => <RuleRow key={ ruleIndex } ruleRowData={ rule } ruleRowId={ ruleIndex } ruleSetIndex={ ruleSetIndex } /> ) }
-						{ currentArray.length - 1 !== ruleSetIndex && <h1>OR</h1> }
+						{ true && 0 !== currentArray.length && <h1>OR</h1> }
 					</div>
 				) ) }
 				<button type="button" onClick={ addRuleGroupHandler }>Add rule group</button>

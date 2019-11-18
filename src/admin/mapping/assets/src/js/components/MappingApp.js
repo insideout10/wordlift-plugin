@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { RuleSets } from './Rules';
-import { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } from 'constants';
+import { Mapping } from './Mapping';
+
 export const MappingContext = React.createContext();
 
 export class MappingApp extends React.Component {
@@ -96,6 +97,7 @@ export class MappingApp extends React.Component {
 		return (
 			<MappingContext.Provider value={ this.state }>
 				<RuleSets />
+				<Mapping />
 			</MappingContext.Provider>
 		);
 	}
