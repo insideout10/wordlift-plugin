@@ -63,13 +63,12 @@ class Wordlift_Countries_Test extends Wordlift_Unit_Test_Case {
 		$this->assertTrue( array_key_exists( 'country_code_name_map', $codes ) );
 
 	}
-
 	/**
-	 * Test when a valid json file is present
+	 * Create_valid_json_file in tests/assets/ folder
 	 *
-	 * @since 3.22.5.1
+	 * @return string the file name which was created by this function.
 	 */
-	public function test_when_valid_json_file_present_should_return_correct_country() {
+	private function create_valid_json_file() {
 		// we are going to create a valid json file in assets/ folder with one entity
 		// and remove it at the end of the test.
 		$valid_json                                 = array();
@@ -79,10 +78,18 @@ class Wordlift_Countries_Test extends Wordlift_Unit_Test_Case {
 		// write this to assets/ folder.
 		$new_file_name = __DIR__ . '/assets/valid_countries_json_file.json';
 		file_put_contents( $new_file_name, $valid_json);
+		return $new_file_name;
+	}
+	/**
+	 * Test when a valid json file is present
+	 *
+	 * @since 3.22.5.1
+	 */
+	public function test_when_valid_json_file_present_should_return_correct_country() {
+		$new_file_name = $this->create_valid_json_file();
 		// now the file has been written to assets folder.
 		// make a call to get_countries, it should return only australia.
-		$country_array = Wordlift_Countries::get_countries( 'en' );
-		print_r($country_array);
+		$country_array = Wordlift_Countries::get_countries( 'en', $new_file_name );
 		$this->assertTrue( array_key_exists( 'au', $country_array ) );
 		// clean up the file at the end of the test.
 		if ( file_exists( $new_file_name ) ) {
