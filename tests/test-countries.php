@@ -23,8 +23,12 @@ class Wordlift_Countries_Test extends Wordlift_Unit_Test_Case {
 
 		// no codes would be populated since an invalid file name is passed
 		// so it should return a empty array.
-		$codes = Wordlift_Countries::get_codes_from_json_file( 'invalid_codes_file.json' );
-		$this->assertEquals( Wordlift_Countries::get_codes(), array() );
+		$codes       = Wordlift_Countries::get_codes_from_json_file( 'invalid_codes_file.json' );
+		$empty_array = array(
+			'country_code_name_map'     => array(),
+			'country_code_language_map' => array(),
+		);
+		$this->assertEquals( Wordlift_Countries::get_codes(), $empty_array );
 
 	}
 
