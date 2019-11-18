@@ -54,6 +54,7 @@ class Wordlift_Countries_Test extends Wordlift_Unit_Test_Case {
 		$codes = Wordlift_Countries::get_codes_from_json_file( __DIR__ . '/assets/supported-countries.json' );
 		// the method should return array of length > 0 on successful parse.
 		$this->assertNotEquals( count($codes), 0 );
+		$this->assertTrue( array_key_exists( 'country_code_language_map', $codes ) );
 
 	}
 
