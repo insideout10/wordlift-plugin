@@ -384,6 +384,27 @@ class Wordlift_Countries {
 	public static function get_codes() {
 		return self::$codes;
 	}
+	/**
+	 * Populate self::codes and self::country_codes if not done before.
+	 *
+	 * @since 3.22.5.1
+	 *
+	 * @param string $file_name The json file where the supported country codes and language_codes are stored.
+	 *
+	 * @return void
+	 */
+	private static function lazy_populate_codes_and_country_codes_array( $file_name ) {
+		if ( null === $file_name ) {
+			$file_name = __DIR__ . '/supported-countries.json';
+		}
+		if ( count( self::$codes ) === 0 || count( self::$country_codes ) === 0 ) {
+			// populate the two arrays.
+			$result_array        = self::get_codes_from_json_file( $file_name );
+			self::$codes         = $result_array['country_code_language_map'];
+			self::$country_codes = $result_array['country_code_name_map'];
+		}
+
+	}
 
 	/**
 	 * Get the list of WordLift's supported countries in an array with country code => country name pairs.
@@ -394,8 +415,9 @@ class Wordlift_Countries {
 	 *
 	 * @return array An array with country code => country name pairs.
 	 */
-	public static function get_countries( $lang = false ) {
-
+	public static function get_countries( $lang = false, $file_name = null ) {
+		// populate the codes and countries array if it is not done before.
+		self::lazy_populate_codes_and_country_codes_array( $file_name );
 		// Lazily load the countries.
 		$lang_key = false === $lang ? 'any' : $lang;
 		if ( isset( self::$countries[ $lang_key ] ) ) {

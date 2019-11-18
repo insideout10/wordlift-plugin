@@ -82,6 +82,7 @@ class Wordlift_Countries_Test extends Wordlift_Unit_Test_Case {
 		// now the file has been written to assets folder.
 		// make a call to get_countries, it should return only australia.
 		$country_array = Wordlift_Countries::get_countries( 'en' );
+		print_r($country_array);
 		$this->assertTrue( array_key_exists( 'au', $country_array ) );
 		// clean up the file at the end of the test.
 		if ( file_exists( $new_file_name ) ) {
