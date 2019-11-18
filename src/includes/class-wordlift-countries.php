@@ -571,21 +571,20 @@ class Wordlift_Countries {
 		'zm' => 'Zambia',
 		'zw' => 'Zimbabwe',
 	);
-	
 	/**
 	 * Get the list of WordLift's supported country codes from json file mapping country_code => languages.
-	 * 
+	 *
 	 * @since 3.22.5.1
-	 * 
-	 * @param string $file_name The json file where the supported country codes and language_codes are stored
-	 * 
+	 *
+	 * @param string $file_name The json file where the supported country codes and language_codes are stored.
+	 *
 	 * @return array An array with country code mapped to supported languages
 	 */
 	public static function get_codes_from_json_file( $file_name ) {
 		if ( file_exists( $file_name ) ) {
 
 			$json_file_contents = file_get_contents( $file_name );
-			$decoded_array = json_decode( $json_file_contents, true );
+			$decoded_array      = json_decode( $json_file_contents, true );
 			// decoded array would be null if the json_decode parses
 			// invalid content.
 			if ( null === $decoded_array ) {
@@ -604,13 +603,13 @@ class Wordlift_Countries {
 		}
 	}
 
-	/**	
-	 * Returns the country language pairs.	
-	 *	
-	 * @since 3.18.0	
-	 *	
-	 * @return array The country language pairs.	
-	 */	
+	/**
+	 * Returns the country language pairs.
+	 *
+	 * @since 3.18.0
+	 *
+	 * @return array The country language pairs.
+	 */
 	public static function get_codes() {	
 		return self::$codes;	
 	}
@@ -697,14 +696,14 @@ class Wordlift_Countries {
 
 		// Bail out if we don't have the flag.
 		if ( ! isset( self::$country_flags[ $country_code ] )
-		     || is_null( self::$country_flags[ $country_code ] ) ) {
+			|| is_null( self::$country_flags[ $country_code ] ) ) {
 			return null;
 		}
 
 		return plugin_dir_url( dirname( __FILE__ ) )
-		       . 'images/flags/16/'
-		       . self::$country_flags[ $country_code ]
-		       . '.png';
+			. 'images/flags/16/'
+			. self::$country_flags[ $country_code ]
+			. '.png';
 	}
 
 	/**
