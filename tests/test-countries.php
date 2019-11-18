@@ -18,7 +18,14 @@ class Wordlift_Countries_Test extends Wordlift_Unit_Test_Case {
 		'country_code_name_map'     => array(),
 		'country_code_language_map' => array(),
 	);
-
+	/**
+	 * Method to run before every test, we reset the codes value before running test.
+	 *
+	 * @return void
+	 */
+	public function setUp() {
+		Wordlift_Countries::reset_codes_and_country_codes();
+	}
 	/**
 	 * Test getting all the codes
 	 *
@@ -81,7 +88,7 @@ class Wordlift_Countries_Test extends Wordlift_Unit_Test_Case {
 		return $new_file_name;
 	}
 	/**
-	 * Test when a valid json file is present
+	 * Test when a valid json file is present should return correct country in valid json.
 	 *
 	 * @since 3.22.5.1
 	 */
@@ -89,6 +96,30 @@ class Wordlift_Countries_Test extends Wordlift_Unit_Test_Case {
 		$new_file_name = $this->create_valid_json_file();
 		// now the file has been written to assets folder.
 		// make a call to get_countries, it should return only australia.
+		$country_array = Wordlift_Countries::get_countries( 'en', $new_file_name );
+		$this->assertTrue( array_key_exists( 'au', $country_array ) );
+		// clean up the file at the end of the test.
+		if ( file_exists( $new_file_name ) ) {
+			unlink( $new_file_name );
+		}
+	}
+
+	/**
+	 * Test lazy load on get_countries method, it should not read the file for
+	 * the next call, it should use the old data.
+	 *
+	 * @since 3.22.5.1
+	 */
+	public function test_lazy_load_valid_json_file() {
+		$new_file_name = $this->create_valid_json_file();
+		// make a call to get_countries, now the file was read and
+		// stored to static variable Wordlift_Countries::$code.
+		Wordlift_Countries::get_countries( 'en', $new_file_name );
+		// delete the file.
+		if ( file_exists( $new_file_name ) ) {
+			unlink( $new_file_name );
+		}
+		// Since the file is no more, but the values are present, so it should get old value.
 		$country_array = Wordlift_Countries::get_countries( 'en', $new_file_name );
 		$this->assertTrue( array_key_exists( 'au', $country_array ) );
 		// clean up the file at the end of the test.

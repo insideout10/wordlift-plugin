@@ -407,11 +407,25 @@ class Wordlift_Countries {
 	}
 
 	/**
+	 * Reset codes_and_country_codes static variable, used for testing
+	 *
+	 * @return void
+	 */
+	public static function reset_codes_and_country_codes() {
+		self::$codes         = array();
+		self::$country_codes = array();
+	}
+
+
+	/**
 	 * Get the list of WordLift's supported countries in an array with country code => country name pairs.
 	 *
 	 * @since 3.18.0
 	 *
 	 * @param string|false $lang Optional. The language code we are looking for. Default `any`.
+	 *
+	 * @param string|null  $file_name Optional. The json file containing country codes
+	 *  and language data.
 	 *
 	 * @return array An array with country code => country name pairs.
 	 */
