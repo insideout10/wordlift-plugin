@@ -7,7 +7,6 @@ dist: precise
 language: php
 php:
  - '5.4'
- - '5.5'
  - '5.6'
 
 # Test matrix:
@@ -25,10 +24,10 @@ matrix:
       env: SCRIPT=test:e2e
     # Additional PHP Unit tests, PHP 7.2, PHP 7.0, WP 5.1 (WP 4.2 isn't compatible with PHP 7.x).
     - php: 7.2
-      env: SCRIPT=test:php WP_VERSION=5.1
+      env: SCRIPT=test:php WP_VERSION=5.3
     #
     - php: 7.0
-      env: SCRIPT=test:php WP_VERSION=5.1
+      env: SCRIPT=test:php WP_VERSION=5.3
     # WordPress nightly.
     - php: 5.6
       env: SCRIPT=test:php WP_VERSION=nightly

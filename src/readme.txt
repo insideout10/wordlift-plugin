@@ -4,7 +4,7 @@ Plugin URL: https://wordlift.io
 Contributors: wordlift, insideout10, ziodave
 Tags: schema.org, semantic seo, seo, artificial intelligence, ai, linked data, semantic web, content recommendation, related posts, timeline, knowledge graph, interactive map
 Requires at least: 4.4
-Tested up to: 5.2
+Tested up to: 5.3
 Requires PHP: 5.3
 Stable tag: {version}
 License: GPLv2 or later
@@ -142,10 +142,18 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.22.6 (2019-10-31) =
-* Enhancement: [#934](https://github.com/insideout10/wordlift-plugin/issues/958): Network navigator endpoint.
-* Enhancement: [#968](https://github.com/insideout10/wordlift-plugin/issues/968): Allow entities (and related media) to be published via rest
-* Fix [#966](https://github.com/insideout10/wordlift-plugin/issues/966): PHP logs Errors.
+= 3.22.6 (2019-11-19) =
+* Enhancement: [#947](https://github.com/insideout10/wordlift-plugin/issues/947): Add an end-point for the WordLift Cloud.
+* Enhancement: [#958](https://github.com/insideout10/wordlift-plugin/issues/958): Network navigator endpoint.
+* Enhancement: [#959](https://github.com/insideout10/wordlift-plugin/issues/959): Context cards should be linked to the entities.
+* Enhancement: [#962](https://github.com/insideout10/wordlift-plugin/issues/962): Adding utm tags to track clicks on the Navigator.
+* Enhancement: [#963](https://github.com/insideout10/wordlift-plugin/issues/963): Add data filter on the navigator widget.
+* Enhancement: [#968](https://github.com/insideout10/wordlift-plugin/issues/968): Allow entities (and related media) to be published via rest.
+* Fix: [#966](https://github.com/insideout10/wordlift-plugin/issues/966): PHP logs Errors.
+* Fix: [#967](https://github.com/insideout10/wordlift-plugin/issues/967): Prevent Context Cards from overlapping
+
+= 3.22.5.1 (2019-11-14) =
+* Fix: [#975](https://github.com/insideout10/wordlift-plugin/issues/975): Compatibility issues with WordPress 5.3.
 
 = 3.22.5 (2019-10-09) =
 * Fix: Performance issues with Navigator on large sites.

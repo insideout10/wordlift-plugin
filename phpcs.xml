@@ -59,6 +59,7 @@
     <config name="testVersion" value="5.3-"/>
     <rule ref="PHPCompatibilityWP">
         <include-pattern>*\.php$</include-pattern>
+        <exclude-pattern>class-wordlift-entity-types-taxonomy-walker-5-3\.php$</exclude-pattern>
     </rule>
 
     <!--
