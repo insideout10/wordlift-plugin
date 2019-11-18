@@ -45,7 +45,7 @@ function wl_shortcode_navigator_data() {
  *
  * Network navigator callback function used by network-navigator endpoint
  *
- * @since 3.23.0
+ * @since 3.22.6
  *
  * @param $request
  *
@@ -54,11 +54,9 @@ function wl_shortcode_navigator_data() {
 function wl_network_navigator_wp_json($request) {
 
 	// Create the cache key.
-	$cache_key = array(
-		'request_params' => array_filter( $_REQUEST, function ( $key ) {
-			return 'uniqid' !== $key;
-		}, ARRAY_FILTER_USE_KEY ),
-	);
+	$cache_key_params = $_REQUEST;
+	unset( $cache_key_params['uniqid'] );
+	$cache_key = array( 'request_params' => $cache_key_params );
 
 	// Create the TTL cache and try to get the results.
 	$cache         = new Ttl_Cache( "network-navigator", 24 * 60 * 60 ); // 24 hours.
@@ -106,10 +104,12 @@ function _wl_navigator_get_data() {
 		return array();
 	}
 
+	$order_by = apply_filters( 'wl_navigator_data_order_by', 'ID ASC');
+
 	$referencing_posts = _wl_navigator_get_results( $current_post_id, array(
 		'ID',
 		'post_title',
-	), 'ID DESC', $navigator_length, $navigator_offset );
+	), $order_by, $navigator_length, $navigator_offset );
 
 	// loop over them and take the first one which is not already in the $related_posts
 	$results = array();
@@ -166,10 +166,12 @@ function _wl_network_navigator_get_data($request) {
 		wp_send_json_error( 'No valid entities provided' );
 	}
 
+	$order_by = apply_filters( 'wl_network_navigator_data_order_by', 'ID ASC');
+
 	$referencing_posts = _wl_network_navigator_get_results( $entities, array(
 		'ID',
 		'post_title',
-	), 'ID DESC', $navigator_length, $navigator_offset );
+	), $order_by, $navigator_length, $navigator_offset );
 
 	// loop over them and take the first one which is not already in the $related_posts
 	$results = array();
