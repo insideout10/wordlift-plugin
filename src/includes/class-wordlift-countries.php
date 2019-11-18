@@ -571,6 +571,30 @@ class Wordlift_Countries {
 		'zm' => 'Zambia',
 		'zw' => 'Zimbabwe',
 	);
+
+	/**
+	 * Parse_country_code_json_file_to_array.
+	 *
+	 * @param  string $file_name The json file name where the supported country
+	 * and languages are present.
+	 *
+	 * @return array An Array mapping country_code => supported_languages
+	 */
+	public static function parse_country_code_json_file_to_array( $file_name ) {
+			$json_file_contents = file_get_contents( $file_name );
+			$decoded_array      = json_decode( $json_file_contents, true );
+			// decoded array would be null if the json_decode parses
+			// invalid content.
+		if ( null === $decoded_array ) {
+			return array();
+		} else {
+			$country_codes_map = array();
+			foreach ( $decoded_array as $key => $value ) {
+				$country_codes_map[ $key ] = $value['supportedLang'];
+			}
+			return $country_codes_map;
+		}
+	}
 	/**
 	 * Get the list of WordLift's supported country codes from json file mapping country_code => languages.
 	 *
@@ -582,20 +606,7 @@ class Wordlift_Countries {
 	 */
 	public static function get_codes_from_json_file( $file_name ) {
 		if ( file_exists( $file_name ) ) {
-
-			$json_file_contents = wp_remote_get( $file_name );
-			$decoded_array      = json_decode( $json_file_contents, true );
-			// decoded array would be null if the json_decode parses
-			// invalid content.
-			if ( null === $decoded_array ) {
-				return array();
-			} else {
-				$country_codes_map = array();
-				foreach ( $decoded_array as $key => $value ) {
-					$country_codes_map[ $key ] = $value['supportedLang'];
-				}
-				return $country_codes_map;
-			}
+			return self::parse_country_code_json_file_to_array( $file_name );
 		} else {
 			return array();
 		}
