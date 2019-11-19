@@ -1,4 +1,5 @@
 import React, { createContext } from 'react';
+import './../../scss/mapping.scss';
 
 const MappingConfigurationContext = createContext();
 
@@ -92,7 +93,9 @@ export class Mapping extends React.Component {
 		} )
 	}
 
-	closeCurrentMappingHandler() {
+	closeCurrentMappingHandler( e ) {
+		e.preventDefault();
+
 		this.setState( {
 			currentlyEditing: null,
 		} )
@@ -108,50 +111,50 @@ export class Mapping extends React.Component {
 }
 
 const MappingConfiguration = () => (
-	<MappingConfigurationContext.Consumer>
-		{ ( { savedProperties, addNewMappingHandler } ) => (
-			<>
-			{ savedProperties.map( ( savedPropertyItem, savedPropertyItemIndex ) => (
-				<div className="wl-mapping-unit" key={ savedPropertyItemIndex }>
-					<MappingRow mappingRowData={ savedPropertyItem } savedPropertyItemIndex={ savedPropertyItemIndex } />
-				</div>
-			) ) }
-			<button type="button" onClick={ addNewMappingHandler }>Add Mapping</button>
-			</>
-		) }
-	</MappingConfigurationContext.Consumer>
+	<div className="wl-mapping__container">
+		<MappingConfigurationContext.Consumer>
+			{ ( { savedProperties, addNewMappingHandler } ) => (
+				<>
+				{ savedProperties.map( ( savedPropertyItem, savedPropertyItemIndex ) => (
+					<MappingRow key={ savedPropertyItemIndex } mappingRowData={ savedPropertyItem } savedPropertyItemIndex={ savedPropertyItemIndex } />
+				) ) }
+				<button className="button wl-mapping__add-mapping" type="button" onClick={ addNewMappingHandler }>Add Mapping</button>
+				</>
+			) }
+		</MappingConfigurationContext.Consumer>
+	</div>
 );
 
 const MappingRow = ( { mappingRowData, savedPropertyItemIndex } ) => (
 	<MappingConfigurationContext.Consumer>
 		{ ( { editControlHandler, currentlyEditing, defaultProperties, propertyTextUpdateHandler, closeCurrentMappingHandler } ) => (
-			<div className="wl-mapping-unit">
-				<div className="wl-mapping-checkbox">
+			<div className="wl-mapping__unit">
+				<div className="wl-mapping__checkbox">
 					<input type="checkbox" />
 				</div>
 
-				<div className="wl-mapping-edit-panel">
-					<div className="wl-mapping-title">{ mappingRowData.property }</div>
+				<div className="wl-mapping__edit-panel">
+					<div className="wl-mapping__title">{ mappingRowData.property }</div>
 
-					{ currentlyEditing === savedPropertyItemIndex && ( <div className="wl-mapping-expanded-controls">
-						<div className="wl-mapping-property-control">
+					{ currentlyEditing === savedPropertyItemIndex && ( <div className="wl-mapping__expanded-controls">
+						<div className="wl-mapping__property-control">
 							<label>Property</label>
 							<input defaultValue={ mappingRowData.property } onChange={ ( e ) => propertyTextUpdateHandler( e, savedPropertyItemIndex ) } />
 						</div>
 
-						<div className="wl-mapping-property-control">
+						<div className="wl-mapping__property-control">
 							<label>Field Type</label>
 							<select defaultValue={ mappingRowData.fieldType }>
 								{ Object.keys( defaultProperties.fieldType ).map( ( key, index ) => <option key={ index } value={ key }>{ defaultProperties.fieldType[ key ] }</option> ) }
 							</select>
 						</div>
 
-						<div className="wl-mapping-property-control">
+						<div className="wl-mapping__property-control">
 							<label>Field</label>
 							<input defaultValue={ mappingRowData.field } />
 						</div>
 
-						<div className="wl-mapping-property-control">
+						<div className="wl-mapping__property-control">
 							<label>Transform</label>
 							<select defaultValue={ mappingRowData.transform }>
 								{ Object.keys( defaultProperties.transform ).map( ( key, index ) => <option key={ index } value={ key }>{ defaultProperties.transform[ key ] }</option> ) }
@@ -159,13 +162,13 @@ const MappingRow = ( { mappingRowData, savedPropertyItemIndex } ) => (
 						</div>
 					</div> ) }
 
-					{ currentlyEditing !== savedPropertyItemIndex && <div className="wl-mapping-edit-controls">
+					{ currentlyEditing !== savedPropertyItemIndex && <div className="wl-mapping__edit-controls">
 						<a onClick={ ( e ) => editControlHandler( e, savedPropertyItemIndex ) } data-control-id={ 0 } href="#">Edit</a>
 						<a onClick={ ( e ) => editControlHandler( e, savedPropertyItemIndex ) } data-control-id={ 1 } href="#">Duplicate</a>
 						<a onClick={ ( e ) => editControlHandler( e, savedPropertyItemIndex ) } data-control-id={ 2 } href="#">Deletion</a>
 					</div> }
 
-					{ currentlyEditing === savedPropertyItemIndex && <button type="button" onClick={ closeCurrentMappingHandler }>Close Mapping</button> }
+					{ currentlyEditing === savedPropertyItemIndex && <a href="#" className="wl-mapping__close-mapping" onClick={ ( e ) => { closeCurrentMappingHandler( e ) } }>Close Mapping</a> }
 				</div>
 			</div>
 		) }
