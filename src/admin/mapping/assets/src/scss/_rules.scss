@@ -1,0 +1,48 @@
+$layout-padding: 16px;
+$layout-width: 700px;
+
+.wl-mapping {
+	&__rules {
+		background-color: #fff;
+		padding: $layout-padding;
+		max-width: $layout-width;
+		box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+		margin-top: $layout-padding;
+	}
+
+	&__rule-item {
+		padding-bottom: 8px;
+
+		input,
+		select {
+			width: 150px;
+			margin-left: 6px;
+
+			&:first-child {
+				margin-left: 0;
+			}
+		}
+
+		button {
+			margin-left: 6px !important;
+		}
+
+		&:hover .wl-mapping__delete-rule {
+			display: inline-block !important;
+		}
+	}
+
+	&__separator {
+		font-size: 1.5rem;
+		line-height: 1;
+		margin-top: 1rem;
+		margin-bottom: 1.25rem;
+	}
+
+	&__delete-rule {
+		display: none !important;
+		color: #fff !important;
+		background-color: #ff2323 !important;
+		border: 1px solid #ff2323;
+	}
+}

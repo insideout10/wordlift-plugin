@@ -4,26 +4,28 @@ import { MappingContext } from './MappingApp';
 
 export const RuleSets = () => {
 	return (
-		<MappingContext.Consumer>
-			{ ( { savedRules, addRuleGroupHandler } ) => ( <>
-				{ savedRules.map( ( ruleSet, ruleSetIndex, currentArray ) => (
-					ruleSet.length > 0 && <div key={ ruleSetIndex }>
-						{ ruleSet.map( ( rule, ruleIndex ) => <RuleRow key={ ruleIndex } ruleRowData={ rule } ruleRowId={ ruleIndex } ruleSetIndex={ ruleSetIndex } /> ) }
-						{ true && 0 !== currentArray.length && <h1>OR</h1> }
-					</div>
-				) ) }
-				<button type="button" onClick={ addRuleGroupHandler }>Add rule group</button>
-			</> ) }
-		</MappingContext.Consumer>
+		<div className="wl-mapping__rules">
+			<MappingContext.Consumer>
+				{ ( { savedRules, addRuleGroupHandler } ) => ( <>
+					{ savedRules.map( ( ruleSet, ruleSetIndex, currentArray ) => (
+						ruleSet.length > 0 && <div className="wl-mapping__rule-set" key={ ruleSetIndex }>
+							{ ruleSet.map( ( rule, ruleIndex ) => <RuleRow key={ ruleIndex } ruleRowData={ rule } ruleRowId={ ruleIndex } ruleSetIndex={ ruleSetIndex } /> ) }
+							{ true && 0 !== currentArray.length && <div className="wl-mapping__separator">OR</div> }
+						</div>
+					) ) }
+					<button className="button" type="button" onClick={ addRuleGroupHandler }>Add rule group</button>
+				</> ) }
+			</MappingContext.Consumer>
+		</div>
 	)
 }
 
 const RuleRow = ( { ruleRowData, ruleSetIndex, ruleRowId } ) => (
 	<MappingContext.Consumer>
-		{ ( { addRuleHandler, deleteRuleHandler  } ) => ( <div>
+		{ ( { addRuleHandler, deleteRuleHandler  } ) => ( <div className="wl-mapping__rule-item">
 			<GenerateDropdown ruleRowData={ ruleRowData } ruleSetIndex={ ruleSetIndex} ruleRowId={ ruleRowId } />
-			<button type="button" onClick={ ( e ) => addRuleHandler( e, ruleSetIndex ) }>Add</button>
-			<button type="button" onClick={ ( e ) => deleteRuleHandler( e, ruleSetIndex, ruleRowId ) }>Delete</button>
+			<button className="button" type="button" onClick={ ( e ) => addRuleHandler( e, ruleSetIndex ) }>And</button>
+			<button className="button wl-mapping__delete-rule" type="button" onClick={ ( e ) => deleteRuleHandler( e, ruleSetIndex, ruleRowId ) }>Delete</button>
 		</div> ) }
 	</MappingContext.Consumer>
 );
