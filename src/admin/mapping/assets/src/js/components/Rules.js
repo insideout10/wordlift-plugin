@@ -5,6 +5,7 @@ import { MappingContext } from './MappingApp';
 export const RuleSets = () => {
 	return (
 		<div className="wl-mapping__rules">
+			<div className="wl-mapping__rules-headline">Rules</div>
 			<MappingContext.Consumer>
 				{ ( { savedRules, addRuleGroupHandler } ) => ( <>
 					{ savedRules.map( ( ruleSet, ruleSetIndex, currentArray ) => (

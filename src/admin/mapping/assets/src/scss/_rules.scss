@@ -10,6 +10,18 @@ $layout-width: 700px;
 		margin-top: $layout-padding;
 	}
 
+	&__rules-headline {
+		font-size: 1.25rem;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		margin-left: -($layout-padding);
+		margin-right: -($layout-padding);
+		padding: $layout-padding;
+		padding-top: 0;
+		margin-bottom: $layout-padding;
+		border-bottom: 3px solid #eee;
+	}
+
 	&__rule-item {
 		padding-bottom: 8px;
 

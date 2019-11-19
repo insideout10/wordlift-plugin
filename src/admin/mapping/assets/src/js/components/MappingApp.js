@@ -75,8 +75,6 @@ export class MappingApp extends React.Component {
 
 		savedRules = savedRules.filter( ( item ) => 0 !== item.length )
 
-		console.log( savedRules )
-
 		this.setState( { savedRules } );
 	}
 
