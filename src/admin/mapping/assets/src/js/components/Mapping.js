@@ -9,11 +9,13 @@ export class Mapping extends React.Component {
 		this.editControlHandler = this.editControlHandler.bind( this );
 		this.addNewMappingHandler = this.addNewMappingHandler.bind( this );
 		this.closeCurrentMappingHandler = this.closeCurrentMappingHandler.bind( this );
+		this.propertyTextUpdateHandler = this.propertyTextUpdateHandler.bind( this );
 
 		this.state = {
 			editControlHandler: this.editControlHandler,
 			addNewMappingHandler: this.addNewMappingHandler,
 			closeCurrentMappingHandler: this.closeCurrentMappingHandler,
+			propertyTextUpdateHandler: this.propertyTextUpdateHandler,
 
 			currentlyEditing: null,
 
@@ -42,7 +44,7 @@ export class Mapping extends React.Component {
 					property: 'description',
 					fieldType: 'text',
 					field: 'Description',
-					transform: 'none',
+					transform: 'add',
 				},
 			],
 		};
@@ -69,10 +71,20 @@ export class Mapping extends React.Component {
 		this.setState( {
 			savedProperties: [
 				...this.state.savedProperties,
-				this.state.defaultProperties,
+				Object.assign( {}, this.state.defaultProperties ),
 			],
 			currentlyEditing: this.state.savedProperties.length,
 		} );
+
+	}
+	
+	propertyTextUpdateHandler( e, savedPropertyItemIndex ) {
+		const savedProperties = [ ...this.state.savedProperties ];
+		savedProperties[ savedPropertyItemIndex ].property = e.target.value;
+
+		this.setState( {
+			savedProperties: savedProperties
+		} )
 	}
 
 	closeCurrentMappingHandler() {
@@ -107,7 +119,7 @@ const MappingConfiguration = () => (
 
 const MappingRow = ( { mappingRowData, savedPropertyItemIndex } ) => (
 	<MappingConfigurationContext.Consumer>
-		{ ( { editControlHandler, currentlyEditing, defaultProperties, closeCurrentMappingHandler } ) => (
+		{ ( { editControlHandler, currentlyEditing, defaultProperties, propertyTextUpdateHandler, closeCurrentMappingHandler } ) => (
 			<div className="wl-mapping-unit">
 				<div className="wl-mapping-checkbox">
 					<input type="checkbox" />
@@ -119,7 +131,7 @@ const MappingRow = ( { mappingRowData, savedPropertyItemIndex } ) => (
 					{ currentlyEditing === savedPropertyItemIndex && ( <div className="wl-mapping-expanded-controls">
 						<div className="wl-mapping-property-control">
 							<label>Property</label>
-							<input defaultValue={ mappingRowData.property } />
+							<input defaultValue={ mappingRowData.property } onChange={ ( e ) => propertyTextUpdateHandler( e, savedPropertyItemIndex ) } />
 						</div>
 
 						<div className="wl-mapping-property-control">
@@ -132,6 +144,13 @@ const MappingRow = ( { mappingRowData, savedPropertyItemIndex } ) => (
 						<div className="wl-mapping-property-control">
 							<label>Field</label>
 							<input defaultValue={ mappingRowData.field } />
+						</div>
+
+						<div className="wl-mapping-property-control">
+							<label>Transform</label>
+							<select defaultValue={ mappingRowData.transform }>
+								{ Object.keys( defaultProperties.transform ).map( ( key, index ) => <option key={ index } value={ key }>{ defaultProperties.transform[ key ] }</option> ) }
+							</select>
 						</div>
 					</div> ) }
 
