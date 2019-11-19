@@ -71,8 +71,11 @@ export class MappingApp extends React.Component {
 		let savedRules = [...this.state.savedRules];
 		let ruleSet = savedRules[ ruleSetIndex ];
 		let updatedRuleSet = ruleSet.filter( ( rule, index ) => index !== ruleIndex );
-
 		savedRules[ ruleSetIndex ] = updatedRuleSet;
+
+		savedRules = savedRules.filter( ( item ) => 0 !== item.length )
+
+		console.log( savedRules )
 
 		this.setState( { savedRules } );
 	}

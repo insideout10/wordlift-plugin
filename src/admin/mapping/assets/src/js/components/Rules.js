@@ -10,7 +10,7 @@ export const RuleSets = () => {
 					{ savedRules.map( ( ruleSet, ruleSetIndex, currentArray ) => (
 						ruleSet.length > 0 && <div className="wl-mapping__rule-set" key={ ruleSetIndex }>
 							{ ruleSet.map( ( rule, ruleIndex ) => <RuleRow key={ ruleIndex } ruleRowData={ rule } ruleRowId={ ruleIndex } ruleSetIndex={ ruleSetIndex } /> ) }
-							{ true && 0 !== currentArray.length && <div className="wl-mapping__separator">OR</div> }
+							{ ruleSetIndex < currentArray.length - 1 && 0 !== currentArray[ ruleSetIndex ].length && <div className="wl-mapping__separator">OR</div> }
 						</div>
 					) ) }
 					<button className="button" type="button" onClick={ addRuleGroupHandler }>Add rule group</button>
