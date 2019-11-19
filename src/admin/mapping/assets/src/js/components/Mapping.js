@@ -195,10 +195,12 @@ const MappingConfiguration = () => (
 	</MappingConfigurationContext.Consumer>
 );
 
-const MappingRow = ( { mappingRowData, savedPropertyItemIndex } ) => (
-	<MappingConfigurationContext.Consumer>
-		{ ( { editControlHandler, currentlyEditing, defaultProperties, propertyTextUpdateHandler, closeCurrentMappingHandler, mapRowCheckboxHandler, onPropertySelectChange } ) => (
-			<div className="wl-mapping__unit">
+const MappingRow = ( { mappingRowData, savedPropertyItemIndex } ) => {
+	return ( <MappingConfigurationContext.Consumer>
+		{ ( { editControlHandler, currentlyEditing, defaultProperties, propertyTextUpdateHandler, closeCurrentMappingHandler, mapRowCheckboxHandler, onPropertySelectChange } ) => {
+			const editControlStyle = ( currentlyEditing === savedPropertyItemIndex ) ? { display: 'block' } : { display: 'none' };
+
+			return ( <div className="wl-mapping__unit">
 				<div className="wl-mapping__checkbox">
 					<input checked={ !! mappingRowData.checked } onChange={ ( e ) => mapRowCheckboxHandler( e, savedPropertyItemIndex ) } type="checkbox" />
 				</div>
@@ -206,7 +208,7 @@ const MappingRow = ( { mappingRowData, savedPropertyItemIndex } ) => (
 				<div className="wl-mapping__edit-panel">
 					<div className="wl-mapping__title">{ mappingRowData.property }</div>
 
-					{ currentlyEditing === savedPropertyItemIndex && ( <div className="wl-mapping__expanded-controls">
+					<div className="wl-mapping__expanded-controls" style={ editControlStyle }>
 						<div className="wl-mapping__property-control">
 							<label>Property</label>
 							<input type="text" required defaultValue={ mappingRowData.property } onChange={ ( e ) => propertyTextUpdateHandler( e, savedPropertyItemIndex ) } />
@@ -230,7 +232,7 @@ const MappingRow = ( { mappingRowData, savedPropertyItemIndex } ) => (
 								{ Object.keys( defaultProperties.transform ).map( ( key, index ) => <option key={ index } value={ key }>{ defaultProperties.transform[ key ] }</option> ) }
 							</select>
 						</div>
-					</div> ) }
+					</div>
 
 					{ currentlyEditing !== savedPropertyItemIndex && <div className="wl-mapping__edit-controls">
 						<a onClick={ ( e ) => editControlHandler( e, savedPropertyItemIndex ) } data-control-id={ 0 } href="#">Edit</a>
@@ -240,8 +242,6 @@ const MappingRow = ( { mappingRowData, savedPropertyItemIndex } ) => (
 
 					{ currentlyEditing === savedPropertyItemIndex && <a href="#" className="wl-mapping__close-mapping" onClick={ ( e ) => { closeCurrentMappingHandler( e ) } }>Close</a> }
 				</div>
-			</div>
-		) }
-	</MappingConfigurationContext.Consumer>
-);
-
+			</div> ) } }
+	</MappingConfigurationContext.Consumer> )
+};
