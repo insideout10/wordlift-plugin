@@ -12,7 +12,8 @@ export class Mapping extends React.Component {
 		this.closeCurrentMappingHandler = this.closeCurrentMappingHandler.bind( this );
 		this.propertyTextUpdateHandler = this.propertyTextUpdateHandler.bind( this );
 		this.bulkSelectHandler = this.bulkSelectHandler.bind( this );
-		this.selectMapRowHandler = this.selectMapRowHandler.bind( this );
+		this.mapRowCheckboxHandler = this.mapRowCheckboxHandler.bind( this );
+		this.onPropertySelectChange = this.onPropertySelectChange.bind( this );
 
 		this.state = {
 			editControlHandler: this.editControlHandler,
@@ -20,7 +21,8 @@ export class Mapping extends React.Component {
 			closeCurrentMappingHandler: this.closeCurrentMappingHandler,
 			propertyTextUpdateHandler: this.propertyTextUpdateHandler,
 			bulkSelectHandler: this.bulkSelectHandler,
-			selectMapRowHandler: this.selectMapRowHandler,
+			mapRowCheckboxHandler: this.mapRowCheckboxHandler,
+			onPropertySelectChange: this.onPropertySelectChange,
 
 			currentlyEditing: null,
 			bulkSelect: false,
@@ -125,12 +127,35 @@ export class Mapping extends React.Component {
 		} );
 	}
 
-	selectMapRowHandler( e, savedPropertyItemIndex ) {
+	mapRowCheckboxHandler( e, savedPropertyItemIndex ) {
 		const savedProperties = [ ...this.state.savedProperties ];
 
 		savedProperties[ savedPropertyItemIndex ].checked = e.target.checked;
 
 		this.setState( { savedProperties } );
+	}
+
+	onPropertySelectChange( e, savedPropertyItemIndex ) {
+		const savedProperties = [ ...this.state.savedProperties ];
+		const selectId = Number( e.target.dataset.selectId );
+		const selectValue = e.target.value;
+
+		switch( selectId ) {
+			case 0:
+				savedProperties[ savedPropertyItemIndex ].fieldType = selectValue;
+				this.setState( { savedProperties } );
+				break;
+
+			case 1:
+					savedProperties[ savedPropertyItemIndex ].field = selectValue;
+					this.setState( { savedProperties } );
+					break;
+
+			case 2:
+				savedProperties[ savedPropertyItemIndex ].transform = selectValue;
+				this.setState( { savedProperties } );
+				break;
+		}
 	}
 
 	render() {
@@ -165,10 +190,10 @@ const MappingConfiguration = () => (
 
 const MappingRow = ( { mappingRowData, savedPropertyItemIndex } ) => (
 	<MappingConfigurationContext.Consumer>
-		{ ( { editControlHandler, currentlyEditing, defaultProperties, propertyTextUpdateHandler, closeCurrentMappingHandler, selectMapRowHandler } ) => (
+		{ ( { editControlHandler, currentlyEditing, defaultProperties, propertyTextUpdateHandler, closeCurrentMappingHandler, mapRowCheckboxHandler, onPropertySelectChange } ) => (
 			<div className="wl-mapping__unit">
 				<div className="wl-mapping__checkbox">
-					<input checked={ !! mappingRowData.checked } onChange={ ( e ) => selectMapRowHandler( e, savedPropertyItemIndex ) } type="checkbox" />
+					<input checked={ !! mappingRowData.checked } onChange={ ( e ) => mapRowCheckboxHandler( e, savedPropertyItemIndex ) } type="checkbox" />
 				</div>
 
 				<div className="wl-mapping__edit-panel">
@@ -182,19 +207,19 @@ const MappingRow = ( { mappingRowData, savedPropertyItemIndex } ) => (
 
 						<div className="wl-mapping__property-control">
 							<label>Field Type</label>
-							<select defaultValue={ mappingRowData.fieldType }>
+							<select data-select-id={ 0 } value={ mappingRowData.fieldType } onChange={ ( e ) => onPropertySelectChange( e, savedPropertyItemIndex ) }>
 								{ Object.keys( defaultProperties.fieldType ).map( ( key, index ) => <option key={ index } value={ key }>{ defaultProperties.fieldType[ key ] }</option> ) }
 							</select>
 						</div>
 
 						<div className="wl-mapping__property-control">
 							<label>Field</label>
-							<input type="text" required defaultValue={ mappingRowData.field } />
+							<input data-select-id={ 1 } type="text" required value={ mappingRowData.field } onChange={ ( e ) => onPropertySelectChange( e, savedPropertyItemIndex ) } />
 						</div>
 
 						<div className="wl-mapping__property-control">
 							<label>Transform</label>
-							<select defaultValue={ mappingRowData.transform }>
+							<select data-select-id={ 2 } value={ mappingRowData.transform } onChange={ ( e ) => onPropertySelectChange( e, savedPropertyItemIndex ) }>
 								{ Object.keys( defaultProperties.transform ).map( ( key, index ) => <option key={ index } value={ key }>{ defaultProperties.transform[ key ] }</option> ) }
 							</select>
 						</div>
