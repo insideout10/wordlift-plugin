@@ -8,24 +8,33 @@ export class Mapping extends React.Component {
 
 		this.editControlHandler = this.editControlHandler.bind( this );
 		this.addNewMappingHandler = this.addNewMappingHandler.bind( this );
+		this.closeCurrentMappingHandler = this.closeCurrentMappingHandler.bind( this );
 
 		this.state = {
 			editControlHandler: this.editControlHandler,
 			addNewMappingHandler: this.addNewMappingHandler,
+			closeCurrentMappingHandler: this.closeCurrentMappingHandler,
 
 			currentlyEditing: null,
 
 			defaultProperties: {
 				property: '',
-				fieldType: '',
+				fieldType: {
+					text: 'Text',
+					acfCustomField: 'ACF Custom Field',
+				},
 				field: '',
-				transform: '',
+				transform: {
+					none: 'None',
+					add: 'Add',
+					subtract: 'subtract',
+				},
 			},
 
 			savedProperties: [
 				{
 					property: 'telephone',
-					fieldType: 'custom-field',
+					fieldType: 'acfCustomField',
 					field: 'Contact Form',
 					transform: 'none',
 				},
@@ -57,15 +66,19 @@ export class Mapping extends React.Component {
 	}
 
 	addNewMappingHandler() {
-		let savedProperties = this.state.savedProperties;
-
 		this.setState( {
 			savedProperties: [
 				...this.state.savedProperties,
 				this.state.defaultProperties,
 			],
-			currentlyEditing: savedProperties.length,
+			currentlyEditing: this.state.savedProperties.length,
 		} );
+	}
+
+	closeCurrentMappingHandler() {
+		this.setState( {
+			currentlyEditing: null,
+		} )
 	}
 
 	render() {
@@ -94,7 +107,7 @@ const MappingConfiguration = () => (
 
 const MappingRow = ( { mappingRowData, savedPropertyItemIndex } ) => (
 	<MappingConfigurationContext.Consumer>
-		{ ( { editControlHandler, currentlyEditing } ) => (
+		{ ( { editControlHandler, currentlyEditing, defaultProperties, closeCurrentMappingHandler } ) => (
 			<div className="wl-mapping-unit">
 				<div className="wl-mapping-checkbox">
 					<input type="checkbox" />
@@ -110,16 +123,25 @@ const MappingRow = ( { mappingRowData, savedPropertyItemIndex } ) => (
 						</div>
 
 						<div className="wl-mapping-property-control">
+							<label>Field Type</label>
+							<select defaultValue={ mappingRowData.fieldType }>
+								{ Object.keys( defaultProperties.fieldType ).map( ( key, index ) => <option key={ index } value={ key }>{ defaultProperties.fieldType[ key ] }</option> ) }
+							</select>
+						</div>
+
+						<div className="wl-mapping-property-control">
 							<label>Field</label>
 							<input defaultValue={ mappingRowData.field } />
 						</div>
 					</div> ) }
 
-					<div className="wl-mapping-edit-controls">
+					{ currentlyEditing !== savedPropertyItemIndex && <div className="wl-mapping-edit-controls">
 						<a onClick={ ( e ) => editControlHandler( e, savedPropertyItemIndex ) } data-control-id={ 0 } href="#">Edit</a>
 						<a onClick={ ( e ) => editControlHandler( e, savedPropertyItemIndex ) } data-control-id={ 1 } href="#">Duplicate</a>
 						<a onClick={ ( e ) => editControlHandler( e, savedPropertyItemIndex ) } data-control-id={ 2 } href="#">Deletion</a>
-					</div>
+					</div> }
+
+					{ currentlyEditing === savedPropertyItemIndex && <button type="button" onClick={ closeCurrentMappingHandler }>Close Mapping</button> }
 				</div>
 			</div>
 		) }
