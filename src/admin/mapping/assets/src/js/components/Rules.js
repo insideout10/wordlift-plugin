@@ -14,7 +14,7 @@ export const RuleSets = () => {
 							{ ruleSetIndex < currentArray.length - 1 && 0 !== currentArray[ ruleSetIndex ].length && <div className="wl-mapping__separator">OR</div> }
 						</div>
 					) ) }
-					<button className="button" type="button" onClick={ addRuleGroupHandler }>Add rule group</button>
+					<button className="wl-mapping__add-rule-group button" type="button" onClick={ addRuleGroupHandler }>Add rule group</button>
 				</> ) }
 			</MappingContext.Consumer>
 		</div>
