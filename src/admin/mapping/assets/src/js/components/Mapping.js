@@ -147,9 +147,9 @@ export class Mapping extends React.Component {
 				break;
 
 			case 1:
-					savedProperties[ savedPropertyItemIndex ].field = selectValue;
-					this.setState( { savedProperties } );
-					break;
+				savedProperties[ savedPropertyItemIndex ].field = selectValue;
+				this.setState( { savedProperties } );
+				break;
 
 			case 2:
 				savedProperties[ savedPropertyItemIndex ].transform = selectValue;
@@ -181,6 +181,13 @@ const MappingConfiguration = () => (
 				{ savedProperties.map( ( savedPropertyItem, savedPropertyItemIndex ) => (
 					<MappingRow key={ savedPropertyItemIndex } mappingRowData={ savedPropertyItem } savedPropertyItemIndex={ savedPropertyItemIndex } />
 				) ) }
+				<div className="wl-mapping__bulk-action-controls">
+					<select>
+						<option>Bulk Actions</option>
+						<option value="delete">Delete</option>
+					</select>
+					<input name="wl-mapping-apply-bulk-filter" className="button button-primary" type="submit" value="Apply" />
+				</div>
 				{ null === currentlyEditing && <button className="button wl-mapping__add-mapping" type="button" onClick={ addNewMappingHandler }>Add Mapping</button> }
 				</>
 			</div>

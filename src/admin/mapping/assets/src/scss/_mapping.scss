@@ -87,4 +87,12 @@ $layout-width: 700px;
 	&__add-mapping {
 		margin-top: $layout-padding !important;
 	}
+
+	&__bulk-action-controls {
+		margin-top: $layout-padding;
+
+		input[type="submit"] {
+			margin-left: 6px !important;
+		}
+	}
 }
