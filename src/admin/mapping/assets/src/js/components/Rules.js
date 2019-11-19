@@ -34,20 +34,20 @@ const RuleRow = ( { ruleRowData, ruleSetIndex, ruleRowId } ) => (
 const GenerateDropdown = ( { ruleRowData, ruleSetIndex, ruleRowId } ) => (
 	<MappingContext.Consumer>
 		{ ( { wpObjects, relations, wpObjectChangeHandler } ) => ( <>
-			<select defaultValue={ ruleRowData.wpObject } onChange={ ( e ) => wpObjectChangeHandler( e, ruleSetIndex, ruleRowId ) }>
+			<select name={ `wlrule[${ ruleRowId} ][wpObject]` } defaultValue={ ruleRowData.wpObject } onChange={ ( e ) => wpObjectChangeHandler( e, ruleSetIndex, ruleRowId ) }>
 				{ wpObjects.map( ( wpObject, wpObjectIndex ) => <option key={ wpObjectIndex } value={ wpObject.value }>{ wpObject.label }</option> ) }
 			</select>
-			<select defaultValue={ ruleRowData.relation }>
+			<select name={ `wlrule[${ ruleRowId} ][relation]` } defaultValue={ ruleRowData.relation }>
 				{ Object.keys( relations ).map( ( relationKey, relationIndex ) => <option key={ relationIndex } value={ relationKey }>{ relations[ relationKey ] }</option> ) }
 			</select>
 
-			{ !! ruleRowData.value ? <select defaultValue={ ruleRowData.value } >
+			{ !! ruleRowData.value ? <select name={ `wlrule[${ ruleRowId} ][value]` } defaultValue={ ruleRowData.value } >
 				{ wpObjects.map( ( wpObject, wpObjectIndex ) => (
 					( wpObject.value === ruleRowData.wpObject ) && wpObject.data.map( ( valueItem, valueItemIndex ) => (
 						<option key={ valueItemIndex } value={ valueItem.value }>{ valueItem.label }</option>
 					) )
 				) ) }
-			</select> : <select>
+			</select> : <select name={ `wlrule[${ ruleRowId} ][value]` }>
 				{ wpObjects[ 0 ].data.map( ( valueItem, valueItemIndex ) => <option key={ valueItemIndex } value={ valueItem.value }>{ valueItem.label }</option> ) }
 			</select> }
 		</> ) }
