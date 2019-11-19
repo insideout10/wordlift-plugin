@@ -61,14 +61,14 @@ export class MappingApp extends React.Component {
 	}
 
 	addRuleHandler( event, ruleSetIndex ) {
-		let savedRules = this.state.savedRules;
+		let savedRules = [...this.state.savedRules];
 		savedRules[ ruleSetIndex ].push( { wpObject: 'postType', relation: 'equals', value: 'post', } );
 
 		this.setState( { savedRules } );
 	}
 
 	deleteRuleHandler( event, ruleSetIndex, ruleIndex ) {
-		let savedRules = this.state.savedRules;
+		let savedRules = [...this.state.savedRules];
 		let ruleSet = savedRules[ ruleSetIndex ];
 		let updatedRuleSet = ruleSet.filter( ( rule, index ) => index !== ruleIndex );
 
@@ -78,7 +78,7 @@ export class MappingApp extends React.Component {
 	}
 
 	wpObjectChangeHandler( event, ruleSetIndex, ruleIndex ) {
-		let savedRules = this.state.savedRules;
+		let savedRules = [...this.state.savedRules];
 		savedRules[ ruleSetIndex ][ ruleIndex ].wpObject = event.target.value;
 
 		this.setState( { savedRules } );
