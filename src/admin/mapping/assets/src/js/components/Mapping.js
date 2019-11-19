@@ -62,6 +62,11 @@ export class Mapping extends React.Component {
 				} )
 				break;
 
+			case 1:
+				this.setState( {
+					savedProperties: this.state.savedProperties.reduce( ( accumulator, currentItem, currentIndex ) => ( currentIndex === savedPropertyItemIndex ? [ ...accumulator, currentItem, currentItem ] : [ ...accumulator, currentItem ] ), [] ),
+				} )
+
 			default:
 				break;
 		}
@@ -77,7 +82,7 @@ export class Mapping extends React.Component {
 		} );
 
 	}
-	
+
 	propertyTextUpdateHandler( e, savedPropertyItemIndex ) {
 		const savedProperties = [ ...this.state.savedProperties ];
 		savedProperties[ savedPropertyItemIndex ].property = e.target.value;
