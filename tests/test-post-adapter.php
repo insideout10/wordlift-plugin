@@ -77,4 +77,83 @@ class Post_Adapter_Test extends Wordlift_Unit_Test_Case {
 
 	}
 
+	public function test_get_labels__no_data() {
+
+		$post_adapter = new Wordlift\Post\Post_Adapter();
+
+		$result = $post_adapter->get_labels( array() );
+
+		$this->assertEquals( array(), $result, 'Expect an empty array since we provided no data.' );
+	}
+
+	public function test_get_labels__label_only() {
+
+		$post_adapter = new Wordlift\Post\Post_Adapter();
+
+		$result = $post_adapter->get_labels( array(
+			'label' => 'Label',
+		) );
+
+		$this->assertEquals( array( 'Label' ), $result, 'Expect an array with `Label`.' );
+
+	}
+
+	public function test_get_labels__label_and_synonyms() {
+
+		$post_adapter = new Wordlift\Post\Post_Adapter();
+
+		$result = $post_adapter->get_labels( array(
+			'label'    => 'Label 1',
+			'synonyms' => array( 'Synonym 1', 'Synonym 2' ),
+		) );
+
+		$this->assertEquals( array( 'Label 1', 'Synonym 1', 'Synonym 2' ), $result, 'Expect an array with 3 labels.' );
+
+	}
+
+	public function test_get_labels__label_and_synonyms_and_annotations() {
+
+		$post_adapter = new Wordlift\Post\Post_Adapter();
+
+		$result = $post_adapter->get_labels( array(
+			'label'       => 'Label 1',
+			'synonyms'    => array( 'Synonym 1', 'Synonym 2' ),
+			'annotations' => array(
+				'annotation_1' => array( 'text' => 'Annotation 1' ),
+				'annotation_2' => array( 'text' => 'Annotation 2' ),
+				'annotation_3' => array(),
+			),
+			'occurrences' => array( 'annotation_1', 'annotation_3', 'annotation_4' ),
+		) );
+
+		$this->assertEquals( array(
+			'Label 1',
+			'Synonym 1',
+			'Synonym 2',
+			'Annotation 1',
+		), $result, 'Expect an array with 4 labels.' );
+
+	}
+
+	public function test_get_labels__no_synonyms() {
+
+		$post_adapter = new Wordlift\Post\Post_Adapter();
+
+		$result = $post_adapter->get_labels( array(
+			'label'       => 'Label 1',
+			'annotations' => array(
+				'annotation_1' => array( 'text' => 'Annotation 1' ),
+				'annotation_2' => array( 'text' => 'Annotation 2' ),
+				'annotation_3' => array(),
+			),
+			'occurrences' => array( 'annotation_1', 'annotation_3', 'annotation_4' ),
+		) );
+
+		$this->assertEquals( array(
+			'Label 1',
+			'Annotation 1',
+		), $result, 'Expect an array with 2 labels.' );
+
+	}
+
 }

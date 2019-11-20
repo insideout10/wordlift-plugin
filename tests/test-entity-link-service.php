@@ -1,7 +1,4 @@
 <?php
-
-require_once( 'class-wordlift-unit-test-case.php' );
-
 /**
  *
  */

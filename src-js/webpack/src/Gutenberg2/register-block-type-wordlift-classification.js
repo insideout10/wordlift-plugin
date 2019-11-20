@@ -23,29 +23,6 @@ import React from "react";
 import { registerBlockType } from "@wordpress/blocks";
 import { __ } from "@wordpress/i18n";
 
-import { createHigherOrderComponent } from "@wordpress/compose";
-import { Fragment } from "@wordpress/element";
-import { InspectorControls } from "@wordpress/editor";
-import { PanelBody } from "@wordpress/components";
-
-import { addFilter } from "@wordpress/hooks";
-
-const withInspectorControls = createHigherOrderComponent(BlockEdit => {
-  return props => {
-    console.log("props", props);
-    return (
-      <Fragment>
-        <BlockEdit {...props} />
-        <InspectorControls>
-          <PanelBody>My custom control</PanelBody>
-        </InspectorControls>
-      </Fragment>
-    );
-  };
-}, "withInspectorControl");
-
-addFilter("editor.BlockEdit", "my-plugin/with-inspector-controls", withInspectorControls);
-
 // Registering my block with a unique name
 registerBlockType("wordlift/classification", {
   title: __("WordLift Classification", "wordlift"),

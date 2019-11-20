@@ -20,15 +20,27 @@ export const getEntities = state => state.entities;
 export const getSelectedEntities = state =>
   getEntities(state)
     .filter(entity => "undefined" !== typeof entity.occurrences && 0 < entity.occurrences.length)
-    .map(({ description, id, label, mainType, sameAs, synonyms, types }) => ({
-      description,
-      id,
-      label,
-      mainType,
-      sameAs,
-      synonyms,
-      types
-    }))
+    .map(({ annotations, description, id, label, mainType, occurrences, sameAs, synonyms, types }) => {
+      const annotationsWithoutCyclicReferences = {};
+      Object.getOwnPropertyNames(annotations).forEach(propName => {
+        annotationsWithoutCyclicReferences[propName] = {
+          start: annotations[propName].start,
+          end: annotations[propName].end,
+          text: annotations[propName].text
+        };
+      });
+      return {
+        annotations: annotationsWithoutCyclicReferences,
+        description,
+        id,
+        label,
+        mainType,
+        occurrences,
+        sameAs,
+        synonyms,
+        types
+      };
+    })
     .toArray();
 
 export const getClassificationBlock = () =>
