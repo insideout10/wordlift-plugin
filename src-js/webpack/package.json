@@ -42,6 +42,7 @@
     "webpack-cli": "^3.3.8"
   },
   "dependencies": {
+    "wordlift-cloud": "git+ssh://git@gitlab.com:wordlift/wordlift-navigator-js#38a5ef1f2a313baf87cf523b625e1ed97a1cd793",
     "@wordlift/wordlift-for-schemaorg": "^1.0",
     "immutable": "^3",
     "prop-types": "^15",
@@ -52,8 +53,7 @@
     "redux-saga": "^1.0.5",
     "redux-thunk": "^2.3.0",
     "styled-components": "^4.3.2",
-    "whatwg-fetch": "^2",
-    "wordlift-cloud": "git+ssh://git@gitlab.com:wordlift/wordlift-navigator-js#47256c37ab2ff171e543dbe1ac2dfb1ac0adfadf"
+    "whatwg-fetch": "^2"
   },
   "prettier": {
     "tabWidth": 2,

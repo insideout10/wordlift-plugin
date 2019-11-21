@@ -142,11 +142,21 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.23.0 (2019-11-05) =
+= 3.23.0 (2019-11-21) =
 * Enhancement [#972](https://github.com/insideout10/wordlift-plugin/issues/972): Entity to Term link should check the sameAs values as well.
 
 * Fix [#971](https://github.com/insideout10/wordlift-plugin/issues/971): Automatically exclude wordlift-cloud from WP Rocket minification.
 * Fix [#966](https://github.com/insideout10/wordlift-plugin/issues/966): PHP logs Errors.
+
+= 3.22.6 (2019-11-19) =
+* Enhancement: [#947](https://github.com/insideout10/wordlift-plugin/issues/947): Add an end-point for the WordLift Cloud.
+* Enhancement: [#958](https://github.com/insideout10/wordlift-plugin/issues/958): Network navigator endpoint.
+* Enhancement: [#959](https://github.com/insideout10/wordlift-plugin/issues/959): Context cards should be linked to the entities.
+* Enhancement: [#962](https://github.com/insideout10/wordlift-plugin/issues/962): Adding utm tags to track clicks on the Navigator.
+* Enhancement: [#963](https://github.com/insideout10/wordlift-plugin/issues/963): Add data filter on the navigator widget.
+* Enhancement: [#968](https://github.com/insideout10/wordlift-plugin/issues/968): Allow entities (and related media) to be published via rest.
+* Fix: [#966](https://github.com/insideout10/wordlift-plugin/issues/966): PHP logs Errors.
+* Fix: [#967](https://github.com/insideout10/wordlift-plugin/issues/967): Prevent Context Cards from overlapping
 
 = 3.22.5.1 (2019-11-14) =
 * Fix: [#975](https://github.com/insideout10/wordlift-plugin/issues/975): Compatibility issues with WordPress 5.3.
