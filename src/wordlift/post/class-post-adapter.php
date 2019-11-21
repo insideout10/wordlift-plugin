@@ -18,18 +18,22 @@ class Post_Adapter {
 	private $entity_service;
 	private $entity_factory;
 
+	private static $instance;
+
 	public function __construct() {
 
 		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
 
-		if ( function_exists( 'register_block_type' ) ) {
-			register_block_type( 'wordlift/classification', array(
-				'editor_script' => 'wl-block-editor',
-				'attributes'    => array(
-					'entities' => array( 'type' => 'array' ),
-				),
-			) );
-		}
+		add_action( 'init', function () {
+			if ( function_exists( 'register_block_type' ) ) {
+				register_block_type( 'wordlift/classification', array(
+					'editor_script' => 'wl-block-editor',
+					'attributes'    => array(
+						'entities' => array( 'type' => 'array' ),
+					),
+				) );
+			}
+		} );
 
 		$this->entity_service = \Wordlift_Entity_Service::get_instance();
 		$this->entity_factory = Entity_Store::get_instance();

@@ -10,14 +10,14 @@
 /**
  * External dependencies
  */
-import { Map } from 'immutable'
+import { Map } from "immutable";
 /**
  * Internal dependencies
  */
-import * as types from '../constants/ActionTypes'
-import { TOGGLE_LINK_SUCCESS } from '../constants/ActionTypes'
-import LinkService from '../services/LinkService'
-import WsService from '../services/WsService'
+import * as types from "../constants/ActionTypes";
+import { TOGGLE_LINK_SUCCESS } from "../constants/ActionTypes";
+import LinkService from "../services/LinkService";
+import WsService from "../services/WsService";
 
 /**
  * Define the reducers.
@@ -48,8 +48,11 @@ const entities = function(state = Map(), action) {
               duplicateLabel: 1 < labels.get(x.label).count()
             })
           )
-          // Sort by confidence.
+          // Sort by (1) local/not local, (2) confidence, (3) number of annotations.
           .sort((x, y) => {
+            // First the local entities.
+            if (x.local !== y.local) return y.local - x.local;
+
             // Get the delta confidence.
             const delta = y.confidence - x.confidence;
 
