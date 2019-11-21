@@ -1,4 +1,5 @@
 import React, { createContext } from 'react';
+import serialize from 'form-serialize';
 import './../../scss/mapping-app.scss';
 
 const MappingConfigurationContext = createContext();
@@ -14,6 +15,7 @@ export class Mapping extends React.Component {
 		this.bulkSelectHandler = this.bulkSelectHandler.bind( this );
 		this.mapRowCheckboxHandler = this.mapRowCheckboxHandler.bind( this );
 		this.onPropertySelectChange = this.onPropertySelectChange.bind( this );
+		this.applyBulkEditHandler = this.applyBulkEditHandler.bind( this );
 
 		this.state = {
 			editControlHandler: this.editControlHandler,
@@ -23,6 +25,7 @@ export class Mapping extends React.Component {
 			bulkSelectHandler: this.bulkSelectHandler,
 			mapRowCheckboxHandler: this.mapRowCheckboxHandler,
 			onPropertySelectChange: this.onPropertySelectChange,
+			applyBulkEditHandler: this.applyBulkEditHandler,
 
 			currentlyEditing: null,
 			bulkSelect: false,
@@ -158,6 +161,25 @@ export class Mapping extends React.Component {
 		}
 	}
 
+	applyBulkEditHandler( e ) {
+		// e.preventDefault();
+
+		// const http = new XMLHttpRequest();
+		// const url = ajaxurl;
+		// const params = serialize( e.target.closest( 'form' ) );
+
+		// http.open( 'POST', url, true );
+		// http.setRequestHeader( 'Content-type', 'application/x-www-form-urlencoded' );
+
+		// http.onreadystatechange = function() {
+		// 	if ( 4 === http.readyState && 200 === http.status ) {
+
+		// 	}
+		// }
+
+		// http.send( params );
+	}
+
 	render() {
 		return (
 			<MappingConfigurationContext.Provider value={ this.state } >
@@ -169,7 +191,7 @@ export class Mapping extends React.Component {
 
 const MappingConfiguration = () => (
 	<MappingConfigurationContext.Consumer>
-		{ ( { savedProperties, addNewMappingHandler, currentlyEditing, bulkSelectHandler } ) => (
+		{ ( { savedProperties, addNewMappingHandler, currentlyEditing, bulkSelectHandler, applyBulkEditHandler } ) => (
 			<div className="wl-mapping__container">
 				<div className="wl-mapping__bulk-actions">
 					<div className="wl-mapping__bulk-actions-checkbox">
@@ -186,7 +208,7 @@ const MappingConfiguration = () => (
 						<option>Bulk Actions</option>
 						<option value="delete">Delete</option>
 					</select>
-					<input name="wl-mapping-apply-bulk-filter" className="button button-primary" type="submit" value="Apply" />
+					<input onClick={ ( e ) => applyBulkEditHandler( e ) } name="wl-mapping-apply-bulk-filter" className="button button-primary" type="submit" value="Apply" />
 				</div>
 				{ null === currentlyEditing && <button className="button wl-mapping__add-mapping" type="button" onClick={ addNewMappingHandler }>Add Mapping</button> }
 				</>
@@ -211,24 +233,24 @@ const MappingRow = ( { mappingRowData, savedPropertyItemIndex } ) => {
 					<div className="wl-mapping__expanded-controls" style={ editControlStyle }>
 						<div className="wl-mapping__property-control">
 							<label>Property</label>
-							<input name={ `wlProperty[${ savedPropertyItemIndex }][property]` } type="text" required defaultValue={ mappingRowData.property } onChange={ ( e ) => propertyTextUpdateHandler( e, savedPropertyItemIndex ) } />
+							<input name={ `wlProperties[${ savedPropertyItemIndex }][property]` } type="text" required defaultValue={ mappingRowData.property } onChange={ ( e ) => propertyTextUpdateHandler( e, savedPropertyItemIndex ) } />
 						</div>
 
 						<div className="wl-mapping__property-control">
 							<label>Field Type</label>
-							<select name={ `wlProperty[${ savedPropertyItemIndex }][fieldType]` } data-select-id={ 0 } value={ mappingRowData.fieldType } onChange={ ( e ) => onPropertySelectChange( e, savedPropertyItemIndex ) }>
+							<select name={ `wlProperties[${ savedPropertyItemIndex }][fieldType]` } data-select-id={ 0 } value={ mappingRowData.fieldType } onChange={ ( e ) => onPropertySelectChange( e, savedPropertyItemIndex ) }>
 								{ Object.keys( defaultProperties.fieldType ).map( ( key, index ) => <option key={ index } value={ key }>{ defaultProperties.fieldType[ key ] }</option> ) }
 							</select>
 						</div>
 
 						<div className="wl-mapping__property-control">
 							<label>Field</label>
-							<input name={ `wlProperty[${ savedPropertyItemIndex }][field]` } data-select-id={ 1 } type="text" required value={ mappingRowData.field } onChange={ ( e ) => onPropertySelectChange( e, savedPropertyItemIndex ) } />
+							<input name={ `wlProperties[${ savedPropertyItemIndex }][field]` } data-select-id={ 1 } type="text" required value={ mappingRowData.field } onChange={ ( e ) => onPropertySelectChange( e, savedPropertyItemIndex ) } />
 						</div>
 
 						<div className="wl-mapping__property-control">
 							<label>Transform</label>
-							<select name={ `wlProperty[${ savedPropertyItemIndex }][transform]` } data-select-id={ 2 } value={ mappingRowData.transform } onChange={ ( e ) => onPropertySelectChange( e, savedPropertyItemIndex ) }>
+							<select name={ `wlProperties[${ savedPropertyItemIndex }][transform]` } data-select-id={ 2 } value={ mappingRowData.transform } onChange={ ( e ) => onPropertySelectChange( e, savedPropertyItemIndex ) }>
 								{ Object.keys( defaultProperties.transform ).map( ( key, index ) => <option key={ index } value={ key }>{ defaultProperties.transform[ key ] }</option> ) }
 							</select>
 						</div>

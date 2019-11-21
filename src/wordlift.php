@@ -549,68 +549,22 @@ function wordlift_plugin_autoload_register() {
 
 }
 
+function wl_process_mapping( $post_id ) {
+	$post_type = get_post_type( $post_id );
 
-function wpdocs_codex_mapping_init() {
-    $labels = array(
-        'name'                  => _x( 'Mapping', 'Post type general name', 'textdomain' ),
-        'singular_name'         => _x( 'Mapping', 'Post type singular name', 'textdomain' ),
-        'menu_name'             => _x( 'Mapping', 'Admin Menu text', 'textdomain' ),
-        'name_admin_bar'        => _x( 'Mapping', 'Add New on Toolbar', 'textdomain' ),
-        'add_new'               => __( 'Add New', 'textdomain' ),
-        'add_new_item'          => __( 'Add New mapping', 'textdomain' ),
-        'new_item'              => __( 'New mapping', 'textdomain' ),
-        'edit_item'             => __( 'Edit mapping', 'textdomain' ),
-        'view_item'             => __( 'View mapping', 'textdomain' ),
-        'all_items'             => __( 'All mapping', 'textdomain' ),
-        'search_items'          => __( 'Search mapping', 'textdomain' ),
-        'parent_item_colon'     => __( 'Parent mapping:', 'textdomain' ),
-        'not_found'             => __( 'No mapping found.', 'textdomain' ),
-        'not_found_in_trash'    => __( 'No mapping found in Trash.', 'textdomain' ),
-        'featured_image'        => _x( 'Mapping Cover Image', 'Overrides the “Featured Image” phrase for this post type. Added in 4.3', 'textdomain' ),
-        'set_featured_image'    => _x( 'Set cover image', 'Overrides the “Set featured image” phrase for this post type. Added in 4.3', 'textdomain' ),
-        'remove_featured_image' => _x( 'Remove cover image', 'Overrides the “Remove featured image” phrase for this post type. Added in 4.3', 'textdomain' ),
-        'use_featured_image'    => _x( 'Use as cover image', 'Overrides the “Use as featured image” phrase for this post type. Added in 4.3', 'textdomain' ),
-        'archives'              => _x( 'Mapping archives', 'The post type archive label used in nav menus. Default “Post Archives”. Added in 4.4', 'textdomain' ),
-        'insert_into_item'      => _x( 'Insert into mapping', 'Overrides the “Insert into post”/”Insert into page” phrase (used when inserting media into a post). Added in 4.4', 'textdomain' ),
-        'uploaded_to_this_item' => _x( 'Uploaded to this mapping', 'Overrides the “Uploaded to this post”/”Uploaded to this page” phrase (used when viewing media attached to a post). Added in 4.4', 'textdomain' ),
-        'filter_items_list'     => _x( 'Filter mapping list', 'Screen reader text for the filter links heading on the post type listing screen. Default “Filter posts list”/”Filter pages list”. Added in 4.4', 'textdomain' ),
-        'items_list_navigation' => _x( 'Mapping list navigation', 'Screen reader text for the pagination heading on the post type listing screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4', 'textdomain' ),
-        'items_list'            => _x( 'Mapping list', 'Screen reader text for the items list heading on the post type listing screen. Default “Posts list”/”Pages list”. Added in 4.4', 'textdomain' ),
-    );
- 
-    $args = array(
-        'labels'             => $labels,
-        'public'             => true,
-        'publicly_queryable' => true,
-        'show_ui'            => true,
-        'show_in_menu'       => true,
-        'query_var'          => true,
-        'rewrite'            => array( 'slug' => 'mapping' ),
-        'capability_type'    => 'post',
-        'has_archive'        => true,
-        'hierarchical'       => false,
-        'menu_position'      => null,
-        'supports'           => array( 'title' ),
-    );
- 
-    register_post_type( 'mapping', $args );
+	if ( 'mapping' !== $post_type ) {
+		return;
+	}
+
+	$rules     = filter_input( INPUT_POST, 'wlRules', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+	$proprties = filter_input( INPUT_POST, 'wlProperties', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+
+	if ( ! empty( $rules ) ) {
+		add_post_meta( $post_id, 'wlRules', $rules );
+	}
+
+	if ( ! empty( $proprties ) ) {
+		add_post_meta( $post_id, 'wlProperties', $proprties );
+	}
 }
-add_action( 'init', 'wpdocs_codex_mapping_init' );
-
-function wpse_110427_hide_title() {
-	// remove_post_type_support( 'mapping', 'title' );
-}
-add_action('admin_init', 'wpse_110427_hide_title');
-
-function remove_save_box() {
-	// remove_meta_box( 'submitdiv', 'mapping', 'side' );
-}
-add_action( 'admin_menu' , 'remove_save_box' );
-
-add_action( 'edit_form_after_title', function() {
-    echo '<div id="wl-mapping-root"></div>';
-});
-
-// add_action( 'admin_init', function() {
-// 	var_dump( $_POST ); die;
-// } );
+add_action( 'save_post', 'wl_process_mapping' );

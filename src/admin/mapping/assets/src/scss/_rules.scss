@@ -38,10 +38,6 @@ $layout-width: 700px;
 		button {
 			margin-left: 6px !important;
 		}
-
-		&:hover .wl-mapping__delete-rule {
-			display: inline-block !important;
-		}
 	}
 
 	&__separator {
@@ -49,13 +45,6 @@ $layout-width: 700px;
 		line-height: 1;
 		margin-top: 1rem;
 		margin-bottom: 1.25rem;
-	}
-
-	&__delete-rule {
-		display: none !important;
-		color: #fff !important;
-		background-color: #ff2323 !important;
-		border: 1px solid #ff2323;
 	}
 
 	&__add-rule-group {
