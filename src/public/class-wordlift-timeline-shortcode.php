@@ -217,7 +217,7 @@ add_action( 'init', function() {
 
 	$wordlift_timeline_shortcode = new Wordlift_Timeline_Shortcode();
 	register_block_type('wordlift/timeline', array(
-		'editor_script' => 'wordlift-admin-edit-gutenberg',
+		'editor_script' => 'wl-block-editor',
 		'render_callback' => function($attributes){
 			$attr_code = '';
 			$timelinejs_options = json_decode($attributes['timelinejs_options'], true);

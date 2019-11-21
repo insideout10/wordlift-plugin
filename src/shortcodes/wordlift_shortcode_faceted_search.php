@@ -447,7 +447,7 @@ add_action( 'init', function () {
 	}
 
 	register_block_type( 'wordlift/faceted-search', array(
-		'editor_script'   => 'wordlift-admin-edit-gutenberg',
+		'editor_script'   => 'wl-block-editor',
 		'render_callback' => function ( $attributes ) {
 			$attr_code = '';
 			foreach ( $attributes as $key => $value ) {

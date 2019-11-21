@@ -56,15 +56,14 @@ class Wordlift_Admin_Post_Edit_Page {
 		}
 
 		// Define the callbacks.
-		$callback                  = array( $this, 'enqueue_scripts', );
-		$callback_gutenberg        = array( $this, 'enqueue_scripts_gutenberg', );
+		$callback = array( $this, 'enqueue_scripts', );
 		$callback_block_categories = array( $this, 'block_categories' );
 
 		// Set a hook to enqueue scripts only when the edit page is displayed.
 		add_action( 'admin_print_scripts-post.php', $callback );
 		add_action( 'admin_print_scripts-post-new.php', $callback );
 
-		add_action( 'enqueue_block_editor_assets', $callback_gutenberg );
+		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_scripts_gutenberg', ) );
 
 		$this->plugin = $plugin;
 	}
@@ -185,28 +184,41 @@ class Wordlift_Admin_Post_Edit_Page {
 	 * @since 3.21.0
 	 */
 	public function enqueue_scripts_gutenberg() {
-		wp_enqueue_script(
-			'wordlift-admin-edit-gutenberg',
-			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/gutenberg.js',
+
+		wp_register_script(
+			'wl-block-editor',
+			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/block-editor.js',
+//			array(
+//				$this->plugin->get_plugin_name(),
+//				'react',
+//				'wp-api-fetch',
+//				'wp-blocks',
+//				'wp-data',
+//				'wp-edit-post',
+//				'wp-editor',
+//				'wp-element',
+//				'wp-hooks',
+//				'wp-i18n',
+//				'wp-plugins',
+//				'wp-polyfill',
+//				'wp-rich-text',
+//			),
 			array(
-				$this->plugin->get_plugin_name(),
-				'jquery',
-				'wp-blocks',
-				'wp-util',
-				'wp-element',
-				'wp-components',
-				'wp-compose',
-				'wp-edit-post',
-				'wp-plugins',
+				'react',
+				'wordlift',
+				'wp-hooks',
 				'wp-data',
-				'wp-annotations',
+				'wp-rich-text',
+				'wp-blocks',
+				'wp-plugins',
+				'wp-edit-post',
 			),
-			$this->plugin->get_version(),
-			false
+			$this->plugin->get_version()
 		);
+
 		wp_enqueue_style(
-			'style-gutenberg',
-			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/gutenberg.css',
+			'wl-block-editor',
+			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/block-editor.css',
 			array(),
 			$this->plugin->get_version()
 		);

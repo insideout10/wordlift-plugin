@@ -28,12 +28,15 @@
     "@wordpress/rich-text": "^3.0.3",
     "@wordpress/scripts": "^5.1.0",
     "css-loader": "^3.2.0",
+    "eslint": "^6.6.0",
     "mini-css-extract-plugin": "^0.8.0",
     "node-sass": "^4.12.0",
     "path": "^0",
     "postcss-loader": "^3.0.0",
+    "prop-types": "^15",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
+    "redux": "^4.0.0",
     "sass-loader": "^8.0.0",
     "svg-react-loader": "^0.4.5",
     "tinymce": "^4",
@@ -42,18 +45,17 @@
     "webpack-cli": "^3.3.8"
   },
   "dependencies": {
-    "wordlift-cloud": "git+ssh://git@gitlab.com:wordlift/wordlift-navigator-js#38a5ef1f2a313baf87cf523b625e1ed97a1cd793",
     "@wordlift/wordlift-for-schemaorg": "^1.0",
     "immutable": "^3",
-    "prop-types": "^15",
+    "react-redux": "^5.0.0",
     "react-select": "^1",
-    "redux": "^4.0.0",
     "redux-actions": "^2.6.5",
     "redux-logger": "^3.0.6",
     "redux-saga": "^1.0.5",
     "redux-thunk": "^2.3.0",
     "styled-components": "^4.3.2",
-    "whatwg-fetch": "^2"
+    "whatwg-fetch": "^2",
+    "wordlift-cloud": "git+ssh://git@gitlab.com:wordlift/wordlift-navigator-js#47256c37ab2ff171e543dbe1ac2dfb1ac0adfadf"
   },
   "prettier": {
     "tabWidth": 2,

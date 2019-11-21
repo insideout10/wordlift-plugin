@@ -24,7 +24,8 @@ class Post_Adapter {
 
 		if ( function_exists( 'register_block_type' ) ) {
 			register_block_type( 'wordlift/classification', array(
-				'attributes' => array(
+				'editor_script' => 'wl-block-editor',
+				'attributes'    => array(
 					'entities' => array( 'type' => 'array' ),
 				),
 			) );

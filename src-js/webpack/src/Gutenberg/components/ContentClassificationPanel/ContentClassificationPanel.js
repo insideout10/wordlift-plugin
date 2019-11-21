@@ -11,11 +11,6 @@ import React from "react";
 import styled from "styled-components";
 
 /**
- * WordPress dependencies.
- */
-const { dispatch } = wp.data.dispatch;
-
-/**
  * Internal dependencies
  */
 import AnnotationService from "../../services/AnnotationService";
@@ -50,7 +45,19 @@ class ContentClassificationPanel extends React.Component {
     super(props);
   }
 
+  asyncBlockAnalysis() {
+    wp.data
+      .select("core/editor")
+      .getBlocks()
+      .forEach((block, blockIndex) => {
+        let annotationService = new AnnotationService(block);
+        this.props.dispatch(annotationService.wordliftAnalyze());
+      });
+    this.props.dispatch(AnnotationService.analyseLocalEntities());
+  }
+
   componentDidMount() {
+    this.asyncBlockAnalysis();
     wp.richText.registerFormatType(Constants.PLUGIN_FORMAT_NAMESPACE, {
       name: Constants.PLUGIN_FORMAT_NAMESPACE,
       title: Constants.PLUGIN_NAMESPACE,
@@ -61,10 +68,6 @@ class ContentClassificationPanel extends React.Component {
           this.props.dispatch(AnnotationService.annotateSelected(value.start, value.end));
           const blockClientId = wp.data.select("core/editor").getSelectedBlockClientId();
           const selected = value.text.substring(value.start, value.end);
-
-          // @@todo: continue here.
-          dispatch(Constants.EDITOR_STORE).editorSelectionChanged(selected);
-
           let formats = [];
           for (var i = value.start; i < value.end; i++) {
             formats.push(value.formats[i]);

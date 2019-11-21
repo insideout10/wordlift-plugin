@@ -27,7 +27,7 @@ module.exports = {
     bundle: "./src/Public/index.js",
     edit: "./src/Edit/index.js",
     term: "./src/Term/index.js",
-    gutenberg: "./src/Gutenberg2/index.js",
+    "block-editor": "./src/block-editor/index.js",
     "tiny-mce": "./src/tiny-mce/index.js",
     "wordlift-cloud": "./src/Cloud/index.js"
   },

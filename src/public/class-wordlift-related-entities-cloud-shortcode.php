@@ -133,7 +133,7 @@ add_action( 'init', function() {
 	}
 
 	register_block_type('wordlift/cloud', array(
-		'editor_script' => 'wordlift-admin-edit-gutenberg',
+		'editor_script' => 'wl-block-editor',
 		'render_callback' => function($attributes){
 			return '[wl_cloud]';
 		}
