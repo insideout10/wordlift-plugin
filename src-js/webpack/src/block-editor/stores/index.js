@@ -14,7 +14,6 @@ import { registerGenericStore } from "@wordpress/data";
 /**
  * Internal dependencies
  */
-import { EDITOR_STORE } from "../constants";
 import entities from "../../Edit/reducers/entities";
 import annotationFilter from "../../Edit/reducers/annotationFilter";
 import visibilityFilter from "../../Edit/reducers/visibilityFilter";
@@ -33,7 +32,7 @@ const store = createStore(
 sagaMiddleware.run(saga);
 
 // Register the store with WordPress.
-registerGenericStore(EDITOR_STORE, {
+registerGenericStore("wordlift/editor", {
   getSelectors() {
     return {
       getAnnotationFilter: (...args) => getAnnotationFilter(store.getState(), ...args),
