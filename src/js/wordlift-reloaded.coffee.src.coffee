@@ -1641,7 +1641,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
         # Add text annotations to the html
         # @since 3.23.0 We need to sort the annotations from the last one to the first one in order to insert them into
         #               the html without the need to recalculate positions.
-        annotations = Array.sort Object.values( analysis.annotations ), ( a, b ) ->
+        annotations = Object.values( analysis.annotations ).sort ( a, b ) ->
           if a.end > b.end
             return -1
           else if a.end < b.end

@@ -1,12 +1,24 @@
 <?php
+/**
+ * This file provides the tests for the {@link Wordlift\Entity\Entity_Factory} class.
+ *
+ * @see https://github.com/insideout10/wordlift-plugin/issues/944
+ * @author David Riccitelli <david@wordlift.io>
+ * @since 3.23.0
+ */
 
-use Wordlift\Entity\Entity_Factory;
+use Wordlift\Entity\Entity_Store;
 
 class Entity_Factory_Test extends \Wordlift_Unit_Test_Case {
 
+	/**
+	 * Test creating an entity providing only one label as string.
+	 *
+	 * @throws Exception
+	 */
 	public function test_create__only_label_as_string() {
 
-		$entity_factory = Entity_Factory::get_instance();
+		$entity_factory = Entity_Store::get_instance();
 
 		$post_id = $entity_factory->create( array(
 			'labels' => 'Label 1',
@@ -19,9 +31,14 @@ class Entity_Factory_Test extends \Wordlift_Unit_Test_Case {
 
 	}
 
+	/**
+	 * Test creating an entity providing multiple labels, a description and multiple same as.
+	 *
+	 * @throws Exception
+	 */
 	public function test_create__many_labels() {
 
-		$entity_factory = Entity_Factory::get_instance();
+		$entity_factory = Entity_Store::get_instance();
 
 		$post_id = $entity_factory->create( array(
 			'labels'      => array( 'Label 1', 'Label 2', 'Label 3' ),

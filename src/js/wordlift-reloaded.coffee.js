@@ -1527,7 +1527,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', ['wordlift.edi
           var annotation, annotations, ed, element, em, entity, html, isDirty, j, k, len, len1, ref, ref1, ref2, ref3;
           ed = EditorAdapter.getEditor();
           html = EditorAdapter.getHTML();
-          annotations = Array.sort(Object.values(analysis.annotations), function(a, b) {
+          annotations = Object.values(analysis.annotations).sort(function(a, b) {
             if (a.end > b.end) {
               return -1;
             } else if (a.end < b.end) {

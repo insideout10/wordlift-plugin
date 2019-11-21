@@ -3,7 +3,7 @@
 
 namespace Wordlift\Post;
 
-use Wordlift\Entity\Entity_Factory;
+use Wordlift\Entity\Entity_Store;
 
 class Post_Adapter {
 
@@ -22,10 +22,19 @@ class Post_Adapter {
 
 		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
 
-		$this->entity_service = \Wordlift_Entity_Service::get_instance();
-		$this->entity_factory = Entity_Factory::get_instance();
+		if ( function_exists( 'register_block_type' ) ) {
+			register_block_type( 'wordlift/classification', array(
+				'attributes' => array(
+					'entities' => array( 'type' => 'array' ),
+				),
+			) );
+		}
 
-		add_action( 'wp_insert_post', array( $this, 'wp_insert_post' ), 10, 3 );
+		$this->entity_service = \Wordlift_Entity_Service::get_instance();
+		$this->entity_factory = Entity_Store::get_instance();
+
+		add_filter( 'wp_insert_post_data', array( $this, 'wp_insert_post_data' ), 10, 2 );
+
 	}
 
 	/**
@@ -53,30 +62,42 @@ class Post_Adapter {
 	 *   ]
 	 * }
 	 *
-	 * @param int     $post_ID Post ID.
-	 * @param WP_Post $post Post object.
-	 * @param bool    $update Whether this is an existing post being updated or not.
+	 * @param array $data An array of slashed post data.
+	 * @param array $postarr An array of sanitized, but otherwise unmodified post data.
 	 *
+	 * @return array The data array.
 	 * @throws \Exception
 	 */
-	public function wp_insert_post( $post_ID, $post, $update ) {
+	public function wp_insert_post_data( $data, $postarr ) {
 
-		$data = (array) $post;
+		$this->log->trace( "The following data has been received by `wp_insert_post_data`:\n"
+		                   . var_export( $data, true ) );
 
-		$this->log->trace( "The following data has been received with `wp_insert_post`:\n"
-		                   . var_export( $data, true ) . "\n"
-		                   . "Called from:\n"
-		                   . var_export( debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 10 ), true ) );
+		try {
+			$entities = $this->parse_content( wp_unslash( $data['post_content'] ) );
 
-		// Bail out if there's no post_content or no `wordlift/classification` block.
-		if ( empty( $data['post_content'] )
-		     || ! function_exists( 'has_block' )
-		     || ! function_exists( 'parse_blocks' )
-		     || ! has_block( 'wordlift/classification', $data['post_content'] ) ) {
-			return;
+			foreach ( $entities as $entity ) {
+				$this->create_or_update_entity( $entity, $data['post_status'] );
+			}
+
+		} catch ( \Exception $e ) {
+			$this->log->error( $e->getMessage() );
 		}
 
-		$all_blocks = parse_blocks( $data['post_content'] );
+		return $data;
+	}
+
+	/**
+	 * @param        $post_content
+	 *
+	 * @param string $post_status
+	 *
+	 * @return array An array of entities' structures.
+	 * @throws \Exception
+	 */
+	private function parse_content( $post_content ) {
+
+		$all_blocks = parse_blocks( $post_content );
 		$this->log->trace( "The following blocks have been parsed while in `wp_insert_post`:\n"
 		                   . var_export( $all_blocks, true ) );
 
@@ -86,7 +107,7 @@ class Post_Adapter {
 
 		// Bail out if the blocks' array is empty.
 		if ( empty( $blocks ) ) {
-			return;
+			return array();
 		}
 
 		$block = current( $blocks );
@@ -95,20 +116,10 @@ class Post_Adapter {
 
 		// Bail out if the entities array is empty.
 		if ( empty( $block['attrs'] ) && empty( $block['attrs']['entities'] ) ) {
-			return;
+			return array();
 		}
 
-		$entities = $block['attrs']['entities'];
-		foreach ( $entities as $entity ) {
-
-			$entity_id = $this->create_or_update_entity( $entity );
-
-			wl_core_add_relation_instance( $post_ID, 'what', $entity_id );
-
-			$this->log->trace( "Entity $entity_id created and relations added with post $post_ID." );
-
-		}
-
+		return $block['attrs']['entities'];
 	}
 
 	/**
@@ -183,12 +194,27 @@ class Post_Adapter {
 	}
 
 	/**
-	 * @param $post_ID
-	 * @param $entity
+	 * Create or update the entity.
 	 *
+	 * An entity lookup is performed on the local vocabulary using the `id` and `sameAs` URIs. If an entity is found
+	 * the {@link Entity_Store} update function is called to update the `labels` and the `sameAs` values.
+	 *
+	 * If an entity is not found the {@link Entity_Store} create function is called to create a new entity.
+	 *
+	 * @param array $entity {
+	 * The entity parameters.
+	 *
+	 * @type string The entity item id URI.
+	 * @type string|array The entity sameAs URI(s).
+	 * @type string $description The entity description.
+	 * }
+	 *
+	 * @param       $string $post_status The post status, default 'draft'.
+	 *
+	 * @return int|\WP_Error
 	 * @throws \Exception
 	 */
-	private function create_or_update_entity( $entity ) {
+	private function create_or_update_entity( $entity, $post_status = 'draft' ) {
 
 		$uris = array_merge(
 			(array) $entity['id'],
@@ -197,27 +223,29 @@ class Post_Adapter {
 
 		$post = $this->get_first_matching_entity_by_uri( $uris );
 
+		$this->log->trace( 'Entity' . ( empty( $post ) ? ' not' : '' ) . " found with the following URIs:\n"
+		                   . var_export( $uris, true ) );
+
 		// Get the labels.
 		$labels = $this->get_labels( $entity );
 
 		// Create the entity if it doesn't exist.
-		if ( isset( $post ) ) {
+		if ( empty( $post ) ) {
 			return $this->entity_factory->create( array(
 				'labels'      => $labels,
 				'description' => $entity['description'],
-				'same_as'     => (array) $entity['sameAs'],
-			) );
+				'same_as'     => $uris,
+			), $post_status );
 		}
 
 		// Update the entity otherwise.
 		return $this->entity_factory->update( array(
-			'ID'          => $post->ID,
-			'labels'      => $labels,
-			'same_as'     => (array) $entity['sameAs'],
+			'ID'      => $post->ID,
+			'labels'  => $labels,
+			'same_as' => $uris,
 		) );
 
 	}
-
 
 	/**
 	 * Get the first matching entity for the provided URI array.
@@ -228,7 +256,7 @@ class Post_Adapter {
 	 *
 	 * @return \WP_Post|null The entity WP_Post if found or null if not found.
 	 */
-	private function get_first_matching_entity_by_uri( array $uris ) {
+	private function get_first_matching_entity_by_uri( $uris ) {
 
 		foreach ( $uris as $uri ) {
 			$existing_entity = $this->entity_service->get_entity_post_by_uri( $uri );
@@ -240,5 +268,70 @@ class Post_Adapter {
 		return null;
 	}
 
+	//	/**
+//	 * @param int      $post_ID Post ID.
+//	 * @param \WP_Post $post Post object.
+//	 * @param bool     $update Whether this is an existing post being updated or not.
+//	 *
+//	 * @throws \Exception
+//	 */
+//	public function wp_insert_post( $post_ID, $post, $update ) {
+//
+//		preg_match_all(
+//			'/<span id="[^"]+" class="textannotation disambiguated(?:\s.*)?" itemid="([^"]+)">/i', $post->post_content, $matches
+//		);
+//
+//		$uris = array_unique( $matches[1] );
+//		// $this->log->trace( "`wp_insert_post` received the following post content:\n" . $post->post_content );
+//		$this->log->trace( count( $uris ) . " URI(s) found in post_content:\n"
+//		                   . var_export( $uris, true ) );
+//
+//		$query_args = array(
+//			// See https://github.com/insideout10/wordlift-plugin/issues/654.
+//			'ignore_sticky_posts' => 1,
+//			'posts_per_page'      => - 1,
+//			'numberposts'         => - 1,
+//			'post_status'         => 'any',
+//			'post_type'           => \Wordlift_Entity_Service::valid_entity_post_types(),
+//			'meta_query'          => array(
+//				'relation' => 'OR',
+//				array(
+//					'key'     => WL_ENTITY_URL_META_NAME,
+//					'value'   => $uris,
+//					'compare' => 'IN',
+//				),
+//				array(
+//					'key'     => \Wordlift_Schema_Service::FIELD_SAME_AS,
+//					'value'   => $uris,
+//					'compare' => 'IN',
+//				),
+//			),
+//		);
+//
+//		$posts = get_posts( $query_args );
+//
+//		$this->log->trace( count( $posts ) . " post(s) found in post_content:\n"
+//		                   . var_export( $posts, true ) );
+//
+////		wp_die();
+//
+////
+////		$data = (array) $post;
+////
+////		$this->log->trace( "The following data has been received with `wp_insert_post`:\n"
+////		                   . var_export( $data, true ) . "\n"
+////		                   . "Called from:\n"
+////		                   . var_export( debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 10 ), true ) );
+////
+////		// Bail out if there's no post_content or no `wordlift/classification` block.
+////		if ( empty( $data['post_content'] )
+////		     || ! function_exists( 'has_block' )
+////		     || ! function_exists( 'parse_blocks' )
+////		     || ! has_block( 'wordlift/classification', $data['post_content'] ) ) {
+////			return;
+////		}
+////
+////		$this->on_insert_post( $data['post_content'] );
+//	}
 
 }
