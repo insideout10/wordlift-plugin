@@ -36,7 +36,6 @@ addAction(SELECTION_CHANGED, "wordlift", ({ selection }) => store.dispatch(setVa
 
 const AddEntity = ({ selectEntity, showCreate }) => {
   console.debug("AddEntity", { selectEntity, showCreate });
-  window.store2 = store;
   return (
     <Provider store={store}>
       <WrapperContainer>

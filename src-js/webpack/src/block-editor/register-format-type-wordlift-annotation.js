@@ -45,7 +45,6 @@ registerFormatType("wordlift/annotation", {
   className: "textannotation",
   title: "Annotation",
   edit: e => {
-    console.log(e);
     const value = e.value;
 
     // Send the selection change event.

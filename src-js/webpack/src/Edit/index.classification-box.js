@@ -25,9 +25,6 @@ import EditorSelectionChangedEvent from "./angular/EditorSelectionChangedEvent";
 // loaded.
 const wp = global["wp"];
 wp.wordlift.on("wlEntityList.loaded", function() {
-  // Create the `store` with the reducer, using the analysis result as
-  // `initialState`.
-  window.store1 = store;
 
   // Render the `React` tree at the `wl-entity-list` element.
   ReactDOM.render(

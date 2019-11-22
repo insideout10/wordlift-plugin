@@ -171,8 +171,6 @@ function* toggleAnnotation({ annotation }) {
 }
 
 export default function* saga() {
-  // yield takeLatest(actions.selectEditor, selectEditor);
-  // yield takeLatest([actions.selectEditorSucceeded, actions.requestAnalysis], requestAnalysis);
   yield takeLatest(actions.requestAnalysis, requestAnalysis);
   yield takeEvery(TOGGLE_ENTITY, toggleEntity);
   yield takeEvery(TOGGLE_LINK, toggleLink);

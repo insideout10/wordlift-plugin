@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+  db:
+    image: mariadb:10
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: wordpress
+
+  phpunit:
+    image: "phpunit/phpunit:4.8.5"
+    depends_on:
+      - db
+    volumes:
+      - ..:/app
+    entrypoint: >
+      bash -c "docker-php-ext-install mysqli &&
+        /app/bin/install-wp-tests.sh wordpress wordpress password db 4.4 true &&
+        phpunit -c phpunit.xml --stop-on-error --stop-on-fail"
+    environment:
+      WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING: "true"
+      WORDLIFT_KEY: $WORDLIFT_KEY
+    tty: true
+

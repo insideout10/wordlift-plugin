@@ -1,4 +1,10 @@
 /**
+ * This file defines the store.
+ *
+ * @since 3.23.0
+ */
+
+/**
  * External dependencies
  */
 import { applyMiddleware, combineReducers, createStore } from "redux";

@@ -1,4 +1,17 @@
+/**
+ * Define the actions.
+ *
+ * @since 3.23.0
+ */
+
+/**
+ * External dependencies
+ */
 import { createAction } from "redux-actions";
+
+/**
+ * Internal dependencies
+ */
 import { EDITOR_SELECTION_CHANGED } from "../../Edit/constants/ActionTypes";
 
 /**
