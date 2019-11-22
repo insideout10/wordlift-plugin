@@ -116,7 +116,6 @@ class Wordlift_Post_Adapter {
 
 		// Try to find one term matching the entity.
 		$terms = get_terms( array(
-			'fields'                 => 'ids',
 			'number'                 => 1,
 			'hide_empty'             => false,
 			'update_term_meta_cache' => false,
@@ -127,9 +126,11 @@ class Wordlift_Post_Adapter {
 
 		// If found use the term link, otherwise the permalink.
 		if ( 1 === count( $terms ) ) {
-			$permalink = get_term_link( current( $terms ) );
+			$term      = current( $terms );
+			$permalink = get_term_link( $term );
 			$type      = self::TYPE_TERM_LINK;
 		} else {
+			$term      = null;
 			$permalink = get_permalink( $post_id );
 			$type      = self::TYPE_ENTITY_LINK;
 		}
@@ -137,14 +138,15 @@ class Wordlift_Post_Adapter {
 		/**
 		 * Apply the `wl_production_permalink` filter.
 		 *
-		 * @param string $permalink The permalink.
-		 * @param int    $post_id The post id.
-		 * @param int    $type The permalink type: 0 = entity permalink, 1 = term link.
+		 * @param string  $permalink The permalink.
+		 * @param int     $post_id The post id.
+		 * @param int     $type The permalink type: 0 = entity permalink, 1 = term link.
+		 * @param WP_Term $term The term if type is term link, otherwise null.
 		 *
-		 * @since 3.23.0 add the permalink type.
+		 * @since 3.23.0 add the permalink type and term parameters.
 		 *
 		 */
-		return apply_filters( 'wl_production_permalink', $permalink, $post_id, $type );
+		return apply_filters( 'wl_production_permalink', $permalink, $post_id, $type, $term );
 	}
 
 }
