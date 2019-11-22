@@ -37,13 +37,16 @@ class EntityTile extends React.Component {
   constructor(props) {
     super(props);
 
+    // Create a reference to the DOM element, sine we want focus on the tiles
+    // when they're active.
+    this.ref = React.createRef();
+
     // Bind our functions.
     this.onEditClick = this.onEditClick.bind(this);
     this.onSwitchClick = this.onSwitchClick.bind(this);
     this.onMainClick = this.onMainClick.bind(this);
     this.onArrowToggleClick = this.onArrowToggleClick.bind(this);
     this.close = this.close.bind(this);
-    this.setWrapperRef = this.setWrapperRef.bind(this);
 
     // Set the initial state.
     this.state = { open: false };
@@ -135,37 +138,10 @@ class EntityTile extends React.Component {
    * @since 3.11.0
    */
   componentDidUpdate() {
-    if (this.state.open && this.setWrapperRef && this.setWrapperRef.focus) {
-      this.setWrapperRef.focus();
+    if (this.state.open && this.ref && this.ref.current && this.ref.current.focus) {
+      this.ref.current.focus();
     }
   }
-
-  /**
-   * Set a reference to the `Wrapper` element.
-   *
-   * @since 3.11.0
-   *
-   * @param {Object} element The `Wrapper` DOM element.
-   */
-  setWrapperRef(element) {
-    // Set the reference to the wrapper.
-    this.setWrapperRef = element;
-
-    console.info("setWrapperRef", { element });
-  }
-
-  // /**
-  //  * Display occurences of current entity or plus if there are no such.
-  //  *
-  //  * @since 3.16.0
-  //  */
-  // displayEntityOccurences() {
-  //   if (this.props.entity.occurrences.length) {
-  //     return this.props.entity.occurrences.length;
-  //   }
-  //
-  //   return '+';
-  // }
 
   /**
    * Render the component.
@@ -175,13 +151,7 @@ class EntityTile extends React.Component {
    */
   render() {
     return (
-      <Wrapper
-        entity={this.props.entity}
-        onBlur={this.close}
-        innerRef={this.setWrapperRef}
-        tabIndex="0"
-        key={this.props.entity.id}
-      >
+      <Wrapper entity={this.props.entity} onBlur={this.close} ref={this.ref} tabIndex="0" key={this.props.entity.id}>
         <Main onClick={this.onMainClick} open={this.state.open}>
           <Label entity={this.props.entity}>
             {this.props.entity.label}

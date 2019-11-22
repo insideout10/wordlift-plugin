@@ -25,6 +25,9 @@ const wlSettings = global["wlSettings"];
 const canCreateEntities =
   "undefined" !== wlSettings["can_create_entities"] && "yes" === wlSettings["can_create_entities"];
 
+
+// item => dispatch(addEntityRequest(item))
+
 /**
  * Define the {@link App}.
  *

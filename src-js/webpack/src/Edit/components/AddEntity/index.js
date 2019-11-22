@@ -1,16 +1,15 @@
-/* global wp */
-
 /**
- * External dependencies.
+ * External dependencies
  */
 import React from "react";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import createSagaMiddleware from "redux-saga";
 import logger from "redux-logger";
+import PropTypes from "prop-types";
 
 /**
- * WordPress dependencies (we can't import it here, we're not into Gutenberg).
+ * WordPress dependencies
  */
 import { addAction } from "@wordpress/hooks";
 
@@ -35,7 +34,6 @@ sagaMiddleware.run(saga);
 addAction(SELECTION_CHANGED, "wordlift", ({ selection }) => store.dispatch(setValue(selection)));
 
 const AddEntity = ({ selectEntity, showCreate }) => {
-  console.debug("AddEntity", { selectEntity, showCreate });
   return (
     <Provider store={store}>
       <WrapperContainer>
@@ -46,6 +44,11 @@ const AddEntity = ({ selectEntity, showCreate }) => {
       </WrapperContainer>
     </Provider>
   );
+};
+
+AddEntity.propTypes = {
+  selectEntity: PropTypes.func.isRequired,
+  showCreate: PropTypes.bool.isRequired
 };
 
 export default AddEntity;
