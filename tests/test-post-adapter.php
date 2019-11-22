@@ -67,13 +67,19 @@ class Post_Adapter_Test extends Wordlift_Unit_Test_Case {
 		// Add same as.
 		add_term_meta( $term_id, '_wl_entity_id', $same_as );
 
-		// We expect the term link.
-		$expected = get_term_link( $term_id );
-
 		// Get the permalink.
 		$permalink = Wordlift_Post_Adapter::get_production_permalink( $entity_id );
 
-		$this->assertEquals( $expected, $permalink, 'Permalink should be the term permalink.' );
+		global $wp_version;
+		if ( version_compare( $wp_version, '4.5', '>=' ) ) {
+			// We expect the term link.
+			$expected = get_term_link( $term_id );
+			$this->assertEquals( $expected, $permalink, 'Permalink should be the term permalink.' );
+		} else {
+			// We expect the entity link.
+			$expected = get_permalink( $entity_id );
+			$this->assertEquals( $expected, $permalink, 'Permalink should be the entity permalink.' );
+		}
 
 	}
 

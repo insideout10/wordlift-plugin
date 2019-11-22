@@ -18,9 +18,9 @@ services:
     entrypoint: >
       bash -c "docker-php-ext-install mysqli &&
         /app/bin/install-wp-tests.sh wordpress wordpress password db 4.4 true &&
-        phpunit -c phpunit.xml --stop-on-error --stop-on-fail"
+        phpunit -c phpunit.xml --stop-on-error --stop-on-fail &&
+        cat /tmp/wordpress/wp-content/debug.log"
     environment:
       WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING: "true"
       WORDLIFT_KEY: $WORDLIFT_KEY
     tty: true
-

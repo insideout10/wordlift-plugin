@@ -121,13 +121,6 @@ class Wordlift_Default_Sparql_Tuple_Rendition implements Wordlift_Sparql_Tuple_R
 		// Filter out empty values.
 		$class_name = get_class( $this->storage );
 		$values     = array_filter( (array) $this->storage->get( $post_id ), function ( $item ) use ( $class_name, $post_id ) {
-			if ( is_wp_error( $item ) ) {
-				Wordlift_Log_Service::get_instance()->error( "An error occurred while getting data from $class_name for post $post_id:\n"
-					. $item->get_error_message() );
-
-				return false;
-			}
-
 			return ! empty( $item );
 		} );
 

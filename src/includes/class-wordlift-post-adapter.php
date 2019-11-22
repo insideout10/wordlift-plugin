@@ -94,6 +94,19 @@ class Wordlift_Post_Adapter {
 	public static function get_production_permalink( $post_id ) {
 
 		/**
+		 * WordPress 4.4 doesn't support meta queries for terms, therefore we only support post permalinks here.
+		 *
+		 * Later on for WordPress 4.5+ we look for terms bound to the entity and we use the term link instead of the
+		 * post permalink if we find them.
+		 */
+		global $wp_version;
+		if ( version_compare( $wp_version, '4.5', '<' ) ) {
+			$permalink = get_permalink( $post_id );
+
+			return apply_filters( 'wl_production_permalink', $permalink, $post_id, self::TYPE_ENTITY_LINK, null );
+		}
+
+		/**
 		 * The `wl_production_permalink` filter allows to change the permalink, this is useful in contexts
 		 * when the production environment is copied over from a staging environment with staging
 		 * URLs.

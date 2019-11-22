@@ -5,7 +5,7 @@
  * @param callback
  * @returns {*}
  */
-export function collectBlocks(accumulator, blocks, callback = x => x) {
+export function collectBlocks (accumulator, blocks, callback = x => x) {
   blocks.forEach(block => {
     if ("core/paragraph" === block.name || "core/freeform" === block.name) {
       accumulator.push(callback(block));
@@ -17,7 +17,7 @@ export function collectBlocks(accumulator, blocks, callback = x => x) {
   return accumulator;
 }
 
-export function mergeArray(a1, a2) {
+export function mergeArray (a1, a2) {
   const newArray = a1.splice(0);
 
   for (let i = 0; i < a2.length; i++) {
@@ -27,8 +27,7 @@ export function mergeArray(a1, a2) {
   return newArray;
 }
 
-export function makeEntityAnnotationsSelector(entity) {
-  return Object.values(entity.annotations)
-    .map(annotation => annotation.annotationId)
+export function makeEntityAnnotationsSelector (entity) {
+  return Object.keys(entity.annotations)
     .join("|");
 }

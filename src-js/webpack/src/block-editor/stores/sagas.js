@@ -84,6 +84,7 @@ function* toggleEntity({ entity }) {
       }
     );
   } else {
+    console.debug(`Looking for "<span\\s+id="(${annotationSelector})"\\sclass="([^"]*)"\\sitemid="[^"]*">"...`);
     // Switch off.
     blocks.replace(
       new RegExp(`<span\\s+id="(${annotationSelector})"\\sclass="([^"]*)"\\sitemid="[^"]*">`, "gi"),
