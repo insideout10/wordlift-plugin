@@ -1,5 +1,16 @@
 <?php
-
+/**
+ * This file hooks to WordPress' post-related events in order to store entities.
+ *
+ * In particular we register the `wordlift/classification` block type and hook to the `wp_insert_post_data` hook
+ * to parse the block type, retrieve the entities data and store it to the database.
+ *
+ * @authod David Riccitelli <david@wordlift.io>
+ * @since 3.23.0
+ *
+ * @package Wordlift
+ * @subpackage Wordlift\Post
+ */
 
 namespace Wordlift\Post;
 
@@ -8,37 +19,58 @@ use Wordlift\Entity\Entity_Store;
 class Post_Adapter {
 
 	/**
-	 * @var \Wordlift_Log_Service
+	 * A {@link Wordlift_Log_Service} logging instance.
+	 *
+	 * @access private
+	 * @var \Wordlift_Log_Service A {@link Wordlift_Log_Service} logging instance.
 	 */
 	private $log;
 
 	/**
-	 * @var \Wordlift_Entity_Service
+	 * A {@link Wordlift_Entity_Service} instance.
+	 *
+	 * @access private
+	 * @var \Wordlift_Entity_Service A {@link Wordlift_Entity_Service} instance.
 	 */
 	private $entity_service;
-	private $entity_factory;
 
-	private static $instance;
+	/**
+	 * A {@link Entity_Store} instance.
+	 *
+	 * @access private
+	 * @var Entity_Store $entity_store A {@link Entity_Store} instance.
+	 */
+	private $entity_store;
 
 	public function __construct() {
 
+		// Bail out if block editor's functions aren't available.
+		if ( ! function_exists( 'register_block_type' ) || ! function_exists( 'parse_blocks' ) ) {
+			return;
+		}
+
 		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
 
-		add_action( 'init', function () {
-			if ( function_exists( 'register_block_type' ) ) {
-				register_block_type( 'wordlift/classification', array(
-					'editor_script' => 'wl-block-editor',
-					'attributes'    => array(
-						'entities' => array( 'type' => 'array' ),
-					),
-				) );
-			}
-		} );
-
 		$this->entity_service = \Wordlift_Entity_Service::get_instance();
-		$this->entity_factory = Entity_Store::get_instance();
+		$this->entity_store   = Entity_Store::get_instance();
 
+		add_action( 'init', array( $this, 'init' ) );
 		add_filter( 'wp_insert_post_data', array( $this, 'wp_insert_post_data' ), 10, 2 );
+
+	}
+
+	/**
+	 * Initialize by registering our block type `wordlift/classification`, required for {@link parse_blocks) to work
+	 * correctly.
+	 */
+	public function init() {
+
+		register_block_type( 'wordlift/classification', array(
+			'editor_script' => 'wl-block-editor',
+			'attributes'    => array(
+				'entities' => array( 'type' => 'array' ),
+			),
+		) );
 
 	}
 
@@ -93,9 +125,9 @@ class Post_Adapter {
 	}
 
 	/**
-	 * @param        $post_content
+	 * Parse the post content to find the `wordlift/classification` block and return the entities' data.
 	 *
-	 * @param string $post_status
+	 * @param string $post_content The post content.
 	 *
 	 * @return array An array of entities' structures.
 	 * @throws \Exception
@@ -236,7 +268,7 @@ class Post_Adapter {
 
 		// Create the entity if it doesn't exist.
 		if ( empty( $post ) ) {
-			return $this->entity_factory->create( array(
+			return $this->entity_store->create( array(
 				'labels'      => $labels,
 				'description' => $entity['description'],
 				'same_as'     => $uris,
@@ -244,7 +276,7 @@ class Post_Adapter {
 		}
 
 		// Update the entity otherwise.
-		return $this->entity_factory->update( array(
+		return $this->entity_store->update( array(
 			'ID'      => $post->ID,
 			'labels'  => $labels,
 			'same_as' => $uris,

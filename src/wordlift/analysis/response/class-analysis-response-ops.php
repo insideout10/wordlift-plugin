@@ -180,11 +180,6 @@ class Analysis_Response_Ops {
 		// function `preselect`, which was called by src/coffee/editpost-widget/app.services.EditorService.coffee in
 		// `embedAnalysis`.
 		foreach ( $this->json->entities as $id => $entity ) {
-//			// Skip to the next one if this entity isn't found.
-//			if ( ! isset( $this->json->entities->{$id} ) ) {
-//				continue;
-//			}
-//
 			$this->json->entities->{$id}->occurrences = isset( $occurrences[ $id ] ) ? $occurrences[ $id ] : array();;
 
 			foreach ( $this->json->entities->{$id}->occurrences as $annotation_id ) {
@@ -226,7 +221,11 @@ class Analysis_Response_Ops {
 	 */
 	public function to_string() {
 
-		return wp_json_encode( $this->json, JSON_UNESCAPED_UNICODE );
+		// Add the `JSON_UNESCAPED_UNICODE` only for PHP 5.4+.
+		$options = ( version_compare( PHP_VERSION, '5.4', '>=' )
+			? JSON_UNESCAPED_UNICODE : 0 );
+
+		return wp_json_encode( $this->json, $options );
 
 	}
 

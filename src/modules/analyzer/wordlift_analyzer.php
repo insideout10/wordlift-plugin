@@ -78,8 +78,8 @@ function wl_analyze_content( $content ) {
 	// Get the actual content sent to the analysis, so that we can pass it to the Analysis_Response_Ops to populate
 	// the occurrences for the local entities.
 	if ( 0 === strpos( $content_type, 'application/json' ) ) {
-		$request_json    = json_decode( $content, JSON_OBJECT_AS_ARRAY );
-		$request_content = $request_json['content'];
+		$request_json    = json_decode( $content );
+		$request_content = $request_json->content;
 	} else {
 		$request_content = $content;
 	}
