@@ -31,8 +31,16 @@ export class MappingApp extends React.Component {
 					],
 				},
 				{
-					label: 'Category',
-					value: 'category',
+					label: 'Taxonomy',
+					value: 'taxonomy',
+					data: [
+						{ value: 'category', label: 'Category' },
+						{ value: 'tag', label: 'Tags' },
+					],
+				},
+				{
+					label: 'Term',
+					value: 'term',
 					data: [
 						{ value: 'art', label: 'Art' },
 						{ value: 'science', label: 'Science' },
@@ -49,12 +57,12 @@ export class MappingApp extends React.Component {
 			savedRules: [
 				[
 					{ wpObject: 'postType', relation: 'equals', value: 'post', },
-					{ wpObject: 'category', relation: 'notEquals', value: 'art', },
-					{ wpObject: 'category', relation: 'equals', value: 'science', },
+					{ wpObject: 'taxonomy', relation: 'notEquals', value: 'art', },
+					{ wpObject: 'taxonomy', relation: 'equals', value: 'science', },
 				],
 				[
 					{ wpObject: 'postType', relation: 'equals', value: 'books', },
-					{ wpObject: 'category', relation: 'equals', value: 'history', },
+					{ wpObject: 'taxonomy', relation: 'equals', value: 'history', },
 				]
 			]
 		}
