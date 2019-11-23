@@ -395,7 +395,7 @@ class Wordlift_Countries {
 		if ( null === $file_name ) {
 			$file_name = __DIR__ . '/supported-countries.json';
 		}
-		if ( count( self::$codes ) === 0 || count( self::$country_codes ) === 0 ) {
+		if ( 0 === count( self::$codes ) || 0 === count( self::$country_codes ) ) {
 			// populate the two arrays.
 			$result_array        = self::get_codes_from_json_file( $file_name );
 			self::$codes         = $result_array['country_code_language_map'];
