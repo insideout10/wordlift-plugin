@@ -339,20 +339,19 @@ class Wordlift_Countries {
 				'country_code_name_map'     => array(),
 				'country_code_language_map' => array(),
 			);
-		} else {
-			$result = array();
-			// country_code => country_language map.
-			$country_code_language_map = array();
-			// country_code => country_name map.
-			$country_code_name_map = array();
-			foreach ( $decoded_array as $key => $value ) {
-				$country_code_language_map[ $key ] = $value['supportedLang'];
-				$country_code_name_map [ $key ]    = $value['defaultLoc']['loc_name'];
-			}
-			$result['country_code_language_map'] = $country_code_language_map;
-			$result['country_code_name_map']     = $country_code_name_map;
-			return $result;
 		}
+		$result = array();
+		// country_code => country_language map.
+		$country_code_language_map = array();
+		// country_code => country_name map.
+		$country_code_name_map = array();
+		foreach ( $decoded_array as $key => $value ) {
+			$country_code_language_map[ $key ] = $value['supportedLang'];
+			$country_code_name_map [ $key ]    = $value['defaultLoc']['loc_name'];
+		}
+		$result['country_code_language_map'] = $country_code_language_map;
+		$result['country_code_name_map']     = $country_code_name_map;
+		return $result;
 	}
 	/**
 	 * Get the list of WordLift's supported country codes from json file mapping country_code => languages.
@@ -366,12 +365,11 @@ class Wordlift_Countries {
 	public static function get_codes_from_json_file( $file_name ) {
 		if ( file_exists( $file_name ) ) {
 			return self::parse_country_code_json_file_to_array( $file_name );
-		} else {
-			return array(
-				'country_code_name_map'     => array(),
-				'country_code_language_map' => array(),
-			);
 		}
+		return array(
+			'country_code_name_map'     => array(),
+			'country_code_language_map' => array(),
+		);
 	}
 
 	/**
