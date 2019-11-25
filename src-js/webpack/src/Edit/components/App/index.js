@@ -11,6 +11,7 @@
  * External dependencies
  */
 import React from "react";
+import { connect } from "react-redux";
 
 /**
  * Internal dependencies
@@ -20,13 +21,11 @@ import Header from "../Header";
 import VisibleEntityList from "../../containers/VisibleEntityList";
 import Accordion from "../Accordion";
 import AddEntity from "../../components/AddEntity";
+import { addEntityRequest } from "../AddEntity/actions";
 
 const wlSettings = global["wlSettings"];
 const canCreateEntities =
   "undefined" !== wlSettings["can_create_entities"] && "yes" === wlSettings["can_create_entities"];
-
-
-// item => dispatch(addEntityRequest(item))
 
 /**
  * Define the {@link App}.
@@ -34,9 +33,9 @@ const canCreateEntities =
  * @since 3.11.0
  * @return {Function} The `render` function.
  */
-const App = () => (
+const App = ({ addEntityRequest }) => (
   <Wrapper>
-    <AddEntity showCreate={canCreateEntities} selectEntity={entity => console.debug(entity)} />
+    <AddEntity showCreate={canCreateEntities} selectEntity={addEntityRequest} />
     <Accordion open={true} label="Content classification">
       <Header />
       <VisibleEntityList />
@@ -45,4 +44,7 @@ const App = () => (
 );
 
 // Finally export the `App`.
-export default App;
+export default connect(
+  null,
+  { addEntityRequest }
+)(App);

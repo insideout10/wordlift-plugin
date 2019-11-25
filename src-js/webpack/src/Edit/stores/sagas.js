@@ -18,6 +18,7 @@ import EditPostWidgetController from "../angular/EditPostWidgetController";
 import { getEntity } from "./selectors";
 import LinkService from "../services/LinkService";
 import { toggleLinkSuccess } from "../actions";
+import { addEntityRequest, addEntitySuccess } from "../components/AddEntity/actions";
 
 /**
  * Handle the {@link TOGGLE_ENTITY} action.
@@ -47,6 +48,35 @@ function* setCurrentEntity(entity) {
   EditPostWidgetController().$apply(EditPostWidgetController().setCurrentEntity(entity, "entity"));
 }
 
+function* addEntity({ payload }) {
+  const ctrl = EditPostWidgetController();
+  ctrl.$apply(() => {
+    // Create the text annotation.
+    ctrl.setCurrentEntity();
+    // Update the entity data.
+    ctrl.currentEntity.description = payload.descriptions[0];
+    ctrl.currentEntity.id = payload.id;
+    ctrl.currentEntity.images = payload.images;
+    ctrl.currentEntity.label = payload.label;
+    ctrl.currentEntity.mainType = getMainType(payload.types);
+    ctrl.currentEntity.types = payload.types;
+    ctrl.currentEntity.sameAs = payload.sameAss;
+    // Save the entity.
+    ctrl.storeCurrentEntity();
+  });
+
+  yield put(addEntitySuccess());
+}
+
+const getMainType = types => {
+  for (let i = 0; i < window.wordlift.types.length; i++) {
+    const type = window.wordlift.types[i];
+
+    if (-1 < types.indexOf(type.uri)) return type.slug;
+  }
+  return "thing";
+};
+
 /**
  * Connect the side effects.
  */
@@ -54,6 +84,7 @@ function* sagas() {
   yield takeEvery(TOGGLE_ENTITY, toggleEntity);
   yield takeEvery(TOGGLE_LINK, toggleLink);
   yield takeEvery(SET_CURRENT_ENTITY, setCurrentEntity);
+  yield takeEvery(addEntityRequest, addEntity);
 }
 
 export default sagas;

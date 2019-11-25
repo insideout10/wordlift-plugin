@@ -4,7 +4,6 @@ import EntitySelect from "./EntitySelect";
 import {
   close,
   setValue,
-  addEntityRequest,
   createEntityRequest
 } from "./actions";
 

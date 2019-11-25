@@ -12,7 +12,7 @@ const EntitySelect = ({ createEntity, selectEntity, items, value, showCreate, ..
   const elements = (showCreate
     ? [<CreateItem key={1000} label={value} onClick={() => createEntity(value)} />]
     : []
-  ).concat(items.map((item, index) => <SelectItem key={index} item={item} onClick={selectEntity} />));
+  ).concat(items.map((item, index) => <SelectItem key={index} item={item} onClick={() => selectEntity(item)} />));
 
   return (
     <Select value={value} {...props}>
