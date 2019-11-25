@@ -75,5 +75,5 @@ services:
       - wordpress-data:/var/www/html
 
 volumes:
-  ? db-data
-  ? wordpress-data
+  db-data:
+  wordpress-data:

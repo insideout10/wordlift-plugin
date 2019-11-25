@@ -125,11 +125,14 @@ export default {
       },
       uniqid: {
         default: ""
+      },
+      order_by: {
+        default: "ID ASC"
       }
     },
     //display the edit interface + preview
     edit: ({ attributes, setAttributes }) => {
-      const { title, limit, template_id, post_id, offset, uniqid } = attributes;
+      const { title, limit, template_id, post_id, offset, uniqid, order_by } = attributes;
       return (
         <div>
           <BlockPreview title="Wordlift Navigator" attributes={attributes} />
@@ -158,6 +161,12 @@ export default {
                 onChange={post_id => setAttributes({ post_id })}
               />
               <TextControl label="Unique ID" value={uniqid} onChange={uniqid => setAttributes({ uniqid })} />
+              <TextControl
+                label="Order by"
+                help="Valid SQL ‘order by’ clause"
+                value={order_by}
+                onChange={order_by => setAttributes({ order_by })}
+              />
             </PanelBody>
           </InspectorControls>
         </div>
