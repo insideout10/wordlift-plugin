@@ -62,10 +62,11 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 	 * id for the current site will be appended) and a file extension for cache
 	 * files (by default `.wlcache`) is used.
 	 *
-	 * @since 3.16.0
-	 *
 	 * @param string $cache_dir The base cache directory.
 	 * @param string $file_extension The file extension, by default `.wlcache`.
+	 *
+	 * @since 3.16.0
+	 *
 	 */
 	public function __construct( $cache_dir, $file_extension = '.wlcache' ) {
 
@@ -91,11 +92,11 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 	/**
 	 * Get the cached response for the specified `id`.
 	 *
-	 * @since 3.16.0
-	 *
 	 * @param int $id The cache `id`.
 	 *
 	 * @return mixed|false The cached contents or false if the cache isn't found.
+	 * @since 3.16.0
+	 *
 	 */
 	function get_cache( $id ) {
 
@@ -119,11 +120,11 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 	/**
 	 * Set the cache contents for the specified `id`.
 	 *
-	 * @since 3.16.0
-	 *
 	 * @param int $id The cache id.
 	 *
 	 * @return bool True if the `id` has a cache.
+	 * @since 3.16.0
+	 *
 	 */
 	function has_cache( $id ) {
 
@@ -150,9 +151,10 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 	/**
 	 * Delete the cache for the specified `id`.
 	 *
+	 * @param int $id The cache `id`.
+	 *
 	 * @since 3.16.0
 	 *
-	 * @param int $id The cache `id`.
 	 */
 	function delete_cache( $id ) {
 
@@ -160,7 +162,9 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 
 		$this->log->trace( "Deleting cache contents for $id, file $filename..." );
 
-		@unlink( $filename );
+		if ( file_exists( $filename ) ) {
+			@unlink( $filename );
+		}
 
 	}
 
@@ -190,8 +194,10 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 
 		// Loop into the directory to delete files.
 		while ( false !== ( $entry = readdir( $handle ) ) ) {
-			if ( substr( $entry, - $file_extension_length ) === $this->file_extension ) {
+			if ( substr( $entry, - $file_extension_length ) === $this->file_extension
+			     && file_exists( $this->cache_dir . $entry ) ) {
 				$this->log->trace( "Deleting file {$this->cache_dir}{$entry}..." );
+
 				@unlink( $this->cache_dir . $entry );
 			}
 		}
@@ -212,11 +218,11 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 	/**
 	 * Get the filename holding the cache contents for the specified `id`.
 	 *
-	 * @since 3.16.0
-	 *
 	 * @param int $id The cache `id`.
 	 *
 	 * @return string The filename.
+	 * @since 3.16.0
+	 *
 	 */
 	private function get_filename( $id ) {
 

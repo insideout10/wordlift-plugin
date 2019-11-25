@@ -47,6 +47,8 @@ registerFormatType("wordlift/annotation", {
   edit: e => {
     const value = e.value;
 
+    console.debug("wordlift/annotation::edit", { value });
+
     // Send the selection change event.
     if (delay) clearTimeout(delay);
     delay = setTimeout(() => {
