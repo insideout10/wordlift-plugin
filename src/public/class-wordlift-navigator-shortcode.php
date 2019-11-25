@@ -51,6 +51,7 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 			'template_id' => '',
 			'post_id'     => '',
 			'uniqid'      => uniqid( 'wl-navigator-widget-' ),
+			'order_by'    => 'ID ASC'
 		), $atts );
 
 		return $shortcode_atts;
@@ -77,7 +78,7 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 
 		$post         = ! empty( $shortcode_atts['post_id'] ) ? get_post( intval( $shortcode_atts['post_id'] ) ) : get_post();
 		$navigator_id = $shortcode_atts['uniqid'];
-		$rest_url     = $post ? admin_url( sprintf( 'admin-ajax.php?action=wl_navigator&uniqid=%s&post_id=%s&limit=%s&offset=%s', $navigator_id, $post->ID, $shortcode_atts['limit'], $shortcode_atts['offset'] ) ) : false;
+		$rest_url     = $post ? admin_url( sprintf( 'admin-ajax.php?action=wl_navigator&uniqid=%s&post_id=%s&limit=%s&offset=%s&order_by=%s', $navigator_id, $post->ID, $shortcode_atts['limit'], $shortcode_atts['offset'], $shortcode_atts['order_by'] ) ) : false;
 
 		// avoid building the widget when no valid $rest_url
 		if ( ! $rest_url ) {
@@ -133,6 +134,7 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 			'post_id' => $post->ID,
 			'limit'   => $shortcode_atts['limit'],
 			'offset'  => $shortcode_atts['offset'],
+			'order_by'=> 'ID ASC'
 		);
 
 		if ( strpos( $wp_json_base, 'wp-json/' . WL_REST_ROUTE_DEFAULT_NAMESPACE ) ) {

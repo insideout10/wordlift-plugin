@@ -91,6 +91,7 @@ function _wl_navigator_get_data() {
 	// Limit the results (defaults to 4)
 	$navigator_length = isset( $_GET['limit'] ) ? intval( $_GET['limit'] ) : 4;
 	$navigator_offset = isset( $_GET['offset'] ) ? intval( $_GET['offset'] ) : 0;
+	$order_by         = isset( $_GET['order_by'] ) ? sanitize_sql_orderby($_GET['order_by']) : 'ID ASC';
 
 	$current_post_id = $_GET['post_id'];
 	$current_post    = get_post( $current_post_id );
@@ -103,8 +104,6 @@ function _wl_navigator_get_data() {
 
 		return array();
 	}
-
-	$order_by = apply_filters( 'wl_navigator_data_order_by', 'ID ASC');
 
 	$referencing_posts = _wl_navigator_get_results( $current_post_id, array(
 		'ID',
@@ -157,7 +156,8 @@ function _wl_network_navigator_get_data($request) {
 	// Limit the results (defaults to 4)
 	$navigator_length = isset( $request['limit'] ) ? intval( $request['limit'] ) : 4;
 	$navigator_offset = isset( $request['offset'] ) ? intval( $request['offset'] ) : 0;
-	$navigator_id = $request['uniqid'];
+	$navigator_id     = $request['uniqid'];
+	$order_by         = isset( $_GET['order_by'] ) ? sanitize_sql_orderby($_GET['order_by']) : 'ID ASC';
 
 	$entities = $request['entities'];
 
@@ -165,8 +165,6 @@ function _wl_network_navigator_get_data($request) {
 	if ( !isset($entities) || empty($entities) ) {
 		wp_send_json_error( 'No valid entities provided' );
 	}
-
-	$order_by = apply_filters( 'wl_network_navigator_data_order_by', 'ID ASC');
 
 	$referencing_posts = _wl_network_navigator_get_results( $entities, array(
 		'ID',
