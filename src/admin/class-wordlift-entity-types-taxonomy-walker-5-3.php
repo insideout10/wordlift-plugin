@@ -71,7 +71,7 @@ class Wordlift_Entity_Types_Taxonomy_Walker extends Walker_Category_Checklist {
 		// `max_depth` force to -1 to display a flat taxonomy.
 		//
 		// See https://github.com/insideout10/wordlift-plugin/issues/305
-		$output = parent::walk( $elements, - 1, $args );
+		$output = parent::walk( $elements, - 1, ...$args );
 
 		$output = str_replace(
 			array( "type=\"checkbox\"", "type='checkbox'" ),

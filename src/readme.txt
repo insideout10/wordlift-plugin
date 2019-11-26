@@ -147,6 +147,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 * Fix [#971](https://github.com/insideout10/wordlift-plugin/issues/971): Automatically exclude wordlift-cloud from WP Rocket minification.
 
+= 3.22.7 (2019-11-26) =
+* Fix: [#979](https://github.com/insideout10/wordlift-plugin/issues/979): Unable to set Entity Type on posts.
+
 = 3.22.6 (2019-11-25) =
 * Enhancement: [#968](https://github.com/insideout10/wordlift-plugin/issues/968): Allow entities (and related media) to be published via rest.
 * Enhancement: [#966](https://github.com/insideout10/wordlift-plugin/issues/966): PHP Logs Errors.
