@@ -21,7 +21,7 @@ import EntitySelectContainer from "./EntitySelectContainer";
 import WrapperContainer from "./WrapperContainer";
 import Arrow from "../Arrow";
 import saga from "./sagas";
-import { reducer, setValue } from "./actions";
+import { addEntitySuccess, reducer, setValue } from "./actions";
 import { SELECTION_CHANGED } from "../../../common/constants";
 
 // Create the saga middleware.
@@ -31,7 +31,14 @@ const store = createStore(reducer, applyMiddleware(sagaMiddleware, logger));
 // Run the saga.
 sagaMiddleware.run(saga);
 
+// Receives events that the selection has changed in the editor.
 addAction(SELECTION_CHANGED, "wordlift", ({ selection }) => store.dispatch(setValue(selection)));
+
+// Receives events that an entity has been successfully added.
+//
+// These events are raised from the Block Editor (block-editor/stores/sagas) and are required to update the AddEntity
+// state.
+addAction("wordlift.addEntitySuccess", "wordlift", () => store.dispatch(addEntitySuccess()));
 
 const AddEntity = ({ selectEntity, showCreate }) => {
   return (

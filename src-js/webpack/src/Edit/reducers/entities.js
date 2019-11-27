@@ -29,6 +29,8 @@ import WsService from "../services/WsService";
  */
 const entities = function(state = Map(), action) {
   switch (action.type) {
+    case types.ADD_ENTITY:
+      return state.merge(Map({ [action.payload.id]: action.payload }));
     // Legacy: receive analysis' results.
     case types.RECEIVE_ANALYSIS_RESULTS:
       // Calculate the labels.

@@ -40,7 +40,7 @@ registerFormatType("wordlift/annotation", {
    * as WPFormat:
    *  wp.data.select( 'core/rich-text' ).getFormatTypes();
    */
-  attributes: { id: "id" },
+  attributes: { id: "id", class: "class", itemid: "itemid" },
   tagName: "span",
   className: "textannotation",
   title: "Annotation",

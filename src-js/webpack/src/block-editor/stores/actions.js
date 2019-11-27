@@ -14,7 +14,7 @@ import { createActions, handleActions } from "redux-actions";
  */
 import { EDITOR_SELECTION_CHANGED } from "../../Edit/constants/ActionTypes";
 
-export const { editorSelectionChanged, requestAnalysis, setFormat } = createActions(
+export const { addEntity, editorSelectionChanged, requestAnalysis, setFormat } = createActions(
   EDITOR_SELECTION_CHANGED,
   "REQUEST_ANALYSIS",
   "SET_FORMAT"

@@ -13,7 +13,7 @@ import * as data from "@wordpress/data";
  * Internal dependencies
  */
 import { receiveAnalysisResults, toggleLinkSuccess, updateOccurrencesForEntity } from "../../Edit/actions";
-import { ANNOTATION, TOGGLE_ENTITY, TOGGLE_LINK } from "../../Edit/constants/ActionTypes";
+import { ADD_ENTITY, ANNOTATION, TOGGLE_ENTITY, TOGGLE_LINK } from "../../Edit/constants/ActionTypes";
 import { requestAnalysis } from "./actions";
 import parseAnalysisResponse from "./compat";
 import { EDITOR_STORE } from "../constants";
@@ -21,8 +21,9 @@ import EditorOps from "../api/EditorOps";
 import { makeEntityAnnotationsSelector, mergeArray } from "../api/utils";
 import { Blocks } from "../api/Blocks";
 import { getAnnotationFilter, getBlockEditorFormat, getClassificationBlock, getSelectedEntities } from "./selectors";
-import { addEntityRequest } from "../../Edit/components/AddEntity/actions";
+import { addEntityRequest, addEntitySuccess } from "../../Edit/components/AddEntity/actions";
 import { applyFormat } from "@wordpress/rich-text";
+import { doAction } from "@wordpress/hooks";
 
 function* handleRequestAnalysis() {
   const editorOps = new EditorOps(EDITOR_STORE);
@@ -173,14 +174,40 @@ function* toggleAnnotation({ annotation }) {
   blocks.apply();
 }
 
-function* handleAddEntityRequest() {
+/**
+ * Handles the request to add an entity.
+ *
+ * First we toggle the wordlift/annotation in Block Editor to create the annotation.
+ */
+function* handleAddEntityRequest({ payload }) {
   // See https://developer.wordpress.org/block-editor/packages/packages-rich-text/#applyFormat
   const { onChange, value } = yield select(getBlockEditorFormat);
-  const format = { type: "wordlift/annotation", attributes: { id: "zzz" } };
+  const annotationId = "urn:local-annotation-" + Math.floor(Math.random() * 9999);
+  const format = {
+    type: "wordlift/annotation",
+    attributes: { id: annotationId, class: "disambiguated", itemid: payload.id }
+  };
 
-  console.debug("Going to call applyFormat with the following parameters:", { value, format });
+  console.debug("Going to call applyFormat with the following parameters:", { value, format, payload });
 
   yield call(onChange, applyFormat(value, format));
+
+  const entityToAdd = {
+    ...payload,
+    annotations: { [annotationId]: { annotationId, start: value.start, end: value.end } },
+    occurrences: [annotationId]
+  };
+
+  yield put({ type: ADD_ENTITY, payload: entityToAdd });
+
+  yield put(addEntitySuccess());
+}
+
+/**
+ * Broadcast the `wordlift.addEntitySuccess` action in order to have the AddEntity local store capture it.
+ */
+function* handleAddEntitySuccess() {
+  yield call(doAction, "wordlift.addEntitySuccess");
 }
 
 export default function* saga() {
@@ -189,4 +216,5 @@ export default function* saga() {
   yield takeEvery(TOGGLE_LINK, toggleLink);
   yield takeLatest(ANNOTATION, toggleAnnotation);
   yield takeEvery(addEntityRequest, handleAddEntityRequest);
+  yield takeEvery(addEntitySuccess, handleAddEntitySuccess);
 }
