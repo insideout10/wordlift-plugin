@@ -7,21 +7,22 @@
 /**
  * External dependencies
  */
-import { createAction } from "redux-actions";
+import { createActions, handleActions } from "redux-actions";
 
 /**
  * Internal dependencies
  */
 import { EDITOR_SELECTION_CHANGED } from "../../Edit/constants/ActionTypes";
 
-/**
- * Requests an analysis on the selected editor.
- */
-const requestAnalysis = createAction("REQUEST_ANALYSIS");
+export const { editorSelectionChanged, requestAnalysis, setFormat } = createActions(
+  EDITOR_SELECTION_CHANGED,
+  "REQUEST_ANALYSIS",
+  "SET_FORMAT"
+);
 
-const editorSelectionChanged = createAction(EDITOR_SELECTION_CHANGED);
-
-export default {
-  requestAnalysis,
-  editorSelectionChanged
-};
+export default handleActions(
+  {
+    SET_FORMAT: (state, action) => ({ format: action.payload })
+  },
+  { format: null }
+);

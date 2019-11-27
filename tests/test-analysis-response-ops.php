@@ -119,4 +119,17 @@ class Analysis_Response_Ops_Test extends \Wordlift_Unit_Test_Case {
 
 	}
 
+	public function test_response_1() {
+
+		$request  = file_get_contents( __DIR__ . '/assets/request_1.json' );
+		$request_json = json_decode( $request );
+		$response = file_get_contents( __DIR__ . '/assets/response_1.json' );
+		$response_json = json_decode( $response );
+
+		echo Analysis_Response_Ops::create( $response_json )
+		                          ->make_entities_local()
+		                          ->add_occurrences( $request_json->content )
+		                          ->to_string();
+	}
+
 }

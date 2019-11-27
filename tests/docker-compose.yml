@@ -1,3 +1,9 @@
+# This docker-compose.yml file configures an environment to run tests.
+#
+#  WORDLIFT_KEY=... \
+#  PHPUNIT_ARGS="-c phpunit.xml --stop-on-error --stop-on-fail --filter Analysis_Response_Ops_Test::test_response_1" \
+#  docker-compose run phpunit
+
 version: "3.7"
 
 services:
@@ -18,7 +24,7 @@ services:
     entrypoint: >
       bash -c "docker-php-ext-install mysqli &&
         /app/bin/install-wp-tests.sh wordpress wordpress password db 4.4 true &&
-        phpunit -c phpunit.xml --stop-on-error --stop-on-fail &&
+        phpunit -c phpunit.xml $PHPUNIT_ARGS &&
         cat /tmp/wordpress/wp-content/debug.log"
     environment:
       WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING: "true"

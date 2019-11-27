@@ -25,12 +25,12 @@ import { createBlock } from "@wordpress/blocks";
  */
 import Sidebar from "../Edit/components/App";
 import withDidMountCallback from "./components/with-did-mount-callback";
-import actions from "./stores/actions";
+import { requestAnalysis } from "./stores/actions";
 import store from "./stores";
 
 import WordLiftIcon from "./wl-logo-big.svg";
 import "./index.scss";
-import "./register-format-type-wordlift-annotation";
+import "./formats/register-format-type-wordlift-annotation";
 import "./register-block-type-wordlift-classification";
 import { ANNOTATION_CHANGED } from "../common/constants";
 import { setCurrentAnnotation } from "../Edit/actions";
@@ -49,7 +49,7 @@ addAction(ANNOTATION_CHANGED, "wordlift", payload => store.dispatch(setCurrentAn
  */
 const SidebarWithDidMountCallback = withDidMountCallback(Sidebar, () => {
   // Request the analysis.
-  store.dispatch(actions.requestAnalysis());
+  store.dispatch(requestAnalysis());
 
   // Add the WordLift Classification block is not yet available.
   if ("undefined" === typeof getClassificationBlock())

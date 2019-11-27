@@ -45,12 +45,13 @@ let delay;
  * @returns {Function} A stateless component.
  * @constructor
  */
-const EditComponent = ({ value, isActive, activeAttributes, onSelectionChange }) => {
+const EditComponent = ({ onChange, value, isActive, activeAttributes, onSelectionChange, setFormat }) => {
   // Send the selection change event.
   if (delay) clearTimeout(delay);
   delay = setTimeout(() => {
     const selection = value.text.substring(value.start, value.end);
     onSelectionChange(selection);
+    setFormat({ onChange, value });
     doAction(SELECTION_CHANGED, { selection });
   }, 200);
 
@@ -69,10 +70,11 @@ const EditComponent = ({ value, isActive, activeAttributes, onSelectionChange })
 /**
  * Connect the `onSelectionChange` function to the `setValue` dispatch.
  */
-export default withDispatch(dispatch => {
-  const { setValue } = dispatch(WORDLIFT_STORE);
+export default withDispatch((dispatch, ownProps) => {
+  const { setValue, setFormat } = dispatch(WORDLIFT_STORE);
 
   return {
-    onSelectionChange: setValue
+    onSelectionChange: setValue,
+    setFormat
   };
 })(EditComponent);

@@ -47,3 +47,10 @@ export const getClassificationBlock = () =>
   select("core/editor")
     .getBlocks()
     .find(block => "wordlift/classification" === block.name);
+
+export const getBlockEditor = state => state.blockEditor;
+
+/**
+ * Get the Block Editor current format.
+ */
+export const getBlockEditorFormat = state => getBlockEditor(state).format;

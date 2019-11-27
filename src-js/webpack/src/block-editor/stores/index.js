@@ -23,8 +23,15 @@ import { registerGenericStore } from "@wordpress/data";
 import entities from "../../Edit/reducers/entities";
 import annotationFilter from "../../Edit/reducers/annotationFilter";
 import visibilityFilter from "../../Edit/reducers/visibilityFilter";
-import actions from "./actions";
-import { getAnnotationFilter, getEditor, getEntities, getSelectedEntities } from "./selectors";
+import reducer, { requestAnalysis, setFormat } from "./actions";
+import {
+  getAnnotationFilter,
+  getBlockEditor,
+  getBlockEditorFormat,
+  getEditor,
+  getEntities,
+  getSelectedEntities
+} from "./selectors";
 import saga from "./sagas";
 import { editorSelectionChanged } from "../../Edit/actions";
 import { setValue } from "../../Edit/components/AddEntity/actions";
@@ -33,7 +40,7 @@ import { WORDLIFT_STORE } from "../constants";
 const initialState = { entities: Map() };
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
-  combineReducers({ entities, annotationFilter, visibilityFilter }),
+  combineReducers({ entities, annotationFilter, visibilityFilter, blockEditor: reducer }),
   initialState,
   applyMiddleware(sagaMiddleware, logger)
 );
@@ -46,15 +53,19 @@ registerGenericStore(WORDLIFT_STORE, {
       getAnnotationFilter: (...args) => getAnnotationFilter(store.getState(), ...args),
       getEditor: (...args) => getEditor(store.getState(), ...args),
       getEntities: (...args) => getEntities(store.getState(), ...args),
-      getSelectedEntities: (...args) => getSelectedEntities(store.getState(), ...args)
+      getSelectedEntities: (...args) => getSelectedEntities(store.getState(), ...args),
+      getBlockEditor: (...args) => getBlockEditor(store.getState(), ...args),
+      getBlockEditorFormat: (...args) => getBlockEditorFormat(store.getState(), ...args)
     };
   },
   getActions() {
     return {
       editorSelectionChanged: args => store.dispatch(editorSelectionChanged(args)),
-      requestAnalysis: (...args) => store.dispatch(actions.requestAnalysis(...args)),
+      requestAnalysis: (...args) => store.dispatch(requestAnalysis(...args)),
       // Called when the selection changes in editor.
-      setValue: args => store.dispatch(setValue(args))
+      setValue: args => store.dispatch(setValue(args)),
+      // Called to set the block editor current selection as Block Editor format value.
+      setFormat: args => store.dispatch(setFormat(args))
     };
   },
   subscribe: store.subscribe

@@ -14,15 +14,17 @@ import * as data from "@wordpress/data";
  */
 import { receiveAnalysisResults, toggleLinkSuccess, updateOccurrencesForEntity } from "../../Edit/actions";
 import { ANNOTATION, TOGGLE_ENTITY, TOGGLE_LINK } from "../../Edit/constants/ActionTypes";
-import actions from "./actions";
+import { requestAnalysis } from "./actions";
 import parseAnalysisResponse from "./compat";
 import { EDITOR_STORE } from "../constants";
 import EditorOps from "../api/EditorOps";
 import { makeEntityAnnotationsSelector, mergeArray } from "../api/utils";
 import { Blocks } from "../api/Blocks";
-import { getAnnotationFilter, getClassificationBlock, getSelectedEntities } from "./selectors";
+import { getAnnotationFilter, getBlockEditorFormat, getClassificationBlock, getSelectedEntities } from "./selectors";
+import { addEntityRequest } from "../../Edit/components/AddEntity/actions";
+import { applyFormat } from "@wordpress/rich-text";
 
-function* requestAnalysis() {
+function* handleRequestAnalysis() {
   const editorOps = new EditorOps(EDITOR_STORE);
 
   const request = editorOps.buildAnalysisRequest(window["wlSettings"]["language"], [
@@ -171,9 +173,20 @@ function* toggleAnnotation({ annotation }) {
   blocks.apply();
 }
 
+function* handleAddEntityRequest() {
+  // See https://developer.wordpress.org/block-editor/packages/packages-rich-text/#applyFormat
+  const { onChange, value } = yield select(getBlockEditorFormat);
+  const format = { type: "wordlift/annotation", attributes: { id: "zzz" } };
+
+  console.debug("Going to call applyFormat with the following parameters:", { value, format });
+
+  yield call(onChange, applyFormat(value, format));
+}
+
 export default function* saga() {
-  yield takeLatest(actions.requestAnalysis, requestAnalysis);
+  yield takeLatest(requestAnalysis, handleRequestAnalysis);
   yield takeEvery(TOGGLE_ENTITY, toggleEntity);
   yield takeEvery(TOGGLE_LINK, toggleLink);
   yield takeLatest(ANNOTATION, toggleAnnotation);
+  yield takeEvery(addEntityRequest, handleAddEntityRequest);
 }
