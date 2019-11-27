@@ -26,12 +26,12 @@ import { doAction } from "@wordpress/hooks";
 /**
  * Internal dependencies
  */
-import { ANNOTATION_CHANGED, SELECTION_CHANGED } from "../common/constants";
+import EditComponent from "./edit-component";
 
 /**
  * @see https://developer.wordpress.org/block-editor/tutorials/format-api/1-register-format/
  */
-let delay;
+
 registerFormatType("wordlift/annotation", {
   /*
    * The `attributes` property is undocumented as basically the `WPFormat` class.
@@ -44,27 +44,5 @@ registerFormatType("wordlift/annotation", {
   tagName: "span",
   className: "textannotation",
   title: "Annotation",
-  edit: e => {
-    const value = e.value;
-
-    console.debug("wordlift/annotation::edit", { value });
-
-    // Send the selection change event.
-    if (delay) clearTimeout(delay);
-    delay = setTimeout(() => {
-      const selection = value.text.substring(value.start, value.end);
-      doAction(SELECTION_CHANGED, { selection });
-    }, 200);
-
-    // Send the annotation change event.
-    const payload =
-      "undefined" !== typeof e.isActive &&
-      "undefined" !== typeof e.activeAttributes &&
-      "undefined" !== typeof e.activeAttributes.id
-        ? e.activeAttributes.id
-        : undefined;
-    doAction(ANNOTATION_CHANGED, payload);
-
-    return <Fragment />;
-  }
+  edit: EditComponent
 });

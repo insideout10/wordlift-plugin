@@ -20,3 +20,11 @@ export const EDITOR_STORE = "core/editor";
  * @type {string}
  */
 export const EDITOR_ELEMENT_ID = "editor";
+
+/**
+ * Define the WordLift Store name used for {@link select} and {@link dispatch}
+ * functions.
+ *
+ * @type {string}
+ */
+export const WORDLIFT_STORE = "wordlift/editor";

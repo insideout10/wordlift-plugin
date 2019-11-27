@@ -27,6 +27,8 @@ import actions from "./actions";
 import { getAnnotationFilter, getEditor, getEntities, getSelectedEntities } from "./selectors";
 import saga from "./sagas";
 import { editorSelectionChanged } from "../../Edit/actions";
+import { setValue } from "../../Edit/components/AddEntity/actions";
+import { WORDLIFT_STORE } from "../constants";
 
 const initialState = { entities: Map() };
 const sagaMiddleware = createSagaMiddleware();
@@ -38,7 +40,7 @@ const store = createStore(
 sagaMiddleware.run(saga);
 
 // Register the store with WordPress.
-registerGenericStore("wordlift/editor", {
+registerGenericStore(WORDLIFT_STORE, {
   getSelectors() {
     return {
       getAnnotationFilter: (...args) => getAnnotationFilter(store.getState(), ...args),
@@ -49,8 +51,10 @@ registerGenericStore("wordlift/editor", {
   },
   getActions() {
     return {
+      editorSelectionChanged: args => store.dispatch(editorSelectionChanged(args)),
       requestAnalysis: (...args) => store.dispatch(actions.requestAnalysis(...args)),
-      editorSelectionChanged: args => store.dispatch(editorSelectionChanged(args))
+      // Called when the selection changes in editor.
+      setValue: args => store.dispatch(setValue(args))
     };
   },
   subscribe: store.subscribe
