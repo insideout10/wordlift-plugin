@@ -29403,7 +29403,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
       $scope.currentEntityType = entityType;
       switch (entityType) {
         case 'entity':
-          return $log.debug("An existing entity. Nothing to do");
+          return $log.debug("An existing entity. Nothing to do", entity);
         default:
           $log.debug("A new entity");
           $scope.currentEntity = AnalysisService.createEntity();

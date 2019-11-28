@@ -16,7 +16,7 @@ import { Provider } from "react-redux";
 import { PluginSidebar, PluginSidebarMoreMenuItem } from "@wordpress/edit-post";
 import { Fragment } from "@wordpress/element";
 import { registerPlugin } from "@wordpress/plugins";
-import { addAction } from "@wordpress/hooks";
+import { addAction, addFilter } from "@wordpress/hooks";
 import { dispatch } from "@wordpress/data";
 import { createBlock } from "@wordpress/blocks";
 
@@ -36,6 +36,11 @@ import { ANNOTATION_CHANGED } from "../common/constants";
 import { setCurrentAnnotation } from "../Edit/actions";
 import { getClassificationBlock } from "./stores/selectors";
 import { EDITOR_STORE, PLUGIN_NAMESPACE } from "./constants";
+import registerFilters from "./filters/add-entity.filters";
+
+// Register our filters to display additional elements in the CreateEntityForm. Pass our store to connect them to
+// our state.
+registerFilters(store);
 
 /**
  * Hook WordPress' action `ANNOTATION_CHANGED` to dispatching the annotation

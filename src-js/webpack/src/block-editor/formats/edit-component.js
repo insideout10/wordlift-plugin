@@ -48,6 +48,7 @@ let delay;
 const EditComponent = ({ onChange, value, isActive, activeAttributes, onSelectionChange, setFormat }) => {
   // Send the selection change event.
   if (delay) clearTimeout(delay);
+
   delay = setTimeout(() => {
     const selection = value.text.substring(value.start, value.end);
     onSelectionChange(selection);

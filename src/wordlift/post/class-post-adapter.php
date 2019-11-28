@@ -190,9 +190,9 @@ class Post_Adapter {
 	 *  The entity data.
 	 *
 	 * @type string $label The entity label.
-	 * @type array  $synonyms The entity synonyms.
-	 * @type array  $occurrences The selected occurrences.
-	 * @type array  $annotations The annotations.
+	 * @type array $synonyms The entity synonyms.
+	 * @type array $occurrences The selected occurrences.
+	 * @type array $annotations The annotations.
 	 * }
 	 *
 	 * @return array An array of labels.
@@ -253,8 +253,13 @@ class Post_Adapter {
 	 */
 	private function create_or_update_entity( $entity, $post_status = 'draft' ) {
 
+		// Get only valid IDs.
+		$ids = array_filter( (array) $entity['id'], function ( $id ) {
+			return preg_match( '|^https?://|', $id );
+		} );
+
 		$uris = array_merge(
-			(array) $entity['id'],
+			(array) $ids,
 			(array) $entity['sameAs']
 		);
 

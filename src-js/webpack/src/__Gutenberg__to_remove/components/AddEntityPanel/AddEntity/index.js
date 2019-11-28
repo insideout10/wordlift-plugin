@@ -7,8 +7,8 @@ import { Provider } from "react-redux";
 
 import ButtonContainer from "../../../../Edit/components/AddEntity/ButtonContainer";
 import EntitySelectContainer from "./EntitySelectContainer";
-import AddEntityNoticeContainer from "./AddEntityNoticeContainer";
-import CreateEntityContainer from "./CreateEntityContainer";
+import AddEntityNoticeContainer from "../../../../block-editor/filters/add-entity-notice-container";
+import CreateEntityContainer from "../../../../common/containers/create-entity-form";
 import WrapperContainer from "../../../../Edit/components/AddEntity/WrapperContainer";
 import Arrow from "../../../../Edit/components/Arrow";
 

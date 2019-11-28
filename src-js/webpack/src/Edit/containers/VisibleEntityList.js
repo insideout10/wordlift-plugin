@@ -115,10 +115,7 @@ const mapDispatchToProps = dispatch => {
  *
  * @since 3.11.0
  */
-const VisibleEntityList = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EntityList);
+const VisibleEntityList = connect(mapStateToProps, mapDispatchToProps)(EntityList);
 
 // Finally export the `VisibleEntityList`.
 export default VisibleEntityList;

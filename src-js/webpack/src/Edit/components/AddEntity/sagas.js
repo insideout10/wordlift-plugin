@@ -34,14 +34,6 @@ function* loadItems({ payload }) {
   "undefined" !== typeof wp.wordlift && wp.wordlift.trigger("loading", false);
 }
 
-function* createEntity({ payload }) {
-  const ctrl = EditPostWidgetController();
-
-  ctrl.$apply(ctrl.setCurrentEntity(undefined, undefined, payload));
-
-  yield put(createEntitySuccess());
-}
-
 function* requestClose() {
   yield put(close());
 }
@@ -75,8 +67,6 @@ function* watchForSetValue() {
 
 function* saga() {
   yield fork(watchForEditorSelectionChanges);
-
-  yield takeEvery(createEntityRequest, createEntity);
 
   yield takeEvery(createEntitySuccess, requestClose);
 

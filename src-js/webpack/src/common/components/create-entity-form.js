@@ -1,12 +1,16 @@
-/* globals wp, wordlift */
 /**
- * External dependencies.
+ * External dependencies
  */
 import React from "react";
 
-const { Button } = wp.components;
+/**
+ * Internal dependencies
+ */
+import { Button } from "@wordpress/components";
 
-class CreateEntityForm extends React.Component {
+const wordlift = window["wordlift"];
+
+export default class CreateEntityForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -28,7 +32,7 @@ class CreateEntityForm extends React.Component {
   }
 
   handleSubmit(event) {
-    this.props.createEntity(this.state);
+    this.props.onSubmit(this.state);
     event.preventDefault();
   }
 
@@ -75,5 +79,3 @@ class CreateEntityForm extends React.Component {
     );
   }
 }
-
-export default CreateEntityForm;

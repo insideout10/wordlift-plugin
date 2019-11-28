@@ -1,3 +1,6 @@
+/**
+ * External dependencies
+ */
 import { createActions, handleActions } from "redux-actions";
 
 export const {

@@ -23,9 +23,7 @@ const SelectItem = ({ item, ...props }) => (
   <Wrapper {...props}>
     <Label title={item.label}>{item.label}</Label>
     <Cloud className="fa fa-cloud" local={"local" === item.scope ? 1 : 0} />
-    {0 < item.descriptions.length && (
-      <Description title={item.descriptions[0]}>{item.descriptions[0]}</Description>
-    )}
+    {0 < item.descriptions.length && <Description title={item.descriptions[0]}>{item.descriptions[0]}</Description>}
     <DisplayTypes>{item.displayTypes}</DisplayTypes>
   </Wrapper>
 );

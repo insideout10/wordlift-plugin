@@ -1,11 +1,13 @@
-/* globals wp */
 /**
  * External dependencies.
  */
 import React from "react";
 import { connect } from "react-redux";
 
-const { Notice } = wp.components;
+/**
+ * WordPress dependencies
+ */
+import { Notice } from "@wordpress/components";
 
 const mapStateToProps = ({ showNotice }) => ({ showNotice });
 

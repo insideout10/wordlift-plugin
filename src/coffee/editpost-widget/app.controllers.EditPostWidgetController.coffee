@@ -103,7 +103,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
     switch entityType
       when 'entity'
-        $log.debug "An existing entity. Nothing to do"
+        $log.debug "An existing entity. Nothing to do", entity
       else # New entity
 
         $log.debug "A new entity"

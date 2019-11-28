@@ -13,7 +13,13 @@ import * as data from "@wordpress/data";
  * Internal dependencies
  */
 import { receiveAnalysisResults, toggleLinkSuccess, updateOccurrencesForEntity } from "../../Edit/actions";
-import { ADD_ENTITY, ANNOTATION, TOGGLE_ENTITY, TOGGLE_LINK } from "../../Edit/constants/ActionTypes";
+import {
+  ADD_ENTITY,
+  ANNOTATION,
+  SET_CURRENT_ENTITY,
+  TOGGLE_ENTITY,
+  TOGGLE_LINK
+} from "../../Edit/constants/ActionTypes";
 import { requestAnalysis } from "./actions";
 import parseAnalysisResponse from "./compat";
 import { EDITOR_STORE } from "../constants";
@@ -24,6 +30,7 @@ import { getAnnotationFilter, getBlockEditorFormat, getClassificationBlock, getS
 import { addEntityRequest, addEntitySuccess } from "../../Edit/components/AddEntity/actions";
 import { applyFormat } from "@wordpress/rich-text";
 import { doAction } from "@wordpress/hooks";
+import { createEntityRequest } from "../../common/containers/create-entity-form/actions";
 
 function* handleRequestAnalysis() {
   const editorOps = new EditorOps(EDITOR_STORE);
@@ -68,7 +75,8 @@ function* toggleEntity({ entity }) {
   // Get the supported blocks.
   const blocks = Blocks.create(data.select(EDITOR_STORE).getBlocks(), data.dispatch(EDITOR_STORE));
 
-  const onClassNames = ["disambiguated", `wl-${entity.mainType.replace(/\s/, "-")}`];
+  const mainType = entity.mainType || "thing";
+  const onClassNames = ["disambiguated", `wl-${mainType.replace(/\s/, "-")}`];
 
   // Build a css selector to select all the annotations for the provided entity.
   const annotationSelector = makeEntityAnnotationsSelector(entity);
@@ -182,23 +190,38 @@ function* toggleAnnotation({ annotation }) {
 function* handleAddEntityRequest({ payload }) {
   // See https://developer.wordpress.org/block-editor/packages/packages-rich-text/#applyFormat
   const { onChange, value } = yield select(getBlockEditorFormat);
-  const annotationId = "urn:local-annotation-" + Math.floor(Math.random() * 9999);
-  const format = {
-    type: "wordlift/annotation",
-    attributes: { id: annotationId, class: "disambiguated", itemid: payload.id }
-  };
 
-  console.debug("Going to call applyFormat with the following parameters:", { value, format, payload });
-
-  yield call(onChange, applyFormat(value, format));
+  const annotationId = "urn:local-annotation-" + Math.floor(Math.random() * 999999);
 
   const entityToAdd = {
+    // Temporary ID, may be overwritten by payload if provided.
+    id:
+      payload.id ||
+      window["wordlift"].datasetUri +
+        "/" +
+        payload.label.replace(/\W/gi, "-") +
+        "-" +
+        Math.floor(Math.random() * 999999),
     ...payload,
     annotations: { [annotationId]: { annotationId, start: value.start, end: value.end } },
     occurrences: [annotationId]
   };
 
+  console.debug("Adding Entity", entityToAdd);
+
+  const format = {
+    type: "wordlift/annotation",
+    attributes: { id: annotationId, class: "disambiguated", itemid: entityToAdd.id }
+  };
+
+  yield call(onChange, applyFormat(value, format));
+
   yield put({ type: ADD_ENTITY, payload: entityToAdd });
+
+  // Send the selected entities to the WordLift Classification box.
+  data.dispatch(EDITOR_STORE).updateBlockAttributes(getClassificationBlock().clientId, {
+    entities: yield select(getSelectedEntities)
+  });
 
   yield put(addEntitySuccess());
 }
@@ -210,6 +233,27 @@ function* handleAddEntitySuccess() {
   yield call(doAction, "wordlift.addEntitySuccess");
 }
 
+/**
+ * Handles the action when the entity edit link is clicked in the Classification Box.
+ *
+ * Within the Block Editor we open a new window to the WordPress edit post screen.
+ *
+ * @since 3.23.0
+ * @param Object entity The entity object.
+ */
+function* handleSetCurrentEntity({ entity }) {
+  const url = `${window["wp"].ajax.settings.url}?action=wordlift_redirect&uri=${encodeURIComponent(entity.id)}&to=edit`;
+  window.open(url, "_blank");
+}
+
+/**
+ * Handle the Create Entity Request, which is supposed to open a form in the sidebar.
+ */
+function* handleCreateEntityRequest() {
+  // Call the WP hook to close the entity select (see ../../Edit/components/AddEntity/index.js).
+  doAction("unstable_wordlift.closeEntitySelect");
+}
+
 export default function* saga() {
   yield takeLatest(requestAnalysis, handleRequestAnalysis);
   yield takeEvery(TOGGLE_ENTITY, toggleEntity);
@@ -217,4 +261,6 @@ export default function* saga() {
   yield takeLatest(ANNOTATION, toggleAnnotation);
   yield takeEvery(addEntityRequest, handleAddEntityRequest);
   yield takeEvery(addEntitySuccess, handleAddEntitySuccess);
+  yield takeEvery(SET_CURRENT_ENTITY, handleSetCurrentEntity);
+  yield takeEvery(createEntityRequest, handleCreateEntityRequest);
 }

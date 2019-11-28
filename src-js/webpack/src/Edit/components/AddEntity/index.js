@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import React from "react";
+import React, { Fragment } from "react";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import createSagaMiddleware from "redux-saga";
@@ -11,7 +11,7 @@ import PropTypes from "prop-types";
 /**
  * WordPress dependencies
  */
-import { addAction } from "@wordpress/hooks";
+import { addAction, applyFilters } from "@wordpress/hooks";
 
 /**
  * Internal dependencies
@@ -21,7 +21,7 @@ import EntitySelectContainer from "./EntitySelectContainer";
 import WrapperContainer from "./WrapperContainer";
 import Arrow from "../Arrow";
 import saga from "./sagas";
-import { addEntitySuccess, reducer, setValue } from "./actions";
+import { addEntitySuccess, close, reducer, setValue } from "./actions";
 import { SELECTION_CHANGED } from "../../../common/constants";
 
 // Create the saga middleware.
@@ -40,15 +40,24 @@ addAction(SELECTION_CHANGED, "wordlift", ({ selection }) => store.dispatch(setVa
 // state.
 addAction("wordlift.addEntitySuccess", "wordlift", () => store.dispatch(addEntitySuccess()));
 
-const AddEntity = ({ selectEntity, showCreate }) => {
+// Temporary hack to allow 3rd parties to close the Entity Select.
+addAction("unstable_wordlift.closeEntitySelect", "wordlift", () => store.dispatch(close()));
+
+const AddEntity = ({ createEntity, selectEntity, showCreate }) => {
   return (
     <Provider store={store}>
-      <WrapperContainer>
-        <ButtonContainer>
-          <Arrow height="8px" color="white" />
-        </ButtonContainer>
-        <EntitySelectContainer selectEntity={selectEntity} showCreate={showCreate} />
-      </WrapperContainer>
+      <Fragment>
+        {// Allow 3rd parties to hook and add additional components.
+        applyFilters("wordlift.AddEntity.beforeWrapperContainer", [])}
+        <WrapperContainer>
+          <ButtonContainer>
+            <Arrow height="8px" color="white" />
+          </ButtonContainer>
+          <EntitySelectContainer createEntity={createEntity} selectEntity={selectEntity} showCreate={showCreate} />
+        </WrapperContainer>
+        {// Allow 3rd parties to hook and add additional components.
+        applyFilters("wordlift.AddEntity.afterWrapperContainer", [])}
+      </Fragment>
     </Provider>
   );
 };

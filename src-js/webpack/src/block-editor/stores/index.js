@@ -23,7 +23,8 @@ import { registerGenericStore } from "@wordpress/data";
 import entities from "../../Edit/reducers/entities";
 import annotationFilter from "../../Edit/reducers/annotationFilter";
 import visibilityFilter from "../../Edit/reducers/visibilityFilter";
-import reducer, { requestAnalysis, setFormat } from "./actions";
+import blockEditor, { requestAnalysis, setFormat } from "./actions";
+import createEntityForm from "../../common/containers/create-entity-form/actions";
 import {
   getAnnotationFilter,
   getBlockEditor,
@@ -40,7 +41,7 @@ import { WORDLIFT_STORE } from "../constants";
 const initialState = { entities: Map() };
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
-  combineReducers({ entities, annotationFilter, visibilityFilter, blockEditor: reducer }),
+  combineReducers({ entities, annotationFilter, visibilityFilter, blockEditor, createEntityForm }),
   initialState,
   applyMiddleware(sagaMiddleware, logger)
 );

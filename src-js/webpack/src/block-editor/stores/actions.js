@@ -24,5 +24,5 @@ export default handleActions(
   {
     SET_FORMAT: (state, action) => ({ format: action.payload })
   },
-  { format: null }
+  { format: null, showCreate: true }
 );

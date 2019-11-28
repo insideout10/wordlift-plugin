@@ -21,7 +21,7 @@ import Header from "../Header";
 import VisibleEntityList from "../../containers/VisibleEntityList";
 import Accordion from "../Accordion";
 import AddEntity from "../../components/AddEntity";
-import { addEntityRequest } from "../AddEntity/actions";
+import { addEntityRequest, createEntityRequest } from "../AddEntity/actions";
 
 const wlSettings = global["wlSettings"];
 const canCreateEntities =
@@ -33,9 +33,9 @@ const canCreateEntities =
  * @since 3.11.0
  * @return {Function} The `render` function.
  */
-const App = ({ addEntityRequest }) => (
+const App = ({ addEntityRequest, createEntityRequest }) => (
   <Wrapper>
-    <AddEntity showCreate={canCreateEntities} selectEntity={addEntityRequest} />
+    <AddEntity createEntity={createEntityRequest} showCreate={canCreateEntities} selectEntity={addEntityRequest} />
     <Accordion open={true} label="Content classification">
       <Header />
       <VisibleEntityList />
@@ -44,7 +44,4 @@ const App = ({ addEntityRequest }) => (
 );
 
 // Finally export the `App`.
-export default connect(
-  null,
-  { addEntityRequest }
-)(App);
+export default connect(null, { addEntityRequest, createEntityRequest })(App);
