@@ -24,6 +24,7 @@ import entities from "../../Edit/reducers/entities";
 import annotationFilter from "../../Edit/reducers/annotationFilter";
 import visibilityFilter from "../../Edit/reducers/visibilityFilter";
 import blockEditor, { requestAnalysis, setFormat } from "./actions";
+import relatedPosts from "../../common/containers/related-posts/actions";
 import createEntityForm from "../../common/containers/create-entity-form/actions";
 import {
   getAnnotationFilter,
@@ -36,12 +37,12 @@ import {
 import saga from "./sagas";
 import { editorSelectionChanged } from "../../Edit/actions";
 import { setValue } from "../../Edit/components/AddEntity/actions";
-import { WORDLIFT_STORE } from "../constants";
+import { WORDLIFT_STORE } from "../../common/constants";
 
 const initialState = { entities: Map() };
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
-  combineReducers({ entities, annotationFilter, visibilityFilter, blockEditor, createEntityForm }),
+  combineReducers({ entities, annotationFilter, visibilityFilter, blockEditor, createEntityForm, relatedPosts }),
   initialState,
   applyMiddleware(sagaMiddleware, logger)
 );

@@ -1,12 +1,14 @@
-/* globals wp, wlSettings */
 /**
  * External dependencies
  */
 import React from "react";
 import styled from "styled-components";
 
-const { ClipboardButton } = wp.components;
-const { withState } = wp.compose;
+/**
+ * WordPress dependencies
+ */
+import { ClipboardButton } from "@wordpress/components";
+import { withState } from "@wordpress/compose";
 
 const Image = styled.img`
   width: 80px;
@@ -29,7 +31,7 @@ const LinkClipboardButton = withState({
   </ClipboardButton>
 ));
 
-const Post = props => (
+export default props => (
   <React.Fragment>
     <Image src={props.thumbnail} />
     <div>
@@ -38,5 +40,3 @@ const Post = props => (
     </div>
   </React.Fragment>
 );
-
-export default Post;

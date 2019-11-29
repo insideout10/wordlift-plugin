@@ -29,7 +29,7 @@ import { Fragment } from "@wordpress/element";
  * Internal dependencies
  */
 import { ANNOTATION_CHANGED, SELECTION_CHANGED } from "../../common/constants";
-import { WORDLIFT_STORE } from "../constants";
+import { WORDLIFT_STORE } from "../../common/constants";
 
 // Keeps the window timeout reference to delay sending events while the user
 // is performing the selection.

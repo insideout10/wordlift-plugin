@@ -1,21 +1,14 @@
-/* globals wp, wordlift */
-/*
+/**
  * External dependencies.
  */
 import React from "react";
 
-/*
- * Internal dependencies.
+/**
+ * WordPress dependencies
  */
-import WordLiftIcon from "../svg/wl-logo-big.svg";
-import * as Constants from "../constants";
-import { humanize } from "../helpers";
-
-/*
- * Packages via WordPress global
- */
-const { InspectorControls } = wp.editor;
-const {
+import { Fragment } from "@wordpress/element";
+import { InspectorControls } from "@wordpress/editor";
+import {
   PanelBody,
   TextControl,
   TextareaControl,
@@ -24,10 +17,27 @@ const {
   ColorPicker,
   RadioControl,
   SelectControl
-} = wp.components;
+} from "@wordpress/components";
+import { registerBlockType } from "@wordpress/blocks";
+
+/**
+ * Internal dependencies
+ */
+import WordLiftIcon from "./wl-logo-big.svg";
+import { PLUGIN_NAMESPACE } from "../common/constants";
+import "./blocks.scss";
+
+const humanize = str => {
+  return str
+    .replace(/^[\s_]+|[\s_]+$/g, "")
+    .replace(/[_\s]+/g, " ")
+    .replace(/^[a-z]/, function(m) {
+      return m.toUpperCase();
+    });
+};
 
 const BlockPreview = ({ title, attributes }) => (
-  <React.Fragment>
+  <Fragment>
     <h4>{title}</h4>
     {attributes &&
       Object.keys(attributes).map(key => (
@@ -36,11 +46,11 @@ const BlockPreview = ({ title, attributes }) => (
           {typeof attributes[key] === "boolean" ? JSON.stringify(attributes[key]) : attributes[key]}
         </div>
       ))}
-  </React.Fragment>
+  </Fragment>
 );
 
-export default {
-  [`${Constants.PLUGIN_NAMESPACE}/faceted-search`]: {
+const blocks = {
+  [`${PLUGIN_NAMESPACE}/faceted-search`]: {
     title: "Wordlift Faceted Search",
     description: "Configure Faceted Search block within your content.",
     category: "wordlift",
@@ -102,7 +112,7 @@ export default {
       return null; //save has to exist. This all we need
     }
   },
-  [`${Constants.PLUGIN_NAMESPACE}/navigator`]: {
+  [`${PLUGIN_NAMESPACE}/navigator`]: {
     title: "Wordlift Navigator",
     description: "Configure Navigator block within your content.",
     category: "wordlift",
@@ -176,7 +186,7 @@ export default {
       return null; //save has to exist. This all we need
     }
   },
-  [`${Constants.PLUGIN_NAMESPACE}/chord`]: {
+  [`${PLUGIN_NAMESPACE}/chord`]: {
     title: "Wordlift Chord",
     description: "Configure Chord block within your content.",
     category: "wordlift",
@@ -225,7 +235,7 @@ export default {
       return null; //save has to exist. This all we need
     }
   },
-  [`${Constants.PLUGIN_NAMESPACE}/geomap`]: {
+  [`${PLUGIN_NAMESPACE}/geomap`]: {
     title: "Wordlift Geomap",
     description: "Configure Geomap block within your content.",
     category: "wordlift",
@@ -261,7 +271,7 @@ export default {
       return null; //save has to exist. This all we need
     }
   },
-  [`${Constants.PLUGIN_NAMESPACE}/cloud`]: {
+  [`${PLUGIN_NAMESPACE}/cloud`]: {
     title: "Wordlift Entities Cloud",
     description: "Entities Cloud block within your content.",
     category: "wordlift",
@@ -279,7 +289,7 @@ export default {
       return null; //save has to exist. This all we need
     }
   },
-  [`${Constants.PLUGIN_NAMESPACE}/vocabulary`]: {
+  [`${PLUGIN_NAMESPACE}/vocabulary`]: {
     title: "Wordlift Vocabulary",
     description: "Configure Vocabulary block within your content.",
     category: "wordlift",
@@ -320,7 +330,10 @@ export default {
         { value: "rand", label: "Random order" },
         { value: "none", label: "None" }
       ];
-      const orderOptions = [{ value: "ASC", label: "Ascending" }, { value: "DESC", label: "Descending" }];
+      const orderOptions = [
+        { value: "ASC", label: "Ascending" },
+        { value: "DESC", label: "Descending" }
+      ];
       wordlift.types.forEach(item => {
         typeOptions.push({
           value: item.slug,
@@ -367,7 +380,7 @@ export default {
       return null; //save has to exist. This all we need
     }
   },
-  [`${Constants.PLUGIN_NAMESPACE}/timeline`]: {
+  [`${PLUGIN_NAMESPACE}/timeline`]: {
     title: "Wordlift Timeline",
     description: "Configure Timeline block within your content.",
     category: "wordlift",
@@ -398,7 +411,10 @@ export default {
                 label="Display images as"
                 selected={display_images_as}
                 onChange={display_images_as => setAttributes({ display_images_as })}
-                options={[{ value: "media", label: "Media" }, { value: "background", label: "Background" }]}
+                options={[
+                  { value: "media", label: "Media" },
+                  { value: "background", label: "Background" }
+                ]}
               />
               <RangeControl
                 label="Excerpt length"
@@ -425,3 +441,10 @@ export default {
     }
   }
 };
+
+/**
+ * Register all blocks (widgets)
+ */
+for (let block in blocks) {
+  registerBlockType(block, blocks[block]);
+}

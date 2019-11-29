@@ -223,7 +223,7 @@ class Analysis_Response_Ops {
 
 		// Add the `JSON_UNESCAPED_UNICODE` only for PHP 5.4+.
 		$options = ( version_compare( PHP_VERSION, '5.4', '>=' )
-			? JSON_UNESCAPED_UNICODE : 0 );
+			? 256 : 0 );
 
 		return wp_json_encode( $this->json, $options );
 

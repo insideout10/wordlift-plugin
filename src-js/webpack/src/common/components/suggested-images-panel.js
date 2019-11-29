@@ -1,29 +1,30 @@
-/* globals wp, wordlift */
 /**
  * External dependencies
  */
 import React from "react";
 import styled from "styled-components";
 
-/*
- * Packages via WordPress global
+/**
+ * WordPress dependencies
  */
-const { Panel, PanelBody, PanelRow } = wp.components;
+import { Panel, PanelBody, PanelRow } from "@wordpress/components";
 
 const RelatedImage = styled.img`
   max-width: 100%;
   cursor: move;
 `;
 
+const wordlift = global["wordlift"];
+
 const Images = () => {
   let images = [];
-  for (var wlEntities in wordlift.entities) {
-    images = images.concat(wordlift.entities[wlEntities].images);
+  for (const wlEntities in wordlift["entities"]) {
+    images = images.concat(wordlift["entities"][wlEntities].images);
   }
   return [...new Set(images)];
 };
 
-const SuggestedImagesPanel = () => (
+export default () => (
   <Panel>
     <PanelBody title="Suggested images" initialOpen={false}>
       <h4>Drag & Drop in editor</h4>
@@ -35,5 +36,3 @@ const SuggestedImagesPanel = () => (
     </PanelBody>
   </Panel>
 );
-
-export default SuggestedImagesPanel;

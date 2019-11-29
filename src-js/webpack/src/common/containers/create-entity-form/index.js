@@ -8,8 +8,7 @@ import { connect } from "react-redux";
  * Internal dependencies
  */
 import CreateEntityForm from "../../components/create-entity-form";
-import { createEntityForm } from "../../../__Gutenberg__to_remove/components/AddEntityPanel/AddEntity/actions";
-import { addEntityRequest } from "../../../Edit/components/AddEntity/actions";
+import { addEntityRequest, createEntityForm } from "../../../Edit/components/AddEntity/actions";
 
 const mapStateToProps = ({ createEntityForm }) => createEntityForm;
 

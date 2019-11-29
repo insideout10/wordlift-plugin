@@ -4,8 +4,9 @@ import styled from "styled-components";
 const VerticalContainer = styled.div`
   position: relative;
   overflow-y: visible;
-  margin-bottom: 8px;
   width: calc(100% + 6px);
+  margin-top: 10px;
+  margin-bottom: 8px;
   margin-left: -3px;
 `;
 

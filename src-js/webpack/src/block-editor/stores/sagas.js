@@ -22,7 +22,7 @@ import {
 } from "../../Edit/constants/ActionTypes";
 import { requestAnalysis } from "./actions";
 import parseAnalysisResponse from "./compat";
-import { EDITOR_STORE } from "../constants";
+import { EDITOR_STORE } from "../../common/constants";
 import EditorOps from "../api/editor-ops";
 import { makeEntityAnnotationsSelector, mergeArray } from "../api/utils";
 import { Blocks } from "../api/blocks";
@@ -32,6 +32,8 @@ import { applyFormat } from "@wordpress/rich-text";
 import { doAction } from "@wordpress/hooks";
 import { createEntityRequest } from "../../common/containers/create-entity-form/actions";
 import createEntity from "../api/create-entity";
+import { relatedPostsRequest, relatedPostsSuccess } from "../../common/containers/related-posts/actions";
+import getRelatedPosts from "../../common/api/get-related-posts";
 
 function* handleRequestAnalysis() {
   const editorOps = new EditorOps(EDITOR_STORE);
@@ -258,6 +260,15 @@ function* handleCreateEntityRequest() {
   doAction("unstable_wordlift.closeEntitySelect");
 }
 
+/**
+ * Handles the request to load the related posts.
+ */
+function* handleRelatedPostsRequest() {
+  const posts = yield call(getRelatedPosts);
+
+  yield put(relatedPostsSuccess(posts));
+}
+
 export default function* saga() {
   yield takeLatest(requestAnalysis, handleRequestAnalysis);
   yield takeEvery(TOGGLE_ENTITY, toggleEntity);
@@ -267,4 +278,5 @@ export default function* saga() {
   yield takeEvery(addEntitySuccess, handleAddEntitySuccess);
   yield takeEvery(SET_CURRENT_ENTITY, handleSetCurrentEntity);
   yield takeEvery(createEntityRequest, handleCreateEntityRequest);
+  yield takeEvery(relatedPostsRequest, handleRelatedPostsRequest);
 }

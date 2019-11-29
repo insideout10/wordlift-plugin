@@ -13,7 +13,8 @@ export const {
   addEntitySuccess,
   close,
   open,
-  setValue
+  setValue,
+  createEntityForm
 } = createActions(
   "LOAD_ITEMS_REQUEST",
   "LOAD_ITEMS_SUCCESS",
@@ -24,7 +25,8 @@ export const {
   "ADD_ENTITY_SUCCESS",
   "CLOSE",
   "OPEN",
-  "SET_VALUE"
+  "SET_VALUE",
+  "CREATE_ENTITY_FORM"
 );
 
 export const reducer = handleActions(

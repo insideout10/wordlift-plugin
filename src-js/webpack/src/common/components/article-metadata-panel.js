@@ -1,15 +1,19 @@
-/* globals wp, wordlift */
 /**
  * External dependencies
  */
 import React from "react";
 import styled from "styled-components";
 
-/*
- * Internal dependencies.
+/**
+ * WordPress dependencies
  */
-import WlAuthorIcon from "../../../../../../src/images/svg/wl-author-icon.svg";
-import WlCalenderIcon from "../../../../../../src/images/svg/wl-calendar-icon.svg";
+import { Panel, PanelBody, PanelRow } from "@wordpress/components";
+
+/**
+ * Internal dependencies
+ */
+import WlAuthorIcon from "../../../../../src/images/svg/wl-author-icon.svg";
+import WlCalenderIcon from "../../../../../src/images/svg/wl-calendar-icon.svg";
 
 const StyledWlAuthorIcon = styled(WlAuthorIcon)`
   width: 18px;
@@ -21,10 +25,7 @@ const StyledWlCalenderIcon = styled(WlCalenderIcon)`
   margin-right: 5px;
 `;
 
-/*
- * Packages via WordPress global
- */
-const { Panel, PanelBody, PanelRow } = wp.components;
+const wordlift = global["wordlift"];
 
 const ArticleMetadataPanel = () => (
   <Panel>
@@ -32,11 +33,11 @@ const ArticleMetadataPanel = () => (
       <PanelRow>
         <div>
           <StyledWlAuthorIcon />
-          {wordlift.currentUser}
+          {wordlift["currentUser"]}
         </div>
         <div>
           <StyledWlCalenderIcon />
-          {wordlift.publishedDate}
+          {wordlift["publishedDate"]}
         </div>
       </PanelRow>
     </PanelBody>

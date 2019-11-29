@@ -8,7 +8,7 @@
  * External dependencies
  */
 import React from "react";
-import { Provider } from "react-redux";
+import { connect, Provider } from "react-redux";
 
 /**
  * WordPress dependencies
@@ -23,11 +23,10 @@ import { createBlock } from "@wordpress/blocks";
 /**
  * Internal dependencies
  */
-import Sidebar from "../Edit/components/App";
-import withDidMountCallback from "./components/with-did-mount-callback";
+import Sidebar from "./containers/sidebar";
+import withDidMountCallback from "../common/components/with-did-mount-callback";
 import { requestAnalysis } from "./stores/actions";
 import store from "./stores";
-
 import WordLiftIcon from "./wl-logo-big.svg";
 import "./index.scss";
 import "./formats/register-format-type-wordlift-annotation";
@@ -35,8 +34,12 @@ import "./register-block-type-wordlift-classification";
 import { ANNOTATION_CHANGED } from "../common/constants";
 import { setCurrentAnnotation } from "../Edit/actions";
 import { getClassificationBlock } from "./stores/selectors";
-import { EDITOR_STORE, PLUGIN_NAMESPACE } from "./constants";
+import { EDITOR_STORE, PLUGIN_NAMESPACE } from "../common/constants";
 import registerFilters from "./filters/add-entity.filters";
+import ArticleMetadataPanel from "../common/components/article-metadata-panel";
+import SuggestedImagesPanel from "../common/components/suggested-images-panel";
+import RelatedPostsPanel from "../common/containers/related-posts";
+import "./blocks";
 
 // Register our filters to display additional elements in the CreateEntityForm. Pass our store to connect them to
 // our state.
@@ -77,7 +80,12 @@ registerPlugin(PLUGIN_NAMESPACE, {
       </PluginSidebarMoreMenuItem>
       <PluginSidebar name="wordlift-sidebar" title="WordLift" className="wl-sidebar">
         <Provider store={store}>
-          <SidebarWithDidMountCallback />
+          <Fragment>
+            <SidebarWithDidMountCallback />
+            <ArticleMetadataPanel />
+            <SuggestedImagesPanel />
+            <RelatedPostsPanel />
+          </Fragment>
         </Provider>
       </PluginSidebar>
     </Fragment>

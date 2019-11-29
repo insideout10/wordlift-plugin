@@ -6,10 +6,7 @@ import Wrapper from "./Wrapper";
 const mapStateToProps = state => ({ open: state.open });
 
 const mapDispatchToProps = dispatch => ({
-  onBlur: () => {
-    console.log("Blurring...");
-    dispatch(close());
-  }
+  onBlur: () => dispatch(close())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wrapper);

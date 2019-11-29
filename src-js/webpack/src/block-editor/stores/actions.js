@@ -22,7 +22,9 @@ export const { addEntity, editorSelectionChanged, requestAnalysis, setFormat } =
 
 export default handleActions(
   {
+    REQUEST_ANALYSIS: state => ({ loading: true }),
+    RECEIVE_ANALYSIS_RESULTS: state => ({ loading: false }),
     SET_FORMAT: (state, action) => ({ format: action.payload })
   },
-  { format: null, showCreate: true }
+  { format: null, loading: false, showCreate: true }
 );
