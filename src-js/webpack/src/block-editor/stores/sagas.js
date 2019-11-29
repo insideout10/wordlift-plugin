@@ -23,14 +23,15 @@ import {
 import { requestAnalysis } from "./actions";
 import parseAnalysisResponse from "./compat";
 import { EDITOR_STORE } from "../constants";
-import EditorOps from "../api/EditorOps";
+import EditorOps from "../api/editor-ops";
 import { makeEntityAnnotationsSelector, mergeArray } from "../api/utils";
-import { Blocks } from "../api/Blocks";
+import { Blocks } from "../api/blocks";
 import { getAnnotationFilter, getBlockEditorFormat, getClassificationBlock, getSelectedEntities } from "./selectors";
 import { addEntityRequest, addEntitySuccess } from "../../Edit/components/AddEntity/actions";
 import { applyFormat } from "@wordpress/rich-text";
 import { doAction } from "@wordpress/hooks";
 import { createEntityRequest } from "../../common/containers/create-entity-form/actions";
+import createEntity from "../api/create-entity";
 
 function* handleRequestAnalysis() {
   const editorOps = new EditorOps(EDITOR_STORE);
@@ -193,15 +194,18 @@ function* handleAddEntityRequest({ payload }) {
 
   const annotationId = "urn:local-annotation-" + Math.floor(Math.random() * 999999);
 
+  // Create the entity if the `id` isn't defined.
+  const id =
+    payload.id ||
+    (yield call(createEntity, {
+      title: payload.label,
+      status: "draft",
+      description: payload.description,
+      excerpt: ""
+    }))["wl:entity_url"];
+
   const entityToAdd = {
-    // Temporary ID, may be overwritten by payload if provided.
-    id:
-      payload.id ||
-      window["wordlift"].datasetUri +
-        "/" +
-        payload.label.replace(/\W/gi, "-") +
-        "-" +
-        Math.floor(Math.random() * 999999),
+    id,
     ...payload,
     annotations: { [annotationId]: { annotationId, start: value.start, end: value.end } },
     occurrences: [annotationId]

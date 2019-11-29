@@ -56,7 +56,7 @@ class Wordlift_Admin_Post_Edit_Page {
 		}
 
 		// Define the callbacks.
-		$callback = array( $this, 'enqueue_scripts', );
+		$callback                  = array( $this, 'enqueue_scripts', );
 		$callback_block_categories = array( $this, 'block_categories' );
 
 		// Set a hook to enqueue scripts only when the edit page is displayed.
@@ -188,21 +188,6 @@ class Wordlift_Admin_Post_Edit_Page {
 		wp_register_script(
 			'wl-block-editor',
 			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/block-editor.js',
-//			array(
-//				$this->plugin->get_plugin_name(),
-//				'react',
-//				'wp-api-fetch',
-//				'wp-blocks',
-//				'wp-data',
-//				'wp-edit-post',
-//				'wp-editor',
-//				'wp-element',
-//				'wp-hooks',
-//				'wp-i18n',
-//				'wp-plugins',
-//				'wp-polyfill',
-//				'wp-rich-text',
-//			),
 			array(
 				'react',
 				'wordlift',
@@ -215,6 +200,10 @@ class Wordlift_Admin_Post_Edit_Page {
 			),
 			$this->plugin->get_version()
 		);
+		wp_localize_script( 'wl-block-editor', '_wlBlockEditorSettings', array(
+			'root'  => esc_url_raw( rest_url() ),
+			'nonce' => wp_create_nonce( 'wp_rest' )
+		) );
 
 		wp_enqueue_style(
 			'wl-block-editor',

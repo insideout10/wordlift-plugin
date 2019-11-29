@@ -6,7 +6,7 @@ import { dispatch, select } from "@wordpress/data";
 /**
  * Internal dependencies
  */
-import { Blocks } from "./Blocks";
+import { Blocks } from "./blocks";
 
 export default class EditorOps {
   constructor(editor) {

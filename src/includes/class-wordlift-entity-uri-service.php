@@ -67,6 +67,9 @@ class Wordlift_Entity_Uri_Service {
 
 		$this->configuration_service = $configuration_service;
 
+		// Add a filter to the `rest_post_dispatch` filter to add the wl_entity_url meta as `wl:entity_url`.
+		add_filter( 'rest_post_dispatch', array( $this, 'rest_post_dispatch' ) );
+
 		self::$instance = $this;
 
 	}
@@ -246,6 +249,35 @@ class Wordlift_Entity_Uri_Service {
 	public function is_internal( $uri ) {
 
 		return ( 0 === strrpos( $uri, (string) $this->configuration_service->get_dataset_uri() ) );
+	}
+
+	/**
+	 * Hook to `rest_post_dispatch` to alter the response and add the `wl_entity_url` post meta as `wl:entity_url`.
+	 *
+	 * We're using this filter instead of the well known `register_meta` / `register_rest_field` because we still need
+	 * to provide full compatibility with WordPress 4.4+.
+	 *
+	 * @param WP_HTTP_Response $result Result to send to the client. Usually a WP_REST_Response.
+	 *
+	 * @return WP_HTTP_Response The result to send to the client.
+	 *
+	 * @since 3.23.0
+	 */
+	public function rest_post_dispatch( $result ) {
+
+		// Get a reference to the actual data.
+		$data = &$result->data;
+
+		// Bail out if we don't have the required parameters, or if the type is not a valid entity.
+		if ( ! isset( $data['id'] ) || ! isset( $data['type'] )
+		     || ! Wordlift_Entity_Type_Service::is_valid_entity_post_type( $data['type'] ) ) {
+			return $result;
+		}
+
+		// Add the `wl:entity_url`.
+		$data['wl:entity_url'] = Wordlift_Entity_Service::get_instance()->get_uri( $data['id'] );
+
+		return $result;
 	}
 
 }
