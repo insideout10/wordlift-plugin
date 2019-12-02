@@ -1692,6 +1692,21 @@ class Wordlift {
 		add_action( 'admin_footer', array( $deactivator_feedback, 'render_feedback_popup' ) );
 		add_action( 'admin_enqueue_scripts', array( $deactivator_feedback, 'enqueue_popup_scripts' ) );
 		add_action( 'wp_ajax_wl_deactivation_feedback', array( $deactivator_feedback, 'wl_deactivation_feedback' ) );
+
+		/**
+		 * Always allow the `wordlift/classification` block.
+		 *
+		 * @since 3.23.0
+		 */
+		add_filter( 'allowed_block_types', function ( $value ) {
+
+			if ( true === $value ) {
+				return $value;
+			}
+
+			return array_merge( (array) $value, array( 'wordlift/classification' ) );
+		}, PHP_INT_MAX );
+
 	}
 
 	/**
