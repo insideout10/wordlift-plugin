@@ -1101,7 +1101,7 @@ class Wordlift {
 		/**
 		 * The class responsible for providing mockup for sync mappings
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-mappings-mockup.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-mappings-mockup-page.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
