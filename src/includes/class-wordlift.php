@@ -1389,8 +1389,8 @@ class Wordlift {
 		$this->related_entities_cloud_widget = new Wordlift_Related_Entities_Cloud_Widget();
 
 		/* WordPress Admin. */
-		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page( $this->configuration_service );
-		$this->status_page             = new Wordlift_Admin_Status_Page( $this->entity_service, $this->sparql_service );
+		$this->download_your_data_page   = new Wordlift_Admin_Download_Your_Data_Page( $this->configuration_service );
+		$this->status_page               = new Wordlift_Admin_Status_Page( $this->entity_service, $this->sparql_service );
 		$this->sync_mappings_mockup_page = new Wordlift_Admin_Mappings_Mockup_Page();
 		// Create an instance of the install wizard.
 		$this->admin_setup = new Wordlift_Admin_Setup( $this->configuration_service, $this->key_validation_service, $this->entity_service, $this->language_select_element, $this->country_select_element );
