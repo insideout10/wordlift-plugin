@@ -1,89 +1,116 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <h3>
+        <h2>
             Mappings
-            <button>Add New</button>
-        </h3>
+            <button class="button action">Add New</button>
+        </h2>
     </head>
     <style>
-        table {
-            border-collapse: collapse;
-            width: 500px;
-            border: 1px solid #888;
-        }
-
-        th {
-            text-align: left;
-            padding: 8px;
-        }
-
-        tr:nth-child(even) {background-color: #f2f2f2;}
+    .row {
+        display: flex;
+        border-bottom: 1px solid #000;
+    }
+    .row-no-border {
+        display: flex;
+    }
+    .col {
+        padding: 1em;
+    }
+    .small-table {
+        width: 500px;
+        
+    }
     </style>
     <div class="aligncenter">
-        <table class="table-small-padding">
+        <table class="wp-list-table widefat fixed small-table">
             <tr class="table-row">
                 <td>
-                    <input type="checkbox">
+                    <div class="row">
+                        <div class="col">
+                            <input type="checkbox">
+                        </div>
+                        <div class="col">
+                            Title
+                        </div>
+                    </div>
                 </td>
+            </tr>
+            <tr class="table-row">
                 <td>
-                    Title
+                   <div class="row">
+                        <div class="col">
+                            <input type="checkbox">
+                        </div>
+                        <div class="col">
+                            My custom post type
+                            <br/>
+                            <b>
+                                <a>
+                                    Edit
+                                </a>|
+                                <a>
+                                    Duplicate
+                                </a>|
+                                <a>
+                                    Trash
+                                </a>|
+                            </b>
+                        </div>
+                    </div>
                 </td>
             </tr>
 
             <tr class="table-row">
                 <td>
-                   <input type="checkbox">
-                    My custom post type
-                    <br/>
-                    <b>
-                        <a>
-                            Edit
-                        </a>|
-                        <a>
-                            Duplicate
-                        </a>|
-                        <a>
-                            Trash
-                        </a>|
-                    </b>
+                   <div class="row">
+                        <div class="col">
+                            <input type="checkbox">
+                        </div>
+                        <div class="col">
+                            Another custom post type
+                            <br/>
+                            <b>
+                                <a>
+                                    Edit
+                                </a>|
+                                <a>
+                                    Duplicate
+                                </a>|
+                                <a>
+                                    Trash
+                                </a>|
+                            </b>
+                        </div>
+                    </div>
                 </td>
             </tr>
 
             <tr class="table-row">
                 <td>
-                    <input type="checkbox">
-                </td>
-                <td>
-                    Another custom post type
-                    <br />
-                    <b>
-                        <a>
-                            Edit
-                        </a>|
-                        <a>
-                            Duplicate
-                        </a>|
-                        <a>
-                            Trash
-                        </a>|
-                    </b>
+                   <div class="row">
+                        <div class="col">
+                            <input type="checkbox">
+                        </div>
+                        <div class="col">
+                            Title
+                        </div>
+                    </div>
                 </td>
             </tr>
 
-            <tr>
-                <td>
-                    <input type="checkbox">
-                </td>
-                <td>
-                    Title
-                </td>
-            </tr>
         </table>
     </div>
-    <select>
-        <option value="-1">Bulk Actions</option>
-        <option value="duplicate">Duplicate</option>
-        <option value="trash">Move to Trash</option>
-    </select>
+    <div class="row-no-border">
+        <div class="col">
+            <select>
+                <option value="-1">Bulk Actions</option>
+                <option value="duplicate">Duplicate</option>
+                <option value="trash">Move to Trash</option>
+            </select>
+        </div>
+        <div class="col">
+            <button class="button action"> Apply </button>
+        </div>
+    </div>
 </html>
