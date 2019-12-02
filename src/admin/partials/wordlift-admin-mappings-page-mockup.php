@@ -6,7 +6,7 @@
             <button>Add New</button>
         </h3>
     </head>
-    <table>
+    <table class="wp-list-table">
         <tr>
             <td>
                 <input type="checkbox">

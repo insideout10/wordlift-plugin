@@ -15,6 +15,13 @@
  * @since 3.20.0
  */
 class Wordlift_Admin_Mappings_Mockup_Page extends Wordlift_Admin_Page {
+	/**
+	 * {@inheritdoc}
+	 */
+	public function __construct() {
+		// do nothing, if this constructor is not overridden, duplicate menu entry
+		// created.
+	}
 
 	/**
 	 * {@inheritdoc}
