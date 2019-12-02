@@ -226,7 +226,6 @@ class Analysis_Response_Ops {
 			? 256 : 0 );
 
 		return wp_json_encode( $this->json, $options );
-
 	}
 
 	/**
