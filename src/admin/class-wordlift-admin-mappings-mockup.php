@@ -46,7 +46,7 @@ class Wordlift_Admin_Mappings_Mockup_Page extends Wordlift_Admin_Page {
 
 	function get_partial_name() {
 
-		return 'wordlift-admin-mappings-mockup.php';
+		return 'wordlift-admin-mappings-page-mockup.php';
 	}
 
 }
