@@ -122,7 +122,8 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		$current_post = get_post();
 
 		// Enqueue amp specific styles
-		wp_enqueue_style( 'wordlift-amp-custom', plugin_dir_url( dirname( __FILE__ ) ) . '/css/wordlift-amp-custom.min.css' );
+		// wp_enqueue_style( 'wordlift-amp-custom', plugin_dir_url( dirname( __FILE__ ) ) . '/css/wordlift-amp-custom.min.css' );
+		add_action('amp_post_template_css','amp_navigator_css', 11);
 
 		$post         = ! empty( $shortcode_atts['post_id'] ) ? get_post( intval( $shortcode_atts['post_id'] ) ) : get_post();
 		$navigator_id = $shortcode_atts['uniqid'];
@@ -150,34 +151,18 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 				'https:',
 			), '', $wp_json_base ) . '/navigator' . $delimiter . http_build_query( $navigator_query );
 
+		$template_id = !empty($shortcode_atts['template_id']) ? $shortcode_atts['template_id'] : "template-".$navigator_id;
+
 		return <<<HTML
-		<div id="{$navigator_id}" class="wl-navigator-widget" style="width: 100%">
+		<div id="{$navigator_id}" class="wl-amp-navigator" style="width: 100%">
 			<h3 class="wl-headline">{$shortcode_atts['title']}</h3>
 			<amp-list 
 				media="(min-width: 461px)"
 				width="auto"
 				height="320"
 				layout="fixed-height"
-				src="{$wp_json_url_posts}">
-				<template type="amp-mustache">  
-					<amp-carousel 
-						class="wl-amp-carousel"
-						height="320"
-						layout="fixed-height"
-						type="carousel">
-					{{#values}}
-						<div class="wl-card" style="min-width: 400px">
-							<h6 class="wl-card-header"><a href="{{entity.permalink}}">{{entity.label}}</a></h6>
-                            <div class="fixed-container" style="height: 220px">
-                                <amp-img class="cover"
-                                	layout="fill"
-                                    src="{{post.thumbnail}}"></amp-img>
-                            </div>
-							<div class="wl-card-title"><a href="{{post.permalink}}">{{post.title}}</a></div> 
-						</div>	
-					{{/values}}
-					</amp-carousel>
-				</template>
+				src="{$wp_json_url_posts}"
+				template="{$template_id}">
 			</amp-list>
 			<amp-list 
 				media="(max-width: 460px)"
@@ -206,7 +191,31 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 				</template>
 			</amp-list>	
 		</div>
+		<template type="amp-mustache" id="template-{$navigator_id}"> 
+			<div class="wordlift-navigator">
+				<section class="cards">
+				{{#values}}
+					<article class="card">
+						<a href="{{post.permalink}}">
+							<amp-img
+		                        width="800"
+		                        height="450"
+								layout="responsive"
+		                        src="{{post.thumbnail}}"></amp-img>
+							<div class="card-content"><h3 class="title">{{post.title}}</h3></div>
+						</a>
+					</article>
+				{{/values}}
+				</section>
+			</div>
+		</template>
 HTML;
 	}
 
+}
+
+function amp_navigator_css() { ?>
+	/* amp_navigator_css custom css */
+	.wordlift-navigator .title{font-size:16px;margin:0.5rem 0}.wordlift-navigator .cards{display:flex;flex-wrap:wrap}.wordlift-navigator .cards .card{background:white;flex:1 0 300px;box-sizing:border-box;margin:1rem .25em}@media screen and (min-width: 40em){.wordlift-navigator .cards .card{max-width:calc(50% -  1em)}}@media screen and (min-width: 60em){.wordlift-navigator .cards .card{max-width:calc(25% - 1em)}}.wordlift-navigator .cards .card a{color:black;text-decoration:none}.wordlift-navigator .cards .card a:hover{box-shadow:3px 3px 8px #ccc}.wordlift-navigator .cards .card .thumbnail{width:100%;padding-bottom:56.25%;background-size:cover}.wordlift-navigator .cards .card .thumbnail img{display:block;border:0;width:100%;height:auto}.wordlift-navigator .cards .card .card-content .title{font-size:14px;margin:0.3rem 0}
+	<?php
 }
