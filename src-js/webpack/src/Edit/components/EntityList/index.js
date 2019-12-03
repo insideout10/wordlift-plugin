@@ -33,17 +33,16 @@ const EntityList = ({ entities, onClick, onLinkClick, onEditClick }) => {
   return (
     <List>
       {// Map each entity to an `EntityTile`.
-      entities
-        .toList()
-        .map(entity => (
-          <EntityTile
-            entity={entity}
-            tile={{ open: false }}
-            onClick={onClick}
-            onEditClick={onEditClick}
-            onLinkClick={onLinkClick}
-          />
-        ))}
+      entities.toList().map(entity => (
+        <EntityTile
+          entity={entity}
+          tile={{ open: false }}
+          onClick={onClick}
+          onEditClick={onEditClick}
+          onLinkClick={onLinkClick}
+          key={entity.id}
+        />
+      ))}
     </List>
   );
 };

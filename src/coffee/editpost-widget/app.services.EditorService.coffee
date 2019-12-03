@@ -12,7 +12,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
     # Find existing entities selected in the html content (by looking for *itemid* attributes).
     findEntities = (html) ->
 # Prepare a traslator instance that will traslate Html and Text positions.
-      traslator = Traslator.create html
+#      traslator = Traslator.create html
 
       # Set the pattern to look for *itemid* attributes.
       # pattern = /<(\w+)[^>]*\sclass="([^"]+)"\sitemid="([^"]+)"[^>]*>([^<]*)<\/\1>/gim
@@ -27,8 +27,10 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       (while match = pattern.exec html
 
         annotation =
-          start: traslator.html2text match.index
-          end: traslator.html2text (match.index + match[0].length)
+#          start: traslator.html2text match.index
+#          end: traslator.html2text (match.index + match[0].length)
+          start: match.index
+          end: match.index + match[0].length
           uri: match[3]
           label: match[4]
           cssClass: match[2]
@@ -105,6 +107,9 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       $rootScope.$broadcast "updateOccurencesForEntity", entity.id, occurrences
 
     $rootScope.$on "entityDeselected", (event, entity, annotationId) ->
+
+      console.debug 'EditorService::$rootScope.$on "entityDeselected" (event)', { event, entity, annotationId }
+
       if annotationId?
         dedisambiguate annotationId, entity
       else
@@ -112,6 +117,9 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
           dedisambiguate annotation.id, entity
 
       occurrences = currentOccurrencesForEntity entity.id
+
+      console.debug 'EditorService::$rootScope.$on "entityDeselected" (event)', { occurrences }
+
       $rootScope.$broadcast "updateOccurencesForEntity", entity.id, occurrences
 
     service =
@@ -207,36 +215,60 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
         # Get the TinyMCE editor html content.
         html = EditorAdapter.getHTML() # ed.getContent format: 'raw'
 
+        ##
+        # @since 3.23.0 no more necessary.
         # Find existing entities.
-        entities = findEntities html
+        # entities = findEntities html
 
+        ##
+        # The following isn't anymore necessary with the new Analysis micro service since it already removes overlapping
+        # annotations.
+        # @since 3.23.0
+        #
         # Remove overlapping annotations preserving selected entities
-        AnalysisService.cleanAnnotations analysis, findPositions(entities)
+        # AnalysisService.cleanAnnotations analysis, findPositions(entities)
 
+        ##
+        # The following isn't anymore necessary because we're sending to the new Analysis micro service the editor html
+        # and the analysis micro service returns us the html positions, hence we're not removing existing annotations
+        # anymore.
+        #
+        # @since 3.23.0
+        #
         # Preselect entities found in html. We also keep track of the original
         # text annotation css classes which may turn useful when checking additional
         # classes added to the text annotation, for example the `wl-no-link` css
         # class which we use to decide whether to activate or not a link.
         # We need to keep track now of the css classes because in a while we're
         # going to remove the text annotations and put them back.
-        AnalysisService.preselect analysis, entities
+        # AnalysisService.preselect analysis, entities
 
         # Remove existing text annotations (the while-match is necessary to remove nested spans).
-        while html.match(/<(\w+)[^>]*\sclass="textannotation[^"]*"[^>]*>([^<]+)<\/\1>/gim, '$2')
-          html = html.replace(/<(\w+)[^>]*\sclass="textannotation[^"]*"[^>]*>([^<]*)<\/\1>/gim, '$2')
+        # while html.match(/<(\w+)[^>]*\sclass="textannotation[^"]*"[^>]*>([^<]+)<\/\1>/gim, '$2')
+        #  html = html.replace(/<(\w+)[^>]*\sclass="textannotation[^"]*"[^>]*>([^<]*)<\/\1>/gim, '$2')
 
         # Prepare a traslator instance that will traslate Html and Text positions.
-        traslator = Traslator.create html
+        # traslator = Traslator.create html
 
         # Add text annotations to the html
-        for annotationId, annotation of analysis.annotations
+        # @since 3.23.0 We need to sort the annotations from the last one to the first one in order to insert them into
+        #               the html without the need to recalculate positions.
+        annotations = Object.values( analysis.annotations ).sort ( a, b ) ->
+          if a.end > b.end
+            return -1
+          else if a.end < b.end
+            return 1
+          else
+            return 0
 
-# If the annotation has no entity matches it could be a problem
+        for annotation in annotations
+
+          # If the annotation has no entity matches it could be a problem
           if annotation.entityMatches.length is 0
             $log.warn "Annotation #{annotation.text} [#{annotation.start}:#{annotation.end}] with id #{annotation.id} has no entity matches!"
             continue
 
-          element = "<span id=\"#{annotationId}\" class=\"textannotation"
+          element = "<span id=\"#{annotation.id}\" class=\"textannotation"
 
           # Add the `wl-no-link` class if it was present in the original annotation.
           element += ' wl-no-link' if -1 < annotation.cssClass?.indexOf('wl-no-link')
@@ -248,20 +280,26 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
           for em in annotation.entityMatches
             entity = analysis.entities[em.entityId]
 
-            if annotationId in entity.occurrences
+            if annotation.id in entity.occurrences
               element += " disambiguated wl-#{entity.mainType}\" itemid=\"#{entity.id}"
 
           element += "\">"
 
           # Finally insert the HTML code.
-          traslator.insertHtml element, text: annotation.start
-          traslator.insertHtml '</span>', text: annotation.end
+          # traslator.insertHtml element, text: annotation.start
+          # traslator.insertHtml '</span>', text: annotation.end
+
+          html = html.substring(0, annotation.end) + '</span>' + html.substring(annotation.end)
+          html = html.substring(0, annotation.start) + element + html.substring(annotation.start)
+
 
         # Add a zero-width no-break space after each annotation
         # to be sure that a caret container is available
         # See https://github.com/tinymce/tinymce/blob/master/js/tinymce/classes/Formatter.js#L2030
-        html = traslator.getHtml()
+        # html = traslator.getHtml()
         html = html.replace(/<\/span>/gim, "</span>#{INVISIBLE_CHAR}")
+
+        console.debug { annotations, html }
 
         $rootScope.$broadcast "analysisEmbedded"
         # Update the editor Html code.

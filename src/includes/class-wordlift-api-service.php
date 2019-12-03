@@ -104,17 +104,32 @@ class Wordlift_Api_Service {
 	 */
 	public function post( $path, $body ) {
 
+		return $this->post_custom_content_type(
+			$path, json_encode( $body ), 'application/json; ' . get_bloginfo( 'charset' )
+		);
+	}
+
+	public function post_custom_content_type( $path, $body, $content_type ) {
+
 		// Prepare the target URL.
-		$url = $this->configuration_service->get_api_url() . $path;
+		$url = apply_filters( 'wl_api_service_api_url_path', $this->configuration_service->get_api_url() . $path );
 
 		// Get the response value.
 		$response = wp_remote_post( $url, array(
+			'timeout'    => 60,
 			'user-agent' => self::get_user_agent(),
 			'headers'    => array(
-				'Content-Type'    => 'application/json; ' . get_bloginfo( 'charset' ),
+				'Content-Type'    => $content_type,
 				'X-Authorization' => $this->configuration_service->get_key(),
+				'Authorization'   => "Key {$this->configuration_service->get_key()}",
+				/*
+				 * This is required to avoid CURL receiving 502 Bad Gateway errors.
+				 *
+				 * @see https://stackoverflow.com/questions/30601075/curl-to-google-compute-load-balancer-gets-error-502
+				 */
+				'Expect'          => '',
 			),
-			'body'       => json_encode( $body ),
+			'body'       => $body,
 		) );
 
 		return self::get_message_or_error( $response );

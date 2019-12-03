@@ -1,0 +1,205 @@
+{
+  "entities": {
+    "http://dbpedia.org/resource/Human": {
+      "entityId": "http://dbpedia.org/resource/Human",
+      "confidence": 1.1,
+      "mainType": "other",
+      "types": [
+        "other"
+      ],
+      "label": "Human",
+      "description": "Humans (Homo sapiens) are primates of the family Hominidae, and the only extant species of the genus Homo. Humans are characterized by having a large brain relative to body size, with a particularly well developed neocortex, prefrontal cortex and temporal lobes, making them capable of abstract reasoning, language, introspection, problem solving and culture through social learning.",
+      "images": null,
+      "sameAs": [
+        "http://rdf.freebase.com/ns/m.0dgw9r"
+      ],
+      "properties": {},
+      "synonyms": []
+    },
+    "http://dbpedia.org/resource/Human_sexuality": {
+      "entityId": "http://dbpedia.org/resource/Human_sexuality",
+      "confidence": 1.3,
+      "mainType": "other",
+      "types": [
+        "other"
+      ],
+      "label": "Human sexuality",
+      "description": "Human sexuality is the capacity to have erotic experiences and responses. Human sexuality can also refer to the way someone is sexually attracted to another person – which is determined by their sexual orientation – whether it is to the opposite sex, to the same sex, having both these tendencies, to all gender identities, or not being attracted to anyone in a sexual manner. Human sexuality impacts cultural, political, legal, and philosophical aspects of life.",
+      "images": null,
+      "sameAs": [
+        "http://rdf.freebase.com/ns/m.03ngg"
+      ],
+      "properties": {},
+      "synonyms": []
+    },
+    "http://dbpedia.org/resource/Surrealism": {
+      "entityId": "http://dbpedia.org/resource/Surrealism",
+      "confidence": 1.2,
+      "mainType": "other",
+      "types": [
+        "other"
+      ],
+      "label": "Surrealism",
+      "description": "Surrealism is a cultural movement that began in the early 1920s, and is best known for its visual artworks and writings. Surrealism works feature the element of surprise, unexpected juxtapositions and non sequitur; however, many Surrealist artists and writers regard their work as an expression of the philosophical movement first and foremost, with the works being an artefact. Leader André Breton was explicit in his assertion that Surrealism was above all a revolutionary movement.",
+      "images": null,
+      "sameAs": [
+        "http://rdf.freebase.com/ns/m.073_6"
+      ],
+      "properties": {},
+      "synonyms": []
+    },
+    "http://dbpedia.org/resource/Rural_area": {
+      "entityId": "http://dbpedia.org/resource/Rural_area",
+      "confidence": 1.2,
+      "mainType": "other",
+      "types": [
+        "other"
+      ],
+      "label": "Rural area",
+      "description": "In general, a rural area is a geographic area that is located outside the cities and towns. The Health Resources and Services Administration of the U.S. Department of Health and Human Services defines the word \"rural\" as encompassing \"... all population, housing, and territory not included within an urban area. Whatever is not urban is considered rural. \" Typical rural areas have a low population density and small settlements.",
+      "images": null,
+      "sameAs": [
+        "http://rdf.freebase.com/ns/m.01f4td"
+      ],
+      "properties": {},
+      "synonyms": []
+    },
+    "http://dbpedia.org/resource/Imagery": {
+      "entityId": "http://dbpedia.org/resource/Imagery",
+      "confidence": 1.1400000000000001,
+      "mainType": "other",
+      "types": [
+        "other"
+      ],
+      "label": "Imagery",
+      "description": "Imagery, in a literary text, is an author's use of vivid and descriptive language to add depth to their work. It appeals to human senses to deepen the reader's understanding of the work.",
+      "images": null,
+      "sameAs": [
+        "http://rdf.freebase.com/ns/m.01z5td"
+      ],
+      "properties": {},
+      "synonyms": []
+    },
+    "http://dbpedia.org/resource/Studio": {
+      "entityId": "http://dbpedia.org/resource/Studio",
+      "confidence": 1.12,
+      "mainType": "other",
+      "types": [
+        "other"
+      ],
+      "label": "Studio",
+      "description": "A studio is an artist's or worker's workroom, or the catchall term for an artist and his or her employees who work within that studio. This can be for the purpose of architecture, painting, pottery, sculpture, woodworking, scrapbooking, photography, graphic design, filmmaking, animation, radio or television production broadcasting or the making of music. The term is also used for the workroom of dancers, often specified to dance studio.",
+      "images": null,
+      "sameAs": [
+        "http://rdf.freebase.com/ns/m.035zq3"
+      ],
+      "properties": {},
+      "synonyms": []
+    }
+  },
+  "annotations": {
+    "urn:enhancement-8087b84d": {
+      "annotationId": "urn:enhancement-8087b84d",
+      "start": 444,
+      "end": 450,
+      "text": "sexual",
+      "entityMatches": [
+        {
+          "confidence": 1.0,
+          "entityId": "http://dbpedia.org/resource/Human_sexuality"
+        }
+      ]
+    },
+    "urn:enhancement-b2ae20b2": {
+      "annotationId": "urn:enhancement-b2ae20b2",
+      "start": 320,
+      "end": 325,
+      "text": "human",
+      "entityMatches": [
+        {
+          "confidence": 1.0,
+          "entityId": "http://dbpedia.org/resource/Human"
+        }
+      ]
+    },
+    "urn:enhancement-74de4cf0": {
+      "annotationId": "urn:enhancement-74de4cf0",
+      "start": 451,
+      "end": 458,
+      "text": "imagery",
+      "entityMatches": [
+        {
+          "confidence": 1.0,
+          "entityId": "http://dbpedia.org/resource/Imagery"
+        }
+      ]
+    },
+    "urn:enhancement-f22b4e14": {
+      "annotationId": "urn:enhancement-f22b4e14",
+      "start": 341,
+      "end": 348,
+      "text": "surreal",
+      "entityMatches": [
+        {
+          "confidence": 1.0,
+          "entityId": "http://dbpedia.org/resource/Surrealism"
+        }
+      ]
+    },
+    "urn:enhancement-16728fad": {
+      "annotationId": "urn:enhancement-16728fad",
+      "start": 229,
+      "end": 235,
+      "text": "studio",
+      "entityMatches": [
+        {
+          "confidence": 1.0,
+          "entityId": "http://dbpedia.org/resource/Studio"
+        }
+      ]
+    },
+    "urn:enhancement-f2f07ad8": {
+      "annotationId": "urn:enhancement-f2f07ad8",
+      "start": 239,
+      "end": 244,
+      "text": "rural",
+      "entityMatches": [
+        {
+          "confidence": 1.0,
+          "entityId": "http://dbpedia.org/resource/Rural_area"
+        }
+      ]
+    }
+  },
+  "images": [],
+  "languages": null,
+  "topics": [
+    {
+      "label": "Arts",
+      "description": null,
+      "uri": "http://dbpedia.org/resource/Arts",
+      "confidence": 0.42463555932044983,
+      "images": null,
+      "sameAs": null
+    },
+    {
+      "label": "Literature",
+      "description": "Literature is the art of written work and can, in some circumstances, refer exclusively to published sources. The word literature literally means \"things made from letters\" and the pars pro toto term \"letters\" is sometimes used to signify \"literature,\" as in the figures of speech \"arts and letters\" and \"man of letters. \" Literature is commonly classified as having two major forms—fiction and non-fiction—and two major techniques—poetry and prose.",
+      "uri": "http://dbpedia.org/resource/Literature",
+      "confidence": 0.3866013288497925,
+      "images": null,
+      "sameAs": [
+        "http://rdf.freebase.com/ns/m.04g51"
+      ]
+    },
+    {
+      "label": "Environment",
+      "description": null,
+      "uri": "http://dbpedia.org/resource/Environment",
+      "confidence": 0.1887630969285965,
+      "images": null,
+      "sameAs": null
+    }
+  ],
+  "content": null
+}

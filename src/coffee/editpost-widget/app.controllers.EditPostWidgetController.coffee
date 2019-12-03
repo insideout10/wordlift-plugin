@@ -103,7 +103,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
     switch entityType
       when 'entity'
-        $log.debug "An existing entity. Nothing to do"
+        $log.debug "An existing entity. Nothing to do", entity
       else # New entity
 
         $log.debug "A new entity"
@@ -331,7 +331,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     RelatedPostDataRetrieverService.load entityIds
 
   $scope.onSelectedEntityTile = (entity)->
-
     # Detect if the entity has to be selected or unselected
     action = 'entitySelected'
     # If bottom / up disambiguation mode is on
@@ -347,16 +346,20 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
       if entity.occurrences.length > 0
         action = 'entityDeselected'
 
+    console.info "onSelectedEntityTile", { action, entity }
+
     scopeId = configuration.getCategoryForType entity.mainType
+
     $log.debug "Action '#{action}' on entity #{entity.id} within #{scopeId} scope"
 
     if action is 'entitySelected'
       # Ensure to mark the current entity to selected entities
       $scope.selectedEntities[ scopeId ][ entity.id ] = entity
       # Concat entity images to suggested images collection
-      for image in entity.images
-        unless image in $scope.images
-          $scope.images.push image
+      if entity.images?
+        for image in entity.images
+          unless image in $scope.images
+            $scope.images.push image
     else
       # Remove current entity images from suggested images collection
       $scope.images = $scope.images.filter (img)->

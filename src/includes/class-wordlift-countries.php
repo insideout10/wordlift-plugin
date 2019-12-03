@@ -31,149 +31,19 @@ class Wordlift_Countries {
 	private static $countries = array();
 
 	/**
-	 * The list of supported country codes.
+	 * The list of supported country codes, this is populated by self::lazy_populate_codes_and_country_codes_array.
 	 *
 	 * WARNING! If you change the list of supported countries, *you have* to add the related flag
 	 * in the images/flags folder.
 	 *
 	 * @since 3.18.0
 	 *
-	 * @var array An array of country codes.
+	 * @var array An array of country codes => supported_languages_array
 	 */
-	private static $codes = array(
-		'ae' => array(
-			'en',
-		),
-		'ar' => array(),
-		'at' => array(),
-		'au' => array(),
-		'be' => array(
-			'fr',
-			'nl',
-		),
-		'bg' => array(),
-		'br' => array(),
-		'ca' => array(
-			'en',
-			'fr',
-		),
-		'ch' => array(
-			'de',
-			'en',
-			'fr',
-			'it',
-		),
-		'cl' => array(),
-		'co' => array(),
-		'cy' => array(
-			'el',
-			'en',
-			'tr',
-		),
-		'cz' => array(),
-		'de' => array(),
-		'dk' => array(),
-		'ec' => array(),
-		'ee' => array(
-			'et',
-			'ru',
-		),
-		'eg' => array(),
-		'es' => array(),
-		'et' => array(
-			'am',
-			'en',
-			'om',
-			'so',
-			'ti',
-		),
-		'fi' => array(
-			'fi',
-		),
-		'fr' => array(),
-		'ge' => array(
-			'en',
-		),
-		'gr' => array(),
-		'gt' => array(),
-		'hr' => array(),
-		'id' => array(),
-		'ie' => array(),
-		'il' => array(),
-		'in' => array(
-			'en',
-			'hi',
-			'ta',
-			'te',
-		),
-		'it' => array(),
-		'jp' => array(),
-		'kh' => array(),
-		'lt' => array(),
-		'lu' => array(
-			'de',
-			'fr',
-		),
-		'ma' => array(),
-		'mx' => array(),
-		'my' => array(
-			'en',
-			'ms',
-		),
-		'nl' => array(),
-		'no' => array(),
-		'nz' => array(
-			'en',
-		),
-		'pe' => array(
-			'es',
-			'qu',
-		),
-		'ph' => array(),
-		'pl' => array(),
-		'pt' => array(),
-		'ro' => array(
-			'hu',
-			'ro',
-		),
-		'rs' => array(),
-		'ru' => array(),
-		'se' => array(),
-		'sg' => array(
-			'en',
-			'ms',
-			'zh-CN',
-		),
-		'sk' => array(),
-		'th' => array(),
-		'tr' => array(),
-		'tw' => array(
-			'zh-TW',
-		),
-		'ua' => array(
-			'ru',
-			'uk',
-		),
-		'uk' => array(),
-		'us' => array(
-			'en',
-			'es',
-			'zh-CN',
-			'zh-TW',
-		),
-		'uy' => array(),
-		'vn' => array(
-			'en',
-			'vi',
-		),
-		'za' => array(
-			'af',
-			'en',
-		),
-	);
+	public static $codes = array();
 
 	/**
-	 * The list of country codes.
+	 * The list of country codes, this is populated by self::lazy_populate_codes_and_country_codes_array.
 	 *
 	 * WARNING! If you change the list of supported countries, *you have* to add the related flag
 	 * in the images/flags folder.
@@ -182,258 +52,7 @@ class Wordlift_Countries {
 	 *
 	 * @var array An array of country codes => country names.
 	 */
-	private static $country_codes = array(
-		'af' => 'Afghanistan',
-		'ax' => '\u00c5land Islands',
-		'al' => 'Albania',
-		'dz' => 'Algeria',
-		'as' => 'American Samoa',
-		'ad' => 'Andorra',
-		'ao' => 'Angola',
-		'ai' => 'Anguilla',
-		'aq' => 'Antarctica',
-		'ag' => 'Antigua and Barbuda',
-		'ar' => 'Argentina',
-		'am' => 'Armenia',
-		'aw' => 'Aruba',
-		'au' => 'Australia',
-		'at' => 'Austria',
-		'az' => 'Azerbaijan',
-		'bs' => 'Bahamas',
-		'bh' => 'Bahrain',
-		'bd' => 'Bangladesh',
-		'bb' => 'Barbados',
-		'by' => 'Belarus',
-		'be' => 'Belgium',
-		'bz' => 'Belize',
-		'bj' => 'Benin',
-		'bm' => 'Bermuda',
-		'bt' => 'Bhutan',
-		'bo' => 'Bolivia, Plurinational State of',
-		'bq' => 'Bonaire, Sint Eustatius and Saba',
-		'ba' => 'Bosnia and Herzegovina',
-		'bw' => 'Botswana',
-		'bv' => 'Bouvet Island',
-		'br' => 'Brazil',
-		'io' => 'British Indian Ocean Territory',
-		'bn' => 'Brunei Darussalam',
-		'bg' => 'Bulgaria',
-		'bf' => 'Burkina Faso',
-		'bi' => 'Burundi',
-		'kh' => 'Cambodia',
-		'cm' => 'Cameroon',
-		'ca' => 'Canada',
-		'cv' => 'Cape Verde',
-		'ky' => 'Cayman Islands',
-		'cf' => 'Central African Republic',
-		'td' => 'Chad',
-		'cl' => 'Chile',
-		'cn' => 'China',
-		'cx' => 'Christmas Island',
-		'cc' => 'Cocos (Keeling) Islands',
-		'co' => 'Colombia',
-		'km' => 'Comoros',
-		'cg' => 'Congo',
-		'cd' => 'Congo, the Democratic Republic of the',
-		'ck' => 'Cook Islands',
-		'cr' => 'Costa Rica',
-		'ci' => 'C\u00f4te d\'Ivoire',
-		'hr' => 'Croatia',
-		'cu' => 'Cuba',
-		'cw' => 'Cura\u00e7ao',
-		'cy' => 'Cyprus',
-		'cz' => 'Czech Republic',
-		'dk' => 'Denmark',
-		'dj' => 'Djibouti',
-		'dm' => 'Dominica',
-		'do' => 'Dominican Republic',
-		'ec' => 'Ecuador',
-		'eg' => 'Egypt',
-		'sv' => 'El Salvador',
-		'gq' => 'Equatorial Guinea',
-		'er' => 'Eritrea',
-		'ee' => 'Estonia',
-		'et' => 'Ethiopia',
-		'fk' => 'Falkland Islands (Malvinas)',
-		'fo' => 'Faroe Islands',
-		'fj' => 'Fiji',
-		'fi' => 'Finland',
-		'fr' => 'France',
-		'gf' => 'French Guiana',
-		'pf' => 'French Polynesia',
-		'tf' => 'French Southern Territories',
-		'ga' => 'Gabon',
-		'gm' => 'Gambia',
-		'ge' => 'Georgia',
-		'de' => 'Germany',
-		'gh' => 'Ghana',
-		'gi' => 'Gibraltar',
-		'gr' => 'Greece',
-		'gl' => 'Greenland',
-		'gd' => 'Grenada',
-		'gp' => 'Guadeloupe',
-		'gu' => 'Guam',
-		'gt' => 'Guatemala',
-		'gg' => 'Guernsey',
-		'gn' => 'Guinea',
-		'gw' => 'Guinea-Bissau',
-		'gy' => 'Guyana',
-		'ht' => 'Haiti',
-		'hm' => 'Heard Island and McDonald Islands',
-		'va' => 'Holy See (Vatican City State)',
-		'hn' => 'Honduras',
-		'hk' => 'Hong Kong',
-		'hu' => 'Hungary',
-		'is' => 'Iceland',
-		'in' => 'India',
-		'id' => 'Indonesia',
-		'ir' => 'Iran, Islamic Republic of',
-		'iq' => 'Iraq',
-		'ie' => 'Ireland',
-		'im' => 'Isle of Man',
-		'il' => 'Israel',
-		'it' => 'Italy',
-		'jm' => 'Jamaica',
-		'jp' => 'Japan',
-		'je' => 'Jersey',
-		'jo' => 'Jordan',
-		'kz' => 'Kazakhstan',
-		'ke' => 'Kenya',
-		'ki' => 'Kiribati',
-		'kp' => 'Korea, Democratic People\'s Republic of',
-		'kr' => 'Korea, Republic of',
-		'kw' => 'Kuwait',
-		'kg' => 'Kyrgyzstan',
-		'la' => 'Lao People\'s Democratic Republic',
-		'lv' => 'Latvia',
-		'lb' => 'Lebanon',
-		'ls' => 'Lesotho',
-		'lr' => 'Liberia',
-		'ly' => 'Libya',
-		'li' => 'Liechtenstein',
-		'lt' => 'Lithuania',
-		'lu' => 'Luxembourg',
-		'mo' => 'Macao',
-		'mk' => 'Macedonia, the Former Yugoslav Republic of',
-		'mg' => 'Madagascar',
-		'mw' => 'Malawi',
-		'my' => 'Malaysia',
-		'mv' => 'Maldives',
-		'ml' => 'Mali',
-		'mt' => 'Malta',
-		'mh' => 'Marshall Islands',
-		'mq' => 'Martinique',
-		'mr' => 'Mauritania',
-		'mu' => 'Mauritius',
-		'yt' => 'Mayotte',
-		'mx' => 'Mexico',
-		'fm' => 'Micronesia, Federated States of',
-		'md' => 'Moldova, Republic of',
-		'mc' => 'Monaco',
-		'mn' => 'Mongolia',
-		'me' => 'Montenegro',
-		'ms' => 'Montserrat',
-		'ma' => 'Morocco',
-		'mz' => 'Mozambique',
-		'mm' => 'Myanmar',
-		'na' => 'Namibia',
-		'nr' => 'Nauru',
-		'np' => 'Nepal',
-		'nl' => 'Netherlands',
-		'nc' => 'New Caledonia',
-		'nz' => 'New Zealand',
-		'ni' => 'Nicaragua',
-		'ne' => 'Niger',
-		'ng' => 'Nigeria',
-		'nu' => 'Niue',
-		'nf' => 'Norfolk Island',
-		'mp' => 'Northern Mariana Islands',
-		'no' => 'Norway',
-		'om' => 'Oman',
-		'pk' => 'Pakistan',
-		'pw' => 'Palau',
-		'ps' => 'Palestine, State of',
-		'pa' => 'Panama',
-		'pg' => 'Papua New Guinea',
-		'py' => 'Paraguay',
-		'pe' => 'Peru',
-		'ph' => 'Philippines',
-		'pn' => 'Pitcairn',
-		'pl' => 'Poland',
-		'pt' => 'Portugal',
-		'pr' => 'Puerto Rico',
-		'qa' => 'Qatar',
-		're' => 'R\u00e9union',
-		'ro' => 'Romania',
-		'ru' => 'Russian Federation',
-		'rw' => 'Rwanda',
-		'bl' => 'Saint Barth\u00e9lemy',
-		'sh' => 'Saint Helena, Ascension and Tristan da Cunha',
-		'kn' => 'Saint Kitts and Nevis',
-		'lc' => 'Saint Lucia',
-		'mf' => 'Saint Martin (French part)',
-		'pm' => 'Saint Pierre and Miquelon',
-		'vc' => 'Saint Vincent and the Grenadines',
-		'ws' => 'Samoa',
-		'sm' => 'San Marino',
-		'st' => 'Sao Tome and Principe',
-		'sa' => 'Saudi Arabia',
-		'sn' => 'Senegal',
-		'rs' => 'Serbia',
-		'sc' => 'Seychelles',
-		'sl' => 'Sierra Leone',
-		'sg' => 'Singapore',
-		'sx' => 'Sint Maarten (Dutch part)',
-		'sk' => 'Slovakia',
-		'si' => 'Slovenia',
-		'sb' => 'Solomon Islands',
-		'so' => 'Somalia',
-		'za' => 'South Africa',
-		'gs' => 'South Georgia and the South Sandwich Islands',
-		'ss' => 'South Sudan',
-		'es' => 'Spain',
-		'lk' => 'Sri Lanka',
-		'sd' => 'Sudan',
-		'sr' => 'Suriname',
-		'sj' => 'Svalbard and Jan Mayen',
-		'sz' => 'Swaziland',
-		'se' => 'Sweden',
-		'ch' => 'Switzerland',
-		'sy' => 'Syrian Arab Republic',
-		'tw' => 'Taiwan, Province of China',
-		'tj' => 'Tajikistan',
-		'tz' => 'Tanzania, United Republic of',
-		'th' => 'Thailand',
-		'tl' => 'Timor-Leste',
-		'tg' => 'Togo',
-		'tk' => 'Tokelau',
-		'to' => 'Tonga',
-		'tt' => 'Trinidad and Tobago',
-		'tn' => 'Tunisia',
-		'tr' => 'Turkey',
-		'tm' => 'Turkmenistan',
-		'tc' => 'Turks and Caicos Islands',
-		'tv' => 'Tuvalu',
-		'ug' => 'Uganda',
-		'ua' => 'Ukraine',
-		'ae' => 'United Arab Emirates',
-		'gb' => 'United Kingdom',
-		'uk' => 'United Kingdom',
-		'us' => 'United States',
-		'um' => 'United States Minor Outlying Islands',
-		'uy' => 'Uruguay',
-		'uz' => 'Uzbekistan',
-		'vu' => 'Vanuatu',
-		've' => 'Venezuela, Bolivarian Republic of',
-		'vn' => 'Viet Nam',
-		'vg' => 'Virgin Islands, British',
-		'vi' => 'Virgin Islands, U.S.',
-		'wf' => 'Wallis and Futuna',
-		'eh' => 'Western Sahara',
-		'ye' => 'Yemen',
-		'zm' => 'Zambia',
-		'zw' => 'Zimbabwe',
-	);
+	private static $country_codes = array();
 
 	/**
 	 * An array of flag filenames.
@@ -703,16 +322,116 @@ class Wordlift_Countries {
 	);
 
 	/**
+	 * Parse_country_code_json_file_to_array.
+	 *
+	 * @param  string $file_name The json file name where the supported country
+	 * and languages are present.
+	 *
+	 * @return array An Array having two maps, country_code_language_map and country_code_name_map.
+	 */
+	public static function parse_country_code_json_file_to_array( $file_name ) {
+		$json_file_contents = file_get_contents( $file_name );
+		$decoded_array      = json_decode( $json_file_contents, true );
+		// decoded array would be null if the json_decode parses
+		// invalid content.
+		if ( null === $decoded_array ) {
+			return array(
+				'country_code_name_map'     => array(),
+				'country_code_language_map' => array(),
+			);
+		}
+		$result = array();
+		// country_code => country_language map.
+		$country_code_language_map = array();
+		// country_code => country_name map.
+		$country_code_name_map = array();
+		foreach ( $decoded_array as $key => $value ) {
+			$country_code_language_map[ $key ] = $value['supportedLang'];
+			$country_code_name_map [ $key ]    = $value['defaultLoc']['loc_name'];
+		}
+		$result['country_code_language_map'] = $country_code_language_map;
+		$result['country_code_name_map']     = $country_code_name_map;
+		return $result;
+	}
+	/**
+	 * Get the list of WordLift's supported country codes from json file mapping country_code => languages.
+	 *
+	 * @since 3.22.5.1
+	 *
+	 * @param string $file_name The json file where the supported country codes and language_codes are stored.
+	 *
+	 * @return array An Array having two maps, country_code_language_map and country_code_name_map.
+	 */
+	public static function get_codes_from_json_file( $file_name ) {
+		if ( file_exists( $file_name ) ) {
+			return self::parse_country_code_json_file_to_array( $file_name );
+		}
+		return array(
+			'country_code_name_map'     => array(),
+			'country_code_language_map' => array(),
+		);
+	}
+
+	/**
+	 * Returns the country language pairs.
+	 *
+	 * @since 3.18.0
+	 *
+	 * @return array The country language pairs.
+	 */
+	public static function get_codes() {
+		return self::$codes;
+	}
+	/**
+	 * Populate self::codes and self::country_codes if not done before.
+	 *
+	 * @since 3.22.5.1
+	 *
+	 * @param string $file_name The json file where the supported country codes and language_codes are stored.
+	 *
+	 * @return void
+	 */
+	private static function lazy_populate_codes_and_country_codes_array( $file_name ) {
+		if ( null === $file_name ) {
+			$file_name = __DIR__ . '/supported-countries.json';
+		}
+		if ( 0 === count( self::$codes ) || 0 === count( self::$country_codes ) ) {
+			// populate the two arrays.
+			$result_array        = self::get_codes_from_json_file( $file_name );
+			self::$codes         = $result_array['country_code_language_map'];
+			self::$country_codes = $result_array['country_code_name_map'];
+		}
+
+	}
+
+	/**
+	 * Reset codes_and_country_codes static variable, used for testing
+	 *
+	 * @since 3.22.5.1
+	 *
+	 * @return void
+	 */
+	public static function reset_codes_and_country_codes() {
+		self::$codes         = array();
+		self::$country_codes = array();
+	}
+
+
+	/**
 	 * Get the list of WordLift's supported countries in an array with country code => country name pairs.
 	 *
 	 * @since 3.18.0
 	 *
 	 * @param string|false $lang Optional. The language code we are looking for. Default `any`.
 	 *
+	 * @param string|null  $file_name Optional. The json file containing country codes
+	 *  and language data.
+	 *
 	 * @return array An array with country code => country name pairs.
 	 */
-	public static function get_countries( $lang = false ) {
-
+	public static function get_countries( $lang = false, $file_name = null ) {
+		// populate the codes and countries array if it is not done before.
+		self::lazy_populate_codes_and_country_codes_array( $file_name );
 		// Lazily load the countries.
 		$lang_key = false === $lang ? 'any' : $lang;
 		if ( isset( self::$countries[ $lang_key ] ) ) {
@@ -772,18 +491,6 @@ class Wordlift_Countries {
 	}
 
 	/**
-	 * Returns the country language pairs.
-	 *
-	 * @since 3.18.0
-	 *
-	 * @return array The country language pairs.
-	 */
-	public static function get_codes() {
-
-		return self::$codes;
-	}
-
-	/**
 	 * Get a flag URL.
 	 *
 	 * @since 3.20.0
@@ -796,14 +503,14 @@ class Wordlift_Countries {
 
 		// Bail out if we don't have the flag.
 		if ( ! isset( self::$country_flags[ $country_code ] )
-		     || is_null( self::$country_flags[ $country_code ] ) ) {
+			|| is_null( self::$country_flags[ $country_code ] ) ) {
 			return null;
 		}
 
 		return plugin_dir_url( dirname( __FILE__ ) )
-		       . 'images/flags/16/'
-		       . self::$country_flags[ $country_code ]
-		       . '.png';
+			. 'images/flags/16/'
+			. self::$country_flags[ $country_code ]
+			. '.png';
 	}
 
 	/**

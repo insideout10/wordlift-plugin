@@ -33,9 +33,6 @@ class Wordlift_Dashboard_Latest_News {
 			'add_dashboard_latest_news_widget',
 		) );
 
-		add_action( 'admin_enqueue_scripts', function () {
-			wp_enqueue_script( 'wl-admin-dashboard', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/wordlift-admin-dashboard.js', array( 'jquery' ) );
-		} );
 	}
 
 	/**
@@ -44,6 +41,9 @@ class Wordlift_Dashboard_Latest_News {
 	 * @return string Articles html markup.
 	 */
 	public function render() {
+
+		wp_enqueue_script( 'wl-admin-dashboard', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/wordlift-admin-dashboard.js', array( 'jquery' ), '3.22.0', true );
+
 		include( plugin_dir_path( __FILE__ ) . 'partials/wordlift-admin-news-widget.php' );
 	}
 
@@ -120,11 +120,11 @@ class Wordlift_Dashboard_Latest_News {
 	/**
 	 * Add the `utm` parameter for GA.
 	 *
-	 * @since 3.19.0
-	 *
 	 * @param string $url The URL.
 	 *
 	 * @return string The URL with the `utm` parameter prepended by `&` or by `?`.
+	 * @since 3.19.0
+	 *
 	 */
 	private static function add_utm_parameter( $url ) {
 

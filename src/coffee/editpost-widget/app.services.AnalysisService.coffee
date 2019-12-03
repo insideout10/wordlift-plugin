@@ -106,19 +106,20 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 # TMP ... Should be done on WLS side
 #      unless data.topics?
 #        data.topics = []
-      dt = @._defaultType
+#      dt = @._defaultType
 
-      if data.topics?
-        data.topics = data.topics.map (topic)->
-          topic.id = topic.uri
-          topic.occurrences = []
-          topic.mainType = dt
-          topic
+#      if data.topics?
+#        data.topics = data.topics.map (topic)->
+#          topic.id = topic.uri
+#          topic.occurrences = []
+#          topic.mainType = dt
+#          topic
 
-      $log.debug "Found #{Object.keys(configuration.entities).length} entities in configuration...", configuration
+#      $log.debug "Found #{Object.keys(configuration.entities).length} entities in configuration...", configuration
 
-      for id, localEntity of configuration.entities
-        data.entities[id] = localEntity
+      # This isn't needed anymore as it is delegated to the WP analysis end-point to merge disambiguated entities.
+#      for id, localEntity of configuration.entities
+#        data.entities[id] = localEntity
 
       for id, entity of data.entities
 
@@ -126,31 +127,32 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 #
 # See https://github.com/insideout10/wordlift-plugin/issues/437
 # See https://github.com/insideout10/wordlift-plugin/issues/345
-        if configuration.currentPostUri is id
-          delete data.entities[id]
-          continue
+#        if configuration.currentPostUri is id
+#          delete data.entities[id]
+#          continue
 
-        if not entity.label
-          $log.warn "Label missing for entity #{id}"
+#        if not entity.label
+#          $log.warn "Label missing for entity #{id}"
+#
+#        if not entity.description
+#          $log.warn "Description missing for entity #{id}"
 
-        if not entity.description
-          $log.warn "Description missing for entity #{id}"
+#        if not entity.sameAs
+#          $log.warn "sameAs missing for entity #{id}"
+#          entity.sameAs = []
+#          configuration.entities[id]?.sameAs = []
+#          $log.debug "Schema.org sameAs overridden for entity #{id}"
 
-        if not entity.sameAs
-          $log.warn "sameAs missing for entity #{id}"
-          entity.sameAs = []
-          configuration.entities[id]?.sameAs = []
-          $log.debug "Schema.org sameAs overridden for entity #{id}"
-
-        if entity.mainType not in @._supportedTypes
-          $log.warn "Schema.org type #{entity.mainType} for entity #{id} is not supported from current classification boxes configuration"
-          entity.mainType = @._defaultType
-          configuration.entities[id]?.mainType = @._defaultType
-          $log.debug "Schema.org type overridden for entity #{id}"
+#        if entity.mainType not in @._supportedTypes
+#          $log.warn "Schema.org type #{entity.mainType} for entity #{id} is not supported from current classification boxes configuration"
+#          entity.mainType = @._defaultType
+#          configuration.entities[id]?.mainType = @._defaultType
+#          $log.debug "Schema.org type overridden for entity #{id}"
 
         entity.id = id
-        entity.occurrences = []
-        entity.annotations = {}
+#        # This is not necessary anymore because Analysis_Response_Ops (in PHP) populates it.
+        entity.occurrences = [] if not entity.occurrences?
+        entity.annotations = {} if not entity.annotations?
         # See #550: the confidence is set by the server.
         # entity.confidence = 1
 
@@ -160,34 +162,35 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 
         # Filter out annotations that don't have a corresponding entity. The entities list might be filtered, in order
         # to remove the local entity.
-        data.annotations[id].entityMatches = (ea for ea in annotation.entityMatches when ea.entityId of data.entities)
+        #  data.annotations[id].entityMatches = (ea for ea in annotation.entityMatches when ea.entityId of data.entities)
 
         # Remove the annotation if there's no entity matches left.
         #
         # See https://github.com/insideout10/wordlift-plugin/issues/437
         # See https://github.com/insideout10/wordlift-plugin/issues/345
-        if 0 is data.annotations[id].entityMatches.length
-          delete data.annotations[id]
-          continue
+        # if 0 is data.annotations[id].entityMatches.length
+        #   delete data.annotations[id]
+        #   continue
 
         for ea, index in data.annotations[id].entityMatches
 
-          if not data.entities[ea.entityId].label
-            data.entities[ea.entityId].label = annotation.text
-            $log.debug "Missing label retrieved from related annotation for entity #{ea.entityId}"
+          # if not data.entities[ea.entityId].label
+          #   data.entities[ea.entityId].label = annotation.text
+          #   $log.debug "Missing label retrieved from related annotation for entity #{ea.entityId}"
 
+          data.entities[ea.entityId].annotations = {} if not data.entities[ea.entityId].annotations?
           data.entities[ea.entityId].annotations[id] = annotation
           data.annotations[id].entities[ea.entityId] = data.entities[ea.entityId]
 
-      # TODO move this calculation on the server
-      for id, entity of data.entities
-        for annotationId, annotation of data.annotations
-          local_confidence = 1
-          for em in annotation.entityMatches
-            if em.entityId? and em.entityId is id
-              local_confidence = em.confidence
-          entity.confidence = entity.confidence * local_confidence
-
+#      # TODO move this calculation on the server
+#      for id, entity of data.entities
+#        for annotationId, annotation of data.annotations
+#          local_confidence = 1
+#          for em in annotation.entityMatches
+#            if em.entityId? and em.entityId is id
+#              local_confidence = em.confidence
+#          entity.confidence = entity.confidence * local_confidence
+#
       data
 
     service.getSuggestedSameAs = (content)->
@@ -242,11 +245,11 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
       service._updateStatus true
 
       # Get the existing annotations in the text.
-      annotations = AnnotationParser.parse(EditorAdapter.getHTML())
+      # annotations = AnnotationParser.parse(EditorAdapter.getHTML())
 
       $log.debug 'Requesting analysis...'
 
-      promise = @._innerPerform content, annotations
+      promise = @._innerPerform content, {}
       # If successful, broadcast an *analysisPerformed* event.
       promise.then (response) ->
 

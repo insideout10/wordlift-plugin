@@ -1,19 +1,13 @@
-@import '../bower_components/components-font-awesome/less/font-awesome.less';
-@import 'colors.less';
-@import 'animations.less';
-@import 'wordlift-functions.less';
-@import 'wordlift-carousel.less';
-@import 'wordlift-card.less';
-@import 'wordlift-label.less';
-@import 'wordlift-dashboard-widget.less';
-// Importing new brand identity
+@import "../bower_components/components-font-awesome/less/font-awesome.less";
+@import "colors.less";
+@import "animations.less";
+@import "wordlift-functions.less";
+@import "wordlift-carousel.less";
+@import "wordlift-card.less";
+@import "wordlift-label.less";
+@import "wordlift-dashboard-widget.less";
+/** Importing new brand identity. */
 @import "wordlift-widget-be.less";
-
-//.inline-edit-entity {
-//  .inline-edit-categories {
-//    display: none;
-//  }
-//}
 
 .wl-button {
   background-color: @wl-brand-color !important;
@@ -95,7 +89,7 @@
 }
 
 .mce-wl-button button {
-  background: data-uri('../images/svg/wl-logo-icon.svg') 6px 3px no-repeat !important;
+  background: data-uri("../images/svg/wl-logo-icon.svg") 6px 3px no-repeat !important;
   padding-left: 28px !important;
   height: 20px;
 }
@@ -228,49 +222,39 @@
   }
 
   &.wl-creative-work {
-    .tile(@wl-creative-work-color, @fa-var-lightbulb-o)
+    .tile(@wl-creative-work-color, @fa-var-lightbulb-o);
   }
 
   &.wl-event {
-    .tile(@wl-event-color, @fa-var-calendar)
+    .tile(@wl-event-color, @fa-var-calendar);
   }
 
   &.wl-organization {
-    .tile(@wl-organization-color, @fa-var-building-o)
+    .tile(@wl-organization-color, @fa-var-building-o);
   }
 
   &.wl-local-business {
-    .tile(@wl-organization-color, @fa-var-building-o)
+    .tile(@wl-organization-color, @fa-var-building-o);
   }
 
   &.wl-person {
-    .tile(@wl-person-color, @fa-var-user)
+    .tile(@wl-person-color, @fa-var-user);
   }
 
   &.wl-place {
-    .tile(@wl-place-color, @fa-var-map-marker)
+    .tile(@wl-place-color, @fa-var-map-marker);
   }
 
   &.wl-thing {
-    .tile(@wl-thing-color, @fa-var-file-o)
+    .tile(@wl-thing-color, @fa-var-file-o);
   }
 }
 
 #wordlift-edit-post-wrapper {
-  // margin          : 10px 0;
-  // background-color: white;
-
   .clear {
     clear: both;
     height: 1px;
   }
-
-  // .wl-error {
-  //   margin-bottom: 6px;
-  //   padding      : 2px 12px;
-  //   border-left  : @wl-brand-color 4px solid;
-  //   font-size    : 11px;
-  // }
 
   input,
   select,
@@ -280,19 +264,11 @@
   }
 
   .wl-widget-headline {
-    //   margin       : 10px -12px;
-    //   border-top   : #eee 1px solid;
-    //   border-bottom: #eee 1px solid;
-    //   font-size    : 14px;
-    //   padding      : 8px 12px 8px;
-    //   line-height  : 1.4em;
-    //   position     : relative;
-
     .wl-spinner {
       position: absolute;
       right: 30px;
       top: 10px;
-      background: url('/wp-admin/images/spinner.gif') no-repeat;
+      background: url("/wp-admin/images/spinner.gif") no-repeat;
       background-size: 16px 16px;
       opacity: 0.7;
       filter: alpha(opacity=70);
@@ -483,13 +459,10 @@
             color: @wp-cta-color;
             .fa-icon(@fa-var-picture-o);
           }
-        ;
-
           &.wl-ArticleSuggestor {
             color: @wp-cta-color;
             .fa-icon(@fa-var-list);
           }
-        ;
         }
       }
     }
@@ -618,7 +591,6 @@
     right: 0;
     top: 0;
   }
-
 }
 
 div.wp-menu-image:before #adminmenu .toplevel_page_wordlift-admin-entities,
@@ -650,7 +622,7 @@ div.wp-menu-image:before #adminmenu .toplevel_page_wordlift-admin-entities,
     margin-bottom: 0;
 
     &:before {
-      content: ' ';
+      content: " ";
       position: absolute;
       width: 0;
       height: 0;
@@ -661,7 +633,7 @@ div.wp-menu-image:before #adminmenu .toplevel_page_wordlift-admin-entities,
     }
 
     &:after {
-      content: ' ';
+      content: " ";
       position: absolute;
       width: 0;
       height: 0;
@@ -673,7 +645,7 @@ div.wp-menu-image:before #adminmenu .toplevel_page_wordlift-admin-entities,
   }
 
   .handlediv:before {
-    content: '\f158';
+    content: "\f158";
     right: 12px;
     font: 400 20px/1 dashicons;
     speak: none;
@@ -862,7 +834,7 @@ svg.wl-logo-svg {
   }
 
   .wl-logo-letter {
-    fill: #FFFFFF;
+    fill: #ffffff;
   }
 }
 
@@ -876,76 +848,3 @@ svg.wl-logo-svg {
 //    display: none;
 //  }
 //}
-
-// The TinyMCE editor.
-body#tinymce, .mce-content-body, body#tinymce p, .mce-content-body p {
-
-  // Editor loading.p
-  &[contenteditable=false] {
-    background-color: rgb(241, 241, 241);
-  }
-
-  .textannotation {
-    cursor: pointer;
-    transition: all 500ms linear;
-
-    // Default state for an annotation.
-    background-color: rgba(46, 146, 255, .2);
-    // box-shadow: 3px 0 0 0 rgba(46, 146, 255, .2), -3px 0 0 0 rgba(46, 146, 255, .2);
-
-    padding: 2px;
-
-    // Default properties.
-    &.disambiguated, &.selected {
-      // Reset the above properties.
-      background-color: transparent;
-      box-shadow: none;
-    }
-
-    // Disambiguated entities are underlined with the WL blu color.
-    &.disambiguated {
-      background-color: rgba(46, 146, 255, .4);
-      border-color: #007aff !important;
-      border-bottom: #999 2px solid;
-    }
-
-    // Selected entities are highlighted gray.
-    &.selected {
-      color: #fff;
-      background-color: #a4a3a3;
-    }
-
-    // Selected disambiguated entities are highlighted blu.
-    &.disambiguated.selected {
-      color: #fff;
-      background-color: #007aff;
-      border-bottom: #007aff 2px solid;
-    }
-
-    //// When an entity is bound to an annotation.
-    //&.disambiguated {
-    //  background-color: rgba(255, 239, 173, .4);
-    //  box-shadow: 3px 0 0 0 rgba(255, 239, 173, .4), -3px 0 0 0 rgba(255, 239, 173, .4);
-    //}
-    //
-    //// When the editor clicks an annotation.
-    //&.selected {
-    //  background-color: rgba(46, 146, 255, .4);
-    //  box-shadow: 3px 0 0 0 rgba(46, 146, 255, .4), -3px 0 0 0 rgba(46, 146, 255, .4);
-    //}
-  }
-
-  // When the user is typing in TinyMCE or the classification postbox is closed.
-  &.wl-tinymce-typing .textannotation, &.wl-postbox-closed .textannotation {
-    cursor: initial;
-    background-color: transparent;
-    box-shadow: none;
-
-    // Selected entities are highlighted gray.
-    &.selected {
-      color: initial;
-      background-color: initial;
-    }
-
-  }
-}

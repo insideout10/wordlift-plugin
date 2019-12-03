@@ -136,6 +136,7 @@ function wl_entities_box_content( $post, $wrapper = true ) {
 		$all_referenced_entities_ids = array_merge( $all_referenced_entities_ids, $entity_ids );
 
 	}
+
 	// Json encoding for classification boxes structure.
 	$classification_boxes = wp_json_encode( $classification_boxes );
 
@@ -184,10 +185,10 @@ function wl_entities_box_content( $post, $wrapper = true ) {
 	// Retrive the published date.
 	$published_date = get_the_time( 'Y-m-d', $post->ID );
 	// Current language.
-	$current_language = $configuration_service->get_language_code();
+	$current_language            = $configuration_service->get_language_code();
 	$wordlift_timeline_shortcode = new Wordlift_Timeline_Shortcode();
-	$timelinejs_default_options = json_encode($wordlift_timeline_shortcode->get_timelinejs_default_options(), JSON_PRETTY_PRINT);
-	$addslashes_post_author = addslashes($post_author);
+	$timelinejs_default_options  = json_encode( $wordlift_timeline_shortcode->get_timelinejs_default_options(), JSON_PRETTY_PRINT );
+	$addslashes_post_author      = addslashes( $post_author );
 
 	$js_code = <<<JS
 		if ('undefined' == typeof window.wordlift) {

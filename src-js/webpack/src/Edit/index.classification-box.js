@@ -3,20 +3,18 @@
  *
  * @since 3.20.0
  */
-/*
- * External dependencies.
+
+/**
+ * External dependencies
  */
 import React from "react";
 import ReactDOM from "react-dom";
-import { applyMiddleware, createStore } from "redux";
-import thunk from "redux-thunk";
-import logger from 'redux-logger';
-import Provider from "react-redux/es/components/Provider";
+import { Provider } from "react-redux";
 
-/*
- * Internal dependencies.
+/**
+ * Internal dependencies
  */
-import reducer from "./reducers";
+import store from "./stores";
 import App from "./components/App";
 import AnnotationEvent from "./angular/AnnotationEvent";
 import ReceiveAnalysisResultsEvent from "./angular/ReceiveAnalysisResultsEvent";
@@ -25,12 +23,8 @@ import EditorSelectionChangedEvent from "./angular/EditorSelectionChangedEvent";
 
 // Start-up the application when the `wlEntityList` Angular directive is
 // loaded.
+const wp = global["wp"];
 wp.wordlift.on("wlEntityList.loaded", function() {
-  // Create the `store` with the reducer, using the analysis result as
-  // `initialState`.
-  const store = createStore(reducer, applyMiddleware(thunk, logger));
-
-  window.store1 = store;
 
   // Render the `React` tree at the `wl-entity-list` element.
   ReactDOM.render(

@@ -55,10 +55,11 @@ class Wordlift_Entity_Post_Type_Service {
 	/**
 	 * Create an entity type service instance.
 	 *
+	 * @param string $post_type The post type, e.g. entity.
+	 * @param string $slug The entity type slug, if the slug is empty, the default slug will be used.
+	 *
 	 * @since 3.6.0
 	 *
-	 * @param string $post_type The post type, e.g. entity.
-	 * @param string $slug      The entity type slug, if the slug is empty, the default slug will be used.
 	 */
 	public function __construct( $post_type, $slug ) {
 
@@ -77,9 +78,9 @@ class Wordlift_Entity_Post_Type_Service {
 	/**
 	 * Get the entity type service singleton instance.
 	 *
+	 * @return Wordlift_Entity_Post_Type_Service The entity type service singleton instance.
 	 * @since 3.6.0
 	 *
-	 * @return Wordlift_Entity_Post_Type_Service The entity type service singleton instance.
 	 */
 	public static function get_instance() {
 
@@ -89,9 +90,9 @@ class Wordlift_Entity_Post_Type_Service {
 	/**
 	 * Get the entity type slug.
 	 *
+	 * @return string The entity type slug.
 	 * @since 3.6.0
 	 *
-	 * @return string The entity type slug.
 	 */
 	public function get_slug() {
 
@@ -101,9 +102,9 @@ class Wordlift_Entity_Post_Type_Service {
 	/**
 	 * Get the entity post type name.
 	 *
+	 * @return string The entity post type.
 	 * @since 3.6.0
 	 *
-	 * @return string The entity post type.
 	 */
 	public function get_post_type() {
 
@@ -162,9 +163,11 @@ class Wordlift_Entity_Post_Type_Service {
 				'wordlift_entity',
 				'wordlift_entities',
 			),
-			'capabilities' => array(
+			'capabilities'    => array(
 				'delete_posts' => 'delete_wordlift_entities',
-			)
+			),
+			'rest_base'       => 'entities',
+			'show_in_rest'    => true
 		);
 
 		register_post_type( $this->post_type, $args );

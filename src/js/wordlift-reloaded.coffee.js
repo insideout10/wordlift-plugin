@@ -455,7 +455,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
       $scope.currentEntityType = entityType;
       switch (entityType) {
         case 'entity':
-          return $log.debug("An existing entity. Nothing to do");
+          return $log.debug("An existing entity. Nothing to do", entity);
         default:
           $log.debug("A new entity");
           $scope.currentEntity = AnalysisService.createEntity();
@@ -686,15 +686,21 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
           action = 'entityDeselected';
         }
       }
+      console.info("onSelectedEntityTile", {
+        action: action,
+        entity: entity
+      });
       scopeId = configuration.getCategoryForType(entity.mainType);
       $log.debug("Action '" + action + "' on entity " + entity.id + " within " + scopeId + " scope");
       if (action === 'entitySelected') {
         $scope.selectedEntities[scopeId][entity.id] = entity;
-        ref2 = entity.images;
-        for (k = 0, len1 = ref2.length; k < len1; k++) {
-          image = ref2[k];
-          if (indexOf.call($scope.images, image) < 0) {
-            $scope.images.push(image);
+        if (entity.images != null) {
+          ref2 = entity.images;
+          for (k = 0, len1 = ref2.length; k < len1; k++) {
+            image = ref2[k];
+            if (indexOf.call($scope.images, image) < 0) {
+              $scope.images.push(image);
+            }
           }
         }
       } else {
@@ -831,7 +837,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', []).directive
         box: '='
       },
       templateUrl: function() {
-        return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.23.0-dev';
+        return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.22.6';
       },
       link: function($scope, $element, $attrs, $ctrl) {
         $scope.configuration = configuration;
@@ -977,7 +983,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', []).direc
         entity: '='
       },
       templateUrl: function() {
-        return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.23.0-dev';
+        return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.22.6';
       }
     };
   }
@@ -1165,102 +1171,31 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', ['wordlift.e
       return merge(defaults, params);
     };
     service.parse = function(data) {
-      var annotation, annotationId, dt, ea, em, entity, id, index, l, len2, len3, localEntity, local_confidence, m, ref10, ref11, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9;
-      dt = this._defaultType;
-      if (data.topics != null) {
-        data.topics = data.topics.map(function(topic) {
-          topic.id = topic.uri;
-          topic.occurrences = [];
-          topic.mainType = dt;
-          return topic;
-        });
-      }
-      $log.debug("Found " + (Object.keys(configuration.entities).length) + " entities in configuration...", configuration);
-      ref2 = configuration.entities;
+      var annotation, ea, entity, id, index, l, len2, ref2, ref3, ref4;
+      ref2 = data.entities;
       for (id in ref2) {
-        localEntity = ref2[id];
-        data.entities[id] = localEntity;
-      }
-      ref3 = data.entities;
-      for (id in ref3) {
-        entity = ref3[id];
-        if (configuration.currentPostUri === id) {
-          delete data.entities[id];
-          continue;
-        }
-        if (!entity.label) {
-          $log.warn("Label missing for entity " + id);
-        }
-        if (!entity.description) {
-          $log.warn("Description missing for entity " + id);
-        }
-        if (!entity.sameAs) {
-          $log.warn("sameAs missing for entity " + id);
-          entity.sameAs = [];
-          if ((ref4 = configuration.entities[id]) != null) {
-            ref4.sameAs = [];
-          }
-          $log.debug("Schema.org sameAs overridden for entity " + id);
-        }
-        if (ref5 = entity.mainType, indexOf.call(this._supportedTypes, ref5) < 0) {
-          $log.warn("Schema.org type " + entity.mainType + " for entity " + id + " is not supported from current classification boxes configuration");
-          entity.mainType = this._defaultType;
-          if ((ref6 = configuration.entities[id]) != null) {
-            ref6.mainType = this._defaultType;
-          }
-          $log.debug("Schema.org type overridden for entity " + id);
-        }
+        entity = ref2[id];
         entity.id = id;
-        entity.occurrences = [];
-        entity.annotations = {};
+        if (entity.occurrences == null) {
+          entity.occurrences = [];
+        }
+        if (entity.annotations == null) {
+          entity.annotations = {};
+        }
       }
-      ref7 = data.annotations;
-      for (id in ref7) {
-        annotation = ref7[id];
+      ref3 = data.annotations;
+      for (id in ref3) {
+        annotation = ref3[id];
         annotation.id = id;
         annotation.entities = {};
-        data.annotations[id].entityMatches = (function() {
-          var l, len2, ref8, results1;
-          ref8 = annotation.entityMatches;
-          results1 = [];
-          for (l = 0, len2 = ref8.length; l < len2; l++) {
-            ea = ref8[l];
-            if (ea.entityId in data.entities) {
-              results1.push(ea);
-            }
-          }
-          return results1;
-        })();
-        if (0 === data.annotations[id].entityMatches.length) {
-          delete data.annotations[id];
-          continue;
-        }
-        ref8 = data.annotations[id].entityMatches;
-        for (index = l = 0, len2 = ref8.length; l < len2; index = ++l) {
-          ea = ref8[index];
-          if (!data.entities[ea.entityId].label) {
-            data.entities[ea.entityId].label = annotation.text;
-            $log.debug("Missing label retrieved from related annotation for entity " + ea.entityId);
+        ref4 = data.annotations[id].entityMatches;
+        for (index = l = 0, len2 = ref4.length; l < len2; index = ++l) {
+          ea = ref4[index];
+          if (data.entities[ea.entityId].annotations == null) {
+            data.entities[ea.entityId].annotations = {};
           }
           data.entities[ea.entityId].annotations[id] = annotation;
           data.annotations[id].entities[ea.entityId] = data.entities[ea.entityId];
-        }
-      }
-      ref9 = data.entities;
-      for (id in ref9) {
-        entity = ref9[id];
-        ref10 = data.annotations;
-        for (annotationId in ref10) {
-          annotation = ref10[annotationId];
-          local_confidence = 1;
-          ref11 = annotation.entityMatches;
-          for (m = 0, len3 = ref11.length; m < len3; m++) {
-            em = ref11[m];
-            if ((em.entityId != null) && em.entityId === id) {
-              local_confidence = em.confidence;
-            }
-          }
-          entity.confidence = entity.confidence * local_confidence;
         }
       }
       return data;
@@ -1322,16 +1257,15 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', ['wordlift.e
       return $rootScope.$broadcast("analysisServiceStatusUpdated", status);
     };
     service.perform = function(content) {
-      var annotations, promise;
+      var promise;
       if (service._currentAnalysis) {
         $log.warn("Analysis already run! Nothing to do ...");
         service._updateStatus(false);
         return;
       }
       service._updateStatus(true);
-      annotations = AnnotationParser.parse(EditorAdapter.getHTML());
       $log.debug('Requesting analysis...');
-      promise = this._innerPerform(content, annotations);
+      promise = this._innerPerform(content, {});
       promise.then(function(response) {
         var result;
         if ((response.data.success != null) && !response.data.success) {
@@ -1408,14 +1342,13 @@ angular.module('wordlift.editpost.widget.services.EditorService', ['wordlift.edi
     var INVISIBLE_CHAR, currentOccurrencesForEntity, dedisambiguate, disambiguate, editor, findEntities, findPositions, service;
     INVISIBLE_CHAR = '\uFEFF';
     findEntities = function(html) {
-      var annotation, match, pattern, results1, traslator;
-      traslator = Traslator.create(html);
+      var annotation, match, pattern, results1;
       pattern = /<(\w+)[^>]*\sclass="([^"]+)"\s+(?:id="[^"]+"\s+)?itemid="([^"]+)"[^>]*>([^<]*)<\/\1>/gim;
       results1 = [];
       while (match = pattern.exec(html)) {
         annotation = {
-          start: traslator.html2text(match.index),
-          end: traslator.html2text(match.index + match[0].length),
+          start: match.index,
+          end: match.index + match[0].length,
           uri: match[3],
           label: match[4],
           cssClass: match[2]
@@ -1512,6 +1445,11 @@ angular.module('wordlift.editpost.widget.services.EditorService', ['wordlift.edi
     });
     $rootScope.$on("entityDeselected", function(event, entity, annotationId) {
       var annotation, id, occurrences, ref;
+      console.debug('EditorService::$rootScope.$on "entityDeselected" (event)', {
+        event: event,
+        entity: entity,
+        annotationId: annotationId
+      });
       if (annotationId != null) {
         dedisambiguate(annotationId, entity);
       } else {
@@ -1522,6 +1460,9 @@ angular.module('wordlift.editpost.widget.services.EditorService', ['wordlift.edi
         }
       }
       occurrences = currentOccurrencesForEntity(entity.id);
+      console.debug('EditorService::$rootScope.$on "entityDeselected" (event)', {
+        occurrences: occurrences
+      });
       return $rootScope.$broadcast("updateOccurencesForEntity", entity.id, occurrences);
     });
     service = {
@@ -1583,48 +1524,48 @@ angular.module('wordlift.editpost.widget.services.EditorService', ['wordlift.edi
       },
       embedAnalysis: (function(_this) {
         return function(analysis) {
-          var annotation, annotationId, ed, element, em, entities, entity, html, isDirty, j, len, ref, ref1, ref2, ref3, traslator;
+          var annotation, annotations, ed, element, em, entity, html, isDirty, j, k, len, len1, ref, ref1, ref2, ref3;
           ed = EditorAdapter.getEditor();
           html = EditorAdapter.getHTML();
-          entities = findEntities(html);
-          AnalysisService.cleanAnnotations(analysis, findPositions(entities));
-          AnalysisService.preselect(analysis, entities);
-          while (html.match(/<(\w+)[^>]*\sclass="textannotation[^"]*"[^>]*>([^<]+)<\/\1>/gim, '$2')) {
-            html = html.replace(/<(\w+)[^>]*\sclass="textannotation[^"]*"[^>]*>([^<]*)<\/\1>/gim, '$2');
-          }
-          traslator = Traslator.create(html);
-          ref = analysis.annotations;
-          for (annotationId in ref) {
-            annotation = ref[annotationId];
+          annotations = Object.values(analysis.annotations).sort(function(a, b) {
+            if (a.end > b.end) {
+              return -1;
+            } else if (a.end < b.end) {
+              return 1;
+            } else {
+              return 0;
+            }
+          });
+          for (j = 0, len = annotations.length; j < len; j++) {
+            annotation = annotations[j];
             if (annotation.entityMatches.length === 0) {
               $log.warn("Annotation " + annotation.text + " [" + annotation.start + ":" + annotation.end + "] with id " + annotation.id + " has no entity matches!");
               continue;
             }
-            element = "<span id=\"" + annotationId + "\" class=\"textannotation";
-            if (-1 < ((ref1 = annotation.cssClass) != null ? ref1.indexOf('wl-no-link') : void 0)) {
+            element = "<span id=\"" + annotation.id + "\" class=\"textannotation";
+            if (-1 < ((ref = annotation.cssClass) != null ? ref.indexOf('wl-no-link') : void 0)) {
               element += ' wl-no-link';
             }
-            if (-1 < ((ref2 = annotation.cssClass) != null ? ref2.indexOf('wl-link') : void 0)) {
+            if (-1 < ((ref1 = annotation.cssClass) != null ? ref1.indexOf('wl-link') : void 0)) {
               element += ' wl-link';
             }
-            ref3 = annotation.entityMatches;
-            for (j = 0, len = ref3.length; j < len; j++) {
-              em = ref3[j];
+            ref2 = annotation.entityMatches;
+            for (k = 0, len1 = ref2.length; k < len1; k++) {
+              em = ref2[k];
               entity = analysis.entities[em.entityId];
-              if (indexOf.call(entity.occurrences, annotationId) >= 0) {
+              if (ref3 = annotation.id, indexOf.call(entity.occurrences, ref3) >= 0) {
                 element += " disambiguated wl-" + entity.mainType + "\" itemid=\"" + entity.id;
               }
             }
             element += "\">";
-            traslator.insertHtml(element, {
-              text: annotation.start
-            });
-            traslator.insertHtml('</span>', {
-              text: annotation.end
-            });
+            html = html.substring(0, annotation.end) + '</span>' + html.substring(annotation.end);
+            html = html.substring(0, annotation.start) + element + html.substring(annotation.start);
           }
-          html = traslator.getHtml();
           html = html.replace(/<\/span>/gim, "</span>" + INVISIBLE_CHAR);
+          console.debug({
+            annotations: annotations,
+            html: html
+          });
           $rootScope.$broadcast("analysisEmbedded");
           isDirty = ed.isDirty();
           ed.setContent(html, {
@@ -1779,6 +1720,7 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', []).p
             return category.id;
           }
         }
+        return "what";
       };
       _configuration.getTypesForCategoryId = function(categoryId) {
         var category, j, len, ref;
@@ -1820,7 +1762,7 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', []).p
     angular.module('wordlift.editpost.widget', ['ngAnimate', 'wordlift.ui.carousel', 'wordlift.utils.directives', 'wordlift.editpost.widget.providers.ConfigurationProvider', 'wordlift.editpost.widget.controllers.EditPostWidgetController', 'wordlift.editpost.widget.directives.wlClassificationBox', 'wordlift.editpost.widget.directives.wlEntityList', 'wordlift.editpost.widget.directives.wlEntityForm', 'wordlift.editpost.widget.directives.wlEntityTile', 'wordlift.editpost.widget.directives.wlEntityInputBox', 'wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.EditorService', 'wordlift.editpost.widget.services.RelatedPostDataRetrieverService']).config(function(configurationProvider) {
       return configurationProvider.setConfiguration(window.wordlift);
     });
-    container = $("<div\n  id=\"wordlift-edit-post-wrapper\"\n  ng-controller=\"EditPostWidgetController\"\n  ng-include=\"configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.23.0-dev'\">\n</div>").appendTo('#wordlift-edit-post-outer-wrapper');
+    container = $("<div\n  id=\"wordlift-edit-post-wrapper\"\n  ng-controller=\"EditPostWidgetController\"\n  ng-include=\"configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.22.6'\">\n</div>").appendTo('#wordlift-edit-post-outer-wrapper');
     spinner = $("<div class=\"wl-widget-spinner\">\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-blogger\">\n    <circle cx=\"10\" cy=\"10\" r=\"6\" class=\"wl-blogger-shape\"></circle>\n  </svg>\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-editorial\">\n    <rect x=\"4\" y=\"4\" width=\"12\" height=\"12\" class=\"wl-editorial-shape\"></rect>\n  </svg>\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-enterprise\">\n    <polygon points=\"3,10 6.5,4 13.4,4 16.9,10 13.4,16 6.5,16\" class=\"wl-enterprise-shape\"></polygon>\n  </svg>\n</div>").appendTo('#wordlift_entities_box .ui-sortable-handle');
     console.log("bootstrapping WordLift app...");
     injector = angular.bootstrap($('#wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']);

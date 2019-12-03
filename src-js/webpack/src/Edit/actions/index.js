@@ -9,19 +9,19 @@
 /**
  * Internal dependencies
  */
-import * as types from '../constants/ActionTypes';
+import * as types from "../constants/ActionTypes";
+import { createAction } from "redux-actions";
+import { TOGGLE_LINK_SUCCESS } from "../constants/ActionTypes";
 
 /**
  * Set the current annotation. If `undefined` no annotation is selected.
  *
  * @since 3.11.0
- * @param {string} annotation The annotation id or `undefined` if no annotation
+ * @param {string|undefined} annotation The annotation id or `undefined` if no annotation
  *     is selected.
  * @return {Function} The action's function.
  */
-export const setCurrentAnnotation = ( annotation ) => (
-	{ type: types.ANNOTATION, annotation }
-);
+export const setCurrentAnnotation = annotation => ({ type: types.ANNOTATION, annotation });
 
 /**
  * The `receiveAnalysisResults` action is dispatched when new analysis results
@@ -31,9 +31,7 @@ export const setCurrentAnnotation = ( annotation ) => (
  * @param {{entities: (Array)}} results The analysis results.
  * @return {Function} The action's function.
  */
-export const receiveAnalysisResults = ( results ) => (
-	{ type: types.RECEIVE_ANALYSIS_RESULTS, results }
-);
+export const receiveAnalysisResults = results => ({ type: types.RECEIVE_ANALYSIS_RESULTS, results });
 
 /**
  * The `setCurrentEntity` action is dispatched in order to send an event to the
@@ -44,13 +42,9 @@ export const receiveAnalysisResults = ( results ) => (
  * @param {Object} entity The entity to display in the inline edit box.
  * @return {Function} The action's function.
  */
-export const setCurrentEntity = ( entity ) => (
-	{ type: types.SET_CURRENT_ENTITY, entity }
-);
+export const setCurrentEntity = entity => ({ type: types.SET_CURRENT_ENTITY, entity });
 
-export const setEntityVisibility = ( filter ) => (
-	{ type: types.SET_ENTITY_FILTER, filter }
-);
+export const setEntityVisibility = filter => ({ type: types.SET_ENTITY_FILTER, filter });
 
 /**
  * The `toggleEntity` action toggles the selection flag for the provided entity.
@@ -59,9 +53,7 @@ export const setEntityVisibility = ( filter ) => (
  * @param {Object} entity The entity being toggled.
  * @return {Function} The action's function.
  */
-export const toggleEntity = entity => (
-	{ type: types.TOGGLE_ENTITY, entity }
-);
+export const toggleEntity = entity => ({ type: types.TOGGLE_ENTITY, entity });
 
 /**
  * The `toggleLink` action is dispatched to enable/disable linking an entity.
@@ -70,9 +62,7 @@ export const toggleEntity = entity => (
  * @param {Object} entity The entity.
  * @return {Function} The action's function.
  */
-export const toggleLink = ( entity ) => (
-	{ type: types.TOGGLE_LINK, entity }
-);
+export const toggleLink = entity => ({ type: types.TOGGLE_LINK, entity });
 
 /**
  * The `updateOccurrencesForEntity` action is dispatched when the number of
@@ -84,9 +74,11 @@ export const toggleLink = ( entity ) => (
  * @param {Array} occurrences An array of occurrences.
  * @return {Function} The action's function.
  */
-export const updateOccurrencesForEntity = ( entityId, occurrences ) => (
-	{ type: types.UPDATE_OCCURRENCES_FOR_ENTITY, entityId, occurrences }
-);
+export const updateOccurrencesForEntity = (entityId, occurrences) => ({
+  type: types.UPDATE_OCCURRENCES_FOR_ENTITY,
+  entityId,
+  occurrences
+});
 
 /**
  * The `editorSelectionChanged` action is dispatched when the editor text selection
@@ -96,6 +88,6 @@ export const updateOccurrencesForEntity = ( entityId, occurrences ) => (
  * @param {string} selection The editor text selection.
  * @returns {{type: string, selection: *}}
  */
-export const editorSelectionChanged = ( selection ) => (
-	{ type: types.EDITOR_SELECTION_CHANGED, selection }
-);
+export const editorSelectionChanged = selection => ({ type: types.EDITOR_SELECTION_CHANGED, selection });
+
+export const toggleLinkSuccess = createAction(TOGGLE_LINK_SUCCESS);

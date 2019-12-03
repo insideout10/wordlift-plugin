@@ -475,7 +475,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
     switch entityType
       when 'entity'
-        $log.debug "An existing entity. Nothing to do"
+        $log.debug "An existing entity. Nothing to do", entity
       else # New entity
 
         $log.debug "A new entity"
@@ -703,7 +703,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     RelatedPostDataRetrieverService.load entityIds
 
   $scope.onSelectedEntityTile = (entity)->
-
     # Detect if the entity has to be selected or unselected
     action = 'entitySelected'
     # If bottom / up disambiguation mode is on
@@ -719,16 +718,20 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
       if entity.occurrences.length > 0
         action = 'entityDeselected'
 
+    console.info "onSelectedEntityTile", { action, entity }
+
     scopeId = configuration.getCategoryForType entity.mainType
+
     $log.debug "Action '#{action}' on entity #{entity.id} within #{scopeId} scope"
 
     if action is 'entitySelected'
       # Ensure to mark the current entity to selected entities
       $scope.selectedEntities[ scopeId ][ entity.id ] = entity
       # Concat entity images to suggested images collection
-      for image in entity.images
-        unless image in $scope.images
-          $scope.images.push image
+      if entity.images?
+        for image in entity.images
+          unless image in $scope.images
+            $scope.images.push image
     else
       # Remove current entity images from suggested images collection
       $scope.images = $scope.images.filter (img)->
@@ -799,6 +802,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     $scope.topic = topic
 
 ])
+
 angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
 .directive('wlClassificationBox', ['configuration', '$log', (configuration, $log)->
     restrict: 'E'
@@ -850,7 +854,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
       onReset: '&'
       box: '='
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.23.0-dev'
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.22.6'
 
     link: ($scope, $element, $attrs, $ctrl) ->
 
@@ -973,7 +977,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', [])
     scope:
       entity: '='
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.23.0-dev'
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.22.6'
 ])
 
 angular.module('wordlift.editpost.widget.services.EditorAdapter', [
@@ -1153,19 +1157,20 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 # TMP ... Should be done on WLS side
 #      unless data.topics?
 #        data.topics = []
-      dt = @._defaultType
+#      dt = @._defaultType
 
-      if data.topics?
-        data.topics = data.topics.map (topic)->
-          topic.id = topic.uri
-          topic.occurrences = []
-          topic.mainType = dt
-          topic
+#      if data.topics?
+#        data.topics = data.topics.map (topic)->
+#          topic.id = topic.uri
+#          topic.occurrences = []
+#          topic.mainType = dt
+#          topic
 
-      $log.debug "Found #{Object.keys(configuration.entities).length} entities in configuration...", configuration
+#      $log.debug "Found #{Object.keys(configuration.entities).length} entities in configuration...", configuration
 
-      for id, localEntity of configuration.entities
-        data.entities[id] = localEntity
+      # This isn't needed anymore as it is delegated to the WP analysis end-point to merge disambiguated entities.
+#      for id, localEntity of configuration.entities
+#        data.entities[id] = localEntity
 
       for id, entity of data.entities
 
@@ -1173,31 +1178,32 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 #
 # See https://github.com/insideout10/wordlift-plugin/issues/437
 # See https://github.com/insideout10/wordlift-plugin/issues/345
-        if configuration.currentPostUri is id
-          delete data.entities[id]
-          continue
+#        if configuration.currentPostUri is id
+#          delete data.entities[id]
+#          continue
 
-        if not entity.label
-          $log.warn "Label missing for entity #{id}"
+#        if not entity.label
+#          $log.warn "Label missing for entity #{id}"
+#
+#        if not entity.description
+#          $log.warn "Description missing for entity #{id}"
 
-        if not entity.description
-          $log.warn "Description missing for entity #{id}"
+#        if not entity.sameAs
+#          $log.warn "sameAs missing for entity #{id}"
+#          entity.sameAs = []
+#          configuration.entities[id]?.sameAs = []
+#          $log.debug "Schema.org sameAs overridden for entity #{id}"
 
-        if not entity.sameAs
-          $log.warn "sameAs missing for entity #{id}"
-          entity.sameAs = []
-          configuration.entities[id]?.sameAs = []
-          $log.debug "Schema.org sameAs overridden for entity #{id}"
-
-        if entity.mainType not in @._supportedTypes
-          $log.warn "Schema.org type #{entity.mainType} for entity #{id} is not supported from current classification boxes configuration"
-          entity.mainType = @._defaultType
-          configuration.entities[id]?.mainType = @._defaultType
-          $log.debug "Schema.org type overridden for entity #{id}"
+#        if entity.mainType not in @._supportedTypes
+#          $log.warn "Schema.org type #{entity.mainType} for entity #{id} is not supported from current classification boxes configuration"
+#          entity.mainType = @._defaultType
+#          configuration.entities[id]?.mainType = @._defaultType
+#          $log.debug "Schema.org type overridden for entity #{id}"
 
         entity.id = id
-        entity.occurrences = []
-        entity.annotations = {}
+#        # This is not necessary anymore because Analysis_Response_Ops (in PHP) populates it.
+        entity.occurrences = [] if not entity.occurrences?
+        entity.annotations = {} if not entity.annotations?
         # See #550: the confidence is set by the server.
         # entity.confidence = 1
 
@@ -1207,34 +1213,35 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 
         # Filter out annotations that don't have a corresponding entity. The entities list might be filtered, in order
         # to remove the local entity.
-        data.annotations[id].entityMatches = (ea for ea in annotation.entityMatches when ea.entityId of data.entities)
+        #  data.annotations[id].entityMatches = (ea for ea in annotation.entityMatches when ea.entityId of data.entities)
 
         # Remove the annotation if there's no entity matches left.
         #
         # See https://github.com/insideout10/wordlift-plugin/issues/437
         # See https://github.com/insideout10/wordlift-plugin/issues/345
-        if 0 is data.annotations[id].entityMatches.length
-          delete data.annotations[id]
-          continue
+        # if 0 is data.annotations[id].entityMatches.length
+        #   delete data.annotations[id]
+        #   continue
 
         for ea, index in data.annotations[id].entityMatches
 
-          if not data.entities[ea.entityId].label
-            data.entities[ea.entityId].label = annotation.text
-            $log.debug "Missing label retrieved from related annotation for entity #{ea.entityId}"
+          # if not data.entities[ea.entityId].label
+          #   data.entities[ea.entityId].label = annotation.text
+          #   $log.debug "Missing label retrieved from related annotation for entity #{ea.entityId}"
 
+          data.entities[ea.entityId].annotations = {} if not data.entities[ea.entityId].annotations?
           data.entities[ea.entityId].annotations[id] = annotation
           data.annotations[id].entities[ea.entityId] = data.entities[ea.entityId]
 
-      # TODO move this calculation on the server
-      for id, entity of data.entities
-        for annotationId, annotation of data.annotations
-          local_confidence = 1
-          for em in annotation.entityMatches
-            if em.entityId? and em.entityId is id
-              local_confidence = em.confidence
-          entity.confidence = entity.confidence * local_confidence
-
+#      # TODO move this calculation on the server
+#      for id, entity of data.entities
+#        for annotationId, annotation of data.annotations
+#          local_confidence = 1
+#          for em in annotation.entityMatches
+#            if em.entityId? and em.entityId is id
+#              local_confidence = em.confidence
+#          entity.confidence = entity.confidence * local_confidence
+#
       data
 
     service.getSuggestedSameAs = (content)->
@@ -1289,11 +1296,11 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
       service._updateStatus true
 
       # Get the existing annotations in the text.
-      annotations = AnnotationParser.parse(EditorAdapter.getHTML())
+      # annotations = AnnotationParser.parse(EditorAdapter.getHTML())
 
       $log.debug 'Requesting analysis...'
 
-      promise = @._innerPerform content, annotations
+      promise = @._innerPerform content, {}
       # If successful, broadcast an *analysisPerformed* event.
       promise.then (response) ->
 
@@ -1378,6 +1385,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
     service
 
 ])
+
 # Create the main AngularJS module, and set it dependent on controllers and directives.
 angular.module('wordlift.editpost.widget.services.EditorService', [
   'wordlift.editpost.widget.services.EditorAdapter',
@@ -1392,7 +1400,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
     # Find existing entities selected in the html content (by looking for *itemid* attributes).
     findEntities = (html) ->
 # Prepare a traslator instance that will traslate Html and Text positions.
-      traslator = Traslator.create html
+#      traslator = Traslator.create html
 
       # Set the pattern to look for *itemid* attributes.
       # pattern = /<(\w+)[^>]*\sclass="([^"]+)"\sitemid="([^"]+)"[^>]*>([^<]*)<\/\1>/gim
@@ -1407,8 +1415,10 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       (while match = pattern.exec html
 
         annotation =
-          start: traslator.html2text match.index
-          end: traslator.html2text (match.index + match[0].length)
+#          start: traslator.html2text match.index
+#          end: traslator.html2text (match.index + match[0].length)
+          start: match.index
+          end: match.index + match[0].length
           uri: match[3]
           label: match[4]
           cssClass: match[2]
@@ -1485,6 +1495,9 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       $rootScope.$broadcast "updateOccurencesForEntity", entity.id, occurrences
 
     $rootScope.$on "entityDeselected", (event, entity, annotationId) ->
+
+      console.debug 'EditorService::$rootScope.$on "entityDeselected" (event)', { event, entity, annotationId }
+
       if annotationId?
         dedisambiguate annotationId, entity
       else
@@ -1492,6 +1505,9 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
           dedisambiguate annotation.id, entity
 
       occurrences = currentOccurrencesForEntity entity.id
+
+      console.debug 'EditorService::$rootScope.$on "entityDeselected" (event)', { occurrences }
+
       $rootScope.$broadcast "updateOccurencesForEntity", entity.id, occurrences
 
     service =
@@ -1587,36 +1603,60 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
         # Get the TinyMCE editor html content.
         html = EditorAdapter.getHTML() # ed.getContent format: 'raw'
 
+        ##
+        # @since 3.23.0 no more necessary.
         # Find existing entities.
-        entities = findEntities html
+        # entities = findEntities html
 
+        ##
+        # The following isn't anymore necessary with the new Analysis micro service since it already removes overlapping
+        # annotations.
+        # @since 3.23.0
+        #
         # Remove overlapping annotations preserving selected entities
-        AnalysisService.cleanAnnotations analysis, findPositions(entities)
+        # AnalysisService.cleanAnnotations analysis, findPositions(entities)
 
+        ##
+        # The following isn't anymore necessary because we're sending to the new Analysis micro service the editor html
+        # and the analysis micro service returns us the html positions, hence we're not removing existing annotations
+        # anymore.
+        #
+        # @since 3.23.0
+        #
         # Preselect entities found in html. We also keep track of the original
         # text annotation css classes which may turn useful when checking additional
         # classes added to the text annotation, for example the `wl-no-link` css
         # class which we use to decide whether to activate or not a link.
         # We need to keep track now of the css classes because in a while we're
         # going to remove the text annotations and put them back.
-        AnalysisService.preselect analysis, entities
+        # AnalysisService.preselect analysis, entities
 
         # Remove existing text annotations (the while-match is necessary to remove nested spans).
-        while html.match(/<(\w+)[^>]*\sclass="textannotation[^"]*"[^>]*>([^<]+)<\/\1>/gim, '$2')
-          html = html.replace(/<(\w+)[^>]*\sclass="textannotation[^"]*"[^>]*>([^<]*)<\/\1>/gim, '$2')
+        # while html.match(/<(\w+)[^>]*\sclass="textannotation[^"]*"[^>]*>([^<]+)<\/\1>/gim, '$2')
+        #  html = html.replace(/<(\w+)[^>]*\sclass="textannotation[^"]*"[^>]*>([^<]*)<\/\1>/gim, '$2')
 
         # Prepare a traslator instance that will traslate Html and Text positions.
-        traslator = Traslator.create html
+        # traslator = Traslator.create html
 
         # Add text annotations to the html
-        for annotationId, annotation of analysis.annotations
+        # @since 3.23.0 We need to sort the annotations from the last one to the first one in order to insert them into
+        #               the html without the need to recalculate positions.
+        annotations = Object.values( analysis.annotations ).sort ( a, b ) ->
+          if a.end > b.end
+            return -1
+          else if a.end < b.end
+            return 1
+          else
+            return 0
 
-# If the annotation has no entity matches it could be a problem
+        for annotation in annotations
+
+          # If the annotation has no entity matches it could be a problem
           if annotation.entityMatches.length is 0
             $log.warn "Annotation #{annotation.text} [#{annotation.start}:#{annotation.end}] with id #{annotation.id} has no entity matches!"
             continue
 
-          element = "<span id=\"#{annotationId}\" class=\"textannotation"
+          element = "<span id=\"#{annotation.id}\" class=\"textannotation"
 
           # Add the `wl-no-link` class if it was present in the original annotation.
           element += ' wl-no-link' if -1 < annotation.cssClass?.indexOf('wl-no-link')
@@ -1628,20 +1668,26 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
           for em in annotation.entityMatches
             entity = analysis.entities[em.entityId]
 
-            if annotationId in entity.occurrences
+            if annotation.id in entity.occurrences
               element += " disambiguated wl-#{entity.mainType}\" itemid=\"#{entity.id}"
 
           element += "\">"
 
           # Finally insert the HTML code.
-          traslator.insertHtml element, text: annotation.start
-          traslator.insertHtml '</span>', text: annotation.end
+          # traslator.insertHtml element, text: annotation.start
+          # traslator.insertHtml '</span>', text: annotation.end
+
+          html = html.substring(0, annotation.end) + '</span>' + html.substring(annotation.end)
+          html = html.substring(0, annotation.start) + element + html.substring(annotation.start)
+
 
         # Add a zero-width no-break space after each annotation
         # to be sure that a caret container is available
         # See https://github.com/tinymce/tinymce/blob/master/js/tinymce/classes/Formatter.js#L2030
-        html = traslator.getHtml()
+        # html = traslator.getHtml()
         html = html.replace(/<\/span>/gim, "</span>#{INVISIBLE_CHAR}")
+
+        console.debug { annotations, html }
 
         $rootScope.$broadcast "analysisEmbedded"
         # Update the editor Html code.
@@ -1651,6 +1697,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
 
     service
 ])
+
 angular.module('wordlift.editpost.widget.services.RelatedPostDataRetrieverService', [])
 # Manage redlink analysis responses
 .service('RelatedPostDataRetrieverService', [ 'configuration', '$log', '$http', '$rootScope', (configuration, $log, $http, $rootScope)-> 
@@ -1778,9 +1825,9 @@ angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geoloca
 
 angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
 .provider("configuration", ()->
-  
+
   _configuration = undefined
-  
+
   provider =
     setConfiguration: (configuration)->
       _configuration = configuration
@@ -1792,30 +1839,34 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
 
       	unless entityType
       	  return undefined
-      	for category in @classificationBoxes 
-      	  if entityType in category.registeredTypes
-      	    return category.id 
-      
+
+      	for category in @classificationBoxes
+          if entityType in category.registeredTypes
+            return category.id
+
+        # Return `what` by default.
+        return "what"
+
       # Return registered types for a given category
       _configuration.getTypesForCategoryId = (categoryId)->
-      	
+
       	unless categoryId
       	  return []
-      	for category in @classificationBoxes 
-      	  if categoryId is category.id 
+      	for category in @classificationBoxes
+      	  if categoryId is category.id
       	  	return category.registeredTypes
-      
+
       # Check if a given entity id refers to an internal entity
       _configuration.isInternal = (uri)->
       	return uri?.startsWith @datasetUri
-      
+
       # Check if a given entity id refers to an internal entity
       _configuration.getUriForType = (mainType)->
         for type in @types
           if type.css is "wl-#{mainType}"
             return type.uri
 
-      	    
+
     $get: ()->
       _configuration
 
@@ -1853,7 +1904,7 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
     <div
       id="wordlift-edit-post-wrapper"
       ng-controller="EditPostWidgetController"
-      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.23.0-dev'">
+      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.22.6'">
     </div>
   """)
   .appendTo('#wordlift-edit-post-outer-wrapper')

@@ -1,5 +1,7 @@
 <?php
 
+use Wordlift\Analysis\Response\Analysis_Response_Ops;
+
 /**
  * Receive some content, run a remote analysis task and return the results. The content is read from the body
  * input (php://input).
@@ -24,7 +26,7 @@ function wl_ajax_analyze_action() {
 		wp_send_json_error( array(
 			'code'    => $e->getCode(),
 			'message' => $e->getMessage(),
-			'trace'   => $e->getTraceAsString()
+			'trace'   => $e->getTraceAsString(),
 		) );
 	}
 
@@ -36,63 +38,60 @@ add_action( 'wp_ajax_wordlift_analyze', 'wl_ajax_analyze_action' );
  * Analyze the provided content. The analysis will make use of the method *wl_ajax_analyze_action*
  * provided by the WordLift plugin.
  *
- * @since 1.0.0
- *
- * @uses  wl_configuration_get_analyzer_url() to get the API for the analysis.
- *
  * @param string $content The content to analyze.
  *
  * @return string Returns null on failure, or the WP_Error, or a WP_Response with the response.
  *
  * @throws Exception
+ * @uses  wl_configuration_get_analyzer_url() to get the API for the analysis.
+ *
+ * @since 1.0.0
+ *
  */
 function wl_analyze_content( $content ) {
-
-	// Get the analyzer URL.
-	$url = wl_configuration_get_analyzer_url();
 
 	// Set the content type to the request content type or to text/plain by default.
 	$content_type = isset( $_SERVER['CONTENT_TYPE'] ) ? $_SERVER['CONTENT_TYPE'] : 'text/plain';
 
-	// Prepare the request.
-	$args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
-		'method'      => 'POST',
-		'headers'     => array(
-			'Accept'       => 'application/json',
-			'Content-type' => $content_type,
-		),
-		// we need to downgrade the HTTP version in this case since chunked encoding is dumping numbers in the response.
-		'httpversion' => '1.0',
-		'body'        => $content,
-	) );
-
-	$response = wp_remote_post( $url, $args );
+	add_filter( 'wl_api_service_api_url_path', 'wl_use_analysis_on_api_wordlift_io' );
+	$json = Wordlift_Api_Service::get_instance()
+	                            ->post_custom_content_type( 'analysis/single', $content, $content_type );
+	remove_filter( 'wl_api_service_api_url_path', 'wl_use_analysis_on_api_wordlift_io' );
 
 	// If it's an error log it.
-	if ( is_wp_error( $response ) ) {
+	if ( is_wp_error( $json ) ) {
 
-		$message = "An error occurred while requesting an analysis to $url: {$response->get_error_message()}";
+		$message = "An error occurred while requesting an analysis: {$json->get_error_message()}";
 
 		Wordlift_Log_Service::get_logger( 'wl_analyze_content' )->error( $message );
 
-		throw new Exception( $response->get_error_message(), is_numeric( $response->get_error_code() ) ? $response->get_error_code() : - 1 );
+		throw new Exception( $json->get_error_message(), is_numeric( $json->get_error_code() ) ? $json->get_error_code() : - 1 );
 	}
 
-	// Get the status code.
-	$status_code = (int) $response['response']['code'];
+	/*
+	 * We pass the response to the Analysis_Response_Ops to ensure that we make remote entities local.
+	 *
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/944
+	 * @since 3.21.5
+	 */
 
-	// If status code is OK, return the body.
-	if ( 200 === $status_code ) {
-		return $response['body'];
+	// Get the actual content sent to the analysis, so that we can pass it to the Analysis_Response_Ops to populate
+	// the occurrences for the local entities.
+	if ( 0 === strpos( $content_type, 'application/json' ) ) {
+		$request_json    = json_decode( $content );
+		$request_content = $request_json->content;
+	} else {
+		$request_content = $content;
 	}
 
-	// Invalid request, e.g. invalid key.
-	if ( 400 === $status_code ) {
-		$error = json_decode( $response['body'] );
+	return Analysis_Response_Ops::create( $json )
+	                            ->make_entities_local()
+	                            ->add_occurrences( $request_content )
+	                            ->to_string();
 
-		throw new Exception( $error->message, $error->code );
-	}
+}
 
-	// Another generic error.
-	throw new Exception( "An error occurred.", $status_code );;
+function wl_use_analysis_on_api_wordlift_io( $value ) {
+
+	return preg_replace( '|https://api\.wordlift\.it/|', 'https://api.wordlift.io/', $value );
 }

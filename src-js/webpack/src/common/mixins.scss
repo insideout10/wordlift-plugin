@@ -1,0 +1,38 @@
+@mixin textannotation {
+  .textannotation {
+    cursor: pointer;
+    transition: all 500ms linear;
+
+    // Default state for an annotation.
+    background-color: rgba(46, 146, 255, 0.2);
+    padding: 2px;
+
+    // Default properties.
+    &.disambiguated,
+    &.selected {
+      // Reset the above properties.
+      background-color: transparent;
+      box-shadow: none;
+    }
+
+    // Disambiguated entities are underlined with the WL blu color.
+    &.disambiguated {
+      background-color: rgba(46, 146, 255, 0.4);
+      border-color: #007aff !important;
+      border-bottom: #999 2px solid;
+    }
+
+    // Selected entities are highlighted gray.
+    &.selected {
+      color: #fff;
+      background-color: #a4a3a3;
+    }
+
+    // Selected disambiguated entities are highlighted blu.
+    &.disambiguated.selected {
+      color: #fff;
+      background-color: #007aff;
+      border-bottom: #007aff 2px solid;
+    }
+  }
+}

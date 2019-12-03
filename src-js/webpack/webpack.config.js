@@ -1,11 +1,17 @@
 /**
+ * This is the default wp-scripts Webpack configuration that we use as a base for ours.
+ *
+ * @since 3.23.0
+ */
+const defaultConfig = require("@wordpress/scripts/config/webpack.config");
+
+/**
  * This is the new entry point for JavaScript development. The idea is to migrate
  * the initial eject react-app to this webpack configuration.
  *
  * @since 3.19.0
  */
 const path = require("path");
-const webpack = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 /**
@@ -16,11 +22,13 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
  */
 
 module.exports = {
+  ...defaultConfig,
   entry: {
     bundle: "./src/Public/index.js",
     edit: "./src/Edit/index.js",
     term: "./src/Term/index.js",
-    gutenberg: "./src/Gutenberg/index.js",
+    "block-editor": "./src/block-editor/index.js",
+    "tiny-mce": "./src/tiny-mce/index.js",
     "wordlift-cloud": "./src/Cloud/index.js"
   },
   output: {
@@ -39,19 +47,15 @@ module.exports = {
   // },
   devtool: "eval-source-map",
   module: {
+    ...defaultConfig.module,
     rules: [
+      ...defaultConfig.module.rules,
       {
-        test: /\.js$/,
-        exclude: /(node_modules(?!\/wordlift-for-schemaorg)|bower_components)/,
-        use: {
-          loader: "babel-loader?cacheDirectory",
-          options: {
-            presets: ["babel-preset-env"]
-          }
-        }
+        test: /\.css$/i,
+        use: [MiniCssExtractPlugin.loader, "css-loader"]
       },
       {
-        test: /\.s?css$/,
+        test: /\.s[ac]ss$/i,
         use: [
           // We use the MiniCssExtractPlugin for both production and development
           // since development happens inside of WordPress which loads the css
@@ -72,14 +76,10 @@ module.exports = {
     ]
   },
   plugins: [
+    ...defaultConfig.plugins,
     // @see https://webpack.js.org/loaders/sass-loader/#extracting-style-sheets
     new MiniCssExtractPlugin({
       filename: "[name].css"
-    }),
-    new webpack.DefinePlugin({
-      "process.env": {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV)
-      }
     })
   ]
 };

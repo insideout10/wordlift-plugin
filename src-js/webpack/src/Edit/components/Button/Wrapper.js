@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components";
-import { darken } from "polished";
 
 const Wrapper = styled.div`
     white-space: initial;
@@ -34,7 +33,6 @@ const Wrapper = styled.div`
         }
 
         &:active {
-          background-color: ${darken(0.02, "#007aff")};
           box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
           transform: scale(1);
         }

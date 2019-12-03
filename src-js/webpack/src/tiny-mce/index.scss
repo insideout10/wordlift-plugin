@@ -1,0 +1,31 @@
+/**
+ * This file defines the styles in the TinyMCE editor. The output css is loaded directly inside TinyMCE.
+ */
+@import "../common/mixins";
+
+// The TinyMCE editor.
+body#tinymce,
+.mce-content-body,
+body#tinymce p,
+.mce-content-body p {
+  // Editor loading.p
+  &[contenteditable="false"] {
+    background-color: rgb(241, 241, 241);
+  }
+
+  @include textannotation;
+
+  // When the user is typing in TinyMCE or the classification postbox is closed.
+  &.wl-tinymce-typing .textannotation,
+  &.wl-postbox-closed .textannotation {
+    cursor: initial;
+    background-color: transparent;
+    box-shadow: none;
+
+    // Selected entities are highlighted gray.
+    &.selected {
+      color: initial;
+      background-color: initial;
+    }
+  }
+}

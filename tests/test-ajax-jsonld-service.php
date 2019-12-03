@@ -180,6 +180,10 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 
 		$jsonld_1 = get_object_vars( $response[0] );
 
+		$this->assertTrue( is_string( $jsonld_1['url'] )
+			, "URL must be a string, maybe the response is corrupted:\n"
+			  . var_export( $response[0], true ) );
+
 		$this->assertTrue( is_array( $jsonld_1 ) );
 		$this->assertArrayHasKey( '@context', $jsonld_1 );
 		$this->assertEquals( 'http://schema.org', $jsonld_1['@context'] );
@@ -194,7 +198,12 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$this->assertEquals( $name, $jsonld_1['name'] );
 
 		$this->assertArrayHasKey( 'url', $jsonld_1 );
-		$this->assertEquals( get_permalink( $local_business_id ), $jsonld_1['url'] );
+		$this->assertEquals( get_permalink( $local_business_id )
+			, $jsonld_1['url']
+			, "Expected:\n"
+			  . var_export( $jsonld_1['url'], true )
+			  . "Received:\n"
+			  . var_export( get_permalink( $local_business_id ), true ) );
 
 		$this->assertArrayHasKey( 'sameAs', $jsonld_1 );
 		$this->assertEquals( $same_as, $jsonld_1['sameAs'] );
@@ -642,11 +651,11 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 	/**
 	 * Test the filter `wl_jsonld_search_url`.
 	 *
-	 * @since 3.14.0
-	 *
 	 * @param string $url The default URL.
 	 *
 	 * @return string A modified URL.
+	 * @since 3.14.0
+	 *
 	 */
 	public function change_search_url( $url ) {
 		return str_replace( '{search_term_string}', '', $url );

@@ -14,11 +14,9 @@ import styled from 'styled-components';
  */
 const Wrapper = styled.div`
 	background-color: #fff;
-	// padding: 8px 0;
 
 	// Compensate accordion margin bottom.
 	position: relative;
-	// top: -8px;
 
 	// Size.
 	max-width: 254px;

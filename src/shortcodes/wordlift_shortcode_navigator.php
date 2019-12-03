@@ -41,6 +41,44 @@ function wl_shortcode_navigator_data() {
 	return $results;
 }
 
+/**
+ *
+ * Network navigator callback function used by network-navigator endpoint
+ *
+ * @since 3.22.6
+ *
+ * @param $request
+ *
+ * @return array
+ */
+function wl_network_navigator_wp_json($request) {
+
+	// Create the cache key.
+	$cache_key_params = $_REQUEST;
+	unset( $cache_key_params['uniqid'] );
+	$cache_key = array( 'request_params' => $cache_key_params );
+
+	// Create the TTL cache and try to get the results.
+	$cache         = new Ttl_Cache( "network-navigator", 24 * 60 * 60 ); // 24 hours.
+	$cache_results = $cache->get( $cache_key );
+
+	if ( isset( $cache_results ) ) {
+		header( 'X-WordLift-Cache: HIT' );
+
+		return $cache_results;
+	}
+
+	header( 'X-WordLift-Cache: MISS' );
+
+	$results = _wl_network_navigator_get_data($request);
+
+	// Put the result before sending the json to the client, since sending the json will terminate us.
+	$cache->put( $cache_key, $results );
+
+	return $results;
+
+}
+
 function _wl_navigator_get_data() {
 
 	// Post ID must be defined
@@ -53,6 +91,7 @@ function _wl_navigator_get_data() {
 	// Limit the results (defaults to 4)
 	$navigator_length = isset( $_GET['limit'] ) ? intval( $_GET['limit'] ) : 4;
 	$navigator_offset = isset( $_GET['offset'] ) ? intval( $_GET['offset'] ) : 0;
+	$order_by         = isset( $_GET['order_by'] ) ? sanitize_sql_orderby($_GET['order_by']) : 'ID ASC';
 
 	$current_post_id = $_GET['post_id'];
 	$current_post    = get_post( $current_post_id );
@@ -61,7 +100,7 @@ function _wl_navigator_get_data() {
 
 	// Post ID has to match an existing item
 	if ( null === $current_post ) {
-		wp_die( 'No valid post_id given' );
+		wp_send_json_error( 'No valid post_id given' );
 
 		return array();
 	}
@@ -69,7 +108,7 @@ function _wl_navigator_get_data() {
 	$referencing_posts = _wl_navigator_get_results( $current_post_id, array(
 		'ID',
 		'post_title',
-	), 'ID DESC', $navigator_length, $navigator_offset );
+	), $order_by, $navigator_length, $navigator_offset );
 
 	// loop over them and take the first one which is not already in the $related_posts
 	$results = array();
@@ -85,8 +124,6 @@ function _wl_navigator_get_data() {
 		 * @since 3.19.3 We're using the medium size image.
 		 */
 		$thumbnail = get_the_post_thumbnail_url( $referencing_post, 'medium' );
-
-//		if ( $thumbnail ) {
 
 		$result = array(
 			'post'   => array(
@@ -105,18 +142,76 @@ function _wl_navigator_get_data() {
 		$result['entity'] = apply_filters( 'wl_navigator_data_entity', $result['entity'], intval( $referencing_post->entity_id ), $navigator_id );
 
 		$results[] = $result;
-
-		// Be sure no more than 1 post for entity is returned
-//			break;
-//		}
 	}
 
 	if ( count( $results ) < $navigator_length ) {
 		$results = apply_filters( 'wl_navigator_data_placeholder', $results, $navigator_id, $navigator_offset, $navigator_length );
 	}
 
-	// Return first 4 results in json accordingly to 4 columns layout
 	return $results;
+}
+
+function _wl_network_navigator_get_data($request) {
+
+	// Limit the results (defaults to 4)
+	$navigator_length = isset( $request['limit'] ) ? intval( $request['limit'] ) : 4;
+	$navigator_offset = isset( $request['offset'] ) ? intval( $request['offset'] ) : 0;
+	$navigator_id     = $request['uniqid'];
+	$order_by         = isset( $_GET['order_by'] ) ? sanitize_sql_orderby($_GET['order_by']) : 'ID ASC';
+
+	$entities = $request['entities'];
+
+	// Post ID has to match an existing item
+	if ( !isset($entities) || empty($entities) ) {
+		wp_send_json_error( 'No valid entities provided' );
+	}
+
+	$referencing_posts = _wl_network_navigator_get_results( $entities, array(
+		'ID',
+		'post_title',
+	), $order_by, $navigator_length, $navigator_offset );
+
+	// loop over them and take the first one which is not already in the $related_posts
+	$results = array();
+	foreach ( $referencing_posts as $referencing_post ) {
+		$serialized_entity = wl_serialize_entity( $referencing_post->entity_id );
+
+		/**
+		 * Use the thumbnail.
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/825 related issue.
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/837
+		 *
+		 * @since 3.19.3 We're using the medium size image.
+		 */
+		$thumbnail = get_the_post_thumbnail_url( $referencing_post, 'medium' );
+
+		$result = array(
+			'post'   => array(
+				'permalink' => get_permalink( $referencing_post->ID ),
+				'title'     => $referencing_post->post_title,
+				'thumbnail' => $thumbnail,
+			),
+			'entity' => array(
+				'label'     => $serialized_entity['label'],
+				'mainType'  => $serialized_entity['mainType'],
+				'permalink' => get_permalink( $referencing_post->entity_id ),
+			),
+		);
+
+		$result['post']   = apply_filters( 'wl_network_navigator_data_post', $result['post'], intval( $referencing_post->ID ), $navigator_id );
+		$result['entity'] = apply_filters( 'wl_network_navigator_data_entity', $result['entity'], intval( $referencing_post->entity_id ), $navigator_id );
+
+		$results[] = $result;
+
+	}
+
+	if ( count( $results ) < $navigator_length ) {
+		$results = apply_filters( 'wl_network_navigator_data_placeholder', $results, $navigator_id, $navigator_offset, $navigator_length );
+	}
+
+	return $results;
+
 }
 
 
@@ -175,6 +270,60 @@ EOF
 
 }
 
+function _wl_network_navigator_get_results(
+	$entities, $fields = array(
+	'ID',
+	'post_title',
+), $order_by = 'ID DESC', $limit = 10, $offset = 0
+) {
+	global $wpdb;
+
+	$select = implode( ', ', array_map( function ( $item ) {
+		return "p.$item AS $item";
+	}, (array) $fields ) );
+
+	$order_by = implode( ', ', array_map( function ( $item ) {
+		return "p.$item";
+	}, (array) $order_by ) );
+
+	$entities_in = implode( ',', array_map( function ( $item ) {
+		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri(urldecode($item));
+		if(isset($entity)) return $entity->ID;
+	}, $entities ) );
+
+	/** @noinspection SqlNoDataSourceInspection */
+	return $wpdb->get_results(
+		$wpdb->prepare( <<<EOF
+SELECT %3\$s, p2.ID as entity_id
+ FROM {$wpdb->prefix}wl_relation_instances r1
+	-- get the ID of the post entity in common between the object and the subject 2. 
+    INNER JOIN {$wpdb->posts} p2
+        ON p2.ID = r1.object_id
+            AND p2.post_status = 'publish'
+    INNER JOIN {$wpdb->posts} p
+        ON p.ID = r1.subject_id
+            AND p.post_status = 'publish'
+    INNER JOIN {$wpdb->term_relationships} tr
+     	ON tr.object_id = p.ID
+    INNER JOIN {$wpdb->term_taxonomy} tt
+     	ON tt.term_taxonomy_id = tr.term_taxonomy_id
+      	    AND tt.taxonomy = 'wl_entity_type'
+    INNER JOIN {$wpdb->terms} t
+        ON t.term_id = tt.term_id
+            AND t.slug = 'article'
+    -- select only posts with featured images.
+ WHERE r1.object_id IN ({$entities_in})
+ -- avoid duplicates.
+ GROUP BY p.ID
+ ORDER BY %4\$s
+ LIMIT %1\$d
+ OFFSET %2\$d
+EOF
+			, $limit, $offset, $select, $order_by )
+	);
+
+}
+
 /**
  * The Navigator Ajax function.
  *
@@ -220,6 +369,16 @@ add_action( 'rest_api_init', function () {
 } );
 
 /**
+ * Adding `rest_api_init` action for backend of network navigator
+ */
+add_action( 'rest_api_init', function () {
+	register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/network-navigator', array(
+		'methods'  => 'GET',
+		'callback' => 'wl_network_navigator_wp_json',
+	) );
+} );
+
+/**
  * register_block_type for Gutenberg blocks
  */
 add_action( 'init', function () {
@@ -229,7 +388,7 @@ add_action( 'init', function () {
 	}
 
 	register_block_type( 'wordlift/navigator', array(
-		'editor_script'   => 'wordlift-admin-edit-gutenberg',
+		'editor_script'   => 'wl-block-editor',
 		'render_callback' => function ( $attributes ) {
 			$attr_code = '';
 			foreach ( $attributes as $key => $value ) {

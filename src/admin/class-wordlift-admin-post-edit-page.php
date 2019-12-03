@@ -57,14 +57,13 @@ class Wordlift_Admin_Post_Edit_Page {
 
 		// Define the callbacks.
 		$callback                  = array( $this, 'enqueue_scripts', );
-		$callback_gutenberg        = array( $this, 'enqueue_scripts_gutenberg', );
 		$callback_block_categories = array( $this, 'block_categories' );
 
 		// Set a hook to enqueue scripts only when the edit page is displayed.
 		add_action( 'admin_print_scripts-post.php', $callback );
 		add_action( 'admin_print_scripts-post-new.php', $callback );
 
-		add_action( 'enqueue_block_editor_assets', $callback_gutenberg );
+		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_scripts_gutenberg', ) );
 
 		$this->plugin = $plugin;
 	}
@@ -124,6 +123,11 @@ class Wordlift_Admin_Post_Edit_Page {
 		wp_dequeue_script( 'ontrapagesApp' );
 		wp_dequeue_script( 'ontrapagesController' );
 
+		// If Gutenberg is enabled for the post, do not load the legacy edit.js.
+		if ( function_exists( 'use_block_editor_for_post' ) && use_block_editor_for_post( get_post() ) ) {
+			return;
+		}
+
 		/*
 		 * Enqueue the edit screen JavaScript. The `wordlift-admin.bundle.js` file
 		 * is scheduled to replace the older `wordlift-admin.min.js` once client-side
@@ -135,6 +139,7 @@ class Wordlift_Admin_Post_Edit_Page {
 		 */
 		// plugin_dir_url( __FILE__ ) . 'js/1/edit.js'
 		$script_name = plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/edit';
+
 		wp_enqueue_script(
 			'wordlift-admin-edit-page', "$script_name.js",
 			array(
@@ -142,6 +147,11 @@ class Wordlift_Admin_Post_Edit_Page {
 				'jquery',
 				// Require wp.ajax.
 				'wp-util',
+				// @@todo: provide the following dependencies when we're in WP < 5.0 (i.e. when these dependencies aren't already defined).
+				'react',
+				'react-dom',
+				'wp-element',
+				'wp-polyfill',
 				/*
 				 * Angular isn't loaded anymore remotely, but it is loaded within wordlift-reloaded.js.
 				 *
@@ -154,6 +164,12 @@ class Wordlift_Admin_Post_Edit_Page {
 				//				'wl-angular-geolocation',
 				//				'wl-angular-touch',
 				//				'wl-angular-animate',
+				/**
+				 * We need the `wp.hooks` global to allow the edit.js script to send actions.
+				 *
+				 * @since 3.23.0
+				 */
+				'wp-hooks',
 			),
 			$this->plugin->get_version(),
 			false
@@ -168,28 +184,30 @@ class Wordlift_Admin_Post_Edit_Page {
 	 * @since 3.21.0
 	 */
 	public function enqueue_scripts_gutenberg() {
-		wp_enqueue_script(
-			'wordlift-admin-edit-gutenberg',
-			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/gutenberg.js',
+
+		wp_register_script(
+			'wl-block-editor',
+			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/block-editor.js',
 			array(
-				$this->plugin->get_plugin_name(),
-				'jquery',
-				'wp-blocks',
-				'wp-util',
-				'wp-element',
-				'wp-components',
-				'wp-compose',
-				'wp-edit-post',
-				'wp-plugins',
+				'react',
+				'wordlift',
+				'wp-hooks',
 				'wp-data',
-				'wp-annotations',
+				'wp-rich-text',
+				'wp-blocks',
+				'wp-plugins',
+				'wp-edit-post',
 			),
-			$this->plugin->get_version(),
-			false
+			$this->plugin->get_version()
 		);
+		wp_localize_script( 'wl-block-editor', '_wlBlockEditorSettings', array(
+			'root'  => esc_url_raw( rest_url() ),
+			'nonce' => wp_create_nonce( 'wp_rest' )
+		) );
+
 		wp_enqueue_style(
-			'style-gutenberg',
-			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/gutenberg.css',
+			'wl-block-editor',
+			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/block-editor.css',
 			array(),
 			$this->plugin->get_version()
 		);

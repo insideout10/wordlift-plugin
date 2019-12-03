@@ -32,7 +32,7 @@ class Wordlift_Admin_Country_Select_Element_Ajax_Test extends Wordlift_Ajax_Unit
 	 */
 	public function test_get_options_html() {
 		// Set $_POST variable: this means we will perform data selection for $entity_1_id
-		$_POST['lang']  = 'en';
+		$_POST['lang']  = 'bg';
 		$_POST['value'] = 'bg';
 
 		try {
@@ -61,13 +61,9 @@ class Wordlift_Admin_Country_Select_Element_Ajax_Test extends Wordlift_Ajax_Unit
 			$this->_handleAjax( 'wl_update_country_options' );
 		} catch ( WPAjaxDieContinueException $e ) {
 		}
-
 		$response = json_decode( $this->_last_response, true );
-
-		$matches = array();
-		preg_match_all( '/<option\s+value="uk"\s+selected=\'selected\'/', $response['data'], $matches );
-
-		$this->assertCount( 1, $matches[0] );
+		// Since an unknown language is posted, there would be no countries returned.
+		$this->assertEquals( '', $response['data'] );
 
 	}
 
