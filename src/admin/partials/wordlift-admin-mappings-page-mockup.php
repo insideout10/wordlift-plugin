@@ -2,6 +2,10 @@
 <html>
 
     <style>
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
     .form-control {
         padding: 5px;
         margin: 5px;
@@ -19,9 +23,6 @@
     .full-width {
         width: 100%;
     }
-    .row {
-        display: flex;
-    }
     .text-center{
         text-align:center!important;
     }
@@ -31,12 +32,15 @@
     .text-right{
         text-align:right !important;
     }
+    .align-right {
+        align-self: right;
+    }
     .row   {
         display: flex;
+        flex: 1;
     }
     .col {
-        padding: 1em;
-        flex-basis: fill;
+        padding: 1em; 
     }
     .border-bottom {
         border-bottom: 1px solid #888;
@@ -56,7 +60,7 @@
         border-right: 1px solid #888;
     }
     .border-full {
-        border: 1px solid #888;
+        border-bottom: 1px solid #888;
     }
     .bg-primary{
         background-color:#007bff!important
@@ -343,36 +347,46 @@
                                     </button>
                                 </div>
                             </div>
-                            <br/>
-                            <div class="row full-width text-right">
+                        </div>
+                        
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                
+                <td>
+                    <div class="row full-width">
+                        <div class="col align-right">
+                            <button class="button action bg-primary text-white">
+                                Add Mapping
+                            </button>
+                        </div>
 
-                                    <button class="button action bg-primary text-white">
-                                        Add Mapping
-                                    </button>
-
-                            </div>
-
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="row full-width text-right">
+                        <div class="col">
+                            <select  class="form-control">
+                                <option value="-1">Bulk Actions</option>
+                                <option value="duplicate">Duplicate</option>
+                                <option value="trash">Move to Trash</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <button class="button action"> Apply </button>
+                        </div>
+                        <div class="col">
+                            <button class="button action"> Save </button>
                         </div>
                     </div>
                 </td>
             </tr>
         </table>
 
-        <div class="row full-width text-right">
-            <div class="col">
-                <select  class="form-control">
-                    <option value="-1">Bulk Actions</option>
-                    <option value="duplicate">Duplicate</option>
-                    <option value="trash">Move to Trash</option>
-                </select>
-            </div>
-            <div class="col">
-                <button class="button action"> Apply </button>
-            </div>
-            <div class="col">
-                <button class="button action"> Save </button>
-            </div>
-        </div>
+
     </div>
 
 </html>
