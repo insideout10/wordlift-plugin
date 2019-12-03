@@ -3,10 +3,21 @@
 
     <style>
     .form-control {
+        padding: 5px;
+        margin: 5px;
+        width: -webkit-calc(100% - 10px);
+        width: -moz-calc(100% - 10px);
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -o-box-sizing: border-box;
+        -ms-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    .form-control-fixed {
         width: 150px;
     }
-    .form-control-lg {
-        width: 500px;
+    .full-width {
+        width: 100%;
     }
     .row {
         display: flex;
@@ -180,11 +191,13 @@
             <a onclick="show_first_mockup()" href="#">Go Back</a>
         </div>
         <h2> Edit Mapping </h2>
-        <input type="text"  placeholder="Edit Title" class="form-control-lg">
-         <div class="bg-primary">
-            <h3 class="container text-white"> Rules </h3>
+        
+        <input type="text"  placeholder="Edit Title" class="form-control">
+        <br/><br/>
+         <div class="bg-primary text-white container">
+            Rules
          </div>
-        <div class="row border-no-top">
+        <div class="row border-full">
            <div class="col">
                 Here we show the help text
             </div>
@@ -192,17 +205,17 @@
                 Use the mapping if
                 <div class="row">
                     <div class="col">
-                        <select class="form-control">
+                        <select class="form-control-fixed">
                             <option value="-1">Post type</option>
                         </select>
                     </div>
                     <div class="col">
-                        <select class="form-control">
+                        <select class="form-control-fixed">
                             <option value="-1">is equal to</option>
                         </select>
                     </div>
                     <div class="col">
-                        <select class="form-control">
+                        <select class="form-control-fixed">
                             <option value="-1">Custom Post</option>
                         </select>
                     </div>
@@ -212,17 +225,17 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <select class="form-control">
+                        <select class="form-control-fixed">
                             <option value="-1">Post taxonomy</option>
                         </select>
                     </div>
                     <div class="col">
-                        <select class="form-control">
+                        <select class="form-control-fixed">
                             <option value="-1">is equal to</option>
                         </select>
                     </div>
                     <div class="col">
-                        <select  class="form-control">
+                        <select  class="form-control-fixed">
                             <option value="-1">My Term</option>
                         </select>
                     </div>
@@ -238,99 +251,114 @@
             </div>
         </div>
         <br/>
-        <div class="row">
-            <div class="col text-center">
-                <input type="checkbox">
-                Property
-            </div>
-            <div class="col text-center">
-                Field
-            </div>
-        </div>
-        <div class="row  ">
-            <div class="col text-center">
-                <input type="checkbox">
-            </div>
-            <div class="col text-center">
-                etype
-                <br/>
-                <b>
-                    <a>
-                        Edit
-                    </a>|
-                    <a>
-                        Duplicate
-                    </a>|
-                    <a>
-                        Trash
-                    </a>|
-                </b>
-            </div>
-        </div>
-        <div class="row  ">
-            <div class="col text-center">
-                <input type="checkbox">
-            </div>
-            <div class="col text-center">
-                Telephone
-                <br/>
-                <div class="row">
-                    <div class="col">
-                        Property Help Text
+        <table class="full-width">
+            <tr class="row bg-primary text-white container">
+                <td class="full-width">
+                    <input type="checkbox">
+                    Property
+                </td>
+                <td class="full-width">
+                    Field
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="row border-full">
+                        <div class="col">
+                            <input type="checkbox">
+                        </div>
+                        <div class="col">
+                            etype
+                            <br/>
+                            <b>
+                                <a>
+                                    Edit
+                                </a>|
+                                <a>
+                                    Duplicate
+                                </a>|
+                                <a>
+                                    Trash
+                                </a>|
+                            </b>
+                        </div>
+                    </div>        
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="row border-full">
+                        <div class="col">
+                            <input type="checkbox">
+                        </div>
+                        <div class="col">
+                            Telephone
+                            <br/>
+                            <div class="row">
+                                <div class="col full-width">
+                                    Property Help Text
+                                </div>
+                                <div class="col">
+                                    <input type="text" placeholder="Telephone"  class="form-control-fixed">                    
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <div class="col  full-width">
+                                    Field Type Help Text
+                                </div>
+                                <div class="col ">
+                                    <select  class="form-control-fixed">
+                                        <option value="-1">Custom Field</option>
+                                    </select>                  
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col  full-width">
+                                    Field  Help Text
+                                </div>
+                                <div class="col">
+                                    <input type="text" placeholder="Contact Form" class="form-control-fixed">                  
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <div class="col  full-width">
+                                    Transform Help Text
+                                </div>
+                                <div class="col">
+                                    <select  class="form-control-fixed">
+                                        <option value="-1">None</option>
+                                    </select>                  
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <div class="col  full-width">
+                                    
+                                </div>
+                                <div class="col">
+                                    <button class="button action">
+                                        Close Mapping
+                                    </button>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row full-width text-right">
+
+                                    <button class="button action bg-primary text-white">
+                                        Add Mapping
+                                    </button>
+
+                            </div>
+
+                        </div>
                     </div>
-                    <div class="col">
-                        <input type="text" placeholder="Telephone"  class="form-control">                    
-                    </div>
-                </div>
-                <br/>
-                <div class="row">
-                    <div class="col">
-                        Field Type Help Text
-                    </div>
-                    <div class="col">
-                        <select  class="form-control">
-                            <option value="-1">Custom Field</option>
-                        </select>                  
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        Field  Help Text
-                    </div>
-                    <div class="col">
-                        <input type="text" placeholder="Contact Form" class="form-control">                  
-                    </div>
-                </div>
-                <br/>
-                <div class="row">
-                    <div class="col">
-                        Transform Help Text
-                    </div>
-                    <div class="col">
-                        <select  class="form-control">
-                            <option value="-1">None</option>
-                        </select>                  
-                    </div>
-                </div>
-                <br/>
-                <div class="row">
-                    <div class="col">
-                        <button class="button action">
-                            Close Mapping
-                        </button>
-                    </div>
-                </div>
-                <br/>
-                <div class="row">
-                    <div class="col">
-                        <button class="button action">
-                            Add Mapping
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row  ">
+                </td>
+            </tr>
+        </table>
+
+        <div class="row full-width text-right">
             <div class="col">
                 <select  class="form-control">
                     <option value="-1">Bulk Actions</option>
