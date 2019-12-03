@@ -1,15 +1,10 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <h2>
-            Mappings
-            <button class="button action">Add New</button>
-        </h2>
-    </head>
+
     <style>
     .row {
         display: flex;
-        border-bottom: 1px solid #000;
+        border-bottom: 1px solid #888;
     }
     .text-left {
         text-align: left;
@@ -22,7 +17,7 @@
     }
     .col-border {
         padding: 1em;
-        border: 2px solid #000;
+        border: 2px solid #888;
     }
     .small-table {
         width: 500px;
@@ -31,101 +26,122 @@
     .large-div {
         width: 700px;
     }
+    .hide {
+        display: none;
+    }
     </style>
-    <div class="aligncenter">
-        <table class="wp-list-table widefat fixed small-table">
-            <tr class="table-row">
-                <td>
+    <script>
+        function show_second_mockup() {
+            document.getElementById("second_mockup").style.display = "block";
+            document.getElementById("first_mockup").style.display = "none";
+        }
+        function show_first_mockup() {
+            document.getElementById("second_mockup").style.display = "none";
+            document.getElementById("first_mockup").style.display = "block";
+        }
+    </script>
+    <div id="first_mockup">
+        <div class="aligncenter">
+            <h2>
+                Mappings
+                <button class="button action" onclick="show_second_mockup()">Add New</button>
+            </h2>
+            <table class="wp-list-table widefat fixed small-table">
+                <tr class="table-row">
+                    <td>
+                        <div class="row">
+                            <div class="col">
+                                <input type="checkbox">
+                            </div>
+                            <div class="col">
+                                Title
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="table-row">
+                    <td>
                     <div class="row">
-                        <div class="col">
-                            <input type="checkbox">
+                            <div class="col">
+                                <input type="checkbox">
+                            </div>
+                            <div class="col">
+                                My custom post type
+                                <br/>
+                                <b>
+                                    <a>
+                                        Edit
+                                    </a>|
+                                    <a>
+                                        Duplicate
+                                    </a>|
+                                    <a>
+                                        Trash
+                                    </a>|
+                                </b>
+                            </div>
                         </div>
-                        <div class="col">
-                            Title
-                        </div>
-                    </div>
-                </td>
-            </tr>
-            <tr class="table-row">
-                <td>
-                   <div class="row">
-                        <div class="col">
-                            <input type="checkbox">
-                        </div>
-                        <div class="col">
-                            My custom post type
-                            <br/>
-                            <b>
-                                <a>
-                                    Edit
-                                </a>|
-                                <a>
-                                    Duplicate
-                                </a>|
-                                <a>
-                                    Trash
-                                </a>|
-                            </b>
-                        </div>
-                    </div>
-                </td>
-            </tr>
+                    </td>
+                </tr>
 
-            <tr class="table-row">
-                <td>
-                   <div class="row">
-                        <div class="col">
-                            <input type="checkbox">
+                <tr class="table-row">
+                    <td>
+                    <div class="row">
+                            <div class="col">
+                                <input type="checkbox">
+                            </div>
+                            <div class="col">
+                                Another custom post type
+                                <br/>
+                                <b>
+                                    <a>
+                                        Edit
+                                    </a>|
+                                    <a>
+                                        Duplicate
+                                    </a>|
+                                    <a>
+                                        Trash
+                                    </a>|
+                                </b>
+                            </div>
                         </div>
-                        <div class="col">
-                            Another custom post type
-                            <br/>
-                            <b>
-                                <a>
-                                    Edit
-                                </a>|
-                                <a>
-                                    Duplicate
-                                </a>|
-                                <a>
-                                    Trash
-                                </a>|
-                            </b>
-                        </div>
-                    </div>
-                </td>
-            </tr>
+                    </td>
+                </tr>
 
-            <tr class="table-row">
-                <td>
-                   <div class="row">
-                        <div class="col">
-                            <input type="checkbox">
+                <tr class="table-row">
+                    <td>
+                    <div class="row">
+                            <div class="col">
+                                <input type="checkbox">
+                            </div>
+                            <div class="col">
+                                Title
+                            </div>
                         </div>
-                        <div class="col">
-                            Title
-                        </div>
-                    </div>
-                </td>
-            </tr>
+                    </td>
+                </tr>
 
-        </table>
-    </div>
-    <div class="row-no-border">
-        <div class="col">
-            <select>
-                <option value="-1">Bulk Actions</option>
-                <option value="duplicate">Duplicate</option>
-                <option value="trash">Move to Trash</option>
-            </select>
+            </table>
         </div>
-        <div class="col">
-            <button class="button action"> Apply </button>
+        <div class="row-no-border">
+            <div class="col">
+                <select>
+                    <option value="-1">Bulk Actions</option>
+                    <option value="duplicate">Duplicate</option>
+                    <option value="trash">Move to Trash</option>
+                </select>
+            </div>
+            <div class="col">
+                <button class="button action"> Apply </button>
+            </div>
         </div>
     </div>
-    <br/><br/><br/>
-    <b>Second mockup</b>
-    <div id="#second_mockup" class="large-div">
+    <div id="second_mockup" class="large-div hide">
+        <br/>
+        <div class="text-left">
+            <a onclick="show_first_mockup()" href="#">Go Back</a>
+        </div>
         <h2> Edit Mapping </h2>
         <input type="text"  placeholder="Edit Title">
         
@@ -293,4 +309,5 @@
             </div>
         </div>
     </div>
+
 </html>
