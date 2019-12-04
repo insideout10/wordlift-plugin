@@ -142,10 +142,11 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.23.0 (2019-11-25) =
+= 3.23.0 (2019-12-04) =
 * Enhancement [#972](https://github.com/insideout10/wordlift-plugin/issues/972): Entity to Term link should check the sameAs values as well.
-
+* Enhancement [#961](https://github.com/insideout10/wordlift-plugin/issues/961): Customizable AMP Navigator.
 * Fix [#971](https://github.com/insideout10/wordlift-plugin/issues/971): Automatically exclude wordlift-cloud from WP Rocket minification.
+* Fix [#944](https://github.com/insideout10/wordlift-plugin/issues/944): Analysis highlights matches in the middle of words.
 
 = 3.22.7 (2019-11-26) =
 * Fix: [#979](https://github.com/insideout10/wordlift-plugin/issues/979): Unable to set Entity Type on posts.
