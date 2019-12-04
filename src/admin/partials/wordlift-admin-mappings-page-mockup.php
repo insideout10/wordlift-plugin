@@ -42,25 +42,9 @@
     .col {
         padding: 1em; 
     }
-    .border-bottom {
-        border-bottom: 1px solid #888;
-    }
-    .border-top {
-        border-top: 1px solid #888;
-    }
-    .border-left {
-        border-left: 1px solid #888;
-    }
-    .border-right {
-        border-right: 1px solid #888;
-    }
-    .border-no-top {
-        border-bottom: 1px solid #888;
-        border-left: 1px solid #888;
-        border-right: 1px solid #888;
-    }
-    .border-full {
-        border-bottom: 1px solid #888;
+    .mockup-table-1 {
+        margin-right: 10px;
+        width: 90% !important;
     }
     .bg-primary{
         background-color:#007bff!important
@@ -81,6 +65,11 @@
     .hide {
         display: none;
     }
+
+    .page-title-action:active {
+        background-color: #0073aa;
+        color: #f7f7f7;
+    }
     </style>
     <script>
         function show_second_mockup() {
@@ -93,44 +82,46 @@
         }
     </script>
     <div id="first_mockup">
-        <div class="aligncenter">
-            <h2>
-                Mappings
-                <button class="button action" onclick="show_second_mockup()">Add New</button>
-            </h2>
-            <table class="small-table">
+
+        <h1 class="wp-heading-inline">
+        Mappings </h1>
+            <table class="wp-list-table widefat fixed striped mockup-table-1">
+                <thead>
+                    <tr class="table-row">
+                        <td>
+                            <div class="row">
+                                <div class="col">
+                                    <input type="checkbox">
+                                </div>
+                                <div class="col">
+
+                                    Title
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </thead>
                 <tr class="table-row">
                     <td>
-                        <div class="row border-full">
-                            <div class="col">
-                                <input type="checkbox">
-                            </div>
-                            <div class="col">
-                                Title
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr class="table-row">
-                    <td>
-                    <div class="row border-full">
+                    <div class="row">
                             <div class="col">
                                 <input type="checkbox">
                             </div>
                             <div class="col">
                                 My custom post type
-                                <br/>
-                                <b>
-                                    <a>
-                                        Edit
-                                    </a>|
-                                    <a>
-                                        Duplicate
-                                    </a>|
-                                    <a>
-                                        Trash
-                                    </a>|
-                                </b>
+                                
+                                <div class="row-actions">
+                                    <span class="edit">
+                                        <a>Edit</a>
+                                        | 
+                                    </span>
+                                    <span>
+                                        <a title="Duplicate this item">Duplicate</a> |
+                                    </span>
+                                    <span class="trash">
+                                        <a>Trash</a>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </td>
@@ -138,57 +129,68 @@
 
                 <tr class="table-row">
                     <td>
-                    <div class="row border-full">
+                    <div class="row">
                             <div class="col">
                                 <input type="checkbox">
                             </div>
                             <div class="col">
                                 Another custom post type
-                                <br/>
-                                <b>
-                                    <a>
-                                        Edit
-                                    </a>|
-                                    <a>
-                                        Duplicate
-                                    </a>|
-                                    <a>
-                                        Trash
-                                    </a>|
-                                </b>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
 
-                <tr class="table-row">
-                    <td>
-                    <div class="row border-full">
-                            <div class="col">
-                                <input type="checkbox">
+                            <div class="row-actions">
+                                <span class="edit">
+                                    <a>Edit</a>
+                                    | 
+                                </span>
+                                <span>
+                                    <a title="Duplicate this item">Duplicate</a> |
+                                </span>
+                                <span class="trash">
+                                    <a>Trash</a>
+                                </span>
                             </div>
-                            <div class="col">
-                                Title
+
+
+
+
                             </div>
                         </div>
                     </td>
                 </tr>
+                <tfoot>
+                    <tr class="table-row">
+                        <td>
+                        <div class="row">
+                                <div class="col">
+                                    <input type="checkbox">
+                                </div>
+                                <div class="col">
+                                    Title
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
 
             </table>
         </div>
-        <div class="row  ">
-            <div class="col">
-                <select  class="form-control">
-                    <option value="-1">Bulk Actions</option>
-                    <option value="duplicate">Duplicate</option>
-                    <option value="trash">Move to Trash</option>
-                </select>
-            </div>
-            <div class="col">
-                <button class="button action"> Apply </button>
+
+        <div class="tablenav bottom">
+            <div class="alignleft actions bulkactions">
+            <label for="bulk-action-selector-bottom" class="screen-reader-text">Select bulk action</label><select name="action2" id="bulk-action-selector-bottom">
+            <option value="-1">Bulk Actions</option>
+            <option value="acfduplicate" class="hide-if-no-js">Duplicate</option>
+            <option value="trash">Move to Trash</option>
+            </select>
+            <input type="submit" id="doaction2" class="button action" value="Apply">
             </div>
         </div>
+
+
+
     </div>
+
+
+
     <div id="second_mockup" class="large-div hide">
         <br/>
         <div class="text-left">
