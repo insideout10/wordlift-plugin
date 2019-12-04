@@ -121,10 +121,6 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 
 		$current_post = get_post();
 
-		// Enqueue amp specific styles
-		// wp_enqueue_style( 'wordlift-amp-custom', plugin_dir_url( dirname( __FILE__ ) ) . '/css/wordlift-amp-custom.min.css' );
-		add_action('amp_post_template_css','amp_navigator_css', 11);
-
 		$post         = ! empty( $shortcode_atts['post_id'] ) ? get_post( intval( $shortcode_atts['post_id'] ) ) : get_post();
 		$navigator_id = $shortcode_atts['uniqid'];
 
@@ -135,7 +131,7 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 			'post_id' => $post->ID,
 			'limit'   => $shortcode_atts['limit'],
 			'offset'  => $shortcode_atts['offset'],
-			'order_by'=> 'ID ASC'
+			'order_by'=> $shortcode_atts['order_by']
 		);
 
 		if ( strpos( $wp_json_base, 'wp-json/' . WL_REST_ROUTE_DEFAULT_NAMESPACE ) ) {
@@ -151,7 +147,12 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 				'https:',
 			), '', $wp_json_base ) . '/navigator' . $delimiter . http_build_query( $navigator_query );
 
-		$template_id = !empty($shortcode_atts['template_id']) ? $shortcode_atts['template_id'] : "template-".$navigator_id;
+		if(!empty($shortcode_atts['template_id'])){
+			$template_id = $shortcode_atts['template_id'];
+        } else {
+			$template_id = "template-".$navigator_id;
+			add_action( 'amp_post_template_css', array($this, 'amp_post_template_css') );
+        }
 
 		return <<<HTML
 		<div id="{$navigator_id}" class="wl-amp-navigator" style="width: 100%">
@@ -212,10 +213,24 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 HTML;
 	}
 
-}
+	public function amp_post_template_css(){
+	    // Default CSS for default template
+		echo <<<CSS
+	        .wordlift-navigator .title{font-size:16px;margin:0.5rem 0}
+	        .wordlift-navigator .cards{display:flex;flex-wrap:wrap}
+	        .wordlift-navigator .cards .card{background:white;flex:1 0 300px;box-sizing:border-box;margin:1rem .25em}
+	        @media screen and (min-width: 40em){
+	            .wordlift-navigator .cards .card{max-width:calc(50% -  1em)}
+	        }
+	        @media screen and (min-width: 60em){
+	            .wordlift-navigator .cards .card{max-width:calc(25% - 1em)}
+	        }
+	        .wordlift-navigator .cards .card a{color:black;text-decoration:none}
+	        .wordlift-navigator .cards .card a:hover{box-shadow:3px 3px 8px #ccc}
+	        .wordlift-navigator .cards .card .thumbnail{width:100%;padding-bottom:56.25%;background-size:cover}
+	        .wordlift-navigator .cards .card .thumbnail img{display:block;border:0;width:100%;height:auto}
+	        .wordlift-navigator .cards .card .card-content .title{font-size:14px;margin:0.3rem 0}
+CSS;
+    }
 
-function amp_navigator_css() { ?>
-	/* amp_navigator_css custom css */
-	.wordlift-navigator .title{font-size:16px;margin:0.5rem 0}.wordlift-navigator .cards{display:flex;flex-wrap:wrap}.wordlift-navigator .cards .card{background:white;flex:1 0 300px;box-sizing:border-box;margin:1rem .25em}@media screen and (min-width: 40em){.wordlift-navigator .cards .card{max-width:calc(50% -  1em)}}@media screen and (min-width: 60em){.wordlift-navigator .cards .card{max-width:calc(25% - 1em)}}.wordlift-navigator .cards .card a{color:black;text-decoration:none}.wordlift-navigator .cards .card a:hover{box-shadow:3px 3px 8px #ccc}.wordlift-navigator .cards .card .thumbnail{width:100%;padding-bottom:56.25%;background-size:cover}.wordlift-navigator .cards .card .thumbnail img{display:block;border:0;width:100%;height:auto}.wordlift-navigator .cards .card .card-content .title{font-size:14px;margin:0.3rem 0}
-	<?php
 }
