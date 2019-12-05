@@ -2,13 +2,20 @@
 <html>
 
     <style>
-    table {
-        border-collapse: collapse;
-        border-spacing: 0;
-    }
+
     .wl-mappings-heading-text {
         font-size: 23px;
         font-weight: 400;
+    }
+    .wl-table {
+        width: 70%;
+    }
+    .wl-check-column {
+        vertical-align: inherit;
+        width: 2.2em;
+    }
+    .wl-table td input{
+        margin-left: 8px;
     }
     .wl-mappings-add-new:hover {
         background-color: #0073aa !important;
@@ -43,29 +50,27 @@
     .wl-description {
         font-size: 13px;
         font-style: italic;
-    } 
-
-    .form-control {
-        padding: 5px;
-        margin: 5px;
-        width: -webkit-calc(100% - 10px);
-        width: -moz-calc(100% - 10px);
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        -o-box-sizing: border-box;
-        -ms-box-sizing: border-box;
-        box-sizing: border-box;
     }
-    .form-control-fixed {
-        width: 150px;
+    .wl-form-select {
+        padding-top: 3px;
+        padding-right: 5px;
+        padding-bottom: 3px;
+        padding-left: 5px;
+        min-width: 50%;
+    }
+
+    .wl-container {
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .wl-col {
+        padding: 1em;
     }
 
     .row   {
         display: flex;
         flex: 1;
-    }
-    .col {
-        padding: 1em; 
     }
 
     .bg-primary{
@@ -84,104 +89,85 @@
     </style>
     <script>
         function show_second_mockup() {
-            document.getElementById("second_mockup").style.display = "block";
-            document.getElementById("first_mockup").style.display = "none";
+            document.getElementById("second_mockup").style.display = "fixed";
+            document.getElementById("first_mockup").style.display = "hidden";
         }
         function show_first_mockup() {
             document.getElementById("second_mockup").style.display = "none";
             document.getElementById("first_mockup").style.display = "block";
         }
     </script>
-    <div id="first_mockup">
+
+<!-- first mock up template -->
+    <div id="first_mockup" class="hide">
         <h1 class="wp-heading-inline wl-mappings-heading-text">
             Mappings
         <button class="button wl-mappings-add-new" onclick="show_second_mockup()">
             Add New
         </button>
         </h1>
-        <table class="wp-list-table widefat striped mockup-table-1">
+        <table class="wp-list-table widefat striped wl-table">
             <thead>
-                <tr class="table-row">
-                    <td>
-                        <div class="row">
-                            <div class="col">
-                                <input type="checkbox">
-                            </div>
-                            <div class="col">
-                                <a class="row-title">Title</a>
-                            </div>
-                        </div>
-                    </td>
+                <tr>
+                    <th class="wl-check-column">
+                        <input type="checkbox">
+                    </th>
+                    <th>
+                        <a class="row-title">Title</a>
+                    </th>
                 </tr>
             </thead>
-            <tr class="table-row">
+            <tr>
+                <td class="wl-check-column">
+                    <input type="checkbox">
+                </td>
                 <td>
-                    <div class="row">
-                        <div class="col">
-                            <input type="checkbox">
-                        </div>
-                        <div class="col">
-                            <a class="row-title">
-                                My custom post type
-                            </a>
-                            <div class="row-actions">
-                                <span class="edit">
-                                    <a>Edit</a>
-                                    | 
-                                </span>
-                                <span>
-                                    <a title="Duplicate this item">Duplicate</a> |
-                                </span>
-                                <span class="trash">
-                                    <a>Trash</a>
-                                </span>
-                            </div>
-                        </div>
+                    <a class="row-title">
+                        My custom post type
+                    </a>
+                    <div class="row-actions">
+                        <span class="edit">
+                            <a>Edit</a>
+                            | 
+                        </span>
+                        <span>
+                            <a title="Duplicate this item">Duplicate</a> |
+                        </span>
+                        <span class="trash">
+                            <a>Trash</a>
+                        </span>
                     </div>
                 </td>
             </tr>
 
-            <tr class="table-row">
+            <tr>
+                <td class="wl-check-column">
+                    <input type="checkbox">
+                </td>
                 <td>
-                <div class="row">
-                        <div class="col">
-                            <input type="checkbox">
-                        </div>
-                        <div class="col">
-                            <a class="row-title"> Another custom post type </a>
-
-                        <div class="row-actions">
-                            <span class="edit">
-                                <a>Edit</a>
-                                | 
-                            </span>
-                            <span>
-                                <a title="Duplicate this item">Duplicate</a> |
-                            </span>
-                            <span class="trash">
-                                <a>Trash</a>
-                            </span>
-                        </div>
-
-
-
-
-                        </div>
+                    <a class="row-title"> Another custom post type </a>
+                    <div class="row-actions">
+                        <span class="edit">
+                            <a>Edit</a>
+                            | 
+                        </span>
+                        <span>
+                            <a title="Duplicate this item">Duplicate</a> |
+                        </span>
+                        <span class="trash">
+                            <a>Trash</a>
+                        </span>
                     </div>
                 </td>
             </tr>
             <tfoot>
-                <tr class="table-row">
-                    <td>
-                    <div class="row">
-                            <div class="col">
-                                <input type="checkbox">
-                            </div>
-                            <div class="col">
-                                <a class="row-title">Title</a>
-                            </div>
-                        </div>
-                    </td>
+                <tr>
+                    <th class="wl-check-column">
+                        <input type="checkbox">
+                    </th>
+                    <th>
+                        <a class="row-title">Title</a>
+                    </th>
                 </tr>
             </tfoot>
 
@@ -198,20 +184,42 @@
             </div>
         </div>
     </div>
+<!-- first mockup template end -->
 
 
-    <div id="second_mockup" class="hide">
-        <br/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- second mock up template -->
+    <div id="second_mockup">
         <div class="text-left">
             <a onclick="show_first_mockup()" href="#">Go Back</a>
         </div>
         <h1 class="wp-heading-inline wl-mappings-heading-text">
             Edit Mapping
         </h1>
-        
         <input type="text" class="form-control wl-spaced  wl-input-class"
          size="30" value="My Custom Post Type" id="title" spellcheck="true" autocomplete="off">
-        <br/>
+
         <table class="wp-list-table widefat striped wl-spaced">
             <thead>
                 <tr>
@@ -229,50 +237,50 @@
                     </div>
                 </td>
                 <td>
-                    <div class="col">
+                    <div class="wl-col">
                     Use the mapping if
-                    <div class="row">
-                        <div class="col">
-                            <select class="form-control-fixed">
+                    <div class="wl-container">
+                        <div class="wl-col">
+                            <select class="  wl-form-select">
                                 <option value="-1">Post type</option>
                             </select>
                         </div>
-                        <div class="col">
-                            <select class="form-control-fixed">
+                        <div class="wl-col">
+                            <select class="  wl-form-select">
                                 <option value="-1">is equal to</option>
                             </select>
                         </div>
-                        <div class="col">
-                            <select class="form-control-fixed">
+                        <div class="wl-col">
+                            <select class="  wl-form-select">
                                 <option value="-1">Custom Post</option>
                             </select>
                         </div>
-                        <div class="col">
+                        <div class="wl-col">
                             <button class="button action"> And </button>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <select class="form-control-fixed">
+                    <div class="wl-container">
+                        <div class="wl-col">
+                            <select class="  wl-form-select">
                                 <option value="-1">Post taxonomy</option>
                             </select>
                         </div>
-                        <div class="col">
-                            <select class="form-control-fixed">
+                        <div class="wl-col">
+                            <select class="  wl-form-select">
                                 <option value="-1">is equal to</option>
                             </select>
                         </div>
-                        <div class="col">
-                            <select  class="form-control-fixed">
+                        <div class="wl-col">
+                            <select  class="  wl-form-select">
                                 <option value="-1">My Term</option>
                             </select>
                         </div>
-                        <div class="col">
+                        <div class="wl-col">
                             <button class="button action"> And </button>
                         </div>
                     </div>
                     <div class="row  ">
-                        <div class="col">
+                        <div class="wl-col">
                             <button class="button action"> Add Rule Group </button>
                         </div>
                     </div>
@@ -282,14 +290,13 @@
             </tr>
         </table>
         <br/>
+
+
         <table class="wp-list-table widefat striped wl-spaced">
             <thead>
                 <tr>
-                    <th colspan="0">
-                        <input type="checkbox">&nbsp;
-                    </th>
                     <th colspan="2">
-                        Property
+                    <input type="checkbox"> Property
                     </th>
                     <th colpspan="2">
                         Field
@@ -301,8 +308,8 @@
                     <input type="checkbox">
                 </td>
                 <td>
-                    <div class="row">
-                            <div class="col">
+                    <div class="wl-container">
+                            <div class="wl-col">
                                 <a class="row-title">
                                     etype
                                 </a>
@@ -326,56 +333,56 @@
             <tr>
                 <td>
                     <div class="row border-full">
-                        <div class="col">
+                        <div class="wl-col">
                             <input type="checkbox">
                         </div>
-                        <div class="col">
+                        <div class="wl-col">
                             Telephone
                             <br/>
-                            <div class="row">
+                            <div class="wl-container">
                                 <div class="col full-width">
                                     Property Help Text
                                 </div>
-                                <div class="col">
-                                    <input type="text" placeholder="Telephone"  class="form-control-fixed">                    
+                                <div class="wl-col">
+                                    <input type="text" placeholder="Telephone"  class="  wl-form-select">                    
                                 </div>
                             </div>
                             <br/>
-                            <div class="row">
+                            <div class="wl-container">
                                 <div class="col  full-width">
                                     Field Type Help Text
                                 </div>
                                 <div class="col ">
-                                    <select  class="form-control-fixed">
+                                    <select  class="  wl-form-select">
                                         <option value="-1">Custom Field</option>
                                     </select>                  
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="wl-container">
                                 <div class="col  full-width">
                                     Field  Help Text
                                 </div>
-                                <div class="col">
-                                    <input type="text" placeholder="Contact Form" class="form-control-fixed">                  
+                                <div class="wl-col">
+                                    <input type="text" placeholder="Contact Form" class="  wl-form-select">                  
                                 </div>
                             </div>
                             <br/>
-                            <div class="row">
+                            <div class="wl-container">
                                 <div class="col  full-width">
                                     Transform Help Text
                                 </div>
-                                <div class="col">
-                                    <select  class="form-control-fixed">
+                                <div class="wl-col">
+                                    <select  class="  wl-form-select">
                                         <option value="-1">None</option>
                                     </select>                  
                                 </div>
                             </div>
                             <br/>
-                            <div class="row">
+                            <div class="wl-container">
                                 <div class="col  full-width">
                                     
                                 </div>
-                                <div class="col">
+                                <div class="wl-col">
                                     <button class="button action">
                                         Close Mapping
                                     </button>
@@ -403,17 +410,17 @@
             <tr>
                 <td>
                     <div class="row full-width text-right">
-                        <div class="col">
+                        <div class="wl-col">
                             <select  class="form-control">
                                 <option value="-1">Bulk Actions</option>
                                 <option value="duplicate">Duplicate</option>
                                 <option value="trash">Move to Trash</option>
                             </select>
                         </div>
-                        <div class="col">
+                        <div class="wl-col">
                             <button class="button action"> Apply </button>
                         </div>
-                        <div class="col">
+                        <div class="wl-col">
                             <button class="button action"> Save </button>
                         </div>
                     </div>
@@ -423,5 +430,6 @@
 
 
     </div>
+<!-- second mock up template end -->
 
 </html>
