@@ -10,12 +10,16 @@
     .wl-table td, th {
         vertical-align: inherit;
     }
+
+    .wl-spaced-table td {
+        padding-right: 150px;
+    }
     
     .wl-check-column {
         vertical-align: inherit;
         width: 2.2em;
     }
-    .wl-table td input{
+    .wl-table td input[type=checkbox]{
         margin-left: 8px;
     }
     .wl-mappings-add-new:hover {
@@ -52,7 +56,7 @@
         padding-top: 3px;
         padding-right: 5px;
         padding-bottom: 3px;
-        padding-left: 5px;
+        padding-left: 0px !important;
         width: 150px;
     }
     .wl-form-control {
@@ -81,7 +85,12 @@
     .wl-container-30 {
         width: 30%;
     }
-
+    .wl-container-70 {
+        width: 70%;
+    }
+    .wl-text-right {
+        text-align: right;
+    }
 
 
     .hide {
@@ -100,6 +109,7 @@
         }
     </script>
 
+<div>
 <!-- first mock up template -->
     <div id="first_mockup" class="hide">
         <h1 class="wp-heading-inline wl-mappings-heading-text">
@@ -192,7 +202,7 @@
 
 
 <!-- second mock up template -->
-    <div id="second_mockup" class="wl-container-80">
+    <div id="second_mockup" class="wl-container-70">
         <br/>
         <div class="text-left">
             <a onclick="show_first_mockup()" href="#">Go Back</a>
@@ -202,7 +212,7 @@
         </div>
         <input type="text" class="wl-form-control wl-input-class"
          size="30" value="My Custom Post Type" id="title" spellcheck="true" autocomplete="off">
-        <br/>
+        <br/><br/>
         <table class="wp-list-table widefat striped wl-table wl-container-full">
             <thead>
                 <tr>
@@ -276,8 +286,6 @@
             </tr>
         </table>
         <br/>
-
-
         <table class="wp-list-table widefat striped wl-table wl-container-full">
             <thead>
                 <tr>
@@ -323,52 +331,65 @@
                 <td class="wl-check-column">
                     <input type="checkbox">
                 </td>
-                <td colspan="2">
+
+                <td colspan="3">
                     <a class="row-title">Telephone</a>
                     <br/>
-                    <div class="wl-container wl-container-full">
-                        
-                        <div class="wl-col" style="width: 30%;">
-                            <br/>
-                            Property Help Text
-                            <br/><br/>
-                            Field Type Help Text
-                            <br/><br/>
-                            Field  Help Text
-                            <br/><br/>
+                    <table class="wl-container wl-container-full wl-spaced-table">
+                        <tr>
+                            <td colspan="2">
+                                Property Help Text
+                            </td>
+                            <td>
+                                <input type="text" placeholder="Telephone" class="wl-form-control">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                Field Type Help Text
+                            </td>
+                            <td>
+                                <select class="wl-form-select">
+                                    <option value="-1">Custom Field</option>
+                                </select> 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                Field Help Text
+                            </td>
+                            <td>
+                                <input type="text" placeholder="Contact Form" class="wl-form-control">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
                             Transform Help Text
-                        </div>
-                        <div class="wl-col" style="width: 70%;" class="wl-form-control">
-                            <br/>
-                            <input type="text" placeholder="Telephone" class="wl-form-select">
-                            <br/><br/>
-                            <select class="wl-form-select">
-                                <option value="-1">Custom Field</option>
-                            </select> 
-                            <br/><br/>
-                            <select  class="wl-form-select">
-                                <option value="-1">None</option>
-                            </select>
-                            <br/><br/>
-                            <select  class="wl-form-select">
-                                <option value="-1">None</option>
-                            </select>     
-
-                        </div> 
+                            </td>
+                            <td>
+                                <select  class="wl-form-select">
+                                    <option value="-1">None</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"></td>
+                            <td>
+                                <button class="button action bg-primary text-white">
+                                    Close Mapping
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="wl-text-right">
+                    <br/><br/>
+                        <button class="button action bg-primary text-white" style="margin:auto;">
+                            Add Mapping
+                        </button>
                     </div>
                 </td>
             </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td>
-                    <button class="button action bg-primary text-white">
-                        Add Mapping
-                    </button>
-                </td>
-            </tr>
         </table>
-
         <div class="wl-container wl-container-full">
             <div class="wl-col">
                 <select  class="form-control">
@@ -388,4 +409,4 @@
 
     </div>
 <!-- second mock up template end -->
-
+</div>
