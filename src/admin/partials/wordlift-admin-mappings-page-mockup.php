@@ -6,6 +6,45 @@
         border-collapse: collapse;
         border-spacing: 0;
     }
+    .wl-mappings-heading-text {
+        font-size: 23px;
+        font-weight: 400;
+    }
+    .wl-mappings-add-new:hover {
+        background-color: #0073aa !important;
+        color: #f7f7f7 !important;
+    }
+    .wl-postbox {
+        position: relative;
+        min-width: 255px;
+        border: 1px solid #e5e5e5;
+        box-shadow: 0 1px 1px rgba(0,0,0,.04);
+        background: #fff;
+        width: 90% !important;
+    }
+    .wl-bg-light {
+        background-color: #fbfbfc !important;
+    }
+    .wl-input-class
+    {
+        height: 40px !important;
+    }
+    .wl-spaced {
+        margin-right: 10px;
+        width: 95% !important;
+    }
+    .wl-postbox {
+        position: relative;
+        min-width: 255px;
+        border: 1px solid #e5e5e5;
+        box-shadow: 0 1px 1px rgba(0,0,0,.04);
+        background: #fff;
+    }
+    .wl-description {
+        font-size: 13px;
+        font-style: italic;
+    } 
+
     .form-control {
         padding: 5px;
         margin: 5px;
@@ -20,21 +59,7 @@
     .form-control-fixed {
         width: 150px;
     }
-    .full-width {
-        width: 100%;
-    }
-    .text-center{
-        text-align:center!important;
-    }
-    .text-left{
-        text-align:left !important;
-    }
-    .text-right{
-        text-align:right !important;
-    }
-    .align-right {
-        align-self: right;
-    }
+
     .row   {
         display: flex;
         flex: 1;
@@ -42,10 +67,7 @@
     .col {
         padding: 1em; 
     }
-    .mockup-table-1 {
-        margin-right: 10px;
-        width: 90% !important;
-    }
+
     .bg-primary{
         background-color:#007bff!important
     }
@@ -55,21 +77,10 @@
     .container {
         padding: 5px;
     }
-    .small-table {
-        width: 500px;
-        
-    }
-    .large-div {
-        width: 700px;
-    }
     .hide {
         display: none;
     }
 
-    .page-title-action:active {
-        background-color: #0073aa;
-        color: #f7f7f7;
-    }
     </style>
     <script>
         function show_second_mockup() {
@@ -82,60 +93,37 @@
         }
     </script>
     <div id="first_mockup">
-
-        <h1 class="wp-heading-inline">
-        Mappings </h1>
-            <table class="wp-list-table widefat fixed striped mockup-table-1">
-                <thead>
-                    <tr class="table-row">
-                        <td>
-                            <div class="row">
-                                <div class="col">
-                                    <input type="checkbox">
-                                </div>
-                                <div class="col">
-
-                                    Title
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </thead>
+        <h1 class="wp-heading-inline wl-mappings-heading-text">
+            Mappings
+        <button class="button wl-mappings-add-new" onclick="show_second_mockup()">
+            Add New
+        </button>
+        </h1>
+        <table class="wp-list-table widefat striped mockup-table-1">
+            <thead>
                 <tr class="table-row">
                     <td>
-                    <div class="row">
+                        <div class="row">
                             <div class="col">
                                 <input type="checkbox">
                             </div>
                             <div class="col">
-                                My custom post type
-                                
-                                <div class="row-actions">
-                                    <span class="edit">
-                                        <a>Edit</a>
-                                        | 
-                                    </span>
-                                    <span>
-                                        <a title="Duplicate this item">Duplicate</a> |
-                                    </span>
-                                    <span class="trash">
-                                        <a>Trash</a>
-                                    </span>
-                                </div>
+                                <a class="row-title">Title</a>
                             </div>
                         </div>
                     </td>
                 </tr>
-
-                <tr class="table-row">
-                    <td>
+            </thead>
+            <tr class="table-row">
+                <td>
                     <div class="row">
-                            <div class="col">
-                                <input type="checkbox">
-                            </div>
-                            <div class="col">
-                                Another custom post type
-
+                        <div class="col">
+                            <input type="checkbox">
+                        </div>
+                        <div class="col">
+                            <a class="row-title">
+                                My custom post type
+                            </a>
                             <div class="row-actions">
                                 <span class="edit">
                                     <a>Edit</a>
@@ -148,148 +136,192 @@
                                     <a>Trash</a>
                                 </span>
                             </div>
-
-
-
-
-                            </div>
                         </div>
-                    </td>
-                </tr>
-                <tfoot>
-                    <tr class="table-row">
-                        <td>
-                        <div class="row">
-                                <div class="col">
-                                    <input type="checkbox">
-                                </div>
-                                <div class="col">
-                                    Title
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </tfoot>
-
-            </table>
-        </div>
-
-        <div class="tablenav bottom">
-            <div class="alignleft actions bulkactions">
-            <label for="bulk-action-selector-bottom" class="screen-reader-text">Select bulk action</label><select name="action2" id="bulk-action-selector-bottom">
-            <option value="-1">Bulk Actions</option>
-            <option value="acfduplicate" class="hide-if-no-js">Duplicate</option>
-            <option value="trash">Move to Trash</option>
-            </select>
-            <input type="submit" id="doaction2" class="button action" value="Apply">
-            </div>
-        </div>
-
-
-
-    </div>
-
-
-
-    <div id="second_mockup" class="large-div hide">
-        <br/>
-        <div class="text-left">
-            <a onclick="show_first_mockup()" href="#">Go Back</a>
-        </div>
-        <h2> Edit Mapping </h2>
-        
-        <input type="text"  placeholder="Edit Title" class="form-control">
-        <br/><br/>
-         <div class="bg-primary text-white container">
-            Rules
-         </div>
-        <div class="row border-full">
-           <div class="col">
-                Here we show the help text
-            </div>
-            <div class="col">
-                Use the mapping if
-                <div class="row">
-                    <div class="col">
-                        <select class="form-control-fixed">
-                            <option value="-1">Post type</option>
-                        </select>
                     </div>
-                    <div class="col">
-                        <select class="form-control-fixed">
-                            <option value="-1">is equal to</option>
-                        </select>
-                    </div>
-                    <div class="col">
-                        <select class="form-control-fixed">
-                            <option value="-1">Custom Post</option>
-                        </select>
-                    </div>
-                    <div class="col">
-                        <button class="button action"> And </button>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <select class="form-control-fixed">
-                            <option value="-1">Post taxonomy</option>
-                        </select>
-                    </div>
-                    <div class="col">
-                        <select class="form-control-fixed">
-                            <option value="-1">is equal to</option>
-                        </select>
-                    </div>
-                    <div class="col">
-                        <select  class="form-control-fixed">
-                            <option value="-1">My Term</option>
-                        </select>
-                    </div>
-                    <div class="col">
-                        <button class="button action"> And </button>
-                    </div>
-                </div>
-                <div class="row  ">
-                    <div class="col">
-                        <button class="button action"> Add Rule Group </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <br/>
-        <table class="full-width">
-            <tr class="row bg-primary text-white container">
-                <td class="full-width">
-                    <input type="checkbox">
-                    Property
-                </td>
-                <td class="full-width">
-                    Field
                 </td>
             </tr>
-            <tr>
+
+            <tr class="table-row">
                 <td>
-                    <div class="row border-full">
+                <div class="row">
                         <div class="col">
                             <input type="checkbox">
                         </div>
                         <div class="col">
-                            etype
-                            <br/>
-                            <b>
-                                <a>
-                                    Edit
-                                </a>|
-                                <a>
-                                    Duplicate
-                                </a>|
-                                <a>
-                                    Trash
-                                </a>|
-                            </b>
+                            <a class="row-title"> Another custom post type </a>
+
+                        <div class="row-actions">
+                            <span class="edit">
+                                <a>Edit</a>
+                                | 
+                            </span>
+                            <span>
+                                <a title="Duplicate this item">Duplicate</a> |
+                            </span>
+                            <span class="trash">
+                                <a>Trash</a>
+                            </span>
                         </div>
-                    </div>        
+
+
+
+
+                        </div>
+                    </div>
                 </td>
+            </tr>
+            <tfoot>
+                <tr class="table-row">
+                    <td>
+                    <div class="row">
+                            <div class="col">
+                                <input type="checkbox">
+                            </div>
+                            <div class="col">
+                                <a class="row-title">Title</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
+
+        </table>
+        <div class="tablenav bottom">
+                <div class="alignleft actions bulkactions">
+                    <label for="bulk-action-selector-bottom" class="screen-reader-text">Select bulk action</label><select name="action2" id="bulk-action-selector-bottom">
+                    <option value="-1">Bulk Actions</option>
+                    <option value="acfduplicate">Duplicate</option>
+                    <option value="trash">Move to Trash</option>
+                    </select>
+                    <input type="submit" id="doaction2" class="button action" value="Apply">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="second_mockup" class="hide">
+        <br/>
+        <div class="text-left">
+            <a onclick="show_first_mockup()" href="#">Go Back</a>
+        </div>
+        <h1 class="wp-heading-inline wl-mappings-heading-text">
+            Edit Mapping
+        </h1>
+        
+        <input type="text" class="form-control wl-spaced  wl-input-class"
+         size="30" value="My Custom Post Type" id="title" spellcheck="true" autocomplete="off">
+        <br/>
+        <table class="wp-list-table widefat striped wl-spaced">
+            <thead>
+                <tr>
+                    <td colspan="0">
+                        Rules
+                    </td>
+                    <td colspan="2">
+                    </td>
+                </tr>
+            </thead>
+           <tr>
+                <td class="wl-bg-light wl-description">
+                    <div>
+                        Here we show the help text
+                    </div>
+                </td>
+                <td>
+                    <div class="col">
+                    Use the mapping if
+                    <div class="row">
+                        <div class="col">
+                            <select class="form-control-fixed">
+                                <option value="-1">Post type</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <select class="form-control-fixed">
+                                <option value="-1">is equal to</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <select class="form-control-fixed">
+                                <option value="-1">Custom Post</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <button class="button action"> And </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <select class="form-control-fixed">
+                                <option value="-1">Post taxonomy</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <select class="form-control-fixed">
+                                <option value="-1">is equal to</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <select  class="form-control-fixed">
+                                <option value="-1">My Term</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <button class="button action"> And </button>
+                        </div>
+                    </div>
+                    <div class="row  ">
+                        <div class="col">
+                            <button class="button action"> Add Rule Group </button>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <br/>
+        <table class="wp-list-table widefat striped wl-spaced">
+            <thead>
+                <tr>
+                    <th colspan="0">
+                        <input type="checkbox">&nbsp;
+                    </th>
+                    <th colspan="2">
+                        Property
+                    </th>
+                    <th colpspan="2">
+                        Field
+                    </th>
+                </tr>
+            </thead>
+            <tr>
+                <td>
+                    <input type="checkbox">
+                </td>
+                <td>
+                    <div class="row">
+                            <div class="col">
+                                <a class="row-title">
+                                    etype
+                                </a>
+                                <div class="row-actions">
+                                    <span class="edit">
+                                        <a>Edit</a>
+                                        | 
+                                    </span>
+                                    <span>
+                                        <a title="Duplicate this item">Duplicate</a> |
+                                    </span>
+                                    <span class="trash">
+                                        <a>Trash</a>
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td></td>
             </tr>
             <tr>
                 <td>
@@ -354,8 +386,9 @@
                     </div>
                 </td>
             </tr>
+        </table>
+        <table class="full-width">
             <tr>
-                
                 <td>
                     <div class="row full-width">
                         <div class="col align-right">
