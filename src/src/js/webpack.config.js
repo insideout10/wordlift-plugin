@@ -30,11 +30,11 @@ module.exports = {
     "block-editor": "./src/block-editor/index.js",
     "tiny-mce": "./src/tiny-mce/index.js",
     "wordlift-cloud": "./src/Cloud/index.js",
-    "mappings": "./src/mappings/index.js",
+    "mappings": "./src/mappings/index.js"
   },
   output: {
     filename: "[name].js",
-    path: path.resolve(__dirname, "../../src/js/dist")
+    path: path.resolve(__dirname, "../../js/dist")
   },
   /*
    * Give precedence to our node_modules folder when resolving the same module.
