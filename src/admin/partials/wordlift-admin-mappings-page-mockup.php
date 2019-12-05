@@ -1,7 +1,4 @@
-<!DOCTYPE html>
-<html>
-
-    <style>
+<style>
 
     .wl-mappings-heading-text {
         font-size: 23px;
@@ -10,6 +7,10 @@
     .wl-table {
         width: 70%;
     }
+    .wl-table td, th {
+        vertical-align: inherit;
+    }
+    
     .wl-check-column {
         vertical-align: inherit;
         width: 2.2em;
@@ -36,10 +37,6 @@
     {
         height: 40px !important;
     }
-    .wl-spaced {
-        margin-right: 10px;
-        width: 95% !important;
-    }
     .wl-postbox {
         position: relative;
         min-width: 255px;
@@ -56,32 +53,33 @@
         padding-right: 5px;
         padding-bottom: 3px;
         padding-left: 5px;
-        min-width: 50%;
+        width: 150px;
+    }
+    .wl-form-control {
+        width: 100%;
     }
 
     .wl-container {
         display: flex;
         justify-content: flex-start;
     }
+    .wl-container-80 {
+        width: 80%;
+    }
 
+    .wl-container-full {
+        width: 100%;
+    }
+    
     .wl-col {
         padding: 1em;
     }
-
-    .row   {
-        display: flex;
-        flex: 1;
+    .wl-align-right {
+        margin-left: auto;
     }
 
-    .bg-primary{
-        background-color:#007bff!important
-    }
-    .text-white {
-        color: #fff !important;
-    }
-    .container {
-        padding: 5px;
-    }
+
+
     .hide {
         display: none;
     }
@@ -89,8 +87,8 @@
     </style>
     <script>
         function show_second_mockup() {
-            document.getElementById("second_mockup").style.display = "fixed";
-            document.getElementById("first_mockup").style.display = "hidden";
+            document.getElementById("second_mockup").style.display = "block";
+            document.getElementById("first_mockup").style.display = "none";
         }
         function show_first_mockup() {
             document.getElementById("second_mockup").style.display = "none";
@@ -189,42 +187,23 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!-- second mock up template -->
-    <div id="second_mockup">
+    <div id="second_mockup" class="wl-container-80">
+        <br/>
         <div class="text-left">
             <a onclick="show_first_mockup()" href="#">Go Back</a>
+            <h1 class="wp-heading-inline wl-mappings-heading-text">
+                Edit Mapping
+            </h1>
         </div>
-        <h1 class="wp-heading-inline wl-mappings-heading-text">
-            Edit Mapping
-        </h1>
-        <input type="text" class="form-control wl-spaced  wl-input-class"
+        <input type="text" class="wl-form-control wl-input-class"
          size="30" value="My Custom Post Type" id="title" spellcheck="true" autocomplete="off">
-
-        <table class="wp-list-table widefat striped wl-spaced">
+        <br/>
+        <table class="wp-list-table widefat striped wl-table wl-container-full">
             <thead>
                 <tr>
                     <td colspan="0">
-                        Rules
+                       <b>Rules</b> 
                     </td>
                     <td colspan="2">
                     </td>
@@ -232,13 +211,11 @@
             </thead>
            <tr>
                 <td class="wl-bg-light wl-description">
-                    <div>
-                        Here we show the help text
-                    </div>
+                    Here we show the help text
                 </td>
                 <td>
-                    <div class="wl-col">
-                    Use the mapping if
+                    <div>
+                        <b>Use the mapping if</b>
                     <div class="wl-container">
                         <div class="wl-col">
                             <select class="  wl-form-select">
@@ -279,7 +256,12 @@
                             <button class="button action"> And </button>
                         </div>
                     </div>
-                    <div class="row  ">
+                    <div class="wl-container">
+                        <div class="wl-col">
+                            <b>Or</b>
+                        </div>
+                    </div>
+                    <div class="wl-container">
                         <div class="wl-col">
                             <button class="button action"> Add Rule Group </button>
                         </div>
@@ -292,19 +274,22 @@
         <br/>
 
 
-        <table class="wp-list-table widefat striped wl-spaced">
+        <table class="wp-list-table widefat striped wl-table wl-container-full">
             <thead>
                 <tr>
-                    <th colspan="2">
-                    <input type="checkbox"> Property
+                    <th class="wl-check-column">
+                        <input type="checkbox"> 
                     </th>
-                    <th colpspan="2">
+                    <th style="width: 40%;">
+                        Property
+                    </th>
+                    <th>
                         Field
                     </th>
                 </tr>
             </thead>
             <tr>
-                <td>
+                <td class="wl-check-column">
                     <input type="checkbox">
                 </td>
                 <td>
@@ -331,13 +316,15 @@
                 <td></td>
             </tr>
             <tr>
-                <td>
-                    <div class="row border-full">
-                        <div class="wl-col">
-                            <input type="checkbox">
-                        </div>
-                        <div class="wl-col">
-                            Telephone
+                <td class="wl-check-column">
+                    <input type="checkbox">
+                </td>
+                <td colspan="2">
+                    <a class="row-title">Telephone</a>
+                    <br/>
+                    <div class="wl-container wl-container-full">
+                        
+                        <div class="wl-col">                           
                             <br/>
                             <div class="wl-container">
                                 <div class="col full-width">
@@ -393,43 +380,34 @@
                     </div>
                 </td>
             </tr>
-        </table>
-        <table class="full-width">
             <tr>
+                <td></td>
+                <td></td>
                 <td>
-                    <div class="row full-width">
-                        <div class="col align-right">
-                            <button class="button action bg-primary text-white">
-                                Add Mapping
-                            </button>
-                        </div>
-
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="row full-width text-right">
-                        <div class="wl-col">
-                            <select  class="form-control">
-                                <option value="-1">Bulk Actions</option>
-                                <option value="duplicate">Duplicate</option>
-                                <option value="trash">Move to Trash</option>
-                            </select>
-                        </div>
-                        <div class="wl-col">
-                            <button class="button action"> Apply </button>
-                        </div>
-                        <div class="wl-col">
-                            <button class="button action"> Save </button>
-                        </div>
-                    </div>
+                    <button class="button action bg-primary text-white">
+                        Add Mapping
+                    </button>
                 </td>
             </tr>
         </table>
 
+        <div class="wl-container wl-container-full">
+            <div class="wl-col">
+                <select  class="form-control">
+                    <option value="-1">Bulk Actions</option>
+                    <option value="duplicate">Duplicate</option>
+                    <option value="trash">Move to Trash</option>
+                </select>
+            </div>
+            <div class="wl-col">
+                <button class="button action"> Apply </button>
+            </div>
+            <div class="wl-col wl-align-right">
+                <button class="button action"> Save </button>
+            </div>
+
+        </div>
 
     </div>
 <!-- second mock up template end -->
 
-</html>
