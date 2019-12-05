@@ -407,6 +407,6 @@
 
         </div>
 
-    </div>
+
 <!-- second mock up template end -->
-</div>
+
