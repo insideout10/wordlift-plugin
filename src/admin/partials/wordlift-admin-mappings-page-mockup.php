@@ -78,6 +78,10 @@
         margin-left: auto;
     }
 
+    .wl-container-30 {
+        width: 30%;
+    }
+
 
 
     .hide {
@@ -280,11 +284,11 @@
                     <th class="wl-check-column">
                         <input type="checkbox"> 
                     </th>
-                    <th style="width: 40%;">
-                        Property
+                    <th style="width: 30%;">
+                        <b>Property</b>
                     </th>
                     <th>
-                        Field
+                        <b>Field</b>
                     </th>
                 </tr>
             </thead>
@@ -324,59 +328,33 @@
                     <br/>
                     <div class="wl-container wl-container-full">
                         
-                        <div class="wl-col">                           
+                        <div class="wl-col" style="width: 30%;">
                             <br/>
-                            <div class="wl-container">
-                                <div class="col full-width">
-                                    Property Help Text
-                                </div>
-                                <div class="wl-col">
-                                    <input type="text" placeholder="Telephone"  class="  wl-form-select">                    
-                                </div>
-                            </div>
-                            <br/>
-                            <div class="wl-container">
-                                <div class="col  full-width">
-                                    Field Type Help Text
-                                </div>
-                                <div class="col ">
-                                    <select  class="  wl-form-select">
-                                        <option value="-1">Custom Field</option>
-                                    </select>                  
-                                </div>
-                            </div>
-                            <div class="wl-container">
-                                <div class="col  full-width">
-                                    Field  Help Text
-                                </div>
-                                <div class="wl-col">
-                                    <input type="text" placeholder="Contact Form" class="  wl-form-select">                  
-                                </div>
-                            </div>
-                            <br/>
-                            <div class="wl-container">
-                                <div class="col  full-width">
-                                    Transform Help Text
-                                </div>
-                                <div class="wl-col">
-                                    <select  class="  wl-form-select">
-                                        <option value="-1">None</option>
-                                    </select>                  
-                                </div>
-                            </div>
-                            <br/>
-                            <div class="wl-container">
-                                <div class="col  full-width">
-                                    
-                                </div>
-                                <div class="wl-col">
-                                    <button class="button action">
-                                        Close Mapping
-                                    </button>
-                                </div>
-                            </div>
+                            Property Help Text
+                            <br/><br/>
+                            Field Type Help Text
+                            <br/><br/>
+                            Field  Help Text
+                            <br/><br/>
+                            Transform Help Text
                         </div>
-                        
+                        <div class="wl-col" style="width: 70%;" class="wl-form-control">
+                            <br/>
+                            <input type="text" placeholder="Telephone" class="wl-form-select">
+                            <br/><br/>
+                            <select class="wl-form-select">
+                                <option value="-1">Custom Field</option>
+                            </select> 
+                            <br/><br/>
+                            <select  class="wl-form-select">
+                                <option value="-1">None</option>
+                            </select>
+                            <br/><br/>
+                            <select  class="wl-form-select">
+                                <option value="-1">None</option>
+                            </select>     
+
+                        </div> 
                     </div>
                 </td>
             </tr>
