@@ -1,3 +1,12 @@
+/**
+ * Components: Mapping List Item component.
+ *
+ * @since 3.24.0
+ */
+
+/**
+ * External dependencies
+ */
 import React from "react"
 export default class MappingListItemComponent extends
 React.Component {
