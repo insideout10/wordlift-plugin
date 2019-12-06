@@ -286,11 +286,20 @@ class Wordlift {
 	/**
 	 * The 'Sync Mapping Mockup' page.
 	 *
-	 * @since  3.6.0
+	 * @since  3.24.0
 	 * @access private
 	 * @var \Wordlift_Admin_Mappings_Mockup_Page $sync_mappings_mockup_page The sync mappings mockup page.
 	 */
 	private $sync_mappings_mockup_page;
+
+	/**
+	 * The 'Sync Mappings' page.
+	 *
+	 * @since  3.24.0
+	 * @access private
+	 * @var \Wordlift_Admin_Sync_Mappings_Page $sync_mappings_page The sync mappings page.
+	 */
+	private $sync_mappings_page;
 	/**
 	 * The 'WordLift Settings' page.
 	 *
@@ -1104,6 +1113,14 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-mappings-mockup-page.php';
 
 		/**
+		 *
+		 * The class responsible for displaying sync mappings page
+		 *
+		 * @since 3.24.0
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-sync-mappings-page.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
@@ -1392,6 +1409,7 @@ class Wordlift {
 		$this->download_your_data_page   = new Wordlift_Admin_Download_Your_Data_Page( $this->configuration_service );
 		$this->status_page               = new Wordlift_Admin_Status_Page( $this->entity_service, $this->sparql_service );
 		$this->sync_mappings_mockup_page = new Wordlift_Admin_Mappings_Mockup_Page();
+		$this->sync_mappings_page        = new Wordlift_Admin_Sync_Mappings_Page();
 		// Create an instance of the install wizard.
 		$this->admin_setup = new Wordlift_Admin_Setup( $this->configuration_service, $this->key_validation_service, $this->entity_service, $this->language_select_element, $this->country_select_element );
 
@@ -1593,8 +1611,13 @@ class Wordlift {
 		$this->loader->add_action( 'admin_menu', $this->download_your_data_page, 'admin_menu', 100, 0 );
 		$this->loader->add_action( 'admin_menu', $this->status_page, 'admin_menu', 100, 0 );
 		$this->loader->add_action( 'admin_menu', $this->entity_type_settings_admin_page, 'admin_menu', 100, 0 );
+		/**
+		 * Adding sync mapping menu entry to the sidebar
+		 *
+		 * @since 3.24.0
+		 */
 		$this->loader->add_action( 'admin_menu', $this->sync_mappings_mockup_page, 'admin_menu', 100, 0 );
-
+		$this->loader->add_action( 'admin_menu', $this->sync_mappings_page, 'admin_menu', 100, 0 );
 		// Hook the admin-ajax.php?action=wl_download_your_data&out=xyz links.
 		$this->loader->add_action( 'wp_ajax_wl_download_your_data', $this->download_your_data_page, 'download_your_data', 10 );
 
