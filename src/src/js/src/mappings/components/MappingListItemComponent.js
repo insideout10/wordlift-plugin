@@ -16,11 +16,15 @@ React.Component {
                     </a>
                     <div class="row-actions">
                         <span class="edit">
-                            <a>Edit</a>
+                            <a>
+                                Edit
+                            </a>
                             | 
                         </span>
                         <span>
-                            <a title="Duplicate this item">Duplicate</a> |
+                            <a title="Duplicate this item">
+                                Duplicate
+                            </a> |
                         </span>
                         <span class="trash">
                             <a>Trash</a>
