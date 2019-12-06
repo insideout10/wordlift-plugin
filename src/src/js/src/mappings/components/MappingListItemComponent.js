@@ -5,6 +5,29 @@ React.Component {
         super(props)
     }
     render() {
-        return <p></p>
+        return  ( 
+            <tr>
+                <td class="wl-check-column">
+                    <input type="checkbox" />
+                </td>
+                <td>
+                    <a class="row-title">
+                        { this.props.title }
+                    </a>
+                    <div class="row-actions">
+                        <span class="edit">
+                            <a>Edit</a>
+                            | 
+                        </span>
+                        <span>
+                            <a title="Duplicate this item">Duplicate</a> |
+                        </span>
+                        <span class="trash">
+                            <a>Trash</a>
+                        </span>
+                    </div>
+                </td>
+            </tr>
+        )
     }
 }
