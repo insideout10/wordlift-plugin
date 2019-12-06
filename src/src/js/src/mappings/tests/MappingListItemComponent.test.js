@@ -1,8 +1,12 @@
+/**
+ * Test for MappingListItemComponent
+ * 
+ * @since 3.24.0
+ */
 import React from "react";
-import { render } from "react-test-renderer";
+import renderer from 'react-test-renderer';
 
 
-
-test("fake test", ()=> {
-    expect(1).toBe(1)
+test("check whether mapping list item can be rendered", ()=> {
+    renderer.create(<MappingListItemComponent />)
 })
