@@ -8,7 +8,7 @@ import renderer from 'react-test-renderer';
 import SelectionBoxComponent from '../components/SelectionBoxComponent'
 
 test("check whether selection box component can be rendered", ()=> {
-    renderer.create(<SelectionBoxComponent />)
+    renderer.create(<SelectionBoxComponent options={[]}/>)
 })
 
 test("provided options via property, then renders the options", ()=> {
@@ -25,6 +25,5 @@ test("provided options via property, then renders the options", ()=> {
     const optionCount = componentRoot.findAll(
         (el) => el.type == 'option'
     ).length
-    // the options should be 1
     expect(optionCount).toBe(1)
 })

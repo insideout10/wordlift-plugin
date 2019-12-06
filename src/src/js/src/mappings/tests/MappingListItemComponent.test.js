@@ -23,6 +23,5 @@ test("provided title renders it on the component", ()=> {
         && el.props.class
         && el.props.class.includes("wl-mappings-list-item-title")
     ).children[0]
-
     expect(titleText).toBe("some title")
 })

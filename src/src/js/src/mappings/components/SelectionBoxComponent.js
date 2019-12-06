@@ -11,8 +11,21 @@ import React from "react"
 export default class SelectionBoxComponent extends
 React.Component {
 
+    constructor(props) {
+        super(props)
+    }
+
     render() {
-        return <p></p>
+        return (
+            <select>
+                {this.props.options.map((item,index)=> {
+                    return (
+                    <option value={item.value} key={index}>
+                        { item.text }
+                    </option>)
+                })}
+            </select>
+        )
     }
 
 }
