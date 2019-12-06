@@ -12,7 +12,7 @@ React.Component {
                 </td>
                 <td>
                     <a class="row-title wl-mappings-list-item-title">
-                        
+                        { this.props.title }
                     </a>
                     <div class="row-actions">
                         <span class="edit">

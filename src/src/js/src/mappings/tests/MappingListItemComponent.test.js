@@ -20,8 +20,9 @@ test("provided title renders it on the component", ()=> {
     const component = renderer.create(<MappingListItemComponent title="some title" />).root
     const titleText = component.find(
         (el) => el.type == 'a'
-        && el.classList
-        && el.classList.contains('wl-mappings-list-item-title')
-    ).textContent
+        && el.props.class
+        && el.props.class.includes("wl-mappings-list-item-title")
+    ).children[0]
+
     expect(titleText).toBe("some title")
 })
