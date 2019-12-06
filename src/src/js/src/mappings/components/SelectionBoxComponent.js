@@ -18,12 +18,15 @@ React.Component {
     render() {
         return (
             <select>
-                {this.props.options.map((item,index)=> {
-                    return (
-                    <option value={item.value} key={index}>
-                        { item.text }
-                    </option>)
-                })}
+                {
+                    this.props.options.map((item,index)=> {
+                        return (
+                            <option value={item.value} key={index}>
+                                { item.text }
+                            </option>
+                        )
+                    })
+                }
             </select>
         )
     }
