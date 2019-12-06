@@ -11,8 +11,8 @@ React.Component {
                     <input type="checkbox" />
                 </td>
                 <td>
-                    <a class="row-title">
-                        { this.props.title }
+                    <a class="row-title wl-mappings-list-item-title">
+                        
                     </a>
                     <div class="row-actions">
                         <span class="edit">
