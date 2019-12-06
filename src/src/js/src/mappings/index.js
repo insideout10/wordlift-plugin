@@ -4,4 +4,4 @@
  * @since 3.24.0
  */
 
-const HELLO = "world!";
+import MappingListItemComponent from './components/MappingListItemComponent'

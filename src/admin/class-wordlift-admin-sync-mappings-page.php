@@ -2,7 +2,7 @@
 /**
  * Pages: Sync Mappings page.
  *
- * Display the list of Mappings Mockup.
+ * Display the sync mappings page.
  *
  * @since 3.24.0
  * @package Wordlift
@@ -19,8 +19,11 @@ class Wordlift_Admin_Sync_Mappings_Page extends Wordlift_Admin_Page {
 	 * {@inheritdoc}
 	 */
 	public function __construct() {
-		// do nothing, if this constructor is not overridden, duplicate menu entry
-		// created.
+		// Register scripts needed to be loaded for that page.
+		wp_register_script('wl-sync-mappings-script',
+			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings.js',
+			false
+		);
 	}
 
 	/**
