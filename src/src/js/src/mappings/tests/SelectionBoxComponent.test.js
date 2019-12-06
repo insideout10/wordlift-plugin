@@ -27,3 +27,30 @@ test("provided options via property, then renders the options", ()=> {
     ).length
     expect(optionCount).toBe(1)
 })
+
+test("provided options and selected option, should select correct option",
+    ()=>{
+        const options = [
+            {
+                text:"foo",
+                value: "bar"
+            },
+            {
+                text: "some foo",
+                value: "some value"
+            }
+        ]
+        const componentRoot = renderer
+            .create(<SelectionBoxComponent options={options} 
+                selectedOption="some value"/>).root
+                
+        // now the component should have selected 'some value'
+        const optionValue = componentRoot.findAll(
+            (el) => el.type == 'option'
+            && el.props.selected
+        ).value
+        
+        expect(optionValue).toBe("some value")
+
+    }
+)
