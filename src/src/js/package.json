@@ -9,7 +9,8 @@
   "private": true,
   "scripts": {
     "build": "wp-scripts build",
-    "start": "wp-scripts start"
+    "start": "wp-scripts start",
+    "test": "jest"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
