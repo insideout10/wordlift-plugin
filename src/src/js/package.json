@@ -51,6 +51,7 @@
     "webpack-cli": "^3.3.8"
   },
   "dependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
     "@wordlift/wordlift-for-schemaorg": "^1.0",
     "immutable": "^3",
     "react-redux": "^5.0.0",

@@ -1,3 +1,9 @@
+/**
+ * @since 3.24.0
+ * 
+ * Tests for RuleComponent
+ */
+
 import React from 'react'
 import Adapter from 'enzyme-adapter-react-16';
 import { shallow, configure, render } from 'enzyme'
@@ -19,7 +25,7 @@ test("should be able to render rule component", ()=> {
 test("given options field one rendering correctly", ()=> {
     const addNewRuleMockHandler = jest.fn()
     const wrapper = shallow(<RuleComponent 
-        rule_field_one_options={options} 
+        ruleFieldOneOptions={options} 
         addNewRuleHandler={addNewRuleMockHandler}/>)
     // 3 items supplied, so it should be reflected in ui
     expect(wrapper.find('.wl-field-one-select').props().options)
@@ -29,7 +35,7 @@ test("given options field one rendering correctly", ()=> {
 test("given options logic field rendering correctly", ()=> {
     const addNewRuleMockHandler = jest.fn()
     const wrapper = shallow(<RuleComponent 
-        rule_logic_field_options={options} 
+        ruleLogicFieldOptions={options} 
         addNewRuleHandler={addNewRuleMockHandler}/>)   
     // 3 items supplied, so it should be reflected in ui
     expect(wrapper.find('.wl-field-logic').props().options)
@@ -39,7 +45,7 @@ test("given options logic field rendering correctly", ()=> {
 test("given options field two rendering correctly", ()=> {
     const addNewRuleMockHandler = jest.fn()
     const wrapper = shallow(<RuleComponent 
-        rule_field_two_options={options} 
+        ruleFieldTwoOptions={options} 
         addNewRuleHandler={addNewRuleMockHandler}/>)  
     // 3 items supplied, so it should be reflected in ui
     expect(wrapper.find('.wl-field-two-select').props().options)

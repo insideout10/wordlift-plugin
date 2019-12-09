@@ -1,5 +1,5 @@
 /**
- * Test for MappingListItemComponent
+ * Tests for MappingListItemComponent
  * 
  * @since 3.24.0
  */
