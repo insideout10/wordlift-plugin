@@ -7,10 +7,28 @@
 
 import React from 'react'
 import PropTypes from 'prop-types';
+import PropertyComponent from './PropertyComponent';
+import PropertyListItemComponent from './PropertyListItemComponent';
 
 class PropertyListComponent extends React.Component {
     constructor(props){
         super(props)
+    }
+    state = {
+        propertyList: (this.props.propertyList !== undefined ?
+            this.props.propertyList : [])  
+    }
+    renderListComponentBasedOnState = (property)=> {
+        if (property.isOpenedOrAddedByUser) {
+            return (
+                // show the property in edit mode
+                <PropertyComponent {... property} />
+            )
+        }
+        // if it is not opened then return the list item
+        return (
+            <PropertyListItemComponent propertyText={property.propertyHelpText} />
+        )
     }
     render() {
         return ( 
@@ -30,19 +48,27 @@ class PropertyListComponent extends React.Component {
                         </tr>
                         </thead>
                         <tbody>
-                            { /** if opened by user then show the property
-                             * component, if not then show the property
-                             * list item component
-                             */}                    
-                            <tr>
-                                <td className="wl-check-column">
-                                <input type="checkbox" />
-                                </td>
-                                <td>
+                  
+                        {
 
-                                </td>
-                                <td />
-                            </tr>
+                            this.state.propertyList.map((property, index) => {
+
+                                return (
+                                    <tr className="wl-property-list-item-container">
+                                            <td className="wl-check-column">
+                                            <input type="checkbox" />
+                                            </td>
+                                            <td>
+                                                { 
+                                                    this.renderListComponentBasedOnState(property)
+                                                }
+                                            </td>
+                                            <td />
+                                        </tr>
+                                )
+                            })
+                        }   
+
                         </tbody>
                         </table>          
                         <div className="wl-text-right">

@@ -17,7 +17,7 @@ class PropertyListItemComponent extends React.Component {
 
     render() {
         return (
-            <div className="wl-container">
+            <div className="wl-property-list-item wl-container">
                 <div className="wl-col">
                     <a className="row-title wl-property-list-item-title">
                         {this.props.propertyText}
