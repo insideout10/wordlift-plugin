@@ -1229,6 +1229,10 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
           #   data.entities[ea.entityId].label = annotation.text
           #   $log.debug "Missing label retrieved from related annotation for entity #{ea.entityId}"
 
+          if not data.entities[ea.entityId]?
+            $log.warn "#{ea.entityId} not found in `entities`, skipping."
+            continue
+
           data.entities[ea.entityId].annotations = {} if not data.entities[ea.entityId].annotations?
           data.entities[ea.entityId].annotations[id] = annotation
           data.annotations[id].entities[ea.entityId] = data.entities[ea.entityId]
@@ -1666,6 +1670,11 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
 
           # Loop annotation to see which has to be preselected
           for em in annotation.entityMatches
+
+            if not analysis.entities[em.entityId]?
+              $log.warn "#{em.entityId} not found in `entities`, skipping."
+              continue
+
             entity = analysis.entities[em.entityId]
 
             if annotation.id in entity.occurrences

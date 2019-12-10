@@ -3286,7 +3286,7 @@ h3.ui-sortable-handle {
   width: 20px;
 }
 .wl-widget-spinner svg#wl-widget-spinner-blogger {
-  fill: #007AFF;
+  fill: #007aff;
   -webkit-animation-iteration-count: infinite;
           animation-iteration-count: infinite;
   -webkit-animation-timing-function: ease-in-out;
@@ -3295,7 +3295,7 @@ h3.ui-sortable-handle {
           animation-duration: 1.2s;
 }
 .wl-widget-spinner svg#wl-widget-spinner-editorial {
-  fill: #FCC207;
+  fill: #fcc207;
   -webkit-animation-delay: 0.4s;
           animation-delay: 0.4s;
   -webkit-animation-iteration-count: infinite;
@@ -3306,7 +3306,7 @@ h3.ui-sortable-handle {
           animation-duration: 1.2s;
 }
 .wl-widget-spinner svg#wl-widget-spinner-enterprise {
-  fill: #FF2222;
+  fill: #ff2222;
   -webkit-animation-delay: 0.8s;
           animation-delay: 0.8s;
   -webkit-animation-iteration-count: infinite;
