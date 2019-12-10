@@ -24,7 +24,9 @@ class PropertyListItemComponent extends React.Component {
                     </a>
                     <div className="row-actions">
                         <span className="edit">
-                        <a>Edit</a>
+                        <a onClick={()=> this.props.switchState(this.props.propertyIndex)}>
+                            Edit
+                        </a>
                         | 
                         </span>
                         <span>

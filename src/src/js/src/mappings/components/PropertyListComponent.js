@@ -18,16 +18,29 @@ class PropertyListComponent extends React.Component {
         propertyList: (this.props.propertyList !== undefined ?
             this.props.propertyList : [])  
     }
-    renderListComponentBasedOnState = (property)=> {
+    handleCloseOrOpenPropertyBasedOnState=(index)=> {
+        const propertyList = [... this.state.propertyList]
+        //invert the state
+        propertyList[index].isOpenedOrAddedByUser = !propertyList[index].isOpenedOrAddedByUser
+        this.setState({
+            propertyList: propertyList
+        })
+    }
+    renderListComponentBasedOnState = (property, index)=> {
         if (property.isOpenedOrAddedByUser) {
             return (
                 // show the property in edit mode
-                <PropertyComponent {... property} />
+                <PropertyComponent {... property}
+                propertyIndex={index}
+                switchState={this.handleCloseOrOpenPropertyBasedOnState}/>
             )
         }
         // if it is not opened then return the list item
         return (
-            <PropertyListItemComponent propertyText={property.propertyHelpText} />
+            <PropertyListItemComponent
+            propertyIndex={index}
+            propertyText={property.propertyHelpText}
+            switchState={this.handleCloseOrOpenPropertyBasedOnState} />
         )
     }
     render() {
@@ -60,7 +73,7 @@ class PropertyListComponent extends React.Component {
                                             </td>
                                             <td>
                                                 { 
-                                                    this.renderListComponentBasedOnState(property)
+                                                    this.renderListComponentBasedOnState(property, index)
                                                 }
                                             </td>
                                             <td />

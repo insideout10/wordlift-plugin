@@ -28,7 +28,7 @@ import PropTypes from 'prop-types';
                        { this.state.propertyHelpText }
                     </a>
                     <br />
-                    <table className="wl-container wl-container-full wl-spaced-table">
+                    <table className="wl-container wl-container-full wl-spaced-table wl-property-edit-item">
                         <tbody>
                             <tr>
                                 <td colspan="2">
@@ -74,20 +74,13 @@ import PropTypes from 'prop-types';
                             <tr>
                                 <td colspan="2"></td>
                                 <td>
-                                    <button className="button action bg-primary text-white">
+                                    <button className="wl-close-mapping button action bg-primary text-white"
+                                    onClick={()=> this.props.switchState(this.props.propertyIndex)}>
                                         Close Mapping
                                     </button>
                                 </td>
                             </tr>
                     </tbody></table>
-                    <div className="wl-text-right">
-                        <br /><br />
-                            <button className="wl-add-mapping-button button action bg-primary text-white">
-                                Add Mapping
-                            </button>
-                    </div>
-
-
             </React.Fragment>
         )
      }
