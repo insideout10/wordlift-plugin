@@ -11,7 +11,7 @@ import RuleComponent from '../components/RuleComponent'
 configure({adapter: new Adapter()});
 
 // mock options supplied to render on ui
-const options = [
+export const options = [
     { value: 'one', label: 'one' },
     { value: 'two', label: 'two' },
     { value: 'three', label: 'three' }

@@ -30,3 +30,24 @@ configure({adapter: new Adapter()});
     // lets see the state of the rule component
     expect(wrapper.state().rules).toHaveLength(2)
  })
+
+
+ test ("First Rule item should not have remove button", ()=> {
+   const wrapper = shallow(<RuleGroupComponent rules={[{},{}]} />)
+   // lets check if the first row has the remove button
+   const first_rule_row_remove_button = wrapper.find(RuleComponent).at(0).dive().find('.wl-remove-button')
+   expect(first_rule_row_remove_button).toHaveLength(0)
+   // but the second rule item should have remove button
+   const second_rule_row_remove_button =  wrapper.find(RuleComponent).at(1).dive().find('.wl-remove-button')
+   expect(second_rule_row_remove_button).toHaveLength(1)
+})
+
+
+test("When remove button clicked should remove the clicked rule item", ()=> {
+   const wrapper = shallow(<RuleGroupComponent rules={[{},{}]} />)
+   // lets click on the remove button
+   wrapper.find(RuleComponent).at(1).dive().find('.wl-remove-button').simulate('click')
+   // since remove button is clicked the item would be removed, check the 
+   // state of the parent component, it should have only one rule item
+   expect(wrapper.state().rules).toHaveLength(1)
+})

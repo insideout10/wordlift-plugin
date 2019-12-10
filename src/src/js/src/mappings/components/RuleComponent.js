@@ -1,5 +1,5 @@
 import React from 'react'
-import Select from 'react-select'
+import SelectComponent from './SelectComponent'
 
 export default class RuleComponent extends React.Component {
     constructor(props) {
@@ -7,21 +7,21 @@ export default class RuleComponent extends React.Component {
     }
     render() {
         return (
-                <div className="wl-rule-container">
+                <div className="wl-container wl-rule-container">
                     <div className="wl-col">
-                        <Select options={this.props.ruleFieldOneOptions}
+                        <SelectComponent options={this.props.ruleFieldOneOptions}
                          className="wl-field-one-select wl-form-select">
-                        </Select>
+                        </SelectComponent>
                     </div>
                     <div className="wl-col">
-                        <Select options={this.props.ruleLogicFieldOptions}
+                        <SelectComponent options={this.props.ruleLogicFieldOptions}
                          className="wl-field-logic wl-form-select">
-                        </Select>
+                        </SelectComponent>
                     </div>
                     <div className="wl-col">
-                        <Select options={this.props.ruleFieldTwoOptions}
+                        <SelectComponent options={this.props.ruleFieldTwoOptions}
                          className="wl-field-two-select wl-form-select">
-                        </Select>
+                        </SelectComponent>
                     </div>
                     <div className="wl-col">
                         <button className="button action wl-and-button"
@@ -29,6 +29,15 @@ export default class RuleComponent extends React.Component {
                              And 
                          </button>
                     </div>
+                    {
+                        this.props.ruleIndex != 0 && 
+                        <div className="wl-col">
+                            <button className="button action wl-remove-button"
+                            onClick={() => this.props.deleteCurrentRuleHandler(this.props.ruleIndex)}>
+                                -
+                            </button>
+                        </div>
+                    }
                 </div>
 
         )
