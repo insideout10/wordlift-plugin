@@ -4,6 +4,7 @@ import Adapter from 'enzyme-adapter-react-16';
 configure({adapter: new Adapter()});
 import RuleGroupListComponent from '../components/RuleGroupListComponent'
 import RuleGroupComponent from '../components/RuleGroupComponent';
+
 test("rule group list component should render properly", ()=>{ 
     shallow(<RuleGroupListComponent ruleGroupList={[{}, {}]}/>)
 })

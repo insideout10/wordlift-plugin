@@ -30,14 +30,19 @@ class RuleGroupListComponent extends React.Component {
             <React.Fragment>
                 {
                     this.state.ruleGroupList.map((item, index)=> {
-                        return <RuleGroupComponent rules={[]}/>
+                        return (
+                            <React.Fragment>
+                                <RuleGroupComponent rules={[]}/>
+                                <div className="wl-container">
+                                    <div className="wl-col">
+                                        <b>Or</b>
+                                    </div>
+                                </div>
+                            </React.Fragment> 
+                        )
                     }) 
                 }
-                <div className="wl-container">
-                    <div className="wl-col">
-                        <b>Or</b>
-                    </div>
-                </div>
+
                 <div className="wl-container">
                     <div className="wl-col">
                         <button 
