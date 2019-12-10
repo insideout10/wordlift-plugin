@@ -20,15 +20,8 @@ import RuleComponent from './RuleComponent';
       * appear right after the clicked rule.
       */
      addNewRuleHandler = (rule_index)=> {
-        const options = [
-            { value: 'one', label: 'one' },
-            { value: 'two', label: 'two' },
-            { value: 'three', label: 'three' }
-        ]
+
         const mock_rule_item = {
-            ruleFieldOneOptions: options,
-            ruleFieldTwoOptions: options,
-            ruleLogicFieldOptions: options,
         }
         this.setState(prevState => ({
             rules: [...prevState.rules.slice(0, rule_index),
@@ -46,7 +39,7 @@ import RuleComponent from './RuleComponent';
      }
      render() {
          return (
-             <div>
+             <div className="rule-group-container">
                  {
                     this.state.rules.map((ruleProps, ruleIndex)=> {
                         return <RuleComponent
