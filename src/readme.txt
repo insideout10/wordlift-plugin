@@ -142,6 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.23.2 (2019-12-10) =
+* Fix [#984](https://github.com/insideout10/wordlift-plugin/issues/984): Analysis failing on Classic Editor.
+
 = 3.23.1 (2019-12-09) =
 * Fix [#983](https://github.com/insideout10/wordlift-plugin/issues/983): Sidebar fails in Block Editor.
 
