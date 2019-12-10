@@ -30,8 +30,6 @@ import RuleComponent from './RuleComponent';
           }))
      }
      deleteCurrentRuleHandler = (ruleIndex)=> {
-         console.log(this.state.rules)
-         console.log(ruleIndex)
          // remove the clicked item by referrring to index
          this.setState(prevState => ({
             rules: prevState.rules.filter((_, index) => index !== ruleIndex)
