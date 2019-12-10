@@ -18,8 +18,11 @@ class PropertyListComponent extends React.Component {
         propertyList: (this.props.propertyList !== undefined ?
             this.props.propertyList : [])  
     }
-    handleCloseOrOpenPropertyBasedOnState=(index)=> {
+    handleCloseOrOpenPropertyBasedOnState=(index, propData)=> {
         const propertyList = [... this.state.propertyList]
+        if (propData != null){
+            propertyList[index] = propData
+        }
         //invert the state
         propertyList[index].isOpenedOrAddedByUser = !propertyList[index].isOpenedOrAddedByUser
         this.setState({
@@ -43,7 +46,8 @@ class PropertyListComponent extends React.Component {
         if (property.isOpenedOrAddedByUser) {
             return (
                 // show the property in edit mode
-                <PropertyComponent {... property}
+                <PropertyComponent
+                propData={property}
                 propertyIndex={index}
                 switchState={this.handleCloseOrOpenPropertyBasedOnState}/>
             )

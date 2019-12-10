@@ -12,16 +12,16 @@ configure({adapter: new Adapter()});
 
 
 test("able to render the property component", ()=> {
-    shallow(<PropertyComponent propertyData={{}}/>)
+    shallow(<PropertyComponent propData={{}}/>)
 })
 
 
 test("when the property help text is changed, then ui should change", ()=> {
-    const component = shallow(<PropertyComponent propertyData={{}} />)
+    const component = shallow(<PropertyComponent propData={{}} />)
     // lets type some thing on that field
     component.find('.wl-property-help-text')
     .simulate('change', { target: { value: 'something' } })
     // now the state should be changed
-    expect(component.state().propertyHelpText).toEqual('something')
+    expect(component.update().state().propData.propertyHelpText).toEqual('something')
 })
 

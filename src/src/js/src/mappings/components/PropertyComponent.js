@@ -13,19 +13,22 @@ import PropTypes from 'prop-types';
          super(props)
      }
      state = {
-         propertyHelpText: ( this.props.propertyHelpText !== undefined ? 
-            this.props.propertyHelpText : "")
+         propData: ( this.props.propData !== undefined ? 
+            this.props.propData : "")
      }
      handlePropertyTextChange = (value) => {
-        this.setState(() => ({
-            propertyHelpText: value
+        this.setState((prevState) => ({
+            propData: {
+                ...prevState.propData,
+                propertyHelpText: value
+            }
         }))
      }
      render() {
          return (
             <React.Fragment>
                     <a className="row-title">
-                       { this.state.propertyHelpText }
+                       { this.state.propData.propertyHelpText }
                     </a>
                     <br />
                     <table className="wl-container wl-container-full wl-spaced-table wl-property-edit-item">
@@ -38,7 +41,7 @@ import PropTypes from 'prop-types';
                                     <input type="text"
                                     placeholder="Telephone"
                                     className="wl-form-control wl-property-help-text"
-                                    value={this.state.propertyHelpText}
+                                    value={this.state.propData.propertyHelpText}
                                     onChange={event=> this.handlePropertyTextChange(event.target.value)}
                                     />
                                 </td>
@@ -75,7 +78,7 @@ import PropTypes from 'prop-types';
                                 <td colspan="2"></td>
                                 <td>
                                     <button className="wl-close-mapping button action bg-primary text-white"
-                                    onClick={()=> this.props.switchState(this.props.propertyIndex)}>
+                                    onClick={()=> this.props.switchState(this.props.propertyIndex, this.state.propData)}>
                                         Close Mapping
                                     </button>
                                 </td>
