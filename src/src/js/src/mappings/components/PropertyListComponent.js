@@ -26,6 +26,19 @@ class PropertyListComponent extends React.Component {
             propertyList: propertyList
         })
     }
+    // triggered when the add mapping button is clicked
+    handleAddMappingClick=()=> {
+        const newPropertyData = {
+            isOpenedOrAddedByUser: true,
+            propertyHelpText:"",
+            fieldTypeHelpText: "",
+            fieldHelpText: "",
+            transformHelpText: ""
+        }
+        this.setState(prevState => ({
+            propertyList: [...prevState.propertyList, newPropertyData]
+        }))
+    }
     renderListComponentBasedOnState = (property, index)=> {
         if (property.isOpenedOrAddedByUser) {
             return (
@@ -86,7 +99,10 @@ class PropertyListComponent extends React.Component {
                         </table>          
                         <div className="wl-text-right">
                             <br /><br />
-                            <button className="button action bg-primary text-white" style={{margin: 'auto'}}>
+                            <button
+                             className="button action bg-primary text-white wl-add-mapping"
+                              style={{margin: 'auto'}}
+                              onClick={this.handleAddMappingClick}>
                             Add Mapping
                             </button>
                         </div>

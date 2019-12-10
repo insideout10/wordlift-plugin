@@ -83,3 +83,20 @@ test("when close mapping on edit property list item is clicked,"  +
     expect(component.find(PropertyListItemComponent).dive()
     .find('.wl-property-list-item')).toHaveLength(1)
 })
+
+test("when add mapping is clicked, able to add an property", ()=> {
+    /** 
+     * we have no property on propertyList 
+     */
+    const component = shallow(<PropertyListComponent 
+        propertyList={[]} />)
+    /**
+     * lets click on add mapping
+     */
+    component.find('.wl-add-mapping').simulate('click')
+    /**
+     * An list item in editable state should be rendered
+     */
+    expect(component.find(PropertyComponent).dive()
+    .find('.wl-property-edit-item')).toHaveLength(1)
+})
