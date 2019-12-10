@@ -105,10 +105,18 @@ function _wl_navigator_get_data() {
 		return array();
 	}
 
-	$referencing_posts = _wl_navigator_get_results( $current_post_id, array(
-		'ID',
-		'post_title',
-	), $order_by, $navigator_length, $navigator_offset );
+	// Determine navigator type and call respective _get_results
+	if(get_post_type($current_post_id) === Wordlift_Entity_Service::TYPE_NAME){
+		$referencing_posts = _wl_entity_navigator_get_results( $current_post_id, array(
+			'ID',
+			'post_title',
+		), $order_by, $navigator_length, $navigator_offset );
+	} else {
+		$referencing_posts = _wl_navigator_get_results( $current_post_id, array(
+			'ID',
+			'post_title',
+		), $order_by, $navigator_length, $navigator_offset );
+	}
 
 	// loop over them and take the first one which is not already in the $related_posts
 	$results = array();
@@ -268,6 +276,53 @@ EOF
 			, $post_id, $limit, $offset, $select, $order_by )
 	);
 
+}
+
+function _wl_entity_navigator_get_results(
+	$post_id, $fields = array(
+	'ID',
+	'post_title',
+), $order_by = 'ID DESC', $limit = 10, $offset = 0){
+	global $wpdb;
+
+	$select = implode( ', ', array_map( function ( $item ) {
+		return "p.$item AS $item";
+	}, (array) $fields ) );
+
+	$order_by = implode( ', ', array_map( function ( $item ) {
+		return "p.$item";
+	}, (array) $order_by ) );
+
+	/** @noinspection SqlNoDataSourceInspection */
+	return $wpdb->get_results(
+		$wpdb->prepare( <<<EOF
+SELECT %4\$s, p2.ID as entity_id
+ FROM {$wpdb->prefix}wl_relation_instances r1
+	-- get the ID of the post entity in common between the object and the subject 2. 
+    INNER JOIN {$wpdb->posts} p2
+        ON p2.ID = r1.object_id
+            AND p2.post_status = 'publish'
+    INNER JOIN {$wpdb->posts} p
+        ON p.ID = r1.subject_id
+            AND p.post_status = 'publish'
+    INNER JOIN {$wpdb->term_relationships} tr
+     	ON tr.object_id = p.ID
+    INNER JOIN {$wpdb->term_taxonomy} tt
+     	ON tt.term_taxonomy_id = tr.term_taxonomy_id
+      	    AND tt.taxonomy = 'wl_entity_type'
+    INNER JOIN {$wpdb->terms} t
+        ON t.term_id = tt.term_id
+            AND t.slug = 'article'
+    -- select only posts with featured images.
+ WHERE r1.object_id = %1\$d
+ -- avoid duplicates.
+ GROUP BY p.ID
+ ORDER BY %5\$s
+ LIMIT %2\$d
+ OFFSET %3\$d
+EOF
+			, $post_id, $limit, $offset, $select, $order_by )
+	);
 }
 
 function _wl_network_navigator_get_results(
