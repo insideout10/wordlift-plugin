@@ -314,6 +314,9 @@ SELECT %4\$s, p2.ID as entity_id
         ON t.term_id = tt.term_id
             AND t.slug = 'article'
     -- select only posts with featured images.
+    INNER JOIN {$wpdb->postmeta} m
+        ON m.post_id = p.ID
+            AND m.meta_key = '_thumbnail_id'
  WHERE r1.object_id = %1\$d
  -- avoid duplicates.
  GROUP BY p.ID
