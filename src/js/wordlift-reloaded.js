@@ -30504,6 +30504,10 @@ angular.module('wordlift.editpost.widget.services.EditorService', ['wordlift.edi
             ref2 = annotation.entityMatches;
             for (k = 0, len1 = ref2.length; k < len1; k++) {
               em = ref2[k];
+              if (analysis.entities[em.entityId] == null) {
+                $log.warn(em.entityId + " not found in `entities`, skipping.");
+                continue;
+              }
               entity = analysis.entities[em.entityId];
               if (ref3 = annotation.id, indexOf.call(entity.occurrences, ref3) >= 0) {
                 element += " disambiguated wl-" + entity.mainType + "\" itemid=\"" + entity.id;

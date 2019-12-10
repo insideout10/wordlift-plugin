@@ -1670,6 +1670,11 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
 
           # Loop annotation to see which has to be preselected
           for em in annotation.entityMatches
+
+            if not analysis.entities[em.entityId]?
+              $log.warn "#{em.entityId} not found in `entities`, skipping."
+              continue
+
             entity = analysis.entities[em.entityId]
 
             if annotation.id in entity.occurrences
