@@ -269,7 +269,7 @@ class Wordlift_Entity_Uri_Service {
 		$data = &$result->data;
 
 		// Bail out if we don't have the required parameters, or if the type is not a valid entity.
-		if ( ! isset( $data['id'] ) || ! isset( $data['type'] )
+		if ( ! is_array( $data ) || ! isset( $data['id'] ) || ! isset( $data['type'] )
 		     || ! Wordlift_Entity_Type_Service::is_valid_entity_post_type( $data['type'] ) ) {
 			return $result;
 		}
