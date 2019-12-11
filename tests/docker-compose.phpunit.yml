@@ -16,11 +16,16 @@ services:
       MYSQL_DATABASE: wordpress
 
   phpunit:
-    image: "wordpress-tests:php5.6-phpunit4.8-wordpress4.4"
+    image: "phpunit/phpunit:4.8.5"
     depends_on:
       - db
     volumes:
       - ..:/app
+    entrypoint: >
+      bash -c "docker-php-ext-install mysqli &&
+        /app/bin/install-wp-tests.sh wordpress wordpress password db 4.4 true &&
+        phpunit -c phpunit.xml $PHPUNIT_ARGS &&
+        cat /tmp/wordpress/wp-content/debug.log"
     environment:
       WORDLIFT_KEY: $WORDLIFT_KEY
     tty: true

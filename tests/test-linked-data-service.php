@@ -33,17 +33,22 @@ class Wordlift_Linked_Data_Service_Test extends Wordlift_Unit_Test_Case {
 		$this->entity_service = $this->get_wordlift_test()->get_entity_service();
 		// Create a mock sparql service.
 		$this->sparql_service = $this->getMockBuilder( 'Wordlift_Sparql_Service' )
-									 ->disableOriginalConstructor()
-									 ->setMethods( array( 'execute' ) )
-									 ->getMock();
+		                             ->disableOriginalConstructor()
+		                             ->setMethods( array( 'execute' ) )
+		                             ->getMock();
 
 	}
 
 	/**
-	 * The Wordlift_Linked_Data_Service_Test->push function is tested in the
-	 * test-post.php and test-references.php files.
+	 * Check that queries buffering is disabled by default.
+	 *
+	 * @since 3.23.2
 	 */
-	// function test_push() {}
+	function test_push() {
+
+		$this->assertFalse( wl_is_sparql_update_queries_buffering_enabled() );
+
+	}
 
 	function test_remove() {
 
@@ -68,8 +73,8 @@ class Wordlift_Linked_Data_Service_Test extends Wordlift_Unit_Test_Case {
 		// Declare our expectation for the `execute` function to be called once
 		// with the above parameter.
 		$this->sparql_service->expects( $this->once() )
-							 ->method( 'execute' )
-							 ->with( $this->equalTo( $expected ) );
+		                     ->method( 'execute' )
+		                     ->with( $this->equalTo( $expected ) );
 
 		// Call the `remove` function to test it.
 		$linked_data_service->remove( $post_id );
