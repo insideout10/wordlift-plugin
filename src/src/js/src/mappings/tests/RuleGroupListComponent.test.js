@@ -50,3 +50,11 @@ test("when user clicks on the and button on first rule group it should add a rul
     .RuleGroupData.ruleGroupList[0]
     .rules).toHaveLength(2)
 })
+
+test("when there is no rule in the second rule group" +
+ "after removal then remove that rule group", ()=> {
+     // we removed the only one rule from the second rule group
+    component.find('.wl-remove-button').at(0).simulate('click')
+    expect(MOCK_STORE.getState()
+    .RuleGroupData.ruleGroupList).toHaveLength(1)
+})

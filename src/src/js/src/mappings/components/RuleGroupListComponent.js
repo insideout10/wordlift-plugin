@@ -31,11 +31,17 @@ class RuleGroupListComponent extends React.Component {
                                 <RuleGroupComponent 
                                 rules={item.rules} 
                                 ruleGroupIndex={index}/>
-                                <div className="wl-container">
-                                    <div className="wl-col">
-                                        <b>Or</b>
+                                { 
+                                    // dont show extra or text if there
+                                    // is no rule group below
+                                    index != this.props.ruleGroupList.length -1 &&   
+                                    <div className="wl-container">
+                                        <div className="wl-col">
+                                            <b>Or</b>
+                                        </div>
                                     </div>
-                                </div>
+                                }
+                            
                             </React.Fragment> 
                         )
                     }) 
