@@ -1,17 +1,23 @@
 /**
+ * This file has tests for RuleComponent
+ *
+ * @author Naveen Muthusamy <naveen@wordlift.io>
  * @since 3.24.0
- * 
- * Tests for RuleComponent
  */
+
 
 import React from 'react'
 import Adapter from 'enzyme-adapter-react-16';
 import { shallow, configure, mount } from 'enzyme'
-import { Provider } from 'react-redux'
 import RuleComponent from '../components/RuleComponent'
-import SelectComponent from '../components/SelectComponent'
+
 configure({adapter: new Adapter()});
-import store from '../store/store'
+
+// get the mock initial state
+import INITIAL_STATE from './MockStore'
+import { RuleGroupReducer } from '../reducers/reducers'
+import { createStore } from 'redux';
+const store = createStore(RuleGroupReducer)
 
 test("should be able to render rule component", ()=> {
     shallow(<RuleComponent store={store} />)

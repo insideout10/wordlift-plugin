@@ -7,6 +7,7 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 import RuleComponent from './RuleComponent';
+import { connect } from 'react-redux'
 
  class RuleGroupComponent extends React.Component {
      constructor(props) {
@@ -40,12 +41,7 @@ import RuleComponent from './RuleComponent';
              <div className="rule-group-container">
                  {
                     this.state.rules.map((ruleProps, ruleIndex)=> {
-                        return <RuleComponent
-                        key={ruleProps}
-                        { ...ruleProps } 
-                        addNewRuleHandler={this.addNewRuleHandler}
-                        deleteCurrentRuleHandler={this.deleteCurrentRuleHandler}
-                        ruleIndex={ruleIndex} />
+                        return <RuleComponent />
                     })
                  }
              </div>
@@ -55,4 +51,7 @@ import RuleComponent from './RuleComponent';
 RuleGroupComponent.propTypes = {
     rules: PropTypes.array
 }
-export default RuleGroupComponent
+const mapStateToProps = function (state) {
+
+}
+export default connect(mapStateToProps)(RuleGroupComponent)

@@ -9,6 +9,8 @@ import Adapter from 'enzyme-adapter-react-16';
 import RuleGroupComponent from '../components/RuleGroupComponent'
 import RuleComponent from '../components/RuleComponent';
 
+
+
 configure({adapter: new Adapter()});
 
  test("can render rule group component", ()=> {

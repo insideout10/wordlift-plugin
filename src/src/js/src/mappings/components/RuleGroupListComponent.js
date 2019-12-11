@@ -1,35 +1,31 @@
 /**
- * @since 3.24.0
- * 
  * RuleGroupListComponent : it displays the list of rule groups, let the user
  * add new rule groups
+ *
+ * @author Naveen Muthusamy <naveen@wordlift.io>
+ * @since 3.24.0
  */
+
 
 import React from 'react'
 import PropTypes from 'prop-types';
 import RuleGroupComponent from './RuleGroupComponent';
-
+import { connect } from 'react-redux'
+import { ADD_NEW_RULE_GROUP_ACTION } from '../actions/actions'
 class RuleGroupListComponent extends React.Component {
     constructor(props) {
-        super(props)
-        
+        super(props)   
     }
 
     addNewRuleGroupHandler = ()=> {
-        this.setState(prevState => ({
-            ruleGroupList: [...prevState.ruleGroupList, {}]
-        }))
+        this.props.dispatch(ADD_NEW_RULE_GROUP_ACTION)
     }
 
-    state = {
-        ruleGroupList: (this.props.ruleGroupList == undefined 
-        || this.props.ruleGroupList.length == 0) ? [{}] : this.props.ruleGroupList
-    }
     render() {
         return (
             <React.Fragment>
                 {
-                    this.state.ruleGroupList.map((item, index)=> {
+                    this.props.ruleGroupList.map((item, index)=> {
                         return (
                             <React.Fragment>
                                 <RuleGroupComponent rules={[]}/>
@@ -60,4 +56,12 @@ class RuleGroupListComponent extends React.Component {
 RuleGroupListComponent.propTypes = {
     ruleGroupList: PropTypes.array
 }
-export default RuleGroupListComponent
+
+const mapStateToProps = function(state){ 
+    return {
+        ruleGroupList: state.RuleGroupData.ruleGroupList,
+    }
+
+}
+
+export default connect(mapStateToProps)(RuleGroupListComponent)

@@ -53,9 +53,9 @@ class RuleComponent extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    ruleFieldOneOptions: state.ruleFieldOneOptions,
-    ruleFieldTwoOptions: state.ruleFieldTwoOptions,
-    ruleLogicFieldOptions: state.ruleLogicFieldOptions
+    ruleFieldOneOptions: state.RuleGroupData.ruleFieldOneOptions,
+    ruleFieldTwoOptions: state.RuleGroupData.ruleFieldTwoOptions,
+    ruleLogicFieldOptions: state.RuleGroupData.ruleLogicFieldOptions
 })
 
 export default connect(mapStateToProps)(RuleComponent)
