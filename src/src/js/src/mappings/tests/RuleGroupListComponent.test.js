@@ -15,31 +15,30 @@ import {createStore } from 'redux'
 import {Provider} from 'react-redux'
 import {MOCK_INITIAL_STATE, mock_reducers } from './MockStore'
 
+var MOCK_STORE  = null
+var component = null
+// reset the store after every test
+beforeEach(() => {
+    MOCK_STORE = createStore(mock_reducers, MOCK_INITIAL_STATE)
+    component  = mount(
+        <Provider store={MOCK_STORE}>
+            <RuleGroupListComponent/>
+        </Provider>)
+});
+
 test("rule group list component should render properly", ()=>{
-    const MOCK_STORE = createStore(mock_reducers, MOCK_INITIAL_STATE) 
     shallow(<RuleGroupListComponent store={MOCK_STORE}/>)
 })
 
 test("given list of rule groups rendering properly", ()=> {
-    const MOCK_STORE = createStore(mock_reducers, MOCK_INITIAL_STATE)
-    const component  = mount(
-                    <Provider store={MOCK_STORE}>
-                        <RuleGroupListComponent/>
-                    </Provider>)
     expect(component.find(RuleGroupComponent)).toHaveLength(2)
 
 })
 
 test ("when user clicks on add rule group, then rule group is added", ()=> {
-    const MOCK_STORE = createStore(mock_reducers, MOCK_INITIAL_STATE)
-    const component = mount(
-                            <Provider store={MOCK_STORE}>
-                                <RuleGroupListComponent/>
-                            </Provider>
-                        )
     // lets do a click on add rule group button
     component.find('.wl-add-rule-group').simulate('click')
-    // now the rule group should be 2
+    // now the rule group should be 3
     expect(MOCK_STORE.getState().RuleGroupData.ruleGroupList)
     .toHaveLength(3)
 })
