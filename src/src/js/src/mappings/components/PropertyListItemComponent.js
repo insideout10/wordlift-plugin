@@ -1,14 +1,12 @@
 /**
- * @since 3.24.0
- * 
  * PropertyListItemComponent : used to display a single
  * property item with the title property help text
+ * @author Naveen Muthusamy <naveen@wordlift.io>
+ * @since 3.24.0
  */
 
 import React from 'react'
 import PropTypes from 'prop-types';
-import PropertyListComponent from './PropertyListComponent';
-
 
 class PropertyListItemComponent extends React.Component {
     constructor(props) {

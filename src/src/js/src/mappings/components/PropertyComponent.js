@@ -1,8 +1,8 @@
 /**
- * @since 3.24.0
- * 
- * PropertyComponent : used to display a individaul property, has 2 states
+ * PropertyComponent : used to display a individual property, has 2 states
  * allow the user to edit it and add a new property
+ * @author Naveen Muthusamy <naveen@wordlift.io>
+ * @since 3.24.0
  */
 
 import React from 'react'

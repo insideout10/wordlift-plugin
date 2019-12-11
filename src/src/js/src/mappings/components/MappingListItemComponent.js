@@ -1,6 +1,7 @@
 /**
- * Components: Mapping List Item component.
+ * MappingListItemComponent : it displays the list of mapping items
  *
+ * @author Naveen Muthusamy <naveen@wordlift.io>
  * @since 3.24.0
  */
 

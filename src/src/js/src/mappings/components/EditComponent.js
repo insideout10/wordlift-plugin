@@ -1,12 +1,11 @@
 /**
+ * EditComponent : it displays the edit section for the mapping item
+ *
+ * @author Naveen Muthusamy <naveen@wordlift.io>
  * @since 3.24.0
- * 
- * PropertyComponent : used to display a individaul property, has 2 states
- * allow the user to edit it and add a new property
  */
 
 import React from 'react'
-import PropTypes from 'prop-types';
 import RuleGroupListComponent from './RuleGroupListComponent'
 import PropertyListComponent from './PropertyListComponent'
  class EditComponent extends React.Component {

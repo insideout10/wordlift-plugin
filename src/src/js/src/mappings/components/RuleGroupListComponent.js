@@ -1,6 +1,6 @@
 /**
  * RuleGroupListComponent : it displays the list of rule groups, let the user
- * add new rule groups
+ * add/remove new rule groups
  *
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * @since 3.24.0

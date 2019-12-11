@@ -1,3 +1,9 @@
+/**
+ * RuleComponent : Displays a single rule 
+ * @author Naveen Muthusamy <naveen@wordlift.io>
+ * @since 3.24.0
+ */
+
 import React from 'react'
 import SelectComponent from './SelectComponent'
 import { connect } from 'react-redux'

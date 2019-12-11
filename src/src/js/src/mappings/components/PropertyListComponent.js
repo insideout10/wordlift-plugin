@@ -1,8 +1,8 @@
 /**
- * @since 3.24.0
- * 
  * PropertyListComponent : used to display list of properties present
  * in a mapping item, the user can edit, add, delete properties
+ * @author Naveen Muthusamy <naveen@wordlift.io>
+ * @since 3.24.0
  */
 
 import React from 'react'

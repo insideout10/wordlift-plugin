@@ -1,11 +1,11 @@
 /**
- * @since 3.24.0
+ * SelectComponent : component to render the selection box
  * 
- * component to render the selection box
+ * @author Naveen Muthusamy <naveen@wordlift.io>
+ * @since 3.24.0
  */
 
 import React from 'react'
-import PropTypes from 'prop-types';
 
 class SelectComponent extends React.Component {
     constructor(props) {
