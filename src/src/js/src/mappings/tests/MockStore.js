@@ -12,7 +12,14 @@ export const MOCK_INITIAL_STATE = {
         ruleFieldOneOptions: options,
         ruleFieldTwoOptions: options,
         ruleLogicFieldOptions: options,
-        ruleGroupList: [{},{}]
+        ruleGroupList: [
+            {
+                rules: [{}]
+            },
+            {
+                rules:[{}]
+            }
+        ]
     }
 }
 

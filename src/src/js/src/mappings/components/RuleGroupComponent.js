@@ -13,9 +13,6 @@ import { connect } from 'react-redux'
      constructor(props) {
          super(props)
      }
-     state = {
-         rules: this.props.rules.length == 0 ? [{}] : this.props.rules
-     }
      /**
       * Add a new rule after the rule_index, so that the item
       * appear right after the clicked rule.
@@ -40,8 +37,11 @@ import { connect } from 'react-redux'
          return (
              <div className="rule-group-container">
                  {
-                    this.state.rules.map((ruleProps, ruleIndex)=> {
-                        return <RuleComponent />
+                    this.props.rules.map((ruleProps, ruleIndex)=> {
+                        return <RuleComponent
+                        ruleProps={ruleProps}
+                        ruleGroupIndex={this.props.ruleGroupIndex}
+                        ruleIndex={ruleIndex}/>
                     })
                  }
              </div>
@@ -52,6 +52,8 @@ RuleGroupComponent.propTypes = {
     rules: PropTypes.array
 }
 const mapStateToProps = function (state) {
+    return  {
 
+    }
 }
 export default connect(mapStateToProps)(RuleGroupComponent)

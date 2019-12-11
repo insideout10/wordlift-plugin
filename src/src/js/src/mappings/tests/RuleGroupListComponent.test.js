@@ -42,3 +42,11 @@ test ("when user clicks on add rule group, then rule group is added", ()=> {
     expect(MOCK_STORE.getState().RuleGroupData.ruleGroupList)
     .toHaveLength(3)
 })
+
+test("when user clicks on the and button on first rule group it should add a rule", ()=>{
+   // and button clicked on first rule of first tule group component
+    component.find('.wl-and-button').at(0).simulate('click')
+    expect(MOCK_STORE.getState()
+    .RuleGroupData.ruleGroupList[0]
+    .rules).toHaveLength(2)
+})

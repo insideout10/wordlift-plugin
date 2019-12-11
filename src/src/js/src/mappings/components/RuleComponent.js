@@ -1,14 +1,19 @@
 import React from 'react'
 import SelectComponent from './SelectComponent'
 import { connect } from 'react-redux'
-import { ADD_NEW_RULE } from '../actions/actionTypes'
+
+import { ADD_NEW_RULE_ACTION } from '../actions/actions'
 
 class RuleComponent extends React.Component {
     constructor(props) {
         super(props)
     }
-    handleAddNewRule = (ruleGroupIndex)=> {
-        this.props.dispatch(ADD_NEW_RULE, ruleGroupIndex)
+    handleAddNewRule = (ruleGroupIndex, ruleIndex)=> {
+        const action = ADD_NEW_RULE_ACTION
+        action.payload = {}
+        action.payload.ruleGroupIndex = ruleGroupIndex
+        action.payload.ruleIndex = ruleIndex
+        this.props.dispatch(action)
     }
     handleDeleteRule = (ruleIndex)=> {
         
@@ -33,7 +38,7 @@ class RuleComponent extends React.Component {
                     </div>
                     <div className="wl-col">
                         <button className="button action wl-and-button"
-                         onClick={() => this.handleAddNewRule}>
+                         onClick={() => this.handleAddNewRule(this.props.ruleGroupIndex, this.props.ruleIndex) }>
                              And 
                          </button>
                     </div>

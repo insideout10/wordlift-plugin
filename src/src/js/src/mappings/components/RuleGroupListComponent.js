@@ -28,7 +28,9 @@ class RuleGroupListComponent extends React.Component {
                     this.props.ruleGroupList.map((item, index)=> {
                         return (
                             <React.Fragment>
-                                <RuleGroupComponent rules={[]}/>
+                                <RuleGroupComponent 
+                                rules={item.rules} 
+                                ruleGroupIndex={index}/>
                                 <div className="wl-container">
                                     <div className="wl-col">
                                         <b>Or</b>
