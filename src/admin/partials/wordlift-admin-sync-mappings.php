@@ -1,4 +1,4 @@
-<div id="container">
+<div id="container" style="width: 70%;">
 </div>
 <style>
 

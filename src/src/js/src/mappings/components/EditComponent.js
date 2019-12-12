@@ -16,11 +16,12 @@ import PropertyListComponent from './PropertyListComponent'
     render() {
         return (
             <React.Fragment>
-
+                 <br /> <br />
                 <input type="text"
                     className="wl-form-control wl-input-class"
                     size="30"
                     value="My Custom Post Type" />
+                    <br /> <br />
                 <table className="wp-list-table widefat striped wl-table wl-container-full">
                     <thead>
                     <tr>

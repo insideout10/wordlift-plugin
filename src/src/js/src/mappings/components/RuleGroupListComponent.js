@@ -25,58 +25,39 @@ class RuleGroupListComponent extends React.Component {
     render() {
         return (
             <React.Fragment>
-                
-                    <table className="wp-list-table widefat striped wl-table wl-container-full">
-                        <thead>
-                            <tr>
-                                <td colspan="0">
-                                <b>Rules</b> 
-                                </td>
-                                <td colspan="2">
-                                </td>
-                            </tr>
-                        </thead>
-                        <tr>
-                        <td className="wl-bg-light wl-description">
-                            Here we show the help text
-                        </td>
-                        <td>
-                            
-                                <b>Use the mapping if</b>
-                                { this.props.ruleGroupList.map((item, index)=> {
-                                        return (
-                                            <React.Fragment>
-                                                <RuleGroupComponent 
-                                                rules={item.rules} 
-                                                ruleGroupIndex={index}/>
-                                                { 
-                                                    // dont show extra or text if there
-                                                    // is no rule group below
-                                                    index != this.props.ruleGroupList.length -1 &&   
-                                                    <div className="wl-container">
-                                                        <div className="wl-col">
-                                                            <b>Or</b>
-                                                        </div>
-                                                    </div>
-                                                }
-                                            
-                                            </React.Fragment> 
-                                        )
-                                    }) 
+                {
+                    
+                    this.props.ruleGroupList.map((item, index)=> {
+                        return (
+                            <React.Fragment>
+                                <RuleGroupComponent 
+                                rules={item.rules} 
+                                ruleGroupIndex={index}/>
+                                { 
+                                    // dont show extra or text if there
+                                    // is no rule group below
+                                    index != this.props.ruleGroupList.length -1 &&   
+                                    <div className="wl-container">
+                                        <div className="wl-col">
+                                            <b>Or</b>
+                                        </div>
+                                    </div>
                                 }
                             
-                        </td>
-                    </tr>
-                    </table>
-                    <div className="wl-container">
-                        <div className="wl-col">
-                            <button 
-                            className="button action wl-add-rule-group"
-                            onClick={()=> { this.addNewRuleGroupHandler() }}>
-                                Add Rule Group 
-                            </button>
-                        </div>
+                            </React.Fragment> 
+                        )
+                    }) 
+                }
+
+                <div className="wl-container">
+                    <div className="wl-col">
+                        <button 
+                        className="button action wl-add-rule-group"
+                        onClick={()=> { this.addNewRuleGroupHandler() }}>
+                             Add Rule Group 
+                        </button>
                     </div>
+                </div>
             </React.Fragment>
         )
     }
