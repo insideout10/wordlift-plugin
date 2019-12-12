@@ -58,7 +58,7 @@
         padding-top: 3px;
         padding-right: 5px;
         padding-bottom: 3px;
-        padding-left: 0px !important;
+        padding-left: 2px !important;
         width: 150px;
     }
     .wl-form-control {

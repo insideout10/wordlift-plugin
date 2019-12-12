@@ -61,6 +61,23 @@ import { TITLE_CHANGED_ACTION } from '../actions/actions'
                 </table>
                 <br/><br/>
                 <PropertyListComponent />
+                <br/>
+                <div class="wl-container wl-container-full">
+                    <div class="wl-col">
+                        <select  class="form-control">
+                            <option value="-1">Bulk Actions</option>
+                            <option value="duplicate">Duplicate</option>
+                            <option value="trash">Move to Trash</option>
+                        </select>
+                    </div>
+                    <div class="wl-col">
+                        <button class="button action"> Apply </button>
+                    </div>
+                    <div class="wl-col wl-align-right">
+                        <button class="button action"> Save </button>
+                    </div>
+
+                </div>
             </React.Fragment>
         )
     }
