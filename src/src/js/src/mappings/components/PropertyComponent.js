@@ -100,7 +100,9 @@ import { PROPERTY_DATA_CHANGED_ACTION } from '../actions/actions';
                             <tr>
                                 <td colspan="2"></td>
                                 <td>
-                                    <button className="wl-close-mapping button action bg-primary text-white"
+                                    <button 
+                                    disabled={this.props.propData.propertyHelpText.length <= 0}
+                                    className="wl-close-mapping button action bg-primary text-white"
                                     onClick={()=> this.props.switchState(this.props.propertyIndex)}>
                                         Close Mapping
                                     </button>
@@ -117,10 +119,6 @@ import { PROPERTY_DATA_CHANGED_ACTION } from '../actions/actions';
      propertyData: PropTypes.object
  }
 
- const mapStateToProps = function( state ) {
-    return {
 
-    }
-}
 
-export default connect(mapStateToProps)(PropertyComponent)
+export default connect()(PropertyComponent)

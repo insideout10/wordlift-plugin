@@ -40,3 +40,9 @@ export const OPEN_OR_CLOSE_PROPERTY = "OPEN_OR_CLOSE_PROPERTY"
  * Action when a property data of an item gets changed
  */
 export const PROPERTY_DATA_CHANGED = "PROPERTY_DATA_CHANGED"
+
+/**
+ * @const ADD_MAPPING
+ * Action when add mapping button is clicked
+ */
+export const ADD_MAPPING = "ADD_MAPPING"

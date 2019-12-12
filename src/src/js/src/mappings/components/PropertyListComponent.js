@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import PropertyComponent from './PropertyComponent';
 import PropertyListItemComponent from './PropertyListItemComponent';
 import { connect } from 'react-redux'
-import { OPEN_OR_CLOSE_PROPERTY_ACTION } from '../actions/actions';
+import { OPEN_OR_CLOSE_PROPERTY_ACTION, ADD_MAPPING_ACTION } from '../actions/actions';
 
 class PropertyListComponent extends React.Component {
     constructor(props){
@@ -29,7 +29,8 @@ class PropertyListComponent extends React.Component {
         this.props.dispatch(action)
      }
     // triggered when the add mapping button is clicked
-    handleAddMappingClick=()=> {
+    handleAddMappingClick = ()=> {
+        this.props.dispatch( ADD_MAPPING_ACTION )
     }
     renderListComponentBasedOnState = (property, index)=> {
         console.log(this.props)

@@ -1,4 +1,4 @@
-import { ADD_NEW_RULE, ADD_NEW_RULE_GROUP, DELETE_RULE, CHANGE_RULE_FIELD_VALUE, OPEN_OR_CLOSE_PROPERTY, PROPERTY_DATA_CHANGED } from '../actions/actionTypes'
+import { ADD_NEW_RULE, ADD_NEW_RULE_GROUP, DELETE_RULE, CHANGE_RULE_FIELD_VALUE, OPEN_OR_CLOSE_PROPERTY, PROPERTY_DATA_CHANGED, ADD_MAPPING } from '../actions/actionTypes'
 import { createReducer } from '@reduxjs/toolkit'
 /**
  * This file has reducers for mappings screen
@@ -19,7 +19,7 @@ export const RuleGroupReducer = createReducer(null, {
         state.ruleGroupList[action.payload.ruleGroupIndex].rules
         .splice(action.payload.ruleIndex + 1, 0, {
             ruleFieldOneValue: state.ruleFieldOneOptions[0].value,
-            ruleFieldTwoValue: state.ruleFieldTwoOptions[1].value,
+            ruleFieldTwoValue: state.ruleFieldTwoOptions[0].value,
             ruleLogicFieldValue: state.ruleLogicFieldOptions[0].value
 
         })
@@ -51,9 +51,18 @@ export const RuleGroupReducer = createReducer(null, {
         state.propertyList[propertyIndex].isOpenedOrAddedByUser = !prevState
     },
     [PROPERTY_DATA_CHANGED]: ( state, action )=> {
-        console.log(action)
         const {fieldKey, value, propertyIndex } = action.payload
         state.propertyList[propertyIndex][fieldKey] = value
+    },
+    [ADD_MAPPING]: ( state, action )=> {
+        // push an empty property item
+        state.propertyList.push({
+            isOpenedOrAddedByUser: true,
+            propertyHelpText:"",
+            fieldTypeHelpText: "",
+            fieldHelpText: "",
+            transformHelpText: ""
+        })
     }
 })
 
