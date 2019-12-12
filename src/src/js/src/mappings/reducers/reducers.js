@@ -18,8 +18,14 @@ export const RuleGroupReducer = createReducer(null, {
       state.ruleGroupList.push({rules: [{}]})
     },
     [ADD_NEW_RULE]: (state, action)=> {
+        // clicked index is given, add an item after that index
         state.ruleGroupList[action.payload.ruleGroupIndex].rules
-        .splice(action.payload.ruleIndex + 1, 0, {})
+        .splice(action.payload.ruleIndex + 1, 0, {
+            ruleFieldOneValue: state.ruleFieldOneOptions[0].value,
+            ruleFieldTwoValue: state.ruleFieldTwoOptions[1].value,
+            ruleLogicFieldValue: state.ruleLogicFieldOptions[0].value
+
+        })
     },
     [DELETE_RULE]: (state, action)=> {
         const ruleGroupIndex = action.payload.ruleGroupIndex

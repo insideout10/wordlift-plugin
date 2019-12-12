@@ -9,12 +9,14 @@ import React from 'react'
 
 class SelectComponent extends React.Component {
     constructor(props) {
+        console.log("Seelct")
+        console.log(props)
         super(props)
     }
     render() {
         return (
         <React.Fragment>
-            <select {...this.props}>
+            <select value={this.props.value}>
                 {
                     this.props.options.map((item, index)=> {
                         

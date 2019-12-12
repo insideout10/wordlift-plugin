@@ -98,18 +98,21 @@ class PropertyListComponent extends React.Component {
                                 )
                             })
                         }   
-
+                        <tr className="wl-text-right">
+                           <td />
+                           <td />
+                            <td><br />
+                                <button
+                                className="button action bg-primary text-white wl-add-mapping"
+                                style={{margin: 'auto'}}
+                                onClick={this.handleAddMappingClick}>
+                                Add Mapping
+                                </button> <br />
+                            </td>
+                        </tr>
                         </tbody>
                         </table>          
-                        <div className="wl-text-right">
-                            <br /><br />
-                            <button
-                             className="button action bg-primary text-white wl-add-mapping"
-                              style={{margin: 'auto'}}
-                              onClick={this.handleAddMappingClick}>
-                            Add Mapping
-                            </button>
-                        </div>
+
 
 
             </React.Fragment>

@@ -13,6 +13,7 @@ import { ADD_NEW_RULE_ACTION, DELETE_RULE_ACTION } from '../actions/actions'
 class RuleComponent extends React.Component {
     constructor(props) {
         super(props)
+        console.log(props)
     }
     handleAddNewRule = (ruleGroupIndex, ruleIndex)=> {
         const action = ADD_NEW_RULE_ACTION
@@ -33,16 +34,19 @@ class RuleComponent extends React.Component {
                 <div className="wl-container wl-rule-container">
                     <div className="wl-col">
                         <SelectComponent options={this.props.ruleFieldOneOptions}
+                        value= {this.props.ruleProps.ruleFieldOneValue}
                          className="wl-field-one-select wl-form-select">
                         </SelectComponent>
                     </div>
                     <div className="wl-col">
                         <SelectComponent options={this.props.ruleLogicFieldOptions}
+                        value= {this.props.ruleProps.ruleLogicFieldValue}
                          className="wl-field-logic wl-form-select">
                         </SelectComponent>
                     </div>
                     <div className="wl-col">
                         <SelectComponent options={this.props.ruleFieldTwoOptions}
+                         value= {this.props.ruleProps.ruleFieldTwoValue}
                          className="wl-field-two-select wl-form-select">
                         </SelectComponent>
                     </div>

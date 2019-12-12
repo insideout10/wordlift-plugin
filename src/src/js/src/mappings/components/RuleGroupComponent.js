@@ -15,6 +15,7 @@ import { connect } from 'react-redux'
          super(props)
      }
      render() {
+        console.log(this.props.rules)
          return (
              <div className="rule-group-container">
                  {
