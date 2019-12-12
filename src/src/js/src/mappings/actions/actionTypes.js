@@ -22,3 +22,9 @@ export const ADD_NEW_RULE_GROUP = "ADD_NEW_RULE_GROUP"
  * constant used for add delete rule
  */
 export const DELETE_RULE = "DELETE_RULE"
+
+/**
+ * @const CHANGE_RULE_FIELD_VALUE
+ * change a individual rule field option
+ */
+export const CHANGE_RULE_FIELD_VALUE = "CHANGE_RULE_FIELD_VALUE"

@@ -1,5 +1,6 @@
-import { ADD_NEW_RULE, ADD_NEW_RULE_GROUP, DELETE_RULE } from '../actions/actionTypes'
+import { ADD_NEW_RULE, ADD_NEW_RULE_GROUP, DELETE_RULE, CHANGE_RULE_FIELD_VALUE } from '../actions/actionTypes'
 import { createReducer } from '@reduxjs/toolkit'
+import { CHANGE_RULE_FIELD_VALUE_ACTION } from '../actions/actions'
 /**
  * This file has reducers for mappings screen
  *
@@ -28,8 +29,7 @@ export const RuleGroupReducer = createReducer(null, {
         })
     },
     [DELETE_RULE]: (state, action)=> {
-        const ruleGroupIndex = action.payload.ruleGroupIndex
-        const ruleIndex = action.payload.ruleIndex
+        const {ruleGroupIndex,ruleIndex} = action.payload
         // if the rule group has only one item, then it should be removed
         if (state.ruleGroupList[ruleGroupIndex].rules.length === 1) {
             state.ruleGroupList.splice(ruleGroupIndex, 1)
@@ -37,5 +37,9 @@ export const RuleGroupReducer = createReducer(null, {
         else {
             state.ruleGroupList[ruleGroupIndex].rules.splice(ruleIndex, 1)
         }
+    },
+    [CHANGE_RULE_FIELD_VALUE]: (state,action)=> {
+        const { ruleGroupIndex,ruleIndex,fieldKey,value } = action.payload
+        state.ruleGroupList[ruleGroupIndex].rules[ruleIndex][fieldKey] = value
     }
   })

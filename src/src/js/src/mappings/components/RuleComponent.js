@@ -34,19 +34,28 @@ class RuleComponent extends React.Component {
                 <div className="wl-container wl-rule-container">
                     <div className="wl-col">
                         <SelectComponent options={this.props.ruleFieldOneOptions}
-                        value= {this.props.ruleProps.ruleFieldOneValue}
-                         className="wl-field-one-select wl-form-select">
+                        value={this.props.ruleProps.ruleFieldOneValue}
+                        ruleGroupIndex={this.props.ruleGroupIndex}
+                        ruleIndex={this.props.ruleIndex}
+                        fieldKey={"ruleFieldOneValue"}
+                        className="wl-field-one-select wl-form-select">
                         </SelectComponent>
                     </div>
                     <div className="wl-col">
                         <SelectComponent options={this.props.ruleLogicFieldOptions}
                         value= {this.props.ruleProps.ruleLogicFieldValue}
-                         className="wl-field-logic wl-form-select">
+                        ruleGroupIndex={this.props.ruleGroupIndex}
+                        ruleIndex={this.props.ruleIndex}
+                        fieldKey={"ruleLogicFieldValue"}
+                        className="wl-field-logic wl-form-select">
                         </SelectComponent>
                     </div>
                     <div className="wl-col">
                         <SelectComponent options={this.props.ruleFieldTwoOptions}
                          value= {this.props.ruleProps.ruleFieldTwoValue}
+                         ruleGroupIndex={this.props.ruleGroupIndex}
+                         ruleIndex={this.props.ruleIndex}
+                         fieldKey={"ruleFieldTwoValue"}
                          className="wl-field-two-select wl-form-select">
                         </SelectComponent>
                     </div>
