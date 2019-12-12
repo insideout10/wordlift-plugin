@@ -50,8 +50,7 @@ import { TITLE_CHANGED_ACTION } from '../actions/actions'
                             <td>
                                 <div>
                                     <b>Use the mapping if</b>
-                                    <RuleGroupListComponent 
-                                        ruleGroupList={[{}]}/>
+                                    <RuleGroupListComponent />
                                 </div>
                             </td>
                             <td>
@@ -62,19 +61,19 @@ import { TITLE_CHANGED_ACTION } from '../actions/actions'
                 <br/><br/>
                 <PropertyListComponent />
                 <br/>
-                <div class="wl-container wl-container-full">
-                    <div class="wl-col">
-                        <select  class="form-control">
+                <div className="wl-container wl-container-full">
+                    <div className="wl-col">
+                        <select  className="form-control">
                             <option value="-1">Bulk Actions</option>
                             <option value="duplicate">Duplicate</option>
                             <option value="trash">Move to Trash</option>
                         </select>
                     </div>
-                    <div class="wl-col">
-                        <button class="button action"> Apply </button>
+                    <div className="wl-col">
+                        <button className="button action"> Apply </button>
                     </div>
-                    <div class="wl-col wl-align-right">
-                        <button class="button action"> Save </button>
+                    <div className="wl-col wl-align-right">
+                        <button className="button action"> Save </button>
                     </div>
 
                 </div>
