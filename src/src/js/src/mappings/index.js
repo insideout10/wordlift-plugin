@@ -1,5 +1,5 @@
 import React from 'react'
-import RuleGroupListComponent from './components/RuleGroupListComponent'
+import EditComponent from './components/EditComponent'
 import ReactDOM from 'react-dom'
 import {Provider} from 'react-redux'
 import { createStore } from 'redux'
@@ -8,6 +8,6 @@ const MOCK_STORE = createStore(mock_reducers, MOCK_INITIAL_STATE)
 
 ReactDOM.render(
     <Provider store={MOCK_STORE}>
-        <RuleGroupListComponent />
+        <EditComponent />
     </Provider>,
     document.getElementById("container"))
