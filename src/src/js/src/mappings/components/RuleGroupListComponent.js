@@ -12,6 +12,7 @@ import PropTypes from 'prop-types';
 import RuleGroupComponent from './RuleGroupComponent';
 import { connect } from 'react-redux'
 import { ADD_NEW_RULE_GROUP_ACTION } from '../actions/actions'
+
 class RuleGroupListComponent extends React.Component {
     constructor(props) {
         super(props)   
@@ -24,38 +25,58 @@ class RuleGroupListComponent extends React.Component {
     render() {
         return (
             <React.Fragment>
-                {
-                    this.props.ruleGroupList.map((item, index)=> {
-                        return (
-                            <React.Fragment>
-                                <RuleGroupComponent 
-                                rules={item.rules} 
-                                ruleGroupIndex={index}/>
-                                { 
-                                    // dont show extra or text if there
-                                    // is no rule group below
-                                    index != this.props.ruleGroupList.length -1 &&   
-                                    <div className="wl-container">
-                                        <div className="wl-col">
-                                            <b>Or</b>
-                                        </div>
-                                    </div>
+                
+                    <table className="wp-list-table widefat striped wl-table wl-container-full">
+                        <thead>
+                            <tr>
+                                <td colspan="0">
+                                <b>Rules</b> 
+                                </td>
+                                <td colspan="2">
+                                </td>
+                            </tr>
+                        </thead>
+                        <tr>
+                        <td className="wl-bg-light wl-description">
+                            Here we show the help text
+                        </td>
+                        <td>
+                            
+                                <b>Use the mapping if</b>
+                                { this.props.ruleGroupList.map((item, index)=> {
+                                        return (
+                                            <React.Fragment>
+                                                <RuleGroupComponent 
+                                                rules={item.rules} 
+                                                ruleGroupIndex={index}/>
+                                                { 
+                                                    // dont show extra or text if there
+                                                    // is no rule group below
+                                                    index != this.props.ruleGroupList.length -1 &&   
+                                                    <div className="wl-container">
+                                                        <div className="wl-col">
+                                                            <b>Or</b>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            
+                                            </React.Fragment> 
+                                        )
+                                    }) 
                                 }
                             
-                            </React.Fragment> 
-                        )
-                    }) 
-                }
-
-                <div className="wl-container">
-                    <div className="wl-col">
-                        <button 
-                        className="button action wl-add-rule-group"
-                        onClick={()=> { this.addNewRuleGroupHandler() }}>
-                             Add Rule Group 
-                        </button>
+                        </td>
+                    </tr>
+                    </table>
+                    <div className="wl-container">
+                        <div className="wl-col">
+                            <button 
+                            className="button action wl-add-rule-group"
+                            onClick={()=> { this.addNewRuleGroupHandler() }}>
+                                Add Rule Group 
+                            </button>
+                        </div>
                     </div>
-                </div>
             </React.Fragment>
         )
     }

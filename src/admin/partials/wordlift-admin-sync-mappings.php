@@ -93,6 +93,20 @@
     .wl-text-right {
         text-align: right;
     }
+    .wl-remove-button {
+        height: 33px;
+        width: 33px;
+        border-radius: 50%;
+        visibility:hidden;
+        vertical-align: inherit;
+    }
+    .wl-remove-button:hover {
+        background-color: rgba(184,0,0,1);
+        color: #fff;
+    }
+    .wl-rule-container:hover .wl-remove-button {
+        visibility: visible;
+    }
 
 
     .hide {
