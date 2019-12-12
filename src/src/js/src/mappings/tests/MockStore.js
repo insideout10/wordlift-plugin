@@ -22,6 +22,8 @@ export const MOCK_INITIAL_STATE = {
         ]
     },
     PropertyListData: {
+        fieldTypeHelpTextOptions:options,
+        transformHelpTextOptions:options,
         propertyList: [
             {
                 isOpenedOrAddedByUser: false,

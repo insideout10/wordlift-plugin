@@ -13,21 +13,12 @@ class SelectComponent extends React.Component {
     constructor(props) {
         super(props)
     }
-    handleSelectFieldChange = (event)=> {
-        const action = CHANGE_RULE_FIELD_VALUE_ACTION
-        action.payload = {}
-        action.payload.value = event.target.value
-        action.payload.ruleIndex = this.props.ruleIndex
-        action.payload.ruleGroupIndex = this.props.ruleGroupIndex
-        action.payload.fieldKey = this.props.fieldKey
-        this.props.dispatch(action) 
-    }
     render() {
         return (
         <React.Fragment>
             <select value={this.props.value}
             className={this.props.className}
-            onChange={(e)=>this.handleSelectFieldChange(e)}>
+            onChange={this.props.onChange}>
                 {
                     this.props.options.map((item, index)=> {
                         

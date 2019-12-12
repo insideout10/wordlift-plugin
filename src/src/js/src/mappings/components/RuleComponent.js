@@ -8,26 +8,37 @@ import React from 'react'
 import SelectComponent from './SelectComponent'
 import { connect } from 'react-redux'
 
-import { ADD_NEW_RULE_ACTION, DELETE_RULE_ACTION } from '../actions/actions'
+import { ADD_NEW_RULE_ACTION, DELETE_RULE_ACTION, CHANGE_RULE_FIELD_VALUE_ACTION } from '../actions/actions'
 
 class RuleComponent extends React.Component {
     constructor(props) {
         super(props)
-        console.log(props)
     }
     handleAddNewRule = (ruleGroupIndex, ruleIndex)=> {
         const action = ADD_NEW_RULE_ACTION
-        action.payload = {}
-        action.payload.ruleGroupIndex = ruleGroupIndex
-        action.payload.ruleIndex = ruleIndex
+        action.payload = {
+            ruleGroupIndex: ruleGroupIndex,
+            ruleIndex: ruleIndex
+        }
         this.props.dispatch(action)
     }
     handleDeleteRule = (ruleGroupIndex, ruleIndex)=> {
         const action = DELETE_RULE_ACTION
-        action.payload = {}
-        action.payload.ruleGroupIndex = ruleGroupIndex
-        action.payload.ruleIndex = ruleIndex
+        action.payload = {
+            ruleGroupIndex:ruleGroupIndex,
+            ruleIndex:ruleIndex
+        }
         this.props.dispatch(action)
+    }
+    handleSelectFieldChange = (event, fieldKey )=> {
+        const action = CHANGE_RULE_FIELD_VALUE_ACTION
+        action.payload = {
+            value: event.target.value,
+            ruleIndex: this.props.ruleIndex,
+            ruleGroupIndex: this.props.ruleGroupIndex,
+            fieldKey: fieldKey
+        }
+        this.props.dispatch(action) 
     }
     render() {
         return (
@@ -35,27 +46,21 @@ class RuleComponent extends React.Component {
                     <div className="wl-col">
                         <SelectComponent options={this.props.ruleFieldOneOptions}
                         value={this.props.ruleProps.ruleFieldOneValue}
-                        ruleGroupIndex={this.props.ruleGroupIndex}
-                        ruleIndex={this.props.ruleIndex}
-                        fieldKey={"ruleFieldOneValue"}
+                        onChange={(e)=>{this.handleSelectFieldChange(e, "ruleFieldOneValue")}}
                         className="wl-field-one-select wl-form-select">
                         </SelectComponent>
                     </div>
                     <div className="wl-col">
                         <SelectComponent options={this.props.ruleLogicFieldOptions}
                         value= {this.props.ruleProps.ruleLogicFieldValue}
-                        ruleGroupIndex={this.props.ruleGroupIndex}
-                        ruleIndex={this.props.ruleIndex}
-                        fieldKey={"ruleLogicFieldValue"}
+                        onChange={(e)=>{this.handleSelectFieldChange(e, "ruleLogicFieldValue")}}
                         className="wl-field-logic wl-form-select">
                         </SelectComponent>
                     </div>
                     <div className="wl-col">
                         <SelectComponent options={this.props.ruleFieldTwoOptions}
                          value= {this.props.ruleProps.ruleFieldTwoValue}
-                         ruleGroupIndex={this.props.ruleGroupIndex}
-                         ruleIndex={this.props.ruleIndex}
-                         fieldKey={"ruleFieldTwoValue"}
+                         onChange={(e)=>{this.handleSelectFieldChange(e, "ruleFieldTwoValue")}}
                          className="wl-field-two-select wl-form-select">
                         </SelectComponent>
                     </div>

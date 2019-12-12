@@ -33,8 +33,6 @@ class PropertyListComponent extends React.Component {
         this.props.dispatch( ADD_MAPPING_ACTION )
     }
     renderListComponentBasedOnState = (property, index)=> {
-        console.log(this.props)
-        console.log(property)
         if (property.isOpenedOrAddedByUser) {
             return (
                 // show the property in edit mode

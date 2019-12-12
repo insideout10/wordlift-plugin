@@ -8,12 +8,12 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
+import SelectComponent from './SelectComponent'
 import { PROPERTY_DATA_CHANGED_ACTION } from '../actions/actions';
 
  class PropertyComponent extends React.Component {
      constructor (props) {
          super(props)
-         console.log("property component")
          console.log(props)
      }
      /**
@@ -60,13 +60,14 @@ import { PROPERTY_DATA_CHANGED_ACTION } from '../actions/actions';
                                     Field Type Help Text
                                 </td>
                                 <td>
-                                    <select className="wl-form-select"
-                                        value={this.props.propData.fieldTypeHelpText}
+                                    <SelectComponent
+                                        className="wl-form-select"
+                                        options={this.props.fieldTypeHelpTextOptions}
+                                        value = {this.props.propData.fieldTypeHelpText}
                                         onChange={ (event)=> 
                                             { this.handleChangeForPropertyField("fieldTypeHelpText", event)
                                         }}>
-                                        <option value="-1">Custom Field</option>
-                                    </select> 
+                                    </SelectComponent> 
                                 </td>
                             </tr>
                             <tr>
@@ -88,13 +89,14 @@ import { PROPERTY_DATA_CHANGED_ACTION } from '../actions/actions';
                                 Transform Help Text
                                 </td>
                                 <td>
-                                    <select className="wl-form-select"
-                                        value={this.props.propData.transformHelpText}
+                                    <SelectComponent
+                                        className="wl-form-select"
+                                        options={this.props.transformHelpTextOptions}
+                                        value = {this.props.propData.transformHelpText}
                                         onChange={ (event)=> 
                                             { this.handleChangeForPropertyField("transformHelpText", event)
                                         }}>
-                                        <option value="-1">None</option>
-                                    </select>
+                                    </SelectComponent>
                                 </td>
                             </tr>
                             <tr>
@@ -119,6 +121,12 @@ import { PROPERTY_DATA_CHANGED_ACTION } from '../actions/actions';
      propertyData: PropTypes.object
  }
 
+ const mapStateToProps = function (state) {
+     return {
+        transformHelpTextOptions: state.PropertyListData.transformHelpTextOptions,
+        fieldTypeHelpTextOptions: state.PropertyListData.fieldTypeHelpTextOptions
+     }
+ }
 
 
-export default connect()(PropertyComponent)
+export default connect(mapStateToProps)(PropertyComponent)
