@@ -27,7 +27,7 @@ export default class MappingListItemComponent extends React.Component {
                     </a>
                     <div class="row-actions">
                         <span class="edit">
-                            <a>
+                            <a href="?page=wl_edit_mapping">
                                 Edit
                             </a>
                             | 
