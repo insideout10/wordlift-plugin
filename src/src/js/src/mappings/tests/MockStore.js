@@ -1,5 +1,5 @@
 import { combineReducers, createStore } from 'redux'
-import { RuleGroupReducer } from '../reducers/reducers'
+import { RuleGroupReducer, PropertyReducer } from '../reducers/reducers'
 
 const options = [
     { value: 'one', label: 'one' },
@@ -20,11 +20,23 @@ export const MOCK_INITIAL_STATE = {
                 rules:[{}]
             }
         ]
+    },
+    PropertyListData: {
+        propertyList: [
+            {
+                isOpenedOrAddedByUser: false,
+                propertyHelpText:"foo",
+                fieldTypeHelpText: "",
+                fieldHelpText: "",
+                transformHelpText: ""
+            },
+        ]
     }
 }
 
 
 // lets create a mock store with reducers and with initial state
 export const mock_reducers = combineReducers({
-    RuleGroupData: RuleGroupReducer
+    RuleGroupData: RuleGroupReducer,
+    PropertyListData: PropertyReducer
 })

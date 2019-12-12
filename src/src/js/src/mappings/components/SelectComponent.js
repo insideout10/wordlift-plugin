@@ -20,7 +20,6 @@ class SelectComponent extends React.Component {
         action.payload.ruleIndex = this.props.ruleIndex
         action.payload.ruleGroupIndex = this.props.ruleGroupIndex
         action.payload.fieldKey = this.props.fieldKey
-        console.log(action)
         this.props.dispatch(action) 
     }
     render() {

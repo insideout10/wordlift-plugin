@@ -1,6 +1,5 @@
-import { ADD_NEW_RULE, ADD_NEW_RULE_GROUP, DELETE_RULE, CHANGE_RULE_FIELD_VALUE } from '../actions/actionTypes'
+import { ADD_NEW_RULE, ADD_NEW_RULE_GROUP, DELETE_RULE, CHANGE_RULE_FIELD_VALUE, OPEN_OR_CLOSE_PROPERTY } from '../actions/actionTypes'
 import { createReducer } from '@reduxjs/toolkit'
-import { CHANGE_RULE_FIELD_VALUE_ACTION } from '../actions/actions'
 /**
  * This file has reducers for mappings screen
  *
@@ -9,10 +8,7 @@ import { CHANGE_RULE_FIELD_VALUE_ACTION } from '../actions/actions'
  */
 
  /**
-  * 
-  * @param {object} state The state of the edit mapping screen
-  * @param {object} action The action to be performed on the state
-  * mapped to action/actionTypes.js
+  * Reducer to handle the rule group and rule section
   */
 export const RuleGroupReducer = createReducer(null, {
     [ADD_NEW_RULE_GROUP]: (state, action) => {
@@ -43,3 +39,16 @@ export const RuleGroupReducer = createReducer(null, {
         state.ruleGroupList[ruleGroupIndex].rules[ruleIndex][fieldKey] = value
     }
   })
+
+/**
+  * Reducer to handle the property section
+  */
+ export const PropertyReducer = createReducer(null, {
+    [OPEN_OR_CLOSE_PROPERTY]: (state,action)=> {
+        const {propertyIndex} = action.payload
+        const prevState = state.propertyList[propertyIndex].isOpenedOrAddedByUser
+        // invert the previous state
+        state.propertyList[propertyIndex].isOpenedOrAddedByUser = !prevState
+    }
+})
+

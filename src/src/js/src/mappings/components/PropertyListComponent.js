@@ -9,47 +9,38 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import PropertyComponent from './PropertyComponent';
 import PropertyListItemComponent from './PropertyListItemComponent';
+import { connect } from 'react-redux'
+import { OPEN_OR_CLOSE_PROPERTY_ACTION } from '../actions/actions';
 
 class PropertyListComponent extends React.Component {
     constructor(props){
         super(props)
     }
-    state = {
-        propertyList: (this.props.propertyList !== undefined ?
-            this.props.propertyList : [])  
-    }
-    handleCloseOrOpenPropertyBasedOnState=(index, propData)=> {
-        const propertyList = [... this.state.propertyList]
-        if (propData != null){
-            propertyList[index] = propData
+     /**
+      * It makes property item 
+      * switch from edit mode to list item mode and vice versa
+      * @param {Number} propertyIndex 
+      */
+     switchState = ( propertyIndex ) => {
+        const action  = OPEN_OR_CLOSE_PROPERTY_ACTION
+        action.payload = {
+            propertyIndex: propertyIndex
         }
-        //invert the state
-        propertyList[index].isOpenedOrAddedByUser = !propertyList[index].isOpenedOrAddedByUser
-        this.setState({
-            propertyList: propertyList
-        })
-    }
+        this.props.dispatch(action)
+     }
     // triggered when the add mapping button is clicked
     handleAddMappingClick=()=> {
-        const newPropertyData = {
-            isOpenedOrAddedByUser: true,
-            propertyHelpText:"",
-            fieldTypeHelpText: "",
-            fieldHelpText: "",
-            transformHelpText: ""
-        }
-        this.setState(prevState => ({
-            propertyList: [...prevState.propertyList, newPropertyData]
-        }))
     }
     renderListComponentBasedOnState = (property, index)=> {
+        console.log(this.props)
+        console.log(property)
         if (property.isOpenedOrAddedByUser) {
             return (
                 // show the property in edit mode
                 <PropertyComponent
                 propData={property}
                 propertyIndex={index}
-                switchState={this.handleCloseOrOpenPropertyBasedOnState}/>
+                switchState={this.switchState}/>
             )
         }
         // if it is not opened then return the list item
@@ -57,7 +48,7 @@ class PropertyListComponent extends React.Component {
             <PropertyListItemComponent
             propertyIndex={index}
             propertyText={property.propertyHelpText}
-            switchState={this.handleCloseOrOpenPropertyBasedOnState} />
+            switchState={this.switchState} />
         )
     }
     render() {
@@ -81,7 +72,7 @@ class PropertyListComponent extends React.Component {
                   
                         {
 
-                            this.state.propertyList.map((property, index) => {
+                            this.props.propertyList.map((property, index) => {
 
                                 return (
                                     <tr className="wl-property-list-item-container">
@@ -110,11 +101,8 @@ class PropertyListComponent extends React.Component {
                                 </button> <br />
                             </td>
                         </tr>
-                        </tbody>
-                        </table>          
-
-
-
+                    </tbody>
+                </table>          
             </React.Fragment>
         )
     }
@@ -124,4 +112,10 @@ PropertyListComponent.propTypes = {
     propertyList: PropTypes.array
 }
 
-export default PropertyListComponent
+const mapStateToProps = function( state ) {
+    return {
+        propertyList: state.PropertyListData.propertyList
+    }
+}
+
+export default connect(mapStateToProps)(PropertyListComponent)

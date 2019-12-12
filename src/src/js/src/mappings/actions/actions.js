@@ -4,7 +4,7 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * @since 3.24.0
  */
-import { ADD_NEW_RULE, ADD_NEW_RULE_GROUP, DELETE_RULE, CHANGE_RULE_FIELD_VALUE } from './actionTypes'
+import { ADD_NEW_RULE, ADD_NEW_RULE_GROUP, DELETE_RULE, CHANGE_RULE_FIELD_VALUE, OPEN_OR_CLOSE_PROPERTY } from './actionTypes'
 /**
  * @const {object} ADD_NEW_RULE_ACTION
  * Dispatches this action when add new rule is clicked
@@ -35,4 +35,12 @@ export const DELETE_RULE_ACTION = {
  */
 export const CHANGE_RULE_FIELD_VALUE_ACTION = { 
     type: CHANGE_RULE_FIELD_VALUE
+}
+
+/**
+ * @const {object} OPEN_OR_CLOSE_PROPERTY_ACTION
+ *  Dispatches this action to open or close a property item
+ */
+export const OPEN_OR_CLOSE_PROPERTY_ACTION = { 
+    type: OPEN_OR_CLOSE_PROPERTY
 }

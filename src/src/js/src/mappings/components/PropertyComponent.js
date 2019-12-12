@@ -7,28 +7,17 @@
 
 import React from 'react'
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux'
 
  class PropertyComponent extends React.Component {
      constructor (props) {
          super(props)
      }
-     state = {
-         propData: ( this.props.propData !== undefined ? 
-            this.props.propData : "")
-     }
-     handlePropertyTextChange = (value) => {
-        this.setState((prevState) => ({
-            propData: {
-                ...prevState.propData,
-                propertyHelpText: value
-            }
-        }))
-     }
      render() {
          return (
             <React.Fragment>
                     <a className="row-title">
-                       { this.state.propData.propertyHelpText }
+                       {/* { this.state.propData.propertyHelpText } */}
                     </a>
                     <br />
                     <table className="wl-container wl-container-full wl-spaced-table wl-property-edit-item">
@@ -41,8 +30,6 @@ import PropTypes from 'prop-types';
                                     <input type="text"
                                     placeholder="Telephone"
                                     className="wl-form-control wl-property-help-text"
-                                    value={this.state.propData.propertyHelpText}
-                                    onChange={event=> this.handlePropertyTextChange(event.target.value)}
                                     />
                                 </td>
                             </tr>
@@ -78,7 +65,7 @@ import PropTypes from 'prop-types';
                                 <td colspan="2"></td>
                                 <td>
                                     <button className="wl-close-mapping button action bg-primary text-white"
-                                    onClick={()=> this.props.switchState(this.props.propertyIndex, this.state.propData)}>
+                                    onClick={()=> this.props.switchState(this.props.propertyIndex)}>
                                         Close Mapping
                                     </button>
                                 </td>
@@ -94,4 +81,10 @@ import PropTypes from 'prop-types';
      propertyData: PropTypes.object
  }
 
- export default PropertyComponent
+ const mapStateToProps = function( state ) {
+    return {
+
+    }
+}
+
+export default connect(mapStateToProps)(PropertyComponent)

@@ -28,3 +28,10 @@ export const DELETE_RULE = "DELETE_RULE"
  * change a individual rule field option
  */
 export const CHANGE_RULE_FIELD_VALUE = "CHANGE_RULE_FIELD_VALUE"
+
+/**
+ * @const OPEN_OR_CLOSE_PROPERTY
+ * Action to open/close a property item for editing
+ */
+export const OPEN_OR_CLOSE_PROPERTY = "OPEN_OR_CLOSE_PROPERTY"
+
