@@ -46,3 +46,9 @@ export const PROPERTY_DATA_CHANGED = "PROPERTY_DATA_CHANGED"
  * Action when add mapping button is clicked
  */
 export const ADD_MAPPING = "ADD_MAPPING"
+
+/**
+ * @const TITLE_CHANGED
+ * Action when add mapping button is clicked
+ */
+export const TITLE_CHANGED = "TITLE_CHANGED"

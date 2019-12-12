@@ -46,7 +46,7 @@ import { PROPERTY_DATA_CHANGED_ACTION } from '../actions/actions';
                                 </td>
                                 <td>
                                     <input type="text"
-                                    value={this.props.propData.propertyHelpText}
+                                    defaultValue={this.props.propData.propertyHelpText}
                                     placeholder="Telephone"
                                     className="wl-form-control wl-property-help-text"
                                     onChange={ (event)=> 
@@ -78,7 +78,7 @@ import { PROPERTY_DATA_CHANGED_ACTION } from '../actions/actions';
                                     <input type="text" 
                                     placeholder="Contact Form"
                                     className="wl-form-control"
-                                    value={this.props.propData.fieldHelpText}
+                                    defaultValue={this.props.propData.fieldHelpText}
                                     onChange={ (event)=> 
                                         { this.handleChangeForPropertyField("fieldHelpText", event)
                                     }} />

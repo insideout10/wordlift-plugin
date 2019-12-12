@@ -8,10 +8,20 @@
 import React from 'react'
 import RuleGroupListComponent from './RuleGroupListComponent'
 import PropertyListComponent from './PropertyListComponent'
+import { connect } from 'react-redux'
+import { TITLE_CHANGED_ACTION } from '../actions/actions'
+
  class EditComponent extends React.Component {
 
     constructor(props) {
         super(props)
+    }
+    handleTitleChange = (event)=> {
+        const action = TITLE_CHANGED_ACTION
+        action.payload = {
+            value: event.target.value
+        }
+        this.props.dispatch(action)
     }
     render() {
         return (
@@ -19,8 +29,8 @@ import PropertyListComponent from './PropertyListComponent'
                  <br /> <br />
                 <input type="text"
                     className="wl-form-control wl-input-class"
-                    size="30"
-                    value="My Custom Post Type" />
+                    defaultValue={this.props.title}
+                    onChange={(e)=> {this.handleTitleChange(e)}}/>
                     <br /> <br />
                 <table className="wp-list-table widefat striped wl-table wl-container-full">
                     <thead>
@@ -54,7 +64,12 @@ import PropertyListComponent from './PropertyListComponent'
             </React.Fragment>
         )
     }
-    
 }
 
-export default EditComponent
+const mapStateToProps = function( state ) {
+    return {
+        title: state.TitleSectionData.title
+    }
+}
+
+export default connect(mapStateToProps)(EditComponent)

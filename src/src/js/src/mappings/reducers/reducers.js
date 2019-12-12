@@ -1,5 +1,6 @@
-import { ADD_NEW_RULE, ADD_NEW_RULE_GROUP, DELETE_RULE, CHANGE_RULE_FIELD_VALUE, OPEN_OR_CLOSE_PROPERTY, PROPERTY_DATA_CHANGED, ADD_MAPPING } from '../actions/actionTypes'
+import { ADD_NEW_RULE, ADD_NEW_RULE_GROUP, DELETE_RULE, CHANGE_RULE_FIELD_VALUE, OPEN_OR_CLOSE_PROPERTY, PROPERTY_DATA_CHANGED, ADD_MAPPING, TITLE_CHANGED } from '../actions/actionTypes'
 import { createReducer } from '@reduxjs/toolkit'
+import { TITLE_CHANGED_ACTION } from '../actions/actions'
 /**
  * This file has reducers for mappings screen
  *
@@ -63,6 +64,15 @@ export const RuleGroupReducer = createReducer(null, {
             fieldHelpText: "",
             transformHelpText: ""
         })
+    }
+})
+
+/**
+  * Reducer to handle the title section
+  */
+ export const TitleReducer = createReducer(null, {
+    [TITLE_CHANGED]: ( state, action )=> {
+        state.title = action.payload.value
     }
 })
 
