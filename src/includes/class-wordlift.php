@@ -300,6 +300,16 @@ class Wordlift {
 	 * @var \Wordlift_Admin_Sync_Mappings_Page $sync_mappings_page The sync mappings page.
 	 */
 	private $sync_mappings_page;
+
+	/**
+	 * The 'Edit Mappings' page.
+	 *
+	 * @since  3.24.0
+	 * @access private
+	 * @var \Wordlift_Admin_Edit_Mappings $edit_mappings_page The edit mappings page.
+	 */
+	private $edit_mappings_page;
+
 	/**
 	 * The 'WordLift Settings' page.
 	 *
@@ -1121,6 +1131,14 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-sync-mappings-page.php';
 
 		/**
+		 *
+		 * The class responsible for displaying edit mappings page
+		 *
+		 * @since 3.24.0
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-edit-mappings.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
@@ -1410,6 +1428,7 @@ class Wordlift {
 		$this->status_page               = new Wordlift_Admin_Status_Page( $this->entity_service, $this->sparql_service );
 		$this->sync_mappings_mockup_page = new Wordlift_Admin_Mappings_Mockup_Page();
 		$this->sync_mappings_page        = new Wordlift_Admin_Sync_Mappings_Page();
+		$this->edit_mappings_page        = new Wordlift_Admin_Edit_Mappings();
 		// Create an instance of the install wizard.
 		$this->admin_setup = new Wordlift_Admin_Setup( $this->configuration_service, $this->key_validation_service, $this->entity_service, $this->language_select_element, $this->country_select_element );
 
@@ -1618,6 +1637,7 @@ class Wordlift {
 		 */
 		$this->loader->add_action( 'admin_menu', $this->sync_mappings_mockup_page, 'admin_menu', 100, 0 );
 		$this->loader->add_action( 'admin_menu', $this->sync_mappings_page, 'admin_menu', 100, 0 );
+		$this->loader->add_action( 'admin_menu', $this->edit_mappings_page, 'admin_menu', 100, 0 );
 		// Hook the admin-ajax.php?action=wl_download_your_data&out=xyz links.
 		$this->loader->add_action( 'wp_ajax_wl_download_your_data', $this->download_your_data_page, 'download_your_data', 10 );
 

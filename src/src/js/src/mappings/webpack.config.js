@@ -3,14 +3,19 @@ const path = require('path');
 module.exports = {
   mode: "production", // "production" | "development" | "none"
   // Chosen mode tells webpack to use its built-in optimizations accordingly.
-  entry: "./index.js", // string | object | array
+  entry:  {
+    mappings: './mappings.js',
+    edit_mappings:'./edit-mappings.js',
+  },
   // defaults to ./src
   // Here the application starts executing
   // and webpack starts bundling
+
   output: {
-    filename: "mappings.js",
+    filename: '[name].js',
     path: path.resolve(__dirname, "../../../../js/dist")
   },
+
   module: {
     rules: [
       {

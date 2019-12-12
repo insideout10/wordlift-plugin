@@ -21,7 +21,7 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 	public function __construct() {
 		// Register scripts needed to be loaded for that page.
 		wp_register_script('wl-edit-mappings-script',
-			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/edit-mappings.js',
+			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/edit_mappings.js',
 			false
 		);
 	}
@@ -47,7 +47,7 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 	 */
 	public function get_menu_slug() {
 
-		return 'wl_edit_mappings';
+		return 'wl_edit_mapping';
 	}
 
 	/**
