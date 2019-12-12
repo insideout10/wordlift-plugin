@@ -1,4 +1,4 @@
-import { ADD_NEW_RULE, ADD_NEW_RULE_GROUP, DELETE_RULE, CHANGE_RULE_FIELD_VALUE, OPEN_OR_CLOSE_PROPERTY } from '../actions/actionTypes'
+import { ADD_NEW_RULE, ADD_NEW_RULE_GROUP, DELETE_RULE, CHANGE_RULE_FIELD_VALUE, OPEN_OR_CLOSE_PROPERTY, PROPERTY_DATA_CHANGED } from '../actions/actionTypes'
 import { createReducer } from '@reduxjs/toolkit'
 /**
  * This file has reducers for mappings screen
@@ -49,6 +49,11 @@ export const RuleGroupReducer = createReducer(null, {
         const prevState = state.propertyList[propertyIndex].isOpenedOrAddedByUser
         // invert the previous state
         state.propertyList[propertyIndex].isOpenedOrAddedByUser = !prevState
+    },
+    [PROPERTY_DATA_CHANGED]: ( state, action )=> {
+        console.log(action)
+        const {fieldKey, value, propertyIndex } = action.payload
+        state.propertyList[propertyIndex][fieldKey] = value
     }
 })
 

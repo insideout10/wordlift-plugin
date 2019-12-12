@@ -35,3 +35,8 @@ export const CHANGE_RULE_FIELD_VALUE = "CHANGE_RULE_FIELD_VALUE"
  */
 export const OPEN_OR_CLOSE_PROPERTY = "OPEN_OR_CLOSE_PROPERTY"
 
+/**
+ * @const PROPERTY_DATA_CHANGED
+ * Action when a property data of an item gets changed
+ */
+export const PROPERTY_DATA_CHANGED = "PROPERTY_DATA_CHANGED"
