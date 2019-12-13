@@ -60,16 +60,18 @@ EOF;
 	 *
 	 * @return void
 	 */
-	private function create_rule_table() {
+	public static function create_rule_table() {
 		global $wpdb;
 		$table_name      = $wpdb->prefix . WL_RULE_TABLE_NAME;
 		$charset_collate = $wpdb->get_charset_collate();
 		$sql             = <<<EOF
         CREATE TABLE $table_name (
-                rule_id int(11) NOT NULL AUTO_INCREMENT,
+                rule_id INT(11) NOT NULL AUTO_INCREMENT,
                 PRIMARY KEY (rule_id)
         ) $charset_collate;
 EOF;
+		// Execute the query for mappings table.
+		dbDelta( $sql );
 	}
 
 	/**

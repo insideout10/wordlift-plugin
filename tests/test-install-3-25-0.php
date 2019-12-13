@@ -28,9 +28,26 @@ class Wordlift_Install_3_25_0_Test extends Wordlift_Unit_Test_Case {
 			$expected_table_name,
 			array(
 				'mapping_id'    => 1,
-				'mapping_title' => 'foo')
+				'mapping_title' => 'foo',
+			)
 		);
 
+		$this->assertEquals( $insertion_query, 1 );
+	}
+
+	/**
+	 * Test to check whether we can create rule table
+	 */
+	public function test_can_create_rule_table() {
+		global $wpdb;
+		Wordlift_Install_3_25_0::create_rule_table();
+		$expected_table_name = $wpdb->prefix . WL_RULE_TABLE_NAME;
+		$insertion_query = $wpdb->insert(
+			$expected_table_name,
+			array(
+				'rule_id' => 1,
+			)
+		);
 		$this->assertEquals( $insertion_query, 1 );
 	}
 
