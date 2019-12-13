@@ -51,4 +51,17 @@ class Wordlift_Install_3_25_0_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( $insertion_query, 1 );
 	}
 
+	/**
+	 * Test to check whether we can create rule group table
+	 */
+	public function test_can_create_rule_group_table() {
+		global $wpdb;
+		Wordlift_Install_3_25_0::create_rule_group_table();
+		$expected_table_name = $wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
+		// Before making insertion queries this table has two foreign keys
+		// So the values must be referred before making insertion query.
+		// Let's insert a mapping row.
+		$this->assertEquals( $insertion_query, 1 );
+	}
+
 }

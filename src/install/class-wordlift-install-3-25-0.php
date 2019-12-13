@@ -82,7 +82,7 @@ EOF;
 	 *
 	 * @return void
 	 */
-	private function create_rule_group_table() {
+	public static function create_rule_group_table() {
 		global $wpdb;
 		$table_name      = $wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
 		$charset_collate = $wpdb->get_charset_collate();
@@ -101,6 +101,8 @@ EOF;
                 ON DELETE CASCADE
         ) $charset_collate;
 EOF;
+		// Execute the query for rule group table.
+		dbDelta( $sql );
 	}
 
 
