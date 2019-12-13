@@ -22,10 +22,16 @@ class Wordlift_Install_3_25_0_Test extends Wordlift_Unit_Test_Case {
 		global $wpdb;
 		Wordlift_Install_3_25_0::create_mappings_table();
 		$expected_table_name = $wpdb->prefix . WL_MAPPING_TABLE_NAME;
-		$query               = $wpdb->prepare( 'SHOW TABLES LIKE %s', array( $expected_table_name ));
-		$table_name          = $wpdb->get_var( $query );
-		// When the table is created it should match the expected table name.
-		$this->assertEquals( $expected_table_name, $table_name );
+		// Temporary table is created and only visible to this connection
+		// while running tests.So we insert rows to confirm table exists.
+		$insertion_query = $wpdb->insert(
+			$expected_table_name,
+			array(
+				'mapping_id'    => 1,
+				'mapping_title' => 'foo')
+		);
+
+		$this->assertEquals( $insertion_query, 1 );
 	}
 
 }
