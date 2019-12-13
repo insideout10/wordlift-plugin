@@ -18,7 +18,7 @@ class Wordlift_Install_3_25_0 extends Wordlift_Install {
 	/**
 	 * @inheritdoc
 	 */
-    protected static $version = '3.25.0';
+	protected static $version = '3.25.0';
 
 	/**
 	 * @inheritdoc
@@ -37,39 +37,39 @@ class Wordlift_Install_3_25_0 extends Wordlift_Install {
 	private function create_mappings_table() {
 		global $wpdb;
 		$table_name      = $wpdb->prefix . WL_MAPPING_TABLE_NAME;
-        $charset_collate = $wpdb->get_charset_collate();
+		$charset_collate = $wpdb->get_charset_collate();
 		$sql             = <<<EOF
         CREATE TABLE $table_name (
                 mapping_id int(11) NOT NULL AUTO_INCREMENT,
                 title varchar(255) NOT NULL,
-                PRIMARY KEY (id)
+                PRIMARY KEY (mapping_id)
         ) $charset_collate;
 EOF;
-    }
-    // TODO: need to obtain field names for rule table.
+	}
+	// TODO: need to obtain field names for rule table.
 	/**
 	 * Install rule table
-     *
+	 *
 	 *
 	 * @since 3.25.0
 	 *
 	 * @return void
 	 */
-    private function create_rule_table() {
+	private function create_rule_table() {
 		global $wpdb;
 		$table_name      = $wpdb->prefix . WL_RULE_TABLE_NAME;
-        $charset_collate = $wpdb->get_charset_collate();
+		$charset_collate = $wpdb->get_charset_collate();
 		$sql             = <<<EOF
         CREATE TABLE $table_name (
                 rule_id int(11) NOT NULL AUTO_INCREMENT,
                 PRIMARY KEY (rule_id)
         ) $charset_collate;
-EOF;        
-    }
+EOF;
+	}
 
 	/**
 	 * Install rule group table, should run after creating mapping and
-     * rule table due to foreign key reference.
+	 * rule table due to foreign key reference.
 	 *
 	 * @since 3.25.0
 	 *
@@ -78,10 +78,10 @@ EOF;
 	private function create_rule_group_table() {
 		global $wpdb;
 		$table_name      = $wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
-        $charset_collate = $wpdb->get_charset_collate();
+		$charset_collate = $wpdb->get_charset_collate();
 
-        $mapping_table_name = $wpdb->prefix . WL_MAPPING_TABLE_NAME;
-        $rule_table_name    = $wpdb->prefix . WL_RULE_TABLE_NAME;
+		$mapping_table_name = $wpdb->prefix . WL_MAPPING_TABLE_NAME;
+		$rule_table_name    = $wpdb->prefix . WL_RULE_TABLE_NAME;
 		$sql                = <<<EOF
         CREATE TABLE $table_name (
                 rule_group_id int(11) NOT NULL AUTO_INCREMENT,
