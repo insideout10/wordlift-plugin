@@ -11,6 +11,13 @@ define( 'WL_WHO_RELATION', 'who' );
 define( 'WL_WHERE_RELATION', 'where' );
 define( 'WL_WHEN_RELATION', 'when' );
 
+/**
+ * Define wl_mapping_table_name
+ *
+ * @since 3.25.0
+ */
+define( 'WL_MAPPING_TABLE_NAME', 'wl_mappings' );
+
 // Mapping options / validations rules used by wl_core_get_posts to perform validation on args
 // The array is serialized because array constants are only from php 5.6 on.
 define( 'WL_CORE_GET_POSTS_VALIDATION_RULES', serialize( array(
