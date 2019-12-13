@@ -3,17 +3,28 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * @since 3.24.0
  */
-
+/**
+ * External dependencies
+ */
 import React from 'react'
-import SelectComponent from './SelectComponent'
 import { connect } from 'react-redux'
 
+/**
+ * Internal dependencies
+ */
+import SelectComponent from './SelectComponent'
 import { ADD_NEW_RULE_ACTION, DELETE_RULE_ACTION, CHANGE_RULE_FIELD_VALUE_ACTION } from '../actions/actions'
 
 class RuleComponent extends React.Component {
     constructor(props) {
         super(props)
     }
+    /**
+     * Adds a new rule after the current rule index
+     * 
+     * @param {Number} ruleGroupIndex Index of the rule group which the rule belongs to
+     * @param {Number} ruleIndex Index of the rule
+     */
     handleAddNewRule = (ruleGroupIndex, ruleIndex)=> {
         const action = ADD_NEW_RULE_ACTION
         action.payload = {
@@ -22,6 +33,12 @@ class RuleComponent extends React.Component {
         }
         this.props.dispatch(action)
     }
+    /**
+     * Delete current rule at ruleIndex
+     * 
+     * @param {Number} ruleGroupIndex Index of the rule group which the rule belongs to
+     * @param {Number} ruleIndex Index of the rule
+     */
     handleDeleteRule = (ruleGroupIndex, ruleIndex)=> {
         const action = DELETE_RULE_ACTION
         action.payload = {
@@ -30,6 +47,12 @@ class RuleComponent extends React.Component {
         }
         this.props.dispatch(action)
     }
+    /**
+     * Saves when a change occur to selection field.
+     * 
+     * @param {Object} event When selection field inside rule changes this event is emiited.
+     * @param {String} fieldKey FieldKey indicates the selection field name
+     */
     handleSelectFieldChange = (event, fieldKey )=> {
         const action = CHANGE_RULE_FIELD_VALUE_ACTION
         action.payload = {

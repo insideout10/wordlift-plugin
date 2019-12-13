@@ -5,8 +5,15 @@
  * @since 3.24.0
  */
 
+/**
+ * External dependencies
+ */
 import React from 'react'
 import PropTypes from 'prop-types';
+
+/**
+ * Internal dependencies
+ */
 import RuleComponent from './RuleComponent';
 import { connect } from 'react-redux'
 

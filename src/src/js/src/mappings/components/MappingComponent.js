@@ -4,7 +4,15 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * @since 3.24.0
  */
+
+/**
+ * External dependencies
+ */
 import React from 'react'
+
+/**
+ * Internal dependencies
+ */
 import MappingListItemComponent from './MappingListItemComponent'
 
  class MappingComponent extends React.Component {

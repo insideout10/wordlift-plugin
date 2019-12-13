@@ -5,9 +5,16 @@
  * @since 3.24.0
  */
 
+/**
+ * External dependencies
+ */
 import React from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
+
+/**
+ * Internal dependencies
+ */
 import SelectComponent from './SelectComponent'
 import { PROPERTY_DATA_CHANGED_ACTION } from '../actions/actions';
 

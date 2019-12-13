@@ -5,10 +5,17 @@
  * @since 3.24.0
  */
 
+/**
+ * External dependencies
+ */
 import React from 'react'
+import { connect } from 'react-redux'
+
+/**
+ * Internal dependencies
+ */
 import RuleGroupListComponent from './RuleGroupListComponent'
 import PropertyListComponent from './PropertyListComponent'
-import { connect } from 'react-redux'
 import { TITLE_CHANGED_ACTION } from '../actions/actions'
 
  class EditComponent extends React.Component {
@@ -16,6 +23,10 @@ import { TITLE_CHANGED_ACTION } from '../actions/actions'
     constructor(props) {
         super(props)
     }
+    /**
+     * When the title is changed, this method saves it in the redux store.
+     * @param {Object} event The event which is fired when mapping title changes
+     */
     handleTitleChange = (event)=> {
         const action = TITLE_CHANGED_ACTION
         action.payload = {
@@ -75,7 +86,6 @@ import { TITLE_CHANGED_ACTION } from '../actions/actions'
                     <div className="wl-col wl-align-right">
                         <button className="button action"> Save </button>
                     </div>
-
                 </div>
             </React.Fragment>
         )

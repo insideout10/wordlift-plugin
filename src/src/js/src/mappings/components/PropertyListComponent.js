@@ -5,12 +5,20 @@
  * @since 3.24.0
  */
 
+/**
+ * External dependencies
+ */
 import React from 'react'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
+
+/**
+ * Internal dependencies
+ */
 import PropertyComponent from './PropertyComponent';
 import PropertyListItemComponent from './PropertyListItemComponent';
-import { connect } from 'react-redux'
 import { OPEN_OR_CLOSE_PROPERTY_ACTION, ADD_MAPPING_ACTION } from '../actions/actions';
+
 
 class PropertyListComponent extends React.Component {
     constructor(props){
@@ -32,6 +40,12 @@ class PropertyListComponent extends React.Component {
     handleAddMappingClick = ()=> {
         this.props.dispatch( ADD_MAPPING_ACTION )
     }
+    /**
+     * It Renders depends on the isOpenedOrAddedByUser boolean present
+     * in the property object.
+     * @param {Object} property A single property present in property list
+     * @param {Number} index Index of the property in property list
+     */
     renderListComponentBasedOnState = (property, index)=> {
         if (property.isOpenedOrAddedByUser) {
             return (
@@ -70,21 +84,20 @@ class PropertyListComponent extends React.Component {
                         <tbody>
                   
                         {
-
                             this.props.propertyList.map((property, index) => {
 
                                 return (
                                     <tr className="wl-property-list-item-container">
                                             <td className="wl-check-column">
-                                            <input type="checkbox" />
+                                                <input type="checkbox" />
                                             </td>
                                             <td>
                                                 { 
                                                     this.renderListComponentBasedOnState(property, index)
                                                 }
                                             </td>
-                                            <td />
-                                        </tr>
+                                        <td />
+                                    </tr>
                                 )
                             })
                         }   
@@ -96,7 +109,7 @@ class PropertyListComponent extends React.Component {
                                 className="button action bg-primary text-white wl-add-mapping"
                                 style={{margin: 'auto'}}
                                 onClick={this.handleAddMappingClick}>
-                                Add Mapping
+                                    Add Mapping
                                 </button> <br />
                             </td>
                         </tr>

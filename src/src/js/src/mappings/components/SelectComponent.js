@@ -5,8 +5,15 @@
  * @since 3.24.0
  */
 
+/**
+ * External dependencies
+ */
 import React from 'react'
 import { connect } from 'react-redux'
+
+/**
+ * Internal dependencies
+ */
 import { CHANGE_RULE_FIELD_VALUE_ACTION } from '../actions/actions'
 
 class SelectComponent extends React.Component {

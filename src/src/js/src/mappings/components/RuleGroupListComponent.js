@@ -6,11 +6,17 @@
  * @since 3.24.0
  */
 
-
+/**
+ * External dependencies
+ */
 import React from 'react'
 import PropTypes from 'prop-types';
-import RuleGroupComponent from './RuleGroupComponent';
 import { connect } from 'react-redux'
+
+/**
+ * Internal dependencies
+ */
+import RuleGroupComponent from './RuleGroupComponent';
 import { ADD_NEW_RULE_GROUP_ACTION } from '../actions/actions'
 
 class RuleGroupListComponent extends React.Component {
