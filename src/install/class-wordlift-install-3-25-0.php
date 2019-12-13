@@ -7,6 +7,9 @@
  * @subpackage Wordlift/install
  */
 
+// @see: https://codex.wordpress.org/Creating_Tables_with_Plugins
+require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+
 /**
  * Define the {@link Wordlift_Install_3_25_0} interface.
  *
@@ -34,7 +37,7 @@ class Wordlift_Install_3_25_0 extends Wordlift_Install {
 	 *
 	 * @return void
 	 */
-	private function create_mappings_table() {
+	public static function create_mappings_table() {
 		global $wpdb;
 		$table_name      = $wpdb->prefix . WL_MAPPING_TABLE_NAME;
 		$charset_collate = $wpdb->get_charset_collate();
@@ -45,6 +48,8 @@ class Wordlift_Install_3_25_0 extends Wordlift_Install {
                 PRIMARY KEY (mapping_id)
         ) $charset_collate;
 EOF;
+		// Execute the query for mappings table.
+		dbDelta( $sql );
 	}
 	// TODO: need to obtain field names for rule table.
 	/**
