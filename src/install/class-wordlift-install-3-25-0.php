@@ -43,9 +43,9 @@ class Wordlift_Install_3_25_0 extends Wordlift_Install {
 		$charset_collate = $wpdb->get_charset_collate();
 		$sql             = <<<EOF
         CREATE TABLE $table_name (
-                mapping_id int(11) NOT NULL AUTO_INCREMENT,
-                title varchar(255) NOT NULL,
-                PRIMARY KEY (mapping_id)
+			mapping_id INT(11) NOT NULL AUTO_INCREMENT, 
+			title VARCHAR(255) NOT NULL, 
+			PRIMARY KEY  (mapping_id)
         ) $charset_collate;
 EOF;
 		// Execute the query for mappings table.
