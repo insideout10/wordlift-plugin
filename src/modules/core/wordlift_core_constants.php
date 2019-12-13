@@ -16,7 +16,21 @@ define( 'WL_WHEN_RELATION', 'when' );
  *
  * @since 3.25.0
  */
-define( 'WL_MAPPING_TABLE_NAME', 'wl_mappings' );
+define( 'WL_MAPPING_TABLE_NAME', 'wl_mapping' );
+
+/**
+ * Define wl_rule_group_table_name
+ *
+ * @since 3.25.0
+ */
+define( 'WL_RULE_GROUP_TABLE_NAME', 'wl_rule_group' );
+
+/**
+ * Define wl_rule_table_name
+ *
+ * @since 3.25.0
+ */
+define( 'WL_RULE_TABLE_NAME', 'wl_rule_table' );
 
 // Mapping options / validations rules used by wl_core_get_posts to perform validation on args
 // The array is serialized because array constants are only from php 5.6 on.
