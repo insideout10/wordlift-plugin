@@ -101,8 +101,9 @@ EOF;
                 ON DELETE CASCADE
         ) $charset_collate;
 EOF;
-		// Execute the query for rule group table.
-		dbDelta( $sql );
+		// Execute the query for rule group table, we cant use db delta
+		// due to lack of support for foreign keys
+		$wpdb->query( $sql );
 	}
 
 
