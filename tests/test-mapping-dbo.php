@@ -50,6 +50,7 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 		$this->assertEquals( 1, $count );
 	}
 
+	/** When mapping item is given can update the item.*/
 	public function test_given_mapping_id_and_title_update_mapping_item() {
 		$mapping_id = $this->dbo_instance->insert_mapping_item( "foo title" );
 		$mapping_table_name = WL_MAPPING_TABLE_NAME;
@@ -58,6 +59,32 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 		// Count all titles with string foo, it should be 1.
 		$count = $this->wpdb->get_var( "SELECT COUNT(mapping_id) as total FROM {$this->wpdb->prefix}$mapping_table_name WHERE mapping_title='foo'" );
 		$this->assertEquals( 1, $count );
+	}
+
+	/** When rule item is given should insert it to db.*/
+	public function test_given_rule_fields_should_insert_rule() {
+		$rule_table_name = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
+		$this->dbo_instance->insert_rule_item( 'foo', '>', 'bar' );
+		// we have inserted a rule item, so count should be 1.
+		$count = $this->wpdb->get_var( "SELECT COUNT(rule_id) as total FROM $rule_table_name" );
+		$this->assertEquals( 1, $count );
+	}
+
+
+	/** When rule id is given should update it in db. */
+	public function test_given_rule_id_should_update_rule() {
+		$rule_table_name = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
+		$rule_id         = $this->dbo_instance->insert_rule_item( 'foo', '>', 'bar' );
+		$this->dbo_instance->update_rule_item(
+			array(
+				'rule_field_one' => 'bar',
+				'rule_id'        => $rule_id,
+			)
+		);
+		// Count all rule field one with value bar.
+		$count = $this->wpdb->get_var( "SELECT COUNT(rule_field_one) as total FROM $rule_table_name WHERE rule_field_one='bar'" );
+		$this->assertEquals( 1, $count );
+
 	}
 
 }

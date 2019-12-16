@@ -68,7 +68,10 @@ EOF;
 		$charset_collate = $wpdb->get_charset_collate();
 		$sql             = <<<EOF
         CREATE TABLE $table_name (
-                rule_id INT(11) NOT NULL AUTO_INCREMENT,
+				rule_id INT(11) NOT NULL AUTO_INCREMENT,
+				rule_field_one VARCHAR(255) NOT NULL,
+				rule_logic_field VARCHAR(255) NOT NULL,
+				rule_field_two VARCHAR(255) NOT NULL,
                 PRIMARY KEY (rule_id)
         ) $charset_collate;
 EOF;
