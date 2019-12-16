@@ -1,0 +1,51 @@
+{
+    "mapping_id": 2,
+    "mapping_title": "foo",
+    "property_list": [
+        {
+			"property_help_text":"foo",
+			"field_type_help_text":"bar",
+			"field_help_text":"foo",
+            "transform_help_text":"foo",
+            "property_id": 1
+        },
+        {
+			"property_help_text":"foo",
+			"field_type_help_text":"bar",
+			"field_help_text":"foo",
+            "transform_help_text":"foo",
+        }
+    ],
+    "rule_group_list": [
+
+        {
+            "rule_group_id": 1,
+            "rules": [
+                {
+                    "rule_field_one": "foo",
+                    "rule_field_two": "bar",
+                    "rule_logic_field": ">",
+                },
+                {
+                    "rule_field_one": "foo",
+                    "rule_field_two": "bar",
+                    "rule_logic_field": "!=",
+                }
+            ]   
+        },
+        {
+            "rules": [
+                {
+                    "rule_field_one": "foo",
+                    "rule_field_two": "bar",
+                    "rule_logic_field": ">",
+                },
+                {
+                    "rule_field_one": "foo",
+                    "rule_field_two": "bar",
+                    "rule_logic_field": "!=",
+                }
+            ]   
+        }
+    ]
+}
