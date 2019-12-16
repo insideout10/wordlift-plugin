@@ -27,7 +27,9 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 	 * @inheritdoc
 	 */
 	public function setUp() {
-		parent::setUp();	
+		parent::setUp();
+		global $wpdb;
+		$this->wpdb         = $wpdb;
 		$this->dbo_instance = new Wordlift_Mapping_DBO();
 	}
 
@@ -37,6 +39,25 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 	 */
 	public function test_instance_not_null() {
 		$this->assertNotNull( $this->dbo_instance );
+	}
+
+	/** When mapping item is given can insert the item */
+	public function test_given_mapping_title_can_insert_mapping_item() {
+		$this->dbo_instance->insert_mapping_item( 'some title' );
+		$mapping_table_name = WL_MAPPING_TABLE_NAME;
+		// we have inserted a mapping item, so count should be 1.
+		$count = $this->wpdb->get_var( "SELECT COUNT(mapping_id) as total FROM {$this->wpdb->prefix}$mapping_table_name" );
+		$this->assertEquals( 1, $count );
+	}
+
+	public function test_given_mapping_id_and_title_update_mapping_item() {
+		$mapping_id = $this->dbo_instance->insert_mapping_item( "foo title" );
+		$mapping_table_name = WL_MAPPING_TABLE_NAME;
+		// Update this title.
+		$this->dbo_instance->update_mapping_item( $mapping_id, "foo" );
+		// Count all titles with string foo, it should be 1.
+		$count = $this->wpdb->get_var( "SELECT COUNT(mapping_id) as total FROM {$this->wpdb->prefix}$mapping_table_name WHERE mapping_title='foo'" );
+		$this->assertEquals( 1, $count );
 	}
 
 }
