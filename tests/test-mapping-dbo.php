@@ -64,27 +64,37 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 	/** When rule item is given should insert it to db.*/
 	public function test_given_rule_fields_should_insert_rule() {
 		$rule_table_name = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
-		$this->dbo_instance->insert_rule_item( 'foo', '>', 'bar' );
+		$rule_group_table_name = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
+		$mapping_id = $this->dbo_instance->insert_mapping_item( "foo title" );
+		$this->dbo_instance->insert_rule_item( $mapping_id, 'foo', '>', 'bar' );
 		// we have inserted a rule item, so count should be 1.
 		$count = $this->wpdb->get_var( "SELECT COUNT(rule_id) as total FROM $rule_table_name" );
 		$this->assertEquals( 1, $count );
+		// When inserting/updating rule, there should be row created at rule group table.
+		$rule_group_count = $this->wpdb->get_var( "SELECT COUNT(rule_id) as total FROM $rule_group_table_name" );
+		$this->assertEquals( 1, $rule_group_count );		
 	}
 
 
 	/** When rule id is given should update it in db. */
 	public function test_given_rule_id_should_update_rule() {
 		$rule_table_name = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
-		$rule_id         = $this->dbo_instance->insert_rule_item( 'foo', '>', 'bar' );
+		$mapping_id = $this->dbo_instance->insert_mapping_item( "foo title" );
+		$rule_id         = $this->dbo_instance->insert_rule_item( $mapping_id, 'foo', '>', 'bar' );
 		$this->dbo_instance->update_rule_item(
 			array(
 				'rule_field_one' => 'bar',
 				'rule_id'        => $rule_id,
+				'mapping_id'     => $mapping_id,
 			)
 		);
 		// Count all rule field one with value bar.
 		$count = $this->wpdb->get_var( "SELECT COUNT(rule_field_one) as total FROM $rule_table_name WHERE rule_field_one='bar'" );
 		$this->assertEquals( 1, $count );
-
+		$rule_group_table_name = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
+		// When inserting/updating rule, there should be row created at rule group table.
+		$rule_group_count = $this->wpdb->get_var( "SELECT COUNT(rule_id) as total FROM $rule_group_table_name" );
+		$this->assertEquals( 1, $rule_group_count );
 	}
 
 }
