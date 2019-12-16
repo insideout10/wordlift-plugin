@@ -7,8 +7,6 @@
  * @subpackage Wordlift/includes/sync-mappings
  */
 class Wordlift_Mapping_REST_Controller {
-	/** Namespace for wordlift plugin */
-	const WORDLIFT_NAMESPACE = 'wordlift/v1';
 	/**
 	 * Registers route on rest api initialisation.
 	 */
@@ -23,7 +21,7 @@ class Wordlift_Mapping_REST_Controller {
 	 */
 	public static function register_route_callback() {
 		register_rest_route(
-			self::WORDLIFT_NAMESPACE,
+			WL_REST_ROUTE_DEFAULT_NAMESPACE,
 			'/sync-mappings/mapping',
 			array(
 				'methods'             => WP_REST_Server::CREATABLE,

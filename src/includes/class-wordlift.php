@@ -1039,6 +1039,7 @@ class Wordlift {
 
 		/** Sync Mappings */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/sync-mappings/class-wordlift-mapping-rest-controller.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/sync-mappings/class-wordlift-mapping-dbo.php';
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */

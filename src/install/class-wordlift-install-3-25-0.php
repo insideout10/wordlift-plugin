@@ -27,7 +27,9 @@ class Wordlift_Install_3_25_0 extends Wordlift_Install {
 	 * @inheritdoc
 	 */
 	public function install() {
-
+		self::create_mappings_table();
+		self::create_rule_table();
+		self::create_rule_group_table();
 	}
 
 	/**
@@ -106,7 +108,12 @@ EOF;
 		$wpdb->query( $sql );
 	}
 
-
+	/**
+	 * @inheritdoc
+	 */
+	public function must_install() {
+		return true;
+	}
 
 
 }
