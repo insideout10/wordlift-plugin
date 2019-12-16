@@ -98,14 +98,10 @@ EOF;
 		$rule_table_name    = $wpdb->prefix . WL_RULE_TABLE_NAME;
 		$sql                = <<<EOF
         CREATE TABLE $table_name (
-				rule_group_index INT(11) NOT NULL AUTOINCREMENT,
-                rule_group_id INT(11) NOT NULL,
+                rule_group_id INT(11) NOT NULL AUTOINCREMENT,
                 mapping_id INT(11) NOT NULL,
-                rule_id INT(11) NOT NULL,
-                PRIMARY KEY  (rule_group_index),
+                PRIMARY KEY  (rule_group_id),
                 FOREIGN KEY (mapping_id) REFERENCES $mapping_table_name(mapping_id)
-                ON DELETE CASCADE,
-                FOREIGN KEY (rule_id) REFERENCES $rule_table_name(rule_id)
                 ON DELETE CASCADE
         ) $charset_collate;
 EOF;

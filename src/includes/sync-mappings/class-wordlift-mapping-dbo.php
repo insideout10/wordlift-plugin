@@ -97,7 +97,6 @@ final class Wordlift_Mapping_DBO {
 			(int) $rule_item_data['rule_id']
 		);
 	}
-
 	/**
 	 * If a rule group exists doesn't do anything, but if rule group
 	 * didn't exist then it inserts a new entry.
