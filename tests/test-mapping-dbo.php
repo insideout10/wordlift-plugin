@@ -112,4 +112,35 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 		$this->assertEquals( 0, $rule_group_count );
 	}
 
+	/** Able to insert property */
+	public function test_given_property_should_insert_property() {
+		$property_table_name = $this->wpdb->prefix . WL_PROPERTY_TABLE_NAME;
+		$property_data       = array(
+			'property_help_text'   => 'foo',
+			'field_type_help_text' => 'bar',
+			'field_help_text'      => 'foo',
+			'transform_help_text'  => 'foo',
+		);
+		$mapping_id          = $this->dbo_instance->insert_mapping_item( "foo title" );
+		$this->dbo_instance->insert_or_update_property( $mapping_id, $property_data );
+		$property_table_count = $this->wpdb->get_var( "SELECT COUNT(mapping_id) as total FROM $property_table_name" );
+		$this->assertEquals( 1, $property_table_count );
+	}
+
+	/** Able to delete property */
+	public function test_given_property_id_should_delete_property() {
+		$property_table_name = $this->wpdb->prefix . WL_PROPERTY_TABLE_NAME;
+		$property_data       = array(
+			'property_help_text'   => 'foo',
+			'field_type_help_text' => 'bar',
+			'field_help_text'      => 'foo',
+			'transform_help_text'  => 'foo',
+		);
+		$mapping_id          = $this->dbo_instance->insert_mapping_item( "foo title" );
+		$property_id         = $this->dbo_instance->insert_or_update_property( $mapping_id, $property_data );		
+		$this->dbo_instance->delete_property( $property_id );
+		$property_table_count = $this->wpdb->get_var( "SELECT COUNT(mapping_id) as total FROM $property_table_name" );
+		$this->assertEquals( 0, $property_table_count );
+	}
+
 }

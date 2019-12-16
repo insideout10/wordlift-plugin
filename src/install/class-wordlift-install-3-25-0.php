@@ -30,6 +30,7 @@ class Wordlift_Install_3_25_0 extends Wordlift_Install {
 		self::create_mappings_table();
 		self::create_rule_table();
 		self::create_rule_group_table();
+		self::create_property_table();
 	}
 
 	/**
@@ -53,7 +54,8 @@ EOF;
 		// Execute the query for mappings table.
 		dbDelta( $sql );
 	}
-	// TODO: need to obtain field names for rule table.
+
+
 	/**
 	 * Install rule table
 	 *
@@ -103,6 +105,39 @@ EOF;
                 FOREIGN KEY (mapping_id) REFERENCES $mapping_table_name(mapping_id)
                 ON DELETE CASCADE,
                 FOREIGN KEY (rule_id) REFERENCES $rule_table_name(rule_id)
+                ON DELETE CASCADE
+        ) $charset_collate;
+EOF;
+		// Execute the query for rule group table, we cant use db delta
+		// due to lack of support for foreign keys.
+		$wpdb->query( $sql );
+	}
+
+
+	/**
+	 * Install property table, should run afer mapping table due to
+	 * foreign key reference.
+	 *
+	 * @since 3.25.0
+	 *
+	 * @return void
+	 */
+	public static function create_property_table() {
+		global $wpdb;
+		$table_name      = $wpdb->prefix . WL_PROPERTY_TABLE_NAME;
+		$charset_collate = $wpdb->get_charset_collate();
+
+		$mapping_table_name = $wpdb->prefix . WL_MAPPING_TABLE_NAME;
+		$sql                = <<<EOF
+        CREATE TABLE $table_name (
+                property_id INT(11) NOT NULL AUTO_INCREMENT,
+                mapping_id INT(11) NOT NULL,
+				property_help_text VARCHAR(255) NOT NULL,
+				field_type_help_text VARCHAR(255) NOT NULL,
+				field_help_text VARCHAR(255) NOT NULL,
+				transform_help_text VARCHAR(255) NOT NULL,
+                PRIMARY KEY  (property_id),
+                FOREIGN KEY (mapping_id) REFERENCES $mapping_table_name(mapping_id)
                 ON DELETE CASCADE
         ) $charset_collate;
 EOF;

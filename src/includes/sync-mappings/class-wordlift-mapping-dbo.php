@@ -138,11 +138,35 @@ final class Wordlift_Mapping_DBO {
 	 * @param Int $rule_id Primary key for rule table.
 	 */
 	public function delete_rule_item( $rule_id ) {
-		$rule_table_name = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
+		$rule_table_name       = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
 		$rule_group_table_name = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
 		// Delete from both tables.
 		$this->wpdb->delete( $rule_table_name, array( 'rule_id' => $rule_id ) );
 		$this->wpdb->delete( $rule_group_table_name, array( 'rule_id' => $rule_id ) );
+	}
+
+	/**
+	 * Insert/Update property item.
+	 *
+	 * @param Int   $mapping_id Primary key for mapping table.
+	 *
+	 * @param Array $propery_data Property row from table/ui.
+	 */
+	public function insert_or_update_property( $mapping_id, $propery_data ) {
+		$property_table_name        = $this->wpdb->prefix . WL_PROPERTY_TABLE_NAME;
+		$propery_data['mapping_id'] = $mapping_id;
+		$this->wpdb->replace( $property_table_name, $propery_data );
+		return $this->wpdb->insert_id;
+	}
+
+	/**
+	 * Delete property item.
+	 *
+	 * @param Int $property_id Primary key for property table.
+	 */
+	public function delete_property( $property_id ) {
+		$property_table_name = $this->wpdb->prefix . WL_PROPERTY_TABLE_NAME;		
+		return $this->wpdb->delete( $property_table_name, array( 'property_id' => $property_id ) );
 	}
 
 }
