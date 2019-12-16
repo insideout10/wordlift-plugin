@@ -97,4 +97,19 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 		$this->assertEquals( 1, $rule_group_count );
 	}
 
+	/** Delete a rule along with its rule group entry */
+	public function test_able_to_delete_rule_item() {
+		$rule_table_name = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
+		$mapping_id      = $this->dbo_instance->insert_mapping_item( "foo title" );
+		$rule_id         = $this->dbo_instance->insert_rule_item( $mapping_id, 'foo', '>', 'bar' );		
+		$this->dbo_instance->delete_rule_item( $rule_id );
+		// The item should be deleted from rule table.
+		$rule_table_count = $this->wpdb->get_var( "SELECT COUNT(rule_field_one) as total FROM $rule_table_name" );
+		$this->assertEquals( 0, $rule_table_count );
+		// The item is deleted from rule group table.
+		$rule_group_table_name = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
+		$rule_group_count = $this->wpdb->get_var( "SELECT COUNT(rule_id) as total FROM $rule_group_table_name" );
+		$this->assertEquals( 0, $rule_group_count );
+	}
+
 }

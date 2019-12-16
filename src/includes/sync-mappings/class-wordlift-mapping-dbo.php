@@ -132,4 +132,17 @@ final class Wordlift_Mapping_DBO {
 		}
 	}
 
+	/**
+	 * Deletes a rule item by rule_id from rule and rule group table.
+	 *
+	 * @param Int $rule_id Primary key for rule table.
+	 */
+	public function delete_rule_item( $rule_id ) {
+		$rule_table_name = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
+		$rule_group_table_name = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
+		// Delete from both tables.
+		$this->wpdb->delete( $rule_table_name, array( 'rule_id' => $rule_id ) );
+		$this->wpdb->delete( $rule_group_table_name, array( 'rule_id' => $rule_id ) );
+	}
+
 }
