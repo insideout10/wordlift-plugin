@@ -26,16 +26,21 @@ class Wordlift_Mapping_REST_Controller {
 			self::WORDLIFT_NAMESPACE,
 			'/sync-mappings/mapping',
 			array(
-				'methods'  => WP_REST_Server::CREATABLE,
-				'callback' => 'Wordlift_Mapping_REST_Controller::insert_or_update_mapping_item',
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => 'Wordlift_Mapping_REST_Controller::insert_or_update_mapping_item',
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
 			)
 		);
 	}
 
 	/**
 	 * Insert or update mapping item depends on data
+	 *
+	 * @param Array $data Data containing all the post data.
 	 */
-	public static function insert_or_update_mapping_item() {
+	public static function insert_or_update_mapping_item( $data ) {
 
 	}
 }

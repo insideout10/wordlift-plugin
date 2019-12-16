@@ -62,6 +62,10 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 	 * Test post mapping item to rest api endpoint returns 200 status code.
 	 */
 	public function test_post_to_insert_mapping_item_endpoint_returns_200() {
+		// Only roles with manage_options permission can post to the url.
+		$user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
+		$user    = wp_set_current_user( $user_id );
+
 		$request  = new WP_REST_Request( 'POST', $this->mapping_route );
 		$response = $this->server->dispatch( $request );
 		$this->assertEquals( 200, $response->get_status() );
