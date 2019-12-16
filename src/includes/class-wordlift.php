@@ -1037,6 +1037,8 @@ class Wordlift {
 		/** Analytics */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/analytics/class-wordlift-analytics-connect.php';
 
+		/** Sync Mappings */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/sync-mappings/class-wordlift-mapping-rest-controller.php';
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
