@@ -66,14 +66,17 @@ EOF;
 	 */
 	public static function create_rule_table() {
 		global $wpdb;
-		$table_name      = $wpdb->prefix . WL_RULE_TABLE_NAME;
-		$charset_collate = $wpdb->get_charset_collate();
-		$sql             = <<<EOF
+		$table_name            = $wpdb->prefix . WL_RULE_TABLE_NAME;
+		$rule_group_table_name = $wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
+		$charset_collate       = $wpdb->get_charset_collate();
+		$sql                   = <<<EOF
         CREATE TABLE $table_name (
 				rule_id INT(11) NOT NULL AUTO_INCREMENT,
 				rule_field_one VARCHAR(255) NOT NULL,
 				rule_logic_field VARCHAR(255) NOT NULL,
 				rule_field_two VARCHAR(255) NOT NULL,
+				rule_group_id INT(11) NOT NULL,
+				FOREIGN KEY (rule_group_id) REFERENCES $rule_group_table_name(rule_group_id)
                 PRIMARY KEY (rule_id)
         ) $charset_collate;
 EOF;
