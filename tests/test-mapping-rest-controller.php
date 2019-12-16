@@ -87,10 +87,16 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 		// We are now going to assert against database to
 		// to check if everything is correctly saved.
 		global $wpdb;
-		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
+		$mapping_table_name = $wpdb->prefix . WL_MAPPING_TABLE_NAME;
 
 		// 1 mapping item is posted, even though it is not in db, it should be saved
-		$mapping_row_count = $this->wpdb->get_var( "SELECT COUNT(mapping_id) as total FROM $mapping_table_name" );
+		$mapping_row_count = $wpdb->get_var( "SELECT COUNT(mapping_id) as total FROM $mapping_table_name" );
 		$this->assertEquals( 1, $mapping_row_count );
+
+		$rule_group_table_name = $wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
+		// 2 rule groups posted along with 4 rules, see assets/fake_sync_mappings_create_edit_item.json
+		// for more details, so we need to have 2 rule groups and 4 rules
+		$rule_group_count = $wpdb->get_var( "SELECT COUNT(DISTINCT rule_group_id) as total FROM $rule_group_table_name" );
+		$this->assertEquals( 2, $rule_group_count );
 	}
 }

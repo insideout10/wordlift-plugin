@@ -43,17 +43,14 @@ final class Wordlift_Mapping_DBO {
 	 *
 	 * @param Int    $mapping_id Primary key for mapping table.
 	 *
-	 * @param String $title Title of the mapping item.
+	 * @param String $mapping_data Array of the mapping data.
 	 */
-	public function update_mapping_item( $mapping_id, $title ) {
+	public function insert_or_update_mapping_item( $mapping_data ) {
 		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
-		$this->wpdb->replace( 
+		$this->wpdb->replace(
 			$mapping_table_name,
-			array(
-				'mapping_title' => $title,
-				'mapping_id'    => $mapping_id,
-			)
-		);	
+			$mapping_data
+		);
 	}
 
 	/**

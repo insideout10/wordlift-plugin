@@ -36,18 +36,43 @@ class Wordlift_Mapping_REST_Controller {
 	/**
 	 * Insert or update mapping item depends on data
 	 *
+	 * @param Int   $mapping_id Primary key of mapping table.
+	 * @param Array $rule_group_list { Array of rule group items }.
+	 */
+	private static function save_rule_group_list( $mapping_id, $rule_group_list ) {
+		// Loop through rule group list and save the rule group.
+		foreach ( $rule_group_list as $rule_group ) {
+			if ( array_key_exists( 'rule_group_id', $rule_group ) ) {
+				
+			}
+			else {
+				// new rule group, should create new rule group id
+			}
+		}
+	}
+
+	/**
+	 * Insert or update mapping item depends on data
+	 *
 	 * @param WP_REST_Request $request {@link WP_REST_Request instance}.
 	 */
 	public static function insert_or_update_mapping_item( $request ) {
-		$post_data   = $request->get_post_params();
+		$post_data   = $request->get_body_params();
 		$mapping_dbo = new Wordlift_Mapping_DBO();
-		// Do validation, remove all incomplete data.
-		$mapping_item = array();
-		if ( array_key_exists( 'mapping_id', $post_data ) ) {
-			$mapping_item['mapping_id'] = $post_data['mapping_id'];
+
+		// check if valid object is posted.
+		if ( array_key_exists( 'mapping_title', $post_data ) &&
+			array_key_exists( 'rule_group_list' ) &&
+			array_key_exists( 'property_list' ) ) {
+			// Do validation, remove all incomplete data.
+			$mapping_item = array();
+			if ( array_key_exists( 'mapping_id', $post_data ) ) {
+				$mapping_item['mapping_id'] = $post_data['mapping_id'];
+			}
+			$mapping_item['mapping_title'] = $post_data['mapping_title'];
+			// lets save the mapping item.
+			$mapping_id = $mapping_dbo->insert_or_update_mapping_item( $mapping_item );
+			self::save_rule_group_list( $mapping_id, $post_data['rule_group_list'] );
 		}
-		$mapping_item['title'] = $post_data['mapping_title'];
-		// lets save the mapping item.
-		$mapping_dbo->insert_or_update_mapping_item()
 	}
 }
