@@ -36,9 +36,18 @@ class Wordlift_Mapping_REST_Controller {
 	/**
 	 * Insert or update mapping item depends on data
 	 *
-	 * @param Array $data Data containing all the post data.
+	 * @param WP_REST_Request $request {@link WP_REST_Request instance}.
 	 */
-	public static function insert_or_update_mapping_item( $data ) {
-
+	public static function insert_or_update_mapping_item( $request ) {
+		$post_data   = $request->get_post_params();
+		$mapping_dbo = new Wordlift_Mapping_DBO();
+		// Do validation, remove all incomplete data.
+		$mapping_item = array();
+		if ( array_key_exists( 'mapping_id', $post_data ) ) {
+			$mapping_item['mapping_id'] = $post_data['mapping_id'];
+		}
+		$mapping_item['title'] = $post_data['mapping_title'];
+		// lets save the mapping item.
+		$mapping_dbo->insert_or_update_mapping_item()
 	}
 }

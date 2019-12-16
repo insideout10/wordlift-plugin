@@ -70,4 +70,27 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 		$response = $this->server->dispatch( $request );
 		$this->assertEquals( 200, $response->get_status() );
 	}
+
+	/**
+	 * Test posting fake json data, should save properly
+	 */
+	public function test_post_fake_json_to_insert_mapping_item_endpoint() {
+		// Only roles with manage_options permission can post to the url.
+		$user_id   = $this->factory->user->create( array( 'role' => 'administrator' ) );
+		$user      = wp_set_current_user( $user_id );		
+		$json_data = file_get_contents( __DIR__ . '/assets/fake_sync_mappings_create_edit_item.json' );
+		$post_array = json_decode( $json_data, true );
+		$request   = new WP_REST_Request( 'POST', $this->mapping_route );
+		$request->set_body_params( $post_array );
+		$response  = $this->server->dispatch( $request );
+
+		// We are now going to assert against database to
+		// to check if everything is correctly saved.
+		global $wpdb;
+		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
+
+		// 1 mapping item is posted, even though it is not in db, it should be saved
+		$mapping_row_count = $this->wpdb->get_var( "SELECT COUNT(mapping_id) as total FROM $mapping_table_name" );
+		$this->assertEquals( 1, $mapping_row_count );
+	}
 }
