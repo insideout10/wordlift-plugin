@@ -90,11 +90,11 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 		$mapping_table_name = $wpdb->prefix . WL_MAPPING_TABLE_NAME;
 		$rule_group_table_name = $wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
 		$rule_table_name = $wpdb->prefix . WL_RULE_TABLE_NAME;
+		$property_table_name = $wpdb->prefix . WL_PROPERTY_TABLE_NAME;
 		// 1 mapping item is posted, even though it is not in db, it should be saved
 		$mapping_row_count = $wpdb->get_var( "SELECT COUNT(mapping_id) as total FROM $mapping_table_name" );
 		$this->assertEquals( 1, $mapping_row_count );
 
-		
 		// 2 rule groups posted without rule group id, see assets/fake_sync_mappings_create_edit_item.json
 		// for more details,
 		$rule_group_count = $wpdb->get_var( "SELECT COUNT(DISTINCT rule_group_id) as total FROM $rule_group_table_name" );
@@ -102,6 +102,10 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 
 		// 4 rules posted, so checking if 4 rules are saved
 		$rule_count = $wpdb->get_var( "SELECT COUNT(DISTINCT rule_id) as total FROM $rule_table_name" );
-		$this->assertEquals( 4, $rule_count );		
+		$this->assertEquals( 4, $rule_count );
+
+		// 2 properties posted, so expect 2 properties in database.
+		$property_count = $wpdb->get_var( "SELECT COUNT(property_id) as total FROM $property_table_name" );
+		$this->assertEquals( 2, $property_count );
 	}
 }

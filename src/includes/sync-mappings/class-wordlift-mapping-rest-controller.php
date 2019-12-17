@@ -53,7 +53,20 @@ class Wordlift_Mapping_REST_Controller {
 	}
 
 	/**
-	 * Insert or update mapping item depends on data
+	 * Insert or update rule group list based on data
+	 *
+	 * @param Object $dbo Instance of {@link Wordlift_Mapping_DBO } class.
+	 * @param Int    $mapping_id Primary key of mapping table.
+	 * @param Array  $property_list { Array of property items }.
+	 * @return void
+	 */
+	private static function save_property_list( $dbo, $mapping_id, $property_list ) {
+		foreach ( $property_list as $property ) {
+			$dbo->insert_or_update_property( $mapping_id, $property );
+		}
+	}
+	/**
+	 * Insert or update rule group list
 	 *
 	 * @param Object $dbo Instance of {@link Wordlift_Mapping_DBO } class.
 	 * @param Int    $mapping_id Primary key of mapping table.
@@ -96,6 +109,7 @@ class Wordlift_Mapping_REST_Controller {
 			// lets save the mapping item.
 			$mapping_id = $dbo->insert_or_update_mapping_item( $mapping_item );
 			self::save_rule_group_list( $dbo, $mapping_id, $post_data['rule_group_list'] );
+			self::save_property_list( $dbo, $mapping_id, $post_data['property_list'] );
 		}
 	}
 }
