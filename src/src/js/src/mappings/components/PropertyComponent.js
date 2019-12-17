@@ -21,7 +21,6 @@ import { PROPERTY_DATA_CHANGED_ACTION } from '../actions/actions';
  class PropertyComponent extends React.Component {
      constructor (props) {
          super(props)
-         console.log(props)
      }
      /**
       * When a property item changes this method gets fired

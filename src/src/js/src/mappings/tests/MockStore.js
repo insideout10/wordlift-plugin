@@ -35,6 +35,13 @@ export const MOCK_INITIAL_STATE = {
                 fieldHelpText: "",
                 transformHelpText: ""
             },
+            {
+                isOpenedOrAddedByUser: true,
+                propertyHelpText:"foo",
+                fieldTypeHelpText: "",
+                fieldHelpText: "",
+                transformHelpText: ""
+            },
         ]
     }
 }
