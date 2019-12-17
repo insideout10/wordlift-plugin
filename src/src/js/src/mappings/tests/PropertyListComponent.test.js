@@ -17,14 +17,6 @@ import {createStore } from 'redux'
 import {Provider} from 'react-redux'
 import {MOCK_INITIAL_STATE, mock_reducers } from './MockStore'
 
-const mock_property_list_with_item_open = [{
-    isOpenedOrAddedByUser: true,
-    propertyHelpText:"foo",
-    fieldTypeHelpText: "field type",
-    fieldHelpText: "field help text",
-    transformHelpText: "transform help text"
-}]
-
 
 var MOCK_STORE  = null
 var component = null
