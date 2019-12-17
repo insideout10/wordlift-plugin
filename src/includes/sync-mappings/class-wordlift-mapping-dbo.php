@@ -82,7 +82,7 @@ final class Wordlift_Mapping_DBO {
 				'mapping_id' => $mapping_id,
 			)
 		);
-
+		return $this->wpdb->insert_id;
 	}
 
 	/**
@@ -92,10 +92,7 @@ final class Wordlift_Mapping_DBO {
 	 */
 	public function delete_rule_item( $rule_id ) {
 		$rule_table_name       = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
-		$rule_group_table_name = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
-		// Delete from both tables.
 		$this->wpdb->delete( $rule_table_name, array( 'rule_id' => $rule_id ) );
-		$this->wpdb->delete( $rule_group_table_name, array( 'rule_id' => $rule_id ) );
 	}
 
 	/**

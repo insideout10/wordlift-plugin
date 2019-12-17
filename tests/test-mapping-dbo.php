@@ -71,50 +71,40 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 		$rule_table_name = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
 		$rule_group_table_name = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
 		$mapping_id = $this->dbo_instance->insert_mapping_item( "foo title" );
-		$this->dbo_instance->insert_rule_item( $mapping_id, 'foo', '>', 'bar' );
+		$rule_group_id = $this->dbo_instance->insert_rule_group( $mapping_id );
+		$this->dbo_instance->insert_or_update_rule_item(
+			array(
+				'rule_group_id' => $rule_group_id,
+				'rule_field_one' => 'foo',
+				'rule_logic_field' => '>',
+				'rule_field_two' => 'bar'
+			)
+		);
 		// we have inserted a rule item, so count should be 1.
 		$count = $this->wpdb->get_var( "SELECT COUNT(rule_id) as total FROM $rule_table_name" );
 		$this->assertEquals( 1, $count );
 		// When inserting/updating rule, there should be row created at rule group table.
-		$rule_group_count = $this->wpdb->get_var( "SELECT COUNT(rule_id) as total FROM $rule_group_table_name" );
+		$rule_group_count = $this->wpdb->get_var( "SELECT COUNT(rule_group_id) as total FROM $rule_group_table_name" );
 		$this->assertEquals( 1, $rule_group_count );		
-	}
-
-
-	/** When rule id is given should update it in db. */
-	public function test_given_rule_id_should_update_rule() {
-		$rule_table_name = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
-		$mapping_id = $this->dbo_instance->insert_mapping_item( "foo title" );
-		$rule_id         = $this->dbo_instance->insert_rule_item( $mapping_id, 'foo', '>', 'bar' );
-		$this->dbo_instance->update_rule_item(
-			array(
-				'rule_field_one' => 'bar',
-				'rule_id'        => $rule_id,
-				'mapping_id'     => $mapping_id,
-			)
-		);
-		// Count all rule field one with value bar.
-		$count = $this->wpdb->get_var( "SELECT COUNT(rule_field_one) as total FROM $rule_table_name WHERE rule_field_one='bar'" );
-		$this->assertEquals( 1, $count );
-		$rule_group_table_name = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
-		// When inserting/updating rule, there should be row created at rule group table.
-		$rule_group_count = $this->wpdb->get_var( "SELECT COUNT(rule_id) as total FROM $rule_group_table_name" );
-		$this->assertEquals( 1, $rule_group_count );
 	}
 
 	/** Delete a rule along with its rule group entry */
 	public function test_able_to_delete_rule_item() {
 		$rule_table_name = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
 		$mapping_id      = $this->dbo_instance->insert_mapping_item( "foo title" );
-		$rule_id         = $this->dbo_instance->insert_rule_item( $mapping_id, 'foo', '>', 'bar' );		
+		$rule_group_id = $this->dbo_instance->insert_rule_group( $mapping_id );
+		$rule_id = $this->dbo_instance->insert_or_update_rule_item(
+			array(
+				'rule_group_id' => $rule_group_id,
+				'rule_field_one' => 'foo',
+				'rule_logic_field' => '>',
+				'rule_field_two' => 'bar'
+			)
+		);
 		$this->dbo_instance->delete_rule_item( $rule_id );
 		// The item should be deleted from rule table.
 		$rule_table_count = $this->wpdb->get_var( "SELECT COUNT(rule_field_one) as total FROM $rule_table_name" );
 		$this->assertEquals( 0, $rule_table_count );
-		// The item is deleted from rule group table.
-		$rule_group_table_name = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
-		$rule_group_count = $this->wpdb->get_var( "SELECT COUNT(rule_id) as total FROM $rule_group_table_name" );
-		$this->assertEquals( 0, $rule_group_count );
 	}
 
 	/** Able to insert property */

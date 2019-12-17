@@ -24,13 +24,25 @@ class Wordlift_Install_3_25_0 extends Wordlift_Install {
 	protected static $version = '3.25.0';
 
 	/**
+	 * Reference to global $wpdb instance.
+	 *
+	 * @var $wpdb
+	 * */
+	private $wpdb;
+
+	/** Constructor for 3_25_0 installer. */
+	public function __construct() {
+		global $wpdb;
+		$this->wpdb = $wpdb;
+	}
+	/**
 	 * @inheritdoc
 	 */
 	public function install() {
-		self::create_mappings_table();
-		self::create_rule_table();
-		self::create_rule_group_table();
-		self::create_property_table();
+		$this->create_mappings_table();
+		$this->create_rule_group_table();
+		$this->create_rule_table();
+		$this->create_property_table();
 	}
 
 	/**
@@ -40,10 +52,9 @@ class Wordlift_Install_3_25_0 extends Wordlift_Install {
 	 *
 	 * @return void
 	 */
-	public static function create_mappings_table() {
-		global $wpdb;
-		$table_name      = $wpdb->prefix . WL_MAPPING_TABLE_NAME;
-		$charset_collate = $wpdb->get_charset_collate();
+	public function create_mappings_table() {
+		$table_name      = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
+		$charset_collate = $this->wpdb->get_charset_collate();
 		$sql             = <<<EOF
         CREATE TABLE $table_name (
 			mapping_id INT(11) NOT NULL AUTO_INCREMENT, 
@@ -64,11 +75,10 @@ EOF;
 	 *
 	 * @return void
 	 */
-	public static function create_rule_table() {
-		global $wpdb;
-		$table_name            = $wpdb->prefix . WL_RULE_TABLE_NAME;
-		$rule_group_table_name = $wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
-		$charset_collate       = $wpdb->get_charset_collate();
+	public function create_rule_table() {
+		$table_name            = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
+		$rule_group_table_name = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
+		$charset_collate       = $this->wpdb->get_charset_collate();
 		$sql                   = <<<EOF
         CREATE TABLE $table_name (
 				rule_id INT(11) NOT NULL AUTO_INCREMENT,
@@ -77,11 +87,12 @@ EOF;
 				rule_field_two VARCHAR(255) NOT NULL,
 				rule_group_id INT(11) NOT NULL,
 				FOREIGN KEY (rule_group_id) REFERENCES $rule_group_table_name(rule_group_id)
-                PRIMARY KEY (rule_id)
+				ON DELETE CASCADE,
+				PRIMARY KEY  (rule_id)
         ) $charset_collate;
 EOF;
 		// Execute the query for mappings table.
-		dbDelta( $sql );
+		$this->wpdb->query( $sql );
 	}
 
 	/**
@@ -92,16 +103,15 @@ EOF;
 	 *
 	 * @return void
 	 */
-	public static function create_rule_group_table() {
-		global $wpdb;
-		$table_name      = $wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
-		$charset_collate = $wpdb->get_charset_collate();
+	public function create_rule_group_table() {
+		$table_name      = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
+		$charset_collate = $this->wpdb->get_charset_collate();
 
-		$mapping_table_name = $wpdb->prefix . WL_MAPPING_TABLE_NAME;
-		$rule_table_name    = $wpdb->prefix . WL_RULE_TABLE_NAME;
+		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
+		$rule_table_name    = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
 		$sql                = <<<EOF
         CREATE TABLE $table_name (
-                rule_group_id INT(11) NOT NULL AUTOINCREMENT,
+                rule_group_id INT(11) NOT NULL AUTO_INCREMENT,
                 mapping_id INT(11) NOT NULL,
                 PRIMARY KEY  (rule_group_id),
                 FOREIGN KEY (mapping_id) REFERENCES $mapping_table_name(mapping_id)
@@ -110,7 +120,7 @@ EOF;
 EOF;
 		// Execute the query for rule group table, we cant use db delta
 		// due to lack of support for foreign keys.
-		$wpdb->query( $sql );
+		$this->wpdb->query( $sql );
 	}
 
 
@@ -122,12 +132,11 @@ EOF;
 	 *
 	 * @return void
 	 */
-	public static function create_property_table() {
-		global $wpdb;
-		$table_name      = $wpdb->prefix . WL_PROPERTY_TABLE_NAME;
-		$charset_collate = $wpdb->get_charset_collate();
+	public function create_property_table() {
+		$table_name      = $this->wpdb->prefix . WL_PROPERTY_TABLE_NAME;
+		$charset_collate = $this->wpdb->get_charset_collate();
 
-		$mapping_table_name = $wpdb->prefix . WL_MAPPING_TABLE_NAME;
+		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
 		$sql                = <<<EOF
         CREATE TABLE $table_name (
                 property_id INT(11) NOT NULL AUTO_INCREMENT,
@@ -143,7 +152,7 @@ EOF;
 EOF;
 		// Execute the query for rule group table, we cant use db delta
 		// due to lack of support for foreign keys
-		$wpdb->query( $sql );
+		$this->wpdb->query( $sql );
 	}
 
 	/**
