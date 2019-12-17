@@ -42,7 +42,7 @@ export const RuleGroupReducer = createReducer(null, {
     [DELETE_RULE]: ( state, action )=> {
         const {ruleGroupIndex,ruleIndex} = action.payload
         // if the rule group has only one item, then it should be removed
-        if (state.ruleGroupList[ruleGroupIndex].rules.length === 1) {
+        if (1 === state.ruleGroupList[ruleGroupIndex].rules.length) {
             state.ruleGroupList.splice(ruleGroupIndex, 1)
         }
         else {
