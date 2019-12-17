@@ -212,9 +212,9 @@ function wl_entities_box_content( $post, $wrapper = true ) {
 		window.wordlift.timelinejsDefaultOptions = $timelinejs_default_options;
 JS;
 
-	if ( $wrapper ) {
+//	if ( $wrapper ) {
 		echo '<script type="text/javascript">' . PHP_EOL . $js_code . PHP_EOL . '</script>';
-	}
-	wp_add_inline_script( 'wl-entity-metabox-utility', $js_code );
+//	}
+//	wp_add_inline_script( 'wl-entity-metabox-utility', $js_code );
 }
 

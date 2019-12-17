@@ -17,12 +17,12 @@
  * External dependencies
  */
 import React from "react";
+import { trigger } from "backbone";
 
 /**
  * WordPress dependencies
  */
 import { withDispatch } from "@wordpress/data";
-import { doAction } from "@wordpress/hooks";
 import { Fragment } from "@wordpress/element";
 
 /**
@@ -53,7 +53,7 @@ const EditComponent = ({ onChange, value, isActive, activeAttributes, onSelectio
     const selection = value.text.substring(value.start, value.end);
     onSelectionChange(selection);
     setFormat({ onChange, value });
-    doAction(SELECTION_CHANGED, { selection });
+    trigger(SELECTION_CHANGED, { selection });
   }, 200);
 
   // Send the annotation change event.
@@ -63,7 +63,7 @@ const EditComponent = ({ onChange, value, isActive, activeAttributes, onSelectio
     "undefined" !== typeof activeAttributes.id
       ? activeAttributes.id
       : undefined;
-  doAction(ANNOTATION_CHANGED, payload);
+  trigger(ANNOTATION_CHANGED, payload);
 
   return <Fragment />;
 };

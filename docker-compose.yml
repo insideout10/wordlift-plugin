@@ -4,7 +4,7 @@ services:
   db:
     image: mariadb:10
     volumes:
-      - db-data:/var/lib/mysql
+      - db-data-${WORDPRESS_VERSION:-5.0.0}:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: wordpress
@@ -12,11 +12,11 @@ services:
       MYSQL_PASSWORD: password
 
   wordpress:
-    image: wordpress:5.0.0
+    image: wordpress:${WORDPRESS_VERSION:-5.0.0}
     depends_on:
       - db
     volumes:
-      - wordpress-data:/var/www/html
+      - wordpress-data-${WORDPRESS_VERSION:-5.0.0}:/var/www/html
       - ./src:/var/www/html/wp-content/plugins/wordlift
     environment:
       WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING: "true"
@@ -73,10 +73,12 @@ services:
       - db
     user: xfs
     volumes:
-      - wordpress-data:/var/www/html
+      - wordpress-data-${WORDPRESS_VERSION:-5.0.0}:/var/www/html
       - ./src:/var/www/html/wp-content/plugins/wordlift
     tty: true
 
 volumes:
-  db-data: {}
-  wordpress-data: {}
+  db-data-4.4.0:
+  wordpress-data-4.4.0:
+  db-data-5.0.0:
+  wordpress-data-5.0.0:
