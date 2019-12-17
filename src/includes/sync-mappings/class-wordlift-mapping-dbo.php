@@ -31,6 +31,7 @@ final class Wordlift_Mapping_DBO {
 	 * Insert new mapping item with title
 	 *
 	 * @param String $title Title of the mapping item.
+	 * @return Int Id of the inserted mapping item.
 	 */
 	public function insert_mapping_item( $title ) {
 		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
@@ -41,9 +42,8 @@ final class Wordlift_Mapping_DBO {
 	/**
 	 * Update mapping item with new title
 	 *
-	 * @param Int    $mapping_id Primary key for mapping table.
-	 *
 	 * @param Array $mapping_data Array of the mapping data.
+	 * @return Int Id of the inserted mapping item
 	 */
 	public function insert_or_update_mapping_item( $mapping_data ) {
 		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
@@ -58,6 +58,7 @@ final class Wordlift_Mapping_DBO {
 	 * Updates rule item.
 	 *
 	 * @param Array $rule_item_data   The rule_item_data, should contain rule_id.
+	 * @return Int $rule_id The inserted rule id.
 	 */
 	public function insert_or_update_rule_item( $rule_item_data ) {
 		$rule_table_name = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
@@ -72,7 +73,7 @@ final class Wordlift_Mapping_DBO {
 	 * didn't exist then it inserts a new entry.
 	 *
 	 * @param Int $mapping_id Primary key for mapping table.
-	 *
+	 * @return Int The inserted rule group id.
 	 */
 	public function insert_rule_group( $mapping_id ) {
 		$rule_group_table_name = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
@@ -89,6 +90,7 @@ final class Wordlift_Mapping_DBO {
 	 * Deletes a rule item by rule_id from rule and rule group table.
 	 *
 	 * @param Int $rule_id Primary key for rule table.
+	 * @return void
 	 */
 	public function delete_rule_item( $rule_id ) {
 		$rule_table_name       = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
@@ -99,8 +101,8 @@ final class Wordlift_Mapping_DBO {
 	 * Insert/Update property item.
 	 *
 	 * @param Int   $mapping_id Primary key for mapping table.
-	 *
 	 * @param Array $propery_data Property row from table/ui.
+	 * @return Int Inserted Property Id.
 	 */
 	public function insert_or_update_property( $mapping_id, $propery_data ) {
 		$property_table_name        = $this->wpdb->prefix . WL_PROPERTY_TABLE_NAME;
@@ -113,6 +115,7 @@ final class Wordlift_Mapping_DBO {
 	 * Delete property item.
 	 *
 	 * @param Int $property_id Primary key for property table.
+	 * @return void
 	 */
 	public function delete_property( $property_id ) {
 		$property_table_name = $this->wpdb->prefix . WL_PROPERTY_TABLE_NAME;		
