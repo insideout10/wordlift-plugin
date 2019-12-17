@@ -51,6 +51,7 @@ final class Wordlift_Mapping_DBO {
 			$mapping_table_name,
 			$mapping_data
 		);
+		return $this->wpdb->insert_id;
 	}
 
 	/**
@@ -72,7 +73,6 @@ final class Wordlift_Mapping_DBO {
 	 *
 	 * @param Int $mapping_id Primary key for mapping table.
 	 *
-	 * @param Int $rule_id Primary key for rule table.
 	 */
 	public function insert_rule_group( $mapping_id ) {
 		$rule_group_table_name = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;

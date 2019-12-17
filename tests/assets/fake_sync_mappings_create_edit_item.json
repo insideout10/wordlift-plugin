@@ -19,7 +19,6 @@
     "rule_group_list": [
 
         {
-            "rule_group_id": 1,
             "rules": [
                 {
                     "rule_id":1,
