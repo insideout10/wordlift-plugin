@@ -24,6 +24,12 @@ class Wordlift_Admin_Sync_Mappings_Page extends Wordlift_Admin_Page {
 			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings.js',
 			false
 		);
+		// Create ui settings array to be used by js client.
+		$mapping_settings             = array();
+		$mapping_settings['rest_url'] = get_rest_url(
+			null,
+			WL_REST_ROUTE_DEFAULT_NAMESPACE . Wordlift_Mapping_REST_Controller::MAPPINGS_NAMESPACE
+		);
 	}
 
 	/**

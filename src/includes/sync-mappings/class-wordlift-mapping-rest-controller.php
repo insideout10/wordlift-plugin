@@ -7,6 +7,8 @@
  * @subpackage Wordlift/includes/sync-mappings
  */
 class Wordlift_Mapping_REST_Controller {
+	// Namespace for CRUD mappings.
+	const MAPPINGS_NAMESPACE = '/sync-mappings/mappings';
 	/**
 	 * Registers route on rest api initialisation.
 	 */
