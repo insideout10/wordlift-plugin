@@ -135,7 +135,53 @@ final class Wordlift_Mapping_DBO {
 		$this->wpdb->delete( $mapping_table_name, array( 'mapping_id' => $mapping_id ) );
 	}
 
-
+	/**
+	 * Gets a list of rule group items.
+	 *
+	 * @param Int $mapping_id Primary key for mapping table.
+	 * @return Array Get list of rule group items.
+	 */
+	public function get_rule_group_list_with_rules( $mapping_id ) {
+		$rule_group_table_name = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
+		$rule_group_rows       = $this->wpdb->get_results(
+			$this->wpdb->prepare(
+				"SELECT rule_group_id FROM $rule_group_table_name WHERE mapping_id=%d",
+				$mapping_id
+			),
+			ARRAY_A
+		);
+		// List of all rule group items.
+		$rule_group_data = array();
+		foreach ( $rule_group_rows as $rule_group_row ) {
+			array_push(
+				$rule_group_data,
+				array(
+					'rule_group_id' => $rule_group_row['rule_group_id'],
+					'rules'         => $this->get_rules(
+						$rule_group_row['rule_group_id']
+					),
+				)
+			);
+		}
+		return $rule_group_data;
+	}
+	/**
+	 * Gets a list of rule items belong to rule_group_id.
+	 *
+	 * @param Int $rule_group_id Indicates which group the item belongs to.
+	 * @return Array Get list of rule items.
+	 */
+	private function get_rules( $rule_group_id ) {
+		$rule_table_name       = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
+		$rule_rows = $this->wpdb->get_results(
+			$this->wpdb->prepare(
+				"SELECT * FROM $rule_table_name WHERE rule_group_id=%d",
+				$rule_group_id
+			),
+			ARRAY_A
+		);
+		return $rule_rows;
+	}
 	/**
 	 * Insert/Update property item.
 	 *

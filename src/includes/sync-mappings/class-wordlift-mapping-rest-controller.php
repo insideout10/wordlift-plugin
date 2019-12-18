@@ -24,7 +24,7 @@ class Wordlift_Mapping_REST_Controller {
 		$dbo             = new Wordlift_Mapping_DBO();
 		$mapping_id      = $request['id'];
 		$mapping_id_data = array();
-		$rule_groups     = array();
+		$rule_groups     = $dbo->get_rule_group_list_with_rules( $mapping_id );
 		$properties      = $dbo->get_properties( $mapping_id );
 
 		$mapping_id_data['property_list'] = $properties;

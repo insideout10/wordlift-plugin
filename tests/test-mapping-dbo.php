@@ -173,4 +173,35 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 		$this->assertEquals( count( $property_rows ), 2 );
 	}
 
+	/** Test can get rule group items with rules by mapping id */
+	public function test_can_get_rule_group_with_rules() {
+		// Lets insert a mapping item.
+		$mapping_id = $this->dbo_instance->insert_mapping_item( 'foo' );
+		// Lets insert some rule groups
+		// We insert 2 rule groups for this mapping item.
+		$rule_group_1 = $this->dbo_instance->insert_rule_group( $mapping_id );
+		$rule_group_2 = $this->dbo_instance->insert_rule_group( $mapping_id );
+		// We insert 1 rule for each rule group.
+		$rule_1 =  $this->dbo_instance->insert_or_update_rule_item(
+			array(
+				'rule_group_id'    => $rule_group_1,
+				'rule_field_one'   => 'foo',
+				'rule_field_two'   => 'bar',
+				'rule_logic_field' => '>',
+			)
+		);
+		$rule_2 =  $this->dbo_instance->insert_or_update_rule_item(
+			array(
+				'rule_group_id'    => $rule_group_2,
+				'rule_field_one'   => 'foo',
+				'rule_field_two'   => 'bar',
+				'rule_logic_field' => '>',
+			)
+		);
+		$rule_groups_data = $this->dbo_instance->get_rule_group_list_with_rules( $mapping_id );
+		$this->assertEquals( count( $rule_groups_data ), 2 );
+		$this->assertEquals( count( $rule_groups_data[0]['rules'] ), 1 );
+		$this->assertEquals( count( $rule_groups_data[1]['rules'] ), 1 );
+	}
+
 }
