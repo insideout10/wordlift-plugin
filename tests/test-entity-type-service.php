@@ -22,6 +22,9 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 	public function setUp() {
 		parent::setUp();
 
+		$this->assertTrue( defined( 'WL_ALL_ENTITY_TYPES' ) );
+		$this->assertTrue( 'WL_ALL_ENTITY_TYPES' );
+
 		// Ensure `All Entity Types` are installed.
 		$sync = Wordlift_Schemaorg_Sync_Batch_Operation::get_instance();
 		$sync->process( 0, $sync->count() );
