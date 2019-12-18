@@ -195,6 +195,23 @@ final class Wordlift_Mapping_DBO {
 		$this->wpdb->replace( $property_table_name, $propery_data );
 		return $this->wpdb->insert_id;
 	}
+	/**
+	 * Gets a single mapping item row.
+	 *
+	 * @param Int $mapping_id Primary key of mapping table.
+	 * @return Array Returns single mapping table row..
+	 */
+	public function get_mapping_item_data ( $mapping_id ) {
+		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
+		$mapping_row = $this->wpdb->get_row(
+			$this->wpdb->prepare(
+				"SELECT * FROM $mapping_table_name WHERE mapping_id=%d",
+				$mapping_id
+			),
+			ARRAY_A
+		);
+		return $mapping_row;
+	}
 
 	/**
 	 * Delete property item.

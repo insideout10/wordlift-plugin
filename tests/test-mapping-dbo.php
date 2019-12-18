@@ -204,4 +204,11 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 		$this->assertEquals( count( $rule_groups_data[1]['rules'] ), 1 );
 	}
 
+	/** Given mapping id returns correct mapping title */
+	public function test_get_mapping_item_data() {
+		// Lets insert a mapping item.
+		$mapping_id       = $this->dbo_instance->insert_mapping_item( 'foo' );
+		$mapping_row_data = $this->dbo_instance->get_mapping_item_data( $mapping_id );
+		$this->assertEquals( 'foo', $mapping_row_data['mapping_title'] );
+	}
 }

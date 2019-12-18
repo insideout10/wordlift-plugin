@@ -26,9 +26,12 @@ class Wordlift_Mapping_REST_Controller {
 		$mapping_id_data = array();
 		$rule_groups     = $dbo->get_rule_group_list_with_rules( $mapping_id );
 		$properties      = $dbo->get_properties( $mapping_id );
+		$mapping_row     = $dbo->get_mapping_item_data( $mapping_id );
 
-		$mapping_id_data['property_list'] = $properties;
-
+		$mapping_id_data['mapping_id']      = $mapping_id;
+		$mapping_id_data['property_list']   = $properties;
+		$mapping_id_data['rule_group_list'] = $rule_groups;
+		$mapping_id_data['mapping_title']   = $mapping_row['mapping_title'];
 		return $mapping_id_data;
 	}
 	/**

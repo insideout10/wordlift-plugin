@@ -156,6 +156,7 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 		// We insert 2 rule groups for this mapping item.
 		$rule_group_1 = $dbo->insert_rule_group( $mapping_id );
 		$rule_group_2 = $dbo->insert_rule_group( $mapping_id );
+
 		// We insert 1 rule for each rule group.
 		$rule_1 = $dbo->insert_or_update_rule_item(
 			array(
@@ -174,6 +175,17 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 			)
 		);
 
+		// We insert 2 properties.
+		$property_data       = array(
+			'property_help_text'   => 'foo',
+			'field_type_help_text' => 'bar',
+			'field_help_text'      => 'foo',
+			'transform_help_text'  => 'foo',
+		);
+		// 2 properties inserted.
+		$dbo->insert_or_update_property( $mapping_id, $property_data );
+		$dbo->insert_or_update_property( $mapping_id, $property_data );
+
 		// We make a request to get info about single mapping item.
 		$request = new WP_REST_Request(
 			'GET',
@@ -184,7 +196,15 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 
 		// This request should return 200.
 		$this->assertEquals( 200, $response->get_status() );
-		var_dump( $response->get_data() );
+		$response_data = $response->get_data();
+		// Expect Two rule groups.
+		$this->assertEquals( 2, count( $response_data['rule_group_list'] ) );
+		// Expect two rules.
+		$this->assertEquals( 2, count( $response_data['property_list'] ) );
+		// Expect title to be foo.
+		$this->assertEquals( 'foo', $response_data['mapping_title'] );
+		// Expect correct mapping id.
+		$this->assertEquals( $mapping_id, $response_data['mapping_id'] );
 	}
 
 }
