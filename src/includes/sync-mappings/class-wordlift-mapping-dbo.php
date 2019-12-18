@@ -28,6 +28,17 @@ final class Wordlift_Mapping_DBO {
 	}
 
 	/**
+	 * Returns a list of mapping item rows
+	 * @return Array List of Mapping items
+	 */
+	public function get_mapping_items() {
+		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
+		return $this->wpdb->get_results( 
+			$this->wpdb->query( "SELECT * FROM $mapping_table_name"),
+			ARRAY_A
+		);
+	}
+	/**
 	 * Insert new mapping item with title
 	 *
 	 * @param String $title Title of the mapping item.

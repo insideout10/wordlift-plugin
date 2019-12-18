@@ -24,7 +24,7 @@ class Wordlift_Mapping_REST_Controller {
 	public static function register_route_callback() {
 		register_rest_route(
 			WL_REST_ROUTE_DEFAULT_NAMESPACE,
-			'/sync-mappings/mapping',
+			'/sync-mappings/mappings',
 			array(
 				'methods'             => WP_REST_Server::CREATABLE,
 				'callback'            => 'Wordlift_Mapping_REST_Controller::insert_or_update_mapping_item',
@@ -33,6 +33,22 @@ class Wordlift_Mapping_REST_Controller {
 				},
 			)
 		);
+		register_rest_route(
+			WL_REST_ROUTE_DEFAULT_NAMESPACE,
+			'/sync-mappings/mappings',
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => 'Wordlift_Mapping_REST_Controller::list_mapping_items',
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+	}
+
+	public static function list_mapping_items( $request ) {
+		$dbo = new Wordlift_Mapping_DBO();
+		return $dbo->get_mapping_items();
 	}
 
 	/**
@@ -113,3 +129,5 @@ class Wordlift_Mapping_REST_Controller {
 		}
 	}
 }
+
+Wordlift_Mapping_REST_Controller::register_routes();
