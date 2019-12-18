@@ -15,5 +15,5 @@ const MOCK_STORE = createStore(mock_reducers, MOCK_INITIAL_STATE)
 //     document.getElementById("container"))
 
 ReactDOM.render(
-    <MappingComponent mappingItems={[{title:'foo'}, {title:'sample'}]}/>,
+    <MappingComponent mappingItems={[]}/>,
     document.getElementById("container"))

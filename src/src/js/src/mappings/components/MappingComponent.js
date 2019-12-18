@@ -21,8 +21,11 @@ import MappingListItemComponent from './MappingListItemComponent'
             <React.Fragment>
                 <h1 className="wp-heading-inline wl-mappings-heading-text">
                     Mappings
-                    <button className="button wl-mappings-add-new" onclick="show_second_mockup()">
-                        Add New
+                    &nbsp;&nbsp;
+                    <button className="button wl-mappings-add-new">
+                        <a href="?page=wl_edit_mapping">
+                            Add New
+                        </a>
                     </button>
                 </h1>
                 <table className="wp-list-table widefat striped wl-table">
@@ -38,19 +41,32 @@ import MappingListItemComponent from './MappingListItemComponent'
                 </thead>
                 <tbody>
                     {
+                        // show empty screen when there is no mapping items
+                        0 === this.props.mappingItems.length &&
+                        <tr>
+                            <td colspan="3">
+                                <div className="wl-container text-center">
+                                    No Mapping items found, click on
+                                    <b>&nbsp; Add New </b>
+                                </div>
+                            </td>
+                        </tr> 
+                    }
+                    {
                         this.props.mappingItems.map((item, index)=> {
                             return <MappingListItemComponent title={item.title}/>
                         })
                     }
-                </tbody><tfoot>
-                <tr>
-                    <th className="wl-check-column">
-                    <input type="checkbox" />
-                    </th>
-                    <th>
-                    <a className="row-title">Title</a>
-                    </th>
-                </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th className="wl-check-column">
+                        <input type="checkbox" />
+                        </th>
+                        <th>
+                        <a className="row-title">Title</a>
+                        </th>
+                    </tr>
                 </tfoot>
             </table>
                 <div className="tablenav bottom">
