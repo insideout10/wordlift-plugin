@@ -22,7 +22,6 @@ RUN set -ex; \
 		exif \
 		gd \
 		mysqli \
-		opcache \
 		zip \
 	; \
 	pecl install imagick-3.4.4; \
