@@ -123,4 +123,25 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 		// We have 1 mapping item in db inserted in this test.
 		$this->assertEquals( 1, count( $response->get_data() ) );
 	}
+	/** Test can delete a mapping item */
+	public function test_delete_mapping_item() {
+		// Create user with 'manage options' capability, only that user can delete this item
+		$user_id   = $this->factory->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $user_id );
+		$dbo = new Wordlift_Mapping_DBO();
+		$mapping_id_1 = $dbo->insert_mapping_item('foo');
+		$mapping_id_2 = $dbo->insert_mapping_item('bar');
+
+		$request = new WP_REST_Request('DELETE', $this->mapping_route);
+		$request->set_body_params(
+			array(
+				'mapping_ids' => array( $mapping_id_1, $mapping_id_2 ),
+			)
+		);
+		$response = $this->server->dispatch( $request );
+		// This request should return 200
+		$this->assertEquals( 200, $response->get_status() );
+		// Now these items would be deleted, we wont have any mapping items left on db.
+		$this->assertEquals( 0, count( $this->dbo->get_mapping_items() ) );
+	}
 }

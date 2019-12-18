@@ -33,6 +33,7 @@ class Wordlift_Mapping_REST_Controller {
 				},
 			)
 		);
+		// Get list of mapping items
 		register_rest_route(
 			WL_REST_ROUTE_DEFAULT_NAMESPACE,
 			'/sync-mappings/mappings',
@@ -44,8 +45,42 @@ class Wordlift_Mapping_REST_Controller {
 				},
 			)
 		);
+
+		// Delete mapping items by id.
+		register_rest_route(
+			WL_REST_ROUTE_DEFAULT_NAMESPACE,
+			'sync-mappings/mappings',
+			array(
+				'methods'             => WP_REST_Server::DELETABLE,
+				'callback'            => 'Wordlift_Mapping_REST_Controller::delete_mapping_items',
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
 	}
 
+	/**
+	 * Delete mapping items by mapping id
+	 *
+	 * @param WP_REST_Request $request {@link WP_REST_Request instance}.
+	 */
+	public static function delete_mapping_items( $request ) {
+		$dbo = new Wordlift_Mapping_DBO();
+		$post_data = $request->get_body_params();
+		if ( array_key_exists( 'mapping_ids', $post_data ) ) {
+			$mapping_ids = $post_data['mapping_ids'];
+			foreach ( $mapping_ids as $mapping_id ) {
+				$dbo->delete_mapping_item( $mapping_id );
+			}
+		}
+	}
+
+	/**
+	 * Get all mapping items
+	 *
+	 * @param WP_REST_Request $request {@link WP_REST_Request instance}.
+	 */
 	public static function list_mapping_items( $request ) {
 		$dbo = new Wordlift_Mapping_DBO();
 		$mapping_items =  $dbo->get_mapping_items();

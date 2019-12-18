@@ -146,4 +146,13 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 		$this->assertEquals(count($this->dbo_instance->get_mapping_items()), 1);
 	}
 
+
+	/** Able to delete mapping items */
+	public function test_delete_mapping_item() {
+		// Lets insert a mapping item.
+		$mapping_id = $this->dbo_instance->insert_mapping_item( 'foo' );
+		$this->dbo_instance->delete_mapping_item( $mapping_id );
+		$this->assertEquals( 0, count( $this->dbo_instance->get_mapping_items() ) );
+	}
+
 }

@@ -110,6 +110,17 @@ final class Wordlift_Mapping_DBO {
 		$rule_table_name       = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
 		$this->wpdb->delete( $rule_table_name, array( 'rule_id' => $rule_id ) );
 	}
+	/**
+	 * Deletes a mapping item by mapping_id
+	 *
+	 * @param Int $mapping_id Primary key for mapping table.
+	 * @return void
+	 */
+	public function delete_mapping_item( $mapping_id ) {
+		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
+		$this->wpdb->delete( $mapping_table_name, array( 'mapping_id' => $mapping_id ) );
+	}
+
 
 	/**
 	 * Insert/Update property item.
