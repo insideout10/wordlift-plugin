@@ -131,11 +131,9 @@ class Wordlift_Event_Entity_Page_Service_Test extends Wordlift_Unit_Test_Case {
 
 		global $wp_the_query;
 
-		$this->assertTrue( $wp_the_query->is_main_query, 'We expect a main query to enable sorting.' );
+		$this->assertTrue( $wp_the_query->is_main_query(), 'We expect a main query to enable sorting.' );
 
 		$posts = $wp_the_query->get_posts();
-
-		var_dump( $posts );
 
 		// test that three entities are returned.
 		$this->assertEquals( 3, count( $posts ) );
