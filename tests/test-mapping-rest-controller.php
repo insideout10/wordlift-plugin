@@ -125,23 +125,66 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 	}
 	/** Test can delete a list of mapping items */
 	public function test_delete_mapping_item() {
-		// Create user with 'manage options' capability, only that user can delete this item
+		// Create user with 'manage options' capability, only that user can delete this item.
 		$user_id   = $this->factory->user->create( array( 'role' => 'administrator' ) );
 		wp_set_current_user( $user_id );
-		$dbo = new Wordlift_Mapping_DBO();
-		$mapping_id_1 = $dbo->insert_mapping_item('foo');
-		$mapping_id_2 = $dbo->insert_mapping_item('bar');
+		$dbo          = new Wordlift_Mapping_DBO();
+		$mapping_id_1 = $dbo->insert_mapping_item( 'foo' );
+		$mapping_id_2 = $dbo->insert_mapping_item( 'bar' );
 
-		$request = new WP_REST_Request('DELETE', $this->mapping_route);
+		$request = new WP_REST_Request( 'DELETE', $this->mapping_route );
 		$request->set_body_params(
 			array(
 				'mapping_ids' => array( $mapping_id_1, $mapping_id_2 ),
 			)
 		);
 		$response = $this->server->dispatch( $request );
-		// This request should return 200
+		// This request should return 200.
 		$this->assertEquals( 200, $response->get_status() );
 		// Now these items would be deleted, we wont have any mapping items left on db.
 		$this->assertEquals( 0, count( $dbo->get_mapping_items() ) );
 	}
+
+	/** Test can get a single mapping item in correct format */
+	public function test_single_mapping_item_should_return_correct_format() {
+		// Create user with 'manage options' capability, only that user can delete this item.
+		$user_id   = $this->factory->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $user_id );
+		$dbo        = new Wordlift_Mapping_DBO();
+		// We create a mapping item.
+		$mapping_id = $dbo->insert_mapping_item( 'foo' );
+		// We insert 2 rule groups for this mapping item.
+		$rule_group_1 = $dbo->insert_rule_group( $mapping_id );
+		$rule_group_2 = $dbo->insert_rule_group( $mapping_id );
+		// We insert 1 rule for each rule group.
+		$rule_1 = $dbo->insert_or_update_rule_item(
+			array(
+				'rule_group_id'    => $rule_group_1,
+				'rule_field_one'   => 'foo',
+				'rule_field_two'   => 'bar',
+				'rule_logic_field' => '>',
+			)
+		);
+		$rule_2 = $dbo->insert_or_update_rule_item(
+			array(
+				'rule_group_id'    => $rule_group_2,
+				'rule_field_one'   => 'foo',
+				'rule_field_two'   => 'bar',
+				'rule_logic_field' => '>',
+			)
+		);
+
+		// We make a request to get info about single mapping item.
+		$request = new WP_REST_Request(
+			'GET',
+			'/wordlift/v1/sync-mappings/mappings/' . $mapping_id
+		);
+
+		$response = $this->server->dispatch( $request );
+
+		// This request should return 200.
+		$this->assertEquals( 200, $response->get_status() );
+		var_dump( $response->get_data() );
+	}
+
 }

@@ -39,6 +39,20 @@ final class Wordlift_Mapping_DBO {
 		);
 	}
 	/**
+	 * Returns a list of property rows
+	 *
+	 * @param Int $mapping_id Primary key of mapping table.
+	 * @return Array List of property items belong to $mapping_id.
+	 */
+	public function get_properties( $mapping_id ) {
+		$property_table_name = $this->wpdb->prefix . WL_PROPERTY_TABLE_NAME;
+		$property_rows       = $this->wpdb->get_results(
+			$this->wpdb->prepare( "SELECT * FROM $property_table_name WHERE mapping_id=%d", $mapping_id )
+		);
+		return $property_rows;
+	}
+
+	/**
 	 * Insert new mapping item with title
 	 *
 	 * @param String $title Title of the mapping item.

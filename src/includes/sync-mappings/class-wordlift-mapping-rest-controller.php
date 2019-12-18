@@ -15,7 +15,22 @@ class Wordlift_Mapping_REST_Controller {
 		add_action( 'rest_api_init', 'Wordlift_Mapping_REST_Controller::register_route_callback' );
 
 	}
+	/**
+	 * Get a single mapping item by its mapping_id
+	 *
+	 * @param WP_REST_Request $request {@link WP_REST_Request instance}.
+	 */
+	public static function get_mapping_item( $request ) {
+		$dbo             = new Wordlift_Mapping_DBO();
+		$mapping_id      = $request['id'];
+		$mapping_id_data = array();
+		$rule_groups     = array();
+		$properties      = $dbo->get_properties( $mapping_id );
 
+		$mapping_id_data['property_list'] = $properties;
+
+		return $mapping_id_data;
+	}
 	/**
 	 * Register route call back function, called when rest api gets initialised
 	 *
@@ -33,7 +48,7 @@ class Wordlift_Mapping_REST_Controller {
 				},
 			)
 		);
-		// Get list of mapping items
+		// Get list of mapping items.
 		register_rest_route(
 			WL_REST_ROUTE_DEFAULT_NAMESPACE,
 			'/sync-mappings/mappings',
@@ -53,6 +68,19 @@ class Wordlift_Mapping_REST_Controller {
 			array(
 				'methods'             => WP_REST_Server::DELETABLE,
 				'callback'            => 'Wordlift_Mapping_REST_Controller::delete_mapping_items',
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+
+		// Get single mapping item route.
+		register_rest_route(
+			WL_REST_ROUTE_DEFAULT_NAMESPACE,
+			'sync-mappings/mappings/(?P<id>\d+)',
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => 'Wordlift_Mapping_REST_Controller::get_mapping_item',
 				'permission_callback' => function () {
 					return current_user_can( 'manage_options' );
 				},

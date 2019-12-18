@@ -141,9 +141,9 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 	/** Able to list mapping items */
 	public function test_get_mapping_items() {
 		// Lets insert a mapping item.
-		$this->dbo_instance->insert_mapping_item('foo');
-		// we will have 1 item in db
-		$this->assertEquals(count($this->dbo_instance->get_mapping_items()), 1);
+		$this->dbo_instance->insert_mapping_item( 'foo' );
+		// we will have 1 item in db.
+		$this->assertEquals( count( $this->dbo_instance->get_mapping_items() ), 1 );
 	}
 
 
@@ -153,6 +153,24 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 		$mapping_id = $this->dbo_instance->insert_mapping_item( 'foo' );
 		$this->dbo_instance->delete_mapping_item( $mapping_id );
 		$this->assertEquals( 0, count( $this->dbo_instance->get_mapping_items() ) );
+	}
+
+	/** Able to get properties for a mapping id */
+	public function test_can_get_property_items() {
+		// Lets insert a mapping item.
+		$mapping_id = $this->dbo_instance->insert_mapping_item( 'foo' );
+		$property_data       = array(
+			'property_help_text'   => 'foo',
+			'field_type_help_text' => 'bar',
+			'field_help_text'      => 'foo',
+			'transform_help_text'  => 'foo',
+		);
+		// 2 properties inserted.
+		$this->dbo_instance->insert_or_update_property( $mapping_id, $property_data );
+		$this->dbo_instance->insert_or_update_property( $mapping_id, $property_data );
+		// 2 properties should be returned.
+		$property_rows = $this->dbo_instance->get_properties( $mapping_id );
+		$this->assertEquals( count( $property_rows ), 2 );
 	}
 
 }
