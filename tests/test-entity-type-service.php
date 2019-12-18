@@ -20,10 +20,13 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 	 * {@inheritdoc}
 	 */
 	public function setUp() {
-		parent::setUp();
+
+		$this->set_current_screen( 'admin' );
 
 		$this->assertTrue( defined( 'WL_ALL_ENTITY_TYPES' ) );
-		$this->assertTrue( 'WL_ALL_ENTITY_TYPES' );
+		$this->assertTrue( WL_ALL_ENTITY_TYPES );
+
+		parent::setUp();
 
 		// Ensure `All Entity Types` are installed.
 		$sync = Wordlift_Schemaorg_Sync_Batch_Operation::get_instance();

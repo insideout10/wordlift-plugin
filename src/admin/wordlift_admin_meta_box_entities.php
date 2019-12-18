@@ -211,10 +211,8 @@ function wl_entities_box_content( $post, $wrapper = true ) {
 		window.wordlift.currentLanguage = "$current_language";
 		window.wordlift.timelinejsDefaultOptions = $timelinejs_default_options;
 JS;
+	
+	echo '<script type="text/javascript">' . PHP_EOL . $js_code . PHP_EOL . '</script>';
 
-//	if ( $wrapper ) {
-		echo '<script type="text/javascript">' . PHP_EOL . $js_code . PHP_EOL . '</script>';
-//	}
-//	wp_add_inline_script( 'wl-entity-metabox-utility', $js_code );
 }
 

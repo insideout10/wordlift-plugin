@@ -45,7 +45,8 @@ class Wordlift_Context_Cards_Service {
 		$show_context_cards = apply_filters( 'wl_show_context_cards', $show_context_cards );
 		if ( $show_context_cards ) {
 			wp_enqueue_script( 'wordlift-cloud' );
-			wp_add_inline_script( 'wordlift-cloud', "window.addEventListener( 'load', function() { wordliftCloud.contextCards('a.wl-entity-page-link', '" . get_rest_url() . WL_REST_ROUTE_DEFAULT_NAMESPACE . $this->endpoint . "'); } );" );
+			$url_json = wp_json_encode( get_rest_url() . WL_REST_ROUTE_DEFAULT_NAMESPACE . $this->endpoint );
+			echo( "<script type='application/javascript'>window.addEventListener( 'load', function() { wordliftCloud.contextCards('a.wl-entity-page-link', $url_json); } );</script>" );
 		}
 	}
 
