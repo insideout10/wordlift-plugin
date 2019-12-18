@@ -34,6 +34,12 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 
 	}
 
+	public function tearDown() {
+		$this->set_current_screen( 'front' );
+
+		parent::tearDown();
+	}
+
 	/**
 	 * This test function gathers together all the tests, because loading the `All Entity Types` is an
 	 * expensive operation, we want to avoid to repeat it for each separate test.
