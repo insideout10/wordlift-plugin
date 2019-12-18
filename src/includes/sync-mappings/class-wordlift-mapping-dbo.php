@@ -34,7 +34,7 @@ final class Wordlift_Mapping_DBO {
 	public function get_mapping_items() {
 		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
 		return $this->wpdb->get_results( 
-			$this->wpdb->query( "SELECT * FROM $mapping_table_name"),
+			"SELECT * FROM $mapping_table_name",
 			ARRAY_A
 		);
 	}
@@ -46,7 +46,10 @@ final class Wordlift_Mapping_DBO {
 	 */
 	public function insert_mapping_item( $title ) {
 		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
-		$this->wpdb->insert( $mapping_table_name, array( 'mapping_title' => $title ) );
+		$this->wpdb->insert(
+			$mapping_table_name,
+			array( 'mapping_title' => $title )
+		);
 		return $this->wpdb->insert_id;
 	}
 

@@ -138,4 +138,12 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 		$this->assertEquals( 0, $property_table_count );
 	}
 
+	/** Able to list mapping items */
+	public function test_get_mapping_items() {
+		// Lets insert a mapping item.
+		$this->dbo_instance->insert_mapping_item('foo');
+		// we will have 1 item in db
+		$this->assertEquals(count($this->dbo_instance->get_mapping_items()), 1);
+	}
+
 }
