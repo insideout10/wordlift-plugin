@@ -142,6 +142,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.23.3 (2019-12-17) =
+* Fix [#990](https://github.com/insideout10/wordlift-plugin/issues/990): Cloud icon appearing for local entity on Add New entity search.
+* Fix [#988](https://github.com/insideout10/wordlift-plugin/issues/988): Analysis results don't show in Classic Editor on WordPress 4.9.
+
 = 3.23.2 (2019-12-10) =
 * Fix [#984](https://github.com/insideout10/wordlift-plugin/issues/984): Analysis failing on Classic Editor.
 

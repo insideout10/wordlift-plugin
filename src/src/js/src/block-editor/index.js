@@ -8,7 +8,8 @@
  * External dependencies
  */
 import React from "react";
-import { connect, Provider } from "react-redux";
+import { Provider } from "react-redux";
+import { on } from "backbone";
 
 /**
  * WordPress dependencies
@@ -16,7 +17,6 @@ import { connect, Provider } from "react-redux";
 import { PluginSidebar, PluginSidebarMoreMenuItem } from "@wordpress/edit-post";
 import { Fragment } from "@wordpress/element";
 import { registerPlugin } from "@wordpress/plugins";
-import { addAction, addFilter } from "@wordpress/hooks";
 import { dispatch } from "@wordpress/data";
 import { createBlock } from "@wordpress/blocks";
 
@@ -49,7 +49,7 @@ registerFilters(store);
  * Hook WordPress' action `ANNOTATION_CHANGED` to dispatching the annotation
  * to the store.
  */
-addAction(ANNOTATION_CHANGED, "wordlift", payload => store.dispatch(setCurrentAnnotation(payload)));
+on(ANNOTATION_CHANGED, payload => store.dispatch(setCurrentAnnotation(payload)));
 
 /**
  * Connect the Sidebar to the analysis to be run as soon as the component is

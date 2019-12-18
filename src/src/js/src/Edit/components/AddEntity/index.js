@@ -7,6 +7,7 @@ import { createStore, applyMiddleware } from "redux";
 import createSagaMiddleware from "redux-saga";
 import logger from "redux-logger";
 import PropTypes from "prop-types";
+import { on } from "backbone";
 
 /**
  * WordPress dependencies
@@ -32,7 +33,7 @@ const store = createStore(reducer, applyMiddleware(sagaMiddleware, logger));
 sagaMiddleware.run(saga);
 
 // Receives events that the selection has changed in the editor.
-addAction(SELECTION_CHANGED, "wordlift", ({ selection }) => store.dispatch(setValue(selection)));
+on(SELECTION_CHANGED, ({ selection }) => store.dispatch(setValue(selection)));
 
 // Receives events that an entity has been successfully added.
 //

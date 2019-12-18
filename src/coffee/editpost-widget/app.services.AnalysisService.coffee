@@ -97,6 +97,8 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 
     service.parse = (data) ->
 
+      $log.debug 'Parsing data...'
+
 # Add local entities
 # Add id to entity obj
 # Add id to annotation obj
