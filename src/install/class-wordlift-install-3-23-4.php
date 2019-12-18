@@ -21,14 +21,14 @@ class Wordlift_Install_3_23_4 extends Wordlift_Install {
 
 	public function install() {
 
-		$term = get_term_by( 'slug', 'web-page', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+		$existing_term = get_term_by( 'slug', 'web-page', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 		// Bail out if term exists.
-		if ( false !== $term ) {
+		if ( false !== $existing_term ) {
 			return;
 		}
 
-		wp_insert_term(
+		$term = wp_insert_term(
 			'WebPage',
 			Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 			array(
@@ -37,8 +37,8 @@ class Wordlift_Install_3_23_4 extends Wordlift_Install {
 			)
 		);
 
-		update_term_meta( $term->term_id, '_wl_name', 'WebPage' );
-		update_term_meta( $term->term_id, '_wl_uri', "http://schema.org/WebPage" );
+		update_term_meta( $term['term_id'], '_wl_name', 'WebPage' );
+		update_term_meta( $term['term_id'], '_wl_uri', "http://schema.org/WebPage" );
 
 	}
 
