@@ -44,6 +44,7 @@ class Wordlift_Image_Service_Test extends Wordlift_Unit_Test_Case {
 	public function test_png() {
 		$response = Wordlift_Remote_Image_Service::save_from_url( 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Flag_of_Rome.svg/2000px-Flag_of_Rome.svg.png' );
 
+		$this->assertFalse( is_wp_error( $response ), 'Error: ' . $response->get_error_message() );
 		$this->assertInternalType( 'array', $response );
 		$this->assertEquals( 3, count( $response ) );
 		$this->assertEquals( 'image/png', $response['content_type'] );
@@ -57,7 +58,8 @@ class Wordlift_Image_Service_Test extends Wordlift_Unit_Test_Case {
 	public function test_gif() {
 		$response = Wordlift_Remote_Image_Service::save_from_url( 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Rotating_earth_%28large%29.gif/200px-Rotating_earth_%28large%29.gif' );
 
-		$this->assertInternalType( 'array', $response, 'Expecting array, instead got: ' .var_export( $response, true ) );
+		$this->assertFalse( is_wp_error( $response ), 'Error: ' . $response->get_error_message() );
+		$this->assertInternalType( 'array', $response, 'Expecting array, instead got: ' . var_export( $response, true ) );
 		$this->assertEquals( 3, count( $response ) );
 		$this->assertEquals( 'image/gif', $response['content_type'] );
 	}
@@ -70,6 +72,7 @@ class Wordlift_Image_Service_Test extends Wordlift_Unit_Test_Case {
 	public function test_jpg() {
 		$response = Wordlift_Remote_Image_Service::save_from_url( 'https://upload.wikimedia.org/wikipedia/commons/f/ff/Wikipedia_logo_593.jpg' );
 
+		$this->assertFalse( is_wp_error( $response ), 'Error: ' . $response->get_error_message() );
 		$this->assertInternalType( 'array', $response );
 		$this->assertEquals( 3, count( $response ) );
 		$this->assertEquals( 'image/jpeg', $response['content_type'] );
@@ -138,11 +141,11 @@ class Wordlift_Image_Service_Test extends Wordlift_Unit_Test_Case {
 	/**
 	 * Upload an attachment and return the generated sources.
 	 *
-	 * @since 3.19.4
-	 *
 	 * @param string $file The file name relative to the current folder.
 	 *
 	 * @return array The array of sources (or an empty array).
+	 * @since 3.19.4
+	 *
 	 */
 	private function _test_attachment( $file ) {
 

@@ -512,7 +512,7 @@ function wl_save_entity( $entity_data ) {
 		// Save the image and get the local path.
 		$image = Wordlift_Remote_Image_Service::save_from_url( $image_remote_url );
 
-		if ( false === $image ) {
+		if ( false === $image || is_wp_error( $image ) ) {
 			continue;
 		}
 

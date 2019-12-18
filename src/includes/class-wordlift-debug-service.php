@@ -59,7 +59,6 @@ class Wordlift_Debug_Service {
 		$post = get_post( $post_id );
 
 		$uri       = $this->entity_service->get_uri( $post_id );
-		$encoding  = mb_detect_encoding( $uri );
 		$build_uri = $this->uri_service->build_uri( $post->post_title, $post->post_type );
 
 

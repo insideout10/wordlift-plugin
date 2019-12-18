@@ -13,10 +13,10 @@ class Wordlift_Remote_Image_Service {
 	 *
 	 * @param string $url The image remote URL.
 	 *
-	 * @return array|false An array with information about the saved image (*path*: the local path to the image, *url*: the local
+	 * @return array|false|WP_Error An array with information about the saved image (*path*: the local path to the image, *url*: the local
 	 * url, *content_type*: the image content type) or false on error.
 	 * @since 3.18.0
-	 *
+	 * @since 3.23.4 the function may return a WP_Error.
 	 */
 	public static function save_from_url( $url ) {
 
@@ -24,6 +24,7 @@ class Wordlift_Remote_Image_Service {
 		if ( ! function_exists( 'WP_Filesystem' ) ) {
 			require_once( ABSPATH . 'wp-admin/includes/file.php' );
 		}
+
 		// Load `WP_Filesystem`.
 		WP_Filesystem();
 		global $wp_filesystem;
@@ -49,18 +50,20 @@ class Wordlift_Remote_Image_Service {
 
 		// Create custom directory and bail on failure.
 		if ( ! wp_mkdir_p( $upload_dir ) ) {
-			wl_write_log( "save_image_from_url : failed creating upload dir $upload_dir \n" );
+			Wordlift_Log_Service::get_logger( 'Wordlift_Remote_Image_Service' )
+			                    ->warn( "save_image_from_url : failed creating upload dir $upload_dir \n" );
 
-			return false;
+			return new WP_Error( 0, "save_image_from_url : failed creating upload dir $upload_dir \n" );
 		};
 
 		$response = self::get_response( $url );
 
 		// Bail if the response is not set.
 		if ( false === $response ) {
-			wl_write_log( "save_image_from_url : failed to fetch the response from: $url \n" );
+			Wordlift_Log_Service::get_logger( 'Wordlift_Remote_Image_Service' )
+			                    ->warn( "save_image_from_url : failed to fetch the response from: $url \n" );
 
-			return false;
+			return new WP_Error( 0, "save_image_from_url : failed to fetch the response from: $url \n" );
 		}
 
 		// Get the content type of response.
@@ -71,7 +74,7 @@ class Wordlift_Remote_Image_Service {
 
 		// Bail if the content type is not supported.
 		if ( empty( $extension ) ) {
-			return false;
+			return new WP_Error( 0, 'Unsupported content type.' );
 		}
 
 		// Complete the local filename.
