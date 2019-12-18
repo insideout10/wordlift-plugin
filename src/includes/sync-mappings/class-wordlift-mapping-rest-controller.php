@@ -48,7 +48,8 @@ class Wordlift_Mapping_REST_Controller {
 
 	public static function list_mapping_items( $request ) {
 		$dbo = new Wordlift_Mapping_DBO();
-		return $dbo->get_mapping_items();
+		$mapping_items =  $dbo->get_mapping_items();
+		return $mapping_items;
 	}
 
 	/**

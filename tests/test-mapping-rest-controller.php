@@ -113,9 +113,14 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 		// Create user with 'manage options' capability.
 		$user_id   = $this->factory->user->create( array( 'role' => 'administrator' ) );
 		wp_set_current_user( $user_id );
+		$dbo = new Wordlift_Mapping_DBO();
+		$dbo->insert_mapping_item( 'foo' );
+		// Lets insert a item.
 		$request   = new WP_REST_Request( 'GET', $this->mapping_route );
 		$response  = $this->server->dispatch( $request );
 		// Get 200 code.
 		$this->assertEquals( 200, $response->get_status() );
+		// We have 1 mapping item in db inserted in this test.
+		$this->assertEquals( 1, count( $response->get_data() ) );
 	}
 }
