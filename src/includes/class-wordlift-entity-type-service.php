@@ -231,10 +231,21 @@ class Wordlift_Entity_Type_Service {
 			// Get term by URI.
 			: $this->get_term_by_uri( $type_uri );
 
+		/*
+		 * We always want to assign a type to an entity otherwise it won't show in the Vocabulary and it won't be
+		 * connected to Articles via mentions. We realized that the client JS code is passing `wl-other` when the
+		 * entity type isn't "notable". In which case we couldn't find an entity type.
+		 *
+		 * When an entity type is not found, we'll now switch by default to "thing" which is the most basic entity type.
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/991
+		 *
+		 * @since 3.23.4
+		 */
 		if ( false === $term ) {
-			$this->log->warn( "No term found for URI $type_uri." );
+			$this->log->warn( "No term found for URI $type_uri, will use Thing." );
 
-			return;
+			$term = $this->get_term_by_slug( 'thing' );
 		}
 
 		$this->log->debug( "Setting entity type [ post id :: $post_id ][ term id :: $term->term_id ][ term slug :: $term->slug ][ type uri :: $type_uri ]..." );

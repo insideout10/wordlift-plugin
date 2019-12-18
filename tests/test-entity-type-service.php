@@ -259,11 +259,11 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 	/**
 	 * Add the `property` cpt to the entity types.
 	 *
-	 * @since 3.20.0
-	 *
 	 * @param array $types Custom post types.
 	 *
 	 * @return array Custom post types plus `property`.
+	 * @since 3.20.0
+	 *
 	 */
 	public function extend_default_entity_types( $types ) {
 
