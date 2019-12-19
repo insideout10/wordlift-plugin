@@ -86,12 +86,7 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
             return single_rule_group_item
         })
     }
-    /**
-     * Save the mapping item to the api,
-     * Apply some filters, build post object for saving.
-     */
-    saveMappingItem = () => {
-        const store = this.props.stateObject
+    static mapStoreKeysToAPI( store ) {
         // We create a post object to transform the ui data to Api data
         const postObject = {
             mapping_title: store.TitleSectionData.title,
@@ -100,7 +95,22 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
         }
         postObject.rule_group_list = EditComponent.mapRuleGroupListKeysToAPI(postObject.rule_group_list)
         postObject.property_list = EditComponent.mapPropertyListKeysToAPI(postObject.property_list)
-
+        return postObject
+    } 
+    /**
+     * Save the mapping item to the api,
+     * Apply some filters, build post object for saving.
+     */
+    saveMappingItem = () => {
+        const postObject = EditComponent.mapStoreKeysToAPI( this.props.stateObject)
+        fetch(editMappingSettings.rest_url, {
+            method: 'POST',
+            headers: {
+                "content-type": "application/json",
+                "X-WP-Nonce": editMappingSettings.wl_mapping_nonce,           
+            },
+            body: JSON.stringify(postObject)  
+        })
     }
     render() {
         return (

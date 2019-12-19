@@ -178,9 +178,8 @@ class Wordlift_Mapping_REST_Controller {
 	 * @param WP_REST_Request $request {@link WP_REST_Request instance}.
 	 */
 	public static function insert_or_update_mapping_item( $request ) {
-		$post_data   = $request->get_body_params();
-		$dbo = new Wordlift_Mapping_DBO();
-
+		$post_data = $request->get_json_params();
+		$dbo       = new Wordlift_Mapping_DBO();
 		// check if valid object is posted.
 		if ( array_key_exists( 'mapping_title', $post_data ) &&
 			array_key_exists( 'rule_group_list', $post_data ) &&

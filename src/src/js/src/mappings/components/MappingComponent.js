@@ -80,7 +80,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                 <table className="wp-list-table widefat striped wl-table">
                     <thead>
                         <tr>
-                            <th className="wl-check-column" onclick={this.selectAllItems()}>
+                            <th className="wl-check-column">
                                 <input type="checkbox" />
                             </th>
                             <th>
