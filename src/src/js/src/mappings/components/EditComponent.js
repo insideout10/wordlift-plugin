@@ -18,6 +18,9 @@ import RuleGroupListComponent from './RuleGroupListComponent'
 import PropertyListComponent from './PropertyListComponent'
 import { TITLE_CHANGED_ACTION } from '../actions/actions'
 
+// Set a reference to the WordLift's Edit Mapping settings stored in the window instance.
+const editMappingSettings = window["wlEditMappingsConfig"] || {};
+
  class EditComponent extends React.Component {
 
     constructor(props) {

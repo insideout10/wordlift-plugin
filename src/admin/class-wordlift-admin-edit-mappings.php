@@ -20,10 +20,25 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 	 */
 	public function __construct() {
 		// Register scripts needed to be loaded for that page.
-		wp_register_script('wl-edit-mappings-script',
+		wp_register_script(
+			'wl-edit-mappings-script',
 			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/edit_mappings.js',
 			false
 		);
+		add_action( 'init', 'Wordlift_Admin_Edit_Mappings::load_ui_dependancies' );
+	}
+	/**
+	 * Load Dependancies required for js client.
+	 */
+	public static function load_ui_dependancies() {
+		// Create ui settings array to be used by js client.
+		$edit_mapping_settings                     = array();
+		$edit_mapping_settings['rest_url']         = get_rest_url(
+			null,
+			WL_REST_ROUTE_DEFAULT_NAMESPACE . Wordlift_Mapping_REST_Controller::MAPPINGS_NAMESPACE
+		);
+		$edit_mapping_settings['wl_mapping_nonce'] = wp_create_nonce( 'wp_rest' );
+		wp_localize_script( 'wl-edit-mappings-script', 'wlEditMappingsConfig', $edit_mapping_settings );
 	}
 
 	/**
