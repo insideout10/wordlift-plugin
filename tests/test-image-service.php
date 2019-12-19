@@ -31,9 +31,9 @@ class Wordlift_Image_Service_Test extends Wordlift_Unit_Test_Case {
 		// Test with non image link.
 		$response_2 = Wordlift_Remote_Image_Service::save_from_url( 'https://en.wikipedia.org/wiki/Main_Page' );
 
-		$this->assertFalse( $response );
-		$this->assertFalse( $response_1 );
-		$this->assertFalse( $response_2 );
+		$this->assertWPError( $response );
+		$this->assertWPError( $response_1 );
+		$this->assertWPError( $response_2 );
 	}
 
 	/**
