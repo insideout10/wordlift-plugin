@@ -80,9 +80,8 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 		$user_id   = $this->factory->user->create( array( 'role' => 'administrator' ) );
 		$user      = wp_set_current_user( $user_id );		
 		$json_data = file_get_contents( __DIR__ . '/assets/fake_sync_mappings_create_edit_item.json' );
-		$post_array = json_decode( $json_data, true );
 		$request   = new WP_REST_Request( 'POST', $this->mapping_route );
-		$request->set_body_params( $post_array );		
+		$request->set_body( $json_data );		
 		$response  = $this->server->dispatch( $request );
 		// We are now going to assert against database to
 		// to check if everything is correctly saved.	

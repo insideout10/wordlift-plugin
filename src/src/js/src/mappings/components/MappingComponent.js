@@ -103,7 +103,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                         }
                         {
                             this.state.mappingItems.map((item, index)=> {
-                                return <MappingListItemComponent title={item.title}/>
+                                return <MappingListItemComponent title={item.mapping_title}/>
                             })
                         }
                     </tbody>
