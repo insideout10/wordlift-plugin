@@ -27,12 +27,77 @@ import { TITLE_CHANGED_ACTION } from '../actions/actions'
      * When the title is changed, this method saves it in the redux store.
      * @param {Object} event The event which is fired when mapping title changes
      */
-    handleTitleChange = (event)=> {
+    handleTitleChange = ( event )=> {
         const action = TITLE_CHANGED_ACTION
         action.payload = {
             value: event.target.value
         }
         this.props.dispatch(action)
+    }
+
+    /**
+     * @param {Array} rule_list List of rules
+     *  Note: if the rule_id are undefined, then dont post it, backend
+     *  creates new rule id if there is no id.
+     */
+    static mapRuleFieldKeysToAPI( rule_list ) {
+        return rule_list.map(function(rule) {
+            const single_rule = {
+                rule_field_one:rule.ruleFieldOneValue,
+                rule_field_two:rule.ruleFieldTwoValue,
+                rule_logic_field:rule.ruleLogicFieldValue,
+            }
+            rule.rule_id ? ( single_rule['rule_id'] = rule.rule_id ) : rule.rule_id;
+            return single_rule
+        })
+    }
+    /**
+     * Convert property list to api format to save the property
+     * list propertly
+     * @param {Array} property_list List of property items from ui
+     */
+    static mapPropertyListKeysToAPI( property_list ) {
+        return property_list.map((property)=>({
+            property_help_text: property.propertyHelpText,
+            field_type_help_text: property.fieldTypeHelpText,
+            field_help_text: property.fieldHelpText,
+            transform_help_text: property.transformHelpText,
+            property_id: property.property_id,
+        }))
+    }
+    /**
+     * Map Rule group list to api format to save the list.
+     * @param {Array} rule_group_list List of rule groups along with rules
+     * from ui
+     * Note: if the rule_group_ids are undefined, then dont post it, backend
+     * creates new rule group if there is no id.
+     */
+    static mapRuleGroupListKeysToAPI( rule_group_list ) {
+        return rule_group_list.map(function ( rule_group_item ){
+            const single_rule_group_item = {
+                rules: EditComponent.mapRuleFieldKeysToAPI(rule_group_item.rules),
+            }
+            if ( rule_group_item.rule_group_id ) {
+                single_rule_group_item.rule_group_id = rule_group_item.rule_group_id
+            }
+            return single_rule_group_item
+        })
+    }
+    /**
+     * Save the mapping item to the api,
+     * Apply some filters, build post object for saving.
+     */
+    saveMappingItem = () => {
+        const store = this.props.stateObject
+        // We create a post object to transform the ui data to Api data
+        const postObject = {
+            mapping_title: store.TitleSectionData.title,
+            property_list: store.PropertyListData.propertyList,
+            rule_group_list: store.RuleGroupData.ruleGroupList
+        }
+        postObject.rule_group_list = EditComponent.mapRuleGroupListKeysToAPI(postObject.rule_group_list)
+        postObject.property_list = EditComponent.mapPropertyListKeysToAPI(postObject.property_list)
+
     }
     render() {
         return (
@@ -84,7 +149,10 @@ import { TITLE_CHANGED_ACTION } from '../actions/actions'
                         <button className="button action"> Apply </button>
                     </div>
                     <div className="wl-col wl-align-right">
-                        <button className="button action"> Save </button>
+                        <button className="button action" 
+                        onClick={this.saveMappingItem}>
+                            Save
+                        </button>
                     </div>
                 </div>
             </React.Fragment>
@@ -94,7 +162,8 @@ import { TITLE_CHANGED_ACTION } from '../actions/actions'
 
 const mapStateToProps = function( state ) {
     return {
-        title: state.TitleSectionData.title
+        title: state.TitleSectionData.title,
+        stateObject: state,
     }
 }
 
