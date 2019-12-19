@@ -16,7 +16,7 @@ services:
       MYSQL_DATABASE: wordpress
 
   phpunit:
-    image: "wordpress-tests:php${PHP_VERSION:-5.6}-phpunit4.8-wordpress${WORDPRESS_VERSION:-4.4}"
+    image: "ziodave/wordpress-tests:php${PHP_VERSION:-5.6}-phpunit4.8-wordpress${WORDPRESS_VERSION:-4.4}"
     depends_on:
       - db
     volumes:
