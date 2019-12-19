@@ -61,7 +61,7 @@ class Wordlift_Remote_Image_Service {
 		// Bail if the response is not set.
 		if ( false === $response ) {
 			Wordlift_Log_Service::get_logger( 'Wordlift_Remote_Image_Service' )
-			                    ->warn( "save_image_from_url : failed to fetch the response from: $url \n" );
+			                    ->warn( "save_image_from_url : failed to fetch the response from: $url\nThe response was:\n" . var_export( $response, true ) );
 
 			return new WP_Error( 'image_error', "save_image_from_url : failed to fetch the response from: $url \n" );
 		}
