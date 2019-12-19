@@ -53,7 +53,7 @@ class Wordlift_Remote_Image_Service {
 			Wordlift_Log_Service::get_logger( 'Wordlift_Remote_Image_Service' )
 			                    ->warn( "save_image_from_url : failed creating upload dir $upload_dir \n" );
 
-			return new WP_Error( 0, "save_image_from_url : failed creating upload dir $upload_dir \n" );
+			return new WP_Error( 'image_error', "save_image_from_url : failed creating upload dir $upload_dir \n" );
 		};
 
 		$response = self::get_response( $url );
@@ -63,7 +63,7 @@ class Wordlift_Remote_Image_Service {
 			Wordlift_Log_Service::get_logger( 'Wordlift_Remote_Image_Service' )
 			                    ->warn( "save_image_from_url : failed to fetch the response from: $url \n" );
 
-			return new WP_Error( 0, "save_image_from_url : failed to fetch the response from: $url \n" );
+			return new WP_Error( 'image_error', "save_image_from_url : failed to fetch the response from: $url \n" );
 		}
 
 		// Get the content type of response.
@@ -74,7 +74,7 @@ class Wordlift_Remote_Image_Service {
 
 		// Bail if the content type is not supported.
 		if ( empty( $extension ) ) {
-			return new WP_Error( 0, 'Unsupported content type.' );
+			return new WP_Error( 'image_error', 'Unsupported content type.' );
 		}
 
 		// Complete the local filename.
