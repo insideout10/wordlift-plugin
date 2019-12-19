@@ -26,7 +26,7 @@ class Wordlift_Image_Service_Test extends Wordlift_Unit_Test_Case {
 		$response = Wordlift_Remote_Image_Service::save_from_url( 'http://example.org/404' );
 
 		// Test with SVG, which is not supported.
-		$response_1 = Wordlift_Remote_Image_Service::save_from_url( 'https://wordlift.io/wp-content/uploads/2018/02/logo-1.png' );
+		$response_1 = Wordlift_Remote_Image_Service::save_from_url( 'http://upload.wikimedia.org/wikipedia/commons/a/a6/Flag_of_Rome.svg' );
 
 		// Test with non image link.
 		$response_2 = Wordlift_Remote_Image_Service::save_from_url( 'https://en.wikipedia.org/wiki/Main_Page' );
