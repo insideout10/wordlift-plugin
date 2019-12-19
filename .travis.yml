@@ -1,6 +1,8 @@
 # We need `sudo` because we're going to install Apache with PHP.
 # See https://docs.travis-ci.com/user/ci-environment/#Virtualization-environments
 sudo: required
+# We use precise because it's the only one supporting PHP 5.2, 5.3, 5.4, 5.5, 5.6 and 7.0
+# See https://docs.travis-ci.com/user/languages/php/#php-52x---53x-support-is-available-on-precise-only
 dist: precise
 
 # Set the language to PHP since we're going to setup a WordPress web site.
@@ -114,6 +116,7 @@ services:
 
 # Legacy (required by test:js and test:php).
 before_install:
+  - echo "extension = gd.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - .ci/travis/install_ssh_key.sh
   # If we're running the PHP 5.3 compatibility reports, we need the composer deps.
   - |
