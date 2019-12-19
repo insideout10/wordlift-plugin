@@ -116,7 +116,6 @@ services:
 
 # Legacy (required by test:js and test:php).
 before_install:
-  - echo "extension = gd.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - .ci/travis/install_ssh_key.sh
   # If we're running the PHP 5.3 compatibility reports, we need the composer deps.
   - |
