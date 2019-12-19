@@ -23,10 +23,10 @@ class Wordlift_Image_Service_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_failures() {
 		// Test with 404 page.
-		$response = Wordlift_Remote_Image_Service::save_from_url( 'https://en.wikipedia.org/404' );
+		$response = Wordlift_Remote_Image_Service::save_from_url( 'http://example.org/404' );
 
 		// Test with SVG, which is not supported.
-		$response_1 = Wordlift_Remote_Image_Service::save_from_url( 'http://upload.wikimedia.org/wikipedia/commons/a/a6/Flag_of_Rome.svg' );
+		$response_1 = Wordlift_Remote_Image_Service::save_from_url( 'https://wordlift.io/wp-content/uploads/2018/02/logo-1.png' );
 
 		// Test with non image link.
 		$response_2 = Wordlift_Remote_Image_Service::save_from_url( 'https://en.wikipedia.org/wiki/Main_Page' );
@@ -42,7 +42,7 @@ class Wordlift_Image_Service_Test extends Wordlift_Unit_Test_Case {
 	 * @since 3.18.0
 	 */
 	public function test_png() {
-		$response = Wordlift_Remote_Image_Service::save_from_url( 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Flag_of_Rome.svg/2000px-Flag_of_Rome.svg.png' );
+		$response = Wordlift_Remote_Image_Service::save_from_url( 'https://cdn.wordlift.io/blog/en/wp-content/uploads/sites/3/2017/10/search-marketing192x192.png' );
 
 		$this->assertFalse( is_wp_error( $response ), 'Error: ' . ( is_wp_error( $response ) ? $response->get_error_message() : 'Unknown' ) );
 		$this->assertInternalType( 'array', $response );
@@ -56,7 +56,7 @@ class Wordlift_Image_Service_Test extends Wordlift_Unit_Test_Case {
 	 * @since 3.18.0
 	 */
 	public function test_gif() {
-		$response = Wordlift_Remote_Image_Service::save_from_url( 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Rotating_earth_%28large%29.gif/200px-Rotating_earth_%28large%29.gif' );
+		$response = Wordlift_Remote_Image_Service::save_from_url( 'https://wordlift.io/wp-content/uploads/2017/07/GIF_2_Chord_1.0.gif' );
 
 		$this->assertFalse( is_wp_error( $response ), 'Error: ' . ( is_wp_error( $response ) ? $response->get_error_message() : 'Unknown' ) );
 		$this->assertInternalType( 'array', $response, 'Expecting array, instead got: ' . var_export( $response, true ) );
@@ -70,7 +70,7 @@ class Wordlift_Image_Service_Test extends Wordlift_Unit_Test_Case {
 	 * @since 3.18.0
 	 */
 	public function test_jpg() {
-		$response = Wordlift_Remote_Image_Service::save_from_url( 'https://upload.wikimedia.org/wikipedia/commons/f/ff/Wikipedia_logo_593.jpg' );
+		$response = Wordlift_Remote_Image_Service::save_from_url( 'https://wordlift.io/wp-content/uploads/2017/07/grunauer.jpg' );
 
 		$this->assertFalse( is_wp_error( $response ), 'Error: ' . ( is_wp_error( $response ) ? $response->get_error_message() : 'Unknown' ) );
 		$this->assertInternalType( 'array', $response );
