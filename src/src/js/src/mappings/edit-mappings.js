@@ -1,6 +1,6 @@
 import React from 'react'
 import EditComponent from './components/EditComponent'
-import MappingComponent from './components/MappingComponent'
+import './mappings.css'
 import ReactDOM from 'react-dom'
 import {Provider} from 'react-redux'
 import { createStore } from 'redux'

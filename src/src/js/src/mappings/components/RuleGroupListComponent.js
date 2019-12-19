@@ -77,7 +77,6 @@ const mapStateToProps = function(state){
     return {
         ruleGroupList: state.RuleGroupData.ruleGroupList,
     }
-
 }
 
 export default connect(mapStateToProps)(RuleGroupListComponent)
