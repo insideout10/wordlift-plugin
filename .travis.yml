@@ -125,6 +125,7 @@ before_install:
   # If we're running the PHP tests, we need a WP test site.
   - |
     if [[ "$SCRIPT" == "test:php" || "$SCRIPT" == "test:php-test-coverage" || "$SCRIPT" == "test:multisite" ]]; then
+      .ci/travis/install_requirements.sh
       bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
       composer install --dev
       phpunit --version
