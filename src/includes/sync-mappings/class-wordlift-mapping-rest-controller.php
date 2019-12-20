@@ -196,7 +196,17 @@ class Wordlift_Mapping_REST_Controller {
 			// lets save the mapping item.
 			$mapping_id = $dbo->insert_or_update_mapping_item( $mapping_item );
 			self::save_rule_group_list( $dbo, $mapping_id, $post_data['rule_group_list'] );
-			self::save_property_list( $dbo, $mapping_id, $post_data['property_list'] );
+			self::save_property_list( $dbo, $mapping_id, $post_data['property_list'] );	
+			return array(
+				'status'  => 'success',
+				'message' => __( 'Successfully saved mapping item', 'wordlift' )
+			);
+		}
+		else {
+			return array(
+				'status'  => 'error',
+				'message' => __( 'Unable to save mapping item', 'wordlift' ),
+			);
 		}
 	}
 }

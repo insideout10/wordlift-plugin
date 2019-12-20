@@ -8,7 +8,7 @@
 /**
  * Internal dependancies
  */
-import { ADD_NEW_RULE, ADD_NEW_RULE_GROUP, DELETE_RULE, CHANGE_RULE_FIELD_VALUE, OPEN_OR_CLOSE_PROPERTY, PROPERTY_DATA_CHANGED, ADD_MAPPING, TITLE_CHANGED, PROPERTY_LIST_CHANGED, MAPPING_HEADER_CHANGED, RULE_GROUP_LIST_CHANGED } from '../actions/actionTypes'
+import { ADD_NEW_RULE, ADD_NEW_RULE_GROUP, DELETE_RULE, CHANGE_RULE_FIELD_VALUE, OPEN_OR_CLOSE_PROPERTY, PROPERTY_DATA_CHANGED, ADD_MAPPING, TITLE_CHANGED, PROPERTY_LIST_CHANGED, MAPPING_HEADER_CHANGED, RULE_GROUP_LIST_CHANGED, NOTIFICATION_CHANGED } from '../actions/actionTypes'
 import { createReducer } from '@reduxjs/toolkit'
 
  /**
@@ -132,3 +132,15 @@ export const RuleGroupReducer = createReducer(null, {
     },
 })
 
+/**
+  * Reducer to handle the notification section
+  */
+ export const NotificationReducer = createReducer(null, {
+    /**
+     * When the notification is changed, then we trigger the action
+     */
+    [NOTIFICATION_CHANGED]: ( state, action )=> {
+        state.message = action.payload.message
+        state.type = action.payload.type
+    },
+})

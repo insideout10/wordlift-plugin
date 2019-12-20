@@ -16,7 +16,7 @@ import { connect } from 'react-redux'
  */
 import RuleGroupListComponent from './RuleGroupListComponent'
 import PropertyListComponent from './PropertyListComponent'
-import { TITLE_CHANGED_ACTION, PROPERTY_LIST_CHANGED_ACTION, RULE_GROUP_LIST_CHANGED_ACTION, MAPPING_HEADER_CHANGED_ACTION } from '../actions/actions'
+import { TITLE_CHANGED_ACTION, PROPERTY_LIST_CHANGED_ACTION, RULE_GROUP_LIST_CHANGED_ACTION, MAPPING_HEADER_CHANGED_ACTION, NOTIFICATION_CHANGED_ACTION } from '../actions/actions'
 import EditComponentMapping from '../mappings/EditComponentMapping'
 
 // Set a reference to the WordLift's Edit Mapping settings stored in the window instance.
@@ -100,12 +100,26 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
                 "X-WP-Nonce": editMappingSettings.wl_edit_mapping_rest_nonce,           
             },
             body: JSON.stringify(postObject)  
-        })
+        }).then( response => response.json().then(
+            data => {
+               const notification_changed_action = NOTIFICATION_CHANGED_ACTION
+                notification_changed_action.payload = {
+                    message: data.message,
+                    type: data.status,
+                }
+                this.props.dispatch(notification_changed_action)
+            }
+        ))
     }
     render() {
         return (
             <React.Fragment>
-                 <br /> <br />
+                {
+                    "" != this.props.notificationData.message &&
+                    <div className={'notice notice-' + this.props.notificationData.type + ' is-dismissible'}>
+                        <p>{this.props.notificationData.message}</p>
+                    </div>
+                }
                 <input type="text"
                     className="wl-form-control wl-input-class"
                     value={this.props.title}
@@ -166,6 +180,7 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
 const mapStateToProps = function( state ) {
     return {
         title: state.TitleSectionData.title,
+        notificationData: state.NotificationData,
         stateObject: state,
     }
 }

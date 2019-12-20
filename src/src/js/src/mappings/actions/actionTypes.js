@@ -70,3 +70,9 @@ export const RULE_GROUP_LIST_CHANGED = "RULE_GROUP_LIST_CHANGED"
  * Action when mapping header is changed by api, usually consists of title and mapping id. 
  */
 export const MAPPING_HEADER_CHANGED = "MAPPING_HEADER_CHANGED"
+
+/**
+ * @const NOTIFICATION_CHANGED
+ * Action when notification is sent by api.
+ */
+export const NOTIFICATION_CHANGED = "NOTIFICATION_CHANGED"

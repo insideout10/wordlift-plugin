@@ -1,5 +1,5 @@
 import { combineReducers, createStore } from 'redux'
-import { RuleGroupReducer, PropertyReducer, TitleReducer } from '../reducers/reducers'
+import { RuleGroupReducer, PropertyReducer, TitleReducer, NotificationReducer } from '../reducers/reducers'
 
 const options = [
     { value: 'one', label: 'one' },
@@ -8,6 +8,10 @@ const options = [
 ]
 
 export const MOCK_INITIAL_STATE = {
+    NotificationData: {
+        message: "",
+        type: "",
+    },
     TitleSectionData: {
         title: "foo title"
     },
@@ -51,5 +55,6 @@ export const MOCK_INITIAL_STATE = {
 export const mock_reducers = combineReducers({
     RuleGroupData: RuleGroupReducer,
     PropertyListData: PropertyReducer,
-    TitleSectionData: TitleReducer
+    TitleSectionData: TitleReducer,
+    NotificationData: NotificationReducer,
 })
