@@ -16,6 +16,13 @@ export default class MappingListItemComponent extends React.Component {
     constructor(props) {
         super(props)
     }
+    constructEditMappingLink = ()=> {
+        return '?page=wl_edit_mapping' 
+        + '&_wl_edit_mapping_nonce=' 
+        + this.props.nonce
+        + '&wl_edit_mapping_id='
+        + this.props.mappingId
+    }
     render() {
         return  ( 
             <tr>
@@ -28,7 +35,7 @@ export default class MappingListItemComponent extends React.Component {
                     </a>
                     <div class="row-actions">
                         <span class="edit">
-                            <a href="?page=wl_edit_mapping">
+                            <a href={this.constructEditMappingLink()}>
                                 Edit
                             </a>
                             | 
