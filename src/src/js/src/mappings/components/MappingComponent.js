@@ -22,11 +22,17 @@ const mappingSettings = window["wlMappingsConfig"] || {};
      state = {
          // The list of mapping items loaded from api
         mappingItems: this.props.mappingItems,
-        // Selected items are the ones selected with checkbox
-        selectedItems: [],
      }
      componentDidMount() {
          this.getMappingItems()
+     }
+     selectAllMappingItems = ( category ) => {
+        this.setState({
+            mappingItems: this.state.mappingItems.map(item => {
+                item.is_selected = !item.is_selected
+                return item
+            })
+        })
      }
      /**
       * Add some keys to mapping items before setting it as
@@ -80,7 +86,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                     <thead>
                         <tr>
                             <th className="wl-check-column">
-                                <input type="checkbox" />
+                                <input type="checkbox" onClick={this.selectAllMappingItems} />
                             </th>
                             <th>
                                 <a className="row-title">Title</a>
@@ -104,6 +110,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                             this.state.mappingItems.map((item, index)=> {
                                 return <MappingListItemComponent title={item.mapping_title}
                                 nonce={mappingSettings.wl_edit_mapping_nonce}
+                                isSelected={item.is_selected}
                                 mappingId={item.mapping_id}/>
                             })
                         }

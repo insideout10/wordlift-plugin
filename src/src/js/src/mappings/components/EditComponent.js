@@ -142,13 +142,13 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
                         <td colSpan={0}>
                         <b>Rules</b> 
                         </td>
-                        <td colSpan={2}>
+                        <td>
                         </td>
                     </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td className="wl-bg-light wl-description" colSpan={2}>
+                            <td className="wl-bg-light wl-description">
                                 Here we show the help text
                             </td>
                             <td>
@@ -157,7 +157,6 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
                                     <RuleGroupListComponent />
                                 </div>
                             </td>
-
                         </tr>
                     </tbody>
                 </table>

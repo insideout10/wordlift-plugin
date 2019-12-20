@@ -1,6 +1,5 @@
 /**
- * EditComponentMapping : This maps the ui keys with api response keys and vice
- * versa.
+ * EditComponentMapping : This maps the ui keys with api response keys and vice versa.
  * 
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * @since 3.24.0

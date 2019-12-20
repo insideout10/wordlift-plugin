@@ -58,7 +58,8 @@ class Wordlift_Install_3_25_0 extends Wordlift_Install {
 		$sql             = <<<EOF
         CREATE TABLE $table_name (
 			mapping_id INT(11) NOT NULL AUTO_INCREMENT, 
-			mapping_title VARCHAR(255) NOT NULL, 
+			mapping_title VARCHAR(255) NOT NULL,
+			mapping_status VARCHAR(255) NOT NULL,
 			PRIMARY KEY  (mapping_id)
         ) $charset_collate;
 EOF;

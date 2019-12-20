@@ -27,7 +27,7 @@ export default class MappingListItemComponent extends React.Component {
         return  ( 
             <tr>
                 <td class="wl-check-column">
-                    <input type="checkbox" />
+                    <input type="checkbox" checked={this.props.isSelected }/>
                 </td>
                 <td>
                     <a class="row-title wl-mappings-list-item-title">
