@@ -178,7 +178,6 @@ class Wordlift_Mapping_REST_Controller {
 	 * @param WP_REST_Request $request {@link WP_REST_Request instance}.
 	 */
 	public static function insert_or_update_mapping_item( $request ) {
-		var_dump( $request->get_params() );
 		$post_data = $request->get_params();
 		if ( null === $post_data ) {
 			$post_data = array();
