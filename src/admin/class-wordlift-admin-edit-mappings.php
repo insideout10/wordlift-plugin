@@ -26,6 +26,20 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 			false
 		);
 		add_action( 'init', 'Wordlift_Admin_Edit_Mappings::load_ui_dependancies' );
+		$that = $this;
+		add_action( 'admin_menu', array( $that, 'add_edit_mapping_menu_entry' ) );
+	}
+	/** Add menu entry but dont show in sidebar */
+	public function add_edit_mapping_menu_entry() {
+		$that = $this;
+		add_submenu_page(
+			null,
+			__( 'Add/Edit Mappings', 'wordlift' ),
+			__( 'Add/Edit Mappings', 'wordlift' ),
+			'manage_options',
+			'wl_edit_mapping',
+			array( $that, 'render' )
+		);
 	}
 	/**
 	 * Load Dependancies required for js client.

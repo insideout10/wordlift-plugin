@@ -300,16 +300,6 @@ class Wordlift {
 	 * @var \Wordlift_Admin_Sync_Mappings_Page $sync_mappings_page The sync mappings page.
 	 */
 	private $sync_mappings_page;
-
-	/**
-	 * The 'Edit Mappings' page.
-	 *
-	 * @since  3.24.0
-	 * @access private
-	 * @var \Wordlift_Admin_Edit_Mappings $edit_mappings_page The edit mappings page.
-	 */
-	private $edit_mappings_page;
-
 	/**
 	 * The 'WordLift Settings' page.
 	 *
@@ -1640,7 +1630,6 @@ class Wordlift {
 		 */
 		$this->loader->add_action( 'admin_menu', $this->sync_mappings_mockup_page, 'admin_menu', 100, 0 );
 		$this->loader->add_action( 'admin_menu', $this->sync_mappings_page, 'admin_menu', 100, 0 );
-		$this->loader->add_action( 'admin_menu', $this->edit_mappings_page, 'admin_menu', 100, 0 );
 		// Hook the admin-ajax.php?action=wl_download_your_data&out=xyz links.
 		$this->loader->add_action( 'wp_ajax_wl_download_your_data', $this->download_your_data_page, 'download_your_data', 10 );
 
