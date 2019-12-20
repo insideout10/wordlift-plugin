@@ -32,6 +32,12 @@ class RuleGroupListComponent extends React.Component {
         return (
             <React.Fragment>
                 {
+                    0 === this.props.ruleGroupList.length &&
+                    <div className="wl-col">
+                        No rule groups present, click on add new
+                    </div>
+                }
+                {
                     
                     this.props.ruleGroupList.map((item, index)=> {
                         return (

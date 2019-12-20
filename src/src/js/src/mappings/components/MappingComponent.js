@@ -71,11 +71,10 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                 <h1 className="wp-heading-inline wl-mappings-heading-text">
                     Mappings
                     &nbsp;&nbsp;
-                    <button className="button wl-mappings-add-new">
-                        <a href="?page=wl_edit_mapping">
-                            Add New
-                        </a>
-                    </button>
+                    <a href="?page=wl_edit_mapping" className="button wl-mappings-add-new">
+                        Add New
+                    </a>
+
                 </h1>
                 <table className="wp-list-table widefat striped wl-table">
                     <thead>
@@ -124,7 +123,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                     <div className="alignleft actions bulkactions">
                         <label htmlFor="bulk-action-selector-bottom" className="screen-reader-text">Select bulk action</label>
                         <select name="action2" id="bulk-action-selector-bottom">
-                            <option value={-1}>Bulk Actions</option>
+                            <option disabled>Bulk Actions</option>
                             <option value="acfduplicate">Duplicate</option>
                             <option value="trash">Move to Trash</option>
                         </select>

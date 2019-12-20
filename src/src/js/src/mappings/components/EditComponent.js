@@ -148,7 +148,7 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
                     </thead>
                     <tbody>
                         <tr>
-                            <td className="wl-bg-light wl-description">
+                            <td className="wl-bg-light wl-description" colSpan={2}>
                                 Here we show the help text
                             </td>
                             <td>
@@ -177,7 +177,8 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
                     </div>
                     <div className="wl-col wl-align-right">
                         <button className="button action" 
-                        onClick={this.saveMappingItem}>
+                        onClick={this.saveMappingItem}
+                        disabled={this.props.title === ""}>
                             Save
                         </button>
                     </div>

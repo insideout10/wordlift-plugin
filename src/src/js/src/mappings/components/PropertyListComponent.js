@@ -69,39 +69,47 @@ class PropertyListComponent extends React.Component {
             <React.Fragment>
                 <table className="wp-list-table widefat striped wl-table wl-container-full">
                         <thead>
-                        <tr>
-                            <th className="wl-check-column">
-                            <input type="checkbox" /> 
-                            </th>
-                            <th style={{width: '30%'}}>
-                            <b>Property</b>
-                            </th>
-                            <th>
-                            <b>Field</b>
-                            </th>
-                        </tr>
+                            <tr>
+                                <th className="wl-check-column">
+                                <input type="checkbox" /> 
+                                </th>
+                                <th style={{width: '30%'}}>
+                                <b>Property</b>
+                                </th>
+                                <th>
+                                <b>Field</b>
+                                </th>
+                            </tr>
                         </thead>
                         <tbody>
+                            {
+                                0 === this.props.propertyList.length &&
+                                <tr>
+                                    <td colSpan={2} className="text-center">
+                                        No properties present, click on add new
+                                    </td>
+                                </tr>
+                            }
                   
-                        {
-                            this.props.propertyList.map((property, index) => {
+                            {
+                                this.props.propertyList.map((property, index) => {
 
-                                return (
-                                    <tr className="wl-property-list-item-container">
-                                            <td className="wl-check-column">
-                                                <input type="checkbox" />
-                                            </td>
-                                            <td>
-                                                { 
-                                                    this.renderListComponentBasedOnState(property, index)
-                                                }
-                                            </td>
-                                        <td />
-                                    </tr>
-                                )
-                            })
-                        }   
-                        <tr className="wl-text-right">
+                                    return (
+                                        <tr className="wl-property-list-item-container">
+                                                <td className="wl-check-column">
+                                                    <input type="checkbox" />
+                                                </td>
+                                                <td>
+                                                    { 
+                                                        this.renderListComponentBasedOnState(property, index)
+                                                    }
+                                                </td>
+                                            <td />
+                                        </tr>
+                                    )
+                                })
+                            }   
+                            <tr className="wl-text-right">
                            <td />
                            <td />
                             <td><br />
