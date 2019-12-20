@@ -207,4 +207,35 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 		$this->assertEquals( $mapping_id, $response_data['mapping_id'] );
 	}
 
+	/** When list of mapping items posted to update endpoint, we need to update mapping items */
+	public function test_multiple_mapping_item_posted_to_update_endpoint_should_update() {
+		$user_id   = $this->factory->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $user_id );	
+		$dbo = new Wordlift_Mapping_DBO();
+		// Lets make 2 mapping items on db.
+		$mapping_id_1 = $dbo->insert_mapping_item( 'foo' );
+		$mapping_id_2 = $dbo->insert_mapping_item( 'bar' );
+		// Lets make a post array.
+		$post_array = array(
+			array(
+				'mapping_id'     => $mapping_id_1,
+				'mapping_title'  => 'foo',
+				'mapping_status' => 'trash',
+			),
+			array(
+				'mapping_id'     => $mapping_id_2,
+				'mapping_title'  => 'bar',
+				'mapping_status' => '',
+			),
+		);
+		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
+		$json_data = json_encode( $post_array );
+		$request   = new WP_REST_Request( 'PUT', $this->mapping_route );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( $json_data );		
+		$response = $this->server->dispatch( $request );
+		$this->assertEquals( 200, $response->get_status() );
+		$trash_count = $this->wpdb->get_var( "SELECT COUNT(mapping_id) as total FROM $mapping_table_name WHERE mapping_status='trash'" );
+		$this->assertEquals( 1, $trash_count );
+	}
 }

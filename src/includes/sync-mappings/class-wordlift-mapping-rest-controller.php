@@ -91,6 +91,34 @@ class Wordlift_Mapping_REST_Controller {
 				},
 			)
 		);
+
+		// Update mapping items.
+		register_rest_route(
+			WL_REST_ROUTE_DEFAULT_NAMESPACE,
+			'sync-mappings/mappings',
+			array(
+				'methods'             => WP_REST_Server::EDITABLE,
+				'callback'            => 'Wordlift_Mapping_REST_Controller::update_mapping_items',
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+	}
+
+	/**
+	 * Update posted mapping items.
+	 *
+	 * @param WP_REST_Request $request {@link WP_REST_Request instance}.
+	 */
+	public static function update_mapping_items( $request ) {
+		$dbo = new Wordlift_Mapping_DBO();
+		$post_data = $request->get_params();
+		if ( null !== $post_data ) {
+			foreach ( $post_data as $mapping_item ) {
+				$dbo->insert_or_update_mapping_item( $mapping_item );
+			}
+		}
 	}
 
 	/**

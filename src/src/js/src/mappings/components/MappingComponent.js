@@ -134,9 +134,9 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                 </table>
                 <div className="tablenav bottom">
                     <div className="alignleft actions bulkactions">
-                        <label htmlFor="bulk-action-selector-bottom" className="screen-reader-text">Select bulk action</label>
+
                         <select name="action2" id="bulk-action-selector-bottom">
-                            <option disabled>Bulk Actions</option>
+                            <option disabled selected>Bulk Actions</option>
                             <option value="acfduplicate">Duplicate</option>
                             <option value="trash">Move to Trash</option>
                         </select>
