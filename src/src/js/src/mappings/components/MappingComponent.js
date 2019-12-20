@@ -14,6 +14,8 @@ import React from 'react'
  * Internal dependencies
  */
 import MappingListItemComponent from './MappingListItemComponent'
+import { MAPPING_LIST_CHANGED_ACTION } from '../actions/actions';
+import { connect } from 'react-redux'
 
 // Set a reference to the WordLift's Mapping settings stored in the window instance.
 const mappingSettings = window["wlMappingsConfig"] || {};
@@ -25,14 +27,6 @@ const mappingSettings = window["wlMappingsConfig"] || {};
      }
      componentDidMount() {
          this.getMappingItems()
-     }
-     selectAllMappingItems = ( category ) => {
-        this.setState({
-            mappingItems: this.state.mappingItems.map(item => {
-                item.is_selected = !item.is_selected
-                return item
-            })
-        })
      }
      /**
       * Add some keys to mapping items before setting it as
@@ -64,10 +58,12 @@ const mappingSettings = window["wlMappingsConfig"] || {};
             }
         )
         .then(response => response.json().then(
-            data=> {
-                this.setState({
-                    mappingItems:MappingComponent.applyUiItemFilters(data)
-                })
+            data => {
+                const action = MAPPING_LIST_CHANGED_ACTION
+                action.payload  = {    
+                    value: MappingComponent.applyUiItemFilters(data)
+                }
+                this.props.dispatch( action )
             }
         ))
      }
@@ -80,7 +76,6 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                     <a href="?page=wl_edit_mapping" className="button wl-mappings-add-new">
                         Add New
                     </a>
-
                 </h1>
                 <table className="wp-list-table widefat striped wl-table">
                     <thead>
@@ -96,7 +91,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                     <tbody>
                         {
                             // show empty screen when there is no mapping items
-                            0 === this.state.mappingItems.length &&
+                            0 === this.props.mapping_items.length &&
                                 <tr>
                                     <td colspan="3">
                                         <div className="wl-container text-center">
@@ -107,7 +102,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                                 </tr> 
                         }
                         {
-                            this.state.mappingItems.map((item, index)=> {
+                            this.props.mapping_items.map((item, index)=> {
                                 return <MappingListItemComponent title={item.mapping_title}
                                 nonce={mappingSettings.wl_edit_mapping_nonce}
                                 isSelected={item.is_selected}
@@ -142,4 +137,10 @@ const mappingSettings = window["wlMappingsConfig"] || {};
      }
  }
 
- export default MappingComponent
+const mapStateToProps = function(state){ 
+    return {
+        mapping_items: state.mapping_items,
+    }
+}
+
+export default connect(mapStateToProps)(MappingComponent)

@@ -1,12 +1,22 @@
 import React from 'react'
 import MappingComponent from './components/MappingComponent'
 import ReactDOM from 'react-dom'
+import {Provider} from 'react-redux'
 import { createStore } from 'redux'
-import {MOCK_INITIAL_STATE, mock_reducers } from './tests/MockStore'
 import './mappings.css'
-const MOCK_STORE = createStore(mock_reducers, MOCK_INITIAL_STATE)
+import { MappingListReducer } from './reducers/mapping_list_reducers'
 
+
+const MAPPINGS_INITIAL_STATE = {
+    mapping_items: [],
+    categories: [],
+    selected_items: [],
+}
+
+const store = createStore(MappingListReducer, MAPPINGS_INITIAL_STATE)
 
 ReactDOM.render(
-    <MappingComponent mappingItems={[]}/>,
+    <Provider store={store}>
+        <MappingComponent />
+    </Provider>,
     document.getElementById("container"))

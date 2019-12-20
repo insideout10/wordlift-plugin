@@ -76,3 +76,9 @@ export const MAPPING_HEADER_CHANGED = "MAPPING_HEADER_CHANGED"
  * Action when notification is sent by api.
  */
 export const NOTIFICATION_CHANGED = "NOTIFICATION_CHANGED"
+
+/**
+ * @const MAPPING_LIST_CHANGED
+ * Action when notification is sent by api.
+ */
+export const MAPPING_LIST_CHANGED = "MAPPING_LIST_CHANGED"

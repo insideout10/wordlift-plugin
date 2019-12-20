@@ -110,3 +110,9 @@
 .text-center {
     text-align: center !important;
 }
+.wl-col-30 {
+    width: 30%;
+}
+.wl-col-70 {
+    width: 70%;
+}

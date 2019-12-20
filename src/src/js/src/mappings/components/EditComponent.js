@@ -139,8 +139,8 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
                 <table className="wp-list-table widefat striped wl-table wl-container-full">
                     <thead>
                     <tr>
-                        <td colSpan={0}>
-                        <b>Rules</b> 
+                        <td>
+                            <b>Rules</b> 
                         </td>
                         <td>
                         </td>
@@ -148,10 +148,10 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
                     </thead>
                     <tbody>
                         <tr>
-                            <td className="wl-bg-light wl-description">
+                            <td className="wl-bg-light wl-description wl-col-30">
                                 Here we show the help text
                             </td>
-                            <td>
+                            <td className="wl-col-70">
                                 <div>
                                     <b>Use the mapping if</b>
                                     <RuleGroupListComponent />
