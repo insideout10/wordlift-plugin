@@ -38,7 +38,9 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
         this.props.dispatch(action)
     }
     componentDidMount() {
-        this.getMappingItemByMappingId()
+        if (editMappingSettings.wl_edit_mapping_id != undefined) {
+            this.getMappingItemByMappingId()
+        }
     }
 
     /**
@@ -64,7 +66,6 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
                     title: data.mapping_title,
                     mapping_id: data.mapping_id,
                 }
-                console.log( mapping_header_action )
                 this.props.dispatch(mapping_header_action, data.mapping_title)
 
                 //Dispatch property list changed after applying filters
@@ -219,7 +220,7 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
                     <tbody>
                         <tr>
                             <td className="wl-bg-light wl-description">
-                            Here we show the help text
+                                Here we show the help text
                             </td>
                             <td>
                                 <div>
