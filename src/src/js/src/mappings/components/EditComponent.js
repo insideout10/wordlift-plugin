@@ -122,7 +122,15 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
                     </div>
                     
                 }
-                
+                <h1 className="wp-heading-inline wl-mappings-heading-text">
+                    {
+                        editMappingSettings.wl_edit_mapping_id === undefined ? (
+                            editMappingSettings.wl_add_mapping_text
+                        ) : (
+                            editMappingSettings.wl_edit_mapping_text
+                        )
+                    }
+                </h1>               
                 <input type="text"
                     className="wl-form-control wl-input-class"
                     value={this.props.title}
@@ -149,8 +157,7 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
                                     <RuleGroupListComponent />
                                 </div>
                             </td>
-                            <td>
-                            </td>
+
                         </tr>
                     </tbody>
                 </table>

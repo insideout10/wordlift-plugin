@@ -3,12 +3,47 @@ import EditComponent from './components/EditComponent'
 import './mappings.css'
 import ReactDOM from 'react-dom'
 import {Provider} from 'react-redux'
-import { createStore } from 'redux'
-import {MOCK_INITIAL_STATE, mock_reducers } from './tests/MockStore'
-const MOCK_STORE = createStore(mock_reducers, MOCK_INITIAL_STATE)
+import { createStore, combineReducers } from 'redux'
+import { RuleGroupReducer, PropertyReducer, TitleReducer, NotificationReducer } from './reducers/reducers'
+
+const options = [
+    { value: 'one', label: 'one' },
+    { value: 'two', label: 'two' },
+    { value: 'three', label: 'three' }
+]
+
+const INITIAL_STATE = {
+    NotificationData: {
+        message: "",
+        type: "",
+    },
+    TitleSectionData: {
+        title: ""
+    },
+    RuleGroupData: {
+        ruleFieldOneOptions: options,
+        ruleFieldTwoOptions: options,
+        ruleLogicFieldOptions: options,
+        ruleGroupList: []
+    },
+    PropertyListData: {
+        fieldTypeHelpTextOptions:options,
+        transformHelpTextOptions:options,
+        propertyList: []
+    }
+}
+
+const reducers = combineReducers({
+    RuleGroupData: RuleGroupReducer,
+    PropertyListData: PropertyReducer,
+    TitleSectionData: TitleReducer,
+    NotificationData: NotificationReducer,
+})
+
+const store = createStore(reducers, INITIAL_STATE)
 
 ReactDOM.render(
-    <Provider store={MOCK_STORE}>
+    <Provider store={store}>
         <EditComponent />
     </Provider>,
     document.getElementById("container"))
