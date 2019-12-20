@@ -9,7 +9,7 @@ const options = [
 
 export const MOCK_INITIAL_STATE = {
     TitleSectionData: {
-        title: "foo"
+        title: "foo title"
     },
     RuleGroupData: {
         ruleFieldOneOptions: options,

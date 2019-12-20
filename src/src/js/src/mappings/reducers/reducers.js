@@ -8,7 +8,7 @@
 /**
  * Internal dependancies
  */
-import { ADD_NEW_RULE, ADD_NEW_RULE_GROUP, DELETE_RULE, CHANGE_RULE_FIELD_VALUE, OPEN_OR_CLOSE_PROPERTY, PROPERTY_DATA_CHANGED, ADD_MAPPING, TITLE_CHANGED } from '../actions/actionTypes'
+import { ADD_NEW_RULE, ADD_NEW_RULE_GROUP, DELETE_RULE, CHANGE_RULE_FIELD_VALUE, OPEN_OR_CLOSE_PROPERTY, PROPERTY_DATA_CHANGED, ADD_MAPPING, TITLE_CHANGED, PROPERTY_LIST_CHANGED } from '../actions/actionTypes'
 import { createReducer } from '@reduxjs/toolkit'
 
  /**
@@ -94,6 +94,14 @@ export const RuleGroupReducer = createReducer(null, {
             fieldHelpText: "",
             transformHelpText: ""
         })
+    },
+    /**
+     * When property list is changed from api, then change
+     * it on the store, this action is dispatched after the 
+     * network request.
+     */
+    [PROPERTY_LIST_CHANGED]: ( state, action )=> {
+        state.propertyList = action.payload.value
     }
 })
 

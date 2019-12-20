@@ -37,7 +37,7 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 			null,
 			WL_REST_ROUTE_DEFAULT_NAMESPACE . Wordlift_Mapping_REST_Controller::MAPPINGS_NAMESPACE
 		);
-		$edit_mapping_settings['wl_mapping_nonce'] = wp_create_nonce( 'wp_rest' );
+		$edit_mapping_settings['wl_edit_mapping_rest_nonce'] = wp_create_nonce( 'wp_rest' );
 		if ( wp_verify_nonce( $_REQUEST['_wl_edit_mapping_nonce'], 'wl-edit-mapping-nonce' ) ) {
 			$edit_mapping_settings['wl_edit_mapping_id'] = $_REQUEST['wl_edit_mapping_id'];
 		}

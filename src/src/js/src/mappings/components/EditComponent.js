@@ -16,7 +16,7 @@ import { connect } from 'react-redux'
  */
 import RuleGroupListComponent from './RuleGroupListComponent'
 import PropertyListComponent from './PropertyListComponent'
-import { TITLE_CHANGED_ACTION } from '../actions/actions'
+import { TITLE_CHANGED_ACTION, PROPERTY_LIST_CHANGED_ACTION } from '../actions/actions'
 
 // Set a reference to the WordLift's Edit Mapping settings stored in the window instance.
 const editMappingSettings = window["wlEditMappingsConfig"] || {};
@@ -36,6 +36,47 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
             value: event.target.value
         }
         this.props.dispatch(action)
+    }
+    componentDidMount() {
+        this.getMappingItemByMappingId()
+    }
+
+    /**
+     * Get edit mapping item if the mapping id is supplied
+     * via the url
+     */
+    getMappingItemByMappingId() {
+        const url  = editMappingSettings.rest_url + "/" + editMappingSettings.wl_edit_mapping_id
+        fetch(url,
+            {
+                method: "GET",
+                headers: {
+                    "content-type": "application/json",
+                    "X-WP-Nonce": editMappingSettings.wl_edit_mapping_rest_nonce
+                }
+            }
+        )
+        .then(response => response.json().then(
+            data=> {
+                // Dispatch title changed
+                const title_action = TITLE_CHANGED_ACTION
+                title_action.payload = {
+                    value: data.mapping_title
+                }
+                this.props.dispatch(title_action, data.mapping_title)
+
+                //Dispatch property list changed after applying filters
+                const property_list_action = PROPERTY_LIST_CHANGED_ACTION
+                property_list_action.payload = {
+                    value: EditComponent.mapPropertyAPIKeysToUi(data.property_list)
+                }
+                this.props.dispatch(property_list_action)
+
+                // Dispatch rule group list changed after applying filters
+                
+
+            }
+        ))
     }
 
     /**
@@ -65,6 +106,21 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
             field_type_help_text: property.fieldTypeHelpText,
             field_help_text: property.fieldHelpText,
             transform_help_text: property.transformHelpText,
+            property_id: property.property_id,
+        }))
+    }
+
+    /**
+     * Convert property list API Response to ui format
+     * @param {Array} property_list The list of properties
+     * from API.
+     */
+    static mapPropertyAPIKeysToUi( property_list ) {
+        return property_list.map((property)=>({
+            propertyHelpText:property.property_help_text,
+            fieldTypeHelpText: property.field_type_help_text,
+            fieldHelpText: property.field_help_text,
+            transformHelpText: property.transform_help_text,
             property_id: property.property_id,
         }))
     }
@@ -118,7 +174,7 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
                  <br /> <br />
                 <input type="text"
                     className="wl-form-control wl-input-class"
-                    defaultValue={this.props.title}
+                    value={this.props.title}
                     onChange={(e)=> {this.handleTitleChange(e)}}/>
                     <br /> <br />
                 <table className="wp-list-table widefat striped wl-table wl-container-full">

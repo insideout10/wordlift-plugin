@@ -52,3 +52,9 @@ export const ADD_MAPPING = "ADD_MAPPING"
  * Action when add mapping button is clicked
  */
 export const TITLE_CHANGED = "TITLE_CHANGED"
+
+/**
+ * @const PROPERTY_LIST_CHANGED
+ * Action when property list changed by data from api.
+ */
+export const PROPERTY_LIST_CHANGED = "PROPERTY_LIST_CHANGED"
