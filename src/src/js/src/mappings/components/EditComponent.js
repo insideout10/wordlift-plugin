@@ -114,12 +114,15 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
     render() {
         return (
             <React.Fragment>
+              
                 {
                     "" != this.props.notificationData.message &&
                     <div className={'notice notice-' + this.props.notificationData.type + ' is-dismissible'}>
                         <p>{this.props.notificationData.message}</p>
                     </div>
+                    
                 }
+                
                 <input type="text"
                     className="wl-form-control wl-input-class"
                     value={this.props.title}
