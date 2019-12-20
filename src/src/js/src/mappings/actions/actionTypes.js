@@ -58,3 +58,15 @@ export const TITLE_CHANGED = "TITLE_CHANGED"
  * Action when property list changed by data from api.
  */
 export const PROPERTY_LIST_CHANGED = "PROPERTY_LIST_CHANGED"
+
+/**
+ * @const RULE_GROUP_LIST_CHANGED
+ * Action when rule group list changed by data from api.
+ */
+export const RULE_GROUP_LIST_CHANGED = "RULE_GROUP_LIST_CHANGED"
+
+/**
+ * @const MAPPING_HEADER_CHANGED
+ * Action when mapping header is changed by api, usually consists of title and mapping id. 
+ */
+export const MAPPING_HEADER_CHANGED = "MAPPING_HEADER_CHANGED"

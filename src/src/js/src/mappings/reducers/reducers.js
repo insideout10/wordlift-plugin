@@ -8,7 +8,7 @@
 /**
  * Internal dependancies
  */
-import { ADD_NEW_RULE, ADD_NEW_RULE_GROUP, DELETE_RULE, CHANGE_RULE_FIELD_VALUE, OPEN_OR_CLOSE_PROPERTY, PROPERTY_DATA_CHANGED, ADD_MAPPING, TITLE_CHANGED, PROPERTY_LIST_CHANGED } from '../actions/actionTypes'
+import { ADD_NEW_RULE, ADD_NEW_RULE_GROUP, DELETE_RULE, CHANGE_RULE_FIELD_VALUE, OPEN_OR_CLOSE_PROPERTY, PROPERTY_DATA_CHANGED, ADD_MAPPING, TITLE_CHANGED, PROPERTY_LIST_CHANGED, MAPPING_HEADER_CHANGED, RULE_GROUP_LIST_CHANGED } from '../actions/actionTypes'
 import { createReducer } from '@reduxjs/toolkit'
 
  /**
@@ -56,6 +56,13 @@ export const RuleGroupReducer = createReducer(null, {
     [CHANGE_RULE_FIELD_VALUE]: ( state, action )=> {
         const { ruleGroupIndex,ruleIndex,fieldKey,value } = action.payload
         state.ruleGroupList[ruleGroupIndex].rules[ruleIndex][fieldKey] = value
+    },
+
+    /** When rule group list is changed by data from api, this below
+     * handler set the new rule group data
+     */
+    [RULE_GROUP_LIST_CHANGED]: ( state, action )=> {
+        state.ruleGroupList = action.payload.value
     }
   })
 
@@ -114,6 +121,14 @@ export const RuleGroupReducer = createReducer(null, {
      */
     [TITLE_CHANGED]: ( state, action )=> {
         state.title = action.payload.value
-    }
+    },
+
+    /**
+     * When the mapping header is changed by api, then this callback is triggered.
+     */
+    [MAPPING_HEADER_CHANGED]: ( state, action )=> {
+        state.title = action.payload.title
+        state.mapping_id = action.payload.mapping_id
+    },
 })
 

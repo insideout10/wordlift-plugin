@@ -4,7 +4,7 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * @since 3.24.0
  */
-import { ADD_NEW_RULE, ADD_NEW_RULE_GROUP, DELETE_RULE, CHANGE_RULE_FIELD_VALUE, OPEN_OR_CLOSE_PROPERTY, PROPERTY_DATA_CHANGED, ADD_MAPPING, TITLE_CHANGED, PROPERTY_LIST_CHANGED } from './actionTypes'
+import { ADD_NEW_RULE, ADD_NEW_RULE_GROUP, DELETE_RULE, CHANGE_RULE_FIELD_VALUE, OPEN_OR_CLOSE_PROPERTY, PROPERTY_DATA_CHANGED, ADD_MAPPING, TITLE_CHANGED, PROPERTY_LIST_CHANGED, RULE_GROUP_LIST_CHANGED, MAPPING_HEADER_CHANGED } from './actionTypes'
 /**
  * @const {object} ADD_NEW_RULE_ACTION
  * Dispatches this action when add new rule is clicked
@@ -74,4 +74,20 @@ export const TITLE_CHANGED_ACTION = {
  */
 export const PROPERTY_LIST_CHANGED_ACTION = {
     type:PROPERTY_LIST_CHANGED
+}
+
+/**
+ * @const {object} RULE_GROUP_LIST_CHANGED_ACTION
+ *  Dispatches this action when the rule group list is changed from the api.
+ */
+export const RULE_GROUP_LIST_CHANGED_ACTION = {
+    type:RULE_GROUP_LIST_CHANGED
+}
+
+/**
+ * @const {object} MAPPING_HEADER_CHANGED_ACTION
+ *  Dispatches this action when the mapping header is changed from the api.
+ */
+export const MAPPING_HEADER_CHANGED_ACTION = {
+    type:MAPPING_HEADER_CHANGED
 }

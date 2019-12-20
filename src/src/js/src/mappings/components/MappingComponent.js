@@ -52,8 +52,8 @@ const mappingSettings = window["wlMappingsConfig"] || {};
             {
                 method: "GET",
                 headers: {
-                "content-type": "application/json",
-                "X-WP-Nonce": mappingSettings.wl_mapping_nonce
+                    "content-type": "application/json",
+                    "X-WP-Nonce": mappingSettings.wl_mapping_nonce
                 }
             }
         )

@@ -16,7 +16,7 @@ import { connect } from 'react-redux'
  */
 import RuleGroupListComponent from './RuleGroupListComponent'
 import PropertyListComponent from './PropertyListComponent'
-import { TITLE_CHANGED_ACTION, PROPERTY_LIST_CHANGED_ACTION } from '../actions/actions'
+import { TITLE_CHANGED_ACTION, PROPERTY_LIST_CHANGED_ACTION, RULE_GROUP_LIST_CHANGED_ACTION, MAPPING_HEADER_CHANGED_ACTION } from '../actions/actions'
 
 // Set a reference to the WordLift's Edit Mapping settings stored in the window instance.
 const editMappingSettings = window["wlEditMappingsConfig"] || {};
@@ -59,21 +59,27 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
         .then(response => response.json().then(
             data=> {
                 // Dispatch title changed
-                const title_action = TITLE_CHANGED_ACTION
-                title_action.payload = {
-                    value: data.mapping_title
+                const mapping_header_action = MAPPING_HEADER_CHANGED_ACTION
+                mapping_header_action.payload = {
+                    title: data.mapping_title,
+                    mapping_id: data.mapping_id,
                 }
-                this.props.dispatch(title_action, data.mapping_title)
+                console.log( mapping_header_action )
+                this.props.dispatch(mapping_header_action, data.mapping_title)
 
                 //Dispatch property list changed after applying filters
                 const property_list_action = PROPERTY_LIST_CHANGED_ACTION
                 property_list_action.payload = {
-                    value: EditComponent.mapPropertyAPIKeysToUi(data.property_list)
+                    value: EditComponent.mapPropertyAPIKeysToUi( data.property_list )
                 }
-                this.props.dispatch(property_list_action)
+                this.props.dispatch( property_list_action )
 
                 // Dispatch rule group list changed after applying filters
-                
+                const rule_group_list_action = RULE_GROUP_LIST_CHANGED_ACTION
+                rule_group_list_action.payload = {
+                    value: EditComponent.mapRuleGroupListAPIKeysToUi( data.rule_group_list )
+                }
+                this.props.dispatch( rule_group_list_action )
 
             }
         ))
@@ -114,6 +120,7 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
      * Convert property list API Response to ui format
      * @param {Array} property_list The list of properties
      * from API.
+     * @return {Array} New array with mapped keys.
      */
     static mapPropertyAPIKeysToUi( property_list ) {
         return property_list.map((property)=>({
@@ -122,6 +129,25 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
             fieldHelpText: property.field_help_text,
             transformHelpText: property.transform_help_text,
             property_id: property.property_id,
+        }))
+    }
+
+    static mapRuleFieldAPIKeysToUi( rule_list ) {
+        return rule_list.map((rule) => ({
+            ruleFieldOneValue: rule.rule_field_one,
+            ruleFieldTwoValue: rule.rule_field_two,
+            ruleLogicFieldValue: rule.rule_logic_field,
+            rule_id: rule.rule_id
+        }))
+    }
+
+    /**
+     * @param {Array} rule_group_list List of rule group items from api 
+     */
+    static mapRuleGroupListAPIKeysToUi( rule_group_list ) {
+        return rule_group_list.map(( rule_group_item ) => ({
+            rule_group_id: rule_group_item.rule_group_id,
+            rules: EditComponent.mapRuleFieldAPIKeysToUi(rule_group_item.rules)
         }))
     }
     /**
@@ -149,6 +175,9 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
             property_list: store.PropertyListData.propertyList,
             rule_group_list: store.RuleGroupData.ruleGroupList
         }
+        if ( store.TitleSectionData.mapping_id != undefined ) {
+            postObject.mapping_id = store.TitleSectionData.mapping_id
+        }
         postObject.rule_group_list = EditComponent.mapRuleGroupListKeysToAPI(postObject.rule_group_list)
         postObject.property_list = EditComponent.mapPropertyListKeysToAPI(postObject.property_list)
         return postObject
@@ -163,7 +192,7 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
             method: 'POST',
             headers: {
                 "content-type": "application/json",
-                "X-WP-Nonce": editMappingSettings.wl_mapping_nonce,           
+                "X-WP-Nonce": editMappingSettings.wl_edit_mapping_rest_nonce,           
             },
             body: JSON.stringify(postObject)  
         })
