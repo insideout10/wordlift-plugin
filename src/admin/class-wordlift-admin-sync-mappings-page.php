@@ -41,8 +41,11 @@ class Wordlift_Admin_Sync_Mappings_Page extends Wordlift_Admin_Page {
 			null,
 			WL_REST_ROUTE_DEFAULT_NAMESPACE . Wordlift_Mapping_REST_Controller::MAPPINGS_NAMESPACE
 		);
-		$mapping_settings['wl_mapping_nonce']      = wp_create_nonce( 'wp_rest' );
-		$mapping_settings['wl_edit_mapping_nonce'] = wp_create_nonce( 'wl-edit-mapping-nonce' );
+		$mapping_settings['wl_mapping_nonce']             = wp_create_nonce( 'wp_rest' );
+		$mapping_settings['wl_edit_mapping_nonce']        = wp_create_nonce( 'wl-edit-mapping-nonce' );
+		$mapping_settings['wl_edit_mapping_success_save'] = __( 'Mapping item saved successfully.', 'wordlift' );
+		$mapping_settings['wl_edit_mapping_failure_save'] = __( 'Failure while saving this item.', 'wordlift' );
+		$mapping_settings['wl_edit_mapping_no_item']      = __( 'Unable to find the mapping item', 'wordlift' );
 		wp_localize_script( 'wl-sync-mappings-script', 'wlMappingsConfig', $mapping_settings );
 	}
 
