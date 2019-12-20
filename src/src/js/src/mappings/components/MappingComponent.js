@@ -14,9 +14,9 @@ import React from 'react'
  * Internal dependencies
  */
 import MappingListItemComponent from './MappingListItemComponent'
-import { MAPPING_LIST_CHANGED_ACTION } from '../actions/actions';
+import { MAPPING_LIST_CHANGED_ACTION, CATEGORY_OBJECT_CHANGED_ACTION, CATEGORY_ITEMS_LIST_CHANGED_ACTION } from '../actions/actions';
 import { connect } from 'react-redux'
-import { MAPPING_LIST_CHANGED } from '../actions/actionTypes';
+import { MAPPING_LIST_CHANGED, CATEGORY_ITEMS_LIST_CHANGED } from '../actions/actionTypes';
 
 // Set a reference to the WordLift's Mapping settings stored in the window instance.
 const mappingSettings = window["wlMappingsConfig"] || {};
@@ -44,6 +44,23 @@ const mappingSettings = window["wlMappingsConfig"] || {};
             }
         ))
      }
+     /**
+      * Extract categories from mapping_items
+      * @param {Array} mapping_items Mapping items list
+      * @return {Array} List of cateogory objects.
+      */
+     static extractCategoriesFromMappingItems ( mapping_items ) {
+        const categories = {}
+        mapping_items.map((item)=> {
+            if (!categories.hasOwnProperty(item.mapping_status)) {
+                categories[item.mapping_status] = 1
+            }
+            else {
+                categories[item.mapping_status] += 1
+            }
+        })
+        return categories
+     }
      selectAllMappingItems = () => {
          const action = MAPPING_LIST_CHANGED_ACTION
          action.payload = {
@@ -53,6 +70,19 @@ const mappingSettings = window["wlMappingsConfig"] || {};
              })
          }
          this.props.dispatch( MAPPING_LIST_CHANGED_ACTION )
+     }
+     /**
+      * Switches category on click of category item.
+      * @param {String} category Category which needes to be switched 
+      */
+     switchCategory = ( category ) => {
+        const category_items_changed = CATEGORY_ITEMS_LIST_CHANGED_ACTION
+        category_items_changed.payload = {
+            value: this.props.mapping_items.filter((item)=> {
+                return item.mapping_status === category
+            })
+        }
+        this.props.dispatch( category_items_changed )
      }
      /**
       * Fetch the mapping items from api.
@@ -74,6 +104,16 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                 action.payload  = {    
                     value: MappingComponent.applyUiItemFilters(data)
                 }
+                const category_action = CATEGORY_OBJECT_CHANGED_ACTION
+                category_action.payload = {
+                    value: MappingComponent.extractCategoriesFromMappingItems( data )
+                }
+                const category_items_changed = CATEGORY_ITEMS_LIST_CHANGED_ACTION
+                category_items_changed.payload = {
+                    value: MappingComponent.applyUiItemFilters(data)
+                }
+                this.props.dispatch( category_items_changed )
+                this.props.dispatch( category_action ) 
                 this.props.dispatch( action )
             }
         ))
@@ -88,6 +128,16 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                         Add New
                     </a>
                 </h1>
+                <p>
+                    {
+                        Object.keys(this.props.categories).map((key) => {
+                        return (
+                            <a href="#" onClick={()=> { this.switchCategory(key) }}> 
+                                {key} ({this.props.categories[key]})
+                            </a>)
+                        })
+                    }
+                </p>
                 <table className="wp-list-table widefat striped wl-table">
                     <thead>
                         <tr>
@@ -102,7 +152,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                     <tbody>
                         {
                             // show empty screen when there is no mapping items
-                            0 === this.props.mapping_items.length &&
+                            0 === this.props.category_items.length &&
                                 <tr>
                                     <td colspan="3">
                                         <div className="wl-container text-center">
@@ -113,7 +163,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                                 </tr> 
                         }
                         {
-                            this.props.mapping_items.map((item, index)=> {
+                            this.props.category_items.map((item, index)=> {
                                 return <MappingListItemComponent title={item.mapping_title}
                                 nonce={mappingSettings.wl_edit_mapping_nonce}
                                 isSelected={item.is_selected}
@@ -151,6 +201,8 @@ const mappingSettings = window["wlMappingsConfig"] || {};
 const mapStateToProps = function(state){ 
     return {
         mapping_items: state.mapping_items,
+        categories: state.categories,
+        category_items: state.category_items,
     }
 }
 

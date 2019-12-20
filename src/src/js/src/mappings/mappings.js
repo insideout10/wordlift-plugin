@@ -9,8 +9,8 @@ import { MappingListReducer } from './reducers/mapping_list_reducers'
 
 const MAPPINGS_INITIAL_STATE = {
     mapping_items: [],
-    categories: [],
-    selected_items: [],
+    categories: {},
+    category_items: [],
 }
 
 const store = createStore(MappingListReducer, MAPPINGS_INITIAL_STATE)

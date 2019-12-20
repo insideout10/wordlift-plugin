@@ -82,3 +82,15 @@ export const NOTIFICATION_CHANGED = "NOTIFICATION_CHANGED"
  * Action when notification is sent by api.
  */
 export const MAPPING_LIST_CHANGED = "MAPPING_LIST_CHANGED"
+
+/**
+ * @const CATEGORY_OBJECT_CHANGED
+ * Action when the list of categories change
+ */
+export const CATEGORY_OBJECT_CHANGED = "CATEGORY_OBJECT_CHANGED"
+
+/**
+ * @const CATEGORY_ITEMS_LIST_CHANGED
+ * Action when the choosen category changes
+ */
+export const CATEGORY_ITEMS_LIST_CHANGED = "CATEGORY_ITEMS_LIST_CHANGED"
