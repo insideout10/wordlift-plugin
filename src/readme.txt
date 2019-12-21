@@ -142,7 +142,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.23.4 (2019-12-18) =
+= 3.23.4 (2019-12-21) =
 * Fix [#991](https://github.com/insideout10/wordlift-plugin/issues/991): Entity Type not set when Cloud entity is of type Other.
 
 = 3.23.3 (2019-12-17) =
