@@ -56,10 +56,10 @@ class Wordlift_Remote_Image_Service {
 			return new WP_Error( 'image_error', "save_image_from_url : failed creating upload dir $upload_dir \n" );
 		};
 
-		$response = self::get_response( $url );
+		$response = wp_remote_get( $url );
 
 		// Bail if the response is not set.
-		if ( false === $response ) {
+		if ( self::is_response_error( $response ) ) {
 			Wordlift_Log_Service::get_logger( 'Wordlift_Remote_Image_Service' )
 			                    ->warn( "save_image_from_url : failed to fetch the response from: $url\nThe response was:\n" . var_export( $response, true ) );
 
@@ -120,31 +120,19 @@ class Wordlift_Remote_Image_Service {
 	}
 
 	/**
-	 * Retrieve the response from url and sets the response.
+	 * Checks whether a response is an error.
 	 *
-	 * @param string $url The url to retrieve.
+	 * @param array|WP_Error $response The response.
 	 *
-	 * @return false|array True on success and false on failure.
-	 * @since 3.18.0
-	 *
+	 * @return bool True if the response is an error, otherwise false.
+	 * @since 3.23.4
 	 */
-	private static function get_response( $url ) {
-		// Request the remote file.
-		$response = wp_remote_get( $url );
+	private static function is_response_error( $response ) {
 
-		// Bail out if the response is not ok.
-		if (
-			is_wp_error( $response )
-			|| 200 !== (int) $response['response']['code']
-			|| ! isset( $response['body'] )
-		) {
-			wl_write_log( "save_image_from_url : error fetching image $url \n" );
-
-			return false;
-		}
-
-		// Set the response.
-		return $response;
+		return ( is_wp_error( $response )
+		         || 200 !== (int) $response['response']['code']
+		         || ! isset( $response['body'] )
+		);
 	}
 
 }
