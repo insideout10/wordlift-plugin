@@ -19,13 +19,6 @@
 class Wordlift_Admin_Country_Select_Element_Ajax_Test extends Wordlift_Ajax_Unit_Test_Case {
 
 	/**
-	 * @inheritdoc
-	 */
-	function setUp() {
-		parent::setUp();
-	}
-
-	/**
 	 * Test that the ajax request will filter the country select options
 	 *
 	 * @since 3.18.0

@@ -86,8 +86,8 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		}
 
 		wp_enqueue_script( 'wordlift-cloud' );
-		$json_navigator_id = json_encode( $navigator_id );
-		wp_add_inline_script( 'wordlift-cloud', "window.wlNavigators = window.wlNavigators || []; wlNavigators.push( $json_navigator_id );" );
+		$json_navigator_id = wp_json_encode( $navigator_id );
+		echo "<script type='application/javascript'>window.wlNavigators = window.wlNavigators || []; wlNavigators.push( $json_navigator_id );</script>";
 
 		return sprintf(
 			'<div id="%s" class="%s" data-rest-url="%s" data-title="%s" data-template-id="%s" data-limit="%s"></div>',
@@ -127,11 +127,11 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		$wp_json_base = get_rest_url() . WL_REST_ROUTE_DEFAULT_NAMESPACE;
 
 		$navigator_query = array(
-			'uniqid'  => $navigator_id,
-			'post_id' => $post->ID,
-			'limit'   => $shortcode_atts['limit'],
-			'offset'  => $shortcode_atts['offset'],
-			'order_by'=> $shortcode_atts['order_by']
+			'uniqid'   => $navigator_id,
+			'post_id'  => $post->ID,
+			'limit'    => $shortcode_atts['limit'],
+			'offset'   => $shortcode_atts['offset'],
+			'order_by' => $shortcode_atts['order_by']
 		);
 
 		if ( strpos( $wp_json_base, 'wp-json/' . WL_REST_ROUTE_DEFAULT_NAMESPACE ) ) {
@@ -147,12 +147,12 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 				'https:',
 			), '', $wp_json_base ) . '/navigator' . $delimiter . http_build_query( $navigator_query );
 
-		if(!empty($shortcode_atts['template_id'])){
+		if ( ! empty( $shortcode_atts['template_id'] ) ) {
 			$template_id = $shortcode_atts['template_id'];
-        } else {
-			$template_id = "template-".$navigator_id;
-			add_action( 'amp_post_template_css', array($this, 'amp_post_template_css') );
-        }
+		} else {
+			$template_id = "template-" . $navigator_id;
+			add_action( 'amp_post_template_css', array( $this, 'amp_post_template_css' ) );
+		}
 
 		return <<<HTML
 		<div id="{$navigator_id}" class="wl-amp-navigator" style="width: 100%">
@@ -186,8 +186,8 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 HTML;
 	}
 
-	public function amp_post_template_css(){
-	    // Default CSS for default template
+	public function amp_post_template_css() {
+		// Default CSS for default template
 		echo <<<CSS
 	        .wordlift-navigator .title{font-size:16px;margin:0.5rem 0}
 	        .wordlift-navigator .cards{display:flex;flex-wrap:wrap}
@@ -204,6 +204,6 @@ HTML;
 	        .wordlift-navigator .cards .card .thumbnail img{display:block;border:0;width:100%;height:auto}
 	        .wordlift-navigator .cards .card .card-content .title{font-size:14px;margin:0.3rem 0}
 CSS;
-    }
+	}
 
 }

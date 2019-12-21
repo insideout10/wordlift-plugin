@@ -122,9 +122,16 @@ class Wordlift_Event_Entity_Page_Service_Test extends Wordlift_Unit_Test_Case {
 		$entity_type_service->set( $entity_3_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
 		add_post_meta( $entity_3_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-21', true );
 
+		$term_exists = get_term_by( 'slug', 'event', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+
+		$this->assertTrue( is_a( $term_exists, 'WP_Term' ), 'The term event must exist.' );
+		$this->assertFalse( is_admin(), 'Check that you`re resetting the current screen in other tests to an empty string.' );
+
 		$this->go_to( '?' . Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME . '=event' );
 
 		global $wp_the_query;
+
+		$this->assertTrue( $wp_the_query->is_main_query(), 'We expect a main query to enable sorting.' );
 
 		$posts = $wp_the_query->get_posts();
 
