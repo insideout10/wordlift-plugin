@@ -74,7 +74,7 @@ class Wordlift_Remote_Image_Service {
 
 		// Bail if the content type is not supported.
 		if ( empty( $extension ) ) {
-			return new WP_Error( 'image_error', 'Unsupported content type.' );
+			return new WP_Error( 'image_error', "Unsupported content type [ $content_type ]:\n" . var_export( $response, true ) );
 		}
 
 		// Complete the local filename.
