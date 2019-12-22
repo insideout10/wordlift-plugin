@@ -140,41 +140,64 @@ class Wordlift_Admin_Post_Edit_Page {
 		// plugin_dir_url( __FILE__ ) . 'js/1/edit.js'
 		$script_name = plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/edit';
 
-		wp_enqueue_script(
-			'wordlift-admin-edit-page', "$script_name.js",
-			array(
-				$this->plugin->get_plugin_name(),
-				'jquery',
-				// Require wp.ajax.
-				'wp-util',
-				// @@todo: provide the following dependencies when we're in WP < 5.0 (i.e. when these dependencies aren't already defined).
-				'react',
-				'react-dom',
-				'wp-element',
-				'wp-polyfill',
-				/*
-				 * Angular isn't loaded anymore remotely, but it is loaded within wordlift-reloaded.js.
-				 *
-				 * See https://github.com/insideout10/wordlift-plugin/issues/865.
-				 *
-				 * @since 3.19.6
-				 */
-				//				// Require Angular.
-				//				'wl-angular',
-				//				'wl-angular-geolocation',
-				//				'wl-angular-touch',
-				//				'wl-angular-animate',
-				/**
-				 * We need the `wp.hooks` global to allow the edit.js script to send actions.
-				 *
-				 * @since 3.23.0
-				 */
-				'wp-hooks',
-			),
-			$this->plugin->get_version(),
-			false
-		);
+		$this->enqueue_based_on_wordpress_version( 'wordlift-admin-edit-page', $script_name, array(
+			$this->plugin->get_plugin_name(),
+			'jquery',
+			// Require wp.ajax.
+			'wp-util',
+			// @@todo: provide the following dependencies when we're in WP < 5.0 (i.e. when these dependencies aren't already defined).
+			'react',
+			'react-dom',
+			'wp-element',
+			'wp-polyfill',
+			/*
+			 * Angular isn't loaded anymore remotely, but it is loaded within wordlift-reloaded.js.
+			 *
+			 * See https://github.com/insideout10/wordlift-plugin/issues/865.
+			 *
+			 * @since 3.19.6
+			 */
+			//				// Require Angular.
+			//				'wl-angular',
+			//				'wl-angular-geolocation',
+			//				'wl-angular-touch',
+			//				'wl-angular-animate',
+			/**
+			 * We need the `wp.hooks` global to allow the edit.js script to send actions.
+			 *
+			 * @since 3.23.0
+			 */
+			'wp-hooks',
+		) );
+
 		wp_enqueue_style( 'wordlift-admin-edit-page', "$script_name.css", array(), $this->plugin->get_version() );
+
+	}
+
+	/**
+	 * This function loads the javascript file according to the WordPress version.
+	 *
+	 * For WordPress < 5.0 it'll load the javascript file using the `.full` suffix i.e. the file that embeds all the
+	 * dependencies.
+	 *
+	 * For WordPress >= 5.0 it'll load the stripped down js.
+	 *
+	 * @param string $handle The handle name.
+	 * @param string $script_name The full script URL without the `.js` extension.
+	 * @param array $dependencies An array of dependencies to be added only in WordPress > 5.0.
+	 */
+	private function enqueue_based_on_wordpress_version( $handle, $script_name, $dependencies ) {
+		global $wp_version;
+
+		if ( version_compare( $wp_version, '5.0', '<' ) ) {
+			$actual_script_name  = "$script_name.full.js";
+			$actual_dependencies = array();
+		} else {
+			$actual_script_name  = "$script_name.js";
+			$actual_dependencies = $dependencies;
+		}
+
+		wp_enqueue_script( $handle, $actual_script_name, $actual_dependencies, $this->plugin->get_version(), false );
 
 	}
 

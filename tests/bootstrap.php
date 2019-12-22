@@ -1,14 +1,5 @@
 <?php
 
-/*
- * Enable `All Entity Types`.
- *
- * This can be removed one `All Entity Types` is enabled by default.
- *
- * @see https://github.com/insideout10/wordlift-plugin/issues/835
- */
-define( 'WL_ALL_ENTITY_TYPES', true );
-
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
 if ( ! $_tests_dir ) {
 	$_tests_dir = '/tmp/wordpress-tests-lib';

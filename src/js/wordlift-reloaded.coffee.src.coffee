@@ -811,6 +811,7 @@ angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
     templateUrl: ()->
       configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-classification-box.html'
     link: ($scope, $element, $attrs, $ctrl) ->
+      $log.debug 'Linking classification box...'
 
       $scope.hasSelectedEntities = ()->
         Object.keys( $scope.selectedEntities[ $scope.box.id ] ).length > 0
@@ -854,7 +855,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
       onReset: '&'
       box: '='
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.23.0'
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.23.4'
 
     link: ($scope, $element, $attrs, $ctrl) ->
 
@@ -938,38 +939,6 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
 
 ])
 
-angular.module('wordlift.editpost.widget.directives.wlEntityTile', [])
-.directive('wlEntityTile', [ 'configuration','$log', (configuration, $log)->
-    require: '?^wlClassificationBox'
-    restrict: 'E'
-    scope:
-      entity: '='
-      isSelected: '='
-      showConfidence: '='
-      onSelect: '&'
-      onMore: '&'
-    templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-tile.html'
-    link: ($scope, $element, $attrs, $boxCtrl) ->
-      
-      $scope.configuration = configuration
-      # Add tile to related container scope
-      $boxCtrl?.addTile $scope
-
-      $scope.isOpened = false
-
-      $scope.isInternal = ()->
-        if $scope.entity.id.startsWith configuration.datasetUri
-          return true
-        return false
-
-      $scope.toggle = ()->
-        if !$scope.isOpened
-          $boxCtrl?.closeTiles()
-        $scope.isOpened = !$scope.isOpened
-
-  ])
-
 angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', [])
 # The wlEntityInputBoxes prints the inputs and textareas with entities data.
 .directive('wlEntityInputBox', ['configuration', '$log', (configuration, $log)->
@@ -977,7 +946,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', [])
     scope:
       entity: '='
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.23.0'
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.23.4'
 ])
 
 angular.module('wordlift.editpost.widget.services.EditorAdapter', [
@@ -1147,6 +1116,8 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
       merge defaults, params
 
     service.parse = (data) ->
+
+      $log.debug 'Parsing data...'
 
 # Add local entities
 # Add id to entity obj
@@ -1601,6 +1572,9 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
 
 # Embed the provided analysis in the editor.
       embedAnalysis: (analysis) =>
+
+        $log.debug 'Embedding analysis...'
+
 # A reference to the editor.
         ed = EditorAdapter.getEditor()
 
@@ -1896,9 +1870,11 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
     'wordlift.editpost.widget.providers.ConfigurationProvider',
     'wordlift.editpost.widget.controllers.EditPostWidgetController',
     'wordlift.editpost.widget.directives.wlClassificationBox',
+    # Beware that while we're not using Angular components, we're using the element to hook the React application.
+    # The Classification Box is in fact a React application.
     'wordlift.editpost.widget.directives.wlEntityList',
     'wordlift.editpost.widget.directives.wlEntityForm',
-    'wordlift.editpost.widget.directives.wlEntityTile',
+#    'wordlift.editpost.widget.directives.wlEntityTile',
     'wordlift.editpost.widget.directives.wlEntityInputBox',
     'wordlift.editpost.widget.services.AnalysisService',
     'wordlift.editpost.widget.services.EditorService',
@@ -1913,7 +1889,7 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
     <div
       id="wordlift-edit-post-wrapper"
       ng-controller="EditPostWidgetController"
-      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.23.0'">
+      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.23.4'">
     </div>
   """)
   .appendTo('#wordlift-edit-post-outer-wrapper')

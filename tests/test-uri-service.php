@@ -49,13 +49,17 @@ class Uri_Service_Test extends Wordlift_Unit_Test_Case {
 		$title = 'Mozarts﻿ Geburtshaus';
 
 		// Check that the encoding is recognized as UTF-8.
-		$this->assertEquals( 'UTF-8', mb_detect_encoding( $title ) );
+		if ( function_exists( 'mb_detect_encoding' ) ) {
+			$this->assertEquals( 'UTF-8', mb_detect_encoding( $title ) );
+		}
 
 		// Get the sanitized path.
 		$path = $this->uri_service->sanitize_path( $title );
 
 		// Check that the encoding is now ASCII.
-		$this->assertEquals( 'ASCII', mb_detect_encoding( $path ) );
+		if ( function_exists( 'mb_detect_encoding' ) ) {
+			$this->assertEquals( 'ASCII', mb_detect_encoding( $path ) );
+		}
 
 		// Check that the URI is good.
 		$this->assertEquals( 'mozarts__geburtshaus', $path );

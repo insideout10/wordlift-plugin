@@ -20,12 +20,24 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 	 * {@inheritdoc}
 	 */
 	public function setUp() {
+
+		$this->set_current_screen( 'admin' );
+
+		$this->assertTrue( defined( 'WL_ALL_ENTITY_TYPES' ) );
+		$this->assertTrue( WL_ALL_ENTITY_TYPES );
+
 		parent::setUp();
 
 		// Ensure `All Entity Types` are installed.
 		$sync = Wordlift_Schemaorg_Sync_Batch_Operation::get_instance();
 		$sync->process( 0, $sync->count() );
 
+	}
+
+	public function tearDown() {
+		$this->set_current_screen( 'front' );
+
+		parent::tearDown();
 	}
 
 	/**
@@ -259,11 +271,11 @@ class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 	/**
 	 * Add the `property` cpt to the entity types.
 	 *
-	 * @since 3.20.0
-	 *
 	 * @param array $types Custom post types.
 	 *
 	 * @return array Custom post types plus `property`.
+	 * @since 3.20.0
+	 *
 	 */
 	public function extend_default_entity_types( $types ) {
 

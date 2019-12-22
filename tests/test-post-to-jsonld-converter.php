@@ -274,15 +274,15 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	/**
 	 * Helper function to create attachment DB without uploading FilesystemIterator.
 	 *
-	 * @since 3.10
-	 *
-	 * @param    string  $filename The filename the attachement should have
-	 * @param    integer $width The width of the image
-	 * @param    integer $height The height of the image
-	 * @param    integer $post_id The ID of the post to associated with the attachment
+	 * @param string $filename The filename the attachement should have
+	 * @param integer $width The width of the image
+	 * @param integer $height The height of the image
+	 * @param integer $post_id The ID of the post to associated with the attachment
 	 *
 	 * @return    integer        The ID of the attachment created
-	 **/
+	 **@since 3.10
+	 *
+	 */
 	private function make_dummy_attachment( $filename, $width, $height, $post_id ) {
 
 		// Get the mock file.
@@ -1299,6 +1299,10 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_issue_888_entity_type_set_to_web_page() {
 
+		$term = $this->entity_type_service->get_term_by_uri( 'http://schema.org/WebPage' );
+
+		$this->assertTrue( is_a( $term, 'WP_Term' ), 'WebPage should be a WP_Term' );
+
 		register_post_type( 'a-cpt' );
 
 		// Create an event to bind to the post.
@@ -1307,6 +1311,12 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		) );
 
 		$this->entity_type_service->set( $post_id, 'http://schema.org/WebPage' );
+
+		$terms = wp_get_post_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+
+		$this->assertCount( 1, $terms, 'There must be one term: WebPage' );
+		$this->assertEquals( 'WebPage', $terms[0]->name, 'There must be one term: WebPage.' );
+		$this->assertEquals( 'web-page', $terms[0]->slug, 'There must be one term: web-page.' );
 
 		// Convert the post to json-ld.
 		$references = array();
@@ -1319,11 +1329,11 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	/**
 	 * Get the word count for a {@link WP_Post}.
 	 *
-	 * @since 3.14.0
-	 *
 	 * @param int $post_id The {@link WP_Post} `id`.
 	 *
 	 * @return int The word count.
+	 * @since 3.14.0
+	 *
 	 */
 	private static function word_count( $post_id ) {
 

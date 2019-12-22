@@ -209,6 +209,9 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
 
 # Embed the provided analysis in the editor.
       embedAnalysis: (analysis) =>
+
+        $log.debug 'Embedding analysis...'
+
 # A reference to the editor.
         ed = EditorAdapter.getEditor()
 

@@ -133,8 +133,8 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 	/**
 	 * Get the {@link Wordlift_Test} instance.
 	 *
-	 * @since 3.11.0
 	 * @return \Wordlift_Test The {@link Wordlift_Test} instance.
+	 * @since 3.11.0
 	 */
 	public function get_wordlift_test() {
 
@@ -144,11 +144,12 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 	/**
 	 * Utility method that resets permalinks and flushes rewrites.
 	 *
-	 * @since 3.16.0
+	 * @param string $structure Optional. Permalink structure to set. Default empty.
 	 *
 	 * @global WP_Rewrite $wp_rewrite
 	 *
-	 * @param string      $structure Optional. Permalink structure to set. Default empty.
+	 * @since 3.16.0
+	 *
 	 */
 	public function set_permalink_structure( $structure = '' ) {
 		global $wp_rewrite;
@@ -169,7 +170,7 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 	 */
 	public function set_current_screen( $hook_name ) {
 
-		$this->screen = get_current_screen();
+		$this->screen = get_current_screen( '' );
 
 		set_current_screen( $hook_name );
 

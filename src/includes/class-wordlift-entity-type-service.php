@@ -49,9 +49,10 @@ class Wordlift_Entity_Type_Service {
 	/**
 	 * Wordlift_Entity_Type_Service constructor.
 	 *
+	 * @param \Wordlift_Schema_Service $schema_service The {@link Wordlift_Schema_Service} instance.
+	 *
 	 * @since 3.7.0
 	 *
-	 * @param \Wordlift_Schema_Service $schema_service The {@link Wordlift_Schema_Service} instance.
 	 */
 	public function __construct( $schema_service ) {
 
@@ -66,8 +67,8 @@ class Wordlift_Entity_Type_Service {
 	/**
 	 * Get the {@link Wordlift_Entity_Type_Service} singleton instance.
 	 *
-	 * @since 3.7.0
 	 * @return \Wordlift_Entity_Type_Service The {@link Wordlift_Entity_Type_Service} singleton instance.
+	 * @since 3.7.0
 	 */
 	public static function get_instance() {
 
@@ -79,6 +80,19 @@ class Wordlift_Entity_Type_Service {
 	 *
 	 * We have a strategy to define the entity type, given that everything is
 	 * an entity, i.e. also posts/pages and custom post types.
+	 *
+	 * @param int $post_id The post id.
+	 *
+	 * @return array|null {
+	 * An array of type properties or null if no term is associated
+	 *
+	 * @type string css_class     The css class, e.g. `wl-thing`.
+	 * @type string uri           The schema.org class URI, e.g. `http://schema.org/Thing`.
+	 * @type array  same_as       An array of same as attributes.
+	 * @type array  custom_fields An array of custom fields.
+	 * @type array  linked_data   An array of {@link Wordlift_Sparql_Tuple_Rendition}.
+	 * }
+	 * @since 3.7.0
 	 *
 	 * @since 3.20.0 This function will **not** return entity types introduced with 3.20.0.
 	 *
@@ -93,19 +107,6 @@ class Wordlift_Entity_Type_Service {
 	 *      c) the post is a custom post type then it is
 	 *          assigned the `WebPage` entity type by default.
 	 *
-	 * @since 3.7.0
-	 *
-	 * @param int $post_id The post id.
-	 *
-	 * @return array|null {
-	 * An array of type properties or null if no term is associated
-	 *
-	 * @type string css_class     The css class, e.g. `wl-thing`.
-	 * @type string uri           The schema.org class URI, e.g. `http://schema.org/Thing`.
-	 * @type array  same_as       An array of same as attributes.
-	 * @type array  custom_fields An array of custom fields.
-	 * @type array  linked_data   An array of {@link Wordlift_Sparql_Tuple_Rendition}.
-	 * }
 	 */
 	public function get( $post_id ) {
 
@@ -149,6 +150,7 @@ class Wordlift_Entity_Type_Service {
 			 *
 			 * @since 3.20.0
 			 */
+
 			return $this->schema_service->get_schema( 'thing' );
 		}
 
@@ -171,11 +173,11 @@ class Wordlift_Entity_Type_Service {
 	/**
 	 * Get the term ids of the entity types associated to the specified post.
 	 *
-	 * @since 3.20.0
-	 *
 	 * @param int $post_id The post id.
 	 *
 	 * @return array|WP_Error An array of entity types ids or a {@link WP_Error}.
+	 * @since 3.20.0
+	 *
 	 */
 	public function get_ids( $post_id ) {
 
@@ -185,11 +187,11 @@ class Wordlift_Entity_Type_Service {
 	/**
 	 * Get the camel case names of the entity types associated to the specified post.
 	 *
-	 * @since 3.20.0
-	 *
 	 * @param int $post_id The post id.
 	 *
 	 * @return array|WP_Error An array of entity types camel case names or a {@link WP_Error}.
+	 * @since 3.20.0
+	 *
 	 */
 	public function get_names( $post_id ) {
 
@@ -205,11 +207,12 @@ class Wordlift_Entity_Type_Service {
 	/**
 	 * Set the main type for the specified entity post, given the type URI.
 	 *
+	 * @param int $post_id The post id.
+	 * @param string $type_uri The type URI.
+	 * @param bool $replace Whether the provided type must replace the existing types, by default `true`.
+	 *
 	 * @since 3.8.0
 	 *
-	 * @param int    $post_id The post id.
-	 * @param string $type_uri The type URI.
-	 * @param bool   $replace Whether the provided type must replace the existing types, by default `true`.
 	 */
 	public function set( $post_id, $type_uri, $replace = true ) {
 
@@ -231,10 +234,27 @@ class Wordlift_Entity_Type_Service {
 			// Get term by URI.
 			: $this->get_term_by_uri( $type_uri );
 
+		/*
+		 * We always want to assign a type to an entity otherwise it won't show in the Vocabulary and it won't be
+		 * connected to Articles via mentions. We realized that the client JS code is passing `wl-other` when the
+		 * entity type isn't "notable". In which case we couldn't find an entity type.
+		 *
+		 * When an entity type is not found, we'll now switch by default to "thing" which is the most basic entity type.
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/991
+		 *
+		 * @since 3.23.4
+		 */
 		if ( false === $term ) {
-			$this->log->warn( "No term found for URI $type_uri." );
+			$this->log->warn( "No term found for URI $type_uri, will use Thing." );
 
-			return;
+			$term = $this->get_term_by_slug( 'thing' );
+
+			// We still need to be able to bali out here, for example WordPress 5.1 tests create posts before our taxonomy
+			// is installed.
+			if ( false === $term ) {
+				return;
+			}
 		}
 
 		$this->log->debug( "Setting entity type [ post id :: $post_id ][ term id :: $term->term_id ][ term slug :: $term->slug ][ type uri :: $type_uri ]..." );
@@ -247,12 +267,12 @@ class Wordlift_Entity_Type_Service {
 	/**
 	 * Get an entity type term given its slug.
 	 *
-	 * @since 3.20.0
-	 *
 	 * @param string $slug The slug.
 	 *
 	 * @return false|WP_Term WP_Term instance on success. Will return false if `$taxonomy` does not exist
 	 *                             or `$term` was not found.
+	 * @since 3.20.0
+	 *
 	 */
 	private function get_term_by_slug( $slug ) {
 
@@ -262,12 +282,12 @@ class Wordlift_Entity_Type_Service {
 	/**
 	 * Get an entity type term given its URI.
 	 *
-	 * @since 3.20.0
-	 *
 	 * @param string $uri The uri.
 	 *
 	 * @return false|WP_Term WP_Term instance on success. Will return false if `$taxonomy` does not exist
 	 *                             or `$term` was not found.
+	 * @since 3.20.0
+	 *
 	 */
 	public function get_term_by_uri( $uri ) {
 
@@ -294,12 +314,12 @@ class Wordlift_Entity_Type_Service {
 	 * Check whether an entity type is set for the {@link WP_Post} with the
 	 * specified id.
 	 *
-	 * @since 3.15.0
-	 *
-	 * @param int    $post_id The {@link WP_Post}'s `id`.
+	 * @param int $post_id The {@link WP_Post}'s `id`.
 	 * @param string $uri The entity type URI.
 	 *
 	 * @return bool True if an entity type is set otherwise false.
+	 * @since 3.15.0
+	 *
 	 */
 	public function has_entity_type( $post_id, $uri = null ) {
 
@@ -329,11 +349,11 @@ class Wordlift_Entity_Type_Service {
 	/**
 	 * Get the list of entity types' terms for the specified {@link WP_Post}.
 	 *
-	 * @since 3.15.0
-	 *
 	 * @param int $post_id The {@link WP_Post} id.
 	 *
 	 * @return array|WP_Error An array of entity types' terms or {@link WP_Error}.
+	 * @since 3.15.0
+	 *
 	 */
 	private function get_post_terms( $post_id ) {
 
@@ -351,13 +371,13 @@ class Wordlift_Entity_Type_Service {
 	/**
 	 * Get an entity type term given its URI.
 	 *
-	 * @since 3.20.0 function renamed to `has_post_term_by_uri` and return type changed to `bool`.
-	 * @since 3.15.0
-	 *
-	 * @param int    $post_id The {@link WP_Post} id.
+	 * @param int $post_id The {@link WP_Post} id.
 	 * @param string $uri The entity type URI.
 	 *
 	 * @return bool True if the post has that type URI bound to it otherwise false.
+	 * @since 3.15.0
+	 *
+	 * @since 3.20.0 function renamed to `has_post_term_by_uri` and return type changed to `bool`.
 	 */
 	private function has_post_term_by_uri( $post_id, $uri ) {
 
@@ -384,11 +404,11 @@ class Wordlift_Entity_Type_Service {
 	 * Criteria is that the post type is public. The list of valid post types
 	 * can be overridden with a filter.
 	 *
-	 * @since 3.15.0
-	 *
 	 * @param string $post_type A post type name.
 	 *
 	 * @return bool Return true if the post type can be used for entities, otherwise false.
+	 * @since 3.15.0
+	 *
 	 */
 	public static function is_valid_entity_post_type( $post_type ) {
 

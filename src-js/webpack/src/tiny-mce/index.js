@@ -16,9 +16,9 @@
  */
 
 /**
- * WordPress dependencies
+ * External dependencies
  */
-import { doAction } from "@wordpress/hooks";
+import { trigger } from "backbone";
 
 /**
  * Internal dependencies
@@ -32,7 +32,7 @@ const tinymce = global["tinymce"];
 tinymce.PluginManager.add("wl_tinymce_2", function(ed) {
   // Capture `NodeChange` events and broadcast the selected text.
   ed.on("NodeChange", e => {
-    doAction(SELECTION_CHANGED, { selection: ed.selection.getContent({ format: "text" }) });
+    trigger(SELECTION_CHANGED, { selection: ed.selection.getContent({ format: "text" }) });
 
     // Fire the annotation change.
     const payload =
@@ -40,6 +40,6 @@ tinymce.PluginManager.add("wl_tinymce_2", function(ed) {
         ? // Set the payload to `{ annotationId }` if it's an annotation otherwise to null.
           e.element.id
         : undefined;
-    doAction(ANNOTATION_CHANGED, payload);
+    trigger(ANNOTATION_CHANGED, payload);
   });
 });

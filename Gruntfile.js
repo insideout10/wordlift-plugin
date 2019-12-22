@@ -25,7 +25,7 @@ module.exports = function(grunt) {
       "coffee/editpost-widget/app.directives.wlClassificationBox.coffee",
     SOURCE_DIR + "coffee/editpost-widget/app.directives.wlEntityList.coffee",
     SOURCE_DIR + "coffee/editpost-widget/app.directives.wlEntityForm.coffee",
-    SOURCE_DIR + "coffee/editpost-widget/app.directives.wlEntityTile.coffee",
+    // SOURCE_DIR + "coffee/editpost-widget/app.directives.wlEntityTile.coffee",
     SOURCE_DIR +
       "coffee/editpost-widget/app.directives.wlEntityInputBox.coffee",
     SOURCE_DIR + "coffee/editpost-widget/app.services.EditorAdapter.coffee",

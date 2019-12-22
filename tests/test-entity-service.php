@@ -391,7 +391,9 @@ class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 		$title = 'Mozarts﻿ Geburtshaus';
 
 		// Check that the encoding is recognized as UTF-8.
-		$this->assertEquals( 'UTF-8', mb_detect_encoding( $title ) );
+		if ( function_exists( 'mb_detect_encoding' ) ) {
+			$this->assertEquals( 'UTF-8', mb_detect_encoding( $title ) );
+		}
 
 		// Build the URI.
 		$uri = Wordlift_Uri_Service::get_instance()->build_uri( $title, 'entity' );

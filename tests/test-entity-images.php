@@ -15,7 +15,7 @@ class EntityImagesTest extends Wordlift_Unit_Test_Case {
 			'type_uris'       => array(),
 			'related_post_id' => null,
 			'image'           => array(
-				'http://upload.wikimedia.org/wikipedia/commons/f/ff/Tim_Berners-Lee-Knight.jpg',
+				'https://upload.wikimedia.org/wikipedia/commons/b/b2/UserIconContributions.png',
 			),
 			'same_as'         => array(),
 		) );
@@ -27,7 +27,7 @@ class EntityImagesTest extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 1, count( $attachments ) );
 
 		// Check that the attachments are found by source URL.
-		$image_post = wl_get_attachment_for_source_url( $entity_post->ID, 'http://upload.wikimedia.org/wikipedia/commons/f/ff/Tim_Berners-Lee-Knight.jpg' );
+		$image_post = wl_get_attachment_for_source_url( $entity_post->ID, 'https://upload.wikimedia.org/wikipedia/commons/b/b2/UserIconContributions.png' );
 		$this->assertNotNull( $image_post );
 
 		// Check that the no attachments are found if the source URL doesn't exist.
@@ -38,9 +38,9 @@ class EntityImagesTest extends Wordlift_Unit_Test_Case {
 	function testSaveMultipleImages() {
 
 		$images = array(
-			'http://upload.wikimedia.org/wikipedia/commons/f/ff/Tim_Berners-Lee-Knight.jpg',
-			'http://upload.wikimedia.org/wikipedia/commons/3/3a/Tim_Berners-Lee_closeup.jpg',
-			'http://upload.wikimedia.org/wikipedia/commons/c/c2/Tim_Berners-Lee_2012.jpg',
+			'https://upload.wikimedia.org/wikipedia/commons/b/b2/UserIconContributions.png',
+			'https://upload.wikimedia.org/wikipedia/commons/e/ec/UserIconTrust.png',
+			'https://upload.wikimedia.org/wikipedia/commons/f/fc/UserIconE-Mail.png',
 		);
 
 		$entity_post = wl_save_entity( array(
@@ -70,10 +70,10 @@ class EntityImagesTest extends Wordlift_Unit_Test_Case {
 	function testSaveExistingImages() {
 
 		$images = array(
-			'http://upload.wikimedia.org/wikipedia/commons/f/ff/Tim_Berners-Lee-Knight.jpg',
-			'http://upload.wikimedia.org/wikipedia/commons/3/3a/Tim_Berners-Lee_closeup.jpg',
-			'http://upload.wikimedia.org/wikipedia/commons/c/c2/Tim_Berners-Lee_2012.jpg',
-			'http://upload.wikimedia.org/wikipedia/commons/3/3a/Tim_Berners-Lee_closeup.jpg',
+			'https://upload.wikimedia.org/wikipedia/commons/b/b2/UserIconContributions.png',
+			'https://upload.wikimedia.org/wikipedia/commons/e/ec/UserIconTrust.png',
+			'https://upload.wikimedia.org/wikipedia/commons/f/fc/UserIconE-Mail.png',
+			'https://upload.wikimedia.org/wikipedia/commons/e/ec/UserIconTrust.png',
 		);
 
 		$entity_post = wl_save_entity( array(
@@ -108,8 +108,8 @@ class EntityImagesTest extends Wordlift_Unit_Test_Case {
 		// Create a first entity, just to have
 		// two attachments available in the media library
 		$featured_images = array(
-			'http://upload.wikimedia.org/wikipedia/commons/f/ff/Tim_Berners-Lee-Knight.jpg',
-			'http://upload.wikimedia.org/wikipedia/commons/c/c2/Tim_Berners-Lee_2012.jpg',
+			'https://upload.wikimedia.org/wikipedia/commons/b/b2/UserIconContributions.png',
+			'https://upload.wikimedia.org/wikipedia/commons/e/ec/UserIconTrust.png',
 		);
 
 		$entity_post_name = uniqid( 'entity', true );
@@ -132,7 +132,7 @@ class EntityImagesTest extends Wordlift_Unit_Test_Case {
 		// Create a second entity entity, with one of the
 		// few attachment available in the media library
 		$images = array(
-			'http://upload.wikimedia.org/wikipedia/commons/3/3a/Tim_Berners-Lee_closeup.jpg',
+			'https://upload.wikimedia.org/wikipedia/commons/f/fc/UserIconE-Mail.png',
 		);
 
 		$entity_post_name = uniqid( 'entity', true );
@@ -146,6 +146,8 @@ class EntityImagesTest extends Wordlift_Unit_Test_Case {
 			'image'           => $images,
 			'same_as'         => array(),
 		) );
+
+		$this->assertNotNull( $entity_post, 'Entity post must not be null.' );
 
 		// Retrieve the attachment
 		$attachments = wl_get_attachments( $entity_post->ID );
@@ -214,8 +216,8 @@ class EntityImagesTest extends Wordlift_Unit_Test_Case {
 		// Send the query and get the response.
 		$response = rl_sparql_select( $sparql );
 
-		if (is_wp_error( $response )) {
-			var_dump($response);
+		if ( is_wp_error( $response ) ) {
+			var_dump( $response );
 		}
 
 		$this->assertFalse( is_wp_error( $response ) );

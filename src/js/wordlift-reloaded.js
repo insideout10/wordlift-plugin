@@ -29735,6 +29735,7 @@ angular.module('wordlift.editpost.widget.directives.wlClassificationBox', []).di
         return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-classification-box.html';
       },
       link: function($scope, $element, $attrs, $ctrl) {
+        $log.debug('Linking classification box...');
         $scope.hasSelectedEntities = function() {
           return Object.keys($scope.selectedEntities[$scope.box.id]).length > 0;
         };
@@ -29785,7 +29786,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', []).directive
         box: '='
       },
       templateUrl: function() {
-        return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.23.0';
+        return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.23.4';
       },
       link: function($scope, $element, $attrs, $ctrl) {
         $scope.configuration = configuration;
@@ -29883,46 +29884,6 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', []).directive
   }
 ]);
 
-angular.module('wordlift.editpost.widget.directives.wlEntityTile', []).directive('wlEntityTile', [
-  'configuration', '$log', function(configuration, $log) {
-    return {
-      require: '?^wlClassificationBox',
-      restrict: 'E',
-      scope: {
-        entity: '=',
-        isSelected: '=',
-        showConfidence: '=',
-        onSelect: '&',
-        onMore: '&'
-      },
-      templateUrl: function() {
-        return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-tile.html';
-      },
-      link: function($scope, $element, $attrs, $boxCtrl) {
-        $scope.configuration = configuration;
-        if ($boxCtrl != null) {
-          $boxCtrl.addTile($scope);
-        }
-        $scope.isOpened = false;
-        $scope.isInternal = function() {
-          if ($scope.entity.id.startsWith(configuration.datasetUri)) {
-            return true;
-          }
-          return false;
-        };
-        return $scope.toggle = function() {
-          if (!$scope.isOpened) {
-            if ($boxCtrl != null) {
-              $boxCtrl.closeTiles();
-            }
-          }
-          return $scope.isOpened = !$scope.isOpened;
-        };
-      }
-    };
-  }
-]);
-
 angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', []).directive('wlEntityInputBox', [
   'configuration', '$log', function(configuration, $log) {
     return {
@@ -29931,7 +29892,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', []).direc
         entity: '='
       },
       templateUrl: function() {
-        return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.23.0';
+        return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.23.4';
       }
     };
   }
@@ -30120,6 +30081,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', ['wordlift.e
     };
     service.parse = function(data) {
       var annotation, ea, entity, id, index, l, len2, ref2, ref3, ref4;
+      $log.debug('Parsing data...');
       ref2 = data.entities;
       for (id in ref2) {
         entity = ref2[id];
@@ -30477,6 +30439,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', ['wordlift.edi
       embedAnalysis: (function(_this) {
         return function(analysis) {
           var annotation, annotations, ed, element, em, entity, html, isDirty, j, k, len, len1, ref, ref1, ref2, ref3;
+          $log.debug('Embedding analysis...');
           ed = EditorAdapter.getEditor();
           html = EditorAdapter.getHTML();
           annotations = Object.values(analysis.annotations).sort(function(a, b) {
@@ -30715,10 +30678,10 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', []).p
 ((function(_this) {
   return function($, angular) {
     var container, injector, spinner;
-    angular.module('wordlift.editpost.widget', ['ngAnimate', 'wordlift.ui.carousel', 'wordlift.utils.directives', 'wordlift.editpost.widget.providers.ConfigurationProvider', 'wordlift.editpost.widget.controllers.EditPostWidgetController', 'wordlift.editpost.widget.directives.wlClassificationBox', 'wordlift.editpost.widget.directives.wlEntityList', 'wordlift.editpost.widget.directives.wlEntityForm', 'wordlift.editpost.widget.directives.wlEntityTile', 'wordlift.editpost.widget.directives.wlEntityInputBox', 'wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.EditorService', 'wordlift.editpost.widget.services.RelatedPostDataRetrieverService']).config(function(configurationProvider) {
+    angular.module('wordlift.editpost.widget', ['ngAnimate', 'wordlift.ui.carousel', 'wordlift.utils.directives', 'wordlift.editpost.widget.providers.ConfigurationProvider', 'wordlift.editpost.widget.controllers.EditPostWidgetController', 'wordlift.editpost.widget.directives.wlClassificationBox', 'wordlift.editpost.widget.directives.wlEntityList', 'wordlift.editpost.widget.directives.wlEntityForm', 'wordlift.editpost.widget.directives.wlEntityInputBox', 'wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.EditorService', 'wordlift.editpost.widget.services.RelatedPostDataRetrieverService']).config(function(configurationProvider) {
       return configurationProvider.setConfiguration(window.wordlift);
     });
-    container = $("<div\n  id=\"wordlift-edit-post-wrapper\"\n  ng-controller=\"EditPostWidgetController\"\n  ng-include=\"configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.23.0'\">\n</div>").appendTo('#wordlift-edit-post-outer-wrapper');
+    container = $("<div\n  id=\"wordlift-edit-post-wrapper\"\n  ng-controller=\"EditPostWidgetController\"\n  ng-include=\"configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.23.4'\">\n</div>").appendTo('#wordlift-edit-post-outer-wrapper');
     spinner = $("<div class=\"wl-widget-spinner\">\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-blogger\">\n    <circle cx=\"10\" cy=\"10\" r=\"6\" class=\"wl-blogger-shape\"></circle>\n  </svg>\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-editorial\">\n    <rect x=\"4\" y=\"4\" width=\"12\" height=\"12\" class=\"wl-editorial-shape\"></rect>\n  </svg>\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-enterprise\">\n    <polygon points=\"3,10 6.5,4 13.4,4 16.9,10 13.4,16 6.5,16\" class=\"wl-enterprise-shape\"></polygon>\n  </svg>\n</div>").appendTo('#wordlift_entities_box .ui-sortable-handle');
     console.log("bootstrapping WordLift app...");
     injector = angular.bootstrap($('#wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']);

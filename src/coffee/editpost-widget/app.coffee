@@ -10,9 +10,11 @@
     'wordlift.editpost.widget.providers.ConfigurationProvider',
     'wordlift.editpost.widget.controllers.EditPostWidgetController',
     'wordlift.editpost.widget.directives.wlClassificationBox',
+    # Beware that while we're not using Angular components, we're using the element to hook the React application.
+    # The Classification Box is in fact a React application.
     'wordlift.editpost.widget.directives.wlEntityList',
     'wordlift.editpost.widget.directives.wlEntityForm',
-    'wordlift.editpost.widget.directives.wlEntityTile',
+#    'wordlift.editpost.widget.directives.wlEntityTile',
     'wordlift.editpost.widget.directives.wlEntityInputBox',
     'wordlift.editpost.widget.services.AnalysisService',
     'wordlift.editpost.widget.services.EditorService',
@@ -27,7 +29,7 @@
     <div
       id="wordlift-edit-post-wrapper"
       ng-controller="EditPostWidgetController"
-      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.23.0'">
+      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.23.4'">
     </div>
   """)
   .appendTo('#wordlift-edit-post-outer-wrapper')
