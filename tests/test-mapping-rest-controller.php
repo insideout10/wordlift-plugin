@@ -276,11 +276,11 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 		$this->assertEquals( 2, count( $dbo->get_mapping_items() ) );
 		$rule_group_table_name = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
 		$rule_table_name = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
-		$rule_group_count = $this->wpdb->get_var( "SELECT COUNT(rule_group_id) as total FROM $rule_group_table_name" );
-		$rule_count = $this->wpdb->get_var( "SELECT COUNT(rule_id) as total FROM $rule_table_name" );
+		$rule_group_count = $this->wpdb->get_var( "SELECT COUNT(DISTINCT rule_group_id) as total FROM $rule_group_table_name" );
+		$rule_count = $this->wpdb->get_var( "SELECT COUNT(DISTINCT rule_group_id) as total FROM $rule_table_name" );
 		// we should have 4 rule groups and 4 rules.
 		$this->assertEquals( 4, $rule_group_count );
-		// we should have 4 rules in the db.
-		$this->assertEquals( 4, $rule_count );
+		// we should have 2 rule groups in the rule table.
+		$this->assertEquals( 2, $rule_count );
 	}
 }
