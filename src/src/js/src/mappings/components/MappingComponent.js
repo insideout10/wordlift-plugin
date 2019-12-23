@@ -16,8 +16,6 @@ import React from 'react'
 import MappingListItemComponent from './MappingListItemComponent'
 import { MAPPING_LIST_CHANGED_ACTION, CATEGORY_OBJECT_CHANGED_ACTION, CATEGORY_ITEMS_LIST_CHANGED_ACTION } from '../actions/actions';
 import { connect } from 'react-redux'
-import { MAPPING_LIST_CHANGED, CATEGORY_ITEMS_LIST_CHANGED } from '../actions/actionTypes';
-
 // Set a reference to the WordLift's Mapping settings stored in the window instance.
 const mappingSettings = window["wlMappingsConfig"] || {};
 
@@ -182,10 +180,9 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                         }
                         {
                             this.props.category_items.map((item, index)=> {
-                                return <MappingListItemComponent title={item.mapping_title}
+                                return <MappingListItemComponent 
                                 nonce={mappingSettings.wl_edit_mapping_nonce}
-                                isSelected={item.is_selected}
-                                mappingId={item.mapping_id}/>
+                                mappingData={item}/>
                             })
                         }
                     </tbody>
