@@ -8,7 +8,7 @@
  /**
  * Internal dependancies
  */
-import { MAPPING_LIST_CHANGED, MAPPING_ITEM_CATEGORY_CHANGED, MAPPING_LIST_BULK_SELECT } from '../actions/actionTypes'
+import { MAPPING_LIST_CHANGED, MAPPING_ITEM_CATEGORY_CHANGED, MAPPING_LIST_BULK_SELECT, MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED } from '../actions/actionTypes'
 import { createReducer } from '@reduxjs/toolkit'
 
 /**
@@ -35,5 +35,9 @@ import { createReducer } from '@reduxjs/toolkit'
             }
             return item
          })
+    },
+
+    [ MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED ] : ( state, action ) => {
+        state.choosen_category = action.payload.categoryName
     }
 })

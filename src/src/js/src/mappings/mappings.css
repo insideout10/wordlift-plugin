@@ -119,3 +119,7 @@
 .wl-mappings-link {
     cursor: pointer !important;
 }
+
+.wl-category-title {
+    text-transform: capitalize !important;
+}

@@ -14,8 +14,9 @@ import React from 'react'
  * Internal dependencies
  */
 import MappingListItemComponent from './MappingListItemComponent'
-import { MAPPING_LIST_CHANGED_ACTION, MAPPING_ITEM_CATEGORY_CHANGED_ACTION, MAPPING_LIST_BULK_SELECT_ACTION } from '../actions/actions';
+import { MAPPING_LIST_CHANGED_ACTION, MAPPING_ITEM_CATEGORY_CHANGED_ACTION, MAPPING_LIST_BULK_SELECT_ACTION, MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION } from '../actions/actions';
 import { connect } from 'react-redux'
+import CategoryComponent from './CategoryComponent';
 // Set a reference to the WordLift's Mapping settings stored in the window instance.
 const mappingSettings = window["wlMappingsConfig"] || {};
 
@@ -157,6 +158,14 @@ const mappingSettings = window["wlMappingsConfig"] || {};
             }
         ))
      }
+
+     categorySelectHandler = ( category ) => {
+        const action = MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION
+        action.payload = {
+            categoryName: category
+        }
+        this.props.dispatch( action )
+     }
      render() {
          return (
             <React.Fragment>
@@ -167,7 +176,12 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                         Add New
                     </a>
                 </h1>
-
+                <CategoryComponent 
+                    source={this.props.mapping_items}
+                    categoryKeyName="mapping_status"
+                    categories={['active','trash']}
+                    categorySelectHandler={ this.categorySelectHandler }
+                /><br/>
                 <table className="wp-list-table widefat striped wl-table">
                     <thead>
                         <tr>
