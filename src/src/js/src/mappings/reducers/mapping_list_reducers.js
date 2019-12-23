@@ -8,7 +8,7 @@
  /**
  * Internal dependancies
  */
-import { MAPPING_LIST_CHANGED, CATEGORY_OBJECT_CHANGED, CATEGORY_ITEMS_LIST_CHANGED, MAPPING_ITEM_CATEGORY_CHANGED, MAPPING_LIST_BULK_SELECT } from '../actions/actionTypes'
+import { MAPPING_LIST_CHANGED, MAPPING_ITEM_CATEGORY_CHANGED, MAPPING_LIST_BULK_SELECT } from '../actions/actionTypes'
 import { createReducer } from '@reduxjs/toolkit'
 
 /**
@@ -25,7 +25,6 @@ import { createReducer } from '@reduxjs/toolkit'
         .map( el => el.mapping_id )
         .indexOf( mappingId )
         state.mapping_items[ targetIndex ].mapping_status = mappingCategory
-        console.log( state.mapping_items[ targetIndex ] )
     },
 
     [ MAPPING_LIST_BULK_SELECT ] : ( state, action ) => {

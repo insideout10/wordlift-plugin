@@ -116,3 +116,6 @@
 .wl-col-70 {
     width: 70%;
 }
+.wl-mappings-link {
+    cursor: pointer !important;
+}

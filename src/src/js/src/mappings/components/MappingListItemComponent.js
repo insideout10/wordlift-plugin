@@ -54,13 +54,13 @@ class MappingListItemComponent extends React.Component {
                 </a>
                 | 
             </span>
-            <span>
+            <span className="wl-mappings-link">
                 <a title="Duplicate this item" 
                 onClick={ () => { this.props.duplicateMappingItemHandler( this.props.mappingData ) }}>
                     Duplicate
                 </a> |
             </span>
-            <span className="trash">
+            <span className="trash wl-mappings-link">
                 <a onClick={ () => { 
                     this.props.switchCategoryHandler(
                         this.props.mappingData,
