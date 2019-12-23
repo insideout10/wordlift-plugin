@@ -8,7 +8,7 @@
  /**
  * Internal dependancies
  */
-import { MAPPING_LIST_CHANGED, CATEGORY_OBJECT_CHANGED, CATEGORY_ITEMS_LIST_CHANGED } from '../actions/actionTypes'
+import { MAPPING_LIST_CHANGED, CATEGORY_OBJECT_CHANGED, CATEGORY_ITEMS_LIST_CHANGED, MAPPING_ITEM_CATEGORY_CHANGED } from '../actions/actionTypes'
 import { createReducer } from '@reduxjs/toolkit'
 
 /**
@@ -18,4 +18,8 @@ import { createReducer } from '@reduxjs/toolkit'
     [ MAPPING_LIST_CHANGED ] : ( state, action ) => {
         state.mapping_items = action.payload.value
     },
+    [ MAPPING_ITEM_CATEGORY_CHANGED ] : ( state, action ) => {
+        const { mappingIndex, mappingCategory } = action.payload
+        state.mapping_items[ mappingIndex ].mapping_status = mappingCategory
+    }
 })

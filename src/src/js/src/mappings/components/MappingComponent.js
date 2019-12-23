@@ -14,7 +14,7 @@ import React from 'react'
  * Internal dependencies
  */
 import MappingListItemComponent from './MappingListItemComponent'
-import { MAPPING_LIST_CHANGED_ACTION } from '../actions/actions';
+import { MAPPING_LIST_CHANGED_ACTION, MAPPING_ITEM_CATEGORY_CHANGED_ACTION } from '../actions/actions';
 import { connect } from 'react-redux'
 // Set a reference to the WordLift's Mapping settings stored in the window instance.
 const mappingSettings = window["wlMappingsConfig"] || {};
@@ -37,6 +37,18 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                 is_selected: false,
             }
         ))
+     }
+     /**
+      * Convert ui data to api format before posting to api
+      * @param {Array} mapping_items Mapping items list
+      * 
+      */
+     static applyApiFilters( mapping_items ) {
+         return mapping_items.map((item)=>({
+             mapping_id: item.mapping_id,
+             mapping_title: item.mapping_title,
+             mapping_status: item.mapping_status,
+         }))
      }
      /**
       * Extract categories from mapping_items
@@ -67,12 +79,12 @@ const mappingSettings = window["wlMappingsConfig"] || {};
      }
 
      switchCategory = ( mappingIndex, categoryName ) => {
-        const mapping_items = [...this.props.mapping_items]
-        mapping_items[mappingIndex].mapping_status = categoryName
-        const action = MAPPING_LIST_CHANGED_ACTION
-        action.payload  = {    
-            value: mapping_items
+        const action = MAPPING_ITEM_CATEGORY_CHANGED_ACTION
+        action.payload = {
+            mappingIndex: mappingIndex,
+            mappingCategory: categoryName
         }
+        console.log( action )
         this.props.dispatch( action )
         // Save Changes to the db
         this.updateMappingItems()
@@ -86,7 +98,11 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                     "content-type": "application/json",
                     "X-WP-Nonce": mappingSettings.wl_mapping_nonce
                 },
-                body: JSON.stringify(this.props.mapping_items)  
+                body: JSON.stringify(
+                        MappingComponent.applyApiFilters(
+                            this.props.mapping_items
+                        )
+                    )  
             }
         )
         .then(response => response.json().then(
@@ -229,6 +245,7 @@ const mapStateToProps = function(state){
     return {
         mapping_items: state.mapping_items,
         choosen_category: state.choosen_category,
+        stateObj: state,
     }
 }
 
