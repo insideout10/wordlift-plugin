@@ -103,7 +103,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                 'content-type': 'application/json',
                 'X-WP-Nonce': mappingSettings.wl_mapping_nonce
             },
-            body: JSON.stringify( mapping_items )
+            body: JSON.stringify( { mapping_items: mapping_items } )
         })
         .then( response => response.json().then(
             data => {

@@ -253,10 +253,12 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 		wp_set_current_user( $user_id );
 		$mapping_id = $this->inject_mock_data_for_mapping_id();
 		$post_array = array(
-			array(
-				'mapping_id'     => $mapping_id,
-				'mapping_title'  => 'foo',
-				'mapping_status' => 'trash',
+			'mapping_items' => array(
+				array(
+					'mapping_id'     => $mapping_id,
+					'mapping_title'  => 'foo',
+					'mapping_status' => 'trash',
+				),
 			),
 		);
 		$json_data = json_encode( $post_array );

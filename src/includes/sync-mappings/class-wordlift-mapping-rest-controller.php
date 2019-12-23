@@ -125,9 +125,10 @@ class Wordlift_Mapping_REST_Controller {
 	 * @param WP_REST_Request $request {@link WP_REST_Request instance}.
 	 */
 	public static function clone_mapping_items( $request ) {
-		$dbo       = new Wordlift_Mapping_DBO();
-		$post_data = (array) $request->get_params();
-		foreach ( $post_data as $mapping_item ) {
+		$dbo           = new Wordlift_Mapping_DBO();
+		$post_data     = (array) $request->get_params();
+		$mapping_items = (array) $post_data['mapping_items'];
+		foreach ( $mapping_items as $mapping_item ) {
 			$mapping_id = (int) $mapping_item['mapping_id'];
 			// Clone the current mapping item.
 			$cloned_mapping_id = $dbo->insert_mapping_item( $mapping_item['mapping_title'] );
