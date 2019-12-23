@@ -78,19 +78,20 @@ const mappingSettings = window["wlMappingsConfig"] || {};
          this.props.dispatch( MAPPING_LIST_CHANGED_ACTION )
      }
 
-     switchCategory = ( mappingIndex, categoryName ) => {
+     switchCategory = ( mappingData, categoryName ) => {
         const action = MAPPING_ITEM_CATEGORY_CHANGED_ACTION
         action.payload = {
-            mappingIndex: mappingIndex,
+            mappingId: mappingData.mapping_id,
             mappingCategory: categoryName
         }
         console.log( action )
         this.props.dispatch( action )
         // Save Changes to the db
-        this.updateMappingItems()
+        mappingData.mapping_status = categoryName
+        this.updateMappingItems([mappingData])
      }
 
-     updateMappingItems() {
+     updateMappingItems( mapping_items ) {
         fetch(mappingSettings.rest_url,
             {
                 method: "PUT",
@@ -100,7 +101,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                 },
                 body: JSON.stringify(
                         MappingComponent.applyApiFilters(
-                            this.props.mapping_items
+                            mapping_items
                         )
                     )  
             }

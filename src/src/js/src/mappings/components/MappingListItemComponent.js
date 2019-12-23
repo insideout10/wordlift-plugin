@@ -60,7 +60,12 @@ class MappingListItemComponent extends React.Component {
                 </a> |
             </span>
             <span className="trash">
-                <a onClick={ () => { this.props.switchCategoryHandler( this.props.mappingIndex, 'trash') }}>
+                <a onClick={ () => { 
+                    this.props.switchCategoryHandler(
+                        this.props.mappingData,
+                        'trash'
+                    ) 
+                }}>
                     Trash
                 </a>
             </span>

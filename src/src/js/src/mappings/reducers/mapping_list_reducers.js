@@ -19,7 +19,11 @@ import { createReducer } from '@reduxjs/toolkit'
         state.mapping_items = action.payload.value
     },
     [ MAPPING_ITEM_CATEGORY_CHANGED ] : ( state, action ) => {
-        const { mappingIndex, mappingCategory } = action.payload
-        state.mapping_items[ mappingIndex ].mapping_status = mappingCategory
+        const { mappingId, mappingCategory } = action.payload
+        const targetIndex = state.mapping_items
+        .map( el => el.mapping_id )
+        .indexOf( mappingId )
+        state.mapping_items[ targetIndex ].mapping_status = mappingCategory
+        console.log( state.mapping_items[ targetIndex ] )
     }
 })
