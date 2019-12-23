@@ -18,12 +18,4 @@ import { createReducer } from '@reduxjs/toolkit'
     [ MAPPING_LIST_CHANGED ] : ( state, action ) => {
         state.mapping_items = action.payload.value
     },
-
-    [ CATEGORY_OBJECT_CHANGED ] : ( state, action ) => {
-        state.categories = action.payload.value
-    },
-
-    [ CATEGORY_ITEMS_LIST_CHANGED ] : ( state, action ) => {
-        state.category_items = action.payload.value
-    }
 })

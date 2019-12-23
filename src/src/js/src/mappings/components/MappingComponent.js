@@ -14,16 +14,12 @@ import React from 'react'
  * Internal dependencies
  */
 import MappingListItemComponent from './MappingListItemComponent'
-import { MAPPING_LIST_CHANGED_ACTION, CATEGORY_OBJECT_CHANGED_ACTION, CATEGORY_ITEMS_LIST_CHANGED_ACTION } from '../actions/actions';
+import { MAPPING_LIST_CHANGED_ACTION } from '../actions/actions';
 import { connect } from 'react-redux'
 // Set a reference to the WordLift's Mapping settings stored in the window instance.
 const mappingSettings = window["wlMappingsConfig"] || {};
 
  class MappingComponent extends React.Component {
-     state = {
-         // The list of mapping items loaded from api
-        mappingItems: this.props.mappingItems,
-     }
      componentDidMount() {
          this.getMappingItems()
      }
@@ -70,6 +66,18 @@ const mappingSettings = window["wlMappingsConfig"] || {};
          this.props.dispatch( MAPPING_LIST_CHANGED_ACTION )
      }
 
+     switchCategory = ( mappingIndex, categoryName ) => {
+        const mapping_items = [...this.props.mapping_items]
+        mapping_items[mappingIndex].mapping_status = categoryName
+        const action = MAPPING_LIST_CHANGED_ACTION
+        action.payload  = {    
+            value: mapping_items
+        }
+        this.props.dispatch( action )
+        // Save Changes to the db
+        this.updateMappingItems()
+     }
+
      updateMappingItems() {
         fetch(mappingSettings.rest_url,
             {
@@ -107,6 +115,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
         })
         .then( response => response.json().then(
             data => {
+                // Refresh the screen with the cloned mapping item.
                 this.getMappingItems()
             }
         ))
@@ -131,16 +140,6 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                 action.payload  = {    
                     value: MappingComponent.applyUiItemFilters(data)
                 }
-                const category_action = CATEGORY_OBJECT_CHANGED_ACTION
-                category_action.payload = {
-                    value: MappingComponent.extractCategoriesFromMappingItems( data )
-                }
-                const category_items_changed = CATEGORY_ITEMS_LIST_CHANGED_ACTION
-                category_items_changed.payload = {
-                    value: MappingComponent.applyUiItemFilters(data)
-                }
-                this.props.dispatch( category_items_changed )
-                this.props.dispatch( category_action ) 
                 this.props.dispatch( action )
             }
         ))
@@ -181,11 +180,19 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                                 </tr> 
                         }
                         {
-                            this.props.mapping_items.map((item, index)=> {
+                            this.props.mapping_items
+                            .filter( el => el.mapping_status === this.props.choosen_category )
+                            .map((item, index)=> {
                                 return <MappingListItemComponent
+                                mappingIndex = {
+                                    index
+                                }
                                 duplicateMappingItemHandler={
                                     this.duplicateMappingItems
                                 } 
+                                switchCategoryHandler= {
+                                    this.switchCategory
+                                }
                                 nonce={mappingSettings.wl_edit_mapping_nonce}
                                 mappingData={item}/>
                             })
@@ -221,8 +228,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
 const mapStateToProps = function(state){ 
     return {
         mapping_items: state.mapping_items,
-        categories: state.categories,
-        category_items: state.category_items,
+        choosen_category: state.choosen_category,
     }
 }
 

@@ -249,7 +249,7 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 	/** Test can clone a mapping item */
 	public function test_given_mapping_id_can_create_clone() {
 		// Create user with 'manage options' capability, only that user can delete this item.
-		$user_id   = $this->factory->user->create( array( 'role' => 'administrator' ) );
+		$user_id    = $this->factory->user->create( array( 'role' => 'administrator' ) );
 		wp_set_current_user( $user_id );
 		$mapping_id = $this->inject_mock_data_for_mapping_id();
 		$post_array = array(

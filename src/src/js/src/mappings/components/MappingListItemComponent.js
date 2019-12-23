@@ -15,7 +15,6 @@ import PropTypes from 'prop-types';
 class MappingListItemComponent extends React.Component {
 
     constructor(props) {
-        console.log( props )
         super(props)
     }
     constructEditMappingLink = ()=> {
@@ -61,7 +60,9 @@ class MappingListItemComponent extends React.Component {
                 </a> |
             </span>
             <span className="trash">
-                <a>Trash</a>
+                <a onClick={ () => { this.props.switchCategoryHandler( this.props.mappingIndex, 'trash') }}>
+                    Trash
+                </a>
             </span>
         </React.Fragment>
     }
@@ -100,6 +101,7 @@ class MappingListItemComponent extends React.Component {
 
 MappingListItemComponent.propTypes = {
     nonce: PropTypes.string,
-    mappingData: PropTypes.object
+    mappingData: PropTypes.object,
+    mappingIndex: PropTypes.number
 }
 export default connect()(MappingListItemComponent)
