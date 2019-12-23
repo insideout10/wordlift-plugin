@@ -16,6 +16,7 @@ class MappingListItemComponent extends React.Component {
 
     constructor(props) {
         super(props)
+        console.log( props )
     }
     constructEditMappingLink = ()=> {
         return '?page=wl_edit_mapping' 
@@ -87,7 +88,8 @@ class MappingListItemComponent extends React.Component {
         return  ( 
             <tr>
                 <td class="wl-check-column">
-                    <input type="checkbox" checked={this.props.mappingData.is_selected }/>
+                    <input type="checkbox" 
+                    checked={ this.props.mappingData.is_selected }/>
                 </td>
                 <td>
                     <a class="row-title wl-mappings-list-item-title">

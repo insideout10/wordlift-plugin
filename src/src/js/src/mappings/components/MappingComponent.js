@@ -14,7 +14,7 @@ import React from 'react'
  * Internal dependencies
  */
 import MappingListItemComponent from './MappingListItemComponent'
-import { MAPPING_LIST_CHANGED_ACTION, MAPPING_ITEM_CATEGORY_CHANGED_ACTION } from '../actions/actions';
+import { MAPPING_LIST_CHANGED_ACTION, MAPPING_ITEM_CATEGORY_CHANGED_ACTION, MAPPING_LIST_BULK_SELECT_ACTION } from '../actions/actions';
 import { connect } from 'react-redux'
 // Set a reference to the WordLift's Mapping settings stored in the window instance.
 const mappingSettings = window["wlMappingsConfig"] || {};
@@ -67,15 +67,12 @@ const mappingSettings = window["wlMappingsConfig"] || {};
         })
         return categories
      }
+     /**
+      * Selects all the mapping items on the currently active category
+      * When triggered on the active, it selects only the active items
+      */
      selectAllMappingItems = () => {
-         const action = MAPPING_LIST_CHANGED_ACTION
-         action.payload = {
-             value: this.props.mapping_items.map((item) => {
-                item.is_selected = !item.is_selected
-                return item
-             })
-         }
-         this.props.dispatch( MAPPING_LIST_CHANGED_ACTION )
+        this.props.dispatch( MAPPING_LIST_BULK_SELECT_ACTION )
      }
 
      switchCategory = ( mappingData, categoryName ) => {
@@ -84,7 +81,6 @@ const mappingSettings = window["wlMappingsConfig"] || {};
             mappingId: mappingData.mapping_id,
             mappingCategory: categoryName
         }
-        console.log( action )
         this.props.dispatch( action )
         // Save Changes to the db
         mappingData.mapping_status = categoryName

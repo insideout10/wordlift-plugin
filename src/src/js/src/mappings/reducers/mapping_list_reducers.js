@@ -8,7 +8,7 @@
  /**
  * Internal dependancies
  */
-import { MAPPING_LIST_CHANGED, CATEGORY_OBJECT_CHANGED, CATEGORY_ITEMS_LIST_CHANGED, MAPPING_ITEM_CATEGORY_CHANGED } from '../actions/actionTypes'
+import { MAPPING_LIST_CHANGED, CATEGORY_OBJECT_CHANGED, CATEGORY_ITEMS_LIST_CHANGED, MAPPING_ITEM_CATEGORY_CHANGED, MAPPING_LIST_BULK_SELECT } from '../actions/actionTypes'
 import { createReducer } from '@reduxjs/toolkit'
 
 /**
@@ -16,6 +16,7 @@ import { createReducer } from '@reduxjs/toolkit'
   */
  export const MappingListReducer = createReducer(null, {
     [ MAPPING_LIST_CHANGED ] : ( state, action ) => {
+        console.log( "state changed " )
         state.mapping_items = action.payload.value
     },
     [ MAPPING_ITEM_CATEGORY_CHANGED ] : ( state, action ) => {
@@ -25,5 +26,15 @@ import { createReducer } from '@reduxjs/toolkit'
         .indexOf( mappingId )
         state.mapping_items[ targetIndex ].mapping_status = mappingCategory
         console.log( state.mapping_items[ targetIndex ] )
+    },
+
+    [ MAPPING_LIST_BULK_SELECT ] : ( state, action ) => {
+        state.mapping_items = state.mapping_items.map((item) => {
+            // Select only items in the current choosen category.
+            if ( item.mapping_status === state.choosen_category ) {
+                item.is_selected = !item.is_selected
+            }
+            return item
+         })
     }
 })
