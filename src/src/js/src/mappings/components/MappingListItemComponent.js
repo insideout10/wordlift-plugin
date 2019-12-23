@@ -89,7 +89,12 @@ class MappingListItemComponent extends React.Component {
             <tr>
                 <td class="wl-check-column">
                     <input type="checkbox" 
-                    checked={ this.props.mappingData.is_selected }/>
+                    checked={ this.props.mappingData.is_selected }
+                    onClick={ () => { 
+                        this.props.selectMappingItemHandler(
+                            this.props.mappingData
+                        ) 
+                    } }/>
                 </td>
                 <td>
                     <a class="row-title wl-mappings-list-item-title">

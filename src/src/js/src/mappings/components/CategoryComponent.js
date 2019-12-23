@@ -27,14 +27,14 @@ class CategoryComponent extends React.Component {
                         return (
                             <span className="wl-mappings-link wl-category-title">
                                 <a onClick={()=> { this.props.categorySelectHandler(category) }}>
-                                   { category }
-                                </a> 
-                                ({
-                                    // Count the category in the source
-                                    this.props.source
-                                    .filter( el=> el[this.props.categoryKeyName] === category )
-                                    .length
-                                }) | &nbsp;
+                                    { category }
+                                    ({
+                                        // Count the category in the source
+                                        this.props.source
+                                        .filter( el=> el[this.props.categoryKeyName] === category )
+                                        .length
+                                    })|
+                                 </a>&nbsp;
                             </span>
                         )
 

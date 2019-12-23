@@ -101,3 +101,9 @@ export const MAPPING_LIST_BULK_SELECT = "MAPPING_LIST_BULK_SELECT"
  * Action when mapping items needed to be selected / unselected
  */
 export const MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED = "MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED"
+
+/**
+ * @const MAPPING_ITEM_SELECTED
+ * Action when mapping item is selected.
+ */
+export const MAPPING_ITEM_SELECTED = "MAPPING_ITEM_SELECTED"

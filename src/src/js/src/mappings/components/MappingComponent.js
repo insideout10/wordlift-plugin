@@ -14,7 +14,7 @@ import React from 'react'
  * Internal dependencies
  */
 import MappingListItemComponent from './MappingListItemComponent'
-import { MAPPING_LIST_CHANGED_ACTION, MAPPING_ITEM_CATEGORY_CHANGED_ACTION, MAPPING_LIST_BULK_SELECT_ACTION, MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION } from '../actions/actions';
+import { MAPPING_LIST_CHANGED_ACTION, MAPPING_ITEM_CATEGORY_CHANGED_ACTION, MAPPING_LIST_BULK_SELECT_ACTION, MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION, MAPPING_ITEM_SELECTED_ACTION } from '../actions/actions';
 import { connect } from 'react-redux'
 import CategoryComponent from './CategoryComponent';
 // Set a reference to the WordLift's Mapping settings stored in the window instance.
@@ -158,13 +158,35 @@ const mappingSettings = window["wlMappingsConfig"] || {};
             }
         ))
      }
-
+     /**
+      * When the category is selected in the categoryComponent this method
+      * is fired.
+      * @param {String} category The category choosen by the user
+      * @return void 
+      */
      categorySelectHandler = ( category ) => {
         const action = MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION
         action.payload = {
             categoryName: category
         }
         this.props.dispatch( action )
+     }
+     /**
+      * Called when a mapping item is clicked.
+      * @param {Object} mappingData Object represeting single mapping item
+      * @return void
+      */
+     selectMappingItemHandler = ( mappingData ) => {
+        const action = MAPPING_ITEM_SELECTED_ACTION
+        action.payload = {
+            mappingId: mappingData.mapping_id
+        }
+        console.log( action )
+        this.props.dispatch( action )
+     }
+     bulkActionSubmitHandler = () => {
+         console.log( this.props.mapping_items
+            .filter(el => el.is_selected ) )
      }
      render() {
          return (
@@ -211,6 +233,9 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                             .filter( el => el.mapping_status === this.props.choosen_category )
                             .map((item, index)=> {
                                 return <MappingListItemComponent
+                                selectMappingItemHandler = {
+                                    this.selectMappingItemHandler
+                                }
                                 mappingIndex = {
                                     index
                                 }
@@ -244,7 +269,10 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                             <option value="acfduplicate">Duplicate</option>
                             <option value="trash">Move to Trash</option>
                         </select>
-                        <input type="submit" id="doaction2" className="button action" defaultValue="Apply" />
+                        <input type="button" 
+                        className="button action"
+                        defaultValue="Apply"
+                        onClick={ ()=> { this.bulkActionSubmitHandler() } } />
                     </div>
                 </div>
             </React.Fragment>

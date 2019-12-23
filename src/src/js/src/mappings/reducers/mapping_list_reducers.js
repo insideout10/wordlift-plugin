@@ -8,7 +8,7 @@
  /**
  * Internal dependancies
  */
-import { MAPPING_LIST_CHANGED, MAPPING_ITEM_CATEGORY_CHANGED, MAPPING_LIST_BULK_SELECT, MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED } from '../actions/actionTypes'
+import { MAPPING_LIST_CHANGED, MAPPING_ITEM_CATEGORY_CHANGED, MAPPING_LIST_BULK_SELECT, MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED, MAPPING_ITEM_SELECTED } from '../actions/actionTypes'
 import { createReducer } from '@reduxjs/toolkit'
 
 /**
@@ -39,5 +39,13 @@ import { createReducer } from '@reduxjs/toolkit'
 
     [ MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED ] : ( state, action ) => {
         state.choosen_category = action.payload.categoryName
+    },
+
+    [ MAPPING_ITEM_SELECTED ] : ( state, action ) => {
+        const { mappingId } = action.payload
+        const targetIndex = state.mapping_items
+        .map( el => el.mapping_id )
+        .indexOf( mappingId )
+        state.mapping_items[ targetIndex ].is_selected = !state.mapping_items[ targetIndex ].is_selected
     }
 })
