@@ -69,19 +69,6 @@ const mappingSettings = window["wlMappingsConfig"] || {};
          }
          this.props.dispatch( MAPPING_LIST_CHANGED_ACTION )
      }
-     /**
-      * Switches category on click of category item.
-      * @param {String} category Category which needes to be switched 
-      */
-     switchCategory = ( category ) => {
-        const category_items_changed = CATEGORY_ITEMS_LIST_CHANGED_ACTION
-        category_items_changed.payload = {
-            value: this.props.mapping_items.filter((item)=> {
-                return item.mapping_status === category
-            })
-        }
-        this.props.dispatch( category_items_changed )
-     }
 
      updateMappingItems() {
         fetch(mappingSettings.rest_url,
@@ -97,6 +84,30 @@ const mappingSettings = window["wlMappingsConfig"] || {};
         .then(response => response.json().then(
             data => {
                 
+            }
+        ))
+     }
+
+     /**
+      * 
+      * @param {Array|Object} mapping_items accepts a single 
+      * mapping item object or multiple mapping items, clone them by posting
+      * to the api endpoint and then refresh the current list.
+      */
+     duplicateMappingItems = ( mapping_items ) => {
+        // If single item is given, construct it to array
+        mapping_items = Array.isArray( mapping_items ) ? mapping_items : [ mapping_items ]
+        fetch( mappingSettings.rest_url + '/clone', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+                'X-WP-Nonce': mappingSettings.wl_mapping_nonce
+            },
+            body: JSON.stringify( mapping_items )
+        })
+        .then( response => response.json().then(
+            data => {
+                this.getMappingItems()
             }
         ))
      }
@@ -144,16 +155,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                         Add New
                     </a>
                 </h1>
-                <p>
-                    {
-                        Object.keys(this.props.categories).map((key) => {
-                        return (
-                            <a href="#" onClick={()=> { this.switchCategory(key) }}> 
-                                {key} ({this.props.categories[key]})
-                            </a>)
-                        })
-                    }
-                </p>
+
                 <table className="wp-list-table widefat striped wl-table">
                     <thead>
                         <tr>
@@ -168,7 +170,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                     <tbody>
                         {
                             // show empty screen when there is no mapping items
-                            0 === this.props.category_items.length &&
+                            0 === this.props.mapping_items.length &&
                                 <tr>
                                     <td colspan="3">
                                         <div className="wl-container text-center">
@@ -179,8 +181,11 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                                 </tr> 
                         }
                         {
-                            this.props.category_items.map((item, index)=> {
-                                return <MappingListItemComponent 
+                            this.props.mapping_items.map((item, index)=> {
+                                return <MappingListItemComponent
+                                duplicateMappingItemHandler={
+                                    this.duplicateMappingItems
+                                } 
                                 nonce={mappingSettings.wl_edit_mapping_nonce}
                                 mappingData={item}/>
                             })

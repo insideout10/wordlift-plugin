@@ -15,6 +15,7 @@ import PropTypes from 'prop-types';
 class MappingListItemComponent extends React.Component {
 
     constructor(props) {
+        console.log( props )
         super(props)
     }
     constructEditMappingLink = ()=> {
@@ -22,7 +23,7 @@ class MappingListItemComponent extends React.Component {
         + '&_wl_edit_mapping_nonce=' 
         + this.props.nonce
         + '&wl_edit_mapping_id='
-        + this.props.mappingId
+        + this.props.mappingData.mapping_id
     }
     /**
      * Return the options for the trash category.
@@ -54,8 +55,9 @@ class MappingListItemComponent extends React.Component {
                 | 
             </span>
             <span>
-                <a title="Duplicate this item">
-                Duplicate
+                <a title="Duplicate this item" 
+                onClick={ () => { this.props.duplicateMappingItemHandler( this.props.mappingData ) }}>
+                    Duplicate
                 </a> |
             </span>
             <span className="trash">
@@ -79,7 +81,7 @@ class MappingListItemComponent extends React.Component {
         return  ( 
             <tr>
                 <td class="wl-check-column">
-                    <input type="checkbox" checked={this.props.isSelected }/>
+                    <input type="checkbox" checked={this.props.mappingData.is_selected }/>
                 </td>
                 <td>
                     <a class="row-title wl-mappings-list-item-title">
