@@ -84,6 +84,24 @@ const mappingSettings = window["wlMappingsConfig"] || {};
         }
         this.props.dispatch( category_items_changed )
      }
+
+     updateMappingItems() {
+        fetch(mappingSettings.rest_url,
+            {
+                method: "PUT",
+                headers: {
+                    "content-type": "application/json",
+                    "X-WP-Nonce": mappingSettings.wl_mapping_nonce
+                },
+                body: JSON.stringify(this.props.mapping_items)  
+            }
+        )
+        .then(response => response.json().then(
+            data => {
+                
+            }
+        ))
+     }
      /**
       * Fetch the mapping items from api.
       * @return void

@@ -150,42 +150,7 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 		// Create user with 'manage options' capability, only that user can delete this item.
 		$user_id   = $this->factory->user->create( array( 'role' => 'administrator' ) );
 		wp_set_current_user( $user_id );
-		$dbo        = new Wordlift_Mapping_DBO();
-		// We create a mapping item.
-		$mapping_id = $dbo->insert_mapping_item( 'foo' );
-		// We insert 2 rule groups for this mapping item.
-		$rule_group_1 = $dbo->insert_rule_group( $mapping_id );
-		$rule_group_2 = $dbo->insert_rule_group( $mapping_id );
-
-		// We insert 1 rule for each rule group.
-		$rule_1 = $dbo->insert_or_update_rule_item(
-			array(
-				'rule_group_id'    => $rule_group_1,
-				'rule_field_one'   => 'foo',
-				'rule_field_two'   => 'bar',
-				'rule_logic_field' => '>',
-			)
-		);
-		$rule_2 = $dbo->insert_or_update_rule_item(
-			array(
-				'rule_group_id'    => $rule_group_2,
-				'rule_field_one'   => 'foo',
-				'rule_field_two'   => 'bar',
-				'rule_logic_field' => '>',
-			)
-		);
-
-		// We insert 2 properties.
-		$property_data       = array(
-			'property_help_text'   => 'foo',
-			'field_type_help_text' => 'bar',
-			'field_help_text'      => 'foo',
-			'transform_help_text'  => 'foo',
-		);
-		// 2 properties inserted.
-		$dbo->insert_or_update_property( $mapping_id, $property_data );
-		$dbo->insert_or_update_property( $mapping_id, $property_data );
-
+		$mapping_id = $this->inject_mock_data_for_mapping_id();
 		// We make a request to get info about single mapping item.
 		$request = new WP_REST_Request(
 			'GET',
@@ -237,5 +202,85 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 		$this->assertEquals( 200, $response->get_status() );
 		$trash_count = $this->wpdb->get_var( "SELECT COUNT(mapping_id) as total FROM $mapping_table_name WHERE mapping_status='trash'" );
 		$this->assertEquals( 1, $trash_count );
+	}
+	/**
+	 * Inject some mock data used for testing.
+	 * @return $mapping_id
+	 */
+	private function inject_mock_data_for_mapping_id() {
+		$dbo = new Wordlift_Mapping_DBO();
+		// We create a mapping item.
+		$mapping_id = $dbo->insert_mapping_item( 'foo' );
+		// We insert 2 rule groups for this mapping item.
+		$rule_group_1 = $dbo->insert_rule_group( $mapping_id );
+		$rule_group_2 = $dbo->insert_rule_group( $mapping_id );
+
+		// We insert 1 rule for each rule group.
+		$rule_1 = $dbo->insert_or_update_rule_item(
+			array(
+				'rule_group_id'    => $rule_group_1,
+				'rule_field_one'   => 'foo',
+				'rule_field_two'   => 'bar',
+				'rule_logic_field' => '>',
+			)
+		);
+		$rule_2 = $dbo->insert_or_update_rule_item(
+			array(
+				'rule_group_id'    => $rule_group_2,
+				'rule_field_one'   => 'foo',
+				'rule_field_two'   => 'bar',
+				'rule_logic_field' => '>',
+			)
+		);
+
+		// We insert 2 properties.
+		$property_data       = array(
+			'property_help_text'   => 'foo',
+			'field_type_help_text' => 'bar',
+			'field_help_text'      => 'foo',
+			'transform_help_text'  => 'foo',
+		);
+		// 2 properties inserted.
+		$dbo->insert_or_update_property( $mapping_id, $property_data );
+		$dbo->insert_or_update_property( $mapping_id, $property_data );
+		return $mapping_id;		
+	}
+
+	/** Test can clone a mapping item */
+	public function test_given_mapping_id_can_create_clone() {
+		// Create user with 'manage options' capability, only that user can delete this item.
+		$user_id   = $this->factory->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $user_id );
+		$mapping_id = $this->inject_mock_data_for_mapping_id();
+		$post_array = array(
+			array(
+				'mapping_id'     => $mapping_id,
+				'mapping_title'  => 'foo',
+				'mapping_status' => 'trash',
+			),
+		);
+		$json_data = json_encode( $post_array );
+		// Some data present for the mapping id, we are going to clone this mapping id.
+		// We make a request to get info about single mapping item.
+		$request = new WP_REST_Request(
+			'POST',
+			'/wordlift/v1/sync-mappings/mappings/clone'
+		);
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( $json_data );
+		$response = $this->server->dispatch( $request );
+		$dbo = new Wordlift_Mapping_DBO();
+
+		$this->assertEquals( 200, $response->get_status() );
+		// we should have 2 mapping items in db.
+		$this->assertEquals( 2, count( $dbo->get_mapping_items() ) );
+		$rule_group_table_name = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
+		$rule_table_name = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
+		$rule_group_count = $this->wpdb->get_var( "SELECT COUNT(rule_group_id) as total FROM $rule_group_table_name" );
+		$rule_count = $this->wpdb->get_var( "SELECT COUNT(rule_id) as total FROM $rule_table_name" );
+		// we should have 4 rule groups and 4 rules.
+		$this->assertEquals( 4, $rule_group_count );
+		// we should have 4 rules in the db.
+		$this->assertEquals( 4, $rule_count );
 	}
 }

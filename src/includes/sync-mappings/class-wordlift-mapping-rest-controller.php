@@ -104,6 +104,51 @@ class Wordlift_Mapping_REST_Controller {
 				},
 			)
 		);
+
+		// Clone mapping items.
+		register_rest_route(
+			WL_REST_ROUTE_DEFAULT_NAMESPACE,
+			'sync-mappings/mappings/clone',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => 'Wordlift_Mapping_REST_Controller::clone_mapping_items',
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);		
+	}
+
+	/**
+	 * Clone posted mapping items.
+	 *
+	 * @param WP_REST_Request $request {@link WP_REST_Request instance}.
+	 */
+	public static function clone_mapping_items( $request ) {
+		$dbo       = new Wordlift_Mapping_DBO();
+		$post_data = (array) $request->get_params();
+		foreach ( $post_data as $mapping_item ) {
+			$mapping_id = (int) $mapping_item['mapping_id'];
+			// Clone the current mapping item.
+			$cloned_mapping_id = $dbo->insert_mapping_item( $mapping_item['mapping_title'] );
+			// Clone all the rule groups.
+			$rule_groups_to_be_cloned = $dbo->get_rule_group_list_with_rules( $mapping_id );
+			// Loop through the rule groups and insert them in table with the mapping id.
+			foreach ( $rule_groups_to_be_cloned as $rule_group ) {
+				$cloned_rule_group_id = $dbo->insert_rule_group( $cloned_mapping_id );
+				$original_rules       = (array) $rule_group['rules'];
+				// Now we need to insert these rules for the cloned rule group id.
+				foreach ( $original_rules as $clone_rule ) {
+					// We should replace only rule group id in the cloned rules.
+					$clone_rule['rule_group_id'] = (int) $cloned_rule_group_id;
+					$dbo->insert_or_update_rule_item( $clone_rule );
+				}
+			}
+		}
+		return array(
+			'status'  => 'success',
+			'message' => __( 'Successfully cloned mapping items', 'wordlift' ),
+		);
 	}
 
 	/**
