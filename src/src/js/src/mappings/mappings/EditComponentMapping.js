@@ -53,6 +53,7 @@ class EditComponentMapping {
             transformHelpText: property.transform_help_text,
             property_id: property.property_id,
             property_status: property.property_status,
+            isOpenedOrAddedByUser: false,
         }))
     }
 

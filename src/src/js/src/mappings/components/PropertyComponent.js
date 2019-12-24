@@ -32,7 +32,7 @@ import { PROPERTY_DATA_CHANGED_ACTION } from '../actions/actions';
         action.payload = {
             fieldKey: fieldKey,
             value: event.target.value,
-            propertyIndex: this.props.propertyIndex
+            propertyId: this.props.propData.property_id
         }
         this.props.dispatch(action)
      }
@@ -111,7 +111,7 @@ import { PROPERTY_DATA_CHANGED_ACTION } from '../actions/actions';
                                     <button 
                                     disabled={this.props.propData.propertyHelpText.length <= 0}
                                     className="wl-close-mapping button action bg-primary text-white"
-                                    onClick={()=> this.props.switchState(this.props.propertyIndex)}>
+                                    onClick={()=> this.props.switchState( this.props.propData.property_id )}>
                                         Close Mapping
                                     </button>
                                 </td>

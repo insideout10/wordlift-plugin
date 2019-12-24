@@ -24,17 +24,17 @@ import { OPEN_OR_CLOSE_PROPERTY_ACTION, ADD_MAPPING_ACTION, PROPERTY_LIST_CHOOSE
 class PropertyListComponent extends React.Component {
     constructor(props){
         super(props)
+        console.log( props )
     }
      /**
       * It makes property item 
       * switch from edit mode to list item mode and vice versa
       * @param {Number} propertyIndex 
       */
-     switchState = ( propertyIndex ) => {
-         console.log ( propertyIndex )
+     switchState = ( propertyId ) => {
         const action  = OPEN_OR_CLOSE_PROPERTY_ACTION
         action.payload = {
-            propertyIndex: propertyIndex
+            propertyId: propertyId
         }
         this.props.dispatch(action)
      }
@@ -61,7 +61,6 @@ class PropertyListComponent extends React.Component {
                 // show the property in edit mode
                 <PropertyComponent
                 propData={property}
-                propertyIndex={index}
                 switchState={this.switchState}/>
             )
         }
@@ -69,8 +68,7 @@ class PropertyListComponent extends React.Component {
         return (
             <PropertyListItemComponent
             choosenCategory={ this.props.choosenCategory }
-            propertyIndex={index}
-            propertyText={property.propertyHelpText}
+            propData={property}
             switchState={this.switchState} />
         )
     }
@@ -113,7 +111,6 @@ class PropertyListComponent extends React.Component {
                                 this.props.propertyList
                                 .filter( property => property.property_status === this.props.choosenCategory )
                                 .map((property, index) => {
-                                    
                                     return (
                                         <tr className="wl-property-list-item-container">
                                                 <td className="wl-check-column">

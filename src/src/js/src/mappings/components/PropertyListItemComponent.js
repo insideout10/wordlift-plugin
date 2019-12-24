@@ -24,7 +24,10 @@ class PropertyListItemComponent extends React.Component {
     returnOptionsForTrashCategory() {
         return <React.Fragment>
             <span className="edit wl-mappings-link">
-                <a>
+                <a onClick={ this.changeCategoryPropertyItem(
+                            this.props.propData.property_id,
+                            ACTIVE_CATEGORY
+                )}>
                     Restore
                 </a>
                 | 
@@ -43,7 +46,9 @@ class PropertyListItemComponent extends React.Component {
         return <React.Fragment>
             <span className="edit wl-mappings-link">
                 <a onClick={()=> 
-                    this.props.switchState(this.props.propertyIndex)}>
+                    this.props.switchState(
+                        this.props.propData.property_id
+                    )}>
                     Edit
                 </a>
                 | 
@@ -55,7 +60,7 @@ class PropertyListItemComponent extends React.Component {
             </span>
             <span className="trash wl-mappings-link">
                 <a onClick={ this.changeCategoryPropertyItem(
-                            this.props.propertyIndex,
+                            this.props.propData.property_id,
                             TRASH_CATEGORY
                 )}>
                     Trash
@@ -76,10 +81,10 @@ class PropertyListItemComponent extends React.Component {
                 return this.returnOptionsForTrashCategory()
         }
     }
-    changeCategoryPropertyItem = ( propertyIndex, category ) => {
+    changeCategoryPropertyItem = ( propertyId, category ) => {
         const action = PROPERTY_ITEM_CATEGORY_CHANGED_ACTION
         action.payload = {
-            propertyIndex: propertyIndex,
+            propertyId: propertyId,
             propertyCategory: category
         }
         this.props.dispatch( action )
@@ -89,7 +94,7 @@ class PropertyListItemComponent extends React.Component {
             <div className="wl-property-list-item wl-container">
                 <div className="wl-col">
                     <a className="row-title wl-property-list-item-title">
-                        {this.props.propertyText}
+                        { this.props.propData.propertyHelpText }
                     </a>
                     <div className="row-actions">
                         { 

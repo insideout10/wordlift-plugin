@@ -75,7 +75,10 @@ export const RuleGroupReducer = createReducer(null, {
      * it switches to edit mode and list mode depends on the state
      */
     [OPEN_OR_CLOSE_PROPERTY]: ( state, action )=> {
-        const {propertyIndex} = action.payload
+        const {propertyId} = action.payload
+        const propertyIndex = state.propertyList
+        .map( el => el.property_id )
+        .indexOf( propertyId )
         const prevState = state.propertyList[propertyIndex].isOpenedOrAddedByUser
         // invert the previous state
         state.propertyList[propertyIndex].isOpenedOrAddedByUser = !prevState
@@ -85,7 +88,10 @@ export const RuleGroupReducer = createReducer(null, {
      * and it is saved based on the fieldKey which identifies the field
      */
     [PROPERTY_DATA_CHANGED]: ( state, action )=> {
-        const {fieldKey, value, propertyIndex } = action.payload
+        const {fieldKey, value, propertyId } = action.payload
+        const propertyIndex = state.propertyList
+        .map( el => el.property_id )
+        .indexOf( propertyId )
         state.propertyList[propertyIndex][fieldKey] = value
     },
     /**
@@ -95,6 +101,7 @@ export const RuleGroupReducer = createReducer(null, {
     [ADD_MAPPING]: ( state, action )=> {
         // push an empty property item
         state.propertyList.push({
+            property_id: state.propertyList.length + 1,
             isOpenedOrAddedByUser: true,
             propertyHelpText:"",
             fieldTypeHelpText: "",
@@ -119,7 +126,10 @@ export const RuleGroupReducer = createReducer(null, {
      * here
      */
     [ PROPERTY_ITEM_CATEGORY_CHANGED ]: ( state, action ) => {
-        const { propertyIndex, propertyCategory } = action.payload
+        const { propertyId, propertyCategory } = action.payload
+        const propertyIndex = state.propertyList
+        .map( el => el.property_id )
+        .indexOf( propertyId )
         state.propertyList[propertyIndex].property_status = propertyCategory
     },
 
