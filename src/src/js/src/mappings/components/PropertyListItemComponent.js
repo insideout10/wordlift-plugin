@@ -11,8 +11,15 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
-import { PROPERTY_ITEM_CATEGORY_CHANGED_ACTION } from '../actions/actions';
+import { PROPERTY_ITEM_CATEGORY_CHANGED_ACTION, PROPERTY_ITEM_CRUD_OPERATION_ACTION } from '../actions/actions';
 import { TRASH_CATEGORY, ACTIVE_CATEGORY } from './CategoryComponent';
+
+/** Constants to be supplied via actions, and also compared in 
+ * the property reducers for making a CRUD Action on the property
+ * list.
+ */
+export const DUPLICATE_PROPERTY = 'duplicate_property'
+export const DELETE_PROPERTY_PERMANENT = 'delete_property_permanent'
 
 class PropertyListItemComponent extends React.Component {
     constructor(props) {
@@ -25,19 +32,24 @@ class PropertyListItemComponent extends React.Component {
         return <React.Fragment>
             <span className="edit wl-mappings-link">
                 <a onClick={ 
-                () => { 
-                    this.changeCategoryPropertyItem(
+                    () => { 
+                        this.changeCategoryPropertyItem(
                             this.props.propData.property_id,
                             ACTIVE_CATEGORY
-                    )
-                }
-            }>
+                        )
+                    }
+                }>
                     Restore
                 </a>
                 | 
             </span>
             <span className="trash wl-mappings-link">
-                <a>
+                <a onClick={
+                    ()=> { this.makeCrudOperationOnPropertyId(
+                            this.props.propData.property_id,
+                            DELETE_PROPERTY_PERMANENT
+                    )}
+                }>
                     Delete Permanently
                 </a> |
             </span>
@@ -59,7 +71,14 @@ class PropertyListItemComponent extends React.Component {
                 | 
             </span>
             <span className="wl-mappings-link">
-                <a title="Duplicate this item" >
+                <a title="Duplicate this item"
+                   onClick={ 
+                       ()=> { this.makeCrudOperationOnPropertyId(
+                           this.props.propData.property_id,
+                           DUPLICATE_PROPERTY
+                       ) 
+                    }}
+                >
                     Duplicate
                 </a> |
             </span>
@@ -98,6 +117,17 @@ class PropertyListItemComponent extends React.Component {
         }
         this.props.dispatch( action )
     }
+
+    makeCrudOperationOnPropertyId = ( propertyId, operationName ) => {
+        const action = PROPERTY_ITEM_CRUD_OPERATION_ACTION
+        action.payload = {
+            propertyId: propertyId,
+            operationName: operationName
+        }
+        console.log( action )
+        this.props.dispatch( action )
+    }
+
     render() {
         return (
             <div className="wl-property-list-item wl-container">

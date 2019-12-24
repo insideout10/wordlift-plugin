@@ -8,8 +8,9 @@
 /**
  * Internal dependancies
  */
-import { ADD_NEW_RULE, ADD_NEW_RULE_GROUP, DELETE_RULE, CHANGE_RULE_FIELD_VALUE, OPEN_OR_CLOSE_PROPERTY, PROPERTY_DATA_CHANGED, ADD_MAPPING, TITLE_CHANGED, PROPERTY_LIST_CHANGED, MAPPING_HEADER_CHANGED, RULE_GROUP_LIST_CHANGED, NOTIFICATION_CHANGED, PROPERTY_ITEM_CATEGORY_CHANGED, PROPERTY_LIST_SELECTED_CATEGORY_CHANGED } from '../actions/actionTypes'
+import { ADD_NEW_RULE, ADD_NEW_RULE_GROUP, DELETE_RULE, CHANGE_RULE_FIELD_VALUE, OPEN_OR_CLOSE_PROPERTY, PROPERTY_DATA_CHANGED, ADD_MAPPING, TITLE_CHANGED, PROPERTY_LIST_CHANGED, MAPPING_HEADER_CHANGED, RULE_GROUP_LIST_CHANGED, NOTIFICATION_CHANGED, PROPERTY_ITEM_CATEGORY_CHANGED, PROPERTY_LIST_SELECTED_CATEGORY_CHANGED, PROPERTY_ITEM_CRUD_OPERATION } from '../actions/actionTypes'
 import { createReducer } from '@reduxjs/toolkit'
+import { DELETE_PROPERTY_PERMANENT, DUPLICATE_PROPERTY } from '../components/PropertyListItemComponent'
 
  /**
   * Reducer to handle the rule group and rule section
@@ -138,8 +139,32 @@ export const RuleGroupReducer = createReducer(null, {
      */
     [ PROPERTY_LIST_SELECTED_CATEGORY_CHANGED ] : ( state, action ) => {
         const { choosenCategory } = action.payload
-        console.log( action )
         state.choosenPropertyCategory = choosenCategory
+    },
+
+    /**
+     * Whenever user makes delete/duplicate operation on property id
+     * the below action handler makes the operation
+     */
+    [ PROPERTY_ITEM_CRUD_OPERATION ] : ( state, action ) => {
+        const { propertyId, operationName } = action.payload
+        const propertyIndex = state.propertyList
+        .map( el => el.property_id )
+        .indexOf( propertyId )
+        console.log( operationName )
+        switch ( operationName ) {
+            // Delete a property permanently
+            case DELETE_PROPERTY_PERMANENT:
+                state.propertyList = state.propertyList.splice(propertyIndex, 1);
+                break
+            case DUPLICATE_PROPERTY:
+                // Copy the property values and change the property id
+                const cloned_property = state.propertyList[ propertyIndex ]
+                cloned_property.property_id = state.propertyList.length + 1
+                state.propertyList.splice( propertyIndex + 1, 0,  cloned_property );
+            default:
+                break;
+        }
     }
 })
 

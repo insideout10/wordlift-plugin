@@ -119,3 +119,9 @@ export const PROPERTY_ITEM_CATEGORY_CHANGED = "PROPERTY_ITEM_CATEGORY_CHANGED"
  * Action when the choosen category of property list changed.
  */
 export const PROPERTY_LIST_SELECTED_CATEGORY_CHANGED = "PROPERTY_LIST_SELECTED_CATEGORY_CHANGED"
+
+/**
+ * @const PROPERTY_ITEM_CRUD_OPERATION
+ * Action when we need to perform crud operation
+ */
+export const PROPERTY_ITEM_CRUD_OPERATION = "PROPERTY_ITEM_CRUD_OPERATION"
