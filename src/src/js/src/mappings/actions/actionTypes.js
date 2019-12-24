@@ -107,3 +107,15 @@ export const MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED = "MAPPING_LIST_CHOOSEN_CATEG
  * Action when mapping item is selected.
  */
 export const MAPPING_ITEM_SELECTED = "MAPPING_ITEM_SELECTED"
+
+/**
+ * @const PROPERTY_ITEM_CATEGORY_CHANGED
+ * Action when category of property item changes.
+ */
+export const PROPERTY_ITEM_CATEGORY_CHANGED = "PROPERTY_ITEM_CATEGORY_CHANGED"
+
+/**
+ * @const PROPERTY_LIST_SELECTED_CATEGORY_CHANGED
+ * Action when the choosen category of property list changed.
+ */
+export const PROPERTY_LIST_SELECTED_CATEGORY_CHANGED = "PROPERTY_LIST_SELECTED_CATEGORY_CHANGED"

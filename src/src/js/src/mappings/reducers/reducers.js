@@ -8,7 +8,7 @@
 /**
  * Internal dependancies
  */
-import { ADD_NEW_RULE, ADD_NEW_RULE_GROUP, DELETE_RULE, CHANGE_RULE_FIELD_VALUE, OPEN_OR_CLOSE_PROPERTY, PROPERTY_DATA_CHANGED, ADD_MAPPING, TITLE_CHANGED, PROPERTY_LIST_CHANGED, MAPPING_HEADER_CHANGED, RULE_GROUP_LIST_CHANGED, NOTIFICATION_CHANGED } from '../actions/actionTypes'
+import { ADD_NEW_RULE, ADD_NEW_RULE_GROUP, DELETE_RULE, CHANGE_RULE_FIELD_VALUE, OPEN_OR_CLOSE_PROPERTY, PROPERTY_DATA_CHANGED, ADD_MAPPING, TITLE_CHANGED, PROPERTY_LIST_CHANGED, MAPPING_HEADER_CHANGED, RULE_GROUP_LIST_CHANGED, NOTIFICATION_CHANGED, PROPERTY_ITEM_CATEGORY_CHANGED, PROPERTY_LIST_SELECTED_CATEGORY_CHANGED } from '../actions/actionTypes'
 import { createReducer } from '@reduxjs/toolkit'
 
  /**
@@ -111,6 +111,24 @@ export const RuleGroupReducer = createReducer(null, {
      */
     [PROPERTY_LIST_CHANGED]: ( state, action )=> {
         state.propertyList = action.payload.value
+    },
+
+    /**
+     * When the property category is changed like moved to 
+     * trash, or moved back to active this action is handled
+     * here
+     */
+    [ PROPERTY_ITEM_CATEGORY_CHANGED ]: ( state, action ) => {
+        const { propertyIndex, propertyCategory } = action.payload
+        state.propertyList[propertyIndex].property_status = propertyCategory
+    },
+
+    /** When the user clicks on the category of the property list
+     * this action is dispatched to change the choosen category
+     */
+    [ PROPERTY_LIST_SELECTED_CATEGORY_CHANGED ] : ( state, action ) => {
+        const { choosenCategory } = action.payload
+        state.choosenPropertyCategory = choosenCategory
     }
 })
 

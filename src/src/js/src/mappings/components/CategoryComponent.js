@@ -12,6 +12,9 @@
 import React from "react"
 import PropTypes from 'prop-types';
 
+export const TRASH_CATEGORY = 'trash'
+export const ACTIVE_CATEGORY = 'active'
+
 class CategoryComponent extends React.Component {
 
     constructor( props ) {

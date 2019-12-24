@@ -18,7 +18,7 @@ import PropTypes from 'prop-types';
 import PropertyComponent from './PropertyComponent';
 import CategoryComponent from './CategoryComponent';
 import PropertyListItemComponent from './PropertyListItemComponent';
-import { OPEN_OR_CLOSE_PROPERTY_ACTION, ADD_MAPPING_ACTION } from '../actions/actions';
+import { OPEN_OR_CLOSE_PROPERTY_ACTION, ADD_MAPPING_ACTION, PROPERTY_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION } from '../actions/actions';
 
 
 class PropertyListComponent extends React.Component {
@@ -31,6 +31,7 @@ class PropertyListComponent extends React.Component {
       * @param {Number} propertyIndex 
       */
      switchState = ( propertyIndex ) => {
+         console.log ( propertyIndex )
         const action  = OPEN_OR_CLOSE_PROPERTY_ACTION
         action.payload = {
             propertyIndex: propertyIndex
@@ -42,7 +43,11 @@ class PropertyListComponent extends React.Component {
         this.props.dispatch( ADD_MAPPING_ACTION )
     }
     categorySelectHandler = ( category ) => {
-
+        const action = PROPERTY_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION
+        action.payload = {
+            choosenCategory: category
+        }
+        this.props.dispatch( action )
     }
     /**
      * It Renders depends on the isOpenedOrAddedByUser boolean present
@@ -63,6 +68,7 @@ class PropertyListComponent extends React.Component {
         // if it is not opened then return the list item
         return (
             <PropertyListItemComponent
+            choosenCategory={ this.props.choosenCategory }
             propertyIndex={index}
             propertyText={property.propertyHelpText}
             switchState={this.switchState} />
@@ -94,15 +100,19 @@ class PropertyListComponent extends React.Component {
                         </thead>
                         <tbody>
                             {
-                                0 === this.props.propertyList.length &&
+                                0 === this.props.propertyList
+                                .filter( property => property.property_status === this.props.choosenCategory )
+                                .length &&
                                 <tr>
                                     <td colSpan={2} className="text-center">
-                                        No properties present, click on add new
+                                        No Active properties present, click on add new
                                     </td>
                                 </tr>
                             }               
                             {
-                                this.props.propertyList.map((property, index) => {
+                                this.props.propertyList
+                                .filter( property => property.property_status === this.props.choosenCategory )
+                                .map((property, index) => {
                                     
                                     return (
                                         <tr className="wl-property-list-item-container">
@@ -120,9 +130,8 @@ class PropertyListComponent extends React.Component {
                                 })
                             }   
                             <tr className="wl-text-right">
-                           <td />
-                           <td />
-                            <td><br />
+
+                            <td colspan="3"><br />
                                 <button
                                 className="button action bg-primary text-white wl-add-mapping"
                                 style={{margin: 'auto'}}
@@ -144,7 +153,8 @@ PropertyListComponent.propTypes = {
 
 const mapStateToProps = function( state ) {
     return {
-        propertyList: state.PropertyListData.propertyList
+        propertyList: state.PropertyListData.propertyList,
+        choosenCategory: state.PropertyListData.choosenPropertyCategory
     }
 }
 

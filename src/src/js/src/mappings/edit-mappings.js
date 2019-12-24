@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom'
 import {Provider} from 'react-redux'
 import { createStore, combineReducers } from 'redux'
 import { RuleGroupReducer, PropertyReducer, TitleReducer, NotificationReducer } from './reducers/reducers'
+import { ACTIVE_CATEGORY } from './components/CategoryComponent'
 
 const options = [
     { value: 'one', label: 'one' },
@@ -27,6 +28,7 @@ const INITIAL_STATE = {
         ruleGroupList: []
     },
     PropertyListData: {
+        choosenPropertyCategory: ACTIVE_CATEGORY,
         fieldTypeHelpTextOptions:options,
         transformHelpTextOptions:options,
         propertyList: []
