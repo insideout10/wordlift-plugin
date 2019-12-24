@@ -78,10 +78,11 @@ class PropertyListComponent extends React.Component {
         return ( 
             <React.Fragment>
                 <CategoryComponent
-                    source={this.props.propertyList}
-                    categoryKeyName="property_status"
-                    categories={['active','trash']}
-                    categorySelectHandler={ this.categorySelectHandler }
+                    source                = { this.props.propertyList }
+                    categoryKeyName       = 'property_status'
+                    categories            = { [ 'active', 'trash' ] }
+                    categorySelectHandler = { this.categorySelectHandler }
+                    choosenCategory       = { this.props.choosenCategory }
                 />
                 <br/>
                 <table className="wp-list-table widefat striped wl-table wl-container-full">

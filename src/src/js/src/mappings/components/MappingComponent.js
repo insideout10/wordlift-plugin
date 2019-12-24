@@ -205,10 +205,11 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                     </a>
                 </h1>
                 <CategoryComponent 
-                    source={this.props.mapping_items}
-                    categoryKeyName="mapping_status"
-                    categories={['active','trash']}
-                    categorySelectHandler={ this.categorySelectHandler }
+                    source                = { this.props.mapping_items }
+                    categoryKeyName       = 'mapping_status'
+                    categories            = { [ 'active', 'trash' ] }
+                    categorySelectHandler = { this.categorySelectHandler }
+                    choosenCategory       = { this.props.choosen_category }
                 /><br/>
                 <table className="wp-list-table widefat striped wl-table">
                     <thead>

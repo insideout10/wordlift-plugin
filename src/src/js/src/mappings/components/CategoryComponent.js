@@ -15,18 +15,37 @@ import PropTypes from 'prop-types';
 export const TRASH_CATEGORY = 'trash'
 export const ACTIVE_CATEGORY = 'active'
 
-const SingleCategoryItem = ( { category, source, categorySelectHandler, categoryKeyName } ) => {
+const SingleCategoryItem = ( { choosenCategory, category, source, categorySelectHandler, categoryKeyName } ) => {
     return (
         <span className="wl-mappings-link wl-category-title">
-            <a onClick={()=> { categorySelectHandler(category) }}>
-                { category }
-                ({
-                    // Count the category in the source
-                    source
-                    .filter( el=> el[categoryKeyName] === category )
-                    .length
-                })|
-            </a>&nbsp;
+            {
+                category === choosenCategory ?
+                (   
+                    <b>
+                        <a className='wl-mappings-link-active'>
+                            { category }
+                            ({
+                                // Count the category in the source
+                                source
+                                .filter( el=> el[categoryKeyName] === category )
+                                .length
+                            }) | 
+                        </a>
+                    </b>
+                ):
+                (
+                    <a onClick={()=> { categorySelectHandler(category) }}>
+                        { category }
+                        ({
+                            // Count the category in the source
+                            source
+                            .filter( el=> el[categoryKeyName] === category )
+                            .length
+                        }) | 
+                    </a>
+                )
+            }
+            &nbsp;
         </span>
     )
 }

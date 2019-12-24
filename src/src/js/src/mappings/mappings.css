@@ -123,3 +123,8 @@
 .wl-category-title {
     text-transform: capitalize !important;
 }
+
+.wl-mappings-link-active {
+    color: #000 !important;
+    cursor: default;
+}
