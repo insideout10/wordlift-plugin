@@ -21,6 +21,19 @@ import { TRASH_CATEGORY, ACTIVE_CATEGORY } from './CategoryComponent';
 export const DUPLICATE_PROPERTY = 'duplicate_property'
 export const DELETE_PROPERTY_PERMANENT = 'delete_property_permanent'
 
+
+const RowActionItem = ( { className, title,  onClickHandler, args } ) => {
+    return (
+        <span className={className}>
+            <a onClick={()=> {onClickHandler(...args)}}>
+                { title }
+            </a>
+            | 
+        </span>
+    )
+}
+
+
 class PropertyListItemComponent extends React.Component {
     constructor(props) {
         super(props)
@@ -29,72 +42,49 @@ class PropertyListItemComponent extends React.Component {
      * Return the options for the trash category.
      */
     returnOptionsForTrashCategory() {
-        return <React.Fragment>
-            <span className="edit wl-mappings-link">
-                <a onClick={ 
-                    () => { 
-                        this.changeCategoryPropertyItem(
-                            this.props.propData.property_id,
-                            ACTIVE_CATEGORY
-                        )
-                    }
-                }>
-                    Restore
-                </a>
-                | 
-            </span>
-            <span className="trash wl-mappings-link">
-                <a onClick={
-                    ()=> { this.makeCrudOperationOnPropertyId(
-                            this.props.propData.property_id,
-                            DELETE_PROPERTY_PERMANENT
-                    )}
-                }>
-                    Delete Permanently
-                </a> |
-            </span>
-        </React.Fragment>
+        return (
+            <React.Fragment>
+                <RowActionItem
+                    className      = 'edit wl-mappings-link'
+                    onClickHandler = { this.changeCategoryPropertyItem }
+                    title          = 'Restore'
+                    args           = { [ this.props.propData.property_id, ACTIVE_CATEGORY ] }
+                />
+                <RowActionItem
+                    className      = 'trash wl-mappings-link'
+                    onClickHandler = { this.makeCrudOperationOnPropertyId }
+                    title          = 'Delete Permanently'
+                    args           = { [ this.props.propData.property_id, DELETE_PROPERTY_PERMANENT ] }
+                />
+            </React.Fragment> 
+        )
     }
     /**
      * Return the template for the active category.
      */
     returnOptionsForActiveCategory() {
-        return <React.Fragment>
-            <span className="edit wl-mappings-link">
-                <a onClick={()=> {
-                        this.props.switchState(
-                            this.props.propData.property_id
-                        )}
-                    }>
-                    Edit
-                </a>
-                | 
-            </span>
-            <span className="wl-mappings-link">
-                <a title="Duplicate this item"
-                   onClick={ 
-                       ()=> { this.makeCrudOperationOnPropertyId(
-                           this.props.propData.property_id,
-                           DUPLICATE_PROPERTY
-                       ) 
-                    }}
-                >
-                    Duplicate
-                </a> |
-            </span>
-            <span className="trash wl-mappings-link">
-                <a onClick={ 
-                    () => {
-                        this.changeCategoryPropertyItem(
-                            this.props.propData.property_id,
-                            TRASH_CATEGORY
-                        )
-                    }
-                }>
-                    Trash
-                </a>
-            </span>
-        </React.Fragment>
+        return (
+            <React.Fragment>
+                    <RowActionItem
+                        className      = 'edit wl-mappings-link'
+                        onClickHandler = { this.props.switchState }
+                        title          = 'Edit'
+                        args           = { [ this.props.propData.property_id ] }
+                    />
+                    <RowActionItem
+                        className      = 'wl-mappings-link'
+                        onClickHandler = { this.makeCrudOperationOnPropertyId }
+                        title          = 'Duplicate'
+                        args           = { [ this.props.propData.property_id, DUPLICATE_PROPERTY ] }
+                    />
+                    <RowActionItem
+                        className      = 'wl-mappings-link trash'
+                        onClickHandler = { this.changeCategoryPropertyItem }
+                        title          = 'Trash'
+                        args           = { [ this.props.propData.property_id, TRASH_CATEGORY ] }
+                    />
+            </React.Fragment>
+        )
     }
 
     /**
