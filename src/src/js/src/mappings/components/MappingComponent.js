@@ -17,6 +17,7 @@ import MappingListItemComponent from './MappingListItemComponent'
 import { MAPPING_LIST_CHANGED_ACTION, MAPPING_ITEM_CATEGORY_CHANGED_ACTION, MAPPING_LIST_BULK_SELECT_ACTION, MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION, MAPPING_ITEM_SELECTED_ACTION } from '../actions/actions';
 import { connect } from 'react-redux'
 import CategoryComponent from './CategoryComponent';
+import BulkActionComponent from './BulkActionComponent';
 // Set a reference to the WordLift's Mapping settings stored in the window instance.
 const mappingSettings = window["wlMappingsConfig"] || {};
 
@@ -261,33 +262,8 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                         </tr>
                     </tfoot>
                 </table>
-                <div className="tablenav bottom">
-                    <div className="alignleft actions bulkactions">
-
-                        <select name="action2" id="bulk-action-selector-bottom">
-                            <option disabled selected>Bulk Actions</option>
-                            {
-                                // Conditional rendering the option.
-                                this.props.choosen_category === 'active' &&
-                                <React.Fragment>
-                                    <option value="duplicate">Duplicate</option>
-                                    <option value="trash">Move to Trash</option>
-                                </React.Fragment>                          
-                            }
-
-                            {
-                                this.props.choosen_category === 'trash' &&
-                                <React.Fragment>
-                                    <option value="restore">Restore</option>
-                                    <option value="trash">Delete Permanently</option>
-                                </React.Fragment>                          
-                            }
-                        </select>
-                        <input type="button" 
-                        className="button action"
-                        defaultValue="Apply"
-                        onClick={ ()=> { this.bulkActionSubmitHandler() } } />
-                    </div>
+                <div className="wl-container wl-container-full">
+                    <BulkActionComponent options={[]} />
                 </div>
             </React.Fragment>
          )

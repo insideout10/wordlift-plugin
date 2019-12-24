@@ -18,6 +18,7 @@ import RuleGroupListComponent from './RuleGroupListComponent'
 import PropertyListComponent from './PropertyListComponent'
 import { TITLE_CHANGED_ACTION, PROPERTY_LIST_CHANGED_ACTION, RULE_GROUP_LIST_CHANGED_ACTION, MAPPING_HEADER_CHANGED_ACTION, NOTIFICATION_CHANGED_ACTION } from '../actions/actions'
 import EditComponentMapping from '../mappings/EditComponentMapping'
+import BulkActionComponent from './BulkActionComponent'
 
 // Set a reference to the WordLift's Edit Mapping settings stored in the window instance.
 const editMappingSettings = window["wlEditMappingsConfig"] || {};
@@ -42,6 +43,9 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
         if (editMappingSettings.wl_edit_mapping_id != undefined) {
             this.getMappingItemByMappingId()
         }
+    }
+    bulkActionSubmitHandler = () => {
+        
     }
 
     /**
@@ -165,16 +169,10 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
                 <PropertyListComponent />
                 <br/>
                 <div className="wl-container wl-container-full">
-                    <div className="wl-col">
-                        <select  className="form-control">
-                            <option value="-1">Bulk Actions</option>
-                            <option value="duplicate">Duplicate</option>
-                            <option value="trash">Move to Trash</option>
-                        </select>
-                    </div>
-                    <div className="wl-col">
-                        <button className="button action"> Apply </button>
-                    </div>
+                    <BulkActionComponent 
+                        options={[]}
+                        bulkActionSubmitHandler={this.bulkActionSubmitHandler} 
+                    />
                     <div className="wl-col wl-align-right">
                         <button className="button action" 
                         onClick={this.saveMappingItem}
