@@ -30,13 +30,13 @@ class MappingListItemComponent extends React.Component {
      */
     returnOptionsForTrashCategory() {
         return <React.Fragment>
-            <span className="edit">
+            <span className="edit wl-mappings-link">
                 <a>
-                    Move back to active
+                    Restore
                 </a>
                 | 
             </span>
-            <span className="trash">
+            <span className="trash wl-mappings-link">
                 <a>
                     Delete Permanently
                 </a> |

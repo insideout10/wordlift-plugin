@@ -16,6 +16,7 @@ import PropTypes from 'prop-types';
  * Internal dependencies
  */
 import PropertyComponent from './PropertyComponent';
+import CategoryComponent from './CategoryComponent';
 import PropertyListItemComponent from './PropertyListItemComponent';
 import { OPEN_OR_CLOSE_PROPERTY_ACTION, ADD_MAPPING_ACTION } from '../actions/actions';
 
@@ -39,6 +40,9 @@ class PropertyListComponent extends React.Component {
     // triggered when the add mapping button is clicked
     handleAddMappingClick = ()=> {
         this.props.dispatch( ADD_MAPPING_ACTION )
+    }
+    categorySelectHandler = ( category ) => {
+
     }
     /**
      * It Renders depends on the isOpenedOrAddedByUser boolean present
@@ -67,6 +71,13 @@ class PropertyListComponent extends React.Component {
     render() {
         return ( 
             <React.Fragment>
+                <CategoryComponent
+                    source={this.props.propertyList}
+                    categoryKeyName="property_status"
+                    categories={['active','trash']}
+                    categorySelectHandler={ this.categorySelectHandler }
+                />
+                <br/>
                 <table className="wp-list-table widefat striped wl-table wl-container-full">
                         <thead>
                             <tr>
@@ -89,8 +100,7 @@ class PropertyListComponent extends React.Component {
                                         No properties present, click on add new
                                     </td>
                                 </tr>
-                            }
-                  
+                            }               
                             {
                                 this.props.propertyList.map((property, index) => {
 

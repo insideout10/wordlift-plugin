@@ -146,6 +146,7 @@ EOF;
 				field_type_help_text VARCHAR(255) NOT NULL,
 				field_help_text VARCHAR(255) NOT NULL,
 				transform_help_text VARCHAR(255) NOT NULL,
+				property_status NOT NULL DEFAULT 'active',
                 PRIMARY KEY  (property_id),
                 FOREIGN KEY (mapping_id) REFERENCES $mapping_table_name(mapping_id)
                 ON DELETE CASCADE

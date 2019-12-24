@@ -99,7 +99,9 @@ export const RuleGroupReducer = createReducer(null, {
             propertyHelpText:"",
             fieldTypeHelpText: "",
             fieldHelpText: "",
-            transformHelpText: ""
+            transformHelpText: "",
+            // Default category is active
+            property_status: 'active'
         })
     },
     /**

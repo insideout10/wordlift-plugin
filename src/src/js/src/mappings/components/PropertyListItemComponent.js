@@ -24,17 +24,17 @@ class PropertyListItemComponent extends React.Component {
                         {this.props.propertyText}
                     </a>
                     <div className="row-actions">
-                        <span className="edit">
+                        <span className="edit wl-mappings-link">
                         <a onClick={()=> this.props.switchState(this.props.propertyIndex)}>
                             Edit
                         </a>
                         | 
                         </span>
-                        <span>
-                        <a title="Duplicate this item">Duplicate</a> |
+                        <span className="wl-mappings-link">
+                            <a title="Duplicate this item">Duplicate</a> |
                         </span>
-                        <span className="trash">
-                        <a>Trash</a>
+                        <span className="trash wl-mappings-link">
+                            <a>Trash</a>
                         </span>
                     </div>
                 </div>

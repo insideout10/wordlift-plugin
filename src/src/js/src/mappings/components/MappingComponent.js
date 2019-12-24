@@ -266,8 +266,22 @@ const mappingSettings = window["wlMappingsConfig"] || {};
 
                         <select name="action2" id="bulk-action-selector-bottom">
                             <option disabled selected>Bulk Actions</option>
-                            <option value="acfduplicate">Duplicate</option>
-                            <option value="trash">Move to Trash</option>
+                            {
+                                // Conditional rendering the option.
+                                this.props.choosen_category === 'active' &&
+                                <React.Fragment>
+                                    <option value="duplicate">Duplicate</option>
+                                    <option value="trash">Move to Trash</option>
+                                </React.Fragment>                          
+                            }
+
+                            {
+                                this.props.choosen_category === 'trash' &&
+                                <React.Fragment>
+                                    <option value="restore">Restore</option>
+                                    <option value="trash">Delete Permanently</option>
+                                </React.Fragment>                          
+                            }
                         </select>
                         <input type="button" 
                         className="button action"
