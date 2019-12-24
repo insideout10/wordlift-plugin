@@ -103,7 +103,7 @@ class PropertyListComponent extends React.Component {
                             }               
                             {
                                 this.props.propertyList.map((property, index) => {
-
+                                    
                                     return (
                                         <tr className="wl-property-list-item-container">
                                                 <td className="wl-check-column">

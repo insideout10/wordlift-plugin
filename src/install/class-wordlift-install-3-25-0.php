@@ -146,13 +146,13 @@ EOF;
 				field_type_help_text VARCHAR(255) NOT NULL,
 				field_help_text VARCHAR(255) NOT NULL,
 				transform_help_text VARCHAR(255) NOT NULL,
-				property_status NOT NULL DEFAULT 'active',
+				property_status  VARCHAR(255) NOT NULL DEFAULT 'active',
                 PRIMARY KEY  (property_id),
                 FOREIGN KEY (mapping_id) REFERENCES $mapping_table_name(mapping_id)
                 ON DELETE CASCADE
         ) $charset_collate;
 EOF;
-		// Execute the query for rule group table, we cant use db delta
+		// Execute the query for property table, we cant use db delta
 		// due to lack of support for foreign keys
 		$this->wpdb->query( $sql );
 	}

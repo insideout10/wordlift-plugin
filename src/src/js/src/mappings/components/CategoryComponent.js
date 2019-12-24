@@ -15,6 +15,7 @@ import PropTypes from 'prop-types';
 class CategoryComponent extends React.Component {
 
     constructor( props ) {
+        console.log( props )
         super( props )
     }
 

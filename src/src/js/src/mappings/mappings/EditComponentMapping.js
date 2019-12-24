@@ -35,6 +35,7 @@ class EditComponentMapping {
             field_help_text: property.fieldHelpText,
             transform_help_text: property.transformHelpText,
             property_id: property.property_id,
+            property_status: property.property_status,
         }))
     }
 
@@ -51,6 +52,7 @@ class EditComponentMapping {
             fieldHelpText: property.field_help_text,
             transformHelpText: property.transform_help_text,
             property_id: property.property_id,
+            property_status: property.property_status,
         }))
     }
 

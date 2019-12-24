@@ -74,6 +74,7 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
                 property_list_action.payload = {
                     value: EditComponentMapping.mapPropertyAPIKeysToUi( data.property_list )
                 }
+                console.log( property_list_action )
                 this.props.dispatch( property_list_action )
 
                 // Dispatch rule group list changed after applying filters
