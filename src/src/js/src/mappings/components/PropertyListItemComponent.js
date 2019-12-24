@@ -24,10 +24,14 @@ class PropertyListItemComponent extends React.Component {
     returnOptionsForTrashCategory() {
         return <React.Fragment>
             <span className="edit wl-mappings-link">
-                <a onClick={ this.changeCategoryPropertyItem(
+                <a onClick={ 
+                () => { 
+                    this.changeCategoryPropertyItem(
                             this.props.propData.property_id,
                             ACTIVE_CATEGORY
-                )}>
+                    )
+                }
+            }>
                     Restore
                 </a>
                 | 
@@ -45,10 +49,11 @@ class PropertyListItemComponent extends React.Component {
     returnOptionsForActiveCategory() {
         return <React.Fragment>
             <span className="edit wl-mappings-link">
-                <a onClick={()=> 
-                    this.props.switchState(
-                        this.props.propData.property_id
-                    )}>
+                <a onClick={()=> {
+                        this.props.switchState(
+                            this.props.propData.property_id
+                        )}
+                    }>
                     Edit
                 </a>
                 | 

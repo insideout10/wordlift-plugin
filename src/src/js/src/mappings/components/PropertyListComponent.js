@@ -112,6 +112,7 @@ class PropertyListComponent extends React.Component {
                                 this.props.propertyList
                                 .filter( property => property.property_status === this.props.choosenCategory )
                                 .map((property, index) => {
+                                    console.log( property )
                                     return (
                                         <tr className="wl-property-list-item-container">
                                                 <td className="wl-check-column">
