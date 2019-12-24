@@ -26,10 +26,13 @@ const BulkActionApplyButton = ({ bulkActionSubmitHandler }) => {
 }
 
 /** Bulk action options wrapper */
-const BulkActionOptionsWrapper = ( { choosenCategory } ) => {
+const BulkActionOptionsWrapper = ( { choosenCategory, bulkActionOptionChangedHandler } ) => {
     return (
         <div className="wl-col">
-            <select className="form-control">
+            <select 
+                className="form-control" 
+                onChange={ ( event ) => { bulkActionOptionChangedHandler( event ) }}
+            >
                 <option value="-1">Bulk Actions</option>
                 <BulkActionOptions 
                     choosenCategory={choosenCategory} 
@@ -43,8 +46,9 @@ class BulkActionComponent extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <BulkActionOptionsWrapper 
-                    choosenCategory = { this.props.choosenCategory }
+                <BulkActionOptionsWrapper
+                    bulkActionOptionChangedHandler = { this.props.bulkActionOptionChangedHandler }
+                    choosenCategory                = { this.props.choosenCategory }
                 />
                 <BulkActionApplyButton 
                     bulkActionSubmitHandler = { this.props.bulkActionSubmitHandler }

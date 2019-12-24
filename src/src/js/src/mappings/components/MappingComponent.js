@@ -25,6 +25,9 @@ const mappingSettings = window["wlMappingsConfig"] || {};
      componentDidMount() {
          this.getMappingItems()
      }
+     bulkActionOptionChangedHandler = ( event ) => {
+        console.log( event.target.value )
+     }
      /**
       * Add some keys to mapping items before setting it as
       * state, it is used by ui.
@@ -267,6 +270,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                 <div className="wl-container wl-container-full">
                     <BulkActionComponent
                         choosenCategory={this.props.choosen_category}
+                        bulkActionOptionChangedHandler = { this.bulkActionOptionChangedHandler }
                         bulkActionSubmitHandler={ this.bulkActionSubmitHandler }
                     />
                 </div>
