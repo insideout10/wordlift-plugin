@@ -220,9 +220,32 @@ class Wordlift_Mapping_REST_Controller {
 	 * @return void
 	 */
 	private static function save_property_list( $dbo, $mapping_id, $property_list ) {
+		$properties_needed_to_be_deleted = $dbo->get_properties( $mapping_id );
+		$property_ids = array();
+		foreach ( $properties_needed_to_be_deleted as $property ) {
+			array_push( $property_ids, (int) $property['property_id'] );
+		}
 		foreach ( $property_list as $property ) {
 			$dbo->insert_or_update_property( $mapping_id, $property );
+
+			if ( array_key_exists( 'property_id', $property ) ) {
+				// Remove the id from the list of property ids needed to be deleted
+				// because it is posted.
+				$index_to_be_removed = array_search(
+					$property['property_id'],
+					$property_ids,
+					true
+				);
+				if ( false !== $index_to_be_removed ) {
+					unset( $property_ids[ $index_to_be_removed ] );
+				}
+			}
 		}
+		// At the end remove all the property ids which are not posted.
+		foreach ( $property_ids as $property_id ) {
+			$dbo->delete_property( $property_id );
+		}
+
 	}
 	/**
 	 * Insert or update rule group list

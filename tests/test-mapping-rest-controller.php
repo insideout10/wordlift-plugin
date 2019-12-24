@@ -285,4 +285,28 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 		// we should have 2 rule groups in the rule table.
 		$this->assertEquals( 2, $rule_count );
 	}
+	/** Test when the property is not posted it should be deleted  */
+	public function test_when_property_is_not_posted_should_delete_property() {
+		// Create user with 'manage options' capability, only that user can delete this item.
+		$user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $user_id );
+		$mapping_id = $this->inject_mock_data_for_mapping_id();
+		$post_array = array(
+			'mapping_id'     => $mapping_id,
+			'mapping_title'  => 'foo',
+			'mapping_status' => 'active',
+			'property_list' => array(),
+			'rule_group_list' => array(),
+		);
+		$request   = new WP_REST_Request( 'POST', $this->mapping_route );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( $post_array ) );		
+		$response  = $this->server->dispatch( $request );
+		// Request should return 200.
+		$this->assertEquals( 200, $response->get_status() );
+		// We didnt post the property data, so it should be removed.
+		$property_table_name = $this->wpdb->prefix . WL_PROPERTY_TABLE_NAME;
+		$property_count      = $this->wpdb->get_var( "SELECT COUNT(property_id) as total FROM $property_table_name" );
+		$this->assertEquals( 0, $property_count );		
+	}
 }

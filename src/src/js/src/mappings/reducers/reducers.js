@@ -153,11 +153,11 @@ export const RuleGroupReducer = createReducer(null, {
         .map( el => el.property_id )
         const propertyIndex = propertyArray
         .indexOf( propertyId )
-        
+
         switch ( operationName ) {
             // Delete a property permanently
             case DELETE_PROPERTY_PERMANENT:
-                state.propertyList = state.propertyList.splice( propertyIndex, 1 );
+                state.propertyList.splice( propertyIndex, 1 );
                 break
             case DUPLICATE_PROPERTY:                
                 // Copy the property values and change the property id
