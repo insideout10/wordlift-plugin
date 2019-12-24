@@ -138,6 +138,7 @@ export const RuleGroupReducer = createReducer(null, {
      */
     [ PROPERTY_LIST_SELECTED_CATEGORY_CHANGED ] : ( state, action ) => {
         const { choosenCategory } = action.payload
+        console.log( action )
         state.choosenPropertyCategory = choosenCategory
     }
 })

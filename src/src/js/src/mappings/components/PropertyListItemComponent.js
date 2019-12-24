@@ -59,10 +59,14 @@ class PropertyListItemComponent extends React.Component {
                 </a> |
             </span>
             <span className="trash wl-mappings-link">
-                <a onClick={ this.changeCategoryPropertyItem(
+                <a onClick={ 
+                    () => {
+                        this.changeCategoryPropertyItem(
                             this.props.propData.property_id,
                             TRASH_CATEGORY
-                )}>
+                        )
+                    }
+                }>
                     Trash
                 </a>
             </span>

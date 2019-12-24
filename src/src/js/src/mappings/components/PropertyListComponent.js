@@ -43,6 +43,7 @@ class PropertyListComponent extends React.Component {
         this.props.dispatch( ADD_MAPPING_ACTION )
     }
     categorySelectHandler = ( category ) => {
+        console.log( category )
         const action = PROPERTY_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION
         action.payload = {
             choosenCategory: category
