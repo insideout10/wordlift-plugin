@@ -125,3 +125,9 @@ export const PROPERTY_LIST_SELECTED_CATEGORY_CHANGED = "PROPERTY_LIST_SELECTED_C
  * Action when we need to perform crud operation
  */
 export const PROPERTY_ITEM_CRUD_OPERATION = "PROPERTY_ITEM_CRUD_OPERATION"
+
+/**
+ * @const BULK_ACTION_SELECTION_CHANGED
+ * Action when we change the bulk action component
+ */
+export const BULK_ACTION_SELECTION_CHANGED = "BULK_ACTION_SELECTION_CHANGED"
