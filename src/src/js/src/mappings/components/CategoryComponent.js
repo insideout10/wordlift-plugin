@@ -15,40 +15,42 @@ import PropTypes from 'prop-types';
 export const TRASH_CATEGORY = 'trash'
 export const ACTIVE_CATEGORY = 'active'
 
-class CategoryComponent extends React.Component {
+const SingleCategoryItem = ( { source, categorySelectHandler, categoryKeyName } ) => {
 
+    return (
+        <span className="wl-mappings-link wl-category-title">
+            <a onClick={()=> { categorySelectHandler(category) }}>
+                { category }
+                ({
+                    // Count the category in the source
+                    source
+                    .filter( el=> el[categoryKeyName] === category )
+                    .length
+                })|
+            </a>&nbsp;
+        </span>
+    )
+}
+
+class CategoryComponent extends React.Component {
     constructor( props ) {
-        console.log( props )
         super( props )
     }
-
     render() {
         return (
             <div>
                 {
                     this.props.categories.map( ( category, index ) => {
-
                         return (
-                            <span className="wl-mappings-link wl-category-title">
-                                <a onClick={()=> { this.props.categorySelectHandler(category) }}>
-                                    { category }
-                                    ({
-                                        // Count the category in the source
-                                        this.props.source
-                                        .filter( el=> el[this.props.categoryKeyName] === category )
-                                        .length
-                                    })|
-                                 </a>&nbsp;
-                            </span>
+                            <SingleCategoryItem 
+                                {...this.props}
+                                category={category} />
                         )
-
                     })
                 }
             </div>
         )
     }
-
-
 }
 
 CategoryComponent.propTypes = {
@@ -61,6 +63,5 @@ CategoryComponent.propTypes = {
     // Category select handler
     categorySelectHandler: PropTypes.func.isRequired
 }
-
 
 export default CategoryComponent

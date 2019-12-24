@@ -10,38 +10,30 @@
  * External dependencies
  */
 import React from "react"
+import { BulkActionOptions } from "./BulkActionSubComponents"
 
-const BulkActionComponent = (props) => {
-
-    return (
-        <React.Fragment>
-            <div className="wl-col">
-                <select className="form-control">
-                    <option value="-1">Bulk Actions</option>
-                    {
-                        props.options.map( ( item, index ) => {
-
-                            return (
-                                <option value={item.value}>
-                                    { item.label }
-                                </option>
-                            )
-
-                        })
-                    }
-                </select>
-            </div>
-            <div className="wl-col">
-                <button className="button action" onClick={
-                    props.bulkActionSubmitHandler()
-                }> 
-                    Apply
-                </button>
-            </div>
-        </React.Fragment>
-    )
-
-
+class BulkActionComponent extends React.Component {
+    render() {
+        return (
+            <React.Fragment>
+                <div className="wl-col">
+                    <select className="form-control">
+                        <option value="-1">Bulk Actions</option>
+                        <BulkActionOptions 
+                            choosenCategory={this.props.choosenCategory} 
+                        />
+                    </select>
+                </div>
+                <div className="wl-col">
+                    <button className="button action" onClick={
+                        this.props.bulkActionSubmitHandler()
+                    }> 
+                        Apply
+                    </button>
+                </div>
+            </React.Fragment>
+        )
+    }
 }
 
 export default BulkActionComponent

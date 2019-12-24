@@ -45,7 +45,7 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
         }
     }
     bulkActionSubmitHandler = () => {
-        
+
     }
 
     /**
@@ -170,8 +170,8 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
                 <br/>
                 <div className="wl-container wl-container-full">
                     <BulkActionComponent 
-                        options={[]}
-                        bulkActionSubmitHandler={this.bulkActionSubmitHandler} 
+                        choosenCategory={ this.props.choosenCategory }
+                        bulkActionSubmitHandler={ this.bulkActionSubmitHandler } 
                     />
                     <div className="wl-col wl-align-right">
                         <button className="button action" 
@@ -191,6 +191,7 @@ const mapStateToProps = function( state ) {
         title: state.TitleSectionData.title,
         notificationData: state.NotificationData,
         stateObject: state,
+        choosenCategory: state.PropertyListData.choosenPropertyCategory
     }
 }
 

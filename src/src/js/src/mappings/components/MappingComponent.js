@@ -77,7 +77,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
         this.props.dispatch( MAPPING_LIST_BULK_SELECT_ACTION )
      }
 
-     switchCategory = ( mappingData, categoryName ) => {
+    switchCategory = ( mappingData, categoryName ) => {
         const action = MAPPING_ITEM_CATEGORY_CHANGED_ACTION
         action.payload = {
             mappingId: mappingData.mapping_id,
@@ -87,9 +87,11 @@ const mappingSettings = window["wlMappingsConfig"] || {};
         // Save Changes to the db
         mappingData.mapping_status = categoryName
         this.updateMappingItems([mappingData])
-     }
-
-     updateMappingItems( mapping_items ) {
+    }
+    bulkActionSubmitHandler = () => {
+        
+    }
+    updateMappingItems( mapping_items ) {
         fetch(mappingSettings.rest_url,
             {
                 method: "PUT",
@@ -263,7 +265,10 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                     </tfoot>
                 </table>
                 <div className="wl-container wl-container-full">
-                    <BulkActionComponent options={[]} />
+                    <BulkActionComponent
+                        choosenCategory={this.props.choosen_category}
+                        bulkActionSubmitHandler={ this.bulkActionSubmitHandler }
+                    />
                 </div>
             </React.Fragment>
          )
