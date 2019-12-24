@@ -148,6 +148,7 @@ export const RuleGroupReducer = createReducer(null, {
      */
     [ PROPERTY_ITEM_CRUD_OPERATION ] : ( state, action ) => {
         const { propertyId, operationName } = action.payload
+
         const propertyArray = state.propertyList
         .map( el => el.property_id )
         const propertyIndex = propertyArray
@@ -156,12 +157,12 @@ export const RuleGroupReducer = createReducer(null, {
         switch ( operationName ) {
             // Delete a property permanently
             case DELETE_PROPERTY_PERMANENT:
-                state.propertyList = state.propertyList.splice(propertyIndex, 1);
+                state.propertyList = state.propertyList.splice( propertyIndex, 1 );
                 break
-            case DUPLICATE_PROPERTY:
+            case DUPLICATE_PROPERTY:                
                 // Copy the property values and change the property id
                 const cloned_property = { ...state.propertyList[ propertyIndex ] }
-                cloned_property.property_id = Math.max( propertyArray ) + 1
+                cloned_property.property_id = Math.max( ...propertyArray ) + 1
                 state.propertyList.splice( propertyIndex + 1, 0,  cloned_property );
             default:
                 break;

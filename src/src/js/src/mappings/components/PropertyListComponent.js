@@ -36,7 +36,8 @@ class PropertyListComponent extends React.Component {
         action.payload = {
             propertyId: propertyId
         }
-        this.props.dispatch(action)
+        console.log( action )
+        this.props.dispatch( action )
      }
     // triggered when the add mapping button is clicked
     handleAddMappingClick = ()=> {
