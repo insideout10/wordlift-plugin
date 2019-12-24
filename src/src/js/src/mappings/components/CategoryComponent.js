@@ -15,8 +15,7 @@ import PropTypes from 'prop-types';
 export const TRASH_CATEGORY = 'trash'
 export const ACTIVE_CATEGORY = 'active'
 
-const SingleCategoryItem = ( { source, categorySelectHandler, categoryKeyName } ) => {
-
+const SingleCategoryItem = ( { category, source, categorySelectHandler, categoryKeyName } ) => {
     return (
         <span className="wl-mappings-link wl-category-title">
             <a onClick={()=> { categorySelectHandler(category) }}>
