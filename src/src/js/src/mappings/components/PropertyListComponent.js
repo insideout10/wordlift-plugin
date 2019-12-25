@@ -155,7 +155,7 @@ class PropertyListComponent extends React.Component {
                             </td>
                         </tr>
                     </tbody>
-                </table>          
+                </table>        
             </React.Fragment>
         )
     }

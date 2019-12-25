@@ -29,6 +29,7 @@ const INITIAL_STATE = {
     },
     PropertyListData: {
         choosenPropertyCategory: ACTIVE_CATEGORY,
+        choosenPropertyBulkAction: null,
         fieldTypeHelpTextOptions:options,
         transformHelpTextOptions:options,
         propertyList: []

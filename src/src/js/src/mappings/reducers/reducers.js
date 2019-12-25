@@ -8,9 +8,12 @@
 /**
  * Internal dependancies
  */
-import { ADD_NEW_RULE, ADD_NEW_RULE_GROUP, DELETE_RULE, CHANGE_RULE_FIELD_VALUE, OPEN_OR_CLOSE_PROPERTY, PROPERTY_DATA_CHANGED, ADD_MAPPING, TITLE_CHANGED, PROPERTY_LIST_CHANGED, MAPPING_HEADER_CHANGED, RULE_GROUP_LIST_CHANGED, NOTIFICATION_CHANGED, PROPERTY_ITEM_CATEGORY_CHANGED, PROPERTY_LIST_SELECTED_CATEGORY_CHANGED, PROPERTY_ITEM_CRUD_OPERATION, PROPERTY_ITEM_SELECTED, PROPERTY_ITEM_SELECT_ALL } from '../actions/actionTypes'
+import { ADD_NEW_RULE, ADD_NEW_RULE_GROUP, DELETE_RULE, CHANGE_RULE_FIELD_VALUE, OPEN_OR_CLOSE_PROPERTY, PROPERTY_DATA_CHANGED, ADD_MAPPING, TITLE_CHANGED, PROPERTY_LIST_CHANGED, MAPPING_HEADER_CHANGED, RULE_GROUP_LIST_CHANGED, NOTIFICATION_CHANGED, PROPERTY_ITEM_CATEGORY_CHANGED, PROPERTY_LIST_SELECTED_CATEGORY_CHANGED, PROPERTY_ITEM_CRUD_OPERATION, PROPERTY_ITEM_SELECTED, PROPERTY_ITEM_SELECT_ALL, PROPERTY_ITEMS_BULK_SELECT, BULK_ACTION_SELECTION_CHANGED } from '../actions/actionTypes'
 import { createReducer } from '@reduxjs/toolkit'
 import { DELETE_PROPERTY_PERMANENT, DUPLICATE_PROPERTY } from '../components/PropertyListItemComponent'
+import { PROPERTY_ITEMS_BULK_ACTION } from '../actions/actions'
+import { BulkOptionValues } from '../components/BulkActionSubComponents'
+import { TRASH_CATEGORY, ACTIVE_CATEGORY } from '../components/CategoryComponent'
 
  /**
   * Reducer to handle the rule group and rule section
@@ -186,6 +189,43 @@ export const RuleGroupReducer = createReducer(null, {
             }
             return item
         })
+    },
+
+    [ PROPERTY_ITEMS_BULK_SELECT ] : ( state, action ) => {
+        const selectedBulkAction = state.choosenPropertyBulkAction
+        const selectedItems = state.propertyList.filter( item => item.isSelectedByUser )
+        selectedItems.map( (item) => {
+            // Get the index of the current item
+            const propertyArray = state.propertyList
+                                .map( el => el.property_id )
+            const propertyIndex = propertyArray.indexOf( item.property_id )
+            
+            switch( selectedBulkAction ) {
+                case BulkOptionValues.TRASH:
+                    state.propertyList[propertyIndex].property_status = TRASH_CATEGORY
+                    break
+                case BulkOptionValues.DUPLICATE:
+                    const cloned_property = { ...state.propertyList[ propertyIndex ] }
+                    cloned_property.property_id = Math.max( ...propertyArray ) + 1
+                    state.propertyList.splice( propertyIndex + 1, 0,  cloned_property );
+                    break
+                case BulkOptionValues.RESTORE:
+                    state.propertyList[propertyIndex].property_status = ACTIVE_CATEGORY
+                    break
+                case BulkOptionValues.DELETE_PERMANENTLY:
+                    state.propertyList.splice( propertyIndex, 1 );
+                    break
+                default:
+                    break
+            }
+        })
+
+    },
+
+    [ BULK_ACTION_SELECTION_CHANGED ] : ( state, action ) => {
+        const { selectedBulkAction } = action.payload
+        console.log ( selectedBulkAction )
+        state.choosenPropertyBulkAction = selectedBulkAction
     }
 })
 

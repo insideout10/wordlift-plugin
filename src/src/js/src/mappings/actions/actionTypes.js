@@ -143,3 +143,9 @@ export const PROPERTY_ITEM_SELECTED = "PROPERTY_ITEM_SELECTED"
  * Action when the user want to select all the items in the category.
  */
 export const PROPERTY_ITEM_SELECT_ALL = "PROPERTY_ITEM_SELECT_ALL"
+
+/**
+ * @const PROPERTY_ITEMS_BULK_SELECT
+ * Action when the user wants to make bulk action on selected properties
+ */
+export const PROPERTY_ITEMS_BULK_SELECT = "PROPERTY_ITEMS_BULK_SELECT"

@@ -16,7 +16,7 @@ import { connect } from 'react-redux'
  */
 import RuleGroupListComponent from './RuleGroupListComponent'
 import PropertyListComponent from './PropertyListComponent'
-import { TITLE_CHANGED_ACTION, PROPERTY_LIST_CHANGED_ACTION, RULE_GROUP_LIST_CHANGED_ACTION, MAPPING_HEADER_CHANGED_ACTION, NOTIFICATION_CHANGED_ACTION } from '../actions/actions'
+import { TITLE_CHANGED_ACTION, PROPERTY_LIST_CHANGED_ACTION, RULE_GROUP_LIST_CHANGED_ACTION, MAPPING_HEADER_CHANGED_ACTION, NOTIFICATION_CHANGED_ACTION, PROPERTY_ITEMS_BULK_ACTION, BULK_ACTION_SELECTION_CHANGED_ACTION } from '../actions/actions'
 import EditComponentMapping from '../mappings/EditComponentMapping'
 import BulkActionComponent from './BulkActionComponent'
 import { EditComponentNotificationArea, EditComponentSaveButton, RuleGroupWrapper, EditComponentTitleArea } from './EditSubComponents'
@@ -48,23 +48,16 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
         }
     }
     bulkActionSubmitHandler = ( ) => {
+        this.props.dispatch( PROPERTY_ITEMS_BULK_ACTION )
     }
 
     bulkActionOptionChangedHandler = (event) => {
-        const value = event.target.value
-        console.log( value )
-        switch ( value ) {
-            case BulkOptionValues.TRASH:
-                break
-            case BulkOptionValues.DUPLICATE:
-                break
-            case BulkOptionValues.RESTORE:
-                break
-            case BulkOptionValues.DELETE_PERMANENTLY:
-                break
-            default:
-                break
+        const selectedBulkOption = event.target.value
+        const action = BULK_ACTION_SELECTION_CHANGED_ACTION
+        action.payload = {
+            selectedBulkAction: selectedBulkOption
         }
+        this.props.dispatch( action )
     }
 
     /**
