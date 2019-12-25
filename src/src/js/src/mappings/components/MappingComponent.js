@@ -95,19 +95,19 @@ const mappingSettings = window["wlMappingsConfig"] || {};
         mappingData.mapping_status = categoryName
         this.updateMappingItems([mappingData])
     }
-    updateMappingItems( mapping_items ) {
+    // Updates or deletes the mapping items based on the request
+    updateMappingItems( mapping_items, type = 'PUT') {
         fetch(mappingSettings.rest_url,
             {
-                method: "PUT",
+                method: type,
                 headers: {
                     "content-type": "application/json",
                     "X-WP-Nonce": mappingSettings.wl_mapping_nonce
                 },
-                body: JSON.stringify(
-                        MappingComponent.applyApiFilters(
+                body: JSON.stringify({
+                            mapping_items: MappingComponent.applyApiFilters(
                             mapping_items
-                        )
-                    )  
+                        )})  
             }
         )
         .then(response => response.json().then(
@@ -195,7 +195,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
         const action = MAPPING_ITEMS_BULK_ACTION
         action.payload = {
             duplicateCallBack: this.duplicateMappingItems,
-            categoryChangeCallBack: this.updateMappingItems,
+            updateCallBack: this.updateMappingItems,
         }
         console.log( this.duplicateMappingItems )
         console.log ( action )

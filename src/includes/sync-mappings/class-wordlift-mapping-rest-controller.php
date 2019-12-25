@@ -158,10 +158,11 @@ class Wordlift_Mapping_REST_Controller {
 	 * @param WP_REST_Request $request {@link WP_REST_Request instance}.
 	 */
 	public static function update_mapping_items( $request ) {
-		$dbo = new Wordlift_Mapping_DBO();
+		$dbo       = new Wordlift_Mapping_DBO();
 		$post_data = $request->get_params();
-		if ( null !== $post_data ) {
-			foreach ( $post_data as $mapping_item ) {
+		if ( array_key_exists( 'mapping_items', $post_data ) ) {
+			$mapping_items = (array) $post_data['mapping_items'];
+			foreach ( $mapping_items as $mapping_item ) {
 				$dbo->insert_or_update_mapping_item( $mapping_item );
 			}
 		}
@@ -175,10 +176,11 @@ class Wordlift_Mapping_REST_Controller {
 	public static function delete_mapping_items( $request ) {
 		$dbo = new Wordlift_Mapping_DBO();
 		$post_data = $request->get_body_params();
-		if ( array_key_exists( 'mapping_ids', $post_data ) ) {
-			$mapping_ids = $post_data['mapping_ids'];
-			foreach ( $mapping_ids as $mapping_id ) {
-				$dbo->delete_mapping_item( $mapping_id );
+		if ( array_key_exists( 'mapping_items', $post_data ) ) {
+			$mapping_items = (array) $post_data['mapping_items'];
+			print_r( $mapping_items );
+			foreach ( $mapping_items as $mapping_item ) {
+				$dbo->delete_mapping_item( $mapping_item['mapping_id'] );
 			}
 		}
 	}

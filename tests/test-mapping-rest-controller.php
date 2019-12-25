@@ -135,7 +135,14 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 		$request = new WP_REST_Request( 'DELETE', $this->mapping_route );
 		$request->set_body_params(
 			array(
-				'mapping_ids' => array( $mapping_id_1, $mapping_id_2 ),
+				'mapping_items' => array(
+					array(
+						'mapping_id' => $mapping_id_1,
+					),
+					array(
+						'mapping_id' => $mapping_id_2,
+					),
+				),
 			)
 		);
 		$response = $this->server->dispatch( $request );
@@ -182,15 +189,17 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 		$mapping_id_2 = $dbo->insert_mapping_item( 'bar' );
 		// Lets make a post array.
 		$post_array = array(
-			array(
-				'mapping_id'     => $mapping_id_1,
-				'mapping_title'  => 'foo',
-				'mapping_status' => 'trash',
-			),
-			array(
-				'mapping_id'     => $mapping_id_2,
-				'mapping_title'  => 'bar',
-				'mapping_status' => '',
+			'mapping_items' => array(
+				array(
+					'mapping_id'     => $mapping_id_1,
+					'mapping_title'  => 'foo',
+					'mapping_status' => 'trash',
+				),
+				array(
+					'mapping_id'     => $mapping_id_2,
+					'mapping_title'  => 'bar',
+					'mapping_status' => '',
+				),
 			),
 		);
 		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;

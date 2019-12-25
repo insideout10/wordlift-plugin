@@ -67,7 +67,7 @@ const changeCategoryForMappingItems = ( mapping_items, category ) => {
     },
 
     [ MAPPING_ITEMS_BULK_SELECT ] : ( state, action ) => {
-       const {duplicateCallBack, categoryChangeCallBack } = action.payload
+       const {duplicateCallBack, updateCallBack } = action.payload
        const selectedItems = state.mapping_items
        .filter( item => true === item.is_selected)
        switch ( state.selectedBulkOption ) {
@@ -76,7 +76,7 @@ const changeCategoryForMappingItems = ( mapping_items, category ) => {
                break
             case BulkOptionValues.TRASH:
                 // change the category of selected items
-                categoryChangeCallBack(
+                updateCallBack(
                     changeCategoryForMappingItems(
                         selectedItems,
                         TRASH_CATEGORY
@@ -84,13 +84,18 @@ const changeCategoryForMappingItems = ( mapping_items, category ) => {
                 )
                 break
             case BulkOptionValues.RESTORE:
-                categoryChangeCallBack(
+                updateCallBack(
                     changeCategoryForMappingItems(
                         selectedItems,
                         ACTIVE_CATEGORY
                     )
                 )
-                break               
+                break
+            case BulkOptionValues.DELETE_PERMANENTLY:
+                updateCallBack(
+                    selectedItems,
+                    'DELETE'
+                )              
             default:
                break
        }
