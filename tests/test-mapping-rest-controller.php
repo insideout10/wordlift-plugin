@@ -133,7 +133,7 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 		$mapping_id_2 = $dbo->insert_mapping_item( 'bar' );
 
 		$request = new WP_REST_Request( 'DELETE', $this->mapping_route );
-		$request->set_body_params(
+		$json_data = wp_json_encode(
 			array(
 				'mapping_items' => array(
 					array(
@@ -145,6 +145,8 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 				),
 			)
 		);
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( $json_data );
 		$response = $this->server->dispatch( $request );
 		// This request should return 200.
 		$this->assertEquals( 200, $response->get_status() );

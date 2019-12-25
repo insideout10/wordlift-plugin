@@ -175,10 +175,9 @@ class Wordlift_Mapping_REST_Controller {
 	 */
 	public static function delete_mapping_items( $request ) {
 		$dbo = new Wordlift_Mapping_DBO();
-		$post_data = $request->get_body_params();
+		$post_data = $request->get_params();
 		if ( array_key_exists( 'mapping_items', $post_data ) ) {
 			$mapping_items = (array) $post_data['mapping_items'];
-			print_r( $mapping_items );
 			foreach ( $mapping_items as $mapping_item ) {
 				$dbo->delete_mapping_item( $mapping_item['mapping_id'] );
 			}
