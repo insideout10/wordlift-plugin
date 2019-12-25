@@ -28,6 +28,7 @@ const INITIAL_STATE = {
         ruleGroupList: []
     },
     PropertyListData: {
+        propertyHeaderCheckboxClicked: false,
         choosenPropertyCategory: ACTIVE_CATEGORY,
         choosenPropertyBulkAction: null,
         fieldTypeHelpTextOptions:options,

@@ -70,6 +70,21 @@ export const RuleGroupReducer = createReducer(null, {
     }
   })
 
+
+  const changePropertyItemCategory = ( state, propertyIndex, category ) => {
+    state.propertyList[propertyIndex].property_status = category
+  }
+
+  const addDuplicatePropertyItem = ( state, propertyIndex ) => {
+    const propertyArray = state.propertyList.map( el => el.property_id )
+    const cloned_property = { ...state.propertyList[ propertyIndex ] }
+    cloned_property.isSelectedByUser = false
+    cloned_property.property_id = Math.max( ...propertyArray ) + 1
+    state.propertyList.splice( propertyIndex + 1, 0,  cloned_property );
+  }
+
+
+
 /**
   * Reducer to handle the property section
   */
@@ -151,10 +166,8 @@ export const RuleGroupReducer = createReducer(null, {
      */
     [ PROPERTY_ITEM_CRUD_OPERATION ] : ( state, action ) => {
         const { propertyId, operationName } = action.payload
-
-        const propertyArray = state.propertyList
+        const propertyIndex = state.propertyList
         .map( el => el.property_id )
-        const propertyIndex = propertyArray
         .indexOf( propertyId )
 
         switch ( operationName ) {
@@ -163,10 +176,8 @@ export const RuleGroupReducer = createReducer(null, {
                 state.propertyList.splice( propertyIndex, 1 );
                 break
             case DUPLICATE_PROPERTY:                
-                // Copy the property values and change the property id
-                const cloned_property = { ...state.propertyList[ propertyIndex ] }
-                cloned_property.property_id = Math.max( ...propertyArray ) + 1
-                state.propertyList.splice( propertyIndex + 1, 0,  cloned_property );
+                addDuplicatePropertyItem( state, propertyIndex)
+                break
             default:
                 break;
         }
@@ -192,25 +203,25 @@ export const RuleGroupReducer = createReducer(null, {
     },
 
     [ PROPERTY_ITEMS_BULK_SELECT ] : ( state, action ) => {
+        // Iterate through all the selected items, and based on option
+        // perform the action.
         const selectedBulkAction = state.choosenPropertyBulkAction
-        const selectedItems = state.propertyList.filter( item => item.isSelectedByUser )
-        selectedItems.map( (item) => {
+        state.propertyList.filter( item => item.isSelectedByUser )
+        .map( (item) => {
             // Get the index of the current item
-            const propertyArray = state.propertyList
-                                .map( el => el.property_id )
-            const propertyIndex = propertyArray.indexOf( item.property_id )
+            const propertyIndex = state.propertyList
+            .map( el => el.property_id )
+            .indexOf( item.property_id )
             
             switch( selectedBulkAction ) {
                 case BulkOptionValues.TRASH:
-                    state.propertyList[propertyIndex].property_status = TRASH_CATEGORY
+                    changePropertyItemCategory( state, propertyIndex, TRASH_CATEGORY)
                     break
                 case BulkOptionValues.DUPLICATE:
-                    const cloned_property = { ...state.propertyList[ propertyIndex ] }
-                    cloned_property.property_id = Math.max( ...propertyArray ) + 1
-                    state.propertyList.splice( propertyIndex + 1, 0,  cloned_property );
+                    addDuplicatePropertyItem( state, propertyIndex)
                     break
                 case BulkOptionValues.RESTORE:
-                    state.propertyList[propertyIndex].property_status = ACTIVE_CATEGORY
+                    changePropertyItemCategory( state, propertyIndex, ACTIVE_CATEGORY)
                     break
                 case BulkOptionValues.DELETE_PERMANENTLY:
                     state.propertyList.splice( propertyIndex, 1 );
@@ -224,7 +235,6 @@ export const RuleGroupReducer = createReducer(null, {
 
     [ BULK_ACTION_SELECTION_CHANGED ] : ( state, action ) => {
         const { selectedBulkAction } = action.payload
-        console.log ( selectedBulkAction )
         state.choosenPropertyBulkAction = selectedBulkAction
     }
 })

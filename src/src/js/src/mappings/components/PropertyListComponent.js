@@ -96,7 +96,8 @@ class PropertyListComponent extends React.Component {
                         <thead>
                             <tr>
                                 <th className="wl-check-column">
-                                <input type="checkbox" 
+                                <input type="checkbox"
+                                checked = { this.props.propertyHeaderCheckboxClicked }
                                 onClick={ () => {
                                     this.selectAllPropertyHandler() }}/> 
                                 </th>
@@ -167,6 +168,7 @@ PropertyListComponent.propTypes = {
 
 const mapStateToProps = function( state ) {
     return {
+        propertyHeaderCheckboxClicked: state.propertyHeaderCheckboxClicked,
         propertyList: state.PropertyListData.propertyList,
         choosenCategory: state.PropertyListData.choosenPropertyCategory
     }
