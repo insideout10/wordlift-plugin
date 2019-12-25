@@ -65,24 +65,24 @@ class PropertyListItemComponent extends React.Component {
     returnOptionsForActiveCategory() {
         return (
             <React.Fragment>
-                    <RowActionItem
-                        className      = 'edit wl-mappings-link'
-                        onClickHandler = { this.props.switchState }
-                        title          = 'Edit'
-                        args           = { [ this.props.propData.property_id ] }
-                    />
-                    <RowActionItem
-                        className      = 'wl-mappings-link'
-                        onClickHandler = { this.makeCrudOperationOnPropertyId }
-                        title          = 'Duplicate'
-                        args           = { [ this.props.propData.property_id, DUPLICATE_PROPERTY ] }
-                    />
-                    <RowActionItem
-                        className      = 'wl-mappings-link trash'
-                        onClickHandler = { this.changeCategoryPropertyItem }
-                        title          = 'Trash'
-                        args           = { [ this.props.propData.property_id, TRASH_CATEGORY ] }
-                    />
+                <RowActionItem
+                    className      = 'edit wl-mappings-link'
+                    onClickHandler = { this.props.switchState }
+                    title          = 'Edit'
+                    args           = { [ this.props.propData.property_id ] }
+                />
+                <RowActionItem
+                    className      = 'wl-mappings-link'
+                    onClickHandler = { this.makeCrudOperationOnPropertyId }
+                    title          = 'Duplicate'
+                    args           = { [ this.props.propData.property_id, DUPLICATE_PROPERTY ] }
+                />
+                <RowActionItem
+                    className      = 'wl-mappings-link trash'
+                    onClickHandler = { this.changeCategoryPropertyItem }
+                    title          = 'Trash'
+                    args           = { [ this.props.propData.property_id, TRASH_CATEGORY ] }
+                />
             </React.Fragment>
         )
     }
@@ -114,7 +114,6 @@ class PropertyListItemComponent extends React.Component {
             propertyId: propertyId,
             operationName: operationName
         }
-        console.log( action )
         this.props.dispatch( action )
     }
 

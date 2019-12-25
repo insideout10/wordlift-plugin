@@ -19,9 +19,11 @@ import PropertyListComponent from './PropertyListComponent'
 import { TITLE_CHANGED_ACTION, PROPERTY_LIST_CHANGED_ACTION, RULE_GROUP_LIST_CHANGED_ACTION, MAPPING_HEADER_CHANGED_ACTION, NOTIFICATION_CHANGED_ACTION } from '../actions/actions'
 import EditComponentMapping from '../mappings/EditComponentMapping'
 import BulkActionComponent from './BulkActionComponent'
+import { EditComponentNotificationArea, EditComponentSaveButton, RuleGroupWrapper, EditComponentTitleArea } from './EditSubComponents'
 
 // Set a reference to the WordLift's Edit Mapping settings stored in the window instance.
 const editMappingSettings = window["wlEditMappingsConfig"] || {};
+
 
  class EditComponent extends React.Component {
 
@@ -78,7 +80,6 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
                 property_list_action.payload = {
                     value: EditComponentMapping.mapPropertyAPIKeysToUi( data.property_list )
                 }
-                console.log( property_list_action )
                 this.props.dispatch( property_list_action )
 
                 // Dispatch rule group list changed after applying filters
@@ -119,52 +120,20 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
     render() {
         return (
             <React.Fragment>
-              
-                {
-                    "" != this.props.notificationData.message &&
-                    <div className={'notice notice-' + this.props.notificationData.type + ' is-dismissible'}>
-                        <p>{this.props.notificationData.message}</p>
-                    </div>
-                    
-                }
-                <h1 className="wp-heading-inline wl-mappings-heading-text">
-                    {
-                        editMappingSettings.wl_edit_mapping_id === undefined ? (
-                            editMappingSettings.wl_add_mapping_text
-                        ) : (
-                            editMappingSettings.wl_edit_mapping_text
-                        )
-                    }
-                </h1>               
+                <EditComponentNotificationArea
+                    notificationData = { this.props.notificationData }
+                />
+                <EditComponentTitleArea 
+                    wl_edit_mapping_id   = { editMappingSettings.wl_edit_mapping_id }
+                    wl_add_mapping_text  = { editMappingSettings.wl_add_mapping_text }
+                    wl_edit_mapping_text = { editMappingSettings.wl_edit_mapping_text }
+                />              
                 <input type="text"
                     className="wl-form-control wl-input-class"
                     value={this.props.title}
                     onChange={(e)=> {this.handleTitleChange(e)}}/>
                     <br /> <br />
-                <table className="wp-list-table widefat striped wl-table wl-container-full">
-                    <thead>
-                    <tr>
-                        <td>
-                            <b>Rules</b> 
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td className="wl-bg-light wl-description wl-col-30">
-                                Here we show the help text
-                            </td>
-                            <td className="wl-col-70">
-                                <div>
-                                    <b>Use the mapping if</b>
-                                    <RuleGroupListComponent />
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <RuleGroupWrapper />
                 <br/><br/>
                 <PropertyListComponent />
                 <br/>
@@ -173,13 +142,10 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
                         choosenCategory={ this.props.choosenCategory }
                         bulkActionSubmitHandler={ this.bulkActionSubmitHandler } 
                     />
-                    <div className="wl-col wl-align-right">
-                        <button className="button action" 
-                        onClick={this.saveMappingItem}
-                        disabled={this.props.title === ""}>
-                            Save
-                        </button>
-                    </div>
+                    <EditComponentSaveButton
+                        title                  = { this.props.title }
+                        saveMappingItemHandler = { this.saveMappingItem }
+                    />
                 </div>
             </React.Fragment>
         )
