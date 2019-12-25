@@ -70,17 +70,55 @@ export const RuleGroupReducer = createReducer(null, {
     }
   })
 
-
+  /**
+   * Change property item category of the property item.
+   * @param {Object} state The complete redux state of property item
+   * @param {Number} propertyIndex The index of property item
+   * @param {String} category The category of the property item.
+   * @return {null}
+   */
   const changePropertyItemCategory = ( state, propertyIndex, category ) => {
     state.propertyList[propertyIndex].property_status = category
   }
 
+  /**
+   * Add a duplicate item to the property list.
+   * @param {Object} state The complete redux state of property item
+   * @param {Number} propertyIndex The index of property item
+   * @return {null}
+   */
   const addDuplicatePropertyItem = ( state, propertyIndex ) => {
     const propertyArray = state.propertyList.map( el => el.property_id )
     const cloned_property = { ...state.propertyList[ propertyIndex ] }
     cloned_property.isSelectedByUser = false
     cloned_property.property_id = Math.max( ...propertyArray ) + 1
     state.propertyList.splice( propertyIndex + 1, 0,  cloned_property );
+  }
+
+  /**
+   * Do bulk action based on the select one in the ui
+   * @param {Object} state The complete redux state of property item
+   * @param {Number} propertyIndex The index of property item
+   * @param {String} selectedBulkAction The selected bulk action
+   * @return {null}
+   */
+  const doPropertyBulkAction = ( state, propertyIndex, selectedBulkAction )=> {
+    switch( selectedBulkAction ) {
+        case BulkOptionValues.TRASH:
+            changePropertyItemCategory( state, propertyIndex, TRASH_CATEGORY)
+            break
+        case BulkOptionValues.DUPLICATE:
+            addDuplicatePropertyItem( state, propertyIndex)
+            break
+        case BulkOptionValues.RESTORE:
+            changePropertyItemCategory( state, propertyIndex, ACTIVE_CATEGORY)
+            break
+        case BulkOptionValues.DELETE_PERMANENTLY:
+            state.propertyList.splice( propertyIndex, 1 );
+            break
+        default:
+            break
+    }
   }
 
 
@@ -214,25 +252,10 @@ export const RuleGroupReducer = createReducer(null, {
             .map( el => el.property_id )
             .indexOf( item.property_id )
             
-            switch( selectedBulkAction ) {
-                case BulkOptionValues.TRASH:
-                    changePropertyItemCategory( state, propertyIndex, TRASH_CATEGORY)
-                    break
-                case BulkOptionValues.DUPLICATE:
-                    addDuplicatePropertyItem( state, propertyIndex)
-                    break
-                case BulkOptionValues.RESTORE:
-                    changePropertyItemCategory( state, propertyIndex, ACTIVE_CATEGORY)
-                    break
-                case BulkOptionValues.DELETE_PERMANENTLY:
-                    state.propertyList.splice( propertyIndex, 1 );
-                    break
-                default:
-                    break
-            }
+            doPropertyBulkAction( state, propertyIndex, selectedBulkAction )
         })
         // Remove the checked state
-        state.propertyHeaderCheckboxClicked = false
+        state.propertyHeaderCheckboxClicked = !state.propertyHeaderCheckboxClicked
         state.propertyList = state.propertyList
         .map( (item) => { 
             item.isSelectedByUser = false 
