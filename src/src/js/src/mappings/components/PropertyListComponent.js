@@ -97,15 +97,17 @@ class PropertyListComponent extends React.Component {
                             <tr>
                                 <th className="wl-check-column">
                                 <input type="checkbox"
-                                checked = { this.props.propertyHeaderCheckboxClicked }
-                                onClick={ () => {
-                                    this.selectAllPropertyHandler() }}/> 
+                                    checked = { this.props.propertyHeaderCheckboxClicked }
+                                    onClick = { () => {
+                                        this.selectAllPropertyHandler() 
+                                    }}
+                                /> 
                                 </th>
                                 <th style={{width: '30%'}}>
-                                <b>Property</b>
+                                    <b>Property</b>
                                 </th>
                                 <th>
-                                <b>Field</b>
+                                    <b>Field</b>
                                 </th>
                             </tr>
                         </thead>

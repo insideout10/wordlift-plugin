@@ -194,6 +194,7 @@ export const RuleGroupReducer = createReducer(null, {
     },
 
     [ PROPERTY_ITEM_SELECT_ALL ] : ( state, action ) => {
+        state.propertyHeaderCheckboxClicked = !state.propertyHeaderCheckboxClicked
         state.propertyList = state.propertyList.map( (item) => {
             if ( item.property_status === state.choosenPropertyCategory ) {
                 item.isSelectedByUser = !item.isSelectedByUser
@@ -229,6 +230,13 @@ export const RuleGroupReducer = createReducer(null, {
                 default:
                     break
             }
+        })
+        // Remove the checked state
+        state.propertyHeaderCheckboxClicked = false
+        state.propertyList = state.propertyList
+        .map( (item) => { 
+            item.isSelectedByUser = false 
+            return item
         })
 
     },
