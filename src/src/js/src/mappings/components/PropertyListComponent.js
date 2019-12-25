@@ -128,7 +128,7 @@ class PropertyListComponent extends React.Component {
                                                 <td className="wl-check-column">
                                                     <input 
                                                         type    = 'checkbox'
-                                                        checked = { property.isCheckedByUser }
+                                                        checked = { property.isSelectedByUser }
                                                         onClick = {
                                                             () => { this.propertySelectedHandler( property.property_id ) }
                                                         }
