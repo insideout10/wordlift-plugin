@@ -5,11 +5,14 @@ import {Provider} from 'react-redux'
 import { createStore } from 'redux'
 import './mappings.css'
 import { MappingListReducer } from './reducers/mapping_list_reducers'
+import { ACTIVE_CATEGORY } from './components/CategoryComponent'
 
 
 const MAPPINGS_INITIAL_STATE = {
     mapping_items: [],
-    choosen_category: 'active',
+    choosen_category: ACTIVE_CATEGORY,
+    headerCheckBoxSelected: false,
+    selectedBulkOption:null,
 }
 
 const store = createStore(MappingListReducer, MAPPINGS_INITIAL_STATE)

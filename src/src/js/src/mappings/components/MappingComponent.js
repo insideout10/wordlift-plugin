@@ -14,9 +14,9 @@ import React from 'react'
  * Internal dependencies
  */
 import MappingListItemComponent from './MappingListItemComponent'
-import { MAPPING_LIST_CHANGED_ACTION, MAPPING_ITEM_CATEGORY_CHANGED_ACTION, MAPPING_LIST_BULK_SELECT_ACTION, MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION, MAPPING_ITEM_SELECTED_ACTION } from '../actions/actions';
+import { MAPPING_LIST_CHANGED_ACTION, MAPPING_ITEM_CATEGORY_CHANGED_ACTION, MAPPING_LIST_BULK_SELECT_ACTION, MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION, MAPPING_ITEM_SELECTED_ACTION, MAPPING_ITEMS_BULK_ACTION, BULK_ACTION_SELECTION_CHANGED_ACTION } from '../actions/actions';
 import { connect } from 'react-redux'
-import CategoryComponent from './CategoryComponent';
+import CategoryComponent, { ACTIVE_CATEGORY } from './CategoryComponent';
 import BulkActionComponent from './BulkActionComponent';
 // Set a reference to the WordLift's Mapping settings stored in the window instance.
 const mappingSettings = window["wlMappingsConfig"] || {};
@@ -26,7 +26,11 @@ const mappingSettings = window["wlMappingsConfig"] || {};
          this.getMappingItems()
      }
      bulkActionOptionChangedHandler = ( event ) => {
-        console.log( event.target.value )
+        const action = BULK_ACTION_SELECTION_CHANGED_ACTION
+        action.payload = {
+            selectedBulkOption: event.target.value
+        }
+        this.props.dispatch( action )
      }
      /**
       * Add some keys to mapping items before setting it as
@@ -91,9 +95,6 @@ const mappingSettings = window["wlMappingsConfig"] || {};
         mappingData.mapping_status = categoryName
         this.updateMappingItems([mappingData])
     }
-    bulkActionSubmitHandler = () => {
-        
-    }
     updateMappingItems( mapping_items ) {
         fetch(mappingSettings.rest_url,
             {
@@ -144,7 +145,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
       * Fetch the mapping items from api.
       * @return void
       */
-     getMappingItems() {
+     getMappingItems = () => {
         fetch(mappingSettings.rest_url,
             {
                 method: "GET",
@@ -191,8 +192,14 @@ const mappingSettings = window["wlMappingsConfig"] || {};
         this.props.dispatch( action )
      }
      bulkActionSubmitHandler = () => {
-         console.log( this.props.mapping_items
-            .filter(el => el.is_selected ) )
+        const action = MAPPING_ITEMS_BULK_ACTION
+        action.payload = {
+            duplicateCallBack: this.duplicateMappingItems,
+            categoryChangeCallBack: this.updateMappingItems,
+        }
+        console.log( this.duplicateMappingItems )
+        console.log ( action )
+        this.props.dispatch( MAPPING_ITEMS_BULK_ACTION )
      }
      render() {
          return (
@@ -215,7 +222,10 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                     <thead>
                         <tr>
                             <th className="wl-check-column">
-                                <input type="checkbox" onClick={this.selectAllMappingItems} />
+                                <input type="checkbox" 
+                                    onClick = { this.selectAllMappingItems }
+                                    checked = { this.props.headerCheckBoxSelected }
+                                />
                             </th>
                             <th>
                                 <a className="row-title">Title</a>
@@ -225,7 +235,9 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                     <tbody>
                         {
                             // show empty screen when there is no mapping items
-                            0 === this.props.mapping_items.length &&
+                            0 === this.props.mapping_items
+                            .filter( el => el.mapping_status === ACTIVE_CATEGORY )
+                            .length && this.props.choosen_category === ACTIVE_CATEGORY &&
                                 <tr>
                                     <td colspan="3">
                                         <div className="wl-container text-center">
@@ -260,7 +272,10 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                     <tfoot>
                         <tr>
                             <th className="wl-check-column">
-                                <input type="checkbox" />
+                                <input type="checkbox" 
+                                    onClick = { this.selectAllMappingItems }
+                                    checked = { this.props.headerCheckBoxSelected }
+                                />
                             </th>
                             <th>
                                 <a className="row-title">Title</a>
@@ -285,6 +300,7 @@ const mapStateToProps = function(state){
         mapping_items: state.mapping_items,
         choosen_category: state.choosen_category,
         stateObj: state,
+        headerCheckBoxSelected: state.headerCheckBoxSelected,
     }
 }
 

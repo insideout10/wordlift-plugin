@@ -149,3 +149,9 @@ export const PROPERTY_ITEM_SELECT_ALL = "PROPERTY_ITEM_SELECT_ALL"
  * Action when the user wants to make bulk action on selected properties
  */
 export const PROPERTY_ITEMS_BULK_SELECT = "PROPERTY_ITEMS_BULK_SELECT"
+
+/**
+ * @const MAPPING_ITEMS_BULK_SELECT
+ * Action when the user wants to make bulk action on selected mapping items
+ */
+export const MAPPING_ITEMS_BULK_SELECT = "MAPPING_ITEMS_BULK_SELECT"
