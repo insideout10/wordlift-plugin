@@ -20,6 +20,7 @@ import { TITLE_CHANGED_ACTION, PROPERTY_LIST_CHANGED_ACTION, RULE_GROUP_LIST_CHA
 import EditComponentMapping from '../mappings/EditComponentMapping'
 import BulkActionComponent from './BulkActionComponent'
 import { EditComponentNotificationArea, EditComponentSaveButton, RuleGroupWrapper, EditComponentTitleArea } from './EditSubComponents'
+import { BulkOptionValues } from './BulkActionSubComponents'
 
 // Set a reference to the WordLift's Edit Mapping settings stored in the window instance.
 const editMappingSettings = window["wlEditMappingsConfig"] || {};
@@ -46,8 +47,24 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
             this.getMappingItemByMappingId()
         }
     }
-    bulkActionSubmitHandler = () => {
+    bulkActionSubmitHandler = ( ) => {
+    }
 
+    bulkActionOptionChangedHandler = (event) => {
+        const value = event.target.value
+        console.log( value )
+        switch ( value ) {
+            case BulkOptionValues.TRASH:
+                break
+            case BulkOptionValues.DUPLICATE:
+                break
+            case BulkOptionValues.RESTORE:
+                break
+            case BulkOptionValues.DELETE_PERMANENTLY:
+                break
+            default:
+                break
+        }
     }
 
     /**
@@ -128,19 +145,22 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
                     wl_add_mapping_text  = { editMappingSettings.wl_add_mapping_text }
                     wl_edit_mapping_text = { editMappingSettings.wl_edit_mapping_text }
                 />              
-                <input type="text"
-                    className="wl-form-control wl-input-class"
-                    value={this.props.title}
-                    onChange={(e)=> {this.handleTitleChange(e)}}/>
-                    <br /> <br />
+                <input 
+                    type      = 'text'
+                    className = 'wl-form-control wl-input-class'
+                    value     = {this.props.title}
+                    onChange  = {(e)=> {this.handleTitleChange(e)}}
+                />
+                <br /> <br />
                 <RuleGroupWrapper />
                 <br/><br/>
                 <PropertyListComponent />
                 <br/>
                 <div className="wl-container wl-container-full">
                     <BulkActionComponent 
-                        choosenCategory={ this.props.choosenCategory }
-                        bulkActionSubmitHandler={ this.bulkActionSubmitHandler } 
+                        choosenCategory                = { this.props.choosenCategory }
+                        bulkActionSubmitHandler        = { this.bulkActionSubmitHandler }
+                        bulkActionOptionChangedHandler = { this.bulkActionOptionChangedHandler } 
                     />
                     <EditComponentSaveButton
                         title                  = { this.props.title }

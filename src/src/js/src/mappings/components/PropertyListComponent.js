@@ -18,13 +18,12 @@ import PropTypes from 'prop-types';
 import PropertyComponent from './PropertyComponent';
 import CategoryComponent from './CategoryComponent';
 import PropertyListItemComponent from './PropertyListItemComponent';
-import { OPEN_OR_CLOSE_PROPERTY_ACTION, ADD_MAPPING_ACTION, PROPERTY_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION } from '../actions/actions';
+import { OPEN_OR_CLOSE_PROPERTY_ACTION, ADD_MAPPING_ACTION, PROPERTY_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION, PROPERTY_ITEM_SELECTED_ACTION, PROPERTY_ITEM_SELECT_ALL_ACTION } from '../actions/actions';
 
 
 class PropertyListComponent extends React.Component {
     constructor(props){
         super(props)
-        console.log( props )
     }
      /**
       * It makes property item 
@@ -36,7 +35,6 @@ class PropertyListComponent extends React.Component {
         action.payload = {
             propertyId: propertyId
         }
-        console.log( action )
         this.props.dispatch( action )
      }
     // triggered when the add mapping button is clicked
@@ -44,12 +42,21 @@ class PropertyListComponent extends React.Component {
         this.props.dispatch( ADD_MAPPING_ACTION )
     }
     categorySelectHandler = ( category ) => {
-        console.log( category )
         const action = PROPERTY_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION
         action.payload = {
             choosenCategory: category
         }
         this.props.dispatch( action )
+    }
+    propertySelectedHandler = ( propertyId ) => {
+        const action = PROPERTY_ITEM_SELECTED_ACTION
+        action.payload = {
+            propertyId: propertyId
+        }
+        this.props.dispatch( action )
+    }
+    selectAllPropertyHandler  = () => {
+        this.props.dispatch( PROPERTY_ITEM_SELECT_ALL_ACTION )
     }
     /**
      * It Renders depends on the isOpenedOrAddedByUser boolean present
@@ -89,7 +96,9 @@ class PropertyListComponent extends React.Component {
                         <thead>
                             <tr>
                                 <th className="wl-check-column">
-                                <input type="checkbox" /> 
+                                <input type="checkbox" 
+                                onClick={ () => {
+                                    this.selectAllPropertyHandler() }}/> 
                                 </th>
                                 <th style={{width: '30%'}}>
                                 <b>Property</b>
@@ -114,11 +123,16 @@ class PropertyListComponent extends React.Component {
                                 this.props.propertyList
                                 .filter( property => property.property_status === this.props.choosenCategory )
                                 .map((property, index) => {
-                                    console.log( property )
                                     return (
                                         <tr className="wl-property-list-item-container">
                                                 <td className="wl-check-column">
-                                                    <input type="checkbox" />
+                                                    <input 
+                                                        type    = 'checkbox'
+                                                        checked = { property.isCheckedByUser }
+                                                        onClick = {
+                                                            () => { this.propertySelectedHandler( property.property_id ) }
+                                                        }
+                                                    />
                                                 </td>
                                                 <td>
                                                     { 
@@ -131,7 +145,6 @@ class PropertyListComponent extends React.Component {
                                 })
                             }   
                             <tr className="wl-text-right">
-
                             <td colspan="3"><br />
                                 <button
                                 className="button action bg-primary text-white wl-add-mapping"

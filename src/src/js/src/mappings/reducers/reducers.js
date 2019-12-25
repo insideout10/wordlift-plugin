@@ -8,7 +8,7 @@
 /**
  * Internal dependancies
  */
-import { ADD_NEW_RULE, ADD_NEW_RULE_GROUP, DELETE_RULE, CHANGE_RULE_FIELD_VALUE, OPEN_OR_CLOSE_PROPERTY, PROPERTY_DATA_CHANGED, ADD_MAPPING, TITLE_CHANGED, PROPERTY_LIST_CHANGED, MAPPING_HEADER_CHANGED, RULE_GROUP_LIST_CHANGED, NOTIFICATION_CHANGED, PROPERTY_ITEM_CATEGORY_CHANGED, PROPERTY_LIST_SELECTED_CATEGORY_CHANGED, PROPERTY_ITEM_CRUD_OPERATION } from '../actions/actionTypes'
+import { ADD_NEW_RULE, ADD_NEW_RULE_GROUP, DELETE_RULE, CHANGE_RULE_FIELD_VALUE, OPEN_OR_CLOSE_PROPERTY, PROPERTY_DATA_CHANGED, ADD_MAPPING, TITLE_CHANGED, PROPERTY_LIST_CHANGED, MAPPING_HEADER_CHANGED, RULE_GROUP_LIST_CHANGED, NOTIFICATION_CHANGED, PROPERTY_ITEM_CATEGORY_CHANGED, PROPERTY_LIST_SELECTED_CATEGORY_CHANGED, PROPERTY_ITEM_CRUD_OPERATION, PROPERTY_ITEM_SELECTED, PROPERTY_ITEM_SELECT_ALL } from '../actions/actionTypes'
 import { createReducer } from '@reduxjs/toolkit'
 import { DELETE_PROPERTY_PERMANENT, DUPLICATE_PROPERTY } from '../components/PropertyListItemComponent'
 
@@ -167,6 +167,25 @@ export const RuleGroupReducer = createReducer(null, {
             default:
                 break;
         }
+    },
+
+    /** Handle the checkbox click on the property item */
+    [ PROPERTY_ITEM_SELECTED ] : ( state, action ) => {
+        const {propertyId}  = action.payload
+        const propertyIndex = state.propertyList
+        .map( el => el.property_id )
+        .indexOf( propertyId )
+        const prevState = state.propertyList[propertyIndex].isSelectedByUser
+        state.propertyList[propertyIndex].isSelectedByUser = !prevState
+    },
+
+    [ PROPERTY_ITEM_SELECT_ALL ] : ( state, action ) => {
+        state.propertyList = state.propertyList.map( (item) => {
+            if ( item.property_status === state.choosenPropertyCategory ) {
+                item.isSelectedByUser = !item.isSelectedByUser
+            }
+            return item
+        })
     }
 })
 

@@ -131,3 +131,15 @@ export const PROPERTY_ITEM_CRUD_OPERATION = "PROPERTY_ITEM_CRUD_OPERATION"
  * Action when we change the bulk action component
  */
 export const BULK_ACTION_SELECTION_CHANGED = "BULK_ACTION_SELECTION_CHANGED"
+
+/**
+ * @const PROPERTY_ITEM_SELECTED
+ * Action when property item is selected by user.
+ */
+export const PROPERTY_ITEM_SELECTED = "PROPERTY_ITEM_SELECTED"
+
+/**
+ * @const PROPERTY_ITEM_SELECT_ALL
+ * Action when the user want to select all the items in the category.
+ */
+export const PROPERTY_ITEM_SELECT_ALL = "PROPERTY_ITEM_SELECT_ALL"

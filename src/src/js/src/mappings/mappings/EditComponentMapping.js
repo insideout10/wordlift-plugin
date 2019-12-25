@@ -54,6 +54,7 @@ class EditComponentMapping {
             property_id: parseInt( property.property_id ),
             property_status: property.property_status,
             isOpenedOrAddedByUser: false,
+            isSelectedByUser: false,
         }))
     }
 

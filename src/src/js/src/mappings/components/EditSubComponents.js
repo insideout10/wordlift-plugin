@@ -12,6 +12,9 @@
 import React from 'react'
 import RuleGroupListComponent from './RuleGroupListComponent'
 
+/**
+ * EditComponentSaveButton : added to the edit mapping screen.
+ */
 export const EditComponentSaveButton = ( { saveMappingItemHandler, title } ) => {
     return (
         <div className="wl-col wl-align-right">
@@ -57,10 +60,8 @@ export const RuleGroupWrapper = () => {
         <table className="wp-list-table widefat striped wl-table wl-container-full">
             <thead>
             <tr>
-                <td>
+                <td colSpan={2}>
                     <b>Rules</b> 
-                </td>
-                <td>
                 </td>
             </tr>
             </thead>
