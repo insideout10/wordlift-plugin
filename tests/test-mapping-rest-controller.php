@@ -296,8 +296,8 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 		$property_count      = $this->wpdb->get_var( "SELECT COUNT(property_id) as total FROM $property_table_name" );
 		// we should have 4 rule groups and 4 rules.
 		$this->assertEquals( 4, $rule_group_count );
-		// we should have 2 rule groups in the rule table.
-		$this->assertEquals( 2, $rule_count );
+		// we should have 4 rules in the rule table.
+		$this->assertEquals( 4, $rule_count );
 		// we should have 4 properties in the property table.
 		$this->assertEquals( 4, $property_count );
 	}

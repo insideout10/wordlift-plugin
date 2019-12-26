@@ -150,6 +150,7 @@ class Wordlift_Mapping_REST_Controller {
 				foreach ( $original_rules as $clone_rule ) {
 					// We should replace only rule group id in the cloned rules.
 					$clone_rule['rule_group_id'] = (int) $cloned_rule_group_id;
+					unset( $clone_rule['rule_id'] );
 					$dbo->insert_or_update_rule_item( $clone_rule );
 				}
 			}
