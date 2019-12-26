@@ -96,7 +96,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
         this.updateMappingItems([mappingData])
     }
     // Updates or deletes the mapping items based on the request
-    updateMappingItems( mapping_items, type = 'PUT') {
+    updateMappingItems = ( mapping_items, type = 'PUT') => {
         fetch(mappingSettings.rest_url,
             {
                 method: type,
@@ -110,9 +110,10 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                         )})  
             }
         )
-        .then(response => response.then(
+        .then( response => response.json().then(
             data => {
-                
+                // Refresh the screen with the cloned mapping item.
+                this.getMappingItems()
             }
         ))
      }
