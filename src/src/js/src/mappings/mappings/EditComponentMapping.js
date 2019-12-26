@@ -29,14 +29,23 @@ class EditComponentMapping {
      * @param {Array} property_list List of property items from ui
      */
     static mapPropertyListKeysToAPI( property_list ) {
-        return property_list.map((property)=>({
-            property_help_text: property.propertyHelpText,
-            field_type_help_text: property.fieldTypeHelpText,
-            field_help_text: property.fieldHelpText,
-            transform_help_text: property.transformHelpText,
-            property_id: parseInt( property.property_id ),
-            property_status: property.property_status,
-        }))
+        return property_list.map((property)=>{
+            // Conditionally remove property id, if it is added by user.
+            const propertyItem = {
+                property_help_text: property.propertyHelpText,
+                field_type_help_text: property.fieldTypeHelpText,
+                field_help_text: property.fieldHelpText,
+                transform_help_text: property.transformHelpText,
+                property_status: property.property_status,
+            }
+            // If it is created in the ui, then remove the property id, rest api will detect this and
+            // create a new entry for the property.
+            if( !property.isPropertyAddedViaUI ) {
+                propertyItem.property_id = parseInt( property.property_id )
+            }
+            return propertyItem
+
+        })
     }
 
     /**
@@ -55,6 +64,7 @@ class EditComponentMapping {
             property_status: property.property_status,
             isOpenedOrAddedByUser: false,
             isSelectedByUser: false,
+            isPropertyAddedViaUI: false,
         }))
     }
 

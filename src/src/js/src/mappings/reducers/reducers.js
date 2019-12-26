@@ -92,6 +92,7 @@ export const RuleGroupReducer = createReducer(null, {
     const cloned_property = { ...state.propertyList[ propertyIndex ] }
     cloned_property.isSelectedByUser = false
     cloned_property.property_id = Math.max( ...propertyArray ) + 1
+    cloned_property.isPropertyAddedViaUI =  true
     state.propertyList.splice( propertyIndex + 1, 0,  cloned_property );
   }
 
@@ -156,16 +157,18 @@ export const RuleGroupReducer = createReducer(null, {
      * add a property to the propertylist
      */
     [ADD_MAPPING]: ( state, action )=> {
+        const propertyArray = state.propertyList.map( el => el.property_id )
         // push an empty property item
         state.propertyList.push({
-            property_id: state.propertyList.length + 1,
+            property_id: Math.max( ...propertyArray ) + 1,
             isOpenedOrAddedByUser: true,
             propertyHelpText:"",
             fieldTypeHelpText: "",
             fieldHelpText: "",
             transformHelpText: "",
             // Default category is active
-            property_status: 'active'
+            property_status: 'active',
+            isPropertyAddedViaUI: true,
         })
     },
     /**
