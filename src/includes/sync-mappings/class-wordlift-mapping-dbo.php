@@ -235,7 +235,7 @@ final class Wordlift_Mapping_DBO {
 	 * @param Int $rule_group_id Indicates which group the item belongs to.
 	 * @return Array Get list of rule items.
 	 */
-	private function get_rules( $rule_group_id ) {
+	public function get_rules( $rule_group_id ) {
 		$rule_table_name       = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
 		$rule_rows = $this->wpdb->get_results(
 			$this->wpdb->prepare(

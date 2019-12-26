@@ -203,7 +203,21 @@ class Wordlift_Mapping_REST_Controller {
 		$mapping_items =  $dbo->get_mapping_items();
 		return $mapping_items;
 	}
-
+	/**
+	 * Returns a array of rule ids for the rule group id
+	 *
+	 * @param Object $dbo Instance of {@link Wordlift_Mapping_DBO } class.
+	 * @param Int    $rule_group_id Primary key of rule group table.
+	 * @return Array A list of rule ids.
+	 */
+	private static function get_rule_ids( $dbo, $rule_group_id ) {
+		$rule_rows_in_db = $dbo->get_rules( $rule_group_id );
+		$rule_ids        = array();
+		foreach ( $rule_rows_in_db as $rule_row ) {
+			array_push( $rule_ids, (int) $rule_row['rule_id'] );
+		}
+		return $rule_ids;
+	}
 	/**
 	 * Insert or update mapping item depends on data
 	 *
@@ -213,11 +227,24 @@ class Wordlift_Mapping_REST_Controller {
 	 * @return void
 	 */
 	private static function save_rules( $dbo, $rule_group_id, $rule_list ) {
+		$rule_ids = self::get_rule_ids( $dbo, $rule_group_id );
 		foreach ( $rule_list as $rule ) {
 			// Some rules may not have rule group id, because they are inserted
 			// in ui, so lets add them any way.
 			$rule['rule_group_id'] = $rule_group_id;
 			$dbo->insert_or_update_rule_item( $rule );
+			$index_to_be_removed = array_search(
+				(int) $rule['rule_id'],
+				$rule_ids,
+				true
+			);
+			if ( false !== $index_to_be_removed ) {
+				unset( $rule_ids[ $index_to_be_removed ] );
+			}
+		}
+		foreach ( $rule_ids as $rule_id ) {
+			// Delete all the rule ids which are not posted.
+			$dbo->delete_rule_item( $rule_id );
 		}
 	}
 
