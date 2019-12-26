@@ -117,7 +117,8 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 			'transform_help_text'  => 'foo',
 		);
 		$mapping_id          = $this->dbo_instance->insert_mapping_item( "foo title" );
-		$this->dbo_instance->insert_or_update_property( $mapping_id, $property_data );
+		$property_data['mapping_id'] = $mapping_id;
+		$this->dbo_instance->insert_or_update_property( $property_data );
 		$property_table_count = $this->wpdb->get_var( "SELECT COUNT(mapping_id) as total FROM $property_table_name" );
 		$this->assertEquals( 1, $property_table_count );
 	}
@@ -132,7 +133,8 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 			'transform_help_text'  => 'foo',
 		);
 		$mapping_id          = $this->dbo_instance->insert_mapping_item( "foo title" );
-		$property_id         = $this->dbo_instance->insert_or_update_property( $mapping_id, $property_data );		
+		$property_data['mapping_id'] = $mapping_id;
+		$property_id         = $this->dbo_instance->insert_or_update_property( $property_data );		
 		$this->dbo_instance->delete_property( $property_id );
 		$property_table_count = $this->wpdb->get_var( "SELECT COUNT(mapping_id) as total FROM $property_table_name" );
 		$this->assertEquals( 0, $property_table_count );
@@ -166,8 +168,9 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 			'transform_help_text'  => 'foo',
 		);
 		// 2 properties inserted.
-		$this->dbo_instance->insert_or_update_property( $mapping_id, $property_data );
-		$this->dbo_instance->insert_or_update_property( $mapping_id, $property_data );
+		$property_data['mapping_id'] = $mapping_id;
+		$this->dbo_instance->insert_or_update_property( $property_data );
+		$this->dbo_instance->insert_or_update_property( $property_data );
 		// 2 properties should be returned.
 		$property_rows = $this->dbo_instance->get_properties( $mapping_id );
 		$this->assertEquals( count( $property_rows ), 2 );

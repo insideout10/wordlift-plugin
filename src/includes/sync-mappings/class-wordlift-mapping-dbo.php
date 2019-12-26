@@ -47,11 +47,30 @@ final class Wordlift_Mapping_DBO {
 	public function get_properties( $mapping_id ) {
 		$property_table_name = $this->wpdb->prefix . WL_PROPERTY_TABLE_NAME;
 		$property_rows       = $this->wpdb->get_results(
-			$this->wpdb->prepare( "SELECT * FROM $property_table_name WHERE mapping_id=%d", $mapping_id )
+			$this->wpdb->prepare( "SELECT * FROM $property_table_name WHERE mapping_id=%d", $mapping_id ),
+			ARRAY_A
 		);
 		return $property_rows;
 	}
 
+	/**
+	 * Check if the row exists in the table
+	 *
+	 * @param String $table_name The table name you want to query, completely escaped value.
+	 * @param String $primary_key_name The primary key you want to query, should be escaped before passing.
+	 * @param Int    $primary_key_value The primary key value, no need to escape.
+	 * @return Boolean Returns true if the row exists, false if it does not
+	 */
+	private function check_if_row_exists( $table_name, $primary_key_name, $primary_key_value ) {
+		$primary_key_value = (int) $primary_key_value;
+		$count             = (int) $this->wpdb->get_var(
+			$this->wpdb->prepare(
+				"SELECT COUNT($primary_key_name) from $table_name where $primary_key_name = %d",
+				$primary_key_value
+			)
+		);
+		return $count > 0;
+	}
 	/**
 	 * Insert new mapping item with title
 	 *
@@ -75,11 +94,23 @@ final class Wordlift_Mapping_DBO {
 	 */
 	public function insert_or_update_mapping_item( $mapping_data ) {
 		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
-		$this->wpdb->replace(
-			$mapping_table_name,
-			$mapping_data
-		);
-		return $this->wpdb->insert_id;
+		$mapping_id         = array_key_exists( 'mapping_id', $mapping_data ) ? (int) $mapping_data['mapping_id'] : null;
+		if ( $this->check_if_row_exists( $mapping_table_name, 'mapping_id', $mapping_data['mapping_id'] ) ) {
+			$this->wpdb->update(
+				$mapping_table_name,
+				$mapping_data,
+				array( 'mapping_id' => $mapping_id )
+			);
+		}
+		else {
+			$this->wpdb->insert(
+				$mapping_table_name,
+				$mapping_data
+			);
+			$mapping_id = (int) $this->wpdb->insert_id;
+		}
+
+		return $mapping_id;
 	}
 
 	/**
@@ -90,11 +121,15 @@ final class Wordlift_Mapping_DBO {
 	 */
 	public function insert_or_update_rule_item( $rule_item_data ) {
 		$rule_table_name = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
-		$this->wpdb->replace(
-			$rule_table_name,
-			$rule_item_data
-		);
-		return $this->wpdb->insert_id;
+		$rule_id         = array_key_exists( 'rule_id', $rule_item_data ) ? $rule_item_data['rule_id'] : null;
+		if ( $this->check_if_row_exists( $rule_table_name, 'rule_id', $rule_id ) ) {
+			$this->wpdb->update( $rule_table_name, $rule_item_data, array( 'rule_id' => $rule_id ) );
+		}
+		else {
+			$this->wpdb->insert( $rule_table_name, $rule_item_data );
+			$rule_id = $this->wpdb->insert_id;
+		}
+		return $rule_id;
 	}
 	/**
 	 * If a rule group exists doesn't do anything, but if rule group
@@ -124,6 +159,18 @@ final class Wordlift_Mapping_DBO {
 		$rule_table_name       = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
 		$this->wpdb->delete( $rule_table_name, array( 'rule_id' => $rule_id ) );
 	}
+
+	/**
+	 * Deletes a rule group item by rule_group_id from rule group table.
+	 *
+	 * @param Int $rule_group_id Primary key for rule table.
+	 * @return void
+	 */
+	public function delete_rule_group_item( $rule_group_id ) {
+		$rule_group_table_name = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
+		$this->wpdb->delete( $rule_group_table_name, array( 'rule_group_id' => $rule_group_id ) );
+	}
+
 	/**
 	 * Deletes a mapping item by mapping_id
 	 *
@@ -133,6 +180,23 @@ final class Wordlift_Mapping_DBO {
 	public function delete_mapping_item( $mapping_id ) {
 		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
 		$this->wpdb->delete( $mapping_table_name, array( 'mapping_id' => $mapping_id ) );
+	}
+
+	/**
+	 * Gets a list of rule group items.
+	 *
+	 * @param Int $mapping_id Primary key for mapping table.
+	 * @return Array Get list of rule group items.
+	 */
+	public function get_rule_group_list( $mapping_id ) {
+		$rule_group_table_name = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
+		return $this->wpdb->get_results(
+			$this->wpdb->prepare(
+				"SELECT rule_group_id FROM $rule_group_table_name WHERE mapping_id=%d",
+				$mapping_id
+			),
+			ARRAY_A
+		);
 	}
 
 	/**
@@ -185,15 +249,25 @@ final class Wordlift_Mapping_DBO {
 	/**
 	 * Insert/Update property item.
 	 *
-	 * @param Int   $mapping_id Primary key for mapping table.
-	 * @param Array $propery_data Property row from table/ui.
+	 * @param Array $property_data Property row from table/ui.
 	 * @return Int Inserted Property Id.
 	 */
-	public function insert_or_update_property( $mapping_id, $propery_data ) {
-		$property_table_name        = $this->wpdb->prefix . WL_PROPERTY_TABLE_NAME;
-		$propery_data['mapping_id'] = $mapping_id;
-		$this->wpdb->replace( $property_table_name, $propery_data );
-		return $this->wpdb->insert_id;
+	public function insert_or_update_property( $property_data ) {
+		$property_table_name = $this->wpdb->prefix . WL_PROPERTY_TABLE_NAME;
+		$property_id         = array_key_exists( 'property_id', $property_data ) ? $property_data['property_id'] : null;
+
+		if ( $this->check_if_row_exists( $property_table_name, 'property_id', $property_id ) ) {
+			$this->wpdb->update(
+				$property_table_name,
+				$property_data,
+				array( 'property_id' => $property_id )
+			);
+		}
+		else {
+			$this->wpdb->insert( $property_table_name, $property_data );
+			$property_id = $this->wpdb->insert_id;
+		}
+		return $property_id;
 	}
 	/**
 	 * Gets a single mapping item row.

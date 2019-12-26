@@ -222,10 +222,10 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 		$dbo = new Wordlift_Mapping_DBO();
 		// We create a mapping item.
 		$mapping_id = $dbo->insert_mapping_item( 'foo' );
+
 		// We insert 2 rule groups for this mapping item.
 		$rule_group_1 = $dbo->insert_rule_group( $mapping_id );
 		$rule_group_2 = $dbo->insert_rule_group( $mapping_id );
-
 		// We insert 1 rule for each rule group.
 		$rule_1 = $dbo->insert_or_update_rule_item(
 			array(
@@ -251,10 +251,11 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 			'field_help_text'      => 'foo',
 			'transform_help_text'  => 'foo',
 		);
+		$property_data['mapping_id'] = $mapping_id;
 		// 2 properties inserted.
-		$dbo->insert_or_update_property( $mapping_id, $property_data );
-		$dbo->insert_or_update_property( $mapping_id, $property_data );
-		return $mapping_id;		
+		$dbo->insert_or_update_property( $property_data );
+		$dbo->insert_or_update_property( $property_data );
+		return $mapping_id;	
 	}
 
 	/** Test can clone a mapping item */
@@ -291,10 +292,14 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 		$rule_table_name = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
 		$rule_group_count = $this->wpdb->get_var( "SELECT COUNT(DISTINCT rule_group_id) as total FROM $rule_group_table_name" );
 		$rule_count = $this->wpdb->get_var( "SELECT COUNT(DISTINCT rule_group_id) as total FROM $rule_table_name" );
+		$property_table_name = $this->wpdb->prefix . WL_PROPERTY_TABLE_NAME;
+		$property_count      = $this->wpdb->get_var( "SELECT COUNT(property_id) as total FROM $property_table_name" );
 		// we should have 4 rule groups and 4 rules.
 		$this->assertEquals( 4, $rule_group_count );
 		// we should have 2 rule groups in the rule table.
 		$this->assertEquals( 2, $rule_count );
+		// we should have 4 properties in the property table.
+		$this->assertEquals( 4, $property_count );
 	}
 	/** Test when the property is not posted it should be deleted  */
 	public function test_when_property_is_not_posted_should_delete_property() {
@@ -319,5 +324,36 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 		$property_table_name = $this->wpdb->prefix . WL_PROPERTY_TABLE_NAME;
 		$property_count      = $this->wpdb->get_var( "SELECT COUNT(property_id) as total FROM $property_table_name" );
 		$this->assertEquals( 0, $property_count );		
+	}
+
+	/** Test when rule group is not posted, then it should be deleted */
+	public function test_when_rule_group_not_posted_should_be_deleted() {
+		// Create user with 'manage options' capability, only that user can delete this item.
+		$user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $user_id );
+		$mapping_id = $this->inject_mock_data_for_mapping_id();
+		$post_array = array(
+			'mapping_id'     => $mapping_id,
+			'mapping_title'  => 'foo',
+			'mapping_status' => 'active',
+			'property_list' => array(),
+			'rule_group_list' => array(),
+		);
+		$rule_group_table_name = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
+		$rule_table_name       = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
+		$rule_group_count      = $this->wpdb->get_var( "SELECT COUNT(*) as total FROM $rule_group_table_name" );
+		$this->assertEquals( 2, $rule_group_count );
+		$request   = new WP_REST_Request( 'POST', $this->mapping_route );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( $post_array ) );		
+		$response  = $this->server->dispatch( $request );
+		// var_dump( $response );
+		// // Request should return 200.
+		// $this->assertEquals( 200, $response->get_status() );
+		// We didnt post the rule group data, so it should be removed.
+		$rule_group_count      = $this->wpdb->get_var( "SELECT COUNT(*) as total FROM $rule_group_table_name" );
+		$rule_count            = $this->wpdb->get_var( "SELECT COUNT(*) as total FROM $rule_table_name" );
+		$this->assertEquals( 0, $rule_group_count );
+		$this->assertEquals( 0, $rule_count );
 	}
 }

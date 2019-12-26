@@ -110,7 +110,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                         )})  
             }
         )
-        .then(response => response.json().then(
+        .then(response => response.then(
             data => {
                 
             }

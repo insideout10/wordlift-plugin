@@ -134,6 +134,14 @@ class Wordlift_Mapping_REST_Controller {
 			$cloned_mapping_id = $dbo->insert_mapping_item( $mapping_item['mapping_title'] );
 			// Clone all the rule groups.
 			$rule_groups_to_be_cloned = $dbo->get_rule_group_list_with_rules( $mapping_id );
+			// Clone all the properties.
+			$properties_to_be_cloned = $dbo->get_properties( $mapping_id );
+			foreach ( $properties_to_be_cloned as $property ) {
+				// Assign a new mapping id.
+				$property['mapping_id'] = $cloned_mapping_id;
+				unset( $property['property_id'] );
+				$dbo->insert_or_update_property( $property );
+			}
 			// Loop through the rule groups and insert them in table with the mapping id.
 			foreach ( $rule_groups_to_be_cloned as $rule_group ) {
 				$cloned_rule_group_id = $dbo->insert_rule_group( $cloned_mapping_id );
@@ -174,7 +182,7 @@ class Wordlift_Mapping_REST_Controller {
 	 * @param WP_REST_Request $request {@link WP_REST_Request instance}.
 	 */
 	public static function delete_mapping_items( $request ) {
-		$dbo = new Wordlift_Mapping_DBO();
+		$dbo       = new Wordlift_Mapping_DBO();
 		$post_data = $request->get_params();
 		if ( array_key_exists( 'mapping_items', $post_data ) ) {
 			$mapping_items = (array) $post_data['mapping_items'];
@@ -222,12 +230,14 @@ class Wordlift_Mapping_REST_Controller {
 	 */
 	private static function save_property_list( $dbo, $mapping_id, $property_list ) {
 		$properties_needed_to_be_deleted = $dbo->get_properties( $mapping_id );
-		$property_ids = array();
+		$property_ids                    = array();
 		foreach ( $properties_needed_to_be_deleted as $property ) {
-			array_push( $property_ids, (int) $property['property_id'] );
+			array_push( $property_ids, $property['property_id'] );
 		}
 		foreach ( $property_list as $property ) {
-			$dbo->insert_or_update_property( $mapping_id, $property );
+			// Add mapping id to property data.
+			$property['mapping_id'] = $mapping_id;
+			$dbo->insert_or_update_property( $property );
 
 			if ( array_key_exists( 'property_id', $property ) ) {
 				// Remove the id from the list of property ids needed to be deleted
@@ -248,6 +258,22 @@ class Wordlift_Mapping_REST_Controller {
 		}
 
 	}
+
+	/**
+	 * Returns a array of rule group ids for the mapping id
+	 *
+	 * @param Object $dbo Instance of {@link Wordlift_Mapping_DBO } class.
+	 * @param Int    $mapping_id Primary key of mapping table.
+	 * @return Array $rule_group_ids A list of rule group ids.
+	 */
+	private static function get_rule_group_ids( $dbo, $mapping_id ) {
+		$rule_group_rows = $dbo->get_rule_group_list( $mapping_id );
+		$rule_group_ids  = array();
+		foreach ( $rule_group_rows as $rule_group_row ) {
+			array_push( $rule_group_ids, (int) $rule_group_row['rule_group_id'] );
+		}
+		return $rule_group_ids;
+	}
 	/**
 	 * Insert or update rule group list
 	 *
@@ -257,6 +283,8 @@ class Wordlift_Mapping_REST_Controller {
 	 * @return void
 	 */
 	private static function save_rule_group_list( $dbo, $mapping_id, $rule_group_list ) {
+		// The rule groups not posted should be deleted.
+		$rule_group_ids = self::get_rule_group_ids( $dbo, $mapping_id );
 		// Loop through rule group list and save the rule group.
 		foreach ( $rule_group_list as $rule_group ) {
 			if ( array_key_exists( 'rule_group_id', $rule_group ) ) {
@@ -266,7 +294,20 @@ class Wordlift_Mapping_REST_Controller {
 				// New rule group, should create new rule group id.
 				$rule_group_id = $dbo->insert_rule_group( $mapping_id );
 			}
+			$index_to_be_removed = array_search(
+				(int) $rule_group_id,
+				$rule_group_ids,
+				true
+			);
+			if ( false !== $index_to_be_removed ) {
+				unset( $rule_group_ids[ $index_to_be_removed ] );
+			}
 			self::save_rules( $dbo, $rule_group_id, $rule_group['rules'] );
+		}
+
+		// Remove all the rule groups which are not posted.
+		foreach ( $rule_group_ids as $rule_group_id ) {
+			$dbo->delete_rule_group_item( $rule_group_id );
 		}
 	}
 
