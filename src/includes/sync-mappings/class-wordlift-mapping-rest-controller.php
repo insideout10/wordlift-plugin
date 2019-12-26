@@ -139,6 +139,8 @@ class Wordlift_Mapping_REST_Controller {
 			foreach ( $properties_to_be_cloned as $property ) {
 				// Assign a new mapping id.
 				$property['mapping_id'] = $cloned_mapping_id;
+				// Removing this property id, since a new id needed to be created for
+				// new property.
 				unset( $property['property_id'] );
 				$dbo->insert_or_update_property( $property );
 			}
@@ -260,18 +262,14 @@ class Wordlift_Mapping_REST_Controller {
 		$properties_needed_to_be_deleted = $dbo->get_properties( $mapping_id );
 		$property_ids                    = array();
 		foreach ( $properties_needed_to_be_deleted as $property ) {
-			array_push( $property_ids, $property['property_id'] );
+			array_push( $property_ids, (int) $property['property_id'] );
 		}
 		foreach ( $property_list as $property ) {
-			// Add mapping id to property data.
-			$property['mapping_id'] = $mapping_id;
-			$dbo->insert_or_update_property( $property );
-
 			if ( array_key_exists( 'property_id', $property ) ) {
 				// Remove the id from the list of property ids needed to be deleted
 				// because it is posted.
 				$index_to_be_removed = array_search(
-					$property['property_id'],
+					(int) $property['property_id'],
 					$property_ids,
 					true
 				);
@@ -279,6 +277,10 @@ class Wordlift_Mapping_REST_Controller {
 					unset( $property_ids[ $index_to_be_removed ] );
 				}
 			}
+			// Add mapping id to property data.
+			$property['mapping_id'] = $mapping_id;
+			$dbo->insert_or_update_property( $property );
+
 		}
 		// At the end remove all the property ids which are not posted.
 		foreach ( $property_ids as $property_id ) {
