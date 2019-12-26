@@ -176,6 +176,16 @@ class Wordlift_Mapping_REST_Controller {
 			foreach ( $mapping_items as $mapping_item ) {
 				$dbo->insert_or_update_mapping_item( $mapping_item );
 			}
+			return array(
+				'status'  => 'success',
+				'message' => __( 'Mapping items successfully saved', 'wordlift' )
+			);
+		}
+		else {
+			return array(
+				'status'  => 'failure',
+				'message' => __( 'Unable to update mapping item', 'wordlift' )
+			);
 		}
 	}
 
@@ -192,6 +202,16 @@ class Wordlift_Mapping_REST_Controller {
 			foreach ( $mapping_items as $mapping_item ) {
 				$dbo->delete_mapping_item( $mapping_item['mapping_id'] );
 			}
+			return array(
+				'status'  => 'success',
+				'message' => __( 'successfully deleted mapping items', 'wordlift' )
+			);
+		}
+		else {
+			return array(
+				'status'  => 'failure',
+				'message' => __( 'Unable to delete mapping items', 'wordlift' )
+			);
 		}
 	}
 
@@ -235,13 +255,15 @@ class Wordlift_Mapping_REST_Controller {
 			// in ui, so lets add them any way.
 			$rule['rule_group_id'] = $rule_group_id;
 			$dbo->insert_or_update_rule_item( $rule );
-			$index_to_be_removed = array_search(
-				(int) $rule['rule_id'],
-				$rule_ids,
-				true
-			);
-			if ( false !== $index_to_be_removed ) {
-				unset( $rule_ids[ $index_to_be_removed ] );
+			if ( array_key_exists( 'rule_id', $rule ) ) {
+				$index_to_be_removed = array_search(
+					(int) $rule['rule_id'],
+					$rule_ids,
+					true
+				);
+				if ( false !== $index_to_be_removed ) {
+					unset( $rule_ids[ $index_to_be_removed ] );
+				}
 			}
 		}
 		foreach ( $rule_ids as $rule_id ) {
