@@ -610,7 +610,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
       return $scope.unsetCurrentEntity();
     });
     $scope.$on("textAnnotationAdded", function(event, annotation) {
-      $log.debug("added a new annotation with Id " + annotation.id);
+      $log.debug("[ app.controllers.EditPostWidgetController ] added a new annotation with Id " + annotation.id);
       $scope.analysis.annotations[annotation.id] = annotation;
       return $scope.annotation = annotation.id;
     });
@@ -691,7 +691,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         entity: entity
       });
       scopeId = configuration.getCategoryForType(entity.mainType);
-      $log.debug("Action '" + action + "' on entity " + entity.id + " within " + scopeId + " scope");
+      $log.debug("[ app.controllers.EditPostWidgetController ] Action '" + action + "' on entity " + entity.id + " within " + scopeId + " scope");
       if (action === 'entitySelected') {
         $scope.selectedEntities[scopeId][entity.id] = entity;
         if (entity.images != null) {
@@ -1389,6 +1389,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', ['wordlift.edi
     });
     $rootScope.$on("entitySelected", function(event, entity, annotationId) {
       var annotation, discarded, entityId, id, j, len, occurrences, ref;
+      $log.debug('[ app.services.EditorService ] `entitySelected` event received.', event, entity, annotationId);
       discarded = [];
       if (annotationId != null) {
         discarded.push(disambiguate(annotationId, entity));
@@ -1454,7 +1455,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', ['wordlift.edi
         return ed.getBody().setAttribute('contenteditable', status);
       },
       createTextAnnotationFromCurrentSelection: function() {
-        var content, ed, htmlPosition, text, textAnnotation, textAnnotationSpan, textPosition, traslator;
+        var content, ed, htmlPosition, text, textAnnotation, textAnnotationSpan, textContent, textPosition, traslator;
         ed = EditorAdapter.getEditor();
         if (ed.selection.isCollapsed()) {
           $log.warn("Invalid selection! The text annotation cannot be created");
@@ -1464,7 +1465,10 @@ angular.module('wordlift.editpost.widget.services.EditorService', ['wordlift.edi
         textAnnotation = AnalysisService.createAnnotation({
           text: text
         });
-        textAnnotationSpan = "<span id=\"" + textAnnotation.id + "\" class=\"textannotation unlinked selected\">" + (ed.selection.getContent()) + "</span>" + INVISIBLE_CHAR;
+        textContent = ed.selection.getContent({
+          format: 'text'
+        });
+        textAnnotationSpan = "<span id=\"" + textAnnotation.id + "\" class=\"textannotation unlinked selected\">" + textContent + "</span>" + INVISIBLE_CHAR;
         ed.selection.setContent(textAnnotationSpan);
         content = EditorAdapter.getHTML();
         traslator = Traslator.create(content);
