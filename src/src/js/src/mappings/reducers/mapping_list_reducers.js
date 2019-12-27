@@ -99,7 +99,7 @@ const changeCategoryForMappingItems = ( mapping_items, category ) => {
             default:
                break
        }
-       state.headerCheckBoxSelected = !state.headerCheckBoxSelected
+       state.headerCheckBoxSelected = false
        // Set all to unselected after the operation
        state.mapping_items = state.mapping_items.map( (item) => {
             item.is_selected = false

@@ -258,7 +258,7 @@ export const RuleGroupReducer = createReducer(null, {
             doPropertyBulkAction( state, propertyIndex, selectedBulkAction )
         })
         // Remove the checked state
-        state.propertyHeaderCheckboxClicked = !state.propertyHeaderCheckboxClicked
+        state.propertyHeaderCheckboxClicked = false
         state.propertyList = state.propertyList
         .map( (item) => { 
             item.isSelectedByUser = false 
