@@ -16,7 +16,7 @@ import { connect } from 'react-redux'
  */
 import RuleGroupListComponent from './RuleGroupListComponent'
 import PropertyListComponent from './PropertyListComponent'
-import { TITLE_CHANGED_ACTION, PROPERTY_LIST_CHANGED_ACTION, RULE_GROUP_LIST_CHANGED_ACTION, MAPPING_HEADER_CHANGED_ACTION, NOTIFICATION_CHANGED_ACTION, PROPERTY_ITEMS_BULK_ACTION, BULK_ACTION_SELECTION_CHANGED_ACTION } from '../actions/actions'
+import { TITLE_CHANGED_ACTION, PROPERTY_LIST_CHANGED_ACTION, RULE_GROUP_LIST_CHANGED_ACTION, MAPPING_HEADER_CHANGED_ACTION, NOTIFICATION_CHANGED_ACTION, PROPERTY_ITEMS_BULK_ACTION, BULK_ACTION_SELECTION_CHANGED_ACTION, MAPPING_ID_CHANGED_FROM_API_ACTION } from '../actions/actions'
 import EditComponentMapping from '../mappings/EditComponentMapping'
 import BulkActionComponent from './BulkActionComponent'
 import { EditComponentNotificationArea, EditComponentSaveButton, RuleGroupWrapper, EditComponentTitleArea } from './EditSubComponents'
@@ -104,6 +104,22 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
     }
 
     /**
+     * On Add new mapping item, a new mapping item is created,
+     * upon saving we need to redirect it to the edit page if there
+     * is no mapping id in the url by getting it from the saved
+     * server response.
+     * @param {Number} mapping_id The primary key of the mapping table
+     * @return void
+     */
+    setNewMappingId = ( mapping_id ) => {
+        const action = MAPPING_ID_CHANGED_FROM_API_ACTION
+        action.payload = {
+            mappingId: parseInt( mapping_id )
+        }
+        this.props.dispatch( action )
+    }
+
+    /**
      * Save the mapping item to the api,
      * Apply some filters, build post object for saving.
      */
@@ -124,6 +140,7 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
                     type: data.status,
                 }
                 this.props.dispatch(notification_changed_action)
+                this.setNewMappingId( data.mapping_id )
             }
         ))
     }

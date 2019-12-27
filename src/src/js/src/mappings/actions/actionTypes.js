@@ -155,3 +155,9 @@ export const PROPERTY_ITEMS_BULK_SELECT = "PROPERTY_ITEMS_BULK_SELECT"
  * Action when the user wants to make bulk action on selected mapping items
  */
 export const MAPPING_ITEMS_BULK_SELECT = "MAPPING_ITEMS_BULK_SELECT"
+
+/**
+ * @const MAPPING_ID_CHANGED_FROM_API
+ * Action when the mapping id changes from add new mapping post.
+ */
+export const MAPPING_ID_CHANGED_FROM_API = "MAPPING_ID_CHANGED_FROM_API"

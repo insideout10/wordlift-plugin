@@ -46,18 +46,19 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 	 */
 	public static function load_ui_dependancies() {
 		// Create ui settings array to be used by js client.
-		$edit_mapping_settings                     = array();
-		$edit_mapping_settings['rest_url']         = get_rest_url(
+		$edit_mapping_settings                               = array();
+		$edit_mapping_settings['rest_url']                   = get_rest_url(
 			null,
 			WL_REST_ROUTE_DEFAULT_NAMESPACE . Wordlift_Mapping_REST_Controller::MAPPINGS_NAMESPACE
 		);
+		$edit_mapping_settings['page']                       = 'wl_edit_mapping';
 		$edit_mapping_settings['wl_edit_mapping_rest_nonce'] = wp_create_nonce( 'wp_rest' );
 		if ( wp_verify_nonce( $_REQUEST['_wl_edit_mapping_nonce'], 'wl-edit-mapping-nonce' ) ) {
 			$edit_mapping_settings['wl_edit_mapping_id'] = $_REQUEST['wl_edit_mapping_id'];
 		}
-		$edit_mapping_settings['wl_add_mapping_text']  = __( 'Add Mapping', 'wordlift' );
-		$edit_mapping_settings['wl_edit_mapping_text'] = __( 'Edit Mapping', 'wordlift' );
-		$edit_mapping_settings['wl_edit_mapping_no_item']      = __( 'Unable to find the mapping item', 'wordlift' );
+		$edit_mapping_settings['wl_add_mapping_text']     = __( 'Add Mapping', 'wordlift' );
+		$edit_mapping_settings['wl_edit_mapping_text']    = __( 'Edit Mapping', 'wordlift' );
+		$edit_mapping_settings['wl_edit_mapping_no_item'] = __( 'Unable to find the mapping item', 'wordlift' );
 		wp_localize_script( 'wl-edit-mappings-script', 'wlEditMappingsConfig', $edit_mapping_settings );
 	}
 

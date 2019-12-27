@@ -178,13 +178,13 @@ class Wordlift_Mapping_REST_Controller {
 			}
 			return array(
 				'status'  => 'success',
-				'message' => __( 'Mapping items successfully saved', 'wordlift' )
+				'message' => __( 'Mapping items successfully updated', 'wordlift' ),
 			);
 		}
 		else {
 			return array(
 				'status'  => 'failure',
-				'message' => __( 'Unable to update mapping item', 'wordlift' )
+				'message' => __( 'Unable to update mapping item', 'wordlift' ),
 			);
 		}
 	}
@@ -221,7 +221,7 @@ class Wordlift_Mapping_REST_Controller {
 	 * @param WP_REST_Request $request {@link WP_REST_Request instance}.
 	 */
 	public static function list_mapping_items( $request ) {
-		$dbo = new Wordlift_Mapping_DBO();
+		$dbo           = new Wordlift_Mapping_DBO();
 		$mapping_items =  $dbo->get_mapping_items();
 		return $mapping_items;
 	}
@@ -369,11 +369,8 @@ class Wordlift_Mapping_REST_Controller {
 	 * @param WP_REST_Request $request {@link WP_REST_Request instance}.
 	 */
 	public static function insert_or_update_mapping_item( $request ) {
-		$post_data = $request->get_params();
-		if ( null === $post_data ) {
-			$post_data = array();
-		}
-		$dbo = new Wordlift_Mapping_DBO();
+		$post_data = $request->get_params() === null ? array() : $request->get_params();
+		$dbo       = new Wordlift_Mapping_DBO();
 		// check if valid object is posted.
 		if ( array_key_exists( 'mapping_title', $post_data ) &&
 			array_key_exists( 'rule_group_list', $post_data ) &&
@@ -389,8 +386,9 @@ class Wordlift_Mapping_REST_Controller {
 			self::save_rule_group_list( $dbo, $mapping_id, $post_data['rule_group_list'] );
 			self::save_property_list( $dbo, $mapping_id, $post_data['property_list'] );	
 			return array(
-				'status'  => 'success',
-				'message' => __( 'Successfully saved mapping item', 'wordlift' )
+				'status'     => 'success',
+				'message'    => __( 'Successfully saved mapping item', 'wordlift' ),
+				'mapping_id' => (int) $mapping_id,
 			);
 		}
 		else {
