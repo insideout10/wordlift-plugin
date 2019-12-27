@@ -198,8 +198,6 @@ const mappingSettings = window["wlMappingsConfig"] || {};
             duplicateCallBack: this.duplicateMappingItems,
             updateCallBack: this.updateMappingItems,
         }
-        console.log( this.duplicateMappingItems )
-        console.log ( action )
         this.props.dispatch( MAPPING_ITEMS_BULK_ACTION )
      }
      render() {
@@ -261,7 +259,12 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                                 }
                                 duplicateMappingItemHandler={
                                     this.duplicateMappingItems
-                                } 
+                                }
+                                
+                                deleteMappingItemHandler = {
+                                    this.updateMappingItems
+                                }
+
                                 switchCategoryHandler= {
                                     this.switchCategory
                                 }

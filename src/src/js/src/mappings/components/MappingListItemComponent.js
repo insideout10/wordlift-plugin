@@ -11,6 +11,7 @@
 import React from "react"
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
+import { ACTIVE_CATEGORY } from "./CategoryComponent";
 
 class MappingListItemComponent extends React.Component {
 
@@ -31,13 +32,23 @@ class MappingListItemComponent extends React.Component {
     returnOptionsForTrashCategory() {
         return <React.Fragment>
             <span className="edit wl-mappings-link">
-                <a>
+                <a onClick={ () => { 
+                    this.props.switchCategoryHandler(
+                        this.props.mappingData,
+                        ACTIVE_CATEGORY
+                    ) 
+                }}>
                     Restore
                 </a>
                 | 
             </span>
             <span className="trash wl-mappings-link">
-                <a>
+                <a onClick={ () => { 
+                    this.props.deleteMappingItemHandler(
+                        [ this.props.mappingData ],
+                        'DELETE'
+                    ) 
+                }}>
                     Delete Permanently
                 </a> |
             </span>
