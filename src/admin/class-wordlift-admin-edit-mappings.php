@@ -144,13 +144,16 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 			'value' => __( 'post_type', 'wordlift' ),
 		);
 		$post_type_option_values = array();
-		$post_types              = get_post_types();
+		$post_types              = get_post_types(
+			array(),
+			'objects'
+		);
 		foreach ( $post_types as $post_type ) {
 			array_push(
 				$post_type_option_values,
 				array(
-					'label'    => $post_type,
-					'value'    => $post_type,
+					'label'    => $post_type->label,
+					'value'    => $post_type->name,
 					'taxonomy' => 'post_type',
 				)
 			);
