@@ -132,8 +132,31 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 				);
 			}
 		}
-
+		list( $post_type_option, $post_type_option_values ) = self::get_post_type_key_and_value();
+		array_push( $taxonomy_options, $post_type_option );
+		$term_options = array_merge( $term_options, $post_type_option_values );
 		return array( $taxonomy_options, $term_options );
+	}
+
+	private static function get_post_type_key_and_value() {
+		$post_type_option_name = array(
+			'label' => __( 'Post type', 'wordlift' ),
+			'value' => __( 'post_type', 'wordlift' ),
+		);
+		$post_type_option_values = array();
+		$post_types              = get_post_types();
+		foreach ( $post_types as $post_type ) {
+			array_push(
+				$post_type_option_values,
+				array(
+					'label'    => $post_type,
+					'value'    => $post_type,
+					'taxonomy' => 'post_type',
+				)
+			);
+		}
+
+		return array( $post_type_option_name, $post_type_option_values );
 	}
 
 	/**

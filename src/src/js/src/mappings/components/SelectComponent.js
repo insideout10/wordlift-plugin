@@ -26,7 +26,7 @@ class SelectComponent extends React.Component {
             <select value={this.props.value}
             className={this.props.className}
             onChange={this.props.onChange}>
-                <option selected={true} disabled={true}>
+                <option selected={true} disabled={true} value=''>
                     Select one
                 </option>
                 {
