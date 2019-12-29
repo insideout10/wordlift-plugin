@@ -26,9 +26,12 @@ class SelectComponent extends React.Component {
             <select value={this.props.value}
             className={this.props.className}
             onChange={this.props.onChange}>
+                <option selected={true} disabled={true}>
+                    Select one
+                </option>
                 {
                     this.props.options.map((item, index)=> {
-                        
+
                         return ( 
                             <option key={index} value={item.value}>
                                 {item.label}

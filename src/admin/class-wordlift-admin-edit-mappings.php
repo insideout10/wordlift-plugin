@@ -73,7 +73,46 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 				'value' => 'custom_field',
 			),
 		);
+		$edit_mapping_settings['wl_logic_field_options']          = array(
+			array(
+				'label' => __( 'is equal to', 'wordlift' ),
+				'value' => '===',
+			),
+			array(
+				'label' => __( 'is not equal to', 'wordlift' ),
+				'value' => '!=',
+			),
+		); 
+		$edit_mapping_settings['wl_rule_field_one_options']       = self::get_post_type_and_taxonomies_array();
 		wp_localize_script( 'wl-edit-mappings-script', 'wlEditMappingsConfig', $edit_mapping_settings );
+	}
+
+	/**
+	 * Returns post type, post category, or any other post taxonomies
+	 * @return Array An array of select options
+	 */
+	private static function get_post_type_and_taxonomies_array() {
+		$default_options = array(
+			array(
+				'label' => __( 'Post Type', 'wordlift' ),
+				'value' => 'post_type',
+			),
+			array(
+				'label' => __( 'Post Category', 'wordlift' ),
+				'value' => 'post_category',
+			),
+		);
+		$post_taxonomies = get_object_taxonomies( 'post' );
+		foreach ( $post_taxonomies as $key => $value ) {
+			array_push(
+				$default_options,
+				array(
+					'label' => __( (string) $value, 'wordlift' ),
+					'value' => $post_taxonomies[$key],
+				)
+			);
+		}
+		return $default_options;
 	}
 
 	/**

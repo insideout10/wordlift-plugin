@@ -32,7 +32,7 @@ export const EditComponentNotificationArea = ( { notificationData } ) => {
         <React.Fragment>          
             {
                 "" != notificationData.message &&
-                <div className={'notice notice-' + notificationData.type + ' is-dismissible'}>
+                <div className={'notice notice-' + notificationData.type + ' is-dismissble'}>
                     <p>{ notificationData.message }</p>
                 </div>
                 
