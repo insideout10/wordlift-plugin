@@ -27,7 +27,7 @@ const INITIAL_STATE = {
     },
     RuleGroupData: {
         ruleFieldOneOptions: editMappingSettings.wl_rule_field_one_options,
-        ruleFieldTwoOptions: options,
+        ruleFieldTwoOptions: editMappingSettings.wl_rule_field_two_options,
         ruleLogicFieldOptions: editMappingSettings.wl_logic_field_options,
         ruleGroupList: []
     },

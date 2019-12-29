@@ -81,8 +81,8 @@ class RuleComponent extends React.Component {
                         </SelectComponent>
                     </div>
                     <div className="wl-col">
-                        <SelectComponent options={this.props.ruleFieldTwoOptions}
-                         value= {this.props.ruleProps.ruleFieldTwoValue}
+                        <SelectComponent options={this.props.ruleFieldTwoOptions.filter( el => el.taxonomy === this.props.ruleProps.ruleFieldOneValue)}
+                         value= {this.props.ruleProps.ruleFieldTwoValue }
                          onChange={(e)=>{this.handleSelectFieldChange(e, "ruleFieldTwoValue")}}
                          className="wl-field-two-select wl-form-select">
                         </SelectComponent>

@@ -82,8 +82,13 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 				'label' => __( 'is not equal to', 'wordlift' ),
 				'value' => '!=',
 			),
-		); 
-		$edit_mapping_settings['wl_rule_field_one_options']       = self::get_post_type_and_taxonomies_array();
+		);
+
+		list(
+			$edit_mapping_settings['wl_rule_field_one_options'],
+			$edit_mapping_settings['wl_rule_field_two_options']
+		) = self::get_post_taxonomies_and_terms();
+
 		wp_localize_script( 'wl-edit-mappings-script', 'wlEditMappingsConfig', $edit_mapping_settings );
 	}
 
@@ -91,28 +96,44 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 	 * Returns post type, post category, or any other post taxonomies
 	 * @return Array An array of select options
 	 */
-	private static function get_post_type_and_taxonomies_array() {
-		$default_options = array(
-			array(
-				'label' => __( 'Post Type', 'wordlift' ),
-				'value' => 'post_type',
-			),
-			array(
-				'label' => __( 'Post Category', 'wordlift' ),
-				'value' => 'post_category',
-			),
-		);
-		$post_taxonomies = get_object_taxonomies( 'post' );
-		foreach ( $post_taxonomies as $key => $value ) {
+	private static function get_post_taxonomies_and_terms() {
+		$taxonomy_options = array();
+		$term_options     = array();
+		$taxonomies       = get_object_taxonomies( 'post' );
+		foreach ( $taxonomies as $taxonomy ) {
 			array_push(
-				$default_options,
+				$taxonomy_options,
 				array(
-					'label' => __( (string) $value, 'wordlift' ),
-					'value' => $post_taxonomies[$key],
+					'label' => $taxonomy,
+					'value' => $taxonomy,
 				)
 			);
+			// Version compatibility for get_terms.
+			// ( https://developer.wordpress.org/reference/functions/get_terms/ ).
+			if ( version_compare( get_bloginfo( 'version' ), '4.5', '>=' ) ) {
+				$terms = get_terms(
+					array(
+						'taxonomy' => $taxonomy,
+					)
+				);	
+			}
+			else {
+				$terms = get_terms( $taxonomy );
+			}
+
+			foreach ( $terms as $term ) {
+				array_push(
+					$term_options,
+					array(
+						'label'    => $term->name,
+						'value'    => $term->name,
+						'taxonomy' => $taxonomy,
+					)
+				);
+			}
 		}
-		return $default_options;
+
+		return array( $taxonomy_options, $term_options );
 	}
 
 	/**
