@@ -7,6 +7,10 @@ import { createStore, combineReducers } from 'redux'
 import { RuleGroupReducer, PropertyReducer, TitleReducer, NotificationReducer } from './reducers/reducers'
 import { ACTIVE_CATEGORY } from './components/CategoryComponent'
 
+// Set a reference to the WordLift's Edit Mapping settings stored in the window instance.
+const editMappingSettings = window["wlEditMappingsConfig"] || {};
+
+
 const options = [
     { value: 'one', label: 'one' },
     { value: 'two', label: 'two' },
@@ -31,7 +35,7 @@ const INITIAL_STATE = {
         propertyHeaderCheckboxClicked: false,
         choosenPropertyCategory: ACTIVE_CATEGORY,
         choosenPropertyBulkAction: null,
-        fieldTypeHelpTextOptions:options,
+        fieldTypeHelpTextOptions:editMappingSettings.wl_field_type_help_text_options,
         transformHelpTextOptions:options,
         propertyList: []
     }

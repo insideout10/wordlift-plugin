@@ -56,9 +56,23 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 		if ( wp_verify_nonce( $_REQUEST['_wl_edit_mapping_nonce'], 'wl-edit-mapping-nonce' ) ) {
 			$edit_mapping_settings['wl_edit_mapping_id'] = $_REQUEST['wl_edit_mapping_id'];
 		}
-		$edit_mapping_settings['wl_add_mapping_text']     = __( 'Add Mapping', 'wordlift' );
-		$edit_mapping_settings['wl_edit_mapping_text']    = __( 'Edit Mapping', 'wordlift' );
-		$edit_mapping_settings['wl_edit_mapping_no_item'] = __( 'Unable to find the mapping item', 'wordlift' );
+		$edit_mapping_settings['wl_add_mapping_text']             = __( 'Add Mapping', 'wordlift' );
+		$edit_mapping_settings['wl_edit_mapping_text']            = __( 'Edit Mapping', 'wordlift' );
+		$edit_mapping_settings['wl_edit_mapping_no_item']         = __( 'Unable to find the mapping item', 'wordlift' );
+		$edit_mapping_settings['wl_field_type_help_text_options'] = array(
+			array(
+				'label' => __( 'Text', 'wordlift' ),
+				'value' => 'text',
+			),
+			array(
+				'label' => __( 'ACF', 'wordlift' ),
+				'value' => 'acf',
+			),
+			array(
+				'label' => __( 'Custom Field', 'wordlift' ),
+				'value' => 'custom_field',
+			),
+		);
 		wp_localize_script( 'wl-edit-mappings-script', 'wlEditMappingsConfig', $edit_mapping_settings );
 	}
 
