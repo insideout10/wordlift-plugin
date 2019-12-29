@@ -115,7 +115,7 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 					array(
 						'taxonomy' => $taxonomy,
 					)
-				);	
+				);
 			}
 			else {
 				$terms = get_terms( $taxonomy );
@@ -138,8 +138,12 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 		return array( $taxonomy_options, $term_options );
 	}
 
+	/**
+	 * Return post type option and post type option values
+	 * @return Array Array of post_type_option and post_type_option_values
+	 */
 	private static function get_post_type_key_and_value() {
-		$post_type_option_name = array(
+		$post_type_option_name   = array(
 			'label' => __( 'Post type', 'wordlift' ),
 			'value' => __( 'post_type', 'wordlift' ),
 		);
