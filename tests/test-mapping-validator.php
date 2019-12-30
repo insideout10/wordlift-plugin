@@ -67,7 +67,7 @@ class Wordlift_Mapping_Validator_Test extends WP_UnitTestCase {
 		$this->assertFalse( $this->validator->validate( $post_id ) );
 	}
 
-	/** When the rules didmatch the post type it should return true */
+	/** When the rules did match the post type it should return true */
 	public function test_given_post_id_and_correct_rules_should_return_true() {
 		// Create a post with no post type.
 		$post_id = $this->factory->post->create(
@@ -148,5 +148,43 @@ class Wordlift_Mapping_Validator_Test extends WP_UnitTestCase {
 		);
 		// The above rule should make validator return false.
 		$this->assertFalse( $this->validator->validate( $post_id ) );
+	}
+
+	/** For a valid mapping item should return properties */
+	public function test_given_valid_rule_return_properties() {
+		// Create a post with no post type.
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title' => 'Test Post',
+				'post_type'  => 'foo',
+			)
+		);
+		// Create a mapping item with single rule group and rule.
+		$mapping_id = $this->dbo->insert_mapping_item( 'foo' );
+		// Create a rule group.
+		$rule_group_id = $this->dbo->insert_rule_group( $mapping_id );
+		// Create a rule to match post type foo.
+		$rule_id = $this->dbo->insert_or_update_rule_item(
+			array(
+				'rule_field_one'   => 'post_type',
+				'rule_logic_field' => '===',
+				'rule_field_two'   => 'foo',
+				'rule_group_id'    => $rule_group_id,
+			)
+		);
+		$property_data = array(
+			'property_help_text'   => 'foo',
+			'field_type_help_text' => 'bar',
+			'field_help_text'      => 'foo',
+			'transform_help_text'  => 'foo',
+			'mapping_id'           => $mapping_id,
+		);
+		$this->dbo->insert_or_update_property(
+			$property_data
+		);
+		// Should be true, since post type matches.
+		$this->assertTrue( $this->validator->validate( $post_id ) );
+		$properties = $this->validator->get_valid_properties();
+		$this->assertEquals( 1, count( $properties ) );
 	}
 }

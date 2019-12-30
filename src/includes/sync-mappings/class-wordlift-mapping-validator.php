@@ -26,6 +26,15 @@ final class Wordlift_Mapping_Validator {
 	private $dbo;
 
 	/**
+	 * The array of valid properties, loaded at validate() method,
+	 * 
+	 * @since  3.25.0
+	 * @access private
+	 * @var Array $valid_properties The properties which are from mapping items when the rule passes.
+	 */
+	private $valid_properties = array();
+
+	/**
 	 * Constructor for Wordlift_Mapping_Validator.
 	 */
 	public function __construct() {
@@ -158,6 +167,9 @@ final class Wordlift_Mapping_Validator {
 	 * @return Boolean
 	 */
 	public function validate( $post_id ) {
+		// Reset the valid property items before making the validation.
+		$this->valid_properties = array();
+
 		// Get all mapping items.
 		$mapping_items        = $this->dbo->get_mapping_items();
 		$active_mapping_items = self::get_item_by_status(
@@ -180,10 +192,19 @@ final class Wordlift_Mapping_Validator {
 					$valid_mapping_items,
 					$mapping_item
 				);
+				$mapping_item_properties = $this->dbo->get_properties( $mapping_item['mapping_id'] );
+				$this->valid_properties  = array_merge( $this->valid_properties, $mapping_item_properties );
 			}
 		}
 		// If atleast one mapping item is valid then it can be applied.
 		return 0 !== count( $valid_mapping_items );
+	}
+	/**
+	 * Returns a list of valid properties to be mapped against json ld data
+	 * @return Array Array of valid properties
+	 */
+	public function get_valid_properties() {
+		return $this->valid_properties;
 	}
 
 }
