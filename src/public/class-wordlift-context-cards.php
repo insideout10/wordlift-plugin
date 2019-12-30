@@ -16,7 +16,7 @@ class Wordlift_Context_Cards_Service {
 
 	function __construct() {
 
-		$this->endpoint = '/jsonld';
+		$this->endpoint = '/context-card';
 
 		// PHP 5.3 compatibility as `$this` cannot be used in closures.
 		$that = $this;
@@ -30,13 +30,59 @@ class Wordlift_Context_Cards_Service {
 
 	}
 
+	function format_response( $jsonld, $publisher = true ) {
+
+		$response = array();
+
+		if(!isset($jsonld) || empty($jsonld) || empty($jsonld[0])){
+			return null;
+		}
+
+		if( isset($jsonld[0]['description']) && !empty($jsonld[0]['description']) ){
+			if( isset($jsonld[0]['name']) && !empty($jsonld[0]['name']) ) {
+				$title = $jsonld[0]['name'];
+				$response['description'] = str_ireplace($title, "<strong>$title</strong>", $jsonld[0]['description']);
+			} else {
+				$response['description'] = $jsonld[0]['description'];
+			}
+		}
+
+		if( isset($jsonld[0]['name']) && !empty($jsonld[0]['name']) ){
+			$response['title'] = $jsonld[0]['name'];
+		}
+
+		if( isset($jsonld[0]['url']) && !empty($jsonld[0]['url']) ){
+			$response['url'] = $jsonld[0]['url'];
+		}
+
+		if( isset($jsonld[0]['image']) &&
+		    isset($jsonld[0]['image'][0]['url']) &&
+		    isset($jsonld[0]['image'][0]['width']) &&
+		    isset($jsonld[0]['image'][0]['height'])
+		){
+			$response['image'] = array(
+				'url' => $jsonld[0]['image'][0]['url'],
+				'width' => $jsonld[0]['image'][0]['width'],
+				'height' => $jsonld[0]['image'][0]['height'],
+			);
+		}
+
+		if($publisher){
+			$publisher_id       = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+			$publisher_jsonld   = Wordlift_Jsonld_Service::get_instance()->get_jsonld( false, $publisher_id );
+			$response['publisher'] = $this->format_response( $publisher_jsonld, false );
+		}
+
+		return $response;
+	}
+
 	public function context_data( $request ) {
 
 		$entity_uri = urldecode( $request->get_param( 'entity_url' ) );
 		$entity_id  = $this->url_to_postid( $entity_uri );
 		$jsonld     = Wordlift_Jsonld_Service::get_instance()->get_jsonld( false, $entity_id );
 
-		return $jsonld;
+		return $this->format_response( $jsonld );
 
 	}
 
@@ -45,8 +91,10 @@ class Wordlift_Context_Cards_Service {
 		$show_context_cards = apply_filters( 'wl_show_context_cards', $show_context_cards );
 		if ( $show_context_cards ) {
 			wp_enqueue_script( 'wordlift-cloud' );
-			$url_json = wp_json_encode( get_rest_url() . WL_REST_ROUTE_DEFAULT_NAMESPACE . $this->endpoint );
-			echo( "<script type='application/javascript'>window.addEventListener( 'load', function() { wordliftCloud.contextCards('a.wl-entity-page-link', $url_json); } );</script>" );
+			wp_localize_script( 'wordlift-cloud', 'wlCloudContextCards', array(
+				'selector'  => 'a.wl-entity-page-link',
+					'baseUrl'   => get_rest_url() . WL_REST_ROUTE_DEFAULT_NAMESPACE . $this->endpoint
+			) );
 		}
 	}
 
