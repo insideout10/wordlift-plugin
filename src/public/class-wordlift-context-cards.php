@@ -41,7 +41,11 @@ class Wordlift_Context_Cards_Service {
 		if( isset($jsonld[0]['description']) && !empty($jsonld[0]['description']) ){
 			if( isset($jsonld[0]['name']) && !empty($jsonld[0]['name']) ) {
 				$title = $jsonld[0]['name'];
-				$response['description'] = str_ireplace($title, "<strong>$title</strong>", $jsonld[0]['description']);
+				$pos = strpos($jsonld[0]['description'], $title);
+				$response['description'] = $jsonld[0]['description'];
+				if ($pos !== false) {
+					$response['description'] = substr_replace($response['description'], "<strong>$title</strong>", $pos, strlen($title));
+				}
 			} else {
 				$response['description'] = $jsonld[0]['description'];
 			}

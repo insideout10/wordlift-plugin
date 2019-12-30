@@ -91,7 +91,7 @@ function _wl_navigator_get_data() {
 	// Limit the results (defaults to 4)
 	$navigator_length = isset( $_GET['limit'] ) ? intval( $_GET['limit'] ) : 4;
 	$navigator_offset = isset( $_GET['offset'] ) ? intval( $_GET['offset'] ) : 0;
-	$order_by         = isset( $_GET['order_by'] ) ? sanitize_sql_orderby($_GET['order_by']) : 'ID ASC';
+	$order_by         = isset( $_GET['order_by'] ) ? sanitize_sql_orderby($_GET['order_by']) : 'ID DESC';
 
 	$current_post_id = $_GET['post_id'];
 	$current_post    = get_post( $current_post_id );
@@ -165,7 +165,7 @@ function _wl_network_navigator_get_data($request) {
 	$navigator_length = isset( $request['limit'] ) ? intval( $request['limit'] ) : 4;
 	$navigator_offset = isset( $request['offset'] ) ? intval( $request['offset'] ) : 0;
 	$navigator_id     = $request['uniqid'];
-	$order_by         = isset( $_GET['order_by'] ) ? sanitize_sql_orderby($_GET['order_by']) : 'ID ASC';
+	$order_by         = isset( $_GET['order_by'] ) ? sanitize_sql_orderby($_GET['order_by']) : 'ID DESC';
 
 	$entities = $request['entities'];
 

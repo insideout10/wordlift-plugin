@@ -142,6 +142,13 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.24.0 (2019-12-30) =
+* Enhancement [#969](https://github.com/insideout10/wordlift-plugin/issues/969): Turn the entity page into a topic "showcase" with a specific navigator.
+* Enhancement [#934](https://github.com/insideout10/wordlift-plugin/issues/934): Display entity content within context cards.
+
+* Fix [#985](https://github.com/insideout10/wordlift-plugin/issues/985): Empty context card.
+* Fix [#963](https://github.com/insideout10/wordlift-plugin/issues/963): Descending order by default in navigator widget data.
+
 = 3.23.5 (2019-12-27) =
 * Fix [#993](https://github.com/insideout10/wordlift-plugin/issues/993): Manually annotating an entity doesn't remove existing annotations.
 
