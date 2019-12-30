@@ -274,7 +274,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     $scope.unsetCurrentEntity()
 
   $scope.$on "textAnnotationAdded", (event, annotation) ->
-    $log.debug "added a new annotation with Id #{annotation.id}"
+    $log.debug "[ app.controllers.EditPostWidgetController ] added a new annotation with Id #{annotation.id}"
     # Add the new annotation to the current analysis
     $scope.analysis.annotations[ annotation.id ] = annotation
     # Set the annotation scope
@@ -350,7 +350,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
     scopeId = configuration.getCategoryForType entity.mainType
 
-    $log.debug "Action '#{action}' on entity #{entity.id} within #{scopeId} scope"
+    $log.debug "[ app.controllers.EditPostWidgetController ] Action '#{action}' on entity #{entity.id} within #{scopeId} scope"
 
     if action is 'entitySelected'
       # Ensure to mark the current entity to selected entities

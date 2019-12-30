@@ -91,6 +91,9 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
     # Disambiguate a single annotation or every entity related ones
     # Discarded entities are considered too
     $rootScope.$on "entitySelected", (event, entity, annotationId) ->
+
+      $log.debug '[ app.services.EditorService ] `entitySelected` event received.', event, entity, annotationId
+
       discarded = []
       if annotationId?
         discarded.push disambiguate annotationId, entity
@@ -169,7 +172,11 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
         }
 
         # Prepare span wrapper for the new text annotation
-        textAnnotationSpan = "<span id=\"#{textAnnotation.id}\" class=\"textannotation unlinked selected\">#{ed.selection.getContent()}</span>#{INVISIBLE_CHAR}"
+        #
+        # @since 3.23.5 we want to remove existing annotations.
+        # @see https://github.com/insideout10/wordlift-plugin/issues/993
+        textContent = ed.selection.getContent( { format: 'text' } );
+        textAnnotationSpan = "<span id=\"#{textAnnotation.id}\" class=\"textannotation unlinked selected\">#{textContent}</span>#{INVISIBLE_CHAR}"
 
         # Update the content within the editor
         ed.selection.setContent textAnnotationSpan
