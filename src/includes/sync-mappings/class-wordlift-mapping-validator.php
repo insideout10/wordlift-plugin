@@ -204,7 +204,11 @@ final class Wordlift_Mapping_Validator {
 	 * @return Array Array of valid properties
 	 */
 	public function get_valid_properties() {
-		return $this->valid_properties;
+		return self::get_item_by_status(
+			'property_status',
+			$this->valid_properties,
+			self::ACTIVE_CATEGORY
+		);
 	}
 
 }

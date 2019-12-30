@@ -182,9 +182,14 @@ class Wordlift_Mapping_Validator_Test extends WP_UnitTestCase {
 		$this->dbo->insert_or_update_property(
 			$property_data
 		);
+		$property_data['property_status'] = Wordlift_Mapping_Validator::TRASH_CATEGORY;
+		$this->dbo->insert_or_update_property(
+			$property_data
+		);
 		// Should be true, since post type matches.
 		$this->assertTrue( $this->validator->validate( $post_id ) );
 		$properties = $this->validator->get_valid_properties();
+		// Should return only active properties.
 		$this->assertEquals( 1, count( $properties ) );
 	}
 }
