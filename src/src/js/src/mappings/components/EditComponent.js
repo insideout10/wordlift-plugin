@@ -157,10 +157,11 @@ const editMappingSettings = window["wlEditMappingsConfig"] || {};
                     wl_edit_mapping_text = { editMappingSettings.wl_edit_mapping_text }
                 />              
                 <input 
-                    type      = 'text'
-                    className = 'wl-form-control wl-input-class'
-                    value     = {this.props.title}
-                    onChange  = {(e)=> {this.handleTitleChange(e)}}
+                    type        = 'text'
+                    className   = 'wl-form-control wl-input-class'
+                    value       = {this.props.title}
+                    placeholder = 'Title'
+                    onChange    = {(e)=> {this.handleTitleChange(e)}}
                 />
                 <br /> <br />
                 <RuleGroupWrapper />
