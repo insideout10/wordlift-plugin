@@ -80,7 +80,7 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 			),
 			array(
 				'label' => __( 'is not equal to', 'wordlift' ),
-				'value' => '!=',
+				'value' => '!==',
 			),
 		);
 
