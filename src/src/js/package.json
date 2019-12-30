@@ -9,10 +9,13 @@
   "private": true,
   "scripts": {
     "build": "wp-scripts build",
-    "start": "wp-scripts start"
+    "start": "wp-scripts start",
+    "test": "jest"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.7.4",
+    "@babel/preset-react": "^7.7.4",
     "@wordpress/api-fetch": "^2.2.6",
     "@wordpress/block-library": "^2.2.10",
     "@wordpress/blocks": "6.0.4",
@@ -29,8 +32,10 @@
     "@wordpress/rich-text": "^3.0.3",
     "@wordpress/scripts": "^5.1.0",
     "backbone": "^1.1.2",
+    "babel-jest": "^24.9.0",
     "css-loader": "^3.2.0",
     "eslint": "^6.6.0",
+    "jest": "^24.9.0",
     "mini-css-extract-plugin": "^0.8.0",
     "node-sass": "^4.12.0",
     "path": "^0",
@@ -38,6 +43,7 @@
     "prop-types": "^15",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
+    "react-test-renderer": "^16.12.0",
     "redux": "^4.0.0",
     "sass-loader": "^8.0.0",
     "svg-react-loader": "^0.4.5",
@@ -47,6 +53,7 @@
     "webpack-cli": "^3.3.8"
   },
   "dependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
     "@wordlift/wordlift-for-schemaorg": "^1.0",
     "immutable": "^3",
     "react-redux": "^5.0.0",

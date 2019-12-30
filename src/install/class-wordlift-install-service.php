@@ -57,7 +57,12 @@ class Wordlift_Install_Service {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-23-4.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-all-entity-types.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-package-type.php';
-
+		/**
+		 * Include installation script for 3.25.0
+		 *
+		 * @since 3.25.0
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-25-0.php';
 		self::$instance = $this;
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
@@ -112,6 +117,7 @@ class Wordlift_Install_Service {
 			new Wordlift_Install_3_18_3(),
 			new Wordlift_Install_3_19_5(),
 			new Wordlift_Install_3_20_0(),
+			new Wordlift_Install_3_25_0(),
 			/*
 			 * This should be enabled with #852.
 			 */

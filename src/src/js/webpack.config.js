@@ -30,8 +30,7 @@ const webpackConfig = {
     term: "./src/Term/index.js",
     "block-editor": "./src/block-editor/index.js",
     "tiny-mce": "./src/tiny-mce/index.js",
-    "wordlift-cloud": "./src/Cloud/index.js",
-    mappings: "./src/mappings/index.js"
+    "wordlift-cloud": "./src/Cloud/index.js"
   },
   output: {
     filename: "[name].js",
