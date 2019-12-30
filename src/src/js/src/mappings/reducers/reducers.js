@@ -264,7 +264,6 @@ export const RuleGroupReducer = createReducer(null, {
             item.isSelectedByUser = false 
             return item
         })
-
     },
 
     [ BULK_ACTION_SELECTION_CHANGED ] : ( state, action ) => {

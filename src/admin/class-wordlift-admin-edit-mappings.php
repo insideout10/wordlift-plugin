@@ -99,13 +99,13 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 	private static function get_post_taxonomies_and_terms() {
 		$taxonomy_options = array();
 		$term_options     = array();
-		$taxonomies       = get_object_taxonomies( 'post' );
+		$taxonomies       = get_object_taxonomies( 'post', 'objects' );
 		foreach ( $taxonomies as $taxonomy ) {
 			array_push(
 				$taxonomy_options,
 				array(
-					'label' => $taxonomy,
-					'value' => $taxonomy,
+					'label' => $taxonomy->label,
+					'value' => $taxonomy->name,
 				)
 			);
 			// Version compatibility for get_terms.
@@ -113,12 +113,12 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 			if ( version_compare( get_bloginfo( 'version' ), '4.5', '>=' ) ) {
 				$terms = get_terms(
 					array(
-						'taxonomy' => $taxonomy,
+						'taxonomy' => $taxonomy->name,
 					)
 				);
 			}
 			else {
-				$terms = get_terms( $taxonomy );
+				$terms = get_terms( $taxonomy->name );
 			}
 
 			foreach ( $terms as $term ) {
@@ -127,7 +127,7 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 					array(
 						'label'    => $term->name,
 						'value'    => $term->name,
-						'taxonomy' => $taxonomy,
+						'taxonomy' => $taxonomy->name,
 					)
 				);
 			}

@@ -223,7 +223,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                             <th className="wl-check-column">
                                 <input type="checkbox" 
                                     onClick = { this.selectAllMappingItems }
-                                    checked = { this.props.headerCheckBoxSelected }
+                                    checked = { this.props.headerCheckBoxSelected === true }
                                 />
                             </th>
                             <th>
@@ -278,7 +278,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                             <th className="wl-check-column">
                                 <input type="checkbox" 
                                     onClick = { this.selectAllMappingItems }
-                                    checked = { this.props.headerCheckBoxSelected }
+                                    checked = { this.props.headerCheckBoxSelected === true }
                                 />
                             </th>
                             <th>
