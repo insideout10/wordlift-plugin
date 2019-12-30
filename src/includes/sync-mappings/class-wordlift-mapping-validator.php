@@ -87,6 +87,26 @@ final class Wordlift_Mapping_Validator {
 					$rule_logic_field,
 					$rule_field_two
 				);
+			default:
+				$taxonomy       = $rule_field_one;
+				$terms          = get_the_terms( $post_id, $taxonomy );
+				$terms_id_array = array();
+				if ( is_wp_error( $terms ) || 0 === count( $terms ) ) {
+					// If no terms present then the rule is invalid.
+					return false;
+				}
+				foreach ( $terms as $term ) {
+					array_push( $terms_id_array, (string) $term->term_id );
+				}
+				if ( self::IS_EQUAL_TO === $rule_logic_field ) {
+					// Rule is made to check if the term is present for post, so
+					// do in_array.
+					return in_array( (string) $rule_field_two, $terms_id_array, true );
+				}
+				elseif ( self::IS_NOT_EQUAL_TO === $rule_logic_field ) {
+					// The term  should not be present in the post terms.
+					return ! in_array( (string) $rule_field_two, $terms_id_array, true );
+				}
 		}
 	}
 

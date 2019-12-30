@@ -40,6 +40,7 @@ class Wordlift_Mapping_Validator_Test extends WP_UnitTestCase {
 		$this->dbo       = new Wordlift_Mapping_DBO();
 		$this->validator = new Wordlift_Mapping_Validator();
 	}
+
 	/** Check if validator class can be initalised */
 	public function test_can_initialize_validator() {
 		$this->assertNotNull( new Wordlift_Mapping_Validator() );
@@ -100,6 +101,52 @@ class Wordlift_Mapping_Validator_Test extends WP_UnitTestCase {
 				'rule_group_id'    => $rule_group_id,
 			)
 		);
+		$this->assertFalse( $this->validator->validate( $post_id ) );
+	}
+
+	/** Test when given correct taxonomy, should return true */
+	public function test_given_correct_taxonomy_should_return_true() {
+		$post_id = $this->factory->post->create(
+			array(
+				'post_title' => 'Test Post',
+			)
+		);
+		register_taxonomy( 'foo', 'post' );
+		// Make sure the taxonomy exists.
+		$this->assertTrue(
+			taxonomy_exists(
+				'foo'
+			)
+		);
+		// Add terms to taxonomy.
+		$term_id = wp_insert_term( 'bar', 'foo' );
+		// Add taxonomy term to post.
+		wp_set_object_terms( $post_id, array( 'bar' ), 'foo', true );
+		// Create a mapping item with single rule group and rule.
+		$mapping_id = $this->dbo->insert_mapping_item( 'foo' );
+		// Create a rule group.
+		$rule_group_id = $this->dbo->insert_rule_group( $mapping_id );
+		// Create a rule to match the tax type foo.
+		$rule_id = $this->dbo->insert_or_update_rule_item(
+			array(
+				'rule_field_one'   => 'foo',
+				'rule_logic_field' => '===',
+				'rule_field_two'   => (string) $term_id['term_id'],
+				'rule_group_id'    => $rule_group_id,
+			)
+		);
+		// Since this post have correct taxonomy term, should return true.
+		$this->assertTrue( $this->validator->validate( $post_id ) );
+		// Lets insert another rule which says not equal to the term id.
+		$this->dbo->insert_or_update_rule_item(
+			array(
+				'rule_field_one'   => 'foo',
+				'rule_logic_field' => '!==',
+				'rule_field_two'   => (string) $term_id['term_id'],
+				'rule_group_id'    => $rule_group_id,
+			)
+		);
+		// The above rule should make validator return false.
 		$this->assertFalse( $this->validator->validate( $post_id ) );
 	}
 }

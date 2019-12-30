@@ -126,7 +126,7 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 					$term_options,
 					array(
 						'label'    => $term->name,
-						'value'    => $term->name,
+						'value'    => $term->term_id,
 						'taxonomy' => $taxonomy->name,
 					)
 				);
