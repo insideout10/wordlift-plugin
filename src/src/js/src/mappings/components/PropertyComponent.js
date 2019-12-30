@@ -91,7 +91,7 @@ class PropertyComponent extends React.Component {
                         </tr>
                         <tr>
                             <td colspan="2">
-                                Field Help Text
+                                Field Text
                             </td>
                             <td>
                                 <PropertyInputField 

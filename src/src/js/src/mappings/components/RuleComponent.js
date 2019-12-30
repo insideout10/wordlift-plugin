@@ -96,9 +96,8 @@ class RuleComponent extends React.Component {
                     {
                         ( 0 != this.props.ruleGroupIndex || 0 != this.props.ruleIndex ) &&
                         <div className="wl-col">
-                            <button className="button action wl-remove-button"
+                            <button className="button action wl-remove-button dashicons dashicons-trash"
                             onClick={() => this.handleDeleteRule(this.props.ruleGroupIndex, this.props.ruleIndex)}>
-                                -
                             </button>
                         </div>
                     }

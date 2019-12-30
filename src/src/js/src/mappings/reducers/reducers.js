@@ -146,6 +146,7 @@ export const RuleGroupReducer = createReducer(null, {
      * and it is saved based on the fieldKey which identifies the field
      */
     [PROPERTY_DATA_CHANGED]: ( state, action )=> {
+        console.log( action )
         const {fieldKey, value, propertyId } = action.payload
         const propertyIndex = state.propertyList
         .map( el => el.property_id )
@@ -160,7 +161,9 @@ export const RuleGroupReducer = createReducer(null, {
         const propertyArray = state.propertyList.map( el => el.property_id )
         // push an empty property item
         state.propertyList.push({
-            property_id: Math.max( ...propertyArray ) + 1,
+            // Math.max returns -infinity if no items are passed, parseInt 
+            // returns 1 if no item present
+            property_id: parseInt( Math.max( ...propertyArray ) + 1 ) || 1,
             isOpenedOrAddedByUser: true,
             propertyHelpText:"",
             fieldTypeHelpText: "",
