@@ -22,8 +22,12 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 		// Register scripts needed to be loaded for that page.
 		wp_register_script(
 			'wl-edit-mappings-script',
-			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/edit_mappings.js',
-			false
+			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings-edit.js',
+			array( 'react', 'react-dom', 'wp-polyfill' )
+		);
+		wp_register_style(
+			'wl-edit-mappings-style',
+			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings-edit.css'
 		);
 		add_action( 'init', 'Wordlift_Admin_Edit_Mappings::load_ui_dependancies' );
 		$that = $this;

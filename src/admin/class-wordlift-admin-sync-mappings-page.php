@@ -22,7 +22,11 @@ class Wordlift_Admin_Sync_Mappings_Page extends Wordlift_Admin_Page {
 		wp_register_script(
 			'wl-sync-mappings-script',
 			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings.js',
-			array('react', 'react-dom', 'wp-polyfill')
+			array( 'react', 'react-dom', 'wp-polyfill' )
+		);
+		wp_register_style(
+			'wl-sync-mappings-style',
+			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings.css'
 		);
 		add_action(
 			'init',
