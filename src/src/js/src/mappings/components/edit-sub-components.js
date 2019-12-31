@@ -10,7 +10,7 @@
  * External dependencies
  */
 import React from 'react'
-import RuleGroupListComponent from './RuleGroupListComponent'
+import RuleGroupListComponent from './rule-group-list-component'
 
 /**
  * EditComponentSaveButton : added to the edit mapping screen.

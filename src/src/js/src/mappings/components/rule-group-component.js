@@ -14,7 +14,7 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import RuleComponent from './RuleComponent';
+import RuleComponent from './rule-component';
 import { connect } from 'react-redux'
 
  class RuleGroupComponent extends React.Component {

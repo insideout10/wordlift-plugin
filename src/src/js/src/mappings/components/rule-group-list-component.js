@@ -16,7 +16,7 @@ import { connect } from 'react-redux'
 /**
  * Internal dependencies
  */
-import RuleGroupComponent from './RuleGroupComponent';
+import RuleGroupComponent from './rule-group-component';
 import { ADD_NEW_RULE_GROUP_ACTION } from '../actions/actions'
 
 class RuleGroupListComponent extends React.Component {

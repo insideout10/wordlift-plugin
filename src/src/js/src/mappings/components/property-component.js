@@ -15,7 +15,7 @@ import { connect } from 'react-redux'
 /**
  * Internal dependencies
  */
-import SelectComponent from './SelectComponent'
+import SelectComponent from './select-component'
 import { PROPERTY_DATA_CHANGED_ACTION } from '../actions/actions';
 
 const PropertyInputField = ( { propData, handleChangeForPropertyField, inputKeyName } ) => {

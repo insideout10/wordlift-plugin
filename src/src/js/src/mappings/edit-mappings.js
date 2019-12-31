@@ -1,11 +1,11 @@
 import React from 'react'
-import EditComponent from './components/EditComponent'
+import EditComponent from './components/edit-component'
 import './mappings.css'
 import ReactDOM from 'react-dom'
 import {Provider} from 'react-redux'
 import { createStore, combineReducers } from 'redux'
 import { RuleGroupReducer, PropertyReducer, TitleReducer, NotificationReducer } from './reducers/reducers'
-import { ACTIVE_CATEGORY } from './components/CategoryComponent'
+import { ACTIVE_CATEGORY } from './components/category-component'
 
 // Set a reference to the WordLift's Edit Mapping settings stored in the window instance.
 const editMappingSettings = window["wlEditMappingsConfig"] || {};

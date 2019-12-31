@@ -12,7 +12,7 @@ import { connect } from 'react-redux'
 /**
  * Internal dependencies
  */
-import SelectComponent from './SelectComponent'
+import SelectComponent from './select-component'
 import { ADD_NEW_RULE_ACTION, DELETE_RULE_ACTION, CHANGE_RULE_FIELD_VALUE_ACTION } from '../actions/actions'
 
 class RuleComponent extends React.Component {

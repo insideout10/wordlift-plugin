@@ -13,11 +13,11 @@ import React from 'react'
 /**
  * Internal dependencies
  */
-import MappingListItemComponent from './MappingListItemComponent'
+import MappingListItemComponent from './mapping-list-item-component'
 import { MAPPING_LIST_CHANGED_ACTION, MAPPING_ITEM_CATEGORY_CHANGED_ACTION, MAPPING_LIST_BULK_SELECT_ACTION, MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION, MAPPING_ITEM_SELECTED_ACTION, MAPPING_ITEMS_BULK_ACTION, BULK_ACTION_SELECTION_CHANGED_ACTION } from '../actions/actions';
 import { connect } from 'react-redux'
-import CategoryComponent, { ACTIVE_CATEGORY } from './CategoryComponent';
-import BulkActionComponent from './BulkActionComponent';
+import CategoryComponent, { ACTIVE_CATEGORY } from './category-component';
+import BulkActionComponent from './bulk-action-component';
 // Set a reference to the WordLift's Mapping settings stored in the window instance.
 const mappingSettings = window["wlMappingsConfig"] || {};
 

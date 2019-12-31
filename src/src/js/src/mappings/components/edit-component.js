@@ -14,13 +14,11 @@ import { connect } from 'react-redux'
 /**
  * Internal dependencies
  */
-import RuleGroupListComponent from './RuleGroupListComponent'
-import PropertyListComponent from './PropertyListComponent'
+import PropertyListComponent from './property-list-component'
 import { TITLE_CHANGED_ACTION, PROPERTY_LIST_CHANGED_ACTION, RULE_GROUP_LIST_CHANGED_ACTION, MAPPING_HEADER_CHANGED_ACTION, NOTIFICATION_CHANGED_ACTION, PROPERTY_ITEMS_BULK_ACTION, BULK_ACTION_SELECTION_CHANGED_ACTION, MAPPING_ID_CHANGED_FROM_API_ACTION } from '../actions/actions'
-import EditComponentMapping from '../mappings/EditComponentMapping'
-import BulkActionComponent from './BulkActionComponent'
-import { EditComponentNotificationArea, EditComponentSaveButton, RuleGroupWrapper, EditComponentTitleArea } from './EditSubComponents'
-import { BulkOptionValues } from './BulkActionSubComponents'
+import EditComponentMapping from '../mappings/edit-component-mapping'
+import BulkActionComponent from './bulk-action-component'
+import { EditComponentNotificationArea, EditComponentSaveButton, RuleGroupWrapper, EditComponentTitleArea } from './edit-sub-components'
 
 // Set a reference to the WordLift's Edit Mapping settings stored in the window instance.
 const editMappingSettings = window["wlEditMappingsConfig"] || {};

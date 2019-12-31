@@ -10,7 +10,7 @@
  * External dependencies
  */
 import React from "react"
-import { TRASH_CATEGORY, ACTIVE_CATEGORY } from "./CategoryComponent"
+import { TRASH_CATEGORY, ACTIVE_CATEGORY } from "./category-component"
 
 export const BulkOptionValues = {
     TRASH: 'trash',

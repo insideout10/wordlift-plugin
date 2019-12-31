@@ -8,10 +8,10 @@
  /**
  * Internal dependancies
  */
-import { MAPPING_LIST_CHANGED, MAPPING_ITEM_CATEGORY_CHANGED, MAPPING_LIST_BULK_SELECT, MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED, MAPPING_ITEM_SELECTED, BULK_ACTION_SELECTION_CHANGED, MAPPING_ITEMS_BULK_SELECT } from '../actions/actionTypes'
+import { MAPPING_LIST_CHANGED, MAPPING_ITEM_CATEGORY_CHANGED, MAPPING_LIST_BULK_SELECT, MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED, MAPPING_ITEM_SELECTED, BULK_ACTION_SELECTION_CHANGED, MAPPING_ITEMS_BULK_SELECT } from '../actions/action-types'
 import { createReducer } from '@reduxjs/toolkit'
-import { BulkOptionValues } from '../components/BulkActionSubComponents'
-import { TRASH_CATEGORY, ACTIVE_CATEGORY } from '../components/CategoryComponent'
+import { BulkOptionValues } from '../components/bulk-action-sub-components'
+import { TRASH_CATEGORY, ACTIVE_CATEGORY } from '../components/category-component'
 
 const changeCategoryForMappingItems = ( mapping_items, category ) => {
     return mapping_items.map( (item) => {

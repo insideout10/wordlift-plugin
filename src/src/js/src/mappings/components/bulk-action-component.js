@@ -10,7 +10,7 @@
  * External dependencies
  */
 import React from "react"
-import { BulkActionOptions } from "./BulkActionSubComponents"
+import { BulkActionOptions } from "./bulk-action-sub-components"
 
 /** Bulk action apply button */
 const BulkActionApplyButton = ({ bulkActionSubmitHandler }) => {
