@@ -107,7 +107,7 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 	 * Hook to the `get_object_terms` filter.
 	 *
 	 * We check if our taxonomy is requested and whether a term has been returned. If no term has been returned we
-	 * preset `Article` and we query the terms again.
+	 * preset `Article` for posts/pages and 'Thing' for everything else and we query the terms again.
 	 *
 	 * @param array $terms Array of terms for the given object or objects.
 	 * @param int[] $object_ids Array of object IDs for which terms were retrieved.
@@ -127,7 +127,8 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 		if ( ! taxonomy_exists( $entity_type )
 		     || array( $entity_type ) !== (array) $taxonomies
 		     || ! empty( $terms )
-		     || ! term_exists( 'article', $entity_type ) ) {
+		     || ! term_exists( 'article', $entity_type )
+		     || ! term_exists( 'thing', $entity_type ) ) {
 
 			// Return the input value.
 			return $terms;
@@ -138,8 +139,12 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 
 		// Set the default term for all the queried object.
 		foreach ( (array) $object_ids as $object_id ) {
-			if ( Wordlift_Entity_Type_Service::is_valid_entity_post_type( get_post_type( $object_id ) ) ) {
-				wp_set_object_terms( $object_id, 'article', $entity_type, true );
+			$post_type = get_post_type( $object_id );
+			if ( Wordlift_Entity_Type_Service::is_valid_entity_post_type( $post_type ) ) {
+				// Set the term to article for posts and pages, or to thing for everything else.
+				$term = in_array( $post_type, array( 'post', 'page' ) )
+					? 'article' : 'thing';
+				wp_set_object_terms( $object_id, $term, $entity_type, true );
 			}
 		}
 
