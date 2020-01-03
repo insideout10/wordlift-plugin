@@ -131,7 +131,7 @@ class Wordlift_Issue_662 extends Wordlift_Unit_Test_Case {
 
 	private function add_term( $post_id, $slug ) {
 
-		wp_add_object_terms( $post_id, $slug, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+		wp_set_object_terms( $post_id, $slug, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 		// Get the terms bound to the post.
 		$terms = get_the_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
