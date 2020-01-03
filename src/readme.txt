@@ -142,7 +142,8 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.23.6 (2019-12-29) =
+= 3.23.6 (2020-01-03) =
+* Fix [#996](https://github.com/insideout10/wordlift-plugin/issues/996): Bad Request error when running analysis.
 * Fix [#995](https://github.com/insideout10/wordlift-plugin/issues/995): Unspecified Type error for existing posts.
 
 = 3.23.5 (2019-12-27) =
