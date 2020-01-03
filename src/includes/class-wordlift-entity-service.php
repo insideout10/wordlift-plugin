@@ -438,168 +438,162 @@ class Wordlift_Entity_Service {
 	 * @since 3.2.0
 	 *
 	 */
-		private
-		function get_alternative_label_input( $value = '' ) {
+	private function get_alternative_label_input( $value = '' ) {
 
-			return sprintf( self::ALTERNATIVE_LABEL_INPUT_TEMPLATE, esc_attr( $value ), __( 'Delete', 'wordlift' ) );
-		}
+		return sprintf( self::ALTERNATIVE_LABEL_INPUT_TEMPLATE, esc_attr( $value ), __( 'Delete', 'wordlift' ) );
+	}
 
-		/**
-		 * Get the number of entity posts published in this blog.
-		 *
-		 * @return int The number of published entity posts.
-		 * @since 3.6.0
-		 *
-		 */
-		public
-		function count() {
+	/**
+	 * Get the number of entity posts published in this blog.
+	 *
+	 * @return int The number of published entity posts.
+	 * @since 3.6.0
+	 *
+	 */
+	public function count() {
 
-			$posts = get_posts( $this->add_criterias( array(
-				'fields'      => 'ids',
-				'post_status' => 'any',
-				'numberposts' => - 1,
-			) ) );
+		$posts = get_posts( $this->add_criterias( array(
+			'fields'      => 'ids',
+			'post_status' => 'any',
+			'numberposts' => - 1,
+		) ) );
 
-			return count( $posts );
-		}
+		return count( $posts );
+	}
 
-		/**
-		 * Add the entity filtering criterias to the arguments for a `get_posts`
-		 * call.
-		 *
-		 * @param array $args The arguments for a `get_posts` call.
-		 *
-		 * @return array The arguments for a `get_posts` call.
-		 * @since 3.15.0
-		 *
-		 */
-		public
-		static function add_criterias( $args ) {
+	/**
+	 * Add the entity filtering criterias to the arguments for a `get_posts`
+	 * call.
+	 *
+	 * @param array $args The arguments for a `get_posts` call.
+	 *
+	 * @return array The arguments for a `get_posts` call.
+	 * @since 3.15.0
+	 *
+	 */
+	public static function add_criterias( $args ) {
 
-			// Build an optimal tax-query.
-			$tax_query = array(
-				'relation' => 'AND',
-				array(
-					'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
-					'operator' => 'EXISTS',
-				),
-				array(
-					'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
-					'field'    => 'slug',
-					'terms'    => 'article',
-					'operator' => 'NOT IN',
-				),
+		// Build an optimal tax-query.
+		$tax_query = array(
+			'relation' => 'AND',
+			array(
+				'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
+				'operator' => 'EXISTS',
+			),
+			array(
+				'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
+				'field'    => 'slug',
+				'terms'    => 'article',
+				'operator' => 'NOT IN',
+			),
+		);
+
+		return $args + array(
+				'post_type' => Wordlift_Entity_Service::valid_entity_post_types(),
+				/*
+				 * Ensure compatibility with Polylang.
+				 *
+				 * @see https://github.com/insideout10/wordlift-plugin/issues/855.
+				 * @see https://wordpress.org/support/topic/parse_query-filter-adds-language-taxonomy-to-query/.
+				 *
+				 * @since 3.19.5
+				 */
+				'lang'      => '',
+				'tax_query' => $tax_query,
 			);
+	}
 
-			return $args + array(
-					'post_type' => Wordlift_Entity_Service::valid_entity_post_types(),
-					/*
-					 * Ensure compatibility with Polylang.
-					 *
-					 * @see https://github.com/insideout10/wordlift-plugin/issues/855.
-					 * @see https://wordpress.org/support/topic/parse_query-filter-adds-language-taxonomy-to-query/.
-					 *
-					 * @since 3.19.5
-					 */
-					'lang'      => '',
-					'tax_query' => $tax_query,
-				);
-		}
+	/**
+	 * Create a new entity.
+	 *
+	 * @param string $name The entity name.
+	 * @param string $type_uri The entity's type URI.
+	 * @param null $logo The entity logo id (or NULL if none).
+	 * @param string $status The post status, by default 'publish'.
+	 *
+	 * @return int|WP_Error The entity post id or a {@link WP_Error} in case the `wp_insert_post` call fails.
+	 * @since 3.9.0
+	 *
+	 */
+	public function create( $name, $type_uri, $logo = null, $status = 'publish' ) {
 
-		/**
-		 * Create a new entity.
-		 *
-		 * @param string $name The entity name.
-		 * @param string $type_uri The entity's type URI.
-		 * @param null $logo The entity logo id (or NULL if none).
-		 * @param string $status The post status, by default 'publish'.
-		 *
-		 * @return int|WP_Error The entity post id or a {@link WP_Error} in case the `wp_insert_post` call fails.
-		 * @since 3.9.0
-		 *
-		 */
-		public
-		function create( $name, $type_uri, $logo = null, $status = 'publish' ) {
+		// Create an entity for the publisher.
+		$post_id = @wp_insert_post( array(
+			'post_type'    => self::TYPE_NAME,
+			'post_title'   => $name,
+			'post_status'  => $status,
+			'post_content' => '',
+		) );
 
-			// Create an entity for the publisher.
-			$post_id = @wp_insert_post( array(
-				'post_type'    => self::TYPE_NAME,
-				'post_title'   => $name,
-				'post_status'  => $status,
-				'post_content' => '',
-			) );
-
-			// Return the error if any.
-			if ( is_wp_error( $post_id ) ) {
-				return $post_id;
-			}
-
-			// Set the entity logo.
-			if ( $logo && is_numeric( $logo ) ) {
-				set_post_thumbnail( $post_id, $logo );
-			}
-
-			// Set the entity type.
-			Wordlift_Entity_Type_Service::get_instance()->set( $post_id, $type_uri );
-
+		// Return the error if any.
+		if ( is_wp_error( $post_id ) ) {
 			return $post_id;
 		}
 
-		/**
-		 * Get the entities related to the one with the specified id. By default only
-		 * published entities will be returned.
-		 *
-		 * @param int $id The post id.
-		 * @param string $post_status The target post status (default = publish).
-		 *
-		 * @return array An array of post ids.
-		 * @since 3.10.0
-		 *
-		 */
-		public
-		function get_related_entities( $id, $post_status = 'publish' ) {
-
-			return $this->relation_service->get_objects( $id, 'ids', null, $post_status );
+		// Set the entity logo.
+		if ( $logo && is_numeric( $logo ) ) {
+			set_post_thumbnail( $post_id, $logo );
 		}
 
-		/**
-		 * Get the list of entities.
-		 *
-		 * @param array $params Custom parameters for WordPress' own {@link get_posts} function.
-		 *
-		 * @return array An array of entity posts.
-		 * @since 3.12.2
-		 *
-		 */
-		public
-		function get( $params = array() ) {
+		// Set the entity type.
+		Wordlift_Entity_Type_Service::get_instance()->set( $post_id, $type_uri );
 
-			// Set the defaults.
-			$defaults = array( 'post_type' => 'entity' );
-
-			// Merge the defaults with the provided parameters.
-			$args = wp_parse_args( $params, $defaults );
-
-			// Call the `get_posts` function.
-			return get_posts( $args );
-		}
-
-		/**
-		 * The list of post type names which can be used for entities
-		 *
-		 * Criteria is that the post type is public. The list of valid post types
-		 * can be overridden with a filter.
-		 *
-		 * @return array Array containing the names of the valid post types.
-		 * @since 3.15.0
-		 *
-		 */
-		static function valid_entity_post_types() {
-
-			// Ignore builtins in the call to avoid getting attachments.
-			$post_types = array( 'post', 'page', self::TYPE_NAME );
-
-			return apply_filters( 'wl_valid_entity_post_types', $post_types );
-		}
-
+		return $post_id;
 	}
+
+	/**
+	 * Get the entities related to the one with the specified id. By default only
+	 * published entities will be returned.
+	 *
+	 * @param int $id The post id.
+	 * @param string $post_status The target post status (default = publish).
+	 *
+	 * @return array An array of post ids.
+	 * @since 3.10.0
+	 *
+	 */
+	public function get_related_entities( $id, $post_status = 'publish' ) {
+
+		return $this->relation_service->get_objects( $id, 'ids', null, $post_status );
+	}
+
+	/**
+	 * Get the list of entities.
+	 *
+	 * @param array $params Custom parameters for WordPress' own {@link get_posts} function.
+	 *
+	 * @return array An array of entity posts.
+	 * @since 3.12.2
+	 *
+	 */
+	public function get( $params = array() ) {
+
+		// Set the defaults.
+		$defaults = array( 'post_type' => 'entity' );
+
+		// Merge the defaults with the provided parameters.
+		$args = wp_parse_args( $params, $defaults );
+
+		// Call the `get_posts` function.
+		return get_posts( $args );
+	}
+
+	/**
+	 * The list of post type names which can be used for entities
+	 *
+	 * Criteria is that the post type is public. The list of valid post types
+	 * can be overridden with a filter.
+	 *
+	 * @return array Array containing the names of the valid post types.
+	 * @since 3.15.0
+	 *
+	 */
+	static function valid_entity_post_types() {
+
+		// Ignore builtins in the call to avoid getting attachments.
+		$post_types = array( 'post', 'page', self::TYPE_NAME );
+
+		return apply_filters( 'wl_valid_entity_post_types', $post_types );
+	}
+
+}

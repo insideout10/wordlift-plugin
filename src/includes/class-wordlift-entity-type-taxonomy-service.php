@@ -133,6 +133,9 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 			return $terms;
 		}
 
+		// Avoid nested calls in case of issues.
+		remove_filter( 'get_object_terms', array( $this, 'get_object_terms' ), 10 );
+
 		// Set the default term for all the queried object.
 		foreach ( (array) $object_ids as $object_id ) {
 			if ( Wordlift_Entity_Type_Service::is_valid_entity_post_type( get_post_type( $object_id ) ) ) {
@@ -142,6 +145,9 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 
 		// Finally return the object terms.
 		$terms = wp_get_object_terms( $object_ids, $taxonomies, $args );
+
+		// Re-enable nested calls in case of issues.
+		add_filter( 'get_object_terms', array( $this, 'get_object_terms' ), 10, 4 );
 
 		return $terms;
 	}
