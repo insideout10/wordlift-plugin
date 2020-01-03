@@ -142,8 +142,8 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 			$post_type = get_post_type( $object_id );
 			if ( Wordlift_Entity_Type_Service::is_valid_entity_post_type( $post_type ) ) {
 				// Set the term to article for posts and pages, or to thing for everything else.
-				$term = in_array( $post_type, array( 'post', 'page' ) )
-					? 'article' : 'thing';
+				$term = Wordlift_Entity_Service::TYPE_NAME === $post_type
+					? 'thing' : 'article';
 				wp_set_object_terms( $object_id, $term, $entity_type, true );
 			}
 		}
