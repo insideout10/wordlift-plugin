@@ -165,7 +165,13 @@ class Wordlift_Issue_662 extends Wordlift_Unit_Test_Case {
 
 		// Check that the taxonomy has been removed.
 		$terms = get_the_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
-		$this->assertFalse( $terms );
+
+		/*
+		 * As of 3.23.6, we always set one term, 'thing' (for entity) or 'article' for everything else.
+		 *
+		 * @since 3.23.6
+		 */
+		// $this->assertFalse( $terms );
 
 		return $post_id;
 	}
