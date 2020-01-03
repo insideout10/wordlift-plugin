@@ -167,7 +167,10 @@ class Wordlift_Issue_662 extends Wordlift_Unit_Test_Case {
 		$terms = get_the_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 		/*
-		 * As of 3.23.6, we always set one term, 'thing' (for entity) or 'article' for everything else.
+		 * As of 3.23.6, we always set one term, 'thing' (for entity) or 'article' for everything else, when the
+		 * `wp_get_object_terms` function is used and that function returns no terms (see Wordlift_Entity_Type_Taxonomy_Service).
+		 *
+		 * Therefore asserting that terms is false will always fail from now on.
 		 *
 		 * @since 3.23.6
 		 */
