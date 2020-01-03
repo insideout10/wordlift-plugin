@@ -55,6 +55,8 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 	 */
 	private static $instances = array();
 
+	private static $instance;
+
 	/**
 	 * Create a {@link Wordlift_File_Cache_Service} instance.
 	 *
@@ -84,6 +86,13 @@ class Wordlift_File_Cache_Service implements Wordlift_Cache_Service {
 
 		// Add ourselves to the list of instances.
 		self::$instances[] = $this;
+
+		// Initialize the singleton and the ajax method.
+		if ( ! isset( self::$instance ) ) {
+			self::$instance = $this;
+
+			add_action( 'wp_ajax_wl_file_cache__flush_all', array( 'Wordlift_File_Cache_Service', 'flush_all' ) );
+		}
 
 		$this->log->debug( "File Cache service initialized on $this->cache_dir." );
 

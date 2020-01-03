@@ -142,6 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.23.6 (2019-12-29) =
+* Fix [#995](https://github.com/insideout10/wordlift-plugin/issues/995): Unspecified Type error for existing posts.
+
 = 3.23.5 (2019-12-27) =
 * Fix [#993](https://github.com/insideout10/wordlift-plugin/issues/993): Manually annotating an entity doesn't remove existing annotations.
 
