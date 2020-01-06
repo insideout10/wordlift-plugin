@@ -79,11 +79,11 @@ class Wordlift_Admin_Test extends Wordlift_Unit_Test_Case {
 	/**
 	 * Filter for the `wl_default_editor_id` filter.
 	 *
-	 * @since 3.19.4
-	 *
 	 * @param string $default The default editor id.
 	 *
 	 * @return string
+	 * @since 3.19.4
+	 *
 	 */
 	public function _wl_default_editor_id( $default ) {
 
@@ -95,9 +95,10 @@ class Wordlift_Admin_Test extends Wordlift_Unit_Test_Case {
 	/**
 	 * Check that the editor id in `wlSettings` matches the provided editor id.
 	 *
+	 * @param string $editor_id The expected editor id.
+	 *
 	 * @since 3.19.4
 	 *
-	 * @param string $editor_id The expected editor id.
 	 */
 	private function check_editor_id( $editor_id ) {
 		global $wp_scripts;
@@ -146,10 +147,11 @@ class Wordlift_Admin_Test extends Wordlift_Unit_Test_Case {
 	/**
 	 * Function used to perform the tests.
 	 *
-	 * @since 3.20.0
-	 *
 	 * @param string $role The user's role.
 	 * @param string $autocomplete_scope The expected autocomplete scope (`local` or `cloud`).
+	 *
+	 * @since 3.20.0
+	 *
 	 */
 	private function do_test( $role, $autocomplete_scope ) {
 
@@ -161,6 +163,10 @@ class Wordlift_Admin_Test extends Wordlift_Unit_Test_Case {
 
 		$post = $this->factory()->post->create_and_get( array( 'post_type' => 'entity' ) );
 		setup_postdata( $GLOBALS['post'] = $post );
+
+		$this->assertEquals( 'entity', $post->post_type, 'The post type must be entity. It was: ' . $post->post_type );
+		$this->assertTrue( Wordlift_Entity_Service::get_instance()->is_entity( $post->ID ), 'Post is not an entity.' );
+		$this->assertTrue( is_numeric( get_the_ID() ), 'ID is not numeric.' );
 
 		// Add Schema.org props.
 		add_post_meta( $post->ID, Wordlift_Schemaorg_Property_Service::PREFIX . 'testProp_1_type', 'Text' );
@@ -189,7 +195,7 @@ class Wordlift_Admin_Test extends Wordlift_Unit_Test_Case {
 		$this->assertArrayHasKey( 'post_id', $json, 'The `post_id` key must exist.' );
 		$this->assertEquals( $post->ID, $json['post_id'], 'Post id must match current post.' );
 		$this->assertArrayHasKey( 'entityBeingEdited', $json, 'The `post_id` key must exist.' );
-		$this->assertEquals( 1, $json['entityBeingEdited'], '`entityBeingEdited` must be 1 since current post is an entity.' );
+		$this->assertEquals( 1, $json['entityBeingEdited'], '`entityBeingEdited` must be 1 since current post is an entity. Received: ' . var_export( $json['entityBeingEdited'], true ) );
 		$this->assertArrayHasKey( 'wl_schemaorg_property_nonce', $json, 'The `wl_schemaorg_property_nonce` key must exist.' );
 		$this->assertArrayHasKey( 'properties', $json, 'The `properties` key must exist.' );
 		$this->assertCount( 1, $json['properties'], 'There must be one Schema.org property.' );
