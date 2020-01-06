@@ -142,6 +142,29 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 		return array( $taxonomy_options, $term_options );
 	}
 
+
+	/**
+	 * Return all ACF Fields
+	 * @return Array Array of ACF field name with value
+	 */
+	private static function get_acf_field_options() {
+		$acf_field_options = array();
+		// Check if ACF is loaded, or else return empty options array.
+		if ( function_exists( 'get_field_objects' ) ) {
+			$field_data = (array) get_field_objects();
+			foreach ( $field_data as $key => $value ) {
+				array_push(
+					$acf_field_options,
+					array(
+						'label' => $value['label'],
+						'value' => $key,
+					)
+				);
+			}
+		}
+		return $acf_field_options;
+	}
+
 	/**
 	 * Return post type option and post type option values
 	 * @return Array Array of post_type_option and post_type_option_values
