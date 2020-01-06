@@ -104,6 +104,7 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 		$taxonomy_options = array();
 		$term_options     = array();
 		$taxonomies       = get_object_taxonomies( 'post', 'objects' );
+
 		foreach ( $taxonomies as $taxonomy ) {
 			array_push(
 				$taxonomy_options,
@@ -117,7 +118,8 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 			if ( version_compare( get_bloginfo( 'version' ), '4.5', '>=' ) ) {
 				$terms = get_terms(
 					array(
-						'taxonomy' => $taxonomy->name,
+						'taxonomy'   => $taxonomy->name,
+						'hide_empty' => false,
 					)
 				);
 			}
