@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   db:
-    image: mariadb:10
+    image: mysql:5.7
     volumes:
       - db-data-${WORDPRESS_VERSION:-5.0.0}:/var/lib/mysql
     environment:
