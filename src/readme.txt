@@ -2,7 +2,7 @@
 Author URL: https://wordlift.io
 Plugin URL: https://wordlift.io
 Contributors: wordlift, insideout10, ziodave
-Tags: schema.org, semantic seo, seo, artificial intelligence, ai, linked data, semantic web, content recommendation, related posts, timeline, knowledge graph, interactive map
+Tags: schema.org, rich snippets, semantic seo, JSON-LD, artificial intelligence, ai, linked data, semantic web, content recommendation, related posts, timeline, knowledge graph, interactive map
 Requires at least: 4.4
 Tested up to: 5.3
 Requires PHP: 5.3
@@ -149,6 +149,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Fix [#987](https://github.com/insideout10/wordlift-plugin/issues/987): Remove shortcodes from schema:description.
 * Fix [#985](https://github.com/insideout10/wordlift-plugin/issues/985): Empty context card.
 * Fix [#963](https://github.com/insideout10/wordlift-plugin/issues/963): Descending order by default in navigator widget data.
+
+= 3.23.6 (2020-01-03) =
+* Fix [#996](https://github.com/insideout10/wordlift-plugin/issues/996): Bad Request error when running analysis.
+* Fix [#995](https://github.com/insideout10/wordlift-plugin/issues/995): Unspecified Type error for existing posts.
 
 = 3.23.5 (2019-12-27) =
 * Fix [#993](https://github.com/insideout10/wordlift-plugin/issues/993): Manually annotating an entity doesn't remove existing annotations.

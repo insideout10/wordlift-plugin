@@ -37,4 +37,58 @@ class Wordlift_Entity_Type_Taxonomy_Service_Test extends Wordlift_Unit_Test_Case
 
 	}
 
+	public function test_article_by_default() {
+
+		$post_id = $this->factory()->post->create();
+
+		$this->assertNotWPError( $post_id );
+
+		$terms_1 = wp_get_object_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+
+		$this->assertTrue( is_array( $terms_1 ), 'Terms should be an array, but was: ' . var_export( $terms_1, true ) );
+		$this->assertCount( 1, $terms_1, 'Terms should contain one term, but was: ' . var_export( $terms_1, true ) );
+		$this->assertTrue( is_a( $terms_1[0], 'WP_Term' ), 'Term should be WP_Term, but was: ' . var_export( $terms_1[0], true ) );
+		$this->assertEquals( 'article', $terms_1[0]->slug, 'Term should be article, but was ' . $terms_1[0]->slug );
+
+		$result = wp_remove_object_terms( $post_id, 'article', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+
+		$this->assertTrue( $result, 'Removing object terms should be successful.' );
+
+		$terms_2 = wp_get_object_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+
+		$this->assertTrue( is_array( $terms_2 ), 'Terms should be an array, but was: ' . var_export( $terms_2, true ) );
+		$this->assertCount( 1, $terms_2, 'Terms should contain one term, but was: ' . var_export( $terms_2, true ) );
+		$this->assertTrue( is_a( $terms_2[0], 'WP_Term' ), 'Term should be WP_Term, but was: ' . var_export( $terms_2[0], true ) );
+		$this->assertEquals( 'article', $terms_2[0]->slug, 'Term should be article, but was ' . $terms_2[0]->slug );
+
+	}
+
+	public function test_thing_by_default() {
+
+		$post_id = $this->factory()->post->create( array(
+			'post_type' => 'entity'
+		) );
+
+		$this->assertNotWPError( $post_id );
+
+		$terms_1 = wp_get_object_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+
+		$this->assertTrue( is_array( $terms_1 ), 'Terms should be an array, but was: ' . var_export( $terms_1, true ) );
+		$this->assertCount( 1, $terms_1, 'Terms should contain one term, but was: ' . var_export( $terms_1, true ) );
+		$this->assertTrue( is_a( $terms_1[0], 'WP_Term' ), 'Term should be WP_Term, but was: ' . var_export( $terms_1[0], true ) );
+		$this->assertEquals( 'thing', $terms_1[0]->slug, 'Term should be thing, but was ' . $terms_1[0]->slug );
+
+		$result = wp_remove_object_terms( $post_id, 'thing', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+
+		$this->assertTrue( $result, 'Removing object terms should be successful.' );
+
+		$terms_2 = wp_get_object_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+
+		$this->assertTrue( is_array( $terms_2 ), 'Terms should be an array, but was: ' . var_export( $terms_2, true ) );
+		$this->assertCount( 1, $terms_2, 'Terms should contain one term, but was: ' . var_export( $terms_2, true ) );
+		$this->assertTrue( is_a( $terms_2[0], 'WP_Term' ), 'Term should be WP_Term, but was: ' . var_export( $terms_2[0], true ) );
+		$this->assertEquals( 'thing', $terms_2[0]->slug, 'Term should be thing, but was ' . $terms_2[0]->slug );
+
+	}
+
 }

@@ -178,7 +178,7 @@ function wl_entities_box_content( $post, $wrapper = true ) {
 	$default_thumbnail_path = WL_DEFAULT_THUMBNAIL_PATH;
 	$default_path           = WL_DEFAULT_PATH;
 	$dataset_uri            = $configuration_service->get_dataset_uri();
-	$current_post_uri       = wl_get_entity_uri( $post->ID );
+	$current_post_uri       = Wordlift_Entity_Service::get_instance()->get_uri( $post->ID );
 
 	// Retrieve the current post author.
 	$post_author = get_userdata( $post->post_author )->display_name;

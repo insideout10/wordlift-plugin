@@ -131,7 +131,7 @@ class Wordlift_Issue_662 extends Wordlift_Unit_Test_Case {
 
 	private function add_term( $post_id, $slug ) {
 
-		wp_add_object_terms( $post_id, $slug, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+		wp_set_object_terms( $post_id, $slug, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 		// Get the terms bound to the post.
 		$terms = get_the_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
@@ -165,7 +165,16 @@ class Wordlift_Issue_662 extends Wordlift_Unit_Test_Case {
 
 		// Check that the taxonomy has been removed.
 		$terms = get_the_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
-		$this->assertFalse( $terms );
+
+		/*
+		 * As of 3.23.6, we always set one term, 'thing' (for entity) or 'article' for everything else, when the
+		 * `wp_get_object_terms` function is used and that function returns no terms (see Wordlift_Entity_Type_Taxonomy_Service).
+		 *
+		 * Therefore asserting that terms is false will always fail from now on.
+		 *
+		 * @since 3.23.6
+		 */
+		// $this->assertFalse( $terms );
 
 		return $post_id;
 	}
