@@ -87,6 +87,8 @@ class Wordlift_Post_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_entities_via_array() {
 
+		$this->assertFalse( wl_is_sparql_update_queries_buffering_enabled() );
+
 		// Create a post.
 		$post_id = $this->create_post();
 		$this->assertTrue( is_numeric( $post_id ) );

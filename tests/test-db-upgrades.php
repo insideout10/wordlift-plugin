@@ -193,8 +193,11 @@ class Wordlift_DB_Upgrade_Test extends Wordlift_Unit_Test_Case {
 			Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME
 		);
 
-		// Check that the term is no
-		$this->assertFalse( $this->has_term( $post_id ) );
+		// Check that the term is not set.
+		/*
+		 * @since 3.23.6 we always preset a term.
+		 */
+		// $this->assertFalse( $this->has_term( $post_id ) );
 
 		// Bind the update to 3.18.3
 		update_option( 'wl_db_version', '3.18.0' );
