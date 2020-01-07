@@ -18,9 +18,17 @@ class Wordlift_Mapping_Jsonld_Converter {
 	 *
 	 * @since  3.25.0
 	 * @access private
-	 * @var \Wordlift_Mapping_Validator $validator The {@link Wordlift_Mapping_Validator} instance to test.
+	 * @var \Wordlift_Mapping_Validator $validator The {@link Wordlift_Mapping_Validator} instance.
 	 */
 	private $validator;
+	/**
+	 * The {@link Wordlift_Mapping_Transform_Function_Registry} instance.
+	 *
+	 * @since  3.25.0
+	 * @access private
+	 * @var \Wordlift_Mapping_Transform_Function_Registry $transform_functions_registry The {@link Wordlift_Mapping_Transform_Function_Registry} instance.
+	 */
+	private $transform_functions_registry;
 
 	/**
 	 * The variable to hold the json-ld data
@@ -41,7 +49,8 @@ class Wordlift_Mapping_Jsonld_Converter {
 		$this->validator = new Wordlift_Mapping_Validator();
 		// Validate the post id here.
 		$this->validator->validate( $post_id );
-		$this->jsonld_data = $jsonld_data;
+		$this->transform_functions_registry = new Wordlift_Mapping_Transform_Function_Registry();
+		$this->jsonld_data                  = $jsonld_data;
 	}
 
 	/**
@@ -49,7 +58,10 @@ class Wordlift_Mapping_Jsonld_Converter {
 	 * @return Array Array of json-ld data.
 	 */
 	public function get_jsonld_data() {
-		var_dump( $this->validator->get_valid_properties() );
+		$properties = $this->validator->get_valid_properties();
+		foreach ( $properties as $property ) {
+
+		}
 		return $this->jsonld_data;
 	}
 

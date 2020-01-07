@@ -1,4 +1,5 @@
 <?php
+require_once 'intf-wordlift-mapping-transform-function.php';
 /**
  * Define the Wordlift_Mapping_Acf_Transform_Function Class
  *
@@ -12,7 +13,7 @@
  *
  * @since 3.25.0
  */
-class Wordlift_Mapping_Acf_Transform_Function extends Wordlift_Mapping_Transform_Function {
+class Wordlift_Mapping_Acf_Transform_Function implements Wordlift_Mapping_Transform_Function {
 
 	/**
 	 * Returns Name.
