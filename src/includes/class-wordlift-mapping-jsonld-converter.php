@@ -49,7 +49,7 @@ class Wordlift_Mapping_Jsonld_Converter {
 	 * @return Array Array of json-ld data.
 	 */
 	public function get_jsonld_data() {
-		var_dump( $this->jsonld_data );
+		var_dump( $this->validator->get_valid_properties() );
 		return $this->jsonld_data;
 	}
 
