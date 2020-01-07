@@ -102,7 +102,7 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 	 * @param String $taxonomy_value The value of the taxonomy.
 	 * @return void
 	 */
-	private function create_new_mapping_item( $taxonomy, $taxonomy_value ) {
+	private function create_new_mapping_item( $taxonomy, $taxonomy_value, $properties ) {
 		$mapping_id = $this->dbo->insert_mapping_item( 'foo' );
 		// Create a rule group.
 		$rule_group_id = $this->dbo->insert_rule_group( $mapping_id );
@@ -115,6 +115,10 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 				'rule_group_id'    => $rule_group_id,
 			)
 		);
+		foreach ( $properties as $property ) {
+			$property['mapping_id'] = $mapping_id;
+			$this->dbo->insert_or_update_property( $property );
+		}
 	}
 
 	/**
@@ -159,16 +163,27 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 			), $post_id );
 			$this->assertNotFalse( $result, 'Must not be false.' );
 		}
-		// Create a mapping item for category how_to.
-		$this->create_new_mapping_item( 'category', (int) $result_1[0] );
-
 		// https://developers.google.com/search/docs/data-types/how-to
 
 		$jsonlds = $this->jsonld_service->get_jsonld( false, $post_id );
 		$mapping_converter_instance = new Wordlift_Mapping_Jsonld_Converter( $post_id, $jsonlds );
 		$mapping_converter_instance->get_jsonld_data();
 		$this->assertTrue( is_array( $jsonlds ), '`$jsonlds` must be an array.' );
-		$this->assertCount( 1, $jsonlds, 'We must receive one JSON-LD.' );		
+		$this->assertCount( 1, $jsonlds, 'We must receive one JSON-LD.' );
+
+		// Property for HowTo.
+		$property_data = array(
+			'property_help_text'   => '@type',
+			'field_type_help_text' => 'text',
+			'field_help_text'      => 'How To',
+			'transform_help_text'  => 'text-transform-function',
+		);
+		$properties    = array(
+			$property_data,
+		);
+		// Create a mapping item for category how_to.
+		$this->create_new_mapping_item( 'category', (int) $result_1[0], $properties );
+
 		$jsonld = $jsonlds[0];
 		var_dump( $jsonld );
 
