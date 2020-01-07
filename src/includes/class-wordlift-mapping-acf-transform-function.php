@@ -34,11 +34,9 @@ class Wordlift_Mapping_Acf_Transform_Function extends Wordlift_Mapping_Transform
 	/**
 	 * Returns transformed data.
 	 *
-	 * @param Array $property_data Property Data.
 	 * @inheritdoc
 	 */
-	public function transform_data( $property_data ) {
-
+	public function transform_data( $post_id, $property_data ) {
 	}
 }
 

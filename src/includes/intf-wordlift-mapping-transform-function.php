@@ -33,8 +33,9 @@ interface Wordlift_Mapping_Transform_Function {
 	/**
 	 * Returns transformed data.
 	 *
+	 * @param Int $post_id The id of the post which the ACF data neeeded to be fetched.
 	 * @param Array $property_data An Associative Array containing all the property data.
 	 * @return Array Return transformed data.
 	 */
-	public function transform_data( $property_data );
+	public function transform_data( $post_id, $property_data );
 }
