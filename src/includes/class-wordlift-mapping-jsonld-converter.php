@@ -72,8 +72,6 @@ class Wordlift_Mapping_Jsonld_Converter {
 
 		$json_ld_data_array = $this->jsonld_data;
 		$properties         = $this->validator->get_valid_properties();
-		var_dump( 'valid properties ');
-		var_dump( $properties );
 
 		foreach ( $properties as $property ) {
 			$transform_instance = $this->transform_functions_registry->get_transform_function( $property['transform_help_text'] );

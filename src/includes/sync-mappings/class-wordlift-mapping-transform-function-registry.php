@@ -23,6 +23,7 @@ class Wordlift_Mapping_Transform_Function_Registry {
 	public function __construct() {
 		$this->transform_function_array = array(
 			new Wordlift_Mapping_Acf_Transform_Function(),
+			new Wordlift_Mapping_Text_Transform_Function(),
 		);
 	}
 

@@ -975,6 +975,7 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/intf-wordlift-mapping-transform-function.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-mapping-acf-transform-function.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-mapping-text-transform-function.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/sync-mappings/class-wordlift-mapping-transform-function-registry.php';
 
 		// The Publisher Service and the AJAX adapter.
