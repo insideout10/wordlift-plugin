@@ -157,12 +157,4 @@ EOF;
 		$this->wpdb->query( $sql );
 	}
 
-	/**
-	 * @inheritdoc
-	 */
-	public function must_install() {
-		return true;
-	}
-
-
 }
