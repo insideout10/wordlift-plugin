@@ -40,29 +40,57 @@ class Wordlift_Mapping_Jsonld_Converter {
 	private $jsonld_data;
 
 	/**
+	 * The variable to hold the post_id
+	 *
+	 * @since  3.25.0
+	 * @access private
+	 * @var Int $post_id The id of the post.
+	 */
+	private $post_id;
+
+	/**
 	 * Initialize all dependancies required.
 	 *
 	 * @param Int   $post_id The Id of the post where the mappings should be validated.
 	 * @param Array $jsonld_data An Array of json-ld data from {@link \Wordlift_Jsonld_Service} class.
 	 */
 	public function __construct( $post_id, $jsonld_data ) {
-		$this->validator = new Wordlift_Mapping_Validator();
-		// Validate the post id here.
-		$this->validator->validate( $post_id );
+		$this->validator                    = new Wordlift_Mapping_Validator();
 		$this->transform_functions_registry = new Wordlift_Mapping_Transform_Function_Registry();
 		$this->jsonld_data                  = $jsonld_data;
+		$this->post_id                      = $post_id;
 	}
 
 	/**
-	 * Returns Json-LD data after validating the mappings.
+	 * Returns Json-LD data after applying transformation functions.
+	 *
 	 * @return Array Array of json-ld data.
 	 */
 	public function get_jsonld_data() {
-		$properties = $this->validator->get_valid_properties();
-		foreach ( $properties as $property ) {
+		// Validate the post id here.
+		$this->validator->validate( $this->post_id );
 
+		$json_ld_data_array = $this->jsonld_data;
+		$properties         = $this->validator->get_valid_properties();
+		var_dump( 'valid properties ');
+		var_dump( $properties );
+
+		foreach ( $properties as $property ) {
+			$transform_instance = $this->transform_functions_registry->get_transform_function( $property['transform_help_text'] );
+			if ( null !== $transform_instance ) {
+				$transformed_data = $transform_instance->transform_data( $this->post_id, $property );
+				foreach ( $json_ld_data_array as &$jsonld_data ) {
+					$jsonld_data[ $transformed_data['key'] ] = $transformed_data['value'];
+				}
+			}
+			else {
+				// No transform function exists, do 1 to 1 mapping, just map the string value to the key.
+				foreach ( $json_ld_data_array as &$jsonld_data ) {
+					$jsonld_data[ $property['property_help_text'] ] = $property['field_help_text'];
+				}
+			}
 		}
-		return $this->jsonld_data;
+		return $json_ld_data_array;
 	}
 
 }

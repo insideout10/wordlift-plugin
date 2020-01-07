@@ -44,4 +44,21 @@ class Wordlift_Mapping_Transform_Function_Registry {
 		}
 		return $options;
 	}
+
+	/**
+	 * Return instance of the transform function.
+	 *
+	 * @param  String $transform_function_name The name of the transform function which needs to applied.
+	 * @return Wordlift_Mapping_Transform_Function|null An Instance of transform function from any one of
+	 * the classes extending this interface, if nothing matches null is returned.
+	 */
+	public function get_transform_function( $transform_function_name ) {
+		foreach ( $this->transform_function_array as $transform_function_instance ) {
+			if ( $transform_function_instance->get_name() === $transform_function_name ) {
+				return $transform_function_instance;
+			}
+		}
+		// Returns null if the transform function doesn't match.
+		return null;
+	}
 }

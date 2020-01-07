@@ -167,7 +167,7 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 
 		$jsonlds = $this->jsonld_service->get_jsonld( false, $post_id );
 		$mapping_converter_instance = new Wordlift_Mapping_Jsonld_Converter( $post_id, $jsonlds );
-		$mapping_converter_instance->get_jsonld_data();
+
 		$this->assertTrue( is_array( $jsonlds ), '`$jsonlds` must be an array.' );
 		$this->assertCount( 1, $jsonlds, 'We must receive one JSON-LD.' );
 
@@ -175,8 +175,16 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 		$property_data = array(
 			'property_help_text'   => '@type',
 			'field_type_help_text' => 'text',
-			'field_help_text'      => 'How To',
+			'field_help_text'      => 'HowTo',
 			'transform_help_text'  => 'text-transform-function',
+			'property_status'      => Wordlift_Mapping_Validator::ACTIVE_CATEGORY,
+		);
+		$property_data = array(
+			'property_help_text'   => 'step',
+			'field_type_help_text' => 'ACF',
+			'field_help_text'      => 'step',
+			'transform_help_text'  => 'acf-transform-function',
+			'property_status'      => Wordlift_Mapping_Validator::ACTIVE_CATEGORY,
 		);
 		$properties    = array(
 			$property_data,
@@ -184,7 +192,10 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 		// Create a mapping item for category how_to.
 		$this->create_new_mapping_item( 'category', (int) $result_1[0], $properties );
 
-		$jsonld = $jsonlds[0];
+		// Alter the json ld based on mappings.
+
+		$jsonlds = $mapping_converter_instance->get_jsonld_data();
+		$jsonld  = $jsonlds[0];
 		var_dump( $jsonld );
 
 		$this->assertEquals( 'HowTo', $jsonld['@type'], '`@type` must be `HowTo`, found instead ' . $jsonld['@type'] );
