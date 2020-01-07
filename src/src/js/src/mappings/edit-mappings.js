@@ -36,7 +36,7 @@ const INITIAL_STATE = {
         choosenPropertyCategory: ACTIVE_CATEGORY,
         choosenPropertyBulkAction: null,
         fieldTypeHelpTextOptions:editMappingSettings.wl_field_type_help_text_options,
-        transformHelpTextOptions:options,
+        transformHelpTextOptions:editMappingSettings.wl_transform_function_options,
         propertyList: []
     }
 }

@@ -63,6 +63,8 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 		$edit_mapping_settings['wl_add_mapping_text']             = __( 'Add Mapping', 'wordlift' );
 		$edit_mapping_settings['wl_edit_mapping_text']            = __( 'Edit Mapping', 'wordlift' );
 		$edit_mapping_settings['wl_edit_mapping_no_item']         = __( 'Unable to find the mapping item', 'wordlift' );
+		$transform_function_registry                              = new Wordlift_Mapping_Transform_Function_Registry();
+		$edit_mapping_settings['wl_transform_function_options']   = $transform_function_registry->get_options();
 		$edit_mapping_settings['wl_field_type_help_text_options'] = array(
 			array(
 				'label' => __( 'Text', 'wordlift' ),
