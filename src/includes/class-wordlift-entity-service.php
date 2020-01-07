@@ -90,11 +90,12 @@ class Wordlift_Entity_Service {
 	/**
 	 * Create a Wordlift_Entity_Service instance.
 	 *
+	 * @param \Wordlift_UI_Service $ui_service The UI service.
+	 * @param \Wordlift_Relation_Service $relation_service The {@link Wordlift_Relation_Service} instance.
+	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service} instance.
+	 *
 	 * @since 3.2.0
 	 *
-	 * @param \Wordlift_UI_Service         $ui_service The UI service.
-	 * @param \Wordlift_Relation_Service   $relation_service The {@link Wordlift_Relation_Service} instance.
-	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service} instance.
 	 */
 	public function __construct( $ui_service, $relation_service, $entity_uri_service ) {
 
@@ -111,8 +112,8 @@ class Wordlift_Entity_Service {
 	/**
 	 * Get the singleton instance of the Entity service.
 	 *
-	 * @since 3.2.0
 	 * @return \Wordlift_Entity_Service The singleton instance of the Entity service.
+	 * @since 3.2.0
 	 */
 	public static function get_instance() {
 
@@ -123,11 +124,11 @@ class Wordlift_Entity_Service {
 	 * Determines whether a post is an entity or not. Entity is in this context
 	 * something which is not an article.
 	 *
-	 * @since 3.1.0
-	 *
 	 * @param int $post_id A post id.
 	 *
 	 * @return bool Return true if the post is an entity otherwise false.
+	 * @since 3.1.0
+	 *
 	 */
 	public function is_entity( $post_id ) {
 
@@ -162,14 +163,14 @@ class Wordlift_Entity_Service {
 	/**
 	 * Get the proper classification scope for a given entity post
 	 *
-	 * @since 3.5.0
-	 *
 	 * @param integer $post_id An entity post id.
 	 *
-	 * @param string  $default The default classification scope, `what` if not
+	 * @param string $default The default classification scope, `what` if not
 	 *                         provided.
 	 *
 	 * @return string Returns a classification scope (e.g. 'what').
+	 * @since 3.5.0
+	 *
 	 */
 	public function get_classification_scope_for( $post_id, $default = WL_WHAT_RELATION ) {
 
@@ -244,14 +245,14 @@ class Wordlift_Entity_Service {
 	/**
 	 * Find entity posts by the entity URI. Entity as searched by their entity URI or same as.
 	 *
-	 * @since      3.16.3 deprecated in favor of Wordlift_Entity_Uri_Service->get_entity( $uri );
-	 * @since      3.2.0
-	 *
-	 * @deprecated in favor of Wordlift_Entity_Uri_Service->get_entity( $uri );
-	 *
 	 * @param string $uri The entity URI.
 	 *
 	 * @return WP_Post|null A WP_Post instance or null if not found.
+	 * @deprecated in favor of Wordlift_Entity_Uri_Service->get_entity( $uri );
+	 *
+	 * @since      3.16.3 deprecated in favor of Wordlift_Entity_Uri_Service->get_entity( $uri );
+	 * @since      3.2.0
+	 *
 	 */
 	public function get_entity_post_by_uri( $uri ) {
 
@@ -266,9 +267,9 @@ class Wordlift_Entity_Service {
 	 *
 	 * @since 3.2.0
 	 *
-	 * @param int     $post_id Post ID.
+	 * @param int $post_id Post ID.
 	 * @param WP_Post $post Post object.
-	 * @param bool    $update Whether this is an existing post being updated or not.
+	 * @param bool $update Whether this is an existing post being updated or not.
 	 */
 	public function save_post( $post_id, $post, $update ) {
 
@@ -298,10 +299,11 @@ class Wordlift_Entity_Service {
 	/**
 	 * Set the alternative labels.
 	 *
+	 * @param int $post_id The post id.
+	 * @param array $alt_labels An array of labels.
+	 *
 	 * @since 3.2.0
 	 *
-	 * @param int   $post_id The post id.
-	 * @param array $alt_labels An array of labels.
 	 */
 	public function set_alternative_labels( $post_id, $alt_labels ) {
 
@@ -327,11 +329,11 @@ class Wordlift_Entity_Service {
 	/**
 	 * Retrieve the alternate labels.
 	 *
-	 * @since 3.2.0
-	 *
 	 * @param int $post_id Post id.
 	 *
 	 * @return mixed An array  of alternative labels.
+	 * @since 3.2.0
+	 *
 	 */
 	public function get_alternative_labels( $post_id ) {
 
@@ -341,11 +343,11 @@ class Wordlift_Entity_Service {
 	/**
 	 * Retrieve the labels for an entity, i.e. the title + the synonyms.
 	 *
-	 * @since 3.12.0
-	 *
 	 * @param int $post_id The entity {@link WP_Post} id.
 	 *
 	 * @return array An array with the entity title and labels.
+	 * @since 3.12.0
+	 *
 	 */
 	public function get_labels( $post_id ) {
 
@@ -355,9 +357,10 @@ class Wordlift_Entity_Service {
 	/**
 	 * Fires before the permalink field in the edit form (this event is available in WP from 4.1.0).
 	 *
+	 * @param WP_Post $post Post object.
+	 *
 	 * @since 3.2.0
 	 *
-	 * @param WP_Post $post Post object.
 	 */
 	public function edit_form_before_permalink( $post ) {
 
@@ -384,11 +387,11 @@ class Wordlift_Entity_Service {
 	/**
 	 * Get the URI for the entity with the specified post id.
 	 *
-	 * @since 3.6.0
-	 *
 	 * @param int $post_id The entity post id.
 	 *
 	 * @return null|string The entity URI or NULL if not found or the dataset URI is not configured.
+	 * @since 3.6.0
+	 *
 	 */
 	public function get_uri( $post_id ) {
 
@@ -397,11 +400,22 @@ class Wordlift_Entity_Service {
 			return null;
 		}
 
-		$uri = get_post_meta( $post_id, WL_ENTITY_URL_META_NAME, true );
+		$dataset_uri = wl_configuration_get_redlink_dataset_uri();
 
 		// If the dataset uri is not properly configured, null is returned
-		if ( '' === wl_configuration_get_redlink_dataset_uri() ) {
+		if ( empty( $dataset_uri ) ) {
 			return null;
+		}
+
+		$uri = get_post_meta( $post_id, WL_ENTITY_URL_META_NAME, true );
+
+		/*
+		 * Consider the URI invalid if it doesn't start with the dataset URI.
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/996
+		 */
+		if ( 0 !== strpos( $uri, $dataset_uri ) ) {
+			$uri = null;
 		}
 
 		// Set the URI if it isn't set yet.
@@ -418,11 +432,11 @@ class Wordlift_Entity_Service {
 	/**
 	 * Get the alternative label input HTML code.
 	 *
-	 * @since 3.2.0
-	 *
 	 * @param string $value The input value.
 	 *
 	 * @return string The input HTML code.
+	 * @since 3.2.0
+	 *
 	 */
 	private function get_alternative_label_input( $value = '' ) {
 
@@ -432,9 +446,9 @@ class Wordlift_Entity_Service {
 	/**
 	 * Get the number of entity posts published in this blog.
 	 *
+	 * @return int The number of published entity posts.
 	 * @since 3.6.0
 	 *
-	 * @return int The number of published entity posts.
 	 */
 	public function count() {
 
@@ -451,11 +465,11 @@ class Wordlift_Entity_Service {
 	 * Add the entity filtering criterias to the arguments for a `get_posts`
 	 * call.
 	 *
-	 * @since 3.15.0
-	 *
 	 * @param array $args The arguments for a `get_posts` call.
 	 *
 	 * @return array The arguments for a `get_posts` call.
+	 * @since 3.15.0
+	 *
 	 */
 	public static function add_criterias( $args ) {
 
@@ -492,14 +506,14 @@ class Wordlift_Entity_Service {
 	/**
 	 * Create a new entity.
 	 *
-	 * @since 3.9.0
-	 *
 	 * @param string $name The entity name.
 	 * @param string $type_uri The entity's type URI.
-	 * @param null   $logo The entity logo id (or NULL if none).
+	 * @param null $logo The entity logo id (or NULL if none).
 	 * @param string $status The post status, by default 'publish'.
 	 *
 	 * @return int|WP_Error The entity post id or a {@link WP_Error} in case the `wp_insert_post` call fails.
+	 * @since 3.9.0
+	 *
 	 */
 	public function create( $name, $type_uri, $logo = null, $status = 'publish' ) {
 
@@ -531,12 +545,12 @@ class Wordlift_Entity_Service {
 	 * Get the entities related to the one with the specified id. By default only
 	 * published entities will be returned.
 	 *
-	 * @since 3.10.0
-	 *
-	 * @param int    $id The post id.
+	 * @param int $id The post id.
 	 * @param string $post_status The target post status (default = publish).
 	 *
 	 * @return array An array of post ids.
+	 * @since 3.10.0
+	 *
 	 */
 	public function get_related_entities( $id, $post_status = 'publish' ) {
 
@@ -546,11 +560,11 @@ class Wordlift_Entity_Service {
 	/**
 	 * Get the list of entities.
 	 *
-	 * @since 3.12.2
-	 *
 	 * @param array $params Custom parameters for WordPress' own {@link get_posts} function.
 	 *
 	 * @return array An array of entity posts.
+	 * @since 3.12.2
+	 *
 	 */
 	public function get( $params = array() ) {
 
@@ -570,9 +584,9 @@ class Wordlift_Entity_Service {
 	 * Criteria is that the post type is public. The list of valid post types
 	 * can be overridden with a filter.
 	 *
+	 * @return array Array containing the names of the valid post types.
 	 * @since 3.15.0
 	 *
-	 * @return array Array containing the names of the valid post types.
 	 */
 	static function valid_entity_post_types() {
 

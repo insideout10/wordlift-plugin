@@ -42,7 +42,12 @@ class Wordlift_Issue_991 extends Wordlift_Unit_Test_Case {
 
 		$types_2 = wp_get_post_terms( $post_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
-		$this->assertEmpty( $types_2, "Expect no terms set." );
+		/*
+		 * Since 3.23.6 we always set 'thing' or 'article' if not terms are set.
+		 *
+		 * @since 3.23.6
+		 */
+		$this->assertCount( 1, $types_2, "Expect one term set." );
 
 		// Try to add the entity type using `wl-other` as type uri as the JS client would do.
 		$this->entity_type_service->set( $post_id, 'wl-other' );
