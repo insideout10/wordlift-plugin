@@ -33,11 +33,22 @@ class Wordlift_Mapping_Acf_Transform_Function implements Wordlift_Mapping_Transf
 		return __( 'ACF Transform function', 'wordlift' );
 	}
 	/**
-	 * Returns transformed data.
+	 * Returns transformed data, returns null in the value if
+	 * the ACF field doesn't exist.
 	 *
 	 * @inheritdoc
 	 */
 	public function transform_data( $post_id, $property_data ) {
+		$key   = $property_data['property_help_text'];
+		$value = null;
+		// Check ACF is loaded.
+		if ( function_exists( 'get_field_object' ) ) {
+			$value = get_field( $key, $post_id );
+		}
+		return array(
+			'key'   => $key,
+			'value' => $value,
+		);
 	}
 }
 

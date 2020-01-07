@@ -145,7 +145,7 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 		$post_id  = $this->factory()->post->create();
 		$result_1 = wp_add_object_terms( $post_id, 'how-to', 'category' );
 		$this->assertNotWPError( $result_1, 'An error occurred: ' . var_export( $result_1, true ) );
-		var_dump( $result_1 );
+
 		// Check that the post is seen by ACF.
 		$this->assertEquals( $post_id, acf_get_valid_post_id( $post_id ), '`acf_get_valid_post_id` should be true for post id: ' . $post_id );
 		// Add 5 steps.
@@ -200,7 +200,7 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 		print_r( $jsonld );
 
 		$this->assertEquals( 'HowTo', $jsonld['@type'], '`@type` must be `HowTo`, found instead ' . $jsonld['@type'] );
-		// $this->assertCount( 5, $jsonld['step'] );
+		$this->assertCount( 5, $jsonld['step'] );
 
 	}
 
