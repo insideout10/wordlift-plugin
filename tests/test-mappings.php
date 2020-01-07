@@ -161,10 +161,12 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 		}
 		// Create a mapping item for category how_to.
 		$this->create_new_mapping_item( 'category', (int) $result_1[0] );
-		
+
 		// https://developers.google.com/search/docs/data-types/how-to
 
 		$jsonlds = $this->jsonld_service->get_jsonld( false, $post_id );
+		$mapping_converter_instance = new Wordlift_Mapping_Jsonld_Converter( $post_id, $jsonlds );
+		$mapping_converter_instance->get_jsonld_data();
 		$this->assertTrue( is_array( $jsonlds ), '`$jsonlds` must be an array.' );
 		$this->assertCount( 1, $jsonlds, 'We must receive one JSON-LD.' );		
 		$jsonld = $jsonlds[0];

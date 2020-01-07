@@ -39,8 +39,18 @@ class Wordlift_Mapping_Jsonld_Converter {
 	 */
 	public function __construct( $post_id, $jsonld_data ) {
 		$this->validator = new Wordlift_Mapping_Validator();
+		// Validate the post id here.
 		$this->validator->validate( $post_id );
 		$this->jsonld_data = $jsonld_data;
+	}
+
+	/**
+	 * Returns Json-LD data after validating the mappings.
+	 * @return Array Array of json-ld data.
+	 */
+	public function get_jsonld_data() {
+		var_dump( $this->jsonld_data );
+		return $this->jsonld_data;
 	}
 
 }

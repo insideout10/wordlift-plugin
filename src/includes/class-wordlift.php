@@ -960,6 +960,14 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-jsonld-service.php';
 
+		/**
+		 * Load the Mapping JSON-LD converter which edit the json-ld data provided json-ld service.
+		 *
+		 * @since 3.8.0
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-mapping-jsonld-converter.php';
+
+
 		// The Publisher Service and the AJAX adapter.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-publisher-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-publisher-ajax-adapter.php';
