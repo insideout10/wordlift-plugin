@@ -175,8 +175,8 @@ class Wordlift_Mapping_Validator_Test extends WP_UnitTestCase {
 		$property_data = array(
 			'property_help_text'   => 'foo',
 			'field_type_help_text' => 'bar',
-			'field_help_text'      => 'foo',
-			'transform_help_text'  => 'foo',
+			'field_text'      => 'foo',
+			'transform_function'  => 'foo',
 			'mapping_id'           => $mapping_id,
 		);
 		$this->dbo->insert_or_update_property(

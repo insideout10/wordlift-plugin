@@ -41,7 +41,7 @@ class Wordlift_Mapping_Text_Transform_Function implements Wordlift_Mapping_Trans
 		// Do 1 to 1 mapping and return result.
 		return array(
 			'key'   => $property_data['property_help_text'],
-			'value' => $property_data['field_help_text'],
+			'value' => $property_data['field_text'],
 		);
 	}
 }

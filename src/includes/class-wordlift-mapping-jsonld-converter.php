@@ -74,7 +74,7 @@ class Wordlift_Mapping_Jsonld_Converter {
 		$properties         = $this->validator->get_valid_properties();
 
 		foreach ( $properties as $property ) {
-			$transform_instance = $this->transform_functions_registry->get_transform_function( $property['transform_help_text'] );
+			$transform_instance = $this->transform_functions_registry->get_transform_function( $property['transform_function'] );
 			if ( null !== $transform_instance ) {
 				$transformed_data = $transform_instance->transform_data( $this->post_id, $property );
 				foreach ( $json_ld_data_array as &$jsonld_data ) {
@@ -84,7 +84,7 @@ class Wordlift_Mapping_Jsonld_Converter {
 			else {
 				// No transform function exists, do 1 to 1 mapping, just map the string value to the key.
 				foreach ( $json_ld_data_array as &$jsonld_data ) {
-					$jsonld_data[ $property['property_help_text'] ] = $property['field_help_text'];
+					$jsonld_data[ $property['property_help_text'] ] = $property['field_text'];
 				}
 			}
 		}

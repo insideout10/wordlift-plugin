@@ -6,14 +6,14 @@
 			"property_help_text":"foo",
 			"field_type_help_text":"bar",
 			"field_help_text":"foo",
-            "transform_help_text":"foo",
+            "transform_function":"foo",
             "property_id": 1
         },
         {
 			"property_help_text":"foo",
 			"field_type_help_text":"bar",
 			"field_help_text":"foo",
-            "transform_help_text":"foo"
+            "transform_function":"foo"
         }
     ],
     "rule_group_list": [

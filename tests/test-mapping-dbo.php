@@ -113,8 +113,8 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 		$property_data       = array(
 			'property_help_text'   => 'foo',
 			'field_type_help_text' => 'bar',
-			'field_help_text'      => 'foo',
-			'transform_help_text'  => 'foo',
+			'field_text'      => 'foo',
+			'transform_function'  => 'foo',
 		);
 		$mapping_id          = $this->dbo_instance->insert_mapping_item( "foo title" );
 		$property_data['mapping_id'] = $mapping_id;
@@ -129,8 +129,8 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 		$property_data       = array(
 			'property_help_text'   => 'foo',
 			'field_type_help_text' => 'bar',
-			'field_help_text'      => 'foo',
-			'transform_help_text'  => 'foo',
+			'field_text'      => 'foo',
+			'transform_function'  => 'foo',
 		);
 		$mapping_id          = $this->dbo_instance->insert_mapping_item( "foo title" );
 		$property_data['mapping_id'] = $mapping_id;
@@ -164,8 +164,8 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 		$property_data       = array(
 			'property_help_text'   => 'foo',
 			'field_type_help_text' => 'bar',
-			'field_help_text'      => 'foo',
-			'transform_help_text'  => 'foo',
+			'field_text'      => 'foo',
+			'transform_function'  => 'foo',
 		);
 		// 2 properties inserted.
 		$property_data['mapping_id'] = $mapping_id;

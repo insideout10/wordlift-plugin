@@ -35,7 +35,7 @@ class EditComponentMapping {
                 property_help_text: property.propertyHelpText,
                 field_type_help_text: property.fieldTypeHelpText,
                 field_help_text: property.fieldHelpText,
-                transform_help_text: property.transformHelpText,
+                transform_function: property.transformHelpText,
                 property_status: property.property_status,
             }
             // If it is created in the ui, then remove the property id, rest api will detect this and
@@ -59,7 +59,7 @@ class EditComponentMapping {
             propertyHelpText:property.property_help_text,
             fieldTypeHelpText: property.field_type_help_text,
             fieldHelpText: property.field_help_text,
-            transformHelpText: property.transform_help_text,
+            transformHelpText: property.transform_function,
             property_id: parseInt( property.property_id ),
             property_status: property.property_status,
             isOpenedOrAddedByUser: false,
