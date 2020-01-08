@@ -16,27 +16,20 @@ require_once 'intf-wordlift-mapping-transform-function.php';
 class Wordlift_Mapping_Acf_Transform_Function implements Wordlift_Mapping_Transform_Function {
 
 	/**
-	 * Returns Name.
-	 *
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
 	public function get_name() {
 		return 'acf-transform-function';
 	}
 
 	/**
-	 * Returns Label.
-	 *
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
 	public function get_label() {
 		return __( 'ACF Transform function', 'wordlift' );
 	}
 	/**
-	 * Returns transformed data, returns null in the value if
-	 * the ACF field doesn't exist.
-	 *
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
 	public function transform_data( $post_id, $property_data ) {
 		$key   = $property_data['property_name'];
@@ -47,8 +40,14 @@ class Wordlift_Mapping_Acf_Transform_Function implements Wordlift_Mapping_Transf
 		}
 		return array(
 			'key'   => $key,
-			'value' => $value,
+			'value' => $this->filter_raw_data( $value ),
 		);
+	}
+	/**
+	 * {@inheritdoc}
+	 */
+	public function filter_raw_data( $data ) {
+		return $data;
 	}
 }
 

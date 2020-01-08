@@ -71,7 +71,6 @@ EOF;
 	/**
 	 * Install rule table
 	 *
-	 *
 	 * @since 3.25.0
 	 *
 	 * @return void
@@ -153,7 +152,7 @@ EOF;
         ) $charset_collate;
 EOF;
 		// Execute the query for property table, we cant use db delta
-		// due to lack of support for foreign keys
+		// due to lack of support for foreign keys.
 		$this->wpdb->query( $sql );
 	}
 

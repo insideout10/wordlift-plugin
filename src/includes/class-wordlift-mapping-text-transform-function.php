@@ -44,5 +44,12 @@ class Wordlift_Mapping_Text_Transform_Function implements Wordlift_Mapping_Trans
 			'value' => $property_data['field_text'],
 		);
 	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function filter_raw_data( $data ) {
+		return $data;
+	}
 }
 

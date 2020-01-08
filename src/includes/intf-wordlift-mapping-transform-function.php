@@ -38,4 +38,12 @@ interface Wordlift_Mapping_Transform_Function {
 	 * @return Array Return transformed data.
 	 */
 	public function transform_data( $post_id, $property_data );
+
+	/**
+	 * Map raw data to the desired keys.
+	 *
+	 * @param Array|String $data An Associative Array containing raw data or string.
+	 * @return Array|String Return Mapped data.
+	 */
+	public function filter_raw_data( $data );
 }
