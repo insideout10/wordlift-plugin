@@ -56,7 +56,7 @@ class Wordlift_Install_3_25_0 extends Wordlift_Install {
 		$table_name      = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
 		$charset_collate = $this->wpdb->get_charset_collate();
 		$sql             = <<<EOF
-        CREATE TABLE $table_name (
+        CREATE TABLE IF NOT EXISTS $table_name (
 			mapping_id INT(11) NOT NULL AUTO_INCREMENT, 
 			mapping_title VARCHAR(255) NOT NULL,
 			mapping_status VARCHAR(255) NOT NULL DEFAULT 'active',
@@ -80,7 +80,7 @@ EOF;
 		$rule_group_table_name = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
 		$charset_collate       = $this->wpdb->get_charset_collate();
 		$sql                   = <<<EOF
-        CREATE TABLE $table_name (
+        CREATE TABLE IF NOT EXISTS $table_name (
 				rule_id INT(11) NOT NULL AUTO_INCREMENT,
 				rule_field_one VARCHAR(255) NOT NULL,
 				rule_logic_field VARCHAR(255) NOT NULL,
@@ -110,7 +110,7 @@ EOF;
 		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
 		$rule_table_name    = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
 		$sql                = <<<EOF
-        CREATE TABLE $table_name (
+        CREATE TABLE IF NOT EXISTS $table_name (
                 rule_group_id INT(11) NOT NULL AUTO_INCREMENT,
                 mapping_id INT(11) NOT NULL,
                 PRIMARY KEY  (rule_group_id),
@@ -138,7 +138,7 @@ EOF;
 
 		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
 		$sql                = <<<EOF
-        CREATE TABLE $table_name (
+        CREATE TABLE IF NOT EXISTS $table_name (
                 property_id INT(11) NOT NULL AUTO_INCREMENT,
                 mapping_id INT(11) NOT NULL,
 				property_name VARCHAR(255) NOT NULL,

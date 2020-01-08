@@ -197,10 +197,11 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 
 		$jsonlds = $mapping_converter_instance->get_jsonld_data();
 		$jsonld  = $jsonlds[0];
-		print_r( $jsonld );
+		$single_step = $jsonld['step'][0];
 
 		$this->assertEquals( 'HowTo', $jsonld['@type'], '`@type` must be `HowTo`, found instead ' . $jsonld['@type'] );
 		$this->assertCount( 5, $jsonld['step'] );
+		$this->assertArrayHasKey( '@type', $single_step, '`@type` must be present for step' );
 
 	}
 
