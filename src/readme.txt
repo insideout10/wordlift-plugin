@@ -142,6 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.23.7 (2020-01-08) =
+* Fix [#997](https://github.com/insideout10/wordlift-plugin/issues/997): Cache Flush All endpoint may interfere with other endpoints when WP_DEBUG is enable.
+
 = 3.23.6 (2020-01-03) =
 * Fix [#996](https://github.com/insideout10/wordlift-plugin/issues/996): Bad Request error when running analysis.
 * Fix [#995](https://github.com/insideout10/wordlift-plugin/issues/995): Unspecified Type error for existing posts.
