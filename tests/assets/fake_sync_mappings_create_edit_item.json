@@ -4,14 +4,14 @@
     "property_list": [
         {
 			"property_name":"foo",
-			"field_type_help_text":"bar",
+			"field_type":"bar",
 			"field_text":"foo",
             "transform_function":"foo",
             "property_id": 1
         },
         {
 			"property_name":"foo",
-			"field_type_help_text":"bar",
+			"field_type":"bar",
 			"field_text":"foo",
             "transform_function":"foo"
         }

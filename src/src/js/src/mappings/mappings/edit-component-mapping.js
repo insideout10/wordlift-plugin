@@ -33,7 +33,7 @@ class EditComponentMapping {
             // Conditionally remove property id, if it is added by user.
             const propertyItem = {
                 property_name: property.propertyHelpText,
-                field_type_help_text: property.fieldTypeHelpText,
+                field_type: property.fieldTypeHelpText,
                 field_help_text: property.fieldHelpText,
                 transform_function: property.transformHelpText,
                 property_status: property.property_status,
@@ -57,7 +57,7 @@ class EditComponentMapping {
     static mapPropertyAPIKeysToUi( property_list ) {
         return property_list.map((property)=>({
             propertyHelpText:property.property_name,
-            fieldTypeHelpText: property.field_type_help_text,
+            fieldTypeHelpText: property.field_type,
             fieldHelpText: property.field_help_text,
             transformHelpText: property.transform_function,
             property_id: parseInt( property.property_id ),

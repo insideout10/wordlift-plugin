@@ -35,7 +35,7 @@ const INITIAL_STATE = {
         propertyHeaderCheckboxClicked: false,
         choosenPropertyCategory: ACTIVE_CATEGORY,
         choosenPropertyBulkAction: null,
-        fieldTypeHelpTextOptions:editMappingSettings.wl_field_type_help_text_options,
+        fieldTypeHelpTextOptions:editMappingSettings.wl_field_type_options,
         transformHelpTextOptions:editMappingSettings.wl_transform_function_options,
         propertyList: []
     }

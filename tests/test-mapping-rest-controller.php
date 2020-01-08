@@ -247,7 +247,7 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 		// We insert 2 properties.
 		$property_data       = array(
 			'property_name'   => 'foo',
-			'field_type_help_text' => 'bar',
+			'field_type' => 'bar',
 			'field_text'      => 'foo',
 			'transform_function'  => 'foo',
 		);
