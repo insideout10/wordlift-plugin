@@ -84,7 +84,7 @@ class Wordlift_Mapping_Jsonld_Converter {
 			else {
 				// No transform function exists, do 1 to 1 mapping, just map the string value to the key.
 				foreach ( $json_ld_data_array as &$jsonld_data ) {
-					$jsonld_data[ $property['property_help_text'] ] = $property['field_text'];
+					$jsonld_data[ $property['property_name'] ] = $property['field_text'];
 				}
 			}
 		}

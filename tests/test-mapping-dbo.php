@@ -111,7 +111,7 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 	public function test_given_property_should_insert_property() {
 		$property_table_name = $this->wpdb->prefix . WL_PROPERTY_TABLE_NAME;
 		$property_data       = array(
-			'property_help_text'   => 'foo',
+			'property_name'   => 'foo',
 			'field_type_help_text' => 'bar',
 			'field_text'      => 'foo',
 			'transform_function'  => 'foo',
@@ -127,7 +127,7 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 	public function test_given_property_id_should_delete_property() {
 		$property_table_name = $this->wpdb->prefix . WL_PROPERTY_TABLE_NAME;
 		$property_data       = array(
-			'property_help_text'   => 'foo',
+			'property_name'   => 'foo',
 			'field_type_help_text' => 'bar',
 			'field_text'      => 'foo',
 			'transform_function'  => 'foo',
@@ -162,7 +162,7 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 		// Lets insert a mapping item.
 		$mapping_id = $this->dbo_instance->insert_mapping_item( 'foo' );
 		$property_data       = array(
-			'property_help_text'   => 'foo',
+			'property_name'   => 'foo',
 			'field_type_help_text' => 'bar',
 			'field_text'      => 'foo',
 			'transform_function'  => 'foo',

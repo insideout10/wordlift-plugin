@@ -39,7 +39,7 @@ class Wordlift_Mapping_Acf_Transform_Function implements Wordlift_Mapping_Transf
 	 * @inheritdoc
 	 */
 	public function transform_data( $post_id, $property_data ) {
-		$key   = $property_data['property_help_text'];
+		$key   = $property_data['property_name'];
 		$value = null;
 		// Check ACF is loaded.
 		if ( function_exists( 'get_field_object' ) ) {

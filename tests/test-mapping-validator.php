@@ -173,7 +173,7 @@ class Wordlift_Mapping_Validator_Test extends WP_UnitTestCase {
 			)
 		);
 		$property_data = array(
-			'property_help_text'   => 'foo',
+			'property_name'   => 'foo',
 			'field_type_help_text' => 'bar',
 			'field_text'      => 'foo',
 			'transform_function'  => 'foo',

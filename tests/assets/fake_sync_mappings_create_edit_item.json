@@ -3,16 +3,16 @@
     "mapping_title": "foo",
     "property_list": [
         {
-			"property_help_text":"foo",
+			"property_name":"foo",
 			"field_type_help_text":"bar",
-			"field_help_text":"foo",
+			"field_text":"foo",
             "transform_function":"foo",
             "property_id": 1
         },
         {
-			"property_help_text":"foo",
+			"property_name":"foo",
 			"field_type_help_text":"bar",
-			"field_help_text":"foo",
+			"field_text":"foo",
             "transform_function":"foo"
         }
     ],

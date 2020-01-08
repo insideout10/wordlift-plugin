@@ -142,7 +142,7 @@ EOF;
         CREATE TABLE $table_name (
                 property_id INT(11) NOT NULL AUTO_INCREMENT,
                 mapping_id INT(11) NOT NULL,
-				property_help_text VARCHAR(255) NOT NULL,
+				property_name VARCHAR(255) NOT NULL,
 				field_type_help_text VARCHAR(255) NOT NULL,
 				field_text VARCHAR(255) NOT NULL,
 				transform_function VARCHAR(255) NOT NULL,

@@ -40,7 +40,7 @@ class Wordlift_Mapping_Text_Transform_Function implements Wordlift_Mapping_Trans
 	public function transform_data( $post_id, $property_data ) {
 		// Do 1 to 1 mapping and return result.
 		return array(
-			'key'   => $property_data['property_help_text'],
+			'key'   => $property_data['property_name'],
 			'value' => $property_data['field_text'],
 		);
 	}
