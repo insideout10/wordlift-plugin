@@ -143,7 +143,7 @@ EOF;
                 mapping_id INT(11) NOT NULL,
 				property_name VARCHAR(255) NOT NULL,
 				field_type VARCHAR(255) NOT NULL,
-				field_text VARCHAR(255) NOT NULL,
+				field_name VARCHAR(255) NOT NULL,
 				transform_function VARCHAR(255) NOT NULL,
 				property_status  VARCHAR(255) NOT NULL DEFAULT 'active',
                 PRIMARY KEY  (property_id),

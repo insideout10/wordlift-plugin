@@ -175,14 +175,14 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 		$property_data_1 = array(
 			'property_name'   => '@type',
 			'field_type' => 'text',
-			'field_text'      => 'HowTo',
+			'field_name'      => 'HowTo',
 			'transform_function'  => 'text-transform-function',
 			'property_status'      => Wordlift_Mapping_Validator::ACTIVE_CATEGORY,
 		);
 		$property_data_2 = array(
 			'property_name'   => 'step',
 			'field_type' => 'ACF',
-			'field_text'      => 'step',
+			'field_name'      => 'step',
 			'transform_function'  => 'acf-transform-function',
 			'property_status'      => Wordlift_Mapping_Validator::ACTIVE_CATEGORY,
 		);
