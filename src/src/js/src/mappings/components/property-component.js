@@ -61,8 +61,10 @@ class PropertyComponent extends React.Component {
         const value = results.length > 0 ? results[0].value : null
         // If the value is array then display a selection box
         if ( Array.isArray( value ) ) {
+            console.log( value )
             return ( 
                 <SelectComponent
+                inputDataIsOptionGroup={ (field_type === 'acf') }
                 className="wl-form-select"
                 options={value}
                 value = {this.props.propData.fieldHelpText}

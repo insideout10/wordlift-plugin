@@ -53,14 +53,29 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 	 */
 	private static function get_acf_options() {
 		$acf_options = array();
-		if ( function_exists( 'get_field_objects' ) ) {
-			$acf_fields = get_field_objects();
-			foreach ( $acf_fields as $acf_field ) {
+		if ( function_exists( 'acf_get_field_groups' ) ) {
+			$field_groups     = acf_get_field_groups();
+			$field_group_data = array();
+			foreach ( $field_groups as $field_group ) {
+				$group_name    = $field_group['title'];
+				$group_key     = $field_group['key'];
+				$group_fields  = acf_get_fields( $group_key );
+				$group_options = array();
+				foreach ( $group_fields as $group_field ) {
+					array_push(
+						$group_options,
+						array(
+							'label' => $group_field['label'],
+							'value' => $group_field['value'],
+						)
+					);
+				}
+
 				array_push(
 					$acf_options,
 					array(
-						'label' => $acf_field['label'],
-						'value' => $acf_field['value'],
+						'group_name'    => $group_name,
+						'group_options' => $group_options,
 					)
 				);
 			}

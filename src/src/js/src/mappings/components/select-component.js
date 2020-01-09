@@ -20,6 +20,49 @@ class SelectComponent extends React.Component {
     constructor(props) {
         super(props)
     }
+
+    renderOptionsDefault = () => {
+        return ( 
+            this.props.options.map((item, index)=> {
+                return ( 
+                    <option key={index} value={item.value}>
+                        {item.label}
+                    </option> 
+                )
+            })
+        )
+    }
+    renderOptions = ( options ) => {
+        return ( 
+            options.map((item, index)=> {
+                return ( 
+                    <option key={index} value={item.value}>
+                        {item.label}
+                    </option> 
+                )
+            })
+        )
+    } 
+    renderOptionsForOptionGroup = () => {
+        return ( 
+            this.props.options.map((item, index)=> {
+                return (
+                    <optgroup label = { item.group_name } >
+                        { this.renderOptions( item.group_options ) }
+                    </optgroup>
+                )
+            })
+        )
+    }
+
+    renderOptionsConditionally() {
+        if ( this.props.inputDataIsOptionGroup ) {
+            return this.renderOptionsForOptionGroup()
+        }
+        else {
+            return this.renderOptionsDefault()
+        }
+    }
     render() {
         return (
         <React.Fragment>
@@ -30,14 +73,7 @@ class SelectComponent extends React.Component {
                     Select one
                 </option>
                 {
-                    this.props.options.map((item, index)=> {
-
-                        return ( 
-                            <option key={index} value={item.value}>
-                                {item.label}
-                            </option> 
-                        )
-                    })
+                    this.renderOptionsConditionally()
                 }
             </select> 
         </React.Fragment>)
