@@ -45,6 +45,26 @@ class Wordlift_Mapping_How_To_Step_Transform_Function extends Wordlift_Mapping_T
 		);
 	}
 	/**
+	 * Takes ACF section items and convert to schema section items.
+	 *
+	 * @param Array $section_items Array of ACF Section items.
+	 * @return Array $schema_section_items Array of schema section items.
+	 */
+	private function convert_acf_section_items_to_schema_section_items( $section_items ) {
+		$schema_section_items = array();
+		foreach ( $section_items as $section_item ) {
+			array_push(
+				$schema_section_items,
+				array(
+					'@type' => 'HowToStep',
+					'name'  => $section_item['step_name'],
+					'text'  => wp_strip_all_tags( $section_item['step_text'] ),
+				)
+			);
+		}
+		return $schema_section_items;
+	}
+	/**
 	 * {@inheritdoc}
 	 */
 	public function map_data_to_schema_properties( $data ) {
@@ -63,6 +83,10 @@ class Wordlift_Mapping_How_To_Step_Transform_Function extends Wordlift_Mapping_T
 			}
 			if ( array_key_exists( 'image', $step ) ) {
 				$single_schema_step['image'] = $step['image'];
+			}
+			if ( array_key_exists( 'section_item', $step ) ) {
+				$single_schema_step['itemListElement'] 
+				= $this->convert_acf_section_items_to_schema_section_items( (array) $step['section_item'] );
 			}
 			array_push(
 				$schema_steps,
