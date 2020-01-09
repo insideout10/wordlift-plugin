@@ -142,7 +142,8 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.23.7 (2020-01-08) =
+= 3.23.7 (2020-01-09) =
+* Fix [#1001](https://github.com/insideout10/wordlift-plugin/issues/1001): Entities not highlighted in Classification Box.
 * Fix [#997](https://github.com/insideout10/wordlift-plugin/issues/997): Cache Flush All endpoint may interfere with other endpoints when WP_DEBUG is enable.
 
 = 3.23.6 (2020-01-03) =
