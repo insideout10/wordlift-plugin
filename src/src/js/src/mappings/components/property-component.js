@@ -64,7 +64,7 @@ class PropertyComponent extends React.Component {
             return ( 
                 <SelectComponent
                 className="wl-form-select"
-                options={this.props.fieldNameOptions}
+                options={value}
                 value = {this.props.propData.fieldHelpText}
                 onChange={ (event)=> 
                     { this.handleChangeForPropertyField("fieldHelpText", event)
