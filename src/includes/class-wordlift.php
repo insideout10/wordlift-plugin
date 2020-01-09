@@ -954,18 +954,18 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-post-excerpt-helper.php';
 
 		/**
-		 * Load the JSON-LD service to publish entities using JSON-LD.s
-		 *
-		 * @since 3.8.0
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-jsonld-service.php';
-
-		/**
 		 * Load the Mapping JSON-LD converter which edit the json-ld data provided json-ld service.
 		 *
 		 * @since 3.25.0
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-mapping-jsonld-converter.php';
+
+		/**
+		 * Load the JSON-LD service to publish entities using JSON-LD.s
+		 *
+		 * @since 3.8.0
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-jsonld-service.php';
 
 		/**
 		 * Load the transform function registry to access all transform functions present

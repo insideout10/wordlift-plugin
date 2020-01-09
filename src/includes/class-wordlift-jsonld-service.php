@@ -181,9 +181,10 @@ class Wordlift_Jsonld_Service {
 				// via the `@id` but no other properties are loaded.
 				return $entity_to_jsonld_converter->convert( $item, $references );
 			}, $references ) ) );
-
-		// Finally send the JSON-LD.
-		return $jsonld;
+		
+		$mapping_converter_instance = new Wordlift_Mapping_Jsonld_Converter( $post_id, $jsonld );
+		// Apply the mappings and return json ld.
+		return $mapping_converter_instance->get_jsonld_data();
 	}
 
 	/**
