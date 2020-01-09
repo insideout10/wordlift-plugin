@@ -132,6 +132,38 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 		return 'direct';
 	}
 
+	public function test_how_to_tool_mapping() {
+		$max_tools = 5;
+		$post_id  = $this->factory()->post->create();
+		$result_1 = wp_add_object_terms( $post_id, 'how-to', 'category' );
+		for ( $i = 1; $i <= $max_tools; $i ++ ) {
+			$result = add_row( 'supply', array(
+				'type' => 'HowToTool',
+				'name' => "Tool $i"
+			), $post_id );
+			$this->assertNotFalse( $result, 'Must not be false.' );
+		}
+		$jsonlds = $this->jsonld_service->get_jsonld( false, $post_id );
+		$mapping_converter_instance = new Wordlift_Mapping_Jsonld_Converter( $post_id, $jsonlds );
+		$property_data_1 = array(
+			'property_name' => 'tool',
+			'field_type' => 'ACF',
+			'field_name'          => 'tool',
+			'transform_function'  => 'how_to_tool_transform_function',
+			'property_status'     => Wordlift_Mapping_Validator::ACTIVE_CATEGORY,
+		);
+
+		$properties    = array(
+			$property_data_1,
+		);
+		// Create a mapping item for category how_to.
+		$this->create_new_mapping_item( 'category', (int) $result_1[0], $properties );	
+		$jsonlds = $mapping_converter_instance->get_jsonld_data();
+		$jsonld  = $jsonlds[0]['supply'][0];
+		$this->assertEquals( $jsonld['@type'], 'HowToTool' );
+		$this->assertArrayHasKey( 'name', $jsonld );
+	}
+
 	public function test_how_to_supply_mapping() {
 		$max_steps = 5;
 		$post_id  = $this->factory()->post->create();

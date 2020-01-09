@@ -306,7 +306,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 }
 
 
-if( function_exists( 'acf_add_local_field_group' ) ) {
+if( function_exists('acf_add_local_field_group') ) {
 
 	acf_add_local_field_group(array(
 		'key' => 'group_5e16cb12bcb47',
@@ -360,6 +360,69 @@ if( function_exists( 'acf_add_local_field_group' ) ) {
 						'name' => 'name',
 						'type' => 'text',
 						'instructions' => 'The name of the item.',
+						'required' => 1,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'default_value' => '',
+						'placeholder' => '',
+						'prepend' => '',
+						'append' => '',
+						'maxlength' => '',
+					),
+				),
+			),
+			array(
+				'key' => 'field_5e16decc6097f',
+				'label' => 'HowToTool',
+				'name' => 'tool',
+				'type' => 'repeater',
+				'instructions' => '',
+				'required' => 0,
+				'conditional_logic' => 0,
+				'wrapper' => array(
+					'width' => '',
+					'class' => '',
+					'id' => '',
+				),
+				'collapsed' => '',
+				'min' => 0,
+				'max' => 0,
+				'layout' => 'table',
+				'button_label' => '',
+				'sub_fields' => array(
+					array(
+						'key' => 'field_5e16def160980',
+						'label' => 'Type',
+						'name' => 'type',
+						'type' => 'radio',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'choices' => array(
+							'HowToTool' => 'HowToTool',
+						),
+						'allow_null' => 0,
+						'other_choice' => 0,
+						'default_value' => 'HowToTool',
+						'layout' => 'vertical',
+						'return_format' => 'value',
+						'save_other_choice' => 0,
+					),
+					array(
+						'key' => 'field_5e16df2e60981',
+						'label' => 'Name',
+						'name' => 'name',
+						'type' => 'text',
+						'instructions' => 'A tool used (but not consumed) when performing instructions for how to achieve a result.',
 						'required' => 1,
 						'conditional_logic' => 0,
 						'wrapper' => array(

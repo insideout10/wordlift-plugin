@@ -976,6 +976,7 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-mapping-transform-function.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-mapping-how-to-step-transform-function.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-mapping-how-to-supply-transform-function.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-mapping-how-to-tool-transform-function.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-mapping-text-transform-function.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/sync-mappings/class-wordlift-mapping-transform-function-registry.php';
 
