@@ -319,4 +319,54 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 
 	}
 
+	public function test_how_to_step_with_step_items() {
+		// Create a post and assign it the How To category.
+		$post_id  = $this->factory()->post->create();
+		$result_1 = wp_add_object_terms( $post_id, 'how-to', 'category' );
+		$max_steps = 5;
+		for ( $i = 1; $i <= $max_steps; $i ++ ) {
+			$result = add_row( 'step', array(
+				'type' => 'HowToStep',
+				'name'  => "Name $i",
+				'step_item' => array(
+					array(
+						'step_type' => "HowToDirection",
+						'step_text' => "Step Text $i",
+					),
+				),
+			), $post_id );
+			$this->assertNotFalse( $result, 'Must not be false.' );
+		}
+
+
+		$jsonlds = $this->jsonld_service->get_jsonld( false, $post_id );
+		$mapping_converter_instance = new Wordlift_Mapping_Jsonld_Converter( $post_id, $jsonlds );
+
+		$property_data_2 = array(
+			'property_name'   => 'step',
+			'field_type' => 'ACF',
+			'field_name'      => 'step',
+			'transform_function'  => 'how_to_step_transform_function',
+			'property_status'      => Wordlift_Mapping_Validator::ACTIVE_CATEGORY,
+		);
+		$properties    = array(
+			$property_data_2,
+		);
+		// Create a mapping item for category how_to.
+		$this->create_new_mapping_item( 'category', (int) $result_1[0], $properties );
+
+		$jsonlds = $mapping_converter_instance->get_jsonld_data();
+		$jsonld  = $jsonlds[0];
+		$single_step = $jsonld['step'][0];
+		// Type of step should be HowToSection.
+		$this->assertEquals( $single_step['@type'], 'HowToStep' );
+		$this->assertArrayHasKey( 'itemListElement', $single_step );
+		// A single step should have 1 step item in the array.
+		$step_list = $single_step['itemListElement'];
+		$this->assertCount( 1, $step_list );
+		$single_step_item = $section_list[0];
+		$this->assertEquals( 'HowToDirection', $single_step_item['@type'] );
+		$this->assertEquals( 'Step Text 1', $single_step_item['text'] );
+	}
+
 }
