@@ -137,7 +137,7 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 		$post_id  = $this->factory()->post->create();
 		$result_1 = wp_add_object_terms( $post_id, 'how-to', 'category' );
 		for ( $i = 1; $i <= $max_tools; $i ++ ) {
-			$result = add_row( 'supply', array(
+			$result = add_row( 'tool', array(
 				'type' => 'HowToTool',
 				'name' => "Tool $i"
 			), $post_id );
@@ -159,7 +159,7 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 		// Create a mapping item for category how_to.
 		$this->create_new_mapping_item( 'category', (int) $result_1[0], $properties );	
 		$jsonlds = $mapping_converter_instance->get_jsonld_data();
-		$jsonld  = $jsonlds[0]['supply'][0];
+		$jsonld  = $jsonlds[0]['tool'][0];
 		$this->assertEquals( $jsonld['@type'], 'HowToTool' );
 		$this->assertArrayHasKey( 'name', $jsonld );
 	}
