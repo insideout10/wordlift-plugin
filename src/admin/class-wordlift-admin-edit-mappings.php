@@ -45,6 +45,38 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 			array( $that, 'render' )
 		);
 	}
+
+	/**
+	 * Returns array of acf options.
+	 *
+	 * @return Array Acf options Array.
+	 */
+	private static function get_acf_options() {
+		$acf_options = array();
+		return $acf_options;
+	}
+	/**
+	 * Returns field name options based on the choosen field type.
+	 *
+	 * @return Array Array of the options.
+	 */
+	public static function get_all_field_name_options() {
+		$field_name_options = array(
+			array(
+				'field_type' => 'acf',
+				'value'      => self::get_acf_options(),
+			),
+			array(
+				'field_type' => 'text',
+				'value'      => '',
+			),
+			array(
+				'field_type' => 'custom_field',
+				'value'      => '',
+			),
+		);
+		return $field_name_options;
+	}
 	/**
 	 * Load Dependancies required for js client.
 	 */
@@ -79,7 +111,9 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 				'value' => 'custom_field',
 			),
 		);
-		$edit_mapping_settings['wl_logic_field_options']          = array(
+		// Add wl_edit_field_name_options.
+		$edit_mapping_settings['wl_field_name_options']  = self::get_all_field_name_options();
+		$edit_mapping_settings['wl_logic_field_options'] = array(
 			array(
 				'label' => __( 'is equal to', 'wordlift' ),
 				'value' => '===',
