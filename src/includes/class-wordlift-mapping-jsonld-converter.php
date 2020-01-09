@@ -76,7 +76,7 @@ class Wordlift_Mapping_Jsonld_Converter {
 		foreach ( $properties as $property ) {
 			$transform_instance = $this->transform_functions_registry->get_transform_function( $property['transform_function'] );
 			if ( null !== $transform_instance ) {
-				$transformed_data = $transform_instance->transform_data( $this->post_id, $property );
+				$transformed_data = $transform_instance->get_transformed_data( $this->post_id, $property );
 				foreach ( $json_ld_data_array as &$jsonld_data ) {
 					$jsonld_data[ $transformed_data['key'] ] = $transformed_data['value'];
 				}

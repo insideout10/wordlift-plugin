@@ -156,4 +156,16 @@ EOF;
 		$this->wpdb->query( $sql );
 	}
 
+	/**
+	 * A custom procedure run by the caller to determine whether the install procedure must be run.
+	 *
+	 * @since 3.20.0
+	 *
+	 * @return bool True if the procedure must run.
+	 */
+	public function must_install() {
+
+		return true;
+	}
+
 }

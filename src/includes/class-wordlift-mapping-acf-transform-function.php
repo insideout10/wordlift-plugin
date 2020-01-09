@@ -1,5 +1,5 @@
 <?php
-require_once 'intf-wordlift-mapping-transform-function.php';
+require_once 'class-wordlift-mapping-transform-function.php';
 /**
  * Define the Wordlift_Mapping_Acf_Transform_Function Class
  *
@@ -13,13 +13,13 @@ require_once 'intf-wordlift-mapping-transform-function.php';
  *
  * @since 3.25.0
  */
-class Wordlift_Mapping_Acf_Transform_Function implements Wordlift_Mapping_Transform_Function {
+class Wordlift_Mapping_Acf_Transform_Function extends Wordlift_Mapping_Transform_Function {
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function get_name() {
-		return 'acf-transform-function';
+		return 'acf_transform_function';
 	}
 
 	/**
@@ -28,25 +28,26 @@ class Wordlift_Mapping_Acf_Transform_Function implements Wordlift_Mapping_Transf
 	public function get_label() {
 		return __( 'ACF Transform function', 'wordlift' );
 	}
+
 	/**
 	 * {@inheritdoc}
 	 */
-	public function transform_data( $post_id, $property_data ) {
+	public function get_data_from_data_source( $post_id, $property_data ) {
 		$key   = $property_data['property_name'];
 		$value = null;
 		// Check ACF is loaded.
-		if ( function_exists( 'get_field_object' ) ) {
+		if ( function_exists( 'get_field' ) ) {
 			$value = get_field( $key, $post_id );
-		}
+		}	
 		return array(
 			'key'   => $key,
-			'value' => $this->filter_raw_data( $value ),
+			'value' => $value,
 		);
 	}
 	/**
 	 * {@inheritdoc}
 	 */
-	public function filter_raw_data( $data ) {
+	public function map_data_to_schema_properties( $data ) {
 		return $data;
 	}
 }
