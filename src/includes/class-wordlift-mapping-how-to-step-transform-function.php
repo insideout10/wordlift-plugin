@@ -48,14 +48,21 @@ class Wordlift_Mapping_How_To_Step_Transform_Function extends Wordlift_Mapping_T
 	 * {@inheritdoc}
 	 */
 	public function map_data_to_schema_properties( $data ) {
-		$steps = $data['value'];
-		foreach ( $steps as &$step ) {
+		$acf_steps    = $data['value'];
+		$schema_steps = array();
+		foreach ( $acf_steps as $step ) {
 			$type = $step['type'];
-			unset( $step['type'] );
-			$step['@type'] = $type;
-			$step['text']  = wp_strip_all_tags( $step['text'] );
+			array_push(
+				$schema_steps,
+				array(
+					'@type' => $step['type'],
+					'text'  => wp_strip_all_tags( $step['text'] ),
+					'name'  => $step['name'],
+					'image' => $step['image'],
+				)
+			);
 		}
-		$data['value'] = $steps;
+		$data['value'] = $schema_steps;
 		return $data;
 	}
 }

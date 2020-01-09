@@ -202,6 +202,9 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 'HowTo', $jsonld['@type'], '`@type` must be `HowTo`, found instead ' . $jsonld['@type'] );
 		$this->assertCount( 5, $jsonld['step'] );
 		$this->assertArrayHasKey( '@type', $single_step, '`@type` must be present for step' );
+		$this->assertArrayHasKey( 'text', $single_step, '`text` must be present for step' );
+		$this->assertArrayHasKey( 'name', $single_step, '`name` must be present for step' );
+		$this->assertArrayHasKey( 'name', $single_step, '`image` must be present for step' );
 
 	}
 
