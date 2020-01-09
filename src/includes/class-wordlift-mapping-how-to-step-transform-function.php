@@ -13,20 +13,20 @@ require_once 'class-wordlift-mapping-transform-function.php';
  *
  * @since 3.25.0
  */
-class Wordlift_Mapping_Acf_Transform_Function extends Wordlift_Mapping_Transform_Function {
+class Wordlift_Mapping_How_To_Step_Transform_Function extends Wordlift_Mapping_Transform_Function {
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function get_name() {
-		return 'acf_transform_function';
+		return 'how_to_step_transform_function';
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function get_label() {
-		return __( 'ACF Transform function', 'wordlift' );
+		return __( 'HowToStep Transform function', 'wordlift' );
 	}
 
 	/**
@@ -48,6 +48,14 @@ class Wordlift_Mapping_Acf_Transform_Function extends Wordlift_Mapping_Transform
 	 * {@inheritdoc}
 	 */
 	public function map_data_to_schema_properties( $data ) {
+		$steps = $data['value'];
+		foreach ( $steps as &$step ) {
+			$type = $step['type'];
+			unset( $step['type'] );
+			$step['@type'] = $type;
+			$step['text']  = wp_strip_all_tags( $step['text'] );
+		}
+		$data['value'] = $steps;
 		return $data;
 	}
 }
