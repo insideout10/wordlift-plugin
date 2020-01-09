@@ -37,7 +37,7 @@ class Wordlift_Mapping_How_To_Tool_Transform_Function extends Wordlift_Mapping_T
 		$value = null;
 		// Check ACF is loaded.
 		if ( function_exists( 'get_field' ) ) {
-			$value = get_field( $key, $post_id );
+			$value = get_field( $property_data['field_name'], $post_id );
 		}	
 		return array(
 			'key'   => $key,
@@ -48,6 +48,7 @@ class Wordlift_Mapping_How_To_Tool_Transform_Function extends Wordlift_Mapping_T
 	 * {@inheritdoc}
 	 */
 	public function map_data_to_schema_properties( $data ) {
+		var_dump( $data );
 		$acf_supply_items    = $data['value'];
 		$schema_supply_items = array();
 		foreach ( $acf_supply_items as $supply_item ) {
