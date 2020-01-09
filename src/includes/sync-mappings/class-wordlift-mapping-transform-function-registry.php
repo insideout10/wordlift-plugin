@@ -24,6 +24,7 @@ class Wordlift_Mapping_Transform_Function_Registry {
 		$this->transform_function_array = array(
 			new Wordlift_Mapping_How_To_Step_Transform_Function(),
 			new Wordlift_Mapping_Text_Transform_Function(),
+			new Wordlift_Mapping_How_To_Supply_Transform_Function(),
 		);
 	}
 

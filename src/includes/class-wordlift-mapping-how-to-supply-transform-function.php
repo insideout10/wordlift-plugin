@@ -13,20 +13,20 @@ require_once 'class-wordlift-mapping-transform-function.php';
  *
  * @since 3.25.0
  */
-class Wordlift_Mapping_How_To_Step_Transform_Function extends Wordlift_Mapping_Transform_Function {
+class Wordlift_Mapping_How_To_Supply_Transform_Function extends Wordlift_Mapping_Transform_Function {
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function get_name() {
-		return 'how_to_step_transform_function';
+		return 'how_to_supply_transform_function';
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function get_label() {
-		return __( 'HowToStep Transform function', 'wordlift' );
+		return __( 'HowToSupply Transform function', 'wordlift' );
 	}
 
 	/**
@@ -48,29 +48,18 @@ class Wordlift_Mapping_How_To_Step_Transform_Function extends Wordlift_Mapping_T
 	 * {@inheritdoc}
 	 */
 	public function map_data_to_schema_properties( $data ) {
-		$acf_steps    = $data['value'];
-		$schema_steps = array();
-		foreach ( $acf_steps as $step ) {
-			$single_schema_step = array();
-			if ( array_key_exists( 'type', $step ) ) {
-				$single_schema_step['@type'] = $step['type'];
-			}
-			if ( array_key_exists( 'text', $step ) ) {
-				$single_schema_step['text'] = wp_strip_all_tags( $step['text'] );
-			}
-			if ( array_key_exists( 'name', $step ) ) {
-				$single_schema_step['name'] = $step['name'];
-			}
-			if ( array_key_exists( 'image', $step ) ) {
-				$single_schema_step['image'] = $step['image'];
-			}
+		$acf_supply_items    = $data['value'];
+        $schema_supply_items = array();
+		foreach ( $acf_supply_items as $supply_item ) {
 			array_push(
-				$schema_steps,
-				$single_schema_step
+				$schema_supply_items,
+				array(
+					'@type' => $supply_item['type'],
+					'name'  => wp_strip_all_tags( $supply_item['name'] ),
+				)
 			);
 		}
-		$data['value'] = $schema_steps;
+		$data['value'] = $schema_supply_items;
 		return $data;
 	}
 }
-

@@ -71,7 +71,7 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 		$this->assertNotWPError( $result_4, 'An error occurred: ' . var_export( $result_4, true ) );
 
 		$this->jsonld_service = Wordlift_Jsonld_Service::get_instance();
-
+		require( 'test-mappings.acf.php' );
 	}
 
 	/**
@@ -132,11 +132,42 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 		return 'direct';
 	}
 
+	public function test_how_to_supply_mapping() {
+		$max_steps = 5;
+		$post_id  = $this->factory()->post->create();
+		$result_1 = wp_add_object_terms( $post_id, 'how-to', 'category' );
+		for ( $i = 1; $i <= $max_steps; $i ++ ) {
+			$result = add_row( 'supply', array(
+				'type' => 'HowToSupply',
+				'name' => "Supply $i"
+			), $post_id );
+			$this->assertNotFalse( $result, 'Must not be false.' );
+		}
+		$jsonlds = $this->jsonld_service->get_jsonld( false, $post_id );
+		$mapping_converter_instance = new Wordlift_Mapping_Jsonld_Converter( $post_id, $jsonlds );
+		$property_data_1 = array(
+			'property_name' => 'supply',
+			'field_type' => 'ACF',
+			'field_name'          => 'supply',
+			'transform_function'  => 'how_to_supply_transform_function',
+			'property_status'     => Wordlift_Mapping_Validator::ACTIVE_CATEGORY,
+		);
+
+		$properties    = array(
+			$property_data_1,
+		);
+		// Create a mapping item for category how_to.
+		$this->create_new_mapping_item( 'category', (int) $result_1[0], $properties );	
+		$jsonlds = $mapping_converter_instance->get_jsonld_data();
+		$jsonld  = $jsonlds[0]['supply'][0];
+		$this->assertEquals( $jsonld['@type'], 'HowToSupply' );
+		$this->assertArrayHasKey( 'name', $jsonld );
+	}
+
 	public function test_how_to_with_5_steps() {
 
 		// Add our custom fields.
 		$this->assertTrue( function_exists( 'acf_add_local_field_group' ), '`acf_add_local_field_group` must exist.' );
-		require( 'test-mappings.acf.php' );
 
 		// Validate field group.
 		$this->assertTrue( acf_is_local_field_group( 'group_5e09d8a05741b' ), 'Our ACF local group must exist.' );
@@ -159,7 +190,9 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 		for ( $i = 1; $i <= $max_steps; $i ++ ) {
 			$result = add_row( 'step', array(
 				'type' => 'HowToStep',
-				'text' => "Step $i"
+				'text' => "Step $i",
+				'image' => "Image $i",
+				'name'  => "Name $i",
 			), $post_id );
 			$this->assertNotFalse( $result, 'Must not be false.' );
 		}
@@ -196,7 +229,6 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 
 		$jsonlds = $mapping_converter_instance->get_jsonld_data();
 		$jsonld  = $jsonlds[0];
-		print_r( $jsonld );
 		$single_step = $jsonld['step'][0];
 
 		$this->assertEquals( 'HowTo', $jsonld['@type'], '`@type` must be `HowTo`, found instead ' . $jsonld['@type'] );
@@ -204,7 +236,7 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 		$this->assertArrayHasKey( '@type', $single_step, '`@type` must be present for step' );
 		$this->assertArrayHasKey( 'text', $single_step, '`text` must be present for step' );
 		$this->assertArrayHasKey( 'name', $single_step, '`name` must be present for step' );
-		$this->assertArrayHasKey( 'name', $single_step, '`image` must be present for step' );
+		$this->assertArrayHasKey( 'image', $single_step, '`image` must be present for step' );
 
 	}
 

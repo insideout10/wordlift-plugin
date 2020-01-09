@@ -304,3 +304,94 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 		'description'           => '',
 	) );
 }
+
+
+if( function_exists( 'acf_add_local_field_group' ) ) {
+
+	acf_add_local_field_group(array(
+		'key' => 'group_5e16cb12bcb47',
+		'title' => 'HowToSupply',
+		'fields' => array(
+			array(
+				'key' => 'field_5e16cb76dd915',
+				'label' => 'HowToSupply',
+				'name' => 'supply',
+				'type' => 'repeater',
+				'instructions' => 'A sub-property of instrument. A supply consumed when performing instructions or a direction.',
+				'required' => 0,
+				'conditional_logic' => 0,
+				'wrapper' => array(
+					'width' => '',
+					'class' => '',
+					'id' => '',
+				),
+				'collapsed' => '',
+				'min' => 0,
+				'max' => 0,
+				'layout' => 'table',
+				'button_label' => '',
+				'sub_fields' => array(
+					array(
+						'key' => 'field_5e16cbf7dd916',
+						'label' => 'Type',
+						'name' => 'type',
+						'type' => 'radio',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'choices' => array(
+							'HowToSupply' => 'HowToSupply',
+						),
+						'allow_null' => 0,
+						'other_choice' => 0,
+						'default_value' => 'HowToSupply',
+						'layout' => 'vertical',
+						'return_format' => 'value',
+						'save_other_choice' => 0,
+					),
+					array(
+						'key' => 'field_5e16cc2ddd917',
+						'label' => 'Name',
+						'name' => 'name',
+						'type' => 'text',
+						'instructions' => 'The name of the item.',
+						'required' => 1,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'default_value' => '',
+						'placeholder' => '',
+						'prepend' => '',
+						'append' => '',
+						'maxlength' => '',
+					),
+				),
+			),
+		),
+		'location' => array(
+			array(
+				array(
+					'param' => 'post_category',
+					'operator' => '==',
+					'value' => 'category:how-to',
+				),
+			),
+		),
+		'menu_order' => 0,
+		'position' => 'normal',
+		'style' => 'default',
+		'label_placement' => 'top',
+		'instruction_placement' => 'label',
+		'hide_on_screen' => '',
+		'active' => true,
+		'description' => '',
+	));
+}
