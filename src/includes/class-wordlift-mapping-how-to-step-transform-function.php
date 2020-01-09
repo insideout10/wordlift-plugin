@@ -56,7 +56,7 @@ class Wordlift_Mapping_How_To_Step_Transform_Function extends Wordlift_Mapping_T
 			array_push(
 				$schema_section_items,
 				array(
-					'@type' => $section_item['type'],
+					'@type' => 'HowToSection',
 					'name'  => $section_item['step_name'],
 					'text'  => wp_strip_all_tags( $section_item['step_text'] ),
 				)

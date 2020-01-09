@@ -364,7 +364,7 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 		// A single step should have 1 step item in the array.
 		$step_list = $single_step['itemListElement'];
 		$this->assertCount( 1, $step_list );
-		$single_step_item = $section_list[0];
+		$single_step_item = $step_list[0];
 		$this->assertEquals( 'HowToDirection', $single_step_item['@type'] );
 		$this->assertEquals( 'Step Text 1', $single_step_item['text'] );
 	}
