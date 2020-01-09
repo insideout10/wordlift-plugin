@@ -35,7 +35,6 @@ const PropertyInputField = ( { propData, handleChangeForPropertyField, inputKeyN
 class PropertyComponent extends React.Component {
     constructor (props) {
         super(props)
-        console.log( this )
     }
     /**
      * When a property item changes this method gets fired
@@ -51,6 +50,36 @@ class PropertyComponent extends React.Component {
         }
         this.props.dispatch(action)
         console.log( action )
+    }
+
+    /**
+     * Display a list of options or just a text box depends on the field type
+     */
+    getInputFieldForFieldName = () => {
+        const field_type = this.props.propData.fieldTypeHelpText
+        const results = this.props.fieldNameOptions.filter((el)=> el.field_type === field_type )
+        const value = results.length > 0 ? results[0].value : null
+        // If the value is array then display a selection box
+        if ( Array.isArray( value ) ) {
+            return ( 
+                <SelectComponent
+                className="wl-form-select"
+                options={this.props.fieldNameOptions}
+                value = {this.props.propData.fieldHelpText}
+                onChange={ (event)=> 
+                    { this.handleChangeForPropertyField("fieldHelpText", event)
+                }} />
+            )
+        }
+        else {
+            return (
+                <PropertyInputField 
+                propData                     = { this.props.propData }
+                handleChangeForPropertyField = { this.handleChangeForPropertyField }
+                inputKeyName                 = 'fieldHelpText'
+                />
+            )
+        }
     }
 
     render() {
@@ -94,11 +123,7 @@ class PropertyComponent extends React.Component {
                                 Field Text
                             </td>
                             <td>
-                                <PropertyInputField 
-                                    propData                     = { this.props.propData }
-                                    handleChangeForPropertyField = { this.handleChangeForPropertyField }
-                                    inputKeyName                 = 'fieldHelpText'
-                                />
+                                { this.getInputFieldForFieldName() }
                             </td>
                         </tr>
                         <tr>
@@ -141,7 +166,8 @@ PropertyComponent.propTypes = {
  const mapStateToProps = function (state) {
      return {
         transformHelpTextOptions: state.PropertyListData.transformHelpTextOptions,
-        fieldTypeHelpTextOptions: state.PropertyListData.fieldTypeHelpTextOptions
+        fieldTypeHelpTextOptions: state.PropertyListData.fieldTypeHelpTextOptions,
+        fieldNameOptions: state.PropertyListData.fieldNameOptions,
      }
  }
 
