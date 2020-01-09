@@ -170,20 +170,24 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 
 		$this->assertTrue( is_array( $jsonlds ), '`$jsonlds` must be an array.' );
 		$this->assertCount( 1, $jsonlds, 'We must receive one JSON-LD.' );
-
+		global $wpdb;
+		$property_table_name = $wpdb->prefix . WL_PROPERTY_TABLE_NAME;
+		$cols_sql = "DESCRIBE $property_table_name";
+		$all_objects = $wpdb->get_results( $cols_sql );
+		var_dump( $all_objects );
 		// Property for HowTo.
 		$property_data_1 = array(
-			'property_name'   => '@type',
+			'property_name' => '@type',
 			'field_type' => 'text',
-			'field_name'      => 'HowTo',
-			'transform_function'  => 'text-transform-function',
-			'property_status'      => Wordlift_Mapping_Validator::ACTIVE_CATEGORY,
+			'field_name'          => 'HowTo',
+			'transform_function'  => 'text_transform_function',
+			'property_status'     => Wordlift_Mapping_Validator::ACTIVE_CATEGORY,
 		);
 		$property_data_2 = array(
 			'property_name'   => 'step',
 			'field_type' => 'ACF',
 			'field_name'      => 'step',
-			'transform_function'  => 'acf-transform-function',
+			'transform_function'  => 'acf_transform_function',
 			'property_status'      => Wordlift_Mapping_Validator::ACTIVE_CATEGORY,
 		);
 		$properties    = array(

@@ -34,7 +34,7 @@ class EditComponentMapping {
             const propertyItem = {
                 property_name: property.propertyHelpText,
                 field_type: property.fieldTypeHelpText,
-                field_help_text: property.fieldHelpText,
+                field_name: property.fieldHelpText,
                 transform_function: property.transformHelpText,
                 property_status: property.property_status,
             }
@@ -58,7 +58,7 @@ class EditComponentMapping {
         return property_list.map((property)=>({
             propertyHelpText:property.property_name,
             fieldTypeHelpText: property.field_type,
-            fieldHelpText: property.field_help_text,
+            fieldHelpText: property.field_name,
             transformHelpText: property.transform_function,
             property_id: parseInt( property.property_id ),
             property_status: property.property_status,
