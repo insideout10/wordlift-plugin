@@ -95,9 +95,9 @@ class PropertyComponent extends React.Component {
                     <tbody>
                         <tr>
                             <td colspan="2">
-                                Property Help Text
+                                Property Name
                             </td>
-                            <td>
+                            <td colspan="3">
                                 <PropertyInputField 
                                     propData                     = { this.props.propData }
                                     handleChangeForPropertyField = { this.handleChangeForPropertyField }
@@ -107,9 +107,9 @@ class PropertyComponent extends React.Component {
                         </tr>
                         <tr>
                             <td colspan="2">
-                                Field Type Help Text
+                                Field Type
                             </td>
-                            <td>
+                            <td colspan="3">
                                 <SelectComponent
                                     className="wl-form-select"
                                     options={this.props.fieldTypeHelpTextOptions}
@@ -124,15 +124,15 @@ class PropertyComponent extends React.Component {
                             <td colspan="2">
                                 Field Text
                             </td>
-                            <td>
+                            <td colspan="3">
                                 { this.getInputFieldForFieldName() }
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2">
-                            Transform Help Text
+                            Transform Function
                             </td>
-                            <td>
+                            <td colspan="3">
                                 <SelectComponent
                                     className="wl-form-select"
                                     options={this.props.transformHelpTextOptions}
