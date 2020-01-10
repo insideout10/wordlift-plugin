@@ -164,8 +164,9 @@ class Wordlift_Public {
 
 		// Prepare a settings array for client-side functions.
 		$settings = array(
-			'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-			'apiUrl'  => get_home_url( null, 'wl-api/' ),
+			'ajaxUrl'    => admin_url( 'admin-ajax.php' ),
+			'apiUrl'     => get_home_url( null, 'wl-api/' ),
+			'jsonld_url' => rest_url( '/wordlift/v1/jsonld/' )
 		);
 
 		// If we're in a single page, then print out the post id.
@@ -184,7 +185,7 @@ class Wordlift_Public {
 		// @see https://github.com/insideout10/wordlift-plugin/issues/733
 		$jsonld_enabled = is_home() || is_front_page() || Wordlift_Entity_Type_Service::is_valid_entity_post_type( get_post_type() );
 
-		// Add the JSON-LD enabled flag, when set to false, the JSON-lD won't
+		// Add the JSON-LD enabled flag, when set to false, the JSON-LD won't
 		// be loaded.
 		//
 		// @see https://github.com/insideout10/wordlift-plugin/issues/642.
