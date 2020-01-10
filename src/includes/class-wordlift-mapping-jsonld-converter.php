@@ -60,7 +60,27 @@ class Wordlift_Mapping_Jsonld_Converter {
 		$this->jsonld_data                  = $jsonld_data;
 		$this->post_id                      = $post_id;
 	}
-
+	private static function should_be_replaced_on_one_entity( $key, $value ) {
+		return ( $key === '@type' && $value === 'HowTo' ) || $key === 'step';
+	}
+	private static function replace_jsonld_based_on_type( $json_ld_data_array, $key, $value ) {
+		if ( self::should_be_replaced_on_one_entity( $key, $value ) ) {
+			// Replace it only on first element.
+			if ( count( $json_ld_data_array ) > 0 ) {
+				$json_ld_data_array[0][ $key ] = $value;
+			}
+			return $json_ld_data_array;
+		}
+		else {
+			return self::iterate_through_items_and_replace( $json_ld_data_array, $key, $value );
+		}
+	}
+	private static function iterate_through_items_and_replace( $json_ld_data_array, $key, $value ) {
+		foreach ( $json_ld_data_array as &$jsonld_data ) {
+			$jsonld_data[ $key ] = $value;
+		}
+		return $json_ld_data_array;
+	}
 	/**
 	 * Returns Json-LD data after applying transformation functions.
 	 *
@@ -69,22 +89,24 @@ class Wordlift_Mapping_Jsonld_Converter {
 	public function get_jsonld_data() {
 		// Validate the post id here.
 		$this->validator->validate( $this->post_id );
-
 		$json_ld_data_array = $this->jsonld_data;
 		$properties         = $this->validator->get_valid_properties();
 		foreach ( $properties as $property ) {
 			$transform_instance = $this->transform_functions_registry->get_transform_function( $property['transform_function'] );
 			if ( null !== $transform_instance ) {
-				$transformed_data = $transform_instance->get_transformed_data( $this->post_id, $property );
-				foreach ( $json_ld_data_array as &$jsonld_data ) {
-					$jsonld_data[ $transformed_data['key'] ] = $transformed_data['value'];
-				}
+				$transformed_data   = $transform_instance->get_transformed_data( $this->post_id, $property );
+				$json_ld_data_array = self::replace_jsonld_based_on_type(
+					$json_ld_data_array,
+					$transformed_data['key'],
+					$transformed_data['value']
+				);
 			}
 			else {
-				// No transform function exists, do 1 to 1 mapping, just map the string value to the key.
-				foreach ( $json_ld_data_array as &$jsonld_data ) {
-					$jsonld_data[ $property['property_name'] ] = $property['field_name'];
-				}
+				$json_ld_data_array = self::replace_jsonld_based_on_type(
+					$json_ld_data_array,
+					$property['property_name'],
+					$property['field_name']
+				);
 			}
 		}
 		return $json_ld_data_array;
