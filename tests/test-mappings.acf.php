@@ -6,6 +6,25 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 		'title'                 => 'How To',
 		'fields'                => array(
 			array(
+				'key' => 'field_5e16df2e60987',
+				'label' => 'Name',
+				'name' => 'name',
+				'type' => 'text',
+				'instructions' => 'The Title of how-to',
+				'required' => 1,
+				'conditional_logic' => 0,
+				'wrapper' => array(
+					'width' => '',
+					'class' => '',
+					'id' => '',
+				),
+				'default_value' => '',
+				'placeholder' => '',
+				'prepend' => '',
+				'append' => '',
+				'maxlength' => '',
+			),
+			array(
 				'key'               => 'field_5e09d8a36d4fd',
 				'label'             => 'Step',
 				'name'              => 'step',
