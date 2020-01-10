@@ -123,3 +123,8 @@
     color: #000 !important;
     cursor: default;
 }
+
+.wl-notice-custom-margin{
+    margin-top: 3px !important;
+    margin-left: 1px !important;
+}
