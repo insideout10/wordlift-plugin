@@ -60,9 +60,28 @@ class Wordlift_Mapping_Jsonld_Converter {
 		$this->jsonld_data                  = $jsonld_data;
 		$this->post_id                      = $post_id;
 	}
+
+	/**
+	 * Check if the key and value matches some criteria, if it does
+	 * then it should be replaced only on first element of the array
+	 *
+	 * @param String            $key The key of the property.
+	 * @param String|Array|NULL $value The Value obtained after the transformation method.
+	 * @return Boolean
+	 */
 	private static function should_be_replaced_on_one_entity( $key, $value ) {
-		return ( $key === '@type' && $value === 'HowTo' ) || $key === 'step';
+		$how_to_fields = array( 'step', 'tool', 'supply' );
+		return ( '@type' === $key && 'HowTo' === $value ) || in_array( $key, $how_to_fields );
 	}
+	/**
+	 * Either only one item is replaced with key and value or the entire array
+	 * is replaced depends on the condition.
+	 *
+	 * @param Array             $json_ld_data_array Array of json ld items.
+	 * @param String            $key The key of the property.
+	 * @param String|Array|NULL $value The Value obtained after the transformation method.
+	 * @return Array            $json_ld_data_array replaced with key and value.
+	 */
 	private static function replace_jsonld_based_on_type( $json_ld_data_array, $key, $value ) {
 		if ( self::should_be_replaced_on_one_entity( $key, $value ) ) {
 			// Replace it only on first element.
@@ -75,6 +94,14 @@ class Wordlift_Mapping_Jsonld_Converter {
 			return self::iterate_through_items_and_replace( $json_ld_data_array, $key, $value );
 		}
 	}
+	/**
+	 * Iterate through all the json_ld_data_array and replace the key and value
+	 *
+	 * @param Array             $json_ld_data_array Array of json ld items.
+	 * @param String            $key The key of the property.
+	 * @param String|Array|NULL $value The Value obtained after the transformation method.
+	 * @return Array            $json_ld_data_array replaced with key and value.
+	 */
 	private static function iterate_through_items_and_replace( $json_ld_data_array, $key, $value ) {
 		foreach ( $json_ld_data_array as &$jsonld_data ) {
 			$jsonld_data[ $key ] = $value;
