@@ -66,7 +66,7 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 						$group_options,
 						array(
 							'label' => $group_field['label'],
-							'value' => $group_field['name'],
+							'value' => $group_field['key'],
 						)
 					);
 				}

@@ -38,10 +38,15 @@ class Wordlift_Mapping_Text_Transform_Function extends Wordlift_Mapping_Transfor
 	 * {@inheritdoc}
 	 */
 	public function get_data_from_data_source( $post_id, $property_data ) {
+		$value = $property_data['field_name'];
 		// Do 1 to 1 mapping and return result.
+		if ( 'acf' === $property_data['field_type'] && function_exists( 'get_field' ) ) {
+			$value = get_field( $property_data['field_name'], $post_id );
+			$value = ( null !== $value ) ? $value : '';
+		}
 		return array(
 			'key'   => $property_data['property_name'],
-			'value' => $property_data['field_name'],
+			'value' => $value,
 		);
 	}
 
