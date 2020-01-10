@@ -122,9 +122,7 @@ class Wordlift_Mapping_How_To_Step_Transform_Function extends Wordlift_Mapping_T
 			}
 			if ( self::array_key_not_empty( 'text', $step ) ) {
 				$single_schema_step['text'] = wp_strip_all_tags( $step['text'] );
-			}
-			if ( self::array_key_not_empty( 'name', $step ) ) {
-				$single_schema_step['name'] = $step['name'];
+				$single_schema_step['name'] = wp_strip_all_tags( $step['text'] );
 			}
 			if ( self::array_key_not_empty( 'image', $step ) ) {
 				$single_schema_step['image'] = array(
