@@ -127,7 +127,12 @@ class Wordlift_Mapping_How_To_Step_Transform_Function extends Wordlift_Mapping_T
 				$single_schema_step['name'] = $step['name'];
 			}
 			if ( self::array_key_not_empty( 'image', $step ) ) {
-				$single_schema_step['image'] = $step['image'];
+				$single_schema_step['image'] = array(
+					'@type'  => 'ImageObject',
+					'url'    => $step['image']['url'],
+					'height' => $step['image']['height'],
+					'width'  => $step['image']['width'],
+				);
 			}
 			if ( self::array_key_not_empty( 'section_item', $step ) ) {
 				$single_schema_step['itemListElement'] = $this->convert_acf_section_items_to_schema_section_items( $step['section_item'] );
