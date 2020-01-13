@@ -32,24 +32,9 @@ class Wordlift_Mapping_How_To_Supply_Transform_Function extends Wordlift_Mapping
 	/**
 	 * {@inheritdoc}
 	 */
-	public function get_data_from_data_source( $post_id, $property_data ) {
-		$key   = $property_data['property_name'];
-		$value = null;
-		// Check ACF is loaded.
-		if ( function_exists( 'get_field' ) ) {
-			$value = get_field( $key, $post_id );
-		}	
-		return array(
-			'key'   => $key,
-			'value' => $value,
-		);
-	}
-	/**
-	 * {@inheritdoc}
-	 */
 	public function map_data_to_schema_properties( $data ) {
 		$acf_supply_items    = $data['value'];
-        $schema_supply_items = array();
+		$schema_supply_items = array();
 		foreach ( $acf_supply_items as $supply_item ) {
 			array_push(
 				$schema_supply_items,
