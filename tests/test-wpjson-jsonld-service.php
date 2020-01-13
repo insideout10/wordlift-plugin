@@ -37,7 +37,7 @@ class Wordlift_Jsonld_Endpoint_Test extends Wordlift_Unit_Test_Case {
 
 		/** @var WP_REST_Server $wp_rest_server */
 		global $wp_rest_server;
-		var_dump( array_keys( $wp_rest_server->get_routes() ) );
+//		var_dump( array_keys( $wp_rest_server->get_routes() ) );
 
 	}
 
