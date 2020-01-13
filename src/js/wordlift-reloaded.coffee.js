@@ -1863,15 +1863,16 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', []).p
           });
         });
         if (!closed) {
-          fireEvent(editor, 'LoadContent', startAnalysis);
+          fireEvent(editor, 'init', startAnalysis);
         } else {
-          $(document).on('postbox-toggled', function(e, postbox) {
-            if ('wordlift_entities_box' !== postbox.id) {
-              return;
-            }
-            return startAnalysis();
-          });
+
         }
+        $(document).on('postbox-toggled', function(e, postbox) {
+          if ('wordlift_entities_box' !== postbox.id) {
+            return;
+          }
+          return startAnalysis();
+        });
         fireEvent(editor, "NodeChange", function(e) {
           return injector.invoke([
             'AnalysisService', 'EditorService', '$rootScope', '$log', function(AnalysisService, EditorService, $rootScope, $log) {
