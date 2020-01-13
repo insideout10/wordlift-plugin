@@ -82,7 +82,11 @@ class Wordlift_Mapping_Jsonld_Converter {
 				$json_ld_item[ $property['property_name'] ] = $property['field_name'];
 			}
 		}
-		array_push( $json_ld_data_array, $json_ld_item );
+		// Only if keys of json ld item is greater than 0 then push it to array.
+		if ( 0 < count( array_keys( $json_ld_item ) ) ) {
+			array_push( $json_ld_data_array, $json_ld_item );
+		}
+
 		return $json_ld_data_array;
 	}
 
