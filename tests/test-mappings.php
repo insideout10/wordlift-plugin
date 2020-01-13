@@ -161,6 +161,13 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 			'Name',
 			$post_id
 		);
+
+		// Add Description for HowTo
+		update_field(
+			'description',
+			'foo',
+			$post_id
+		);
 		// Create 2 tool items.
 		for ( $i = 1; $i <= 2; $i ++ ) {
 			$result = add_row( 'tool', array(
@@ -230,6 +237,15 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 			'property_status'     => Wordlift_Mapping_Validator::ACTIVE_CATEGORY,
 		);
 
+		// Description property.
+		$property_data_7 = array(
+			'property_name' => 'description',
+			'field_type' => 'acf',
+			'field_name'          => 'description',
+			'transform_function'  => 'text_transform_function',
+			'property_status'     => Wordlift_Mapping_Validator::ACTIVE_CATEGORY,
+		);
+
 		// collect the properties.
 		$properties = array(
 			$property_data_1,
@@ -238,6 +254,7 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 			$property_data_4,
 			$property_data_5,
 			$property_data_6,
+			$property_data_7,
 		);
 		// Create a new mapping with these properties.
 		$this->create_new_mapping_item( 'category', (int) $result_1[0], $properties );
@@ -253,6 +270,9 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 'http://schema.org', $how_to_jsonld['@context'] );
 		$this->assertEquals( 'HowTo', $how_to_jsonld['@type'] );
 		$this->assertEquals( 'Name', $how_to_jsonld['name'] );
+		// Recommended fields (optional).
+		$this->assertArrayHasKey( 'description', $how_to_jsonld );
+		$this->assertEquals( 'foo', $how_to_jsonld['description'] );
 		// 2 Tools should be present.
 		$this->assertCount( 2, $how_to_jsonld['tool'] );
 		$single_tool = $how_to_jsonld['tool'][0];

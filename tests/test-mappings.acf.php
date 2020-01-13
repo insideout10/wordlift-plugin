@@ -1,9 +1,9 @@
 <?php
 
-if ( function_exists( 'acf_add_local_field_group' ) ) {
+	if ( function_exists( 'acf_add_local_field_group' ) ) {
 	acf_add_local_field_group( array(
 		'key'                   => 'group_5e09d8a05741b',
-		'title'                 => 'How To',
+		'title'                 => 'How To - Required fields',
 		'fields'                => array(
 			array(
 				'key' => 'field_5e16df2e60987',
@@ -325,8 +325,27 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 
 	acf_add_local_field_group(array(
 		'key' => 'group_5e16cb12bcb47',
-		'title' => 'HowToSupply',
+		'title' => 'HowTo - Recommended fields',
 		'fields' => array(
+			array(
+				'key' => 'field_5e16df2e60988',
+				'label' => 'Description',
+				'name' => 'description',
+				'type' => 'text',
+				'instructions' => 'A description of the how-to (optional)',
+				'required' => 0,
+				'conditional_logic' => 0,
+				'wrapper' => array(
+					'width' => '',
+					'class' => '',
+					'id' => '',
+				),
+				'default_value' => '',
+				'placeholder' => '',
+				'prepend' => '',
+				'append' => '',
+				'maxlength' => '',
+			),
 			array(
 				'key' => 'field_5e16cb76dd915',
 				'label' => 'HowToSupply',
@@ -473,3 +492,4 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 		'description' => '',
 	));
 }
+
