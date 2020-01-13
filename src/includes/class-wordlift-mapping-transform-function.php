@@ -38,6 +38,26 @@ abstract class Wordlift_Mapping_Transform_Function {
 		return $data;
 	}
 	/**
+	 * Returns data from data source.
+	 *
+	 * @param Int   $post_id Id of the post.
+	 * @param Array $property_data The property data for the post_id.
+	 * @return Array Returns key, value array, if the value is not found, then it
+	 * returns null.
+	 */
+	final public function get_data_from_data_source( $post_id, $property_data ) {
+		$value = $property_data['field_name'];
+		// Do 1 to 1 mapping and return result.
+		if ( 'acf' === $property_data['field_type'] && function_exists( 'get_field' ) ) {
+			$value = get_field( $property_data['field_name'], $post_id );
+			$value = ( null !== $value ) ? $value : '';
+		}
+		return array(
+			'key'   => $property_data['property_name'],
+			'value' => $value,
+		);
+	}
+	/**
 	 * Returns unique name of the transform function.
 	 *
 	 * @return String $name Unique name of the transform function, it should not be repeated
@@ -52,17 +72,6 @@ abstract class Wordlift_Mapping_Transform_Function {
 	 * be unique.
 	 */
 	abstract public function get_label();
-
-
-	/**
-	 * Returns transformed data.
-	 *
-	 * @param Int   $post_id The id of the post which the ACF data neeeded to be fetched.
-	 * @param Array $property_data An Associative Array containing all the property data.
-	 * @return Array Return transformed data.
-	 */
-	abstract public function get_data_from_data_source( $post_id, $property_data );
-
 	/**
 	 * Map raw data to the desired keys.
 	 *

@@ -30,21 +30,6 @@ class Wordlift_Mapping_How_To_Step_Transform_Function extends Wordlift_Mapping_T
 	}
 
 	/**
-	 * {@inheritdoc}
-	 */
-	public function get_data_from_data_source( $post_id, $property_data ) {
-		$key   = $property_data['property_name'];
-		$value = null;
-		// Check ACF is loaded.
-		if ( function_exists( 'get_field' ) ) {
-			$value = get_field( $key, $post_id );
-		}	
-		return array(
-			'key'   => $key,
-			'value' => $value,
-		);
-	}
-	/**
 	 * Takes ACF section items and convert to schema section items.
 	 *
 	 * @param Array $section_items Array of ACF Section items.
