@@ -53,11 +53,12 @@ class Wordlift_Jsonld_Service {
 	/**
 	 * Create a JSON-LD service.
 	 *
-	 * @since 3.8.0
-	 *
 	 * @param \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
 	 * @param \Wordlift_Post_Converter $converter A {@link Wordlift_Uri_To_Jsonld_Converter} instance.
 	 * @param \Wordlift_Website_Jsonld_Converter $website_converter A {@link Wordlift_Website_Jsonld_Converter} instance.
+	 *
+	 * @since 3.8.0
+	 *
 	 */
 	public function __construct( $entity_service, $converter, $website_converter ) {
 
@@ -72,9 +73,9 @@ class Wordlift_Jsonld_Service {
 	/**
 	 * Get the singleton instance for the JSON-LD service.
 	 *
+	 * @return \Wordlift_Jsonld_Service The singleton instance for the JSON-LD service.
 	 * @since 3.15.1
 	 *
-	 * @return \Wordlift_Jsonld_Service The singleton instance for the JSON-LD service.
 	 */
 	public static function get_instance() {
 
@@ -105,11 +106,12 @@ class Wordlift_Jsonld_Service {
 	/**
 	 * A close of WP's own `wp_send_json` function which uses `application/ld+json` as content type.
 	 *
-	 * @since 3.18.5
-	 *
 	 * @param mixed $response Variable (usually an array or object) to encode as JSON,
 	 *                           then print and die.
 	 * @param int $status_code The HTTP status code to output.
+	 *
+	 * @since 3.18.5
+	 *
 	 */
 	private function send_jsonld( $response, $status_code = null ) {
 		@header( 'Content-Type: application/ld+json; charset=' . get_option( 'blog_charset' ) );
@@ -124,12 +126,12 @@ class Wordlift_Jsonld_Service {
 	/**
 	 * Get the JSON-LD.
 	 *
-	 * @since 3.15.1
-	 *
 	 * @param bool $is_homepage Whether the JSON-LD for the homepage is being requested.
 	 * @param int|null $post_id The JSON-LD for the specified {@link WP_Post} id.
 	 *
 	 * @return array A JSON-LD structure.
+	 * @since 3.15.1
+	 *
 	 */
 	public function get_jsonld( $is_homepage = false, $post_id = null ) {
 
@@ -147,13 +149,15 @@ class Wordlift_Jsonld_Service {
 			 * @since  3.14.0
 			 * @api    bool $display_search Whether or not to display json+ld search on the frontend.
 			 */
-			if ( ! apply_filters( 'wordlift_disable_website_json_ld', false ) ) {
-				// Set a reference to the website_converter.
-				$website_converter = $this->website_converter;
-
-				// Send JSON-LD.
-				return $website_converter->create_schema();
+			if ( apply_filters( 'wordlift_disable_website_json_ld', false ) ) {
+				return array();
 			}
+
+			// Set a reference to the website_converter.
+			$website_converter = $this->website_converter;
+
+			// Send JSON-LD.
+			return $website_converter->create_schema();
 		}
 
 		// If no id has been provided return an empty array.
