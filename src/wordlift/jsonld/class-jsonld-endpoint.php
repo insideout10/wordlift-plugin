@@ -20,10 +20,12 @@ class Jsonld_Endpoint {
 	 */
 	public function __construct( $jsonld_service ) {
 
-		add_action( 'rest_api_init', function () {
+		// PHP 5.3 compatibility.
+		$that = $this;
+		add_action( 'rest_api_init', function () use ( $that ) {
 			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/(?P<id>\d+)', array(
 				'methods'  => 'GET',
-				'callback' => array( $this, 'callback' ),
+				'callback' => array( $that, 'callback' ),
 				'args'     => array(
 					'id' => array(
 						'validate_callback' => function ( $param, $request, $key ) {
