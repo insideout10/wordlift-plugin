@@ -161,7 +161,6 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 			'Name',
 			$post_id
 		);
-		//$this->assertTrue( $title_result );
 		// Create 2 tool items.
 		for ( $i = 1; $i <= 2; $i ++ ) {
 			$result = add_row( 'tool', array(
@@ -318,7 +317,7 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 		$this->create_new_mapping_item( 'category', (int) $result_1[0], $properties );
 
 		$jsonlds = $mapping_converter_instance->get_jsonld_data();
-		$jsonld  = $jsonlds[0];
+		$jsonld  = end( $jsonlds );
 		$single_step = $jsonld['step'][0];
 		// Type of step should be HowToSection.
 		$this->assertEquals( $single_step['@type'], 'HowToSection' );
