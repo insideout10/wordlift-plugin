@@ -168,6 +168,13 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 			'foo',
 			$post_id
 		);
+
+		// Add estimated amount.
+		update_field(
+			'estimatedCost',
+			'100 USD',
+			$post_id
+		);
 		// Create 2 tool items.
 		for ( $i = 1; $i <= 2; $i ++ ) {
 			$result = add_row( 'tool', array(
@@ -246,6 +253,15 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 			'property_status'     => Wordlift_Mapping_Validator::ACTIVE_CATEGORY,
 		);
 
+		// Property for estimated amount.
+		$property_data_8 = array(
+			'property_name' => 'estimatedCost',
+			'field_type' => 'acf',
+			'field_name'          => 'estimatedCost',
+			'transform_function'  => 'text_transform_function',
+			'property_status'     => Wordlift_Mapping_Validator::ACTIVE_CATEGORY,
+		);
+
 		// collect the properties.
 		$properties = array(
 			$property_data_1,
@@ -255,6 +271,7 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 			$property_data_5,
 			$property_data_6,
 			$property_data_7,
+			$property_data_8,
 		);
 		// Create a new mapping with these properties.
 		$this->create_new_mapping_item( 'category', (int) $result_1[0], $properties );
@@ -273,6 +290,8 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 		// Recommended fields (optional).
 		$this->assertArrayHasKey( 'description', $how_to_jsonld );
 		$this->assertEquals( 'foo', $how_to_jsonld['description'] );
+		$this->assertArrayHasKey( 'estimatedCost', $how_to_jsonld );
+		$this->assertEquals( '100 USD', $how_to_jsonld['estimatedCost'] );
 		// 2 Tools should be present.
 		$this->assertCount( 2, $how_to_jsonld['tool'] );
 		$single_tool = $how_to_jsonld['tool'][0];
