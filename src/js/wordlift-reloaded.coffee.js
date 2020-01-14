@@ -704,9 +704,11 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
           }
         }
       } else {
-        $scope.images = $scope.images.filter(function(img) {
-          return indexOf.call(entity.images, img) < 0;
-        });
+        if (entity.images != null) {
+          $scope.images = $scope.images.filter(function(img) {
+            return indexOf.call(entity.images, img) < 0;
+          });
+        }
       }
       $scope.$emit(action, entity, $scope.annotation);
       wp.wordlift.trigger(action, {
