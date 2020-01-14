@@ -9,6 +9,8 @@
  * @subpackage Wordlift/admin
  */
 
+use Wordlift\Scripts\Scripts_Helper;
+
 /**
  * Define the Wordlift_Admin_Sync_Mappings_Page class.
  *
@@ -19,18 +21,26 @@ class Wordlift_Admin_Sync_Mappings_Page extends Wordlift_Admin_Page {
 	 * {@inheritdoc}
 	 */
 	public function __construct() {
-		wp_register_script(
-			'wl-sync-mappings-script',
-			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings.js',
-			array( 'react', 'react-dom', 'wp-polyfill' )
-		);
+
+		Scripts_Helper::enqueue_based_on_wordpress_version( 'wl-sync-mappings-script', plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings', array(
+			'react',
+			'react-dom',
+			'wp-polyfill'
+		) );
+
+//		wp_register_script(
+//			'wl-sync-mappings-script',
+//			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings.js',
+//			array( 'react', 'react-dom', 'wp-polyfill' )
+//		);
+
 		wp_register_style(
 			'wl-sync-mappings-style',
 			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings.css'
 		);
 		add_action(
 			'init',
-			'Wordlift_Admin_Sync_Mappings_Page::provide_ui_dependancies'
+			'Wordlift_Admin_Sync_Mappings_Page::provide_ui_dependencies'
 		);
 
 	}
@@ -38,15 +48,15 @@ class Wordlift_Admin_Sync_Mappings_Page extends Wordlift_Admin_Page {
 	/**
 	 * Provides script and js global values used by react component.
 	 */
-	public static function provide_ui_dependancies() {
+	public static function provide_ui_dependencies() {
 		// Create ui settings array to be used by js client.
-		$mapping_settings             = array();
-		$mapping_settings['rest_url'] = get_rest_url(
+		$mapping_settings                          = array();
+		$mapping_settings['rest_url']              = get_rest_url(
 			null,
 			WL_REST_ROUTE_DEFAULT_NAMESPACE . Wordlift_Mapping_REST_Controller::MAPPINGS_NAMESPACE
 		);
-		$mapping_settings['wl_mapping_nonce']             = wp_create_nonce( 'wp_rest' );
-		$mapping_settings['wl_edit_mapping_nonce']        = wp_create_nonce( 'wl-edit-mapping-nonce' );
+		$mapping_settings['wl_mapping_nonce']      = wp_create_nonce( 'wp_rest' );
+		$mapping_settings['wl_edit_mapping_nonce'] = wp_create_nonce( 'wl-edit-mapping-nonce' );
 		wp_localize_script( 'wl-sync-mappings-script', 'wlMappingsConfig', $mapping_settings );
 	}
 
@@ -55,7 +65,7 @@ class Wordlift_Admin_Sync_Mappings_Page extends Wordlift_Admin_Page {
 	 */
 	public function get_page_title() {
 
-		return __( 'Sync Mappings', 'wordlift' );
+		return __( 'Mappings', 'wordlift' );
 	}
 
 	/**
@@ -63,7 +73,7 @@ class Wordlift_Admin_Sync_Mappings_Page extends Wordlift_Admin_Page {
 	 */
 	public function get_menu_title() {
 
-		return __( 'Sync Mappings', 'wordlift' );
+		return __( 'Mappings', 'wordlift' );
 	}
 
 	/**
