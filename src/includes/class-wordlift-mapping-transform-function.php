@@ -23,14 +23,14 @@ abstract class Wordlift_Mapping_Transform_Function {
 
 		$data = $this->get_data_from_data_source( $post_id, $property_data );
 		// Send data to external hooks before processing.
-		apply_filters(
+		$data = apply_filters(
 			'wordlift_sync_mappings_pre_transform_' . $this->get_name(),
 			$data
 		);
 
 		$data = $this->map_data_to_schema_properties( $data );
 		// Send data to external hooks after processing.
-		apply_filters(
+		$data = apply_filters(
 			'wordlift_sync_mappings_post_transform_' . $this->get_name(),
 			$data
 		);
