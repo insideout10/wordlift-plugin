@@ -128,6 +128,7 @@ class Wordlift_Admin_Post_Edit_Page {
 			return;
 		}
 
+
 		/*
 		 * Enqueue the edit screen JavaScript. The `wordlift-admin.bundle.js` file
 		 * is scheduled to replace the older `wordlift-admin.min.js` once client-side
@@ -139,36 +140,44 @@ class Wordlift_Admin_Post_Edit_Page {
 		 */
 		// plugin_dir_url( __FILE__ ) . 'js/1/edit.js'
 		$script_name = plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/edit';
-
-		$this->enqueue_based_on_wordpress_version( 'wordlift-admin-edit-page', $script_name, array(
-			$this->plugin->get_plugin_name(),
-			'jquery',
-			// Require wp.ajax.
-			'wp-util',
-			// @@todo: provide the following dependencies when we're in WP < 5.0 (i.e. when these dependencies aren't already defined).
-			'react',
-			'react-dom',
-			'wp-element',
-			'wp-polyfill',
-			/*
-			 * Angular isn't loaded anymore remotely, but it is loaded within wordlift-reloaded.js.
-			 *
-			 * See https://github.com/insideout10/wordlift-plugin/issues/865.
-			 *
-			 * @since 3.19.6
-			 */
-			//				// Require Angular.
-			//				'wl-angular',
-			//				'wl-angular-geolocation',
-			//				'wl-angular-touch',
-			//				'wl-angular-animate',
-			/**
-			 * We need the `wp.hooks` global to allow the edit.js script to send actions.
-			 *
-			 * @since 3.23.0
-			 */
-			'wp-hooks',
-		) );
+		/**
+		 * Scripts_Helper introduced.
+		 *
+		 * @since 3.25.0 Scripts are loaded using script helper to ensure WP 4.4 compatibiility.
+		 */
+		Scripts_Helper::enqueue_based_on_wordpress_version(
+			'wordlift-admin-edit-page', 
+			$script_name, 
+			array(
+				$this->plugin->get_plugin_name(),
+				'jquery',
+				// Require wp.ajax.
+				'wp-util',
+				// @@todo: provide the following dependencies when we're in WP < 5.0 (i.e. when these dependencies aren't already defined).
+				'react',
+				'react-dom',
+				'wp-element',
+				'wp-polyfill',
+				/*
+				* Angular isn't loaded anymore remotely, but it is loaded within wordlift-reloaded.js.
+				*
+				* See https://github.com/insideout10/wordlift-plugin/issues/865.
+				*
+				* @since 3.19.6
+				*/
+				//				// Require Angular.
+				//				'wl-angular',
+				//				'wl-angular-geolocation',
+				//				'wl-angular-touch',
+				//				'wl-angular-animate',
+				/**
+				 * We need the `wp.hooks` global to allow the edit.js script to send actions.
+				 *
+				 * @since 3.23.0
+				 */
+				'wp-hooks',
+			)
+		);
 
 		wp_enqueue_style( 'wordlift-admin-edit-page', "$script_name.css", array(), $this->plugin->get_version() );
 
