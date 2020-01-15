@@ -1127,7 +1127,7 @@ class Wordlift {
 		 *
 		 * The class responsible for displaying sync mappings page
 		 *
-		 * @since 3.24.0
+		 * @since 3.25.0
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-sync-mappings-page.php';
 
@@ -1135,7 +1135,7 @@ class Wordlift {
 		 *
 		 * The class responsible for displaying edit mappings page
 		 *
-		 * @since 3.24.0
+		 * @since 3.25.0
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-edit-mappings.php';
 

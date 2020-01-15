@@ -19,17 +19,17 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 	 * {@inheritdoc}
 	 */
 	public function __construct() {
+
 		/**
 		 * Load scripts with script helper.
 		 *
 		 * @since 3.25.0 - Load with script helper to ensure  WP 4.4 compatibility.
 		 */
-		Scripts_Helper::enqueue_based_on_wordpress_version(
+		Wordlift\Scripts\Scripts_Helper::enqueue_based_on_wordpress_version(
 			'wl-edit-mappings-script',
 			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings-edit.js',
 			array( 'react', 'react-dom', 'wp-polyfill' )
 		);
-
 		wp_register_style(
 			'wl-edit-mappings-style',
 			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings-edit.css'
