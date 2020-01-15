@@ -70,7 +70,12 @@ class Scripts_Helper {
 		}
 
 		$wordlift = \Wordlift::get_instance();
-		wp_register_script( $handle, $actual_script_name, $actual_dependencies, $wordlift->get_version(), $in_footer );
+		add_action(
+			'wp_enqueue_scripts',
+			function () use ( $handle, $actual_script_name, $actual_dependencies, $wordlift, $in_footer ) {
+				wp_register_script( $handle, $actual_script_name, $actual_dependencies, $wordlift->get_version(), $in_footer );
+			}
+		);
 
 	}
 
