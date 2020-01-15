@@ -1,4 +1,4 @@
-<div id="container" style="width: 75%;">
+<div id="wl-edit-mappings-container">
 </div>
 <?php
 	wp_enqueue_script( 'wl-edit-mappings-script' );

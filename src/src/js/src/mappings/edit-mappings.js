@@ -56,11 +56,15 @@ const reducers = combineReducers({
     NotificationData: NotificationReducer,
 })
 
+
 const store = createStore(reducers, INITIAL_STATE)
 
-ReactDOM.render(
-    <Provider store={store}>
-        <EditComponent />
-    </Provider>,
-    document.getElementById("container"))
+window.addEventListener( "load", () => {
 
+    ReactDOM.render(
+        <Provider store={store}>
+            <EditComponent />
+        </Provider>,
+        document.getElementById("wl-edit-mappings-container"))
+
+})
