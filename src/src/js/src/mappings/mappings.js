@@ -1,5 +1,8 @@
 /**
- * @@todo add a description about this file.
+ * Shows the list of mapping items in the screen, the user can do 
+ * CRUD operations on this ui.
+ * @author Naveen Muthusamy <naveen@wordlift.io>
+ * @since 3.25.0
  */
 
 /**
@@ -19,9 +22,7 @@ import { MappingListReducer } from "./reducers/mapping-list-reducers";
 import { ACTIVE_CATEGORY } from "./components/category-component";
 
 const MAPPINGS_INITIAL_STATE = {
-  // @@todo follow JavaScript developer guidelines, i.e. camelCase.
   mappingItems: [],
-  // @@todo follow JavaScript developer guidelines, i.e. camelCase.
   choosenCategory: ACTIVE_CATEGORY,
   headerCheckBoxSelected: false,
   selectedBulkOption: null
