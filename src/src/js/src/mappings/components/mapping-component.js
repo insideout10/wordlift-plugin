@@ -105,7 +105,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                     "X-WP-Nonce": mappingSettings.wl_mapping_nonce
                 },
                 body: JSON.stringify({
-                            mappingItems: MappingComponent.applyApiFilters(
+                            mapping_items: MappingComponent.applyApiFilters(
                             mappingItems
                         )})  
             }
