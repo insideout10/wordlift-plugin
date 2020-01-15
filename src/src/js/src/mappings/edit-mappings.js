@@ -59,8 +59,7 @@ const reducers = combineReducers({
 
 const store = createStore(reducers, INITIAL_STATE)
 
-window.addEventListener( "load", () => {
-
+window.addEventListener( 'load', () => {
     ReactDOM.render(
         <Provider store={store}>
             <EditComponent />

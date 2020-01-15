@@ -46,5 +46,32 @@ class Scripts_Helper {
 		wp_enqueue_script( $handle, $actual_script_name, $actual_dependencies, $wordlift->get_version(), $in_footer );
 
 	}
+	/**
+	 * This function registers the javascript file according to the WordPress version.
+	 *
+	 * For WordPress < 5.0 it'll register the javascript file using the `.full` suffix i.e. the file that embeds all the
+	 * dependencies.
+	 *
+	 * For WordPress >= 5.0 it'll register the stripped down js.
+	 *
+	 * @param string $handle The handle name.
+	 * @param string $script_name The full script URL without the `.js` extension.
+	 * @param array  $dependencies An array of dependencies to be added only in WordPress > 5.0.
+	 */
+	public static function register_based_on_wordpress_version( $handle, $script_name, $dependencies, $in_footer = false ) {
+		global $wp_version;
+
+		if ( version_compare( $wp_version, '5.0', '<' ) ) {
+			$actual_script_name  = "$script_name.full.js";
+			$actual_dependencies = array();
+		} else {
+			$actual_script_name  = "$script_name.js";
+			$actual_dependencies = $dependencies;
+		}
+
+		$wordlift = \Wordlift::get_instance();
+		wp_register_script( $handle, $actual_script_name, $actual_dependencies, $wordlift->get_version(), $in_footer );
+
+	}
 
 }
