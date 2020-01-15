@@ -35,11 +35,11 @@ const mappingSettings = window["wlMappingsConfig"] || {};
      /**
       * Add some keys to mapping items before setting it as
       * state, it is used by ui.
-      * @param {Array} mapping_items Mapping items list
+      * @param {Array} mappingItems Mapping items list
       * 
       */
-     static applyUiItemFilters( mapping_items ) {
-        return mapping_items.map((item)=>(
+     static applyUiItemFilters( mappingItems ) {
+        return mappingItems.map((item)=>(
             {
                 ...item,
                 // initially no item is selected.
@@ -49,24 +49,24 @@ const mappingSettings = window["wlMappingsConfig"] || {};
      }
      /**
       * Convert ui data to api format before posting to api
-      * @param {Array} mapping_items Mapping items list
+      * @param {Array} mappingItems Mapping items list
       * 
       */
-     static applyApiFilters( mapping_items ) {
-         return mapping_items.map((item)=>({
+     static applyApiFilters( mappingItems ) {
+         return mappingItems.map((item)=>({
              mapping_id: item.mapping_id,
              mapping_title: item.mapping_title,
              mapping_status: item.mapping_status,
          }))
      }
      /**
-      * Extract categories from mapping_items
-      * @param {Array} mapping_items Mapping items list
+      * Extract categories from mappingItems
+      * @param {Array} mappingItems Mapping items list
       * @return {Array} List of cateogory objects.
       */
-     static extractCategoriesFromMappingItems ( mapping_items ) {
+     static extractCategoriesFromMappingItems ( mappingItems ) {
         const categories = {}
-        mapping_items.map((item)=> {
+        mappingItems.map((item)=> {
             if (!categories.hasOwnProperty(item.mapping_status)) {
                 categories[item.mapping_status] = 1
             }
@@ -96,7 +96,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
         this.updateMappingItems([mappingData])
     }
     // Updates or deletes the mapping items based on the request
-    updateMappingItems = ( mapping_items, type = 'PUT') => {
+    updateMappingItems = ( mappingItems, type = 'PUT') => {
         fetch(mappingSettings.rest_url,
             {
                 method: type,
@@ -105,8 +105,8 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                     "X-WP-Nonce": mappingSettings.wl_mapping_nonce
                 },
                 body: JSON.stringify({
-                            mapping_items: MappingComponent.applyApiFilters(
-                            mapping_items
+                            mappingItems: MappingComponent.applyApiFilters(
+                            mappingItems
                         )})  
             }
         )
@@ -120,20 +120,20 @@ const mappingSettings = window["wlMappingsConfig"] || {};
 
      /**
       * 
-      * @param {Array|Object} mapping_items accepts a single 
+      * @param {Array|Object} mappingItems accepts a single 
       * mapping item object or multiple mapping items, clone them by posting
       * to the api endpoint and then refresh the current list.
       */
-     duplicateMappingItems = ( mapping_items ) => {
+     duplicateMappingItems = ( mappingItems ) => {
         // If single item is given, construct it to array
-        mapping_items = Array.isArray( mapping_items ) ? mapping_items : [ mapping_items ]
+        mappingItems = Array.isArray( mappingItems ) ? mappingItems : [ mappingItems ]
         fetch( mappingSettings.rest_url + '/clone', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',
                 'X-WP-Nonce': mappingSettings.wl_mapping_nonce
             },
-            body: JSON.stringify( { mapping_items: mapping_items } )
+            body: JSON.stringify( { mappingItems: mappingItems } )
         })
         .then( response => response.json().then(
             data => {
@@ -211,7 +211,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                     </a>
                 </h1>
                 <CategoryComponent 
-                    source                = { this.props.mapping_items }
+                    source                = { this.props.mappingItems }
                     categoryKeyName       = 'mapping_status'
                     categories            = { [ 'active', 'trash' ] }
                     categorySelectHandler = { this.categorySelectHandler }
@@ -234,7 +234,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                     <tbody>
                         {
                             // show empty screen when there is no mapping items
-                            0 === this.props.mapping_items
+                            0 === this.props.mappingItems
                             .filter( el => el.mapping_status === ACTIVE_CATEGORY )
                             .length && this.props.choosen_category === ACTIVE_CATEGORY &&
                                 <tr>
@@ -247,7 +247,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                                 </tr> 
                         }
                         {
-                            this.props.mapping_items
+                            this.props.mappingItems
                             .filter( el => el.mapping_status === this.props.choosen_category )
                             .map((item, index)=> {
                                 return <MappingListItemComponent
@@ -301,7 +301,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
 
 const mapStateToProps = function(state){ 
     return {
-        mapping_items: state.mapping_items,
+        mappingItems: state.mappingItems,
         choosen_category: state.choosen_category,
         stateObj: state,
         headerCheckBoxSelected: state.headerCheckBoxSelected,

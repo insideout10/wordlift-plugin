@@ -20,7 +20,7 @@ import { ACTIVE_CATEGORY } from "./components/category-component";
 
 const MAPPINGS_INITIAL_STATE = {
   // @@todo follow JavaScript developer guidelines, i.e. camelCase.
-  mapping_items: [],
+  mappingItems: [],
   // @@todo follow JavaScript developer guidelines, i.e. camelCase.
   choosen_category: ACTIVE_CATEGORY,
   headerCheckBoxSelected: false,

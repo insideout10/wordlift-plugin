@@ -13,8 +13,8 @@ import { createReducer } from '@reduxjs/toolkit'
 import { BulkOptionValues } from '../components/bulk-action-sub-components'
 import { TRASH_CATEGORY, ACTIVE_CATEGORY } from '../components/category-component'
 
-const changeCategoryForMappingItems = ( mapping_items, category ) => {
-    return mapping_items.map( (item) => {
+const changeCategoryForMappingItems = ( mappingItems, category ) => {
+    return mappingItems.map( (item) => {
         item.mapping_status = category
         return item
     })
@@ -26,19 +26,19 @@ const changeCategoryForMappingItems = ( mapping_items, category ) => {
  export const MappingListReducer = createReducer(null, {
     [ MAPPING_LIST_CHANGED ] : ( state, action ) => {
         console.log( "state changed " )
-        state.mapping_items = action.payload.value
+        state.mappingItems = action.payload.value
     },
     [ MAPPING_ITEM_CATEGORY_CHANGED ] : ( state, action ) => {
         const { mappingId, mappingCategory } = action.payload
-        const targetIndex = state.mapping_items
+        const targetIndex = state.mappingItems
         .map( el => el.mapping_id )
         .indexOf( mappingId )
-        state.mapping_items[ targetIndex ].mapping_status = mappingCategory
+        state.mappingItems[ targetIndex ].mapping_status = mappingCategory
     },
 
     [ MAPPING_LIST_BULK_SELECT ] : ( state, action ) => {
 
-        state.mapping_items = state.mapping_items.map((item) => {
+        state.mappingItems = state.mappingItems.map((item) => {
             // Select only items in the current choosen category.
             if ( item.mapping_status === state.choosen_category ) {
                 item.is_selected = !item.is_selected
@@ -55,10 +55,10 @@ const changeCategoryForMappingItems = ( mapping_items, category ) => {
 
     [ MAPPING_ITEM_SELECTED ] : ( state, action ) => {
         const { mappingId } = action.payload
-        const targetIndex = state.mapping_items
+        const targetIndex = state.mappingItems
         .map( el => el.mapping_id )
         .indexOf( mappingId )
-        state.mapping_items[ targetIndex ].is_selected = !state.mapping_items[ targetIndex ].is_selected
+        state.mappingItems[ targetIndex ].is_selected = !state.mappingItems[ targetIndex ].is_selected
     },
 
     [ BULK_ACTION_SELECTION_CHANGED ] : ( state, action ) => {
@@ -68,7 +68,7 @@ const changeCategoryForMappingItems = ( mapping_items, category ) => {
 
     [ MAPPING_ITEMS_BULK_SELECT ] : ( state, action ) => {
        const {duplicateCallBack, updateCallBack } = action.payload
-       const selectedItems = state.mapping_items
+       const selectedItems = state.mappingItems
        .filter( item => true === item.is_selected)
        switch ( state.selectedBulkOption ) {
             case BulkOptionValues.DUPLICATE:
@@ -101,7 +101,7 @@ const changeCategoryForMappingItems = ( mapping_items, category ) => {
        }
        state.headerCheckBoxSelected = false
        // Set all to unselected after the operation
-       state.mapping_items = state.mapping_items.map( (item) => {
+       state.mappingItems = state.mappingItems.map( (item) => {
             item.is_selected = false
             return item
        })
