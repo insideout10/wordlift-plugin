@@ -31,10 +31,18 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 			array( 'react', 'react-dom', 'wp-polyfill' ),
 			true
 		);
-		wp_register_style(
-			'wl-edit-mappings-style',
-			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings-edit.css'
+		add_action(
+			'wp_enqueue_style',
+			function() {
+				$wordlift = \Wordlift::get_instance();
+				wp_register_style(
+					'wl-edit-mappings-style',
+					plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings-edit.css',
+					$wordlift->get_version()
+				);
+			}
 		);
+
 		add_action( 'init', 'Wordlift_Admin_Edit_Mappings::load_ui_dependancies' );
 		$that = $this;
 		add_action( 'admin_menu', array( $that, 'add_edit_mapping_menu_entry' ) );
@@ -122,7 +130,7 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 		);
 		$edit_mapping_settings['page']                       = 'wl_edit_mapping';
 		$edit_mapping_settings['wl_edit_mapping_rest_nonce'] = wp_create_nonce( 'wp_rest' );
-		if ( wp_verify_nonce( $_REQUEST['_wl_edit_mapping_nonce'], 'wl-edit-mapping-nonce' ) ) {
+		if ( isset( $_REQUEST['_wl_edit_mapping_nonce'] ) && wp_verify_nonce( $_REQUEST['_wl_edit_mapping_nonce'], 'wl-edit-mapping-nonce' ) ) {
 			$edit_mapping_settings['wl_edit_mapping_id'] = $_REQUEST['wl_edit_mapping_id'];
 		}
 		$edit_mapping_settings['wl_add_mapping_text']             = __( 'Add Mapping', 'wordlift' );

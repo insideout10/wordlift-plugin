@@ -33,9 +33,16 @@ class Wordlift_Admin_Sync_Mappings_Page extends Wordlift_Admin_Page {
 			true
 		);
 
-		wp_register_style(
-			'wl-sync-mappings-style',
-			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings.css'
+		add_action(
+			'wp_enqueue_style',
+			function() {
+				$wordlift = \Wordlift::get_instance();
+				wp_register_style(
+					'wl-sync-mappings-style',
+					plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings.css',
+					$wordlift->get_version()
+				);
+			}
 		);
 		add_action(
 			'init',
