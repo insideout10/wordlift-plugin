@@ -41,7 +41,7 @@ const changeCategoryForMappingItems = ( mappingItems, category ) => {
         state.mappingItems = state.mappingItems.map((item) => {
             // Select only items in the current choosen category.
             if ( item.mapping_status === state.choosenCategory ) {
-                item.is_selected = !item.is_selected
+                item.isSelected = !item.isSelected
             }
             return item
          })
@@ -58,7 +58,7 @@ const changeCategoryForMappingItems = ( mappingItems, category ) => {
         const targetIndex = state.mappingItems
         .map( el => el.mapping_id )
         .indexOf( mappingId )
-        state.mappingItems[ targetIndex ].is_selected = !state.mappingItems[ targetIndex ].is_selected
+        state.mappingItems[ targetIndex ].isSelected = !state.mappingItems[ targetIndex ].isSelected
     },
 
     [ BULK_ACTION_SELECTION_CHANGED ] : ( state, action ) => {
@@ -69,7 +69,7 @@ const changeCategoryForMappingItems = ( mappingItems, category ) => {
     [ MAPPING_ITEMS_BULK_SELECT ] : ( state, action ) => {
        const {duplicateCallBack, updateCallBack } = action.payload
        const selectedItems = state.mappingItems
-       .filter( item => true === item.is_selected)
+       .filter( item => true === item.isSelected)
        switch ( state.selectedBulkOption ) {
             case BulkOptionValues.DUPLICATE:
                duplicateCallBack( selectedItems )
@@ -102,7 +102,7 @@ const changeCategoryForMappingItems = ( mappingItems, category ) => {
        state.headerCheckBoxSelected = false
        // Set all to unselected after the operation
        state.mappingItems = state.mappingItems.map( (item) => {
-            item.is_selected = false
+            item.isSelected = false
             return item
        })
     }

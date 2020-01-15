@@ -21,7 +21,7 @@ import BulkActionComponent from './bulk-action-component'
 import { EditComponentNotificationArea, EditComponentSaveButton, RuleGroupWrapper, EditComponentTitleArea } from './edit-sub-components'
 
 // Set a reference to the WordLift's Edit Mapping settings stored in the window instance.
-const editMappingSettings = window["wlEditMappingsConfig"] || {};
+const editMappingSettings = window["wl_edit_mappings_config"] || {};
 
 
  class EditComponent extends React.Component {

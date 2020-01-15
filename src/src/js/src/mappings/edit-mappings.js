@@ -22,7 +22,7 @@ import { RuleGroupReducer, PropertyReducer, TitleReducer, NotificationReducer } 
 import { ACTIVE_CATEGORY } from './components/category-component'
 
 // Set a reference to the WordLift's Edit Mapping settings stored in the window instance.
-const editMappingSettings = window["wlEditMappingsConfig"] || {};
+const editMappingSettings = window["wl_edit_mappings_config"] || {};
 
 const INITIAL_STATE = {
     NotificationData: {

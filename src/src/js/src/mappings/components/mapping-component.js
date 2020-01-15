@@ -43,7 +43,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
             {
                 ...item,
                 // initially no item is selected.
-                is_selected: false,
+                isSelected: false,
             }
         ))
      }
