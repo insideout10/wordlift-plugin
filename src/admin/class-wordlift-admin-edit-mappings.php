@@ -162,7 +162,7 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 			$edit_mapping_settings['wl_rule_field_two_options']
 		) = self::get_post_taxonomies_and_terms();
 
-		wp_localize_script( 'wl-edit-mappings-script', 'wlEditMappingsConfig', $edit_mapping_settings );
+		wp_localize_script( 'wl-edit-mappings-script', 'wl_edit_mappings_config', $edit_mapping_settings );
 	}
 
 	/**
