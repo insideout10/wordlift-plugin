@@ -40,7 +40,7 @@ const changeCategoryForMappingItems = ( mappingItems, category ) => {
 
         state.mappingItems = state.mappingItems.map((item) => {
             // Select only items in the current choosen category.
-            if ( item.mapping_status === state.choosen_category ) {
+            if ( item.mapping_status === state.choosenCategory ) {
                 item.is_selected = !item.is_selected
             }
             return item
@@ -50,7 +50,7 @@ const changeCategoryForMappingItems = ( mappingItems, category ) => {
     },
 
     [ MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED ] : ( state, action ) => {
-        state.choosen_category = action.payload.categoryName
+        state.choosenCategory = action.payload.categoryName
     },
 
     [ MAPPING_ITEM_SELECTED ] : ( state, action ) => {

@@ -22,7 +22,7 @@ const MAPPINGS_INITIAL_STATE = {
   // @@todo follow JavaScript developer guidelines, i.e. camelCase.
   mappingItems: [],
   // @@todo follow JavaScript developer guidelines, i.e. camelCase.
-  choosen_category: ACTIVE_CATEGORY,
+  choosenCategory: ACTIVE_CATEGORY,
   headerCheckBoxSelected: false,
   selectedBulkOption: null
 };

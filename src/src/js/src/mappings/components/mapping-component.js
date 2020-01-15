@@ -215,7 +215,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                     categoryKeyName       = 'mapping_status'
                     categories            = { [ 'active', 'trash' ] }
                     categorySelectHandler = { this.categorySelectHandler }
-                    choosenCategory       = { this.props.choosen_category }
+                    choosenCategory       = { this.props.choosenCategory }
                 /><br/>
                 <table className="wp-list-table widefat striped wl-table">
                     <thead>
@@ -236,7 +236,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                             // show empty screen when there is no mapping items
                             0 === this.props.mappingItems
                             .filter( el => el.mapping_status === ACTIVE_CATEGORY )
-                            .length && this.props.choosen_category === ACTIVE_CATEGORY &&
+                            .length && this.props.choosenCategory === ACTIVE_CATEGORY &&
                                 <tr>
                                     <td colspan="3">
                                         <div className="wl-container text-center">
@@ -248,7 +248,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                         }
                         {
                             this.props.mappingItems
-                            .filter( el => el.mapping_status === this.props.choosen_category )
+                            .filter( el => el.mapping_status === this.props.choosenCategory )
                             .map((item, index)=> {
                                 return <MappingListItemComponent
                                 selectMappingItemHandler = {
@@ -289,7 +289,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
                 </table>
                 <div className="wl-container wl-container-full">
                     <BulkActionComponent
-                        choosenCategory={this.props.choosen_category}
+                        choosenCategory={this.props.choosenCategory}
                         bulkActionOptionChangedHandler = { this.bulkActionOptionChangedHandler }
                         bulkActionSubmitHandler={ this.bulkActionSubmitHandler }
                     />
@@ -302,7 +302,7 @@ const mappingSettings = window["wlMappingsConfig"] || {};
 const mapStateToProps = function(state){ 
     return {
         mappingItems: state.mappingItems,
-        choosen_category: state.choosen_category,
+        choosenCategory: state.choosenCategory,
         stateObj: state,
         headerCheckBoxSelected: state.headerCheckBoxSelected,
     }
