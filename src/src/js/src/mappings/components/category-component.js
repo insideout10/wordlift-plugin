@@ -18,6 +18,7 @@ export const ACTIVE_CATEGORY = 'active'
 const SingleCategoryItem = ( { choosenCategory, category, source, categorySelectHandler, categoryKeyName } ) => {
     return (
         <span className="wl-mappings-link wl-category-title">
+             &nbsp;
             {
                 category === choosenCategory ?
                 (   
@@ -29,19 +30,29 @@ const SingleCategoryItem = ( { choosenCategory, category, source, categorySelect
                                 source
                                 .filter( el=> el[categoryKeyName] === category )
                                 .length
-                            }) | 
+                            })
+                            <span className='wl-color-grey'>
+                                &nbsp;|
+                            </span>
+                            &nbsp;
                         </a>
                     </b>
                 ):
                 (
+                    
                     <a onClick={()=> { categorySelectHandler(category) }}>
                         { category }
                         ({
+                           
                             // Count the category in the source
                             source
                             .filter( el=> el[categoryKeyName] === category )
                             .length
-                        }) | 
+                        })
+                        <span className='wl-color-grey'>
+                        &nbsp;|
+                        </span>
+                        &nbsp;
                     </a>
                 )
             }
