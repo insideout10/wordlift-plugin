@@ -32,8 +32,9 @@ class Wordlift_Mapping_How_To_Step_Transform_Function extends Wordlift_Mapping_T
 	/**
 	 * Takes ACF section items and convert to schema section items.
 	 *
-	 * @param Array $section_items Array of ACF Section items.
-	 * @return Array $schema_section_items Array of schema section items.
+	 * @param array $section_items Array of ACF Section items.
+	 *
+	 * @return array $schema_section_items Array of schema section items.
 	 */
 	private function convert_acf_section_items_to_schema_section_items( $section_items ) {
 		$schema_section_items = array();
@@ -47,12 +48,15 @@ class Wordlift_Mapping_How_To_Step_Transform_Function extends Wordlift_Mapping_T
 				)
 			);
 		}
+
 		return $schema_section_items;
 	}
+
 	/**
 	 * Takes ACF step items and convert to schema step items.
 	 *
 	 * @param Array $step_items Array of ACF step items.
+	 *
 	 * @return Array $schema_step_items Array of schema step items.
 	 */
 	private function convert_acf_step_items_to_schema_step_items( $step_items ) {
@@ -66,14 +70,17 @@ class Wordlift_Mapping_How_To_Step_Transform_Function extends Wordlift_Mapping_T
 				)
 			);
 		}
+
 		return $schema_step_items;
 	}
+
 	/**
 	 * Returns true if the value is not empty, if the value
 	 * is array then it should contain atleast one element.
 	 *
 	 * @param String $key Key of the array element.
-	 * @param Array  $source Source Array.
+	 * @param Array $source Source Array.
+	 *
 	 * @return Boolean.
 	 */
 	private static function array_key_not_empty( $key, $source ) {
@@ -82,18 +89,16 @@ class Wordlift_Mapping_How_To_Step_Transform_Function extends Wordlift_Mapping_T
 			if ( is_array( $value ) ) {
 				// Should contain atleast one element.
 				return 1 <= count( $value );
-			}
-			elseif ( is_bool( $value ) ) {
+			} elseif ( is_bool( $value ) ) {
 				return $value;
-			}
-			else {
+			} else {
 				return null !== $value && '' !== $value;
 			}
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
+
 	/**
 	 * {@inheritdoc}
 	 */
@@ -133,6 +138,7 @@ class Wordlift_Mapping_How_To_Step_Transform_Function extends Wordlift_Mapping_T
 			);
 		}
 		$data['value'] = $schema_steps;
+
 		return $data;
 	}
 }

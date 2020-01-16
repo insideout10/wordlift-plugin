@@ -80,5 +80,7 @@ services:
 volumes:
   db-data-4.4.0:
   wordpress-data-4.4.0:
+  db-data-4.7.0:
+  wordpress-data-4.7.0:
   db-data-5.0.0:
   wordpress-data-5.0.0:
