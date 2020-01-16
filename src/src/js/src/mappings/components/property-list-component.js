@@ -102,7 +102,7 @@ class PropertyListComponent extends React.Component {
               <th className="wl-check-column">
                 <input
                   type="checkbox"
-                  checked={this.props.propertyHeaderCheckboxClicked === true}
+                  checked={this.props.propertyHeaderCheckboxClicked}
                   onClick={() => {
                     this.selectAllPropertyHandler();
                   }}
