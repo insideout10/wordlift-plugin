@@ -74,21 +74,22 @@ export const MappingListReducer = createReducer(null, {
   [MAPPING_LIST_SORT_TITLE_CHANGED]: (state, action) => {
     if (state.titleSortBy === SORT_BY_ASC) {
       state.titleSortBy = SORT_BY_DESC;
-      state.mappingItems.sort(function(a, b) {
-        const x = a.mapping_title;
-        const y = b.mapping_title;
-        return x < y ? -1 : x > y ? 1 : 0;
-      }).reverse();
-      state.titleIcon = "dashicons-arrow-up";
-    } else {
-      state.titleSortBy = SORT_BY_ASC;
-      state.titleIcon = "dashicons-arrow-down";
       state.mappingItems
         .sort(function(a, b) {
           const x = a.mapping_title;
           const y = b.mapping_title;
           return x < y ? -1 : x > y ? 1 : 0;
         })
+        .reverse();
+      state.titleIcon = "dashicons-arrow-down";
+    } else {
+      state.titleSortBy = SORT_BY_ASC;
+      state.titleIcon = "dashicons-arrow-up";
+      state.mappingItems.sort(function(a, b) {
+        const x = a.mapping_title;
+        const y = b.mapping_title;
+        return x < y ? -1 : x > y ? 1 : 0;
+      });
     }
   },
 
