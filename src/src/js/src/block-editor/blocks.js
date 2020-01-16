@@ -137,7 +137,7 @@ const blocks = {
         default: ""
       },
       order_by: {
-        default: "ID ASC"
+        default: "ID DESC"
       }
     },
     //display the edit interface + preview
@@ -330,10 +330,7 @@ const blocks = {
         { value: "rand", label: "Random order" },
         { value: "none", label: "None" }
       ];
-      const orderOptions = [
-        { value: "ASC", label: "Ascending" },
-        { value: "DESC", label: "Descending" }
-      ];
+      const orderOptions = [{ value: "ASC", label: "Ascending" }, { value: "DESC", label: "Descending" }];
       wordlift.types.forEach(item => {
         typeOptions.push({
           value: item.slug,
@@ -411,10 +408,7 @@ const blocks = {
                 label="Display images as"
                 selected={display_images_as}
                 onChange={display_images_as => setAttributes({ display_images_as })}
-                options={[
-                  { value: "media", label: "Media" },
-                  { value: "background", label: "Background" }
-                ]}
+                options={[{ value: "media", label: "Media" }, { value: "background", label: "Background" }]}
               />
               <RangeControl
                 label="Excerpt length"

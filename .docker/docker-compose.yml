@@ -1,0 +1,79 @@
+version: "3.7"
+
+services:
+  db:
+    image: mariadb:10
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: password
+
+  wordpress:
+    image: wordpress:5.2
+    depends_on:
+      - db
+    volumes:
+      - wordpress-data:/var/www/html
+      - ../src:/var/www/html/wp-content/plugins/wordlift
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: password
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_CONFIG_EXTRA: |
+        # Add support for the reverse proxy.
+        if ( strpos( $$_SERVER['HTTP_X_FORWARDED_PROTO'], 'https' ) !== false ) {
+        	$$_SERVER['HTTPS'] = 'on';
+        }
+
+        if ( isset( $$_SERVER['HTTP_X_FORWARDED_HOST'] ) ) {
+          $$_SERVER['HTTP_HOST'] = $$_SERVER['HTTP_X_FORWARDED_HOST'];
+        }
+
+        # Define the site and home URLs.
+        define( 'WP_SITEURL', 'https://wordlift.localhost' );
+        define( 'WP_HOME', WP_SITEURL );
+
+        # Allow all entity types.
+        define( 'WL_ALL_ENTITY_TYPES', true );
+
+        // Enable WP_DEBUG mode
+        define( 'WP_DEBUG', true );
+
+        // Enable Debug logging to the /wp-content/debug.log file
+        define( 'WP_DEBUG_LOG', true );
+
+        // Disable display of errors and warnings
+        define( 'WP_DEBUG_DISPLAY', false );
+        @ini_set( 'display_errors', 0 );
+
+        // Use dev versions of core JS and CSS files (only needed if you are modifying these core files)
+        define( 'SCRIPT_DEBUG', true );
+
+  nginx:
+    image: nginx:1.17
+    depends_on:
+      - wordpress
+    ports:
+      - "443:443"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    environment:
+      NGINX_HOST: wordpress
+      NGINX_SERVER_NAME: wordlift.localhost
+    command: /bin/bash -c "envsubst '$$NGINX_HOST $$NGINX_SERVER_NAME' < /etc/nginx/conf.d/wordpress.template > /etc/nginx/conf.d/wordpress.conf && nginx -g 'daemon off;'"
+
+  cli:
+    image: wordpress:cli-2.2
+    depends_on:
+      - db
+    user: xfs
+    volumes:
+      - wordpress-data:/var/www/html
+
+volumes:
+  db-data:
+  wordpress-data:
