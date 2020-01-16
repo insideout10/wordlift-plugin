@@ -21,11 +21,15 @@ import "./mappings.css";
 import { MappingListReducer } from "./reducers/mapping-list-reducers";
 import { ACTIVE_CATEGORY } from "./components/category-component";
 
+export const SORT_BY_ASC = "asc";
+export const SORT_BY_DESC = "desc";
+
 const MAPPINGS_INITIAL_STATE = {
   mappingItems: [],
   choosenCategory: ACTIVE_CATEGORY,
   headerCheckBoxSelected: false,
-  selectedBulkOption: null
+  selectedBulkOption: null,
+  titleSortBy: SORT_BY_ASC
 };
 
 const store = createStore(MappingListReducer, MAPPINGS_INITIAL_STATE);

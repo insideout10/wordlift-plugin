@@ -84,6 +84,12 @@ export const NOTIFICATION_CHANGED = "NOTIFICATION_CHANGED";
 export const MAPPING_LIST_CHANGED = "MAPPING_LIST_CHANGED";
 
 /**
+ * @const MAPPING_LIST_SORT_TITLE_CHANGED
+ * Action when user want to sort the title asc/desc
+ */
+export const MAPPING_LIST_SORT_TITLE_CHANGED = "MAPPING_LIST_SORT_TITLE_CHANGED";
+
+/**
  * @const MAPPING_ITEM_CATEGORY_CHANGED
  * Action when notification is sent by api.
  */

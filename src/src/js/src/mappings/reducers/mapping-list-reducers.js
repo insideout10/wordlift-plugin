@@ -8,10 +8,11 @@
  /**
  * Internal dependancies
  */
-import { MAPPING_LIST_CHANGED, MAPPING_ITEM_CATEGORY_CHANGED, MAPPING_LIST_BULK_SELECT, MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED, MAPPING_ITEM_SELECTED, BULK_ACTION_SELECTION_CHANGED, MAPPING_ITEMS_BULK_SELECT } from '../actions/action-types'
+import { MAPPING_LIST_CHANGED, MAPPING_ITEM_CATEGORY_CHANGED, MAPPING_LIST_BULK_SELECT, MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED, MAPPING_ITEM_SELECTED, BULK_ACTION_SELECTION_CHANGED, MAPPING_ITEMS_BULK_SELECT, MAPPING_LIST_SORT_TITLE_CHANGED } from '../actions/action-types'
 import { createReducer } from '@reduxjs/toolkit'
 import { BulkOptionValues } from '../components/bulk-action-sub-components'
 import { TRASH_CATEGORY, ACTIVE_CATEGORY } from '../components/category-component'
+import { SORT_BY_ASC, SORT_BY_DESC } from '../mappings'
 
 const changeCategoryForMappingItems = ( mappingItems, category ) => {
     return mappingItems.map( (item) => {
@@ -64,6 +65,24 @@ const changeCategoryForMappingItems = ( mappingItems, category ) => {
     [ BULK_ACTION_SELECTION_CHANGED ] : ( state, action ) => {
         const { selectedBulkOption } = action.payload
         state.selectedBulkOption = selectedBulkOption
+    },
+
+    [ MAPPING_LIST_SORT_TITLE_CHANGED ] : ( state, action ) => {
+
+
+        if ( state.titleSortBy === SORT_BY_ASC ) {
+            state.titleSortBy = SORT_BY_DESC
+            state.mappingItems.sort( function( a, b) {
+                const x = a.mapping_title;
+                const y = b.mapping_title;
+                return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+            })
+        }
+        else {
+            state.titleSortBy = SORT_BY_ASC
+            state.mappingItems.reverse()
+        }
+
     },
 
     [ MAPPING_ITEMS_BULK_SELECT ] : ( state, action ) => {

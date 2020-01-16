@@ -30,7 +30,8 @@ import {
   PROPERTY_ITEM_SELECT_ALL,
   PROPERTY_ITEMS_BULK_SELECT,
   MAPPING_ITEMS_BULK_SELECT,
-  MAPPING_ID_CHANGED_FROM_API
+  MAPPING_ID_CHANGED_FROM_API,
+  MAPPING_LIST_SORT_TITLE_CHANGED
 } from "./action-types";
 /**
  * @const {object} ADD_NEW_RULE_ACTION
@@ -166,6 +167,14 @@ export const MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION = {
  */
 export const MAPPING_ITEM_SELECTED_ACTION = {
   type: MAPPING_ITEM_SELECTED
+};
+
+/**
+ * @const {Object} MAPPING_LIST_SORT_TITLE_CHANGED_ACTION
+ * Dispatches this action when the user wants to sort the title asc/desc
+ */
+export const MAPPING_LIST_SORT_TITLE_CHANGED_ACTION = {
+  type: MAPPING_LIST_SORT_TITLE_CHANGED
 };
 
 /**

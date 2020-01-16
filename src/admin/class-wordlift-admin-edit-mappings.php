@@ -31,6 +31,7 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 			array( 'react', 'react-dom', 'wp-polyfill' ),
 			'admin_enqueue_scripts'
 		);
+
 		add_action(
 			'admin_enqueue_scripts',
 			function() {
@@ -131,7 +132,7 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 		$edit_mapping_settings['page']                       = 'wl_edit_mapping';
 		$edit_mapping_settings['wl_edit_mapping_rest_nonce'] = wp_create_nonce( 'wp_rest' );
 		if ( isset( $_REQUEST['_wl_edit_mapping_nonce'] ) && wp_verify_nonce( $_REQUEST['_wl_edit_mapping_nonce'], 'wl-edit-mapping-nonce' ) ) {
-			$edit_mapping_settings['wl_edit_mapping_id'] = $_REQUEST['wl_edit_mapping_id'];
+			$edit_mapping_settings['wl_edit_mapping_id'] = (int) $_REQUEST['wl_edit_mapping_id'];
 		}
 		$edit_mapping_settings['wl_add_mapping_text']             = __( 'Add Mapping', 'wordlift' );
 		$edit_mapping_settings['wl_edit_mapping_text']            = __( 'Edit Mapping', 'wordlift' );

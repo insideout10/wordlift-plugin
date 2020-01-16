@@ -21,7 +21,8 @@ import {
   MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION,
   MAPPING_ITEM_SELECTED_ACTION,
   MAPPING_ITEMS_BULK_ACTION,
-  BULK_ACTION_SELECTION_CHANGED_ACTION
+  BULK_ACTION_SELECTION_CHANGED_ACTION,
+  MAPPING_LIST_SORT_TITLE_CHANGED_ACTION
 } from "../actions/actions";
 import { connect } from "react-redux";
 import CategoryComponent, { ACTIVE_CATEGORY } from "./category-component";
@@ -87,6 +88,14 @@ class MappingComponent extends React.Component {
    */
   selectAllMappingItems = () => {
     this.props.dispatch(MAPPING_LIST_BULK_SELECT_ACTION);
+  };
+
+  /**
+   * Sorts the mapping items by title either ascending or descending
+   * depending on the current state.
+   */
+  sortMappingItemsByTitle = () => {
+    this.props.dispatch(MAPPING_LIST_SORT_TITLE_CHANGED_ACTION);
   };
 
   switchCategory = (mappingData, categoryName) => {
@@ -225,7 +234,14 @@ class MappingComponent extends React.Component {
                 />
               </th>
               <th>
-                <a className="row-title">Title</a>
+                <a
+                  className="row-title wl-mappings-link"
+                  onClick={() => {
+                    this.sortMappingItemsByTitle();
+                  }}
+                >
+                  Title
+                </a>
               </th>
             </tr>
           </thead>
@@ -268,7 +284,14 @@ class MappingComponent extends React.Component {
                 />
               </th>
               <th>
-                <a className="row-title">Title</a>
+                <a
+                  className="row-title wl-mappings-link"
+                  onClick={() => {
+                    this.sortMappingItemsByTitle();
+                  }}
+                >
+                  Title
+                </a>
               </th>
             </tr>
           </tfoot>
