@@ -29,7 +29,8 @@ const MAPPINGS_INITIAL_STATE = {
   choosenCategory: ACTIVE_CATEGORY,
   headerCheckBoxSelected: false,
   selectedBulkOption: null,
-  titleSortBy: SORT_BY_ASC
+  titleSortBy: SORT_BY_ASC,
+  titleIcon: 'dashicons-arrow-up'
 };
 
 const store = createStore(MappingListReducer, MAPPINGS_INITIAL_STATE);

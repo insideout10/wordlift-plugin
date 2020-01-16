@@ -241,6 +241,7 @@ class MappingComponent extends React.Component {
                   }}
                 >
                   Title
+                  <span className={"dashicons " + this.props.titleIconClass}></span>
                 </a>
               </th>
             </tr>
@@ -291,6 +292,7 @@ class MappingComponent extends React.Component {
                   }}
                 >
                   Title
+                  <span className={"dashicons " + this.props.titleIconClass}></span>
                 </a>
               </th>
             </tr>
@@ -313,7 +315,8 @@ const mapStateToProps = function(state) {
     mappingItems: state.mappingItems,
     choosenCategory: state.choosenCategory,
     stateObj: state,
-    headerCheckBoxSelected: state.headerCheckBoxSelected
+    headerCheckBoxSelected: state.headerCheckBoxSelected,
+    titleIconClass: state.titleIcon
   };
 };
 
