@@ -21,6 +21,7 @@ class Wordlift_Mapping_Jsonld_Converter {
 	 * @var \Wordlift_Mapping_Validator $validator The {@link Wordlift_Mapping_Validator} instance.
 	 */
 	private $validator;
+
 	/**
 	 * The {@link Wordlift_Mapping_Transform_Function_Registry} instance.
 	 *
@@ -35,7 +36,7 @@ class Wordlift_Mapping_Jsonld_Converter {
 	 *
 	 * @since  3.25.0
 	 * @access private
-	 * @var Array $jsonld_data The array of json-ld data
+	 * @var array $jsonld_data The array of json-ld data
 	 */
 	private $jsonld_data;
 
@@ -44,15 +45,15 @@ class Wordlift_Mapping_Jsonld_Converter {
 	 *
 	 * @since  3.25.0
 	 * @access private
-	 * @var Int $post_id The id of the post.
+	 * @var int $post_id The id of the post.
 	 */
 	private $post_id;
 
 	/**
-	 * Initialize all dependancies required.
+	 * Initialize all dependencies required.
 	 *
-	 * @param Int   $post_id The Id of the post where the mappings should be validated.
-	 * @param Array $jsonld_data An Array of json-ld data from {@link \Wordlift_Jsonld_Service} class.
+	 * @param int $post_id The Id of the post where the mappings should be validated.
+	 * @param array $jsonld_data An Array of json-ld data from {@link \Wordlift_Jsonld_Service} class.
 	 */
 	public function __construct( $post_id, $jsonld_data ) {
 		$this->validator                    = new Wordlift_Mapping_Validator();
@@ -64,9 +65,10 @@ class Wordlift_Mapping_Jsonld_Converter {
 	/**
 	 * Returns Json-LD data after applying transformation functions.
 	 *
-	 * @return Array Array of json-ld data.
+	 * @return array Array of json-ld data.
 	 */
 	public function get_jsonld_data() {
+
 		// Validate the post id here.
 		$this->validator->validate( $this->post_id );
 		$json_ld_data_array = $this->jsonld_data;
@@ -77,8 +79,7 @@ class Wordlift_Mapping_Jsonld_Converter {
 			if ( null !== $transform_instance ) {
 				$transformed_data                         = $transform_instance->get_transformed_data( $this->post_id, $property );
 				$json_ld_item[ $transformed_data['key'] ] = $transformed_data['value'];
-			}
-			else {
+			} else {
 				$json_ld_item[ $property['property_name'] ] = $property['field_name'];
 			}
 		}
