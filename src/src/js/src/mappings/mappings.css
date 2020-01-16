@@ -1,134 +1,133 @@
 .wl-mappings-heading-text {
-    font-size: 23px;
-    font-weight: 400;
+  font-size: 23px;
+  font-weight: 400;
 }
 .wl-table {
-    width: 70%;
+  width: 70%;
 }
-.wl-table td input[type=checkbox], th input[type=checkbox]{
-    vertical-align: inherit;
+.wl-table td input[type="checkbox"],
+th input[type="checkbox"] {
+  vertical-align: inherit;
 }
 
 .wl-spaced-table td {
-    padding-right: 150px;
+  padding-right: 150px;
 }
 
 .wl-check-column {
-    vertical-align: inherit;
-    width: 2.2em;
+  vertical-align: inherit;
+  width: 2.2em;
 }
-.wl-table td input[type=checkbox]{
-    margin-left: 8px;
+.wl-table td input[type="checkbox"] {
+  margin-left: 8px;
 }
 .wl-mappings-add-new:hover {
-    background-color: #0073aa !important;
-    color: #f7f7f7 !important;
+  background-color: #0073aa !important;
+  color: #f7f7f7 !important;
 }
 .wl-postbox {
-    position: relative;
-    min-width: 255px;
-    border: 1px solid #e5e5e5;
-    box-shadow: 0 1px 1px rgba(0,0,0,.04);
-    background: #fff;
-    width: 90% !important;
+  position: relative;
+  min-width: 255px;
+  border: 1px solid #e5e5e5;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+  background: #fff;
+  width: 90% !important;
 }
 .wl-bg-light {
-    background-color: #fbfbfc !important;
+  background-color: #fbfbfc !important;
 }
-.wl-input-class
-{
-    height: 40px !important;
+.wl-input-class {
+  height: 40px !important;
 }
 .wl-postbox {
-    position: relative;
-    min-width: 255px;
-    border: 1px solid #e5e5e5;
-    box-shadow: 0 1px 1px rgba(0,0,0,.04);
-    background: #fff;
+  position: relative;
+  min-width: 255px;
+  border: 1px solid #e5e5e5;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+  background: #fff;
 }
 .wl-description {
-    font-size: 13px;
-    font-style: italic;
+  font-size: 13px;
+  font-style: italic;
 }
 .wl-form-select {
-    padding-top: 3px;
-    padding-right: 5px;
-    padding-bottom: 3px;
-    padding-left: 5px !important;
-    width: 150px;
+  padding-top: 3px;
+  padding-right: 5px;
+  padding-bottom: 3px;
+  padding-left: 5px !important;
+  width: 150px;
 }
 .wl-form-control {
-    width: 100%;
+  width: 100%;
 }
 
 .wl-container {
-    display: flex;
-    justify-content: flex-start;
+  display: flex;
+  justify-content: flex-start;
 }
 .wl-container-80 {
-    width: 80%;
+  width: 80%;
 }
 
 .wl-container-full {
-    width: 100%;
+  width: 100%;
 }
 
 .wl-col {
-    padding: 1em;
+  padding: 1em;
 }
 .wl-align-right {
-    margin-left: auto;
+  margin-left: auto;
 }
 
 .wl-container-30 {
-    width: 30%;
+  width: 30%;
 }
 .wl-container-70 {
-    width: 70%;
+  width: 70%;
 }
 .wl-text-right {
-    text-align: right;
+  text-align: right;
 }
 
 .wl-remove-button {
-    color: rgba(184,0,0,1) !important;
-    height: 33px;
-    width: 33px;
-    border-radius: 50%;
-    vertical-align: inherit;
+  color: rgba(184, 0, 0, 1) !important;
+  height: 33px;
+  width: 33px;
+  border-radius: 50%;
+  vertical-align: inherit;
 }
-
 
 .hide {
-    display: none;
+  display: none;
 }
 .text-center {
-    text-align: center !important;
+  text-align: center !important;
 }
 .wl-col-30 {
-    width: 30%;
+  width: 30%;
 }
 .wl-col-70 {
-    width: 70%;
+  width: 70%;
 }
 .wl-mappings-link {
-    cursor: pointer !important;
+  cursor: pointer !important;
 }
 
 .wl-category-title {
-    text-transform: capitalize !important;
+  text-transform: capitalize !important;
 }
 
 .wl-mappings-link-active {
-    color: #000 !important;
-    cursor: default;
+  color: #000 !important;
+  cursor: default;
 }
 
-.wl-notice-custom-margin{
-    margin-top: 3px !important;
-    margin-left: 1px !important;
+.wl-notice-custom-margin {
+  margin-top: 3px !important;
+  margin-left: 1px !important;
 }
 
 .wl-color-grey {
-    color: #888;
+  color: #888;
 }

@@ -8,169 +8,158 @@
 /**
  * External dependencies
  */
-import React from 'react'
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux'
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
 /**
  * Internal dependencies
  */
-import SelectComponent from './select-component'
-import { PROPERTY_DATA_CHANGED_ACTION } from '../actions/actions';
+import SelectComponent from "./select-component";
+import { PROPERTY_DATA_CHANGED_ACTION } from "../actions/actions";
 
-const PropertyInputField = ( { propData, handleChangeForPropertyField, inputKeyName } ) => {
-    return (
-        <React.Fragment>
-            <input 
-                type         = 'text' 
-                className    = 'wl-form-control'
-                defaultValue = { propData[inputKeyName] }
-                onChange     = { ( event )=> { 
-                    handleChangeForPropertyField(inputKeyName, event) 
-                }}
-            />
-        </React.Fragment>
-    )
-}
+const PropertyInputField = ({ propData, handleChangeForPropertyField, inputKeyName }) => {
+  return (
+    <React.Fragment>
+      <input
+        type="text"
+        className="wl-form-control"
+        defaultValue={propData[inputKeyName]}
+        onChange={event => {
+          handleChangeForPropertyField(inputKeyName, event);
+        }}
+      />
+    </React.Fragment>
+  );
+};
 class PropertyComponent extends React.Component {
-    constructor (props) {
-        super(props)
-    }
-    /**
-     * When a property item changes this method gets fired
-     * @param {String} fieldKey Field Key is the key present in property data
-     * @param {Object} event The onChange event when a input field is changed
-     */
-    handleChangeForPropertyField = ( fieldKey, event) => {
-        const action = PROPERTY_DATA_CHANGED_ACTION
-        action.payload = {
-            fieldKey: fieldKey,
-            value: event.target.value,
-            propertyId: this.props.propData.property_id
-        }
-        this.props.dispatch(action)
-        console.log( action )
-    }
+  constructor(props) {
+    super(props);
+  }
+  /**
+   * When a property item changes this method gets fired
+   * @param {String} fieldKey Field Key is the key present in property data
+   * @param {Object} event The onChange event when a input field is changed
+   */
+  handleChangeForPropertyField = (fieldKey, event) => {
+    const action = PROPERTY_DATA_CHANGED_ACTION;
+    action.payload = {
+      fieldKey: fieldKey,
+      value: event.target.value,
+      propertyId: this.props.propData.property_id
+    };
+    this.props.dispatch(action);
+    console.log(action);
+  };
 
-    /**
-     * Display a list of options or just a text box depends on the field type
-     */
-    getInputFieldForFieldName = () => {
-        const field_type = this.props.propData.fieldTypeHelpText
-        const results = this.props.fieldNameOptions.filter((el)=> el.field_type === field_type )
-        const value = results.length > 0 ? results[0].value : null
-        // If the value is array then display a selection box
-        if ( Array.isArray( value ) ) {
-            return ( 
-                <SelectComponent
-                inputDataIsOptionGroup={ (field_type === 'acf') }
-                className="wl-form-select"
-                options={value}
-                value = {this.props.propData.fieldHelpText}
-                onChange={ (event)=> 
-                    { this.handleChangeForPropertyField("fieldHelpText", event)
-                }} />
-            )
-        }
-        else {
-            return (
-                <PropertyInputField 
-                propData                     = { this.props.propData }
-                handleChangeForPropertyField = { this.handleChangeForPropertyField }
-                inputKeyName                 = 'fieldHelpText'
+  /**
+   * Display a list of options or just a text box depends on the field type
+   */
+  getInputFieldForFieldName = () => {
+    const field_type = this.props.propData.fieldTypeHelpText;
+    const results = this.props.fieldNameOptions.filter(el => el.field_type === field_type);
+    const value = results.length > 0 ? results[0].value : null;
+    // If the value is array then display a selection box
+    if (Array.isArray(value)) {
+      return (
+        <SelectComponent
+          inputDataIsOptionGroup={field_type === "acf"}
+          className="wl-form-select"
+          options={value}
+          value={this.props.propData.fieldHelpText}
+          onChange={event => {
+            this.handleChangeForPropertyField("fieldHelpText", event);
+          }}
+        />
+      );
+    } else {
+      return (
+        <PropertyInputField
+          propData={this.props.propData}
+          handleChangeForPropertyField={this.handleChangeForPropertyField}
+          inputKeyName="fieldHelpText"
+        />
+      );
+    }
+  };
+
+  render() {
+    return (
+      <React.Fragment>
+        <a className="row-title">{this.props.propData.propertyHelpText}</a>
+        <br />
+        <table className="wl-container wl-container-full wl-spaced-table wl-property-edit-item">
+          <tbody>
+            <tr>
+              <td colspan="2">Property Name</td>
+              <td colspan="3">
+                <PropertyInputField
+                  propData={this.props.propData}
+                  handleChangeForPropertyField={this.handleChangeForPropertyField}
+                  inputKeyName="propertyHelpText"
                 />
-            )
-        }
-    }
-
-    render() {
-        return (
-        <React.Fragment>
-                <a className="row-title">
-                    { this.props.propData.propertyHelpText }
-                </a>
-                <br />
-                <table className="wl-container wl-container-full wl-spaced-table wl-property-edit-item">
-                    <tbody>
-                        <tr>
-                            <td colspan="2">
-                                Property Name
-                            </td>
-                            <td colspan="3">
-                                <PropertyInputField 
-                                    propData                     = { this.props.propData }
-                                    handleChangeForPropertyField = { this.handleChangeForPropertyField }
-                                    inputKeyName                 = 'propertyHelpText'
-                                />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                Field Type
-                            </td>
-                            <td colspan="3">
-                                <SelectComponent
-                                    className="wl-form-select"
-                                    options={this.props.fieldTypeHelpTextOptions}
-                                    value = {this.props.propData.fieldTypeHelpText}
-                                    onChange={ (event)=> 
-                                        { this.handleChangeForPropertyField("fieldTypeHelpText", event)
-                                    }}>
-                                </SelectComponent> 
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                Field Text
-                            </td>
-                            <td colspan="3">
-                                { this.getInputFieldForFieldName() }
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                            Transform Function
-                            </td>
-                            <td colspan="3">
-                                <SelectComponent
-                                    className="wl-form-select"
-                                    options={this.props.transformHelpTextOptions}
-                                    value = {this.props.propData.transformHelpText}
-                                    onChange={ (event)=> 
-                                        { this.handleChangeForPropertyField("transformHelpText", event)
-                                    }}>
-                                </SelectComponent>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"></td>
-                            <td>
-                                <button 
-                                disabled={this.props.propData.propertyHelpText.length <= 0}
-                                className="wl-close-mapping button action bg-primary text-white"
-                                onClick={()=> this.props.switchState( this.props.propData.property_id )}>
-                                    Close Mapping
-                                </button>
-                            </td>
-                        </tr>
-                </tbody></table>
-        </React.Fragment>
-    )
-    }
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">Field Type</td>
+              <td colspan="3">
+                <SelectComponent
+                  className="wl-form-select"
+                  options={this.props.fieldTypeHelpTextOptions}
+                  value={this.props.propData.fieldTypeHelpText}
+                  onChange={event => {
+                    this.handleChangeForPropertyField("fieldTypeHelpText", event);
+                  }}
+                ></SelectComponent>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">Field Text</td>
+              <td colspan="3">{this.getInputFieldForFieldName()}</td>
+            </tr>
+            <tr>
+              <td colspan="2">Transform Function</td>
+              <td colspan="3">
+                <SelectComponent
+                  className="wl-form-select"
+                  options={this.props.transformHelpTextOptions}
+                  value={this.props.propData.transformHelpText}
+                  onChange={event => {
+                    this.handleChangeForPropertyField("transformHelpText", event);
+                  }}
+                ></SelectComponent>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2"></td>
+              <td>
+                <button
+                  disabled={this.props.propData.propertyHelpText.length <= 0}
+                  className="wl-close-mapping button action bg-primary text-white"
+                  onClick={() => this.props.switchState(this.props.propData.property_id)}
+                >
+                  Close Mapping
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </React.Fragment>
+    );
+  }
 }
 
 // supply a property object as data
 PropertyComponent.propTypes = {
-    propertyData: PropTypes.object
-}
+  propertyData: PropTypes.object
+};
 
- const mapStateToProps = function (state) {
-     return {
-        transformHelpTextOptions: state.PropertyListData.transformHelpTextOptions,
-        fieldTypeHelpTextOptions: state.PropertyListData.fieldTypeHelpTextOptions,
-        fieldNameOptions: state.PropertyListData.fieldNameOptions,
-     }
- }
+const mapStateToProps = function(state) {
+  return {
+    transformHelpTextOptions: state.PropertyListData.transformHelpTextOptions,
+    fieldTypeHelpTextOptions: state.PropertyListData.fieldTypeHelpTextOptions,
+    fieldNameOptions: state.PropertyListData.fieldNameOptions
+  };
+};
 
-
-export default connect(mapStateToProps)(PropertyComponent)
+export default connect(mapStateToProps)(PropertyComponent);

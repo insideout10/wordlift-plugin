@@ -1,5 +1,5 @@
 /**
- * Shows the list of mapping items in the screen, the user can do 
+ * Shows the list of mapping items in the screen, the user can do
  * CRUD operations on this ui.
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * @since 3.25.0
