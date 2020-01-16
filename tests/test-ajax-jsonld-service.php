@@ -402,34 +402,39 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 
 		$this->assertTrue( is_array( $response ) );
 
-		$this->assertCount( 1, $response );
+		/*
+		 * When disabling the web site JSON-LD this should actually be 0 not 1 (as it was).
+		 *
+		 * @see <a href="https://github.com/insideout10/wordlift-plugin/issues/1002>#1002</a>
+		 */
+		$this->assertCount( 0, $response );
 
-		$jsonld = get_object_vars( $response[0] );
-
-		$this->assertTrue( is_array( $jsonld ) );
-
-		$this->assertArrayHasKey( '@context', $jsonld );
-		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
-
-		$this->assertArrayHasKey( '@id', $jsonld );
-		$this->assertEquals( $home_uri, $jsonld['@id'] );
-
-		$this->assertArrayHasKey( '@type', $jsonld );
-		$this->assertNotEquals( 'WebSite', $jsonld['@type'] );
-
-		$this->assertArrayHasKey( 'description', $jsonld );
-		$this->assertNotEquals( $description, $jsonld['description'] );
-
-		$this->assertArrayHasKey( 'headline', $jsonld );
-		$this->assertNotEquals( $headline, $jsonld['headline'] );
-
-		$publisher_2 = get_object_vars( $jsonld['publisher'] );
-
-		// Check the publisher.
-		$this->assertCount( 3, $publisher_2 );
-		$this->assertEquals( 'Organization', $publisher_2['@type'] );
-		$this->assertEquals( $publisher_uri, $publisher_2['@id'] );
-		$this->assertEquals( $publisher->post_title, $publisher_2['name'] );
+//		$jsonld = get_object_vars( $response[0] );
+//
+//		$this->assertTrue( is_array( $jsonld ) );
+//
+//		$this->assertArrayHasKey( '@context', $jsonld );
+//		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
+//
+//		$this->assertArrayHasKey( '@id', $jsonld );
+//		$this->assertEquals( $home_uri, $jsonld['@id'] );
+//
+//		$this->assertArrayHasKey( '@type', $jsonld );
+//		$this->assertNotEquals( 'WebSite', $jsonld['@type'] );
+//
+//		$this->assertArrayHasKey( 'description', $jsonld );
+//		$this->assertNotEquals( $description, $jsonld['description'] );
+//
+//		$this->assertArrayHasKey( 'headline', $jsonld );
+//		$this->assertNotEquals( $headline, $jsonld['headline'] );
+//
+//		$publisher_2 = get_object_vars( $jsonld['publisher'] );
+//
+//		// Check the publisher.
+//		$this->assertCount( 3, $publisher_2 );
+//		$this->assertEquals( 'Organization', $publisher_2['@type'] );
+//		$this->assertEquals( $publisher_uri, $publisher_2['@id'] );
+//		$this->assertEquals( $publisher->post_title, $publisher_2['name'] );
 	}
 
 	/**

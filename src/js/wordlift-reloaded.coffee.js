@@ -894,9 +894,11 @@ angular
             }
           }
         } else {
-          $scope.images = $scope.images.filter(function(img) {
-            return indexOf.call(entity.images, img) < 0;
-          });
+          if (entity.images != null) {
+            $scope.images = $scope.images.filter(function(img) {
+              return indexOf.call(entity.images, img) < 0;
+            });
+          }
         }
         $scope.$emit(action, entity, $scope.annotation);
         wp.wordlift.trigger(action, {
@@ -2521,15 +2523,15 @@ angular
           });
         });
         if (!closed) {
-          fireEvent(editor, "LoadContent", startAnalysis);
+          fireEvent(editor, "init", startAnalysis);
         } else {
-          $(document).on("postbox-toggled", function(e, postbox) {
-            if ("wordlift_entities_box" !== postbox.id) {
-              return;
-            }
-            return startAnalysis();
-          });
         }
+        $(document).on("postbox-toggled", function(e, postbox) {
+          if ("wordlift_entities_box" !== postbox.id) {
+            return;
+          }
+          return startAnalysis();
+        });
         fireEvent(editor, "NodeChange", function(e) {
           return injector.invoke([
             "AnalysisService",

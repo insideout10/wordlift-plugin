@@ -37,11 +37,11 @@ class Analysis_Response_Ops {
 	/**
 	 * Analysis_Response_Ops constructor.
 	 *
-	 * @param \Wordlift_Entity_Uri_Service  $entity_uri_service The {@link Wordlift_Entity_Uri_Service}.
-	 * @param \Wordlift_Entity_Service      $entity_service The {@link Wordlift_Entity_Service}.
+	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service}.
+	 * @param \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service}.
 	 * @param \Wordlift_Entity_Type_Service $entity_type_service The {@link Wordlift_Entity_Type_Service}.
-	 * @param \Wordlift_Post_Image_Storage  $post_image_storage A {@link Wordlift_Post_Image_Storage} instance.
-	 * @param mixed                         $json The analysis response json.
+	 * @param \Wordlift_Post_Image_Storage $post_image_storage A {@link Wordlift_Post_Image_Storage} instance.
+	 * @param mixed $json The analysis response json.
 	 *
 	 * @since 3.21.5
 	 */
@@ -130,11 +130,23 @@ class Analysis_Response_Ops {
 		return $this;
 	}
 
+	/**
+	 * Add occurrences by parsing the provided html content.
+	 *
+	 * @param string $content The html content with annotations.
+	 *
+	 * @return Analysis_Response_Ops The {@link Analysis_Response_Ops} instance.
+	 *
+	 * @since 3.23.7 refactor the regex pattern to take into account that there might be css classes between textannotation
+	 *  and disambiguated.
+	 *
+	 * @link https://github.com/insideout10/wordlift-plugin/issues/1001
+	 */
 	public function add_occurrences( $content ) {
 
 		// Try to get all the disambiguated annotations and bail out if an error occurs.
 		if ( false === preg_match_all(
-				'|<span\s+id="([^"]+)"\s+class="textannotation\s+disambiguated(?=[\s"])[^"]*"\s+itemid="([^"]*)">|',
+				'|<span\s+id="([^"]+)"\s+class="textannotation\s+(?:\S+\s+)?disambiguated(?=[\s"])[^"]*"\s+itemid="([^"]*)">|',
 				$content,
 				$matches,
 				PREG_SET_ORDER
