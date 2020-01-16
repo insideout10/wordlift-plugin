@@ -40,10 +40,10 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 					plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings-edit.css',
 					$wordlift->get_version()
 				);
+				Wordlift_Admin_Edit_Mappings::load_ui_dependancies();
 			}
 		);
 
-		add_action( 'init', 'Wordlift_Admin_Edit_Mappings::load_ui_dependancies' );
 		$that = $this;
 		add_action( 'admin_menu', array( $that, 'add_edit_mapping_menu_entry' ) );
 	}

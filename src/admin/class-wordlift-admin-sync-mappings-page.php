@@ -42,13 +42,9 @@ class Wordlift_Admin_Sync_Mappings_Page extends Wordlift_Admin_Page {
 					plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings.css',
 					$wordlift->get_version()
 				);
+				Wordlift_Admin_Sync_Mappings_Page::provide_ui_dependencies();
 			}
 		);
-		add_action(
-			'init',
-			'Wordlift_Admin_Sync_Mappings_Page::provide_ui_dependencies'
-		);
-
 	}
 
 	/**
