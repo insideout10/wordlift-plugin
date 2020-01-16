@@ -29,10 +29,10 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 			'wl-edit-mappings-script',
 			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings-edit',
 			array( 'react', 'react-dom', 'wp-polyfill' ),
-			true
+			'admin_enqueue_scripts'
 		);
 		add_action(
-			'wp_enqueue_style',
+			'admin_enqueue_scripts',
 			function() {
 				$wordlift = \Wordlift::get_instance();
 				wp_register_style(

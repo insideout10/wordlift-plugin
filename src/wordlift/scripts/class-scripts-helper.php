@@ -58,7 +58,13 @@ class Scripts_Helper {
 	 * @param string $script_name The full script URL without the `.js` extension.
 	 * @param array  $dependencies An array of dependencies to be added only in WordPress > 5.0.
 	 */
-	public static function register_based_on_wordpress_version( $handle, $script_name, $dependencies, $in_footer = false ) {
+	public static function register_based_on_wordpress_version(
+			$handle,
+			$script_name,
+			$dependencies,
+			$action = 'wp_enqueue_scripts',
+			$in_footer = false
+		) {
 		global $wp_version;
 
 		if ( version_compare( $wp_version, '5.0', '<' ) ) {
@@ -71,7 +77,7 @@ class Scripts_Helper {
 
 		$wordlift = \Wordlift::get_instance();
 		add_action(
-			'wp_enqueue_scripts',
+			$action,
 			function () use ( $handle, $actual_script_name, $actual_dependencies, $wordlift, $in_footer ) {
 				wp_register_script( $handle, $actual_script_name, $actual_dependencies, $wordlift->get_version(), $in_footer );
 			}

@@ -30,11 +30,11 @@ class Wordlift_Admin_Sync_Mappings_Page extends Wordlift_Admin_Page {
 				'react-dom',
 				'wp-polyfill',
 			),
-			true
+			'admin_enqueue_scripts'
 		);
 
 		add_action(
-			'wp_enqueue_style',
+			'admin_enqueue_scripts',
 			function() {
 				$wordlift = \Wordlift::get_instance();
 				wp_register_style(
