@@ -1,0 +1,3219 @@
+{
+  "name": "salzburgerland.com",
+  "info": null,
+  "children": [
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/salzburgerland_tourismus_gmbh",
+        "type": "http://schema.org/Organization",
+        "url": "https://www.salzburgerland.com/en/salzburgerland-tourism/",
+        "label": "Salzburg State Board of Tourism "
+      },
+      "score": {
+        "value": 3.1928584285953194,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/",
+            "weight": 0.5773502691896257,
+            "keyword": "salzburger",
+            "rank": 3,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/",
+            "weight": 0.4472135954999579,
+            "keyword": "salzburg tourismus",
+            "rank": 5,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/",
+            "weight": 0.28867513459481287,
+            "keyword": "salzburg tourism",
+            "rank": 12,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/",
+            "weight": 0.2773500981126146,
+            "keyword": "salzburg austria tourism",
+            "rank": 13,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/",
+            "weight": 0.2672612419124244,
+            "keyword": "salzburg",
+            "rank": 14,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/",
+            "weight": 0.2672612419124244,
+            "keyword": "salizburg austria",
+            "rank": 14,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/",
+            "weight": 0.2672612419124244,
+            "keyword": "slasburg",
+            "rank": 14,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/",
+            "weight": 0.22941573387056177,
+            "keyword": "salsburg austria",
+            "rank": 19,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/",
+            "weight": 0.21821789023599236,
+            "keyword": "salzburg austria",
+            "rank": 21,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/",
+            "weight": 0.20851441405707477,
+            "keyword": "salzburg, austria",
+            "rank": 23,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/",
+            "weight": 0.14433756729740643,
+            "keyword": "salzburg visit",
+            "rank": 48,
+            "type": "DIRECT"
+          }
+        ],
+        "relative": 1
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/salzburgerland",
+        "type": "http://schema.org/Place",
+        "url": "https://www.salzburgerland.com/en/salzburgerland/",
+        "label": "SalzburgerLand"
+      },
+      "score": {
+        "value": 3.1928584285953194,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/",
+            "weight": 0.5773502691896257,
+            "keyword": "salzburger",
+            "rank": 3,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/",
+            "weight": 0.4472135954999579,
+            "keyword": "salzburg tourismus",
+            "rank": 5,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/",
+            "weight": 0.28867513459481287,
+            "keyword": "salzburg tourism",
+            "rank": 12,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/",
+            "weight": 0.2773500981126146,
+            "keyword": "salzburg austria tourism",
+            "rank": 13,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/",
+            "weight": 0.2672612419124244,
+            "keyword": "salzburg",
+            "rank": 14,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/",
+            "weight": 0.2672612419124244,
+            "keyword": "salizburg austria",
+            "rank": 14,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/",
+            "weight": 0.2672612419124244,
+            "keyword": "slasburg",
+            "rank": 14,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/",
+            "weight": 0.22941573387056177,
+            "keyword": "salsburg austria",
+            "rank": 19,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/",
+            "weight": 0.21821789023599236,
+            "keyword": "salzburg austria",
+            "rank": 21,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/",
+            "weight": 0.20851441405707477,
+            "keyword": "salzburg, austria",
+            "rank": 23,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/",
+            "weight": 0.14433756729740643,
+            "keyword": "salzburg visit",
+            "rank": 48,
+            "type": "DIRECT"
+          }
+        ],
+        "relative": 1
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/salzburg",
+        "type": "http://schema.org/Place",
+        "url": "https://www.salzburgerland.com/en/salzburg/",
+        "label": "Salzburg"
+      },
+      "score": {
+        "value": 3.0851338569055438,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/salzburg/",
+            "weight": 0.22941573387056177,
+            "keyword": "salzburg mozart",
+            "rank": 19,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/salzburg/",
+            "weight": 0.19245008972987526,
+            "keyword": "salzburg mozart festival",
+            "rank": 27,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-perfect-way-to-prepare-for-the-salzburg-festival/",
+            "weight": 0.1767766952966369,
+            "keyword": "salzburg festival dress code",
+            "rank": 2,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/salzburg/",
+            "weight": 0.16012815380508713,
+            "keyword": "salzburg city",
+            "rank": 39,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/salzburg-whitsun-festival/",
+            "weight": 0.1259881576697424,
+            "keyword": "salzburg whitsun festival",
+            "rank": 7,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/a-short-history-of-the-salzburg-festival/",
+            "weight": 0.11785113019775793,
+            "keyword": "salzburg festival performing",
+            "rank": 8,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/a-short-history-of-the-salzburg-festival/",
+            "weight": 0.10540925533894598,
+            "keyword": "where is salzberg festival held",
+            "rank": 12,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-salzburg-festival-in-5-questions/",
+            "weight": 0.09245003270420486,
+            "keyword": "where is salzberg festival held",
+            "rank": 12,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-salzburg-festival-in-5-questions/",
+            "weight": 0.08333333333333333,
+            "keyword": "salzburg festival",
+            "rank": 16,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/sound-of-music-the-true-story/",
+            "weight": 0.08333333333333333,
+            "keyword": "sound of music a true story",
+            "rank": 9,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/sound-of-music-the-true-story/",
+            "weight": 0.08333333333333333,
+            "keyword": "sound of music true story",
+            "rank": 9,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/sound-of-music-the-true-story/",
+            "weight": 0.07905694150420949,
+            "keyword": "is the sound of music a true story",
+            "rank": 10,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/sound-of-music-the-true-story/",
+            "weight": 0.06933752452815364,
+            "keyword": "the true story of the von trapp family",
+            "rank": 13,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/elsbethen/",
+            "weight": 0.06868028197434452,
+            "keyword": "gaisberg mountain",
+            "rank": 53,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/wolfgang-amadeus-mozart/",
+            "weight": 0.06666666666666667,
+            "keyword": "most famous mozart pieces",
+            "rank": 25,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/sound-of-music-the-true-story/",
+            "weight": 0.06454972243679027,
+            "keyword": "is the sound of music based on a true story",
+            "rank": 15,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/sound-of-music-the-true-story/",
+            "weight": 0.0625,
+            "keyword": "sound of music real story",
+            "rank": 16,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/cycle-paths-in-salzburgerland/",
+            "weight": 0.0601929265428846,
+            "keyword": "bike tour austria",
+            "rank": 69,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/salzburgs-most-famous-artists/",
+            "weight": 0.05590169943749474,
+            "keyword": "famous musicians",
+            "rank": 20,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/sound-of-music-the-true-story/",
+            "weight": 0.05590169943749474,
+            "keyword": "sound of music family",
+            "rank": 20,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-background-and-how-the-sound-of-music-became-so-popular/",
+            "weight": 0.05590169943749474,
+            "keyword": "is there a christmas scene in the sound of music",
+            "rank": 20,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/wolfgang-amadeus-mozart/",
+            "weight": 0.05407380704358752,
+            "keyword": "famous works by mozart",
+            "rank": 38,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/wolfgang-amadeus-mozart/",
+            "weight": 0.053376051268362375,
+            "keyword": "when was mozart alive",
+            "rank": 39,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/salzburgs-most-famous-artists/",
+            "weight": 0.05212860351426869,
+            "keyword": "most famous musicians",
+            "rank": 23,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/sound-of-music-the-true-story/",
+            "weight": 0.05,
+            "keyword": "von trapp story",
+            "rank": 25,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/wolfgang-amadeus-mozart/",
+            "weight": 0.04862166383263152,
+            "keyword": "famous mozart compositions",
+            "rank": 47,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/salzburgs-most-famous-artists/",
+            "weight": 0.048112522432468816,
+            "keyword": "famous music artists",
+            "rank": 27,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-background-and-how-the-sound-of-music-became-so-popular/",
+            "weight": 0.048112522432468816,
+            "keyword": "sound of music wedding scene",
+            "rank": 27,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/sound-of-music-the-true-story/",
+            "weight": 0.0472455591261534,
+            "keyword": "von trapp family story",
+            "rank": 28,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/wolfgang-amadeus-mozart/",
+            "weight": 0.04714045207910317,
+            "keyword": "famous mozart pieces",
+            "rank": 50,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/sound-of-music-the-true-story/",
+            "weight": 0.046423834544262965,
+            "keyword": "von trapp family sound of music",
+            "rank": 29,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/salzburgs-most-famous-artists/",
+            "weight": 0.04564354645876384,
+            "keyword": "famous musician",
+            "rank": 30,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/salzburgs-most-famous-artists/",
+            "weight": 0.04419417382415922,
+            "keyword": "famous people from austria",
+            "rank": 32,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/wolfgang-amadeus-mozart/",
+            "weight": 0.043768810953240846,
+            "keyword": "famous mozart music",
+            "rank": 58,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/sound-of-music-the-true-story/",
+            "weight": 0.04351941398892446,
+            "keyword": "real maria sound of music",
+            "rank": 33,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/wolfgang-amadeus-mozart/",
+            "weight": 0.04199605255658081,
+            "keyword": "where was mozart born",
+            "rank": 63,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/salzburgs-most-famous-artists/",
+            "weight": 0.04003203845127178,
+            "keyword": "most famous artist in the world",
+            "rank": 39,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-background-and-how-the-sound-of-music-became-so-popular/",
+            "weight": 0.03952847075210474,
+            "keyword": "so popular",
+            "rank": 40,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/wolfgang-amadeus-mozart/",
+            "weight": 0.03874921291460643,
+            "keyword": "mozart's father",
+            "rank": 74,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/salzburgs-most-famous-artists/",
+            "weight": 0.03608439182435161,
+            "keyword": "most famous composers",
+            "rank": 48,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/salzburgs-most-famous-artists/",
+            "weight": 0.03571428571428571,
+            "keyword": "most popular musicians",
+            "rank": 49,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/salzburgs-most-famous-artists/",
+            "weight": 0.031750031750047626,
+            "keyword": "famous musical composers",
+            "rank": 62,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-sound-of-music-tour/",
+            "weight": 0.030499714066520932,
+            "keyword": "mirabell gardens sound of music",
+            "rank": 43,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/salzburgs-most-famous-artists/",
+            "weight": 0.02926028679903264,
+            "keyword": "popular musicians",
+            "rank": 73,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.9662607741311072
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/the_sound_of_music",
+        "type": "http://schema.org/Thing",
+        "url": "https://www.salzburgerland.com/en/sound-of-music/",
+        "label": "Sound of Music"
+      },
+      "score": {
+        "value": 2.4420570260428454,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/sound-of-music/",
+            "weight": 0.23570226039551584,
+            "keyword": "austria sound of music",
+            "rank": 18,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/sound-of-music/",
+            "weight": 0.22941573387056177,
+            "keyword": "sound of music austria",
+            "rank": 19,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/sound-of-music/",
+            "weight": 0.16222142113076254,
+            "keyword": "sound of music tours",
+            "rank": 38,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.11180339887498948,
+            "keyword": "sound of music filming locations",
+            "rank": 5,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.11180339887498948,
+            "keyword": "sound of music location",
+            "rank": 5,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.11180339887498948,
+            "keyword": "sound of music filming location",
+            "rank": 5,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.11180339887498948,
+            "keyword": "sound of music film locations",
+            "rank": 5,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.11180339887498948,
+            "keyword": "opening scene sound of music location",
+            "rank": 5,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.10206207261596575,
+            "keyword": "where was the sound of music filmed",
+            "rank": 6,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.10206207261596575,
+            "keyword": "sound of music film location",
+            "rank": 6,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.10206207261596575,
+            "keyword": "where was sound of music filmed",
+            "rank": 6,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.0944911182523068,
+            "keyword": "location sound of music",
+            "rank": 7,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.07537783614444091,
+            "keyword": "scenes from sound of music the movie",
+            "rank": 11,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.06063390625908324,
+            "keyword": "sound of music the movie",
+            "rank": 17,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.06063390625908324,
+            "keyword": "austria sound of music",
+            "rank": 18,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05892556509887896,
+            "keyword": "sound of music austria",
+            "rank": 19,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05892556509887896,
+            "keyword": "sound of music, the movie",
+            "rank": 18,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05735393346764044,
+            "keyword": "sound of music opening scene",
+            "rank": 19,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05735393346764044,
+            "keyword": "sound of music film",
+            "rank": 19,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05455447255899809,
+            "keyword": "sound of music i am 16 going on 17",
+            "rank": 21,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05330017908890261,
+            "keyword": "sound of music house",
+            "rank": 22,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05212860351426869,
+            "keyword": "salzburg sound of music",
+            "rank": 23,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05,
+            "keyword": "sound of music ending",
+            "rank": 25,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.04902903378454601,
+            "keyword": "location filming",
+            "rank": 26,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.04902903378454601,
+            "keyword": "salzburg austria sound of music",
+            "rank": 26,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.0472455591261534,
+            "keyword": "sound of music i am 16",
+            "rank": 28,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.04003203845127178,
+            "keyword": "sound of music movie songs",
+            "rank": 39,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-sound-of-music-tour/",
+            "weight": 0.030499714066520932,
+            "keyword": "mirabell gardens sound of music",
+            "rank": 43,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.7648497672717719
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/mirabellgarten",
+        "type": "http://schema.org/Place",
+        "url": "https://www.salzburgerland.com/en/mirabellgarten/",
+        "label": "Mirabellgarten"
+      },
+      "score": {
+        "value": 1.9715524644952152,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.11180339887498948,
+            "keyword": "sound of music filming locations",
+            "rank": 5,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.11180339887498948,
+            "keyword": "sound of music location",
+            "rank": 5,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.11180339887498948,
+            "keyword": "sound of music filming location",
+            "rank": 5,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.11180339887498948,
+            "keyword": "sound of music film locations",
+            "rank": 5,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.11180339887498948,
+            "keyword": "opening scene sound of music location",
+            "rank": 5,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.10206207261596575,
+            "keyword": "where was the sound of music filmed",
+            "rank": 6,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.10206207261596575,
+            "keyword": "sound of music film location",
+            "rank": 6,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.10206207261596575,
+            "keyword": "where was sound of music filmed",
+            "rank": 6,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.0944911182523068,
+            "keyword": "location sound of music",
+            "rank": 7,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.07537783614444091,
+            "keyword": "scenes from sound of music the movie",
+            "rank": 11,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.06063390625908324,
+            "keyword": "sound of music the movie",
+            "rank": 17,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.06063390625908324,
+            "keyword": "austria sound of music",
+            "rank": 18,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/sound-of-music/",
+            "weight": 0.05892556509887896,
+            "keyword": "austria sound of music",
+            "rank": 18,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05892556509887896,
+            "keyword": "sound of music austria",
+            "rank": 19,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05892556509887896,
+            "keyword": "sound of music, the movie",
+            "rank": 18,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/sound-of-music/",
+            "weight": 0.05735393346764044,
+            "keyword": "sound of music austria",
+            "rank": 19,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05735393346764044,
+            "keyword": "sound of music opening scene",
+            "rank": 19,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05735393346764044,
+            "keyword": "sound of music film",
+            "rank": 19,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05455447255899809,
+            "keyword": "sound of music i am 16 going on 17",
+            "rank": 21,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05330017908890261,
+            "keyword": "sound of music house",
+            "rank": 22,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05212860351426869,
+            "keyword": "salzburg sound of music",
+            "rank": 23,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05,
+            "keyword": "sound of music ending",
+            "rank": 25,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.04902903378454601,
+            "keyword": "location filming",
+            "rank": 26,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.04902903378454601,
+            "keyword": "salzburg austria sound of music",
+            "rank": 26,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.0472455591261534,
+            "keyword": "sound of music i am 16",
+            "rank": 28,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/sound-of-music/",
+            "weight": 0.040555355282690636,
+            "keyword": "sound of music tours",
+            "rank": 38,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.04003203845127178,
+            "keyword": "sound of music movie songs",
+            "rank": 39,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-sound-of-music-tour/",
+            "weight": 0.030499714066520932,
+            "keyword": "mirabell gardens sound of music",
+            "rank": 43,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.6174882189695422
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/hellbrunn",
+        "type": "http://schema.org/Place",
+        "url": "https://www.salzburgerland.com/en/hellbrunn/",
+        "label": "Hellbrunn"
+      },
+      "score": {
+        "value": 1.9410527504286943,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.11180339887498948,
+            "keyword": "sound of music filming locations",
+            "rank": 5,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.11180339887498948,
+            "keyword": "sound of music location",
+            "rank": 5,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.11180339887498948,
+            "keyword": "sound of music filming location",
+            "rank": 5,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.11180339887498948,
+            "keyword": "sound of music film locations",
+            "rank": 5,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.11180339887498948,
+            "keyword": "opening scene sound of music location",
+            "rank": 5,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.10206207261596575,
+            "keyword": "where was the sound of music filmed",
+            "rank": 6,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.10206207261596575,
+            "keyword": "sound of music film location",
+            "rank": 6,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.10206207261596575,
+            "keyword": "where was sound of music filmed",
+            "rank": 6,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.0944911182523068,
+            "keyword": "location sound of music",
+            "rank": 7,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.07537783614444091,
+            "keyword": "scenes from sound of music the movie",
+            "rank": 11,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.06063390625908324,
+            "keyword": "sound of music the movie",
+            "rank": 17,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.06063390625908324,
+            "keyword": "austria sound of music",
+            "rank": 18,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/sound-of-music/",
+            "weight": 0.05892556509887896,
+            "keyword": "austria sound of music",
+            "rank": 18,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05892556509887896,
+            "keyword": "sound of music austria",
+            "rank": 19,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05892556509887896,
+            "keyword": "sound of music, the movie",
+            "rank": 18,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/sound-of-music/",
+            "weight": 0.05735393346764044,
+            "keyword": "sound of music austria",
+            "rank": 19,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05735393346764044,
+            "keyword": "sound of music opening scene",
+            "rank": 19,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05735393346764044,
+            "keyword": "sound of music film",
+            "rank": 19,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05455447255899809,
+            "keyword": "sound of music i am 16 going on 17",
+            "rank": 21,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05330017908890261,
+            "keyword": "sound of music house",
+            "rank": 22,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05212860351426869,
+            "keyword": "salzburg sound of music",
+            "rank": 23,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05,
+            "keyword": "sound of music ending",
+            "rank": 25,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.04902903378454601,
+            "keyword": "location filming",
+            "rank": 26,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.04902903378454601,
+            "keyword": "salzburg austria sound of music",
+            "rank": 26,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.0472455591261534,
+            "keyword": "sound of music i am 16",
+            "rank": 28,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/sound-of-music/",
+            "weight": 0.040555355282690636,
+            "keyword": "sound of music tours",
+            "rank": 38,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.04003203845127178,
+            "keyword": "sound of music movie songs",
+            "rank": 39,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.6079357396634244
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/julie_andrews",
+        "type": "http://schema.org/Person",
+        "url": "https://www.salzburgerland.com/en/julie-andrews/",
+        "label": "Julie Andrews"
+      },
+      "score": {
+        "value": 1.9277605892015526,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.11180339887498948,
+            "keyword": "sound of music filming locations",
+            "rank": 5,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.11180339887498948,
+            "keyword": "sound of music location",
+            "rank": 5,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.11180339887498948,
+            "keyword": "sound of music filming location",
+            "rank": 5,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.11180339887498948,
+            "keyword": "sound of music film locations",
+            "rank": 5,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.11180339887498948,
+            "keyword": "opening scene sound of music location",
+            "rank": 5,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.10206207261596575,
+            "keyword": "where was the sound of music filmed",
+            "rank": 6,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.10206207261596575,
+            "keyword": "sound of music film location",
+            "rank": 6,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.10206207261596575,
+            "keyword": "where was sound of music filmed",
+            "rank": 6,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.0944911182523068,
+            "keyword": "location sound of music",
+            "rank": 7,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.07537783614444091,
+            "keyword": "scenes from sound of music the movie",
+            "rank": 11,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.06063390625908324,
+            "keyword": "sound of music the movie",
+            "rank": 17,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.06063390625908324,
+            "keyword": "austria sound of music",
+            "rank": 18,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05892556509887896,
+            "keyword": "sound of music austria",
+            "rank": 19,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05892556509887896,
+            "keyword": "sound of music, the movie",
+            "rank": 18,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05735393346764044,
+            "keyword": "sound of music opening scene",
+            "rank": 19,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05735393346764044,
+            "keyword": "sound of music film",
+            "rank": 19,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-background-and-how-the-sound-of-music-became-so-popular/",
+            "weight": 0.05590169943749474,
+            "keyword": "is there a christmas scene in the sound of music",
+            "rank": 20,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05455447255899809,
+            "keyword": "sound of music i am 16 going on 17",
+            "rank": 21,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05330017908890261,
+            "keyword": "sound of music house",
+            "rank": 22,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05212860351426869,
+            "keyword": "salzburg sound of music",
+            "rank": 23,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.05,
+            "keyword": "sound of music ending",
+            "rank": 25,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.04902903378454601,
+            "keyword": "location filming",
+            "rank": 26,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.04902903378454601,
+            "keyword": "salzburg austria sound of music",
+            "rank": 26,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-background-and-how-the-sound-of-music-became-so-popular/",
+            "weight": 0.048112522432468816,
+            "keyword": "sound of music wedding scene",
+            "rank": 27,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.0472455591261534,
+            "keyword": "sound of music i am 16",
+            "rank": 28,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-film-locations/",
+            "weight": 0.04003203845127178,
+            "keyword": "sound of music movie songs",
+            "rank": 39,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-background-and-how-the-sound-of-music-became-so-popular/",
+            "weight": 0.03952847075210474,
+            "keyword": "so popular",
+            "rank": 40,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.6037726483380788
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/salzburgerland_card",
+        "type": "http://schema.org/Thing",
+        "url": "https://www.salzburgerland.com/en/salzburgerland-card/",
+        "label": "SalzburgerLand Card"
+      },
+      "score": {
+        "value": 1.4939011501426769,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/salzburgerland-card/",
+            "weight": 1,
+            "keyword": "salzburgerland card",
+            "rank": 2,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/salzburgerland-card/",
+            "weight": 0.2581988897471611,
+            "keyword": "salzburg card",
+            "rank": 15,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/salzburgerland-card/",
+            "weight": 0.23570226039551584,
+            "keyword": "salzburg pass",
+            "rank": 18,
+            "type": "DIRECT"
+          }
+        ],
+        "relative": 0.46788831498548794
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/wolfgang_amadeus_mozart",
+        "type": "http://schema.org/Person",
+        "url": "https://www.salzburgerland.com/en/wolfgang-amadeus-mozart/",
+        "label": "Joannes Chrysostomus Wolfgangus Theophilus Mozart"
+      },
+      "score": {
+        "value": 1.183178151944338,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/wolfgang-amadeus-mozart/",
+            "weight": 0.2,
+            "keyword": "most famous mozart pieces",
+            "rank": 25,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/wolfgang-amadeus-mozart/",
+            "weight": 0.16222142113076254,
+            "keyword": "famous works by mozart",
+            "rank": 38,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/wolfgang-amadeus-mozart/",
+            "weight": 0.16012815380508713,
+            "keyword": "when was mozart alive",
+            "rank": 39,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/wolfgang-amadeus-mozart/",
+            "weight": 0.14586499149789456,
+            "keyword": "famous mozart compositions",
+            "rank": 47,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/wolfgang-amadeus-mozart/",
+            "weight": 0.1414213562373095,
+            "keyword": "famous mozart pieces",
+            "rank": 50,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/wolfgang-amadeus-mozart/",
+            "weight": 0.13130643285972254,
+            "keyword": "famous mozart music",
+            "rank": 58,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/wolfgang-amadeus-mozart/",
+            "weight": 0.12598815766974242,
+            "keyword": "where was mozart born",
+            "rank": 63,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/wolfgang-amadeus-mozart/",
+            "weight": 0.11624763874381928,
+            "keyword": "mozart's father",
+            "rank": 74,
+            "type": "DIRECT"
+          }
+        ],
+        "relative": 0.3705701891909034
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/oberndorf",
+        "type": "http://schema.org/Place",
+        "url": "https://www.salzburgerland.com/en/oberndorf/",
+        "label": "Oberndorf"
+      },
+      "score": {
+        "value": 1.0878629682100351,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/oberndorf/",
+            "weight": 0.25,
+            "keyword": "silent-night-chapel",
+            "rank": 16,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/oberndorf/",
+            "weight": 0.25,
+            "keyword": "beautiful silient night church christmas card",
+            "rank": 16,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/oberndorf/",
+            "weight": 0.24253562503633297,
+            "keyword": "what town was silent night written",
+            "rank": 17,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/oberndorf/",
+            "weight": 0.19611613513818404,
+            "keyword": "how popular is silent night",
+            "rank": 26,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/200-years-silent-night/",
+            "weight": 0.07647191129018725,
+            "keyword": "the history of silent night",
+            "rank": 19,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/200-years-silent-night/",
+            "weight": 0.07273929674533079,
+            "keyword": "what is the message of silent night",
+            "rank": 21,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.34071757095996097
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/post/the_most_beautiful_christmas_markets",
+        "type": "http://schema.org/BlogPosting",
+        "url": "https://www.salzburgerland.com/en/christmas-markets-and-traditions/",
+        "label": "The most beautiful Christmas markets"
+      },
+      "score": {
+        "value": 1.0510347074619981,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/christmas-markets-and-traditions/",
+            "weight": 0.2672612419124244,
+            "keyword": "salzburg christmas markets",
+            "rank": 14,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/christmas-markets-and-traditions/",
+            "weight": 0.25,
+            "keyword": "salzburg christmas market",
+            "rank": 16,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/christmas-markets-and-traditions/",
+            "weight": 0.21320071635561044,
+            "keyword": "austrian christmas tree straw star",
+            "rank": 22,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/christmas-markets-and-traditions/",
+            "weight": 0.1643989873053573,
+            "keyword": "salzburg austria chrystmass gifts",
+            "rank": 37,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/christmas-markets-and-traditions/",
+            "weight": 0.15617376188860607,
+            "keyword": "salzburg at christmas",
+            "rank": 41,
+            "type": "DIRECT"
+          }
+        ],
+        "relative": 0.32918299729449485
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/zell_am_see-kaprun",
+        "type": "http://schema.org/Organization",
+        "url": "https://www.salzburgerland.com/en/zell-am-see-kaprun/",
+        "label": "Zell am See-Kaprun"
+      },
+      "score": {
+        "value": 1.0245638646895836,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/zell-am-see-kaprun/",
+            "weight": 0.5773502691896257,
+            "keyword": "kaprun zell am see",
+            "rank": 3,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/zell-am-see-kaprun/",
+            "weight": 0.4472135954999579,
+            "keyword": "zell am see tourist information",
+            "rank": 5,
+            "type": "DIRECT"
+          }
+        ],
+        "relative": 0.32089235636430485
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/museum",
+        "type": "http://schema.org/Thing",
+        "url": "https://www.salzburgerland.com/en/museum/",
+        "label": "Museum"
+      },
+      "score": {
+        "value": 0.8586539491100422,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/mines-caves-in-salzburgerland/",
+            "weight": 0.1889822365046136,
+            "keyword": "salt mine cave",
+            "rank": 28,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/mines-caves-in-salzburgerland/",
+            "weight": 0.15249857033260467,
+            "keyword": "salt mine salzburg",
+            "rank": 43,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/mines-caves-in-salzburgerland/",
+            "weight": 0.14285714285714285,
+            "keyword": "ice caves salzburg",
+            "rank": 49,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/mines-caves-in-salzburgerland/",
+            "weight": 0.1414213562373095,
+            "keyword": "salt mines near salzburg",
+            "rank": 50,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/mines-caves-in-salzburgerland/",
+            "weight": 0.1203858530857692,
+            "keyword": "how deep do cooper mines go",
+            "rank": 69,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/mines-caves-in-salzburgerland/",
+            "weight": 0.1125087900926024,
+            "keyword": "salzburg salt mines",
+            "rank": 79,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.2689295401950541
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/post/the_hellbrunn_trick_fountains",
+        "type": "http://schema.org/BlogPosting",
+        "url": "https://www.salzburgerland.com/en/the-hellbrunn-trick-fountains/",
+        "label": "The Hellbrunn trick fountains"
+      },
+      "score": {
+        "value": 0.7794494684715174,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/the-hellbrunn-trick-fountains/",
+            "weight": 0.3333333333333333,
+            "keyword": "trick water fountains",
+            "rank": 9,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-hellbrunn-trick-fountains/",
+            "weight": 0.25,
+            "keyword": "hellbrunn",
+            "rank": 16,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-hellbrunn-trick-fountains/",
+            "weight": 0.19611613513818404,
+            "keyword": "hellbrunn palace",
+            "rank": 26,
+            "type": "DIRECT"
+          }
+        ],
+        "relative": 0.2441227777250468
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/fuschl_am_see",
+        "type": "http://schema.org/Place",
+        "url": "https://www.salzburgerland.com/en/fuschl-am-see/",
+        "label": "Fuschl am See"
+      },
+      "score": {
+        "value": 0.5717712808292661,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/fuschl-am-see/",
+            "weight": 0.3535533905932738,
+            "keyword": "fuschl am see",
+            "rank": 8,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/fuschl-am-see/",
+            "weight": 0.21821789023599236,
+            "keyword": "fuschl",
+            "rank": 21,
+            "type": "DIRECT"
+          }
+        ],
+        "relative": 0.17907818139021395
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/werfen",
+        "type": "http://schema.org/Place",
+        "url": "https://www.salzburgerland.com/en/werfen/",
+        "label": "Werfen"
+      },
+      "score": {
+        "value": 0.5193903113826088,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/werfen/",
+            "weight": 0.21821789023599236,
+            "keyword": "werfen castle",
+            "rank": 21,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/werfen/",
+            "weight": 0.14433756729740643,
+            "keyword": "werfen",
+            "rank": 48,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/sound-of-music/",
+            "weight": 0.05892556509887896,
+            "keyword": "austria sound of music",
+            "rank": 18,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/sound-of-music/",
+            "weight": 0.05735393346764044,
+            "keyword": "sound of music austria",
+            "rank": 19,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/sound-of-music/",
+            "weight": 0.040555355282690636,
+            "keyword": "sound of music tours",
+            "rank": 38,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.1626725152393029
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/st-_wolfgang",
+        "type": "http://schema.org/Place",
+        "url": "https://www.salzburgerland.com/en/st-wolfgang/",
+        "label": "St. Wolfgang"
+      },
+      "score": {
+        "value": 0.4418246879859713,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/st-wolfgang/",
+            "weight": 0.22360679774997896,
+            "keyword": "st wolfgang",
+            "rank": 20,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/st-wolfgang/",
+            "weight": 0.21821789023599236,
+            "keyword": "st. wolfgang",
+            "rank": 21,
+            "type": "DIRECT"
+          }
+        ],
+        "relative": 0.13837904118421862
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/silent_night",
+        "type": "http://schema.org/CreativeWork",
+        "url": "https://www.salzburgerland.com/en/silent-night/",
+        "label": "Silent Night"
+      },
+      "score": {
+        "value": 0.37309149097933275,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/silent-night/",
+            "weight": 0.25,
+            "keyword": "silent night holy night song",
+            "rank": 16,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/silent-night/",
+            "weight": 0.12309149097933274,
+            "keyword": "silent night in russian",
+            "rank": 66,
+            "type": "DIRECT"
+          }
+        ],
+        "relative": 0.11685187405677498
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/abtenau",
+        "type": "http://schema.org/Place",
+        "url": "https://www.salzburgerland.com/en/abtenau/",
+        "label": "Abtenau"
+      },
+      "score": {
+        "value": 0.3535533905932738,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/abtenau/",
+            "weight": 0.3535533905932738,
+            "keyword": "abtenau",
+            "rank": 8,
+            "type": "DIRECT"
+          }
+        ],
+        "relative": 0.11073256096381877
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/bad_gastein",
+        "type": "http://schema.org/Place",
+        "url": "https://www.salzburgerland.com/en/bad-gastein/",
+        "label": "Bad Gastein"
+      },
+      "score": {
+        "value": 0.35298358911883443,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/thermal-spas-in-salzburgerland/",
+            "weight": 0.2,
+            "keyword": "salzburg baths",
+            "rank": 1,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/salzburgerland-a-paradise-for-animal-lovers/",
+            "weight": 0.10206207261596575,
+            "keyword": "austrian animals",
+            "rank": 24,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/imperial-nostalgia-nina-walks-through-bad-gastein/",
+            "weight": 0.03857583749052298,
+            "keyword": "imperial nostalgia",
+            "rank": 42,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/bike-trails-salzburgerland/",
+            "weight": 0.012345679012345678,
+            "keyword": "pure freedom tour",
+            "rank": 81,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.11055409972377873
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/joseph_mohr",
+        "type": "http://schema.org/Person",
+        "url": "https://www.salzburgerland.com/en/joseph-mohr/",
+        "label": "Josef Mohr"
+      },
+      "score": {
+        "value": 0.3357569535251844,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/silent-night/",
+            "weight": 0.125,
+            "keyword": "silent night holy night song",
+            "rank": 16,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/200-years-silent-night/",
+            "weight": 0.07647191129018725,
+            "keyword": "the history of silent night",
+            "rank": 19,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/200-years-silent-night/",
+            "weight": 0.07273929674533079,
+            "keyword": "what is the message of silent night",
+            "rank": 21,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/silent-night/",
+            "weight": 0.06154574548966637,
+            "keyword": "silent night in russian",
+            "rank": 66,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.10515873504385187
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/alpine_summer",
+        "type": "http://schema.org/Thing",
+        "url": "https://www.salzburgerland.com/en/alpine-summer/",
+        "label": "Alpine Summer"
+      },
+      "score": {
+        "value": 0.3333333333333333,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/alpine-summer/",
+            "weight": 0.3333333333333333,
+            "keyword": "salzburg austria summer",
+            "rank": 9,
+            "type": "DIRECT"
+          }
+        ],
+        "relative": 0.10439965967422536
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/spiritual_travel",
+        "type": "http://schema.org/Thing",
+        "url": "https://www.salzburgerland.com/en/spiritual-travel/",
+        "label": "Spiritual travel"
+      },
+      "score": {
+        "value": 0.2955333197317173,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/spiritual-travel/",
+            "weight": 0.17149858514250885,
+            "keyword": "spiritual travel",
+            "rank": 34,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/spiritual-travel/",
+            "weight": 0.12403473458920845,
+            "keyword": "adriatic pilgrimages",
+            "rank": 65,
+            "type": "DIRECT"
+          }
+        ],
+        "relative": 0.09256073400715596
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/post/the_6_salzburg_city_beaches",
+        "type": "http://schema.org/BlogPosting",
+        "url": "https://www.salzburgerland.com/en/the-6-salzburg-city-beaches/",
+        "label": "The 6 Salzburg city beaches"
+      },
+      "score": {
+        "value": 0.2581988897471611,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/the-6-salzburg-city-beaches/",
+            "weight": 0.2581988897471611,
+            "keyword": "salzach river",
+            "rank": 15,
+            "type": "DIRECT"
+          }
+        ],
+        "relative": 0.08086762865359937
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/kitzsteinhorn",
+        "type": "http://schema.org/Mountain",
+        "url": "https://www.salzburgerland.com/en/kitzsteinhorn/",
+        "label": "Kitzsteinhorn"
+      },
+      "score": {
+        "value": 0.2561409661723959,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/zell-am-see-kaprun/",
+            "weight": 0.14433756729740643,
+            "keyword": "kaprun zell am see",
+            "rank": 3,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/zell-am-see-kaprun/",
+            "weight": 0.11180339887498948,
+            "keyword": "zell am see tourist information",
+            "rank": 5,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.08022308909107621
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/kaprun",
+        "type": "http://schema.org/Place",
+        "url": "https://www.salzburgerland.com/en/kaprun/",
+        "label": "Kaprun"
+      },
+      "score": {
+        "value": 0.2561409661723959,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/zell-am-see-kaprun/",
+            "weight": 0.14433756729740643,
+            "keyword": "kaprun zell am see",
+            "rank": 3,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/zell-am-see-kaprun/",
+            "weight": 0.11180339887498948,
+            "keyword": "zell am see tourist information",
+            "rank": 5,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.08022308909107621
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/zell_am_see",
+        "type": "http://schema.org/Place",
+        "url": "https://www.salzburgerland.com/en/zell-am-see/",
+        "label": "Zell am See"
+      },
+      "score": {
+        "value": 0.2561409661723959,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/zell-am-see-kaprun/",
+            "weight": 0.14433756729740643,
+            "keyword": "kaprun zell am see",
+            "rank": 3,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/zell-am-see-kaprun/",
+            "weight": 0.11180339887498948,
+            "keyword": "zell am see tourist information",
+            "rank": 5,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.08022308909107621
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/schmittenhohe",
+        "type": "http://schema.org/Place",
+        "url": "https://www.salzburgerland.com/en/schmittenhoehe/",
+        "label": "SchmittenhÃ¶he"
+      },
+      "score": {
+        "value": 0.2561409661723959,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/zell-am-see-kaprun/",
+            "weight": 0.14433756729740643,
+            "keyword": "kaprun zell am see",
+            "rank": 3,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/zell-am-see-kaprun/",
+            "weight": 0.11180339887498948,
+            "keyword": "zell am see tourist information",
+            "rank": 5,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.08022308909107621
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/biking_and_cycling",
+        "type": "http://schema.org/Thing",
+        "url": "https://www.salzburgerland.com/en/biking-and-cycling/",
+        "label": "E-Bike"
+      },
+      "score": {
+        "value": 0.25002289225895086,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/biking-and-cycling/",
+            "weight": 0.12598815766974242,
+            "keyword": "cycling in austria",
+            "rank": 63,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/biking-and-cycling/",
+            "weight": 0.12403473458920845,
+            "keyword": "cycling austria",
+            "rank": 65,
+            "type": "DIRECT"
+          }
+        ],
+        "relative": 0.07830691458779995
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/leogang",
+        "type": "http://schema.org/Place",
+        "url": "https://www.salzburgerland.com/en/leogang/",
+        "label": "Leogang"
+      },
+      "score": {
+        "value": 0.24176141288290745,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/leogang/",
+            "weight": 0.22941573387056177,
+            "keyword": "leogang",
+            "rank": 19,
+            "type": "DIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/bike-trails-salzburgerland/",
+            "weight": 0.012345679012345678,
+            "keyword": "pure freedom tour",
+            "rank": 81,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.07571942768200626
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/skiing_and_snowboarding",
+        "type": "http://schema.org/Thing",
+        "url": "https://www.salzburgerland.com/en/ski-board/",
+        "label": "Skiing and Snowboarding"
+      },
+      "score": {
+        "value": 0.23570226039551584,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/ski-board/",
+            "weight": 0.23570226039551584,
+            "keyword": "ski resorts near salzburg",
+            "rank": 18,
+            "type": "DIRECT"
+          }
+        ],
+        "relative": 0.0738217073092125
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/family",
+        "type": "http://schema.org/Thing",
+        "url": "https://www.salzburgerland.com/en/family/",
+        "label": "Family"
+      },
+      "score": {
+        "value": 0.22941573387056177,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/family/",
+            "weight": 0.22941573387056177,
+            "keyword": "family holiday in austria",
+            "rank": 19,
+            "type": "DIRECT"
+          }
+        ],
+        "relative": 0.07185277361999792
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/post/the_long_tradition_of_the_christmas_markets",
+        "type": "http://schema.org/BlogPosting",
+        "url": "https://www.salzburgerland.com/en/traditional-christmas-markets/",
+        "label": "The long tradition of the Christmas Markets"
+      },
+      "score": {
+        "value": 0.21821789023599236,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/traditional-christmas-markets/",
+            "weight": 0.21821789023599236,
+            "keyword": "salzburg knit hat",
+            "rank": 21,
+            "type": "DIRECT"
+          }
+        ],
+        "relative": 0.0683456204263952
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/mariapfarr",
+        "type": "http://schema.org/Place",
+        "url": "https://www.salzburgerland.com/en/mariapfarr/",
+        "label": "Mariapfarr"
+      },
+      "score": {
+        "value": 0.21320071635561044,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/mariapfarr/",
+            "weight": 0.21320071635561044,
+            "keyword": "mariapfarr",
+            "rank": 22,
+            "type": "DIRECT"
+          }
+        ],
+        "relative": 0.06677424668948036
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/destinations_in_salzburgerland",
+        "type": "http://schema.org/Thing",
+        "url": "https://www.salzburgerland.com/en/destinations-in-salzburgerland/",
+        "label": "Destinations in SalzburgerLand"
+      },
+      "score": {
+        "value": 0.20851441405707477,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/destinations-in-salzburgerland/",
+            "weight": 0.20851441405707477,
+            "keyword": "salzburg sightseeing places",
+            "rank": 23,
+            "type": "DIRECT"
+          }
+        ],
+        "relative": 0.06530650159418736
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/muhlbach_am_hochkonig",
+        "type": "http://schema.org/Place",
+        "url": "https://www.salzburgerland.com/en/muehlbach-am-hochkoenig/",
+        "label": "MÃ¼hlbach am HochkÃ¶nig"
+      },
+      "score": {
+        "value": 0.2,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/muehlbach-am-hochkoenig/",
+            "weight": 0.2,
+            "keyword": "hochkonig",
+            "rank": 25,
+            "type": "DIRECT"
+          }
+        ],
+        "relative": 0.06263979580453523
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/krimml-hochkrimml",
+        "type": "http://schema.org/Place",
+        "url": "https://www.salzburgerland.com/en/krimml-hochkrimml/",
+        "label": "Krimml-Hochkrimml"
+      },
+      "score": {
+        "value": 0.2,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/krimml-hochkrimml/",
+            "weight": 0.2,
+            "keyword": "krimml waterfalls",
+            "rank": 25,
+            "type": "DIRECT"
+          }
+        ],
+        "relative": 0.06263979580453523
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/bad_hofgastein",
+        "type": "http://schema.org/Place",
+        "url": "https://www.salzburgerland.com/en/bad-hofgastein/",
+        "label": "Bad Hofgastein"
+      },
+      "score": {
+        "value": 0.19245008972987526,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/alpine-health-region/",
+            "weight": 0.19245008972987526,
+            "keyword": "alpine health",
+            "rank": 27,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.060275171616219335
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/alpine_health_region",
+        "type": "http://schema.org/Thing",
+        "url": "https://www.salzburgerland.com/en/alpine-health-region/",
+        "label": "Alpine Health Region"
+      },
+      "score": {
+        "value": 0.19245008972987526,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/alpine-health-region/",
+            "weight": 0.19245008972987526,
+            "keyword": "alpine health",
+            "rank": 27,
+            "type": "DIRECT"
+          }
+        ],
+        "relative": 0.060275171616219335
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/pfarrwerfen",
+        "type": "http://schema.org/Place",
+        "url": "https://www.salzburgerland.com/en/pfarrwerfen/",
+        "label": "Pfarrwerfen"
+      },
+      "score": {
+        "value": 0.18569533817705186,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/pfarrwerfen/",
+            "weight": 0.18569533817705186,
+            "keyword": "restful holiday",
+            "rank": 29,
+            "type": "DIRECT"
+          }
+        ],
+        "relative": 0.05815959032632321
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/post/mountain_lakes_and_spas__pure_relaxation_in_the_water_in_salzburgerland",
+        "type": "http://schema.org/BlogPosting",
+        "url": "https://www.salzburgerland.com/en/mountain-lakes-and-spas-pure-relaxation-in-the-water-in-salzburgerland/",
+        "label": "Pure mountain lakes"
+      },
+      "score": {
+        "value": 0.16222142113076254,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/mountain-lakes-and-spas-pure-relaxation-in-the-water-in-salzburgerland/",
+            "weight": 0.16222142113076254,
+            "keyword": "lakes in austria",
+            "rank": 38,
+            "type": "DIRECT"
+          }
+        ],
+        "relative": 0.0508075834737624
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/st-_gilgen",
+        "type": "http://schema.org/Place",
+        "url": "https://www.salzburgerland.com/en/st-gilgen/",
+        "label": "St. Gilgen"
+      },
+      "score": {
+        "value": 0.16222142113076254,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/st-gilgen/",
+            "weight": 0.16222142113076254,
+            "keyword": "st gilgen",
+            "rank": 38,
+            "type": "DIRECT"
+          }
+        ],
+        "relative": 0.0508075834737624
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/post/alpine_and_high-altitude_medicine",
+        "type": "http://schema.org/BlogPosting",
+        "url": "https://www.salzburgerland.com/en/alpine-high-altitude-medicine/",
+        "label": "Alpine and high-altitude medicine"
+      },
+      "score": {
+        "value": 0.16222142113076254,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/alpine-high-altitude-medicine/",
+            "weight": 0.16222142113076254,
+            "keyword": "first aid for altitude sickness",
+            "rank": 38,
+            "type": "DIRECT"
+          }
+        ],
+        "relative": 0.0508075834737624
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/hohe_tauern",
+        "type": "http://schema.org/Thing",
+        "url": "https://www.salzburgerland.com/en/hohe-tauern/",
+        "label": "High Tauern"
+      },
+      "score": {
+        "value": 0.1586817883202017,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/camping-holidays-in-salzburgerland/",
+            "weight": 0.08574929257125442,
+            "keyword": "camping holidays",
+            "rank": 34,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/camping-holidays-in-salzburgerland/",
+            "weight": 0.07293249574894728,
+            "keyword": "camping holiday",
+            "rank": 47,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.04969897409137958
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/lake",
+        "type": "http://schema.org/Thing",
+        "url": "https://www.salzburgerland.com/en/lake/",
+        "label": "Lake"
+      },
+      "score": {
+        "value": 0.1531843928646366,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/the-emerald-water-of-the-fuschlsee-lake/",
+            "weight": 0.11785113019775793,
+            "keyword": "lake fuschlsee",
+            "rank": 8,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-grunsee-lake-stand-up-paddling-paradise/",
+            "weight": 0.03533326266687867,
+            "keyword": "paddling paradise",
+            "rank": 89,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.04797719544741269
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/post/4_lakes_art_hike_on_schmittenhohe",
+        "type": "http://schema.org/BlogPosting",
+        "url": "https://www.salzburgerland.com/en/4-lakes-art-hike-on-schmittenhohe/",
+        "label": "4 Lakes Art Hike on SchmittenhÃ¶he"
+      },
+      "score": {
+        "value": 0.15075567228888181,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/4-lakes-art-hike-on-schmittenhohe/",
+            "weight": 0.15075567228888181,
+            "keyword": "schmittenhohe",
+            "rank": 44,
+            "type": "DIRECT"
+          }
+        ],
+        "relative": 0.04721652264275493
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/schwarzach",
+        "type": "http://schema.org/Place",
+        "url": "https://www.salzburgerland.com/en/schwarzach/",
+        "label": "Schwarzach"
+      },
+      "score": {
+        "value": 0.14907119849998599,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/schwarzach/",
+            "weight": 0.14907119849998599,
+            "keyword": "schwarzach",
+            "rank": 45,
+            "type": "DIRECT"
+          }
+        ],
+        "relative": 0.046688947171882295
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/freiherr_von_trapp",
+        "type": "http://schema.org/Person",
+        "url": "https://www.salzburgerland.com/en/freiherr-von-trapp/",
+        "label": "Baron von Trapp"
+      },
+      "score": {
+        "value": 0.1435426926220683,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/the-background-and-how-the-sound-of-music-became-so-popular/",
+            "weight": 0.05590169943749474,
+            "keyword": "is there a christmas scene in the sound of music",
+            "rank": 20,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-background-and-how-the-sound-of-music-became-so-popular/",
+            "weight": 0.048112522432468816,
+            "keyword": "sound of music wedding scene",
+            "rank": 27,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/the-background-and-how-the-sound-of-music-became-so-popular/",
+            "weight": 0.03952847075210474,
+            "keyword": "so popular",
+            "rank": 40,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.04495742477539762
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/elsbethen",
+        "type": "http://schema.org/Place",
+        "url": "https://www.salzburgerland.com/en/elsbethen/",
+        "label": "Elsbethen"
+      },
+      "score": {
+        "value": 0.13736056394868904,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/elsbethen/",
+            "weight": 0.13736056394868904,
+            "keyword": "gaisberg mountain",
+            "rank": 53,
+            "type": "DIRECT"
+          }
+        ],
+        "relative": 0.04302118838670842
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/nina_radman",
+        "type": "http://schema.org/Person",
+        "url": "https://www.salzburgerland.com/en/nina-radman/",
+        "label": "Nina Radman"
+      },
+      "score": {
+        "value": 0.136633905059615,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/gastein-nina-in-between-nostalgia-and-modern/",
+            "weight": 0.09805806756909202,
+            "keyword": "sports personality nina mines",
+            "rank": 26,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/imperial-nostalgia-nina-walks-through-bad-gastein/",
+            "weight": 0.03857583749052298,
+            "keyword": "imperial nostalgia",
+            "rank": 42,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.04279359956455268
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/herbert_von_karajan",
+        "type": "http://schema.org/Person",
+        "url": "https://www.salzburgerland.com/en/herbert-von-karajan/",
+        "label": "Heribert Ritter von Karajan"
+      },
+      "score": {
+        "value": 0.1259881576697424,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/salzburg-whitsun-festival/",
+            "weight": 0.1259881576697424,
+            "keyword": "salzburg whitsun festival",
+            "rank": 7,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.039459362351111256
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/post/miracle_water_from_falkenstein_mountain",
+        "type": "http://schema.org/BlogPosting",
+        "url": "https://www.salzburgerland.com/en/miracle-water-from-falkenstein-mountain/",
+        "label": "Miracle water from Falkenstein mountain"
+      },
+      "score": {
+        "value": 0.12309149097933274,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/miracle-water-from-falkenstein-mountain/",
+            "weight": 0.12309149097933274,
+            "keyword": "miracle water",
+            "rank": 66,
+            "type": "DIRECT"
+          }
+        ],
+        "relative": 0.03855212930110596
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/swimming",
+        "type": "http://schema.org/Thing",
+        "url": "https://www.salzburgerland.com/en/swimming/",
+        "label": "Swimming"
+      },
+      "score": {
+        "value": 0.11785113019775793,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/the-emerald-water-of-the-fuschlsee-lake/",
+            "weight": 0.11785113019775793,
+            "keyword": "lake fuschlsee",
+            "rank": 8,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.03691085365460626
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/rauriser_ache",
+        "type": "http://schema.org/RiverBodyOfWater",
+        "url": "https://www.salzburgerland.com/en/rauriser-ache/",
+        "label": "Rauriser Ache"
+      },
+      "score": {
+        "value": 0.09622504486493762,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/gold-prospectors-for-gold-panning-go-to-rauris/",
+            "weight": 0.09622504486493762,
+            "keyword": "gold washing",
+            "rank": 12,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.030137585808109664
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/rauris",
+        "type": "http://schema.org/Place",
+        "url": "https://www.salzburgerland.com/en/rauris/",
+        "label": "Rauris"
+      },
+      "score": {
+        "value": 0.09622504486493762,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/gold-prospectors-for-gold-panning-go-to-rauris/",
+            "weight": 0.09622504486493762,
+            "keyword": "gold washing",
+            "rank": 12,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.030137585808109664
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/national_park",
+        "type": "http://schema.org/Thing",
+        "url": "https://www.salzburgerland.com/en/national-park/",
+        "label": "National park"
+      },
+      "score": {
+        "value": 0.09622504486493762,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/gold-prospectors-for-gold-panning-go-to-rauris/",
+            "weight": 0.09622504486493762,
+            "keyword": "gold washing",
+            "rank": 12,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.030137585808109664
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/tourismusverband_st-_koloman",
+        "type": "http://schema.org/LocalBusiness",
+        "url": "https://www.salzburgerland.com/en/tourismusverband-st-koloman/",
+        "label": "Tourismusverband St. Koloman"
+      },
+      "score": {
+        "value": 0.08838834764831845,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/abtenau/",
+            "weight": 0.08838834764831845,
+            "keyword": "abtenau",
+            "rank": 8,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.027683140240954692
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/wals-siezenheim",
+        "type": "http://schema.org/Place",
+        "url": "https://www.salzburgerland.com/en/wals-siezenheim/",
+        "label": "Wals-Siezenheim"
+      },
+      "score": {
+        "value": 0.06466599748950269,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/salzburg/",
+            "weight": 0.025490637096729087,
+            "keyword": "salzburg mozart",
+            "rank": 19,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/salzburg/",
+            "weight": 0.021383343303319473,
+            "keyword": "salzburg mozart festival",
+            "rank": 27,
+            "type": "INDIRECT"
+          },
+          {
+            "url": "https://www.salzburgerland.com/en/salzburg/",
+            "weight": 0.017792017089454125,
+            "keyword": "salzburg city",
+            "rank": 39,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.020253324391195177
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/training_camp",
+        "type": "http://schema.org/Thing",
+        "url": "https://www.salzburgerland.com/en/training-camp/",
+        "label": "Training camp"
+      },
+      "score": {
+        "value": 0.05270462766947299,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/football-training-camps-in-salzburg/",
+            "weight": 0.05270462766947299,
+            "keyword": "austrian football clubs",
+            "rank": 40,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.016507035575849226
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/red_bull_arena_salzburg",
+        "type": "http://schema.org/Place",
+        "url": "https://www.salzburgerland.com/en/red-bull-arena-salzburg/",
+        "label": "Red Bull Arena (Salzburg)"
+      },
+      "score": {
+        "value": 0.05270462766947299,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/football-training-camps-in-salzburg/",
+            "weight": 0.05270462766947299,
+            "keyword": "austrian football clubs",
+            "rank": 40,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.016507035575849226
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/bayer_04_leverkusen",
+        "type": "http://schema.org/SportsTeam",
+        "url": "https://www.salzburgerland.com/en/bayer-04-leverkusen/",
+        "label": "Bayer 04 Leverkusen"
+      },
+      "score": {
+        "value": 0.05270462766947299,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/football-training-camps-in-salzburg/",
+            "weight": 0.05270462766947299,
+            "keyword": "austrian football clubs",
+            "rank": 40,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.016507035575849226
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/wildkogel",
+        "type": "http://schema.org/Mountain",
+        "url": "https://www.salzburgerland.com/en/wildkogel/",
+        "label": "Wildkogel"
+      },
+      "score": {
+        "value": 0.05212860351426869,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/herbs-and-medicine/",
+            "weight": 0.05212860351426869,
+            "keyword": "healing properties of herbs",
+            "rank": 23,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.01632662539854684
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/herbs",
+        "type": "http://schema.org/Thing",
+        "url": "https://www.salzburgerland.com/en/herbs/",
+        "label": "Herbs"
+      },
+      "score": {
+        "value": 0.05212860351426869,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/herbs-and-medicine/",
+            "weight": 0.05212860351426869,
+            "keyword": "healing properties of herbs",
+            "rank": 23,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.01632662539854684
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/asthma_bronchiale",
+        "type": "http://schema.org/Thing",
+        "url": "https://www.salzburgerland.com/en/asthma-bronchiale/",
+        "label": "Asthma bronchiale"
+      },
+      "score": {
+        "value": 0.04914731871829905,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/asthma-treatment/",
+            "weight": 0.04914731871829905,
+            "keyword": "treatment options for asthma",
+            "rank": 46,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.015392890044273319
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/hermann_maier",
+        "type": "http://schema.org/Person",
+        "url": "https://www.salzburgerland.com/en/hermann-maier/",
+        "label": "Hermann Maier"
+      },
+      "score": {
+        "value": 0.04811252243246881,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/meisi-meets-hermann-maier-flachau/",
+            "weight": 0.04811252243246881,
+            "keyword": "hermann maier",
+            "rank": 48,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.015068792904054832
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/flachau",
+        "type": "http://schema.org/Place",
+        "url": "https://www.salzburgerland.com/en/flachau/",
+        "label": "Flachau"
+      },
+      "score": {
+        "value": 0.04811252243246881,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/meisi-meets-hermann-maier-flachau/",
+            "weight": 0.04811252243246881,
+            "keyword": "hermann maier",
+            "rank": 48,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.015068792904054832
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/waterfall",
+        "type": "http://schema.org/Thing",
+        "url": "https://www.salzburgerland.com/en/waterfall/",
+        "label": "Waterfall"
+      },
+      "score": {
+        "value": 0.03857583749052298,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/imperial-nostalgia-nina-walks-through-bad-gastein/",
+            "weight": 0.03857583749052298,
+            "keyword": "imperial nostalgia",
+            "rank": 42,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.012081912916976469
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/uttendorf-weissee",
+        "type": "http://schema.org/Place",
+        "url": "https://www.salzburgerland.com/en/uttendorf-weisssee/",
+        "label": "Uttendorf-WeiÃ\u009fsee"
+      },
+      "score": {
+        "value": 0.03533326266687867,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/the-grunsee-lake-stand-up-paddling-paradise/",
+            "weight": 0.03533326266687867,
+            "keyword": "paddling paradise",
+            "rank": 89,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.011066341792806435
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/hiking",
+        "type": "http://schema.org/Thing",
+        "url": "https://www.salzburgerland.com/en/hiking/",
+        "label": "Hiking"
+      },
+      "score": {
+        "value": 0.03533326266687867,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/the-grunsee-lake-stand-up-paddling-paradise/",
+            "weight": 0.03533326266687867,
+            "keyword": "paddling paradise",
+            "rank": 89,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.011066341792806435
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/dough",
+        "type": "http://schema.org/Thing",
+        "url": "https://www.salzburgerland.com/en/dough/",
+        "label": "Dough"
+      },
+      "score": {
+        "value": 0.034020690871988585,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/meisis-journey-blackberry-curd-cakes/",
+            "weight": 0.034020690871988585,
+            "keyword": "blackberry curd cake filling",
+            "rank": 24,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.0106552456467529
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/twenger_alm",
+        "type": "http://schema.org/Place",
+        "url": "https://www.salzburgerland.com/en/twenger-alm/",
+        "label": "Twenger Alm"
+      },
+      "score": {
+        "value": 0.034020690871988585,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/meisis-journey-blackberry-curd-cakes/",
+            "weight": 0.034020690871988585,
+            "keyword": "blackberry curd cake filling",
+            "rank": 24,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.0106552456467529
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/cake",
+        "type": "http://schema.org/Thing",
+        "url": "https://www.salzburgerland.com/en/cake/",
+        "label": "Cake"
+      },
+      "score": {
+        "value": 0.034020690871988585,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/meisis-journey-blackberry-curd-cakes/",
+            "weight": 0.034020690871988585,
+            "keyword": "blackberry curd cake filling",
+            "rank": 24,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.0106552456467529
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/blueberry",
+        "type": "http://schema.org/Thing",
+        "url": "https://www.salzburgerland.com/en/blueberry/",
+        "label": "Blueberry"
+      },
+      "score": {
+        "value": 0.034020690871988585,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/meisis-journey-blackberry-curd-cakes/",
+            "weight": 0.034020690871988585,
+            "keyword": "blackberry curd cake filling",
+            "rank": 24,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.0106552456467529
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/curd",
+        "type": "http://schema.org/Thing",
+        "url": "https://www.salzburgerland.com/en/curd/",
+        "label": "Curd"
+      },
+      "score": {
+        "value": 0.034020690871988585,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/meisis-journey-blackberry-curd-cakes/",
+            "weight": 0.034020690871988585,
+            "keyword": "blackberry curd cake filling",
+            "rank": 24,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.0106552456467529
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/wolfgangsee_2",
+        "type": "http://schema.org/LakeBodyOfWater",
+        "url": "https://www.salzburgerland.com/en/wolfgangsee-2/",
+        "label": "Wolfgangsee"
+      },
+      "score": {
+        "value": 0.030499714066520932,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/the-sound-of-music-tour/",
+            "weight": 0.030499714066520932,
+            "keyword": "mirabell gardens sound of music",
+            "rank": 43,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.009552479306117908
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/maria_von_trapp",
+        "type": "http://schema.org/Person",
+        "url": "https://www.salzburgerland.com/en/maria-von-trapp/",
+        "label": "Maria von Trapp"
+      },
+      "score": {
+        "value": 0.030499714066520932,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/the-sound-of-music-tour/",
+            "weight": 0.030499714066520932,
+            "keyword": "mirabell gardens sound of music",
+            "rank": 43,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.009552479306117908
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/saalbach_hinterglemm",
+        "type": "http://schema.org/Place",
+        "url": "https://www.salzburgerland.com/en/saalbach/",
+        "label": "Saalbach Hinterglemm"
+      },
+      "score": {
+        "value": 0.012345679012345678,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/bike-trails-salzburgerland/",
+            "weight": 0.012345679012345678,
+            "keyword": "pure freedom tour",
+            "rank": 81,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.0038666540620083466
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/cycling",
+        "type": "http://schema.org/Thing",
+        "url": "https://www.salzburgerland.com/en/cycling/",
+        "label": "Cycling"
+      },
+      "score": {
+        "value": 0.012345679012345678,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/bike-trails-salzburgerland/",
+            "weight": 0.012345679012345678,
+            "keyword": "pure freedom tour",
+            "rank": 81,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.0038666540620083466
+      }
+    },
+    {
+      "entity": {
+        "itemId": "http://open.salzburgerland.com/en/entity/mountain_bike",
+        "type": "http://schema.org/Thing",
+        "url": "https://www.salzburgerland.com/en/mountain-bike/",
+        "label": "Mountain bike"
+      },
+      "score": {
+        "value": 0.012345679012345678,
+        "rankings": [
+          {
+            "url": "https://www.salzburgerland.com/en/bike-trails-salzburgerland/",
+            "weight": 0.012345679012345678,
+            "keyword": "pure freedom tour",
+            "rank": 81,
+            "type": "INDIRECT"
+          }
+        ],
+        "relative": 0.0038666540620083466
+      }
+    }
+  ]
+}
