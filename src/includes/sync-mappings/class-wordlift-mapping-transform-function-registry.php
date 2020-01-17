@@ -82,7 +82,8 @@ class Wordlift_Mapping_Transform_Function_Registry {
     }
 
     /**
-     * @return array
+     * Check if any duplicate transformation functions are present in registry, run this
+     * function after syncing with the registry.
      */
     private function remove_duplicate_transformation_functions_after_sync()
     {

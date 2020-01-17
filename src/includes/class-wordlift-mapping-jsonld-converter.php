@@ -62,6 +62,28 @@ class Wordlift_Mapping_Jsonld_Converter {
 		$this->post_id                      = $post_id;
 	}
 
+    /**
+     * Returns data from data source.
+     *
+     * @param int   $post_id Id of the post.
+     * @param array $property_data The property data for the post_id.
+     *
+     * @return array Returns key, value array, if the value is not found, then it
+     * returns null.
+     */
+    final public function get_data_from_data_source( $post_id, $property_data ) {
+        $value = $property_data['field_name'];
+        // Do 1 to 1 mapping and return result.
+        if ( 'acf' === $property_data['field_type'] && function_exists( 'get_field' ) ) {
+            $value = get_field( $property_data['field_name'], $post_id );
+            $value = ( null !== $value ) ? $value : '';
+        }
+
+        return array(
+            'key'   => $property_data['property_name'],
+            'value' => $value,
+        );
+    }
 	/**
 	 * Returns Json-LD data after applying transformation functions.
 	 *
@@ -77,7 +99,8 @@ class Wordlift_Mapping_Jsonld_Converter {
 		foreach ( $properties as $property ) {
 			$transform_instance = $this->transform_functions_registry->get_transform_function( $property['transform_function'] );
 			if ( null !== $transform_instance ) {
-				$transformed_data                         = $transform_instance->get_transformed_data( $this->post_id, $property );
+			    $data  = $this->get_data_from_data_source( $this->post_id, $property );
+				$transformed_data                         = $transform_instance->transform_data( $data );
 				$json_ld_item[ $transformed_data['key'] ] = $transformed_data['value'];
 			} else {
 				$json_ld_item[ $property['property_name'] ] = $property['field_name'];

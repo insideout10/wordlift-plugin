@@ -76,6 +76,5 @@ class Wordlift_Mapping_Transform_Function_Registry_Test extends Wordlift_Unit_Te
         $transformation_function = $registry->get_transform_function( 'foo' );
         $this->assertNotNull( $transformation_function, 'Transformation function should be present' );
         $this->assertEquals( 1, $registry->get_transform_function_count() );
-
     }
 }
