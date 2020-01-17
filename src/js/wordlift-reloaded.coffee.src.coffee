@@ -733,9 +733,10 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
           unless image in $scope.images
             $scope.images.push image
     else
-      # Remove current entity images from suggested images collection
-      $scope.images = $scope.images.filter (img)->
-        img not in entity.images
+      if entity.images?
+        # Remove current entity images from suggested images collection
+        $scope.images = $scope.images.filter (img)->
+          img not in entity.images
 
     # Notify to EditorService
     $scope.$emit action, entity, $scope.annotation
@@ -855,7 +856,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
       onReset: '&'
       box: '='
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.23.7'
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.25.0-dev'
 
     link: ($scope, $element, $attrs, $ctrl) ->
 
@@ -946,7 +947,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', [])
     scope:
       entity: '='
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.23.7'
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.25.0-dev'
 ])
 
 angular.module('wordlift.editpost.widget.services.EditorAdapter', [
@@ -1896,7 +1897,7 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
     <div
       id="wordlift-edit-post-wrapper"
       ng-controller="EditPostWidgetController"
-      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.23.7'">
+      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.25.0-dev'">
     </div>
   """)
   .appendTo('#wordlift-edit-post-outer-wrapper')

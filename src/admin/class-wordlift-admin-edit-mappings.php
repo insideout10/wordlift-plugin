@@ -15,6 +15,7 @@
  * @since 3.24.0
  */
 class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
+
 	/**
 	 * {@inheritdoc}
 	 */
@@ -41,15 +42,16 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 					plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings-edit.css',
 					$wordlift->get_version()
 				);
-				Wordlift_Admin_Edit_Mappings::load_ui_dependancies();
+				Wordlift_Admin_Edit_Mappings::load_ui_dependencies();
 			}
 		);
 
-		$that = $this;
-		add_action( 'admin_menu', array( $that, 'add_edit_mapping_menu_entry' ) );
+		parent::__construct();
+
 	}
+
 	/** Add menu entry but dont show in sidebar */
-	public function add_edit_mapping_menu_entry() {
+	public function admin_menu() {
 		$that = $this;
 		add_submenu_page(
 			null,
@@ -64,7 +66,7 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 	/**
 	 * Returns array of acf options.
 	 *
-	 * @return Array Acf options Array.
+	 * @return array Acf options Array.
 	 */
 	private static function get_acf_options() {
 		$acf_options = array();
@@ -122,7 +124,7 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 	/**
 	 * Load Dependancies required for js client.
 	 */
-	public static function load_ui_dependancies() {
+	public static function load_ui_dependencies() {
 		// Create ui settings array to be used by js client.
 		$edit_mapping_settings                               = array();
 		$edit_mapping_settings['rest_url']                   = get_rest_url(
@@ -197,19 +199,27 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 					'value' => $taxonomy->name,
 				)
 			);
-			// Version compatibility for get_terms.
-			// ( https://developer.wordpress.org/reference/functions/get_terms/ ).
-			if ( version_compare( get_bloginfo( 'version' ), '4.5', '>=' ) ) {
-				$terms = get_terms(
-					array(
-						'taxonomy'   => $taxonomy->name,
-						'hide_empty' => false,
-					)
-				);
-			}
-			else {
-				$terms = get_terms( $taxonomy->name );
-			}
+
+			$terms = get_terms( $taxonomy->name,  array(
+				'hide_empty' => false,
+			));
+
+//			// Version compatibility for get_terms.
+//			// ( https://developer.wordpress.org/reference/functions/get_terms/ ).
+//			if ( version_compare( get_bloginfo( 'version' ), '4.5', '>=' ) ) {
+//				$terms = get_terms(
+//					array(
+//						'taxonomy'   => $taxonomy->name,
+//						'hide_empty' => false,
+//					)
+//				);
+//			}
+//			else {
+//				$terms = get_terms( $taxonomy->name,  array(
+//					'taxonomy'   => $taxonomy->name,
+//					'hide_empty' => false,
+//				));
+//			}
 
 			foreach ( $terms as $term ) {
 				array_push(

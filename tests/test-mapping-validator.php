@@ -36,7 +36,7 @@ class Wordlift_Mapping_Validator_Test extends WP_UnitTestCase {
 	 * @inheritdoc
 	 */
 	public function setUp() {
-		parent::setUp();	
+		parent::setUp();
 		$this->dbo       = new Wordlift_Mapping_DBO();
 		$this->validator = new Wordlift_Mapping_Validator();
 	}
@@ -164,7 +164,7 @@ class Wordlift_Mapping_Validator_Test extends WP_UnitTestCase {
 		// Create a rule group.
 		$rule_group_id = $this->dbo->insert_rule_group( $mapping_id );
 		// Create a rule to match post type foo.
-		$rule_id = $this->dbo->insert_or_update_rule_item(
+		$rule_id       = $this->dbo->insert_or_update_rule_item(
 			array(
 				'rule_field_one'   => 'post_type',
 				'rule_logic_field' => '===',
@@ -173,11 +173,11 @@ class Wordlift_Mapping_Validator_Test extends WP_UnitTestCase {
 			)
 		);
 		$property_data = array(
-			'property_name'   => 'foo',
-			'field_type' => 'bar',
-			'field_name'      => 'foo',
-			'transform_function'  => 'foo',
-			'mapping_id'           => $mapping_id,
+			'property_name'      => 'foo',
+			'field_type'         => 'bar',
+			'field_name'         => 'foo',
+			'transform_function' => 'foo',
+			'mapping_id'         => $mapping_id,
 		);
 		$this->dbo->insert_or_update_property(
 			$property_data
@@ -191,5 +191,7 @@ class Wordlift_Mapping_Validator_Test extends WP_UnitTestCase {
 		$properties = $this->validator->get_valid_properties();
 		// Should return only active properties.
 		$this->assertEquals( 1, count( $properties ) );
+
 	}
+
 }

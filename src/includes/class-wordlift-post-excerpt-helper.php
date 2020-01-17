@@ -48,6 +48,9 @@ class Wordlift_Post_Excerpt_Helper {
 		 */
 		$post_content = apply_filters( 'wl_post_content', $post->post_content, $post );
 
+		// Filter shortcode content in post_content, before using it for trimming
+		$post_content = do_shortcode( $post_content );
+
 		// Get the excerpt and trim it. Use the `post_excerpt` if available.
 		$excerpt = wp_trim_words( ! empty( $post->post_excerpt ) ? $post->post_excerpt : $post_content, $length, $more );
 

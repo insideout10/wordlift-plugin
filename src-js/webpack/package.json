@@ -1,6 +1,6 @@
 {
   "name": "wordlift-plugin",
-  "version": "3.23.7",
+  "version": "3.25.0-dev",
   "description": "WordLift Plugin application for the web site public front-end.",
   "main": "index.js",
   "repository": "https://github.com/insideout10/wordlift-plugin",
@@ -65,7 +65,7 @@
     "redux-thunk": "^2.3.0",
     "styled-components": "^4.3.2",
     "whatwg-fetch": "^2",
-    "wordlift-cloud": "git+ssh://git@gitlab.com:wordlift/wordlift-navigator-js#47256c37ab2ff171e543dbe1ac2dfb1ac0adfadf"
+    "wordlift-cloud": "git+ssh://git@gitlab.com:wordlift/wordlift-navigator-js#546c3772bda7114e9008195d81fe90c0611feb2f"
   },
   "prettier": {
     "tabWidth": 2,

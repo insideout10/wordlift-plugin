@@ -348,9 +348,6 @@ class Wordlift_Admin {
 	 */
 	private static function add_block_category() {
 		add_filter( 'block_categories', function( $categories, $post ) {
-			if ( $post->post_type !== 'post' ) {
-				return $categories;
-			}
 			return array_merge(
 				$categories,
 				array(

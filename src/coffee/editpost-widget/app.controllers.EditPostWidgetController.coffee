@@ -361,9 +361,10 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
           unless image in $scope.images
             $scope.images.push image
     else
-      # Remove current entity images from suggested images collection
-      $scope.images = $scope.images.filter (img)->
-        img not in entity.images
+      if entity.images?
+        # Remove current entity images from suggested images collection
+        $scope.images = $scope.images.filter (img)->
+          img not in entity.images
 
     # Notify to EditorService
     $scope.$emit action, entity, $scope.annotation

@@ -196,7 +196,7 @@ final class Wordlift_Mapping_Validator {
 				$this->valid_properties  = array_merge( $this->valid_properties, $mapping_item_properties );
 			}
 		}
-		// If atleast one mapping item is valid then it can be applied.
+		// If at least one mapping item is valid then it can be applied.
 		return 0 !== count( $valid_mapping_items );
 	}
 	/**

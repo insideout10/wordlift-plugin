@@ -2,9 +2,9 @@ version: "3.7"
 
 services:
   db:
-    image: mysql:5.7
+    image: mariadb:10
     volumes:
-      - db-data-${WORDPRESS_VERSION:-5.0.0}:/var/lib/mysql
+      - db-data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: wordpress
@@ -12,19 +12,17 @@ services:
       MYSQL_PASSWORD: password
 
   wordpress:
-    image: wordpress:${WORDPRESS_VERSION:-5.0.0}
+    image: wordpress:5.2
     depends_on:
       - db
     volumes:
-      - wordpress-data-${WORDPRESS_VERSION:-5.0.0}:/var/www/html
-      - ./src:/var/www/html/wp-content/plugins/wordlift
+      - wordpress-data:/var/www/html
+      - ../src:/var/www/html/wp-content/plugins/wordlift
     environment:
-      WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING: "true"
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: password
       WORDPRESS_DB_NAME: wordpress
-      WORDPRESS_DEBUG: 1
       WORDPRESS_CONFIG_EXTRA: |
         # Add support for the reverse proxy.
         if ( strpos( $$_SERVER['HTTP_X_FORWARDED_PROTO'], 'https' ) !== false ) {
@@ -42,17 +40,18 @@ services:
         # Allow all entity types.
         define( 'WL_ALL_ENTITY_TYPES', true );
 
-        # Enable Debug logging to the /wp-content/debug.log file
+        // Enable WP_DEBUG mode
+        define( 'WP_DEBUG', true );
+
+        // Enable Debug logging to the /wp-content/debug.log file
         define( 'WP_DEBUG_LOG', true );
-        # Disable display of errors and warnings
+
+        // Disable display of errors and warnings
         define( 'WP_DEBUG_DISPLAY', false );
         @ini_set( 'display_errors', 0 );
-        # Use dev versions of core JS and CSS files (only needed if you are modifying these core files)
-        define( 'SCRIPT_DEBUG', true );
 
-        # Enable WordLift debug.
-        define( 'WL_DEBUG', WP_DEBUG );
-        define( 'WL_LOG_LEVEL', 0 );
+        // Use dev versions of core JS and CSS files (only needed if you are modifying these core files)
+        define( 'SCRIPT_DEBUG', true );
 
   nginx:
     image: nginx:1.17
@@ -61,7 +60,7 @@ services:
     ports:
       - "443:443"
     volumes:
-      - ./.docker/nginx:/etc/nginx/conf.d
+      - ./nginx:/etc/nginx/conf.d
     environment:
       NGINX_HOST: wordpress
       NGINX_SERVER_NAME: wordlift.localhost
@@ -73,14 +72,8 @@ services:
       - db
     user: xfs
     volumes:
-      - wordpress-data-${WORDPRESS_VERSION:-5.0.0}:/var/www/html
-      - ./src:/var/www/html/wp-content/plugins/wordlift
-    tty: true
+      - wordpress-data:/var/www/html
 
 volumes:
-  db-data-4.4.0:
-  wordpress-data-4.4.0:
-  db-data-4.7.0:
-  wordpress-data-4.7.0:
-  db-data-5.0.0:
-  wordpress-data-5.0.0:
+  db-data:
+  wordpress-data:

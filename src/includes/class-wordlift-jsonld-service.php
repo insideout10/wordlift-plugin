@@ -187,6 +187,7 @@ class Wordlift_Jsonld_Service {
 			}, $references ) ) );
 
 		$mapping_converter_instance = new Wordlift_Mapping_Jsonld_Converter( $post_id, $jsonld );
+
 		// Apply the mappings and return json ld.
 		return $mapping_converter_instance->get_jsonld_data();
 	}
