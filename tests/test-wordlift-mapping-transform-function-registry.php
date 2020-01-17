@@ -15,7 +15,7 @@
  * @package Wordlift
  */
 
-class Wordlift_Mock_Transformation_Function extends Wordlift_Mapping_Transform_Function {
+class Wordlift_Mock_Transformation_Function implements Wordlift_Mapping_Transform_Function {
 	public function get_name() {
 		return 'foo';
 	}
