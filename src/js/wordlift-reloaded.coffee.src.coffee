@@ -733,9 +733,10 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
           unless image in $scope.images
             $scope.images.push image
     else
-      # Remove current entity images from suggested images collection
-      $scope.images = $scope.images.filter (img)->
-        img not in entity.images
+      if entity.images?
+        # Remove current entity images from suggested images collection
+        $scope.images = $scope.images.filter (img)->
+          img not in entity.images
 
     # Notify to EditorService
     $scope.$emit action, entity, $scope.annotation
@@ -855,7 +856,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
       onReset: '&'
       box: '='
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.23.6'
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html??ver=3.24.0'
 
     link: ($scope, $element, $attrs, $ctrl) ->
 
@@ -946,7 +947,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', [])
     scope:
       entity: '='
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.23.6'
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html??ver=3.24.0'
 ])
 
 angular.module('wordlift.editpost.widget.services.EditorAdapter', [
@@ -1896,7 +1897,7 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
     <div
       id="wordlift-edit-post-wrapper"
       ng-controller="EditPostWidgetController"
-      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.23.6'">
+      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html??ver=3.24.0'">
     </div>
   """)
   .appendTo('#wordlift-edit-post-outer-wrapper')
@@ -2060,18 +2061,24 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
 
         editor.on('selectionchange', () -> broadcastEditorSelection() )
 
+# Start the analysis if the postbox isn't closed.
       )
 
-      # Start the analysis if the postbox isn't closed.
-      if !closed then fireEvent( editor, 'LoadContent', startAnalysis ) else
-        # If the postbox is closed, hook to the `postbox-toggled` event and start
-        # the analysis as soon as the postbox is opened.
-        $(document).on( 'postbox-toggled', (e, postbox) ->
-          # Bail out if it's not our postbox.
-          return if 'wordlift_entities_box' isnt postbox.id
+      # We were using the `LoadContent` event to track when content was being loaded into TinyMCE. At the time of this
+      # event though the raw content in TinyMCE still has some internal html (mce_SELRES_start / type bookmark).
+      #
+      # Switching to `init` ensures that the editor is fully initialized and that HTML is removed.
+      #
+      # @see https://github.com/insideout10/wordlift-plugin/issues/1003
+      if !closed then fireEvent( editor, 'init', startAnalysis ) else
+# If the postbox is closed, hook to the `postbox-toggled` event and start
+# the analysis as soon as the postbox is opened.
+      $(document).on( 'postbox-toggled', (e, postbox) ->
+# Bail out if it's not our postbox.
+        return if 'wordlift_entities_box' isnt postbox.id
 
-          startAnalysis()
-        )
+        startAnalysis()
+      )
 
       # Fires when the user changes node location using the mouse or keyboard in the TinyMCE editor.
       fireEvent(editor, "NodeChange", (e) ->

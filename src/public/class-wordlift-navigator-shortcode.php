@@ -51,7 +51,7 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 			'template_id' => '',
 			'post_id'     => '',
 			'uniqid'      => uniqid( 'wl-navigator-widget-' ),
-			'order_by'    => 'ID ASC'
+			'order_by'    => 'ID DESC'
 		), $atts );
 
 		return $shortcode_atts;

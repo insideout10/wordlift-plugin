@@ -142,6 +142,23 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.24.0 (2020-01-17) =
+* Enhancement [#969](https://github.com/insideout10/wordlift-plugin/issues/969): Turn the entity page into a topic "showcase" with a specific navigator.
+* Enhancement [#934](https://github.com/insideout10/wordlift-plugin/issues/934): Display entity content within context cards.
+
+* Fix [#987](https://github.com/insideout10/wordlift-plugin/issues/987): Remove shortcodes from schema:description.
+* Fix [#985](https://github.com/insideout10/wordlift-plugin/issues/985): Empty context card.
+* Fix [#963](https://github.com/insideout10/wordlift-plugin/issues/963): Descending order by default in navigator widget data.
+
+= 3.23.7.1 (2020-01-14) =
+* Fix: JavaScript error on entity.images null.
+
+= 3.23.7 (2020-01-14) =
+* Fix [#1003](https://github.com/insideout10/wordlift-plugin/issues/1003): Switching from Textual to Visual in Classic Editor messes the html.
+* Fix [#1002](https://github.com/insideout10/wordlift-plugin/issues/1002): Kinsta bypassing cache for JSON-LD requests.
+* Fix [#1001](https://github.com/insideout10/wordlift-plugin/issues/1001): Entities not highlighted in Classification Box.
+* Fix [#997](https://github.com/insideout10/wordlift-plugin/issues/997): Cache Flush All endpoint may interfere with other endpoints when WP_DEBUG is enable.
+
 = 3.23.6 (2020-01-03) =
 * Fix [#996](https://github.com/insideout10/wordlift-plugin/issues/996): Bad Request error when running analysis.
 * Fix [#995](https://github.com/insideout10/wordlift-plugin/issues/995): Unspecified Type error for existing posts.

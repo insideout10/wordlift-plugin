@@ -76,7 +76,7 @@ class Wordlift_Post_Excerpt_Helper_Test extends Wordlift_Unit_Test_Case {
 
 		$excerpt = Wordlift_Post_Excerpt_Helper::get_text_excerpt( $post );
 
-		$this->assertEquals( 'Lorem ipsum dolor sit amet, consectetur adipiscing elit,  sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur...', $excerpt );
+		$this->assertEquals( 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat...', $excerpt );
 
 	}
 
