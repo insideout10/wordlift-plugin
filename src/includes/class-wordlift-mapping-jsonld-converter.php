@@ -105,11 +105,24 @@ class Wordlift_Mapping_Jsonld_Converter {
 		}
 		return $json_ld_item;
 	}
+	/**
+	 * @param array $jsonld_item An associative array of entity
+	 * @param int $post_id The Post Id.
+	 *
+	 * @return array A single jsonld item.
+	 */
+	public static function create_converter_instance_and_convert( $jsonld_item, $post_id ) {
+		$mapping_converter = new Wordlift_Mapping_Jsonld_Converter( $post_id, $jsonld_item );
+		$jsonld_item       = $mapping_converter->get_jsonld_data();
+		return $jsonld_item;
+	}
 
 }
 
 add_filter( 'wl_post_jsonld', function( $jsonld_item, $post_id, $references ) {
-	$mapping_converter = new Wordlift_Mapping_Jsonld_Converter( $post_id, $jsonld_item );
-	$jsonld_item = $mapping_converter->get_jsonld_data();
-	return $jsonld_item;
+	return Wordlift_Mapping_Jsonld_Converter::create_converter_instance_and_convert( $jsonld_item, $post_id);
+}, 10, 3);
+
+add_filter( 'wl_entity_jsonld', function( $jsonld_item, $post_id, $references ) {
+	return Wordlift_Mapping_Jsonld_Converter::create_converter_instance_and_convert( $jsonld_item, $post_id);
 }, 10, 3);

@@ -82,6 +82,10 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 		}
 	}
 
+	/**
+	 * Test when the mapping is valid
+	 */
+
 	/** Test when the mapping is valid, check if it is mapping correctly on JSON-LD data, this test
 	 actually tests whether it is using wl_post_jsonld hook */
 	public function test_provided_valid_mapping_check_for_correct_jsonld() {
@@ -105,4 +109,32 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 'HowTo', $target_jsonld['@type'] );
 	}
 
+	/** Test when the mapping is valid, check if it is mapping correctly on JSON-LD data, this test
+	actually tests whether it is using wl_entity_jsonld hook */
+	public function test_provided_valid_mapping_check_for_correct_entity_jsonld() {
+		// Create a post.
+		$post_id = wp_insert_post(
+			array(
+				'post_title' => 'foo'
+			)
+		);
+
+		wp_add_object_terms( $post_id, 'foo', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+		$result_1 = wp_add_object_terms( $post_id, 'how-to', 'category' );
+		$properties = array(
+			array(
+				'property_name' => '@type',
+				'field_type' => 'text',
+				'field_name'          => 'HowTo',
+				'transform_function'  => 'none',
+				'property_status'     => Wordlift_Mapping_Validator::ACTIVE_CATEGORY,
+			),
+		);
+		$this->create_new_mapping_item( 'category', (int) $result_1[0], $properties );
+		// Get the json ld data for this post.
+		$jsonlds = $this->jsonld_service->get_jsonld( false, $post_id );
+		$target_jsonld = end( $jsonlds );
+		$this->assertArrayHasKey( '@type', $target_jsonld );
+		$this->assertEquals( 'HowTo', $target_jsonld['@type'] );
+	}
 }
