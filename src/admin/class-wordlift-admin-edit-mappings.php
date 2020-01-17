@@ -145,14 +145,20 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 				'value' => 'text',
 			),
 			array(
-				'label' => __( 'ACF', 'wordlift' ),
-				'value' => 'acf',
-			),
-			array(
 				'label' => __( 'Custom Field', 'wordlift' ),
 				'value' => 'custom_field',
 			),
 		);
+		// Only add acf if the acf is loaded.
+		if ( class_exists( 'ACF' ) ) {
+			array_push(
+				$edit_mapping_settings['wl_field_type_options'],
+				array(
+					'label' => __( 'ACF', 'wordlift' ),
+					'value' => 'acf',
+				)
+			);
+		}
 		// Add wl_edit_field_name_options.
 		$edit_mapping_settings['wl_field_name_options']  = self::get_all_field_name_options();
 		$edit_mapping_settings['wl_logic_field_options'] = array(
