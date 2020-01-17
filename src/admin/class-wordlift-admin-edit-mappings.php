@@ -200,26 +200,12 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 				)
 			);
 
-			$terms = get_terms( $taxonomy->name,  array(
-				'hide_empty' => false,
-			));
-
-//			// Version compatibility for get_terms.
-//			// ( https://developer.wordpress.org/reference/functions/get_terms/ ).
-//			if ( version_compare( get_bloginfo( 'version' ), '4.5', '>=' ) ) {
-//				$terms = get_terms(
-//					array(
-//						'taxonomy'   => $taxonomy->name,
-//						'hide_empty' => false,
-//					)
-//				);
-//			}
-//			else {
-//				$terms = get_terms( $taxonomy->name,  array(
-//					'taxonomy'   => $taxonomy->name,
-//					'hide_empty' => false,
-//				));
-//			}
+			$terms = get_terms(
+				$taxonomy->name,
+				array(
+					'hide_empty' => false,
+				)
+			);
 
 			foreach ( $terms as $term ) {
 				array_push(
