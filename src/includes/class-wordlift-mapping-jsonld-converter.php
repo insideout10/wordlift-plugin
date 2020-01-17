@@ -100,8 +100,7 @@ class Wordlift_Mapping_Jsonld_Converter {
 			$transform_instance = $this->transform_functions_registry->get_transform_function( $property['transform_function'] );
 			if ( null !== $transform_instance ) {
 			    $data  = $this->get_data_from_data_source( $this->post_id, $property );
-				$transformed_data                         = $transform_instance->transform_data( $data );
-				$json_ld_item[ $transformed_data['key'] ] = $transformed_data['value'];
+				$json_ld_item[ $property['property_name']] = $transform_instance->transform_data( $data );
 			} else {
 				$json_ld_item[ $property['property_name'] ] = $property['field_name'];
 			}
