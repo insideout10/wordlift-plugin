@@ -15,7 +15,7 @@ abstract class Wordlift_Mapping_Transform_Function {
 	/**
 	 * Returns transformed data.
 	 *
-	 * @param int $post_id The id of the post which the ACF data neeeded to be fetched.
+	 * @param int   $post_id The id of the post which the ACF data neeeded to be fetched.
 	 * @param array $property_data An Associative Array containing all the property data.
 	 *
 	 * @return array Return transformed data.
@@ -29,7 +29,7 @@ abstract class Wordlift_Mapping_Transform_Function {
 			$data
 		);
 
-		$data = $this->map_data_to_schema_properties( $data );
+		$data = $this->transform_data( $data );
 		// Send data to external hooks after processing.
 		$data = apply_filters(
 			'wordlift_sync_mappings_post_transform_' . $this->get_name(),
@@ -42,7 +42,7 @@ abstract class Wordlift_Mapping_Transform_Function {
 	/**
 	 * Returns data from data source.
 	 *
-	 * @param Int $post_id Id of the post.
+	 * @param int   $post_id Id of the post.
 	 * @param array $property_data The property data for the post_id.
 	 *
 	 * @return array Returns key, value array, if the value is not found, then it
@@ -79,12 +79,12 @@ abstract class Wordlift_Mapping_Transform_Function {
 	abstract public function get_label();
 
 	/**
-	 * Map raw data to the desired keys.
+	 * Tranform data and map to the desired keys.
 	 *
 	 * @param array|string $data An Associative Array containing raw data or string.
 	 *
 	 * @return array|string Return Mapped data.
 	 */
-	abstract public function map_data_to_schema_properties( $data );
+	abstract public function transform_data( $data );
 
 }
