@@ -90,12 +90,10 @@ class Wordlift_Mapping_Jsonld_Converter {
 	 * @return array Array of json-ld data.
 	 */
 	public function get_jsonld_data() {
-
 		// Validate the post id here.
 		$this->validator->validate( $this->post_id );
-		$json_ld_data_array = $this->jsonld_data;
+		$json_ld_item = $this->jsonld_data;
 		$properties         = $this->validator->get_valid_properties();
-		$json_ld_item       = array();
 		foreach ( $properties as $property ) {
 			$transform_instance = $this->transform_functions_registry->get_transform_function( $property['transform_function'] );
 			if ( null !== $transform_instance ) {
@@ -105,12 +103,13 @@ class Wordlift_Mapping_Jsonld_Converter {
 				$json_ld_item[ $property['property_name'] ] = $property['field_name'];
 			}
 		}
-		// Only if keys of json ld item is greater than 0 then push it to array.
-		if ( 0 < count( array_keys( $json_ld_item ) ) ) {
-			array_push( $json_ld_data_array, $json_ld_item );
-		}
-
-		return $json_ld_data_array;
+		return $json_ld_item;
 	}
 
 }
+
+add_filter( 'wl_post_jsonld', function( $jsonld_item, $post_id, $references ) {
+	$mapping_converter = new Wordlift_Mapping_Jsonld_Converter( $post_id, $jsonld_item );
+	$jsonld_item = $mapping_converter->get_jsonld_data();
+	return $jsonld_item;
+}, 10, 3);

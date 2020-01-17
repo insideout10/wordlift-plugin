@@ -59,66 +59,9 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 		// Initialize dependencies for the test.
 		$this->dbo       = new Wordlift_Mapping_DBO();
 		$this->validator = new Wordlift_Mapping_Validator();
-
-		// Try to get the ACF PRO Key, if not set, skip this test.
-		$acf_pro_key = getenv( 'ACF_PRO_KEY' );
-		if ( empty( $acf_pro_key ) ) {
-			$this->markTestSkipped( '`ACF_PRO_KEY` not set, test skipped.' );
-		}
-
-		// Load the WP Filesystem.
-		$wp_filesystem = $this->load_wp_filesystem();
-		$this->assertNotNull( $wp_filesystem, 'We require a $wp_filesystem.' );
-
-		// Download the ACF PRO package.
-		$acf_download_url = "https://connect.advancedcustomfields.com/index.php?a=download&p=pro&k=$acf_pro_key";
-		$response         = wp_remote_get( $acf_download_url, array( 'timeout' => 60, ) );
-
-		// Store the zip file to the plugin directory.
-		$acf_destination_path = $wp_filesystem->wp_plugins_dir() . '/advanced-custom-fields-pro.zip';
-
-		// Store the data locally.
-		$body = wp_remote_retrieve_body( $response );
-		$this->assertFalse( is_wp_error( $response ) || ! isset( $response['body'] ), 'An error occurred: ' . var_export( $response, true ) );
-		$result_1 = $wp_filesystem->put_contents( $acf_destination_path, $body );
-		$this->assertTrue( $result_1, "Unable to save ACF Pro to the local WordPress test install [ class name :: " . get_class( $wp_filesystem ) . " ][ url :: $acf_download_url ][ path :: $acf_destination_path ]." );
-
-		// Unzip the plugin.
-		$result_2 = unzip_file( $acf_destination_path, $wp_filesystem->wp_plugins_dir() );
-		$this->assertNotWPError( $result_2, 'An error occurred: ' . var_export( $result_2, true ) );
-
-		// Activate the plugin.
-		$result_3 = activate_plugin( 'advanced-custom-fields-pro/acf.php' );
-		$this->assertNotWPError( $result_3, 'An error occurred: ' . var_export( $result_3, true ) );
-
-		// Add the How To taxonomy term.
-		$result_4 = wp_insert_term( 'How To', 'category' );
-		$this->assertNotWPError( $result_4, 'An error occurred: ' . var_export( $result_4, true ) );
-
 		$this->jsonld_service = Wordlift_Jsonld_Service::get_instance();
-		require( 'test-mappings.acf.php' );
 	}
 
-	/**
-	 * Get a {@link WP_Filesystem_Direct} instance.
-	 *
-	 * @return WP_Filesystem_Direct The {@link WP_Filesystem_Direct} instance.
-	 */
-	private function load_wp_filesystem() {
-
-		// Required for REST API calls
-		if ( ! function_exists( 'WP_Filesystem' ) ) {
-			require_once( ABSPATH . 'wp-admin/includes/file.php' );
-		}
-		// Load `WP_Filesystem`, forcing the direct method.
-		add_filter( 'filesystem_method', array( $this, '__return_direct' ) );
-		WP_Filesystem();
-		remove_filter( 'filesystem_method', array( $this, '__return_direct' ) );
-
-		global $wp_filesystem;
-
-		return $wp_filesystem;
-	}
 
 	private function create_new_mapping_item( $taxonomy, $taxonomy_value, $properties ) {
 		$mapping_id = $this->dbo->insert_mapping_item( 'foo' );
@@ -139,7 +82,8 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 		}
 	}
 
-	/** Test when the mapping is valid, check if it is mapping correctly on JSON-LD data */
+	/** Test when the mapping is valid, check if it is mapping correctly on JSON-LD data, this test
+	 actually tests whether it is using wl_post_jsonld hook */
 	public function test_provided_valid_mapping_check_for_correct_jsonld() {
 		// Create a post.
 		$post_id = $this->factory->post->create();
@@ -149,22 +93,16 @@ class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
 				'property_name' => '@type',
 				'field_type' => 'text',
 				'field_name'          => 'HowTo',
-				'transform_function'  => 'mappings-mock-transform-function',
+				'transform_function'  => 'none',
 				'property_status'     => Wordlift_Mapping_Validator::ACTIVE_CATEGORY,
 			),
 		);
 		$this->create_new_mapping_item( 'category', (int) $result_1[0], $properties );
 		// Get the json ld data for this post.
-	}
-	/**
-	 * Always return `direct`. Useful to force the {@link WP_Filesystem} function to always return a
-	 * {@link WP_Filesystem_Direct} instance.
-	 *
-	 * @return string Always `direct`.
-	 */
-	public function __return_direct() {
-
-		return 'direct';
+		$jsonlds = $this->jsonld_service->get_jsonld( false, $post_id );
+		$target_jsonld = end( $jsonlds );
+		$this->assertArrayHasKey( '@type', $target_jsonld );
+		$this->assertEquals( 'HowTo', $target_jsonld['@type'] );
 	}
 
 }
