@@ -65,6 +65,7 @@ class Wordlift_Mapping_Transform_Function_Registry {
 
     /**
      * Sync the transformation function from external plugins to registry.
+     * @return void
      */
     private function sync_transformation_functions_from_external_plugins()
     {
