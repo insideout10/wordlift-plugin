@@ -78,11 +78,7 @@ class Wordlift_Mapping_Jsonld_Converter {
             $value = get_field( $property_data['field_name'], $post_id );
             $value = ( null !== $value ) ? $value : '';
         }
-
-        return array(
-            'key'   => $property_data['property_name'],
-            'value' => $value,
-        );
+        return $value;
     }
 	/**
 	 * Returns Json-LD data after applying transformation functions.
