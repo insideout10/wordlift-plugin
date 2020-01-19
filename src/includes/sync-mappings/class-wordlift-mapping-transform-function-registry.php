@@ -21,8 +21,6 @@ class Wordlift_Mapping_Transform_Function_Registry {
 	 * Construct a list of transform function array.
 	 */
 	public function __construct() {
-		// Make the external plugins to register transformation functions.
-		do_action('wordlift_mapping_transformation_function_registry_ready');
 		$this->transform_function_array = apply_filters( 'wordlift_sync_mappings_register_transformation_function', array() );
 	}
 
