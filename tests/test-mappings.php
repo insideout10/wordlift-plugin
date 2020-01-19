@@ -7,32 +7,7 @@
  * @subpackage Wordlift/tests
  */
 
-// Implement a mock transformation function for testing.
-class Wordlift_Mappings_Mock_Transformation_Function implements Wordlift_Mapping_Transform_Function {
-
-	/**
-	 * @inheritDoc
-	 */
-	public function get_name() {
-		return 'mappings-mock-transform-function';
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function get_label() {
-		return 'mappings-mock-transform-function';
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function transform_data( $data ) {
-		return $data;
-	}
-}
-
-class Wordlift_Mappings_Test extends Wordlift_Unit_Test_Case {
+class Wordlift_Mappings_Test extends WP_UnitTestCase {
 
 	private $jsonld_service;
 
