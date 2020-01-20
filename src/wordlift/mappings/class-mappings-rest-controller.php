@@ -1,15 +1,18 @@
 <?php
 
-use Wordlift\Mappings\Mappings_DBO;
+namespace Wordlift\Mappings;
+
+use WP_REST_Request;
+use WP_REST_Server;
 
 /**
- * Define the {@link Wordlift_Mapping_REST_Controller} class.
+ * Define the {@link Mappings_REST_Controller} class.
  *
  * @since      3.25.0
  * @package    Wordlift
  * @subpackage Wordlift/includes/sync-mappings
  */
-class Wordlift_Mapping_REST_Controller {
+class Mappings_REST_Controller {
 	// Namespace for CRUD mappings.
 	const MAPPINGS_NAMESPACE = '/mappings';
 
@@ -18,7 +21,7 @@ class Wordlift_Mapping_REST_Controller {
 	 */
 	public static function register_routes() {
 
-		add_action( 'rest_api_init', 'Wordlift_Mapping_REST_Controller::register_route_callback' );
+		add_action( 'rest_api_init', 'Wordlift\Mappings\Mappings_REST_Controller::register_route_callback' );
 
 	}
 
@@ -56,7 +59,7 @@ class Wordlift_Mapping_REST_Controller {
 			'/mappings',
 			array(
 				'methods'             => WP_REST_Server::CREATABLE,
-				'callback'            => 'Wordlift_Mapping_REST_Controller::insert_or_update_mapping_item',
+				'callback'            => 'Wordlift\Mappings\Mappings_REST_Controller::insert_or_update_mapping_item',
 				'permission_callback' => function () {
 					return current_user_can( 'manage_options' );
 				},
@@ -68,7 +71,7 @@ class Wordlift_Mapping_REST_Controller {
 			'/mappings',
 			array(
 				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => 'Wordlift_Mapping_REST_Controller::list_mapping_items',
+				'callback'            => 'Wordlift\Mappings\Mappings_REST_Controller::list_mapping_items',
 				'permission_callback' => function () {
 					return current_user_can( 'manage_options' );
 				},
@@ -81,7 +84,7 @@ class Wordlift_Mapping_REST_Controller {
 			'mappings',
 			array(
 				'methods'             => WP_REST_Server::DELETABLE,
-				'callback'            => 'Wordlift_Mapping_REST_Controller::delete_mapping_items',
+				'callback'            => 'Wordlift\Mappings\Mappings_REST_Controller::delete_mapping_items',
 				'permission_callback' => function () {
 					return current_user_can( 'manage_options' );
 				},
@@ -94,7 +97,7 @@ class Wordlift_Mapping_REST_Controller {
 			'mappings/(?P<id>\d+)',
 			array(
 				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => 'Wordlift_Mapping_REST_Controller::get_mapping_item',
+				'callback'            => 'Wordlift\Mappings\Mappings_REST_Controller::get_mapping_item',
 				'permission_callback' => function () {
 					return current_user_can( 'manage_options' );
 				},
@@ -107,7 +110,7 @@ class Wordlift_Mapping_REST_Controller {
 			'mappings',
 			array(
 				'methods'             => WP_REST_Server::EDITABLE,
-				'callback'            => 'Wordlift_Mapping_REST_Controller::update_mapping_items',
+				'callback'            => 'Wordlift\Mappings\Mappings_REST_Controller::update_mapping_items',
 				'permission_callback' => function () {
 					return current_user_can( 'manage_options' );
 				},
@@ -120,7 +123,7 @@ class Wordlift_Mapping_REST_Controller {
 			'mappings/clone',
 			array(
 				'methods'             => WP_REST_Server::CREATABLE,
-				'callback'            => 'Wordlift_Mapping_REST_Controller::clone_mapping_items',
+				'callback'            => 'Wordlift\Mappings\Mappings_REST_Controller::clone_mapping_items',
 				'permission_callback' => function () {
 					return current_user_can( 'manage_options' );
 				},
@@ -132,6 +135,8 @@ class Wordlift_Mapping_REST_Controller {
 	 * Clone posted mapping items.
 	 *
 	 * @param WP_REST_Request $request {@link WP_REST_Request instance}.
+	 *
+	 * @return array
 	 */
 	public static function clone_mapping_items( $request ) {
 		$dbo           = new Mappings_DBO();
@@ -177,6 +182,8 @@ class Wordlift_Mapping_REST_Controller {
 	 * Update posted mapping items.
 	 *
 	 * @param WP_REST_Request $request {@link WP_REST_Request instance}.
+	 *
+	 * @return array
 	 */
 	public static function update_mapping_items( $request ) {
 		$dbo       = new Mappings_DBO();
@@ -203,6 +210,8 @@ class Wordlift_Mapping_REST_Controller {
 	 * Delete mapping items by mapping id
 	 *
 	 * @param WP_REST_Request $request {@link WP_REST_Request instance}.
+	 *
+	 * @return array
 	 */
 	public static function delete_mapping_items( $request ) {
 		$dbo       = new Mappings_DBO();
@@ -229,12 +238,13 @@ class Wordlift_Mapping_REST_Controller {
 	 * Get all mapping items
 	 *
 	 * @param WP_REST_Request $request {@link WP_REST_Request instance}.
+	 *
+	 * @return array
 	 */
 	public static function list_mapping_items( $request ) {
 		$dbo           = new Mappings_DBO();
-		$mapping_items = $dbo->get_mapping_items();
 
-		return $mapping_items;
+		return $dbo->get_mapping_items();
 	}
 
 	/**
@@ -387,6 +397,8 @@ class Wordlift_Mapping_REST_Controller {
 	 * Insert or update mapping item depends on data
 	 *
 	 * @param WP_REST_Request $request {@link WP_REST_Request instance}.
+	 *
+	 * @return array
 	 */
 	public static function insert_or_update_mapping_item( $request ) {
 		$post_data = $request->get_params() === null ? array() : $request->get_params();
@@ -420,4 +432,4 @@ class Wordlift_Mapping_REST_Controller {
 	}
 }
 
-Wordlift_Mapping_REST_Controller::register_routes();
+Mappings_REST_Controller::register_routes();

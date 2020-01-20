@@ -11,6 +11,7 @@
  */
 
 use Wordlift\Mappings\Acf_Mappings;
+use Wordlift\Mappings\Mappings_REST_Controller;
 use Wordlift\Mappings\Pages\Edit_Mappings_Page;
 use Wordlift\Mappings\Pages\Admin_Mappings_Page;
 
@@ -188,6 +189,9 @@ class Wordlift_Admin {
 		// Add Mappings and Edit Mappings page.
 		new Admin_Mappings_Page();
 		new Edit_Mappings_Page();
+
+		// Add the Mappings' REST Controller.
+		new Mappings_REST_Controller();
 
 		// Set the singleton instance.
 		self::$instance = $this;

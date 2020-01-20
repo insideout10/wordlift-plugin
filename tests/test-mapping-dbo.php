@@ -10,7 +10,7 @@
 use Wordlift\Mappings\Mappings_DBO;
 
 /**
- * Define the Wordlift_Mapping_REST_Controller_Test class.
+ * Define the Mappings_REST_Controller_Test class.
  *
  * @group mappings
  *
@@ -19,7 +19,7 @@ use Wordlift\Mappings\Mappings_DBO;
 class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 
 	/**
-	 * The {@link Wordlift_Mapping_REST_Controller} instance to test.
+	 * The {@link Mappings_REST_Controller} instance to test.
 	 *
 	 * @since  3.25.0
 	 * @access private

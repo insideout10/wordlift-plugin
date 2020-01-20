@@ -12,10 +12,10 @@
 namespace Wordlift\Mappings\Pages;
 
 use Wordlift;
+use Wordlift\Mappings\Mappings_REST_Controller;
+use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
 use Wordlift_Admin_Page;
 use Wordlift\Scripts\Scripts_Helper;
-use Wordlift_Mapping_REST_Controller;
-use Mappings_Transform_Functions_Registry;
 
 /**
  * Define the Wordlift_Admin_Edit_Mappings class.
@@ -135,7 +135,7 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 		$edit_mapping_settings                               = array();
 		$edit_mapping_settings['rest_url']                   = get_rest_url(
 			null,
-			WL_REST_ROUTE_DEFAULT_NAMESPACE . Wordlift_Mapping_REST_Controller::MAPPINGS_NAMESPACE
+			WL_REST_ROUTE_DEFAULT_NAMESPACE . Mappings_REST_Controller::MAPPINGS_NAMESPACE
 		);
 		$edit_mapping_settings['page']                       = 'wl_edit_mapping';
 		$edit_mapping_settings['wl_edit_mapping_rest_nonce'] = wp_create_nonce( 'wp_rest' );

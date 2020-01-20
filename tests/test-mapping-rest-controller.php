@@ -8,22 +8,23 @@
  */
 
 use Wordlift\Mappings\Mappings_DBO;
+use Wordlift\Mappings\Mappings_REST_Controller;
 
 /**
- * Define the Wordlift_Mapping_REST_Controller_Test class.
+ * Define the Mappings_REST_Controller_Test class.
  *
  * @group mappings
  *
  * @since 3.25.0
  */
-class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
+class Mappings_REST_Controller_Test extends WP_UnitTestCase {
 
 	/**
-	 * The {@link Wordlift_Mapping_REST_Controller} instance to test.
+	 * The {@link Mappings_REST_Controller} instance to test.
 	 *
 	 * @since  3.25.0
 	 * @access private
-	 * @var \Wordlift_Mapping_REST_Controller $rest_instance The {@link Wordlift_Mapping_REST_Controller} instance to test.
+	 * @var Mappings_REST_Controller $rest_instance The {@link Mappings_REST_Controller} instance to test.
 	 */
 	private $rest_instance;
 
@@ -37,7 +38,7 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();	
 
-		$this->rest_instance = new Wordlift_Mapping_REST_Controller();
+		$this->rest_instance = new Mappings_REST_Controller();
 		$this->rest_instance->register_routes();
 		global $wp_rest_server, $wpdb;
 
