@@ -56,6 +56,7 @@ class Wordlift_Install_3_25_0 extends Wordlift_Install {
 	public function create_mappings_table() {
 		$table_name      = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
 		$charset_collate = $this->wpdb->get_charset_collate();
+		// @@todo: is necessary to prefix the column names with `mapping_` ? we're the mappings table already.
 		$sql             = <<<EOF
         CREATE TABLE IF NOT EXISTS $table_name (
 			mapping_id INT(11) NOT NULL AUTO_INCREMENT, 
@@ -80,6 +81,7 @@ EOF;
 		$table_name            = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
 		$rule_group_table_name = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
 		$charset_collate       = $this->wpdb->get_charset_collate();
+		// @@todo: is necessary to prefix the column names with `rule_` ? we're the rules table already.
 		$sql                   = <<<EOF
         CREATE TABLE IF NOT EXISTS $table_name (
 				rule_id INT(11) NOT NULL AUTO_INCREMENT,
@@ -109,7 +111,9 @@ EOF;
 		$charset_collate = $this->wpdb->get_charset_collate();
 
 		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
+		// @@todo the following variable is unused, remove.
 		$rule_table_name    = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
+		// @@todo is this table actually needed? I am not understanding what it does.
 		$sql                = <<<EOF
         CREATE TABLE IF NOT EXISTS $table_name (
                 rule_group_id INT(11) NOT NULL AUTO_INCREMENT,
@@ -138,6 +142,7 @@ EOF;
 		$charset_collate = $this->wpdb->get_charset_collate();
 
 		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
+		// @@todo do you we need the `property_` prefix? this is the property table anyway.
 		$sql                = <<<EOF
         CREATE TABLE IF NOT EXISTS $table_name (
                 property_id INT(11) NOT NULL AUTO_INCREMENT,
@@ -166,6 +171,7 @@ EOF;
 	 */
 	public function must_install() {
 
+		// @@todo remove this function if not needed.
 		return defined( 'WP_DEBUG' ) && WP_DEBUG;
 	}
 

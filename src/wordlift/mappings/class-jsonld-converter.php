@@ -66,7 +66,9 @@ class Jsonld_Converter {
 	 */
 	public function wl_post_jsonld( $jsonld, $post_id, $references ) {
 
-		// Validate the post id here.
+		// @@todo I think there's an issue here with the Validator, because you're changing the instance state and the
+		// instance may be reused afterwards.
+
 		$this->validator->validate( $post_id );
 		$properties = $this->validator->get_valid_properties();
 
@@ -89,11 +91,11 @@ class Jsonld_Converter {
 	 * @param int $post_id Id of the post.
 	 * @param array $property_data The property data for the post_id.
 	 *
-	 * @return array Returns key, value array, if the value is not found, then it
-	 * returns null.
+	 * @return array Returns key, value array, if the value is not found, then it returns null.
 	 */
 	final public function get_data_from_data_source( $post_id, $property_data ) {
 		$value = $property_data['field_name'];
+		// @@todo 'ACF' shouldn't be here.
 		// Do 1 to 1 mapping and return result.
 		if ( 'acf' === $property_data['field_type'] && function_exists( 'get_field' ) ) {
 			$value = get_field( $property_data['field_name'], $post_id );

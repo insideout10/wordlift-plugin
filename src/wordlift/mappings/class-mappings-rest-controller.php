@@ -242,7 +242,7 @@ class Mappings_REST_Controller {
 	 * @return array
 	 */
 	public static function list_mapping_items( $request ) {
-		$dbo           = new Mappings_DBO();
+		$dbo = new Mappings_DBO();
 
 		return $dbo->get_mapping_items();
 	}

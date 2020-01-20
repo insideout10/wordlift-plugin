@@ -9,6 +9,8 @@
  * @subpackage Wordlift/admin
  */
 
+use Wordlift\Scripts\Scripts_Helper;
+
 /**
  * Define the {@link Wordlift_Admin_Post_Edit_Page} page.
  *
@@ -145,7 +147,7 @@ class Wordlift_Admin_Post_Edit_Page {
 		 *
 		 * @since 3.25.0 Scripts are loaded using script helper to ensure WP 4.4 compatibiility.
 		 */
-		Wordlift\Scripts\Scripts_Helper::enqueue_based_on_wordpress_version(
+		Scripts_Helper::enqueue_based_on_wordpress_version(
 			'wordlift-admin-edit-page',
 			$script_name,
 			array(

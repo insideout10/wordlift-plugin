@@ -76,7 +76,7 @@ final class Mappings_Validator {
 	 * @param string $logic The logic field.
 	 * @param string $value_two The second value.
 	 *
-	 * @return Boolean
+	 * @return bool
 	 */
 	private function is_logic_valid( $value_one, $logic, $value_two ) {
 		switch ( $logic ) {
@@ -94,7 +94,7 @@ final class Mappings_Validator {
 	 * @param int  $post_id The post id.
 	 * @param array $rule_data The single rule data.
 	 *
-	 * @return Boolean
+	 * @return bool
 	 */
 	private function is_single_rule_valid( $post_id, $rule_data ) {
 		// Determine the rule field one and validate based on it.
@@ -138,7 +138,7 @@ final class Mappings_Validator {
 	 * @param int  $post_id The post id.
 	 * @param array $rules The list of rules from a rule group.
 	 *
-	 * @return Boolean
+	 * @return bool
 	 */
 	private function is_rules_valid( $post_id, $rules ) {
 		foreach ( $rules as $rule ) {
@@ -157,14 +157,14 @@ final class Mappings_Validator {
 	 * @param int  $post_id The post id.
 	 * @param array $rule_group_data The rule group data list.
 	 *
-	 * @return Boolean
+	 * @return bool
 	 */
 	private function validate_rule_group_with_rules_for_post_id( $post_id, $rule_group_data ) {
-		// Atleast one of the rule group must be valid.
+		// At least one of the rule group must be valid.
 		$valid_rule_groups = array();
 		foreach ( $rule_group_data as $rule_group ) {
 			$single_rule_group_rules = $rule_group['rules'];
-			// There should be atleast one rule present.
+			// There should be at least one rule present.
 			if (
 				0 !== count( $single_rule_group_rules ) &&
 				$this->is_rules_valid( $post_id, $single_rule_group_rules )
@@ -182,11 +182,14 @@ final class Mappings_Validator {
 	 *
 	 * @param int  $post_id The post id.
 	 *
-	 * @return Boolean
+	 * @return bool
 	 */
 	public function validate( $post_id ) {
 		// Reset the valid property items before making the validation.
 		$this->valid_properties = array();
+
+		// @@todo I am not following here, first you get all the mappings and then you check the rules?
+		// isn't it more efficient to first check the rules and then the associated mappings?
 
 		// Get all mapping items.
 		$mapping_items        = $this->dbo->get_mapping_items();

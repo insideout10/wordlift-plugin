@@ -66,7 +66,7 @@ final class Mappings_DBO {
 	 * @param string $primary_key_name The primary key you want to query, should be escaped before passing.
 	 * @param int $primary_key_value The primary key value, no need to escape.
 	 *
-	 * @return Boolean Returns true if the row exists, false if it does not
+	 * @return bool Returns true if the row exists, false if it does not
 	 */
 	private function check_if_row_exists( $table_name, $primary_key_name, $primary_key_value ) {
 		$primary_key_value = (int) $primary_key_value;
@@ -85,7 +85,7 @@ final class Mappings_DBO {
 	 *
 	 * @param string $title Title of the mapping item.
 	 *
-	 * @return Int Id of the inserted mapping item.
+	 * @return int Id of the inserted mapping item.
 	 */
 	public function insert_mapping_item( $title ) {
 		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
@@ -102,7 +102,7 @@ final class Mappings_DBO {
 	 *
 	 * @param array $mapping_data Array of the mapping data.
 	 *
-	 * @return Int Id of the inserted mapping item
+	 * @return int Id of the inserted mapping item
 	 */
 	public function insert_or_update_mapping_item( $mapping_data ) {
 		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
@@ -150,7 +150,7 @@ final class Mappings_DBO {
 	 *
 	 * @param int $mapping_id Primary key for mapping table.
 	 *
-	 * @return Int The inserted rule group id.
+	 * @return int The inserted rule group id.
 	 */
 	public function insert_rule_group( $mapping_id ) {
 		$rule_group_table_name = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
@@ -261,15 +261,14 @@ final class Mappings_DBO {
 	 */
 	public function get_rules( $rule_group_id ) {
 		$rule_table_name = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
-		$rule_rows       = $this->wpdb->get_results(
+
+		return $this->wpdb->get_results(
 			$this->wpdb->prepare(
 				"SELECT * FROM $rule_table_name WHERE rule_group_id=%d",
 				$rule_group_id
 			),
 			ARRAY_A
 		);
-
-		return $rule_rows;
 	}
 
 	/**
@@ -277,7 +276,7 @@ final class Mappings_DBO {
 	 *
 	 * @param array $property_data Property row from table/ui.
 	 *
-	 * @return Int Inserted Property Id.
+	 * @return int Inserted Property Id.
 	 */
 	public function insert_or_update_property( $property_data ) {
 		$property_table_name = $this->wpdb->prefix . WL_PROPERTY_TABLE_NAME;
@@ -306,15 +305,14 @@ final class Mappings_DBO {
 	 */
 	public function get_mapping_item_data( $mapping_id ) {
 		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
-		$mapping_row        = $this->wpdb->get_row(
+
+		return $this->wpdb->get_row(
 			$this->wpdb->prepare(
 				"SELECT * FROM $mapping_table_name WHERE mapping_id=%d",
 				$mapping_id
 			),
 			ARRAY_A
 		);
-
-		return $mapping_row;
 	}
 
 	/**
@@ -322,7 +320,7 @@ final class Mappings_DBO {
 	 *
 	 * @param int $property_id Primary key for property table.
 	 *
-	 * @return void
+	 * @return int|false The number of rows updated, or false on error.
 	 */
 	public function delete_property( $property_id ) {
 		$property_table_name = $this->wpdb->prefix . WL_PROPERTY_TABLE_NAME;

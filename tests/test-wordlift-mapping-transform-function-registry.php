@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests: Wordlift_Mapping_Transform_Function_Registry Test.
+ * Tests: Mappings_Transform_Function_Registry Test.
  *
  * This file contains the tests for the {@link Mappings_Transform_Functions_Registry } class.
  *
@@ -8,6 +8,7 @@
  * @package Wordlift
  */
 
+use Wordlift\Mappings\Mappings_Transform_Function;
 use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
 
 /**
@@ -18,7 +19,7 @@ use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
  * @since   3.25.0
  * @package Wordlift
  */
-class Wordlift_Mock_Transformation_Function implements Wordlift_Mapping_Transform_Function {
+class Wordlift_Mock_Transformation_Function implements Mappings_Transform_Function {
 	public function get_name() {
 		return 'foo';
 	}
@@ -32,7 +33,7 @@ class Wordlift_Mock_Transformation_Function implements Wordlift_Mapping_Transfor
 	}
 }
 
-class Wordlift_Mapping_Transform_Function_Registry_Test extends Wordlift_Unit_Test_Case {
+class Mappings_Transform_Function_Registry_Test extends Wordlift_Unit_Test_Case {
 	private static function add_transformation_function_to_hook() {
 		// Emulating this from a external plugin, that plugin should add this to the hook.
 		add_filter(

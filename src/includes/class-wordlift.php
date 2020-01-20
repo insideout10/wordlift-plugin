@@ -947,15 +947,7 @@ class Wordlift {
 		 * @since 3.8.0
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-jsonld-service.php';
-
-		/**
-		 * Load the transform function registry to access all transform functions present
-		 * for mapping.
-		 *
-		 * @since 3.25.0
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/intf-wordlift-mapping-transform-function.php';
-
+		
 		// The Publisher Service and the AJAX adapter.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-publisher-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-publisher-ajax-adapter.php';
