@@ -35,6 +35,7 @@ class Wordlift_Install_3_25_0 extends Wordlift_Install {
 		global $wpdb;
 		$this->wpdb = $wpdb;
 	}
+
 	/**
 	 * @inheritdoc
 	 */
@@ -48,9 +49,9 @@ class Wordlift_Install_3_25_0 extends Wordlift_Install {
 	/**
 	 * Install mappings table
 	 *
+	 * @return void
 	 * @since 3.25.0
 	 *
-	 * @return void
 	 */
 	public function create_mappings_table() {
 		$table_name      = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
@@ -71,9 +72,9 @@ EOF;
 	/**
 	 * Install rule table
 	 *
+	 * @return void
 	 * @since 3.25.0
 	 *
-	 * @return void
 	 */
 	public function create_rule_table() {
 		$table_name            = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
@@ -99,9 +100,9 @@ EOF;
 	 * Install rule group table, should run after creating mapping and
 	 * rule table due to foreign key reference.
 	 *
+	 * @return void
 	 * @since 3.25.0
 	 *
-	 * @return void
 	 */
 	public function create_rule_group_table() {
 		$table_name      = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
@@ -128,9 +129,9 @@ EOF;
 	 * Install property table, should run afer mapping table due to
 	 * foreign key reference.
 	 *
+	 * @return void
 	 * @since 3.25.0
 	 *
-	 * @return void
 	 */
 	public function create_property_table() {
 		$table_name      = $this->wpdb->prefix . WL_PROPERTY_TABLE_NAME;
@@ -159,13 +160,13 @@ EOF;
 	/**
 	 * A custom procedure run by the caller to determine whether the install procedure must be run.
 	 *
+	 * @return bool True if the procedure must run.
 	 * @since 3.20.0
 	 *
-	 * @return bool True if the procedure must run.
 	 */
 	public function must_install() {
 
-		return true;
+		return defined( 'WP_DEBUG' ) && WP_DEBUG;
 	}
 
 }

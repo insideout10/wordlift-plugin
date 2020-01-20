@@ -45,6 +45,7 @@ class Wordlift_Post_Test extends Wordlift_Unit_Test_Case {
 		$this->assertNotNull( $counts );
 		$this->assertFalse( is_wp_error( $counts ) );
 
+		$this->turn_on_entity_push();
 	}
 
 	/**
@@ -87,7 +88,11 @@ class Wordlift_Post_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_entities_via_array() {
 
+		// Check that SPARQL queries buffering is disabled.
 		$this->assertFalse( wl_is_sparql_update_queries_buffering_enabled() );
+
+		// Check that entity push is enabled.
+		$this->assertFalse( apply_filters( 'wl_disable_entity_push', get_transient( 'DISABLE_ENTITY_PUSH' ) ) );
 
 		// Create a post.
 		$post_id = $this->create_post();
@@ -288,7 +293,10 @@ EOF;
 		if ( 2 !== $count ) {
 			wl_write_log( "checkEntity [ post id :: $post->ID ][ uri :: $uri ][ body :: $body ][ count :: $count ][ count (expected) :: 2 ]" );
 		}
-		$this->assertEquals( 2, $count, "checkEntity [ post id :: $post->ID ][ uri :: $uri ][ body :: $body ][ count :: $count ][ count (expected) :: 2 ]" );
+		$this->assertEquals( 2, $count, "checkEntity [ post id :: $post->ID ][ uri :: $uri ]"
+		                                . "[ body :: $body ][ count :: $count ][ count (expected) :: 2 ]"
+		                                . "[ post data :: " . var_export( $post, true ) . "]"
+		                                . "[ post entity type :: " . var_export( wp_get_object_terms( $post->ID, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ), true ) . "]" );
 
 		// Focus on the first row.
 		$match = $matches[1];

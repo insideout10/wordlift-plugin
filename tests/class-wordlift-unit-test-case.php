@@ -93,6 +93,48 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 	}
 
 	/**
+	 * The class {@see WP_UnitTestCase} alters custom tables by making them temporary.
+	 *
+	 * Since we defined foreign keys on these tables we need them persistent, therefore we override the WP_UnitTestCase
+	 * functions in order to return the query as is (i.e. without the TEMPORARY modifier).
+	 *
+	 * @param string $query The original query.
+	 *
+	 * @return string The original query.
+	 *
+	 * @since 3.25.0
+	 */
+	function _create_temporary_tables( $query ) {
+
+		if ( false !== strpos( $query, '_wl_mapping_' ) ) {
+			return $query;
+		}
+
+		return parent::_create_temporary_tables( $query );
+	}
+
+	/**
+	 * The class {@see WP_UnitTestCase} alters custom tables by making them temporary.
+	 *
+	 * Since we defined foreign keys on these tables we need them persistent, therefore we override the WP_UnitTestCase
+	 * functions in order to return the query as is (i.e. without the TEMPORARY modifier).
+	 *
+	 * @param string $query The original query.
+	 *
+	 * @return string The original query.
+	 *
+	 * @since 3.25.0
+	 */
+	function _drop_temporary_tables( $query ) {
+
+		if ( false !== strpos( $query, '_wl_mapping_' ) ) {
+			return $query;
+		}
+
+		return parent::_drop_temporary_tables( $query );
+	}
+
+	/**
 	 * Set up the publisher.
 	 *
 	 * @since 3.16.0

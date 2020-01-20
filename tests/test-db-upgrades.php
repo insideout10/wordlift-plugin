@@ -105,7 +105,8 @@ class Wordlift_DB_Upgrade_Test extends Wordlift_Unit_Test_Case {
 		update_option( 'wl_db_version', '1.0.0' );
 
 		// now call the upgrade routine and check that everything is Flatten
-		Wordlift_Install_Service::get_instance()->install();
+		$install_3_10_0 = new Wordlift_Install_3_10_0();
+		$install_3_10_0->install();
 
 		$slugs = array(
 			'thing',
@@ -114,7 +115,8 @@ class Wordlift_DB_Upgrade_Test extends Wordlift_Unit_Test_Case {
 			'organization',
 			'person',
 			'place',
-			'local-business',
+			// This is later renamed local-business, there's an install class specific for this.
+			'localbusiness',
 		);
 
 		foreach ( $slugs as $slug ) {
@@ -213,11 +215,11 @@ class Wordlift_DB_Upgrade_Test extends Wordlift_Unit_Test_Case {
 	/**
 	 * Check if a post has `article` entity type term.
 	 *
-	 * @since  3.18.3
-	 *
-	 * @param  int $post_id The post id.
+	 * @param int $post_id The post id.
 	 *
 	 * @return boolean True if the term exists, false on failure.
+	 * @since  3.18.3
+	 *
 	 */
 	public function has_term( $post_id ) {
 		return has_term(
