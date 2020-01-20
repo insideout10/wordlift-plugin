@@ -6,17 +6,23 @@
  *
  * @since 3.24.0
  * @package Wordlift
- * @subpackage Wordlift/admin
+ * @subpackage Wordlift\Mappings\Pages
  */
 
+namespace Wordlift\Mappings\Pages;
+
+use Wordlift;
+use Wordlift_Admin_Page;
 use Wordlift\Scripts\Scripts_Helper;
+use Wordlift_Mapping_REST_Controller;
+use Wordlift_Mapping_Transform_Function_Registry;
 
 /**
  * Define the Wordlift_Admin_Edit_Mappings class.
  *
  * @since 3.24.0
  */
-class Wordlift_Admin_Edit_Mappings_Page extends Wordlift_Admin_Page {
+class Edit_Mappings_Page extends Wordlift_Admin_Page {
 
 	/**
 	 * The base class {@link Wordlift_Admin_Page} will add the admin page to the WordLift menu.
@@ -59,7 +65,7 @@ class Wordlift_Admin_Edit_Mappings_Page extends Wordlift_Admin_Page {
 	 */
 	public function get_partial_name() {
 
-		return 'wordlift-admin-edit-mappings.php';
+		return 'wordlift-admin-mappings-edit.php';
 	}
 
 	/**
@@ -70,7 +76,7 @@ class Wordlift_Admin_Edit_Mappings_Page extends Wordlift_Admin_Page {
 		// Enqueue the script.
 		Scripts_Helper::enqueue_based_on_wordpress_version(
 			'wl-mappings-edit',
-			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings-edit',
+			plugin_dir_url( dirname( dirname( dirname( __FILE__ ) ) ) ) . 'js/dist/mappings-edit',
 			array( 'react', 'react-dom', 'wp-polyfill' ),
 			true
 		);
@@ -78,7 +84,7 @@ class Wordlift_Admin_Edit_Mappings_Page extends Wordlift_Admin_Page {
 		// Enqueue the style.
 		wp_enqueue_style(
 			'wl-mappings-edit',
-			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings-edit.css',
+			plugin_dir_url( dirname( dirname( dirname( __FILE__ ) ) ) ) . 'js/dist/mappings-edit.css',
 			Wordlift::get_instance()->get_version()
 		);
 

@@ -11,6 +11,8 @@
  */
 
 use Wordlift\Mappings\Acf_Mappings;
+use Wordlift\Mappings\Pages\Edit_Mappings_Page;
+use Wordlift\Mappings\Pages\Admin_Mappings_Page;
 
 /**
  * The admin-specific functionality of the plugin.
@@ -183,8 +185,9 @@ class Wordlift_Admin {
 		// Add support for ACF mappings, so that the admin edit mappings page can pick up ACF support when ACF is available.
 		new Acf_Mappings();
 
-		// Add the Admin Edit Mappings page.
-		new Wordlift_Admin_Edit_Mappings_Page();
+		// Add Mappings and Edit Mappings page.
+		new Admin_Mappings_Page();
+		new Edit_Mappings_Page();
 
 		// Set the singleton instance.
 		self::$instance = $this;
