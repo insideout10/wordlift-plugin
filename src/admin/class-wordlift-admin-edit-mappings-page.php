@@ -31,6 +31,63 @@ class Wordlift_Admin_Edit_Mappings_Page extends Wordlift_Admin_Page {
 	}
 
 	/**
+	 * {@inheritdoc}
+	 */
+	public function get_page_title() {
+
+		return __( 'Edit Mappings', 'wordlift' );
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function get_menu_title() {
+
+		return __( 'Edit Mappings', 'wordlift' );
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function get_menu_slug() {
+
+		return 'wl_edit_mapping';
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function get_partial_name() {
+
+		return 'wordlift-admin-edit-mappings.php';
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function enqueue_scripts() {
+
+		// Enqueue the script.
+		Scripts_Helper::enqueue_based_on_wordpress_version(
+			'wl-mappings-edit',
+			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings-edit',
+			array( 'react', 'react-dom', 'wp-polyfill' ),
+			true
+		);
+
+		// Enqueue the style.
+		wp_enqueue_style(
+			'wl-mappings-edit',
+			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings-edit.css',
+			Wordlift::get_instance()->get_version()
+		);
+
+		// Load the UI dependencies.
+		self::load_ui_dependencies();
+
+	}
+
+	/**
 	 * Returns field name options based on the chosen field type.
 	 *
 	 * @return array Array of the options.
@@ -124,7 +181,7 @@ class Wordlift_Admin_Edit_Mappings_Page extends Wordlift_Admin_Page {
 			$edit_mapping_settings['wl_rule_field_two_options']
 			) = self::get_post_taxonomies_and_terms();
 
-		wp_localize_script( 'wl-edit-mappings-script', 'wl_edit_mappings_config', $edit_mapping_settings );
+		wp_localize_script( 'wl-mappings-edit', 'wl_edit_mappings_config', $edit_mapping_settings );
 	}
 
 	/**
@@ -198,69 +255,6 @@ class Wordlift_Admin_Edit_Mappings_Page extends Wordlift_Admin_Page {
 		}
 
 		return array( $post_type_option_name, $post_type_option_values );
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function get_page_title() {
-
-		return __( 'Edit Mappings', 'wordlift' );
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function get_menu_title() {
-
-		return __( 'Edit Mappings', 'wordlift' );
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function get_menu_slug() {
-
-		return 'wl_edit_mapping';
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function get_partial_name() {
-
-		return 'wordlift-admin-edit-mappings.php';
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function enqueue_scripts() {
-
-		/**
-		 * Load scripts with script helper.
-		 *
-		 * @since 3.25.0 - Load with script helper to ensure  WP 4.4 compatibility.
-		 */
-		Scripts_Helper::enqueue_based_on_wordpress_version(
-			'wl-edit-mappings-script',
-			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings-edit',
-			array( 'react', 'react-dom', 'wp-polyfill' ),
-			true
-		);
-
-		$wordlift = \Wordlift::get_instance();
-		wp_register_style(
-			'wl-edit-mappings-style',
-			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings-edit.css',
-			$wordlift->get_version()
-		);
-		// @@todo: move to the page render, because it's doing lots of stuff also when not required.
-		Wordlift_Admin_Edit_Mappings_Page::load_ui_dependencies();
-
-		wp_enqueue_script( 'wl-edit-mappings-script' );
-		wp_enqueue_style( 'wl-edit-mappings-style' );
-
 	}
 
 }
