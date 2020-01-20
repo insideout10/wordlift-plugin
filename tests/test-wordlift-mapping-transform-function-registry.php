@@ -34,7 +34,7 @@ class Wordlift_Mapping_Transform_Function_Registry_Test extends Wordlift_Unit_Te
 	private static function add_transformation_function_to_hook() {
 		// Emulating this from a external plugin, that plugin should add this to the hook.
 		add_filter(
-			'wordlift_sync_mappings_register_transformation_function',
+			'wl_mappings_transformation_functions',
 			function ( $transformation_functions ) {
 				array_push( $transformation_functions, new Wordlift_Mock_Transformation_Function() );
 

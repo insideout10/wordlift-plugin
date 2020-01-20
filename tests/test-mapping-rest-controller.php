@@ -7,6 +7,8 @@
  * @subpackage Wordlift/tests
  */
 
+use Wordlift\Mappings\Mappings_DBO;
+
 /**
  * Define the Wordlift_Mapping_REST_Controller_Test class.
  *
@@ -112,10 +114,11 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 	}
 	/** Test get list of mapping items from end point */
 	public function test_get_list_mapping_items() {
+
 		// Create user with 'manage options' capability.
 		$user_id   = $this->factory->user->create( array( 'role' => 'administrator' ) );
 		wp_set_current_user( $user_id );
-		$dbo = new Wordlift_Mapping_DBO();
+		$dbo = new Mappings_DBO();
 		$dbo->insert_mapping_item( 'foo' );
 		// Lets insert a item.
 		$request   = new WP_REST_Request( 'GET', $this->mapping_route );
@@ -124,13 +127,15 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 		$this->assertEquals( 200, $response->get_status() );
 		// We have 1 mapping item in db inserted in this test.
 		$this->assertEquals( 1, count( $response->get_data() ) );
+
 	}
+
 	/** Test can delete a list of mapping items */
 	public function test_delete_mapping_item() {
 		// Create user with 'manage options' capability, only that user can delete this item.
 		$user_id   = $this->factory->user->create( array( 'role' => 'administrator' ) );
 		wp_set_current_user( $user_id );
-		$dbo          = new Wordlift_Mapping_DBO();
+		$dbo          = new Mappings_DBO();
 		$mapping_id_1 = $dbo->insert_mapping_item( 'foo' );
 		$mapping_id_2 = $dbo->insert_mapping_item( 'bar' );
 
@@ -187,7 +192,7 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 	public function test_multiple_mapping_item_posted_to_update_endpoint_should_update() {
 		$user_id   = $this->factory->user->create( array( 'role' => 'administrator' ) );
 		wp_set_current_user( $user_id );	
-		$dbo = new Wordlift_Mapping_DBO();
+		$dbo = new Mappings_DBO();
 		// Lets make 2 mapping items on db.
 		$mapping_id_1 = $dbo->insert_mapping_item( 'foo' );
 		$mapping_id_2 = $dbo->insert_mapping_item( 'bar' );
@@ -221,7 +226,7 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 	 * @return $mapping_id
 	 */
 	private function inject_mock_data_for_mapping_id() {
-		$dbo = new Wordlift_Mapping_DBO();
+		$dbo = new Mappings_DBO();
 		// We create a mapping item.
 		$mapping_id = $dbo->insert_mapping_item( 'foo' );
 
@@ -285,7 +290,7 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 		$request->set_header( 'content-type', 'application/json' );
 		$request->set_body( $json_data );
 		$response = $this->server->dispatch( $request );
-		$dbo = new Wordlift_Mapping_DBO();
+		$dbo = new Mappings_DBO();
 
 		$this->assertEquals( 200, $response->get_status() );
 		// we should have 2 mapping items in db.

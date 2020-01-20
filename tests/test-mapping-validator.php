@@ -7,6 +7,7 @@
  * @subpackage Wordlift/tests
  */
 
+use Wordlift\Mappings\Mappings_DBO;
 use Wordlift\Mappings\Mappings_Validator;
 
 /**
@@ -28,11 +29,11 @@ class Wordlift_Mapping_Validator_Test extends WP_UnitTestCase {
 	private $validator;
 
 	/**
-	 * The {@link Wordlift_Mapping_DBO} instance to test.
+	 * The {@link Mappings_DBO} instance to test.
 	 *
 	 * @since  3.25.0
 	 * @access private
-	 * @var \Wordlift_Mapping_DBO $dbo The {@link Wordlift_Mapping_DBO} instance to test.
+	 * @var Mappings_DBO $dbo The {@link Mappings_DBO} instance to test.
 	 */
 	private $dbo;
 
@@ -41,8 +42,10 @@ class Wordlift_Mapping_Validator_Test extends WP_UnitTestCase {
 	 */
 	public function setUp() {
 		parent::setUp();
-		$this->dbo       = new Wordlift_Mapping_DBO();
+
+		$this->dbo       = new Mappings_DBO();
 		$this->validator = new Mappings_Validator();
+
 	}
 
 	/** Check if validator class can be initalised */

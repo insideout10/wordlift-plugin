@@ -25,7 +25,9 @@ class Mappings_Transform_Functions_Registry {
 	 * Construct a list of transform function array.
 	 */
 	public function __construct() {
-		$this->transform_function_array = apply_filters( 'wordlift_sync_mappings_register_transformation_function', array() );
+
+		$this->transform_function_array = apply_filters( 'wl_mappings_transformation_functions', array() );
+
 	}
 
 	/**
@@ -74,7 +76,7 @@ class Mappings_Transform_Functions_Registry {
 	 */
 	private function sync_transformation_functions_from_external_plugins() {
 		$this->transform_function_array = apply_filters(
-			'wordlift_sync_mappings_register_transformation_function',
+			'wl_mappings_transformation_functions',
 			$this->transform_function_array
 		);
 		$this->remove_duplicate_transformation_functions_after_sync();

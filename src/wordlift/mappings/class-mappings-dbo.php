@@ -1,14 +1,16 @@
 <?php
 
+namespace Wordlift\Mappings;
+
 /**
- * Define the {@link Wordlift_Mapping_DBO} class.
+ * Define the {@link Mappings_DBO} class.
  * Used for CRUD on a mapping item tables
  *
  * @since      3.25.0
  * @package    Wordlift
- * @subpackage Wordlift/includes/sync-mappings
+ * @subpackage Wordlift\Mappings
  */
-final class Wordlift_Mapping_DBO {
+final class Mappings_DBO {
 
 	/**
 	 * The {@link wpdb} instance.
@@ -25,7 +27,6 @@ final class Wordlift_Mapping_DBO {
 	public function __construct() {
 		global $wpdb;
 		$this->wpdb = $wpdb;
-
 	}
 
 	/**
@@ -44,7 +45,7 @@ final class Wordlift_Mapping_DBO {
 	/**
 	 * Returns a list of property rows
 	 *
-	 * @param Int $mapping_id Primary key of mapping table.
+	 * @param int $mapping_id Primary key of mapping table.
 	 *
 	 * @return array List of property items belong to $mapping_id.
 	 */
@@ -63,7 +64,7 @@ final class Wordlift_Mapping_DBO {
 	 *
 	 * @param string $table_name The table name you want to query, completely escaped value.
 	 * @param string $primary_key_name The primary key you want to query, should be escaped before passing.
-	 * @param Int $primary_key_value The primary key value, no need to escape.
+	 * @param int $primary_key_value The primary key value, no need to escape.
 	 *
 	 * @return Boolean Returns true if the row exists, false if it does not
 	 */
@@ -147,7 +148,7 @@ final class Wordlift_Mapping_DBO {
 	 * If a rule group exists doesn't do anything, but if rule group
 	 * didn't exist then it inserts a new entry.
 	 *
-	 * @param Int $mapping_id Primary key for mapping table.
+	 * @param int $mapping_id Primary key for mapping table.
 	 *
 	 * @return Int The inserted rule group id.
 	 */
@@ -166,7 +167,7 @@ final class Wordlift_Mapping_DBO {
 	/**
 	 * Deletes a rule item by rule_id from rule and rule group table.
 	 *
-	 * @param Int $rule_id Primary key for rule table.
+	 * @param int $rule_id Primary key for rule table.
 	 *
 	 * @return void
 	 */
@@ -178,7 +179,7 @@ final class Wordlift_Mapping_DBO {
 	/**
 	 * Deletes a rule group item by rule_group_id from rule group table.
 	 *
-	 * @param Int $rule_group_id Primary key for rule table.
+	 * @param int $rule_group_id Primary key for rule table.
 	 *
 	 * @return void
 	 */
@@ -190,7 +191,7 @@ final class Wordlift_Mapping_DBO {
 	/**
 	 * Deletes a mapping item by mapping_id
 	 *
-	 * @param Int $mapping_id Primary key for mapping table.
+	 * @param int $mapping_id Primary key for mapping table.
 	 *
 	 * @return void
 	 */
@@ -202,7 +203,7 @@ final class Wordlift_Mapping_DBO {
 	/**
 	 * Gets a list of rule group items.
 	 *
-	 * @param Int $mapping_id Primary key for mapping table.
+	 * @param int $mapping_id Primary key for mapping table.
 	 *
 	 * @return array Get list of rule group items.
 	 */
@@ -221,7 +222,7 @@ final class Wordlift_Mapping_DBO {
 	/**
 	 * Gets a list of rule group items.
 	 *
-	 * @param Int $mapping_id Primary key for mapping table.
+	 * @param int $mapping_id Primary key for mapping table.
 	 *
 	 * @return array Get list of rule group items.
 	 */
@@ -254,7 +255,7 @@ final class Wordlift_Mapping_DBO {
 	/**
 	 * Gets a list of rule items belong to rule_group_id.
 	 *
-	 * @param Int $rule_group_id Indicates which group the item belongs to.
+	 * @param int $rule_group_id Indicates which group the item belongs to.
 	 *
 	 * @return array Get list of rule items.
 	 */
@@ -299,7 +300,7 @@ final class Wordlift_Mapping_DBO {
 	/**
 	 * Gets a single mapping item row.
 	 *
-	 * @param Int $mapping_id Primary key of mapping table.
+	 * @param int $mapping_id Primary key of mapping table.
 	 *
 	 * @return array Returns single mapping table row..
 	 */
@@ -319,7 +320,7 @@ final class Wordlift_Mapping_DBO {
 	/**
 	 * Delete property item.
 	 *
-	 * @param Int $property_id Primary key for property table.
+	 * @param int $property_id Primary key for property table.
 	 *
 	 * @return void
 	 */

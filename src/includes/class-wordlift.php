@@ -13,6 +13,7 @@
  */
 
 use Wordlift\Mappings\Jsonld_Converter;
+use Wordlift\Mappings\Mappings_DBO;
 use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
 use Wordlift\Mappings\Mappings_Validator;
 
@@ -1024,7 +1025,6 @@ class Wordlift {
 
 		/** Sync Mappings */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/sync-mappings/class-wordlift-mapping-rest-controller.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/sync-mappings/class-wordlift-mapping-dbo.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
@@ -1480,7 +1480,8 @@ class Wordlift {
 		 *
 		 * @since 3.25.0
 		 */
-		$mappings_validator                    = new Mappings_Validator();
+		$mappings_dbo                          = new Mappings_DBO();
+		$mappings_validator                    = new Mappings_Validator( $mappings_dbo );
 		$mappings_transform_functions_registry = new Mappings_Transform_Functions_Registry();
 		new Jsonld_Converter( $mappings_validator, $mappings_transform_functions_registry );
 

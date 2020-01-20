@@ -21,11 +21,11 @@ final class Mappings_Validator {
 	const IS_NOT_EQUAL_TO = '!==';
 
 	/**
-	 * The {@link Wordlift_Mapping_DBO} instance to test.
+	 * The {@link Mappings_DBO} instance to test.
 	 *
 	 * @since  3.25.0
 	 * @access private
-	 * @var \Wordlift_Mapping_DBO $dbo The {@link Wordlift_Mapping_DBO} instance to test.
+	 * @var Mappings_DBO $dbo The {@link Mappings_DBO} instance to test.
 	 */
 	private $dbo;
 
@@ -40,9 +40,13 @@ final class Mappings_Validator {
 
 	/**
 	 * Constructor for Wordlift_Mapping_Validator.
+	 *
+	 * @param Mappings_DBO $dbo The {@link Mappings_DBO} instance.
 	 */
-	public function __construct() {
-		$this->dbo = new \Wordlift_Mapping_DBO();
+	public function __construct( $dbo ) {
+
+		$this->dbo = $dbo;
+
 	}
 
 	/**
@@ -87,7 +91,7 @@ final class Mappings_Validator {
 	 * Validates a post id with a rule and check if
 	 * a single rule passes the user defined logic.
 	 *
-	 * @param Int $post_id The post id.
+	 * @param int  $post_id The post id.
 	 * @param array $rule_data The single rule data.
 	 *
 	 * @return Boolean
@@ -131,7 +135,7 @@ final class Mappings_Validator {
 	 * Validates a post id with the list of rules and check if
 	 * all rules passes the user defined logic.
 	 *
-	 * @param Int $post_id The post id.
+	 * @param int  $post_id The post id.
 	 * @param array $rules The list of rules from a rule group.
 	 *
 	 * @return Boolean
@@ -150,7 +154,7 @@ final class Mappings_Validator {
 	 * Validates a post id with the list of rule groups and check if
 	 * a single rule group passes the user defined logic.
 	 *
-	 * @param Int $post_id The post id.
+	 * @param int  $post_id The post id.
 	 * @param array $rule_group_data The rule group data list.
 	 *
 	 * @return Boolean
@@ -176,7 +180,7 @@ final class Mappings_Validator {
 	 * Validates a post id with the list of active mapping items and check if
 	 * a mapping can be applied.
 	 *
-	 * @param Int $post_id The post id.
+	 * @param int  $post_id The post id.
 	 *
 	 * @return Boolean
 	 */

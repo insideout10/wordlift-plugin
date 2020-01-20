@@ -1,4 +1,7 @@
-<?php 
+<?php
+
+use Wordlift\Mappings\Mappings_DBO;
+
 /**
  * Define the {@link Wordlift_Mapping_REST_Controller} class.
  *
@@ -17,13 +20,16 @@ class Wordlift_Mapping_REST_Controller {
 		add_action( 'rest_api_init', 'Wordlift_Mapping_REST_Controller::register_route_callback' );
 
 	}
+
 	/**
 	 * Get a single mapping item by its mapping_id
 	 *
 	 * @param WP_REST_Request $request {@link WP_REST_Request instance}.
+	 *
+	 * @return array
 	 */
 	public static function get_mapping_item( $request ) {
-		$dbo             = new Wordlift_Mapping_DBO();
+		$dbo             = new Mappings_DBO();
 		$mapping_id      = $request['id'];
 		$mapping_id_data = array();
 		$rule_groups     = $dbo->get_rule_group_list_with_rules( $mapping_id );
@@ -125,7 +131,7 @@ class Wordlift_Mapping_REST_Controller {
 	 * @param WP_REST_Request $request {@link WP_REST_Request instance}.
 	 */
 	public static function clone_mapping_items( $request ) {
-		$dbo           = new Wordlift_Mapping_DBO();
+		$dbo           = new Mappings_DBO();
 		$post_data     = (array) $request->get_params();
 		$mapping_items = (array) $post_data['mapping_items'];
 		foreach ( $mapping_items as $mapping_item ) {
@@ -169,7 +175,7 @@ class Wordlift_Mapping_REST_Controller {
 	 * @param WP_REST_Request $request {@link WP_REST_Request instance}.
 	 */
 	public static function update_mapping_items( $request ) {
-		$dbo       = new Wordlift_Mapping_DBO();
+		$dbo       = new Mappings_DBO();
 		$post_data = $request->get_params();
 		if ( array_key_exists( 'mapping_items', $post_data ) ) {
 			$mapping_items = (array) $post_data['mapping_items'];
@@ -195,7 +201,7 @@ class Wordlift_Mapping_REST_Controller {
 	 * @param WP_REST_Request $request {@link WP_REST_Request instance}.
 	 */
 	public static function delete_mapping_items( $request ) {
-		$dbo       = new Wordlift_Mapping_DBO();
+		$dbo       = new Mappings_DBO();
 		$post_data = $request->get_params();
 		if ( array_key_exists( 'mapping_items', $post_data ) ) {
 			$mapping_items = (array) $post_data['mapping_items'];
@@ -221,15 +227,16 @@ class Wordlift_Mapping_REST_Controller {
 	 * @param WP_REST_Request $request {@link WP_REST_Request instance}.
 	 */
 	public static function list_mapping_items( $request ) {
-		$dbo           = new Wordlift_Mapping_DBO();
+		$dbo           = new Mappings_DBO();
 		$mapping_items =  $dbo->get_mapping_items();
 		return $mapping_items;
 	}
 	/**
 	 * Returns a array of rule ids for the rule group id
 	 *
-	 * @param Object $dbo Instance of {@link Wordlift_Mapping_DBO } class.
-	 * @param Int    $rule_group_id Primary key of rule group table.
+	 * @param Object $dbo Instance of {@link Mappings_DBO } class.
+	 * @param int     $rule_group_id Primary key of rule group table.
+	 *
 	 * @return array A list of rule ids.
 	 */
 	private static function get_rule_ids( $dbo, $rule_group_id ) {
@@ -243,9 +250,10 @@ class Wordlift_Mapping_REST_Controller {
 	/**
 	 * Insert or update mapping item depends on data
 	 *
-	 * @param Object $dbo Instance of {@link Wordlift_Mapping_DBO } class.
-	 * @param Int    $rule_group_id Refers to a rule group which this rule belongs to.
+	 * @param Object $dbo Instance of {@link Mappings_DBO } class.
+	 * @param int     $rule_group_id Refers to a rule group which this rule belongs to.
 	 * @param array  $rule_list  Array of rule  items.
+	 *
 	 * @return void
 	 */
 	private static function save_rules( $dbo, $rule_group_id, $rule_list ) {
@@ -275,9 +283,10 @@ class Wordlift_Mapping_REST_Controller {
 	/**
 	 * Insert or update rule group list based on data
 	 *
-	 * @param Object $dbo Instance of {@link Wordlift_Mapping_DBO } class.
-	 * @param Int    $mapping_id Primary key of mapping table.
+	 * @param Object $dbo Instance of {@link Mappings_DBO } class.
+	 * @param int     $mapping_id Primary key of mapping table.
 	 * @param array  $property_list { Array of property items }.
+	 *
 	 * @return void
 	 */
 	private static function save_property_list( $dbo, $mapping_id, $property_list ) {
@@ -314,8 +323,9 @@ class Wordlift_Mapping_REST_Controller {
 	/**
 	 * Returns a array of rule group ids for the mapping id
 	 *
-	 * @param Object $dbo Instance of {@link Wordlift_Mapping_DBO } class.
-	 * @param Int    $mapping_id Primary key of mapping table.
+	 * @param Object $dbo Instance of {@link Mappings_DBO } class.
+	 * @param int     $mapping_id Primary key of mapping table.
+	 *
 	 * @return array $rule_group_ids A list of rule group ids.
 	 */
 	private static function get_rule_group_ids( $dbo, $mapping_id ) {
@@ -329,9 +339,10 @@ class Wordlift_Mapping_REST_Controller {
 	/**
 	 * Insert or update rule group list
 	 *
-	 * @param Object $dbo Instance of {@link Wordlift_Mapping_DBO } class.
-	 * @param Int    $mapping_id Primary key of mapping table.
+	 * @param Object $dbo Instance of {@link Mappings_DBO } class.
+	 * @param int     $mapping_id Primary key of mapping table.
 	 * @param array  $rule_group_list { Array of rule group items }.
+	 *
 	 * @return void
 	 */
 	private static function save_rule_group_list( $dbo, $mapping_id, $rule_group_list ) {
@@ -370,7 +381,7 @@ class Wordlift_Mapping_REST_Controller {
 	 */
 	public static function insert_or_update_mapping_item( $request ) {
 		$post_data = $request->get_params() === null ? array() : $request->get_params();
-		$dbo       = new Wordlift_Mapping_DBO();
+		$dbo       = new Mappings_DBO();
 		// check if valid object is posted.
 		if ( array_key_exists( 'mapping_title', $post_data ) &&
 			array_key_exists( 'rule_group_list', $post_data ) &&

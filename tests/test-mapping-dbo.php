@@ -7,6 +7,8 @@
  * @subpackage Wordlift/tests
  */
 
+use Wordlift\Mappings\Mappings_DBO;
+
 /**
  * Define the Wordlift_Mapping_REST_Controller_Test class.
  *
@@ -21,7 +23,7 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 	 *
 	 * @since  3.25.0
 	 * @access private
-	 * @var \Wordlift_Mapping_DBO $dbo_instance The {@link Wordlift_Mapping_DBO} instance to test.
+	 * @var Mappings_DBO $dbo_instance The {@link Mappings_DBO} instance to test.
 	 */
 	private $dbo_instance;
 
@@ -32,7 +34,7 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 		parent::setUp();
 		global $wpdb;
 		$this->wpdb         = $wpdb;
-		$this->dbo_instance = new Wordlift_Mapping_DBO();
+		$this->dbo_instance = new Mappings_DBO();
 	}
 
 	/**
