@@ -9,6 +9,8 @@
  * @subpackage Wordlift/admin
  */
 
+use Wordlift\Scripts\Scripts_Helper;
+
 /**
  * Define the Wordlift_Admin_Edit_Mappings class.
  *
@@ -17,51 +19,15 @@
 class Wordlift_Admin_Edit_Mappings_Page extends Wordlift_Admin_Page {
 
 	/**
-	 * {@inheritdoc}
+	 * The base class {@link Wordlift_Admin_Page} will add the admin page to the WordLift menu.
+	 *
+	 * We don't want this page to be in the menu though. Therefore we override the `parent_slug` so that WordPress won't
+	 * show it there.
+	 *
+	 * @return null return null to avoid this page to be displayed in WordLift's menu.
 	 */
-	public function __construct() {
-
-		/**
-		 * Load scripts with script helper.
-		 *
-		 * @since 3.25.0 - Load with script helper to ensure  WP 4.4 compatibility.
-		 */
-		Wordlift\Scripts\Scripts_Helper::register_based_on_wordpress_version(
-			'wl-edit-mappings-script',
-			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings-edit',
-			array( 'react', 'react-dom', 'wp-polyfill' ),
-			'admin_enqueue_scripts'
-		);
-
-		add_action(
-			'admin_enqueue_scripts',
-			function () {
-				$wordlift = \Wordlift::get_instance();
-				wp_register_style(
-					'wl-edit-mappings-style',
-					plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings-edit.css',
-					$wordlift->get_version()
-				);
-				// @@todo: move to the page render, because it's doing lots of stuff also when not required.
-				Wordlift_Admin_Edit_Mappings_Page::load_ui_dependencies();
-			}
-		);
-
-		parent::__construct();
-
-	}
-
-	/** Add menu entry but dont show in sidebar */
-	public function admin_menu() {
-		$that = $this;
-		add_submenu_page(
-			null,
-			__( 'Add/Edit Mappings', 'wordlift' ),
-			__( 'Add/Edit Mappings', 'wordlift' ),
-			'manage_options',
-			'wl_edit_mapping',
-			array( $that, 'render' )
-		);
+	protected function get_parent_slug() {
+		return null;
 	}
 
 	/**
@@ -112,11 +78,10 @@ class Wordlift_Admin_Edit_Mappings_Page extends Wordlift_Admin_Page {
 		$edit_mapping_settings['wl_edit_mapping_rest_nonce'] = wp_create_nonce( 'wp_rest' );
 
 		// @@todo what's this? add comments.
-		// @@todo always use post, because we've encountered hosting providers which drop get parameters to boot their
-		// caching.
 		if ( isset( $_REQUEST['_wl_edit_mapping_nonce'] )
 		     && wp_verify_nonce( $_REQUEST['_wl_edit_mapping_nonce'], 'wl-edit-mapping-nonce' ) ) {
-			$edit_mapping_settings['wl_edit_mapping_id'] = intval( filter_input( INPUT_POST, 'wl_edit_mapping_id', FILTER_VALIDATE_INT ) );
+			// We're using `INPUT_GET` here because this is a link from the UI, i.e. no POST.
+			$edit_mapping_settings['wl_edit_mapping_id'] = intval( filter_input( INPUT_GET, 'wl_edit_mapping_id', FILTER_VALIDATE_INT ) );
 		}
 
 		$edit_mapping_settings['wl_add_mapping_text']     = __( 'Add Mapping', 'wordlift' );
@@ -265,6 +230,37 @@ class Wordlift_Admin_Edit_Mappings_Page extends Wordlift_Admin_Page {
 	public function get_partial_name() {
 
 		return 'wordlift-admin-edit-mappings.php';
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function enqueue_scripts() {
+
+		/**
+		 * Load scripts with script helper.
+		 *
+		 * @since 3.25.0 - Load with script helper to ensure  WP 4.4 compatibility.
+		 */
+		Scripts_Helper::enqueue_based_on_wordpress_version(
+			'wl-edit-mappings-script',
+			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings-edit',
+			array( 'react', 'react-dom', 'wp-polyfill' ),
+			true
+		);
+
+		$wordlift = \Wordlift::get_instance();
+		wp_register_style(
+			'wl-edit-mappings-style',
+			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings-edit.css',
+			$wordlift->get_version()
+		);
+		// @@todo: move to the page render, because it's doing lots of stuff also when not required.
+		Wordlift_Admin_Edit_Mappings_Page::load_ui_dependencies();
+
+		wp_enqueue_script( 'wl-edit-mappings-script' );
+		wp_enqueue_style( 'wl-edit-mappings-style' );
+
 	}
 
 }
