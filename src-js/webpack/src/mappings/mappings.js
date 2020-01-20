@@ -17,13 +17,15 @@ import { createStore } from "redux";
  * Internal dependencies
  */
 import MappingComponent from "./components/mapping-component";
-import "./mappings.css";
 import { MappingListReducer } from "./reducers/mapping-list-reducers";
 import { ACTIVE_CATEGORY } from "./components/category-component";
+// @@todo: we can use BEM and SCSS.
+import "./mappings.css";
 
 export const SORT_BY_ASC = "asc";
 export const SORT_BY_DESC = "desc";
 
+// @@todo choosen -> chosen.
 const MAPPINGS_INITIAL_STATE = {
   mappingItems: [],
   choosenCategory: ACTIVE_CATEGORY,

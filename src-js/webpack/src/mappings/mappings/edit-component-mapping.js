@@ -18,6 +18,7 @@ class EditComponentMapping {
         rule_field_two: rule.ruleFieldTwoValue,
         rule_logic_field: rule.ruleLogicFieldValue
       };
+      // @@todo what's this?
       rule.rule_id ? (single_rule["rule_id"] = rule.rule_id) : rule.rule_id;
       return single_rule;
     });
@@ -54,6 +55,7 @@ class EditComponentMapping {
    */
   static mapPropertyAPIKeysToUi(property_list) {
     return property_list.map(property => ({
+      // @@todo camelCase here pls.
       propertyHelpText: property.property_name,
       fieldTypeHelpText: property.field_type,
       fieldHelpText: property.field_name,
@@ -109,6 +111,7 @@ class EditComponentMapping {
       property_list: store.PropertyListData.propertyList,
       rule_group_list: store.RuleGroupData.ruleGroupList
     };
+    // @@todo use strict comparison.
     if (store.TitleSectionData.mapping_id != undefined) {
       postObject.mapping_id = store.TitleSectionData.mapping_id;
     }

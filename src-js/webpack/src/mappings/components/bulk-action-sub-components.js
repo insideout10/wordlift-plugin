@@ -51,6 +51,7 @@ const TrashOptions = () => {
  * @param {Object} props
  */
 export const BulkActionOptions = props => {
+  // @@todo choosen ---> chosen.
   switch (props.choosenCategory) {
     case TRASH_CATEGORY:
       return <TrashOptions />;

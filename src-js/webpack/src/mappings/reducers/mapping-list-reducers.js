@@ -6,7 +6,7 @@
  */
 
 /**
- * Internal dependancies
+ * Internal dependencies
  */
 import {
   MAPPING_LIST_CHANGED,
@@ -25,6 +25,7 @@ import { SORT_BY_ASC, SORT_BY_DESC } from "../mappings";
 
 const changeCategoryForMappingItems = (mappingItems, category) => {
   return mappingItems.map(item => {
+    // @@todo camelCase here pls (unless there's a specific reason not too).
     item.mapping_status = category;
     return item;
   });
@@ -35,6 +36,7 @@ const changeCategoryForMappingItems = (mappingItems, category) => {
  */
 export const MappingListReducer = createReducer(null, {
   [MAPPING_LIST_CHANGED]: (state, action) => {
+    // @@todo you can use redux-logger to log state changes, see src-js/webpack/src/block-editor/stores/index.js
     console.log("state changed ");
     state.mappingItems = action.payload.value;
   },
@@ -96,6 +98,7 @@ export const MappingListReducer = createReducer(null, {
   [MAPPING_ITEMS_BULK_SELECT]: (state, action) => {
     const { duplicateCallBack, updateCallBack } = action.payload;
     const selectedItems = state.mappingItems.filter(item => true === item.isSelected);
+    // @@todo: here only work on state. for side-effects use redux-saga (no updateCallback here pls).
     switch (state.selectedBulkOption) {
       case BulkOptionValues.DUPLICATE:
         duplicateCallBack(selectedItems);
@@ -109,8 +112,8 @@ export const MappingListReducer = createReducer(null, {
         break;
       case BulkOptionValues.DELETE_PERMANENTLY:
         updateCallBack(selectedItems, "DELETE");
-      default:
         break;
+      default:
     }
     state.headerCheckBoxSelected = false;
     // Set all to unselected after the operation
