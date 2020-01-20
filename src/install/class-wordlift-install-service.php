@@ -147,7 +147,6 @@ class Wordlift_Install_Service {
 
 				// Bump the version.
 				update_option( 'wl_db_version', $version );
-
 			}
 
 		}
