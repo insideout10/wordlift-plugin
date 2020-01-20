@@ -30,7 +30,7 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 	/**
 	 * Our expected route for rest api.
 	 */
-	protected $mapping_route = '/wordlift/v1/sync-mappings/mappings';
+	protected $mapping_route = '/wordlift/v1/mappings';
 	/**
 	 * @inheritdoc
 	 */
@@ -170,7 +170,7 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 		// We make a request to get info about single mapping item.
 		$request = new WP_REST_Request(
 			'GET',
-			'/wordlift/v1/sync-mappings/mappings/' . $mapping_id
+			'/wordlift/v1/mappings/' . $mapping_id
 		);
 
 		$response = $this->server->dispatch( $request );
@@ -285,7 +285,7 @@ class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {
 		// We make a request to get info about single mapping item.
 		$request = new WP_REST_Request(
 			'POST',
-			'/wordlift/v1/sync-mappings/mappings/clone'
+			'/wordlift/v1/mappings/clone'
 		);
 		$request->set_header( 'content-type', 'application/json' );
 		$request->set_body( $json_data );

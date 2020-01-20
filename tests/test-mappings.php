@@ -42,7 +42,7 @@ class Wordlift_Mappings_Test extends WP_UnitTestCase {
 
 		// Initialize dependencies for the test.
 		$this->dbo            = new Mappings_DBO();
-		$this->validator      = new Mappings_Validator();
+		$this->validator      = new Mappings_Validator( $this->dbo );
 		$this->jsonld_service = Wordlift_Jsonld_Service::get_instance();
 
 	}

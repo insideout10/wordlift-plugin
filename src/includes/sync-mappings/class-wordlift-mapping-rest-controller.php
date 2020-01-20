@@ -11,7 +11,8 @@ use Wordlift\Mappings\Mappings_DBO;
  */
 class Wordlift_Mapping_REST_Controller {
 	// Namespace for CRUD mappings.
-	const MAPPINGS_NAMESPACE = '/sync-mappings/mappings';
+	const MAPPINGS_NAMESPACE = '/mappings';
+
 	/**
 	 * Registers route on rest api initialisation.
 	 */
@@ -40,8 +41,10 @@ class Wordlift_Mapping_REST_Controller {
 		$mapping_id_data['property_list']   = $properties;
 		$mapping_id_data['rule_group_list'] = $rule_groups;
 		$mapping_id_data['mapping_title']   = $mapping_row['mapping_title'];
+
 		return $mapping_id_data;
 	}
+
 	/**
 	 * Register route call back function, called when rest api gets initialised
 	 *
@@ -50,7 +53,7 @@ class Wordlift_Mapping_REST_Controller {
 	public static function register_route_callback() {
 		register_rest_route(
 			WL_REST_ROUTE_DEFAULT_NAMESPACE,
-			'/sync-mappings/mappings',
+			'/mappings',
 			array(
 				'methods'             => WP_REST_Server::CREATABLE,
 				'callback'            => 'Wordlift_Mapping_REST_Controller::insert_or_update_mapping_item',
@@ -62,7 +65,7 @@ class Wordlift_Mapping_REST_Controller {
 		// Get list of mapping items.
 		register_rest_route(
 			WL_REST_ROUTE_DEFAULT_NAMESPACE,
-			'/sync-mappings/mappings',
+			'/mappings',
 			array(
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => 'Wordlift_Mapping_REST_Controller::list_mapping_items',
@@ -75,7 +78,7 @@ class Wordlift_Mapping_REST_Controller {
 		// Delete mapping items by id.
 		register_rest_route(
 			WL_REST_ROUTE_DEFAULT_NAMESPACE,
-			'sync-mappings/mappings',
+			'mappings',
 			array(
 				'methods'             => WP_REST_Server::DELETABLE,
 				'callback'            => 'Wordlift_Mapping_REST_Controller::delete_mapping_items',
@@ -88,7 +91,7 @@ class Wordlift_Mapping_REST_Controller {
 		// Get single mapping item route.
 		register_rest_route(
 			WL_REST_ROUTE_DEFAULT_NAMESPACE,
-			'sync-mappings/mappings/(?P<id>\d+)',
+			'mappings/(?P<id>\d+)',
 			array(
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => 'Wordlift_Mapping_REST_Controller::get_mapping_item',
@@ -101,7 +104,7 @@ class Wordlift_Mapping_REST_Controller {
 		// Update mapping items.
 		register_rest_route(
 			WL_REST_ROUTE_DEFAULT_NAMESPACE,
-			'sync-mappings/mappings',
+			'mappings',
 			array(
 				'methods'             => WP_REST_Server::EDITABLE,
 				'callback'            => 'Wordlift_Mapping_REST_Controller::update_mapping_items',
@@ -114,7 +117,7 @@ class Wordlift_Mapping_REST_Controller {
 		// Clone mapping items.
 		register_rest_route(
 			WL_REST_ROUTE_DEFAULT_NAMESPACE,
-			'sync-mappings/mappings/clone',
+			'mappings/clone',
 			array(
 				'methods'             => WP_REST_Server::CREATABLE,
 				'callback'            => 'Wordlift_Mapping_REST_Controller::clone_mapping_items',
@@ -122,7 +125,7 @@ class Wordlift_Mapping_REST_Controller {
 					return current_user_can( 'manage_options' );
 				},
 			)
-		);		
+		);
 	}
 
 	/**
@@ -163,6 +166,7 @@ class Wordlift_Mapping_REST_Controller {
 				}
 			}
 		}
+
 		return array(
 			'status'  => 'success',
 			'message' => __( 'Successfully cloned mapping items', 'wordlift' ),
@@ -182,12 +186,12 @@ class Wordlift_Mapping_REST_Controller {
 			foreach ( $mapping_items as $mapping_item ) {
 				$dbo->insert_or_update_mapping_item( $mapping_item );
 			}
+
 			return array(
 				'status'  => 'success',
 				'message' => __( 'Mapping items successfully updated', 'wordlift' ),
 			);
-		}
-		else {
+		} else {
 			return array(
 				'status'  => 'failure',
 				'message' => __( 'Unable to update mapping item', 'wordlift' ),
@@ -208,12 +212,12 @@ class Wordlift_Mapping_REST_Controller {
 			foreach ( $mapping_items as $mapping_item ) {
 				$dbo->delete_mapping_item( $mapping_item['mapping_id'] );
 			}
+
 			return array(
 				'status'  => 'success',
 				'message' => __( 'successfully deleted mapping items', 'wordlift' )
 			);
-		}
-		else {
+		} else {
 			return array(
 				'status'  => 'failure',
 				'message' => __( 'Unable to delete mapping items', 'wordlift' )
@@ -228,14 +232,16 @@ class Wordlift_Mapping_REST_Controller {
 	 */
 	public static function list_mapping_items( $request ) {
 		$dbo           = new Mappings_DBO();
-		$mapping_items =  $dbo->get_mapping_items();
+		$mapping_items = $dbo->get_mapping_items();
+
 		return $mapping_items;
 	}
+
 	/**
 	 * Returns a array of rule ids for the rule group id
 	 *
 	 * @param Object $dbo Instance of {@link Mappings_DBO } class.
-	 * @param int     $rule_group_id Primary key of rule group table.
+	 * @param int $rule_group_id Primary key of rule group table.
 	 *
 	 * @return array A list of rule ids.
 	 */
@@ -245,14 +251,16 @@ class Wordlift_Mapping_REST_Controller {
 		foreach ( $rule_rows_in_db as $rule_row ) {
 			array_push( $rule_ids, (int) $rule_row['rule_id'] );
 		}
+
 		return $rule_ids;
 	}
+
 	/**
 	 * Insert or update mapping item depends on data
 	 *
 	 * @param Object $dbo Instance of {@link Mappings_DBO } class.
-	 * @param int     $rule_group_id Refers to a rule group which this rule belongs to.
-	 * @param array  $rule_list  Array of rule  items.
+	 * @param int $rule_group_id Refers to a rule group which this rule belongs to.
+	 * @param array $rule_list Array of rule  items.
 	 *
 	 * @return void
 	 */
@@ -284,8 +292,8 @@ class Wordlift_Mapping_REST_Controller {
 	 * Insert or update rule group list based on data
 	 *
 	 * @param Object $dbo Instance of {@link Mappings_DBO } class.
-	 * @param int     $mapping_id Primary key of mapping table.
-	 * @param array  $property_list { Array of property items }.
+	 * @param int $mapping_id Primary key of mapping table.
+	 * @param array $property_list { Array of property items }.
 	 *
 	 * @return void
 	 */
@@ -324,7 +332,7 @@ class Wordlift_Mapping_REST_Controller {
 	 * Returns a array of rule group ids for the mapping id
 	 *
 	 * @param Object $dbo Instance of {@link Mappings_DBO } class.
-	 * @param int     $mapping_id Primary key of mapping table.
+	 * @param int $mapping_id Primary key of mapping table.
 	 *
 	 * @return array $rule_group_ids A list of rule group ids.
 	 */
@@ -334,14 +342,16 @@ class Wordlift_Mapping_REST_Controller {
 		foreach ( $rule_group_rows as $rule_group_row ) {
 			array_push( $rule_group_ids, (int) $rule_group_row['rule_group_id'] );
 		}
+
 		return $rule_group_ids;
 	}
+
 	/**
 	 * Insert or update rule group list
 	 *
 	 * @param Object $dbo Instance of {@link Mappings_DBO } class.
-	 * @param int     $mapping_id Primary key of mapping table.
-	 * @param array  $rule_group_list { Array of rule group items }.
+	 * @param int $mapping_id Primary key of mapping table.
+	 * @param array $rule_group_list { Array of rule group items }.
 	 *
 	 * @return void
 	 */
@@ -352,8 +362,7 @@ class Wordlift_Mapping_REST_Controller {
 		foreach ( $rule_group_list as $rule_group ) {
 			if ( array_key_exists( 'rule_group_id', $rule_group ) ) {
 				$rule_group_id = $rule_group['rule_group_id'];
-			}
-			else {
+			} else {
 				// New rule group, should create new rule group id.
 				$rule_group_id = $dbo->insert_rule_group( $mapping_id );
 			}
@@ -384,8 +393,8 @@ class Wordlift_Mapping_REST_Controller {
 		$dbo       = new Mappings_DBO();
 		// check if valid object is posted.
 		if ( array_key_exists( 'mapping_title', $post_data ) &&
-			array_key_exists( 'rule_group_list', $post_data ) &&
-			array_key_exists( 'property_list', $post_data ) ) {
+		     array_key_exists( 'rule_group_list', $post_data ) &&
+		     array_key_exists( 'property_list', $post_data ) ) {
 			// Do validation, remove all incomplete data.
 			$mapping_item = array();
 			if ( array_key_exists( 'mapping_id', $post_data ) ) {
@@ -395,14 +404,14 @@ class Wordlift_Mapping_REST_Controller {
 			// lets save the mapping item.
 			$mapping_id = $dbo->insert_or_update_mapping_item( $mapping_item );
 			self::save_rule_group_list( $dbo, $mapping_id, $post_data['rule_group_list'] );
-			self::save_property_list( $dbo, $mapping_id, $post_data['property_list'] );	
+			self::save_property_list( $dbo, $mapping_id, $post_data['property_list'] );
+
 			return array(
 				'status'     => 'success',
 				'message'    => __( 'Successfully saved mapping item', 'wordlift' ),
 				'mapping_id' => (int) $mapping_id,
 			);
-		}
-		else {
+		} else {
 			return array(
 				'status'  => 'error',
 				'message' => __( 'Unable to save mapping item', 'wordlift' ),

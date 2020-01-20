@@ -43,14 +43,12 @@ class Wordlift_Mapping_Validator_Test extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->dbo       = new Mappings_DBO();
-		$this->validator = new Mappings_Validator();
+		$this->dbo = new Mappings_DBO();
+		$this->assertNotNull( $this->dbo, "Must be able to create a DBO instance." );
 
-	}
+		$this->validator = new Mappings_Validator( $this->dbo );
+		$this->assertNotNull( $this->validator, "Must be able to create a validator instance." );
 
-	/** Check if validator class can be initalised */
-	public function test_can_initialize_validator() {
-		$this->assertNotNull( new Mappings_Validator() );
 	}
 
 	/** When the rules didnt match the post type it should return false */

@@ -8,6 +8,8 @@
  * @package Wordlift
  */
 
+use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
+
 /**
  * Define the test class.
  *
