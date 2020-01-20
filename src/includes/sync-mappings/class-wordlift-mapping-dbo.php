@@ -61,8 +61,8 @@ final class Wordlift_Mapping_DBO {
 	/**
 	 * Check if the row exists in the table
 	 *
-	 * @param String $table_name The table name you want to query, completely escaped value.
-	 * @param String $primary_key_name The primary key you want to query, should be escaped before passing.
+	 * @param string $table_name The table name you want to query, completely escaped value.
+	 * @param string $primary_key_name The primary key you want to query, should be escaped before passing.
 	 * @param Int $primary_key_value The primary key value, no need to escape.
 	 *
 	 * @return Boolean Returns true if the row exists, false if it does not
@@ -82,7 +82,7 @@ final class Wordlift_Mapping_DBO {
 	/**
 	 * Insert new mapping item with title
 	 *
-	 * @param String $title Title of the mapping item.
+	 * @param string $title Title of the mapping item.
 	 *
 	 * @return Int Id of the inserted mapping item.
 	 */
@@ -99,7 +99,7 @@ final class Wordlift_Mapping_DBO {
 	/**
 	 * Update mapping item with new title
 	 *
-	 * @param Array $mapping_data Array of the mapping data.
+	 * @param array $mapping_data Array of the mapping data.
 	 *
 	 * @return Int Id of the inserted mapping item
 	 */
@@ -274,7 +274,7 @@ final class Wordlift_Mapping_DBO {
 	/**
 	 * Insert/Update property item.
 	 *
-	 * @param Array $property_data Property row from table/ui.
+	 * @param array $property_data Property row from table/ui.
 	 *
 	 * @return Int Inserted Property Id.
 	 */

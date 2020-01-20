@@ -12,6 +12,10 @@
  * @subpackage Wordlift/includes
  */
 
+use Wordlift\Mappings\Jsonld_Converter;
+use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
+use Wordlift\Mappings\Mappings_Validator;
+
 /**
  * The core plugin class.
  *
@@ -937,13 +941,6 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-post-excerpt-helper.php';
 
 		/**
-		 * Load the Mapping JSON-LD converter which edit the json-ld data provided json-ld service.
-		 *
-		 * @since 3.25.0
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-mapping-jsonld-converter.php';
-
-		/**
 		 * Load the JSON-LD service to publish entities using JSON-LD.s
 		 *
 		 * @since 3.8.0
@@ -957,7 +954,6 @@ class Wordlift {
 		 * @since 3.25.0
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/intf-wordlift-mapping-transform-function.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/sync-mappings/class-wordlift-mapping-transform-function-registry.php';
 
 		// The Publisher Service and the AJAX adapter.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-publisher-service.php';
@@ -1029,7 +1025,7 @@ class Wordlift {
 		/** Sync Mappings */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/sync-mappings/class-wordlift-mapping-rest-controller.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/sync-mappings/class-wordlift-mapping-dbo.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/sync-mappings/class-wordlift-mapping-validator.php';
+
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
@@ -1478,6 +1474,15 @@ class Wordlift {
 		 * @since 3.22.0
 		 */
 		$this->context_cards_service = new Wordlift_Context_Cards_Service();
+
+		/*
+		 * Load the Mappings JSON-LD post processing.
+		 *
+		 * @since 3.25.0
+		 */
+		$mappings_validator                    = new Mappings_Validator();
+		$mappings_transform_functions_registry = new Mappings_Transform_Functions_Registry();
+		new Jsonld_Converter( $mappings_validator, $mappings_transform_functions_registry );
 
 	}
 

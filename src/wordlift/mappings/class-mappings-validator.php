@@ -1,19 +1,23 @@
 <?php
+
 /**
- * Define the {@link Wordlift_Mapping_Validator} class.
- * Validates the mapping for single post and return the
- * schema.org properties mapped to ACF, custom field or text
+ * Define the {@link Mappings_Validator} class.
+ *
+ * Validates the mapping for single post and return the  * schema.org properties mapped to ACF, custom field or text
  * to be used for JSON-LD output.
  *
  * @since      3.25.0
  * @package    Wordlift
  * @subpackage Wordlift/includes/sync-mappings
  */
-final class Wordlift_Mapping_Validator {
-	const TRASH_CATEGORY  = 'trash';
+
+namespace Wordlift\Mappings;
+
+final class Mappings_Validator {
+	const TRASH_CATEGORY = 'trash';
 	const ACTIVE_CATEGORY = 'active';
-	const POST_TYPE       = 'post_type';
-	const IS_EQUAL_TO     = '===';
+	const POST_TYPE = 'post_type';
+	const IS_EQUAL_TO = '===';
 	const IS_NOT_EQUAL_TO = '!==';
 
 	/**
@@ -27,10 +31,10 @@ final class Wordlift_Mapping_Validator {
 
 	/**
 	 * The array of valid properties, loaded at validate() method,
-	 * 
+	 *
 	 * @since  3.25.0
 	 * @access private
-	 * @var Array $valid_properties The properties which are from mapping items when the rule passes.
+	 * @var array $valid_properties The properties which are from mapping items when the rule passes.
 	 */
 	private $valid_properties = array();
 
@@ -38,15 +42,17 @@ final class Wordlift_Mapping_Validator {
 	 * Constructor for Wordlift_Mapping_Validator.
 	 */
 	public function __construct() {
-		$this->dbo = new Wordlift_Mapping_DBO();
+		$this->dbo = new \Wordlift_Mapping_DBO();
 	}
+
 	/**
 	 * Validates two values based on the passed logic
 	 * a single rule passes the user defined logic.
 	 *
-	 * @param String $key The key which every object has mapped to our value.
-	 * @param Array  $items The array of items.
-	 * @param String $status The value which the items should have.
+	 * @param string $key The key which every object has mapped to our value.
+	 * @param array $items The array of items.
+	 * @param string $status The value which the items should have.
+	 *
 	 * @return array
 	 */
 	private static function get_item_by_status( $key, $items, $status ) {
@@ -57,13 +63,15 @@ final class Wordlift_Mapping_Validator {
 			}
 		);
 	}
+
 	/**
 	 * Validates two values based on the passed logic
 	 * a single rule passes the user defined logic.
 	 *
-	 * @param String $value_one The first value.
-	 * @param String $logic The logic field.
-	 * @param String $value_two The second value.
+	 * @param string $value_one The first value.
+	 * @param string $logic The logic field.
+	 * @param string $value_two The second value.
+	 *
 	 * @return Boolean
 	 */
 	private function is_logic_valid( $value_one, $logic, $value_two ) {
@@ -79,8 +87,9 @@ final class Wordlift_Mapping_Validator {
 	 * Validates a post id with a rule and check if
 	 * a single rule passes the user defined logic.
 	 *
-	 * @param Int   $post_id The post id.
-	 * @param Array $rule_data The single rule data.
+	 * @param Int $post_id The post id.
+	 * @param array $rule_data The single rule data.
+	 *
 	 * @return Boolean
 	 */
 	private function is_single_rule_valid( $post_id, $rule_data ) {
@@ -111,8 +120,7 @@ final class Wordlift_Mapping_Validator {
 					// Rule is made to check if the term is present for post, so
 					// do in_array.
 					return in_array( (string) $rule_field_two, $terms_id_array, true );
-				}
-				elseif ( self::IS_NOT_EQUAL_TO === $rule_logic_field ) {
+				} elseif ( self::IS_NOT_EQUAL_TO === $rule_logic_field ) {
 					// The term  should not be present in the post terms.
 					return ! in_array( (string) $rule_field_two, $terms_id_array, true );
 				}
@@ -123,8 +131,9 @@ final class Wordlift_Mapping_Validator {
 	 * Validates a post id with the list of rules and check if
 	 * all rules passes the user defined logic.
 	 *
-	 * @param Int   $post_id The post id.
-	 * @param Array $rules The list of rules from a rule group.
+	 * @param Int $post_id The post id.
+	 * @param array $rules The list of rules from a rule group.
+	 *
 	 * @return Boolean
 	 */
 	private function is_rules_valid( $post_id, $rules ) {
@@ -133,14 +142,17 @@ final class Wordlift_Mapping_Validator {
 				return false;
 			}
 		}
+
 		return true;
 	}
+
 	/**
 	 * Validates a post id with the list of rule groups and check if
 	 * a single rule group passes the user defined logic.
 	 *
-	 * @param Int   $post_id The post id.
-	 * @param Array $rule_group_data The rule group data list.
+	 * @param Int $post_id The post id.
+	 * @param array $rule_group_data The rule group data list.
+	 *
 	 * @return Boolean
 	 */
 	private function validate_rule_group_with_rules_for_post_id( $post_id, $rule_group_data ) {
@@ -156,6 +168,7 @@ final class Wordlift_Mapping_Validator {
 				array_push( $valid_rule_groups, $rule_group );
 			}
 		}
+
 		return 0 !== count( $valid_rule_groups );
 	}
 
@@ -164,6 +177,7 @@ final class Wordlift_Mapping_Validator {
 	 * a mapping can be applied.
 	 *
 	 * @param Int $post_id The post id.
+	 *
 	 * @return Boolean
 	 */
 	public function validate( $post_id ) {
@@ -196,9 +210,11 @@ final class Wordlift_Mapping_Validator {
 				$this->valid_properties  = array_merge( $this->valid_properties, $mapping_item_properties );
 			}
 		}
+
 		// If at least one mapping item is valid then it can be applied.
 		return 0 !== count( $valid_mapping_items );
 	}
+
 	/**
 	 * Returns a list of valid properties to be mapped against json ld data
 	 * @return array Array of valid properties

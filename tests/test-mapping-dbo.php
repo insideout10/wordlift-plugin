@@ -10,6 +10,8 @@
 /**
  * Define the Wordlift_Mapping_REST_Controller_Test class.
  *
+ * @group mappings
+ *
  * @since 3.25.0
  */
 class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
@@ -52,7 +54,7 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 
 	/** When mapping item is given can update the item.*/
 	public function test_given_mapping_id_and_title_update_mapping_item() {
-		$mapping_id = $this->dbo_instance->insert_mapping_item( "foo title" );
+		$mapping_id         = $this->dbo_instance->insert_mapping_item( "foo title" );
 		$mapping_table_name = WL_MAPPING_TABLE_NAME;
 		// Update this title.
 		$this->dbo_instance->insert_or_update_mapping_item(
@@ -68,16 +70,16 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 
 	/** When rule item is given should insert it to db.*/
 	public function test_given_rule_fields_should_insert_rule() {
-		$rule_table_name = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
+		$rule_table_name       = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
 		$rule_group_table_name = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
-		$mapping_id = $this->dbo_instance->insert_mapping_item( "foo title" );
-		$rule_group_id = $this->dbo_instance->insert_rule_group( $mapping_id );
+		$mapping_id            = $this->dbo_instance->insert_mapping_item( "foo title" );
+		$rule_group_id         = $this->dbo_instance->insert_rule_group( $mapping_id );
 		$this->dbo_instance->insert_or_update_rule_item(
 			array(
-				'rule_group_id' => $rule_group_id,
-				'rule_field_one' => 'foo',
+				'rule_group_id'    => $rule_group_id,
+				'rule_field_one'   => 'foo',
 				'rule_logic_field' => '>',
-				'rule_field_two' => 'bar'
+				'rule_field_two'   => 'bar'
 			)
 		);
 		// we have inserted a rule item, so count should be 1.
@@ -85,20 +87,20 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 		$this->assertEquals( 1, $count );
 		// When inserting/updating rule, there should be row created at rule group table.
 		$rule_group_count = $this->wpdb->get_var( "SELECT COUNT(rule_group_id) as total FROM $rule_group_table_name" );
-		$this->assertEquals( 1, $rule_group_count );		
+		$this->assertEquals( 1, $rule_group_count );
 	}
 
 	/** Delete a rule along with its rule group entry */
 	public function test_able_to_delete_rule_item() {
 		$rule_table_name = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
 		$mapping_id      = $this->dbo_instance->insert_mapping_item( "foo title" );
-		$rule_group_id = $this->dbo_instance->insert_rule_group( $mapping_id );
-		$rule_id = $this->dbo_instance->insert_or_update_rule_item(
+		$rule_group_id   = $this->dbo_instance->insert_rule_group( $mapping_id );
+		$rule_id         = $this->dbo_instance->insert_or_update_rule_item(
 			array(
-				'rule_group_id' => $rule_group_id,
-				'rule_field_one' => 'foo',
+				'rule_group_id'    => $rule_group_id,
+				'rule_field_one'   => 'foo',
 				'rule_logic_field' => '>',
-				'rule_field_two' => 'bar'
+				'rule_field_two'   => 'bar'
 			)
 		);
 		$this->dbo_instance->delete_rule_item( $rule_id );
@@ -109,14 +111,14 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 
 	/** Able to insert property */
 	public function test_given_property_should_insert_property() {
-		$property_table_name = $this->wpdb->prefix . WL_PROPERTY_TABLE_NAME;
-		$property_data       = array(
-			'property_name'   => 'foo',
-			'field_type' => 'bar',
-			'field_name'      => 'foo',
-			'transform_function'  => 'foo',
+		$property_table_name         = $this->wpdb->prefix . WL_PROPERTY_TABLE_NAME;
+		$property_data               = array(
+			'property_name'      => 'foo',
+			'field_type'         => 'bar',
+			'field_name'         => 'foo',
+			'transform_function' => 'foo',
 		);
-		$mapping_id          = $this->dbo_instance->insert_mapping_item( "foo title" );
+		$mapping_id                  = $this->dbo_instance->insert_mapping_item( "foo title" );
 		$property_data['mapping_id'] = $mapping_id;
 		$this->dbo_instance->insert_or_update_property( $property_data );
 		$property_table_count = $this->wpdb->get_var( "SELECT COUNT(mapping_id) as total FROM $property_table_name" );
@@ -125,16 +127,16 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 
 	/** Able to delete property */
 	public function test_given_property_id_should_delete_property() {
-		$property_table_name = $this->wpdb->prefix . WL_PROPERTY_TABLE_NAME;
-		$property_data       = array(
-			'property_name'   => 'foo',
-			'field_type' => 'bar',
-			'field_name'      => 'foo',
-			'transform_function'  => 'foo',
+		$property_table_name         = $this->wpdb->prefix . WL_PROPERTY_TABLE_NAME;
+		$property_data               = array(
+			'property_name'      => 'foo',
+			'field_type'         => 'bar',
+			'field_name'         => 'foo',
+			'transform_function' => 'foo',
 		);
-		$mapping_id          = $this->dbo_instance->insert_mapping_item( "foo title" );
+		$mapping_id                  = $this->dbo_instance->insert_mapping_item( "foo title" );
 		$property_data['mapping_id'] = $mapping_id;
-		$property_id         = $this->dbo_instance->insert_or_update_property( $property_data );		
+		$property_id                 = $this->dbo_instance->insert_or_update_property( $property_data );
 		$this->dbo_instance->delete_property( $property_id );
 		$property_table_count = $this->wpdb->get_var( "SELECT COUNT(mapping_id) as total FROM $property_table_name" );
 		$this->assertEquals( 0, $property_table_count );
@@ -160,12 +162,12 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 	/** Able to get properties for a mapping id */
 	public function test_can_get_property_items() {
 		// Lets insert a mapping item.
-		$mapping_id = $this->dbo_instance->insert_mapping_item( 'foo' );
-		$property_data       = array(
-			'property_name'   => 'foo',
-			'field_type' => 'bar',
-			'field_name'      => 'foo',
-			'transform_function'  => 'foo',
+		$mapping_id    = $this->dbo_instance->insert_mapping_item( 'foo' );
+		$property_data = array(
+			'property_name'      => 'foo',
+			'field_type'         => 'bar',
+			'field_name'         => 'foo',
+			'transform_function' => 'foo',
 		);
 		// 2 properties inserted.
 		$property_data['mapping_id'] = $mapping_id;
@@ -185,7 +187,7 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 		$rule_group_1 = $this->dbo_instance->insert_rule_group( $mapping_id );
 		$rule_group_2 = $this->dbo_instance->insert_rule_group( $mapping_id );
 		// We insert 1 rule for each rule group.
-		$rule_1 =  $this->dbo_instance->insert_or_update_rule_item(
+		$rule_1           = $this->dbo_instance->insert_or_update_rule_item(
 			array(
 				'rule_group_id'    => $rule_group_1,
 				'rule_field_one'   => 'foo',
@@ -193,7 +195,7 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 				'rule_logic_field' => '>',
 			)
 		);
-		$rule_2 =  $this->dbo_instance->insert_or_update_rule_item(
+		$rule_2           = $this->dbo_instance->insert_or_update_rule_item(
 			array(
 				'rule_group_id'    => $rule_group_2,
 				'rule_field_one'   => 'foo',

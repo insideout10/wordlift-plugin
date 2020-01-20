@@ -15,7 +15,7 @@ use Wordlift;
 use Wordlift_Admin_Page;
 use Wordlift\Scripts\Scripts_Helper;
 use Wordlift_Mapping_REST_Controller;
-use Wordlift_Mapping_Transform_Function_Registry;
+use Mappings_Transform_Functions_Registry;
 
 /**
  * Define the Wordlift_Admin_Edit_Mappings class.
@@ -153,7 +153,7 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 
 		// @@todo initialize this class in class-admin-wordlift.php, a class should not be responsible for initializing
 		// other classes (pass the instance in the constructor).
-		$transform_function_registry = new Wordlift_Mapping_Transform_Function_Registry();
+		$transform_function_registry = new Mappings_Transform_Functions_Registry();
 
 		$edit_mapping_settings['wl_transform_function_options'] = $transform_function_registry->get_options();
 

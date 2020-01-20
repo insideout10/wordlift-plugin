@@ -7,19 +7,23 @@
  * @subpackage Wordlift/tests
  */
 
+use Wordlift\Mappings\Mappings_Validator;
+
 /**
  * Define the Wordlift_Mapping_Validator_Test class.
+ *
+ * @group mappings
  *
  * @since 3.25.0
  */
 class Wordlift_Mapping_Validator_Test extends WP_UnitTestCase {
 
 	/**
-	 * The {@link Wordlift_Mapping_Validator} instance to test.
+	 * The {@link Mappings_Validator} instance to test.
 	 *
 	 * @since  3.25.0
 	 * @access private
-	 * @var \Wordlift_Mapping_Validator $validator The {@link Wordlift_Mapping_Validator} instance to test.
+	 * @var Mappings_Validator $validator The {@link Mappings_Validator} instance to test.
 	 */
 	private $validator;
 
@@ -38,12 +42,12 @@ class Wordlift_Mapping_Validator_Test extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->dbo       = new Wordlift_Mapping_DBO();
-		$this->validator = new Wordlift_Mapping_Validator();
+		$this->validator = new Mappings_Validator();
 	}
 
 	/** Check if validator class can be initalised */
 	public function test_can_initialize_validator() {
-		$this->assertNotNull( new Wordlift_Mapping_Validator() );
+		$this->assertNotNull( new Mappings_Validator() );
 	}
 
 	/** When the rules didnt match the post type it should return false */
@@ -182,7 +186,7 @@ class Wordlift_Mapping_Validator_Test extends WP_UnitTestCase {
 		$this->dbo->insert_or_update_property(
 			$property_data
 		);
-		$property_data['property_status'] = Wordlift_Mapping_Validator::TRASH_CATEGORY;
+		$property_data['property_status'] = Mappings_Validator::TRASH_CATEGORY;
 		$this->dbo->insert_or_update_property(
 			$property_data
 		);

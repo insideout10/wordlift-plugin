@@ -10,6 +10,8 @@
 /**
  * Define the Wordlift_Mapping_REST_Controller_Test class.
  *
+ * @group mappings
+ *
  * @since 3.25.0
  */
 class Wordlift_Mapping_REST_Controller_Test extends WP_UnitTestCase {

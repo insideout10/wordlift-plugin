@@ -245,7 +245,7 @@ class Wordlift_Mapping_REST_Controller {
 	 *
 	 * @param Object $dbo Instance of {@link Wordlift_Mapping_DBO } class.
 	 * @param Int    $rule_group_id Refers to a rule group which this rule belongs to.
-	 * @param Array  $rule_list  Array of rule  items.
+	 * @param array  $rule_list  Array of rule  items.
 	 * @return void
 	 */
 	private static function save_rules( $dbo, $rule_group_id, $rule_list ) {
@@ -277,7 +277,7 @@ class Wordlift_Mapping_REST_Controller {
 	 *
 	 * @param Object $dbo Instance of {@link Wordlift_Mapping_DBO } class.
 	 * @param Int    $mapping_id Primary key of mapping table.
-	 * @param Array  $property_list { Array of property items }.
+	 * @param array  $property_list { Array of property items }.
 	 * @return void
 	 */
 	private static function save_property_list( $dbo, $mapping_id, $property_list ) {
@@ -331,7 +331,7 @@ class Wordlift_Mapping_REST_Controller {
 	 *
 	 * @param Object $dbo Instance of {@link Wordlift_Mapping_DBO } class.
 	 * @param Int    $mapping_id Primary key of mapping table.
-	 * @param Array  $rule_group_list { Array of rule group items }.
+	 * @param array  $rule_group_list { Array of rule group items }.
 	 * @return void
 	 */
 	private static function save_rule_group_list( $dbo, $mapping_id, $rule_group_list ) {
