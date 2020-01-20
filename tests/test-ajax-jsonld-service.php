@@ -107,6 +107,9 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 	 */
 	public function test_jsonld() {
 
+		$local_business_term = get_term_by( 'slug', 'local-business', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+		$this->assertTrue( is_object( $local_business_term ), 'The `LocalBusiness` term must exist.' );
+
 		// Create a location entity post and bind it to the location property.
 		$name              = rand_str();
 		$local_business_id = $this->factory()->post->create( array(
@@ -115,6 +118,7 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		) );
 		$this->entity_type_service->set( $local_business_id, 'http://schema.org/LocalBusiness' );
 		$local_business_type = $this->entity_type_service->get( $local_business_id );
+
 		$this->assertEquals( 'http://schema.org/LocalBusiness', $local_business_type['uri'] );
 
 		$local_business_uri = $this->entity_service->get_uri( $local_business_id );
