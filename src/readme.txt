@@ -142,7 +142,13 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.24.0 (2020-01-06) =
+= 3.25.0 (????-??-??) =
+* Enhancement [#953](https://github.com/insideout10/wordlift-plugin/issues/953): Map fields from ACF to schema.org classes.
+
+= 3.24.1 (2020-01-17) =
+* Fix: Wrong encoding for images in navigator.
+
+= 3.24.0 (2020-01-17) =
 * Enhancement [#969](https://github.com/insideout10/wordlift-plugin/issues/969): Turn the entity page into a topic "showcase" with a specific navigator.
 * Enhancement [#934](https://github.com/insideout10/wordlift-plugin/issues/934): Display entity content within context cards.
 

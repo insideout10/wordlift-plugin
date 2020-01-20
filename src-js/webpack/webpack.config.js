@@ -36,7 +36,7 @@ const webpackConfig = {
   },
   output: {
     filename: "[name].js",
-    path: path.resolve(__dirname, "../../js/dist")
+    path: path.resolve(__dirname, "../../src/js/dist")
   },
   /*
    * Give precedence to our node_modules folder when resolving the same module.
