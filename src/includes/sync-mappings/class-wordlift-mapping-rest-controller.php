@@ -230,7 +230,7 @@ class Wordlift_Mapping_REST_Controller {
 	 *
 	 * @param Object $dbo Instance of {@link Wordlift_Mapping_DBO } class.
 	 * @param Int    $rule_group_id Primary key of rule group table.
-	 * @return Array A list of rule ids.
+	 * @return array A list of rule ids.
 	 */
 	private static function get_rule_ids( $dbo, $rule_group_id ) {
 		$rule_rows_in_db = $dbo->get_rules( $rule_group_id );
@@ -316,7 +316,7 @@ class Wordlift_Mapping_REST_Controller {
 	 *
 	 * @param Object $dbo Instance of {@link Wordlift_Mapping_DBO } class.
 	 * @param Int    $mapping_id Primary key of mapping table.
-	 * @return Array $rule_group_ids A list of rule group ids.
+	 * @return array $rule_group_ids A list of rule group ids.
 	 */
 	private static function get_rule_group_ids( $dbo, $mapping_id ) {
 		$rule_group_rows = $dbo->get_rule_group_list( $mapping_id );

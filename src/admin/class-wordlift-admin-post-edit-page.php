@@ -146,8 +146,8 @@ class Wordlift_Admin_Post_Edit_Page {
 		 * @since 3.25.0 Scripts are loaded using script helper to ensure WP 4.4 compatibiility.
 		 */
 		Wordlift\Scripts\Scripts_Helper::enqueue_based_on_wordpress_version(
-			'wordlift-admin-edit-page', 
-			$script_name, 
+			'wordlift-admin-edit-page',
+			$script_name,
 			array(
 				$this->plugin->get_plugin_name(),
 				'jquery',

@@ -30,7 +30,7 @@ final class Wordlift_Mapping_DBO {
 
 	/**
 	 * Returns a list of mapping item rows
-	 * @return Array List of Mapping items
+	 * @return array List of Mapping items
 	 */
 	public function get_mapping_items() {
 		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
@@ -46,7 +46,7 @@ final class Wordlift_Mapping_DBO {
 	 *
 	 * @param Int $mapping_id Primary key of mapping table.
 	 *
-	 * @return Array List of property items belong to $mapping_id.
+	 * @return array List of property items belong to $mapping_id.
 	 */
 	public function get_properties( $mapping_id ) {
 		$property_table_name = $this->wpdb->prefix . WL_PROPERTY_TABLE_NAME;
@@ -204,7 +204,7 @@ final class Wordlift_Mapping_DBO {
 	 *
 	 * @param Int $mapping_id Primary key for mapping table.
 	 *
-	 * @return Array Get list of rule group items.
+	 * @return array Get list of rule group items.
 	 */
 	public function get_rule_group_list( $mapping_id ) {
 		$rule_group_table_name = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
@@ -223,7 +223,7 @@ final class Wordlift_Mapping_DBO {
 	 *
 	 * @param Int $mapping_id Primary key for mapping table.
 	 *
-	 * @return Array Get list of rule group items.
+	 * @return array Get list of rule group items.
 	 */
 	public function get_rule_group_list_with_rules( $mapping_id ) {
 		$rule_group_table_name = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
@@ -256,7 +256,7 @@ final class Wordlift_Mapping_DBO {
 	 *
 	 * @param Int $rule_group_id Indicates which group the item belongs to.
 	 *
-	 * @return Array Get list of rule items.
+	 * @return array Get list of rule items.
 	 */
 	public function get_rules( $rule_group_id ) {
 		$rule_table_name = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
@@ -301,7 +301,7 @@ final class Wordlift_Mapping_DBO {
 	 *
 	 * @param Int $mapping_id Primary key of mapping table.
 	 *
-	 * @return Array Returns single mapping table row..
+	 * @return array Returns single mapping table row..
 	 */
 	public function get_mapping_item_data( $mapping_id ) {
 		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;

@@ -1133,7 +1133,7 @@ class Wordlift {
 		 *
 		 * @since 3.25.0
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-edit-mappings.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-edit-mappings-page.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
@@ -1424,7 +1424,7 @@ class Wordlift {
 		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page( $this->configuration_service );
 		$this->status_page             = new Wordlift_Admin_Status_Page( $this->entity_service, $this->sparql_service );
 		$this->sync_mappings_page      = new Wordlift_Admin_Sync_Mappings_Page();
-		$this->edit_mappings_page      = new Wordlift_Admin_Edit_Mappings();
+
 		// Create an instance of the install wizard.
 		$this->admin_setup = new Wordlift_Admin_Setup( $this->configuration_service, $this->key_validation_service, $this->entity_service, $this->language_select_element, $this->country_select_element );
 

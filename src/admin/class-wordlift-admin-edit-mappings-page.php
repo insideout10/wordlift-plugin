@@ -14,7 +14,7 @@
  *
  * @since 3.24.0
  */
-class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
+class Wordlift_Admin_Edit_Mappings_Page extends Wordlift_Admin_Page {
 
 	/**
 	 * {@inheritdoc}
@@ -35,14 +35,15 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 
 		add_action(
 			'admin_enqueue_scripts',
-			function() {
+			function () {
 				$wordlift = \Wordlift::get_instance();
 				wp_register_style(
 					'wl-edit-mappings-style',
 					plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings-edit.css',
 					$wordlift->get_version()
 				);
-				Wordlift_Admin_Edit_Mappings::load_ui_dependencies();
+				// @@todo: move to the page render, because it's doing lots of stuff also when not required.
+				Wordlift_Admin_Edit_Mappings_Page::load_ui_dependencies();
 			}
 		);
 
@@ -64,65 +65,41 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 	}
 
 	/**
-	 * Returns array of acf options.
+	 * Returns field name options based on the chosen field type.
 	 *
-	 * @return array Acf options Array.
-	 */
-	private static function get_acf_options() {
-		$acf_options = array();
-		if ( function_exists( 'acf_get_field_groups' ) ) {
-			$field_groups     = acf_get_field_groups();
-			$field_group_data = array();
-			foreach ( $field_groups as $field_group ) {
-				$group_name    = $field_group['title'];
-				$group_key     = $field_group['key'];
-				$group_fields  = acf_get_fields( $group_key );
-				$group_options = array();
-				foreach ( $group_fields as $group_field ) {
-					array_push(
-						$group_options,
-						array(
-							'label' => $group_field['label'],
-							'value' => $group_field['key'],
-						)
-					);
-				}
-
-				array_push(
-					$acf_options,
-					array(
-						'group_name'    => $group_name,
-						'group_options' => $group_options,
-					)
-				);
-			}
-		}
-		return $acf_options;
-	}
-	/**
-	 * Returns field name options based on the choosen field type.
-	 *
-	 * @return Array Array of the options.
+	 * @return array Array of the options.
 	 */
 	public static function get_all_field_name_options() {
-		$field_name_options = array(
-			array(
-				'field_type' => 'acf',
-				'value'      => self::get_acf_options(),
-			),
+
+		$options = array(
+			// @@todo rename as Fixed Text.
 			array(
 				'field_type' => 'text',
 				'value'      => '',
+				'label'      => __( 'Fixed Text', 'wordlift' ),
 			),
+			// @@todo maybe it makes sense to move this one as well to Wordlift/Mappings/Custom_Fields_Mappings.
 			array(
 				'field_type' => 'custom_field',
 				'value'      => '',
+				'label'      => __( 'Custom Field', 'wordlift' ),
 			),
 		);
-		return $field_name_options;
+
+		/**
+		 * Allow 3rd parties to add field types.
+		 *
+		 * @param array An array of Field Types.
+		 *
+		 * @return array An array of Field Types.
+		 *
+		 * @since 3.25.0
+		 */
+		return apply_filters( 'wl_mappings_field_types', $options );
 	}
+
 	/**
-	 * Load Dependancies required for js client.
+	 * Load dependencies required for js client.
 	 */
 	public static function load_ui_dependencies() {
 		// Create ui settings array to be used by js client.
@@ -133,36 +110,39 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 		);
 		$edit_mapping_settings['page']                       = 'wl_edit_mapping';
 		$edit_mapping_settings['wl_edit_mapping_rest_nonce'] = wp_create_nonce( 'wp_rest' );
-		if ( isset( $_REQUEST['_wl_edit_mapping_nonce'] ) && wp_verify_nonce( $_REQUEST['_wl_edit_mapping_nonce'], 'wl-edit-mapping-nonce' ) ) {
-			$edit_mapping_settings['wl_edit_mapping_id'] = (int) $_REQUEST['wl_edit_mapping_id'];
+
+		// @@todo what's this? add comments.
+		// @@todo always use post, because we've encountered hosting providers which drop get parameters to boot their
+		// caching.
+		if ( isset( $_REQUEST['_wl_edit_mapping_nonce'] )
+		     && wp_verify_nonce( $_REQUEST['_wl_edit_mapping_nonce'], 'wl-edit-mapping-nonce' ) ) {
+			$edit_mapping_settings['wl_edit_mapping_id'] = intval( filter_input( INPUT_POST, 'wl_edit_mapping_id', FILTER_VALIDATE_INT ) );
 		}
-		$edit_mapping_settings['wl_add_mapping_text']             = __( 'Add Mapping', 'wordlift' );
-		$edit_mapping_settings['wl_edit_mapping_text']            = __( 'Edit Mapping', 'wordlift' );
-		$edit_mapping_settings['wl_edit_mapping_no_item']         = __( 'Unable to find the mapping item', 'wordlift' );
-		$transform_function_registry                              = new Wordlift_Mapping_Transform_Function_Registry();
-		$edit_mapping_settings['wl_transform_function_options']   = $transform_function_registry->get_options();
-		$edit_mapping_settings['wl_field_type_options'] = array(
-			array(
-				'label' => __( 'Text', 'wordlift' ),
-				'value' => 'text',
-			),
-			array(
-				'label' => __( 'Custom Field', 'wordlift' ),
-				'value' => 'custom_field',
-			),
-		);
-		// Only add acf if the acf is loaded.
-		if ( class_exists( 'ACF' ) ) {
-			array_push(
-				$edit_mapping_settings['wl_field_type_options'],
-				array(
-					'label' => __( 'ACF', 'wordlift' ),
-					'value' => 'acf',
-				)
+
+		$edit_mapping_settings['wl_add_mapping_text']     = __( 'Add Mapping', 'wordlift' );
+		$edit_mapping_settings['wl_edit_mapping_text']    = __( 'Edit Mapping', 'wordlift' );
+		$edit_mapping_settings['wl_edit_mapping_no_item'] = __( 'Unable to find the mapping item', 'wordlift' );
+
+		// @@todo initialize this class in class-admin-wordlift.php, a class should not be responsible for initializing
+		// other classes (pass the instance in the constructor).
+		$transform_function_registry = new Wordlift_Mapping_Transform_Function_Registry();
+
+		$edit_mapping_settings['wl_transform_function_options'] = $transform_function_registry->get_options();
+
+		$all_field_name_options = self::get_all_field_name_options();
+
+		$all_field_types_options = array_map( function ( $item ) {
+			return array(
+				'label' => $item['label'],
+				'value' => $item['field_type'],
 			);
-		}
+		}, $all_field_name_options );
+
+		$edit_mapping_settings['wl_field_type_options'] = $all_field_types_options;
+
 		// Add wl_edit_field_name_options.
-		$edit_mapping_settings['wl_field_name_options']  = self::get_all_field_name_options();
+		$edit_mapping_settings['wl_field_name_options'] = $all_field_name_options;
+
 		$edit_mapping_settings['wl_logic_field_options'] = array(
 			array(
 				'label' => __( 'is equal to', 'wordlift' ),
@@ -177,15 +157,16 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 		list(
 			$edit_mapping_settings['wl_rule_field_one_options'],
 			$edit_mapping_settings['wl_rule_field_two_options']
-		) = self::get_post_taxonomies_and_terms();
+			) = self::get_post_taxonomies_and_terms();
 
 		wp_localize_script( 'wl-edit-mappings-script', 'wl_edit_mappings_config', $edit_mapping_settings );
 	}
 
 	/**
 	 * Returns post type, post category, or any other post taxonomies
-	 * @return Array An array of select options
+	 * @return array An array of select options
 	 */
+	// @@todo change this to a rest end-point.
 	private static function get_post_taxonomies_and_terms() {
 		$taxonomy_options = array();
 		$term_options     = array();
@@ -221,35 +202,14 @@ class Wordlift_Admin_Edit_Mappings extends Wordlift_Admin_Page {
 		list( $post_type_option, $post_type_option_values ) = self::get_post_type_key_and_value();
 		array_push( $taxonomy_options, $post_type_option );
 		$term_options = array_merge( $term_options, $post_type_option_values );
+
 		return array( $taxonomy_options, $term_options );
 	}
 
-
 	/**
-	 * Return all ACF Fields
-	 * @return Array Array of ACF field name with value
-	 */
-	private static function get_acf_field_options() {
-		$acf_field_options = array();
-		// Check if ACF is loaded, or else return empty options array.
-		if ( function_exists( 'get_field_objects' ) ) {
-			$field_data = (array) get_field_objects();
-			foreach ( $field_data as $key => $value ) {
-				array_push(
-					$acf_field_options,
-					array(
-						'label' => $value['label'],
-						'value' => $key,
-					)
-				);
-			}
-		}
-		return $acf_field_options;
-	}
-
-	/**
-	 * Return post type option and post type option values
-	 * @return Array Array of post_type_option and post_type_option_values
+	 * Return post type option and post type option values.
+	 *
+	 * @return array Array of post_type_option and post_type_option_values.
 	 */
 	private static function get_post_type_key_and_value() {
 		$post_type_option_name   = array(

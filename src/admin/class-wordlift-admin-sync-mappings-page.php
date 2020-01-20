@@ -22,7 +22,7 @@ class Wordlift_Admin_Sync_Mappings_Page extends Wordlift_Admin_Page {
 	 */
 	public function __construct() {
 
-		Wordlift\Scripts\Scripts_Helper::register_based_on_wordpress_version(
+		Scripts_Helper::register_based_on_wordpress_version(
 			'wl-sync-mappings-script',
 			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/mappings',
 			array(

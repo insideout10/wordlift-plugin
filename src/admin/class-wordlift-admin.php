@@ -10,6 +10,8 @@
  * @subpackage Wordlift/admin
  */
 
+use Wordlift\Mappings\Acf_Mappings;
+
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -79,13 +81,14 @@ class Wordlift_Admin {
 	/**
 	 * Initialize the class and set its properties.
 	 *
+	 * @param string $plugin_name The name of this plugin.
+	 * @param string $version The version of this plugin.
+	 * @param \Wordlift_Configuration_Service $configuration_service The configuration service.
+	 * @param \Wordlift_Notice_Service $notice_service The notice service.
+	 * @param \Wordlift_User_Service $user_service The {@link Wordlift_User_Service} instance.
+	 *
 	 * @since  1.0.0
 	 *
-	 * @param string                          $plugin_name The name of this plugin.
-	 * @param string                          $version The version of this plugin.
-	 * @param \Wordlift_Configuration_Service $configuration_service The configuration service.
-	 * @param \Wordlift_Notice_Service        $notice_service The notice service.
-	 * @param \Wordlift_User_Service          $user_service The {@link Wordlift_User_Service} instance.
 	 */
 	public function __construct( $plugin_name, $version, $configuration_service, $notice_service, $user_service ) {
 
@@ -176,6 +179,13 @@ class Wordlift_Admin {
 
 		}
 
+		// @@todo only load this class if ACF is available.
+		// Add support for ACF mappings, so that the admin edit mappings page can pick up ACF support when ACF is available.
+		new Acf_Mappings();
+
+		// Add the Admin Edit Mappings page.
+		new Wordlift_Admin_Edit_Mappings_Page();
+
 		// Set the singleton instance.
 		self::$instance = $this;
 
@@ -184,9 +194,9 @@ class Wordlift_Admin {
 	/**
 	 * Get the singleton instance.
 	 *
+	 * @return \Wordlift_Admin The singleton instance.
 	 * @since 3.19.4
 	 *
-	 * @return \Wordlift_Admin The singleton instance.
 	 */
 	public static function get_instance() {
 
@@ -282,11 +292,12 @@ class Wordlift_Admin {
 			 *
 			 * The editor id is currently referenced by `src/coffee/editpost-widget/app.services.EditorAdapter.coffee`.
 			 *
-			 * @since 3.19.4
+			 * @param string $editor The default editor id, by default `content`.
 			 *
 			 * @see https://github.com/insideout10/wordlift-plugin/issues/848
 			 *
-			 * @param string $editor The default editor id, by default `content`.
+			 * @since 3.19.4
+			 *
 			 */
 			'default_editor_id'          => apply_filters( 'wl_default_editor_id', 'content' ),
 			/**
@@ -347,12 +358,12 @@ class Wordlift_Admin {
 	 * @since 3.21.0
 	 */
 	private static function add_block_category() {
-		add_filter( 'block_categories', function( $categories, $post ) {
+		add_filter( 'block_categories', function ( $categories, $post ) {
 			return array_merge(
 				$categories,
 				array(
 					array(
-						'slug' => 'wordlift',
+						'slug'  => 'wordlift',
 						'title' => 'WordLift Blocks',
 					),
 				)

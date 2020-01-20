@@ -47,7 +47,7 @@ final class Wordlift_Mapping_Validator {
 	 * @param String $key The key which every object has mapped to our value.
 	 * @param Array  $items The array of items.
 	 * @param String $status The value which the items should have.
-	 * @return Array
+	 * @return array
 	 */
 	private static function get_item_by_status( $key, $items, $status ) {
 		return array_filter(
@@ -201,7 +201,7 @@ final class Wordlift_Mapping_Validator {
 	}
 	/**
 	 * Returns a list of valid properties to be mapped against json ld data
-	 * @return Array Array of valid properties
+	 * @return array Array of valid properties
 	 */
 	public function get_valid_properties() {
 		return self::get_item_by_status(
