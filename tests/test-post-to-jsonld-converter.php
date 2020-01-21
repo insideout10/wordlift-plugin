@@ -469,8 +469,9 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->entity_type_service->set( $entity_1->ID, 'http://schema.org/Organization' );
 		$entity_1_uri = $this->entity_service->get_uri( $entity_1->ID );
 
+		// The Post Title is contained in the first Post Title so that this is output as `about` in JSON-LD.
 		$entity_2 = $this->entity_factory->create_and_get( array(
-			'post_title' => 'Test Post To Json-Ld Converter test_a_post_with_one_mentions_and_one_about 2',
+			'post_title' => 'Test Post To Json-Ld Converter test_a_post_with_one_mentions_and_one_about',
 		) );
 		$this->entity_type_service->set( $entity_2->ID, 'http://schema.org/Person' );
 		$entity_2_uri = $this->entity_service->get_uri( $entity_2->ID );
