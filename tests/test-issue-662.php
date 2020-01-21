@@ -104,7 +104,7 @@ class Wordlift_Issue_662 extends Wordlift_Unit_Test_Case {
 
 		// As of 3.16.0, the posts are 3 because we also create a publisher
 		// in the set-up stage.
-		$this->assertCount( 3, $posts, "We expected 3 posts instead we got:\n" . var_export( $posts ) );
+		$this->assertCount( 3, $posts, "We expected 3 posts instead we got:\n" . var_export( $posts, true ) );
 		$this->assertCount( 1, array_filter( $posts, function ( $item ) use ( $post_as_entity_id ) {
 			return $post_as_entity_id === $item->ID;
 		} ) );
