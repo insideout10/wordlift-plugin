@@ -298,15 +298,6 @@ class Wordlift {
 	protected $settings_page;
 
 	/**
-	 * The 'WordLift Batch analysis' page.
-	 *
-	 * @since  3.14.0
-	 * @access protected
-	 * @var \Wordlift_Batch_Analysis_Page $sbatch_analysis_page The 'WordLift batcch analysis' page.
-	 */
-	protected $batch_analysis_page;
-
-	/**
 	 * The install wizard page.
 	 *
 	 * @since  3.9.0
@@ -551,15 +542,6 @@ class Wordlift {
 	protected $author_element;
 
 	/**
-	 * The {@link Wordlift_Batch_Analysis_Service} instance.
-	 *
-	 * @since  3.14.0
-	 * @access protected
-	 * @var \Wordlift_Batch_Analysis_Service $batch_analysis_service The {@link Wordlift_Batch_Analysis_Service} instance.
-	 */
-	protected $batch_analysis_service;
-
-	/**
 	 * The {@link Wordlift_Sample_Data_Service} instance.
 	 *
 	 * @since  3.12.0
@@ -576,15 +558,6 @@ class Wordlift {
 	 * @var \Wordlift_Sample_Data_Ajax_Adapter $sample_data_ajax_adapter The {@link Wordlift_Sample_Data_Ajax_Adapter} instance.
 	 */
 	protected $sample_data_ajax_adapter;
-
-	/**
-	 * The {@link Wordlift_Batch_Analysis_Adapter} instance.
-	 *
-	 * @since  3.14.2
-	 * @access protected
-	 * @var \Wordlift_Batch_Analysis_Adapter $batch_analysis_adapter The {@link Wordlift_Batch_Analysis_Adapter} instance.
-	 */
-	private $batch_analysis_adapter;
 
 	/**
 	 * The {@link Wordlift_Relation_Rebuild_Service} instance.
@@ -947,7 +920,7 @@ class Wordlift {
 		 * @since 3.8.0
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-jsonld-service.php';
-		
+
 		// The Publisher Service and the AJAX adapter.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-publisher-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-publisher-ajax-adapter.php';
@@ -964,8 +937,6 @@ class Wordlift {
 
 		// Load the `Wordlift_Entity_Page_Service` class definition.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-page-service.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/batch-analysis/class-wordlift-batch-analysis-sql-helper.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/batch-analysis/class-wordlift-batch-analysis-service.php';
 
 		/** Linked Data. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-storage.php';
@@ -996,14 +967,11 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-newrelic-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-sample-data-ajax-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-type-adapter.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/batch-analysis/class-wordlift-batch-analysis-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-wprocket-adapter.php';
 
 		/** Async Tasks. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-async-task.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-sparql-query-async-task.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-batch-analysis-request-async-task.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-batch-analysis-complete-async-task.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-push-references-async-task.php';
 
 		/** Autocomplete. */
@@ -1086,7 +1054,6 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-analytics-page.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-batch-analysis-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-page-action-link.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-analytics-page-action-link.php';
 
@@ -1236,8 +1203,6 @@ class Wordlift {
 		// Create a new instance of the Timeline service and Timeline shortcode.
 		$this->timeline_service = new Wordlift_Timeline_Service( $this->entity_service, $this->entity_type_service );
 
-		$this->batch_analysis_service = new Wordlift_Batch_Analysis_Service( $this, $this->configuration_service, $this->file_cache_service );
-
 		$this->entity_types_taxonomy_walker = new Wordlift_Entity_Types_Taxonomy_Walker();
 
 		$this->topic_taxonomy_service        = new Wordlift_Topic_Taxonomy_Service();
@@ -1310,7 +1275,6 @@ class Wordlift {
 		$this->entity_type_adapter      = new Wordlift_Entity_Type_Adapter( $this->entity_type_service );
 		$this->publisher_ajax_adapter   = new Wordlift_Publisher_Ajax_Adapter( $this->publisher_service );
 		$this->tinymce_adapter          = new Wordlift_Tinymce_Adapter( $this );
-		$this->batch_analysis_adapter   = new Wordlift_Batch_Analysis_Adapter( $this->batch_analysis_service );
 		$this->relation_rebuild_adapter = new Wordlift_Relation_Rebuild_Adapter( $this->relation_rebuild_service );
 
 		/*
@@ -1330,8 +1294,6 @@ class Wordlift {
 
 		/** Async Tasks. */
 		new Wordlift_Sparql_Query_Async_Task();
-		new Wordlift_Batch_Analysis_Request_Async_Task();
-		new Wordlift_Batch_Analysis_Complete_Async_Task();
 		new Wordlift_Push_References_Async_Task();
 
 		/** WL Autocomplete. */
@@ -1351,7 +1313,6 @@ class Wordlift {
 		$this->author_element          = new Wordlift_Admin_Author_Element( $this->publisher_service, $this->select2_element );
 
 		$this->settings_page             = new Wordlift_Admin_Settings_Page( $this->configuration_service, $this->entity_service, $this->input_element, $this->language_select_element, $this->country_select_element, $this->publisher_element, $this->radio_input_element );
-		$this->batch_analysis_page       = new Wordlift_Batch_Analysis_Page( $this->batch_analysis_service );
 		$this->settings_page_action_link = new Wordlift_Admin_Settings_Page_Action_Link( $this->settings_page );
 
 		$this->analytics_settings_page             = new Wordlift_Admin_Settings_Analytics_Page( $this->configuration_service, $this->input_element, $this->radio_input_element );
@@ -1622,10 +1583,6 @@ class Wordlift {
 
 		// Hook the menu creation on the general wordlift menu creation.
 		$this->loader->add_action( 'wl_admin_menu', $this->settings_page, 'admin_menu', 10, 2 );
-		if ( defined( 'WORDLIFT_BATCH' ) && WORDLIFT_BATCH ) {
-			// Add the functionality only if a flag is set in wp-config.php .
-			$this->loader->add_action( 'wl_admin_menu', $this->batch_analysis_page, 'admin_menu', 10, 2 );
-		}
 
 		/*
 		 * Display the `Wordlift_Admin_Search_Rankings_Page` page.
@@ -1674,10 +1631,6 @@ class Wordlift {
 
 		/** Adapters. */
 		$this->loader->add_filter( 'mce_external_plugins', $this->tinymce_adapter, 'mce_external_plugins', 10, 1 );
-		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_submit', $this->batch_analysis_adapter, 'submit' );
-		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_submit_posts', $this->batch_analysis_adapter, 'submit_posts' );
-		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_cancel', $this->batch_analysis_adapter, 'cancel' );
-		$this->loader->add_action( 'wp_ajax_wl_batch_analysis_clear_warning', $this->batch_analysis_adapter, 'clear_warning' );
 		$this->loader->add_action( 'wp_ajax_wl_relation_rebuild_process_all', $this->relation_rebuild_adapter, 'process_all' );
 
 		$this->loader->add_action( 'wp_ajax_wl_sample_data_create', $this->sample_data_ajax_adapter, 'create' );

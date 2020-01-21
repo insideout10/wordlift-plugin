@@ -91,9 +91,7 @@ class Wordlift_Install_Service {
 
 		if ( false === get_transient( '_wl_installing' ) ) {
 			set_transient( '_wl_installing', true, 5 * MINUTE_IN_SECONDS );
-
 			$this->do_install();
-
 			@delete_transient( '_wl_installing' );
 		}
 

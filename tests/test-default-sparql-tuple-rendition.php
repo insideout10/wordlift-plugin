@@ -69,6 +69,7 @@ class Wordlift_Default_Sparql_Tuple_Rendition_Test extends Wordlift_Unit_Test_Ca
 		$entity_id = $this->factory->post->create( array(
 			'post_type'   => 'entity',
 			'post_status' => 'publish',
+			'post_title'  => 'Test Sparql Tuple Rendition test_legal_name_delete_insert_renditions',
 		) );
 
 		// Get the entity uri.
@@ -78,17 +79,17 @@ class Wordlift_Default_Sparql_Tuple_Rendition_Test extends Wordlift_Unit_Test_Ca
 		update_post_meta( $entity_id, Wordlift_Schema_Service::FIELD_LEGAL_NAME, 'Lorem Ipsum' );
 
 		// Get delete triples
-		$delete_triples   = $legal_name->get_delete_triples( $entity_id );
+		$delete_triples = $legal_name->get_delete_triples( $entity_id );
 
 		// Test the delete triples.
 		$this->assertContains( "<$uri> <http://schema.org/legalName> ?o", $delete_triples );
 		$this->assertContains( "?s <http://schema.org/legalName> <$uri>", $delete_triples );
 
 		// Test the insert trimples.
-		$insert_triples   = $legal_name->get_insert_triples( $entity_id );
+		$insert_triples = $legal_name->get_insert_triples( $entity_id );
 		$this->assertContains( "<$uri> <http://schema.org/legalName> \"Lorem Ipsum\" . ", $insert_triples );
 	}
-	
+
 	/**
 	 * Test `get_delete_triples` & `get_insert_triples` methods for totalTime.
 	 *
@@ -105,6 +106,7 @@ class Wordlift_Default_Sparql_Tuple_Rendition_Test extends Wordlift_Unit_Test_Ca
 		$entity_id = $this->factory->post->create( array(
 			'post_type'   => 'entity',
 			'post_status' => 'publish',
+			'post_title'  => 'Test Sparql Tuple Rendition test_total_time_delete_insert_renditions',
 		) );
 
 		// Get the entity uri.
@@ -114,8 +116,8 @@ class Wordlift_Default_Sparql_Tuple_Rendition_Test extends Wordlift_Unit_Test_Ca
 		update_post_meta( $entity_id, Wordlift_Schema_Service::FIELD_TOTAL_TIME, '13:00' );
 
 		// Get delete triples
-		$delete_triples   = $total_time->get_delete_triples( $entity_id );
-		$insert_triples   = $total_time->get_insert_triples( $entity_id );
+		$delete_triples = $total_time->get_delete_triples( $entity_id );
+		$insert_triples = $total_time->get_insert_triples( $entity_id );
 
 		$this->assertContains( "<$uri> <http://schema.org/totalTime> ?o", $delete_triples );
 		$this->assertContains( "?s <http://schema.org/totalTime> <$uri>", $delete_triples );

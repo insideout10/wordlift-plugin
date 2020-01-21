@@ -57,7 +57,7 @@ class Wordlift_Install_3_25_0 extends Wordlift_Install {
 		$table_name      = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
 		$charset_collate = $this->wpdb->get_charset_collate();
 		// @@todo: is necessary to prefix the column names with `mapping_` ? we're the mappings table already.
-		$sql             = <<<EOF
+		$sql = <<<EOF
         CREATE TABLE IF NOT EXISTS $table_name (
 			mapping_id INT(11) NOT NULL AUTO_INCREMENT, 
 			mapping_title VARCHAR(255) NOT NULL,
@@ -82,7 +82,7 @@ EOF;
 		$rule_group_table_name = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
 		$charset_collate       = $this->wpdb->get_charset_collate();
 		// @@todo: is necessary to prefix the column names with `rule_` ? we're the rules table already.
-		$sql                   = <<<EOF
+		$sql = <<<EOF
         CREATE TABLE IF NOT EXISTS $table_name (
 				rule_id INT(11) NOT NULL AUTO_INCREMENT,
 				rule_field_one VARCHAR(255) NOT NULL,
@@ -111,10 +111,8 @@ EOF;
 		$charset_collate = $this->wpdb->get_charset_collate();
 
 		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
-		// @@todo the following variable is unused, remove.
-		$rule_table_name    = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
 		// @@todo is this table actually needed? I am not understanding what it does.
-		$sql                = <<<EOF
+		$sql = <<<EOF
         CREATE TABLE IF NOT EXISTS $table_name (
                 rule_group_id INT(11) NOT NULL AUTO_INCREMENT,
                 mapping_id INT(11) NOT NULL,
@@ -130,7 +128,7 @@ EOF;
 
 
 	/**
-	 * Install property table, should run afer mapping table due to
+	 * Install property table, should run after mapping table due to
 	 * foreign key reference.
 	 *
 	 * @return void
@@ -143,7 +141,7 @@ EOF;
 
 		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
 		// @@todo do you we need the `property_` prefix? this is the property table anyway.
-		$sql                = <<<EOF
+		$sql = <<<EOF
         CREATE TABLE IF NOT EXISTS $table_name (
                 property_id INT(11) NOT NULL AUTO_INCREMENT,
                 mapping_id INT(11) NOT NULL,
@@ -173,6 +171,15 @@ EOF;
 
 		// @@todo remove this function if not needed.
 		return defined( 'WP_DEBUG' ) && WP_DEBUG;
+	}
+
+	public static function drop_tables() {
+		global $wpdb;
+
+		$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . WL_PROPERTY_TABLE_NAME );
+		$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . WL_RULE_TABLE_NAME );
+		$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . WL_RULE_GROUP_TABLE_NAME );
+		$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . WL_MAPPING_TABLE_NAME );
 	}
 
 }

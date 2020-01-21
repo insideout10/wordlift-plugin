@@ -148,14 +148,14 @@ class Wordlift_DB_Upgrade_Test extends Wordlift_Unit_Test_Case {
 			'delete_private_wordlift_entities',
 		);
 
-		$user = $this->factory->user->create_and_get( array( 'user_login' => 'wluser' ) );
+		$user = $this->factory()->user->create_and_get( array( 'user_login' => 'wluser' ) );
 		$user->add_role( 'editor' );
 
 		foreach ( $caps_to_test as $cap ) {
 			$this->assertTrue( user_can( $user->ID, $cap ) );
 		}
 
-		$user = $this->factory->user->create_and_get( array( 'user_login' => 'wluser2' ) );
+		$user = $this->factory()->user->create_and_get( array( 'user_login' => 'wluser2' ) );
 		$user->add_role( 'administrator' );
 
 		foreach ( $caps_to_test as $cap ) {
@@ -170,12 +170,14 @@ class Wordlift_DB_Upgrade_Test extends Wordlift_Unit_Test_Case {
 	 * @since  3.18.3
 	 */
 	public function test_3_18_0_to_3_18_3_upgrade() {
-		$post_id = $this->factory->post->create( array(
-			'post_type' => 'post',
+		$post_id = $this->factory()->post->create( array(
+			'post_type'  => 'post',
+			'post_title' => 'Test Db Upgrades test_3_18_0_to_3_18_3_upgrade 1',
 		) );
 
-		$entity_id = $this->factory->post->create( array(
-			'post_type' => 'entity',
+		$entity_id = $this->factory()->post->create( array(
+			'post_type'  => 'entity',
+			'post_title' => 'Test Db Upgrades test_3_18_0_to_3_18_3_upgrade 2',
 		) );
 
 		// Add relation between entity and post.
@@ -202,10 +204,12 @@ class Wordlift_DB_Upgrade_Test extends Wordlift_Unit_Test_Case {
 		// $this->assertFalse( $this->has_term( $post_id ) );
 
 		// Bind the update to 3.18.3
-		update_option( 'wl_db_version', '3.18.0' );
+		//		update_option( 'wl_db_version', '3.18.0' );
 
 		// now call the upgrade routine and check that everything is Flatten
-		Wordlift_Install_Service::get_instance()->install();
+		//		Wordlift_Install_Service::get_instance()->install();
+		$install_3_18_3 = new Wordlift_Install_3_18_3();
+		$install_3_18_3->install();
 
 		// Check that the post has `article` term after the update.
 		$this->assertTrue( $this->has_term( $post_id ) );

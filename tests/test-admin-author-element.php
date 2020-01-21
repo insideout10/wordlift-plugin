@@ -71,7 +71,7 @@ class Wordlift_Admin_Person_Element_Test extends Wordlift_Unit_Test_Case {
 	function test_render() {
 
 		// Create an entity.
-		$post_title     = 'Lorem Ipsum';
+		$post_title     = 'Test Admin Author Element test_render';
 		$entity_post_id = $this->entity_factory->create( array(
 			'post_title' => $post_title,
 		) );

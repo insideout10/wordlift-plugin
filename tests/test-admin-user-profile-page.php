@@ -100,11 +100,11 @@ class Wordlift_Admin_User_Profile_Page_Test extends Wordlift_Unit_Test_Case {
 	 */
 	function test_edit_user_profile_cannot_edit_users() {
 
-		$target_user = $this->factory->user->create_and_get( array(
+		$target_user = $this->factory()->user->create_and_get( array(
 			'role' => 'editor',
 		) );
 
-		$current_user_id = $this->factory->user->create( array(
+		$current_user_id = $this->factory()->user->create( array(
 			'role' => 'editor',
 		) );
 		wp_set_current_user( $current_user_id );
@@ -133,7 +133,7 @@ class Wordlift_Admin_User_Profile_Page_Test extends Wordlift_Unit_Test_Case {
 			'role' => 'editor',
 		) );
 
-		$current_user_id = $this->factory->user->create( array(
+		$current_user_id = $this->factory()->user->create( array(
 			'role' => 'administrator',
 		) );
 		wp_set_current_user( $current_user_id );
@@ -174,12 +174,12 @@ class Wordlift_Admin_User_Profile_Page_Test extends Wordlift_Unit_Test_Case {
 	function test_edit_user_profile_update_cannot_edit_users() {
 
 		// Target user.
-		$target_user_id = $this->factory->user->create( array(
+		$target_user_id = $this->factory()->user->create( array(
 			'role' => 'editor',
 		) );
 
 		// Current user.
-		$current_user_id = $this->factory->user->create( array(
+		$current_user_id = $this->factory()->user->create( array(
 			'role' => 'editor',
 		) );
 		wp_set_current_user( $current_user_id );
@@ -203,12 +203,12 @@ class Wordlift_Admin_User_Profile_Page_Test extends Wordlift_Unit_Test_Case {
 	function test_edit_user_profile_update_can_edit_users() {
 
 		// Target user.
-		$target_user_id = $this->factory->user->create( array(
+		$target_user_id = $this->factory()->user->create( array(
 			'role' => 'editor',
 		) );
 
 		// Current user.
-		$current_user_id = $this->factory->user->create( array(
+		$current_user_id = $this->factory()->user->create( array(
 			'role' => 'administrator',
 		) );
 		wp_set_current_user( $current_user_id );

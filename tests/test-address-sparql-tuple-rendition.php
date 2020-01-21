@@ -69,6 +69,7 @@ class Wordlift_Address_Sparql_Tuple_Rendition_Test extends Wordlift_Unit_Test_Ca
 		$entity_id = $this->factory()->post->create( array(
 			'post_type'   => 'entity',
 			'post_status' => 'publish',
+			'post_title'  => 'Address Sparql Tuple Rendition test_get_delete_triples',
 		) );
 
 		// Set the entity terms.
@@ -107,6 +108,7 @@ class Wordlift_Address_Sparql_Tuple_Rendition_Test extends Wordlift_Unit_Test_Ca
 		$entity_id = $this->factory()->post->create( array(
 			'post_type'   => 'entity',
 			'post_status' => 'publish',
+			'post_title'  => 'Address Sparql Tuple Rendition test_get_insert_triples',
 		) );
 
 		// Set the post meta values.
