@@ -90,6 +90,15 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 			'type'         => 'string',
 		) );
 
+		/**
+		 * Register meta _wl_alt_label for use in Gutenberg
+		 */
+		register_post_meta( 'entity', '_wl_alt_label', array(
+			'show_in_rest' => true,
+			'single'       => true,
+			'type'         => 'string',
+		) );
+
 		// Add filter to change the metabox CSS class.
 		add_filter( 'postbox_classes_entity_wl_entity_typediv', 'wl_admin_metaboxes_add_css_class' );
 
