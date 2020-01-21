@@ -30,14 +30,33 @@ final class Mappings_DBO {
 	}
 
 	/**
-	 * Returns a list of mapping item rows
-	 * @return array List of Mapping items
+	 * Returns an array of mappings.
+	 *
+	 * Each mapping contains one or more rule groups which in turn contain one or more rules.
+	 *
+	 * @return array An array of mappings.
 	 */
-	public function get_mapping_items() {
+	public function get_mappings() {
 		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
 
 		return $this->wpdb->get_results(
 			"SELECT * FROM $mapping_table_name",
+			ARRAY_A
+		);
+	}
+
+	/**
+	 * Returns an array of active mappings.
+	 *
+	 * Each mapping contains one or more rule groups which in turn contain one or more rules.
+	 *
+	 * @return array An array of mappings.
+	 */
+	public function get_active_mappings() {
+		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
+
+		return $this->wpdb->get_results(
+			"SELECT * FROM $mapping_table_name WHERE mapping_status = 'active'",
 			ARRAY_A
 		);
 	}
@@ -226,7 +245,8 @@ final class Mappings_DBO {
 	 *
 	 * @return array Get list of rule group items.
 	 */
-	public function get_rule_group_list_with_rules( $mapping_id ) {
+	public function get_rule_groups_by_mapping( $mapping_id ) {
+
 		$rule_group_table_name = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
 		$rule_group_rows       = $this->wpdb->get_results(
 			$this->wpdb->prepare(
@@ -235,21 +255,17 @@ final class Mappings_DBO {
 			),
 			ARRAY_A
 		);
+
 		// List of all rule group items.
-		$rule_group_data = array();
+		$rule_groups = array();
 		foreach ( $rule_group_rows as $rule_group_row ) {
-			array_push(
-				$rule_group_data,
-				array(
-					'rule_group_id' => $rule_group_row['rule_group_id'],
-					'rules'         => $this->get_rules(
-						$rule_group_row['rule_group_id']
-					),
-				)
+			$rule_groups[] = array(
+				'rule_group_id' => $rule_group_row['rule_group_id'],
+				'rules'         => $this->get_rules_by_rule_group( $rule_group_row['rule_group_id'] ),
 			);
 		}
 
-		return $rule_group_data;
+		return $rule_groups;
 	}
 
 	/**
@@ -259,7 +275,7 @@ final class Mappings_DBO {
 	 *
 	 * @return array Get list of rule items.
 	 */
-	public function get_rules( $rule_group_id ) {
+	public function get_rules_by_rule_group( $rule_group_id ) {
 		$rule_table_name = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
 
 		return $this->wpdb->get_results(

@@ -36,7 +36,7 @@ class Mappings_REST_Controller {
 		$dbo             = new Mappings_DBO();
 		$mapping_id      = $request['id'];
 		$mapping_id_data = array();
-		$rule_groups     = $dbo->get_rule_group_list_with_rules( $mapping_id );
+		$rule_groups     = $dbo->get_rule_groups_by_mapping( $mapping_id );
 		$properties      = $dbo->get_properties( $mapping_id );
 		$mapping_row     = $dbo->get_mapping_item_data( $mapping_id );
 
@@ -147,7 +147,7 @@ class Mappings_REST_Controller {
 			// Clone the current mapping item.
 			$cloned_mapping_id = $dbo->insert_mapping_item( $mapping_item['mapping_title'] );
 			// Clone all the rule groups.
-			$rule_groups_to_be_cloned = $dbo->get_rule_group_list_with_rules( $mapping_id );
+			$rule_groups_to_be_cloned = $dbo->get_rule_groups_by_mapping( $mapping_id );
 			// Clone all the properties.
 			$properties_to_be_cloned = $dbo->get_properties( $mapping_id );
 			foreach ( $properties_to_be_cloned as $property ) {
@@ -244,7 +244,7 @@ class Mappings_REST_Controller {
 	public static function list_mapping_items( $request ) {
 		$dbo = new Mappings_DBO();
 
-		return $dbo->get_mapping_items();
+		return $dbo->get_mappings();
 	}
 
 	/**
@@ -256,7 +256,7 @@ class Mappings_REST_Controller {
 	 * @return array A list of rule ids.
 	 */
 	private static function get_rule_ids( $dbo, $rule_group_id ) {
-		$rule_rows_in_db = $dbo->get_rules( $rule_group_id );
+		$rule_rows_in_db = $dbo->get_rules_by_rule_group( $rule_group_id );
 		$rule_ids        = array();
 		foreach ( $rule_rows_in_db as $rule_row ) {
 			array_push( $rule_ids, (int) $rule_row['rule_id'] );

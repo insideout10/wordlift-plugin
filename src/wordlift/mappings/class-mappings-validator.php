@@ -13,12 +13,11 @@
 
 namespace Wordlift\Mappings;
 
+use Wordlift\Mappings\Validators\Rule_Validators_Registry;
+
 final class Mappings_Validator {
 	const TRASH_CATEGORY = 'trash';
 	const ACTIVE_CATEGORY = 'active';
-	const POST_TYPE = 'post_type';
-	const IS_EQUAL_TO = '===';
-	const IS_NOT_EQUAL_TO = '!==';
 
 	/**
 	 * The {@link Mappings_DBO} instance to test.
@@ -39,13 +38,20 @@ final class Mappings_Validator {
 	private $valid_properties = array();
 
 	/**
+	 * @var Rule_Validators_Registry
+	 */
+	private $rule_validators_registry;
+
+	/**
 	 * Constructor for Wordlift_Mapping_Validator.
 	 *
 	 * @param Mappings_DBO $dbo The {@link Mappings_DBO} instance.
+	 * @param Rule_Validators_Registry $rule_validators_registry
 	 */
-	public function __construct( $dbo ) {
+	public function __construct( $dbo, $rule_validators_registry ) {
 
-		$this->dbo = $dbo;
+		$this->dbo                      = $dbo;
+		$this->rule_validators_registry = $rule_validators_registry;
 
 	}
 
@@ -69,29 +75,10 @@ final class Mappings_Validator {
 	}
 
 	/**
-	 * Validates two values based on the passed logic
-	 * a single rule passes the user defined logic.
-	 *
-	 * @param string $value_one The first value.
-	 * @param string $logic The logic field.
-	 * @param string $value_two The second value.
-	 *
-	 * @return bool
-	 */
-	private function is_logic_valid( $value_one, $logic, $value_two ) {
-		switch ( $logic ) {
-			case self::IS_EQUAL_TO:
-				return (string) $value_one === (string) $value_two;
-			case self::IS_NOT_EQUAL_TO:
-				return (string) $value_one !== (string) $value_two;
-		}
-	}
-
-	/**
 	 * Validates a post id with a rule and check if
 	 * a single rule passes the user defined logic.
 	 *
-	 * @param int  $post_id The post id.
+	 * @param int $post_id The post id.
 	 * @param array $rule_data The single rule data.
 	 *
 	 * @return bool
@@ -102,40 +89,16 @@ final class Mappings_Validator {
 		$rule_logic_field = $rule_data['rule_logic_field'];
 		$rule_field_two   = $rule_data['rule_field_two'];
 
-		switch ( $rule_field_one ) {
-			case self::POST_TYPE:
-				return $this->is_logic_valid(
-					get_post_type( $post_id ),
-					$rule_logic_field,
-					$rule_field_two
-				);
-			default:
-				$taxonomy       = $rule_field_one;
-				$terms          = get_the_terms( $post_id, $taxonomy );
-				$terms_id_array = array();
-				if ( is_wp_error( $terms ) || 0 === count( $terms ) ) {
-					// If no terms present then the rule is invalid.
-					return false;
-				}
-				foreach ( $terms as $term ) {
-					array_push( $terms_id_array, (string) $term->term_id );
-				}
-				if ( self::IS_EQUAL_TO === $rule_logic_field ) {
-					// Rule is made to check if the term is present for post, so
-					// do in_array.
-					return in_array( (string) $rule_field_two, $terms_id_array, true );
-				} elseif ( self::IS_NOT_EQUAL_TO === $rule_logic_field ) {
-					// The term  should not be present in the post terms.
-					return ! in_array( (string) $rule_field_two, $terms_id_array, true );
-				}
-		}
+		$rule_validator = $this->rule_validators_registry->get_rule_validator( $rule_field_one );
+
+		return $rule_validator->is_valid( $post_id, $rule_logic_field, $rule_field_one, $rule_field_two );
 	}
 
 	/**
 	 * Validates a post id with the list of rules and check if
 	 * all rules passes the user defined logic.
 	 *
-	 * @param int  $post_id The post id.
+	 * @param int $post_id The post id.
 	 * @param array $rules The list of rules from a rule group.
 	 *
 	 * @return bool
@@ -154,82 +117,55 @@ final class Mappings_Validator {
 	 * Validates a post id with the list of rule groups and check if
 	 * a single rule group passes the user defined logic.
 	 *
-	 * @param int  $post_id The post id.
-	 * @param array $rule_group_data The rule group data list.
+	 * @param int $post_id The post id.
+	 * @param array $rule_groups The rule group data list.
 	 *
 	 * @return bool
 	 */
-	private function validate_rule_group_with_rules_for_post_id( $post_id, $rule_group_data ) {
-		// At least one of the rule group must be valid.
-		$valid_rule_groups = array();
-		foreach ( $rule_group_data as $rule_group ) {
-			$single_rule_group_rules = $rule_group['rules'];
-			// There should be at least one rule present.
-			if (
-				0 !== count( $single_rule_group_rules ) &&
-				$this->is_rules_valid( $post_id, $single_rule_group_rules )
-			) {
-				array_push( $valid_rule_groups, $rule_group );
+	private function post_matches_rule_groups( $post_id, $rule_groups ) {
+
+		foreach ( $rule_groups as $rule_group ) {
+			$rules = $rule_group['rules'];
+
+			// Return early.
+			if ( ! empty( $rules ) && $this->is_rules_valid( $post_id, $rules ) ) {
+				return true;
 			}
 		}
 
-		return 0 !== count( $valid_rule_groups );
+		return false;
 	}
 
 	/**
 	 * Validates a post id with the list of active mapping items and check if
 	 * a mapping can be applied.
 	 *
-	 * @param int  $post_id The post id.
+	 * @param int $post_id The post id.
 	 *
-	 * @return bool
+	 * @return array
 	 */
 	public function validate( $post_id ) {
 		// Reset the valid property items before making the validation.
-		$this->valid_properties = array();
+		$properties = array();
 
-		// @@todo I am not following here, first you get all the mappings and then you check the rules?
-		// isn't it more efficient to first check the rules and then the associated mappings?
+		// Get active mappings.
+		$mappings = $this->dbo->get_active_mappings();
 
-		// Get all mapping items.
-		$mapping_items        = $this->dbo->get_mapping_items();
-		$active_mapping_items = self::get_item_by_status(
-			'mapping_status',
-			$mapping_items,
-			self::ACTIVE_CATEGORY
-		);
-		$valid_mapping_items  = array();
 		// Get all active rule groups for the mapping items.
-		foreach ( $active_mapping_items as $mapping_item ) {
-			$rule_groups               = $this->dbo->get_rule_group_list_with_rules(
-				(int) $mapping_item['mapping_id']
-			);
-			$is_mapping_valid_for_post = $this->validate_rule_group_with_rules_for_post_id(
-				$post_id,
-				$rule_groups
-			);
-			if ( $is_mapping_valid_for_post ) {
-				array_push(
-					$valid_mapping_items,
-					$mapping_item
-				);
-				$mapping_item_properties = $this->dbo->get_properties( $mapping_item['mapping_id'] );
-				$this->valid_properties  = array_merge( $this->valid_properties, $mapping_item_properties );
+		foreach ( $mappings as $mapping ) {
+			$rule_groups = $this->dbo->get_rule_groups_by_mapping( (int) $mapping['mapping_id'] );
+
+			$should_apply_mapping = $this->post_matches_rule_groups( $post_id, $rule_groups );
+
+			if ( $should_apply_mapping ) {
+				$mapping_item_properties = $this->dbo->get_properties( $mapping['mapping_id'] );
+				$properties              = array_merge( $properties, $mapping_item_properties );
 			}
 		}
 
-		// If at least one mapping item is valid then it can be applied.
-		return 0 !== count( $valid_mapping_items );
-	}
-
-	/**
-	 * Returns a list of valid properties to be mapped against json ld data
-	 * @return array Array of valid properties
-	 */
-	public function get_valid_properties() {
 		return self::get_item_by_status(
 			'property_status',
-			$this->valid_properties,
+			$properties,
 			self::ACTIVE_CATEGORY
 		);
 	}

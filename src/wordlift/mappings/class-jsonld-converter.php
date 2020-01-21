@@ -69,8 +69,7 @@ class Jsonld_Converter {
 		// @@todo I think there's an issue here with the Validator, because you're changing the instance state and the
 		// instance may be reused afterwards.
 
-		$this->validator->validate( $post_id );
-		$properties = $this->validator->get_valid_properties();
+		$properties = $this->validator->validate( $post_id );
 
 		foreach ( $properties as $property ) {
 			$transform_instance = $this->transform_functions_registry->get_transform_function( $property['transform_function'] );

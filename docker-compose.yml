@@ -18,6 +18,7 @@ services:
     volumes:
       - wordpress-data-${WORDPRESS_VERSION:-5.0.0}:/var/www/html
       - ./src:/var/www/html/wp-content/plugins/wordlift
+      - ../wordlift-how-to:/var/www/html/wp-content/plugins/wordlift-how-to
     environment:
       WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING: "true"
       WORDPRESS_DB_HOST: db
@@ -75,6 +76,7 @@ services:
     volumes:
       - wordpress-data-${WORDPRESS_VERSION:-5.0.0}:/var/www/html
       - ./src:/var/www/html/wp-content/plugins/wordlift
+      - ../wordlift-how-to:/var/www/html/wp-content/plugins/wordlift-how-to
     tty: true
 
 volumes:

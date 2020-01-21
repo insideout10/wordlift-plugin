@@ -16,6 +16,9 @@ use Wordlift\Mappings\Jsonld_Converter;
 use Wordlift\Mappings\Mappings_DBO;
 use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
 use Wordlift\Mappings\Mappings_Validator;
+use Wordlift\Mappings\Validators\Post_Type_Rule_Validator;
+use Wordlift\Mappings\Validators\Rule_Validators_Registry;
+use Wordlift\Mappings\Validators\Taxonomy_Rule_Validator;
 
 /**
  * The core plugin class.
@@ -1430,8 +1433,12 @@ class Wordlift {
 		 *
 		 * @since 3.25.0
 		 */
-		$mappings_dbo                          = new Mappings_DBO();
-		$mappings_validator                    = new Mappings_Validator( $mappings_dbo );
+
+		$mappings_dbo           = new Mappings_DBO();
+		$default_rule_validator = new Taxonomy_Rule_Validator();
+		new Post_Type_Rule_Validator();
+		$rule_validators_registry              = new Rule_Validators_Registry( $default_rule_validator );
+		$mappings_validator                    = new Mappings_Validator( $mappings_dbo, $rule_validators_registry );
 		$mappings_transform_functions_registry = new Mappings_Transform_Functions_Registry();
 		new Jsonld_Converter( $mappings_validator, $mappings_transform_functions_registry );
 

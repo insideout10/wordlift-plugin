@@ -2,6 +2,48 @@
 /**
  * Installs: Install Version 3.25.0.
  *
+ * wp_wl_mapping
+ * +----------------+--------------+------+-----+---------+----------------+
+ * | Field          | Type         | Null | Key | Default | Extra          |
+ * +----------------+--------------+------+-----+---------+----------------+
+ * | mapping_id     | int(11)      | NO   | PRI | NULL    | auto_increment |<----\-\
+ * | mapping_title  | varchar(255) | NO   |     | NULL    |                |     | |
+ * | mapping_status | varchar(255) | NO   |     | active  |                |     | |
+ * +----------------+--------------+------+-----+---------+----------------+     | |
+ *                                                                               | |
+ * wp_wl_mapping_rule                                                            | |
+ * +------------------+--------------+------+-----+---------+----------------+   | |
+ * | Field            | Type         | Null | Key | Default | Extra          |   | |
+ * +------------------+--------------+------+-----+---------+----------------+   | |
+ * | rule_id          | int(11)      | NO   | PRI | NULL    | auto_increment |   | |
+ * | rule_field_one   | varchar(255) | NO   |     | NULL    |                |   | |
+ * | rule_logic_field | varchar(255) | NO   |     | NULL    |                |   | |
+ * | rule_field_two   | varchar(255) | NO   |     | NULL    |                |   | |
+ * | rule_group_id    | int(11)      | NO   | MUL | NULL    |                |-\ | |
+ * +------------------+--------------+------+-----+---------+----------------+ | | |
+ *                                                                             | | |
+ * wp_wl_mapping_rule_group                                                    | | |
+ * +---------------+---------+------+-----+---------+----------------+         | | |
+ * | Field         | Type    | Null | Key | Default | Extra          |         | | |
+ * +---------------+---------+------+-----+---------+----------------+         | | |
+ * | rule_group_id | int(11) | NO   | PRI | NULL    | auto_increment |<--------/ | |
+ * | mapping_id    | int(11) | NO   | MUL | NULL    |                |-----------/ |
+ * +---------------+---------+------+-----+---------+----------------+             |
+ *                                                                                 |
+ * wp_wl_mapping_property                                                          |
+ * +--------------------+--------------+------+-----+---------+----------------+   |
+ * | Field              | Type         | Null | Key | Default | Extra          |   |
+ * +--------------------+--------------+------+-----+---------+----------------+   |
+ * | property_id        | int(11)      | NO   | PRI | NULL    | auto_increment |   |
+ * | mapping_id         | int(11)      | NO   | MUL | NULL    |                |---/
+ * | property_name      | varchar(255) | NO   |     | NULL    |                |
+ * | field_type         | varchar(255) | NO   |     | NULL    |                |
+ * | field_name         | varchar(255) | NO   |     | NULL    |                |
+ * | transform_function | varchar(255) | NO   |     | NULL    |                |
+ * | property_status    | varchar(255) | NO   |     | active  |                |
+ * +--------------------+--------------+------+-----+---------+----------------+
+ *
+ *
  * @since      3.25.0
  * @package    Wordlift
  * @subpackage Wordlift/install
@@ -47,7 +89,15 @@ class Wordlift_Install_3_25_0 extends Wordlift_Install {
 	}
 
 	/**
-	 * Install mappings table
+	 * Install mappings table.
+	 *
+	 * +----------------+--------------+------+-----+---------+----------------+
+	 * | Field          | Type         | Null | Key | Default | Extra          |
+	 * +----------------+--------------+------+-----+---------+----------------+
+	 * | mapping_id     | int(11)      | NO   | PRI | NULL    | auto_increment |
+	 * | mapping_title  | varchar(255) | NO   |     | NULL    |                |
+	 * | mapping_status | varchar(255) | NO   |     | active  |                |
+	 * +----------------+--------------+------+-----+---------+----------------+
 	 *
 	 * @return void
 	 * @since 3.25.0
@@ -73,9 +123,18 @@ EOF;
 	/**
 	 * Install rule table
 	 *
+	 * +------------------+--------------+------+-----+---------+----------------+
+	 * | Field            | Type         | Null | Key | Default | Extra          |
+	 * +------------------+--------------+------+-----+---------+----------------+
+	 * | rule_id          | int(11)      | NO   | PRI | NULL    | auto_increment |
+	 * | rule_field_one   | varchar(255) | NO   |     | NULL    |                |
+	 * | rule_logic_field | varchar(255) | NO   |     | NULL    |                |
+	 * | rule_field_two   | varchar(255) | NO   |     | NULL    |                |
+	 * | rule_group_id    | int(11)      | NO   | MUL | NULL    |                |
+	 * +------------------+--------------+------+-----+---------+----------------+
+	 *
 	 * @return void
 	 * @since 3.25.0
-	 *
 	 */
 	public function create_rule_table() {
 		$table_name            = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
@@ -102,9 +161,15 @@ EOF;
 	 * Install rule group table, should run after creating mapping and
 	 * rule table due to foreign key reference.
 	 *
+	 * +---------------+---------+------+-----+---------+----------------+
+	 * | Field         | Type    | Null | Key | Default | Extra          |
+	 * +---------------+---------+------+-----+---------+----------------+
+	 * | rule_group_id | int(11) | NO   | PRI | NULL    | auto_increment |
+	 * | mapping_id    | int(11) | NO   | MUL | NULL    |                |
+	 * +---------------+---------+------+-----+---------+----------------+
+	 *
 	 * @return void
 	 * @since 3.25.0
-	 *
 	 */
 	public function create_rule_group_table() {
 		$table_name      = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
@@ -131,9 +196,20 @@ EOF;
 	 * Install property table, should run after mapping table due to
 	 * foreign key reference.
 	 *
+	 * +--------------------+--------------+------+-----+---------+----------------+
+	 * | Field              | Type         | Null | Key | Default | Extra          |
+	 * +--------------------+--------------+------+-----+---------+----------------+
+	 * | property_id        | int(11)      | NO   | PRI | NULL    | auto_increment |
+	 * | mapping_id         | int(11)      | NO   | MUL | NULL    |                |
+	 * | property_name      | varchar(255) | NO   |     | NULL    |                |
+	 * | field_type         | varchar(255) | NO   |     | NULL    |                |
+	 * | field_name         | varchar(255) | NO   |     | NULL    |                |
+	 * | transform_function | varchar(255) | NO   |     | NULL    |                |
+	 * | property_status    | varchar(255) | NO   |     | active  |                |
+	 * +--------------------+--------------+------+-----+---------+----------------+
+	 *
 	 * @return void
 	 * @since 3.25.0
-	 *
 	 */
 	public function create_property_table() {
 		$table_name      = $this->wpdb->prefix . WL_PROPERTY_TABLE_NAME;

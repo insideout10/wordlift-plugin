@@ -159,7 +159,7 @@ class Mappings_REST_Controller_Test extends WP_UnitTestCase {
 		// This request should return 200.
 		$this->assertEquals( 200, $response->get_status() );
 		// Now these items would be deleted, we wont have any mapping items left on db.
-		$this->assertEquals( 0, count( $dbo->get_mapping_items() ) );
+		$this->assertEquals( 0, count( $dbo->get_mappings() ) );
 	}
 
 	/** Test can get a single mapping item in correct format */
@@ -295,7 +295,7 @@ class Mappings_REST_Controller_Test extends WP_UnitTestCase {
 
 		$this->assertEquals( 200, $response->get_status() );
 		// we should have 2 mapping items in db.
-		$this->assertEquals( 2, count( $dbo->get_mapping_items() ) );
+		$this->assertEquals( 2, count( $dbo->get_mappings() ) );
 		$rule_group_table_name = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
 		$rule_table_name = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
 		$rule_group_count = $this->wpdb->get_var( "SELECT COUNT(DISTINCT rule_group_id) as total FROM $rule_group_table_name" );

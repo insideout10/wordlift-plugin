@@ -149,7 +149,7 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 		// Lets insert a mapping item.
 		$this->dbo_instance->insert_mapping_item( 'foo' );
 		// we will have 1 item in db.
-		$this->assertEquals( count( $this->dbo_instance->get_mapping_items() ), 1 );
+		$this->assertEquals( count( $this->dbo_instance->get_mappings() ), 1 );
 	}
 
 
@@ -158,7 +158,7 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 		// Lets insert a mapping item.
 		$mapping_id = $this->dbo_instance->insert_mapping_item( 'foo' );
 		$this->dbo_instance->delete_mapping_item( $mapping_id );
-		$this->assertEquals( 0, count( $this->dbo_instance->get_mapping_items() ) );
+		$this->assertEquals( 0, count( $this->dbo_instance->get_mappings() ) );
 	}
 
 	/** Able to get properties for a mapping id */
@@ -205,7 +205,7 @@ class Wordlift_Mapping_DBO_Test extends WP_UnitTestCase {
 				'rule_logic_field' => '>',
 			)
 		);
-		$rule_groups_data = $this->dbo_instance->get_rule_group_list_with_rules( $mapping_id );
+		$rule_groups_data = $this->dbo_instance->get_rule_groups_by_mapping( $mapping_id );
 		$this->assertEquals( count( $rule_groups_data ), 2 );
 		$this->assertEquals( count( $rule_groups_data[0]['rules'] ), 1 );
 		$this->assertEquals( count( $rule_groups_data[1]['rules'] ), 1 );
