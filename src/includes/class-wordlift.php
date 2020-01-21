@@ -17,6 +17,7 @@ use Wordlift\Mappings\Mappings_DBO;
 use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
 use Wordlift\Mappings\Mappings_Validator;
 use Wordlift\Mappings\Validators\Post_Type_Rule_Validator;
+use Wordlift\Mappings\Validators\Rule_Groups_Validator;
 use Wordlift\Mappings\Validators\Rule_Validators_Registry;
 use Wordlift\Mappings\Validators\Taxonomy_Rule_Validator;
 
@@ -761,6 +762,7 @@ class Wordlift {
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.
 	 *
+	 * @throws Exception
 	 * @since    1.0.0
 	 * @access   private
 	 */
@@ -1438,7 +1440,8 @@ class Wordlift {
 		$default_rule_validator = new Taxonomy_Rule_Validator();
 		new Post_Type_Rule_Validator();
 		$rule_validators_registry              = new Rule_Validators_Registry( $default_rule_validator );
-		$mappings_validator                    = new Mappings_Validator( $mappings_dbo, $rule_validators_registry );
+		$rule_groups_validator                 = new Rule_Groups_Validator( $rule_validators_registry );
+		$mappings_validator                    = new Mappings_Validator( $mappings_dbo, $rule_groups_validator );
 		$mappings_transform_functions_registry = new Mappings_Transform_Functions_Registry();
 		new Jsonld_Converter( $mappings_validator, $mappings_transform_functions_registry );
 

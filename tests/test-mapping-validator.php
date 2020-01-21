@@ -9,6 +9,7 @@
 
 use Wordlift\Mappings\Mappings_DBO;
 use Wordlift\Mappings\Mappings_Validator;
+use Wordlift\Mappings\Validators\Rule_Groups_Validator;
 use Wordlift\Mappings\Validators\Rule_Validators_Registry;
 use Wordlift\Mappings\Validators\Taxonomy_Rule_Validator;
 
@@ -41,6 +42,7 @@ class Wordlift_Mapping_Validator_Test extends WP_UnitTestCase {
 
 	/**
 	 * @inheritdoc
+	 * @throws Exception
 	 */
 	public function setUp() {
 		parent::setUp();
@@ -50,7 +52,8 @@ class Wordlift_Mapping_Validator_Test extends WP_UnitTestCase {
 
 		$default_rule_validator   = new Taxonomy_Rule_Validator();
 		$rule_validators_registry = new Rule_Validators_Registry( $default_rule_validator );
-		$this->validator          = new Mappings_Validator( $this->dbo, $rule_validators_registry );
+		$rule_groups_validator    = new Rule_Groups_Validator( $rule_validators_registry );
+		$this->validator          = new Mappings_Validator( $this->dbo, $rule_groups_validator );
 		$this->assertNotNull( $this->validator, "Must be able to create a validator instance." );
 
 	}
