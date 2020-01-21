@@ -456,7 +456,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		// Create a post.
 		$post      = $this->factory()->post->create_and_get( array(
-			'post_title'  => 'Lorem Ipsum',
+			'post_title'  => 'Test Post To Json-Ld Converter test_a_post_with_one_mentions_and_one_about 0',
 			'post_author' => $this->author->ID,
 		) );
 		$post_uri  = $this->entity_service->get_uri( $post->ID );
@@ -491,7 +491,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		// Check that we have ... properties, not one more than that.
 		//
 		// Since 3.16.0 we also have the publisher among the properties.
-		$this->assertCount( 13, $jsonld );
+		$this->assertCount( 13, $jsonld, "The number of properties doesn`t match:\n" . var_export( array_keys( $jsonld ), true ) );
 
 		// Check the json-ld values.
 		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
@@ -1112,7 +1112,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		// Create a post that includes an img of an attachment and an external URL.
 		$post = $this->factory()->post->create_and_get( array(
-			'post_author' => $author_id,
+			'post_author'  => $author_id,
 			'post_excerpt' => 'Test Post To Json-Ld Converter test_a_post_with_a_user_with_a_representing_person_entity 2',
 		) );
 
