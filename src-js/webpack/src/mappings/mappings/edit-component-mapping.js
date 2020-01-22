@@ -104,6 +104,13 @@ class EditComponentMapping {
       return single_rule_group_item;
     });
   }
+
+  /**
+   * Map the store keys to api keys before sending it to api.
+   * Note: Lower case variables are sent to API.
+   * @param store Redux Store for edit mappings.
+   * @returns {{property_list: ([]|[{fieldHelpText: string, transformHelpText: string, isOpenedOrAddedByUser: boolean, propertyHelpText: string, fieldTypeHelpText: string}, {fieldHelpText: string, transformHelpText: string, isOpenedOrAddedByUser: boolean, propertyHelpText: string, fieldTypeHelpText: string}]|{fieldHelpText: string, transformHelpText: string, isOpenedOrAddedByUser: boolean, propertyHelpText: string, fieldTypeHelpText: string}), mapping_title: (string), rule_group_list: ([]|[{rules: [{}]}, {rules: [{}]}]|{rules: [{}]})}}
+   */
   static mapStoreKeysToAPI(store) {
     // We create a post object to transform the ui data to Api data
     const postObject = {
@@ -111,8 +118,7 @@ class EditComponentMapping {
       property_list: store.PropertyListData.propertyList,
       rule_group_list: store.RuleGroupData.ruleGroupList
     };
-    // @@todo use strict comparison.
-    if (store.TitleSectionData.mapping_id != undefined) {
+    if (store.TitleSectionData.mapping_id !== undefined) {
       postObject.mapping_id = store.TitleSectionData.mapping_id;
     }
     postObject.rule_group_list = EditComponentMapping.mapRuleGroupListKeysToAPI(postObject.rule_group_list);

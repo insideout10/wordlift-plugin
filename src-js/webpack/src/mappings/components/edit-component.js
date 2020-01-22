@@ -147,7 +147,7 @@ class EditComponent extends React.Component {
         };
         this.props.dispatch(notification_changed_action);
         this.setNewMappingId(data.mapping_id);
-        window != undefined ? window.scrollTo(0, 0) : undefined;
+        window !== undefined ? window.scrollTo(0, 0) : undefined;
       })
     );
   };

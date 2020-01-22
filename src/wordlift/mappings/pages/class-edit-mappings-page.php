@@ -174,7 +174,6 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 		$edit_mapping_settings['wl_transform_function_options'] = $this->transform_function_registry->get_options();
 
 		$all_field_name_options = self::get_all_field_name_options();
-
 		$all_field_types_options = array_map( function ( $item ) {
 			return array(
 				'label' => $item['label'],
@@ -287,8 +286,9 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 	}
 
 	/**
-	 * @param array $edit_mapping_settings
+	 * Load the rest settings required for the edit_mappings js client.
 	 *
+	 * @param array $edit_mapping_settings
 	 * @return array
 	 */
 	private function load_rest_settings( array $edit_mapping_settings ) {
