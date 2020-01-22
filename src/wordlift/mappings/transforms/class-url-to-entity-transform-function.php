@@ -10,18 +10,42 @@
 namespace Wordlift\Mappings\Transforms;
 
 use Wordlift\Mappings\Mappings_Transform_Function;
+use Wordlift_Entity_Uri_Service;
 
+/**
+ * Class Url_To_Entity_Transform_Function.
+ *
+ * @package Wordlift\Mappings\Transforms
+ */
 class Url_To_Entity_Transform_Function implements Mappings_Transform_Function {
 
 	/**
-	 * Url_To_Entity_Transform_Function constructor.
+	 * The {@link Wordlift_Entity_Uri_Service} instance.
+	 *
+	 * @var Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service} instance.
 	 */
-	public function __construct() {
+	private $entity_uri_service;
+
+	/**
+	 * Url_To_Entity_Transform_Function constructor.
+	 *
+	 * @param Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service} instance.
+	 */
+	public function __construct( $entity_uri_service ) {
+
+		$this->entity_uri_service = $entity_uri_service;
 
 		add_filter( 'wl_mappings_transformation_functions', array( $this, 'wl_mappings_transformation_functions' ) );
 
 	}
 
+	/**
+	 * Hook to add ourselves to the list of available transform functions.
+	 *
+	 * @param Mappings_Transform_Function[] $value An array of {@link Mappings_Transform_Function}s.
+	 *
+	 * @return Mappings_Transform_Function[] An updated array with ourselves too.
+	 */
 	public function wl_mappings_transformation_functions( $value ) {
 
 		$value[] = $this;
@@ -49,11 +73,17 @@ class Url_To_Entity_Transform_Function implements Mappings_Transform_Function {
 	 * @inheritDoc
 	 */
 	public function transform_data( $data, $jsonld, &$references ) {
-		// TODO: Implement transform_data() method.
 
-		$references[] = 4;
+		// Get the entity by URI.
+		$post = $this->entity_uri_service->get_entity( $data );
 
-		return $data;
+		// If found, add the reference.
+		if ( is_a( $post, 'WP_Post' ) ) {
+			// Add the entity among the references using the post ID.
+			$references[] = $post->ID;
+		}
+
+		return array( "@id" => $data, );
 	}
 
 }
