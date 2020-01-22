@@ -105,11 +105,11 @@ class Jsonld_Converter {
 
 		foreach ( $properties as $property ) {
 			$transform_instance = $this->transform_functions_registry->get_transform_function( $property['transform_function'] );
+			$data                                 = $this->get_data_from_data_source( $post_id, $property );
 			if ( null !== $transform_instance ) {
-				$data                                 = $this->get_data_from_data_source( $post_id, $property );
 				$jsonld[ $property['property_name'] ] = $transform_instance->transform_data( $data, $jsonld, $references );
 			} else {
-				$jsonld[ $property['property_name'] ] = $property['field_name'];
+				$jsonld[ $property['property_name'] ] = $data;
 			}
 		}
 
