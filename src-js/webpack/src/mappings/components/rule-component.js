@@ -116,7 +116,8 @@ class RuleComponent extends React.Component {
           // Once the terms arrived, pass it to the store.
           const action = MAPPING_TERMS_CHANGED_ACTION;
           action.payload = {
-            terms: terms
+            terms: terms,
+            taxonomy: taxonomy
           };
           this.props.dispatch( action )
         })

@@ -94,8 +94,12 @@ export const RuleGroupReducer = createReducer(null, {
       * they needed to be added to the ruleFieldTwoOptions
       */
      [ MAPPING_TERMS_CHANGED ]: ( state, action ) => {
-         const terms = action.payload.terms
+         const taxonomy = action.payload.taxonomy;
+         const terms = action.payload.terms;
          state.ruleFieldTwoOptions = state.ruleFieldTwoOptions.concat( terms )
+         // set fetched from network to true in taxonomy, we cache the terms.
+         const taxonomyIndex = state.ruleFieldOneOptions.findIndex(x => x.value === taxonomy );
+         state.ruleFieldOneOptions[ taxonomyIndex ].isTermsFetchedForTaxonomy = true
      }
   });
 
