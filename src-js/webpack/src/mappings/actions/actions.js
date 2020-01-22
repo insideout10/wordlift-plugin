@@ -31,7 +31,8 @@ import {
   PROPERTY_ITEMS_BULK_SELECT,
   MAPPING_ITEMS_BULK_SELECT,
   MAPPING_ID_CHANGED_FROM_API,
-  MAPPING_LIST_SORT_TITLE_CHANGED
+  MAPPING_LIST_SORT_TITLE_CHANGED,
+  MAPPING_TERMS_CHANGED
 } from "./action-types";
 /**
  * @const {object} ADD_NEW_RULE_ACTION
@@ -255,4 +256,13 @@ export const MAPPING_ITEMS_BULK_ACTION = {
  */
 export const MAPPING_ID_CHANGED_FROM_API_ACTION = {
   type: MAPPING_ID_CHANGED_FROM_API
+};
+
+/**
+ * @const {object} Whenever the taxonomies are loaded from the rest api,
+ * this action is fired setting the options, the options are cached in the redux
+ * state store.
+ */
+export const MAPPING_TERMS_CHANGED_ACTION = {
+  type: MAPPING_TERMS_CHANGED
 };

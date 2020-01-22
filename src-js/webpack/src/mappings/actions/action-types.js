@@ -166,3 +166,9 @@ export const MAPPING_ITEMS_BULK_SELECT = "MAPPING_ITEMS_BULK_SELECT";
  * Action when the mapping id changes from add new mapping post.
  */
 export const MAPPING_ID_CHANGED_FROM_API = "MAPPING_ID_CHANGED_FROM_API";
+
+/**
+ * @const MAPPING_TERMS_CHANGED
+ * Action type when the mapping taxonomy terms are loaded from the rest api.
+ */
+export const MAPPING_TERMS_CHANGED = "MAPPING_TERMS_CHANGED"
