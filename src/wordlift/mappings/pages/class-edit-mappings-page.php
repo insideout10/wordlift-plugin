@@ -89,8 +89,9 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 		);
 
 		// Load the UI dependencies.
-		self::load_ui_dependencies();
-
+		$edit_mapping_settings = self::get_ui_settings_array();
+		// Supply the settings to js client.
+		wp_localize_script( 'wl-mappings-edit', 'wl_edit_mappings_config', $edit_mapping_settings );
 	}
 
 	/**
@@ -128,9 +129,11 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 	}
 
 	/**
+	 * @since 3.25.0
 	 * Load dependencies required for js client.
+	 * @return array An Array containing key value pairs of settings.
 	 */
-	public static function load_ui_dependencies() {
+	public static function get_ui_settings_array() {
 		// Create ui settings array to be used by js client.
 		$edit_mapping_settings                               = array();
 		$edit_mapping_settings['rest_url']                   = get_rest_url(
@@ -186,8 +189,7 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 			$edit_mapping_settings['wl_rule_field_one_options'],
 			$edit_mapping_settings['wl_rule_field_two_options']
 			) = self::get_post_taxonomies_and_terms();
-
-		wp_localize_script( 'wl-mappings-edit', 'wl_edit_mappings_config', $edit_mapping_settings );
+		return $edit_mapping_settings;
 	}
 
 	/**

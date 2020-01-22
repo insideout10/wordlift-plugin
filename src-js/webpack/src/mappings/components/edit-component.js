@@ -53,7 +53,7 @@ class EditComponent extends React.Component {
     this.props.dispatch(action);
   };
   componentDidMount() {
-    if (editMappingSettings.wl_edit_mapping_id != undefined) {
+    if (editMappingSettings.wl_edit_mapping_id !== undefined) {
       this.getMappingItemByMappingId();
     }
   }
