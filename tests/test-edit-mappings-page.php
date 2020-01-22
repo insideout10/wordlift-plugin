@@ -61,4 +61,24 @@ class Edit_Mapping_Page_Test extends Wordlift_Unit_Test_Case {
 		Registry service must be provided via constructor' );
 	}
 
+
+	/**
+	 * This test checks if the logic options are loaded
+	 */
+	public function test_logic_field_options_should_be_loaded() {
+		$this->assertArrayHasKey( 'wl_logic_field_options',  $this->ui_settings_array, 'Logic field options should be present.');
+		// there should be 2 logic field options.
+		$this->assertCount( 2, $this->ui_settings_array['wl_logic_field_options'] );
+		$expected_logic_field_options = array(
+			array(
+				'label' => __( 'is equal to', 'wordlift' ),
+				'value' => '===',
+			),
+			array(
+				'label' => __( 'is not equal to', 'wordlift' ),
+				'value' => '!==',
+			),
+		);
+		$this->assertEquals( $expected_logic_field_options, $this->ui_settings_array['wl_logic_field_options'] );
+	}
 }

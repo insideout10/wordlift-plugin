@@ -197,16 +197,7 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 		// Add wl_edit_field_name_options.
 		$edit_mapping_settings['wl_field_name_options'] = $all_field_name_options;
 
-		$edit_mapping_settings['wl_logic_field_options'] = array(
-			array(
-				'label' => __( 'is equal to', 'wordlift' ),
-				'value' => '===',
-			),
-			array(
-				'label' => __( 'is not equal to', 'wordlift' ),
-				'value' => '!==',
-			),
-		);
+		$edit_mapping_settings = $this->load_logic_field_options( $edit_mapping_settings );
 
 		list(
 			$edit_mapping_settings['wl_rule_field_one_options'],
@@ -219,7 +210,6 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 	 * Returns post type, post category, or any other post taxonomies
 	 * @return array An array of select options
 	 */
-	// @@todo change this to a rest end-point.
 	private static function get_post_taxonomies_and_terms() {
 		$taxonomy_options = array();
 		$term_options     = array();
@@ -267,6 +257,26 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 		}
 
 		return array( $post_type_option_name, $post_type_option_values );
+	}
+
+	/**
+	 * This function loads the equal to, not equal to operator to the edit mapping settings.
+	 * @param array $edit_mapping_settings
+	 * @return array Loads the logic field options to the $edit_mapping_settings.
+	 */
+	private function load_logic_field_options( array $edit_mapping_settings ) {
+		$edit_mapping_settings['wl_logic_field_options'] = array(
+			array(
+				'label' => __( 'is equal to', 'wordlift' ),
+				'value' => Wordlift\Mappings\Validators\Rule_Validator::IS_EQUAL_TO,
+			),
+			array(
+				'label' => __( 'is not equal to', 'wordlift' ),
+				'value' => Wordlift\Mappings\Validators\Rule_Validator::IS_NOT_EQUAL_TO,
+			),
+		);
+
+		return $edit_mapping_settings;
 	}
 
 }
