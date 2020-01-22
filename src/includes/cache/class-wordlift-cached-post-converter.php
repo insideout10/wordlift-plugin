@@ -131,6 +131,10 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	 */
 	public function convert( $post_id, &$references = array(), &$cache = false ) {
 
+		// Ensure post ID is `int`. Otherwise we may have issues with caching, since caching is strict about
+		// key var types.
+		$post_id = (int) $post_id;
+
 		$this->log->trace( "Converting post $post_id..." );
 
 		// Try to get a cached result.
@@ -174,6 +178,9 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	 */
 	private function get_cache( $post_id, &$references = array() ) {
 
+		// Ensure post ID is int, because cache is strict about var types.
+		$post_id = (int) $post_id;
+
 		$this->log->trace( "Getting cached contents for post $post_id..." );
 
 		// Get the cache.
@@ -181,7 +188,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 
 		// Bail out if we don't have cached contents or the cached contents are
 		// invalid.
-		if ( false === $contents || ! isset( $contents['jsonld'] ) || ! isset( $contents['references'] ) ) {
+		if ( null === $contents || ! isset( $contents['jsonld'] ) || ! isset( $contents['references'] ) ) {
 			$this->log->debug( "Cached contents for post $post_id not found." );
 
 			return false;

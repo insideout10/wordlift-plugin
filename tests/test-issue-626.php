@@ -64,15 +64,6 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 	private $cached_postid_to_jsonld_converter;
 
 	/**
-	 * The {@link Wordlift_Cache_Service} instance.
-	 *
-	 * @since  3.16.0
-	 * @access private
-	 * @var \Wordlift_Cache_Service $file_cache_service The {@link Wordlift_Cache_Service} instance.
-	 */
-	private $file_cache_service;
-
-	/**
 	 * The {@link Wordlift_Relation_Service} instance.
 	 *
 	 * @since  3.16.0
@@ -125,7 +116,9 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 		$this->user_service                      = $wordlift_test->get_user_service();
 
 		// Clear the cache.
-		do_action( 'wl_ttl_cache_cleaner__flush' );
+//		do_action( 'wl_ttl_cache_cleaner__flush' );
+		$ttl_cache_cleaner = new \Wordlift\Cache\Ttl_Cache_Cleaner();
+		$ttl_cache_cleaner->flush();
 	}
 
 	/**
@@ -142,7 +135,7 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 		$post_1 = $this->get_post( 'post_5' );
 		$this->_test_that_the_non_cached_and_the_cached_results_are_equal( $post_1 );
 
-		$post_2 = $this->get_post( 'praesent_imperdiet_odio_sed_lectus_vulputate_finibus' );
+		$post_2 = $this->get_post( 'nullam_tempor_lectus_sit_amet_tincidunt_euismod' );
 		$this->_test_that_the_non_cached_and_the_cached_results_are_equal( $post_2 );
 
 		// Delete the sample data.
@@ -163,9 +156,6 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 	 *
 	 */
 	private function _test_that_the_non_cached_and_the_cached_results_are_equal( $post ) {
-
-		// Reset the cache.
-		$this->file_cache_service->flush();
 
 		// Check that we have a valid value.
 		$this->assertTrue( $post instanceof WP_Post );
@@ -216,12 +206,14 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 		$this->assert_no_cache_and_then_cache( $post->ID );
 
 		// Add back the relations.
+		$this->assertNotEmpty( $relations_1, 'There must be at least one relation.' );
 		foreach ( $relations_1 as $relation ) {
 			wl_core_add_relation_instance( $post->ID, $this->entity_service->get_classification_scope_for( $relation->ID ), $relation->ID );
 		}
 
 		// Check that the relations are back as before.
 		$relations_3 = $this->relation_service->get_objects( $post->ID );
+
 		// We're using PHP Unit 4:
 		// assertEquals( $expected, $actual, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false )
 		$this->assertEquals( $relations_1, $relations_3, '', 0.0, 10, true );
@@ -280,8 +272,9 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 
 		// Get the post #5 which is the one that binds to all the entities.
 		$posts = get_posts( array(
-			'post_name'   => $post_name,
+			'name'        => $post_name,
 			'numberposts' => 1,
+			'post_type'   => 'any'
 		) );
 
 		// Check that we got one post.
@@ -317,7 +310,7 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 		$cached = $this->cached_postid_to_jsonld_converter->convert( $post_id, $cached_references, $cache );
 
 		// Expect the first response not to be cached.
-		$this->assertEquals( $expect, $cache );
+		$this->assertEquals( $expect, $cache, "The first response for post $post_id " . ( $expect ? 'should' : 'shouldn`t' ) . ' be cached.' );
 
 		// If the response is cached we expect no queries.
 		$this->assertEquals( $cache, $num_queries === $wpdb->num_queries );

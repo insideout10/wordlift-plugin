@@ -67,7 +67,8 @@ class Mappings_Transform_Function_Registry_Test extends Wordlift_Unit_Test_Case 
 		self::add_transformation_function_to_hook();
 		$transformation_function = $registry->get_transform_function( 'foo' );
 		$this->assertNotNull( $transformation_function, 'Transformation function should be present' );
-		$this->assertEquals( 1, $registry->get_transform_function_count() );
+		// We now have also the URL to Entity transform function.
+		$this->assertEquals( 2, $registry->get_transform_function_count() );
 	}
 
 	/**
@@ -81,6 +82,8 @@ class Mappings_Transform_Function_Registry_Test extends Wordlift_Unit_Test_Case 
 		self::add_transformation_function_to_hook();
 		$transformation_function = $registry->get_transform_function( 'foo' );
 		$this->assertNotNull( $transformation_function, 'Transformation function should be present' );
-		$this->assertEquals( 1, $registry->get_transform_function_count() );
+		// The mock function and our URL to Entity Function.
+		$this->assertEquals( 2, $registry->get_transform_function_count() );
 	}
+
 }

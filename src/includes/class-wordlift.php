@@ -675,15 +675,6 @@ class Wordlift {
 	protected $cached_postid_to_jsonld_converter;
 
 	/**
-	 * The {@link Wordlift_File_Cache_Service} instance.
-	 *
-	 * @since  3.16.0
-	 * @access protected
-	 * @var \Wordlift_File_Cache_Service $file_cache_service The {@link Wordlift_File_Cache_Service} instance.
-	 */
-	protected $file_cache_service;
-
-	/**
 	 * The {@link Wordlift_Entity_Uri_Service} instance.
 	 *
 	 * @since  3.16.3
