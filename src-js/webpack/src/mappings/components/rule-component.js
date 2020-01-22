@@ -13,7 +13,12 @@ import { connect } from "react-redux";
  * Internal dependencies
  */
 import SelectComponent from "./select-component";
-import { ADD_NEW_RULE_ACTION, DELETE_RULE_ACTION, CHANGE_RULE_FIELD_VALUE_ACTION } from "../actions/actions";
+import {
+  ADD_NEW_RULE_ACTION,
+  DELETE_RULE_ACTION,
+  CHANGE_RULE_FIELD_VALUE_ACTION,
+  NOTIFICATION_CHANGED_ACTION, MAPPING_TERMS_CHANGED_ACTION
+} from "../actions/actions";
 
 class RuleComponent extends React.Component {
   constructor(props) {
@@ -61,8 +66,63 @@ class RuleComponent extends React.Component {
       ruleGroupIndex: this.props.ruleGroupIndex,
       fieldKey: fieldKey
     };
+    if ( fieldKey === 'ruleFieldOneValue' ) {
+      // We might need to get terms when this field changes.
+      this.fetchTermsForSelectedTaxonomyFromAPI( event.target.value )
+    }
     this.props.dispatch(action);
   };
+  /**
+   * Fetches the terms for the selected taxonomy to the ui.
+   * @param selectedTaxonomy The taxonomy selected by the user.
+   */
+  fetchTermsForSelectedTaxonomyFromAPI = ( selectedTaxonomy )=> {
+    // Check if the terms are fetched for the taxonomy.
+    const taxonomies = this.props.ruleFieldOneOptions.filter( e => e.value === selectedTaxonomy );
+    if ( 1 === taxonomies.length ) {
+      const selectedTaxonomyOption = taxonomies[0];
+      if ( ! selectedTaxonomyOption.isTermsFetchedForTaxonomy ) {
+        // if the terms are not fetched from api, then send a network request.
+        this.getTermsFromAPI( selectedTaxonomy )
+      }
+    }
+  };
+
+  /**
+   * Send request to api to get terms for the selected taxonomy,
+   * @param taxonomy The selected taxonomy string.
+   */
+  getTermsFromAPI = ( taxonomy ) => {
+    const editMappingSettings = window["wl_edit_mappings_config"]
+    const postObject = {
+      'taxonomy' : taxonomy,
+    };
+    fetch(editMappingSettings.rest_url + '/get_terms', {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "X-WP-Nonce": editMappingSettings.wl_edit_mapping_rest_nonce
+      },
+      body: JSON.stringify(postObject)
+    }).then(response =>
+        response.json().then(data => {
+          const terms = data.map( e => {
+            return {
+              label: e.name,
+              value: e.slug,
+              taxonomy: e.taxonomy
+            }
+          });
+          // Once the terms arrived, pass it to the store.
+          const action = MAPPING_TERMS_CHANGED_ACTION;
+          action.payload = {
+            terms: terms
+          };
+          this.props.dispatch( action )
+        })
+    );
+  };
+
   render() {
     return (
       <div className="wl-container wl-rule-container">

@@ -8,7 +8,29 @@
 /**
  * Internal dependancies
  */
-import { ADD_NEW_RULE, ADD_NEW_RULE_GROUP, DELETE_RULE, CHANGE_RULE_FIELD_VALUE, OPEN_OR_CLOSE_PROPERTY, PROPERTY_DATA_CHANGED, ADD_MAPPING, TITLE_CHANGED, PROPERTY_LIST_CHANGED, MAPPING_HEADER_CHANGED, RULE_GROUP_LIST_CHANGED, NOTIFICATION_CHANGED, PROPERTY_ITEM_CATEGORY_CHANGED, PROPERTY_LIST_SELECTED_CATEGORY_CHANGED, PROPERTY_ITEM_CRUD_OPERATION, PROPERTY_ITEM_SELECTED, PROPERTY_ITEM_SELECT_ALL, PROPERTY_ITEMS_BULK_SELECT, BULK_ACTION_SELECTION_CHANGED, MAPPING_ID_CHANGED_FROM_API } from '../actions/action-types'
+import {
+    ADD_NEW_RULE,
+    ADD_NEW_RULE_GROUP,
+    DELETE_RULE,
+    CHANGE_RULE_FIELD_VALUE,
+    OPEN_OR_CLOSE_PROPERTY,
+    PROPERTY_DATA_CHANGED,
+    ADD_MAPPING,
+    TITLE_CHANGED,
+    PROPERTY_LIST_CHANGED,
+    MAPPING_HEADER_CHANGED,
+    RULE_GROUP_LIST_CHANGED,
+    NOTIFICATION_CHANGED,
+    PROPERTY_ITEM_CATEGORY_CHANGED,
+    PROPERTY_LIST_SELECTED_CATEGORY_CHANGED,
+    PROPERTY_ITEM_CRUD_OPERATION,
+    PROPERTY_ITEM_SELECTED,
+    PROPERTY_ITEM_SELECT_ALL,
+    PROPERTY_ITEMS_BULK_SELECT,
+    BULK_ACTION_SELECTION_CHANGED,
+    MAPPING_ID_CHANGED_FROM_API,
+    MAPPING_TERMS_CHANGED
+} from '../actions/action-types'
 import { createReducer } from '@reduxjs/toolkit'
 import { DELETE_PROPERTY_PERMANENT, DUPLICATE_PROPERTY } from '../components/property-list-item-component'
 import { BulkOptionValues } from '../components/bulk-action-sub-components'
@@ -66,8 +88,16 @@ export const RuleGroupReducer = createReducer(null, {
      */
     [RULE_GROUP_LIST_CHANGED]: ( state, action )=> {
         state.ruleGroupList = action.payload.value
-    }
-  })
+    },
+     /**
+      * When the taxonomy is chosen by the user the new terms are fetched from api,
+      * they needed to be added to the ruleFieldTwoOptions
+      */
+     [ MAPPING_TERMS_CHANGED ]: ( state, action ) => {
+         const terms = action.payload.terms
+         state.ruleFieldTwoOptions = state.ruleFieldTwoOptions.concat( terms )
+     }
+  });
 
   /**
    * Change property item category of the property item.

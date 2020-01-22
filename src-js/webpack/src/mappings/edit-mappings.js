@@ -20,6 +20,7 @@ import "./mappings.css";
 import { createStore, combineReducers } from "redux";
 import { RuleGroupReducer, PropertyReducer, TitleReducer, NotificationReducer } from "./reducers/edit-mapping-reducers";
 import { ACTIVE_CATEGORY } from "./components/category-component";
+import EditComponentMapping from "./mappings/edit-component-mapping";
 
 // Set a reference to the WordLift's Edit Mapping settings stored in the window instance.
 const editMappingSettings = window["wl_edit_mappings_config"] || {};
@@ -33,7 +34,11 @@ const INITIAL_STATE = {
     title: ""
   },
   RuleGroupData: {
-    ruleFieldOneOptions: editMappingSettings.wl_rule_field_one_options,
+    // Adding filter to determine whether to fetch terms from api or not.
+    ruleFieldOneOptions: EditComponentMapping.addNetworkStateToTaxonomyOptions(
+        editMappingSettings.wl_rule_field_one_options,
+        editMappingSettings.wl_rule_field_two_options
+    ),
     ruleFieldTwoOptions: editMappingSettings.wl_rule_field_two_options,
     ruleLogicFieldOptions: editMappingSettings.wl_logic_field_options,
     ruleGroupList: []
