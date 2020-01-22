@@ -37,6 +37,7 @@ class Mappings_Transform_Functions_Registry {
 	 * @return array An Array of transform function options.
 	 */
 	public function get_options() {
+		$this->sync_transformation_functions_from_external_plugins();
 		$options = array();
 		foreach ( $this->transform_function_array as $transform_function ) {
 			array_push(
