@@ -35,6 +35,7 @@ class Edit_Mapping_Page_Test extends Wordlift_Unit_Test_Case {
 		$this->assertArrayHasKey( 'wl_add_mapping_text', $this->ui_settings_array );
 		$this->assertArrayHasKey( 'wl_edit_mapping_text', $this->ui_settings_array );
 		$this->assertArrayHasKey( 'wl_edit_mapping_no_item', $this->ui_settings_array );
+		$this->assertArrayHasKey( 'page', $this->ui_settings_array );
 	}
 
 	/**

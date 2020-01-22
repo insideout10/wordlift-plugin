@@ -49,7 +49,7 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 		$edit_mapping_settings['wl_add_mapping_text']     = __( 'Add Mapping', 'wordlift' );
 		$edit_mapping_settings['wl_edit_mapping_text']    = __( 'Edit Mapping', 'wordlift' );
 		$edit_mapping_settings['wl_edit_mapping_no_item'] = __( 'Unable to find the mapping item', 'wordlift' );
-
+		$edit_mapping_settings['page']                    = 'wl_edit_mapping';
 		return $edit_mapping_settings;
 	}
 
@@ -131,15 +131,14 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 	public static function get_all_field_name_options() {
 
 		$options = array(
-			// @@todo rename as Fixed Text.
 			array(
-				'field_type' => 'text',
+				'field_type' => Wordlift\Mappings\Jsonld_Converter::FIELD_TYPE_TEXT_FIELD,
 				'value'      => '',
 				'label'      => __( 'Fixed Text', 'wordlift' ),
 			),
 			// @@todo maybe it makes sense to move this one as well to Wordlift/Mappings/Custom_Fields_Mappings.
 			array(
-				'field_type' => 'custom_field',
+				'field_type' => Wordlift\Mappings\Jsonld_Converter::FIELD_TYPE_CUSTOM_FIELD,
 				'value'      => '',
 				'label'      => __( 'Custom Field', 'wordlift' ),
 			),
@@ -169,7 +168,6 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 			null,
 			WL_REST_ROUTE_DEFAULT_NAMESPACE . Mappings_REST_Controller::MAPPINGS_NAMESPACE
 		);
-		$edit_mapping_settings['page']                       = 'wl_edit_mapping';
 		$edit_mapping_settings['wl_edit_mapping_rest_nonce'] = wp_create_nonce( 'wp_rest' );
 		$edit_mapping_settings                               = $this->validate_nonce_and_assign_mapping_id( $edit_mapping_settings );
 

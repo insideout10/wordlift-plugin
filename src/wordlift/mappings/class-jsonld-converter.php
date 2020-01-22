@@ -16,7 +16,13 @@ namespace Wordlift\Mappings;
  * @since 3.25.0
  */
 class Jsonld_Converter {
-
+	/**
+	 * Enumerations for the field types.
+	 * Enumerations for the field types.
+	 */
+	const FIELD_TYPE_TEXT_FIELD = 'text';
+	const FIELD_TYPE_CUSTOM_FIELD = 'custom_field';
+	const FIELD_TYPE_ACF = 'acf';
 	/**
 	 * The {@link Mappings_Validator} instance to test.
 	 *
@@ -94,9 +100,8 @@ class Jsonld_Converter {
 	 */
 	final public function get_data_from_data_source( $post_id, $property_data ) {
 		$value = $property_data['field_name'];
-		// @@todo 'ACF' shouldn't be here.
 		// Do 1 to 1 mapping and return result.
-		if ( 'acf' === $property_data['field_type'] && function_exists( 'get_field' ) ) {
+		if ( self::FIELD_TYPE_ACF === $property_data['field_type'] && function_exists( 'get_field' ) ) {
 			$value = get_field( $property_data['field_name'], $post_id );
 			$value = ( null !== $value ) ? $value : '';
 		}
