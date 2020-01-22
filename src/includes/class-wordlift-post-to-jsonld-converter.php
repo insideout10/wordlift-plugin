@@ -36,13 +36,14 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	/**
 	 * Wordlift_Post_To_Jsonld_Converter constructor.
 	 *
+	 * @param \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
+	 * @param \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_User_Service $user_service A {@link Wordlift_User_Service} instance.
+	 * @param \Wordlift_Attachment_Service $attachment_service A {@link Wordlift_Attachment_Service} instance.
+	 * @param \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
+	 *
 	 * @since 3.10.0
 	 *
-	 * @param \Wordlift_Entity_Type_Service   $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
-	 * @param \Wordlift_Entity_Service        $entity_service A {@link Wordlift_Entity_Service} instance.
-	 * @param \Wordlift_User_Service          $user_service A {@link Wordlift_User_Service} instance.
-	 * @param \Wordlift_Attachment_Service    $attachment_service A {@link Wordlift_Attachment_Service} instance.
-	 * @param \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
 	 */
 	public function __construct( $entity_type_service, $entity_service, $user_service, $attachment_service, $configuration_service ) {
 		parent::__construct( $entity_type_service, $entity_service, $user_service, $attachment_service );
@@ -57,12 +58,12 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 * Convert the provided {@link WP_Post} to a JSON-LD array. Any entity reference
 	 * found while processing the post is set in the $references array.
 	 *
-	 * @since 3.10.0
-	 *
-	 * @param int   $post_id The post id.
+	 * @param int $post_id The post id.
 	 * @param array $references An array of entity references.
 	 *
 	 * @return array A JSON-LD array.
+	 * @since 3.10.0
+	 *
 	 */
 	public function convert( $post_id, &$references = array() ) {
 
@@ -160,15 +161,36 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		$jsonld['author'] = $this->get_author( $post->post_author, $references );
 
 		/**
-		 * Call the `wl_post_jsonld` filter.
+		 * Call the `wl_post_jsonld_array` filter. This filter allows 3rd parties to also modify the references.
+		 *
+		 * @param array $value {
+		 *
+		 * @type array $jsonld The JSON-LD structure.
+		 * @type int[] $references An array of post IDs.
+		 * }
+		 * @since 3.25.0
+		 *
+		 * @see https://www.geeklab.info/2010/04/wordpress-pass-variables-by-reference-with-apply_filter/
 		 *
 		 * @api
+		 */
+		$ret_val    = apply_filters( 'wl_post_jsonld_array', array(
+			'jsonld'     => $jsonld,
+			'references' => $references,
+		), $post_id );
+		$jsonld     = $ret_val['jsonld'];
+		$references = $ret_val['references'];
+
+		/**
+		 * Call the `wl_post_jsonld` filter.
+		 *
+		 * @param array $jsonld The JSON-LD structure.
+		 * @param int $post_id The {@link WP_Post} `id`.
+		 * @param array $references The array of referenced entities.
 		 *
 		 * @since 3.14.0
 		 *
-		 * @param array $jsonld The JSON-LD structure.
-		 * @param int   $post_id The {@link WP_Post} `id`.
-		 * @param array $references The array of referenced entities.
+		 * @api
 		 */
 		return apply_filters( 'wl_post_jsonld', $jsonld, $post_id, $references );
 	}
@@ -179,12 +201,12 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 * The JSON-LD fragment is generated using the {@link WP_User}'s data or
 	 * the referenced entity if configured for the {@link WP_User}.
 	 *
-	 * @since 3.14.0
-	 *
-	 * @param int   $author_id The author {@link WP_User}'s `id`.
+	 * @param int $author_id The author {@link WP_User}'s `id`.
 	 * @param array $references An array of referenced entities.
 	 *
 	 * @return string|array A JSON-LD structure.
+	 * @since 3.14.0
+	 *
 	 */
 	private function get_author( $author_id, &$references ) {
 
@@ -217,9 +239,10 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	/**
 	 * Enrich the provided params array with publisher data, if available.
 	 *
+	 * @param array $params The parameters array.
+	 *
 	 * @since 3.10.0
 	 *
-	 * @param array $params The parameters array.
 	 */
 	protected function set_publisher( &$params ) {
 
@@ -298,11 +321,11 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 *
 	 * @param int $post_id The post id.
 	 *
-	 * @see https://github.com/insideout10/wordlift-plugin/issues/823 related issue.
-	 *
-	 * @since 3.19.2
 	 * @return array|false Returns an array with the `url`, `width` and `height` for the publisher logo or false in case
 	 *  of errors.
+	 * @since 3.19.2
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/823 related issue.
+	 *
 	 */
 	private function get_publisher_logo( $post_id ) {
 

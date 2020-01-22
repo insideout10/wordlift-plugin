@@ -16,6 +16,7 @@ use Wordlift\Mappings\Jsonld_Converter;
 use Wordlift\Mappings\Mappings_DBO;
 use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
 use Wordlift\Mappings\Mappings_Validator;
+use Wordlift\Mappings\Transforms\Url_To_Entity_Transform_Function;
 use Wordlift\Mappings\Validators\Post_Type_Rule_Validator;
 use Wordlift\Mappings\Validators\Rule_Groups_Validator;
 use Wordlift\Mappings\Validators\Rule_Validators_Registry;
@@ -1442,7 +1443,10 @@ class Wordlift {
 		$rule_validators_registry              = new Rule_Validators_Registry( $default_rule_validator );
 		$rule_groups_validator                 = new Rule_Groups_Validator( $rule_validators_registry );
 		$mappings_validator                    = new Mappings_Validator( $mappings_dbo, $rule_groups_validator );
+
+		new Url_To_Entity_Transform_Function();
 		$mappings_transform_functions_registry = new Mappings_Transform_Functions_Registry();
+
 		new Jsonld_Converter( $mappings_validator, $mappings_transform_functions_registry );
 
 	}

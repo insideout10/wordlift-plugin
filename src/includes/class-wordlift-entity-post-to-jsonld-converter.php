@@ -107,6 +107,27 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 		}
 
 		/**
+		 * Call the `wl_post_jsonld_array` filter. This filter allows 3rd parties to also modify the references.
+		 *
+		 * @param array $value {
+		 *
+		 * @type array $jsonld The JSON-LD structure.
+		 * @type int[] $references An array of post IDs.
+		 * }
+		 * @since 3.25.0
+		 *
+		 * @see https://www.geeklab.info/2010/04/wordpress-pass-variables-by-reference-with-apply_filter/
+		 *
+		 * @api
+		 */
+		$ret_val    = apply_filters( 'wl_entity_jsonld_array', array(
+			'jsonld'     => $jsonld,
+			'references' => $references,
+		), $post_id );
+		$jsonld     = $ret_val['jsonld'];
+		$references = $ret_val['references'];
+
+		/**
 		 * Call the `wl_entity_jsonld` filter.
 		 *
 		 * @param array $jsonld The JSON-LD structure.
@@ -116,7 +137,6 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 		 * @since 3.20.0
 		 *
 		 * @api
-		 *
 		 */
 		return apply_filters( 'wl_entity_jsonld', $this->post_process( $jsonld ), $post_id, $references );
 	}

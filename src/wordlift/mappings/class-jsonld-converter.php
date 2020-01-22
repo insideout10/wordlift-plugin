@@ -53,14 +53,40 @@ class Jsonld_Converter {
 		$this->transform_functions_registry = $transform_functions_registry;
 
 		// Hook to refactor the JSON-LD.
-		add_filter( 'wl_post_jsonld', array( $this, 'wl_post_jsonld' ), 11, 3 );
-		add_filter( 'wl_entity_jsonld', array( $this, 'wl_post_jsonld' ), 11, 3 );
+		add_filter( 'wl_post_jsonld_array', array( $this, 'wl_post_jsonld_array' ), 11, 2 );
+		add_filter( 'wl_entity_jsonld_array', array( $this, 'wl_post_jsonld_array' ), 11, 3 );
 
 	}
 
 	/**
-	 * Hook to `wl_post_jsonld` and `wl_entity_jsonld`.
+	 * Hook to `wl_post_jsonld_array` and `wl_entity_jsonld_array`.
 	 *
+	 * Receive the JSON-LD and the references in the array along with the post ID and transform them according to
+	 * the configuration.
+	 *
+	 * @param array $value {
+	 *      The array containing the JSON-LD and the references.
+	 *
+	 * @type array $jsonld The JSON-LD array.
+	 * @type int[] $references An array of post ID referenced by the JSON-LD (will be expanded by the converter).
+	 * }
+	 *
+	 * @param int $post_id The post ID.
+	 *
+	 * @return array An array with the updated JSON-LD and references.
+	 */
+	public function wl_post_jsonld_array( $value, $post_id ) {
+
+		$jsonld     = $value['jsonld'];
+		$references = $value['references'];
+
+		return array(
+			'jsonld'     => $this->wl_post_jsonld( $jsonld, $post_id, $references ),
+			'references' => $references,
+		);
+	}
+
+	/**
 	 * Returns JSON-LD data after applying transformation functions.
 	 *
 	 * @param array $jsonld The JSON-LD structure.
@@ -70,7 +96,7 @@ class Jsonld_Converter {
 	 * @return array the new refactored array structure.
 	 * @since 3.25.0
 	 */
-	public function wl_post_jsonld( $jsonld, $post_id, $references ) {
+	private function wl_post_jsonld( $jsonld, $post_id, &$references ) {
 
 		// @@todo I think there's an issue here with the Validator, because you're changing the instance state and the
 		// instance may be reused afterwards.
@@ -81,7 +107,7 @@ class Jsonld_Converter {
 			$transform_instance = $this->transform_functions_registry->get_transform_function( $property['transform_function'] );
 			if ( null !== $transform_instance ) {
 				$data                                 = $this->get_data_from_data_source( $post_id, $property );
-				$jsonld[ $property['property_name'] ] = $transform_instance->transform_data( $data );
+				$jsonld[ $property['property_name'] ] = $transform_instance->transform_data( $data, $jsonld, $references );
 			} else {
 				$jsonld[ $property['property_name'] ] = $property['field_name'];
 			}
