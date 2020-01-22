@@ -81,4 +81,15 @@ class Edit_Mapping_Page_Test extends Wordlift_Unit_Test_Case {
 		);
 		$this->assertEquals( $expected_logic_field_options, $this->ui_settings_array['wl_logic_field_options'] );
 	}
+
+	/**
+	 * Test when the nonce is posted, should have the mapping_id in the settings.
+	 */
+	public function test_when_nonce_is_posted_then_valid_mapping_id_should_be_present() {
+		$_REQUEST['wl_edit_mapping_id'] = 2;
+		$_REQUEST['_wl_edit_mapping_nonce'] = wp_create_nonce( 'wl-edit-mapping-nonce' );
+		$ui_settings_array = $this->edit_mappings_page_instance->get_ui_settings_array();
+		$this->assertArrayHasKey( 'wl_edit_mapping_id', $ui_settings_array );
+		$this->assertEquals( $ui_settings_array['wl_edit_mapping_id'], 2 );
+	}
 }
