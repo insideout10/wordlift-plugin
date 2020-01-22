@@ -164,15 +164,8 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 	public function get_ui_settings_array() {
 		// Create ui settings array to be used by js client.
 		$edit_mapping_settings                               = array();
-		$edit_mapping_settings['rest_url']                   = get_rest_url(
-			null,
-			WL_REST_ROUTE_DEFAULT_NAMESPACE . Mappings_REST_Controller::MAPPINGS_NAMESPACE
-		);
-		$edit_mapping_settings['wl_edit_mapping_rest_nonce'] = wp_create_nonce( 'wp_rest' );
-		$edit_mapping_settings                               = $this->validate_nonce_and_assign_mapping_id( $edit_mapping_settings );
-
+		$edit_mapping_settings                               = $this->load_rest_settings( $edit_mapping_settings );
 		$edit_mapping_settings = $this->load_text_settings_for_edit_mapping_page( $edit_mapping_settings );
-
 		$edit_mapping_settings['wl_transform_function_options'] = $this->transform_function_registry->get_options();
 
 		$all_field_name_options = self::get_all_field_name_options();
@@ -188,9 +181,8 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 
 		// Add wl_edit_field_name_options.
 		$edit_mapping_settings['wl_field_name_options'] = $all_field_name_options;
-
+		// Load logic field options.
 		$edit_mapping_settings = $this->load_logic_field_options( $edit_mapping_settings );
-
 		list(
 			$edit_mapping_settings['wl_rule_field_one_options'],
 			$edit_mapping_settings['wl_rule_field_two_options']
@@ -285,6 +277,22 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 			// We're using `INPUT_GET` here because this is a link from the UI, i.e. no POST.
 			$edit_mapping_settings['wl_edit_mapping_id'] = (int) filter_var( $_REQUEST['wl_edit_mapping_id'], FILTER_VALIDATE_INT );
 		}
+
+		return $edit_mapping_settings;
+	}
+
+	/**
+	 * @param array $edit_mapping_settings
+	 *
+	 * @return array
+	 */
+	private function load_rest_settings( array $edit_mapping_settings ) {
+		$edit_mapping_settings['rest_url']                   = get_rest_url(
+			null,
+			WL_REST_ROUTE_DEFAULT_NAMESPACE . Mappings_REST_Controller::MAPPINGS_NAMESPACE
+		);
+		$edit_mapping_settings['wl_edit_mapping_rest_nonce'] = wp_create_nonce( 'wp_rest' );
+		$edit_mapping_settings                               = $this->validate_nonce_and_assign_mapping_id( $edit_mapping_settings );
 
 		return $edit_mapping_settings;
 	}

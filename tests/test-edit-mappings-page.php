@@ -39,6 +39,14 @@ class Edit_Mapping_Page_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	/**
+	 * Test check if the rest params are loaded
+	 */
+	public function test_rest_params_are_loaded() {
+		$this->assertArrayHasKey( 'wl_edit_mapping_rest_nonce', $this->ui_settings_array );
+		$this->assertArrayHasKey( 'rest_url', $this->ui_settings_array );
+	}
+
+	/**
 	 * This test should verify all the terms are loaded from the REST API, so taxonomy should have
 	 * zero terms in their value.
 	 */
