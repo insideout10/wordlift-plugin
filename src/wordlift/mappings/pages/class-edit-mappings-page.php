@@ -140,7 +140,7 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 		$edit_mapping_settings['page']                       = 'wl_edit_mapping';
 		$edit_mapping_settings['wl_edit_mapping_rest_nonce'] = wp_create_nonce( 'wp_rest' );
 
-		// @@todo what's this? add comments.
+		// We verify the nonce before making to load the edit mapping page for the wl_edit_mapping_id
 		if ( isset( $_REQUEST['_wl_edit_mapping_nonce'] )
 		     && wp_verify_nonce( $_REQUEST['_wl_edit_mapping_nonce'], 'wl-edit-mapping-nonce' ) ) {
 			// We're using `INPUT_GET` here because this is a link from the UI, i.e. no POST.
