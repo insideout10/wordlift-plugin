@@ -39,6 +39,17 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 		$this->transform_function_registry = $transform_function_registry;
 	}
 
+	public function render() {
+		// Render all the settings when this method is called, because the partial page is loaded after
+		// this method.
+		// Load the UI dependencies.
+		$edit_mapping_settings = $this->get_ui_settings_array();
+		// Supply the settings to js client.
+		wp_localize_script( 'wl-mappings-edit', 'wl_edit_mappings_config', $edit_mapping_settings );
+
+		parent::render();
+	}
+
 	/**
 	 * Load the text settings needed for the edit_mappings_page.
 	 * @param array $edit_mapping_settings Key value pair of settings used by edit mappings page.
@@ -93,7 +104,6 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 	 * {@inheritdoc}
 	 */
 	public function get_partial_name() {
-
 		return 'wordlift-admin-mappings-edit.php';
 	}
 
@@ -116,11 +126,6 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 			plugin_dir_url( dirname( dirname( dirname( __FILE__ ) ) ) ) . 'js/dist/mappings-edit.css',
 			Wordlift::get_instance()->get_version()
 		);
-
-		// Load the UI dependencies.
-		$edit_mapping_settings = $this->get_ui_settings_array();
-		// Supply the settings to js client.
-		wp_localize_script( 'wl-mappings-edit', 'wl_edit_mappings_config', $edit_mapping_settings );
 	}
 
 	/**
