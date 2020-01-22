@@ -28,7 +28,7 @@ class Wordlift_Mock_Transformation_Function implements Mappings_Transform_Functi
 		return 'foo label';
 	}
 
-	public function transform_data( $data ) {
+	public function transform_data( $data, $jsonld, &$references ) {
 		return $data;
 	}
 }
