@@ -124,9 +124,8 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 		$this->entity_service                    = $wordlift_test->get_entity_service();
 		$this->user_service                      = $wordlift_test->get_user_service();
 
-		// Clean-up the file cache.
-		$this->file_cache_service = $wordlift_test->get_file_cache_service();
-
+		// Clear the cache.
+		do_action( 'wl_ttl_cache_cleaner__flush' );
 	}
 
 	/**
@@ -158,9 +157,10 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 	 * data and both time we expect the data to match the results we get by
 	 * calling the converter directly with no caching.
 	 *
+	 * @param \WP_Post $post The {@link WP_Post} to test.
+	 *
 	 * @since 3.16.0
 	 *
-	 * @param \WP_Post $post The {@link WP_Post} to test.
 	 */
 	private function _test_that_the_non_cached_and_the_cached_results_are_equal( $post ) {
 
@@ -273,8 +273,8 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 	/**
 	 * Get post #5, i.e. the sample post connected to all the entities.
 	 *
-	 * @since 3.16.0
 	 * @return WP_Post Post #5.
+	 * @since 3.16.0
 	 */
 	private function get_post( $post_name ) {
 
@@ -300,12 +300,12 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 	 * is either cached or non cached and that it is equal to the non cached
 	 * version.
 	 *
-	 * @since 3.16.0
-	 *
-	 * @param int  $post_id The {@link WP_Post} id.
-	 * @param bool $expect  Expect the response to be cached or not (by default cached).
+	 * @param int $post_id The {@link WP_Post} id.
+	 * @param bool $expect Expect the response to be cached or not (by default cached).
 	 *
 	 * @return mixed The cached response.
+	 * @since 3.16.0
+	 *
 	 */
 	private function assert_cache( $post_id, $expect = true ) {
 		global $wpdb;
@@ -336,11 +336,11 @@ class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 	 * Calls `assert_cache` twice, the first time expects no cache, the 2nd time
 	 * expects caching.
 	 *
-	 * @since 3.16.0
-	 *
 	 * @param int $post_id The {@link WP_Post} id.
 	 *
 	 * @return mixed The cached response.
+	 * @since 3.16.0
+	 *
 	 */
 	private function assert_no_cache_and_then_cache( $post_id ) {
 

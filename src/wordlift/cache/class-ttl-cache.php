@@ -73,11 +73,6 @@ class Ttl_Cache {
 		$this->name = $name;
 		$this->ttl  = $ttl;
 
-		// Get the temp dir and add the directory separator if missing.
-		$temp_dir = get_temp_dir();
-		if ( DIRECTORY_SEPARATOR !== substr( $temp_dir, - strlen( DIRECTORY_SEPARATOR ) ) ) {
-			$temp_dir .= DIRECTORY_SEPARATOR;
-		}
 		$this->cache_dir = self::get_cache_folder() . DIRECTORY_SEPARATOR . md5( $name );
 
 		$this->log->trace( "Creating the cache folder {$this->cache_dir}..." );
@@ -137,6 +132,15 @@ class Ttl_Cache {
 		// Cache.
 		@unlink( $filename );
 		@file_put_contents( $filename, wp_json_encode( $data ) );
+
+	}
+
+	public function delete( $key ) {
+
+		$filename = $this->get_filename( $key );
+
+		// Delete.
+		@unlink( $filename );
 
 	}
 

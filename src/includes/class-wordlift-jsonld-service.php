@@ -174,7 +174,7 @@ class Wordlift_Jsonld_Service {
 
 		// Convert each URI to a JSON-LD array, while gathering referenced entities.
 		// in the references array.
-		$jsonld = array_merge(
+		return array_merge(
 			array( $entity_to_jsonld_converter->convert( $post_id, $references ) ),
 			// Convert each URI in the references array to JSON-LD. We don't output
 			// entities already output above (hence the array_diff).
@@ -185,7 +185,6 @@ class Wordlift_Jsonld_Service {
 				// via the `@id` but no other properties are loaded.
 				return $entity_to_jsonld_converter->convert( $item, $references );
 			}, $references ) ) );
-		return $jsonld;
 	}
 
 	/**
