@@ -9,7 +9,7 @@
 namespace Wordlift\Mappings;
 
 /**
- * This abstract class defines template of methods to be present for the transform function.
+ * This interface defines the list of methods to be present for transform function.
  *
  * @since 3.25.0
  */

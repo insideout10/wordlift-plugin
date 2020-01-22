@@ -364,4 +364,31 @@ class Mappings_REST_Controller_Test extends WP_UnitTestCase {
 		$this->assertEquals( 0, $rule_group_count );
 		$this->assertEquals( 0, $rule_count );
 	}
+
+
+	public function test_can_get_terms_by_posting_the_taxonomy() {
+		// Create a taxonomy and some terms.
+		register_taxonomy('foo', 'post' );
+		wp_insert_term( 'foo term 1', 'foo' );
+		wp_insert_term( 'foo term 2', 'foo' );
+		wp_insert_term( 'foo term 3', 'foo' );
+		// When we request the endpoint for terms it should get the terms.
+		$user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $user_id );
+
+		// Construct the post array.
+		$post_array = array(
+			'taxonomy' => 'foo'
+		);
+		$request   = new WP_REST_Request(
+			'POST',
+			'/wordlift/v1/mappings/get_terms'
+		);
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( json_encode( $post_array ) );
+		$response  = $this->server->dispatch( $request );
+		$this->assertEquals( 200, $response->get_status() );
+		// we have 3 terms on the data.
+		$this->assertEquals( 3, count( $response->get_data() ) );
+	}
 }

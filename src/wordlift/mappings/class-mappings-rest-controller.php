@@ -129,6 +129,52 @@ class Mappings_REST_Controller {
 				},
 			)
 		);
+
+		// Register rest endpoint to get the terms.
+		register_rest_route(
+			WL_REST_ROUTE_DEFAULT_NAMESPACE,
+			'mappings/get_terms',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => 'Wordlift\Mappings\Mappings_REST_Controller::get_terms_for_the_posted_taxonomy',
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+	}
+	/**
+	 * Get the terms for the posted taxonomy name.
+	 *
+	 * @param WP_REST_Request $request {@link WP_REST_Request instance}.
+	 *
+	 * @return array The array of the terms for the taxonomy.
+	 */
+	public static function get_terms_for_the_posted_taxonomy( $request ) {
+		$post_data = $request->get_params();
+		if ( !array_key_exists('taxonomy', $post_data ) ) {
+			return array(
+				'status' => 'failure',
+				'message' => __('Request not valid, must post a taxonomy to get terms', 'wordlift')
+			);
+		}
+		else {
+			$taxonomy = $post_data['taxonomy'];
+			$terms = get_terms(
+				array(
+					'taxonomy' => $taxonomy,
+					'hide_empty' => false,
+				)
+			);
+			if ( is_wp_error( $terms) ) {
+				// Return error response, if the taxonomy is not valid.
+				return array(
+					'status' => 'failure',
+					'message' => __('Request not valid, must post a valid taxonomy', 'wordlift')
+				);
+			}
+			return $terms;
+		}
 	}
 
 	/**
