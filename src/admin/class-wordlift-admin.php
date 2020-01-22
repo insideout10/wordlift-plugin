@@ -12,6 +12,7 @@
 
 use Wordlift\Mappings\Acf_Mappings;
 use Wordlift\Mappings\Mappings_REST_Controller;
+use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
 use Wordlift\Mappings\Pages\Edit_Mappings_Page;
 use Wordlift\Mappings\Pages\Admin_Mappings_Page;
 
@@ -188,7 +189,7 @@ class Wordlift_Admin {
 
 		// Add Mappings and Edit Mappings page.
 		new Admin_Mappings_Page();
-		new Edit_Mappings_Page();
+		new Edit_Mappings_Page( new Mappings_Transform_Functions_Registry() );
 
 		// Add the Mappings' REST Controller.
 		new Mappings_REST_Controller();

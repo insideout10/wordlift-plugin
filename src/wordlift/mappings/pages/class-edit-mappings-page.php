@@ -24,6 +24,35 @@ use Wordlift\Scripts\Scripts_Helper;
  */
 class Edit_Mappings_Page extends Wordlift_Admin_Page {
 
+	/** Instance to store the registry class.
+	 * @var Mappings_Transform_Functions_Registry { @link Mappings_Transform_Functions_Registry instance}
+	 */
+	public $transform_function_registry;
+
+	/**
+	 * Edit_Mappings_Page constructor.
+	 *
+	 * @param $transform_function_registry Mappings_Transform_Functions_Registry { @link Mappings_Transform_Functions_Registry instance }
+	 */
+	public function __construct( $transform_function_registry ) {
+		parent::__construct();
+		$this->transform_function_registry = $transform_function_registry;
+	}
+
+	/**
+	 * Load the text settings needed for the edit_mappings_page.
+	 * @param array $edit_mapping_settings Key value pair of settings used by edit mappings page.
+	 *
+	 * @return array Adding text settings to the main settings array.
+	 */
+	private function load_text_settings_for_edit_mapping_page( array $edit_mapping_settings ) {
+		$edit_mapping_settings['wl_add_mapping_text']     = __( 'Add Mapping', 'wordlift' );
+		$edit_mapping_settings['wl_edit_mapping_text']    = __( 'Edit Mapping', 'wordlift' );
+		$edit_mapping_settings['wl_edit_mapping_no_item'] = __( 'Unable to find the mapping item', 'wordlift' );
+
+		return $edit_mapping_settings;
+	}
+
 	/**
 	 * The base class {@link Wordlift_Admin_Page} will add the admin page to the WordLift menu.
 	 *
@@ -89,7 +118,7 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 		);
 
 		// Load the UI dependencies.
-		$edit_mapping_settings = self::get_ui_settings_array();
+		$edit_mapping_settings = $this->get_ui_settings_array();
 		// Supply the settings to js client.
 		wp_localize_script( 'wl-mappings-edit', 'wl_edit_mappings_config', $edit_mapping_settings );
 	}
@@ -133,7 +162,7 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 	 * Load dependencies required for js client.
 	 * @return array An Array containing key value pairs of settings.
 	 */
-	public static function get_ui_settings_array() {
+	public function get_ui_settings_array() {
 		// Create ui settings array to be used by js client.
 		$edit_mapping_settings                               = array();
 		$edit_mapping_settings['rest_url']                   = get_rest_url(
@@ -150,15 +179,9 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 			$edit_mapping_settings['wl_edit_mapping_id'] = intval( filter_input( INPUT_GET, 'wl_edit_mapping_id', FILTER_VALIDATE_INT ) );
 		}
 
-		$edit_mapping_settings['wl_add_mapping_text']     = __( 'Add Mapping', 'wordlift' );
-		$edit_mapping_settings['wl_edit_mapping_text']    = __( 'Edit Mapping', 'wordlift' );
-		$edit_mapping_settings['wl_edit_mapping_no_item'] = __( 'Unable to find the mapping item', 'wordlift' );
+		$edit_mapping_settings = $this->load_text_settings_for_edit_mapping_page( $edit_mapping_settings );
 
-		// @@todo initialize this class in class-admin-wordlift.php, a class should not be responsible for initializing
-		// other classes (pass the instance in the constructor).
-		$transform_function_registry = new Mappings_Transform_Functions_Registry();
-
-		$edit_mapping_settings['wl_transform_function_options'] = $transform_function_registry->get_options();
+		$edit_mapping_settings['wl_transform_function_options'] = $this->transform_function_registry->get_options();
 
 		$all_field_name_options = self::get_all_field_name_options();
 
@@ -214,7 +237,6 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 		list( $post_type_option, $post_type_option_values ) = self::get_post_type_key_and_value();
 		array_push( $taxonomy_options, $post_type_option );
 		$term_options = array_merge( $term_options, $post_type_option_values );
-
 		return array( $taxonomy_options, $term_options );
 	}
 
