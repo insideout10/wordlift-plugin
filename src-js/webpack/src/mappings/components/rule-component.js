@@ -23,6 +23,8 @@ import {
 class RuleComponent extends React.Component {
   constructor(props) {
     super(props);
+    // Load terms for the selected taxonomy.
+    this.fetchTermsForSelectedTaxonomyFromAPI( this.props.ruleProps.ruleFieldOneValue )
   }
   /**
    * Adds a new rule after the current rule index

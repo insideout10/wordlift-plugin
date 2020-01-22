@@ -96,10 +96,14 @@ export const RuleGroupReducer = createReducer(null, {
      [ MAPPING_TERMS_CHANGED ]: ( state, action ) => {
          const taxonomy = action.payload.taxonomy;
          const terms = action.payload.terms;
-         state.ruleFieldTwoOptions = state.ruleFieldTwoOptions.concat( terms )
-         // set fetched from network to true in taxonomy, we cache the terms.
-         const taxonomyIndex = state.ruleFieldOneOptions.findIndex(x => x.value === taxonomy );
-         state.ruleFieldOneOptions[ taxonomyIndex ].isTermsFetchedForTaxonomy = true
+
+         // Check if there is no term items for the taxonomy, to prevent duplication.
+         if ( 0 === state.ruleFieldTwoOptions.filter( e => e.taxonomy === taxonomy ).length ) {
+             state.ruleFieldTwoOptions = state.ruleFieldTwoOptions.concat(terms);
+             // set fetched from network to true in taxonomy, we cache the terms.
+             const taxonomyIndex = state.ruleFieldOneOptions.findIndex(x => x.value === taxonomy);
+             state.ruleFieldOneOptions[taxonomyIndex].isTermsFetchedForTaxonomy = true
+         }
      }
   });
 
