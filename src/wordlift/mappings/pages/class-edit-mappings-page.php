@@ -210,24 +210,6 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 					'value' => $taxonomy->name,
 				)
 			);
-
-			$terms = get_terms(
-				$taxonomy->name,
-				array(
-					'hide_empty' => false,
-				)
-			);
-
-			foreach ( $terms as $term ) {
-				array_push(
-					$term_options,
-					array(
-						'label'    => $term->name,
-						'value'    => $term->term_id,
-						'taxonomy' => $taxonomy->name,
-					)
-				);
-			}
 		}
 		list( $post_type_option, $post_type_option_values ) = self::get_post_type_key_and_value();
 		array_push( $taxonomy_options, $post_type_option );
