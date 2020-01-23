@@ -29,7 +29,7 @@ import CategoryComponent, {ACTIVE_CATEGORY} from "../category-component";
 import BulkActionComponent from "../bulk-action-component";
 import {
   AddNewButton,
-  MappingHeaderRow,
+  MappingHeaderRow, MappingNoActiveItemMessage,
   MappingTableCheckBox,
   MappingTableTitleSort
 } from "./mapping-list-subcomponents";
@@ -190,18 +190,7 @@ class MappingComponent extends React.Component {
             />
           </thead>
           <tbody>
-            {// show empty screen when there is no mapping items
-            0 === this.props.mappingItems.filter(el => el.mapping_status === ACTIVE_CATEGORY).length &&
-              this.props.chosenCategory === ACTIVE_CATEGORY && (
-                <tr>
-                  <td colspan="3">
-                    <div className="wl-container text-center">
-                      No Mapping items found, click on
-                      <b>&nbsp; Add New </b>
-                    </div>
-                  </td>
-                </tr>
-              )}
+            <MappingNoActiveItemMessage {...props} />
             {this.props.mappingItems
               .filter(el => el.mapping_status === this.props.chosenCategory)
               .map((item, index) => {

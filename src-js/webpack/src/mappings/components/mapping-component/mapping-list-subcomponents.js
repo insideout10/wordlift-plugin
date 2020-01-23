@@ -1,4 +1,5 @@
 import React from "react";
+import {ACTIVE_CATEGORY} from "../category-component";
 
 /**
  * Contains subcomponents for the mapping list component.
@@ -57,7 +58,7 @@ export const MappingTableTitleSort = ( props ) => {
 };
 
 /**
- *
+ * Show the mapping header row in the mapping list table, reused in the table footer.
  * @param props Properties passed from {@link MappingComponent }
  * @returns MappingHeaderRow instance.
  */
@@ -73,3 +74,19 @@ export const MappingHeaderRow = ( props ) => {
         </tr>
     )
 }
+
+export const MappingNoActiveItemMessage = ( props ) => {
+    return (
+        0 === props.mappingItems.filter(el => el.mapping_status === ACTIVE_CATEGORY).length &&
+        props.chosenCategory === ACTIVE_CATEGORY && (
+            <tr>
+                <td colSpan={3}>
+                    <div className="wl-container text-center">
+                        No Mapping items found, click on
+                        <b>&nbsp; Add New </b>
+                    </div>
+                </td>
+            </tr>
+        )
+    )
+};
