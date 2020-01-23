@@ -140,21 +140,7 @@ class MappingComponent extends React.Component {
    * @return void
    */
   getMappingItems() {
-    fetch(mappingSettings.rest_url, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-        "X-WP-Nonce": mappingSettings.wl_mapping_nonce
-      }
-    }).then(response =>
-      response.json().then(data => {
-        const action = MAPPING_LIST_CHANGED_ACTION;
-        action.payload = {
-          value: MappingComponentHelper.applyUiItemFilters(data)
-        };
-        this.props.dispatch(action);
-      })
-    );
+    this.props.dispatch({ type: "MAPPINGS_REQUEST" });
   }
   /**
    * When the category is selected in the categoryComponent this method

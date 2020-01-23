@@ -2,14 +2,28 @@
  *
  */
 
-import { takeLatest } from "redux-saga/effects";
+/**
+ * External dependencies
+ */
+import { call, put, takeLatest } from "redux-saga/effects";
 
-function* fetchUser() {
-    yield null;
+/**
+ * Internal dependencies
+ */
+import API from "./api";
+import { MAPPING_LIST_CHANGED } from "../actions/action-types";
+
+/**
+ * Calls the REST API to retrieve the mappings.
+ */
+function* requestMappings() {
+  const mappings = yield call(API.getMappings);
+
+  yield put({ type: MAPPING_LIST_CHANGED, payload: { value: mappings } });
 }
 
 function* saga() {
-  yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
+  yield takeLatest("MAPPINGS_REQUEST", requestMappings);
 }
 
 export default saga;

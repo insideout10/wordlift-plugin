@@ -36,8 +36,6 @@ const changeCategoryForMappingItems = (mappingItems, category) => {
  */
 export const MappingListReducer = createReducer(null, {
   [MAPPING_LIST_CHANGED]: (state, action) => {
-    // @@todo you can use redux-logger to log state changes, see src-js/webpack/src/block-editor/stores/index.js
-    console.log("state changed ");
     state.mappingItems = action.payload.value;
   },
   [MAPPING_ITEM_CATEGORY_CHANGED]: (state, action) => {
