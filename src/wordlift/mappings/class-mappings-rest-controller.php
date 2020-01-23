@@ -143,6 +143,7 @@ class Mappings_REST_Controller {
 			)
 		);
 	}
+
 	/**
 	 * Get the terms for the posted taxonomy name.
 	 *
@@ -152,27 +153,22 @@ class Mappings_REST_Controller {
 	 */
 	public static function get_terms_for_the_posted_taxonomy( $request ) {
 		$post_data = $request->get_params();
-		if ( !array_key_exists('taxonomy', $post_data ) ) {
+		if ( ! array_key_exists( 'taxonomy', $post_data ) ) {
 			return array(
-				'status' => 'failure',
-				'message' => __('Request not valid, must post a taxonomy to get terms', 'wordlift')
+				'status'  => 'failure',
+				'message' => __( 'Request not valid, must post a taxonomy to get terms', 'wordlift' )
 			);
-		}
-		else {
+		} else {
 			$taxonomy = $post_data['taxonomy'];
-			$terms = get_terms(
-				array(
-					'taxonomy' => $taxonomy,
-					'hide_empty' => false,
-				)
-			);
-			if ( is_wp_error( $terms) ) {
+			$terms    = get_terms( $taxonomy, array( 'hide_empty' => false, ) );
+			if ( is_wp_error( $terms ) ) {
 				// Return error response, if the taxonomy is not valid.
 				return array(
-					'status' => 'failure',
-					'message' => __('Request not valid, must post a valid taxonomy', 'wordlift')
+					'status'  => 'failure',
+					'message' => __( 'Request not valid, must post a valid taxonomy', 'wordlift' )
 				);
 			}
+
 			return $terms;
 		}
 	}

@@ -373,7 +373,7 @@ class Mappings_REST_Controller_Test extends WP_UnitTestCase {
 		wp_insert_term( 'foo term 2', 'foo' );
 		wp_insert_term( 'foo term 3', 'foo' );
 		// When we request the endpoint for terms it should get the terms.
-		$user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
+		$user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
 		wp_set_current_user( $user_id );
 
 		// Construct the post array.
