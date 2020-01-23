@@ -18,13 +18,18 @@ export const AddNewButton  = () => {
     )
 }
 
-export const MappingTableCheckBox = ( props, selectAllMappingsHandler ) => {
+/**
+ * MappingTableCheckBox : Provides a checkbox to user to select all the mapping items.
+ * @param props Properties required for the MappingTableCheckBox
+ * @returns MappingTableCheckBox instance.
+ */
+export const MappingTableCheckBox = ( props ) => {
     return (
         <th className="wl-check-column">
             <input
                 type="checkbox"
-                onClick={ selectAllMappingsHandler }
-                checked={props.headerCheckBoxSelected === true}
+                onClick={ () => { props.selectAllMappingsHandler() } }
+                checked={ props.headerCheckBoxSelected === true}
             />
         </th>
     )

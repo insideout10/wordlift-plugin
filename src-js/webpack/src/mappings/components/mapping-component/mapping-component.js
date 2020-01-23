@@ -180,7 +180,7 @@ class MappingComponent extends React.Component {
           <thead>
             <tr>
               <MappingTableCheckBox
-                props = { this.props }
+                headerCheckBoxSelected = { this.props.headerCheckBoxSelected }
                 selectAllMappingsHandler = { this.selectAllMappingItems }
               />
               <th>
@@ -227,13 +227,10 @@ class MappingComponent extends React.Component {
           </tbody>
           <tfoot>
             <tr>
-              <th className="wl-check-column">
-                <input
-                  type="checkbox"
-                  onClick={this.selectAllMappingItems}
-                  checked={this.props.headerCheckBoxSelected === true}
-                />
-              </th>
+              <MappingTableCheckBox
+                  headerCheckBoxSelected = { this.props.headerCheckBoxSelected }
+                  selectAllMappingsHandler = { this.selectAllMappingItems }
+              />
               <th>
                 <a
                   className="row-title wl-mappings-link"

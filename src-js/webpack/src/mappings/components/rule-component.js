@@ -137,7 +137,7 @@ class RuleComponent extends React.Component {
               this.handleSelectFieldChange(e, "ruleFieldOneValue");
             }}
             className="wl-field-one-select wl-form-select"
-          ></SelectComponent>
+          />
         </div>
         <div className="wl-col">
           <SelectComponent
@@ -147,19 +147,19 @@ class RuleComponent extends React.Component {
               this.handleSelectFieldChange(e, "ruleLogicFieldValue");
             }}
             className="wl-field-logic wl-form-select"
-          ></SelectComponent>
+          />
         </div>
         <div className="wl-col">
           <SelectComponent
             options={this.props.ruleFieldTwoOptions.filter(
-              el => el.taxonomy === this.props.ruleProps.ruleFieldOneValue
+                el => el.taxonomy === this.props.ruleProps.ruleFieldOneValue
             )}
             value={this.props.ruleProps.ruleFieldTwoValue}
             onChange={e => {
               this.handleSelectFieldChange(e, "ruleFieldTwoValue");
             }}
             className="wl-field-two-select wl-form-select"
-          ></SelectComponent>
+        />
         </div>
         <div className="wl-col">
           <button
@@ -169,12 +169,12 @@ class RuleComponent extends React.Component {
             And
           </button>
         </div>
-        {(0 != this.props.ruleGroupIndex || 0 != this.props.ruleIndex) && (
+        {(0 !== this.props.ruleGroupIndex || 0 !== this.props.ruleIndex) && (
           <div className="wl-col">
             <button
               className="button action wl-remove-button dashicons dashicons-trash"
               onClick={() => this.handleDeleteRule(this.props.ruleGroupIndex, this.props.ruleIndex)}
-            ></button>
+            />
           </div>
         )}
       </div>
