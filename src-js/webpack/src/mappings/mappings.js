@@ -16,7 +16,7 @@ import { createStore } from "redux";
 /**
  * Internal dependencies
  */
-import MappingComponent from "./components/mapping-component";
+import MappingComponent from "./components/mapping-list-component/mapping-component";
 import { MappingListReducer } from "./reducers/mapping-list-reducers";
 import { ACTIVE_CATEGORY } from "./components/category-component";
 // @@todo: we can use BEM and SCSS.

@@ -11,7 +11,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { ACTIVE_CATEGORY } from "./category-component";
+import { ACTIVE_CATEGORY } from "../category-component";
 
 class MappingListItemComponent extends React.Component {
   constructor(props) {

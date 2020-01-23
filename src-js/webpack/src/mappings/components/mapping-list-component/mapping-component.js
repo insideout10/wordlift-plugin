@@ -14,6 +14,7 @@ import React from "react";
  * Internal dependencies
  */
 import MappingListItemComponent from "./mapping-list-item-component";
+import MappingComponentHelper from "./mapping-component-helper";
 import {
   MAPPING_LIST_CHANGED_ACTION,
   MAPPING_ITEM_CATEGORY_CHANGED_ACTION,
@@ -23,10 +24,10 @@ import {
   MAPPING_ITEMS_BULK_ACTION,
   BULK_ACTION_SELECTION_CHANGED_ACTION,
   MAPPING_LIST_SORT_TITLE_CHANGED_ACTION
-} from "../actions/actions";
+} from "../../actions/actions";
 import { connect } from "react-redux";
-import CategoryComponent, { ACTIVE_CATEGORY } from "./category-component";
-import BulkActionComponent from "./bulk-action-component";
+import CategoryComponent, { ACTIVE_CATEGORY } from "../category-component";
+import BulkActionComponent from "../bulk-action-component";
 // Set a reference to the WordLift's Mapping settings stored in the window instance.
 const mappingSettings = window["wlMappingsConfig"] || {};
 
@@ -41,47 +42,6 @@ class MappingComponent extends React.Component {
     };
     this.props.dispatch(action);
   };
-  /**
-   * Add some keys to mapping items before setting it as
-   * state, it is used by ui.
-   * @param {Array} mappingItems Mapping items list
-   *
-   */
-  static applyUiItemFilters(mappingItems) {
-    return mappingItems.map(item => ({
-      ...item,
-      // initially no item is selected.
-      isSelected: false
-    }));
-  }
-  /**
-   * Convert ui data to api format before posting to api
-   * @param {Array} mappingItems Mapping items list
-   *
-   */
-  static applyApiFilters(mappingItems) {
-    return mappingItems.map(item => ({
-      mapping_id: item.mapping_id,
-      mapping_title: item.mapping_title,
-      mapping_status: item.mapping_status
-    }));
-  }
-  /**
-   * Extract categories from mappingItems
-   * @param {Array} mappingItems Mapping items list
-   * @return {Array} List of cateogory objects.
-   */
-  static extractCategoriesFromMappingItems(mappingItems) {
-    const categories = {};
-    mappingItems.map(item => {
-      if (!categories.hasOwnProperty(item.mapping_status)) {
-        categories[item.mapping_status] = 1;
-      } else {
-        categories[item.mapping_status] += 1;
-      }
-    });
-    return categories;
-  }
   /**
    * Selects all the mapping items on the currently active category
    * When triggered on the active, it selects only the active items
@@ -118,7 +78,7 @@ class MappingComponent extends React.Component {
         "X-WP-Nonce": mappingSettings.wl_mapping_nonce
       },
       body: JSON.stringify({
-        mapping_items: MappingComponent.applyApiFilters(mappingItems)
+        mapping_items: MappingComponentHelper.applyApiFilters(mappingItems)
       })
     }).then(response =>
       response.json().then(data => {
@@ -166,7 +126,7 @@ class MappingComponent extends React.Component {
       response.json().then(data => {
         const action = MAPPING_LIST_CHANGED_ACTION;
         action.payload = {
-          value: MappingComponent.applyUiItemFilters(data)
+          value: MappingComponentHelper.applyUiItemFilters(data)
         };
         this.props.dispatch(action);
       })
