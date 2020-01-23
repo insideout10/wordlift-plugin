@@ -111,4 +111,10 @@ class Mappings_Transform_Functions_Registry {
 		}
 		$this->transform_function_array = $transformation_functions;
 	}
+
+	public function get_transforms() {
+
+		return $this->transform_function_array;
+	}
+
 }
