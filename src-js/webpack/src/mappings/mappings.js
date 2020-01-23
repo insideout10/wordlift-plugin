@@ -25,10 +25,9 @@ import "./mappings.css";
 export const SORT_BY_ASC = "asc";
 export const SORT_BY_DESC = "desc";
 
-// @@todo choosen -> chosen.
 const MAPPINGS_INITIAL_STATE = {
   mappingItems: [],
-  choosenCategory: ACTIVE_CATEGORY,
+  chosenCategory: ACTIVE_CATEGORY,
   headerCheckBoxSelected: false,
   selectedBulkOption: null,
   titleSortBy: SORT_BY_ASC,

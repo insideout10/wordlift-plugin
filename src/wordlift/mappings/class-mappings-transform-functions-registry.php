@@ -96,9 +96,11 @@ class Mappings_Transform_Functions_Registry {
 	 * function after syncing with the registry.
 	 */
 	private function remove_duplicate_transformation_functions_after_sync() {
-		// @@todo: I am not following what this do?
-
-		// Check for duplication, and remove the duplicate items.
+		/**
+		 * This check is done to avoid transformation function conflicts if they share a same name
+		 * For example if plugin A and plugin B registers transformation function with same name C,
+		 * we remove the duplicated transformation function
+		 */
 		$transformation_function_names = array();
 		$transformation_functions      = array();
 		foreach ( $this->transform_function_array as $transformation_function ) {

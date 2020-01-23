@@ -49,7 +49,7 @@ export const MappingListReducer = createReducer(null, {
   [MAPPING_LIST_BULK_SELECT]: (state, action) => {
     state.mappingItems = state.mappingItems.map(item => {
       // Select only items in the current choosen category.
-      if (item.mapping_status === state.choosenCategory) {
+      if (item.mapping_status === state.chosenCategory) {
         item.isSelected = !item.isSelected;
       }
       return item;
@@ -59,7 +59,7 @@ export const MappingListReducer = createReducer(null, {
   },
 
   [MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED]: (state, action) => {
-    state.choosenCategory = action.payload.categoryName;
+    state.chosenCategory = action.payload.categoryName;
   },
 
   [MAPPING_ITEM_SELECTED]: (state, action) => {
