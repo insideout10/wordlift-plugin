@@ -123,6 +123,18 @@ class Edit_Mapping_Page_Test extends Wordlift_Unit_Test_Case {
 		});
 		$this->assertCount( 1, $expected_taxonomy );
 
+	}
+
+	/**
+	 * Test if the field type options are correctly loaded.
+	 */
+	public function test_check_if_field_type_options_loaded() {
+		$ui_settings_array = $this->ui_settings_array;
+		$this->assertArrayHasKey( 'wl_field_type_options', $ui_settings_array );
+		$this->assertArrayHasKey( 'wl_field_name_options', $ui_settings_array );
+		// Text and custom field should be present since acf wont be loaded.
+		$this->assertCount( 2, $ui_settings_array['wl_field_type_options'] );
+		$this->assertCount( 2, $ui_settings_array['wl_field_name_options'] );
 
 	}
 }

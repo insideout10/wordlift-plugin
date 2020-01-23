@@ -130,6 +130,8 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 
 	/**
 	 * Returns field name options based on the chosen field type.
+	 * if string is returned a text field would be shown to user, if an array of options is returned
+	 * then the select box would be shown to user.
 	 *
 	 * @return array Array of the options.
 	 */
@@ -172,25 +174,11 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 		$edit_mapping_settings                               = $this->load_rest_settings( $edit_mapping_settings );
 		$edit_mapping_settings = $this->load_text_settings_for_edit_mapping_page( $edit_mapping_settings );
 		$edit_mapping_settings['wl_transform_function_options'] = $this->transform_function_registry->get_options();
-
-		$all_field_name_options = self::get_all_field_name_options();
-		$all_field_types_options = array_map( function ( $item ) {
-			return array(
-				'label' => $item['label'],
-				'value' => $item['field_type'],
-			);
-		}, $all_field_name_options );
-
-		$edit_mapping_settings['wl_field_type_options'] = $all_field_types_options;
-
-		// Add wl_edit_field_name_options.
-		$edit_mapping_settings['wl_field_name_options'] = $all_field_name_options;
+		$edit_mapping_settings = $this->load_field_type_and_name_options( $edit_mapping_settings );
 		// Load logic field options.
 		$edit_mapping_settings = $this->load_logic_field_options( $edit_mapping_settings );
-		// Load the rule field options.
-		$rule_field_data = self::get_post_taxonomies_and_terms();
-		$edit_mapping_settings['wl_rule_field_one_options'] = $rule_field_data['taxonomy_options'];
-		$edit_mapping_settings['wl_rule_field_two_options'] = $rule_field_data['term_options'];
+		$edit_mapping_settings = $this->load_rule_field_options( $edit_mapping_settings );
+
 		return $edit_mapping_settings;
 	}
 
@@ -308,6 +296,44 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 		);
 		$edit_mapping_settings['wl_edit_mapping_rest_nonce'] = wp_create_nonce( 'wp_rest' );
 		$edit_mapping_settings                               = $this->validate_nonce_and_assign_mapping_id( $edit_mapping_settings );
+
+		return $edit_mapping_settings;
+	}
+
+	/**
+	 * Load the rule field options in to the settings.
+	 *
+	 * @param array $edit_mapping_settings
+	 *
+	 * @return array Return the settings.
+ 	 */
+	private function load_rule_field_options( array $edit_mapping_settings ) {
+		// Load the rule field options.
+		$rule_field_data                                    = self::get_post_taxonomies_and_terms();
+		$edit_mapping_settings['wl_rule_field_one_options'] = $rule_field_data['taxonomy_options'];
+		$edit_mapping_settings['wl_rule_field_two_options'] = $rule_field_data['term_options'];
+
+		return $edit_mapping_settings;
+	}
+
+	/**
+	 * Load field type and field name options to the settings array.
+	 * @param array $edit_mapping_settings
+	 *
+	 * @return array
+	 */
+	private function load_field_type_and_name_options( array $edit_mapping_settings ) {
+		$all_field_name_options  = self::get_all_field_name_options();
+		$all_field_types_options = array_map( function ( $item ) {
+			return array(
+				'label' => $item['label'],
+				'value' => $item['field_type'],
+			);
+		}, $all_field_name_options );
+
+		$edit_mapping_settings['wl_field_type_options'] = $all_field_types_options;
+		// Add wl_edit_field_name_options.
+		$edit_mapping_settings['wl_field_name_options'] = $all_field_name_options;
 
 		return $edit_mapping_settings;
 	}
