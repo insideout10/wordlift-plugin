@@ -15,7 +15,11 @@ namespace Wordlift\Mappings\Validators;
  * @package Wordlift\Mappings\Validators
  */
 class Post_Type_Rule_Validator implements Rule_Validator {
-
+	/**
+	 * @since 3.25.0
+	 * Enum for the post type rule validator.
+	 */
+	const POST_TYPE = 'post_type';
 	/**
 	 * Post_Type_Rule_Validator constructor.
 	 *
@@ -36,7 +40,7 @@ class Post_Type_Rule_Validator implements Rule_Validator {
 	 */
 	public function wl_mappings_rule_validators( $value ) {
 
-		$value['post_type'] = $this;
+		$value[self::POST_TYPE] = $this;
 
 		return $value;
 	}

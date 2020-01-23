@@ -101,4 +101,28 @@ class Edit_Mapping_Page_Test extends Wordlift_Unit_Test_Case {
 		$this->assertArrayHasKey( 'wl_edit_mapping_id', $ui_settings_array );
 		$this->assertEquals( $ui_settings_array['wl_edit_mapping_id'], 2 );
 	}
+
+	/**
+	 * Test whether the taxonomy and taxonomy options are loaded correctly
+	 */
+	public function test_whether_the_taxonomy_options_are_loaded_correctly() {
+		register_taxonomy('foo', 'post');
+		register_post_type('foo_post_type');
+		$ui_settings_array = $this->edit_mappings_page_instance->get_ui_settings_array();
+		// we have added taxonomy and post type, lets make sure they are in the options.
+		$this->assertArrayHasKey( 'wl_rule_field_one_options', $ui_settings_array );
+		$this->assertArrayHasKey('wl_rule_field_two_options', $ui_settings_array);
+		// we need to have this post type in the wl_rule_field_one_options
+		$expected_post_type = array_filter( $ui_settings_array['wl_rule_field_one_options'], function ( $item ) {
+			return $item['value'] === 'post_type';
+		});
+		// 1 post type should be present
+		$this->assertCount( $expected_post_type, 1 );
+		$expected_taxonomy = array_filter( $ui_settings_array['wl_rule_field_two_options'], function ( $item ) {
+			return $item['value'] === 'foo_post_type' || $item['value'] === 'foo';
+		});
+		$this->assertCount( $expected_taxonomy, 2 );
+
+
+	}
 }

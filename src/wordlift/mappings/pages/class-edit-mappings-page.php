@@ -187,10 +187,10 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 		$edit_mapping_settings['wl_field_name_options'] = $all_field_name_options;
 		// Load logic field options.
 		$edit_mapping_settings = $this->load_logic_field_options( $edit_mapping_settings );
-		list(
-			$edit_mapping_settings['wl_rule_field_one_options'],
-			$edit_mapping_settings['wl_rule_field_two_options']
-			) = self::get_post_taxonomies_and_terms();
+		// Load the rule field options.
+		$rule_field_data = self::get_post_taxonomies_and_terms();
+		$edit_mapping_settings['wl_rule_field_one_options'] = $rule_field_data['taxonomy_options'];
+		$edit_mapping_settings['wl_rule_field_two_options'] = $rule_field_data['term_options'];
 		return $edit_mapping_settings;
 	}
 
@@ -212,10 +212,18 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 				)
 			);
 		}
-		list( $post_type_option, $post_type_option_values ) = self::get_post_type_key_and_value();
+		// Post type is also included in the list of taxonomies, so get the post type and merge with options.
+		$post_type_array =  self::get_post_type_key_and_value();
+		$post_type_option = $post_type_array['post_type_option_name'];
+		// Get also the list of post types from the post_type_array.
+		$post_type_option_values = $post_type_array['post_type_option_values'];
+		// Merge the post type option and post types in the taxonomy options
 		array_push( $taxonomy_options, $post_type_option );
 		$term_options = array_merge( $term_options, $post_type_option_values );
-		return array( $taxonomy_options, $term_options );
+		return array(
+			'taxonomy_options' => $taxonomy_options,
+			'term_options' => $term_options
+		);
 	}
 
 	/**
@@ -226,7 +234,7 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 	private static function get_post_type_key_and_value() {
 		$post_type_option_name   = array(
 			'label' => __( 'Post type', 'wordlift' ),
-			'value' => __( 'post_type', 'wordlift' ),
+			'value' => Wordlift\Mappings\Validators\Post_Type_Rule_Validator::POST_TYPE,
 		);
 		$post_type_option_values = array();
 		$post_types              = get_post_types(
@@ -243,8 +251,10 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 				)
 			);
 		}
-
-		return array( $post_type_option_name, $post_type_option_values );
+		return array(
+			'post_type_option_name' =>  $post_type_option_name,
+			'post_type_option_values' => $post_type_option_values
+		);
 	}
 
 	/**
