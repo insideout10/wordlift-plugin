@@ -190,7 +190,7 @@ class MappingComponent extends React.Component {
             />
           </thead>
           <tbody>
-            <MappingNoActiveItemMessage {...props} />
+            <MappingNoActiveItemMessage {...this.props} />
             {this.props.mappingItems
               .filter(el => el.mapping_status === this.props.chosenCategory)
               .map((item, index) => {
