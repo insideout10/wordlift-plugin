@@ -234,6 +234,21 @@ class Wordlift_Admin_Post_Edit_Page {
 			array(),
 			$this->plugin->get_version()
 		);
+
+		wp_enqueue_script(
+			'wl-autocomplete-select',
+			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/autocomplete-select.js',
+			array(),
+			$this->plugin->get_version(),
+			true
+		);
+
+		wp_enqueue_style(
+			'wl-autocomplete-select',
+			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/autocomplete-select.css',
+			array(),
+			$this->plugin->get_version()
+		);
 	}
 
 }

@@ -142,6 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.24.2 (2020-01-23) =
+* Fix [#1005](https://github.com/insideout10/wordlift-plugin/issues/1005): sameAs select in metabox in Block Editor doesn't show.
+
 = 3.24.1 (2020-01-17) =
 * Fix: Wrong encoding for images in navigator.
 

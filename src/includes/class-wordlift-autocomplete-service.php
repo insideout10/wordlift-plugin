@@ -41,9 +41,10 @@ class Wordlift_Autocomplete_Service {
 	/**
 	 * The {@link Class_Wordlift_Autocomplete_Service} instance.
 	 *
+	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
+	 *
 	 * @since 3.15.0
 	 *
-	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
 	 */
 	public function __construct( $configuration_service ) {
 		$this->configuration_service = $configuration_service;
@@ -53,36 +54,35 @@ class Wordlift_Autocomplete_Service {
 	/**
 	 * Make request to external API and return the response.
 	 *
-	 * @since 3.15.0
-	 *
-	 * @param string       $query The search string.
+	 * @param string $query The search string.
 	 * @param array|string $exclude The exclude parameter string.
-	 * @param string       $scope The search scope: "local" will search only in the local dataset; "cloud" will search also
+	 * @param string $scope The search scope: "local" will search only in the local dataset; "cloud" will search also
 	 *                      in Wikipedia. By default is "cloud".
 	 *
 	 * @return array $response The API response.
+	 * @since 3.15.0
+	 *
 	 */
 	public function make_request( $query, $exclude = '', $scope = 'cloud' ) {
 		$url = $this->build_request_url( $query, $exclude, $scope );
 
-		// Make request.
-		$response = wp_remote_get( $url );
-
 		// Return the response.
-		return $response;
+		return wp_remote_get( $url, array(
+			'timeout' => 30
+		) );
 	}
 
 	/**
 	 * Build the autocomplete url.
 	 *
-	 * @since 3.15.0
-	 *
-	 * @param string       $query The search string.
+	 * @param string $query The search string.
 	 * @param array|string $exclude The exclude parameter.
-	 * @param string       $scope The search scope: "local" will search only in the local dataset; "cloud" will search also
+	 * @param string $scope The search scope: "local" will search only in the local dataset; "cloud" will search also
 	 *                      in Wikipedia. By default is "cloud".
 	 *
 	 * @return string Built url.
+	 * @since 3.15.0
+	 *
 	 */
 	private function build_request_url( $query, $exclude, $scope ) {
 		$args = array(
