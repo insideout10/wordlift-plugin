@@ -9,25 +9,25 @@
  * External dependencies
  */
 import React from "react";
-
 /**
  * Internal dependencies
  */
 import MappingListItemComponent from "./mapping-list-item-component";
 import MappingComponentHelper from "./mapping-component-helper";
 import {
-  MAPPING_LIST_CHANGED_ACTION,
+  BULK_ACTION_SELECTION_CHANGED_ACTION,
   MAPPING_ITEM_CATEGORY_CHANGED_ACTION,
-  MAPPING_LIST_BULK_SELECT_ACTION,
-  MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION,
   MAPPING_ITEM_SELECTED_ACTION,
   MAPPING_ITEMS_BULK_ACTION,
-  BULK_ACTION_SELECTION_CHANGED_ACTION,
+  MAPPING_LIST_BULK_SELECT_ACTION,
+  MAPPING_LIST_CHANGED_ACTION,
+  MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION,
   MAPPING_LIST_SORT_TITLE_CHANGED_ACTION
 } from "../../actions/actions";
-import { connect } from "react-redux";
-import CategoryComponent, { ACTIVE_CATEGORY } from "../category-component";
+import {connect} from "react-redux";
+import CategoryComponent, {ACTIVE_CATEGORY} from "../category-component";
 import BulkActionComponent from "../bulk-action-component";
+import {AddNewButton, MappingTableCheckBox} from "./mapping-list-subcomponents";
 // Set a reference to the WordLift's Mapping settings stored in the window instance.
 const mappingSettings = window["wlMappingsConfig"] || {};
 
@@ -155,12 +155,10 @@ class MappingComponent extends React.Component {
     action.payload = {
       mappingId: mappingData.mapping_id
     };
-    console.log(action);
     this.props.dispatch(action);
   };
   bulkActionSubmitHandler = () => {
-    const action = MAPPING_ITEMS_BULK_ACTION;
-    action.payload = {
+    MAPPING_ITEMS_BULK_ACTION.payload = {
       duplicateCallBack: this.duplicateMappingItems,
       updateCallBack: this.updateMappingItems
     };
@@ -169,12 +167,7 @@ class MappingComponent extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <h1 className="wp-heading-inline wl-mappings-heading-text">
-          Mappings &nbsp;&nbsp;
-          <a href="?page=wl_edit_mapping" className="button wl-mappings-add-new">
-            Add New
-          </a>
-        </h1>
+        <AddNewButton/>
         <CategoryComponent
           source={this.props.mappingItems}
           categoryKeyName="mapping_status"
@@ -186,13 +179,10 @@ class MappingComponent extends React.Component {
         <table className="wp-list-table widefat striped wl-table">
           <thead>
             <tr>
-              <th className="wl-check-column">
-                <input
-                  type="checkbox"
-                  onClick={this.selectAllMappingItems}
-                  checked={this.props.headerCheckBoxSelected === true}
-                />
-              </th>
+              <MappingTableCheckBox
+                props = { this.props }
+                selectAllMappingsHandler = { this.selectAllMappingItems }
+              />
               <th>
                 <a
                   className="row-title wl-mappings-link"
