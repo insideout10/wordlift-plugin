@@ -37,9 +37,10 @@ interface Mappings_Transform_Function {
 	 * @param array|string $data An Associative Array containing raw data or string.
 	 * @param array $jsonld The JSON-LD structure.
 	 * @param int[] $references An array of post IDs referenced by the JSON-LD structure.
+	 * @param int $post_id The post ID.
 	 *
 	 * @return array|string Return Mapped data.
 	 */
-	public function transform_data( $data, $jsonld, &$references );
+	public function transform_data( $data, $jsonld, &$references, $post_id );
 
 }

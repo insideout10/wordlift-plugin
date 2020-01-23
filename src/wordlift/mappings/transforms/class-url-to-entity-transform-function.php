@@ -72,7 +72,7 @@ class Url_To_Entity_Transform_Function implements Mappings_Transform_Function {
 	/**
 	 * @inheritDoc
 	 */
-	public function transform_data( $data, $jsonld, &$references ) {
+	public function transform_data( $data, $jsonld, &$references, $post_id ) {
 
 		// Get the entity by URI.
 		$post = $this->entity_uri_service->get_entity( $data );
