@@ -114,14 +114,14 @@ class Edit_Mapping_Page_Test extends Wordlift_Unit_Test_Case {
 		$this->assertArrayHasKey('wl_rule_field_two_options', $ui_settings_array);
 		// we need to have this post type in the wl_rule_field_one_options
 		$expected_post_type = array_filter( $ui_settings_array['wl_rule_field_one_options'], function ( $item ) {
-			return $item['value'] === 'post_type';
+			return $item['value'] === 'post_type' || $item['value'] === 'foo';
 		});
 		// 1 post type should be present
-		$this->assertCount( $expected_post_type, 1 );
+		$this->assertCount( 2, $expected_post_type );
 		$expected_taxonomy = array_filter( $ui_settings_array['wl_rule_field_two_options'], function ( $item ) {
-			return $item['value'] === 'foo_post_type' || $item['value'] === 'foo';
+			return $item['value'] === 'foo_post_type';
 		});
-		$this->assertCount( $expected_taxonomy, 2 );
+		$this->assertCount( 1, $expected_taxonomy );
 
 
 	}
