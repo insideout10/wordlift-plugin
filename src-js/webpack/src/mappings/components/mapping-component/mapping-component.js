@@ -27,7 +27,12 @@ import {
 import {connect} from "react-redux";
 import CategoryComponent, {ACTIVE_CATEGORY} from "../category-component";
 import BulkActionComponent from "../bulk-action-component";
-import {AddNewButton, MappingTableCheckBox} from "./mapping-list-subcomponents";
+import {
+  AddNewButton,
+  MappingHeaderRow,
+  MappingTableCheckBox,
+  MappingTableTitleSort
+} from "./mapping-list-subcomponents";
 // Set a reference to the WordLift's Mapping settings stored in the window instance.
 const mappingSettings = window["wlMappingsConfig"] || {};
 
@@ -178,23 +183,11 @@ class MappingComponent extends React.Component {
         <br />
         <table className="wp-list-table widefat striped wl-table">
           <thead>
-            <tr>
-              <MappingTableCheckBox
+            <MappingHeaderRow
                 headerCheckBoxSelected = { this.props.headerCheckBoxSelected }
                 selectAllMappingsHandler = { this.selectAllMappingItems }
-              />
-              <th>
-                <a
-                  className="row-title wl-mappings-link"
-                  onClick={() => {
-                    this.sortMappingItemsByTitle();
-                  }}
-                >
-                  Title
-                  <span className={"dashicons " + this.props.titleIconClass}></span>
-                </a>
-              </th>
-            </tr>
+                sortMappingItemsByTitleHandler = { this.sortMappingItemsByTitle }
+            />
           </thead>
           <tbody>
             {// show empty screen when there is no mapping items
@@ -226,23 +219,11 @@ class MappingComponent extends React.Component {
               })}
           </tbody>
           <tfoot>
-            <tr>
-              <MappingTableCheckBox
-                  headerCheckBoxSelected = { this.props.headerCheckBoxSelected }
-                  selectAllMappingsHandler = { this.selectAllMappingItems }
-              />
-              <th>
-                <a
-                  className="row-title wl-mappings-link"
-                  onClick={() => {
-                    this.sortMappingItemsByTitle();
-                  }}
-                >
-                  Title
-                  <span className={"dashicons " + this.props.titleIconClass}></span>
-                </a>
-              </th>
-            </tr>
+            <MappingHeaderRow
+                headerCheckBoxSelected = { this.props.headerCheckBoxSelected }
+                selectAllMappingsHandler = { this.selectAllMappingItems }
+                sortMappingItemsByTitleHandler = { this.sortMappingItemsByTitle }
+            />
           </tfoot>
         </table>
         <div className="wl-container wl-container-full">

@@ -16,7 +16,7 @@ export const AddNewButton  = () => {
             </a>
         </h1>
     )
-}
+};
 
 /**
  * MappingTableCheckBox : Provides a checkbox to user to select all the mapping items.
@@ -32,5 +32,44 @@ export const MappingTableCheckBox = ( props ) => {
                 checked={ props.headerCheckBoxSelected === true}
             />
         </th>
+    )
+};
+
+/**
+ *
+ * @param props Object passed from { @link MappingComponent }
+ * @returns MappingTableTitleSort Instance
+ */
+export const MappingTableTitleSort = ( props ) => {
+    return (
+        <th>
+            <a
+                className="row-title wl-mappings-link"
+                onClick={() => {
+                    props.sortMappingItemsByTitleHandler()
+                }}
+            >
+                Title
+                <span className={"dashicons " + props.titleIconClass} />
+            </a>
+        </th>
+    )
+};
+
+/**
+ *
+ * @param props Properties passed from {@link MappingComponent }
+ * @returns MappingHeaderRow instance.
+ */
+export const MappingHeaderRow = ( props ) => {
+    return (
+        <tr>
+            <MappingTableCheckBox
+                { ...props }
+            />
+            <MappingTableTitleSort
+                { ...props }
+            />
+        </tr>
     )
 }
