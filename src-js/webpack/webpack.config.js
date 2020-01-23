@@ -31,7 +31,7 @@ const webpackConfig = {
     "block-editor": "./src/block-editor/index.js",
     "tiny-mce": "./src/tiny-mce/index.js",
     "wordlift-cloud": "./src/Cloud/index.js",
-    "mappings": "./src/mappings/mappings.js",
+    "mappings": "./src/mappings/index.js",
     "mappings-edit": "./src/mappings/edit-mappings.js"
   },
   output: {

@@ -35,13 +35,16 @@ const PropertyInputField = ({ propData, handleChangeForPropertyField, inputKeyNa
 class PropertyComponent extends React.Component {
   constructor(props) {
     super(props);
+
+    this.handleChangeForPropertyField = this.handleChangeForPropertyField.bind(this);
+    this.getInputFieldForFieldName = this.getInputFieldForFieldName.bind(this);
   }
   /**
    * When a property item changes this method gets fired
    * @param {String} fieldKey Field Key is the key present in property data
    * @param {Object} event The onChange event when a input field is changed
    */
-  handleChangeForPropertyField = (fieldKey, event) => {
+  handleChangeForPropertyField(fieldKey, event) {
     const action = PROPERTY_DATA_CHANGED_ACTION;
     action.payload = {
       fieldKey: fieldKey,
@@ -50,12 +53,12 @@ class PropertyComponent extends React.Component {
     };
     this.props.dispatch(action);
     console.log(action);
-  };
+  }
 
   /**
    * Display a list of options or just a text box depends on the field type
    */
-  getInputFieldForFieldName = () => {
+  getInputFieldForFieldName() {
     const field_type = this.props.propData.fieldTypeHelpText;
     const results = this.props.fieldNameOptions.filter(el => el.field_type === field_type);
     const value = results.length > 0 ? results[0].value : null;
@@ -81,7 +84,7 @@ class PropertyComponent extends React.Component {
         />
       );
     }
-  };
+  }
 
   render() {
     return (

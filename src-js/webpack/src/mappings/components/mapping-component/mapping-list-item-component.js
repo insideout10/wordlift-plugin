@@ -16,8 +16,10 @@ import { ACTIVE_CATEGORY } from "../category-component";
 class MappingListItemComponent extends React.Component {
   constructor(props) {
     super(props);
+
+    this.constructEditMappingLink = this.constructEditMappingLink.bind(this);
   }
-  constructEditMappingLink = () => {
+  constructEditMappingLink() {
     return (
       "?page=wl_edit_mapping" +
       "&_wl_edit_mapping_nonce=" +
@@ -25,7 +27,7 @@ class MappingListItemComponent extends React.Component {
       "&wl_edit_mapping_id=" +
       this.props.mappingData.mapping_id
     );
-  };
+  }
   /**
    * Return the options for the trash category.
    */
@@ -61,7 +63,7 @@ class MappingListItemComponent extends React.Component {
   returnOptionsForActiveCategory() {
     return (
       <React.Fragment>
-        <span class="edit">
+        <span className="edit">
           <a href={this.constructEditMappingLink()}>Edit</a>|
         </span>
         <span className="wl-mappings-link">
@@ -102,18 +104,18 @@ class MappingListItemComponent extends React.Component {
   render() {
     return (
       <tr>
-        <td class="wl-check-column">
+        <td className="wl-check-column">
           <input
             type="checkbox"
-            checked={this.props.mappingData.isSelected}
+            defaultChecked={this.props.mappingData.isSelected}
             onClick={() => {
               this.props.selectMappingItemHandler(this.props.mappingData);
             }}
           />
         </td>
         <td>
-          <a class="row-title wl-mappings-list-item-title">{this.props.mappingData.mapping_title}</a>
-          <div class="row-actions">{this.renderOptionsBasedOnItemCategory(this.props.mappingData.mapping_status)}</div>
+          <a className="row-title wl-mappings-list-item-title">{this.props.mappingData.mapping_title}</a>
+          <div className="row-actions">{this.renderOptionsBasedOnItemCategory(this.props.mappingData.mapping_status)}</div>
         </td>
       </tr>
     );

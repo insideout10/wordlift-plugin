@@ -40,35 +40,41 @@ const editMappingSettings = window["wl_edit_mappings_config"] || {};
 class EditComponent extends React.Component {
   constructor(props) {
     super(props);
+
+    this.handleTitleChange = this.handleTitleChange.bind(this);
+    this.bulkActionSubmitHandler = this.bulkActionSubmitHandler.bind(this);
+    this.bulkActionOptionChangedHandler = this.bulkActionOptionChangedHandler.bind(this);
+    this.setNewMappingId = this.setNewMappingId.bind(this);
+    this.saveMappingItem = this.saveMappingItem.bind(this);
   }
   /**
    * When the title is changed, this method saves it in the redux store.
    * @param {Object} event The event which is fired when mapping title changes
    */
-  handleTitleChange = event => {
+  handleTitleChange(event) {
     const action = TITLE_CHANGED_ACTION;
     action.payload = {
       value: event.target.value
     };
     this.props.dispatch(action);
-  };
+  }
   componentDidMount() {
     if (editMappingSettings.wl_edit_mapping_id !== undefined) {
       this.getMappingItemByMappingId();
     }
   }
-  bulkActionSubmitHandler = () => {
+  bulkActionSubmitHandler() {
     this.props.dispatch(PROPERTY_ITEMS_BULK_ACTION);
-  };
+  }
 
-  bulkActionOptionChangedHandler = event => {
+  bulkActionOptionChangedHandler(event) {
     const selectedBulkOption = event.target.value;
     const action = BULK_ACTION_SELECTION_CHANGED_ACTION;
     action.payload = {
       selectedBulkAction: selectedBulkOption
     };
     this.props.dispatch(action);
-  };
+  }
 
   /**
    * Get edit mapping item if the mapping id is supplied
@@ -117,19 +123,19 @@ class EditComponent extends React.Component {
    * @param {Number} mapping_id The primary key of the mapping table
    * @return void
    */
-  setNewMappingId = mapping_id => {
+  setNewMappingId(mapping_id) {
     const action = MAPPING_ID_CHANGED_FROM_API_ACTION;
     action.payload = {
       mappingId: parseInt(mapping_id)
     };
     this.props.dispatch(action);
-  };
+  }
 
   /**
    * Save the mapping item to the api,
    * Apply some filters, build post object for saving.
    */
-  saveMappingItem = () => {
+  saveMappingItem() {
     const postObject = EditComponentMapping.mapStoreKeysToAPI(this.props.stateObject);
     fetch(editMappingSettings.rest_url, {
       method: "POST",
@@ -150,7 +156,7 @@ class EditComponent extends React.Component {
         window !== undefined ? window.scrollTo(0, 0) : undefined;
       })
     );
-  };
+  }
   render() {
     return (
       <React.Fragment>

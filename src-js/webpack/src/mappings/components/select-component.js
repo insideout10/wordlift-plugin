@@ -19,9 +19,13 @@ import { CHANGE_RULE_FIELD_VALUE_ACTION } from "../actions/actions";
 class SelectComponent extends React.Component {
   constructor(props) {
     super(props);
+
+    this.renderOptionsDefault = this.renderOptionsDefault.bind(this);
+    this.renderOptions = this.renderOptions.bind(this);
+    this.renderOptionsForOptionGroup = this.renderOptionsForOptionGroup.bind(this);
   }
 
-  renderOptionsDefault = () => {
+  renderOptionsDefault() {
     return this.props.options.map((item, index) => {
       return (
         <option key={index} value={item.value}>
@@ -29,8 +33,8 @@ class SelectComponent extends React.Component {
         </option>
       );
     });
-  };
-  renderOptions = options => {
+  }
+  renderOptions(options) {
     return options.map((item, index) => {
       return (
         <option key={index} value={item.value}>
@@ -38,12 +42,12 @@ class SelectComponent extends React.Component {
         </option>
       );
     });
-  };
-  renderOptionsForOptionGroup = () => {
+  }
+  renderOptionsForOptionGroup() {
     return this.props.options.map((item, index) => {
       return <optgroup label={item.group_name}>{this.renderOptions(item.group_options)}</optgroup>;
     });
-  };
+  }
 
   renderOptionsConditionally() {
     if (this.props.inputDataIsOptionGroup) {
@@ -55,10 +59,8 @@ class SelectComponent extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <select value={this.props.value} className={this.props.className} onChange={this.props.onChange}>
-          <option selected={true} disabled={true} value="">
-            Select one
-          </option>
+        <select defaultValue={this.props.value} className={this.props.className} onChange={this.props.onChange}>
+          <option value="">Select one</option>
           {this.renderOptionsConditionally()}
         </select>
       </React.Fragment>

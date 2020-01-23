@@ -22,11 +22,13 @@ import { ADD_NEW_RULE_GROUP_ACTION } from "../actions/actions";
 class RuleGroupListComponent extends React.Component {
   constructor(props) {
     super(props);
+
+    this.addNewRuleGroupHandler = this.addNewRuleGroupHandler.bind(this);
   }
 
-  addNewRuleGroupHandler = () => {
+  addNewRuleGroupHandler() {
     this.props.dispatch(ADD_NEW_RULE_GROUP_ACTION);
-  };
+  }
 
   render() {
     return (
@@ -36,7 +38,7 @@ class RuleGroupListComponent extends React.Component {
         )}
         {this.props.ruleGroupList.map((item, index) => {
           return (
-            <React.Fragment>
+            <React.Fragment key={index}>
               <RuleGroupComponent rules={item.rules} ruleGroupIndex={index} />
               {// dont show extra `or` text if there
               // is no rule group below

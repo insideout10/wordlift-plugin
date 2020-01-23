@@ -14,8 +14,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
-    "@babel/preset-env": "^7.7.4",
-    "@babel/preset-react": "^7.7.4",
     "@wordpress/api-fetch": "^2.2.6",
     "@wordpress/block-library": "^2.2.10",
     "@wordpress/blocks": "6.0.4",
@@ -53,7 +51,6 @@
     "webpack-cli": "^3.3.8"
   },
   "dependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.7.4",
     "@reduxjs/toolkit": "^1.2.1",
     "@wordlift/wordlift-for-schemaorg": "^1.0",
     "immutable": "^3",

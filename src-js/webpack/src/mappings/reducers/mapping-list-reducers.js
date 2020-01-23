@@ -21,7 +21,7 @@ import {
 import { createReducer } from "@reduxjs/toolkit";
 import { BulkOptionValues } from "../components/bulk-action-sub-components";
 import { TRASH_CATEGORY, ACTIVE_CATEGORY } from "../components/category-component";
-import { SORT_BY_ASC, SORT_BY_DESC } from "../mappings";
+import { SORT_BY_ASC, SORT_BY_DESC } from "../constants";
 
 const changeCategoryForMappingItems = (mappingItems, category) => {
   return mappingItems.map(item => {

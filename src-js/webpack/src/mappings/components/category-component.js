@@ -59,7 +59,7 @@ class CategoryComponent extends React.Component {
     return (
       <div>
         {this.props.categories.map((category, index) => {
-          return <SingleCategoryItem {...this.props} category={category} />;
+          return <SingleCategoryItem key={index} {...this.props} category={category} />;
         })}
       </div>
     );

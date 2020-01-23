@@ -39,6 +39,11 @@ const RowActionItem = ({ className, title, onClickHandler, args }) => {
 class PropertyListItemComponent extends React.Component {
   constructor(props) {
     super(props);
+
+    this.returnOptionsForActiveCategory = this.returnOptionsForActiveCategory.bind(this);
+    this.renderOptionsBasedOnItemCategory = this.renderOptionsBasedOnItemCategory.bind(this);
+    this.changeCategoryPropertyItem = this.changeCategoryPropertyItem.bind(this);
+    this.makeCrudOperationOnPropertyId = this.makeCrudOperationOnPropertyId.bind(this);
   }
   /**
    * Return the options for the trash category.
@@ -101,23 +106,23 @@ class PropertyListItemComponent extends React.Component {
         return this.returnOptionsForTrashCategory();
     }
   }
-  changeCategoryPropertyItem = (propertyId, category) => {
+  changeCategoryPropertyItem(propertyId, category) {
     const action = PROPERTY_ITEM_CATEGORY_CHANGED_ACTION;
     action.payload = {
       propertyId: propertyId,
       propertyCategory: category
     };
     this.props.dispatch(action);
-  };
+  }
 
-  makeCrudOperationOnPropertyId = (propertyId, operationName) => {
+  makeCrudOperationOnPropertyId(propertyId, operationName) {
     const action = PROPERTY_ITEM_CRUD_OPERATION_ACTION;
     action.payload = {
       propertyId: propertyId,
       operationName: operationName
     };
     this.props.dispatch(action);
-  };
+  }
 
   render() {
     return (

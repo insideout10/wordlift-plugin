@@ -26,7 +26,12 @@ class RuleGroupComponent extends React.Component {
       <div className="rule-group-container">
         {this.props.rules.map((ruleProps, ruleIndex) => {
           return (
-            <RuleComponent ruleProps={ruleProps} ruleGroupIndex={this.props.ruleGroupIndex} ruleIndex={ruleIndex} />
+            <RuleComponent
+              key={ruleIndex}
+              ruleProps={ruleProps}
+              ruleGroupIndex={this.props.ruleGroupIndex}
+              ruleIndex={ruleIndex}
+            />
           );
         })}
       </div>

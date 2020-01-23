@@ -17,14 +17,22 @@ import {
   ADD_NEW_RULE_ACTION,
   DELETE_RULE_ACTION,
   CHANGE_RULE_FIELD_VALUE_ACTION,
-  NOTIFICATION_CHANGED_ACTION, MAPPING_TERMS_CHANGED_ACTION
+  NOTIFICATION_CHANGED_ACTION,
+  MAPPING_TERMS_CHANGED_ACTION
 } from "../actions/actions";
 
 class RuleComponent extends React.Component {
   constructor(props) {
     super(props);
+
+    this.handleAddNewRule = this.handleAddNewRule.bind(this);
+    this.handleDeleteRule = this.handleDeleteRule.bind(this);
+    this.handleSelectFieldChange = this.handleSelectFieldChange.bind(this);
+    this.fetchTermsForSelectedTaxonomyFromAPI = this.fetchTermsForSelectedTaxonomyFromAPI.bind(this);
+    this.getTermsFromAPI = this.getTermsFromAPI.bind(this);
+
     // Load terms for the selected taxonomy.
-    this.fetchTermsForSelectedTaxonomyFromAPI( this.props.ruleProps.ruleFieldOneValue )
+    this.fetchTermsForSelectedTaxonomyFromAPI(this.props.ruleProps.ruleFieldOneValue);
   }
   /**
    * Adds a new rule after the current rule index
@@ -32,35 +40,35 @@ class RuleComponent extends React.Component {
    * @param {Number} ruleGroupIndex Index of the rule group which the rule belongs to
    * @param {Number} ruleIndex Index of the rule
    */
-  handleAddNewRule = (ruleGroupIndex, ruleIndex) => {
+  handleAddNewRule(ruleGroupIndex, ruleIndex) {
     const action = ADD_NEW_RULE_ACTION;
     action.payload = {
       ruleGroupIndex: ruleGroupIndex,
       ruleIndex: ruleIndex
     };
     this.props.dispatch(action);
-  };
+  }
   /**
    * Delete current rule at ruleIndex
    *
    * @param {Number} ruleGroupIndex Index of the rule group which the rule belongs to
    * @param {Number} ruleIndex Index of the rule
    */
-  handleDeleteRule = (ruleGroupIndex, ruleIndex) => {
+  handleDeleteRule(ruleGroupIndex, ruleIndex) {
     const action = DELETE_RULE_ACTION;
     action.payload = {
       ruleGroupIndex: ruleGroupIndex,
       ruleIndex: ruleIndex
     };
     this.props.dispatch(action);
-  };
+  }
   /**
    * Saves when a change occur to selection field.
    *
    * @param {Object} event When selection field inside rule changes this event is emiited.
    * @param {String} fieldKey FieldKey indicates the selection field name
    */
-  handleSelectFieldChange = (event, fieldKey) => {
+  handleSelectFieldChange(event, fieldKey) {
     const action = CHANGE_RULE_FIELD_VALUE_ACTION;
     action.payload = {
       value: event.target.value,
@@ -68,38 +76,38 @@ class RuleComponent extends React.Component {
       ruleGroupIndex: this.props.ruleGroupIndex,
       fieldKey: fieldKey
     };
-    if ( fieldKey === 'ruleFieldOneValue' ) {
+    if (fieldKey === "ruleFieldOneValue") {
       // We might need to get terms when this field changes.
-      this.fetchTermsForSelectedTaxonomyFromAPI( event.target.value )
+      this.fetchTermsForSelectedTaxonomyFromAPI(event.target.value);
     }
     this.props.dispatch(action);
-  };
+  }
   /**
    * Fetches the terms for the selected taxonomy to the ui.
    * @param selectedTaxonomy The taxonomy selected by the user.
    */
-  fetchTermsForSelectedTaxonomyFromAPI = ( selectedTaxonomy )=> {
+  fetchTermsForSelectedTaxonomyFromAPI(selectedTaxonomy) {
     // Check if the terms are fetched for the taxonomy.
-    const taxonomies = this.props.ruleFieldOneOptions.filter( e => e.value === selectedTaxonomy );
-    if ( 1 === taxonomies.length ) {
+    const taxonomies = this.props.ruleFieldOneOptions.filter(e => e.value === selectedTaxonomy);
+    if (1 === taxonomies.length) {
       const selectedTaxonomyOption = taxonomies[0];
-      if ( ! selectedTaxonomyOption.isTermsFetchedForTaxonomy ) {
+      if (!selectedTaxonomyOption.isTermsFetchedForTaxonomy) {
         // if the terms are not fetched from api, then send a network request.
-        this.getTermsFromAPI( selectedTaxonomy )
+        this.getTermsFromAPI(selectedTaxonomy);
       }
     }
-  };
+  }
 
   /**
    * Send request to api to get terms for the selected taxonomy,
    * @param taxonomy The selected taxonomy string.
    */
-  getTermsFromAPI = ( taxonomy ) => {
-    const editMappingSettings = window["wl_edit_mappings_config"]
+  getTermsFromAPI(taxonomy) {
+    const editMappingSettings = window["wl_edit_mappings_config"];
     const postObject = {
-      'taxonomy' : taxonomy,
+      taxonomy: taxonomy
     };
-    fetch(editMappingSettings.rest_url + '/get_terms', {
+    fetch(editMappingSettings.rest_url + "/get_terms", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -107,24 +115,24 @@ class RuleComponent extends React.Component {
       },
       body: JSON.stringify(postObject)
     }).then(response =>
-        response.json().then(data => {
-          const terms = data.map( e => {
-            return {
-              label: e.name,
-              value: e.slug,
-              taxonomy: e.taxonomy
-            }
-          });
-          // Once the terms arrived, pass it to the store.
-          const action = MAPPING_TERMS_CHANGED_ACTION;
-          action.payload = {
-            terms: terms,
-            taxonomy: taxonomy
+      response.json().then(data => {
+        const terms = data.map(e => {
+          return {
+            label: e.name,
+            value: e.slug,
+            taxonomy: e.taxonomy
           };
-          this.props.dispatch( action )
-        })
+        });
+        // Once the terms arrived, pass it to the store.
+        const action = MAPPING_TERMS_CHANGED_ACTION;
+        action.payload = {
+          terms: terms,
+          taxonomy: taxonomy
+        };
+        this.props.dispatch(action);
+      })
     );
-  };
+  }
 
   render() {
     return (
@@ -152,14 +160,14 @@ class RuleComponent extends React.Component {
         <div className="wl-col">
           <SelectComponent
             options={this.props.ruleFieldTwoOptions.filter(
-                el => el.taxonomy === this.props.ruleProps.ruleFieldOneValue
+              el => el.taxonomy === this.props.ruleProps.ruleFieldOneValue
             )}
             value={this.props.ruleProps.ruleFieldTwoValue}
             onChange={e => {
               this.handleSelectFieldChange(e, "ruleFieldTwoValue");
             }}
             className="wl-field-two-select wl-form-select"
-        />
+          />
         </div>
         <div className="wl-col">
           <button

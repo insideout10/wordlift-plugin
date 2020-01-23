@@ -29,47 +29,54 @@ import {
 class PropertyListComponent extends React.Component {
   constructor(props) {
     super(props);
+
+    this.switchState = this.switchState.bind(this);
+    this.handleAddMappingClick = this.handleAddMappingClick.bind(this);
+    this.categorySelectHandler = this.categorySelectHandler.bind(this);
+    this.propertySelectedHandler = this.propertySelectedHandler.bind(this);
+    this.selectAllPropertyHandler = this.selectAllPropertyHandler.bind(this);
+    this.renderListComponentBasedOnState = this.renderListComponentBasedOnState.bind(this);
   }
   /**
    * It makes property item
    * switch from edit mode to list item mode and vice versa
    * @param {Number} propertyIndex
    */
-  switchState = propertyId => {
+  switchState(propertyId) {
     const action = OPEN_OR_CLOSE_PROPERTY_ACTION;
     action.payload = {
       propertyId: propertyId
     };
     this.props.dispatch(action);
-  };
+  }
   // triggered when the add mapping button is clicked
-  handleAddMappingClick = () => {
+  handleAddMappingClick() {
     this.props.dispatch(ADD_MAPPING_ACTION);
-  };
-  categorySelectHandler = category => {
+  }
+  categorySelectHandler(category) {
     const action = PROPERTY_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION;
     action.payload = {
       choosenCategory: category
     };
     this.props.dispatch(action);
-  };
-  propertySelectedHandler = propertyId => {
+  }
+  propertySelectedHandler(propertyId) {
     const action = PROPERTY_ITEM_SELECTED_ACTION;
     action.payload = {
       propertyId: propertyId
     };
     this.props.dispatch(action);
-  };
-  selectAllPropertyHandler = () => {
+  }
+  selectAllPropertyHandler() {
     this.props.dispatch(PROPERTY_ITEM_SELECT_ALL_ACTION);
-  };
+  }
   /**
    * It Renders depends on the isOpenedOrAddedByUser boolean present
    * in the property object.
    * @param {Object} property A single property present in property list
    * @param {Number} index Index of the property in property list
    */
-  renderListComponentBasedOnState = (property, index) => {
+  renderListComponentBasedOnState(property, index) {
     if (property.isOpenedOrAddedByUser) {
       return (
         // show the property in edit mode
@@ -84,7 +91,7 @@ class PropertyListComponent extends React.Component {
         switchState={this.switchState}
       />
     );
-  };
+  }
   render() {
     return (
       <React.Fragment>
@@ -102,7 +109,7 @@ class PropertyListComponent extends React.Component {
               <th className="wl-check-column">
                 <input
                   type="checkbox"
-                  checked={this.props.propertyHeaderCheckboxClicked}
+                  defaultChecked={this.props.propertyHeaderCheckboxClicked}
                   onClick={() => {
                     this.selectAllPropertyHandler();
                   }}
@@ -130,11 +137,11 @@ class PropertyListComponent extends React.Component {
               .filter(property => property.property_status === this.props.choosenCategory)
               .map((property, index) => {
                 return (
-                  <tr className="wl-property-list-item-container">
+                  <tr key={index} className="wl-property-list-item-container">
                     <td className="wl-check-column">
                       <input
                         type="checkbox"
-                        checked={property.isSelectedByUser}
+                        defaultChecked={property.isSelectedByUser}
                         onClick={() => {
                           this.propertySelectedHandler(property.property_id);
                         }}
@@ -146,7 +153,7 @@ class PropertyListComponent extends React.Component {
                 );
               })}
             <tr className="wl-text-right">
-              <td colspan="3">
+              <td colSpan="3">
                 <br />
                 <button
                   className="button action bg-primary text-white wl-add-mapping"
