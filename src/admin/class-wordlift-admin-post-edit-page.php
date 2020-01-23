@@ -57,7 +57,6 @@ class Wordlift_Admin_Post_Edit_Page {
 
 		// Define the callbacks.
 		$callback                  = array( $this, 'enqueue_scripts', );
-		$callback_block_categories = array( $this, 'block_categories' );
 
 		// Set a hook to enqueue scripts only when the edit page is displayed.
 		add_action( 'admin_print_scripts-post.php', $callback );
