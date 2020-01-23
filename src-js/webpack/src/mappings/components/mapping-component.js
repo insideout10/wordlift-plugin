@@ -220,7 +220,7 @@ class MappingComponent extends React.Component {
           categoryKeyName="mapping_status"
           categories={["active", "trash"]}
           categorySelectHandler={this.categorySelectHandler}
-          choosenCategory={this.props.choosenCategory}
+          choosenCategory={this.props.chosenCategory}
         />
         <br />
         <table className="wp-list-table widefat striped wl-table">
@@ -249,7 +249,7 @@ class MappingComponent extends React.Component {
           <tbody>
             {// show empty screen when there is no mapping items
             0 === this.props.mappingItems.filter(el => el.mapping_status === ACTIVE_CATEGORY).length &&
-              this.props.choosenCategory === ACTIVE_CATEGORY && (
+              this.props.chosenCategory === ACTIVE_CATEGORY && (
                 <tr>
                   <td colspan="3">
                     <div className="wl-container text-center">
@@ -260,7 +260,7 @@ class MappingComponent extends React.Component {
                 </tr>
               )}
             {this.props.mappingItems
-              .filter(el => el.mapping_status === this.props.choosenCategory)
+              .filter(el => el.mapping_status === this.props.chosenCategory)
               .map((item, index) => {
                 return (
                   <MappingListItemComponent
@@ -300,7 +300,7 @@ class MappingComponent extends React.Component {
         </table>
         <div className="wl-container wl-container-full">
           <BulkActionComponent
-            choosenCategory={this.props.choosenCategory}
+            choosenCategory={this.props.chosenCategory}
             bulkActionOptionChangedHandler={this.bulkActionOptionChangedHandler}
             bulkActionSubmitHandler={this.bulkActionSubmitHandler}
           />
@@ -313,7 +313,7 @@ class MappingComponent extends React.Component {
 const mapStateToProps = function(state) {
   return {
     mappingItems: state.mappingItems,
-    choosenCategory: state.choosenCategory,
+    chosenCategory: state.chosenCategory,
     stateObj: state,
     headerCheckBoxSelected: state.headerCheckBoxSelected,
     titleIconClass: state.titleIcon
