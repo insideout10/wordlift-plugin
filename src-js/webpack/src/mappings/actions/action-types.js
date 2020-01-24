@@ -171,4 +171,11 @@ export const MAPPING_ID_CHANGED_FROM_API = "MAPPING_ID_CHANGED_FROM_API";
  * @const MAPPING_TERMS_CHANGED
  * Action type when the mapping taxonomy terms are loaded from the rest api.
  */
-export const MAPPING_TERMS_CHANGED = "MAPPING_TERMS_CHANGED"
+export const MAPPING_TERMS_CHANGED = "MAPPING_TERMS_CHANGED";
+
+/**
+ * @const MAPPINGS_REQUEST
+ * Action type when the ui makes the request to get mappings from API.
+ */
+export const MAPPINGS_REQUEST = "MAPPINGS_REQUEST";
+

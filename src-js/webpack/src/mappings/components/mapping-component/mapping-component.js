@@ -23,7 +23,7 @@ import {
   MAPPING_LIST_BULK_SELECT_ACTION,
   MAPPING_LIST_CHANGED_ACTION,
   MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION,
-  MAPPING_LIST_SORT_TITLE_CHANGED_ACTION
+  MAPPING_LIST_SORT_TITLE_CHANGED_ACTION, MAPPINGS_REQUEST_ACTION
 } from "../../actions/actions";
 import { connect } from "react-redux";
 import CategoryComponent, { ACTIVE_CATEGORY } from "../category-component";
@@ -140,7 +140,7 @@ class MappingComponent extends React.Component {
    * @return void
    */
   getMappingItems() {
-    this.props.dispatch({ type: "MAPPINGS_REQUEST" });
+    this.props.dispatch( MAPPINGS_REQUEST_ACTION );
   }
   /**
    * When the category is selected in the categoryComponent this method
