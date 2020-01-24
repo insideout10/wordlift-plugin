@@ -94,12 +94,11 @@ export const MappingListReducer = createReducer(null, {
   },
 
   [MAPPING_ITEMS_BULK_SELECT]: (state, action) => {
-    const { duplicateCallBack, updateCallBack } = action.payload;
     const selectedItems = state.mappingItems.filter(item => true === item.isSelected);
     // @@todo: here only work on state. for side-effects use redux-saga (no updateCallback here pls).
     switch (state.selectedBulkOption) {
       case BulkOptionValues.DUPLICATE:
-        duplicateCallBack(selectedItems);
+
         break;
       case BulkOptionValues.TRASH:
         // change the category of selected items
@@ -113,6 +112,8 @@ export const MappingListReducer = createReducer(null, {
         break;
       default:
     }
+
+
     state.headerCheckBoxSelected = false;
     // Set all to unselected after the operation
     state.mappingItems = state.mappingItems.map(item => {

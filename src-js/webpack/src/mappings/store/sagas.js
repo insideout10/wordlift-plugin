@@ -5,7 +5,7 @@
 /**
  * External dependencies
  */
-import { call, put, takeLatest } from "redux-saga/effects";
+import { call, put, takeLatest, select } from "redux-saga/effects";
 
 /**
  * Internal dependencies
@@ -18,6 +18,7 @@ import {
   MAPPINGS_REQUEST_DELETE_OR_UPDATE
 } from "../actions/action-types";
 import {MAPPINGS_REQUEST_ACTION} from "../actions/actions";
+import {getSelectedBulkOption, getSelectedMappingItems} from "./selectors";
 
 /**
  * Calls the REST API to retrieve the mappings.
@@ -49,11 +50,21 @@ function* requestCloneMappings( action ) {
   yield put( MAPPINGS_REQUEST_ACTION );
 }
 
+/**
+ * When the bulk action is made, send the request to API depending on the chosen
+ * bulk action, after that dispatch to store to reset the config.
+ * @param action {Object} MAPPING_ITEMS_BULK_ACTION
+ * @returns void
+ */
+function* requestMappingsBulkAction( action ) {
+  const selectedBulkOption = select( getSelectedBulkOption );
+  const selectedMappingItems = select( getSelectedMappingItems );
+}
 
 function* saga() {
   yield takeLatest(MAPPINGS_REQUEST, requestMappings);
-  yield takeLatest(MAPPINGS_REQUEST_DELETE_OR_UPDATE, requestUpdateOrDeleteMappings)
-  yield takeLatest(MAPPINGS_REQUEST_CLONE_MAPPINGS, requestCloneMappings)
+  yield takeLatest(MAPPINGS_REQUEST_DELETE_OR_UPDATE, requestUpdateOrDeleteMappings);
+  yield takeLatest(MAPPINGS_REQUEST_CLONE_MAPPINGS, requestCloneMappings);
 }
 
 export default saga;

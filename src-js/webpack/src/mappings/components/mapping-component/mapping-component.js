@@ -152,11 +152,11 @@ class MappingComponent extends React.Component {
     };
     this.props.dispatch(action);
   }
+
+  /**
+   * When the bulk action is submitted this handler is called.
+   */
   bulkActionSubmitHandler() {
-    MAPPING_ITEMS_BULK_ACTION.payload = {
-      duplicateCallBack: this.duplicateMappingItems,
-      updateCallBack: this.updateMappingItems
-    };
     this.props.dispatch(MAPPING_ITEMS_BULK_ACTION);
   }
   render() {

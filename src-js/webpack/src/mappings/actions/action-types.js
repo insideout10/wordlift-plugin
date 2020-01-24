@@ -191,4 +191,3 @@ export const MAPPINGS_REQUEST_DELETE_OR_UPDATE = "MAPPINGS_REQUEST_DELETE_OR_UPD
  * Action type when the ui makes the request to clone mapping items.
  */
 export const MAPPINGS_REQUEST_CLONE_MAPPINGS = "MAPPINGS_REQUEST_CLONE_MAPPINGS";
-
