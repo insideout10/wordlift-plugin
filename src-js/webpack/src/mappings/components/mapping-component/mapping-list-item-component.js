@@ -25,7 +25,7 @@ class MappingListItemComponent extends React.Component {
       "&_wl_edit_mapping_nonce=" +
       this.props.nonce +
       "&wl_edit_mapping_id=" +
-      this.props.mappingData.mapping_id
+      this.props.mappingData.mappingId
     );
   }
   /**
@@ -114,8 +114,8 @@ class MappingListItemComponent extends React.Component {
           />
         </td>
         <td>
-          <a className="row-title wl-mappings-list-item-title">{this.props.mappingData.mapping_title}</a>
-          <div className="row-actions">{this.renderOptionsBasedOnItemCategory(this.props.mappingData.mapping_status)}</div>
+          <a className="row-title wl-mappings-list-item-title">{this.props.mappingData.mappingTitle}</a>
+          <div className="row-actions">{this.renderOptionsBasedOnItemCategory(this.props.mappingData.mappingStatus)}</div>
         </td>
       </tr>
     );

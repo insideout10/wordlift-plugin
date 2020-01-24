@@ -14,7 +14,9 @@ export default class MappingComponentHelper {
      */
     static applyUiItemFilters(mappingItems) {
         return mappingItems.map(item => ({
-            ...item,
+            mappingId: item.mapping_id,
+            mappingTitle: item.mapping_title,
+            mappingStatus: item.mapping_status,
             // initially no item is selected.
             isSelected: false
         }));
@@ -26,9 +28,9 @@ export default class MappingComponentHelper {
      */
     static applyApiFilters(mappingItems) {
         return mappingItems.map(item => ({
-            mapping_id: item.mapping_id,
-            mapping_title: item.mapping_title,
-            mapping_status: item.mapping_status
+            mapping_id: item.mappingId,
+            mapping_title: item.mappingTitle,
+            mapping_status: item.mappingStatus
         }));
     }
 }

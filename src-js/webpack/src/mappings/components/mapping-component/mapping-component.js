@@ -23,7 +23,10 @@ import {
   MAPPING_LIST_BULK_SELECT_ACTION,
   MAPPING_LIST_CHANGED_ACTION,
   MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION,
-  MAPPING_LIST_SORT_TITLE_CHANGED_ACTION, MAPPINGS_REQUEST_ACTION, MAPPINGS_REQUEST_DELETE_OR_UPDATE_ACTION
+  MAPPING_LIST_SORT_TITLE_CHANGED_ACTION,
+  MAPPINGS_REQUEST_ACTION,
+  MAPPINGS_REQUEST_CLONE_MAPPINGS_ACTION,
+  MAPPINGS_REQUEST_DELETE_OR_UPDATE_ACTION
 } from "../../actions/actions";
 import { connect } from "react-redux";
 import CategoryComponent, { ACTIVE_CATEGORY } from "../category-component";
@@ -91,7 +94,7 @@ class MappingComponent extends React.Component {
     };
     this.props.dispatch(action);
     // Save Changes to the db
-    mappingData.mapping_status = categoryName;
+    mappingData.mappingStatus = categoryName;
     this.updateMappingItems([mappingData]);
   }
   // Updates or deletes the mapping items based on the request
@@ -112,7 +115,10 @@ class MappingComponent extends React.Component {
   duplicateMappingItems(mappingItems) {
     // If single item is given, construct it to array
     mappingItems = Array.isArray(mappingItems) ? mappingItems : [mappingItems];
-
+    MAPPINGS_REQUEST_CLONE_MAPPINGS_ACTION.payload = {
+      mappingItems: mappingItems
+    };
+    this.props.dispatch(MAPPINGS_REQUEST_CLONE_MAPPINGS_ACTION)
   }
   /**
    * Fetch the mapping items from api.
@@ -159,7 +165,7 @@ class MappingComponent extends React.Component {
         <AddNewButton />
         <CategoryComponent
           source={this.props.mappingItems}
-          categoryKeyName="mapping_status"
+          categoryKeyName="mappingStatus"
           categories={["active", "trash"]}
           categorySelectHandler={this.categorySelectHandler}
           choosenCategory={this.props.chosenCategory}
@@ -176,7 +182,7 @@ class MappingComponent extends React.Component {
           <tbody>
             <MappingNoActiveItemMessage {...this.props} />
             {this.props.mappingItems
-              .filter(el => el.mapping_status === this.props.chosenCategory)
+              .filter(el => el.mappingStatus === this.props.chosenCategory)
               .map((item, index) => {
                 return (
                   <MappingListItemComponent

@@ -77,7 +77,7 @@ export const MappingHeaderRow = ( props ) => {
 
 export const MappingNoActiveItemMessage = ( props ) => {
     return (
-        0 === props.mappingItems.filter(el => el.mapping_status === ACTIVE_CATEGORY).length &&
+        0 === props.mappingItems.filter(el => el.mappingStatus === ACTIVE_CATEGORY).length &&
         props.chosenCategory === ACTIVE_CATEGORY && (
             <tr>
                 <td colSpan={3}>
