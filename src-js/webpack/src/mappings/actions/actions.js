@@ -32,7 +32,7 @@ import {
   MAPPING_ITEMS_BULK_SELECT,
   MAPPING_ID_CHANGED_FROM_API,
   MAPPING_LIST_SORT_TITLE_CHANGED,
-  MAPPING_TERMS_CHANGED, MAPPINGS_REQUEST
+  MAPPING_TERMS_CHANGED, MAPPINGS_REQUEST, MAPPINGS_REQUEST_DELETE_OR_UPDATE
 } from "./action-types";
 /**
  * @const {object} ADD_NEW_RULE_ACTION
@@ -273,4 +273,11 @@ export const MAPPING_TERMS_CHANGED_ACTION = {
  */
 export const MAPPINGS_REQUEST_ACTION = {
   type: MAPPINGS_REQUEST
+};
+
+/**
+ * @const {object} Whenever the ui needs to delete or update mappings this action is fired
+ */
+export const MAPPINGS_REQUEST_DELETE_OR_UPDATE_ACTION = {
+  type: MAPPINGS_REQUEST_DELETE_OR_UPDATE
 };

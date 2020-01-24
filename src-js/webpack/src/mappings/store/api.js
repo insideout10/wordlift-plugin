@@ -11,6 +11,11 @@ import MappingComponentHelper from "../components/mapping-component/mapping-comp
 
 const { rest_url, wl_mapping_nonce } = global["wlMappingsConfig"];
 
+/**
+ * Gets the mappings and apply ui filters to it, the filters add the state keys ( like if the mapping
+ * item is already selected by the user) to the mapping items.
+ * @returns {Promise<{isSelected: boolean}[]>}
+ */
 function getMappings() {
   return fetch(rest_url, {
     method: "GET",
@@ -23,4 +28,24 @@ function getMappings() {
     .then(json => MappingComponentHelper.applyUiItemFilters(json));
 }
 
-export default { getMappings };
+/**
+ * Delete or update the mapping items from the API.
+ * Update includes the change in category such as active, trash etc.
+ * @param type Type of the request
+ * @param mappingItems List of mapping items which is sent to api after applying the api filter.
+ * @returns {Promise<Response>}
+ */
+function deleteOrUpdateMappings( type, mappingItems ) {
+  return fetch( rest_url, {
+    method: type,
+    headers: {
+      "content-type": "application/json",
+      "X-WP-Nonce": wl_mapping_nonce
+    },
+    body: JSON.stringify({
+      mapping_items: MappingComponentHelper.applyApiFilters(mappingItems)
+    })
+  })
+}
+
+export default { getMappings, deleteOrUpdateMappings };

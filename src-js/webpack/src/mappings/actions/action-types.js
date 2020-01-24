@@ -179,3 +179,9 @@ export const MAPPING_TERMS_CHANGED = "MAPPING_TERMS_CHANGED";
  */
 export const MAPPINGS_REQUEST = "MAPPINGS_REQUEST";
 
+/**
+ * @const MAPPINGS_REQUEST_DELETE_OR_UPDATE
+ * Action type when the ui makes the request to delete or update mappings from the api.
+ */
+export const MAPPINGS_REQUEST_DELETE_OR_UPDATE = "MAPPINGS_REQUEST_DELETE_OR_UPDATE";
+

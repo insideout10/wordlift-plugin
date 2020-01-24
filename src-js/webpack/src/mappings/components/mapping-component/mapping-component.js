@@ -23,7 +23,7 @@ import {
   MAPPING_LIST_BULK_SELECT_ACTION,
   MAPPING_LIST_CHANGED_ACTION,
   MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION,
-  MAPPING_LIST_SORT_TITLE_CHANGED_ACTION, MAPPINGS_REQUEST_ACTION
+  MAPPING_LIST_SORT_TITLE_CHANGED_ACTION, MAPPINGS_REQUEST_ACTION, MAPPINGS_REQUEST_DELETE_OR_UPDATE_ACTION
 } from "../../actions/actions";
 import { connect } from "react-redux";
 import CategoryComponent, { ACTIVE_CATEGORY } from "../category-component";
@@ -35,6 +35,7 @@ import {
   MappingTableCheckBox,
   MappingTableTitleSort
 } from "./mapping-list-subcomponents";
+import {MAPPINGS_REQUEST_DELETE_OR_UPDATE} from "../../actions/action-types";
 
 // Set a reference to the WordLift's Mapping settings stored in the window instance.
 const mappingSettings = window["wlMappingsConfig"] || {};
@@ -95,21 +96,11 @@ class MappingComponent extends React.Component {
   }
   // Updates or deletes the mapping items based on the request
   updateMappingItems(mappingItems, type = "PUT") {
-    fetch(mappingSettings.rest_url, {
-      method: type,
-      headers: {
-        "content-type": "application/json",
-        "X-WP-Nonce": mappingSettings.wl_mapping_nonce
-      },
-      body: JSON.stringify({
-        mapping_items: MappingComponentHelper.applyApiFilters(mappingItems)
-      })
-    }).then(response =>
-      response.json().then(data => {
-        // Refresh the screen with the cloned mapping item.
-        this.getMappingItems();
-      })
-    );
+    MAPPINGS_REQUEST_DELETE_OR_UPDATE_ACTION.payload = {
+      type: type,
+      mappingItems: mappingItems
+    };
+    this.props.dispatch( MAPPINGS_REQUEST_DELETE_OR_UPDATE_ACTION )
   }
 
   /**
