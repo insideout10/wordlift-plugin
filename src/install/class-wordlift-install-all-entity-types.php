@@ -45,7 +45,7 @@ class Wordlift_Install_All_Entity_Types extends Wordlift_Install {
 		if ( $schema_sync_service->load_from_file() ) {
 			$this->log->debug( 'Updating `All Entity Types` configuration to 1.0.0.' );
 
-			update_option( self::OPTION_NAME, '1.0.0' );
+			update_option( self::OPTION_NAME, '1.0.0', true );
 		}
 
 	}
