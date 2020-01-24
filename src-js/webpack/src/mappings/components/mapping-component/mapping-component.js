@@ -112,19 +112,7 @@ class MappingComponent extends React.Component {
   duplicateMappingItems(mappingItems) {
     // If single item is given, construct it to array
     mappingItems = Array.isArray(mappingItems) ? mappingItems : [mappingItems];
-    fetch(mappingSettings.rest_url + "/clone", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        "X-WP-Nonce": mappingSettings.wl_mapping_nonce
-      },
-      body: JSON.stringify({ mappingItems: mappingItems })
-    }).then(response =>
-      response.json().then(data => {
-        // Refresh the screen with the cloned mapping item.
-        this.getMappingItems();
-      })
-    );
+
   }
   /**
    * Fetch the mapping items from api.

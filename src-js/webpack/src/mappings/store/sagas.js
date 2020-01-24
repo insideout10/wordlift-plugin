@@ -11,7 +11,12 @@ import { call, put, takeLatest } from "redux-saga/effects";
  * Internal dependencies
  */
 import API from "./api";
-import {MAPPING_LIST_CHANGED, MAPPINGS_REQUEST, MAPPINGS_REQUEST_DELETE_OR_UPDATE} from "../actions/action-types";
+import {
+  MAPPING_LIST_CHANGED,
+  MAPPINGS_REQUEST,
+  MAPPINGS_REQUEST_CLONE_MAPPINGS,
+  MAPPINGS_REQUEST_DELETE_OR_UPDATE
+} from "../actions/action-types";
 import {MAPPINGS_REQUEST_ACTION} from "../actions/actions";
 
 /**
@@ -33,10 +38,22 @@ function* requestUpdateOrDeleteMappings( action ) {
   yield put( MAPPINGS_REQUEST_ACTION );
 }
 
+/**
+ * Calls the REST API to clone the mappings.
+ * @param action MAPPINGS_REQUEST_CLONE_MAPPINGS action
+ * @returns {Generator<*, void, ?>}
+ */
+function* requestCloneMappings( action ) {
+  yield call(API.cloneMappings, action.payload.mappingItems);
+  // Refresh the screen by fetching the new data.
+  yield put( MAPPINGS_REQUEST_ACTION );
+}
+
 
 function* saga() {
   yield takeLatest(MAPPINGS_REQUEST, requestMappings);
-  yield takeLatest( MAPPINGS_REQUEST_DELETE_OR_UPDATE, requestUpdateOrDeleteMappings)
+  yield takeLatest(MAPPINGS_REQUEST_DELETE_OR_UPDATE, requestUpdateOrDeleteMappings)
+  yield takeLatest(MAPPINGS_REQUEST_CLONE_MAPPINGS, requestCloneMappings)
 }
 
 export default saga;

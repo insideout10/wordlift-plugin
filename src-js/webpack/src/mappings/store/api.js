@@ -45,7 +45,23 @@ function deleteOrUpdateMappings( type, mappingItems ) {
     body: JSON.stringify({
       mapping_items: MappingComponentHelper.applyApiFilters(mappingItems)
     })
-  })
+  }).then(response => response.json()).then(json => {});
 }
 
-export default { getMappings, deleteOrUpdateMappings };
+/**
+ * Clone the mapping items passed in to it
+ * @param mappingItems List of mapping items which needs to be cloned.
+ * @returns {Promise<unknown>}
+ */
+function cloneMappings( mappingItems ) {
+  return fetch(rest_url + "/clone", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "X-WP-Nonce": wl_mapping_nonce
+    },
+    body: JSON.stringify({ mappingItems: mappingItems })
+  }).then(response => response.json()).then(json => {});
+}
+
+export default { getMappings, deleteOrUpdateMappings, cloneMappings };
