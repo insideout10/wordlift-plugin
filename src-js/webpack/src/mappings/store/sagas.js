@@ -18,7 +18,11 @@ import {
   MAPPINGS_REQUEST_CLONE_MAPPINGS,
   MAPPINGS_REQUEST_DELETE_OR_UPDATE
 } from "../actions/action-types";
-import {MAPPING_ITEMS_BULK_APPLY_ACTION, MAPPINGS_REQUEST_ACTION} from "../actions/actions";
+import {
+  MAPPING_ITEMS_BULK_APPLY_ACTION,
+  MAPPINGS_REQUEST_ACTION,
+  MAPPINGS_RESET_UI_AFTER_BULK_APPLY_ACTION
+} from "../actions/actions";
 import {getSelectedBulkOption, getSelectedMappingItems} from "./selectors";
 import {BULK_OPTIONS} from "../components/bulk-action-sub-components";
 import {ACTIVE_CATEGORY, TRASH_CATEGORY} from "../components/category-component";
@@ -76,6 +80,7 @@ function* requestMappingsBulkAction( action ) {
   if ( selectedBulkOption === BULK_OPTIONS.DUPLICATE ) {
     yield call(API.cloneMappings, selectedMappingItems)
   }
+  yield put( MAPPINGS_RESET_UI_AFTER_BULK_APPLY_ACTION )
   yield put( MAPPINGS_REQUEST_ACTION )
 }
 

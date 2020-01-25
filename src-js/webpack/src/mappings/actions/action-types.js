@@ -191,3 +191,9 @@ export const MAPPINGS_REQUEST_DELETE_OR_UPDATE = "MAPPINGS_REQUEST_DELETE_OR_UPD
  * Action type when the ui makes the request to clone mapping items.
  */
 export const MAPPINGS_REQUEST_CLONE_MAPPINGS = "MAPPINGS_REQUEST_CLONE_MAPPINGS";
+
+/**
+ * @const MAPPINGS_RESET_UI_AFTER_BULK_APPLY
+ * Reset the ui state after applying the bulk action.
+ */
+export const MAPPINGS_RESET_UI_AFTER_BULK_APPLY = "MAPPINGS_RESET_UI_AFTER_BULK_APPLY";

@@ -16,20 +16,12 @@ import {
   MAPPING_ITEM_SELECTED,
   BULK_ACTION_SELECTION_CHANGED,
   MAPPING_ITEMS_BULK_APPLY,
-  MAPPING_LIST_SORT_TITLE_CHANGED
+  MAPPING_LIST_SORT_TITLE_CHANGED, MAPPINGS_RESET_UI_AFTER_BULK_APPLY
 } from "../actions/action-types";
 import { createReducer } from "@reduxjs/toolkit";
 import { BULK_OPTIONS } from "../components/bulk-action-sub-components";
 import { TRASH_CATEGORY, ACTIVE_CATEGORY } from "../components/category-component";
 import { SORT_BY_ASC, SORT_BY_DESC } from "../constants";
-
-// const changeCategoryForMappingItems = (mappingItems, category) => {
-//   return mappingItems.map(item => {
-//     // @@todo camelCase here pls (unless there's a specific reason not too).
-//     item.mappingStatus = category;
-//     return item;
-//   });
-// };
 
 /**
  * Reducer to handle the mapping list section
@@ -92,33 +84,12 @@ export const MappingListReducer = createReducer(null, {
       });
     }
   },
-
-  // [MAPPING_ITEMS_BULK_APPLY]: (state, action) => {
-  //   const selectedItems = state.mappingItems.filter(item => true === item.isSelected);
-  //   // @@todo: here only work on state. for side-effects use redux-saga (no updateCallback here pls).
-  //   switch (state.selectedBulkOption) {
-  //     case BULK_OPTIONS.DUPLICATE:
-  //
-  //       break;
-  //     case BULK_OPTIONS.TRASH:
-  //       // change the category of selected items
-  //       updateCallBack(changeCategoryForMappingItems(selectedItems, TRASH_CATEGORY));
-  //       break;
-  //     case BULK_OPTIONS.RESTORE:
-  //       updateCallBack(changeCategoryForMappingItems(selectedItems, ACTIVE_CATEGORY));
-  //       break;
-  //     case BULK_OPTIONS.DELETE_PERMANENTLY:
-  //       updateCallBack(selectedItems, "DELETE");
-  //       break;
-  //     default:
-  //   }
-  //
-  //
-  //   state.headerCheckBoxSelected = false;
-  //   // Set all to unselected after the operation
-  //   state.mappingItems = state.mappingItems.map(item => {
-  //     item.isSelected = false;
-  //     return item;
-  //   });
-  // }
+  [ MAPPINGS_RESET_UI_AFTER_BULK_APPLY ] : ( state, action ) => {
+      state.headerCheckBoxSelected = false;
+      // Set all to unselected after the operation
+      state.mappingItems = state.mappingItems.map(item => {
+        item.isSelected = false;
+        return item;
+      });
+  }
 });
