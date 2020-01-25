@@ -60,7 +60,7 @@ function cloneMappings( mappingItems ) {
       "content-type": "application/json",
       "X-WP-Nonce": wl_mapping_nonce
     },
-    body: JSON.stringify({ mappingItems: mappingItems })
+    body: JSON.stringify({ mapping_items: MappingComponentHelper.applyApiFilters(mappingItems) })
   }).then(response => response.json()).then(json => {});
 }
 
