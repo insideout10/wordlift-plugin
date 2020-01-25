@@ -31,8 +31,8 @@ function getMappings() {
 /**
  * Delete or update the mapping items from the API.
  * Update includes the change in category such as active, trash etc.
- * @param type Type of the request
- * @param mappingItems List of mapping items which is sent to api after applying the api filter.
+ * @param {String} type Type of the request
+ * @param {Array} mappingItems List of mapping items which is sent to api after applying the api filter.
  * @returns {Promise<Response>}
  */
 function deleteOrUpdateMappings( type, mappingItems ) {

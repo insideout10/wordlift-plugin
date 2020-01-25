@@ -93,32 +93,32 @@ export const MappingListReducer = createReducer(null, {
     }
   },
 
-  [MAPPING_ITEMS_BULK_SELECT]: (state, action) => {
-    const selectedItems = state.mappingItems.filter(item => true === item.isSelected);
-    // @@todo: here only work on state. for side-effects use redux-saga (no updateCallback here pls).
-    switch (state.selectedBulkOption) {
-      case BulkOptionValues.DUPLICATE:
-
-        break;
-      case BulkOptionValues.TRASH:
-        // change the category of selected items
-        updateCallBack(changeCategoryForMappingItems(selectedItems, TRASH_CATEGORY));
-        break;
-      case BulkOptionValues.RESTORE:
-        updateCallBack(changeCategoryForMappingItems(selectedItems, ACTIVE_CATEGORY));
-        break;
-      case BulkOptionValues.DELETE_PERMANENTLY:
-        updateCallBack(selectedItems, "DELETE");
-        break;
-      default:
-    }
-
-
-    state.headerCheckBoxSelected = false;
-    // Set all to unselected after the operation
-    state.mappingItems = state.mappingItems.map(item => {
-      item.isSelected = false;
-      return item;
-    });
-  }
+  // [MAPPING_ITEMS_BULK_SELECT]: (state, action) => {
+  //   const selectedItems = state.mappingItems.filter(item => true === item.isSelected);
+  //   // @@todo: here only work on state. for side-effects use redux-saga (no updateCallback here pls).
+  //   switch (state.selectedBulkOption) {
+  //     case BulkOptionValues.DUPLICATE:
+  //
+  //       break;
+  //     case BulkOptionValues.TRASH:
+  //       // change the category of selected items
+  //       updateCallBack(changeCategoryForMappingItems(selectedItems, TRASH_CATEGORY));
+  //       break;
+  //     case BulkOptionValues.RESTORE:
+  //       updateCallBack(changeCategoryForMappingItems(selectedItems, ACTIVE_CATEGORY));
+  //       break;
+  //     case BulkOptionValues.DELETE_PERMANENTLY:
+  //       updateCallBack(selectedItems, "DELETE");
+  //       break;
+  //     default:
+  //   }
+  //
+  //
+  //   state.headerCheckBoxSelected = false;
+  //   // Set all to unselected after the operation
+  //   state.mappingItems = state.mappingItems.map(item => {
+  //     item.isSelected = false;
+  //     return item;
+  //   });
+  // }
 });
