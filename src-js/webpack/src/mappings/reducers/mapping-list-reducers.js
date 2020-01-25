@@ -15,21 +15,21 @@ import {
   MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED,
   MAPPING_ITEM_SELECTED,
   BULK_ACTION_SELECTION_CHANGED,
-  MAPPING_ITEMS_BULK_SELECT,
+  MAPPING_ITEMS_BULK_APPLY,
   MAPPING_LIST_SORT_TITLE_CHANGED
 } from "../actions/action-types";
 import { createReducer } from "@reduxjs/toolkit";
-import { BulkOptionValues } from "../components/bulk-action-sub-components";
+import { BULK_OPTIONS } from "../components/bulk-action-sub-components";
 import { TRASH_CATEGORY, ACTIVE_CATEGORY } from "../components/category-component";
 import { SORT_BY_ASC, SORT_BY_DESC } from "../constants";
 
-const changeCategoryForMappingItems = (mappingItems, category) => {
-  return mappingItems.map(item => {
-    // @@todo camelCase here pls (unless there's a specific reason not too).
-    item.mapping_status = category;
-    return item;
-  });
-};
+// const changeCategoryForMappingItems = (mappingItems, category) => {
+//   return mappingItems.map(item => {
+//     // @@todo camelCase here pls (unless there's a specific reason not too).
+//     item.mappingStatus = category;
+//     return item;
+//   });
+// };
 
 /**
  * Reducer to handle the mapping list section
@@ -41,13 +41,13 @@ export const MappingListReducer = createReducer(null, {
   [MAPPING_ITEM_CATEGORY_CHANGED]: (state, action) => {
     const { mappingId, mappingCategory } = action.payload;
     const targetIndex = state.mappingItems.map(el => el.mapping_id).indexOf(mappingId);
-    state.mappingItems[targetIndex].mapping_status = mappingCategory;
+    state.mappingItems[targetIndex].mappingStatus = mappingCategory;
   },
 
   [MAPPING_LIST_BULK_SELECT]: (state, action) => {
     state.mappingItems = state.mappingItems.map(item => {
-      // Select only items in the current choosen category.
-      if (item.mapping_status === state.chosenCategory) {
+      // Select only items in the current chosenCategory.
+      if (item.mappingStatus === state.chosenCategory) {
         item.isSelected = !item.isSelected;
       }
       return item;
@@ -93,21 +93,21 @@ export const MappingListReducer = createReducer(null, {
     }
   },
 
-  // [MAPPING_ITEMS_BULK_SELECT]: (state, action) => {
+  // [MAPPING_ITEMS_BULK_APPLY]: (state, action) => {
   //   const selectedItems = state.mappingItems.filter(item => true === item.isSelected);
   //   // @@todo: here only work on state. for side-effects use redux-saga (no updateCallback here pls).
   //   switch (state.selectedBulkOption) {
-  //     case BulkOptionValues.DUPLICATE:
+  //     case BULK_OPTIONS.DUPLICATE:
   //
   //       break;
-  //     case BulkOptionValues.TRASH:
+  //     case BULK_OPTIONS.TRASH:
   //       // change the category of selected items
   //       updateCallBack(changeCategoryForMappingItems(selectedItems, TRASH_CATEGORY));
   //       break;
-  //     case BulkOptionValues.RESTORE:
+  //     case BULK_OPTIONS.RESTORE:
   //       updateCallBack(changeCategoryForMappingItems(selectedItems, ACTIVE_CATEGORY));
   //       break;
-  //     case BulkOptionValues.DELETE_PERMANENTLY:
+  //     case BULK_OPTIONS.DELETE_PERMANENTLY:
   //       updateCallBack(selectedItems, "DELETE");
   //       break;
   //     default:

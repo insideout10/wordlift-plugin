@@ -107,7 +107,7 @@ class MappingListItemComponent extends React.Component {
         <td className="wl-check-column">
           <input
             type="checkbox"
-            defaultChecked={this.props.mappingData.isSelected}
+            checked={this.props.mappingData.isSelected}
             onClick={() => {
               this.props.selectMappingItemHandler(this.props.mappingData);
             }}

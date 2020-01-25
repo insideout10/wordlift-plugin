@@ -12,7 +12,7 @@
 import React from "react";
 import { TRASH_CATEGORY, ACTIVE_CATEGORY } from "./category-component";
 
-export const BulkOptionValues = {
+export const BULK_OPTIONS = {
   TRASH: "trash",
   DUPLICATE: "duplicate",
   RESTORE: "restore",
@@ -26,8 +26,8 @@ export const BulkOptionValues = {
 const ActiveOptions = () => {
   return (
     <React.Fragment>
-      <option value={BulkOptionValues.DUPLICATE}>Duplicate</option>
-      <option value={BulkOptionValues.TRASH}>Move to Trash</option>
+      <option value={BULK_OPTIONS.DUPLICATE}>Duplicate</option>
+      <option value={BULK_OPTIONS.TRASH}>Move to Trash</option>
     </React.Fragment>
   );
 };
@@ -39,8 +39,8 @@ const ActiveOptions = () => {
 const TrashOptions = () => {
   return (
     <React.Fragment>
-      <option value={BulkOptionValues.RESTORE}>Restore</option>
-      <option value={BulkOptionValues.DELETE_PERMANENTLY}>Delete Permanently</option>
+      <option value={BULK_OPTIONS.RESTORE}>Restore</option>
+      <option value={BULK_OPTIONS.DELETE_PERMANENTLY}>Delete Permanently</option>
     </React.Fragment>
   );
 };

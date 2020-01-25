@@ -19,7 +19,7 @@ import {
   BULK_ACTION_SELECTION_CHANGED_ACTION,
   MAPPING_ITEM_CATEGORY_CHANGED_ACTION,
   MAPPING_ITEM_SELECTED_ACTION,
-  MAPPING_ITEMS_BULK_ACTION,
+  MAPPING_ITEMS_BULK_APPLY_ACTION,
   MAPPING_LIST_BULK_SELECT_ACTION,
   MAPPING_LIST_CHANGED_ACTION,
   MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION,
@@ -157,7 +157,7 @@ class MappingComponent extends React.Component {
    * When the bulk action is submitted this handler is called.
    */
   bulkActionSubmitHandler() {
-    this.props.dispatch(MAPPING_ITEMS_BULK_ACTION);
+    this.props.dispatch(MAPPING_ITEMS_BULK_APPLY_ACTION);
   }
   render() {
     return (

@@ -33,7 +33,7 @@ import {
 } from '../actions/action-types'
 import { createReducer } from '@reduxjs/toolkit'
 import { DELETE_PROPERTY_PERMANENT, DUPLICATE_PROPERTY } from '../components/property-list-item-component'
-import { BulkOptionValues } from '../components/bulk-action-sub-components'
+import { BULK_OPTIONS } from '../components/bulk-action-sub-components'
 import { TRASH_CATEGORY, ACTIVE_CATEGORY } from '../components/category-component'
 
  /**
@@ -142,16 +142,16 @@ export const RuleGroupReducer = createReducer(null, {
    */
   const doPropertyBulkAction = ( state, propertyIndex, selectedBulkAction )=> {
     switch( selectedBulkAction ) {
-        case BulkOptionValues.TRASH:
+        case BULK_OPTIONS.TRASH:
             changePropertyItemCategory( state, propertyIndex, TRASH_CATEGORY)
             break
-        case BulkOptionValues.DUPLICATE:
+        case BULK_OPTIONS.DUPLICATE:
             addDuplicatePropertyItem( state, propertyIndex)
             break
-        case BulkOptionValues.RESTORE:
+        case BULK_OPTIONS.RESTORE:
             changePropertyItemCategory( state, propertyIndex, ACTIVE_CATEGORY)
             break
-        case BulkOptionValues.DELETE_PERMANENTLY:
+        case BULK_OPTIONS.DELETE_PERMANENTLY:
             state.propertyList.splice( propertyIndex, 1 );
             break
         default:

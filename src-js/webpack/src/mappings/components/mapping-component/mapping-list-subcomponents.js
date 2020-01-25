@@ -30,7 +30,7 @@ export const MappingTableCheckBox = ( props ) => {
             <input
                 type="checkbox"
                 onClick={ () => { props.selectAllMappingsHandler() } }
-                defaultChecked={ props.headerCheckBoxSelected === true}
+                checked={ props.headerCheckBoxSelected === true}
             />
         </th>
     )

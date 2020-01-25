@@ -156,10 +156,10 @@ export const PROPERTY_ITEM_SELECT_ALL = "PROPERTY_ITEM_SELECT_ALL";
 export const PROPERTY_ITEMS_BULK_SELECT = "PROPERTY_ITEMS_BULK_SELECT";
 
 /**
- * @const MAPPING_ITEMS_BULK_SELECT
+ * @const MAPPING_ITEMS_BULK_APPLY
  * Action when the user wants to make bulk action on selected mapping items
  */
-export const MAPPING_ITEMS_BULK_SELECT = "MAPPING_ITEMS_BULK_SELECT";
+export const MAPPING_ITEMS_BULK_APPLY = "MAPPING_ITEMS_BULK_APPLY";
 
 /**
  * @const MAPPING_ID_CHANGED_FROM_API
