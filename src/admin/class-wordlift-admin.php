@@ -281,7 +281,7 @@ class Wordlift_Admin {
 				'Please wait while we look for entities in the linked data cloud...' => _x( 'Please wait while we look for entities in the linked data cloud...', 'Autocomplete Select', 'wordlift' ),
 				'Add keywords to track'                                              => __( 'Add Keywords to track', 'wordlift' ),
 			),
-			'wl_autocomplete_nonce'      => wp_create_nonce( 'wordlift_autocomplete' ),
+			'wl_autocomplete_nonce'      => wp_create_nonce( 'wl_autocomplete' ),
 			'autocomplete_scope'         => $autocomplete_scope,
 			/**
 			 * Allow 3rd parties to define the default editor id. This turns useful if 3rd parties load

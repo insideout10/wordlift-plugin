@@ -1,25 +1,17 @@
 <?php
 /**
- * Wordlift_Autocomplete_Service class.
+ * This file provides the Linked Data autocomplete service.
  *
- * The {@link Wordlift_Autocomplete_Service} class handle and process all autocomplete requests.
- *
- * @link       https://wordlift.io
- *
- * @package    Wordlift
- * @since      3.15.0
+ * @author David Riccitelli <david@wordlift.io>
+ * @since 3.24.2
+ * @package Wordlift\Autocomplete
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+namespace Wordlift\Autocomplete;
 
-/**
- * Process WordLift's autocomplete requests.
- *
- * @since 3.15.0
- */
-class Wordlift_Autocomplete_Service {
+use Wordlift_Log_Service;
+
+class Linked_Data_Autocomplete_Service implements Autocomplete_Service {
 
 	/**
 	 * The {@link Wordlift_Configuration_Service} instance.
@@ -56,15 +48,15 @@ class Wordlift_Autocomplete_Service {
 	 * Make request to external API and return the response.
 	 *
 	 * @param string $query The search string.
-	 * @param array|string $exclude The exclude parameter string.
 	 * @param string $scope The search scope: "local" will search only in the local dataset; "cloud" will search also
 	 *                      in Wikipedia. By default is "cloud".
+	 * @param array|string $exclude The exclude parameter string.
 	 *
 	 * @return array $response The API response.
 	 * @since 3.15.0
 	 *
 	 */
-	public function make_request( $query, $exclude = '', $scope = 'cloud' ) {
+	public function query( $query, $scope = 'cloud', $exclude = '' ) {
 		$url = $this->build_request_url( $query, $exclude, $scope );
 
 		// Return the response.
@@ -110,4 +102,5 @@ class Wordlift_Autocomplete_Service {
 		// return the built url.
 		return $request_url;
 	}
+
 }

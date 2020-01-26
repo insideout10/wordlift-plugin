@@ -12,6 +12,8 @@
  * @subpackage Wordlift/includes
  */
 
+use Wordlift\Autocomplete\Linked_Data_Autocomplete_Service;
+
 /**
  * The core plugin class.
  *
@@ -654,15 +656,6 @@ class Wordlift {
 	protected $rendition_factory;
 
 	/**
-	 * The {@link Wordlift_Autocomplete_Service} instance.
-	 *
-	 * @since  3.15.0
-	 * @access private
-	 * @var \Wordlift_Autocomplete_Service $autocomplete_service The {@link Wordlift_Autocomplete_Service} instance.
-	 */
-	private $autocomplete_service;
-
-	/**
 	 * The {@link Wordlift_Autocomplete_Adapter} instance.
 	 *
 	 * @since  3.15.0
@@ -1002,7 +995,6 @@ class Wordlift {
 
 		/** Autocomplete. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-autocomplete-service.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-autocomplete-adapter.php';
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-remote-image-service.php';
 
@@ -1330,8 +1322,8 @@ class Wordlift {
 		new Wordlift_Push_References_Async_Task();
 
 		/** WL Autocomplete. */
-		$this->autocomplete_service = new Wordlift_Autocomplete_Service( $this->configuration_service );
-		$this->autocomplete_adapter = new Wordlift_Autocomplete_Adapter( $this->autocomplete_service );
+		$autocomplete_service       = new Linked_Data_Autocomplete_Service( $this->configuration_service );
+		$this->autocomplete_adapter = new Wordlift_Autocomplete_Adapter( $autocomplete_service );
 
 		/** WordPress Admin UI. */
 

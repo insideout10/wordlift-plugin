@@ -35,10 +35,11 @@ class Wordlift_Admin_Schemaorg_Taxonomy_Metabox {
 	 * A function which resembles WordPress' own to display a metabox, but which customizes the output
 	 * to display the Schema.org classes tree.
 	 *
+	 * @param WP_Post $post The {@link WP_Post} being edited.
+	 * @param array $box An array of arguments.
+	 *
 	 * @since 3.20.0
 	 *
-	 * @param WP_Post $post The {@link WP_Post} being edited.
-	 * @param array   $box An array of arguments.
 	 */
 	private static function post_categories_meta_box( $post, $box ) {
 		$defaults = array( 'taxonomy' => 'category' );
@@ -55,9 +56,7 @@ class Wordlift_Admin_Schemaorg_Taxonomy_Metabox {
             <ul id="<?php echo $tax_name; ?>-tabs" class="category-tabs">
                 <li class="tabs"><a href="#<?php echo $tax_name; ?>-all"><?php echo $taxonomy->labels->all_items; ?></a>
                 </li>
-                <li><a
-                            href="#<?php echo $tax_name; ?>-pop"><?php echo esc_html( $taxonomy->labels->most_used ); ?></a>
-                </li>
+                <li><a href="#<?php echo $tax_name; ?>-pop"><?php echo esc_html__( 'Most Used' ); ?></a></li>
                 <li><a href="#<?php echo $tax_name; ?>-legacy">
 						<?php echo esc_html_x( 'A-Z', 'Entity Types metabox', 'wordlift' ); ?></a>
                 </li>
@@ -118,26 +117,26 @@ class Wordlift_Admin_Schemaorg_Taxonomy_Metabox {
 						/**
 						 * Filters the arguments for the taxonomy parent dropdown on the Post Edit page.
 						 *
-						 * @since 4.4.0
-						 *
-						 * @param array   $parent_dropdown_args {
+						 * @param array $parent_dropdown_args {
 						 *     Optional. Array of arguments to generate parent dropdown.
 						 *
-						 * @type string   $taxonomy Name of the taxonomy to retrieve.
-						 * @type bool     $hide_if_empty True to skip generating markup if no
+						 * @type string $taxonomy Name of the taxonomy to retrieve.
+						 * @type bool $hide_if_empty True to skip generating markup if no
 						 *                                      categories are found. Default 0.
-						 * @type string   $name Value for the 'name' attribute
+						 * @type string $name Value for the 'name' attribute
 						 *                                      of the select element.
 						 *                                      Default "new{$tax_name}_parent".
-						 * @type string   $orderby Which column to use for ordering
+						 * @type string $orderby Which column to use for ordering
 						 *                                      terms. Default 'name'.
 						 * @type bool|int $hierarchical Whether to traverse the taxonomy
 						 *                                      hierarchy. Default 1.
-						 * @type string   $show_option_none Text to display for the "none" option.
+						 * @type string $show_option_none Text to display for the "none" option.
 						 *                                      Default "&mdash; {$parent} &mdash;",
 						 *                                      where `$parent` is 'parent_item'
 						 *                                      taxonomy label.
 						 * }
+						 * @since 4.4.0
+						 *
 						 */
 						$parent_dropdown_args = apply_filters( 'post_edit_category_parent_dropdown_args', $parent_dropdown_args );
 
