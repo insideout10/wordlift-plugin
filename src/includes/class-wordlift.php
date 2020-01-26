@@ -12,6 +12,10 @@
  * @subpackage Wordlift/includes
  */
 
+use Wordlift\Autocomplete\All_Autocomplete_Service;
+use Wordlift\Autocomplete\Linked_Data_Autocomplete_Service;
+use Wordlift\Autocomplete\Local_Autocomplete_Service;
+
 /**
  * The core plugin class.
  *
@@ -654,15 +658,6 @@ class Wordlift {
 	protected $rendition_factory;
 
 	/**
-	 * The {@link Wordlift_Autocomplete_Service} instance.
-	 *
-	 * @since  3.15.0
-	 * @access private
-	 * @var \Wordlift_Autocomplete_Service $autocomplete_service The {@link Wordlift_Autocomplete_Service} instance.
-	 */
-	private $autocomplete_service;
-
-	/**
 	 * The {@link Wordlift_Autocomplete_Adapter} instance.
 	 *
 	 * @since  3.15.0
@@ -742,7 +737,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.24.1';
+		$this->version     = '3.24.2';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -984,7 +979,6 @@ class Wordlift {
 		/** Services. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-google-analytics-export-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-api-service.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-service.php';
 
 		/** Adapters. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-tinymce-adapter.php';
@@ -1002,7 +996,6 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-push-references-async-task.php';
 
 		/** Autocomplete. */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-autocomplete-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-autocomplete-adapter.php';
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-remote-image-service.php';
@@ -1184,6 +1177,7 @@ class Wordlift {
 		new Wordlift_Http_Api();
 
 		// Load the Install Service.
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-service.php';
 		$this->install_service = new Wordlift_Install_Service();
 
 		/** Services. */
@@ -1330,8 +1324,11 @@ class Wordlift {
 		new Wordlift_Push_References_Async_Task();
 
 		/** WL Autocomplete. */
-		$this->autocomplete_service = new Wordlift_Autocomplete_Service( $this->configuration_service );
-		$this->autocomplete_adapter = new Wordlift_Autocomplete_Adapter( $this->autocomplete_service );
+		$autocomplete_service       = new All_Autocomplete_Service( array(
+			new Local_Autocomplete_Service(),
+			new Linked_Data_Autocomplete_Service( $this->configuration_service ),
+		) );
+		$this->autocomplete_adapter = new Wordlift_Autocomplete_Adapter( $autocomplete_service );
 
 		/** WordPress Admin UI. */
 
@@ -1722,7 +1719,6 @@ class Wordlift {
 
 		// Register the entity post type.
 		$this->loader->add_action( 'init', $this->entity_post_type_service, 'register' );
-		$this->loader->add_action( 'init', $this->install_service, 'install' );
 
 		// Bind the link generation and handling hooks to the entity link service.
 		$this->loader->add_filter( 'post_type_link', $this->entity_link_service, 'post_type_link', 10, 4 );

@@ -10,6 +10,8 @@
  * @since      3.15.0
  */
 
+use Wordlift\Autocomplete\Autocomplete_Service;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -22,11 +24,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Wordlift_Autocomplete_Adapter {
 
 	/**
-	 * The {@link Wordlift_Autocomplete_Service} instance.
+	 * The {@link Autocomplete_Service} instance.
 	 *
 	 * @since  3.15.0
 	 * @access private
-	 * @var \Wordlift_Autocomplete_Service $configuration_service The {@link Wordlift_Autocomplete_Service} instance.
+	 * @var Autocomplete_Service $configuration_service The {@link Autocomplete_Service} instance.
 	 */
 	private $autocomplete_service;
 
@@ -34,9 +36,10 @@ class Wordlift_Autocomplete_Adapter {
 	/**
 	 * Wordlift_Autocomplete_Adapter constructor.
 	 *
+	 * @param Autocomplete_Service $autocomplete_service The {@link Autocomplete_Service} instance.
+	 *
 	 * @since 3.14.2
 	 *
-	 * @param \Wordlift_Autocomplete_Service $autocomplete_service The {@link Wordlift_Autocomplete_Service} instance.
 	 */
 	public function __construct( $autocomplete_service ) {
 		$this->autocomplete_service = $autocomplete_service;
@@ -48,14 +51,8 @@ class Wordlift_Autocomplete_Adapter {
 	 * @since 3.15.0
 	 */
 	public function wl_autocomplete() {
-		if (
-			! isset( $_REQUEST['_wpnonce'] ) || // Input var okay.
-			! wp_verify_nonce( sanitize_key( $_REQUEST['_wpnonce'] ), 'wordlift_autocomplete' ) // Input var okay.
-		) {
-			wp_send_json_error( array(
-				'message' => __( 'Nonce field doesn\'t match.', 'wordlift' ),
-			) );
-		}
+
+		check_ajax_referer( 'wl_autocomplete' );
 
 		// Return error if the query param is empty.
 		if ( ! empty( $_REQUEST['query'] ) ) { // Input var okay.
@@ -74,29 +71,12 @@ class Wordlift_Autocomplete_Adapter {
 			? sanitize_text_field( wp_unslash( $_REQUEST['scope'] ) ) : WL_AUTOCOMPLETE_SCOPE;
 
 		// Make request.
-		$response = $this->autocomplete_service->make_request( $query, $exclude, $scope );
+		$results = $this->autocomplete_service->query( $query, $scope, $exclude );
 
 		// Clear any buffer.
 		ob_clean();
 
-		// If the response is valid, then send the suggestions.
-		if ( ! is_wp_error( $response ) && 200 === (int) $response['response']['code'] ) {
-			// Echo the response.
-			wp_send_json_success( json_decode( wp_remote_retrieve_body( $response ), true ) );
-		} else {
-			// Default error message.
-			$error_message = 'Something went wrong.';
+		wp_send_json_success( $results );
 
-			// Get the real error message if there is WP_Error.
-			if ( is_wp_error( $response ) ) {
-				$error_message = $response->get_error_message();
-			}
-
-			// There is an error, so send error message.
-			wp_send_json_error( array(
-				/* translators: Placeholders: %s - the error message that will be returned. */
-				'message' => sprintf( esc_html__( 'Error: %s', 'wordlift' ), $error_message ),
-			) );
-		}
 	}
 }

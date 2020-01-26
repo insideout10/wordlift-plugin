@@ -31,7 +31,7 @@ describe "EditorController tests", ->
   it "loads an analysis", inject((AnalysisService, $httpBackend, $rootScope) ->
 
     $.ajax('base/app/assets/english.json', async: false).done (data) ->
-      $httpBackend.expectPOST('/base/app/assets/english.json?action=wordlift_analyze')
+      $httpBackend.expectPOST('/base/app/assets/english.json?action=wl_analyze')
       .respond 200, data
 
       $httpBackend.when('HEAD', /.*/).respond(200, '')

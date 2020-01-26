@@ -31,11 +31,13 @@ const webpackConfig = {
     "block-editor": "./src/block-editor/index.js",
     "tiny-mce": "./src/tiny-mce/index.js",
     "wordlift-cloud": "./src/Cloud/index.js",
-    mappings: "./src/mappings/index.js"
+    mappings: "./src/mappings/index.js",
+    // The sameAs autocomplete for the meta-box. This bundle is used for the meta-box in Block Editor.
+    "autocomplete-select": "./src/Edit/index.autocomplete-select.js"
   },
   output: {
     filename: "[name].js",
-    path: path.resolve(__dirname, "../../js/dist")
+    path: path.resolve(__dirname, "../../src/js/dist")
   },
   /*
    * Give precedence to our node_modules folder when resolving the same module.
@@ -99,7 +101,7 @@ webpackConfigFull.plugins = webpackConfig.plugins.filter(
 
 // Add the .full suffix to each entry.
 webpackConfigFull.entry = Object.keys(webpackConfig.entry)
-  .filter(entry => "block-editor" !== entry)
+  .filter(entry => -1 === ["autocomplete-select", "block-editor"].indexOf(entry))
   .reduce((acc, key) => {
     acc[key + ".full"] = webpackConfig.entry[key];
     return acc;

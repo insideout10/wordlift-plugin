@@ -77,7 +77,7 @@ describe "TinyMCE tests", ->
 
     # Load the sample response.
     $.ajax('base/app/assets/english.json', async: false).done (data) ->
-      $httpBackend.expectPOST('/base/app/assets/english.json?action=wordlift_analyze').respond 200, data
+      $httpBackend.expectPOST('/base/app/assets/english.json?action=wl_analyze').respond 200, data
       #
       # Call the analyze method of the editor.
       EditorService.analyze ed.getContent(format: 'text')
@@ -150,7 +150,7 @@ describe "TinceMCE editor : analysis abort", ->
       # Check editor content is set properly
       expect(ed.getContent({format: 'raw'})).toEqual(source)
 
-      $httpBackend.expectPOST(/wordlift_analyze$/).respond (method, url, data, headers) ->
+      $httpBackend.expectPOST(/wl_analyze$/).respond (method, url, data, headers) ->
         expect(AnalysisService.isRunning).toBe true
         AnalysisService.abort()
         [ 0, analysisResults, {} ]

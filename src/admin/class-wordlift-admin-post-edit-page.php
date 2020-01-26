@@ -57,7 +57,6 @@ class Wordlift_Admin_Post_Edit_Page {
 
 		// Define the callbacks.
 		$callback                  = array( $this, 'enqueue_scripts', );
-		$callback_block_categories = array( $this, 'block_categories' );
 
 		// Set a hook to enqueue scripts only when the edit page is displayed.
 		add_action( 'admin_print_scripts-post.php', $callback );
@@ -231,6 +230,21 @@ class Wordlift_Admin_Post_Edit_Page {
 		wp_enqueue_style(
 			'wl-block-editor',
 			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/block-editor.css',
+			array(),
+			$this->plugin->get_version()
+		);
+
+		wp_enqueue_script(
+			'wl-autocomplete-select',
+			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/autocomplete-select.js',
+			array(),
+			$this->plugin->get_version(),
+			true
+		);
+
+		wp_enqueue_style(
+			'wl-autocomplete-select',
+			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/autocomplete-select.css',
 			array(),
 			$this->plugin->get_version()
 		);

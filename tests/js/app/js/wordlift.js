@@ -473,7 +473,7 @@
         service.promise = $q.defer();
         return $http({
           method: 'post',
-          url: ajaxurl + '?action=wordlift_analyze',
+          url: ajaxurl + '?action=wl_analyze',
           data: content,
           timeout: service.promise.promise
         }).success(function(data) {

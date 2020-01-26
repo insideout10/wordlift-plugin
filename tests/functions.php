@@ -408,10 +408,15 @@ function wl_configure_wordpress_test() {
 	$configuration_service->set_key( getenv( 'WORDLIFT_KEY' ) );
 	$dataset_uri = $configuration_service->get_dataset_uri();
 
-	if ( empty( $dataset_uri ) ) {
-		echo( 'The dataset URI is not set (maybe the WordLift key is not valid?).' );
-		die( 2 );
-	}
+	/*
+	 * We want to run tests even if we're unable to set a dataset URI.
+	 *
+	 * @since 3.24.2
+	 */
+	//	if ( empty( $dataset_uri ) ) {
+	//		echo( 'The dataset URI is not set (maybe the WordLift key is not valid?).' );
+	//		die( 2 );
+	//	}
 
 }
 

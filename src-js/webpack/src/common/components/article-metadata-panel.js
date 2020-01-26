@@ -12,8 +12,8 @@ import { Panel, PanelBody, PanelRow } from "@wordpress/components";
 /**
  * Internal dependencies
  */
-import WlAuthorIcon from "../../../../../images/svg/wl-author-icon.svg";
-import WlCalenderIcon from "../../../../../images/svg/wl-calendar-icon.svg";
+import WlAuthorIcon from "../../../../../src/images/svg/wl-author-icon.svg";
+import WlCalenderIcon from "../../../../../src/images/svg/wl-calendar-icon.svg";
 
 const StyledWlAuthorIcon = styled(WlAuthorIcon)`
   width: 18px;

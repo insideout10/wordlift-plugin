@@ -79,13 +79,14 @@ class Wordlift_Admin {
 	/**
 	 * Initialize the class and set its properties.
 	 *
+	 * @param string $plugin_name The name of this plugin.
+	 * @param string $version The version of this plugin.
+	 * @param \Wordlift_Configuration_Service $configuration_service The configuration service.
+	 * @param \Wordlift_Notice_Service $notice_service The notice service.
+	 * @param \Wordlift_User_Service $user_service The {@link Wordlift_User_Service} instance.
+	 *
 	 * @since  1.0.0
 	 *
-	 * @param string                          $plugin_name The name of this plugin.
-	 * @param string                          $version The version of this plugin.
-	 * @param \Wordlift_Configuration_Service $configuration_service The configuration service.
-	 * @param \Wordlift_Notice_Service        $notice_service The notice service.
-	 * @param \Wordlift_User_Service          $user_service The {@link Wordlift_User_Service} instance.
 	 */
 	public function __construct( $plugin_name, $version, $configuration_service, $notice_service, $user_service ) {
 
@@ -114,8 +115,14 @@ class Wordlift_Admin {
 			// Require the PHP files for the next code fragment.
 			self::require_files();
 
+			/*
+			 * @since 3.24.2 This function isn't called anymore because it was causing the Block Category to
+			 * multiply in Block Editor.
+			 *
+			 * @see https://github.com/insideout10/wordlift-plugin/issues/1004
+			 */
 			// Add Wordlift custom block category.
-			self::add_block_category();
+			// self::add_block_category();
 
 			new Wordlift_Dashboard_Latest_News();
 
@@ -184,9 +191,9 @@ class Wordlift_Admin {
 	/**
 	 * Get the singleton instance.
 	 *
+	 * @return \Wordlift_Admin The singleton instance.
 	 * @since 3.19.4
 	 *
-	 * @return \Wordlift_Admin The singleton instance.
 	 */
 	public static function get_instance() {
 
@@ -274,7 +281,7 @@ class Wordlift_Admin {
 				'Please wait while we look for entities in the linked data cloud...' => _x( 'Please wait while we look for entities in the linked data cloud...', 'Autocomplete Select', 'wordlift' ),
 				'Add keywords to track'                                              => __( 'Add Keywords to track', 'wordlift' ),
 			),
-			'wl_autocomplete_nonce'      => wp_create_nonce( 'wordlift_autocomplete' ),
+			'wl_autocomplete_nonce'      => wp_create_nonce( 'wl_autocomplete' ),
 			'autocomplete_scope'         => $autocomplete_scope,
 			/**
 			 * Allow 3rd parties to define the default editor id. This turns useful if 3rd parties load
@@ -282,11 +289,12 @@ class Wordlift_Admin {
 			 *
 			 * The editor id is currently referenced by `src/coffee/editpost-widget/app.services.EditorAdapter.coffee`.
 			 *
-			 * @since 3.19.4
+			 * @param string $editor The default editor id, by default `content`.
 			 *
 			 * @see https://github.com/insideout10/wordlift-plugin/issues/848
 			 *
-			 * @param string $editor The default editor id, by default `content`.
+			 * @since 3.19.4
+			 *
 			 */
 			'default_editor_id'          => apply_filters( 'wl_default_editor_id', 'content' ),
 			/**
@@ -295,6 +303,8 @@ class Wordlift_Admin {
 			 * @since 3.20.0
 			 */
 			'search_keywords_admin_page' => admin_url( 'admin.php?page=wl_configuration_admin_menu&tab=search-keywords' ),
+
+			'analysis' => array( '_wpnonce' => wp_create_nonce( 'wl_analyze' ), )
 		);
 
 		// Set post-related values if there's a current post.
@@ -345,20 +355,23 @@ class Wordlift_Admin {
 	 * Add Wordlift custom block category.
 	 *
 	 * @since 3.21.0
+	 * @since 3.24.2 this function isn't called anymore as it was causing the WordLift block category to multiply
+	 *   in Block Editor, https://github.com/insideout10/wordlift-plugin/issues/1004
 	 */
-	private static function add_block_category() {
-		add_filter( 'block_categories', function( $categories, $post ) {
-			return array_merge(
-				$categories,
-				array(
-					array(
-						'slug' => 'wordlift',
-						'title' => 'WordLift Blocks',
-					),
-				)
-			);
-		}, 10, 2 );
-	}
+//	private static function add_block_category() {
+//		add_filter( 'block_categories', function ( $categories, $post ) {
+//			return array_merge(
+//				$categories,
+//				array(
+//					array(
+//						'slug'  => 'wordlift',
+//						'title' => 'WordLift',
+//						'icon'  => null,
+//					),
+//				)
+//			);
+//		}, 10, 2 );
+//	}
 
 	public static function is_gutenberg() {
 		if ( function_exists( 'is_gutenberg_page' ) &&

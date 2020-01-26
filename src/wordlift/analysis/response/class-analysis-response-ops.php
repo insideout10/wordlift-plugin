@@ -3,6 +3,8 @@
 
 namespace Wordlift\Analysis\Response;
 
+use stdClass;
+
 class Analysis_Response_Ops {
 
 	/**
@@ -146,39 +148,61 @@ class Analysis_Response_Ops {
 
 		// Try to get all the disambiguated annotations and bail out if an error occurs.
 		if ( false === preg_match_all(
-				'|<span\s+id="([^"]+)"\s+class="textannotation\s+(?:\S+\s+)?disambiguated(?=[\s"])[^"]*"\s+itemid="([^"]*)">|',
+				'|<span\s+id="([^"]+)"\s+class="textannotation\s+(?:\S+\s+)?disambiguated(?=[\s"])[^"]*"\s+itemid="([^"]*)">(.*?)</span>|',
 				$content,
 				$matches,
-				PREG_SET_ORDER
+				PREG_OFFSET_CAPTURE
 			) ) {
 			return $this;
 		}
 
-		// Get the annotations' ids indexed by entity ids.
-		$occurrences = array_reduce( $matches, function ( $carry, $item ) {
-			$annotation_id = $item[1];
-			$item_id       = $item[2];
-			if ( ! isset( $carry[ $item_id ] ) ) {
-				$carry[ $item_id ] = array();
+		if ( empty( $matches ) ) {
+			return $this;
+		}
+
+		$parse_data = array_reduce( range( 0, count( $matches[1] ) - 1 ), function ( $carry, $i ) use ( $matches ) {
+			if ( empty( $matches[0] ) ) {
+				return $carry;
 			}
 
-			$carry[ $item_id ][] = $annotation_id;
+			$start         = $matches[0][ $i ][1];
+			$end           = $start + strlen( $matches[0][ $i ][0] );
+			$annotation_id = $matches[1][ $i ][0];
+			$item_id       = $matches[2][ $i ][0];
+			$text          = $matches[3][ $i ][0];
+
+			$annotation               = new StdClass;
+			$annotation->annotationId = $annotation_id;
+			$annotation->start        = $start;
+			$annotation->end          = $end;
+			$annotation->text         = $text;
+
+			$entity_match                = new StdClass;
+			$entity_match->confidence    = 100;
+			$entity_match->entityId      = $item_id;
+			$annotation->entityMatches[] = $entity_match;
+
+			$carry['annotations'][ $annotation_id ] = $annotation;
+			$carry['occurrences'][ $item_id ][]     = $annotation_id;
 
 			return $carry;
-		}, array() );
+		}, array( 'annotations' => array(), 'occurrences' => array(), ) );
 
-		foreach ( array_keys( $occurrences ) as $id ) {
+		$annotations = $parse_data['annotations'];
+		$occurrences = $parse_data['occurrences'];
+
+		foreach ( array_keys( $occurrences ) as $item_id ) {
 
 			// If the entity isn't there, add it.
-			if ( ! isset( $this->json->entities->{$id} ) ) {
-				$entity = $this->get_local_entity( $id );
+			if ( ! isset( $this->json->entities->{$item_id} ) ) {
+				$entity = $this->get_local_entity( $item_id );
 
 				// Entity not found in the local vocabulary, continue to the next one.
 				if ( false === $entity ) {
 					continue;
 				}
 
-				$this->json->entities->{$id} = $entity;
+				$this->json->entities->{$item_id} = $entity;
 			}
 		}
 
@@ -199,6 +223,16 @@ class Analysis_Response_Ops {
 					'id' => $annotation_id,
 				);
 			}
+		}
+
+		// Add the missing annotations. This allows the analysis response to work also if we didn't receive results
+		// from the analysis API.
+		foreach ( $annotations as $annotation_id => $annotation ) {
+
+			if ( ! isset( $this->json->annotations->{$annotation_id} ) ) {
+				$this->json->annotations->{$annotation_id} = $annotation;
+			}
+
 		}
 
 		return $this;
@@ -224,6 +258,17 @@ class Analysis_Response_Ops {
 			'types'       => wl_get_entity_rdf_types( $entity->ID ),
 			'images'      => $images,
 		);
+	}
+
+	/**
+	 * Return the JSON response.
+	 *
+	 * @return mixed The JSON response.
+	 * @since 3.24.2
+	 */
+	public function get_json() {
+
+		return $this->json;
 	}
 
 	/**

@@ -53,7 +53,7 @@ describe 'TinyMCE: more tests', ->
     expect(text).not.toBe ''
 
     # Catch all the requests to Freebase.
-    $httpBackend.expectPOST(/.*wordlift_analyze$/).respond 200, json_1
+    $httpBackend.expectPOST(/.*wl_analyze$/).respond 200, json_1
 
     # Send the text content for analysis.
     EditorService.analyze text
@@ -75,7 +75,7 @@ describe 'TinyMCE: more tests', ->
     $rootScope.$broadcast 'selectEntity', ta: textAnnotation, ea: entityAnnotation
 
     # Catch all the requests to Freebase.
-    $httpBackend.expectPOST(/.*wordlift_analyze$/).respond 200, json_2
+    $httpBackend.expectPOST(/.*wl_analyze$/).respond 200, json_2
 
     # Send the text content for analysis.
     EditorService.analyze text
