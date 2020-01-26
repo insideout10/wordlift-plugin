@@ -48,14 +48,8 @@ class Wordlift_Autocomplete_Adapter {
 	 * @since 3.15.0
 	 */
 	public function wl_autocomplete() {
-		if (
-			! isset( $_REQUEST['_wpnonce'] ) || // Input var okay.
-			! wp_verify_nonce( sanitize_key( $_REQUEST['_wpnonce'] ), 'wordlift_autocomplete' ) // Input var okay.
-		) {
-			wp_send_json_error( array(
-				'message' => __( 'Nonce field doesn\'t match.', 'wordlift' ),
-			) );
-		}
+
+		check_ajax_referer('wl_autocomplete');
 
 		// Return error if the query param is empty.
 		if ( ! empty( $_REQUEST['query'] ) ) { // Input var okay.

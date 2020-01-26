@@ -40,8 +40,11 @@ export default class EditorOps {
 
     console.log("EditorOps.insertAnnotation", { id, start, end, clientId: block.clientId });
 
-    block.insertHtml(relativeEnd, "</span>");
-    block.insertHtml(relativeStart, `<span id="${id}" class="textannotation">`);
+    // Insert the block only if not found.
+    if (-1 === block.content.indexOf(`<span id="${id}" `)) {
+      block.insertHtml(relativeEnd, "</span>");
+      block.insertHtml(relativeStart, `<span id="${id}" class="textannotation">`);
+    }
 
     this._annotations[id] = block;
   }
