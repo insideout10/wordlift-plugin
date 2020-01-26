@@ -142,6 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.24.3 (2020-01-26) =
+* Enhancement: Provide a JSON-LD end-point using the itemid.
+
 = 3.24.2 (2020-01-26) =
 * Fix: Display selected entities also when the Analysis end-point is unavailable.
 * Fix [#1005](https://github.com/insideout10/wordlift-plugin/issues/1005): sameAs select in metabox in Block Editor doesn't show.
