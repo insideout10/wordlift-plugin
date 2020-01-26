@@ -17,11 +17,11 @@ export default class EditorOps {
     this._blocks = Blocks.create(this._editor.getBlocks(), dispatch(editor));
   }
 
-  buildAnalysisRequest(language, exclude) {
+  buildAnalysisRequest(language, exclude, canCreateEntities) {
     return {
       contentLanguage: language,
       contentType: "text/html",
-      scope: "all",
+      scope: canCreateEntities ? "all" : "local",
       version: "1.0.0",
       content: this._blocks.html,
       exclude: exclude
@@ -40,8 +40,11 @@ export default class EditorOps {
 
     console.log("EditorOps.insertAnnotation", { id, start, end, clientId: block.clientId });
 
-    block.insertHtml(relativeEnd, "</span>");
-    block.insertHtml(relativeStart, `<span id="${id}" class="textannotation">`);
+    // Insert the block only if not found.
+    if (-1 === block.content.indexOf(`<span id="${id}" `)) {
+      block.insertHtml(relativeEnd, "</span>");
+      block.insertHtml(relativeStart, `<span id="${id}" class="textannotation">`);
+    }
 
     this._annotations[id] = block;
   }

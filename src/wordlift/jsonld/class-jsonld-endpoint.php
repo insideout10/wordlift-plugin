@@ -1,31 +1,54 @@
 <?php
+/**
+ * This file defines the JSON-LD endpoint.
+ *
+ * @author David Riccitelli <david@wordlift.io>
+ * @package Wordlift\Jsonld
+ */
 
 namespace Wordlift\Jsonld;
 
 use DateInterval;
 use DateTime;
 use DateTimeZone;
+use Wordlift_Jsonld_Service;
 use WP_REST_Response;
 
+/**
+ * Class Jsonld_Endpoint
+ *
+ * @package Wordlift\Jsonld
+ */
 class Jsonld_Endpoint {
+
 	/**
-	 * @var Wordlift_Jsonld_Service
+	 * The {@link Wordlift_Jsonld_Service} instance.
+	 *
+	 * @var Wordlift_Jsonld_Service The {@link Wordlift_Jsonld_Service} instance.
 	 */
 	private $jsonld_service;
+	/**
+	 * @var \Wordlift_Entity_Uri_Service
+	 */
+	private $entity_uri_service;
 
 	/**
 	 * Jsonld_Endpoint constructor.
 	 *
 	 * @param \Wordlift_Jsonld_Service $jsonld_service
+	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service
 	 */
-	public function __construct( $jsonld_service ) {
+	public function __construct( $jsonld_service, $entity_uri_service ) {
+
+		$this->jsonld_service     = $jsonld_service;
+		$this->entity_uri_service = $entity_uri_service;
 
 		// PHP 5.3 compatibility.
 		$that = $this;
 		add_action( 'rest_api_init', function () use ( $that ) {
 			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/(?P<id>\d+)', array(
 				'methods'  => 'GET',
-				'callback' => array( $that, 'callback' ),
+				'callback' => array( $that, 'jsonld_using_post_id' ),
 				'args'     => array(
 					'id' => array(
 						'validate_callback' => function ( $param, $request, $key ) {
@@ -35,12 +58,28 @@ class Jsonld_Endpoint {
 					),
 				)
 			) );
+
+			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/http/(?P<item_id>.*)', array(
+				'methods'  => 'GET',
+				'callback' => array( $that, 'jsonld_using_item_id' ),
+			) );
 		} );
 
-		$this->jsonld_service = $jsonld_service;
 	}
 
-	public function callback( $request ) {
+	/**
+	 * Callback for the JSON-LD request.
+	 *
+	 * @param array $request {
+	 *  The request array.
+	 *
+	 * @type int $id The post id.
+	 * }
+	 *
+	 * @return WP_REST_Response
+	 * @throws \Exception
+	 */
+	public function jsonld_using_post_id( $request ) {
 
 		$post_id     = $request['id'];
 		$is_homepage = ( 0 === $post_id );
@@ -63,5 +102,30 @@ class Jsonld_Endpoint {
 
 		return $response;
 	}
+
+	/**
+	 * Provide a JSON-LD given the itemId.
+	 *
+	 * @param array $request {
+	 *  The request array.
+	 *
+	 * @type string $item_id The entity item id.
+	 * }
+	 *
+	 * @return WP_REST_Response
+	 * @throws \Exception
+	 */
+	public function jsonld_using_item_id( $request ) {
+
+		$item_id = 'http://' . $request['item_id'];
+		$post    = $this->entity_uri_service->get_entity( $item_id );
+
+		if ( ! is_a( $post, 'WP_Post' ) ) {
+			return new WP_REST_Response( esc_html( "$item_id not found." ), 404, array( 'Content-Type' => 'text/html' ) );
+		}
+
+		return $this->jsonld_using_post_id( array( 'id' => $post->ID, ) );
+	}
+
 
 }

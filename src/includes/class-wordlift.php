@@ -12,6 +12,11 @@
  * @subpackage Wordlift/includes
  */
 
+use Wordlift\Autocomplete\All_Autocomplete_Service;
+use Wordlift\Autocomplete\Linked_Data_Autocomplete_Service;
+use Wordlift\Autocomplete\Local_Autocomplete_Service;
+use Wordlift\Jsonld\Jsonld_Endpoint;
+
 /**
  * The core plugin class.
  *
@@ -654,15 +659,6 @@ class Wordlift {
 	protected $rendition_factory;
 
 	/**
-	 * The {@link Wordlift_Autocomplete_Service} instance.
-	 *
-	 * @since  3.15.0
-	 * @access private
-	 * @var \Wordlift_Autocomplete_Service $autocomplete_service The {@link Wordlift_Autocomplete_Service} instance.
-	 */
-	private $autocomplete_service;
-
-	/**
 	 * The {@link Wordlift_Autocomplete_Adapter} instance.
 	 *
 	 * @since  3.15.0
@@ -742,7 +738,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.24.1';
+		$this->version     = '3.24.3';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -984,7 +980,6 @@ class Wordlift {
 		/** Services. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-google-analytics-export-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-api-service.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-service.php';
 
 		/** Adapters. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-tinymce-adapter.php';
@@ -1002,7 +997,6 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-push-references-async-task.php';
 
 		/** Autocomplete. */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-autocomplete-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-autocomplete-adapter.php';
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-remote-image-service.php';
@@ -1184,6 +1178,7 @@ class Wordlift {
 		new Wordlift_Http_Api();
 
 		// Load the Install Service.
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-service.php';
 		$this->install_service = new Wordlift_Install_Service();
 
 		/** Services. */
@@ -1273,7 +1268,7 @@ class Wordlift {
 		$this->jsonld_website_converter          = new Wordlift_Website_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $this->configuration_service );
 		$this->cached_postid_to_jsonld_converter = new Wordlift_Cached_Post_Converter( $this->postid_to_jsonld_converter, $this->file_cache_service, $this->configuration_service );
 		$this->jsonld_service                    = new Wordlift_Jsonld_Service( $this->entity_service, $this->cached_postid_to_jsonld_converter, $this->jsonld_website_converter );
-		new Wordlift\Jsonld\Jsonld_Endpoint( $this->jsonld_service );
+		new Jsonld_Endpoint( $this->jsonld_service, $this->entity_uri_service );
 
 		$this->key_validation_service    = new Wordlift_Key_Validation_Service( $this->configuration_service );
 		$this->content_filter_service    = new Wordlift_Content_Filter_Service( $this->entity_service, $this->configuration_service, $this->entity_uri_service );
@@ -1282,7 +1277,7 @@ class Wordlift {
 		$this->sample_data_ajax_adapter  = new Wordlift_Sample_Data_Ajax_Adapter( $this->sample_data_service );
 		$this->reference_rebuild_service = new Wordlift_Reference_Rebuild_Service( $this->linked_data_service, $this->entity_service, $this->relation_service );
 
-		// Initialize the shortcodes.
+		// Initialize the short-codes.
 		new Wordlift_Navigator_Shortcode();
 		new Wordlift_Chord_Shortcode();
 		new Wordlift_Geomap_Shortcode();
@@ -1330,8 +1325,11 @@ class Wordlift {
 		new Wordlift_Push_References_Async_Task();
 
 		/** WL Autocomplete. */
-		$this->autocomplete_service = new Wordlift_Autocomplete_Service( $this->configuration_service );
-		$this->autocomplete_adapter = new Wordlift_Autocomplete_Adapter( $this->autocomplete_service );
+		$autocomplete_service       = new All_Autocomplete_Service( array(
+			new Local_Autocomplete_Service(),
+			new Linked_Data_Autocomplete_Service( $this->configuration_service ),
+		) );
+		$this->autocomplete_adapter = new Wordlift_Autocomplete_Adapter( $autocomplete_service );
 
 		/** WordPress Admin UI. */
 
@@ -1722,7 +1720,6 @@ class Wordlift {
 
 		// Register the entity post type.
 		$this->loader->add_action( 'init', $this->entity_post_type_service, 'register' );
-		$this->loader->add_action( 'init', $this->install_service, 'install' );
 
 		// Bind the link generation and handling hooks to the entity link service.
 		$this->loader->add_filter( 'post_type_link', $this->entity_link_service, 'post_type_link', 10, 4 );
