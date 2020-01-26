@@ -26,5 +26,5 @@ export default handleActions(
     RECEIVE_ANALYSIS_RESULTS: state => ({ loading: false }),
     SET_FORMAT: (state, action) => ({ format: action.payload })
   },
-  { format: null, loading: false, showCreate: true }
+  { format: { onChange: () => {}, value: "" }, loading: false, showCreate: true }
 );
