@@ -12,7 +12,9 @@
  * @subpackage Wordlift/includes
  */
 
+use Wordlift\Autocomplete\All_Autocomplete_Service;
 use Wordlift\Autocomplete\Linked_Data_Autocomplete_Service;
+use Wordlift\Autocomplete\Local_Autocomplete_Service;
 
 /**
  * The core plugin class.
@@ -994,7 +996,7 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-push-references-async-task.php';
 
 		/** Autocomplete. */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-autocomplete-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-autocomplete-adapter.php';
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-remote-image-service.php';
 
@@ -1322,7 +1324,10 @@ class Wordlift {
 		new Wordlift_Push_References_Async_Task();
 
 		/** WL Autocomplete. */
-		$autocomplete_service       = new Linked_Data_Autocomplete_Service( $this->configuration_service );
+		$autocomplete_service       = new All_Autocomplete_Service( array(
+			new Local_Autocomplete_Service(),
+			new Linked_Data_Autocomplete_Service( $this->configuration_service ),
+		) );
 		$this->autocomplete_adapter = new Wordlift_Autocomplete_Adapter( $autocomplete_service );
 
 		/** WordPress Admin UI. */

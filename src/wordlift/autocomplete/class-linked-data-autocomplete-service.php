@@ -60,9 +60,27 @@ class Linked_Data_Autocomplete_Service implements Autocomplete_Service {
 		$url = $this->build_request_url( $query, $exclude, $scope );
 
 		// Return the response.
-		return wp_remote_get( $url, array(
+		$response = wp_remote_get( $url, array(
 			'timeout' => 30
 		) );
+
+		// If the response is valid, then send the suggestions.
+		if ( ! is_wp_error( $response ) && 200 === (int) $response['response']['code'] ) {
+			// Echo the response.
+			return json_decode( wp_remote_retrieve_body( $response ), true );
+		} else {
+			// Default error message.
+			$error_message = 'Something went wrong.';
+
+			// Get the real error message if there is WP_Error.
+			if ( is_wp_error( $response ) ) {
+				$error_message = $response->get_error_message();
+			}
+
+			$this->log->error( $error_message );
+
+			return array();
+		}
 	}
 
 	/**
