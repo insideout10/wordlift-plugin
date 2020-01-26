@@ -1213,7 +1213,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', ['wordlift.e
         }
       }
       return $q(function(resolve, reject) {
-        return wp.ajax.post('wordlift_analyze', {
+        return wp.ajax.post('wl_analyze', {
           _wpnonce: wlSettings['analysis']['_wpnonce'],
           data: JSON.stringify(data)
         }).done(function(response) {

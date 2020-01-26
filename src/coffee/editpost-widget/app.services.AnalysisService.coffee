@@ -234,7 +234,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
         if @canCreateEntities then data.scope = 'all' else data.scope = 'local'
 
       return $q( (resolve, reject) ->
-        wp.ajax.post( 'wordlift_analyze', {
+        wp.ajax.post( 'wl_analyze', {
           _wpnonce: wlSettings['analysis']['_wpnonce'],
           data: JSON.stringify( data )
         })

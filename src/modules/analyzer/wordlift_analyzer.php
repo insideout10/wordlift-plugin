@@ -13,7 +13,7 @@ use Wordlift\Analysis\Response\Analysis_Response_Ops;
  */
 function wl_ajax_analyze_action() {
 
-	check_admin_referer( 'wordlift_analyze' );
+	check_admin_referer( 'wl_analyze' );
 
 	$data      = filter_input( INPUT_POST, 'data' );
 
@@ -21,7 +21,7 @@ function wl_ajax_analyze_action() {
 
 }
 
-add_action( 'wp_ajax_wordlift_analyze', 'wl_ajax_analyze_action' );
+add_action( 'wp_ajax_wl_analyze', 'wl_ajax_analyze_action' );
 
 /**
  * Analyze the provided content. The analysis will make use of the method *wl_ajax_analyze_action*

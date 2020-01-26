@@ -47,14 +47,7 @@ function* handleRequestAnalysis() {
     canCreateEntities
   );
 
-  // const response = yield call(apiFetch, {
-  //   url: `${window["wlSettings"]["ajax_url"]}?action=wordlift_analyze`,
-  //   method: "POST",
-  //   headers: { "Content-Type": "application/json" },
-  //   body: JSON.stringify(request)
-  // });
-
-  const response = yield call(global["wp"].ajax.post, "wordlift_analyze", {
+  const response = yield call(global["wp"].ajax.post, "wl_analyze", {
     _wpnonce: settings["analysis"]["_wpnonce"],
     data: JSON.stringify(request)
   });

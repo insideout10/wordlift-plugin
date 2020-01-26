@@ -27,7 +27,7 @@ describe "Controllers: ErrorController", ->
     $.ajax('base/app/assets/error.html',
       async: false
     ).done (data) ->
-      $httpBackend.expectPOST('/base/app/assets/english.json?action=wordlift_analyze')
+      $httpBackend.expectPOST('/base/app/assets/english.json?action=wl_analyze')
       .respond 200, data
 
       $httpBackend.when('HEAD', /.*/).respond(200, '')
