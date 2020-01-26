@@ -93,10 +93,14 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 		/**
 		 * Register meta _wl_alt_label for use in Gutenberg
 		 */
-		register_post_meta( 'entity', '_wl_alt_label', array(
+		register_meta( 'post', Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY, array(
+			'object_subtype' => Wordlift_Entity_Service::TYPE_NAME,
 			'show_in_rest' => true,
-			'single'       => true,
+			'single'       => false,
 			'type'         => 'string',
+			'auth_callback' => function() {
+				return current_user_can('delete_wordlift_entities');;
+			}
 		) );
 
 		// Add filter to change the metabox CSS class.
