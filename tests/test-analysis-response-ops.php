@@ -84,6 +84,11 @@ class Analysis_Response_Ops_Test extends \Wordlift_Unit_Test_Case {
 	 */
 	public function test_make_entities_local() {
 
+		$dataset_uri = $this->configuration_service->get_dataset_uri();
+		if ( empty( $dataset_uri ) ) {
+			$this->markTestSkipped( 'This test requires the dataset URI to be set.' );
+		}
+
 		// Create the entity post.
 		$post_id = $this->factory()->post->create( array(
 			'post_type'   => 'entity',
@@ -153,8 +158,6 @@ class Analysis_Response_Ops_Test extends \Wordlift_Unit_Test_Case {
 		                                      ->make_entities_local()
 		                                      ->add_occurrences( $request_json['content'] )
 		                                      ->get_json();
-
-		var_dump( $response_json );
 
 		$this->assertTrue( isset( $response_json->entities ), 'The entities property must exist.' );
 		$this->assertTrue( isset( $response_json->annotations ), 'The annotations property must exist.' );

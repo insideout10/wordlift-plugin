@@ -67,6 +67,8 @@ class Wordlift_Post_Test extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * Test the method to count the number of triples in the remote datastore.
+	 *
+	 * @group redlink
 	 */
 	function test_count_triples() {
 
@@ -84,6 +86,8 @@ class Wordlift_Post_Test extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * Test saving entities passed via a metabox.
+	 *
+	 * @group redlink
 	 */
 	public function test_entities_via_array() {
 

@@ -14,6 +14,11 @@
             <directory prefix="test-" suffix=".php">./tests/</directory>
         </testsuite>
     </testsuites>
+    <groups>
+        <exclude>
+            <group>redlink</group>
+        </exclude>
+    </groups>
     <php>
         <const name="WP_DEBUG_LOG" value="true"/>
         <const name="WP_DEBUG_DISPLAY" value="false"/>

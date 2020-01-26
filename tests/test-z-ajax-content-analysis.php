@@ -40,8 +40,6 @@ class Content_Analysis_Test extends Wordlift_Ajax_Unit_Test_Case {
 			'We expect the response to contain a `success` key, instead got: ' . var_export( $response, true ) );
 		$this->assertTrue( $response['success'], 'Success must be `true`.' );
 
-		var_dump( $response );
-
 	}
 
 }

@@ -41,6 +41,7 @@ class Wordlift_References_Test extends Wordlift_Unit_Test_Case {
 	/**
 	 * Test that non entity refer entities.
 	 *
+	 * @group redlink
 	 * @since 3.18.0
 	 */
 	function test_that_non_entity_has_references() {
@@ -90,6 +91,7 @@ class Wordlift_References_Test extends Wordlift_Unit_Test_Case {
 	/**
 	 * Test that entity doesn't refer other entities.
 	 *
+	 * @group redlink
 	 * @since 3.18.0
 	 */
 	function test_that_entity_doesnt_have_references() {

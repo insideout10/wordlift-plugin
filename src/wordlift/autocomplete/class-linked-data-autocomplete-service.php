@@ -101,7 +101,7 @@ class Linked_Data_Autocomplete_Service implements Autocomplete_Service {
 			'language' => $this->configuration_service->get_language_code(),
 			'query'    => $query,
 			'scope'    => $scope,
-			'limit'    => 100,
+			'limit'    => 10,
 		);
 
 		// Add args to URL.

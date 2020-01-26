@@ -17,6 +17,9 @@
  */
 class Wordlift_Save_Post_Test extends Wordlift_Unit_Test_Case {
 
+	/**
+	 * @group redlink
+	 */
 	function test_savepostandreferencedentities() {
 
 		// create two entities
@@ -46,6 +49,9 @@ EOF;
 		$this->assertCount( 2, wl_core_get_related_entity_ids( $post_1_id ) );
 	}
 
+	/**
+	 * @group redlink
+	 */
 	function test_referencedentities() {
 
 		// create two entities
@@ -80,6 +86,9 @@ EOF;
 
 	}
 
+	/**
+	 * @group redlink
+	 */
 	function test_publishing_unpublishing_posts() {
 
 		self::turn_on_entity_push();
@@ -203,6 +212,9 @@ EOF;
 
 	}
 
+	/**
+	 * @group redlink
+	 */
 	function test_updated_when_related_entity_is_trashed() {
 
 		self::turn_on_entity_push();
