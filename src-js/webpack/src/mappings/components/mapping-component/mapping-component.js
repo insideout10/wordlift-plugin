@@ -71,14 +71,6 @@ class MappingComponent extends React.Component {
     this.props.dispatch(action);
   }
   /**
-   * Selects all the mapping items on the currently active category
-   * When triggered on the active, it selects only the active items
-   */
-  selectAllMappingItems() {
-    this.props.dispatch(MAPPING_LIST_BULK_SELECT_ACTION);
-  }
-
-  /**
    * Sorts the mapping items by title either ascending or descending
    * depending on the current state.
    */
@@ -141,19 +133,6 @@ class MappingComponent extends React.Component {
     this.props.dispatch(action);
   }
   /**
-   * Called when a mapping item is clicked.
-   * @param {Object} mappingData Object represeting single mapping item
-   * @return void
-   */
-  selectMappingItemHandler(mappingData) {
-    const action = MAPPING_ITEM_SELECTED_ACTION;
-    action.payload = {
-      mappingId: mappingData.mapping_id
-    };
-    this.props.dispatch(action);
-  }
-
-  /**
    * When the bulk action is submitted this handler is called.
    */
   bulkActionSubmitHandler() {
@@ -187,7 +166,6 @@ class MappingComponent extends React.Component {
                 return (
                   <MappingListItemComponent
                     key={index}
-                    selectMappingItemHandler={this.selectMappingItemHandler}
                     mappingIndex={index}
                     duplicateMappingItemHandler={this.duplicateMappingItems}
                     deleteMappingItemHandler={this.updateMappingItems}

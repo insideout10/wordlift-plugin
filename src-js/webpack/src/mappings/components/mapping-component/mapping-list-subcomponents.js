@@ -51,7 +51,7 @@ export const MappingTableTitleSort = ( props ) => {
                 }}
             >
                 Title
-                <span className={"dashicons " + props.titleIconClass} />
+                <span className={"dashicons " + props.titleIconClass} > </span>
             </a>
         </th>
     )
