@@ -195,6 +195,7 @@ function* toggleAnnotation({ annotation }) {
  */
 function* handleAddEntityRequest({ payload }) {
   // See https://developer.wordpress.org/block-editor/packages/packages-rich-text/#applyFormat
+  console.log("getBlockEditorFormat", yield select(getBlockEditorFormat));
   const { onChange, value } = yield select(getBlockEditorFormat);
 
   const annotationId = "urn:local-annotation-" + Math.floor(Math.random() * 999999);

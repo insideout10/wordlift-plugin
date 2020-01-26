@@ -14,7 +14,7 @@ import { createActions, handleActions } from "redux-actions";
  */
 import { EDITOR_SELECTION_CHANGED } from "../../Edit/constants/ActionTypes";
 
-export const { addEntity, editorSelectionChanged, requestAnalysis, setFormat } = createActions(
+export const { editorSelectionChanged, requestAnalysis, setFormat } = createActions(
   EDITOR_SELECTION_CHANGED,
   "REQUEST_ANALYSIS",
   "SET_FORMAT"
@@ -26,5 +26,12 @@ export default handleActions(
     RECEIVE_ANALYSIS_RESULTS: state => ({ loading: false }),
     SET_FORMAT: (state, action) => ({ format: action.payload })
   },
-  { format: { onChange: () => {}, value: "" }, loading: false, showCreate: true }
+  {
+    format: {
+      onChange: () => {},
+      value: ""
+    },
+    loading: false,
+    showCreate: true
+  }
 );
