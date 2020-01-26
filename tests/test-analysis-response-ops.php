@@ -2,6 +2,7 @@
 /**
  * This file defines the Analysis_Response_Ops_Test class providing the unit tests for the Analysis_Response_Ops class.
  *
+ * @group analysis
  * @since 3.21.5
  * @author David Riccitelli <david@wordlift.io>
  * @package Wordlift\Analysis\Response
@@ -11,6 +12,7 @@ namespace Wordlift\Analysis\Response;
 
 use Exception;
 use stdClass;
+use Wordlift_Entity_Type_Taxonomy_Service;
 
 /**
  * Define the {@link Analysis_Response_Ops_Test} class.
@@ -131,5 +133,47 @@ class Analysis_Response_Ops_Test extends \Wordlift_Unit_Test_Case {
 //		                          ->add_occurrences( $request_json->content )
 //		                          ->to_string();
 //	}
+
+	public function test_local_entity_brings_in_annotations() {
+
+		// Create an entity, by also setting its entity URL and type.
+		$post_id = $this->factory()->post->create( array(
+			'post_type'   => 'entity',
+			'post_title'  => 'Analysis Response Ops 1',
+			'post_status' => 'publish',
+		) );
+		update_post_meta( $post_id, 'entity_url', 'http://example.org/content_analysis_test_1' );
+		wp_add_object_terms( $post_id, 'thing', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+
+		// Get the mock request.
+		$request_body = file_get_contents( dirname( __FILE__ ) . '/assets/content-analysis-request-1.json' );
+		$request_json = json_decode( $request_body, true );
+
+		$response_json = Analysis_Response_Ops::create( json_decode( '{ "entities": {}, "annotations": {}, "topics": {} }' ) )
+		                                      ->make_entities_local()
+		                                      ->add_occurrences( $request_json['content'] )
+		                                      ->get_json();
+
+		var_dump( $response_json );
+
+		$this->assertTrue( isset( $response_json->entities ), 'The entities property must exist.' );
+		$this->assertTrue( isset( $response_json->annotations ), 'The annotations property must exist.' );
+		$this->assertTrue( isset( $response_json->topics ), 'The topics property must exist.' );
+
+		$this->assertTrue( isset( $response_json->entities->{"http://example.org/content_analysis_test_1"} ),
+			'Our mock entity must be there.' );
+
+		$entity = $response_json->entities->{"http://example.org/content_analysis_test_1"};
+
+		$this->assertTrue( isset( $entity->occurrences ), 'Our mock entity must have occurrences.' );
+		$this->assertTrue( is_array( $entity->occurrences ), 'Our entity`s occurrences must be an array.' );
+		$this->assertEquals( array( 'urn:content-classification-test-1' ), $entity->occurrences, 'Our entity`s occurrences must match.' );
+
+		$this->assertTrue( isset( $entity->annotations ), 'Our mock entity must have annotations.' );
+		$this->assertTrue( is_array( $entity->annotations ), 'Our entity`s annotations must be an array.' );
+		$this->assertEquals( array( 'urn:content-classification-test-1' => array( 'id' => 'urn:content-classification-test-1' ), ), $entity->annotations,
+			'Our mock entity must have annotations.' );
+
+	}
 
 }

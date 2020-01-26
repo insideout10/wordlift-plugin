@@ -278,6 +278,10 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
             $log.warn "Annotation #{annotation.text} [#{annotation.start}:#{annotation.end}] with id #{annotation.id} has no entity matches!"
             continue
 
+          # Do not insert an annotation if it already exists in editor's DOM.
+          if ed.dom.get( annotation.id )?
+            continue
+
           element = "<span id=\"#{annotation.id}\" class=\"textannotation"
 
           # Add the `wl-no-link` class if it was present in the original annotation.
@@ -313,8 +317,6 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
         # See https://github.com/tinymce/tinymce/blob/master/js/tinymce/classes/Formatter.js#L2030
         # html = traslator.getHtml()
         html = html.replace(/<\/span>/gim, "</span>#{INVISIBLE_CHAR}")
-
-        console.debug { annotations, html }
 
         $rootScope.$broadcast "analysisEmbedded"
         # Update the editor Html code.

@@ -88,7 +88,7 @@ class Wordlift_Install_Service {
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
-		add_action( 'admin_init', array( $this, 'install' ) );
+		add_action( 'init', array( $this, 'install' ) );
 
 	}
 

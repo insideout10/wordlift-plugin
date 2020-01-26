@@ -38,15 +38,25 @@ import getRelatedPosts from "../../common/api/get-related-posts";
 function* handleRequestAnalysis() {
   const editorOps = new EditorOps(EDITOR_STORE);
 
-  const request = editorOps.buildAnalysisRequest(window["wlSettings"]["language"], [
-    window["wordlift"]["currentPostUri"]
-  ]);
+  const settings = global["wlSettings"];
+  const canCreateEntities =
+    "undefined" !== typeof settings["can_create_entities"] && "yes" === settings["can_create_entities"];
+  const request = editorOps.buildAnalysisRequest(
+    settings["can_create_entities"]["language"],
+    [window["wordlift"]["currentPostUri"]],
+    canCreateEntities
+  );
 
-  const response = yield call(apiFetch, {
-    url: `${window["wlSettings"]["ajax_url"]}?action=wordlift_analyze`,
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(request)
+  // const response = yield call(apiFetch, {
+  //   url: `${window["wlSettings"]["ajax_url"]}?action=wordlift_analyze`,
+  //   method: "POST",
+  //   headers: { "Content-Type": "application/json" },
+  //   body: JSON.stringify(request)
+  // });
+
+  const response = yield call(global["wp"].ajax.post, "wordlift_analyze", {
+    _wpnonce: settings["analysis"]["_wpnonce"],
+    data: JSON.stringify(request)
   });
 
   embedAnalysis(editorOps, response);

@@ -29951,7 +29951,7 @@ angular.module('wordlift.editpost.widget.services.AnnotationParser', []).service
 ]);
 
 angular.module('wordlift.editpost.widget.services.AnalysisService', ['wordlift.editpost.widget.services.AnnotationParser', 'wordlift.editpost.widget.services.EditorAdapter']).service('AnalysisService', [
-  'AnnotationParser', 'EditorAdapter', 'configuration', '$log', '$http', '$rootScope', function(AnnotationParser, EditorAdapter, configuration, $log, $http, $rootScope) {
+  'AnnotationParser', 'EditorAdapter', 'configuration', '$log', '$http', '$rootScope', '$q', function(AnnotationParser, EditorAdapter, configuration, $log, $http, $rootScope, $q) {
     var box, extend, findAnnotation, j, k, len, len1, merge, ref, ref1, service, type, uniqueId;
     uniqueId = function(length) {
       var id;
@@ -30083,7 +30083,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', ['wordlift.e
     };
     service.parse = function(data) {
       var annotation, ea, entity, id, index, l, len2, ref2, ref3, ref4;
-      $log.debug('Parsing data...');
+      $log.debug('Parsing data...', data);
       ref2 = data.entities;
       for (id in ref2) {
         entity = ref2[id];
@@ -30114,6 +30114,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', ['wordlift.e
           data.annotations[id].entities[ea.entityId] = data.entities[ea.entityId];
         }
       }
+      $log.debug('Parsed data: ', data);
       return data;
     };
     service.getSuggestedSameAs = function(content) {
@@ -30136,18 +30137,11 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', ['wordlift.e
       return $rootScope.$broadcast("sameAsRetrieved", suggestions);
     };
     service._innerPerform = function(content, annotations) {
-      var args;
+      var data;
       if (annotations == null) {
         annotations = [];
       }
-      args = {
-        method: 'post',
-        url: ajaxurl + '?action=wordlift_analyze'
-      };
-      args.headers = {
-        'Content-Type': 'application/json'
-      };
-      args.data = {
+      data = {
         content: content,
         annotations: annotations,
         contentType: 'text/html',
@@ -30155,18 +30149,27 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', ['wordlift.e
       };
       if ((typeof wlSettings !== "undefined" && wlSettings !== null)) {
         if ((wlSettings.language != null)) {
-          args.data.contentLanguage = wlSettings.language;
+          data.contentLanguage = wlSettings.language;
         }
         if ((wlSettings.itemId != null)) {
-          args.data.exclude = [wlSettings.itemId];
+          data.exclude = [wlSettings.itemId];
         }
         if (this.canCreateEntities) {
-          args.data.scope = 'all';
+          data.scope = 'all';
         } else {
-          args.data.scope = 'local';
+          data.scope = 'local';
         }
       }
-      return $http(args);
+      return $q(function(resolve, reject) {
+        return wp.ajax.post('wordlift_analyze', {
+          _wpnonce: wlSettings['analysis']['_wpnonce'],
+          data: JSON.stringify(data)
+        }).done(function(response) {
+          return resolve(response);
+        }).fail(function(response) {
+          return reject(response);
+        });
+      });
     };
     service._updateStatus = function(status) {
       service._isRunning = status;
@@ -30183,13 +30186,10 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', ['wordlift.e
       $log.debug('Requesting analysis...');
       promise = this._innerPerform(content, {});
       promise.then(function(response) {
-        var result;
-        if ((response.data.success != null) && !response.data.success) {
-          $rootScope.$broadcast("analysisFailed", response.data.data.message);
-          return;
-        }
-        service._currentAnalysis = response.data;
-        result = service.parse(response.data);
+        var data, result;
+        data = response;
+        service._currentAnalysis = data;
+        result = service.parse(data);
         $rootScope.$broadcast("analysisPerformed", result);
         return wp.wordlift.trigger('analysis.result', result);
       });
@@ -30463,6 +30463,9 @@ angular.module('wordlift.editpost.widget.services.EditorService', ['wordlift.edi
               $log.warn("Annotation " + annotation.text + " [" + annotation.start + ":" + annotation.end + "] with id " + annotation.id + " has no entity matches!");
               continue;
             }
+            if (ed.dom.get(annotation.id) != null) {
+              continue;
+            }
             element = "<span id=\"" + annotation.id + "\" class=\"textannotation";
             if (-1 < ((ref = annotation.cssClass) != null ? ref.indexOf('wl-no-link') : void 0)) {
               element += ' wl-no-link';
@@ -30487,10 +30490,6 @@ angular.module('wordlift.editpost.widget.services.EditorService', ['wordlift.edi
             html = html.substring(0, annotation.start) + element + html.substring(annotation.start);
           }
           html = html.replace(/<\/span>/gim, "</span>" + INVISIBLE_CHAR);
-          console.debug({
-            annotations: annotations,
-            html: html
-          });
           $rootScope.$broadcast("analysisEmbedded");
           isDirty = ed.isDirty();
           ed.setContent(html, {
