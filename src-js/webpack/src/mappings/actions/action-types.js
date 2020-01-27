@@ -163,6 +163,12 @@ export const PROPERTY_ITEMS_BULK_SELECT = "PROPERTY_ITEMS_BULK_SELECT";
 export const EDIT_MAPPING_REQUEST_TERMS = "EDIT_MAPPING_REQUEST_TERMS";
 
 /**
+ * @const EDIT_MAPPING_TERMS_FETCHED_FOR_TAXONOMY
+ * Action type when a network request is sent to fetch the taxonomy.
+ */
+export const EDIT_MAPPING_TERMS_FETCHED_FOR_TAXONOMY = "EDIT_MAPPING_TERMS_FETCHED_FOR_TAXONOMY";
+
+/**
  * @const MAPPING_ITEMS_BULK_APPLY
  * Action when the user wants to make bulk action on selected mapping items
  */

@@ -36,7 +36,7 @@ import {
   MAPPINGS_REQUEST,
   MAPPINGS_REQUEST_DELETE_OR_UPDATE,
   MAPPINGS_REQUEST_CLONE_MAPPINGS,
-  MAPPINGS_RESET_UI_AFTER_BULK_APPLY, EDIT_MAPPING_REQUEST_TERMS
+  MAPPINGS_RESET_UI_AFTER_BULK_APPLY, EDIT_MAPPING_REQUEST_TERMS, EDIT_MAPPING_TERMS_FETCHED_FOR_TAXONOMY
 } from "./action-types";
 /**
  * @const {object} ADD_NEW_RULE_ACTION
@@ -260,6 +260,15 @@ export const MAPPING_ITEMS_BULK_APPLY_ACTION = {
  */
 export const EDIT_MAPPING_REQUEST_TERMS_ACTION = {
   type: EDIT_MAPPING_REQUEST_TERMS
+};
+
+/**
+ * @const {object} EDIT_MAPPING_TERMS_FETCHED_FOR_TAXONOMY_ACTION
+ * Dispatches this action when the network request is sent by the ui to get the terms,
+ * to prevent duplication we do this to send only one request for each taxonomy.
+ */
+export const EDIT_MAPPING_TERMS_FETCHED_FOR_TAXONOMY_ACTION = {
+  type: EDIT_MAPPING_TERMS_FETCHED_FOR_TAXONOMY
 };
 
 /**

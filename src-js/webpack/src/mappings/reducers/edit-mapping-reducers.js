@@ -29,7 +29,7 @@ import {
     PROPERTY_ITEMS_BULK_SELECT,
     BULK_ACTION_SELECTION_CHANGED,
     MAPPING_ID_CHANGED_FROM_API,
-    MAPPING_TERMS_CHANGED
+    MAPPING_TERMS_CHANGED, EDIT_MAPPING_TERMS_FETCHED_FOR_TAXONOMY
 } from '../actions/action-types'
 import { createReducer } from '@reduxjs/toolkit'
 import { DELETE_PROPERTY_PERMANENT, DUPLICATE_PROPERTY } from '../components/property-list-item-component'
@@ -96,14 +96,16 @@ export const RuleGroupReducer = createReducer(null, {
      [ MAPPING_TERMS_CHANGED ]: ( state, action ) => {
          const taxonomy = action.payload.taxonomy;
          const terms = action.payload.terms;
-
          // Check if there is no term items for the taxonomy, to prevent duplication.
          if ( 0 === state.ruleFieldTwoOptions.filter( e => e.taxonomy === taxonomy ).length ) {
              state.ruleFieldTwoOptions = state.ruleFieldTwoOptions.concat(terms);
-             // set fetched from network to true in taxonomy, we cache the terms.
-             const taxonomyIndex = state.ruleFieldOneOptions.findIndex(x => x.value === taxonomy);
-             state.ruleFieldOneOptions[taxonomyIndex].isTermsFetchedForTaxonomy = true
          }
+     },
+     [ EDIT_MAPPING_TERMS_FETCHED_FOR_TAXONOMY ] : ( state, action ) => {
+         const taxonomy = action.payload.taxonomy;
+         // set fetched from network to true in taxonomy, we cache the terms.
+         const taxonomyIndex = state.ruleFieldOneOptions.findIndex(x => x.value === taxonomy);
+         state.ruleFieldOneOptions[taxonomyIndex].isTermsFetchedForTaxonomy = true
      }
   });
 
