@@ -28,7 +28,7 @@ import BulkActionComponent from "../bulk-action-component";
 import {
   AddNewButton,
   MappingHeaderRow,
-  MappingNoActiveItemMessage,
+  MappingNoActiveItemMessage, MappingTable,
 } from "./mapping-list-subcomponents";
 
 // Set a reference to the WordLift's Mapping settings stored in the window instance.
@@ -39,7 +39,6 @@ class MappingComponent extends React.Component {
     super(props, context);
     this.categorySelectHandler = this.categorySelectHandler.bind(this);
     this.bulkActionOptionChangedHandler = this.bulkActionOptionChangedHandler.bind(this);
-    this.sortMappingItemsByTitle = this.sortMappingItemsByTitle.bind(this);
     this.getMappingItems = this.getMappingItems.bind(this);
     this.bulkActionSubmitHandler = this.bulkActionSubmitHandler.bind(this);
   }
@@ -55,13 +54,7 @@ class MappingComponent extends React.Component {
     };
     this.props.dispatch(action);
   }
-  /**
-   * Sorts the mapping items by title either ascending or descending
-   * depending on the current state.
-   */
-  sortMappingItemsByTitle() {
-    this.props.dispatch(MAPPING_LIST_SORT_TITLE_CHANGED_ACTION);
-  }
+
   /**
    * Fetch the mapping items from api.
    * @return void
@@ -100,28 +93,7 @@ class MappingComponent extends React.Component {
           choosenCategory={this.props.chosenCategory}
         />
         <br />
-        <table className="wp-list-table widefat striped wl-table">
-          <thead>
-            <MappingHeaderRow/>
-          </thead>
-          <tbody>
-            <MappingNoActiveItemMessage {...this.props} />
-            {this.props.mappingItems
-              .filter(el => el.mappingStatus === this.props.chosenCategory)
-              .map((item, index) => {
-                return (
-                  <MappingListItemComponent
-                    key={index}
-                    nonce={mappingSettings.wl_edit_mapping_nonce}
-                    mappingData={item}
-                  />
-                );
-              })}
-          </tbody>
-          <tfoot>
-            <MappingHeaderRow/>
-          </tfoot>
-        </table>
+        <MappingTable {...this.props} />
         <div className="wl-container wl-container-full">
           <BulkActionComponent
             choosenCategory={this.props.chosenCategory}

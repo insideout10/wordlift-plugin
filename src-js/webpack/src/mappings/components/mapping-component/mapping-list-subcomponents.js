@@ -2,7 +2,6 @@
  * External dependencies.
  */
 import React from "react";
-import {connect} from 'react-redux';
 
 /**
  * Internal dependencies.
@@ -10,7 +9,8 @@ import {connect} from 'react-redux';
 import {ACTIVE_CATEGORY} from "../category-component";
 import {MappingHeaderTitle} from "./mapping-header-title";
 import {MappingHeaderCheckbox} from "./mapping-header-checkbox";
-
+import MappingListItemComponent from "./mapping-list-item-component";
+const { wl_edit_mapping_nonce } = global["wlMappingsConfig"];
 /**
  * Contains subcomponents for the mapping list component.
  *
@@ -45,10 +45,10 @@ export const MappingHeaderRow = ( ) => {
     )
 }
 
-export const MappingNoActiveItemMessage = ( props ) => {
+export const MappingNoActiveItemMessage = ( {mappingItems, chosenCategory} ) => {
     return (
-        0 === props.mappingItems.filter(el => el.mappingStatus === ACTIVE_CATEGORY).length &&
-        props.chosenCategory === ACTIVE_CATEGORY && (
+        0 === mappingItems.filter(el => el.mappingStatus === ACTIVE_CATEGORY).length &&
+        chosenCategory === ACTIVE_CATEGORY && (
             <tr>
                 <td colSpan={3}>
                     <div className="wl-container text-center">
@@ -58,5 +58,33 @@ export const MappingNoActiveItemMessage = ( props ) => {
                 </td>
             </tr>
         )
+    )
+};
+
+
+export const MappingTable = ( props ) => {
+    return (
+        <table className="wp-list-table widefat striped wl-table">
+            <thead>
+            <MappingHeaderRow/>
+            </thead>
+            <tbody>
+            <MappingNoActiveItemMessage {...props} />
+            {props.mappingItems
+                .filter(el => el.mappingStatus === props.chosenCategory)
+                .map((item, index) => {
+                    return (
+                        <MappingListItemComponent
+                            key={index}
+                            nonce={wl_edit_mapping_nonce}
+                            mappingData={item}
+                        />
+                    );
+                })}
+            </tbody>
+            <tfoot>
+            <MappingHeaderRow/>
+            </tfoot>
+        </table>
     )
 };
