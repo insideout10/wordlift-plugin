@@ -9,6 +9,8 @@ import React from "react";
 import { dispatch, select } from "@wordpress/data";
 import { Panel, PanelBody, PanelRow, TextControl, Button } from "@wordpress/components";
 
+const wordlift = window["wordlift"];
+
 class SynonymsPanel extends React.Component {
   constructor(props) {
     super(props);
@@ -20,9 +22,12 @@ class SynonymsPanel extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({
-      altLabels: select("core/editor").getEditedPostAttribute("meta")["_wl_alt_label"]
-    });
+    let altLabels = select("core/editor").getEditedPostAttribute("meta")["_wl_alt_label"];
+    if (altLabels) {
+      this.setState({
+        altLabels
+      });
+    }
   }
 
   addSynomym() {
@@ -60,7 +65,7 @@ class SynonymsPanel extends React.Component {
   }
 
   render() {
-    return (
+    return wordlift.currentPostType === "entity" ? (
       <Panel>
         <PanelBody title="Synomyms" initialOpen={false}>
           {this.state.altLabels.map((item, index) => (
@@ -78,7 +83,7 @@ class SynonymsPanel extends React.Component {
           </PanelRow>
         </PanelBody>
       </Panel>
-    );
+    ) : null;
   }
 }
 
