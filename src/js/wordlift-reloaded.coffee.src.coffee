@@ -855,9 +855,8 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
       onSubmit: '&'
       onReset: '&'
       box: '='
-    templateUrl: ()->configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.25.0-dev'
-
-
+    templateUrl: ()->
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.25.0-dev'
     link: ($scope, $element, $attrs, $ctrl) ->
 
       $scope.configuration = configuration
@@ -1905,11 +1904,7 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
     <div
       id="wordlift-edit-post-wrapper"
       ng-controller="EditPostWidgetController"
-<<<<<<< HEAD
       ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.25.0-dev'">
-=======
-      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.24.2'">
->>>>>>> develop
     </div>
   """)
   .appendTo('#wordlift-edit-post-outer-wrapper')
