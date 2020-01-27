@@ -6,4 +6,5 @@ angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', [])
       entity: '='
     templateUrl: ()->
       configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.25.0-dev'
+
 ])

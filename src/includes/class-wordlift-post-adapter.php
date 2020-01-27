@@ -112,7 +112,7 @@ class Wordlift_Post_Adapter {
 		 * URLs.
 		 *
 		 * @param string $permalink_url The default permalink.
-		 * @param int    $post_id The post id.
+		 * @param int $post_id The post id.
 		 *
 		 * @since 3.23.0 we check whether the entity is bound to a term and, in that case, we link to the term.
 		 * @since 3.20.0
@@ -127,15 +127,19 @@ class Wordlift_Post_Adapter {
 			get_post_meta( $post_id, Wordlift_Schema_Service::FIELD_SAME_AS )
 		);
 
-		// Try to find one term matching the entity.
-		$terms = get_terms( array(
-			'number'                 => 1,
-			'hide_empty'             => false,
-			'update_term_meta_cache' => false,
-			'meta_key'               => '_wl_entity_id',
-			'meta_value'             => $uris,
-			'meta_compare'           => 'IN',
-		) );
+		// Only try to link a term if `WL_ENABLE_TERM_LINKING` is enabled.
+		$terms = array();
+		if ( defined( 'WL_ENABLE_TERM_LINKING' ) && WL_ENABLE_TERM_LINKING ) {
+			// Try to find one term matching the entity.
+			$terms = get_terms( array(
+				'number'                 => 1,
+				'hide_empty'             => false,
+				'update_term_meta_cache' => false,
+				'meta_key'               => '_wl_entity_id',
+				'meta_value'             => $uris,
+				'meta_compare'           => 'IN',
+			) );
+		}
 
 		// If found use the term link, otherwise the permalink.
 		if ( 1 === count( $terms ) ) {
@@ -151,9 +155,9 @@ class Wordlift_Post_Adapter {
 		/**
 		 * Apply the `wl_production_permalink` filter.
 		 *
-		 * @param string  $permalink The permalink.
-		 * @param int     $post_id The post id.
-		 * @param int     $type The permalink type: 0 = entity permalink, 1 = term link.
+		 * @param string $permalink The permalink.
+		 * @param int $post_id The post id.
+		 * @param int $type The permalink type: 0 = entity permalink, 1 = term link.
 		 * @param WP_Term $term The term if type is term link, otherwise null.
 		 *
 		 * @since 3.23.0 add the permalink type and term parameters.

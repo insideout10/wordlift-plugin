@@ -1,25 +1,18 @@
 <?php
 /**
- * Wordlift_Autocomplete_Service class.
+ * This file provides the Linked Data autocomplete service.
  *
- * The {@link Wordlift_Autocomplete_Service} class handle and process all autocomplete requests.
- *
- * @link       https://wordlift.io
- *
- * @package    Wordlift
- * @since      3.15.0
+ * @author David Riccitelli <david@wordlift.io>
+ * @since 3.24.2
+ * @package Wordlift\Autocomplete
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+namespace Wordlift\Autocomplete;
 
-/**
- * Process WordLift's autocomplete requests.
- *
- * @since 3.15.0
- */
-class Wordlift_Autocomplete_Service {
+use Wordlift_Log_Service;
+
+class Linked_Data_Autocomplete_Service implements Autocomplete_Service {
+
 	/**
 	 * The {@link Wordlift_Configuration_Service} instance.
 	 *
@@ -41,9 +34,10 @@ class Wordlift_Autocomplete_Service {
 	/**
 	 * The {@link Class_Wordlift_Autocomplete_Service} instance.
 	 *
+	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
+	 *
 	 * @since 3.15.0
 	 *
-	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
 	 */
 	public function __construct( $configuration_service ) {
 		$this->configuration_service = $configuration_service;
@@ -53,36 +47,53 @@ class Wordlift_Autocomplete_Service {
 	/**
 	 * Make request to external API and return the response.
 	 *
-	 * @since 3.15.0
-	 *
-	 * @param string       $query The search string.
-	 * @param array|string $exclude The exclude parameter string.
-	 * @param string       $scope The search scope: "local" will search only in the local dataset; "cloud" will search also
+	 * @param string $query The search string.
+	 * @param string $scope The search scope: "local" will search only in the local dataset; "cloud" will search also
 	 *                      in Wikipedia. By default is "cloud".
+	 * @param array|string $exclude The exclude parameter string.
 	 *
 	 * @return array $response The API response.
+	 * @since 3.15.0
+	 *
 	 */
-	public function make_request( $query, $exclude = '', $scope = 'cloud' ) {
+	public function query( $query, $scope = 'cloud', $exclude = '' ) {
 		$url = $this->build_request_url( $query, $exclude, $scope );
 
-		// Make request.
-		$response = wp_remote_get( $url );
-
 		// Return the response.
-		return $response;
+		$response = wp_remote_get( $url, array(
+			'timeout' => 30
+		) );
+
+		// If the response is valid, then send the suggestions.
+		if ( ! is_wp_error( $response ) && 200 === (int) $response['response']['code'] ) {
+			// Echo the response.
+			return json_decode( wp_remote_retrieve_body( $response ), true );
+		} else {
+			// Default error message.
+			$error_message = 'Something went wrong.';
+
+			// Get the real error message if there is WP_Error.
+			if ( is_wp_error( $response ) ) {
+				$error_message = $response->get_error_message();
+			}
+
+			$this->log->error( $error_message );
+
+			return array();
+		}
 	}
 
 	/**
 	 * Build the autocomplete url.
 	 *
-	 * @since 3.15.0
-	 *
-	 * @param string       $query The search string.
+	 * @param string $query The search string.
 	 * @param array|string $exclude The exclude parameter.
-	 * @param string       $scope The search scope: "local" will search only in the local dataset; "cloud" will search also
+	 * @param string $scope The search scope: "local" will search only in the local dataset; "cloud" will search also
 	 *                      in Wikipedia. By default is "cloud".
 	 *
 	 * @return string Built url.
+	 * @since 3.15.0
+	 *
 	 */
 	private function build_request_url( $query, $exclude, $scope ) {
 		$args = array(
@@ -90,7 +101,7 @@ class Wordlift_Autocomplete_Service {
 			'language' => $this->configuration_service->get_language_code(),
 			'query'    => $query,
 			'scope'    => $scope,
-			'limit'    => 100,
+			'limit'    => 10,
 		);
 
 		// Add args to URL.
@@ -109,4 +120,5 @@ class Wordlift_Autocomplete_Service {
 		// return the built url.
 		return $request_url;
 	}
+
 }

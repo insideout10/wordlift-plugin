@@ -8,7 +8,6 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
       box: '='
     templateUrl: ()->
       configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.25.0-dev'
-
     link: ($scope, $element, $attrs, $ctrl) ->
 
       $scope.configuration = configuration

@@ -855,8 +855,8 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
       onSubmit: '&'
       onReset: '&'
       box: '='
-    templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.25.0-dev'
+    templateUrl: ()->configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.25.0-dev'
+
 
     link: ($scope, $element, $attrs, $ctrl) ->
 
@@ -948,6 +948,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', [])
       entity: '='
     templateUrl: ()->
       configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.25.0-dev'
+
 ])
 
 angular.module('wordlift.editpost.widget.services.EditorAdapter', [
@@ -1025,8 +1026,8 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 ])
 # Manage redlink analysis responses
 # @since 1.0.0
-  .service('AnalysisService', ['AnnotationParser', 'EditorAdapter', 'configuration', '$log', '$http', '$rootScope',
-  (AnnotationParser, EditorAdapter, configuration, $log, $http, $rootScope)->
+  .service('AnalysisService', ['AnnotationParser', 'EditorAdapter', 'configuration', '$log', '$http', '$rootScope', '$q'
+  (AnnotationParser, EditorAdapter, configuration, $log, $http, $rootScope, $q)->
 
 # Creates a unique ID of the specified length (default 8).
     uniqueId = (length = 8) ->
@@ -1118,7 +1119,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 
     service.parse = (data) ->
 
-      $log.debug 'Parsing data...'
+      $log.debug 'Parsing data...', data
 
 # Add local entities
 # Add id to entity obj
@@ -1217,7 +1218,9 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 #            if em.entityId? and em.entityId is id
 #              local_confidence = em.confidence
 #          entity.confidence = entity.confidence * local_confidence
-#
+
+      $log.debug 'Parsed data: ', data
+
       data
 
     service.getSuggestedSameAs = (content)->
@@ -1239,24 +1242,27 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
       $rootScope.$broadcast "sameAsRetrieved", suggestions
 
     service._innerPerform = (content, annotations = [])->
-      args =
-        method: 'post'
-        url: ajaxurl + '?action=wordlift_analyze'
 
       # Set the data as two parameters, content and annotations.
-      args.headers = {'Content-Type': 'application/json'}
-      args.data = {content: content, annotations: annotations, contentType: 'text/html', version: Traslator.version}
+      data = { content: content, annotations: annotations, contentType: 'text/html', version: Traslator.version }
 
       if (wlSettings?)
-        if (wlSettings.language?) then args.data.contentLanguage = wlSettings.language
+        if (wlSettings.language?) then data.contentLanguage = wlSettings.language
         # We set the current entity URI as exclude from the analysis results.
         #
         # See https://github.com/insideout10/wordlift-plugin/issues/345
-        if (wlSettings.itemId?) then args.data.exclude = [wlSettings.itemId]
+        if (wlSettings.itemId?) then data.exclude = [wlSettings.itemId]
         # Set the scope according to the user capability.
-        if @canCreateEntities then args.data.scope = 'all' else args.data.scope = 'local'
+        if @canCreateEntities then data.scope = 'all' else data.scope = 'local'
 
-      return $http(args)
+      return $q( (resolve, reject) ->
+        wp.ajax.post( 'wl_analyze', {
+          _wpnonce: wlSettings['analysis']['_wpnonce'],
+          data: JSON.stringify( data )
+        })
+          .done( ( response ) -> resolve( response ) )
+          .fail( ( response ) -> reject( response ) )
+      )
 
     service._updateStatus = (status)->
       service._isRunning = status
@@ -1279,21 +1285,21 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
       promise = @._innerPerform content, {}
       # If successful, broadcast an *analysisPerformed* event.
       promise.then (response) ->
+        data = response
 
-        # Catch wp_json_send_error responses.
-        if response.data.success? and !response.data.success
-          # Yes `data.data`, the first one to get the body of the response, the
-          # second for the body internal structure.
-          $rootScope.$broadcast "analysisFailed", response.data.data.message
-          return
+#        # Catch wp_json_send_error responses.
+#        if response.data.success? and !response.data.success
+#          # Yes `data.data`, the first one to get the body of the response, the
+#          # second for the body internal structure.
+#          $rootScope.$broadcast "analysisFailed", response.data.data.message
+#          return
 
         # Store current analysis obj
-        service._currentAnalysis = response.data
+        service._currentAnalysis = data
 
-        result = service.parse(response.data)
+        result = service.parse(data)
         $rootScope.$broadcast "analysisPerformed", result
         wp.wordlift.trigger 'analysis.result', result
-
 
       # On failure, broadcast an *analysisFailed* event.
       promise.catch (response) ->
@@ -1642,6 +1648,10 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
             $log.warn "Annotation #{annotation.text} [#{annotation.start}:#{annotation.end}] with id #{annotation.id} has no entity matches!"
             continue
 
+          # Do not insert an annotation if it already exists in editor's DOM.
+          if ed.dom.get( annotation.id )?
+            continue
+
           element = "<span id=\"#{annotation.id}\" class=\"textannotation"
 
           # Add the `wl-no-link` class if it was present in the original annotation.
@@ -1677,8 +1687,6 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
         # See https://github.com/tinymce/tinymce/blob/master/js/tinymce/classes/Formatter.js#L2030
         # html = traslator.getHtml()
         html = html.replace(/<\/span>/gim, "</span>#{INVISIBLE_CHAR}")
-
-        console.debug { annotations, html }
 
         $rootScope.$broadcast "analysisEmbedded"
         # Update the editor Html code.
@@ -1897,7 +1905,11 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
     <div
       id="wordlift-edit-post-wrapper"
       ng-controller="EditPostWidgetController"
+<<<<<<< HEAD
       ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.25.0-dev'">
+=======
+      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.24.2'">
+>>>>>>> develop
     </div>
   """)
   .appendTo('#wordlift-edit-post-outer-wrapper')

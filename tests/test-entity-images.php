@@ -100,6 +100,9 @@ class EntityImagesTest extends Wordlift_Unit_Test_Case {
 		}
 	}
 
+	/**
+	 * @group redlink
+	 */
 	function test_entity_images_metadata_publishing() {
 
 		// We need to push entities to the Linked Data store, we'll turn this off.

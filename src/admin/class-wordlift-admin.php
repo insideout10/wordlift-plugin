@@ -121,8 +121,14 @@ class Wordlift_Admin {
 			// Require the PHP files for the next code fragment.
 			self::require_files();
 
+			/*
+			 * @since 3.24.2 This function isn't called anymore because it was causing the Block Category to
+			 * multiply in Block Editor.
+			 *
+			 * @see https://github.com/insideout10/wordlift-plugin/issues/1004
+			 */
 			// Add Wordlift custom block category.
-			self::add_block_category();
+			// self::add_block_category();
 
 			new Wordlift_Dashboard_Latest_News();
 
@@ -292,7 +298,7 @@ class Wordlift_Admin {
 				'Please wait while we look for entities in the linked data cloud...' => _x( 'Please wait while we look for entities in the linked data cloud...', 'Autocomplete Select', 'wordlift' ),
 				'Add keywords to track'                                              => __( 'Add Keywords to track', 'wordlift' ),
 			),
-			'wl_autocomplete_nonce'      => wp_create_nonce( 'wordlift_autocomplete' ),
+			'wl_autocomplete_nonce'      => wp_create_nonce( 'wl_autocomplete' ),
 			'autocomplete_scope'         => $autocomplete_scope,
 			/**
 			 * Allow 3rd parties to define the default editor id. This turns useful if 3rd parties load
@@ -314,6 +320,8 @@ class Wordlift_Admin {
 			 * @since 3.20.0
 			 */
 			'search_keywords_admin_page' => admin_url( 'admin.php?page=wl_configuration_admin_menu&tab=search-keywords' ),
+
+			'analysis' => array( '_wpnonce' => wp_create_nonce( 'wl_analyze' ), )
 		);
 
 		// Set post-related values if there's a current post.
@@ -364,20 +372,24 @@ class Wordlift_Admin {
 	 * Add Wordlift custom block category.
 	 *
 	 * @since 3.21.0
+	 * @since 3.24.2 this function isn't called anymore as it was causing the WordLift block category to multiply
+	 *   in Block Editor, https://github.com/insideout10/wordlift-plugin/issues/1004
 	 */
-	private static function add_block_category() {
-		add_filter( 'block_categories', function ( $categories, $post ) {
-			return array_merge(
-				$categories,
-				array(
-					array(
-						'slug'  => 'wordlift',
-						'title' => 'WordLift Blocks',
-					),
-				)
-			);
-		}, 10, 2 );
-	}
+
+//	private static function add_block_category() {
+//		add_filter( 'block_categories', function ( $categories, $post ) {
+//			return array_merge(
+//				$categories,
+//				array(
+//					array(
+//						'slug'  => 'wordlift',
+//						'title' => 'WordLift',
+//						'icon'  => null,
+//					),
+//				)
+//			);
+//		}, 10, 2 );
+//	}
 
 	public static function is_gutenberg() {
 		if ( function_exists( 'is_gutenberg_page' ) &&
