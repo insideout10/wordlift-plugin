@@ -20,8 +20,8 @@ function getMappingItemByMappingId( mappingId ) {
     }).then(response => response.json().then(data => data ))
 }
 
-function saveMappingItem() {
-    const postObject = EditComponentMapping.mapStoreKeysToAPI(this.props.stateObject);
+function saveMappingItem( mappingData ) {
+    const postObject = EditComponentMapping.mapStoreKeysToAPI( mappingData );
     return fetch(rest_url, {
         method: "POST",
         headers: {

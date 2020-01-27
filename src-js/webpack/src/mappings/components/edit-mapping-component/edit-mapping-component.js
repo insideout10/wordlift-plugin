@@ -33,6 +33,7 @@ import {
   RuleGroupWrapper,
   EditComponentTitleArea
 } from "./edit-sub-components";
+import {EditMappingSaveButton} from "./edit-mapping-save-button";
 
 // Set a reference to the WordLift's Edit Mapping settings stored in the window instance.
 const editMappingSettings = window["wl_edit_mappings_config"] || {};
@@ -187,7 +188,7 @@ class EditMappingComponent extends React.Component {
             bulkActionSubmitHandler={this.bulkActionSubmitHandler}
             bulkActionOptionChangedHandler={this.bulkActionOptionChangedHandler}
           />
-          <EditComponentSaveButton title={this.props.title} saveMappingItemHandler={this.saveMappingItem} />
+          <EditMappingSaveButton/>
         </div>
       </React.Fragment>
     );
