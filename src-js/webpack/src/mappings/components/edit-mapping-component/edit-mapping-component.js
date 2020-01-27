@@ -40,12 +40,9 @@ const editMappingSettings = window["wl_edit_mappings_config"] || {};
 class EditMappingComponent extends React.Component {
   constructor(props) {
     super(props);
-
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.bulkActionSubmitHandler = this.bulkActionSubmitHandler.bind(this);
     this.bulkActionOptionChangedHandler = this.bulkActionOptionChangedHandler.bind(this);
-    this.setNewMappingId = this.setNewMappingId.bind(this);
-    this.saveMappingItem = this.saveMappingItem.bind(this);
   }
   /**
    * When the title is changed, this method saves it in the redux store.
@@ -115,48 +112,6 @@ class EditMappingComponent extends React.Component {
     );
   }
 
-  /**
-   * On Add new mapping item, a new mapping item is created,
-   * upon saving we need to redirect it to the edit page if there
-   * is no mapping id in the url by getting it from the saved
-   * server response.
-   * @param {Number} mapping_id The primary key of the mapping table
-   * @return void
-   */
-  setNewMappingId(mapping_id) {
-    const action = MAPPING_ID_CHANGED_FROM_API_ACTION;
-    action.payload = {
-      mappingId: parseInt(mapping_id)
-    };
-    this.props.dispatch(action);
-  }
-
-  /**
-   * Save the mapping item to the api,
-   * Apply some filters, build post object for saving.
-   */
-  saveMappingItem() {
-    const postObject = EditComponentMapping.mapStoreKeysToAPI(this.props.stateObject);
-    fetch(editMappingSettings.rest_url, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        "X-WP-Nonce": editMappingSettings.wl_edit_mapping_rest_nonce
-      },
-      body: JSON.stringify(postObject)
-    }).then(response =>
-      response.json().then(data => {
-        const notification_changed_action = NOTIFICATION_CHANGED_ACTION;
-        notification_changed_action.payload = {
-          message: data.message,
-          type: data.status
-        };
-        this.props.dispatch(notification_changed_action);
-        this.setNewMappingId(data.mapping_id);
-        window !== undefined ? window.scrollTo(0, 0) : undefined;
-      })
-    );
-  }
   render() {
     return (
       <React.Fragment>
