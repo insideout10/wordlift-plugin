@@ -8,7 +8,7 @@ import {connect} from 'react-redux';
  * Internal dependencies.
  */
 import {ACTIVE_CATEGORY} from "../category-component";
-import {MAPPING_LIST_BULK_SELECT_ACTION} from "../../actions/actions";
+import {MAPPING_LIST_BULK_SELECT_ACTION, MAPPING_LIST_SORT_TITLE_CHANGED_ACTION} from "../../actions/actions";
 
 /**
  * Contains subcomponents for the mapping list component.
@@ -57,34 +57,44 @@ const MappingTableCheckBox = connect( (state) => ({
  * @param props Object passed from { @link MappingComponent }
  * @returns MappingTableTitleSort Instance
  */
-export const MappingTableTitleSort = ( props ) => {
-    return (
-        <th>
-            <a
-                className="row-title wl-mappings-link"
-                onClick={() => {
-                    props.sortMappingItemsByTitleHandler()
-                }}
-            >
-                Title
-                <span className={"dashicons " + props.titleIconClass} > </span>
-            </a>
-        </th>
-    )
-};
+class _MappingTableTitleSort  extends React.Component {
+    constructor(props) {
+        super(props);
+        this.sortMappingItemsByTitle = this.sortMappingItemsByTitle.bind(this)
+    }
+    sortMappingItemsByTitle() {
+        this.props.dispatch( MAPPING_LIST_SORT_TITLE_CHANGED_ACTION )
+    }
+    render() {
+        return (
+            <th>
+                <a
+                    className="row-title wl-mappings-link"
+                    onClick={() => {
+                        this.sortMappingItemsByTitle()
+                    }}
+                >
+                    Title
+                    <span className={"dashicons " + this.props.titleIcon}> </span>
+                </a>
+            </th>
+        )
+    }
+}
+const MappingTableTitleSort = connect( (state) => ({
+    titleIcon: state.titleIcon
+}))(_MappingTableTitleSort);
 
 /**
  * Show the mapping header row in the mapping list table, reused in the table footer.
  * @param props Properties passed from {@link MappingComponent }
  * @returns MappingHeaderRow instance.
  */
-export const MappingHeaderRow = ( props ) => {
+export const MappingHeaderRow = ( ) => {
     return (
         <tr>
             <MappingTableCheckBox/>
-            <MappingTableTitleSort
-                { ...props }
-            />
+            <MappingTableTitleSort/>
         </tr>
     )
 }

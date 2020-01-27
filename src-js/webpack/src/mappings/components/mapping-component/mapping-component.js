@@ -17,16 +17,10 @@ import MappingListItemComponent from "./mapping-list-item-component";
 import MappingComponentHelper from "./mapping-component-helper";
 import {
   BULK_ACTION_SELECTION_CHANGED_ACTION,
-  MAPPING_ITEM_CATEGORY_CHANGED_ACTION,
-  MAPPING_ITEM_SELECTED_ACTION,
   MAPPING_ITEMS_BULK_APPLY_ACTION,
-  MAPPING_LIST_BULK_SELECT_ACTION,
-  MAPPING_LIST_CHANGED_ACTION,
   MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION,
   MAPPING_LIST_SORT_TITLE_CHANGED_ACTION,
   MAPPINGS_REQUEST_ACTION,
-  MAPPINGS_REQUEST_CLONE_MAPPINGS_ACTION,
-  MAPPINGS_REQUEST_DELETE_OR_UPDATE_ACTION
 } from "../../actions/actions";
 import { connect } from "react-redux";
 import CategoryComponent, { ACTIVE_CATEGORY } from "../category-component";
@@ -35,10 +29,7 @@ import {
   AddNewButton,
   MappingHeaderRow,
   MappingNoActiveItemMessage,
-  MappingTableCheckBox,
-  MappingTableTitleSort
 } from "./mapping-list-subcomponents";
-import {MAPPINGS_REQUEST_DELETE_OR_UPDATE} from "../../actions/action-types";
 
 // Set a reference to the WordLift's Mapping settings stored in the window instance.
 const mappingSettings = window["wlMappingsConfig"] || {};
@@ -51,7 +42,6 @@ class MappingComponent extends React.Component {
     this.sortMappingItemsByTitle = this.sortMappingItemsByTitle.bind(this);
     this.getMappingItems = this.getMappingItems.bind(this);
     this.bulkActionSubmitHandler = this.bulkActionSubmitHandler.bind(this);
-
   }
 
   componentDidMount() {
@@ -112,11 +102,7 @@ class MappingComponent extends React.Component {
         <br />
         <table className="wp-list-table widefat striped wl-table">
           <thead>
-            <MappingHeaderRow
-              headerCheckBoxSelected={this.props.headerCheckBoxSelected}
-              selectAllMappingsHandler={this.selectAllMappingItems}
-              sortMappingItemsByTitleHandler={this.sortMappingItemsByTitle}
-            />
+            <MappingHeaderRow/>
           </thead>
           <tbody>
             <MappingNoActiveItemMessage {...this.props} />
@@ -126,7 +112,6 @@ class MappingComponent extends React.Component {
                 return (
                   <MappingListItemComponent
                     key={index}
-                    mappingIndex={index}
                     nonce={mappingSettings.wl_edit_mapping_nonce}
                     mappingData={item}
                   />
@@ -134,11 +119,7 @@ class MappingComponent extends React.Component {
               })}
           </tbody>
           <tfoot>
-            <MappingHeaderRow
-              headerCheckBoxSelected={this.props.headerCheckBoxSelected}
-              selectAllMappingsHandler={this.selectAllMappingItems}
-              sortMappingItemsByTitleHandler={this.sortMappingItemsByTitle}
-            />
+            <MappingHeaderRow/>
           </tfoot>
         </table>
         <div className="wl-container wl-container-full">
