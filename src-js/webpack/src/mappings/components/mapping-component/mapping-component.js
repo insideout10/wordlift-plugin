@@ -46,17 +46,14 @@ const mappingSettings = window["wlMappingsConfig"] || {};
 class MappingComponent extends React.Component {
   constructor(props, context, updateMappingItems) {
     super(props, context);
-
     this.categorySelectHandler = this.categorySelectHandler.bind(this);
     this.bulkActionOptionChangedHandler = this.bulkActionOptionChangedHandler.bind(this);
-    this.selectAllMappingItems = this.selectAllMappingItems.bind(this);
     this.sortMappingItemsByTitle = this.sortMappingItemsByTitle.bind(this);
     this.switchCategory = this.switchCategory.bind(this);
     this.updateMappingItems = this.updateMappingItems.bind(this);
     this.getMappingItems = this.getMappingItems.bind(this);
     this.bulkActionSubmitHandler = this.bulkActionSubmitHandler.bind(this);
     this.duplicateMappingItems = this.duplicateMappingItems.bind(this);
-    this.selectMappingItemHandler = this.selectMappingItemHandler.bind(this);
   }
 
   componentDidMount() {
