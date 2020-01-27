@@ -3,13 +3,17 @@
  * edit component.js
  *
  * @author Naveen Muthusamy <naveen@wordlift.io>
- * @since 3.24.0
+ * @since 3.25.0
  */
 
 /**
  * External dependencies
  */
 import React from "react";
+
+/**
+ * Internal dependencies.
+ */
 import RuleGroupListComponent from "./rule-group-list-component";
 
 
@@ -35,7 +39,7 @@ export const EditComponentTitleArea = ({ mappingId, addMappingText, editMappingT
 
 export const RuleGroupWrapper = () => {
   return (
-    <table className="wp-list-table widefat striped wl-table wl-container-full">
+    <table className="wp-list-table widefat striped wl-table wl-container-full wl-rule-group-wrapper">
       <thead>
         <tr>
           <td colSpan={2}>

@@ -3,7 +3,7 @@
  * add/remove new rule groups
  *
  * @author Naveen Muthusamy <naveen@wordlift.io>
- * @since 3.24.0
+ * @since 3.25.0
  */
 
 /**

@@ -2,7 +2,7 @@
  * PropertyListItemComponent : used to display a single
  * property item with the title property help text
  * @author Naveen Muthusamy <naveen@wordlift.io>
- * @since 3.24.0
+ * @since 3.25.0
  */
 
 /**

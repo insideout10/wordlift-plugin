@@ -132,3 +132,6 @@ th input[type="checkbox"] {
   color: #888;
 }
 
+.wl-rule-group-wrapper {
+    margin-bottom: 30px;
+}

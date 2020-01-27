@@ -23,9 +23,11 @@ class _EditMappingPropertyBulkAction extends  React.Component {
         this.bulkActionSubmitHandler = this.bulkActionSubmitHandler.bind(this);
         this.bulkActionOptionChangedHandler = this.bulkActionOptionChangedHandler.bind(this);
     }
+
     bulkActionSubmitHandler() {
         this.props.dispatch(PROPERTY_ITEMS_BULK_ACTION);
     }
+
     bulkActionOptionChangedHandler( event ) {
         const selectedBulkOption = event.target.value;
         BULK_ACTION_SELECTION_CHANGED_ACTION.payload = {
@@ -33,6 +35,7 @@ class _EditMappingPropertyBulkAction extends  React.Component {
         };
         this.props.dispatch(BULK_ACTION_SELECTION_CHANGED_ACTION);
     }
+
     render() {
         return (
             <BulkActionComponent

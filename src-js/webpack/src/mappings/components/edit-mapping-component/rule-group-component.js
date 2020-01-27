@@ -2,7 +2,7 @@
  * RuleGroupComponent : it displays the list of rules, let the user
  * add new rules
  * @author Naveen Muthusamy <naveen@wordlift.io>
- * @since 3.24.0
+ * @since 3.25.0
  */
 
 /**

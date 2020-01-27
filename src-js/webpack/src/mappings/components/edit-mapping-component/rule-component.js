@@ -1,7 +1,7 @@
 /**
  * RuleComponent : Displays a single rule
  * @author Naveen Muthusamy <naveen@wordlift.io>
- * @since 3.24.0
+ * @since 3.25.0
  */
 /**
  * External dependencies

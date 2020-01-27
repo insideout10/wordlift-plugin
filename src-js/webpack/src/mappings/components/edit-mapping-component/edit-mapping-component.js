@@ -2,7 +2,7 @@
  * EditMappingComponent : it displays the edit section for the mapping item
  *
  * @author Naveen Muthusamy <naveen@wordlift.io>
- * @since 3.24.0
+ * @since 3.25.0
  */
 
 /**
@@ -16,15 +16,12 @@ import { connect } from "react-redux";
  */
 import PropertyListComponent from "./property-list-component";
 import {
-    TITLE_CHANGED_ACTION,
     EDIT_MAPPING_REQUEST_MAPPING_ITEM_ACTION
 } from "../../actions/actions";
-import EditComponentMapping from "../../mappings/edit-component-mapping";
-import BulkActionComponent from "../bulk-action-component";
+
 import {
   EditComponentNotificationArea,
   RuleGroupWrapper,
-  EditComponentTitleArea
 } from "./edit-sub-components";
 import {EditMappingSaveButton} from "./edit-mapping-save-button";
 import {EditMappingPropertyBulkAction} from "./edit-mapping-property-bulk-action";
@@ -36,18 +33,6 @@ const editMappingSettings = window["wl_edit_mappings_config"] || {};
 class EditMappingComponent extends React.Component {
   constructor(props) {
     super(props);
-    this.handleTitleChange = this.handleTitleChange.bind(this);
-  }
-  /**
-   * When the title is changed, this method saves it in the redux store.
-   * @param {Object} event The event which is fired when mapping title changes
-   */
-  handleTitleChange(event) {
-    const action = TITLE_CHANGED_ACTION;
-    action.payload = {
-      value: event.target.value
-    };
-    this.props.dispatch(action);
   }
   componentDidMount() {
     if (editMappingSettings.wl_edit_mapping_id !== undefined) {
@@ -73,8 +58,6 @@ class EditMappingComponent extends React.Component {
         <EditComponentNotificationArea notificationData={this.props.notificationData} />
         <EditMappingTitleSection />
         <RuleGroupWrapper />
-        <br />
-        <br />
         <PropertyListComponent />
         <br />
         <div className="wl-container wl-container-full">
@@ -88,10 +71,7 @@ class EditMappingComponent extends React.Component {
 
 const mapStateToProps = function(state) {
   return {
-    title: state.TitleSectionData.title,
     notificationData: state.NotificationData,
-    stateObject: state,
-    choosenCategory: state.PropertyListData.choosenPropertyCategory
   };
 };
 

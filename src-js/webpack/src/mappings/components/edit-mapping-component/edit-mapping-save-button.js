@@ -14,6 +14,7 @@ import {connect} from "react-redux";
  * Internal dependencies.
  */
 import {EDIT_MAPPING_SAVE_MAPPING_ITEM_ACTION} from "../../actions/actions";
+
 class _EditMappingSaveButton extends React.Component {
     constructor(props) {
         super(props);

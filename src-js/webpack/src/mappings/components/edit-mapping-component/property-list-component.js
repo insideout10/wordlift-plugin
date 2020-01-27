@@ -2,7 +2,7 @@
  * PropertyListComponent : used to display list of properties present
  * in a mapping item, the user can edit, add, delete properties
  * @author Naveen Muthusamy <naveen@wordlift.io>
- * @since 3.24.0
+ * @since 3.25.0
  */
 
 /**

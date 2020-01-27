@@ -2,7 +2,7 @@
  * PropertyComponent : used to display a individual property, has 2 states
  * allow the user to edit it and add a new property
  * @author Naveen Muthusamy <naveen@wordlift.io>
- * @since 3.24.0
+ * @since 3.25.0
  */
 
 /**
