@@ -19,21 +19,11 @@ import { CHANGE_RULE_FIELD_VALUE_ACTION } from "../actions/actions";
 class SelectComponent extends React.Component {
   constructor(props) {
     super(props);
-
-    this.renderOptionsDefault = this.renderOptionsDefault.bind(this);
     this.renderOptions = this.renderOptions.bind(this);
     this.renderOptionsForOptionGroup = this.renderOptionsForOptionGroup.bind(this);
   }
 
-  renderOptionsDefault() {
-    return this.props.options.map((item, index) => {
-      return (
-        <option key={index} value={item.value}>
-          {item.label}
-        </option>
-      );
-    });
-  }
+
   renderOptions(options) {
     return options.map((item, index) => {
       return (
@@ -53,13 +43,13 @@ class SelectComponent extends React.Component {
     if (this.props.inputDataIsOptionGroup) {
       return this.renderOptionsForOptionGroup();
     } else {
-      return this.renderOptionsDefault();
+      return this.renderOptions( this.props.options );
     }
   }
   render() {
     return (
       <React.Fragment>
-        <select defaultValue={this.props.value} className={this.props.className} onChange={this.props.onChange}>
+        <select value={this.props.value} className={this.props.className} onChange={this.props.onChange}>
           <option value="">Select one</option>
           {this.renderOptionsConditionally()}
         </select>
