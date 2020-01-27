@@ -109,7 +109,7 @@ class PropertyListComponent extends React.Component {
               <th className="wl-check-column">
                 <input
                   type="checkbox"
-                  defaultChecked={this.props.propertyHeaderCheckboxClicked}
+                  checked={this.props.propertyHeaderCheckboxClicked}
                   onClick={() => {
                     this.selectAllPropertyHandler();
                   }}
@@ -141,7 +141,7 @@ class PropertyListComponent extends React.Component {
                     <td className="wl-check-column">
                       <input
                         type="checkbox"
-                        defaultChecked={property.isSelectedByUser}
+                        checked={property.isSelectedByUser}
                         onClick={() => {
                           this.propertySelectedHandler(property.property_id);
                         }}

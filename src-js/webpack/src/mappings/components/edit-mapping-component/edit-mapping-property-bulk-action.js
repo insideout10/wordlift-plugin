@@ -20,8 +20,8 @@ import {BULK_ACTION_SELECTION_CHANGED_ACTION, PROPERTY_ITEMS_BULK_ACTION} from "
 class _EditMappingPropertyBulkAction extends  React.Component {
     constructor(props) {
         super(props);
-        this.bulkActionSubmitHandler = this.bulkActionSubmitHandler.bind(this)
-        this.bulkActionOptionChangedHandler = this.bulkActionOptionChangedHandler.bind(this)
+        this.bulkActionSubmitHandler = this.bulkActionSubmitHandler.bind(this);
+        this.bulkActionOptionChangedHandler = this.bulkActionOptionChangedHandler.bind(this);
     }
     bulkActionSubmitHandler() {
         this.props.dispatch(PROPERTY_ITEMS_BULK_ACTION);
