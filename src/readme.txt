@@ -142,6 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.24.3.2 (2020-01-27) =
+* Fix: Content-Type to discover local entities.
+
 = 3.24.3.1 (2020-01-27) =
 * Fix: Content-Type on analysis request.
 
