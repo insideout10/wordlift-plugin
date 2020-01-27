@@ -1,4 +1,12 @@
 /**
+ * Contains subcomponents for the mapping list component.
+ *
+ * @author Naveen Muthusamy <naveen@wordlift.io>
+ * @since 3.25.0
+ */
+
+
+/**
  * External dependencies.
  */
 import React from "react";
@@ -9,13 +17,6 @@ import React from "react";
 import {ACTIVE_CATEGORY} from "../category-component";
 import {MappingHeaderTitle} from "./mapping-header-title";
 import {MappingHeaderCheckbox} from "./mapping-header-checkbox";
-const { wl_edit_mapping_nonce } = global["wlMappingsConfig"];
-/**
- * Contains subcomponents for the mapping list component.
- *
- * @author Naveen Muthusamy <naveen@wordlift.io>
- * @since 3.24.0
- */
 
 export const AddNewButton  = () => {
     return (

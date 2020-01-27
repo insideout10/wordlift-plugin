@@ -2,7 +2,7 @@
  * MappingComponent : it displays the entire mapping screen
  *
  * @author Naveen Muthusamy <naveen@wordlift.io>
- * @since 3.24.0
+ * @since 3.25.0
  */
 
 /**
@@ -17,9 +17,7 @@ import {
   MAPPINGS_REQUEST_ACTION,
 } from "../../actions/actions";
 import { connect } from "react-redux";
-import {
-  AddNewButton,
-} from "./mapping-list-subcomponents";
+import {AddNewButton} from "./mapping-list-subcomponents";
 import {MappingTable} from "./mapping-table";
 import {MappingCategories} from "./mapping-categories";
 import {MappingBulkAction} from "./mapping-bulk-action";

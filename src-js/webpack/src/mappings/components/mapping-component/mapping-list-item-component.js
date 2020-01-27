@@ -2,7 +2,7 @@
  * MappingListItemComponent : it displays the list of mapping items
  *
  * @author Naveen Muthusamy <naveen@wordlift.io>
- * @since 3.24.0
+ * @since 3.25.0
  */
 
 /**
@@ -12,9 +12,7 @@ import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import {ACTIVE_CATEGORY, TRASH_CATEGORY} from "../category-component";
-import {
-    MAPPING_ITEM_SELECTED_ACTION,
-} from "../../actions/actions";
+import {MAPPING_ITEM_SELECTED_ACTION} from "../../actions/actions";
 import {MappingListItemActiveCategoryOptions} from "./mapping-list-item-active-category-options";
 import {MappingListItemTrashCategoryOptions} from "./mapping-list-item-trash-category-options";
 
