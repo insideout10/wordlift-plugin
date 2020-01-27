@@ -17,7 +17,7 @@ function wl_ajax_analyze_action() {
 
 	$data = filter_input( INPUT_POST, 'data' );
 
-	wp_send_json_success( wl_analyze_content( $data ) );
+	wp_send_json_success( wl_analyze_content( $data, 'application/json; ' . get_bloginfo( 'charset' ) ) );
 
 }
 
@@ -29,6 +29,8 @@ add_action( 'wp_ajax_wl_analyze', 'wl_ajax_analyze_action' );
  *
  * @param string $data The data structure containing information about the content to analyze as a string.
  *
+ * @param string $content_type The content type.
+ *
  * @return string Returns null on failure, or the WP_Error, or a WP_Response with the response.
  *
  * @uses  wl_configuration_get_analyzer_url() to get the API for the analysis.
@@ -37,14 +39,14 @@ add_action( 'wp_ajax_wl_analyze', 'wl_ajax_analyze_action' );
  * @since 3.24.2 We don't return an error anymore, but an empty analysis response. This is required to allow the editor
  *   to manage entities or to manually add them even when analysis isn't available.
  */
-function wl_analyze_content( $data ) {
+function wl_analyze_content( $data, $content_type ) {
 
-	// Set the content type to the request content type or to text/plain by default.
-	$content_type = isset( $_SERVER['CONTENT_TYPE'] ) ? $_SERVER['CONTENT_TYPE'] : 'text/plain';
+//	// Set the content type to the request content type or to text/plain by default.
+//	$content_type = isset( $_SERVER['CONTENT_TYPE'] ) ? $_SERVER['CONTENT_TYPE'] : 'text/plain';
 
 	add_filter( 'wl_api_service_api_url_path', 'wl_use_analysis_on_api_wordlift_io' );
 	$json = Wordlift_Api_Service::get_instance()
-	                            ->post_custom_content_type( 'analysis/single', $data, 'application/json; ' . get_bloginfo( 'charset' ) );
+	                            ->post_custom_content_type( 'analysis/single', $data, $content_type );
 	remove_filter( 'wl_api_service_api_url_path', 'wl_use_analysis_on_api_wordlift_io' );
 
 	// If it's an error log it.
