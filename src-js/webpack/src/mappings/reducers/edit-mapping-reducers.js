@@ -185,7 +185,6 @@ export const RuleGroupReducer = createReducer(null, {
      * and it is saved based on the fieldKey which identifies the field
      */
     [PROPERTY_DATA_CHANGED]: ( state, action )=> {
-        console.log( action )
         const {fieldKey, value, propertyId } = action.payload
         const propertyIndex = state.propertyList
         .map( el => el.property_id )
