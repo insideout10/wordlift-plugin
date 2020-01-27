@@ -33,6 +33,7 @@ import {
   EditComponentTitleArea
 } from "./edit-sub-components";
 import {EditMappingSaveButton} from "./edit-mapping-save-button";
+import {EditMappingPropertyBulkAction} from "./edit-mapping-property-bulk-action";
 
 // Set a reference to the WordLift's Edit Mapping settings stored in the window instance.
 const editMappingSettings = window["wl_edit_mappings_config"] || {};
@@ -41,8 +42,6 @@ class EditMappingComponent extends React.Component {
   constructor(props) {
     super(props);
     this.handleTitleChange = this.handleTitleChange.bind(this);
-    this.bulkActionSubmitHandler = this.bulkActionSubmitHandler.bind(this);
-    this.bulkActionOptionChangedHandler = this.bulkActionOptionChangedHandler.bind(this);
   }
   /**
    * When the title is changed, this method saves it in the redux store.
@@ -59,18 +58,6 @@ class EditMappingComponent extends React.Component {
     if (editMappingSettings.wl_edit_mapping_id !== undefined) {
       this.getMappingItemByMappingId();
     }
-  }
-  bulkActionSubmitHandler() {
-    this.props.dispatch(PROPERTY_ITEMS_BULK_ACTION);
-  }
-
-  bulkActionOptionChangedHandler(event) {
-    const selectedBulkOption = event.target.value;
-    const action = BULK_ACTION_SELECTION_CHANGED_ACTION;
-    action.payload = {
-      selectedBulkAction: selectedBulkOption
-    };
-    this.props.dispatch(action);
   }
 
   /**
@@ -110,11 +97,7 @@ class EditMappingComponent extends React.Component {
         <PropertyListComponent />
         <br />
         <div className="wl-container wl-container-full">
-          <BulkActionComponent
-            choosenCategory={this.props.choosenCategory}
-            bulkActionSubmitHandler={this.bulkActionSubmitHandler}
-            bulkActionOptionChangedHandler={this.bulkActionOptionChangedHandler}
-          />
+          <EditMappingPropertyBulkAction/>
           <EditMappingSaveButton/>
         </div>
       </React.Fragment>

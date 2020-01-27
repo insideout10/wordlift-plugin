@@ -1,5 +1,5 @@
 /**
- * MappingBulkAction : it displays the save button for the edit mapping screen.
+ * EditMappingSaveButton : it displays the save button for the edit mapping screen.
  *
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * @since 3.25.0
@@ -10,11 +10,10 @@
  */
 import React from "react";
 import {connect} from "react-redux";
-import {EDIT_MAPPING_SAVE_MAPPING_ITEM_ACTION} from "../../actions/actions";
 /**
  * Internal dependencies.
  */
-
+import {EDIT_MAPPING_SAVE_MAPPING_ITEM_ACTION} from "../../actions/actions";
 class _EditMappingSaveButton extends React.Component {
     constructor(props) {
         super(props);
@@ -39,5 +38,5 @@ class _EditMappingSaveButton extends React.Component {
 
 export const EditMappingSaveButton = connect( state => ({
     mappingData: state,
-    title: state.title,
+    title: state.TitleSectionData.title,
 }))(_EditMappingSaveButton)
