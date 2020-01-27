@@ -2,9 +2,8 @@
  * MappingCategories : it displays the categories for the mapping items.
  *
  * @author Naveen Muthusamy <naveen@wordlift.io>
- * @since 3.24.0
+ * @since 3.25.0
  */
-
 
 /**
  * External dependencies
@@ -39,13 +38,16 @@ class _MappingCategories extends React.Component {
     render()
     {
         return (
-            <CategoryComponent
-                source={this.props.mappingItems}
-                categoryKeyName="mappingStatus"
-                categories={["active", "trash"]}
-                categorySelectHandler={this.selectCategory}
-                choosenCategory={this.props.chosenCategory}
-            />
+            <React.Fragment>
+                <CategoryComponent
+                    source={this.props.mappingItems}
+                    categoryKeyName="mappingStatus"
+                    categories={["active", "trash"]}
+                    categorySelectHandler={this.selectCategory}
+                    choosenCategory={this.props.chosenCategory}
+                />
+                <br/>
+            </React.Fragment>
         )
     }
 }

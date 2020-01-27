@@ -10,6 +10,7 @@
  * External dependencies.
  */
 import React from "react";
+import { connect } from "react-redux"
 
 /**
  * Internal dependencies.
@@ -17,29 +18,38 @@ import React from "react";
 import {MappingHeaderRow, MappingNoActiveItemMessage} from "./mapping-list-subcomponents";
 import MappingListItemComponent from "./mapping-list-item-component";
 const {wl_edit_mapping_nonce} = global["wlMappingsConfig"];
-export const MappingTable = ( props ) => {
-    return (
-        <table className="wp-list-table widefat striped wl-table">
-            <thead>
-            <MappingHeaderRow/>
-            </thead>
-            <tbody>
-            <MappingNoActiveItemMessage {...props} />
-            {props.mappingItems
-                .filter(el => el.mappingStatus === props.chosenCategory)
-                .map((item, index) => {
-                    return (
-                        <MappingListItemComponent
-                            key={index}
-                            nonce={wl_edit_mapping_nonce}
-                            mappingData={item}
-                        />
-                    );
-                })}
-            </tbody>
-            <tfoot>
-            <MappingHeaderRow/>
-            </tfoot>
-        </table>
-    )
-};
+
+
+class _MappingTable extends React.Component{
+    render() {
+        return (
+            <table className="wp-list-table widefat striped wl-table">
+                <thead>
+                <MappingHeaderRow/>
+                </thead>
+                <tbody>
+                <MappingNoActiveItemMessage {...this.props} />
+                {this.props.mappingItems
+                    .filter(el => el.mappingStatus === this.props.chosenCategory)
+                    .map((item, index) => {
+                        return (
+                            <MappingListItemComponent
+                                key={index}
+                                nonce={wl_edit_mapping_nonce}
+                                mappingData={item}
+                            />
+                        );
+                    })}
+                </tbody>
+                <tfoot>
+                <MappingHeaderRow/>
+                </tfoot>
+            </table>
+        )
+    }
+
+}
+export const MappingTable = connect((state)=>({
+    mappingItems: state.mappingItems,
+    chosenCategory: state.chosenCategory,
+}))(_MappingTable);
