@@ -17,13 +17,7 @@ import { connect } from "react-redux";
 import PropertyListComponent from "./property-list-component";
 import {
     TITLE_CHANGED_ACTION,
-    PROPERTY_LIST_CHANGED_ACTION,
-    RULE_GROUP_LIST_CHANGED_ACTION,
-    MAPPING_HEADER_CHANGED_ACTION,
-    NOTIFICATION_CHANGED_ACTION,
-    PROPERTY_ITEMS_BULK_ACTION,
-    BULK_ACTION_SELECTION_CHANGED_ACTION,
-    MAPPING_ID_CHANGED_FROM_API_ACTION, EDIT_MAPPING_REQUEST_MAPPING_ITEM_ACTION
+    EDIT_MAPPING_REQUEST_MAPPING_ITEM_ACTION
 } from "../../actions/actions";
 import EditComponentMapping from "../../mappings/edit-component-mapping";
 import BulkActionComponent from "../bulk-action-component";
@@ -34,6 +28,7 @@ import {
 } from "./edit-sub-components";
 import {EditMappingSaveButton} from "./edit-mapping-save-button";
 import {EditMappingPropertyBulkAction} from "./edit-mapping-property-bulk-action";
+import {EditMappingTitleSection} from "./edit-mapping-title-section";
 
 // Set a reference to the WordLift's Edit Mapping settings stored in the window instance.
 const editMappingSettings = window["wl_edit_mappings_config"] || {};
@@ -76,21 +71,7 @@ class EditMappingComponent extends React.Component {
     return (
       <React.Fragment>
         <EditComponentNotificationArea notificationData={this.props.notificationData} />
-        <EditComponentTitleArea
-          wl_edit_mapping_id={editMappingSettings.wl_edit_mapping_id}
-          wl_add_mapping_text={editMappingSettings.wl_add_mapping_text}
-          wl_edit_mapping_text={editMappingSettings.wl_edit_mapping_text}
-        />
-        <input
-          type="text"
-          className="wl-form-control wl-input-class"
-          value={this.props.title}
-          placeholder="Title"
-          onChange={e => {
-            this.handleTitleChange(e);
-          }}
-        />
-        <br /> <br />
+        <EditMappingTitleSection />
         <RuleGroupWrapper />
         <br />
         <br />

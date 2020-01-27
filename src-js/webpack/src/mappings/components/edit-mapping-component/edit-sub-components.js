@@ -16,7 +16,7 @@ import RuleGroupListComponent from "./rule-group-list-component";
 export const EditComponentNotificationArea = ({ notificationData }) => {
   return (
     <React.Fragment>
-      {"" != notificationData.message && (
+      {"" !== notificationData.message && (
         <div className={"wl-notice-custom-margin notice notice-" + notificationData.type + " is-dismissble"}>
           <p>{notificationData.message}</p>
         </div>
@@ -25,10 +25,10 @@ export const EditComponentNotificationArea = ({ notificationData }) => {
   );
 };
 
-export const EditComponentTitleArea = ({ wl_edit_mapping_id, wl_add_mapping_text, wl_edit_mapping_text }) => {
+export const EditComponentTitleArea = ({ mappingId, addMappingText, editMappingText }) => {
   return (
     <h1 className="wp-heading-inline wl-mappings-heading-text">
-      {wl_edit_mapping_id === undefined ? wl_add_mapping_text : wl_edit_mapping_text}
+      {mappingId === undefined ? addMappingText : editMappingText}
     </h1>
   );
 };
