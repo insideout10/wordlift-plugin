@@ -1,5 +1,7 @@
 /**
- *
+ * This file provides the saga for the mapping list screen.
+ * @author Naveen Muthusamy <naveen@wordlift.io>
+ * @since 3.25.0
  */
 
 /**

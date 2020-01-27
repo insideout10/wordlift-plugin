@@ -17,55 +17,12 @@ import { Provider } from "react-redux";
  */
 import EditComponent from "./components/edit-component";
 import "./mappings.css";
-import { createStore, combineReducers } from "redux";
-import { RuleGroupReducer, PropertyReducer, TitleReducer, NotificationReducer } from "./reducers/edit-mapping-reducers";
-import { ACTIVE_CATEGORY } from "./components/category-component";
-import EditComponentMapping from "./mappings/edit-component-mapping";
+import editMappingStore from "./store/edit-mapping-store";
 
-// Set a reference to the WordLift's Edit Mapping settings stored in the window instance.
-const editMappingSettings = window["wl_edit_mappings_config"] || {};
-
-const INITIAL_STATE = {
-  NotificationData: {
-    message: "",
-    type: ""
-  },
-  TitleSectionData: {
-    title: ""
-  },
-  RuleGroupData: {
-    // Adding filter to determine whether to fetch terms from api or not.
-    ruleFieldOneOptions: EditComponentMapping.addNetworkStateToTaxonomyOptions(
-        editMappingSettings.wl_rule_field_one_options,
-        editMappingSettings.wl_rule_field_two_options
-    ),
-    ruleFieldTwoOptions: editMappingSettings.wl_rule_field_two_options,
-    ruleLogicFieldOptions: editMappingSettings.wl_logic_field_options,
-    ruleGroupList: []
-  },
-  PropertyListData: {
-    propertyHeaderCheckboxClicked: false,
-    choosenPropertyCategory: ACTIVE_CATEGORY,
-    choosenPropertyBulkAction: null,
-    fieldTypeHelpTextOptions: editMappingSettings.wl_field_type_options,
-    transformHelpTextOptions: editMappingSettings.wl_transform_function_options,
-    fieldNameOptions: editMappingSettings.wl_field_name_options,
-    propertyList: []
-  }
-};
-
-const reducers = combineReducers({
-  RuleGroupData: RuleGroupReducer,
-  PropertyListData: PropertyReducer,
-  TitleSectionData: TitleReducer,
-  NotificationData: NotificationReducer
-});
-
-const store = createStore(reducers, INITIAL_STATE);
 
 window.addEventListener("load", () => {
   ReactDOM.render(
-    <Provider store={store}>
+    <Provider store={editMappingStore}>
       <EditComponent />
     </Provider>,
     document.getElementById("wl-edit-mappings-container")
