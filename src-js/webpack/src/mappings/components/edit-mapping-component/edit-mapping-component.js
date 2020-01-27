@@ -29,7 +29,6 @@ import EditComponentMapping from "../../mappings/edit-component-mapping";
 import BulkActionComponent from "../bulk-action-component";
 import {
   EditComponentNotificationArea,
-  EditComponentSaveButton,
   RuleGroupWrapper,
   EditComponentTitleArea
 } from "./edit-sub-components";

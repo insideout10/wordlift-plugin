@@ -12,18 +12,6 @@
 import React from "react";
 import RuleGroupListComponent from "./rule-group-list-component";
 
-/**
- * EditComponentSaveButton : added to the edit mapping screen.
- */
-export const EditComponentSaveButton = ({ saveMappingItemHandler, title }) => {
-  return (
-    <div className="wl-col wl-align-right">
-      <button className="button action" onClick={saveMappingItemHandler} disabled={title === ""}>
-        Save
-      </button>
-    </div>
-  );
-};
 
 export const EditComponentNotificationArea = ({ notificationData }) => {
   return (
