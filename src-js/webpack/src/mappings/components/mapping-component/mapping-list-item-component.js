@@ -11,7 +11,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { ACTIVE_CATEGORY } from "../category-component";
+import {ACTIVE_CATEGORY, TRASH_CATEGORY} from "../category-component";
 import {
     MAPPING_ITEM_CATEGORY_CHANGED_ACTION,
     MAPPING_ITEM_SELECTED_ACTION, MAPPINGS_REQUEST_CLONE_MAPPINGS_ACTION,
@@ -22,26 +22,14 @@ class MappingListItemComponent extends React.Component {
   constructor(props) {
     super(props);
     this.constructEditMappingLink = this.constructEditMappingLink.bind(this);
-    this.switchCategory = this.switchCategory.bind(this);
-    this.updateMappingItems = this.updateMappingItems.bind(this);
+    this.updateMappingItem = this.updateMappingItem.bind(this);
     this.duplicateMappingItems = this.duplicateMappingItems.bind(this);
   }
-    switchCategory(mappingData, categoryName) {
-        const action = MAPPING_ITEM_CATEGORY_CHANGED_ACTION;
-        action.payload = {
-            mappingId: mappingData.mapping_id,
-            mappingCategory: categoryName
-        };
-        this.props.dispatch(action);
-        // Save Changes to the db
-        mappingData.mappingStatus = categoryName;
-        this.updateMappingItems([mappingData]);
-    }
     // Updates or deletes the mapping items based on the request
-    updateMappingItems(mappingItems, type = "PUT") {
+    updateMappingItem(mappingItem, type = "PUT") {
         MAPPINGS_REQUEST_DELETE_OR_UPDATE_ACTION.payload = {
             type: type,
-            mappingItems: mappingItems
+            mappingItems: [mappingItem]
         };
         this.props.dispatch( MAPPINGS_REQUEST_DELETE_OR_UPDATE_ACTION )
     }
@@ -78,7 +66,9 @@ class MappingListItemComponent extends React.Component {
         <span className="edit wl-mappings-link">
           <a
             onClick={() => {
-              this.switchCategory(this.props.mappingData, ACTIVE_CATEGORY);
+                const mappingData = this.props.mappingData;
+                mappingData.mappingStatus = ACTIVE_CATEGORY;
+                this.updateMappingItem(this.props.mappingData);
             }}
           >
             Restore
@@ -88,7 +78,7 @@ class MappingListItemComponent extends React.Component {
         <span className="trash wl-mappings-link">
           <a
             onClick={() => {
-              this.updateMappingItems([this.props.mappingData], "DELETE");
+              this.updateMappingItem([this.props.mappingData], "DELETE");
             }}
           >
             Delete Permanently
@@ -121,7 +111,9 @@ class MappingListItemComponent extends React.Component {
         <span className="trash wl-mappings-link">
           <a
             onClick={() => {
-              this.switchCategory(this.props.mappingData, "trash");
+                const mappingData = this.props.mappingData;
+                mappingData.mappingStatus = TRASH_CATEGORY;
+                this.updateMappingItem(this.props.mappingData);
             }}
           >
             Trash
@@ -168,7 +160,6 @@ class MappingListItemComponent extends React.Component {
 
 MappingListItemComponent.propTypes = {
   nonce: PropTypes.string,
-  mappingData: PropTypes.object,
-  mappingIndex: PropTypes.number
+  mappingData: PropTypes.object
 };
 export default connect()(MappingListItemComponent);
