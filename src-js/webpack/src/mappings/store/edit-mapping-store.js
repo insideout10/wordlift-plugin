@@ -17,6 +17,7 @@ import logger from "redux-logger";
 import EditComponentMapping from "../mappings/edit-component-mapping";
 import {ACTIVE_CATEGORY} from "../components/category-component";
 import {NotificationReducer, PropertyReducer, RuleGroupReducer, TitleReducer} from "../reducers/edit-mapping-reducers";
+import editMappingSaga from "./edit-mapping-sagas";
 
 const editMappingSettings = window["wl_edit_mappings_config"] || {};
 
@@ -57,5 +58,5 @@ const reducers = combineReducers({
 });
 const sagaMiddleware = createSagaMiddleware();
 const editMappingStore = createStore(reducers, INITIAL_STATE, applyMiddleware(sagaMiddleware, logger));
-// sagaMiddleware.run(saga);
+sagaMiddleware.run(editMappingSaga);
 export default editMappingStore;

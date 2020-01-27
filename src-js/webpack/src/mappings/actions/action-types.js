@@ -155,6 +155,13 @@ export const PROPERTY_ITEM_SELECT_ALL = "PROPERTY_ITEM_SELECT_ALL";
  */
 export const PROPERTY_ITEMS_BULK_SELECT = "PROPERTY_ITEMS_BULK_SELECT";
 
+
+/**
+ * @const EDIT_MAPPING_REQUEST_TERMS
+ * Send the request to get the terms for the selected taxonomy.
+ */
+export const EDIT_MAPPING_REQUEST_TERMS = "EDIT_MAPPING_REQUEST_TERMS";
+
 /**
  * @const MAPPING_ITEMS_BULK_APPLY
  * Action when the user wants to make bulk action on selected mapping items

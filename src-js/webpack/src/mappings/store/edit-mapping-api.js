@@ -1,4 +1,5 @@
 import EditComponentMapping from "../mappings/edit-component-mapping";
+import MappingComponentHelper from "../components/mapping-component/mapping-component-helper";
 
 /**
  * This file provides the api methods for the edit mappings screen.
@@ -6,7 +7,7 @@ import EditComponentMapping from "../mappings/edit-component-mapping";
  * @since 3.25.0
  */
 
-const { wl_edit_mapping_rest_nonce,  rest_url } = global["editMappingSettings"]
+const { wl_edit_mapping_rest_nonce,  rest_url } = global["wl_edit_mappings_config"];
 
 function getMappingItemByMappingId( mappingId ) {
     const url = rest_url + "/" + mappingId;
@@ -28,14 +29,14 @@ function saveMappingItem() {
             "X-WP-Nonce": wl_edit_mapping_rest_nonce
         },
         body: JSON.stringify(postObject)
-    }).then(response => response.json().then(data => data))
+    }).then(response => response.json().then(json => json))
 }
 
 function getTermsFromAPI(taxonomy) {
     const postObject = {
         taxonomy: taxonomy
     };
-    fetch(rest_url + "/get_terms", {
+    return fetch(rest_url + "/get_terms", {
         method: "POST",
         headers: {
             "content-type": "application/json",

@@ -36,7 +36,7 @@ import {
   MAPPINGS_REQUEST,
   MAPPINGS_REQUEST_DELETE_OR_UPDATE,
   MAPPINGS_REQUEST_CLONE_MAPPINGS,
-  MAPPINGS_RESET_UI_AFTER_BULK_APPLY
+  MAPPINGS_RESET_UI_AFTER_BULK_APPLY, EDIT_MAPPING_REQUEST_TERMS
 } from "./action-types";
 /**
  * @const {object} ADD_NEW_RULE_ACTION
@@ -251,6 +251,15 @@ export const PROPERTY_ITEMS_BULK_ACTION = {
  */
 export const MAPPING_ITEMS_BULK_APPLY_ACTION = {
   type: MAPPING_ITEMS_BULK_APPLY
+};
+
+/**
+ * @const {object} EDIT_MAPPING_REQUEST_TERMS_ACTION
+ * Dispatches this action when the user wants to load
+ * terms for the particular taxonomy.
+ */
+export const EDIT_MAPPING_REQUEST_TERMS_ACTION = {
+  type: EDIT_MAPPING_REQUEST_TERMS
 };
 
 /**
