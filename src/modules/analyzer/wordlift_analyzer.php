@@ -15,7 +15,7 @@ function wl_ajax_analyze_action() {
 
 	check_admin_referer( 'wl_analyze' );
 
-	$data      = filter_input( INPUT_POST, 'data' );
+	$data = filter_input( INPUT_POST, 'data' );
 
 	wp_send_json_success( wl_analyze_content( $data ) );
 
@@ -44,7 +44,7 @@ function wl_analyze_content( $data ) {
 
 	add_filter( 'wl_api_service_api_url_path', 'wl_use_analysis_on_api_wordlift_io' );
 	$json = Wordlift_Api_Service::get_instance()
-	                            ->post_custom_content_type( 'analysis/single', $data, $content_type );
+	                            ->post_custom_content_type( 'analysis/single', $data, 'application/json; ' . get_bloginfo( 'charset' ) );
 	remove_filter( 'wl_api_service_api_url_path', 'wl_use_analysis_on_api_wordlift_io' );
 
 	// If it's an error log it.
