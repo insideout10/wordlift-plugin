@@ -15,10 +15,20 @@ import { call, put, takeLatest, select } from "redux-saga/effects";
 import EDIT_MAPPING_API from "./edit-mapping-api";
 import {
     EDIT_MAPPING_SAVE_MAPPING_ITEM_ACTION,
-    EDIT_MAPPING_TERMS_FETCHED_FOR_TAXONOMY_ACTION, MAPPING_ID_CHANGED_FROM_API_ACTION,
-    MAPPING_TERMS_CHANGED_ACTION, NOTIFICATION_CHANGED_ACTION
+    EDIT_MAPPING_TERMS_FETCHED_FOR_TAXONOMY_ACTION,
+    MAPPING_HEADER_CHANGED_ACTION,
+    MAPPING_ID_CHANGED_FROM_API_ACTION,
+    MAPPING_TERMS_CHANGED_ACTION,
+    NOTIFICATION_CHANGED_ACTION,
+    PROPERTY_LIST_CHANGED_ACTION,
+    RULE_GROUP_LIST_CHANGED_ACTION
 } from "../actions/actions";
-import {EDIT_MAPPING_REQUEST_TERMS, EDIT_MAPPING_SAVE_MAPPING_ITEM} from "../actions/action-types";
+import {
+    EDIT_MAPPING_REQUEST_MAPPING_ITEM,
+    EDIT_MAPPING_REQUEST_TERMS,
+    EDIT_MAPPING_SAVE_MAPPING_ITEM
+} from "../actions/action-types";
+import EditComponentMapping from "../mappings/edit-component-mapping";
 
 function* getTermsForSelectedTaxonomy(action) {
     // Mark the taxonomy as terms fetched, since we dont want to send another request to get the same terms.
@@ -57,9 +67,30 @@ function* saveMappingItem( action ) {
     };
     yield put( NOTIFICATION_CHANGED_ACTION )
 }
+
+function* getMappingItem( action ) {
+    const {mappingId} = action.payload;
+    const data = yield call( EDIT_MAPPING_API.getMappingItemByMappingId, mappingId );
+    MAPPING_HEADER_CHANGED_ACTION.payload = {
+        title: data.mapping_title,
+        mapping_id: data.mapping_id
+    };
+    yield put( MAPPING_HEADER_CHANGED_ACTION)
+
+    PROPERTY_LIST_CHANGED_ACTION.payload = {
+        value: EditComponentMapping.mapPropertyAPIKeysToUi(data.property_list)
+    };
+    yield put( PROPERTY_LIST_CHANGED_ACTION );
+
+    RULE_GROUP_LIST_CHANGED_ACTION.payload = {
+        value: EditComponentMapping.mapRuleGroupListAPIKeysToUi(data.rule_group_list)
+    };
+    yield put(RULE_GROUP_LIST_CHANGED_ACTION);
+}
 function* editMappingSaga() {
-    yield takeLatest(EDIT_MAPPING_REQUEST_TERMS, getTermsForSelectedTaxonomy)
-    yield takeLatest(EDIT_MAPPING_SAVE_MAPPING_ITEM, saveMappingItem)
+    yield takeLatest(EDIT_MAPPING_REQUEST_TERMS, getTermsForSelectedTaxonomy);
+    yield takeLatest(EDIT_MAPPING_SAVE_MAPPING_ITEM, saveMappingItem);
+    yield takeLatest(EDIT_MAPPING_REQUEST_MAPPING_ITEM, getMappingItem)
 }
 
 export default editMappingSaga;

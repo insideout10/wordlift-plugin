@@ -175,6 +175,13 @@ export const EDIT_MAPPING_TERMS_FETCHED_FOR_TAXONOMY = "EDIT_MAPPING_TERMS_FETCH
 export const EDIT_MAPPING_SAVE_MAPPING_ITEM = "EDIT_MAPPING_SAVE_MAPPING_ITEM";
 
 /**
+ * @const EDIT_MAPPING_REQUEST_MAPPING_ITEM
+ * Action type when we need to get the mapping item from API.
+ */
+export const EDIT_MAPPING_REQUEST_MAPPING_ITEM = "EDIT_MAPPING_REQUEST_MAPPING_ITEM";
+
+
+/**
  * @const MAPPING_ITEMS_BULK_APPLY
  * Action when the user wants to make bulk action on selected mapping items
  */

@@ -16,14 +16,14 @@ import { connect } from "react-redux";
  */
 import PropertyListComponent from "./property-list-component";
 import {
-  TITLE_CHANGED_ACTION,
-  PROPERTY_LIST_CHANGED_ACTION,
-  RULE_GROUP_LIST_CHANGED_ACTION,
-  MAPPING_HEADER_CHANGED_ACTION,
-  NOTIFICATION_CHANGED_ACTION,
-  PROPERTY_ITEMS_BULK_ACTION,
-  BULK_ACTION_SELECTION_CHANGED_ACTION,
-  MAPPING_ID_CHANGED_FROM_API_ACTION
+    TITLE_CHANGED_ACTION,
+    PROPERTY_LIST_CHANGED_ACTION,
+    RULE_GROUP_LIST_CHANGED_ACTION,
+    MAPPING_HEADER_CHANGED_ACTION,
+    NOTIFICATION_CHANGED_ACTION,
+    PROPERTY_ITEMS_BULK_ACTION,
+    BULK_ACTION_SELECTION_CHANGED_ACTION,
+    MAPPING_ID_CHANGED_FROM_API_ACTION, EDIT_MAPPING_REQUEST_MAPPING_ITEM_ACTION
 } from "../../actions/actions";
 import EditComponentMapping from "../../mappings/edit-component-mapping";
 import BulkActionComponent from "../bulk-action-component";
@@ -78,38 +78,11 @@ class EditMappingComponent extends React.Component {
    * via the url
    */
   getMappingItemByMappingId() {
-    const url = editMappingSettings.rest_url + "/" + editMappingSettings.wl_edit_mapping_id;
-    fetch(url, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-        "X-WP-Nonce": editMappingSettings.wl_edit_mapping_rest_nonce
-      }
-    }).then(response =>
-      response.json().then(data => {
-        // Dispatch title changed
-        const mapping_header_action = MAPPING_HEADER_CHANGED_ACTION;
-        mapping_header_action.payload = {
-          title: data.mapping_title,
-          mapping_id: data.mapping_id
-        };
-        this.props.dispatch(mapping_header_action, data.mapping_title);
-
-        //Dispatch property list changed after applying filters
-        const property_list_action = PROPERTY_LIST_CHANGED_ACTION;
-        property_list_action.payload = {
-          value: EditComponentMapping.mapPropertyAPIKeysToUi(data.property_list)
-        };
-        this.props.dispatch(property_list_action);
-
-        // Dispatch rule group list changed after applying filters
-        const rule_group_list_action = RULE_GROUP_LIST_CHANGED_ACTION;
-        rule_group_list_action.payload = {
-          value: EditComponentMapping.mapRuleGroupListAPIKeysToUi(data.rule_group_list)
-        };
-        this.props.dispatch(rule_group_list_action);
-      })
-    );
+      const mappingId = editMappingSettings.wl_edit_mapping_id;
+      EDIT_MAPPING_REQUEST_MAPPING_ITEM_ACTION.payload = {
+          mappingId: mappingId
+      };
+      this.props.dispatch( EDIT_MAPPING_REQUEST_MAPPING_ITEM_ACTION )
   }
 
   render() {
