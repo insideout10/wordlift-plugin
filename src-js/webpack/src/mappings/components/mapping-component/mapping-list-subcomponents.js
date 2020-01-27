@@ -48,7 +48,9 @@ class _MappingTableCheckBox extends React.Component {
     }
 }
 
-const MappingTableCheckBox = connect()(_MappingTableCheckBox);
+const MappingTableCheckBox = connect( (state) => ({
+    headerCheckBoxSelected: state.headerCheckBoxSelected
+}))(_MappingTableCheckBox);
 
 /**
  *
@@ -79,9 +81,7 @@ export const MappingTableTitleSort = ( props ) => {
 export const MappingHeaderRow = ( props ) => {
     return (
         <tr>
-            <MappingTableCheckBox
-                { ...props }
-            />
+            <MappingTableCheckBox/>
             <MappingTableTitleSort
                 { ...props }
             />

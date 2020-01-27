@@ -54,7 +54,7 @@ export const MappingListReducer = createReducer(null, {
 
   [MAPPING_ITEM_SELECTED]: (state, action) => {
     const { mappingId } = action.payload;
-    const targetIndex = state.mappingItems.map(el => el.mapping_id).indexOf(mappingId);
+    const targetIndex = state.mappingItems.map(el => el.mappingId).indexOf(mappingId);
     state.mappingItems[targetIndex].isSelected = !state.mappingItems[targetIndex].isSelected;
   },
 

@@ -12,13 +12,54 @@ import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { ACTIVE_CATEGORY } from "../category-component";
+import {
+    MAPPING_ITEM_CATEGORY_CHANGED_ACTION,
+    MAPPING_ITEM_SELECTED_ACTION, MAPPINGS_REQUEST_CLONE_MAPPINGS_ACTION,
+    MAPPINGS_REQUEST_DELETE_OR_UPDATE_ACTION
+} from "../../actions/actions";
 
 class MappingListItemComponent extends React.Component {
   constructor(props) {
     super(props);
-
     this.constructEditMappingLink = this.constructEditMappingLink.bind(this);
+    this.switchCategory = this.switchCategory.bind(this);
+    this.updateMappingItems = this.updateMappingItems.bind(this);
+    this.duplicateMappingItems = this.duplicateMappingItems.bind(this);
   }
+    switchCategory(mappingData, categoryName) {
+        const action = MAPPING_ITEM_CATEGORY_CHANGED_ACTION;
+        action.payload = {
+            mappingId: mappingData.mapping_id,
+            mappingCategory: categoryName
+        };
+        this.props.dispatch(action);
+        // Save Changes to the db
+        mappingData.mappingStatus = categoryName;
+        this.updateMappingItems([mappingData]);
+    }
+    // Updates or deletes the mapping items based on the request
+    updateMappingItems(mappingItems, type = "PUT") {
+        MAPPINGS_REQUEST_DELETE_OR_UPDATE_ACTION.payload = {
+            type: type,
+            mappingItems: mappingItems
+        };
+        this.props.dispatch( MAPPINGS_REQUEST_DELETE_OR_UPDATE_ACTION )
+    }
+
+    /**
+     *
+     * @param {Array|Object} mappingItems accepts a single
+     * mapping item object or multiple mapping items, clone them by posting
+     * to the api endpoint and then refresh the current list.
+     */
+    duplicateMappingItems(mappingItems) {
+        // If single item is given, construct it to array
+        mappingItems = Array.isArray(mappingItems) ? mappingItems : [mappingItems];
+        MAPPINGS_REQUEST_CLONE_MAPPINGS_ACTION.payload = {
+            mappingItems: mappingItems
+        };
+        this.props.dispatch(MAPPINGS_REQUEST_CLONE_MAPPINGS_ACTION)
+    }
   constructEditMappingLink() {
     return (
       "?page=wl_edit_mapping" +
@@ -37,7 +78,7 @@ class MappingListItemComponent extends React.Component {
         <span className="edit wl-mappings-link">
           <a
             onClick={() => {
-              this.props.switchCategoryHandler(this.props.mappingData, ACTIVE_CATEGORY);
+              this.switchCategory(this.props.mappingData, ACTIVE_CATEGORY);
             }}
           >
             Restore
@@ -47,7 +88,7 @@ class MappingListItemComponent extends React.Component {
         <span className="trash wl-mappings-link">
           <a
             onClick={() => {
-              this.props.deleteMappingItemHandler([this.props.mappingData], "DELETE");
+              this.updateMappingItems([this.props.mappingData], "DELETE");
             }}
           >
             Delete Permanently
@@ -70,7 +111,7 @@ class MappingListItemComponent extends React.Component {
           <a
             title="Duplicate this item"
             onClick={() => {
-              this.props.duplicateMappingItemHandler(this.props.mappingData);
+              this.duplicateMappingItems(this.props.mappingData);
             }}
           >
             Duplicate
@@ -80,7 +121,7 @@ class MappingListItemComponent extends React.Component {
         <span className="trash wl-mappings-link">
           <a
             onClick={() => {
-              this.props.switchCategoryHandler(this.props.mappingData, "trash");
+              this.switchCategory(this.props.mappingData, "trash");
             }}
           >
             Trash
@@ -109,7 +150,10 @@ class MappingListItemComponent extends React.Component {
             type="checkbox"
             checked={this.props.mappingData.isSelected}
             onClick={() => {
-              this.props.selectMappingItemHandler(this.props.mappingData);
+                MAPPING_ITEM_SELECTED_ACTION.payload = {
+                    mappingId: this.props.mappingData.mappingId
+                }
+                this.props.dispatch( MAPPING_ITEM_SELECTED_ACTION )
             }}
           />
         </td>

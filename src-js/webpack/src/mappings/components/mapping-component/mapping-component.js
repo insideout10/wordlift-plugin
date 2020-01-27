@@ -49,11 +49,9 @@ class MappingComponent extends React.Component {
     this.categorySelectHandler = this.categorySelectHandler.bind(this);
     this.bulkActionOptionChangedHandler = this.bulkActionOptionChangedHandler.bind(this);
     this.sortMappingItemsByTitle = this.sortMappingItemsByTitle.bind(this);
-    this.switchCategory = this.switchCategory.bind(this);
-    this.updateMappingItems = this.updateMappingItems.bind(this);
     this.getMappingItems = this.getMappingItems.bind(this);
     this.bulkActionSubmitHandler = this.bulkActionSubmitHandler.bind(this);
-    this.duplicateMappingItems = this.duplicateMappingItems.bind(this);
+
   }
 
   componentDidMount() {
@@ -73,41 +71,6 @@ class MappingComponent extends React.Component {
    */
   sortMappingItemsByTitle() {
     this.props.dispatch(MAPPING_LIST_SORT_TITLE_CHANGED_ACTION);
-  }
-
-  switchCategory(mappingData, categoryName) {
-    const action = MAPPING_ITEM_CATEGORY_CHANGED_ACTION;
-    action.payload = {
-      mappingId: mappingData.mapping_id,
-      mappingCategory: categoryName
-    };
-    this.props.dispatch(action);
-    // Save Changes to the db
-    mappingData.mappingStatus = categoryName;
-    this.updateMappingItems([mappingData]);
-  }
-  // Updates or deletes the mapping items based on the request
-  updateMappingItems(mappingItems, type = "PUT") {
-    MAPPINGS_REQUEST_DELETE_OR_UPDATE_ACTION.payload = {
-      type: type,
-      mappingItems: mappingItems
-    };
-    this.props.dispatch( MAPPINGS_REQUEST_DELETE_OR_UPDATE_ACTION )
-  }
-
-  /**
-   *
-   * @param {Array|Object} mappingItems accepts a single
-   * mapping item object or multiple mapping items, clone them by posting
-   * to the api endpoint and then refresh the current list.
-   */
-  duplicateMappingItems(mappingItems) {
-    // If single item is given, construct it to array
-    mappingItems = Array.isArray(mappingItems) ? mappingItems : [mappingItems];
-    MAPPINGS_REQUEST_CLONE_MAPPINGS_ACTION.payload = {
-      mappingItems: mappingItems
-    };
-    this.props.dispatch(MAPPINGS_REQUEST_CLONE_MAPPINGS_ACTION)
   }
   /**
    * Fetch the mapping items from api.
@@ -164,9 +127,6 @@ class MappingComponent extends React.Component {
                   <MappingListItemComponent
                     key={index}
                     mappingIndex={index}
-                    duplicateMappingItemHandler={this.duplicateMappingItems}
-                    deleteMappingItemHandler={this.updateMappingItems}
-                    switchCategoryHandler={this.switchCategory}
                     nonce={mappingSettings.wl_edit_mapping_nonce}
                     mappingData={item}
                   />
