@@ -1,5 +1,14 @@
+/**
+ * External dependencies.
+ */
 import React from "react";
+import {connect} from 'react-redux';
+
+/**
+ * Internal dependencies.
+ */
 import {ACTIVE_CATEGORY} from "../category-component";
+import {MAPPING_LIST_BULK_SELECT_ACTION} from "../../actions/actions";
 
 /**
  * Contains subcomponents for the mapping list component.
@@ -24,17 +33,22 @@ export const AddNewButton  = () => {
  * @param props Properties required for the MappingTableCheckBox
  * @returns MappingTableCheckBox instance.
  */
-export const MappingTableCheckBox = ( props ) => {
-    return (
-        <th className="wl-check-column">
-            <input
-                type="checkbox"
-                onClick={ () => { props.selectAllMappingsHandler() } }
-                checked={ props.headerCheckBoxSelected === true}
-            />
-        </th>
-    )
-};
+class _MappingTableCheckBox extends React.Component {
+
+    render() {
+        return (
+            <th className="wl-check-column">
+                <input
+                    type="checkbox"
+                    onClick={ () => { this.props.dispatch( MAPPING_LIST_BULK_SELECT_ACTION) } }
+                    checked={ this.props.headerCheckBoxSelected === true}
+                />
+            </th>
+        )
+    }
+}
+
+const MappingTableCheckBox = connect()(_MappingTableCheckBox);
 
 /**
  *
