@@ -1,5 +1,5 @@
 /**
- * EditComponent : it displays the edit section for the mapping item
+ * EditMappingComponent : it displays the edit section for the mapping item
  *
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * @since 3.24.0
@@ -24,9 +24,9 @@ import {
   PROPERTY_ITEMS_BULK_ACTION,
   BULK_ACTION_SELECTION_CHANGED_ACTION,
   MAPPING_ID_CHANGED_FROM_API_ACTION
-} from "../actions/actions";
-import EditComponentMapping from "../mappings/edit-component-mapping";
-import BulkActionComponent from "./bulk-action-component";
+} from "../../actions/actions";
+import EditComponentMapping from "../../mappings/edit-component-mapping";
+import BulkActionComponent from "../bulk-action-component";
 import {
   EditComponentNotificationArea,
   EditComponentSaveButton,
@@ -37,7 +37,7 @@ import {
 // Set a reference to the WordLift's Edit Mapping settings stored in the window instance.
 const editMappingSettings = window["wl_edit_mappings_config"] || {};
 
-class EditComponent extends React.Component {
+class EditMappingComponent extends React.Component {
   constructor(props) {
     super(props);
 
@@ -203,4 +203,4 @@ const mapStateToProps = function(state) {
   };
 };
 
-export default connect(mapStateToProps)(EditComponent);
+export default connect(mapStateToProps)(EditMappingComponent);

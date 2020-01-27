@@ -12,15 +12,15 @@ import { connect } from "react-redux";
 /**
  * Internal dependencies
  */
-import SelectComponent from "./select-component";
+import SelectComponent from "../select-component";
 import {
   ADD_NEW_RULE_ACTION,
   DELETE_RULE_ACTION,
   CHANGE_RULE_FIELD_VALUE_ACTION,
   NOTIFICATION_CHANGED_ACTION,
   MAPPING_TERMS_CHANGED_ACTION, EDIT_MAPPING_REQUEST_TERMS_ACTION
-} from "../actions/actions";
-import {EDIT_MAPPING_REQUEST_TERMS} from "../actions/action-types";
+} from "../../actions/actions";
+import {EDIT_MAPPING_REQUEST_TERMS} from "../../actions/action-types";
 
 class RuleComponent extends React.Component {
   constructor(props) {

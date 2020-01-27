@@ -11,8 +11,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { PROPERTY_ITEM_CATEGORY_CHANGED_ACTION, PROPERTY_ITEM_CRUD_OPERATION_ACTION } from "../actions/actions";
-import { TRASH_CATEGORY, ACTIVE_CATEGORY } from "./category-component";
+import { PROPERTY_ITEM_CATEGORY_CHANGED_ACTION, PROPERTY_ITEM_CRUD_OPERATION_ACTION } from "../../actions/actions";
+import { TRASH_CATEGORY, ACTIVE_CATEGORY } from "../category-component";
 
 /** Constants to be supplied via actions, and also compared in
  * the property reducers for making a CRUD Action on the property

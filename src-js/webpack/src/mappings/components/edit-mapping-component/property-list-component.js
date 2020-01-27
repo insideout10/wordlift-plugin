@@ -16,7 +16,7 @@ import PropTypes from "prop-types";
  * Internal dependencies
  */
 import PropertyComponent from "./property-component";
-import CategoryComponent from "./category-component";
+import CategoryComponent from "../category-component";
 import PropertyListItemComponent from "./property-list-item-component";
 import {
   OPEN_OR_CLOSE_PROPERTY_ACTION,
@@ -24,7 +24,7 @@ import {
   PROPERTY_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION,
   PROPERTY_ITEM_SELECTED_ACTION,
   PROPERTY_ITEM_SELECT_ALL_ACTION
-} from "../actions/actions";
+} from "../../actions/actions";
 
 class PropertyListComponent extends React.Component {
   constructor(props) {
