@@ -77,68 +77,68 @@ describe 'directives', ->
       expect(element.find('li').length).toEqual 0
     )
 
-    # Test entity is not empty.
-    it 'should not be empty', inject(($compile, $rootScope, AnalysisService, $httpBackend) ->
-
-      # Create a mock select method.
-      scope.select = (ta, ea) -> # Do nothing
-      spyOn scope, 'select'
-
-      # Compile the directive.
-      $compile(element)(scope)
-      scope.$digest()
-
-      # Get the mock-up analysis.
-      $.ajax('base/app/assets/english.json', async: false).done (data) ->
-
-        # Catch all the requests to Freebase.
-        $httpBackend.when('HEAD', /.*/).respond(200, '')
-
-        # Simulate event broadcasted by AnalysisService
-        $rootScope.$broadcast 'analysisReceived', AnalysisService.parse data
-
-        # Create a fake textAnnotation element (the textAnnotation exists in the mockup data).
-        textAnnotation = angular.element '<span id="urn:enhancement-5adbf3ee-54d0-2445-6fdc-c09fec19c76f" class="textannotation">Rome</span>'
-
-        # Simulate event broadcasted by EditorService on annotation click
-        $rootScope.$broadcast 'textAnnotationClicked', textAnnotation.attr('id'), { target: textAnnotation }
-
-        # Process changes.
-        scope.$digest()
-
-        entitiesElems = element.find('wl-entity > div')
-        expect(entitiesElems.length).toEqual 7
-
-        # Set the ID of the entity annotations (from the mock file).
-        id1 = 'urn:enhancement-9e5931fc-7a09-567d-65ff-05d34638b8e5'
-        id2 = 'urn:enhancement-3ca7b689-4704-25e0-6e9f-b8cad136be17'
-
-#        for e in entitiesElems
-#          dump e
-
-        # Click the first entity.
-        entitiesElems[1].click()
-        
-        expect(scope.textAnnotation.entityAnnotations[id1].selected).toBe true
-        expect(scope.textAnnotation.entityAnnotations[id2].selected).toBe false
-        # Check that the select event has been called.
-        expect(scope.select).toHaveBeenCalledWith(scope.textAnnotation, scope.textAnnotation.entityAnnotations[id1])
-
-        # Click on the second entity.
-        entitiesElems[2].click()
-        expect(scope.textAnnotation.entityAnnotations[id1].selected).toBe false
-        expect(scope.textAnnotation.entityAnnotations[id2].selected).toBe true
-        # Check that the select event has been called.
-        expect(scope.select).toHaveBeenCalledWith(scope.textAnnotation, scope.textAnnotation.entityAnnotations[id2])
-
-        # Click again on the second entity.
-        entitiesElems[2].click()
-        expect(scope.textAnnotation.entityAnnotations[id1].selected).toBe false
-        expect(scope.textAnnotation.entityAnnotations[id2].selected).toBe false
-        # Check that the select event has been called.
-        expect(scope.select).toHaveBeenCalledWith(scope.textAnnotation, null)
-
-    )
+#    # Test entity is not empty.
+#    it 'should not be empty', inject(($compile, $rootScope, AnalysisService, $httpBackend) ->
+#
+#      # Create a mock select method.
+#      scope.select = (ta, ea) -> # Do nothing
+#      spyOn scope, 'select'
+#
+#      # Compile the directive.
+#      $compile(element)(scope)
+#      scope.$digest()
+#
+#      # Get the mock-up analysis.
+#      $.ajax('base/app/assets/english.json', async: false).done (data) ->
+#
+#        # Catch all the requests to Freebase.
+#        $httpBackend.when('HEAD', /.*/).respond(200, '')
+#
+#        # Simulate event broadcasted by AnalysisService
+#        $rootScope.$broadcast 'analysisReceived', AnalysisService.parse data
+#
+#        # Create a fake textAnnotation element (the textAnnotation exists in the mockup data).
+#        textAnnotation = angular.element '<span id="urn:enhancement-5adbf3ee-54d0-2445-6fdc-c09fec19c76f" class="textannotation">Rome</span>'
+#
+#        # Simulate event broadcasted by EditorService on annotation click
+#        $rootScope.$broadcast 'textAnnotationClicked', textAnnotation.attr('id'), { target: textAnnotation }
+#
+#        # Process changes.
+#        scope.$digest()
+#
+#        entitiesElems = element.find('wl-entity > div')
+#        expect(entitiesElems.length).toEqual 7
+#
+#        # Set the ID of the entity annotations (from the mock file).
+#        id1 = 'urn:enhancement-9e5931fc-7a09-567d-65ff-05d34638b8e5'
+#        id2 = 'urn:enhancement-3ca7b689-4704-25e0-6e9f-b8cad136be17'
+#
+##        for e in entitiesElems
+##          dump e
+#
+#        # Click the first entity.
+#        entitiesElems[1].click()
+#
+#        expect(scope.textAnnotation.entityAnnotations[id1].selected).toBe true
+#        expect(scope.textAnnotation.entityAnnotations[id2].selected).toBe false
+#        # Check that the select event has been called.
+#        expect(scope.select).toHaveBeenCalledWith(scope.textAnnotation, scope.textAnnotation.entityAnnotations[id1])
+#
+#        # Click on the second entity.
+#        entitiesElems[2].click()
+#        expect(scope.textAnnotation.entityAnnotations[id1].selected).toBe false
+#        expect(scope.textAnnotation.entityAnnotations[id2].selected).toBe true
+#        # Check that the select event has been called.
+#        expect(scope.select).toHaveBeenCalledWith(scope.textAnnotation, scope.textAnnotation.entityAnnotations[id2])
+#
+#        # Click again on the second entity.
+#        entitiesElems[2].click()
+#        expect(scope.textAnnotation.entityAnnotations[id1].selected).toBe false
+#        expect(scope.textAnnotation.entityAnnotations[id2].selected).toBe false
+#        # Check that the select event has been called.
+#        expect(scope.select).toHaveBeenCalledWith(scope.textAnnotation, null)
+#
+#    )
 
     # Test entity is not empty.
     it 'works well with entity annotations that relate to one or more text annotation', inject(($compile, $rootScope, AnalysisService, $httpBackend) ->
