@@ -15,7 +15,7 @@ import { Provider } from "react-redux";
  * Internal dependencies
  */
 import store from "./store";
-import MappingComponent from "./components/mapping-component/mapping-component";
+import MappingComponent from "./components/mapping-component";
 // @@todo: we can use BEM and SCSS.
 import "./mappings.css";
 

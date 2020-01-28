@@ -15,7 +15,7 @@ import { Provider } from "react-redux";
 /**
  * Internal dependencies
  */
-import EditComponent from "./components/edit-mapping-component/edit-mapping-component";
+import EditComponent from "./components/edit-mapping-component";
 import "./mappings.css";
 import "./edit-mappings.css";
 import editMappingStore from "./store/edit-mapping-store";
