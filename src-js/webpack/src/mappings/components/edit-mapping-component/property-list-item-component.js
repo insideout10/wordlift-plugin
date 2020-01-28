@@ -11,8 +11,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+/**
+ * Internal dependencies.
+ */
 import { PROPERTY_ITEM_CATEGORY_CHANGED_ACTION, PROPERTY_ITEM_CRUD_OPERATION_ACTION } from "../../actions/actions";
 import { TRASH_CATEGORY, ACTIVE_CATEGORY } from "../category-component";
+import {PropertyItemActiveOptions} from "./property-item-active-options";
+import {PropertyItemTrashOptions} from "./property-item-trash-options";
 
 /** Constants to be supplied via actions, and also compared in
  * the property reducers for making a CRUD Action on the property
@@ -21,7 +26,7 @@ import { TRASH_CATEGORY, ACTIVE_CATEGORY } from "../category-component";
 export const DUPLICATE_PROPERTY = "duplicate_property";
 export const DELETE_PROPERTY_PERMANENT = "delete_property_permanent";
 
-const RowActionItem = ({ className, title, onClickHandler, args }) => {
+export const RowActionItem = ({ className, title, onClickHandler, args }) => {
   return (
     <span className={className}>
       <a
@@ -39,61 +44,9 @@ const RowActionItem = ({ className, title, onClickHandler, args }) => {
 class PropertyListItemComponent extends React.Component {
   constructor(props) {
     super(props);
-
-    this.returnOptionsForActiveCategory = this.returnOptionsForActiveCategory.bind(this);
-    this.renderOptionsBasedOnItemCategory = this.renderOptionsBasedOnItemCategory.bind(this);
-    this.changeCategoryPropertyItem = this.changeCategoryPropertyItem.bind(this);
-    this.makeCrudOperationOnPropertyId = this.makeCrudOperationOnPropertyId.bind(this);
+    this.props.changeCategoryPropertyItem = this.changeCategoryPropertyItem.bind(this);
+    this.props.makeCrudOperationOnPropertyId = this.makeCrudOperationOnPropertyId.bind(this);
   }
-  /**
-   * Return the options for the trash category.
-   */
-  returnOptionsForTrashCategory() {
-    return (
-      <React.Fragment>
-        <RowActionItem
-          className="edit wl-mappings-link"
-          onClickHandler={this.changeCategoryPropertyItem}
-          title="Restore"
-          args={[this.props.propData.property_id, ACTIVE_CATEGORY]}
-        />
-        <RowActionItem
-          className="trash wl-mappings-link"
-          onClickHandler={this.makeCrudOperationOnPropertyId}
-          title="Delete Permanently"
-          args={[this.props.propData.property_id, DELETE_PROPERTY_PERMANENT]}
-        />
-      </React.Fragment>
-    );
-  }
-  /**
-   * Return the template for the active category.
-   */
-  returnOptionsForActiveCategory() {
-    return (
-      <React.Fragment>
-        <RowActionItem
-          className="edit wl-mappings-link"
-          onClickHandler={this.props.switchState}
-          title="Edit"
-          args={[this.props.propData.property_id]}
-        />
-        <RowActionItem
-          className="wl-mappings-link"
-          onClickHandler={this.makeCrudOperationOnPropertyId}
-          title="Duplicate"
-          args={[this.props.propData.property_id, DUPLICATE_PROPERTY]}
-        />
-        <RowActionItem
-          className="wl-mappings-link trash"
-          onClickHandler={this.changeCategoryPropertyItem}
-          title="Trash"
-          args={[this.props.propData.property_id, TRASH_CATEGORY]}
-        />
-      </React.Fragment>
-    );
-  }
-
   /**
    * Render the options based on the mapping list item category.
    * @param {String} category Category which the mapping items belong to
@@ -101,18 +54,17 @@ class PropertyListItemComponent extends React.Component {
   renderOptionsBasedOnItemCategory(category) {
     switch (category) {
       case ACTIVE_CATEGORY:
-        return this.returnOptionsForActiveCategory();
+        return <PropertyItemActiveOptions {...this.props}/>;
       case TRASH_CATEGORY:
-        return this.returnOptionsForTrashCategory();
+        return <PropertyItemTrashOptions {...this.props} />;
     }
   }
   changeCategoryPropertyItem(propertyId, category) {
-    const action = PROPERTY_ITEM_CATEGORY_CHANGED_ACTION;
-    action.payload = {
+    PROPERTY_ITEM_CATEGORY_CHANGED_ACTION.payload = {
       propertyId: propertyId,
       propertyCategory: category
     };
-    this.props.dispatch(action);
+    this.props.dispatch(PROPERTY_ITEM_CATEGORY_CHANGED_ACTION);
   }
 
   makeCrudOperationOnPropertyId(propertyId, operationName) {
