@@ -44,8 +44,8 @@ export const RowActionItem = ({ className, title, onClickHandler, args }) => {
 class PropertyListItemComponent extends React.Component {
   constructor(props) {
     super(props);
-    this.props.changeCategoryPropertyItem = this.changeCategoryPropertyItem.bind(this);
-    this.props.makeCrudOperationOnPropertyId = this.makeCrudOperationOnPropertyId.bind(this);
+    this.changeCategoryPropertyItem = this.changeCategoryPropertyItem.bind(this);
+    this.makeCrudOperationOnPropertyId = this.makeCrudOperationOnPropertyId.bind(this);
   }
   /**
    * Render the options based on the mapping list item category.
@@ -54,9 +54,17 @@ class PropertyListItemComponent extends React.Component {
   renderOptionsBasedOnItemCategory(category) {
     switch (category) {
       case ACTIVE_CATEGORY:
-        return <PropertyItemActiveOptions {...this.props}/>;
+        return <PropertyItemActiveOptions
+                  {...this.props}
+                  changeCategoryPropertyItem={this.changeCategoryPropertyItem}
+                  makeCrudOperationOnPropertyId={this.makeCrudOperationOnPropertyId}
+        />;
       case TRASH_CATEGORY:
-        return <PropertyItemTrashOptions {...this.props} />;
+        return <PropertyItemTrashOptions
+            {...this.props}
+            changeCategoryPropertyItem={this.changeCategoryPropertyItem}
+            makeCrudOperationOnPropertyId={this.makeCrudOperationOnPropertyId}
+        />;
     }
   }
   changeCategoryPropertyItem(propertyId, category) {
