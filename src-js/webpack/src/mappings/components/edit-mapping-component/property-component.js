@@ -21,6 +21,7 @@ import {PropertyNameField} from "./property-name-field";
 import {FieldTypeField} from "./field-type-field";
 import {FieldNameField} from "./field-name-field";
 import {TransformFunctionField} from "./transform-function-field";
+import {PropertyCloseMappingButton} from "./property-close-mapping-button";
 
 export const PropertyInputField = ({ propData, handleChangeForPropertyField, inputKeyName }) => {
   return (
@@ -52,18 +53,7 @@ class PropertyComponent extends React.Component {
             <FieldTypeField {...this.props} />
             <FieldNameField {...this.props} />
             <TransformFunctionField {...this.props} />
-            <tr>
-              <td colspan="2"></td>
-              <td>
-                <button
-                  disabled={this.props.propData.propertyHelpText.length <= 0}
-                  className="wl-close-mapping button action bg-primary text-white"
-                  onClick={() => this.props.switchState(this.props.propData.property_id)}
-                >
-                  Close Mapping
-                </button>
-              </td>
-            </tr>
+            <PropertyCloseMappingButton {...this.props} />
           </tbody>
         </table>
       </React.Fragment>
