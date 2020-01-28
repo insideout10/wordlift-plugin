@@ -34,10 +34,11 @@ class Wordlift_Admin_Dashboard_V2 {
 	/**
 	 * Wordlift_Admin_Dashboard_V2 constructor.
 	 *
-	 * @since 3.20.0
-	 *
 	 * @param \Wordlift_Admin_Search_Rankings_Service $search_rankings_service The {@link Wordlift_Admin_Search_Rankings_Service} instance.
 	 * @param                                         $dashboard_service
+	 *
+	 * @since 3.20.0
+	 *
 	 */
 	public function __construct( $search_rankings_service, $dashboard_service, $entity_service ) {
 
@@ -86,9 +87,9 @@ class Wordlift_Admin_Dashboard_V2 {
 	/**
 	 * Get the keyword average position.
 	 *
+	 * @return string The formatted average position string (or `n/a` if not available).
 	 * @since 3.20.0
 	 *
-	 * @return string The formatted average position string (or `n/a` if not available).
 	 */
 	private function get_average_position() {
 
@@ -116,11 +117,18 @@ class Wordlift_Admin_Dashboard_V2 {
 	/**
 	 * Get the top entities.
 	 *
+	 * @return array|object|null An array of top entities.
 	 * @since 3.20.0
 	 *
-	 * @return array|object|null An array of top entities.
 	 */
 	private function get_top_entities() {
+
+		// Get the cached results.
+		$results = get_transient( '_wl_admin_dashboard_v2__top_entities' );
+		if ( false !== $results ) {
+			return $results;
+		}
+
 		global $wpdb;
 
 		$query = <<<EOF
@@ -153,7 +161,10 @@ order by total desc
 limit 100;
 EOF;
 
-		return $wpdb->get_results( $query );
+		$results = $wpdb->get_results( $query );
+		set_transient( '_wl_admin_dashboard_v2__top_entities', $results, 900 );
+
+		return $results;
 	}
 
 	/**
@@ -189,9 +200,9 @@ EOF;
 	/**
 	 * Get the today's tip data.
 	 *
+	 * @return array|false The today's tip data or false in case of error.
 	 * @since 3.20.0
 	 *
-	 * @return array|false The today's tip data or false in case of error.
 	 */
 	private static function get_todays_tip_data() {
 

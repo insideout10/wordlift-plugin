@@ -451,14 +451,30 @@ class Wordlift_Entity_Service {
 	 *
 	 */
 	public function count() {
+		global $wpdb;
 
-		$posts = get_posts( $this->add_criterias( array(
-			'fields'      => 'ids',
-			'post_status' => 'any',
-			'numberposts' => - 1,
-		) ) );
+		// Try to get the count from the transient.
+		$count = get_transient( '_wl_entity_service__count' );
+		if ( false !== $count ) {
+			return $count;
+		}
 
-		return count( $posts );
+		// Query the count.
+		$count = $wpdb->get_var( $wpdb->prepare(
+			"SELECT COUNT( DISTINCT( tr.object_id ) )"
+			. " FROM {$wpdb->term_relationships} tr"
+			. " INNER JOIN {$wpdb->term_taxonomy} tt"
+			. "  ON tt.taxonomy = %s AND tt.term_taxonomy_id = tr.term_taxonomy_id"
+			. " INNER JOIN {$wpdb->terms} t"
+			. "  ON t.term_id = tt.term_id AND t.name != %s",
+			Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
+			'article'
+		) );
+
+		// Store the count in cache.
+		set_transient( '_wl_entity_service__count', $count, 900 );
+
+		return $count;
 	}
 
 	/**
