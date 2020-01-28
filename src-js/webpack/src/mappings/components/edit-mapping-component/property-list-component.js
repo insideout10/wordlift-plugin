@@ -16,18 +16,15 @@ import PropTypes from "prop-types";
  * Internal dependencies
  */
 import PropertyComponent from "./property-component";
-import CategoryComponent from "../category-component";
 import PropertyListItemComponent from "./property-list-item-component";
 import {
   OPEN_OR_CLOSE_PROPERTY_ACTION,
-  ADD_MAPPING_ACTION,
-  PROPERTY_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION,
   PROPERTY_ITEM_SELECTED_ACTION,
-  PROPERTY_ITEM_SELECT_ALL_ACTION
 } from "../../actions/actions";
 import {AddPropertyButton} from "./add-property-button";
 import {PropertyCategories} from "./property-categories";
 import {PropertyHeaderRow} from "./property-header-row";
+import {PropertyNoItemMessage} from "./property-no-item-message";
 
 class PropertyListComponent extends React.Component {
   constructor(props) {
@@ -87,15 +84,7 @@ class PropertyListComponent extends React.Component {
         <table className="wp-list-table widefat striped wl-table wl-container-full">
           <PropertyHeaderRow {...this.props}/>
           <tbody>
-            {0 ===
-              this.props.propertyList.filter(property => property.propertyStatus === this.props.chosenCategory)
-                .length && (
-              <tr>
-                <td colSpan={2} className="text-center">
-                  No Active properties present, click on add new
-                </td>
-              </tr>
-            )}
+            <PropertyNoItemMessage {...this.props} />
             {this.props.propertyList
               .filter(property => property.propertyStatus === this.props.chosenCategory)
               .map((property, index) => {
