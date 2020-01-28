@@ -17,10 +17,7 @@ import PropTypes from "prop-types";
  */
 import PropertyComponent from "./property-component";
 import PropertyListItemComponent from "./property-list-item-component";
-import {
-  OPEN_OR_CLOSE_PROPERTY_ACTION,
-  PROPERTY_ITEM_SELECTED_ACTION,
-} from "../../actions/actions";
+import {OPEN_OR_CLOSE_PROPERTY_ACTION} from "../../actions/actions";
 import {AddPropertyButton} from "./add-property-button";
 import {PropertyCategories} from "./property-categories";
 import {PropertyHeaderRow} from "./property-header-row";
