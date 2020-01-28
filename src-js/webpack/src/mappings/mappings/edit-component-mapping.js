@@ -18,7 +18,8 @@ class EditComponentMapping {
         rule_field_two: rule.ruleFieldTwoValue,
         rule_logic_field: rule.ruleLogicFieldValue
       };
-      // @@todo what's this?
+      // If the rule id is not zero, then we set the rule id, if it is zero, then we dont
+      // pass the rule id parameter, REST API creates a new rule item if this param is not passed.
       rule.rule_id ? (single_rule["rule_id"] = rule.rule_id) : rule.rule_id;
       return single_rule;
     });
@@ -56,7 +57,8 @@ class EditComponentMapping {
    */
   static mapPropertyAPIKeysToUi(property_list) {
     return property_list.map(property => ({
-      // @@todo camelCase here pls.
+      // variable case changed because after mapping this data is going
+      // to the REST API, so camelcase cant be used here.
       propertyHelpText: property.property_name,
       fieldTypeHelpText: property.field_type,
       fieldHelpText: property.field_name,
