@@ -10,6 +10,7 @@
 namespace Wordlift\Autocomplete;
 
 use Wordlift_Entity_Service;
+use Wordlift_Entity_Type_Taxonomy_Service;
 use Wordlift_Post_Excerpt_Helper;
 
 class Local_Autocomplete_Service extends Abstract_Autocomplete_Service {
@@ -18,16 +19,29 @@ class Local_Autocomplete_Service extends Abstract_Autocomplete_Service {
 	 * @inheritDoc
 	 */
 	public function query( $query, $scope, $excludes ) {
+		global $wpdb;
 
-		$args = Wordlift_Entity_Service::add_criterias( array(
-			'numberposts'         => 50,
-			'post_status'         => 'any',
-			's'                   => $query,
-			'ignore_sticky_posts' => true,
-			'suppress_filters'    => true,
+		$posts = $wpdb->get_results( $wpdb->prepare(
+			"SELECT * FROM {$wpdb->posts} p"
+			. " INNER JOIN {$wpdb->term_relationships} tr"
+			. "  ON tr.object_id = p.ID"
+			. " INNER JOIN {$wpdb->term_taxonomy} tt"
+			. "  ON tt.taxonomy = %s AND tt.term_taxonomy_id = tr.term_taxonomy_id"
+			. " INNER JOIN {$wpdb->terms} t"
+			. "  ON t.term_id = tt.term_id AND t.name != %s"
+			. " LEFT OUTER JOIN {$wpdb->postmeta} pm"
+			. "  ON pm.meta_key = %s AND pm.post_id = p.ID"
+			. " WHERE p.post_type IN ( '" . implode( "', '", array_map( 'esc_sql', Wordlift_Entity_Service::valid_entity_post_types() ) ) . "' )"
+			. "  AND ( p.post_title LIKE %s OR pm.meta_value LIKE %s )"
+			. " LIMIT %d",
+			Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
+			'article',
+			Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY,
+			// `prepare` doesn't support argument number, hence we must repeat the query.
+			'%' . $wpdb->esc_like( $query ) . '%',
+			'%' . $wpdb->esc_like( $query ) . '%',
+			50
 		) );
-
-		$posts = get_posts( $args );
 
 		$results = array_map( function ( $item ) {
 
