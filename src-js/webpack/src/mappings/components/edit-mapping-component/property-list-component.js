@@ -25,12 +25,12 @@ import {AddPropertyButton} from "./add-property-button";
 import {PropertyCategories} from "./property-categories";
 import {PropertyHeaderRow} from "./property-header-row";
 import {PropertyNoItemMessage} from "./property-no-item-message";
+import {PropertyItemCheckbox} from "./property-item-checkbox";
 
 class PropertyListComponent extends React.Component {
   constructor(props) {
     super(props);
     this.switchState = this.switchState.bind(this);
-    this.propertySelectedHandler = this.propertySelectedHandler.bind(this);
     this.renderListComponentBasedOnState = this.renderListComponentBasedOnState.bind(this);
   }
   /**
@@ -45,15 +45,6 @@ class PropertyListComponent extends React.Component {
     };
     this.props.dispatch(action);
   }
-
-  propertySelectedHandler(propertyId) {
-    const action = PROPERTY_ITEM_SELECTED_ACTION;
-    action.payload = {
-      propertyId: propertyId
-    };
-    this.props.dispatch(action);
-  }
-
   /**
    * It Renders depends on the isOpenedOrAddedByUser boolean present
    * in the property object.
@@ -90,15 +81,7 @@ class PropertyListComponent extends React.Component {
               .map((property, index) => {
                 return (
                   <tr key={index} className="wl-property-list-item-container">
-                    <td className="wl-check-column">
-                      <input
-                        type="checkbox"
-                        checked={property.isSelectedByUser}
-                        onClick={() => {
-                          this.propertySelectedHandler(property.property_id);
-                        }}
-                      />
-                    </td>
+                    <PropertyItemCheckbox property={property}/>
                     <td>{this.renderListComponentBasedOnState(property, index)}</td>
                     <td />
                   </tr>
