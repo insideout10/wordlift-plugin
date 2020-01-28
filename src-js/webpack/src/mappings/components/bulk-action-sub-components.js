@@ -10,6 +10,10 @@
  * External dependencies
  */
 import React from "react";
+
+/**
+ * Internal dependencies.
+ */
 import { TRASH_CATEGORY, ACTIVE_CATEGORY } from "./category-component";
 
 export const BULK_OPTIONS = {
@@ -51,8 +55,7 @@ const TrashOptions = () => {
  * @param {Object} props
  */
 export const BulkActionOptions = props => {
-  // @@todo choosen ---> chosen.
-  switch (props.choosenCategory) {
+  switch (props.chosenCategory) {
     case TRASH_CATEGORY:
       return <TrashOptions />;
     case ACTIVE_CATEGORY:

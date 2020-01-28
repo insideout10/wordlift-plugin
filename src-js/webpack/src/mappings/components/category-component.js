@@ -15,11 +15,11 @@ import PropTypes from "prop-types";
 export const TRASH_CATEGORY = "trash";
 export const ACTIVE_CATEGORY = "active";
 
-const SingleCategoryItem = ({ choosenCategory, category, source, categorySelectHandler, categoryKeyName }) => {
+const SingleCategoryItem = ({ chosenCategory, category, source, categorySelectHandler, categoryKeyName }) => {
   return (
     <span className="wl-mappings-link wl-category-title">
       &nbsp;
-      {category === choosenCategory ? (
+      {category === chosenCategory ? (
         <b>
           <a className="wl-mappings-link-active">
             {category}&nbsp;(

@@ -40,7 +40,7 @@ class _EditMappingPropertyBulkAction extends  React.Component {
     render() {
         return (
             <BulkActionComponent
-                choosenCategory={this.props.chosenCategory}
+                chosenCategory={this.props.chosenCategory}
                 bulkActionSubmitHandler={this.bulkActionSubmitHandler}
                 bulkActionOptionChangedHandler={this.bulkActionOptionChangedHandler}
             />

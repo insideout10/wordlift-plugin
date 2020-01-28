@@ -11,6 +11,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+
+/**
+ * Internal dependencies.
+ */
 import {ACTIVE_CATEGORY, TRASH_CATEGORY} from "../category-component";
 import {MAPPING_ITEM_SELECTED_ACTION} from "../../actions/actions";
 import {MappingListItemActiveCategoryOptions} from "./mapping-list-item-active-category-options";

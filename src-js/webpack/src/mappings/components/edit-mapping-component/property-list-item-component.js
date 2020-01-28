@@ -129,7 +129,7 @@ class PropertyListItemComponent extends React.Component {
       <div className="wl-property-list-item wl-container">
         <div className="wl-col">
           <a className="row-title wl-property-list-item-title">{this.props.propData.propertyHelpText}</a>
-          <div className="row-actions">{this.renderOptionsBasedOnItemCategory(this.props.choosenCategory)}</div>
+          <div className="row-actions">{this.renderOptionsBasedOnItemCategory(this.props.chosenCategory)}</div>
         </div>
       </div>
     );

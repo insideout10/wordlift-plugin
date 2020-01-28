@@ -46,7 +46,7 @@ class _MappingBulkAction extends React.Component {
         return(
             <div className="wl-container wl-container-full">
                 <BulkActionComponent
-                    choosenCategory={this.props.chosenCategory}
+                    chosenCategory={this.props.chosenCategory}
                     bulkActionOptionChangedHandler={this.bulkActionOptionChangedHandler}
                     bulkActionSubmitHandler={this.bulkActionSubmitHandler}
                 />

@@ -44,7 +44,7 @@ class _MappingCategories extends React.Component {
                     categoryKeyName="mappingStatus"
                     categories={["active", "trash"]}
                     categorySelectHandler={this.selectCategory}
-                    choosenCategory={this.props.chosenCategory}
+                    chosenCategory={this.props.chosenCategory}
                 />
                 <br/>
             </React.Fragment>

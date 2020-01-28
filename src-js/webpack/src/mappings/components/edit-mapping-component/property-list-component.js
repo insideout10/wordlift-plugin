@@ -40,7 +40,7 @@ class PropertyListComponent extends React.Component {
   /**
    * It makes property item
    * switch from edit mode to list item mode and vice versa
-   * @param {Number} propertyIndex
+   * @param {Number} propertyId
    */
   switchState(propertyId) {
     const action = OPEN_OR_CLOSE_PROPERTY_ACTION;
@@ -56,7 +56,7 @@ class PropertyListComponent extends React.Component {
   categorySelectHandler(category) {
     const action = PROPERTY_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION;
     action.payload = {
-      choosenCategory: category
+      chosenCategory: category
     };
     this.props.dispatch(action);
   }
@@ -86,7 +86,7 @@ class PropertyListComponent extends React.Component {
     // if it is not opened then return the list item
     return (
       <PropertyListItemComponent
-        choosenCategory={this.props.choosenCategory}
+        chosenCategory={this.props.chosenCategory}
         propData={property}
         switchState={this.switchState}
       />
@@ -100,7 +100,7 @@ class PropertyListComponent extends React.Component {
           categoryKeyName="property_status"
           categories={["active", "trash"]}
           categorySelectHandler={this.categorySelectHandler}
-          choosenCategory={this.props.choosenCategory}
+          chosenCategory={this.props.chosenCategory}
         />
         <br />
         <table className="wp-list-table widefat striped wl-table wl-container-full">
@@ -125,7 +125,7 @@ class PropertyListComponent extends React.Component {
           </thead>
           <tbody>
             {0 ===
-              this.props.propertyList.filter(property => property.property_status === this.props.choosenCategory)
+              this.props.propertyList.filter(property => property.property_status === this.props.chosenCategory)
                 .length && (
               <tr>
                 <td colSpan={2} className="text-center">
@@ -134,7 +134,7 @@ class PropertyListComponent extends React.Component {
               </tr>
             )}
             {this.props.propertyList
-              .filter(property => property.property_status === this.props.choosenCategory)
+              .filter(property => property.property_status === this.props.chosenCategory)
               .map((property, index) => {
                 return (
                   <tr key={index} className="wl-property-list-item-container">
@@ -180,7 +180,7 @@ const mapStateToProps = function(state) {
   return {
     propertyHeaderCheckboxClicked: state.propertyHeaderCheckboxClicked,
     propertyList: state.PropertyListData.propertyList,
-    choosenCategory: state.PropertyListData.choosenPropertyCategory
+    chosenCategory: state.PropertyListData.choosenPropertyCategory
   };
 };
 
