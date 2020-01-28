@@ -14,7 +14,7 @@ import {connect} from "react-redux"
 /**
  * Internal dependencies.
  */
-import {ADD_MAPPING_ACTION} from "../../actions/actions";
+import {ADD_MAPPING_ACTION} from "../../../actions/actions";
 
 class _AddPropertyButton extends React.Component {
     constructor(props) {

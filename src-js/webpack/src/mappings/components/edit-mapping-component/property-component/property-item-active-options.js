@@ -12,7 +12,7 @@ import React from "react";
 /**
  * Internal dependencies.
  */
-import {TRASH_CATEGORY} from "../category-component";
+import {TRASH_CATEGORY} from "../../category-component";
 import {DUPLICATE_PROPERTY, RowActionItem} from "./property-list-item-component";
 
 export const PropertyItemActiveOptions = ({ switchState,makeCrudOperationOnPropertyId, propData, changeCategoryPropertyItem }) => {

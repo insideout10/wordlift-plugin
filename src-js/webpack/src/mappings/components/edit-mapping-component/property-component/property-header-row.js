@@ -14,7 +14,7 @@ import {connect} from "react-redux"
 /**
  * Internal dependencies.
  */
-import {PROPERTY_ITEM_SELECT_ALL_ACTION} from "../../actions/actions";
+import {PROPERTY_ITEM_SELECT_ALL_ACTION} from "../../../actions/actions";
 
 class _PropertyHeaderRow extends React.Component {
     constructor(props) {

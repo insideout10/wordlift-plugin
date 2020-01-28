@@ -16,7 +16,7 @@ import {connect} from "react-redux"
  */
 import {
     PROPERTY_ITEM_SELECTED_ACTION,
-} from "../../actions/actions";
+} from "../../../actions/actions";
 
 class _PropertyItemCheckbox extends React.Component {
     constructor(props) {

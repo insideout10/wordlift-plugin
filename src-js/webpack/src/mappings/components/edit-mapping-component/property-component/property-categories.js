@@ -14,8 +14,8 @@ import {connect} from "react-redux"
 /**
  * Internal dependencies.
  */
-import {PROPERTY_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION} from "../../actions/actions";
-import CategoryComponent from "../category-component";
+import {PROPERTY_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION} from "../../../actions/actions";
+import CategoryComponent from "../../category-component";
 
 class _PropertyCategories extends React.Component {
     constructor(props) {

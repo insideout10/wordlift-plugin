@@ -1,5 +1,5 @@
 /**
- * FieldTypeField : it displays the field type field in the edit mappings ui
+ * PropertyNameField : it displays the property name field in the edit mappings ui
  *
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * @since 3.25.0
@@ -14,27 +14,26 @@ import {connect} from "react-redux"
 /**
  * Internal dependencies.
  */
-import {PROPERTY_DATA_CHANGED_ACTION} from "../../actions/actions";
-import SelectComponent from "../select-component";
+import {PropertyInputField} from "./property-component";
+import {PROPERTY_DATA_CHANGED_ACTION} from "../../../actions/actions";
 
-class _FieldTypeField extends React.Component {
+class _PropertyNameField extends React.Component {
     render() {
         return(
             <tr>
-                <td colSpan="2">Field Type</td>
+                <td colSpan="2">Property Name</td>
                 <td colSpan="3">
-                    <SelectComponent
-                        className="wl-form-select"
-                        options={this.props.fieldTypeHelpTextOptions}
-                        value={this.props.propData.fieldTypeHelpText}
-                        onChange={event => {
+                    <PropertyInputField
+                        propData={this.props.propData}
+                        handleChangeForPropertyField={ (fieldKey, event) => {
                             PROPERTY_DATA_CHANGED_ACTION.payload = {
-                                fieldKey: "fieldTypeHelpText",
+                                fieldKey: fieldKey,
                                 value: event.target.value,
                                 propertyId: this.props.propData.property_id
                             };
                             this.props.dispatch(PROPERTY_DATA_CHANGED_ACTION);
                         }}
+                        inputKeyName="propertyHelpText"
                     />
                 </td>
             </tr>
@@ -42,4 +41,4 @@ class _FieldTypeField extends React.Component {
     }
 }
 
-export const FieldTypeField = connect()(_FieldTypeField);
+export const PropertyNameField = connect()(_PropertyNameField);

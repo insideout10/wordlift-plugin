@@ -14,8 +14,8 @@ import {connect} from "react-redux"
 /**
  * Internal dependencies.
  */
-import {PROPERTY_DATA_CHANGED_ACTION} from "../../actions/actions";
-import SelectComponent from "../select-component";
+import {PROPERTY_DATA_CHANGED_ACTION} from "../../../actions/actions";
+import SelectComponent from "../../select-component";
 
 class _TransformFunctionField extends React.Component {
     render() {

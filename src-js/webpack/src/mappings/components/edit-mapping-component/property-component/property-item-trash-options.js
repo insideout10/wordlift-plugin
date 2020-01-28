@@ -12,7 +12,7 @@ import React from "react";
 /**
  * Internal dependencies.
  */
-import {ACTIVE_CATEGORY} from "../category-component";
+import {ACTIVE_CATEGORY} from "../../category-component";
 import {DELETE_PROPERTY_PERMANENT, RowActionItem} from "./property-list-item-component";
 
 export const PropertyItemTrashOptions = ({makeCrudOperationOnPropertyId, propData, changeCategoryPropertyItem }) => {

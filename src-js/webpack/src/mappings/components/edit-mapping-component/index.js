@@ -14,7 +14,7 @@ import { connect } from "react-redux";
 /**
  * Internal dependencies
  */
-import PropertyListComponent from "./property-list-component";
+import PropertyListComponent from "./property-component/property-list-component";
 import {
     EDIT_MAPPING_REQUEST_MAPPING_ITEM_ACTION
 } from "../../actions/actions";

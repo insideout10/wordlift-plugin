@@ -14,8 +14,8 @@ import { connect } from "react-redux";
 /**
  * Internal dependencies.
  */
-import { PROPERTY_ITEM_CATEGORY_CHANGED_ACTION, PROPERTY_ITEM_CRUD_OPERATION_ACTION } from "../../actions/actions";
-import { TRASH_CATEGORY, ACTIVE_CATEGORY } from "../category-component";
+import { PROPERTY_ITEM_CATEGORY_CHANGED_ACTION, PROPERTY_ITEM_CRUD_OPERATION_ACTION } from "../../../actions/actions";
+import { TRASH_CATEGORY, ACTIVE_CATEGORY } from "../../category-component";
 import {PropertyItemActiveOptions} from "./property-item-active-options";
 import {PropertyItemTrashOptions} from "./property-item-trash-options";
 

@@ -32,7 +32,7 @@ import {
     MAPPING_TERMS_CHANGED, EDIT_MAPPING_TERMS_FETCHED_FOR_TAXONOMY
 } from '../actions/action-types'
 import { createReducer } from '@reduxjs/toolkit'
-import { DELETE_PROPERTY_PERMANENT, DUPLICATE_PROPERTY } from '../components/edit-mapping-component/property-list-item-component'
+import { DELETE_PROPERTY_PERMANENT, DUPLICATE_PROPERTY } from '../components/edit-mapping-component/property-component/property-list-item-component'
 import { BULK_OPTIONS } from '../components/bulk-action-sub-components'
 import { TRASH_CATEGORY, ACTIVE_CATEGORY } from '../components/category-component'
 
