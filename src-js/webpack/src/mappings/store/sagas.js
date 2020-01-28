@@ -12,7 +12,7 @@ import { call, put, takeLatest, select } from "redux-saga/effects";
 /**
  * Internal dependencies
  */
-import API from "./api";
+import API from "../api/api";
 import {
   MAPPING_ITEMS_BULK_APPLY,
   MAPPING_LIST_CHANGED,

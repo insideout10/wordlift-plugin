@@ -12,7 +12,7 @@ import { call, put, takeLatest, select } from "redux-saga/effects";
 /**
  * Internal dependencies
  */
-import EDIT_MAPPING_API from "./edit-mapping-api";
+import EDIT_MAPPING_API from "../api/edit-mapping-api";
 import {
   EDIT_MAPPING_SAVE_MAPPING_ITEM_ACTION,
   EDIT_MAPPING_TERMS_FETCHED_FOR_TAXONOMY_ACTION,
