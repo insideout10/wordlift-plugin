@@ -98,7 +98,7 @@ PropertyListComponent.propTypes = {
 
 const mapStateToProps = function(state) {
   return {
-    propertyHeaderCheckboxClicked: state.propertyHeaderCheckboxClicked,
+    propertyHeaderCheckboxClicked: state.PropertyListData.propertyHeaderCheckboxClicked,
     propertyList: state.PropertyListData.propertyList,
     chosenCategory: state.PropertyListData.chosenPropertyCategory
   };

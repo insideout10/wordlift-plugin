@@ -31,10 +31,10 @@ class _PropertyHeaderRow extends React.Component {
           <th className="wl-check-column">
             <input
               type="checkbox"
-              checked={this.props.propertyHeaderCheckboxClicked}
               onClick={() => {
                 this.selectAllPropertyHandler();
               }}
+              checked={this.props.propertyHeaderCheckboxClicked === true}
             />
           </th>
           <th style={{ width: "30%" }}>
