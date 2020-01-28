@@ -11,11 +11,12 @@
  */
 import React from "react";
 import {connect} from "react-redux";
-import BulkActionComponent from "../bulk-action-component";
-import {BULK_ACTION_SELECTION_CHANGED_ACTION, PROPERTY_ITEMS_BULK_ACTION} from "../../actions/actions";
+
 /**
  * Internal dependencies.
  */
+import BulkActionComponent from "../bulk-action-component";
+import {BULK_ACTION_SELECTION_CHANGED_ACTION, PROPERTY_ITEMS_BULK_ACTION} from "../../actions/actions";
 
 class _EditMappingPropertyBulkAction extends  React.Component {
     constructor(props) {

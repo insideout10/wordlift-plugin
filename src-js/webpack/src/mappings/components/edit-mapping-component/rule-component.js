@@ -21,47 +21,20 @@ import {
   MAPPING_TERMS_CHANGED_ACTION, EDIT_MAPPING_REQUEST_TERMS_ACTION
 } from "../../actions/actions";
 import {EDIT_MAPPING_REQUEST_TERMS} from "../../actions/action-types";
+import {AddRuleButton} from "./add-rule-button";
+import {DeleteRuleButton} from "./delete-rule-button";
 
 class RuleComponent extends React.Component {
   constructor(props) {
     super(props);
-
-    this.handleAddNewRule = this.handleAddNewRule.bind(this);
-    this.handleDeleteRule = this.handleDeleteRule.bind(this);
     this.handleSelectFieldChange = this.handleSelectFieldChange.bind(this);
     this.fetchTermsForSelectedTaxonomyFromAPI = this.fetchTermsForSelectedTaxonomyFromAPI.bind(this);
 
     // Load terms for the selected taxonomy.
     this.fetchTermsForSelectedTaxonomyFromAPI(this.props.ruleProps.ruleFieldOneValue);
   }
-  /**
-   * Adds a new rule after the current rule index
-   *
-   * @param {Number} ruleGroupIndex Index of the rule group which the rule belongs to
-   * @param {Number} ruleIndex Index of the rule
-   */
-  handleAddNewRule(ruleGroupIndex, ruleIndex) {
-    const action = ADD_NEW_RULE_ACTION;
-    action.payload = {
-      ruleGroupIndex: ruleGroupIndex,
-      ruleIndex: ruleIndex
-    };
-    this.props.dispatch(action);
-  }
-  /**
-   * Delete current rule at ruleIndex
-   *
-   * @param {Number} ruleGroupIndex Index of the rule group which the rule belongs to
-   * @param {Number} ruleIndex Index of the rule
-   */
-  handleDeleteRule(ruleGroupIndex, ruleIndex) {
-    const action = DELETE_RULE_ACTION;
-    action.payload = {
-      ruleGroupIndex: ruleGroupIndex,
-      ruleIndex: ruleIndex
-    };
-    this.props.dispatch(action);
-  }
+
+
   /**
    * Saves when a change occur to selection field.
    *
@@ -138,22 +111,8 @@ class RuleComponent extends React.Component {
             className="wl-field-two-select wl-form-select"
           />
         </div>
-        <div className="wl-col">
-          <button
-            className="button action wl-and-button"
-            onClick={() => this.handleAddNewRule(this.props.ruleGroupIndex, this.props.ruleIndex)}
-          >
-            And
-          </button>
-        </div>
-        {(0 !== this.props.ruleGroupIndex || 0 !== this.props.ruleIndex) && (
-          <div className="wl-col">
-            <button
-              className="button action wl-remove-button dashicons dashicons-trash"
-              onClick={() => this.handleDeleteRule(this.props.ruleGroupIndex, this.props.ruleIndex)}
-            />
-          </div>
-        )}
+        <AddRuleButton {...this.props} />
+        <DeleteRuleButton {...this.props} />
       </div>
     );
   }
