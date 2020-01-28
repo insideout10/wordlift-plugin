@@ -15,8 +15,6 @@ import { connect } from "react-redux";
 /**
  * Internal dependencies
  */
-import SelectComponent from "../select-component";
-import { PROPERTY_DATA_CHANGED_ACTION } from "../../actions/actions";
 import {PropertyNameField} from "./property-name-field";
 import {FieldTypeField} from "./field-type-field";
 import {FieldNameField} from "./field-name-field";
