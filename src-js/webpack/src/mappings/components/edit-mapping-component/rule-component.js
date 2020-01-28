@@ -29,11 +29,12 @@ class RuleComponent extends React.Component {
     super(props);
     this.handleSelectFieldChange = this.handleSelectFieldChange.bind(this);
     this.fetchTermsForSelectedTaxonomyFromAPI = this.fetchTermsForSelectedTaxonomyFromAPI.bind(this);
+  }
 
+  componentDidMount() {
     // Load terms for the selected taxonomy.
     this.fetchTermsForSelectedTaxonomyFromAPI(this.props.ruleProps.ruleFieldOneValue);
   }
-
 
   /**
    * Saves when a change occur to selection field.

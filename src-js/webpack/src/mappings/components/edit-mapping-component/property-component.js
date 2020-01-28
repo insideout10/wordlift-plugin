@@ -17,8 +17,10 @@ import { connect } from "react-redux";
  */
 import SelectComponent from "../select-component";
 import { PROPERTY_DATA_CHANGED_ACTION } from "../../actions/actions";
+import {PropertyNameField} from "./property-name-field";
+import {FieldTypeField} from "./field-type-field";
 
-const PropertyInputField = ({ propData, handleChangeForPropertyField, inputKeyName }) => {
+export const PropertyInputField = ({ propData, handleChangeForPropertyField, inputKeyName }) => {
   return (
     <React.Fragment>
       <input
@@ -35,7 +37,6 @@ const PropertyInputField = ({ propData, handleChangeForPropertyField, inputKeyNa
 class PropertyComponent extends React.Component {
   constructor(props) {
     super(props);
-
     this.handleChangeForPropertyField = this.handleChangeForPropertyField.bind(this);
     this.getInputFieldForFieldName = this.getInputFieldForFieldName.bind(this);
   }
@@ -52,7 +53,6 @@ class PropertyComponent extends React.Component {
       propertyId: this.props.propData.property_id
     };
     this.props.dispatch(action);
-    console.log(action);
   }
 
   /**
@@ -93,29 +93,8 @@ class PropertyComponent extends React.Component {
         <br />
         <table className="wl-container wl-container-full wl-spaced-table wl-property-edit-item">
           <tbody>
-            <tr>
-              <td colspan="2">Property Name</td>
-              <td colspan="3">
-                <PropertyInputField
-                  propData={this.props.propData}
-                  handleChangeForPropertyField={this.handleChangeForPropertyField}
-                  inputKeyName="propertyHelpText"
-                />
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2">Field Type</td>
-              <td colspan="3">
-                <SelectComponent
-                  className="wl-form-select"
-                  options={this.props.fieldTypeHelpTextOptions}
-                  value={this.props.propData.fieldTypeHelpText}
-                  onChange={event => {
-                    this.handleChangeForPropertyField("fieldTypeHelpText", event);
-                  }}
-                ></SelectComponent>
-              </td>
-            </tr>
+            <PropertyNameField {...this.props}/>
+            <FieldTypeField {...this.props}/>
             <tr>
               <td colspan="2">Field Text</td>
               <td colspan="3">{this.getInputFieldForFieldName()}</td>
