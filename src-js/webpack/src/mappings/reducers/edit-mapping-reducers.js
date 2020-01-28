@@ -117,7 +117,7 @@ export const RuleGroupReducer = createReducer(null, {
    * @return {null}
    */
   const changePropertyItemCategory = ( state, propertyIndex, category ) => {
-    state.propertyList[propertyIndex].property_status = category
+    state.propertyList[propertyIndex].propertyStatus = category
   }
 
   /**
@@ -208,7 +208,7 @@ export const RuleGroupReducer = createReducer(null, {
             fieldHelpText: "",
             transformHelpText: "",
             // Default category is active
-            property_status: 'active',
+            propertyStatus: 'active',
             isPropertyAddedViaUI: true,
         })
     },
@@ -231,7 +231,7 @@ export const RuleGroupReducer = createReducer(null, {
         const propertyIndex = state.propertyList
         .map( el => el.property_id )
         .indexOf( propertyId )
-        state.propertyList[propertyIndex].property_status = propertyCategory
+        state.propertyList[propertyIndex].propertyStatus = propertyCategory
     },
 
     /** When the user clicks on the category of the property list
@@ -278,7 +278,7 @@ export const RuleGroupReducer = createReducer(null, {
     [ PROPERTY_ITEM_SELECT_ALL ] : ( state, action ) => {
         state.propertyHeaderCheckboxClicked = !state.propertyHeaderCheckboxClicked
         state.propertyList = state.propertyList.map( (item) => {
-            if ( item.property_status === state.choosenPropertyCategory ) {
+            if ( item.propertyStatus === state.choosenPropertyCategory ) {
                 item.isSelectedByUser = !item.isSelectedByUser
             }
             return item

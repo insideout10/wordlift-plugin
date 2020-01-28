@@ -25,16 +25,15 @@ import {
   PROPERTY_ITEM_SELECTED_ACTION,
   PROPERTY_ITEM_SELECT_ALL_ACTION
 } from "../../actions/actions";
+import {AddPropertyButton} from "./add-property-button";
+import {PropertyCategories} from "./property-categories";
+import {PropertyHeaderRow} from "./property-header-row";
 
 class PropertyListComponent extends React.Component {
   constructor(props) {
     super(props);
-
     this.switchState = this.switchState.bind(this);
-    this.handleAddMappingClick = this.handleAddMappingClick.bind(this);
-    this.categorySelectHandler = this.categorySelectHandler.bind(this);
     this.propertySelectedHandler = this.propertySelectedHandler.bind(this);
-    this.selectAllPropertyHandler = this.selectAllPropertyHandler.bind(this);
     this.renderListComponentBasedOnState = this.renderListComponentBasedOnState.bind(this);
   }
   /**
@@ -49,17 +48,7 @@ class PropertyListComponent extends React.Component {
     };
     this.props.dispatch(action);
   }
-  // triggered when the add mapping button is clicked
-  handleAddMappingClick() {
-    this.props.dispatch(ADD_MAPPING_ACTION);
-  }
-  categorySelectHandler(category) {
-    const action = PROPERTY_LIST_CHOOSEN_CATEGORY_CHANGED_ACTION;
-    action.payload = {
-      chosenCategory: category
-    };
-    this.props.dispatch(action);
-  }
+
   propertySelectedHandler(propertyId) {
     const action = PROPERTY_ITEM_SELECTED_ACTION;
     action.payload = {
@@ -67,9 +56,7 @@ class PropertyListComponent extends React.Component {
     };
     this.props.dispatch(action);
   }
-  selectAllPropertyHandler() {
-    this.props.dispatch(PROPERTY_ITEM_SELECT_ALL_ACTION);
-  }
+
   /**
    * It Renders depends on the isOpenedOrAddedByUser boolean present
    * in the property object.
@@ -95,37 +82,13 @@ class PropertyListComponent extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <CategoryComponent
-          source={this.props.propertyList}
-          categoryKeyName="property_status"
-          categories={["active", "trash"]}
-          categorySelectHandler={this.categorySelectHandler}
-          chosenCategory={this.props.chosenCategory}
-        />
+        <PropertyCategories {...this.props}/>
         <br />
         <table className="wp-list-table widefat striped wl-table wl-container-full">
-          <thead>
-            <tr>
-              <th className="wl-check-column">
-                <input
-                  type="checkbox"
-                  checked={this.props.propertyHeaderCheckboxClicked}
-                  onClick={() => {
-                    this.selectAllPropertyHandler();
-                  }}
-                />
-              </th>
-              <th style={{ width: "30%" }}>
-                <b>Property</b>
-              </th>
-              <th>
-                <b>Field</b>
-              </th>
-            </tr>
-          </thead>
+          <PropertyHeaderRow {...this.props}/>
           <tbody>
             {0 ===
-              this.props.propertyList.filter(property => property.property_status === this.props.chosenCategory)
+              this.props.propertyList.filter(property => property.propertyStatus === this.props.chosenCategory)
                 .length && (
               <tr>
                 <td colSpan={2} className="text-center">
@@ -134,7 +97,7 @@ class PropertyListComponent extends React.Component {
               </tr>
             )}
             {this.props.propertyList
-              .filter(property => property.property_status === this.props.chosenCategory)
+              .filter(property => property.propertyStatus === this.props.chosenCategory)
               .map((property, index) => {
                 return (
                   <tr key={index} className="wl-property-list-item-container">
@@ -152,19 +115,7 @@ class PropertyListComponent extends React.Component {
                   </tr>
                 );
               })}
-            <tr className="wl-text-right">
-              <td colSpan="3">
-                <br />
-                <button
-                  className="button action bg-primary text-white wl-add-mapping"
-                  style={{ margin: "auto" }}
-                  onClick={this.handleAddMappingClick}
-                >
-                  Add Mapping
-                </button>{" "}
-                <br />
-              </td>
-            </tr>
+              <AddPropertyButton/>
           </tbody>
         </table>
       </React.Fragment>

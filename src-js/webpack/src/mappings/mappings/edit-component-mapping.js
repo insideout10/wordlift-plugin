@@ -64,7 +64,7 @@ class EditComponentMapping {
       fieldHelpText: property.field_name,
       transformHelpText: property.transform_function,
       property_id: parseInt(property.property_id),
-      property_status: property.property_status,
+      propertyStatus: property.property_status,
       isOpenedOrAddedByUser: false,
       isSelectedByUser: false,
       isPropertyAddedViaUI: false
