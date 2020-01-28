@@ -239,7 +239,7 @@ export const RuleGroupReducer = createReducer(null, {
      */
     [ PROPERTY_LIST_SELECTED_CATEGORY_CHANGED ] : ( state, action ) => {
         const { chosenCategory } = action.payload
-        state.choosenPropertyCategory = chosenCategory
+        state.chosenPropertyCategory = chosenCategory
     },
 
     /**
@@ -278,7 +278,7 @@ export const RuleGroupReducer = createReducer(null, {
     [ PROPERTY_ITEM_SELECT_ALL ] : ( state, action ) => {
         state.propertyHeaderCheckboxClicked = !state.propertyHeaderCheckboxClicked
         state.propertyList = state.propertyList.map( (item) => {
-            if ( item.propertyStatus === state.choosenPropertyCategory ) {
+            if ( item.propertyStatus === state.chosenPropertyCategory ) {
                 item.isSelectedByUser = !item.isSelectedByUser
             }
             return item

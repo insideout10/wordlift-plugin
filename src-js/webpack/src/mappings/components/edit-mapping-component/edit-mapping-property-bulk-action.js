@@ -49,5 +49,5 @@ class _EditMappingPropertyBulkAction extends  React.Component {
 }
 
 export const EditMappingPropertyBulkAction = connect( state => ({
-    chosenCategory: state.PropertyListData.choosenPropertyCategory
+    chosenCategory: state.PropertyListData.chosenPropertyCategory
 }))(_EditMappingPropertyBulkAction);

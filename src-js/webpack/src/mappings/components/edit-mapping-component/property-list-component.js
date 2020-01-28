@@ -100,7 +100,7 @@ const mapStateToProps = function(state) {
   return {
     propertyHeaderCheckboxClicked: state.propertyHeaderCheckboxClicked,
     propertyList: state.PropertyListData.propertyList,
-    chosenCategory: state.PropertyListData.choosenPropertyCategory
+    chosenCategory: state.PropertyListData.chosenPropertyCategory
   };
 };
 
