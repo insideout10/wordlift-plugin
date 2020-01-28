@@ -15,11 +15,11 @@ import { connect } from "react-redux";
 /**
  * Internal dependencies
  */
-import {PropertyNameField} from "./property-name-field";
-import {FieldTypeField} from "./field-type-field";
-import {FieldNameField} from "./field-name-field";
-import {TransformFunctionField} from "./transform-function-field";
-import {PropertyCloseMappingButton} from "./property-close-mapping-button";
+import { PropertyNameField } from "./property-name-field";
+import { FieldTypeField } from "./field-type-field";
+import { FieldNameField } from "./field-name-field";
+import { TransformFunctionField } from "./transform-function-field";
+import { PropertyCloseMappingButton } from "./property-close-mapping-button";
 
 export const PropertyInputField = ({ propData, handleChangeForPropertyField, inputKeyName }) => {
   return (
@@ -39,7 +39,6 @@ class PropertyComponent extends React.Component {
   constructor(props) {
     super(props);
   }
-
   render() {
     return (
       <React.Fragment>

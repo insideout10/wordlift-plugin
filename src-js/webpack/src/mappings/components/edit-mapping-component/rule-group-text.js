@@ -14,18 +14,18 @@ import React from "react";
  * Internal dependencies.
  */
 
-export const RuleGroupText = ({ruleGroupList, index}) => {
-    return (
-        <React.Fragment>
-            {// dont show extra `or` text if there
-                // is no rule group below
-                index !== ruleGroupList.length - 1 && (
-                <div className="wl-container">
-                    <div className="wl-col">
-                        <b>Or</b>
-                    </div>
-                </div>
-            )}
-        </React.Fragment>
-    )
+export const RuleGroupText = ({ ruleGroupList, index }) => {
+  return (
+    <React.Fragment>
+      {// dont show extra `or` text if there
+      // is no rule group below
+      index !== ruleGroupList.length - 1 && (
+        <div className="wl-container">
+          <div className="wl-col">
+            <b>Or</b>
+          </div>
+        </div>
+      )}
+    </React.Fragment>
+  );
 };

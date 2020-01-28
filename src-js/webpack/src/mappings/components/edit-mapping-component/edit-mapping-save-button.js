@@ -9,35 +9,35 @@
  * External dependencies
  */
 import React from "react";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 /**
  * Internal dependencies.
  */
-import {EDIT_MAPPING_SAVE_MAPPING_ITEM_ACTION} from "../../actions/actions";
+import { EDIT_MAPPING_SAVE_MAPPING_ITEM_ACTION } from "../../actions/actions";
 
 class _EditMappingSaveButton extends React.Component {
-    constructor(props) {
-        super(props);
-        this.saveMappingItem = this.saveMappingItem.bind(this)
-    }
-    saveMappingItem() {
-        EDIT_MAPPING_SAVE_MAPPING_ITEM_ACTION.payload = {
-            mappingData: this.props.mappingData
-        };
-        this.props.dispatch( EDIT_MAPPING_SAVE_MAPPING_ITEM_ACTION )
-    }
-    render() {
-        return (
-            <div className="wl-col wl-align-right">
-                <button className="button action" onClick={this.saveMappingItem} disabled={this.props.title === ""}>
-                    Save
-                </button>
-            </div>
-        )
-    }
+  constructor(props) {
+    super(props);
+    this.saveMappingItem = this.saveMappingItem.bind(this);
+  }
+  saveMappingItem() {
+    EDIT_MAPPING_SAVE_MAPPING_ITEM_ACTION.payload = {
+      mappingData: this.props.mappingData
+    };
+    this.props.dispatch(EDIT_MAPPING_SAVE_MAPPING_ITEM_ACTION);
+  }
+  render() {
+    return (
+      <div className="wl-col wl-align-right">
+        <button className="button action" onClick={this.saveMappingItem} disabled={this.props.title === ""}>
+          Save
+        </button>
+      </div>
+    );
+  }
 }
 
-export const EditMappingSaveButton = connect( state => ({
-    mappingData: state,
-    title: state.TitleSectionData.title,
-}))(_EditMappingSaveButton)
+export const EditMappingSaveButton = connect(state => ({
+  mappingData: state,
+  title: state.TitleSectionData.title
+}))(_EditMappingSaveButton);

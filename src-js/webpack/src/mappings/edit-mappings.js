@@ -20,7 +20,6 @@ import "./mappings.css";
 import "./edit-mappings.css";
 import editMappingStore from "./store/edit-mapping-store";
 
-
 window.addEventListener("load", () => {
   ReactDOM.render(
     <Provider store={editMappingStore}>

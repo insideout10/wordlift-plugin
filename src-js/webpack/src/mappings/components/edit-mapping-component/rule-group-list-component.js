@@ -17,7 +17,6 @@ import { connect } from "react-redux";
  * Internal dependencies
  */
 import RuleGroupComponent from "./rule-group-component";
-import { ADD_NEW_RULE_GROUP_ACTION } from "../../actions/actions";
 import {AddRuleGroupButton} from "./add-rule-group-button";
 import {RuleGroupText} from "./rule-group-text";
 

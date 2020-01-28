@@ -10,18 +10,16 @@
  */
 import React from "react";
 
-export const PropertyNoItemMessage = ( {propertyList, chosenCategory }) => {
-    return (
-        <React.Fragment>
-            {0 === propertyList.filter(property => property.propertyStatus === chosenCategory)
-                .length && (
-                <tr>
-                    <td colSpan={2} className="text-center">
-                        No Active properties present, click on add new
-                    </td>
-                </tr>
-            )}
-        </React.Fragment>
-
-    )
+export const PropertyNoItemMessage = ({ propertyList, chosenCategory }) => {
+  return (
+    <React.Fragment>
+      {0 === propertyList.filter(property => property.propertyStatus === chosenCategory).length && (
+        <tr>
+          <td colSpan={2} className="text-center">
+            No Active properties present, click on add new
+          </td>
+        </tr>
+      )}
+    </React.Fragment>
+  );
 };

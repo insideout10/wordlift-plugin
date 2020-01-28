@@ -23,7 +23,6 @@ class SelectComponent extends React.Component {
     this.renderOptionsForOptionGroup = this.renderOptionsForOptionGroup.bind(this);
   }
 
-
   renderOptions(options) {
     return options.map((item, index) => {
       return (
@@ -43,7 +42,7 @@ class SelectComponent extends React.Component {
     if (this.props.inputDataIsOptionGroup) {
       return this.renderOptionsForOptionGroup();
     } else {
-      return this.renderOptions( this.props.options );
+      return this.renderOptions(this.props.options);
     }
   }
   render() {

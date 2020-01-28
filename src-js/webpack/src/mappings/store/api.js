@@ -35,8 +35,8 @@ function getMappings() {
  * @param {Array} mappingItems List of mapping items which is sent to api after applying the api filter.
  * @returns {Promise<Response>}
  */
-function deleteOrUpdateMappings( type, mappingItems ) {
-  return fetch( rest_url, {
+function deleteOrUpdateMappings(type, mappingItems) {
+  return fetch(rest_url, {
     method: type,
     headers: {
       "content-type": "application/json",
@@ -45,7 +45,9 @@ function deleteOrUpdateMappings( type, mappingItems ) {
     body: JSON.stringify({
       mapping_items: MappingComponentHelper.applyApiFilters(mappingItems)
     })
-  }).then(response => response.json()).then(json => {});
+  })
+    .then(response => response.json())
+    .then(json => {});
 }
 
 /**
@@ -53,7 +55,7 @@ function deleteOrUpdateMappings( type, mappingItems ) {
  * @param mappingItems List of mapping items which needs to be cloned.
  * @returns {Promise<unknown>}
  */
-function cloneMappings( mappingItems ) {
+function cloneMappings(mappingItems) {
   return fetch(rest_url + "/clone", {
     method: "POST",
     headers: {
@@ -61,7 +63,9 @@ function cloneMappings( mappingItems ) {
       "X-WP-Nonce": wl_mapping_nonce
     },
     body: JSON.stringify({ mapping_items: MappingComponentHelper.applyApiFilters(mappingItems) })
-  }).then(response => response.json()).then(json => {});
+  })
+    .then(response => response.json())
+    .then(json => {});
 }
 
 export default { getMappings, deleteOrUpdateMappings, cloneMappings };

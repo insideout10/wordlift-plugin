@@ -16,7 +16,6 @@ import React from "react";
  */
 import RuleGroupListComponent from "./rule-group-list-component";
 
-
 export const EditComponentNotificationArea = ({ notificationData }) => {
   return (
     <React.Fragment>

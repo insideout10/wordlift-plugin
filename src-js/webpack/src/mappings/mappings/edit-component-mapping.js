@@ -12,7 +12,7 @@ class EditComponentMapping {
    *  creates new rule id if there is no id.
    */
   static mapRuleFieldKeysToAPI(rule_list) {
-    return rule_list.map(function (rule) {
+    return rule_list.map(function(rule) {
       const single_rule = {
         rule_field_one: rule.ruleFieldOneValue,
         rule_field_two: rule.ruleFieldTwoValue,
@@ -98,7 +98,7 @@ class EditComponentMapping {
    * creates new rule group if there is no id.
    */
   static mapRuleGroupListKeysToAPI(rule_group_list) {
-    return rule_group_list.map(function (rule_group_item) {
+    return rule_group_list.map(function(rule_group_item) {
       const single_rule_group_item = {
         rules: EditComponentMapping.mapRuleFieldKeysToAPI(rule_group_item.rules)
       };
@@ -137,22 +137,19 @@ class EditComponentMapping {
    * @returns ruleFieldOneOptions with field isTermsFetchedForTaxonomy set based on the value in ruleFieldTwoOptions
    */
   static addNetworkStateToTaxonomyOptions(ruleFieldOneOptions, ruleFieldTwoOptions) {
-    return ruleFieldOneOptions.map((option) => {
-      const taxonomy = option.value
-      if ( taxonomy === 'post_type' ) {
+    return ruleFieldOneOptions.map(option => {
+      const taxonomy = option.value;
+      if (taxonomy === "post_type") {
         // Post types are loaded in the settings itself.
-        option.isTermsFetchedForTaxonomy = true
-      }
-      else {
+        option.isTermsFetchedForTaxonomy = true;
+      } else {
         // Check if atleast one term present for taxonomy, if present then set it to true.
-        const terms = ruleFieldTwoOptions.filter( e => e.taxonomy === taxonomy )
-        option.isTermsFetchedForTaxonomy = ( 0 < terms )
+        const terms = ruleFieldTwoOptions.filter(e => e.taxonomy === taxonomy);
+        option.isTermsFetchedForTaxonomy = 0 < terms;
       }
-      return option
-    })
+      return option;
+    });
   }
-
-
 }
 
 export default EditComponentMapping;

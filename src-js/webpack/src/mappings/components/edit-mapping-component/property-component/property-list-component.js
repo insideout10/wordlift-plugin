@@ -17,12 +17,12 @@ import PropTypes from "prop-types";
  */
 import PropertyComponent from "./property-component";
 import PropertyListItemComponent from "./property-list-item-component";
-import {OPEN_OR_CLOSE_PROPERTY_ACTION} from "../../../actions/actions";
-import {AddPropertyButton} from "./add-property-button";
-import {PropertyCategories} from "./property-categories";
-import {PropertyHeaderRow} from "./property-header-row";
-import {PropertyNoItemMessage} from "./property-no-item-message";
-import {PropertyItemCheckbox} from "./property-item-checkbox";
+import { OPEN_OR_CLOSE_PROPERTY_ACTION } from "../../../actions/actions";
+import { AddPropertyButton } from "./add-property-button";
+import { PropertyCategories } from "./property-categories";
+import { PropertyHeaderRow } from "./property-header-row";
+import { PropertyNoItemMessage } from "./property-no-item-message";
+import { PropertyItemCheckbox } from "./property-item-checkbox";
 
 class PropertyListComponent extends React.Component {
   constructor(props) {
@@ -67,10 +67,10 @@ class PropertyListComponent extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <PropertyCategories {...this.props}/>
+        <PropertyCategories {...this.props} />
         <br />
         <table className="wp-list-table widefat striped wl-table wl-container-full">
-          <PropertyHeaderRow {...this.props}/>
+          <PropertyHeaderRow {...this.props} />
           <tbody>
             <PropertyNoItemMessage {...this.props} />
             {this.props.propertyList
@@ -78,13 +78,13 @@ class PropertyListComponent extends React.Component {
               .map((property, index) => {
                 return (
                   <tr key={index} className="wl-property-list-item-container">
-                    <PropertyItemCheckbox property={property}/>
+                    <PropertyItemCheckbox property={property} />
                     <td>{this.renderListComponentBasedOnState(property, index)}</td>
                     <td />
                   </tr>
                 );
               })}
-              <AddPropertyButton/>
+            <AddPropertyButton />
           </tbody>
         </table>
       </React.Fragment>

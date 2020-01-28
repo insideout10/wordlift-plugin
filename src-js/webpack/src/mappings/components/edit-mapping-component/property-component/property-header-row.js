@@ -9,44 +9,44 @@
  * External dependencies.
  */
 import React from "react";
-import {connect} from "react-redux"
+import { connect } from "react-redux";
 
 /**
  * Internal dependencies.
  */
-import {PROPERTY_ITEM_SELECT_ALL_ACTION} from "../../../actions/actions";
+import { PROPERTY_ITEM_SELECT_ALL_ACTION } from "../../../actions/actions";
 
 class _PropertyHeaderRow extends React.Component {
-    constructor(props) {
-        super(props);
-        this.selectAllPropertyHandler = this.selectAllPropertyHandler.bind(this);
-    }
-    selectAllPropertyHandler() {
-        this.props.dispatch(PROPERTY_ITEM_SELECT_ALL_ACTION);
-    }
-    render() {
-        return (
-            <thead>
-            <tr>
-                <th className="wl-check-column">
-                    <input
-                        type="checkbox"
-                        checked={this.props.propertyHeaderCheckboxClicked}
-                        onClick={() => {
-                            this.selectAllPropertyHandler();
-                        }}
-                    />
-                </th>
-                <th style={{ width: "30%" }}>
-                    <b>Property</b>
-                </th>
-                <th>
-                    <b>Field</b>
-                </th>
-            </tr>
-            </thead>
-        )
-    }
+  constructor(props) {
+    super(props);
+    this.selectAllPropertyHandler = this.selectAllPropertyHandler.bind(this);
+  }
+  selectAllPropertyHandler() {
+    this.props.dispatch(PROPERTY_ITEM_SELECT_ALL_ACTION);
+  }
+  render() {
+    return (
+      <thead>
+        <tr>
+          <th className="wl-check-column">
+            <input
+              type="checkbox"
+              checked={this.props.propertyHeaderCheckboxClicked}
+              onClick={() => {
+                this.selectAllPropertyHandler();
+              }}
+            />
+          </th>
+          <th style={{ width: "30%" }}>
+            <b>Property</b>
+          </th>
+          <th>
+            <b>Field</b>
+          </th>
+        </tr>
+      </thead>
+    );
+  }
 }
 
 export const PropertyHeaderRow = connect()(_PropertyHeaderRow);

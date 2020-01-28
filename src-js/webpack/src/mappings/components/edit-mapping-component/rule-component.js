@@ -18,11 +18,12 @@ import {
   DELETE_RULE_ACTION,
   CHANGE_RULE_FIELD_VALUE_ACTION,
   NOTIFICATION_CHANGED_ACTION,
-  MAPPING_TERMS_CHANGED_ACTION, EDIT_MAPPING_REQUEST_TERMS_ACTION
+  MAPPING_TERMS_CHANGED_ACTION,
+  EDIT_MAPPING_REQUEST_TERMS_ACTION
 } from "../../actions/actions";
-import {EDIT_MAPPING_REQUEST_TERMS} from "../../actions/action-types";
-import {AddRuleButton} from "./add-rule-button";
-import {DeleteRuleButton} from "./delete-rule-button";
+import { EDIT_MAPPING_REQUEST_TERMS } from "../../actions/action-types";
+import { AddRuleButton } from "./add-rule-button";
+import { DeleteRuleButton } from "./delete-rule-button";
 
 class RuleComponent extends React.Component {
   constructor(props) {
@@ -70,12 +71,10 @@ class RuleComponent extends React.Component {
         EDIT_MAPPING_REQUEST_TERMS_ACTION.payload = {
           taxonomy: selectedTaxonomy
         };
-        this.props.dispatch( EDIT_MAPPING_REQUEST_TERMS_ACTION )
+        this.props.dispatch(EDIT_MAPPING_REQUEST_TERMS_ACTION);
       }
     }
   }
-
-
 
   render() {
     return (

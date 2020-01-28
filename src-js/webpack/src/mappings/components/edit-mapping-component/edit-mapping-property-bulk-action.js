@@ -10,44 +10,44 @@
  * External dependencies
  */
 import React from "react";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 
 /**
  * Internal dependencies.
  */
 import BulkActionComponent from "../bulk-action-component";
-import {BULK_ACTION_SELECTION_CHANGED_ACTION, PROPERTY_ITEMS_BULK_ACTION} from "../../actions/actions";
+import { BULK_ACTION_SELECTION_CHANGED_ACTION, PROPERTY_ITEMS_BULK_ACTION } from "../../actions/actions";
 
-class _EditMappingPropertyBulkAction extends  React.Component {
-    constructor(props) {
-        super(props);
-        this.bulkActionSubmitHandler = this.bulkActionSubmitHandler.bind(this);
-        this.bulkActionOptionChangedHandler = this.bulkActionOptionChangedHandler.bind(this);
-    }
+class _EditMappingPropertyBulkAction extends React.Component {
+  constructor(props) {
+    super(props);
+    this.bulkActionSubmitHandler = this.bulkActionSubmitHandler.bind(this);
+    this.bulkActionOptionChangedHandler = this.bulkActionOptionChangedHandler.bind(this);
+  }
 
-    bulkActionSubmitHandler() {
-        this.props.dispatch(PROPERTY_ITEMS_BULK_ACTION);
-    }
+  bulkActionSubmitHandler() {
+    this.props.dispatch(PROPERTY_ITEMS_BULK_ACTION);
+  }
 
-    bulkActionOptionChangedHandler( event ) {
-        const selectedBulkOption = event.target.value;
-        BULK_ACTION_SELECTION_CHANGED_ACTION.payload = {
-            selectedBulkAction: selectedBulkOption
-        };
-        this.props.dispatch(BULK_ACTION_SELECTION_CHANGED_ACTION);
-    }
+  bulkActionOptionChangedHandler(event) {
+    const selectedBulkOption = event.target.value;
+    BULK_ACTION_SELECTION_CHANGED_ACTION.payload = {
+      selectedBulkAction: selectedBulkOption
+    };
+    this.props.dispatch(BULK_ACTION_SELECTION_CHANGED_ACTION);
+  }
 
-    render() {
-        return (
-            <BulkActionComponent
-                chosenCategory={this.props.chosenCategory}
-                bulkActionSubmitHandler={this.bulkActionSubmitHandler}
-                bulkActionOptionChangedHandler={this.bulkActionOptionChangedHandler}
-            />
-        )
-    }
+  render() {
+    return (
+      <BulkActionComponent
+        chosenCategory={this.props.chosenCategory}
+        bulkActionSubmitHandler={this.bulkActionSubmitHandler}
+        bulkActionOptionChangedHandler={this.bulkActionOptionChangedHandler}
+      />
+    );
+  }
 }
 
-export const EditMappingPropertyBulkAction = connect( state => ({
-    chosenCategory: state.PropertyListData.chosenPropertyCategory
+export const EditMappingPropertyBulkAction = connect(state => ({
+  chosenCategory: state.PropertyListData.chosenPropertyCategory
 }))(_EditMappingPropertyBulkAction);

@@ -22,7 +22,8 @@ const SingleCategoryItem = ({ chosenCategory, category, source, categorySelectHa
       {category === chosenCategory ? (
         <b>
           <a className="wl-mappings-link-active">
-            {category}&nbsp;(
+            {category}
+            &nbsp;(
             {
               // Count the category in the source
               source.filter(el => el[categoryKeyName] === category).length
@@ -37,7 +38,8 @@ const SingleCategoryItem = ({ chosenCategory, category, source, categorySelectHa
             categorySelectHandler(category);
           }}
         >
-          {category}&nbsp;(
+          {category}
+          &nbsp;(
           {
             // Count the category in the source
             source.filter(el => el[categoryKeyName] === category).length

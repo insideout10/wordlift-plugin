@@ -20,10 +20,10 @@ import MappingComponent from "./components/mapping-component";
 import "./mappings.css";
 
 window.addEventListener("load", () => {
-    ReactDOM.render(
-        <Provider store={store}>
-            <MappingComponent />
-        </Provider>,
-        document.getElementById("wl-mappings-container")
-    );
+  ReactDOM.render(
+    <Provider store={store}>
+      <MappingComponent />
+    </Provider>,
+    document.getElementById("wl-mappings-container")
+  );
 });

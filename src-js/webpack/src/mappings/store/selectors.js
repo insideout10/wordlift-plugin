@@ -17,5 +17,3 @@ export const getSelectedBulkOption = state => state.selectedBulkOption;
  * @returns {Array} Array of selected mapping items.
  */
 export const getSelectedMappingItems = state => state.mappingItems.filter(item => true === item.isSelected);
-
-

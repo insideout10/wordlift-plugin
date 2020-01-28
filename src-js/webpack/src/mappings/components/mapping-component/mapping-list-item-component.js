@@ -15,10 +15,10 @@ import PropTypes from "prop-types";
 /**
  * Internal dependencies.
  */
-import {ACTIVE_CATEGORY, TRASH_CATEGORY} from "../category-component";
-import {MAPPING_ITEM_SELECTED_ACTION} from "../../actions/actions";
-import {MappingListItemActiveCategoryOptions} from "./mapping-list-item-active-category-options";
-import {MappingListItemTrashCategoryOptions} from "./mapping-list-item-trash-category-options";
+import { ACTIVE_CATEGORY, TRASH_CATEGORY } from "../category-component";
+import { MAPPING_ITEM_SELECTED_ACTION } from "../../actions/actions";
+import { MappingListItemActiveCategoryOptions } from "./mapping-list-item-active-category-options";
+import { MappingListItemTrashCategoryOptions } from "./mapping-list-item-trash-category-options";
 
 class MappingListItemComponent extends React.Component {
   constructor(props) {
@@ -32,9 +32,9 @@ class MappingListItemComponent extends React.Component {
   renderOptionsBasedOnItemCategory(category) {
     switch (category) {
       case ACTIVE_CATEGORY:
-        return <MappingListItemActiveCategoryOptions {...this.props}/>;
+        return <MappingListItemActiveCategoryOptions {...this.props} />;
       case TRASH_CATEGORY:
-        return <MappingListItemTrashCategoryOptions {...this.props}/>;
+        return <MappingListItemTrashCategoryOptions {...this.props} />;
     }
   }
   render() {
@@ -45,16 +45,18 @@ class MappingListItemComponent extends React.Component {
             type="checkbox"
             checked={this.props.mappingData.isSelected}
             onClick={() => {
-                MAPPING_ITEM_SELECTED_ACTION.payload = {
-                    mappingId: this.props.mappingData.mappingId
-                };
-                this.props.dispatch( MAPPING_ITEM_SELECTED_ACTION )
+              MAPPING_ITEM_SELECTED_ACTION.payload = {
+                mappingId: this.props.mappingData.mappingId
+              };
+              this.props.dispatch(MAPPING_ITEM_SELECTED_ACTION);
             }}
           />
         </td>
         <td>
           <a className="row-title wl-mappings-list-item-title">{this.props.mappingData.mappingTitle}</a>
-          <div className="row-actions">{this.renderOptionsBasedOnItemCategory(this.props.mappingData.mappingStatus)}</div>
+          <div className="row-actions">
+            {this.renderOptionsBasedOnItemCategory(this.props.mappingData.mappingStatus)}
+          </div>
         </td>
       </tr>
     );
