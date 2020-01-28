@@ -19,6 +19,7 @@ import { connect } from "react-redux";
 import RuleGroupComponent from "./rule-group-component";
 import { ADD_NEW_RULE_GROUP_ACTION } from "../../actions/actions";
 import {AddRuleGroupButton} from "./add-rule-group-button";
+import {RuleGroupText} from "./rule-group-text";
 
 class RuleGroupListComponent extends React.Component {
   constructor(props) {
@@ -35,15 +36,7 @@ class RuleGroupListComponent extends React.Component {
           return (
             <React.Fragment key={index}>
               <RuleGroupComponent rules={item.rules} ruleGroupIndex={index} />
-              {// dont show extra `or` text if there
-              // is no rule group below
-              index !== this.props.ruleGroupList.length - 1 && (
-                <div className="wl-container">
-                  <div className="wl-col">
-                    <b>Or</b>
-                  </div>
-                </div>
-              )}
+              <RuleGroupText {...this.props} index={index} />
             </React.Fragment>
           );
         })}
