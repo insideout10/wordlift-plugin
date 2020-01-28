@@ -13,12 +13,13 @@ import {createStore } from 'redux'
 import {Provider} from 'react-redux'
 import {MOCK_INITIAL_STATE, mock_reducers } from './MockStore'
 import EditComponent from '../components/EditComponent'
+import editMappingStore from "../store/edit-mapping-store";
 
 var MOCK_STORE  = null
 var component = null
 
 beforeEach(() => {
-    MOCK_STORE = createStore(mock_reducers, MOCK_INITIAL_STATE)
+    MOCK_STORE = editMappingStore
     component  = mount(
         <Provider store={MOCK_STORE}>
             <EditComponent/>
