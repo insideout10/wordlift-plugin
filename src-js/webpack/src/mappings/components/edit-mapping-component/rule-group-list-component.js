@@ -18,16 +18,11 @@ import { connect } from "react-redux";
  */
 import RuleGroupComponent from "./rule-group-component";
 import { ADD_NEW_RULE_GROUP_ACTION } from "../../actions/actions";
+import {AddRuleGroupButton} from "./add-rule-group-button";
 
 class RuleGroupListComponent extends React.Component {
   constructor(props) {
     super(props);
-
-    this.addNewRuleGroupHandler = this.addNewRuleGroupHandler.bind(this);
-  }
-
-  addNewRuleGroupHandler() {
-    this.props.dispatch(ADD_NEW_RULE_GROUP_ACTION);
   }
 
   render() {
@@ -52,19 +47,7 @@ class RuleGroupListComponent extends React.Component {
             </React.Fragment>
           );
         })}
-
-        <div className="wl-container">
-          <div className="wl-col">
-            <button
-              className="button action wl-add-rule-group"
-              onClick={() => {
-                this.addNewRuleGroupHandler();
-              }}
-            >
-              Add Rule Group
-            </button>
-          </div>
-        </div>
+        <AddRuleGroupButton/>
       </React.Fragment>
     );
   }
