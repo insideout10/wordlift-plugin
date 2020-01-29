@@ -1,6 +1,6 @@
-.wl-col{padding:1em}
+.wl-col{padding:1em}.wl-col--full-width{width:100%}
 
-.wl-container{display:flex;justify-content:flex-start}
+.wl-container{display:flex;justify-content:flex-start}.wl-container--full-width{width:100%}
 
 .wl-mappings-heading-text {
   font-size: 23px;
@@ -61,29 +61,14 @@ th input[type="checkbox"] {
   padding-left: 5px !important;
   width: 150px;
 }
-.wl-form-control {
-  width: 100%;
-}
-.wl-container-80 {
-  width: 80%;
-}
-
-.wl-container-full {
-  width: 100%;
-}
-
 .wl-align-right {
   margin-left: auto;
 }
-
-.wl-container-30 {
-  width: 30%;
-}
-.wl-container-70 {
-  width: 70%;
-}
 .wl-text-right {
   text-align: right;
+}
+.wl-input-full {
+  width: 100%;
 }
 
 .wl-remove-button {
