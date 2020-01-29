@@ -60,11 +60,6 @@ th input[type="checkbox"] {
 .wl-form-control {
   width: 100%;
 }
-
-.wl-container {
-  display: flex;
-  justify-content: flex-start;
-}
 .wl-container-80 {
   width: 80%;
 }
@@ -101,12 +96,7 @@ th input[type="checkbox"] {
 .text-center {
   text-align: center !important;
 }
-.wl-col-30 {
-  width: 30%;
-}
-.wl-col-70 {
-  width: 70%;
-}
+
 .wl-mappings-link {
   cursor: pointer !important;
 }

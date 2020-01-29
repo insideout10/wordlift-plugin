@@ -21,6 +21,7 @@ import { EditComponentNotificationArea, RuleGroupWrapper } from "./edit-sub-comp
 import { EditMappingSaveButton } from "./edit-mapping-save-button";
 import { EditMappingPropertyBulkAction } from "./edit-mapping-property-bulk-action";
 import { EditMappingTitleSection } from "./edit-mapping-title-section";
+import { WlContainer } from "../../blocks/wl-container";
 
 // Set a reference to the WordLift's Edit Mapping settings stored in the window instance.
 const editMappingSettings = window["wl_edit_mappings_config"] || {};
@@ -55,10 +56,10 @@ class EditMappingComponent extends React.Component {
         <RuleGroupWrapper />
         <PropertyListComponent />
         <br />
-        <div className="wl-container wl-container-full">
+        <WlContainer>
           <EditMappingPropertyBulkAction />
           <EditMappingSaveButton />
-        </div>
+        </WlContainer>
       </React.Fragment>
     );
   }

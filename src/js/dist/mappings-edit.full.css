@@ -1,5 +1,7 @@
 .wl-col{padding:1em}
 
+.wl-container{display:flex;justify-content:flex-start}
+
 .wl-mappings-heading-text {
   font-size: 23px;
   font-weight: 400;
@@ -62,11 +64,6 @@ th input[type="checkbox"] {
 .wl-form-control {
   width: 100%;
 }
-
-.wl-container {
-  display: flex;
-  justify-content: flex-start;
-}
 .wl-container-80 {
   width: 80%;
 }
@@ -103,12 +100,7 @@ th input[type="checkbox"] {
 .text-center {
   text-align: center !important;
 }
-.wl-col-30 {
-  width: 30%;
-}
-.wl-col-70 {
-  width: 70%;
-}
+
 .wl-mappings-link {
   cursor: pointer !important;
 }
@@ -132,5 +124,6 @@ th input[type="checkbox"] {
 }
 
 .wl-rule-group-wrapper {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 }
+

@@ -1,9 +1,5 @@
 import React from "react";
-import "./index.scss"
-export const WlColumn = ({children}) => {
-    return (
-        <div className="wl-col">
-            {children}
-        </div>
-    )
+import "./index.scss";
+export const WlColumn = ({ children, className }) => {
+  return <div className={"wl-col " + className}>{children}</div>;
 };

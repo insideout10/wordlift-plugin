@@ -16,6 +16,7 @@ import React from "react";
 import { ACTIVE_CATEGORY } from "../category-component";
 import { MappingHeaderTitle } from "./mapping-header-title";
 import { MappingHeaderCheckbox } from "./mapping-header-checkbox";
+import { WlContainer } from "../../blocks/wl-container";
 
 export const AddNewButton = () => {
   return (
@@ -48,10 +49,10 @@ export const MappingNoActiveItemMessage = ({ mappingItems, chosenCategory }) => 
     chosenCategory === ACTIVE_CATEGORY && (
       <tr>
         <td colSpan={3}>
-          <div className="wl-container text-center">
+          <WlContainer>
             No Mapping items found, click on
             <b>&nbsp; Add New </b>
-          </div>
+          </WlContainer>
         </td>
       </tr>
     )
