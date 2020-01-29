@@ -24,6 +24,7 @@ import {
 import { EDIT_MAPPING_REQUEST_TERMS } from "../../actions/action-types";
 import { AddRuleButton } from "./add-rule-button";
 import { DeleteRuleButton } from "./delete-rule-button";
+import { WlColumn } from "../../blocks/wl-column";
 
 class RuleComponent extends React.Component {
   constructor(props) {
@@ -79,7 +80,7 @@ class RuleComponent extends React.Component {
   render() {
     return (
       <div className="wl-container wl-rule-container">
-        <div className="wl-col">
+        <WlColumn>
           <SelectComponent
             options={this.props.ruleFieldOneOptions}
             value={this.props.ruleProps.ruleFieldOneValue}
@@ -88,8 +89,8 @@ class RuleComponent extends React.Component {
             }}
             className="wl-field-one-select wl-form-select"
           />
-        </div>
-        <div className="wl-col">
+        </WlColumn>
+        <WlColumn>
           <SelectComponent
             options={this.props.ruleLogicFieldOptions}
             value={this.props.ruleProps.ruleLogicFieldValue}
@@ -98,8 +99,8 @@ class RuleComponent extends React.Component {
             }}
             className="wl-field-logic wl-form-select"
           />
-        </div>
-        <div className="wl-col">
+        </WlColumn>
+        <WlColumn>
           <SelectComponent
             options={this.props.ruleFieldTwoOptions.filter(
               el => el.taxonomy === this.props.ruleProps.ruleFieldOneValue
@@ -110,7 +111,7 @@ class RuleComponent extends React.Component {
             }}
             className="wl-field-two-select wl-form-select"
           />
-        </div>
+        </WlColumn>
         <AddRuleButton {...this.props} />
         <DeleteRuleButton {...this.props} />
       </div>

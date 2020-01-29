@@ -11,11 +11,12 @@
  */
 import React from "react";
 import { BulkActionOptions } from "./bulk-action-sub-components";
+import { WlColumn } from "../blocks/wl-column";
 
 /** Bulk action apply button */
 const BulkActionApplyButton = ({ bulkActionSubmitHandler }) => {
   return (
-    <div className="wl-col">
+    <WlColumn>
       <button
         className="button action"
         onClick={() => {
@@ -24,14 +25,14 @@ const BulkActionApplyButton = ({ bulkActionSubmitHandler }) => {
       >
         Apply
       </button>
-    </div>
+    </WlColumn>
   );
 };
 
 /** Bulk action options wrapper */
 const BulkActionOptionsWrapper = ({ chosenCategory, bulkActionOptionChangedHandler }) => {
   return (
-    <div className="wl-col">
+    <WlColumn>
       <select
         className="form-control"
         onChange={event => {
@@ -41,7 +42,7 @@ const BulkActionOptionsWrapper = ({ chosenCategory, bulkActionOptionChangedHandl
         <option value="-1">Bulk Actions</option>
         <BulkActionOptions chosenCategory={chosenCategory} />
       </select>
-    </div>
+    </WlColumn>
   );
 };
 

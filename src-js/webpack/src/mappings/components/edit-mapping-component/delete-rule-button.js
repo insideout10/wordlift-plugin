@@ -15,6 +15,7 @@ import { connect } from "react-redux";
  * Internal dependencies.
  */
 import { DELETE_RULE_ACTION } from "../../actions/actions";
+import { WlColumn } from "../../blocks/wl-column";
 
 class _DeleteRuleButton extends React.Component {
   constructor(props) {
@@ -39,12 +40,12 @@ class _DeleteRuleButton extends React.Component {
     return (
       <React.Fragment>
         {(0 !== this.props.ruleGroupIndex || 0 !== this.props.ruleIndex) && (
-          <div className="wl-col">
+          <WlColumn>
             <button
               className="button action wl-remove-button dashicons dashicons-trash"
               onClick={() => this.handleDeleteRule(this.props.ruleGroupIndex, this.props.ruleIndex)}
             />
-          </div>
+          </WlColumn>
         )}
       </React.Fragment>
     );

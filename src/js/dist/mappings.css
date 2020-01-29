@@ -1,3 +1,5 @@
+.wl-col{padding:1em}
+
 .wl-mappings-heading-text {
   font-size: 23px;
   font-weight: 400;
@@ -73,9 +75,6 @@ th input[type="checkbox"] {
   width: 100%;
 }
 
-.wl-col {
-  padding: 1em;
-}
 .wl-align-right {
   margin-left: auto;
 }

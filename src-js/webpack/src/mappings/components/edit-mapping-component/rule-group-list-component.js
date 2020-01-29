@@ -17,8 +17,9 @@ import { connect } from "react-redux";
  * Internal dependencies
  */
 import RuleGroupComponent from "./rule-group-component";
-import {AddRuleGroupButton} from "./add-rule-group-button";
-import {RuleGroupText} from "./rule-group-text";
+import { AddRuleGroupButton } from "./add-rule-group-button";
+import { RuleGroupText } from "./rule-group-text";
+import { WlColumn } from "../../blocks/wl-column";
 
 class RuleGroupListComponent extends React.Component {
   constructor(props) {
@@ -28,9 +29,7 @@ class RuleGroupListComponent extends React.Component {
   render() {
     return (
       <React.Fragment>
-        {0 === this.props.ruleGroupList.length && (
-          <div className="wl-col">No rule groups present, click on add new</div>
-        )}
+        {0 === this.props.ruleGroupList.length && <WlColumn>No rule groups present, click on add new</WlColumn>}
         {this.props.ruleGroupList.map((item, index) => {
           return (
             <React.Fragment key={index}>
@@ -39,7 +38,7 @@ class RuleGroupListComponent extends React.Component {
             </React.Fragment>
           );
         })}
-        <AddRuleGroupButton/>
+        <AddRuleGroupButton />
       </React.Fragment>
     );
   }

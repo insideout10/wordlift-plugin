@@ -15,6 +15,7 @@ import { connect } from "react-redux";
  * Internal dependencies.
  */
 import { ADD_NEW_RULE_ACTION } from "../../actions/actions";
+import { WlColumn } from "../../blocks/wl-column";
 
 class _AddRuleButton extends React.Component {
   constructor(props) {
@@ -37,14 +38,14 @@ class _AddRuleButton extends React.Component {
   }
   render() {
     return (
-      <div className="wl-col">
+      <WlColumn>
         <button
           className="button action wl-and-button"
           onClick={() => this.handleAddNewRule(this.props.ruleGroupIndex, this.props.ruleIndex)}
         >
           And
         </button>
-      </div>
+      </WlColumn>
     );
   }
 }
