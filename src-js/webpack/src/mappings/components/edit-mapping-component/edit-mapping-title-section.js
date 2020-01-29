@@ -15,9 +15,7 @@ import { connect } from "react-redux";
  */
 import { EditComponentTitleArea } from "./edit-sub-components";
 import { TITLE_CHANGED_ACTION } from "../../actions/actions";
-import { WlContainer } from "../../blocks/wl-container";
-import { WlColumn } from "../../blocks/wl-column";
-import style from "../../blocks/wl-column/index.scss";
+
 // Set a reference to the WordLift's Edit Mapping settings stored in the window instance.
 const editMappingSettings = window["wl_edit_mappings_config"] || {};
 
@@ -36,23 +34,19 @@ class _EditMappingTitleSection extends React.Component {
     return (
       <React.Fragment>
         <EditComponentTitleArea
-          mappingId={editMappingSettings.wl_edit_mapping_id}
-          addMappingText={editMappingSettings.wl_add_mapping_text}
-          editMappingText={editMappingSettings.wl_edit_mapping_text}
+          wl_edit_mapping_id={editMappingSettings.wl_edit_mapping_id}
+          wl_add_mapping_text={editMappingSettings.wl_add_mapping_text}
+          wl_edit_mapping_text={editMappingSettings.wl_edit_mapping_text}
         />
-        <WlContainer>
-          <WlColumn className={"wl-container--full-width"}>
-            <input
-              type="text"
-              className="wl-form-control wl-input-class wl-input-full"
-              value={this.props.title}
-              placeholder="Title"
-              onChange={e => {
-                this.handleTitleChange(e);
-              }}
-            />
-          </WlColumn>
-        </WlContainer>
+        <input
+          type="text"
+          className="wl-form-control wl-input-class"
+          value={this.props.title}
+          placeholder="Title"
+          onChange={e => {
+            this.handleTitleChange(e);
+          }}
+        />
         <br /> <br />
       </React.Fragment>
     );

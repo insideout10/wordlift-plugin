@@ -15,7 +15,6 @@ import { connect } from "react-redux";
  */
 import BulkActionComponent from "../bulk-action-component";
 import { BULK_ACTION_SELECTION_CHANGED_ACTION, MAPPING_ITEMS_BULK_APPLY_ACTION } from "../../actions/actions";
-import { WlContainer } from "../../blocks/wl-container";
 
 /**
  * Class to render the bulk action on mapping screen.
@@ -45,13 +44,13 @@ class _MappingBulkAction extends React.Component {
   }
   render() {
     return (
-      <WlContainer>
+      <div className="wl-container wl-container-full">
         <BulkActionComponent
           chosenCategory={this.props.chosenCategory}
           bulkActionOptionChangedHandler={this.bulkActionOptionChangedHandler}
           bulkActionSubmitHandler={this.bulkActionSubmitHandler}
         />
-      </WlContainer>
+      </div>
     );
   }
 }

@@ -16,7 +16,6 @@ import { connect } from "react-redux";
  */
 import { ADD_NEW_RULE_GROUP_ACTION } from "../../actions/actions";
 import { WlColumn } from "../../blocks/wl-column";
-import { WlContainer } from "../../blocks/wl-container";
 
 class _AddRuleGroupButton extends React.Component {
   constructor(props) {
@@ -28,7 +27,7 @@ class _AddRuleGroupButton extends React.Component {
   }
   render() {
     return (
-      <WlContainer>
+      <div className="wl-container">
         <WlColumn>
           <button
             className="button action wl-add-rule-group"
@@ -39,7 +38,7 @@ class _AddRuleGroupButton extends React.Component {
             Add Rule Group
           </button>
         </WlColumn>
-      </WlContainer>
+      </div>
     );
   }
 }

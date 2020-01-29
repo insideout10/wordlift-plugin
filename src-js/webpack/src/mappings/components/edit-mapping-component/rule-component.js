@@ -25,7 +25,6 @@ import { EDIT_MAPPING_REQUEST_TERMS } from "../../actions/action-types";
 import { AddRuleButton } from "./add-rule-button";
 import { DeleteRuleButton } from "./delete-rule-button";
 import { WlColumn } from "../../blocks/wl-column";
-import { WlContainer } from "../../blocks/wl-container";
 
 class RuleComponent extends React.Component {
   constructor(props) {
@@ -80,7 +79,7 @@ class RuleComponent extends React.Component {
 
   render() {
     return (
-      <WlContainer>
+      <div className="wl-container wl-rule-container">
         <WlColumn>
           <SelectComponent
             options={this.props.ruleFieldOneOptions}
@@ -115,7 +114,7 @@ class RuleComponent extends React.Component {
         </WlColumn>
         <AddRuleButton {...this.props} />
         <DeleteRuleButton {...this.props} />
-      </WlContainer>
+      </div>
     );
   }
 }

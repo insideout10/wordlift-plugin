@@ -155,6 +155,7 @@ export const PROPERTY_ITEM_SELECT_ALL = "PROPERTY_ITEM_SELECT_ALL";
  */
 export const PROPERTY_ITEMS_BULK_SELECT = "PROPERTY_ITEMS_BULK_SELECT";
 
+
 /**
  * @const EDIT_MAPPING_REQUEST_TERMS
  * Send the request to get the terms for the selected taxonomy.
@@ -178,6 +179,7 @@ export const EDIT_MAPPING_SAVE_MAPPING_ITEM = "EDIT_MAPPING_SAVE_MAPPING_ITEM";
  * Action type when we need to get the mapping item from API.
  */
 export const EDIT_MAPPING_REQUEST_MAPPING_ITEM = "EDIT_MAPPING_REQUEST_MAPPING_ITEM";
+
 
 /**
  * @const MAPPING_ITEMS_BULK_APPLY
@@ -208,6 +210,7 @@ export const MAPPINGS_REQUEST = "MAPPINGS_REQUEST";
  * Action type when the ui makes the request to delete or update mappings from the api.
  */
 export const MAPPINGS_REQUEST_DELETE_OR_UPDATE = "MAPPINGS_REQUEST_DELETE_OR_UPDATE";
+
 
 /**
  * @const MAPPINGS_REQUEST_CLONE_MAPPINGS
