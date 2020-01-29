@@ -16,6 +16,7 @@ use Wordlift\Autocomplete\All_Autocomplete_Service;
 use Wordlift\Autocomplete\Linked_Data_Autocomplete_Service;
 use Wordlift\Autocomplete\Local_Autocomplete_Service;
 use Wordlift\Jsonld\Jsonld_Endpoint;
+use Wordlift\Templates\Templates_Ajax_Endpoint;
 
 /**
  * The core plugin class.
@@ -712,6 +713,13 @@ class Wordlift {
 	 * @var \Wordlift_Publisher_Service $publisher_service The {@link Wordlift_Publisher_Service} instance.
 	 */
 	protected $publisher_service;
+
+	/**
+	 * The {@link Wordlift_Context_Cards_Service} instance.
+	 *
+	 * @var \Wordlift_Context_Cards_Service The {@link Wordlift_Context_Cards_Service} instance.
+	 */
+	protected $context_cards_service;
 
 	/**
 	 * {@link Wordlift}'s singleton instance.
@@ -1456,6 +1464,12 @@ class Wordlift {
 		 * @since 3.22.0
 		 */
 		$this->context_cards_service = new Wordlift_Context_Cards_Service();
+
+		/*
+		 *
+		 * @since 3.24.4
+		 */
+		new Templates_Ajax_Endpoint();
 
 	}
 
