@@ -810,7 +810,7 @@ angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
     scope: true
     transclude: true
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-classification-box.html'
+      configuration['ajax_url'] + '?action=wl_templates&name=wordlift-directive-classification-box'
     link: ($scope, $element, $attrs, $ctrl) ->
       $log.debug 'Linking classification box...'
 
@@ -856,7 +856,8 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
       onReset: '&'
       box: '='
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.25.0-dev'
+      configuration['ajax_url'] + '?action=wl_templates&name=wordlift-directive-entity-form'
+
     link: ($scope, $element, $attrs, $ctrl) ->
 
       $scope.configuration = configuration
@@ -946,8 +947,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', [])
     scope:
       entity: '='
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.25.0-dev'
-
+      configuration['ajax_url'] + '?action=wl_templates&name=wordlift-directive-entity-input-box'
 ])
 
 angular.module('wordlift.editpost.widget.services.EditorAdapter', [
@@ -1904,7 +1904,7 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
     <div
       id="wordlift-edit-post-wrapper"
       ng-controller="EditPostWidgetController"
-      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.25.0-dev'">
+      ng-include="configuration['ajax_url'] + '?action=wl_templates&name=wordlift-editpost-widget'">
     </div>
   """)
   .appendTo('#wordlift-edit-post-outer-wrapper')

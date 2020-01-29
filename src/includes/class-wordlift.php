@@ -27,6 +27,7 @@ use Wordlift\Autocomplete\All_Autocomplete_Service;
 use Wordlift\Autocomplete\Linked_Data_Autocomplete_Service;
 use Wordlift\Autocomplete\Local_Autocomplete_Service;
 use Wordlift\Jsonld\Jsonld_Endpoint;
+use Wordlift\Templates\Templates_Ajax_Endpoint;
 
 /**
  * The core plugin class.
@@ -687,6 +688,13 @@ class Wordlift {
 	 * @var \Wordlift_Publisher_Service $publisher_service The {@link Wordlift_Publisher_Service} instance.
 	 */
 	protected $publisher_service;
+
+	/**
+	 * The {@link Wordlift_Context_Cards_Service} instance.
+	 *
+	 * @var \Wordlift_Context_Cards_Service The {@link Wordlift_Context_Cards_Service} instance.
+	 */
+	protected $context_cards_service;
 
 	/**
 	 * {@link Wordlift}'s singleton instance.
@@ -1440,6 +1448,15 @@ class Wordlift {
 		$mappings_transform_functions_registry = new Mappings_Transform_Functions_Registry();
 
 		new Jsonld_Converter( $mappings_validator, $mappings_transform_functions_registry );
+
+		/*
+		 * Use the Templates Ajax Endpoint to load HTML templates for the legacy Angular app via admin-ajax.php
+		 * end-point.
+		 * 
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/834
+		 * @since 3.24.4
+		 */
+		new Templates_Ajax_Endpoint();
 
 	}
 

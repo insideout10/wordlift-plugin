@@ -4,7 +4,7 @@
     <div class="wl-widget-message-panel">
 
         <!-- ERROR MESSAGES -->
-        <div ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-messages.html?ver=3.25.0-dev'">
+        <div ng-include="configuration['ajax_url'] + '?action=wl_templates&name=wordlift-messages'">
         </div>
 
     </div>
@@ -28,20 +28,17 @@
     <div id="wl-entity-list" wl-entity-list="wl-entity-list"></div>
 
     <!-- ARTICLE METADATA -->
-    <div ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-article-metadata.html?ver=3.25.0-dev'">
-
+    <div ng-include="configuration['ajax_url'] + '?action=wl_templates&name=wordlift-article-metadata'">
     </div>
 
     <!-- SUGGESTED IMAGES -->
-    <div ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-suggested-images.html?ver=3.25.0-dev'">
-
+    <div ng-include="configuration['ajax_url'] + '?action=wl_templates&name=wordlift-suggested-images'">
     </div>
 
     <!-- RELATED POST -->
-    <div ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-related-post.html?ver=3.25.0-dev'">
+    <div ng-include="configuration['ajax_url'] + '?action=wl_templates&name=wordlift-related-post'">
     </div>
 
-</div>
 </div>
 
 <!-- POST DATA BOX -->

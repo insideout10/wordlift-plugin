@@ -146,7 +146,9 @@ class Wordlift_Install_Service {
 			}
 
 			@delete_transient( '_wl_installing' );
+
 		}
+
 	}
 
 	private function install_required() {
