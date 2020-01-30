@@ -31,6 +31,7 @@ class _PropertyHeaderRow extends React.Component {
           <th className="wl-check-column">
             <input
               type="checkbox"
+              className={"wl-table__checkbox"}
               onClick={() => {
                 this.selectAllPropertyHandler();
               }}

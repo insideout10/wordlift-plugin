@@ -31,7 +31,7 @@ class PropertyComponent extends React.Component {
       <React.Fragment>
         <a className="row-title">{this.props.propData.propertyHelpText}</a>
         <br />
-        <WlTable noBorder={true}>
+        <WlTable noBorder={true} paddingLeft={true} striped={false} transparentBg={true}>
           <tbody>
             <PropertyNameField {...this.props} />
             <FieldTypeField {...this.props} />

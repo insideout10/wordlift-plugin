@@ -35,6 +35,7 @@ class _PropertyItemCheckbox extends React.Component {
       <td className="wl-check-column">
         <input
           type="checkbox"
+          className={"wl-table__checkbox"}
           checked={this.props.property.isSelectedByUser}
           onClick={() => {
             this.propertySelectedHandler(this.props.property.property_id);
