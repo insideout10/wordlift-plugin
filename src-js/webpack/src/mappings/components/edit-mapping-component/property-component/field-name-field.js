@@ -49,7 +49,7 @@ class _FieldNameField extends React.Component {
       return (
         <SelectComponent
           inputDataIsOptionGroup={field_type === "acf"}
-          className="wl-form-select"
+          className="wl-table__select-field"
           options={value}
           value={this.props.propData.fieldHelpText}
           onChange={event => {

@@ -24,7 +24,7 @@ class _TransformFunctionField extends React.Component {
         <td colSpan="2">Transform Function</td>
         <td colSpan="3">
           <SelectComponent
-            className="wl-form-select"
+              className="wl-table__select-field"
             options={this.props.transformHelpTextOptions}
             value={this.props.propData.transformHelpText}
             onChange={event => {
