@@ -13,7 +13,7 @@ import Adapter from 'enzyme-adapter-react-16';
 
 configure({ adapter: new Adapter() });
 test("can render edit component", () => {
-
+    global.MockHttpServer.enqueueResponse([{}])
   mount(
     <Provider store={store}>
       <MappingComponent />

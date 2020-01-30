@@ -3,6 +3,7 @@
  * NOTE: all the settings here are mocked, the mocked settings are provided to components.
  *
  */
+import MockHttpServer from "./MockHttpServer";
 
 const mappingsConfig = {
   rest_url: "https://wordlift.localhost/index.php?rest_route=/wordlift/v1/mappings",
@@ -10,8 +11,25 @@ const mappingsConfig = {
   wl_edit_mapping_nonce: "f4ec1e5ee6"
 };
 
-global.wlMappingsConfig = mappingsConfig
-
+global.wlMappingsConfig = mappingsConfig;
+global.MockHttpServer = new MockHttpServer();
+global.fetch = () => {
+  const response = global.MockHttpServer.dequeueResponse()
+  if (response  != null) {
+    return new Promise((resolve, reject) => {
+      resolve({
+        ok: true,
+        status:200,
+        json: () => {
+          return response
+        },
+      });
+    });
+  }
+  else {
+    return new Promise().reject()
+  }
+};
 export const editMappingsConfig = {
   rest_url: "https://wordlift.localhost/index.php?rest_route=/wordlift/v1/mappings",
   wl_edit_mapping_rest_nonce: "b23118674e",
