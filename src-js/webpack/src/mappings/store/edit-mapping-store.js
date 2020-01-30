@@ -14,7 +14,7 @@ import logger from "redux-logger";
 /**
  * Internal dependencies.
  */
-import EditComponentMapping from "../mappings/edit-component-mapping";
+import EditComponentFilters from "../filters/edit-component-filters";
 import { ACTIVE_CATEGORY } from "../components/category-component";
 import {
   NotificationReducer,
@@ -36,7 +36,7 @@ const INITIAL_STATE = {
   },
   RuleGroupData: {
     // Adding filter to determine whether to fetch terms from api or not.
-    ruleFieldOneOptions: EditComponentMapping.addNetworkStateToTaxonomyOptions(
+    ruleFieldOneOptions: EditComponentFilters.addNetworkStateToTaxonomyOptions(
       editMappingSettings.wl_rule_field_one_options,
       editMappingSettings.wl_rule_field_two_options
     ),

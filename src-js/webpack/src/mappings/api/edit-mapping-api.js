@@ -1,4 +1,4 @@
-import EditComponentMapping from "../mappings/edit-component-mapping";
+import EditComponentFilters from "../filters/edit-component-filters";
 import MappingComponentHelper from "../components/mapping-component/mapping-component-helper";
 
 /**
@@ -21,7 +21,7 @@ function getMappingItemByMappingId(mappingId) {
 }
 
 function saveMappingItem(mappingData) {
-  const postObject = EditComponentMapping.mapStoreKeysToAPI(mappingData);
+  const postObject = EditComponentFilters.mapStoreKeysToAPI(mappingData);
   return fetch(rest_url, {
     method: "POST",
     headers: {

@@ -28,7 +28,7 @@ import {
   EDIT_MAPPING_REQUEST_TERMS,
   EDIT_MAPPING_SAVE_MAPPING_ITEM
 } from "../actions/action-types";
-import EditComponentMapping from "../mappings/edit-component-mapping";
+import EditComponentFilters from "../filters/edit-component-filters";
 
 function* getTermsForSelectedTaxonomy(action) {
   // Mark the taxonomy as terms fetched, since we dont want to send another request to get the same terms.
@@ -78,12 +78,12 @@ function* getMappingItem(action) {
   yield put(MAPPING_HEADER_CHANGED_ACTION);
 
   PROPERTY_LIST_CHANGED_ACTION.payload = {
-    value: EditComponentMapping.mapPropertyAPIKeysToUi(data.property_list)
+    value: EditComponentFilters.mapPropertyAPIKeysToUi(data.property_list)
   };
   yield put(PROPERTY_LIST_CHANGED_ACTION);
 
   RULE_GROUP_LIST_CHANGED_ACTION.payload = {
-    value: EditComponentMapping.mapRuleGroupListAPIKeysToUi(data.rule_group_list)
+    value: EditComponentFilters.mapRuleGroupListAPIKeysToUi(data.rule_group_list)
   };
   yield put(RULE_GROUP_LIST_CHANGED_ACTION);
 }

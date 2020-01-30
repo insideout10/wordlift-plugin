@@ -5,7 +5,7 @@
  * @since 3.24.0
  */
 
-class EditComponentMapping {
+class EditComponentFilters {
   /**
    * @param {Array} rule_list List of rules
    *  Note: if the rule_id are undefined, then dont post it, backend
@@ -86,7 +86,7 @@ class EditComponentMapping {
   static mapRuleGroupListAPIKeysToUi(rule_group_list) {
     return rule_group_list.map(rule_group_item => ({
       rule_group_id: rule_group_item.rule_group_id,
-      rules: EditComponentMapping.mapRuleFieldAPIKeysToUi(rule_group_item.rules)
+      rules: EditComponentFilters.mapRuleFieldAPIKeysToUi(rule_group_item.rules)
     }));
   }
 
@@ -100,7 +100,7 @@ class EditComponentMapping {
   static mapRuleGroupListKeysToAPI(rule_group_list) {
     return rule_group_list.map(function(rule_group_item) {
       const single_rule_group_item = {
-        rules: EditComponentMapping.mapRuleFieldKeysToAPI(rule_group_item.rules)
+        rules: EditComponentFilters.mapRuleFieldKeysToAPI(rule_group_item.rules)
       };
       if (rule_group_item.rule_group_id) {
         single_rule_group_item.rule_group_id = rule_group_item.rule_group_id;
@@ -125,8 +125,8 @@ class EditComponentMapping {
     if (store.TitleSectionData.mapping_id !== undefined) {
       postObject.mapping_id = store.TitleSectionData.mapping_id;
     }
-    postObject.rule_group_list = EditComponentMapping.mapRuleGroupListKeysToAPI(postObject.rule_group_list);
-    postObject.property_list = EditComponentMapping.mapPropertyListKeysToAPI(postObject.property_list);
+    postObject.rule_group_list = EditComponentFilters.mapRuleGroupListKeysToAPI(postObject.rule_group_list);
+    postObject.property_list = EditComponentFilters.mapPropertyListKeysToAPI(postObject.property_list);
     return postObject;
   }
 
@@ -152,4 +152,4 @@ class EditComponentMapping {
   }
 }
 
-export default EditComponentMapping;
+export default EditComponentFilters;
