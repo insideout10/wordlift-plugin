@@ -2,16 +2,11 @@
 
 .wl-container{display:flex;justify-content:flex-start}.wl-container--full-width{width:100%}
 
+.wl-table--bottom-aligned{margin-bottom:30px}.wl-table td input[type="checkbox"],th input[type="checkbox"]{vertical-align:inherit}.wl-table td input[type="checkbox"]{margin-left:8px}
+
 .wl-mappings-heading-text {
   font-size: 23px;
   font-weight: 400;
-}
-.wl-table {
-  width: 70%;
-}
-.wl-table td input[type="checkbox"],
-th input[type="checkbox"] {
-  vertical-align: inherit;
 }
 
 .wl-spaced-table td {
@@ -22,9 +17,7 @@ th input[type="checkbox"] {
   vertical-align: inherit;
   width: 2.2em;
 }
-.wl-table td input[type="checkbox"] {
-  margin-left: 8px;
-}
+
 .wl-mappings-add-new:hover {
   background-color: #0073aa !important;
   color: #f7f7f7 !important;
@@ -67,10 +60,6 @@ th input[type="checkbox"] {
 
 .wl-container-80 {
   width: 80%;
-}
-
-.wl-container-full {
-  width: 100%;
 }
 
 .wl-align-right {

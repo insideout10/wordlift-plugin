@@ -14,6 +14,7 @@ import React from "react";
  * Internal dependencies.
  */
 import { ACTIVE_CATEGORY } from "../category-component";
+import { WlContainer } from "../../blocks/wl-container";
 
 export const MappingNoActiveItemMessage = ({ mappingItems, chosenCategory }) => {
   return (
@@ -21,10 +22,8 @@ export const MappingNoActiveItemMessage = ({ mappingItems, chosenCategory }) => 
     chosenCategory === ACTIVE_CATEGORY && (
       <tr>
         <td colSpan={3}>
-          <div className="wl-container text-center">
-            No Mapping items found, click on
-            <b>&nbsp; Add New </b>
-          </div>
+          No Mapping items found, click on
+          <b>&nbsp; Add New </b>
         </td>
       </tr>
     )

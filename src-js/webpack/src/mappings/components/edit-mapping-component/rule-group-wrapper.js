@@ -14,10 +14,11 @@ import React from "react";
  * Internal dependencies.
  */
 import RuleGroupListComponent from "./rule-group-list-component";
+import { WlTable } from "../../blocks/wl-table";
 
 export const RuleGroupWrapper = () => {
   return (
-    <table className="wp-list-table widefat striped wl-table wl-container-full wl-rule-group-wrapper">
+    <WlTable bottomAligned={true}>
       <thead>
         <tr>
           <td colSpan={2}>
@@ -36,6 +37,6 @@ export const RuleGroupWrapper = () => {
           </td>
         </tr>
       </tbody>
-    </table>
+    </WlTable>
   );
 };

@@ -23,6 +23,8 @@ import { PropertyCategories } from "./property-categories";
 import { PropertyHeaderRow } from "./property-header-row";
 import { PropertyNoItemMessage } from "./property-no-item-message";
 import { PropertyItemCheckbox } from "./property-item-checkbox";
+import { WlContainer } from "../../../blocks/wl-container";
+import { WlTable } from "../../../blocks/wl-table";
 
 class PropertyListComponent extends React.Component {
   constructor(props) {
@@ -69,24 +71,26 @@ class PropertyListComponent extends React.Component {
       <React.Fragment>
         <PropertyCategories {...this.props} />
         <br />
-        <table className="wp-list-table widefat striped wl-table wl-container-full">
-          <PropertyHeaderRow {...this.props} />
-          <tbody>
-            <PropertyNoItemMessage {...this.props} />
-            {this.props.propertyList
-              .filter(property => property.propertyStatus === this.props.chosenCategory)
-              .map((property, index) => {
-                return (
-                  <tr key={index} className="wl-property-list-item-container">
-                    <PropertyItemCheckbox property={property} />
-                    <td>{this.renderListComponentBasedOnState(property, index)}</td>
-                    <td />
-                  </tr>
-                );
-              })}
-            <AddPropertyButton />
-          </tbody>
-        </table>
+        <WlContainer fullWidth={true}>
+          <WlTable bottomAligned={true}>
+            <PropertyHeaderRow {...this.props} />
+            <tbody>
+              <PropertyNoItemMessage {...this.props} />
+              {this.props.propertyList
+                .filter(property => property.propertyStatus === this.props.chosenCategory)
+                .map((property, index) => {
+                  return (
+                    <tr key={index} className="wl-property-list-item-container">
+                      <PropertyItemCheckbox property={property} />
+                      <td>{this.renderListComponentBasedOnState(property, index)}</td>
+                      <td />
+                    </tr>
+                  );
+                })}
+              <AddPropertyButton />
+            </tbody>
+          </WlTable>
+        </WlContainer>
       </React.Fragment>
     );
   }

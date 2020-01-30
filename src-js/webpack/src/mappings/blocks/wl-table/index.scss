@@ -1,0 +1,12 @@
+.wl-table {
+}
+.wl-table--bottom-aligned {
+  margin-bottom: 30px;
+}
+.wl-table td input[type="checkbox"],
+th input[type="checkbox"] {
+  vertical-align: inherit;
+}
+.wl-table td input[type="checkbox"] {
+  margin-left: 8px;
+}
