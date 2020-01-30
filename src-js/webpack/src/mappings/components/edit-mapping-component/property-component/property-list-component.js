@@ -72,7 +72,7 @@ class PropertyListComponent extends React.Component {
         <PropertyCategories {...this.props} />
         <br />
         <WlContainer fullWidth={true}>
-          <WlTable bottomAligned={true}>
+          <WlTable bottomAligned={false}>
             <PropertyHeaderRow {...this.props} />
             <tbody>
               <PropertyNoItemMessage {...this.props} />
