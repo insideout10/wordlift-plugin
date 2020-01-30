@@ -99,7 +99,7 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 			'single'       => false,
 			'type'         => 'string',
 			'auth_callback' => function() {
-				return current_user_can('delete_wordlift_entities');;
+				return current_user_can('edit_posts');;
 			}
 		) );
 
