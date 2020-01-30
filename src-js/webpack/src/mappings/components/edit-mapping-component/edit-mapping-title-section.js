@@ -13,8 +13,9 @@ import { connect } from "react-redux";
 /**
  * Internal dependencies
  */
-import { EditComponentTitleArea } from "./edit-sub-components";
+
 import { TITLE_CHANGED_ACTION } from "../../actions/actions";
+import { TitleArea } from "./title-area";
 
 // Set a reference to the WordLift's Edit Mapping settings stored in the window instance.
 const editMappingSettings = window["wl_edit_mappings_config"] || {};
@@ -33,10 +34,10 @@ class _EditMappingTitleSection extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <EditComponentTitleArea
-          wl_edit_mapping_id={editMappingSettings.wl_edit_mapping_id}
-          wl_add_mapping_text={editMappingSettings.wl_add_mapping_text}
-          wl_edit_mapping_text={editMappingSettings.wl_edit_mapping_text}
+        <TitleArea
+          mappingId={editMappingSettings.wl_edit_mapping_id}
+          addMappingText={editMappingSettings.wl_add_mapping_text}
+          editMappingText={editMappingSettings.wl_edit_mapping_text}
         />
         <input
           type="text"

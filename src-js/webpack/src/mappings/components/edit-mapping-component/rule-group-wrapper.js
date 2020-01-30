@@ -1,6 +1,5 @@
 /**
- * EditSubComponents.js : It have a list of components to be used by
- * edit component.js
+ * RuleGroupWrapper : It renders the rules and rule groups in a table.
  *
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * @since 3.25.0
@@ -15,26 +14,6 @@ import React from "react";
  * Internal dependencies.
  */
 import RuleGroupListComponent from "./rule-group-list-component";
-
-export const EditComponentNotificationArea = ({ notificationData }) => {
-  return (
-    <React.Fragment>
-      {"" !== notificationData.message && (
-        <div className={"wl-notice-custom-margin notice notice-" + notificationData.type + " is-dismissble"}>
-          <p>{notificationData.message}</p>
-        </div>
-      )}
-    </React.Fragment>
-  );
-};
-
-export const EditComponentTitleArea = ({ mappingId, addMappingText, editMappingText }) => {
-  return (
-    <h1 className="wp-heading-inline wl-mappings-heading-text">
-      {mappingId === undefined ? addMappingText : editMappingText}
-    </h1>
-  );
-};
 
 export const RuleGroupWrapper = () => {
   return (

@@ -17,10 +17,11 @@ import { connect } from "react-redux";
 import PropertyListComponent from "./property-component/property-list-component";
 import { EDIT_MAPPING_REQUEST_MAPPING_ITEM_ACTION } from "../../actions/actions";
 
-import { EditComponentNotificationArea, RuleGroupWrapper } from "./edit-sub-components";
+import { RuleGroupWrapper } from "./rule-group-wrapper";
 import { EditMappingSaveButton } from "./edit-mapping-save-button";
 import { EditMappingPropertyBulkAction } from "./edit-mapping-property-bulk-action";
 import { EditMappingTitleSection } from "./edit-mapping-title-section";
+import {NotificationArea} from "./notification-area";
 
 // Set a reference to the WordLift's Edit Mapping settings stored in the window instance.
 const editMappingSettings = window["wl_edit_mappings_config"] || {};
@@ -50,7 +51,7 @@ class EditMappingComponent extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <EditComponentNotificationArea notificationData={this.props.notificationData} />
+        <NotificationArea notificationData={this.props.notificationData} />
         <EditMappingTitleSection />
         <RuleGroupWrapper />
         <PropertyListComponent />
