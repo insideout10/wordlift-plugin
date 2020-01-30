@@ -4,11 +4,13 @@
  *
  */
 
-export const mappingsConfig = {
+const mappingsConfig = {
   rest_url: "https://wordlift.localhost/index.php?rest_route=/wordlift/v1/mappings",
   wl_mapping_nonce: "b23118674e",
   wl_edit_mapping_nonce: "f4ec1e5ee6"
 };
+
+global.wlMappingsConfig = mappingsConfig
 
 export const editMappingsConfig = {
   rest_url: "https://wordlift.localhost/index.php?rest_route=/wordlift/v1/mappings",
