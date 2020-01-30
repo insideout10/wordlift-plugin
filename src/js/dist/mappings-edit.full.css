@@ -1,5 +1,7 @@
 .wl-col{padding:1em}.wl-col--less-padding{padding:0.5em}
 
+.wl-container{display:flex;justify-content:flex-start}.wl-container--full-width{width:100%}
+
 .wl-mappings-heading-text {
   font-size: 23px;
   font-weight: 400;

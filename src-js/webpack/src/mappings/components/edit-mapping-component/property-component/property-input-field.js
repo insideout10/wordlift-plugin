@@ -11,16 +11,16 @@
 import React from "react";
 
 export const PropertyInputField = ({ propData, handleChangeForPropertyField, inputKeyName }) => {
-    return (
-        <React.Fragment>
-            <input
-                type="text"
-                className="wl-form-control"
-                defaultValue={propData[inputKeyName]}
-                onChange={event => {
-                    handleChangeForPropertyField(inputKeyName, event);
-                }}
-            />
-        </React.Fragment>
-    );
+  return (
+    <React.Fragment>
+      <input
+        type="text"
+        className="wl-form-control"
+        defaultValue={propData[inputKeyName]}
+        onChange={event => {
+          handleChangeForPropertyField(inputKeyName, event);
+        }}
+      />
+    </React.Fragment>
+  );
 };

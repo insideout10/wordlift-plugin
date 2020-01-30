@@ -15,7 +15,7 @@ import { connect } from "react-redux";
  * Internal dependencies.
  */
 import { PROPERTY_DATA_CHANGED_ACTION } from "../../../actions/actions";
-import {PropertyInputField} from "./property-input-field";
+import { PropertyInputField } from "./property-input-field";
 
 class _PropertyNameField extends React.Component {
   render() {

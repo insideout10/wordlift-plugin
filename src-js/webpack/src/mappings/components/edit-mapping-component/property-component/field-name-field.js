@@ -16,8 +16,7 @@ import { connect } from "react-redux";
  */
 import { PROPERTY_DATA_CHANGED_ACTION } from "../../../actions/actions";
 import SelectComponent from "../../select-component";
-import {PropertyInputField} from "./property-input-field";
-
+import { PropertyInputField } from "./property-input-field";
 
 class _FieldNameField extends React.Component {
   constructor(props) {

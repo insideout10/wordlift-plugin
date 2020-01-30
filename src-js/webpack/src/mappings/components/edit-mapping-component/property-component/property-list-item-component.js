@@ -19,6 +19,7 @@ import { TRASH_CATEGORY, ACTIVE_CATEGORY } from "../../category-component";
 import { PropertyItemActiveOptions } from "./property-item-active-options";
 import { PropertyItemTrashOptions } from "./property-item-trash-options";
 import { WlColumn } from "../../../blocks/wl-column";
+import { WlContainer } from "../../../blocks/wl-container";
 
 /** Constants to be supplied via actions, and also compared in
  * the property reducers for making a CRUD Action on the property
@@ -91,12 +92,12 @@ class PropertyListItemComponent extends React.Component {
 
   render() {
     return (
-      <div className="wl-property-list-item wl-container">
+      <WlContainer>
         <WlColumn>
           <a className="row-title wl-property-list-item-title">{this.props.propData.propertyHelpText}</a>
           <div className="row-actions">{this.renderOptionsBasedOnItemCategory(this.props.chosenCategory)}</div>
         </WlColumn>
-      </div>
+      </WlContainer>
     );
   }
 }

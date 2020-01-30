@@ -10,6 +10,7 @@
  */
 import React from "react";
 import { WlColumn } from "../../blocks/wl-column";
+import {WlContainer} from "../../blocks/wl-container";
 
 /**
  * Internal dependencies.
@@ -21,11 +22,11 @@ export const RuleGroupText = ({ ruleGroupList, index }) => {
       {// dont show extra `or` text if there
       // is no rule group below
       index !== ruleGroupList.length - 1 && (
-        <div className="wl-container">
+        <WlContainer>
           <WlColumn>
             <b>Or</b>
           </WlColumn>
-        </div>
+        </WlContainer>
       )}
     </React.Fragment>
   );
