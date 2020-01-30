@@ -7,6 +7,11 @@
 .wl-table--no-border {
   border: none !important;
 }
+
+.wl-table--small {
+  width: 70%;
+}
+
 .wl-table td input[type="checkbox"],
 th input[type="checkbox"] {
   vertical-align: inherit;

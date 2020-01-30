@@ -1,4 +1,4 @@
-.wl-table--bottom-aligned{margin-bottom:30px}.wl-table--no-border{border:none !important}.wl-table td input[type="checkbox"],th input[type="checkbox"]{vertical-align:inherit}.wl-table td input[type="checkbox"]{margin-left:8px}
+.wl-table--bottom-aligned{margin-bottom:30px}.wl-table--no-border{border:none !important}.wl-table--small{width:70%}.wl-table td input[type="checkbox"],th input[type="checkbox"]{vertical-align:inherit}.wl-table td input[type="checkbox"]{margin-left:8px}
 
 .wl-col{padding:1em}.wl-col--less-padding{padding:0.5em}
 
@@ -58,11 +58,9 @@
   width: 80%;
 }
 
-
 .wl-align-right {
   margin-left: auto;
 }
-
 
 .wl-text-right {
   text-align: right;

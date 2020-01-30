@@ -20,7 +20,7 @@ import { FieldTypeField } from "./field-type-field";
 import { FieldNameField } from "./field-name-field";
 import { TransformFunctionField } from "./transform-function-field";
 import { PropertyCloseMappingButton } from "./property-close-mapping-button";
-import {WlTable} from "../../../blocks/wl-table";
+import { WlTable } from "../../../blocks/wl-table";
 
 class PropertyComponent extends React.Component {
   constructor(props) {

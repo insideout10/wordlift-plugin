@@ -15,10 +15,11 @@ import React from "react";
 import "./index.scss";
 import { classExtractor } from "../helper";
 
-export const WlTable = ({ children, bottomAligned = false, noBorder=false }) => {
+export const WlTable = ({ children, bottomAligned = false, noBorder = false, small = false }) => {
   const classes = classExtractor({
     "wl-table--bottom-aligned": bottomAligned,
-    "wl-table--no-border":noBorder
+    "wl-table--no-border": noBorder,
+    "wl-table--small": small
   });
   return <table className={"widefat striped wl-table " + classes}>{children}</table>;
 };
