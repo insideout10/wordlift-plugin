@@ -26,7 +26,7 @@ class Wordlift_Issue_991 extends Wordlift_Unit_Test_Case {
 
 		// Create an entity.
 		$post_id = $this->factory->post->create( array(
-			'post_title'  => 'Lorem Ipsum',
+			'post_title'  => 'Test Issue 991',
 			'post_type'   => 'entity',
 			'post_status' => 'publish',
 		) );

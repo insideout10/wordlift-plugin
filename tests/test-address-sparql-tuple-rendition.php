@@ -69,10 +69,14 @@ class Wordlift_Address_Sparql_Tuple_Rendition_Test extends Wordlift_Unit_Test_Ca
 		$entity_id = $this->factory()->post->create( array(
 			'post_type'   => 'entity',
 			'post_status' => 'publish',
+			'post_title'  => 'Address Sparql Tuple Rendition test_get_delete_triples',
 		) );
 
 		// Set the entity terms.
 		$term = get_term_by( 'slug', 'place', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+
+		$this->assertTrue( is_object( $term ), 'The term place must exist: ' . var_export( $term, true ) );
+
 		wp_set_post_terms( $entity_id, $term->term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 		// Get delete triples
@@ -95,15 +99,16 @@ class Wordlift_Address_Sparql_Tuple_Rendition_Test extends Wordlift_Unit_Test_Ca
 	/**
 	 * Test `get_insert_triples` method.
 	 *
+	 * @return void
 	 * @since 3.18.0
 	 *
-	 * @return void
 	 */
 	public function test_get_insert_triples() {
 		// Create an entity.
 		$entity_id = $this->factory()->post->create( array(
 			'post_type'   => 'entity',
 			'post_status' => 'publish',
+			'post_title'  => 'Address Sparql Tuple Rendition test_get_insert_triples',
 		) );
 
 		// Set the post meta values.

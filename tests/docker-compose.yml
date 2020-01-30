@@ -23,4 +23,5 @@ services:
       - ..:/app
     environment:
       WORDLIFT_KEY: $WORDLIFT_KEY
+      ACF_PRO_KEY: $ACF_PRO_KEY
     tty: true

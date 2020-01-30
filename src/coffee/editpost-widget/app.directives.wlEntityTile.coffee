@@ -9,7 +9,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityTile', [])
       onSelect: '&'
       onMore: '&'
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-tile.html'
+      configuration['ajax_url'] + '?action=wl_templates&name=wordlift-directive-entity-tile'
     link: ($scope, $element, $attrs, $boxCtrl) ->
       
       $scope.configuration = configuration

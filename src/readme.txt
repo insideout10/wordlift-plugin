@@ -142,9 +142,13 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.24.4 (2020-01-28) =
+= 3.25.0 (????-??-??) =
+* Enhancement [#953](https://github.com/insideout10/wordlift-plugin/issues/953): Map fields from ACF to schema.org classes.
+
+= 3.24.4 (2020-01-29) =
 * Fix [#1011](https://github.com/insideout10/wordlift-plugin/issues/1011): Wordlift_Entity_Service->count takes long time with more than 500.000 posts.
 * Fix [#1009](https://github.com/insideout10/wordlift-plugin/issues/1009): Autocomplete should take also synonyms under account.
+* Fix [#834](https://github.com/insideout10/wordlift-plugin/issues/834): avoid http calls to the plugins/wordlift directory.
 
 = 3.24.3.2 (2020-01-27) =
 * Fix: Content-Type to discover local entities.

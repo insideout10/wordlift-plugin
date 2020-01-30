@@ -49,11 +49,18 @@ class Wordlift_References_Test extends Wordlift_Unit_Test_Case {
 		self::turn_on_entity_push();
 
 		// Create required posts/entities.
-		$entity_1_id         = $this->entity_factory->create( array( 'post_status' => 'publish' ) );
-		$entity_2_id         = $this->entity_factory->create( array( 'post_status' => 'publish' ) );
+		$entity_1_id         = $this->entity_factory->create( array(
+			'post_status' => 'publish',
+			'post_title'  => 'Test References test_that_non_entity_has_references 1',
+		) );
+		$entity_2_id         = $this->entity_factory->create( array(
+			'post_status' => 'publish',
+			'post_title'  => 'Test References test_that_non_entity_has_references 2',
+		) );
 		$custom_post_type_id = $this->factory()->post->create( array(
 			'post_type'   => 'custom_post_type',
 			'post_status' => 'publish',
+			'post_title'  => 'Test References test_that_non_entity_has_references 3',
 		) );
 
 		// Add relations.
@@ -78,8 +85,8 @@ class Wordlift_References_Test extends Wordlift_Unit_Test_Case {
 			$this->fail( "Call returned an error: " . $response->get_error_message() );
 		}
 
-		$body     = $response['body'];
-		$lines    = str_getcsv( $body, "\n" );
+		$body  = $response['body'];
+		$lines = str_getcsv( $body, "\n" );
 
 		$this->assertContains( "http://purl.org/dc/terms/references,$entity_1_uri", $lines );
 		$this->assertContains( "http://purl.org/dc/terms/references,$entity_2_uri", $lines );
@@ -99,9 +106,18 @@ class Wordlift_References_Test extends Wordlift_Unit_Test_Case {
 		self::turn_on_entity_push();
 
 		// Create required posts/entities.
-		$entity_1_id = $this->entity_factory->create( array( 'post_status' => 'publish' ) );
-		$entity_2_id = $this->entity_factory->create( array( 'post_status' => 'publish' ) );
-		$entity_3_id = $this->entity_factory->create( array( 'post_status' => 'publish' ) );
+		$entity_1_id = $this->entity_factory->create( array(
+			'post_status' => 'publish',
+			'post_title'  => 'Test References test_that_entity_doesnt_have_references 1',
+		) );
+		$entity_2_id = $this->entity_factory->create( array(
+			'post_status' => 'publish',
+			'post_title'  => 'Test References test_that_entity_doesnt_have_references 2',
+		) );
+		$entity_3_id = $this->entity_factory->create( array(
+			'post_status' => 'publish',
+			'post_title'  => 'Test References test_that_entity_doesnt_have_references 3',
+		) );
 
 		// Add relations.
 		wl_core_add_relation_instance( $entity_1_id, WL_WHAT_RELATION, $entity_2_id );

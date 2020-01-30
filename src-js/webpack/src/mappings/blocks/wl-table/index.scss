@@ -1,0 +1,29 @@
+.wl-table {
+}
+.wl-table--bottom-aligned {
+  margin-bottom: 30px;
+}
+.wl-table--no-border {
+  border: none !important;
+}
+.wl-table--small {
+  width: 70%;
+}
+.wl-table--padding-left {
+  margin-left: 30%;
+}
+.wl-table--transparent-bg {
+  background: transparent !important;
+}
+.wl-table__checkbox {
+  vertical-align: inherit !important;
+  margin-left: inherit !important;
+}
+
+.wl-table__select-field {
+  width: 100% !important;
+}
+
+.wl-table__input-field {
+  @extend .wl-table__select-field
+}
