@@ -3,10 +3,6 @@
   font-weight: 400;
 }
 
-.wl-spaced-table td {
-  padding-right: 150px;
-}
-
 .wl-check-column {
   vertical-align: inherit;
   width: 2.2em;
@@ -56,16 +52,12 @@
   width: 80%;
 }
 
+
 .wl-align-right {
   margin-left: auto;
 }
 
-.wl-container-30 {
-  width: 30%;
-}
-.wl-container-70 {
-  width: 70%;
-}
+
 .wl-text-right {
   text-align: right;
 }
@@ -84,12 +76,7 @@
 .text-center {
   text-align: center !important;
 }
-.wl-col-30 {
-  width: 30%;
-}
-.wl-col-70 {
-  width: 70%;
-}
+
 .wl-mappings-link {
   cursor: pointer !important;
 }

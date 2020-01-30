@@ -10,7 +10,7 @@
  */
 import React from "react";
 import { WlColumn } from "../../blocks/wl-column";
-import { WlContainer } from "../../blocks/wl-container";
+import {WlContainer} from "../../blocks/wl-container";
 
 /**
  * Internal dependencies.

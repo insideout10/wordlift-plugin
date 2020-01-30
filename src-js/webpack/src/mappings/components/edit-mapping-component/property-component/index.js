@@ -20,6 +20,7 @@ import { FieldTypeField } from "./field-type-field";
 import { FieldNameField } from "./field-name-field";
 import { TransformFunctionField } from "./transform-function-field";
 import { PropertyCloseMappingButton } from "./property-close-mapping-button";
+import {WlTable} from "../../../blocks/wl-table";
 
 class PropertyComponent extends React.Component {
   constructor(props) {
@@ -30,7 +31,7 @@ class PropertyComponent extends React.Component {
       <React.Fragment>
         <a className="row-title">{this.props.propData.propertyHelpText}</a>
         <br />
-        <table className="wl-container wl-container-full wl-spaced-table wl-property-edit-item">
+        <WlTable noBorder={true}>
           <tbody>
             <PropertyNameField {...this.props} />
             <FieldTypeField {...this.props} />
@@ -38,7 +39,7 @@ class PropertyComponent extends React.Component {
             <TransformFunctionField {...this.props} />
             <PropertyCloseMappingButton {...this.props} />
           </tbody>
-        </table>
+        </WlTable>
       </React.Fragment>
     );
   }

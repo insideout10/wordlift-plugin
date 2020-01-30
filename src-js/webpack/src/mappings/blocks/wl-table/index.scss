@@ -3,6 +3,10 @@
 .wl-table--bottom-aligned {
   margin-bottom: 30px;
 }
+
+.wl-table--no-border {
+  border: none !important;
+}
 .wl-table td input[type="checkbox"],
 th input[type="checkbox"] {
   vertical-align: inherit;

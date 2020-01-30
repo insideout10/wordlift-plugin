@@ -24,7 +24,7 @@ import { PropertyHeaderRow } from "./property-header-row";
 import { PropertyNoItemMessage } from "./property-no-item-message";
 import { PropertyItemCheckbox } from "./property-item-checkbox";
 import { WlContainer } from "../../../blocks/wl-container";
-import { WlTable } from "../../../blocks/wl-table";
+import {WlTable} from "../../../blocks/wl-table";
 
 class PropertyListComponent extends React.Component {
   constructor(props) {

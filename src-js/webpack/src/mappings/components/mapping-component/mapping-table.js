@@ -17,13 +17,13 @@ import { connect } from "react-redux";
 import { MappingNoActiveItemMessage } from "./mapping-no-active-item-message";
 import MappingListItemComponent from "./mapping-list-item-component";
 import { MappingHeaderRow } from "./mapping-header-row";
-import { WlTable } from "../../blocks/wl-table";
+import {WlTable} from "../../blocks/wl-table";
 const { wl_edit_mapping_nonce } = global["wlMappingsConfig"];
 
 class _MappingTable extends React.Component {
   render() {
     return (
-      <WlTable>
+<WlTable>
         <thead>
           <MappingHeaderRow />
         </thead>
@@ -36,7 +36,7 @@ class _MappingTable extends React.Component {
         <tfoot>
           <MappingHeaderRow />
         </tfoot>
-      </WlTable>
+</WlTable>
     );
   }
 }
