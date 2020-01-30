@@ -15,7 +15,7 @@ import PropTypes from "prop-types";
 /**
  * Internal dependencies
  */
-import PropertyComponent from "./property-component";
+import PropertyComponent from "./index";
 import PropertyListItemComponent from "./property-list-item-component";
 import { OPEN_OR_CLOSE_PROPERTY_ACTION } from "../../../actions/actions";
 import { AddPropertyButton } from "./add-property-button";

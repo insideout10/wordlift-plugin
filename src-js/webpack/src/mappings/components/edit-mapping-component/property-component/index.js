@@ -21,20 +21,6 @@ import { FieldNameField } from "./field-name-field";
 import { TransformFunctionField } from "./transform-function-field";
 import { PropertyCloseMappingButton } from "./property-close-mapping-button";
 
-export const PropertyInputField = ({ propData, handleChangeForPropertyField, inputKeyName }) => {
-  return (
-    <React.Fragment>
-      <input
-        type="text"
-        className="wl-form-control"
-        defaultValue={propData[inputKeyName]}
-        onChange={event => {
-          handleChangeForPropertyField(inputKeyName, event);
-        }}
-      />
-    </React.Fragment>
-  );
-};
 class PropertyComponent extends React.Component {
   constructor(props) {
     super(props);
