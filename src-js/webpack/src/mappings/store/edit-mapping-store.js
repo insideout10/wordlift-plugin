@@ -9,7 +9,6 @@
  */
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import createSagaMiddleware from "redux-saga";
-import logger from "redux-logger";
 
 /**
  * Internal dependencies.
@@ -62,6 +61,6 @@ const reducers = combineReducers({
   NotificationData: NotificationReducer
 });
 const sagaMiddleware = createSagaMiddleware();
-const editMappingStore = createStore(reducers, INITIAL_STATE, applyMiddleware(sagaMiddleware, logger));
+const editMappingStore = createStore(reducers, INITIAL_STATE, applyMiddleware(sagaMiddleware));
 sagaMiddleware.run(editMappingSaga);
 export default editMappingStore;

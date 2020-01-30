@@ -9,7 +9,6 @@
  */
 import createSagaMiddleware from "redux-saga";
 import { applyMiddleware, createStore } from "redux";
-import logger from "redux-logger";
 
 /**
  * Internal dependencies
@@ -29,7 +28,7 @@ const MAPPINGS_INITIAL_STATE = {
 };
 
 const sagaMiddleware = createSagaMiddleware();
-const store = createStore(MappingListReducer, MAPPINGS_INITIAL_STATE, applyMiddleware(sagaMiddleware, logger));
+const store = createStore(MappingListReducer, MAPPINGS_INITIAL_STATE, applyMiddleware(sagaMiddleware));
 sagaMiddleware.run(saga);
 
 export default store;
