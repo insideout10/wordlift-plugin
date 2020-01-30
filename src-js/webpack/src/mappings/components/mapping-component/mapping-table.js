@@ -14,8 +14,9 @@ import { connect } from "react-redux";
 /**
  * Internal dependencies.
  */
-import { MappingHeaderRow, MappingNoActiveItemMessage } from "./mapping-list-subcomponents";
+import { MappingNoActiveItemMessage } from "./mapping-no-active-item-message";
 import MappingListItemComponent from "./mapping-list-item-component";
+import { MappingHeaderRow } from "./mapping-header-row";
 const { wl_edit_mapping_nonce } = global["wlMappingsConfig"];
 
 class _MappingTable extends React.Component {

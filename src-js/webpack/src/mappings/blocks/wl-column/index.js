@@ -12,12 +12,8 @@ import React from "react";
 /**
  * Internal dependencies.
  */
-import "./index.scss"
+import "./index.scss";
 
-export const WlColumn = ({children}) => {
-    return (
-        <div className="wl-col">
-            {children}
-        </div>
-    )
+export const WlColumn = ({ children }) => {
+  return <div className="wl-col">{children}</div>;
 };

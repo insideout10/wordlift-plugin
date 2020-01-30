@@ -15,10 +15,10 @@ import React from "react";
  */
 import { MAPPINGS_REQUEST_ACTION } from "../../actions/actions";
 import { connect } from "react-redux";
-import { AddNewButton } from "./mapping-list-subcomponents";
 import { MappingTable } from "./mapping-table";
 import { MappingCategories } from "./mapping-categories";
 import { MappingBulkAction } from "./mapping-bulk-action";
+import { AddNewButton } from "./add-new-button";
 
 class MappingComponent extends React.Component {
   componentDidMount() {

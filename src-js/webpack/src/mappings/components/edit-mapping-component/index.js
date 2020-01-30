@@ -21,7 +21,7 @@ import { RuleGroupWrapper } from "./rule-group-wrapper";
 import { EditMappingSaveButton } from "./edit-mapping-save-button";
 import { EditMappingPropertyBulkAction } from "./edit-mapping-property-bulk-action";
 import { EditMappingTitleSection } from "./edit-mapping-title-section";
-import {NotificationArea} from "./notification-area";
+import { NotificationArea } from "./notification-area";
 
 // Set a reference to the WordLift's Edit Mapping settings stored in the window instance.
 const editMappingSettings = window["wl_edit_mappings_config"] || {};
