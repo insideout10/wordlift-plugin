@@ -8,6 +8,7 @@
 /**
  * External dependencies
  */
+import React from "react"
 import { connect } from "react-redux";
 
 /**
@@ -23,6 +24,7 @@ class _MappingHeaderCheckbox extends React.Component {
     return (
       <th className="wl-check-column">
         <input
+            className={"wl-table__checkbox"}
           type="checkbox"
           onClick={() => {
             this.props.dispatch(MAPPING_LIST_BULK_SELECT_ACTION);
