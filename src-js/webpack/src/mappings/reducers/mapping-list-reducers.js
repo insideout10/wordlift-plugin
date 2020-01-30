@@ -15,13 +15,10 @@ import {
   MAPPING_LIST_CHOOSEN_CATEGORY_CHANGED,
   MAPPING_ITEM_SELECTED,
   BULK_ACTION_SELECTION_CHANGED,
-  MAPPING_ITEMS_BULK_APPLY,
   MAPPING_LIST_SORT_TITLE_CHANGED,
   MAPPINGS_RESET_UI_AFTER_BULK_APPLY
 } from "../actions/action-types";
 import { createReducer } from "@reduxjs/toolkit";
-import { BULK_OPTIONS } from "../components/bulk-action-sub-components";
-import { TRASH_CATEGORY, ACTIVE_CATEGORY } from "../components/category-component";
 import { SORT_BY_ASC, SORT_BY_DESC } from "../constants";
 
 /**
