@@ -34,7 +34,8 @@ const webpackConfig = {
     "mappings": "./src/mappings/index.js",
     "mappings-edit": "./src/mappings/edit-mappings.js",
     // The sameAs autocomplete for the meta-box. This bundle is used for the meta-box in Block Editor.
-    "autocomplete-select": "./src/Edit/index.autocomplete-select.js"
+    "autocomplete-select": "./src/Edit/index.autocomplete-select.js",
+    "faq-widget": "./src/faq-widget/index.js"
   },
   output: {
     filename: "[name].js",

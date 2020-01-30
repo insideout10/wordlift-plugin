@@ -697,6 +697,12 @@ class Wordlift {
 	protected $context_cards_service;
 
 	/**
+	 * The {@link \Wordlift\Faq\FaqTinyMceAdapter} instance.
+	 *
+	 * @var \Wordlift\Faq\FaqTinyMceAdapter The {@link \Wordlift\Faq\FaqTinyMceAdapter } instance.
+	 */
+	private $faq_tiny_mce_adapter;
+	/**
 	 * {@link Wordlift}'s singleton instance.
 	 *
 	 * @since  3.11.2
@@ -1277,6 +1283,7 @@ class Wordlift {
 		$this->entity_type_adapter      = new Wordlift_Entity_Type_Adapter( $this->entity_type_service );
 		$this->publisher_ajax_adapter   = new Wordlift_Publisher_Ajax_Adapter( $this->publisher_service );
 		$this->tinymce_adapter          = new Wordlift_Tinymce_Adapter( $this );
+		$this->faq_tiny_mce_adapter     = new \Wordlift\Faq\Faq_TinyMce_Adapter( $this );
 		$this->relation_rebuild_adapter = new Wordlift_Relation_Rebuild_Adapter( $this->relation_rebuild_service );
 
 		/*
@@ -1654,6 +1661,7 @@ class Wordlift {
 
 		/** Adapters. */
 		$this->loader->add_filter( 'mce_external_plugins', $this->tinymce_adapter, 'mce_external_plugins', 10, 1 );
+		$this->loader->add_filter('mce_external_plugins', $this->faq_tiny_mce_adapter, 'mce_external_plugins', 10, 1);
 		$this->loader->add_action( 'wp_ajax_wl_relation_rebuild_process_all', $this->relation_rebuild_adapter, 'process_all' );
 
 		$this->loader->add_action( 'wp_ajax_wl_sample_data_create', $this->sample_data_ajax_adapter, 'create' );
