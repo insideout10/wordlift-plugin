@@ -179,6 +179,7 @@ function wl_entities_box_content( $post, $wrapper = true ) {
 	$default_path           = WL_DEFAULT_PATH;
 	$dataset_uri            = $configuration_service->get_dataset_uri();
 	$current_post_uri       = Wordlift_Entity_Service::get_instance()->get_uri( $post->ID );
+	$is_entity              = Wordlift_Entity_Service::get_instance()->is_entity( $post->ID );
 
 	// Retrieve the current post author.
 	$post_author = get_userdata( $post->post_author )->display_name;
@@ -201,6 +202,7 @@ function wl_entities_box_content( $post, $wrapper = true ) {
 		window.wordlift.currentPostId = $post->ID;
 		window.wordlift.currentPostUri = "$current_post_uri";
 		window.wordlift.currentPostType = "$post->post_type";
+		window.wordlift.isEntity = !!"$is_entity";
 		window.wordlift.defaultThumbnailPath = "$default_thumbnail_path";
 		window.wordlift.defaultWordLiftPath = "$default_path";
 		window.wordlift.datasetUri = "$dataset_uri";
@@ -211,7 +213,7 @@ function wl_entities_box_content( $post, $wrapper = true ) {
 		window.wordlift.currentLanguage = "$current_language";
 		window.wordlift.timelinejsDefaultOptions = $timelinejs_default_options;
 JS;
-	
+
 	echo '<script type="text/javascript">' . PHP_EOL . $js_code . PHP_EOL . '</script>';
 
 }

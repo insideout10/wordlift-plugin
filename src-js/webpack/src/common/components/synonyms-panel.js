@@ -8,14 +8,15 @@ import React from "react";
  */
 import { withSelect, withDispatch } from "@wordpress/data";
 import { compose } from "@wordpress/compose";
+import { __ } from "@wordpress/i18n";
 import { Panel, PanelBody, PanelRow, TextControl, Button, IconButton } from "@wordpress/components";
 
 const wordlift = window["wordlift"];
 
 let SynonymsPanel = props =>
-  wordlift.currentPostType === "entity" ? (
+  wordlift.isEntity ? (
     <Panel>
-      <PanelBody title="Synonyms" intialOpen={false}>
+      <PanelBody title={__("Meta Fields Panel", "wordlift")} intialOpen={false}>
         {props.altLabels.map((altLabel, altLabelN, altLabels) => (
           <PanelRow>
             <TextControl
