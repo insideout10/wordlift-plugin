@@ -12,27 +12,14 @@
   background-color: #0073aa !important;
   color: #f7f7f7 !important;
 }
-.wl-postbox {
-  position: relative;
-  min-width: 255px;
-  border: 1px solid #e5e5e5;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
-  background: #fff;
-  width: 90% !important;
-}
+
 .wl-bg-light {
   background-color: #fbfbfc !important;
 }
 .wl-input-class {
   height: 40px !important;
 }
-.wl-postbox {
-  position: relative;
-  min-width: 255px;
-  border: 1px solid #e5e5e5;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
-  background: #fff;
-}
+
 .wl-description {
   font-size: 13px;
   font-style: italic;
@@ -43,13 +30,6 @@
   padding-bottom: 3px;
   padding-left: 5px !important;
   width: 150px;
-}
-.wl-form-control {
-  width: 100%;
-}
-
-.wl-container-80 {
-  width: 80%;
 }
 
 .wl-align-right {
@@ -68,9 +48,6 @@
   vertical-align: inherit;
 }
 
-.hide {
-  display: none;
-}
 .text-center {
   text-align: center !important;
 }

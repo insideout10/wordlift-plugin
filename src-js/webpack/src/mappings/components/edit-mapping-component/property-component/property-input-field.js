@@ -15,7 +15,6 @@ export const PropertyInputField = ({ propData, handleChangeForPropertyField, inp
     <React.Fragment>
       <input
         type="text"
-        className="wl-form-control"
         defaultValue={propData[inputKeyName]}
         onChange={event => {
           handleChangeForPropertyField(inputKeyName, event);

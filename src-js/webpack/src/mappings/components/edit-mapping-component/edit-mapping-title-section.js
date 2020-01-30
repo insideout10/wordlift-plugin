@@ -41,7 +41,7 @@ class _EditMappingTitleSection extends React.Component {
         />
         <input
           type="text"
-          className="wl-form-control wl-input-class"
+          className="wl-container__input--full-width wl-container__input--height-medium"
           value={this.props.title}
           placeholder="Title"
           onChange={e => {
