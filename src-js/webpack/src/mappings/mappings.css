@@ -61,10 +61,6 @@ th input[type="checkbox"] {
   width: 100%;
 }
 
-.wl-container {
-  display: flex;
-  justify-content: flex-start;
-}
 .wl-container-80 {
   width: 80%;
 }
