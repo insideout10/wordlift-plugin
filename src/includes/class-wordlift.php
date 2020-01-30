@@ -721,7 +721,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.25.0-dev';
+		$this->version     = '3.25.0';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -1452,7 +1452,7 @@ class Wordlift {
 		/*
 		 * Use the Templates Ajax Endpoint to load HTML templates for the legacy Angular app via admin-ajax.php
 		 * end-point.
-		 * 
+		 *
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/834
 		 * @since 3.24.4
 		 */

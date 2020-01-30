@@ -142,7 +142,8 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.25.0 (????-??-??) =
+= 3.25.0 (2020-01-30) =
+* Enhancement [#994](https://github.com/insideout10/wordlift-plugin/issues/994): Add synonyms to Block Editor.
 * Enhancement [#953](https://github.com/insideout10/wordlift-plugin/issues/953): Map fields from ACF to schema.org classes.
 
 = 3.24.4 (2020-01-29) =
