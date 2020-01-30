@@ -190,6 +190,7 @@ function wl_entities_box_content( $post, $wrapper = true ) {
 	$wordlift_timeline_shortcode = new Wordlift_Timeline_Shortcode();
 	$timelinejs_default_options  = json_encode( $wordlift_timeline_shortcode->get_timelinejs_default_options(), JSON_PRETTY_PRINT );
 	$addslashes_post_author      = addslashes( $post_author );
+	$ajax_url                    = json_encode( admin_url( 'admin-ajax.php' ) );
 
 	$js_code = <<<JS
 		if ('undefined' == typeof window.wordlift) {
@@ -212,6 +213,7 @@ function wl_entities_box_content( $post, $wrapper = true ) {
 		window.wordlift.topic = $topic_obj;
 		window.wordlift.currentLanguage = "$current_language";
 		window.wordlift.timelinejsDefaultOptions = $timelinejs_default_options;
+		window.wordlift.ajax_url = $ajax_url;
 JS;
 
 	echo '<script type="text/javascript">' . PHP_EOL . $js_code . PHP_EOL . '</script>';

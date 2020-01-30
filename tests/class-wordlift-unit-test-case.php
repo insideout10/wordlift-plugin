@@ -68,7 +68,10 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
+		delete_transient( '_wl_installing' );
 		delete_option( 'wl_db_version' );
+
+		$this->assertFalse( get_option( 'wl_db_version' ), '`wl_db_version` should be false.' );
 
 		Wordlift_Install_Service::get_instance()->install();
 
@@ -90,6 +93,61 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 
 		_wl_test_set_wp_die_handler();
 
+	}
+
+	function tearDown() {
+		parent::tearDown();
+
+		// Check that no posts survive the test.
+//		global $wpdb;
+//		$this->assertEquals( 0, $wpdb->get_var( "SELECT COUNT( 1 ) FROM {$wpdb->posts}" )
+//			, 'Post count must be 0, instead got: ' . var_dump( get_posts( array(
+//				'posts_per_page' => - 1,
+//				'post_status'    => 'any'
+//			) ) ) );
+	}
+
+	/**
+	 * The class {@see WP_UnitTestCase} alters custom tables by making them temporary.
+	 *
+	 * Since we defined foreign keys on these tables we need them persistent, therefore we override the WP_UnitTestCase
+	 * functions in order to return the query as is (i.e. without the TEMPORARY modifier).
+	 *
+	 * @param string $query The original query.
+	 *
+	 * @return string The original query.
+	 *
+	 * @since 3.25.0
+	 */
+	function _create_temporary_tables( $query ) {
+
+		if ( preg_match( '|CREATE TABLE IF NOT EXISTS \S+_wl_mapping|', $query ) ) {
+
+			return $query;
+		}
+
+		return parent::_create_temporary_tables( $query );
+	}
+
+	/**
+	 * The class {@see WP_UnitTestCase} alters custom tables by making them temporary.
+	 *
+	 * Since we defined foreign keys on these tables we need them persistent, therefore we override the WP_UnitTestCase
+	 * functions in order to return the query as is (i.e. without the TEMPORARY modifier).
+	 *
+	 * @param string $query The original query.
+	 *
+	 * @return string The original query.
+	 *
+	 * @since 3.25.0
+	 */
+	function _drop_temporary_tables( $query ) {
+
+		if ( preg_match( '|DROP TABLE IF EXISTS \S+_wl_mapping|', $query ) ) {
+			return $query;
+		}
+
+		return parent::_drop_temporary_tables( $query );
 	}
 
 	/**

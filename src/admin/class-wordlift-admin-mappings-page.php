@@ -21,7 +21,7 @@ class Wordlift_Admin_Mappings_Page extends Wordlift_Admin_Page {
 	 */
 	function get_page_title() {
 
-		return __( 'Mappings', 'wordlift' );
+		return __( 'Schema.org Types', 'wordlift' );
 	}
 
 	/**
@@ -29,7 +29,7 @@ class Wordlift_Admin_Mappings_Page extends Wordlift_Admin_Page {
 	 */
 	function get_menu_title() {
 
-		return __( 'Mappings', 'wordlift' );
+		return __( 'Schema.org Types', 'wordlift' );
 	}
 
 	/**

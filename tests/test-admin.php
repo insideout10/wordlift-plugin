@@ -161,7 +161,10 @@ class Wordlift_Admin_Test extends Wordlift_Unit_Test_Case {
 		wp_set_current_user( $user_id );
 		set_current_screen( 'edit.php' );
 
-		$post = $this->factory()->post->create_and_get( array( 'post_type' => 'entity' ) );
+		$post = $this->factory()->post->create_and_get( array(
+			'post_type' => 'entity',
+			'post_title' => 'Test Admin ' . wp_rand(0, 1000)
+		) );
 		setup_postdata( $GLOBALS['post'] = $post );
 
 		$this->assertEquals( 'entity', $post->post_type, 'The post type must be entity. It was: ' . $post->post_type );

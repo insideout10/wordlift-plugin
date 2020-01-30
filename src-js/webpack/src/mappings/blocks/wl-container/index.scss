@@ -1,0 +1,15 @@
+.wl-container {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.wl-container--full-width {
+  width: 100%;
+}
+
+.wl-container__input--full-width {
+  width: 100%;
+}
+.wl-container__input--height-medium {
+  height: 40px;
+}

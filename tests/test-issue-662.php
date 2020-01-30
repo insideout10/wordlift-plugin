@@ -104,7 +104,7 @@ class Wordlift_Issue_662 extends Wordlift_Unit_Test_Case {
 
 		// As of 3.16.0, the posts are 3 because we also create a publisher
 		// in the set-up stage.
-		$this->assertCount( 3, $posts );
+		$this->assertCount( 3, $posts, "We expected 3 posts instead we got:\n" . var_export( $posts, true ) );
 		$this->assertCount( 1, array_filter( $posts, function ( $item ) use ( $post_as_entity_id ) {
 			return $post_as_entity_id === $item->ID;
 		} ) );
@@ -117,7 +117,9 @@ class Wordlift_Issue_662 extends Wordlift_Unit_Test_Case {
 
 	private function create_entity( $slug ) {
 
-		$post_id = $this->entity_factory->create();
+		$post_id = $this->entity_factory->create( array(
+			'post_title' => 'Test Issue 662 ' . wp_rand( 0, 1000 ),
+		) );
 
 		// Remove WordLift's taxonomy from the post, and clean up the cache
 		// to pick up the changes.
@@ -174,6 +176,7 @@ class Wordlift_Issue_662 extends Wordlift_Unit_Test_Case {
 		 *
 		 * @since 3.23.6
 		 */
+
 		// $this->assertFalse( $terms );
 
 		return $post_id;
@@ -182,13 +185,15 @@ class Wordlift_Issue_662 extends Wordlift_Unit_Test_Case {
 	/**
 	 * Create a {@link WP_Post} and check the associated terms.
 	 *
-	 * @since 3.15.3
 	 * @return int The {@link WP_Post} id.
+	 * @since 3.15.3
 	 */
 	private function create_and_check_terms() {
 
 		// Create a post.
-		$post_id = $this->factory->post->create();
+		$post_id = $this->factory()->post->create( array(
+			'post_title' => 'Test Issue #662 (' . wp_rand( 1000 ) . ')',
+		) );
 		$this->assertGreaterThan( 0, $post_id );
 
 		// Get the terms bound to the post.
@@ -206,9 +211,9 @@ class Wordlift_Issue_662 extends Wordlift_Unit_Test_Case {
 	/**
 	 * Behave as a `screen` pretending we're in admin.
 	 *
+	 * @return bool Always true.
 	 * @since 3.15.3
 	 *
-	 * @return bool Always true.
 	 */
 	public function in_admin() {
 

@@ -50,8 +50,8 @@ class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 
 		// now with some unrelated entity
 
-		$pid = $this->factory->post->create( array(
-			'post_title'  => 'bla',
+		$pid = $this->factory()->post->create( array(
+			'post_title'  => 'Test Publisher Service test_nopublishers',
 			'post_type'   => 'entity',
 			'post_status' => 'publish',
 		) );
@@ -73,8 +73,8 @@ class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 		$publishers_service = new Wordlift_Publisher_Service( $this->configuration_service );
 
 		// create a non publisher entity to make the test more real
-		$busines = $this->factory->post->create( array(
-			'post_title'  => 'bla',
+		$busines = $this->factory()->post->create( array(
+			'post_title'  => 'Test_Publisher_Service test_publishers 1',
 			'post_type'   => 'entity',
 			'post_status' => 'publish',
 		) );
@@ -82,8 +82,8 @@ class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 		$this->entity_type_service->set( $busines, 'http://schema.org/LocalBusiness' );
 
 		// create a person
-		$person = $this->factory->post->create( array(
-			'post_title'  => 'blabla',
+		$person = $this->factory()->post->create( array(
+			'post_title'  => 'Test_Publisher_ServiceTest_Publisher_Service test_publishers 2',
 			'post_type'   => 'entity',
 			'post_status' => 'publish',
 		) );
@@ -95,8 +95,9 @@ class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 1, count( $publishers_service->query( '' ) ) );
 
 		// create an organization
-		$org = $this->factory->post->create( array(
-			'post_title'  => 'alb',
+		$org = $this->factory()->post->create( array(
+			// Without underscores, so that we shouldn't be found with the query.
+			'post_title'  => 'Test Publisher Service test_publishers 3',
 			'post_type'   => 'entity',
 			'post_status' => 'publish',
 		) );
@@ -108,13 +109,13 @@ class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 2, count( $publishers_service->query( '' ) ) );
 
 		// test the search
-		$this->assertEquals( 1, count( $publishers_service->query( 'bla' ) ) );
+		$this->assertEquals( 1, count( $publishers_service->query( 'Test_Publisher_Service' ) ) );
 
 		// Test that posts with the relevant entity type are also returned
 
 		// random post article
-		$blapost = $this->factory->post->create( array(
-			'post_title'  => 'blabla',
+		$blapost = $this->factory()->post->create( array(
+			'post_title'  => 'Test_Publisher_ServiceTest_Publisher_Service test_publishers 4',
 			'post_type'   => 'post',
 			'post_status' => 'publish',
 		) );
@@ -125,11 +126,11 @@ class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 2, count( $publishers_service->query( '' ) ) );
 
 		// test the search
-		$this->assertEquals( 1, count( $publishers_service->query( 'bla' ) ) );
+		$this->assertEquals( 1, count( $publishers_service->query( 'Test_Publisher_Service' ) ) );
 
 		// create a post person
-		$postperson = $this->factory->post->create( array(
-			'post_title'  => 'oblao',
+		$postperson = $this->factory()->post->create( array(
+			'post_title'  => 'oTest_Publisher_Serviceo test_publishers 5',
 			'post_type'   => 'post',
 			'post_status' => 'publish',
 		) );
@@ -137,8 +138,8 @@ class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 		$this->entity_type_service->set( $postperson, 'http://schema.org/Person' );
 
 		// create a post organization
-		$postorg = $this->factory->post->create( array(
-			'post_title'  => 'blabla',
+		$postorg = $this->factory()->post->create( array(
+			'post_title'  => 'Test_Publisher_ServiceTest_Publisher_Service test_publishers 6',
 			'post_type'   => 'post',
 			'post_status' => 'publish',
 		) );
@@ -150,7 +151,7 @@ class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 4, count( $publishers_service->query( '' ) ) );
 
 		// test the search
-		$this->assertEquals( 3, count( $publishers_service->query( 'bla' ) ) );
+		$this->assertEquals( 3, count( $publishers_service->query( 'Test_Publisher_Service' ) ) );
 	}
 
 }
