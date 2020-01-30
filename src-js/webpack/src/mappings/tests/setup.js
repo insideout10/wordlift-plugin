@@ -13,6 +13,10 @@ const mappingsConfig = {
 
 global.wlMappingsConfig = mappingsConfig;
 global.MockHttpServer = new MockHttpServer();
+/**
+ * Mock the fetch function here.
+ * @returns {*}
+ */
 global.fetch = () => {
   const response = global.MockHttpServer.dequeueResponse()
   if (response  != null) {
@@ -30,6 +34,7 @@ global.fetch = () => {
     return new Promise().reject()
   }
 };
+
 export const editMappingsConfig = {
   rest_url: "https://wordlift.localhost/index.php?rest_route=/wordlift/v1/mappings",
   wl_edit_mapping_rest_nonce: "b23118674e",

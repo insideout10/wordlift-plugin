@@ -26,7 +26,7 @@ class _MappingHeaderCheckbox extends React.Component {
         <input
             className={"wl-table__checkbox"}
           type="checkbox"
-          onClick={() => {
+          onChange={() => {
             this.props.dispatch(MAPPING_LIST_BULK_SELECT_ACTION);
           }}
           checked={this.props.headerCheckBoxSelected === true}
