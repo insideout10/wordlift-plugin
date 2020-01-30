@@ -16,7 +16,6 @@ import { Provider } from "react-redux";
  */
 import store from "./store";
 import MappingComponent from "./components/mapping-component";
-// @@todo: we can use BEM and SCSS.
 import "./mappings.css";
 
 window.addEventListener("load", () => {

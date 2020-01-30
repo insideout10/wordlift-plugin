@@ -21,6 +21,7 @@ export default class MappingComponentHelper {
       isSelected: false
     }));
   }
+
   /**
    * Convert ui data to api format before posting to api
    * @param {Array} mappingItems Mapping items list

@@ -7,8 +7,7 @@
 /**
  * External dependencies
  */
-import { call, put, takeLatest, select } from "redux-saga/effects";
-
+import { call, put, select, takeLatest } from "redux-saga/effects";
 /**
  * Internal dependencies
  */
@@ -20,11 +19,7 @@ import {
   MAPPINGS_REQUEST_CLONE_MAPPINGS,
   MAPPINGS_REQUEST_DELETE_OR_UPDATE
 } from "../actions/action-types";
-import {
-  MAPPING_ITEMS_BULK_APPLY_ACTION,
-  MAPPINGS_REQUEST_ACTION,
-  MAPPINGS_RESET_UI_AFTER_BULK_APPLY_ACTION
-} from "../actions/actions";
+import { MAPPINGS_REQUEST_ACTION, MAPPINGS_RESET_UI_AFTER_BULK_APPLY_ACTION } from "../actions/actions";
 import { getSelectedBulkOption, getSelectedMappingItems } from "./selectors";
 import { BULK_OPTIONS } from "../components/bulk-action-sub-components";
 import { ACTIVE_CATEGORY, TRASH_CATEGORY } from "../components/category-component";

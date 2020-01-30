@@ -45,9 +45,7 @@ function deleteOrUpdateMappings(type, mappingItems) {
     body: JSON.stringify({
       mapping_items: MappingComponentHelper.applyApiFilters(mappingItems)
     })
-  })
-    .then(response => response.json())
-    .then(json => {});
+  });
 }
 
 /**
@@ -63,9 +61,7 @@ function cloneMappings(mappingItems) {
       "X-WP-Nonce": wl_mapping_nonce
     },
     body: JSON.stringify({ mapping_items: MappingComponentHelper.applyApiFilters(mappingItems) })
-  })
-    .then(response => response.json())
-    .then(json => {});
+  });
 }
 
 export default { getMappings, deleteOrUpdateMappings, cloneMappings };

@@ -1,11 +1,13 @@
-import EditComponentFilters from "../filters/edit-component-filters";
-import MappingComponentHelper from "../components/mapping-component/mapping-component-helper";
-
 /**
  * This file provides the api methods for the edit mappings screen.
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * @since 3.25.0
  */
+
+/**
+ * Internal dependencies
+ */
+import EditComponentFilters from "../filters/edit-component-filters";
 
 const { wl_edit_mapping_rest_nonce, rest_url } = global["wl_edit_mappings_config"];
 
