@@ -64,7 +64,7 @@ class _MappingListItemActiveCategoryOptions extends React.Component {
         <span className="edit">
           <a href={this.constructEditMappingLink()}>Edit</a>|
         </span>
-        <span className="wl-mappings-link">
+        <span className="wl-clone wl-mappings-link">
           <a
             title="Duplicate this item"
             onClick={() => {
