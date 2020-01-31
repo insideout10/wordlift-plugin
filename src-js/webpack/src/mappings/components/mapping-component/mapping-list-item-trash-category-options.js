@@ -33,12 +33,12 @@ class _MappingListItemTrashCategoryOptions extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <span className="edit wl-mappings-link">
+        <span className="restore wl-mappings-link">
           <a
             onClick={() => {
-              const mappingData = this.props.mappingData;
+              const mappingData = Object.assign({},this.props.mappingData);
               mappingData.mappingStatus = ACTIVE_CATEGORY;
-              this.updateMappingItem(this.props.mappingData);
+              this.updateMappingItem(mappingData);
             }}
           >
             Restore
