@@ -23,7 +23,7 @@ test("can render edit component", () => {
 });
 
 test("when given mapping items ui works correctly", () => {
-  const mockResponse = MappingComponentHelper.applyApiFilters([
+  const mockResponse = MappingComponentHelper.applyUiItemFilters([
     {
       mapping_id: "11",
       mapping_title: "item 1",
