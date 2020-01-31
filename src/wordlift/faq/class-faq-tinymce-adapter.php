@@ -22,8 +22,8 @@ class Faq_TinyMce_Adapter {
 
 	}
 
-	function load_faq_tiny_mce_plugin( $plugins ) {
-		$plugins['wl_faq_mce_plugin'] = plugin_dir_path( dirname(__FILE__ ) )."js/faq-widget.js";
+	function mce_external_plugins( $plugins ) {
+		$plugins['wl_faq_mce_plugin'] = plugin_dir_url( dirname( __DIR__ ) )."/js/dist/faq-widget.js";
 		return $plugins;
 	}
 }
