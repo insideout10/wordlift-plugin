@@ -25,7 +25,8 @@ global.fetch = () => {
         ok: true,
         status:200,
         json: () => {
-          return response
+          console.log(response)
+          return Promise.resolve(response)
         },
       });
     });

@@ -6,10 +6,10 @@ class MockHttpServer {
 
     /**
      * Add a list of responses.
-     * @param responses
+     * @param response
      */
-    enqueueResponse( responses ) {
-        this.responses.push(responses)
+    enqueueResponse( response ) {
+        this.responses.push(response)
     }
 
     /**

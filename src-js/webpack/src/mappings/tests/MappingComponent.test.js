@@ -13,17 +13,9 @@ import Adapter from "enzyme-adapter-react-16";
 import MappingComponentHelper from "../components/mapping-component/mapping-component-helper";
 
 configure({ adapter: new Adapter() });
-test("can render edit component", () => {
-  global.MockHttpServer.enqueueResponse([{}]);
-  mount(
-    <Provider store={store}>
-      <MappingComponent />
-    </Provider>
-  );
-});
 
 test("when given mapping items ui works correctly", () => {
-  const mockResponse = MappingComponentHelper.applyUiItemFilters([
+  const mockResponse = [
     {
       mapping_id: "11",
       mapping_title: "item 1",
@@ -39,8 +31,8 @@ test("when given mapping items ui works correctly", () => {
       mapping_title: "item 3",
       mapping_status: "trash"
     }
-  ]);
-  global.MockHttpServer.enqueueResponse([mockResponse]);
+  ];
+  global.MockHttpServer.enqueueResponse(mockResponse);
     // Now when rendering the component our ui will get this data by the mocked fetch method.
     const component = mount(
         <Provider store={store}>
