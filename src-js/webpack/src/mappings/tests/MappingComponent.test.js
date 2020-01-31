@@ -12,24 +12,51 @@ import { shallow, mount, configure } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import MappingComponentHelper from "../components/mapping-component/mapping-component-helper";
 import { MAPPING_LIST_CHANGED_ACTION } from "../actions/actions";
+import { ACTIVE_CATEGORY } from "../components/category-component";
 const mockHttpServer = global.MockHttpServer;
 configure({ adapter: new Adapter() });
 
-test("when component rendered, check if it asks the server for mapping items", () => {
-  // Supply no mapping items when the  component requests for data.
+beforeEach(() => {
+  global.MockHttpServer.resetServer();
   global.MockHttpServer.enqueueResponse([]);
-  const mockStore = store;
+});
+
+test("when component rendered, check if it asks the server for mapping items", () => {
   // Now when rendering the component our ui will get this data by the mocked fetch method.
-  const component = mount(
-    <Provider store={mockStore}>
+  mount(
+    <Provider store={store}>
       <MappingComponent />
     </Provider>
   );
   expect(mockHttpServer.getLastCapturedRequest()).not.toBe(null);
   // that request should have a route for get_mappings
-    expect(mockHttpServer.getLastCapturedRequest().url).toEqual(
-        expect.stringContaining("wordlift/v1/mappings")
-    )
+  expect(mockHttpServer.getLastCapturedRequest().url).toEqual(expect.stringContaining("wordlift/v1/mappings"));
 });
 
-
+test("component should send request correctly when we want set trash category to the mapping item", () => {
+  const mockStore = store;
+  const mappingItems = [
+    {
+      mappingId: 1,
+      mappingTitle: "foo",
+      mappingStatus: ACTIVE_CATEGORY,
+      isSelected: false
+    }
+  ];
+  MAPPING_LIST_CHANGED_ACTION.payload = {
+    value: mappingItems
+  };
+  mockStore.dispatch(MAPPING_LIST_CHANGED_ACTION);
+  // Now when rendering the component we will have a mapping item.
+  const wrapper = mount(
+    <Provider store={mockStore}>
+      <MappingComponent />
+    </Provider>
+  );
+  global.MockHttpServer.resetServer();
+  // We enqueue a another empty response before simulating click.
+  mockHttpServer.enqueueResponse([]) // to handle put event
+  mockHttpServer.enqueueResponse([]) // to handle get mapping event
+  wrapper.find("span.trash > a").simulate("click");
+  console.log(global.MockHttpServer.getCapturedRequests());
+});
