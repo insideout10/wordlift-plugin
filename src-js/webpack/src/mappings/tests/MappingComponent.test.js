@@ -8,14 +8,15 @@ import React from "react";
 import { Provider } from "react-redux";
 import MappingComponent from "../components/mapping-component";
 import store from "../store/index";
-import { mount, configure } from "enzyme";
+import { shallow, mount, configure } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import MappingComponentHelper from "../components/mapping-component/mapping-component-helper";
+import { MAPPING_LIST_CHANGED_ACTION } from "../actions/actions";
 
 configure({ adapter: new Adapter() });
 
 test("when given mapping items ui works correctly", () => {
-  const mockResponse = [
+  const mockMappingItems = [
     {
       mapping_id: "11",
       mapping_title: "item 1",
@@ -32,13 +33,25 @@ test("when given mapping items ui works correctly", () => {
       mapping_status: "trash"
     }
   ];
-  global.MockHttpServer.enqueueResponse(mockResponse);
-    // Now when rendering the component our ui will get this data by the mocked fetch method.
-    const component = mount(
-        <Provider store={store}>
-            <MappingComponent />
-        </Provider>
-    );
-    console.log(store.getState())
+  // Supply no mapping items when the  component requests for data.
+  global.MockHttpServer.enqueueResponse([]);
+  const mockStore = store;
+  // Now when rendering the component our ui will get this data by the mocked fetch method.
+  const component = mount(
+    <Provider store={mockStore}>
+      <MappingComponent />
+    </Provider>
+  );
+
+  const uiMappingItems = MappingComponentHelper.applyUiItemFilters(mockMappingItems);
+  MAPPING_LIST_CHANGED_ACTION.payload = {
+    mappingItems: uiMappingItems
+  };
+  //mockStore.dispatch(MAPPING_LIST_CHANGED_ACTION);
+  console.log(global.MockHttpServer.getLastCapturedRequest())
+
+  // Lets delete a item from the store.
+
+
 
 });

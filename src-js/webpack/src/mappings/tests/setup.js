@@ -17,22 +17,22 @@ global.MockHttpServer = new MockHttpServer();
  * Mock the fetch function here.
  * @returns {*}
  */
-global.fetch = () => {
-  const response = global.MockHttpServer.dequeueResponse()
-  if (response  != null) {
+global.fetch = (url, data) => {
+  // Capture the requests which are coming through this mocked method
+  global.MockHttpServer.insertCapturedRequestParams(url, data);
+  const response = global.MockHttpServer.dequeueResponse();
+  if (response != null) {
     return new Promise((resolve, reject) => {
       resolve({
         ok: true,
-        status:200,
+        status: 200,
         json: () => {
-          console.log(response)
-          return Promise.resolve(response)
-        },
+          return Promise.resolve(response);
+        }
       });
     });
-  }
-  else {
-    return new Promise().reject()
+  } else {
+    return new Promise().reject();
   }
 };
 
