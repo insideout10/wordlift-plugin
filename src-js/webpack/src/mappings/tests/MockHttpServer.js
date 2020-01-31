@@ -25,12 +25,30 @@ class MockHttpServer {
       data: data
     });
   }
-
   /**
-   * Gets the last captured request, returns null if no request found.
+   * Get last captured request, returns null if no request found.
    * @return {object} | null
    */
   getLastCapturedRequest() {
+    if (this.requests.length > 0) {
+      return this.requests[this.requests.length - 1];
+    } else {
+      return null;
+    }
+  }
+  /**
+   * Returns all the captured requests
+   * @returns {Array} List of all captured requests
+   */
+  getCapturedRequests() {
+    return this.requests;
+  }
+
+  /**
+   * Get and remove the last captured request, returns null if no request found.
+   * @return {object} | null
+   */
+  getAndRemoveLastCapturedRequest() {
     if (this.requests.length > 0) {
       return this.requests.shift();
     } else {

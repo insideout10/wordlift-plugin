@@ -12,27 +12,10 @@ import { shallow, mount, configure } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import MappingComponentHelper from "../components/mapping-component/mapping-component-helper";
 import { MAPPING_LIST_CHANGED_ACTION } from "../actions/actions";
-
+const mockHttpServer = global.MockHttpServer;
 configure({ adapter: new Adapter() });
 
-test("when given mapping items ui works correctly", () => {
-  const mockMappingItems = [
-    {
-      mapping_id: "11",
-      mapping_title: "item 1",
-      mapping_status: "active"
-    },
-    {
-      mapping_id: "12",
-      mapping_title: "item 2",
-      mapping_status: "active"
-    },
-    {
-      mapping_id: "13",
-      mapping_title: "item 3",
-      mapping_status: "trash"
-    }
-  ];
+test("when component rendered, check if it asks the server for mapping items", () => {
   // Supply no mapping items when the  component requests for data.
   global.MockHttpServer.enqueueResponse([]);
   const mockStore = store;
@@ -42,16 +25,11 @@ test("when given mapping items ui works correctly", () => {
       <MappingComponent />
     </Provider>
   );
-
-  const uiMappingItems = MappingComponentHelper.applyUiItemFilters(mockMappingItems);
-  MAPPING_LIST_CHANGED_ACTION.payload = {
-    mappingItems: uiMappingItems
-  };
-  //mockStore.dispatch(MAPPING_LIST_CHANGED_ACTION);
-  console.log(global.MockHttpServer.getLastCapturedRequest())
-
-  // Lets delete a item from the store.
-
-
-
+  expect(mockHttpServer.getLastCapturedRequest()).not.toBe(null);
+  // that request should have a route for get_mappings
+    expect(mockHttpServer.getLastCapturedRequest().url).toEqual(
+        expect.stringContaining("wordlift/v1/mappings")
+    )
 });
+
+
