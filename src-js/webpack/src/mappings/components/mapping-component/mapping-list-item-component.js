@@ -44,7 +44,7 @@ class MappingListItemComponent extends React.Component {
           <input
             type="checkbox"
             checked={this.props.mappingData.isSelected}
-            onClick={() => {
+            onChange={() => {
               MAPPING_ITEM_SELECTED_ACTION.payload = {
                 mappingId: this.props.mappingData.mappingId
               };

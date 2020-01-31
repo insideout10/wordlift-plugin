@@ -80,7 +80,7 @@ class _MappingListItemActiveCategoryOptions extends React.Component {
             onClick={() => {
               const mappingData = Object.assign({}, this.props.mappingData);
               mappingData.mappingStatus = TRASH_CATEGORY;
-              this.updateMappingItem(this.props.mappingData);
+              this.updateMappingItem(mappingData);
             }}
           >
             Trash

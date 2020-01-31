@@ -12,7 +12,7 @@ import { shallow, mount, configure } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import MappingComponentHelper from "../components/mapping-component/mapping-component-helper";
 import { MAPPING_LIST_CHANGED_ACTION } from "../actions/actions";
-import { ACTIVE_CATEGORY } from "../components/category-component";
+import { ACTIVE_CATEGORY, TRASH_CATEGORY } from "../components/category-component";
 const mockHttpServer = global.MockHttpServer;
 configure({ adapter: new Adapter() });
 
@@ -53,10 +53,14 @@ test("component should send request correctly when we want set trash category to
       <MappingComponent />
     </Provider>
   );
-  global.MockHttpServer.resetServer();
   // We enqueue a another empty response before simulating click.
-  mockHttpServer.enqueueResponse([]) // to handle put event
-  mockHttpServer.enqueueResponse([]) // to handle get mapping event
+  mockHttpServer.enqueueResponse([]); // to handle put event
+  mockHttpServer.enqueueResponse([]); // to handle get mapping event
   wrapper.find("span.trash > a").simulate("click");
-  console.log(global.MockHttpServer.getCapturedRequests());
+  // when this click is made, a put request should be sent to API, with out mapping item.
+  const request = mockHttpServer.getLastCapturedRequest();
+  expect(request.data.method).toEqual("PUT");
+  const expectedMappingItemsArray = MappingComponentHelper.applyApiFilters(mappingItems);
+  expectedMappingItemsArray[0].mapping_status = TRASH_CATEGORY;
+  expect(request.data.body).toEqual(JSON.stringify({ "mapping_items": expectedMappingItemsArray } ));
 });
