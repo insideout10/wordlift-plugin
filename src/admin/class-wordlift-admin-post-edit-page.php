@@ -197,32 +197,6 @@ class Wordlift_Admin_Post_Edit_Page {
 		wp_localize_script('wordlift-admin-edit-page', '_wlFaqSettings', array(
 			'textEditor' => $editor,
 		));
-	}
-
-	/**
-	 * This function loads the javascript file according to the WordPress version.
-	 *
-	 * For WordPress < 5.0 it'll load the javascript file using the `.full` suffix i.e. the file that embeds all the
-	 * dependencies.
-	 *
-	 * For WordPress >= 5.0 it'll load the stripped down js.
-	 *
-	 * @param string $handle The handle name.
-	 * @param string $script_name The full script URL without the `.js` extension.
-	 * @param array $dependencies An array of dependencies to be added only in WordPress > 5.0.
-	 */
-	private function enqueue_based_on_wordpress_version( $handle, $script_name, $dependencies ) {
-		global $wp_version;
-
-		if ( version_compare( $wp_version, '5.0', '<' ) ) {
-			$actual_script_name  = "$script_name.full.js";
-			$actual_dependencies = array();
-		} else {
-			$actual_script_name  = "$script_name.js";
-			$actual_dependencies = $dependencies;
-		}
-
-		wp_enqueue_script( $handle, $actual_script_name, $actual_dependencies, $this->plugin->get_version(), false );
 
 	}
 
