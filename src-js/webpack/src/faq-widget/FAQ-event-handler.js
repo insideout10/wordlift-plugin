@@ -7,8 +7,24 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
+import TinyMceFaqHook from "./hooks/tiny-mce-faq-hook";
+
 class FAQEventHandler {
     constructor() {
+        this._hook = this.getHookForCurrentEnvironment()
+    }
+    getHook() {
+        return this._hook
+    }
+
+    /**
+     * Returns hook instance based on the current environment
+     * @return FaqTextEditorHook|null
+     */
+    getHookForCurrentEnvironment() {
+        if ( global["tinymce"] !== undefined ) {
+            return new TinyMceFaqHook()
+        }
     }
 }
 
