@@ -7,7 +7,7 @@
  */
 class FaqTextEditorHook {
     constructor() {
-        this._plugin = this.initializePluginForTextEditor()
+       // this._plugin = this.initializePluginForTextEditor()
         this.listenForTextSelection()
     }
     /**

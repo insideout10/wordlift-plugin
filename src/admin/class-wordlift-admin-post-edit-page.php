@@ -20,6 +20,9 @@ use Wordlift\Scripts\Scripts_Helper;
  */
 class Wordlift_Admin_Post_Edit_Page {
 
+	const GUTENBERG = 'gutenberg';
+	const TINY_MCE = 'tiny_mce';
+
 	/**
 	 * The {@link Wordlift} plugin instance.
 	 *
@@ -181,7 +184,19 @@ class Wordlift_Admin_Post_Edit_Page {
 		);
 
 		wp_enqueue_style( 'wordlift-admin-edit-page', "$script_name.css", array(), $this->plugin->get_version() );
+		// This method is reached only if editor is classic editor.
+		$this->load_faq_settings( self::TINY_MCE );
+	}
 
+	/**
+	 * Load FAQ settings to the add/edit post page
+	 *
+	 * @param $editor string specifying which text editor needed to be used.
+	 */
+	private function load_faq_settings( $editor ) {
+		wp_localize_script('wordlift-admin-edit-page', '_wlFaqSettings', array(
+			'textEditor' => $editor,
+		));
 	}
 
 	/**
@@ -259,6 +274,9 @@ class Wordlift_Admin_Post_Edit_Page {
 			array(),
 			$this->plugin->get_version()
 		);
+
+		// Load FAQ settings.
+		$this->load_faq_settings(self::GUTENBERG);
 	}
 
 }
