@@ -25,6 +25,7 @@ class FAQEventHandler {
         if ( global["tinymce"] !== undefined ) {
             return new TinyMceFaqHook()
         }
+        return null
     }
 }
 
