@@ -133,3 +133,4 @@ test("component should send request correctly when we want set active category t
   expectedMappingItemsArray[0].mapping_status = ACTIVE_CATEGORY;
   expect(request.data.body).toEqual(JSON.stringify({ mapping_items: expectedMappingItemsArray }));
 });
+

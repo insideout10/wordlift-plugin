@@ -45,7 +45,7 @@ class _MappingListItemTrashCategoryOptions extends React.Component {
           </a>
           |
         </span>
-        <span className="trash wl-mappings-link">
+        <span className="wl-permanent-delete wl-mappings-link">
           <a
             onClick={() => {
               this.updateMappingItem(this.props.mappingData, "DELETE");
