@@ -7,18 +7,16 @@
 
 import FaqTextEditorHook from "./faq-text-editor-hook";
 
-export const FAQ_TINY_MCE_PLUGIN_NAME = 'wl_faq'
+export const FAQ_TINY_MCE_PLUGIN_NAME = "wl_faq";
 
 class TinyMceFaqHook extends FaqTextEditorHook {
+  constructor() {
+    super();
+  }
 
-    constructor() {
-        super();
-        this.listenForTextSelection()
-    }
+  listenForTextSelection() {
 
-    listenForTextSelection() {
-        super.listenForTextSelection();
-    }
+  }
 }
 
-export default TinyMceFaqHook
+export default TinyMceFaqHook;
