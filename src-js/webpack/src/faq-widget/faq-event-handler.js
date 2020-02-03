@@ -9,7 +9,7 @@
 
 import TinyMceFaqHook from "./hooks/tiny-mce-faq-hook";
 
-class FAQEventHandler {
+class FaqEventHandler {
     constructor() {
         this._hook = this.getHookForCurrentEnvironment()
     }
@@ -29,4 +29,4 @@ class FAQEventHandler {
     }
 }
 
-export default FAQEventHandler
+export default FaqEventHandler

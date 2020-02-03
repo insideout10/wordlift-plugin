@@ -1,0 +1,13 @@
+/**
+ * Constants for the FAQ hooks.
+ *
+ * @since ???
+ * @author Naveen Muthusamy <naveen@wordlift.io>
+ */
+
+/**
+ * Event name when the text selection changed in any of text editor, emitted
+ * from the hooks.
+ * @type {string}
+ */
+export const FAQ_EVENT_HANDLER_SELECTION_CHANGED = "FAQ_EVENT_HANDLER_SELECTION_CHANGED";
