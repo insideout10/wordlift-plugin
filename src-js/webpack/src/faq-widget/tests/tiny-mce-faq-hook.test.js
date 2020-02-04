@@ -51,6 +51,23 @@ test("check if the tinymce selection changed, event handler should receive text 
 
 });
 
+test("when text selection is changed check if its previously emiited", () => {
+  const hook = new TinyMceFaqHook();
+  hook.listenForTextSelection();
+  // Rest previous mocks
+  trigger.mockClear()
+  // mock the selection
+  global["tinymce"]["activeEditor"]["selection"] = {};
+  global["tinymce"]["activeEditor"]["selection"].getContent = () => "foo";
+  // Emit a event from the active editor mock.
+  global["tinymce"]["activeEditor"]["emit"]("NodeChange");
+  // The trigger method should be called once, since we have invoked a change in editor.
+  expect(trigger.mock.calls.length).toEqual(1)
+  global["tinymce"]["activeEditor"]["emit"]("NodeChange");
+  // we are emitting the same text twice, the event should not fire.
+  expect(trigger.mock.calls.length).toEqual(1)
+})
+
 afterEach(() => {
   global["tinymce"] = undefined;
 });
