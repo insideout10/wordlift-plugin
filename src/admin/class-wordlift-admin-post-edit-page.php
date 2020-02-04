@@ -144,6 +144,7 @@ class Wordlift_Admin_Post_Edit_Page {
 		 */
 		// plugin_dir_url( __FILE__ ) . 'js/1/edit.js'
 		$script_name = plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/edit';
+
 		/**
 		 * Scripts_Helper introduced.
 		 *
@@ -186,6 +187,7 @@ class Wordlift_Admin_Post_Edit_Page {
 		wp_enqueue_style( 'wordlift-admin-edit-page', "$script_name.css", array(), $this->plugin->get_version() );
 		// This method is reached only if editor is classic editor.
 		$this->load_faq_settings( self::TINY_MCE );
+
 	}
 
 	/**
@@ -197,6 +199,11 @@ class Wordlift_Admin_Post_Edit_Page {
 		wp_localize_script('wordlift-admin-edit-page', '_wlFaqSettings', array(
 			'textEditor' => $editor,
 		));
+		Scripts_Helper::enqueue_based_on_wordpress_version(
+			'',
+			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/faq',
+			array('wp-polyfill')
+		);
 
 	}
 
