@@ -7,7 +7,8 @@
  */
 
 import FaqTextEditorHook from "./faq-text-editor-hook";
-
+import {FAQ_EVENT_HANDLER_SELECTION_CHANGED} from "../constants/faq-hook-constants";
+import {trigger} from 'backbone'
 export const FAQ_TINY_MCE_PLUGIN_NAME = "wl_faq";
 
 class TinyMceFaqHook extends FaqTextEditorHook {
@@ -16,9 +17,9 @@ class TinyMceFaqHook extends FaqTextEditorHook {
   }
 
   listenForTextSelection() {
-    const tinymce = global["tinymce"];
-    tinymce.activeEditor.on("NodeChange", e => {
-      console.log(e);
+    const editor = global["tinymce"].activeEditor;
+    editor.on("NodeChange", e => {
+      trigger(FAQ_EVENT_HANDLER_SELECTION_CHANGED, editor.selection.getContent({ format: "text" }))
     });
   }
 }
