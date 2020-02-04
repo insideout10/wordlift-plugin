@@ -8,7 +8,7 @@
 class FaqTextEditorHook {
     constructor() {
        // this._plugin = this.initializePluginForTextEditor()
-        this.listenForTextSelection()
+        // this.listenForTextSelection()
     }
     /**
      * This should listen for the changes in the text editor selection and

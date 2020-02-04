@@ -16,7 +16,10 @@ class TinyMceFaqHook extends FaqTextEditorHook {
   }
 
   listenForTextSelection() {
-
+    const tinymce = global["tinymce"];
+    tinymce.activeEditor.on("NodeChange", e => {
+      console.log(e);
+    });
   }
 }
 
