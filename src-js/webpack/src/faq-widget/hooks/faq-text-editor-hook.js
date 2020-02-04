@@ -2,7 +2,7 @@
  * FaqTextEditorHook Provides a abstract class for the hooks to implement
  * the methods.
  *
- * @since ???
+ * @since 3.26.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 class FaqTextEditorHook {

@@ -1,7 +1,7 @@
 /**
  * Constants for the FAQ hooks.
  *
- * @since ???
+ * @since 3.26.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 

@@ -1,7 +1,7 @@
 /**
  * Tests the FAQ Event handler class.
  *
- * @since ???
+ * @since 3.26.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
