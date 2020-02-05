@@ -9,6 +9,7 @@
  * @subpackage Wordlift/admin
  */
 
+use Wordlift\FAQ\FAQ_Rest_Controller;
 use Wordlift\Scripts\Scripts_Helper;
 
 /**
@@ -196,6 +197,7 @@ class Wordlift_Admin_Post_Edit_Page {
 	 * @param $editor string specifying which text editor needed to be used.
 	 */
 	private function load_faq_settings( $editor ) {
+		// Register the api endpoints.
 		wp_localize_script('wordlift-admin-edit-page', '_wlFaqSettings', array(
 			'textEditor' => $editor,
 		));

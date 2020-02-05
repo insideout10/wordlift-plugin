@@ -13,6 +13,7 @@
  */
 
 use Wordlift\Cache\Ttl_Cache;
+use Wordlift\FAQ\FAQ_Rest_Controller;
 use Wordlift\Mappings\Jsonld_Converter;
 use Wordlift\Mappings\Mappings_DBO;
 use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
@@ -1457,6 +1458,8 @@ class Wordlift {
 		 * @since 3.24.4
 		 */
 		new Templates_Ajax_Endpoint();
+		// Call this static method to register FAQ routes to rest api
+		FAQ_Rest_Controller::register_routes();
 
 	}
 

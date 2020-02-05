@@ -17,7 +17,7 @@ use WP_REST_Request;
  */
 class FAQ_Rest_Controller {
 	const FAQ_META_KEY = 'wl_faq';
-	public function register_routes() {
+	public static function register_routes() {
 		add_action( 'rest_api_init', 'Wordlift\FAQ\FAQ_Rest_Controller::register_route_callback' );
 	}
 
