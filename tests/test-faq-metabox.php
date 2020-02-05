@@ -11,7 +11,7 @@
 class FAQ_Metabox_test extends Wordlift_Unit_Test_Case {
 
 	public function test_faq_metabox_should_be_valid_class() {
-		$this->assertNotNull( new FAQ_Metabox() );
+		$this->assertNotNull( new \Wordlift\FAQ\FAQ_Metabox() );
 	}
 
 
