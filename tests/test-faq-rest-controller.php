@@ -56,6 +56,19 @@ class FAQ_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 		$response_data = $response->get_data();
 		$this->assertEquals( 'success', $response_data['status'] );
 	}
+
+	public function test_given_invalid_data_to_insert_faq_item_should_return_error() {
+		// Create user with 'publish_posts' capability.
+		$user_id   = $this->factory->user->create( array( 'role' => 'author' ) );
+		wp_set_current_user( $user_id );
+		// insert the data for this post, prepare POST request to FAQ.
+		$request   = new WP_REST_Request( 'POST', $this->faq_route );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( wp_json_encode( array() ) );
+		$response  = $this->server->dispatch( $request );
+		$response_data = $response->get_data();
+		$this->assertEquals( 'failure', $response_data['status'] );
+	}
 //	public function test_whether_rest_server_has_faq_route() {
 //		$routes = $this->server->get_routes();
 //		$this->assertArrayHasKey( FAQ_Rest_Controller::FAQ_ROUTE, $routes);
