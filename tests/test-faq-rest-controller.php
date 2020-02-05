@@ -13,7 +13,8 @@ class FAQ_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function setUp() {
 		parent::setUp();
-		$this->rest_instance = new Wordlift\FAQ_Rest_Controller();
+
+		$this->rest_instance = new \Wordlift\FAQ\FAQ_Rest_Controller();
 		$this->rest_instance->register_routes();
 		global $wp_rest_server;
 
