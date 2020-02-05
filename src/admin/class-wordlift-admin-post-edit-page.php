@@ -9,6 +9,7 @@
  * @subpackage Wordlift/admin
  */
 
+use Wordlift\FAQ\FAQ_Metabox;
 use Wordlift\FAQ\FAQ_Rest_Controller;
 use Wordlift\Scripts\Scripts_Helper;
 
@@ -207,7 +208,8 @@ class Wordlift_Admin_Post_Edit_Page {
 			array('wp-polyfill'),
 			true
 		);
-
+		// Load the FAQ meta box.
+		new FAQ_Metabox();
 	}
 
 	/**
