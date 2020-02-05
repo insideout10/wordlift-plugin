@@ -200,9 +200,10 @@ class Wordlift_Admin_Post_Edit_Page {
 			'textEditor' => $editor,
 		));
 		Scripts_Helper::enqueue_based_on_wordpress_version(
-			'',
+			'wordlift-admin-edit-page-faq',
 			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/faq',
-			array('wp-polyfill')
+			array('wp-polyfill'),
+			true
 		);
 
 	}

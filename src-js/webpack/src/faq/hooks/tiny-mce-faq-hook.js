@@ -24,6 +24,7 @@ class TinyMceFaqHook extends FaqTextEditorHook {
   }
 
   listenForTextSelection() {
+    console.log("Selected text listener initialized")
     const editor = global["tinymce"].activeEditor;
     editor.on("NodeChange", e => {
 
@@ -32,6 +33,7 @@ class TinyMceFaqHook extends FaqTextEditorHook {
        * selected text, we are checking if the same text was posted last time
        */
       const selectedText = editor.selection.getContent({ format: "text" });
+      console.log("selected text is " + selectedText)
       if (selectedText !== this._lastEmittedSelection) {
         this._lastEmittedSelection = selectedText;
         trigger(FAQ_EVENT_HANDLER_SELECTION_CHANGED, selectedText);
