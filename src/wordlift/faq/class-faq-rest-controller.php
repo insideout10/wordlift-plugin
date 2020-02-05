@@ -3,6 +3,7 @@
  * This file defines the rest controller for FAQ
  *
  * @since 3.26.0
+ * @author Naveen Muthusamy <naveen@wordlift.io>
  * @package Wordlift\FAQ
  */
 
