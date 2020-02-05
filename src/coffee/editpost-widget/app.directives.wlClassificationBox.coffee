@@ -4,7 +4,7 @@ angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
     scope: true
     transclude: true
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-classification-box.html'
+      configuration['ajax_url'] + '?action=wl_templates&name=wordlift-directive-classification-box'
     link: ($scope, $element, $attrs, $ctrl) ->
       $log.debug 'Linking classification box...'
 

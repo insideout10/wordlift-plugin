@@ -68,7 +68,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 	public function test_event_conversion() {
 
 		// Create an entity post and assign it the Event type.
-		$name     = rand_str();
+		$name     = 'Test Entity Post to Json-Ld conversion test_event_conversion ' . rand_str();
 		$event_id = $this->factory->post->create( array(
 			'post_title' => $name,
 			'post_type'  => 'entity',

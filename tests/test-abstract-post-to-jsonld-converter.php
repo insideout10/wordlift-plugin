@@ -61,7 +61,10 @@ class Wordlift_Abstract_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test
 	 */
 	public function test_convert() {
 
-		$post_id = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		$post_id = $this->factory()->post->create( array(
+			'post_type'  => 'entity',
+			'post_title' => 'Abstract Post to Json-Ld Converter test_convert'
+		) );
 		// Add 3 entity type terms.
 		wp_set_object_terms( $post_id, array(
 			'person',

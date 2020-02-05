@@ -63,6 +63,13 @@ class Wordlift_Install_Service {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-24-2.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-all-entity-types.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-package-type.php';
+		/**
+		 * Include installation script for 3.25.0
+		 *
+		 * @since 3.25.0
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-25-0.php';
+
 
 		// Get the install services.
 		$this->installs = array(
@@ -82,8 +89,8 @@ class Wordlift_Install_Service {
 			new Wordlift_Install_Package_Type(),
 			new Wordlift_Install_3_23_4(),
 			new Wordlift_Install_3_24_2(),
+			new Wordlift_Install_3_25_0(),
 		);
-
 		self::$instance = $this;
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
@@ -116,7 +123,6 @@ class Wordlift_Install_Service {
 
 		if ( $this->install_required() && false === get_transient( '_wl_installing' ) ) {
 			set_transient( '_wl_installing', true, 5 * MINUTE_IN_SECONDS );
-
 			/** @var Wordlift_Install $install */
 			foreach ( $this->installs as $install ) {
 				// Get the install version.
@@ -124,13 +130,12 @@ class Wordlift_Install_Service {
 
 				if ( version_compare( $version, $this->get_current_version(), '>' )
 				     || $install->must_install() ) {
-
 					$class_name = get_class( $install );
 
 					$this->log->info( "Current version is {$this->get_current_version()}, installing $class_name..." );
-
 					// Install version.
 					$install->install();
+
 
 					$this->log->info( "$class_name installed." );
 

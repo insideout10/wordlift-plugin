@@ -658,24 +658,11 @@ class Wordlift_Configuration_Service {
 	}
 
 	/**
-	 * Get the URL to perform batch analyses.
-	 *
-	 * @since 3.14.0
-	 *
-	 * @return string The URL to call to perform the batch analyzes.
-	 */
-	public function get_batch_analysis_url() {
-
-		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . 'batch-analyses';
-
-	}
-
-	/**
 	 * Get the URL to perform autocomplete request.
 	 *
 	 * @since 3.15.0
 	 *
-	 * @return string The URL to call to perform the batch analyzes.
+	 * @return string The URL to call to perform the autocomplete request.
 	 */
 	public function get_autocomplete_url() {
 

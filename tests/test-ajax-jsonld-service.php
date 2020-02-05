@@ -107,14 +107,18 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 	 */
 	public function test_jsonld() {
 
+		$local_business_term = get_term_by( 'slug', 'local-business', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+		$this->assertTrue( is_object( $local_business_term ), 'The `LocalBusiness` term must exist.' );
+
 		// Create a location entity post and bind it to the location property.
-		$name              = rand_str();
+		$name              = 'Test Ajax Json-Ld Service test_jsonld ' . rand_str();
 		$local_business_id = $this->factory()->post->create( array(
 			'post_title' => $name,
 			'post_type'  => 'entity',
 		) );
 		$this->entity_type_service->set( $local_business_id, 'http://schema.org/LocalBusiness' );
 		$local_business_type = $this->entity_type_service->get( $local_business_id );
+
 		$this->assertEquals( 'http://schema.org/LocalBusiness', $local_business_type['uri'] );
 
 		$local_business_uri = $this->entity_service->get_uri( $local_business_id );
@@ -151,7 +155,10 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$country = rand_str();
 		add_post_meta( $local_business_id, Wordlift_Schema_Service::FIELD_ADDRESS_COUNTRY, $country );
 
-		$person_id = $this->factory()->post->create( array( 'post_type' => 'entity', ) );
+		$person_id = $this->factory()->post->create( array(
+			'post_type'  => 'entity',
+			'post_title' => 'Test Ajax Json-Ld Service test_jsonld'
+		) );
 		$this->entity_type_service->set( $person_id, 'http://schema.org/Person' );
 
 		$person_type = $this->entity_type_service->get( $person_id );
@@ -272,17 +279,19 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 	 * @since 3.14.0
 	 */
 	public function test_jsonld_website() {
-		$name        = rand_str();
+		$name        = 'Test Ajax Json-Ld Service test_jsonld_website ' . rand_str();
 		$description = rand_str();
 
 		// Set publisher.
-		$publisher = $this->entity_factory->create_and_get();
+		$publisher = $this->entity_factory->create_and_get( array(
+			'post_title' => 'Test Ajax Json-Ld Service test_jsonld_website'
+		) );
 		$this->entity_type_service->set( $publisher->ID, 'http://schema.org/Person' );
 		$publisher_uri = $this->entity_service->get_uri( $publisher->ID );
 		$this->configuration_service->set_publisher_id( $publisher->ID );
 
 		// Create homepage
-		$homepage_id = $this->factory->post->create( array(
+		$homepage_id = $this->factory()->post->create( array(
 			'post_title' => $name,
 			'post_type'  => 'page',
 		) );
@@ -354,11 +363,11 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 	 * @since 3.14.0
 	 */
 	public function test_disable_jsonld_website() {
-		$name        = rand_str();
+		$name        = 'Test Ajax Json-Ld Service test_disable_jsonld_website ' . rand_str();
 		$description = rand_str();
 
 		// Create homepage
-		$homepage_id = $this->factory->post->create( array(
+		$homepage_id = $this->factory()->post->create( array(
 			'post_title' => $name,
 			'post_type'  => 'page',
 		) );
@@ -367,7 +376,9 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$home_uri = $this->entity_service->get_uri( $homepage_id );
 
 		// Set publisher.
-		$publisher = $this->entity_factory->create_and_get();
+		$publisher = $this->entity_factory->create_and_get( array(
+			'post_title' => 'Test Ajax Json-Ld Service test_jsonld_website'
+		) );
 		$this->entity_type_service->set( $publisher->ID, 'http://schema.org/Organization' );
 		$publisher_uri = $this->entity_service->get_uri( $publisher->ID );
 		$this->configuration_service->set_publisher_id( $publisher->ID );
@@ -449,7 +460,9 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		update_option( 'blogdescription', $description );
 
 		// Set publisher.
-		$publisher = $this->entity_factory->create_and_get();
+		$publisher = $this->entity_factory->create_and_get( array(
+			'post_title' => 'Test Ajax Json-Ld Service test_jsonld_website_without_homepage'
+		) );
 		$this->entity_type_service->set( $publisher->ID, 'http://schema.org/Organization' );
 		$publisher_uri = $this->entity_service->get_uri( $publisher->ID );
 		$this->configuration_service->set_publisher_id( $publisher->ID );
@@ -513,17 +526,19 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 	 * @since 3.14.0
 	 */
 	public function test_change_jsonld_website_search_target() {
-		$name        = rand_str();
+		$name        = 'Test Ajax Json-Ld Service test_change_jsonld_website_search_target ' . rand_str();
 		$description = rand_str();
 
 		// Create homepage
-		$homepage_id = $this->factory->post->create( array(
+		$homepage_id = $this->factory()->post->create( array(
 			'post_title' => $name,
 			'post_type'  => 'page',
 		) );
 
 		// Set publisher.
-		$publisher = $this->entity_factory->create_and_get();
+		$publisher = $this->entity_factory->create_and_get( array(
+			'post_title' => 'Test Ajax Json-Ld Service test_change_jsonld_website_search_target'
+		) );
 		$this->entity_type_service->set( $publisher->ID, 'http://schema.org/Person' );
 		$publisher_uri = $this->entity_service->get_uri( $publisher->ID );
 		$this->configuration_service->set_publisher_id( $publisher->ID );
@@ -673,13 +688,14 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 	 */
 	public function test_post_mentioning_a_recipe() {
 
-		$post_id = $this->factory->post->create( array(
+		$post_id = $this->factory()->post->create( array(
 			'type'        => 'post',
 			'post_status' => 'publish',
 		) );
 
 		$recipe_post_id = $this->entity_factory->create( array(
 			'post_status' => 'publish',
+			'post_title'  => 'Test Ajax Json-Ld Service test_post_mentioning_a_recipe',
 		) );
 		$this->entity_type_service->set( $recipe_post_id, 'http://schema.org/Recipe' );
 

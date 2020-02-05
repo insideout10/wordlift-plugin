@@ -7,7 +7,7 @@ require_once( dirname( __FILE__ ) . '/../src/includes/properties/class-wordlift-
  *
  * @since 3.14.0
  */
-class Wordlift_Duration_Property_Service_Test  extends Wordlift_Unit_Test_Case {
+class Wordlift_Duration_Property_Service_Test extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * Test conversions from possible valid values to json-LD expected values
@@ -16,13 +16,15 @@ class Wordlift_Duration_Property_Service_Test  extends Wordlift_Unit_Test_Case {
 		$converter = new Wordlift_Duration_Property_Service();
 
 		// Create a fake post.
-		$id = $this->factory->post->create();
+		$id = $this->factory->post->create( array(
+			'post_title' => 'Test Duration Property Service test_sanitize_data_filter',
+		) );
 
 		// Set a "fake" meta with a number of minutes
 		update_post_meta( $id, 'duration', '10' );
 		$v = $converter->get( $id, 'duration' );
 		// Get return an array with one value.
-		$this->assertEquals( 'PT10M',  $v[0] );
+		$this->assertEquals( 'PT10M', $v[0] );
 
 		// Set a "fake" meta with a hh:mm format
 		update_post_meta( $id, 'duration', '3:13' );

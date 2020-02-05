@@ -320,18 +320,6 @@ class Wordlift_Test extends Wordlift {
 	}
 
 	/**
-	 * Get the {@link Wordlift_Batch_Analysis_Service} instance.
-	 *
-	 * @since 3.17.0
-	 *
-	 * @return \Wordlift_Batch_Analysis_Service The {@link Wordlift_Batch_Analysis_Service} instance.
-	 */
-	public function get_batch_analysis_service() {
-
-		return $this->batch_analysis_service;
-	}
-
-	/**
 	 * Get the {@link Wordlift_Linked_Data_Service} instance.
 	 *
 	 * @since 3.18.0

@@ -52,6 +52,9 @@ class Ttl_Cache_Cleaner {
 		$this->ttl      = $ttl;
 		$this->max_size = $max_size;
 
+		add_action( 'wp_ajax_wl_ttl_cache_cleaner__flush', array( $this, 'flush' ) );
+		add_action( 'wl_ttl_cache_cleaner__flush', array( $this, 'flush' ) );
+
 		add_action( 'wp_ajax_wl_ttl_cache_cleaner__cleanup', array( $this, 'cleanup' ) );
 		add_action( 'wl_ttl_cache_cleaner__cleanup', array( $this, 'cleanup' ) );
 
@@ -69,11 +72,24 @@ class Ttl_Cache_Cleaner {
 
 	}
 
-	public function cleanup() {
+	public function flush() {
 
 		// Get all the files, recursive.
 		$files = $this->reduce( array(), Ttl_Cache::get_cache_folder() );
 
+		foreach ( $files as $file ) {
+			@unlink( $file[ Ttl_Cache_Cleaner::PATH ] );
+		}
+
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX && 'wl_ttl_cache_cleaner__flush' === $_REQUEST['action'] ) {
+			wp_send_json_success( count( $files ) );
+		}
+	}
+
+	public function cleanup() {
+
+		// Get all the files, recursive.
+		$files = $this->reduce( array(), Ttl_Cache::get_cache_folder() );
 
 		// Get the max mtime.
 		$max_mtime = time() - WORDLIFT_CACHE_DEFAULT_TTL;

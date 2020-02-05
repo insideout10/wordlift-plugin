@@ -10,6 +10,12 @@
  * @subpackage Wordlift/admin
  */
 
+use Wordlift\Mappings\Acf_Mappings;
+use Wordlift\Mappings\Mappings_REST_Controller;
+use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
+use Wordlift\Mappings\Pages\Edit_Mappings_Page;
+use Wordlift\Mappings\Pages\Admin_Mappings_Page;
+
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -182,6 +188,17 @@ class Wordlift_Admin {
 			new Wordlift_Admin_Not_Enriched_Filter();
 
 		}
+
+		// @@todo only load this class if ACF is available.
+		// Add support for ACF mappings, so that the admin edit mappings page can pick up ACF support when ACF is available.
+		new Acf_Mappings();
+
+		// Add Mappings and Edit Mappings page.
+		new Admin_Mappings_Page();
+		new Edit_Mappings_Page( new Mappings_Transform_Functions_Registry() );
+
+		// Add the Mappings' REST Controller.
+		new Mappings_REST_Controller();
 
 		// Set the singleton instance.
 		self::$instance = $this;
@@ -358,6 +375,7 @@ class Wordlift_Admin {
 	 * @since 3.24.2 this function isn't called anymore as it was causing the WordLift block category to multiply
 	 *   in Block Editor, https://github.com/insideout10/wordlift-plugin/issues/1004
 	 */
+
 //	private static function add_block_category() {
 //		add_filter( 'block_categories', function ( $categories, $post ) {
 //			return array_merge(
