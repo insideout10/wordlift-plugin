@@ -33,7 +33,38 @@ class FAQ_Rest_Controller {
 		);
 	}
 
+	/**
+	 * Insert a single FAQ item.
+	 *
+	 * @param $request \WP_REST_Request $request {@link WP_REST_Request instance}.
+	 *
+	 * @return array Associative array whether the faq item is inserted or not
+	 */
 	public static function insert_faq_item( $request ) {
-
+		$post_data = $request->get_params();
+		if ( array_key_exists('post_id', $post_data) &&
+		     array_key_exists( 'faq_items', $post_data) ) {
+			$post_id = $post_data['post_id'];
+			/**
+			 * Add index as the identifier to the faq_items,
+			 * later to be used for updating or deleting.
+			 */
+			$faq_items = array();
+			foreach ( $post_data['faq_items'] as $index => $faq_item ) {
+				$faq_item['faq_id'] = $index;
+				array_push( $faq_items, $faq_item );
+			}
+			add_post_meta( (int) $post_id, self::FAQ_META_KEY, $faq_items);
+			return array(
+				'status' => 'success',
+				'message' => __('Faq Item successfully inserted.')
+			);
+		}
+		else {
+			return array(
+				'status'  => 'failure',
+				'message' => __( 'Invalid data, post_id or faq_items missing', 'wordlift' )
+			);
+		}
 	}
 }

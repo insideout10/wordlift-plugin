@@ -53,6 +53,8 @@ class FAQ_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 200, $response->get_status() );
 		$faq_items = get_post_meta($post_id, FAQ_Rest_Controller::FAQ_META_KEY);
 		$this->assertCount( 1, $faq_items );
+		$response_data = $response->get_data();
+		$this->assertEquals( 'success', $response_data['status'] );
 	}
 //	public function test_whether_rest_server_has_faq_route() {
 //		$routes = $this->server->get_routes();
