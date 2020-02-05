@@ -18,12 +18,9 @@ services:
     volumes:
       - wordpress-data-${WORDPRESS_VERSION:-5.0.0}:/var/www/html
       - ./src:/var/www/html/wp-content/plugins/wordlift
-<<<<<<< HEAD
       - ../wordlift-batch-analysis:/var/www/html/wp-content/plugins/wordlift-batch-analysis
       - ../advanced-custom-fields-for-schema-org:/var/www/html/wp-content/plugins/advanced-custom-fields-for-schema-org
-=======
-      - ../wordlift-how-to:/var/www/html/wp-content/plugins/wordlift-how-to
->>>>>>> release/3.25.0
+      - ../wordlift-entity-redirect:/var/www/html/wp-content/plugins/wordlift-entity-redirect
     environment:
       WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING: "true"
       WORDPRESS_DB_HOST: db
@@ -83,6 +80,7 @@ services:
       - ./src:/var/www/html/wp-content/plugins/wordlift
       - ../wordlift-batch-analysis:/var/www/html/wp-content/plugins/wordlift-batch-analysis
       - ../advanced-custom-fields-for-schema-org:/var/www/html/wp-content/plugins/advanced-custom-fields-for-schema-org
+      - ../wordlift-entity-redirect:/var/www/html/wp-content/plugins/wordlift-entity-redirect
     tty: true
 
 volumes:
