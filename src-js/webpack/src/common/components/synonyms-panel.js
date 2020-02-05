@@ -16,7 +16,7 @@ const wordlift = window["wordlift"];
 let SynonymsPanel = props =>
   wordlift.isEntity ? (
     <Panel>
-      <PanelBody title={__("Meta Fields Panel", "wordlift")} intialOpen={false}>
+      <PanelBody title={__("Synonyms", "wordlift")} intialOpen={false}>
         {props.altLabels.map((altLabel, altLabelN, altLabels) => (
           <PanelRow>
             <TextControl
