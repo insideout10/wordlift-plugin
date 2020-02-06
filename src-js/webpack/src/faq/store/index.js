@@ -6,6 +6,11 @@
  *
  */
 
+import createSagaMiddleware from "redux-saga";
+import {applyMiddleware, createStore} from "redux";
+import rootSaga from "../sagas";
+import {faqItemsListReducer} from "../reducers/faq-items-list-reducer";
+
 /**
  * External dependencies
  */
@@ -15,3 +20,8 @@ const FAQ_INITIAL_STATE = {
   faqItems: [],
 };
 
+const sagaMiddleware = createSagaMiddleware();
+const store = createStore(faqItemsListReducer, FAQ_INITIAL_STATE, applyMiddleware(sagaMiddleware));
+sagaMiddleware.run(rootSaga);
+
+export default store

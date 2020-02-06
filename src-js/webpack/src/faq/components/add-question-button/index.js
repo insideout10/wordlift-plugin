@@ -15,16 +15,26 @@ import PropTypes from "prop-types";
  * Internal dependencies.
  */
 import "./index.scss";
+import { connect } from "react-redux";
+import { requestAddNewQuestion } from "../../actions";
 
-const AddQuestionButton = ({ question, questionButtonText }) => {
-  return (
-    <button disabled={question.length === 0} className={"wl-add-question-button"}>
-      &nbsp;
-      <span className="dashicons dashicons-plus" />
-      {questionButtonText}
-    </button>
-  );
-};
+class AddQuestionButton extends React.Component {
+
+  render() {
+    return (
+      <button
+        disabled={this.props.question.length === 0}
+        className={"wl-add-question-button"}
+        type="button"
+        onClick={ () => { this.props.dispatch(requestAddNewQuestion()) }}
+      >
+        &nbsp;
+        <span className="dashicons dashicons-plus" />
+        {this.props.questionButtonText}
+      </button>
+    );
+  }
+}
 
 AddQuestionButton.propTypes = {
   // The question which is typed on the input box, usually obtained from state container
@@ -33,4 +43,4 @@ AddQuestionButton.propTypes = {
   questionButtonText: PropTypes.string
 };
 
-export default AddQuestionButton;
+export default connect()(AddQuestionButton);

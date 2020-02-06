@@ -10,10 +10,7 @@
  * External dependencies
  */
 import { createReducer } from "@reduxjs/toolkit";
-import { ADD_NEW_QUESTION } from "../constants/action-types";
 
 export const faqItemsListReducer = createReducer(null, {
-  [ADD_NEW_QUESTION]: (state, action) => {
 
-  }
 });
