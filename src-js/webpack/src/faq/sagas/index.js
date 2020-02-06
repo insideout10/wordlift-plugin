@@ -8,10 +8,11 @@
 /**
  * External dependencies
  */
-import { call, select, takeLatest } from "redux-saga/effects";
+import { call, select, takeLatest, put } from "redux-saga/effects";
 import { REQUEST_FAQ_ADD_NEW_QUESTION, REQUEST_GET_FAQ_ITEMS } from "../constants/action-types";
 import API from "../api/index";
 import { getCurrentQuestion } from "../selectors";
+import { updateFaqItems } from "../actions";
 
 function* handleAddNewQuestion(action) {
   const currentQuestion = yield select(getCurrentQuestion);
@@ -27,6 +28,9 @@ function* handleAddNewQuestion(action) {
 
 function* handleGetFaqItems() {
   const faqItems = yield call(API.getFAQItems);
+  const action = updateFaqItems();
+  action.payload = faqItems;
+  yield put(action);
 }
 
 function* rootSaga() {
