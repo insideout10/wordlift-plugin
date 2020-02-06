@@ -10,7 +10,6 @@
  */
 
 use Wordlift\FAQ\FAQ_Metabox;
-use Wordlift\FAQ\FAQ_Rest_Controller;
 use Wordlift\Scripts\Scripts_Helper;
 
 /**
@@ -201,7 +200,15 @@ class Wordlift_Admin_Post_Edit_Page {
 		// Register the api endpoints.
 		wp_localize_script('wordlift-admin-edit-page', '_wlFaqSettings', array(
 			'textEditor' => $editor,
+			'listBoxId' => FAQ_Metabox::FAQ_LIST_BOX_ID,
+			'addQuestionText' => __('Add Question', 'wordlift')
 		));
+		// Enqueue the FAQ style
+		wp_enqueue_style(
+			'wordlift-admin-edit-page-faq',
+			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/faq.css',
+			array()
+		);
 		Scripts_Helper::enqueue_based_on_wordpress_version(
 			'wordlift-admin-edit-page-faq',
 			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/faq',

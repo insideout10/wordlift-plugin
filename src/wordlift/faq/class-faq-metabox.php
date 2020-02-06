@@ -13,6 +13,8 @@ class FAQ_Metabox {
 
 	const FAQ_METABOX_ID = 'wl-faq-meta-box';
 
+	const FAQ_LIST_BOX_ID = 'wl-faq-meta-list-box';
+
 	public function __construct() {
 		$this->register_faq_metabox();
 	}
@@ -23,6 +25,7 @@ class FAQ_Metabox {
 	 * then it should be echoed inside this function.
 	 */
 	public function echo_meta_box_template() {
+		echo '<div id="'. self::FAQ_LIST_BOX_ID . '"></div>';
 	}
 
 	/**

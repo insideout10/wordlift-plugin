@@ -11,8 +11,19 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+/**
+ * Internal dependencies.
+ */
+import "./index.scss";
+
 const AddQuestionButton = ({ question, questionButtonText }) => {
-  return <button disabled={question.length === 0}>{questionButtonText}</button>;
+  return (
+    <button disabled={question.length === 0} className={"wl-add-question-button"}>
+      &nbsp;
+      <span className="dashicons dashicons-plus" />
+      {questionButtonText}
+    </button>
+  );
 };
 
 AddQuestionButton.propTypes = {
