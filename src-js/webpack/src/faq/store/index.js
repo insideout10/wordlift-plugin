@@ -11,6 +11,7 @@
  */
 
 const FAQ_INITIAL_STATE = {
-  question: ""
+  question: "",
+  faqItems: [],
 };
 
