@@ -42,7 +42,7 @@ class FAQ_Rest_Controller {
 		 */
 		register_rest_route(
 			WL_REST_ROUTE_DEFAULT_NAMESPACE,
-			'/faq',
+			'/faq/(?P<post_id>\d+)',
 			array(
 				'methods'             => \WP_REST_Server::READABLE,
 				'callback'            => 'Wordlift\FAQ\FAQ_Rest_Controller::get_faq_items',

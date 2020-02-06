@@ -22,7 +22,7 @@ function saveFAQItems(faqItems) {
 }
 
 function getFAQItems() {
-  return fetch(restUrl + "?post_id=" + postId, {
+  return fetch(restUrl + "/" + postId, {
     method: "GET",
     headers: {
       "content-type": "application/json",
@@ -33,4 +33,4 @@ function getFAQItems() {
     .then(json => json);
 }
 
-export default { saveFAQItems };
+export default { saveFAQItems, getFAQItems };
