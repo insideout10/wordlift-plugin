@@ -31,7 +31,7 @@ class FAQ_Rest_Controller {
 			'/faq',
 			array(
 				'methods'             => \WP_REST_Server::CREATABLE,
-				'callback'            => 'Wordlift\FAQ\FAQ_Rest_Controller::insert_faq_item',
+				'callback'            => 'Wordlift\FAQ\FAQ_Rest_Controller::add_faq_items',
 				'permission_callback' => function () {
 					return current_user_can( 'publish_posts' );
 				},
@@ -65,7 +65,7 @@ class FAQ_Rest_Controller {
 		$data = $request->get_params();
 		if ( array_key_exists('post_id', $data ) ) {
 			$post_id = (int) $data['post_id'];
-			return get_post_meta( $post_id, self::FAQ_META_KEY, true );
+			return get_post_meta( $post_id, self::FAQ_META_KEY );
 		}
 		else {
 			return array(
@@ -76,19 +76,21 @@ class FAQ_Rest_Controller {
 	}
 
 	/**
-	 * Insert a single FAQ item.
+	 * Insert or update FAQ items.
 	 *
 	 * @param $request WP_REST_Request $request {@link WP_REST_Request instance}.
 	 *
 	 * @return array Associative array whether the faq item is inserted or not
 	 */
-	public static function insert_faq_item( $request ) {
+	public static function add_faq_items( $request ) {
 		$post_data = $request->get_params();
 		if ( array_key_exists('post_id', $post_data) &&
 		     array_key_exists( 'faq_items', $post_data) ) {
 			$post_id = $post_data['post_id'];
 			$faq_items = $post_data['faq_items'];
-			add_post_meta( (int) $post_id, self::FAQ_META_KEY, $faq_items);
+			foreach ( $faq_items as $faq_item ) {
+				add_post_meta( (int) $post_id, self::FAQ_META_KEY, $faq_item);
+			}
 			return array(
 				'status' => 'success',
 				'message' => __('Faq Item successfully inserted.')

@@ -35,7 +35,7 @@ class FAQ_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 		$response  = $this->server->dispatch( $request );
 		// Should return 200 response
 		$this->assertEquals( 200, $response->get_status() );
-		$faq_items = get_post_meta($post_id, FAQ_Rest_Controller::FAQ_META_KEY, true);
+		$faq_items = get_post_meta($post_id, FAQ_Rest_Controller::FAQ_META_KEY);
 		$this->assertCount( 2, $faq_items );
 		$response_data = $response->get_data();
 		$this->assertEquals( 'success', $response_data['status'] );
