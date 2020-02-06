@@ -1,9 +1,10 @@
 .wl-add-question-button {
-  height: 30px;
   background-color: white;
-  border-radius: 15px;
+  border-radius: 7px;
+  font-size: 12px !important;
   border: 2px solid #177EFB;
   cursor: pointer;
+  height: 25px;
   &:hover {
     background-color: #177EFB;
     color: white;

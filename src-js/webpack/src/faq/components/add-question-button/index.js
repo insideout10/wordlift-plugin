@@ -28,8 +28,6 @@ class AddQuestionButton extends React.Component {
         type="button"
         onClick={ () => { this.props.dispatch(requestAddNewQuestion()) }}
       >
-        &nbsp;
-        <span className="dashicons dashicons-plus" />
         {this.props.questionButtonText}
       </button>
     );
@@ -43,4 +41,6 @@ AddQuestionButton.propTypes = {
   questionButtonText: PropTypes.string
 };
 
-export default connect()(AddQuestionButton);
+export default connect(state => ({
+  question: state.question
+}))(AddQuestionButton);

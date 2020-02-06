@@ -202,7 +202,7 @@ class Wordlift_Admin_Post_Edit_Page {
 			'restUrl' => get_rest_url( null, WL_REST_ROUTE_DEFAULT_NAMESPACE.'/faq' ),
 			'textEditor' => $editor,
 			'listBoxId' => FAQ_Metabox::FAQ_LIST_BOX_ID,
-			'addQuestionText' => __( 'Add Question', 'wordlift' ),
+			'addQuestionText' => __( 'Add', 'wordlift' ),
 			'nonce' => wp_create_nonce( 'wp_rest' ),
 			'postId' => get_the_ID(),
 		));
