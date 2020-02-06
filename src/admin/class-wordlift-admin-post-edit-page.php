@@ -204,6 +204,7 @@ class Wordlift_Admin_Post_Edit_Page {
 			'listBoxId' => FAQ_Metabox::FAQ_LIST_BOX_ID,
 			'addQuestionText' => __( 'Add Question', 'wordlift' ),
 			'nonce' => wp_create_nonce( 'wp_rest' ),
+			'postId' => get_the_ID(),
 		));
 		// Enqueue the FAQ style
 		wp_enqueue_style(

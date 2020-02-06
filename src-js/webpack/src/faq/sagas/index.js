@@ -11,9 +11,9 @@
  */
 import { call, put, select, takeLatest } from "redux-saga/effects";
 import {REQUEST_FAQ_ADD_NEW_QUESTION} from "../constants/action-types";
-
-function* handleAddNewQuestion() {
-    const items = yield
+import API from "../api/index"
+function* handleAddNewQuestion( action ) {
+    yield call(API.saveFAQItems, faqItems)
 }
 
 
