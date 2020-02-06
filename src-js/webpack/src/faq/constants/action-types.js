@@ -9,4 +9,4 @@
  * Action type for adding new question using sidebar FAQ
  * @type {string}
  */
-export const ADD_NEW_QUESTION = "ADD_NEW_QUESTION";
+export const REQUEST_FAQ_ADD_NEW_QUESTION = "REQUEST_FAQ_ADD_NEW_QUESTION";

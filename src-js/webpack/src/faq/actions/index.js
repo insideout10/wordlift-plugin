@@ -13,6 +13,6 @@ import { createAction } from "redux-actions";
 /**
  * Internal dependencies
  */
-import { ADD_NEW_QUESTION } from "../constants/action-types";
+import { REQUEST_FAQ_ADD_NEW_QUESTION } from "../constants/action-types";
 
-export const addNewQuestion = createAction(ADD_NEW_QUESTION);
+export const requestAddNewQuestion = createAction(REQUEST_FAQ_ADD_NEW_QUESTION);

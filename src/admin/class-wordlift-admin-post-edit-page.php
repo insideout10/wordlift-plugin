@@ -199,9 +199,11 @@ class Wordlift_Admin_Post_Edit_Page {
 	private function load_faq_settings( $editor ) {
 		// Register the api endpoints.
 		wp_localize_script('wordlift-admin-edit-page', '_wlFaqSettings', array(
+			'restUrl' => get_rest_url( null, WL_REST_ROUTE_DEFAULT_NAMESPACE.'/faq' ),
 			'textEditor' => $editor,
 			'listBoxId' => FAQ_Metabox::FAQ_LIST_BOX_ID,
-			'addQuestionText' => __('Add Question', 'wordlift')
+			'addQuestionText' => __( 'Add Question', 'wordlift' ),
+			'nonce' => wp_create_nonce( 'wp_rest' ),
 		));
 		// Enqueue the FAQ style
 		wp_enqueue_style(
