@@ -16,7 +16,9 @@ RUN set -ex; \
 		libzip-dev \
 	; \
 	\
-	docker-php-ext-configure gd --with-freetype --with-jpeg; \
+	# PHP 7.2 fails with `--with-freetype --with-jpeg`.
+	# docker-php-ext-configure gd --with-freetype --with-jpeg; \
+	docker-php-ext-configure gd; \
 	docker-php-ext-install \
 		bcmath \
 		exif \
