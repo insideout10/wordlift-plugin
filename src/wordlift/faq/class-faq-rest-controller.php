@@ -104,8 +104,8 @@ class FAQ_Rest_Controller {
 			$faq_items = (array) $data['faq_items'];
 			foreach ( $faq_items as $faq_item ) {
 				$previous_value = array(
-					'question' => (string) $faq_item['previous_question'],
-					'answer' => (string) $faq_item['previous_answer']
+					'question' => (string) $faq_item['previous_question_value'],
+					'answer' => (string) $faq_item['previous_answer_value']
 				);
 				$new_value = array(
 					'question' => (string) $faq_item['question'],

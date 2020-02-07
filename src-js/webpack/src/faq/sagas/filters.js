@@ -5,6 +5,11 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
+/**
+ * Takes an array of FAQ items from API and transform it to ui data.
+ * @param items
+ * @return {Array} Transformed FAQ items.
+ */
 export const transformAPIDataToUi = items => {
   return items.map((item, index) => ({
     ...item,
@@ -15,5 +20,19 @@ export const transformAPIDataToUi = items => {
      */
     previousQuestionValue: item.question,
     previousAnswerValue: item.answer
+  }));
+};
+
+/**
+ * Takes an array of FAQ Ui items from API and transform it to api data.
+ * @param items FAQ items from redux store.
+ * @return {Array} Transformed FAQ items.
+ */
+export const transformUiDataToApiFormat = items => {
+  return items.map((item, index) => ({
+    question: item.question,
+    answer: item.answer,
+    previous_question_value: item.previousQuestionValue,
+    previous_answer_value: item.previousAnswerValue
   }));
 };

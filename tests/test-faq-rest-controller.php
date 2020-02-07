@@ -88,8 +88,8 @@ class FAQ_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 				array(
 					'question' => 'changed_question_1',
 					'answer'   => 'changed_answer_1',
-					'previous_question' => 'foo question 1',
-					'previous_answer'   => 'foo answer 1'
+					'previous_question_value' => 'foo question 1',
+					'previous_answer_value'   => 'foo answer 1'
 				)
 			)
 		);
