@@ -49,4 +49,4 @@ function getFAQItems() {
     .then(json => json);
 }
 
-export default { saveFAQItems, getFAQItems };
+export default { saveFAQItems, getFAQItems, updateFAQItems };
