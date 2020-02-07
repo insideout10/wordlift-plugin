@@ -89,25 +89,24 @@ class Wordlift_Api_Service {
 			'timeout'    => 30,
 		) );
 
-		var_dump( array(
-			$url,
-			array(
-				'user-agent' => self::get_user_agent(),
-				'headers'    => array(
-					'X-Authorization' => $this->configuration_service->get_key(),
-				),
-				/*
-				 * Increase the timeout from the default of 5 to 30 secs.
-				 *
-				 * @see https://github.com/insideout10/wordlift-plugin/issues/906
-				 *
-				 * @since 3.20.1
-				 */
-				'timeout'    => 30,
-			)
-		) );
-
-		wp_die();
+//		var_dump( array(
+//			$url,
+//			array(
+//				'user-agent' => self::get_user_agent(),
+//				'headers'    => array(
+//					'X-Authorization' => $this->configuration_service->get_key(),
+//				),
+//				/*
+//				 * Increase the timeout from the default of 5 to 30 secs.
+//				 *
+//				 * @see https://github.com/insideout10/wordlift-plugin/issues/906
+//				 *
+//				 * @since 3.20.1
+//				 */
+//				'timeout'    => 30,
+//			)
+//		) );
+//		wp_die();
 
 		return self::get_message_or_error( $response );
 	}
