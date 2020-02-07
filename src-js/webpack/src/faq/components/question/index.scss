@@ -1,11 +1,12 @@
 $primary-color: #177EFB;
 
 .wl-faq-question-title {
+  word-wrap: break-word;
   color: black;
   cursor: pointer;
-  &:first-letter {
-    text-transform: uppercase;
-  }
+  font-size: 14px;
+  text-transform: capitalize;
+  text-align: center;
   &:hover {
     color:$primary-color;
   }

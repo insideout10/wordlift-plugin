@@ -16,6 +16,7 @@ import { connect } from "react-redux";
  */
 import Question from "../question";
 import Answer from "../answer";
+import { WlCard } from "../../blocks/wl-card";
 
 class FaqList extends React.Component {
   render() {
@@ -24,8 +25,10 @@ class FaqList extends React.Component {
         {this.props.faqItems.map(item => {
           return (
             <React.Fragment>
-              <Question question={item.question} />
-              <Answer answer={item.answer} />
+              <WlCard>
+                <Question question={item.question} />
+                <Answer answer={item.answer} />
+              </WlCard>
             </React.Fragment>
           );
         })}

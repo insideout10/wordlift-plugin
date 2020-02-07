@@ -12,7 +12,7 @@ import { call, select, takeLatest, put } from "redux-saga/effects";
 import { REQUEST_FAQ_ADD_NEW_QUESTION, REQUEST_GET_FAQ_ITEMS } from "../constants/action-types";
 import API from "../api/index";
 import { getCurrentQuestion } from "../selectors";
-import { updateFaqItems } from "../actions";
+import {requestGetFaqItems, updateFaqItems} from "../actions";
 
 function* handleAddNewQuestion(action) {
   const currentQuestion = yield select(getCurrentQuestion);
@@ -24,7 +24,7 @@ function* handleAddNewQuestion(action) {
   ];
   yield call(API.saveFAQItems, faqItems);
   // Refresh the screen by getting new FAQ items.
-  yield put(REQUEST_GET_FAQ_ITEMS)
+  yield put(requestGetFaqItems())
 }
 
 function* handleGetFaqItems() {
