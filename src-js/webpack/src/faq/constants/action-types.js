@@ -34,3 +34,9 @@ export const UPDATE_QUESTION_ON_INPUT_CHANGE = "UPDATE_QUESTION_ON_INPUT_CHANGE"
  * @type {string}
  */
 export const QUESTION_SELECTED_BY_USER = "QUESTION_SELECTED_BY_USER";
+
+/**
+ * Action for updating store when the edit screen is closed.
+ * @type {string}
+ */
+export const CLOSE_EDIT_SCREEN = "CLOSE_EDIT_SCREEN";

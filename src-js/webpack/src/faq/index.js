@@ -27,7 +27,6 @@ window.addEventListener("load", () => {
   ReactDOM.render(
     <Provider store={store}>
       <React.Fragment>
-        <FaqListHeader />
         <FaqScreen />
       </React.Fragment>
     </Provider>,

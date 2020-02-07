@@ -14,6 +14,7 @@ import { createAction } from "redux-actions";
  * Internal dependencies
  */
 import {
+  CLOSE_EDIT_SCREEN,
   QUESTION_SELECTED_BY_USER,
   REQUEST_FAQ_ADD_NEW_QUESTION,
   REQUEST_GET_FAQ_ITEMS,
@@ -50,3 +51,9 @@ export const updateQuestionOnInputChange = createAction(UPDATE_QUESTION_ON_INPUT
  * @type {function(): {type: *}}
  */
 export const questionSelectedByUser = createAction(QUESTION_SELECTED_BY_USER);
+
+/**
+ * Action when the user wants to close the edit screen
+ * @type {function(): {type: *}}
+ */
+export const closeEditScreen = createAction(CLOSE_EDIT_SCREEN);

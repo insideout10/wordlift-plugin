@@ -18,6 +18,7 @@ import Question from "../question";
 import Answer from "../answer";
 import { WlCard } from "../../blocks/wl-card";
 import { questionSelectedByUser } from "../../actions";
+import {FaqListHeader} from "../faq-list-header";
 
 class FaqList extends React.Component {
   constructor(props) {
@@ -32,6 +33,7 @@ class FaqList extends React.Component {
   render() {
     return (
       <React.Fragment>
+        <FaqListHeader />
         {this.props.faqItems.map(item => {
           return (
             <React.Fragment>

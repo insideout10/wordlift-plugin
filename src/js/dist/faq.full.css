@@ -15,3 +15,5 @@
 
 .wl-button{border-radius:8px !important;width:100%;margin:3px;padding:10px;font-size:13px;text-align:center;text-transform:capitalize;cursor:pointer;border:1px solid #eee}.wl-button.wl-button--primary{background-color:#177EFB !important;color:#fff !important}.wl-button.wl-button--normal{background-color:#c2e5ff !important;color:#177EFB !important}.wl-button.wl-button--text-bold{font-weight:bold}
 
+.faq-edit-item-close-button{cursor:pointer}
+

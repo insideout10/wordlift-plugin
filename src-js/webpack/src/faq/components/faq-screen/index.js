@@ -11,7 +11,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import FaqList from "../faq-list";
-import FaqEditItem from "../faq-item-edit-item";
+import FaqEditItem from "../faq-edit-item";
+import FaqEditItemCloseButton from "../faq-edit-item-close-button";
 
 class FaqScreen extends React.Component {
   /**
@@ -24,6 +25,7 @@ class FaqScreen extends React.Component {
       const selectedFaqItem = this.props.faqItems[selectedFaqIndex];
       return (
         <React.Fragment>
+          <FaqEditItemCloseButton />
           <FaqEditItem title={"Question"} value={selectedFaqItem.question}/>
           <br />
           <FaqEditItem title={"Answer"} value={selectedFaqItem.answer} />

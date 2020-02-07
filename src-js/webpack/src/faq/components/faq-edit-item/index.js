@@ -26,7 +26,7 @@ class FaqEditItem extends React.Component{
                 <br/><br/>
                 <WlContainer>
                     <WlColumn className={"wl-col--width-100 wl-col--less-padding"}>
-                        <textarea cols={25} rows={5} value={this.props.value}/>
+                        <textarea cols={25} rows={3} value={this.props.value}/>
                     </WlColumn>
                 </WlContainer>
                 <FaqEditButtonGroup />
