@@ -10,5 +10,7 @@
 
 .wl-faq-answer-title{color:black;cursor:pointer;height:2em;text-overflow:ellipsis}.wl-faq-answer-title:first-letter{text-transform:uppercase}.wl-faq-answer-title:hover{color:#177EFB}
 
-.wl-card{border-radius:4px;border:5px solid #eee;height:50px;transition:0.1s;padding:2px}.wl-card:hover{box-shadow:0 8px 16px 0 rgba(0,0,0,0.2)}
+.wl-card{border-radius:8px;border:1px solid #eee;height:80px;transition:0.1s;padding:8px;margin:8px}
+
+.wl-button{border-radius:8px !important;width:50%;margin:3px;padding:10px;font-size:13px;text-align:center;text-transform:capitalize;cursor:pointer}
 

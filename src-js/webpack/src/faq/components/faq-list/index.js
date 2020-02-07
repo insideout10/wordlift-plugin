@@ -17,6 +17,7 @@ import { connect } from "react-redux";
 import Question from "../question";
 import Answer from "../answer";
 import { WlCard } from "../../blocks/wl-card";
+import WlButton from "../wl-button";
 
 class FaqList extends React.Component {
   render() {
