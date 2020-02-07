@@ -62,13 +62,41 @@ class FAQ_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 		$post_id = $this->factory()->post->create( array('post_title' => 'foo'));
 		$create_faq_items_request = $this->get_create_faq_item_request( $post_id );
 		$this->server->dispatch( $create_faq_items_request );
-		$request   = new WP_REST_Request( 'GET', $this->faq_route );
+		$request   = new WP_REST_Request( 'GET', $this->faq_route . "/". $post_id );
 		$request->set_query_params(array(
 			'post_id' => $post_id,
 		));
 		$response  = $this->server->dispatch( $request );
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertCount( 2, $response->get_data() );
+
+	}
+
+	/**
+	 * Test changing the faq items in the ui and update
+	 * it on the API.
+	 */
+	public function test_update_faq_items() {
+		// We created the items on the DB
+		$post_id = $this->factory()->post->create( array('post_title' => 'foo'));
+		$create_faq_items_request = $this->get_create_faq_item_request( $post_id );
+		$this->server->dispatch( $create_faq_items_request );
+		// Now emulate changing the data in ui and trying to update it on the ui
+		$data = array(
+			'post_id' => $post_id,
+			'faq_items' => array(
+				array(
+					'question' => 'changed question 1',
+					'answer'   => 'changed_answer_1',
+					'previous_question' => 'foo question 1',
+					'previous_answer'   => 'foo answer 1'
+				)
+			)
+		);
+		$request   = new WP_REST_Request( 'POST', $this->faq_route );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( wp_json_encode( $data ) );
+		$response  = $this->server->dispatch( $request );
 
 	}
 

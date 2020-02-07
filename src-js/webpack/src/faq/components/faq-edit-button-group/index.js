@@ -21,10 +21,10 @@ import WlButton from "../wl-button";
 const FaqEditButtonGroup = ({ updateHandler, deleteHandler }) => {
   return (
     <WlContainer fullWidth={true}>
-      <WlColumn className={"wl-col--width-50 wl-col--less-padding"}>
+      <WlColumn className={"wl-col--width-50 wl-col--low-padding"}>
         <WlButton text={"delete"} className={"wl-button--normal wl-button--text-bold"} onClickHandler={deleteHandler} />
       </WlColumn>
-      <WlColumn className={"wl-col--width-50 wl-col--less-padding"}>
+      <WlColumn className={"wl-col--width-50 wl-col--low-padding"}>
         <WlButton
           text={"update"}
           className={"wl-button--primary wl-button--text-bold"}
