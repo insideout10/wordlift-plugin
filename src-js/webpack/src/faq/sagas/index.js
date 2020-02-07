@@ -13,6 +13,7 @@ import { REQUEST_FAQ_ADD_NEW_QUESTION, REQUEST_GET_FAQ_ITEMS } from "../constant
 import API from "../api/index";
 import { getCurrentQuestion } from "../selectors";
 import {requestGetFaqItems, updateFaqItems} from "../actions";
+import {transformAPIDataToUi} from "./filters";
 
 function* handleAddNewQuestion(action) {
   const currentQuestion = yield select(getCurrentQuestion);
@@ -30,7 +31,7 @@ function* handleAddNewQuestion(action) {
 function* handleGetFaqItems() {
   const faqItems = yield call(API.getFAQItems);
   const action = updateFaqItems();
-  action.payload = faqItems;
+  action.payload = transformAPIDataToUi(faqItems);
   yield put(action);
 }
 
