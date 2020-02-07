@@ -11,7 +11,7 @@
 
 .wl-faq-question-title{word-wrap:break-word;color:black;cursor:pointer;font-size:14px;text-transform:capitalize;text-align:center}.wl-faq-question-title:hover{color:#177EFB}
 
-.wl-faq-answer-container{text-overflow:ellipsis}.wl-faq-answer-title{color:black;cursor:pointer;height:2em}.wl-faq-answer-title:first-letter{text-transform:uppercase}
+.wl-faq-answer-container{overflow:hidden;text-overflow:clip}.wl-faq-answer-title{color:black;cursor:pointer;height:2em}.wl-faq-answer-title:first-letter{text-transform:uppercase}
 
 .wl-card{border-radius:8px;border:1px solid #eee;height:80px;transition:0.1s;padding:8px;margin:8px}.wl-card:hover{box-shadow:3px 3px #eee}
 

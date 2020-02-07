@@ -1,9 +1,8 @@
 $primary-color: #177EFB;
-
 .wl-faq-answer-container {
-  text-overflow: ellipsis;
+  overflow: hidden;
+  text-overflow: clip;
 }
-
 .wl-faq-answer-title {
   color: black;
   cursor: pointer;

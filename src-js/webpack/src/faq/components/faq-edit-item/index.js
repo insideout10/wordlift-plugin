@@ -28,19 +28,28 @@ class FaqEditItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      textAreaValue: ""
+      textAreaValue: this.props.value
     };
     this.changeValueOnUserType = this.changeValueOnUserType.bind(this);
     this.updateFaqEditItem = this.updateFaqEditItem.bind(this);
+    this.deleteFaqItem = this.deleteFaqItem.bind(this);
   }
-  updateFaqEditItem() {
+  updateFaqEditItem(textAreaValue = null) {
     const action = updateFaqItem();
     action.payload = {
       id: this.props.id,
       type: this.props.type,
       value: this.state.textAreaValue
     };
+    if (textAreaValue !== null) {
+      action.value = textAreaValue;
+    }
     this.props.dispatch(action);
+  }
+  deleteFaqItem() {
+    // Set the state, this is asynchronous, so we pass a default argument to action creator
+    this.setState({ textAreaValue: "" });
+    this.updateFaqEditItem("");
   }
   changeValueOnUserType(event) {
     this.setState({
@@ -57,14 +66,14 @@ class FaqEditItem extends React.Component {
             <textarea
               cols={25}
               rows={3}
-              defaultValue={this.props.value}
+              value={this.state.textAreaValue}
               onChange={e => {
                 this.changeValueOnUserType(e);
               }}
             />
           </WlColumn>
         </WlContainer>
-        <FaqEditButtonGroup updateHandler={this.updateFaqEditItem}/>
+        <FaqEditButtonGroup updateHandler={this.updateFaqEditItem} deleteHandler={this.deleteFaqItem}/>
       </React.Fragment>
     );
   }
