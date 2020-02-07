@@ -86,18 +86,22 @@ class FAQ_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 			'post_id' => $post_id,
 			'faq_items' => array(
 				array(
-					'question' => 'changed question 1',
+					'question' => 'changed_question_1',
 					'answer'   => 'changed_answer_1',
 					'previous_question' => 'foo question 1',
 					'previous_answer'   => 'foo answer 1'
 				)
 			)
 		);
-		$request   = new WP_REST_Request( 'POST', $this->faq_route );
+		$request   = new WP_REST_Request( 'PUT', $this->faq_route );
 		$request->set_header( 'content-type', 'application/json' );
 		$request->set_body( wp_json_encode( $data ) );
 		$response  = $this->server->dispatch( $request );
-
+		$this->assertEquals( $response->get_status(), 200 );
+		$faq_items = get_post_meta($post_id, FAQ_Rest_Controller::FAQ_META_KEY);
+		$changed_faq_item = $faq_items[0];
+		$this->assertEquals( $changed_faq_item['question'], 'changed_question_1');
+		$this->assertEquals( $changed_faq_item['answer'], 'changed_answer_1');
 	}
 
 	/**

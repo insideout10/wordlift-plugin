@@ -24,7 +24,7 @@ class FAQ_Rest_Controller {
 
 	public static function register_route_callback() {
 		/**
-		 * Rest route for creating new faq item / updating faq items.
+		 * Rest route for creating new faq item.
 		 */
 		register_rest_route(
 			WL_REST_ROUTE_DEFAULT_NAMESPACE,
@@ -32,6 +32,20 @@ class FAQ_Rest_Controller {
 			array(
 				'methods'             => \WP_REST_Server::CREATABLE,
 				'callback'            => 'Wordlift\FAQ\FAQ_Rest_Controller::add_faq_items',
+				'permission_callback' => function () {
+					return current_user_can( 'publish_posts' );
+				},
+			)
+		);
+		/**
+		 * Rest route for updating faq items.
+		 */
+		register_rest_route(
+			WL_REST_ROUTE_DEFAULT_NAMESPACE,
+			'/faq',
+			array(
+				'methods'             => \WP_REST_Server::EDITABLE,
+				'callback'            => 'Wordlift\FAQ\FAQ_Rest_Controller::update_faq_items',
 				'permission_callback' => function () {
 					return current_user_can( 'publish_posts' );
 				},
@@ -71,6 +85,43 @@ class FAQ_Rest_Controller {
 			return array(
 				'status'  => 'failure',
 				'message' => __( 'Invalid data, post_id missing', 'wordlift' )
+			);
+		}
+	}
+
+	/**
+	 * Update all FAQ items for a post id.
+	 *
+	 * @param $request $request WP_REST_Request $request {@link WP_REST_Request instance}.
+	 *
+	 * @return array Result array, if post id is not given then error array is returned.
+	 */
+	public static function update_faq_items( $request ) {
+		$data = $request->get_params();
+		if ( array_key_exists('post_id', $data ) && array_key_exists('faq_items', $data ) ) {
+
+			$post_id = (int) $data['post_id'];
+			$faq_items = (array) $data['faq_items'];
+			foreach ( $faq_items as $faq_item ) {
+				$previous_value = array(
+					'question' => (string) $faq_item['previous_question'],
+					'answer' => (string) $faq_item['previous_answer']
+				);
+				$new_value = array(
+					'question' => (string) $faq_item['question'],
+					'answer' => (string) $faq_item['answer']
+				);
+				update_post_meta( $post_id, self::FAQ_META_KEY, $new_value, $previous_value );
+			}
+			return array(
+				'status' => 'success',
+				'message' => __('Faq Items updated successfully')
+			);
+		}
+		else {
+			return array(
+				'status' => 'failure',
+				'message' => __('Failure in updating Faq items')
 			);
 		}
 	}
