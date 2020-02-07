@@ -1,14 +1,14 @@
 $primary-color: #177EFB;
 
+.wl-faq-answer-container {
+  text-overflow: ellipsis;
+}
+
 .wl-faq-answer-title {
   color: black;
   cursor: pointer;
   height: 2em;
-  text-overflow: ellipsis;
   &:first-letter {
     text-transform: uppercase;
-  }
-  &:hover {
-    color:$primary-color;
   }
 }

@@ -49,7 +49,7 @@ function* handleUpdateFaqItems(action) {
       faqItems[faqItemIndex]['answer'] = payload.value;
       break;
     case faqEditItemType.QUESTION:
-      faqItems[faqItemIndex]['quesiton'] = payload.value;
+      faqItems[faqItemIndex]['question'] = payload.value;
       break;
   }
   yield call(API.updateFAQItems, faqItems);

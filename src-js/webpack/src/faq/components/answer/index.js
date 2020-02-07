@@ -13,14 +13,14 @@ import React from "react";
 /**
  * Internal dependencies
  */
-import "./index.scss"
+import "./index.scss";
 
-const Answer = ( {answer} ) => {
-    return (
-        <p className={"wl-faq-answer-title"}>
-            {answer}
-        </p>
-    )
+const Answer = ({ answer }) => {
+  return (
+    <div className={"wl-faq-answer-container"}>
+      <p className={"wl-faq-answer-title"}>{answer}</p>
+    </div>
+  );
 };
 
-export default Answer
+export default Answer;

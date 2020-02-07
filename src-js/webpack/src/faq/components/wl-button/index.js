@@ -16,7 +16,7 @@ import "./index.scss";
 
 const WlButton = ({ className="", text, onClickHandler }) => {
     return (
-        <button onClick={onClickHandler} className={"wl-button " + className} type={"button"}>
+        <button onClick={onClickHandler} className={"wl-action-button " + className} type={"button"}>
             {text}
         </button>
     );

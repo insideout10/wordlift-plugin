@@ -5,13 +5,13 @@
 
 .wl-col{padding:1em}.wl-col--less-padding{padding:0.5em}.wl-col--low-padding{padding:0.1em}.wl-col--half-width{width:50%}.wl-col--width-5{width:5%}.wl-col--width-10{width:10%}.wl-col--width-15{width:15%}.wl-col--width-20{width:20%}.wl-col--width-25{width:25%}.wl-col--width-30{width:30%}.wl-col--width-35{width:35%}.wl-col--width-40{width:40%}.wl-col--width-45{width:45%}.wl-col--width-50{width:50%}.wl-col--width-55{width:55%}.wl-col--width-60{width:60%}.wl-col--width-65{width:65%}.wl-col--width-70{width:70%}.wl-col--width-75{width:75%}.wl-col--width-80{width:80%}.wl-col--width-85{width:85%}.wl-col--width-90{width:90%}.wl-col--width-95{width:95%}.wl-col--width-100{width:100%}
 
-.wl-button{border-radius:8px !important;width:100%;margin:3px;padding:10px;font-size:13px;text-align:center;text-transform:capitalize;cursor:pointer;border:1px solid #eee}.wl-button.wl-button--primary{background-color:#177EFB !important;color:#fff !important}.wl-button.wl-button--normal{background-color:#c2e5ff !important;color:#177EFB !important}.wl-button.wl-button--text-bold{font-weight:bold}
+.wl-action-button{border-radius:8px !important;width:100%;margin:3px;padding:10px;font-size:13px;text-align:center;text-transform:capitalize;cursor:pointer;border:1px solid #eee}.wl-action-button.wl-button--primary{background-color:#177EFB !important;color:#fff !important}.wl-action-button.wl-button--normal{background-color:#c2e5ff !important;color:#177EFB !important}.wl-action-button.wl-button--text-bold{font-weight:bold}
 
 .question-input-box{width:100%}
 
 .wl-faq-question-title{word-wrap:break-word;color:black;cursor:pointer;font-size:14px;text-transform:capitalize;text-align:center}.wl-faq-question-title:hover{color:#177EFB}
 
-.wl-faq-answer-title{color:black;cursor:pointer;height:2em;text-overflow:ellipsis}.wl-faq-answer-title:first-letter{text-transform:uppercase}.wl-faq-answer-title:hover{color:#177EFB}
+.wl-faq-answer-container{text-overflow:ellipsis}.wl-faq-answer-title{color:black;cursor:pointer;height:2em}.wl-faq-answer-title:first-letter{text-transform:uppercase}
 
 .wl-card{border-radius:8px;border:1px solid #eee;height:80px;transition:0.1s;padding:8px;margin:8px}.wl-card:hover{box-shadow:3px 3px #eee}
 
