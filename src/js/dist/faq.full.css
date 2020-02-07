@@ -12,5 +12,5 @@
 
 .wl-card{border-radius:8px;border:1px solid #eee;height:80px;transition:0.1s;padding:8px;margin:8px}
 
-.wl-button{border-radius:8px !important;width:50%;margin:3px;padding:10px;font-size:13px;text-align:center;text-transform:capitalize;cursor:pointer}
+.wl-button{border-radius:8px !important;width:50%;margin:3px;padding:10px;font-size:13px;text-align:center;text-transform:capitalize;cursor:pointer}.wl-button.wl-button--primary{background-color:#177EFB;color:#fff}.wl-button.wl-button--normal{background-color:#c2e5ff;color:#177EFB}
 

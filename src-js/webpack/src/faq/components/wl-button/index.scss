@@ -1,3 +1,5 @@
+$primary-color: #177EFB;
+$secondary-color: #c2e5ff;
 .wl-button {
   border-radius: 8px !important;
   width: 50%;
@@ -7,4 +9,12 @@
   text-align: center;
   text-transform: capitalize;
   cursor: pointer;
+  &.wl-button--primary {
+    background-color: $primary-color;
+    color: #fff;
+  }
+  &.wl-button--normal {
+    background-color: $secondary-color;
+    color: $primary-color;
+  }
 }
