@@ -17,7 +17,7 @@ import {
   CLOSE_EDIT_SCREEN,
   QUESTION_SELECTED_BY_USER,
   REQUEST_FAQ_ADD_NEW_QUESTION,
-  REQUEST_GET_FAQ_ITEMS,
+  REQUEST_GET_FAQ_ITEMS, REQUEST_UPDATE_FAQ_ITEMS,
   UPDATE_FAQ_ITEMS,
   UPDATE_QUESTION_ON_INPUT_CHANGE
 } from "../constants/action-types";
@@ -57,3 +57,9 @@ export const questionSelectedByUser = createAction(QUESTION_SELECTED_BY_USER);
  * @type {function(): {type: *}}
  */
 export const closeEditScreen = createAction(CLOSE_EDIT_SCREEN);
+
+/**
+ * Action when the ui wants to update the data in API.
+ * @type {function(): {type: *}}
+ */
+export const requestUpdateFaqItems = createAction(REQUEST_UPDATE_FAQ_ITEMS);

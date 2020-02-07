@@ -5,6 +5,8 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  *
  */
+import {transformUiDataToApiFormat} from "../sagas/filters";
+
 const { restUrl, nonce, postId } = global["_wlFaqSettings"];
 
 function saveFAQItems(faqItems) {
@@ -17,6 +19,20 @@ function saveFAQItems(faqItems) {
     body: JSON.stringify({
       post_id: postId,
       faq_items: faqItems
+    })
+  });
+}
+
+function updateFAQItems(faqItems) {
+  return fetch(restUrl, {
+    method: "PUT",
+    headers: {
+      "content-type": "application/json",
+      "X-WP-Nonce": nonce
+    },
+    body: JSON.stringify({
+      post_id: postId,
+      faq_items: transformUiDataToApiFormat(faqItems)
     })
   });
 }

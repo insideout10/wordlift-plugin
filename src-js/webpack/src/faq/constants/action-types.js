@@ -40,3 +40,9 @@ export const QUESTION_SELECTED_BY_USER = "QUESTION_SELECTED_BY_USER";
  * @type {string}
  */
 export const CLOSE_EDIT_SCREEN = "CLOSE_EDIT_SCREEN";
+
+/**
+ * Action type for updating FAQ items on ui changing the data.
+ * @type {string}
+ */
+export const REQUEST_UPDATE_FAQ_ITEMS = "REQUEST_UPDATE_FAQ_ITEMS";
