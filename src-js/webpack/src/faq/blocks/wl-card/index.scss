@@ -5,4 +5,7 @@
   transition: 0.1s;
   padding: 8px;
   margin: 8px;
+  &:hover {
+    box-shadow: 3px 3px #eee;
+  }
 }

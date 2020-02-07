@@ -14,9 +14,9 @@ import React from "react"
  */
 import "./index.scss"
 
-export const WlCard = ({children}) => {
+export const WlCard = ({children, onClickHandler = null }) => {
     return (
-        <div className={'wl-card'}>
+        <div className={'wl-card'} onClick={ () => { onClickHandler !== null ? onClickHandler() : null } }>
             {children}
         </div>
     )

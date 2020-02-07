@@ -28,7 +28,7 @@ class FaqList extends React.Component {
         {this.props.faqItems.map(item => {
           return (
             <React.Fragment>
-              <WlCard>
+              <WlCard onClickHandler={ ()=> { console.log("card clicked")} }>
                 <Question question={item.question} />
                 <Answer answer={item.answer} />
               </WlCard>
