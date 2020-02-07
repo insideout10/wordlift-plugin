@@ -17,14 +17,16 @@ import { connect } from "react-redux";
 import Question from "../question";
 import Answer from "../answer";
 import { WlCard } from "../../blocks/wl-card";
-import WlButton from "../wl-button";
+
 import FaqEditButtonGroup from "../faq-edit-button-group";
+import FaqEditItem from "../faq-item-edit-item";
 
 class FaqList extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <FaqEditButtonGroup />
+        <FaqEditItem title={'Question'}/>
+        <FaqEditItem title={'Answer'}/>
         {this.props.faqItems.map(item => {
           return (
             <React.Fragment>
