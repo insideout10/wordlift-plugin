@@ -28,3 +28,9 @@ export const UPDATE_FAQ_ITEMS = "UPDATE_FAQ_ITEMS";
  * @type {string}
  */
 export const UPDATE_QUESTION_ON_INPUT_CHANGE = "UPDATE_QUESTION_ON_INPUT_CHANGE";
+
+/**
+ * Action for updating store when question is selected by user.
+ * @type {string}
+ */
+export const QUESTION_SELECTED_BY_USER = "QUESTION_SELECTED_BY_USER";

@@ -10,7 +10,11 @@
  * External dependencies
  */
 import { createReducer } from "@reduxjs/toolkit";
-import { UPDATE_FAQ_ITEMS, UPDATE_QUESTION_ON_INPUT_CHANGE } from "../constants/action-types";
+import {
+  QUESTION_SELECTED_BY_USER,
+  UPDATE_FAQ_ITEMS,
+  UPDATE_QUESTION_ON_INPUT_CHANGE
+} from "../constants/action-types";
 
 export const faqItemsListReducer = createReducer(null, {
   [UPDATE_FAQ_ITEMS]: (state, action) => {
@@ -18,5 +22,8 @@ export const faqItemsListReducer = createReducer(null, {
   },
   [UPDATE_QUESTION_ON_INPUT_CHANGE]: (state, action) => {
     state.question = action.payload;
+  },
+  [QUESTION_SELECTED_BY_USER]: (state, action) => {
+    state.selectedFaqId = action.payload;
   }
 });

@@ -14,6 +14,7 @@ import { createAction } from "redux-actions";
  * Internal dependencies
  */
 import {
+  QUESTION_SELECTED_BY_USER,
   REQUEST_FAQ_ADD_NEW_QUESTION,
   REQUEST_GET_FAQ_ITEMS,
   UPDATE_FAQ_ITEMS,
@@ -43,3 +44,9 @@ export const updateFaqItems = createAction(UPDATE_FAQ_ITEMS);
  * @type {function(): {type: *}}
  */
 export const updateQuestionOnInputChange = createAction(UPDATE_QUESTION_ON_INPUT_CHANGE);
+
+/**
+ * Action when the user selects the question from the list of questions.
+ * @type {function(): {type: *}}
+ */
+export const questionSelectedByUser = createAction(QUESTION_SELECTED_BY_USER);

@@ -19,6 +19,7 @@ import AddQuestionButton from "./components/add-question-button";
 import store from "./store/index";
 import { FaqListHeader } from "./components/faq-list-header";
 import FaqList from "./components/faq-list";
+import FaqScreen from "./components/faq-screen";
 
 const { listBoxId, addQuestionText } = global["_wlFaqSettings"];
 
@@ -27,7 +28,7 @@ window.addEventListener("load", () => {
     <Provider store={store}>
       <React.Fragment>
         <FaqListHeader />
-        <FaqList />
+        <FaqScreen />
       </React.Fragment>
     </Provider>,
     document.getElementById(listBoxId)

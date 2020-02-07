@@ -23,6 +23,7 @@ import {faqItemsListReducer} from "../reducers/faq-items-list-reducer";
 const FAQ_INITIAL_STATE = {
   question: "",
   faqItems: [],
+  selectedFaqId: null,
 };
 
 const sagaMiddleware = createSagaMiddleware();

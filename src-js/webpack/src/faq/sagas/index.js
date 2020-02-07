@@ -9,6 +9,10 @@
  * External dependencies
  */
 import { call, select, takeLatest, put } from "redux-saga/effects";
+
+/**
+ * Internal dependencies.
+ */
 import { REQUEST_FAQ_ADD_NEW_QUESTION, REQUEST_GET_FAQ_ITEMS } from "../constants/action-types";
 import API from "../api/index";
 import { getCurrentQuestion } from "../selectors";

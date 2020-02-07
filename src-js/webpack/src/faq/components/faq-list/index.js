@@ -17,20 +17,29 @@ import { connect } from "react-redux";
 import Question from "../question";
 import Answer from "../answer";
 import { WlCard } from "../../blocks/wl-card";
-
-import FaqEditButtonGroup from "../faq-edit-button-group";
-import FaqEditItem from "../faq-item-edit-item";
+import { questionSelectedByUser } from "../../actions";
 
 class FaqList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.faqItemClicked = this.faqItemClicked.bind(this)
+  }
+  faqItemClicked(id) {
+    const action = questionSelectedByUser();
+    action.payload = id;
+    this.props.dispatch(action);
+  }
   render() {
     return (
       <React.Fragment>
-        <FaqEditItem title={'Question'}/>
-        <FaqEditItem title={'Answer'}/>
         {this.props.faqItems.map(item => {
           return (
             <React.Fragment>
-              <WlCard onClickHandler={ ()=> { console.log("card clicked")} }>
+              <WlCard
+                onClickHandler={() => {
+                  this.faqItemClicked(item.id)
+                }}
+              >
                 <Question question={item.question} />
                 <Answer answer={item.answer} />
               </WlCard>
