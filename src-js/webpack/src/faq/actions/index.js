@@ -13,7 +13,12 @@ import { createAction } from "redux-actions";
 /**
  * Internal dependencies
  */
-import { REQUEST_FAQ_ADD_NEW_QUESTION, REQUEST_GET_FAQ_ITEMS, UPDATE_FAQ_ITEMS } from "../constants/action-types";
+import {
+  REQUEST_FAQ_ADD_NEW_QUESTION,
+  REQUEST_GET_FAQ_ITEMS,
+  UPDATE_FAQ_ITEMS,
+  UPDATE_QUESTION_ON_INPUT_CHANGE
+} from "../constants/action-types";
 
 /**
  * Action for adding new question.
@@ -32,3 +37,9 @@ export const requestGetFaqItems = createAction(REQUEST_GET_FAQ_ITEMS);
  * @type {function(): {type: *}}
  */
 export const updateFaqItems = createAction(UPDATE_FAQ_ITEMS);
+
+/**
+ * Action for updating question in state when user types the question.
+ * @type {function(): {type: *}}
+ */
+export const updateQuestionOnInputChange = createAction(UPDATE_QUESTION_ON_INPUT_CHANGE);

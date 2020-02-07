@@ -17,9 +17,9 @@ import "./index.scss"
 
 const Question = ( {question} ) => {
     return (
-        <p className={"wl-faq-question-title"}>
+        <b className={"wl-faq-question-title"}>
             {question}
-        </p>
+        </b>
     )
 };
 export default Question

@@ -1,8 +1,10 @@
 $primary-color: #177EFB;
 
-.wl-faq-question-title {
+.wl-faq-answer-title {
   color: black;
   cursor: pointer;
+  height: 2em;
+  text-overflow: ellipsis;
   &:first-letter {
     text-transform: uppercase;
   }

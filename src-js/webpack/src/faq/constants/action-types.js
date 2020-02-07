@@ -22,3 +22,9 @@ export const REQUEST_GET_FAQ_ITEMS = "REQUEST_GET_FAQ_ITEMS";
  * @type {string}
  */
 export const UPDATE_FAQ_ITEMS = "UPDATE_FAQ_ITEMS";
+
+/**
+ * Action for updating new question typed by user.
+ * @type {string}
+ */
+export const UPDATE_QUESTION_ON_INPUT_CHANGE = "UPDATE_QUESTION_ON_INPUT_CHANGE";
