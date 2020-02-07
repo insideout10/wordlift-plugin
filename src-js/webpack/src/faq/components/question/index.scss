@@ -1,0 +1,12 @@
+$primary-color: #177EFB;
+
+.wl-faq-question-title {
+  color: black;
+  cursor: pointer;
+  &:first-letter {
+    text-transform: uppercase;
+  }
+  &:hover {
+    color:$primary-color;
+  }
+}
