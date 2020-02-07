@@ -46,3 +46,9 @@ export const CLOSE_EDIT_SCREEN = "CLOSE_EDIT_SCREEN";
  * @type {string}
  */
 export const REQUEST_UPDATE_FAQ_ITEMS = "REQUEST_UPDATE_FAQ_ITEMS";
+
+/**
+ * Action type for updating FAQ item on store.
+ * @type {string}
+ */
+export const UPDATE_FAQ_ITEM = "UPDATE_FAQ_ITEM";

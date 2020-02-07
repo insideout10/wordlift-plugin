@@ -18,12 +18,12 @@ import Question from "../question";
 import Answer from "../answer";
 import { WlCard } from "../../blocks/wl-card";
 import { questionSelectedByUser } from "../../actions";
-import {FaqListHeader} from "../faq-list-header";
+import { FaqListHeader } from "../faq-list-header";
 
 class FaqList extends React.Component {
   constructor(props) {
     super(props);
-    this.faqItemClicked = this.faqItemClicked.bind(this)
+    this.faqItemClicked = this.faqItemClicked.bind(this);
   }
   faqItemClicked(id) {
     const action = questionSelectedByUser();
@@ -39,7 +39,7 @@ class FaqList extends React.Component {
             <React.Fragment>
               <WlCard
                 onClickHandler={() => {
-                  this.faqItemClicked(item.id)
+                  this.faqItemClicked(item.id);
                 }}
               >
                 <Question question={item.question} />

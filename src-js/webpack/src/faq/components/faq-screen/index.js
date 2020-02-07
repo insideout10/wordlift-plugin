@@ -11,7 +11,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import FaqList from "../faq-list";
-import FaqEditItem from "../faq-edit-item";
+import FaqEditItem, { faqEditItemType } from "../faq-edit-item";
 import FaqEditItemCloseButton from "../faq-edit-item-close-button";
 
 class FaqScreen extends React.Component {
@@ -26,9 +26,19 @@ class FaqScreen extends React.Component {
       return (
         <React.Fragment>
           <FaqEditItemCloseButton />
-          <FaqEditItem title={"Question"} value={selectedFaqItem.question}/>
+          <FaqEditItem
+            title={"Question"}
+            value={selectedFaqItem.question}
+            id={this.props.selectedFaqId}
+            type={faqEditItemType.QUESTION}
+          />
           <br />
-          <FaqEditItem title={"Answer"} value={selectedFaqItem.answer} />
+          <FaqEditItem
+            title={"Answer"}
+            value={selectedFaqItem.answer}
+            id={this.props.selectedFaqId}
+            type={faqEditItemType.ANSWER}
+          />
         </React.Fragment>
       );
     } else {
