@@ -24,6 +24,7 @@ function* handleAddNewQuestion(action) {
   ];
   yield call(API.saveFAQItems, faqItems);
   // Refresh the screen by getting new FAQ items.
+  yield put(REQUEST_GET_FAQ_ITEMS)
 }
 
 function* handleGetFaqItems() {
