@@ -1,8 +1,18 @@
 .wl-notification-area {
+  animation-duration: 0.2s;
+  animation-name: slidein;
   width: 100%;
-  position: fixed;
-  top: 50%;
-  left: 50%;
+}
+@keyframes slidein {
+  from {
+    margin-left: 100%;
+    width: 300%;
+  }
+
+  to {
+    margin-left: 0;
+    width: 100%;
+  }
 }
 .wl-notification-area__close-button {
   cursor: pointer;

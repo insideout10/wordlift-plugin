@@ -20,7 +20,7 @@ import WlActionButton from "../wl-action-button";
 const FaqEditButtonGroup = ({ updateHandler, deleteHandler }) => {
   return (
     <WlContainer fullWidth={true}>
-      <WlColumn className={"wl-col--width-50 wl-col--low-padding"}>
+      <WlColumn className={"wl-col--width-40 wl-col--low-padding"}>
         <WlActionButton
           text={"delete"}
           className={"wl-action-button--normal wl-action-button--text-bold"}
@@ -29,7 +29,8 @@ const FaqEditButtonGroup = ({ updateHandler, deleteHandler }) => {
           }}
         />
       </WlColumn>
-      <WlColumn className={"wl-col--width-50 wl-col--low-padding"}>
+        <WlColumn className={"wl-col--width-10"}></WlColumn>
+      <WlColumn className={"wl-col--width-40 wl-col--low-padding"}>
         <WlActionButton
           text={"update"}
           className={"wl-action-button--primary wl-action-button--text-bold"}

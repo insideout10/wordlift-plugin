@@ -22,21 +22,23 @@ class WlNotificationArea extends React.Component {
     return (
       <React.Fragment>
         {"" !== notificationMessage && (
-          <WlContainer>
-            <WlColumn className={"wl-col--width-90"}>
-              <div className={"wl-notification-area notice notice-" + notificationType + " is-dismissble"}>
-                <p>{notificationMessage}</p>
-              </div>
-            </WlColumn>
-            <WlColumn className={"wl-col--width-10"}>
-              <span
-                className="dashicons dashicons-dismiss wl-notification-area__close-button"
-                onClick={() => {
-                  notificationCloseButtonClickedListener();
-                }}
-              />
-            </WlColumn>
-          </WlContainer>
+          <div className={"wl-notification-area"}>
+            <WlContainer>
+              <WlColumn className={"wl-col--width-90"}>
+                <div className={"notice notice-" + notificationType + " is-dismissble"}>
+                  <p>{notificationMessage}</p>
+                </div>
+              </WlColumn>
+              <WlColumn className={"wl-col--width-10"}>
+                <span
+                  className="dashicons dashicons-dismiss wl-notification-area__close-button"
+                  onClick={() => {
+                    notificationCloseButtonClickedListener();
+                  }}
+                />
+              </WlColumn>
+            </WlContainer>
+          </div>
         )}
       </React.Fragment>
     );
