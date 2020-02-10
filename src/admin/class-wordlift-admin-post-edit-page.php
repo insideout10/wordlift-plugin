@@ -198,7 +198,20 @@ class Wordlift_Admin_Post_Edit_Page {
 	 */
 	private function load_faq_settings( $editor ) {
 		// Register the api endpoints.
-		wp_localize_script('wordlift-admin-edit-page', '_wlFaqSettings', array(
+		// Enqueue the FAQ style
+		wp_enqueue_style(
+			'faq-metabox-style',
+			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/faq.css',
+			array()
+		);
+		Scripts_Helper::enqueue_based_on_wordpress_version(
+			'faq-metabox-script',
+			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/faq',
+			array('wp-polyfill'),
+			true
+		);
+
+		wp_localize_script('faq-metabox-script', '_wlFaqSettings', array(
 			'restUrl' => get_rest_url( null, WL_REST_ROUTE_DEFAULT_NAMESPACE.'/faq' ),
 			'textEditor' => $editor,
 			'listBoxId' => FAQ_Metabox::FAQ_LIST_BOX_ID,
@@ -207,18 +220,6 @@ class Wordlift_Admin_Post_Edit_Page {
 			'nonce' => wp_create_nonce( 'wp_rest' ),
 			'postId' => get_the_ID(),
 		));
-		// Enqueue the FAQ style
-		wp_enqueue_style(
-			'wordlift-admin-edit-page-faq',
-			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/faq.css',
-			array()
-		);
-		Scripts_Helper::enqueue_based_on_wordpress_version(
-			'wordlift-admin-edit-page-faq',
-			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/faq',
-			array('wp-polyfill'),
-			true
-		);
 		// Load the FAQ meta box.
 		new FAQ_Metabox();
 	}

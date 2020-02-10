@@ -1,5 +1,8 @@
 .wl-notification-area {
   width: 100%;
+  position: fixed;
+  top: 50%;
+  left: 50%;
 }
 .wl-notification-area__close-button {
   cursor: pointer;
