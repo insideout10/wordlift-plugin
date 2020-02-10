@@ -13,8 +13,8 @@ import React from "react";
  * Internal dependencies
  */
 import "./index.scss";
-import {WlContainer} from "../../../mappings/blocks/wl-container";
-import {WlColumn} from "../../../mappings/blocks/wl-column";
+import { WlContainer } from "../../../mappings/blocks/wl-container";
+import { WlColumn } from "../../../mappings/blocks/wl-column";
 import WlActionButton from "../wl-action-button";
 
 const FaqEditButtonGroup = ({ updateHandler, deleteHandler }) => {

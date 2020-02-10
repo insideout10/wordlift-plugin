@@ -9,15 +9,15 @@
  * External dependencies.
  */
 import React from "react";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 /**
  * Internal dependencies.
  */
 import FaqList from "../faq-list";
-import "./index.scss"
-import FaqEditItem, {faqEditItemType} from "../faq-edit-item";
+import "./index.scss";
+import FaqEditItem, { faqEditItemType } from "../faq-edit-item";
 import FaqEditItemCloseButton from "../faq-edit-item-close-button";
-import {updateFaqModalVisibility} from "../../actions";
+import { updateFaqModalVisibility } from "../../actions";
 
 class FaqScreen extends React.Component {
   /**
@@ -49,11 +49,17 @@ class FaqScreen extends React.Component {
     } else {
       return (
         <React.Fragment>
-            <button type={"button"} onClick={()=> {
-                const action = updateFaqModalVisibility()
-                action.payload = true
-                this.props.dispatch(action)
-            }}> open modal</button>
+          <button
+            type={"button"}
+            onClick={() => {
+              const action = updateFaqModalVisibility();
+              action.payload = true;
+              this.props.dispatch(action);
+            }}
+          >
+            {" "}
+            open modal
+          </button>
           <FaqList />
         </React.Fragment>
       );

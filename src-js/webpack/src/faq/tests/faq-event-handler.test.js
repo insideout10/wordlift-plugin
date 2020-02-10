@@ -5,7 +5,7 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
-import FaqEventHandler, {textEditors} from "../faq-event-handler";
+import FaqEventHandler, { textEditors } from "../faq-event-handler";
 import TinyMceFaqHook from "../hooks/tiny-mce-faq-hook";
 
 beforeEach(() => {

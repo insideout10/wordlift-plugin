@@ -8,14 +8,14 @@
  * External dependencies.
  */
 import React from "react";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 /**
  * Internal dependencies.
  */
-import {closeEditScreen} from "../../actions";
-import {WlContainer} from "../../../mappings/blocks/wl-container";
-import {WlColumn} from "../../../mappings/blocks/wl-column";
-import "./index.scss"
+import { closeEditScreen } from "../../actions";
+import { WlContainer } from "../../../mappings/blocks/wl-container";
+import { WlColumn } from "../../../mappings/blocks/wl-column";
+import "./index.scss";
 
 class FaqEditItemCloseButton extends React.Component {
   render() {

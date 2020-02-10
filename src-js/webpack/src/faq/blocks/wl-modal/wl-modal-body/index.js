@@ -11,16 +11,12 @@ import React from "react";
 /**
  * Internal dependencies.
  */
-import {classExtractor} from "../../../../mappings/blocks/helper";
-import "./index.scss"
+import { classExtractor } from "../../../../mappings/blocks/helper";
+import "./index.scss";
 
 export const WlModalBody = ({ children }) => {
   const classes = classExtractor({
     "wl-modal-body": true
   });
-  return (
-      <div className={classes}>
-          {children}
-      </div>
-  )
+  return <div className={classes}>{children}</div>;
 };

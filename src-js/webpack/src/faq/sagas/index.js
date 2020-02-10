@@ -8,16 +8,16 @@
 /**
  * External dependencies
  */
-import {call, put, select, takeLatest} from "redux-saga/effects";
+import { call, put, select, takeLatest } from "redux-saga/effects";
 /**
  * Internal dependencies.
  */
-import {REQUEST_FAQ_ADD_NEW_QUESTION, REQUEST_GET_FAQ_ITEMS, UPDATE_FAQ_ITEM} from "../constants/action-types";
+import { REQUEST_FAQ_ADD_NEW_QUESTION, REQUEST_GET_FAQ_ITEMS, UPDATE_FAQ_ITEM } from "../constants/action-types";
 import API from "../api/index";
-import {getAllFAQItems, getCurrentQuestion} from "../selectors";
-import {requestGetFaqItems, updateFaqItems} from "../actions";
-import {transformAPIDataToUi} from "./filters";
-import {faqEditItemType} from "../components/faq-edit-item";
+import { getAllFAQItems, getCurrentQuestion } from "../selectors";
+import { requestGetFaqItems, updateFaqItems } from "../actions";
+import { transformAPIDataToUi } from "./filters";
+import { faqEditItemType } from "../components/faq-edit-item";
 
 function* handleAddNewQuestion(action) {
   const currentQuestion = yield select(getCurrentQuestion);

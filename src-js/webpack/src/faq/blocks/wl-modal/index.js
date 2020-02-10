@@ -7,12 +7,12 @@
 /**
  * External dependencies
  */
-import React from 'react'
+import React from "react";
 /**
  * Internal dependencies.
  */
-import {classExtractor} from "../../../mappings/blocks/helper";
-import "./index.scss"
+import { classExtractor } from "../../../mappings/blocks/helper";
+import "./index.scss";
 
 export const WlModal = ({ shouldOpenModal, children }) => {
   const classes = classExtractor({

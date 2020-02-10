@@ -8,15 +8,15 @@
  * External dependencies.
  */
 import React from "react";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 /**
  * Internal dependencies.
  */
-import {updateFaqModalVisibility} from "../../actions";
+import { updateFaqModalVisibility } from "../../actions";
 import "./index.scss";
-import {WlModal} from "../../blocks/wl-modal";
-import {WlModalHeader} from "../../blocks/wl-modal/wl-modal-header";
-import {WlModalBody} from "../../blocks/wl-modal/wl-modal-body";
+import { WlModal } from "../../blocks/wl-modal";
+import { WlModalHeader } from "../../blocks/wl-modal/wl-modal-header";
+import { WlModalBody } from "../../blocks/wl-modal/wl-modal-body";
 import FaqApplyList from "../faq-apply-list";
 
 class FaqModal extends React.Component {
@@ -42,5 +42,5 @@ class FaqModal extends React.Component {
   }
 }
 export default connect(state => ({
-  isModalOpened: state.faqModalOptions.isModalOpened,
+  isModalOpened: state.faqModalOptions.isModalOpened
 }))(FaqModal);

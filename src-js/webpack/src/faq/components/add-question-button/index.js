@@ -14,12 +14,12 @@ import PropTypes from "prop-types";
  * Internal dependencies.
  */
 import "./index.scss";
-import {connect} from "react-redux";
-import {requestAddNewQuestion, requestGetFaqItems} from "../../actions";
+import { connect } from "react-redux";
+import { requestAddNewQuestion, requestGetFaqItems } from "../../actions";
 
 class AddQuestionButton extends React.Component {
   componentDidMount() {
-    this.props.dispatch(requestGetFaqItems())
+    this.props.dispatch(requestGetFaqItems());
   }
 
   render() {
@@ -28,7 +28,9 @@ class AddQuestionButton extends React.Component {
         disabled={this.props.question.length === 0}
         className={"wl-add-question-button"}
         type="button"
-        onClick={ () => { this.props.dispatch(requestAddNewQuestion()) }}
+        onClick={() => {
+          this.props.dispatch(requestAddNewQuestion());
+        }}
       >
         {this.props.questionButtonText}
       </button>

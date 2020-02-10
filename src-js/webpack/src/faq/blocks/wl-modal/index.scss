@@ -3,12 +3,12 @@
   z-index: 9999 !important;
   height: 60%;
   width: 50%;
-  background-color: rgba(255,255,255,1);
+  background-color: rgba(255, 255, 255, 1);
   position: fixed;
   left: 50%;
   top: 50%;
-  transform: translate(-50%,-50%);
-  border: 5px solid #177EFB;
+  transform: translate(-50%, -50%);
+  border: 5px solid #177efb;
   &.wl-modal--open {
     display: block;
     animation-fill-mode: forwards;
@@ -21,7 +21,7 @@
 @keyframes wlModalOpen {
   from {
     height: 0;
-    width: 0
+    width: 0;
   }
   to {
     height: 60%;

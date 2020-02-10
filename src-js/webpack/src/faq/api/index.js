@@ -5,7 +5,7 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  *
  */
-import {transformUiDataToApiFormat} from "../sagas/filters";
+import { transformUiDataToApiFormat } from "../sagas/filters";
 
 const { restUrl, nonce, postId } = global["_wlFaqSettings"];
 

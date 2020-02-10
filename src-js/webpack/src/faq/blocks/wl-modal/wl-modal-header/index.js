@@ -11,10 +11,10 @@ import React from "react";
 /**
  * Internal dependencies.
  */
-import {classExtractor} from "../../../../mappings/blocks/helper";
+import { classExtractor } from "../../../../mappings/blocks/helper";
 import "./index.scss";
-import {WlContainer} from "../../../../mappings/blocks/wl-container";
-import {WlColumn} from "../../../../mappings/blocks/wl-column";
+import { WlContainer } from "../../../../mappings/blocks/wl-container";
+import { WlColumn } from "../../../../mappings/blocks/wl-column";
 
 export const WlModalHeader = ({ title, description, children, modalCloseClickedListener }) => {
   const classes = classExtractor({
@@ -32,7 +32,7 @@ export const WlModalHeader = ({ title, description, children, modalCloseClickedL
           <span
             className="dashicons dashicons-dismiss wl-modal-header-icon"
             onClick={() => {
-                modalCloseClickedListener();
+              modalCloseClickedListener();
             }}
           />
         </WlColumn>

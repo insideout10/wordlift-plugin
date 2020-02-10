@@ -9,7 +9,7 @@
 /**
  * External dependencies
  */
-import {createReducer} from "@reduxjs/toolkit";
+import { createReducer } from "@reduxjs/toolkit";
 /**
  * Internal dependencies.
  */
@@ -30,7 +30,7 @@ export const faqItemsListReducer = createReducer(null, {
   [QUESTION_SELECTED_BY_USER]: (state, action) => {
     state.selectedFaqId = action.payload;
   },
-  [CLOSE_EDIT_SCREEN] : (state,action) => {
-    state.selectedFaqId = null
-  },
+  [CLOSE_EDIT_SCREEN]: (state, action) => {
+    state.selectedFaqId = null;
+  }
 });

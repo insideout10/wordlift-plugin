@@ -12,13 +12,9 @@ import React from "react";
 /**
  * Internal dependencies
  */
-import "./index.scss"
+import "./index.scss";
 
-const Question = ( {question} ) => {
-    return (
-        <b className={"wl-faq-question-title"}>
-            {question}
-        </b>
-    )
+const Question = ({ question }) => {
+  return <b className={"wl-faq-question-title"}>{question}</b>;
 };
-export default Question
+export default Question;

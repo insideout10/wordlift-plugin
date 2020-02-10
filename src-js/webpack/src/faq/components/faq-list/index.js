@@ -9,15 +9,15 @@
  * External dependencies.
  */
 import React from "react";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 /**
  * Internal dependencies.
  */
 import Question from "../question";
 import Answer from "../answer";
-import {WlCard} from "../../blocks/wl-card";
-import {questionSelectedByUser} from "../../actions";
-import {FaqListHeader} from "../faq-list-header";
+import { WlCard } from "../../blocks/wl-card";
+import { questionSelectedByUser } from "../../actions";
+import { FaqListHeader } from "../faq-list-header";
 
 class FaqList extends React.Component {
   constructor(props) {

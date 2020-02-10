@@ -9,14 +9,14 @@
  * External dependencies.
  */
 import React from "react";
-import {connect} from "react-redux";
-import {WlCard} from "../../blocks/wl-card";
+import { connect } from "react-redux";
+import { WlCard } from "../../blocks/wl-card";
 import Question from "../question";
-import {WlContainer} from "../../../mappings/blocks/wl-container";
+import { WlContainer } from "../../../mappings/blocks/wl-container";
 import WlActionButton from "../wl-action-button";
-import {WlColumn} from "../../../mappings/blocks/wl-column";
-import {updateFaqItem} from "../../actions";
-import {faqEditItemType} from "../faq-edit-item";
+import { WlColumn } from "../../../mappings/blocks/wl-column";
+import { updateFaqItem } from "../../actions";
+import { faqEditItemType } from "../faq-edit-item";
 
 class FaqApplyList extends React.Component {
   constructor(props) {
@@ -46,9 +46,13 @@ class FaqApplyList extends React.Component {
               <Question question={e.question} />
             </WlColumn>
             <WlColumn className={"wl-col--width-10"}>
-              <WlActionButton text={"apply"} className={"wl-action-button--primary"} onClickHandler={ () => {
-                  this.applyAnswerToQuestion(e.id)
-              }}/>
+              <WlActionButton
+                text={"apply"}
+                className={"wl-action-button--primary"}
+                onClickHandler={() => {
+                  this.applyAnswerToQuestion(e.id);
+                }}
+              />
             </WlColumn>
           </WlContainer>
         </WlCard>

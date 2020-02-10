@@ -13,12 +13,12 @@ import React from "react";
  */
 import "./index.scss";
 
-const WlActionButton = ({ className="", text, onClickHandler }) => {
-    return (
-        <button onClick={onClickHandler} className={"wl-action-button " + className} type={"button"}>
-            {text}
-        </button>
-    );
+const WlActionButton = ({ className = "", text, onClickHandler }) => {
+  return (
+    <button onClick={onClickHandler} className={"wl-action-button " + className} type={"button"}>
+      {text}
+    </button>
+  );
 };
 
-export default WlActionButton
+export default WlActionButton;

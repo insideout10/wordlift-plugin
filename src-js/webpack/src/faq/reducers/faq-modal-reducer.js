@@ -9,14 +9,14 @@
 /**
  * External dependencies
  */
-import {createReducer} from "@reduxjs/toolkit";
+import { createReducer } from "@reduxjs/toolkit";
 /**
  * Internal dependencies.
  */
-import {UPDATE_MODAL_STATUS} from "../constants/action-types";
+import { UPDATE_MODAL_STATUS } from "../constants/action-types";
 
 export const faqModalReducer = createReducer(null, {
-    [UPDATE_MODAL_STATUS]: ( state, action ) => {
-        state.isModalOpened = action.payload
-    }
+  [UPDATE_MODAL_STATUS]: (state, action) => {
+    state.isModalOpened = action.payload;
+  }
 });

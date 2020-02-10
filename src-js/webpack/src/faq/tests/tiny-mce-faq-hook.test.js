@@ -9,12 +9,12 @@
  * External dependencies
  */
 jest.mock("backbone");
-import {trigger} from "backbone";
+import { trigger } from "backbone";
 /**
  * Internal dependencies
  */
 import TinyMceFaqHook from "../hooks/tiny-mce-faq-hook";
-import {FAQ_EVENT_HANDLER_SELECTION_CHANGED} from "../constants/faq-hook-constants";
+import { FAQ_EVENT_HANDLER_SELECTION_CHANGED } from "../constants/faq-hook-constants";
 
 beforeEach(() => {
   global["tinymce"] = {};

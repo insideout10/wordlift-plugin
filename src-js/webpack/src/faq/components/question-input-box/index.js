@@ -9,12 +9,12 @@
  * External dependencies.
  */
 import React from "react";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 /**
  * Internal dependencies.
  */
 import "./index.scss";
-import {updateQuestionOnInputChange} from "../../actions";
+import { updateQuestionOnInputChange } from "../../actions";
 
 class QuestionInputBox extends React.Component {
   render() {
