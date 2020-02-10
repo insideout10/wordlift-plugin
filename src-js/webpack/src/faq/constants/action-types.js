@@ -58,3 +58,9 @@ export const UPDATE_FAQ_ITEM = "UPDATE_FAQ_ITEM";
  * @type {string}
  */
 export const UPDATE_MODAL_STATUS = "UPDATE_MODAL_STATUS";
+
+/**
+ * Action type for updating notification area.
+ * @type {string}
+ */
+export const UPDATE_NOTIFICATION_AREA = "UPDATE_NOTIFICATION_AREA";

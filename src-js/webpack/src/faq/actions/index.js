@@ -20,7 +20,7 @@ import {
   REQUEST_UPDATE_FAQ_ITEMS,
   UPDATE_FAQ_ITEM,
   UPDATE_FAQ_ITEMS,
-  UPDATE_MODAL_STATUS,
+  UPDATE_MODAL_STATUS, UPDATE_NOTIFICATION_AREA,
   UPDATE_QUESTION_ON_INPUT_CHANGE
 } from "../constants/action-types";
 
@@ -77,3 +77,9 @@ export const updateFaqItem = createAction(UPDATE_FAQ_ITEM);
  * @type {function(): {type: *}}
  */
 export const updateFaqModalVisibility = createAction(UPDATE_MODAL_STATUS);
+
+/**
+ * Action for showing notification area.
+ * @type {function(): {type: *}}
+ */
+export const updateNotificationArea = createAction(UPDATE_NOTIFICATION_AREA);

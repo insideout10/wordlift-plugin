@@ -25,6 +25,10 @@ const FAQ_INITIAL_STATE = {
   },
   faqModalOptions: {
     isModalOpened: false
+  },
+  faqNotificationArea: {
+    notificationMessage: "",
+    notificationType: "",
   }
 };
 
