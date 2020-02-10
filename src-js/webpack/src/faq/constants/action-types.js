@@ -52,3 +52,9 @@ export const REQUEST_UPDATE_FAQ_ITEMS = "REQUEST_UPDATE_FAQ_ITEMS";
  * @type {string}
  */
 export const UPDATE_FAQ_ITEM = "UPDATE_FAQ_ITEM";
+
+/**
+ * Action type for opening/closing the modal.
+ * @type {string}
+ */
+export const UPDATE_MODAL_STATUS = "UPDATE_MODAL_STATUS";

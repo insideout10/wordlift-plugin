@@ -18,7 +18,7 @@ import {
   QUESTION_SELECTED_BY_USER,
   REQUEST_FAQ_ADD_NEW_QUESTION,
   REQUEST_GET_FAQ_ITEMS, REQUEST_UPDATE_FAQ_ITEMS, UPDATE_FAQ_ITEM,
-  UPDATE_FAQ_ITEMS,
+  UPDATE_FAQ_ITEMS, UPDATE_MODAL_STATUS,
   UPDATE_QUESTION_ON_INPUT_CHANGE
 } from "../constants/action-types";
 
@@ -69,3 +69,9 @@ export const requestUpdateFaqItems = createAction(REQUEST_UPDATE_FAQ_ITEMS);
  * @type {function(): {type: *}}
  */
 export const updateFaqItem = createAction(UPDATE_FAQ_ITEM);
+
+/**
+ * Action when the ui wants to show/hide the modal.
+ * @type {function(): {type: *}}
+ */
+export const updateFaqModalVisibility = createAction(UPDATE_MODAL_STATUS);

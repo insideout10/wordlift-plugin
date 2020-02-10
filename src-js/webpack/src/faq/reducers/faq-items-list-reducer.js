@@ -10,6 +10,10 @@
  * External dependencies
  */
 import { createReducer } from "@reduxjs/toolkit";
+
+/**
+ * Internal dependencies.
+ */
 import {
   CLOSE_EDIT_SCREEN,
   QUESTION_SELECTED_BY_USER, UPDATE_FAQ_ITEM,

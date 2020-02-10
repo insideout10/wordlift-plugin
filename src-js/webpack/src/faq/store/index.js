@@ -16,18 +16,21 @@ import logger from "redux-logger";
  * Internal dependencies
  */
 import rootSaga from "../sagas";
-import {faqItemsListReducer} from "../reducers/faq-items-list-reducer";
-
-
+import {faqModalReducer} from "../reducers/faq-modal-reducer";
 
 const FAQ_INITIAL_STATE = {
-  question: "",
-  faqItems: [],
-  selectedFaqId: null,
+  faqListOptions: {
+    question: "",
+    faqItems: [],
+    selectedFaqId: null,
+  },
+  faqModalOptions: {
+    isModalOpened: false,
+  }
 };
 
 const sagaMiddleware = createSagaMiddleware();
-const store = createStore(faqItemsListReducer, FAQ_INITIAL_STATE, applyMiddleware(sagaMiddleware, logger));
+const store = createStore(faqModalReducer, FAQ_INITIAL_STATE, applyMiddleware(sagaMiddleware, logger));
 sagaMiddleware.run(rootSaga);
 
 export default store
