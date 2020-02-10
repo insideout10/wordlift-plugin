@@ -1,16 +1,16 @@
 .wl-modal {
   display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
+  position: fixed !important; /* Stay in place */
+  z-index: 1 !important; /* Sit on top */
+  height: 50%;
+  width: 50%;
   overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-
+  background-color: rgba(255,255,255,0.8); /* Black w/ opacity */
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
   &.wl-modal--open {
-    height: 90%;
-    width: 90%;
     display: block;
   }
   &.wl-modal--closed {
@@ -19,4 +19,3 @@
     display: none;
   }
 }
-
