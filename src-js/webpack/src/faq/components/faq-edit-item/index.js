@@ -18,6 +18,7 @@ import { WlContainer } from "../../../mappings/blocks/wl-container";
 import { WlColumn } from "../../../mappings/blocks/wl-column";
 import PropTypes from "prop-types";
 import { updateFaqItem } from "../../actions";
+import {NotificationArea} from "../../../mappings/components/edit-mapping-component/notification-area";
 
 export const faqEditItemType = {
   ANSWER: "ANSWER",
