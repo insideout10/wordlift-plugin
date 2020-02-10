@@ -57,6 +57,6 @@ class FaqScreen extends React.Component {
 }
 
 export default connect(state => ({
-  selectedFaqId: state.selectedFaqId,
-  faqItems: state.faqItems
+  selectedFaqId: state.faqListOptions.selectedFaqId,
+  faqItems: state.faqListOptions.faqItems
 }))(FaqScreen);

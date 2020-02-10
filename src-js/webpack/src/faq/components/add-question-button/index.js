@@ -45,5 +45,5 @@ AddQuestionButton.propTypes = {
 };
 
 export default connect(state => ({
-  question: state.question
+  question: state.faqListOptions.question
 }))(AddQuestionButton);

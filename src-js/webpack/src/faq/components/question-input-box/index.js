@@ -36,5 +36,5 @@ class QuestionInputBox extends React.Component {
 }
 
 export default connect(state => ({
-  question: state.question
+  question: state.faqModalOptions.question
 }))(QuestionInputBox);

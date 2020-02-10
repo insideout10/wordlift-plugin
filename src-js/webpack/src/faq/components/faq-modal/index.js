@@ -45,5 +45,5 @@ class FaqModal extends React.Component {
   }
 }
 export default connect(state => ({
-  isModalOpened: state.isModalOpened
+  isModalOpened: state.faqModalOptions.isModalOpened
 }))(FaqModal);
