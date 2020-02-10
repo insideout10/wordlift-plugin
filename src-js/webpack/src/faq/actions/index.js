@@ -8,8 +8,7 @@
 /**
  * External dependencies.
  */
-import { createAction } from "redux-actions";
-
+import {createAction} from "redux-actions";
 /**
  * Internal dependencies
  */
@@ -17,8 +16,11 @@ import {
   CLOSE_EDIT_SCREEN,
   QUESTION_SELECTED_BY_USER,
   REQUEST_FAQ_ADD_NEW_QUESTION,
-  REQUEST_GET_FAQ_ITEMS, REQUEST_UPDATE_FAQ_ITEMS, UPDATE_FAQ_ITEM,
-  UPDATE_FAQ_ITEMS, UPDATE_MODAL_STATUS,
+  REQUEST_GET_FAQ_ITEMS,
+  REQUEST_UPDATE_FAQ_ITEMS,
+  UPDATE_FAQ_ITEM,
+  UPDATE_FAQ_ITEMS,
+  UPDATE_MODAL_STATUS,
   UPDATE_QUESTION_ON_INPUT_CHANGE
 } from "../constants/action-types";
 

@@ -9,16 +9,15 @@
  * external dependencies
  */
 import React from "react";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 /**
  * Internal dependencies.
  */
 import FaqEditButtonGroup from "../faq-edit-button-group";
-import { WlContainer } from "../../../mappings/blocks/wl-container";
-import { WlColumn } from "../../../mappings/blocks/wl-column";
+import {WlContainer} from "../../../mappings/blocks/wl-container";
+import {WlColumn} from "../../../mappings/blocks/wl-column";
 import PropTypes from "prop-types";
-import { updateFaqItem } from "../../actions";
-import { NotificationArea } from "../../../mappings/components/edit-mapping-component/notification-area";
+import {updateFaqItem} from "../../actions";
 
 export const faqEditItemType = {
   ANSWER: "ANSWER",

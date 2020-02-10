@@ -11,12 +11,10 @@
 import createSagaMiddleware from "redux-saga";
 import {applyMiddleware, createStore} from "redux";
 import logger from "redux-logger";
-
 /**
  * Internal dependencies
  */
 import rootSaga from "../sagas";
-import {faqModalReducer} from "../reducers/faq-modal-reducer";
 import {faqReducer} from "../reducers";
 
 const FAQ_INITIAL_STATE = {

@@ -7,8 +7,9 @@
  */
 
 import FaqTextEditorHook from "./faq-text-editor-hook";
-import { FAQ_EVENT_HANDLER_SELECTION_CHANGED } from "../constants/faq-hook-constants";
-import { trigger } from "backbone";
+import {FAQ_EVENT_HANDLER_SELECTION_CHANGED} from "../constants/faq-hook-constants";
+import {trigger} from "backbone";
+
 export const FAQ_TINY_MCE_PLUGIN_NAME = "wl_faq";
 
 class TinyMceFaqHook extends FaqTextEditorHook {

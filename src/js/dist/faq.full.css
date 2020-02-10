@@ -1,5 +1,3 @@
-.wl-add-question-button{background-color:white;border-radius:7px;font-size:12px !important;border:2px solid #177EFB;cursor:pointer;height:25px}.wl-add-question-button:hover{background-color:#177EFB;color:white}
-
 
 .wl-container{display:flex;justify-content:flex-start}.wl-container--full-width{width:100%}.wl-container__input--full-width{width:100%}.wl-container__input--height-medium{height:40px}
 
@@ -7,21 +5,23 @@
 
 .wl-action-button{border-radius:8px !important;width:100%;margin:3px;padding:10px;font-size:13px;text-align:center;text-transform:capitalize;cursor:pointer;border:1px solid #eee}.wl-action-button.wl-action-button--primary{background-color:#177EFB !important;color:#fff !important}.wl-action-button.wl-action-button--normal{background-color:#c2e5ff !important;color:#177EFB !important}.wl-action-button.wl-action-button--text-bold{font-weight:bold}
 
-.question-input-box{width:100%}
-
 .wl-faq-question-title{word-wrap:break-word;color:black;cursor:pointer;font-size:14px;text-transform:capitalize;text-align:center}.wl-faq-question-title:hover{color:#177EFB}
 
 .wl-faq-answer-container{overflow:hidden;text-overflow:clip}.wl-faq-answer-title{color:black;cursor:pointer;height:2em}.wl-faq-answer-title:first-letter{text-transform:uppercase}
 
 .wl-card{border-radius:8px;border:1px solid #eee;height:80px;transition:0.1s;padding:8px;margin:8px}.wl-card:hover{box-shadow:3px 3px #eee}
 
+.question-input-box{width:100%}
+
+.wl-add-question-button{background-color:white;border-radius:7px;font-size:12px !important;border:2px solid #177EFB;cursor:pointer;height:25px}.wl-add-question-button:hover{background-color:#177EFB;color:white}
+
 
 .faq-edit-item-close-button{cursor:pointer}
+
 
 .wl-modal{display:none;z-index:9999 !important;height:60%;width:50%;background-color:#fff;position:fixed;left:50%;top:50%;transform:translate(-50%, -50%);border:5px solid #177EFB}.wl-modal.wl-modal--open{display:block;animation-fill-mode:forwards;animation:wlModalOpen 0.3s}.wl-modal.wl-modal--closed{display:none}@keyframes wlModalOpen{from{height:0;width:0}to{height:60%;width:50%}}
 
 .wl-modal-header{background-color:#177EFB;color:white;height:20%}.wl-modal-header-icon{cursor:pointer;font-size:30px}
 
 .wl-modal-body{overflow-y:scroll;height:80%;background-color:#fbfbfc}
-
 

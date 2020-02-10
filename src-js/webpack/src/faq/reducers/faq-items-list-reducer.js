@@ -9,14 +9,13 @@
 /**
  * External dependencies
  */
-import { createReducer } from "@reduxjs/toolkit";
-
+import {createReducer} from "@reduxjs/toolkit";
 /**
  * Internal dependencies.
  */
 import {
   CLOSE_EDIT_SCREEN,
-  QUESTION_SELECTED_BY_USER, UPDATE_FAQ_ITEM,
+  QUESTION_SELECTED_BY_USER,
   UPDATE_FAQ_ITEMS,
   UPDATE_QUESTION_ON_INPUT_CHANGE
 } from "../constants/action-types";

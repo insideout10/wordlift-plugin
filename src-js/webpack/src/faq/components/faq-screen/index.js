@@ -9,17 +9,14 @@
  * External dependencies.
  */
 import React from "react";
-import { connect } from "react-redux";
-
+import {connect} from "react-redux";
 /**
  * Internal dependencies.
  */
 import FaqList from "../faq-list";
 import "./index.scss"
-import FaqEditItem, { faqEditItemType } from "../faq-edit-item";
+import FaqEditItem, {faqEditItemType} from "../faq-edit-item";
 import FaqEditItemCloseButton from "../faq-edit-item-close-button";
-import { WlModal } from "../../blocks/wl-modal";
-import { WlModalHeader } from "../../blocks/wl-modal/wl-modal-header";
 import {updateFaqModalVisibility} from "../../actions";
 
 class FaqScreen extends React.Component {

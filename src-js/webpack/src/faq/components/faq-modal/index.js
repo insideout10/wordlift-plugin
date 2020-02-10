@@ -8,20 +8,16 @@
  * External dependencies.
  */
 import React from "react";
-import { connect } from "react-redux";
-
+import {connect} from "react-redux";
 /**
  * Internal dependencies.
  */
-import { closeEditScreen, updateFaqItem, updateFaqModalVisibility } from "../../actions";
-import { WlContainer } from "../../../mappings/blocks/wl-container";
-import { WlColumn } from "../../../mappings/blocks/wl-column";
+import {updateFaqModalVisibility} from "../../actions";
 import "./index.scss";
-import { WlModal } from "../../blocks/wl-modal";
-import { WlModalHeader } from "../../blocks/wl-modal/wl-modal-header";
-import { WlModalBody } from "../../blocks/wl-modal/wl-modal-body";
+import {WlModal} from "../../blocks/wl-modal";
+import {WlModalHeader} from "../../blocks/wl-modal/wl-modal-header";
+import {WlModalBody} from "../../blocks/wl-modal/wl-modal-body";
 import FaqApplyList from "../faq-apply-list";
-import { faqEditItemType } from "../faq-edit-item";
 
 class FaqModal extends React.Component {
   render() {

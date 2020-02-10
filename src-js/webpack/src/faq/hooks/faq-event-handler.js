@@ -8,6 +8,7 @@
  */
 
 import TinyMceFaqHook from "./hooks/tiny-mce-faq-hook";
+
 const GUTENBERG = "gutenberg";
 
 const TINY_MCE = "tiny_mce";

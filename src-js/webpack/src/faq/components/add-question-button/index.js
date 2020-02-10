@@ -10,12 +10,11 @@
  */
 import React from "react";
 import PropTypes from "prop-types";
-
 /**
  * Internal dependencies.
  */
 import "./index.scss";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import {requestAddNewQuestion, requestGetFaqItems} from "../../actions";
 
 class AddQuestionButton extends React.Component {

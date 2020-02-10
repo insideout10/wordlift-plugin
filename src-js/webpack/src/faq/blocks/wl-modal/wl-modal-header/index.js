@@ -8,14 +8,13 @@
  * External dependencies
  */
 import React from "react";
-
 /**
  * Internal dependencies.
  */
-import { classExtractor } from "../../../../mappings/blocks/helper";
+import {classExtractor} from "../../../../mappings/blocks/helper";
 import "./index.scss";
-import { WlContainer } from "../../../../mappings/blocks/wl-container";
-import { WlColumn } from "../../../../mappings/blocks/wl-column";
+import {WlContainer} from "../../../../mappings/blocks/wl-container";
+import {WlColumn} from "../../../../mappings/blocks/wl-column";
 
 export const WlModalHeader = ({ title, description, children, modalCloseClickedListener }) => {
   const classes = classExtractor({
