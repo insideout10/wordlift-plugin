@@ -1,6 +1,10 @@
 .wl-modal-header {
   background-color: #177EFB;
   color: white;
-  height: 10%;
-  text-align: right;
+  height: 20%;
+}
+
+.wl-modal-header-icon {
+  cursor: pointer;
+  font-size: 30px;
 }

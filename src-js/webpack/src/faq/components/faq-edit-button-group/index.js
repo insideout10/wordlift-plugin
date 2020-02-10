@@ -16,24 +16,24 @@ import React from "react";
 import "./index.scss";
 import { WlContainer } from "../../../mappings/blocks/wl-container";
 import { WlColumn } from "../../../mappings/blocks/wl-column";
-import WlButton from "../wl-button";
+import WlActionButton from "../wl-action-button";
 
 const FaqEditButtonGroup = ({ updateHandler, deleteHandler }) => {
   return (
     <WlContainer fullWidth={true}>
       <WlColumn className={"wl-col--width-50 wl-col--low-padding"}>
-        <WlButton
+        <WlActionButton
           text={"delete"}
-          className={"wl-button--normal wl-button--text-bold"}
+          className={"wl-action-button--normal wl-action-button--text-bold"}
           onClickHandler={() => {
             deleteHandler();
           }}
         />
       </WlColumn>
       <WlColumn className={"wl-col--width-50 wl-col--low-padding"}>
-        <WlButton
+        <WlActionButton
           text={"update"}
-          className={"wl-button--primary wl-button--text-bold"}
+          className={"wl-action-button--primary wl-action-button--text-bold"}
           onClickHandler={() => {
             updateHandler();
           }}

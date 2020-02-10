@@ -22,6 +22,8 @@ import FaqList from "./components/faq-list";
 import FaqScreen from "./components/faq-screen";
 import { WlModal } from "./blocks/wl-modal";
 import { WlModalHeader } from "./blocks/wl-modal/wl-modal-header";
+import FaqApplyList from "./components/faq-apply-list";
+import {WlModalBody} from "./blocks/wl-modal/wl-modal-body";
 
 const { listBoxId, addQuestionText, modalId } = global["_wlFaqSettings"];
 
@@ -39,8 +41,10 @@ window.addEventListener("load", () => {
     <Provider store={store}>
       <React.Fragment>
         <WlModal shouldOpenModal={true}>
-          <WlModalHeader />
-          <FaqScreen />
+          <WlModalHeader title={"Wordlift FAQ"} description={"Apply this answer to a question"} />
+          <WlModalBody>
+            <FaqApplyList />
+          </WlModalBody>
         </WlModal>
       </React.Fragment>
     </Provider>,

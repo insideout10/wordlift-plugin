@@ -10,15 +10,16 @@ $secondary-color: #c2e5ff;
   text-transform: capitalize;
   cursor: pointer;
   border: 1px solid #eee;
-  &.wl-button--primary {
+  &.wl-action-button--primary {
     background-color: $primary-color !important;
     color: #fff !important;
   }
-  &.wl-button--normal {
+  &.wl-action-button--normal {
     background-color: $secondary-color !important;
     color: $primary-color !important;
   }
-  &.wl-button--text-bold {
+  &.wl-action-button--text-bold {
     font-weight: bold;
   }
+
 }

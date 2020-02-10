@@ -14,7 +14,7 @@ import React from "react";
  */
 import "./index.scss";
 
-const WlButton = ({ className="", text, onClickHandler }) => {
+const WlActionButton = ({ className="", text, onClickHandler }) => {
     return (
         <button onClick={onClickHandler} className={"wl-action-button " + className} type={"button"}>
             {text}
@@ -22,4 +22,4 @@ const WlButton = ({ className="", text, onClickHandler }) => {
     );
 };
 
-export default WlButton
+export default WlActionButton

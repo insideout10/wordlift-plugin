@@ -1,15 +1,14 @@
 .wl-modal {
-  display: none; /* Hidden by default */
-  position: fixed !important; /* Stay in place */
-  z-index: 1 !important; /* Sit on top */
-  height: 50%;
-  width: 50%;
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgba(255,255,255,0.8); /* Black w/ opacity */
+  display: none;
+  z-index: 9999 !important;
+  height: 60%;
+  width: 60%;
+  background-color: rgba(255,255,255,1);
   position: fixed;
   left: 50%;
   top: 50%;
   transform: translate(-50%,-50%);
+  border: 5px solid #177EFB;
   &.wl-modal--open {
     display: block;
   }
