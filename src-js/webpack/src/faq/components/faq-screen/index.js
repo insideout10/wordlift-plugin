@@ -15,6 +15,7 @@ import FaqEditItem, { faqEditItemType } from "../faq-edit-item";
 import FaqEditItemCloseButton from "../faq-edit-item-close-button";
 import { WlModal } from "../../blocks/wl-modal";
 import { WlModalHeader } from "../../blocks/wl-modal/wl-modal-header";
+import {updateFaqModalVisibility} from "../../actions";
 
 class FaqScreen extends React.Component {
   /**
@@ -46,6 +47,11 @@ class FaqScreen extends React.Component {
     } else {
       return (
         <React.Fragment>
+            <button type={"button"} onClick={()=> {
+                const action = updateFaqModalVisibility()
+                action.payload = true
+                this.props.dispatch(action)
+            }}> open modal</button>
           <FaqList />
         </React.Fragment>
       );

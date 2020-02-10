@@ -17,6 +17,7 @@ import logger from "redux-logger";
  */
 import rootSaga from "../sagas";
 import {faqModalReducer} from "../reducers/faq-modal-reducer";
+import {faqReducer} from "../reducers";
 
 const FAQ_INITIAL_STATE = {
   faqListOptions: {
@@ -30,7 +31,7 @@ const FAQ_INITIAL_STATE = {
 };
 
 const sagaMiddleware = createSagaMiddleware();
-const store = createStore(faqModalReducer, FAQ_INITIAL_STATE, applyMiddleware(sagaMiddleware, logger));
+const store = createStore(faqReducer, FAQ_INITIAL_STATE, applyMiddleware(sagaMiddleware, logger));
 sagaMiddleware.run(rootSaga);
 
 export default store

@@ -18,6 +18,6 @@ import {UPDATE_MODAL_STATUS} from "../constants/action-types";
 
 export const faqModalReducer = createReducer(null, {
     [UPDATE_MODAL_STATUS]: ( state, action ) => {
-        this.isModalOpened = action.payload
+        state.isModalOpened = action.payload
     }
 });
