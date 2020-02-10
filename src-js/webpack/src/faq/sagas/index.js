@@ -18,7 +18,7 @@ import API from "../api/index";
 import { getAllFAQItems, getCurrentQuestion } from "../selectors";
 import { requestGetFaqItems, updateFaqItems } from "../actions";
 import { transformAPIDataToUi } from "./filters";
-import {faqEditItemType} from "../components/faq-edit-item";
+import { faqEditItemType } from "../components/faq-edit-item";
 
 function* handleAddNewQuestion(action) {
   const currentQuestion = yield select(getCurrentQuestion);
@@ -46,15 +46,14 @@ function* handleUpdateFaqItems(action) {
   const faqItemIndex = faqItems.map(e => e.id).indexOf(payload.id);
   switch (payload.type) {
     case faqEditItemType.ANSWER:
-      faqItems[faqItemIndex]['answer'] = payload.value;
+      faqItems[faqItemIndex]["answer"] = payload.value;
       break;
     case faqEditItemType.QUESTION:
-      faqItems[faqItemIndex]['question'] = payload.value;
+      faqItems[faqItemIndex]["question"] = payload.value;
       break;
   }
   yield call(API.updateFAQItems, faqItems);
-  yield put(requestGetFaqItems())
-
+  yield put(requestGetFaqItems());
 }
 
 function* rootSaga() {

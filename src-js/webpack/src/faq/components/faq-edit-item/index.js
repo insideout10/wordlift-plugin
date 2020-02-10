@@ -18,7 +18,7 @@ import { WlContainer } from "../../../mappings/blocks/wl-container";
 import { WlColumn } from "../../../mappings/blocks/wl-column";
 import PropTypes from "prop-types";
 import { updateFaqItem } from "../../actions";
-import {NotificationArea} from "../../../mappings/components/edit-mapping-component/notification-area";
+import { NotificationArea } from "../../../mappings/components/edit-mapping-component/notification-area";
 
 export const faqEditItemType = {
   ANSWER: "ANSWER",
@@ -43,7 +43,7 @@ class FaqEditItem extends React.Component {
       value: this.state.textAreaValue
     };
     if (textAreaValue !== null) {
-      action.value = textAreaValue;
+      action.payload.value = textAreaValue;
     }
     this.props.dispatch(action);
   }
@@ -74,7 +74,7 @@ class FaqEditItem extends React.Component {
             />
           </WlColumn>
         </WlContainer>
-        <FaqEditButtonGroup updateHandler={this.updateFaqEditItem} deleteHandler={this.deleteFaqItem}/>
+        <FaqEditButtonGroup updateHandler={this.updateFaqEditItem} deleteHandler={this.deleteFaqItem} />
       </React.Fragment>
     );
   }

@@ -2,7 +2,7 @@
   display: none;
   z-index: 9999 !important;
   height: 60%;
-  width: 60%;
+  width: 50%;
   background-color: rgba(255,255,255,1);
   position: fixed;
   left: 50%;
@@ -25,6 +25,6 @@
   }
   to {
     height: 60%;
-    width: 60%;
+    width: 50%;
   }
 }
