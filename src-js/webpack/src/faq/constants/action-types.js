@@ -64,3 +64,11 @@ export const UPDATE_MODAL_STATUS = "UPDATE_MODAL_STATUS";
  * @type {string}
  */
 export const UPDATE_NOTIFICATION_AREA = "UPDATE_NOTIFICATION_AREA";
+
+/**
+ * Action type for resetting question input field.
+ * @type {string}
+ */
+export const RESET_TYPED_QUESTION = "RESET_TYPED_QUESTION";
+
+

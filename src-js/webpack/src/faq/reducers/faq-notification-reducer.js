@@ -19,6 +19,6 @@ export const faqNotificationReducer = createReducer(null, {
   [UPDATE_NOTIFICATION_AREA]: (state, action) => {
     const { notificationType, notificationMessage } = action.payload;
     state.notificationMessage = notificationMessage;
-    state.notifcationType = notificationType;
+    state.notificationType = notificationType;
   }
 });

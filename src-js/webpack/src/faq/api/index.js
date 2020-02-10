@@ -20,7 +20,9 @@ function saveFAQItems(faqItems) {
       post_id: postId,
       faq_items: faqItems
     })
-  });
+  })
+    .then(response => response.json())
+    .then(json => json);
 }
 
 function updateFAQItems(faqItems) {
@@ -34,7 +36,9 @@ function updateFAQItems(faqItems) {
       post_id: postId,
       faq_items: transformUiDataToApiFormat(faqItems)
     })
-  });
+  })
+    .then(response => response.json())
+    .then(json => json);
 }
 
 function getFAQItems() {

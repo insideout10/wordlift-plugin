@@ -17,7 +17,7 @@ import {
   QUESTION_SELECTED_BY_USER,
   REQUEST_FAQ_ADD_NEW_QUESTION,
   REQUEST_GET_FAQ_ITEMS,
-  REQUEST_UPDATE_FAQ_ITEMS,
+  REQUEST_UPDATE_FAQ_ITEMS, RESET_TYPED_QUESTION,
   UPDATE_FAQ_ITEM,
   UPDATE_FAQ_ITEMS,
   UPDATE_MODAL_STATUS, UPDATE_NOTIFICATION_AREA,
@@ -83,3 +83,9 @@ export const updateFaqModalVisibility = createAction(UPDATE_MODAL_STATUS);
  * @type {function(): {type: *}}
  */
 export const updateNotificationArea = createAction(UPDATE_NOTIFICATION_AREA);
+
+/**
+ * Action for resetting input field.
+ * @type {function(): {type: *}}
+ */
+export const resetTypedQuestion = createAction(RESET_TYPED_QUESTION);

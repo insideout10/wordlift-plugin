@@ -28,9 +28,9 @@ class WlNotificationArea extends React.Component {
                 <p>{notificationMessage}</p>
               </div>
             </WlColumn>
-            <WlColumn className={"wl-col--width-90"}>
+            <WlColumn className={"wl-col--width-10"}>
               <span
-                className="dashicons dashicons-dismiss wl-modal-header-icon"
+                className="dashicons dashicons-dismiss wl-notification-area__close-button"
                 onClick={() => {
                   notificationCloseButtonClickedListener();
                 }}

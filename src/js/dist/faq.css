@@ -18,6 +18,8 @@
 
 .faq-edit-item-close-button{cursor:pointer}
 
+.wl-notification-area{width:100%}.wl-notification-area__close-button{cursor:pointer}
+
 
 .wl-modal{display:none;z-index:9999 !important;height:60%;width:50%;background-color:#fff;position:fixed;left:50%;top:50%;transform:translate(-50%, -50%);border:5px solid #177efb}.wl-modal.wl-modal--open{display:block;animation-fill-mode:forwards;animation:wlModalOpen 0.3s}.wl-modal.wl-modal--closed{display:none}@keyframes wlModalOpen{from{height:0;width:0}to{height:60%;width:50%}}
 

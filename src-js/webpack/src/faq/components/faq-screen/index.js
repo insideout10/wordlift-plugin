@@ -17,9 +17,25 @@ import FaqList from "../faq-list";
 import "./index.scss";
 import FaqEditItem, { faqEditItemType } from "../faq-edit-item";
 import FaqEditItemCloseButton from "../faq-edit-item-close-button";
-import { updateFaqModalVisibility } from "../../actions";
+import { updateFaqModalVisibility, updateNotificationArea } from "../../actions";
+import WlNotificationArea from "../../blocks/wl-notification-area";
 
 class FaqScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.removeNotificationListener = this.removeNotificationListener.bind(this);
+  }
+  /**
+   * Run this listener once the close button is clicked
+   */
+  removeNotificationListener() {
+    const action = updateNotificationArea();
+    action.payload = {
+      notificationMessage: "",
+      notificationType: ""
+    };
+    this.props.dispatch(action);
+  }
   /**
    * If the user chose a question then display it
    * in the edit mode, or show the faq list.
@@ -57,7 +73,6 @@ class FaqScreen extends React.Component {
               this.props.dispatch(action);
             }}
           >
-            {" "}
             open modal
           </button>
           <FaqList />
@@ -66,11 +81,22 @@ class FaqScreen extends React.Component {
     }
   }
   render() {
-    return <React.Fragment>{this.renderComponentBasedOnState()}</React.Fragment>;
+    return (
+      <React.Fragment>
+        <WlNotificationArea
+          notificationMessage={this.props.notificationMessage}
+          notificationType={this.props.notificationType}
+          notificationCloseButtonClickedListener={this.removeNotificationListener}
+        />
+        {this.renderComponentBasedOnState()}
+      </React.Fragment>
+    );
   }
 }
 
 export default connect(state => ({
   selectedFaqId: state.faqListOptions.selectedFaqId,
-  faqItems: state.faqListOptions.faqItems
+  faqItems: state.faqListOptions.faqItems,
+  notificationMessage: state.faqNotificationArea.notificationMessage,
+  notificationType: state.faqNotificationArea.notificationType
 }))(FaqScreen);

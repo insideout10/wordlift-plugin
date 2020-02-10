@@ -15,7 +15,7 @@ import { call, put, select, takeLatest } from "redux-saga/effects";
 import { REQUEST_FAQ_ADD_NEW_QUESTION, REQUEST_GET_FAQ_ITEMS, UPDATE_FAQ_ITEM } from "../constants/action-types";
 import API from "../api/index";
 import { getAllFAQItems, getCurrentQuestion } from "../selectors";
-import { requestGetFaqItems, updateFaqItems } from "../actions";
+import { requestGetFaqItems, resetTypedQuestion, updateFaqItems, updateNotificationArea } from "../actions";
 import { transformAPIDataToUi } from "./filters";
 import { faqEditItemType } from "../components/faq-edit-item";
 
@@ -27,7 +27,14 @@ function* handleAddNewQuestion(action) {
       answer: ""
     }
   ];
-  yield call(API.saveFAQItems, faqItems);
+  const response = yield call(API.saveFAQItems, faqItems);
+  const notificationAction = updateNotificationArea();
+  notificationAction.payload = {
+    notificationMessage: response.message,
+    notificationType: response.status
+  };
+  yield put(notificationAction);
+  yield put(resetTypedQuestion());
   // Refresh the screen by getting new FAQ items.
   yield put(requestGetFaqItems());
 }
@@ -51,7 +58,13 @@ function* handleUpdateFaqItems(action) {
       faqItems[faqItemIndex]["question"] = payload.value;
       break;
   }
-  yield call(API.updateFAQItems, faqItems);
+  const response = yield call(API.updateFAQItems, faqItems);
+  const notificationAction = updateNotificationArea();
+  notificationAction.payload = {
+    notificationMessage: response.message,
+    notificationType: response.status
+  };
+  yield put(notificationAction);
   yield put(requestGetFaqItems());
 }
 
