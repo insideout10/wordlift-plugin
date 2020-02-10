@@ -17,3 +17,7 @@
 
 .faq-edit-item-close-button{cursor:pointer}
 
+.wl-modal{display:none;position:fixed;z-index:1;width:100%;height:100%;overflow:auto;background-color:#000;background-color:rgba(0,0,0,0.4)}.wl-modal.wl-modal--open{height:90%;width:90%;display:block}.wl-modal.wl-modal--closed{height:0;width:0;display:none}
+
+.wl-modal-header{background-color:#177EFB;color:white;height:10%;text-align:right}
+

@@ -13,6 +13,8 @@ import { connect } from "react-redux";
 import FaqList from "../faq-list";
 import FaqEditItem, { faqEditItemType } from "../faq-edit-item";
 import FaqEditItemCloseButton from "../faq-edit-item-close-button";
+import { WlModal } from "../../blocks/wl-modal";
+import { WlModalHeader } from "../../blocks/wl-modal/wl-modal-header";
 
 class FaqScreen extends React.Component {
   /**
@@ -42,7 +44,11 @@ class FaqScreen extends React.Component {
         </React.Fragment>
       );
     } else {
-      return <FaqList />;
+      return (
+        <React.Fragment>
+          <FaqList />
+        </React.Fragment>
+      );
     }
   }
   render() {

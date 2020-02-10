@@ -15,6 +15,8 @@ class FAQ_Metabox {
 
 	const FAQ_LIST_BOX_ID = 'wl-faq-meta-list-box';
 
+	const FAQ_MODAL_ID = 'wl-faq-modal';
+
 	public function __construct() {
 		$this->register_faq_metabox();
 	}
@@ -26,6 +28,7 @@ class FAQ_Metabox {
 	 */
 	public function echo_meta_box_template() {
 		echo '<div id="'. self::FAQ_LIST_BOX_ID . '"></div>';
+		echo '<div id="'. self::FAQ_MODAL_ID . '"></div>';
 	}
 
 	/**

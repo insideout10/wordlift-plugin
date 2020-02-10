@@ -20,8 +20,10 @@ import store from "./store/index";
 import { FaqListHeader } from "./components/faq-list-header";
 import FaqList from "./components/faq-list";
 import FaqScreen from "./components/faq-screen";
+import {WlModal} from "./blocks/wl-modal";
+import {WlModalHeader} from "./blocks/wl-modal/wl-modal-header";
 
-const { listBoxId, addQuestionText } = global["_wlFaqSettings"];
+const { listBoxId, addQuestionText, modalId } = global["_wlFaqSettings"];
 
 window.addEventListener("load", () => {
   ReactDOM.render(
@@ -32,4 +34,14 @@ window.addEventListener("load", () => {
     </Provider>,
     document.getElementById(listBoxId)
   );
+
+  ReactDOM.render(
+      <React.Fragment>
+          <WlModal shouldOpenModal={true}>
+              <WlModalHeader/>
+          </WlModal>
+      </React.Fragment>,
+      document.getElementById(modalId)
+  )
+
 });
