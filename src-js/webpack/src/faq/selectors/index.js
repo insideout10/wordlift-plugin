@@ -10,11 +10,11 @@
  * @param state The full state of FAQ store
  * @return {[]} Array of FAQ items.
  */
-export const getAllFAQItems = state => state.faqItems;
+export const getAllFAQItems = state => state.faqListOptions.faqItems;
 
 /**
  * Get currently typed question in the FAQ header
  * @param state The full state of the FAQ store.
  * @return {*} String
  */
-export const getCurrentQuestion = state => state.question;
+export const getCurrentQuestion = state => state.faqListOptions.question;

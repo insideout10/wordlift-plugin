@@ -13,7 +13,7 @@ import { connect } from "react-redux";
 /**
  * Internal dependencies.
  */
-import { closeEditScreen, updateFaqModalVisibility } from "../../actions";
+import { closeEditScreen, updateFaqItem, updateFaqModalVisibility } from "../../actions";
 import { WlContainer } from "../../../mappings/blocks/wl-container";
 import { WlColumn } from "../../../mappings/blocks/wl-column";
 import "./index.scss";
@@ -21,6 +21,7 @@ import { WlModal } from "../../blocks/wl-modal";
 import { WlModalHeader } from "../../blocks/wl-modal/wl-modal-header";
 import { WlModalBody } from "../../blocks/wl-modal/wl-modal-body";
 import FaqApplyList from "../faq-apply-list";
+import { faqEditItemType } from "../faq-edit-item";
 
 class FaqModal extends React.Component {
   render() {
@@ -45,5 +46,5 @@ class FaqModal extends React.Component {
   }
 }
 export default connect(state => ({
-  isModalOpened: state.faqModalOptions.isModalOpened
+  isModalOpened: state.faqModalOptions.isModalOpened,
 }))(FaqModal);

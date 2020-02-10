@@ -11,10 +11,20 @@
   border: 5px solid #177EFB;
   &.wl-modal--open {
     display: block;
+    animation-fill-mode: forwards;
+    animation: wlModalOpen 0.3s;
   }
   &.wl-modal--closed {
-    height: 0;
-    width: 0;
     display: none;
+  }
+}
+@keyframes wlModalOpen {
+  from {
+    height: 0;
+    width: 0
+  }
+  to {
+    height: 60%;
+    width: 60%;
   }
 }
