@@ -8,7 +8,7 @@ describe "TinyMCE tests", ->
   # Tests set-up.
   beforeEach inject((AnalysisService) ->
     ed = tinyMCE.get('content')
-    AnalysisService.setKnownTypes window.wordlift.types
+    AnalysisService.setKnownTypes window._wlEntityTypes
   )
 
   afterEach inject ($httpBackend) ->
@@ -283,7 +283,7 @@ describe 'TinyMCE', ->
 
   beforeEach inject((AnalysisService) ->
     ed = tinyMCE.get('content')
-    AnalysisService.setKnownTypes window.wordlift.types
+    AnalysisService.setKnownTypes window._wlEntityTypes
     AnalysisService.setEntities window.wordlift.entities
   )
 

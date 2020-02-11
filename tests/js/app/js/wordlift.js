@@ -1519,7 +1519,7 @@
   }), injector = angular.bootstrap($('#wl-app'), ['wordlift.tinymce.plugin']), injector.invoke([
     'AnalysisService', 'EntityAnnotationConfidenceService', function(AnalysisService, EntityAnnotationConfidenceService) {
       if (window.wordlift != null) {
-        AnalysisService.setKnownTypes(window.wordlift.types);
+        AnalysisService.setKnownTypes(window._wlEntityTypes);
         AnalysisService.setEntities(window.wordlift.entities);
         return EntityAnnotationConfidenceService.setEntities(window.wordlift.entities);
       }

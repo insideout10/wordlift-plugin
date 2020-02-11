@@ -14,7 +14,7 @@ export default class CreateEntityForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      category: wordlift.types[0].slug,
+      category: window['_wlEntityTypes'][0].slug,
       description: ""
     };
     this.handleChange = this.handleChange.bind(this);
@@ -50,7 +50,7 @@ export default class CreateEntityForm extends React.Component {
         <div>
           Category
           <select name="category" style={{ width: "100%" }} value={this.state.category} onChange={this.handleChange}>
-            {wordlift.types.map(item => (
+            {_wlEntityTypes.map(item => (
               <option value={item.uri}>{item.label}</option>
             ))}
           </select>

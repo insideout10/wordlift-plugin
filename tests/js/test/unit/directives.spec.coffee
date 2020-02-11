@@ -6,7 +6,7 @@ describe 'directives', ->
   beforeEach module('AnalysisService')
 
   beforeEach inject( (AnalysisService) ->
-    AnalysisService.setKnownTypes window.wordlift.types
+    AnalysisService.setKnownTypes window._wlEntityTypes
   )
 
   # Test the wlEntity directive.
@@ -18,7 +18,7 @@ describe 'directives', ->
     beforeEach inject(($rootScope) ->
 
       scope = $rootScope.$new()
-      scope.currentTypeDefinition = window.wordlift.types[0]
+      scope.currentTypeDefinition = window._wlEntityTypes[0]
 
       # The wlEntities directive gets the annotation from the text-annotation attribute.
       element = angular.element '<wl-entity type-definition="currentTypeDefinition" on-select="select(entityAnnotation)" entity-annotation="entityAnnotation"></wl-entities>'
@@ -56,7 +56,7 @@ describe 'directives', ->
       # as in the HTML the textAnnotation is passed using the 'textAnnotation' property of the EntitiesController
       # scope.
       scope = $rootScope.$new()
-      scope.knowTypes = window.wordlift.types
+      scope.knowTypes = window._wlEntityTypes
 
       # Create the EntitiesController with the new scope.
       EntitiesController = $controller 'EntitiesController', { $scope: scope }
