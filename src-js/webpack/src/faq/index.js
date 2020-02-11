@@ -18,6 +18,7 @@ import store from "./store/index";
 import FaqScreen from "./components/faq-screen";
 import FaqModal from "./components/faq-modal";
 import FaqEventHandler from "./hooks/faq-event-handler";
+import FaqHookToStoreDispatcher from "./hooks/faq-hook-to-store-dispatcher";
 
 const { listBoxId, addQuestionText, modalId } = global["_wlFaqSettings"];
 
@@ -38,9 +39,7 @@ window.addEventListener("load", () => {
     document.getElementById(modalId)
   );
 
-
-    const handler = new FaqEventHandler( store );
-    handler.getHook().listenForTextSelection();
-
+  const dispatcher = new FaqHookToStoreDispatcher(store);
+  const handler = new FaqEventHandler(store, dispatcher);
+  handler.getHook().listenForTextSelection();
 });
-
