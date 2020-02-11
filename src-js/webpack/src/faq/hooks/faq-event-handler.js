@@ -10,7 +10,7 @@
 /**
  * External dependencies.
  */
-import {on} from "backbone"
+import { on } from "backbone";
 /**
  * Internal dependencies.
  */
@@ -40,10 +40,16 @@ class FaqEventHandler {
    */
   listenEventsFromHooks() {
     on(FAQ_EVENT_HANDLER_SELECTION_CHANGED, text => {
-      console.log("text selected")
-      const action = updateQuestionOnInputChange();
-      action.payload = text;
-      this.getStore().dispatch(action);
+      // Check if this is a question
+      const isQuestion = text.endsWith("?");
+      if ( isQuestion ) {
+        const action = updateQuestionOnInputChange();
+        action.payload = text;
+        this.getStore().dispatch(action);
+      }
+      else {
+        // This is an answer, show the  add answer button.
+      }
     });
   }
   /**

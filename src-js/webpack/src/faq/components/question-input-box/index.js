@@ -21,7 +21,7 @@ class QuestionInputBox extends React.Component {
     return (
       <input
         type={"text"}
-        defaultValue={this.props.question}
+        value={this.props.question}
         className={"question-input-box"}
         placeholder={"Add Your question here"}
         onChange={event => {

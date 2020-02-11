@@ -25,7 +25,7 @@ class TinyMceFaqHook extends FaqTextEditorHook {
   }
 
   listenForTextSelection() {
-    const editor = window["tinymce"].activeEditor;
+    const editor = window["tinymce"].get()[0];
     editor.on("NodeChange", e => {
       /**
        * To prevent the multiple events getting emitted for the same
