@@ -13,14 +13,17 @@ import { createAction } from "redux-actions";
  * Internal dependencies
  */
 import {
+  ANSWER_SELECTED_BY_USER,
   CLOSE_EDIT_SCREEN,
   QUESTION_SELECTED_BY_USER,
   REQUEST_FAQ_ADD_NEW_QUESTION,
   REQUEST_GET_FAQ_ITEMS,
-  REQUEST_UPDATE_FAQ_ITEMS, RESET_TYPED_QUESTION,
+  REQUEST_UPDATE_FAQ_ITEMS,
+  RESET_TYPED_QUESTION,
   UPDATE_FAQ_ITEM,
   UPDATE_FAQ_ITEMS,
-  UPDATE_MODAL_STATUS, UPDATE_NOTIFICATION_AREA,
+  UPDATE_MODAL_STATUS,
+  UPDATE_NOTIFICATION_AREA,
   UPDATE_QUESTION_ON_INPUT_CHANGE
 } from "../constants/action-types";
 
@@ -89,3 +92,8 @@ export const updateNotificationArea = createAction(UPDATE_NOTIFICATION_AREA);
  * @type {function(): {type: *}}
  */
 export const resetTypedQuestion = createAction(RESET_TYPED_QUESTION);
+
+/**
+ * Action for opening modal if the answer is selected by the user
+ */
+export const answerSelectedByUser = createAction(ANSWER_SELECTED_BY_USER);

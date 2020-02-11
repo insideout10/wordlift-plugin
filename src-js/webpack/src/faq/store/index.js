@@ -21,10 +21,11 @@ const FAQ_INITIAL_STATE = {
   faqListOptions: {
     question: "",
     faqItems: [],
-    selectedFaqId: null
+    selectedFaqId: null,
   },
   faqModalOptions: {
-    isModalOpened: false
+    isModalOpened: false,
+    selectedAnswer: "",
   },
   faqNotificationArea: {
     notificationMessage: "",

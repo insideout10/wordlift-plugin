@@ -64,5 +64,5 @@ class FaqApplyList extends React.Component {
 export default connect(state => ({
   faqItems: state.faqListOptions.faqItems,
   // Mocking answer from text editor for now.
-  selectedAnswer: "some answer"
+  selectedAnswer: state.faqModalOptions.selectedAnswer,
 }))(FaqApplyList);

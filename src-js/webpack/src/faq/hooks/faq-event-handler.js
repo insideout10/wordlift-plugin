@@ -16,7 +16,7 @@ import { on } from "backbone";
  */
 import TinyMceFaqHook from "./tiny-mce-faq-hook";
 import { FAQ_EVENT_HANDLER_SELECTION_CHANGED } from "../constants/faq-hook-constants";
-import { updateQuestionOnInputChange } from "../actions";
+import { answerSelectedByUser, updateQuestionOnInputChange } from "../actions";
 
 const GUTENBERG = "gutenberg";
 
@@ -42,13 +42,17 @@ class FaqEventHandler {
     on(FAQ_EVENT_HANDLER_SELECTION_CHANGED, text => {
       // Check if this is a question
       const isQuestion = text.endsWith("?");
-      if ( isQuestion ) {
+      if (isQuestion) {
         const action = updateQuestionOnInputChange();
         action.payload = text;
         this.getStore().dispatch(action);
-      }
-      else {
+      } else {
         // This is an answer, show the  add answer button.
+        const action = answerSelectedByUser();
+        action.payload = {
+          selectedAnswer: text
+        };
+        this.getStore().dispatch(action);
       }
     });
   }

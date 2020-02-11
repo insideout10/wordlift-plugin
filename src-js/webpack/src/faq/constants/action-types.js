@@ -71,4 +71,10 @@ export const UPDATE_NOTIFICATION_AREA = "UPDATE_NOTIFICATION_AREA";
  */
 export const RESET_TYPED_QUESTION = "RESET_TYPED_QUESTION";
 
+/**
+ * Action type for when the answer is set by selecting.
+ * @type {string}
+ */
+export const ANSWER_SELECTED_BY_USER = "ANSWER_SELECTED_BY_USER";
+
 
