@@ -11,11 +11,12 @@
  * External dependencies.
  */
 
-
 /**
  * Internal dependencies.
  */
 import TinyMceFaqHook from "./tiny-mce-faq-hook";
+import { FAQ_EVENT_HANDLER_SELECTION_CHANGED } from "../constants/faq-hook-constants";
+import { updateQuestionOnInputChange } from "../actions";
 
 const GUTENBERG = "gutenberg";
 
@@ -29,7 +30,8 @@ export const textEditors = {
 class FaqEventHandler {
   constructor(store) {
     this._hook = this.getHookForCurrentEnvironment();
-    this._store = store
+    this._store = store;
+    this.listenEventsFromHooks();
   }
 
   /**
@@ -37,14 +39,19 @@ class FaqEventHandler {
    * the store.
    */
   listenEventsFromHooks() {
-    on()
+    on(FAQ_EVENT_HANDLER_SELECTION_CHANGED, text => {
+      console.log("text selected")
+      const action = updateQuestionOnInputChange();
+      action.payload = text;
+      this.getStore().dispatch(action);
+    });
   }
   /**
    * Returns the redux store.
    * @return {*}
    */
   getStore() {
-    return this._store
+    return this._store;
   }
   getHook() {
     return this._hook;

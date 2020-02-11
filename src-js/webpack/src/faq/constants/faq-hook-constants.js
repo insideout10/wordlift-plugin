@@ -11,3 +11,9 @@
  * @type {string}
  */
 export const FAQ_REQUEST_ADD_NEW_QUESTION = "FAQ_REQUEST_ADD_NEW_QUESTION";
+
+/**
+ * Event emitted by hook when the text selection is changed.
+ * @type {string}
+ */
+export const FAQ_EVENT_HANDLER_SELECTION_CHANGED = "FAQ_EVENT_HANDLER_SELECTION_CHANGED"
