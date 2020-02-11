@@ -10,7 +10,7 @@
 /**
  * External dependencies.
  */
-
+import {on} from "backbone"
 /**
  * Internal dependencies.
  */
