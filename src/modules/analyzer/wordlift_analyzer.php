@@ -1,6 +1,7 @@
 <?php
 
 use Wordlift\Analysis\Response\Analysis_Response_Ops;
+use Wordlift\Analysis\Response\Analysis_Response_Ops_Factory;
 
 /**
  * Receive some content, run a remote analysis task and return the results. The content is read from the body
@@ -53,10 +54,11 @@ function wl_analyze_content( $data, $content_type ) {
 	if ( is_wp_error( $json ) ) {
 		$request_body = json_decode( $data, true );
 
-		return Analysis_Response_Ops::create( json_decode( '{ "entities": {}, "annotations": {}, "topics": {} }' ) )
-		                            ->make_entities_local()
-		                            ->add_occurrences( $request_body['content'] )
-		                            ->get_json();
+		return Analysis_Response_Ops_Factory::get_instance()
+		                                    ->create( json_decode( '{ "entities": {}, "annotations": {}, "topics": {} }' ) )
+		                                    ->make_entities_local()
+		                                    ->add_occurrences( $request_body['content'] )
+		                                    ->get_json();
 	}
 
 	/*
@@ -75,10 +77,11 @@ function wl_analyze_content( $data, $content_type ) {
 		$request_content = $data;
 	}
 
-	return Analysis_Response_Ops::create( $json )
-	                            ->make_entities_local()
-	                            ->add_occurrences( $request_content )
-	                            ->get_json();
+	return Analysis_Response_Ops_Factory::get_instance()
+	                                    ->create( $json )
+	                                    ->make_entities_local()
+	                                    ->add_occurrences( $request_content )
+	                                    ->get_json();
 
 }
 

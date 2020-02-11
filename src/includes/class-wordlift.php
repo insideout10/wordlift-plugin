@@ -12,7 +12,9 @@
  * @subpackage Wordlift/includes
  */
 
+use Wordlift\Analysis\Response\Analysis_Response_Ops_Factory;
 use Wordlift\Cache\Ttl_Cache;
+use Wordlift\Entity\Entity_Helper;
 use Wordlift\Mappings\Jsonld_Converter;
 use Wordlift\Mappings\Mappings_DBO;
 use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
@@ -1457,6 +1459,18 @@ class Wordlift {
 		 * @since 3.24.4
 		 */
 		new Templates_Ajax_Endpoint();
+
+		/*
+		 * Create a singleton for the Analysis_Response_Ops_Factory.
+		 */
+		$entity_helper = new Entity_Helper( $this->entity_uri_service, $this->entity_service );
+		new Analysis_Response_Ops_Factory(
+			$this->entity_uri_service,
+			$this->entity_service,
+			$this->entity_type_service,
+			$this->storage_factory->post_images(),
+			$entity_helper
+		);
 
 	}
 
