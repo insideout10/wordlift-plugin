@@ -10,6 +10,11 @@
  */
 import React from "react";
 
+/**
+ * Internal dependencies.
+ */
+import "./index.scss"
+
 export const FaqFloatingActionButton = ({ buttonText, buttonClickHandler }) => {
     return (
         <React.Fragment>

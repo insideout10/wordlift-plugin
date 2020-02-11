@@ -23,6 +23,15 @@ class FaqFloatingActionButtonHandler {
       this.top_position = event.y;
     });
   }
+
+  showFloatingActionButton() {
+    const fab = document.getElementById("wl-faq-fab");
+    console.log(this);
+    console.log("showing fab");
+    fab.style.position = "fixed";
+    fab.style.top = this.top_position + "px";
+    fab.style.left = this.left_position + "px";
+  }
 }
 
 export default FaqFloatingActionButtonHandler;
