@@ -7,7 +7,15 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
-import TinyMceFaqHook from "./hooks/tiny-mce-faq-hook";
+/**
+ * External dependencies.
+ */
+
+
+/**
+ * Internal dependencies.
+ */
+import TinyMceFaqHook from "./tiny-mce-faq-hook";
 
 const GUTENBERG = "gutenberg";
 
@@ -19,8 +27,24 @@ export const textEditors = {
 };
 
 class FaqEventHandler {
-  constructor() {
+  constructor(store) {
     this._hook = this.getHookForCurrentEnvironment();
+    this._store = store
+  }
+
+  /**
+   * Listens for events from hooks and dispatch to
+   * the store.
+   */
+  listenEventsFromHooks() {
+    on()
+  }
+  /**
+   * Returns the redux store.
+   * @return {*}
+   */
+  getStore() {
+    return this._store
   }
   getHook() {
     return this._hook;
