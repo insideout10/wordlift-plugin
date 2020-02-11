@@ -1,5 +1,5 @@
 import FaqValidator from "./faq-validator";
-import {answerSelectedByUser, updateQuestionOnInputChange} from "../actions";
+import { answerSelectedByUser, updateQuestionOnInputChange } from "../actions";
 
 /**
  * FaqHookToStoreDispatcher Dispatches the events from hook to
@@ -10,27 +10,29 @@ import {answerSelectedByUser, updateQuestionOnInputChange} from "../actions";
  */
 
 class FaqHookToStoreDispatcher {
-    /**
-     * @param store Redux store for Faq.
-     */
-    constructor( store ) {
-        this.store = store
+  /**
+   * @param store Redux store for Faq.
+   * @param floatingActionButtonHandler {FaqFloatingActionButtonHandler} Instance
+   */
+  constructor(store, floatingActionButtonHandler) {
+    this.store = store;
+    this.floatingActionButtonHandler = floatingActionButtonHandler;
+  }
+  dispatchTextSelectedAction(text) {
+    // Check if this is a question
+    if (FaqValidator.isQuestion(text)) {
+      const action = updateQuestionOnInputChange();
+      action.payload = text;
+      this.store.dispatch(action);
+    } else {
+      // This is an answer, show the  add answer button.
+      const action = answerSelectedByUser();
+      action.payload = {
+        selectedAnswer: text
+      };
+      this.store.dispatch(action);
     }
-    dispatchTextSelectedAction(text) {
-        // Check if this is a question
-        if (FaqValidator.isQuestion(text)) {
-            const action = updateQuestionOnInputChange();
-            action.payload = text;
-            this.store.dispatch(action);
-        } else {
-            // This is an answer, show the  add answer button.
-            const action = answerSelectedByUser();
-            action.payload = {
-                selectedAnswer: text
-            };
-            this.store.dispatch(action);
-        }
-    }
+  }
 }
 
-export default FaqHookToStoreDispatcher
+export default FaqHookToStoreDispatcher;
