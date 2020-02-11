@@ -19,6 +19,7 @@ class FaqHookToStoreDispatcher {
     this.floatingActionButtonHandler = floatingActionButtonHandler;
   }
   dispatchTextSelectedAction(text) {
+    console.log("showing fab")
     this.floatingActionButtonHandler.showFloatingActionButton()
     // // Check if this is a question
     // if (FaqValidator.isQuestion(text)) {

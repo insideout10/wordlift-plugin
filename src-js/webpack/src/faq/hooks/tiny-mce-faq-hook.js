@@ -7,7 +7,7 @@
  */
 
 import FaqTextEditorHook from "./faq-text-editor-hook";
-import { FAQ_EVENT_HANDLER_SELECTION_CHANGED } from "../constants/faq-hook-constants";
+import {FAQ_EVENT_HANDLER_SELECTION_CHANGED, FAQ_TINY_MCE_HOOK_MOUSE_UP_EVENT} from "../constants/faq-hook-constants";
 import { trigger } from "backbone";
 
 export const FAQ_TINY_MCE_PLUGIN_NAME = "wl_faq";
@@ -32,11 +32,14 @@ class TinyMceFaqHook extends FaqTextEditorHook {
        * selected text, we are checking if the same text was posted last time
        */
       const selectedText = editor.selection.getContent({ format: "text" });
-      if (selectedText !== this._lastEmittedSelection) {
+      if (selectedText !== this._lastEmittedSelection || true) {
         this._lastEmittedSelection = selectedText;
         trigger(FAQ_EVENT_HANDLER_SELECTION_CHANGED, selectedText);
       }
     });
+    editor.on("MouseDown", event => {
+      trigger(FAQ_TINY_MCE_HOOK_MOUSE_UP_EVENT, event)
+    })
   }
 }
 

@@ -1,7 +1,12 @@
-.faq-fab-container {
+
+#wl-faq-fab-panel {
+  z-index: 99999;
+  padding: 10px;
+  background-color: #eee;
+  box-shadow: 1px 1px 1px #888;
 
 }
+.faq-fab {
+  border: 2px solid #eee;
 
-#wl-faq-fab {
-  z-index: 99999;
 }

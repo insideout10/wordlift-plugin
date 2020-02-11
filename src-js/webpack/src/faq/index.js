@@ -44,3 +44,7 @@ window.addEventListener("load", () => {
   const handler = new FaqEventHandler(store, dispatcher);
   handler.getHook().listenForTextSelection();
 });
+
+document.addEventListener("mouseup", event => {
+  console.log("mouse up event detected")
+})
