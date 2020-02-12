@@ -7,9 +7,10 @@
  */
 
 import FaqTextEditorHook from "../interface/faq-text-editor-hook";
-import {FAQ_EVENT_HANDLER_SELECTION_CHANGED} from "../../constants/faq-hook-constants";
-import {trigger} from "backbone";
+import { FAQ_EVENT_HANDLER_SELECTION_CHANGED } from "../../constants/faq-hook-constants";
+import { trigger } from "backbone";
 import TinymceFloatingActionButtonHandler from "./tinymce-floating-action-button-handler";
+import FaqValidator from "../validators/faq-validator";
 
 export const FAQ_TINY_MCE_PLUGIN_NAME = "wl_faq";
 
@@ -27,20 +28,19 @@ class TinymceFaqHook extends FaqTextEditorHook {
 
   listenForTextSelection() {
     const editor = window["tinymce"].get()[0];
+    const handler = new TinymceFloatingActionButtonHandler(editor);
     editor.on("NodeChange", e => {
       /**
        * To prevent the multiple events getting emitted for the same
        * selected text, we are checking if the same text was posted last time
        */
       const selectedText = editor.selection.getContent({ format: "text" });
-      if (selectedText !== this._lastEmittedSelection || true) {
+      if (selectedText !== this._lastEmittedSelection && selectedText.length > 0) {
         this._lastEmittedSelection = selectedText;
-        const handler = new TinymceFloatingActionButtonHandler( editor )
-        handler.showFloatingActionButton()
+        handler.showFloatingActionButton(FaqValidator.isQuestion(selectedText));
       }
 
     });
-
   }
 }
 

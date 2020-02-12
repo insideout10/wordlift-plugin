@@ -19,7 +19,6 @@ import FaqEditItem, { faqEditItemType } from "../faq-edit-item";
 import FaqEditItemCloseButton from "../faq-edit-item-close-button";
 import { updateFaqModalVisibility, updateNotificationArea } from "../../actions";
 import WlNotificationArea from "../../blocks/wl-notification-area";
-import {FaqFloatingActionButton} from "../faq-floating-action-button";
 
 class FaqScreen extends React.Component {
   constructor(props) {
@@ -89,7 +88,6 @@ class FaqScreen extends React.Component {
           notificationType={this.props.notificationType}
           notificationCloseButtonClickedListener={this.removeNotificationListener}
         />
-        <FaqFloatingActionButton buttonText={"Add Question"}/>
         {this.renderComponentBasedOnState()}
       </React.Fragment>
     );

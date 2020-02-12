@@ -15,12 +15,11 @@
 
 .wl-add-question-button{background-color:white;border-radius:7px;font-size:12px !important;border:2px solid #177efb;cursor:pointer;height:25px}.wl-add-question-button:hover{background-color:#177efb;color:white}
 
+.wl-faq-fab{border-radius:8px !important;width:100%;margin:3px;padding:10px;font-size:13px;text-align:center;text-transform:capitalize;cursor:pointer;border:1px solid #eee}
 
 .faq-edit-item-close-button{cursor:pointer}
 
 .wl-notification-area{animation-duration:0.2s;animation-name:slidein;width:100%}@keyframes slidein{from{margin-left:100%;width:300%}to{margin-left:0;width:100%}}.wl-notification-area__close-button{cursor:pointer}
-
-#wl-faq-fab-panel{z-index:99999;padding:10px;background-color:#eee;box-shadow:1px 1px 1px #888}.faq-fab{border:2px solid #eee}
 
 
 .wl-modal{display:none;z-index:9999 !important;height:60%;width:50%;background-color:#fff;position:fixed;left:50%;top:50%;transform:translate(-50%, -50%);border:5px solid #177efb}.wl-modal.wl-modal--open{display:block;animation-fill-mode:forwards;animation:wlModalOpen 0.3s}.wl-modal.wl-modal--closed{display:none}@keyframes wlModalOpen{from{height:0;width:0}to{height:60%;width:50%}}
