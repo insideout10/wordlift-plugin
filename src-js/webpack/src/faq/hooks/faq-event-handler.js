@@ -10,14 +10,12 @@
 /**
  * External dependencies.
  */
-import { on } from "backbone";
+import {on} from "backbone";
 /**
  * Internal dependencies.
  */
-import TinyMceFaqHook from "./tinymce/tiny-mce-faq-hook";
-import { FAQ_EVENT_HANDLER_SELECTION_CHANGED } from "../constants/faq-hook-constants";
-import { answerSelectedByUser, updateQuestionOnInputChange } from "../actions";
-import FaqValidator from "./validators/faq-validator";
+import TinymceFaqHook from "./tinymce/tinymce-faq-hook";
+import {FAQ_EVENT_HANDLER_SELECTION_CHANGED} from "../constants/faq-hook-constants";
 
 const GUTENBERG = "gutenberg";
 
@@ -66,7 +64,7 @@ class FaqEventHandler {
     }
     switch (textEditor) {
       case textEditors.TINY_MCE:
-        return new TinyMceFaqHook();
+        return new TinymceFaqHook();
       default:
         return null;
     }

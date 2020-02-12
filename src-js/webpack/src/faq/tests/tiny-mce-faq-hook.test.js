@@ -13,7 +13,7 @@ import { trigger } from "backbone";
 /**
  * Internal dependencies
  */
-import TinyMceFaqHook from "../hooks/tinymce/tiny-mce-faq-hook";
+import TinymceFaqHook from "../hooks/tinymce/tinymce-faq-hook";
 import { FAQ_EVENT_HANDLER_SELECTION_CHANGED } from "../constants/faq-hook-constants";
 
 beforeEach(() => {
@@ -32,7 +32,7 @@ beforeEach(() => {
 });
 
 test("check if the tinymce selection changed, event handler should receive text selection event", () => {
-  const hook = new TinyMceFaqHook();
+  const hook = new TinymceFaqHook();
   hook.listenForTextSelection();
 
   // Emit a event from the active editor mock.
@@ -50,7 +50,7 @@ test("check if the tinymce selection changed, event handler should receive text 
 });
 
 test("when text selection is changed check if its previously emiited", () => {
-  const hook = new TinyMceFaqHook();
+  const hook = new TinymceFaqHook();
   hook.listenForTextSelection();
   // Rest previous mocks
   trigger.mockClear();

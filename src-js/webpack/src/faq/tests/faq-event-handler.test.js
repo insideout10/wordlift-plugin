@@ -6,7 +6,7 @@
  */
 
 import FaqEventHandler, { textEditors } from "../faq-event-handler";
-import TinyMceFaqHook from "../hooks/tinymce/tiny-mce-faq-hook";
+import TinymceFaqHook from "../hooks/tinymce/tinymce-faq-hook";
 
 beforeEach(() => {
   global["_wlFaqSettings"] = undefined;
@@ -17,7 +17,7 @@ test("check if the correct hook is initialized", () => {
   global["_wlFaqSettings"] = {};
   global["_wlFaqSettings"]["textEditor"] = textEditors.TINY_MCE;
   const eventHandler = new FaqEventHandler();
-  expect(eventHandler.getHook()).toBeInstanceOf(TinyMceFaqHook);
+  expect(eventHandler.getHook()).toBeInstanceOf(TinymceFaqHook);
 });
 
 test("check if no hook condition matches, null should be returned", () => {

@@ -7,13 +7,13 @@
  */
 
 import FaqTextEditorHook from "../interface/faq-text-editor-hook";
-import {FAQ_EVENT_HANDLER_SELECTION_CHANGED, FAQ_TINY_MCE_HOOK_MOUSE_UP_EVENT} from "../../constants/faq-hook-constants";
-import { trigger } from "backbone";
-import FaqFloatingActionButtonHandler from "./faq-floating-action-button-handler";
+import {FAQ_EVENT_HANDLER_SELECTION_CHANGED} from "../../constants/faq-hook-constants";
+import {trigger} from "backbone";
+import TinymceFloatingActionButtonHandler from "./tinymce-floating-action-button-handler";
 
 export const FAQ_TINY_MCE_PLUGIN_NAME = "wl_faq";
 
-class TinyMceFaqHook extends FaqTextEditorHook {
+class TinymceFaqHook extends FaqTextEditorHook {
   constructor() {
     super();
     /**
@@ -35,12 +35,13 @@ class TinyMceFaqHook extends FaqTextEditorHook {
       const selectedText = editor.selection.getContent({ format: "text" });
       if (selectedText !== this._lastEmittedSelection || true) {
         this._lastEmittedSelection = selectedText;
-        trigger(FAQ_EVENT_HANDLER_SELECTION_CHANGED, selectedText);
+        const handler = new TinymceFloatingActionButtonHandler( editor )
+        handler.showFloatingActionButton()
       }
-      new FaqFloatingActionButtonHandler( editor )
+
     });
 
   }
 }
 
-export default TinyMceFaqHook;
+export default TinymceFaqHook;

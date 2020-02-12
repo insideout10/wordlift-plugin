@@ -1,6 +1,3 @@
-import FaqValidator from "./validators/faq-validator";
-import { answerSelectedByUser, updateQuestionOnInputChange } from "../actions";
-
 /**
  * FaqHookToStoreDispatcher Dispatches the events from hook to
  * the redux store.
