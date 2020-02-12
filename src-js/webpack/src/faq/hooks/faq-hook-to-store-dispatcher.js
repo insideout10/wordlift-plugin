@@ -6,6 +6,9 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
+import {answerSelectedByUser, requestAddNewQuestion, updateQuestionOnInputChange} from "../actions";
+import FaqValidator from "./validators/faq-validator";
+
 class FaqHookToStoreDispatcher {
   /**
    * @param store Redux store for Faq.
@@ -14,20 +17,21 @@ class FaqHookToStoreDispatcher {
     this.store = store;
   }
   dispatchTextSelectedAction(text) {
-    console.log("showing fab")
     // // Check if this is a question
-    // if (FaqValidator.isQuestion(text)) {
-    //   const action = updateQuestionOnInputChange();
-    //   action.payload = text;
-    //   this.store.dispatch(action);
-    // } else {
-    //   // This is an answer, show the  add answer button.
-    //   const action = answerSelectedByUser();
-    //   action.payload = {
-    //     selectedAnswer: text
-    //   };
-    //   this.store.dispatch(action);
-    // }
+    if (FaqValidator.isQuestion(text)) {
+      const action = updateQuestionOnInputChange();
+      action.payload = text;
+      this.store.dispatch(action);
+      // Add it to the API
+      this.store.dispatch( requestAddNewQuestion() )
+    } else {
+      // This is an answer, show the  add answer button.
+      const action = answerSelectedByUser();
+      action.payload = {
+        selectedAnswer: text
+      };
+      this.store.dispatch(action);
+    }
   }
 }
 

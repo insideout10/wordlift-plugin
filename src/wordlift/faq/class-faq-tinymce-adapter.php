@@ -15,6 +15,8 @@ class Faq_Tinymce_Adapter {
 
 	const FAQ_TINYMCE_PLUGIN_NAME = "wl_faq_tinymce";
 
+	const FAQ_TINYMCE_ADD_BUTTON_ID = "wl-faq-toolbar-button";
+
 	public function register_faq_tinymce_plugin( $plugins ) {
 		/**
 		 * Registering the tinymce plugin for FAQ here.
@@ -26,7 +28,7 @@ class Faq_Tinymce_Adapter {
 	}
 
 	public function register_faq_toolbar_button( $buttons ) {
-		array_push( $buttons, "wl-faq-toolbar-button" );
+		array_push( $buttons, self::FAQ_TINYMCE_ADD_BUTTON_ID );
 		return $buttons;
 	}
 
