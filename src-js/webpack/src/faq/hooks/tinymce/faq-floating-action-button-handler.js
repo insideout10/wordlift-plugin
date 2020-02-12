@@ -37,6 +37,7 @@ class FaqFloatingActionButtonHandler {
   showFloatingActionButton() {
     this.removePreviousFloatingActionButtons()
   }
+
 }
 
 export default FaqFloatingActionButtonHandler;

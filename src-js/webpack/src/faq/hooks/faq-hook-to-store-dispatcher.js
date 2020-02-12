@@ -1,4 +1,4 @@
-import FaqValidator from "./faq-validator";
+import FaqValidator from "./validators/faq-validator";
 import { answerSelectedByUser, updateQuestionOnInputChange } from "../actions";
 
 /**

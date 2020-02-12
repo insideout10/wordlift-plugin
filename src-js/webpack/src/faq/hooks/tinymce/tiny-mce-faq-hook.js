@@ -6,9 +6,10 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
-import FaqTextEditorHook from "./faq-text-editor-hook";
-import {FAQ_EVENT_HANDLER_SELECTION_CHANGED, FAQ_TINY_MCE_HOOK_MOUSE_UP_EVENT} from "../constants/faq-hook-constants";
+import FaqTextEditorHook from "../interface/faq-text-editor-hook";
+import {FAQ_EVENT_HANDLER_SELECTION_CHANGED, FAQ_TINY_MCE_HOOK_MOUSE_UP_EVENT} from "../../constants/faq-hook-constants";
 import { trigger } from "backbone";
+import FaqFloatingActionButtonHandler from "./faq-floating-action-button-handler";
 
 export const FAQ_TINY_MCE_PLUGIN_NAME = "wl_faq";
 
@@ -36,6 +37,7 @@ class TinyMceFaqHook extends FaqTextEditorHook {
         this._lastEmittedSelection = selectedText;
         trigger(FAQ_EVENT_HANDLER_SELECTION_CHANGED, selectedText);
       }
+      new FaqFloatingActionButtonHandler( editor )
     });
 
   }

@@ -14,10 +14,10 @@ import { on } from "backbone";
 /**
  * Internal dependencies.
  */
-import TinyMceFaqHook from "./tiny-mce-faq-hook";
+import TinyMceFaqHook from "./tinymce/tiny-mce-faq-hook";
 import { FAQ_EVENT_HANDLER_SELECTION_CHANGED } from "../constants/faq-hook-constants";
 import { answerSelectedByUser, updateQuestionOnInputChange } from "../actions";
-import FaqValidator from "./faq-validator";
+import FaqValidator from "./validators/faq-validator";
 
 const GUTENBERG = "gutenberg";
 
@@ -29,10 +29,9 @@ export const textEditors = {
 };
 
 class FaqEventHandler {
-  constructor(store, dispatcher) {
+  constructor(store) {
     this._hook = this.getHookForCurrentEnvironment();
     this._store = store;
-    this.dispatcher = dispatcher;
     this.listenEventsFromHooks();
   }
 
@@ -42,7 +41,7 @@ class FaqEventHandler {
    */
   listenEventsFromHooks() {
     on(FAQ_EVENT_HANDLER_SELECTION_CHANGED, text => {
-      this.dispatcher.dispatchTextSelectedAction(text)
+
     });
   }
   /**

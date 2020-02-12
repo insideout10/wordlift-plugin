@@ -13,7 +13,7 @@ import { trigger } from "backbone";
 /**
  * Internal dependencies
  */
-import TinyMceFaqHook from "../hooks/tiny-mce-faq-hook";
+import TinyMceFaqHook from "../hooks/tinymce/tiny-mce-faq-hook";
 import { FAQ_EVENT_HANDLER_SELECTION_CHANGED } from "../constants/faq-hook-constants";
 
 beforeEach(() => {

@@ -6,7 +6,7 @@
  */
 
 import FaqEventHandler, { textEditors } from "../faq-event-handler";
-import TinyMceFaqHook from "../hooks/tiny-mce-faq-hook";
+import TinyMceFaqHook from "../hooks/tinymce/tiny-mce-faq-hook";
 
 beforeEach(() => {
   global["_wlFaqSettings"] = undefined;
