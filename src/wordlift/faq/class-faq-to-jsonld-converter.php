@@ -11,6 +11,6 @@ namespace Wordlift\FAQ;
 
 class Faq_To_Jsonld_Converter {
 	public function get_jsonld_for_faq() {
-		return array();
+		return array('@type' => 'FAQPage');
 	}
 }
