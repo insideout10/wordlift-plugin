@@ -17,9 +17,6 @@ import { Provider } from "react-redux";
 import store from "./store/index";
 import FaqScreen from "./components/faq-screen";
 import FaqModal from "./components/faq-modal";
-import FaqEventHandler from "./hooks/faq-event-handler";
-import FaqHookToStoreDispatcher from "./hooks/faq-hook-to-store-dispatcher";
-import TinymceFloatingActionButtonHandler from "./hooks/tinymce/tinymce-floating-action-button-handler";
 
 const { listBoxId, addQuestionText, modalId } = global["_wlFaqSettings"];
 
@@ -39,7 +36,5 @@ window.addEventListener("load", () => {
     </Provider>,
     document.getElementById(modalId)
   );
-  const handler = new FaqEventHandler(store);
-  handler.getHook().listenForTextSelection();
 });
 

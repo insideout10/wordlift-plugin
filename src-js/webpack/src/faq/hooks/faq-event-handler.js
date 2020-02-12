@@ -14,7 +14,6 @@ import {on} from "backbone";
 /**
  * Internal dependencies.
  */
-import TinymceFaqHook from "./tinymce/tinymce-faq-hook";
 import {FAQ_EVENT_HANDLER_SELECTION_CHANGED} from "../constants/faq-hook-constants";
 
 const GUTENBERG = "gutenberg";
@@ -64,7 +63,7 @@ class FaqEventHandler {
     }
     switch (textEditor) {
       case textEditors.TINY_MCE:
-        return new TinymceFaqHook();
+        return null;
       default:
         return null;
     }
