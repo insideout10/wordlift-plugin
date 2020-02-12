@@ -37,9 +37,7 @@ class TinyMceFaqHook extends FaqTextEditorHook {
         trigger(FAQ_EVENT_HANDLER_SELECTION_CHANGED, selectedText);
       }
     });
-    editor.on("MouseDown", event => {
-      trigger(FAQ_TINY_MCE_HOOK_MOUSE_UP_EVENT, event)
-    })
+
   }
 }
 
