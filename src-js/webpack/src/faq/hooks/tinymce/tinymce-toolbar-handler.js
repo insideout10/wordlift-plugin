@@ -21,7 +21,6 @@ class TinymceToolbarHandler {
                 ed.insertContent('Hello world!!');
             },
         });
-        this.editor.render()
     }
 }
 

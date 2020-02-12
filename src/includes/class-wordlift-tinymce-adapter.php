@@ -73,6 +73,11 @@ class Wordlift_Tinymce_Adapter {
 		$plugins['wl_tinymce']    = plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/1/tinymce.js?ver=' . $version;
 		$plugins['wl_tinymce_2']       = plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/tiny-mce.js?ver=' . $version;
 
+		/**
+		 * Registering the tinymce plugin for FAQ here.
+		 * @since 3.26.0
+		 */
+		$plugins['wl_faq_tinymce'] = plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/tinymce-faq-plugin.js?ver=' . $version;
 		return $plugins;
 	}
 
