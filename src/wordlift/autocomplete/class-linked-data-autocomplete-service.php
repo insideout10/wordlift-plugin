@@ -9,6 +9,7 @@
 
 namespace Wordlift\Autocomplete;
 
+use Wordlift\Entity\Entity_Helper;
 use Wordlift_Log_Service;
 
 class Linked_Data_Autocomplete_Service implements Autocomplete_Service {
@@ -30,18 +31,26 @@ class Linked_Data_Autocomplete_Service implements Autocomplete_Service {
 	 * @var \Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
 	 */
 	private $log;
+	private $entity_helper;
+	private $entity_uri_service;
 
 	/**
 	 * The {@link Class_Wordlift_Autocomplete_Service} instance.
 	 *
 	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
+	 * @param Entity_Helper $entity_helper
+	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service
 	 *
 	 * @since 3.15.0
-	 *
 	 */
-	public function __construct( $configuration_service ) {
+	public function __construct( $configuration_service, $entity_helper, $entity_uri_service ) {
+
+		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Autocomplete_Service' );
+
 		$this->configuration_service = $configuration_service;
-		$this->log                   = Wordlift_Log_Service::get_logger( 'Wordlift_Autocomplete_Service' );
+		$this->entity_helper         = $entity_helper;
+		$this->entity_uri_service    = $entity_uri_service;
+
 	}
 
 	/**
@@ -57,6 +66,40 @@ class Linked_Data_Autocomplete_Service implements Autocomplete_Service {
 	 *
 	 */
 	public function query( $query, $scope = 'cloud', $exclude = '' ) {
+
+		$results = $this->do_query( $query, $scope, $exclude );
+
+		$uris = array_reduce( $results, function ( $carry, $result ) {
+
+			$carry[] = $result['id'];
+
+			return array_merge( $carry, $result['sameAss'] );
+		}, array() );
+
+		$mappings = $this->entity_helper->map_many_to_local( $uris );
+
+		$that           = $this;
+		$mapped_results = array_map( function ( $result ) use ( $that, $mappings ) {
+
+			if ( $that->entity_uri_service->is_internal( $result['id'] ) ) {
+				return $result;
+			}
+
+			$uris = array_merge( $result['id'], $result['sameAss'] );
+
+			foreach ( $uris as $uri ) {
+				if ( isset( $mappings[ $uri ] ) ) {
+					return $that->entity_uri_service->get_entity( $mappings[ $uri ] );
+				}
+			}
+
+			return $result;
+		}, $results );
+
+		return $mapped_results;
+	}
+
+	private function do_query( $query, $scope = 'cloud', $exclude = '' ) {
 		$url = $this->build_request_url( $query, $exclude, $scope );
 
 		// Return the response.

@@ -1300,13 +1300,6 @@ class Wordlift {
 		new Wordlift_Sparql_Query_Async_Task();
 		new Wordlift_Push_References_Async_Task();
 
-		/** WL Autocomplete. */
-		$autocomplete_service       = new All_Autocomplete_Service( array(
-			new Local_Autocomplete_Service(),
-			new Linked_Data_Autocomplete_Service( $this->configuration_service ),
-		) );
-		$this->autocomplete_adapter = new Wordlift_Autocomplete_Adapter( $autocomplete_service );
-
 		/** WordPress Admin UI. */
 
 		// UI elements.
@@ -1471,6 +1464,13 @@ class Wordlift {
 			$this->storage_factory->post_images(),
 			$entity_helper
 		);
+
+		/** WL Autocomplete. */
+		$autocomplete_service       = new All_Autocomplete_Service( array(
+			new Local_Autocomplete_Service(),
+			new Linked_Data_Autocomplete_Service( $this->configuration_service, $entity_helper, $this->entity_uri_service ),
+		) );
+		$this->autocomplete_adapter = new Wordlift_Autocomplete_Adapter( $autocomplete_service );
 
 	}
 

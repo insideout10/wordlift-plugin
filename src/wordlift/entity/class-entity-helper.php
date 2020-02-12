@@ -1,10 +1,18 @@
 <?php
+/**
+ * Provides helper functions for entity. In particular a function to map external URIs to local URIs.
+ *
+ * @author David Riccitelli <david@wordlift.io>
+ * @since 3.25.1
+ * @package Wordlift\Entity
+ */
 
 namespace Wordlift\Entity;
 
 class Entity_Helper {
 
 	private $entity_uri_service;
+
 	private $entity_service;
 
 	/**
@@ -20,6 +28,18 @@ class Entity_Helper {
 
 	}
 
+	/**
+	 * Maps the provided URIs to local URIs.
+	 *
+	 * The input array is filtered out of the local URIs. Then each URI is checked with itemid and sameAs in the local
+	 * database. If found a mapping is added from the external URI to the local URI.
+	 *
+	 * An array of mappings is returned, where the key is the external URI and the value is the local URI.
+	 *
+	 * @param array $uris An array of URIs.
+	 *
+	 * @return array The mappings array.
+	 */
 	public function map_many_to_local( $uris ) {
 
 		// Filter only the external URIs.
