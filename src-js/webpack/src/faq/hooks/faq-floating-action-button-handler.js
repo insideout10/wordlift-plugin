@@ -9,22 +9,33 @@
 /**
  * External dependencies.
  */
-import {on} from 'backbone'
+import { on } from "backbone";
+
+const FLOATING_ACTION_BUTTON_CLASS_NAME = "wl-faq-fab";
 
 class FaqFloatingActionButtonHandler {
   /**
-   * Use two variables to track position of cursor in order to
-   * show the floating action button once the text was selected.
+   * Accepts an editor instance.
+   * @param editor Editor instance.
    */
-  constructor() {
-    this.left_position = 0;
-    this.top_position = 0;
+  constructor(editor) {
+    this.editor = editor;
   }
 
+  /**
+   * When the user selects the text, remove all
+   * the floating action button in the tinymce dom
+   */
+  removePreviousFloatingActionButtons() {
+    const previousFloatingActionButtonInstances = this.editor.dom.Selection.select('.' + FLOATING_ACTION_BUTTON_CLASS_NAME)
+    this.editor.dom.remove( previousFloatingActionButtonInstances )
+  }
 
-
+  /**
+   * Show the floating action button for the user to Add question
+   */
   showFloatingActionButton() {
-
+    this.removePreviousFloatingActionButtons()
   }
 }
 

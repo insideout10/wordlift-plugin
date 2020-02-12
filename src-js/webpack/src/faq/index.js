@@ -39,8 +39,7 @@ window.addEventListener("load", () => {
     </Provider>,
     document.getElementById(modalId)
   );
-  const floatingActionButtonHandler = new FaqFloatingActionButtonHandler();
-  const dispatcher = new FaqHookToStoreDispatcher(store, floatingActionButtonHandler);
+  const dispatcher = new FaqHookToStoreDispatcher(store);
   const handler = new FaqEventHandler(store, dispatcher);
   handler.getHook().listenForTextSelection();
 });

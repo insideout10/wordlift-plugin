@@ -12,15 +12,12 @@ import { answerSelectedByUser, updateQuestionOnInputChange } from "../actions";
 class FaqHookToStoreDispatcher {
   /**
    * @param store Redux store for Faq.
-   * @param floatingActionButtonHandler {FaqFloatingActionButtonHandler} Instance
    */
-  constructor(store, floatingActionButtonHandler) {
+  constructor(store) {
     this.store = store;
-    this.floatingActionButtonHandler = floatingActionButtonHandler;
   }
   dispatchTextSelectedAction(text) {
     console.log("showing fab")
-    this.floatingActionButtonHandler.showFloatingActionButton()
     // // Check if this is a question
     // if (FaqValidator.isQuestion(text)) {
     //   const action = updateQuestionOnInputChange();
