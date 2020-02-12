@@ -16,10 +16,11 @@ class TinymceToolbarHandler {
     }
     addButtonToToolBar() {
         this.editor.addButton(TINYMCE_TOOLBAR_BUTTON_NAME, {
-            title: 'Add Question',
+            title: 'My title',
+            icon : false,
             onclick: function() {
                 ed.insertContent('Hello world!!');
-            },
+            }
         });
     }
 }
