@@ -9,7 +9,6 @@
 import FaqTextEditorHook from "../interface/faq-text-editor-hook";
 import { FAQ_EVENT_HANDLER_SELECTION_CHANGED } from "../../constants/faq-hook-constants";
 import { trigger } from "backbone";
-import TinymceFloatingActionButtonHandler from "./tinymce-floating-action-button-handler";
 import FaqValidator from "../validators/faq-validator";
 
 export const FAQ_TINY_MCE_PLUGIN_NAME = "wl_faq";
@@ -28,7 +27,6 @@ class TinymceFaqHook extends FaqTextEditorHook {
 
   listenForTextSelection() {
     const editor = window["tinymce"].get()[0];
-    const handler = new TinymceFloatingActionButtonHandler(editor);
     editor.on("NodeChange", e => {
       /**
        * To prevent the multiple events getting emitted for the same
@@ -37,7 +35,6 @@ class TinymceFaqHook extends FaqTextEditorHook {
       const selectedText = editor.selection.getContent({ format: "text" });
       if (selectedText !== this._lastEmittedSelection && selectedText.length > 0) {
         this._lastEmittedSelection = selectedText;
-        handler.showFloatingActionButton(FaqValidator.isQuestion(selectedText));
       }
 
     });
