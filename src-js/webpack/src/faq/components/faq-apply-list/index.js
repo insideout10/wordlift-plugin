@@ -28,7 +28,7 @@ class FaqApplyList extends React.Component {
       <React.Fragment>
         {faqItems.filter(e => e.answer.length === 0).length === 0 && (
           <WlCard>
-            <b>No questions present.</b>
+            <h3>No questions present.</h3>
           </WlCard>
         )}
       </React.Fragment>

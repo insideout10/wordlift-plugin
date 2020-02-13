@@ -22,9 +22,9 @@
 .wl-notification-area{position:fixed;z-index:99999;top:0;right:0;animation-duration:0.3s;animation-name:fadeIn;background-color:inherit}@keyframes fadeIn{from{opacity:0}to{opacity:1}}.wl-notification-area__close-button{cursor:pointer}
 
 
-.wl-modal{display:none;z-index:9999 !important;height:60%;width:50%;background-color:#fff;position:fixed;left:50%;top:50%;transform:translate(-50%, -50%);border-radius:10px}.wl-modal.wl-modal--open{display:block}.wl-modal.wl-modal--closed{display:none}
+.wl-modal{display:none;z-index:99999 !important;height:60%;width:50%;background-color:#fff;position:fixed;left:50%;top:50%;transform:translate(-50%, -50%);border-radius:10px}.wl-modal.wl-modal--open{display:block}.wl-modal.wl-modal--closed{display:none}
 
-.wl-modal-header{background-color:white;color:black;height:20%;border-bottom:3px solid #eee}.wl-modal-header-icon{cursor:pointer;font-size:30px}
+.wl-modal-header{background-color:white;color:black;height:20%;border-bottom:3px solid #eee}.wl-modal-header-icon{cursor:pointer;font-size:20px}
 
 .wl-modal-body{overflow-y:scroll;height:80%}
 

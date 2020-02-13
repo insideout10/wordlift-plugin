@@ -24,9 +24,7 @@ export const WlModalHeader = ({ title, description, children, modalCloseClickedL
     <div className={classes}>
       <WlContainer>
         <WlColumn className={"wl-col--width-95"}>
-          <b> {title} </b>
-          <br />
-          <p>{description}</p>
+          <h1> {title} </h1>
         </WlColumn>
         <WlColumn className={"wl-col--width-5"}>
           <span
