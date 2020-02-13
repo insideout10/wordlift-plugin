@@ -11,9 +11,8 @@
  * @return {Array} Transformed FAQ items.
  */
 export const transformAPIDataToUi = items => {
-  return items.map((item, index) => ({
+  return items.map((item) => ({
     ...item,
-    id: index,
     /**
      * We save the value of question and answer before supplying to ui, they will
      * be used when it is used to update in the db
@@ -30,6 +29,7 @@ export const transformAPIDataToUi = items => {
  */
 export const transformUiDataToApiFormat = items => {
   return items.map((item, index) => ({
+    id: item.id,
     question: item.question,
     answer: item.answer,
     previous_question_value: item.previousQuestionValue,
