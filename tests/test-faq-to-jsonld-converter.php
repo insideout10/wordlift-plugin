@@ -19,10 +19,16 @@ class Faq_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_if_converter_returns_correct_type() {
 		$post_id = $this->factory()->post->create( array('post_title' => 'foo'));
+		add_post_meta( $post_id, FAQ_Rest_Controller::FAQ_META_KEY, array(
+			'question' => 'foo1',
+			'answer' => 'bar1'
+		));
 		$jsonlds       = $this->jsonld_service->get_jsonld( false, $post_id );
 		$data = end( $jsonlds );
 		$this->assertArrayHasKey( '@type', $data );
-		$this->assertNotEquals( $data['@type'], 'FAQPage');
+		// The default type for json ld is article, now faq is present then the type should be array.
+		$this->assertEquals( in_array(Faq_To_Jsonld_Converter::FAQ_JSONLD_TYPE, $data['@type']), true);
+
 	}
 
 	public function test_given_sample_faq_data_return_correct_jsonld() {

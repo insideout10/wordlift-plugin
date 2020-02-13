@@ -17,11 +17,34 @@ namespace Wordlift\FAQ;
  */
 class Faq_To_Jsonld_Converter {
 
+	const FAQ_JSONLD_TYPE = 'FAQPage';
+
 	public function __construct() {
 		// Hook to refactor the JSON-LD.
 		add_filter( 'wl_post_jsonld_array', array( $this, 'get_jsonld_for_faq' ), 11, 2 );
 	}
 
+	/**
+	 * @param $jsonld array The jsonld array.
+	 *
+	 * @return array Returns the json ld array with the type set.
+	 */
+	public function set_faq_type( $jsonld ) {
+		if ( array_key_exists('@type', $jsonld)) {
+			if ( is_string($jsonld['@type'])) {
+				// If a plain string is present, create an array with previous items.
+				$jsonld['@type'] = array($jsonld['@type'], self::FAQ_JSONLD_TYPE);
+			}
+			// check if it is a array, then append the type.
+			if ( is_array($jsonld['@type']) ) {
+				array_push($jsonld['@type'], self::FAQ_JSONLD_TYPE);
+			}
+		}
+		else {
+			$jsonld['@type'] = array(self::FAQ_JSONLD_TYPE);
+		}
+		return $jsonld;
+	}
 	/**
 	 * @param $post_id int The id of the post.
 	 *
@@ -40,6 +63,8 @@ class Faq_To_Jsonld_Converter {
 			$faq_data = $this->get_faq_data( $faq_items );
 			// Merge the FAQ data with jsonld.
 			$jsonld = array_merge( $jsonld, $faq_data);
+			// check if the @type is set on json ld
+			$jsonld = $this->set_faq_type($jsonld);
 		}
 		return array(
 			'jsonld'     => $jsonld,
@@ -53,9 +78,6 @@ class Faq_To_Jsonld_Converter {
 	 * @return array Associtative array of type, mainEntity.
 	 */
 	private function get_faq_data( $faq_items ) {
-		$jsonld_data               = array(
-			'@type' => 'FAQPage'
-		);
 		$jsonld_data['mainEntity'] = array();
 		foreach ( $faq_items as $faq_item ) {
 			$faq_data                            = array();
