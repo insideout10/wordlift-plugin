@@ -35,10 +35,12 @@ class Faq_To_Jsonld_Converter {
 			if ( is_string($jsonld['@type'])) {
 				// If a plain string is present, create an array with previous items.
 				$jsonld['@type'] = array($jsonld['@type'], self::FAQ_JSONLD_TYPE);
+				return $jsonld;
 			}
 			// check if it is a array, then append the type.
-			if ( is_array($jsonld['@type']) ) {
+			if ( is_array($jsonld['@type']) && ! in_array(self::FAQ_JSONLD_TYPE, $jsonld['@type'])) {
 				array_push($jsonld['@type'], self::FAQ_JSONLD_TYPE);
+				return $jsonld;
 			}
 		}
 		else {

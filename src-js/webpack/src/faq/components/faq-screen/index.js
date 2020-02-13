@@ -65,16 +65,6 @@ class FaqScreen extends React.Component {
     } else {
       return (
         <React.Fragment>
-          <button
-            type={"button"}
-            onClick={() => {
-              const action = updateFaqModalVisibility();
-              action.payload = true;
-              this.props.dispatch(action);
-            }}
-          >
-            open modal
-          </button>
           <FaqList />
         </React.Fragment>
       );
