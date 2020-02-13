@@ -56,6 +56,10 @@ class TinymceToolbarHandler {
     }
   }
 
+  /**
+   * Listen for node changes, and alter the state of
+   * the button according to the text selected.
+   */
   changeToolBarButtonStateBasedOnTextSelected() {
     const editor = this.editor;
     editor.on("NodeChange", e => {
@@ -63,6 +67,9 @@ class TinymceToolbarHandler {
     });
   }
 
+  /**
+   * Adds the button to the toolbar.
+   */
   addButtonToToolBar() {
     const editor = this.editor;
     editor.addButton(TINYMCE_TOOLBAR_BUTTON_NAME, {

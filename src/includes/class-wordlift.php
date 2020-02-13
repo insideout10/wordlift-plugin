@@ -15,6 +15,7 @@
 use Wordlift\Cache\Ttl_Cache;
 use Wordlift\FAQ\FAQ_Rest_Controller;
 use Wordlift\FAQ\Faq_Tinymce_Adapter;
+use Wordlift\FAQ\Faq_To_Jsonld_Converter;
 use Wordlift\Mappings\Jsonld_Converter;
 use Wordlift\Mappings\Mappings_DBO;
 use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
@@ -1460,6 +1461,11 @@ class Wordlift {
 
 		new Jsonld_Converter( $mappings_validator, $mappings_transform_functions_registry );
 
+		/**
+		 * @since 3.26.0
+		 * Initialize the Faq JSON LD converter here.
+		 */
+		new Faq_To_Jsonld_Converter();
 		/*
 		 * Use the Templates Ajax Endpoint to load HTML templates for the legacy Angular app via admin-ajax.php
 		 * end-point.
