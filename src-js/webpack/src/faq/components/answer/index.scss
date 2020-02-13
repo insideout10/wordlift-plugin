@@ -6,7 +6,8 @@ $primary-color: #177efb;
 .wl-faq-answer-title {
   color: black;
   cursor: pointer;
-  height: 2em;
+  height: 40px !important;
+  margin: 2px !important;
   &:first-letter {
     text-transform: uppercase;
   }

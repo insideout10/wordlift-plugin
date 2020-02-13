@@ -15,6 +15,10 @@ import React from "react";
 import "./index.scss";
 
 const Question = ({ question }) => {
-  return <b className={"wl-faq-question-title"}>{question}</b>;
+  return (
+    <div className={"wl-faq-question-container"}>
+      <p className={"wl-faq-question-title"}>{question}</p>
+    </div>
+  );
 };
 export default Question;

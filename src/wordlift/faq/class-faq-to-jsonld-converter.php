@@ -83,6 +83,10 @@ class Faq_To_Jsonld_Converter {
 	private function get_faq_data( $faq_items ) {
 		$jsonld_data['mainEntity'] = array();
 		foreach ( $faq_items as $faq_item ) {
+			if ( 0 === strlen($faq_item['question']) || 0 === strlen($faq_item['answer']) ) {
+				// Bail out if question or answer is not present
+				continue;
+			}
 			$faq_data                            = array();
 			$faq_data['@type']                   = 'Question';
 			$faq_data['name']                    = $faq_item['question'];

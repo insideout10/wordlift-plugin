@@ -12,11 +12,16 @@ import React from "react";
  * Internal dependencies.
  */
 import "./index.scss";
+import { classExtractor } from "../../../mappings/blocks/helper";
 
-export const WlCard = ({ children, onClickHandler = null }) => {
+export const WlCard = ({ children, alignCenter = false, onClickHandler = null }) => {
+  const classes = classExtractor({
+    "wl-card": true,
+    "wl-card-center": alignCenter
+  });
   return (
     <div
-      className={"wl-card"}
+      className={classes}
       onClick={() => {
         onClickHandler !== null ? onClickHandler() : null;
       }}

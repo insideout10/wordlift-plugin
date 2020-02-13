@@ -27,7 +27,7 @@ class FaqApplyList extends React.Component {
     return (
       <React.Fragment>
         {faqItems.filter(e => e.answer.length === 0).length === 0 && (
-          <WlCard>
+          <WlCard alignCenter={true}>
             <h3>No questions present.</h3>
           </WlCard>
         )}

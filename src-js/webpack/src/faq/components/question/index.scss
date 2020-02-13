@@ -1,13 +1,16 @@
 $primary-color: #177efb;
 
+.wl-faq-question-container {
+  overflow: hidden;
+  text-overflow: clip;
+}
 .wl-faq-question-title {
-  word-wrap: break-word;
+  font-weight: bold;
   color: black;
   cursor: pointer;
-  font-size: 14px;
-  text-transform: capitalize;
-  text-align: center;
-  &:hover {
-    color: $primary-color;
+  height: 40px !important;
+  margin: 2px !important;
+  &:first-letter {
+    text-transform: uppercase;
   }
 }
