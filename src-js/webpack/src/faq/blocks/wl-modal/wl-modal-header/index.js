@@ -30,7 +30,7 @@ export const WlModalHeader = ({ title, description, children, modalCloseClickedL
         </WlColumn>
         <WlColumn className={"wl-col--width-5"}>
           <span
-            className="dashicons dashicons-dismiss wl-modal-header-icon"
+            className="dashicons dashicons-no-alt wl-modal-header-icon"
             onClick={() => {
               modalCloseClickedListener();
             }}
