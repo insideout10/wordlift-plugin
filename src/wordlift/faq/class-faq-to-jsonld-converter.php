@@ -20,11 +20,12 @@ class Faq_To_Jsonld_Converter {
 	const FAQ_JSONLD_TYPE = 'FAQPage';
 
 	public function __construct() {
-		// Hook to refactor the JSON-LD.
 		add_filter( 'wl_post_jsonld_array', array( $this, 'get_jsonld_for_faq' ), 11, 2 );
 	}
 
 	/**
+	 * Set the FAQ type to the json ld array
+	 *
 	 * @param $jsonld array The jsonld array.
 	 *
 	 * @return array Returns the json ld array with the type set.
@@ -90,5 +91,5 @@ class Faq_To_Jsonld_Converter {
 		}
 
 		return $jsonld_data;
-}
+	}
 }
