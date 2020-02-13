@@ -82,6 +82,9 @@ class FAQ_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 		$create_faq_items_request = $this->get_create_faq_item_request( $post_id );
 		$this->server->dispatch( $create_faq_items_request );
 		// Now emulate changing the data in ui and trying to update it on the ui
+		$first_item_id = get_post_meta( $post_id, FAQ_Rest_Controller::FAQ_META_KEY );
+		$first_item_id = $first_item_id[0]['id'];
+
 		$data = array(
 			'post_id' => $post_id,
 			'faq_items' => array(
@@ -89,7 +92,8 @@ class FAQ_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 					'question' => 'changed_question_1',
 					'answer'   => 'changed_answer_1',
 					'previous_question_value' => 'foo question 1',
-					'previous_answer_value'   => 'foo answer 1'
+					'previous_answer_value'   => 'foo answer 1',
+					'id' => $first_item_id
 				)
 			)
 		);
@@ -104,12 +108,56 @@ class FAQ_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( $changed_faq_item['answer'], 'changed_answer_1');
 	}
 
+	public function test_can_update_duplicate_items_correctly() {
+		$post_id = $this->factory()->post->create( array('post_title' => 'foo'));
+		$data = array(
+			'post_id'   => $post_id,
+			'faq_items' => array(
+				array(
+					'question' => 'foo',
+					'answer'   => 'bar'
+				),
+				array(
+					'question' => 'foo',
+					'answer'   => 'bar'
+				)
+			)
+		);
+		// We have create request with two duplicate items.
+		$create_faq_items_request = $this->get_create_faq_item_request( $post_id, $data );
+		$this->server->dispatch( $create_faq_items_request );
+
+		$data = array(
+			'post_id' => $post_id,
+			'faq_items' => array(
+				array(
+					'question' => 'foo1',
+					'answer'   => 'bar1',
+					'previous_question_value' => 'foo',
+					'previous_answer_value'   => 'bar',
+					'id' => "0"
+				)
+			)
+		);
+		// we are trying to update the duplicate item, and send the update request.
+		$request   = new WP_REST_Request( 'PUT', $this->faq_route );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( wp_json_encode( $data ) );
+		$response  = $this->server->dispatch( $request );
+
+		$faq_data = get_post_meta( $post_id, FAQ_Rest_Controller::FAQ_META_KEY);
+		// check the first item,it should be having foo1, bar1 as question and answer.
+		$first_faq_item = $faq_data[0];
+		$this->assertEquals('foo1', $first_faq_item['question']);
+		$this->assertEquals('bar1', $first_faq_item['answer']);
+	}
+
 	/**
 	 * @param $post_id
 	 *
 	 * @return WP_REST_Request
 	 */
-	private function get_create_faq_item_request( $post_id ) {
+	private function get_create_faq_item_request( $post_id, $faq_items_data = null ) {
 		$data = array(
 			'post_id'   => $post_id,
 			'faq_items' => array(
@@ -123,6 +171,9 @@ class FAQ_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 				)
 			)
 		);
+		if ( $faq_items_data !== null) {
+			$data = $faq_items_data;
+		}
 		// Create user with 'publish_posts' capability.
 		$user_id = $this->factory->user->create( array( 'role' => 'author' ) );
 		wp_set_current_user( $user_id );

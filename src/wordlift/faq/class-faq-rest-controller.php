@@ -105,11 +105,13 @@ class FAQ_Rest_Controller {
 			foreach ( $faq_items as $faq_item ) {
 				$previous_value = array(
 					'question' => (string) $faq_item['previous_question_value'],
-					'answer' => (string) $faq_item['previous_answer_value']
+					'answer' => (string) $faq_item['previous_answer_value'],
+					'id' => (int) $faq_item['id']
 				);
 				$new_value = array(
 					'question' => (string) $faq_item['question'],
-					'answer' => (string) $faq_item['answer']
+					'answer' => (string) $faq_item['answer'],
+					'id' => (int) $faq_item['id']
 				);
 				update_post_meta( $post_id, self::FAQ_META_KEY, $new_value, $previous_value );
 			}
@@ -140,6 +142,8 @@ class FAQ_Rest_Controller {
 			$post_id = $post_data['post_id'];
 			$faq_items = $post_data['faq_items'];
 			foreach ( $faq_items as $faq_item ) {
+				// Add an indentifier id to the faq item, it helps to prevent duplication problem.
+				$faq_item['id'] = count( get_post_meta($post_id, self::FAQ_META_KEY) );
 				add_post_meta( (int) $post_id, self::FAQ_META_KEY, $faq_item);
 			}
 			return array(
