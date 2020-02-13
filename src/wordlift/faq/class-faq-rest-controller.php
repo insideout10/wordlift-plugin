@@ -148,7 +148,7 @@ class FAQ_Rest_Controller {
 			}
 			return array(
 				'status' => 'success',
-				'message' => __('Faq Item successfully inserted.')
+				'message' => __('Question successfully added.')
 			);
 		}
 		else {

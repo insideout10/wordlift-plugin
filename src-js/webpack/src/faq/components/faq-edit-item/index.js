@@ -64,12 +64,12 @@ class FaqEditItem extends React.Component {
         <WlContainer>
           <WlColumn className={"wl-col--width-100 wl-col--less-padding"}>
             <textarea
-              cols={25}
               rows={3}
               value={this.state.textAreaValue}
               onChange={e => {
                 this.changeValueOnUserType(e);
               }}
+              style={{"width":"95%"}}
             />
           </WlColumn>
         </WlContainer>
