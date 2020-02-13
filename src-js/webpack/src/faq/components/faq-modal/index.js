@@ -24,7 +24,7 @@ class FaqModal extends React.Component {
   render() {
     return (
       <React.Fragment>
-
+        <WlBgModal shouldOpenModal={this.props.isModalOpened}>
           <WlModal shouldOpenModal={this.props.isModalOpened}>
             <WlModalHeader
               title={"Wordlift FAQ"}
@@ -39,7 +39,7 @@ class FaqModal extends React.Component {
               <FaqApplyList />
             </WlModalBody>
           </WlModal>
-
+        </WlBgModal>
       </React.Fragment>
     );
   }

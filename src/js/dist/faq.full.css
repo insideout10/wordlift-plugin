@@ -28,5 +28,5 @@
 
 .wl-modal-body{overflow-y:scroll;height:80%;background-color:#fbfbfc}
 
-.wl-bg-modal{display:none;z-index:99999 !important;background-color:rgba(0,0,0,0.3);left:50%;top:50%;transform:translate(-50%, -50%);border:5px solid #eee;border-radius:10px}.wl-bg-modal.wl-bg-modal--open{display:block}.wl-bg-modal.wl-bg-modal--closed{display:none}
+.wl-bg-modal{display:none;z-index:999999 !important;position:fixed;background-color:rgba(0,0,0,0.3);left:50%;top:50%;height:100%;width:100%;transform:translate(-50%, -50%)}.wl-bg-modal.wl-bg-modal--open{display:block}.wl-bg-modal.wl-bg-modal--closed{display:none}
 
