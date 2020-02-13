@@ -30,6 +30,7 @@ class Faq_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 			'answer' => 'bar2'
 		));
 		$data = Faq_To_Jsonld_Converter::get_jsonld_for_faq($post_id);
+		echo json_encode($data);
 		$this->assertArrayHasKey( 'mainEntity', $data );
 		$this->assertCount( 2, $data['mainEntity'] );
 		$single_faq_item = $data['mainEntity'][0];
