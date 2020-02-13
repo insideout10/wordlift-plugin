@@ -1,17 +1,20 @@
 .wl-notification-area {
-  animation-duration: 0.2s;
-  animation-name: slidein;
-  width: 100%;
+  position:fixed;
+  z-index: 99999; /** Show notification above all divs **/
+  top:0;
+  right:0;
+  animation-duration: 0.3s;
+  animation-name: fadeIn;
+  background-color: inherit;
+
 }
-@keyframes slidein {
+@keyframes fadeIn {
   from {
-    margin-left: 100%;
-    width: 300%;
+    opacity: 0;
   }
 
   to {
-    margin-left: 0;
-    width: 100%;
+    opacity: 1;
   }
 }
 .wl-notification-area__close-button {
