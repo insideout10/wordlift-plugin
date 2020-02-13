@@ -1,7 +1,7 @@
 /**
  * WlNotificationArea : it shows the notification on the sidebar.
  * @author Naveen Muthusamy <naveen@wordlift.io>
- * @since 3.25.0
+ * @since 3.26.0
  */
 
 /**

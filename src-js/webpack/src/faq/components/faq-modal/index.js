@@ -18,25 +18,28 @@ import { WlModal } from "../../blocks/wl-modal";
 import { WlModalHeader } from "../../blocks/wl-modal/wl-modal-header";
 import { WlModalBody } from "../../blocks/wl-modal/wl-modal-body";
 import FaqApplyList from "../faq-apply-list";
+import { WlBgModal } from "../../blocks/wl-bg-modal";
 
 class FaqModal extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <WlModal shouldOpenModal={this.props.isModalOpened}>
-          <WlModalHeader
-            title={"Wordlift FAQ"}
-            description={"Apply this answer to a question"}
-            modalCloseClickedListener={() => {
-              const action = updateFaqModalVisibility();
-              action.payload = false;
-              this.props.dispatch(action);
-            }}
-          />
-          <WlModalBody>
-            <FaqApplyList />
-          </WlModalBody>
-        </WlModal>
+
+          <WlModal shouldOpenModal={this.props.isModalOpened}>
+            <WlModalHeader
+              title={"Wordlift FAQ"}
+              description={"Apply this answer to a question"}
+              modalCloseClickedListener={() => {
+                const action = updateFaqModalVisibility();
+                action.payload = false;
+                this.props.dispatch(action);
+              }}
+            />
+            <WlModalBody>
+              <FaqApplyList />
+            </WlModalBody>
+          </WlModal>
+
       </React.Fragment>
     );
   }

@@ -1,7 +1,7 @@
 /**
  * WlModalHeader : it shows the header for modal component.
  * @author Naveen Muthusamy <naveen@wordlift.io>
- * @since 3.25.0
+ * @since 3.26.0
  */
 
 /**

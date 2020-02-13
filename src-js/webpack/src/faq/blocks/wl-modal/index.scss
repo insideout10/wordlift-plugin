@@ -12,20 +12,8 @@
   border-radius: 10px;
   &.wl-modal--open {
     display: block;
-    animation-fill-mode: forwards;
-    animation: wlModalOpen 0.3s;
   }
   &.wl-modal--closed {
     display: none;
-  }
-}
-@keyframes wlModalOpen {
-  from {
-    height: 0;
-    width: 0;
-  }
-  to {
-    height: 60%;
-    width: 50%;
   }
 }
