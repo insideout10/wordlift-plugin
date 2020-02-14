@@ -5,16 +5,13 @@
  */
 
 class TinymceHighlightHandler {
-
-    /**
-     * Construct highlight handler instance.
-     * @param editor The Tinymce editor instance.
-     * @param store Redux store.
-     */
-    constructor(editor, store) {
-
-    }
-
-
-
+  /**
+   * Construct highlight handler instance.
+   * @param editor The Tinymce editor instance.
+   * @param store Redux store.
+   */
+  constructor(editor, store) {
+    this.editor = editor;
+    this.store = store;
+  }
 }
