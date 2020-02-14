@@ -211,6 +211,15 @@ class Wordlift_Admin_Post_Edit_Page {
 			true
 		);
 
+		if ( $editor === self::GUTENBERG ) {
+			Scripts_Helper::enqueue_based_on_wordpress_version(
+				'faq-gutenberg-plugin',
+				plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/gutenberg-faq-plugin',
+				array('wp-polyfill'),
+				true
+			);
+		}
+
 		wp_localize_script('faq-metabox-script', '_wlFaqSettings', array(
 			'restUrl' => get_rest_url( null, WL_REST_ROUTE_DEFAULT_NAMESPACE.'/faq' ),
 			'textEditor' => $editor,
