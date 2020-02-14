@@ -3,13 +3,13 @@
  * @since 3.26.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
+
 /**
  * Internal dependencies.
  */
 import { trigger } from "backbone";
 import { FAQ_EVENT_HANDLER_SELECTION_CHANGED } from "../../constants/faq-hook-constants";
 import FaqValidator from "../validators/faq-validator";
-
 const TINYMCE_TOOLBAR_BUTTON_NAME = "wl-faq-toolbar-button";
 
 class TinymceToolbarHandler {
