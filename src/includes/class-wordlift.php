@@ -1468,7 +1468,7 @@ class Wordlift {
 		/** WL Autocomplete. */
 		$autocomplete_service       = new All_Autocomplete_Service( array(
 			new Local_Autocomplete_Service(),
-			new Linked_Data_Autocomplete_Service( $this->configuration_service, $entity_helper, $this->entity_uri_service ),
+			new Linked_Data_Autocomplete_Service( $this->configuration_service, $entity_helper, $this->entity_uri_service, $this->entity_service ),
 		) );
 		$this->autocomplete_adapter = new Wordlift_Autocomplete_Adapter( $autocomplete_service );
 

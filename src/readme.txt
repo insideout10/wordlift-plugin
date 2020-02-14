@@ -145,6 +145,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 = 3.25.1 (2020-02-11) =
 * Enhancement [#1014](https://github.com/insideout10/wordlift-plugin/issues/1014): Improve the performance of GeoMap for single posts.
 
+* Fix [#1013](https://github.com/insideout10/wordlift-plugin/issues/1013): Creating an Entity using Add New doesn't check if the entity exists locally.
 * Fix [#999](https://github.com/insideout10/wordlift-plugin/issues/999): wordlift_admin_meta_box_entities raises a warning.
 
 = 3.25.0 (2020-02-06) =
