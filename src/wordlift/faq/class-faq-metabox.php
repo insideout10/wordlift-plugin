@@ -37,7 +37,7 @@ class FAQ_Metabox {
 	public function register_faq_metabox() {
 		add_meta_box(
 			self::FAQ_METABOX_ID,
-			__( 'Wordlift FAQ', 'wordlift' ),
+			__( 'WordLift FAQ', 'wordlift' ),
 			array($this, 'echo_meta_box_template'),
 			'post'
 		);

@@ -27,7 +27,7 @@ class FaqModal extends React.Component {
         <WlBgModal shouldOpenModal={this.props.isModalOpened}>
           <WlModal shouldOpenModal={this.props.isModalOpened}>
             <WlModalHeader
-              title={"Wordlift FAQ"}
+              title={"WordLift FAQ"}
               description={"Apply this answer to a question"}
               modalCloseClickedListener={() => {
                 const action = updateFaqModalVisibility();
