@@ -21,6 +21,7 @@ class Faq_To_Jsonld_Converter {
 
 	public function __construct() {
 		add_filter( 'wl_post_jsonld_array', array( $this, 'get_jsonld_for_faq' ), 11, 2 );
+		add_filter( 'wl_entity_jsonld_array', array( $this, 'get_jsonld_for_faq' ), 11, 2 );
 	}
 
 	/**
