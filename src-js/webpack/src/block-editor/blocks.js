@@ -331,7 +331,7 @@ const blocks = {
         { value: "none", label: "None" }
       ];
       const orderOptions = [{ value: "ASC", label: "Ascending" }, { value: "DESC", label: "Descending" }];
-      wordlift.types.forEach(item => {
+      window['_wlEntityTypes'].forEach(item => {
         typeOptions.push({
           value: item.slug,
           label: item.label

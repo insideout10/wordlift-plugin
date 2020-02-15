@@ -1,9 +1,16 @@
 <?php
-
+/**
+ * This file provides a class to manipulate the analysis response.
+ *
+ * @author David Riccitelli <david@wordlift.io>
+ * @since 3.25.0
+ * @package Wordlift\Analysis\Response
+ */
 
 namespace Wordlift\Analysis\Response;
 
 use stdClass;
+use Wordlift\Entity\Entity_Helper;
 
 class Analysis_Response_Ops {
 
@@ -37,23 +44,30 @@ class Analysis_Response_Ops {
 	private $post_image_storage;
 
 	/**
+	 * @var Entity_Helper
+	 */
+	private $entity_helper;
+
+	/**
 	 * Analysis_Response_Ops constructor.
 	 *
 	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service}.
 	 * @param \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service}.
 	 * @param \Wordlift_Entity_Type_Service $entity_type_service The {@link Wordlift_Entity_Type_Service}.
 	 * @param \Wordlift_Post_Image_Storage $post_image_storage A {@link Wordlift_Post_Image_Storage} instance.
+	 * @param Entity_Helper $entity_helper The {@link Entity_Helper}.
 	 * @param mixed $json The analysis response json.
 	 *
 	 * @since 3.21.5
 	 */
-	public function __construct( $entity_uri_service, $entity_service, $entity_type_service, $post_image_storage, $json ) {
+	public function __construct( $entity_uri_service, $entity_service, $entity_type_service, $post_image_storage, $entity_helper, $json ) {
 
 		$this->json                = $json;
 		$this->entity_uri_service  = $entity_uri_service;
 		$this->entity_service      = $entity_service;
 		$this->entity_type_service = $entity_type_service;
 		$this->post_image_storage  = $post_image_storage;
+		$this->entity_helper       = $entity_helper;
 
 	}
 
@@ -75,27 +89,8 @@ class Analysis_Response_Ops {
 		}
 
 		// Get the URIs.
-		$uris = array_keys( get_object_vars( $this->json->entities ) );
-
-		// Filter only the external URIs.
-		$entity_uri_service = $this->entity_uri_service;
-		$external_uris      = array_filter( $uris, function ( $item ) use ( $entity_uri_service ) {
-			return ! $entity_uri_service->is_internal( $item );
-		} );
-
-		// Preload the URIs.
-		$entity_uri_service->preload_uris( $external_uris );
-
-		$mappings = array();
-		foreach ( $external_uris as $external_uri ) {
-			$entity = $entity_uri_service->get_entity( $external_uri );
-			if ( null !== $entity ) {
-
-				// Get the internal URI.
-				$internal_uri              = $this->entity_service->get_uri( $entity->ID );
-				$mappings[ $external_uri ] = $internal_uri;
-			}
-		}
+		$uris     = array_keys( get_object_vars( $this->json->entities ) );
+		$mappings = $this->entity_helper->map_many_to_local( $uris );
 
 		foreach ( $mappings as $external_uri => $internal_uri ) {
 
@@ -283,43 +278,6 @@ class Analysis_Response_Ops {
 			? 256 : 0 );
 
 		return wp_json_encode( $this->json, $options );
-	}
-
-	/**
-	 * Create an Analysis_Response_Ops instance given the provided JSON structure.
-	 *
-	 * @param mixed $json The JSON structure.
-	 *
-	 * @return Analysis_Response_Ops A new Analysis_Response_Ops instance.
-	 */
-	public static function create( $json ) {
-
-		return new static(
-			\Wordlift_Entity_Uri_Service::get_instance(),
-			\Wordlift_Entity_Service::get_instance(),
-			\Wordlift_Entity_Type_Service::get_instance(),
-			\Wordlift_Storage_Factory::get_instance()->post_images(),
-			$json );
-	}
-
-	/**
-	 * Create an Analysis_Response_Ops instance given the provided http response.
-	 *
-	 * @param array $response {
-	 *
-	 * @type string $body The response body.
-	 * }
-	 *
-	 * @return Analysis_Response_Ops A new Analysis_Response_Ops instance.
-	 * @throws \Exception if the provided response doesn't contain a `body` element.
-	 */
-	public static function create_with_response( $response ) {
-
-		if ( ! isset( $response['body'] ) ) {
-			throw new \Exception( "`body` is required in response." );
-		}
-
-		return static::create( json_decode( $response['body'] ) );
 	}
 
 }

@@ -27,7 +27,7 @@ class Acf_Mappings {
 			return array();
 		}
 
-		add_filter( 'wl_mappings_field_types', array( $this, 'wl_mappings_field_types' ) );
+		add_filter( 'wl_mappings_field_types', array( $this, 'wl_mappings_field_types', ) );
 
 	}
 

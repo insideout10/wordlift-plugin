@@ -21,7 +21,6 @@ if ( is_admin() ) {
 	add_action( 'load-post-new.php', 'wl_register_metaboxes' );
 }
 
-
 /**
  * Adds the entities meta box (called from *add_meta_boxes* hook).
  *
@@ -50,10 +49,8 @@ function wl_admin_add_entities_meta_box( $post_type ) {
 		add_meta_box(
 			'wordlift_entities_box', __( 'WordLift', 'wordlift' ), 'wl_entities_box_content', $post_type, 'side', 'high'
 		);
-	} else {
-		// Call wl_entities_box_content for the other things that it does.
-		wl_entities_box_content( get_post(), false );
 	}
+
 }
 
 add_action( 'add_meta_boxes', 'wl_admin_add_entities_meta_box' );
@@ -95,6 +92,10 @@ function wl_entities_box_content( $post, $wrapper = true ) {
 	if ( $wrapper ) {
 		echo '<div id="wordlift-edit-post-outer-wrapper"></div>';
 	}
+}
+
+function wl_entities_box_content_scripts() {
+	$post = get_post();
 
 	// Angularjs edit-post widget classification boxes configuration.
 	$classification_boxes = unserialize( WL_CORE_POST_CLASSIFICATION_BOXES );
@@ -195,7 +196,7 @@ function wl_entities_box_content( $post, $wrapper = true ) {
 	$js_code = <<<JS
 		if ('undefined' == typeof window.wordlift) {
 			window.wordlift = {};
-			window.wordlift.entities = {};  		
+			window.wordlift.entities = {};
 		}
 
 		window.wordlift.classificationBoxes = $classification_boxes;
@@ -218,5 +219,33 @@ JS;
 
 	echo '<script type="text/javascript">' . PHP_EOL . $js_code . PHP_EOL . '</script>';
 
+	$metabox_settings = array(
+		"classificationBoxes"      => json_decode( $classification_boxes ),
+		"entities"                 => json_decode( $referenced_entities_obj ),
+		"currentPostId"            => intval( $post->ID ),
+		"currentPostUri"           => $current_post_uri,
+		"currentPostType"          => $post->post_type,
+		"isEntity"                 => ! empty( $is_entity ),
+		"defaultThumbnailPath"     => $default_thumbnail_path,
+		"defaultWordLiftPath"      => $default_path,
+		"datasetUri"               => $dataset_uri,
+		"currentUser"              => $addslashes_post_author,
+		"publishedDate"            => $published_date,
+		"publishedPlace"           => $published_place_obj,
+		"topic"                    => json_decode( $topic_obj ),
+		"currentLanguage"          => $current_language,
+		"timelinejsDefaultOptions" => json_decode( $timelinejs_default_options ),
+		"ajax_url"                 => admin_url( 'admin-ajax.php' ),
+	);
+
+	// Allow Classic and Block Editor scripts to register first.
+	// Hook to the Block Editor script.
+	wp_localize_script( 'wl-block-editor', '_wlMetaBoxSettings', array( 'settings' => $metabox_settings ) );
+
+	// Hook to the Classic Editor script, see Wordlift_Admin_Post_Edit_Page.
+	wp_localize_script( 'wl-classic-editor', '_wlMetaBoxSettings', array( 'settings' => $metabox_settings ) );
+
 }
 
+add_action( 'admin_print_scripts-post.php', 'wl_entities_box_content_scripts', 11 );
+add_action( 'admin_print_scripts-post-new.php', 'wl_entities_box_content_scripts', 11 );

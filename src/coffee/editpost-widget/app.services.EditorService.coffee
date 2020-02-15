@@ -51,6 +51,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
     disambiguate = (annotationId, entity)->
       ed = EditorAdapter.getEditor()
       ed.dom.addClass annotationId, "disambiguated"
+      console.log { configuration }
       for type in configuration.types
         ed.dom.removeClass annotationId, type.css
       ed.dom.removeClass annotationId, "unlinked"
