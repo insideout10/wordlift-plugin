@@ -15,6 +15,7 @@
 use Wordlift\Analysis\Response\Analysis_Response_Ops_Factory;
 use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Entity\Entity_Helper;
+use Wordlift\Jsonld\Jsonld_Adapter;
 use Wordlift\Mappings\Jsonld_Converter;
 use Wordlift\Mappings\Mappings_DBO;
 use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
@@ -1248,6 +1249,8 @@ class Wordlift {
 		$this->cached_postid_to_jsonld_converter = new Wordlift_Cached_Post_Converter( $this->postid_to_jsonld_converter, $this->configuration_service, $jsonld_cache );
 		$this->jsonld_service                    = new Wordlift_Jsonld_Service( $this->entity_service, $this->cached_postid_to_jsonld_converter, $this->jsonld_website_converter );
 		new Jsonld_Endpoint( $this->jsonld_service, $this->entity_uri_service );
+		// Prints the JSON-LD in the head.
+		new Jsonld_Adapter( $this->jsonld_service );
 
 		$this->key_validation_service    = new Wordlift_Key_Validation_Service( $this->configuration_service );
 		$this->content_filter_service    = new Wordlift_Content_Filter_Service( $this->entity_service, $this->configuration_service, $this->entity_uri_service );
