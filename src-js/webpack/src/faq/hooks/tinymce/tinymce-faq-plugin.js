@@ -9,10 +9,12 @@
  * Internal dependencies.
  */
 import TinymceToolbarHandler from "./tinymce-toolbar-handler";
+import TinymceHighlightHandler from "./tinymce-highlight-handler";
 
 const FAQ_TINYMCE_PLUGIN_NAME = "wl_faq_tinymce";
 const tinymce = global["tinymce"];
 tinymce.PluginManager.add(FAQ_TINYMCE_PLUGIN_NAME, function (editor) {
   const toolBarHandler = new TinymceToolbarHandler(editor);
   toolBarHandler.addButtonToToolBar();
+  const hightlightHandler = new TinymceHighlightHandler(editor)
 });

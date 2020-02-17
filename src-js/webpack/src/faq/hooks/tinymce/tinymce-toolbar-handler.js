@@ -72,14 +72,28 @@ class TinymceToolbarHandler {
    */
   addButtonToToolBar() {
     const editor = this.editor;
+    const handler = this;
     editor.addButton(TINYMCE_TOOLBAR_BUTTON_NAME, {
       text: "Add Question or Answer",
       id: TINYMCE_TOOLBAR_BUTTON_NAME,
       onclick: function() {
+        console.log(editor)
+        handler.annotateTheSelection();
         trigger(FAQ_EVENT_HANDLER_SELECTION_CHANGED, editor.selection.getContent({ format: "text" }));
       }
     });
     this.changeToolBarButtonStateBasedOnTextSelected();
+  }
+
+  /**
+   * Annotate the selected text.
+   */
+  annotateTheSelection() {
+    const editor = this.editor;
+    editor.annotator.annotate("alpha", {
+      uid: "use-this-id-instead-of-your-random-one-annotator!",
+      author: "me"
+    });
   }
 }
 
