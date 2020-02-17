@@ -60,114 +60,6 @@ function wl_linked_data_save_post( $post_id ) {
 
 add_action( 'save_post', 'wl_linked_data_save_post' );
 
-//add_action( 'rest_insert_post', 'wl_linked_data_rest_insert_post', 10, 3 );
-//
-//function wl_linked_data_rest_insert_post( $post, $request, $creating ){
-//
-//	$log = Wordlift_Log_Service::get_logger( 'wl_linked_data_save_post_and_related_entities' );
-//
-//	$post_id = $post->ID;
-//	$log->trace( "Saving $post_id to Linked Data along with related entities..." );
-//
-//	// Ignore auto-saves
-//	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-//		$log->trace( 'Doing autosave, skipping...' );
-//		return;
-//	}
-//
-//	// Get the entity service instance.
-//	$entity_service = Wordlift_Entity_Service::get_instance();
-//
-//	// Store mapping between tmp new entities uris and real new entities uri
-//	$entities_uri_mapping = array();
-//
-//	// Save the entities coming with POST data.
-//	$metas = $request->get_json_params();
-//	$metas = $metas['meta'];
-//
-//	// Ignore if no change in meta
-//	if ( !empty($metas) ) {
-//		$entities_via_meta = json_decode($metas['wl_entities_gutenberg'], true);
-//
-//		foreach ( $entities_via_meta as $entity_uri => $entity ) {
-//
-//			// Only if the current entity is created from scratch let's avoid to
-//			// create more than one entity with same label & entity type.
-//			$entity_type = ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) ?
-//				$entity['main_type'] : null;
-//
-//			// Look if current entity uri matches an internal existing entity, meaning:
-//			// 1. when $entity_uri is an internal uri
-//			// 2. when $entity_uri is an external uri used as sameAs of an internal entity
-//			$ie = $entity_service->get_entity_post_by_uri( $entity_uri );
-//
-//			// Detect the uri depending if is an existing or a new entity
-//			$uri = ( null === $ie ) ?
-//				Wordlift_Uri_Service::get_instance()->build_uri(
-//					$entity['label'],
-//					Wordlift_Entity_Service::TYPE_NAME,
-//					$entity_type
-//				) : wl_get_entity_uri( $ie->ID );
-//
-//			wl_write_log( "Map $entity_uri on $uri" );
-//			$entities_uri_mapping[ $entity_uri ] = $uri;
-//
-//			// Local entities have a tmp uri with 'local-entity-' prefix
-//			// These uris need to be rewritten here and replaced in the content
-//			if ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) {
-//				// Override the entity obj
-//				$entity['uri'] = $uri;
-//			}
-//
-//			// Update entity data with related post
-//			$entity['related_post_id'] = $post_id;
-//
-//			// Save the entity if is a new entity
-//			if ( null === $ie ) {
-//				wl_save_entity( $entity );
-//			}
-//
-//		}
-//	}
-//
-//	// Replace tmp uris in content post if needed
-//	$updated_post_content = $post->post_content;
-//
-//	// Update the post content if we found mappings of new entities.
-//	if ( ! empty( $entities_uri_mapping ) ) {
-//		// Save each entity and store the post id.
-//		foreach ( $entities_uri_mapping as $tmp_uri => $uri ) {
-//			$updated_post_content = str_replace( $tmp_uri, $uri, $updated_post_content );
-//		}
-//
-//		// Update the post content.
-//		wp_update_post( array(
-//			'ID'           => $post->ID,
-//			'post_content' => $updated_post_content,
-//		) );
-//	}
-//
-//	// Extract related/referenced entities from text.
-//	$disambiguated_entities = wl_linked_data_content_get_embedded_entities( $updated_post_content );
-//
-//	// Reset previously saved instances.
-//	wl_core_delete_relation_instances( $post_id );
-//
-//	// Save relation instances
-//	foreach ( array_unique( $disambiguated_entities ) as $referenced_entity_id ) {
-//
-//		wl_core_add_relation_instance(
-//			$post_id,
-//			$entity_service->get_classification_scope_for( $referenced_entity_id ),
-//			$referenced_entity_id
-//		);
-//
-//	}
-//
-//	// Push the post to Redlink.
-//	Wordlift_Linked_Data_Service::get_instance()->push( $post->ID );
-//}
-
 /**
  * Save the post to the triple store. Also saves the entities locally and on the triple store.
  *
@@ -264,7 +156,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	if ( ! empty( $entities_uri_mapping ) ) {
 		// Save each entity and store the post id.
 		foreach ( $entities_uri_mapping as $tmp_uri => $uri ) {
-			if ( 1 !== preg_match( '|^https?://|', $tmp_uri ) ) {
+			if ( 1 !== preg_match( '@^(https?://|local-entity-)@', $tmp_uri ) ) {
 				continue;
 			}
 
