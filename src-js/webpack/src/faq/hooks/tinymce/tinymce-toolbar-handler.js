@@ -16,9 +16,11 @@ class TinymceToolbarHandler {
   /**
    * Construct the TinymceToolbarHandler
    * @param editor {tinymce.Editor} instance.
+   * @param highlightHandler {TinymceHighlightHandler} instance.
    */
-  constructor(editor) {
+  constructor(editor, highlightHandler) {
     this.editor = editor;
+    this.highlightHandler = highlightHandler;
   }
 
   /**
@@ -65,6 +67,10 @@ class TinymceToolbarHandler {
     editor.on("NodeChange", e => {
       this.changeButtonStateOnSelectedText();
     });
+    editor.on("SaveContent", e => {
+      console.log("save content")
+      console.log(e)
+    })
   }
 
   /**
@@ -77,23 +83,11 @@ class TinymceToolbarHandler {
       text: "Add Question or Answer",
       id: TINYMCE_TOOLBAR_BUTTON_NAME,
       onclick: function() {
-        console.log(editor)
-        handler.annotateTheSelection();
-        trigger(FAQ_EVENT_HANDLER_SELECTION_CHANGED, editor.selection.getContent({ format: "text" }));
+        handler.highlightHandler.highlightSelectedText(editor.selection.getContent());
+        trigger(FAQ_EVENT_HANDLER_SELECTION_CHANGED, editor.selection.getContent());
       }
     });
     this.changeToolBarButtonStateBasedOnTextSelected();
-  }
-
-  /**
-   * Annotate the selected text.
-   */
-  annotateTheSelection() {
-    const editor = this.editor;
-    editor.annotator.annotate("alpha", {
-      uid: "use-this-id-instead-of-your-random-one-annotator!",
-      author: "me"
-    });
   }
 }
 
