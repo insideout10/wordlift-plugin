@@ -310,6 +310,12 @@ class Wordlift_Entity_Service {
 	 */
 	public function set_alternative_labels( $post_id, $alt_labels ) {
 
+		// Bail out if post id is not numeric. We add this check as we found a WP install that was sending a WP_Error
+		// instead of post id.
+		if ( ! is_numeric( $post_id ) ) {
+			return;
+		}
+
 		// Force $alt_labels to be an array
 		if ( ! is_array( $alt_labels ) ) {
 			$alt_labels = array( $alt_labels );
