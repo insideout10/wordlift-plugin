@@ -6,7 +6,7 @@ Tags: schema.org, rich snippets, semantic seo, JSON-LD, artificial intelligence,
 Requires at least: 4.4
 Tested up to: 5.3
 Requires PHP: 5.3
-Stable tag: 3.25.1
+Stable tag: 3.25.0
 License: GPLv2 or later
 
 WordLift brings the power of Artificial Intelligence to optimize SEO and organize content. Attract new readers and get their true attention.
