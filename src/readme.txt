@@ -142,6 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.25.1.1 (2020-02-17) =
+* Fix: error while saving, possible html issues.
+
 = 3.25.1 (2020-02-15) =
 * Enhancement: Print the JSON-LD in head synchronously.
 * Enhancement [#1014](https://github.com/insideout10/wordlift-plugin/issues/1014): Improve the performance of GeoMap for single posts.

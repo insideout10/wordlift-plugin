@@ -10,9 +10,10 @@
 /**
  * Receive events from post saves, and split them according to the post type.
  *
+ * @param int $post_id The post id.
+ *
  * @since 3.0.0
  *
- * @param int $post_id The post id.
  */
 function wl_linked_data_save_post( $post_id ) {
 
@@ -170,9 +171,10 @@ add_action( 'save_post', 'wl_linked_data_save_post' );
 /**
  * Save the post to the triple store. Also saves the entities locally and on the triple store.
  *
+ * @param int $post_id The post id being saved.
+ *
  * @since 3.0.0
  *
- * @param int $post_id The post id being saved.
  */
 function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
@@ -262,6 +264,10 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	if ( ! empty( $entities_uri_mapping ) ) {
 		// Save each entity and store the post id.
 		foreach ( $entities_uri_mapping as $tmp_uri => $uri ) {
+			if ( 1 !== preg_match( '|^https?://|', $tmp_uri ) ) {
+				continue;
+			}
+
 			$updated_post_content = str_replace( $tmp_uri, $uri, $updated_post_content );
 		}
 
@@ -555,11 +561,11 @@ function wl_save_entity( $entity_data ) {
 /**
  * Get an array of entities from the *itemid* attributes embedded in the provided content.
  *
- * @since 3.0.0
- *
  * @param string $content The content with itemid attributes.
  *
  * @return array An array of entity posts.
+ * @since 3.0.0
+ *
  */
 function wl_linked_data_content_get_embedded_entities( $content ) {
 
