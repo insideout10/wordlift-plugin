@@ -142,6 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.25.1.2 (2020-02-17) =
+* Fix: missing sidebar button in Block Editor.
+
 = 3.25.1.1 (2020-02-17) =
 * Fix: error while saving, possible html issues.
 

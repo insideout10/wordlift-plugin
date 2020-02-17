@@ -25,7 +25,7 @@ const StyledWlCalenderIcon = styled(WlCalenderIcon)`
   margin-right: 5px;
 `;
 
-const wordlift = global["wordlift"];
+const settings = global["_wlMetaBoxSettings"].settings;
 
 const ArticleMetadataPanel = () => (
   <Panel>
@@ -33,11 +33,11 @@ const ArticleMetadataPanel = () => (
       <PanelRow>
         <div>
           <StyledWlAuthorIcon />
-          {wordlift["currentUser"]}
+          {settings["currentUser"]}
         </div>
         <div>
           <StyledWlCalenderIcon />
-          {wordlift["publishedDate"]}
+          {settings["publishedDate"]}
         </div>
       </PanelRow>
     </PanelBody>

@@ -18,8 +18,9 @@ const wordlift = global["wordlift"];
 
 const Images = () => {
   let images = [];
-  for (const wlEntities in wordlift["entities"]) {
-    images = images.concat(wordlift["entities"][wlEntities].images);
+  let entities = window["_wlMetaBoxSettings"].settings["entities"];
+  for (const wlEntities in entities) {
+    images = images.concat(entities[wlEntities].images);
   }
   return [...new Set(images)];
 };

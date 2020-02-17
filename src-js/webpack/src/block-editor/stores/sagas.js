@@ -41,9 +41,10 @@ function* handleRequestAnalysis() {
   const settings = global["wlSettings"];
   const canCreateEntities =
     "undefined" !== typeof settings["can_create_entities"] && "yes" === settings["can_create_entities"];
+  const _wlMetaBoxSettings = global["_wlMetaBoxSettings"].settings;
   const request = editorOps.buildAnalysisRequest(
     settings["can_create_entities"]["language"],
-    [window["wordlift"]["currentPostUri"]],
+    [_wlMetaBoxSettings["currentPostUri"]],
     canCreateEntities
   );
 
