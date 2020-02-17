@@ -50,6 +50,8 @@ class Wordlift_Admin_Post_Edit_Page {
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
+		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_scripts_gutenberg', ) );
+
 		// Bail out if we're in the UX Builder editor.
 		if ( $this->is_ux_builder_editor() ) {
 			$this->log->info( 'WordLift will not show, since we are in UX Builder editor.' );
@@ -63,7 +65,6 @@ class Wordlift_Admin_Post_Edit_Page {
 		// Set a hook to enqueue scripts only when the edit page is displayed.
 		add_action( 'admin_print_scripts-post.php', $callback );
 		add_action( 'admin_print_scripts-post-new.php', $callback );
-		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_scripts_gutenberg', ) );
 
 		$this->plugin = $plugin;
 	}
@@ -216,6 +217,8 @@ class Wordlift_Admin_Post_Edit_Page {
 	 * @since 3.21.0
 	 */
 	public function enqueue_scripts_gutenberg() {
+
+//		wp_die( 'enqueue_scripts_gutenberg');
 
 		wp_register_script(
 			'wl-block-editor',

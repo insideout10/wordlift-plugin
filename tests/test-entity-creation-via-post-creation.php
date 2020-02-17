@@ -31,7 +31,7 @@ class EntityCreationViaPostCreationTest extends Wordlift_Unit_Test_Case {
 
 		$entity_service = Wordlift_Entity_Service::get_instance();
 
-		$fake  = $this->prepareFakeGlobalPostArrayFromFile(
+		$fake  = $this->prepare_fake_global_post_array_from_file(
 			'/assets/fake_global_post_array_with_one_entity_linked_as_what.json'
 		);
 		$_POST = $fake;
@@ -47,7 +47,7 @@ EOF;
 		$this->assertNull( $entity );
 
 		// Create a post referencing to the created entity.
-		$post_id   = wl_create_post( $content, 'my-post', 'A post', 'draft' );
+		$post_id = wl_create_post( $content, 'my-post', 'A post', 'draft' );
 
 		// Here the entity should be created instead.
 		$entity = $entity_service->get_entity_post_by_uri( $original_entity_uri );
@@ -79,7 +79,7 @@ EOF;
 		$existing_entity_id = wl_create_post( '', 'gran-sasso', 'Gran Sasso', 'draft', 'entity' );
 		wl_set_entity_main_type( $existing_entity_id, 'wl-place' );
 
-		$fake  = $this->prepareFakeGlobalPostArrayFromFile(
+		$fake  = $this->prepare_fake_global_post_array_from_file(
 			'/assets/fake_global_post_array_with_gran_sasso_linked_as_where.json'
 		);
 		$_POST = $fake;
@@ -110,7 +110,7 @@ EOF;
 
 	function testEntityWithEscapedCharsInUriIsCreatedAndLinkedToThePost() {
 
-		$fake  = $this->prepareFakeGlobalPostArrayFromFile(
+		$fake  = $this->prepare_fake_global_post_array_from_file(
 			'/assets/fake_global_post_array_with_gran_sasso_linked_as_where.json'
 		);
 		$_POST = $fake;
@@ -149,39 +149,39 @@ EOF;
 		$entity_id = wl_create_post( '', 'tex_willer', 'Tex Willer', 'draft', 'entity' );
 		wl_set_entity_main_type( $entity_id, 'wl-person' );
 
-		$fake  = $this->prepareFakeGlobalPostArrayFromFile(
+		$terms = wp_get_post_terms( $entity_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+		$this->assertCount( 1, $terms );
+		$this->assertEquals( 'person', $terms[0]->slug );
+
+		$fake  = $this->prepare_fake_global_post_array_from_file(
 			'/assets/fake_global_post_array_with_tex_willer_as_who.json'
 		);
 		$_POST = $fake;
 
-		$content        = <<<EOF
-    <span itemid="local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt">Tex Willer</span>
-EOF;
+		$content        = '<span itemid="local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt">Tex Willer</span>';
 		$new_entity_uri = sprintf( '%s/%s/%s',
 			wl_configuration_get_redlink_dataset_uri(),
 			Wordlift_Entity_Service::TYPE_NAME,
 			wl_sanitize_uri_path( 'Tex Willer' )
 		);
 
-		$this->assertEquals(
-			$new_entity_uri,
-			wl_get_entity_uri( $entity_id )
-		);
+		$this->assertEquals( $new_entity_uri, wl_get_entity_uri( $entity_id ) );
 
-		// Create a post referincing to the created entity
+		// Create a post referencing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post', 'draft' );
 		wl_write_log( "+++ Post id $post_id" );
 
-		$related_entity_ids = wl_core_get_related_entity_ids( $post_id, array( "predicate" => "who" ) );
-		$this->assertCount( 1, $related_entity_ids );
+		$related_entity_ids = wl_core_get_related_entity_ids( $post_id, array( "predicate" => 'who', ) );
+		$this->assertCount( 1
+			, $related_entity_ids
+			, '$related_entity_ids count doesn`t match: ' . var_export( $related_entity_ids, true ) );
 
 		$relation_instances = wl_tests_get_relation_instances_for( $post_id );
-		$this->assertCount( 1, $relation_instances );
+		$this->assertCount( 1
+			, $relation_instances
+			, '$related_entity_ids count doesn`t match: ' . var_export( $related_entity_ids, true ) );
 
-		$this->assertEquals(
-			wl_get_entity_uri( $entity_id ),
-			wl_get_entity_uri( $related_entity_ids[0] )
-		);
+		$this->assertEquals( wl_get_entity_uri( $entity_id ), wl_get_entity_uri( $related_entity_ids[0] ) );
 
 		// Check the already existing entity is linked
 		$this->assertContains( $entity_id, $related_entity_ids );
@@ -195,7 +195,7 @@ EOF;
 	// We expect they are properly created and linked to the post
 	function testThreeEntitiesWithTheSameLabelsAreProperlyCreatedAndLinkedToThePost() {
 
-		$fake  = $this->prepareFakeGlobalPostArrayFromFile(
+		$fake  = $this->prepare_fake_global_post_array_from_file(
 			'/assets/fake_global_post_array_with_two_entities_with_same_label_and_different_types.json'
 		);
 		$_POST = $fake;
@@ -254,7 +254,7 @@ EOF;
 	// Same test of the previous one but with escaped chars in the entity label
 	function testNewEntityWithEscapedCharsIsCreatedAndLinkedToThePost() {
 
-		$fake  = $this->prepareFakeGlobalPostArrayFromFile(
+		$fake  = $this->prepare_fake_global_post_array_from_file(
 			'/assets/fake_global_post_array_with_a_new_entity_linked_with_escaped_chars.json'
 		);
 		$_POST = $fake;
@@ -296,7 +296,7 @@ EOF;
 	// Same test of the previous one but with utf8 chars in the entity label
 	function testNewEntityWithUtf8CharsIsCreatedAndLinkedToThePost() {
 
-		$fake  = $this->prepareFakeGlobalPostArrayFromFile(
+		$fake  = $this->prepare_fake_global_post_array_from_file(
 			'/assets/fake_global_post_array_with_a_new_entity_linked_with_utf8_chars.json'
 		);
 		$_POST = $fake;
@@ -342,7 +342,7 @@ EOF;
 	// Ea: local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt
 	function testNewEntityIsCreatedAndLinkedToThePost() {
 
-		$fake  = $this->prepareFakeGlobalPostArrayFromFile(
+		$fake  = $this->prepare_fake_global_post_array_from_file(
 			'/assets/fake_global_post_array_with_a_new_entity_linked_as_who.json'
 		);
 		$_POST = $fake;
@@ -383,7 +383,7 @@ EOF;
 	// Please notice here the entity is properly referenced by post content
 	function testEntityIsCreatedAndLinkedWithMultiplePredicatesToThePost() {
 
-		$fake = $this->prepareFakeGlobalPostArrayFromFile(
+		$fake = $this->prepare_fake_global_post_array_from_file(
 			'/assets/fake_global_post_array_with_one_entity_linked_as_what_and_who.json'
 		);
 
@@ -420,7 +420,7 @@ EOF;
 	// Please notice here the entity is NOT properly referenced by post content
 	function testEntityIsCreatedButNotLinkedToThePost() {
 
-		$fake  = $this->prepareFakeGlobalPostArrayFromFile(
+		$fake  = $this->prepare_fake_global_post_array_from_file(
 			'/assets/fake_global_post_array_with_one_entity_linked_as_what.json'
 		);
 		$_POST = $fake;
@@ -449,7 +449,7 @@ EOF;
 	// I expect that the 'public' status is properly preserved
 	function testPublicEntityStatusIsPreservedWhenLinkedToDraftPost() {
 
-		$fake  = $this->prepareFakeGlobalPostArrayFromFile(
+		$fake  = $this->prepare_fake_global_post_array_from_file(
 			'/assets/fake_global_post_array_with_one_entity_linked_as_what.json'
 		);
 		$_POST = $fake;
@@ -502,7 +502,7 @@ EOF;
 	// This test simulate entity type-specific properties (latitude, startDate, etc.) are saved trough the disambiguation widget
 	function testEntityAdditionalPropertiesAreSaved() {
 
-		$fake  = $this->prepareFakeGlobalPostArrayFromFile(
+		$fake  = $this->prepare_fake_global_post_array_from_file(
 			'/assets/fake_global_post_array_with_a_new_entity_linked_as_where_with_coordinates.json'
 		);
 		$_POST = $fake;
@@ -562,7 +562,7 @@ EOF;
 
 		// Notice that the uri is generated trough the original label
 		// while the current label is the alternative one	
-		$fake = $this->prepareFakeGlobalPostArrayFromFile(
+		$fake = $this->prepare_fake_global_post_array_from_file(
 			'/assets/fake_global_post_array_with_one_existing_entity_linked_as_what.json',
 			array(
 				'CURRENT_URI'   => $this->buildEntityUriForLabel( $original_label ),
@@ -593,7 +593,7 @@ EOF;
 
 	}
 
-	function prepareFakeGlobalPostArrayFromFile( $fileName, $placeholders = array() ) {
+	function prepare_fake_global_post_array_from_file( $fileName, $placeholders = array() ) {
 		$json_data = file_get_contents( dirname( __FILE__ ) . $fileName );
 		$json_data = preg_replace(
 			'/{{REDLINK_ENDPOINT}}/',

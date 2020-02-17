@@ -165,14 +165,14 @@ function wl_entities_box_content_scripts() {
 	);
 	$published_place_obj = ( $published_place_id ) ?
 		wp_json_encode( wl_serialize_entity( $published_place_id ) ) :
-		'undefined';
+		null;
 
 	$topic_id  = get_post_meta(
 		$post->ID, Wordlift_Schema_Service::FIELD_TOPIC, true
 	);
 	$topic_obj = ( $topic_id ) ?
 		wp_json_encode( wl_serialize_entity( $topic_id ) ) :
-		'undefined';
+		null;
 
 	$configuration_service = Wordlift_Configuration_Service::get_instance();
 
@@ -191,33 +191,6 @@ function wl_entities_box_content_scripts() {
 	$wordlift_timeline_shortcode = new Wordlift_Timeline_Shortcode();
 	$timelinejs_default_options  = json_encode( $wordlift_timeline_shortcode->get_timelinejs_default_options(), JSON_PRETTY_PRINT );
 	$addslashes_post_author      = addslashes( $post_author );
-	$ajax_url                    = json_encode( admin_url( 'admin-ajax.php' ) );
-
-	$js_code = <<<JS
-		if ('undefined' == typeof window.wordlift) {
-			window.wordlift = {};
-			window.wordlift.entities = {};
-		}
-
-		window.wordlift.classificationBoxes = $classification_boxes;
-		window.wordlift.entities = $referenced_entities_obj;
-		window.wordlift.currentPostId = $post->ID;
-		window.wordlift.currentPostUri = "$current_post_uri";
-		window.wordlift.currentPostType = "$post->post_type";
-		window.wordlift.isEntity = !!"$is_entity";
-		window.wordlift.defaultThumbnailPath = "$default_thumbnail_path";
-		window.wordlift.defaultWordLiftPath = "$default_path";
-		window.wordlift.datasetUri = "$dataset_uri";
-		window.wordlift.currentUser = "$addslashes_post_author";
-		window.wordlift.publishedDate = "$published_date";
-		window.wordlift.publishedPlace = $published_place_obj;
-		window.wordlift.topic = $topic_obj;
-		window.wordlift.currentLanguage = "$current_language";
-		window.wordlift.timelinejsDefaultOptions = $timelinejs_default_options;
-		window.wordlift.ajax_url = $ajax_url;
-JS;
-
-	echo '<script type="text/javascript">' . PHP_EOL . $js_code . PHP_EOL . '</script>';
 
 	$metabox_settings = array(
 		"classificationBoxes"      => json_decode( $classification_boxes ),

@@ -11,10 +11,10 @@ import { compose } from "@wordpress/compose";
 import { __ } from "@wordpress/i18n";
 import { Panel, PanelBody, PanelRow, TextControl, Button, IconButton } from "@wordpress/components";
 
-const wordlift = window["wordlift"];
+const settings = global["_wlMetaBoxSettings"].settings;
 
 let SynonymsPanel = props =>
-  wordlift.isEntity ? (
+  settings.isEntity ? (
     <Panel>
       <PanelBody title={__("Synonyms", "wordlift")} intialOpen={false}>
         {props.altLabels.map((altLabel, altLabelN, altLabels) => (
