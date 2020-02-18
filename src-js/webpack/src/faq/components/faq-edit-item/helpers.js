@@ -65,7 +65,7 @@ function getAllInvalidTags(textAreaValue) {
   /**
    * This regex matches <p and </p ( so we detect invalid tags even if they have a incomplete closed tag in it)
    */
-  const matches = textAreaValue.match(/<\/?[A-Za-z]+\s?/g).map(e =>
+  const matches = textAreaValue.match(/<\/?\w+/gim).map(e =>
       e
           .replace("<", "")
           .replace("/", "")
