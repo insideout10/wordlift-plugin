@@ -61,6 +61,25 @@ export function showWarningIfAnswerWordCountExceedsLimit(type, textAreaValue) {
     );
   }
 }
+function getAllInvalidTags(textAreaValue) {
+  /**
+   * This regex matches <p and </p ( so we detect invalid tags even if they have a incomplete closed tag in it)
+   */
+  const matches = textAreaValue.match(/<\/?[A-Za-z]+\s?/g).map(e =>
+      e
+          .replace("<", "")
+          .replace("/", "")
+          .toLowerCase()
+          .replace(" ", "")
+  );
+  // Tags with no duplicate items.
+  const tags = [...new Set(matches)];
+  // Check which tags are not present in FAQ answer.
+  let invalidTags = tags.filter(e => !ANSWER_ALLOWED_HTML_TAGS.includes(e));
+  return invalidTags.map(e => {
+    return "<" + e + ">";
+  });
+}
 
 /**
  * Show alert if an invalid tag is present in the value.
@@ -72,24 +91,8 @@ export function showWarningIfInvalidHTMLTagPresentInAnswer(type, textAreaValue) 
   if (type !== faqEditItemType.ANSWER || 0 === textAreaValue.length) {
     return <React.Fragment />;
   }
-  /**
-   * This regex matches <p and </p ( so we detect invalid tags even if they have a incomplete closed tag in it)
-   */
-  const matches = textAreaValue.match(/<\/?[A-Za-z]+\s?/g).map(e =>
-    e
-      .replace("<", "")
-      .replace("/", "")
-      .toLowerCase()
-      .replace(" ", "")
-  );
-  // Tags with no duplicate items.
-  const tags = [...new Set(matches)];
-  console.log(tags);
-  // Check which tags are not present in FAQ answer.
-  let invalidTags = tags.filter(e => !ANSWER_ALLOWED_HTML_TAGS.includes(e));
-  invalidTags = invalidTags.map(e => {
-    return "<" + e + ">";
-  });
+  // Get all invalid tags in the answer.
+  const invalidTags = getAllInvalidTags(textAreaValue)
   if (invalidTags.length === 0) {
     return <React.Fragment />;
   } else {
