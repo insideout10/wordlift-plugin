@@ -5,6 +5,8 @@
 
 .wl-action-button{border-radius:8px !important;width:100%;margin:3px;padding:10px;font-size:13px;text-align:center;text-transform:capitalize;cursor:pointer;border:1px solid #eee}.wl-action-button.wl-action-button--primary{background-color:#177efb !important;color:#fff !important}.wl-action-button.wl-action-button--normal{background-color:#c2e5ff !important;color:#177efb !important}.wl-action-button.wl-action-button--text-bold{font-weight:bold}
 
+.faq-edit-item__warning_text{font-size:12px;color:tomato}
+
 .wl-faq-question-container{overflow:hidden;text-overflow:clip}.wl-faq-question-title{font-weight:bold;color:black;cursor:pointer;height:40px !important;margin:2px !important}.wl-faq-question-title:first-letter{text-transform:uppercase}
 
 .wl-faq-answer-container{overflow:hidden;text-overflow:clip}.wl-faq-answer-title{color:black;cursor:pointer;height:40px !important;margin:2px !important}.wl-faq-answer-title:first-letter{text-transform:uppercase}

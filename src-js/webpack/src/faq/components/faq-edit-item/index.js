@@ -18,11 +18,14 @@ import { WlContainer } from "../../../mappings/blocks/wl-container";
 import { WlColumn } from "../../../mappings/blocks/wl-column";
 import PropTypes from "prop-types";
 import { updateFaqItem } from "../../actions";
+import "./index.scss"
 
 export const faqEditItemType = {
   ANSWER: "ANSWER",
   QUESTION: "QUESTION"
 };
+// When the word count exceeds this limit a warning should be displayed for answer.
+const ANSWER_WORD_COUNT_WARNING_LIMIT = 50;
 
 class FaqEditItem extends React.Component {
   constructor(props) {
@@ -56,6 +59,22 @@ class FaqEditItem extends React.Component {
       textAreaValue: event.target.value
     });
   }
+  showWarningIfAnswerWordCountExceedsLimit() {
+    if (this.props.type !== faqEditItemType.ANSWER || 0 === this.state.textAreaValue.length) {
+      return <React.Fragment />;
+    }
+    const wordCount = this.state.textAreaValue.match(/\S+/g).length;
+    if (wordCount <= ANSWER_WORD_COUNT_WARNING_LIMIT) {
+      return <React.Fragment />;
+    } else {
+      return (
+        <p className={"faq-edit-item__warning_text"}>
+          <span className="dashicons dashicons-warning" /> Answer word count must not exceed
+          {ANSWER_WORD_COUNT_WARNING_LIMIT} words
+        </p>
+      );
+    }
+  }
   render() {
     return (
       <React.Fragment>
@@ -69,8 +88,9 @@ class FaqEditItem extends React.Component {
               onChange={e => {
                 this.changeValueOnUserType(e);
               }}
-              style={{"width":"95%"}}
+              style={{ width: "95%" }}
             />
+            {this.showWarningIfAnswerWordCountExceedsLimit()}
           </WlColumn>
         </WlContainer>
         <FaqEditButtonGroup updateHandler={this.updateFaqEditItem} deleteHandler={this.deleteFaqItem} />
