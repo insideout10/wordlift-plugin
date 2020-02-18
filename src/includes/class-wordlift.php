@@ -13,6 +13,7 @@
  */
 
 use Wordlift\Cache\Ttl_Cache;
+use Wordlift\FAQ\Faq_Content_Filter;
 use Wordlift\FAQ\FAQ_Rest_Controller;
 use Wordlift\FAQ\Faq_Tinymce_Adapter;
 use Wordlift\FAQ\Faq_To_Jsonld_Converter;
@@ -1466,6 +1467,12 @@ class Wordlift {
 		 * Initialize the Faq JSON LD converter here.
 		 */
 		new Faq_To_Jsonld_Converter();
+
+		/**
+		 * @since 3.26.0
+		 * Initialize the content filter for FAQ here.
+		 */
+		new Faq_Content_Filter();
 		/*
 		 * Use the Templates Ajax Endpoint to load HTML templates for the legacy Angular app via admin-ajax.php
 		 * end-point.

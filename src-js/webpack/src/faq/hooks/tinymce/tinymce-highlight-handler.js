@@ -19,8 +19,9 @@ class TinymceHighlightHandler {
 
   highlightSelectedText(selectedText) {
     const editor = this.editor;
+    const highlightClassName = global["_wlFaqSettings"]["faqHighlightClass"];
     editor.selection.setContent(
-      "<span class='wl-faq-question-highlight' style='background-color: #ffff00;'>" + selectedText + "</span>"
+      "<span class='" + highlightClassName + "' style='background-color: #ffff00;'>" + selectedText + "</span>"
     );
   }
 }

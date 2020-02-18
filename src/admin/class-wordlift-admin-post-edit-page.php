@@ -9,6 +9,7 @@
  * @subpackage Wordlift/admin
  */
 
+use Wordlift\FAQ\Faq_Content_Filter;
 use Wordlift\FAQ\FAQ_Metabox;
 use Wordlift\Scripts\Scripts_Helper;
 
@@ -228,6 +229,8 @@ class Wordlift_Admin_Post_Edit_Page {
 			'addQuestionText' => __( 'Add', 'wordlift' ),
 			'nonce' => wp_create_nonce( 'wp_rest' ),
 			'postId' => get_the_ID(),
+			// Use this hightlight class to highlight question and answer.
+			'faqHighlightClass' => Faq_Content_Filter::FAQ_HIGHLIGHT_CLASS_NAME
 		));
 		// Load the FAQ meta box.
 		new FAQ_Metabox();
