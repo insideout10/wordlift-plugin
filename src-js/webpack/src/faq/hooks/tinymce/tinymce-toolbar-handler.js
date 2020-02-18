@@ -67,10 +67,6 @@ class TinymceToolbarHandler {
     editor.on("NodeChange", e => {
       this.changeButtonStateOnSelectedText();
     });
-    editor.on("SaveContent", e => {
-      console.log("save content")
-      console.log(e)
-    })
   }
 
   /**

@@ -82,8 +82,8 @@ function* createEntity({ payload }) {
 }
 
 const getMainType = types => {
-  for (let i = 0; i < window.wordlift.types.length; i++) {
-    const type = window.wordlift.types[i];
+  for (let i = 0; i < window._wlEntityTypes.length; i++) {
+    const type = window._wlEntityTypes[i];
 
     if (-1 < types.indexOf(type.uri)) return type.slug;
   }

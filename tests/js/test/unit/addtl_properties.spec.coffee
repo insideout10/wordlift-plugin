@@ -6,7 +6,7 @@ describe 'services', ->
   beforeEach module('AnalysisService')
 
   beforeEach inject((AnalysisService) ->
-    AnalysisService.setKnownTypes window.wordlift.types
+    AnalysisService.setKnownTypes window._wlEntityTypes
   )
 
   # Test the wlEntity directive.

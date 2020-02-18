@@ -132,33 +132,33 @@ class Wordlift_Admin_Dashboard_V2 {
 		global $wpdb;
 
 		$query = <<<EOF
-select p.ID
+SELECT p.ID
      , p.post_title
      , coalesce(sum(case when obj_t.slug is null then 1 end), 0)     entities
      , coalesce(sum(case when obj_t.slug is not null then 1 end), 0) posts
-     , count(entity.subject_id) as                                   total
-from {$wpdb->prefix}wl_relation_instances entity
-       inner join {$wpdb->prefix}posts p
-                  on p.ID = entity.object_id
-       inner join {$wpdb->prefix}term_relationships tr
-                  on tr.object_id = entity.object_id
-       inner join {$wpdb->prefix}term_taxonomy tt
-                  on tt.term_id = tr.term_taxonomy_id
-                    and tt.taxonomy = 'wl_entity_type'
-       inner join {$wpdb->prefix}terms t
-                  on t.term_id = tt.term_id
-                    and 'article' != t.slug
-       inner join {$wpdb->prefix}term_relationships obj_tr
-                  on obj_tr.object_id = entity.subject_id
-       inner join {$wpdb->prefix}term_taxonomy obj_tt
-                  on obj_tt.term_id = obj_tr.term_taxonomy_id
-                    and obj_tt.taxonomy = 'wl_entity_type'
-       left outer join {$wpdb->prefix}terms obj_t
-                       on obj_t.term_id = obj_tt.term_id
-                         and 'article' = obj_t.slug
-group by p.ID, p.post_title
-order by total desc
-limit 100;
+     , count(entity.subject_id) AS                                   total
+FROM {$wpdb->prefix}wl_relation_instances entity
+       INNER JOIN {$wpdb->prefix}posts p
+                  ON p.ID = entity.object_id
+       INNER JOIN {$wpdb->prefix}term_relationships tr
+                  ON tr.object_id = entity.object_id
+       INNER JOIN {$wpdb->prefix}term_taxonomy tt
+                  ON tt.term_id = tr.term_taxonomy_id
+                    AND tt.taxonomy = 'wl_entity_type'
+       INNER JOIN {$wpdb->prefix}terms t
+                  ON t.term_id = tt.term_id
+                    AND 'article' != t.slug
+       INNER JOIN {$wpdb->prefix}term_relationships obj_tr
+                  ON obj_tr.object_id = entity.subject_id
+       INNER JOIN {$wpdb->prefix}term_taxonomy obj_tt
+                  ON obj_tt.term_id = obj_tr.term_taxonomy_id
+                    AND obj_tt.taxonomy = 'wl_entity_type'
+       LEFT OUTER JOIN {$wpdb->prefix}terms obj_t
+                       ON obj_t.term_id = obj_tt.term_id
+                         AND 'article' = obj_t.slug
+GROUP BY p.ID, p.post_title
+ORDER BY total DESC
+LIMIT 20;
 EOF;
 
 		$results = $wpdb->get_results( $query );

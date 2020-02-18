@@ -142,7 +142,23 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.25.0 (????-??-??) =
+= 3.26.0 (2020-02-06) =
+
+= 3.25.1.2 (2020-02-17) =
+* Fix: missing sidebar button in Block Editor.
+
+= 3.25.1.1 (2020-02-17) =
+* Fix: error while saving, possible html issues.
+
+= 3.25.1 (2020-02-15) =
+* Enhancement: Print the JSON-LD in head synchronously.
+* Enhancement [#1014](https://github.com/insideout10/wordlift-plugin/issues/1014): Improve the performance of GeoMap for single posts.
+
+* Fix [#1013](https://github.com/insideout10/wordlift-plugin/issues/1013): Creating an Entity using Add New doesn't check if the entity exists locally.
+* Fix [#999](https://github.com/insideout10/wordlift-plugin/issues/999): wordlift_admin_meta_box_entities raises a warning.
+
+= 3.25.0 (2020-02-06) =
+* Enhancement [#994](https://github.com/insideout10/wordlift-plugin/issues/994): Add synonyms to Block Editor.
 * Enhancement [#953](https://github.com/insideout10/wordlift-plugin/issues/953): Map fields from ACF to schema.org classes.
 
 = 3.24.4 (2020-01-29) =

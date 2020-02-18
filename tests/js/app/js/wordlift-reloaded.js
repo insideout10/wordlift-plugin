@@ -544,7 +544,7 @@
           $scope.configuration = configuration;
           $scope.getCurrentTypeUri = function() {
             var type, _i, _len, _ref;
-            _ref = configuration.types;
+            _ref = window['_wlEntityTypes'];
             for (_i = 0, _len = _ref.length; _i < _len; _i++) {
               type = _ref[_i];
               if (type.css === ("wl-" + $scope.entity.mainType)) {
@@ -562,14 +562,14 @@
             return /^(f|ht)tps?:\/\//i.test(uri);
           };
           availableTypes = [];
-          _ref = configuration.types;
+          _ref = window['_wlEntityTypes'];
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             type = _ref[_i];
             availableTypes[type.css.replace('wl-', '')] = type.uri;
           }
           $scope.supportedTypes = (function() {
             var _j, _len1, _ref1, _results;
-            _ref1 = configuration.types;
+            _ref1 = window['_wlEntityTypes'];
             _results = [];
             for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
               type = _ref1[_j];

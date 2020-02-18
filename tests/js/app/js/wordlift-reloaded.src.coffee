@@ -589,7 +589,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
       $scope.configuration = configuration
 
       $scope.getCurrentTypeUri = ()->
-        for type in configuration.types
+        for type in window['_wlEntityTypes']
           if type.css is "wl-#{$scope.entity.mainType}"
             return type.uri
 
@@ -602,10 +602,10 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
         /^(f|ht)tps?:\/\//i.test(uri)
 
       availableTypes = [] 
-      for type in configuration.types
+      for type in window['_wlEntityTypes']
         availableTypes[ type.css.replace('wl-','') ] = type.uri
 
-      $scope.supportedTypes = ({ id: type.css.replace('wl-',''), name: type.uri } for type in configuration.types)
+      $scope.supportedTypes = ({ id: type.css.replace('wl-',''), name: type.uri } for type in window['_wlEntityTypes'])
       if $scope.box
         $scope.supportedTypes = ({ id: type, name: availableTypes[ type ] } for type in $scope.box.registeredTypes)
         

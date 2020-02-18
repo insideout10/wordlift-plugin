@@ -6,7 +6,7 @@ describe 'TinyMCE: more tests', ->
 
   beforeEach inject((AnalysisService) ->
     ed = tinyMCE.get('content')
-    AnalysisService.setKnownTypes window.wordlift.types
+    AnalysisService.setKnownTypes window._wlEntityTypes
     AnalysisService.setEntities window.wordlift.entities
   )
 

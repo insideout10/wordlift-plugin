@@ -47,7 +47,6 @@ class Wordlift_Admin_Search_Rankings_Ajax_Adapter {
 	 */
 	public function search_rankings() {
 
-		@header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
 		$value = $this->service->get();
 
 		if ( is_wp_error( $value ) ) {

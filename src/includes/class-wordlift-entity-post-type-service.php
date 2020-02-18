@@ -154,6 +154,7 @@ class Wordlift_Entity_Post_Type_Service {
 				'comments',
 				'author',
 				'revisions',
+				'custom-fields'
 			),
 			'has_archive'     => true,
 			'menu_icon'       => WP_CONTENT_URL . '/plugins/wordlift/images/svg/wl-vocabulary-icon.svg',

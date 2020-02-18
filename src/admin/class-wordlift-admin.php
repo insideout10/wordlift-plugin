@@ -193,12 +193,15 @@ class Wordlift_Admin {
 		// Add support for ACF mappings, so that the admin edit mappings page can pick up ACF support when ACF is available.
 		new Acf_Mappings();
 
-		// Add Mappings and Edit Mappings page.
-		new Admin_Mappings_Page();
-		new Edit_Mappings_Page( new Mappings_Transform_Functions_Registry() );
-
 		// Add the Mappings' REST Controller.
 		new Mappings_REST_Controller();
+
+		// Only enable the Mappings UI if the constant is defined.
+		if ( defined( 'WL_ENABLE_MAPPINGS' ) && WL_ENABLE_MAPPINGS ) {
+			// Add Mappings and Edit Mappings page.
+			new Admin_Mappings_Page();
+			new Edit_Mappings_Page( new Mappings_Transform_Functions_Registry() );
+		}
 
 		// Set the singleton instance.
 		self::$instance = $this;

@@ -96,7 +96,7 @@ function wl_create_post( $content, $slug, $title, $status = 'draft', $type = 'po
 /**
  * Delete the post and related attachments with the specified id (it's basically a proxy to wp_delete_post).
  *
- * @param int  $post_id The post id.
+ * @param int $post_id The post id.
  * @param bool $force_delete Whether to force delete.
  *
  * @return false|WP_Post False on failure and the post object for the deleted post success.
@@ -511,10 +511,8 @@ function rl_sparql_select( $query ) {
 /**
  * Get relations for a given $subject_id as an associative array.
  *
- * @global type $wpdb
- *
- * @param type  $post_id
- * @param type  $predicate
+ * @param int $post_id
+ * @param string $predicate
  *
  * @return array in the following format:
  *              Array (
@@ -522,6 +520,8 @@ function rl_sparql_select( $query ) {
  *                  [1] => stdClass Object ( [id] => 141 [subject_id] => 17 [predicate] => what [object_id] => 14 ),
  *                  [2] => stdClass Object ( [id] => 142 [subject_id] => 17 [predicate] => where [object_id] => 16 ),
  *                  ...
+ * @global WP_Query $wpdb
+ *
  */
 function wl_tests_get_relation_instances_for( $post_id, $predicate = null ) {
 
@@ -581,13 +581,14 @@ function wl_get_meta_type( $property_name ) {
 
 /**
  * Remove a given relation instance
- * @uses   $wpdb->delete() to perform the query
  *
- * @param int    $subject_id The post ID | The entity post ID.
+ * @param int $subject_id The post ID | The entity post ID.
  * @param string $predicate Name of the relation: 'what' | 'where' | 'when' | 'who'
- * @param int    $object_id The entity post ID.
+ * @param int $object_id The entity post ID.
  *
  * @return boolean False for failure. True for success.
+ * @uses   $wpdb->delete() to perform the query
+ *
  */
 function wl_core_delete_relation_instance( $subject_id, $predicate, $object_id ) {
 
@@ -622,13 +623,14 @@ function wl_core_delete_relation_instance( $subject_id, $predicate, $object_id )
 
 /**
  * Create multiple relation instances
- * @uses   wl_add_relation_instance() to create each single instance
  *
- * @param int    $subject_id The post ID | The entity post ID.
+ * @param int $subject_id The post ID | The entity post ID.
  * @param string $predicate Name of the relation: 'what' | 'where' | 'when' | 'who'
- * @param array  $object_ids The entity post IDs collection.
+ * @param array $object_ids The entity post IDs collection.
  *
  * @return integer|boolean Return the relation instances IDs or false
+ * @uses   wl_add_relation_instance() to create each single instance
+ *
  */
 function wl_core_add_relation_instances( $subject_id, $predicate, $object_ids ) {
 

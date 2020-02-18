@@ -12,11 +12,15 @@
  * @subpackage Wordlift/includes
  */
 
+use Wordlift\Analysis\Response\Analysis_Response_Ops_Factory;
 use Wordlift\Cache\Ttl_Cache;
+
 use Wordlift\FAQ\Faq_Content_Filter;
 use Wordlift\FAQ\FAQ_Rest_Controller;
 use Wordlift\FAQ\Faq_Tinymce_Adapter;
 use Wordlift\FAQ\Faq_To_Jsonld_Converter;
+use Wordlift\Entity\Entity_Helper;
+use Wordlift\Jsonld\Jsonld_Adapter;
 use Wordlift\Mappings\Jsonld_Converter;
 use Wordlift\Mappings\Mappings_DBO;
 use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
@@ -1258,6 +1262,8 @@ class Wordlift {
 		$this->cached_postid_to_jsonld_converter = new Wordlift_Cached_Post_Converter( $this->postid_to_jsonld_converter, $this->configuration_service, $jsonld_cache );
 		$this->jsonld_service                    = new Wordlift_Jsonld_Service( $this->entity_service, $this->cached_postid_to_jsonld_converter, $this->jsonld_website_converter );
 		new Jsonld_Endpoint( $this->jsonld_service, $this->entity_uri_service );
+		// Prints the JSON-LD in the head.
+		new Jsonld_Adapter( $this->jsonld_service );
 
 		$this->key_validation_service    = new Wordlift_Key_Validation_Service( $this->configuration_service );
 		$this->content_filter_service    = new Wordlift_Content_Filter_Service( $this->entity_service, $this->configuration_service, $this->entity_uri_service );
@@ -1310,13 +1316,6 @@ class Wordlift {
 		/** Async Tasks. */
 		new Wordlift_Sparql_Query_Async_Task();
 		new Wordlift_Push_References_Async_Task();
-
-		/** WL Autocomplete. */
-		$autocomplete_service       = new All_Autocomplete_Service( array(
-			new Local_Autocomplete_Service(),
-			new Linked_Data_Autocomplete_Service( $this->configuration_service ),
-		) );
-		$this->autocomplete_adapter = new Wordlift_Autocomplete_Adapter( $autocomplete_service );
 
 		/** WordPress Admin UI. */
 
@@ -1476,13 +1475,32 @@ class Wordlift {
 		/*
 		 * Use the Templates Ajax Endpoint to load HTML templates for the legacy Angular app via admin-ajax.php
 		 * end-point.
-		 * 
+		 *
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/834
 		 * @since 3.24.4
 		 */
 		new Templates_Ajax_Endpoint();
 		// Call this static method to register FAQ routes to rest api
 		FAQ_Rest_Controller::register_routes();
+
+		/*
+		 * Create a singleton for the Analysis_Response_Ops_Factory.
+		 */
+		$entity_helper = new Entity_Helper( $this->entity_uri_service, $this->entity_service );
+		new Analysis_Response_Ops_Factory(
+			$this->entity_uri_service,
+			$this->entity_service,
+			$this->entity_type_service,
+			$this->storage_factory->post_images(),
+			$entity_helper
+		);
+
+		/** WL Autocomplete. */
+		$autocomplete_service       = new All_Autocomplete_Service( array(
+			new Local_Autocomplete_Service(),
+			new Linked_Data_Autocomplete_Service( $this->configuration_service, $entity_helper, $this->entity_uri_service, $this->entity_service ),
+		) );
+		$this->autocomplete_adapter = new Wordlift_Autocomplete_Adapter( $autocomplete_service );
 
 	}
 

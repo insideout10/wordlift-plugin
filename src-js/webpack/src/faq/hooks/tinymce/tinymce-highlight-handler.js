@@ -6,6 +6,8 @@
 
 const QUESTION_HIGHLIGHT_COLOR = "#00ff00";
 
+const ANSWER_HIGHLIGHT_COLOR = "#00FFFF";
+
 class TinymceHighlightHandler {
   /**
    * Construct highlight handler instance.

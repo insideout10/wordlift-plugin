@@ -14,6 +14,8 @@
   }
   .disambiguated {
     border-bottom: #007aff 2px solid;
+    // Remove the padding bottom otherwise our bottom border won't show.
+    padding-bottom: 0;
   }
   &[data-type='wordlift/faceted-search'],
   &[data-type='wordlift/navigator'],

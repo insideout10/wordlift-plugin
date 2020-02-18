@@ -45,7 +45,7 @@ t.push({
 
 window.wordlift = {} if not window.wordlift?
 
-window.wordlift.types = t;
+window._wlEntityTypes = t;
 window.wordlift.entities = {}
 
 # Declared to be compliant with wordpress color picker

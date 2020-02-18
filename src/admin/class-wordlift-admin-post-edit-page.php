@@ -55,6 +55,8 @@ class Wordlift_Admin_Post_Edit_Page {
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
+		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_scripts_gutenberg', ) );
+
 		// Bail out if we're in the UX Builder editor.
 		if ( $this->is_ux_builder_editor() ) {
 			$this->log->info( 'WordLift will not show, since we are in UX Builder editor.' );
@@ -68,8 +70,6 @@ class Wordlift_Admin_Post_Edit_Page {
 		// Set a hook to enqueue scripts only when the edit page is displayed.
 		add_action( 'admin_print_scripts-post.php', $callback );
 		add_action( 'admin_print_scripts-post-new.php', $callback );
-
-		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_scripts_gutenberg', ) );
 
 		$this->plugin = $plugin;
 	}
@@ -144,16 +144,16 @@ class Wordlift_Admin_Post_Edit_Page {
 		 *
 		 * @since 3.20.0 edit.js has been migrated to the new webpack configuration.
 		 */
-		// plugin_dir_url( __FILE__ ) . 'js/1/edit.js'
 		$script_name = plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/edit';
 
 		/**
 		 * Scripts_Helper introduced.
 		 *
 		 * @since 3.25.0 Scripts are loaded using script helper to ensure WP 4.4 compatibiility.
+		 * @since 3.25.1 The handle is used to hook the wp_localize_script for the _wlEntityTypes global object.
 		 */
 		Scripts_Helper::enqueue_based_on_wordpress_version(
-			'wordlift-admin-edit-page',
+			'wl-classic-editor',
 			$script_name,
 			array(
 				$this->plugin->get_plugin_name(),
@@ -189,6 +189,7 @@ class Wordlift_Admin_Post_Edit_Page {
 		wp_enqueue_style( 'wordlift-admin-edit-page', "$script_name.css", array(), $this->plugin->get_version() );
 		// This method is reached only if editor is classic editor.
 		$this->load_faq_settings( self::TINY_MCE );
+		wp_enqueue_style( 'wl-classic-editor', "$script_name.css", array(), $this->plugin->get_version() );
 
 	}
 
@@ -243,6 +244,8 @@ class Wordlift_Admin_Post_Edit_Page {
 	 */
 	public function enqueue_scripts_gutenberg() {
 
+//		wp_die( 'enqueue_scripts_gutenberg');
+
 		wp_register_script(
 			'wl-block-editor',
 			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/block-editor.js',
@@ -263,6 +266,9 @@ class Wordlift_Admin_Post_Edit_Page {
 			'nonce' => wp_create_nonce( 'wp_rest' )
 		) );
 
+		/*
+		 * @since 3.25.1 The hook is used by the wp_localize_script to register the _wlEntityTypes global object.
+		 */
 		wp_enqueue_style(
 			'wl-block-editor',
 			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/block-editor.css',
