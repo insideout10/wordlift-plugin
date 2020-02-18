@@ -8,7 +8,7 @@
 /**
  * External dependencies
  */
-import { call, put, select, takeLatest } from "redux-saga/effects";
+import { call, put, select, takeLatest, delay } from "redux-saga/effects";
 /**
  * Internal dependencies.
  */
@@ -21,6 +21,21 @@ import { faqEditItemType } from "../components/faq-edit-item";
 import { FAQ_ITEMS_CHANGED } from "../constants/faq-hook-constants";
 import { trigger } from "backbone";
 
+function* dispatchNotification(response) {
+  const notificationAction = updateNotificationArea();
+  notificationAction.payload = {
+    notificationMessage: response.message,
+    notificationType: response.status
+  };
+  yield put(notificationAction);
+  yield delay(2000);
+  notificationAction.payload = {
+    notificationMessage: "",
+    notificationType: ""
+  };
+  yield put(notificationAction);
+}
+
 function* handleAddNewQuestion(action) {
   const currentQuestion = yield select(getCurrentQuestion);
   const faqItems = [
@@ -30,19 +45,12 @@ function* handleAddNewQuestion(action) {
     }
   ];
   const response = yield call(API.saveFAQItems, faqItems);
-  dispatchNotification(response);
+  yield dispatchNotification(response);
   yield put(resetTypedQuestion());
   // Refresh the screen by getting new FAQ items.
   yield put(requestGetFaqItems());
 }
-function* dispatchNotification(response) {
-  const notificationAction = updateNotificationArea();
-  notificationAction.payload = {
-    notificationMessage: response.message,
-    notificationType: response.status
-  };
-  yield put(notificationAction);
-}
+
 /**
  * Get the FAQ items from the API.
  * @return {Generator<*, void, ?>}
@@ -73,7 +81,7 @@ function* handleUpdateFaqItems(action) {
       break;
   }
   const response = yield call(API.updateFAQItems, faqItems);
-  dispatchNotification(response);
+  yield dispatchNotification(response);
   yield put(requestGetFaqItems());
 }
 
