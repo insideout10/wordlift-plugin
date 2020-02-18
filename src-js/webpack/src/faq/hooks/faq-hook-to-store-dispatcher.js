@@ -49,16 +49,18 @@ class FaqHookToStoreDispatcher {
       this.store.dispatch(action);
     }
   }
-  dispatchTextSelectedAction(text) {
+  dispatchTextSelectedAction(data) {
+    const { selectedText, selectedHTML } = data;
     // // Check if this is a question
-    if (FaqValidator.isQuestion(text)) {
+    if (FaqValidator.isQuestion(selectedText)) {
       const action = updateQuestionOnInputChange();
-      action.payload = text;
+      action.payload = selectedText;
       this.store.dispatch(action);
       // Add it to the API
       this.store.dispatch(requestAddNewQuestion());
     } else {
-      this.dispatchAnswerSelected(text);
+      // Allow html on answers.
+      this.dispatchAnswerSelected(selectedHTML);
     }
   }
 }

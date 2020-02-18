@@ -37,8 +37,8 @@ class FaqEventHandler {
    * the store.
    */
   listenEventsFromHooks() {
-    on(FAQ_EVENT_HANDLER_SELECTION_CHANGED, text => {
-      this.dispatcher.dispatchTextSelectedAction(text)
+    on(FAQ_EVENT_HANDLER_SELECTION_CHANGED, data => {
+      this.dispatcher.dispatchTextSelectedAction(data)
     });
   }
 
