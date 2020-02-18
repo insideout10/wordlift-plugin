@@ -17,3 +17,11 @@ export const FAQ_REQUEST_ADD_NEW_QUESTION = "FAQ_REQUEST_ADD_NEW_QUESTION";
  * @type {string}
  */
 export const FAQ_EVENT_HANDLER_SELECTION_CHANGED = "FAQ_EVENT_HANDLER_SELECTION_CHANGED";
+
+/**
+ * Event emitted by the store when the faq items are changed
+ * @type {string}
+ */
+export const FAQ_ITEMS_CHANGED = "FAQ_ITEMS_CHANGED";
+
+

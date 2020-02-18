@@ -18,6 +18,8 @@ import { getAllFAQItems, getCurrentQuestion } from "../selectors";
 import { requestGetFaqItems, resetTypedQuestion, updateFaqItems, updateNotificationArea } from "../actions";
 import { transformAPIDataToUi } from "./filters";
 import { faqEditItemType } from "../components/faq-edit-item";
+import {FAQ_ITEMS_CHANGED} from "../constants/faq-hook-constants";
+import {trigger} from "backbone"
 
 function* handleAddNewQuestion(action) {
   const currentQuestion = yield select(getCurrentQuestion);
@@ -43,6 +45,7 @@ function* handleGetFaqItems() {
   const faqItems = yield call(API.getFAQItems);
   const action = updateFaqItems();
   action.payload = transformAPIDataToUi(faqItems);
+  trigger(FAQ_ITEMS_CHANGED, action.payload)
   yield put(action);
 }
 

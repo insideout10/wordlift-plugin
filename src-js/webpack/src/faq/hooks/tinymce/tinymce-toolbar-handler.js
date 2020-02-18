@@ -79,8 +79,9 @@ class TinymceToolbarHandler {
       text: "Add Question or Answer",
       id: TINYMCE_TOOLBAR_BUTTON_NAME,
       onclick: function() {
-        handler.highlightHandler.highlightSelectedText(editor.selection.getContent());
-        trigger(FAQ_EVENT_HANDLER_SELECTION_CHANGED, editor.selection.getContent());
+        const selectedText = editor.selection.getContent({ format: "text" });
+        handler.highlightHandler.highlightSelectedText(selectedText);
+        trigger(FAQ_EVENT_HANDLER_SELECTION_CHANGED, selectedText);
       }
     });
     this.changeToolBarButtonStateBasedOnTextSelected();

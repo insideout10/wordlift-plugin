@@ -6,17 +6,22 @@
  */
 
 /**
+ * External dependencies.
+ */
+import { trigger } from "backbone";
+
+/**
  * Internal dependencies.
  */
 import TinymceToolbarHandler from "./tinymce-toolbar-handler";
 import TinymceHighlightHandler from "./tinymce-highlight-handler";
+import { FAQ_TINYMCE_EDITOR_READY } from "../../constants/faq-hook-constants";
+import store from "../../store";
 
 const FAQ_TINYMCE_PLUGIN_NAME = "wl_faq_tinymce";
 const tinymce = global["tinymce"];
-tinymce.PluginManager.add(FAQ_TINYMCE_PLUGIN_NAME, function (editor) {
-  console.log(editor)
-  const highlightHandler = new TinymceHighlightHandler(editor)
+tinymce.PluginManager.add(FAQ_TINYMCE_PLUGIN_NAME, function(editor) {
+  const highlightHandler = new TinymceHighlightHandler(editor);
   const toolBarHandler = new TinymceToolbarHandler(editor, highlightHandler);
   toolBarHandler.addButtonToToolBar();
-
 });

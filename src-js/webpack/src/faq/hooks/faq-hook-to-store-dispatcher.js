@@ -6,7 +6,7 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
-import {answerSelectedByUser, requestAddNewQuestion, updateQuestionOnInputChange} from "../actions";
+import { answerSelectedByUser, requestAddNewQuestion, updateQuestionOnInputChange } from "../actions";
 import FaqValidator from "./validators/faq-validator";
 
 class FaqHookToStoreDispatcher {
@@ -23,7 +23,7 @@ class FaqHookToStoreDispatcher {
       action.payload = text;
       this.store.dispatch(action);
       // Add it to the API
-      this.store.dispatch( requestAddNewQuestion() )
+      this.store.dispatch(requestAddNewQuestion());
     } else {
       // This is an answer, show the  add answer button.
       const action = answerSelectedByUser();

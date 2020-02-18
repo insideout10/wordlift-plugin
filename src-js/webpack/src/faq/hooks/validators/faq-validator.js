@@ -8,7 +8,7 @@
 class FaqValidator {
 
     static isQuestion(text) {
-        return text.trim().endsWith("?");
+        return text.trim().endsWith("?")
     }
 
 }
