@@ -77,6 +77,7 @@ class FaqScreen extends React.Component {
           notificationMessage={this.props.notificationMessage}
           notificationType={this.props.notificationType}
           notificationCloseButtonClickedListener={this.removeNotificationListener}
+          autoHide = {true}
         />
         {this.renderComponentBasedOnState()}
       </React.Fragment>

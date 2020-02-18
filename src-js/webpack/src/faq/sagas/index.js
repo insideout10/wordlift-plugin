@@ -18,8 +18,8 @@ import { getAllFAQItems, getCurrentQuestion } from "../selectors";
 import { requestGetFaqItems, resetTypedQuestion, updateFaqItems, updateNotificationArea } from "../actions";
 import { transformAPIDataToUi } from "./filters";
 import { faqEditItemType } from "../components/faq-edit-item";
-import {FAQ_ITEMS_CHANGED} from "../constants/faq-hook-constants";
-import {trigger} from "backbone"
+import { FAQ_ITEMS_CHANGED } from "../constants/faq-hook-constants";
+import { trigger } from "backbone";
 
 function* handleAddNewQuestion(action) {
   const currentQuestion = yield select(getCurrentQuestion);
@@ -30,25 +30,36 @@ function* handleAddNewQuestion(action) {
     }
   ];
   const response = yield call(API.saveFAQItems, faqItems);
+  dispatchNotification(response);
+  yield put(resetTypedQuestion());
+  // Refresh the screen by getting new FAQ items.
+  yield put(requestGetFaqItems());
+}
+function* dispatchNotification(response) {
   const notificationAction = updateNotificationArea();
   notificationAction.payload = {
     notificationMessage: response.message,
     notificationType: response.status
   };
   yield put(notificationAction);
-  yield put(resetTypedQuestion());
-  // Refresh the screen by getting new FAQ items.
-  yield put(requestGetFaqItems());
 }
-
+/**
+ * Get the FAQ items from the API.
+ * @return {Generator<*, void, ?>}
+ */
 function* handleGetFaqItems() {
   const faqItems = yield call(API.getFAQItems);
   const action = updateFaqItems();
   action.payload = transformAPIDataToUi(faqItems);
-  trigger(FAQ_ITEMS_CHANGED, action.payload)
+  trigger(FAQ_ITEMS_CHANGED, action.payload);
   yield put(action);
 }
 
+/**
+ * Update the FAQ items when the user changes the data.
+ * @param action
+ * @return {Generator<<"CALL", CallEffectDescriptor>|*, void, ?>}
+ */
 function* handleUpdateFaqItems(action) {
   const faqItems = yield select(getAllFAQItems);
   const payload = action.payload;
@@ -62,12 +73,7 @@ function* handleUpdateFaqItems(action) {
       break;
   }
   const response = yield call(API.updateFAQItems, faqItems);
-  const notificationAction = updateNotificationArea();
-  notificationAction.payload = {
-    notificationMessage: response.message,
-    notificationType: response.status
-  };
-  yield put(notificationAction);
+  dispatchNotification(response);
   yield put(requestGetFaqItems());
 }
 

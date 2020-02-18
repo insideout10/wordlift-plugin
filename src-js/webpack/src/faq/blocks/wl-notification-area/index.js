@@ -17,8 +17,24 @@ import { WlContainer } from "../../../mappings/blocks/wl-container";
 import { WlColumn } from "../../../mappings/blocks/wl-column";
 
 class WlNotificationArea extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { ...this.props };
+    console.log(this.state)
+
+    this.hideNotificationIfTimeoutEnabled()
+  }
+  hideNotificationIfTimeoutEnabled() {
+    this.state.timeout = this.props.timeout || 2000;
+    this.state.autoHide = this.props.autoHide || false;
+    if ( this.state.autoHide ) {
+      setTimeout( () => {
+        this.state.notificationMessage = ""
+      }, this.state.timeout)
+    }
+  }
   render() {
-    const { notificationMessage, notificationType, notificationCloseButtonClickedListener } = this.props;
+    const { notificationMessage, notificationType, notificationCloseButtonClickedListener } = this.state;
     return (
       <React.Fragment>
         {"" !== notificationMessage && (
