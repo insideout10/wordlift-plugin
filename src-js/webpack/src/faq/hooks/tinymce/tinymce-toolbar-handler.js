@@ -46,7 +46,7 @@ class TinymceToolbarHandler {
   }
 
   /**
-   * Disable button
+   * Disable toolbar button
    */
   disableButton(container, button) {
     container.classList.add("mce-disabled");
@@ -54,7 +54,7 @@ class TinymceToolbarHandler {
   }
 
   /**
-   * Enable tool bar button
+   * Enable toolbar button
    */
   enableButton(container, button) {
     container.classList.remove("mce-disabled");
@@ -91,7 +91,6 @@ class TinymceToolbarHandler {
     const selectedText = editor.selection.getContent({ format: "text" });
     const container = document.getElementById(TINYMCE_TOOLBAR_BUTTON_NAME);
     const button = container.getElementsByTagName("button")[0];
-    // If all questions have answer and an answer is selected then disable the button
     if (this.shouldDisableButton(selectedText)) {
       this.disableButton(container, button);
     } else {

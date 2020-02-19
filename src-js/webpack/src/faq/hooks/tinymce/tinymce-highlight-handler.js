@@ -20,14 +20,23 @@ class TinymceHighlightHandler {
   constructor(editor, store) {
     this.editor = editor;
     this.store = store;
-    this.highlightWhenStoreDataChange()
+    this.highlightWhenStoreDataChange();
+    // Keep a reference to the strings which are highlighted.
+    this.highlightedStrings = []
+  }
+
+  /**
+   * Accepts an Faq item and highlights the faq items if not done before.
+   * @param faqItem
+   */
+  highlightTextIfNotDoneBefore(faqItem) {
+
   }
 
   highlightWhenStoreDataChange() {
     on(FAQ_ITEMS_CHANGED, faqItems => {
       faqItems.map(e => {
-        this.highlightSelectedText(e.question);
-        this.highlightSelectedText(e.answer);
+        this.highlightTextIfNotDoneBefore(e)
       });
     });
   }
