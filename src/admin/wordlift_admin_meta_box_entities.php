@@ -5,6 +5,8 @@
  * @package Wordlift
  */
 
+use Wordlift\FAQ\FAQ_Metabox;
+
 /**
  * Build WL_Metabox and the contained WL_Metabox_Field(s)
  */
@@ -92,6 +94,8 @@ function wl_entities_box_content( $post, $wrapper = true ) {
 	if ( $wrapper ) {
 		echo '<div id="wordlift-edit-post-outer-wrapper"></div>';
 	}
+	echo '<div id="'. FAQ_Metabox::FAQ_LIST_BOX_ID . '"></div>';
+	echo '<div id="'. FAQ_Metabox::FAQ_MODAL_ID . '"></div>';
 }
 
 function wl_entities_box_content_scripts() {
