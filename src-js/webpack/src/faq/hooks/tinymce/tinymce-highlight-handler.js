@@ -34,14 +34,14 @@ class TinymceHighlightHandler {
     });
   }
 
-
   highlightSelectedText(selectedText, isQuestion) {
+    const html = this.editor.selection.getContent()
     const className = classExtractor({
       "wl-faq__question": isQuestion,
       "wl-faq__answer": !isQuestion
     });
     const editor = this.editor;
-    const highlightedElement = `<span class="${className}">${selectedText}</span>`;
+    const highlightedElement = `<span class="${className}">${html}</span>`;
     editor.selection.setContent(highlightedElement);
   }
 }

@@ -16,10 +16,20 @@ body#tinymce p,
   @include textannotation;
   .wl-faq__question {
     background-color: tomato;
+    opacity: 0.9;
+    cursor: pointer;
+    &:hover {
+      opacity: 1;
+    }
   }
 
   .wl-faq__answer {
     background-color: #00a0d2;
+    cursor: pointer;
+    opacity: 0.9;
+    &:hover {
+      opacity: 1;
+    }
   }
   // When the user is typing in TinyMCE or the classification postbox is closed.
   &.wl-tinymce-typing .textannotation,
