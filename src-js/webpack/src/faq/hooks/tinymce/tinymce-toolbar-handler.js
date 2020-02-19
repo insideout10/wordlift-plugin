@@ -7,8 +7,8 @@
 /**
  * Internal dependencies.
  */
-import { trigger } from "backbone";
-import { FAQ_EVENT_HANDLER_SELECTION_CHANGED } from "../../constants/faq-hook-constants";
+import { trigger, on } from "backbone";
+import { FAQ_EVENT_HANDLER_SELECTION_CHANGED, FAQ_ITEMS_CHANGED } from "../../constants/faq-hook-constants";
 import FaqValidator from "../validators/faq-validator";
 const TINYMCE_TOOLBAR_BUTTON_NAME = "wl-faq-toolbar-button";
 
@@ -21,6 +21,12 @@ class TinymceToolbarHandler {
   constructor(editor, highlightHandler) {
     this.editor = editor;
     this.highlightHandler = highlightHandler;
+    this.faqItems = [];
+    // Listen to store changes on faq items and set the tool bar
+    // button state based on it.
+    on(FAQ_ITEMS_CHANGED, faqItems => {
+      this.faqItems = faqItems;
+    });
   }
 
   /**
@@ -40,6 +46,43 @@ class TinymceToolbarHandler {
   }
 
   /**
+   * Disable button
+   */
+  disableButton(container, button) {
+    container.classList.add("mce-disabled");
+    button.disabled = true;
+  }
+
+  /**
+   * Enable tool bar button
+   */
+  enableButton(container, button) {
+    container.classList.remove("mce-disabled");
+    button.disabled = false;
+  }
+
+  /**
+   * Determine if the tool bar button needed to be disabled.
+   * Conditions for disabling the button
+   * 1. If there is no selected text
+   * 2. If an answer is selected and there are no unanswered questions.
+   * @return {Boolean} True if we need to disable button, false if we dont want to.
+   */
+  shouldDisableButton(selectedText) {
+    if (0 === selectedText.length) {
+      return true;
+    }
+    // If there is some selected text then check if it is an answer.
+    const questionsWithoutAnswer = this.faqItems.filter(e => e.answer === "").length;
+    if (0 === questionsWithoutAnswer && !FaqValidator.isQuestion(selectedText)) {
+      // There are no questions without answer and selected text is answer then disable it.
+      return true;
+    }
+    // Return false if no conditions are matching.
+    return false;
+  }
+
+  /**
    * When there is no selection disable the button, determine
    * if it is question or answer and change the button text.
    */
@@ -48,14 +91,13 @@ class TinymceToolbarHandler {
     const selectedText = editor.selection.getContent({ format: "text" });
     const container = document.getElementById(TINYMCE_TOOLBAR_BUTTON_NAME);
     const button = container.getElementsByTagName("button")[0];
-    if (selectedText.length > 0) {
-      container.classList.remove("mce-disabled");
-      button.disabled = false;
-      this.setButtonTextBasedOnSelectedText(selectedText, button, container);
+    // If all questions have answer and an answer is selected then disable the button
+    if (this.shouldDisableButton(selectedText)) {
+      this.disableButton(container, button);
     } else {
-      container.classList.add("mce-disabled");
-      button.disabled = true;
+      this.enableButton(container, button);
     }
+    this.setButtonTextBasedOnSelectedText(selectedText, button, container);
   }
 
   /**
