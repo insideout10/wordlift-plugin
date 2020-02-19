@@ -38,7 +38,7 @@ const ANSWER_ALLOWED_HTML_TAGS = [
   "i",
   "em"
 ];
-const { invalidTagMessage, invalidWordCountMessage } = globals["_wlFaqSettings"];
+const { invalidTagMessage, invalidWordCountMessage } = global["_wlFaqSettings"];
 /**
  * Show the warning if the answer exceeds the word count limit.
  * @param type Question or Answer
@@ -49,8 +49,12 @@ export function showWarningIfAnswerWordCountExceedsLimit(type, textAreaValue) {
   if (type !== faqEditItemType.ANSWER || 0 === textAreaValue.length) {
     return <React.Fragment />;
   }
-  const errorMessage = invalidWordCountMessage.replace("{ANSWER_WORD_COUNT_WARNING_LIMIT}", wordCount);
-  const wordCount = textAreaValue.match(/\S+/g).length;
+  const matches = textAreaValue.match(/\S+/g)
+  if ( matches === null || matches.length === 0) {
+    return <React.Fragment />;
+  }
+  const wordCount = matches.length
+  const errorMessage = invalidWordCountMessage.replace("{ANSWER_WORD_COUNT_WARNING_LIMIT}", ANSWER_WORD_COUNT_WARNING_LIMIT);
   if (wordCount <= ANSWER_WORD_COUNT_WARNING_LIMIT) {
     return <React.Fragment />;
   } else {
