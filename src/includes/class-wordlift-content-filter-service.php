@@ -26,6 +26,20 @@ class Wordlift_Content_Filter_Service {
 	const PATTERN = '/<(\\w+)[^<]*class="([^"]*)"\\sitemid=\"([^"]+)\"[^>]*>([^<]*)<\\/\\1>/i';
 
 	/**
+	 * This pattern is used to find all the questions tag.
+	 *
+	 * @since 3.26.0
+	 */
+	const FAQ_QUESTION_PATTERN = '/(<span class="\s?wl-faq__question">)(.*)(<\/span>)/';
+
+	/**
+	 * This pattern is used to find all the questions tag.
+	 *
+	 * @since 3.26.0
+	 */
+	const FAQ_ANSWER_PATTERN = '/(<span class="\s?wl-faq__answer">)(.*)(<\/span>)/';
+
+	/**
 	 * A {@link Wordlift_Entity_Service} instance.
 	 *
 	 * @since  3.8.0
@@ -133,6 +147,11 @@ class Wordlift_Content_Filter_Service {
 			return $content;
 		}
 
+		/**
+		 * Before removing annotation tags, remove the highlight tags.
+		 */
+		$content = preg_replace(self::FAQ_QUESTION_PATTERN,'$2', $content);
+		$content = preg_replace(self::FAQ_ANSWER_PATTERN,'$2', $content);
 		// Preload the `link by default` setting.
 		$this->is_link_by_default = $this->configuration_service->is_link_by_default();
 
