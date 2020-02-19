@@ -229,8 +229,6 @@ class Wordlift_Admin_Post_Edit_Page {
 			'addQuestionText' => __( 'Add', 'wordlift' ),
 			'nonce' => wp_create_nonce( 'wp_rest' ),
 			'postId' => get_the_ID(),
-			// Use this hightlight class to highlight question and answer.
-			'faqHighlightClass' => Faq_Content_Filter::FAQ_HIGHLIGHT_CLASS_NAME,
 			// Translation for warning, error message.
 			'invalidTagMessage' => 'Invalid tags {INVALID_TAGS} is present in answer',
 			'invalidWordCountMessage' => 'Answer word count must not exceed {ANSWER_WORD_COUNT_WARNING_LIMIT} words'
