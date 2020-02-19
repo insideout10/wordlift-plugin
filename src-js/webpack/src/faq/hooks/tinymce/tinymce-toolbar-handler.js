@@ -122,7 +122,6 @@ class TinymceToolbarHandler {
       onclick: function() {
         const selectedText = editor.selection.getContent({ format: "text" });
         const selectedHTML = editor.selection.getNode().innerHTML;
-        handler.highlightHandler.highlightSelectedText(selectedText);
         trigger(FAQ_EVENT_HANDLER_SELECTION_CHANGED, {
           selectedText: selectedText,
           selectedHTML: selectedHTML

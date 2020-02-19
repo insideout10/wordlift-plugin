@@ -38,7 +38,7 @@ const ANSWER_ALLOWED_HTML_TAGS = [
   "i",
   "em"
 ];
-
+const { invalidTagMessage, invalidWordCountMessage } = globals["_wlFaqSettings"];
 /**
  * Show the warning if the answer exceeds the word count limit.
  * @param type Question or Answer
@@ -49,14 +49,15 @@ export function showWarningIfAnswerWordCountExceedsLimit(type, textAreaValue) {
   if (type !== faqEditItemType.ANSWER || 0 === textAreaValue.length) {
     return <React.Fragment />;
   }
+  const errorMessage = invalidWordCountMessage.replace("{ANSWER_WORD_COUNT_WARNING_LIMIT}", wordCount);
   const wordCount = textAreaValue.match(/\S+/g).length;
   if (wordCount <= ANSWER_WORD_COUNT_WARNING_LIMIT) {
     return <React.Fragment />;
   } else {
     return (
       <p className={"faq-edit-item__warning_text"}>
-        <span className="dashicons dashicons-warning" /> Answer word count must not exceed
-        {ANSWER_WORD_COUNT_WARNING_LIMIT} words
+        <span className="dashicons dashicons-warning" />
+        {errorMessage}
       </p>
     );
   }
@@ -72,7 +73,7 @@ function getAllInvalidTags(textAreaValue) {
    * This regex matches <p and </p ( so we detect invalid tags even if they have a incomplete closed tag in it)
    */
   const matches = textAreaValue.match(/<\/?\w+/gim);
-  if ( matches === null ) return false;
+  if (matches === null) return false;
   const filteredMatches = matches.map(e =>
     e
       .replace("<", "")
@@ -106,9 +107,10 @@ export function showWarningIfInvalidHTMLTagPresentInAnswer(type, textAreaValue) 
   } else {
     // Return error message.
     const invalidTagsString = invalidTags.join(",");
+    const errorMessage = invalidTagMessage.replace("{INVALID_TAGS}", invalidTagsString);
     return (
       <p className={"faq-edit-item__danger_text"}>
-        <span className="dashicons dashicons-no-alt" /> Invalid tags {invalidTagsString} is present in answer.
+        <span className="dashicons dashicons-no-alt" /> {errorMessage}
       </p>
     );
   }

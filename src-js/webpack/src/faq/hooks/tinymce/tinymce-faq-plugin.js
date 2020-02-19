@@ -15,8 +15,7 @@ import { trigger } from "backbone";
  */
 import TinymceToolbarHandler from "./tinymce-toolbar-handler";
 import TinymceHighlightHandler from "./tinymce-highlight-handler";
-import { FAQ_TINYMCE_EDITOR_READY } from "../../constants/faq-hook-constants";
-import store from "../../store";
+
 
 const FAQ_TINYMCE_PLUGIN_NAME = "wl_faq_tinymce";
 const tinymce = global["tinymce"];

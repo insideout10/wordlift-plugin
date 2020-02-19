@@ -18,7 +18,7 @@ import { getAllFAQItems, getCurrentQuestion } from "../selectors";
 import { requestGetFaqItems, resetTypedQuestion, updateFaqItems, updateNotificationArea } from "../actions";
 import { transformAPIDataToUi } from "./filters";
 import { faqEditItemType } from "../components/faq-edit-item";
-import { FAQ_ITEMS_CHANGED } from "../constants/faq-hook-constants";
+import { FAQ_HIGHLIGHT_TEXT, FAQ_ITEMS_CHANGED } from "../constants/faq-hook-constants";
 import { trigger } from "backbone";
 
 function* dispatchNotification(response) {
@@ -46,6 +46,11 @@ function* handleAddNewQuestion(action) {
   ];
   const response = yield call(API.saveFAQItems, faqItems);
   yield dispatchNotification(response);
+  // Event emitted to global namespace in order to highlight text in the editor.
+  trigger(FAQ_HIGHLIGHT_TEXT, {
+    text: currentQuestion,
+    isQuestion: true
+  });
   yield put(resetTypedQuestion());
   // Refresh the screen by getting new FAQ items.
   yield put(requestGetFaqItems());
@@ -80,6 +85,10 @@ function* handleUpdateFaqItems(action) {
       faqItems[faqItemIndex]["question"] = payload.value;
       break;
   }
+  trigger(FAQ_HIGHLIGHT_TEXT, {
+    text: payload.value,
+    isQuestion: payload.type === faqEditItemType.QUESTION
+  });
   const response = yield call(API.updateFAQItems, faqItems);
   yield dispatchNotification(response);
   yield put(requestGetFaqItems());

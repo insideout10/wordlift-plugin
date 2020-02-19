@@ -14,7 +14,13 @@ body#tinymce p,
   }
 
   @include textannotation;
+  .wl-faq__question {
+    background-color: tomato;
+  }
 
+  .wl-faq__answer {
+    background-color: #00a0d2;
+  }
   // When the user is typing in TinyMCE or the classification postbox is closed.
   &.wl-tinymce-typing .textannotation,
   &.wl-postbox-closed .textannotation {

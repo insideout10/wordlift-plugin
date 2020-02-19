@@ -24,4 +24,10 @@ export const FAQ_EVENT_HANDLER_SELECTION_CHANGED = "FAQ_EVENT_HANDLER_SELECTION_
  */
 export const FAQ_ITEMS_CHANGED = "FAQ_ITEMS_CHANGED";
 
+/**
+ * Event emitted by the store when a question or answer
+ * is added by ui, asking the editor to highlight the text.
+ */
+export const FAQ_HIGHLIGHT_TEXT = "FAQ_HIGHLIGHT_TEXT";
+
 
