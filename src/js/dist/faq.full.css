@@ -32,3 +32,5 @@
 
 .wl-bg-modal{display:none;z-index:9998 !important;position:fixed;background-color:rgba(0,0,0,0.3);left:50%;top:50%;height:100%;width:100%;transform:translate(-50%, -50%)}.wl-bg-modal.wl-bg-modal--open{display:block}.wl-bg-modal.wl-bg-modal--closed{display:none}
 
+#wl-faq-meta-list-box{height:380px;overflow-y:scroll}
+

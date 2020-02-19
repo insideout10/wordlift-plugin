@@ -61,19 +61,27 @@ export function showWarningIfAnswerWordCountExceedsLimit(type, textAreaValue) {
     );
   }
 }
+
+/**
+ * Return array if invalid tags present and false if no invalid tags present
+ * @param textAreaValue
+ * @return {boolean|string[]}
+ */
 function getAllInvalidTags(textAreaValue) {
   /**
    * This regex matches <p and </p ( so we detect invalid tags even if they have a incomplete closed tag in it)
    */
-  const matches = textAreaValue.match(/<\/?\w+/gim).map(e =>
-      e
-          .replace("<", "")
-          .replace("/", "")
-          .toLowerCase()
-          .replace(" ", "")
+  const matches = textAreaValue.match(/<\/?\w+/gim);
+  if ( matches === null ) return false;
+  const filteredMatches = matches.map(e =>
+    e
+      .replace("<", "")
+      .replace("/", "")
+      .toLowerCase()
+      .replace(" ", "")
   );
   // Tags with no duplicate items.
-  const tags = [...new Set(matches)];
+  const tags = [...new Set(filteredMatches)];
   // Check which tags are not present in FAQ answer.
   let invalidTags = tags.filter(e => !ANSWER_ALLOWED_HTML_TAGS.includes(e));
   return invalidTags.map(e => {
@@ -92,8 +100,8 @@ export function showWarningIfInvalidHTMLTagPresentInAnswer(type, textAreaValue) 
     return <React.Fragment />;
   }
   // Get all invalid tags in the answer.
-  const invalidTags = getAllInvalidTags(textAreaValue)
-  if (invalidTags.length === 0) {
+  const invalidTags = getAllInvalidTags(textAreaValue);
+  if (invalidTags === false || invalidTags.length === 0) {
     return <React.Fragment />;
   } else {
     // Return error message.
