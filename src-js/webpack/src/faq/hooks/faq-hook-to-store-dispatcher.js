@@ -6,7 +6,13 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
-import { answerSelectedByUser, requestAddNewQuestion, updateFaqItem, updateQuestionOnInputChange } from "../actions";
+import {
+  answerSelectedByUser,
+  questionSelectedByUser,
+  requestAddNewQuestion,
+  updateFaqItem,
+  updateQuestionOnInputChange
+} from "../actions";
 import FaqValidator from "./validators/faq-validator";
 import { getAllFAQItems } from "../selectors";
 import { faqEditItemType } from "../components/faq-edit-item";
@@ -49,6 +55,24 @@ class FaqHookToStoreDispatcher {
       this.store.dispatch(action);
     }
   }
+
+  /**
+   * When the user clicks on the question or answer in text editor
+   * this dispatcher handles the event and dispatch the selected
+   * event to the store.
+   * @param faqId
+   */
+  dispatchQuestionOrAnswerClickedByUser(faqId) {
+    const action = questionSelectedByUser();
+    action.payload = faqId;
+    this.store.dispatch(action);
+  }
+
+  /**
+   * This method is called when the user selects the text and clicks
+   * on the tool bar button.
+   * @param data
+   */
   dispatchTextSelectedAction(data) {
     const { selectedText, selectedHTML } = data;
     // // Check if this is a question

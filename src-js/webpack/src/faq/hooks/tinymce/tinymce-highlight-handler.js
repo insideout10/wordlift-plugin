@@ -4,13 +4,19 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
-import { FAQ_HIGHLIGHT_TEXT, FAQ_ITEMS_CHANGED } from "../../constants/faq-hook-constants";
+/**
+ * External dependencies.
+ */
 import { on } from "backbone";
+
+/**
+ * Internal dependencies.
+ */
+import { FAQ_HIGHLIGHT_TEXT, FAQ_ITEMS_CHANGED } from "../../constants/faq-hook-constants";
 import { classExtractor } from "../../../mappings/blocks/helper";
 
-const QUESTION_HIGHLIGHT_COLOR = "#00ff00";
-
-const ANSWER_HIGHLIGHT_COLOR = "#00FFFF";
+export const FAQ_QUESTION_HIGHLIGHTING_CLASS = "wl-faq__question";
+export const FAQ_ANSWER_HIGHLIGHTING_CLASS = "wl-faq__answer";
 
 class TinymceHighlightHandler {
   /**
@@ -44,8 +50,8 @@ class TinymceHighlightHandler {
   highlightSelectedText(selectedText, isQuestion, id) {
     const html = this.editor.selection.getContent();
     const className = classExtractor({
-      "wl-faq__question": isQuestion,
-      "wl-faq__answer": !isQuestion
+      [FAQ_QUESTION_HIGHLIGHTING_CLASS]: isQuestion,
+      [FAQ_ANSWER_HIGHLIGHTING_CLASS]: !isQuestion
     });
     /**
      * Prepare unique identifier for the string, we are appending the classname because ids should

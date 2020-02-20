@@ -43,4 +43,5 @@ window.addEventListener("load", () => {
   );
 
   new FaqEventHandler(store);
+  
 });

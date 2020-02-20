@@ -10,11 +10,11 @@
 /**
  * External dependencies.
  */
-import {on} from "backbone";
+import { on } from "backbone";
 /**
  * Internal dependencies.
  */
-import {FAQ_EVENT_HANDLER_SELECTION_CHANGED} from "../constants/faq-hook-constants";
+import { FAQ_EVENT_HANDLER_SELECTION_CHANGED, FAQ_ITEM_SELECTED_ON_TEXT_EDITOR } from "../constants/faq-hook-constants";
 import FaqHookToStoreDispatcher from "./faq-hook-to-store-dispatcher";
 
 const GUTENBERG = "gutenberg";
@@ -38,11 +38,13 @@ class FaqEventHandler {
    */
   listenEventsFromHooks() {
     on(FAQ_EVENT_HANDLER_SELECTION_CHANGED, data => {
-      this.dispatcher.dispatchTextSelectedAction(data)
+      this.dispatcher.dispatchTextSelectedAction(data);
+    });
+    on(FAQ_ITEM_SELECTED_ON_TEXT_EDITOR, faqId => {
+      console.log("faqid is " + faqId);
+      this.dispatcher.dispatchQuestionOrAnswerClickedByUser(faqId);
     });
   }
-
-
 }
 
 export default FaqEventHandler;

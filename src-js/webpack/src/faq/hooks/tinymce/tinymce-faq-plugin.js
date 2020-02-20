@@ -15,7 +15,7 @@ import { trigger } from "backbone";
  */
 import TinymceToolbarHandler from "./tinymce-toolbar-handler";
 import TinymceHighlightHandler from "./tinymce-highlight-handler";
-
+import TinymceClickHandler from "./tinymce-click-handler";
 
 const FAQ_TINYMCE_PLUGIN_NAME = "wl_faq_tinymce";
 const tinymce = global["tinymce"];
@@ -23,4 +23,5 @@ tinymce.PluginManager.add(FAQ_TINYMCE_PLUGIN_NAME, function(editor) {
   const highlightHandler = new TinymceHighlightHandler(editor);
   const toolBarHandler = new TinymceToolbarHandler(editor, highlightHandler);
   toolBarHandler.addButtonToToolBar();
+  new TinymceClickHandler(editor);
 });
