@@ -2,3 +2,22 @@
   max-height: 380px;
   overflow-y: scroll;
 }
+@mixin wl-faq-highlight-mixin {
+  .wl-faq__question {
+    background-color: tomato;
+    opacity: 0.9;
+    cursor: pointer;
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .wl-faq__answer {
+    background-color: #00a0d2;
+    cursor: pointer;
+    opacity: 0.9;
+    &:hover {
+      opacity: 1;
+    }
+  }
+}

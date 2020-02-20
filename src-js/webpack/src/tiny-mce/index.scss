@@ -2,7 +2,7 @@
  * This file defines the styles in the TinyMCE editor. The output css is loaded directly inside TinyMCE.
  */
 @import "../common/mixins";
-
+@import "../faq/index.scss";
 // The TinyMCE editor.
 body#tinymce,
 .mce-content-body,
@@ -12,25 +12,8 @@ body#tinymce p,
   &[contenteditable="false"] {
     background-color: rgb(241, 241, 241);
   }
-
   @include textannotation;
-  .wl-faq__question {
-    background-color: tomato;
-    opacity: 0.9;
-    cursor: pointer;
-    &:hover {
-      opacity: 1;
-    }
-  }
-
-  .wl-faq__answer {
-    background-color: #00a0d2;
-    cursor: pointer;
-    opacity: 0.9;
-    &:hover {
-      opacity: 1;
-    }
-  }
+  @include wl-faq-highlight-mixin;
   // When the user is typing in TinyMCE or the classification postbox is closed.
   &.wl-tinymce-typing .textannotation,
   &.wl-postbox-closed .textannotation {
