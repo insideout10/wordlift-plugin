@@ -243,8 +243,8 @@ class Wordlift_Admin_Post_Edit_Page {
 	 * @since 3.21.0
 	 */
 	public function enqueue_scripts_gutenberg() {
-
-//		wp_die( 'enqueue_scripts_gutenberg');
+		// Load FAQ settings.
+		$this->load_faq_settings(self::GUTENBERG);
 
 		wp_register_script(
 			'wl-block-editor',
@@ -291,8 +291,6 @@ class Wordlift_Admin_Post_Edit_Page {
 			$this->plugin->get_version()
 		);
 
-		// Load FAQ settings.
-		$this->load_faq_settings(self::GUTENBERG);
 	}
 
 }
