@@ -346,6 +346,15 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	/**
+	 * Test if the highlighting done by FAQ is removed.
+	 *
+	 * @since 3.26.0
+	 */
+	public function test_faq_highlighting_tags_are_removed() {
+
+	}
+
+	/**
 	 * Test a content with an entity marked as `wl-no-link`.
 	 *
 	 * @since 3.13.0

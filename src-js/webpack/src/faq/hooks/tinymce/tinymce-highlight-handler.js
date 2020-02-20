@@ -27,21 +27,34 @@ class TinymceHighlightHandler {
      * {
      *     text: string,
      *     isQuestion:Boolean
+     *     id: Int
      * }
      */
     on(FAQ_HIGHLIGHT_TEXT, result => {
-      this.highlightSelectedText(result.text, result.isQuestion);
+      this.highlightSelectedText(result.text, result.isQuestion, result.id);
     });
   }
 
-  highlightSelectedText(selectedText, isQuestion) {
-    const html = this.editor.selection.getContent()
+  /**
+   * Highlight the selection done by the user.
+   * @param selectedText The text which was selected by the user.
+   * @param isQuestion {Boolean} Indicates if its question or answer.
+   * @param id {Int} Unique id for question and answer.
+   */
+  highlightSelectedText(selectedText, isQuestion, id) {
+    const html = this.editor.selection.getContent();
     const className = classExtractor({
       "wl-faq__question": isQuestion,
       "wl-faq__answer": !isQuestion
     });
+    /**
+     * Prepare unique identifier for the string, we are appending the classname because ids should
+     * be unique.
+     * @type {string}
+     */
+    const identifier = `${className}--${id}`;
     const editor = this.editor;
-    const highlightedElement = `<span class="${className}">${html}</span>`;
+    const highlightedElement = `<span class="${className}" id="${identifier}">${html}</span>`;
     editor.selection.setContent(highlightedElement);
   }
 }

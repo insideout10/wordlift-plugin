@@ -141,14 +141,19 @@ class FAQ_Rest_Controller {
 		     array_key_exists( 'faq_items', $post_data) ) {
 			$post_id = $post_data['post_id'];
 			$faq_items = $post_data['faq_items'];
-			foreach ( $faq_items as $faq_item ) {
-				// Add an indentifier id to the faq item, it helps to prevent duplication problem.
-				$faq_item['id'] = count( get_post_meta($post_id, self::FAQ_META_KEY) );
+			foreach ( $faq_items as &$faq_item ) {
+				// Add an identifier id to the faq item, it helps to prevent duplication problem.
+				$faq_item['id'] = time() * rand(1, 100);
 				add_post_meta( (int) $post_id, self::FAQ_META_KEY, $faq_item);
 			}
+
+			/**
+			 * We are returning only the first item id, since the user can select only one text at a time.
+			 */
 			return array(
 				'status' => 'success',
-				'message' => __('Question successfully added.')
+				'message' => __('Question successfully added.'),
+				'id' => (int) $faq_items[0]['id'],
 			);
 		}
 		else {

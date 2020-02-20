@@ -49,7 +49,8 @@ function* handleAddNewQuestion(action) {
   // Event emitted to global namespace in order to highlight text in the editor.
   trigger(FAQ_HIGHLIGHT_TEXT, {
     text: currentQuestion,
-    isQuestion: true
+    isQuestion: true,
+    id: response.id
   });
   yield put(resetTypedQuestion());
   // Refresh the screen by getting new FAQ items.
@@ -87,7 +88,8 @@ function* handleUpdateFaqItems(action) {
   }
   trigger(FAQ_HIGHLIGHT_TEXT, {
     text: payload.value,
-    isQuestion: payload.type === faqEditItemType.QUESTION
+    isQuestion: payload.type === faqEditItemType.QUESTION,
+    id: faqItems[faqItemIndex].id
   });
   const response = yield call(API.updateFAQItems, faqItems);
   yield dispatchNotification(response);
