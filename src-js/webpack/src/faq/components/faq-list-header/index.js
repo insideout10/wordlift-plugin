@@ -18,7 +18,7 @@ const { addQuestionText } = global["_wlFaqSettings"];
 
 export const FaqListHeader = () => (
   <React.Fragment>
-    <WlContainer fullWidth={true}>
+    <WlContainer>
       <WlColumn className={"wl-col--width-80"}>
         <QuestionInputBox />
       </WlColumn>

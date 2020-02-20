@@ -25,6 +25,19 @@ const { addQuestionText, modalId } = global["_wlFaqSettings"];
 
 const listBoxId = "wl-faq-meta-list-box";
 
+/**
+ * Render the modal on the div.
+ */
+window.addEventListener("load", () => {
+  const el = document.createElement("div");
+  ReactDOM.render(
+    <Provider store={store}>
+      <FaqModal />
+    </Provider>,
+    el
+  );
+});
+
 window.addEventListener("DOMNodeInserted", () => {
   // It is loaded dynamically in gutenberg, render these components when the node is added.
   if (document.getElementById(listBoxId) !== null && document.getElementById(modalId) !== null) {
@@ -35,13 +48,6 @@ window.addEventListener("DOMNodeInserted", () => {
         </React.Fragment>
       </Provider>,
       document.getElementById(listBoxId)
-    );
-
-    ReactDOM.render(
-      <Provider store={store}>
-        <FaqModal />
-      </Provider>,
-      document.getElementById(modalId)
     );
 
     new FaqEventHandler(store);

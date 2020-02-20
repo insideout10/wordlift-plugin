@@ -90,6 +90,10 @@ class TinymceToolbarHandler {
     const editor = this.editor;
     const selectedText = editor.selection.getContent({ format: "text" });
     const container = document.getElementById(TINYMCE_TOOLBAR_BUTTON_NAME);
+    // If we cant find the toolbar buttons, then return early.
+    if ( container === null ) {
+      return
+    }
     const button = container.getElementsByTagName("button")[0];
     if (this.shouldDisableButton(selectedText)) {
       this.disableButton(container, button);
