@@ -64,7 +64,7 @@ class FaqHookToStoreDispatcher {
    */
   dispatchQuestionOrAnswerClickedByUser(faqId) {
     const action = questionSelectedByUser();
-    action.payload = faqId;
+    action.payload = parseInt(faqId);
     this.store.dispatch(action);
   }
 
