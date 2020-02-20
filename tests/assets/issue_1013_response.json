@@ -1,0 +1,228 @@
+[
+  {
+    "id": "http://www.wikidata.org/entity/Q296960",
+    "labels": [
+      "Acme"
+    ],
+    "descriptions": [
+      "Wikimedia disambiguation page"
+    ],
+    "types": [
+      "http://schema.org/Product",
+      "http://schema.org/CreativeWork",
+      "http://schema.org/WebPage",
+      "http://schema.org/Thing"
+    ],
+    "urls": [],
+    "images": [],
+    "sameAss": [
+      "http://dbpedia.org/resource/Acme"
+    ],
+    "scope": "cloud",
+    "displayTypes": "CreativeWork, Product, WebPage",
+    "label": "Acme",
+    "value": "http://www.wikidata.org/entity/Q296960⁣http://dbpedia.org/resource/Acme"
+  },
+  {
+    "id": "http://www.wikidata.org/entity/Q341970",
+    "labels": [
+      "acme"
+    ],
+    "descriptions": [
+      "text editor"
+    ],
+    "types": [
+      "http://schema.org/SoftwareApplication",
+      "http://schema.org/Product",
+      "http://schema.org/CreativeWork",
+      "http://schema.org/Thing"
+    ],
+    "urls": [
+      "http://acme.cat-v.org"
+    ],
+    "images": [
+      "http://commons.wikimedia.org/wiki/Special:FilePath/Acme.png"
+    ],
+    "sameAss": [
+      "http://dbpedia.org/resource/Acme_(text_editor)",
+      "http://rdf.freebase.com/ns/m.012l0w"
+    ],
+    "scope": "cloud",
+    "displayTypes": "CreativeWork, Product, SoftwareApplication",
+    "label": "acme",
+    "value": "http://www.wikidata.org/entity/Q341970⁣http://dbpedia.org/resource/Acme_(text_editor)⁣http://rdf.freebase.com/ns/m.012l0w"
+  },
+  {
+    "id": "http://www.wikidata.org/entity/Q1510236",
+    "labels": [
+      "Acme"
+    ],
+    "descriptions": [
+      "census-designated place (CDP) in Whatcom County, Washington, United States"
+    ],
+    "types": [
+      "http://schema.org/Place",
+      "http://schema.org/Thing",
+      "http://schema.org/AdministrativeArea"
+    ],
+    "urls": [],
+    "images": [],
+    "sameAss": [
+      "http://dbpedia.org/resource/Acme,_Washington",
+      "http://sws.geonames.org/5555133",
+      "http://rdf.freebase.com/ns/m.010vnw"
+    ],
+    "scope": "cloud",
+    "displayTypes": "AdministrativeArea, Place",
+    "label": "Acme",
+    "value": "http://www.wikidata.org/entity/Q1510236⁣http://dbpedia.org/resource/Acme,_Washington⁣http://sws.geonames.org/5555133⁣http://rdf.freebase.com/ns/m.010vnw"
+  },
+  {
+    "id": "http://www.wikidata.org/entity/Q3604581",
+    "labels": [
+      "Acme"
+    ],
+    "descriptions": [
+      "album by Jon Spencer Blues Explosion"
+    ],
+    "types": [
+      "http://schema.org/MusicRelease",
+      "http://schema.org/VisualArtwork",
+      "http://schema.org/CreativeWork",
+      "http://schema.org/Thing",
+      "http://schema.org/MusicAlbum"
+    ],
+    "urls": [],
+    "images": [],
+    "sameAss": [
+      "http://dbpedia.org/resource/Acme_(album)"
+    ],
+    "scope": "cloud",
+    "displayTypes": "CreativeWork, MusicAlbum, MusicRelease, VisualArtwork",
+    "label": "Acme",
+    "value": "http://www.wikidata.org/entity/Q3604581⁣http://dbpedia.org/resource/Acme_(album)"
+  },
+  {
+    "id": "http://www.wikidata.org/entity/Q4674380",
+    "labels": [
+      "Acme"
+    ],
+    "descriptions": [
+      "unincorporated community in Jackson County, Indiana"
+    ],
+    "types": [
+      "http://schema.org/Place",
+      "http://schema.org/Thing",
+      "http://schema.org/AdministrativeArea"
+    ],
+    "urls": [],
+    "images": [
+      "http://commons.wikimedia.org/wiki/Special:FilePath/Acme%2C%20Indiana.jpg"
+    ],
+    "sameAss": [
+      "http://dbpedia.org/resource/Acme,_Indiana",
+      "http://sws.geonames.org/4253749"
+    ],
+    "scope": "cloud",
+    "displayTypes": "AdministrativeArea, Place",
+    "label": "Acme",
+    "value": "http://www.wikidata.org/entity/Q4674380⁣http://dbpedia.org/resource/Acme,_Indiana⁣http://sws.geonames.org/4253749"
+  },
+  {
+    "id": "http://www.wikidata.org/entity/Q7866966",
+    "labels": [
+      "Acme"
+    ],
+    "descriptions": [
+      "1916 merchant tanker ship"
+    ],
+    "types": [
+      "http://schema.org/Product",
+      "http://schema.org/Vehicle",
+      "http://schema.org/Thing"
+    ],
+    "urls": [],
+    "images": [
+      "http://commons.wikimedia.org/wiki/Special:FilePath/USS%20Abarenda%20IX-131.jpg"
+    ],
+    "sameAss": [
+      "http://dbpedia.org/resource/USS_Abarenda_(IX-131)"
+    ],
+    "scope": "cloud",
+    "displayTypes": "Product, Vehicle",
+    "label": "Acme",
+    "value": "http://www.wikidata.org/entity/Q7866966⁣http://dbpedia.org/resource/USS_Abarenda_(IX-131)"
+  },
+  {
+    "id": "http://www.wikidata.org/entity/Q14691556",
+    "labels": [
+      "Acme"
+    ],
+    "descriptions": [
+      "Unincorporated Community in Concordia Parish, Louisiana, United States."
+    ],
+    "types": [
+      "http://schema.org/Place",
+      "http://schema.org/Thing",
+      "http://schema.org/AdministrativeArea"
+    ],
+    "urls": [],
+    "images": [],
+    "sameAss": [
+      "http://dbpedia.org/resource/Acme,_Louisiana",
+      "http://sws.geonames.org/4314382"
+    ],
+    "scope": "cloud",
+    "displayTypes": "AdministrativeArea, Place",
+    "label": "Acme",
+    "value": "http://www.wikidata.org/entity/Q14691556⁣http://dbpedia.org/resource/Acme,_Louisiana⁣http://sws.geonames.org/4314382"
+  },
+  {
+    "id": "http://www.wikidata.org/entity/Q15753194",
+    "labels": [
+      "ACME"
+    ],
+    "descriptions": [
+      "journal"
+    ],
+    "types": [
+      "http://schema.org/Product",
+      "http://schema.org/CreativeWorkSeries",
+      "http://schema.org/CreativeWork",
+      "http://schema.org/Series",
+      "http://schema.org/Thing",
+      "http://schema.org/Organization",
+      "http://schema.org/Periodical"
+    ],
+    "urls": [],
+    "images": [],
+    "sameAss": [],
+    "scope": "cloud",
+    "displayTypes": "CreativeWork, CreativeWorkSeries, Organization, Periodical, Product, Series",
+    "label": "ACME",
+    "value": "http://www.wikidata.org/entity/Q15753194"
+  },
+  {
+    "id": "http://www.wikidata.org/entity/Q28941601",
+    "labels": [
+      "acme"
+    ],
+    "descriptions": [
+      "free software"
+    ],
+    "types": [
+      "http://schema.org/Product",
+      "http://schema.org/CreativeWork",
+      "http://schema.org/Thing"
+    ],
+    "urls": [
+      "https://certbot.eff.org/"
+    ],
+    "images": [],
+    "sameAss": [],
+    "scope": "cloud",
+    "displayTypes": "CreativeWork, Product",
+    "label": "acme",
+    "value": "http://www.wikidata.org/entity/Q28941601"
+  }
+]

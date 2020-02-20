@@ -330,8 +330,11 @@ const blocks = {
         { value: "rand", label: "Random order" },
         { value: "none", label: "None" }
       ];
-      const orderOptions = [{ value: "ASC", label: "Ascending" }, { value: "DESC", label: "Descending" }];
-      wordlift.types.forEach(item => {
+      const orderOptions = [
+        { value: "ASC", label: "Ascending" },
+        { value: "DESC", label: "Descending" }
+      ];
+      window["_wlEntityTypes"].forEach(item => {
         typeOptions.push({
           value: item.slug,
           label: item.label
@@ -393,7 +396,7 @@ const blocks = {
         default: false
       },
       timelinejs_options: {
-        default: JSON.stringify(wordlift.timelinejsDefaultOptions, null, 2)
+        default: JSON.stringify(window["_wlMetaBoxSettings"].settings.timelinejsDefaultOptions, null, 2)
       }
     },
     //display the edit interface + preview
@@ -408,7 +411,10 @@ const blocks = {
                 label="Display images as"
                 selected={display_images_as}
                 onChange={display_images_as => setAttributes({ display_images_as })}
-                options={[{ value: "media", label: "Media" }, { value: "background", label: "Background" }]}
+                options={[
+                  { value: "media", label: "Media" },
+                  { value: "background", label: "Background" }
+                ]}
               />
               <RangeControl
                 label="Excerpt length"

@@ -1345,6 +1345,9 @@ angular.module('wordlift.editpost.widget.services.EditorService', ['wordlift.edi
       var discardedItemId, ed, j, len, ref, type;
       ed = EditorAdapter.getEditor();
       ed.dom.addClass(annotationId, "disambiguated");
+      console.log({
+        configuration: configuration
+      });
       ref = configuration.types;
       for (j = 0, len = ref.length; j < len; j++) {
         type = ref[j];
@@ -1736,7 +1739,11 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', []).p
   return function($, angular) {
     var container, injector, spinner;
     angular.module('wordlift.editpost.widget', ['ngAnimate', 'wordlift.ui.carousel', 'wordlift.utils.directives', 'wordlift.editpost.widget.providers.ConfigurationProvider', 'wordlift.editpost.widget.controllers.EditPostWidgetController', 'wordlift.editpost.widget.directives.wlClassificationBox', 'wordlift.editpost.widget.directives.wlEntityList', 'wordlift.editpost.widget.directives.wlEntityForm', 'wordlift.editpost.widget.directives.wlEntityInputBox', 'wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.EditorService', 'wordlift.editpost.widget.services.RelatedPostDataRetrieverService']).config(function(configurationProvider) {
-      return configurationProvider.setConfiguration(window.wordlift);
+      var params;
+      params = Object.assign({}, window['_wlMetaBoxSettings'].settings, {
+        types: window['_wlEntityTypes']
+      });
+      return configurationProvider.setConfiguration(params);
     });
     container = $("<div\n  id=\"wordlift-edit-post-wrapper\"\n  ng-controller=\"EditPostWidgetController\"\n  ng-include=\"configuration['ajax_url'] + '?action=wl_templates&name=wordlift-editpost-widget'\">\n</div>").appendTo('#wordlift-edit-post-outer-wrapper');
     spinner = $("<div class=\"wl-widget-spinner\">\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-blogger\">\n    <circle cx=\"10\" cy=\"10\" r=\"6\" class=\"wl-blogger-shape\"></circle>\n  </svg>\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-editorial\">\n    <rect x=\"4\" y=\"4\" width=\"12\" height=\"12\" class=\"wl-editorial-shape\"></rect>\n  </svg>\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-enterprise\">\n    <polygon points=\"3,10 6.5,4 13.4,4 16.9,10 13.4,16 6.5,16\" class=\"wl-enterprise-shape\"></polygon>\n  </svg>\n</div>").appendTo('#wordlift_entities_box .ui-sortable-handle');

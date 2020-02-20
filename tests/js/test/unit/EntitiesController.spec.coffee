@@ -18,7 +18,7 @@ describe "EditorController tests", ->
   )
 
   beforeEach inject( (AnalysisService) ->
-    AnalysisService.setKnownTypes window.wordlift.types
+    AnalysisService.setKnownTypes window._wlEntityTypes
   )
 
   it "loads an empty analysis object on bootstrap", inject((AnalysisService) ->

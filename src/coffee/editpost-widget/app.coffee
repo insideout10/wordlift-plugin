@@ -22,7 +22,8 @@
   ])
 
   .config((configurationProvider)->
-    configurationProvider.setConfiguration window.wordlift
+    params = Object.assign({}, window['_wlMetaBoxSettings'].settings, { types: window['_wlEntityTypes'] })
+    configurationProvider.setConfiguration params
   )
 
   container = $("""

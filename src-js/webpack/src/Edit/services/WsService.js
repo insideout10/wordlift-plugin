@@ -1,4 +1,3 @@
-/*global wordlift*/
 /**
  * Services: Ws Service.
  *
@@ -7,7 +6,6 @@
  * @since 3.11.0
  */
 class WsService {
-
   /**
    * Get the `W` (who, where, when, what) corresponding to the provided
    * entity.
@@ -17,13 +15,13 @@ class WsService {
    * @param {Object} entity The entity.
    * @returns {string} The W, or 'unknown' if there's no match.
    */
-  getW (entity) {
-    return wordlift.classificationBoxes.reduce((acc, box) => (
-      -1 === box.registeredTypes.indexOf(entity.mainType) ? acc : box.id
-    ), 'unknown')
+  getW(entity) {
+    return window['_wlMetaBoxSettings'].settings.classificationBoxes.reduce(
+      (acc, box) => (-1 === box.registeredTypes.indexOf(entity.mainType) ? acc : box.id),
+      "unknown"
+    );
   }
-
 }
 
 // Finally export the `WsService`.
-export default new WsService()
+export default new WsService();

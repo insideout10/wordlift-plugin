@@ -109,10 +109,10 @@ class Jsonld_Converter {
 			if ( null !== $transform_instance ) {
 				$transform_data = $transform_instance->transform_data( $data, $jsonld, $references, $post_id );
 				if ( null !== $transform_data ) {
-					$jsonld[ $property['property_name'] ] = $transform_data;
+					$jsonld[ $property['property_name'] ] = $this->make_single( $transform_data );
 				}
 			} else {
-				$jsonld[ $property['property_name'] ] = $data;
+				$jsonld[ $property['property_name'] ] = $this->make_single( $data );
 			}
 		}
 
@@ -129,13 +129,39 @@ class Jsonld_Converter {
 	 */
 	final public function get_data_from_data_source( $post_id, $property_data ) {
 		$value = $property_data['field_name'];
+
 		// Do 1 to 1 mapping and return result.
-		if ( self::FIELD_TYPE_ACF === $property_data['field_type'] && function_exists( 'get_field' ) ) {
-			$value = get_field( $property_data['field_name'], $post_id );
-			$value = ( null !== $value ) ? $value : '';
+		switch ( $property_data['field_type'] ) {
+			case self::FIELD_TYPE_ACF:
+				if ( ! function_exists( 'get_field' ) ) {
+					return array();
+				}
+
+				return get_field( $property_data['field_name'], $post_id );
+
+			case self::FIELD_TYPE_CUSTOM_FIELD:
+
+				return array_map( 'wp_strip_all_tags', get_post_meta( $post_id, $value ) );
+
+			default:
+				return $value;
 		}
 
-		return $value;
+	}
+
+	private function make_single( $value ) {
+
+		$values = (array) $value;
+
+		if ( empty( $values ) ) {
+			return null;
+		}
+
+		if ( 1 === count( $values ) ) {
+			return $values[0];
+		}
+
+		return $values;
 	}
 
 }

@@ -179,17 +179,20 @@ class Wordlift_Public {
 			$settings['isHome'] = true;
 		}
 
+		// As of 2020-02-15, we publish the JSON-LD in the head, see Jsonld_Adaper.
+		$settings['jsonld_enabled'] = false;
+
 		// By default only enable JSON-LD on supported entity pages (includes
 		// `page`, `post` and `entity` by default) and on the home page.
 		//
 		// @see https://github.com/insideout10/wordlift-plugin/issues/733
-		$jsonld_enabled = is_home() || is_front_page() || Wordlift_Entity_Type_Service::is_valid_entity_post_type( get_post_type() );
+		//	$jsonld_enabled = is_home() || is_front_page() || Wordlift_Entity_Type_Service::is_valid_entity_post_type( get_post_type() );
 
 		// Add the JSON-LD enabled flag, when set to false, the JSON-LD won't
 		// be loaded.
 		//
 		// @see https://github.com/insideout10/wordlift-plugin/issues/642.
-		$settings['jsonld_enabled'] = apply_filters( 'wl_jsonld_enabled', $jsonld_enabled );
+		// $settings['jsonld_enabled'] = apply_filters( 'wl_jsonld_enabled', $jsonld_enabled );
 
 		return $settings;
 	}

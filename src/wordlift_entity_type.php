@@ -3,10 +3,11 @@
 /**
  * Set the main type for the entity using the related taxonomy.
  *
- * @deprecated use Wordlift_Entity_Type_Service::get_instance()->set( $post_id, $type_uri )
- *
  * @param int $post_id The numeric post ID.
  * @param string $type_uri A type URI.
+ *
+ * @deprecated use Wordlift_Entity_Type_Service::get_instance()->set( $post_id, $type_uri )
+ *
  */
 function wl_set_entity_main_type( $post_id, $type_uri ) {
 
@@ -22,53 +23,36 @@ function wl_print_entity_type_inline_js() {
 
 	$terms = get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, array( 'get' => 'all', ) );
 
-	echo <<<EOF
-    <script type="text/javascript">
-        (function() {
-        var t = [];
+	// Load the type data.
+	$schema_service = Wordlift_Schema_Service::get_instance();
+	$entity_types   = array_reduce( $terms, function ( $carry, $term ) use ( $schema_service ) {
+		$type = $schema_service->get_schema( $term->slug );
 
-EOF;
-
-	// Cycle in each WordLift term and get its metadata. The metadata will be printed as a global object in JavaScript
-	// to be used by the JavaScript client library.
-	foreach ( $terms as $term ) {
-
-		$term_name = $term->name;
-
-		// Load the type data.
-		$type = Wordlift_Schema_Service::get_instance()
-		                               ->get_schema( $term->slug );
-
-		// Skip types that are not defined.
-		if ( ! empty( $type['uri'] ) ) {
-
-			// Prepare the JSON output then print it to the browser.
-			$json = json_encode( array(
-				'label'     => $term_name,
-				'uri'       => $type['uri'],
-				'css'       => $type['css_class'],
-				'sameAs'    => isset( $type['same_as'] ) ? $type['same_as'] : array(),
-				'slug'      => $term->slug,
-				'templates' => ( isset( $type['templates'] ) ? $type['templates'] : array() ),
-			) );
-
-			// Output the type data.
-			echo "t.push($json);\n";
-
+		// Skip if no `uri`.
+		if ( empty( $type['uri'] ) ) {
+			return $carry;
 		}
 
-	}
+		$carry[] = array(
+			'label'     => $term->name,
+			'uri'       => $type['uri'],
+			'css'       => $type['css_class'],
+			'sameAs'    => isset( $type['same_as'] ) ? $type['same_as'] : array(),
+			'slug'      => $term->slug,
+			'templates' => ( isset( $type['templates'] ) ? $type['templates'] : array() ),
+		);
 
-	echo <<<EOF
-            if ('undefined' == typeof window.wordlift) {
-                window.wordlift = {}
-            }
-            window.wordlift.types = t;
+		return $carry;
+	}, array() );
 
-        })();
-    </script>
-EOF;
+	// Hook to the Block Editor script.
+	wp_localize_script( 'wl-block-editor', '_wlEntityTypes', $entity_types );
+
+	// Hook to the Classic Editor script, see Wordlift_Admin_Post_Edit_Page.
+	wp_localize_script( 'wl-classic-editor', '_wlEntityTypes', $entity_types );
 
 }
 
-add_action( 'admin_print_scripts', 'wl_print_entity_type_inline_js' );
+// Allow Classic and Block Editor scripts to register first.
+add_action( 'admin_print_scripts-post.php', 'wl_print_entity_type_inline_js', 11 );
+add_action( 'admin_print_scripts-post-new.php', 'wl_print_entity_type_inline_js', 11 );

@@ -1420,6 +1420,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
     disambiguate = (annotationId, entity)->
       ed = EditorAdapter.getEditor()
       ed.dom.addClass annotationId, "disambiguated"
+      console.log { configuration }
       for type in configuration.types
         ed.dom.removeClass annotationId, type.css
       ed.dom.removeClass annotationId, "unlinked"
@@ -1897,7 +1898,8 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
   ])
 
   .config((configurationProvider)->
-    configurationProvider.setConfiguration window.wordlift
+    params = Object.assign({}, window['_wlMetaBoxSettings'].settings, { types: window['_wlEntityTypes'] })
+    configurationProvider.setConfiguration params
   )
 
   container = $("""

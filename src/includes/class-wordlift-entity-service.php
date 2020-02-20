@@ -291,8 +291,11 @@ class Wordlift_Entity_Service {
 		// Get the alt labels from the request (or empty array).
 		$alt_labels = isset( $_REQUEST['wl_alternative_label'] ) ? $_REQUEST['wl_alternative_label'] : array();
 
-		// Set the alternative labels.
-		$this->set_alternative_labels( $post_id, $alt_labels );
+		if ( ( ! empty( $_POST['content'] ) && ! empty( $_POST['post_content'] ) ) || isset( $_REQUEST['wl_alternative_label'] ) ) {
+			// This is via classic editor, so set the alternative labels.
+			$this->set_alternative_labels( $post_id, $alt_labels );
+		}
+
 
 	}
 
@@ -306,6 +309,12 @@ class Wordlift_Entity_Service {
 	 *
 	 */
 	public function set_alternative_labels( $post_id, $alt_labels ) {
+
+		// Bail out if post id is not numeric. We add this check as we found a WP install that was sending a WP_Error
+		// instead of post id.
+		if ( ! is_numeric( $post_id ) ) {
+			return;
+		}
 
 		// Force $alt_labels to be an array
 		if ( ! is_array( $alt_labels ) ) {
