@@ -33,7 +33,7 @@ class Wordlift_Content_Filter_Service {
 	const FAQ_QUESTION_PATTERN = '/<span class="\s?wl-faq__question" id="wl-faq__question--\d+">(.*)<\/span>/';
 
 	/**
-	 * This pattern is used to find all the questions tag.
+	 * This pattern is used to find all the answers tag.
 	 *
 	 * @since 3.26.0
 	 */
