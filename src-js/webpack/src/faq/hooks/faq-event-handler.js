@@ -38,7 +38,8 @@ class FaqEventHandler {
    */
   listenEventsFromHooks() {
     on(FAQ_EVENT_HANDLER_SELECTION_CHANGED, data => {
-      console.log("event handler fired")
+      console.log("event handler fired");
+      console.log(data);
       this.dispatcher.dispatchTextSelectedAction(data);
     });
     on(FAQ_ITEM_SELECTED_ON_TEXT_EDITOR, faqId => {

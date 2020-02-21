@@ -1,5 +1,5 @@
-import {trigger} from "backbone";
-import {FAQ_EVENT_HANDLER_SELECTION_CHANGED} from "../../constants/faq-hook-constants";
+import { trigger } from "backbone";
+import { FAQ_EVENT_HANDLER_SELECTION_CHANGED } from "../../constants/faq-hook-constants";
 
 (function(wp) {
   const AddFaqButton = function(props) {
@@ -7,10 +7,11 @@ import {FAQ_EVENT_HANDLER_SELECTION_CHANGED} from "../../constants/faq-hook-cons
       title: "Add Question / Answer",
       icon: "plus-alt",
       onClick: function() {
+        console.log(props)
         const { text, start, end } = props.value;
         const selectedText = text.slice(start, end);
-        console.log("event handler fired from gutenberg")
-        trigger(FAQ_EVENT_HANDLER_SELECTION_CHANGED, { selectedText: selectedText, selectedHtml: selectedText });
+        console.log(selectedText)
+        trigger(FAQ_EVENT_HANDLER_SELECTION_CHANGED, { selectedText: selectedText, selectedHTML: selectedText });
       }
     });
   };

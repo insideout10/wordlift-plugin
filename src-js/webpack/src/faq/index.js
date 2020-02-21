@@ -20,9 +20,7 @@ import FaqScreen from "./components/faq-screen";
 import FaqModal from "./components/faq-modal";
 import FaqEventHandler from "./hooks/faq-event-handler";
 import "./index.scss";
-
 const { addQuestionText, modalId } = global["_wlFaqSettings"];
-
 const listBoxId = "wl-faq-meta-list-box";
 
 /**
@@ -30,6 +28,8 @@ const listBoxId = "wl-faq-meta-list-box";
  */
 window.addEventListener("load", () => {
   const el = document.createElement("div");
+  el.id = modalId;
+  document.body.appendChild(el)
   ReactDOM.render(
     <Provider store={store}>
       <FaqModal />
@@ -42,23 +42,20 @@ window.addEventListener("load", () => {
 window.addEventListener("DOMNodeInserted", () => {
   // It is loaded dynamically in gutenberg, render these components when the node is added.
   if (document.getElementById(listBoxId) !== null && document.getElementById(modalId) !== null) {
-      /**
-       * We might have our react component rendered before, so check the innerHTML  if we
-       * didnt render out component and initalize.
-       */
-      if (document.getElementById(listBoxId).innerHTML !== "" && document.getElementById(modalId).innerHTML !== "") {
-
-      }
-      else {
-          ReactDOM.render(
-              <Provider store={store}>
-                  <React.Fragment>
-                      <FaqScreen/>
-                  </React.Fragment>
-              </Provider>,
-              document.getElementById(listBoxId)
-          );
-      }
-
+    /**
+     * We might have our react component rendered before, so check the innerHTML  if we
+     * didnt render out component and initalize.
+     */
+    if (document.getElementById(listBoxId).innerHTML !== "" && document.getElementById(modalId).innerHTML !== "") {
+    } else {
+      ReactDOM.render(
+        <Provider store={store}>
+          <React.Fragment>
+            <FaqScreen />
+          </React.Fragment>
+        </Provider>,
+        document.getElementById(listBoxId)
+      );
+    }
   }
 });
