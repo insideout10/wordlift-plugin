@@ -48,6 +48,12 @@ class TinymceHighlightHandler {
    * @param id {Int} Unique id for question and answer.
    */
   highlightSelectedText(selectedText, isQuestion, id) {
+    if ( this.editor.selection === null) {
+      /**
+       * Bail out if there is no selection on the editor.
+       */
+      return
+    }
     const html = this.editor.selection.getContent();
     const className = classExtractor({
       [FAQ_QUESTION_HIGHLIGHTING_CLASS]: isQuestion,
