@@ -28,7 +28,6 @@ const listBoxId = "wl-faq-meta-list-box";
  */
 window.addEventListener("load", () => {
   const el = document.createElement("div");
-  el.id = modalId;
   document.body.appendChild(el)
   ReactDOM.render(
     <Provider store={store}>

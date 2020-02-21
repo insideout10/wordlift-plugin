@@ -23,7 +23,6 @@ import WlNotificationArea from "../../blocks/wl-notification-area";
 class FaqScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.removeNotificationListener = this.removeNotificationListener.bind(this);
   }
   /**
    * If the user chose a question then display it
