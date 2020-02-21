@@ -36,20 +36,29 @@ window.addEventListener("load", () => {
     </Provider>,
     el
   );
+  new FaqEventHandler(store);
 });
 
 window.addEventListener("DOMNodeInserted", () => {
   // It is loaded dynamically in gutenberg, render these components when the node is added.
   if (document.getElementById(listBoxId) !== null && document.getElementById(modalId) !== null) {
-    ReactDOM.render(
-      <Provider store={store}>
-        <React.Fragment>
-          <FaqScreen />
-        </React.Fragment>
-      </Provider>,
-      document.getElementById(listBoxId)
-    );
+      /**
+       * We might have our react component rendered before, so check the innerHTML  if we
+       * didnt render out component and initalize.
+       */
+      if (document.getElementById(listBoxId).innerHTML !== "" && document.getElementById(modalId).innerHTML !== "") {
 
-    new FaqEventHandler(store);
+      }
+      else {
+          ReactDOM.render(
+              <Provider store={store}>
+                  <React.Fragment>
+                      <FaqScreen/>
+                  </React.Fragment>
+              </Provider>,
+              document.getElementById(listBoxId)
+          );
+      }
+
   }
 });

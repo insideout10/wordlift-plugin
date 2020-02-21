@@ -75,6 +75,7 @@ class FaqHookToStoreDispatcher {
    */
   dispatchTextSelectedAction(data) {
     const { selectedText, selectedHTML } = data;
+    console.log("dispatcher fired.")
     // // Check if this is a question
     if (FaqValidator.isQuestion(selectedText)) {
       const action = updateQuestionOnInputChange();

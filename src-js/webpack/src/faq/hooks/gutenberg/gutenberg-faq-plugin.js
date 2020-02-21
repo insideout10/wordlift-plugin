@@ -9,7 +9,8 @@ import {FAQ_EVENT_HANDLER_SELECTION_CHANGED} from "../../constants/faq-hook-cons
       onClick: function() {
         const { text, start, end } = props.value;
         const selectedText = text.slice(start, end);
-        trigger(FAQ_EVENT_HANDLER_SELECTION_CHANGED, selectedText);
+        console.log("event handler fired from gutenberg")
+        trigger(FAQ_EVENT_HANDLER_SELECTION_CHANGED, { selectedText: selectedText, selectedHtml: selectedText });
       }
     });
   };

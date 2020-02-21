@@ -91,8 +91,8 @@ class TinymceToolbarHandler {
     const selectedText = editor.selection.getContent({ format: "text" });
     const container = document.getElementById(TINYMCE_TOOLBAR_BUTTON_NAME);
     // If we cant find the toolbar buttons, then return early.
-    if ( container === null ) {
-      return
+    if (container === null) {
+      return;
     }
     const button = container.getElementsByTagName("button")[0];
     if (this.shouldDisableButton(selectedText)) {
@@ -119,17 +119,18 @@ class TinymceToolbarHandler {
    */
   addButtonToToolBar() {
     const editor = this.editor;
-    const handler = this;
     editor.addButton(TINYMCE_TOOLBAR_BUTTON_NAME, {
       text: "Add Question or Answer",
       id: TINYMCE_TOOLBAR_BUTTON_NAME,
       onclick: function() {
+        console.log("on click fired tinymce");
         const selectedText = editor.selection.getContent({ format: "text" });
         const selectedHTML = editor.selection.getNode().innerHTML;
         trigger(FAQ_EVENT_HANDLER_SELECTION_CHANGED, {
           selectedText: selectedText,
           selectedHTML: selectedHTML
         });
+        console.log("event handler triggered from tinymce");
       }
     });
     this.changeToolBarButtonStateBasedOnTextSelected();

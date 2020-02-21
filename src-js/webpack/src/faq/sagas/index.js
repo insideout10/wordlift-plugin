@@ -28,6 +28,9 @@ function* dispatchNotification(response) {
     notificationType: response.status
   };
   yield put(notificationAction);
+  /**
+   * After 2 seconds, remove the notification.
+   */
   yield delay(2000);
   notificationAction.payload = {
     notificationMessage: "",
