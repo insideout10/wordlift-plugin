@@ -7,13 +7,13 @@
 /**
  * External dependencies.
  */
-import {trigger} from 'backbone'
+import { trigger } from "backbone";
 
 /**
  * Internal dependencies.
  */
 import { FAQ_ANSWER_HIGHLIGHTING_CLASS, FAQ_QUESTION_HIGHLIGHTING_CLASS } from "./tinymce-highlight-handler";
-import {FAQ_ITEM_SELECTED_ON_TEXT_EDITOR} from "../../constants/faq-hook-constants";
+import { FAQ_ITEM_SELECTED_ON_TEXT_EDITOR } from "../../constants/faq-hook-constants";
 
 class TinymceClickHandler {
   constructor(editor) {
@@ -26,7 +26,7 @@ class TinymceClickHandler {
    * @return {string} returns the parsed id
    */
   parseHtmlIdToFAQId(id) {
-    return id.split("--")[1];
+    return id.split("--")[2];
   }
 
   /**
@@ -34,8 +34,10 @@ class TinymceClickHandler {
    * @param id {string} Html id.
    */
   fireEventToEventHandlerToOpenQuestionOrAnswer(id) {
-      const faqId = this.parseHtmlIdToFAQId(id)
-      trigger(FAQ_ITEM_SELECTED_ON_TEXT_EDITOR, faqId)
+    console.log("faq id before parsing " + id);
+    const faqId = this.parseHtmlIdToFAQId(id);
+    console.log("faq id after parsing" + id);
+    trigger(FAQ_ITEM_SELECTED_ON_TEXT_EDITOR, faqId);
   }
   /**
    * Listen for click events from question and answer.

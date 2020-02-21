@@ -17,6 +17,7 @@ export const transformAPIDataToUi = items => {
      * We save the value of question and answer before supplying to ui, they will
      * be used when it is used to update in the db
      */
+    id: item.id.toString(),
     previousQuestionValue: item.question,
     previousAnswerValue: item.answer
   }));

@@ -17,6 +17,9 @@ const highlightHandler = new GutenbergHighlightHandler();
  */
 highlightHandler.listenForHighlightEvent();
 
+
+
+
 /**
  * Register the toolbar button and the format.
  */
