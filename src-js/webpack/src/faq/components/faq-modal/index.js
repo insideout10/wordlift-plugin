@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 /**
  * Internal dependencies.
  */
-import { updateFaqModalVisibility } from "../../actions";
+import { requestGetFaqItems, updateFaqModalVisibility } from "../../actions";
 import "./index.scss";
 import { WlModal } from "../../blocks/wl-modal";
 import { WlModalHeader } from "../../blocks/wl-modal/wl-modal-header";
@@ -21,6 +21,10 @@ import FaqApplyList from "../faq-apply-list";
 import { WlBgModal } from "../../blocks/wl-bg-modal";
 
 class FaqModal extends React.Component {
+  componentDidMount() {
+    this.props.dispatch(requestGetFaqItems());
+  }
+
   render() {
     return (
       <React.Fragment>

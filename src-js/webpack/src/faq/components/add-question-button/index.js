@@ -18,10 +18,6 @@ import { connect } from "react-redux";
 import { requestAddNewQuestion, requestGetFaqItems } from "../../actions";
 
 class AddQuestionButton extends React.Component {
-  componentDidMount() {
-    this.props.dispatch(requestGetFaqItems());
-  }
-
   render() {
     return (
       <button
