@@ -15,13 +15,12 @@ import { on } from "backbone";
  * Internal dependencies.
  */
 import { FAQ_HIGHLIGHT_TEXT } from "../../constants/faq-hook-constants";
-import { FAQ_QUESTION_FORMAT_NAME } from "./gutenberg-format-type-handler";
-import {applyFormat} from "@wordpress/rich-text";
+import {FAQ_ANSWER_FORMAT_NAME, FAQ_QUESTION_FORMAT_NAME} from "./gutenberg-format-type-handler";
+import { applyFormat } from "@wordpress/rich-text";
 
 class GutenbergHighlightHandler {
-  constructor(wp) {
-    this.wp = wp;
-    this.selectedTextObject  = null
+  constructor() {
+    this.selectedTextObject = null;
   }
   /**
    * Start listening for highlight events from
@@ -29,9 +28,16 @@ class GutenbergHighlightHandler {
    */
   listenForHighlightEvent() {
     on(FAQ_HIGHLIGHT_TEXT, result => {
-      console.log(result);
-      console.log("format applied");
-      applyFormat(this.selectedTextObject, { type: FAQ_QUESTION_FORMAT_NAME });
+      const { isQuestion, id } = result;
+      /**
+       * Apply format depending on the type.
+       */
+      if ( isQuestion) {
+        applyFormat(this.selectedTextObject, {type: FAQ_QUESTION_FORMAT_NAME});
+      }
+      else {
+        applyFormat(this.selectedTextObject, {type: FAQ_ANSWER_FORMAT_NAME})
+      }
     });
   }
 }

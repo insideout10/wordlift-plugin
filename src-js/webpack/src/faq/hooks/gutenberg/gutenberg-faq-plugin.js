@@ -2,7 +2,6 @@ import { trigger, on } from "backbone";
 import { FAQ_EVENT_HANDLER_SELECTION_CHANGED, FAQ_HIGHLIGHT_TEXT } from "../../constants/faq-hook-constants";
 import GutenbergFormatTypeHandler, { FAQ_QUESTION_FORMAT_NAME } from "./gutenberg-format-type-handler";
 import GutenbergHighlightHandler from "./gutenberg-highlight-handler";
-import { applyFormat } from "@wordpress/rich-text";
 
 /**
  * Register all the format types required by FAQ
@@ -11,7 +10,7 @@ import { applyFormat } from "@wordpress/rich-text";
 const formatTypeHandler = new GutenbergFormatTypeHandler();
 formatTypeHandler.registerAllFormatTypes();
 
-const highlightHandler = new GutenbergHighlightHandler(window.wp);
+const highlightHandler = new GutenbergHighlightHandler();
 highlightHandler.listenForHighlightEvent();
 
 /**
