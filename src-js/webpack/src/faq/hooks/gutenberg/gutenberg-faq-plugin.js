@@ -1,6 +1,7 @@
 import { trigger, on } from "backbone";
 import { FAQ_EVENT_HANDLER_SELECTION_CHANGED, FAQ_HIGHLIGHT_TEXT } from "../../constants/faq-hook-constants";
 import GutenbergFormatTypeHandler from "./gutenberg-format-type-handler";
+import GutenbergHighlightHandler from "./gutenberg-highlight-handler";
 
 /**
  * Register all the format types required by FAQ
@@ -9,6 +10,9 @@ import GutenbergFormatTypeHandler from "./gutenberg-format-type-handler";
 const formatTypeHandler = new GutenbergFormatTypeHandler();
 formatTypeHandler.registerAllFormatTypes();
 
+/**
+ * Register the toolbar button and the format.
+ */
 (function(wp) {
   const AddFaqButton = function(props) {
     return wp.element.createElement(wp.editor.RichTextToolbarButton, {
@@ -37,3 +41,6 @@ formatTypeHandler.registerAllFormatTypes();
     edit: AddFaqButton
   });
 })(window.wp);
+
+const highlightHandler = new GutenbergHighlightHandler(window.wp);
+highlightHandler.listenForHighlightEvent();

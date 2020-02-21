@@ -10,20 +10,27 @@
  * WordPress dependencies
  */
 import { registerFormatType } from "@wordpress/rich-text";
+
+/**
+ * Internal dependencies.
+ */
 import { FAQ_ANSWER_HIGHLIGHTING_CLASS, FAQ_QUESTION_HIGHLIGHTING_CLASS } from "../tinymce/tinymce-highlight-handler";
+
+export const FAQ_ANSWER_FORMAT_NAME = "wordlift/faq-answer";
+export const FAQ_QUESTION_FORMAT_NAME = "wordlift/faq-question";
 
 class GutenbergFormatTypeHandler {
   registerAnswerFormatType() {
-    registerFormatType("wordlift/faq-answer", {
+    registerFormatType(FAQ_ANSWER_FORMAT_NAME, {
       title: "Question",
-      tagName: "Span",
+      tagName: "span",
       className: FAQ_ANSWER_HIGHLIGHTING_CLASS
     });
   }
   registerQuestionFormatType() {
-    registerFormatType("wordlift/faq-question", {
+    registerFormatType(FAQ_QUESTION_FORMAT_NAME, {
       title: "Question",
-      tagName: "Span",
+      tagName: "span",
       className: FAQ_QUESTION_HIGHLIGHTING_CLASS
     });
   }
