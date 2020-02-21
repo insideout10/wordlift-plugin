@@ -9,30 +9,31 @@
 /**
  * External dependencies.
  */
-import {on} from "backbone";
+import { on } from "backbone";
 
 /**
  * Internal dependencies.
  */
-import {FAQ_HIGHLIGHT_TEXT} from "../../constants/faq-hook-constants";
-import {FAQ_QUESTION_FORMAT_NAME} from "./gutenberg-format-type-handler";
+import { FAQ_HIGHLIGHT_TEXT } from "../../constants/faq-hook-constants";
+import { FAQ_QUESTION_FORMAT_NAME } from "./gutenberg-format-type-handler";
+import {applyFormat} from "@wordpress/rich-text";
 
 class GutenbergHighlightHandler {
-    constructor(wp) {
-        this.wp = wp
-    }
-    /**
-     * Start listening for highlight events from
-     * the store.
-     */
-    listenForHighlightEvent() {
-        on(FAQ_HIGHLIGHT_TEXT, result => {
-            this.wp.richText.toggleFormat(
-                result.extras,
-                { type: FAQ_QUESTION_FORMAT_NAME }
-            );
-        });
-    }
+  constructor(wp) {
+    this.wp = wp;
+    this.selectedTextObject  = null
+  }
+  /**
+   * Start listening for highlight events from
+   * the store.
+   */
+  listenForHighlightEvent() {
+    on(FAQ_HIGHLIGHT_TEXT, result => {
+      console.log(result);
+      console.log("format applied");
+      applyFormat(this.selectedTextObject, { type: FAQ_QUESTION_FORMAT_NAME });
+    });
+  }
 }
 
-export default GutenbergHighlightHandler
+export default GutenbergHighlightHandler;

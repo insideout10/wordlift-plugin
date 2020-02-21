@@ -123,12 +123,11 @@ class TinymceToolbarHandler {
       text: "Add Question or Answer",
       id: TINYMCE_TOOLBAR_BUTTON_NAME,
       onclick: function() {
-        console.log("on click fired tinymce");
         const selectedText = editor.selection.getContent({ format: "text" });
         const selectedHTML = editor.selection.getNode().innerHTML;
         trigger(FAQ_EVENT_HANDLER_SELECTION_CHANGED, {
           selectedText: selectedText,
-          selectedHTML: selectedHTML
+          selectedHTML: selectedHTML,
         });
         console.log("event handler triggered from tinymce");
       }
