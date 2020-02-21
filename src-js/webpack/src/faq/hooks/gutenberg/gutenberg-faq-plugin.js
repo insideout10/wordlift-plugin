@@ -33,7 +33,7 @@ highlightHandler.listenForHighlightEvent();
          * We pass props.value in to extras, in order to make
          * gutenberg highlight on the highlight event.
          */
-        highlightHandler.selectedTextObject = props.value;
+        highlightHandler.props = props;
         const { text, start, end } = props.value;
         const selectedText = text.slice(start, end);
         trigger(FAQ_EVENT_HANDLER_SELECTION_CHANGED, {

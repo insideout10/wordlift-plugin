@@ -20,7 +20,7 @@ import { applyFormat } from "@wordpress/rich-text";
 
 class GutenbergHighlightHandler {
   constructor() {
-    this.selectedTextObject = null;
+    this.props = null;
   }
   /**
    * Start listening for highlight events from
@@ -33,10 +33,10 @@ class GutenbergHighlightHandler {
        * Apply format depending on the type.
        */
       if ( isQuestion) {
-        applyFormat(this.selectedTextObject, {type: FAQ_QUESTION_FORMAT_NAME});
+        this.props.onChange( applyFormat(this.props.value, {type: FAQ_QUESTION_FORMAT_NAME}) );
       }
       else {
-        applyFormat(this.selectedTextObject, {type: FAQ_ANSWER_FORMAT_NAME})
+        this.props.onChange( applyFormat(this.props.value, {type: FAQ_ANSWER_FORMAT_NAME}) );
       }
     });
   }
