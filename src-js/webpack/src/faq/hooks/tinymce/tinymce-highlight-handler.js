@@ -15,8 +15,8 @@ import { on } from "backbone";
 import { FAQ_HIGHLIGHT_TEXT, FAQ_ITEMS_CHANGED } from "../../constants/faq-hook-constants";
 import { classExtractor } from "../../../mappings/blocks/helper";
 
-export const FAQ_QUESTION_HIGHLIGHTING_CLASS = "wl-faq__question";
-export const FAQ_ANSWER_HIGHLIGHTING_CLASS = "wl-faq__answer";
+export const FAQ_QUESTION_HIGHLIGHTING_CLASS = "wl-faq--question";
+export const FAQ_ANSWER_HIGHLIGHTING_CLASS = "wl-faq--answer";
 
 class TinymceHighlightHandler {
   /**

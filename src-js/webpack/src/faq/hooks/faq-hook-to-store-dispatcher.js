@@ -40,7 +40,7 @@ class FaqHookToStoreDispatcher {
     };
     store.dispatch(action);
   }
-  dispatchAnswerSelected(text) {
+  dispatchAnswerSelected(text, extras) {
     // Answer selected by user, but check if there is only one question
     // If only one question present then dispatch the apply action for that question.
     const unansweredQuestions = getAllFAQItems(this.store.getState()).filter(e => e.answer === "");
@@ -50,7 +50,8 @@ class FaqHookToStoreDispatcher {
     } else {
       const action = answerSelectedByUser();
       action.payload = {
-        selectedAnswer: text
+        selectedAnswer: text,
+        extras: extras
       };
       this.store.dispatch(action);
     }
@@ -74,20 +75,21 @@ class FaqHookToStoreDispatcher {
    * @param data
    */
   dispatchTextSelectedAction(data) {
-    const { selectedText, selectedHTML } = data;
-    console.log("dispatcher fired.");
-    console.log(data);
-    console.log(selectedText);
+    const { selectedText, selectedHTML, extras } = data;
     // // Check if this is a question
     if (FaqValidator.isQuestion(selectedText)) {
       const action = updateQuestionOnInputChange();
       action.payload = selectedText;
       this.store.dispatch(action);
       // Add it to the API
-      this.store.dispatch(requestAddNewQuestion());
+      const addNewQuestionAction = requestAddNewQuestion();
+      addNewQuestionAction.payload = {
+        extras: extras
+      }
+      this.store.dispatch(addNewQuestionAction);
     } else {
       // Allow html on answers.
-      this.dispatchAnswerSelected(selectedHTML);
+      this.dispatchAnswerSelected(selectedHTML, extras);
     }
   }
 }

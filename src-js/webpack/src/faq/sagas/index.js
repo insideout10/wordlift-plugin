@@ -64,7 +64,8 @@ function* handleAddNewQuestion(action) {
   trigger(FAQ_HIGHLIGHT_TEXT, {
     text: currentQuestion,
     isQuestion: true,
-    id: response.id
+    id: response.id,
+    extras: action.payload.extras
   });
   yield put(resetTypedQuestion());
   // Refresh the screen by getting new FAQ items.
@@ -103,7 +104,8 @@ function* handleUpdateFaqItems(action) {
   trigger(FAQ_HIGHLIGHT_TEXT, {
     text: payload.value,
     isQuestion: payload.type === faqEditItemType.QUESTION,
-    id: faqItems[faqItemIndex].id
+    id: faqItems[faqItemIndex].id,
+    extras: payload.extras
   });
   const response = yield call(API.updateFAQItems, faqItems);
   yield dispatchNotification(response);
