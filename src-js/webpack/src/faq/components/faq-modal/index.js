@@ -12,22 +12,39 @@ import { connect } from "react-redux";
 /**
  * Internal dependencies.
  */
-import { requestGetFaqItems, updateFaqModalVisibility } from "../../actions";
+import { requestGetFaqItems, updateFaqModalVisibility, updateNotificationArea } from "../../actions";
 import "./index.scss";
 import { WlModal } from "../../blocks/wl-modal";
 import { WlModalHeader } from "../../blocks/wl-modal/wl-modal-header";
 import { WlModalBody } from "../../blocks/wl-modal/wl-modal-body";
 import FaqApplyList from "../faq-apply-list";
 import { WlBgModal } from "../../blocks/wl-bg-modal";
+import WlNotificationArea from "../../blocks/wl-notification-area";
 
 class FaqModal extends React.Component {
   componentDidMount() {
     this.props.dispatch(requestGetFaqItems());
   }
-
+  /**
+   * Run this listener once the close button is clicked
+   */
+  removeNotificationListener() {
+    const action = updateNotificationArea();
+    action.payload = {
+      notificationMessage: "",
+      notificationType: ""
+    };
+    this.props.dispatch(action);
+  }
   render() {
     return (
       <React.Fragment>
+        <WlNotificationArea
+          notificationMessage={this.props.notificationMessage}
+          notificationType={this.props.notificationType}
+          notificationCloseButtonClickedListener={this.removeNotificationListener}
+          autoHide={true}
+        />
         <WlBgModal shouldOpenModal={this.props.isModalOpened}>
           <WlModal shouldOpenModal={this.props.isModalOpened}>
             <WlModalHeader
@@ -49,5 +66,7 @@ class FaqModal extends React.Component {
   }
 }
 export default connect(state => ({
-  isModalOpened: state.faqModalOptions.isModalOpened
+  isModalOpened: state.faqModalOptions.isModalOpened,
+  notificationMessage: state.faqNotificationArea.notificationMessage,
+  notificationType: state.faqNotificationArea.notificationType
 }))(FaqModal);

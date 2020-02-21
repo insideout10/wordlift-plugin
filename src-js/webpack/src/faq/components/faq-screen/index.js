@@ -26,17 +26,6 @@ class FaqScreen extends React.Component {
     this.removeNotificationListener = this.removeNotificationListener.bind(this);
   }
   /**
-   * Run this listener once the close button is clicked
-   */
-  removeNotificationListener() {
-    const action = updateNotificationArea();
-    action.payload = {
-      notificationMessage: "",
-      notificationType: ""
-    };
-    this.props.dispatch(action);
-  }
-  /**
    * If the user chose a question then display it
    * in the edit mode, or show the faq list.
    */
@@ -73,12 +62,6 @@ class FaqScreen extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <WlNotificationArea
-          notificationMessage={this.props.notificationMessage}
-          notificationType={this.props.notificationType}
-          notificationCloseButtonClickedListener={this.removeNotificationListener}
-          autoHide = {true}
-        />
         {this.renderComponentBasedOnState()}
       </React.Fragment>
     );
@@ -88,6 +71,4 @@ class FaqScreen extends React.Component {
 export default connect(state => ({
   selectedFaqId: state.faqListOptions.selectedFaqId,
   faqItems: state.faqListOptions.faqItems,
-  notificationMessage: state.faqNotificationArea.notificationMessage,
-  notificationType: state.faqNotificationArea.notificationType
 }))(FaqScreen);
