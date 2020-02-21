@@ -1,10 +1,6 @@
-/**
- *
- */
+import { trigger, on } from "backbone";
+import { FAQ_EVENT_HANDLER_SELECTION_CHANGED, FAQ_HIGHLIGHT_TEXT } from "../../constants/faq-hook-constants";
 import GutenbergFormatTypeHandler from "./gutenberg-format-type-handler";
-import GutenbergAddFAQItemHandler from "./gutenberg-add-faq-item-handler";
-import { trigger } from "backbone";
-import { FAQ_EVENT_HANDLER_SELECTION_CHANGED } from "../../constants/faq-hook-constants";
 
 /**
  * Register all the format types required by FAQ
@@ -14,8 +10,8 @@ const formatTypeHandler = new GutenbergFormatTypeHandler();
 formatTypeHandler.registerAllFormatTypes();
 
 (function(wp) {
-  const addFAQButton = function(props) {
-    return wp.element.createElement(wp.blockEditor.RichTextToolbarButton, {
+  const AddFaqButton = function(props) {
+    return wp.element.createElement(wp.editor.RichTextToolbarButton, {
       title: "Add Question / Answer",
       icon: "plus-alt",
       onClick: function() {
@@ -30,13 +26,14 @@ formatTypeHandler.registerAllFormatTypes();
           selectedHTML: selectedText,
           extras: props.value
         });
-      },
-      isActive: props.isActive
+      }
     });
   };
-  const handler = new GutenbergAddFAQItemHandler(addFAQButton);
-  handler.registerToolBarButton();
-})(window.wp);
 
-const addFAQItemHandler = new GutenbergAddFAQItemHandler();
-addFAQItemHandler.registerToolBarButton();
+  wp.richText.registerFormatType("wordlift/faq-plugin", {
+    title: "Add Question/Answer",
+    tagName: "faq-gutenberg",
+    className: null,
+    edit: AddFaqButton
+  });
+})(window.wp);
