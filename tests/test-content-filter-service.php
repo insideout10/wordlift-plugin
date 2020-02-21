@@ -352,7 +352,7 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_faq_question_highlighting_tag_removed() {
 		$src = <<<EOF
-			<p><span class="wl-faq__question" id="wl-faq__question--3164315662">this is a question?</span></p>
+			<p><span class="wl-faq--question" id="wl-faq--question--3164315662">this is a question?</span></p>
 EOF;
 		$expected_output = <<<EOF
 			<p>this is a question?</p>
@@ -368,7 +368,7 @@ EOF;
 	 */
 	public function test_faq_answer_highlighting_tag_removed() {
 		$src = <<<EOF
-			<p><span class="wl-faq__answer" id="wl-faq__answer--3164315662">this is a answer</span></p>
+			<p><span class="wl-faq--answer" id="wl-faq--answer--3164315662">this is a answer</span></p>
 EOF;
 		$expected_output = <<<EOF
 			<p>this is a answer</p>
@@ -384,7 +384,7 @@ EOF;
 	 */
 	public function test_faq_answer_highlighting_nested_tags_removed_correctly() {
 		$src = <<<EOF
-			<p><span class="wl-faq__answer" id="wl-faq__answer--3164315662">this<span class="foo">is</span> a answer</span></p>
+			<p><span class="wl-faq--answer" id="wl-faq--answer--3164315662">this<span class="foo">is</span> a answer</span></p>
 EOF;
 		$expected_output = <<<EOF
 			<p>this<span class="foo">is</span> a answer</p>

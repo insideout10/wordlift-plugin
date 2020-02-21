@@ -11,6 +11,10 @@ const formatTypeHandler = new GutenbergFormatTypeHandler();
 formatTypeHandler.registerAllFormatTypes();
 
 const highlightHandler = new GutenbergHighlightHandler();
+/**
+ * Event handler / store emits highlight event upon faqitem
+ * save or edit.
+ */
 highlightHandler.listenForHighlightEvent();
 
 /**
@@ -33,7 +37,8 @@ highlightHandler.listenForHighlightEvent();
           selectedText: selectedText,
           selectedHTML: selectedText
         });
-      }
+      },
+      isActive: false
     });
   };
 

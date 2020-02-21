@@ -30,14 +30,14 @@ class Wordlift_Content_Filter_Service {
 	 *
 	 * @since 3.26.0
 	 */
-	const FAQ_QUESTION_PATTERN = '/<span class="\s?wl-faq__question" id="wl-faq__question--\d+">(.*)<\/span>/';
+	const FAQ_QUESTION_PATTERN = '/<span class="\s?wl-faq--question" id="wl-faq--question--\d+">(.*)<\/span>/';
 
 	/**
 	 * This pattern is used to find all the answers tag.
 	 *
 	 * @since 3.26.0
 	 */
-	const FAQ_ANSWER_PATTERN = '/<span class="\s?wl-faq__answer" id="wl-faq__answer--\d+">(.*)<\/span>/';
+	const FAQ_ANSWER_PATTERN = '/<span class="\s?wl-faq--answer" id="wl-faq--answer--\d+">(.*)<\/span>/';
 
 	/**
 	 * A {@link Wordlift_Entity_Service} instance.
