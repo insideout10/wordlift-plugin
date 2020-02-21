@@ -34,9 +34,7 @@ class TinymceClickHandler {
    * @param id {string} Html id.
    */
   fireEventToEventHandlerToOpenQuestionOrAnswer(id) {
-    console.log("faq id before parsing " + id);
     const faqId = this.parseHtmlIdToFAQId(id);
-    console.log("faq id after parsing" + id);
     trigger(FAQ_ITEM_SELECTED_ON_TEXT_EDITOR, faqId);
   }
   /**

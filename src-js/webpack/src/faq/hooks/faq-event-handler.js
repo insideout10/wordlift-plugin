@@ -41,8 +41,6 @@ class FaqEventHandler {
       this.dispatcher.dispatchTextSelectedAction(data);
     });
     on(FAQ_ITEM_SELECTED_ON_TEXT_EDITOR, faqId => {
-      console.log("faq item selected");
-      console.log(faqId);
       this.dispatcher.dispatchQuestionOrAnswerClickedByUser(faqId);
     });
   }
