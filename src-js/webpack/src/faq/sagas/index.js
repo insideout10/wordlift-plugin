@@ -15,12 +15,23 @@ import { call, put, select, takeLatest, delay } from "redux-saga/effects";
 import { REQUEST_FAQ_ADD_NEW_QUESTION, REQUEST_GET_FAQ_ITEMS, UPDATE_FAQ_ITEM } from "../constants/action-types";
 import API from "../api/index";
 import { getAllFAQItems, getCurrentQuestion } from "../selectors";
-import { requestGetFaqItems, resetTypedQuestion, updateFaqItems, updateNotificationArea } from "../actions";
+import {
+  requestGetFaqItems,
+  resetTypedQuestion,
+  updateFaqItems,
+  updateFaqModalVisibility,
+  updateNotificationArea
+} from "../actions";
 import { transformAPIDataToUi } from "./filters";
 import { faqEditItemType } from "../components/faq-edit-item";
 import { FAQ_HIGHLIGHT_TEXT, FAQ_ITEMS_CHANGED } from "../constants/faq-hook-constants";
 import { trigger } from "backbone";
 
+/**
+ * Dispatch notification when a event occurs on the store.
+ * @param response
+ * @return {Generator<<"CALL", CallEffectDescriptor>|<"PUT", PutEffectDescriptor<{type: *}>>, void, ?>}
+ */
 function* dispatchNotification(response) {
   const notificationAction = updateNotificationArea();
   notificationAction.payload = {
@@ -97,6 +108,10 @@ function* handleUpdateFaqItems(action) {
   const response = yield call(API.updateFAQItems, faqItems);
   yield dispatchNotification(response);
   yield put(requestGetFaqItems());
+  // Close the modal on apply.
+  const modalAction = updateFaqModalVisibility();
+  modalAction.payload = false;
+  yield put(modalAction);
 }
 
 function* rootSaga() {
