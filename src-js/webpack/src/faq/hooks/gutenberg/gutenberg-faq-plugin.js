@@ -2,8 +2,9 @@ import { trigger, on } from "backbone";
 import { FAQ_EVENT_HANDLER_SELECTION_CHANGED, FAQ_HIGHLIGHT_TEXT } from "../../constants/faq-hook-constants";
 import GutenbergFormatTypeHandler, { FAQ_QUESTION_FORMAT_NAME } from "./gutenberg-format-type-handler";
 import GutenbergHighlightHandler from "./gutenberg-highlight-handler";
-import {getCurrentSelectionHTML} from "./helpers";
+import { getCurrentSelectionHTML } from "./helpers";
 
+export const FAQ_GUTENBERG_TOOLBAR_BUTTON_CLASS_NAME = "wl-faq-gutenberg-toolbar-button";
 /**
  * Register all the format types required by FAQ
  * for the gutenberg
@@ -18,9 +19,6 @@ const highlightHandler = new GutenbergHighlightHandler();
  */
 highlightHandler.listenForHighlightEvent();
 
-
-
-
 /**
  * Register the toolbar button and the format.
  */
@@ -28,7 +26,8 @@ highlightHandler.listenForHighlightEvent();
   const AddFaqButton = function(props) {
     return wp.element.createElement(wp.editor.RichTextToolbarButton, {
       title: "Add Question / Answer",
-      icon: "plus-alt",
+      icon: "plus",
+      className: FAQ_GUTENBERG_TOOLBAR_BUTTON_CLASS_NAME,
       onClick: function() {
         /**
          * We pass props.value in to extras, in order to make
@@ -42,7 +41,8 @@ highlightHandler.listenForHighlightEvent();
           selectedHTML: getCurrentSelectionHTML()
         });
       },
-      isActive: false
+      isActive: false,
+      disabled: true
     });
   };
 
