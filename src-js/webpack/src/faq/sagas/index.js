@@ -59,13 +59,13 @@ function* handleAddNewQuestion(action) {
     }
   ];
   const response = yield call(API.saveFAQItems, faqItems);
-  yield dispatchNotification(response);
   // Event emitted to global namespace in order to highlight text in the editor.
   trigger(FAQ_HIGHLIGHT_TEXT, {
     text: currentQuestion,
     isQuestion: true,
     id: response.id,
   });
+  yield dispatchNotification(response);
   yield put(resetTypedQuestion());
   // Refresh the screen by getting new FAQ items.
   yield put(requestGetFaqItems());

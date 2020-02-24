@@ -119,17 +119,21 @@ class TinymceToolbarHandler {
    */
   addButtonToToolBar() {
     const editor = this.editor;
+    const self = this;
     editor.addButton(TINYMCE_TOOLBAR_BUTTON_NAME, {
       text: "Add Question or Answer",
       id: TINYMCE_TOOLBAR_BUTTON_NAME,
       onclick: function() {
         const selectedText = editor.selection.getContent({ format: "text" });
         const selectedHTML = editor.selection.getNode().innerHTML;
+        /**
+         * Make the highlight handler to save the selection.
+         */
+        self.highlightHandler.saveSelection();
         trigger(FAQ_EVENT_HANDLER_SELECTION_CHANGED, {
           selectedText: selectedText,
-          selectedHTML: selectedHTML,
+          selectedHTML: selectedHTML
         });
-        console.log("event handler triggered from tinymce");
       }
     });
     this.changeToolBarButtonStateBasedOnTextSelected();

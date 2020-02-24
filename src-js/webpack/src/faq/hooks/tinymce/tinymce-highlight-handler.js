@@ -27,6 +27,7 @@ class TinymceHighlightHandler {
   constructor(editor, store) {
     this.editor = editor;
     this.store = store;
+    this.selection = null
     /**
      * Listen for highlighting events, then highlight the text.
      * Expected object from the event
@@ -42,19 +43,28 @@ class TinymceHighlightHandler {
   }
 
   /**
+   * Save the currently selection to a instance
+   * variable, used for highlighting the text later even
+   * if the user unselected the text.
+   */
+  saveSelection() {
+    this.selection = this.editor.selection
+  }
+  /**
    * Highlight the selection done by the user.
    * @param selectedText The text which was selected by the user.
    * @param isQuestion {Boolean} Indicates if its question or answer.
    * @param id {Int} Unique id for question and answer.
    */
   highlightSelectedText(selectedText, isQuestion, id) {
-    if ( this.editor.selection === null) {
+    if ( this.selection === null) {
       /**
        * Bail out if there is no selection on the editor.
        */
       return
     }
-    const html = this.editor.selection.getContent();
+    const html = this.selection.getContent();
+    console.log("html is " + html)
     const className = classExtractor({
       [FAQ_QUESTION_HIGHLIGHTING_CLASS]: isQuestion,
       [FAQ_ANSWER_HIGHLIGHTING_CLASS]: !isQuestion
@@ -65,9 +75,8 @@ class TinymceHighlightHandler {
      * @type {string}
      */
     const identifier = `${className}--${id}`;
-    const editor = this.editor;
     const highlightedElement = `<span class="${className}" id="${identifier}">${html}</span>`;
-    editor.selection.setContent(highlightedElement);
+    this.selection.setContent(highlightedElement);
   }
 }
 
