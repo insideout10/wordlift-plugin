@@ -186,10 +186,9 @@ class Wordlift_Admin_Post_Edit_Page {
 			)
 		);
 
-		wp_enqueue_style( 'wordlift-admin-edit-page', "$script_name.css", array(), $this->plugin->get_version() );
+		wp_enqueue_style( 'wl-classic-editor', "$script_name.css", array(), $this->plugin->get_version() );
 		// This method is reached only if editor is classic editor.
 		$this->load_faq_settings( self::TINY_MCE );
-		wp_enqueue_style( 'wl-classic-editor', "$script_name.css", array(), $this->plugin->get_version() );
 	}
 
 	/**
