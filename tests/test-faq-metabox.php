@@ -16,13 +16,4 @@ class FAQ_Metabox_test extends Wordlift_Unit_Test_Case {
 		$this->assertNotNull( new FAQ_Metabox() );
 	}
 
-	public function test_when_class_is_initialized_faq_metabox_registered() {
-		new FAQ_Metabox();
-		//do_action('admin_init');
-		// check if the meta box is present for FAQ
-		global $wp_meta_boxes;
-		// the metaboxes should have the FAQ meta box.
-		$this->assertArrayHasKey(FAQ_Metabox::FAQ_METABOX_ID, $wp_meta_boxes['post']['advanced']['default'] );
-	}
-
 }

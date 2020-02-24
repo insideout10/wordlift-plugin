@@ -187,18 +187,11 @@ class Wordlift_Admin_Post_Edit_Page {
 		);
 
 		wp_enqueue_style( 'wl-classic-editor', "$script_name.css", array(), $this->plugin->get_version() );
-		// This method is reached only if editor is classic editor.
+		$this->load_faq_scripts_and_styles();
 		$this->load_faq_settings( self::TINY_MCE );
 	}
 
-	/**
-	 * Load FAQ settings to the add/edit post page
-	 *
-	 * @param $editor string specifying which text editor needed to be used.
-	 */
-	private function load_faq_settings( $editor ) {
-		// Register the api endpoints.
-		// Enqueue the FAQ style
+	private function load_faq_scripts_and_styles() {
 		wp_enqueue_style(
 			'faq-metabox-style',
 			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/faq.css',
@@ -210,7 +203,16 @@ class Wordlift_Admin_Post_Edit_Page {
 			array('wp-polyfill'),
 			true
 		);
+	}
 
+	/**
+	 * Load FAQ settings to the add/edit post page
+	 *
+	 * @param $editor string specifying which text editor needed to be used.
+	 */
+	private function load_faq_settings( $editor ) {
+		// Register the api endpoints.
+		// Enqueue the FAQ style
 		if ( $editor === self::GUTENBERG ) {
 			Scripts_Helper::enqueue_based_on_wordpress_version(
 				'faq-gutenberg-plugin',
@@ -232,8 +234,6 @@ class Wordlift_Admin_Post_Edit_Page {
 			'invalidTagMessage' => 'Invalid tags {INVALID_TAGS} is present in answer',
 			'invalidWordCountMessage' => 'Answer word count must not exceed {ANSWER_WORD_COUNT_WARNING_LIMIT} words'
 		));
-		// Load the FAQ meta box.
-		new FAQ_Metabox();
 	}
 
 	/**
@@ -243,6 +243,7 @@ class Wordlift_Admin_Post_Edit_Page {
 	 */
 	public function enqueue_scripts_gutenberg() {
 		// Load FAQ settings.
+		$this->load_faq_scripts_and_styles();
 		$this->load_faq_settings(self::GUTENBERG);
 
 		wp_register_script(
