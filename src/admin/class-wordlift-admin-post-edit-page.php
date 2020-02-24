@@ -209,6 +209,25 @@ class Wordlift_Admin_Post_Edit_Page {
 	}
 
 	/**
+	 * Get FAQ settings array
+	 *
+	 * @return array
+	 */
+	public function get_faq_settings() {
+		return array(
+			'restUrl' => get_rest_url( null, WL_REST_ROUTE_DEFAULT_NAMESPACE.'/faq' ),
+			'listBoxId' => FAQ_Metabox::FAQ_LIST_BOX_ID,
+			'modalId' => FAQ_Metabox::FAQ_MODAL_ID,
+			'addQuestionText' => __( 'Add', 'wordlift' ),
+			'nonce' => wp_create_nonce( 'wp_rest' ),
+			'postId' => get_the_ID(),
+			// Translation for warning, error message.
+			'invalidTagMessage' => sprintf(__('Invalid tags %s is present in answer'), "{INVALID_TAGS}"),
+			'invalidWordCountMessage' => sprintf(__('Answer word count must not exceed %s words'), "{ANSWER_WORD_COUNT_WARNING_LIMIT}")
+		);
+	}
+
+	/**
 	 * Load FAQ settings to the add/edit post page
 	 *
 	 * @param $editor string specifying which text editor needed to be used.
@@ -225,17 +244,7 @@ class Wordlift_Admin_Post_Edit_Page {
 			);
 		}
 
-		wp_localize_script('faq-metabox-script', '_wlFaqSettings', array(
-			'restUrl' => get_rest_url( null, WL_REST_ROUTE_DEFAULT_NAMESPACE.'/faq' ),
-			'listBoxId' => FAQ_Metabox::FAQ_LIST_BOX_ID,
-			'modalId' => FAQ_Metabox::FAQ_MODAL_ID,
-			'addQuestionText' => __( 'Add', 'wordlift' ),
-			'nonce' => wp_create_nonce( 'wp_rest' ),
-			'postId' => get_the_ID(),
-			// Translation for warning, error message.
-			'invalidTagMessage' => sprintf(__('Invalid tags %s is present in answer'), "{INVALID_TAGS}"),
-			'invalidWordCountMessage' => sprintf(__('Answer word count must not exceed %s words'), "{ANSWER_WORD_COUNT_WARNING_LIMIT}")
-		));
+		wp_localize_script('faq-metabox-script', '_wlFaqSettings', $this->get_faq_settings());
 	}
 
 	/**
