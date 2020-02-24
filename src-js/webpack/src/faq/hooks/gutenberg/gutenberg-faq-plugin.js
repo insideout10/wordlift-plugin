@@ -2,6 +2,7 @@ import { trigger, on } from "backbone";
 import { FAQ_EVENT_HANDLER_SELECTION_CHANGED, FAQ_HIGHLIGHT_TEXT } from "../../constants/faq-hook-constants";
 import GutenbergFormatTypeHandler, { FAQ_QUESTION_FORMAT_NAME } from "./gutenberg-format-type-handler";
 import GutenbergHighlightHandler from "./gutenberg-highlight-handler";
+import {getCurrentSelectionHTML} from "./helpers";
 
 /**
  * Register all the format types required by FAQ
@@ -38,7 +39,7 @@ highlightHandler.listenForHighlightEvent();
         const selectedText = text.slice(start, end);
         trigger(FAQ_EVENT_HANDLER_SELECTION_CHANGED, {
           selectedText: selectedText,
-          selectedHTML: selectedText
+          selectedHTML: getCurrentSelectionHTML()
         });
       },
       isActive: false
