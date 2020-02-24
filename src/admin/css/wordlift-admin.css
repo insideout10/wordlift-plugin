@@ -122,3 +122,34 @@
 #wl-schemaorg-property.postbox, #wl_entity_typediv.postbox {
     border-left: 2px solid #007AFF;
 }
+
+#excerpt_summary {
+    width: 100%;
+    height: 4em;
+}
+
+#wl-summary-notify:before {
+    content: "\f0f3";
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+}
+
+#wl-summary-notify {
+    font-size: 15px;
+    padding-left: 30px;
+    display: inline-block;
+    margin-left: 20px;
+    margin: 10px;
+}
+
+#loader {
+    display: none;
+    height: 35px;
+    width: 35px;
+}
+
+.wl-use-ref {
+    display: flex;
+}
