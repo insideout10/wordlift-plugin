@@ -10,7 +10,6 @@
  */
 import createSagaMiddleware from "redux-saga";
 import { applyMiddleware, createStore } from "redux";
-import logger from "redux-logger";
 /**
  * Internal dependencies
  */
@@ -34,7 +33,7 @@ const FAQ_INITIAL_STATE = {
 };
 
 const sagaMiddleware = createSagaMiddleware();
-const store = createStore(faqReducer, FAQ_INITIAL_STATE, applyMiddleware(sagaMiddleware, logger));
+const store = createStore(faqReducer, FAQ_INITIAL_STATE, applyMiddleware(sagaMiddleware));
 sagaMiddleware.run(rootSaga);
 
 export default store;
