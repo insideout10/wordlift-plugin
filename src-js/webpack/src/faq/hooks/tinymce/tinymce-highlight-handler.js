@@ -64,7 +64,6 @@ class TinymceHighlightHandler {
       return
     }
     const html = this.selection.getContent();
-    console.log("html is " + html)
     const className = classExtractor({
       [FAQ_QUESTION_HIGHLIGHTING_CLASS]: isQuestion,
       [FAQ_ANSWER_HIGHLIGHTING_CLASS]: !isQuestion

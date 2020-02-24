@@ -3,6 +3,7 @@ import { FAQ_EVENT_HANDLER_SELECTION_CHANGED, FAQ_HIGHLIGHT_TEXT } from "../../c
 import GutenbergFormatTypeHandler, { FAQ_QUESTION_FORMAT_NAME } from "./gutenberg-format-type-handler";
 import GutenbergHighlightHandler from "./gutenberg-highlight-handler";
 import { getCurrentSelectionHTML } from "./helpers";
+import GutenbergToolbarHandler from "./gutenberg-toolbar-handler";
 
 export const FAQ_GUTENBERG_TOOLBAR_BUTTON_CLASS_NAME = "wl-faq-gutenberg-toolbar-button";
 /**
@@ -19,6 +20,11 @@ const highlightHandler = new GutenbergHighlightHandler();
  */
 highlightHandler.listenForHighlightEvent();
 
+/**
+ * Initialize event handler to listen for text selection,
+ * enable/disable the toolbar button.
+ */
+new GutenbergToolbarHandler();
 /**
  * Register the toolbar button and the format.
  */
@@ -41,8 +47,6 @@ highlightHandler.listenForHighlightEvent();
           selectedHTML: getCurrentSelectionHTML()
         });
       },
-      isActive: false,
-      disabled: true
     });
   };
 

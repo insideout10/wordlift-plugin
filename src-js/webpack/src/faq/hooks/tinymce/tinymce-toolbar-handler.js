@@ -68,12 +68,12 @@ class TinymceToolbarHandler {
    * 2. If an answer is selected and there are no unanswered questions.
    * @return {Boolean} True if we need to disable button, false if we dont want to.
    */
-  shouldDisableButton(selectedText) {
-    if (0 === selectedText.length) {
+  static shouldDisableButton(selectedText, faqItems) {
+    if (0 === selectedText.length || typeof selectedText === "undefined") {
       return true;
     }
     // If there is some selected text then check if it is an answer.
-    const questionsWithoutAnswer = this.faqItems.filter(e => e.answer === "").length;
+    const questionsWithoutAnswer = faqItems.filter(e => e.answer === "").length;
     if (0 === questionsWithoutAnswer && !FaqValidator.isQuestion(selectedText)) {
       // There are no questions without answer and selected text is answer then disable it.
       return true;
@@ -95,7 +95,7 @@ class TinymceToolbarHandler {
       return;
     }
     const button = container.getElementsByTagName("button")[0];
-    if (this.shouldDisableButton(selectedText)) {
+    if (TinymceToolbarHandler.shouldDisableButton(selectedText, this.faqItems)) {
       this.disableButton(container, button);
     } else {
       this.enableButton(container, button);
