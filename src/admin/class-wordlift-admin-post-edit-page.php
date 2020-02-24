@@ -191,6 +191,9 @@ class Wordlift_Admin_Post_Edit_Page {
 		$this->load_faq_settings( self::TINY_MCE );
 	}
 
+	/**
+	 * Enqueue the scripts and styles needed for FAQ
+	 */
 	private function load_faq_scripts_and_styles() {
 		wp_enqueue_style(
 			'faq-metabox-style',
@@ -224,15 +227,14 @@ class Wordlift_Admin_Post_Edit_Page {
 
 		wp_localize_script('faq-metabox-script', '_wlFaqSettings', array(
 			'restUrl' => get_rest_url( null, WL_REST_ROUTE_DEFAULT_NAMESPACE.'/faq' ),
-			'textEditor' => $editor,
 			'listBoxId' => FAQ_Metabox::FAQ_LIST_BOX_ID,
 			'modalId' => FAQ_Metabox::FAQ_MODAL_ID,
 			'addQuestionText' => __( 'Add', 'wordlift' ),
 			'nonce' => wp_create_nonce( 'wp_rest' ),
 			'postId' => get_the_ID(),
 			// Translation for warning, error message.
-			'invalidTagMessage' => 'Invalid tags {INVALID_TAGS} is present in answer',
-			'invalidWordCountMessage' => 'Answer word count must not exceed {ANSWER_WORD_COUNT_WARNING_LIMIT} words'
+			'invalidTagMessage' => sprintf(__('Invalid tags %s is present in answer'), "{INVALID_TAGS}"),
+			'invalidWordCountMessage' => sprintf(__('Answer word count must not exceed %s words'), "{ANSWER_WORD_COUNT_WARNING_LIMIT}")
 		));
 	}
 
