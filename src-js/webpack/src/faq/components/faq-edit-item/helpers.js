@@ -16,10 +16,11 @@ import { ANSWER_WORD_COUNT_WARNING_LIMIT, faqEditItemType } from "./index";
 /**
  * Allowed html tags in the answer according to docs
  * Used to validate the html tags in the answer box.
+ * NOTE: Use lowercase to add new items
  * https://developers.google.com/search/docs/data-types/faqpage#answer
  * @type {Array}
  */
-const ANSWER_ALLOWED_HTML_TAGS = [
+export const ANSWER_ALLOWED_HTML_TAGS = [
   "h1",
   "h2",
   "h3",

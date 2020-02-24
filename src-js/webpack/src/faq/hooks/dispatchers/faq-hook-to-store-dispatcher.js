@@ -16,6 +16,7 @@ import {
 import FaqValidator from "../validators/faq-validator";
 import { getAllFAQItems } from "../../selectors";
 import { faqEditItemType } from "../../components/faq-edit-item";
+import {invalidTagFilter} from "./filters";
 
 class FaqHookToStoreDispatcher {
   /**
@@ -83,8 +84,9 @@ class FaqHookToStoreDispatcher {
       // Add it to the API
       this.store.dispatch(requestAddNewQuestion());
     } else {
-      // Allow html on answers.
-      this.dispatchAnswerSelected(selectedHTML);
+      // Allow html on answers, but apply filters before dispatching.
+      const filteredHTML = invalidTagFilter(selectedHTML)
+      this.dispatchAnswerSelected(filteredHTML);
     }
   }
 }
