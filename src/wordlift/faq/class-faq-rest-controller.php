@@ -143,6 +143,10 @@ class FAQ_Rest_Controller {
 			$faq_items = $post_data['faq_items'];
 			foreach ( $faq_items as &$faq_item ) {
 				// Add an identifier id to the faq item, it helps to prevent duplication problem.
+				/**
+				 * We are using time() and a random integer to prevent
+				 * duplication problem.
+				 */
 				$faq_item['id'] = time() + rand(1, 100);
 				add_post_meta( (int) $post_id, self::FAQ_META_KEY, $faq_item);
 			}

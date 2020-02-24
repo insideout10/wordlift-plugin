@@ -127,6 +127,12 @@ class FAQ_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 		$create_faq_items_request = $this->get_create_faq_item_request( $post_id, $data );
 		$this->server->dispatch( $create_faq_items_request );
 
+		$request   = new WP_REST_Request( 'GET', $this->faq_route . "/". $post_id );
+		$request->set_query_params(array(
+			'post_id' => $post_id,
+		));
+		$response  = $this->server->dispatch( $request )->get_data();
+
 		$data = array(
 			'post_id' => $post_id,
 			'faq_items' => array(
@@ -135,7 +141,7 @@ class FAQ_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 					'answer'   => 'bar1',
 					'previous_question_value' => 'foo',
 					'previous_answer_value'   => 'bar',
-					'id' => "0"
+					'id' => $response[0]["id"]
 				)
 			)
 		);
