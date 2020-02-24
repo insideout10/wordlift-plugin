@@ -12,10 +12,10 @@ import {
   requestAddNewQuestion,
   updateFaqItem,
   updateQuestionOnInputChange
-} from "../actions";
-import FaqValidator from "./validators/faq-validator";
-import { getAllFAQItems } from "../selectors";
-import { faqEditItemType } from "../components/faq-edit-item";
+} from "../../actions";
+import FaqValidator from "../validators/faq-validator";
+import { getAllFAQItems } from "../../selectors";
+import { faqEditItemType } from "../../components/faq-edit-item";
 
 class FaqHookToStoreDispatcher {
   /**

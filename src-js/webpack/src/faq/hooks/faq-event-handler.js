@@ -15,7 +15,7 @@ import { on } from "backbone";
  * Internal dependencies.
  */
 import { FAQ_EVENT_HANDLER_SELECTION_CHANGED, FAQ_ITEM_SELECTED_ON_TEXT_EDITOR } from "../constants/faq-hook-constants";
-import FaqHookToStoreDispatcher from "./faq-hook-to-store-dispatcher";
+import FaqHookToStoreDispatcher from "./dispatchers/faq-hook-to-store-dispatcher";
 
 const GUTENBERG = "gutenberg";
 
