@@ -50,7 +50,7 @@ class FaqApplyList extends React.Component {
   render() {
     return (
       <React.Fragment>
-         {this.renderEmptyMessageWhenNoQuestionPresent(this.props.faqItems)}
+        {this.renderEmptyMessageWhenNoQuestionPresent(this.props.faqItems)}
         {this.props.faqItems.filter(e => e.answer.length === 0).map(e => {
           return (
             <WlCard>

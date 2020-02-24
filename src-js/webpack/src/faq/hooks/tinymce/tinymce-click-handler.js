@@ -8,7 +8,6 @@
  * External dependencies.
  */
 import { trigger } from "backbone";
-
 /**
  * Internal dependencies.
  */

@@ -17,8 +17,6 @@ import FaqList from "../faq-list";
 import "./index.scss";
 import FaqEditItem, { faqEditItemType } from "../faq-edit-item";
 import FaqEditItemCloseButton from "../faq-edit-item-close-button";
-import { updateFaqModalVisibility, updateNotificationArea } from "../../actions";
-import WlNotificationArea from "../../blocks/wl-notification-area";
 
 class FaqScreen extends React.Component {
   constructor(props) {
@@ -59,15 +57,11 @@ class FaqScreen extends React.Component {
     }
   }
   render() {
-    return (
-      <React.Fragment>
-        {this.renderComponentBasedOnState()}
-      </React.Fragment>
-    );
+    return <React.Fragment>{this.renderComponentBasedOnState()}</React.Fragment>;
   }
 }
 
 export default connect(state => ({
   selectedFaqId: state.faqListOptions.selectedFaqId,
-  faqItems: state.faqListOptions.faqItems,
+  faqItems: state.faqListOptions.faqItems
 }))(FaqScreen);

@@ -10,12 +10,11 @@
  * External dependencies.
  */
 import { on } from "backbone";
-
 /**
  * Internal dependencies.
  */
 import { FAQ_HIGHLIGHT_TEXT } from "../../constants/faq-hook-constants";
-import {FAQ_ANSWER_FORMAT_NAME, FAQ_QUESTION_FORMAT_NAME} from "./gutenberg-format-type-handler";
+import { FAQ_ANSWER_FORMAT_NAME, FAQ_QUESTION_FORMAT_NAME } from "./gutenberg-format-type-handler";
 import { applyFormat } from "@wordpress/rich-text";
 
 class GutenbergHighlightHandler {
@@ -32,11 +31,10 @@ class GutenbergHighlightHandler {
       /**
        * Apply format depending on the type.
        */
-      if ( isQuestion) {
-        this.props.onChange( applyFormat(this.props.value, {type: FAQ_QUESTION_FORMAT_NAME}) );
-      }
-      else {
-        this.props.onChange( applyFormat(this.props.value, {type: FAQ_ANSWER_FORMAT_NAME}) );
+      if (isQuestion) {
+        this.props.onChange(applyFormat(this.props.value, { type: FAQ_QUESTION_FORMAT_NAME }));
+      } else {
+        this.props.onChange(applyFormat(this.props.value, { type: FAQ_ANSWER_FORMAT_NAME }));
       }
     });
   }

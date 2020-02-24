@@ -15,7 +15,7 @@ import PropTypes from "prop-types";
  */
 import "./index.scss";
 import { connect } from "react-redux";
-import { requestAddNewQuestion, requestGetFaqItems } from "../../actions";
+import { requestAddNewQuestion } from "../../actions";
 
 class AddQuestionButton extends React.Component {
   render() {

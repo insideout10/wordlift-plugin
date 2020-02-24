@@ -8,7 +8,6 @@
  * External dependencies
  */
 import React from "react";
-
 /**
  * Internal dependencies.
  */
@@ -16,10 +15,10 @@ import { classExtractor } from "../../../mappings/blocks/helper";
 import "./index.scss";
 
 export const WlBgModal = ({ shouldOpenModal, children }) => {
-    const classes = classExtractor({
-        "wl-bg-modal": true,
-        "wl-bg-modal--open": shouldOpenModal,
-        "wl-bg-modal--closed": !shouldOpenModal
-    });
-    return <div className={classes}>{children}</div>;
+  const classes = classExtractor({
+    "wl-bg-modal": true,
+    "wl-bg-modal--open": shouldOpenModal,
+    "wl-bg-modal--closed": !shouldOpenModal
+  });
+  return <div className={classes}>{children}</div>;
 };

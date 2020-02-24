@@ -15,7 +15,8 @@ import { createReducer } from "@reduxjs/toolkit";
  */
 import {
   CLOSE_EDIT_SCREEN,
-  QUESTION_SELECTED_BY_USER, RESET_TYPED_QUESTION,
+  QUESTION_SELECTED_BY_USER,
+  RESET_TYPED_QUESTION,
   UPDATE_FAQ_ITEMS,
   UPDATE_QUESTION_ON_INPUT_CHANGE
 } from "../constants/action-types";
@@ -33,7 +34,7 @@ export const faqItemsListReducer = createReducer(null, {
   [CLOSE_EDIT_SCREEN]: (state, action) => {
     state.selectedFaqId = null;
   },
-  [RESET_TYPED_QUESTION]: (state,action) => {
-    state.question = ""
+  [RESET_TYPED_QUESTION]: (state, action) => {
+    state.question = "";
   }
 });

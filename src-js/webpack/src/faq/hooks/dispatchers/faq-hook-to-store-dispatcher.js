@@ -16,7 +16,7 @@ import {
 import FaqValidator from "../validators/faq-validator";
 import { getAllFAQItems } from "../../selectors";
 import { faqEditItemType } from "../../components/faq-edit-item";
-import {invalidTagFilter} from "./filters";
+import { invalidTagFilter } from "./filters";
 
 class FaqHookToStoreDispatcher {
   /**
@@ -37,7 +37,7 @@ class FaqHookToStoreDispatcher {
     action.payload = {
       id: id,
       type: faqEditItemType.ANSWER,
-      value: answer,
+      value: answer
     };
     store.dispatch(action);
   }
@@ -51,7 +51,7 @@ class FaqHookToStoreDispatcher {
     } else {
       const action = answerSelectedByUser();
       action.payload = {
-        selectedAnswer: text,
+        selectedAnswer: text
       };
       this.store.dispatch(action);
     }
@@ -75,7 +75,7 @@ class FaqHookToStoreDispatcher {
    * @param data
    */
   dispatchTextSelectedAction(data) {
-    const { selectedText, selectedHTML} = data;
+    const { selectedText, selectedHTML } = data;
     // // Check if this is a question
     if (FaqValidator.isQuestion(selectedText)) {
       const action = updateQuestionOnInputChange();
@@ -85,7 +85,7 @@ class FaqHookToStoreDispatcher {
       this.store.dispatch(requestAddNewQuestion());
     } else {
       // Allow html on answers, but apply filters before dispatching.
-      const filteredHTML = invalidTagFilter(selectedHTML)
+      const filteredHTML = invalidTagFilter(selectedHTML);
       this.dispatchAnswerSelected(filteredHTML);
     }
   }

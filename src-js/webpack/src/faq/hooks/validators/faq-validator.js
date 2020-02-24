@@ -6,11 +6,9 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 class FaqValidator {
-
-    static isQuestion(text) {
-        return text.trim().endsWith("?")
-    }
-
+  static isQuestion(text) {
+    return text.trim().endsWith("?");
+  }
 }
 
-export default FaqValidator
+export default FaqValidator;

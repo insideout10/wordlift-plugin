@@ -29,7 +29,7 @@ const FaqEditButtonGroup = ({ updateHandler, deleteHandler }) => {
           }}
         />
       </WlColumn>
-        <WlColumn className={"wl-col--width-10"}></WlColumn>
+      <WlColumn className={"wl-col--width-10"} />
       <WlColumn className={"wl-col--width-40 wl-col--low-padding"}>
         <WlActionButton
           text={"update"}

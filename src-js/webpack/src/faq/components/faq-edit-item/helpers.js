@@ -50,12 +50,15 @@ export function showWarningIfAnswerWordCountExceedsLimit(type, textAreaValue) {
   if (type !== faqEditItemType.ANSWER || 0 === textAreaValue.length) {
     return <React.Fragment />;
   }
-  const matches = textAreaValue.match(/\S+/g)
-  if ( matches === null || matches.length === 0) {
+  const matches = textAreaValue.match(/\S+/g);
+  if (matches === null || matches.length === 0) {
     return <React.Fragment />;
   }
-  const wordCount = matches.length
-  const errorMessage = invalidWordCountMessage.replace("{ANSWER_WORD_COUNT_WARNING_LIMIT}", ANSWER_WORD_COUNT_WARNING_LIMIT);
+  const wordCount = matches.length;
+  const errorMessage = invalidWordCountMessage.replace(
+    "{ANSWER_WORD_COUNT_WARNING_LIMIT}",
+    ANSWER_WORD_COUNT_WARNING_LIMIT
+  );
   if (wordCount <= ANSWER_WORD_COUNT_WARNING_LIMIT) {
     return <React.Fragment />;
   } else {

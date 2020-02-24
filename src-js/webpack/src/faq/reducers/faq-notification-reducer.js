@@ -11,6 +11,7 @@
  */
 import { createReducer } from "@reduxjs/toolkit";
 import { UPDATE_NOTIFICATION_AREA } from "../constants/action-types";
+
 /**
  * Internal dependencies.
  */

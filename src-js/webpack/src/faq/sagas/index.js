@@ -8,7 +8,7 @@
 /**
  * External dependencies
  */
-import { call, put, select, takeLatest, delay } from "redux-saga/effects";
+import { call, delay, put, select, takeLatest } from "redux-saga/effects";
 /**
  * Internal dependencies.
  */
@@ -63,7 +63,7 @@ function* handleAddNewQuestion(action) {
   trigger(FAQ_HIGHLIGHT_TEXT, {
     text: currentQuestion,
     isQuestion: true,
-    id: response.id,
+    id: response.id
   });
   yield dispatchNotification(response);
   yield put(resetTypedQuestion());
@@ -103,7 +103,7 @@ function* handleUpdateFaqItems(action) {
   trigger(FAQ_HIGHLIGHT_TEXT, {
     text: payload.value,
     isQuestion: payload.type === faqEditItemType.QUESTION,
-    id: faqItems[faqItemIndex].id,
+    id: faqItems[faqItemIndex].id
   });
   const response = yield call(API.updateFAQItems, faqItems);
   yield dispatchNotification(response);

@@ -11,7 +11,7 @@
  * @return {Array} Transformed FAQ items.
  */
 export const transformAPIDataToUi = items => {
-  return items.map((item) => ({
+  return items.map(item => ({
     ...item,
     /**
      * We save the value of question and answer before supplying to ui, they will

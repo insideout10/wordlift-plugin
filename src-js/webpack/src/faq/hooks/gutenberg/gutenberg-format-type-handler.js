@@ -10,7 +10,6 @@
  * WordPress dependencies
  */
 import { registerFormatType } from "@wordpress/rich-text";
-
 /**
  * Internal dependencies.
  */
@@ -26,7 +25,7 @@ class GutenbergFormatTypeHandler {
       tagName: "span",
       className: FAQ_ANSWER_HIGHLIGHTING_CLASS
     });
-    console.log(answerFormat)
+    console.log(answerFormat);
   }
   registerQuestionFormatType() {
     registerFormatType(FAQ_QUESTION_FORMAT_NAME, {

@@ -23,17 +23,16 @@ class GutenbergToolbarHandler {
     });
     this.startListeningForSelectionChangesAndSetState();
     // When initailised set the button to disabled state.
-    this.disableButtons(document.getElementsByClassName(FAQ_GUTENBERG_TOOLBAR_BUTTON_CLASS_NAME))
+    this.disableButtons(document.getElementsByClassName(FAQ_GUTENBERG_TOOLBAR_BUTTON_CLASS_NAME));
   }
 
   startListeningForSelectionChangesAndSetState() {
     /**
      * Listen for event emitted by wordlift hook.
      */
-    on(SELECTION_CHANGED, ({selection}) => {
+    on(SELECTION_CHANGED, ({ selection }) => {
       this.setStateBasedOnStore(selection);
     });
-
   }
 
   /**
@@ -41,8 +40,8 @@ class GutenbergToolbarHandler {
    * @param toolbarButtons
    */
   disableButtons(toolbarButtons) {
-    for ( let button of toolbarButtons) {
-      button.disabled = true
+    for (let button of toolbarButtons) {
+      button.disabled = true;
     }
   }
 
@@ -51,9 +50,9 @@ class GutenbergToolbarHandler {
    * @param toolbarButtons
    */
   enableButtons(toolbarButtons) {
-      for ( let button of toolbarButtons) {
-          button.disabled = false
-      }
+    for (let button of toolbarButtons) {
+      button.disabled = false;
+    }
   }
 
   /**
@@ -63,11 +62,10 @@ class GutenbergToolbarHandler {
   setStateBasedOnStore(selectedText) {
     const toolbarButtons = document.getElementsByClassName(FAQ_GUTENBERG_TOOLBAR_BUTTON_CLASS_NAME);
     const shouldDisableButton = TinymceToolbarHandler.shouldDisableButton(selectedText, this.faqItems);
-    if ( shouldDisableButton ) {
-        this.disableButtons(toolbarButtons)
-    }
-    else {
-        this.enableButtons(toolbarButtons)
+    if (shouldDisableButton) {
+      this.disableButtons(toolbarButtons);
+    } else {
+      this.enableButtons(toolbarButtons);
     }
   }
 }

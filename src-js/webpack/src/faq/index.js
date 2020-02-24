@@ -11,7 +11,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import { on } from "backbone";
 /**
  * Internal dependencies.
  */
@@ -20,6 +19,7 @@ import FaqScreen from "./components/faq-screen";
 import FaqModal from "./components/faq-modal";
 import FaqEventHandler from "./hooks/faq-event-handler";
 import "./index.scss";
+
 const { addQuestionText, modalId } = global["_wlFaqSettings"];
 const listBoxId = "wl-faq-meta-list-box";
 
@@ -28,7 +28,7 @@ const listBoxId = "wl-faq-meta-list-box";
  */
 window.addEventListener("load", () => {
   const el = document.createElement("div");
-  document.body.appendChild(el)
+  document.body.appendChild(el);
   ReactDOM.render(
     <Provider store={store}>
       <FaqModal />

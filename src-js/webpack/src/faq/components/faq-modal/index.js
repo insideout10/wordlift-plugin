@@ -24,7 +24,7 @@ import WlNotificationArea from "../../blocks/wl-notification-area";
 class FaqModal extends React.Component {
   componentDidMount() {
     this.props.dispatch(requestGetFaqItems());
-      this.removeNotificationListener = this.removeNotificationListener.bind(this);
+    this.removeNotificationListener = this.removeNotificationListener.bind(this);
   }
   /**
    * Run this listener once the close button is clicked

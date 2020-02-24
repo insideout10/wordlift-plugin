@@ -1,6 +1,6 @@
-import { trigger, on } from "backbone";
-import { FAQ_EVENT_HANDLER_SELECTION_CHANGED, FAQ_HIGHLIGHT_TEXT } from "../../constants/faq-hook-constants";
-import GutenbergFormatTypeHandler, { FAQ_QUESTION_FORMAT_NAME } from "./gutenberg-format-type-handler";
+import { trigger } from "backbone";
+import { FAQ_EVENT_HANDLER_SELECTION_CHANGED } from "../../constants/faq-hook-constants";
+import GutenbergFormatTypeHandler from "./gutenberg-format-type-handler";
 import GutenbergHighlightHandler from "./gutenberg-highlight-handler";
 import { getCurrentSelectionHTML } from "./helpers";
 import GutenbergToolbarHandler from "./gutenberg-toolbar-handler";
@@ -46,7 +46,7 @@ new GutenbergToolbarHandler();
           selectedText: selectedText,
           selectedHTML: getCurrentSelectionHTML()
         });
-      },
+      }
     });
   };
 

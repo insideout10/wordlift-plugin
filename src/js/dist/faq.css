@@ -21,8 +21,6 @@
 
 .faq-edit-item-close-button{cursor:pointer}
 
-.wl-notification-area{position:fixed;z-index:99999;top:0;right:0;animation-duration:0.3s;animation-name:fadeIn;background-color:inherit}@keyframes fadeIn{from{opacity:0}to{opacity:1}}.wl-notification-area__close-button{cursor:pointer}
-
 
 .wl-modal{display:none;z-index:99999 !important;height:65%;width:55%;background-color:#fff;position:fixed;left:50%;top:50%;transform:translate(-50%, -50%);border-radius:10px !important;padding:10px}.wl-modal.wl-modal--open{display:block}.wl-modal.wl-modal--closed{display:none}
 
@@ -31,6 +29,8 @@
 .wl-modal-body{overflow-y:scroll;height:80%}
 
 .wl-bg-modal{display:none;z-index:9998 !important;position:fixed;background-color:rgba(0,0,0,0.3);left:50%;top:50%;height:100%;width:100%;transform:translate(-50%, -50%)}.wl-bg-modal.wl-bg-modal--open{display:block}.wl-bg-modal.wl-bg-modal--closed{display:none}
+
+.wl-notification-area{position:fixed;z-index:99999;top:0;right:0;animation-duration:0.3s;animation-name:fadeIn;background-color:inherit}@keyframes fadeIn{from{opacity:0}to{opacity:1}}.wl-notification-area__close-button{cursor:pointer}
 
 #wl-faq-meta-list-box{max-height:380px;overflow-y:scroll;width:100%;overflow-x:hidden}
 

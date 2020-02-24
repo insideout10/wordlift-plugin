@@ -8,11 +8,10 @@
  * External dependencies.
  */
 import { on } from "backbone";
-
 /**
  * Internal dependencies.
  */
-import { FAQ_HIGHLIGHT_TEXT, FAQ_ITEMS_CHANGED } from "../../constants/faq-hook-constants";
+import { FAQ_HIGHLIGHT_TEXT } from "../../constants/faq-hook-constants";
 import { classExtractor } from "../../../mappings/blocks/helper";
 
 export const FAQ_QUESTION_HIGHLIGHTING_CLASS = "wl-faq--question";
@@ -27,7 +26,7 @@ class TinymceHighlightHandler {
   constructor(editor, store) {
     this.editor = editor;
     this.store = store;
-    this.selection = null
+    this.selection = null;
     /**
      * Listen for highlighting events, then highlight the text.
      * Expected object from the event
@@ -48,7 +47,7 @@ class TinymceHighlightHandler {
    * if the user unselected the text.
    */
   saveSelection() {
-    this.selection = this.editor.selection
+    this.selection = this.editor.selection;
   }
   /**
    * Highlight the selection done by the user.
@@ -57,11 +56,11 @@ class TinymceHighlightHandler {
    * @param id {Int} Unique id for question and answer.
    */
   highlightSelectedText(selectedText, isQuestion, id) {
-    if ( this.selection === null) {
+    if (this.selection === null) {
       /**
        * Bail out if there is no selection on the editor.
        */
-      return
+      return;
     }
     const html = this.selection.getContent();
     const className = classExtractor({

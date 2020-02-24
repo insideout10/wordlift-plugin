@@ -18,8 +18,8 @@ import { WlContainer } from "../../../mappings/blocks/wl-container";
 import { WlColumn } from "../../../mappings/blocks/wl-column";
 import PropTypes from "prop-types";
 import { updateFaqItem } from "../../actions";
-import "./index.scss"
-import {showWarningIfAnswerWordCountExceedsLimit, showWarningIfInvalidHTMLTagPresentInAnswer} from "./helpers";
+import "./index.scss";
+import { showWarningIfAnswerWordCountExceedsLimit, showWarningIfInvalidHTMLTagPresentInAnswer } from "./helpers";
 
 export const faqEditItemType = {
   ANSWER: "ANSWER",

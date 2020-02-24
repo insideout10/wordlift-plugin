@@ -1,12 +1,11 @@
 .wl-notification-area {
-  position:fixed;
+  position: fixed;
   z-index: 99999; /** Show notification above all divs **/
-  top:0;
-  right:0;
+  top: 0;
+  right: 0;
   animation-duration: 0.3s;
   animation-name: fadeIn;
   background-color: inherit;
-
 }
 @keyframes fadeIn {
   from {
