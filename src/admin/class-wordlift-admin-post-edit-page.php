@@ -24,6 +24,7 @@ class Wordlift_Admin_Post_Edit_Page {
 
 	const GUTENBERG = 'gutenberg';
 	const TINY_MCE = 'tiny_mce';
+	const FAQ_LIST_BOX_ID = 'wl-faq-meta-list-box';
 
 	/**
 	 * The {@link Wordlift} plugin instance.
@@ -216,7 +217,7 @@ class Wordlift_Admin_Post_Edit_Page {
 	public function get_faq_settings() {
 		return array(
 			'restUrl' => get_rest_url( null, WL_REST_ROUTE_DEFAULT_NAMESPACE.'/faq' ),
-			'listBoxId' => FAQ_Metabox::FAQ_LIST_BOX_ID,
+			'listBoxId' => self::FAQ_LIST_BOX_ID,
 			'addQuestionText' => __( 'Add', 'wordlift' ),
 			'nonce' => wp_create_nonce( 'wp_rest' ),
 			'postId' => get_the_ID(),

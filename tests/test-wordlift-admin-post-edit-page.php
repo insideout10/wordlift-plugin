@@ -22,7 +22,6 @@ class Test_Wordlift_Admin_Post_Edit_Page extends Wordlift_Unit_Test_Case {
 		$faq_settings_array = $this->instance->get_faq_settings();
 		$this->assertArrayHasKey('restUrl', $faq_settings_array);
 		$this->assertArrayHasKey('listBoxId', $faq_settings_array);
-		$this->assertArrayHasKey('modalId', $faq_settings_array);
 		$this->assertArrayHasKey('addQuestionText', $faq_settings_array);
 		$this->assertArrayHasKey('nonce', $faq_settings_array);
 		$this->assertArrayHasKey('postId', $faq_settings_array);
