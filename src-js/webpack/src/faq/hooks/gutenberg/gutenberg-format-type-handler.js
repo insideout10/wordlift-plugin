@@ -20,13 +20,12 @@ export const FAQ_QUESTION_FORMAT_NAME = "wordlift/faq-question";
 
 class GutenbergFormatTypeHandler {
   registerAnswerFormatType() {
-    const answerFormat = registerFormatType(FAQ_ANSWER_FORMAT_NAME, {
+    registerFormatType(FAQ_ANSWER_FORMAT_NAME, {
       title: "Question",
       tagName: "span",
       className: FAQ_ANSWER_HIGHLIGHTING_CLASS,
       attributes: { id: "id"},
     });
-    console.log(answerFormat);
   }
   registerQuestionFormatType() {
     registerFormatType(FAQ_QUESTION_FORMAT_NAME, {
