@@ -1,8 +1,16 @@
+/**
+ * External dependencies.
+ */
 import React from "react";
 import { shallow, mount, render, configure } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
+import { Provider } from "react-redux";
+/**
+ * Internal dependencies.
+ */
 import store from "../store";
 import FaqScreen from "../components/faq-screen";
+import {WlCard} from "../../common/components/wl-card";
 
 configure({ adapter: new Adapter() });
 
@@ -45,5 +53,10 @@ it("should render without throwing error", () => {
     }
   ];
   fetch.mockResponseOnce(JSON.stringify(getFaqItemsResponse));
-  render(<FaqScreen store={store} />);
+  const wrapper = mount(
+      <Provider store={store}>
+        <FaqScreen />
+      </Provider>
+  );
+  expect(wrapper.find('div.some-class')).to.have.lengthOf(3);
 });
