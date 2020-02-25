@@ -58,5 +58,6 @@ it("should render without throwing error", () => {
         <FaqScreen />
       </Provider>
   );
-  expect(wrapper.find('div.some-class')).to.have.lengthOf(3);
+  console.log(wrapper.html())
+  expect(wrapper.find('.wl-card')).toHaveLength(1);
 });
