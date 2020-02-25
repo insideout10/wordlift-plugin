@@ -4,56 +4,50 @@ import GutenbergFormatTypeHandler from "./gutenberg-format-type-handler";
 import GutenbergHighlightHandler from "./gutenberg-highlight-handler";
 import { getCurrentSelectionHTML } from "./helpers";
 import GutenbergToolbarHandler from "./gutenberg-toolbar-handler";
+import FaqTextEditorHook from "../interface/faq-text-editor-hook";
+import GutenbergToolbarButtonRegister from "./gutenberg-toolbar-button-register";
 
 export const FAQ_GUTENBERG_TOOLBAR_BUTTON_CLASS_NAME = "wl-faq-gutenberg-toolbar-button";
-/**
- * Register all the format types required by FAQ
- * for the gutenberg
- */
-const formatTypeHandler = new GutenbergFormatTypeHandler();
-formatTypeHandler.registerAllFormatTypes();
 
-const highlightHandler = new GutenbergHighlightHandler();
-/**
- * Event handler / store emits highlight event upon faqitem
- * save or edit.
- */
-highlightHandler.listenForHighlightEvent();
+class GutenbergFaqPlugin extends FaqTextEditorHook {
+  constructor(wp) {
+    super();
+    this.wp = wp;
+  }
+
+  performTextHighlighting() {
+    /**
+     * Register all the format types required by FAQ
+     * for the gutenberg
+     */
+    const formatTypeHandler = new GutenbergFormatTypeHandler();
+    formatTypeHandler.registerAllFormatTypes();
+    /**
+     * Event handler / store emits highlight event upon faqitem
+     * save or edit.
+     */
+    const highlightHandler = new GutenbergHighlightHandler();
+    highlightHandler.listenForHighlightEvent();
+    new GutenbergToolbarButtonRegister(this.wp, highlightHandler);
+  }
+
+  showFloatingActionButton() {
+    /**
+     * Initialize event handler to listen for text selection,
+     * enable/disable the toolbar button.
+     */
+    new GutenbergToolbarHandler();
+  }
+
+  initialize() {
+    this.performTextHighlighting();
+    this.showFloatingActionButton();
+  }
+}
 
 /**
- * Initialize event handler to listen for text selection,
- * enable/disable the toolbar button.
+ * This hook is automatically loaded with block editor, so
+ * we can just initailize the hook here.
  */
-new GutenbergToolbarHandler();
-/**
- * Register the toolbar button and the format.
- */
-(function(wp) {
-  const AddFaqButton = function(props) {
-    return wp.element.createElement(wp.editor.RichTextToolbarButton, {
-      title: "Add Question / Answer",
-      icon: "plus",
-      className: FAQ_GUTENBERG_TOOLBAR_BUTTON_CLASS_NAME,
-      onClick: function() {
-        /**
-         * We pass props.value in to extras, in order to make
-         * gutenberg highlight on the highlight event.
-         */
-        highlightHandler.props = props;
-        const { text, start, end } = props.value;
-        const selectedText = text.slice(start, end);
-        trigger(FAQ_EVENT_HANDLER_SELECTION_CHANGED, {
-          selectedText: selectedText,
-          selectedHTML: getCurrentSelectionHTML()
-        });
-      }
-    });
-  };
-
-  wp.richText.registerFormatType("wordlift/faq-plugin", {
-    title: "Add Question/Answer",
-    tagName: "faq-gutenberg",
-    className: null,
-    edit: AddFaqButton
-  });
-})(window.wp);
+const adapter = new GutenbergFaqPlugin(window.wp);
+adapter.initialize();

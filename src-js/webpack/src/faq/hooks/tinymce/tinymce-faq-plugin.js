@@ -28,11 +28,11 @@ class TinymceFaqPlugin extends FaqTextEditorHook {
     super();
     this.editor = null;
     this.highlightHandler = null;
-    const self = this
+    const self = this;
     tinymce.PluginManager.add(FAQ_TINYMCE_PLUGIN_NAME, function(editor) {
       self.editor = editor;
       // initialize the handlers.
-      self.initialize()
+      self.initialize();
     });
   }
 
@@ -57,4 +57,3 @@ class TinymceFaqPlugin extends FaqTextEditorHook {
  * in this file itself.
  */
 new TinymceFaqPlugin();
-
