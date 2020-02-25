@@ -40,12 +40,12 @@ window.addEventListener("load", () => {
 
 window.addEventListener("DOMNodeInserted", () => {
   // It is loaded dynamically in gutenberg, render these components when the node is added.
-  if (document.getElementById(listBoxId) !== null && document.getElementById(modalId) !== null) {
+  if (document.getElementById(listBoxId) !== null) {
     /**
      * We might have our react component rendered before, so check the innerHTML  if we
      * didnt render out component and initalize.
      */
-    if (document.getElementById(listBoxId).innerHTML !== "" && document.getElementById(modalId).innerHTML !== "") {
+    if (document.getElementById(listBoxId).innerHTML !== "") {
     } else {
       ReactDOM.render(
         <Provider store={store}>
