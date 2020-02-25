@@ -38,25 +38,12 @@
     <!-- RELATED POST -->
     <div ng-include="configuration['ajax_url'] + '?action=wl_templates&name=wordlift-related-post'">
     </div>
-</div>
 
-<!-- FAQ -->
-<div class="wl-tab-lead">
-    <div class="wl-tab-lead-wrap" ng-click="toggleCurrentSection('faq')">
-        <h1 class="wl-tab-lead-text">
-            FAQ
-        </h1>
-        <div class="wl-tab-lead-text wl-tab-lead-btn"
-             ng-class="{ 'wl-open' : isCurrentSection('faq'), 'wl-close' : !isCurrentSection('faq') }">
-            <!-- display a triangle -->
-        </div>
+    <!-- FAQ -->
+    <div ng-include="configuration['ajax_url'] + '?action=wl_templates&name=wordlift-faq'">
     </div>
 </div>
 
-<div class="wl-widget-posts wl-tab-wrap">
-    <div id="wl-faq-meta-list-box"></div>
-    <div id="wl-faq-modal"></div>
-</div>
 
 
 <!-- POST DATA BOX -->
