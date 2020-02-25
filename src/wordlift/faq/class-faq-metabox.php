@@ -11,10 +11,7 @@ namespace Wordlift\FAQ;
 
 class FAQ_Metabox {
 
-	const FAQ_METABOX_ID = 'wl-faq-meta-box';
-
 	const FAQ_LIST_BOX_ID = 'wl-faq-meta-list-box';
 
-	const FAQ_MODAL_ID = 'wl-faq-modal';
 
 }
