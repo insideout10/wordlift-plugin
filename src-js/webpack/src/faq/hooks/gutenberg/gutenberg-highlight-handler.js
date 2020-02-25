@@ -16,6 +16,7 @@ import { on } from "backbone";
 import { FAQ_HIGHLIGHT_TEXT } from "../../constants/faq-hook-constants";
 import { FAQ_ANSWER_FORMAT_NAME, FAQ_QUESTION_FORMAT_NAME } from "./gutenberg-format-type-handler";
 import { applyFormat } from "@wordpress/rich-text";
+import {FAQ_ANSWER_HIGHLIGHTING_CLASS, FAQ_QUESTION_HIGHLIGHTING_CLASS} from "../tinymce/tinymce-highlight-handler";
 
 class GutenbergHighlightHandler {
   constructor() {
@@ -28,13 +29,22 @@ class GutenbergHighlightHandler {
   listenForHighlightEvent() {
     on(FAQ_HIGHLIGHT_TEXT, result => {
       const { isQuestion, id } = result;
+      const format = {
+        attributes: {}
+      };
+      console.log("id is " + id);
+      console.log(format.attributes.id);
       /**
        * Apply format depending on the type.
        */
       if (isQuestion) {
-        this.props.onChange(applyFormat(this.props.value, { type: FAQ_QUESTION_FORMAT_NAME }));
+        format.attributes.id = `${FAQ_QUESTION_HIGHLIGHTING_CLASS}--${id}`;
+        format.type = FAQ_QUESTION_FORMAT_NAME;
+        this.props.onChange(applyFormat(this.props.value, format));
       } else {
-        this.props.onChange(applyFormat(this.props.value, { type: FAQ_ANSWER_FORMAT_NAME }));
+        format.attributes.id = `${FAQ_ANSWER_HIGHLIGHTING_CLASS}--${id}`;
+        format.type = FAQ_ANSWER_FORMAT_NAME;
+        this.props.onChange(applyFormat(this.props.value, format));
       }
     });
   }
