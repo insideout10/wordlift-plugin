@@ -28,8 +28,11 @@ class TinymceFaqPlugin extends FaqTextEditorHook {
     super();
     this.editor = null;
     this.highlightHandler = null;
-    tinymce.PluginManager.add(FAQ_TINYMCE_PLUGIN_NAME, editor => {
-      this.editor = editor;
+    const self = this
+    tinymce.PluginManager.add(FAQ_TINYMCE_PLUGIN_NAME, function(editor) {
+      self.editor = editor;
+      // initialize the handlers.
+      self.initialize()
     });
   }
 
@@ -42,11 +45,16 @@ class TinymceFaqPlugin extends FaqTextEditorHook {
     toolBarHandler.addButtonToToolBar();
     new TinymceClickHandler(this.editor);
   }
+
+  initialize() {
+    this.performTextHighlighting();
+    this.showFloatingActionButton();
+  }
 }
 
 /**
  * This hook is called by tinymce for registering plugin, so initialize the hook
  * in this file itself.
  */
-const adapter = new TinymceFaqPlugin();
-adapter.initialize();
+new TinymceFaqPlugin();
+
