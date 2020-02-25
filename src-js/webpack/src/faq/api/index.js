@@ -5,6 +5,10 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  *
  */
+
+/**
+ * Internal dependencies.
+ */
 import { transformUiDataToApiFormat } from "../sagas/filters";
 
 const { restUrl, nonce, postId } = global["_wlFaqSettings"];

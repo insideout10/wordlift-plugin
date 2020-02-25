@@ -10,6 +10,9 @@
  */
 import React from "react";
 import { connect } from "react-redux";
+/**
+ * Internal dependencies.
+ */
 import { WlCard } from "../../blocks/wl-card";
 import Question from "../question";
 import { WlContainer } from "../../../mappings/blocks/wl-container";

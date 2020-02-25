@@ -6,6 +6,9 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
+/**
+ * Internal dependencies.
+ */
 import { ANSWER_ALLOWED_HTML_TAGS } from "../../components/faq-edit-item/helpers";
 
 /**

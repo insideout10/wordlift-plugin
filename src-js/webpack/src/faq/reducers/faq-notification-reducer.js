@@ -10,11 +10,10 @@
  * External dependencies
  */
 import { createReducer } from "@reduxjs/toolkit";
-import { UPDATE_NOTIFICATION_AREA } from "../constants/action-types";
-
 /**
  * Internal dependencies.
  */
+import { UPDATE_NOTIFICATION_AREA } from "../constants/action-types";
 
 export const faqNotificationReducer = createReducer(null, {
   [UPDATE_NOTIFICATION_AREA]: (state, action) => {

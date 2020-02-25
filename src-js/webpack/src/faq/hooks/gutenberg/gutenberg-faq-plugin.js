@@ -1,8 +1,8 @@
-import { trigger } from "backbone";
-import { FAQ_EVENT_HANDLER_SELECTION_CHANGED } from "../../constants/faq-hook-constants";
+/**
+ * Internal dependencies.
+ */
 import GutenbergFormatTypeHandler from "./gutenberg-format-type-handler";
 import GutenbergHighlightHandler from "./gutenberg-highlight-handler";
-import { getCurrentSelectionHTML } from "./helpers";
 import GutenbergToolbarHandler from "./gutenberg-toolbar-handler";
 import FaqTextEditorHook from "../interface/faq-text-editor-hook";
 import GutenbergToolbarButtonRegister from "./gutenberg-toolbar-button-register";
@@ -29,7 +29,7 @@ class GutenbergFaqPlugin extends FaqTextEditorHook {
     const highlightHandler = new GutenbergHighlightHandler();
     highlightHandler.listenForHighlightEvent();
     const toolbarRegister = new GutenbergToolbarButtonRegister(this.wp, highlightHandler);
-    toolbarRegister.registerToolbarButton()
+    toolbarRegister.registerToolbarButton();
   }
 
   showFloatingActionButton() {

@@ -1,4 +1,10 @@
+/**
+ * External dependencies.
+ */
 import { trigger } from "backbone";
+/**
+ * Internal dependencies.
+ */
 import { FAQ_EVENT_HANDLER_SELECTION_CHANGED } from "../../constants/faq-hook-constants";
 import { getCurrentSelectionHTML } from "./helpers";
 import { FAQ_GUTENBERG_TOOLBAR_BUTTON_CLASS_NAME } from "./gutenberg-faq-plugin";
@@ -17,12 +23,12 @@ class GutenbergToolbarButtonRegister {
     this.highlightHandler = highlightHandler;
   }
   registerToolbarButton() {
-      this.wp.richText.registerFormatType("wordlift/faq-plugin", {
-          title: "Add Question/Answer",
-          tagName: "faq-gutenberg",
-          className: null,
-          edit: this.getFAQButton()
-      });
+    this.wp.richText.registerFormatType("wordlift/faq-plugin", {
+      title: "Add Question/Answer",
+      tagName: "faq-gutenberg",
+      className: null,
+      edit: this.getFAQButton()
+    });
   }
   getFAQButton() {
     const self = this;
@@ -49,4 +55,4 @@ class GutenbergToolbarButtonRegister {
   }
 }
 
-export default GutenbergToolbarButtonRegister
+export default GutenbergToolbarButtonRegister;

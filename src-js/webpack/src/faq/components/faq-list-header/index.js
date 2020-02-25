@@ -9,6 +9,9 @@
  * External dependencies.
  */
 import React from "react";
+/**
+ * Internal dependenices.
+ */
 import QuestionInputBox from "../question-input-box";
 import AddQuestionButton from "../add-question-button";
 import { WlContainer } from "../../../mappings/blocks/wl-container";

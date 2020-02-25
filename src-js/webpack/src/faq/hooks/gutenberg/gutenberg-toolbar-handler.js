@@ -7,9 +7,12 @@
  */
 
 /**
- * Internal dependencies.
+ * External dependencies.
  */
 import { on } from "backbone";
+/**
+ * Internal dependencies.
+ */
 import { FAQ_ITEMS_CHANGED } from "../../constants/faq-hook-constants";
 import { SELECTION_CHANGED } from "../../../common/constants";
 import { FAQ_GUTENBERG_TOOLBAR_BUTTON_CLASS_NAME } from "./gutenberg-faq-plugin";

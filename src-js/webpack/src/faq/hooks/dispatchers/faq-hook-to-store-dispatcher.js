@@ -6,6 +6,9 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
+/**
+ * Internal dependencies.
+ */
 import {
   answerSelectedByUser,
   questionSelectedByUser,
