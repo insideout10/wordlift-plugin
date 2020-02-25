@@ -1,5 +1,8 @@
 import React from "react";
-import { shallow, mount, render } from "enzyme";
+import { shallow, mount, render, configure } from "enzyme";
+import Adapter from "enzyme-adapter-react-16";
+configure({ adapter: new Adapter() });
+
 beforeAll(() => {
   global["_wlFaqSettings"] = {
     restUrl: "https://wordlift.localhost/index.php?rest_route=/wordlift/v1/faq",
@@ -17,7 +20,9 @@ afterAll(() => {
 });
 
 import FaqEditItem from "../components/faq-edit-item";
+import { Provider } from "react-redux";
+import store from "../store";
 
 it("should render without throwing error", () => {
-  render(<FaqEditItem />);
+  render(<FaqEditItem store={store} />);
 });

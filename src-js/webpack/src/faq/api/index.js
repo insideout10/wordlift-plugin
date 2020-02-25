@@ -11,9 +11,8 @@
  */
 import { transformUiDataToApiFormat } from "../sagas/filters";
 
-const { restUrl, nonce, postId } = global["_wlFaqSettings"];
-
 function saveFAQItems(faqItems) {
+  const { restUrl, nonce, postId } = global["_wlFaqSettings"];
   return fetch(restUrl, {
     method: "POST",
     headers: {
@@ -30,6 +29,7 @@ function saveFAQItems(faqItems) {
 }
 
 function updateFAQItems(faqItems) {
+  const { restUrl, nonce, postId } = global["_wlFaqSettings"];
   return fetch(restUrl, {
     method: "PUT",
     headers: {
@@ -46,6 +46,7 @@ function updateFAQItems(faqItems) {
 }
 
 function getFAQItems() {
+  const { restUrl, nonce, postId } = global["_wlFaqSettings"];
   return fetch(restUrl + "/" + postId, {
     method: "GET",
     headers: {
