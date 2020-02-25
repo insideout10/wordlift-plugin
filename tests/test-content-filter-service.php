@@ -393,6 +393,22 @@ EOF;
 		$this->assertEquals($expected_output, $result);
 	}
 
+	/**
+	 * Testing if the nested tags inside the span should not affect the outside regex.
+	 *
+	 * @since 3.26.0
+	 */
+	public function test_faq_question_highlighting_nested_tags_removed_correctly() {
+		$src = <<<EOF
+			<p><span class="wl-faq--question" id="wl-faq--question--3164315662">this<span class="foo">is</span> a question?</span></p>
+EOF;
+		$expected_output = <<<EOF
+			<p>this<span class="foo">is</span> a question?</p>
+EOF;
+		$result = $this->content_filter_service->the_content($src);
+		$this->assertEquals($expected_output, $result);
+	}
+
 
 	/**
 	 * Test a content with an entity marked as `wl-no-link`.
