@@ -20,7 +20,6 @@ import FaqModal from "./components/faq-modal";
 import FaqEventHandler from "./hooks/faq-event-handler";
 import "./index.scss";
 
-const { addQuestionText, modalId } = global["_wlFaqSettings"];
 const listBoxId = "wl-faq-meta-list-box";
 
 /**

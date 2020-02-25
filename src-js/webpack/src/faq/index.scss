@@ -6,7 +6,7 @@
 }
 @mixin wl-faq-highlight-mixin {
   .wl-faq--question {
-    background-color: tomato;
+    background-color: #00ffa1;
     opacity: 0.9;
     cursor: pointer;
     &:hover {
@@ -15,7 +15,7 @@
   }
 
   .wl-faq--answer {
-    background-color: #00a0d2;
+    background-color: #b9d25d;
     cursor: pointer;
     opacity: 0.9;
     &:hover {
