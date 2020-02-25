@@ -28,7 +28,8 @@ class GutenbergFaqPlugin extends FaqTextEditorHook {
      */
     const highlightHandler = new GutenbergHighlightHandler();
     highlightHandler.listenForHighlightEvent();
-    new GutenbergToolbarButtonRegister(this.wp, highlightHandler);
+    const toolbarRegister = new GutenbergToolbarButtonRegister(this.wp, highlightHandler);
+    toolbarRegister.registerToolbarButton()
   }
 
   showFloatingActionButton() {
