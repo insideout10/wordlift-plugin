@@ -39,7 +39,7 @@ export const ANSWER_ALLOWED_HTML_TAGS = [
   "i",
   "em"
 ];
-const { invalidTagMessage, invalidWordCountMessage } = global["_wlFaqSettings"];
+
 /**
  * Show the warning if the answer exceeds the word count limit.
  * @param type Question or Answer
@@ -47,6 +47,7 @@ const { invalidTagMessage, invalidWordCountMessage } = global["_wlFaqSettings"];
  * @return {*}
  */
 export function showWarningIfAnswerWordCountExceedsLimit(type, textAreaValue) {
+  const {invalidWordCountMessage } = global["_wlFaqSettings"];
   if (type !== faqEditItemType.ANSWER || 0 === textAreaValue.length) {
     return <React.Fragment />;
   }
@@ -105,6 +106,7 @@ function getAllInvalidTags(textAreaValue) {
  * @return {*}
  */
 export function showWarningIfInvalidHTMLTagPresentInAnswer(type, textAreaValue) {
+  const { invalidTagMessage } = global["_wlFaqSettings"];
   if (type !== faqEditItemType.ANSWER || 0 === textAreaValue.length) {
     return <React.Fragment />;
   }
