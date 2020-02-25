@@ -15,7 +15,7 @@ import { connect } from "react-redux";
  */
 import Question from "../question";
 import Answer from "../answer";
-import { WlCard } from "../../blocks/wl-card";
+import { WlCard } from "../../../common/components/wl-card";
 import { questionSelectedByUser } from "../../actions";
 import { FaqListHeader } from "../faq-list-header";
 

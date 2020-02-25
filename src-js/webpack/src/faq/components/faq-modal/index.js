@@ -14,12 +14,12 @@ import { connect } from "react-redux";
  */
 import { requestGetFaqItems, updateFaqModalVisibility, updateNotificationArea } from "../../actions";
 import "./index.scss";
-import { WlModal } from "../../blocks/wl-modal";
-import { WlModalHeader } from "../../blocks/wl-modal/wl-modal-header";
-import { WlModalBody } from "../../blocks/wl-modal/wl-modal-body";
+import { WlModal } from "../../../common/components/wl-modal";
+import { WlModalHeader } from "../../../common/components/wl-modal/wl-modal-header";
+import { WlModalBody } from "../../../common/components/wl-modal/wl-modal-body";
 import FaqApplyList from "../faq-apply-list";
-import { WlBgModal } from "../../blocks/wl-bg-modal";
-import WlNotificationArea from "../../blocks/wl-notification-area";
+import { WlBgModal } from "../../../common/components/wl-bg-modal";
+import WlNotificationArea from "../../../common/components/wl-notification-area";
 
 class FaqModal extends React.Component {
   componentDidMount() {

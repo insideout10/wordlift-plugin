@@ -13,7 +13,7 @@ import { connect } from "react-redux";
 /**
  * Internal dependencies.
  */
-import { WlCard } from "../../blocks/wl-card";
+import { WlCard } from "../../../common/components/wl-card";
 import Question from "../question";
 import { WlContainer } from "../../../mappings/blocks/wl-container";
 import WlActionButton from "../wl-action-button";

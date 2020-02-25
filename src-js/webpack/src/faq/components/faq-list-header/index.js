@@ -22,10 +22,10 @@ const { addQuestionText } = global["_wlFaqSettings"];
 export const FaqListHeader = () => (
   <React.Fragment>
     <WlContainer>
-      <WlColumn className={"wl-col--width-80"}>
+      <WlColumn className={"wl-col--width-60"}>
         <QuestionInputBox />
       </WlColumn>
-      <WlColumn className={" wl-col--width-20 "}>
+      <WlColumn className={" wl-col--width-20"}>
         <AddQuestionButton questionButtonText={addQuestionText} />
       </WlColumn>
     </WlContainer>
