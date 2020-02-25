@@ -28,23 +28,23 @@ class GutenbergHighlightHandler {
    */
   listenForHighlightEvent() {
     on(FAQ_HIGHLIGHT_TEXT, result => {
-      const { isQuestion, id } = result;
-      const format = {
-        attributes: {}
-      };
-      console.log("id is " + id);
-      console.log(format.attributes.id);
-      /**
-       * Apply format depending on the type.
-       */
-      if (isQuestion) {
-        format.attributes.id = `${FAQ_QUESTION_HIGHLIGHTING_CLASS}--${id}`;
-        format.type = FAQ_QUESTION_FORMAT_NAME;
-        this.props.onChange(applyFormat(this.props.value, format));
-      } else {
-        format.attributes.id = `${FAQ_ANSWER_HIGHLIGHTING_CLASS}--${id}`;
-        format.type = FAQ_ANSWER_FORMAT_NAME;
-        this.props.onChange(applyFormat(this.props.value, format));
+      if (this.props !== null) {
+        const {isQuestion, id} = result;
+        const format = {
+          attributes: {}
+        };
+        /**
+         * Apply format depending on the type.
+         */
+        if (isQuestion) {
+          format.attributes.id = `${FAQ_QUESTION_HIGHLIGHTING_CLASS}--${id}`;
+          format.type = FAQ_QUESTION_FORMAT_NAME;
+          this.props.onChange(applyFormat(this.props.value, format));
+        } else {
+          format.attributes.id = `${FAQ_ANSWER_HIGHLIGHTING_CLASS}--${id}`;
+          format.type = FAQ_ANSWER_FORMAT_NAME;
+          this.props.onChange(applyFormat(this.props.value, format));
+        }
       }
     });
   }
