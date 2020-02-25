@@ -19,10 +19,11 @@ afterAll(() => {
   global["_wlFaqSettings"] = null;
 });
 
-import FaqEditItem from "../components/faq-edit-item";
-import { Provider } from "react-redux";
 import store from "../store";
+import FaqScreen from "../components/faq-screen";
 
 it("should render without throwing error", () => {
-  render(<FaqEditItem store={store} />);
+  fetch.mockResponseOnce(JSON.stringify({ data: '12345' }))
+  render(<FaqScreen store={store} />);
 });
+

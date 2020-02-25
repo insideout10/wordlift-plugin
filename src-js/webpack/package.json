@@ -58,6 +58,7 @@
     "@reduxjs/toolkit": "^1.2.1",
     "@wordlift/wordlift-for-schemaorg": "^1.0",
     "immutable": "^3",
+    "jest-fetch-mock": "^3.0.1",
     "react-redux": "^5.0.0",
     "react-select": "^1",
     "redux-actions": "^2.6.5",
@@ -79,6 +80,9 @@
     },
     "setupFilesAfterEnv": [
       "./src/mappings/tests/setup.js"
+    ],
+    "setupFiles": [
+      "./src/faq/tests/setup.js"
     ]
   }
 }
