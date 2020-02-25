@@ -21,11 +21,9 @@ class TinymceHighlightHandler {
   /**
    * Construct highlight handler instance.
    * @param editor {tinymce.Editor} The Tinymce editor instance.
-   * @param store Redux store.
    */
-  constructor(editor, store) {
+  constructor(editor) {
     this.editor = editor;
-    this.store = store;
     this.selection = null;
     /**
      * Listen for highlighting events, then highlight the text.

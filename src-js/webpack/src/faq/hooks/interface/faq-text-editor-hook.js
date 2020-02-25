@@ -6,17 +6,30 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 class FaqTextEditorHook {
-  constructor() {
-    // this._plugin = this.initializePluginForTextEditor()
-    // this.listenForTextSelection()
+  constructor() {}
+  /**
+   * Perform text highlighting when the event is sent from store.
+   */
+  performTextHighlighting() {
+    this._throwFunctionNotImplementedError("doTextHighlighting()");
+  }
+
+  /**
+   * Show the floating action button to be used to add question or answer based
+   * on the text selected.
+   */
+  showFloatingActionButton() {
+    this._throwFunctionNotImplementedError("showFloatingActionButton()");
   }
   /**
-   * This should listen for the changes in the text editor selection and
-   * emit the text.
+   * Initialize the hook in correct order, the order might
+   * be changed by the child class if it wants to change.
    */
-  listenForTextSelection() {
-    this._throwFunctionNotImplementedError("listenForTextSelection()");
+  initialize() {
+    this.performTextHighlighting();
+    this.showFloatingActionButton();
   }
+
   _throwFunctionNotImplementedError(functionName) {
     throw new Error(functionName + " should be implemented by the parent class ");
   }
