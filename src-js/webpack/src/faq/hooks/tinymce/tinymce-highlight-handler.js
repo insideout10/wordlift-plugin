@@ -71,7 +71,7 @@ class TinymceHighlightHandler {
      * @type {string}
      */
     const identifier = `${className}--${id}`;
-    const highlightedElement = `<span class="${className}" id="${identifier}">${html}</span>`;
+    const highlightedElement = `<span id="${identifier}" class="${className}">${html}</span>`;
     this.selection.setContent(highlightedElement);
   }
 }
