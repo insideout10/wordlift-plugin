@@ -1,6 +1,9 @@
 import React from "react";
 import { shallow, mount, render, configure } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
+import store from "../store";
+import FaqScreen from "../components/faq-screen";
+
 configure({ adapter: new Adapter() });
 
 beforeAll(() => {
@@ -19,11 +22,28 @@ afterAll(() => {
   global["_wlFaqSettings"] = null;
 });
 
-import store from "../store";
-import FaqScreen from "../components/faq-screen";
-
-it("should render without throwing error", () => {
-  fetch.mockResponseOnce(JSON.stringify({ data: '12345' }))
-  render(<FaqScreen store={store} />);
+beforeEach(() => {
+  fetch.resetMocks();
 });
 
+it("should render without throwing error", () => {
+  const getFaqItemsResponse = [
+    {
+      question: "this is a question?e",
+      answer: "this is answer.de",
+      id: 1582622863
+    },
+    {
+      question: "this is an another question?",
+      answer: "this is also answer....",
+      id: 1582639238
+    },
+    {
+      question: "this is third question??",
+      answer: "this is third answeer.",
+      id: 1582639326
+    }
+  ];
+  fetch.mockResponseOnce(JSON.stringify(getFaqItemsResponse));
+  render(<FaqScreen store={store} />);
+});
