@@ -16,7 +16,7 @@ import { applyMiddleware, createStore } from "redux";
 import rootSaga from "../sagas";
 import { faqReducer } from "../reducers";
 
-const FAQ_INITIAL_STATE = {
+export const FAQ_INITIAL_STATE = {
   faqListOptions: {
     question: "",
     faqItems: [],

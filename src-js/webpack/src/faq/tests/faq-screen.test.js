@@ -2,18 +2,21 @@
  * External dependencies.
  */
 import React from "react";
-import { shallow, mount, render, configure } from "enzyme";
+import { configure, mount } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import { Provider } from "react-redux";
 /**
  * Internal dependencies.
  */
-import store from "../store";
+import store, {FAQ_INITIAL_STATE} from "../store";
 import FaqScreen from "../components/faq-screen";
-import { WlCard } from "../../common/components/wl-card";
 import { updateFaqItems } from "../actions";
 import { transformAPIDataToUi } from "../sagas/filters";
-import FaqList from "../components/faq-list";
+import createSagaMiddleware from "redux-saga";
+import {applyMiddleware, createStore} from "redux";
+import {faqReducer} from "../reducers";
+import rootSaga from "../sagas";
+
 configure({ adapter: new Adapter() });
 
 const getFaqItemsResponse = [
@@ -49,19 +52,22 @@ beforeAll(() => {
 afterAll(() => {
   global["_wlFaqSettings"] = null;
 });
-
+let testStore = null
 beforeEach(() => {
   fetch.resetMocks();
+  const sagaMiddleware = createSagaMiddleware();
+  testStore = createStore(faqReducer, FAQ_INITIAL_STATE, applyMiddleware(sagaMiddleware));
+  sagaMiddleware.run(rootSaga);
 });
 
 it("should render faq items when faq items given", () => {
   // Mock the faq items data
   const action = updateFaqItems();
   action.payload = transformAPIDataToUi(getFaqItemsResponse);
-  store.dispatch(action);
+  testStore.dispatch(action);
 
   const wrapper = mount(
-    <Provider store={store}>
+    <Provider store={testStore}>
       <FaqScreen />
     </Provider>
   );
@@ -70,27 +76,42 @@ it("should render faq items when faq items given", () => {
   expect(wrapper.find(".wl-card")).toHaveLength(3);
 });
 
-it("when the faq item is clicked then the edit screen should show," +
-    " on clicking close button list should be displayed", () => {
-  // Mock the faq items data
-  const action = updateFaqItems();
-  action.payload = transformAPIDataToUi(getFaqItemsResponse);
-  store.dispatch(action);
+it(
+  "when the faq item is clicked then the edit screen should show," +
+    " on clicking close button list should be displayed",
+  () => {
+    // Mock the faq items data
+    const action = updateFaqItems();
+    action.payload = transformAPIDataToUi(getFaqItemsResponse);
+    testStore.dispatch(action);
 
+    const wrapper = mount(
+      <Provider store={testStore}>
+        <FaqScreen />
+      </Provider>
+    );
+    // Now click on a faq item.
+    wrapper
+      .find(".wl-card")
+      .at(0)
+      .simulate("click");
+    // check the store, selected FAQ Id should be 1582622863 ( the first item on the response)
+    expect(testStore.getState().faqListOptions.selectedFaqId).toEqual("1582622863");
+    // lets click close button and check the html
+    wrapper
+      .find(".faq-edit-item-close-button")
+      .at(0)
+      .simulate("click");
+    // now we need to have the 3 faq items to be displayed to the user.
+    expect(wrapper.find(".wl-card")).toHaveLength(3);
+  }
+);
+
+it("when the user opens the edit screen, should be able " + "to update / delete the question or answer", () => {
   const wrapper = mount(
     <Provider store={store}>
       <FaqScreen />
     </Provider>
   );
-  // Now click on a faq item.
-  wrapper
-    .find(".wl-card")
-    .at(0)
-    .simulate("click");
-  // check the store, selected FAQ Id should be 1582622863 ( the first item on the response)
-  expect(store.getState().faqListOptions.selectedFaqId).toEqual("1582622863");
-  // lets click close button and check the html
-  wrapper.find(".faq-edit-item-close-button").at(0).simulate("click")
-  // now we need to have the 3 faq items to be displayed to the user.
-  expect(wrapper.find(".wl-card")).toHaveLength(3);
+  console.log(wrapper.html());
 });
