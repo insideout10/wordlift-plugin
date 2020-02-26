@@ -9,8 +9,6 @@
  * @subpackage Wordlift/admin
  */
 
-use Wordlift\FAQ\Faq_Content_Filter;
-use Wordlift\FAQ\FAQ_Metabox;
 use Wordlift\Scripts\Scripts_Helper;
 
 /**
@@ -66,7 +64,7 @@ class Wordlift_Admin_Post_Edit_Page {
 		}
 
 		// Define the callbacks.
-		$callback                  = array( $this, 'enqueue_scripts', );
+		$callback = array( $this, 'enqueue_scripts', );
 
 		// Set a hook to enqueue scripts only when the edit page is displayed.
 		add_action( 'admin_print_scripts-post.php', $callback );
@@ -204,7 +202,7 @@ class Wordlift_Admin_Post_Edit_Page {
 		Scripts_Helper::enqueue_based_on_wordpress_version(
 			'faq-metabox-script',
 			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/faq',
-			array('wp-polyfill'),
+			array( 'wp-polyfill' ),
 			true
 		);
 	}
@@ -216,14 +214,14 @@ class Wordlift_Admin_Post_Edit_Page {
 	 */
 	public function get_faq_settings() {
 		return array(
-			'restUrl' => get_rest_url( null, WL_REST_ROUTE_DEFAULT_NAMESPACE.'/faq' ),
-			'listBoxId' => self::FAQ_LIST_BOX_ID,
-			'addQuestionText' => __( 'Add', 'wordlift' ),
-			'nonce' => wp_create_nonce( 'wp_rest' ),
-			'postId' => get_the_ID(),
+			'restUrl'                 => get_rest_url( null, WL_REST_ROUTE_DEFAULT_NAMESPACE . '/faq' ),
+			'listBoxId'               => self::FAQ_LIST_BOX_ID,
+			'addQuestionText'         => __( 'Add', 'wordlift' ),
+			'nonce'                   => wp_create_nonce( 'wp_rest' ),
+			'postId'                  => get_the_ID(),
 			// Translation for warning, error message.
-			'invalidTagMessage' => sprintf(__('Invalid tags %s is present in answer'), "{INVALID_TAGS}"),
-			'invalidWordCountMessage' => sprintf(__('Answer word count must not exceed %s words'), "{ANSWER_WORD_COUNT_WARNING_LIMIT}")
+			'invalidTagMessage'       => sprintf( __( 'Invalid tags %s is present in answer' ), "{INVALID_TAGS}" ),
+			'invalidWordCountMessage' => sprintf( __( 'Answer word count must not exceed %s words' ), "{ANSWER_WORD_COUNT_WARNING_LIMIT}" )
 		);
 	}
 
@@ -239,12 +237,12 @@ class Wordlift_Admin_Post_Edit_Page {
 			Scripts_Helper::enqueue_based_on_wordpress_version(
 				'faq-gutenberg-plugin',
 				plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/gutenberg-faq-plugin',
-				array('wp-polyfill'),
+				array( 'wp-polyfill' ),
 				true
 			);
 		}
 
-		wp_localize_script('faq-metabox-script', '_wlFaqSettings', $this->get_faq_settings());
+		wp_localize_script( 'faq-metabox-script', '_wlFaqSettings', $this->get_faq_settings() );
 	}
 
 	/**
@@ -255,7 +253,7 @@ class Wordlift_Admin_Post_Edit_Page {
 	public function enqueue_scripts_gutenberg() {
 		// Load FAQ settings.
 		$this->load_faq_scripts_and_styles();
-		$this->load_faq_settings(self::GUTENBERG);
+		$this->load_faq_settings( self::GUTENBERG );
 
 		wp_register_script(
 			'wl-block-editor',
