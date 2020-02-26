@@ -35,7 +35,7 @@ class FaqList extends React.Component {
         <FaqListHeader />
         {this.props.faqItems.map(item => {
           return (
-            <React.Fragment>
+            <React.Fragment key={item.id}>
               <WlCard
                 onClickHandler={() => {
                   this.faqItemClicked(item.id);

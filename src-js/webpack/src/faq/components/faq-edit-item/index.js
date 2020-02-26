@@ -88,6 +88,6 @@ FaqEditItem.propTypes = {
   // Edit item type it can be question or answer.
   type: PropTypes.string,
   // Faq item id.
-  id: PropTypes.number
+  id: PropTypes.string
 };
 export default connect()(FaqEditItem);
