@@ -64,7 +64,7 @@ class FaqApplyList extends React.Component {
                 <WlColumn className={"wl-col--width-10"}>
                   <WlActionButton
                     text={"apply"}
-                    className={"wl-action-button--primary"}
+                    className={"wl-faq-apply-button wl-action-button--primary"}
                     onClickHandler={() => {
                       this.applyAnswerToQuestion(e.id);
                     }}
