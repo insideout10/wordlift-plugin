@@ -10,9 +10,9 @@ import { Provider } from "react-redux";
  */
 import store from "../store";
 import FaqScreen from "../components/faq-screen";
-import {WlCard} from "../../common/components/wl-card";
-import {updateFaqItems} from "../actions";
-import {transformAPIDataToUi} from "../sagas/filters";
+import { WlCard } from "../../common/components/wl-card";
+import { updateFaqItems } from "../actions";
+import { transformAPIDataToUi } from "../sagas/filters";
 import FaqList from "../components/faq-list";
 configure({ adapter: new Adapter() });
 
@@ -58,32 +58,39 @@ it("should render faq items when faq items given", () => {
   // Mock the faq items data
   const action = updateFaqItems();
   action.payload = transformAPIDataToUi(getFaqItemsResponse);
-  store.dispatch(action)
+  store.dispatch(action);
 
   const wrapper = mount(
-      <Provider store={store}>
-        <FaqScreen />
-      </Provider>
+    <Provider store={store}>
+      <FaqScreen />
+    </Provider>
   );
 
   // Now we have dispatched the action, we should have 3 items in html
-  expect(wrapper.find('.wl-card')).toHaveLength(3);
+  expect(wrapper.find(".wl-card")).toHaveLength(3);
 });
 
-
-it("when the faq item is clicked then the edit screen should show", ()=> {
+it("when the faq item is clicked then the edit screen should show," +
+    " on clicking close button list should be displayed", () => {
   // Mock the faq items data
   const action = updateFaqItems();
   action.payload = transformAPIDataToUi(getFaqItemsResponse);
-  store.dispatch(action)
+  store.dispatch(action);
 
   const wrapper = mount(
-      <Provider store={store}>
-        <FaqScreen />
-      </Provider>
+    <Provider store={store}>
+      <FaqScreen />
+    </Provider>
   );
   // Now click on a faq item.
-  wrapper.find('.wl-card').at(0).simulate('click')
+  wrapper
+    .find(".wl-card")
+    .at(0)
+    .simulate("click");
   // check the store, selected FAQ Id should be 1582622863 ( the first item on the response)
-  expect(store.getState().faqListOptions.selectedFaqId).toEqual("1582622863")
-})
+  expect(store.getState().faqListOptions.selectedFaqId).toEqual("1582622863");
+  // lets click close button and check the html
+  wrapper.find(".faq-edit-item-close-button").at(0).simulate("click")
+  // now we need to have the 3 faq items to be displayed to the user.
+  expect(wrapper.find(".wl-card")).toHaveLength(3);
+});
