@@ -45,13 +45,13 @@ function wl_shortcode_navigator_data() {
  *
  * Network navigator callback function used by network-navigator endpoint
  *
- * @since 3.22.6
- *
  * @param $request
  *
  * @return array
+ * @since 3.22.6
+ *
  */
-function wl_network_navigator_wp_json($request) {
+function wl_network_navigator_wp_json( $request ) {
 
 	// Create the cache key.
 	$cache_key_params = $_REQUEST;
@@ -70,7 +70,7 @@ function wl_network_navigator_wp_json($request) {
 
 	header( 'X-WordLift-Cache: MISS' );
 
-	$results = _wl_network_navigator_get_data($request);
+	$results = _wl_network_navigator_get_data( $request );
 
 	// Put the result before sending the json to the client, since sending the json will terminate us.
 	$cache->put( $cache_key, $results );
@@ -91,7 +91,7 @@ function _wl_navigator_get_data() {
 	// Limit the results (defaults to 4)
 	$navigator_length = isset( $_GET['limit'] ) ? intval( $_GET['limit'] ) : 4;
 	$navigator_offset = isset( $_GET['offset'] ) ? intval( $_GET['offset'] ) : 0;
-	$order_by         = isset( $_GET['order_by'] ) ? sanitize_sql_orderby($_GET['order_by']) : 'ID DESC';
+	$order_by         = isset( $_GET['sort'] ) ? sanitize_sql_orderby( $_GET['sort'] ) : 'ID DESC';
 
 	$current_post_id = $_GET['post_id'];
 	$current_post    = get_post( $current_post_id );
@@ -106,7 +106,7 @@ function _wl_navigator_get_data() {
 	}
 
 	// Determine navigator type and call respective _get_results
-	if(get_post_type($current_post_id) === Wordlift_Entity_Service::TYPE_NAME){
+	if ( get_post_type( $current_post_id ) === Wordlift_Entity_Service::TYPE_NAME ) {
 		$referencing_posts = _wl_entity_navigator_get_results( $current_post_id, array(
 			'ID',
 			'post_title',
@@ -159,18 +159,18 @@ function _wl_navigator_get_data() {
 	return $results;
 }
 
-function _wl_network_navigator_get_data($request) {
+function _wl_network_navigator_get_data( $request ) {
 
 	// Limit the results (defaults to 4)
 	$navigator_length = isset( $request['limit'] ) ? intval( $request['limit'] ) : 4;
 	$navigator_offset = isset( $request['offset'] ) ? intval( $request['offset'] ) : 0;
 	$navigator_id     = $request['uniqid'];
-	$order_by         = isset( $_GET['order_by'] ) ? sanitize_sql_orderby($_GET['order_by']) : 'ID DESC';
+	$order_by         = isset( $_GET['sort'] ) ? sanitize_sql_orderby( $_GET['sort'] ) : 'ID DESC';
 
 	$entities = $request['entities'];
 
 	// Post ID has to match an existing item
-	if ( !isset($entities) || empty($entities) ) {
+	if ( ! isset( $entities ) || empty( $entities ) ) {
 		wp_send_json_error( 'No valid entities provided' );
 	}
 
@@ -282,7 +282,8 @@ function _wl_entity_navigator_get_results(
 	$post_id, $fields = array(
 	'ID',
 	'post_title',
-), $order_by = 'ID DESC', $limit = 10, $offset = 0){
+), $order_by = 'ID DESC', $limit = 10, $offset = 0
+) {
 	global $wpdb;
 
 	$select = implode( ', ', array_map( function ( $item ) {
@@ -345,8 +346,10 @@ function _wl_network_navigator_get_results(
 	}, (array) $order_by ) );
 
 	$entities_in = implode( ',', array_map( function ( $item ) {
-		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri(urldecode($item));
-		if(isset($entity)) return $entity->ID;
+		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( urldecode( $item ) );
+		if ( isset( $entity ) ) {
+			return $entity->ID;
+		}
 	}, $entities ) );
 
 	/** @noinspection SqlNoDataSourceInspection */

@@ -142,7 +142,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.26.0 (2020-02-06) =
+= 3.26.0 (2020-02-26) =
+
+= 3.25.1.3 (2020-02-25) =
+* Fix: synonyms may raise an error in Block Editor.
 
 = 3.25.1.2 (2020-02-17) =
 * Fix: missing sidebar button in Block Editor.
