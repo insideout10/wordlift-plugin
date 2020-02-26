@@ -92,12 +92,17 @@ function* handleUpdateFaqItems(action) {
   const faqItems = yield select(getAllFAQItems);
   const payload = action.payload;
   const faqItemIndex = faqItems.map(e => e.id).indexOf(payload.id);
+  /**
+   * Update the changed faq item to the API.
+   */
+  const changedFaqItem = faqItems[faqItemIndex];
+  const changedFaqItems = [Object.assign({}, changedFaqItem)];
   switch (payload.type) {
     case faqEditItemType.ANSWER:
-      faqItems[faqItemIndex]["answer"] = payload.value;
+      changedFaqItems[0]["answer"] = payload.value;
       break;
     case faqEditItemType.QUESTION:
-      faqItems[faqItemIndex]["question"] = payload.value;
+      changedFaqItems[0]["question"] = payload.value;
       break;
   }
   trigger(FAQ_HIGHLIGHT_TEXT, {
@@ -105,7 +110,7 @@ function* handleUpdateFaqItems(action) {
     isQuestion: payload.type === faqEditItemType.QUESTION,
     id: faqItems[faqItemIndex].id
   });
-  const response = yield call(API.updateFAQItems, faqItems);
+  const response = yield call(API.updateFAQItems, changedFaqItems);
   yield dispatchNotification(response);
   yield put(requestGetFaqItems());
   // Close the modal on apply.

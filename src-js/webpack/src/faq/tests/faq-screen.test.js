@@ -8,13 +8,13 @@ import { Provider } from "react-redux";
 /**
  * Internal dependencies.
  */
-import store, {FAQ_INITIAL_STATE} from "../store";
+import store, { FAQ_INITIAL_STATE } from "../store";
 import FaqScreen from "../components/faq-screen";
 import { updateFaqItems } from "../actions";
 import { transformAPIDataToUi } from "../sagas/filters";
 import createSagaMiddleware from "redux-saga";
-import {applyMiddleware, createStore} from "redux";
-import {faqReducer} from "../reducers";
+import { applyMiddleware, createStore } from "redux";
+import { faqReducer } from "../reducers";
 import rootSaga from "../sagas";
 
 configure({ adapter: new Adapter() });
@@ -52,7 +52,7 @@ beforeAll(() => {
 afterAll(() => {
   global["_wlFaqSettings"] = null;
 });
-let testStore = null
+let testStore = null;
 beforeEach(() => {
   fetch.resetMocks();
   const sagaMiddleware = createSagaMiddleware();
@@ -108,10 +108,52 @@ it(
 );
 
 it("when the user opens the edit screen, should be able " + "to update / delete the question or answer", () => {
+  // Mock the faq items data
+  const action = updateFaqItems();
+  action.payload = transformAPIDataToUi(getFaqItemsResponse);
+  testStore.dispatch(action);
+
+  const updateSuccessResponse = {
+    status: "success",
+    message: "Faq Items updated successfully"
+  };
+  fetch.mockResponseOnce(JSON.stringify(updateSuccessResponse));
   const wrapper = mount(
-    <Provider store={store}>
+    <Provider store={testStore}>
       <FaqScreen />
     </Provider>
   );
-  console.log(wrapper.html());
+  // Now click on a faq item.
+  wrapper
+    .find(".wl-card")
+    .at(0)
+    .simulate("click");
+
+  // change the question and click on update, we should have a update request.
+  wrapper
+    .find(".wl-faq-edit-item__textarea")
+    .at(0)
+    .simulate("change", {
+      target: {
+        value: "new question value?"
+      }
+    });
+  wrapper
+    .find(".wl-action-button--update")
+    .at(0)
+    .simulate("click");
+  const postedData = JSON.parse(fetch.mock.calls[0][1].body);
+  expect(postedData.faq_items[0].question).toEqual("new question value?");
+  // Clear all the mocks.
+  fetch.mockClear()
+
+  // Enqueue a successful update response
+  fetch.mockResponseOnce(JSON.stringify(updateSuccessResponse));
+  // Now click on delete, should set the question to empty.
+  wrapper
+      .find(".wl-action-button--delete")
+      .at(0)
+      .simulate("click");
+  const postedDeleteData = JSON.parse(fetch.mock.calls[0][1].body);
+  expect(postedDeleteData.faq_items[0].question).toEqual("");
 });

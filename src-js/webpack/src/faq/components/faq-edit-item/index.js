@@ -68,6 +68,7 @@ class FaqEditItem extends React.Component {
         <WlContainer>
           <WlColumn className={"wl-col--width-100 wl-col--less-padding"}>
             <textarea
+                className={"wl-faq-edit-item__textarea"}
               rows={3}
               value={this.state.textAreaValue}
               onChange={e => {
