@@ -123,9 +123,12 @@ it(
     // Should show the modal because mutiple questions present
     expect(testStore.getState().faqModalOptions.isModalOpened).toEqual(true);
     // Click on apply button, now we should receive the API request.
-    wrapper.find(".wl-faq-apply-button").at(0).simulate("click");
-      // Also expect an API call to update the answer.
-      const postedData = JSON.parse(fetch.mock.calls[0][1].body);
-      expect(postedData.faq_items[0].answer).toEqual("sample answer html");
+    wrapper
+      .find(".wl-faq-apply-button")
+      .at(0)
+      .simulate("click");
+    // Also expect an API call to update the answer.
+    const postedData = JSON.parse(fetch.mock.calls[0][1].body);
+    expect(postedData.faq_items[0].answer).toEqual("sample answer html");
   }
 );
