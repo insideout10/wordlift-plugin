@@ -107,7 +107,7 @@ it(
   }
 );
 
-it("when the user opens the edit screen, should be able " + "to update / delete the question or answer", () => {
+it("when the user opens the edit screen, should be able " + "to update / delete the question", () => {
   // Mock the faq items data
   const action = updateFaqItems();
   action.payload = transformAPIDataToUi(getFaqItemsResponse);
@@ -156,4 +156,59 @@ it("when the user opens the edit screen, should be able " + "to update / delete 
       .simulate("click");
   const postedDeleteData = JSON.parse(fetch.mock.calls[0][1].body);
   expect(postedDeleteData.faq_items[0].question).toEqual("");
+});
+
+
+
+
+
+it("when the user opens the edit screen, should be able " + "to update / delete the answer", () => {
+  // Mock the faq items data
+  const action = updateFaqItems();
+  action.payload = transformAPIDataToUi(getFaqItemsResponse);
+  testStore.dispatch(action);
+
+  const updateSuccessResponse = {
+    status: "success",
+    message: "Faq Items updated successfully"
+  };
+  fetch.mockResponseOnce(JSON.stringify(updateSuccessResponse));
+  const wrapper = mount(
+      <Provider store={testStore}>
+        <FaqScreen />
+      </Provider>
+  );
+  // Now click on a faq item.
+  wrapper
+      .find(".wl-card")
+      .at(0)
+      .simulate("click");
+
+  // change the question and click on update, we should have a update request.
+  wrapper
+      .find(".wl-faq-edit-item__textarea")
+      .at(1)
+      .simulate("change", {
+        target: {
+          value: "new answer value"
+        }
+      });
+  wrapper
+      .find(".wl-action-button--update")
+      .at(2)
+      .simulate("click");
+  const postedData = JSON.parse(fetch.mock.calls[0][1].body);
+  expect(postedData.faq_items[0].answer).toEqual("new answer value");
+  // Clear all the mocks.
+  fetch.mockClear()
+
+  // Enqueue a successful update response
+  fetch.mockResponseOnce(JSON.stringify(updateSuccessResponse));
+  // Now click on delete, should set the question to empty.
+  wrapper
+      .find(".wl-action-button--delete")
+      .at(2)
+      .simulate("click");
+  const postedDeleteData = JSON.parse(fetch.mock.calls[0][1].body);
+  expect(postedDeleteData.faq_items[0].answer).toEqual("");
 });
