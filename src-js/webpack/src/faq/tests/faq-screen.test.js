@@ -69,3 +69,21 @@ it("should render faq items when faq items given", () => {
   // Now we have dispatched the action, we should have 3 items in html
   expect(wrapper.find('.wl-card')).toHaveLength(3);
 });
+
+
+it("when the faq item is clicked then the edit screen should show", ()=> {
+  // Mock the faq items data
+  const action = updateFaqItems();
+  action.payload = transformAPIDataToUi(getFaqItemsResponse);
+  store.dispatch(action)
+
+  const wrapper = mount(
+      <Provider store={store}>
+        <FaqScreen />
+      </Provider>
+  );
+  // Now click on a faq item.
+  wrapper.find('.wl-card').at(0).simulate('click')
+  // check the store, selected FAQ Id should be 1582622863 ( the first item on the response)
+  expect(store.getState().faqListOptions.selectedFaqId).toEqual("1582622863")
+})
