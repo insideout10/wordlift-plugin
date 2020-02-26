@@ -22,7 +22,7 @@ class QuestionInputBox extends React.Component {
       <input
         type={"text"}
         value={this.props.question}
-        className={"question-input-box"}
+        className={"wl-question-input-box"}
         placeholder={"Add Your question here"}
         onChange={event => {
           const action = updateQuestionOnInputChange();

@@ -13,7 +13,7 @@
 
 .wl-card{border-radius:8px;border:1px solid #eee;height:80px;transition:0.1s;padding:8px;margin:8px}.wl-card:hover{box-shadow:3px 3px #eee}.wl-card.wl-card-center{text-align:center}
 
-.question-input-box{width:100%}
+.wl-question-input-box{width:100%}
 
 .wl-add-question-button{background-color:white;border-radius:7px;font-size:12px !important;border:2px solid #177efb;cursor:pointer;height:25px}.wl-add-question-button:hover{background-color:#177efb;color:white}
 

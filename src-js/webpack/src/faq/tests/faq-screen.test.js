@@ -37,6 +37,8 @@ const getFaqItemsResponse = [
   }
 ];
 
+const createNewQuestionResponse = { status: "success", message: "Question successfully added.", id: 1582698289 };
+
 beforeAll(() => {
   global["_wlFaqSettings"] = {
     restUrl: "https://wordlift.localhost/index.php?rest_route=/wordlift/v1/faq",
@@ -145,22 +147,18 @@ it("when the user opens the edit screen, should be able " + "to update / delete 
   const postedData = JSON.parse(fetch.mock.calls[0][1].body);
   expect(postedData.faq_items[0].question).toEqual("new question value?");
   // Clear all the mocks.
-  fetch.mockClear()
+  fetch.mockClear();
 
   // Enqueue a successful update response
   fetch.mockResponseOnce(JSON.stringify(updateSuccessResponse));
   // Now click on delete, should set the question to empty.
   wrapper
-      .find(".wl-action-button--delete")
-      .at(0)
-      .simulate("click");
+    .find(".wl-action-button--delete")
+    .at(0)
+    .simulate("click");
   const postedDeleteData = JSON.parse(fetch.mock.calls[0][1].body);
   expect(postedDeleteData.faq_items[0].question).toEqual("");
 });
-
-
-
-
 
 it("when the user opens the edit screen, should be able " + "to update / delete the answer", () => {
   // Mock the faq items data
@@ -174,41 +172,70 @@ it("when the user opens the edit screen, should be able " + "to update / delete 
   };
   fetch.mockResponseOnce(JSON.stringify(updateSuccessResponse));
   const wrapper = mount(
-      <Provider store={testStore}>
-        <FaqScreen />
-      </Provider>
+    <Provider store={testStore}>
+      <FaqScreen />
+    </Provider>
   );
   // Now click on a faq item.
   wrapper
-      .find(".wl-card")
-      .at(0)
-      .simulate("click");
+    .find(".wl-card")
+    .at(0)
+    .simulate("click");
 
   // change the question and click on update, we should have a update request.
   wrapper
-      .find(".wl-faq-edit-item__textarea")
-      .at(1)
-      .simulate("change", {
-        target: {
-          value: "new answer value"
-        }
-      });
+    .find(".wl-faq-edit-item__textarea")
+    .at(1)
+    .simulate("change", {
+      target: {
+        value: "new answer value"
+      }
+    });
   wrapper
-      .find(".wl-action-button--update")
-      .at(2)
-      .simulate("click");
+    .find(".wl-action-button--update")
+    .at(2)
+    .simulate("click");
   const postedData = JSON.parse(fetch.mock.calls[0][1].body);
   expect(postedData.faq_items[0].answer).toEqual("new answer value");
   // Clear all the mocks.
-  fetch.mockClear()
+  fetch.mockClear();
 
   // Enqueue a successful update response
   fetch.mockResponseOnce(JSON.stringify(updateSuccessResponse));
   // Now click on delete, should set the question to empty.
   wrapper
-      .find(".wl-action-button--delete")
-      .at(2)
-      .simulate("click");
+    .find(".wl-action-button--delete")
+    .at(2)
+    .simulate("click");
   const postedDeleteData = JSON.parse(fetch.mock.calls[0][1].body);
   expect(postedDeleteData.faq_items[0].answer).toEqual("");
 });
+
+it(
+  "When the question is added to input and add question is clicked then" +
+    " it should send a request to add a new question",
+  () => {
+    const wrapper = mount(
+      <Provider store={testStore}>
+        <FaqScreen />
+      </Provider>
+    );
+    wrapper
+      .find(".wl-question-input-box")
+      .at(0)
+      .simulate("change", {
+        target: {
+          value: "This is a new question?"
+        }
+      });
+    fetch.mockResponseOnce(JSON.stringify(createNewQuestionResponse));
+    // click on the add question button.
+    wrapper
+      .find(".wl-add-question-button")
+      .at(0)
+      .simulate("click");
+
+    const postedData = JSON.parse(fetch.mock.calls[0][1].body);
+    expect(postedData.faq_items[0].question).toEqual("This is a new question?");
+  }
+);
