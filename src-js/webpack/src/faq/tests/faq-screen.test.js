@@ -11,8 +11,28 @@ import { Provider } from "react-redux";
 import store from "../store";
 import FaqScreen from "../components/faq-screen";
 import {WlCard} from "../../common/components/wl-card";
-
+import {updateFaqItems} from "../actions";
+import {transformAPIDataToUi} from "../sagas/filters";
+import FaqList from "../components/faq-list";
 configure({ adapter: new Adapter() });
+
+const getFaqItemsResponse = [
+  {
+    question: "this is a question?e",
+    answer: "this is answer.de",
+    id: 1582622863
+  },
+  {
+    question: "this is an another question?",
+    answer: "this is also answer....",
+    id: 1582639238
+  },
+  {
+    question: "this is third question??",
+    answer: "this is third answeer.",
+    id: 1582639326
+  }
+];
 
 beforeAll(() => {
   global["_wlFaqSettings"] = {
@@ -34,30 +54,18 @@ beforeEach(() => {
   fetch.resetMocks();
 });
 
-it("should render without throwing error", () => {
-  const getFaqItemsResponse = [
-    {
-      question: "this is a question?e",
-      answer: "this is answer.de",
-      id: 1582622863
-    },
-    {
-      question: "this is an another question?",
-      answer: "this is also answer....",
-      id: 1582639238
-    },
-    {
-      question: "this is third question??",
-      answer: "this is third answeer.",
-      id: 1582639326
-    }
-  ];
-  fetch.mockResponseOnce(JSON.stringify(getFaqItemsResponse));
+it("should render faq items when faq items given", () => {
+  // Mock the faq items data
+  const action = updateFaqItems();
+  action.payload = transformAPIDataToUi(getFaqItemsResponse);
+  store.dispatch(action)
+
   const wrapper = mount(
       <Provider store={store}>
         <FaqScreen />
       </Provider>
   );
-  console.log(wrapper.html())
-  expect(wrapper.find('.wl-card')).toHaveLength(1);
+
+  // Now we have dispatched the action, we should have 3 items in html
+  expect(wrapper.find('.wl-card')).toHaveLength(3);
 });
