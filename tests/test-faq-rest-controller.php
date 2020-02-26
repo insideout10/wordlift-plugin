@@ -225,8 +225,6 @@ class FAQ_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 				array(
 					'question' => 'foo1',
 					'answer'   => 'bar1',
-					'previous_question_value' => 'foo',
-					'previous_answer_value'   => 'bar',
 					'id' => $response[0]["id"]
 				)
 			)
@@ -240,7 +238,7 @@ class FAQ_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals(200, $response->get_status());
 		$data = $response->get_data();
 		// should return success
-		$this->assertArrayHasKey($data, 'status');
+		$this->assertArrayHasKey('status', $data);
 		// should be success in status
 		$this->assertEquals($data['status'], 'success');
 		// check if the item is removed.

@@ -65,7 +65,20 @@ class FAQ_Rest_Controller {
 				},
 			)
 		);
-
+		/**
+		 * Rest route for deleting faq item.
+		 */
+		register_rest_route(
+			WL_REST_ROUTE_DEFAULT_NAMESPACE,
+			'/faq',
+			array(
+				'methods'             => \WP_REST_Server::DELETABLE,
+				'callback'            => 'Wordlift\FAQ\FAQ_Rest_Controller::delete_faq_items',
+				'permission_callback' => function () {
+					return current_user_can( 'publish_posts' );
+				},
+			)
+		);
 	}
 
 	/**
@@ -124,6 +137,39 @@ class FAQ_Rest_Controller {
 			return array(
 				'status' => 'failure',
 				'message' => __('Failure in updating Faq items')
+			);
+		}
+	}
+
+	/**
+	 * Delete Faq items.
+	 *
+	 * @param $request WP_REST_Request $request {@link WP_REST_Request instance}.
+	 *
+	 * @return array Associative array whether the faq item is deleted or not.
+	 */
+	public static function delete_faq_items( $request ) {
+		$post_data = $request->get_params();
+		if ( array_key_exists('post_id', $post_data) &&
+		     array_key_exists( 'faq_items', $post_data) ) {
+			$post_id = $post_data['post_id'];
+			$faq_items = $post_data['faq_items'];
+			foreach ( $faq_items as $faq_item ) {
+				delete_post_meta($post_id, self::FAQ_META_KEY, $faq_item);
+			}
+
+			/**
+			 * We are returning only the first item id, since the user can select only one text at a time.
+			 */
+			return array(
+				'status' => 'success',
+				'message' => __('Faq item successfully deleted.'),
+			);
+		}
+		else {
+			return array(
+				'status'  => 'failure',
+				'message' => __( 'Invalid data, post_id or faq_items missing', 'wordlift' )
 			);
 		}
 	}
