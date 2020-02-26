@@ -19,7 +19,7 @@ import rootSaga from "../sagas";
 
 configure({ adapter: new Adapter() });
 
-const getFaqItemsResponse = [
+export const getFaqItemsResponse = [
   {
     question: "this is a question?e",
     answer: "this is answer.de",
@@ -37,7 +37,11 @@ const getFaqItemsResponse = [
   }
 ];
 
-const createNewQuestionResponse = { status: "success", message: "Question successfully added.", id: 1582698289 };
+export const createNewQuestionResponse = { status: "success", message: "Question successfully added.", id: 1582698289 };
+export const updateSuccessResponse = {
+  status: "success",
+  message: "Faq Items updated successfully"
+};
 
 beforeAll(() => {
   global["_wlFaqSettings"] = {
@@ -54,6 +58,7 @@ beforeAll(() => {
 afterAll(() => {
   global["_wlFaqSettings"] = null;
 });
+
 let testStore = null;
 beforeEach(() => {
   fetch.resetMocks();
@@ -166,10 +171,6 @@ it("when the user opens the edit screen, should be able " + "to update / delete 
   action.payload = transformAPIDataToUi(getFaqItemsResponse);
   testStore.dispatch(action);
 
-  const updateSuccessResponse = {
-    status: "success",
-    message: "Faq Items updated successfully"
-  };
   fetch.mockResponseOnce(JSON.stringify(updateSuccessResponse));
   const wrapper = mount(
     <Provider store={testStore}>

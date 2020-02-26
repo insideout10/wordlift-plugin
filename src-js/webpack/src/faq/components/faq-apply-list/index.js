@@ -56,7 +56,7 @@ class FaqApplyList extends React.Component {
         {this.renderEmptyMessageWhenNoQuestionPresent(this.props.faqItems)}
         {this.props.faqItems.filter(e => e.answer.length === 0).map(e => {
           return (
-            <WlCard>
+            <WlCard key={e.id}>
               <WlContainer>
                 <WlColumn className={"wl-col--width-90"}>
                   <Question question={e.question} />
