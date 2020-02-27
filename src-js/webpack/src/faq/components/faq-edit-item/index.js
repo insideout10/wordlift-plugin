@@ -38,16 +38,13 @@ class FaqEditItem extends React.Component {
     this.updateFaqEditItem = this.updateFaqEditItem.bind(this);
     this.deleteFaqItem = this.deleteFaqItem.bind(this);
   }
-  updateFaqEditItem(textAreaValue = null) {
+  updateFaqEditItem() {
     const action = updateFaqItem();
     action.payload = {
       id: this.props.id,
       type: this.props.type,
       value: this.state.textAreaValue
     };
-    if (textAreaValue !== null) {
-      action.payload.value = textAreaValue;
-    }
     this.props.dispatch(action);
   }
   deleteFaqItem() {

@@ -24,9 +24,7 @@ const FaqEditButtonGroup = ({ updateHandler, deleteHandler }) => {
         <WlActionButton
           text={"delete"}
           className={"wl-action-button--delete wl-action-button--normal wl-action-button--text-bold"}
-          onClickHandler={() => {
-            deleteHandler();
-          }}
+          onClickHandler={deleteHandler}
         />
       </WlColumn>
       <WlColumn className={"wl-col--width-10"} />
@@ -34,9 +32,7 @@ const FaqEditButtonGroup = ({ updateHandler, deleteHandler }) => {
         <WlActionButton
           text={"update"}
           className={"wl-action-button--update wl-action-button--primary wl-action-button--text-bold"}
-          onClickHandler={() => {
-            updateHandler();
-          }}
+          onClickHandler={updateHandler}
         />
       </WlColumn>
     </WlContainer>
