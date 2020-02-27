@@ -1,37 +1,34 @@
-jQuery(document).ready(function ($) {
-    //On click on refresh button then ajax call
-    jQuery('#wl-refresh-summary').on('click', function(e) {
-        e.preventDefault();
-        let postId = jQuery(this).data('post-id');
+document.addEventListener( "DOMContentLoaded", function() {
 
-        jQuery.ajax({
-            type:'POST',
-            dataType:'json',
-            url: etsAdminAjaxUrl.wpadminajax,
-            data:{ 'action': 'wl_refresh_excerpt_summary', 'post_id':postId },
-            beforeSend: function(){
-                // Show image container
-                jQuery("#loader").show();
-            },
-            success:function(response){ 
-            },
-            complete:function(data){
-                // Hide image container
-                jQuery("#loader").hide();
-           }
-        });
-    });
-    
-    //event on use button
-    jQuery('#wl-use-summary').on('click', function(e){
+   //event on use button
+   document.querySelector( "#wl-use-summary" ).addEventListener( 'click', function (e) {
         e.preventDefault();
-        let excerpt_summary = jQuery('#excerpt_summary').val();
-        jQuery('#excerpt').val(excerpt_summary);
+        var excerptSummary = document.getElementById( "wl-excerpt-summary" ).value;
+        document.getElementById("excerpt").value = excerptSummary;
+    });
+
+   //Ajax call to refresh summarize API
+    document.querySelector( "#wl-refresh-summary" ).addEventListener( 'click', function(e) {
+        e.preventDefault();
+        var postId = document.getElementById( "wl-refresh-summary" ).getAttribute( "data-post-id" );
+        document.querySelector( "#wl-loader" ).style.display = "block";
+        wp.ajax.post( "wl_refresh_excerpt_summary", { post_id: postId } )
+        .done(function (data) {
+            if (data) {
+                var summarizeVal = data;
+                document.getElementById( "wl-excerpt-summary" ).value = summarizeVal;
+                document.querySelector( "#wl-loader" ).style.display = "none";
+            }
+        });
     });
 
     //add bell icon when summeries API responce
-    if (etsAdminAjaxUrl.summaryKey) {
-        jQuery('#postexcerpt').find('.handlediv')   .prepend('<span id="wl-summary-notify"></span>');
-        jQuery('#postexcerpt .handlediv').css('width', '100px');
+    if ( etsAdminAjaxUrl.summaryKey ) {
+        var postEx = document.querySelector( "#postexcerpt" );
+        var handleDiv = postEx.querySelector( ".handlediv" );
+        var theChild = document.createElement( "span" );
+        theChild.classList.add( "wl-summary-notify" );
+        handleDiv.prepend(theChild);
+        document.querySelector( "#postexcerpt .handlediv" ).style.width = "100px";
     }
 });

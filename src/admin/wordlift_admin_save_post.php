@@ -112,12 +112,12 @@ add_filter( 'use_block_editor_for_post', '__return_false', 10 );
  * @param int $post_id post ID
  */
 function update_post_excerpt_summary( $location, $post_id ) {
-    $rest = get_excerpt_summary($post_id);
-    $res = json_decode($rest, true);
-    if ($res) {
-        if (array_key_exists('summary', $res)) {
-            $summary = $res['summary'];
-            $postKey =  update_post_meta($post_id, "wl-summaries-excerpt", $summary);
+    $rest = get_excerpt_summary( $post_id );
+    $res = json_decode( wp_remote_retrieve_body( $rest ), true );
+    if ( $res ) {
+        if ( array_key_exists( 'summary', $res ) ) {
+            $summary = strip_tags( $res['summary'] );
+            $postKey = update_post_meta( $post_id, "_wl-summaries-excerpt", $summary );
         }
     } 
     return $location;
@@ -131,27 +131,23 @@ add_filter( 'redirect_post_location', 'update_post_excerpt_summary', 10, 2 );
  *
  * @return JSON
  */
-function get_excerpt_summary($post_id) {
-    $post = get_post($post_id);
+function get_excerpt_summary( $post_id ) {
+    $post = get_post( $post_id );
     $post_content = $post->post_content;
-    $curl = curl_init();
-    curl_setopt_array($curl, array(
-        CURLOPT_URL => "https://api.wordlift.io/summarize?min_length=60&ratio=0.005&",
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => "",
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 0,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => "POST",
-        CURLOPT_POSTFIELDS => $post_content,
-        CURLOPT_HTTPHEADER => array(
-            "Authorization: Key xyhamSOvCPgEcIYgspju3bJXCPJ2aJu7JEb3EYO7E2e9DzWm2MNVe3MIPIQX7uI0",
-            "Content-Type: text/plain"
-        ),
-    ));
-    $response = curl_exec($curl);
-    curl_close($curl);
+    $summary_api_url = 'https://api.wordlift.io/summarize?min_length=60&ratio=0.005';
+    $args =  array(
+        'method'      => 'POST',
+        'headers'     => array(
+                "Authorization" => "Key ". WL_SUMMARIZE_API_KEY,
+                "Content-Type"  => "text/plain"
+            ),
+        'timeout'     => 60,
+        'redirection' => 5,
+        'blocking'    => true,
+        'httpversion' => '1.0',
+        'body'        => $post_content
+    );
+    $response = wp_remote_post( $summary_api_url, $args ); 
     return $response;   
 }
 
@@ -181,26 +177,29 @@ add_action( 'admin_menu', 'wl_add_excerpt_meta_box' );
 function wl_add_field_excerpt_meta_boxes() {
     global $post;
     $post_id = $post->ID;
-    $wlSummariesExcerpt = get_post_meta($post_id, 'wl-summaries-excerpt',true);
+    $wlSummariesExcerpt = get_post_meta( $post_id, '_wl-summaries-excerpt', true );
     ?>
-        <label class="screen-reader-text" for="excerpt"><?php echo esc_html__('Excerpt', 'wordlift');?></label>
+        <label class="screen-reader-text" for="excerpt"><?php echo esc_html__( 'Excerpt', 'wordlift' );?></label>
         <textarea rows="1" cols="40" name="excerpt" id="excerpt"><?php echo $post->post_excerpt;?></textarea>
-        <p><?php echo esc_html__( 'Excerpts are optional hand-crafted summaries of your content that can be used in your theme.', 'wordlift' );?><a href="https://codex.wordpress.org/Excerpt"><?php echo esc_html__('Learn more about manual excerpts.', 'wordlift');?></a></p>
-        <label class="screen-reader-text" for="excerpt_summary"><?php echo esc_html__('Excerpt', 'wordlift');?></label>
-        <textarea rows="1" cols="40" name="excerpt_summary" id="excerpt_summary"><?php if ($wlSummariesExcerpt) echo strip_tags($wlSummariesExcerpt);
-        else
-            echo ""; ?></textarea>
 
-        <p><?php echo esc_html__( 'WordLift generated excerpt.', 'wordlift' );?></p> 
+        <p><?php echo esc_html__( 'Excerpts are optional hand-crafted summaries of your content that can be used in your theme.', 'wordlift' );?><a href="https://codex.wordpress.org/Excerpt"><?php echo esc_html__( 'Learn more about manual excerpts.', 'wordlift' );?></a></p>
+
+        <label class="screen-reader-text" for="wl-excerpt-summary"><?php echo esc_html__( 'Excerpt', 'wordlift' );?></label>
+
+        <textarea rows="1" cols="40" name="excerpt_summary" id="wl-excerpt-summary"><?php 
+            if ( $wlSummariesExcerpt ) { 
+                echo strip_tags( $wlSummariesExcerpt );
+            } ?></textarea>
+
+        <p><?php echo esc_html__( 'WordLift generated excerpt.', 'wordlift' );?></p>
+
         <div class="wl-use-ref">
-            <button class="btn" id="wl-use-summary"><?php echo esc_html__('Use', 'wordlift');?></button>
+            <button class="btn" id="wl-use-summary"><?php echo esc_html__( 'Use', 'wordlift' );?></button>
         
-            <button class="btn" id="wl-refresh-summary" data-post-id="<?php echo $post_id;?>"><?php echo esc_html__('Refresh', 'wordlift');?></button>
+            <button class="btn" id="wl-refresh-summary" data-post-id="<?php echo $post_id;?>"><?php echo esc_html__( 'Refresh', 'wordlift' );?></button>
        
-            <img id='loader' src="<?php echo plugin_dir_url(__FILE__).'../images/loading.gif';?>">
-        </div>
-        
-        
+            <img id='wl-loader' src="<?php echo plugin_dir_url(__FILE__).'../images/loading.gif';?>">
+        </div>    
     <?php
 }
 
@@ -213,19 +212,15 @@ function wl_add_field_excerpt_meta_boxes() {
 function wl_refresh_excerpt_summary() {
     $post_id = intval( $_POST['post_id'] );
     if ( isset( $post_id ) ) {
-        $rest = get_excerpt_summary($post_id);
-        $res = json_decode($rest,true); 
-        if ($res) {
+        $rest = get_excerpt_summary( $post_id );
+        $res = json_decode( wp_remote_retrieve_body( $rest ), true );
+        if ( $res ) {
             if ( array_key_exists( 'summary', $res ) ) {
-                $summary = $res['summary'];
-                update_post_meta( $postid, "wl-summaries-excerpt", $summary );
+                $summary = strip_tags( $res['summary'] );
+                update_post_meta( $postid, "_wl-summaries-excerpt", $summary );
             }
         }
-        $response = array(
-                    'status'=> 1,
-                );
-        echo json_encode($response);
-        die();
+        wp_send_json_success( $summary, 1 );
     }
 }
 add_action( 'wp_ajax_wl_refresh_excerpt_summary', 'wl_refresh_excerpt_summary' );
@@ -237,14 +232,18 @@ add_action( 'wp_ajax_nopriv_wl_refresh_excerpt_summary', 'wl_refresh_excerpt_sum
 function wl_admin_backend_script_style()
 {
     global $post;
-    $wlSummariesExcerpt = get_post_meta($post->ID, 'wl-summaries-excerpt',true);
+    if ( $post ) {
+        $wl_summaries_excerpt = get_post_meta( $post->ID, '_wl-summaries-excerpt', true );
+    } else {
+        $wl_summaries_excerpt = false;
+    }
 
-    $jsvar = array(
-            'wpadminajax'   => admin_url('admin-ajax.php'),
-            'summaryKey'    => $wlSummariesExcerpt
+    $js_var = array(
+            'wpadminajax'   => admin_url( 'admin-ajax.php' ),
+            'summaryKey'    => $wl_summaries_excerpt
         );
-    wp_register_script('ets_admin_script', plugin_dir_url(__FILE__).'js/ets-admin.js', array());
-    wp_enqueue_script('ets_admin_script');
-    wp_localize_script('ets_admin_script','etsAdminAjaxUrl',$jsvar);
+    wp_register_script( 'ets_admin_script', plugin_dir_url(__FILE__).'js/ets-admin.js' ,array(), '1.0' );
+    wp_enqueue_script( 'ets_admin_script' );
+    wp_localize_script( 'ets_admin_script', 'etsAdminAjaxUrl', $js_var );
 }
 add_action( 'admin_enqueue_scripts', 'wl_admin_backend_script_style' );
