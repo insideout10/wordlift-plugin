@@ -64,7 +64,7 @@ class FaqEditItem extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <b>{this.props.title}</b>
+        <span className={"wl-faq-edit-item--title"}>{this.props.title}</span>
         <br />
         <WlContainer>
           <WlColumn className={"wl-col--width-100 wl-col--less-padding"}>
