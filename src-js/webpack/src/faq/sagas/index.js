@@ -39,11 +39,10 @@ import { trigger } from "backbone";
  * @return {Generator<<"CALL", CallEffectDescriptor>|<"PUT", PutEffectDescriptor<{type: *}>>, void, ?>}
  */
 function* dispatchNotification(response) {
-  const notificationAction = updateNotificationArea();
-  notificationAction.payload = {
+  const notificationAction = updateNotificationArea({
     notificationMessage: response.message,
     notificationType: response.status
-  };
+  });
   yield put(notificationAction);
   /**
    * After 2 seconds, remove the notification.
@@ -83,9 +82,9 @@ function* handleAddNewQuestion(action) {
  */
 function* handleGetFaqItems() {
   const faqItems = yield call(API.getFAQItems);
-  const action = updateFaqItems();
-  action.payload = transformAPIDataToUi(faqItems);
-  trigger(FAQ_ITEMS_CHANGED, action.payload);
+  const payload = transformAPIDataToUi(faqItems)
+  const action = updateFaqItems(payload);
+  trigger(FAQ_ITEMS_CHANGED, payload);
   yield put(action);
 }
 
@@ -120,8 +119,7 @@ function* handleUpdateFaqItems(action) {
   yield dispatchNotification(response);
   yield put(requestGetFaqItems());
   // Close the modal on apply.
-  const modalAction = updateFaqModalVisibility();
-  modalAction.payload = false;
+  const modalAction = updateFaqModalVisibility(false);
   yield put(modalAction);
 }
 

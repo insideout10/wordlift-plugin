@@ -36,12 +36,11 @@ class FaqHookToStoreDispatcher {
    * @param answer Selected answer.
    */
   applyAnswerToQuestion(store, id, answer) {
-    const action = updateFaqItem();
-    action.payload = {
+    const action = updateFaqItem({
       id: id,
       type: faqEditItemType.ANSWER,
       value: answer
-    };
+    });
     store.dispatch(action);
   }
   dispatchAnswerSelected(text) {
@@ -52,11 +51,11 @@ class FaqHookToStoreDispatcher {
       const selectedQuestion = unansweredQuestions[0];
       this.applyAnswerToQuestion(this.store, selectedQuestion.id, text);
     } else {
-      const action = answerSelectedByUser();
-      action.payload = {
-        selectedAnswer: text
-      };
-      this.store.dispatch(action);
+      this.store.dispatch(
+        answerSelectedByUser({
+          selectedAnswer: text
+        })
+      );
     }
   }
 
@@ -67,8 +66,7 @@ class FaqHookToStoreDispatcher {
    * @param faqId
    */
   dispatchQuestionOrAnswerClickedByUser(faqId) {
-    const action = questionSelectedByUser();
-    action.payload = faqId;
+    const action = questionSelectedByUser(faqId);
     this.store.dispatch(action);
   }
 
@@ -81,9 +79,7 @@ class FaqHookToStoreDispatcher {
     const { selectedText, selectedHTML } = data;
     // // Check if this is a question
     if (FaqValidator.isQuestion(selectedText)) {
-      const action = updateQuestionOnInputChange();
-      action.payload = selectedText;
-      this.store.dispatch(action);
+      this.store.dispatch(updateQuestionOnInputChange(selectedText));
       // Add it to the API
       this.store.dispatch(requestAddNewQuestion());
     } else {
