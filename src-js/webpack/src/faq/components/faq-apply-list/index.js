@@ -42,12 +42,11 @@ class FaqApplyList extends React.Component {
    * @param id The id of the FAQ item
    */
   applyAnswerToQuestion(id) {
-    const action = updateFaqItem();
-    action.payload = {
+    const action = updateFaqItem({
       id: id,
       type: faqEditItemType.ANSWER,
       value: this.props.selectedAnswer
-    };
+    });
     this.props.dispatch(action);
   }
   render() {

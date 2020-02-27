@@ -30,11 +30,10 @@ class FaqModal extends React.Component {
    * Run this listener once the close button is clicked
    */
   removeNotificationListener() {
-    const action = updateNotificationArea();
-    action.payload = {
+    const action = updateNotificationArea({
       notificationMessage: "",
       notificationType: ""
-    };
+    });
     this.props.dispatch(action);
   }
   render() {
@@ -52,9 +51,7 @@ class FaqModal extends React.Component {
               title={"WordLift FAQ"}
               description={"Apply this answer to a question"}
               modalCloseClickedListener={() => {
-                const action = updateFaqModalVisibility();
-                action.payload = false;
-                this.props.dispatch(action);
+                this.props.dispatch(updateFaqModalVisibility(false));
               }}
             />
             <WlModalBody>

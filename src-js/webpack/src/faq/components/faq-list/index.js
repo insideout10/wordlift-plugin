@@ -24,9 +24,7 @@ class FaqList extends React.Component {
     this.faqItemClicked = this.faqItemClicked.bind(this);
   }
   faqItemClicked(id) {
-    const action = questionSelectedByUser();
-    action.payload = id;
-    this.props.dispatch(action);
+    this.props.dispatch(questionSelectedByUser(id));
   }
   render() {
     return (

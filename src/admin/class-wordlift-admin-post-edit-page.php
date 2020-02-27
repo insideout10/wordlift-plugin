@@ -220,8 +220,11 @@ class Wordlift_Admin_Post_Edit_Page {
 			'nonce'                   => wp_create_nonce( 'wp_rest' ),
 			'postId'                  => get_the_ID(),
 			// Translation for warning, error message.
-			'invalidTagMessage'       => sprintf( __( 'Invalid tags %s is present in answer' ), "{INVALID_TAGS}" ),
-			'invalidWordCountMessage' => sprintf( __( 'Answer word count must not exceed %s words' ), "{ANSWER_WORD_COUNT_WARNING_LIMIT}" )
+			'invalidTagMessage'       => sprintf( __( 'Invalid tags %s is present in answer', 'wordlift' ), "{INVALID_TAGS}" ),
+			'invalidWordCountMessage' => sprintf( __( 'Answer word count must not exceed %s words', 'wordlift' ), "{ANSWER_WORD_COUNT_WARNING_LIMIT}" ),
+			'questionText' => __('Question', 'wordlift'),
+			'answer' => __('Answer', 'wordlift'),
+
 		);
 	}
 
