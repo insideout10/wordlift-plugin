@@ -6,7 +6,6 @@ import GutenbergHighlightHandler from "./gutenberg-highlight-handler";
 import GutenbergToolbarHandler from "./gutenberg-toolbar-handler";
 import FaqTextEditorHook from "../interface/faq-text-editor-hook";
 import GutenbergToolbarButtonRegister from "./gutenberg-toolbar-button-register";
-import GutenbergClickHandler from "./gutenberg-click-handler";
 
 export const FAQ_GUTENBERG_TOOLBAR_BUTTON_CLASS_NAME = "wl-faq-gutenberg-toolbar-button";
 
@@ -39,7 +38,6 @@ class GutenbergFaqPlugin extends FaqTextEditorHook {
      * enable/disable the toolbar button.
      */
     new GutenbergToolbarHandler();
-    new GutenbergClickHandler();
   }
 
   initialize() {

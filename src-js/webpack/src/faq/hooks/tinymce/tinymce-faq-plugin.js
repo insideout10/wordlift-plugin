@@ -13,7 +13,6 @@
  */
 import TinymceToolbarHandler from "./tinymce-toolbar-handler";
 import TinymceHighlightHandler from "./tinymce-highlight-handler";
-import TinymceClickHandler from "./tinymce-click-handler";
 import FaqTextEditorHook from "../interface/faq-text-editor-hook";
 
 const FAQ_TINYMCE_PLUGIN_NAME = "wl_faq_tinymce";
@@ -43,7 +42,6 @@ class TinymceFaqPlugin extends FaqTextEditorHook {
   showFloatingActionButton() {
     const toolBarHandler = new TinymceToolbarHandler(this.editor, this.highlightHandler);
     toolBarHandler.addButtonToToolBar();
-    new TinymceClickHandler(this.editor);
   }
 
   initialize() {
