@@ -1,6 +1,6 @@
 <?php
 
-use Wordlift\FAQ\FAQ_Rest_Controller;
+use Wordlift\FAQ\Faq_Rest_Controller;
 use Wordlift\FAQ\Faq_To_Jsonld_Converter;
 
 /**
@@ -19,7 +19,7 @@ class Faq_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_if_converter_returns_correct_type() {
 		$post_id = $this->factory()->post->create( array('post_title' => 'foo'));
-		add_post_meta( $post_id, FAQ_Rest_Controller::FAQ_META_KEY, array(
+		add_post_meta( $post_id, Faq_Rest_Controller::FAQ_META_KEY, array(
 			'question' => 'foo1',
 			'answer' => 'bar1'
 		));
@@ -33,11 +33,11 @@ class Faq_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_given_sample_faq_data_return_correct_jsonld() {
 		$post_id = $this->factory()->post->create( array('post_title' => 'foo'));
-		add_post_meta( $post_id, FAQ_Rest_Controller::FAQ_META_KEY, array(
+		add_post_meta( $post_id, Faq_Rest_Controller::FAQ_META_KEY, array(
 			'question' => 'foo1',
 			'answer' => 'bar1'
 		));
-		add_post_meta( $post_id, FAQ_Rest_Controller::FAQ_META_KEY, array(
+		add_post_meta( $post_id, Faq_Rest_Controller::FAQ_META_KEY, array(
 			'question' => 'foo2',
 			'answer' => 'bar2'
 		));

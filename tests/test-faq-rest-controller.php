@@ -1,6 +1,6 @@
 <?php
 
-use Wordlift\FAQ\FAQ_Rest_Controller;
+use Wordlift\FAQ\Faq_Rest_Controller;
 
 /**
  * Tests: Tests the FAQ Rest Controller
@@ -18,7 +18,7 @@ class FAQ_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 	public function setUp() {
 		parent::setUp();
 
-		$this->rest_instance = new FAQ_Rest_Controller();
+		$this->rest_instance = new Faq_Rest_Controller();
 		global $wp_rest_server;
 
 		$wp_rest_server = new WP_REST_Server();
@@ -35,7 +35,7 @@ class FAQ_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 		$response  = $this->server->dispatch( $request );
 		// Should return 200 response
 		$this->assertEquals( 200, $response->get_status() );
-		$faq_items = get_post_meta($post_id, FAQ_Rest_Controller::FAQ_META_KEY);
+		$faq_items = get_post_meta($post_id, Faq_Rest_Controller::FAQ_META_KEY);
 		$this->assertCount( 2, $faq_items );
 		$response_data = $response->get_data();
 		$this->assertEquals( 'success', $response_data['status'] );
@@ -82,7 +82,7 @@ class FAQ_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 		$create_faq_items_request = $this->get_create_faq_item_request( $post_id );
 		$this->server->dispatch( $create_faq_items_request );
 		// Now emulate changing the data in ui and trying to update it on the ui
-		$first_item_id = get_post_meta( $post_id, FAQ_Rest_Controller::FAQ_META_KEY );
+		$first_item_id = get_post_meta( $post_id, Faq_Rest_Controller::FAQ_META_KEY );
 		$first_item_id = $first_item_id[0]['id'];
 
 		$data = array(
@@ -102,7 +102,7 @@ class FAQ_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 		$request->set_body( wp_json_encode( $data ) );
 		$response  = $this->server->dispatch( $request );
 		$this->assertEquals( $response->get_status(), 200 );
-		$faq_items = get_post_meta($post_id, FAQ_Rest_Controller::FAQ_META_KEY);
+		$faq_items = get_post_meta($post_id, Faq_Rest_Controller::FAQ_META_KEY);
 		$changed_faq_item = $faq_items[0];
 		$this->assertEquals( $changed_faq_item['question'], 'changed_question_1');
 		$this->assertEquals( $changed_faq_item['answer'], 'changed_answer_1');
@@ -151,7 +151,7 @@ class FAQ_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 		$request->set_body( wp_json_encode( $data ) );
 		$response  = $this->server->dispatch( $request );
 
-		$faq_data = get_post_meta( $post_id, FAQ_Rest_Controller::FAQ_META_KEY);
+		$faq_data = get_post_meta( $post_id, Faq_Rest_Controller::FAQ_META_KEY);
 		// check the first item,it should be having foo1, bar1 as question and answer.
 		$first_faq_item = $faq_data[0];
 		$this->assertEquals('foo1', $first_faq_item['question']);
@@ -243,7 +243,7 @@ class FAQ_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 		// should be success in status
 		$this->assertEquals($data['status'], 'success');
 		// check if the item is removed.
-		$items = get_post_meta($post_id, FAQ_Rest_Controller::FAQ_META_KEY);
+		$items = get_post_meta($post_id, Faq_Rest_Controller::FAQ_META_KEY);
 		$this->assertEquals( 1, count($items) );
 	}
 }

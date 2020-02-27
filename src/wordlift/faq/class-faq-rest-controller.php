@@ -12,11 +12,11 @@ namespace Wordlift\FAQ;
 use WP_REST_Request;
 
 /**
- * Class FAQ_Rest_Controller
+ * Class Faq_Rest_Controller
  * @package Wordlift\FAQ
  *
  */
-class FAQ_Rest_Controller {
+class Faq_Rest_Controller {
 	const FAQ_META_KEY = '_wl_faq';
 	public static function register_routes() {
 		add_action( 'rest_api_init', 'Wordlift\FAQ\FAQ_Rest_Controller::register_route_callback' );

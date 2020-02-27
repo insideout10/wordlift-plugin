@@ -14,7 +14,7 @@
 
 use Wordlift\Analysis\Response\Analysis_Response_Ops_Factory;
 use Wordlift\Cache\Ttl_Cache;
-use Wordlift\FAQ\FAQ_Rest_Controller;
+use Wordlift\FAQ\Faq_Rest_Controller;
 use Wordlift\FAQ\Faq_Tinymce_Adapter;
 use Wordlift\FAQ\Faq_To_Jsonld_Converter;
 use Wordlift\Entity\Entity_Helper;
@@ -1473,7 +1473,7 @@ class Wordlift {
 		 */
 		new Templates_Ajax_Endpoint();
 		// Call this static method to register FAQ routes to rest api
-		FAQ_Rest_Controller::register_routes();
+		Faq_Rest_Controller::register_routes();
 
 		/*
 		 * Create a singleton for the Analysis_Response_Ops_Factory.

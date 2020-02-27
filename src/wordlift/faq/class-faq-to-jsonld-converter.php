@@ -59,7 +59,7 @@ class Faq_To_Jsonld_Converter {
 		$jsonld     = $value['jsonld'];
 		$references = $value['references'];
 
-		$faq_items = get_post_meta( $post_id, FAQ_Rest_Controller::FAQ_META_KEY);
+		$faq_items = get_post_meta( $post_id, Faq_Rest_Controller::FAQ_META_KEY);
 		/**
 		 * Apply the FAQ mapping only if the FAQ items are present.
 		 */
