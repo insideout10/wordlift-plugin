@@ -37,3 +37,17 @@ export const transformUiDataToApiFormat = items => {
     previous_answer_value: item.previousAnswerValue
   }));
 };
+
+/**
+ * Takes an array of FAQ Ui items from API and transform it to api data for
+ * deleting faq item.
+ * @param items FAQ items from redux store.
+ * @return {Array} Transformed FAQ items.
+ */
+export const transformUiDataToDeleteApiFormat = items => {
+  return items.map((item, index) => ({
+    id: item.id,
+    question: item.question,
+    answer: item.answer,
+  }));
+};

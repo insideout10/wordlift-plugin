@@ -76,3 +76,9 @@ export const RESET_TYPED_QUESTION = "RESET_TYPED_QUESTION";
  * @type {string}
  */
 export const ANSWER_SELECTED_BY_USER = "ANSWER_SELECTED_BY_USER";
+
+/**
+ * Action type for deleting faq items.
+ * @type {string}
+ */
+export const REQUEST_DELETE_FAQ_ITEMS = "REQUEST_DELETE_FAQ_ITEMS";

@@ -12,10 +12,16 @@ import { call, delay, put, select, takeLatest } from "redux-saga/effects";
 /**
  * Internal dependencies.
  */
-import { REQUEST_FAQ_ADD_NEW_QUESTION, REQUEST_GET_FAQ_ITEMS, UPDATE_FAQ_ITEM } from "../constants/action-types";
+import {
+  REQUEST_DELETE_FAQ_ITEMS,
+  REQUEST_FAQ_ADD_NEW_QUESTION,
+  REQUEST_GET_FAQ_ITEMS,
+  UPDATE_FAQ_ITEM
+} from "../constants/action-types";
 import API from "../api/index";
 import { getAllFAQItems, getCurrentQuestion } from "../selectors";
 import {
+  closeEditScreen,
   requestGetFaqItems,
   resetTypedQuestion,
   updateFaqItems,
@@ -119,10 +125,30 @@ function* handleUpdateFaqItems(action) {
   yield put(modalAction);
 }
 
+/**
+ * Delete Faq items.
+ * @param action
+ * @return {Generator<*, void, ?>}
+ */
+function* handleDeleteFaqItems(action) {
+  // close the edit screen
+  yield put(closeEditScreen());
+  const allFaqItems = yield select(getAllFAQItems);
+  const payload = action.payload;
+  const faqItemIndex = allFaqItems.map(e => e.id).indexOf(payload.id);
+  const deletedFaqItems = [allFaqItems[faqItemIndex]];
+  const response = yield call(API.deleteFaqItems, deletedFaqItems);
+  yield dispatchNotification(response);
+  // Refresh the screen by getting new FAQ items.
+  yield put(requestGetFaqItems());
+
+}
+
 function* rootSaga() {
   yield takeLatest(REQUEST_FAQ_ADD_NEW_QUESTION, handleAddNewQuestion);
   yield takeLatest(REQUEST_GET_FAQ_ITEMS, handleGetFaqItems);
   yield takeLatest(UPDATE_FAQ_ITEM, handleUpdateFaqItems);
+  yield takeLatest(REQUEST_DELETE_FAQ_ITEMS, handleDeleteFaqItems);
 }
 
 export default rootSaga;

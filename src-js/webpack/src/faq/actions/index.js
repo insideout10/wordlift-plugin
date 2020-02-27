@@ -15,7 +15,7 @@ import { createAction } from "redux-actions";
 import {
   ANSWER_SELECTED_BY_USER,
   CLOSE_EDIT_SCREEN,
-  QUESTION_SELECTED_BY_USER,
+  QUESTION_SELECTED_BY_USER, REQUEST_DELETE_FAQ_ITEMS,
   REQUEST_FAQ_ADD_NEW_QUESTION,
   REQUEST_GET_FAQ_ITEMS,
   REQUEST_UPDATE_FAQ_ITEMS,
@@ -38,6 +38,13 @@ export const requestAddNewQuestion = createAction(REQUEST_FAQ_ADD_NEW_QUESTION);
  * @type {function(): {type: *}}
  */
 export const requestGetFaqItems = createAction(REQUEST_GET_FAQ_ITEMS);
+
+/**
+ * Action for deleting FAQ items from API.
+ * @type {function(): {type: *}}
+ */
+export const requestDeleteFaqItems = createAction(REQUEST_DELETE_FAQ_ITEMS);
+
 
 /**
  * Action for updating FAQ items in store.

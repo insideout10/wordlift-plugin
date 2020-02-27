@@ -9,7 +9,7 @@
 /**
  * Internal dependencies.
  */
-import { transformUiDataToApiFormat } from "../sagas/filters";
+import {transformUiDataToApiFormat, transformUiDataToDeleteApiFormat} from "../sagas/filters";
 
 function saveFAQItems(faqItems) {
   const { restUrl, nonce, postId } = global["_wlFaqSettings"];
@@ -58,4 +58,23 @@ function getFAQItems() {
     .then(json => json);
 }
 
-export default { saveFAQItems, getFAQItems, updateFAQItems };
+/**
+ * Delete the faq items.
+ */
+function deleteFaqItems(faqItems) {
+  const { restUrl, nonce, postId } = global["_wlFaqSettings"];
+  return fetch(restUrl, {
+    method: "DELETE",
+    headers: {
+      "content-type": "application/json",
+      "X-WP-Nonce": nonce
+    },
+    body: JSON.stringify({
+      post_id: postId,
+      faq_items: transformUiDataToDeleteApiFormat(faqItems)
+    })
+  })
+    .then(response => response.json())
+    .then(json => json);
+}
+export default { saveFAQItems, getFAQItems, updateFAQItems, deleteFaqItems };

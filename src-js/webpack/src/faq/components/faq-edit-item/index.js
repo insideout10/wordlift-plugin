@@ -17,7 +17,7 @@ import FaqEditButtonGroup from "../faq-edit-button-group";
 import { WlContainer } from "../../../mappings/blocks/wl-container";
 import { WlColumn } from "../../../mappings/blocks/wl-column";
 import PropTypes from "prop-types";
-import { updateFaqItem } from "../../actions";
+import {requestDeleteFaqItems, updateFaqItem} from "../../actions";
 import "./index.scss";
 import { showWarningIfAnswerWordCountExceedsLimit, showWarningIfInvalidHTMLTagPresentInAnswer } from "./helpers";
 
@@ -53,7 +53,11 @@ class FaqEditItem extends React.Component {
   deleteFaqItem() {
     // Set the state, this is asynchronous, so we pass a default argument to action creator
     this.setState({ textAreaValue: "" });
-    this.updateFaqEditItem("");
+    this.props.dispatch(
+      requestDeleteFaqItems({
+        id: this.props.id
+      })
+    );
   }
   changeValueOnUserType(event) {
     this.setState({
@@ -68,7 +72,7 @@ class FaqEditItem extends React.Component {
         <WlContainer>
           <WlColumn className={"wl-col--width-100 wl-col--less-padding"}>
             <textarea
-                className={"wl-faq-edit-item__textarea"}
+              className={"wl-faq-edit-item__textarea"}
               rows={3}
               value={this.state.textAreaValue}
               onChange={e => {
