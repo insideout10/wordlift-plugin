@@ -13,12 +13,11 @@ $secondary-color: #c2e5ff;
   &.wl-action-button--primary {
     background-color: $primary-color !important;
     color: #fff !important;
+    font-weight: bold;
   }
   &.wl-action-button--normal {
     background-color: $secondary-color !important;
     color: $primary-color !important;
-  }
-  &.wl-action-button--text-bold {
     font-weight: bold;
   }
 }

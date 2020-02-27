@@ -64,7 +64,7 @@ export function showWarningIfAnswerWordCountExceedsLimit(type, textAreaValue) {
     return <React.Fragment />;
   } else {
     return (
-      <p className={"faq-edit-item__warning_text"}>
+      <p className={"wl-faq-edit-item--warning"}>
         <span className="dashicons dashicons-warning" />
         {errorMessage}
       </p>
@@ -119,7 +119,7 @@ export function showWarningIfInvalidHTMLTagPresentInAnswer(type, textAreaValue) 
     const invalidTagsString = invalidTags.join(",");
     const errorMessage = invalidTagMessage.replace("{INVALID_TAGS}", invalidTagsString);
     return (
-      <p className={"faq-edit-item__danger_text"}>
+      <p className={"wl-faq-edit-item--danger"}>
         <span className="dashicons dashicons-no-alt" /> {errorMessage}
       </p>
     );

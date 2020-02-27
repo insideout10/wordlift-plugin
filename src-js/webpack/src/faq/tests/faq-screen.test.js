@@ -143,7 +143,7 @@ it("when the user opens the edit screen, should be able " + "to update / delete 
 
   // change the question and click on update, we should have a update request.
   wrapper
-    .find(".wl-faq-edit-item__textarea")
+    .find(".wl-faq-edit-item--textarea")
     .at(0)
     .simulate("change", {
       target: {
@@ -194,7 +194,7 @@ it("when the user opens the edit screen, should be able " + "to update / delete 
 
   // change the question and click on update, we should have a update request.
   wrapper
-    .find(".wl-faq-edit-item__textarea")
+    .find(".wl-faq-edit-item--textarea")
     .at(1)
     .simulate("change", {
       target: {

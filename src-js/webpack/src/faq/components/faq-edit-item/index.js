@@ -69,13 +69,12 @@ class FaqEditItem extends React.Component {
         <WlContainer>
           <WlColumn className={"wl-col--width-100 wl-col--less-padding"}>
             <textarea
-              className={"wl-faq-edit-item__textarea"}
+              className={"wl-faq-edit-item--textarea"}
               rows={3}
               value={this.state.textAreaValue}
               onChange={e => {
                 this.changeValueOnUserType(e);
               }}
-              style={{ width: "95%" }}
             />
             {showWarningIfAnswerWordCountExceedsLimit(this.props.type, this.state.textAreaValue)}
             {showWarningIfInvalidHTMLTagPresentInAnswer(this.props.type, this.state.textAreaValue)}
