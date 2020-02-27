@@ -155,6 +155,7 @@ class FAQ_Rest_Controller {
 			$post_id = $post_data['post_id'];
 			$faq_items = $post_data['faq_items'];
 			foreach ( $faq_items as $faq_item ) {
+				$faq_item['id'] = (int) $faq_item['id'];
 				delete_post_meta($post_id, self::FAQ_META_KEY, $faq_item);
 			}
 

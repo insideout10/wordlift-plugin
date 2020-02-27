@@ -225,10 +225,11 @@ class FAQ_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 				array(
 					'question' => 'foo1',
 					'answer'   => 'bar1',
-					'id' => $response[0]["id"]
+					'id' => (string) $response[0]["id"]
 				)
 			)
 		);
+
 		// we are trying to update the duplicate item, and send the update request.
 		$request   = new WP_REST_Request( WP_REST_Server::DELETABLE, $this->faq_route );
 		$request->set_header( 'content-type', 'application/json' );

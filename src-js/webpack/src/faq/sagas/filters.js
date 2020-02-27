@@ -46,8 +46,8 @@ export const transformUiDataToApiFormat = items => {
  */
 export const transformUiDataToDeleteApiFormat = items => {
   return items.map((item, index) => ({
-    id: item.id,
     question: item.question,
     answer: item.answer,
+    id: item.id,
   }));
 };
