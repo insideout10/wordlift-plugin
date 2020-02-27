@@ -7,7 +7,7 @@
  * @package Wordlift\FAQ
  */
 
-namespace Wordlift\FAQ;
+namespace Wordlift\Faq;
 
 use Wordlift;
 

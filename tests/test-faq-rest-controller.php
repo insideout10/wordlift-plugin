@@ -1,6 +1,6 @@
 <?php
 
-use Wordlift\FAQ\Faq_Rest_Controller;
+use Wordlift\Faq\Faq_Rest_Controller;
 
 /**
  * Tests: Tests the FAQ Rest Controller

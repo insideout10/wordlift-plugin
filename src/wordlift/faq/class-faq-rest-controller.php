@@ -4,10 +4,10 @@
  *
  * @since 3.26.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
- * @package Wordlift\FAQ
+ * @package Wordlift\Faq
  */
 
-namespace Wordlift\FAQ;
+namespace Wordlift\Faq;
 
 use WP_REST_Request;
 
@@ -31,7 +31,7 @@ class Faq_Rest_Controller {
 			'/faq',
 			array(
 				'methods'             => \WP_REST_Server::CREATABLE,
-				'callback'            => 'Wordlift\FAQ\FAQ_Rest_Controller::add_faq_items',
+				'callback'            => 'Wordlift\Faq\Faq_Rest_Controller::add_faq_items',
 				'permission_callback' => function () {
 					return current_user_can( 'publish_posts' );
 				},
@@ -45,7 +45,7 @@ class Faq_Rest_Controller {
 			'/faq',
 			array(
 				'methods'             => \WP_REST_Server::EDITABLE,
-				'callback'            => 'Wordlift\FAQ\FAQ_Rest_Controller::update_faq_items',
+				'callback'            => 'Wordlift\Faq\Faq_Rest_Controller::update_faq_items',
 				'permission_callback' => function () {
 					return current_user_can( 'publish_posts' );
 				},
@@ -59,7 +59,7 @@ class Faq_Rest_Controller {
 			'/faq/(?P<post_id>\d+)',
 			array(
 				'methods'             => \WP_REST_Server::READABLE,
-				'callback'            => 'Wordlift\FAQ\FAQ_Rest_Controller::get_faq_items',
+				'callback'            => 'Wordlift\Faq\Faq_Rest_Controller::get_faq_items',
 				'permission_callback' => function () {
 					return current_user_can( 'publish_posts' );
 				},
@@ -73,7 +73,7 @@ class Faq_Rest_Controller {
 			'/faq',
 			array(
 				'methods'             => \WP_REST_Server::DELETABLE,
-				'callback'            => 'Wordlift\FAQ\FAQ_Rest_Controller::delete_faq_items',
+				'callback'            => 'Wordlift\Faq\Faq_Rest_Controller::delete_faq_items',
 				'permission_callback' => function () {
 					return current_user_can( 'publish_posts' );
 				},

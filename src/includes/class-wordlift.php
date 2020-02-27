@@ -14,9 +14,9 @@
 
 use Wordlift\Analysis\Response\Analysis_Response_Ops_Factory;
 use Wordlift\Cache\Ttl_Cache;
-use Wordlift\FAQ\Faq_Rest_Controller;
-use Wordlift\FAQ\Faq_Tinymce_Adapter;
-use Wordlift\FAQ\Faq_To_Jsonld_Converter;
+use Wordlift\Faq\Faq_Rest_Controller;
+use Wordlift\Faq\Faq_Tinymce_Adapter;
+use Wordlift\Faq\Faq_To_Jsonld_Converter;
 use Wordlift\Entity\Entity_Helper;
 use Wordlift\Jsonld\Jsonld_Adapter;
 use Wordlift\Mappings\Jsonld_Converter;

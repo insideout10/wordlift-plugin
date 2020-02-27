@@ -7,7 +7,7 @@
  * @package Wordlift\FAQ
  */
 
-namespace Wordlift\FAQ;
+namespace Wordlift\Faq;
 
 /**
  * Class Faq_To_Jsonld_Converter helps to convert the

@@ -1,7 +1,7 @@
 <?php
 
-use Wordlift\FAQ\Faq_Rest_Controller;
-use Wordlift\FAQ\Faq_To_Jsonld_Converter;
+use Wordlift\Faq\Faq_Rest_Controller;
+use Wordlift\Faq\Faq_To_Jsonld_Converter;
 
 /**
  * Tests: Tests the FAQ Rest Controller
