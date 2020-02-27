@@ -20,8 +20,8 @@ class Faq_To_Jsonld_Converter {
 	const FAQ_JSONLD_TYPE = 'FAQPage';
 
 	public function __construct() {
-		add_filter( 'wl_post_jsonld_array', array( $this, 'get_jsonld_for_faq' ), 11, 2 );
-		add_filter( 'wl_entity_jsonld_array', array( $this, 'get_jsonld_for_faq' ), 11, 2 );
+		add_filter( 'wl_post_jsonld', array( $this, 'get_jsonld_for_faq' ), 11, 2 );
+		add_filter( 'wl_entity_jsonld', array( $this, 'get_jsonld_for_faq' ), 11, 2 );
 	}
 
 	/**
@@ -54,10 +54,7 @@ class Faq_To_Jsonld_Converter {
 	 *
 	 * @return array Get the converted jsonld data
 	 */
-	public function get_jsonld_for_faq( $value, $post_id ) {
-
-		$jsonld     = $value['jsonld'];
-		$references = $value['references'];
+	public function get_jsonld_for_faq( $jsonld, $post_id ) {
 
 		$faq_items = get_post_meta( $post_id, Faq_Rest_Controller::FAQ_META_KEY);
 		/**
@@ -70,10 +67,7 @@ class Faq_To_Jsonld_Converter {
 			// check if the @type is set on json ld
 			$jsonld = $this->set_faq_type($jsonld);
 		}
-		return array(
-			'jsonld'     => $jsonld,
-			'references' => $references,
-		);
+		return $jsonld;
 	}
 
 	/**

@@ -21,7 +21,7 @@ class GutenbergToolbarButtonRegister {
   constructor(wp, highlightHandler) {
     this.wp = wp;
     this.highlightHandler = highlightHandler;
-    this.addQuestionOrAnswerText = globals["_wlFaqSettings"]["addQuestionOrAnswerText"]
+    this.addQuestionOrAnswerText = global["_wlFaqSettings"]["addQuestionOrAnswerText"]
   }
   registerToolbarButton() {
     this.wp.richText.registerFormatType("wordlift/faq-plugin", {

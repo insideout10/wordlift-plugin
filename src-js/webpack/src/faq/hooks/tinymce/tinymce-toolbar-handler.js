@@ -23,7 +23,7 @@ class TinymceToolbarHandler {
     this.editor = editor;
     this.highlightHandler = highlightHandler;
     this.faqItems = [];
-    const { addQuestionText, addAnswerText, addQuestionOrAnswerText } = globals["_wlFaqSettings"];
+    const { addQuestionText, addAnswerText, addQuestionOrAnswerText } = global["_wlFaqSettings"];
     this.addQuestionText = addQuestionText;
     this.addAnswerText = addAnswerText;
     this.addQuestionOrAnswerText = addQuestionOrAnswerText;
