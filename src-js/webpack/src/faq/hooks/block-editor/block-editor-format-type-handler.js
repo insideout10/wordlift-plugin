@@ -18,7 +18,7 @@ import { FAQ_ANSWER_HIGHLIGHTING_CLASS, FAQ_QUESTION_HIGHLIGHTING_CLASS } from "
 export const FAQ_ANSWER_FORMAT_NAME = "wordlift/faq-answer";
 export const FAQ_QUESTION_FORMAT_NAME = "wordlift/faq-question";
 
-class GutenbergFormatTypeHandler {
+class BlockEditorFormatTypeHandler {
   registerAnswerFormatType() {
     registerFormatType(FAQ_ANSWER_FORMAT_NAME, {
       title: "Question",
@@ -45,4 +45,4 @@ class GutenbergFormatTypeHandler {
   }
 }
 
-export default GutenbergFormatTypeHandler;
+export default BlockEditorFormatTypeHandler;

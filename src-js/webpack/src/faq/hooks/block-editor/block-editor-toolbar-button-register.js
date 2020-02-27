@@ -7,7 +7,7 @@ import { trigger } from "backbone";
  */
 import { FAQ_EVENT_HANDLER_SELECTION_CHANGED } from "../../constants/faq-hook-constants";
 import { getCurrentSelectionHTML } from "./helpers";
-import { FAQ_GUTENBERG_TOOLBAR_BUTTON_CLASS_NAME } from "./gutenberg-faq-plugin";
+import { FAQ_GUTENBERG_TOOLBAR_BUTTON_CLASS_NAME } from "./block-editor-faq-plugin";
 
 /**
  * GutenbergToolbarButtonRegister Registers the toolbar button for the
@@ -17,7 +17,7 @@ import { FAQ_GUTENBERG_TOOLBAR_BUTTON_CLASS_NAME } from "./gutenberg-faq-plugin"
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
-class GutenbergToolbarButtonRegister {
+class BlockEditorToolbarButtonRegister {
   constructor(wp, highlightHandler) {
     this.wp = wp;
     this.highlightHandler = highlightHandler;
@@ -56,4 +56,4 @@ class GutenbergToolbarButtonRegister {
   }
 }
 
-export default GutenbergToolbarButtonRegister;
+export default BlockEditorToolbarButtonRegister;

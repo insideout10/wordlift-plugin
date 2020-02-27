@@ -37,7 +37,7 @@ const webpackConfig = {
     "autocomplete-select": "./src/Edit/index.autocomplete-select.js",
     "faq": "./src/faq/index.js",
     "tinymce-faq-plugin": "./src/faq/hooks/tinymce/tinymce-faq-plugin.js",
-    "gutenberg-faq-plugin": "./src/faq/hooks/gutenberg/gutenberg-faq-plugin.js",
+    "block-editor-faq-plugin": "./src/faq/hooks/block-editor/block-editor-faq-plugin.js",
   },
   output: {
     filename: "[name].js",

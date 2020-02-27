@@ -1,5 +1,5 @@
 /**
- * GutenbergToolbarHandler handles the disable and enabling
+ * BlockEditorToolbarHandler handles the disable and enabling
  * the add question or answer button based on the store state.
  *
  * @since 3.26.0
@@ -15,10 +15,10 @@ import { on } from "backbone";
  */
 import { FAQ_ITEMS_CHANGED } from "../../constants/faq-hook-constants";
 import { SELECTION_CHANGED } from "../../../common/constants";
-import { FAQ_GUTENBERG_TOOLBAR_BUTTON_CLASS_NAME } from "./gutenberg-faq-plugin";
+import { FAQ_GUTENBERG_TOOLBAR_BUTTON_CLASS_NAME } from "./block-editor-faq-plugin";
 import TinymceToolbarHandler from "../tinymce/tinymce-toolbar-handler";
 
-class GutenbergToolbarHandler {
+class BlockEditorToolbarHandler {
   constructor() {
     this.faqItems = [];
     on(FAQ_ITEMS_CHANGED, faqItems => {
@@ -73,4 +73,4 @@ class GutenbergToolbarHandler {
   }
 }
 
-export default GutenbergToolbarHandler;
+export default BlockEditorToolbarHandler;

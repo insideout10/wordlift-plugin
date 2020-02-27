@@ -14,11 +14,11 @@ import { on } from "backbone";
  * Internal dependencies.
  */
 import { FAQ_HIGHLIGHT_TEXT } from "../../constants/faq-hook-constants";
-import { FAQ_ANSWER_FORMAT_NAME, FAQ_QUESTION_FORMAT_NAME } from "./gutenberg-format-type-handler";
+import { FAQ_ANSWER_FORMAT_NAME, FAQ_QUESTION_FORMAT_NAME } from "./block-editor-format-type-handler";
 import { applyFormat } from "@wordpress/rich-text";
 import {FAQ_ANSWER_HIGHLIGHTING_CLASS, FAQ_QUESTION_HIGHLIGHTING_CLASS} from "../tinymce/tinymce-highlight-handler";
 
-class GutenbergHighlightHandler {
+class BlockEditorHighlightHandler {
   constructor() {
     this.props = null;
   }
@@ -50,4 +50,4 @@ class GutenbergHighlightHandler {
   }
 }
 
-export default GutenbergHighlightHandler;
+export default BlockEditorHighlightHandler;

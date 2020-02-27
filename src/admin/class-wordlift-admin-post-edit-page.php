@@ -202,12 +202,12 @@ class Wordlift_Admin_Post_Edit_Page {
 	 */
 	private function load_faq_scripts_and_styles() {
 		wp_enqueue_style(
-			'faq-metabox-style',
+			'wl-faq-metabox-style',
 			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/faq.css',
 			array()
 		);
 		Scripts_Helper::enqueue_based_on_wordpress_version(
-			'faq-metabox-script',
+			'wl-faq-metabox-script',
 			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/faq',
 			array( 'wp-polyfill' ),
 			true
@@ -247,14 +247,14 @@ class Wordlift_Admin_Post_Edit_Page {
 		// Enqueue the FAQ style
 		if ( $editor === self::GUTENBERG ) {
 			Scripts_Helper::enqueue_based_on_wordpress_version(
-				'faq-gutenberg-plugin',
-				plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/gutenberg-faq-plugin',
+				'wl-faq-gutenberg-plugin',
+				plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/block-editor-faq-plugin',
 				array( 'wp-polyfill' ),
 				true
 			);
 		}
 
-		wp_localize_script( 'faq-metabox-script', '_wlFaqSettings', $this->get_faq_settings() );
+		wp_localize_script( 'wl-faq-metabox-script', '_wlFaqSettings', $this->get_faq_settings() );
 	}
 
 	/**
