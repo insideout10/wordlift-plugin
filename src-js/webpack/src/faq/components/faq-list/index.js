@@ -32,7 +32,6 @@ class FaqList extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <FaqListHeader />
         {this.props.faqItems.map(item => {
           return (
             <React.Fragment key={item.id}>
