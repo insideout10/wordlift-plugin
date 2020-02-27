@@ -149,9 +149,12 @@ class Wordlift_Content_Filter_Service {
 
 		/**
 		 * Before removing annotation tags, remove the highlight tags.
+		 * Temporarily disabling regex filter for FAQ.
 		 */
-		$content = preg_replace(self::FAQ_QUESTION_PATTERN,'$1', $content);
-		$content = preg_replace(self::FAQ_ANSWER_PATTERN,'$1', $content);
+		/**
+			$content = preg_replace(self::FAQ_QUESTION_PATTERN,'$1', $content);
+			$content = preg_replace(self::FAQ_ANSWER_PATTERN,'$1', $content);
+		 **/
 		// Preload the `link by default` setting.
 		$this->is_link_by_default = $this->configuration_service->is_link_by_default();
 
