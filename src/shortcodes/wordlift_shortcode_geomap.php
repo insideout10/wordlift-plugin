@@ -9,11 +9,6 @@
 
 /**
  * Print both global or post related places in json. It's executed via Ajax
- *
- * @param array $places An array of place posts.
- *
- * @return array An array of place posts.
- *
  */
 function wl_shortcode_geomap_ajax() {
 	// Get the post Id.
@@ -24,6 +19,7 @@ function wl_shortcode_geomap_ajax() {
 		: wl_shortcode_geomap_ajax_all_posts() );
 
 	wl_core_send_json( wl_shortcode_geomap_format_results( $map_data, $post_id ) );
+
 }
 
 function wl_shortcode_geomap_ajax_all_posts() {
@@ -50,19 +46,31 @@ function wl_shortcode_geomap_ajax_single_post( $post_id ) {
 	global $wpdb;
 
 	return $wpdb->get_results( $wpdb->prepare(
-		"SELECT p2.ID, p2.post_title, pm1.meta_value AS longitude, pm2.meta_value AS latitude"
-		. " FROM {$wpdb->posts} p1 "
-		. " INNER JOIN {$wpdb->prefix}wl_relation_instances ri"
-		. "  ON ri.subject_id = p1.ID AND ri.predicate = %s"
-		. " INNER JOIN {$wpdb->posts} p2"
-		. "  ON p2.ID = ri.object_id AND p2.post_status = %s"
-		. " INNER JOIN {$wpdb->postmeta} pm1"
-		. "  ON pm1.post_id = p2.ID AND pm1.meta_key = %s AND '0' != pm1.meta_value"
-		. " INNER JOIN {$wpdb->postmeta} pm2"
-		. "  ON pm2.post_id = p2.ID AND pm2.meta_key = %s AND '0' != pm2.meta_value"
-		. " WHERE p1.ID = %d",
-		'where',
+		"
+		SELECT p2.ID, p2.post_title, pm1.meta_value AS longitude, pm2.meta_value AS latitude
+		 FROM {$wpdb->prefix}wl_relation_instances ri
+		 INNER JOIN {$wpdb->posts} p2
+		  ON p2.ID = ri.object_id AND p2.post_status = %s
+		 INNER JOIN {$wpdb->postmeta} pm1
+		  ON pm1.post_id = p2.ID AND pm1.meta_key = %s AND '0' != pm1.meta_value
+		 INNER JOIN {$wpdb->postmeta} pm2
+		  ON pm2.post_id = p2.ID AND pm2.meta_key = %s AND '0' != pm2.meta_value
+		 WHERE ri.subject_id = %d AND ri.predicate = %s
+		UNION 
+		SELECT p.ID, p.post_title, pm1.meta_value AS longitude, pm2.meta_value AS latitude
+		 FROM {$wpdb->posts} p
+		 INNER JOIN {$wpdb->postmeta} pm1
+		  ON pm1.post_id = p.ID AND pm1.meta_key = %s AND '0' != pm1.meta_value
+		 INNER JOIN {$wpdb->postmeta} pm2
+		  ON pm2.post_id = p.ID AND pm2.meta_key = %s AND '0' != pm2.meta_value
+		 WHERE p.ID = %s
+		",
 		'publish',
+		'wl_geo_latitude',
+		'wl_geo_longitude',
+		$post_id,
+		'where',
+		// UNION
 		'wl_geo_latitude',
 		'wl_geo_longitude',
 		$post_id
@@ -161,74 +169,3 @@ add_action( 'init', function () {
 		)
 	) );
 } );
-
-///**
-// * Print geomap shortcode
-// *
-// * @param array $atts An array of shortcode attributes.
-// *
-// * @return string A dom element represneting a geomap.
-// */
-//function wl_shortcode_geomap( $atts ) {
-//
-//	// Extract attributes and set default values.
-//	$geomap_atts = shortcode_atts( array(
-//		'width'  => '100%',
-//		'height' => '300px',
-//		'global' => false
-//	), $atts );
-//
-//	// Get id of the post
-//	$post_id = get_the_ID();
-//
-//	if ( $geomap_atts['global'] || is_null( $post_id ) ) {
-//		// Global geomap
-//		$geomap_id = 'wl_geomap_global';
-//		$post_id   = null;
-//	} else {
-//		// Post-specific geomap
-//		$geomap_id = 'wl_geomap_' . $post_id;
-//	}
-//
-//	// Add leaflet css and library.
-//	wp_enqueue_style(
-//		'leaflet',
-//		dirname( plugin_dir_url( __FILE__ ) ) . '/bower_components/leaflet/dist/leaflet.css'
-//	);
-//	wp_enqueue_script(
-//		'leaflet',
-//		dirname( plugin_dir_url( __FILE__ ) ) . '/bower_components/leaflet/dist/leaflet.js'
-//	);
-//
-//	// Add wordlift-ui css and library.
-//	wp_enqueue_style( 'wordlift-ui-css', dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-ui.min.css' );
-//
-//	wp_enqueue_script( 'wordlift-ui', dirname( plugin_dir_url( __FILE__ ) ) . '/js/wordlift-ui.min.js', array( 'jquery' ) );
-//
-//	wp_localize_script( 'wordlift-ui', 'wl_geomap_params', array(
-//		'ajax_url' => admin_url( 'admin-ajax.php' ),    // Global param
-//		'action'   => 'wl_geomap'            // Global param
-//	) );
-//
-//	// Escaping atts.
-//	$esc_class   = esc_attr( 'wl-geomap' );
-//	$esc_id      = esc_attr( $geomap_id );
-//	$esc_width   = esc_attr( $geomap_atts['width'] );
-//	$esc_height  = esc_attr( $geomap_atts['height'] );
-//	$esc_post_id = esc_attr( $post_id );
-//
-//	// Return HTML template.
-//	return <<<EOF
-//<div class="$esc_class"
-//	id="$esc_id"
-//	data-post-id="$esc_post_id"
-//	style="width:$esc_width;
-//        height:$esc_height;
-//        background-color:gray
-//        ">
-//</div>
-//EOF;
-//
-//}
-//
-//add_shortcode( 'wl_geomap', 'wl_shortcode_geomap' );

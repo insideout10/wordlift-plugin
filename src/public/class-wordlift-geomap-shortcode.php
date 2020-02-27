@@ -30,21 +30,18 @@ class Wordlift_Geomap_Shortcode extends Wordlift_Shortcode {
 
 		// Hook to the `amp_post_template_css` to hide ourselves when in AMP
 		// rendering.
-		add_action( 'amp_post_template_css', array(
-			$this,
-			'amp_post_template_css',
-		) );
+		add_action( 'amp_post_template_css', array( $this, 'amp_post_template_css', ) );
 
 	}
 
 	/**
 	 * Render the shortcode.
 	 *
-	 * @since 3.5.4
-	 *
 	 * @param array $atts An array of shortcode attributes as set by the editor.
 	 *
 	 * @return string The output html code.
+	 * @since 3.5.4
+	 *
 	 */
 	public function render( $atts ) {
 
@@ -67,15 +64,8 @@ class Wordlift_Geomap_Shortcode extends Wordlift_Shortcode {
 			$geomap_id = 'wl_geomap_' . $post_id;
 		}
 
-		// Add leaflet css and library.
-		wp_enqueue_style(
-			'leaflet',
-			dirname( plugin_dir_url( __FILE__ ) ) . '/bower_components/leaflet/dist/leaflet.css'
-		);
-		wp_enqueue_script(
-			'leaflet',
-			dirname( plugin_dir_url( __FILE__ ) ) . '/bower_components/leaflet/dist/leaflet.js'
-		);
+		wp_enqueue_style( 'wl-leaflet', 'https://unpkg.com/leaflet@1.6.0/dist/leaflet.css', array(), '1.6.0' );
+		wp_enqueue_script( 'wl-leaflet', 'https://unpkg.com/leaflet@1.6.0/dist/leaflet.js', array(), '1.6.0', true );
 
 		// Use the registered style which define an optional dependency to font-awesome.
 		//
@@ -109,15 +99,16 @@ EOF;
 	 *
 	 * See https://github.com/Automattic/amp-wp/blob/master/readme.md#custom-css
 	 *
+	 * @param object $amp_template The template.
+	 *
 	 * @since 3.13.0
 	 *
-	 * @param object $amp_template The template.
 	 */
 	public function amp_post_template_css( $amp_template ) {
 
 		// Hide the `wl-geomap` when in AMP.
 		?>
-		.wl-geomap { display: none; }
+        .wl-geomap { display: none; }
 		<?php
 	}
 
