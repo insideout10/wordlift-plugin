@@ -155,8 +155,19 @@ class FAQ_Rest_Controller {
 			$post_id = $post_data['post_id'];
 			$faq_items = $post_data['faq_items'];
 			foreach ( $faq_items as $faq_item ) {
-				$faq_item['id'] = (int) $faq_item['id'];
-				delete_post_meta($post_id, self::FAQ_META_KEY, $faq_item);
+				/**
+					 Note: the order of keys is important in order to delete it properly
+					 If the order change, delete operation will fail since it is converted
+					 in to a string when it was stored.
+					 we cant rely on client to post it in correct order, so we create an array
+					 in correct order.
+				 **/
+				$deleted_faq_item = array(
+					'question' => $faq_item['question'],
+					'answer' => $faq_item['answer'],
+					'id' => (int) $faq_item['id']
+				);
+				delete_post_meta($post_id, self::FAQ_META_KEY, $deleted_faq_item);
 			}
 
 			/**

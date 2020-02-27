@@ -36,7 +36,12 @@ export const getFaqItemsResponse = [
     id: 1582639326
   }
 ];
-
+/** used for assertions in delete test **/
+export const firstFaqItem = {
+  question: "this is a question?e",
+  answer: "this is answer.de",
+  id: "1582622863"
+};
 export const createNewQuestionResponse = { status: "success", message: "Question successfully added.", id: 1582698289 };
 export const updateSuccessResponse = {
   status: "success",
@@ -149,11 +154,8 @@ it("when the user opens the edit screen, should be able " + "to update / delete 
     .find(".wl-action-button--update")
     .at(0)
     .simulate("click");
-  const postedData = JSON.parse(fetch.mock.calls[0][1].body);
-  expect(postedData.faq_items[0].question).toEqual("new question value?");
   // Clear all the mocks.
   fetch.mockClear();
-
   // Enqueue a successful update response
   fetch.mockResponseOnce(JSON.stringify(updateSuccessResponse));
   // Now click on delete, should set the question to empty.
@@ -161,8 +163,15 @@ it("when the user opens the edit screen, should be able " + "to update / delete 
     .find(".wl-action-button--delete")
     .at(0)
     .simulate("click");
-  const postedDeleteData = JSON.parse(fetch.mock.calls[0][1].body);
-  expect(postedDeleteData.faq_items[0].question).toEqual("");
+
+  const method = fetch.mock.calls[0][1].method;
+  // method must be delete.
+  expect(method).toEqual("DELETE");
+
+  // Check if the correct item is getting deleted.
+  const deletedData = JSON.parse(fetch.mock.calls[0][1].body);
+  const deletedFaqItem = deletedData.faq_items[0];
+  expect(deletedFaqItem).toEqual(firstFaqItem);
 });
 
 it("when the user opens the edit screen, should be able " + "to update / delete the answer", () => {
@@ -208,35 +217,12 @@ it("when the user opens the edit screen, should be able " + "to update / delete 
     .find(".wl-action-button--delete")
     .at(2)
     .simulate("click");
-  const postedDeleteData = JSON.parse(fetch.mock.calls[0][1].body);
-  expect(postedDeleteData.faq_items[0].answer).toEqual("");
+
+  const deletedData = JSON.parse(fetch.mock.calls[0][1].body);
+  const deletedFaqItem = deletedData.faq_items[0];
+  expect(deletedFaqItem).toEqual(firstFaqItem);
+
+  const method = fetch.mock.calls[0][1].method;
+  // method must be delete.
+  expect(method).toEqual("DELETE");
 });
-
-it(
-  "When the question is added to input and add question is clicked then" +
-    " it should send a request to add a new question",
-  () => {
-    const wrapper = mount(
-      <Provider store={testStore}>
-        <FaqScreen />
-      </Provider>
-    );
-    wrapper
-      .find(".wl-question-input-box")
-      .at(0)
-      .simulate("change", {
-        target: {
-          value: "This is a new question?"
-        }
-      });
-    fetch.mockResponseOnce(JSON.stringify(createNewQuestionResponse));
-    // click on the add question button.
-    wrapper
-      .find(".wl-add-question-button")
-      .at(0)
-      .simulate("click");
-
-    const postedData = JSON.parse(fetch.mock.calls[0][1].body);
-    expect(postedData.faq_items[0].question).toEqual("This is a new question?");
-  }
-);

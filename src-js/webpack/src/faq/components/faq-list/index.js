@@ -17,7 +17,6 @@ import Question from "../question";
 import Answer from "../answer";
 import { WlCard } from "../../../common/components/wl-card";
 import { questionSelectedByUser } from "../../actions";
-import { FaqListHeader } from "../faq-list-header";
 
 class FaqList extends React.Component {
   constructor(props) {
