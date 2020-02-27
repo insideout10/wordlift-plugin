@@ -52,5 +52,5 @@ class GutenbergFaqPlugin extends FaqTextEditorHook {
  * This hook is automatically loaded with block editor, so
  * we can just initailize the hook here.
  */
-const adapter = new GutenbergFaqPlugin(window.wp);
+const adapter = new GutenbergFaqPlugin(global["wp"]);
 adapter.initialize();

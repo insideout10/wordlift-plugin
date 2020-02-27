@@ -20,9 +20,16 @@ use Wordlift\Scripts\Scripts_Helper;
  */
 class Wordlift_Admin_Post_Edit_Page {
 
+	/**
+	 * Constants to be used instead of text inside FAQ
+	 * helper methods.
+	 */
 	const GUTENBERG = 'gutenberg';
 	const TINY_MCE = 'tiny_mce';
 	const FAQ_LIST_BOX_ID = 'wl-faq-meta-list-box';
+
+	/** Constant to be used for translation domain */
+	const WORDLIFT_TEXT_DOMAIN = 'wordlift';
 
 	/**
 	 * The {@link Wordlift} plugin instance.
@@ -216,14 +223,16 @@ class Wordlift_Admin_Post_Edit_Page {
 		return array(
 			'restUrl'                 => get_rest_url( null, WL_REST_ROUTE_DEFAULT_NAMESPACE . '/faq' ),
 			'listBoxId'               => self::FAQ_LIST_BOX_ID,
-			'addQuestionText'         => __( 'Add', 'wordlift' ),
 			'nonce'                   => wp_create_nonce( 'wp_rest' ),
 			'postId'                  => get_the_ID(),
 			// Translation for warning, error message.
-			'invalidTagMessage'       => sprintf( __( 'Invalid tags %s is present in answer', 'wordlift' ), "{INVALID_TAGS}" ),
-			'invalidWordCountMessage' => sprintf( __( 'Answer word count must not exceed %s words', 'wordlift' ), "{ANSWER_WORD_COUNT_WARNING_LIMIT}" ),
-			'questionText' => __('Question', 'wordlift'),
-			'answer' => __('Answer', 'wordlift'),
+			'invalidTagMessage'       => sprintf( __( 'Invalid tags %s is present in answer', self::WORDLIFT_TEXT_DOMAIN ), "{INVALID_TAGS}" ),
+			'invalidWordCountMessage' => sprintf( __( 'Answer word count must not exceed %s words', self::WORDLIFT_TEXT_DOMAIN ), "{ANSWER_WORD_COUNT_WARNING_LIMIT}" ),
+			'questionText' => __('Question', self::WORDLIFT_TEXT_DOMAIN),
+			'answerText' => __('Answer', self::WORDLIFT_TEXT_DOMAIN),
+			'addQuestionOrAnswerText' => __('Add Question / Answer', self::WORDLIFT_TEXT_DOMAIN),
+			'addQuestionText' => __('Add Question', self::WORDLIFT_TEXT_DOMAIN),
+			'addAnswerText' => __('Add Answer', self::WORDLIFT_TEXT_DOMAIN),
 
 		);
 	}

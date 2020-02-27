@@ -23,6 +23,10 @@ class TinymceToolbarHandler {
     this.editor = editor;
     this.highlightHandler = highlightHandler;
     this.faqItems = [];
+    const { addQuestionText, addAnswerText, addQuestionOrAnswerText } = globals["_wlFaqSettings"];
+    this.addQuestionText = addQuestionText;
+    this.addAnswerText = addAnswerText;
+    this.addQuestionOrAnswerText = addQuestionOrAnswerText;
     // Listen to store changes on faq items and set the tool bar
     // button state based on it.
     on(FAQ_ITEMS_CHANGED, faqItems => {
@@ -38,11 +42,11 @@ class TinymceToolbarHandler {
    */
   setButtonTextBasedOnSelectedText(selectedText, button, container) {
     if (FaqValidator.isQuestion(selectedText)) {
-      button.innerText = "Add Question";
-      container.setAttribute("aria-label", "Add Question");
+      button.innerText = this.addQuestionText;
+      container.setAttribute("aria-label", this.addQuestionText);
     } else {
-      button.innerText = "Add Answer";
-      container.setAttribute("aria-label", "Add Answer");
+      button.innerText = this.addAnswerText;
+      container.setAttribute("aria-label", this.addAnswerText);
     }
   }
 

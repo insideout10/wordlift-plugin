@@ -21,10 +21,11 @@ class GutenbergToolbarButtonRegister {
   constructor(wp, highlightHandler) {
     this.wp = wp;
     this.highlightHandler = highlightHandler;
+    this.addQuestionOrAnswerText = globals["_wlFaqSettings"]["addQuestionOrAnswerText"]
   }
   registerToolbarButton() {
     this.wp.richText.registerFormatType("wordlift/faq-plugin", {
-      title: "Add Question/Answer",
+      title: this.addQuestionOrAnswerText,
       tagName: "faq-gutenberg",
       className: null,
       edit: this.getFAQButton()
@@ -34,7 +35,7 @@ class GutenbergToolbarButtonRegister {
     const self = this;
     return function(props) {
       return wp.element.createElement(wp.editor.RichTextToolbarButton, {
-        title: "Add Question / Answer",
+        title: self.addQuestionOrAnswerText,
         icon: "plus",
         className: FAQ_GUTENBERG_TOOLBAR_BUTTON_CLASS_NAME,
         onClick: function() {
