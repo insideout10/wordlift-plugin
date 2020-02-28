@@ -9,15 +9,16 @@
 /**
  * External dependencies.
  */
-import { on } from "backbone";
+import { on, trigger } from "backbone";
 /**
  * Internal dependencies.
  */
-import { FAQ_ITEMS_CHANGED } from "../../constants/faq-hook-constants";
+import { FAQ_EVENT_HANDLER_SELECTION_CHANGED, FAQ_ITEMS_CHANGED } from "../../constants/faq-hook-constants";
 import { SELECTION_CHANGED } from "../../../common/constants";
-import { FAQ_GUTENBERG_TOOLBAR_BUTTON_CLASS_NAME } from "./block-editor-faq-plugin";
 import TinymceToolbarHandler from "../tinymce/tinymce-toolbar-handler";
-import { FAB_WRAPPER_ID } from "./block-editor-fab-button-register";
+import { FAB_ID, FAB_WRAPPER_ID } from "./block-editor-fab-button-register";
+import FaqValidator from "../validators/faq-validator";
+import { getCurrentSelectionHTML } from "./helpers";
 
 class BlockEditorFabHandler {
   constructor() {
@@ -26,6 +27,9 @@ class BlockEditorFabHandler {
       this.faqItems = faqItems;
     });
     this.startListeningForSelectionChangesAndSetState();
+    this.dispatchTextSelectedToEventHandler();
+    this.addQuestionText = global["_wlFaqSettings"]["addQuestionText"];
+    this.addAnswerText = global["_wlFaqSettings"]["addAnswerText"];
   }
 
   startListeningForSelectionChangesAndSetState() {
@@ -61,26 +65,64 @@ class BlockEditorFabHandler {
   }
 
   /**
+   * When the user clicks on the add question or add answer button
+   * then dispatch the text to the event handler.
+   */
+  dispatchTextSelectedToEventHandler() {
+    const button = document.getElementById(FAB_ID);
+    button.addEventListener("click", event => {
+      const selection = document
+        .getSelection()
+        .getRangeAt(0)
+        .toString();
+      trigger(FAQ_EVENT_HANDLER_SELECTION_CHANGED, {
+        selectedText: selection,
+        selectedHTML: getCurrentSelectionHTML()
+      });
+      // Hide the button after getting clicked.
+      this.hideFabWrapper(this.getFabWrapper());
+    });
+  }
+
+  setFabButtonTextBasedOnSelectedText() {
+    const button = document.getElementById(FAB_ID);
+    if (button !== null) {
+      const selection = document
+        .getSelection()
+        .getRangeAt(0)
+        .toString();
+      if (FaqValidator.isQuestion(selection)) {
+        button.innerText = this.addQuestionText;
+      } else {
+        button.innerText = this.addAnswerText;
+      }
+    }
+  }
+
+  /**
    * Set the state of toolbar button instances with text selection.
    * @param selectedText
    */
   setStateBasedOnStore(selectedText) {
+    const wrapper = this.getFabWrapper();
+    if (wrapper === null) {
+      /** Return early, wrapper is not added to DOM yet **/
+      return;
+    }
+    this.setFabButtonTextBasedOnSelectedText();
     const shouldDisableButton = TinymceToolbarHandler.shouldDisableButton(selectedText, this.faqItems);
     if (shouldDisableButton) {
       this.hideFabWrapper(wrapper);
     } else {
-      const wrapper = this.getFabWrapper();
-      if (wrapper !== null) {
-        // get the selection coordinates.
-        const node = window.getSelection().getRangeAt(0).commonAncestorContainer;
-        const parentElement = node.parentElement;
-        // we get the coordinates and then we place the button
-        const { right, bottom, height } = parentElement.getBoundingClientRect();
-        const offset = height / 2;
-        wrapper.style.position = "absolute";
-        wrapper.style.left = `${right + 30}px`;
-        wrapper.style.top = `${bottom - offset}px`;
-      }
+      // get the selection coordinates.
+      const node = window.getSelection().getRangeAt(0).commonAncestorContainer;
+      const parentElement = node.parentElement;
+      // we get the coordinates and then we place the button
+      const { right, bottom, height } = parentElement.getBoundingClientRect();
+      const offset = height;
+      wrapper.style.position = "absolute";
+      wrapper.style.left = `${right + 30}px`;
+      wrapper.style.top = `${bottom - offset}px`;
       this.showFabWrapper(wrapper);
     }
   }

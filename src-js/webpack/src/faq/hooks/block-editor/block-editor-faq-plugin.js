@@ -7,7 +7,6 @@ import BlockEditorFabHandler from "./block-editor-fab-handler";
 import FaqTextEditorHook from "../interface/faq-text-editor-hook";
 import BlockEditorFabButtonRegister from "./block-editor-fab-button-register";
 
-export const FAQ_GUTENBERG_TOOLBAR_BUTTON_CLASS_NAME = "wl-faq-gutenberg-toolbar-button";
 
 class BlockEditorFaqPlugin extends FaqTextEditorHook {
   constructor(wp) {

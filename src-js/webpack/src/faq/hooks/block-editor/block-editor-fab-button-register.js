@@ -1,16 +1,3 @@
-/**
- * External dependencies.
- */
-import { on, trigger } from "backbone";
-/**
- * Internal dependencies.
- */
-import { FAQ_EVENT_HANDLER_SELECTION_CHANGED } from "../../constants/faq-hook-constants";
-import { getCurrentSelectionHTML } from "./helpers";
-import { FAQ_GUTENBERG_TOOLBAR_BUTTON_CLASS_NAME } from "./block-editor-faq-plugin";
-import { SELECTION_CHANGED } from "../../../common/constants";
-import FaqValidator from "../validators/faq-validator";
-
 /** Floating action button wrapper id **/
 export const FAB_WRAPPER_ID = "wl-block-editor-fab-wrapper";
 /** Floating action button id **/
@@ -29,25 +16,7 @@ class BlockEditorFabButtonRegister {
     this.highlightHandler = highlightHandler;
     /** Translated Text from PHP **/
     this.addQuestionOrAnswerText = global["_wlFaqSettings"]["addQuestionOrAnswerText"];
-    this.addQuestionText = global["_wlFaqSettings"]["addQuestionText"];
-    this.addAnswerText = global["_wlFaqSettings"]["addAnswerText"];
   }
-  showFloatingActionButtonOnTextSelectionEvent() {
-    on(SELECTION_CHANGED, ({ selection }) => {
-      if (selection.length > 0) {
-        if (FaqValidator.isQuestion(selection)) {
-          document.getElementById(FAB_ID).innerText = this.addQuestionText;
-        } else {
-          document.getElementById(FAB_ID).innerText = this.addAnswerText;
-        }
-
-      } else {
-        // hide the button
-        this.fab.style.display = "none";
-      }
-    });
-  }
-
   /**
    * Adding a floating action button to the gutenberg editor
    * it doesnt affect the DOM of gutenberg, it floats near the block
