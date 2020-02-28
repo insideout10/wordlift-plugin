@@ -6,10 +6,12 @@ $primary-color: #177efb;
 }
 
 .wl-fab .wl-fab-body {
-  width: 200px;
-  padding: 10px;
-  background-color: #eee;
+  width: 160px;
+  padding: 2px;
+  background-color: #fff;
+  box-shadow: 1px 1px 1px 1px #888;
   color: #fff;
+  border: 1px solid $primary-color;
   text-align: center;
   border-radius: 6px;
   position: absolute;
@@ -24,9 +26,9 @@ $primary-color: #177efb;
   top: 50%;
   right: 100%;
   margin-top: -5px;
-  border-width: 5px;
+  border-width: 8px;
   border-style: solid;
-  border-color: transparent black transparent transparent;
+  border-color: transparent $primary-color transparent transparent;
 }
 .wl-fab-button {
   border-radius: 8px !important;
@@ -37,7 +39,6 @@ $primary-color: #177efb;
   text-align: center;
   text-transform: capitalize;
   cursor: pointer;
-  border: 1px solid #eee;
   background-color: $primary-color !important;
   color: #fff !important;
   font-weight: bold;
