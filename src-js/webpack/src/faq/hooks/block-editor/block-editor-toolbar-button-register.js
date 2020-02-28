@@ -9,6 +9,7 @@ import { FAQ_EVENT_HANDLER_SELECTION_CHANGED } from "../../constants/faq-hook-co
 import { getCurrentSelectionHTML } from "./helpers";
 import { FAQ_GUTENBERG_TOOLBAR_BUTTON_CLASS_NAME } from "./block-editor-faq-plugin";
 import { SELECTION_CHANGED } from "../../../common/constants";
+import FaqValidator from "../validators/faq-validator";
 
 /**
  * GutenbergToolbarButtonRegister Registers the toolbar button for the
@@ -23,12 +24,20 @@ class BlockEditorToolbarButtonRegister {
     this.wp = wp;
     this.highlightHandler = highlightHandler;
     this.addQuestionOrAnswerText = global["_wlFaqSettings"]["addQuestionOrAnswerText"];
+    this.addQuestionText = global["_wlFaqSettings"]["addQuestionText"]
+    this.addAnswerText = global["_wlFaqSettings"]["addAnswerText"]
     this.fab = null;
     this.last_selection = null
   }
   showFloatingActionButtonOnTextSelectionEvent() {
     on(SELECTION_CHANGED, ({ selection }) => {
       if (selection.length > 0) {
+        if (FaqValidator.isQuestion(selection)) {
+          document.getElementById(FAB_ID).innerText = this.addQuestionText
+        }
+        else {
+          document.getElementById(FAB_ID).innerText = this.addAnswerText
+        }
         // get the selection coordinates.
         const node = window.getSelection().getRangeAt(0).commonAncestorContainer;
         const parentElement = node.parentElement;
