@@ -56,10 +56,7 @@ class WL_Metabox {
 
 		// Add hooks to print metaboxes and save submitted data.
 		add_action( 'add_meta_boxes', array( $this, 'add_main_metabox' ) );
-		add_action( 'wl_linked_data_save_post', array(
-			$this,
-			'save_form_data',
-		) );
+		add_action( 'wl_linked_data_save_post', array( $this, 'save_form_data', ) );
 
 		// Enqueue js and css.
 		$this->enqueue_scripts_and_styles();

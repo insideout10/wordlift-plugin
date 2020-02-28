@@ -197,11 +197,9 @@ class Wordlift_Entity_Type_Service {
 
 		$ids = $this->get_ids( $post_id );
 
-		$camel_case_names = array_map( function ( $id ) {
+		return array_map( function ( $id ) {
 			return get_term_meta( $id, '_wl_name', true );
 		}, $ids );
-
-		return $camel_case_names;
 	}
 
 	/**
