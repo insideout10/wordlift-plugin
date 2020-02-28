@@ -134,7 +134,7 @@ class Wordlift_Api_Service {
 		$url = apply_filters( 'wl_api_service_api_url_path', $this->configuration_service->get_api_url() . $path );
 
 		// Give some time for the operation to complete, more than the time we give to the HTTP operation to complete.
-		@set_time_limit(90);
+		@set_time_limit( 90 );
 
 		// Get the response value.
 		$response = wp_remote_post( $url, array(
