@@ -17,13 +17,14 @@ import { SELECTION_CHANGED } from "../../../common/constants";
  * @since 3.26.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
-
+const FAB_ID = 'wl-block-editor-fab-button'
 class BlockEditorToolbarButtonRegister {
   constructor(wp, highlightHandler) {
     this.wp = wp;
     this.highlightHandler = highlightHandler;
     this.addQuestionOrAnswerText = global["_wlFaqSettings"]["addQuestionOrAnswerText"];
-    this.floatingActionButton = null;
+    this.fab = null;
+    this.last_selection = null
   }
   showFloatingActionButtonOnTextSelectionEvent() {
     on(SELECTION_CHANGED, ({ selection }) => {
@@ -34,30 +35,38 @@ class BlockEditorToolbarButtonRegister {
         // we get the coordinates and then we place the button
         const { right, bottom, height } = parentElement.getBoundingClientRect();
         const offset = height / 2;
-        this.floatingActionButton.style.display = "block";
-        this.floatingActionButton.style.position = "absolute";
-        this.floatingActionButton.style.left = `${right + 20}px`;
-        this.floatingActionButton.style.top = `${bottom - offset}px`;
-        this.floatingActionButton.classList = [FAQ_GUTENBERG_TOOLBAR_BUTTON_CLASS_NAME];
-        console.log(this.floatingActionButton);
+        this.fab.style.display = "block";
+        this.fab.style.position = "absolute";
+        this.fab.style.left = `${right + 30}px`;
+        this.fab.style.top = `${bottom - offset}px`;
+        this.last_selection = selection
       } else {
         // hide the button
-        this.floatingActionButton.style.display = "none";
+        this.fab.style.display = "none";
       }
     });
   }
   registerToolbarButton() {
-    this.floatingActionButton = document.createElement("div");
-    this.floatingActionButton.innerHTML = `
+    this.fab = document.createElement("div");
+    this.fab.innerHTML = `
       <div class="wl-fab">
             <div class="wl-fab-body">
-                <button class="wl-fab-button">Add Answer</button>
+                <button class="wl-fab-button" id="${FAB_ID}">Add Answer</button>
             </div>
       </div>
     `;
-    this.floatingActionButton.style.zIndex = 9999;
-    document.body.appendChild(this.floatingActionButton);
+    this.fab.style.zIndex = 99;
+    document.body.appendChild(this.fab);
     this.showFloatingActionButtonOnTextSelectionEvent();
+    document.getElementById(FAB_ID).addEventListener("click", (event) => {
+      if ( this.last_selection !== null && this.last_selection.length > 0 ) {
+        trigger(FAQ_EVENT_HANDLER_SELECTION_CHANGED, {
+          selectedText: this.last_selection,
+          selectedHTML: getCurrentSelectionHTML()
+        })
+        this.fab.style.display = "none"
+      }
+    })
   }
 }
 
