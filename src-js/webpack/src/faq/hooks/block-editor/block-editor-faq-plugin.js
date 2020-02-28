@@ -3,9 +3,9 @@
  */
 import BlockEditorFormatTypeHandler from "./block-editor-format-type-handler";
 import BlockEditorHighlightHandler from "./block-editor-highlight-handler";
-import BlockEditorToolbarHandler from "./block-editor-handler";
+import BlockEditorFabHandler from "./block-editor-fab-handler";
 import FaqTextEditorHook from "../interface/faq-text-editor-hook";
-import BlockEditorToolbarButtonRegister from "./block-editor-toolbar-button-register";
+import BlockEditorFabButtonRegister from "./block-editor-fab-button-register";
 
 export const FAQ_GUTENBERG_TOOLBAR_BUTTON_CLASS_NAME = "wl-faq-gutenberg-toolbar-button";
 
@@ -28,8 +28,8 @@ class BlockEditorFaqPlugin extends FaqTextEditorHook {
      */
     const highlightHandler = new BlockEditorHighlightHandler();
     highlightHandler.listenForHighlightEvent();
-    const toolbarRegister = new BlockEditorToolbarButtonRegister(this.wp, highlightHandler);
-    toolbarRegister.registerToolbarButton();
+    const toolbarRegister = new BlockEditorFabButtonRegister(this.wp, highlightHandler);
+    toolbarRegister.registerFabButton();
   }
 
   showFloatingActionButton() {
@@ -37,7 +37,7 @@ class BlockEditorFaqPlugin extends FaqTextEditorHook {
      * Initialize event handler to listen for text selection,
      * enable/disable the toolbar button.
      */
-    new BlockEditorToolbarHandler();
+    new BlockEditorFabHandler();
   }
 
   initialize() {

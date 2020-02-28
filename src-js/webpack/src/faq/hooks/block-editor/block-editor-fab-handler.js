@@ -1,5 +1,5 @@
 /**
- * BlockEditorToolbarHandler handles the disable and enabling
+ * BlockEditorFabHandler handles the disable and enabling
  * the add question or answer button based on the store state.
  *
  * @since 3.26.0
@@ -17,16 +17,15 @@ import { FAQ_ITEMS_CHANGED } from "../../constants/faq-hook-constants";
 import { SELECTION_CHANGED } from "../../../common/constants";
 import { FAQ_GUTENBERG_TOOLBAR_BUTTON_CLASS_NAME } from "./block-editor-faq-plugin";
 import TinymceToolbarHandler from "../tinymce/tinymce-toolbar-handler";
+import { FAB_WRAPPER_ID } from "./block-editor-fab-button-register";
 
-class BlockEditorToolbarHandler {
+class BlockEditorFabHandler {
   constructor() {
     this.faqItems = [];
     on(FAQ_ITEMS_CHANGED, faqItems => {
       this.faqItems = faqItems;
     });
     this.startListeningForSelectionChangesAndSetState();
-    // When initailised set the button to disabled state.
-    this.disableButtons(document.getElementsByClassName(FAQ_GUTENBERG_TOOLBAR_BUTTON_CLASS_NAME));
   }
 
   startListeningForSelectionChangesAndSetState() {
@@ -40,22 +39,25 @@ class BlockEditorToolbarHandler {
 
   /**
    * Disabling the buttons on selection change.
-   * @param toolbarButtons
+   * @param fabWrapper {Element} Wrapper div for fab button
    */
-  disableButtons(toolbarButtons) {
-    for (let button of toolbarButtons) {
-      button.disabled = true;
-    }
+  hideFabWrapper(fabWrapper) {
+    fabWrapper.style.display = "none";
   }
 
   /**
    * Enable the buttons when the selection is changed.
-   * @param toolbarButtons
+   * @param fabWrapper Wrapper div for fab button
    */
-  enableButtons(toolbarButtons) {
-    for (let button of toolbarButtons) {
-      button.disabled = false;
-    }
+  showFabWrapper(fabWrapper) {
+    fabWrapper.style.display = "block";
+  }
+
+  /**
+   * Returns the floating action button from the DOM.
+   */
+  getFabWrapper() {
+    return document.getElementById(FAB_WRAPPER_ID);
   }
 
   /**
@@ -63,14 +65,25 @@ class BlockEditorToolbarHandler {
    * @param selectedText
    */
   setStateBasedOnStore(selectedText) {
-    const toolbarButtons = document.getElementsByClassName(FAQ_GUTENBERG_TOOLBAR_BUTTON_CLASS_NAME);
     const shouldDisableButton = TinymceToolbarHandler.shouldDisableButton(selectedText, this.faqItems);
     if (shouldDisableButton) {
-      this.disableButtons(toolbarButtons);
+      this.hideFabWrapper(wrapper);
     } else {
-      this.enableButtons(toolbarButtons);
+      const wrapper = this.getFabWrapper();
+      if (wrapper !== null) {
+        // get the selection coordinates.
+        const node = window.getSelection().getRangeAt(0).commonAncestorContainer;
+        const parentElement = node.parentElement;
+        // we get the coordinates and then we place the button
+        const { right, bottom, height } = parentElement.getBoundingClientRect();
+        const offset = height / 2;
+        wrapper.style.position = "absolute";
+        wrapper.style.left = `${right + 30}px`;
+        wrapper.style.top = `${bottom - offset}px`;
+      }
+      this.showFabWrapper(wrapper);
     }
   }
 }
 
-export default BlockEditorToolbarHandler;
+export default BlockEditorFabHandler;
