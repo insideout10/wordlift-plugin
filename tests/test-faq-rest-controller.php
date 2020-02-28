@@ -51,7 +51,7 @@ class FAQ_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 		$request->set_body( wp_json_encode( array() ) );
 		$response  = $this->server->dispatch( $request );
 		$response_data = $response->get_data();
-		$this->assertEquals( 'failure', $response_data['status'] );
+		$this->assertEquals( 'rest_missing_callback_param', $response_data['code'] );
 	}
 	public function test_whether_rest_server_has_faq_route() {
 		$routes = $this->server->get_routes();
