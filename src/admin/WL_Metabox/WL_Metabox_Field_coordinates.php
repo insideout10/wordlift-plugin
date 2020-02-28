@@ -46,7 +46,7 @@ class WL_Metabox_Field_coordinates extends WL_Metabox_Field {
 		$html .= '<input type="text" id="wl_place_lon" name="wl_metaboxes[coordinates][]" value="' . $data['longitude'] . '" style="width:100%" />';
 
 		// Show Leaflet map to pick coordinates
-		$element_id = uniqid( 'wl-gep-map-' );
+		$element_id = uniqid( 'wl-geo-map-' );
 		$html .= <<<EOF
 
 <div id="$element_id"></div>
@@ -59,8 +59,8 @@ class WL_Metabox_Field_coordinates extends WL_Metabox_Field {
 
 		var wlMap = L.map('$element_id').$map_init;
 
-		L.tileLayer( 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
-		    { attribution: '&copy; <a href=http://osm.org/copyright>OpenStreetMap</a> contributors'}
+		L.tileLayer( 'https://{s}.tile.osm.org/{z}/{x}/{y}.png',
+		    { attribution: '&copy; <a href=https://osm.org/copyright>OpenStreetMap</a> contributors'}
 		).addTo( wlMap );
 
 		var marker = L.marker($coordinates).addTo( wlMap );

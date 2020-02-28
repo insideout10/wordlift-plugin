@@ -142,7 +142,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.26.0 (2020-02-26) =
+= 3.26.0 (2020-02-28) =
+
+= 3.25.2 (2020-02-27) =
+* Fix [#1021](https://github.com/insideout10/wordlift-plugin/issues/1021): GeoMap should show the current entity for entity pages.
 
 = 3.25.1.3 (2020-02-25) =
 * Fix: synonyms may raise an error in Block Editor.

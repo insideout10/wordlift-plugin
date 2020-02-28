@@ -38,7 +38,7 @@ class EditComponentFilters {
         field_type: property.fieldTypeHelpText,
         field_name: property.fieldHelpText,
         transform_function: property.transformHelpText,
-        property_status: property.property_status
+        property_status: property.propertyStatus
       };
       // If it is created in the ui, then remove the property id, rest api will detect this and
       // create a new entry for the property.
