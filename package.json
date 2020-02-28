@@ -75,6 +75,7 @@
     "test:php": "./vendor/bin/phpunit",
     "test:php-test-coverage": "./vendor/bin/phpunit -c phpunit-test-coverage.xml",
     "test:multisite": "./vendor/bin/phpunit -c phpunit-multisite.xml",
+    "test:jest": " yarn --cwd=./src-js/webpack/ test",
     "test:php5.3-compat": "./vendor/bin/phpcs src/ --extensions=php --ignore=class-wordlift-entity-types-taxonomy-walker-5-3.php --standard=PHPCompatibilityWP --runtime-set testVersion 5.3"
   },
   "jest": {
