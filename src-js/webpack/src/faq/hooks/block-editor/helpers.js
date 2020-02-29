@@ -23,7 +23,6 @@ function getSingleBlockSelectionHTML() {
   return html;
 }
 
-
 /**
  * Returns html string from selected blocks.
  * @return {string} HTML String
@@ -33,19 +32,16 @@ export function getCurrentSelectionHTML() {
   /** Check if it multi selection, if multi selection is done then
    * the user can only select the contents in the block fully, so we
    * can append the html in to single string */
-  const blocks = wp.data.select('core/block-editor').getMultiSelectedBlocks()
+  const blocks = wp.data.select("core/block-editor").getMultiSelectedBlocks();
 
-  if ( blocks.length > 1 ) {
+  if (blocks.length > 1) {
     // its a multi selection, loop through blocks and get html.
     for (let block of blocks) {
-      html += block.originalContent
+      html += block.originalContent;
     }
-  }
-  else {
+  } else {
     // it is a single selection, get selected blocks original content.
-    html += getSingleBlockSelectionHTML()
+    html += getSingleBlockSelectionHTML();
   }
-  return html
+  return html;
 }
-
-

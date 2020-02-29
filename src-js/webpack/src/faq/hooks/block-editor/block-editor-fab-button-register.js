@@ -11,9 +11,8 @@ export const FAB_ID = "wl-block-editor-fab-button";
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 class BlockEditorFabButtonRegister {
-  constructor(wp, highlightHandler) {
+  constructor(wp) {
     this.wp = wp;
-    this.highlightHandler = highlightHandler;
     /** Translated Text from PHP **/
     this.addQuestionOrAnswerText = global["_wlFaqSettings"]["addQuestionOrAnswerText"];
   }

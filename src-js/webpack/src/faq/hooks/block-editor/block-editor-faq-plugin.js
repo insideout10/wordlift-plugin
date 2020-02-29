@@ -27,7 +27,7 @@ class BlockEditorFaqPlugin extends FaqTextEditorHook {
      */
     const highlightHandler = new BlockEditorHighlightHandler();
     highlightHandler.listenForHighlightEvent();
-    const toolbarRegister = new BlockEditorFabButtonRegister(this.wp, highlightHandler);
+    const toolbarRegister = new BlockEditorFabButtonRegister(this.wp);
     toolbarRegister.registerFabButton();
   }
 
