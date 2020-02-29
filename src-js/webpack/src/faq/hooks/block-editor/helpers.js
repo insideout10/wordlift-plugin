@@ -6,27 +6,26 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 /**
- * Gutenberg returns a selected object that represents a
- * text value, there is no way to return the selected html,
- * we can get the HTML manually from DOM using this method.
- * This method should only be called when the user clicks on
- * Add question/Answer in order to get the correct selected html.
- *
+ * Returns html string from selected blocks.
  * @return {string} HTML String
  */
 export function getCurrentSelectionHTML() {
   let html = "";
-  /** Check for selection */
-  if (window.getSelection() !== undefined) {
-    const selection = window.getSelection();
-    const rangeCount = selection.rangeCount;
-    // Loop through all the ranges and append the child.
-    const container = document.createElement("div");
-    for (let i = 0; i < rangeCount; ++i) {
-      container.appendChild(selection.getRangeAt(i).cloneContents());
-    }
-    // once we have appended the child to the dummy container, return the innerHTML
-    html = container.innerHTML;
+  /** Check if it multi selection */
+  const blocks = wp.data.select('core/block-editor').getMultiSelectedBlocks()
+  if ( blocks.length === 0 ) {
+    // Not a valid selection, return empty html
+    return html
   }
-  return html;
+  if ( blocks.length > 1 ) {
+    // its a multi selection, loop through blocks and get html.
+    for (let block of blocks) {
+      html += block.originalContent
+    }
+  }
+  else {
+    // it is a single selection, get selected blocks original content.
+    html += wp.data.select('core/block-editor').getSelectedBlock().originalContent
+  }
+  return html
 }
