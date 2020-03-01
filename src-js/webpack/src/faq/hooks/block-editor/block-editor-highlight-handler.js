@@ -73,7 +73,8 @@ class BlockEditorHighlightHandler {
     const selectedBlock = wp.data.select("core/block-editor").getSelectedBlock();
     const blockValue = this.getBlockValue(selectedBlock);
     if (blockValue !== undefined) {
-      console.log(this.applyFormatAndReturnAppliedValue(formatToBeApplied, blockValue));
+      const content = `<span id="234234" class="wl-faq--answer">${blockValue}</span>`;
+      wp.data.dispatch( 'core/block-editor' ).updateBlockAttributes( selectedBlock.clientId, {content: content} )
     }
   }
 
