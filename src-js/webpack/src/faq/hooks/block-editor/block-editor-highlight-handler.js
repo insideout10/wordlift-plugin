@@ -22,28 +22,45 @@ class BlockEditorHighlightHandler {
   constructor() {
     this.props = null;
   }
+
+  /**
+   * Get the format type which needs to be applied on the the selection
+   * @param data
+   * @return {{attributes: {}}}
+   */
+  getFormatFromEventData(data) {
+    const {isQuestion, id} = data;
+    const format = {
+      attributes: {}
+    };
+    /**
+     * Apply format depending on the type.
+     */
+    if (isQuestion) {
+      format.attributes.id = `${FAQ_QUESTION_HIGHLIGHTING_CLASS}--${id}`;
+      format.type = FAQ_QUESTION_FORMAT_NAME;
+
+    } else {
+      format.attributes.id = `${FAQ_ANSWER_HIGHLIGHTING_CLASS}--${id}`;
+      format.type = FAQ_ANSWER_FORMAT_NAME;
+    }
+    return format
+  }
   /**
    * Start listening for highlight events from
    * the store.
    */
   listenForHighlightEvent() {
-    on(FAQ_HIGHLIGHT_TEXT, result => {
-      if (this.props !== null) {
-        const {isQuestion, id} = result;
-        const format = {
-          attributes: {}
-        };
-        /**
-         * Apply format depending on the type.
-         */
-        if (isQuestion) {
-          format.attributes.id = `${FAQ_QUESTION_HIGHLIGHTING_CLASS}--${id}`;
-          format.type = FAQ_QUESTION_FORMAT_NAME;
-          this.props.onChange(applyFormat(this.props.value, format));
-        } else {
-          format.attributes.id = `${FAQ_ANSWER_HIGHLIGHTING_CLASS}--${id}`;
-          format.type = FAQ_ANSWER_FORMAT_NAME;
-          this.props.onChange(applyFormat(this.props.value, format));
+    on(FAQ_HIGHLIGHT_TEXT, data => {
+      const format = this.getFormatFromEventData(data)
+      // check if it is a multi selection.
+      const blocks = wp.data.select("core/block-editor").getMultiSelectedBlocks();
+      if ( blocks.length > 0 ) {
+        // Not a multi selection
+        // it indicates all the blocks are selected without needing to use
+        // the start or end index, so loop through the blocks and highlight it.
+        for ( let block of blocks ) {
+          console.log( block )
         }
       }
     });
