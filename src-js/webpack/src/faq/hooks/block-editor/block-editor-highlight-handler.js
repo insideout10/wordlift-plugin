@@ -46,6 +46,28 @@ class BlockEditorHighlightHandler {
     return format;
   }
 
+  applyFormattingForMultipleBlocks(formatToBeApplied, blocks) {
+    for (let block of blocks) {
+      const attrs = block.attributes;
+      const blockValue = attrs.content ? attrs.content : attrs.values;
+      if (blockValue !== undefined) {
+        /**
+         * We need to create a rich text element in order
+         * to automatically parse the formats in the text
+         * for us, so to do that we are creating a fake element
+         * span and then append the block html in to it.
+         */
+        const el = document.createElement("span");
+        el.innerHTML = blockValue;
+        const richText = wp.richText.create({
+          html: blockValue,
+          element: el
+        });
+        console.log(richText);
+      }
+    }
+  }
+
   /**
    * Selection can be either multiple blocks or a single block
    * with start and end index.
@@ -56,13 +78,12 @@ class BlockEditorHighlightHandler {
     if (blocks.length > 0) {
       // it indicates all the blocks are selected without needing to use
       // the start or end index, so loop through the blocks and highlight it.
-      for (let block of blocks) {
-        const attrs = block.attributes;
-        const blockValue = attrs.content ? attrs.content : attrs.values;
-        if ( blockValue !== undefined ) {
-
-        }
-      }
+      this.applyFormattingForMultipleBlocks(formatToBeApplied, blocks);
+    } else {
+      // single block, so we need to find start and end index.
+      const startIndex = wp.data.select("core/block-editor").getSelectionStart().offset;
+      const endIndex = wp.data.select("core/block-editor").getSelectionEnd().offset;
+      // we can get the selected block content and create a rich text element.
     }
   }
   /**
