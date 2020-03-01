@@ -46,10 +46,55 @@ class BlockEditorHighlightHandler {
     return format;
   }
 
+  /**
+   * Apply the format to the block value and return the applied value
+   * @param formatToBeApplied
+   * @param blockValue
+   */
+  applyFormatAndReturnAppliedValue(formatToBeApplied, blockValue) {
+    const el = document.createElement("span");
+    el.innerHTML = blockValue;
+    const richText = wp.richText.create({
+      html: blockValue,
+      element: el
+    });
+    return wp.richText.applyFormat(richText, formatToBeApplied);
+  }
+
+  /**
+   * Apply format for a single block.
+   * @param formatToBeApplied
+   */
+  applyFormattingForSingleBlock(formatToBeApplied) {
+    // single block, so we need to find start and end index.
+    const startIndex = wp.data.select("core/block-editor").getSelectionStart().offset;
+    const endIndex = wp.data.select("core/block-editor").getSelectionEnd().offset;
+    // we can get the selected block content and create a rich text element.
+    const selectedBlock = wp.data.select("core/block-editor").getSelectedBlock();
+    const blockValue = this.getBlockValue(selectedBlock);
+    if (blockValue !== undefined) {
+      console.log(this.applyFormatAndReturnAppliedValue(formatToBeApplied, blockValue));
+    }
+  }
+
+  /**
+   * Returns the block value, ie the innerHTML with formatting applied.
+   * @param block
+   * @return {*}
+   */
+  getBlockValue(block) {
+    const attrs = block.attributes;
+    return attrs.content ? attrs.content : attrs.values;
+  }
+
+  /**
+   * Loops through the blocks and apply formatting for all.
+   * @param formatToBeApplied
+   * @param blocks
+   */
   applyFormattingForMultipleBlocks(formatToBeApplied, blocks) {
     for (let block of blocks) {
-      const attrs = block.attributes;
-      const blockValue = attrs.content ? attrs.content : attrs.values;
+      const blockValue = this.getBlockValue(block);
       if (blockValue !== undefined) {
         /**
          * We need to create a rich text element in order
@@ -57,13 +102,7 @@ class BlockEditorHighlightHandler {
          * for us, so to do that we are creating a fake element
          * span and then append the block html in to it.
          */
-        const el = document.createElement("span");
-        el.innerHTML = blockValue;
-        const richText = wp.richText.create({
-          html: blockValue,
-          element: el
-        });
-        console.log(richText);
+        console.log(this.applyFormatAndReturnAppliedValue(formatToBeApplied, blockValue));
       }
     }
   }
@@ -80,10 +119,7 @@ class BlockEditorHighlightHandler {
       // the start or end index, so loop through the blocks and highlight it.
       this.applyFormattingForMultipleBlocks(formatToBeApplied, blocks);
     } else {
-      // single block, so we need to find start and end index.
-      const startIndex = wp.data.select("core/block-editor").getSelectionStart().offset;
-      const endIndex = wp.data.select("core/block-editor").getSelectionEnd().offset;
-      // we can get the selected block content and create a rich text element.
+      this.applyFormattingForSingleBlock(formatToBeApplied);
     }
   }
   /**
