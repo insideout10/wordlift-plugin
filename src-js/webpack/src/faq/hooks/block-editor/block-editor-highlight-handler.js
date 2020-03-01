@@ -17,6 +17,7 @@ import { FAQ_HIGHLIGHT_TEXT } from "../../constants/faq-hook-constants";
 import { FAQ_ANSWER_FORMAT_NAME, FAQ_QUESTION_FORMAT_NAME } from "./block-editor-format-type-handler";
 import { applyFormat } from "@wordpress/rich-text";
 import { FAQ_ANSWER_HIGHLIGHTING_CLASS, FAQ_QUESTION_HIGHLIGHTING_CLASS } from "../tinymce/tinymce-highlight-handler";
+import { classExtractor } from "../../../mappings/blocks/helper";
 
 class BlockEditorHighlightHandler {
   constructor() {
@@ -74,7 +75,7 @@ class BlockEditorHighlightHandler {
     const blockValue = this.getBlockValue(selectedBlock);
     if (blockValue !== undefined) {
       const content = `<span id="234234" class="wl-faq--answer">${blockValue}</span>`;
-      wp.data.dispatch( 'core/block-editor' ).updateBlockAttributes( selectedBlock.clientId, {content: content} )
+      wp.data.dispatch("core/block-editor").updateBlockAttributes(selectedBlock.clientId, { content: content });
     }
   }
 
@@ -93,10 +94,19 @@ class BlockEditorHighlightHandler {
    * @param formatToBeApplied
    * @param blocks
    */
-  applyFormattingForMultipleBlocks(formatToBeApplied, blocks) {
+  applyFormattingForMultipleBlocks(formatToBeApplied, blocks, eventData) {
     for (let block of blocks) {
       const blockValue = this.getBlockValue(block);
       if (blockValue !== undefined) {
+        const { id, isQuestion } = eventData;
+        const className = classExtractor({
+          [FAQ_QUESTION_HIGHLIGHTING_CLASS]: isQuestion,
+          [FAQ_ANSWER_HIGHLIGHTING_CLASS]: !isQuestion
+        });
+        const identifier = `${className}--${id}`;
+        const content = `<span id="${identifier}" class="${className}">${blockValue}</span>`;
+        wp.data.dispatch("core/block-editor").updateBlockAttributes(block.clientId, { content: content });
+
         /**
          * We need to create a rich text element in order
          * to automatically parse the formats in the text
@@ -112,15 +122,16 @@ class BlockEditorHighlightHandler {
    * Selection can be either multiple blocks or a single block
    * with start and end index.
    * @param formatToBeApplied {object}
+   * @param eventData {object}
    */
-  applyFormattingBasedOnType(formatToBeApplied) {
+  applyFormattingBasedOnType(formatToBeApplied, eventData) {
     const blocks = wp.data.select("core/block-editor").getMultiSelectedBlocks();
     if (blocks.length > 0) {
       // it indicates all the blocks are selected without needing to use
       // the start or end index, so loop through the blocks and highlight it.
-      this.applyFormattingForMultipleBlocks(formatToBeApplied, blocks);
+      this.applyFormattingForMultipleBlocks(formatToBeApplied, blocks, eventData);
     } else {
-      this.applyFormattingForSingleBlock(formatToBeApplied);
+      this.applyFormattingForSingleBlock(formatToBeApplied, eventData);
     }
   }
   /**
@@ -131,7 +142,7 @@ class BlockEditorHighlightHandler {
     on(FAQ_HIGHLIGHT_TEXT, data => {
       const format = this.getFormatFromEventData(data);
       // check if it is a multi selection.
-      this.applyFormattingBasedOnType(format);
+      this.applyFormattingBasedOnType(format, data);
     });
   }
 }
