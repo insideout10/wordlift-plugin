@@ -18,10 +18,22 @@ import { FAQ_ANSWER_FORMAT_NAME, FAQ_QUESTION_FORMAT_NAME } from "./block-editor
 import { applyFormat } from "@wordpress/rich-text";
 import { FAQ_ANSWER_HIGHLIGHTING_CLASS, FAQ_QUESTION_HIGHLIGHTING_CLASS } from "../tinymce/tinymce-highlight-handler";
 import { classExtractor } from "../../../mappings/blocks/helper";
+import { SELECTION_CHANGED } from "../../../common/constants";
 
 class BlockEditorHighlightHandler {
   constructor() {
     this.props = null;
+    this.singleBlockSelectionValue = null;
+    this.onChange = null;
+    /**
+     * When the single block is selected then we need to get
+     * all the format types of that block, along with the value
+     * property
+     */
+    on(SELECTION_CHANGED, ({ value, onChange }) => {
+      this.singleBlockSelectionValue = value;
+      this.onChange = onChange;
+    });
   }
 
   /**
@@ -48,34 +60,15 @@ class BlockEditorHighlightHandler {
   }
 
   /**
-   * Apply the format to the block value and return the applied value
-   * @param formatToBeApplied
-   * @param blockValue
-   */
-  applyFormatAndReturnAppliedValue(formatToBeApplied, blockValue) {
-    const el = document.createElement("span");
-    el.innerHTML = blockValue;
-    const richText = wp.richText.create({
-      html: blockValue,
-      element: el
-    });
-    return wp.richText.applyFormat(richText, formatToBeApplied);
-  }
-
-  /**
    * Apply format for a single block.
    * @param formatToBeApplied
    */
   applyFormattingForSingleBlock(formatToBeApplied) {
-    // single block, so we need to find start and end index.
-    const startIndex = wp.data.select("core/block-editor").getSelectionStart().offset;
-    const endIndex = wp.data.select("core/block-editor").getSelectionEnd().offset;
-    // we can get the selected block content and create a rich text element.
-    const selectedBlock = wp.data.select("core/block-editor").getSelectedBlock();
-    const blockValue = this.getBlockValue(selectedBlock);
-    if (blockValue !== undefined) {
-      const content = `<span id="234234" class="wl-faq--answer">${blockValue}</span>`;
-      wp.data.dispatch("core/block-editor").updateBlockAttributes(selectedBlock.clientId, { content: content });
+    if ( this.onChange !== null && this.singleBlockSelectionValue !== null ) {
+      this.onChange(wp.richText.applyFormat(
+          this.singleBlockSelectionValue,
+          formatToBeApplied
+      ));
     }
   }
 
@@ -106,14 +99,6 @@ class BlockEditorHighlightHandler {
         const identifier = `${className}--${id}`;
         const content = `<span id="${identifier}" class="${className}">${blockValue}</span>`;
         wp.data.dispatch("core/block-editor").updateBlockAttributes(block.clientId, { content: content });
-
-        /**
-         * We need to create a rich text element in order
-         * to automatically parse the formats in the text
-         * for us, so to do that we are creating a fake element
-         * span and then append the block html in to it.
-         */
-        console.log(this.applyFormatAndReturnAppliedValue(formatToBeApplied, blockValue));
       }
     }
   }
