@@ -13,6 +13,7 @@ import { on } from "backbone";
  */
 import { FAQ_HIGHLIGHT_TEXT } from "../../constants/faq-hook-constants";
 import { classExtractor } from "../../../mappings/blocks/helper";
+import {FAQ_ANSWER_TAG_NAME, FAQ_QUESTION_TAG_NAME} from "../custom-faq-elements";
 
 export const FAQ_QUESTION_HIGHLIGHTING_CLASS = "wl-faq--question";
 export const FAQ_ANSWER_HIGHLIGHTING_CLASS = "wl-faq--answer";
@@ -47,6 +48,19 @@ class TinymceHighlightHandler {
   saveSelection() {
     this.selection = this.editor.selection;
   }
+
+  /**
+   * Return answer or question tag based on the selected
+   * text.
+   */
+  getTagBasedOnHighlightedText(isQuestion) {
+    if ( isQuestion ) {
+      return FAQ_QUESTION_TAG_NAME
+    }
+    else {
+      return FAQ_ANSWER_TAG_NAME
+    }
+  }
   /**
    * Highlight the selection done by the user.
    * @param selectedText The text which was selected by the user.
@@ -61,17 +75,8 @@ class TinymceHighlightHandler {
       return;
     }
     const html = this.selection.getContent();
-    const className = classExtractor({
-      [FAQ_QUESTION_HIGHLIGHTING_CLASS]: isQuestion,
-      [FAQ_ANSWER_HIGHLIGHTING_CLASS]: !isQuestion
-    });
-    /**
-     * Prepare unique identifier for the string, we are appending the classname because ids should
-     * be unique.
-     * @type {string}
-     */
-    const identifier = `${className}--${id}`;
-    const highlightedElement = `<span id="${identifier}" class="${className}">${html}</span>`;
+    const tagName = this.getTagBasedOnHighlightedText(isQuestion)
+    const highlightedElement = `<${tagName}>${html}</${tagName}>`;
     this.selection.setContent(highlightedElement);
   }
 }

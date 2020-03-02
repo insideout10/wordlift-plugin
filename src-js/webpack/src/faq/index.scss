@@ -5,7 +5,7 @@
   overflow-x: hidden;
 }
 @mixin wl-faq-highlight-mixin {
-  .wl-faq--question {
+  wl-faq-question {
     background-color: #00ffa1;
     opacity: 0.9;
     cursor: pointer;
@@ -14,7 +14,7 @@
     }
   }
 
-  .wl-faq--answer {
+  wl-faq-answer {
     background-color: #b9d25d;
     cursor: pointer;
     opacity: 0.9;
