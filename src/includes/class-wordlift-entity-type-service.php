@@ -395,6 +395,47 @@ class Wordlift_Entity_Type_Service {
 		return false;
 	}
 
+	/**
+	 * Get the custom fields for a specific post.
+	 *
+	 * @param int $post_id The post ID.
+	 *
+	 * @return array An array of custom fields (see `custom_fields` in Wordlift_Schema_Service).
+	 * @since 3.25.2
+	 *
+	 */
+	public function get_custom_fields( $post_id ) {
+
+		// Return custom fields for this specific entity's type.
+		$types = $this->get_ids( $post_id );
+
+		/** @var WP_Term[] $terms */
+		$terms = array_filter( array_map( function ( $item ) {
+			return get_term( $item );
+		}, $types ), function ( $item ) {
+			return isset( $item ) && is_a( $item, 'WP_Term' );
+		} );
+
+		$term_slugs = array_map( function ( $item ) {
+			return $item->slug;
+		}, $terms );
+
+		$term_slugs[] = 'thing';
+
+		$schema_service = Wordlift_Schema_Service::get_instance();
+
+		return array_reduce( $term_slugs, function ( $carry, $item ) use ( $schema_service ) {
+
+			$schema = $schema_service->get_schema( $item );
+
+			if ( ! isset( $schema['custom_fields'] ) ) {
+				return $carry;
+			}
+
+			return $carry + $schema['custom_fields'];
+		}, array() );
+	}
+
 
 	/**
 	 * Determines whether a post type can be used for entities.
