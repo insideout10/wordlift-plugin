@@ -78,14 +78,6 @@ class BlockEditorHighlightHandler {
    */
   applyFormattingForSingleBlock(formatToBeApplied) {
     if (this.onChange !== null && this.singleBlockSelectionValue !== null) {
-      console.log("single block selection value");
-      console.log(this.singleBlockSelectionValue);
-      console.log(this.onChange)
-      console.log(
-        wp.richText.toHTMLString({
-          value: this.singleBlockSelectionValue
-        })
-      );
       this.onChange(wp.richText.applyFormat(this.singleBlockSelectionValue, formatToBeApplied));
     }
   }

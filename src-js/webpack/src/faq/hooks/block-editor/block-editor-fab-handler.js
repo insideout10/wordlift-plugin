@@ -109,6 +109,10 @@ class BlockEditorFabHandler {
       /** Return early, wrapper is not added to DOM yet **/
       return;
     }
+    if ( window.getSelection().rangeCount === 0) {
+      /** Return early if the range is not defined yet **/
+      return;
+    }
     this.setFabButtonTextBasedOnSelectedText();
     const shouldDisableButton = TinymceToolbarHandler.shouldDisableButton(selectedText, this.faqItems);
     if (shouldDisableButton) {
