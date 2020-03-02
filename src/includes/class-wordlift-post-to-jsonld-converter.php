@@ -76,6 +76,11 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		// Get the base JSON-LD and the list of entities referenced by this entity.
 		$jsonld = parent::convert( $post_id, $references );
 
+		// Set Article by default.
+		if ( empty( $jsonld['@type'] ) ) {
+			$jsonld['@type'] = 'Article';
+		}
+
 		// Get the entity name.
 		$jsonld['headline'] = $post->post_title;
 
