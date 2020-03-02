@@ -127,6 +127,7 @@ class BlockEditorFabHandler {
       wrapper.style.position = "fixed";
       wrapper.style.left = `${right + 30}px`;
       wrapper.style.top = `${bottom - offset  - 10}px`;
+      wrapper.zIndex = 999
       this.showFabWrapper(wrapper);
     }
   }

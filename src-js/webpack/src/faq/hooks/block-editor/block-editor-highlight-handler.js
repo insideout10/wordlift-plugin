@@ -113,18 +113,13 @@ class BlockEditorHighlightHandler {
         const rootNode = document.createElement('div')
         rootNode.appendChild(el)
         range.selectNodeContents(el);
-        console.log(range)
         // get the rich text element
         const value = this.createRichTextElementFromRange(rootNode, range);
         // lets apply the format.
         const result = wp.richText.applyFormat(value, formatToBeApplied);
-
-        console.log(result);
-        console.log("rich text element converted in to html");
         const content = wp.richText.toHTMLString({
           value: result
         });
-
         wp.data.dispatch("core/block-editor").updateBlockAttributes(block.clientId, { content, values:content });
       }
     }
