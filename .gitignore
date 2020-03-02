@@ -46,3 +46,5 @@ yarn-error.log*
 
 .docker/nginx/wordlift-plugin.localhost/cert.pem
 .docker/nginx/wordlift-plugin.localhost/key.pem
+
+wordlift-*.zip

@@ -32,6 +32,14 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 	private $schemaorg_property_service;
 
 	/**
+	 * The {@link Wordlift_Post_To_Jsonld_Converter} is used to convert entities that also have the `article` term.
+	 *
+	 * @since 3.25.2
+	 * @var \Wordlift_Post_To_Jsonld_Converter $post_to_jsonld_converter The {@link Wordlift_Post_To_Jsonld_Converter} instance.
+	 */
+	private $post_to_jsonld_converter;
+
+	/**
 	 * Wordlift_Entity_To_Jsonld_Converter constructor.
 	 *
 	 * @param \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
@@ -40,15 +48,16 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 	 * @param \Wordlift_Attachment_Service $attachment_service A {@link Wordlift_Attachment_Service} instance.
 	 * @param \Wordlift_Property_Getter $property_getter A {@link Wordlift_Property_Getter} instance.
 	 * @param \Wordlift_Schemaorg_Property_Service $schemaorg_property_service A {@link Wordlift_Schemaorg_Property_Service} instance.
+	 * @param \Wordlift_Post_To_Jsonld_Converter $post_to_jsonld_converter The {@link Wordlift_Post_To_Jsonld_Converter} instance.
 	 *
 	 * @since 3.8.0
-	 *
 	 */
-	public function __construct( $entity_type_service, $entity_service, $user_service, $attachment_service, $property_getter, $schemaorg_property_service = null ) {
+	public function __construct( $entity_type_service, $entity_service, $user_service, $attachment_service, $property_getter, $schemaorg_property_service, $post_to_jsonld_converter ) {
 		parent::__construct( $entity_type_service, $entity_service, $user_service, $attachment_service );
 
 		$this->property_getter            = $property_getter;
 		$this->schemaorg_property_service = $schemaorg_property_service;
+		$this->post_to_jsonld_converter   = $post_to_jsonld_converter;
 
 	}
 
@@ -74,7 +83,11 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 		}
 
 		// Get the base JSON-LD and the list of entities referenced by this entity.
-		$jsonld = parent::convert( $post_id, $references );
+		if ( has_term( 'article', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, $post_id ) ) {
+			$jsonld = $this->post_to_jsonld_converter->convert( $post_id, $references );
+		} else {
+			$jsonld = parent::convert( $post_id, $references );
+		}
 
 		// Get the entity name.
 		$jsonld['name'] = $post->post_title;
@@ -88,11 +101,11 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 		// Get the entity `@type` with custom fields set by the Wordlift_Schema_Service.
 		//
 		// This allows us to gather the basic properties as defined by the `Thing` entity type.
-		$type = $this->entity_type_service->get( $post_id );
-
 		// Get the configured type custom fields.
-		if ( isset( $type['custom_fields'] ) ) {
-			$this->process_type_custom_fields( $jsonld, $type['custom_fields'], $post, $references );
+		$custom_fields = $this->entity_type_service->get_custom_fields( $post_id );
+
+		if ( isset( $custom_fields ) ) {
+			$this->process_type_custom_fields( $jsonld, $custom_fields, $post, $references );
 		}
 
 		/*

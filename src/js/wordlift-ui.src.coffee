@@ -364,8 +364,8 @@ $.fn.extend
         map.fitBounds L.latLngBounds(data.boundaries)
 
       # Add an OpenStreetMap tile layer
-      L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png',
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png',
+        attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
       ).addTo map
 
       L.geoJson(data.features,
@@ -383,7 +383,7 @@ $.fn.extend
       console?.log msg if settings.debug
 
     init()
-# TODO we should think about how to initilize the whole wordlift ui layer
+# TODO we should think about how to initialize the whole wordlift ui layer
 jQuery ($) ->
   $('.wl-geomap').each ->
     element = $(@)
