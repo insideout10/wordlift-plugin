@@ -60,15 +60,33 @@ class BlockEditorHighlightHandler {
   }
 
   /**
+   * Create a rich text element from the supplied range.
+   * @param range {Range}
+   * @param element {Element}
+   * @return element {Object: {key: {String}}}
+   */
+  createRichTextElementFromRange(element, range) {
+    return wp.richText.create({
+      range,
+      element
+    });
+  }
+
+  /**
    * Apply format for a single block.
    * @param formatToBeApplied
    */
   applyFormattingForSingleBlock(formatToBeApplied) {
-    if ( this.onChange !== null && this.singleBlockSelectionValue !== null ) {
-      this.onChange(wp.richText.applyFormat(
-          this.singleBlockSelectionValue,
-          formatToBeApplied
-      ));
+    if (this.onChange !== null && this.singleBlockSelectionValue !== null) {
+      console.log("single block selection value");
+      console.log(this.singleBlockSelectionValue);
+      console.log(this.onChange)
+      console.log(
+        wp.richText.toHTMLString({
+          value: this.singleBlockSelectionValue
+        })
+      );
+      this.onChange(wp.richText.applyFormat(this.singleBlockSelectionValue, formatToBeApplied));
     }
   }
 
@@ -91,14 +109,31 @@ class BlockEditorHighlightHandler {
     for (let block of blocks) {
       const blockValue = this.getBlockValue(block);
       if (blockValue !== undefined) {
-        const { id, isQuestion } = eventData;
-        const className = classExtractor({
-          [FAQ_QUESTION_HIGHLIGHTING_CLASS]: isQuestion,
-          [FAQ_ANSWER_HIGHLIGHTING_CLASS]: !isQuestion
+        // Get the parent node from the original content.
+        const parentNode = document.createElement("div");
+        parentNode.innerHTML = block.originalContent;
+        const parentNodeName = parentNode.firstChild.nodeName;
+        const range = new Range();
+        // we create a dummy element with our html contents from block
+        // the div doesnt affect our range, since it is set to get only node contents.
+        const el = document.createElement(parentNodeName);
+        el.innerHTML = blockValue;
+        const rootNode = document.createElement('div')
+        rootNode.appendChild(el)
+        range.selectNodeContents(el);
+        console.log(range)
+        // get the rich text element
+        const value = this.createRichTextElementFromRange(rootNode, range);
+        // lets apply the format.
+        const result = wp.richText.applyFormat(value, formatToBeApplied);
+
+        console.log(result);
+        console.log("rich text element converted in to html");
+        const content = wp.richText.toHTMLString({
+          value: result
         });
-        const identifier = `${className}--${id}`;
-        const content = `<span id="${identifier}" class="${className}">${blockValue}</span>`;
-        wp.data.dispatch("core/block-editor").updateBlockAttributes(block.clientId, { content: content });
+
+        wp.data.dispatch("core/block-editor").updateBlockAttributes(block.clientId, { content, values:content });
       }
     }
   }
