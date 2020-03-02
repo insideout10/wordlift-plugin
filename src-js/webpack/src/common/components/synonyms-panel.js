@@ -56,7 +56,7 @@ let SynonymsPanel = props =>
 export default compose(
   withSelect(select => {
     return {
-      altLabels: select("core/editor").getEditedPostAttribute("meta")["_wl_alt_label"]
+      altLabels: select("core/editor").getEditedPostAttribute("meta")["_wl_alt_label"] || []
     };
   }),
   withDispatch(dispatch => {
