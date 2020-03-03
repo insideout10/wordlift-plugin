@@ -56,10 +56,7 @@ class WL_Metabox {
 
 		// Add hooks to print metaboxes and save submitted data.
 		add_action( 'add_meta_boxes', array( $this, 'add_main_metabox' ) );
-		add_action( 'wl_linked_data_save_post', array(
-			$this,
-			'save_form_data',
-		) );
+		add_action( 'wl_linked_data_save_post', array( $this, 'save_form_data', ) );
 
 		// Enqueue js and css.
 		$this->enqueue_scripts_and_styles();
@@ -105,9 +102,10 @@ class WL_Metabox {
 	/**
 	 * Called from WP to print the metabox content in page.
 	 *
+	 * @param WP_Post $post The post.
+	 *
 	 * @since 3.1.0
 	 *
-	 * @param WP_Post $post The post.
 	 */
 	public function html( $post ) {
 
@@ -129,9 +127,10 @@ class WL_Metabox {
 	 * Note: the first function that calls this method will instantiate the fields.
 	 * Why it isn't called from the constructor? Because we need to hook this process as late as possible.
 	 *
+	 * @param int $post_id The post id.
+	 *
 	 * @since 3.1.0
 	 *
-	 * @param int $post_id The post id.
 	 */
 	public function instantiate_fields( $post_id ) {
 
@@ -232,7 +231,7 @@ class WL_Metabox {
 	 * This method is a rude factory for Field objects.
 	 *
 	 * @param array $args The field's information.
-	 * @param bool  $grouped Flag to distinguish between simple and grouped fields.
+	 * @param bool $grouped Flag to distinguish between simple and grouped fields.
 	 */
 	public function add_field( $args, $grouped = false ) {
 
@@ -284,9 +283,10 @@ class WL_Metabox {
 	/**
 	 * Save the form data for the specified entity {@link WP_Post}'s id.
 	 *
+	 * @param int $entity_id The entity's {@link WP_Post}'s id.
+	 *
 	 * @since 3.5.4
 	 *
-	 * @param int $entity_id The entity's {@link WP_Post}'s id.
 	 */
 	public function save_form_data( $entity_id ) {
 
@@ -329,10 +329,11 @@ class WL_Metabox {
 		 * Filter: 'wl_save_form_pre_push_entity' - Allow to hook right
 		 * before the triples are pushed to the linked dataset.
 		 *
+		 * @param int $entity_id The entity id.
+		 * @param int $id The post data.
+		 *
 		 * @since  3.18.2
 		 *
-		 * @param  int $entity_id The entity id.
-		 * @param  int $id The post data.
 		 */
 		do_action( 'wl_save_form_pre_push_entity', $entity_id, $_POST );
 
@@ -355,8 +356,8 @@ class WL_Metabox {
 		wp_enqueue_script( 'wl-flatpickr', dirname( plugin_dir_url( __FILE__ ) ) . "/js/flatpickr/flatpickr$min.js", array( 'jquery' ), '3.0.6', true );
 
 		// Leaflet.
-		wp_enqueue_style( 'leaflet', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/bower_components/leaflet/dist/leaflet.css' );
-		wp_enqueue_script( 'leaflet', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/bower_components/leaflet/dist/leaflet.js', __FILE__ );
+		wp_enqueue_style( 'wl-leaflet', 'https://unpkg.com/leaflet@1.6.0/dist/leaflet.css', array(), '1.6.0' );
+		wp_enqueue_script( 'wl-leaflet', 'https://unpkg.com/leaflet@1.6.0/dist/leaflet.js', array(), '1.6.0' );
 
 		// Add AJAX autocomplete to facilitate metabox editing.
 		wp_enqueue_script( 'wl-entity-metabox-utility', dirname( plugin_dir_url( __FILE__ ) ) . '/js/wl_entity_metabox_utilities.js' );
