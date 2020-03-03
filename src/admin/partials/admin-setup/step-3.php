@@ -33,7 +33,11 @@
 		autocomplete="off"
 		placeholder="<?php echo esc_attr_x( 'License Key', 'Input text placeholder', 'wordlift' ); ?>"
 	>
-	
+	<div>
+        <p class="wl-val-key-error">
+            
+        </p>
+    </div>
 	<div class="btn-wrapper">
 		<a id="btn-grab-a-key"
 			href="https://wordlift.io/pricing/?utm_campaign=wl_activation_grab_the_key"
