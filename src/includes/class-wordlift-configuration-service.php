@@ -576,6 +576,20 @@ class Wordlift_Configuration_Service {
 		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "accounts/key=$key/dataset_uri";
 	}
 
+    /**
+     * Get the API URI to retrieve the account info using the WordLift Key.
+     *
+     * @since 3.26.0
+     *
+     * @param string $key The WordLift key to use.
+     *
+     * @return string The API URI.
+     */
+    public function get_accounts_info_by_key( $key ) {
+
+        return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "accounts/info";
+    }
+
 	/**
 	 * Get the `accounts` end point.
 	 *
