@@ -9,12 +9,12 @@ export const FAQ_QUESTION_TAG_NAME = "wl-faq-question";
 
 export const FAQ_ANSWER_TAG_NAME = "wl-faq-answer";
 
-class FaqQuestion extends HTMLDivElement {
+class FaqQuestion extends HTMLElement {
   constructor() {
     super();
   }
 }
-class FaqAnswer extends HTMLDivElement {
+class FaqAnswer extends HTMLElement {
   constructor() {
     super();
   }

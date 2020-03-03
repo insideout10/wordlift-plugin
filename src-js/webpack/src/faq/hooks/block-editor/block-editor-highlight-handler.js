@@ -60,6 +60,7 @@ class BlockEditorHighlightHandler {
    * @param range {Range}
    * @param element {Element}
    * @return element {Object: {key: {String}}}
+   * @return element {Object: {key: {String}}}
    */
   createRichTextElementFromRange(element, range) {
     return wp.richText.create({
@@ -79,34 +80,86 @@ class BlockEditorHighlightHandler {
   }
 
   /**
-   * Returns the block value, ie the innerHTML with formatting applied.
+   * Returns the block value and the attribute key name, ie the innerHTML with formatting applied.
    * @param block
-   * @return {*}
+   * @return
    */
-  getBlockValue(block) {
+  getBlockValueAndKeyName(block) {
+    // Every block have an attribute in different name other than content
+    // so this code determines the attribute key name by assuming the following
     const attrs = block.attributes;
-    return attrs.content ? attrs.content : attrs.values;
+    // Bail out if we dont have attributes.
+    if (attrs === undefined) {
+      return {
+        blockValue: null,
+        attributeKeyName: null
+      };
+    }
+    /**
+     * Assumed conditions.
+     * The attribute would definitely will have some string in the original content
+     * 1. The type of key name would be string, since html is a string
+     * 2. The more the length of the match, the higher is chance for the attribute key.
+     */
+    let length = 0;
+    let attributeKeyName = null;
+    let blockValue = null;
+    for (let key of Object.keys(attrs)) {
+      const value = attrs[key];
+      if (typeof value === "string" && value.length > length) {
+        length = value.length;
+        attributeKeyName = key;
+        blockValue = attrs[attributeKeyName];
+      }
+    }
+    return {
+      blockValue: blockValue,
+      attributeKeyName: attributeKeyName
+    };
   }
 
+  /**
+   * Renders the html from the blockvalue string and insert
+   * highlight tags to produce a valid HTML.
+   * @param blockValue {string} which may contain html.
+   * @param tagName {string} Name of the highlight tag.
+   * @return {string} string with valid html tags.
+   */
+  renderHTMLAndApplyHighlightingCorrectly(blockValue, tagName) {
+    const blockWrapper = document.createElement("div");
+    blockWrapper.innerHTML = blockValue;
+    /**
+     * We apply highlighting for every child node, if the node
+     * is a text node then we are creating our highlighting tag and
+     * replace the text node with our highlighting node.
+     */
+    for (let node of blockWrapper.childNodes) {
+      const currentHTML = node.innerHTML;
+      if (node.nodeType === Node.TEXT_NODE) {
+        const textContent = node.textContent;
+        const newNode = document.createElement(`${tagName}`);
+        newNode.innerHTML = textContent;
+        blockWrapper.replaceChild(newNode, node);
+      } else {
+        node.innerHTML = `<${tagName}>${currentHTML}</${tagName}>`;
+      }
+    }
+    return blockWrapper.innerHTML;
+  }
   /**
    * Loops through the blocks and apply formatting for all.
    * @param formatToBeApplied
    * @param blocks
+   * @param eventData
    */
   applyFormattingForMultipleBlocks(formatToBeApplied, blocks, eventData) {
     for (let block of blocks) {
-      const blockValue = this.getBlockValue(block);
-      console.log(block)
-      if (blockValue !== undefined) {
+      const { blockValue, attributeKeyName } = this.getBlockValueAndKeyName(block);
+      if (blockValue !== null && attributeKeyName !== null) {
         const attributes = {};
         const tagName = TinymceHighlightHandler.getTagBasedOnHighlightedText(eventData.isQuestion);
-        const resultHTML = `<${tagName}>${blockValue}</${tagName}>`;
-        // check if the block has content attribute or values attribute.
-        if (block.attributes.content !== undefined) {
-          attributes.content = resultHTML;
-        } else if (block.values !== undefined) {
-          attributes.values = resultHTML;
-        }
+        attributes[attributeKeyName] = this.renderHTMLAndApplyHighlightingCorrectly(blockValue, tagName);
+        console.log(attributes);
         // Set the altered HTML to the block.
         wp.data.dispatch("core/block-editor").updateBlockAttributes(block.clientId, attributes);
       }

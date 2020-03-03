@@ -8,8 +8,7 @@
   wl-faq-question {
     background-color: #00ffa1 !important;
     opacity: 0.9;
-    display: inline-block;
-    cursor: pointer;
+    display: inline;
     &:hover {
       opacity: 1;
     }
@@ -17,9 +16,8 @@
 
   wl-faq-answer {
     background-color: #b9d25d !important;
-    cursor: pointer;
     opacity: 0.9;
-    display: inline-block;
+    display: inline;
     &:hover {
       opacity: 1;
     }
