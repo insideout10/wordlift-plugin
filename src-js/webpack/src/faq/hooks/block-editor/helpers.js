@@ -45,3 +45,14 @@ export function getCurrentSelectionHTML() {
   }
   return html;
 }
+
+/**
+ * Returns the text from the selected blocks.
+ * @return {string} Text
+ */
+export function getCurrentSelectionText() {
+  // Create a dummy element and render it.
+  const el = document.createElement('div')
+  el.innerHTML = getCurrentSelectionHTML()
+  return el.innerText
+}

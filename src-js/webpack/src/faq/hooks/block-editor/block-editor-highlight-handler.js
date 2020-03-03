@@ -159,7 +159,6 @@ class BlockEditorHighlightHandler {
         const attributes = {};
         const tagName = TinymceHighlightHandler.getTagBasedOnHighlightedText(eventData.isQuestion);
         attributes[attributeKeyName] = this.renderHTMLAndApplyHighlightingCorrectly(blockValue, tagName);
-        console.log(attributes);
         // Set the altered HTML to the block.
         wp.data.dispatch("core/block-editor").updateBlockAttributes(block.clientId, attributes);
       }

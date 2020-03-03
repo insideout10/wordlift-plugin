@@ -18,7 +18,7 @@ import { SELECTION_CHANGED } from "../../../common/constants";
 import TinymceToolbarHandler from "../tinymce/tinymce-toolbar-handler";
 import { FAB_ID, FAB_WRAPPER_ID } from "./block-editor-fab-button-register";
 import FaqValidator from "../validators/faq-validator";
-import { getCurrentSelectionHTML } from "./helpers";
+import { getCurrentSelectionHTML, getCurrentSelectionText } from "./helpers";
 
 class BlockEditorFabHandler {
   constructor() {
@@ -37,7 +37,7 @@ class BlockEditorFabHandler {
      * Listen for event emitted by wordlift hook.
      */
     on(SELECTION_CHANGED, ({ selection }) => {
-      this.setStateBasedOnStore(selection);
+      this.setStateBasedOnStore(getCurrentSelectionText());
     });
   }
 
@@ -71,12 +71,8 @@ class BlockEditorFabHandler {
   dispatchTextSelectedToEventHandler() {
     const button = document.getElementById(FAB_ID);
     button.addEventListener("click", event => {
-      const selection = document
-        .getSelection()
-        .getRangeAt(0)
-        .toString();
       trigger(FAQ_EVENT_HANDLER_SELECTION_CHANGED, {
-        selectedText: selection,
+        selectedText: getCurrentSelectionText(),
         selectedHTML: getCurrentSelectionHTML()
       });
       // Hide the button after getting clicked.
@@ -87,10 +83,7 @@ class BlockEditorFabHandler {
   setFabButtonTextBasedOnSelectedText() {
     const button = document.getElementById(FAB_ID);
     if (button !== null) {
-      const selection = document
-        .getSelection()
-        .getRangeAt(0)
-        .toString();
+      const selection = getCurrentSelectionText();
       if (FaqValidator.isQuestion(selection)) {
         button.innerText = this.addQuestionText;
       } else {
@@ -109,7 +102,7 @@ class BlockEditorFabHandler {
       /** Return early, wrapper is not added to DOM yet **/
       return;
     }
-    if ( window.getSelection().rangeCount === 0) {
+    if (window.getSelection().rangeCount === 0) {
       /** Return early if the range is not defined yet **/
       return;
     }
@@ -126,8 +119,8 @@ class BlockEditorFabHandler {
       const offset = height / 2;
       wrapper.style.position = "fixed";
       wrapper.style.left = `${right + 30}px`;
-      wrapper.style.top = `${bottom - offset  - 10}px`;
-      wrapper.zIndex = 999
+      wrapper.style.top = `${bottom - offset - 10}px`;
+      wrapper.zIndex = 999;
       this.showFabWrapper(wrapper);
     }
   }
