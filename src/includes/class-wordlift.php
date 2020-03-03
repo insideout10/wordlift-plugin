@@ -18,6 +18,7 @@ use Wordlift\Faq\Faq_Rest_Controller;
 use Wordlift\Faq\Faq_Tinymce_Adapter;
 use Wordlift\Faq\Faq_To_Jsonld_Converter;
 use Wordlift\Entity\Entity_Helper;
+use Wordlift\Faq\Faq_Content_Filter;
 use Wordlift\Jsonld\Jsonld_Adapter;
 use Wordlift\Mappings\Jsonld_Converter;
 use Wordlift\Mappings\Mappings_DBO;
@@ -341,6 +342,14 @@ class Wordlift {
 	 * @var \Wordlift_Content_Filter_Service $content_filter_service A {@link Wordlift_Content_Filter_Service} instance.
 	 */
 	private $content_filter_service;
+
+	/**
+	 * The Faq Content filter service
+	 * @since  3.26.0
+	 * @access private
+	 * @var Faq_Content_Filter $faq_content_filter_service A {@link Faq_Content_Filter} instance.
+	 */
+	private $faq_content_filter_service;
 
 	/**
 	 * A {@link Wordlift_Key_Validation_Service} instance.
@@ -1265,6 +1274,8 @@ class Wordlift {
 
 		$this->key_validation_service    = new Wordlift_Key_Validation_Service( $this->configuration_service );
 		$this->content_filter_service    = new Wordlift_Content_Filter_Service( $this->entity_service, $this->configuration_service, $this->entity_uri_service );
+		// Creating Faq Content filter service.
+		$this->faq_content_filter_service = new Faq_Content_Filter();
 		$this->relation_rebuild_service  = new Wordlift_Relation_Rebuild_Service( $this->content_filter_service, $this->entity_service );
 		$this->sample_data_service       = new Wordlift_Sample_Data_Service( $this->entity_type_service, $this->configuration_service, $this->user_service );
 		$this->sample_data_ajax_adapter  = new Wordlift_Sample_Data_Ajax_Adapter( $this->sample_data_service );
@@ -1766,7 +1777,8 @@ class Wordlift {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $this->context_cards_service, 'enqueue_scripts' );
-
+		// Registering Faq_Content_Filter service used for removing faq question and answer tags from the html.
+		$this->loader->add_filter('the_content', $this->faq_content_filter_service, 'remove_all_faq_question_and_answer_tags');
 		// Hook the content filter service to add entity links.
 		if ( ! defined( 'WL_DISABLE_CONTENT_FILTER' ) || ! WL_DISABLE_CONTENT_FILTER ) {
 			$this->loader->add_filter( 'the_content', $this->content_filter_service, 'the_content' );

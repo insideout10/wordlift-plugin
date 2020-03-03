@@ -45,7 +45,7 @@ class BlockEditorHighlightHandler {
    * @return {{attributes: {}}}
    */
   getFormatFromEventData(data) {
-    const { isQuestion, id } = data;
+    const { isQuestion } = data;
     const format = {
       attributes: {}
     };
@@ -53,10 +53,8 @@ class BlockEditorHighlightHandler {
      * Apply format depending on the type.
      */
     if (isQuestion) {
-      format.attributes.id = `${FAQ_QUESTION_HIGHLIGHTING_CLASS}--${id}`;
       format.type = FAQ_QUESTION_FORMAT_NAME;
     } else {
-      format.attributes.id = `${FAQ_ANSWER_HIGHLIGHTING_CLASS}--${id}`;
       format.type = FAQ_ANSWER_FORMAT_NAME;
     }
     return format;
@@ -106,8 +104,6 @@ class BlockEditorHighlightHandler {
       console.log(block)
       if (blockValue !== undefined) {
         const attributes = {};
-        console.log(eventData)
-        console.log(block)
         const tagName = TinymceHighlightHandler.getTagBasedOnHighlightedText(eventData.isQuestion);
         const resultHTML = `<${tagName}>${blockValue}</${tagName}>`;
         // check if the block has content attribute or values attribute.
