@@ -13,7 +13,7 @@ import { on } from "backbone";
  */
 import { FAQ_HIGHLIGHT_TEXT } from "../../constants/faq-hook-constants";
 import { classExtractor } from "../../../mappings/blocks/helper";
-import {FAQ_ANSWER_TAG_NAME, FAQ_QUESTION_TAG_NAME} from "../custom-faq-elements";
+import CustomFaqElementsRegistry, {FAQ_ANSWER_TAG_NAME, FAQ_QUESTION_TAG_NAME} from "../custom-faq-elements";
 
 export const FAQ_QUESTION_HIGHLIGHTING_CLASS = "wl-faq--question";
 export const FAQ_ANSWER_HIGHLIGHTING_CLASS = "wl-faq--answer";
@@ -26,6 +26,8 @@ class TinymceHighlightHandler {
   constructor(editor) {
     this.editor = editor;
     this.selection = null;
+    // Register all the custom elements.
+    CustomFaqElementsRegistry.registerAllElements()
     /**
      * Listen for highlighting events, then highlight the text.
      * Expected object from the event
@@ -53,7 +55,7 @@ class TinymceHighlightHandler {
    * Return answer or question tag based on the selected
    * text.
    */
-  getTagBasedOnHighlightedText(isQuestion) {
+  static getTagBasedOnHighlightedText(isQuestion) {
     if ( isQuestion ) {
       return FAQ_QUESTION_TAG_NAME
     }
@@ -75,7 +77,7 @@ class TinymceHighlightHandler {
       return;
     }
     const html = this.selection.getContent();
-    const tagName = this.getTagBasedOnHighlightedText(isQuestion)
+    const tagName = TinymceHighlightHandler.getTagBasedOnHighlightedText(isQuestion)
     const highlightedElement = `<${tagName}>${html}</${tagName}>`;
     this.selection.setContent(highlightedElement);
   }

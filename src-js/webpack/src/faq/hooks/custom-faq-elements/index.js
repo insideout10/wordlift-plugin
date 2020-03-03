@@ -9,8 +9,16 @@ export const FAQ_QUESTION_TAG_NAME = "wl-faq-question";
 
 export const FAQ_ANSWER_TAG_NAME = "wl-faq-answer";
 
-class FaqQuestion extends Element {}
-class FaqAnswer extends Element {}
+class FaqQuestion extends HTMLDivElement {
+  constructor() {
+    super();
+  }
+}
+class FaqAnswer extends HTMLDivElement {
+  constructor() {
+    super();
+  }
+}
 
 class CustomFaqElementsRegistry {
   static registerFaqQuestionElement() {

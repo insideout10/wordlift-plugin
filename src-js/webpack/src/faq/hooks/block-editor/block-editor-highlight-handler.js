@@ -16,7 +16,10 @@ import { on } from "backbone";
 import { FAQ_HIGHLIGHT_TEXT } from "../../constants/faq-hook-constants";
 import { FAQ_ANSWER_FORMAT_NAME, FAQ_QUESTION_FORMAT_NAME } from "./block-editor-format-type-handler";
 import { applyFormat } from "@wordpress/rich-text";
-import { FAQ_ANSWER_HIGHLIGHTING_CLASS, FAQ_QUESTION_HIGHLIGHTING_CLASS } from "../tinymce/tinymce-highlight-handler";
+import TinymceHighlightHandler, {
+  FAQ_ANSWER_HIGHLIGHTING_CLASS,
+  FAQ_QUESTION_HIGHLIGHTING_CLASS
+} from "../tinymce/tinymce-highlight-handler";
 import { classExtractor } from "../../../mappings/blocks/helper";
 import { SELECTION_CHANGED } from "../../../common/constants";
 
@@ -100,27 +103,21 @@ class BlockEditorHighlightHandler {
   applyFormattingForMultipleBlocks(formatToBeApplied, blocks, eventData) {
     for (let block of blocks) {
       const blockValue = this.getBlockValue(block);
+      console.log(block)
       if (blockValue !== undefined) {
-        // Get the parent node from the original content.
-        const parentNode = document.createElement("div");
-        parentNode.innerHTML = block.originalContent;
-        const parentNodeName = parentNode.firstChild.nodeName;
-        const range = new Range();
-        // we create a dummy element with our html contents from block
-        // the div doesnt affect our range, since it is set to get only node contents.
-        const el = document.createElement(parentNodeName);
-        el.innerHTML = blockValue;
-        const rootNode = document.createElement('div')
-        rootNode.appendChild(el)
-        range.selectNodeContents(el);
-        // get the rich text element
-        const value = this.createRichTextElementFromRange(rootNode, range);
-        // lets apply the format.
-        const result = wp.richText.applyFormat(value, formatToBeApplied);
-        const content = wp.richText.toHTMLString({
-          value: result
-        });
-        wp.data.dispatch("core/block-editor").updateBlockAttributes(block.clientId, { content, values:content });
+        const attributes = {};
+        console.log(eventData)
+        console.log(block)
+        const tagName = TinymceHighlightHandler.getTagBasedOnHighlightedText(eventData.isQuestion);
+        const resultHTML = `<${tagName}>${blockValue}</${tagName}>`;
+        // check if the block has content attribute or values attribute.
+        if (block.attributes.content !== undefined) {
+          attributes.content = resultHTML;
+        } else if (block.values !== undefined) {
+          attributes.values = resultHTML;
+        }
+        // Set the altered HTML to the block.
+        wp.data.dispatch("core/block-editor").updateBlockAttributes(block.clientId, attributes);
       }
     }
   }
