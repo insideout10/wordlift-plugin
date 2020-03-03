@@ -13,7 +13,6 @@ import { registerFormatType } from "@wordpress/rich-text";
 /**
  * Internal dependencies.
  */
-import { FAQ_ANSWER_HIGHLIGHTING_CLASS, FAQ_QUESTION_HIGHLIGHTING_CLASS } from "../tinymce/tinymce-highlight-handler";
 import CustomFaqElementsRegistry, { FAQ_ANSWER_TAG_NAME, FAQ_QUESTION_TAG_NAME } from "../custom-faq-elements";
 
 export const FAQ_ANSWER_FORMAT_NAME = "wordlift/faq-answer";

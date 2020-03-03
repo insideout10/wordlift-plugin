@@ -15,9 +15,6 @@ import { FAQ_HIGHLIGHT_TEXT } from "../../constants/faq-hook-constants";
 import { classExtractor } from "../../../mappings/blocks/helper";
 import CustomFaqElementsRegistry, {FAQ_ANSWER_TAG_NAME, FAQ_QUESTION_TAG_NAME} from "../custom-faq-elements";
 
-export const FAQ_QUESTION_HIGHLIGHTING_CLASS = "wl-faq--question";
-export const FAQ_ANSWER_HIGHLIGHTING_CLASS = "wl-faq--answer";
-
 class TinymceHighlightHandler {
   /**
    * Construct highlight handler instance.
