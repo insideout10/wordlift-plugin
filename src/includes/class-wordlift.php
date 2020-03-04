@@ -1705,6 +1705,8 @@ class Wordlift {
 		 * Load the tinymce editor button on the tool bar.
 		 * @since 3.26.0
 		 */
+		// Load the translation strings required for tinymce plugin.
+		$this->loader->add_filter( 'mce_external_languages', $this->faq_tinymce_adapter, 'load_translation_strings_for_faq_tinymce_plugin', 10, 1 );
 		$this->loader->add_filter('mce_buttons', $this->faq_tinymce_adapter, 'register_faq_toolbar_button', 10, 1);
 		$this->loader->add_filter('mce_external_plugins', $this->faq_tinymce_adapter, 'register_faq_tinymce_plugin', 10, 1);
 
