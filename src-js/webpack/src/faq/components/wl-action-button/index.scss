@@ -1,0 +1,23 @@
+$primary-color: #177efb;
+$secondary-color: #c2e5ff;
+.wl-action-button {
+  border-radius: 8px !important;
+  width: 100%;
+  margin: 3px;
+  padding: 10px;
+  font-size: 13px;
+  text-align: center;
+  text-transform: capitalize;
+  cursor: pointer;
+  border: 1px solid #eee;
+  &.wl-action-button--primary {
+    background-color: $primary-color !important;
+    color: #fff !important;
+    font-weight: bold;
+  }
+  &.wl-action-button--normal {
+    background-color: $secondary-color !important;
+    color: $primary-color !important;
+    font-weight: bold;
+  }
+}

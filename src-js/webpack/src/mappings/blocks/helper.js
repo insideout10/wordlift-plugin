@@ -17,5 +17,5 @@ export const classExtractor = classConfig => {
       className += ` ${key}`;
     }
   }
-  return className;
+  return className.trim();
 };

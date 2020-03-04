@@ -14,7 +14,11 @@
 
 use Wordlift\Analysis\Response\Analysis_Response_Ops_Factory;
 use Wordlift\Cache\Ttl_Cache;
+use Wordlift\Faq\Faq_Rest_Controller;
+use Wordlift\Faq\Faq_Tinymce_Adapter;
+use Wordlift\Faq\Faq_To_Jsonld_Converter;
 use Wordlift\Entity\Entity_Helper;
+use Wordlift\Faq\Faq_Content_Filter;
 use Wordlift\Jsonld\Jsonld_Adapter;
 use Wordlift\Mappings\Jsonld_Converter;
 use Wordlift\Mappings\Mappings_DBO;
@@ -86,6 +90,14 @@ class Wordlift {
 	 * @var \Wordlift_Tinymce_Adapter $tinymce_adapter The {@link Wordlift_Tinymce_Adapter} instance.
 	 */
 	protected $tinymce_adapter;
+
+	/**
+	 * The {@link Faq_Tinymce_Adapter} instance
+	 * @since 3.26.0
+	 * @access protected
+	 * @var Faq_Tinymce_Adapter $faq_tinymce_adapter.
+	 */
+	protected $faq_tinymce_adapter;
 
 	/**
 	 * The Thumbnail service.
@@ -330,6 +342,14 @@ class Wordlift {
 	 * @var \Wordlift_Content_Filter_Service $content_filter_service A {@link Wordlift_Content_Filter_Service} instance.
 	 */
 	private $content_filter_service;
+
+	/**
+	 * The Faq Content filter service
+	 * @since  3.26.0
+	 * @access private
+	 * @var Faq_Content_Filter $faq_content_filter_service A {@link Faq_Content_Filter} instance.
+	 */
+	private $faq_content_filter_service;
 
 	/**
 	 * A {@link Wordlift_Key_Validation_Service} instance.
@@ -1240,8 +1260,8 @@ class Wordlift {
 
 		// Instantiate the JSON-LD service.
 		$property_getter                       = Wordlift_Property_Getter_Factory::create( $this->entity_service );
-		$this->entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $property_getter, $schemaorg_property_service );
 		$this->post_to_jsonld_converter        = new Wordlift_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $this->configuration_service );
+		$this->entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $property_getter, $schemaorg_property_service, $this->post_to_jsonld_converter );
 		$this->postid_to_jsonld_converter      = new Wordlift_Postid_To_Jsonld_Converter( $this->entity_service, $this->entity_post_to_jsonld_converter, $this->post_to_jsonld_converter );
 		$this->jsonld_website_converter        = new Wordlift_Website_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $this->configuration_service );
 
@@ -1254,6 +1274,8 @@ class Wordlift {
 
 		$this->key_validation_service    = new Wordlift_Key_Validation_Service( $this->configuration_service );
 		$this->content_filter_service    = new Wordlift_Content_Filter_Service( $this->entity_service, $this->configuration_service, $this->entity_uri_service );
+		// Creating Faq Content filter service.
+		$this->faq_content_filter_service = new Faq_Content_Filter();
 		$this->relation_rebuild_service  = new Wordlift_Relation_Rebuild_Service( $this->content_filter_service, $this->entity_service );
 		$this->sample_data_service       = new Wordlift_Sample_Data_Service( $this->entity_type_service, $this->configuration_service, $this->user_service );
 		$this->sample_data_ajax_adapter  = new Wordlift_Sample_Data_Ajax_Adapter( $this->sample_data_service );
@@ -1282,6 +1304,7 @@ class Wordlift {
 		$this->entity_type_adapter      = new Wordlift_Entity_Type_Adapter( $this->entity_type_service );
 		$this->publisher_ajax_adapter   = new Wordlift_Publisher_Ajax_Adapter( $this->publisher_service );
 		$this->tinymce_adapter          = new Wordlift_Tinymce_Adapter( $this );
+		$this->faq_tinymce_adapter      = new Faq_Tinymce_Adapter();
 		$this->relation_rebuild_adapter = new Wordlift_Relation_Rebuild_Adapter( $this->relation_rebuild_service );
 
 		/*
@@ -1447,6 +1470,11 @@ class Wordlift {
 
 		new Jsonld_Converter( $mappings_validator, $mappings_transform_functions_registry );
 
+		/**
+		 * @since 3.26.0
+		 * Initialize the Faq JSON LD converter here.
+		 */
+		new Faq_To_Jsonld_Converter();
 		/*
 		 * Use the Templates Ajax Endpoint to load HTML templates for the legacy Angular app via admin-ajax.php
 		 * end-point.
@@ -1455,6 +1483,8 @@ class Wordlift {
 		 * @since 3.24.4
 		 */
 		new Templates_Ajax_Endpoint();
+		// Call this static method to register FAQ routes to rest api
+		Faq_Rest_Controller::register_routes();
 
 		/*
 		 * Create a singleton for the Analysis_Response_Ops_Factory.
@@ -1671,8 +1701,16 @@ class Wordlift {
 
 		/** Adapters. */
 		$this->loader->add_filter( 'mce_external_plugins', $this->tinymce_adapter, 'mce_external_plugins', 10, 1 );
-		$this->loader->add_action( 'wp_ajax_wl_relation_rebuild_process_all', $this->relation_rebuild_adapter, 'process_all' );
+		/**
+		 * Load the tinymce editor button on the tool bar.
+		 * @since 3.26.0
+		 */
+		$this->loader->add_filter('tiny_mce_before_init', $this->faq_tinymce_adapter, 'register_custom_tags');
+		$this->loader->add_filter('mce_buttons', $this->faq_tinymce_adapter, 'register_faq_toolbar_button', 10, 1);
+		$this->loader->add_filter('mce_external_plugins', $this->faq_tinymce_adapter, 'register_faq_tinymce_plugin', 10, 1);
 
+
+		$this->loader->add_action( 'wp_ajax_wl_relation_rebuild_process_all', $this->relation_rebuild_adapter, 'process_all' );
 		$this->loader->add_action( 'wp_ajax_wl_sample_data_create', $this->sample_data_ajax_adapter, 'create' );
 		$this->loader->add_action( 'wp_ajax_wl_sample_data_delete', $this->sample_data_ajax_adapter, 'delete' );
 
@@ -1740,7 +1778,8 @@ class Wordlift {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $this->context_cards_service, 'enqueue_scripts' );
-
+		// Registering Faq_Content_Filter service used for removing faq question and answer tags from the html.
+		$this->loader->add_filter('the_content', $this->faq_content_filter_service, 'remove_all_faq_question_and_answer_tags');
 		// Hook the content filter service to add entity links.
 		if ( ! defined( 'WL_DISABLE_CONTENT_FILTER' ) || ! WL_DISABLE_CONTENT_FILTER ) {
 			$this->loader->add_filter( 'the_content', $this->content_filter_service, 'the_content' );
