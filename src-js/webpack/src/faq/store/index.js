@@ -20,7 +20,8 @@ export const FAQ_INITIAL_STATE = {
   faqListOptions: {
     question: "",
     faqItems: [],
-    selectedFaqId: null
+    selectedFaqId: null,
+    requestInProgress: true,
   },
   faqModalOptions: {
     isModalOpened: false,

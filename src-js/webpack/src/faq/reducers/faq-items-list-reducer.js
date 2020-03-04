@@ -18,7 +18,7 @@ import {
   QUESTION_SELECTED_BY_USER,
   RESET_TYPED_QUESTION,
   UPDATE_FAQ_ITEMS,
-  UPDATE_QUESTION_ON_INPUT_CHANGE
+  UPDATE_QUESTION_ON_INPUT_CHANGE, UPDATE_REQUEST_IN_PROGRESS
 } from "../constants/action-types";
 
 export const faqItemsListReducer = createReducer(null, {
@@ -36,5 +36,8 @@ export const faqItemsListReducer = createReducer(null, {
   },
   [RESET_TYPED_QUESTION]: (state, action) => {
     state.question = "";
+  },
+  [UPDATE_REQUEST_IN_PROGRESS]: (state, action) => {
+    state.requestInProgress = action.payload
   }
 });

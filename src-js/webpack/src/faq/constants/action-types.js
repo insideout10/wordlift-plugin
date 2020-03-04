@@ -82,3 +82,9 @@ export const ANSWER_SELECTED_BY_USER = "ANSWER_SELECTED_BY_USER";
  * @type {string}
  */
 export const REQUEST_DELETE_FAQ_ITEMS = "REQUEST_DELETE_FAQ_ITEMS";
+
+/**
+ * Action type for updating the request in progress.
+ * @type {string}
+ */
+export const UPDATE_REQUEST_IN_PROGRESS = "UPDATE_REQUEST_IN_PROGRESS";

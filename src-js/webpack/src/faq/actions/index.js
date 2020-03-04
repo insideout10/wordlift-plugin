@@ -25,7 +25,7 @@ import {
   UPDATE_FAQ_ITEMS,
   UPDATE_MODAL_STATUS,
   UPDATE_NOTIFICATION_AREA,
-  UPDATE_QUESTION_ON_INPUT_CHANGE
+  UPDATE_QUESTION_ON_INPUT_CHANGE, UPDATE_REQUEST_IN_PROGRESS
 } from "../constants/action-types";
 
 /**
@@ -104,3 +104,8 @@ export const resetTypedQuestion = createAction(RESET_TYPED_QUESTION);
  * Action for opening modal if the answer is selected by the user
  */
 export const answerSelectedByUser = createAction(ANSWER_SELECTED_BY_USER);
+
+/**
+ * Action for changing the request status
+ */
+export const changeRequestStatus = createAction(UPDATE_REQUEST_IN_PROGRESS);

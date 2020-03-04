@@ -21,6 +21,7 @@ import {
 import API from "../api/index";
 import {getAllFAQItems, getCurrentQuestion} from "../selectors";
 import {
+  changeRequestStatus,
   closeEditScreen,
   requestGetFaqItems,
   resetTypedQuestion,
@@ -63,7 +64,9 @@ function* handleAddNewQuestion(action) {
       answer: ""
     }
   ];
+  yield put(changeRequestStatus(true))
   const response = yield call(API.saveFAQItems, faqItems);
+  yield put(changeRequestStatus(false))
   // Event emitted to global namespace in order to highlight text in the editor.
   trigger(FAQ_HIGHLIGHT_TEXT, {
     text: currentQuestion,
@@ -81,11 +84,13 @@ function* handleAddNewQuestion(action) {
  * @return {Generator<*, void, ?>}
  */
 function* handleGetFaqItems() {
+  yield put(changeRequestStatus(true))
   const faqItems = yield call(API.getFAQItems);
   const payload = transformAPIDataToUi(faqItems);
   const action = updateFaqItems(payload);
   trigger(FAQ_ITEMS_CHANGED, payload);
   yield put(action);
+  yield put(changeRequestStatus(false))
 }
 
 /**
@@ -115,9 +120,11 @@ function* handleUpdateFaqItems(action) {
     isQuestion: payload.type === faqEditItemType.QUESTION,
     id: faqItems[faqItemIndex].id
   });
+  yield put(changeRequestStatus(true))
   const response = yield call(API.updateFAQItems, changedFaqItems);
-  yield dispatchNotification(response);
+  yield put(changeRequestStatus(false))
   yield put(requestGetFaqItems());
+  yield dispatchNotification(response);
   // Close the modal on apply.
   const modalAction = updateFaqModalVisibility(false);
   yield put(modalAction);
@@ -135,10 +142,12 @@ function* handleDeleteFaqItems(action) {
   const payload = action.payload;
   const faqItemIndex = allFaqItems.map(e => e.id).indexOf(payload.id);
   const deletedFaqItems = [allFaqItems[faqItemIndex]];
+  yield put(changeRequestStatus(true))
   const response = yield call(API.deleteFaqItems, deletedFaqItems);
-  yield dispatchNotification(response);
+  yield put(changeRequestStatus(false))
   // Refresh the screen by getting new FAQ items.
   yield put(requestGetFaqItems());
+  yield dispatchNotification(response);
 }
 
 function* rootSaga() {

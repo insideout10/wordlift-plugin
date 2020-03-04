@@ -89,16 +89,16 @@ class Wordlift_Admin_Post_Edit_Page {
 	function is_gutenberg_page() {
 		if ( function_exists( 'is_gutenberg_page' ) && is_gutenberg_page() ) {
 			// The Gutenberg plugin is on.
-			return true;
+			return TRUE;
 		}
 
 		$current_screen = get_current_screen();
 		if ( method_exists( $current_screen, 'is_block_editor' ) && $current_screen->is_block_editor() ) {
 			// Gutenberg page on 5+.
-			return true;
+			return TRUE;
 		}
 
-		return false;
+		return FALSE;
 	}
 
 	/**
@@ -210,7 +210,7 @@ class Wordlift_Admin_Post_Edit_Page {
 			'wl-faq-metabox-script',
 			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/faq',
 			array( 'wp-polyfill' ),
-			true
+			TRUE
 		);
 	}
 
@@ -221,19 +221,20 @@ class Wordlift_Admin_Post_Edit_Page {
 	 */
 	public function get_faq_settings() {
 		return array(
-			'restUrl'                 => get_rest_url( null, WL_REST_ROUTE_DEFAULT_NAMESPACE . '/faq' ),
+			'restUrl'                 => get_rest_url( NULL, WL_REST_ROUTE_DEFAULT_NAMESPACE . '/faq' ),
 			'listBoxId'               => self::FAQ_LIST_BOX_ID,
 			'nonce'                   => wp_create_nonce( 'wp_rest' ),
 			'postId'                  => get_the_ID(),
 			// Translation for warning, error message.
 			'invalidTagMessage'       => sprintf( __( 'Invalid tags %s is present in answer', self::WORDLIFT_TEXT_DOMAIN ), "{INVALID_TAGS}" ),
 			'invalidWordCountMessage' => sprintf( __( 'Answer word count must not exceed %s words', self::WORDLIFT_TEXT_DOMAIN ), "{ANSWER_WORD_COUNT_WARNING_LIMIT}" ),
-			'questionText' => __('Question', self::WORDLIFT_TEXT_DOMAIN),
-			'answerText' => __('Answer', self::WORDLIFT_TEXT_DOMAIN),
-			'addQuestionOrAnswerText' => __('Add Question / Answer', self::WORDLIFT_TEXT_DOMAIN),
-			'addQuestionText' => __('Add Question', self::WORDLIFT_TEXT_DOMAIN),
-			'addAnswerText' => __('Add Answer', self::WORDLIFT_TEXT_DOMAIN),
-			'noFaqItemsText' => __('No Questions or answers present', self::WORDLIFT_TEXT_DOMAIN)
+			'questionText'            => __( 'Question', self::WORDLIFT_TEXT_DOMAIN ),
+			'answerText'              => __( 'Answer', self::WORDLIFT_TEXT_DOMAIN ),
+			'addQuestionOrAnswerText' => __( 'Add Question / Answer', self::WORDLIFT_TEXT_DOMAIN ),
+			'addQuestionText'         => __( 'Add Question', self::WORDLIFT_TEXT_DOMAIN ),
+			'addAnswerText'           => __( 'Add Answer', self::WORDLIFT_TEXT_DOMAIN ),
+			'noFaqItemsText'          => __( 'No Questions or answers present', self::WORDLIFT_TEXT_DOMAIN ),
+			'updatingText'          => __( 'Updating...', self::WORDLIFT_TEXT_DOMAIN )
 		);
 	}
 
@@ -252,7 +253,7 @@ class Wordlift_Admin_Post_Edit_Page {
 				'wl-faq-gutenberg-plugin',
 				plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/block-editor-faq-plugin',
 				array( 'wp-polyfill' ),
-				true
+				TRUE
 			);
 		}
 	}
@@ -302,7 +303,7 @@ class Wordlift_Admin_Post_Edit_Page {
 			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/autocomplete-select.js',
 			array(),
 			$this->plugin->get_version(),
-			true
+			TRUE
 		);
 
 		wp_enqueue_style(
