@@ -23,10 +23,9 @@ class TinymceToolbarHandler {
     this.editor = editor;
     this.highlightHandler = highlightHandler;
     this.faqItems = [];
-    const { addQuestionText, addAnswerText, addQuestionOrAnswerText } = global["_wlFaqSettings"];
-    this.addQuestionText = addQuestionText;
-    this.addAnswerText = addAnswerText;
-    this.addQuestionOrAnswerText = addQuestionOrAnswerText;
+    this.addQuestionText = this.editor.translate("Add Question");
+    this.addAnswerText = this.editor.translate("Add Answer");
+    this.addQuestionOrAnswerText = this.editor.translate("Add Question / Answer");
     // Listen to store changes on faq items and set the tool bar
     // button state based on it.
     on(FAQ_ITEMS_CHANGED, faqItems => {

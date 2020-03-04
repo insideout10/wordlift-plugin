@@ -17,11 +17,6 @@ class Faq_Tinymce_Adapter {
 
 	const FAQ_TINYMCE_ADD_BUTTON_ID = "wl-faq-toolbar-button";
 
-	public function load_translation_strings_for_faq_tinymce_plugin( $translation_files ) {
-		array_push( $translation_files, plugin_dir_url( dirname( __DIR__ ) ) . 'wordlift/faq/faq-tinymce=plugin-translation.php' );
-
-		return $translation_files;
-	}
 
 	public function register_faq_tinymce_plugin( $plugins ) {
 		/**
