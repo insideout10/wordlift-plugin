@@ -16,11 +16,12 @@ import {ANSWER_ALLOWED_HTML_TAGS} from "../../components/faq-edit-item/helpers";
  * @param el {Element}
  * @param tagName {string}
  */
-function removeElementByTagName(el, tagName) {
+function replaceElementByTagName(el, tagName) {
   const occurrences = el.getElementsByTagName(tagName);
   // Remove all occurences by removing it from the parent node.
   for (let i = occurrences.length - 1; i >= 0; i--) {
-    occurrences[i].parentNode.removeChild(occurrences[i]);
+    const newChild = document.createTextNode(occurrences[i].textContent);
+    occurrences[i].parentNode.replaceChild(newChild, occurrences[i]);
   }
 }
 
@@ -49,7 +50,7 @@ export const invalidTagFilter = htmlString => {
    * Remove all the invalid tags.
    */
   for (let invalidTag of invalidTags) {
-    removeElementByTagName(el, invalidTag);
+    replaceElementByTagName(el, invalidTag);
   }
   return el.innerHTML;
 };
