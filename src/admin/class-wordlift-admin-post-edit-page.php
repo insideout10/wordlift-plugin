@@ -243,7 +243,9 @@ class Wordlift_Admin_Post_Edit_Page {
 	 * @param $editor string specifying which text editor needed to be used.
 	 */
 	private function load_faq_settings( $editor ) {
-		// Register the api endpoints.
+		// This script also provides translations to gutenberg.
+		wp_localize_script( 'wl-faq-metabox-script', '_wlFaqSettings', $this->get_faq_settings() );
+
 		// Enqueue the FAQ style
 		if ( $editor === self::GUTENBERG ) {
 			Scripts_Helper::enqueue_based_on_wordpress_version(
@@ -253,8 +255,6 @@ class Wordlift_Admin_Post_Edit_Page {
 				true
 			);
 		}
-
-		wp_localize_script( 'wl-faq-metabox-script', '_wlFaqSettings', $this->get_faq_settings() );
 	}
 
 	/**

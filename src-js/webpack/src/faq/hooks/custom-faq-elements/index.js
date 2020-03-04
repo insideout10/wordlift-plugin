@@ -22,10 +22,14 @@ class FaqAnswer extends HTMLElement {
 
 class CustomFaqElementsRegistry {
   static registerFaqQuestionElement() {
-    customElements.define(FAQ_QUESTION_TAG_NAME, FaqQuestion, { extends: "div" });
+    if ( customElements.get(FAQ_QUESTION_TAG_NAME) === undefined ) {
+      customElements.define(FAQ_QUESTION_TAG_NAME, FaqQuestion, {extends: "div"});
+    }
   }
   static registerFaqAnswerElement() {
-    customElements.define(FAQ_ANSWER_TAG_NAME, FaqAnswer, { extends: "div" });
+    if ( customElements.get(FAQ_ANSWER_TAG_NAME) === undefined ) {
+      customElements.define(FAQ_ANSWER_TAG_NAME, FaqAnswer, {extends: "div"});
+    }
   }
   static registerAllElements() {
     CustomFaqElementsRegistry.registerFaqQuestionElement();
