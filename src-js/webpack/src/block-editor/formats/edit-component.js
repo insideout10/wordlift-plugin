@@ -53,7 +53,7 @@ const EditComponent = ({ onChange, value, isActive, activeAttributes, onSelectio
     const selection = value.text.substring(value.start, value.end);
     onSelectionChange(selection);
     setFormat({ onChange, value });
-    trigger(SELECTION_CHANGED, { selection });
+    trigger(SELECTION_CHANGED, { selection, value, onChange });
   }, 200);
 
   // Send the annotation change event.

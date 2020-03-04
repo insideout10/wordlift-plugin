@@ -1,0 +1,21 @@
+.wl-notification-area {
+  position: fixed;
+  z-index: 99999; /** Show notification above all divs **/
+  top: 0;
+  right: 0;
+  animation-duration: 0.3s;
+  animation-name: fadeIn;
+  background-color: inherit;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+.wl-notification-area__close-button {
+  cursor: pointer;
+}
