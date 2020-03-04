@@ -52,11 +52,10 @@ export function getCurrentSelectionHTML() {
  */
 export function getCurrentSelectionText() {
   // Create a dummy element and render it.
-  const el = document.createElement('div')
-  el.innerHTML = getCurrentSelectionHTML()
-  return el.innerText
+  const el = document.createElement("div");
+  el.innerHTML = getCurrentSelectionHTML();
+  return el.innerText;
 }
-
 
 /**
  * Renders the html from the blockvalue string and insert

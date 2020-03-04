@@ -8,14 +8,15 @@
 /**
  * External dependencies.
  */
-import { createAction } from "redux-actions";
+import {createAction} from "redux-actions";
 /**
  * Internal dependencies
  */
 import {
   ANSWER_SELECTED_BY_USER,
   CLOSE_EDIT_SCREEN,
-  QUESTION_SELECTED_BY_USER, REQUEST_DELETE_FAQ_ITEMS,
+  QUESTION_SELECTED_BY_USER,
+  REQUEST_DELETE_FAQ_ITEMS,
   REQUEST_FAQ_ADD_NEW_QUESTION,
   REQUEST_GET_FAQ_ITEMS,
   REQUEST_UPDATE_FAQ_ITEMS,
@@ -44,7 +45,6 @@ export const requestGetFaqItems = createAction(REQUEST_GET_FAQ_ITEMS);
  * @type {function(): {type: *}}
  */
 export const requestDeleteFaqItems = createAction(REQUEST_DELETE_FAQ_ITEMS);
-
 
 /**
  * Action for updating FAQ items in store.

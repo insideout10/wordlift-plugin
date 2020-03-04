@@ -9,12 +9,12 @@
  * External dependencies
  */
 import createSagaMiddleware from "redux-saga";
-import { applyMiddleware, createStore } from "redux";
+import {applyMiddleware, createStore} from "redux";
 /**
  * Internal dependencies
  */
 import rootSaga from "../sagas";
-import { faqReducer } from "../reducers";
+import {faqReducer} from "../reducers";
 
 export const FAQ_INITIAL_STATE = {
   faqListOptions: {

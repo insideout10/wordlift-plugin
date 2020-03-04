@@ -9,13 +9,13 @@
  * External dependencies.
  */
 import React from "react";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 /**
  * Internal dependencies.
  */
 import FaqList from "../faq-list";
 import "./index.scss";
-import FaqEditItem, { faqEditItemType } from "../faq-edit-item";
+import FaqEditItem, {faqEditItemType} from "../faq-edit-item";
 import FaqEditItemCloseButton from "../faq-edit-item-close-button";
 
 class FaqScreen extends React.Component {

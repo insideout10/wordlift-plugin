@@ -9,20 +9,20 @@
  * External dependencies.
  */
 import React from "react";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 /**
  * Internal dependencies.
  */
 import Question from "../question";
 import Answer from "../answer";
-import { WlCard } from "../../../common/components/wl-card";
-import { questionSelectedByUser } from "../../actions";
+import {WlCard} from "../../../common/components/wl-card";
+import {questionSelectedByUser} from "../../actions";
 
 class FaqList extends React.Component {
   constructor(props) {
     super(props);
     this.faqItemClicked = this.faqItemClicked.bind(this);
-    this.noFaqItemsText = window["_wlFaqSettings"]["noFaqItemsText"]
+    this.noFaqItemsText = window["_wlFaqSettings"]["noFaqItemsText"];
   }
   faqItemClicked(id) {
     this.props.dispatch(questionSelectedByUser(id));
@@ -30,10 +30,11 @@ class FaqList extends React.Component {
   render() {
     return (
       <React.Fragment>
-        {
-          this.props.faqItems.length === 0 &&
-          <WlCard alignCenter={true}><h3>{this.noFaqItemsText}</h3></WlCard>
-        }
+        {this.props.faqItems.length === 0 && (
+          <WlCard alignCenter={true}>
+            <h3>{this.noFaqItemsText}</h3>
+          </WlCard>
+        )}
         {this.props.faqItems.map(item => {
           return (
             <React.Fragment key={item.id}>

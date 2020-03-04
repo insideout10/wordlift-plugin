@@ -9,14 +9,14 @@
 /**
  * External dependencies.
  */
-import { on } from "backbone";
+import {on} from "backbone";
 /**
  * Internal dependencies.
  */
-import { FAQ_HIGHLIGHT_TEXT } from "../../constants/faq-hook-constants";
-import { FAQ_ANSWER_FORMAT_NAME, FAQ_QUESTION_FORMAT_NAME } from "./block-editor-format-type-handler";
+import {FAQ_HIGHLIGHT_TEXT} from "../../constants/faq-hook-constants";
+import {FAQ_ANSWER_FORMAT_NAME, FAQ_QUESTION_FORMAT_NAME} from "./block-editor-format-type-handler";
 import TinymceHighlightHandler from "../tinymce/tinymce-highlight-handler";
-import { SELECTION_CHANGED } from "../../../common/constants";
+import {SELECTION_CHANGED} from "../../../common/constants";
 import {renderHTMLAndApplyHighlightingCorrectly} from "./helpers";
 
 class BlockEditorHighlightHandler {
@@ -75,9 +75,9 @@ class BlockEditorHighlightHandler {
    * @param formatToBeApplied
    */
   applyFormattingForSingleBlock(formatToBeApplied) {
-    const selectedBlock = wp.data.select('core/block-editor').getSelectedBlock();
+    const selectedBlock = wp.data.select("core/block-editor").getSelectedBlock();
     // Dont apply formatting if the tinymce block is embedded in the block editor.
-    if (this.onChange !== null && this.singleBlockSelectionValue !== null && selectedBlock.name !== 'core/freeform') {
+    if (this.onChange !== null && this.singleBlockSelectionValue !== null && selectedBlock.name !== "core/freeform") {
       this.onChange(wp.richText.applyFormat(this.singleBlockSelectionValue, formatToBeApplied));
     }
   }
@@ -120,7 +120,6 @@ class BlockEditorHighlightHandler {
       attributeKeyName: attributeKeyName
     };
   }
-
 
   /**
    * Loops through the blocks and apply formatting for all.

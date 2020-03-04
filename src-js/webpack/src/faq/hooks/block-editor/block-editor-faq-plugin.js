@@ -7,7 +7,6 @@ import BlockEditorFabHandler from "./block-editor-fab-handler";
 import FaqTextEditorHook from "../interface/faq-text-editor-hook";
 import BlockEditorFabButtonRegister from "./block-editor-fab-button-register";
 
-
 class BlockEditorFaqPlugin extends FaqTextEditorHook {
   constructor(wp) {
     super();

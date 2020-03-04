@@ -10,7 +10,7 @@
  */
 import React from "react";
 import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
+import {Provider} from "react-redux";
 /**
  * Internal dependencies.
  */
@@ -19,7 +19,7 @@ import FaqScreen from "./components/faq-screen";
 import FaqModal from "./components/faq-modal";
 import FaqEventHandler from "./hooks/faq-event-handler";
 import "./index.scss";
-import "./components/wl-fab/index.scss"
+import "./components/wl-fab/index.scss";
 
 const listBoxId = "wl-faq-meta-list-box";
 

@@ -7,14 +7,12 @@
 /**
  * External dependencies.
  */
-import { on } from "backbone";
+import {on} from "backbone";
 /**
  * Internal dependencies.
  */
-import { FAQ_HIGHLIGHT_TEXT } from "../../constants/faq-hook-constants";
-import { classExtractor } from "../../../mappings/blocks/helper";
+import {FAQ_HIGHLIGHT_TEXT} from "../../constants/faq-hook-constants";
 import CustomFaqElementsRegistry, {FAQ_ANSWER_TAG_NAME, FAQ_QUESTION_TAG_NAME} from "../custom-faq-elements";
-import {renderHTMLAndApplyHighlightingCorrectly} from "../block-editor/helpers";
 
 class TinymceHighlightHandler {
   /**
@@ -25,7 +23,7 @@ class TinymceHighlightHandler {
     this.editor = editor;
     this.selection = null;
     // Register all the custom elements.
-    CustomFaqElementsRegistry.registerAllElements()
+    CustomFaqElementsRegistry.registerAllElements();
     /**
      * Listen for highlighting events, then highlight the text.
      * Expected object from the event
@@ -54,11 +52,10 @@ class TinymceHighlightHandler {
    * text.
    */
   static getTagBasedOnHighlightedText(isQuestion) {
-    if ( isQuestion ) {
-      return FAQ_QUESTION_TAG_NAME
-    }
-    else {
-      return FAQ_ANSWER_TAG_NAME
+    if (isQuestion) {
+      return FAQ_QUESTION_TAG_NAME;
+    } else {
+      return FAQ_ANSWER_TAG_NAME;
     }
   }
   /**
@@ -75,8 +72,8 @@ class TinymceHighlightHandler {
       return;
     }
     const html = this.selection.getContent();
-    const tagName = TinymceHighlightHandler.getTagBasedOnHighlightedText(isQuestion)
-    const highlightedHTML = renderHTMLAndApplyHighlightingCorrectly(html, tagName)
+    const tagName = TinymceHighlightHandler.getTagBasedOnHighlightedText(isQuestion);
+    const highlightedHTML = `<${tagName}>${html}</${tagName}>`;
     this.selection.setContent(highlightedHTML);
   }
 }

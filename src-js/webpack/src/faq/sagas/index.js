@@ -8,7 +8,7 @@
 /**
  * External dependencies
  */
-import { call, delay, put, select, takeLatest } from "redux-saga/effects";
+import {call, delay, put, select, takeLatest} from "redux-saga/effects";
 /**
  * Internal dependencies.
  */
@@ -19,7 +19,7 @@ import {
   UPDATE_FAQ_ITEM
 } from "../constants/action-types";
 import API from "../api/index";
-import { getAllFAQItems, getCurrentQuestion } from "../selectors";
+import {getAllFAQItems, getCurrentQuestion} from "../selectors";
 import {
   closeEditScreen,
   requestGetFaqItems,
@@ -28,10 +28,10 @@ import {
   updateFaqModalVisibility,
   updateNotificationArea
 } from "../actions";
-import { transformAPIDataToUi } from "./filters";
-import { faqEditItemType } from "../components/faq-edit-item";
-import { FAQ_HIGHLIGHT_TEXT, FAQ_ITEMS_CHANGED } from "../constants/faq-hook-constants";
-import { trigger } from "backbone";
+import {transformAPIDataToUi} from "./filters";
+import {faqEditItemType} from "../components/faq-edit-item";
+import {FAQ_HIGHLIGHT_TEXT, FAQ_ITEMS_CHANGED} from "../constants/faq-hook-constants";
+import {trigger} from "backbone";
 
 /**
  * Dispatch notification when a event occurs on the store.
@@ -82,7 +82,7 @@ function* handleAddNewQuestion(action) {
  */
 function* handleGetFaqItems() {
   const faqItems = yield call(API.getFAQItems);
-  const payload = transformAPIDataToUi(faqItems)
+  const payload = transformAPIDataToUi(faqItems);
   const action = updateFaqItems(payload);
   trigger(FAQ_ITEMS_CHANGED, payload);
   yield put(action);
@@ -139,7 +139,6 @@ function* handleDeleteFaqItems(action) {
   yield dispatchNotification(response);
   // Refresh the screen by getting new FAQ items.
   yield put(requestGetFaqItems());
-
 }
 
 function* rootSaga() {

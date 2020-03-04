@@ -11,7 +11,7 @@ import React from "react";
 /**
  * Internal dependencies.
  */
-import { ANSWER_WORD_COUNT_WARNING_LIMIT, faqEditItemType } from "./index";
+import {ANSWER_WORD_COUNT_WARNING_LIMIT, faqEditItemType} from "./index";
 
 /**
  * Allowed html tags in the answer according to docs
@@ -47,7 +47,7 @@ export const ANSWER_ALLOWED_HTML_TAGS = [
  * @return {*}
  */
 export function showWarningIfAnswerWordCountExceedsLimit(type, textAreaValue) {
-  const {invalidWordCountMessage } = global["_wlFaqSettings"];
+  const { invalidWordCountMessage } = global["_wlFaqSettings"];
   if (type !== faqEditItemType.ANSWER || 0 === textAreaValue.length) {
     return <React.Fragment />;
   }
