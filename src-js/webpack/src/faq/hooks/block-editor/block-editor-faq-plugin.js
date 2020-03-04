@@ -47,7 +47,7 @@ class BlockEditorFaqPlugin extends FaqTextEditorHook {
 
 /**
  * This hook is automatically loaded with block editor, so
- * we can just initailize the hook here.
+ * we can just initialize the hook here.
  */
 const adapter = new BlockEditorFaqPlugin(global["wp"]);
 adapter.initialize();

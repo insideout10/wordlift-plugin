@@ -56,3 +56,33 @@ export function getCurrentSelectionText() {
   el.innerHTML = getCurrentSelectionHTML()
   return el.innerText
 }
+
+
+/**
+ * Renders the html from the blockvalue string and insert
+ * highlight tags to produce a valid HTML.
+ * @param htmlValue {string} which may contain html.
+ * @param tagName {string} Name of the highlight tag.
+ * @return {string} string with valid html tags.
+ */
+export function renderHTMLAndApplyHighlightingCorrectly(htmlValue, tagName) {
+  const blockWrapper = document.createElement("div");
+  blockWrapper.innerHTML = htmlValue;
+  /**
+   * We apply highlighting for every child node, if the node
+   * is a text node then we are creating our highlighting tag and
+   * replace the text node with our highlighting node.
+   */
+  for (let node of blockWrapper.childNodes) {
+    const currentHTML = node.innerHTML;
+    if (node.nodeType === Node.TEXT_NODE) {
+      const textContent = node.textContent;
+      const newNode = document.createElement(`${tagName}`);
+      newNode.innerHTML = textContent;
+      blockWrapper.replaceChild(newNode, node);
+    } else {
+      node.innerHTML = `<${tagName}>${currentHTML}</${tagName}>`;
+    }
+  }
+  return blockWrapper.innerHTML;
+}

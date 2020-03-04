@@ -17,6 +17,7 @@ import { FAQ_HIGHLIGHT_TEXT } from "../../constants/faq-hook-constants";
 import { FAQ_ANSWER_FORMAT_NAME, FAQ_QUESTION_FORMAT_NAME } from "./block-editor-format-type-handler";
 import TinymceHighlightHandler from "../tinymce/tinymce-highlight-handler";
 import { SELECTION_CHANGED } from "../../../common/constants";
+import {renderHTMLAndApplyHighlightingCorrectly} from "./helpers";
 
 class BlockEditorHighlightHandler {
   constructor() {
@@ -118,34 +119,7 @@ class BlockEditorHighlightHandler {
     };
   }
 
-  /**
-   * Renders the html from the blockvalue string and insert
-   * highlight tags to produce a valid HTML.
-   * @param blockValue {string} which may contain html.
-   * @param tagName {string} Name of the highlight tag.
-   * @return {string} string with valid html tags.
-   */
-  renderHTMLAndApplyHighlightingCorrectly(blockValue, tagName) {
-    const blockWrapper = document.createElement("div");
-    blockWrapper.innerHTML = blockValue;
-    /**
-     * We apply highlighting for every child node, if the node
-     * is a text node then we are creating our highlighting tag and
-     * replace the text node with our highlighting node.
-     */
-    for (let node of blockWrapper.childNodes) {
-      const currentHTML = node.innerHTML;
-      if (node.nodeType === Node.TEXT_NODE) {
-        const textContent = node.textContent;
-        const newNode = document.createElement(`${tagName}`);
-        newNode.innerHTML = textContent;
-        blockWrapper.replaceChild(newNode, node);
-      } else {
-        node.innerHTML = `<${tagName}>${currentHTML}</${tagName}>`;
-      }
-    }
-    return blockWrapper.innerHTML;
-  }
+
   /**
    * Loops through the blocks and apply formatting for all.
    * @param formatToBeApplied
@@ -158,7 +132,7 @@ class BlockEditorHighlightHandler {
       if (blockValue !== null && attributeKeyName !== null) {
         const attributes = {};
         const tagName = TinymceHighlightHandler.getTagBasedOnHighlightedText(eventData.isQuestion);
-        attributes[attributeKeyName] = this.renderHTMLAndApplyHighlightingCorrectly(blockValue, tagName);
+        attributes[attributeKeyName] = renderHTMLAndApplyHighlightingCorrectly(blockValue, tagName);
         // Set the altered HTML to the block.
         wp.data.dispatch("core/block-editor").updateBlockAttributes(block.clientId, attributes);
       }
