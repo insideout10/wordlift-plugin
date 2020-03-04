@@ -75,7 +75,9 @@ class BlockEditorHighlightHandler {
    * @param formatToBeApplied
    */
   applyFormattingForSingleBlock(formatToBeApplied) {
-    if (this.onChange !== null && this.singleBlockSelectionValue !== null) {
+    const selectedBlock = wp.data.select('core/block-editor').getSelectedBlock();
+    // Dont apply formatting if the tinymce block is embedded in the block editor.
+    if (this.onChange !== null && this.singleBlockSelectionValue !== null && selectedBlock.name !== 'core/freeform') {
       this.onChange(wp.richText.applyFormat(this.singleBlockSelectionValue, formatToBeApplied));
     }
   }
