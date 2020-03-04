@@ -9,7 +9,7 @@
 /**
  * Internal dependencies.
  */
-import {ANSWER_ALLOWED_HTML_TAGS} from "../../components/faq-edit-item/helpers";
+import { ANSWER_ALLOWED_HTML_TAGS } from "../../components/faq-edit-item/helpers";
 
 /**
  * Remove an element by tag name

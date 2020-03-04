@@ -9,7 +9,7 @@
 /**
  * Internal dependencies.
  */
-import {transformUiDataToApiFormat, transformUiDataToDeleteApiFormat} from "../sagas/filters";
+import { transformUiDataToApiFormat, transformUiDataToDeleteApiFormat } from "../sagas/filters";
 
 function saveFAQItems(faqItems) {
   const { restUrl, nonce, postId } = global["_wlFaqSettings"];

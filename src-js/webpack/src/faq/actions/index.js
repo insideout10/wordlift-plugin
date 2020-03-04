@@ -8,7 +8,7 @@
 /**
  * External dependencies.
  */
-import {createAction} from "redux-actions";
+import { createAction } from "redux-actions";
 /**
  * Internal dependencies
  */
@@ -25,7 +25,8 @@ import {
   UPDATE_FAQ_ITEMS,
   UPDATE_MODAL_STATUS,
   UPDATE_NOTIFICATION_AREA,
-  UPDATE_QUESTION_ON_INPUT_CHANGE, UPDATE_REQUEST_IN_PROGRESS
+  UPDATE_QUESTION_ON_INPUT_CHANGE,
+  UPDATE_REQUEST_IN_PROGRESS
 } from "../constants/action-types";
 
 /**

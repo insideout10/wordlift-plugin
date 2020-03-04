@@ -22,7 +22,7 @@ import { WlCard } from "../../../common/components/wl-card";
 class FaqScreen extends React.Component {
   constructor(props) {
     super(props);
-      this.updatingText = window["_wlFaqSettings"]["updatingText"]
+    this.updatingText = window["_wlFaqSettings"]["updatingText"];
   }
   /**
    * If the user chose a question then display it

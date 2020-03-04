@@ -9,17 +9,17 @@
  * external dependencies
  */
 import React from "react";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 /**
  * Internal dependencies.
  */
 import FaqEditButtonGroup from "../faq-edit-button-group";
-import {WlContainer} from "../../../mappings/blocks/wl-container";
-import {WlColumn} from "../../../mappings/blocks/wl-column";
+import { WlContainer } from "../../../mappings/blocks/wl-container";
+import { WlColumn } from "../../../mappings/blocks/wl-column";
 import PropTypes from "prop-types";
-import {requestDeleteFaqItems, updateFaqItem} from "../../actions";
+import { requestDeleteFaqItems, updateFaqItem } from "../../actions";
 import "./index.scss";
-import {showWarningIfAnswerWordCountExceedsLimit, showWarningIfInvalidHTMLTagPresentInAnswer} from "./helpers";
+import { showWarningIfAnswerWordCountExceedsLimit, showWarningIfInvalidHTMLTagPresentInAnswer } from "./helpers";
 
 export const faqEditItemType = {
   ANSWER: "ANSWER",

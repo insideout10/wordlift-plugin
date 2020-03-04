@@ -7,8 +7,8 @@
 /**
  * Internal dependencies.
  */
-import {on, trigger} from "backbone";
-import {FAQ_EVENT_HANDLER_SELECTION_CHANGED, FAQ_ITEMS_CHANGED} from "../../constants/faq-hook-constants";
+import { on, trigger } from "backbone";
+import { FAQ_EVENT_HANDLER_SELECTION_CHANGED, FAQ_ITEMS_CHANGED } from "../../constants/faq-hook-constants";
 import FaqValidator from "../validators/faq-validator";
 
 const TINYMCE_TOOLBAR_BUTTON_NAME = "wl-faq-toolbar-button";
@@ -103,6 +103,12 @@ class TinymceToolbarHandler {
       this.disableButton(container, button);
     } else {
       this.enableButton(container, button);
+    }
+    const contentEditable = editor.getBody().getAttribute("contenteditable");
+    if (contentEditable === "false" || contentEditable === false) {
+      // then dont allow user to highlight text, analysis is going on, allowing user to
+      // highlighting text might break the html
+      this.disableButton(container, button);
     }
     this.setButtonTextBasedOnSelectedText(selectedText, button, container);
   }

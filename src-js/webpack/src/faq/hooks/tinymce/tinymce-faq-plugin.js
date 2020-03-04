@@ -14,6 +14,7 @@
 import TinymceToolbarHandler from "./tinymce-toolbar-handler";
 import TinymceHighlightHandler from "./tinymce-highlight-handler";
 import FaqTextEditorHook from "../interface/faq-text-editor-hook";
+import { FAQ_ANSWER_TAG_NAME, FAQ_QUESTION_TAG_NAME } from "../custom-faq-elements";
 
 const FAQ_TINYMCE_PLUGIN_NAME = "wl_faq_tinymce";
 const tinymce = global["tinymce"];

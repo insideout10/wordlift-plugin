@@ -2,19 +2,19 @@
  * External dependencies.
  */
 import React from "react";
-import {configure, mount} from "enzyme";
+import { configure, mount } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
-import {Provider} from "react-redux";
+import { Provider } from "react-redux";
 /**
  * Internal dependencies.
  */
-import {FAQ_INITIAL_STATE} from "../store";
+import { FAQ_INITIAL_STATE } from "../store";
 import FaqScreen from "../components/faq-screen";
-import {updateFaqItems} from "../actions";
-import {transformAPIDataToUi} from "../sagas/filters";
+import { updateFaqItems } from "../actions";
+import { transformAPIDataToUi } from "../sagas/filters";
 import createSagaMiddleware from "redux-saga";
-import {applyMiddleware, createStore} from "redux";
-import {faqReducer} from "../reducers";
+import { applyMiddleware, createStore } from "redux";
+import { faqReducer } from "../reducers";
 import rootSaga from "../sagas";
 
 configure({ adapter: new Adapter() });

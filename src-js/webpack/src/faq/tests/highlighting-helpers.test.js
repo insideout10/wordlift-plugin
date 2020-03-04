@@ -20,6 +20,4 @@ it("when the plain text is given to the tinymce highlighting helper, should retu
   ).toEqual(expectedText.trim().replace(/\s/g, ""));
 });
 
-it("when the html with tags are given then apply the tags inside it", () => {
-
-})
+it("when the html with tags are given then apply the tags inside it", () => {});

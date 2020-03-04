@@ -9,15 +9,15 @@
 /**
  * External dependencies.
  */
-import {on} from "backbone";
+import { on } from "backbone";
 /**
  * Internal dependencies.
  */
-import {FAQ_HIGHLIGHT_TEXT} from "../../constants/faq-hook-constants";
-import {FAQ_ANSWER_FORMAT_NAME, FAQ_QUESTION_FORMAT_NAME} from "./block-editor-format-type-handler";
+import { FAQ_HIGHLIGHT_TEXT } from "../../constants/faq-hook-constants";
+import { FAQ_ANSWER_FORMAT_NAME, FAQ_QUESTION_FORMAT_NAME } from "./block-editor-format-type-handler";
 import TinymceHighlightHandler from "../tinymce/tinymce-highlight-handler";
-import {SELECTION_CHANGED} from "../../../common/constants";
-import {renderHTMLAndApplyHighlightingCorrectly} from "./helpers";
+import { SELECTION_CHANGED } from "../../../common/constants";
+import { renderHTMLAndApplyHighlightingCorrectly } from "./helpers";
 
 class BlockEditorHighlightHandler {
   constructor() {

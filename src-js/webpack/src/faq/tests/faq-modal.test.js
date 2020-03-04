@@ -1,19 +1,19 @@
-import {configure, mount} from "enzyme";
-import {Provider} from "react-redux";
+import { configure, mount } from "enzyme";
+import { Provider } from "react-redux";
 import React from "react";
 import FaqModal from "../components/faq-modal";
 import createSagaMiddleware from "redux-saga";
-import {applyMiddleware, createStore} from "redux";
-import {faqReducer} from "../reducers";
-import {FAQ_INITIAL_STATE} from "../store";
+import { applyMiddleware, createStore } from "redux";
+import { faqReducer } from "../reducers";
+import { FAQ_INITIAL_STATE } from "../store";
 import rootSaga from "../sagas";
 import Adapter from "enzyme-adapter-react-16";
-import {FAQ_EVENT_HANDLER_SELECTION_CHANGED, FAQ_ITEM_SELECTED_ON_TEXT_EDITOR} from "../constants/faq-hook-constants";
-import {off, trigger} from "backbone";
+import { FAQ_EVENT_HANDLER_SELECTION_CHANGED, FAQ_ITEM_SELECTED_ON_TEXT_EDITOR } from "../constants/faq-hook-constants";
+import { off, trigger } from "backbone";
 import FaqEventHandler from "../hooks/faq-event-handler";
-import {updateFaqItems} from "../actions";
-import {transformAPIDataToUi} from "../sagas/filters";
-import {updateSuccessResponse} from "./faq-screen.test";
+import { updateFaqItems } from "../actions";
+import { transformAPIDataToUi } from "../sagas/filters";
+import { updateSuccessResponse } from "./faq-screen.test";
 
 configure({ adapter: new Adapter() });
 
