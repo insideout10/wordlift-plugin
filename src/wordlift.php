@@ -24,7 +24,11 @@
  * Domain Path:       /languages
  */
 
+use Wordlift\Api\Default_Api_Service;
+use Wordlift\Api\User_Agent;
 use Wordlift\Cache\Ttl_Cache_Cleaner;
+use Wordlift\Images_Licenses\Commons_Image;
+use Wordlift\Images_Licenses\Images_Licenses_Service;
 use Wordlift\Post\Post_Adapter;
 
 // If this file is called directly, abort.
@@ -513,6 +517,91 @@ function run_wordlift() {
 
 	// Load the new Post Adapter.
 	new Post_Adapter();
+
+	// Licenses Images.
+	$user_agent              = User_Agent::get_user_agent();
+	$wordlift_key            = Wordlift_Configuration_Service::get_instance()->get_key();
+	$api_service             = new Default_Api_Service( 'https://api.wordlift.io', 60, $user_agent, $wordlift_key );
+	$images_licenses_service = new Images_Licenses_Service( $api_service );
+
+	global $wpdb;
+	add_action( 'wp_ajax_wl_images_licenses__get_non_public_domain_images', function () use ( $images_licenses_service, $wpdb ) {
+		foreach ( $images_licenses_service->get_non_public_domain_images() as $raw_image ) {
+			$image       = new Commons_Image( $raw_image );
+
+			$attachments = $wpdb->get_results( $wpdb->prepare(
+				"SELECT post_id, meta_value FROM {$wpdb->postmeta} WHERE meta_key = %s AND meta_value LIKE %s",
+				'_wp_attached_file',
+				'%' . $wpdb->esc_like( $image->get_filename() )
+			) );
+
+			var_dump( $wpdb->prepare(
+				"SELECT post_id, meta_value FROM {$wpdb->postmeta} WHERE meta_key = %s AND meta_value LIKE %s",
+				'_wp_attached_file',
+				'%' . $wpdb->esc_like( $image->get_filename() )
+			) );
+
+			if ( empty( $attachments ) ) {
+				continue;
+			}
+
+			$attachment_ids          = array_column( $attachments, 'post_id' );
+			$filenames               = array_column( $attachments, 'meta_value' );
+			$posts_as_featured_image = $wpdb->get_col( $wpdb->prepare(
+				"
+				SELECT post_id FROM {$wpdb->postmeta}
+				WHERE meta_key = %s
+				 AND meta_value IN ( " . implode( ',', $attachment_ids ) . " )
+				",
+				'_thumbnail_id'
+			) );
+
+			var_dump( $wpdb->prepare(
+				"
+				SELECT post_id FROM {$wpdb->postmeta}
+				WHERE meta_key = %s
+				 AND meta_value IN ( " . implode( ',', $attachment_ids ) . " )
+				",
+				'_thumbnail_id'
+			) );
+
+			var_dump( $posts_as_featured_image );
+
+			if ( empty( $filenames ) ) {
+				continue;
+			}
+
+			$post_content_like = "post_content LIKE '%/"
+			                     . implode( "%' OR post_content LIKE '%/", array_map( 'esc_sql', $filenames ) )
+			                     . "%'";
+			$posts_as_embed    = $wpdb->get_col(
+				"
+				SELECT ID FROM {$wpdb->posts}
+				WHERE $post_content_like
+				"
+			);
+
+			var_dump(
+				"
+				SELECT ID FROM {$wpdb->posts}
+				WHERE $post_content_like
+				"
+			);
+			var_dump( $posts_as_embed );
+
+			// https://commons.wikimedia.org/wiki/File:Tim_Berners-Lee-Knight.jpg
+
+			/**
+			 * <figure>
+			 * <img src="/media/examples/elephant-660-480.jpg"
+			 * alt="Elephant at sunset">
+			 * <figcaption>An elephant at sunset</figcaption>
+			 * </figure>
+			 */
+		};
+
+		wp_die( 'done' );
+	} );
 
 }
 
