@@ -21,20 +21,26 @@ final class Post_Excerpt_Meta_Box_Adapter {
 	const POST_EXCERPT_META_BOX_KEY = 'postexcerpt';
 
 	/**
+	 * Div id used for adding the additional content
+	 * to the wordpress excerpt meta box.
+	 */
+	const WORDLIFT_EXCERPT_DIV_ID = 'wl-custom-excerpt-wrapper';
+
+	/**
 	 * @var callable|null The default callback used by wordpress to
 	 * echo the post_excerpt contents, defaults to null.
 	 */
 	private $wordpress_excerpt_callback;
 
 	public function __construct() {
-		$this->wordpress_excerpt_callback = null;
+		$this->wordpress_excerpt_callback = NULL;
 	}
 
 	/**
 	 * Removes the registered post excerpt metabox.
 	 */
 	private function remove_default_post_excerpt_meta_box() {
-		remove_meta_box(self::POST_EXCERPT_META_BOX_KEY, get_current_screen(), 'normal');
+		remove_meta_box( self::POST_EXCERPT_META_BOX_KEY, get_current_screen(), 'normal' );
 	}
 
 	/**
@@ -43,17 +49,17 @@ final class Post_Excerpt_Meta_Box_Adapter {
 	private function add_custom_post_excerpt_meta_box() {
 		add_meta_box(
 			self::POST_EXCERPT_META_BOX_KEY,
-			__('Post Excerpt', 'wordlift'),
-			array($this, 'print_wordlift_custom_post_excerpt_box')
+			__( 'Post Excerpt', 'wordlift' ),
+			array( $this, 'print_wordlift_custom_post_excerpt_box' )
 		);
 	}
 
 	public function print_wordlift_custom_post_excerpt_box() {
 		global $post;
 		// Print the wordpress template for post excerpt
-		post_excerpt_meta_box($post);
-		// Invoke our call back to add additional html.
-		echo "<p>additional content</p>";
+		post_excerpt_meta_box( $post );
+		// Invoke our call back to add additional html, the react script will find this id and render the component there.
+		echo "<div id='" . self::WORDLIFT_EXCERPT_DIV_ID . "'></div>";
 	}
 
 	/**
