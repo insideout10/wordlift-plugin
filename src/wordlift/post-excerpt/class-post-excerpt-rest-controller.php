@@ -33,13 +33,24 @@ class Post_Excerpt_Rest_Controller {
 	 *
 	 *  @param $request WP_REST_Request $request {@link WP_REST_Request instance}.
 	 *
-	 * @return string Post excerpt data.
+	 * @return array Post excerpt data.
 	 */
 	public static function get_post_excerpt( $request ) {
 		$data    = $request->get_params();
 		$post_id = $data['post_id'];
 		$post_body = $data['post_body'];
-
+		$current_hash = md5($post_body);
+		$previous_data = get_post_meta(self::POST_EXCERPT_META_KEY, TRUE);
+		$previous_hash = $previous_data['hash'];
+		if ( $current_hash === $previous_hash ) {
+			// then return the previous value.
+			return array(
+				'post_excerpt' => $previous_data['post_excerpt']
+			);
+		}
+		else {
+			// send the request to external API and then send the response.
+		}
 	}
 
 
