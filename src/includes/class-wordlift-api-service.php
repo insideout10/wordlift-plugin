@@ -237,7 +237,7 @@ class Wordlift_Api_Service {
 	 * @return string The user-agent string.
 	 * @since 3.20.0
 	 */
-	private static function get_user_agent() {
+	public static function get_user_agent() {
 
 		// Get WL version.
 		$wl_version = Wordlift::get_instance()->get_version();
