@@ -35,6 +35,7 @@ use Wordlift\Autocomplete\Linked_Data_Autocomplete_Service;
 use Wordlift\Autocomplete\Local_Autocomplete_Service;
 use Wordlift\Jsonld\Jsonld_Endpoint;
 use Wordlift\Post_Excerpt\Post_Excerpt_Meta_Box_Adapter;
+use Wordlift\Post_Excerpt\Post_Excerpt_Rest_Controller;
 use Wordlift\Templates\Templates_Ajax_Endpoint;
 
 /**
@@ -1486,6 +1487,8 @@ class Wordlift {
 		new Templates_Ajax_Endpoint();
 		// Call this static method to register FAQ routes to rest api
 		Faq_Rest_Controller::register_routes();
+		// Adding Rest route for the post excerpt
+		Post_Excerpt_Rest_Controller::register_routes();
 
 		/*
 		 * Create a singleton for the Analysis_Response_Ops_Factory.
