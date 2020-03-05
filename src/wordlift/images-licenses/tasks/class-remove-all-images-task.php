@@ -78,8 +78,9 @@ class Remove_All_Images_Task implements Task {
 				'post_content' => $post_content,
 			) );
 
-			wp_delete_attachment( $item['attachment_id'], true );
 		}
+
+		wp_delete_attachment( $item['attachment_id'], true );
 
 	}
 
