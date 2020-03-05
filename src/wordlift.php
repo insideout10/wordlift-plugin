@@ -26,8 +26,15 @@
 
 use Wordlift\Api\Default_Api_Service;
 use Wordlift\Api\User_Agent;
+use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Cache\Ttl_Cache_Cleaner;
+use Wordlift\Images_Licenses\Cached_Image_License_Service;
 use Wordlift\Images_Licenses\Commons_Image;
+use Wordlift\Images_Licenses\Image_License_Cleanup_Service;
+use Wordlift\Images_Licenses\Image_License_Factory;
+use Wordlift\Images_Licenses\Image_License_Notifier;
+use Wordlift\Images_Licenses\Image_License_Page;
+use Wordlift\Images_Licenses\Image_License_Scheduler;
 use Wordlift\Images_Licenses\Image_License_Service;
 use Wordlift\Images_Licenses\Images_Licenses_Service;
 use Wordlift\Post\Post_Adapter;
@@ -520,16 +527,28 @@ function run_wordlift() {
 	new Post_Adapter();
 
 	// Licenses Images.
-	$user_agent            = User_Agent::get_user_agent();
-	$wordlift_key          = Wordlift_Configuration_Service::get_instance()->get_key();
-	$api_service           = new Default_Api_Service( 'https://api.wordlift.io', 60, $user_agent, $wordlift_key );
-	$image_license_service = new Image_License_Service( $api_service );
+	$user_agent                   = User_Agent::get_user_agent();
+	$wordlift_key                 = Wordlift_Configuration_Service::get_instance()->get_key();
+	$api_service                  = new Default_Api_Service( 'https://api.wordlift.io', 60, $user_agent, $wordlift_key );
+	$image_license_factory        = new Image_License_Factory();
+	$image_license_service        = new Image_License_Service( $api_service, $image_license_factory );
+	$image_license_cache          = new Ttl_Cache( 'image-license', 86400 * 30 ); // 30 days.
+	$cached_image_license_service = new Cached_Image_License_Service( $image_license_service, $image_license_cache );
+	$image_license_page           = new Image_License_Page( $cached_image_license_service );
 
-	add_action( 'wp_ajax_wl_images_licenses__get_non_public_domain_images', static function () use ( $image_license_service ) {
+	$image_license_scheduler       = new Image_License_Scheduler( $image_license_service );
+	$image_license_cleanup_service = new Image_License_Cleanup_Service();
 
-		wp_send_json( $image_license_service->get_non_public_domain_images() );
+	// Get the cached data. If we have cached data, we load the notifier.
+	$image_license_data = $image_license_cache->get( Cached_Image_License_Service::GET_NON_PUBLIC_DOMAIN_IMAGES );
+	if ( null !== $image_license_data ) {
+		new Image_License_Notifier( $image_license_data, $image_license_page );
+	}
 
-		wp_die( 'done' );
+	add_action( 'wp_ajax_wl_cached_image_license_service__get_non_public_domain_images', function () use ( $cached_image_license_service ) {
+
+		wp_send_json_success( $cached_image_license_service->get_non_public_domain_images() );
+
 	} );
 
 }
