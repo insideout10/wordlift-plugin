@@ -8,7 +8,7 @@
 /**
  * External dependencies.
  */
-import React from 'react'
+import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 
@@ -21,5 +21,6 @@ const WL_CUSTOM_EXCERPT_DIV_ID = "wl-custom-excerpt-wrapper";
 
 window.addEventListener("load", () => {
   const el = document.getElementById(WL_CUSTOM_EXCERPT_DIV_ID);
-  ReactDOM.render(<WlPostExcerpt />, el);
+  const { orText } = window["_wlExcerptSettings"];
+  ReactDOM.render(<WlPostExcerpt orText={orText} />, el);
 });

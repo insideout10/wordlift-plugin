@@ -12,6 +12,8 @@
 
 namespace Wordlift\Post_Excerpt;
 
+use Wordlift\Scripts\Scripts_Helper;
+
 final class Post_Excerpt_Meta_Box_Adapter {
 
 	/**
@@ -54,6 +56,12 @@ final class Post_Excerpt_Meta_Box_Adapter {
 		);
 	}
 
+	public function get_post_excerpt_translations() {
+		return array(
+			'orText' => 'or use wordlift suggested post excerpt'
+		);
+	}
+
 	public function print_wordlift_custom_post_excerpt_box() {
 		global $post;
 		// Print the wordpress template for post excerpt
@@ -62,11 +70,24 @@ final class Post_Excerpt_Meta_Box_Adapter {
 		echo "<div id='" . self::WORDLIFT_EXCERPT_DIV_ID . "'></div>";
 	}
 
+	private function enqueue_post_excerpt_scripts() {
+		Scripts_Helper::enqueue_based_on_wordpress_version(
+			'wl-post-excerpt',
+			plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'js/dist/post-excerpt',
+			array( 'react', 'react-dom', 'wp-polyfill' ),
+			TRUE
+		);
+		wp_localize_script( 'wl-post-excerpt',
+			'_wlExcerptSettings',
+			$this->get_post_excerpt_translations() );
+	}
+
 	/**
 	 * Replaces the default post excerpt meta box with custom post excerpt meta box.
 	 */
 	public function replace_post_excerpt_meta_box() {
 		$this->remove_default_post_excerpt_meta_box();
 		$this->add_custom_post_excerpt_meta_box();
+		$this->enqueue_post_excerpt_scripts();
 	}
 }
