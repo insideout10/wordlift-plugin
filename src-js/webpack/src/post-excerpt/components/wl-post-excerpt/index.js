@@ -20,9 +20,14 @@ import { WlColumn } from "../../../mappings/blocks/wl-column";
 import "./index.scss";
 import { WlPostExcerptButtonGroup } from "../wl-post-excerpt-button-group";
 import WlPostExcerptLoadingScreen from "../wl-post-excerpt-loading-screen";
+import {requestPostExcerpt} from "../../actions";
 
 class WlPostExcerpt extends React.Component {
-  renderConditionally() {
+    componentDidMount() {
+        this.props.dispatch(requestPostExcerpt())
+    }
+
+    renderConditionally() {
     if (this.props.isRequestInProgress) {
       return <WlPostExcerptLoadingScreen />;
     } else {

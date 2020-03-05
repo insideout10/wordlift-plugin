@@ -60,6 +60,9 @@ final class Post_Excerpt_Meta_Box_Adapter {
 		return array(
 			'orText' => 'Or use wordlift suggested post excerpt',
             'generatingText' => 'Generating excerpt...',
+			'restUrl'                 => get_rest_url( NULL, WL_REST_ROUTE_DEFAULT_NAMESPACE . '/post-excerpt' ),
+			'nonce'                   => wp_create_nonce( 'wp_rest' ),
+			'postId'                  => get_the_ID(),
 		);
 	}
 
