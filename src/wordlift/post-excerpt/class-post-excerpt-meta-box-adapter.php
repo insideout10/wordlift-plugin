@@ -62,12 +62,38 @@ final class Post_Excerpt_Meta_Box_Adapter {
 		);
 	}
 
+	private function print_wordpress_post_excerpt_ui($post) {
+		?>
+		<label class="screen-reader-text" for="excerpt">
+			<?php _e( 'Excerpt' ); ?>
+		</label>
+		<textarea rows="1" cols="40" name="excerpt" id="excerpt">
+			<?php echo $post->post_excerpt; // textarea_escaped ?>
+		</textarea>
+		<?php
+	}
+
+	private function print_wordpress_post_excerpt_custom_text() {
+		?>
+		<p>
+			<?php
+			printf(
+			/* translators: %s: Documentation URL. */
+				__( 'Excerpts are optional hand-crafted summaries of your content that can be used in your theme. <a href="%s">Learn more about manual excerpts</a>.' ),
+				__( 'https://wordpress.org/support/article/excerpt/' )
+			);
+			?>
+		</p>
+		<?php
+	}
+
 	public function print_wordlift_custom_post_excerpt_box() {
 		global $post;
 		// Print the wordpress template for post excerpt
-		post_excerpt_meta_box( $post );
+		$this->print_wordpress_post_excerpt_ui($post);
 		// Invoke our call back to add additional html, the react script will find this id and render the component there.
 		echo "<div id='" . self::WORDLIFT_EXCERPT_DIV_ID . "'></div>";
+		$this->print_wordpress_post_excerpt_custom_text();
 	}
 
 	private function enqueue_post_excerpt_scripts() {
