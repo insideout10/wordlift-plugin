@@ -113,7 +113,9 @@ class Post_Excerpt_Rest_Controller {
 
 	}
 
-
+	/**
+	 * This call back is invoked by the Rest api action.
+	 */
 	public static function register_route_callback() {
 		/** @var  $post_id_validation_settings array Settings used to validate post id */
 		$post_id_validation_settings   = array(
@@ -149,9 +151,10 @@ class Post_Excerpt_Rest_Controller {
 	}
 
 	/**
-	 * @param $post_id
-	 * @param $post_body
-	 * @param $current_hash
+	 * This function determines whether to get the excerpt from the server or from the meta cache.
+	 * @param $post_id int The Post id.
+	 * @param $post_body string The post content
+	 * @param $current_hash string md5 hash of the current post body.
 	 *
 	 * @return array|bool|null
 	 */
