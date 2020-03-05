@@ -17,7 +17,9 @@ import {reducer} from "../actions"
 import rootSaga from "../sagas";
 
 export const POST_EXCERPT_INITIAL_STATE = {
-    isRequestInProgress: false
+    isRequestInProgress: false,
+    // Empty at starting
+    currentPostExcerpt: "",
 };
 
 const sagaMiddleware = createSagaMiddleware();
