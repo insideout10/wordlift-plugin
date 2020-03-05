@@ -34,6 +34,7 @@ use Wordlift\Autocomplete\All_Autocomplete_Service;
 use Wordlift\Autocomplete\Linked_Data_Autocomplete_Service;
 use Wordlift\Autocomplete\Local_Autocomplete_Service;
 use Wordlift\Jsonld\Jsonld_Endpoint;
+use Wordlift\Post_Excerpt\Post_Excerpt_Meta_Box_Adapter;
 use Wordlift\Templates\Templates_Ajax_Endpoint;
 
 /**
@@ -1713,7 +1714,8 @@ class Wordlift {
 		$this->loader->add_action( 'wp_ajax_wl_relation_rebuild_process_all', $this->relation_rebuild_adapter, 'process_all' );
 		$this->loader->add_action( 'wp_ajax_wl_sample_data_create', $this->sample_data_ajax_adapter, 'create' );
 		$this->loader->add_action( 'wp_ajax_wl_sample_data_delete', $this->sample_data_ajax_adapter, 'delete' );
-
+		$excerpt_adapter = new Post_Excerpt_Meta_Box_Adapter();
+		$this->loader->add_action('do_meta_boxes', $excerpt_adapter, 'replace_post_excerpt_meta_box');
 
 		$this->loader->add_action( 'update_user_metadata', $this->user_service, 'update_user_metadata', 10, 5 );
 		$this->loader->add_action( 'delete_user_metadata', $this->user_service, 'delete_user_metadata', 10, 5 );
