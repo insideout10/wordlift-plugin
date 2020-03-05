@@ -2,7 +2,9 @@
 
 namespace Wordlift\Images_Licenses;
 
-class Image_License_Page {
+use Wordlift\Wordpress\Page;
+
+class Image_License_Page implements Page {
 
 	/**
 	 * @var string
@@ -51,8 +53,10 @@ class Image_License_Page {
             Alias aliquam, animi debitis distinctio dolores laboriosam modi optio possimus qui, quis suscipit, unde
             veritatis voluptates?</p>
 
-        <button class="button"><?php esc_html_e( 'Reload data', 'wordlift' ); ?></button>
-        <button class="button"><?php esc_html_e( 'Remove all images', 'wordlift' ); ?></button>
+        <a class="button"
+           href="<?php echo admin_url( 'admin.php?page=wl_images_licenses__reload_data' ); ?>"><?php esc_html_e( 'Reload data', 'wordlift' ); ?></a>
+        <a class="button"
+           href="<?php echo admin_url( 'admin.php?page=wl_images_licenses__remove_all_images' ); ?>"><?php esc_html_e( 'Remove all images', 'wordlift' ); ?></a>
         <button class="button"><?php esc_html_e( 'Add license caption to images and remove those with unknown license', 'wordlift' ); ?></button>
 		<?php
 		$images = $this->image_license_service->get_non_public_domain_images();

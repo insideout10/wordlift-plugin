@@ -33,6 +33,11 @@ class Cached_Image_License_Service extends Image_License_Service {
 		$this->image_license_service = $image_license_service;
 		$this->cache_service         = $cache_service;
 
+		$that = $this;
+		add_action( 'wp_ajax_wl_cached_image_license_service__get_non_public_domain_images', function () use ( $that ) {
+			wp_send_json_success( $that->get_non_public_domain_images() );
+		} );
+
 	}
 
 	/**

@@ -10,6 +10,8 @@
 
 namespace Wordlift\Images_Licenses;
 
+use Wordlift\Cache\Ttl_Cache;
+
 class Image_License_Scheduler {
 
 	const ACTION_NAME = 'wl_image_license_scheduler__run';
@@ -18,13 +20,19 @@ class Image_License_Scheduler {
 	 * @var Image_License_Service
 	 */
 	private $image_license_service;
+	/**
+	 * @var Ttl_Cache
+	 */
+	private $cache_service;
 
 	/**
 	 * @param Image_License_Service $image_license_service
+	 * @param Ttl_Cache $cache_service
 	 */
-	public function __construct( $image_license_service ) {
+	public function __construct( $image_license_service, $cache_service ) {
 
 		$this->image_license_service = $image_license_service;
+		$this->cache_service         = $cache_service;
 
 		// Do not bother to configure scheduled tasks while running on the front-end.
 		add_action( 'wp_ajax_' . self::ACTION_NAME, array( $this, 'run' ) );
@@ -40,6 +48,9 @@ class Image_License_Scheduler {
 
 		// Get and save the domains.
 		$data = $this->image_license_service->get_non_public_domain_images();
+
+		// Update the cache.
+		$this->cache_service->put( Cached_Image_License_Service::GET_NON_PUBLIC_DOMAIN_IMAGES, $data );
 
 		if ( wp_doing_ajax() &&
 		     ( self::ACTION_NAME === filter_input( INPUT_GET, 'action' )

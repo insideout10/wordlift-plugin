@@ -29,15 +29,19 @@ use Wordlift\Api\User_Agent;
 use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Cache\Ttl_Cache_Cleaner;
 use Wordlift\Images_Licenses\Cached_Image_License_Service;
-use Wordlift\Images_Licenses\Commons_Image;
 use Wordlift\Images_Licenses\Image_License_Cleanup_Service;
 use Wordlift\Images_Licenses\Image_License_Factory;
 use Wordlift\Images_Licenses\Image_License_Notifier;
 use Wordlift\Images_Licenses\Image_License_Page;
 use Wordlift\Images_Licenses\Image_License_Scheduler;
 use Wordlift\Images_Licenses\Image_License_Service;
-use Wordlift\Images_Licenses\Images_Licenses_Service;
+use Wordlift\Images_Licenses\Tasks\Reload_Data_Page;
+use Wordlift\Images_Licenses\Tasks\Reload_Data_Task;
+use Wordlift\Images_Licenses\Tasks\Remove_All_Images_Page;
+use Wordlift\Images_Licenses\Tasks\Remove_All_Images_Task;
 use Wordlift\Post\Post_Adapter;
+use Wordlift\Tasks\Task_Ajax_Adapter;
+use Wordlift\Tasks\Task_Ajax_Adapters_Registry;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -536,7 +540,7 @@ function run_wordlift() {
 	$cached_image_license_service = new Cached_Image_License_Service( $image_license_service, $image_license_cache );
 	$image_license_page           = new Image_License_Page( $cached_image_license_service );
 
-	$image_license_scheduler       = new Image_License_Scheduler( $image_license_service );
+	$image_license_scheduler       = new Image_License_Scheduler( $image_license_service, $image_license_cache );
 	$image_license_cleanup_service = new Image_License_Cleanup_Service();
 
 	// Get the cached data. If we have cached data, we load the notifier.
@@ -545,11 +549,17 @@ function run_wordlift() {
 		new Image_License_Notifier( $image_license_data, $image_license_page );
 	}
 
-	add_action( 'wp_ajax_wl_cached_image_license_service__get_non_public_domain_images', function () use ( $cached_image_license_service ) {
+	$task_ajax_adapters_registry    = new Task_Ajax_Adapters_Registry();
+	$remove_all_images_task         = new Remove_All_Images_Task( $cached_image_license_service );
+	$remove_all_images_task_adapter = new Task_Ajax_Adapter( $remove_all_images_task );
+	$task_ajax_adapters_registry->register( $remove_all_images_task_adapter );
 
-		wp_send_json_success( $cached_image_license_service->get_non_public_domain_images() );
+	$reload_data_task         = new Reload_Data_Task();
+	$reload_data_task_adapter = new Task_Ajax_Adapter( $reload_data_task );
+	$task_ajax_adapters_registry->register( $reload_data_task_adapter );
 
-	} );
+	$remove_all_images_task_page = new Remove_All_Images_Page( $task_ajax_adapters_registry, $plugin->get_version() );
+	$reload_data_task_page       = new Reload_Data_Page( $task_ajax_adapters_registry, $plugin->get_version() );
 
 }
 

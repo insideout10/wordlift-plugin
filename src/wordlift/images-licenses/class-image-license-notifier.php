@@ -2,13 +2,17 @@
 
 namespace Wordlift\Images_Licenses;
 
+use Wordlift\Wordpress\Page;
+
 class Image_License_Notifier {
+
 	/**
 	 * @var array
 	 */
 	private $data;
+
 	/**
-	 * @var Image_License_Page
+	 * @var Page
 	 */
 	private $image_license_page;
 
@@ -16,7 +20,7 @@ class Image_License_Notifier {
 	 * Image_License_Notifier constructor.
 	 *
 	 * @param array $data
-	 * @param Image_License_Page $image_license_page
+	 * @param Page $image_license_page
 	 */
 	public function __construct( $data, $image_license_page ) {
 
