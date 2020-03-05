@@ -6,12 +6,14 @@
  *
  */
 
+import {POST_EXCERPT_LOCALIZATION_OBJECT_KEY} from "../constants";
+
 /**
  * Internal dependencies.
  */
 
 function getPostExcerpt(postBody) {
-  const { restUrl, nonce, postId } = global["_wlPostExcerptSettings"];
+  const { restUrl, nonce, postId } = global[POST_EXCERPT_LOCALIZATION_OBJECT_KEY];
   return fetch(restUrl + "/" + postId, {
     method: "POST",
     headers: {

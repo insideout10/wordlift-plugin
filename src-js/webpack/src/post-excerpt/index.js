@@ -15,13 +15,18 @@ import { Provider } from "react-redux";
 /**
  * Internal depdencies.
  */
-import WlPostExcerpt from "./components/wl-post-excerpt";
-
+import WlPostExcerpt from "./components/wl-post-excerpt/index";
+import store from './store/index'
 
 const WL_CUSTOM_EXCERPT_DIV_ID = "wl-custom-excerpt-wrapper";
 
 window.addEventListener("load", () => {
   const el = document.getElementById(WL_CUSTOM_EXCERPT_DIV_ID);
   const { orText } = window["_wlExcerptSettings"];
-  ReactDOM.render(<WlPostExcerpt orText={orText} />, el);
+  ReactDOM.render(
+    <Provider store={store}>
+      <WlPostExcerpt orText={orText} />
+    </Provider>,
+    el
+  );
 });

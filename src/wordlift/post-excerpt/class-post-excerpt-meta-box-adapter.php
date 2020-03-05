@@ -58,7 +58,8 @@ final class Post_Excerpt_Meta_Box_Adapter {
 
 	public function get_post_excerpt_translations() {
 		return array(
-			'orText' => 'Or use wordlift suggested post excerpt'
+			'orText' => 'Or use wordlift suggested post excerpt',
+            'generatingText' => 'Generating excerpt...',
 		);
 	}
 

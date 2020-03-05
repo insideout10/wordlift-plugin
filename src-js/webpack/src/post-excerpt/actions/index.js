@@ -17,13 +17,19 @@ export const { updateRequestStatus, requestPostExcerpt, applyPostExcerpt, update
   "UPDATE_POST_EXCERPT"
 );
 
-export const reducer = handleActions({
-  [updateRequestStatus]: (state, action) => ({
-    ...state,
-    isRequestInProgress: action.payload
-  }),
-  [updatePostExcerpt]: (state,action)=>({
-    ...state,
-    currentPostExcerpt: action.payload
-  })
-});
+export const reducer = handleActions(
+  {
+    [updateRequestStatus]: (state, action) => ({
+      ...state,
+      isRequestInProgress: action.payload
+    }),
+    [updatePostExcerpt]: (state, action) => ({
+      ...state,
+      currentPostExcerpt: action.payload
+    })
+  },
+  {
+    isRequestInProgress: true,
+    currentPostExcerpt: ""
+  }
+);
