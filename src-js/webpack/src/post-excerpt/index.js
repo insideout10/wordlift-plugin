@@ -17,6 +17,7 @@ import { Provider } from "react-redux";
  */
 import WlPostExcerpt from "./components/wl-post-excerpt";
 
+
 const WL_CUSTOM_EXCERPT_DIV_ID = "wl-custom-excerpt-wrapper";
 
 window.addEventListener("load", () => {

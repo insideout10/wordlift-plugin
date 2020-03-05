@@ -58,7 +58,7 @@ final class Post_Excerpt_Meta_Box_Adapter {
 
 	public function get_post_excerpt_translations() {
 		return array(
-			'orText' => 'or use wordlift suggested post excerpt'
+			'orText' => 'Or use wordlift suggested post excerpt'
 		);
 	}
 
@@ -76,6 +76,11 @@ final class Post_Excerpt_Meta_Box_Adapter {
 			plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'js/dist/post-excerpt',
 			array( 'react', 'react-dom', 'wp-polyfill' ),
 			TRUE
+		);
+		wp_enqueue_style(
+			'wl-post-excerpt-style',
+			plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'js/dist/post-excerpt.css',
+			array()
 		);
 		wp_localize_script( 'wl-post-excerpt',
 			'_wlExcerptSettings',
