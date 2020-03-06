@@ -44,7 +44,7 @@ class Post_Excerpt_Rest_Controller {
 	 * @param $post_body string Total text content of the post body.
 	 * @return void
 	 */
-	private static function save_post_excerpt_in_meta( $post_id, $post_excerpt, $post_body ) {
+	public static function save_post_excerpt_in_meta( $post_id, $post_excerpt, $post_body ) {
 		// hash the post body and save it.
 		$data = array(
 			'post_body_hash' => md5( $post_body ),
@@ -62,7 +62,7 @@ class Post_Excerpt_Rest_Controller {
 	 *
 	 * @return array|bool
 	 */
-	private static function get_post_excerpt_from_remote_server( $post_id, $post_body ) {
+	public static function get_post_excerpt_from_remote_server( $post_id, $post_body ) {
 		// The configuration is constant for now, it might be changing in future.
 		$configuration         = array(
 			'ratio'      => 0.0005,
@@ -80,7 +80,6 @@ class Post_Excerpt_Rest_Controller {
 			),
 			'body'       => $post_body,
 		) );
-
 		return self::save_response_to_meta_on_success( $post_id, $post_body, $response );
 
 	}
@@ -137,8 +136,8 @@ class Post_Excerpt_Rest_Controller {
 			WL_REST_ROUTE_DEFAULT_NAMESPACE,
 			'/' . self::POST_EXCERPT_NAMESPACE . '/(?P<post_id>\d+)',
 			array(
-				'methods'             => \WP_REST_Server::READABLE,
-				'callback'            => 'Wordlift\Faq\Faq_Rest_Controller::get_post_excerpt',
+				'methods'             => \WP_REST_Server::CREATABLE,
+				'callback'            => 'Wordlift\Post_Excerpt\Post_Excerpt_Rest_Controller::get_post_excerpt',
 				'permission_callback' => function () {
 					return current_user_can( 'publish_posts' );
 				},
@@ -158,7 +157,7 @@ class Post_Excerpt_Rest_Controller {
 	 *
 	 * @return array|bool|null
 	 */
-	private static function get_post_excerpt_conditionally( $post_id, $post_body, $current_hash ) {
+	public static function get_post_excerpt_conditionally( $post_id, $post_body, $current_hash ) {
 		$previous_data   = get_post_meta( self::POST_EXCERPT_META_KEY, TRUE );
 		$server_response = NULL;
 
@@ -190,7 +189,7 @@ class Post_Excerpt_Rest_Controller {
 	 *
 	 * @return array|bool
 	 */
-	private static function save_response_to_meta_on_success( $post_id, $post_body, $response ) {
+	public static function save_response_to_meta_on_success( $post_id, $post_body, $response ) {
 		if ( ! array_key_exists( self::WORDLIFT_POST_EXCERPT_RESPONSE_KEY, $response['body'] ) ) {
 			// Bail out if we get an in correct response
 			return FALSE;

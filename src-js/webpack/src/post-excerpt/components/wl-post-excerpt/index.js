@@ -33,7 +33,13 @@ class WlPostExcerpt extends React.Component {
    * Refresh the excerpt by getting the new data.
    */
   refreshExcerpt() {
-    console.log(requestPostExcerpt);
+    console.log("on click handler fired for refresh excerpt")
+    this.props.dispatch({
+      type: "GET_POST_EXCERPT",
+      payload: {
+        postBody: ""
+      }
+    });
   }
 
   /**
@@ -59,7 +65,10 @@ class WlPostExcerpt extends React.Component {
             <textarea rows={3} className={"wl-post-excerpt--textarea"} value={this.props.currentPostExcerpt} />
           </WlContainer>
           <WlContainer fullWidth={true}>
-            <WlPostExcerptButtonGroup refreshHandler={this.refreshExcerpt} useExcerptHandler={this.useExcerpt} />
+            <WlPostExcerptButtonGroup
+              refreshHandler={() => this.refreshExcerpt()}
+              useExcerptHandler={() => this.useExcerpt()}
+            />
           </WlContainer>
         </React.Fragment>
       );
