@@ -28,11 +28,11 @@ use Wordlift\Api\Default_Api_Service;
 use Wordlift\Api\User_Agent;
 use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Cache\Ttl_Cache_Cleaner;
+use Wordlift\Images_Licenses\Admin\Image_License_Page;
 use Wordlift\Images_Licenses\Cached_Image_License_Service;
 use Wordlift\Images_Licenses\Image_License_Cleanup_Service;
 use Wordlift\Images_Licenses\Image_License_Factory;
 use Wordlift\Images_Licenses\Image_License_Notifier;
-use Wordlift\Images_Licenses\Image_License_Page;
 use Wordlift\Images_Licenses\Image_License_Scheduler;
 use Wordlift\Images_Licenses\Image_License_Service;
 use Wordlift\Images_Licenses\Tasks\Add_License_Caption_Or_Remove_Page;
@@ -540,7 +540,7 @@ function run_wordlift() {
 	$image_license_service        = new Image_License_Service( $api_service, $image_license_factory );
 	$image_license_cache          = new Ttl_Cache( 'image-license', 86400 * 30 ); // 30 days.
 	$cached_image_license_service = new Cached_Image_License_Service( $image_license_service, $image_license_cache );
-	$image_license_page           = new Image_License_Page( $cached_image_license_service );
+	$image_license_page           = new Image_License_Page( $cached_image_license_service, Wordlift::get_instance()->get_version() );
 
 	$image_license_scheduler       = new Image_License_Scheduler( $image_license_service, $image_license_cache );
 	$image_license_cleanup_service = new Image_License_Cleanup_Service();

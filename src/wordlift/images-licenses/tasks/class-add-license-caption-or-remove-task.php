@@ -7,6 +7,8 @@ use Wordlift\Images_Licenses\Image_License_Service;
 
 class Add_License_Caption_Or_Remove_Task extends Remove_All_Images_Task {
 
+	const MENU_SLUG = 'wl_add_license_caption_or_remove';
+
 	/**
 	 * @var Image_License_Service
 	 */
@@ -28,9 +30,11 @@ class Add_License_Caption_Or_Remove_Task extends Remove_All_Images_Task {
 
 	public function ajax() {
 
-		var_dump($_POST);
-		wp_die();
+		check_ajax_referer( $this->get_id() );
+
 		$this->process_item( $_POST );
+
+		wp_send_json_success();
 
 	}
 
@@ -39,7 +43,7 @@ class Add_License_Caption_Or_Remove_Task extends Remove_All_Images_Task {
 	 */
 	function get_id() {
 
-		return 'wl_add_license_caption_or_remove';
+		return self::MENU_SLUG;
 	}
 
 	function get_label() {
@@ -68,6 +72,12 @@ class Add_License_Caption_Or_Remove_Task extends Remove_All_Images_Task {
 			'ID'           => $item['attachment_id'],
 			'post_excerpt' => $caption
 		) );
+
+		// Avoid running the regex on post content more than once.
+		$fixed = get_post_meta( $item['attachment_id'], '_wl_image_license_fixed', true );
+		if ( ! empty( $fixed ) ) {
+			return;
+		}
 
 		foreach ( $item['posts_ids_as_embed'] as $post_id ) {
 

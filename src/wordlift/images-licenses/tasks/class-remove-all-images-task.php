@@ -7,6 +7,8 @@ use Wordlift\Tasks\Task;
 
 class Remove_All_Images_Task implements Task {
 
+	const MENU_SLUG = 'wl_remove_all_images_task';
+
 	/**
 	 * @var Image_License_Service
 	 */
@@ -21,6 +23,19 @@ class Remove_All_Images_Task implements Task {
 
 		$this->image_license_service = $image_license_service;
 
+
+		add_action( 'wp_ajax_' . $this->get_id(), array( $this, 'ajax', ) );
+
+	}
+
+	public function ajax() {
+
+		check_ajax_referer( $this->get_id() );
+
+		$this->process_item( $_POST );
+
+		wp_send_json_success();
+
 	}
 
 	/**
@@ -28,7 +43,7 @@ class Remove_All_Images_Task implements Task {
 	 */
 	function get_id() {
 
-		return 'wl_remove_all_images_task';
+		return self::MENU_SLUG;
 	}
 
 	function get_label() {

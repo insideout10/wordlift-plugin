@@ -1,47 +1,35 @@
 <?php
 
-namespace Wordlift\Images_Licenses;
+namespace Wordlift\Images_Licenses\Admin;
 
-use Wordlift\Wordpress\Page;
+use Wordlift\Images_Licenses\Caption_Builder;
+use Wordlift\Images_Licenses\Image_License_Service;
+use Wordlift\Images_Licenses\Tasks\Add_License_Caption_Or_Remove_Task;
+use Wordlift\Images_Licenses\Tasks\Remove_All_Images_Task;
+use Wordlift\Wordpress\Submenu_Page_Base;
 
-class Image_License_Page implements Page {
-
-	/**
-	 * @var string
-	 */
-	private $menu_slug;
+class Image_License_Page extends Submenu_Page_Base {
 
 	/**
 	 * @var Image_License_Service
 	 */
 	private $image_license_service;
+	/**
+	 * @var string
+	 */
+	private $version;
 
 	/**
 	 * Image_License_Page constructor.
 	 *
 	 * @param Image_License_Service $image_license_service
+	 * @param string $version
 	 */
-	public function __construct( $image_license_service ) {
+	public function __construct( $image_license_service, $version ) {
+		parent::__construct( 'wl_image_license_page', __( 'License Compliance', 'wordlift' ) );
 
-		$this->menu_slug             = 'wl_image_license_page';
 		$this->image_license_service = $image_license_service;
-
-		add_action( 'admin_menu', array( $this, 'admin_menu', ) );
-
-	}
-
-	public function admin_menu() {
-
-		add_submenu_page(
-			null,
-			__( 'License Compliance', 'wordlift' ),
-			__( 'License Compliance', 'wordlift' ),
-			'',
-			$this->menu_slug,
-			array(
-				$this,
-				'render'
-			) );
+		$this->version               = $version;
 
 	}
 
@@ -80,35 +68,41 @@ class Image_License_Page implements Page {
 			<?php
 			$images = $this->image_license_service->get_non_public_domain_images();
 
-			foreach ( $images as $image ) {
-				$this->render_image( $image );
+			for ( $i = 0; $i < count( $images ); $i ++ ) {
+				$this->render_image( $images[ $i ], $i );
 			}
 			?>
         </table>
 		<?php
 	}
 
-	public function get_menu_slug() {
-
-		return $this->menu_slug;
-	}
-
 	/**
 	 * @param array $image
 	 */
-	private function render_image( $image ) {
+	private function render_image( $image, $idx ) {
 
-		$author             = html_entity_decode( $image['author'] );
+		$attachment_id = $image['attachment_id'];
+
+		// Skip if the post doesn't exist anymore or has been fixed.
+		if ( ! $this->exists( $attachment_id ) ) {
+			return;
+		}
+
+		$author = html_entity_decode( $image['author'] );
+
 		$more_info_link_esc = esc_url( $image['more_info_link'] );
 
 		$is_unknown_license = '#N/A' === $image['license'];
 
 		$caption_builder  = new Caption_Builder( $image );
 		$proposed_caption = $caption_builder->build();
+
+		$script_id = "wl-image-$idx";
+		$row_id    = "wl-row-$idx";
 		?>
-        <tr>
+        <tr id="<?php echo $row_id; ?>">
+            <td><?php echo wp_get_attachment_image( $attachment_id ); ?></td>
             <td><?php echo esc_html( $image['filename'] ); ?></td>
-            <td><?php echo wp_get_attachment_image( $image['attachment_id'] ); ?></td>
             <td><?php echo esc_html( $image['license'] ); ?></td>
             <td><?php echo $author; ?></td>
             <td><?php echo $proposed_caption; ?></td>
@@ -123,13 +117,22 @@ class Image_License_Page implements Page {
 				?>
             </td>
             <td>
-                <button class="button"><?php esc_html_e( 'Remove image', 'wordlift' ); ?></button>
+                <script type="application/json"
+                        id="<?php echo $script_id; ?>"><?php echo json_encode( $image ); ?></script>
+                <button data-id="<?php echo $script_id; ?>"
+                        data-row-id="<?php echo $row_id; ?>"
+                        data-action="wl_remove_all_images_task"
+                        class="button wl-action-btn"><?php esc_html_e( 'Remove image', 'wordlift' ); ?></button>
 				<?php if ( ! $is_unknown_license ) { ?>
-                    <button class="button"><?php esc_html_e( 'Add license caption', 'wordlift' ); ?></button>
+                    <button data-id="<?php echo $script_id; ?>"
+                            data-row-id="<?php echo $row_id; ?>"
+                            data-action="wl_add_license_caption_or_remove"
+                            class="button wl-action-btn"><?php esc_html_e( 'Add license caption', 'wordlift' ); ?></button>
 				<?php } ?>
                 <a class="button"
-                   href="<?php echo get_edit_post_link( $image['attachment_id'] ); ?>"
-                   target="_blank"><?php esc_html_e( 'Edit image', 'wordlift' ); ?></a>
+                   href=" <?php echo get_edit_post_link( $attachment_id ); ?>"
+                   target="_blank"><?php esc_html_e( 'Edit image', 'wordlift' ); ?> <span
+                            class="dashicons dashicons-external"></span></a>
             </td>
         </tr>
 		<?php
@@ -149,6 +152,44 @@ class Image_License_Page implements Page {
             <a href="<?php echo get_permalink( $post_id ); ?>"><?php echo esc_html( $post->post_title ); ?></a>
 			<?php
 		}
+	}
+
+	function enqueue_scripts() {
+
+		wp_enqueue_script( $this->get_menu_slug(), plugin_dir_url( __FILE__ ) . 'assets/image-license.js', array( 'wp-util' ), $this->version, true );
+		wp_localize_script( $this->get_menu_slug(), '_wlImageLicensePageSettings', array(
+			'_ajax_nonce' => array(
+				Add_License_Caption_Or_Remove_Task::MENU_SLUG => wp_create_nonce( Add_License_Caption_Or_Remove_Task::MENU_SLUG ),
+				Remove_All_Images_Task::MENU_SLUG             => wp_create_nonce( Remove_All_Images_Task::MENU_SLUG ),
+			),
+			'l10n'        => array(
+				'Done'              => __( 'Done', 'wordlift' ),
+				'An error occurred' => __( 'An error occurred', 'wordlift' ),
+			)
+		) );
+	}
+
+	private function exists( $attachment_id ) {
+		global $wpdb;
+
+		$sql =
+			"
+            SELECT COUNT( 1 )
+            FROM {$wpdb->postmeta} pm1
+            LEFT OUTER JOIN {$wpdb->postmeta} pm2
+             ON pm2.post_id = pm1.post_id
+              AND pm2.meta_key = %s
+            WHERE pm1.post_id = %d
+              AND pm1.meta_key = %s
+              AND pm2.meta_value IS NULL
+            ";
+
+		return $wpdb->get_var( $wpdb->prepare(
+			$sql,
+			'_wl_image_license_fixed',
+			$attachment_id,
+			'_wp_attached_file'
+		) );
 	}
 
 }
