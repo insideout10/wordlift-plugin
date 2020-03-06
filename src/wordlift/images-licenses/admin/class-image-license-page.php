@@ -3,7 +3,6 @@
 namespace Wordlift\Images_Licenses\Admin;
 
 use Wordlift\Images_Licenses\Caption_Builder;
-use Wordlift\Images_Licenses\Image_License_Service;
 use Wordlift\Images_Licenses\Tasks\Add_License_Caption_Or_Remove_Task;
 use Wordlift\Images_Licenses\Tasks\Remove_All_Images_Task;
 use Wordlift\Wordpress\Submenu_Page_Base;
@@ -11,9 +10,10 @@ use Wordlift\Wordpress\Submenu_Page_Base;
 class Image_License_Page extends Submenu_Page_Base {
 
 	/**
-	 * @var Image_License_Service
+	 * @var array
 	 */
-	private $image_license_service;
+	private $data;
+
 	/**
 	 * @var string
 	 */
@@ -22,14 +22,23 @@ class Image_License_Page extends Submenu_Page_Base {
 	/**
 	 * Image_License_Page constructor.
 	 *
-	 * @param Image_License_Service $image_license_service
+	 * @param array $data
 	 * @param string $version
 	 */
-	public function __construct( $image_license_service, $version ) {
-		parent::__construct( 'wl_image_license_page', __( 'License Compliance', 'wordlift' ), 'manage_options', 'wl_admin_menu' );
+	public function __construct( $data, $version ) {
+		$count = count( $data );
 
-		$this->image_license_service = $image_license_service;
-		$this->version               = $version;
+		// Display the page in the menu only if there's something to do.
+		if ( 0 === $count ) {
+			return;
+		}
+		$menu_title = __( 'License Compliance', 'wordlift' ) .
+		              sprintf( '<span class="update-plugins count-%1$d"><span class="license-compliance-count">%1$d</span></span>', $count );
+
+		parent::__construct( 'wl_image_license_page', __( 'License Compliance', 'wordlift' ), 'manage_options', 'wl_admin_menu', $menu_title );
+
+		$this->data    = $data;
+		$this->version = $version;
 
 	}
 
@@ -66,7 +75,7 @@ class Image_License_Page extends Submenu_Page_Base {
             </tr>
             </thead>
 			<?php
-			$images = $this->image_license_service->get_non_public_domain_images();
+			$images = $this->data;
 
 			for ( $i = 0; $i < count( $images ); $i ++ ) {
 				$this->render_image( $images[ $i ], $i );
@@ -101,7 +110,7 @@ class Image_License_Page extends Submenu_Page_Base {
 		$row_id    = "wl-row-$idx";
 		?>
         <tr id="<?php echo $row_id; ?>">
-            <td><?php echo wp_get_attachment_image( $attachment_id ); ?></td>
+            <td><?php echo wp_get_attachment_image( $attachment_id, array( 100, ) ); ?></td>
             <td><?php echo esc_html( $image['filename'] ); ?></td>
             <td><?php echo esc_html( $image['license'] ); ?></td>
             <td><?php echo $author; ?></td>

@@ -15,7 +15,7 @@
  * Plugin Name:       WordLift
  * Plugin URI:        https://wordlift.io
  * Description:       WordLift brings the power of AI to organize content, attract new readers and get their attention. To activate the plugin <a href="https://wordlift.io/">visit our website</a>.
- * Version:           3.25.1.20200306.1-dev
+ * Version:           3.25.1.20200306.2-dev
  * Author:            WordLift, Insideout10
  * Author URI:        https://wordlift.io
  * License:           GPL-2.0+
@@ -540,7 +540,6 @@ function run_wordlift() {
 	$image_license_service        = new Image_License_Service( $api_service, $image_license_factory );
 	$image_license_cache          = new Ttl_Cache( 'image-license', 86400 * 30 ); // 30 days.
 	$cached_image_license_service = new Cached_Image_License_Service( $image_license_service, $image_license_cache );
-	$image_license_page           = new Image_License_Page( $cached_image_license_service, Wordlift::get_instance()->get_version() );
 
 	$image_license_scheduler       = new Image_License_Scheduler( $image_license_service, $image_license_cache );
 	$image_license_cleanup_service = new Image_License_Cleanup_Service();
@@ -548,6 +547,7 @@ function run_wordlift() {
 	// Get the cached data. If we have cached data, we load the notifier.
 	$image_license_data = $image_license_cache->get( Cached_Image_License_Service::GET_NON_PUBLIC_DOMAIN_IMAGES );
 	if ( null !== $image_license_data ) {
+		$image_license_page = new Image_License_Page( $image_license_data, Wordlift::get_instance()->get_version() );
 		new Image_License_Notifier( $image_license_data, $image_license_page );
 	}
 
