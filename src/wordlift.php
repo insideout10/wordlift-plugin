@@ -35,6 +35,8 @@ use Wordlift\Images_Licenses\Image_License_Notifier;
 use Wordlift\Images_Licenses\Image_License_Page;
 use Wordlift\Images_Licenses\Image_License_Scheduler;
 use Wordlift\Images_Licenses\Image_License_Service;
+use Wordlift\Images_Licenses\Tasks\Add_License_Caption_Or_Remove_Page;
+use Wordlift\Images_Licenses\Tasks\Add_License_Caption_Or_Remove_Task;
 use Wordlift\Images_Licenses\Tasks\Reload_Data_Page;
 use Wordlift\Images_Licenses\Tasks\Reload_Data_Task;
 use Wordlift\Images_Licenses\Tasks\Remove_All_Images_Page;
@@ -549,17 +551,18 @@ function run_wordlift() {
 		new Image_License_Notifier( $image_license_data, $image_license_page );
 	}
 
-	$task_ajax_adapters_registry    = new Task_Ajax_Adapters_Registry();
 	$remove_all_images_task         = new Remove_All_Images_Task( $cached_image_license_service );
 	$remove_all_images_task_adapter = new Task_Ajax_Adapter( $remove_all_images_task );
-	$task_ajax_adapters_registry->register( $remove_all_images_task_adapter );
 
 	$reload_data_task         = new Reload_Data_Task();
 	$reload_data_task_adapter = new Task_Ajax_Adapter( $reload_data_task );
-	$task_ajax_adapters_registry->register( $reload_data_task_adapter );
 
-	$remove_all_images_task_page = new Remove_All_Images_Page( $task_ajax_adapters_registry, $plugin->get_version() );
-	$reload_data_task_page       = new Reload_Data_Page( $task_ajax_adapters_registry, $plugin->get_version() );
+	$add_license_caption_or_remove_task         = new Add_License_Caption_Or_Remove_Task( $cached_image_license_service );
+	$add_license_caption_or_remove_task_adapter = new Task_Ajax_Adapter( $add_license_caption_or_remove_task );
+
+	$remove_all_images_task_page             = new Remove_All_Images_Page( new Task_Ajax_Adapters_Registry( $remove_all_images_task_adapter ), $plugin->get_version() );
+	$reload_data_task_page                   = new Reload_Data_Page( new Task_Ajax_Adapters_Registry( $reload_data_task_adapter ), $plugin->get_version() );
+	$add_license_caption_or_remove_task_page = new Add_License_Caption_Or_Remove_Page( new Task_Ajax_Adapters_Registry( $add_license_caption_or_remove_task_adapter ), $plugin->get_version() );
 
 }
 

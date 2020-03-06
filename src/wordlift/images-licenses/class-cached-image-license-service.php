@@ -47,7 +47,7 @@ class Cached_Image_License_Service extends Image_License_Service {
 
 		// Return the cached data if available.
 		$cache = $this->cache_service->get( self::GET_NON_PUBLIC_DOMAIN_IMAGES );
-		if ( $cache ) {
+		if ( ! is_null( $cache ) ) {
 			return $cache;
 		}
 

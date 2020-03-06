@@ -6,6 +6,12 @@ class Task_Ajax_Adapters_Registry {
 
 	private $task_ajax_adapters = array();
 
+	public function __construct( $adapters = array() ) {
+
+		$this->task_ajax_adapters = is_array( $adapters ) ? $adapters : array( $adapters );
+
+	}
+
 	/**
 	 * @param Task_Ajax_Adapter $task_ajax_adapter
 	 */

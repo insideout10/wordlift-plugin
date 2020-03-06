@@ -33,7 +33,7 @@ class Image_License_Service {
 	}
 
 	/**
-	 * @return Image_License_Factory[]
+	 * @return array
 	 */
 	public function get_non_public_domain_images() {
 
@@ -66,16 +66,29 @@ class Image_License_Service {
 			$filename       = $raw_image['filename'];
 			$more_info_link = sprintf( 'https://commons.wikimedia.org/wiki/File:%s', $filename );
 
+			$sql =
+				"
+				SELECT pm1.post_id, pm1.meta_value
+				FROM {$wpdb->postmeta} pm1
+				LEFT OUTER JOIN {$wpdb->postmeta} pm2
+				 ON pm2.post_id = pm1.post_id
+				  AND pm2.meta_key = %s
+				WHERE pm1.meta_key = %s
+				  AND pm1.meta_value LIKE %s
+				  AND pm2.meta_value IS NULL
+				";
+
 			$attachments = $wpdb->get_results( $wpdb->prepare(
-				"SELECT post_id, meta_value FROM {$wpdb->postmeta} WHERE meta_key = %s AND meta_value LIKE %s",
+				$sql,
+				'_wl_image_license_fixed',
 				'_wp_attached_file',
 				'wl/%' . $wpdb->esc_like( $filename )
 			) );
 
 			// Get tha attachments' post IDs.
-
 			foreach ( $attachments as $attachment ) {
-				$post_id       = (int) $attachment->post_id;
+				$post_id = (int) $attachment->post_id;
+
 				$image_license = $this->image_license_factory->create( $post_id, $raw_image, $more_info_link );
 
 				// Get the posts referencing the attachments as featured image_license.
@@ -84,14 +97,6 @@ class Image_License_Service {
 				$filename = $attachment->meta_value;
 
 				$image_license['posts_ids_as_embed'] = $this->get_posts_ids_as_embed( $filename );
-
-				/**
-				 * <figure>
-				 * <img src="/media/examples/elephant-660-480.jpg"
-				 * alt="Elephant at sunset">
-				 * <figcaption>An elephant at sunset</figcaption>
-				 * </figure>
-				 */
 
 				$return_data[] = $image_license;
 			}
