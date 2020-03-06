@@ -82,26 +82,28 @@ class Remove_All_Images_Task implements Task {
 			return;
 		}
 
-		foreach ( $item['posts_ids_as_embed'] as $post_id ) {
+		if ( ! isset( $item['posts_ids_as_embed'] ) ) {
+			foreach ( $item['posts_ids_as_embed'] as $post_id ) {
 
-			$filename       = $item['filename'];
-			$filename_quote = preg_quote( $filename );
-			$post           = get_post( $post_id );
-			$search         = array(
-				'@<a[^>]*href="[^"]+wl/[^"]+' . $filename_quote . '"[^>]*>(.+?)<\/a>@',
-				'@<img[^>]*src="[^"]+wl/[^"]+' . $filename_quote . '"[^>]*>@',
-			);
-			$replace        = array( '$1', '', );
-			$post_content   = preg_replace( $search, $replace, $post->post_content );
+				$filename       = $item['filename'];
+				$filename_quote = preg_quote( $filename );
+				$post           = get_post( $post_id );
+				$search         = array(
+					'@<a[^>]*href="[^"]+wl/[^"]+' . $filename_quote . '"[^>]*>(.+?)<\/a>@',
+					'@<img[^>]*src="[^"]+wl/[^"]+' . $filename_quote . '"[^>]*>@',
+				);
+				$replace        = array( '$1', '', );
+				$post_content   = preg_replace( $search, $replace, $post->post_content );
 
-			wp_update_post( array(
-				'ID'           => $post_id,
-				'post_content' => $post_content,
-			) );
+				wp_update_post( array(
+					'ID'           => $post_id,
+					'post_content' => $post_content,
+				) );
 
+			}
+
+			wp_delete_attachment( $item['attachment_id'], true );
 		}
-
-		wp_delete_attachment( $item['attachment_id'], true );
 
 	}
 
