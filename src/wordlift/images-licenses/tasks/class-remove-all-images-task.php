@@ -76,6 +76,12 @@ class Remove_All_Images_Task implements Task {
 	 */
 	function process_item( $item ) {
 
+		// Avoid deleting images that have been marked as fixed.
+		$fixed = get_post_meta( $item['attachment_id'], '_wl_image_license_fixed', true );
+		if ( ! empty( $fixed ) ) {
+			return;
+		}
+
 		foreach ( $item['posts_ids_as_embed'] as $post_id ) {
 
 			$filename       = $item['filename'];
