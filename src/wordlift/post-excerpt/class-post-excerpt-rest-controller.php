@@ -97,7 +97,7 @@ class Post_Excerpt_Rest_Controller {
 	public static function get_post_excerpt( $request ) {
 		$data          = $request->get_params();
 		$post_id       = $data['post_id'];
-		$post_body     = $data['post_body'];
+		$post_body     = get_post_field('post_content', $post_id);
 		$current_hash  = md5( $post_body );
 		$server_response = self::get_post_excerpt_conditionally( $post_id, $post_body, $current_hash );
 		if ( $server_response === null || !array_key_exists('post_excerpt', $server_response)) {
@@ -124,12 +124,12 @@ class Post_Excerpt_Rest_Controller {
 				return is_numeric( $param );
 			}
 		);
-		$post_body_validation_settings = array(
-			'required'          => TRUE,
-			'validate_callback' => function ( $param, $request, $key ) {
-				return is_string( $param );
-			}
-		);
+//		$post_body_validation_settings = array(
+//			'required'          => TRUE,
+//			'validate_callback' => function ( $param, $request, $key ) {
+//				return is_string( $param );
+//			}
+//		);
 		/**
 		 * Rest route for getting the excerpt from wordlift api.
 		 */
@@ -144,7 +144,7 @@ class Post_Excerpt_Rest_Controller {
 				},
 				'args'                => array(
 					'post_id'   => $post_id_validation_settings,
-					'post_body' => $post_body_validation_settings
+//					'post_body' => $post_body_validation_settings
 				)
 			)
 		);

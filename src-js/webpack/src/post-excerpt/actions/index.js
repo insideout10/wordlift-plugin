@@ -29,7 +29,7 @@ export const reducer = handleActions(
     })
   },
   {
-    isRequestInProgress: true,
+    isRequestInProgress: false,
     currentPostExcerpt: ""
   }
 );

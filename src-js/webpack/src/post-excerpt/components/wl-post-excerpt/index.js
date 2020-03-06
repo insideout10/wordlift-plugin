@@ -20,14 +20,31 @@ import { WlColumn } from "../../../mappings/blocks/wl-column";
 import "./index.scss";
 import { WlPostExcerptButtonGroup } from "../wl-post-excerpt-button-group";
 import WlPostExcerptLoadingScreen from "../wl-post-excerpt-loading-screen";
-import {requestPostExcerpt} from "../../actions";
+import { requestPostExcerpt } from "../../actions";
 
 class WlPostExcerpt extends React.Component {
-    componentDidMount() {
-        this.props.dispatch(requestPostExcerpt())
-    }
+  constructor(props) {
+    super(props);
+    this.refreshExcerpt = this.refreshExcerpt.bind(this);
+    this.useExcerpt = this.useExcerpt.bind(this);
+  }
 
-    renderConditionally() {
+  /**
+   * Refresh the excerpt by getting the new data.
+   */
+  refreshExcerpt() {
+    console.log(requestPostExcerpt);
+  }
+
+  /**
+   * Copy the contents of the wordlift post excerpt box to
+   * wp default box.
+   */
+  useExcerpt() {
+    console.log(this.props.currentPostExcerpt);
+  }
+
+  renderConditionally() {
     if (this.props.isRequestInProgress) {
       return <WlPostExcerptLoadingScreen />;
     } else {
@@ -39,17 +56,17 @@ class WlPostExcerpt extends React.Component {
             </WlColumn>
           </WlContainer>
           <WlContainer fullWidth={true}>
-            <textarea rows={3} className={"wl-post-excerpt--textarea"} />
+            <textarea rows={3} className={"wl-post-excerpt--textarea"} value={this.props.currentPostExcerpt} />
           </WlContainer>
           <WlContainer fullWidth={true}>
-            <WlPostExcerptButtonGroup />
+            <WlPostExcerptButtonGroup refreshHandler={this.refreshExcerpt} useExcerptHandler={this.useExcerpt} />
           </WlContainer>
         </React.Fragment>
       );
     }
   }
   render() {
-    return this.renderConditionally()
+    return this.renderConditionally();
   }
 }
 // Define all the props used by this component.
@@ -58,5 +75,6 @@ WlPostExcerpt.propTypes = {
 };
 
 export default connect(state => ({
-  isRequestInProgress: state.isRequestInProgress
+  isRequestInProgress: state.isRequestInProgress,
+  currentPostExcerpt: state.currentPostExcerpt
 }))(WlPostExcerpt);

@@ -17,21 +17,21 @@ import {WlContainer} from "../../../mappings/blocks/wl-container";
 import {WlColumn} from "../../../mappings/blocks/wl-column";
 import WlActionButton from "../../../faq/components/wl-action-button";
 
-export const WlPostExcerptButtonGroup = ({ updateHandler, deleteHandler }) => {
+export const WlPostExcerptButtonGroup = ({ refreshHandler, useExcerptHandler }) => {
     return (
         <WlContainer fullWidth={true}>
             <WlColumn className={"wl-col--width-20 wl-col--low-padding"}>
                 <WlActionButton
                     text={"Use"}
                     className={"wl-action-button--delete wl-action-button--normal"}
-                    onClickHandler={deleteHandler}
+                    onClickHandler={useExcerptHandler}
                 />
             </WlColumn>
             <WlColumn className={"wl-col--width-30 wl-col--low-padding"}>
                 <WlActionButton
                     text={"Refresh"}
                     className={"wl-action-button--update wl-action-button--primary"}
-                    onClickHandler={updateHandler}
+                    onClickHandler={refreshHandler}
                 />
             </WlColumn>
         </WlContainer>
