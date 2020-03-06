@@ -39,9 +39,11 @@ class Post_Excerpt_Rest_Controller {
 
 	/**
 	 * Saves the excerpt in the post meta.
+	 *
 	 * @param $post_id int Post id which the post excerpt belongs to
 	 * @param $post_excerpt string Post excerpt returned by the server
 	 * @param $post_body string Total text content of the post body.
+	 *
 	 * @return void
 	 */
 	public static function save_post_excerpt_in_meta( $post_id, $post_excerpt, $post_body ) {
@@ -80,6 +82,7 @@ class Post_Excerpt_Rest_Controller {
 			),
 			'body'       => $post_body,
 		) );
+
 		return self::save_response_to_meta_on_success( $post_id, $post_body, $response );
 
 	}
@@ -94,18 +97,17 @@ class Post_Excerpt_Rest_Controller {
 	 * @return array Post excerpt data.
 	 */
 	public static function get_post_excerpt( $request ) {
-		$data          = $request->get_params();
-		$post_id       = $data['post_id'];
-		$post_body     = get_post_field('post_content', $post_id);
-		$current_hash  = md5( $post_body );
+		$data            = $request->get_params();
+		$post_id         = $data['post_id'];
+		$post_body       = get_post_field( 'post_content', $post_id );
+		$current_hash    = md5( $post_body );
 		$server_response = self::get_post_excerpt_conditionally( $post_id, $post_body, $current_hash );
-		if ( $server_response === null || !array_key_exists('post_excerpt', $server_response)) {
+		if ( $server_response === NULL || ! array_key_exists( 'post_excerpt', $server_response ) ) {
 			return array(
 				'status' => 'failure'
 			);
-		}
-		else {
-			return array (
+		} else {
+			return array(
 				'post_excerpt' => $server_response['post_excerpt']
 			);
 		}
@@ -123,12 +125,12 @@ class Post_Excerpt_Rest_Controller {
 				return is_numeric( $param );
 			}
 		);
-//		$post_body_validation_settings = array(
-//			'required'          => TRUE,
-//			'validate_callback' => function ( $param, $request, $key ) {
-//				return is_string( $param );
-//			}
-//		);
+		$post_body_validation_settings = array(
+			'required'          => TRUE,
+			'validate_callback' => function ( $param, $request, $key ) {
+				return is_string( $param );
+			}
+		);
 		/**
 		 * Rest route for getting the excerpt from wordlift api.
 		 */
@@ -143,7 +145,7 @@ class Post_Excerpt_Rest_Controller {
 				},
 				'args'                => array(
 					'post_id'   => $post_id_validation_settings,
-//					'post_body' => $post_body_validation_settings
+					'post_body' => $post_body_validation_settings
 				)
 			)
 		);
@@ -151,6 +153,7 @@ class Post_Excerpt_Rest_Controller {
 
 	/**
 	 * This function determines whether to get the excerpt from the server or from the meta cache.
+	 *
 	 * @param $post_id int The Post id.
 	 * @param $post_body string The post content
 	 * @param $current_hash string md5 hash of the current post body.
@@ -183,6 +186,7 @@ class Post_Excerpt_Rest_Controller {
 
 	/**
 	 * Save the post excerpt to meta if the response is successful.
+	 *
 	 * @param $post_id int The post id
 	 * @param $post_body string Full text content of the post.
 	 * @param $response array

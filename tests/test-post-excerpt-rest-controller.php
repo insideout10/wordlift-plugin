@@ -43,13 +43,26 @@ class Post_Excerpt_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 	public function test_if_request_without_proper_authentication_should_fail() {
 		$post_id = $this->factory()->post->create();
 		$url  = $this->post_excerpt_rest_route . '/' . $post_id;
-		var_dump($url);
 		$request   = new WP_REST_Request( 'POST', $url);
 		$request->set_header( 'content-type', 'application/json' );
 		$request->set_body( wp_json_encode( array() ) );
 		$response  = $this->server->dispatch( $request );
 		$response_data = $response->get_data();
 		$this->assertEquals($response_data['code'], 'rest_forbidden');
+	}
+
+
+	public function test_if_post_body_is_not_present_then_request_should_be_invalid() {
+		$user_id   = $this->factory->user->create( array( 'role' => 'author' ) );
+		wp_set_current_user( $user_id );
+		$post_id = $this->factory()->post->create();
+		$url  = $this->post_excerpt_rest_route . '/' . $post_id;
+		$request   = new WP_REST_Request( 'POST', $url);
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( wp_json_encode( array() ) );
+		$response  = $this->server->dispatch( $request );
+		$response_data = $response->get_data();
+		$this->assertEquals($response_data['code'], 'rest_missing_callback_param');
 	}
 
 }
