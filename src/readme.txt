@@ -142,7 +142,8 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.25.2 (2020-03-02) =
+= 3.25.2 (2020-03-06) =
+* Enhancement: Image License Compliance tool.
 * Fix: Article properties missing when entity has other schema types.
 * Fix [#1021](https://github.com/insideout10/wordlift-plugin/issues/1021): GeoMap should show the current entity for entity pages.
 

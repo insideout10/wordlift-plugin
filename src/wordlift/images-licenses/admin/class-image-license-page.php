@@ -26,7 +26,7 @@ class Image_License_Page extends Submenu_Page_Base {
 	 * @param string $version
 	 */
 	public function __construct( $image_license_service, $version ) {
-		parent::__construct( 'wl_image_license_page', __( 'License Compliance', 'wordlift' ) );
+		parent::__construct( 'wl_image_license_page', __( 'License Compliance', 'wordlift' ), 'manage_options', 'wl_admin_menu' );
 
 		$this->image_license_service = $image_license_service;
 		$this->version               = $version;

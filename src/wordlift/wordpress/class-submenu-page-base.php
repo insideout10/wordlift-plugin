@@ -41,7 +41,7 @@ abstract class Submenu_Page_Base implements Page {
 		$this->page_title  = $page_title;
 		$this->capability  = $capability;
 		$this->parent_slug = $parent_slug;
-		$this->menu_title  = $menu_title;
+		$this->menu_title  = isset( $menu_title ) ? $menu_title : $page_title;
 	}
 
 	public function get_menu_slug() {
