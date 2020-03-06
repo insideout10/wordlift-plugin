@@ -79,35 +79,37 @@ class Add_License_Caption_Or_Remove_Task extends Remove_All_Images_Task {
 			return;
 		}
 
-		foreach ( $item['posts_ids_as_embed'] as $post_id ) {
+		if ( ! isset( $item['posts_ids_as_embed'] ) ) {
+			foreach ( $item['posts_ids_as_embed'] as $post_id ) {
 
-			$figure = sprintf(
-				'
+				$figure = sprintf(
+					'
 				<figure>
 					$0
 					<figcaption>%s</figcaption>
 				</figure>
 				', $caption );
 
-			/**
-			 * <figure>
-			 * <img src="/media/examples/elephant-660-480.jpg"
-			 * alt="Elephant at sunset">
-			 * <figcaption>An elephant at sunset</figcaption>
-			 * </figure>
-			 */
+				/**
+				 * <figure>
+				 * <img src="/media/examples/elephant-660-480.jpg"
+				 * alt="Elephant at sunset">
+				 * <figcaption>An elephant at sunset</figcaption>
+				 * </figure>
+				 */
 
-			$filename       = $item['filename'];
-			$filename_quote = preg_quote( $filename );
-			$post           = get_post( $post_id );
-			$pattern        = '@<img[^>]*src="[^"]+wl/[^"]+' . $filename_quote . '"[^>]*>@';
-			$post_content   = preg_replace( $pattern, $figure, $post->post_content );
+				$filename       = $item['filename'];
+				$filename_quote = preg_quote( $filename );
+				$post           = get_post( $post_id );
+				$pattern        = '@<img[^>]*src="[^"]+wl/[^"]+' . $filename_quote . '"[^>]*>@';
+				$post_content   = preg_replace( $pattern, $figure, $post->post_content );
 
-			wp_update_post( array(
-				'ID'           => $post_id,
-				'post_content' => $post_content,
-			) );
+				wp_update_post( array(
+					'ID'           => $post_id,
+					'post_content' => $post_content,
+				) );
 
+			}
 		}
 
 		// Set the attachment as fixed.
