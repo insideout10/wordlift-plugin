@@ -20,7 +20,7 @@ import {WlColumn} from "../../../mappings/blocks/wl-column";
 class WlPostExcerptLoadingScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.generatingText = window[POST_EXCERPT_LOCALIZATION_OBJECT_KEY]["generatingText"];
+    this.generatingText = global[POST_EXCERPT_LOCALIZATION_OBJECT_KEY]["generatingText"];
   }
   render() {
     return (

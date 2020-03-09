@@ -21,7 +21,7 @@ function getPostContent() {
   // Render it on the dom and get the inner text
   const el = document.createElement("div");
   el.innerHTML = html;
-  return el.innerText;
+  return el.textContent;
 }
 
 /**

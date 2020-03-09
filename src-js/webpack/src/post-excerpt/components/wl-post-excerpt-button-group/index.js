@@ -22,7 +22,7 @@ export const WlPostExcerptButtonGroup = ({ refreshHandler, useExcerptHandler }) 
       <WlColumn className={"wl-col--width-20 wl-col--low-padding"}>
         <WlActionButton
           text={"Use"}
-          className={"wl-action-button--delete wl-action-button--normal"}
+          className={"wl-action-button--use wl-action-button--normal"}
           onClickHandler={useExcerptHandler}
         />
       </WlColumn>
@@ -30,7 +30,7 @@ export const WlPostExcerptButtonGroup = ({ refreshHandler, useExcerptHandler }) 
       <WlColumn className={"wl-col--width-30 wl-col--low-padding"}>
         <WlActionButton
           text={"Refresh"}
-          className={"wl-action-button--update wl-action-button--primary"}
+          className={"wl-action-button--refresh wl-action-button--primary"}
           onClickHandler={refreshHandler}
         />
       </WlColumn>
