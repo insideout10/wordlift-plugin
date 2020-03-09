@@ -8,19 +8,18 @@
  * External dependencies.
  */
 import createSagaMiddleware from "redux-saga";
-import { createStore, applyMiddleware } from "redux";
-import {logger} from 'redux-logger'
-
+import {applyMiddleware, createStore} from "redux";
+import {logger} from "redux-logger";
 /**
  * Internal dependencies.
  */
-import {reducer} from "../actions"
+import {reducer} from "../actions";
 import rootSaga from "../sagas";
 
 export const POST_EXCERPT_INITIAL_STATE = {
-    isRequestInProgress: false,
-    // Empty at starting
-    currentPostExcerpt: "",
+  isRequestInProgress: false,
+  // Empty at starting
+  currentPostExcerpt: ""
 };
 
 const sagaMiddleware = createSagaMiddleware();

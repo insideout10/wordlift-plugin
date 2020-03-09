@@ -8,8 +8,8 @@
 /**
  * External dependencies
  */
-import { createAction, handleActions } from "redux-actions";
-import { createReducer } from "@reduxjs/toolkit";
+import {createAction} from "redux-actions";
+import {createReducer} from "@reduxjs/toolkit";
 
 /**
  * Action to Request the post excerpt from the external api.

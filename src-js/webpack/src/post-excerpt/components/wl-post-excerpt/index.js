@@ -10,18 +10,17 @@
  */
 import React from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
-
+import {connect} from "react-redux";
 /**
  * Internal dependencies.
  */
-import { WlContainer } from "../../../mappings/blocks/wl-container";
-import { WlColumn } from "../../../mappings/blocks/wl-column";
+import {WlContainer} from "../../../mappings/blocks/wl-container";
+import {WlColumn} from "../../../mappings/blocks/wl-column";
 import "./index.scss";
-import { WlPostExcerptButtonGroup } from "../wl-post-excerpt-button-group";
+import {WlPostExcerptButtonGroup} from "../wl-post-excerpt-button-group";
 import WlPostExcerptLoadingScreen from "../wl-post-excerpt-loading-screen";
-import { requestPostExcerpt } from "../../actions";
-import { getPostContent } from "./helpers";
+import {requestPostExcerpt} from "../../actions";
+import {getPostContent, removeDefaultExcerptPanel} from "./helpers";
 
 class WlPostExcerpt extends React.Component {
   constructor(props) {
@@ -35,10 +34,11 @@ class WlPostExcerpt extends React.Component {
    * post body.
    */
   componentDidMount() {
+    removeDefaultExcerptPanel()
     this.props.dispatch(
-        requestPostExcerpt({
-          postBody: getPostContent()
-        })
+      requestPostExcerpt({
+        postBody: getPostContent()
+      })
     );
   }
 

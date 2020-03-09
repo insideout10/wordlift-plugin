@@ -5,4 +5,4 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
-export const POST_EXCERPT_LOCALIZATION_OBJECT_KEY = '_wlExcerptSettings'
+export const POST_EXCERPT_LOCALIZATION_OBJECT_KEY = "_wlExcerptSettings";

@@ -8,8 +8,7 @@
 /**
  * External dependencies.
  */
-import React from 'react'
-
+import React from "react";
 /**
  * Internal dependencies.
  */
@@ -18,24 +17,23 @@ import {WlColumn} from "../../../mappings/blocks/wl-column";
 import WlActionButton from "../../../faq/components/wl-action-button";
 
 export const WlPostExcerptButtonGroup = ({ refreshHandler, useExcerptHandler }) => {
-    return (
-        <WlContainer fullWidth={true}>
-            <WlColumn className={"wl-col--width-20 wl-col--low-padding"}>
-                <WlActionButton
-                    text={"Use"}
-                    className={"wl-action-button--delete wl-action-button--normal"}
-                    onClickHandler={useExcerptHandler}
-                />
-            </WlColumn>
-            <WlColumn className={"wl-col--width-5 wl-col--low-padding"}>
-            </WlColumn>
-            <WlColumn className={"wl-col--width-30 wl-col--low-padding"}>
-                <WlActionButton
-                    text={"Refresh"}
-                    className={"wl-action-button--update wl-action-button--primary"}
-                    onClickHandler={refreshHandler}
-                />
-            </WlColumn>
-        </WlContainer>
-    );
+  return (
+    <WlContainer fullWidth={true}>
+      <WlColumn className={"wl-col--width-20 wl-col--low-padding"}>
+        <WlActionButton
+          text={"Use"}
+          className={"wl-action-button--delete wl-action-button--normal"}
+          onClickHandler={useExcerptHandler}
+        />
+      </WlColumn>
+      <WlColumn className={"wl-col--width-10 wl-col--low-padding"} />
+      <WlColumn className={"wl-col--width-30 wl-col--low-padding"}>
+        <WlActionButton
+          text={"Refresh"}
+          className={"wl-action-button--update wl-action-button--primary"}
+          onClickHandler={refreshHandler}
+        />
+      </WlColumn>
+    </WlContainer>
+  );
 };

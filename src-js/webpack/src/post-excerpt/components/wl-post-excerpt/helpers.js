@@ -22,4 +22,14 @@ function getPostContent() {
   el.innerHTML = html;
   return el.innerText;
 }
-export { getPostContent };
+
+/**
+ * Remove default excerpt panel in block editor, show only
+ * our custom meta box.
+ */
+function removeDefaultExcerptPanel() {
+  if ( wp.data !== undefined ) {
+    wp.data.dispatch( 'core/edit-post').removeEditorPanel( 'post-excerpt' );
+  }
+}
+export { getPostContent, removeDefaultExcerptPanel };

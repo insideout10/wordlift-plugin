@@ -9,15 +9,13 @@
  * External dependencies.
  */
 import React from "react";
-
 /**
  * Internal dependencies.
  */
 import Spinner from "../../../common/components/spinner/index";
-import { WlContainer } from "../../../mappings/blocks/wl-container";
-import { POST_EXCERPT_LOCALIZATION_OBJECT_KEY } from "../../constants";
-import { WlColumn } from "../../../mappings/blocks/wl-column";
-import { WlCard } from "../../../common/components/wl-card";
+import {WlContainer} from "../../../mappings/blocks/wl-container";
+import {POST_EXCERPT_LOCALIZATION_OBJECT_KEY} from "../../constants";
+import {WlColumn} from "../../../mappings/blocks/wl-column";
 
 class WlPostExcerptLoadingScreen extends React.Component {
   constructor(props) {
@@ -27,15 +25,14 @@ class WlPostExcerptLoadingScreen extends React.Component {
   render() {
     return (
       <React.Fragment>
-
-          <WlContainer fullWidth={true}>
-            <WlColumn className={"wl-col--align-center wl-col--full-width"}>
-              <Spinner running={true} />
-              <br />
-              <p>{this.generatingText}</p>
-              <br />
-            </WlColumn>
-          </WlContainer>
+        <WlContainer fullWidth={true}>
+          <WlColumn className={"wl-col--align-center wl-col--full-width"}>
+            <Spinner running={true} />
+            <br />
+            <p>{this.generatingText}</p>
+            <br />
+          </WlColumn>
+        </WlContainer>
       </React.Fragment>
     );
   }

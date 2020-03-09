@@ -29,5 +29,4 @@ function getPostExcerpt(postBody) {
     .then(json => json);
 }
 
-
-export default getPostExcerpt
+export default getPostExcerpt;

@@ -8,8 +8,7 @@
 /**
  * External dependencies
  */
-import { takeLatest, put, call } from "redux-saga/effects";
-
+import {call, put, takeLatest} from "redux-saga/effects";
 /**
  * Internal dependencies.
  */
@@ -20,9 +19,9 @@ function* handleRefreshPostExcerpt(action) {
   yield put(updateRequestStatus(true));
   const { postBody } = action.payload;
   // set request state to in progress.
-  const response  = yield call(getPostExcerpt, postBody);
-  if ( response.post_excerpt !== undefined ) {
-    yield put(updatePostExcerpt(response.post_excerpt))
+  const response = yield call(getPostExcerpt, postBody);
+  if (response.post_excerpt !== undefined) {
+    yield put(updatePostExcerpt(response.post_excerpt));
   }
   // Request is complete, now dont show the loading icon.
   yield put(updateRequestStatus(false));

@@ -10,13 +10,12 @@
  */
 import React from "react";
 import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
-
+import {Provider} from "react-redux";
 /**
  * Internal depdencies.
  */
 import WlPostExcerpt from "./components/wl-post-excerpt/index";
-import store from './store/index'
+import store from "./store/index";
 
 const WL_CUSTOM_EXCERPT_DIV_ID = "wl-custom-excerpt-wrapper";
 
