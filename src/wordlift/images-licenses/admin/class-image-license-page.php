@@ -130,12 +130,12 @@ class Image_License_Page extends Submenu_Page_Base {
                         id="<?php echo $script_id; ?>"><?php echo json_encode( $image ); ?></script>
                 <button data-id="<?php echo $script_id; ?>"
                         data-row-id="<?php echo $row_id; ?>"
-                        data-action="wl_remove_all_images_task"
+                        data-action="wl_remove_all_images_task__single"
                         class="button wl-action-btn"><?php esc_html_e( 'Remove image', 'wordlift' ); ?></button>
 				<?php if ( ! $is_unknown_license ) { ?>
                     <button data-id="<?php echo $script_id; ?>"
                             data-row-id="<?php echo $row_id; ?>"
-                            data-action="wl_add_license_caption_or_remove"
+                            data-action="wl_add_license_caption_or_remove__single"
                             class="button wl-action-btn"><?php esc_html_e( 'Add license caption', 'wordlift' ); ?></button>
 				<?php } ?>
                 <a class="button"

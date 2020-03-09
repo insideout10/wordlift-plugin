@@ -24,7 +24,7 @@ class Remove_All_Images_Task implements Task {
 		$this->image_license_service = $image_license_service;
 
 
-		add_action( 'wp_ajax_' . $this->get_id(), array( $this, 'ajax', ) );
+		add_action( 'wp_ajax_' . $this->get_id() . '__single', array( $this, 'ajax', ) );
 
 	}
 
