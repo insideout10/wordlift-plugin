@@ -10,11 +10,12 @@
  * @return {string} Text content of the post
  */
 function getPostContent() {
+  const {wp, tinymce} = global
   let html = "";
-  if (wp.data !== undefined) {
+  if (wp !== undefined && wp.data !== undefined && wp.data.select !== undefined) {
     // Block editor is active, return the post content.
     html = wp.data.select("core/editor").getCurrentPost().content;
-  } else {
+  } else if (tinymce !== undefined && tinymce.activeEditor !== undefined) {
     html = tinymce.activeEditor.getContent();
   }
   // Render it on the dom and get the inner text

@@ -21,6 +21,7 @@ import {WlPostExcerptButtonGroup} from "../wl-post-excerpt-button-group";
 import WlPostExcerptLoadingScreen from "../wl-post-excerpt-loading-screen";
 import {requestPostExcerpt} from "../../actions";
 import {getPostContent, removeDefaultExcerptPanel} from "./helpers";
+import WlNotificationArea from "../../../common/components/wl-notification-area";
 
 class WlPostExcerpt extends React.Component {
   constructor(props) {
@@ -75,7 +76,7 @@ class WlPostExcerpt extends React.Component {
             </WlColumn>
           </WlContainer>
           <WlContainer fullWidth={true}>
-            <textarea rows={3} className={"wl-post-excerpt--textarea"} value={this.props.currentPostExcerpt} />
+            <textarea rows={3} className={"wl-post-excerpt--textarea"} value={this.props.currentPostExcerpt} onChange={()=>{}}/>
           </WlContainer>
           <WlContainer fullWidth={true}>
             <WlPostExcerptButtonGroup
