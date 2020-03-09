@@ -16,12 +16,12 @@ import {reducer} from "../actions";
 import rootSaga from "../sagas";
 
 export const POST_EXCERPT_INITIAL_STATE = {
-  isRequestInProgress: false,
-  // Empty at starting
-  currentPostExcerpt: "",
-  // notification data
-  notificationMessage: "",
-  notificationType: "",
+    isRequestInProgress: false,
+    // Empty at starting
+    currentPostExcerpt: "",
+    // notification data
+    notificationMessage: "",
+    notificationType: "",
 };
 
 const sagaMiddleware = createSagaMiddleware();

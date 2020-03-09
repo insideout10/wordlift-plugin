@@ -10,15 +10,14 @@ import createSagaMiddleware from "redux-saga";
 import {applyMiddleware, createStore} from "redux";
 import rootSaga from "../../post-excerpt/sagas/index";
 import {reducer} from "../actions";
-import WlNotificationArea from "../../common/components/wl-notification-area";
 
-configure({ adapter: new Adapter() });
+configure({adapter: new Adapter()});
 
 let testStore = null;
 const postExcerptSuccessResponse = {
-  post_excerpt: "this is a sample excerpt",
-  from_cache: true,
-  status: "success"
+    post_excerpt: "this is a sample excerpt",
+    from_cache: true,
+    status: "success"
 };
 
 /**
@@ -29,109 +28,109 @@ const postExcerptSuccessResponse = {
 const flushPromises = () => new Promise(setImmediate);
 
 beforeAll(() => {
-  global["wp"] = {};
-  global["tinymce"] = {
-    activeEditor: {
-      getContent: () => {
-        return "<p>foo</p>";
-      }
-    }
-  };
-  global[POST_EXCERPT_LOCALIZATION_OBJECT_KEY] = {
-    generatingText: "Generating Excerpt..."
-  };
+    global["wp"] = {};
+    global["tinymce"] = {
+        activeEditor: {
+            getContent: () => {
+                return "<p>foo</p>";
+            }
+        }
+    };
+    global[POST_EXCERPT_LOCALIZATION_OBJECT_KEY] = {
+        generatingText: "Generating Excerpt..."
+    };
 });
 
 beforeEach(() => {
-  fetch.resetMocks();
-  const sagaMiddleware = createSagaMiddleware();
-  testStore = createStore(reducer, POST_EXCERPT_INITIAL_STATE, applyMiddleware(sagaMiddleware));
-  sagaMiddleware.run(rootSaga);
+    fetch.resetMocks();
+    const sagaMiddleware = createSagaMiddleware();
+    testStore = createStore(reducer, POST_EXCERPT_INITIAL_STATE, applyMiddleware(sagaMiddleware));
+    sagaMiddleware.run(rootSaga);
 });
 
 it("when the post excerpt component is rendered, should send a http request", () => {
-  fetch.mockResponseOnce(JSON.stringify(postExcerptSuccessResponse));
-  const wrapper = mount(
-    <Provider store={testStore}>
-      <WlPostExcerpt orText={"foo"} />
-    </Provider>
-  );
-  const method = fetch.mock.calls[0][1].method;
-  expect(method).toEqual("POST");
-  const postData = JSON.parse(fetch.mock.calls[0][1].body);
-  // we have supplied value foo via tinymce getcontent() method, see beforeEach() method
-  expect(postData.post_body).toEqual("foo");
+    fetch.mockResponseOnce(JSON.stringify(postExcerptSuccessResponse));
+    const wrapper = mount(
+        <Provider store={testStore}>
+            <WlPostExcerpt orText={"foo"}/>
+        </Provider>
+    );
+    const method = fetch.mock.calls[0][1].method;
+    expect(method).toEqual("POST");
+    const postData = JSON.parse(fetch.mock.calls[0][1].body);
+    // we have supplied value foo via tinymce getcontent() method, see beforeEach() method
+    expect(postData.post_body).toEqual("foo");
 });
 
 it("when the post excerpt component is rendered, should display the loading screen", () => {
-  fetch.mockResponseOnce(JSON.stringify(postExcerptSuccessResponse));
-  const wrapper = mount(
-    <Provider store={testStore}>
-      <WlPostExcerpt orText={"foo"} />
-    </Provider>
-  );
-  expect(wrapper.find(WlPostExcerptLoadingScreen).exists()).toBeTruthy();
+    fetch.mockResponseOnce(JSON.stringify(postExcerptSuccessResponse));
+    const wrapper = mount(
+        <Provider store={testStore}>
+            <WlPostExcerpt orText={"foo"}/>
+        </Provider>
+    );
+    expect(wrapper.find(WlPostExcerptLoadingScreen).exists()).toBeTruthy();
 });
 
 it("when the user clicks on the refresh button, the http ", async () => {
-  // we are creating a mock element.
-  fetch.mockResponseOnce(JSON.stringify(postExcerptSuccessResponse));
-  const wrapper = mount(
-    <Provider store={testStore}>
-      <WlPostExcerpt orText={"foo"} />
-    </Provider>
-  );
-  await flushPromises();
-  wrapper.update();
-  // so we will have the ui now instead of loading screen
-  // click on the refresh button
-  // enqueue a fake response before clicking on the button prevent error.
-  fetch.mockResponseOnce(JSON.stringify(postExcerptSuccessResponse));
-  wrapper
-    .find(".wl-action-button--refresh")
-    .at(0)
-    .simulate("click");
-  const method = fetch.mock.calls[0][1].method;
-  expect(method).toEqual("POST");
-  const postData = JSON.parse(fetch.mock.calls[0][1].body);
-  // we have supplied value foo via tinymce getcontent() method, see beforeEach() method
-  expect(postData.post_body).toEqual("foo");
+    // we are creating a mock element.
+    fetch.mockResponseOnce(JSON.stringify(postExcerptSuccessResponse));
+    const wrapper = mount(
+        <Provider store={testStore}>
+            <WlPostExcerpt orText={"foo"}/>
+        </Provider>
+    );
+    await flushPromises();
+    wrapper.update();
+    // so we will have the ui now instead of loading screen
+    // click on the refresh button
+    // enqueue a fake response before clicking on the button prevent error.
+    fetch.mockResponseOnce(JSON.stringify(postExcerptSuccessResponse));
+    wrapper
+        .find(".wl-action-button--refresh")
+        .at(0)
+        .simulate("click");
+    const method = fetch.mock.calls[0][1].method;
+    expect(method).toEqual("POST");
+    const postData = JSON.parse(fetch.mock.calls[0][1].body);
+    // we have supplied value foo via tinymce getcontent() method, see beforeEach() method
+    expect(postData.post_body).toEqual("foo");
 });
 
 it("when the user clicks on the use button, the text should be copied to the wordpress textarea ", async () => {
-  // we are creating a mock element.
-  fetch.mockResponseOnce(JSON.stringify(postExcerptSuccessResponse));
-  const wrapper = mount(
-    <Provider store={testStore}>
-      <WlPostExcerpt orText={"foo"} />
-    </Provider>
-  );
-  await flushPromises();
-  wrapper.update();
-  // create the fake text area.
-  const el = document.createElement("textarea");
-  el.id = "excerpt";
-  document.body.appendChild(el);
-  wrapper
-    .find(".wl-action-button--use")
-    .at(0)
-    .simulate("click");
-  // now we should have the excerpt value in that textarea.
-  expect(el.value).toEqual("this is a sample excerpt");
+    // we are creating a mock element.
+    fetch.mockResponseOnce(JSON.stringify(postExcerptSuccessResponse));
+    const wrapper = mount(
+        <Provider store={testStore}>
+            <WlPostExcerpt orText={"foo"}/>
+        </Provider>
+    );
+    await flushPromises();
+    wrapper.update();
+    // create the fake text area.
+    const el = document.createElement("textarea");
+    el.id = "excerpt";
+    document.body.appendChild(el);
+    wrapper
+        .find(".wl-action-button--use")
+        .at(0)
+        .simulate("click");
+    // now we should have the excerpt value in that textarea.
+    expect(el.value).toEqual("this is a sample excerpt");
 });
 
 
-it("when the request to external api fails, should show an failure notification on the ui", async() => {
-  fetch.mockResponseOnce(JSON.stringify({
-    "status": "error"
-  }));
-  const wrapper = mount(
-      <Provider store={testStore}>
-        <WlPostExcerpt orText={"foo"} />
-      </Provider>
-  );
-  await flushPromises();
-  wrapper.update();
-  // check if the failure notification is shown.
-  expect(wrapper.find(".notice-error").exists()).toBeTruthy();
+it("when the request to external api fails, should show an failure notification on the ui", async () => {
+    fetch.mockResponseOnce(JSON.stringify({
+        "status": "error"
+    }));
+    const wrapper = mount(
+        <Provider store={testStore}>
+            <WlPostExcerpt orText={"foo"}/>
+        </Provider>
+    );
+    await flushPromises();
+    wrapper.update();
+    // check if the failure notification is shown.
+    expect(wrapper.find(".notice-error").exists()).toBeTruthy();
 })

@@ -10,18 +10,18 @@
  * @return {string} Text content of the post
  */
 function getPostContent() {
-  const { wp, tinymce } = global;
-  let html = "";
-  if (wp !== undefined && wp.data !== undefined && wp.data.select !== undefined) {
-    // Block editor is active, return the post content.
-    html = wp.data.select("core/editor").getCurrentPost().content;
-  } else if (tinymce !== undefined && tinymce.activeEditor !== undefined) {
-    html = tinymce.activeEditor.getContent();
-  }
-  // Render it on the dom and get the inner text
-  const el = document.createElement("div");
-  el.innerHTML = html;
-  return el.textContent;
+    const {wp, tinymce} = global;
+    let html = "";
+    if (wp !== undefined && wp.data !== undefined && wp.data.select !== undefined) {
+        // Block editor is active, return the post content.
+        html = wp.data.select("core/editor").getCurrentPost().content;
+    } else if (tinymce !== undefined && tinymce.activeEditor !== undefined) {
+        html = tinymce.activeEditor.getContent();
+    }
+    // Render it on the dom and get the inner text
+    const el = document.createElement("div");
+    el.innerHTML = html;
+    return el.textContent;
 }
 
 /**
@@ -29,8 +29,9 @@ function getPostContent() {
  * our custom meta box.
  */
 function removeDefaultExcerptPanel() {
-  if (wp.data !== undefined) {
-    wp.data.dispatch("core/edit-post").removeEditorPanel("post-excerpt");
-  }
+    if (wp.data !== undefined) {
+        wp.data.dispatch("core/edit-post").removeEditorPanel("post-excerpt");
+    }
 }
-export { getPostContent, removeDefaultExcerptPanel };
+
+export {getPostContent, removeDefaultExcerptPanel};
