@@ -21,6 +21,7 @@ import "./index.scss";
 import { WlPostExcerptButtonGroup } from "../wl-post-excerpt-button-group";
 import WlPostExcerptLoadingScreen from "../wl-post-excerpt-loading-screen";
 import { requestPostExcerpt } from "../../actions";
+import {getPostContent} from "./helpers";
 
 class WlPostExcerpt extends React.Component {
   constructor(props) {
@@ -37,7 +38,7 @@ class WlPostExcerpt extends React.Component {
     this.props.dispatch({
       type: "GET_POST_EXCERPT",
       payload: {
-        postBody: ""
+        postBody: getPostContent()
       }
     });
   }

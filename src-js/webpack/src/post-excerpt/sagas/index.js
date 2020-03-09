@@ -17,12 +17,10 @@ import {requestPostExcerpt, updatePostExcerpt, updateRequestStatus} from "../act
 import getPostExcerpt from "../api";
 
 function* handleRefreshPostExcerpt(action) {
-  console.log("Saga received the action")
+  yield put(updateRequestStatus(true));
   const { postBody } = action.payload;
   // set request state to in progress.
   const response  = yield call(getPostExcerpt, postBody);
-  throw new Error("saga received the action")
-
   if ( response.post_excerpt !== undefined ) {
     yield put(updatePostExcerpt(response.post_excerpt))
   }

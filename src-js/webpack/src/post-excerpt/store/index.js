@@ -24,7 +24,7 @@ export const POST_EXCERPT_INITIAL_STATE = {
 };
 
 const sagaMiddleware = createSagaMiddleware();
-const store = createStore(reducer, applyMiddleware(sagaMiddleware, logger));
+const store = createStore(reducer, POST_EXCERPT_INITIAL_STATE, applyMiddleware(sagaMiddleware, logger));
 sagaMiddleware.run(rootSaga);
 
 export default store;
