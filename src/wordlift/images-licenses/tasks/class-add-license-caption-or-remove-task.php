@@ -79,7 +79,7 @@ class Add_License_Caption_Or_Remove_Task extends Remove_All_Images_Task {
 			return;
 		}
 
-		if ( ! isset( $item['posts_ids_as_embed'] ) ) {
+		if ( isset( $item['posts_ids_as_embed'] ) ) {
 			foreach ( $item['posts_ids_as_embed'] as $post_id ) {
 
 				$figure = sprintf(
@@ -98,11 +98,13 @@ class Add_License_Caption_Or_Remove_Task extends Remove_All_Images_Task {
 				 * </figure>
 				 */
 
-				$filename       = $item['filename'];
+				$pathinfo       = pathinfo( $item['filename'] );
+				$filename       = $pathinfo['filename'];
+				$extension      = $pathinfo['extension'];
 				$filename_quote = preg_quote( $filename );
 				$post           = get_post( $post_id );
-				$pattern        = '@<img[^>]*src="[^"]+wl/[^"]+' . $filename_quote . '"[^>]*>@';
-				$post_content   = preg_replace( $pattern, $figure, $post->post_content );
+				$pattern        = '@<img[^>]*src="[^"]+wl/[^"]+' . $filename_quote . '(?:-\d+x\d+).' . $extension . '"[^>]*>@';
+				$post_content = preg_replace( $pattern, $figure, $post->post_content );
 
 				wp_update_post( array(
 					'ID'           => $post_id,
