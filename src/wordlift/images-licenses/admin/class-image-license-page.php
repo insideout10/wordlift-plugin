@@ -168,8 +168,8 @@ class Image_License_Page extends Submenu_Page_Base {
 		wp_enqueue_script( $this->get_menu_slug(), plugin_dir_url( __FILE__ ) . 'assets/image-license.js', array( 'wp-util' ), $this->version, true );
 		wp_localize_script( $this->get_menu_slug(), '_wlImageLicensePageSettings', array(
 			'_ajax_nonce' => array(
-				Add_License_Caption_Or_Remove_Task::MENU_SLUG => wp_create_nonce( Add_License_Caption_Or_Remove_Task::MENU_SLUG ),
-				Remove_All_Images_Task::MENU_SLUG             => wp_create_nonce( Remove_All_Images_Task::MENU_SLUG ),
+				Add_License_Caption_Or_Remove_Task::MENU_SLUG . '__single' => wp_create_nonce( Add_License_Caption_Or_Remove_Task::MENU_SLUG ),
+				Remove_All_Images_Task::MENU_SLUG . '__single'             => wp_create_nonce( Remove_All_Images_Task::MENU_SLUG ),
 			),
 			'l10n'        => array(
 				'Done'              => __( 'Done', 'wordlift' ),
