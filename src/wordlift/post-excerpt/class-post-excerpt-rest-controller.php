@@ -104,13 +104,15 @@ class Post_Excerpt_Rest_Controller {
 		$server_response = self::get_post_excerpt_conditionally( $post_id, $post_body, $current_hash );
 		if ( $server_response === NULL || ! array_key_exists( 'post_excerpt', $server_response ) ) {
 			return array(
-				'status' => 'failure'
+				'status' => 'error',
+				'message' => __('Unable to contact wordlift server', 'wordlift')
 			);
 		} else {
 			return array(
 				'status' => 'success',
 				'post_excerpt' => $server_response['post_excerpt'],
 				'from_cache' => $server_response['from_cache'],
+				'message' => __('Excerpt successfully generated.', 'wordlift')
 			);
 		}
 

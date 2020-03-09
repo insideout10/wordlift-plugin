@@ -19,7 +19,7 @@ import {WlColumn} from "../../../mappings/blocks/wl-column";
 import "./index.scss";
 import {WlPostExcerptButtonGroup} from "../wl-post-excerpt-button-group";
 import WlPostExcerptLoadingScreen from "../wl-post-excerpt-loading-screen";
-import {requestPostExcerpt} from "../../actions";
+import {requestPostExcerpt, setNotificationData} from "../../actions";
 import {getPostContent, removeDefaultExcerptPanel} from "./helpers";
 import WlNotificationArea from "../../../common/components/wl-notification-area";
 
@@ -28,6 +28,7 @@ class WlPostExcerpt extends React.Component {
     super(props);
     this.refreshExcerpt = this.refreshExcerpt.bind(this);
     this.useExcerpt = this.useExcerpt.bind(this);
+    this.removeNotificationListener = this.removeNotificationListener.bind(this)
   }
 
   /**
@@ -35,7 +36,7 @@ class WlPostExcerpt extends React.Component {
    * post body.
    */
   componentDidMount() {
-    removeDefaultExcerptPanel()
+    removeDefaultExcerptPanel();
     this.props.dispatch(
       requestPostExcerpt({
         postBody: getPostContent()
@@ -43,6 +44,17 @@ class WlPostExcerpt extends React.Component {
     );
   }
 
+  /**
+   * Clear the notification message and type.
+   */
+  removeNotificationListener() {
+    this.props.dispatch(
+        setNotificationData({
+          notificationMessage: "",
+          notificationType: "",
+        })
+    )
+  }
   /**
    * Refresh the excerpt by getting the new data.
    */
@@ -70,13 +82,23 @@ class WlPostExcerpt extends React.Component {
     } else {
       return (
         <React.Fragment>
+          <WlNotificationArea
+              notificationMessage={this.props.notificationMessage}
+              notificationType={this.props.notificationType}
+              notificationCloseButtonClickedListener={this.removeNotificationListener}
+          />
           <WlContainer>
             <WlColumn className={"wl-col--low-padding"}>
               <p>{this.props.orText}</p>
             </WlColumn>
           </WlContainer>
           <WlContainer fullWidth={true}>
-            <textarea rows={3} className={"wl-post-excerpt--textarea"} value={this.props.currentPostExcerpt} onChange={()=>{}}/>
+            <textarea
+              rows={3}
+              className={"wl-post-excerpt--textarea"}
+              value={this.props.currentPostExcerpt}
+              onChange={() => {}}
+            />
           </WlContainer>
           <WlContainer fullWidth={true}>
             <WlPostExcerptButtonGroup
@@ -99,5 +121,7 @@ WlPostExcerpt.propTypes = {
 
 export default connect(state => ({
   isRequestInProgress: state.isRequestInProgress,
-  currentPostExcerpt: state.currentPostExcerpt
+  currentPostExcerpt: state.currentPostExcerpt,
+  notificationMessage: state.notificationMessage,
+  notificationType: state.notificationType,
 }))(WlPostExcerpt);

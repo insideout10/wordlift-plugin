@@ -30,6 +30,12 @@ export const updateRequestStatus = createAction("UPDATE_REQUEST_STATUS");
 export const applyPostExcerpt = createAction("APPLY_POST_EXCERPT");
 
 /**
+ * When this action is dispatched we set the notification message and notification type.
+ * @type {function(): {type: *}}
+ */
+export const setNotificationData = createAction("SET_NOTIFICATION_DATA");
+
+/**
  * Update the post excerpt in global state after fetching it from api.
  * @type {function(): {type: *}}
  */
@@ -41,5 +47,10 @@ export const reducer = createReducer(null, {
   },
   [updatePostExcerpt().type]: (state, action) => {
     state.currentPostExcerpt = action.payload;
+  },
+  [setNotificationData().type]: (state, action) => {
+    const {notificationMessage, notificationType} = action.payload
+    state.notificationMessage = notificationMessage
+    state.notificationType = notificationType
   }
 });

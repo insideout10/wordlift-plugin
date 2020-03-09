@@ -1,16 +1,17 @@
-import { configure, mount } from "enzyme";
+import {configure, mount} from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
-import { Provider } from "react-redux";
+import {Provider} from "react-redux";
 import React from "react";
-import { POST_EXCERPT_INITIAL_STATE } from "../store/index";
+import {POST_EXCERPT_INITIAL_STATE} from "../store/index";
 import WlPostExcerpt from "../components/wl-post-excerpt";
-import { POST_EXCERPT_LOCALIZATION_OBJECT_KEY } from "../constants";
+import {POST_EXCERPT_LOCALIZATION_OBJECT_KEY} from "../constants";
 import WlPostExcerptLoadingScreen from "../components/wl-post-excerpt-loading-screen";
 import createSagaMiddleware from "redux-saga";
-import { applyMiddleware, createStore } from "redux";
+import {applyMiddleware, createStore} from "redux";
 import rootSaga from "../../post-excerpt/sagas/index";
-import { reducer } from "../actions";
-import { logger } from "redux-logger";
+import {reducer} from "../actions";
+import WlNotificationArea from "../../common/components/wl-notification-area";
+
 configure({ adapter: new Adapter() });
 
 let testStore = null;
@@ -97,7 +98,7 @@ it("when the user clicks on the refresh button, the http ", async () => {
   expect(postData.post_body).toEqual("foo");
 });
 
-it("when the user clicks on the use button, the text should be copied to the wordlift textarea ", async () => {
+it("when the user clicks on the use button, the text should be copied to the wordpress textarea ", async () => {
   // we are creating a mock element.
   fetch.mockResponseOnce(JSON.stringify(postExcerptSuccessResponse));
   const wrapper = mount(
@@ -116,5 +117,21 @@ it("when the user clicks on the use button, the text should be copied to the wor
     .at(0)
     .simulate("click");
   // now we should have the excerpt value in that textarea.
-  expect(el.value).toEqual("this is a sample excerpt")
+  expect(el.value).toEqual("this is a sample excerpt");
 });
+
+
+it("when the request to external api fails, should show an failure notification on the ui", async() => {
+  fetch.mockResponseOnce(JSON.stringify({
+    "status": "error"
+  }));
+  const wrapper = mount(
+      <Provider store={testStore}>
+        <WlPostExcerpt orText={"foo"} />
+      </Provider>
+  );
+  await flushPromises();
+  wrapper.update();
+  // check if the failure notification is shown.
+  expect(wrapper.find(".notice-error").exists()).toBeTruthy();
+})

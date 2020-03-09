@@ -8,11 +8,11 @@
 /**
  * External dependencies
  */
-import {call, put, takeLatest} from "redux-saga/effects";
+import { call, delay, put, takeLatest } from "redux-saga/effects";
 /**
  * Internal dependencies.
  */
-import {requestPostExcerpt, updatePostExcerpt, updateRequestStatus} from "../actions";
+import { requestPostExcerpt, setNotificationData, updatePostExcerpt, updateRequestStatus } from "../actions";
 import getPostExcerpt from "../api";
 
 function* handleRefreshPostExcerpt(action) {
@@ -23,8 +23,24 @@ function* handleRefreshPostExcerpt(action) {
   if (response.post_excerpt !== undefined) {
     yield put(updatePostExcerpt(response.post_excerpt));
   }
+  yield put(
+    setNotificationData({
+      notificationMessage: response.message,
+      notificationType: response.status
+    })
+  );
   // Request is complete, now dont show the loading icon.
   yield put(updateRequestStatus(false));
+  /**
+   * After 2 seconds, remove the notification.
+   */
+  yield delay(2000);
+  yield put(
+    setNotificationData({
+      notificationMessage: "",
+      notificationType: ""
+    })
+  );
 }
 
 function* rootSaga() {

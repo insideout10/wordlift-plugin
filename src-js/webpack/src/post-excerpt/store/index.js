@@ -9,7 +9,6 @@
  */
 import createSagaMiddleware from "redux-saga";
 import {applyMiddleware, createStore} from "redux";
-import {logger} from "redux-logger";
 /**
  * Internal dependencies.
  */
@@ -19,7 +18,10 @@ import rootSaga from "../sagas";
 export const POST_EXCERPT_INITIAL_STATE = {
   isRequestInProgress: false,
   // Empty at starting
-  currentPostExcerpt: ""
+  currentPostExcerpt: "",
+  // notification data
+  notificationMessage: "",
+  notificationType: "",
 };
 
 const sagaMiddleware = createSagaMiddleware();

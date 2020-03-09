@@ -10,7 +10,7 @@
  * @return {string} Text content of the post
  */
 function getPostContent() {
-  const {wp, tinymce} = global
+  const { wp, tinymce } = global;
   let html = "";
   if (wp !== undefined && wp.data !== undefined && wp.data.select !== undefined) {
     // Block editor is active, return the post content.
@@ -29,8 +29,8 @@ function getPostContent() {
  * our custom meta box.
  */
 function removeDefaultExcerptPanel() {
-  if ( wp.data !== undefined ) {
-    wp.data.dispatch( 'core/edit-post').removeEditorPanel( 'post-excerpt' );
+  if (wp.data !== undefined) {
+    wp.data.dispatch("core/edit-post").removeEditorPanel("post-excerpt");
   }
 }
 export { getPostContent, removeDefaultExcerptPanel };
