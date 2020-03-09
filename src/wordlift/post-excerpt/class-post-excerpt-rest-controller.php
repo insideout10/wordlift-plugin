@@ -85,7 +85,6 @@ class Post_Excerpt_Rest_Controller {
 			'data_format' => 'body',
 		) );
 		return self::save_response_to_meta_on_success( $post_id, $post_body, $response );
-
 	}
 
 	/**

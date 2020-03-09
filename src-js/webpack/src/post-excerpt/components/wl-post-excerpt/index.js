@@ -21,7 +21,7 @@ import "./index.scss";
 import { WlPostExcerptButtonGroup } from "../wl-post-excerpt-button-group";
 import WlPostExcerptLoadingScreen from "../wl-post-excerpt-loading-screen";
 import { requestPostExcerpt } from "../../actions";
-import {getPostContent} from "./helpers";
+import { getPostContent } from "./helpers";
 
 class WlPostExcerpt extends React.Component {
   constructor(props) {
@@ -31,16 +31,26 @@ class WlPostExcerpt extends React.Component {
   }
 
   /**
+   * Automatically fetch the post excerpt for the current
+   * post body.
+   */
+  componentDidMount() {
+    this.props.dispatch(
+        requestPostExcerpt({
+          postBody: getPostContent()
+        })
+    );
+  }
+
+  /**
    * Refresh the excerpt by getting the new data.
    */
   refreshExcerpt() {
-    console.log("on click handler fired for refresh excerpt")
-    this.props.dispatch({
-      type: "GET_POST_EXCERPT",
-      payload: {
+    this.props.dispatch(
+      requestPostExcerpt({
         postBody: getPostContent()
-      }
-    });
+      })
+    );
   }
 
   /**
@@ -48,7 +58,9 @@ class WlPostExcerpt extends React.Component {
    * wp default box.
    */
   useExcerpt() {
-    console.log(this.props.currentPostExcerpt);
+    // we get the wordpress text area id and set the text to it.
+    const textarea = document.getElementById("excerpt");
+    textarea.value = this.props.currentPostExcerpt;
   }
 
   renderConditionally() {
