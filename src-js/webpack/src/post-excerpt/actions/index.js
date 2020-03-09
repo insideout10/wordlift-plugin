@@ -10,11 +10,29 @@
  */
 import { createAction, handleActions } from "redux-actions";
 import { createReducer } from "@reduxjs/toolkit";
-import { UPDATE_FAQ_ITEMS } from "../../faq/constants/action-types";
 
+/**
+ * Action to Request the post excerpt from the external api.
+ * @type {actionCreator}
+ */
 export const requestPostExcerpt = createAction("GET_POST_EXCERPT");
+
+/**
+ * Action to update whether the request is in progress or not.
+ * @type {actionCreator}
+ */
 export const updateRequestStatus = createAction("UPDATE_REQUEST_STATUS");
+
+/**
+ * When this action is emitted, the post excerpt is copied to the wordpress excerpt box.
+ * @type {function(): {type: *}}
+ */
 export const applyPostExcerpt = createAction("APPLY_POST_EXCERPT");
+
+/**
+ * Update the post excerpt in global state after fetching it from api.
+ * @type {function(): {type: *}}
+ */
 export const updatePostExcerpt = createAction("UPDATE_POST_EXCERPT");
 
 export const reducer = createReducer(null, {
