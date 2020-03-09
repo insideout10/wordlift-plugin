@@ -19,6 +19,14 @@ const postExcerptSuccessResponse = {
   from_cache: true,
   status: "success"
 };
+
+/**
+ * Resolve all promises before making assertions, setImmediate is a non standard feature
+ * See here https://stackoverflow.com/questions/44741102/how-to-make-jest-wait-for-all-asynchronous-code-to-finish-execution-before-expec
+ * @return {*}
+ */
+const flushPromises = () => new Promise(setImmediate);
+
 beforeAll(() => {
   global["wp"] = {};
   global["tinymce"] = {
@@ -62,4 +70,27 @@ it("when the post excerpt component is rendered, should display the loading scre
     </Provider>
   );
   expect(wrapper.find(WlPostExcerptLoadingScreen).exists()).toBeTruthy()
+
 });
+
+it("when the user clicks on the refresh button, the http ", async () => {
+  // we are creating a mock element.
+  fetch.mockResponseOnce(JSON.stringify(postExcerptSuccessResponse));
+  const wrapper = mount(
+      <Provider store={testStore}>
+        <WlPostExcerpt orText={"foo"} />
+      </Provider>
+  );
+  await flushPromises();
+  wrapper.update()
+  // so we will have the ui now instead of loading screen
+  // click on the refresh button
+  // enqueue a fake response before clicking on the button prevent error.
+  fetch.mockResponseOnce(JSON.stringify(postExcerptSuccessResponse));
+  wrapper.find('.wl-action-button--refresh').at(0).simulate('click')
+  const method = fetch.mock.calls[0][1].method;
+  expect(method).toEqual("POST");
+  const postData = JSON.parse(fetch.mock.calls[0][1].body);
+  // we have supplied value foo via tinymce getcontent() method, see beforeEach() method
+  expect(postData.post_body).toEqual("foo");
+})
