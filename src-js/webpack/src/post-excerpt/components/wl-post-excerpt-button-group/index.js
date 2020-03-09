@@ -27,6 +27,8 @@ export const WlPostExcerptButtonGroup = ({ refreshHandler, useExcerptHandler }) 
                     onClickHandler={useExcerptHandler}
                 />
             </WlColumn>
+            <WlColumn className={"wl-col--width-5 wl-col--low-padding"}>
+            </WlColumn>
             <WlColumn className={"wl-col--width-30 wl-col--low-padding"}>
                 <WlActionButton
                     text={"Refresh"}
