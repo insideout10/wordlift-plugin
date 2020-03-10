@@ -190,7 +190,66 @@ class FAQ_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 
 		return $request;
 	}
+	/**
+	 * Testing if only the answer is deleted, then it should delete only
+	 * the answer not the full faq item.
+	 */
+	public function test_can_only_delete_the_answer() {
+		$post_id = $this->factory()->post->create( array('post_title' => 'foo'));
+		$data = array(
+			'post_id'   => $post_id,
+			'faq_items' => array(
+				array(
+					'question' => 'foo1',
+					'answer'   => 'bar1'
+				),
+				array(
+					'question' => 'foo2',
+					'answer'   => 'bar2'
+				)
+			)
+		);
+		// We have created two faq items.
+		$create_faq_items_request = $this->get_create_faq_item_request( $post_id, $data );
+		$this->server->dispatch( $create_faq_items_request );
 
+		// now lets get those items.
+		$request   = new WP_REST_Request( 'GET', $this->faq_route . "/". $post_id );
+		$request->set_query_params(array(
+			'post_id' => $post_id,
+		));
+		$response  = $this->server->dispatch( $request )->get_data();
+
+		// we need to craft a request to delete the answer only.
+		$data = array(
+			'post_id' => $post_id,
+			'faq_items' => array(
+				array(
+					'question' => 'foo1',
+					'answer'   => 'bar1',
+					'id' => (string) $response[0]["id"],
+					'field_to_be_deleted' => 'answer'
+				)
+			)
+		);
+		// request to delete the faq items.
+		$request   = new WP_REST_Request( WP_REST_Server::DELETABLE, $this->faq_route );
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( wp_json_encode( $data ) );
+		$response  = $this->server->dispatch( $request );
+		// should be 200
+		$this->assertEquals(200, $response->get_status());
+		$data = $response->get_data();
+		// should return success
+		$this->assertArrayHasKey('status', $data);
+		// should be success in status
+		$this->assertEquals($data['status'], 'success');
+		// check if the item is removed.
+		$items = get_post_meta($post_id, Faq_Rest_Controller::FAQ_META_KEY);
+		$this->assertEquals( 2, count($items) );
+		// also the answer should be empty in the first item.
+		$this->assertEquals('', $items[0]['answer']);
+	}
 	/**
 	 * Testing if the user can delete the Faq items correctly.
 	 */
@@ -225,12 +284,12 @@ class FAQ_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 				array(
 					'question' => 'foo1',
 					'answer'   => 'bar1',
-					'id' => (string) $response[0]["id"]
+					'id' => (string) $response[0]["id"],
+					'field_to_be_deleted' => Faq_Rest_Controller::QUESTION
 				)
 			)
 		);
-
-		// we are trying to update the duplicate item, and send the update request.
+		// request to delete the faq items.
 		$request   = new WP_REST_Request( WP_REST_Server::DELETABLE, $this->faq_route );
 		$request->set_header( 'content-type', 'application/json' );
 		$request->set_body( wp_json_encode( $data ) );
