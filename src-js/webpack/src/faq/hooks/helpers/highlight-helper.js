@@ -6,6 +6,9 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
+import {faqEditItemType} from "../../components/faq-edit-item";
+import {FAQ_ANSWER_TAG_NAME, FAQ_QUESTION_TAG_NAME} from "../custom-faq-elements";
+
 export default class HighlightHelper {
   /**
    *
@@ -65,5 +68,26 @@ export default class HighlightHelper {
         HighlightHelper.highlightNodes(element, tagName, className);
       }
     }
+  }
+
+  /**
+   * Remove the highlighting based on the type, ie whether it is a question or
+   * answer
+   * @param id {string} Faq item id
+   * @param type {string} Question or answer
+   * @param html {string} string with highlighting tags
+   * @return {string} Html string with highlighting tags removed.
+   */
+  static removeHighlightingBasedOnType(id, type, html) {
+    if ( type  === faqEditItemType.QUESTION) {
+      // If the question is deleted, then the answer is also deleted currently
+      // so we need to remove the answer, question highlight tags.
+      html = HighlightHelper.removeHighlightingTagsByClassName(html, FAQ_QUESTION_TAG_NAME, id);
+      html = HighlightHelper.removeHighlightingTagsByClassName(html, FAQ_ANSWER_TAG_NAME, id)
+    }
+    else {
+      html = HighlightHelper.removeHighlightingTagsByClassName(html, FAQ_ANSWER_TAG_NAME, id)
+    }
+    return html
   }
 }

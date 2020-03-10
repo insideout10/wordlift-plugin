@@ -34,3 +34,13 @@ export const FAQ_HIGHLIGHT_TEXT = "FAQ_HIGHLIGHT_TEXT";
  * Event emitted by the hook to event handler when the faq is selected by the user.
  */
 export const FAQ_ITEM_SELECTED_ON_TEXT_EDITOR = "FAQ_ITEM_SELECTED_ON_TEXT_EDITOR";
+
+/**
+ * Event emitted by the store to event handler in order to delete the highlighting.
+ * payload should be in this structure.
+ * {
+ *     id: id,
+ *     type: type ( question or answer),
+ * }
+ */
+export const FAQ_ITEM_DELETED = "FAQ_ITEM_DELETED";

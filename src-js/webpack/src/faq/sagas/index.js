@@ -31,7 +31,7 @@ import {
 } from "../actions";
 import { transformAPIDataToUi } from "./filters";
 import { faqEditItemType } from "../components/faq-edit-item";
-import { FAQ_HIGHLIGHT_TEXT, FAQ_ITEMS_CHANGED } from "../constants/faq-hook-constants";
+import { FAQ_HIGHLIGHT_TEXT, FAQ_ITEM_DELETED, FAQ_ITEMS_CHANGED } from "../constants/faq-hook-constants";
 import { trigger } from "backbone";
 
 /**
@@ -142,10 +142,17 @@ function* handleDeleteFaqItems(action) {
   const faqItemIndex = allFaqItems.map(e => e.id).indexOf(id);
   const faqItemToBeDeleted = Object.assign({}, allFaqItems[faqItemIndex]);
   faqItemToBeDeleted.fieldToBeDeleted = type;
-
   const deletedFaqItems = [faqItemToBeDeleted];
   yield put(changeRequestStatus(true));
   const response = yield call(API.deleteFaqItems, deletedFaqItems);
+  /**
+   * Send a delete signal to the hooks in order to remove the highlighting
+   * from the editor.
+   */
+  trigger(FAQ_ITEM_DELETED, {
+    id: id,
+    type: type
+  });
   yield put(changeRequestStatus(false));
   // Refresh the screen by getting new FAQ items.
   yield put(requestGetFaqItems());
