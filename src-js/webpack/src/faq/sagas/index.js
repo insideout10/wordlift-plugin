@@ -120,14 +120,14 @@ function* handleUpdateFaqItems(action) {
     isQuestion: payload.type === faqEditItemType.QUESTION,
     id: faqItems[faqItemIndex].id
   });
+  // Close the modal immediately on apply.
+  yield put(updateFaqModalVisibility(false));
   yield put(changeRequestStatus(true));
   const response = yield call(API.updateFAQItems, changedFaqItems);
   yield put(changeRequestStatus(false));
   yield put(requestGetFaqItems());
   yield dispatchNotification(response);
-  // Close the modal on apply.
-  const modalAction = updateFaqModalVisibility(false);
-  yield put(modalAction);
+
 }
 
 /**
