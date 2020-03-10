@@ -59,9 +59,11 @@ class BlockEditorHighlightHandler {
    * @return {{attributes: {}}}
    */
   getFormatFromEventData(data) {
-    const { isQuestion } = data;
+    const { isQuestion, id } = data;
     const format = {
-      attributes: {}
+      attributes: {
+        className: id
+      }
     };
     /**
      * Apply format depending on the type.

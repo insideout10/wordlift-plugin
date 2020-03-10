@@ -24,7 +24,8 @@ class BlockEditorFormatTypeHandler {
     registerFormatType(FAQ_ANSWER_FORMAT_NAME, {
       title: "Question",
       tagName: FAQ_QUESTION_TAG_NAME,
-      className: null
+      className: null,
+      attributes: { class: "class" },
     });
   }
   registerQuestionFormatType() {
@@ -32,7 +33,8 @@ class BlockEditorFormatTypeHandler {
     registerFormatType(FAQ_QUESTION_FORMAT_NAME, {
       title: "Answer",
       tagName: FAQ_ANSWER_TAG_NAME,
-      className: null
+      className: null,
+      attributes: { class: "class" },
     });
   }
 
