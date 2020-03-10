@@ -18,6 +18,7 @@ import { FAQ_ANSWER_FORMAT_NAME, FAQ_QUESTION_FORMAT_NAME } from "./block-editor
 import TinymceHighlightHandler from "../tinymce/tinymce-highlight-handler";
 import { SELECTION_CHANGED } from "../../../common/constants";
 import { renderHTMLAndApplyHighlightingCorrectly } from "./helpers";
+import HighlightHelper from "../helpers/highlight-helper";
 
 class BlockEditorHighlightHandler {
   constructor() {
@@ -133,7 +134,7 @@ class BlockEditorHighlightHandler {
       if (blockValue !== null && attributeKeyName !== null) {
         const attributes = {};
         const tagName = TinymceHighlightHandler.getTagBasedOnHighlightedText(eventData.isQuestion);
-        attributes[attributeKeyName] = renderHTMLAndApplyHighlightingCorrectly(blockValue, tagName);
+        attributes[attributeKeyName] = HighlightHelper.highlightHTML(blockValue, tagName, eventData.id.toString());
         // Set the altered HTML to the block.
         wp.data.dispatch("core/block-editor").updateBlockAttributes(block.clientId, attributes);
       }

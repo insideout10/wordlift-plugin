@@ -15,7 +15,7 @@ export default class HighlightHelper {
    * @return {string} HTML string with highlighting tags applied.
    */
   static highlightHTML(html, tagName, className) {
-    const el = document.createElement('div');
+    const el = document.createElement("div");
     el.innerHTML = html;
     HighlightHelper.highlightNodes(el, tagName, className);
     return el.innerHTML;
@@ -29,10 +29,10 @@ export default class HighlightHelper {
    * @return {string} HTML string with highlighting removed.
    */
   static removeHighlightingTagsByClassName(html, tagName, className) {
-    const el = document.createElement('div');
+    const el = document.createElement("div");
     el.innerHTML = html;
-    const highlightingTags = el.querySelectorAll(`${tagName}[class="${className}"]`)
-    for ( let tag of highlightingTags) {
+    const highlightingTags = el.querySelectorAll(`${tagName}[class="${className}"]`);
+    for (let tag of highlightingTags) {
       // Remove the highlighting tags
       /**
        * Assumptions.
@@ -40,9 +40,9 @@ export default class HighlightHelper {
        * only textnode at the end of the string, so we can get the node and replace our highlighting
        * tag with that node.
        */
-      tag.parentElement.replaceChild(tag.firstChild, tag)
+      tag.parentElement.replaceChild(tag.firstChild, tag);
     }
-    return el.innerHTML
+    return el.innerHTML;
   }
 
   /**
@@ -59,7 +59,7 @@ export default class HighlightHelper {
       if (element.childNodes.length === 0 && element.nodeType === Node.TEXT_NODE) {
         const newChild = document.createElement(tagName);
         newChild.classList = [className];
-        newChild.textContent = element.textContent
+        newChild.textContent = element.textContent;
         element.parentElement.replaceChild(newChild, element);
       } else {
         HighlightHelper.highlightNodes(element, tagName, className);

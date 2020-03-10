@@ -14,6 +14,7 @@ import { on } from "backbone";
 import { FAQ_HIGHLIGHT_TEXT } from "../../constants/faq-hook-constants";
 import CustomFaqElementsRegistry, { FAQ_ANSWER_TAG_NAME, FAQ_QUESTION_TAG_NAME } from "../custom-faq-elements";
 import { createTinymceHighlightHTML } from "../block-editor/helpers";
+import HighlightHelper from "../helpers/highlight-helper";
 
 class TinymceHighlightHandler {
   /**
@@ -74,7 +75,7 @@ class TinymceHighlightHandler {
     }
     const html = this.selection.getContent();
     const tagName = TinymceHighlightHandler.getTagBasedOnHighlightedText(isQuestion);
-    const highlightedHTML = createTinymceHighlightHTML(html, tagName);
+    const highlightedHTML = HighlightHelper.highlightHTML(html, tagName, id.toString());
     this.selection.setContent(highlightedHTML);
   }
 }
