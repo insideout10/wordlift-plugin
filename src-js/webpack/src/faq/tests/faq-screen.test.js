@@ -58,7 +58,8 @@ beforeAll(() => {
     nonce: "101a671e3d",
     postId: "436",
     invalidTagMessage: "Invalid tags {INVALID_TAGS} is present in answer",
-    invalidWordCountMessage: "Answer word count must not exceed {ANSWER_WORD_COUNT_WARNING_LIMIT} words"
+    invalidWordCountMessage: "Answer word count must not exceed {ANSWER_WORD_COUNT_WARNING_LIMIT} words",
+    updatingText: "updating"
   };
 });
 
@@ -118,116 +119,7 @@ it(
       .simulate("click");
     // now we need to have the 3 faq items to be displayed to the user.
     expect(wrapper.find(".wl-card")).toHaveLength(3);
+
   }
 );
 
-it("when the user opens the edit screen, should be able " + "to update / delete the question", () => {
-  // Mock the faq items data
-  const action = updateFaqItems();
-  action.payload = transformAPIDataToUi(getFaqItemsResponse);
-  testStore.dispatch(action);
-
-  const updateSuccessResponse = {
-    status: "success",
-    message: "Faq Items updated successfully"
-  };
-  fetch.mockResponseOnce(JSON.stringify(updateSuccessResponse));
-  const wrapper = mount(
-    <Provider store={testStore}>
-      <FaqScreen />
-    </Provider>
-  );
-
-  // Now click on a faq item.
-  wrapper
-    .find(".wl-card")
-    .at(0)
-    .simulate("click");
-
-  // change the question and click on update, we should have a update request.
-  wrapper
-    .find(".wl-faq-edit-item--textarea")
-    .at(0)
-    .simulate("change", {
-      target: {
-        value: "new question value?"
-      }
-    });
-  wrapper
-    .find(".wl-action-button--update")
-    .at(0)
-    .simulate("click");
-  // Clear all the mocks.
-  fetch.mockClear();
-  // Enqueue a successful update response
-  fetch.mockResponseOnce(JSON.stringify(updateSuccessResponse));
-  // Now click on delete, should set the question to empty.
-  wrapper
-    .find(".wl-action-button--delete")
-    .at(0)
-    .simulate("click");
-
-  const method = fetch.mock.calls[0][1].method;
-  // method must be delete.
-  expect(method).toEqual("DELETE");
-
-  // Check if the correct item is getting deleted.
-  const deletedData = JSON.parse(fetch.mock.calls[0][1].body);
-  const deletedFaqItem = deletedData.faq_items[0];
-  expect(deletedFaqItem).toEqual(firstFaqItem);
-});
-
-it("when the user opens the edit screen, should be able " + "to update / delete the answer", async() => {
-  // Mock the faq items data
-  const action = updateFaqItems();
-  action.payload = transformAPIDataToUi(getFaqItemsResponse);
-  testStore.dispatch(action);
-
-  fetch.mockResponseOnce(JSON.stringify(updateSuccessResponse));
-  const wrapper = mount(
-    <Provider store={testStore}>
-      <FaqScreen />
-    </Provider>
-  );
-  await flushPromises();
-  wrapper.update();
-  // Now click on a faq item.
-  wrapper
-    .find(".wl-card")
-    .at(0)
-    .simulate("click");
-
-  // change the question and click on update, we should have a update request.
-  wrapper
-    .find(".wl-faq-edit-item--textarea")
-    .at(1)
-    .simulate("change", {
-      target: {
-        value: "new answer value"
-      }
-    });
-  wrapper
-    .find(".wl-action-button--update")
-    .at(2)
-    .simulate("click");
-  const postedData = JSON.parse(fetch.mock.calls[0][1].body);
-  expect(postedData.faq_items[0].answer).toEqual("new answer value");
-  // Clear all the mocks.
-  fetch.mockClear();
-
-  // Enqueue a successful update response
-  fetch.mockResponseOnce(JSON.stringify(updateSuccessResponse));
-  // Now click on delete, should set the question to empty.
-  wrapper
-    .find(".wl-action-button--delete")
-    .at(2)
-    .simulate("click");
-
-  const deletedData = JSON.parse(fetch.mock.calls[0][1].body);
-  const deletedFaqItem = deletedData.faq_items[0];
-  expect(deletedFaqItem).toEqual(firstFaqItem);
-
-  const method = fetch.mock.calls[0][1].method;
-  // method must be delete.
-  expect(method).toEqual("DELETE");
-});
