@@ -147,9 +147,9 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Get the singleton instance.
 	 *
+	 * @return \Wordlift_Configuration_Service
 	 * @since 3.6.0
 	 *
-	 * @return \Wordlift_Configuration_Service
 	 */
 	public static function get_instance() {
 
@@ -160,13 +160,13 @@ class Wordlift_Configuration_Service {
 	 * Get a configuration given the option name and a key. The option value is
 	 * expected to be an array.
 	 *
-	 * @since 3.6.0
-	 *
 	 * @param string $option The option name.
 	 * @param string $key A key in the option value array.
 	 * @param string $default The default value in case the key is not found (by default an empty string).
 	 *
 	 * @return mixed The configuration value or the default value if not found.
+	 * @since 3.6.0
+	 *
 	 */
 	private function get( $option, $key, $default = '' ) {
 
@@ -178,11 +178,12 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Set a configuration parameter.
 	 *
-	 * @since 3.9.0
-	 *
 	 * @param string $option Name of option to retrieve. Expected to not be SQL-escaped.
 	 * @param string $key The value key.
-	 * @param mixed  $value The value.
+	 * @param mixed $value The value.
+	 *
+	 * @since 3.9.0
+	 *
 	 */
 	private function set( $option, $key, $value ) {
 
@@ -196,9 +197,9 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Get the entity base path, by default 'entity'.
 	 *
+	 * @return string The entity base path.
 	 * @since 3.6.0
 	 *
-	 * @return string The entity base path.
 	 */
 	public function get_entity_base_path() {
 
@@ -208,9 +209,10 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Get the entity base path.
 	 *
+	 * @param string $value The entity base path.
+	 *
 	 * @since 3.9.0
 	 *
-	 * @param string $value The entity base path.
 	 */
 	public function set_entity_base_path( $value ) {
 
@@ -221,9 +223,9 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Whether the installation skip wizard should be skipped.
 	 *
+	 * @return bool True if it should be skipped otherwise false.
 	 * @since 3.9.0
 	 *
-	 * @return bool True if it should be skipped otherwise false.
 	 */
 	public function is_skip_wizard() {
 
@@ -233,9 +235,10 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Set the skip wizard parameter.
 	 *
+	 * @param bool $value True to skip the wizard. We expect a boolean value.
+	 *
 	 * @since 3.9.0
 	 *
-	 * @param bool $value True to skip the wizard. We expect a boolean value.
 	 */
 	public function set_skip_wizard( $value ) {
 
@@ -246,9 +249,9 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Get WordLift's key.
 	 *
+	 * @return string WordLift's key or an empty string if not set.
 	 * @since 3.9.0
 	 *
-	 * @return string WordLift's key or an empty string if not set.
 	 */
 	public function get_key() {
 
@@ -258,9 +261,10 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Set WordLift's key.
 	 *
+	 * @param string $value WordLift's key.
+	 *
 	 * @since 3.9.0
 	 *
-	 * @param string $value WordLift's key.
 	 */
 	public function set_key( $value ) {
 
@@ -272,9 +276,9 @@ class Wordlift_Configuration_Service {
 	 *
 	 * Note that WordLift's language is used when writing strings to the Linked Data dataset, not for the analysis.
 	 *
+	 * @return string WordLift's configured language code ('en' by default).
 	 * @since 3.9.0
 	 *
-	 * @return string WordLift's configured language code ('en' by default).
 	 */
 	public function get_language_code() {
 
@@ -284,9 +288,10 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Set WordLift's language code, used when storing strings to the Linked Data dataset.
 	 *
+	 * @param string $value WordLift's language code.
+	 *
 	 * @since 3.9.0
 	 *
-	 * @param string $value WordLift's language code.
 	 */
 	public function set_language_code( $value ) {
 
@@ -297,9 +302,10 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Set the user preferences about sharing diagnostic with us.
 	 *
+	 * @param string $value The user preferences(yes/no).
+	 *
 	 * @since 3.19.0
 	 *
-	 * @param string $value The user preferences(yes/no).
 	 */
 	public function set_diagnostic_preferences( $value ) {
 
@@ -320,9 +326,9 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Get WordLift's configured country code, by default 'us'.
 	 *
+	 * @return string WordLift's configured country code ('us' by default).
 	 * @since 3.18.0
 	 *
-	 * @return string WordLift's configured country code ('us' by default).
 	 */
 	public function get_country_code() {
 
@@ -332,9 +338,10 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Set WordLift's country code.
 	 *
+	 * @param string $value WordLift's country code.
+	 *
 	 * @since 3.18.0
 	 *
-	 * @param string $value WordLift's country code.
 	 */
 	public function set_country_code( $value ) {
 
@@ -348,9 +355,9 @@ class Wordlift_Configuration_Service {
 	 * The publisher entity post id points to an entity post which contains the data for the publisher used in schema.org
 	 * Article markup.
 	 *
+	 * @return int|NULL The publisher entity post id or NULL if not set.
 	 * @since 3.9.0
 	 *
-	 * @return int|NULL The publisher entity post id or NULL if not set.
 	 */
 	public function get_publisher_id() {
 
@@ -360,9 +367,10 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Set the publisher entity post id.
 	 *
+	 * @param int $value The publisher entity post id.
+	 *
 	 * @since 3.9.0
 	 *
-	 * @param int $value The publisher entity post id.
 	 */
 	public function set_publisher_id( $value ) {
 
@@ -373,9 +381,9 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Get the dataset URI.
 	 *
+	 * @return string The dataset URI or an empty string if not set.
 	 * @since 3.10.0
 	 *
-	 * @return string The dataset URI or an empty string if not set.
 	 */
 	public function get_dataset_uri() {
 
@@ -385,9 +393,10 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Set the dataset URI.
 	 *
+	 * @param string $value The dataset URI.
+	 *
 	 * @since 3.10.0
 	 *
-	 * @param string $value The dataset URI.
 	 */
 	public function set_dataset_uri( $value ) {
 
@@ -397,9 +406,9 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Get the package type.
 	 *
+	 * @return string The package type or an empty string if not set.
 	 * @since 3.20.0
 	 *
-	 * @return string The package type or an empty string if not set.
 	 */
 	public function get_package_type() {
 
@@ -409,9 +418,10 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Set the package type.
 	 *
+	 * @param string $value The package type.
+	 *
 	 * @since 3.20.0
 	 *
-	 * @param string $value The package type.
 	 */
 	public function set_package_type( $value ) {
 
@@ -459,23 +469,34 @@ class Wordlift_Configuration_Service {
 	 * If a valid dataset uri is returned it is stored in the appropriate option,
 	 * otherwise the option is set to empty string.
 	 *
-	 * @since 3.17.0 send the site URL and get the dataset URI.
+	 * @param string $key The key to be used.
+	 *
 	 * @since 3.12.0
 	 *
-	 * @param string $key The key to be used.
+	 * @since 3.17.0 send the site URL and get the dataset URI.
 	 */
 	public function get_remote_dataset_uri( $key ) {
 
 		$this->log->trace( 'Getting the remote dataset URI and package type...' );
 
+		if ( empty( $key ) ) {
+			$this->log->warn( 'Key set to empty value.' );
+
+			$this->set_dataset_uri( '' );
+			$this->set_package_type( null );
+
+			return;
+		}
+
 		/**
 		 * Allow 3rd parties to change the site_url.
 		 *
-		 * @since 3.20.0
+		 * @param string $site_url The site url.
 		 *
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/850
 		 *
-		 * @param string $site_url The site url.
+		 * @since 3.20.0
+		 *
 		 */
 		$site_url = apply_filters( 'wl_production_site_url', site_url() );
 
@@ -486,7 +507,7 @@ class Wordlift_Configuration_Service {
 		       . '&country=' . $this->get_country_code()
 		       . '&language=' . $this->get_language_code();
 
-		$args     = wp_parse_args( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
+		$args = wp_parse_args( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
 			'method' => 'PUT',
 		) );
 
@@ -536,12 +557,12 @@ class Wordlift_Configuration_Service {
 	 * it is not being triggered when the save value equals to the one already
 	 * in the DB.
 	 *
-	 * @since 3.12.0
-	 *
 	 * @param mixed $value The new, unserialized option value.
 	 * @param mixed $old_value The old option value.
 	 *
 	 * @return mixed The same value in the $value parameter
+	 * @since 3.12.0
+	 *
 	 */
 	function maybe_update_dataset_uri( $value, $old_value ) {
 
@@ -565,37 +586,37 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Get the API URI to retrieve the dataset URI using the WordLift Key.
 	 *
-	 * @since 3.11.0
-	 *
 	 * @param string $key The WordLift key to use.
 	 *
 	 * @return string The API URI.
+	 * @since 3.11.0
+	 *
 	 */
 	public function get_accounts_by_key_dataset_uri( $key ) {
 
 		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "accounts/key=$key/dataset_uri";
 	}
 
-    /**
-     * Get the API URI to retrieve the account info using the WordLift Key.
-     *
-     * @since 3.26.0
-     *
-     * @param string $key The WordLift key to use.
-     *
-     * @return string The API URI.
-     */
-    public function get_accounts_info_by_key( $key ) {
+	/**
+	 * Get the API URI to retrieve the account info using the WordLift Key.
+	 *
+	 * @param string $key The WordLift key to use.
+	 *
+	 * @return string The API URI.
+	 * @since 3.26.0
+	 *
+	 */
+	public function get_accounts_info_by_key( $key ) {
 
-        return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "accounts/info";
-    }
+		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "accounts/info";
+	}
 
 	/**
 	 * Get the `accounts` end point.
 	 *
+	 * @return string The `accounts` end point.
 	 * @since 3.16.0
 	 *
-	 * @return string The `accounts` end point.
 	 */
 	public function get_accounts() {
 
@@ -605,9 +626,9 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Get the `link by default` option.
 	 *
+	 * @return bool True if entities must be linked by default otherwise false.
 	 * @since 3.13.0
 	 *
-	 * @return bool True if entities must be linked by default otherwise false.
 	 */
 	public function is_link_by_default() {
 
@@ -617,9 +638,10 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Set the `link by default` option.
 	 *
+	 * @param bool $value True to enabling linking by default, otherwise false.
+	 *
 	 * @since 3.13.0
 	 *
-	 * @param bool $value True to enabling linking by default, otherwise false.
 	 */
 	public function set_link_by_default( $value ) {
 
@@ -629,9 +651,9 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Get the 'analytics-enable' option.
 	 *
+	 * @return string 'no' or 'yes' representing bool.
 	 * @since 3.21.0
 	 *
-	 * @return string 'no' or 'yes' representing bool.
 	 */
 	public function is_analytics_enable() {
 		return 'yes' === $this->get( 'wl_analytics_settings', self::ANALYTICS_ENABLE, 'no' );
@@ -640,9 +662,10 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Set the `analytics-enable` option.
 	 *
+	 * @param bool $value True to enabling analytics, otherwise false.
+	 *
 	 * @since 3.21.0
 	 *
-	 * @param bool $value True to enabling analytics, otherwise false.
 	 */
 	public function set_is_analytics_enable( $value ) {
 
@@ -652,9 +675,9 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Get the 'analytics-entity-uri-dimention' option.
 	 *
+	 * @return int
 	 * @since 3.21.0
 	 *
-	 * @return int
 	 */
 	public function get_analytics_entity_uri_dimension() {
 		return (int) $this->get( 'wl_analytics_settings', self::ANALYTICS_ENTITY_URI_DIMENSION, 1 );
@@ -663,9 +686,9 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Get the 'analytics-entity-type-dimension' option.
 	 *
+	 * @return int
 	 * @since 3.21.0
 	 *
-	 * @return int
 	 */
 	public function get_analytics_entity_type_dimension() {
 		return $this->get( 'wl_analytics_settings', self::ANALYTICS_ENTITY_TYPE_DIMENSION, 2 );
@@ -674,9 +697,9 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Get the URL to perform autocomplete request.
 	 *
+	 * @return string The URL to call to perform the autocomplete request.
 	 * @since 3.15.0
 	 *
-	 * @return string The URL to call to perform the autocomplete request.
 	 */
 	public function get_autocomplete_url() {
 
@@ -687,9 +710,9 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Get the URL to perform feedback deactivation request.
 	 *
+	 * @return string The URL to call to perform the feedback deactivation request.
 	 * @since 3.19.0
 	 *
-	 * @return string The URL to call to perform the feedback deactivation request.
 	 */
 	public function get_deactivation_feedback_url() {
 
@@ -700,9 +723,9 @@ class Wordlift_Configuration_Service {
 	/**
 	 * Get the base API URL.
 	 *
+	 * @return string The base API URL.
 	 * @since 3.20.0
 	 *
-	 * @return string The base API URL.
 	 */
 	public function get_api_url() {
 

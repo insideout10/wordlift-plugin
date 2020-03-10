@@ -12,6 +12,7 @@
 
 namespace Wordlift\Post_Excerpt;
 
+use Wordlift\Api\User_Agent;
 use Wordlift_Api_Service;
 use WP_REST_Request;
 
@@ -76,7 +77,7 @@ class Post_Excerpt_Rest_Controller {
 
 		$response = wp_remote_post( $url, array(
 			'timeout'    => 60,
-			'user-agent' => Wordlift_Api_Service::get_user_agent(),
+			'user-agent' => User_Agent::get_user_agent(),
 			'headers'    => array(
 				'Content-Type'  => 'text/plain',
 				'Authorization' => "Key {$configuration_service->get_key()}",

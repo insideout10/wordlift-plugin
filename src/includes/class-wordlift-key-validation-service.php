@@ -113,7 +113,6 @@ class Wordlift_Key_Validation_Service {
 		}
 
 		// If the URL doesn't match it means that this key has been configured elsewhere already.
-		var_dump($res_body);
 		if ( $url !== site_url() ) {
 			Wordlift_Configuration_Service::get_instance()->set_key( '' );
 			wp_send_json_success( array(
@@ -139,9 +138,7 @@ class Wordlift_Key_Validation_Service {
 
 		if ( ! $wl_blog_url ) {
 			update_option( '_wl_blog_url', site_url(), true );
-		}
-
-		if ( $wl_blog_url !== site_url() ) {
+		} else if ( $wl_blog_url !== site_url() ) {
 			Wordlift_Configuration_Service::get_instance()->set_key( '' );
 			set_transient( 'wl-key-error-msg', __( "Your web site URL has changed. To avoid data corruption, WordLift's key has been removed. Please provide a new key in WordLift Settings. If you believe this to be an error, please contact us at hello@wordlift.io", 'wordlift' ), 10 );
 		}
