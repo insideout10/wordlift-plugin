@@ -24,19 +24,33 @@ class FaqScreen extends React.Component {
     super(props);
     this.updatingText = window["_wlFaqSettings"]["updatingText"];
   }
+
   /**
-   * If the user chose a question then display it
-   * in the edit mode, or show the faq list, and if a request
-   * is ongoing, show the updating text.
+   * Show updating screen if the request is in progress.
+   * @return {*}
    */
-  renderComponentBasedOnState() {
+  showFaqItemsList() {
     if (this.props.requestInProgress) {
       return (
         <WlCard alignCenter={true}>
           <h3>{this.updatingText}</h3>
         </WlCard>
       );
-    } else if (this.props.selectedFaqId !== null) {
+    } else {
+      return (
+        <React.Fragment>
+          <FaqList />
+        </React.Fragment>
+      );
+    }
+  }
+  /**
+   * If the user chose a question then display it
+   * in the edit mode, or show the faq list, and if a request
+   * is ongoing, show the updating text.
+   */
+  renderComponentBasedOnState() {
+    if (this.props.selectedFaqId !== null) {
       const selectedFaqIndex = this.props.faqItems.map(e => e.id).indexOf(this.props.selectedFaqId);
       const selectedFaqItem = this.props.faqItems[selectedFaqIndex];
       return (
@@ -58,11 +72,7 @@ class FaqScreen extends React.Component {
         </React.Fragment>
       );
     } else {
-      return (
-        <React.Fragment>
-          <FaqList />
-        </React.Fragment>
-      );
+      return this.showFaqItemsList();
     }
   }
   render() {
