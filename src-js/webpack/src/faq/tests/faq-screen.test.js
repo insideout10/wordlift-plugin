@@ -231,7 +231,6 @@ it("test whether the user can update and delete the faq item question from the e
    * 3.field_to_be_deleted
    * */
   const deletedFaqItem = deleteData.faq_items[0];
-  console.log(deletedFaqItem)
   expect(deletedFaqItem.question).not.toEqual(undefined);
   expect(deletedFaqItem.answer).not.toEqual(undefined);
   expect(deletedFaqItem.field_to_be_deleted).not.toEqual(undefined);
@@ -240,4 +239,129 @@ it("test whether the user can update and delete the faq item question from the e
    * is clicked on question.
    */
   expect(deletedFaqItem.field_to_be_deleted).toEqual("question");
+});
+
+
+
+it("test whether the user can update and delete the faq item answer from the edit screen", async () => {
+  /**
+   * Lets add faq items to the store.
+   */
+  testStore.dispatch(updateFaqItems(transformAPIDataToUi(getFaqItemsResponse)));
+  const wrapper = mount(
+      <Provider store={testStore}>
+        <FaqScreen />
+      </Provider>
+  );
+
+  /**
+   * step 1: click on a faq item.
+   */
+  wrapper
+      .find(".wl-card")
+      .at(0)
+      .simulate("click");
+
+  /**
+   * step 2: edit the answer info on the
+   * text area in edit item screen.
+   */
+  wrapper
+      .find(".wl-faq-edit-item--textarea")
+      .at(1)
+      .simulate("change", {
+        target: {
+          value: "foo answer"
+        }
+      });
+
+  /**
+   * step 3: click the update button, it should
+   * send a request to API with the faq item info and
+   * question should be foo question?, make a update response ready
+   * since we should not receive fetch errors.
+   */
+  fetch.mockResponseOnce(JSON.stringify(updateSuccessResponse));
+  fetch.mockResponseOnce(JSON.stringify(getFaqItemsResponse));
+  // Reset all the mocks of the fetch call.
+  wrapper
+      .find(".wl-action-button--update")
+      .at(2)
+      .simulate("click");
+
+  const postedData = JSON.parse(fetch.mock.calls[0][1].body);
+
+  /**
+   * step 4: when the update button is clicked then the API
+   * call is made, assert the question value in the api call.
+   */
+  // we need to find only one faq item in the update request
+  expect(postedData.faq_items.length).toEqual(1);
+
+  /**
+   * We need to have post id in the request
+   */
+  expect(postedData.post_id).not.toEqual(undefined);
+  expect(postedData.post_id).toEqual("436");
+  /**
+   * We need to have these keys
+   * 1.question
+   * 2.answer
+   * 3.previous_question_value
+   * 4.previous_answer_value
+   * in a single faq item.
+   */
+  const singleFaqItem = postedData.faq_items[0];
+  expect(singleFaqItem.question).not.toEqual(undefined);
+  expect(singleFaqItem.answer).not.toEqual(undefined);
+  expect(singleFaqItem.previous_question_value).not.toEqual(undefined);
+  expect(singleFaqItem.previous_answer_value).not.toEqual(undefined);
+
+  /**
+   * We need the updated value of question in the request, we have
+   * updated the question in text area at step 2, we need to see the value
+   * foo question? here.
+   */
+  expect(singleFaqItem.answer).toEqual("foo answer");
+
+  /**
+   * Deletion of Faq item question.
+   */
+  /**
+   * Step 1: click on the delete button in faq item question, before clicking enqueue
+   * the delete response.
+   */
+  fetch.mockResponseOnce(JSON.stringify(deleteResponse));
+  fetch.mockResponseOnce(JSON.stringify(getFaqItemsResponse));
+
+  wrapper
+      .find(".wl-action-button--delete")
+      .at(2)
+      .simulate("click");
+  /**
+   * Expect the request to contain the delete method, and the faq item to be deleted.
+   */
+  const deleteDataMethod = fetch.mock.calls[1][1].method;
+  const deleteData = JSON.parse(fetch.mock.calls[1][1].body);
+  /**
+   * Method should be `DELETE`
+   */
+  expect(deleteDataMethod).toEqual("DELETE");
+  // we need to find only one faq item in the delete request
+  expect(deleteData.faq_items.length).toEqual(1);
+  /**
+   * We need to have these keys
+   * 1.question
+   * 2.answer
+   * 3.field_to_be_deleted
+   * */
+  const deletedFaqItem = deleteData.faq_items[0];
+  expect(deletedFaqItem.question).not.toEqual(undefined);
+  expect(deletedFaqItem.answer).not.toEqual(undefined);
+  expect(deletedFaqItem.field_to_be_deleted).not.toEqual(undefined);
+  /**
+   * Also expect the field_to_be_deleted should be question, because delete
+   * is clicked on question.
+   */
+  expect(deletedFaqItem.field_to_be_deleted).toEqual("answer");
 });
