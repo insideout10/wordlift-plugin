@@ -48,6 +48,8 @@ export const updateSuccessResponse = {
   message: "Faq Items updated successfully"
 };
 
+const flushPromises = () => new Promise(setImmediate);
+
 beforeAll(() => {
   global["_wlFaqSettings"] = {
     restUrl: "https://wordlift.localhost/index.php?rest_route=/wordlift/v1/faq",
@@ -135,6 +137,7 @@ it("when the user opens the edit screen, should be able " + "to update / delete 
       <FaqScreen />
     </Provider>
   );
+
   // Now click on a faq item.
   wrapper
     .find(".wl-card")
@@ -174,7 +177,7 @@ it("when the user opens the edit screen, should be able " + "to update / delete 
   expect(deletedFaqItem).toEqual(firstFaqItem);
 });
 
-it("when the user opens the edit screen, should be able " + "to update / delete the answer", () => {
+it("when the user opens the edit screen, should be able " + "to update / delete the answer", async() => {
   // Mock the faq items data
   const action = updateFaqItems();
   action.payload = transformAPIDataToUi(getFaqItemsResponse);
@@ -186,6 +189,8 @@ it("when the user opens the edit screen, should be able " + "to update / delete 
       <FaqScreen />
     </Provider>
   );
+  await flushPromises();
+  wrapper.update();
   // Now click on a faq item.
   wrapper
     .find(".wl-card")

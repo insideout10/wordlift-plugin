@@ -21,7 +21,7 @@ export const FAQ_INITIAL_STATE = {
     question: "",
     faqItems: [],
     selectedFaqId: null,
-    requestInProgress: true
+    requestInProgress: false,
   },
   faqModalOptions: {
     isModalOpened: false,
