@@ -85,7 +85,7 @@ export default class HighlightHelper {
       html = HighlightHelper.removeHighlightingTagsByClassName(html, FAQ_QUESTION_TAG_NAME, id);
       html = HighlightHelper.removeHighlightingTagsByClassName(html, FAQ_ANSWER_TAG_NAME, id)
     }
-    else {
+    else if ( type === faqEditItemType.ANSWER) {
       html = HighlightHelper.removeHighlightingTagsByClassName(html, FAQ_ANSWER_TAG_NAME, id)
     }
     return html
