@@ -44,7 +44,6 @@ class TinymceHighlightHandler {
        */
       let html = this.editor.getContent();
       html = HighlightHelper.removeHighlightingBasedOnType(id, type, html);
-      console.log(html + " after highlighting removed")
       this.editor.setContent(html);
     });
   }

@@ -34,12 +34,22 @@ class BlockEditorHighlightHandler {
       this.singleBlockSelectionValue = value;
       this.onChange = onChange;
     });
-    on(FAQ_ITEM_DELETED, ({id, type}) => {
-      /**
-       * Faq item is deleted, loop through the blocks and remove all
-       * the instances of the highlighted text.
-       */
-
+    /**
+     * Remove highlighting if the faq item is deleted from
+     * the faq items list, listen for the delete event and delete
+     * the highlighting.
+     */
+    on(FAQ_ITEM_DELETED, ({ id, type }) => {
+      const blocks = wp.data.select("core/block-editor").getBlocks();
+      for ( let block of blocks) {
+        const { blockValue, attributeKeyName } = this.getBlockValueAndKeyName(block);
+        if (blockValue !== null && attributeKeyName !== null) {
+          const attributes = {};
+          attributes[attributeKeyName] = HighlightHelper.removeHighlightingBasedOnType(id, type, blockValue)
+          // Set the altered HTML to the block.
+          wp.data.dispatch("core/block-editor").updateBlockAttributes(block.clientId, attributes);
+        }
+      }
     })
   }
 
