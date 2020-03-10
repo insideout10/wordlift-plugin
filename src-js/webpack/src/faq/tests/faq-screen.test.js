@@ -47,14 +47,11 @@ export const updateSuccessResponse = {
   status: "success",
   message: "Faq Items updated successfully"
 };
-
+export const deleteResponse = {
+  status: "success",
+  message: "Faq Item successfully deleted."
+};
 const flushPromises = () => new Promise(setImmediate);
-
-beforeAll(() => {});
-
-afterAll(() => {
-  global["_wlFaqSettings"] = null;
-});
 
 let testStore = null;
 beforeEach(() => {
@@ -70,7 +67,8 @@ beforeEach(() => {
     postId: "436",
     invalidTagMessage: "Invalid tags {INVALID_TAGS} is present in answer",
     invalidWordCountMessage: "Answer word count must not exceed {ANSWER_WORD_COUNT_WARNING_LIMIT} words",
-    updatingText: "updating"
+    updatingText: "updating",
+    noFaqItemsText: "No faq items present, add one."
   };
 });
 
@@ -179,7 +177,7 @@ it("test whether the user can update and delete the faq item question from the e
    * We need to have post id in the request
    */
   expect(postedData.post_id).not.toEqual(undefined);
-  expect(postedData.post_id).toEqual('436')
+  expect(postedData.post_id).toEqual("436");
   /**
    * We need to have these keys
    * 1.question
@@ -200,4 +198,46 @@ it("test whether the user can update and delete the faq item question from the e
    * foo question? here.
    */
   expect(singleFaqItem.question).toEqual("foo question?");
+
+  /**
+   * Deletion of Faq item question.
+   */
+  /**
+   * Step 1: click on the delete button in faq item question, before clicking enqueue
+   * the delete response.
+   */
+  fetch.mockResponseOnce(JSON.stringify(deleteResponse));
+  fetch.mockResponseOnce(JSON.stringify(getFaqItemsResponse));
+
+  wrapper
+    .find(".wl-action-button--delete")
+    .at(0)
+    .simulate("click");
+  /**
+   * Expect the request to contain the delete method, and the faq item to be deleted.
+   */
+  const deleteDataMethod = fetch.mock.calls[1][1].method;
+  const deleteData = JSON.parse(fetch.mock.calls[1][1].body);
+  /**
+   * Method should be `DELETE`
+   */
+  expect(deleteDataMethod).toEqual("DELETE");
+  // we need to find only one faq item in the delete request
+  expect(deleteData.faq_items.length).toEqual(1);
+  /**
+   * We need to have these keys
+   * 1.question
+   * 2.answer
+   * 3.field_to_be_deleted
+   * */
+  const deletedFaqItem = deleteData.faq_items[0];
+  console.log(deletedFaqItem)
+  expect(deletedFaqItem.question).not.toEqual(undefined);
+  expect(deletedFaqItem.answer).not.toEqual(undefined);
+  expect(deletedFaqItem.field_to_be_deleted).not.toEqual(undefined);
+  /**
+   * Also expect the field_to_be_deleted should be question, because delete
+   * is clicked on question.
+   */
+  expect(deletedFaqItem.field_to_be_deleted).toEqual("question");
 });

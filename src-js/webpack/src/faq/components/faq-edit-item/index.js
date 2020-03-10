@@ -52,7 +52,8 @@ class FaqEditItem extends React.Component {
     this.setState({ textAreaValue: "" });
     this.props.dispatch(
       requestDeleteFaqItems({
-        id: this.props.id
+        id: this.props.id,
+        type: this.props.type.toLowerCase(),
       })
     );
   }

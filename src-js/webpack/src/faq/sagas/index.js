@@ -127,7 +127,6 @@ function* handleUpdateFaqItems(action) {
   yield put(changeRequestStatus(false));
   yield put(requestGetFaqItems());
   yield dispatchNotification(response);
-
 }
 
 /**
@@ -139,9 +138,12 @@ function* handleDeleteFaqItems(action) {
   // close the edit screen
   yield put(closeEditScreen());
   const allFaqItems = yield select(getAllFAQItems);
-  const payload = action.payload;
-  const faqItemIndex = allFaqItems.map(e => e.id).indexOf(payload.id);
-  const deletedFaqItems = [allFaqItems[faqItemIndex]];
+  const { id, type } = action.payload;
+  const faqItemIndex = allFaqItems.map(e => e.id).indexOf(id);
+  const faqItemToBeDeleted = Object.assign({}, allFaqItems[faqItemIndex]);
+  faqItemToBeDeleted.fieldToBeDeleted = type;
+
+  const deletedFaqItems = [faqItemToBeDeleted];
   yield put(changeRequestStatus(true));
   const response = yield call(API.deleteFaqItems, deletedFaqItems);
   yield put(changeRequestStatus(false));

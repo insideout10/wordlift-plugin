@@ -48,6 +48,7 @@ export const transformUiDataToDeleteApiFormat = items => {
   return items.map((item, index) => ({
     question: item.question,
     answer: item.answer,
-    id: item.id
+    id: item.id,
+    field_to_be_deleted: item.fieldToBeDeleted
   }));
 };
