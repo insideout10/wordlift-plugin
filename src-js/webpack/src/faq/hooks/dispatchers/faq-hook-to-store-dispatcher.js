@@ -60,17 +60,6 @@ class FaqHookToStoreDispatcher {
   }
 
   /**
-   * When the user clicks on the question or answer in text editor
-   * this dispatcher handles the event and dispatch the selected
-   * event to the store.
-   * @param faqId
-   */
-  dispatchQuestionOrAnswerClickedByUser(faqId) {
-    const action = questionSelectedByUser(faqId);
-    this.store.dispatch(action);
-  }
-
-  /**
    * This method is called when the user selects the text and clicks
    * on the tool bar button.
    * @param data

@@ -40,9 +40,6 @@ class FaqEventHandler {
     on(FAQ_EVENT_HANDLER_SELECTION_CHANGED, data => {
       this.dispatcher.dispatchTextSelectedAction(data);
     });
-    on(FAQ_ITEM_SELECTED_ON_TEXT_EDITOR, faqId => {
-      this.dispatcher.dispatchQuestionOrAnswerClickedByUser(faqId);
-    });
   }
 }
 

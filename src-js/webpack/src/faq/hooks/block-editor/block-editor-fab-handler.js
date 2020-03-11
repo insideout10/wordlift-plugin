@@ -115,10 +115,9 @@ class BlockEditorFabHandler {
       const range = window.getSelection().getRangeAt(0)
       // we get the coordinates and then we place the button
       const { right, bottom, height } = range.getBoundingClientRect()
-      const offset = height / 2;
       wrapper.style.position = "fixed";
-      wrapper.style.left = `${right + 30}px`;
-      wrapper.style.top = `${bottom - offset - 10}px`;
+      wrapper.style.left = `${right}px`;
+      wrapper.style.top = `${bottom}px`;
       wrapper.zIndex = 999;
       this.showFabWrapper(wrapper);
     }
