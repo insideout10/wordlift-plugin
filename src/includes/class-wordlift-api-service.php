@@ -7,6 +7,8 @@
  * @since 3.20.0
  */
 
+use Wordlift\Api\User_Agent;
+
 /**
  * Define the {@link Wordlift_Api_Service} class.
  *
@@ -75,7 +77,7 @@ class Wordlift_Api_Service {
 
 		// Get the response value.
 		$response = wp_remote_get( $url, array(
-			'user-agent' => self::get_user_agent(),
+			'user-agent' => User_Agent::get_user_agent(),
 			'headers'    => array(
 				'X-Authorization' => $this->configuration_service->get_key(),
 			),
@@ -88,25 +90,6 @@ class Wordlift_Api_Service {
 			 */
 			'timeout'    => 30,
 		) );
-
-//		var_dump( array(
-//			$url,
-//			array(
-//				'user-agent' => self::get_user_agent(),
-//				'headers'    => array(
-//					'X-Authorization' => $this->configuration_service->get_key(),
-//				),
-//				/*
-//				 * Increase the timeout from the default of 5 to 30 secs.
-//				 *
-//				 * @see https://github.com/insideout10/wordlift-plugin/issues/906
-//				 *
-//				 * @since 3.20.1
-//				 */
-//				'timeout'    => 30,
-//			)
-//		) );
-//		wp_die();
 
 		return self::get_message_or_error( $response );
 	}
@@ -134,12 +117,12 @@ class Wordlift_Api_Service {
 		$url = apply_filters( 'wl_api_service_api_url_path', $this->configuration_service->get_api_url() . $path );
 
 		// Give some time for the operation to complete, more than the time we give to the HTTP operation to complete.
-		@set_time_limit(90);
+		@set_time_limit( 90 );
 
 		// Get the response value.
 		$response = wp_remote_post( $url, array(
 			'timeout'    => 60,
-			'user-agent' => self::get_user_agent(),
+			'user-agent' => User_Agent::get_user_agent(),
 			'headers'    => array(
 				'Content-Type'    => $content_type,
 				'X-Authorization' => $this->configuration_service->get_key(),
@@ -165,7 +148,7 @@ class Wordlift_Api_Service {
 		// Get the response value.
 		$response = wp_remote_request( $url, array(
 			'method'     => 'DELETE',
-			'user-agent' => self::get_user_agent(),
+			'user-agent' => User_Agent::get_user_agent(),
 			'headers'    => array(
 				'X-Authorization' => $this->configuration_service->get_key(),
 			),
@@ -229,36 +212,6 @@ class Wordlift_Api_Service {
 
 		// Decode and return the structured result.
 		return json_decode( $body );
-	}
-
-	/**
-	 * Get the User Agent.
-	 *
-	 * @return string The user-agent string.
-	 * @since 3.20.0
-	 */
-	private static function get_user_agent() {
-
-		// Get WL version.
-		$wl_version = Wordlift::get_instance()->get_version();
-
-		// Get the WP version.
-		$wp_version = get_bloginfo( 'version' );
-
-		// Get the home url.
-		$home_url = home_url( '/' );
-
-		// Get the locale flag.
-		$locale = apply_filters( 'core_version_check_locale', get_locale() );
-
-		// Get the multisite flag.
-		$multisite = is_multisite() ? 'yes' : 'no';
-
-		// Get the PHP version.
-		$php_version = phpversion();
-
-		/** @var string $wp_version The variable is defined in `version.php`. */
-		return "WordLift/$wl_version WordPress/$wp_version (multisite:$multisite, url:$home_url, locale:$locale) PHP/$php_version";
 	}
 
 }

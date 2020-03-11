@@ -46,12 +46,12 @@ function wl_get_entity_post_ids_by_uris( $uris ) {
 /**
  * Build the entity URI given the entity's post.
  *
- * @uses wl_sanitize_uri_path() to sanitize the post title.
- * @uses wl_configuration_get_redlink_dataset_uri() to get the dataset base URI.
- *
  * @param int $post_id The post ID
  *
  * @return string The URI of the entity
+ * @uses wl_sanitize_uri_path() to sanitize the post title.
+ * @uses wl_configuration_get_redlink_dataset_uri() to get the dataset base URI.
+ *
  */
 function wl_build_entity_uri( $post_id ) {
 
@@ -84,14 +84,14 @@ function wl_build_entity_uri( $post_id ) {
 /**
  * Get the entity URI of the provided post.
  *
- * @deprecated use Wordlift_Entity_Service::get_instance()->get_uri( $post_id )
- *
- * @uses       wl_build_entity_uri() to create a new URI if the entity doesn't have an URI yet.
- * @uses       wl_set_entity_uri() to set a newly create URI.
- *
  * @param int $post_id The post ID.
  *
  * @return string|null The URI of the entity or null if not configured.
+ * @uses       wl_set_entity_uri() to set a newly create URI.
+ *
+ * @deprecated use Wordlift_Entity_Service::get_instance()->get_uri( $post_id )
+ *
+ * @uses       wl_build_entity_uri() to create a new URI if the entity doesn't have an URI yet.
  */
 function wl_get_entity_uri( $post_id ) {
 
@@ -101,7 +101,7 @@ function wl_get_entity_uri( $post_id ) {
 /**
  * Save the entity URI for the provided post ID.
  *
- * @param int    $post_id The post ID.
+ * @param int $post_id The post ID.
  * @param string $uri The post URI.
  *
  * @return bool True if successful, otherwise false.
@@ -117,11 +117,11 @@ function wl_set_entity_uri( $post_id, $uri ) {
 /**
  * Get the entity type URIs associated to the specified post.
  *
- * @since 3.0.0
- *
  * @param int $post_id The post ID.
  *
  * @return array An array of terms.
+ * @since 3.0.0
+ *
  */
 function wl_get_entity_rdf_types( $post_id ) {
 
@@ -131,7 +131,7 @@ function wl_get_entity_rdf_types( $post_id ) {
 /**
  * Set the types for the entity with the specified post ID.
  *
- * @param int   $post_id The entity post ID.
+ * @param int $post_id The entity post ID.
  * @param array $type_uris An array of type URIs.
  */
 function wl_set_entity_rdf_types( $post_id, $type_uris = array() ) {
@@ -227,12 +227,31 @@ function wl_entity_taxonomy_get_custom_fields( $entity_id = null ) {
 	}
 
 	// Return custom fields for this specific entity's type.
-	$type = Wordlift_Entity_Type_Service::get_instance()->get( $entity_id );
+	$types = Wordlift_Entity_Type_Service::get_instance()->get_ids( $entity_id );
 
-	if ( ! isset( $type['custom_fields'] ) ) {
-		return array();
-	}
+	/** @var WP_Term[] $terms */
+	$terms = array_filter( array_map( function ( $item ) {
+		return get_term( $item );
+	}, $types ), function ( $item ) {
+		return isset( $item ) && is_a( $item, 'WP_Term' );
+	} );
 
-	return $type['custom_fields'];
+	$term_slugs = array_map( function ( $item ) {
+		return $item->slug;
+	}, $terms );
 
+	$term_slugs[] = 'thing';
+
+	$schema_service = Wordlift_Schema_Service::get_instance();
+
+	return array_reduce( $term_slugs, function ( $carry, $item ) use ( $schema_service ) {
+
+		$schema = $schema_service->get_schema( $item );
+
+		if ( ! isset( $schema['custom_fields'] ) ) {
+			return $carry;
+		}
+
+		return $carry + $schema['custom_fields'];
+	}, array() );
 }
