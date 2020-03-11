@@ -46,18 +46,22 @@ class Image_License_Page extends Submenu_Page_Base {
 		?>
         <h1><?php esc_html_e( 'License Compliance', 'wordlift' ); ?></h1>
 
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus laudantium nam nihil provident sequi?
-            Alias aliquam, animi debitis distinctio dolores laboriosam modi optio possimus qui, quis suscipit, unde
-            veritatis voluptates?</p>
+        <p><?php esc_html_e( 'By choosing "Remove All Images" you will ', 'wordlift' ); ?>
+            <strong><?php esc_html_e( 'remove from your website all images that do not have a Public Domain or CC0 license', 'wordlift' ); ?></strong>.
+			<?php esc_html_e( 'Alternatively, WordLift can write the terms of the detected license in the caption of each image. Make sure
+            that attribution, when required, is visible to your readers. You can also selectively choose from the list
+            of images below if removing or adding the license for each of the images.', 'wordlift' ); ?></p>
+        <p><span class="dashicons dashicons-warning"></span> <?php esc_html_e( 'As site owner you are ultimately responsible for the images
+            being published on your website.', 'wordlift' ); ?></p>
 
-        <div class="tablenav top">
+        <p class="top">
             <a class="button"
                href="<?php echo admin_url( 'admin.php?page=wl_images_licenses__reload_data' ); ?>"><?php esc_html_e( 'Reload data', 'wordlift' ); ?></a>
             <a class="button"
                href="<?php echo admin_url( 'admin.php?page=wl_images_licenses__remove_all_images' ); ?>"><?php esc_html_e( 'Remove all images', 'wordlift' ); ?></a>
             <a class="button"
                href="<?php echo admin_url( 'admin.php?page=wl_images_licenses__add_license_caption_or_remove' ); ?>"><?php esc_html_e( 'Add license caption to images and remove those with unknown license', 'wordlift' ); ?></a>
-        </div>
+        </p>
 
         <h2 class="screen-reader-text"><?php esc_html_e( 'Images', 'wordlift' ); ?></h2>
 

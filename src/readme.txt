@@ -144,10 +144,14 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 = 3.26.0 (2020-02-28) =
 
-= 3.25.2 (2020-03-06) =
+= 3.25.2 (2020-03-11) =
 * Enhancement: Image License Compliance tool.
+
 * Fix: Article properties missing when entity has other schema types.
+* Fix [#1022](https://github.com/insideout10/wordlift-plugin/issues/1022): Unable to delete the mapping property from the edit mapping screen.
 * Fix [#1021](https://github.com/insideout10/wordlift-plugin/issues/1021): GeoMap should show the current entity for entity pages.
+* Fix [#1020](https://github.com/insideout10/wordlift-plugin/issues/1020): Clear out key when a duplicate web site is detected.
+* Fix [#883](https://github.com/insideout10/wordlift-plugin/issues/883): Add support for streaming Leaflet tiles over HTTPS / SSL.
 
 = 3.25.1.3 (2020-02-25) =
 * Fix: synonyms may raise an error in Block Editor.
