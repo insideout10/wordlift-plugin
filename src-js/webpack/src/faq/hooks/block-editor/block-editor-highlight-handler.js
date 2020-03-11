@@ -34,15 +34,19 @@ class BlockEditorHighlightHandler {
       this.singleBlockSelectionValue = value;
       this.onChange = onChange;
     });
-    /**
-     * Remove highlighting if the faq item is deleted from
-     * the faq items list, listen for the delete event and delete
-     * the highlighting.
-     */
-    on(FAQ_ITEM_DELETED, ({ id, type }) => {
+    this.removeHighlightingFromEditorOnDeleteEvent();
+  }
+
+  /**
+   * Remove highlighting if the faq item is deleted from
+   * the faq items list, listen for the delete event and delete
+   * the highlighting.
+   */
+  removeHighlightingFromEditorOnDeleteEvent() {
+    on(FAQ_ITEM_DELETED, ({id, type}) => {
       const blocks = wp.data.select("core/block-editor").getBlocks();
-      for ( let block of blocks) {
-        const { blockValue, attributeKeyName } = this.getBlockValueAndKeyName(block);
+      for (let block of blocks) {
+        const {blockValue, attributeKeyName} = this.getBlockValueAndKeyName(block);
         if (blockValue !== null && attributeKeyName !== null) {
           const attributes = {};
           attributes[attributeKeyName] = HighlightHelper.removeHighlightingBasedOnType(id, type, blockValue)

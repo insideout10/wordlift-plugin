@@ -11,11 +11,6 @@ export const FAB_ID = "wl-block-editor-fab-button";
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 class BlockEditorFabButtonRegister {
-  constructor(wp) {
-    this.wp = wp;
-    /** Translated Text from PHP **/
-    this.addQuestionOrAnswerText = global["_wlFaqSettings"]["addQuestionOrAnswerText"];
-  }
   /**
    * Adding a floating action button to the gutenberg editor
    * it doesnt affect the DOM of gutenberg, it floats near the block
