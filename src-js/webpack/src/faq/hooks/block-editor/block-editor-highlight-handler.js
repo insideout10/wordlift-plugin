@@ -16,25 +16,14 @@ import { on } from "backbone";
 import {FAQ_HIGHLIGHT_TEXT, FAQ_ITEM_DELETED} from "../../constants/faq-hook-constants";
 import { FAQ_ANSWER_FORMAT_NAME, FAQ_QUESTION_FORMAT_NAME } from "./block-editor-format-type-handler";
 import TinymceHighlightHandler from "../tinymce/tinymce-highlight-handler";
-import { SELECTION_CHANGED } from "../../../common/constants";
+import {SELECTION_CHANGED, WORDLIFT_STORE} from "../../../common/constants";
 import { renderHTMLAndApplyHighlightingCorrectly } from "./helpers";
 import HighlightHelper from "../helpers/highlight-helper";
+import {applyFormat, toggleFormat} from "@wordpress/rich-text";
 
 class BlockEditorHighlightHandler {
   constructor() {
     this.props = null;
-    this.singleBlockSelectionValue = null;
-    this.onChange = null;
-    /**
-     * When the single block is selected then we need to get
-     * all the format types of that block, along with the value
-     * property
-     */
-    on(SELECTION_CHANGED, ({ value, onChange }) => {
-      console.log(value)
-      this.singleBlockSelectionValue = value;
-      this.onChange = onChange;
-    });
     this.removeHighlightingFromEditorOnDeleteEvent();
   }
 
@@ -67,7 +56,7 @@ class BlockEditorHighlightHandler {
     const { isQuestion, id } = data;
     const format = {
       attributes: {
-        className: id
+        className: id.toString()
       }
     };
     /**
@@ -86,12 +75,9 @@ class BlockEditorHighlightHandler {
    * @param formatToBeApplied
    */
   applyFormattingForSingleBlock(formatToBeApplied) {
-    console.log(this.singleBlockSelectionValue)
-    const selectedBlock = wp.data.select("core/block-editor").getSelectedBlock();
-    // Dont apply formatting if the tinymce block is embedded in the block editor.
-    if (this.onChange !== null && this.singleBlockSelectionValue !== null && selectedBlock.name !== "core/freeform") {
-      this.onChange(wp.richText.toggleFormat(this.singleBlockSelectionValue, formatToBeApplied));
-    }
+    console.log(formatToBeApplied)
+    const {onChange, value} = wp.data.select(WORDLIFT_STORE).getBlockEditorFormat()
+    onChange(toggleFormat(value, formatToBeApplied))
   }
 
   /**

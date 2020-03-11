@@ -20,8 +20,8 @@ export const FAQ_QUESTION_FORMAT_NAME = "wordlift/faq-question";
 
 class BlockEditorFormatTypeHandler {
   registerAnswerFormatType() {
-    CustomFaqElementsRegistry.registerFaqQuestionElement();
-    registerFormatType(FAQ_ANSWER_FORMAT_NAME, {
+    CustomFaqElementsRegistry.registerFaqAnswerElement();
+    registerFormatType(FAQ_QUESTION_FORMAT_NAME, {
       title: "Question",
       tagName: FAQ_QUESTION_TAG_NAME,
       className: null,
@@ -29,8 +29,8 @@ class BlockEditorFormatTypeHandler {
     });
   }
   registerQuestionFormatType() {
-    CustomFaqElementsRegistry.registerFaqAnswerElement();
-    registerFormatType(FAQ_QUESTION_FORMAT_NAME, {
+    CustomFaqElementsRegistry.registerFaqQuestionElement();
+    registerFormatType(FAQ_ANSWER_FORMAT_NAME, {
       title: "Answer",
       tagName: FAQ_ANSWER_TAG_NAME,
       className: null,
