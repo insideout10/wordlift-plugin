@@ -95,6 +95,28 @@ export const blockEditorWithSelectedBlocks = {
     }
 };
 
+
+export const blockEditorWithNoSelectedBlocks = {
+    data: {
+        select: editorString => {
+            if (editorString === "core/block-editor") {
+                return {
+                    getMultiSelectedBlocks: () => []
+                };
+            }
+        },
+        dispatch: editorString => {
+            if (editorString === "core/block-editor") {
+                return {
+                    updateBlockAttributes: updateBlockAttributesMethod
+                };
+            }
+        }
+    }
+};
+
+
+
 export const blockEditorWithHighlightedBlocks = {
     data: {
         select: editorString => {

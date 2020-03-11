@@ -54,7 +54,7 @@ export function getCurrentSelectionText() {
   // Create a dummy element and render it.
   const el = document.createElement("div");
   el.innerHTML = getCurrentSelectionHTML();
-  return el.innerText;
+  return el.textContent;
 }
 
 /**
