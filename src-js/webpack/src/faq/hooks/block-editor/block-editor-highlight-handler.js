@@ -77,20 +77,6 @@ class BlockEditorHighlightHandler {
   }
 
   /**
-   * Create a rich text element from the supplied range.
-   * @param range {Range}
-   * @param element {Element}
-   * @return element {Object: {key: {String}}}
-   * @return element {Object: {key: {String}}}
-   */
-  createRichTextElementFromRange(element, range) {
-    return wp.richText.create({
-      range,
-      element
-    });
-  }
-
-  /**
    * Apply format for a single block.
    * @param formatToBeApplied
    */
