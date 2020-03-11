@@ -51,6 +51,9 @@ class FaqHookToStoreDispatcher {
       const selectedQuestion = unansweredQuestions[0];
       this.applyAnswerToQuestion(this.store, selectedQuestion.id, text);
     } else {
+      /**
+       * Display the modal once the answer is selected.
+       */
       this.store.dispatch(
         answerSelectedByUser({
           selectedAnswer: text

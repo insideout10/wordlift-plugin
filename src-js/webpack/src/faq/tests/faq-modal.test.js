@@ -8,7 +8,7 @@ import { faqReducer } from "../reducers";
 import { FAQ_INITIAL_STATE } from "../store";
 import rootSaga from "../sagas";
 import Adapter from "enzyme-adapter-react-16";
-import { FAQ_EVENT_HANDLER_SELECTION_CHANGED, FAQ_ITEM_SELECTED_ON_TEXT_EDITOR } from "../constants/faq-hook-constants";
+import { FAQ_EVENT_HANDLER_SELECTION_CHANGED } from "../constants/faq-hook-constants";
 import { off, trigger } from "backbone";
 import FaqEventHandler from "../hooks/faq-event-handler";
 import { updateFaqItems } from "../actions";
@@ -37,7 +37,6 @@ let testStore = null;
 beforeEach(() => {
   // Reset all event handlers.
   off(FAQ_EVENT_HANDLER_SELECTION_CHANGED);
-  off(FAQ_ITEM_SELECTED_ON_TEXT_EDITOR);
   fetch.resetMocks();
   fetch.mockClear();
   const sagaMiddleware = createSagaMiddleware();
