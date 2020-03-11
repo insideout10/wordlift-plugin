@@ -9,6 +9,7 @@ import BlockEditorHighlightHandler from "../hooks/block-editor/block-editor-high
 import { off, trigger } from "backbone";
 import { FAQ_HIGHLIGHT_TEXT } from "../constants/faq-hook-constants";
 import {FAQ_ANSWER_TAG_NAME} from "../hooks/custom-faq-elements";
+import {blockEditorWithSelectedBlocks, updateBlockAttributesMethod} from "./mock-dependencies/block-editor";
 
 beforeEach(() => {
   // Reset event handlers before every test.
@@ -19,70 +20,16 @@ afterEach(() => {
   global["wp"] = null;
 });
 
-/**
- * A mock selected blocks object obtained from gutenberg, used
- * for testing the hook externally.
- */
-const fakeParagraphBlocksData = [
-  {
-    clientId: "1595319b-0c37-41b3-addf-93804ded1a68",
-    name: "core/paragraph",
-    isValid: true,
-    attributes: {
-      content: "this is a answer in first paragraph",
-      dropCap: false
-    },
-    innerBlocks: []
-  },
-  {
-    clientId: "7f122677-7ebd-44bd-80fb-5f9ecdff11f5",
-    name: "core/paragraph",
-    isValid: true,
-    attributes: {
-      content: "this is a answer in second",
-      dropCap: false
-    },
-    innerBlocks: []
-  },
-  {
-    clientId: "cfe47d7b-b5cd-4af2-b4c1-8c747313a6e0",
-    name: "core/paragraph",
-    isValid: true,
-    attributes: {
-      content: "this is answer in third",
-      dropCap: false
-    },
-    innerBlocks: []
-  }
-];
+
 
 it("when the event is emitted from store to highlight the multiple block selection, then it should highlight it correctly", () => {
   const handler = new BlockEditorHighlightHandler();
   handler.listenForHighlightEvent();
-  const updateBlockAttributesMethod = jest.fn(() => {
-  });
+
   /**
    * Setup dependencies used by our hook.
    */
-  global["wp"] = {
-    data: {
-      select: editorString => {
-        if (editorString === "core/block-editor") {
-          return {
-            getMultiSelectedBlocks: () => fakeParagraphBlocksData
-          };
-        }
-      },
-      dispatch: editorString => {
-        if (editorString === "core/block-editor") {
-          return {
-            updateBlockAttributes: updateBlockAttributesMethod
-          };
-        }
-      }
-    }
-  };
-
+  global["wp"] = blockEditorWithSelectedBlocks
   /**
    * step 1: we are mocking a highlight event from the faq store
    * which will cause the block editor handler to highlight the
@@ -110,3 +57,8 @@ it("when the event is emitted from store to highlight the multiple block selecti
    */
   expect(singleCall[1].content.includes(FAQ_ANSWER_TAG_NAME)).toEqual(true)
 });
+
+
+it("when remove highlight event is emitted from store upon deleting a faq item, should remove highlighting correctly", () =>{
+
+})
