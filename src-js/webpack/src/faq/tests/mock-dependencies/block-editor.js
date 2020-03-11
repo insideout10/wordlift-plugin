@@ -7,6 +7,7 @@ const fakeParagraphBlocksData = [
         clientId: "1595319b-0c37-41b3-addf-93804ded1a68",
         name: "core/paragraph",
         isValid: true,
+        originalContent: "this is a answer in first paragraph",
         attributes: {
             content: "this is a answer in first paragraph",
             dropCap: false
@@ -16,6 +17,7 @@ const fakeParagraphBlocksData = [
     {
         clientId: "7f122677-7ebd-44bd-80fb-5f9ecdff11f5",
         name: "core/paragraph",
+        originalContent: "this is a answer in second",
         isValid: true,
         attributes: {
             content: "this is a answer in second",
@@ -26,6 +28,7 @@ const fakeParagraphBlocksData = [
     {
         clientId: "cfe47d7b-b5cd-4af2-b4c1-8c747313a6e0",
         name: "core/paragraph",
+        originalContent: "this is answer in third",
         isValid: true,
         attributes: {
             content: "this is answer in third",
