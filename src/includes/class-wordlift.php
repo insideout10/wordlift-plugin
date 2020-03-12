@@ -1715,6 +1715,7 @@ class Wordlift {
 		$this->loader->add_action( 'wp_ajax_wl_relation_rebuild_process_all', $this->relation_rebuild_adapter, 'process_all' );
 		$this->loader->add_action( 'wp_ajax_wl_sample_data_create', $this->sample_data_ajax_adapter, 'create' );
 		$this->loader->add_action( 'wp_ajax_wl_sample_data_delete', $this->sample_data_ajax_adapter, 'delete' );
+
 		/**
 		 * @since 3.26.0
 		 * Post excerpt meta box would be only loaded when the language is set
@@ -1722,7 +1723,7 @@ class Wordlift {
 		 */
 		if ( $this->configuration_service->get_language_code() === 'en' ) {
 			$excerpt_adapter = new Post_Excerpt_Meta_Box_Adapter();
-			$this->loader->add_action( 'do_meta_boxes', $excerpt_adapter, 'replace_post_excerpt_meta_box' );
+			$this->loader->add_action( 'do_meta_boxes', $excerpt_adapter, 'enqueue_post_excerpt_scripts' );
 			// Adding Rest route for the post excerpt
 			Post_Excerpt_Rest_Controller::register_routes();
 		}

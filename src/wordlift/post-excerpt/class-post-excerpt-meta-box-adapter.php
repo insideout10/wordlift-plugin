@@ -16,14 +16,7 @@ use Wordlift\Scripts\Scripts_Helper;
 
 final class Post_Excerpt_Meta_Box_Adapter {
 
-	/**
-	 * Replaces the default post excerpt meta box with custom post excerpt meta box.
-	 */
-	public function replace_post_excerpt_meta_box() {
-		$this->enqueue_post_excerpt_scripts();
-	}
-
-	private function enqueue_post_excerpt_scripts() {
+	public function enqueue_post_excerpt_scripts() {
 		Scripts_Helper::enqueue_based_on_wordpress_version(
 			'wl-post-excerpt',
 			plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'js/dist/post-excerpt',
