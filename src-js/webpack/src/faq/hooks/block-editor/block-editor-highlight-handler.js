@@ -36,7 +36,7 @@ class BlockEditorHighlightHandler {
     on(FAQ_ITEM_DELETED, ({id, type}) => {
       const blocks = wp.data.select("core/block-editor").getBlocks();
       for (let block of blocks) {
-        const {blockValue, attributeKeyName} = this.getBlockValueAndKeyName(block);
+        const {blockValue, attributeKeyName} = BlockEditorHighlightHandler.getBlockValueAndKeyName(block);
         if (blockValue !== null && attributeKeyName !== null) {
           const attributes = {};
           attributes[attributeKeyName] = HighlightHelper.removeHighlightingBasedOnType(id.toString(), type, blockValue)
@@ -85,7 +85,7 @@ class BlockEditorHighlightHandler {
    * @param block
    * @return
    */
-  getBlockValueAndKeyName(block) {
+  static getBlockValueAndKeyName(block) {
     // Every block have an attribute in different name other than content
     // so this code determines the attribute key name by assuming the following
     const attrs = block.attributes;
@@ -127,7 +127,7 @@ class BlockEditorHighlightHandler {
    */
   applyFormattingForMultipleBlocks(formatToBeApplied, blocks, eventData) {
     for (let block of blocks) {
-      const { blockValue, attributeKeyName } = this.getBlockValueAndKeyName(block);
+      const { blockValue, attributeKeyName } = BlockEditorHighlightHandler.getBlockValueAndKeyName(block);
       if (blockValue !== null && attributeKeyName !== null) {
         const attributes = {};
         const tagName = TinymceHighlightHandler.getTagBasedOnHighlightedText(eventData.isQuestion);

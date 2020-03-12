@@ -6,6 +6,8 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
+import BlockEditorHighlightHandler from "./block-editor-highlight-handler";
+
 function getSingleBlockSelectionHTML() {
   let html = "";
   /** Check for selection */
@@ -37,12 +39,17 @@ export function getCurrentSelectionHTML() {
   if (blocks.length > 1) {
     // its a multi selection, loop through blocks and get html.
     for (let block of blocks) {
-      html += block.originalContent;
+      const {blockValue, attributeKeyName} = BlockEditorHighlightHandler.getBlockValueAndKeyName(block);
+      if (blockValue !== null && attributeKeyName !== null) {
+        html += blockValue;
+      }
+
     }
   } else {
     // it is a single selection, get selected blocks original content.
     html += getSingleBlockSelectionHTML();
   }
+  console.log(html);
   return html;
 }
 
@@ -86,28 +93,3 @@ export function renderHTMLAndApplyHighlightingCorrectly(htmlValue, tagName) {
   return blockWrapper.innerHTML;
 }
 
-/**
- * Tinymce and block editor htmls have different formats when selected,tinymce usually selects with
- * the parent node like paragraph, block editor selection doesnt have the parent node html
- * @param htmlValue {string} which may contain html.
- * @param tagName {string} Name of the highlight tag.
- * @return {string} string with valid html tags.
- */
-export function createTinymceHighlightHTML(htmlValue, tagName) {
-  // Render the html on the dummy div
-  const blockWrapper = document.createElement("div");
-  blockWrapper.innerHTML = htmlValue;
-  // Loop through all the nodes and highlight the nodes.
-  for (let node of blockWrapper.childNodes) {
-    const currentHTML = node.innerHTML;
-    if (node.nodeType === Node.TEXT_NODE) {
-      const textContent = node.textContent;
-      const newNode = document.createElement(`${tagName}`);
-      newNode.innerHTML = textContent;
-      blockWrapper.replaceChild(newNode, node);
-    } else {
-      node.innerHTML = `<${tagName}>${currentHTML}</${tagName}>`;
-    }
-  }
-  return blockWrapper.innerHTML;
-}
