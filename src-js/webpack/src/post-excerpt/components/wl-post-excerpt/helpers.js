@@ -14,7 +14,7 @@ function getPostContent() {
   let html = "";
   if (wp !== undefined && wp.data !== undefined && wp.data.select !== undefined) {
     // Block editor is active, return the post content.
-    html = wp.data.select("core/editor").getCurrentPost().content;
+    html = wp.data.select("core/editor").getEditedPostAttribute('content');
   } else if (tinymce !== undefined && tinymce.activeEditor !== undefined) {
     html = tinymce.activeEditor.getContent();
   }
