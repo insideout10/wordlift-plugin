@@ -79,9 +79,6 @@
       "\\.(css|less|sass|scss)$": "<rootDir>/__mocks__/styleMock.js",
       "\\.(gif|ttf|eot|svg)$": "<rootDir>/__mocks__/fileMock.js"
     },
-    "setupFilesAfterEnv": [
-      "./src/mappings/tests/setup.js"
-    ],
     "setupFiles": [
       "./src/faq/tests/setup.js"
     ]
