@@ -8,8 +8,8 @@
 /**
  * External dependencies
  */
-import {createAction} from "redux-actions";
-import {createReducer} from "@reduxjs/toolkit";
+import { createAction } from "redux-actions";
+import { createReducer } from "@reduxjs/toolkit";
 
 /**
  * Action to Request the post excerpt from the external api.
@@ -42,15 +42,15 @@ export const setNotificationData = createAction("SET_NOTIFICATION_DATA");
 export const updatePostExcerpt = createAction("UPDATE_POST_EXCERPT");
 
 export const reducer = createReducer(null, {
-    [updateRequestStatus().type]: (state, action) => {
-        state.isRequestInProgress = action.payload;
-    },
-    [updatePostExcerpt().type]: (state, action) => {
-        state.currentPostExcerpt = action.payload;
-    },
-    [setNotificationData().type]: (state, action) => {
-        const {notificationMessage, notificationType} = action.payload
-        state.notificationMessage = notificationMessage
-        state.notificationType = notificationType
-    }
+  [updateRequestStatus().type]: (state, action) => {
+    state.isRequestInProgress = action.payload;
+  },
+  [updatePostExcerpt().type]: (state, action) => {
+    state.currentPostExcerpt = action.payload;
+  },
+  [setNotificationData().type]: (state, action) => {
+    const { notificationMessage, notificationType } = action.payload;
+    state.notificationMessage = notificationMessage;
+    state.notificationType = notificationType;
+  }
 });
