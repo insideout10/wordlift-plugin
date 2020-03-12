@@ -122,6 +122,9 @@ class TinymceToolbarHandler {
     editor.on("NodeChange", e => {
       this.changeButtonStateOnSelectedText();
     });
+    editor.on("selectionchange", e => {
+      this.changeButtonStateOnSelectedText();
+    })
   }
 
   /**
