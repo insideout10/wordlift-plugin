@@ -14,7 +14,7 @@ export default class HighlightHelper {
    *
    * @param html Source HTML string
    * @param tagName Tag name which is used for highlighting
-   * @param className Class Name to select the highlighting tags.
+   * @param className {string} Class Name to select the highlighting tags.
    * @return {string} HTML string with highlighting tags applied.
    */
   static highlightHTML(html, tagName, className) {
