@@ -8,7 +8,7 @@
 /**
  * External dependencies
  */
-import { call, delay, put, select, takeLatest } from "redux-saga/effects";
+import {call, delay, put, select, takeLatest} from "redux-saga/effects";
 /**
  * Internal dependencies.
  */
@@ -19,7 +19,7 @@ import {
   UPDATE_FAQ_ITEM
 } from "../constants/action-types";
 import API from "../api/index";
-import { getAllFAQItems, getCurrentQuestion } from "../selectors";
+import {getAllFAQItems, getCurrentQuestion} from "../selectors";
 import {
   changeRequestStatus,
   closeEditScreen,
@@ -29,10 +29,10 @@ import {
   updateFaqModalVisibility,
   updateNotificationArea
 } from "../actions";
-import { transformAPIDataToUi } from "./filters";
-import { faqEditItemType } from "../components/faq-edit-item";
-import { FAQ_HIGHLIGHT_TEXT, FAQ_ITEM_DELETED, FAQ_ITEMS_CHANGED } from "../constants/faq-hook-constants";
-import { trigger } from "backbone";
+import {transformAPIDataToUi} from "./filters";
+import {faqEditItemType} from "../components/faq-edit-item";
+import {FAQ_HIGHLIGHT_TEXT, FAQ_ITEM_DELETED, FAQ_ITEMS_CHANGED} from "../constants/faq-hook-constants";
+import {trigger} from "backbone";
 
 /**
  * Dispatch notification when a event occurs on the store.

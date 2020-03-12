@@ -9,17 +9,16 @@
 /**
  * External dependencies.
  */
-import { on } from "backbone";
+import {on} from "backbone";
 /**
  * Internal dependencies.
  */
 import {FAQ_HIGHLIGHT_TEXT, FAQ_ITEM_DELETED} from "../../constants/faq-hook-constants";
-import { FAQ_ANSWER_FORMAT_NAME, FAQ_QUESTION_FORMAT_NAME } from "./block-editor-format-type-handler";
+import {FAQ_ANSWER_FORMAT_NAME, FAQ_QUESTION_FORMAT_NAME} from "./block-editor-format-type-handler";
 import TinymceHighlightHandler from "../tinymce/tinymce-highlight-handler";
-import {SELECTION_CHANGED, WORDLIFT_STORE} from "../../../common/constants";
-import { renderHTMLAndApplyHighlightingCorrectly } from "./helpers";
+import {WORDLIFT_STORE} from "../../../common/constants";
 import HighlightHelper from "../helpers/highlight-helper";
-import {applyFormat, toggleFormat} from "@wordpress/rich-text";
+import {toggleFormat} from "@wordpress/rich-text";
 
 class BlockEditorHighlightHandler {
   constructor() {
@@ -33,18 +32,18 @@ class BlockEditorHighlightHandler {
    * the highlighting.
    */
   removeHighlightingFromEditorOnDeleteEvent() {
-    on(FAQ_ITEM_DELETED, ({id, type}) => {
+    on(FAQ_ITEM_DELETED, ({ id, type }) => {
       const blocks = wp.data.select("core/block-editor").getBlocks();
       for (let block of blocks) {
-        const {blockValue, attributeKeyName} = BlockEditorHighlightHandler.getBlockValueAndKeyName(block);
+        const { blockValue, attributeKeyName } = BlockEditorHighlightHandler.getBlockValueAndKeyName(block);
         if (blockValue !== null && attributeKeyName !== null) {
           const attributes = {};
-          attributes[attributeKeyName] = HighlightHelper.removeHighlightingBasedOnType(id.toString(), type, blockValue)
+          attributes[attributeKeyName] = HighlightHelper.removeHighlightingBasedOnType(id.toString(), type, blockValue);
           // Set the altered HTML to the block.
           wp.data.dispatch("core/block-editor").updateBlockAttributes(block.clientId, attributes);
         }
       }
-    })
+    });
   }
 
   /**
@@ -75,8 +74,8 @@ class BlockEditorHighlightHandler {
    * @param formatToBeApplied
    */
   applyFormattingForSingleBlock(formatToBeApplied) {
-    const {onChange, value} = wp.data.select(WORDLIFT_STORE).getBlockEditorFormat()
-    onChange(toggleFormat(value, formatToBeApplied))
+    const { onChange, value } = wp.data.select(WORDLIFT_STORE).getBlockEditorFormat();
+    onChange(toggleFormat(value, formatToBeApplied));
   }
 
   /**

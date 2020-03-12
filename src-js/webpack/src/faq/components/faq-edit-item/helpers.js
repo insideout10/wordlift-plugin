@@ -11,7 +11,7 @@ import React from "react";
 /**
  * Internal dependencies.
  */
-import { ANSWER_WORD_COUNT_WARNING_LIMIT, faqEditItemType } from "./index";
+import {ANSWER_WORD_COUNT_WARNING_LIMIT, faqEditItemType} from "./index";
 
 /**
  * Allowed html tags in the answer according to docs

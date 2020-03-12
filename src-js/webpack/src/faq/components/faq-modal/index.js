@@ -8,17 +8,17 @@
  * External dependencies.
  */
 import React from "react";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 /**
  * Internal dependencies.
  */
-import { requestGetFaqItems, updateFaqModalVisibility, updateNotificationArea } from "../../actions";
+import {requestGetFaqItems, updateFaqModalVisibility, updateNotificationArea} from "../../actions";
 import "./index.scss";
-import { WlModal } from "../../../common/components/wl-modal";
-import { WlModalHeader } from "../../../common/components/wl-modal/wl-modal-header";
-import { WlModalBody } from "../../../common/components/wl-modal/wl-modal-body";
+import {WlModal} from "../../../common/components/wl-modal";
+import {WlModalHeader} from "../../../common/components/wl-modal/wl-modal-header";
+import {WlModalBody} from "../../../common/components/wl-modal/wl-modal-body";
 import FaqApplyList from "../faq-apply-list";
-import { WlBgModal } from "../../../common/components/wl-bg-modal";
+import {WlBgModal} from "../../../common/components/wl-bg-modal";
 import WlNotificationArea from "../../../common/components/wl-notification-area";
 
 class FaqModal extends React.Component {

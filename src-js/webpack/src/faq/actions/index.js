@@ -8,7 +8,7 @@
 /**
  * External dependencies.
  */
-import { createAction } from "redux-actions";
+import {createAction} from "redux-actions";
 /**
  * Internal dependencies
  */

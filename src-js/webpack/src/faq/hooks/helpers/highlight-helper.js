@@ -79,18 +79,16 @@ export default class HighlightHelper {
    * @return {string} Html string with highlighting tags removed.
    */
   static removeHighlightingBasedOnType(id, type, html) {
-
-    if ( type.toLowerCase()  === faqEditItemType.QUESTION.toLowerCase()) {
+    if (type.toLowerCase() === faqEditItemType.QUESTION.toLowerCase()) {
       // If the question is deleted, then the answer is also deleted currently
       // so we need to remove the answer, question highlight tags.
       html = HighlightHelper.removeHighlightingTagsByClassName(html, FAQ_QUESTION_TAG_NAME, id);
-      html = HighlightHelper.removeHighlightingTagsByClassName(html, FAQ_ANSWER_TAG_NAME, id)
-    }
-    else if ( type.toLowerCase() === faqEditItemType.ANSWER.toLowerCase()) {
+      html = HighlightHelper.removeHighlightingTagsByClassName(html, FAQ_ANSWER_TAG_NAME, id);
+    } else if (type.toLowerCase() === faqEditItemType.ANSWER.toLowerCase()) {
       // If only the answer is deleted, we dont need to remove the question tag, because
       // question would be present even if the answer is not present.
-      html = HighlightHelper.removeHighlightingTagsByClassName(html, FAQ_ANSWER_TAG_NAME, id)
+      html = HighlightHelper.removeHighlightingTagsByClassName(html, FAQ_ANSWER_TAG_NAME, id);
     }
-    return html
+    return html;
   }
 }

@@ -9,17 +9,11 @@
 /**
  * Internal dependencies.
  */
-import {
-  answerSelectedByUser,
-  questionSelectedByUser,
-  requestAddNewQuestion,
-  updateFaqItem,
-  updateQuestionOnInputChange
-} from "../../actions";
+import {answerSelectedByUser, requestAddNewQuestion, updateFaqItem, updateQuestionOnInputChange} from "../../actions";
 import FaqValidator from "../validators/faq-validator";
-import { getAllFAQItems } from "../../selectors";
-import { faqEditItemType } from "../../components/faq-edit-item";
-import { invalidTagFilter } from "./filters";
+import {getAllFAQItems} from "../../selectors";
+import {faqEditItemType} from "../../components/faq-edit-item";
+import {invalidTagFilter} from "./filters";
 
 class FaqHookToStoreDispatcher {
   /**

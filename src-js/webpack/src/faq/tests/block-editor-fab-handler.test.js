@@ -6,8 +6,7 @@
 /**
  * External dependencies
  */
-import { trigger, off, on } from "backbone";
-
+import {off, on, trigger} from "backbone";
 /**
  * Internal depdendencies.
  */
@@ -16,9 +15,10 @@ import BlockEditorFabButtonRegister, {
   FAB_ID,
   FAB_WRAPPER_ID
 } from "../hooks/block-editor/block-editor-fab-button-register";
-import { SELECTION_CHANGED } from "../../common/constants";
-import { blockEditorWithNoSelectedBlocks, blockEditorWithSelectedBlocks } from "./mock-dependencies/block-editor";
-import { FAQ_EVENT_HANDLER_SELECTION_CHANGED, FAQ_ITEMS_CHANGED } from "../constants/faq-hook-constants";
+import {SELECTION_CHANGED} from "../../common/constants";
+import {blockEditorWithNoSelectedBlocks, blockEditorWithSelectedBlocks} from "./mock-dependencies/block-editor";
+import {FAQ_EVENT_HANDLER_SELECTION_CHANGED, FAQ_ITEMS_CHANGED} from "../constants/faq-hook-constants";
+
 let selectedNode = null;
 
 beforeEach(() => {
@@ -175,6 +175,6 @@ it("when the fab is clicked then it should emit a correct event with all the cor
    * step 4: lets make a click on the floating action button on the button
    */
   document.getElementById(FAB_ID).click();
-  expect(selectedObject.selectedText).not.toEqual(undefined)
-  expect(selectedObject.selectedHTML).not.toEqual(undefined)
+  expect(selectedObject.selectedText).not.toEqual(undefined);
+  expect(selectedObject.selectedHTML).not.toEqual(undefined);
 });

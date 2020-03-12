@@ -39,11 +39,10 @@ export function getCurrentSelectionHTML() {
   if (blocks.length > 1) {
     // its a multi selection, loop through blocks and get html.
     for (let block of blocks) {
-      const {blockValue, attributeKeyName} = BlockEditorHighlightHandler.getBlockValueAndKeyName(block);
+      const { blockValue, attributeKeyName } = BlockEditorHighlightHandler.getBlockValueAndKeyName(block);
       if (blockValue !== null && attributeKeyName !== null) {
         html += blockValue;
       }
-
     }
   } else {
     // it is a single selection, get selected blocks original content.
@@ -91,4 +90,3 @@ export function renderHTMLAndApplyHighlightingCorrectly(htmlValue, tagName) {
   }
   return blockWrapper.innerHTML;
 }
-

@@ -1,19 +1,19 @@
-import { configure, mount } from "enzyme";
-import { Provider } from "react-redux";
+import {configure, mount} from "enzyme";
+import {Provider} from "react-redux";
 import React from "react";
 import FaqModal from "../components/faq-modal";
 import createSagaMiddleware from "redux-saga";
-import { applyMiddleware, createStore } from "redux";
-import { faqReducer } from "../reducers";
-import { FAQ_INITIAL_STATE } from "../store";
+import {applyMiddleware, createStore} from "redux";
+import {faqReducer} from "../reducers";
+import {FAQ_INITIAL_STATE} from "../store";
 import rootSaga from "../sagas";
 import Adapter from "enzyme-adapter-react-16";
-import { FAQ_EVENT_HANDLER_SELECTION_CHANGED } from "../constants/faq-hook-constants";
-import { off, trigger } from "backbone";
+import {FAQ_EVENT_HANDLER_SELECTION_CHANGED} from "../constants/faq-hook-constants";
+import {off, trigger} from "backbone";
 import FaqEventHandler from "../hooks/faq-event-handler";
-import { updateFaqItems } from "../actions";
-import { transformAPIDataToUi } from "../sagas/filters";
-import { updateSuccessResponse } from "./faq-screen.test";
+import {updateFaqItems} from "../actions";
+import {transformAPIDataToUi} from "../sagas/filters";
+import {updateSuccessResponse} from "./faq-screen.test";
 
 configure({ adapter: new Adapter() });
 
@@ -43,7 +43,6 @@ beforeEach(() => {
   testStore = createStore(faqReducer, FAQ_INITIAL_STATE, applyMiddleware(sagaMiddleware));
   sagaMiddleware.run(rootSaga);
 });
-
 
 it("when only one question present then the modal should not open on " + "the text selection event", () => {
   const faqItems = [
@@ -132,4 +131,3 @@ it(
     expect(postedData.faq_items[0].answer).toEqual("sample answer html");
   }
 );
-

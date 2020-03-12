@@ -9,11 +9,11 @@
 /**
  * External dependencies
  */
-import { createReducer } from "@reduxjs/toolkit";
+import {createReducer} from "@reduxjs/toolkit";
 /**
  * Internal dependencies.
  */
-import { UPDATE_NOTIFICATION_AREA } from "../constants/action-types";
+import {UPDATE_NOTIFICATION_AREA} from "../constants/action-types";
 
 export const faqNotificationReducer = createReducer(null, {
   [UPDATE_NOTIFICATION_AREA]: (state, action) => {

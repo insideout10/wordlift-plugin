@@ -43,45 +43,46 @@ it("on adding answer, dispatcher should emit correct action", () => {
     selectedText: "this is a answer",
     selectedHTML: "<p>this is a answer</p>"
   });
-  expect(dispatchFn.mock.calls[0][0]).toEqual(updateFaqItem({
+  expect(dispatchFn.mock.calls[0][0]).toEqual(
+    updateFaqItem({
       id: 123,
       type: faqEditItemType.ANSWER,
       value: "<p>this is a answer</p>"
-  }));
+    })
+  );
 });
 
-
-
-
 it("on adding answer with multiple questions present, dispatcher should emit correct action", () => {
-    const dispatchFn = jest.fn();
-    const store = {
-        dispatch: dispatchFn,
-        getState: () => {
-            return {
-                faqListOptions: {
-                    faqItems: [
-                        {
-                            question: "unanswered question?",
-                            answer: "",
-                            id: 123
-                        },
-                        {
-                            question: "unanswered question 2?",
-                            answer: "",
-                            id: 124
-                        }
-                    ]
-                }
-            };
+  const dispatchFn = jest.fn();
+  const store = {
+    dispatch: dispatchFn,
+    getState: () => {
+      return {
+        faqListOptions: {
+          faqItems: [
+            {
+              question: "unanswered question?",
+              answer: "",
+              id: 123
+            },
+            {
+              question: "unanswered question 2?",
+              answer: "",
+              id: 124
+            }
+          ]
         }
-    };
-    const dispatcher = new FaqHookToStoreDispatcher(store);
-    dispatcher.dispatchTextSelectedAction({
-        selectedText: "this is a answer",
-        selectedHTML: "<p>this is a answer</p>"
-    });
-    expect(dispatchFn.mock.calls[0][0]).toEqual(answerSelectedByUser({
-        selectedAnswer: "<p>this is a answer</p>"
-    }));
+      };
+    }
+  };
+  const dispatcher = new FaqHookToStoreDispatcher(store);
+  dispatcher.dispatchTextSelectedAction({
+    selectedText: "this is a answer",
+    selectedHTML: "<p>this is a answer</p>"
+  });
+  expect(dispatchFn.mock.calls[0][0]).toEqual(
+    answerSelectedByUser({
+      selectedAnswer: "<p>this is a answer</p>"
+    })
+  );
 });

@@ -3,8 +3,9 @@
  */
 
 import BlockEditorFormatTypeHandler from "../hooks/block-editor/block-editor-format-type-handler";
-import { FAQ_ANSWER_TAG_NAME, FAQ_QUESTION_TAG_NAME } from "../hooks/custom-faq-elements";
-import { registerFormatType } from "@wordpress/rich-text";
+import {FAQ_ANSWER_TAG_NAME, FAQ_QUESTION_TAG_NAME} from "../hooks/custom-faq-elements";
+import {registerFormatType} from "@wordpress/rich-text";
+
 const customElementDefineFunction = jest.fn();
 jest.mock("@wordpress/rich-text");
 

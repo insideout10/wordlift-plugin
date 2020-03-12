@@ -2,19 +2,19 @@
  * External dependencies.
  */
 import React from "react";
-import { configure, mount } from "enzyme";
+import {configure, mount} from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
-import { Provider } from "react-redux";
+import {Provider} from "react-redux";
 /**
  * Internal dependencies.
  */
-import { FAQ_INITIAL_STATE } from "../store";
+import {FAQ_INITIAL_STATE} from "../store";
 import FaqScreen from "../components/faq-screen";
-import { updateFaqItems } from "../actions";
-import { transformAPIDataToUi } from "../sagas/filters";
+import {updateFaqItems} from "../actions";
+import {transformAPIDataToUi} from "../sagas/filters";
 import createSagaMiddleware from "redux-saga";
-import { applyMiddleware, createStore } from "redux";
-import { faqReducer } from "../reducers";
+import {applyMiddleware, createStore} from "redux";
+import {faqReducer} from "../reducers";
 import rootSaga from "../sagas";
 
 configure({ adapter: new Adapter() });
@@ -241,39 +241,37 @@ it("test whether the user can update and delete the faq item question from the e
   expect(deletedFaqItem.field_to_be_deleted).toEqual("question");
 });
 
-
-
 it("test whether the user can update and delete the faq item answer from the edit screen", async () => {
   /**
    * Lets add faq items to the store.
    */
   testStore.dispatch(updateFaqItems(transformAPIDataToUi(getFaqItemsResponse)));
   const wrapper = mount(
-      <Provider store={testStore}>
-        <FaqScreen />
-      </Provider>
+    <Provider store={testStore}>
+      <FaqScreen />
+    </Provider>
   );
 
   /**
    * step 1: click on a faq item.
    */
   wrapper
-      .find(".wl-card")
-      .at(0)
-      .simulate("click");
+    .find(".wl-card")
+    .at(0)
+    .simulate("click");
 
   /**
    * step 2: edit the answer info on the
    * text area in edit item screen.
    */
   wrapper
-      .find(".wl-faq-edit-item--textarea")
-      .at(1)
-      .simulate("change", {
-        target: {
-          value: "foo answer"
-        }
-      });
+    .find(".wl-faq-edit-item--textarea")
+    .at(1)
+    .simulate("change", {
+      target: {
+        value: "foo answer"
+      }
+    });
 
   /**
    * step 3: click the update button, it should
@@ -285,9 +283,9 @@ it("test whether the user can update and delete the faq item answer from the edi
   fetch.mockResponseOnce(JSON.stringify(getFaqItemsResponse));
   // Reset all the mocks of the fetch call.
   wrapper
-      .find(".wl-action-button--update")
-      .at(2)
-      .simulate("click");
+    .find(".wl-action-button--update")
+    .at(2)
+    .simulate("click");
 
   const postedData = JSON.parse(fetch.mock.calls[0][1].body);
 
@@ -335,9 +333,9 @@ it("test whether the user can update and delete the faq item answer from the edi
   fetch.mockResponseOnce(JSON.stringify(getFaqItemsResponse));
 
   wrapper
-      .find(".wl-action-button--delete")
-      .at(2)
-      .simulate("click");
+    .find(".wl-action-button--delete")
+    .at(2)
+    .simulate("click");
   /**
    * Expect the request to contain the delete method, and the faq item to be deleted.
    */

@@ -9,7 +9,7 @@
 /**
  * External dependencies
  */
-import { createReducer } from "@reduxjs/toolkit";
+import {createReducer} from "@reduxjs/toolkit";
 /**
  * Internal dependencies.
  */
