@@ -49,7 +49,6 @@ export function getCurrentSelectionHTML() {
     // it is a single selection, get selected blocks original content.
     html += getSingleBlockSelectionHTML();
   }
-  console.log(html);
   return html;
 }
 

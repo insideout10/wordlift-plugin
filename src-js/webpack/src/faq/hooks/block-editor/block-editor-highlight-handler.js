@@ -75,7 +75,6 @@ class BlockEditorHighlightHandler {
    * @param formatToBeApplied
    */
   applyFormattingForSingleBlock(formatToBeApplied) {
-    console.log(formatToBeApplied)
     const {onChange, value} = wp.data.select(WORDLIFT_STORE).getBlockEditorFormat()
     onChange(toggleFormat(value, formatToBeApplied))
   }
