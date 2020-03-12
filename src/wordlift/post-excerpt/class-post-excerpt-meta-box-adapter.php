@@ -118,8 +118,8 @@ final class Post_Excerpt_Meta_Box_Adapter {
 
 	public function get_post_excerpt_translations() {
 		return array(
-			'orText'         => 'Or use wordlift suggested post excerpt',
-			'generatingText' => 'Generating excerpt...',
+			'orText'         => __( 'Or use wordlift suggested post excerpt', 'wordlift' ),
+			'generatingText' => __( 'Generating excerpt...', 'wordlift' ),
 			'restUrl'        => get_rest_url( NULL, WL_REST_ROUTE_DEFAULT_NAMESPACE . '/post-excerpt' ),
 			'nonce'          => wp_create_nonce( 'wp_rest' ),
 			'postId'         => get_the_ID(),

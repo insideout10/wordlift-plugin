@@ -55,10 +55,10 @@ class Post_Excerpt_Rest_Controller {
 		$post_body       = $data['post_body'];
 		$current_hash    = md5( $post_body );
 		$server_response = self::get_post_excerpt_conditionally( $post_id, $post_body, $current_hash );
-		if ( $server_response === NULL || ! array_key_exists( 'post_excerpt', $server_response ) ) {
+		if ( $server_response === null || ! array_key_exists( 'post_excerpt', $server_response ) ) {
 			return array(
 				'status'  => 'error',
-				'message' => __('Unable to contact WordLift API', 'wordlift')
+				'message' => __( 'Unable to contact WordLift API', 'wordlift' )
 			);
 		} else {
 			return array(
@@ -81,8 +81,8 @@ class Post_Excerpt_Rest_Controller {
 	 * @return array|bool|null
 	 */
 	public static function get_post_excerpt_conditionally( $post_id, $post_body, $current_hash ) {
-		$previous_data   = get_post_meta( self::POST_EXCERPT_META_KEY, TRUE );
-		$server_response = NULL;
+		$previous_data   = get_post_meta( self::POST_EXCERPT_META_KEY, true );
+		$server_response = null;
 
 		if ( $previous_data === '' ) {
 			// There is no data in meta, so just fetch the data from remote server.
@@ -95,7 +95,7 @@ class Post_Excerpt_Rest_Controller {
 			// then return the previous value.
 			$server_response = array(
 				'post_excerpt' => $previous_data['post_excerpt'],
-				'from_cache'   => TRUE
+				'from_cache'   => true
 			);
 		} else {
 			// send the request to external API and then send the response.
@@ -116,7 +116,7 @@ class Post_Excerpt_Rest_Controller {
 	 */
 	public static function get_post_excerpt_from_remote_server( $post_id, $post_body ) {
 		// The configuration is constant for now, it might be changing in future.
-		$configuration         = array(
+		$configuration = array(
 			'ratio'      => 0.0005,
 			'min_length' => 60
 		);
@@ -141,10 +141,10 @@ class Post_Excerpt_Rest_Controller {
 	 */
 	public static function save_response_to_meta_on_success( $post_id, $post_body, $response ) {
 		// If body exists then decode the body.
-		$body = json_decode( $response->get_body(), TRUE );
+		$body = json_decode( $response->get_body(), true );
 		if ( ! array_key_exists( self::WORDLIFT_POST_EXCERPT_RESPONSE_KEY, $body ) ) {
 			// Bail out if we get an in correct response
-			return FALSE;
+			return false;
 		} else {
 			$post_excerpt = (string) $body[ self::WORDLIFT_POST_EXCERPT_RESPONSE_KEY ];
 			// Save it to meta.
@@ -152,7 +152,7 @@ class Post_Excerpt_Rest_Controller {
 
 			return array(
 				'post_excerpt' => $post_excerpt,
-				'from_cache'   => TRUE
+				'from_cache'   => true
 			);
 		}
 	}
@@ -181,13 +181,13 @@ class Post_Excerpt_Rest_Controller {
 	public static function register_route_callback() {
 		/** @var  $post_id_validation_settings array Settings used to validate post id */
 		$post_id_validation_settings   = array(
-			'required'          => TRUE,
+			'required'          => true,
 			'validate_callback' => function ( $param, $request, $key ) {
 				return is_numeric( $param );
 			}
 		);
 		$post_body_validation_settings = array(
-			'required'          => TRUE,
+			'required'          => true,
 			'validate_callback' => function ( $param, $request, $key ) {
 				return is_string( $param );
 			}
