@@ -39,7 +39,7 @@ class BlockEditorHighlightHandler {
         const {blockValue, attributeKeyName} = this.getBlockValueAndKeyName(block);
         if (blockValue !== null && attributeKeyName !== null) {
           const attributes = {};
-          attributes[attributeKeyName] = HighlightHelper.removeHighlightingBasedOnType(id, type, blockValue)
+          attributes[attributeKeyName] = HighlightHelper.removeHighlightingBasedOnType(id.toString(), type, blockValue)
           // Set the altered HTML to the block.
           wp.data.dispatch("core/block-editor").updateBlockAttributes(block.clientId, attributes);
         }
@@ -56,7 +56,7 @@ class BlockEditorHighlightHandler {
     const { isQuestion, id } = data;
     const format = {
       attributes: {
-        className: id.toString()
+        class: id.toString()
       }
     };
     /**
