@@ -28,3 +28,10 @@ it("when html given with question type, should remove only the answer tags not t
   const result = HighlightHelper.removeHighlightingBasedOnType("123", faqEditItemType.QUESTION, highlightedHTML);
   expect(expectedHTML).toEqual(result);
 });
+
+it("when html given with question type along with annotations, should remove only the answer tags not the question tags and annotation tags", () => {
+  const highlightedHTML = `<p><wl-faq-question class="123">this is a </wl-faq-question><b><span class="textannotation"><wl-faq-answer class="123">simple</wl-faq-answer></span></b><wl-faq-answer class="123"> html test</wl-faq-answer></p>`;
+  const expectedHTML = `<p>this is a <b><span class="textannotation">simple</span></b> html test</p>`;
+  const result = HighlightHelper.removeHighlightingBasedOnType("123", faqEditItemType.QUESTION, highlightedHTML);
+  expect(expectedHTML).toEqual(result);
+});

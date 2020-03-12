@@ -210,7 +210,7 @@ class Wordlift_Admin_Post_Edit_Page {
 			'wl-faq-metabox-script',
 			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/faq',
 			array( 'wp-polyfill' ),
-			TRUE
+			true
 		);
 	}
 
