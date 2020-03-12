@@ -80,7 +80,7 @@
       "\\.(gif|ttf|eot|svg)$": "<rootDir>/__mocks__/fileMock.js"
     },
     "setupFiles": [
-      "./src/faq/tests/setup.js"
+      "<rootDir>/src/faq/tests/setup.js"
     ]
   }
 }
