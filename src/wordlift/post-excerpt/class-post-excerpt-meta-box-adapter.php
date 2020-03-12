@@ -40,36 +40,8 @@ final class Post_Excerpt_Meta_Box_Adapter {
 
 	public function print_wordlift_custom_post_excerpt_box() {
 		global $post;
-		// Print the wordpress template for post excerpt
-		$this->print_wordpress_post_excerpt_ui( $post );
-		// Invoke our call back to add additional html, the react script will find this id and render the component there.
+		post_excerpt_meta_box($post);
 		echo "<div id='" . self::WORDLIFT_EXCERPT_DIV_ID . "'></div>";
-		$this->print_wordpress_post_excerpt_custom_text();
-	}
-
-	private function print_wordpress_post_excerpt_ui( $post ) {
-		?>
-        <label class="screen-reader-text" for="excerpt">
-			<?php _e( 'Excerpt' ); ?>
-        </label>
-        <textarea rows="1" cols="40" name="excerpt" id="excerpt">
-			<?php echo $post->post_excerpt; // textarea_escaped ?>
-		</textarea>
-		<?php
-	}
-
-	private function print_wordpress_post_excerpt_custom_text() {
-		?>
-        <p>
-			<?php
-			printf(
-			/* translators: %s: Documentation URL. */
-				__( 'Excerpts are optional hand-crafted summaries of your content that can be used in your theme. <a href="%s">Learn more about manual excerpts</a>.' ),
-				__( 'https://wordpress.org/support/article/excerpt/' )
-			);
-			?>
-        </p>
-		<?php
 	}
 
 	/**
@@ -118,7 +90,7 @@ final class Post_Excerpt_Meta_Box_Adapter {
 
 	public function get_post_excerpt_translations() {
 		return array(
-			'orText'         => __( 'Or use wordlift suggested post excerpt', 'wordlift' ),
+			'orText'         => __( 'Or use WordLift suggested post excerpt', 'wordlift' ),
 			'generatingText' => __( 'Generating excerpt...', 'wordlift' ),
 			'restUrl'        => get_rest_url( NULL, WL_REST_ROUTE_DEFAULT_NAMESPACE . '/post-excerpt' ),
 			'nonce'          => wp_create_nonce( 'wp_rest' ),
