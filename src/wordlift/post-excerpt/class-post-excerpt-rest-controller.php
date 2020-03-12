@@ -12,7 +12,10 @@
 
 namespace Wordlift\Post_Excerpt;
 
+use Wordlift\Api\Default_Api_Service;
+use Wordlift\Api\Response;
 use Wordlift\Api\User_Agent;
+use Wordlift_Configuration_Service;
 use WP_REST_Request;
 
 class Post_Excerpt_Rest_Controller {
@@ -26,7 +29,7 @@ class Post_Excerpt_Rest_Controller {
 	/**
 	 * Url for getting the post excerpt data from wordlift api.
 	 */
-	const WORDLIFT_POST_EXCERPT_URL = 'https://api.wordlift.io/summarize';
+	const WORDLIFT_POST_EXCERPT_ENDPOINT = '/summarize';
 
 	/**
 	 * Wordlift returns excerpt in response using this key..
@@ -55,7 +58,7 @@ class Post_Excerpt_Rest_Controller {
 		if ( $server_response === NULL || ! array_key_exists( 'post_excerpt', $server_response ) ) {
 			return array(
 				'status'  => 'error',
-				'message' => __( 'Unable to contact wordlift server', 'wordlift' )
+				'message' => __('Unable to contact WordLift API', 'wordlift')
 			);
 		} else {
 			return array(
@@ -78,7 +81,7 @@ class Post_Excerpt_Rest_Controller {
 	 * @return array|bool|null
 	 */
 	public static function get_post_excerpt_conditionally( $post_id, $post_body, $current_hash ) {
-		$previous_data   = get_post_meta( self::POST_EXCERPT_META_KEY, true );
+		$previous_data   = get_post_meta( self::POST_EXCERPT_META_KEY, TRUE );
 		$server_response = NULL;
 
 		if ( $previous_data === '' ) {
@@ -92,7 +95,7 @@ class Post_Excerpt_Rest_Controller {
 			// then return the previous value.
 			$server_response = array(
 				'post_excerpt' => $previous_data['post_excerpt'],
-				'from_cache'   => true
+				'from_cache'   => TRUE
 			);
 		} else {
 			// send the request to external API and then send the response.
@@ -117,20 +120,12 @@ class Post_Excerpt_Rest_Controller {
 			'ratio'      => 0.0005,
 			'min_length' => 60
 		);
-		$configuration_service = \Wordlift_Configuration_Service::get_instance();
 		// Construct the url with the configuration
-		$url = add_query_arg( $configuration, self::WORDLIFT_POST_EXCERPT_URL );
-
-		$response = wp_remote_post( $url, array(
-			'timeout'     => 60,
-			'user-agent'  => User_Agent::get_user_agent(),
-			'headers'     => array(
-				'Content-Type'  => 'text/plain',
-				'Authorization' => "Key {$configuration_service->get_key()}",
-			),
-			'body'        => $post_body,
-			'data_format' => 'body',
-		) );
+		$endpoint     = add_query_arg( $configuration, self::WORDLIFT_POST_EXCERPT_ENDPOINT );
+		$wordlift_key = Wordlift_Configuration_Service::get_instance()->get_key();
+		$user_agent   = User_Agent::get_user_agent();
+		$api_service  = new Default_Api_Service( 'https://api.wordlift.io', 60, $user_agent, $wordlift_key );
+		$response     = $api_service->request( 'POST', $endpoint, array( 'Content-Type' => 'text/plain' ), array( 'data_format' => 'body' ) );
 
 		return self::save_response_to_meta_on_success( $post_id, $post_body, $response );
 	}
@@ -140,16 +135,13 @@ class Post_Excerpt_Rest_Controller {
 	 *
 	 * @param $post_id int The post id
 	 * @param $post_body string Full text content of the post.
-	 * @param $response array
+	 * @param $response Response instance
 	 *
 	 * @return array|bool
 	 */
 	public static function save_response_to_meta_on_success( $post_id, $post_body, $response ) {
-		if ( ! array_key_exists( 'body', $response ) ) {
-			return FALSE;
-		}
 		// If body exists then decode the body.
-		$body = json_decode( $response['body'], true );
+		$body = json_decode( $response->get_body(), TRUE );
 		if ( ! array_key_exists( self::WORDLIFT_POST_EXCERPT_RESPONSE_KEY, $body ) ) {
 			// Bail out if we get an in correct response
 			return FALSE;
@@ -160,7 +152,7 @@ class Post_Excerpt_Rest_Controller {
 
 			return array(
 				'post_excerpt' => $post_excerpt,
-				'from_cache'   => true
+				'from_cache'   => TRUE
 			);
 		}
 	}
@@ -189,13 +181,13 @@ class Post_Excerpt_Rest_Controller {
 	public static function register_route_callback() {
 		/** @var  $post_id_validation_settings array Settings used to validate post id */
 		$post_id_validation_settings   = array(
-			'required'          => true,
+			'required'          => TRUE,
 			'validate_callback' => function ( $param, $request, $key ) {
 				return is_numeric( $param );
 			}
 		);
 		$post_body_validation_settings = array(
-			'required'          => true,
+			'required'          => TRUE,
 			'validate_callback' => function ( $param, $request, $key ) {
 				return is_string( $param );
 			}
