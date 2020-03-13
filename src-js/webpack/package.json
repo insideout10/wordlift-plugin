@@ -81,6 +81,9 @@
     },
     "setupFiles": [
       "<rootDir>/src/faq/tests/setup.js"
+    ],
+    "moduleDirectories": [
+      "node_modules"
     ]
   }
 }
