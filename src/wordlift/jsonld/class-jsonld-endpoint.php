@@ -137,13 +137,22 @@ class Jsonld_Endpoint {
 		$post_name = $request['post_name'];
 		$post_type = $request['post_type'];
 
-		$post = get_page_by_path( $post_name, OBJECT, $post_type );
+		global $wpdb;
 
-		if ( ! is_a( $post, 'WP_Post' ) ) {
+		$sql     = "
+			SELECT ID
+			FROM $wpdb->posts
+			WHERE post_name = %s
+			 AND post_type = %s
+		";
+
+		$post_id = $wpdb->get_var( $wpdb->prepare( $sql, $post_name, $post_type ) );
+
+		if ( is_null( $post_id ) ) {
 			return new WP_REST_Response( esc_html( "$post_name of type $post_type not found." ), 404, array( 'Content-Type' => 'text/html' ) );
 		}
 
-		return $this->jsonld_using_post_id( array( 'id' => $post->ID, ) );
+		return $this->jsonld_using_post_id( array( 'id' => $post_id, ) );
 	}
 
 }
