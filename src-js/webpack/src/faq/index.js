@@ -38,8 +38,7 @@ window.addEventListener("load", () => {
   new FaqEventHandler(store);
 });
 
-window.addEventListener("DOMNodeInserted", () => {
-  // It is loaded dynamically in gutenberg, render these components when the node is added.
+const observer = new MutationObserver(() => {
   if (document.getElementById(listBoxId) !== null) {
     /**
      * We might have our react component rendered before, so check the innerHTML  if we
@@ -48,13 +47,18 @@ window.addEventListener("DOMNodeInserted", () => {
     if (document.getElementById(listBoxId).innerHTML !== "") {
     } else {
       ReactDOM.render(
-        <Provider store={store}>
-          <React.Fragment>
-            <FaqScreen />
-          </React.Fragment>
-        </Provider>,
-        document.getElementById(listBoxId)
+          <Provider store={store}>
+            <React.Fragment>
+              <FaqScreen />
+            </React.Fragment>
+          </Provider>,
+          document.getElementById(listBoxId)
       );
     }
   }
 });
+
+/**
+ * Observe for changes in the DOM tree.
+ */
+observer.observe(document, {childList: true, subtree: true});

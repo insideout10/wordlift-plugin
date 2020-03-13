@@ -59,7 +59,7 @@ export default class HighlightHelper {
    */
   static highlightNodes(el, tagName, className) {
     for (let element of el.childNodes) {
-      if (element.childNodes.length === 0 && element.nodeType === Node.TEXT_NODE) {
+      if (element.childNodes.length === 0 && element.nodeType === Node.TEXT_NODE && element.textContent.trim() !== "") {
         const newChild = document.createElement(tagName);
         newChild.classList = [className];
         newChild.textContent = element.textContent;

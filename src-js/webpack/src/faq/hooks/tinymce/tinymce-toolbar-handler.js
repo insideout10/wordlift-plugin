@@ -138,7 +138,7 @@ class TinymceToolbarHandler {
       id: TINYMCE_TOOLBAR_BUTTON_NAME,
       onclick: function() {
         const selectedText = editor.selection.getContent({ format: "text" });
-        const selectedHTML = editor.selection.getNode().innerHTML;
+        const selectedHTML = editor.selection.getContent({format: "html"});
         /**
          * Make the highlight handler to save the selection.
          */
