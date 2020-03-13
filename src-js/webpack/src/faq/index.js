@@ -47,12 +47,12 @@ const observer = new MutationObserver(() => {
     if (document.getElementById(listBoxId).innerHTML !== "") {
     } else {
       ReactDOM.render(
-          <Provider store={store}>
-            <React.Fragment>
-              <FaqScreen />
-            </React.Fragment>
-          </Provider>,
-          document.getElementById(listBoxId)
+        <Provider store={store}>
+          <React.Fragment>
+            <FaqScreen />
+          </React.Fragment>
+        </Provider>,
+        document.getElementById(listBoxId)
       );
     }
   }
@@ -61,4 +61,4 @@ const observer = new MutationObserver(() => {
 /**
  * Observe for changes in the DOM tree.
  */
-observer.observe(document, {childList: true, subtree: true});
+observer.observe(document, { childList: true, subtree: true });
