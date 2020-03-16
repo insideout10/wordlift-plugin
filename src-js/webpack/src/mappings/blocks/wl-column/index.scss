@@ -10,6 +10,12 @@
 .wl-col--half-width {
   width: 50%;
 }
+.wl-col--align-center {
+  text-align: center;
+}
+.wl-col--full-width {
+  width: 100%;
+}
 
 @for $i from 1 through 20 {
   .wl-col--width-#{$i * 5} {
