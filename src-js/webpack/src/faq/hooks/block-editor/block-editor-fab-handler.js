@@ -106,6 +106,11 @@ class BlockEditorFabHandler {
       /** Return early if the range is not defined yet **/
       return;
     }
+    const selectedBlock = wp.data.select('core/block-editor').getSelectedBlock();
+    if ( selectedBlock !== null && selectedBlock.name === 'core/freeform') {
+      /** Dont show floating action button if the block is classic editor block **/
+      return;
+    }
     this.setFabButtonTextBasedOnSelectedText();
     const shouldDisableButton = TinymceToolbarHandler.shouldDisableButton(selectedText, this.faqItems);
     if (shouldDisableButton) {

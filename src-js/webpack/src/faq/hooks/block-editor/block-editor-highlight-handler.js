@@ -9,20 +9,19 @@
 /**
  * External dependencies.
  */
-import {on} from "backbone";
+import { on } from "backbone";
 /**
  * Internal dependencies.
  */
-import {FAQ_HIGHLIGHT_TEXT, FAQ_ITEM_DELETED} from "../../constants/faq-hook-constants";
-import {FAQ_ANSWER_FORMAT_NAME, FAQ_QUESTION_FORMAT_NAME} from "./block-editor-format-type-handler";
+import { FAQ_HIGHLIGHT_TEXT, FAQ_ITEM_DELETED } from "../../constants/faq-hook-constants";
+import { FAQ_ANSWER_FORMAT_NAME, FAQ_QUESTION_FORMAT_NAME } from "./block-editor-format-type-handler";
 import TinymceHighlightHandler from "../tinymce/tinymce-highlight-handler";
-import {WORDLIFT_STORE} from "../../../common/constants";
+import { WORDLIFT_STORE } from "../../../common/constants";
 import HighlightHelper from "../helpers/highlight-helper";
-import {toggleFormat} from "@wordpress/rich-text";
+import { toggleFormat } from "@wordpress/rich-text";
 
 class BlockEditorHighlightHandler {
   constructor() {
-    this.props = null;
     this.removeHighlightingFromEditorOnDeleteEvent();
   }
 
@@ -74,8 +73,14 @@ class BlockEditorHighlightHandler {
    * @param formatToBeApplied
    */
   applyFormattingForSingleBlock(formatToBeApplied) {
-    const { onChange, value } = wp.data.select(WORDLIFT_STORE).getBlockEditorFormat();
-    onChange(toggleFormat(value, formatToBeApplied));
+    const selectedBlock = wp.data.select("core/block-editor").getSelectedBlock();
+    /**
+     * If the selected block is classic editor, then dont apply the format.
+     */
+    if (selectedBlock.name !== "core/freeform") {
+      const { onChange, value } = wp.data.select(WORDLIFT_STORE).getBlockEditorFormat();
+      onChange(toggleFormat(value, formatToBeApplied));
+    }
   }
 
   /**

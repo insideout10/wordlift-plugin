@@ -82,7 +82,10 @@ export const blockEditorWithSelectedBlocks = {
     select: editorString => {
       if (editorString === "core/block-editor") {
         return {
-          getMultiSelectedBlocks: () => fakeParagraphBlocksData
+          getMultiSelectedBlocks: () => fakeParagraphBlocksData,
+          getSelectedBlock: () => {
+            return null
+          }
         };
       }
     },
@@ -101,7 +104,10 @@ export const blockEditorWithNoSelectedBlocks = {
     select: editorString => {
       if (editorString === "core/block-editor") {
         return {
-          getMultiSelectedBlocks: () => []
+          getMultiSelectedBlocks: () => [],
+          getSelectedBlock: () => {
+            return null
+          }
         };
       }
     },
