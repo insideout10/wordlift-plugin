@@ -10,7 +10,7 @@
  */
 import React from "react";
 import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
+import {Provider} from "react-redux";
 /**
  * Internal dependencies.
  */
@@ -38,8 +38,7 @@ window.addEventListener("load", () => {
   new FaqEventHandler(store);
 });
 
-window.addEventListener("DOMNodeInserted", () => {
-  // It is loaded dynamically in gutenberg, render these components when the node is added.
+const observer = new MutationObserver(() => {
   if (document.getElementById(listBoxId) !== null) {
     /**
      * We might have our react component rendered before, so check the innerHTML  if we
@@ -58,3 +57,8 @@ window.addEventListener("DOMNodeInserted", () => {
     }
   }
 });
+
+/**
+ * Observe for changes in the DOM tree.
+ */
+observer.observe(document, { childList: true, subtree: true });

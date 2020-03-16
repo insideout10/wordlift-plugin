@@ -7,8 +7,8 @@
 /**
  * Internal dependencies.
  */
-import { on, trigger } from "backbone";
-import { FAQ_EVENT_HANDLER_SELECTION_CHANGED, FAQ_ITEMS_CHANGED } from "../../constants/faq-hook-constants";
+import {on, trigger} from "backbone";
+import {FAQ_EVENT_HANDLER_SELECTION_CHANGED, FAQ_ITEMS_CHANGED} from "../../constants/faq-hook-constants";
 import FaqValidator from "../validators/faq-validator";
 
 const TINYMCE_TOOLBAR_BUTTON_NAME = "wl-faq-toolbar-button";
@@ -122,6 +122,9 @@ class TinymceToolbarHandler {
     editor.on("NodeChange", e => {
       this.changeButtonStateOnSelectedText();
     });
+    editor.on("selectionchange", e => {
+      this.changeButtonStateOnSelectedText();
+    });
   }
 
   /**
@@ -135,7 +138,7 @@ class TinymceToolbarHandler {
       id: TINYMCE_TOOLBAR_BUTTON_NAME,
       onclick: function() {
         const selectedText = editor.selection.getContent({ format: "text" });
-        const selectedHTML = editor.selection.getNode().innerHTML;
+        const selectedHTML = editor.selection.getContent({ format: "html" });
         /**
          * Make the highlight handler to save the selection.
          */

@@ -16,7 +16,7 @@ class Faq_Content_Filter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_faq_question_highlighting_tag_removed() {
 		$src = <<<EOF
-			<p><wl-faq-question>this is a question?</wl-faq-question></p>
+			<p><wl-faq-question class="123">this is a question?</wl-faq-question></p>
 EOF;
 		$expected_output = <<<EOF
 			<p>this is a question?</p>
@@ -32,7 +32,7 @@ EOF;
 	 */
 	public function test_faq_answer_highlighting_tag_removed() {
 		$src = <<<EOF
-			<p><wl-faq-answer>this is a answer</wl-faq-answer></p>
+			<p><wl-faq-answer class="123">this is a answer</wl-faq-answer></p>
 EOF;
 		$expected_output = <<<EOF
 			<p>this is a answer</p>
@@ -48,7 +48,7 @@ EOF;
 	 */
 	public function test_faq_answer_highlighting_nested_tags_removed_correctly() {
 		$src = <<<EOF
-			<p>this<wl-faq-answer><span class="foo">is</span></wl-faq-answer> a answer</p>
+			<p>this<wl-faq-answer class="123"><span class="foo">is</span></wl-faq-answer> a answer</p>
 EOF;
 		$expected_output = <<<EOF
 			<p>this<span class="foo">is</span> a answer</p>
@@ -64,7 +64,7 @@ EOF;
 	 */
 	public function test_faq_question_highlighting_nested_tags_removed_correctly() {
 		$src = <<<EOF
-			<p><wl-faq-question>this<span class="foo">is</span> a question?</wl-faq-question></p>
+			<p><wl-faq-question class="123">this<span class="foo">is</span> a question?</wl-faq-question></p>
 EOF;
 		$expected_output = <<<EOF
 			<p>this<span class="foo">is</span> a question?</p>

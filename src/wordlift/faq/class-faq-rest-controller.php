@@ -18,6 +18,12 @@ use WP_REST_Request;
  */
 class Faq_Rest_Controller {
 	const FAQ_META_KEY = '_wl_faq';
+	/**
+	 * Enumerations to determine the field to be deleted on
+	 * the DELETE request in API.
+	 */
+	const QUESTION = 'question';
+	const ANSWER = 'answer';
 
 	public static function register_routes() {
 		add_action( 'rest_api_init', 'Wordlift\FAQ\FAQ_Rest_Controller::register_route_callback' );
@@ -179,7 +185,24 @@ class Faq_Rest_Controller {
 				'answer'   => $faq_item['answer'],
 				'id'       => (int) $faq_item['id']
 			);
-			delete_post_meta( $post_id, self::FAQ_META_KEY, $deleted_faq_item );
+			/**
+			 * If the field to be deleted is answer, then dont delete the faq item,
+			 * if it is question then delete the faq item.
+			 */
+			if ( $faq_item['field_to_be_deleted'] === self::ANSWER) {
+				$previous_value = $deleted_faq_item;
+				// then dont delete the faq item, set the answer as empty.
+				$deleted_faq_item['answer'] = '';
+				$new_value = $deleted_faq_item;
+				update_post_meta($post_id, self::FAQ_META_KEY, $new_value, $previous_value);
+			}
+			else if ( $faq_item['field_to_be_deleted'] === self::QUESTION) {
+				/**
+				 * If the question is deleted, then delete the faq item.
+				 */
+				delete_post_meta( $post_id, self::FAQ_META_KEY, $deleted_faq_item );
+			}
+
 		}
 
 		/**

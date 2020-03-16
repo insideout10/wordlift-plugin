@@ -9,20 +9,40 @@
  * External dependencies.
  */
 import React from "react";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 /**
  * Internal dependencies.
  */
 import FaqList from "../faq-list";
 import "./index.scss";
-import FaqEditItem, { faqEditItemType } from "../faq-edit-item";
+import FaqEditItem, {faqEditItemType} from "../faq-edit-item";
 import FaqEditItemCloseButton from "../faq-edit-item-close-button";
-import { WlCard } from "../../../common/components/wl-card";
+import {WlCard} from "../../../common/components/wl-card";
 
 class FaqScreen extends React.Component {
   constructor(props) {
     super(props);
     this.updatingText = window["_wlFaqSettings"]["updatingText"];
+  }
+
+  /**
+   * Show updating screen if the request is in progress.
+   * @return {*}
+   */
+  showFaqItemsList() {
+    if (this.props.requestInProgress) {
+      return (
+        <WlCard alignCenter={true}>
+          <h3>{this.updatingText}</h3>
+        </WlCard>
+      );
+    } else {
+      return (
+        <React.Fragment>
+          <FaqList />
+        </React.Fragment>
+      );
+    }
   }
   /**
    * If the user chose a question then display it
@@ -30,13 +50,7 @@ class FaqScreen extends React.Component {
    * is ongoing, show the updating text.
    */
   renderComponentBasedOnState() {
-    if (this.props.requestInProgress) {
-      return (
-        <WlCard alignCenter={true}>
-          <h3>{this.updatingText}</h3>
-        </WlCard>
-      );
-    } else if (this.props.selectedFaqId !== null) {
+    if (this.props.selectedFaqId !== null) {
       const selectedFaqIndex = this.props.faqItems.map(e => e.id).indexOf(this.props.selectedFaqId);
       const selectedFaqItem = this.props.faqItems[selectedFaqIndex];
       return (
@@ -58,11 +72,7 @@ class FaqScreen extends React.Component {
         </React.Fragment>
       );
     } else {
-      return (
-        <React.Fragment>
-          <FaqList />
-        </React.Fragment>
-      );
+      return this.showFaqItemsList();
     }
   }
   render() {

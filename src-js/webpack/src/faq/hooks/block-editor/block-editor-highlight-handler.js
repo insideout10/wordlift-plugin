@@ -13,25 +13,35 @@ import { on } from "backbone";
 /**
  * Internal dependencies.
  */
-import { FAQ_HIGHLIGHT_TEXT } from "../../constants/faq-hook-constants";
+import { FAQ_HIGHLIGHT_TEXT, FAQ_ITEM_DELETED } from "../../constants/faq-hook-constants";
 import { FAQ_ANSWER_FORMAT_NAME, FAQ_QUESTION_FORMAT_NAME } from "./block-editor-format-type-handler";
 import TinymceHighlightHandler from "../tinymce/tinymce-highlight-handler";
-import { SELECTION_CHANGED } from "../../../common/constants";
-import { renderHTMLAndApplyHighlightingCorrectly } from "./helpers";
+import { WORDLIFT_STORE } from "../../../common/constants";
+import HighlightHelper from "../helpers/highlight-helper";
+import { toggleFormat } from "@wordpress/rich-text";
 
 class BlockEditorHighlightHandler {
   constructor() {
-    this.props = null;
-    this.singleBlockSelectionValue = null;
-    this.onChange = null;
-    /**
-     * When the single block is selected then we need to get
-     * all the format types of that block, along with the value
-     * property
-     */
-    on(SELECTION_CHANGED, ({ value, onChange }) => {
-      this.singleBlockSelectionValue = value;
-      this.onChange = onChange;
+    this.removeHighlightingFromEditorOnDeleteEvent();
+  }
+
+  /**
+   * Remove highlighting if the faq item is deleted from
+   * the faq items list, listen for the delete event and delete
+   * the highlighting.
+   */
+  removeHighlightingFromEditorOnDeleteEvent() {
+    on(FAQ_ITEM_DELETED, ({ id, type }) => {
+      const blocks = wp.data.select("core/block-editor").getBlocks();
+      for (let block of blocks) {
+        const { blockValue, attributeKeyName } = BlockEditorHighlightHandler.getBlockValueAndKeyName(block);
+        if (blockValue !== null && attributeKeyName !== null) {
+          const attributes = {};
+          attributes[attributeKeyName] = HighlightHelper.removeHighlightingBasedOnType(id.toString(), type, blockValue);
+          // Set the altered HTML to the block.
+          wp.data.dispatch("core/block-editor").updateBlockAttributes(block.clientId, attributes);
+        }
+      }
     });
   }
 
@@ -41,9 +51,11 @@ class BlockEditorHighlightHandler {
    * @return {{attributes: {}}}
    */
   getFormatFromEventData(data) {
-    const { isQuestion } = data;
+    const { isQuestion, id } = data;
     const format = {
-      attributes: {}
+      attributes: {
+        class: id.toString()
+      }
     };
     /**
      * Apply format depending on the type.
@@ -57,28 +69,17 @@ class BlockEditorHighlightHandler {
   }
 
   /**
-   * Create a rich text element from the supplied range.
-   * @param range {Range}
-   * @param element {Element}
-   * @return element {Object: {key: {String}}}
-   * @return element {Object: {key: {String}}}
-   */
-  createRichTextElementFromRange(element, range) {
-    return wp.richText.create({
-      range,
-      element
-    });
-  }
-
-  /**
    * Apply format for a single block.
    * @param formatToBeApplied
    */
   applyFormattingForSingleBlock(formatToBeApplied) {
     const selectedBlock = wp.data.select("core/block-editor").getSelectedBlock();
-    // Dont apply formatting if the tinymce block is embedded in the block editor.
-    if (this.onChange !== null && this.singleBlockSelectionValue !== null && selectedBlock.name !== "core/freeform") {
-      this.onChange(wp.richText.applyFormat(this.singleBlockSelectionValue, formatToBeApplied));
+    /**
+     * If the selected block is classic editor, then dont apply the format.
+     */
+    if (selectedBlock.name !== "core/freeform") {
+      const { onChange, value } = wp.data.select(WORDLIFT_STORE).getBlockEditorFormat();
+      onChange(toggleFormat(value, formatToBeApplied));
     }
   }
 
@@ -87,7 +88,7 @@ class BlockEditorHighlightHandler {
    * @param block
    * @return
    */
-  getBlockValueAndKeyName(block) {
+  static getBlockValueAndKeyName(block) {
     // Every block have an attribute in different name other than content
     // so this code determines the attribute key name by assuming the following
     const attrs = block.attributes;
@@ -129,11 +130,11 @@ class BlockEditorHighlightHandler {
    */
   applyFormattingForMultipleBlocks(formatToBeApplied, blocks, eventData) {
     for (let block of blocks) {
-      const { blockValue, attributeKeyName } = this.getBlockValueAndKeyName(block);
+      const { blockValue, attributeKeyName } = BlockEditorHighlightHandler.getBlockValueAndKeyName(block);
       if (blockValue !== null && attributeKeyName !== null) {
         const attributes = {};
         const tagName = TinymceHighlightHandler.getTagBasedOnHighlightedText(eventData.isQuestion);
-        attributes[attributeKeyName] = renderHTMLAndApplyHighlightingCorrectly(blockValue, tagName);
+        attributes[attributeKeyName] = HighlightHelper.highlightHTML(blockValue, tagName, eventData.id.toString());
         // Set the altered HTML to the block.
         wp.data.dispatch("core/block-editor").updateBlockAttributes(block.clientId, attributes);
       }

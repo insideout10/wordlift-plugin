@@ -1,14 +1,11 @@
 $primary-color: #177efb;
 .wl-faq-answer-container {
+  height: 40px !important;
   overflow: hidden;
   text-overflow: clip;
 }
 .wl-faq-answer-title {
   color: black;
   cursor: pointer;
-  height: 40px !important;
-  margin: 2px !important;
-  &:first-letter {
-    text-transform: uppercase;
-  }
+  padding: 2px;
 }

@@ -9,16 +9,16 @@
 /**
  * External dependencies.
  */
-import { on, trigger } from "backbone";
+import {on, trigger} from "backbone";
 /**
  * Internal dependencies.
  */
-import { FAQ_EVENT_HANDLER_SELECTION_CHANGED, FAQ_ITEMS_CHANGED } from "../../constants/faq-hook-constants";
-import { SELECTION_CHANGED } from "../../../common/constants";
+import {FAQ_EVENT_HANDLER_SELECTION_CHANGED, FAQ_ITEMS_CHANGED} from "../../constants/faq-hook-constants";
+import {SELECTION_CHANGED} from "../../../common/constants";
 import TinymceToolbarHandler from "../tinymce/tinymce-toolbar-handler";
-import { FAB_ID, FAB_WRAPPER_ID } from "./block-editor-fab-button-register";
+import {FAB_ID, FAB_WRAPPER_ID} from "./block-editor-fab-button-register";
 import FaqValidator from "../validators/faq-validator";
-import { getCurrentSelectionHTML, getCurrentSelectionText } from "./helpers";
+import {getCurrentSelectionHTML, getCurrentSelectionText} from "./helpers";
 
 class BlockEditorFabHandler {
   constructor() {
@@ -106,20 +106,23 @@ class BlockEditorFabHandler {
       /** Return early if the range is not defined yet **/
       return;
     }
+    const selectedBlock = wp.data.select('core/block-editor').getSelectedBlock();
+    if ( selectedBlock !== null && selectedBlock.name === 'core/freeform') {
+      /** Dont show floating action button if the block is classic editor block **/
+      return;
+    }
     this.setFabButtonTextBasedOnSelectedText();
     const shouldDisableButton = TinymceToolbarHandler.shouldDisableButton(selectedText, this.faqItems);
     if (shouldDisableButton) {
       this.hideFabWrapper(wrapper);
     } else {
       // get the selection coordinates.
-      const node = window.getSelection().getRangeAt(0).commonAncestorContainer;
-      const parentElement = node.parentElement;
+      const range = window.getSelection().getRangeAt(0);
       // we get the coordinates and then we place the button
-      const { right, bottom, height } = parentElement.getBoundingClientRect();
-      const offset = height / 2;
+      const { right, bottom, height } = range.getBoundingClientRect();
       wrapper.style.position = "fixed";
-      wrapper.style.left = `${right + 30}px`;
-      wrapper.style.top = `${bottom - offset - 10}px`;
+      wrapper.style.left = `${right}px`;
+      wrapper.style.top = `${bottom}px`;
       wrapper.zIndex = 999;
       this.showFabWrapper(wrapper);
     }

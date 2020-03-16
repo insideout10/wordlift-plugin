@@ -7,13 +7,13 @@
 /**
  * External dependencies.
  */
-import { on } from "backbone";
+import {on} from "backbone";
 /**
  * Internal dependencies.
  */
-import { FAQ_HIGHLIGHT_TEXT } from "../../constants/faq-hook-constants";
-import CustomFaqElementsRegistry, { FAQ_ANSWER_TAG_NAME, FAQ_QUESTION_TAG_NAME } from "../custom-faq-elements";
-import { createTinymceHighlightHTML } from "../block-editor/helpers";
+import {FAQ_HIGHLIGHT_TEXT, FAQ_ITEM_DELETED} from "../../constants/faq-hook-constants";
+import CustomFaqElementsRegistry, {FAQ_ANSWER_TAG_NAME, FAQ_QUESTION_TAG_NAME} from "../custom-faq-elements";
+import HighlightHelper from "../helpers/highlight-helper";
 
 class TinymceHighlightHandler {
   /**
@@ -36,6 +36,14 @@ class TinymceHighlightHandler {
      */
     on(FAQ_HIGHLIGHT_TEXT, result => {
       this.highlightSelectedText(result.text, result.isQuestion, result.id);
+    });
+    on(FAQ_ITEM_DELETED, ({ id, type }) => {
+      /**
+       * Faq item is deleted, get the content from tinymce and remove all the highlights
+       */
+      let html = this.editor.getContent();
+      html = HighlightHelper.removeHighlightingBasedOnType(id, type, html);
+      this.editor.setContent(html);
     });
   }
 
@@ -74,7 +82,7 @@ class TinymceHighlightHandler {
     }
     const html = this.selection.getContent();
     const tagName = TinymceHighlightHandler.getTagBasedOnHighlightedText(isQuestion);
-    const highlightedHTML = createTinymceHighlightHTML(html, tagName);
+    const highlightedHTML = HighlightHelper.highlightHTML(html, tagName, id.toString());
     this.selection.setContent(highlightedHTML);
   }
 }

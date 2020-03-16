@@ -8,7 +8,7 @@
 /**
  * External dependencies
  */
-import { call, delay, put, select, takeLatest } from "redux-saga/effects";
+import {call, delay, put, select, takeLatest} from "redux-saga/effects";
 /**
  * Internal dependencies.
  */
@@ -19,7 +19,7 @@ import {
   UPDATE_FAQ_ITEM
 } from "../constants/action-types";
 import API from "../api/index";
-import { getAllFAQItems, getCurrentQuestion } from "../selectors";
+import {getAllFAQItems, getCurrentQuestion} from "../selectors";
 import {
   changeRequestStatus,
   closeEditScreen,
@@ -29,10 +29,10 @@ import {
   updateFaqModalVisibility,
   updateNotificationArea
 } from "../actions";
-import { transformAPIDataToUi } from "./filters";
-import { faqEditItemType } from "../components/faq-edit-item";
-import { FAQ_HIGHLIGHT_TEXT, FAQ_ITEMS_CHANGED } from "../constants/faq-hook-constants";
-import { trigger } from "backbone";
+import {transformAPIDataToUi} from "./filters";
+import {faqEditItemType} from "../components/faq-edit-item";
+import {FAQ_HIGHLIGHT_TEXT, FAQ_ITEM_DELETED, FAQ_ITEMS_CHANGED} from "../constants/faq-hook-constants";
+import {trigger} from "backbone";
 
 /**
  * Dispatch notification when a event occurs on the store.
@@ -120,14 +120,13 @@ function* handleUpdateFaqItems(action) {
     isQuestion: payload.type === faqEditItemType.QUESTION,
     id: faqItems[faqItemIndex].id
   });
+  // Close the modal immediately on apply.
+  yield put(updateFaqModalVisibility(false));
   yield put(changeRequestStatus(true));
   const response = yield call(API.updateFAQItems, changedFaqItems);
   yield put(changeRequestStatus(false));
   yield put(requestGetFaqItems());
   yield dispatchNotification(response);
-  // Close the modal on apply.
-  const modalAction = updateFaqModalVisibility(false);
-  yield put(modalAction);
 }
 
 /**
@@ -139,11 +138,21 @@ function* handleDeleteFaqItems(action) {
   // close the edit screen
   yield put(closeEditScreen());
   const allFaqItems = yield select(getAllFAQItems);
-  const payload = action.payload;
-  const faqItemIndex = allFaqItems.map(e => e.id).indexOf(payload.id);
-  const deletedFaqItems = [allFaqItems[faqItemIndex]];
+  const { id, type } = action.payload;
+  const faqItemIndex = allFaqItems.map(e => e.id).indexOf(id);
+  const faqItemToBeDeleted = Object.assign({}, allFaqItems[faqItemIndex]);
+  faqItemToBeDeleted.fieldToBeDeleted = type;
+  const deletedFaqItems = [faqItemToBeDeleted];
   yield put(changeRequestStatus(true));
   const response = yield call(API.deleteFaqItems, deletedFaqItems);
+  /**
+   * Send a delete signal to the hooks in order to remove the highlighting
+   * from the editor.
+   */
+  trigger(FAQ_ITEM_DELETED, {
+    id: id,
+    type: type
+  });
   yield put(changeRequestStatus(false));
   // Refresh the screen by getting new FAQ items.
   yield put(requestGetFaqItems());
