@@ -84,15 +84,11 @@ final class Post_Excerpt_Meta_Box_Adapter {
 	/**
 	 * Adds the custom post excerpt metabox.
 	 */
-	private function add_custom_post_excerpt_meta_box( $wordpress_callback ) {
+	private function add_custom_post_excerpt_meta_box() {
 		add_meta_box(
 			self::POST_EXCERPT_META_BOX_KEY,
 			__( 'Post Excerpt', 'wordlift' ),
-			array( $this, 'print_wordlift_custom_post_excerpt_box' ),
-			get_current_screen(),
-			'normal',
-			'high',
-			array( $wordpress_callback )
+			array( $this, 'print_wordlift_custom_post_excerpt_box' )
 		);
 	}
 
