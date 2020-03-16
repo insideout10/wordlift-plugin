@@ -68,7 +68,7 @@ final class Post_Excerpt_Meta_Box_Adapter {
 			) ) {
 			$this->wordpress_excerpt_callback = $callback;
 			$this->remove_default_post_excerpt_meta_box();
-			$this->add_custom_post_excerpt_meta_box( $this->wordpress_excerpt_callback );
+			$this->add_custom_post_excerpt_meta_box();
 			$this->enqueue_post_excerpt_scripts();
 		}
 	}
