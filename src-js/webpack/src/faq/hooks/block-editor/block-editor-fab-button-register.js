@@ -25,6 +25,8 @@ class BlockEditorFabButtonRegister {
             </div>
       </div>
     `;
+    // initially it should be hidden for user.
+    fabWrapper.style.display = "none";
     document.body.appendChild(fabWrapper);
   }
 }
