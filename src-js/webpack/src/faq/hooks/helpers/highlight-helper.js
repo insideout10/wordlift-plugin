@@ -36,14 +36,15 @@ export default class HighlightHelper {
     el.innerHTML = html;
     const highlightingTags = el.querySelectorAll(`${tagName}[class="${className}"]`);
     for (let tag of highlightingTags) {
-      // Remove the highlighting tags
       /**
-       * Assumptions.
-       * 1. Highlighting made by this class would have only one node inside, since it is applied to
-       * only textnode at the end of the string, so we can get the node and replace our highlighting
-       * tag with that node.
+       * There might be multiple child nodes inside, so replace all the elements.
        */
-      tag.parentElement.replaceChild(tag.firstChild, tag);
+      /** Note: childNodes return a live nodelist, we convert it to array before removing it **/
+      const childNodes = Array.prototype.slice.call(tag.childNodes);
+      for (let node of childNodes) {
+        tag.parentElement?.insertBefore(node, tag)
+      }
+      tag.remove()
     }
     return el.innerHTML;
   }
