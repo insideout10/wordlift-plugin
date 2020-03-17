@@ -11761,9 +11761,9 @@ word-wrap@~1.2.3:
   resolved "https://registry.yarnpkg.com/word-wrap/-/word-wrap-1.2.3.tgz#610636f6b1f703891bd34771ccb17fb93b47079c"
   integrity sha512-Hz/mrNwitNRh/HUAtM/VT/5VH+ygD6DV7mYKZAtHOrbs8U7lvPS6xf7EJKMF0uW1KJCl0H701g3ZGus+muE5vQ==
 
-"wordlift-cloud@git+ssh://git@gitlab.com:wordlift/wordlift-navigator-js#006c42020ec91cc523206f2b5e26e4d347eb99d6":
+"wordlift-cloud@git+https://wordlift-plugin:TCYswWXSoq1765zSg4iH@gitlab.com/wordlift/wordlift-navigator-js.git#006c42020ec91cc523206f2b5e26e4d347eb99d6":
   version "1.0.0"
-  resolved "git+ssh://git@gitlab.com:wordlift/wordlift-navigator-js#006c42020ec91cc523206f2b5e26e4d347eb99d6"
+  resolved "git+https://wordlift-plugin:TCYswWXSoq1765zSg4iH@gitlab.com/wordlift/wordlift-navigator-js.git#006c42020ec91cc523206f2b5e26e4d347eb99d6"
   dependencies:
     axios "0.19.0"
     axios-cache-plugin "^0.1.0"
