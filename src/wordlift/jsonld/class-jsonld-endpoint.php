@@ -59,6 +59,11 @@ class Jsonld_Endpoint {
 				)
 			) );
 
+			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/(?P<post_type>.*)/(?P<post_name>.*)', array(
+				'methods'  => 'GET',
+				'callback' => array( $that, 'jsonld_using_get_page_by_path' ),
+			) );
+
 			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/http/(?P<item_id>.*)', array(
 				'methods'  => 'GET',
 				'callback' => array( $that, 'jsonld_using_item_id' ),
@@ -127,5 +132,27 @@ class Jsonld_Endpoint {
 		return $this->jsonld_using_post_id( array( 'id' => $post->ID, ) );
 	}
 
+	public function jsonld_using_get_page_by_path( $request ) {
+
+		$post_name = $request['post_name'];
+		$post_type = $request['post_type'];
+
+		global $wpdb;
+
+		$sql     = "
+			SELECT ID
+			FROM $wpdb->posts
+			WHERE post_name = %s
+			 AND post_type = %s
+		";
+
+		$post_id = $wpdb->get_var( $wpdb->prepare( $sql, $post_name, $post_type ) );
+
+		if ( is_null( $post_id ) ) {
+			return new WP_REST_Response( esc_html( "$post_name of type $post_type not found." ), 404, array( 'Content-Type' => 'text/html' ) );
+		}
+
+		return $this->jsonld_using_post_id( array( 'id' => $post_id, ) );
+	}
 
 }
