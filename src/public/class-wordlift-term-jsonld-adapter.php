@@ -37,10 +37,11 @@ class Wordlift_Term_JsonLd_Adapter {
 	/**
 	 * Wordlift_Term_JsonLd_Adapter constructor.
 	 *
+	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service} instance.
+	 * @param \Wordlift_Jsonld_Service $jsonld_service The {@link Wordlift_Jsonld_Service} instance.
+	 *
 	 * @since 3.20.0
 	 *
-	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service} instance.
-	 * @param \Wordlift_Jsonld_Service     $jsonld_service The {@link Wordlift_Jsonld_Service} instance.
 	 */
 	public function __construct( $entity_uri_service, $jsonld_service ) {
 
@@ -49,6 +50,34 @@ class Wordlift_Term_JsonLd_Adapter {
 		$this->entity_uri_service = $entity_uri_service;
 		$this->jsonld_service     = $jsonld_service;
 
+	}
+
+	/**
+	 * Adds carousel json ld data to term page if the conditions match
+	 *
+	 * @param $taxonomy string Taxonomy string.
+	 * @param $term_id int Term id
+	 * @param $jsonld array JsonLd Array.
+	 *
+	 * @return array
+	 */
+	public function get_carousel_jsonld( $taxonomy, $term_id, $jsonld ) {
+
+		$args = array(
+			'post_status' => 'publish',
+			'tax_query'   => array(
+				array(
+					'taxonomy' => $taxonomy,
+					'field'    => 'term_id',
+					'terms'    => $term_id,
+				),
+			),
+		);
+
+		$posts = get_posts( $args );
+		if ( count( $posts ) < 2 ) {
+			return $jsonld;
+		}
 	}
 
 	/**
@@ -83,7 +112,18 @@ class Wordlift_Term_JsonLd_Adapter {
 		$jsonld = $this->jsonld_service->get_jsonld( false, $post->ID );
 		// Reset the `url` to the term page.
 		$jsonld[0]['url'] = get_term_link( $term_id );
-		$jsonld_string    = wp_json_encode( $jsonld );
+
+		/**
+		 * Support for carousel rich snippet, get jsonld data present
+		 * for all the posts shown in the term page, and add the jsonld data
+		 * to list
+		 *
+		 * see here: https://developers.google.com/search/docs/data-types/carousel
+		 *
+		 * @since 3.26.0
+		 */
+
+		$jsonld_string = wp_json_encode( $jsonld );
 
 		echo "<script type=\"application/ld+json\">$jsonld_string</script>";
 
