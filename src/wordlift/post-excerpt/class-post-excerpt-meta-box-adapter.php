@@ -50,7 +50,8 @@ final class Post_Excerpt_Meta_Box_Adapter {
 	 */
 	public function replace_post_excerpt_meta_box() {
 		global $wp_meta_boxes;
-		$core_meta_boxes       = $wp_meta_boxes[ get_post_type() ]["normal"]["core"];
+		$post_type             = get_post_type();
+		$core_meta_boxes       = $wp_meta_boxes[ $post_type ]["normal"]["core"];
 		$post_excerpt_meta_box = $core_meta_boxes[ self::POST_EXCERPT_META_BOX_KEY ];
 		$callback              = $post_excerpt_meta_box['callback'];
 		/**
