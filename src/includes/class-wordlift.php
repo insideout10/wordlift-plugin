@@ -24,6 +24,7 @@ use Wordlift\Faq\Faq_Tinymce_Adapter;
 use Wordlift\Faq\Faq_To_Jsonld_Converter;
 use Wordlift\Jsonld\Jsonld_Adapter;
 use Wordlift\Jsonld\Jsonld_Endpoint;
+use Wordlift\Jsonld\Taxonomy_Jsonld_Adapter;
 use Wordlift\Mappings\Jsonld_Converter;
 use Wordlift\Mappings\Mappings_DBO;
 use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
@@ -1442,6 +1443,11 @@ class Wordlift {
 			 */
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-term-jsonld-adapter.php';
 			new Wordlift_Term_JsonLd_Adapter( $this->entity_uri_service, $this->jsonld_service );
+			/**
+			 * Hook to taxonomy page and alter the json ld.
+			 * @since 3.26.0
+			 */
+			new Taxonomy_Jsonld_Adapter( $this->entity_uri_service, $this->jsonld_service );
 		}
 
 		/*
