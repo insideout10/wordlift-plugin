@@ -84,9 +84,9 @@ class Wordlift_Content_Filter_Service {
 	/**
 	 * Create a {@link Wordlift_Content_Filter_Service} instance.
 	 *
-	 * @param \Wordlift_Entity_Service        $entity_service The {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service} instance.
 	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
-	 * @param \Wordlift_Entity_Uri_Service    $entity_uri_service The {@link Wordlift_Entity_Uri_Service} instance.
+	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service The {@link Wordlift_Entity_Uri_Service} instance.
 	 *
 	 * @since 3.8.0
 	 *
@@ -228,8 +228,19 @@ class Wordlift_Content_Filter_Service {
 		// Get an alternative title attribute.
 		$title_attribute = $this->get_title_attribute( $post->ID, $label );
 
+		/**
+		 * Allow 3rd parties to add additional attributes to the anchor link.
+		 *
+		 * @since 3.26.0
+		 */
+		$attributes      = apply_filters( 'wl_anchor_data_attributes', array(), $post->ID );
+		$attributes_html = '';
+		foreach ( $attributes as $key => $value ) {
+			$attributes_html .= 'data-' . esc_html( $key ) . '="' . esc_attr( $value ) . '"';
+		}
+
 		// Return the link.
-		return "<a class='wl-entity-page-link' $title_attribute href='$href'>$label</a>";
+		return "<a class='wl-entity-page-link' $title_attribute href='$href' $attributes_html>$label</a>";
 	}
 
 	/**
@@ -237,7 +248,7 @@ class Wordlift_Content_Filter_Service {
 	 *
 	 * If an alternative title isn't available an empty string is returned.
 	 *
-	 * @param int    $post_id The {@link WP_Post}'s id.
+	 * @param int $post_id The {@link WP_Post}'s id.
 	 * @param string $label The main link label.
 	 *
 	 * @return string A `title` attribute with an alternative label or an empty
@@ -259,7 +270,7 @@ class Wordlift_Content_Filter_Service {
 	/**
 	 * Get a string to be used as a title attribute in links to a post
 	 *
-	 * @param int    $post_id The post id of the post being linked.
+	 * @param int $post_id The post id of the post being linked.
 	 * @param string $ignore_label A label to ignore.
 	 *
 	 * @return string    The title to be used in the link. An empty string when

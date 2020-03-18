@@ -149,7 +149,7 @@ class Wordlift_Public {
 		 * @since 3.22.0
 		 *
 		 */
-		wp_register_script( 'wordlift-cloud', self::get_cloud_js_url(), array(), Wordlift::get_instance()->get_version(), true );
+		wp_register_script( 'wordlift-cloud', self::get_cloud_js_url(), array( 'wp-hooks' ), Wordlift::get_instance()->get_version(), true );
 
 	}
 
