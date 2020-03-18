@@ -24,12 +24,14 @@ class Faq_Tinymce_Adapter {
 	 *
 	 * @return array
 	 */
-	public function register_custom_tags($init_array) {
-		$opts = '~wl-faq-question,~wl-faq-answer';
-		$init_array['custom_elements'] = $opts;
-		$init_array['extended_valid_elements'] = $opts;
+	public function register_custom_tags( $init_array ) {
+		$opts                                  = '~wl-faq-question,~wl-faq-answer';
+		$init_array['custom_elements']         .= ( empty( $init_array['custom_elements'] ) ? '' : ',' ) . $opts;
+		$init_array['extended_valid_elements'] .= ( empty( $init_array['extended_valid_elements'] ) ? '' : ',' ) . $opts;
+
 		return $init_array;
 	}
+
 	public function register_faq_tinymce_plugin( $plugins ) {
 		/**
 		 * Registering the tinymce plugin for FAQ here.

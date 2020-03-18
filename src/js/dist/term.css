@@ -371,5 +371,7 @@
   }
 }
 
-#entity_same_as::placeholder{color:#aaa;font-size:12px}
+#entity_same_as::placeholder {
+  color: #aaa;
+  font-size: 12px; }
 

@@ -11,17 +11,19 @@
  */
 function getPostContent() {
   const { wp, tinymce } = global;
-  let html = "";
-  if (wp !== undefined && wp.data !== undefined && wp.data.select !== undefined) {
+
+  const bodyEls = document.getElementsByTagName("body");
+  if (0 < bodyEls.length && bodyEls[0].classList.contains("block-editor-page")) {
     // Block editor is active, return the post content.
-    html = wp.data.select("core/editor").getEditedPostAttribute('content');
-  } else if (tinymce !== undefined && tinymce.activeEditor !== undefined) {
-    html = tinymce.activeEditor.getContent();
+    return wp.data
+      .select("core/editor")
+      .getEditedPostAttribute("content")
+      .replace(/<[^>]+>/gi, "");
+  } else if (tinymce !== undefined && tinymce.editors["content"] !== undefined) {
+    return tinymce.editors["content"].getContent({ format: "text" });
   }
-  // Render it on the dom and get the inner text
-  const el = document.createElement("div");
-  el.innerHTML = html;
-  return el.textContent;
+
+  return "";
 }
 
 /**
