@@ -41,11 +41,14 @@ class WlPostExcerpt extends React.Component {
   componentDidMount() {
     removeDefaultExcerptPanel();
 
-    this.props.dispatch(
-      requestPostExcerpt({
-        postBody: getPostContent()
-      })
-    );
+    const content = getPostContent();
+
+    if ("" !== content)
+      this.props.dispatch(
+        requestPostExcerpt({
+          postBody: content
+        })
+      );
   }
 
   /**
@@ -64,11 +67,14 @@ class WlPostExcerpt extends React.Component {
    * Refresh the excerpt by getting the new data.
    */
   refreshExcerpt() {
-    this.props.dispatch(
-      requestPostExcerpt({
-        postBody: getPostContent()
-      })
-    );
+    const content = getPostContent();
+
+    if ("" !== content)
+      this.props.dispatch(
+        requestPostExcerpt({
+          postBody: getPostContent()
+        })
+      );
   }
 
   /**
