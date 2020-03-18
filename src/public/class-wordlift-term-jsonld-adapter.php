@@ -110,30 +110,6 @@ class Wordlift_Term_JsonLd_Adapter {
 		$taxonomy     = $query_object->taxonomy;
 		$term_id      = $query_object->term_id;
 
-		// The `_wl_entity_id` are URIs.
-		$entity_ids         = get_term_meta( $term_id, '_wl_entity_id' );
-		$entity_uri_service = $this->entity_uri_service;
-
-		$local_entity_ids = array_filter( $entity_ids, function ( $uri ) use ( $entity_uri_service ) {
-			return $entity_uri_service->is_internal( $uri );
-		} );
-
-		$jsonld = $this->get_carousel_jsonld( $taxonomy, $term_id, $jsonld );
-
-		if ( $jsonld === array() ) {
-			// Bail out if there are no entities.
-			if ( empty( $local_entity_ids ) ) {
-				return;
-			}
-
-			$post   = $this->entity_uri_service->get_entity( $local_entity_ids[0] );
-			$jsonld = $this->jsonld_service->get_jsonld( false, $post->ID );
-			// Reset the `url` to the term page.
-			$jsonld[0]['url'] = get_term_link( $term_id );
-		}
-
-		$jsonld['@context'] = 'https://schema.org';
-
 		/**
 		 * Support for carousel rich snippet, get jsonld data present
 		 * for all the posts shown in the term page, and add the jsonld data
@@ -143,6 +119,29 @@ class Wordlift_Term_JsonLd_Adapter {
 		 *
 		 * @since 3.26.0
 		 */
+		$jsonld = $this->get_carousel_jsonld( $taxonomy, $term_id, array() );
+
+		// If the carousel jsonld returns empty array, then fallback to previous jsonld generation.
+		if ( $jsonld === array() ) {
+			// The `_wl_entity_id` are URIs.
+			$entity_ids         = get_term_meta( $term_id, '_wl_entity_id' );
+			$entity_uri_service = $this->entity_uri_service;
+
+			$local_entity_ids = array_filter( $entity_ids, function ( $uri ) use ( $entity_uri_service ) {
+				return $entity_uri_service->is_internal( $uri );
+			} );
+
+			// Bail out if there are no entities.
+			if ( empty( $local_entity_ids ) ) {
+				return;
+			}
+			$post   = $this->entity_uri_service->get_entity( $local_entity_ids[0] );
+			$jsonld = $this->jsonld_service->get_jsonld( false, $post->ID );
+			// Reset the `url` to the term page.
+			$jsonld[0]['url'] = get_term_link( $term_id );
+		}
+
+		$jsonld['@context'] = 'https://schema.org';
 
 		$jsonld_string = wp_json_encode( $jsonld );
 
