@@ -53,7 +53,6 @@ class Wordlift_Term_Jsonld_Adapter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertArrayHasKey('position', $single_item);
 		$this->assertEquals($single_item['@type'], 'ListItem');
 		$this->assertEquals($single_item['position'], 1);
-
 	}
 
 }

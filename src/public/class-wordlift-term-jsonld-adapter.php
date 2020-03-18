@@ -82,8 +82,7 @@ class Wordlift_Term_JsonLd_Adapter {
 		// More than 2 items are present, so construct the jsonld data
 		$jsonld['@type']           = 'ItemList';
 		$jsonld['itemListElement'] = array();
-
-		$position                     = 1;
+		$position                  = 1;
 		foreach ( $posts as $post_id ) {
 			$post_jsonld = $this->jsonld_service->get_jsonld( false, $post_id );
 			array_push( $jsonld['itemListElement'], array(
@@ -103,14 +102,13 @@ class Wordlift_Term_JsonLd_Adapter {
 	 * @since 3.20.0
 	 */
 	public function wp_head() {
-
 		// Bail out if it's not a category page.
 		if ( ! is_tax() && ! is_category() ) {
 			return;
 		}
-
-		$term    = get_queried_object();
-		$term_id = $term->term_id;
+		$query_object = get_queried_object();
+		$taxonomy     = $query_object->taxonomy;
+		$term_id      = $query_object->term_id;
 
 		// The `_wl_entity_id` are URIs.
 		$entity_ids         = get_term_meta( $term_id, '_wl_entity_id' );
@@ -119,17 +117,20 @@ class Wordlift_Term_JsonLd_Adapter {
 		$local_entity_ids = array_filter( $entity_ids, function ( $uri ) use ( $entity_uri_service ) {
 			return $entity_uri_service->is_internal( $uri );
 		} );
+		$jsonld           = array( '@context' => 'https://schema.org' );
+		$jsonld           = $this->get_carousel_jsonld( $taxonomy, $term_id, $jsonld );
 
-		// Bail out if there are no entities.
-		if ( empty( $local_entity_ids ) ) {
-			return;
+		if ( $jsonld === array() ) {
+			// Bail out if there are no entities.
+			if ( empty( $local_entity_ids ) ) {
+				return;
+			}
+
+			$post   = $this->entity_uri_service->get_entity( $local_entity_ids[0] );
+			$jsonld = $this->jsonld_service->get_jsonld( false, $post->ID );
+			// Reset the `url` to the term page.
+			$jsonld[0]['url'] = get_term_link( $term_id );
 		}
-
-		$post   = $this->entity_uri_service->get_entity( $local_entity_ids[0] );
-		$jsonld = $this->jsonld_service->get_jsonld( false, $post->ID );
-		// Reset the `url` to the term page.
-		$jsonld[0]['url'] = get_term_link( $term_id );
-
 		/**
 		 * Support for carousel rich snippet, get jsonld data present
 		 * for all the posts shown in the term page, and add the jsonld data
