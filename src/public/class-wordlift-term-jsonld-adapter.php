@@ -117,8 +117,8 @@ class Wordlift_Term_JsonLd_Adapter {
 		$local_entity_ids = array_filter( $entity_ids, function ( $uri ) use ( $entity_uri_service ) {
 			return $entity_uri_service->is_internal( $uri );
 		} );
-		$jsonld           = array( '@context' => 'https://schema.org' );
-		$jsonld           = $this->get_carousel_jsonld( $taxonomy, $term_id, $jsonld );
+
+		$jsonld = $this->get_carousel_jsonld( $taxonomy, $term_id, $jsonld );
 
 		if ( $jsonld === array() ) {
 			// Bail out if there are no entities.
@@ -131,6 +131,9 @@ class Wordlift_Term_JsonLd_Adapter {
 			// Reset the `url` to the term page.
 			$jsonld[0]['url'] = get_term_link( $term_id );
 		}
+
+		$jsonld['@context'] = 'https://schema.org';
+
 		/**
 		 * Support for carousel rich snippet, get jsonld data present
 		 * for all the posts shown in the term page, and add the jsonld data
