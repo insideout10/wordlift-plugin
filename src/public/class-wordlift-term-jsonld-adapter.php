@@ -80,6 +80,7 @@ class Wordlift_Term_JsonLd_Adapter {
 			return $jsonld;
 		}
 		// More than 2 items are present, so construct the jsonld data
+		$jsonld['@context'] = 'https://schema.org';
 		$jsonld['@type']           = 'ItemList';
 		$jsonld['itemListElement'] = array();
 		$position                  = 1;
@@ -140,8 +141,6 @@ class Wordlift_Term_JsonLd_Adapter {
 			// Reset the `url` to the term page.
 			$jsonld[0]['url'] = get_term_link( $term_id );
 		}
-
-		$jsonld['@context'] = 'https://schema.org';
 
 		$jsonld_string = wp_json_encode( $jsonld );
 
