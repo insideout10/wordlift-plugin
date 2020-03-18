@@ -16,6 +16,16 @@ use Wordlift\Scripts\Scripts_Helper;
 
 final class Post_Excerpt_Meta_Box_Adapter {
 
+	public function __construct() {
+		/**
+		 * Order our metabox for all the post types.
+		 */
+		$post_types = get_post_types();
+		foreach ($post_types as $post_type) {
+			add_filter( 'get_user_option_meta-box-order_'.$post_type, array( $this, 'order_meta_box' ) );
+		}
+	}
+
 	/**
 	 * Key used by wordpress to add the excerpt meta box in
 	 * the $wp_meta_boxes global variable.
@@ -74,6 +84,58 @@ final class Post_Excerpt_Meta_Box_Adapter {
 
 		remove_meta_box( self::POST_EXCERPT_META_BOX_KEY, get_current_screen(), 'normal' );
 
+	}
+
+	/**
+	 * Deserializes the string, and rewrite the order for post excerpt.
+	 *
+	 * @param $order array
+	 *
+	 * @return array
+	 */
+	private function deserialize_and_rewrite_order($order) {
+		$side = explode(',', $order['side']);
+		$normal = explode(',', $order['normal']);
+		$advanced = explode(',', $order['advanced']);
+		$remove_array = array(self::POST_EXCERPT_META_BOX_KEY);
+
+		// We first remove from the side category if it is previously present.
+		$side = array_diff($side, $remove_array);
+		if ( count($side) === 0) {
+			// No boxes present, so add our excerpt box at o th position.
+			array_push($side, self::POST_EXCERPT_META_BOX_KEY);
+		}
+		else {
+			// Add custom excerpt metabox at second position
+			array_splice( $side, 1, 0, $remove_array );
+		}
+
+		// We remove postexcerpt from all other metaboxes category.
+		$normal = array_diff($normal, $remove_array);
+		$advanced = array_diff($advanced, $remove_array);
+
+		return array(
+			'normal' => $normal,
+			'side' => $side,
+			'advanced' => $advanced
+		);
+	}
+
+	/**
+	 * Orders the post excerpt meta box to display only on sidebar.
+	 *
+	 * @param $order array
+	 *
+	 * @return array
+	 */
+	public function order_meta_box($order) {
+		// Remove all from the advanced and normal orders, and place it on the sidebar
+		$order = $this->deserialize_and_rewrite_order($order);
+		// convert all arrays to string again.
+		$order['side'] = implode(',', $order['side']);
+		$order['normal'] = implode(',', $order['normal']);
+		$order['advanced'] = implode(',', $order['advanced']);
+		return $order;
 	}
 
 	/**
