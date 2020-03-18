@@ -65,6 +65,7 @@ class Wordlift_Term_JsonLd_Adapter {
 
 		$args = array(
 			'post_status' => 'publish',
+			'fields'      => 'ids',
 			'tax_query'   => array(
 				array(
 					'taxonomy' => $taxonomy,
@@ -78,6 +79,22 @@ class Wordlift_Term_JsonLd_Adapter {
 		if ( count( $posts ) < 2 ) {
 			return $jsonld;
 		}
+		// More than 2 items are present, so construct the jsonld data
+		$jsonld['@type']           = 'ItemList';
+		$jsonld['itemListElement'] = array();
+
+		$position                     = 1;
+		foreach ( $posts as $post_id ) {
+			$post_jsonld = $this->jsonld_service->get_jsonld( false, $post_id );
+			array_push( $jsonld['itemListElement'], array(
+				'@type'    => 'ListItem',
+				'position' => $position,
+				'item'     => $post_jsonld
+			) );
+			$position += 1;
+		}
+
+		return $jsonld;
 	}
 
 	/**

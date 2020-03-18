@@ -26,4 +26,34 @@ class Wordlift_Term_Jsonld_Adapter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( $result, array() );
 	}
 
+	public function test_if_more_than_2_posts_present_then_add_jsonld() {
+		// lets create a category
+		$category_id = wp_insert_category( array( 'cat_name' => 'foo' ) );
+
+		// Add 2 posts
+		$first_post = $this->factory->post->create( array(
+			'post_title' => 'foo'
+		) );
+		wp_set_post_categories( $first_post, array( $category_id ) );
+
+		$second_post = $this->factory->post->create( array(
+			'post_title' => 'bar'
+		) );
+		wp_set_post_categories( $second_post, array( $category_id ) );
+
+		// get json ld data
+		$result = $this->adapter->get_carousel_jsonld( 'category', $category_id, array() );
+		// the result should have key itemListElement.
+		$this->assertArrayHasKey('itemListElement', $result);
+		// the result should have 2 post jsonlds
+		$this->assertCount(2, $result['itemListElement']);
+
+		$single_item = $result['itemListElement'][0];
+		$this->assertArrayHasKey('@type', $single_item);
+		$this->assertArrayHasKey('position', $single_item);
+		$this->assertEquals($single_item['@type'], 'ListItem');
+		$this->assertEquals($single_item['position'], 1);
+
+	}
+
 }
