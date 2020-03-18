@@ -34,6 +34,16 @@ beforeAll(() => {
       getContent: () => {
         return "<p>foo</p>";
       }
+    },
+    editors: {
+      content: {
+        getContent: ({format}) => {
+          if ( format === "text") {
+            return "foo"
+          }
+          return "<p>foo</p>";
+        }
+      }
     }
   };
   global[POST_EXCERPT_LOCALIZATION_OBJECT_KEY] = {
