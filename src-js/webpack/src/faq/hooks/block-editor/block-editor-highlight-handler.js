@@ -32,14 +32,14 @@ class BlockEditorHighlightHandler {
    */
   removeHighlightingFromEditorOnDeleteEvent() {
     on(FAQ_ITEM_DELETED, ({ id, type }) => {
-      const blocks = wp.data.select("core/block-editor").getBlocks();
+      const blocks = wp.data.select("core/editor").getBlocks();
       for (let block of blocks) {
         const { blockValue, attributeKeyName } = BlockEditorHighlightHandler.getBlockValueAndKeyName(block);
         if (blockValue !== null && attributeKeyName !== null) {
           const attributes = {};
           attributes[attributeKeyName] = HighlightHelper.removeHighlightingBasedOnType(id.toString(), type, blockValue);
           // Set the altered HTML to the block.
-          wp.data.dispatch("core/block-editor").updateBlockAttributes(block.clientId, attributes);
+          wp.data.dispatch("core/editor").updateBlockAttributes(block.clientId, attributes);
         }
       }
     });
@@ -73,7 +73,7 @@ class BlockEditorHighlightHandler {
    * @param formatToBeApplied
    */
   applyFormattingForSingleBlock(formatToBeApplied) {
-    const selectedBlock = wp.data.select("core/block-editor").getSelectedBlock();
+    const selectedBlock = wp.data.select("core/editor").getSelectedBlock();
     /**
      * If the selected block is classic editor, then dont apply the format.
      */
@@ -136,7 +136,7 @@ class BlockEditorHighlightHandler {
         const tagName = TinymceHighlightHandler.getTagBasedOnHighlightedText(eventData.isQuestion);
         attributes[attributeKeyName] = HighlightHelper.highlightHTML(blockValue, tagName, eventData.id.toString());
         // Set the altered HTML to the block.
-        wp.data.dispatch("core/block-editor").updateBlockAttributes(block.clientId, attributes);
+        wp.data.dispatch("core/editor").updateBlockAttributes(block.clientId, attributes);
       }
     }
   }
@@ -148,7 +148,7 @@ class BlockEditorHighlightHandler {
    * @param eventData {object}
    */
   applyFormattingBasedOnType(formatToBeApplied, eventData) {
-    const blocks = wp.data.select("core/block-editor").getMultiSelectedBlocks();
+    const blocks = wp.data.select("core/editor").getMultiSelectedBlocks();
     if (blocks.length > 0) {
       // it indicates all the blocks are selected without needing to use
       // the start or end index, so loop through the blocks and highlight it.
