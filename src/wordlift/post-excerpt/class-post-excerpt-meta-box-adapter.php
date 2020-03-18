@@ -32,11 +32,7 @@ final class Post_Excerpt_Meta_Box_Adapter {
 	 * @var callable|null The default callback used by wordpress to
 	 * echo the post_excerpt contents, defaults to null.
 	 */
-	public $wordpress_excerpt_callback;
-
-	public function __construct() {
-		$this->wordpress_excerpt_callback = null;
-	}
+	public $wordpress_excerpt_callback = null;
 
 	/**
 	 * Invokes the default callback inside our custom template callback
@@ -62,10 +58,7 @@ final class Post_Excerpt_Meta_Box_Adapter {
 		 * different set of metaboxes, so to prevent overwriting our
 		 * callback with null, this check is necessary.
 		 */
-		if ( $callback !== null && $callback !== array(
-				$this,
-				'print_wordlift_custom_post_excerpt_box'
-			) ) {
+		if ( $callback !== null && $callback !== array( $this, 'print_wordlift_custom_post_excerpt_box' ) ) {
 			$this->wordpress_excerpt_callback = $callback;
 			$this->remove_default_post_excerpt_meta_box();
 			$this->add_custom_post_excerpt_meta_box();
@@ -79,6 +72,7 @@ final class Post_Excerpt_Meta_Box_Adapter {
 	private function remove_default_post_excerpt_meta_box() {
 
 		remove_meta_box( self::POST_EXCERPT_META_BOX_KEY, get_current_screen(), 'normal' );
+
 	}
 
 	/**
@@ -100,7 +94,7 @@ final class Post_Excerpt_Meta_Box_Adapter {
 			true
 		);
 		wp_enqueue_style(
-			'wl-post-excerpt-style',
+			'wl-post-excerpt',
 			plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'js/dist/post-excerpt.css',
 			array()
 		);
@@ -110,6 +104,7 @@ final class Post_Excerpt_Meta_Box_Adapter {
 	}
 
 	public function get_post_excerpt_translations() {
+
 		return array(
 			'orText'         => __( 'Or use wordlift suggested post excerpt', 'wordlift' ),
 			'generatingText' => __( 'Generating excerpt...', 'wordlift' ),
@@ -118,4 +113,5 @@ final class Post_Excerpt_Meta_Box_Adapter {
 			'postId'         => get_the_ID(),
 		);
 	}
+
 }
