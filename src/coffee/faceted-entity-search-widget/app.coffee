@@ -47,7 +47,7 @@ angular.module('wordlift.facetedsearch.widget', ['wordlift.ui.carousel', 'wordli
         <div class="#{wrapperClasses}" #{wrapperAttrs}>
           <div class="#{itemWrapperClasses}" ng-repeat="post in posts"#{itemWrapperAttrs}>
             <div class="#{thumbClasses}"> 
-              <a ng-href="{{post.permalink}}" style="background: url({{post.thumbnail}}) no-repeat center center; background-size: cover;"></a>
+              <a ng-href="{{post.permalink}}" style="background: url('{{post.thumbnail}}') no-repeat center center; background-size: cover;"></a>
             </div>
             <div class="wl-card-title"> 
               <a ng-href="{{post.permalink}}">{{post.post_title}}</a>
