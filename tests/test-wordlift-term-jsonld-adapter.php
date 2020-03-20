@@ -22,7 +22,7 @@ class Wordlift_Term_Jsonld_Adapter_Test extends Wordlift_Unit_Test_Case {
 	public function test_if_less_than_2_posts_are_present_then_dont_alter_the_jsonld() {
 		// lets create a category
 		$category_id = wp_insert_category( array( 'cat_name' => 'foo' ) );
-		$result      = $this->adapter->get_carousel_jsonld( 'category', $category_id, array() );
+		$result      = $this->adapter->get_carousel_jsonld( array() );
 		$this->assertEquals( $result, array() );
 	}
 
@@ -42,17 +42,17 @@ class Wordlift_Term_Jsonld_Adapter_Test extends Wordlift_Unit_Test_Case {
 		wp_set_post_categories( $second_post, array( $category_id ) );
 
 		// get json ld data
-		$result = $this->adapter->get_carousel_jsonld( 'category', $category_id, array() );
+		$result = $this->adapter->get_carousel_jsonld( array() );
 		// the result should have key itemListElement.
-		$this->assertArrayHasKey('itemListElement', $result);
+		$this->assertArrayHasKey( 'itemListElement', $result );
 		// the result should have 2 post jsonlds
-		$this->assertCount(2, $result['itemListElement']);
+		$this->assertCount( 2, $result['itemListElement'] );
 
 		$single_item = $result['itemListElement'][0];
-		$this->assertArrayHasKey('@type', $single_item);
-		$this->assertArrayHasKey('position', $single_item);
-		$this->assertEquals($single_item['@type'], 'ListItem');
-		$this->assertEquals($single_item['position'], 1);
+		$this->assertArrayHasKey( '@type', $single_item );
+		$this->assertArrayHasKey( 'position', $single_item );
+		$this->assertEquals( $single_item['@type'], 'ListItem' );
+		$this->assertEquals( $single_item['position'], 1 );
 	}
 
 }

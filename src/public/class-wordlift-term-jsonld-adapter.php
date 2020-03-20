@@ -55,32 +55,21 @@ class Wordlift_Term_JsonLd_Adapter {
 	/**
 	 * Adds carousel json ld data to term page if the conditions match
 	 *
-	 * @param $taxonomy string Taxonomy string.
-	 * @param $term_id int Term id
 	 * @param $jsonld array JsonLd Array.
 	 *
 	 * @return array
 	 */
-	public function get_carousel_jsonld( $taxonomy, $term_id, $jsonld ) {
+	public function get_carousel_jsonld( $jsonld ) {
+		global $wp_query;
+		$posts = array_map( function ( $post ) {
+			return $post->ID;
+		}, $wp_query->posts );
 
-		$args = array(
-			'post_status' => 'publish',
-			'fields'      => 'ids',
-			'tax_query'   => array(
-				array(
-					'taxonomy' => $taxonomy,
-					'field'    => 'term_id',
-					'terms'    => $term_id,
-				),
-			),
-		);
-
-		$posts = get_posts( $args );
 		if ( count( $posts ) < 2 ) {
 			return $jsonld;
 		}
 		// More than 2 items are present, so construct the jsonld data
-		$jsonld['@context'] = 'https://schema.org';
+		$jsonld['@context']        = 'https://schema.org';
 		$jsonld['@type']           = 'ItemList';
 		$jsonld['itemListElement'] = array();
 		$position                  = 1;
@@ -110,7 +99,6 @@ class Wordlift_Term_JsonLd_Adapter {
 		$query_object = get_queried_object();
 		$taxonomy     = $query_object->taxonomy;
 		$term_id      = $query_object->term_id;
-
 		/**
 		 * Support for carousel rich snippet, get jsonld data present
 		 * for all the posts shown in the term page, and add the jsonld data
@@ -120,7 +108,7 @@ class Wordlift_Term_JsonLd_Adapter {
 		 *
 		 * @since 3.26.0
 		 */
-		$jsonld = $this->get_carousel_jsonld( $taxonomy, $term_id, array() );
+		$jsonld = $this->get_carousel_jsonld( array() );
 
 		// If the carousel jsonld returns empty array, then fallback to previous jsonld generation.
 		if ( $jsonld === array() ) {
