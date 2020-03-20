@@ -6,8 +6,8 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
-import {faqEditItemType} from "../../components/faq-edit-item";
-import {FAQ_ANSWER_TAG_NAME, FAQ_QUESTION_TAG_NAME} from "../custom-faq-elements";
+import { faqEditItemType } from "../../components/faq-edit-item";
+import { FAQ_ANSWER_TAG_NAME, FAQ_QUESTION_TAG_NAME } from "../custom-faq-elements";
 
 export default class HighlightHelper {
   /**
@@ -42,11 +42,31 @@ export default class HighlightHelper {
       /** Note: childNodes return a live nodelist, we convert it to array before removing it **/
       const childNodes = Array.prototype.slice.call(tag.childNodes);
       for (let node of childNodes) {
-        tag.parentElement?.insertBefore(node, tag)
+        tag.parentElement?.insertBefore(node, tag);
       }
-      tag.remove()
+      tag.remove();
     }
     return el.innerHTML;
+  }
+
+  static highlightNodesByRange(nodes, tagName, className, range) {
+    for (let element of nodes) {
+      if (element.childNodes.length === 0 && element.nodeType === Node.TEXT_NODE && element.textContent.trim() !== "") {
+        if (range.intersectsNode(element)) {
+          // Only highlight if the node intersects the range.
+          const newChild = document.createElement(tagName);
+          newChild.classList = [className];
+          newChild.textContent = element.textContent;
+          element.parentElement.replaceChild(newChild, element);
+        }
+      } else {
+        // Check if the element is intersecting the range, otherwise there is no
+        // point in recursion
+        if (range.intersectsNode(element)) {
+          HighlightHelper.highlightNodesByRange(element.childNodes, tagName, className, range);
+        }
+      }
+    }
   }
 
   /**
