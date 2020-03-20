@@ -49,6 +49,8 @@ export default class HighlightHelper {
     return el.innerHTML;
   }
 
+
+
   static highlightNodesByRange(nodes, tagName, className, range) {
     for (let element of nodes) {
       if (element.childNodes.length === 0 && element.nodeType === Node.TEXT_NODE && element.textContent.trim() !== "") {
@@ -60,11 +62,7 @@ export default class HighlightHelper {
           element.parentElement.replaceChild(newChild, element);
         }
       } else {
-        // Check if the element is intersecting the range, otherwise there is no
-        // point in recursion
-        if (range.intersectsNode(element)) {
-          HighlightHelper.highlightNodesByRange(element.childNodes, tagName, className, range);
-        }
+        HighlightHelper.highlightNodesByRange(element.childNodes, tagName, className, range);
       }
     }
   }
