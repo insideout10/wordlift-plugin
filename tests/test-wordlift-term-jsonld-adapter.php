@@ -41,6 +41,21 @@ class Wordlift_Term_Jsonld_Adapter_Test extends Wordlift_Unit_Test_Case {
 		) );
 		wp_set_post_categories( $second_post, array( $category_id ) );
 
+		$args = array(
+			'tax_query' => array(
+				array(
+					'taxonomy' => 'category',
+					'field' => 'term_id',
+					'terms' => $category_id
+				)
+			)
+		);
+		/**
+		 * Emulating the query on the taxonomy page.
+		 */
+		global $wp_query;
+		$wp_query = new WP_Query( $args );
+
 		// get json ld data
 		$result = $this->adapter->get_carousel_jsonld( array() );
 		// the result should have key itemListElement.

@@ -61,6 +61,12 @@ class Wordlift_Term_JsonLd_Adapter {
 	 */
 	public function get_carousel_jsonld( $jsonld ) {
 		global $wp_query;
+
+		if ( ! is_array( $wp_query->posts ) ) {
+			// Bail out if no posts are present.
+			return $jsonld;
+		}
+
 		$posts = array_map( function ( $post ) {
 			return $post->ID;
 		}, $wp_query->posts );
