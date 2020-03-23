@@ -94,7 +94,7 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 		 * Register meta _wl_alt_label for use in Gutenberg
 		 */
 		register_meta( 'post', Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY, array(
-			'object_subtype' => '', // Wordlift_Entity_Service::valid_entity_post_types(),
+			'object_subtype' => '',
 			'show_in_rest'   => true,
 			'single'         => false,
 			'type'           => 'string',

@@ -142,6 +142,11 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.25.3 (2020-03-23) =
+* Enhancement: wp-json end-point to retrieve JSON-LD by post type and slug.
+
+* Fix: Allow synonyms on custom post types.
+
 = 3.25.2 (2020-03-11) =
 * Enhancement: Image License Compliance tool.
 
