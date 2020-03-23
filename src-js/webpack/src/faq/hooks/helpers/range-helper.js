@@ -16,10 +16,34 @@
 class RangeHelper {
   constructor(range) {
     this.range = range;
+    /**
+     * The list of the nodes which should not be highlighted.
+     * @type {Node[]}
+     */
     this.nodesShouldNotBeHighlighted = [];
+    /**
+     * The list of the nodes which should be highlighted.
+     * @type {Node[]}
+     */
     this.nodesToBeHighlighted = [];
+    /**
+     * The list of the nodes which should be added to start container,
+     * they are created by using the startOffset, also endOffset if the selected nodes are
+     * in same parent.
+     * @type {Node[]}
+     */
     this.nodesToBeAddedOnStartContainer = [];
+    /**
+     * The list of the nodes which should be added to start container,
+     * they are created by using the endOffset
+     * in same parent.
+     * @type {Node[]}
+     */
     this.nodesToBeAddedOnEndContainer = [];
+    /**
+     * Process the range, and extract the nodes to be highlighted
+     * and the nodes which should not be highlighted.
+     */
     this.processRange(range);
   }
   getProcessedRange() {
@@ -29,6 +53,13 @@ class RangeHelper {
     }
   }
 
+  /**
+   * Process a text node and add it to the highlighted or not highlighted list
+   * if the textcontent is not empty.
+   * @param node {Text}
+   * @param container {Array}
+   * @param shouldBeHighlighted {Boolean}
+   */
   ifTextContentNotEmptyPushNode(node, container, shouldBeHighlighted = false) {
     if (node.textContent !== "") {
       if ( shouldBeHighlighted ) {
@@ -41,6 +72,13 @@ class RangeHelper {
     }
   }
 
+  /**
+   * Split in to two nodes by the offset, used to split the text nodes in
+   * to two.
+   * @param text Text content which needs to split.
+   * @param offset {Integer}
+   * @return {{startNode: Text, endNode: Text}}
+   */
   splitToTwoNodesByOffset(text, offset) {
     const startNode = document.createTextNode(text.slice(0, offset));
     const endNode = document.createTextNode(text.slice(offset, text.length));
@@ -114,6 +152,12 @@ class RangeHelper {
     referenceNode.textContent = ""
   }
 
+  /**
+   * If the startContainer and endContainer are same then apply the offsets
+   * and return the nodes.
+   * @param range {Range}
+   * @return {{startNode: Text, middleNode: Text, endNode: Text}}
+   */
   createTextNodesFromRange(range) {
     const text = range.startContainer.textContent;
     // split it by offset.
