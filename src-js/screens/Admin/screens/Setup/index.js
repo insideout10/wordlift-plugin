@@ -55,6 +55,8 @@ import delay from "modules/delay";
                 $this.addClass("valid");
               } else {
                 $this.addClass("invalid");
+                // Show url mismatch error.
+                $( '.wl-val-key-error' ).html( data.message );   
               }
             });
         });

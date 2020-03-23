@@ -18,7 +18,7 @@ let SynonymsPanel = props =>
     <Panel>
       <PanelBody title={__("Synonyms", "wordlift")} intialOpen={false}>
         {props.altLabels.map((altLabel, altLabelN, altLabels) => (
-          <PanelRow>
+          <PanelRow key={altLabelN}>
             <TextControl
               value={altLabel}
               onChange={value => {
@@ -37,7 +37,7 @@ let SynonymsPanel = props =>
             />
           </PanelRow>
         ))}
-        <PanelRow>
+        <PanelRow key={-1}>
           <Button
             isDefault
             onClick={() => {
@@ -55,9 +55,11 @@ let SynonymsPanel = props =>
 
 export default compose(
   withSelect(select => {
-    return {
-      altLabels: select("core/editor").getEditedPostAttribute("meta")["_wl_alt_label"] || []
-    };
+    const meta = select("core/editor").getEditedPostAttribute("meta");
+    if (undefined !== meta && undefined !== meta["_wl_alt_label"]) {
+      return { altLabels: meta["_wl_alt_label"] };
+    }
+    return { altLabels: [] };
   }),
   withDispatch(dispatch => {
     return {

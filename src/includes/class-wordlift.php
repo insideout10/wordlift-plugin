@@ -13,9 +13,17 @@
  */
 
 use Wordlift\Analysis\Response\Analysis_Response_Ops_Factory;
+use Wordlift\Autocomplete\All_Autocomplete_Service;
+use Wordlift\Autocomplete\Linked_Data_Autocomplete_Service;
+use Wordlift\Autocomplete\Local_Autocomplete_Service;
 use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Entity\Entity_Helper;
+use Wordlift\Faq\Faq_Content_Filter;
+use Wordlift\Faq\Faq_Rest_Controller;
+use Wordlift\Faq\Faq_Tinymce_Adapter;
+use Wordlift\Faq\Faq_To_Jsonld_Converter;
 use Wordlift\Jsonld\Jsonld_Adapter;
+use Wordlift\Jsonld\Jsonld_Endpoint;
 use Wordlift\Mappings\Jsonld_Converter;
 use Wordlift\Mappings\Mappings_DBO;
 use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
@@ -26,10 +34,8 @@ use Wordlift\Mappings\Validators\Post_Type_Rule_Validator;
 use Wordlift\Mappings\Validators\Rule_Groups_Validator;
 use Wordlift\Mappings\Validators\Rule_Validators_Registry;
 use Wordlift\Mappings\Validators\Taxonomy_Rule_Validator;
-use Wordlift\Autocomplete\All_Autocomplete_Service;
-use Wordlift\Autocomplete\Linked_Data_Autocomplete_Service;
-use Wordlift\Autocomplete\Local_Autocomplete_Service;
-use Wordlift\Jsonld\Jsonld_Endpoint;
+use Wordlift\Post_Excerpt\Post_Excerpt_Meta_Box_Adapter;
+use Wordlift\Post_Excerpt\Post_Excerpt_Rest_Controller;
 use Wordlift\Templates\Templates_Ajax_Endpoint;
 
 /**
@@ -86,6 +92,14 @@ class Wordlift {
 	 * @var \Wordlift_Tinymce_Adapter $tinymce_adapter The {@link Wordlift_Tinymce_Adapter} instance.
 	 */
 	protected $tinymce_adapter;
+
+	/**
+	 * The {@link Faq_Tinymce_Adapter} instance
+	 * @since 3.26.0
+	 * @access protected
+	 * @var Faq_Tinymce_Adapter $faq_tinymce_adapter .
+	 */
+	protected $faq_tinymce_adapter;
 
 	/**
 	 * The Thumbnail service.
@@ -330,6 +344,14 @@ class Wordlift {
 	 * @var \Wordlift_Content_Filter_Service $content_filter_service A {@link Wordlift_Content_Filter_Service} instance.
 	 */
 	private $content_filter_service;
+
+	/**
+	 * The Faq Content filter service
+	 * @since  3.26.0
+	 * @access private
+	 * @var Faq_Content_Filter $faq_content_filter_service A {@link Faq_Content_Filter} instance.
+	 */
+	private $faq_content_filter_service;
 
 	/**
 	 * A {@link Wordlift_Key_Validation_Service} instance.
@@ -724,7 +746,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.25.2.20200317.1';
+		$this->version     = '3.26.0-dev';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -1252,12 +1274,14 @@ class Wordlift {
 		// Prints the JSON-LD in the head.
 		new Jsonld_Adapter( $this->jsonld_service );
 
-		$this->key_validation_service    = new Wordlift_Key_Validation_Service( $this->configuration_service );
-		$this->content_filter_service    = new Wordlift_Content_Filter_Service( $this->entity_service, $this->configuration_service, $this->entity_uri_service );
-		$this->relation_rebuild_service  = new Wordlift_Relation_Rebuild_Service( $this->content_filter_service, $this->entity_service );
-		$this->sample_data_service       = new Wordlift_Sample_Data_Service( $this->entity_type_service, $this->configuration_service, $this->user_service );
-		$this->sample_data_ajax_adapter  = new Wordlift_Sample_Data_Ajax_Adapter( $this->sample_data_service );
-		$this->reference_rebuild_service = new Wordlift_Reference_Rebuild_Service( $this->linked_data_service, $this->entity_service, $this->relation_service );
+		$this->key_validation_service = new Wordlift_Key_Validation_Service( $this->configuration_service );
+		$this->content_filter_service = new Wordlift_Content_Filter_Service( $this->entity_service, $this->configuration_service, $this->entity_uri_service );
+		// Creating Faq Content filter service.
+		$this->faq_content_filter_service = new Faq_Content_Filter();
+		$this->relation_rebuild_service   = new Wordlift_Relation_Rebuild_Service( $this->content_filter_service, $this->entity_service );
+		$this->sample_data_service        = new Wordlift_Sample_Data_Service( $this->entity_type_service, $this->configuration_service, $this->user_service );
+		$this->sample_data_ajax_adapter   = new Wordlift_Sample_Data_Ajax_Adapter( $this->sample_data_service );
+		$this->reference_rebuild_service  = new Wordlift_Reference_Rebuild_Service( $this->linked_data_service, $this->entity_service, $this->relation_service );
 
 		// Initialize the short-codes.
 		new Wordlift_Navigator_Shortcode();
@@ -1282,6 +1306,7 @@ class Wordlift {
 		$this->entity_type_adapter      = new Wordlift_Entity_Type_Adapter( $this->entity_type_service );
 		$this->publisher_ajax_adapter   = new Wordlift_Publisher_Ajax_Adapter( $this->publisher_service );
 		$this->tinymce_adapter          = new Wordlift_Tinymce_Adapter( $this );
+		$this->faq_tinymce_adapter      = new Faq_Tinymce_Adapter();
 		$this->relation_rebuild_adapter = new Wordlift_Relation_Rebuild_Adapter( $this->relation_rebuild_service );
 
 		/*
@@ -1447,6 +1472,11 @@ class Wordlift {
 
 		new Jsonld_Converter( $mappings_validator, $mappings_transform_functions_registry );
 
+		/**
+		 * @since 3.26.0
+		 * Initialize the Faq JSON LD converter here.
+		 */
+		new Faq_To_Jsonld_Converter();
 		/*
 		 * Use the Templates Ajax Endpoint to load HTML templates for the legacy Angular app via admin-ajax.php
 		 * end-point.
@@ -1455,6 +1485,8 @@ class Wordlift {
 		 * @since 3.24.4
 		 */
 		new Templates_Ajax_Endpoint();
+		// Call this static method to register FAQ routes to rest api
+		Faq_Rest_Controller::register_routes();
 
 		/*
 		 * Create a singleton for the Analysis_Response_Ops_Factory.
@@ -1671,11 +1703,29 @@ class Wordlift {
 
 		/** Adapters. */
 		$this->loader->add_filter( 'mce_external_plugins', $this->tinymce_adapter, 'mce_external_plugins', 10, 1 );
-		$this->loader->add_action( 'wp_ajax_wl_relation_rebuild_process_all', $this->relation_rebuild_adapter, 'process_all' );
+		/**
+		 * Load the tinymce editor button on the tool bar.
+		 * @since 3.26.0
+		 */
+		$this->loader->add_filter( 'tiny_mce_before_init', $this->faq_tinymce_adapter, 'register_custom_tags' );
+		$this->loader->add_filter( 'mce_buttons', $this->faq_tinymce_adapter, 'register_faq_toolbar_button', 10, 1 );
+		$this->loader->add_filter( 'mce_external_plugins', $this->faq_tinymce_adapter, 'register_faq_tinymce_plugin', 10, 1 );
 
+
+		$this->loader->add_action( 'wp_ajax_wl_relation_rebuild_process_all', $this->relation_rebuild_adapter, 'process_all' );
 		$this->loader->add_action( 'wp_ajax_wl_sample_data_create', $this->sample_data_ajax_adapter, 'create' );
 		$this->loader->add_action( 'wp_ajax_wl_sample_data_delete', $this->sample_data_ajax_adapter, 'delete' );
-
+		/**
+		 * @since 3.26.0
+		 * Post excerpt meta box would be only loaded when the language is set
+		 * to english
+		 */
+		if ( $this->configuration_service->get_language_code() === 'en' ) {
+			$excerpt_adapter = new Post_Excerpt_Meta_Box_Adapter();
+			$this->loader->add_action( 'do_meta_boxes', $excerpt_adapter, 'replace_post_excerpt_meta_box' );
+			// Adding Rest route for the post excerpt
+			Post_Excerpt_Rest_Controller::register_routes();
+		}
 
 		$this->loader->add_action( 'update_user_metadata', $this->user_service, 'update_user_metadata', 10, 5 );
 		$this->loader->add_action( 'delete_user_metadata', $this->user_service, 'delete_user_metadata', 10, 5 );
@@ -1740,7 +1790,8 @@ class Wordlift {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $this->context_cards_service, 'enqueue_scripts' );
-
+		// Registering Faq_Content_Filter service used for removing faq question and answer tags from the html.
+		$this->loader->add_filter( 'the_content', $this->faq_content_filter_service, 'remove_all_faq_question_and_answer_tags' );
 		// Hook the content filter service to add entity links.
 		if ( ! defined( 'WL_DISABLE_CONTENT_FILTER' ) || ! WL_DISABLE_CONTENT_FILTER ) {
 			$this->loader->add_filter( 'the_content', $this->content_filter_service, 'the_content' );

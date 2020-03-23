@@ -1,0 +1,14 @@
+.wl-card {
+  border-radius: 8px;
+  border: 1px solid #eee;
+  height: 80px;
+  transition: 0.1s;
+  padding: 8px;
+  margin: 8px;
+  &:hover {
+    box-shadow: 3px 3px #eee;
+  }
+  &.wl-card-center {
+    text-align: center;
+  }
+}

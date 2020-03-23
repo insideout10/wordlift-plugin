@@ -72,7 +72,6 @@ class Wordlift_Tinymce_Adapter {
 		$plugins['wl_shortcodes'] = plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/wordlift_shortcode_tinymce_plugin.js?ver=' . $version;
 		$plugins['wl_tinymce']    = plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/1/tinymce.js?ver=' . $version;
 		$plugins['wl_tinymce_2']       = plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/tiny-mce.js?ver=' . $version;
-
 		return $plugins;
 	}
 
