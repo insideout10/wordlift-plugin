@@ -49,10 +49,13 @@ export default class HighlightHelper {
     return el.innerHTML;
   }
 
-  static highlightNodesByRange(nodes, tagName, className, nodesToBeRemoved) {
+  static highlightNodesByRange(nodes, tagName, className, range, processedRange) {
     for (let element of nodes) {
       if (element.childNodes.length === 0 && element.nodeType === Node.TEXT_NODE && element.textContent.trim() !== "") {
-        if (!nodesToBeRemoved.includes(element)) {
+        if (
+          processedRange.nodesToBeHighlighted.includes(element) ||
+          (!processedRange.nodesShouldNotBeHighlighted.includes(element) && range.intersectsNode(element))
+        ) {
           // Only highlight if the node intersects the range.
           const newChild = document.createElement(tagName);
           newChild.classList = [className];
@@ -60,7 +63,7 @@ export default class HighlightHelper {
           element.parentElement.replaceChild(newChild, element);
         }
       } else {
-        HighlightHelper.highlightNodesByRange(element.childNodes, tagName, className, nodesToBeRemoved);
+        HighlightHelper.highlightNodesByRange(element.childNodes, tagName, className, range, processedRange);
       }
     }
   }
@@ -108,6 +111,4 @@ export default class HighlightHelper {
     }
     return html;
   }
-
-
 }

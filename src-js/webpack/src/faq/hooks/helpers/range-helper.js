@@ -110,7 +110,8 @@ class RangeHelper {
     for ( let node of nodesToBeInserted ) {
       parentElement.insertBefore(node, referenceNode)
     }
-    referenceNode.remove()
+    // Dont remove the reference node, set it to empty (Tinymce compatibility)
+    referenceNode.textContent = ""
   }
 
   createTextNodesFromRange(range) {

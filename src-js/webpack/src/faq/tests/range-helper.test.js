@@ -18,7 +18,7 @@ it("when given range object on same start and end container should perform slice
     };
     const rangeHelper = new RangeHelper(range);
     // if we now look at the parent element, we should have 3 children text nodes
-    expect(paragraph.childNodes).toHaveLength(3);
+    expect(paragraph.childNodes).toHaveLength(4);
     const processedRangeObj = rangeHelper.getProcessedRange();
     /**
      * check if the nodes are correctly returned.
@@ -59,8 +59,8 @@ it("when the range object start and end containers are not equal should return c
 
     const rangeHelper = new RangeHelper(range);
     // if we now look at the parent element, we should have 2 children text nodes
-    expect(paragraph1.childNodes).toHaveLength(2);
-    expect(paragraph2.childNodes).toHaveLength(2);
+    expect(paragraph1.childNodes).toHaveLength(3);
+    expect(paragraph2.childNodes).toHaveLength(3);
     const processedRangeObj = rangeHelper.getProcessedRange();
     expect(processedRangeObj.nodesToBeHighlighted[0].textContent).toEqual(" is foo text");
     // end text should be some

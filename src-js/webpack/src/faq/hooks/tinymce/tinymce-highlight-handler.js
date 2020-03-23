@@ -14,6 +14,7 @@ import { on } from "backbone";
 import { FAQ_HIGHLIGHT_TEXT, FAQ_ITEM_DELETED } from "../../constants/faq-hook-constants";
 import CustomFaqElementsRegistry, { FAQ_ANSWER_TAG_NAME, FAQ_QUESTION_TAG_NAME } from "../custom-faq-elements";
 import HighlightHelper from "../helpers/highlight-helper";
+import RangeHelper from "../helpers/range-helper";
 
 class TinymceHighlightHandler {
   /**
@@ -86,10 +87,11 @@ class TinymceHighlightHandler {
      * @type {Range}
      */
     const range = this.selection.getRng();
-    const nodesToBeRemoved = [];
+    const rangeHelper = new RangeHelper(range);
+    const processedRange = rangeHelper.getProcessedRange();
     let nodes = Array.from(this.selection.getNode().childNodes);
-    nodes = nodes.filter(n => range.intersectsNode(n));
-    HighlightHelper.highlightNodesByRange(nodes, tagName, id.toString(), range, nodesToBeRemoved);
+    HighlightHelper.highlightNodesByRange(nodes, tagName, id.toString(), range, processedRange);
+    range.collapse()
   }
 }
 
