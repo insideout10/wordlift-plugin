@@ -81,10 +81,15 @@ class TinymceHighlightHandler {
       return;
     }
     const tagName = TinymceHighlightHandler.getTagBasedOnHighlightedText(isQuestion);
-    const rng = this.selection.getRng();
+    /**
+     * DOM Range object.
+     * @type {Range}
+     */
+    const range = this.selection.getRng();
+    const nodesToBeRemoved = [];
     let nodes = Array.from(this.selection.getNode().childNodes);
-    nodes = nodes.filter(n => rng.intersectsNode(n));
-    HighlightHelper.highlightNodesByRange(nodes, tagName, id.toString(), rng);
+    nodes = nodes.filter(n => range.intersectsNode(n));
+    HighlightHelper.highlightNodesByRange(nodes, tagName, id.toString(), range, nodesToBeRemoved);
   }
 }
 

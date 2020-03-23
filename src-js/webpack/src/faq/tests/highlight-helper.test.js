@@ -1,5 +1,6 @@
 import HighlightHelper from "../hooks/helpers/highlight-helper";
-import {faqEditItemType} from "../components/faq-edit-item";
+import { faqEditItemType } from "../components/faq-edit-item";
+import RangeHelper from "../hooks/helpers/range-helper";
 
 it("when given html, should apply inline highlighting to all text nodes", () => {
   const html = `<p>this is a <b>simple</b> html test</p>`;

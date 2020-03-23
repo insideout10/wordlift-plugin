@@ -49,12 +49,10 @@ export default class HighlightHelper {
     return el.innerHTML;
   }
 
-
-
-  static highlightNodesByRange(nodes, tagName, className, range) {
+  static highlightNodesByRange(nodes, tagName, className, nodesToBeRemoved) {
     for (let element of nodes) {
       if (element.childNodes.length === 0 && element.nodeType === Node.TEXT_NODE && element.textContent.trim() !== "") {
-        if (range.intersectsNode(element)) {
+        if (!nodesToBeRemoved.includes(element)) {
           // Only highlight if the node intersects the range.
           const newChild = document.createElement(tagName);
           newChild.classList = [className];
@@ -62,7 +60,7 @@ export default class HighlightHelper {
           element.parentElement.replaceChild(newChild, element);
         }
       } else {
-        HighlightHelper.highlightNodesByRange(element.childNodes, tagName, className, range);
+        HighlightHelper.highlightNodesByRange(element.childNodes, tagName, className, nodesToBeRemoved);
       }
     }
   }
@@ -110,4 +108,6 @@ export default class HighlightHelper {
     }
     return html;
   }
+
+
 }
