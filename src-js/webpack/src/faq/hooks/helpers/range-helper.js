@@ -17,16 +17,34 @@ class RangeHelper {
   constructor(range) {
     this.range = range;
     this.nodesShouldNotBeHighlighted = [];
-    this.nodesToBeAddedOnStartContainer = [];
     this.nodesToBeHighlighted = [];
+    this.nodesToBeAddedOnStartContainer = [];
+    this.nodesToBeAddedOnEndContainer = [];
     this.processRange(range);
   }
-
-  ifTextContentNotEmptyPushNode(node) {
-    if (node.textContent !== "") {
-      this.nodesShouldNotBeHighlighted.push(node);
-      this.nodesToBeAddedOnStartContainer.push(node);
+  getProcessedRange() {
+    return {
+      nodesToBeHighlighted: this.nodesToBeHighlighted,
+      nodesShouldNotBeHighlighted: this.nodesShouldNotBeHighlighted
     }
+  }
+
+  ifTextContentNotEmptyPushNode(node, container, shouldBeHighlighted = false) {
+    if (node.textContent !== "") {
+      if ( shouldBeHighlighted ) {
+        this.nodesToBeHighlighted.push(node)
+      }
+      else {
+        this.nodesShouldNotBeHighlighted.push(node);
+      }
+      container.push(node);
+    }
+  }
+
+  splitToTwoNodesByOffset(text, offset) {
+    const startNode = document.createTextNode(text.slice(0, offset));
+    const endNode = document.createTextNode(text.slice(offset, text.length));
+    return {startNode, endNode}
   }
   /**
    * Window Range Object.
@@ -39,19 +57,48 @@ class RangeHelper {
      */
     if (range.startContainer === range.endContainer) {
       const { startNode, middleNode, endNode } = this.createTextNodesFromRange(range);
-      this.ifTextContentNotEmptyPushNode(startNode);
+      this.ifTextContentNotEmptyPushNode(startNode, this.nodesToBeAddedOnStartContainer);
       this.nodesToBeAddedOnStartContainer.push(middleNode);
       this.nodesToBeHighlighted.push(middleNode);
-      this.ifTextContentNotEmptyPushNode(endNode);
+      this.ifTextContentNotEmptyPushNode(endNode, this.nodesToBeAddedOnStartContainer);
+    }
+    else {
+      // the start and end containers are in different parent element
+
+      /**
+       * For the start container the end node is the node
+       * which should be highlighted, start node should not be highlighted.
+       */
+      let {startNode, endNode } = this.splitToTwoNodesByOffset(range.startContainer.textContent, range.startOffset)
+      this.ifTextContentNotEmptyPushNode(startNode, this.nodesToBeAddedOnStartContainer);
+      this.ifTextContentNotEmptyPushNode(endNode, this.nodesToBeAddedOnStartContainer, true);
+
+      /**
+       * For the end container, the start node should be highlighted
+       * and the end node shouldn't be highlighted.
+       */
+      let endContainerNodes = this.splitToTwoNodesByOffset(range.endContainer.textContent, range.endOffset);
+      this.ifTextContentNotEmptyPushNode(endContainerNodes.startNode, this.nodesToBeAddedOnEndContainer, true);
+      this.ifTextContentNotEmptyPushNode(endContainerNodes.endNode, this.nodesToBeAddedOnEndContainer);
+
     }
     /**
      * After creating text nodes we append it to the parent
-     * element.
+     * element of start container.
      */
     this.appendCreatedNodesToParentElement(
         range.startContainer.parentElement,
         range.startContainer,
         this.nodesToBeAddedOnStartContainer
+    );
+    /**
+     * After creating text nodes we append it to the parent
+     * element of end container.
+     */
+    this.appendCreatedNodesToParentElement(
+        range.endContainer.parentElement,
+        range.endContainer,
+        this.nodesToBeAddedOnEndContainer
     );
   }
 
