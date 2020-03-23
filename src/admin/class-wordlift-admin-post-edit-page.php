@@ -233,7 +233,7 @@ class Wordlift_Admin_Post_Edit_Page {
 			'addQuestionOrAnswerText' => __( 'Add Question / Answer', self::WORDLIFT_TEXT_DOMAIN ),
 			'addQuestionText'         => __( 'Add Question', self::WORDLIFT_TEXT_DOMAIN ),
 			'addAnswerText'           => __( 'Add Answer', self::WORDLIFT_TEXT_DOMAIN ),
-			'noFaqItemsText'          => __( 'No Questions or answers present', self::WORDLIFT_TEXT_DOMAIN ),
+			'noFaqItemsText'          => __( 'Highlight a question in content, then click Add Question.', self::WORDLIFT_TEXT_DOMAIN ),
 			'updatingText'          => __( 'Updating...', self::WORDLIFT_TEXT_DOMAIN )
 		);
 	}
