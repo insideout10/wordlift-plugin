@@ -82,13 +82,43 @@ class Wordlift_Context_Cards_Service {
 
 	public function context_data( $request ) {
 
-		$entity_uri = urldecode( $request->get_param( 'entity_url' ) );
-		$entity_id  = $this->url_to_postid( $entity_uri );
-		$jsonld     = Wordlift_Jsonld_Service::get_instance()->get_jsonld( false, $entity_id );
+		$entity_uri    = urldecode( $request->get_param( 'entity_url' ) );
+		$entity_sameas = $request->get_param( 'sameas' );
+
+		if ( !empty( $entity_uri ) ) {
+			return $this->context_data_by_entity_uri( $entity_uri );
+		}
+		if ( !empty( $entity_sameas ) ) {
+			return $this->context_data_by_sameas( $entity_sameas );
+		}
+
+	}
+
+	private function context_data_by_entity_uri( $entity_uri ) {
+
+		$entity_id = $this->url_to_postid( $entity_uri );
+		$jsonld = Wordlift_Jsonld_Service::get_instance()->get_jsonld( false, $entity_id );
 
 		return $this->format_response( $jsonld );
 
 	}
+
+	private function context_data_by_sameas( $entity_sameas ) {
+
+		// Look for an entity.
+		foreach ( $entity_sameas as $id ) {
+			$post = Wordlift_Entity_Service::get_instance()
+			                               ->get_entity_post_by_uri( urldecode($id) );
+
+			if ( null !== $post ) {
+				$jsonld    = Wordlift_Jsonld_Service::get_instance()->get_jsonld( false, $post->ID );
+
+				return $this->format_response( $jsonld );
+			}
+		}
+
+	}
+
 
 	public function enqueue_scripts() {
 		$show_context_cards = true;
@@ -97,12 +127,12 @@ class Wordlift_Context_Cards_Service {
 			wp_enqueue_script( 'wordlift-cloud' );
 			wp_localize_script( 'wordlift-cloud', 'wlCloudContextCards', array(
 				'selector'  => 'a.wl-entity-page-link',
-					'baseUrl'   => get_rest_url() . WL_REST_ROUTE_DEFAULT_NAMESPACE . $this->endpoint
+				'baseUrl'   => get_rest_url() . WL_REST_ROUTE_DEFAULT_NAMESPACE . $this->endpoint
 			) );
 		}
 	}
 
-	private function url_to_postid( $url ) {
+	static function url_to_postid( $url ) {
 		// Try with url_to_postid
 		$post_id = url_to_postid( $url );
 		if ( $post_id == 0 ) {

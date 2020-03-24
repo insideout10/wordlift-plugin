@@ -233,7 +233,7 @@ class Wordlift_Content_Filter_Service {
 		 *
 		 * @since 3.26.0
 		 */
-		$attributes      = apply_filters( 'wl_anchor_data_attributes', array(), $post->ID );
+		$attributes      = apply_filters( 'wl_anchor_data_attributes', $post->ID );
 		$attributes_html = '';
 		foreach ( $attributes as $key => $value ) {
 			$attributes_html .= 'data-' . esc_html( $key ) . '="' . esc_attr( $value ) . '"';
