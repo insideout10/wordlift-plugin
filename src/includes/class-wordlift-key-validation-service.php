@@ -97,23 +97,24 @@ class Wordlift_Key_Validation_Service {
 		}
 
 		$response = $this->get_account_info( $_POST['key'] );
-		$res_body = json_decode( wp_remote_retrieve_body( $response ), true );
-
-		// The URL stored in WLS. If this is the initial install the URL may be null.
-		$url = $res_body['url'];
 
 		// If we got an error, return invalid.
 		if ( is_wp_error( $response ) || 2 !== (int) $response['response']['code'] / 100 ) {
 			wp_send_json_success( array( 'valid' => false, 'message' => '' ) );
 		}
 
+		$res_body = json_decode( wp_remote_retrieve_body( $response ), true );
+
+		// The URL stored in WLS. If this is the initial install the URL may be null.
+		$url = $res_body['url'];
+
 		// If the URL isn't set or matches, then it's valid.
-		if ( is_null( $url ) || $url === site_url() ) {
+		if ( is_null( $url ) || $url === home_url() ) {
 			wp_send_json_success( array( 'valid' => true, 'message' => '' ) );
 		}
 
 		// If the URL doesn't match it means that this key has been configured elsewhere already.
-		if ( $url !== site_url() ) {
+		if ( $url !== home_url() ) {
 			Wordlift_Configuration_Service::get_instance()->set_key( '' );
 			wp_send_json_success( array(
 				'valid'   => false,
@@ -135,10 +136,12 @@ class Wordlift_Key_Validation_Service {
 	public function wl_load_plugin() {
 
 		$wl_blog_url = get_option( '_wl_blog_url' );
+		$home_url    = defined( 'WP_HOME' ) ? WP_HOME : home_url();
 
 		if ( ! $wl_blog_url ) {
-			update_option( '_wl_blog_url', site_url(), true );
-		} else if ( $wl_blog_url !== site_url() ) {
+			update_option( '_wl_blog_url', $home_url, true );
+		} else if ( $wl_blog_url !== $home_url ) {
+			update_option( '_wl_blog_url', $home_url, true );
 			Wordlift_Configuration_Service::get_instance()->set_key( '' );
 			set_transient( 'wl-key-error-msg', __( "Your web site URL has changed. To avoid data corruption, WordLift's key has been removed. Please provide a new key in WordLift Settings. If you believe this to be an error, please contact us at hello@wordlift.io", 'wordlift' ), 10 );
 		}
