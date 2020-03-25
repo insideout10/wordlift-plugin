@@ -13,10 +13,12 @@ class Wordlift_Context_Cards_Service {
 	 * @var string
 	 */
 	private $endpoint;
+	private $jsonld_endpoint;
 
 	function __construct() {
 
-		$this->endpoint = '/context-card';
+		$this->endpoint        = '/context-card';
+		$this->jsonld_endpoint = '/jsonld';
 
 		// PHP 5.3 compatibility as `$this` cannot be used in closures.
 		$that = $this;
@@ -28,97 +30,112 @@ class Wordlift_Context_Cards_Service {
 			) );
 		} );
 
+		add_action( 'rest_api_init', function () use ( $that ) {
+			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, $that->jsonld_endpoint, array(
+				'methods'  => 'GET',
+				'callback' => array( $that, 'context_data_jsonld' ),
+			) );
+		} );
+
 	}
 
 	function format_response( $jsonld, $publisher = true ) {
 
 		$response = array();
 
-		if(!isset($jsonld) || empty($jsonld) || empty($jsonld[0])){
+		if ( ! isset( $jsonld ) || empty( $jsonld ) || empty( $jsonld[0] ) ) {
 			return null;
 		}
 
-		if( isset($jsonld[0]['description']) && !empty($jsonld[0]['description']) ){
-			if( isset($jsonld[0]['name']) && !empty($jsonld[0]['name']) ) {
-				$title = $jsonld[0]['name'];
-				$pos = strpos($jsonld[0]['description'], $title);
+		if ( isset( $jsonld[0]['description'] ) && ! empty( $jsonld[0]['description'] ) ) {
+			if ( isset( $jsonld[0]['name'] ) && ! empty( $jsonld[0]['name'] ) ) {
+				$title                   = $jsonld[0]['name'];
+				$pos                     = strpos( $jsonld[0]['description'], $title );
 				$response['description'] = $jsonld[0]['description'];
-				if ($pos !== false) {
-					$response['description'] = substr_replace($response['description'], "<strong>$title</strong>", $pos, strlen($title));
+				if ( $pos !== false ) {
+					$response['description'] = substr_replace( $response['description'], "<strong>$title</strong>", $pos, strlen( $title ) );
 				}
 			} else {
 				$response['description'] = $jsonld[0]['description'];
 			}
 		}
 
-		if( isset($jsonld[0]['name']) && !empty($jsonld[0]['name']) ){
+		if ( isset( $jsonld[0]['name'] ) && ! empty( $jsonld[0]['name'] ) ) {
 			$response['title'] = $jsonld[0]['name'];
 		}
 
-		if( isset($jsonld[0]['url']) && !empty($jsonld[0]['url']) ){
+		if ( isset( $jsonld[0]['url'] ) && ! empty( $jsonld[0]['url'] ) ) {
 			$response['url'] = $jsonld[0]['url'];
 		}
 
-		if( isset($jsonld[0]['image']) &&
-		    isset($jsonld[0]['image'][0]['url']) &&
-		    isset($jsonld[0]['image'][0]['width']) &&
-		    isset($jsonld[0]['image'][0]['height'])
-		){
+		if ( isset( $jsonld[0]['image'] ) &&
+		     isset( $jsonld[0]['image'][0]['url'] ) &&
+		     isset( $jsonld[0]['image'][0]['width'] ) &&
+		     isset( $jsonld[0]['image'][0]['height'] )
+		) {
 			$response['image'] = array(
-				'url' => $jsonld[0]['image'][0]['url'],
-				'width' => $jsonld[0]['image'][0]['width'],
+				'url'    => $jsonld[0]['image'][0]['url'],
+				'width'  => $jsonld[0]['image'][0]['width'],
 				'height' => $jsonld[0]['image'][0]['height'],
 			);
 		}
 
-		if($publisher){
-			$publisher_id       = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
-			$publisher_jsonld   = Wordlift_Jsonld_Service::get_instance()->get_jsonld( false, $publisher_id );
+		if ( $publisher ) {
+			$publisher_id          = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+			$publisher_jsonld      = Wordlift_Jsonld_Service::get_instance()->get_jsonld( false, $publisher_id );
 			$response['publisher'] = $this->format_response( $publisher_jsonld, false );
 		}
 
 		return $response;
 	}
 
-	public function context_data( $request ) {
+	function format_as_jsonld( $jsonld, $publisher = true ) {
 
-		$entity_uri    = urldecode( $request->get_param( 'entity_url' ) );
-		$entity_sameas = $request->get_param( 'sameas' );
+		$response = array();
 
-		if ( !empty( $entity_uri ) ) {
-			return $this->context_data_by_entity_uri( $entity_uri );
+		if ( ! isset( $jsonld ) || empty( $jsonld ) || empty( $jsonld[0] ) ) {
+			return null;
 		}
-		if ( !empty( $entity_sameas ) ) {
-			return $this->context_data_by_sameas( $entity_sameas );
-		}
+
+		$publisher_id     = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+		$publisher_jsonld = Wordlift_Jsonld_Service::get_instance()->get_jsonld( false, $publisher_id );
+
+		$response['@context']  = "http://schema.org";
+		$response['@type']     = "WebSite";
+		$response['publisher'] = $publisher_jsonld;
+		$response['mentions']  = $jsonld;
+
+		return $response;
 
 	}
 
-	private function context_data_by_entity_uri( $entity_uri ) {
+	public function context_data( $request ) {
 
-		$entity_id = $this->url_to_postid( $entity_uri );
-		$jsonld = Wordlift_Jsonld_Service::get_instance()->get_jsonld( false, $entity_id );
+		$entity_uri = urldecode( $request->get_param( 'entity_url' ) );
+		$entity_id  = Wordlift_Context_Cards_Service::url_to_postid( $entity_uri );
+		$jsonld     = Wordlift_Jsonld_Service::get_instance()->get_jsonld( false, $entity_id );
 
 		return $this->format_response( $jsonld );
 
 	}
 
-	private function context_data_by_sameas( $entity_sameas ) {
+	public function context_data_jsonld( $request ) {
+
+		$ids = $request->get_param( 'id' );
 
 		// Look for an entity.
-		foreach ( $entity_sameas as $id ) {
+		foreach ( $ids as $id ) {
 			$post = Wordlift_Entity_Service::get_instance()
-			                               ->get_entity_post_by_uri( urldecode($id) );
+			                               ->get_entity_post_by_uri( urldecode( $id ) );
 
 			if ( null !== $post ) {
-				$jsonld    = Wordlift_Jsonld_Service::get_instance()->get_jsonld( false, $post->ID );
+				$jsonld = Wordlift_Jsonld_Service::get_instance()->get_jsonld( false, $post->ID );
 
-				return $this->format_response( $jsonld );
+				return $this->format_as_jsonld( $jsonld );
 			}
 		}
 
 	}
-
 
 	public function enqueue_scripts() {
 		$show_context_cards = true;
@@ -126,8 +143,8 @@ class Wordlift_Context_Cards_Service {
 		if ( $show_context_cards ) {
 			wp_enqueue_script( 'wordlift-cloud' );
 			wp_localize_script( 'wordlift-cloud', 'wlCloudContextCards', array(
-				'selector'  => 'a.wl-entity-page-link',
-				'baseUrl'   => get_rest_url() . WL_REST_ROUTE_DEFAULT_NAMESPACE . $this->endpoint
+				'selector' => 'a.wl-entity-page-link',
+				'baseUrl'  => get_rest_url() . WL_REST_ROUTE_DEFAULT_NAMESPACE . $this->endpoint
 			) );
 		}
 	}
