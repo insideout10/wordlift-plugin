@@ -143,6 +143,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 = 3.26.0 (2020-02-28) =
+* Enhancement [#1027](https://github.com/insideout10/wordlift-plugin/issues/1027): Adding support for Wordpress 5.4.
 
 = 3.25.2 (2020-03-11) =
 * Enhancement: Image License Compliance tool.
