@@ -97,8 +97,7 @@ class Wordlift_Context_Cards_Service {
 			return null;
 		}
 
-		$publisher_id     = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
-		$publisher_jsonld = Wordlift_Jsonld_Service::get_instance()->get_jsonld( false, $publisher_id );
+		$publisher_jsonld = Wordlift_Jsonld_Service::get_instance()->get_jsonld( true );
 
 		$response['@context']  = "http://schema.org";
 		$response['@type']     = "WebSite";
@@ -123,10 +122,12 @@ class Wordlift_Context_Cards_Service {
 
 		$ids = $request->get_param( 'id' );
 
+		$cached_entity_uri_service    = Wordlift_Cached_Entity_Uri_Service::get_instance();
+		$cached_entity_uri_service->preload_uris( array_map('urldecode', $ids) );
+
 		// Look for an entity.
 		foreach ( $ids as $id ) {
-			$post = Wordlift_Entity_Service::get_instance()
-			                               ->get_entity_post_by_uri( urldecode( $id ) );
+			$post = $cached_entity_uri_service->get_entity( urldecode( $id ) );
 
 			if ( null !== $post ) {
 				$jsonld = Wordlift_Jsonld_Service::get_instance()->get_jsonld( false, $post->ID );
@@ -138,13 +139,13 @@ class Wordlift_Context_Cards_Service {
 	}
 
 	public function enqueue_scripts() {
-		$show_context_cards = true;
-		$show_context_cards = apply_filters( 'wl_show_context_cards', $show_context_cards );
+		$show_context_cards = apply_filters( 'wl_show_context_cards', true );
+		$base_url = apply_filters( 'wl_context_cards_base_url', get_rest_url() . WL_REST_ROUTE_DEFAULT_NAMESPACE . $this->endpoint );
 		if ( $show_context_cards ) {
 			wp_enqueue_script( 'wordlift-cloud' );
 			wp_localize_script( 'wordlift-cloud', 'wlCloudContextCards', array(
 				'selector' => 'a.wl-entity-page-link',
-				'baseUrl'  => get_rest_url() . WL_REST_ROUTE_DEFAULT_NAMESPACE . $this->endpoint
+				'baseUrl'  => $base_url
 			) );
 		}
 	}
