@@ -31,7 +31,9 @@ function getPostContent() {
  * our custom meta box.
  */
 function removeDefaultExcerptPanel() {
-  if (wp.data !== undefined) {
+  if (!document.body.classList.contains("block-editor-page")) return;
+
+  if (wp.data && wp.data.dispatch("core/edit-post")) {
     wp.data.dispatch("core/edit-post").removeEditorPanel("post-excerpt");
   }
 }
