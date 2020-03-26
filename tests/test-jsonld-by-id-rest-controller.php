@@ -147,9 +147,64 @@ class Jsonld_By_Id_REST_Controller_Test extends WP_UnitTestCase {
 	}
 
 	public function test_two_items() {
+
+		$post_id_1 = $this->factory()->post->create( array(
+			'post_type'    => 'entity',
+			'post_title'   => 'Jsonld_By_Id_REST_Controller_Test->test_two_items title 1',
+			'post_excerpt' => 'Jsonld_By_Id_REST_Controller_Test->test_two_items content 1'
+		) );
+
+		$post_uri_1 = $this->entity_service->get_uri( $post_id_1 );
+
+		$post_id_2 = $this->factory()->post->create( array(
+			'post_type'    => 'entity',
+			'post_title'   => 'Jsonld_By_Id_REST_Controller_Test->test_one_item title 2',
+			'post_excerpt' => 'Jsonld_By_Id_REST_Controller_Test->test_one_item content 2'
+		) );
+
+		$post_uri_2 = $this->entity_service->get_uri( $post_id_2 );
+
+		$request = new WP_REST_Request( 'GET', $this->route );
+		$request->set_param( 'id', array( $post_uri_1, $post_uri_2 ) );
+		$response = $this->server->dispatch( $request );
+
+		$this->assertEquals( 200, $response->get_status(), 'Except success' );
+
+		$data_array = $response->get_data();
+
+		$this->assertCount( 2, $data_array, 'Expect 2 items in the response.' );
+
 	}
 
 	public function test_two_items_with_website() {
+
+		$post_id_1 = $this->factory()->post->create( array(
+			'post_type'    => 'entity',
+			'post_title'   => 'Jsonld_By_Id_REST_Controller_Test->test_two_items title 1',
+			'post_excerpt' => 'Jsonld_By_Id_REST_Controller_Test->test_two_items content 1'
+		) );
+
+		$post_uri_1 = $this->entity_service->get_uri( $post_id_1 );
+
+		$post_id_2 = $this->factory()->post->create( array(
+			'post_type'    => 'entity',
+			'post_title'   => 'Jsonld_By_Id_REST_Controller_Test->test_one_item title 2',
+			'post_excerpt' => 'Jsonld_By_Id_REST_Controller_Test->test_one_item content 2'
+		) );
+
+		$post_uri_2 = $this->entity_service->get_uri( $post_id_2 );
+
+		$request = new WP_REST_Request( 'GET', $this->route );
+		$request->set_param( 'id', array( $post_uri_1, $post_uri_2 ) );
+		$request->set_param( 'website', true );
+		$response = $this->server->dispatch( $request );
+
+		$this->assertEquals( 200, $response->get_status(), 'Except success' );
+
+		$data_array = $response->get_data();
+
+		$this->assertCount( 3, $data_array, 'Expect 2 items in the response.' );
+
 	}
 
 }
