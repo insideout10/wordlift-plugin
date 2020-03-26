@@ -30,13 +30,6 @@ class Wordlift_Context_Cards_Service {
 			) );
 		} );
 
-		add_action( 'rest_api_init', function () use ( $that ) {
-			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, $that->jsonld_endpoint, array(
-				'methods'  => 'GET',
-				'callback' => array( $that, 'context_data_jsonld' ),
-			) );
-		} );
-
 	}
 
 	function format_response( $jsonld, $publisher = true ) {
@@ -89,25 +82,6 @@ class Wordlift_Context_Cards_Service {
 		return $response;
 	}
 
-	function format_as_jsonld( $jsonld, $publisher = true ) {
-
-		$response = array();
-
-		if ( ! isset( $jsonld ) || empty( $jsonld ) || empty( $jsonld[0] ) ) {
-			return null;
-		}
-
-		$publisher_jsonld = Wordlift_Jsonld_Service::get_instance()->get_jsonld( true );
-
-		$response['@context']  = "http://schema.org";
-		$response['@type']     = "WebSite";
-		$response['publisher'] = $publisher_jsonld;
-		$response['mentions']  = $jsonld;
-
-		return $response;
-
-	}
-
 	public function context_data( $request ) {
 
 		$entity_uri = urldecode( $request->get_param( 'entity_url' ) );
@@ -118,29 +92,9 @@ class Wordlift_Context_Cards_Service {
 
 	}
 
-	public function context_data_jsonld( $request ) {
-
-		$ids = $request->get_param( 'id' );
-
-		$cached_entity_uri_service    = Wordlift_Cached_Entity_Uri_Service::get_instance();
-		$cached_entity_uri_service->preload_uris( array_map('urldecode', $ids) );
-
-		// Look for an entity.
-		foreach ( $ids as $id ) {
-			$post = $cached_entity_uri_service->get_entity( urldecode( $id ) );
-
-			if ( null !== $post ) {
-				$jsonld = Wordlift_Jsonld_Service::get_instance()->get_jsonld( false, $post->ID );
-
-				return $this->format_as_jsonld( $jsonld );
-			}
-		}
-
-	}
-
 	public function enqueue_scripts() {
 		$show_context_cards = apply_filters( 'wl_show_context_cards', true );
-		$base_url = apply_filters( 'wl_context_cards_base_url', get_rest_url() . WL_REST_ROUTE_DEFAULT_NAMESPACE . $this->endpoint );
+		$base_url           = apply_filters( 'wl_context_cards_base_url', get_rest_url() . WL_REST_ROUTE_DEFAULT_NAMESPACE . $this->endpoint );
 		if ( $show_context_cards ) {
 			wp_enqueue_script( 'wordlift-cloud' );
 			wp_localize_script( 'wordlift-cloud', 'wlCloudContextCards', array(
