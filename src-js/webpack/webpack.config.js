@@ -30,7 +30,7 @@ const webpackConfig = {
     term: "./src/Term/index.js",
     "block-editor": "./src/block-editor/index.js",
     "tiny-mce": "./src/tiny-mce/index.js",
-    "wordlift-cloud": "./src/Cloud/index.js",
+    "wordlift-cloud": "./src/cloud/index.js",
     "mappings": "./src/mappings/index.js",
     "mappings-edit": "./src/mappings/edit-mappings.js",
     // The sameAs autocomplete for the meta-box. This bundle is used for the meta-box in Block Editor.

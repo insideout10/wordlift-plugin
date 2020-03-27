@@ -97,9 +97,9 @@ class Wordlift_Context_Cards_Service {
 		$base_url           = apply_filters( 'wl_context_cards_base_url', get_rest_url() . WL_REST_ROUTE_DEFAULT_NAMESPACE . $this->endpoint );
 		if ( $show_context_cards ) {
 			wp_enqueue_script( 'wordlift-cloud' );
-			wp_localize_script( 'wordlift-cloud', 'wlCloudContextCards', array(
+			wp_localize_script( 'wordlift-cloud', '_wlCloudSettings', array(
 				'selector' => 'a.wl-entity-page-link',
-				'baseUrl'  => $base_url
+				'url'  => get_rest_url( NULL, WL_REST_ROUTE_DEFAULT_NAMESPACE . '/jsonld' ),
 			) );
 		}
 	}
