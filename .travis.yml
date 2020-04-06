@@ -38,7 +38,7 @@ matrix:
       env: SCRIPT=test:js
     # Additional PHP Unit tests multisite environment, PHP 5.6, WP 5.1.
     - php: 5.6
-      env: SCRIPT=test:multisite WP_VERSION=5.1
+      env: SCRIPT=test:multisite WP_VERSION=5.4
     # Additional PHP Unit tests specific to some users' environment, i.e. PHP 5.5 and WP 4.7.
     - php: 5.5
       env: SCRIPT=test:php WP_VERSION=4.7
@@ -107,7 +107,7 @@ env:
     # NB4P/P1/Gzje1/mOseVZqkIdaxI5vEgnlUUEmNRBtAT0CMt3c3pLSfzRtKrFfuJzoXpahxf8pC1R+Ljjf+QCC+2ECqjGCPSSv1tIj0L/H+c9UtbpPQIwD6kv7dPBYedZ6eNAgGjK1DXhrAuSnNaYJrZ35N6tv06B0KmniY6pJnk=
 
   matrix:
-    - SCRIPT=test:php WP_VERSION=5.4
+    - SCRIPT=test:php WP_VERSION=5.1
     - SCRIPT=test:php WP_VERSION=4.4
 
 services:
