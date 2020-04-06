@@ -288,6 +288,11 @@ class Post_Adapter {
 			if ( isset( $entity['mainType'] ) ) {
 				wp_set_object_terms( $post_id, $entity['mainType'], \Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 			}
+
+			if ( isset( $entity['properties'] ) && isset( $entity['properties']['latitude'] ) && isset( $entity['properties']['longitude'] ) ) {
+				add_post_meta( $post_id, \Wordlift_Schema_Service::FIELD_GEO_LATITUDE, $entity['properties']['latitude'] );
+				add_post_meta( $post_id, \Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, $entity['properties']['longitude'] );
+			}
 		} else {
 			// Update the entity otherwise.
 			$post_id = $this->entity_store->update( array(
