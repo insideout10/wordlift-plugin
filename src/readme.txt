@@ -4,7 +4,7 @@ Plugin URL: https://wordlift.io
 Contributors: wordlift, insideout10, ziodave
 Tags: schema.org, rich snippets, semantic seo, JSON-LD, artificial intelligence, ai, linked data, semantic web, content recommendation, related posts, timeline, knowledge graph, interactive map
 Requires at least: 4.4
-Tested up to: 5.3
+Tested up to: 5.4
 Requires PHP: 5.3
 Stable tag: {version}
 License: GPLv2 or later
@@ -141,6 +141,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 9. The WordLift Dashboard. Your [knowledge graph](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph) at a glance.
 
 == Changelog ==
+
+= 3.25.4 (2020-04-06) =
+* Enhancement [#1027](https://github.com/insideout10/wordlift-plugin/issues/1027): Adding support for Wordpress 5.4.
 
 = 3.25.3 (2020-03-23) =
 * Enhancement: wp-json end-point to retrieve JSON-LD by post type and slug.
