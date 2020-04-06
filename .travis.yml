@@ -26,10 +26,10 @@ matrix:
       env: SCRIPT=test:e2e
     # Additional PHP Unit tests, PHP 7.2, PHP 7.0, WP 5.1 (WP 4.2 isn't compatible with PHP 7.x).
     - php: 7.2
-      env: SCRIPT=test:php WP_VERSION=5.3
+      env: SCRIPT=test:php WP_VERSION=5.4
     #
     - php: 7.0
-      env: SCRIPT=test:php WP_VERSION=5.3
+      env: SCRIPT=test:php WP_VERSION=5.4
     # WordPress nightly.
     - php: 5.6
       env: SCRIPT=test:php WP_VERSION=nightly
@@ -107,7 +107,7 @@ env:
     # NB4P/P1/Gzje1/mOseVZqkIdaxI5vEgnlUUEmNRBtAT0CMt3c3pLSfzRtKrFfuJzoXpahxf8pC1R+Ljjf+QCC+2ECqjGCPSSv1tIj0L/H+c9UtbpPQIwD6kv7dPBYedZ6eNAgGjK1DXhrAuSnNaYJrZ35N6tv06B0KmniY6pJnk=
 
   matrix:
-    - SCRIPT=test:php WP_VERSION=5.1
+    - SCRIPT=test:php WP_VERSION=5.4
     - SCRIPT=test:php WP_VERSION=4.4
 
 services:
