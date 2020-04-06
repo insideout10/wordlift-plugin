@@ -338,7 +338,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		$thumbnail_id = get_post_thumbnail_id( $post_id );
 
 		// Bail out if thumbnail not available.
-		if ( empty( $thumbnail_id ) ) {
+		if ( empty( $thumbnail_id ) || 0 === $thumbnail_id ) {
 			$this->log->info( "Featured image not set for post $post_id." );
 
 			return false;
