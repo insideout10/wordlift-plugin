@@ -18,7 +18,7 @@ function wl_ajax_analyze_action() {
 
 	$data = filter_input( INPUT_POST, 'data' );
 
-	wp_send_json_success( wl_analyze_content( $data, 'application/json; ' . get_bloginfo( 'charset' ) ) );
+	wp_send_json_success( wl_analyze_content( $data, 'application/json; charset=' . get_bloginfo( 'charset' ) ) );
 
 }
 
