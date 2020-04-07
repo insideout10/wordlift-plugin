@@ -271,22 +271,43 @@ class Post_Adapter {
 		// Get the labels.
 		$labels = $this->get_labels( $entity );
 
-		// Create the entity if it doesn't exist.
 		if ( empty( $post ) ) {
-			return $this->entity_store->create( array(
+			// Create the entity if it doesn't exist.
+			$post_id = $this->entity_store->create( array(
 				'labels'      => $labels,
 				'description' => $entity['description'],
 				'same_as'     => $uris,
 			), $post_status );
+
+			// Return the WP_Error if we got one.
+			if ( is_wp_error( $post_id ) ) {
+				return $post_id;
+			}
+
+			// Add the entity type.
+			if ( isset( $entity['mainType'] ) ) {
+				wp_set_object_terms( $post_id, $entity['mainType'], \Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+			}
+
+			if ( isset( $entity['properties'] ) && isset( $entity['properties']['latitude'] ) && isset( $entity['properties']['longitude'] ) ) {
+				add_post_meta( $post_id, \Wordlift_Schema_Service::FIELD_GEO_LATITUDE, $entity['properties']['latitude'] );
+				add_post_meta( $post_id, \Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, $entity['properties']['longitude'] );
+			}
+		} else {
+			// Update the entity otherwise.
+			$post_id = $this->entity_store->update( array(
+				'ID'      => $post->ID,
+				'labels'  => $labels,
+				'same_as' => $uris,
+			) );
+
+			// Add the entity type.
+			if ( isset( $entity['mainType'] ) ) {
+				wp_add_object_terms( $post_id, $entity['mainType'], \Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+			}
 		}
 
-		// Update the entity otherwise.
-		return $this->entity_store->update( array(
-			'ID'      => $post->ID,
-			'labels'  => $labels,
-			'same_as' => $uris,
-		) );
-
+		return $post_id;
 	}
 
 	/**

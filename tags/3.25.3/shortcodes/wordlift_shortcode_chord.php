@@ -60,10 +60,10 @@ function wl_shortcode_chord_most_referenced_entity_id() {
 /**
  * Recursive function used to retrieve related content starting from a post ID.
  *
- * @param int   $entity_id The entity post ID.
- * @param int   $depth Max number of nesting levels in output.
+ * @param int $entity_id The entity post ID.
+ * @param int $depth Max number of nesting levels in output.
  * @param array $related An existing array of related entities.
- * @param int   $max_size Max number of items.
+ * @param int $max_size Max number of items.
  *
  * @return array
  * @uses wl_core_get_related_post_ids() to get the list of post ids that reference an entity.
@@ -158,7 +158,7 @@ function wl_shortcode_chord_get_graph( $data ) {
 		// TODO: get all images
 		$thumbnail    = null;
 		$thumbnail_id = get_post_thumbnail_id( $post->ID );
-		if ( '' !== $thumbnail_id ) {
+		if ( '' !== $thumbnail_id && 0 !== $thumbnail_id ) {
 			$attachment = wp_get_attachment_image_src( $thumbnail_id );
 			if ( false !== $attachment ) {
 				$thumbnail = esc_attr( $attachment[0] );
