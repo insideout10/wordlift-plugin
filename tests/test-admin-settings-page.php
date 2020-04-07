@@ -31,7 +31,7 @@ class Wordlift_Admin_Settings_Page_Test extends Wordlift_Unit_Test_Case {
 	function setUp() {
 		parent::setUp();
 
-		$this->settings_page       = $this->get_wordlift_test()->get_settings_page();
+		$this->settings_page = $this->get_wordlift_test()->get_settings_page();
 
 	}
 
@@ -94,7 +94,12 @@ class Wordlift_Admin_Settings_Page_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 'http://schema.org/Person', $type['uri'] );
 
 		// Check that there's no thumbnail.
-		$this->assertEquals( '', get_post_thumbnail_id( $publisher_id ) );
+		global $wp_version;
+		if ( version_compare( $wp_version, '5.4', '>' ) ) {
+			$this->assertEquals( 0, get_post_thumbnail_id( $publisher_id ) );
+		} else {
+			$this->assertEquals( '', get_post_thumbnail_id( $publisher_id ) );
+		}
 
 	}
 

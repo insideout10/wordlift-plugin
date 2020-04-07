@@ -214,7 +214,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 
 		// Set the thumbnail id as first attachment id, if any.
 		$thumbnail_id = get_post_thumbnail_id( $post->ID );
-		if ( '' !== $thumbnail_id ) {
+		if ( '' !== $thumbnail_id && 0 !== $thumbnail_id ) {
 			$ids[] = $thumbnail_id;
 		}
 

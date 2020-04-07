@@ -11,22 +11,22 @@
 import { dispatch, select } from "@wordpress/data";
 import { createBlock } from "@wordpress/blocks";
 
-export const getAnnotationFilter = state => state.annotationFilter;
+export const getAnnotationFilter = (state) => state.annotationFilter;
 
-export const getEditor = state => state.editor;
+export const getEditor = (state) => state.editor;
 
-export const getEntities = state => state.entities;
+export const getEntities = (state) => state.entities;
 
-export const getSelectedEntities = state =>
+export const getSelectedEntities = (state) =>
   getEntities(state)
-    .filter(entity => "undefined" !== typeof entity.occurrences && 0 < entity.occurrences.length)
-    .map(({ annotations, description, id, label, mainType, occurrences, sameAs, synonyms, types }) => {
+    .filter((entity) => "undefined" !== typeof entity.occurrences && 0 < entity.occurrences.length)
+    .map(({ annotations, description, id, label, mainType, occurrences, properties, sameAs, synonyms, types }) => {
       const annotationsWithoutCyclicReferences = {};
-      Object.getOwnPropertyNames(annotations).forEach(propName => {
+      Object.getOwnPropertyNames(annotations).forEach((propName) => {
         annotationsWithoutCyclicReferences[propName] = {
           start: annotations[propName].start,
           end: annotations[propName].end,
-          text: annotations[propName].text
+          text: annotations[propName].text,
         };
       });
       return {
@@ -36,9 +36,10 @@ export const getSelectedEntities = state =>
         label,
         mainType,
         occurrences,
+        properties,
         sameAs,
         synonyms,
-        types
+        types,
       };
     })
     .toArray();
@@ -46,11 +47,11 @@ export const getSelectedEntities = state =>
 export const getClassificationBlock = () =>
   select("core/editor")
     .getBlocks()
-    .find(block => "wordlift/classification" === block.name);
+    .find((block) => "wordlift/classification" === block.name);
 
-export const getBlockEditor = state => state.blockEditor;
+export const getBlockEditor = (state) => state.blockEditor;
 
 /**
  * Get the Block Editor current format.
  */
-export const getBlockEditorFormat = state => getBlockEditor(state).format;
+export const getBlockEditorFormat = (state) => getBlockEditor(state).format;

@@ -223,7 +223,8 @@ class Wordlift_Timeline_Service {
 			}
 
 			// Load thumbnail
-			if ( '' !== ( $thumbnail_id = get_post_thumbnail_id( $item->ID ) )
+			$thumbnail_id = get_post_thumbnail_id( $item->ID );
+			if ( '' !== $thumbnail_id && 0 !== $thumbnail_id
 			     && false !== ( $attachment = wp_get_attachment_image_src( $thumbnail_id ) )
 			) {
 
