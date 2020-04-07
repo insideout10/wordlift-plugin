@@ -142,8 +142,11 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.25.4 (2020-04-06) =
+= 3.25.4 (2020-04-07) =
 * Enhancement [#1027](https://github.com/insideout10/wordlift-plugin/issues/1027): Adding support for Wordpress 5.4.
+
+* Fix: entity type set to thing for cloud entities.
+* Fix: geo-coordinates not imported for places.
 
 = 3.25.3 (2020-03-23) =
 * Enhancement: wp-json end-point to retrieve JSON-LD by post type and slug.
