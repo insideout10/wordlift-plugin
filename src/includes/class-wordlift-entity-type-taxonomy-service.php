@@ -103,17 +103,6 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 			}
 		) );
 
-		/**
-		 * Add post type support for 'custom-fields' for all valid entity post types
-		 * Specifically needed in Gutenberg
-		 */
-		$post_types = get_post_types();
-		foreach ( $post_types as $post_type ) {
-			if ( in_array( $post_type, Wordlift_Entity_Service::valid_entity_post_types() ) ) {
-				add_post_type_support( $post_type, 'custom-fields' );
-			}
-		}
-
 		// Add filter to change the metabox CSS class.
 		add_filter( 'postbox_classes_entity_wl_entity_typediv', 'wl_admin_metaboxes_add_css_class' );
 
