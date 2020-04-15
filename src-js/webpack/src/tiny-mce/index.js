@@ -40,6 +40,12 @@ tinymce.PluginManager.add("wl_tinymce_2", function (ed) {
       editorType: "tinymce",
     });
 
+    console.log(SELECTION_CHANGED, {
+      selection: ed.selection.getContent({ format: "text" }),
+      editor: ed,
+      editorType: "tinymce",
+    });
+
     // Fire the annotation change.
     const payload =
       "undefined" !== typeof e && isAnnotationElement(e.element)

@@ -152,15 +152,13 @@ function* handleEditorSelectionChanged({ payload }) {
   // document.body.appendChild(container);
 
   // Finally create the popover.
-  popover = yield call(
-    createPopover,
-    <div>
-      <Button>Hello WordPress!</Button>
-    </div>,
-    { ...rect, positions: ["right", "left", "bottom", "top"] }
-  );
-
-  console.log("createPopover...", popover, rect, iframeRect, editorRect);
+  // popover = yield call(
+  //   createPopover,
+  //   <div>
+  //     <Button>Hello WordPress!</Button>
+  //   </div>,
+  //   { ...rect, positions: ["right", "left", "bottom", "top"] }
+  // );
 }
 
 /**
