@@ -1,28 +1,33 @@
 /**
  * External dependencies
  */
-import { call, put, select, takeEvery, takeLatest } from "redux-saga/effects";
-
+import { on, off } from "backbone";
+import { call, put, select, take, takeEvery, takeLatest } from "redux-saga/effects";
+import { eventChannel } from "redux-saga";
 /**
  * WordPress dependencies
  */
-import apiFetch from "@wordpress/api-fetch";
 import * as data from "@wordpress/data";
-
 /**
  * Internal dependencies
  */
-import { receiveAnalysisResults, toggleLinkSuccess, updateOccurrencesForEntity } from "../../Edit/actions";
+import {
+  editorSelectionChanged,
+  receiveAnalysisResults,
+  toggleLinkSuccess,
+  updateOccurrencesForEntity,
+} from "../../Edit/actions";
 import {
   ADD_ENTITY,
   ANNOTATION,
+  EDITOR_SELECTION_CHANGED,
   SET_CURRENT_ENTITY,
   TOGGLE_ENTITY,
-  TOGGLE_LINK
+  TOGGLE_LINK,
 } from "../../Edit/constants/ActionTypes";
 import { requestAnalysis } from "./actions";
 import parseAnalysisResponse from "./compat";
-import { EDITOR_STORE } from "../../common/constants";
+import { EDITOR_STORE, SELECTION_CHANGED } from "../../common/constants";
 import EditorOps from "../api/editor-ops";
 import { makeEntityAnnotationsSelector, mergeArray } from "../api/utils";
 import { Blocks } from "../api/blocks";
@@ -34,6 +39,7 @@ import { createEntityRequest } from "../../common/containers/create-entity-form/
 import createEntity from "../api/create-entity";
 import { relatedPostsRequest, relatedPostsSuccess } from "../../common/containers/related-posts/actions";
 import getRelatedPosts from "../../common/api/get-related-posts";
+import { handleEditorSelectionChanged } from "../../common/handle-editor-selection-changed";
 
 function* handleRequestAnalysis() {
   const editorOps = new EditorOps(EDITOR_STORE);
@@ -50,7 +56,7 @@ function* handleRequestAnalysis() {
 
   const response = yield call(global["wp"].ajax.post, "wl_analyze", {
     _wpnonce: settings["analysis"]["_wpnonce"],
-    data: JSON.stringify(request)
+    data: JSON.stringify(request),
   });
 
   embedAnalysis(editorOps, response);
@@ -64,14 +70,14 @@ function embedAnalysis(editorOps, response) {
   // Bail out if the response doesn't contain results.
   if ("undefined" === typeof response || "undefined" === typeof response.annotations) return;
 
-  const annotations = Object.values(response.annotations).sort(function(a1, a2) {
+  const annotations = Object.values(response.annotations).sort(function (a1, a2) {
     if (a1.end > a2.end) return -1;
     if (a1.end < a2.end) return 1;
 
     return 0;
   });
 
-  annotations.forEach(annotation =>
+  annotations.forEach((annotation) =>
     editorOps.insertAnnotation(annotation.annotationId, annotation.start, annotation.end)
   );
 
@@ -107,7 +113,7 @@ function* toggleEntity({ entity }) {
     blocks.replace(
       new RegExp(`<span\\s+id="(${annotationSelector})"\\sclass="([^"]*)"\\sitemid="[^"]*">`, "gi"),
       (match, annotationId, classNames) => {
-        const newClassNames = classNames.split(/\s+/).filter(x => -1 === onClassNames.indexOf(x));
+        const newClassNames = classNames.split(/\s+/).filter((x) => -1 === onClassNames.indexOf(x));
         return `<span id="${annotationId}" class="${newClassNames.join(" ")}">`;
       }
     );
@@ -117,7 +123,7 @@ function* toggleEntity({ entity }) {
 
   // Send the selected entities to the WordLift Classification box.
   data.dispatch(EDITOR_STORE).updateBlockAttributes(getClassificationBlock().clientId, {
-    entities: yield select(getSelectedEntities)
+    entities: yield select(getSelectedEntities),
   });
 
   // Apply the changes.
@@ -139,7 +145,7 @@ function* toggleLink({ entity }) {
     new RegExp(`<span\\s+id="(${annotationSelector})"\\sclass="([^"]*)"\\sitemid="([^"]*)">`, "gi"),
     (match, annotationId, classNames) => {
       // Remove existing `wl-link` / `wl-no-link` classes.
-      const newClassNames = classNames.split(/\s+/).filter(x => -1 === cssClasses.indexOf(x));
+      const newClassNames = classNames.split(/\s+/).filter((x) => -1 === cssClasses.indexOf(x));
       // Add the `wl-link` / `wl-no-link` class according to the desired outcome.
       newClassNames.push(link ? "wl-link" : "wl-no-link");
       return `<span id="${annotationId}" class="${newClassNames.join(" ")}" itemid="${entity.id}">`;
@@ -175,7 +181,7 @@ function* toggleAnnotation({ annotation }) {
     new RegExp(`<span\\s+id="([^"]+)"\\sclass="(textannotation(?:\\s[^"]*)?)"`, "gi"),
     (match, annotationId, classNames) => {
       // Get the class names removing any potential `selected` class.
-      const newClassNames = classNames.split(/\s+/).filter(x => "selected" !== x);
+      const newClassNames = classNames.split(/\s+/).filter((x) => "selected" !== x);
 
       // Add the `selected` class if the annotation match.
       if (annotation === annotationId) newClassNames.push("selected");
@@ -208,21 +214,21 @@ function* handleAddEntityRequest({ payload }) {
       title: payload.label,
       status: "draft",
       description: payload.description,
-      excerpt: ""
+      excerpt: "",
     }))["wl:entity_url"];
 
   const entityToAdd = {
     id,
     ...payload,
     annotations: { [annotationId]: { annotationId, start: value.start, end: value.end } },
-    occurrences: [annotationId]
+    occurrences: [annotationId],
   };
 
   console.debug("Adding Entity", entityToAdd);
 
   const format = {
     type: "wordlift/annotation",
-    attributes: { id: annotationId, class: "disambiguated", itemid: entityToAdd.id }
+    attributes: { id: annotationId, class: "disambiguated", itemid: entityToAdd.id },
   };
 
   yield call(onChange, applyFormat(value, format));
@@ -231,7 +237,7 @@ function* handleAddEntityRequest({ payload }) {
 
   // Send the selected entities to the WordLift Classification box.
   data.dispatch(EDITOR_STORE).updateBlockAttributes(getClassificationBlock().clientId, {
-    entities: yield select(getSelectedEntities)
+    entities: yield select(getSelectedEntities),
   });
 
   yield put(addEntitySuccess());
@@ -274,6 +280,18 @@ function* handleRelatedPostsRequest() {
   yield put(relatedPostsSuccess(posts));
 }
 
+function editorSelectionChangedChannel() {
+  const listener = (emitter) => (payload) => {
+    console.log("editorSelectionChangedChannel RECV", payload);
+    emitter(payload);
+  };
+  return eventChannel((emitter) => {
+    console.log("editorSelectionChangedChannel LISTEN");
+    on(SELECTION_CHANGED, listener(emitter));
+    return () => off(SELECTION_CHANGED, listener(emitter));
+  });
+}
+
 export default function* saga() {
   yield takeLatest(requestAnalysis, handleRequestAnalysis);
   yield takeEvery(TOGGLE_ENTITY, toggleEntity);
@@ -284,4 +302,15 @@ export default function* saga() {
   yield takeEvery(SET_CURRENT_ENTITY, handleSetCurrentEntity);
   yield takeEvery(createEntityRequest, handleCreateEntityRequest);
   yield takeEvery(relatedPostsRequest, handleRelatedPostsRequest);
+  yield takeLatest(EDITOR_SELECTION_CHANGED, handleEditorSelectionChanged);
+
+  const ch = yield call(editorSelectionChangedChannel);
+  try {
+    while (true) {
+      // take(END) will cause the saga to terminate by jumping to the finally block
+      let payload = yield take(ch);
+      yield put(editorSelectionChanged(payload));
+    }
+  } finally {
+  }
 }

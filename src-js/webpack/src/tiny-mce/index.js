@@ -19,14 +19,12 @@
  * External dependencies
  */
 import React from "react";
-import { on, trigger } from "backbone";
-import { createPopover, Button } from "@wordlift/design";
-
+import {trigger} from "backbone";
 /**
  * Internal dependencies
  */
-import { ANNOTATION_CHANGED, SELECTION_CHANGED } from "../common/constants";
-import { isAnnotationElement } from "../common/helpers";
+import {ANNOTATION_CHANGED, SELECTION_CHANGED} from "../common/constants";
+import {isAnnotationElement} from "../common/helpers";
 
 import "./index.scss";
 
