@@ -18,7 +18,9 @@
 /**
  * External dependencies
  */
-import { trigger } from "backbone";
+import React from "react";
+import { on, trigger } from "backbone";
+import { createPopover, Button } from "@wordlift/design";
 
 /**
  * Internal dependencies
@@ -29,10 +31,14 @@ import { isAnnotationElement } from "../common/helpers";
 import "./index.scss";
 
 const tinymce = global["tinymce"];
-tinymce.PluginManager.add("wl_tinymce_2", function(ed) {
+tinymce.PluginManager.add("wl_tinymce_2", function (ed) {
   // Capture `NodeChange` events and broadcast the selected text.
-  ed.on("NodeChange", e => {
-    trigger(SELECTION_CHANGED, { selection: ed.selection.getContent({ format: "text" }) });
+  ed.on("NodeChange", (e) => {
+    trigger(SELECTION_CHANGED, {
+      selection: ed.selection.getContent({ format: "text" }),
+      editor: ed,
+      editorType: "tinymce",
+    });
 
     // Fire the annotation change.
     const payload =

@@ -85,9 +85,9 @@ export const updateOccurrencesForEntity = (entityId, occurrences) => ({
  * changes.
  *
  * @since 3.18.4
- * @param {string} selection The editor text selection.
+ * @param {{selection: string, editor: *, source: ("tinymce"|"block-editor")}} payload The editor text selection.
  * @returns {{type: string, selection: *}}
  */
-export const editorSelectionChanged = selection => ({ type: types.EDITOR_SELECTION_CHANGED, selection });
+export const editorSelectionChanged = payload => ({ type: types.EDITOR_SELECTION_CHANGED, payload });
 
 export const toggleLinkSuccess = createAction(TOGGLE_LINK_SUCCESS);
