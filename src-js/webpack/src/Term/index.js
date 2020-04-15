@@ -7,12 +7,12 @@ import ReactDOM from "react-dom";
 /*
  * Internal dependencies.
  */
-import AutocompleteSelect from "../Edit/components/Autocomplete/AutocompleteSelect";
+import AutocompleteSelect from "../classic-editor/components/Autocomplete/AutocompleteSelect";
 
 /*
  * Styles
  */
-import "../Edit/index.scss";
+import "../classic-editor/index.scss";
 
 // Set a reference to the WordLift's settings stored in the window instance.
 const settings = window["wlSettings"] || {};

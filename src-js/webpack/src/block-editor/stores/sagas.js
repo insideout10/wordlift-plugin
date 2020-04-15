@@ -1,9 +1,7 @@
 /**
  * External dependencies
  */
-import { on, off } from "backbone";
-import { call, put, select, take, takeEvery, takeLatest } from "redux-saga/effects";
-import { eventChannel } from "redux-saga";
+import {call, fork, put, select, takeEvery, takeLatest} from "redux-saga/effects";
 /**
  * WordPress dependencies
  */
@@ -11,12 +9,7 @@ import * as data from "@wordpress/data";
 /**
  * Internal dependencies
  */
-import {
-  editorSelectionChanged,
-  receiveAnalysisResults,
-  toggleLinkSuccess,
-  updateOccurrencesForEntity,
-} from "../../Edit/actions";
+import {receiveAnalysisResults, toggleLinkSuccess, updateOccurrencesForEntity,} from "../../classic-editor/actions";
 import {
   ADD_ENTITY,
   ANNOTATION,
@@ -24,22 +17,23 @@ import {
   SET_CURRENT_ENTITY,
   TOGGLE_ENTITY,
   TOGGLE_LINK,
-} from "../../Edit/constants/ActionTypes";
-import { requestAnalysis } from "./actions";
+} from "../../classic-editor/constants/ActionTypes";
+import {requestAnalysis} from "./actions";
 import parseAnalysisResponse from "./compat";
-import { EDITOR_STORE, SELECTION_CHANGED } from "../../common/constants";
+import {EDITOR_STORE} from "../../common/constants";
 import EditorOps from "../api/editor-ops";
-import { makeEntityAnnotationsSelector, mergeArray } from "../api/utils";
-import { Blocks } from "../api/blocks";
-import { getAnnotationFilter, getBlockEditorFormat, getClassificationBlock, getSelectedEntities } from "./selectors";
-import { addEntityRequest, addEntitySuccess } from "../../Edit/components/AddEntity/actions";
-import { applyFormat } from "@wordpress/rich-text";
-import { doAction } from "@wordpress/hooks";
-import { createEntityRequest } from "../../common/containers/create-entity-form/actions";
+import {makeEntityAnnotationsSelector, mergeArray} from "../api/utils";
+import {Blocks} from "../api/blocks";
+import {getAnnotationFilter, getBlockEditorFormat, getClassificationBlock, getSelectedEntities} from "./selectors";
+import {addEntityRequest, addEntitySuccess} from "../../classic-editor/components/AddEntity/actions";
+import {applyFormat} from "@wordpress/rich-text";
+import {doAction} from "@wordpress/hooks";
+import {createEntityRequest} from "../../common/containers/create-entity-form/actions";
 import createEntity from "../api/create-entity";
-import { relatedPostsRequest, relatedPostsSuccess } from "../../common/containers/related-posts/actions";
+import {relatedPostsRequest, relatedPostsSuccess} from "../../common/containers/related-posts/actions";
 import getRelatedPosts from "../../common/api/get-related-posts";
-import { handleEditorSelectionChanged } from "../../common/handle-editor-selection-changed";
+import {handleEditorSelectionChanged} from "../../common/editor-selection/handle-editor-selection-changed";
+import {watchForEditorSelectionChanges} from "../../common/editor-selection/watch-for-editor-selection-changes";
 
 function* handleRequestAnalysis() {
   const editorOps = new EditorOps(EDITOR_STORE);
@@ -267,7 +261,7 @@ function* handleSetCurrentEntity({ entity }) {
  * Handle the Create Entity Request, which is supposed to open a form in the sidebar.
  */
 function* handleCreateEntityRequest() {
-  // Call the WP hook to close the entity select (see ../../Edit/components/AddEntity/index.js).
+  // Call the WP hook to close the entity select (see ../../classic-editor/components/AddEntity/index.js).
   doAction("unstable_wordlift.closeEntitySelect");
 }
 
@@ -278,18 +272,6 @@ function* handleRelatedPostsRequest() {
   const posts = yield call(getRelatedPosts);
 
   yield put(relatedPostsSuccess(posts));
-}
-
-function editorSelectionChangedChannel() {
-  const listener = (emitter) => (payload) => {
-    console.log("editorSelectionChangedChannel RECV", payload);
-    emitter(payload);
-  };
-  return eventChannel((emitter) => {
-    console.log("editorSelectionChangedChannel LISTEN");
-    on(SELECTION_CHANGED, listener(emitter));
-    return () => off(SELECTION_CHANGED, listener(emitter));
-  });
 }
 
 export default function* saga() {
@@ -304,13 +286,5 @@ export default function* saga() {
   yield takeEvery(relatedPostsRequest, handleRelatedPostsRequest);
   yield takeLatest(EDITOR_SELECTION_CHANGED, handleEditorSelectionChanged);
 
-  const ch = yield call(editorSelectionChangedChannel);
-  try {
-    while (true) {
-      // take(END) will cause the saga to terminate by jumping to the finally block
-      let payload = yield take(ch);
-      yield put(editorSelectionChanged(payload));
-    }
-  } finally {
-  }
+  yield fork(watchForEditorSelectionChanges);
 }

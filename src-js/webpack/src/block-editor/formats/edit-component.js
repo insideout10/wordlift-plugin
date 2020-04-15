@@ -18,18 +18,15 @@
  */
 import React from "react";
 import { trigger } from "backbone";
-
 /**
  * WordPress dependencies
  */
 import { withDispatch } from "@wordpress/data";
 import { Fragment } from "@wordpress/element";
-
 /**
  * Internal dependencies
  */
-import { ANNOTATION_CHANGED, SELECTION_CHANGED } from "../../common/constants";
-import { WORDLIFT_STORE } from "../../common/constants";
+import { ANNOTATION_CHANGED, SELECTION_CHANGED, WORDLIFT_STORE } from "../../common/constants";
 
 // Keeps the window timeout reference to delay sending events while the user
 // is performing the selection.
@@ -52,7 +49,7 @@ const EditComponent = ({ onChange, value, isActive, activeAttributes, onSelectio
     const selection = value.text.substring(value.start, value.end);
     onSelectionChange(selection);
     setFormat({ onChange, value });
-    trigger(SELECTION_CHANGED, { selection, value, onChange });
+    trigger(SELECTION_CHANGED, { selection, value, onChange, editorType: "block-editor" });
   }, 200);
 
   // Send the annotation change event.
@@ -75,6 +72,6 @@ export default withDispatch((dispatch, ownProps) => {
 
   return {
     onSelectionChange: setValue,
-    setFormat
+    setFormat,
   };
 })(EditComponent);

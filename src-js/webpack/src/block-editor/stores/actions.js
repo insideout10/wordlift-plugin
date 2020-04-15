@@ -12,7 +12,7 @@ import { createActions, handleActions } from "redux-actions";
 /**
  * Internal dependencies
  */
-import { EDITOR_SELECTION_CHANGED } from "../../Edit/constants/ActionTypes";
+import { EDITOR_SELECTION_CHANGED } from "../../classic-editor/constants/ActionTypes";
 
 export const { editorSelectionChanged, requestAnalysis, setFormat } = createActions(
   EDITOR_SELECTION_CHANGED,

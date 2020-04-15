@@ -15,14 +15,10 @@
  * External dependencies
  */
 import React from "react";
-
 /**
  * WordPress dependencies
  */
-import { registerFormatType } from "@wordpress/rich-text";
-import { Fragment } from "@wordpress/element";
-import { doAction } from "@wordpress/hooks";
-
+import {registerFormatType} from "@wordpress/rich-text";
 /**
  * Internal dependencies
  */

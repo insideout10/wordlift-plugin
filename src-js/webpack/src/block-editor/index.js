@@ -32,7 +32,7 @@ import "./index.scss";
 import "./formats/register-format-type-wordlift-annotation";
 import "./register-block-type-wordlift-classification";
 import { ANNOTATION_CHANGED } from "../common/constants";
-import { setCurrentAnnotation } from "../Edit/actions";
+import { setCurrentAnnotation } from "../classic-editor/actions";
 import { getClassificationBlock } from "./stores/selectors";
 import { EDITOR_STORE, PLUGIN_NAMESPACE } from "../common/constants";
 import registerFilters from "./filters/add-entity.filters";

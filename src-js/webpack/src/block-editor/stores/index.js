@@ -20,9 +20,9 @@ import { registerGenericStore } from "@wordpress/data";
 /**
  * Internal dependencies
  */
-import entities from "../../Edit/reducers/entities";
-import annotationFilter from "../../Edit/reducers/annotationFilter";
-import visibilityFilter from "../../Edit/reducers/visibilityFilter";
+import entities from "../../classic-editor/reducers/entities";
+import annotationFilter from "../../classic-editor/reducers/annotationFilter";
+import visibilityFilter from "../../classic-editor/reducers/visibilityFilter";
 import blockEditor, { requestAnalysis, setFormat } from "./actions";
 import relatedPosts from "../../common/containers/related-posts/actions";
 import createEntityForm from "../../common/containers/create-entity-form/actions";
@@ -35,8 +35,8 @@ import {
   getSelectedEntities
 } from "./selectors";
 import saga from "./sagas";
-import { editorSelectionChanged } from "../../Edit/actions";
-import { setValue } from "../../Edit/components/AddEntity/actions";
+import { editorSelectionChanged } from "../../classic-editor/actions";
+import { setValue } from "../../classic-editor/components/AddEntity/actions";
 import { WORDLIFT_STORE } from "../../common/constants";
 
 const initialState = { entities: Map() };

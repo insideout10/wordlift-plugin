@@ -26,7 +26,7 @@ const webpackConfig = {
   ...defaultConfig,
   entry: {
     bundle: "./src/Public/index.js",
-    edit: "./src/Edit/index.js",
+    edit: "./src/classic-editor/index.js",
     term: "./src/Term/index.js",
     "block-editor": "./src/block-editor/index.js",
     "tiny-mce": "./src/tiny-mce/index.js",
@@ -34,7 +34,7 @@ const webpackConfig = {
     "mappings": "./src/mappings/index.js",
     "mappings-edit": "./src/mappings/edit-mappings.js",
     // The sameAs autocomplete for the meta-box. This bundle is used for the meta-box in Block Editor.
-    "autocomplete-select": "./src/Edit/index.autocomplete-select.js",
+    "autocomplete-select": "./src/classic-editor/index.autocomplete-select.js",
     "faq": "./src/faq/index.js",
     "tinymce-faq-plugin": "./src/faq/hooks/tinymce/tinymce-faq-plugin.js",
     "block-editor-faq-plugin": "./src/faq/hooks/block-editor/block-editor-faq-plugin.js",
