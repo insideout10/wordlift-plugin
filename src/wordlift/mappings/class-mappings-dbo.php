@@ -55,27 +55,37 @@ final class Mappings_DBO {
 	public function get_active_mappings() {
 		$mapping_table_name = $this->wpdb->prefix . WL_MAPPING_TABLE_NAME;
 
-		return $this->wpdb->get_results(
+		$mappings = $this->wpdb->get_results(
 			"SELECT * FROM $mapping_table_name WHERE mapping_status = 'active'",
 			ARRAY_A
 		);
+
+		return apply_filters( 'wl_mappings_register_mappings', $mappings );
+
 	}
 
 	/**
 	 * Returns a list of property rows
 	 *
-	 * @param int $mapping_id Primary key of mapping table.
+	 * @param string $mapping_id Primary key of mapping table.
 	 *
 	 * @return array List of property items belong to $mapping_id.
 	 */
 	public function get_properties( $mapping_id ) {
-		$property_table_name = $this->wpdb->prefix . WL_PROPERTY_TABLE_NAME;
-		$property_rows       = $this->wpdb->get_results(
-			$this->wpdb->prepare( "SELECT * FROM $property_table_name WHERE mapping_id=%d", $mapping_id ),
-			ARRAY_A
-		);
-
-		return $property_rows;
+		$property_table_name   = $this->wpdb->prefix . WL_PROPERTY_TABLE_NAME;
+		$ui_defined_properties = array();
+		if ( is_numeric($mapping_id) ) {
+			$ui_defined_properties = $this->wpdb->get_results(
+				$this->wpdb->prepare( "SELECT * FROM $property_table_name WHERE mapping_id=%d", (int)$mapping_id ),
+				ARRAY_A
+			);
+		}
+		$manual_properties = apply_filters('wl_mappings_register_properties', array());
+		// filter properties by mapping_id
+		$manual_properties = array_filter( $manual_properties, function ( $manual_property ) use ( $mapping_id ) {
+			return $manual_property['mapping_id'] === $mapping_id;
+		});
+		return array_merge($ui_defined_properties, $manual_properties);
 	}
 
 	/**
@@ -241,20 +251,34 @@ final class Mappings_DBO {
 	/**
 	 * Gets a list of rule group items.
 	 *
-	 * @param int $mapping_id Primary key for mapping table.
+	 * @param string $mapping_id Primary key for mapping table.
 	 *
 	 * @return array Get list of rule group items.
 	 */
 	public function get_rule_groups_by_mapping( $mapping_id ) {
-
+		$mapping_id            = (string) $mapping_id;
 		$rule_group_table_name = $this->wpdb->prefix . WL_RULE_GROUP_TABLE_NAME;
-		$rule_group_rows       = $this->wpdb->get_results(
-			$this->wpdb->prepare(
-				"SELECT rule_group_id FROM $rule_group_table_name WHERE mapping_id=%d",
-				$mapping_id
-			),
-			ARRAY_A
-		);
+		$rule_group_rows       = array();
+		// Do a integer check, because the mapping_id might be string value too
+		// If it is a string then we can directly proceed to filter mappings.
+		if ( is_numeric( $mapping_id ) ) {
+			$rule_group_rows = $this->wpdb->get_results(
+				$this->wpdb->prepare(
+					"SELECT rule_group_id FROM $rule_group_table_name WHERE mapping_id=%d",
+					(int) $mapping_id
+				),
+				ARRAY_A
+			);
+		}
+
+		$manual_rule_groups = apply_filters( 'wl_mappings_register_rule_groups', array() );
+		// Filter the manual rule groups by mapping id.
+		$manual_rule_groups = array_filter( $manual_rule_groups, function ( $mapping_item ) use ( $mapping_id ) {
+			return $mapping_item['mapping_id'] === $mapping_id;
+		} );
+
+		$rule_group_rows = array_merge( $rule_group_rows, $manual_rule_groups );
+
 
 		// List of all rule group items.
 		$rule_groups = array();
@@ -271,20 +295,30 @@ final class Mappings_DBO {
 	/**
 	 * Gets a list of rule items belong to rule_group_id.
 	 *
-	 * @param int $rule_group_id Indicates which group the item belongs to.
+	 * @param string $rule_group_id Indicates which group the item belongs to.
 	 *
 	 * @return array Get list of rule items.
 	 */
 	public function get_rules_by_rule_group( $rule_group_id ) {
-		$rule_table_name = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
+		$rule_table_name  = $this->wpdb->prefix . WL_RULE_TABLE_NAME;
+		$rule_group_id    = (string) $rule_group_id;
+		$ui_defined_rules = array();
+		if ( is_numeric( $rule_group_id ) ) {
+			$ui_defined_rules = $this->wpdb->get_results(
+				$this->wpdb->prepare(
+					"SELECT * FROM $rule_table_name WHERE rule_group_id=%d",
+					(int) $rule_group_id
+				),
+				ARRAY_A
+			);
+		}
+		$manual_rules = apply_filters( 'wl_mappings_register_rules', array() );
+		// Filter all the manual rules by the rule group id.
+		$manual_rules = array_filter( $manual_rules, function ( $manual_rule_item ) use ( $rule_group_id ) {
+			return $manual_rule_item['rule_group_id'] === $rule_group_id;
+		} );
 
-		return $this->wpdb->get_results(
-			$this->wpdb->prepare(
-				"SELECT * FROM $rule_table_name WHERE rule_group_id=%d",
-				$rule_group_id
-			),
-			ARRAY_A
-		);
+		return array_merge( $ui_defined_rules, $manual_rules );
 	}
 
 	/**
