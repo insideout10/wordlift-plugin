@@ -90,10 +90,12 @@ class Mappings_Filter_Test extends Wordlift_Unit_Test_Case {
 					// Rule groups array.
 					array(
 						// List of rules for a single rule group.
-						array(
-							'rule_field_one'   => 'category',
-							'rule_logic_field' => '===',
-							'rule_field_two'   => 'how-to',
+						'rules' => array(
+							array(
+								'rule_field_one'   => 'category',
+								'rule_logic_field' => '===',
+								'rule_field_two'   => 'how-to',
+							)
 						)
 					)
 				),
@@ -130,10 +132,12 @@ class Mappings_Filter_Test extends Wordlift_Unit_Test_Case {
 					// Rule groups array.
 					array(
 						// List of rules for a single rule group.
-						array(
-							'rule_field_one'   => 'category',
-							'rule_logic_field' => '===',
-							'rule_field_two'   => 'how-to',
+						'rules' => array(
+							array(
+								'rule_field_one'   => 'category',
+								'rule_logic_field' => '===',
+								'rule_field_two'   => 'how-to',
+							)
 						)
 					)
 				),
