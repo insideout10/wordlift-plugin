@@ -209,7 +209,9 @@ class Mappings_Filter_Test extends Wordlift_Unit_Test_Case {
 		}, 10, 2 );
 
 		// Get the json ld data for this post.
-		$jsonlds = $this->jsonld_service->get_jsonld( false, $post_id );
+		$jsonlds       = $this->jsonld_service->get_jsonld( false, $post_id );
+		$target_jsonld = end( $jsonlds );
+		$this->assertNotEquals( "foo", $target_jsonld['@type'] );
 	}
 
 }
