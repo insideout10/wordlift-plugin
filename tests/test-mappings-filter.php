@@ -70,24 +70,6 @@ class Mappings_Filter_Test extends Wordlift_Unit_Test_Case {
 		$this->jsonld_service     = Wordlift_Jsonld_Service::get_instance();
 	}
 
-	private function create_new_mapping_item( $taxonomy, $taxonomy_value, $properties ) {
-		$mapping_id = $this->dbo->insert_mapping_item( 'foo' );
-		// Create a rule group.
-		$rule_group_id = $this->dbo->insert_rule_group( $mapping_id );
-
-		$rule_id = $this->dbo->insert_or_update_rule_item(
-			array(
-				'rule_field_one'   => $taxonomy,
-				'rule_logic_field' => '===',
-				'rule_field_two'   => $taxonomy_value,
-				'rule_group_id'    => $rule_group_id,
-			)
-		);
-		foreach ( $properties as $property ) {
-			$property['mapping_id'] = $mapping_id;
-			$this->dbo->insert_or_update_property( $property );
-		}
-	}
 
 	public function test_when_added_filters_should_correctly_produce_jsonld_output() {
 		$post_id = $this->factory()->post->create( array() );
@@ -100,50 +82,26 @@ class Mappings_Filter_Test extends Wordlift_Unit_Test_Case {
 				'field_name'         => 'HowTo',
 				'transform_function' => 'none',
 				'property_status'    => Mappings_Validator::ACTIVE_CATEGORY,
-				'mapping_id'         => 'foo'
 			),
 		);
-
-		$mapping_id = 'foo';
-
-		add_filter( 'wl_mappings_active_mappings', function ( $mappings ) use ( $mapping_id ) {
+		add_filter( 'wl_mappings_post', function ( $mappings, $post_id ) use ( $manual_properties ) {
 			array_push( $mappings, array(
-				'mapping_id'     => $mapping_id,
-				'mapping_title'  => 'foo title',
-				'mapping_status' => 'active'
+				'rule_groups' => array(
+					// Rule groups array.
+					array(
+						// List of rules for a single rule group.
+						array(
+							'rule_field_one'   => 'category',
+							'rule_logic_field' => '===',
+							'rule_field_two'   => 'how-to',
+						)
+					)
+				),
+				'properties'  => $manual_properties
 			) );
 
 			return $mappings;
-		} );
-
-		add_filter( 'wl_mappings_register_rule_groups', function ( $rule_groups ) use ( $mapping_id ) {
-			array_push( $rule_groups, array(
-				'rule_group_id' => 'rg_recipe_1',
-				'mapping_id'    => $mapping_id
-			) );
-
-			return $rule_groups;
-		} );
-
-		add_filter( 'wl_mappings_register_rules', function ( $rules ) {
-			array_push( $rules, array(
-				'rule_field_one'   => 'category',
-				'rule_logic_field' => '===',
-				'rule_field_two'   => 'how-to',
-				'rule_group_id'    => 'rg_recipe_1',
-			) );
-
-			return $rules;
-		} );
-
-		add_filter( 'wl_mappings_register_properties', function ( $current_mapping_id, $properties ) use ( $mapping_id, $manual_properties ) {
-			if ( $current_mapping_id === $mapping_id ) {
-				$properties = array_merge( $properties, $manual_properties );
-			}
-
-			return $properties;
 		}, 10, 2 );
-
 		// Get the json ld data for this post.
 		$jsonlds       = $this->jsonld_service->get_jsonld( false, $post_id );
 		$target_jsonld = end( $jsonlds );
@@ -164,49 +122,25 @@ class Mappings_Filter_Test extends Wordlift_Unit_Test_Case {
 				'field_name'         => 'HowTo',
 				'transform_function' => $transformation_function->get_name(),
 				'property_status'    => Mappings_Validator::ACTIVE_CATEGORY,
-				'mapping_id'         => 'foo'
 			),
 		);
-
-		$mapping_id = 'foo';
-
-		add_filter( 'wl_mappings_active_mappings', function ( $mappings ) use ( $mapping_id ) {
+		add_filter( 'wl_mappings_post', function ( $mappings, $post_id ) use ( $manual_properties ) {
 			array_push( $mappings, array(
-				'mapping_id'     => $mapping_id,
-				'mapping_title'  => 'foo title',
-				'mapping_status' => 'active'
+				'rule_groups' => array(
+					// Rule groups array.
+					array(
+						// List of rules for a single rule group.
+						array(
+							'rule_field_one'   => 'category',
+							'rule_logic_field' => '===',
+							'rule_field_two'   => 'how-to',
+						)
+					)
+				),
+				'properties'  => $manual_properties
 			) );
 
 			return $mappings;
-		} );
-
-		add_filter( 'wl_mappings_register_rule_groups', function ( $rule_groups ) use ( $mapping_id ) {
-			array_push( $rule_groups, array(
-				'rule_group_id' => 'rg_recipe_1',
-				'mapping_id'    => $mapping_id
-			) );
-
-			return $rule_groups;
-		} );
-
-		add_filter( 'wl_mappings_register_rules', function ( $rules ) {
-			array_push( $rules, array(
-				'rule_field_one'   => 'category',
-				'rule_logic_field' => '===',
-				'rule_field_two'   => 'how-to',
-				'rule_group_id'    => 'rg_recipe_1',
-			) );
-
-			return $rules;
-		} );
-
-		add_filter( 'wl_mappings_register_properties', function ( $current_mapping_id, $properties ) use ( $manual_properties, $mapping_id ) {
-			if ( $current_mapping_id === $mapping_id ) {
-				$properties = array_merge( $properties, $manual_properties );
-			}
-			$properties = array_merge( $properties, $manual_properties );
-
-			return $properties;
 		}, 10, 2 );
 
 		// Get the json ld data for this post.
