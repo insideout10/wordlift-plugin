@@ -60,7 +60,7 @@ final class Mappings_DBO {
 			ARRAY_A
 		);
 
-		return apply_filters( 'wl_mappings_register_mappings', $mappings );
+		return apply_filters( 'wl_mappings_active_mappings', $mappings );
 
 	}
 
@@ -74,18 +74,26 @@ final class Mappings_DBO {
 	public function get_properties( $mapping_id ) {
 		$property_table_name   = $this->wpdb->prefix . WL_PROPERTY_TABLE_NAME;
 		$ui_defined_properties = array();
-		if ( is_numeric($mapping_id) ) {
+		/**
+		 * If the $mapping_id is numeric then it is from database,
+		 * if it is a string then it is from external plugin.
+		 */
+		if ( is_numeric( $mapping_id ) ) {
 			$ui_defined_properties = $this->wpdb->get_results(
-				$this->wpdb->prepare( "SELECT * FROM $property_table_name WHERE mapping_id=%d", (int)$mapping_id ),
+				$this->wpdb->prepare( "SELECT * FROM $property_table_name WHERE mapping_id=%d", (int) $mapping_id ),
 				ARRAY_A
 			);
 		}
-		$manual_properties = apply_filters('wl_mappings_register_properties', array());
-		// filter properties by mapping_id
-		$manual_properties = array_filter( $manual_properties, function ( $manual_property ) use ( $mapping_id ) {
-			return $manual_property['mapping_id'] === $mapping_id;
-		});
-		return array_merge($ui_defined_properties, $manual_properties);
+
+		/**
+		 * Allows other plugins to register the properties.
+		 *
+		 * @param $mapping_id string The current mapping id.
+		 * @param $ui_defined_properties array The property array from database.
+		 *
+		 * @since 3.26.0
+		 */
+		return apply_filters( 'wl_mappings_register_properties', $mapping_id, $ui_defined_properties );
 	}
 
 	/**

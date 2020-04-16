@@ -106,7 +106,7 @@ class Mappings_Filter_Test extends Wordlift_Unit_Test_Case {
 
 		$mapping_id = 'foo';
 
-		add_filter( 'wl_mappings_register_mappings', function ( $mappings ) use ( $mapping_id ) {
+		add_filter( 'wl_mappings_active_mappings', function ( $mappings ) use ( $mapping_id ) {
 			array_push( $mappings, array(
 				'mapping_id'     => $mapping_id,
 				'mapping_title'  => 'foo title',
@@ -136,11 +136,13 @@ class Mappings_Filter_Test extends Wordlift_Unit_Test_Case {
 			return $rules;
 		} );
 
-		add_filter( 'wl_mappings_register_properties', function ( $properties ) use ( $manual_properties ) {
-			$properties = array_merge( $properties, $manual_properties );
+		add_filter( 'wl_mappings_register_properties', function ( $current_mapping_id, $properties ) use ( $mapping_id, $manual_properties ) {
+			if ( $current_mapping_id === $mapping_id ) {
+				$properties = array_merge( $properties, $manual_properties );
+			}
 
 			return $properties;
-		} );
+		}, 10, 2 );
 
 		// Get the json ld data for this post.
 		$jsonlds       = $this->jsonld_service->get_jsonld( false, $post_id );
@@ -168,7 +170,7 @@ class Mappings_Filter_Test extends Wordlift_Unit_Test_Case {
 
 		$mapping_id = 'foo';
 
-		add_filter( 'wl_mappings_register_mappings', function ( $mappings ) use ( $mapping_id ) {
+		add_filter( 'wl_mappings_active_mappings', function ( $mappings ) use ( $mapping_id ) {
 			array_push( $mappings, array(
 				'mapping_id'     => $mapping_id,
 				'mapping_title'  => 'foo title',
@@ -198,14 +200,17 @@ class Mappings_Filter_Test extends Wordlift_Unit_Test_Case {
 			return $rules;
 		} );
 
-		add_filter( 'wl_mappings_register_properties', function ( $properties ) use ( $manual_properties ) {
+		add_filter( 'wl_mappings_register_properties', function ( $current_mapping_id, $properties ) use ( $manual_properties, $mapping_id ) {
+			if ( $current_mapping_id === $mapping_id ) {
+				$properties = array_merge( $properties, $manual_properties );
+			}
 			$properties = array_merge( $properties, $manual_properties );
 
 			return $properties;
-		} );
+		}, 10, 2 );
 
 		// Get the json ld data for this post.
-		$jsonlds = $this->jsonld_service->get_jsonld( false, $post_id );
+		$jsonlds       = $this->jsonld_service->get_jsonld( false, $post_id );
 		$target_jsonld = end( $jsonlds );
 		$this->assertEquals( "foo", $target_jsonld['@type'] );
 	}
