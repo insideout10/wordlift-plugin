@@ -104,6 +104,13 @@ class Jsonld_Converter {
 		$properties = $this->validator->validate( $post_id );
 
 		foreach ( $properties as $property ) {
+			/**
+			 * Add error handling if the developer didnt register the properties
+			 * correctly.
+			 */
+//			if ( !array_key_exists('property_name', $property) ) {
+//				continue;
+//			}
 			$transform_instance = $this->transform_functions_registry->get_transform_function( $property['transform_function'] );
 			$data               = $this->get_data_from_data_source( $post_id, $property );
 			if ( null !== $transform_instance ) {

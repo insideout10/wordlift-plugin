@@ -56,10 +56,24 @@ final class Mappings_Validator {
 	 *
 	 * @return array
 	 */
-	private static function get_item_by_status( $key, $items, $status ) {
+	private static function get_property_item_by_status( $key, $items, $status ) {
 		return array_filter(
 			$items,
 			function ( $item ) use ( $key, $status ) {
+				/**
+				 * Since the properties might also be passed
+				 * by external plugins, we might need to check if
+				 * they have correct data format.
+				 */
+				if ( ! array_key_exists( 'property_status', $item ) ||
+				     ! array_key_exists( 'field_type', $item ) ||
+				     ! array_key_exists( 'field_name', $item ) ||
+				     ! array_key_exists( 'transform_function', $item )
+				) {
+					// If these keys doesnt exist, then dont process.
+					return false;
+				}
+
 				return $item[ $key ] === (string) $status;
 			}
 		);
@@ -114,7 +128,7 @@ final class Mappings_Validator {
 			}
 		}
 
-		return self::get_item_by_status(
+		return self::get_property_item_by_status(
 			'property_status',
 			$properties,
 			self::ACTIVE_CATEGORY

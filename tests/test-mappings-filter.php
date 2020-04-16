@@ -153,4 +153,63 @@ class Mappings_Filter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( "foo", $target_jsonld['@type'] );
 	}
 
+	/**
+	 * This test ensures if the developer didnt supply the data in the correct
+	 * format, it make sure it didnt affect the other mappings and handles error correctly.
+	 */
+	public function test_improper_data_provided_by_developer_on_filter_should_not_break_mappings() {
+		$post_id = $this->factory()->post->create( array() );
+		wp_add_object_terms( $post_id, 'how-to', 'category' );
+		/**
+		 * NOTE: All the data supplied in this test are invalid, we should not
+		 * have this mapping applied.
+		 */
+		// create filters
+		$transformation_function = new Test_Transform_function();
+		$manual_properties       = array(
+			array(
+				'property_foo_name'      => '@type',
+				'field_foo_type'         => 'text',
+				'field_foo_name'         => 'HowTo',
+				'transform_foo_function' => $transformation_function->get_name(),
+				'property_foo_status'    => Mappings_Validator::ACTIVE_CATEGORY,
+			),
+		);
+		add_filter( 'wl_mappings_post', function ( $mappings, $post_id ) use ( $manual_properties ) {
+			array_push( $mappings, array(
+				'rule_groups' => array(
+					// Rule groups array.
+					array(
+						// List of rules for a single rule group.
+						'foo_rules' => array(
+							array(
+								'foo_rule_field_one'   => 'category',
+								'rule_foo_logic_field' => '===',
+								'rule_foo_field_two'   => 'how-to',
+							),
+						)
+					),
+					array(
+						// A valid rule group.
+						'rules' => array(
+							// A valid rule to make this a valid mapping
+							// so that we can check the properties.
+							array(
+								'rule_field_one'   => 'category',
+								'rule_logic_field' => '===',
+								'rule_field_two'   => 'how-to',
+							)
+						)
+					)
+				),
+				'properties'  => $manual_properties
+			) );
+
+			return $mappings;
+		}, 10, 2 );
+
+		// Get the json ld data for this post.
+		$jsonlds = $this->jsonld_service->get_jsonld( false, $post_id );
+	}
+
 }
