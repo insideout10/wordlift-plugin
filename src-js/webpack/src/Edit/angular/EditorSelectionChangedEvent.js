@@ -21,13 +21,13 @@ import { editorSelectionChanged } from "../actions";
  * @returns {Function} The redux-thunk function.
  */
 function EditorSelectionChangedEvent() {
-  return function(dispatch) {
+  return function (dispatch) {
     // Hook other events.
-    wp.wordlift.on("editorSelectionChanged", function(selection) {
+    wp.wordlift.on("editorSelectionChanged", function (args) {
       // Asynchronously call the dispatch. We need this because we
       // might be inside a reducer call.
-      setTimeout(function() {
-        dispatch(editorSelectionChanged(selection));
+      setTimeout(function () {
+        dispatch(editorSelectionChanged(args));
       }, 0);
     });
   };

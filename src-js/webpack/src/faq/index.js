@@ -10,7 +10,7 @@
  */
 import React from "react";
 import ReactDOM from "react-dom";
-import {Provider} from "react-redux";
+import { Provider } from "react-redux";
 /**
  * Internal dependencies.
  */
@@ -62,3 +62,5 @@ const observer = new MutationObserver(() => {
  * Observe for changes in the DOM tree.
  */
 observer.observe(document, { childList: true, subtree: true });
+
+
