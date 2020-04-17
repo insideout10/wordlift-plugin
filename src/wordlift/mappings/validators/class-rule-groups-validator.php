@@ -49,25 +49,7 @@ class Rule_Groups_Validator {
 
 		// Validate each group. Return true as soon as one group is validated (all rules).
 		foreach ( (array) $rule_groups as $rule_group ) {
-			if ( ! array_key_exists( 'rules', $rule_group )
-			     || ! is_array( $rule_group['rules'] ) ) {
-				/**
-				 * If the programatically implemented mappings didnt supply
-				 * correct data then skip the rule group.
-				 */
-				continue;
-			}
 			foreach ( $rule_group['rules'] as $rule ) {
-				/**
-				 * If one of the keys aren't present in the rule
-				 * then skip that rule, this is done to prevent registered
-				 * run time rules from breaking the setup.
-				 */
-				if ( ! array_key_exists( 'rule_field_one', $rule )
-				     || ! array_key_exists( 'rule_field_two', $rule )
-				     || ! array_key_exists( 'rule_logic_field', $rule ) ) {
-					continue;
-				}
 				$rule_field_one   = $rule['rule_field_one'];
 				$rule_logic_field = $rule['rule_logic_field'];
 				$rule_field_two   = $rule['rule_field_two'];

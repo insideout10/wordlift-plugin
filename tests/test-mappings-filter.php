@@ -86,19 +86,6 @@ class Mappings_Filter_Test extends Wordlift_Unit_Test_Case {
 		);
 		add_filter( 'wl_mappings_post', function ( $mappings, $post_id ) use ( $manual_properties ) {
 			array_push( $mappings, array(
-				'rule_groups' => array(
-					// Rule groups array.
-					array(
-						// List of rules for a single rule group.
-						'rules' => array(
-							array(
-								'rule_field_one'   => 'category',
-								'rule_logic_field' => '===',
-								'rule_field_two'   => 'how-to',
-							)
-						)
-					)
-				),
 				'properties'  => $manual_properties
 			) );
 
@@ -128,19 +115,6 @@ class Mappings_Filter_Test extends Wordlift_Unit_Test_Case {
 		);
 		add_filter( 'wl_mappings_post', function ( $mappings, $post_id ) use ( $manual_properties ) {
 			array_push( $mappings, array(
-				'rule_groups' => array(
-					// Rule groups array.
-					array(
-						// List of rules for a single rule group.
-						'rules' => array(
-							array(
-								'rule_field_one'   => 'category',
-								'rule_logic_field' => '===',
-								'rule_field_two'   => 'how-to',
-							)
-						)
-					)
-				),
 				'properties'  => $manual_properties
 			) );
 
@@ -177,31 +151,6 @@ class Mappings_Filter_Test extends Wordlift_Unit_Test_Case {
 		);
 		add_filter( 'wl_mappings_post', function ( $mappings, $post_id ) use ( $manual_properties ) {
 			array_push( $mappings, array(
-				'rule_groups' => array(
-					// Rule groups array.
-					array(
-						// List of rules for a single rule group.
-						'foo_rules' => array(
-							array(
-								'foo_rule_field_one'   => 'category',
-								'rule_foo_logic_field' => '===',
-								'rule_foo_field_two'   => 'how-to',
-							),
-						)
-					),
-					array(
-						// A valid rule group.
-						'rules' => array(
-							// A valid rule to make this a valid mapping
-							// so that we can check the properties.
-							array(
-								'rule_field_one'   => 'category',
-								'rule_logic_field' => '===',
-								'rule_field_two'   => 'how-to',
-							)
-						)
-					)
-				),
 				'properties'  => $manual_properties
 			) );
 

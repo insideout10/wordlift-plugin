@@ -112,18 +112,12 @@ final class Mappings_Validator {
 				}
 			} else {
 				/**
-				 * This is a programatically defined mapping,
+				 * This is a programmatically defined mapping,
 				 * so we will have the rule groups and the properties in the array keys
 				 */
-				if ( array_key_exists( 'rule_groups', $mapping )
-				     && array_key_exists( 'properties', $mapping ) &&
-				     is_array( $mapping['rule_groups'] ) &&
+				if ( array_key_exists( 'properties', $mapping ) &&
 				     is_array( $mapping['properties'] ) ) {
-					// Make sure we have the same data type.
-					$should_apply_mapping = $this->rule_groups_validator->is_valid( $post_id, $mapping['rule_groups'] );
-					if ( $should_apply_mapping ) {
-						$properties = array_merge( $properties, $mapping['properties'] );
-					}
+					$properties = array_merge( $properties, $mapping['properties'] );
 				}
 			}
 		}
