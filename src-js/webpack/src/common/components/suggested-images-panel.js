@@ -2,8 +2,7 @@
  * External dependencies
  */
 import React from "react";
-import styled from "styled-components";
-
+import styled from "@emotion/styled";
 /**
  * WordPress dependencies
  */
@@ -29,7 +28,7 @@ export default () => (
   <Panel>
     <PanelBody title="Suggested images" initialOpen={false}>
       <h4>Drag & Drop in editor</h4>
-      {Images().map(item => (
+      {Images().map((item) => (
         <PanelRow>
           <RelatedImage src={item} />
         </PanelRow>

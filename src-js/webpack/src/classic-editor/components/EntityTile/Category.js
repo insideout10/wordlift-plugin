@@ -9,14 +9,14 @@
 /**
  * External dependencies
  */
-import styled from 'styled-components';
+import styled from "@emotion/styled";
 
 const Category = styled.div`
-	display: inline-block;
-	position: relative;
-	top: -4px;	
-	line-height: 16px;
-	font-size: 12px;
+  display: inline-block;
+  position: relative;
+  top: -4px;
+  line-height: 16px;
+  font-size: 12px;
 `;
 
 // Finally export the `Category`.

@@ -7,14 +7,14 @@
 /**
  * External dependencies
  */
-import styled from 'styled-components';
+import styled from "@emotion/styled";
 
 /**
  * @inheritDoc
  */
 const List = styled.ul`
-	margin: 0 auto;
-	padding-bottom: 8px;
+  margin: 0 auto;
+  padding-bottom: 8px;
 `;
 
 // Finally export the `List` component.

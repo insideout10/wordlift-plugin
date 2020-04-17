@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "@emotion/styled";
 
 export default styled.div`
   // Do not overlap with the scope icon.
@@ -7,8 +7,8 @@ export default styled.div`
   font-size: 12px;
   margin-top: 2px;
   text-align: justify;
-  
+
   &:first-letter {
     text-transform: capitalize;
   }
-`
+`;

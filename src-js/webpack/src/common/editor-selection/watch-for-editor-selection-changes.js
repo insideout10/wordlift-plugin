@@ -1,6 +1,6 @@
 /**
- * This file defines a Backbone event listener for editor selection changes and fires the related
- * `editorSelectionChanged` action.
+ * This file defines a Backbone event listener for editor selection changes (tinymce, block editor) and fires the
+ * related `editorSelectionChanged` action.
  */
 
 /**
@@ -21,7 +21,7 @@ import { editorSelectionChanged } from "../../classic-editor/actions";
  * @returns {Channel<unknown>}
  */
 function createEditorSelectionChangedChannel() {
-  // Create our listener.
+  // Create our listener, the reference is used to turn it off.
   const listener = (emitter) => (payload) => emitter(payload);
 
   // Create the event channel
@@ -35,7 +35,8 @@ function createEditorSelectionChangedChannel() {
 }
 
 /**
- * Watch for emissions from the `EditorSelectionChangedChannel`.
+ * Watch for emissions from the `EditorSelectionChangedChannel`. This function is referenced from the classic editor
+ * edit post screen and block editor edit post screen.
  *
  * @returns {Generator<<"TAKE", TakeEffectDescriptor>|*, void, ?>}
  */

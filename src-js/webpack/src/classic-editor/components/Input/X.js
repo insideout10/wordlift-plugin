@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from "@emotion/styled";
 
 const X = styled.div`
   font-family: sans-serif;

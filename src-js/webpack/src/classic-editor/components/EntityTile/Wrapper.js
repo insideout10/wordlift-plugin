@@ -7,7 +7,7 @@
 /**
  * External dependencies
  */
-import styled from 'styled-components';
+import styled from "@emotion/styled";
 
 /**
  * @inheritDoc
@@ -34,8 +34,8 @@ const Wrapper = styled.li`
 	padding-left: 12px;
 
 	&:hover {
-		transform: scale( ${ props => 0 < props.entity.occurrences.length ? 1 : 1.01 } ); 
-		background-color: ${ props => 0 < props.entity.occurrences.length ? '#f5f5f5' : '#fafafa' }
+		transform: scale( ${(props) => (0 < props.entity.occurrences.length ? 1 : 1.01)} ); 
+		background-color: ${(props) => (0 < props.entity.occurrences.length ? "#f5f5f5" : "#fafafa")}
 		// Prevent dotted outline in FF
 		outline: 0;
 	};

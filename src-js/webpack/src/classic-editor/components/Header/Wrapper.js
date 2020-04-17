@@ -10,51 +10,51 @@
 /**
  * External dependencies
  */
-import styled from 'styled-components';
+import styled from "@emotion/styled";
 
 /**
  * @inheritDoc
  */
 const Wrapper = styled.div`
-	position: relative;
-	margin: auto;
-	max-width: 248px;
-	border-radius: 2px;
-	border: 1px solid #666;
-	overflow: hidden;
+  position: relative;
+  margin: auto;
+  max-width: 248px;
+  border-radius: 2px;
+  border: 1px solid #666;
+  overflow: hidden;
 
-	* {
-		box-sizing: border-box !important;
-		display: inline-block;
-		width: 20%;
-		border-right: 1px solid #666;
-		color: #666;
-		text-align: center;
-		text-decoration: none;
-		
-		&:hover {
-			color: #a0a0a0;
-		}
+  * {
+    box-sizing: border-box !important;
+    display: inline-block;
+    width: 20%;
+    border-right: 1px solid #666;
+    color: #666;
+    text-align: center;
+    text-decoration: none;
 
-		&:focus {
-			// Overrides WordPress' styles.
-			box-shadow: none
-		}
-	}
+    &:hover {
+      color: #a0a0a0;
+    }
 
-	*:last-child {
-		border-right: none;
+    &:focus {
+      // Overrides WordPress' styles.
+      box-shadow: none;
+    }
+  }
 
-		// Fix annoying pixel gap in responsive.
-		&.wl-active {
-			box-shadow: 3px 0 0 0 #666;
-		}
-	}
-	
-	*.wl-active {
-		background: #666;
-		color: #fff;
-	}
+  *:last-child {
+    border-right: none;
+
+    // Fix annoying pixel gap in responsive.
+    &.wl-active {
+      box-shadow: 3px 0 0 0 #666;
+    }
+  }
+
+  *.wl-active {
+    background: #666;
+    color: #fff;
+  }
 `;
 
 // Finally export the `Wrapper`.

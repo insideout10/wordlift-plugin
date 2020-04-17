@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from "@emotion/styled";
 
 const Wrapper = styled.div`
   padding: 8px 0 6px;
@@ -11,8 +11,7 @@ const Wrapper = styled.div`
     outline: none;
     float: left;
     width: calc(100% - 36px) !important;
-    font-family: BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu,
-      Cantarell, "Helvetica Neue", sans-serif;
+    font-family: BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
     line-height: 20px;
     font-size: 14px;
     padding: 0 6px;

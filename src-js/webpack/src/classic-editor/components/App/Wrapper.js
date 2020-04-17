@@ -7,23 +7,23 @@
 /**
  * External dependencies
  */
-import styled from 'styled-components';
+import styled from "@emotion/styled";
 
 /**
  * @inheritDoc
  */
 const Wrapper = styled.div`
-	background-color: #fff;
+  background-color: #fff;
 
-	// Compensate accordion margin bottom.
-	position: relative;
+  // Compensate accordion margin bottom.
+  position: relative;
 
-	// Size.
-	max-width: 254px;
+  // Size.
+  max-width: 254px;
 
-	// Fixing position in responsive.
-	margin: auto;
-	margin-bottom: 8px;
+  // Fixing position in responsive.
+  margin: auto;
+  margin-bottom: 8px;
 `;
 
 // Finally export the `Wrapper`.

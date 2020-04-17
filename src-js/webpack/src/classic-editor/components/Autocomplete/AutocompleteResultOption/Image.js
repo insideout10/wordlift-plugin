@@ -1,7 +1,7 @@
-import styled from 'styled-components'
+import styled from "@emotion/styled";
 
 export default styled.div`
-  background-image: url(${props => props.src});
+  background-image: url(${(props) => props.src});
   width: 40px;
   height: 40px;
   background-size: contain;
@@ -11,5 +11,5 @@ export default styled.div`
   display: inline-block;
   margin-right: 10px;
   vertical-align: top;
-  ${props => props.src ? '' : 'border: 0;' }
-`
+  ${(props) => (props.src ? "" : "border: 0;")}
+`;

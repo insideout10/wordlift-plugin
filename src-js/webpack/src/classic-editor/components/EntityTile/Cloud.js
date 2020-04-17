@@ -7,13 +7,13 @@
 /**
  * External dependencies
  */
-import styled from "styled-components";
+import styled from "@emotion/styled";
 
 /**
  * @inheritDoc
  */
 const Cloud = styled.i`
-  display: ${props => (props.local ? "none" : "inline-block !important")};
+  display: ${(props) => (props.local ? "none" : "inline-block !important")};
   position: absolute;
   right: 20px;
   top: 8px;

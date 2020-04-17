@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled from "@emotion/styled";
 
 const VerticalContainer = styled.div`
   position: relative;
@@ -23,7 +23,7 @@ const HorizontalContainer = styled.div`
       width: calc(100% - 2px);
       margin: 0 1px;
 
-      margin-left: ${props => (props.open ? "-100%" : "1px")};
+      margin-left: ${(props) => (props.open ? "-100%" : "1px")};
       transition: all 200ms ease-out;
     }
 

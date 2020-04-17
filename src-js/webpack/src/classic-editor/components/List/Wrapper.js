@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from "@emotion/styled";
 
 const Wrapper = styled.ul`
   background: white;
@@ -13,19 +13,18 @@ const Wrapper = styled.ul`
   box-sizing: border-box;
   max-height: 280px;
   overflow-y: scroll;
-  font-family: BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu,
-    Cantarell, "Helvetica Neue", sans-serif;
+  font-family: BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   line-height: 20px;
   font-size: 14px;
   position: absolute;
   // width: calc(100% - 1px);
   // margin-left: 1px;
   width: 110%;
-  margin-left: calc( -5% + 1px );
+  margin-left: calc(-5% + 1px);
   overflow-x: hidden;
   z-index: 1001;
 
-  display: ${props => (props.open ? "block" : "none")};
+  display: ${(props) => (props.open ? "block" : "none")};
 
   > li {
     cursor: pointer;

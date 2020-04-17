@@ -9,22 +9,22 @@
 /**
  * External dependencies
  */
-import styled from 'styled-components';
+import styled from "@emotion/styled";
 
 /**
  * @inheritDoc
  */
 const Bullet = styled.div`
-	cursor: pointer;
-	display: inline-block;
-	position: absolute;
-	top: 2px;
-	left: ${ props => props.selected ? 10 : 2 }px;
-	transition: left 150ms ease;
-	width: 12px;
-	height: 12px;
-	background: #FFFFFF;
-	border-radius: 50%;
+  cursor: pointer;
+  display: inline-block;
+  position: absolute;
+  top: 2px;
+  left: ${(props) => (props.selected ? 10 : 2)}px;
+  transition: left 150ms ease;
+  width: 12px;
+  height: 12px;
+  background: #ffffff;
+  border-radius: 50%;
 `;
 
 // Finally export the `Bullet`.

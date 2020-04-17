@@ -5,16 +5,14 @@
  *
  * @since 1.0.0
  */
-import styled from "styled-components";
+import styled from "@emotion/styled";
 
-export default styled.i.attrs({
-  "aria-hidden": true
-})`
+export default styled.i`
   margin: 4px 8px;
   font-size: 14px;
 
   // ### ANY alignment.	
-  ${props =>
+  ${(props) =>
     "right" !== props.align &&
     `
     &:hover {
@@ -24,7 +22,7 @@ export default styled.i.attrs({
   `}
   
 	// ### RIGHT alignment.
-	${props =>
+	${(props) =>
     "right" === props.align &&
     `
     position: absolute;

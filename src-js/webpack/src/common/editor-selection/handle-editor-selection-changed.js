@@ -11,8 +11,7 @@ import { Button, createPopover } from "@wordlift/design";
 import React from "react";
 import { call, delay } from "redux-saga/effects";
 
-// Default null popover.
-let popover = { unmount: () => {} };
+let popover;
 
 const handlers = {
   tinymce: (payload) => {
@@ -65,7 +64,7 @@ const handlers = {
     const caretRect = wp.dom.computeCaretRect();
     const editorEl = document.querySelector(".edit-post-visual-editor");
 
-    const layoutEl = document.querySelector(".edit-post-layout__content");
+    const layoutEl = editorEl.offsetParent;
     if (null !== layoutEl) {
       const unmount = () => {
         if (popover) popover.unmount();

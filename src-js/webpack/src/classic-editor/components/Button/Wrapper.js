@@ -1,4 +1,5 @@
-import styled, { css } from "styled-components";
+import { css } from "@emotion/core";
+import styled from "@emotion/styled";
 
 const Wrapper = styled.div`
     white-space: initial;
@@ -20,7 +21,7 @@ const Wrapper = styled.div`
         }
     }
 
-    ${props =>
+    ${(props) =>
       props.enabled &&
       css`
         background-color: #007aff;
@@ -38,7 +39,7 @@ const Wrapper = styled.div`
         }
       `}
     
-    ${props =>
+    ${(props) =>
       !props.enabled &&
       css`
         background-color: #cbcbcb;
