@@ -56,10 +56,24 @@ final class Mappings_Validator {
 	 *
 	 * @return array
 	 */
-	private static function get_item_by_status( $key, $items, $status ) {
+	private static function get_property_item_by_status( $key, $items, $status ) {
 		return array_filter(
 			$items,
 			function ( $item ) use ( $key, $status ) {
+				/**
+				 * Since the properties might also be passed
+				 * by external plugins, we might need to check if
+				 * they have correct data format.
+				 */
+				if ( ! array_key_exists( 'property_status', $item ) ||
+				     ! array_key_exists( 'field_type', $item ) ||
+				     ! array_key_exists( 'field_name', $item ) ||
+				     ! array_key_exists( 'transform_function', $item )
+				) {
+					// If these keys doesnt exist, then dont process.
+					return false;
+				}
+
 				return $item[ $key ] === (string) $status;
 			}
 		);
@@ -79,20 +93,36 @@ final class Mappings_Validator {
 
 		// Get active mappings.
 		$mappings = $this->dbo->get_active_mappings();
+		/**
+		 * Apply this filter to get mappings from external plugins.
+		 *
+		 * @param $mappings array Array of mappings from database.
+		 * @param $post_id int The post id.
+		 */
+		$mappings = apply_filters( 'wl_mappings_post', $mappings, $post_id );
 
 		// Get all active rule groups for the mapping items.
 		foreach ( $mappings as $mapping ) {
-			$rule_groups = $this->dbo->get_rule_groups_by_mapping( (int) $mapping['mapping_id'] );
-
-			$should_apply_mapping = $this->rule_groups_validator->is_valid( $post_id, $rule_groups );
-
-			if ( $should_apply_mapping ) {
-				$mapping_item_properties = $this->dbo->get_properties( $mapping['mapping_id'] );
-				$properties              = array_merge( $properties, $mapping_item_properties );
+			if ( array_key_exists( 'mapping_id', $mapping ) ) {
+				$rule_groups          = $this->dbo->get_rule_groups_by_mapping( (int) $mapping['mapping_id'] );
+				$should_apply_mapping = $this->rule_groups_validator->is_valid( $post_id, $rule_groups );
+				if ( $should_apply_mapping ) {
+					$mapping_item_properties = $this->dbo->get_properties( $mapping['mapping_id'] );
+					$properties              = array_merge( $properties, $mapping_item_properties );
+				}
+			} else {
+				/**
+				 * This is a programmatically defined mapping,
+				 * so we will have the rule groups and the properties in the array keys
+				 */
+				if ( array_key_exists( 'properties', $mapping ) &&
+				     is_array( $mapping['properties'] ) ) {
+					$properties = array_merge( $properties, $mapping['properties'] );
+				}
 			}
 		}
 
-		return self::get_item_by_status(
+		return self::get_property_item_by_status(
 			'property_status',
 			$properties,
 			self::ACTIVE_CATEGORY
