@@ -2176,16 +2176,17 @@
     "@webassemblyjs/wast-parser" "1.9.0"
     "@xtuc/long" "4.2.2"
 
-"@wordlift/design@~0.1.19":
-  version "0.1.19"
-  resolved "https://registry.yarnpkg.com/@wordlift/design/-/design-0.1.19.tgz#ce78f9ce6b5a574ad3da1d51881547595f6c5c5d"
-  integrity sha512-57kcPN+E+yiHSwnSvSHTyEXbhamKf2XbGx3TnmoYR2ND+96+EYVO4NUNXc4KpHKG6fL18QPVHTzJGv+1Z3bKkQ==
+"@wordlift/design@^0.1.20":
+  version "0.1.20"
+  resolved "https://registry.yarnpkg.com/@wordlift/design/-/design-0.1.20.tgz#f857534c4b2938d4da7aa974b56be761fd21da5f"
+  integrity sha512-gee2yXUyOXpOXbE74yYVRt6SDl0iBbDvVobi7u1BjvOZcNlWtqqRAAw6QFzLuove8JRYuUY687lutaZgUGONfw==
   dependencies:
     "@babel/cli" "^7.8.4"
     "@babel/runtime" "^7.9.2"
     "@testing-library/jest-dom" "^4.2.4"
     "@testing-library/react" "^9.3.2"
     "@testing-library/user-event" "^7.1.2"
+    lodash-es "~4.17.10"
     prop-types "^15.7.2"
     react "^16.13.1"
     react-dom "^16.13.1"
@@ -2878,6 +2879,11 @@
     "@wordpress/hooks" "^2.8.0"
     "@wordpress/icons" "^1.3.1"
     lodash "^4.17.15"
+
+"@wordpress/prettier-config@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@wordpress/prettier-config/-/prettier-config-0.2.0.tgz#ac32ad59d3e7137369be7046fb804b2f8ba752bc"
+  integrity sha512-v5H1dIDG9s2wASC8eah3hYRFuviPFNnflcAvHP7D7dOA6YPfPTCJDHeJ8CVKT+QBkNKkdueyYiR6YkxEVBj7iw==
 
 "@wordpress/primitives@^1.3.1":
   version "1.3.1"
@@ -9047,6 +9053,11 @@ locate-path@^5.0.0:
   integrity sha512-t7hw9pI+WvuwNJXwk5zVHpyhIqzg2qTlklJOf0mVxGSbe3Fp2VieZcduNYjaLDoy6p9uGpQEGWG87WpMKlNq8g==
   dependencies:
     p-locate "^4.1.0"
+
+lodash-es@~4.17.10:
+  version "4.17.15"
+  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.15.tgz#21bd96839354412f23d7a10340e5eac6ee455d78"
+  integrity sha512-rlrc3yU3+JNOpZ9zj5pQtxnx2THmvRykwL4Xlxoa8I9lHBlVbbyPhgyPMioxVZ4NqyxaVVtaJnzsyOidQIhyyQ==
 
 lodash._reinterpolate@^3.0.0:
   version "3.0.0"
