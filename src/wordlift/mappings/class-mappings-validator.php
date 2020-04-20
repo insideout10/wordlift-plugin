@@ -47,6 +47,38 @@ final class Mappings_Validator {
 	}
 
 	/**
+	 * This method is used to filter properties based on presence
+	 * of certain key values.
+	 *
+	 * @param $items array Array of properties.
+	 *
+	 * @return array
+	 */
+	private static function filter_properties_for_required_keys( $items ) {
+		return array_filter(
+			$items,
+			function ( $item ) {
+				/**
+				 * Since the properties might also be passed
+				 * by external plugins, we might need to check if
+				 * they have correct data format.
+				 */
+				if ( ! array_key_exists( 'property_name', $item ) ||
+				     ! array_key_exists( 'field_type', $item ) ||
+				     ! array_key_exists( 'field_name', $item ) ||
+				     ! array_key_exists( 'transform_function', $item )
+				) {
+					// If these keys doesnt exist, then dont process.
+					return false;
+				} else {
+					// If the keys exist, then filter it.
+					return true;
+				}
+			}
+		);
+	}
+
+	/**
 	 * Validates two values based on the passed logic
 	 * a single rule passes the user defined logic.
 	 *
@@ -60,20 +92,6 @@ final class Mappings_Validator {
 		return array_filter(
 			$items,
 			function ( $item ) use ( $key, $status ) {
-				/**
-				 * Since the properties might also be passed
-				 * by external plugins, we might need to check if
-				 * they have correct data format.
-				 */
-				if ( ! array_key_exists( 'property_status', $item ) ||
-				     ! array_key_exists( 'field_type', $item ) ||
-				     ! array_key_exists( 'field_name', $item ) ||
-				     ! array_key_exists( 'transform_function', $item )
-				) {
-					// If these keys doesnt exist, then dont process.
-					return false;
-				}
-
 				return $item[ $key ] === (string) $status;
 			}
 		);
@@ -90,6 +108,9 @@ final class Mappings_Validator {
 	public function validate( $post_id ) {
 		// Reset the valid property items before making the validation.
 		$properties = array();
+
+		// Filter registered properties
+		$filter_registered_properties = array();
 
 		// Get active mappings.
 		$mappings = $this->dbo->get_active_mappings();
@@ -117,16 +138,20 @@ final class Mappings_Validator {
 				 */
 				if ( array_key_exists( 'properties', $mapping ) &&
 				     is_array( $mapping['properties'] ) ) {
-					$properties = array_merge( $properties, $mapping['properties'] );
+					$filter_registered_properties = array_merge( $filter_registered_properties, $mapping['properties'] );
 				}
 			}
 		}
-
-		return self::get_property_item_by_status(
+		// Filter all registered properties based on required key values.
+		$filter_registered_properties = self::filter_properties_for_required_keys( $filter_registered_properties );
+		$active_properties            = self::get_property_item_by_status(
 			'property_status',
 			$properties,
 			self::ACTIVE_CATEGORY
 		);
+
+		// Merge ui defined properties with filter registered properties.
+		return array_merge( $active_properties, $filter_registered_properties );
 	}
 
 }
