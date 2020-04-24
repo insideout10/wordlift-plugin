@@ -8,31 +8,32 @@
 /**
  * External dependencies
  */
-import React from "react";
+import React from 'react';
 
-import { fork, put, select, takeEvery, takeLatest } from "redux-saga/effects";
+import { fork, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
 /**
  * Internal dependencies
  */
 import {
-  default as types,
-  EDITOR_SELECTION_CHANGED,
-  SET_CURRENT_ENTITY,
-  TOGGLE_ENTITY,
-  TOGGLE_LINK,
-} from "../constants/ActionTypes";
-import EditPostWidgetController from "../angular/EditPostWidgetController";
-import { getEntity } from "./selectors";
-import LinkService from "../services/LinkService";
-import { toggleLinkSuccess } from "../actions";
+	default as types,
+	EDITOR_SELECTION_CHANGED,
+	SET_CURRENT_ENTITY,
+	TOGGLE_ENTITY,
+	TOGGLE_LINK,
+} from '../constants/ActionTypes';
+import EditPostWidgetController from '../angular/EditPostWidgetController';
+import { getEntity } from './selectors';
+import LinkService from '../services/LinkService';
+import { toggleLinkSuccess } from '../actions';
 import {
-  addEntityRequest,
-  addEntitySuccess,
-  createEntityRequest,
-  createEntitySuccess,
-} from "../components/AddEntity/actions";
-import { handleEditorSelectionChanged } from "../../common/editor-selection/handle-editor-selection-changed";
-import { watchForEditorSelectionChanges } from "../../common/editor-selection/watch-for-editor-selection-changes";
+	addEntityRequest,
+	addEntitySuccess,
+	createEntityRequest,
+	createEntitySuccess,
+} from '../components/AddEntity/actions';
+import { handleEditorSelectionChanged } from '../../common/editor-selection/handle-editor-selection-changed';
+import { watchForEditorSelectionChanges } from '../../common/editor-selection/watch-for-editor-selection-changes';
+import { default as faqSaga } from '../../faq/sagas/index';
 
 /**
  * Handle the {@link TOGGLE_ENTITY} action.
@@ -40,77 +41,82 @@ import { watchForEditorSelectionChanges } from "../../common/editor-selection/wa
  *  @param {{entity:{id}}} payload A payload containing an entity.
  */
 function* toggleEntity(payload) {
-  const entity = yield select(getEntity, payload.entity.id);
-  EditPostWidgetController().$apply(EditPostWidgetController().onSelectedEntityTile(entity));
+	const entity = yield select(getEntity, payload.entity.id);
+	EditPostWidgetController().$apply(
+		EditPostWidgetController().onSelectedEntityTile(entity)
+	);
 }
 
 function* toggleLink({ entity }) {
-  // Toggle the link/no link on entity's occurrences.
-  // Toggle the link on the occurrences.
-  LinkService.setLink(entity.occurrences, !entity.link);
+	// Toggle the link/no link on entity's occurrences.
+	// Toggle the link on the occurrences.
+	LinkService.setLink(entity.occurrences, !entity.link);
 
-  yield put(
-    toggleLinkSuccess({
-      id: entity.id,
-      link: LinkService.getLink(entity.occurrences),
-    })
-  );
+	yield put(
+		toggleLinkSuccess({
+			id: entity.id,
+			link: LinkService.getLink(entity.occurrences),
+		})
+	);
 }
 
 function* setCurrentEntity({ entity }) {
-  // Call the `EditPostWidgetController` to set the current entity.
-  EditPostWidgetController().$apply(EditPostWidgetController().setCurrentEntity(entity, "entity"));
+	// Call the `EditPostWidgetController` to set the current entity.
+	EditPostWidgetController().$apply(
+		EditPostWidgetController().setCurrentEntity(entity, 'entity')
+	);
 }
 
 function* addEntity({ payload }) {
-  const ctrl = EditPostWidgetController();
-  ctrl.$apply(() => {
-    // Create the text annotation.
-    ctrl.setCurrentEntity();
-    // Update the entity data.
-    ctrl.currentEntity.description = payload.descriptions[0];
-    ctrl.currentEntity.id = payload.id;
-    ctrl.currentEntity.images = payload.images;
-    ctrl.currentEntity.label = payload.label;
-    ctrl.currentEntity.mainType = getMainType(payload.types);
-    ctrl.currentEntity.types = payload.types;
-    ctrl.currentEntity.sameAs = payload.sameAss;
-    // Save the entity.
-    ctrl.storeCurrentEntity();
-  });
+	const ctrl = EditPostWidgetController();
+	ctrl.$apply(() => {
+		// Create the text annotation.
+		ctrl.setCurrentEntity();
+		// Update the entity data.
+		ctrl.currentEntity.description = payload.descriptions[0];
+		ctrl.currentEntity.id = payload.id;
+		ctrl.currentEntity.images = payload.images;
+		ctrl.currentEntity.label = payload.label;
+		ctrl.currentEntity.mainType = getMainType(payload.types);
+		ctrl.currentEntity.types = payload.types;
+		ctrl.currentEntity.sameAs = payload.sameAss;
+		// Save the entity.
+		ctrl.storeCurrentEntity();
+	});
 
-  yield put(addEntitySuccess());
+	yield put(addEntitySuccess());
 }
 
 function* createEntity({ payload }) {
-  const ctrl = EditPostWidgetController();
+	const ctrl = EditPostWidgetController();
 
-  ctrl.$apply(ctrl.setCurrentEntity(undefined, undefined, payload));
+	ctrl.$apply(ctrl.setCurrentEntity(undefined, undefined, payload));
 
-  yield put(createEntitySuccess());
+	yield put(createEntitySuccess());
 }
 
 const getMainType = (types) => {
-  for (let i = 0; i < window._wlEntityTypes.length; i++) {
-    const type = window._wlEntityTypes[i];
+	for (let i = 0; i < window._wlEntityTypes.length; i++) {
+		const type = window._wlEntityTypes[i];
 
-    if (-1 < types.indexOf(type.uri)) return type.slug;
-  }
-  return "thing";
+		if (-1 < types.indexOf(type.uri)) return type.slug;
+	}
+	return 'thing';
 };
 
 /**
  * Connect the side effects.
  */
 function* sagas() {
-  yield takeEvery(TOGGLE_ENTITY, toggleEntity);
-  yield takeEvery(TOGGLE_LINK, toggleLink);
-  yield takeEvery(SET_CURRENT_ENTITY, setCurrentEntity);
-  yield takeEvery(addEntityRequest, addEntity);
-  yield takeEvery(createEntityRequest, createEntity);
-  yield takeLatest(EDITOR_SELECTION_CHANGED, handleEditorSelectionChanged);
+	yield takeEvery(TOGGLE_ENTITY, toggleEntity);
+	yield takeEvery(TOGGLE_LINK, toggleLink);
+	yield takeEvery(SET_CURRENT_ENTITY, setCurrentEntity);
+	yield takeEvery(addEntityRequest, addEntity);
+	yield takeEvery(createEntityRequest, createEntity);
 
-  yield fork(watchForEditorSelectionChanges);
+	yield fork(watchForEditorSelectionChanges);
+
+	yield fork(faqSaga);
 }
 
 export default sagas;

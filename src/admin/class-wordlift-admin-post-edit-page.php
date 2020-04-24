@@ -89,16 +89,16 @@ class Wordlift_Admin_Post_Edit_Page {
 	function is_gutenberg_page() {
 		if ( function_exists( 'is_gutenberg_page' ) && is_gutenberg_page() ) {
 			// The Gutenberg plugin is on.
-			return TRUE;
+			return true;
 		}
 
 		$current_screen = get_current_screen();
 		if ( method_exists( $current_screen, 'is_block_editor' ) && $current_screen->is_block_editor() ) {
 			// Gutenberg page on 5+.
-			return TRUE;
+			return true;
 		}
 
-		return FALSE;
+		return false;
 	}
 
 	/**
@@ -170,6 +170,7 @@ class Wordlift_Admin_Post_Edit_Page {
 				'react',
 				'react-dom',
 				'wp-element',
+				'wp-i18n',
 				'wp-polyfill',
 				/*
 				* Angular isn't loaded anymore remotely, but it is loaded within wordlift-reloaded.js.
@@ -221,7 +222,7 @@ class Wordlift_Admin_Post_Edit_Page {
 	 */
 	public function get_faq_settings() {
 		return array(
-			'restUrl'                 => get_rest_url( NULL, WL_REST_ROUTE_DEFAULT_NAMESPACE . '/faq' ),
+			'restUrl'                 => get_rest_url( null, WL_REST_ROUTE_DEFAULT_NAMESPACE . '/faq' ),
 			'listBoxId'               => self::FAQ_LIST_BOX_ID,
 			'nonce'                   => wp_create_nonce( 'wp_rest' ),
 			'postId'                  => get_the_ID(),
@@ -234,7 +235,7 @@ class Wordlift_Admin_Post_Edit_Page {
 			'addQuestionText'         => __( 'Add Question', self::WORDLIFT_TEXT_DOMAIN ),
 			'addAnswerText'           => __( 'Add Answer', self::WORDLIFT_TEXT_DOMAIN ),
 			'noFaqItemsText'          => __( 'Highlight a question in content, then click Add Question.', self::WORDLIFT_TEXT_DOMAIN ),
-			'updatingText'          => __( 'Updating...', self::WORDLIFT_TEXT_DOMAIN )
+			'updatingText'            => __( 'Updating...', self::WORDLIFT_TEXT_DOMAIN )
 		);
 	}
 
@@ -253,7 +254,7 @@ class Wordlift_Admin_Post_Edit_Page {
 				'wl-faq-gutenberg-plugin',
 				plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/block-editor-faq-plugin',
 				array( 'wp-polyfill' ),
-				TRUE
+				true
 			);
 		}
 	}
@@ -303,7 +304,7 @@ class Wordlift_Admin_Post_Edit_Page {
 			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/autocomplete-select.js',
 			array(),
 			$this->plugin->get_version(),
-			TRUE
+			true
 		);
 
 		wp_enqueue_style(

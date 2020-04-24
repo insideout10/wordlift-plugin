@@ -107,6 +107,9 @@ const handlers = {
 };
 
 export function* handleEditorSelectionChanged({ payload }) {
+
+	return ;
+
 	yield delay(300);
 
 	if ('' === payload.selection) return;

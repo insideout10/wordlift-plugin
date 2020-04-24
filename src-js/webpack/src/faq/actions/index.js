@@ -8,26 +8,26 @@
 /**
  * External dependencies.
  */
-import {createAction} from "redux-actions";
+import { createAction } from 'redux-actions';
 /**
  * Internal dependencies
  */
 import {
-  ANSWER_SELECTED_BY_USER,
-  CLOSE_EDIT_SCREEN,
-  QUESTION_SELECTED_BY_USER,
-  REQUEST_DELETE_FAQ_ITEMS,
-  REQUEST_FAQ_ADD_NEW_QUESTION,
-  REQUEST_GET_FAQ_ITEMS,
-  REQUEST_UPDATE_FAQ_ITEMS,
-  RESET_TYPED_QUESTION,
-  UPDATE_FAQ_ITEM,
-  UPDATE_FAQ_ITEMS,
-  UPDATE_MODAL_STATUS,
-  UPDATE_NOTIFICATION_AREA,
-  UPDATE_QUESTION_ON_INPUT_CHANGE,
-  UPDATE_REQUEST_IN_PROGRESS
-} from "../constants/action-types";
+	ANSWER_SELECTED_BY_USER,
+	CLOSE_EDIT_SCREEN,
+	QUESTION_SELECTED_BY_USER,
+	REQUEST_DELETE_FAQ_ITEMS,
+	REQUEST_FAQ_ADD_NEW_QUESTION,
+	REQUEST_GET_FAQ_ITEMS,
+	REQUEST_UPDATE_FAQ_ITEMS,
+	RESET_TYPED_QUESTION,
+	UPDATE_FAQ_ITEM,
+	UPDATE_FAQ_ITEMS,
+	UPDATE_MODAL_STATUS,
+	UPDATE_NOTIFICATION_AREA,
+	UPDATE_QUESTION_ON_INPUT_CHANGE,
+	UPDATE_REQUEST_IN_PROGRESS,
+} from '../constants/action-types';
 
 /**
  * Action for adding new question.
@@ -57,7 +57,9 @@ export const updateFaqItems = createAction(UPDATE_FAQ_ITEMS);
  * Action for updating question in state when user types the question.
  * @type {function(): {type: *}}
  */
-export const updateQuestionOnInputChange = createAction(UPDATE_QUESTION_ON_INPUT_CHANGE);
+export const updateQuestionOnInputChange = createAction(
+	UPDATE_QUESTION_ON_INPUT_CHANGE
+);
 
 /**
  * Action when the user selects the question from the list of questions.
@@ -110,3 +112,13 @@ export const answerSelectedByUser = createAction(ANSWER_SELECTED_BY_USER);
  * Action for changing the request status
  */
 export const changeRequestStatus = createAction(UPDATE_REQUEST_IN_PROGRESS);
+
+/**
+ * A possible candidate for a question has been selected.
+ */
+export const maybeQuestionSelected = createAction('MAYBE_QUESTION_SELECTED');
+
+/**
+ * A possible candidate for an answer has been selected.
+ */
+export const maybeAnswerSelected = createAction('MAYBE_ANSWER_SELECTED');

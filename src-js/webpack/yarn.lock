@@ -2176,10 +2176,10 @@
     "@webassemblyjs/wast-parser" "1.9.0"
     "@xtuc/long" "4.2.2"
 
-"@wordlift/design@^0.1.20":
-  version "0.1.20"
-  resolved "https://registry.yarnpkg.com/@wordlift/design/-/design-0.1.20.tgz#f857534c4b2938d4da7aa974b56be761fd21da5f"
-  integrity sha512-gee2yXUyOXpOXbE74yYVRt6SDl0iBbDvVobi7u1BjvOZcNlWtqqRAAw6QFzLuove8JRYuUY687lutaZgUGONfw==
+"@wordlift/design@^0.1.21":
+  version "0.1.21"
+  resolved "https://registry.yarnpkg.com/@wordlift/design/-/design-0.1.21.tgz#e7ad947ad3577b0fb5e31f2e767cc27c43fbbcb4"
+  integrity sha512-5UhLpO9mL/JladOGx1yqSIvEvM3UbjJRL9ybBVY3cV9pDZr5zUnINNWcEMKAE5QiClrpECyA2BtGr0GkHIZpOg==
   dependencies:
     "@babel/cli" "^7.8.4"
     "@babel/runtime" "^7.9.2"
@@ -2735,18 +2735,6 @@
   integrity sha512-OmHZFHDl1Ai0LmRlqehRAt0broGigW1QCnRS1K82nurCFi9kz8x13C7GWv7wshA9TC4Qp/PLP9SEl/nzcJyIYg==
   dependencies:
     "@babel/runtime" "^7.9.2"
-
-"@wordpress/i18n@3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@wordpress/i18n/-/i18n-3.1.0.tgz#c7115aab16a4f2f91fc7fede02681cb4c7f1b69b"
-  integrity sha512-zHqLRuKrDV3FYh8PYDs4ABO/csiEAy1EfTffMtMS/8GAz4BcWrcqDjyH42GJF8iwWdG5+DdsllP5oerAQMHnng==
-  dependencies:
-    "@babel/runtime" "^7.0.0"
-    gettext-parser "^1.3.1"
-    lodash "^4.17.10"
-    memize "^1.0.5"
-    sprintf-js "^1.1.1"
-    tannin "^1.0.1"
 
 "@wordpress/i18n@^3.1.0", "@wordpress/i18n@^3.1.1", "@wordpress/i18n@^3.11.0", "@wordpress/i18n@^3.7.0":
   version "3.11.0"
@@ -13773,7 +13761,7 @@ table@^5.0.0, table@^5.2.3:
     slice-ansi "^2.1.0"
     string-width "^3.0.0"
 
-tannin@^1.0.1, tannin@^1.2.0:
+tannin@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/tannin/-/tannin-1.2.0.tgz#1da6fe65280dca4c3d84efb075b077b1b94362a6"
   integrity sha512-U7GgX/RcSeUETbV7gYgoz8PD7Ni4y95pgIP/Z6ayI3CfhSujwKEBlGFTCRN+Aqnuyf4AN2yHL+L8x+TCGjb9uA==
