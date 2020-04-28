@@ -10,22 +10,23 @@
 /**
  * External dependencies
  */
-import React from "react";
-import { connect } from "react-redux";
+import React from 'react';
+import { connect } from 'react-redux';
 
 /**
  * Internal dependencies
  */
-import Wrapper from "./Wrapper";
-import Header from "../Header";
-import VisibleEntityList from "../../containers/VisibleEntityList";
-import Accordion from "../Accordion";
-import AddEntity from "../../components/AddEntity";
-import { addEntityRequest, createEntityRequest } from "../AddEntity/actions";
+import Wrapper from './Wrapper';
+import Header from '../Header';
+import VisibleEntityList from '../../containers/VisibleEntityList';
+import Accordion from '../Accordion';
+import AddEntity from '../../components/AddEntity';
+import { addEntityRequest, createEntityRequest } from '../AddEntity/actions';
 
-const wlSettings = global["wlSettings"];
+const wlSettings = global['wlSettings'];
 const canCreateEntities =
-  "undefined" !== wlSettings["can_create_entities"] && "yes" === wlSettings["can_create_entities"];
+	'undefined' !== wlSettings['can_create_entities'] &&
+	'yes' === wlSettings['can_create_entities'];
 
 /**
  * Define the {@link App}.
@@ -34,13 +35,17 @@ const canCreateEntities =
  * @return {Function} The `render` function.
  */
 const App = ({ addEntityRequest, createEntityRequest }) => (
-  <Wrapper>
-    <AddEntity createEntity={createEntityRequest} showCreate={canCreateEntities} selectEntity={addEntityRequest} />
-    <Accordion open={true} label="Content classification">
-      <Header />
-      <VisibleEntityList />
-    </Accordion>
-  </Wrapper>
+	<Wrapper>
+		<AddEntity
+			createEntity={createEntityRequest}
+			showCreate={canCreateEntities}
+			selectEntity={addEntityRequest}
+		/>
+		<Accordion open={true} label="Content classification">
+			<Header />
+			<VisibleEntityList />
+		</Accordion>
+	</Wrapper>
 );
 
 // Finally export the `App`.

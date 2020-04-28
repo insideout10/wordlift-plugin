@@ -248,6 +248,97 @@
 .wp-block[data-type="wordlift/classification"] {
   display: none; }
 
+
+.wl-modal {
+  display: none;
+  z-index: 99999 !important;
+  height: 65%;
+  width: 55%;
+  background-color: white;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 10px !important;
+  padding: 10px; }
+  .wl-modal.wl-modal--open {
+    display: block; }
+  .wl-modal.wl-modal--closed {
+    display: none; }
+
+.wl-modal-header {
+  background-color: white;
+  color: black;
+  height: 20%;
+  border-bottom: 3px solid #eee; }
+
+.wl-modal-header-icon {
+  cursor: pointer;
+  font-size: 20px; }
+
+.wl-modal-body {
+  overflow-y: scroll;
+  height: 80%; }
+
+.wl-card {
+  border-radius: 8px;
+  border: 1px solid #eee;
+  height: 80px;
+  transition: 0.1s;
+  padding: 8px;
+  margin: 8px; }
+  .wl-card:hover {
+    box-shadow: 3px 3px #eee; }
+  .wl-card.wl-card-center {
+    text-align: center; }
+
+.wl-faq-question-container {
+  overflow: hidden;
+  text-overflow: clip; }
+
+.wl-faq-question-title {
+  font-weight: bold;
+  color: black;
+  cursor: pointer;
+  height: 40px !important;
+  margin: 2px !important; }
+  .wl-faq-question-title:first-letter {
+    text-transform: uppercase; }
+
+.wl-bg-modal {
+  display: none;
+  z-index: 9998 !important;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.3);
+  left: 50%;
+  top: 50%;
+  height: 100%;
+  width: 100%;
+  transform: translate(-50%, -50%); }
+  .wl-bg-modal.wl-bg-modal--open {
+    display: block; }
+  .wl-bg-modal.wl-bg-modal--closed {
+    display: none; }
+
+.wl-notification-area {
+  position: fixed;
+  z-index: 99999;
+  /** Show notification above all divs **/
+  top: 0;
+  right: 0;
+  animation-duration: 0.3s;
+  animation-name: fadeIn;
+  background-color: inherit; }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+
+.wl-notification-area__close-button {
+  cursor: pointer; }
+
 .wl-notice .components-notice {
   margin: 10px 0; }
   .wl-notice .components-notice .components-notice__content {

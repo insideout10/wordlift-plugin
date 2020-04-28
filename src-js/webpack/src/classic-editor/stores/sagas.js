@@ -8,32 +8,25 @@
 /**
  * External dependencies
  */
-import React from 'react';
+import React from "react";
 
-import { fork, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
+import { fork, put, select, takeEvery } from "redux-saga/effects";
 /**
  * Internal dependencies
  */
-import {
-	default as types,
-	EDITOR_SELECTION_CHANGED,
-	SET_CURRENT_ENTITY,
-	TOGGLE_ENTITY,
-	TOGGLE_LINK,
-} from '../constants/ActionTypes';
-import EditPostWidgetController from '../angular/EditPostWidgetController';
-import { getEntity } from './selectors';
-import LinkService from '../services/LinkService';
-import { toggleLinkSuccess } from '../actions';
+import { default as types, SET_CURRENT_ENTITY, TOGGLE_ENTITY, TOGGLE_LINK } from "../constants/ActionTypes";
+import EditPostWidgetController from "../angular/EditPostWidgetController";
+import { getEntity } from "./selectors";
+import LinkService from "../services/LinkService";
+import { toggleLinkSuccess } from "../actions";
 import {
 	addEntityRequest,
 	addEntitySuccess,
 	createEntityRequest,
-	createEntitySuccess,
-} from '../components/AddEntity/actions';
-import { handleEditorSelectionChanged } from '../../common/editor-selection/handle-editor-selection-changed';
-import { watchForEditorSelectionChanges } from '../../common/editor-selection/watch-for-editor-selection-changes';
-import { default as faqSaga } from '../../faq/sagas/index';
+	createEntitySuccess
+} from "../components/AddEntity/actions";
+import { watchForEditorSelectionChanges } from "../../common/editor-selection/watch-for-editor-selection-changes";
+import { default as faqSaga } from "../../faq/sagas/index";
 
 /**
  * Handle the {@link TOGGLE_ENTITY} action.

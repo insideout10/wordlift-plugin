@@ -9,16 +9,16 @@
 /**
  * External dependencies.
  */
-import {combineReducers} from "redux";
+import { combineReducers } from 'redux';
 /**
  * Internal dependencies.
  */
-import {faqItemsListReducer} from "./faq-items-list-reducer";
-import {faqModalReducer} from "./faq-modal-reducer";
-import {faqNotificationReducer} from "./faq-notification-reducer";
+import { faqItemsListReducer } from './faq-items-list-reducer';
+import { faqModalReducer } from './faq-modal-reducer';
+import { faqNotificationReducer } from './faq-notification-reducer';
 
 export const faqReducer = combineReducers({
-  faqListOptions: faqItemsListReducer,
-  faqModalOptions: faqModalReducer,
-  faqNotificationArea: faqNotificationReducer
+	faqListOptions: faqItemsListReducer,
+	faqModalOptions: faqModalReducer,
+	faqNotificationArea: faqNotificationReducer,
 });

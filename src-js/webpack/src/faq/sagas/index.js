@@ -8,7 +8,14 @@
 /**
  * External dependencies
  */
-import { call, delay, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
+import {
+	call,
+	delay,
+	put,
+	select,
+	takeEvery,
+	takeLatest,
+} from 'redux-saga/effects';
 /**
  * WordPress dependencies
  */
@@ -173,63 +180,11 @@ function* handleDeleteFaqItems(action) {
 	yield dispatchNotification(response);
 }
 
-/**
- * When the editor selection has changed, we check whether the selection is a potential question or
- * or answer. In which case we fire the Maybe Question Selected or Maybe Answer Selected actions.
- *
- * @param {{payload: {selection: string}}} A payload with the current selection.
- * @returns {Generator<*, void, *>}
- */
-function* handleEditorSelectionChange({ payload }) {
-	// Get the selection.
-	const { selection } = payload;
-
-	// Potential question.
-	if (selection.endsWith('?')) {
-		yield put(maybeQuestionSelected(payload));
-		return;
-	}
-
-	// Potential answer.
-	// const allFaqItems = yield select(getAllFAQItems);
-	// if (0 < allFaqItems.length) yield put(maybeAnswerSelected(payload));
-}
-
-/**
- * Displays a popover when a potential question has been selected.
- *
- * @param {{payload: {rect: Object}}} payload
- */
-function* handleMaybeQuestionSelected({ payload }) {
-	// Wait 300 ms. before displaying anything.
-	yield delay(300);
-
-	const { rect } = payload;
-
-	// Finally create the popover.
-	const popover = yield call(
-		createPopover,
-		<Button onClick={() => put(requestAddNewQuestion())}>
-			{__('Add Question', 'wordlift')}
-		</Button>,
-		{ ...rect, positions: ['right', 'left', 'bottom', 'top'] }
-	);
-}
-
-function* handleRequestAddNewQuestion() {
-	console.debug('handleRequestAddNewQuestion');
-}
-
 function* rootSaga() {
 	yield takeLatest(REQUEST_FAQ_ADD_NEW_QUESTION, handleAddNewQuestion);
 	yield takeLatest(REQUEST_GET_FAQ_ITEMS, handleGetFaqItems);
 	yield takeLatest(UPDATE_FAQ_ITEM, handleUpdateFaqItems);
 	yield takeLatest(REQUEST_DELETE_FAQ_ITEMS, handleDeleteFaqItems);
-
-	yield takeLatest(EDITOR_SELECTION_CHANGED, handleEditorSelectionChange);
-	yield takeLatest(maybeQuestionSelected, handleMaybeQuestionSelected);
-
-	yield takeEvery(REQUEST_FAQ_ADD_NEW_QUESTION, handleRequestAddNewQuestion);
 }
 
 export default rootSaga;

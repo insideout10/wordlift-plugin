@@ -68,10 +68,11 @@ class Wordlift_Tinymce_Adapter {
 
 		// Add our own JavaScript file to TinyMCE's extensions.
 		// DO NOT use the minified version, it'll yield errors with AngularJS.
-		$plugins['wordlift']      = plugin_dir_url( dirname( __FILE__ ) ) . 'js/wordlift-reloaded.js?ver=' . $version;
-		$plugins['wl_shortcodes'] = plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/wordlift_shortcode_tinymce_plugin.js?ver=' . $version;
-		$plugins['wl_tinymce']    = plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/1/tinymce.js?ver=' . $version;
-		$plugins['wl_tinymce_2']       = plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/tiny-mce.js?ver=' . $version;
+		$plugins['wordlift']                 = plugin_dir_url( dirname( __FILE__ ) ) . 'js/wordlift-reloaded.js?ver=' . $version;
+		$plugins['wl_shortcodes']            = plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/wordlift_shortcode_tinymce_plugin.js?ver=' . $version;
+		$plugins['wl_tinymce']               = plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/1/tinymce.js?ver=' . $version;
+		$plugins['wl_tinymce_2']             = plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/tiny-mce.js?ver=' . $version;
+		$plugins['@wordlift/design/tinymce'] = plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/wordlift-design-tinymce.js?ver=' . $version;
 
 		return $plugins;
 	}

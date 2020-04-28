@@ -108,7 +108,7 @@ class Wordlift_Install_3_25_0 extends Wordlift_Install {
 		$charset_collate = $this->wpdb->get_charset_collate();
 		// @@todo: is necessary to prefix the column names with `mapping_` ? we're the mappings table already.
 		$sql = <<<EOF
-        CREATE TABLE $table_name (
+        CREATE TABLE IF NOT EXISTS $table_name (
 			mapping_id INT(11) NOT NULL AUTO_INCREMENT, 
 			mapping_title VARCHAR(255) NOT NULL,
 			mapping_status VARCHAR(255) NOT NULL DEFAULT 'active',
