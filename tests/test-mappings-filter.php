@@ -81,7 +81,6 @@ class Mappings_Filter_Test extends Wordlift_Unit_Test_Case {
 				'field_type'         => 'text',
 				'field_name'         => 'HowTo',
 				'transform_function' => 'none',
-				'property_status'    => Mappings_Validator::ACTIVE_CATEGORY,
 			),
 		);
 		add_filter( 'wl_mappings_post', function ( $mappings, $post_id ) use ( $manual_properties ) {
@@ -110,7 +109,6 @@ class Mappings_Filter_Test extends Wordlift_Unit_Test_Case {
 				'field_type'         => 'text',
 				'field_name'         => 'HowTo',
 				'transform_function' => $transformation_function->get_name(),
-				'property_status'    => Mappings_Validator::ACTIVE_CATEGORY,
 			),
 		);
 		add_filter( 'wl_mappings_post', function ( $mappings, $post_id ) use ( $manual_properties ) {
