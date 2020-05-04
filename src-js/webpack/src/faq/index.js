@@ -8,18 +8,17 @@
 /**
  * External dependencies
  */
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
 /**
  * Internal dependencies.
  */
-import store from './store/index';
-import FaqScreen from './components/faq-screen';
-import FaqModal from './components/faq-modal';
-import FaqEventHandler from './hooks/faq-event-handler';
-import './index.scss';
-import './components/wl-fab/index.scss';
+import store from "./store/index";
+import FaqModal from "./components/faq-modal";
+import FaqEventHandler from "./hooks/faq-event-handler";
+import "./index.scss";
+import "./components/wl-fab/index.scss";
 
 const listBoxId = 'wl-faq-meta-list-box';
 
@@ -38,27 +37,27 @@ window.addEventListener('load', () => {
 	new FaqEventHandler(store);
 });
 
-const observer = new MutationObserver(() => {
-	if (document.getElementById(listBoxId) !== null) {
-		/**
-		 * We might have our react component rendered before, so check the innerHTML  if we
-		 * didnt render out component and initalize.
-		 */
-		if (document.getElementById(listBoxId).innerHTML !== '') {
-		} else {
-			ReactDOM.render(
-				<Provider store={store}>
-					<React.Fragment>
-						<FaqScreen />
-					</React.Fragment>
-				</Provider>,
-				document.getElementById(listBoxId)
-			);
-		}
-	}
-});
+// const observer = new MutationObserver(() => {
+// 	if (document.getElementById(listBoxId) !== null) {
+// 		/**
+// 		 * We might have our react component rendered before, so check the innerHTML  if we
+// 		 * didnt render out component and initalize.
+// 		 */
+// 		if (document.getElementById(listBoxId).innerHTML !== '') {
+// 		} else {
+// 			ReactDOM.render(
+// 				<Provider store={store}>
+// 					<React.Fragment>
+// 						<FaqScreen />
+// 					</React.Fragment>
+// 				</Provider>,
+// 				document.getElementById(listBoxId)
+// 			);
+// 		}
+// 	}
+// });
 
-/**
- * Observe for changes in the DOM tree.
- */
-observer.observe(document, { childList: true, subtree: true });
+// /**
+//  * Observe for changes in the DOM tree.
+//  */
+// observer.observe(document, { childList: true, subtree: true });

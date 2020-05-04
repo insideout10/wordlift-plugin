@@ -123,55 +123,6 @@
 .wl-faq-edit-item--title {
   font-weight: bold; }
 
-.wl-faq-question-container {
-  overflow: hidden;
-  text-overflow: clip; }
-
-.wl-faq-question-title {
-  font-weight: bold;
-  color: black;
-  cursor: pointer;
-  height: 40px !important;
-  margin: 2px !important; }
-  .wl-faq-question-title:first-letter {
-    text-transform: uppercase; }
-
-.wl-faq-answer-container {
-  height: 40px !important;
-  overflow: hidden;
-  text-overflow: clip; }
-
-.wl-faq-answer-title {
-  color: black;
-  cursor: pointer;
-  padding: 2px; }
-
-.wl-card {
-  border-radius: 8px;
-  border: 1px solid #eee;
-  height: 80px;
-  transition: 0.1s;
-  padding: 8px;
-  margin: 8px; }
-  .wl-card:hover {
-    box-shadow: 3px 3px #eee; }
-  .wl-card.wl-card-center {
-    text-align: center; }
-
-.wl-faq-fab {
-  border-radius: 8px !important;
-  width: 100%;
-  margin: 3px;
-  padding: 10px;
-  font-size: 13px;
-  text-align: center;
-  text-transform: capitalize;
-  cursor: pointer;
-  border: 1px solid #eee; }
-
-.faq-edit-item-close-button {
-  cursor: pointer; }
-
 
 .wl-modal {
   display: none;
@@ -203,6 +154,31 @@
 .wl-modal-body {
   overflow-y: scroll;
   height: 80%; }
+
+.wl-card {
+  border-radius: 8px;
+  border: 1px solid #eee;
+  height: 80px;
+  transition: 0.1s;
+  padding: 8px;
+  margin: 8px; }
+  .wl-card:hover {
+    box-shadow: 3px 3px #eee; }
+  .wl-card.wl-card-center {
+    text-align: center; }
+
+.wl-faq-question-container {
+  overflow: hidden;
+  text-overflow: clip; }
+
+.wl-faq-question-title {
+  font-weight: bold;
+  color: black;
+  cursor: pointer;
+  height: 40px !important;
+  margin: 2px !important; }
+  .wl-faq-question-title:first-letter {
+    text-transform: uppercase; }
 
 .wl-bg-modal {
   display: none;

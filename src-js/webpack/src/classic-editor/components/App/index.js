@@ -11,7 +11,9 @@
  * External dependencies
  */
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
+import { Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -22,11 +24,30 @@ import VisibleEntityList from '../../containers/VisibleEntityList';
 import Accordion from '../Accordion';
 import AddEntity from '../../components/AddEntity';
 import { addEntityRequest, createEntityRequest } from '../AddEntity/actions';
+import FaqScreen from '../../../faq/components/faq-screen';
 
 const wlSettings = global['wlSettings'];
 const canCreateEntities =
 	'undefined' !== wlSettings['can_create_entities'] &&
 	'yes' === wlSettings['can_create_entities'];
+
+const withPortal = (WrappedComponent, elementId) => (props) =>
+	ReactDOM.createPortal(
+		<WrappedComponent {...props} />,
+		document.getElementById(elementId)
+	);
+
+const FaqScreenPortal = withPortal(FaqScreen, 'wl-faq-meta-list-box');
+
+export const ContentClassificationPanel = (props) => (
+	<Fragment>
+		<AddEntity {...props} />
+		<Accordion open={true} label="Content classification">
+			<Header />
+			<VisibleEntityList />
+		</Accordion>
+	</Fragment>
+);
 
 /**
  * Define the {@link App}.
@@ -36,15 +57,12 @@ const canCreateEntities =
  */
 const App = ({ addEntityRequest, createEntityRequest }) => (
 	<Wrapper>
-		<AddEntity
+		<ContentClassificationPanel
 			createEntity={createEntityRequest}
 			showCreate={canCreateEntities}
 			selectEntity={addEntityRequest}
 		/>
-		<Accordion open={true} label="Content classification">
-			<Header />
-			<VisibleEntityList />
-		</Accordion>
+		<FaqScreenPortal />
 	</Wrapper>
 );
 

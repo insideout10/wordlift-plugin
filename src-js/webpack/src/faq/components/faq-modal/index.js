@@ -74,7 +74,7 @@ class FaqModal extends React.Component {
 	}
 }
 export default connect((state) => ({
-	isModalOpened: state.faqModalOptions.isModalOpened,
-	notificationMessage: state.faqNotificationArea.notificationMessage,
-	notificationType: state.faqNotificationArea.notificationType,
+	isModalOpened: false, // state.faqModalOptions.isModalOpened,
+	notificationMessage: '', // state.faqNotificationArea.notificationMessage,
+	notificationType: null, // state.faqNotificationArea.notificationType,
 }))(FaqModal);

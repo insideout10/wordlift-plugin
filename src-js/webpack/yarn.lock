@@ -2176,10 +2176,10 @@
     "@webassemblyjs/wast-parser" "1.9.0"
     "@xtuc/long" "4.2.2"
 
-"@wordlift/design@^0.1.28":
-  version "0.1.28"
-  resolved "https://registry.yarnpkg.com/@wordlift/design/-/design-0.1.28.tgz#b0f11ed39104eb2267cee5266ac1c75c6ed07cfa"
-  integrity sha512-+EDhEiecZe30HJwtBHrKAL/FITTx7MCy0HCGoophwiip8+ZqltZvVhVThexYhPPOKB+r1kdcqZe/kNiOcStDHA==
+"@wordlift/design@^0.1.29":
+  version "0.1.29"
+  resolved "https://registry.yarnpkg.com/@wordlift/design/-/design-0.1.29.tgz#b2380cce2c00300cd057b2e88fa5806cbf756e15"
+  integrity sha512-fQURde1N8IifhauGbSkk+ChR6UI4bIxNtNefXam3KUrfUViBlCUFZxYea0Czb305ZoZPSui9PS8u81GxUbqBYQ==
   dependencies:
     "@babel/cli" "^7.8.4"
     "@babel/runtime" "^7.9.2"

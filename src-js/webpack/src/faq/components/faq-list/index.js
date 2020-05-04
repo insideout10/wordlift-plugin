@@ -55,5 +55,5 @@ class FaqList extends React.Component {
 }
 
 export default connect(state => ({
-  faqItems: state.faqListOptions.faqItems
+  faqItems: [] // state.faqListOptions.faqItems
 }))(FaqList);

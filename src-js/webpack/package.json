@@ -60,7 +60,7 @@
 		"@emotion/core": "~10.0",
 		"@emotion/styled": "~10.0",
 		"@reduxjs/toolkit": "^1.2.1",
-		"@wordlift/design": "^0.1.28",
+		"@wordlift/design": "^0.1.29",
 		"@wordlift/wordlift-for-schemaorg": "^1.0",
 		"immutable": "^3",
 		"jest-fetch-mock": "^3.0.1",
