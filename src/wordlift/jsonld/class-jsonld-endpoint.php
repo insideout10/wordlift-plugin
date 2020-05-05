@@ -57,15 +57,16 @@ class Jsonld_Endpoint {
 				)
 			) );
 
+			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/http/(?P<item_id>.*)', array(
+				'methods'  => WP_REST_Server::READABLE,
+				'callback' => array( $that, 'jsonld_using_item_id' ),
+			) );
+
 			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/(?P<post_type>.*)/(?P<post_name>.*)', array(
 				'methods'  => WP_REST_Server::READABLE,
 				'callback' => array( $that, 'jsonld_using_get_page_by_path' ),
 			) );
 
-			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/http/(?P<item_id>.*)', array(
-				'methods'  => WP_REST_Server::READABLE,
-				'callback' => array( $that, 'jsonld_using_item_id' ),
-			) );
 		} );
 
 	}
