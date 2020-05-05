@@ -8,5 +8,8 @@
     "wp-coding-standards/wpcs": "*",
     "phpcompatibility/phpcompatibility-wp": "*"
   },
-  "prefer-stable": true
+  "prefer-stable": true,
+  "require": {
+    "ext-zlib": "*"
+  }
 }
