@@ -205,7 +205,7 @@ class Jsonld_Converter {
 		// Do 1 to 1 mapping and return result.
 		switch ( $property_data['field_type'] ) {
 			case self::FIELD_TYPE_ACF:
-				if ( ! function_exists( 'get_field' ) ) {
+				if ( ! function_exists( 'get_field' ) || ! function_exists( 'get_field_object' ) ) {
 					return array();
 				}
 
@@ -221,6 +221,14 @@ class Jsonld_Converter {
 
 	}
 
+	/**
+	 * Gets data from acf, format the data if it is a repeater field.
+	 *
+	 * @param $field_name
+	 * @param $post_id
+	 *
+	 * @return array|mixed
+	 */
 	public function get_data_for_acf_field( $field_name, $post_id ) {
 		$field_data = get_field_object( $field_name, $post_id );
 		$data       = get_field( $field_name, $post_id );
@@ -239,6 +247,7 @@ class Jsonld_Converter {
 			}
 		}
 
+		// Return normal acf data if it is not a repeater field.
 		return $data;
 	}
 
