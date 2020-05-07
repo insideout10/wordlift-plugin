@@ -209,7 +209,7 @@ class Jsonld_Converter {
 					return array();
 				}
 
-				return get_field( $property_data['field_name'], $post_id );
+				return $this->get_data_for_acf_field( $property_data['field_name'], $post_id );
 
 			case self::FIELD_TYPE_CUSTOM_FIELD:
 
@@ -219,6 +219,27 @@ class Jsonld_Converter {
 				return $value;
 		}
 
+	}
+
+	public function get_data_for_acf_field( $field_name, $post_id ) {
+		$field_data = get_field_object( $field_name, $post_id );
+		$data       = get_field( $field_name, $post_id );
+
+		// only process if it is a repeater field, else return the data.
+		if ( is_array( $field_data ) && array_key_exists( 'type', $field_data )
+		     && $field_data['type'] === 'repeater' ) {
+			// check if we have only one sub field, currently we only support one subfield.
+			if ( is_array( $data ) && count( $data ) > 0 && count( array_keys( $data[0] ) === 1 ) ) {
+				$repeater_formatted_data = array();
+				foreach ( $data as $item ) {
+					$repeater_formatted_data = array_merge( $repeater_formatted_data, array_values( $item ) );
+				}
+
+				return $repeater_formatted_data;
+			}
+		}
+
+		return $data;
 	}
 
 	private function make_single( $value ) {
