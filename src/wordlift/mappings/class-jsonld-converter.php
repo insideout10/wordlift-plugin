@@ -101,23 +101,81 @@ class Jsonld_Converter {
 		// @@todo I think there's an issue here with the Validator, because you're changing the instance state and the
 		// instance may be reused afterwards.
 
-		$properties = $this->validator->validate( $post_id );
+		$properties        = $this->validator->validate( $post_id );
+		$nested_properties = array();
 
 		foreach ( $properties as $property ) {
-			$transform_instance = $this->transform_functions_registry->get_transform_function( $property['transform_function'] );
-			$data               = $this->get_data_from_data_source( $post_id, $property );
-			if ( null !== $transform_instance ) {
-				$transform_data = $transform_instance->transform_data( $data, $jsonld, $references, $post_id );
-				if ( null !== $transform_data ) {
-					$jsonld[ $property['property_name'] ] = $this->make_single( $transform_data );
-				}
-			} else {
-				$jsonld[ $property['property_name'] ] = $this->make_single( $data );
+			// If the property has the character '/' in the property name then it is a nested property.
+			if ( strpos( $property['property_name'], '/' ) !== false ) {
+				$nested_properties[] = $property;
+				continue;
 			}
+			$property_transformed_data = $this->get_property_data( $property, $jsonld, $post_id, $references );
+			if ( false !== $property_transformed_data ) {
+				$jsonld[ $property['property_name'] ] = $property_transformed_data;
+			}
+		}
+
+		$jsonld = $this->process_nested_properties( $nested_properties, $jsonld, $post_id, $references );
+
+		return $jsonld;
+	}
+
+	public function get_property_data( $property, $jsonld, $post_id, &$references ) {
+		$transform_instance = $this->transform_functions_registry->get_transform_function( $property['transform_function'] );
+		$data               = $this->get_data_from_data_source( $post_id, $property );
+		if ( null !== $transform_instance ) {
+			$transform_data = $transform_instance->transform_data( $data, $jsonld, $references, $post_id );
+			if ( null !== $transform_data ) {
+				return $this->make_single( $transform_data );
+			}
+		} else {
+			return $this->make_single( $data );
+		}
+
+		return false;
+	}
+
+	/**
+	 * Process all the nested properties.
+	 *
+	 * @param $nested_properties array
+	 * @param $jsonld array
+	 */
+	public function process_nested_properties( $nested_properties, $jsonld, $post_id, &$references ) {
+		foreach ( $nested_properties as $property ) {
+			$property_data = $this->get_property_data( $property, $jsonld, $post_id, $references );
+			if ( false === $property_data ) {
+				// No need to create nested levels.
+				continue;
+			}
+
+			$keys = explode( '/', $property['property_name'] );
+			// end is the last level of the nested property.
+			$end                      = array_pop( $keys );
+			$current_property_pointer = &$jsonld;
+
+			/**
+			 * Once we find all the nested levels from the property name
+			 * loop through it and create associative array if the levels
+			 * didnt exist.
+			 */
+			while ( count( $keys ) > 0 ) {
+				$key = array_shift( $keys );
+				if ( $key === "" ) {
+					continue;
+				}
+				if ( ! array_key_exists( $key, $current_property_pointer ) ) {
+					$current_property_pointer[ $key ] = array();
+				}
+				$current_property_pointer = &$current_property_pointer[ $key ];
+			}
+			$current_property_pointer[ $end ] = $property_data;
 		}
 
 		return $jsonld;
 	}
+
 
 	/**
 	 * Returns data from data source.
