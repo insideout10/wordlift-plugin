@@ -121,6 +121,16 @@ class Jsonld_Converter {
 		return $jsonld;
 	}
 
+	/**
+	 * Get the property data by applying the transformation function
+	 *
+	 * @param $property
+	 * @param $jsonld
+	 * @param $post_id
+	 * @param $references
+	 *
+	 * @return array|bool|null
+	 */
 	public function get_property_data( $property, $jsonld, $post_id, &$references ) {
 		$transform_instance = $this->transform_functions_registry->get_transform_function( $property['transform_function'] );
 		$data               = $this->get_data_from_data_source( $post_id, $property );
@@ -141,6 +151,8 @@ class Jsonld_Converter {
 	 *
 	 * @param $nested_properties array
 	 * @param $jsonld array
+	 *
+	 * @return array
 	 */
 	public function process_nested_properties( $nested_properties, $jsonld, $post_id, &$references ) {
 		foreach ( $nested_properties as $property ) {
@@ -168,6 +180,8 @@ class Jsonld_Converter {
 				if ( ! array_key_exists( $key, $current_property_pointer ) ) {
 					$current_property_pointer[ $key ] = array();
 				}
+				// We are setting the pointer to the current key, so that at the end
+				// we can add the data at last level.
 				$current_property_pointer = &$current_property_pointer[ $key ];
 			}
 			$current_property_pointer[ $end ] = $property_data;
