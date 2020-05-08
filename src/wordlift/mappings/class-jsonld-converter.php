@@ -242,8 +242,13 @@ class Jsonld_Converter {
 				foreach ( $data as $item ) {
 					$repeater_formatted_data = array_merge( $repeater_formatted_data, array_values( $item ) );
 				}
+				// Remove non unique values.
+				$repeater_formatted_data = array_unique( $repeater_formatted_data );
+				// Remove empty values
+				$repeater_formatted_data = array_filter( $repeater_formatted_data, 'strlen' );
 
-				return $repeater_formatted_data;
+				// re-index all the values.
+				return array_values( $repeater_formatted_data );
 			}
 		}
 

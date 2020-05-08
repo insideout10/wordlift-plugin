@@ -55,6 +55,62 @@ class Mapping_Acf_Repeater_Support_Test extends WP_UnitTestCase {
 
 		// Empty reference array.
 		$this->references = array();
+
+		// register a repeater field.
+		if ( function_exists( 'acf_add_local_field_group' ) ):
+			acf_add_local_field_group( array(
+				'key'    => 'group_5e611eba11fbe',
+				'title'  => 'FinancialProduct',
+				'fields' => array(
+					array(
+						'key'               => 'field_5e09d8a36d4fd',
+						'label'             => 'Color',
+						'name'              => '_wl_color',
+						'type'              => 'repeater',
+						'instructions'      => '',
+						'required'          => 0,
+						'conditional_logic' => 0,
+						'wrapper'           => array(
+							'width' => '',
+							'class' => '',
+							'id'    => '',
+						),
+						'collapsed'         => '',
+						'min'               => 0,
+						'max'               => 0,
+						'layout'            => 'block',
+						'button_label'      => 'Add Step',
+						'sub_fields'        => array(
+							array(
+								'key'               => 'field_5e09d8e26d4fe',
+								'label'             => 'Type',
+								'name'              => 'color',
+								'type'              => 'text',
+								'instructions'      => '',
+								'required'          => 1,
+								'conditional_logic' => 0,
+								'wrapper'           => array(
+									'width' => '',
+									'class' => '',
+									'id'    => '',
+								),
+								'choices'           => array(
+									'HowToStep'    => 'Step',
+									'HowToSection' => 'Section',
+								),
+								'allow_null'        => 0,
+								'other_choice'      => 0,
+								'default_value'     => 'HowToStep',
+								'layout'            => 'horizontal',
+								'return_format'     => 'value',
+								'save_other_choice' => 0,
+							)
+						)
+					)
+				)
+			) );
+		endif;
+
 	}
 
 	/**
@@ -124,60 +180,6 @@ class Mapping_Acf_Repeater_Support_Test extends WP_UnitTestCase {
 			),
 		);
 		$this->create_new_mapping_item( 'category', (int) $result_1[0], $properties );
-		// register a repeater field.
-		if ( function_exists( 'acf_add_local_field_group' ) ):
-			acf_add_local_field_group( array(
-				'key'    => 'group_5e611eba11fbe',
-				'title'  => 'FinancialProduct',
-				'fields' => array(
-					array(
-						'key'               => 'field_5e09d8a36d4fd',
-						'label'             => 'Color',
-						'name'              => '_wl_color',
-						'type'              => 'repeater',
-						'instructions'      => '',
-						'required'          => 0,
-						'conditional_logic' => 0,
-						'wrapper'           => array(
-							'width' => '',
-							'class' => '',
-							'id'    => '',
-						),
-						'collapsed'         => '',
-						'min'               => 0,
-						'max'               => 0,
-						'layout'            => 'block',
-						'button_label'      => 'Add Step',
-						'sub_fields'        => array(
-							array(
-								'key'               => 'field_5e09d8e26d4fe',
-								'label'             => 'Type',
-								'name'              => 'color',
-								'type'              => 'text',
-								'instructions'      => '',
-								'required'          => 1,
-								'conditional_logic' => 0,
-								'wrapper'           => array(
-									'width' => '',
-									'class' => '',
-									'id'    => '',
-								),
-								'choices'           => array(
-									'HowToStep'    => 'Step',
-									'HowToSection' => 'Section',
-								),
-								'allow_null'        => 0,
-								'other_choice'      => 0,
-								'default_value'     => 'HowToStep',
-								'layout'            => 'horizontal',
-								'return_format'     => 'value',
-								'save_other_choice' => 0,
-							)
-						)
-					)
-				)
-			) );
-		endif;
 
 		// insert the data for repeater field.
 		for ( $i = 1; $i <= 2; $i ++ ) {
@@ -192,6 +194,42 @@ class Mapping_Acf_Repeater_Support_Test extends WP_UnitTestCase {
 
 		$this->assertArrayHasKey( 'color', $target_jsonld );
 		$this->assertEquals( $target_jsonld['color'], array( 'color1', 'color2' ) );
+	}
+
+	public function test_when_supplied_with_non_unique_and_empty_fields_to_repeater_field_should_be_removed() {
+		$post_id = $this->factory()->post->create();
+		wp_add_object_terms( $post_id, 'foo', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+		$result_1   = wp_add_object_terms( $post_id, 'how-to', 'category' );
+		$properties = array(
+			array(
+				'property_name'      => 'color',
+				'field_type'         => 'acf',
+				'field_name'         => '_wl_color',
+				'transform_function' => 'none',
+				'property_status'    => Mappings_Validator::ACTIVE_CATEGORY,
+			),
+		);
+		$this->create_new_mapping_item( 'category', (int) $result_1[0], $properties );
+
+		// insert the data for repeater field.
+		for ( $i = 1; $i <= 2; $i ++ ) {
+			$result = add_row(
+				'_wl_color', array( 'color' => "color${i}" ), $post_id );
+			$this->assertNotFalse( $result, 'Must not be false.' );
+		}
+
+		// Also add empty and non unique rows.
+		add_row( '_wl_color', array( 'color' => "color1" ), $post_id );
+		add_row( '_wl_color', array( 'color' => "" ), $post_id );
+		add_row( '_wl_color', array( 'color' => "0" ), $post_id );
+
+		// Create a mapping and get the json ld.
+		// Get the json ld data for this post.
+		$jsonlds       = $this->jsonld_service->get_jsonld( false, $post_id );
+		$target_jsonld = end( $jsonlds );
+
+		$this->assertArrayHasKey( 'color', $target_jsonld );
+		$this->assertEquals( $target_jsonld['color'], array( 'color1', 'color2', '0' ) );
 	}
 
 
