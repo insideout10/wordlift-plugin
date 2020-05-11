@@ -398,12 +398,14 @@ class Wordlift_Configuration_Service {
 	 * Get the package type.
 	 *
 	 * @since 3.20.0
+	 * @since 3.25.5 temporary return blogger, until Search Rankings is back online.
 	 *
 	 * @return string The package type or an empty string if not set.
 	 */
 	public function get_package_type() {
 
-		return $this->get( 'wl_advanced_settings', self::PACKAGE_TYPE, null );
+		return 'blogger';
+//		return $this->get( 'wl_advanced_settings', self::PACKAGE_TYPE, null );
 	}
 
 	/**
