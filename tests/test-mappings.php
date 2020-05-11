@@ -131,4 +131,71 @@ class Wordlift_Mappings_Test extends WP_UnitTestCase {
 		$this->assertArrayHasKey( '@type', $target_jsonld );
 		$this->assertEquals( 'HowTo', $target_jsonld['@type'] );
 	}
+
+	public function test_provided_valid_nested_mapping_should_get_correct_jsonld() {
+		// Create a post.
+		$post_id = wp_insert_post(
+			array(
+				'post_title' => 'foo'
+			)
+		);
+
+		wp_add_object_terms( $post_id, 'foo', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+		$result_1   = wp_add_object_terms( $post_id, 'how-to', 'category' );
+		$properties = array(
+			array(
+				'property_name'      => 'weight/foo/@type',
+				'field_type'         => 'text',
+				'field_name'         => 'Test',
+				'transform_function' => 'none',
+				'property_status'    => Mappings_Validator::ACTIVE_CATEGORY,
+			),
+		);
+		$this->create_new_mapping_item( 'category', (int) $result_1[0], $properties );
+		// Get the json ld data for this post.
+		$jsonlds       = $this->jsonld_service->get_jsonld( false, $post_id );
+		$target_jsonld = end( $jsonlds );
+		$this->assertArrayHasKey( 'weight', $target_jsonld );
+		$this->assertArrayHasKey( 'foo', $target_jsonld['weight'] );
+		$this->assertArrayHasKey( '@type', $target_jsonld['weight']['foo'] );
+	}
+
+	public function test_provided_valid_nested_schema_mapping_should_produce_valid_jsonld() {
+		// Create a post.
+		$post_id = wp_insert_post(
+			array(
+				'post_title' => 'foo'
+			)
+		);
+
+		wp_add_object_terms( $post_id, 'foo', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+		$result_1   = wp_add_object_terms( $post_id, 'how-to', 'category' );
+		$properties = array(
+			array(
+				'property_name'      => 'weight/foo/@type',
+				'field_type'         => 'text',
+				'field_name'         => 'Test',
+				'transform_function' => 'none',
+				'property_status'    => Mappings_Validator::ACTIVE_CATEGORY,
+			),
+			array(
+				'property_name'      => 'weight/foo/random',
+				'field_type'         => 'text',
+				'field_name'         => 'Test',
+				'transform_function' => 'none',
+				'property_status'    => Mappings_Validator::ACTIVE_CATEGORY,
+			),
+		);
+		$this->create_new_mapping_item( 'category', (int) $result_1[0], $properties );
+		// Get the json ld data for this post.
+		$jsonlds       = $this->jsonld_service->get_jsonld( false, $post_id );
+		$target_jsonld = end( $jsonlds );
+		$this->assertArrayHasKey( 'weight', $target_jsonld );
+		$this->assertArrayHasKey( 'foo', $target_jsonld['weight'] );
+		$this->assertArrayHasKey( '@type', $target_jsonld['weight']['foo'] );
+		$this->assertArrayHasKey( 'random', $target_jsonld['weight']['foo'] );
+		$this->assertEquals( 'Test', $target_jsonld['weight']['foo']['random'] );
+	}
+
+
 }

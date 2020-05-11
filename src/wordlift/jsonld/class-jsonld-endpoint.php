@@ -58,12 +58,17 @@ class Jsonld_Endpoint {
 			) );
 
 			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/http/(?P<item_id>.*)', array(
-				'methods'  => WP_REST_Server::READABLE,
+				'methods'  => 'GET',
 				'callback' => array( $that, 'jsonld_using_item_id' ),
 			) );
 
+			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/post-meta/(?P<meta_key>[^/]+)/(?P<meta_value>.*)', array(
+				'methods'  => 'GET',
+				'callback' => array( $that, 'jsonld_using_post_meta' ),
+			) );
+
 			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/(?P<post_type>.*)/(?P<post_name>.*)', array(
-				'methods'  => WP_REST_Server::READABLE,
+				'methods'  => 'GET',
 				'callback' => array( $that, 'jsonld_using_get_page_by_path' ),
 			) );
 
@@ -136,6 +141,30 @@ class Jsonld_Endpoint {
 
 		if ( is_null( $post_id ) ) {
 			return new WP_REST_Response( esc_html( "$post_name of type $post_type not found." ), 404, array( 'Content-Type' => 'text/html' ) );
+		}
+
+		return $this->jsonld_using_post_id( array( 'id' => $post_id, ) );
+	}
+
+	public function jsonld_using_post_meta( $request ) {
+
+		$meta_key   = $request['meta_key'];
+		$meta_value = rawurldecode( $request['meta_value'] );
+
+		global $wpdb;
+
+		$sql = "
+			SELECT post_id AS ID
+			FROM $wpdb->postmeta
+			WHERE meta_key = %s
+			 AND meta_value LIKE %s
+			LIMIT 1
+		";
+
+		$post_id = $wpdb->get_var( $wpdb->prepare( $sql, $meta_key, '%' . $wpdb->esc_like( $meta_value ) . '%' ) );
+
+		if ( is_null( $post_id ) ) {
+			return new WP_REST_Response( esc_html( "Post with meta key $meta_key and value $meta_value not found." ), 404, array( 'Content-Type' => 'text/html' ) );
 		}
 
 		return $this->jsonld_using_post_id( array( 'id' => $post_id, ) );
