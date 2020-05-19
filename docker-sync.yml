@@ -1,0 +1,8 @@
+version: "2"
+
+options:
+  verbose: true
+syncs:
+  advanced-custom-fields-for-schema-org-sync:
+    src: '../advanced-custom-fields-for-schema-org'
+    sync_excludes: ['.docker']

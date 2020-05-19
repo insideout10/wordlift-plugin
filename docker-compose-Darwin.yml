@@ -1,0 +1,15 @@
+version: "3.7"
+
+services:
+  wordpress:
+    volumes:
+      - docker-sync:/var/www/html/wp-content/plugins/advanced-custom-fields-for-schema-org:nocopy
+
+  cli:
+    volumes:
+      - docker-sync:/var/www/html/wp-content/plugins/advanced-custom-fields-for-schema-org:nocopy
+
+volumes:
+  docker-sync:
+    external:
+      name: advanced-custom-fields-for-schema-org-sync
