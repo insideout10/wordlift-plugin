@@ -48,3 +48,6 @@ yarn-error.log*
 .docker/nginx/wordlift-plugin.localhost/key.pem
 
 wordlift-*.zip
+
+# Ignore Docker Sync files.
+.docker-sync/
