@@ -62,6 +62,8 @@ class Wordlift_Term_JsonLd_Adapter {
 	public function get_carousel_jsonld( $jsonld ) {
 		global $wp_query;
 
+		$entities = array();
+
 		if ( ! is_array( $wp_query->posts ) ) {
 			// Bail out if no posts are present.
 			return $jsonld;
@@ -84,12 +86,16 @@ class Wordlift_Term_JsonLd_Adapter {
 			array_push( $jsonld['itemListElement'], array(
 				'@type'    => 'ListItem',
 				'position' => $position,
-				'item'     => $post_jsonld
+				'item'     => array_shift( $post_jsonld )
 			) );
+			$entities = array_merge( $entities, $post_jsonld );
 			$position += 1;
 		}
 
-		return $jsonld;
+		return array(
+			'post_jsonld' => $jsonld,
+			'entities'    => $entities
+		);
 	}
 
 	/**
@@ -114,10 +120,16 @@ class Wordlift_Term_JsonLd_Adapter {
 		 *
 		 * @since 3.26.0
 		 */
-		$jsonld = $this->get_carousel_jsonld( array() );
+		$carousel_data = $this->get_carousel_jsonld( array() );
+
+		$entities    = $carousel_data['entities'];
+		$post_jsonld = $carousel_data['post_jsonld'];
 
 		// If the carousel jsonld returns empty array, then fallback to previous jsonld generation.
-		if ( $jsonld === array() ) {
+		if ( $post_jsonld !== array() ) {
+			$jsonld = array( $post_jsonld );
+			$jsonld = array_merge( $jsonld, $entities );
+		} else {
 			// The `_wl_entity_id` are URIs.
 			$entity_ids         = get_term_meta( $term_id, '_wl_entity_id' );
 			$entity_uri_service = $this->entity_uri_service;

@@ -58,6 +58,7 @@ class Wordlift_Term_Jsonld_Adapter_Test extends Wordlift_Unit_Test_Case {
 
 		// get json ld data
 		$result = $this->adapter->get_carousel_jsonld( array() );
+		$result = $result['post_jsonld'];
 		// the result should have key itemListElement.
 		$this->assertArrayHasKey( 'itemListElement', $result );
 		// the result should have 2 post jsonlds
