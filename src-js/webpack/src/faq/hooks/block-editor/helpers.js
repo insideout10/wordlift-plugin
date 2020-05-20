@@ -34,7 +34,7 @@ export function getCurrentSelectionHTML() {
   /** Check if it multi selection, if multi selection is done then
    * the user can only select the contents in the block fully, so we
    * can append the html in to single string */
-  const blocks = wp.data.select("core/block-editor").getMultiSelectedBlocks();
+  const blocks = wp.data.select("core/editor").getMultiSelectedBlocks();
 
   if (blocks.length > 1) {
     // its a multi selection, loop through blocks and get html.

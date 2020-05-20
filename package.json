@@ -75,7 +75,7 @@
     "test:php": "./vendor/bin/phpunit",
     "test:php-test-coverage": "./vendor/bin/phpunit -c phpunit-test-coverage.xml",
     "test:multisite": "./vendor/bin/phpunit -c phpunit-multisite.xml",
-    "test:jest": "cd ./src-js/webpack/ && yarn install && yarn test",
+    "test:jest": "nvm install 8 --reinstall-packages-from=node && nvm use 8 && cd ./src-js/webpack/ && yarn install && yarn test",
     "test:php5.3-compat": "./vendor/bin/phpcs src/ --extensions=php --ignore=class-wordlift-entity-types-taxonomy-walker-5-3.php --standard=PHPCompatibilityWP --runtime-set testVersion 5.3"
   },
   "jest": {

@@ -7,13 +7,14 @@
 /**
  * External dependencies.
  */
-import {on} from "backbone";
+import { on } from "backbone";
 /**
  * Internal dependencies.
  */
-import {FAQ_HIGHLIGHT_TEXT, FAQ_ITEM_DELETED} from "../../constants/faq-hook-constants";
-import CustomFaqElementsRegistry, {FAQ_ANSWER_TAG_NAME, FAQ_QUESTION_TAG_NAME} from "../custom-faq-elements";
+import { FAQ_HIGHLIGHT_TEXT, FAQ_ITEM_DELETED } from "../../constants/faq-hook-constants";
+import CustomFaqElementsRegistry, { FAQ_ANSWER_TAG_NAME, FAQ_QUESTION_TAG_NAME } from "../custom-faq-elements";
 import HighlightHelper from "../helpers/highlight-helper";
+import RangeHelper from "../helpers/range-helper";
 
 class TinymceHighlightHandler {
   /**
@@ -80,10 +81,17 @@ class TinymceHighlightHandler {
        */
       return;
     }
-    const html = this.selection.getContent();
     const tagName = TinymceHighlightHandler.getTagBasedOnHighlightedText(isQuestion);
-    const highlightedHTML = HighlightHelper.highlightHTML(html, tagName, id.toString());
-    this.selection.setContent(highlightedHTML);
+    /**
+     * DOM Range object.
+     * @type {Range}
+     */
+    const range = this.selection.getRng();
+    const rangeHelper = new RangeHelper(range);
+    const processedRange = rangeHelper.getProcessedRange();
+    let nodes = Array.from(this.selection.getNode().childNodes);
+    HighlightHelper.highlightNodesByRange(nodes, tagName, id.toString(), range, processedRange);
+    range.collapse()
   }
 }
 

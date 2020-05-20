@@ -6,7 +6,7 @@
 }
 @mixin wl-faq-highlight-mixin {
   wl-faq-question {
-    background-color: #00ffa1 !important;
+    border-bottom: 2px dotted rgb(0, 122, 255);
     opacity: 0.9;
     display: inline;
     &:hover {
@@ -15,7 +15,7 @@
   }
 
   wl-faq-answer {
-    background-color: #b9d25d !important;
+    border-bottom: 2px dotted rgb(0, 122, 255);
     opacity: 0.9;
     display: inline;
     &:hover {

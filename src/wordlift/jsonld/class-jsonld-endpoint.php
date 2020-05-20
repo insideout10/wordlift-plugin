@@ -8,11 +8,9 @@
 
 namespace Wordlift\Jsonld;
 
-use DateInterval;
-use DateTime;
-use DateTimeZone;
 use Wordlift_Jsonld_Service;
 use WP_REST_Response;
+use WP_REST_Server;
 
 /**
  * Class Jsonld_Endpoint
@@ -47,7 +45,7 @@ class Jsonld_Endpoint {
 		$that = $this;
 		add_action( 'rest_api_init', function () use ( $that ) {
 			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/(?P<id>\d+)', array(
-				'methods'  => 'GET',
+				'methods'  => WP_REST_Server::READABLE,
 				'callback' => array( $that, 'jsonld_using_post_id' ),
 				'args'     => array(
 					'id' => array(
@@ -60,9 +58,15 @@ class Jsonld_Endpoint {
 			) );
 
 			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/http/(?P<item_id>.*)', array(
-				'methods'  => 'GET',
+				'methods'  => WP_REST_Server::READABLE,
 				'callback' => array( $that, 'jsonld_using_item_id' ),
 			) );
+
+			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/(?P<post_type>.*)/(?P<post_name>.*)', array(
+				'methods'  => WP_REST_Server::READABLE,
+				'callback' => array( $that, 'jsonld_using_get_page_by_path' ),
+			) );
+
 		} );
 
 	}
@@ -85,22 +89,9 @@ class Jsonld_Endpoint {
 		$is_homepage = ( 0 === $post_id );
 
 		// Send the generated JSON-LD.
-		$data     = $this->jsonld_service->get_jsonld( $is_homepage, $post_id );
-		$response = new WP_REST_Response( $data );
+		$data = $this->jsonld_service->get_jsonld( $is_homepage, $post_id );
 
-		$cache_in_seconds = 86400;
-		$date_timezone    = new DateTimeZone( 'GMT' );
-		$date_now         = new DateTime( 'now', $date_timezone );
-		$date_interval    = new DateInterval( "PT{$cache_in_seconds}S" );
-		$expires          = $date_now->add( $date_interval )->format( 'D, j M Y H:i:s T' );
-
-		$response->set_headers( array(
-			'Content-Type'  => 'application/ld+json; charset=' . get_option( 'blog_charset' ),
-			'Cache-Control' => "max-age=$cache_in_seconds",
-			'Expires'       => $expires
-		) );
-
-		return $response;
+		return Jsonld_Response_Helper::to_response( $data );
 	}
 
 	/**
@@ -127,5 +118,27 @@ class Jsonld_Endpoint {
 		return $this->jsonld_using_post_id( array( 'id' => $post->ID, ) );
 	}
 
+	public function jsonld_using_get_page_by_path( $request ) {
+
+		$post_name = $request['post_name'];
+		$post_type = $request['post_type'];
+
+		global $wpdb;
+
+		$sql = "
+			SELECT ID
+			FROM $wpdb->posts
+			WHERE post_name = %s
+			 AND post_type = %s
+		";
+
+		$post_id = $wpdb->get_var( $wpdb->prepare( $sql, $post_name, $post_type ) );
+
+		if ( is_null( $post_id ) ) {
+			return new WP_REST_Response( esc_html( "$post_name of type $post_type not found." ), 404, array( 'Content-Type' => 'text/html' ) );
+		}
+
+		return $this->jsonld_using_post_id( array( 'id' => $post_id, ) );
+	}
 
 }

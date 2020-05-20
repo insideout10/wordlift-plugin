@@ -10,7 +10,7 @@ import {
   setValue,
   loadItemsSuccess,
   close,
-  open
+  open,
 } from "./actions";
 import { autocomplete } from "./api";
 import EditPostWidgetController from "../../angular/EditPostWidgetController";
@@ -39,8 +39,8 @@ function* requestClose() {
 }
 
 function editorSelectionChangedChannel() {
-  return eventChannel(emitter => {
-    const hook = selection => emitter(selection);
+  return eventChannel((emitter) => {
+    const hook = (params) => emitter(params);
 
     // eslint-disable-next-line
     wp.wordlift.on("editorSelectionChanged", hook);
@@ -54,10 +54,10 @@ function* watchForEditorSelectionChanges() {
   const channel = yield call(editorSelectionChangedChannel);
 
   while (true) {
-    const value = yield take(channel);
-    yield put(setValue(value));
+    const { selection } = yield take(channel);
+    yield put(setValue(selection));
 
-    if ("" === value) yield put(close());
+    if ("" === selection) yield put(close());
   }
 }
 
@@ -75,11 +75,11 @@ function* saga() {
   // Watch for setValue only after an open.
   while (true) {
     yield take(open);
-    yield call(loadItems, yield select(state => ({ payload: state.value })));
+    yield call(loadItems, yield select((state) => ({ payload: state.value })));
 
     yield race({
       task: call(watchForSetValue),
-      cancel: take(close)
+      cancel: take(close),
     });
   }
 }

@@ -22,7 +22,13 @@
   }
 }
 
-.editor-block-list__block {
+/**
+ * .editor-block-list__block was removed on 5.4.0 and replaced with
+ * .block-editor-block-list__block, for WP 5.4.0 compatibility we add this class
+ */
+
+.editor-block-list__block,
+.block-editor-block-list__block {
   @include textannotation;
   @include wl-faq-highlight-mixin;
   &[data-type="wordlift/faceted-search"],

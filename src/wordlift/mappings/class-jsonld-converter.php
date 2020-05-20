@@ -157,8 +157,8 @@ class Jsonld_Converter {
 			return null;
 		}
 
-		if ( 1 === count( $values ) ) {
-			return $values[0];
+		if ( 1 === count( $values ) && 0 === key( $values ) ) {
+			return current( $values );
 		}
 
 		return $values;

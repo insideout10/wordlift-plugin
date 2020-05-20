@@ -23,6 +23,7 @@ use Wordlift\Faq\Faq_Rest_Controller;
 use Wordlift\Faq\Faq_Tinymce_Adapter;
 use Wordlift\Faq\Faq_To_Jsonld_Converter;
 use Wordlift\Jsonld\Jsonld_Adapter;
+use Wordlift\Jsonld\Jsonld_By_Id_Endpoint;
 use Wordlift\Jsonld\Jsonld_Endpoint;
 use Wordlift\Mappings\Jsonld_Converter;
 use Wordlift\Mappings\Mappings_DBO;
@@ -1273,6 +1274,8 @@ class Wordlift {
 		new Jsonld_Endpoint( $this->jsonld_service, $this->entity_uri_service );
 		// Prints the JSON-LD in the head.
 		new Jsonld_Adapter( $this->jsonld_service );
+
+		new Jsonld_By_Id_Endpoint( $this->jsonld_service, $this->entity_uri_service );
 
 		$this->key_validation_service = new Wordlift_Key_Validation_Service( $this->configuration_service );
 		$this->content_filter_service = new Wordlift_Content_Filter_Service( $this->entity_service, $this->configuration_service, $this->entity_uri_service );

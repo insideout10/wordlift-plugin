@@ -80,7 +80,7 @@ export const updateBlockAttributesMethod = jest.fn();
 export const blockEditorWithSelectedBlocks = {
   data: {
     select: editorString => {
-      if (editorString === "core/block-editor") {
+      if (editorString === "core/editor") {
         return {
           getMultiSelectedBlocks: () => fakeParagraphBlocksData,
           getSelectedBlock: () => {
@@ -90,7 +90,7 @@ export const blockEditorWithSelectedBlocks = {
       }
     },
     dispatch: editorString => {
-      if (editorString === "core/block-editor") {
+      if (editorString === "core/editor") {
         return {
           updateBlockAttributes: updateBlockAttributesMethod
         };
@@ -102,7 +102,7 @@ export const blockEditorWithSelectedBlocks = {
 export const blockEditorWithNoSelectedBlocks = {
   data: {
     select: editorString => {
-      if (editorString === "core/block-editor") {
+      if (editorString === "core/editor") {
         return {
           getMultiSelectedBlocks: () => [],
           getSelectedBlock: () => {
@@ -112,7 +112,7 @@ export const blockEditorWithNoSelectedBlocks = {
       }
     },
     dispatch: editorString => {
-      if (editorString === "core/block-editor") {
+      if (editorString === "core/editor") {
         return {
           updateBlockAttributes: updateBlockAttributesMethod
         };
@@ -124,14 +124,14 @@ export const blockEditorWithNoSelectedBlocks = {
 export const blockEditorWithHighlightedBlocks = {
   data: {
     select: editorString => {
-      if (editorString === "core/block-editor") {
+      if (editorString === "core/editor") {
         return {
           getBlocks: () => fakeParagraphBlocksHighlightingData
         };
       }
     },
     dispatch: editorString => {
-      if (editorString === "core/block-editor") {
+      if (editorString === "core/editor") {
         return {
           updateBlockAttributes: updateBlockAttributesMethod
         };

@@ -29310,12 +29310,11 @@ angular.module('wordlift.ui.carousel', ['ngTouch']).directive('wlCarousel', [
 angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', ['wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.EditorService', 'wordlift.editpost.widget.services.GeoLocationService', 'wordlift.editpost.widget.providers.ConfigurationProvider']).filter('filterEntitiesByTypesAndRelevance', [
   'configuration', '$log', function(configuration, $log) {
     return function(items, types) {
-      var entity, filtered, id, ref, treshold;
+      var entity, filtered, id, ref;
       filtered = [];
       if (items == null) {
         return filtered;
       }
-      treshold = Math.floor(((1 / 120) * Object.keys(items).length) + 0.75);
       for (id in items) {
         entity = items[id];
         if (ref = entity.mainType, indexOf.call(types, ref) >= 0) {
@@ -30812,7 +30811,11 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', []).p
             selection = editor.selection.getContent({
               format: 'text'
             });
-            return wp.wordlift.trigger('editorSelectionChanged', selection);
+            return wp.wordlift.trigger('editorSelectionChanged', {
+              selection: selection,
+              editor: editor,
+              source: "tinymce"
+            });
           };
           return editor.on('selectionchange', function() {
             return broadcastEditorSelection();

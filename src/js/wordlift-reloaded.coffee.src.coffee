@@ -384,24 +384,9 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     if not items?
       return filtered
 
-    treshold = Math.floor ( (1/120) * Object.keys(items).length ) + 0.75
-
     for id, entity of items
       if  entity.mainType in types
         filtered.push entity
-
-        #annotations_count = Object.keys( entity.annotations ).length
-        #if annotations_count is 0
-        #  continue
-
-        #if annotations_count > treshold and entity.confidence is 1
-        #  filtered.push entity
-        #  continue
-        #if entity.occurrences.length > 0
-        #  filtered.push entity
-        #  continue
-        #if entity.id.startsWith configuration.datasetUri
-        #  filtered.push entity
 
     filtered
 
@@ -2066,7 +2051,7 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
         # See https://github.com/insideout10/wordlift-plugin/issues/467
         broadcastEditorSelection = () ->
           selection = editor.selection.getContent({format: 'text'})
-          wp.wordlift.trigger 'editorSelectionChanged', selection
+          wp.wordlift.trigger 'editorSelectionChanged', { selection, editor, source: "tinymce" }
 
         editor.on('selectionchange', () -> broadcastEditorSelection() )
 

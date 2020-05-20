@@ -65,10 +65,11 @@ class Wordlift_Timeline_Service {
 	/**
 	 * Create a Wordlift_Timeline_Service instance.
 	 *
+	 * @param \Wordlift_Entity_Service $entity_service The Entity service.
+	 * @param \Wordlift_Entity_Type_Service $entity_type_service The {@link Wordlift_Entity_Type_Service} instance.
+	 *
 	 * @since 3.1.0
 	 *
-	 * @param \Wordlift_Entity_Service      $entity_service      The Entity service.
-	 * @param \Wordlift_Entity_Type_Service $entity_type_service The {@link Wordlift_Entity_Type_Service} instance.
 	 */
 	public function __construct( $entity_service, $entity_type_service ) {
 
@@ -84,9 +85,9 @@ class Wordlift_Timeline_Service {
 	/**
 	 * Get the singleton instance of the Wordlift_Timeline_Service
 	 *
+	 * @return \Wordlift_Timeline_Service The singleton instance of the Wordlift_Timeline_Service.
 	 * @since 3.1.0
 	 *
-	 * @return \Wordlift_Timeline_Service The singleton instance of the Wordlift_Timeline_Service.
 	 */
 	public static function get_instance() {
 
@@ -111,20 +112,20 @@ class Wordlift_Timeline_Service {
 	/**
 	 * Retrieve timeline events.
 	 *
+	 * @param int $post_id The post ID.
+	 *
+	 * @return array An array of event posts.
 	 * @since 3.1.0
 	 *
 	 * @uses  wl_core_get_related_entity_ids() to retrieve the entities referenced by the specified post.
 	 *
-	 * @param int $post_id The post ID.
-	 *
-	 * @return array An array of event posts.
 	 */
 	public function get_events( $post_id = null ) {
 
 		// Get the entity IDs either from the entities related to the specified post or from the last 50 published
 		// posts if no post has been specified.
 		$ids = ( is_numeric( $post_id )
-			? wl_core_get_related_entity_ids( $post_id )
+			? wl_core_get_related_entity_ids( $post_id, array( 'predicate' => 'where', ) )
 			: $this->get_all_related_to_last_50_published_posts() );
 
 		// Add the post itself if it's an entity.
@@ -140,16 +141,6 @@ class Wordlift_Timeline_Service {
 		}
 
 		$this->log->trace( 'Getting events [ entity ids :: ' . join( ', ', $ids ) . ' ]' );
-
-//		$entity_type_service = $this->entity_type_service;
-
-//		var_dump($ids);
-
-//		return array_map( function ( $item ) {
-//			return get_post( $item );
-//		}, array_filter( $ids, function ( $item ) use ( $entity_type_service ) {
-//			return $entity_type_service->has_entity_type( $item, 'http://schema.org/Event' );
-//		} ) );
 
 		$args = array(
 			'post__in'       => $ids,
@@ -186,11 +177,11 @@ class Wordlift_Timeline_Service {
 	 * to get an automatic excerpt. Since we're being called inside an AJAX request,
 	 * we're not taking care of restoring any previous post: there isn't any.
 	 *
-	 * @since 3.1.0
-	 *
 	 * @param array $posts An array of posts.
 	 *
 	 * @return array|string An array of timeline events or an empty string if no posts are provided.
+	 * @since 3.1.0
+	 *
 	 */
 	public function to_json( $posts ) {
 
@@ -232,7 +223,8 @@ class Wordlift_Timeline_Service {
 			}
 
 			// Load thumbnail
-			if ( '' !== ( $thumbnail_id = get_post_thumbnail_id( $item->ID ) )
+			$thumbnail_id = get_post_thumbnail_id( $item->ID );
+			if ( '' !== $thumbnail_id && 0 !== $thumbnail_id
 			     && false !== ( $attachment = wp_get_attachment_image_src( $thumbnail_id ) )
 			) {
 
@@ -292,11 +284,11 @@ class Wordlift_Timeline_Service {
 	 * This function filters {@link excerpt_more} by removing it, since we're
 	 * adding the 'read more' link. This filter is set by {@see to_json}.
 	 *
-	 * @since 3.7.0
-	 *
 	 * @param string $excerpt_more The excerpt more preset.
 	 *
 	 * @return string An empty string.
+	 * @since 3.7.0
+	 *
 	 */
 	public function excerpt_more( $excerpt_more ) {
 
@@ -307,11 +299,11 @@ class Wordlift_Timeline_Service {
 	 * A filter for the excerpt length, set by the `to_json` function, to tailor
 	 * how many words to return according to the client setting.
 	 *
-	 * @since 3.7.0
-	 *
 	 * @param int $length The preset number of words.
 	 *
 	 * @return int The number of words for the preset.
+	 * @since 3.7.0
+	 *
 	 */
 	public function excerpt_length( $length ) {
 
@@ -322,11 +314,11 @@ class Wordlift_Timeline_Service {
 	/**
 	 * Convert the date to a date array.
 	 *
-	 * @since 3.7.0
-	 *
 	 * @param $value int A date value.
 	 *
 	 * @return array An array containing year, month and day values.
+	 * @since 3.7.0
+	 *
 	 */
 	public static function date( $value ) {
 
@@ -342,9 +334,9 @@ class Wordlift_Timeline_Service {
 	 * Get the entities related to the last 50 posts published on this blog (we're keeping a long function name due to
 	 * its specific function).
 	 *
+	 * @return array An array of post IDs.
 	 * @since 3.1.0
 	 *
-	 * @return array An array of post IDs.
 	 */
 	public function get_all_related_to_last_50_published_posts() {
 

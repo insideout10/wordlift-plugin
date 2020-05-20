@@ -6,13 +6,14 @@
  */
 
 /**
- * External dependencies.
+ * External dependencies
  */
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+
 /**
- * Internal dependencies.
+ * Internal dependencies
  */
 import { WlContainer } from "../../../mappings/blocks/wl-container";
 import { WlColumn } from "../../../mappings/blocks/wl-column";
@@ -22,6 +23,8 @@ import WlPostExcerptLoadingScreen from "../wl-post-excerpt-loading-screen";
 import { requestPostExcerpt, setNotificationData } from "../../actions";
 import { getPostContent, removeDefaultExcerptPanel } from "./helpers";
 import WlNotificationArea from "../../../common/components/wl-notification-area";
+
+const tinymce = global["tinymce"];
 
 class WlPostExcerpt extends React.Component {
   constructor(props) {
@@ -37,11 +40,15 @@ class WlPostExcerpt extends React.Component {
    */
   componentDidMount() {
     removeDefaultExcerptPanel();
-    this.props.dispatch(
-      requestPostExcerpt({
-        postBody: getPostContent()
-      })
-    );
+
+    const content = getPostContent();
+
+    if ("" !== content)
+      this.props.dispatch(
+        requestPostExcerpt({
+          postBody: content
+        })
+      );
   }
 
   /**
@@ -60,11 +67,14 @@ class WlPostExcerpt extends React.Component {
    * Refresh the excerpt by getting the new data.
    */
   refreshExcerpt() {
-    this.props.dispatch(
-      requestPostExcerpt({
-        postBody: getPostContent()
-      })
-    );
+    const content = getPostContent();
+
+    if ("" !== content)
+      this.props.dispatch(
+        requestPostExcerpt({
+          postBody: getPostContent()
+        })
+      );
   }
 
   /**
