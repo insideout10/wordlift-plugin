@@ -8,9 +8,12 @@
 
 namespace Wordlift\Jsonld;
 
+use DateInterval;
+use DateTime;
+use DateTimeZone;
 use Wordlift_Jsonld_Service;
+use WP_REST_Request;
 use WP_REST_Response;
-use WP_REST_Server;
 
 /**
  * Class Jsonld_Endpoint
@@ -45,7 +48,7 @@ class Jsonld_Endpoint {
 		$that = $this;
 		add_action( 'rest_api_init', function () use ( $that ) {
 			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/(?P<id>\d+)', array(
-				'methods'  => WP_REST_Server::READABLE,
+				'methods'  => 'GET',
 				'callback' => array( $that, 'jsonld_using_post_id' ),
 				'args'     => array(
 					'id' => array(
@@ -62,7 +65,7 @@ class Jsonld_Endpoint {
 				'callback' => array( $that, 'jsonld_using_item_id' ),
 			) );
 
-			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/post-meta/(?P<meta_key>[^/]+)/(?P<meta_value>.*)', array(
+			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/post-meta/(?P<meta_key>[^/]+)', array(
 				'methods'  => 'GET',
 				'callback' => array( $that, 'jsonld_using_post_meta' ),
 			) );
@@ -94,9 +97,22 @@ class Jsonld_Endpoint {
 		$is_homepage = ( 0 === $post_id );
 
 		// Send the generated JSON-LD.
-		$data = $this->jsonld_service->get_jsonld( $is_homepage, $post_id );
+		$data     = $this->jsonld_service->get_jsonld( $is_homepage, $post_id );
+		$response = new WP_REST_Response( $data );
 
-		return Jsonld_Response_Helper::to_response( $data );
+		$cache_in_seconds = 86400;
+		$date_timezone    = new DateTimeZone( 'GMT' );
+		$date_now         = new DateTime( 'now', $date_timezone );
+		$date_interval    = new DateInterval( "PT{$cache_in_seconds}S" );
+		$expires          = $date_now->add( $date_interval )->format( 'D, j M Y H:i:s T' );
+
+		$response->set_headers( array(
+			'Content-Type'  => 'application/ld+json; charset=' . get_option( 'blog_charset' ),
+			'Cache-Control' => "max-age=$cache_in_seconds",
+			'Expires'       => $expires
+		) );
+
+		return $response;
 	}
 
 	/**
@@ -146,10 +162,16 @@ class Jsonld_Endpoint {
 		return $this->jsonld_using_post_id( array( 'id' => $post_id, ) );
 	}
 
+	/**
+	 * @param WP_REST_Request $request
+	 *
+	 * @return WP_REST_Response
+	 * @throws \Exception
+	 */
 	public function jsonld_using_post_meta( $request ) {
 
 		$meta_key   = $request['meta_key'];
-		$meta_value = rawurldecode( $request['meta_value'] );
+		$meta_value = current( $request->get_query_params( 'meta_value' ) );
 
 		global $wpdb;
 
@@ -157,11 +179,11 @@ class Jsonld_Endpoint {
 			SELECT post_id AS ID
 			FROM $wpdb->postmeta
 			WHERE meta_key = %s
-			 AND meta_value LIKE %s
+			 AND meta_value = %s
 			LIMIT 1
 		";
 
-		$post_id = $wpdb->get_var( $wpdb->prepare( $sql, $meta_key, '%' . $wpdb->esc_like( $meta_value ) . '%' ) );
+		$post_id = $wpdb->get_var( $wpdb->prepare( $sql, $meta_key, $meta_value ) );
 
 		if ( is_null( $post_id ) ) {
 			return new WP_REST_Response( esc_html( "Post with meta key $meta_key and value $meta_value not found." ), 404, array( 'Content-Type' => 'text/html' ) );
