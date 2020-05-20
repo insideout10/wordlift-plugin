@@ -143,7 +143,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 = 3.26.0 (2020-02-28) =
-
+* Enhancement: [#1029](https://github.com/insideout10/wordlift-plugin/pull/1029): Adding jsonld support for colleciton pages.
 = 3.25.2 (2020-03-11) =
 * Enhancement: Image License Compliance tool.
 
