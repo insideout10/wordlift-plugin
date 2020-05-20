@@ -12,6 +12,7 @@ use DateInterval;
 use DateTime;
 use DateTimeZone;
 use Wordlift_Jsonld_Service;
+use WP_REST_Request;
 use WP_REST_Response;
 
 /**
@@ -64,7 +65,7 @@ class Jsonld_Endpoint {
 				'callback' => array( $that, 'jsonld_using_item_id' ),
 			) );
 
-			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/post-meta/(?P<meta_key>[^/]+)/(?P<meta_value>.*)', array(
+			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/post-meta/(?P<meta_key>[^/]+)', array(
 				'methods'  => 'GET',
 				'callback' => array( $that, 'jsonld_using_post_meta' ),
 			) );
@@ -161,10 +162,16 @@ class Jsonld_Endpoint {
 		return $this->jsonld_using_post_id( array( 'id' => $post_id, ) );
 	}
 
+	/**
+	 * @param WP_REST_Request $request
+	 *
+	 * @return WP_REST_Response
+	 * @throws \Exception
+	 */
 	public function jsonld_using_post_meta( $request ) {
 
 		$meta_key   = $request['meta_key'];
-		$meta_value = rawurldecode( $request['meta_value'] );
+		$meta_value = current( $request->get_query_params( 'meta_value' ) );
 
 		global $wpdb;
 
@@ -172,11 +179,11 @@ class Jsonld_Endpoint {
 			SELECT post_id AS ID
 			FROM $wpdb->postmeta
 			WHERE meta_key = %s
-			 AND meta_value LIKE %s
+			 AND meta_value = %s
 			LIMIT 1
 		";
 
-		$post_id = $wpdb->get_var( $wpdb->prepare( $sql, $meta_key, '%' . $wpdb->esc_like( $meta_value ) . '%' ) );
+		$post_id = $wpdb->get_var( $wpdb->prepare( $sql, $meta_key, $meta_value ) );
 
 		if ( is_null( $post_id ) ) {
 			return new WP_REST_Response( esc_html( "Post with meta key $meta_key and value $meta_value not found." ), 404, array( 'Content-Type' => 'text/html' ) );
