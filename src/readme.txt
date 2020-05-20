@@ -145,6 +145,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 = 3.26.0 (2020-04-07) =
 * Enhancement [#1027](https://github.com/insideout10/wordlift-plugin/issues/1027): Adding support for Wordpress 5.4.
 * Enhancement [#1016](https://github.com/insideout10/wordlift-plugin/issues/1016): Context Cards should display referenced entity data when Entity Redirect is active
+* Enhancement [#1056](https://github.com/insideout10/wordlift-plugin/pull/1056): Adding filter to assign default entity type based on post type.
 
 = 3.25.4 (2020-04-07) =
 * Enhancement [#1027](https://github.com/insideout10/wordlift-plugin/issues/1027): Adding support for Wordpress 5.4.
