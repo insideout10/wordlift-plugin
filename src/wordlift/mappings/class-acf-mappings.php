@@ -22,13 +22,20 @@ class Acf_Mappings {
 	 */
 	public function __construct() {
 
+		$that = $this;
+		add_action( 'plugins_loaded', function () use ( $that ) {
+			$that->add_acf_option_to_mappings_ui();
+		} );
+
+	}
+
+	private function add_acf_option_to_mappings_ui() {
 		// Bail out if ACF is not available.
 		if ( ! function_exists( 'acf_get_field_groups' ) ) {
 			return array();
 		}
 
 		add_filter( 'wl_mappings_field_types', array( $this, 'wl_mappings_field_types', ) );
-
 	}
 
 	/**
