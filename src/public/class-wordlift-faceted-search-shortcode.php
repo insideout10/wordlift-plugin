@@ -46,25 +46,11 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 		// Extract attributes and set default values.
 		$shortcode_atts = shortcode_atts( array(
 			'title'          => __( 'Related articles', 'wordlift' ),
-			'show_facets'    => true,
-			'with_carousel'  => true,
-			'squared_thumbs' => false,
 			'limit'          => 20,
+			'post_id'        => '',
+			'template_id'    => '',
+			'uniqid'         => uniqid( 'wl-faceted-widget-' ),
 		), $atts );
-
-		foreach (
-			array(
-				'show_facets',
-				'with_carousel',
-				'squared_thumbs',
-			) as $att
-		) {
-
-			// See http://wordpress.stackexchange.com/questions/119294/pass-boolean-value-in-shortcode
-			$shortcode_atts[ $att ] = filter_var(
-				$shortcode_atts[ $att ], FILTER_VALIDATE_BOOLEAN
-			);
-		}
 
 		return $shortcode_atts;
 	}
@@ -80,57 +66,39 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 	 */
 	private function web_shortcode( $atts ) {
 
+		//return rest_url("wordlift/v1/faceted-search/network");
+
 		// attributes extraction and boolean filtering
 		$shortcode_atts = $this->make_shortcode_atts( $atts );
 
-		// If the current post is not an entity and has no related entities
-		// than the shortcode cannot be rendered
-		// TODO Add an alert visibile only for connected admin users.
-		$current_post = get_post();
-
-		$entity_service = Wordlift_Entity_Service::get_instance();
-		$entity_ids     = $entity_service->is_entity( $current_post->ID ) ?
-			array( $current_post->ID ) :
-			wl_core_get_related_entity_ids( $current_post->ID );
-
-		// Bail if there are no entity ids.
-		if ( 0 === count( $entity_ids ) ) {
-			return '';
+		// avoid building the widget when no post_id is specified and there is a list of posts.
+		if ( empty( $shortcode_atts['post_id'] ) && ! is_singular() ) {
+			return;
 		}
 
-		$div_id = 'wordlift-faceted-entity-search-widget';
+		$post         = ! empty( $shortcode_atts['post_id'] ) ? get_post( intval( $shortcode_atts['post_id'] ) ) : get_post();
+		$limit        = $shortcode_atts['limit'];
+		$faceted_id   = $shortcode_atts['uniqid'];
 
-		// Enqueue common shortcode scripts.
-		$this->enqueue_scripts();
+		$rest_url     = $post ? rest_url(sprintf("wordlift/v1/faceted-search/network?post_id=%s&limit=%s", $post->ID, $limit)) : false;
 
-		// Enqueue shortcode specific scripts and styles.
-		$deps = apply_filters( 'wl_include_font_awesome', true )
-			? array( 'wordlift-font-awesome' )
-			: array();
-		wp_enqueue_style( 'wordlift-faceted-search', dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-faceted-entity-search-widget.min.css', $deps, Wordlift::get_instance()->get_version() );
-		wp_enqueue_script( 'wordlift-faceted-search', dirname( plugin_dir_url( __FILE__ ) ) . '/js/wordlift-faceted-entity-search-widget.js' );
+		// avoid building the widget when no valid $rest_url
+		if ( ! $rest_url ) {
+			return;
+		}
 
-		wp_localize_script(
-			'wordlift-faceted-search',
-			'wl_faceted_search_params', array(
-				'ajax_url'             => admin_url( 'admin-ajax.php' ),
-				'action'               => 'wl_faceted_search',
-				'post_id'              => $current_post->ID,
-				'entity_ids'           => $entity_ids,
-				'limit'                => apply_filters( 'wl_faceted_search_limit', $shortcode_atts['limit'] ),
-				'div_id'               => $div_id,
-				'defaultThumbnailPath' => WL_DEFAULT_THUMBNAIL_PATH,
-				'attrs'                => $shortcode_atts,
-				'l10n'                 => array(
-					'what'  => _x( 'What', 'Faceted Search Widget', 'wordlift' ),
-					'who'   => _x( 'Who', 'Faceted Search Widget', 'wordlift' ),
-					'where' => _x( 'Where', 'Faceted Search Widget', 'wordlift' ),
-					'when'  => _x( 'When', 'Faceted Search Widget', 'wordlift' ),
-				),
-			)
+		wp_enqueue_script( 'wordlift-cloud' );
+		$json_faceted_id = wp_json_encode( $faceted_id );
+		echo "<script type='application/javascript'>window.wlFaceted = window.wlFaceted || []; wlFaceted.push( $json_faceted_id );</script>";
+
+		return sprintf(
+			'<div id="%s" class="%s" data-rest-url="%s" data-title="%s" data-template-id="%s"></div>',
+			$faceted_id,
+			'wl-faceted',
+			$rest_url,
+			$shortcode_atts['title'],
+			$shortcode_atts['template_id']
 		);
-
-		return '<div id="' . $div_id . '" style="width:100%"></div>';
 	}
 
 	/**
