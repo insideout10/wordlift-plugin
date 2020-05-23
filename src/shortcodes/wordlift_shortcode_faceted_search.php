@@ -427,6 +427,155 @@ function wl_shortcode_faceted_search_wp_json( $http_raw_data = null ) {
 
 }
 
+function wl_shortcode_network_faceted_search( $request ) {
+	// Post ID must be defined.
+	if ( ! isset( $_GET['post_id'] ) ) { // WPCS: input var ok; CSRF ok.
+		wp_die( 'No post_id given' );
+
+		return;
+	}
+
+	$current_post_id = $_GET['post_id']; // WPCS: input var ok; CSRF ok.
+	$current_post    = get_post( $current_post_id );
+
+	// Post ID has to match an existing item.
+	if ( null === $current_post ) {
+		wp_die( 'No valid post_id given' );
+
+		return;
+	}
+
+	// If the current post is an entity,
+	// the current post is used as main entity.
+	// Otherwise, current post related entities are used.
+	$entity_service = Wordlift_Entity_Service::get_instance();
+	$entity_ids     = $entity_service->is_entity( $current_post->ID ) ?
+		array( $current_post->ID ) :
+		wl_core_get_related_entity_ids( $current_post->ID );
+
+	// If there are no entities we cannot render the widget.
+	if ( 0 === count( $entity_ids ) ) {
+		wp_die( 'No entities available' );
+
+		return;
+	}
+
+	$limit = ( isset( $_GET['limit'] ) ) ? (int) $_GET['limit'] : 20;  // WPCS: input var ok; CSRF ok.
+
+	$referencing_posts = Wordlift_Relation_Service::get_instance()->get_article_subjects(
+		$entity_ids,
+		'*',
+		null,
+		'publish',
+		array( $current_post_id ),
+		$limit
+	);
+
+	$referencing_post_ids = array_map( function ( $p ) {
+		return $p->ID;
+	}, $referencing_posts );
+
+	$post_results = array();
+	$entity_results = array();
+
+	// Populate $post_results
+
+	$filtered_posts = ( empty( $filtering_entity_uris ) ) ?
+		$referencing_posts :
+		Wordlift_Relation_Service::get_instance()->get_article_subjects(
+			wl_get_entity_post_ids_by_uris( $filtering_entity_uris ),
+			'*',
+			null,
+			null,
+			array(),
+			null,
+			$referencing_post_ids
+		);
+
+	if ( $filtered_posts ) {
+		foreach ( $filtered_posts as $post_obj ) {
+
+			/**
+			 * Use the thumbnail.
+			 *
+			 * @see https://github.com/insideout10/wordlift-plugin/issues/825 related issue.
+			 * @see https://github.com/insideout10/wordlift-plugin/issues/837
+			 *
+			 * @since 3.19.3 We're using the medium size image.
+			 */
+			$thumbnail           = get_the_post_thumbnail_url( $post_obj, 'medium' );
+			$post_obj->thumbnail = ( $thumbnail ) ?
+				$thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
+			$post_obj->permalink = get_post_permalink( $post_obj->ID );
+
+			$result = $post_obj;
+			$post_results[] = $result;
+		}
+	}
+
+	// Populate $entity_results
+
+	global $wpdb;
+
+	// Retrieve Wordlift relation instances table name.
+	$table_name = wl_core_get_relation_instances_table_name();
+
+	/*
+	 * Make sure we have some referenced post, otherwise the IN parts of
+	 * the SQL will produce an SQL error.
+	 */
+	if ( ! empty( $referencing_post_ids ) ) {
+		$subject_ids = implode( ',', $referencing_post_ids );
+
+		$query = "
+				SELECT
+					object_id AS ID,
+					count( object_id ) AS counter
+				FROM $table_name
+				WHERE
+					subject_id IN ($subject_ids)
+					AND object_id != ($current_post_id)
+				GROUP BY object_id
+				LIMIT $limit;
+			";
+
+		wl_write_log( "Going to find related entities for the current post [ post ID :: $current_post_id ] [ query :: $query ]" );
+
+		$entities = $wpdb->get_results( $query, OBJECT ); // No cache ok.
+
+		wl_write_log( 'Entities found ' . count( $entities ) );
+
+		foreach ( $entities as $obj ) {
+
+			$entity = get_post( $obj->ID );
+
+			// Ensure only valid and published entities are returned.
+			if ( ( null !== $entity ) && ( 'publish' === $entity->post_status ) ) {
+
+				$serialized_entity              = wl_serialize_entity( $entity );
+				$serialized_entity['counter']   = $obj->counter;
+				$serialized_entity['createdAt'] = $entity->post_date;
+				$serialized_entity['referencedPosts'] = Wordlift_Relation_Service::get_instance()->get_article_subjects(
+					$obj->ID,
+					'ids',
+					null,
+					null,
+					array(),
+					null,
+					$referencing_post_ids
+				);
+				$entity_results[] = $serialized_entity;
+			}
+		}
+	}
+
+	return array(
+		'posts' => $post_results,
+		'entities' => $entity_results
+	);
+
+}
+
 /**
  * Adding `rest_api_init` action for amp backend of faceted-search
  */
@@ -434,6 +583,16 @@ add_action( 'rest_api_init', function () {
 	register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/faceted-search', array(
 		'methods'  => 'GET',
 		'callback' => 'wl_shortcode_faceted_search_wp_json',
+	) );
+} );
+
+/**
+ * Adding `rest_api_init` action for network faceted-search
+ */
+add_action( 'rest_api_init', function () {
+	register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/faceted-search/network', array(
+		'methods'  => 'GET',
+		'callback' => 'wl_shortcode_network_faceted_search',
 	) );
 } );
 
