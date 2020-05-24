@@ -89,7 +89,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 
 		wp_enqueue_script( 'wordlift-cloud' );
 		$json_faceted_id = wp_json_encode( $faceted_id );
-		echo "<script type='application/javascript'>window.wlFaceted = window.wlFaceted || []; wlFaceted.push( $json_faceted_id );</script>";
+		echo "<script type='application/javascript'>window.wlFaceteds = window.wlFaceteds || []; wlFaceteds.push( $json_faceted_id );</script>";
 
 		return sprintf(
 			'<div id="%s" class="%s" data-rest-url="%s" data-title="%s" data-template-id="%s"></div>',
@@ -166,11 +166,11 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 		$wp_json_url_posts  = str_replace( array(
 				'http:',
 				'https:',
-			), '', $wp_json_base ) . '/faceted-search' . $delimiter . http_build_query( $query_posts );
+			), '', $wp_json_base ) . '/faceted-search/amp' . $delimiter . http_build_query( $query_posts );
 		$wp_json_url_facets = str_replace( array(
 				'http:',
 				'https:',
-			), '', $wp_json_base ) . '/faceted-search' . $delimiter . http_build_query( $query_facets );
+			), '', $wp_json_base ) . '/faceted-search/amp' . $delimiter . http_build_query( $query_facets );
 
 		/*
 		 * Notes about amp code:

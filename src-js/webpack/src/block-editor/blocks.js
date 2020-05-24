@@ -59,22 +59,22 @@ const blocks = {
       title: {
         default: "Related articles"
       },
-      show_facets: {
-        default: true
-      },
-      with_carousel: {
-        default: true
-      },
-      squared_thumbs: {
-        default: false
-      },
       limit: {
         default: 20
+      },
+      template_id: {
+        default: ""
+      },
+      post_id: {
+        default: ""
+      },
+      uniqid: {
+        default: ""
       }
     },
     //display the edit interface + preview
     edit: ({ attributes, setAttributes }) => {
-      const { title, show_facets, with_carousel, squared_thumbs, limit } = attributes;
+      const { title, template_id, post_id, uniqid, limit } = attributes;
       return (
         <div>
           <BlockPreview title="Wordlift Faceted Search" attributes={attributes} />
@@ -88,21 +88,20 @@ const blocks = {
                 max={100}
                 onChange={limit => setAttributes({ limit })}
               />
-              <CheckboxControl
-                label="Show Facets"
-                checked={show_facets}
-                onChange={show_facets => setAttributes({ show_facets })}
+              <TextControl
+                label="Template ID"
+                help="ID of the script tag that has mustache template to be used for navigator."
+                value={template_id}
+                onChange={template_id => setAttributes({ template_id })}
               />
-              <CheckboxControl
-                label="With Carousel"
-                checked={with_carousel}
-                onChange={with_carousel => setAttributes({ with_carousel })}
+              <TextControl
+                label="Post ID"
+                help="Post ID of the post of which navigator has to be shown."
+                type="number"
+                value={post_id}
+                onChange={post_id => setAttributes({ post_id })}
               />
-              <CheckboxControl
-                label="Squared Thumbnails"
-                checked={squared_thumbs}
-                onChange={squared_thumbs => setAttributes({ squared_thumbs })}
-              />
+              <TextControl label="Unique ID" value={uniqid} onChange={uniqid => setAttributes({ uniqid })} />
             </PanelBody>
           </InspectorControls>
         </div>
@@ -330,10 +329,7 @@ const blocks = {
         { value: "rand", label: "Random order" },
         { value: "none", label: "None" }
       ];
-      const orderOptions = [
-        { value: "ASC", label: "Ascending" },
-        { value: "DESC", label: "Descending" }
-      ];
+      const orderOptions = [{ value: "ASC", label: "Ascending" }, { value: "DESC", label: "Descending" }];
       window["_wlEntityTypes"].forEach(item => {
         typeOptions.push({
           value: item.slug,
@@ -411,10 +407,7 @@ const blocks = {
                 label="Display images as"
                 selected={display_images_as}
                 onChange={display_images_as => setAttributes({ display_images_as })}
-                options={[
-                  { value: "media", label: "Media" },
-                  { value: "background", label: "Background" }
-                ]}
+                options={[{ value: "media", label: "Media" }, { value: "background", label: "Background" }]}
               />
               <RangeControl
                 label="Excerpt length"

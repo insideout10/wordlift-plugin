@@ -414,7 +414,7 @@ add_action( 'wp_ajax_nopriv_wl_faceted_search', 'wl_shortcode_faceted_search_aja
 /**
  * wp-json call for the faceted search widget
  */
-function wl_shortcode_faceted_search_wp_json( $http_raw_data = null ) {
+function wl_shortcode_amp_faceted_search( $http_raw_data = null ) {
 
 	$results = wl_shortcode_faceted_search_data_wp_json( $http_raw_data );
 	if ( ob_get_contents() ) {
@@ -577,12 +577,12 @@ function wl_shortcode_network_faceted_search( $request ) {
 }
 
 /**
- * Adding `rest_api_init` action for amp backend of faceted-search
+ * Adding `rest_api_init` action for amp faceted-search
  */
 add_action( 'rest_api_init', function () {
-	register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/faceted-search', array(
+	register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/faceted-search/amp', array(
 		'methods'  => 'GET',
-		'callback' => 'wl_shortcode_faceted_search_wp_json',
+		'callback' => 'wl_shortcode_amp_faceted_search_wp_json',
 	) );
 } );
 
@@ -620,17 +620,15 @@ add_action( 'init', function () {
 				'type'    => 'string',
 				'default' => __( 'Related articles', 'wordlift' ),
 			),
-			'show_facets'    => array(
-				'type'    => 'bool',
-				'default' => true,
+			'template_id' => array(
+				'type' => 'string',
 			),
-			'with_carousel'  => array(
-				'type'    => 'bool',
-				'default' => true,
+			'post_id'     => array(
+				'type' => 'number',
 			),
-			'squared_thumbs' => array(
-				'type'    => 'bool',
-				'default' => false,
+			'uniqid'      => array(
+				'type'    => 'string',
+				'default' => uniqid( 'wl-faceted-widget-' ),
 			),
 			'limit'          => array(
 				'type'    => 'number',
