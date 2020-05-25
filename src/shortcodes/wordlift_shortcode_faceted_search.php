@@ -582,7 +582,7 @@ function wl_shortcode_network_faceted_search( $request ) {
 add_action( 'rest_api_init', function () {
 	register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/faceted-search/amp', array(
 		'methods'  => 'GET',
-		'callback' => 'wl_shortcode_amp_faceted_search_wp_json',
+		'callback' => 'wl_shortcode_amp_faceted_search',
 	) );
 } );
 
