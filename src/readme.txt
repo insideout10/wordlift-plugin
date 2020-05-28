@@ -142,7 +142,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.25.5 (2020-05-11) =
+= 3.25.5 (2020-05-28) =
 * Enhancement [#1052](https://github.com/insideout10/wordlift-plugin/issues/1052): Add support for ACF repeater in mappings.
 * Enhancement [#1051](https://github.com/insideout10/wordlift-plugin/issues/1051): Add support for nested properties in mappings.
 * Enhancement [#1050](https://github.com/insideout10/wordlift-plugin/issues/1050): Add a JSON-LD end-point to retrieve entities by post meta.
