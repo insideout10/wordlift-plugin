@@ -1,0 +1,169 @@
+          ok  Starting native_osx for sync advanced-custom-fields-for-schema-org-sync
+          ok  advanced-custom-fields-for-schema-org-sync container still running, restarting unison in container
+     command  docker exec advanced-custom-fields-for-schema-org-sync supervisorctl restart unison
+unison: stopped
+unison: started
+          ok  starting initial sync of advanced-custom-fields-for-schema-org-sync
+     success  Sync container started
+     success  Showing unison logs from your sync container: advanced-custom-fields-for-schema-org-sync
+[2020-05-18 17:25:52 +0200] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 17:25:51.96 on 18 May 2020
+[2020-05-18 17:25:52 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-faq-page-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:25:52 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-faq-page-mapping.php
+[2020-05-18 17:25:52 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-review-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:25:52 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-review-mapping.php
+[2020-05-18 17:25:52 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-software-application-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:25:52 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-software-application-mapping.php
+[2020-05-18 17:25:52 +0200] Sync Log:  [BGN] Updating file classes/schema-org/types/class-faq-page.php from /host_sync to /app_sync
+[2020-05-18 17:25:52 +0200] Sync Log:  [END] Updating file classes/schema-org/types/class-faq-page.php
+[2020-05-18 17:25:52 +0200] Sync Log:  [BGN] Updating file classes/schema-org/types/class-software-application.php from /host_sync to /app_sync
+[2020-05-18 17:25:52 +0200] Sync Log:  [END] Updating file classes/schema-org/types/class-software-application.php
+[2020-05-18 17:25:52 +0200] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 17:25:51.98 on 18 May 2020
+[2020-05-18 17:25:52 +0200] Sync Log:  Synchronization complete at 17:25:51  (5 items transferred, 0 skipped, 0 failed)
+[2020-05-18 17:34:03 +0200] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 17:34:02.88 on 18 May 2020
+[2020-05-18 17:34:03 +0200] Sync Log:  [BGN] Updating file classes/schema-org/types/class-faq-page.php from /host_sync to /app_sync
+[2020-05-18 17:34:03 +0200] Sync Log:  [END] Updating file classes/schema-org/types/class-faq-page.php
+[2020-05-18 17:34:03 +0200] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 17:34:02.89 on 18 May 2020
+[2020-05-18 17:34:03 +0200] Sync Log:  Synchronization complete at 17:34:02  (1 item transferred, 0 skipped, 0 failed)
+[2020-05-18 17:34:04 +0200] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 17:34:03.92 on 18 May 2020
+[2020-05-18 17:34:04 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-faq-page-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:34:04 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-faq-page-mapping.php
+[2020-05-18 17:34:04 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-review-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:34:04 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-review-mapping.php
+[2020-05-18 17:34:04 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-software-application-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:34:04 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-software-application-mapping.php
+[2020-05-18 17:34:04 +0200] Sync Log:  [BGN] Updating file classes/schema-org/types/class-software-application.php from /host_sync to /app_sync
+[2020-05-18 17:34:04 +0200] Sync Log:  [END] Updating file classes/schema-org/types/class-software-application.php
+[2020-05-18 17:34:04 +0200] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 17:34:03.94 on 18 May 2020
+[2020-05-18 17:34:04 +0200] Sync Log:  Synchronization complete at 17:34:03  (4 items transferred, 0 skipped, 0 failed)
+[2020-05-18 17:34:49 +0200] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 17:34:48.47 on 18 May 2020
+[2020-05-18 17:34:49 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-faq-page-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:34:49 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-faq-page-mapping.php
+[2020-05-18 17:34:49 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-review-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:34:49 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-review-mapping.php
+[2020-05-18 17:34:49 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-software-application-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:34:49 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-software-application-mapping.php
+[2020-05-18 17:34:49 +0200] Sync Log:  [BGN] Updating file classes/schema-org/types/class-faq-page.php from /host_sync to /app_sync
+[2020-05-18 17:34:49 +0200] Sync Log:  [END] Updating file classes/schema-org/types/class-faq-page.php
+[2020-05-18 17:34:49 +0200] Sync Log:  [BGN] Updating file classes/schema-org/types/class-software-application.php from /host_sync to /app_sync
+[2020-05-18 17:34:49 +0200] Sync Log:  [END] Updating file classes/schema-org/types/class-software-application.php
+[2020-05-18 17:34:49 +0200] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 17:34:48.49 on 18 May 2020
+[2020-05-18 17:34:49 +0200] Sync Log:  Synchronization complete at 17:34:48  (5 items transferred, 0 skipped, 0 failed)
+[2020-05-18 17:35:41 +0200] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 17:35:40.52 on 18 May 2020
+[2020-05-18 17:35:41 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-faq-page-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:35:41 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-faq-page-mapping.php
+[2020-05-18 17:35:41 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-review-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:35:41 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-review-mapping.php
+[2020-05-18 17:35:41 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-software-application-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:35:41 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-software-application-mapping.php
+[2020-05-18 17:35:41 +0200] Sync Log:  [BGN] Updating file classes/schema-org/types/class-faq-page.php from /host_sync to /app_sync
+[2020-05-18 17:35:41 +0200] Sync Log:  [END] Updating file classes/schema-org/types/class-faq-page.php
+[2020-05-18 17:35:41 +0200] Sync Log:  [BGN] Updating file classes/schema-org/types/class-software-application.php from /host_sync to /app_sync
+[2020-05-18 17:35:41 +0200] Sync Log:  [END] Updating file classes/schema-org/types/class-software-application.php
+[2020-05-18 17:35:41 +0200] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 17:35:40.54 on 18 May 2020
+[2020-05-18 17:35:41 +0200] Sync Log:  Synchronization complete at 17:35:40  (5 items transferred, 0 skipped, 0 failed)
+[2020-05-18 17:36:23 +0200] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 17:36:23.02 on 18 May 2020
+[2020-05-18 17:36:23 +0200] Sync Log:  [BGN] Updating file classes/schema-org/types/class-faq-page.php from /host_sync to /app_sync
+[2020-05-18 17:36:23 +0200] Sync Log:  [END] Updating file classes/schema-org/types/class-faq-page.php
+[2020-05-18 17:36:23 +0200] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 17:36:23.02 on 18 May 2020
+[2020-05-18 17:36:23 +0200] Sync Log:  Synchronization complete at 17:36:23  (1 item transferred, 0 skipped, 0 failed)
+[2020-05-18 17:36:24 +0200] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 17:36:24.05 on 18 May 2020
+[2020-05-18 17:36:24 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-faq-page-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:36:24 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-faq-page-mapping.php
+[2020-05-18 17:36:24 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-review-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:36:24 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-review-mapping.php
+[2020-05-18 17:36:24 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-software-application-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:36:24 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-software-application-mapping.php
+[2020-05-18 17:36:24 +0200] Sync Log:  [BGN] Updating file classes/schema-org/types/class-software-application.php from /host_sync to /app_sync
+[2020-05-18 17:36:24 +0200] Sync Log:  [END] Updating file classes/schema-org/types/class-software-application.php
+[2020-05-18 17:36:24 +0200] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 17:36:24.06 on 18 May 2020
+[2020-05-18 17:36:24 +0200] Sync Log:  Synchronization complete at 17:36:24  (4 items transferred, 0 skipped, 0 failed)
+[2020-05-18 17:36:40 +0200] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 17:36:39.85 on 18 May 2020
+[2020-05-18 17:36:40 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-faq-page-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:36:40 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-faq-page-mapping.php
+[2020-05-18 17:36:40 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-review-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:36:40 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-review-mapping.php
+[2020-05-18 17:36:40 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-software-application-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:36:40 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-software-application-mapping.php
+[2020-05-18 17:36:40 +0200] Sync Log:  [BGN] Updating file classes/schema-org/types/class-faq-page.php from /host_sync to /app_sync
+[2020-05-18 17:36:40 +0200] Sync Log:  [END] Updating file classes/schema-org/types/class-faq-page.php
+[2020-05-18 17:36:40 +0200] Sync Log:  [BGN] Updating file classes/schema-org/types/class-software-application.php from /host_sync to /app_sync
+[2020-05-18 17:36:40 +0200] Sync Log:  [END] Updating file classes/schema-org/types/class-software-application.php
+[2020-05-18 17:36:40 +0200] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 17:36:39.88 on 18 May 2020
+[2020-05-18 17:36:40 +0200] Sync Log:  Synchronization complete at 17:36:39  (5 items transferred, 0 skipped, 0 failed)
+[2020-05-18 17:37:36 +0200] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 17:37:36.24 on 18 May 2020
+[2020-05-18 17:37:36 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-faq-page-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:37:36 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-faq-page-mapping.php
+[2020-05-18 17:37:36 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-review-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:37:36 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-review-mapping.php
+[2020-05-18 17:37:36 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-software-application-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:37:36 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-software-application-mapping.php
+[2020-05-18 17:37:36 +0200] Sync Log:  [BGN] Updating file classes/schema-org/types/class-faq-page.php from /host_sync to /app_sync
+[2020-05-18 17:37:36 +0200] Sync Log:  [END] Updating file classes/schema-org/types/class-faq-page.php
+[2020-05-18 17:37:36 +0200] Sync Log:  [BGN] Updating file classes/schema-org/types/class-software-application.php from /host_sync to /app_sync
+[2020-05-18 17:37:36 +0200] Sync Log:  [END] Updating file classes/schema-org/types/class-software-application.php
+[2020-05-18 17:37:36 +0200] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 17:37:36.26 on 18 May 2020
+[2020-05-18 17:37:36 +0200] Sync Log:  Synchronization complete at 17:37:36  (5 items transferred, 0 skipped, 0 failed)
+[2020-05-18 17:39:35 +0200] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 17:39:34.64 on 18 May 2020
+[2020-05-18 17:39:35 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-faq-page-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:39:35 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-faq-page-mapping.php
+[2020-05-18 17:39:35 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-review-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:39:35 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-review-mapping.php
+[2020-05-18 17:39:35 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-software-application-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:39:35 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-software-application-mapping.php
+[2020-05-18 17:39:35 +0200] Sync Log:  [BGN] Updating file classes/schema-org/types/class-faq-page.php from /host_sync to /app_sync
+[2020-05-18 17:39:35 +0200] Sync Log:  [END] Updating file classes/schema-org/types/class-faq-page.php
+[2020-05-18 17:39:35 +0200] Sync Log:  [BGN] Updating file classes/schema-org/types/class-software-application.php from /host_sync to /app_sync
+[2020-05-18 17:39:35 +0200] Sync Log:  [END] Updating file classes/schema-org/types/class-software-application.php
+[2020-05-18 17:39:35 +0200] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 17:39:34.66 on 18 May 2020
+[2020-05-18 17:39:35 +0200] Sync Log:  Synchronization complete at 17:39:34  (5 items transferred, 0 skipped, 0 failed)
+[2020-05-18 17:40:25 +0200] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 17:40:25.17 on 18 May 2020
+[2020-05-18 17:40:25 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-faq-page-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:40:25 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-faq-page-mapping.php
+[2020-05-18 17:40:25 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-review-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:40:25 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-review-mapping.php
+[2020-05-18 17:40:25 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-software-application-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:40:25 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-software-application-mapping.php
+[2020-05-18 17:40:25 +0200] Sync Log:  [BGN] Updating file classes/schema-org/types/class-software-application.php from /host_sync to /app_sync
+[2020-05-18 17:40:25 +0200] Sync Log:  [END] Updating file classes/schema-org/types/class-software-application.php
+[2020-05-18 17:40:25 +0200] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 17:40:25.19 on 18 May 2020
+[2020-05-18 17:40:25 +0200] Sync Log:  Synchronization complete at 17:40:25  (4 items transferred, 0 skipped, 0 failed)
+[2020-05-18 17:41:12 +0200] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 17:41:12.07 on 18 May 2020
+[2020-05-18 17:41:12 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-faq-page-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:41:12 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-faq-page-mapping.php
+[2020-05-18 17:41:12 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-review-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:41:12 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-review-mapping.php
+[2020-05-18 17:41:12 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-software-application-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:41:12 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-software-application-mapping.php
+[2020-05-18 17:41:12 +0200] Sync Log:  [BGN] Updating file classes/schema-org/types/class-software-application.php from /host_sync to /app_sync
+[2020-05-18 17:41:12 +0200] Sync Log:  [END] Updating file classes/schema-org/types/class-software-application.php
+[2020-05-18 17:41:12 +0200] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 17:41:12.08 on 18 May 2020
+[2020-05-18 17:41:12 +0200] Sync Log:  Synchronization complete at 17:41:12  (4 items transferred, 0 skipped, 0 failed)
+[2020-05-18 17:48:06 +0200] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 17:48:05.62 on 18 May 2020
+[2020-05-18 17:48:06 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-faq-page-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:48:06 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-faq-page-mapping.php
+[2020-05-18 17:48:06 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-review-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:48:06 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-review-mapping.php
+[2020-05-18 17:48:06 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-software-application-mapping.php from /host_sync to /app_sync
+[2020-05-18 17:48:06 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-software-application-mapping.php
+[2020-05-18 17:48:06 +0200] Sync Log:  [BGN] Updating file classes/schema-org/types/class-faq-page.php from /host_sync to /app_sync
+[2020-05-18 17:48:06 +0200] Sync Log:  [END] Updating file classes/schema-org/types/class-faq-page.php
+[2020-05-18 17:48:06 +0200] Sync Log:  [BGN] Updating file classes/schema-org/types/class-software-application.php from /host_sync to /app_sync
+[2020-05-18 17:48:06 +0200] Sync Log:  [END] Updating file classes/schema-org/types/class-software-application.php
+[2020-05-18 17:48:06 +0200] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 17:48:05.65 on 18 May 2020
+[2020-05-18 17:48:06 +0200] Sync Log:  Synchronization complete at 17:48:05  (5 items transferred, 0 skipped, 0 failed)
+[2020-05-18 18:09:53 +0200] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) started propagating changes at 18:09:52.90 on 18 May 2020
+[2020-05-18 18:09:53 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-faq-page-mapping.php from /host_sync to /app_sync
+[2020-05-18 18:09:53 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-faq-page-mapping.php
+[2020-05-18 18:09:53 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-review-mapping.php from /host_sync to /app_sync
+[2020-05-18 18:09:53 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-review-mapping.php
+[2020-05-18 18:09:53 +0200] Sync Log:  [BGN] Updating file classes/schema-org/mappings/class-software-application-mapping.php from /host_sync to /app_sync
+[2020-05-18 18:09:53 +0200] Sync Log:  [END] Updating file classes/schema-org/mappings/class-software-application-mapping.php
+[2020-05-18 18:09:53 +0200] Sync Log:  [BGN] Updating file classes/schema-org/types/class-faq-page.php from /host_sync to /app_sync
+[2020-05-18 18:09:53 +0200] Sync Log:  [END] Updating file classes/schema-org/types/class-faq-page.php
+[2020-05-18 18:09:53 +0200] Sync Log:  [BGN] Updating file classes/schema-org/types/class-review.php from /host_sync to /app_sync
+[2020-05-18 18:09:53 +0200] Sync Log:  [END] Updating file classes/schema-org/types/class-review.php
+[2020-05-18 18:09:53 +0200] Sync Log:  [BGN] Updating file classes/schema-org/types/class-software-application.php from /host_sync to /app_sync
+[2020-05-18 18:09:53 +0200] Sync Log:  [END] Updating file classes/schema-org/types/class-software-application.php
+[2020-05-18 18:09:53 +0200] Sync Log:  UNISON 2.51.2 (OCAML 4.06.1) finished propagating changes at 18:09:52.92 on 18 May 2020
+[2020-05-18 18:09:53 +0200] Sync Log:  Synchronization complete at 18:09:52  (6 items transferred, 0 skipped, 0 failed)
+[2020-05-22 15:57:07 +0200] Sync Log:  Error response from daemon: Bad response from Docker engine
