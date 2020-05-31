@@ -66,8 +66,6 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 	 */
 	private function web_shortcode( $atts ) {
 
-		//return rest_url("wordlift/v1/faceted-search/network");
-
 		// attributes extraction and boolean filtering
 		$shortcode_atts = $this->make_shortcode_atts( $atts );
 
@@ -101,6 +99,99 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 		);
 	}
 
+	private function amp_shortcode( $atts ) {
+
+		// attributes extraction and boolean filtering
+		$shortcode_atts = $this->make_shortcode_atts( $atts );
+
+		// avoid building the widget when no post_id is specified and there is a list of posts.
+		if ( empty( $shortcode_atts['post_id'] ) && ! is_singular() ) {
+			return;
+		}
+
+		$post         = ! empty( $shortcode_atts['post_id'] ) ? get_post( intval( $shortcode_atts['post_id'] ) ) : get_post();
+		$limit        = $shortcode_atts['limit'];
+		$faceted_id   = $shortcode_atts['uniqid'];
+
+		$rest_url     = $post ? rest_url(sprintf("wordlift/v1/faceted-search/network?post_id=%s&limit=%s", $post->ID, $limit)) : false;
+
+		// avoid building the widget when no valid $rest_url
+		if ( ! $rest_url ) {
+			return;
+		}
+
+		// Use a protocol-relative URL as amp-list spec says that URL's protocol must be HTTPS.
+		// This is a hackish way, but this works for http and https URLs
+		$rest_url  = str_replace( array(
+				'http:',
+				'https:',
+			), '', $rest_url );
+
+		if ( ! empty( $shortcode_atts['template_id'] ) ) {
+			$template_id = $shortcode_atts['template_id'];
+		} else {
+			$template_id = "template-cards-" . $faceted_id;
+			// Enqueue amp specific styles
+			wp_enqueue_style( 'wordlift-amp-custom', plugin_dir_url( dirname( __FILE__ ) ) . '/css/wordlift-amp-custom.min.css' );
+		}
+
+		return <<<HTML
+		<div id="{$faceted_id}" class="wl-amp-faceted" style="width: 100%">
+			<h3 class="title">{$shortcode_atts['title']}</h3>
+			<amp-state id="referencedPosts">
+				<script type="application/json">
+					[]
+				</script>
+			</amp-state>
+			<amp-state id="activeEntities">
+				<script type="application/json">
+					[]
+				</script>
+			</amp-state>
+			<amp-state id="allPostsEntities" src="{$rest_url}"></amp-state>
+			<section class="chips">
+				<amp-list 
+					width="auto"
+					height="50"
+					layout="fixed-height"
+					src="{$rest_url}"
+					[src]="allPostsEntities.entities.sort((a, b) => activeEntities.includes(a.id) ? -1 : 1)"
+					items="entities">
+					<template type="amp-mustache">
+						<h4 [class]="activeEntities.includes('{{id}}') ? 'chip active' : 'chip'" on="tap:AMP.setState({
+							referencedPosts: referencedPosts.includes({{referencedPosts}}) ? referencedPosts.filter(item => item != {{referencedPosts}}) : referencedPosts.concat({{referencedPosts}}),
+							activeEntities: activeEntities.includes('{{id}}') ? activeEntities.filter(item => item != '{{id}}') : activeEntities.concat('{{id}}')
+						})">{{label}}</h4>
+					</template>	
+				</amp-list>
+			</section>
+			<section class="cards">
+				<amp-list 
+					width="auto"
+					height="240"
+					layout="fixed-height"
+					src="{$rest_url}"
+					[src]="allPostsEntities.posts.sort((a, b) => referencedPosts.includes(a.ID) ? -1 : 1)"
+					template="{$template_id}"
+					items="posts">
+				</amp-list>
+				<template type="amp-mustache" id="template-cards-{$faceted_id}">
+					<article class="card">
+						<a href="{{permalink}}">
+							<amp-img
+		                        width="800"
+		                        height="450"
+								layout="responsive"
+		                        src="{{thumbnail}}"></amp-img>
+							<div class="card-content"><h3 class="title">{{post_title}}</h3></div>
+						</a>
+					</article>
+				</template>		
+			</section>	
+		</div>
+HTML;
+	}
+
 	/**
 	 * Function in charge of diplaying the [wl-faceted-search] in amp mode.
 	 *
@@ -110,7 +201,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 	 *
 	 * @return string Shortcode HTML for amp
 	 */
-	private function amp_shortcode( $atts ) {
+	private function amp_shortcode_old( $atts ) {
 
 		// attributes extraction and boolean filtering
 		$shortcode_atts = $this->make_shortcode_atts( $atts );

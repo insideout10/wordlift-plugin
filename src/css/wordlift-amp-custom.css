@@ -119,3 +119,75 @@
   -webkit-box-shadow: inset 0 0 0 rgba(0, 0, 0, 0), 0 3px 0 #000000;
           box-shadow: inset 0 0 0 rgba(0, 0, 0, 0), 0 3px 0 #000000;
 }
+.wl-amp-faceted .title {
+  font-size: 16px;
+  margin: 0.5rem 0;
+}
+.wl-amp-faceted .chips amp-list div[role='list'] .chip {
+  font-size: 12px;
+  background: #dedede;
+  padding: 5px;
+  -webkit-border-radius: 15px;
+          border-radius: 15px;
+  display: inline-block;
+  margin: 5px;
+  cursor: pointer;
+}
+.wl-amp-faceted .chips amp-list div[role='list'] .chip.active {
+  background: #000;
+  color: #fff;
+}
+.wl-amp-faceted .cards amp-list div[role='list'] {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+}
+.wl-amp-faceted .cards amp-list div[role='list'] .card {
+  background: white;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 0 300px;
+      -ms-flex: 1 0 300px;
+          flex: 1 0 300px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin: 1rem .25em;
+}
+@media screen and (min-width: 40em) {
+  .wl-amp-faceted .cards amp-list div[role='list'] .card {
+    max-width: -webkit-calc(49%);
+    max-width: calc(49%);
+  }
+}
+@media screen and (min-width: 60em) {
+  .wl-amp-faceted .cards amp-list div[role='list'] .card {
+    max-width: -webkit-calc(24%);
+    max-width: calc(24%);
+  }
+}
+.wl-amp-faceted .cards amp-list div[role='list'] .card a {
+  color: black;
+  text-decoration: none;
+}
+.wl-amp-faceted .cards amp-list div[role='list'] .card a:hover {
+  -webkit-box-shadow: 3px 3px 8px #ccc;
+          box-shadow: 3px 3px 8px #ccc;
+}
+.wl-amp-faceted .cards amp-list div[role='list'] .card .thumbnail {
+  width: 100%;
+  padding-bottom: 56.25%;
+  background-size: cover;
+}
+.wl-amp-faceted .cards amp-list div[role='list'] .card .thumbnail img {
+  display: block;
+  border: 0;
+  width: 100%;
+  height: auto;
+}
+.wl-amp-faceted .cards amp-list div[role='list'] .card .card-content .title {
+  font-size: 14px;
+  margin: 0.3rem 0;
+}
