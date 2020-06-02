@@ -7,15 +7,12 @@
 /**
  * External dependencies.
  */
-import { call, put, takeLatest, select } from "redux-saga/effects";
-
+import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
 /**
  * Internal dependencies
  */
 import EDIT_MAPPING_API from "../api/edit-mapping-api";
 import {
-  EDIT_MAPPING_SAVE_MAPPING_ITEM_ACTION,
-  EDIT_MAPPING_TERMS_FETCHED_FOR_TAXONOMY_ACTION,
   MAPPING_HEADER_CHANGED_ACTION,
   MAPPING_ID_CHANGED_FROM_API_ACTION,
   MAPPING_TERMS_CHANGED_ACTION,
@@ -29,14 +26,16 @@ import {
   EDIT_MAPPING_SAVE_MAPPING_ITEM
 } from "../actions/action-types";
 import EditComponentFilters from "../filters/edit-component-filters";
+import { getTermsForTaxonomy } from "./selectors";
+import editMappingStore from "./edit-mapping-store";
 
 function* getTermsForSelectedTaxonomy(action) {
-  // Mark the taxonomy as terms fetched, since we dont want to send another request to get the same terms.
-  EDIT_MAPPING_TERMS_FETCHED_FOR_TAXONOMY_ACTION.payload = {
-    taxonomy: action.payload.taxonomy
-  };
-  yield put(EDIT_MAPPING_TERMS_FETCHED_FOR_TAXONOMY_ACTION);
-
+  // Check if the terms are fetched for the taxonomy.
+  const existingTerms = getTermsForTaxonomy(editMappingStore.getState(), action.payload.taxonomy);
+  if (0 !== existingTerms.length || action.payload.taxonomy === "post_type") {
+    // It means the terms are already present for the taxonomy, not needed to fetch it again from API.
+    return;
+  }
   const response = yield call(EDIT_MAPPING_API.getTermsFromAPI, action.payload.taxonomy);
   const terms = response.map(e => {
     return {
@@ -68,6 +67,18 @@ function* saveMappingItem(action) {
   yield put(NOTIFICATION_CHANGED_ACTION);
 }
 
+function* loadTermOptions(ruleGroupList) {
+  const taxonomies = EditComponentFilters.getUniqueTaxonomiesSelected(ruleGroupList);
+  for (let taxonomy of taxonomies) {
+    yield put({
+      type: EDIT_MAPPING_REQUEST_TERMS,
+      payload: {
+        taxonomy: taxonomy
+      }
+    });
+  }
+}
+
 function* getMappingItem(action) {
   const { mappingId } = action.payload;
   const data = yield call(EDIT_MAPPING_API.getMappingItemByMappingId, mappingId);
@@ -82,13 +93,18 @@ function* getMappingItem(action) {
   };
   yield put(PROPERTY_LIST_CHANGED_ACTION);
 
+  const ruleGroupList = EditComponentFilters.mapRuleGroupListAPIKeysToUi(data.rule_group_list);
   RULE_GROUP_LIST_CHANGED_ACTION.payload = {
-    value: EditComponentFilters.mapRuleGroupListAPIKeysToUi(data.rule_group_list)
+    value: ruleGroupList
   };
+
+  yield call(loadTermOptions, ruleGroupList);
+
   yield put(RULE_GROUP_LIST_CHANGED_ACTION);
 }
+
 function* editMappingSaga() {
-  yield takeLatest(EDIT_MAPPING_REQUEST_TERMS, getTermsForSelectedTaxonomy);
+  yield takeEvery(EDIT_MAPPING_REQUEST_TERMS, getTermsForSelectedTaxonomy);
   yield takeLatest(EDIT_MAPPING_SAVE_MAPPING_ITEM, saveMappingItem);
   yield takeLatest(EDIT_MAPPING_REQUEST_MAPPING_ITEM, getMappingItem);
 }

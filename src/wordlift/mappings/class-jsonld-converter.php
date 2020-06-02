@@ -261,7 +261,7 @@ class Jsonld_Converter {
 		$values = (array) $value;
 
 		if ( empty( $values ) ) {
-			return null;
+			return false;
 		}
 
 		if ( 1 === count( $values ) && 0 === key( $values ) ) {

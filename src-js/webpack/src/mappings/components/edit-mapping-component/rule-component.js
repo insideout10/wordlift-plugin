@@ -8,35 +8,22 @@
  */
 import React from "react";
 import { connect } from "react-redux";
-
 /**
  * Internal dependencies
  */
 import SelectComponent from "../select-component";
-import {
-  ADD_NEW_RULE_ACTION,
-  DELETE_RULE_ACTION,
-  CHANGE_RULE_FIELD_VALUE_ACTION,
-  NOTIFICATION_CHANGED_ACTION,
-  MAPPING_TERMS_CHANGED_ACTION,
-  EDIT_MAPPING_REQUEST_TERMS_ACTION
-} from "../../actions/actions";
-import { EDIT_MAPPING_REQUEST_TERMS } from "../../actions/action-types";
+import { CHANGE_RULE_FIELD_VALUE_ACTION } from "../../actions/actions";
 import { AddRuleButton } from "./add-rule-button";
 import { DeleteRuleButton } from "./delete-rule-button";
 import { WlColumn } from "../../blocks/wl-column";
 import { WlContainer } from "../../blocks/wl-container";
+import { EDIT_MAPPING_REQUEST_TERMS } from "../../actions/action-types";
 
 class RuleComponent extends React.Component {
   constructor(props) {
     super(props);
     this.handleSelectFieldChange = this.handleSelectFieldChange.bind(this);
     this.fetchTermsForSelectedTaxonomyFromAPI = this.fetchTermsForSelectedTaxonomyFromAPI.bind(this);
-  }
-
-  componentDidMount() {
-    // Load terms for the selected taxonomy.
-    this.fetchTermsForSelectedTaxonomyFromAPI(this.props.ruleProps.ruleFieldOneValue);
   }
 
   /**
@@ -59,23 +46,17 @@ class RuleComponent extends React.Component {
     }
     this.props.dispatch(action);
   }
+
   /**
    * Fetches the terms for the selected taxonomy to the ui.
    * @param selectedTaxonomy The taxonomy selected by the user.
    */
   fetchTermsForSelectedTaxonomyFromAPI(selectedTaxonomy) {
-    // Check if the terms are fetched for the taxonomy.
-    const taxonomies = this.props.ruleFieldOneOptions.filter(e => e.value === selectedTaxonomy);
-    if (1 === taxonomies.length) {
-      const selectedTaxonomyOption = taxonomies[0];
-      if (!selectedTaxonomyOption.isTermsFetchedForTaxonomy) {
-        // if the terms are not fetched from api, then send a network request.
-        EDIT_MAPPING_REQUEST_TERMS_ACTION.payload = {
-          taxonomy: selectedTaxonomy
-        };
-        this.props.dispatch(EDIT_MAPPING_REQUEST_TERMS_ACTION);
-      }
-    }
+    // if the terms are not fetched from api, then send a network request.
+    this.props.dispatch({
+      type: EDIT_MAPPING_REQUEST_TERMS,
+      payload: { taxonomy: selectedTaxonomy }
+    });
   }
 
   render() {

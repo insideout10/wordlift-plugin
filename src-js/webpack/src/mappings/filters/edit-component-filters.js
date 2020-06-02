@@ -1,3 +1,6 @@
+import editMappingStore from "../store/edit-mapping-store";
+import { EDIT_MAPPING_REQUEST_TERMS } from "../actions/action-types";
+
 /**
  * EditComponentMapping : This maps the ui keys with api response keys and vice versa.
  *
@@ -131,24 +134,27 @@ class EditComponentFilters {
   }
 
   /**
-   * Loops through taxonomyOptions and add isTermsFetchedForTaxonomy field to the options.
-   * @param ruleFieldOneOptions Array of taxonomy options.
-   * @param ruleFieldTwoOptions Array of term options.
-   * @returns ruleFieldOneOptions with field isTermsFetchedForTaxonomy set based on the value in ruleFieldTwoOptions
+   * Returns a list of taxonomies which are currently selected
+   * in the rule component.
+   * @param ruleGroupList
+   * @return {Array} Array of taxonomies.
    */
-  static addNetworkStateToTaxonomyOptions(ruleFieldOneOptions, ruleFieldTwoOptions) {
-    return ruleFieldOneOptions.map(option => {
-      const taxonomy = option.value;
-      if (taxonomy === "post_type") {
-        // Post types are loaded in the settings itself.
-        option.isTermsFetchedForTaxonomy = true;
-      } else {
-        // Check if atleast one term present for taxonomy, if present then set it to true.
-        const terms = ruleFieldTwoOptions.filter(e => e.taxonomy === taxonomy);
-        option.isTermsFetchedForTaxonomy = 0 < terms;
-      }
-      return option;
+  static getUniqueTaxonomiesSelected(ruleGroupList) {
+    const taxonomies = [];
+    let rules = [];
+    ruleGroupList.map(e => {
+      rules = rules.concat(e.rules);
     });
+
+    for (let rule of rules) {
+      const taxonomy = rule.ruleFieldOneValue;
+      // Dont include post type.
+      if (taxonomies.includes(taxonomy) || taxonomy === "post_type") {
+        continue;
+      }
+      taxonomies.push(taxonomy);
+    }
+    return taxonomies;
   }
 }
 

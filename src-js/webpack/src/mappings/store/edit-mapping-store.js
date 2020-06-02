@@ -13,7 +13,6 @@ import createSagaMiddleware from "redux-saga";
 /**
  * Internal dependencies.
  */
-import EditComponentFilters from "../filters/edit-component-filters";
 import { ACTIVE_CATEGORY } from "../components/category-component";
 import {
   NotificationReducer,
@@ -22,6 +21,7 @@ import {
   TitleReducer
 } from "../reducers/edit-mapping-reducers";
 import editMappingSaga from "./edit-mapping-sagas";
+import { EDIT_MAPPING_REQUEST_TERMS } from "../actions/action-types";
 
 const editMappingSettings = window["wl_edit_mappings_config"] || {};
 
@@ -35,10 +35,7 @@ const INITIAL_STATE = {
   },
   RuleGroupData: {
     // Adding filter to determine whether to fetch terms from api or not.
-    ruleFieldOneOptions: EditComponentFilters.addNetworkStateToTaxonomyOptions(
-      editMappingSettings.wl_rule_field_one_options,
-      editMappingSettings.wl_rule_field_two_options
-    ),
+    ruleFieldOneOptions: editMappingSettings.wl_rule_field_one_options,
     ruleFieldTwoOptions: editMappingSettings.wl_rule_field_two_options,
     ruleLogicFieldOptions: editMappingSettings.wl_logic_field_options,
     ruleGroupList: []
@@ -63,4 +60,5 @@ const reducers = combineReducers({
 const sagaMiddleware = createSagaMiddleware();
 const editMappingStore = createStore(reducers, INITIAL_STATE, applyMiddleware(sagaMiddleware));
 sagaMiddleware.run(editMappingSaga);
+
 export default editMappingStore;
