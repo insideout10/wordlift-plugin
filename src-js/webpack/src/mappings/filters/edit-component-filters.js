@@ -1,5 +1,5 @@
 import editMappingStore from "../store/edit-mapping-store";
-import {EDIT_MAPPING_REQUEST_TERMS} from "../actions/action-types";
+import { EDIT_MAPPING_REQUEST_TERMS } from "../actions/action-types";
 
 /**
  * EditComponentMapping : This maps the ui keys with api response keys and vice versa.
@@ -134,23 +134,22 @@ class EditComponentFilters {
   }
 
   static getUniqueTaxonomiesSelected(rule_group_list) {
-    const taxonomies = []
-    let rules = []
+    const taxonomies = [];
+    let rules = [];
     rule_group_list.map(e => {
-      rules = rules.concat(e.rules)
-    })
+      rules = rules.concat(e.rules);
+    });
 
     for (let rule of rules) {
-      const taxonomy = rule.ruleFieldOneValue
+      const taxonomy = rule.ruleFieldOneValue;
       // Dont include post type.
-      if (taxonomies.includes(taxonomy) || taxonomy === 'post_type') {
-        continue
+      if (taxonomies.includes(taxonomy) || taxonomy === "post_type") {
+        continue;
       }
-      taxonomies.push(taxonomy)
+      taxonomies.push(taxonomy);
     }
     return taxonomies;
   }
-
 }
 
 export default EditComponentFilters;

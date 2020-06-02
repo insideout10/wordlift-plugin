@@ -25,5 +25,5 @@ export const getSelectedMappingItems = state => state.mappingItems.filter(item =
  * @return {Array} The array of terms
  */
 export function getTermsForTaxonomy(state, taxonomy) {
-    return state.RuleGroupData.ruleFieldTwoOptions.filter(e => e.taxonomy === taxonomy)
+  return state.RuleGroupData.ruleFieldTwoOptions.filter(e => e.taxonomy === taxonomy);
 }

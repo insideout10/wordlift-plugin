@@ -18,20 +18,19 @@ global.MockHttpServer = new MockHttpServer();
  * @returns {*}
  */
 global.fetch = () => {
-  const response = global.MockHttpServer.dequeueResponse()
-  if (response  != null) {
+  const response = global.MockHttpServer.dequeueResponse();
+  if (response != null) {
     return new Promise((resolve, reject) => {
       resolve({
         ok: true,
-        status:200,
+        status: 200,
         json: () => {
-          return response
-        },
+          return response;
+        }
       });
     });
-  }
-  else {
-    return new Promise().reject()
+  } else {
+    return new Promise().reject();
   }
 };
 

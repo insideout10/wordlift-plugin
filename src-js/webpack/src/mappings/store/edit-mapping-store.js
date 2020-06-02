@@ -21,7 +21,7 @@ import {
   TitleReducer
 } from "../reducers/edit-mapping-reducers";
 import editMappingSaga from "./edit-mapping-sagas";
-import {EDIT_MAPPING_REQUEST_TERMS} from "../actions/action-types";
+import { EDIT_MAPPING_REQUEST_TERMS } from "../actions/action-types";
 
 const editMappingSettings = window["wl_edit_mappings_config"] || {};
 
