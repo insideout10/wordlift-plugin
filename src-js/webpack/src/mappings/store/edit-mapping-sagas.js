@@ -26,9 +26,17 @@ import {
     EDIT_MAPPING_SAVE_MAPPING_ITEM
 } from "../actions/action-types";
 import EditComponentFilters from "../filters/edit-component-filters";
+import {getTermsForTaxonomy} from "./selectors";
+import editMappingStore from "./edit-mapping-store";
 
 
 function* getTermsForSelectedTaxonomy(action) {
+    // Check if the terms are fetched for the taxonomy.
+    const existingTerms = getTermsForTaxonomy(editMappingStore.getState(), action.payload.taxonomy);
+    if (0 !== existingTerms.length || action.payload.taxonomy === "post_type") {
+        // It means the terms are already present for the taxonomy, not needed to fetch it again from API.
+        return
+    }
     const response = yield call(EDIT_MAPPING_API.getTermsFromAPI, action.payload.taxonomy);
     const terms = response.map(e => {
         return {
