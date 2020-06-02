@@ -95,7 +95,7 @@ class Wordlift_Admin_Settings_Page_Test extends Wordlift_Unit_Test_Case {
 
 		// Check that there's no thumbnail.
 		global $wp_version;
-		if ( version_compare( $wp_version, '5.4', '>' ) ) {
+		if ( version_compare( $wp_version, '5.4', '>=' ) ) {
 			$this->assertEquals( 0, get_post_thumbnail_id( $publisher_id ) );
 		} else {
 			$this->assertEquals( '', get_post_thumbnail_id( $publisher_id ) );
