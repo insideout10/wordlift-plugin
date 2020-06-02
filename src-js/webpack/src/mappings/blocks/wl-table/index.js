@@ -29,7 +29,7 @@ export const WlTable = ({
     "wl-table--no-border": noBorder,
     "wl-table--small": small,
     "wl-table--padding-left": paddingLeft,
-    striped: striped,
+    "striped": striped,
     "wl-table--transparent-bg": transparentBg
   });
   return <table className={"widefat  wl-table " + classes}>{children}</table>;
