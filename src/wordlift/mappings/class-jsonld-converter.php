@@ -101,23 +101,95 @@ class Jsonld_Converter {
 		// @@todo I think there's an issue here with the Validator, because you're changing the instance state and the
 		// instance may be reused afterwards.
 
-		$properties = $this->validator->validate( $post_id );
+		$properties        = $this->validator->validate( $post_id );
+		$nested_properties = array();
 
 		foreach ( $properties as $property ) {
-			$transform_instance = $this->transform_functions_registry->get_transform_function( $property['transform_function'] );
-			$data               = $this->get_data_from_data_source( $post_id, $property );
-			if ( null !== $transform_instance ) {
-				$transform_data = $transform_instance->transform_data( $data, $jsonld, $references, $post_id );
-				if ( null !== $transform_data ) {
-					$jsonld[ $property['property_name'] ] = $this->make_single( $transform_data );
-				}
-			} else {
-				$jsonld[ $property['property_name'] ] = $this->make_single( $data );
+			// If the property has the character '/' in the property name then it is a nested property.
+			if ( strpos( $property['property_name'], '/' ) !== false ) {
+				$nested_properties[] = $property;
+				continue;
 			}
+			$property_transformed_data = $this->get_property_data( $property, $jsonld, $post_id, $references );
+			if ( false !== $property_transformed_data ) {
+				$jsonld[ $property['property_name'] ] = $property_transformed_data;
+			}
+		}
+
+		$jsonld = $this->process_nested_properties( $nested_properties, $jsonld, $post_id, $references );
+
+		return $jsonld;
+	}
+
+	/**
+	 * Get the property data by applying the transformation function
+	 *
+	 * @param $property
+	 * @param $jsonld
+	 * @param $post_id
+	 * @param $references
+	 *
+	 * @return array|bool|null
+	 */
+	public function get_property_data( $property, $jsonld, $post_id, &$references ) {
+		$transform_instance = $this->transform_functions_registry->get_transform_function( $property['transform_function'] );
+		$data               = $this->get_data_from_data_source( $post_id, $property );
+		if ( null !== $transform_instance ) {
+			$transform_data = $transform_instance->transform_data( $data, $jsonld, $references, $post_id );
+			if ( null !== $transform_data ) {
+				return $this->make_single( $transform_data );
+			}
+		} else {
+			return $this->make_single( $data );
+		}
+
+		return false;
+	}
+
+	/**
+	 * Process all the nested properties.
+	 *
+	 * @param $nested_properties array
+	 * @param $jsonld array
+	 *
+	 * @return array
+	 */
+	public function process_nested_properties( $nested_properties, $jsonld, $post_id, &$references ) {
+		foreach ( $nested_properties as $property ) {
+			$property_data = $this->get_property_data( $property, $jsonld, $post_id, $references );
+			if ( false === $property_data ) {
+				// No need to create nested levels.
+				continue;
+			}
+
+			$keys = explode( '/', $property['property_name'] );
+			// end is the last level of the nested property.
+			$end                      = array_pop( $keys );
+			$current_property_pointer = &$jsonld;
+
+			/**
+			 * Once we find all the nested levels from the property name
+			 * loop through it and create associative array if the levels
+			 * didnt exist.
+			 */
+			while ( count( $keys ) > 0 ) {
+				$key = array_shift( $keys );
+				if ( $key === "" ) {
+					continue;
+				}
+				if ( ! array_key_exists( $key, $current_property_pointer ) ) {
+					$current_property_pointer[ $key ] = array();
+				}
+				// We are setting the pointer to the current key, so that at the end
+				// we can add the data at last level.
+				$current_property_pointer = &$current_property_pointer[ $key ];
+			}
+			$current_property_pointer[ $end ] = $property_data;
 		}
 
 		return $jsonld;
 	}
+
 
 	/**
 	 * Returns data from data source.
@@ -133,11 +205,11 @@ class Jsonld_Converter {
 		// Do 1 to 1 mapping and return result.
 		switch ( $property_data['field_type'] ) {
 			case self::FIELD_TYPE_ACF:
-				if ( ! function_exists( 'get_field' ) ) {
+				if ( ! function_exists( 'get_field' ) || ! function_exists( 'get_field_object' ) ) {
 					return array();
 				}
 
-				return get_field( $property_data['field_name'], $post_id );
+				return $this->get_data_for_acf_field( $property_data['field_name'], $post_id );
 
 			case self::FIELD_TYPE_CUSTOM_FIELD:
 
@@ -147,6 +219,41 @@ class Jsonld_Converter {
 				return $value;
 		}
 
+	}
+
+	/**
+	 * Gets data from acf, format the data if it is a repeater field.
+	 *
+	 * @param $field_name
+	 * @param $post_id
+	 *
+	 * @return array|mixed
+	 */
+	public function get_data_for_acf_field( $field_name, $post_id ) {
+		$field_data = get_field_object( $field_name, $post_id );
+		$data       = get_field( $field_name, $post_id );
+
+		// only process if it is a repeater field, else return the data.
+		if ( is_array( $field_data ) && array_key_exists( 'type', $field_data )
+		     && $field_data['type'] === 'repeater' ) {
+			// check if we have only one sub field, currently we only support one subfield.
+			if ( is_array( $data ) && count( $data ) > 0 && count( array_keys( $data[0] ) === 1 ) ) {
+				$repeater_formatted_data = array();
+				foreach ( $data as $item ) {
+					$repeater_formatted_data = array_merge( $repeater_formatted_data, array_values( $item ) );
+				}
+				// Remove non unique values.
+				$repeater_formatted_data = array_unique( $repeater_formatted_data );
+				// Remove empty values
+				$repeater_formatted_data = array_filter( $repeater_formatted_data, 'strlen' );
+
+				// re-index all the values.
+				return array_values( $repeater_formatted_data );
+			}
+		}
+
+		// Return normal acf data if it is not a repeater field.
+		return $data;
 	}
 
 	private function make_single( $value ) {
