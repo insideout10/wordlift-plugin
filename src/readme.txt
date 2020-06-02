@@ -142,7 +142,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.25.5.1 (2020-06-02)
+= 3.25.5.1 (2020-06-02) =
 * Fix: update certificate bundle.
 
 = 3.25.5 (2020-05-28) =
