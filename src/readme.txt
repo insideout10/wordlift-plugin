@@ -142,12 +142,16 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-
 = 3.26.0 (2020-04-07) =
 * Enhancement [#1027](https://github.com/insideout10/wordlift-plugin/issues/1027): Adding support for Wordpress 5.4.
 * Enhancement [#1016](https://github.com/insideout10/wordlift-plugin/issues/1016): Context Cards should display referenced entity data when Entity Redirect is active
+* Enhancement [#1056](https://github.com/insideout10/wordlift-plugin/pull/1056): Adding filter to assign default entity type based on post type.
+* Enhancement: [#1029](https://github.com/insideout10/wordlift-plugin/pull/1029): Adding jsonld support for colleciton pages.
 
-= 3.25.5 (2020-05-11) =
+= 3.25.5.1 (2020-06-02) =
+* Fix: update certificate bundle.
+
+= 3.25.5 (2020-05-28) =
 * Enhancement [#1052](https://github.com/insideout10/wordlift-plugin/issues/1052): Add support for ACF repeater in mappings.
 * Enhancement [#1051](https://github.com/insideout10/wordlift-plugin/issues/1051): Add support for nested properties in mappings.
 * Enhancement [#1050](https://github.com/insideout10/wordlift-plugin/issues/1050): Add a JSON-LD end-point to retrieve entities by post meta.

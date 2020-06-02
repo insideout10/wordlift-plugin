@@ -260,10 +260,10 @@ angular.module('wordlift.facetedsearch.widget', ['wordlift.ui.carousel', 'wordli
       <div class="wl-posts">
         <div class="#{wrapperClasses}" #{wrapperAttrs}>
           <div class="#{itemWrapperClasses}" ng-repeat="post in posts"#{itemWrapperAttrs}>
-            <div class="#{thumbClasses}"> 
+            <div class="#{thumbClasses}">
               <a ng-href="{{post.permalink}}" style="background: url('{{post.thumbnail}}') no-repeat center center; background-size: cover;"></a>
             </div>
-            <div class="wl-card-title"> 
+            <div class="wl-card-title">
               <a ng-href="{{post.permalink}}">{{post.post_title}}</a>
             </div>
           </div>
@@ -281,7 +281,7 @@ angular.module('wordlift.facetedsearch.widget', ['wordlift.ui.carousel', 'wordli
     $scope.conditions = {}
     $scope.entityLimit = 5
 
-    # TODO Load dynamically 
+    # TODO Load dynamically
     $scope.supportedTypes = [
       {'scope': 'what', 'types': ['thing', 'creative-work', 'recipe']}
       {'scope': 'who', 'types': ['person', 'organization', 'local-business']}
@@ -378,7 +378,7 @@ $(
         </div>
       </div>
       <wl-faceted-posts></wl-faceted-posts>
-      
+
     </div>
   """)
   .appendTo('#wordlift-faceted-entity-search-widget')

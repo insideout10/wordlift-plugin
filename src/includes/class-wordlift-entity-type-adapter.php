@@ -41,9 +41,10 @@ class Wordlift_Entity_Type_Adapter {
 	/**
 	 * Create a {@link Wordlift_Entity_Type_Adapter} instance.
 	 *
+	 * @param \Wordlift_Entity_Type_Service $entity_type_service The {@link Wordlift_Entity_Type_Service} instance.
+	 *
 	 * @since 3.15.0
 	 *
-	 * @param \Wordlift_Entity_Type_Service $entity_type_service The {@link Wordlift_Entity_Type_Service} instance.
 	 */
 	public function __construct( $entity_type_service ) {
 
@@ -51,6 +52,25 @@ class Wordlift_Entity_Type_Adapter {
 
 		$this->entity_type_service = $entity_type_service;
 
+		add_filter( 'wl_default_entity_type_for_post_type', array(
+			$this,
+			'default_entity_type_callback'
+		), 10, 2 );
+
+	}
+
+	/**
+	 * @param $entity_type string Entity type
+	 * @param $post_type string The post type
+	 *
+	 * @return string The default entity type depending on the post type.
+	 */
+	public function default_entity_type_callback( $entity_type, $post_type ) {
+		if ( 'product' === $post_type ) {
+			return 'http://schema.org/Product';
+		}
+
+		return $entity_type;
 	}
 
 	/**
@@ -61,11 +81,12 @@ class Wordlift_Entity_Type_Adapter {
 	 * taxonomy) is already assigned and, if not, it calls {@link Wordlift_Entity_Type_Service}
 	 * to set the default taxonomy term.
 	 *
+	 * @param int $post_id The {@link WP_Post}'s id.
+	 * @param WP_Post $post The {@link WP_Post} instance.
+	 * @param bool $update Whether it's an update.
+	 *
 	 * @since 3.15.0
 	 *
-	 * @param int     $post_id The {@link WP_Post}'s id.
-	 * @param WP_Post $post The {@link WP_Post} instance.
-	 * @param bool    $update Whether it's an update.
 	 */
 	public function save_post( $post_id, $post, $update ) {
 
@@ -105,21 +126,22 @@ class Wordlift_Entity_Type_Adapter {
 	/**
 	 * Get the entity types for a post type.
 	 *
-	 * @since 3.20.0
-	 *
 	 * @param string $post_type The post type.
 	 *
 	 * @return array An array of entity types.
+	 * @since 3.20.0
+	 *
 	 */
 	public static function get_entity_types( $post_type ) {
 
 		/**
 		 * Get the default entity type.
 		 *
-		 * @since 3.20.0
-		 *
 		 * @param string $entity_type The preset entity type.
 		 * @param string $post_type The post type.
+		 *
+		 * @since 3.20.0
+		 *
 		 */
 		$default_entity_type = apply_filters( 'wl_default_entity_type_for_post_type', 'http://schema.org/Article', $post_type );
 
@@ -128,12 +150,13 @@ class Wordlift_Entity_Type_Adapter {
 		 *
 		 * Adding support to assign more than one entity type.
 		 *
+		 * @param array $entity_types The default entity types.
+		 * @param string $post_type The post type.
+		 *
 		 * @since 3.20.0
 		 *
 		 * @see Wordlift_Mapping_Service
 		 *
-		 * @param array  $entity_types The default entity types.
-		 * @param string $post_type The post type.
 		 */
 		$entity_types = apply_filters( 'wl_default_entity_types_for_post_type', array( $default_entity_type ), $post_type );
 

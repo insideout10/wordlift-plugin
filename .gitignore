@@ -49,5 +49,5 @@ yarn-error.log*
 
 wordlift-*.zip
 
-# Ignore Docker Sync hidden folder.
+# Ignore Docker Sync files.
 .docker-sync/
