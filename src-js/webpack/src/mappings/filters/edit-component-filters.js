@@ -133,10 +133,16 @@ class EditComponentFilters {
     return postObject;
   }
 
-  static getUniqueTaxonomiesSelected(rule_group_list) {
+  /**
+   * Returns a list of taxonomies which are currently selected
+   * in the rule component.
+   * @param ruleGroupList
+   * @return {Array} Array of taxonomies.
+   */
+  static getUniqueTaxonomiesSelected(ruleGroupList) {
     const taxonomies = [];
     let rules = [];
-    rule_group_list.map(e => {
+    ruleGroupList.map(e => {
       rules = rules.concat(e.rules);
     });
 
