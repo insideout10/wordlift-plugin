@@ -60,7 +60,7 @@ const blocks = {
         default: "Related articles"
       },
       limit: {
-        default: 20
+        default: 4
       },
       template_id: {
         default: ""
@@ -81,22 +81,16 @@ const blocks = {
           <InspectorControls>
             <PanelBody title="Widget Settings" className="blocks-font-size">
               <TextControl label="Title" value={title} onChange={title => setAttributes({ title })} />
-              <RangeControl
-                label="Limit"
-                value={limit}
-                min={2}
-                max={100}
-                onChange={limit => setAttributes({ limit })}
-              />
+              <RangeControl label="Limit" value={limit} min={2} max={20} onChange={limit => setAttributes({ limit })} />
               <TextControl
                 label="Template ID"
-                help="ID of the script tag that has mustache template to be used for navigator."
+                help="ID of the script tag that has mustache template to be used for Faceted Search widget."
                 value={template_id}
                 onChange={template_id => setAttributes({ template_id })}
               />
               <TextControl
                 label="Post ID"
-                help="Post ID of the post of which navigator has to be shown."
+                help="Post ID of the post of which Faceted Search widget has to be shown."
                 type="number"
                 value={post_id}
                 onChange={post_id => setAttributes({ post_id })}

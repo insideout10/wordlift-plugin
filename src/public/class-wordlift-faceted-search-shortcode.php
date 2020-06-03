@@ -46,7 +46,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 		// Extract attributes and set default values.
 		$shortcode_atts = shortcode_atts( array(
 			'title'          => __( 'Related articles', 'wordlift' ),
-			'limit'          => 20,
+			'limit'          => 4,
 			'post_id'        => '',
 			'template_id'    => '',
 			'uniqid'         => uniqid( 'wl-faceted-widget-' ),
@@ -146,7 +146,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 
 		return <<<HTML
 		<div id="{$faceted_id}" class="wl-amp-faceted" style="width: 100%">
-			<h3 class="wl-headline">{$shortcode_atts['title']}</h3>
+			<h2 class="wl-headline">{$shortcode_atts['title']}</h2>
 			<amp-state id="referencedPosts">
 				<script type="application/json">
 					[]
@@ -160,23 +160,22 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 			<amp-state id="allPostsEntities" src="{$rest_url}"></amp-state>
 			<section class="chips">
 				<amp-list 
-					height="50"
+					height="40"
 					layout="fixed-height"
 					src="{$rest_url}"
 					[src]="allPostsEntities.entities.sort((a, b) => activeEntities.includes(a.id) ? -1 : 1)"
 					items="entities">
 					<template type="amp-mustache">
-						<h4 [class]="activeEntities.includes('{{id}}') ? 'chip active' : 'chip'" on="tap:AMP.setState({
+						<span [class]="activeEntities.includes('{{id}}') ? 'chip active' : 'chip'" on="tap:AMP.setState({
 							referencedPosts: referencedPosts.includes({{referencedPosts}}) ? referencedPosts.filter(item => item != {{referencedPosts}}) : referencedPosts.concat({{referencedPosts}}),
 							activeEntities: activeEntities.includes('{{id}}') ? activeEntities.filter(item => item != '{{id}}') : activeEntities.concat('{{id}}')
-						})">{{label}}</h4>
+						})">{{label}}</span>
 					</template>	
 				</amp-list>
 			</section>
 			<section class="cards">
 				<amp-list 
-					height="240"
-					[height]="240 * ceil(allPostsEntities.posts.length / 4)"
+					height="200"
 					layout="fixed-height"
 					src="{$rest_url}"
 					[src]="allPostsEntities.posts.sort((a, b) => referencedPosts.includes(a.ID) ? -1 : 1)"

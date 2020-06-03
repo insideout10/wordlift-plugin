@@ -84,7 +84,7 @@ function wl_shortcode_faceted_search_origin( $request ) {
 		return;
 	}
 
-	$limit = ( isset( $_GET['limit'] ) ) ? (int) $_GET['limit'] : 20;  // WPCS: input var ok; CSRF ok.
+	$limit = ( isset( $_GET['limit'] ) ) ? (int) $_GET['limit'] : 4;  // WPCS: input var ok; CSRF ok.
 
 	$referencing_posts = Wordlift_Relation_Service::get_instance()->get_article_subjects(
 		$entity_ids,
@@ -136,6 +136,15 @@ function wl_shortcode_faceted_search_origin( $request ) {
 			$post_results[] = $result;
 		}
 	}
+
+	// Add filler posts if needed
+
+	$filler_count = $limit - count($post_results);
+	$filler_posts = wl_shortcode_faceted_search_filler_posts($filler_count, $current_post_id, $referencing_post_ids);
+	$post_results = array_merge($post_results, $filler_posts);
+	$referencing_post_ids = array_map(function($post){
+		return $post->ID;
+	}, $post_results);
 
 	// Populate $entity_results
 
@@ -200,6 +209,65 @@ function wl_shortcode_faceted_search_origin( $request ) {
 
 }
 
+function wl_shortcode_faceted_search_filler_posts($filler_count, $current_post_id, $referencing_post_ids){
+
+	$filler_posts = array();
+
+	// First add latest posts from same categories as the current post
+	if($filler_count > 0){
+
+		$current_post_categories = wp_get_post_categories($current_post_id);
+
+		$args = array(
+			'meta_query' => array(
+				array(
+					'key' => '_thumbnail_id'
+				)
+			),
+			'category__in' => $current_post_categories,
+			'numberposts' => $filler_count,
+			'post__not_in' => array_merge(array($current_post_id), $referencing_post_ids),
+			'ignore_sticky_posts' => 1
+		);
+
+		$filler_posts = get_posts($args);
+	}
+
+	$filler_count = $filler_count - count($filler_posts);
+	$filler_post_ids = array_map(function($post){
+		return $post->ID;
+	}, $filler_posts);
+
+	// If that does not fill, add latest posts irrespective of category
+	if($filler_count > 0){
+
+		$args = array(
+			'meta_query' => array(
+				array(
+					'key' => '_thumbnail_id'
+				)
+			),
+			'numberposts' => $filler_count,
+			'post__not_in' => array_merge(array($current_post_id), $referencing_post_ids, $filler_post_ids),
+			'ignore_sticky_posts' => 1
+		);
+
+		$filler_posts = array_merge($filler_posts, get_posts($args));
+
+	}
+
+	// Add thumbnail and permalink to filler posts
+	foreach ( $filler_posts as $post_obj ) {
+		$thumbnail           = get_the_post_thumbnail_url( $post_obj, 'medium' );
+		$post_obj->thumbnail = ( $thumbnail ) ?
+			$thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
+		$post_obj->permalink = get_post_permalink( $post_obj->ID );
+	}
+
+	return $filler_posts;
+
+}
+
 /**
  * Adding `rest_api_init` action for network faceted-search
  */
@@ -246,7 +314,7 @@ add_action( 'init', function () {
 			),
 			'limit'          => array(
 				'type'    => 'number',
-				'default' => 20,
+				'default' => 4,
 			),
 		),
 	) );
