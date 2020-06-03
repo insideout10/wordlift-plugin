@@ -45,11 +45,11 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 
 		// Extract attributes and set default values.
 		$shortcode_atts = shortcode_atts( array(
-			'title'          => __( 'Related articles', 'wordlift' ),
-			'limit'          => 4,
-			'post_id'        => '',
-			'template_id'    => '',
-			'uniqid'         => uniqid( 'wl-faceted-widget-' ),
+			'title'       => __( 'Related articles', 'wordlift' ),
+			'limit'       => 4,
+			'post_id'     => '',
+			'template_id' => '',
+			'uniqid'      => uniqid( 'wl-faceted-widget-' ),
 		), $atts );
 
 		return $shortcode_atts;
@@ -74,11 +74,11 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 			return;
 		}
 
-		$post         = ! empty( $shortcode_atts['post_id'] ) ? get_post( intval( $shortcode_atts['post_id'] ) ) : get_post();
-		$limit        = $shortcode_atts['limit'];
-		$faceted_id   = $shortcode_atts['uniqid'];
+		$post       = ! empty( $shortcode_atts['post_id'] ) ? get_post( intval( $shortcode_atts['post_id'] ) ) : get_post();
+		$limit      = $shortcode_atts['limit'];
+		$faceted_id = $shortcode_atts['uniqid'];
 
-		$rest_url     = $post ? rest_url(sprintf("wordlift/v1/faceted-search?post_id=%s&limit=%s", $post->ID, $limit)) : false;
+		$rest_url = $post ? rest_url( sprintf( "wordlift/v1/faceted-search?post_id=%s&limit=%s", $post->ID, $limit ) ) : false;
 
 		// avoid building the widget when no valid $rest_url
 		if ( ! $rest_url ) {
@@ -118,11 +118,11 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 			return;
 		}
 
-		$post         = ! empty( $shortcode_atts['post_id'] ) ? get_post( intval( $shortcode_atts['post_id'] ) ) : get_post();
-		$limit        = $shortcode_atts['limit'];
-		$faceted_id   = $shortcode_atts['uniqid'];
+		$post       = ! empty( $shortcode_atts['post_id'] ) ? get_post( intval( $shortcode_atts['post_id'] ) ) : get_post();
+		$limit      = $shortcode_atts['limit'];
+		$faceted_id = $shortcode_atts['uniqid'];
 
-		$rest_url     = $post ? rest_url(sprintf("wordlift/v1/faceted-search?post_id=%s&limit=%s", $post->ID, $limit)) : false;
+		$rest_url = $post ? rest_url( sprintf( "wordlift/v1/faceted-search?post_id=%s&limit=%s", $post->ID, $limit ) ) : false;
 
 		// avoid building the widget when no valid $rest_url
 		if ( ! $rest_url ) {
@@ -131,10 +131,10 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 
 		// Use a protocol-relative URL as amp-list spec says that URL's protocol must be HTTPS.
 		// This is a hackish way, but this works for http and https URLs
-		$rest_url  = str_replace( array(
-				'http:',
-				'https:',
-			), '', $rest_url );
+		$rest_url = str_replace( array(
+			'http:',
+			'https:',
+		), '', $rest_url );
 
 		if ( ! empty( $shortcode_atts['template_id'] ) ) {
 			$template_id = $shortcode_atts['template_id'];
@@ -145,7 +145,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 		}
 
 		return <<<HTML
-		<div id="{$faceted_id}" class="wl-amp-faceted" style="width: 100%">
+		<div id="{$faceted_id}" class="wl-amp-faceted">
 			<h2 class="wl-headline">{$shortcode_atts['title']}</h2>
 			<amp-state id="referencedPosts">
 				<script type="application/json">

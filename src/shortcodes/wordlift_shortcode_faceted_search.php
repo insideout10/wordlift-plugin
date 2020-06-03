@@ -99,7 +99,7 @@ function wl_shortcode_faceted_search_origin( $request ) {
 		return $p->ID;
 	}, $referencing_posts );
 
-	$post_results = array();
+	$post_results   = array();
 	$entity_results = array();
 
 	// Populate $post_results
@@ -132,19 +132,19 @@ function wl_shortcode_faceted_search_origin( $request ) {
 				$thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
 			$post_obj->permalink = get_post_permalink( $post_obj->ID );
 
-			$result = $post_obj;
+			$result         = $post_obj;
 			$post_results[] = $result;
 		}
 	}
 
 	// Add filler posts if needed
 
-	$filler_count = $limit - count($post_results);
-	$filler_posts = wl_shortcode_faceted_search_filler_posts($filler_count, $current_post_id, $referencing_post_ids);
-	$post_results = array_merge($post_results, $filler_posts);
-	$referencing_post_ids = array_map(function($post){
+	$filler_count         = $limit - count( $post_results );
+	$filler_posts         = wl_shortcode_faceted_search_filler_posts( $filler_count, $current_post_id, $referencing_post_ids );
+	$post_results         = array_merge( $post_results, $filler_posts );
+	$referencing_post_ids = array_map( function ( $post ) {
 		return $post->ID;
-	}, $post_results);
+	}, $post_results );
 
 	// Populate $entity_results
 
@@ -185,9 +185,9 @@ function wl_shortcode_faceted_search_origin( $request ) {
 			// Ensure only valid and published entities are returned.
 			if ( ( null !== $entity ) && ( 'publish' === $entity->post_status ) ) {
 
-				$serialized_entity              = wl_serialize_entity( $entity );
-				$serialized_entity['counter']   = $obj->counter;
-				$serialized_entity['createdAt'] = $entity->post_date;
+				$serialized_entity                    = wl_serialize_entity( $entity );
+				$serialized_entity['counter']         = $obj->counter;
+				$serialized_entity['createdAt']       = $entity->post_date;
 				$serialized_entity['referencedPosts'] = Wordlift_Relation_Service::get_instance()->get_article_subjects(
 					$obj->ID,
 					'ids',
@@ -197,62 +197,62 @@ function wl_shortcode_faceted_search_origin( $request ) {
 					null,
 					$referencing_post_ids
 				);
-				$entity_results[] = $serialized_entity;
+				$entity_results[]                     = $serialized_entity;
 			}
 		}
 	}
 
 	return array(
-		'posts' => $post_results,
+		'posts'    => $post_results,
 		'entities' => $entity_results
 	);
 
 }
 
-function wl_shortcode_faceted_search_filler_posts($filler_count, $current_post_id, $referencing_post_ids){
+function wl_shortcode_faceted_search_filler_posts( $filler_count, $current_post_id, $referencing_post_ids ) {
 
 	$filler_posts = array();
 
 	// First add latest posts from same categories as the current post
-	if($filler_count > 0){
+	if ( $filler_count > 0 ) {
 
-		$current_post_categories = wp_get_post_categories($current_post_id);
+		$current_post_categories = wp_get_post_categories( $current_post_id );
 
 		$args = array(
-			'meta_query' => array(
+			'meta_query'          => array(
 				array(
 					'key' => '_thumbnail_id'
 				)
 			),
-			'category__in' => $current_post_categories,
-			'numberposts' => $filler_count,
-			'post__not_in' => array_merge(array($current_post_id), $referencing_post_ids),
+			'category__in'        => $current_post_categories,
+			'numberposts'         => $filler_count,
+			'post__not_in'        => array_merge( array( $current_post_id ), $referencing_post_ids ),
 			'ignore_sticky_posts' => 1
 		);
 
-		$filler_posts = get_posts($args);
+		$filler_posts = get_posts( $args );
 	}
 
-	$filler_count = $filler_count - count($filler_posts);
-	$filler_post_ids = array_map(function($post){
+	$filler_count    = $filler_count - count( $filler_posts );
+	$filler_post_ids = array_map( function ( $post ) {
 		return $post->ID;
-	}, $filler_posts);
+	}, $filler_posts );
 
 	// If that does not fill, add latest posts irrespective of category
-	if($filler_count > 0){
+	if ( $filler_count > 0 ) {
 
 		$args = array(
-			'meta_query' => array(
+			'meta_query'          => array(
 				array(
 					'key' => '_thumbnail_id'
 				)
 			),
-			'numberposts' => $filler_count,
-			'post__not_in' => array_merge(array($current_post_id), $referencing_post_ids, $filler_post_ids),
+			'numberposts'         => $filler_count,
+			'post__not_in'        => array_merge( array( $current_post_id ), $referencing_post_ids, $filler_post_ids ),
 			'ignore_sticky_posts' => 1
 		);
 
-		$filler_posts = array_merge($filler_posts, get_posts($args));
+		$filler_posts = array_merge( $filler_posts, get_posts( $args ) );
 
 	}
 
@@ -298,7 +298,7 @@ add_action( 'init', function () {
 			return '[wl_faceted_search ' . $attr_code . ']';
 		},
 		'attributes'      => array(
-			'title'          => array(
+			'title'       => array(
 				'type'    => 'string',
 				'default' => __( 'Related articles', 'wordlift' ),
 			),
@@ -312,7 +312,7 @@ add_action( 'init', function () {
 				'type'    => 'string',
 				'default' => uniqid( 'wl-faceted-widget-' ),
 			),
-			'limit'          => array(
+			'limit'       => array(
 				'type'    => 'number',
 				'default' => 4,
 			),

@@ -119,6 +119,9 @@
   -webkit-box-shadow: inset 0 0 0 rgba(0, 0, 0, 0), 0 3px 0 #000000;
           box-shadow: inset 0 0 0 rgba(0, 0, 0, 0), 0 3px 0 #000000;
 }
+.wl-amp-faceted {
+  width: 100%;
+}
 .wl-amp-faceted .wl-headline {
   font-size: 1rem;
   margin: 0.5rem 0;
