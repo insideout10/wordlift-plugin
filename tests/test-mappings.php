@@ -198,4 +198,30 @@ class Wordlift_Mappings_Test extends WP_UnitTestCase {
 	}
 
 
+	public function test_given_empty_meta_value_should_not_add_the_property_on_jsonld() {
+		// Create a post.
+		$post_id = wp_insert_post(
+			array(
+				'post_title' => 'foo'
+			)
+		);
+
+		wp_add_object_terms( $post_id, 'foo', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+		$result_1   = wp_add_object_terms( $post_id, 'how-to', 'category' );
+		$properties = array(
+			array(
+				'property_name'      => 'foo',
+				'field_type'         => \Wordlift\Mappings\Jsonld_Converter::FIELD_TYPE_CUSTOM_FIELD,
+				'field_name'         => 'foo',
+				'transform_function' => 'none',
+				'property_status'    => Mappings_Validator::ACTIVE_CATEGORY,
+			),
+		);
+		$this->create_new_mapping_item( 'category', (int) $result_1[0], $properties );
+		// Get the json ld data for this post.
+		$jsonlds       = $this->jsonld_service->get_jsonld( false, $post_id );
+		$target_jsonld = end( $jsonlds );
+		$this->assertFalse( array_key_exists( 'foo', $target_jsonld ) );
+	}
+
 }
