@@ -125,7 +125,7 @@ class Wordlift_Timeline_Service {
 		// Get the entity IDs either from the entities related to the specified post or from the last 50 published
 		// posts if no post has been specified.
 		$ids = ( is_numeric( $post_id )
-			? wl_core_get_related_entity_ids( $post_id, array( 'predicate' => 'where', ) )
+			? wl_core_get_related_entity_ids( $post_id )
 			: $this->get_all_related_to_last_50_published_posts() );
 
 		// Add the post itself if it's an entity.
