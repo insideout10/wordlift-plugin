@@ -24,7 +24,7 @@ class _FieldTypeField extends React.Component {
         <td colSpan="2">Field Type</td>
         <td colSpan="3">
           <SelectComponent
-              className="wl-table__select-field"
+            className="wl-table__select-field"
             options={this.props.fieldTypeHelpTextOptions}
             value={this.props.propData.fieldTypeHelpText}
             onChange={event => {

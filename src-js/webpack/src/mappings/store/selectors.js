@@ -17,3 +17,13 @@ export const getSelectedBulkOption = state => state.selectedBulkOption;
  * @returns {Array} Array of selected mapping items.
  */
 export const getSelectedMappingItems = state => state.mappingItems.filter(item => true === item.isSelected);
+
+/**
+ * Returns all the terms present in the store for the particular taxonomy
+ * @param state Total state of edit mapping ui.
+ * @param taxonomy Selected taxonomy
+ * @return {Array} The array of terms
+ */
+export function getTermsForTaxonomy(state, taxonomy) {
+  return state.RuleGroupData.ruleFieldTwoOptions.filter(e => e.taxonomy === taxonomy);
+}

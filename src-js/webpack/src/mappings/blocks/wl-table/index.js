@@ -22,7 +22,7 @@ export const WlTable = ({
   small = false,
   paddingLeft = false,
   striped = true,
-                          transparentBg = false
+  transparentBg = false
 }) => {
   const classes = classExtractor({
     "wl-table--bottom-aligned": bottomAligned,
@@ -30,7 +30,7 @@ export const WlTable = ({
     "wl-table--small": small,
     "wl-table--padding-left": paddingLeft,
     "striped": striped,
-    "wl-table--transparent-bg":transparentBg,
+    "wl-table--transparent-bg": transparentBg
   });
   return <table className={"widefat  wl-table " + classes}>{children}</table>;
 };
