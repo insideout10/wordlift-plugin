@@ -68,18 +68,18 @@ class Wordlift_Term_JsonLd_Adapter {
 	 * @return array
 	 */
 	public function get_carousel_jsonld( $jsonld ) {
-		global $wp_query;
+		$posts = $this->get_posts();
 
-		$entities = array();
-
-		if ( ! is_array( $wp_query->posts ) ) {
+		if ( ! is_array( $posts ) ) {
 			// Bail out if no posts are present.
 			return $jsonld;
 		}
 
+		$entities = array();
+
 		$posts = array_map( function ( $post ) {
 			return $post->ID;
-		}, $wp_query->posts );
+		}, $posts );
 
 		if ( count( $posts ) < 2 ) {
 			return $jsonld;
@@ -104,6 +104,16 @@ class Wordlift_Term_JsonLd_Adapter {
 			'post_jsonld' => $jsonld,
 			'entities'    => $entities
 		);
+	}
+
+	private function get_posts() {
+		global $wp_query;
+
+		if ( null !== $wp_query->posts ) {
+			return $wp_query->posts;
+		}
+
+		return null;
 	}
 
 	/**

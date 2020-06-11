@@ -62,10 +62,18 @@ class Wordlift_Issue_1072_Test extends Wordlift_Unit_Test_Case {
 
 	function test_term() {
 
-		$term_id       = $this->factory()->term->create();
+		$term_id  = $this->factory()->term->create( array( 'taxonomy' => 'category' ) );
+		$post_ids = $this->factory()->post->create_many( 100 );
+
+		foreach ( $post_ids as $post_id ) {
+			wp_add_object_terms( $post_id, $term_id, 'category' );
+		}
+
 		$term_jsonld_a = $this->term_jsonld_adapter->get( $term_id );
 		$term_jsonld_b = $this->jsonld_service->get( Jsonld_Service::TYPE_TERM, $term_id );
 		$this->assertEqualSets( $term_jsonld_a, $term_jsonld_b );
+
+		var_dump( $term_jsonld_a );
 
 	}
 
