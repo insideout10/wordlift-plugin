@@ -85,6 +85,7 @@ function wl_shortcode_faceted_search_origin( $request ) {
 	}
 
 	$limit = ( isset( $_GET['limit'] ) ) ? (int) $_GET['limit'] : 4;  // WPCS: input var ok; CSRF ok.
+	$amp = ( isset( $_GET['amp'] ) ) ? true : false;
 
 	$referencing_posts = Wordlift_Relation_Service::get_instance()->get_article_subjects(
 		$entity_ids,
@@ -203,7 +204,7 @@ function wl_shortcode_faceted_search_origin( $request ) {
 	}
 
 	return array(
-		'posts'    => $post_results,
+		'posts'    => $amp ? array(array('values' => $post_results)) : $post_results,
 		'entities' => $entity_results
 	);
 

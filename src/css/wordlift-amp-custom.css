@@ -126,6 +126,9 @@
   font-size: 1rem;
   margin: 0.5rem 0;
 }
+.wl-amp-faceted .chips {
+  margin: 12px 0;
+}
 .wl-amp-faceted .chips amp-list div[role='list'] .chip {
   font-size: 0.8rem;
   font-weight: 600;
@@ -141,36 +144,24 @@
   background: #000;
   color: #fff;
 }
-.wl-amp-faceted .cards amp-list div[role='list'] {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap;
+.wl-amp-faceted .cards amp-carousel {
+  background: transparent;
+}
+.wl-amp-faceted .cards amp-carousel .amp-carousel-button-prev {
+  position: absolute;
+  top: 30%;
+}
+.wl-amp-faceted .cards amp-carousel .amp-carousel-button-next {
+  position: absolute;
+  right: 0;
+  top: 30%;
 }
 .wl-amp-faceted .cards amp-list div[role='list'] .card {
   background: white;
-  -webkit-box-flex: 1;
-  -webkit-flex: 1 0 300px;
-      -ms-flex: 1 0 300px;
-          flex: 1 0 300px;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   margin: 0.5rem .25em;
-}
-@media screen and (min-width: 40em) {
-  .wl-amp-faceted .cards amp-list div[role='list'] .card {
-    max-width: -webkit-calc(49%);
-    max-width: calc(49%);
-  }
-}
-@media screen and (min-width: 60em) {
-  .wl-amp-faceted .cards amp-list div[role='list'] .card {
-    max-width: -webkit-calc(24%);
-    max-width: calc(24%);
-  }
+  vertical-align: top;
 }
 .wl-amp-faceted .cards amp-list div[role='list'] .card a {
   color: black;
@@ -183,4 +174,5 @@
   font-size: 0.8rem;
   margin: 0.3rem 0;
   line-height: 1.5rem;
+  white-space: normal;
 }

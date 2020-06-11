@@ -122,7 +122,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 		$limit      = $shortcode_atts['limit'];
 		$faceted_id = $shortcode_atts['uniqid'];
 
-		$rest_url = $post ? rest_url( sprintf( "wordlift/v1/faceted-search?post_id=%s&limit=%s", $post->ID, $limit ) ) : false;
+		$rest_url = $post ? rest_url( sprintf( "wordlift/v1/faceted-search?amp&post_id=%s&limit=%s", $post->ID, $limit ) ) : false;
 
 		// avoid building the widget when no valid $rest_url
 		if ( ! $rest_url ) {
@@ -178,23 +178,49 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 					height="200"
 					layout="fixed-height"
 					src="{$rest_url}"
-					[src]="allPostsEntities.posts.sort((a, b) => referencedPosts.includes(a.ID) ? -1 : 1)"
+					[src]="{values: allPostsEntities.posts[0].values.sort((a, b) => referencedPosts.includes(a.ID) ? -1 : 1)}"
 					template="{$template_id}"
 					items="posts">
 					<template type="amp-mustache" id="template-{$faceted_id}">
-						<article class="card">
-							<a href="{{permalink}}">
-								<amp-img
-			                        width="800"
-			                        height="450"
-									layout="responsive"
-			                        src="{{thumbnail}}"></amp-img>
-								<div class="card-content"><h3 class="title">{{post_title}}</h3></div>
-							</a>
-						</article>
+						<amp-carousel 
+						  media="(min-width: 380px)"
+						  height="180"
+					      layout="fixed-height"
+					      type="carousel">
+					      {{#values}}
+							<article class="card" style="width: 25%">
+								<a href="{{permalink}}">
+									<amp-img
+				                        width="16"
+				                        height="9"
+										layout="responsive"
+				                        src="{{thumbnail}}"></amp-img>
+									<div class="card-content"><h3 class="title">{{post_title}}</h3></div>
+								</a>
+							</article>
+						  {{/values}}
+						</amp-carousel>
+						<amp-carousel 
+						  media="(max-width: 380px)"
+						  height="230"
+					      layout="fixed-height"
+					      type="slides">
+					      {{#values}}
+							<article class="card" style="width: 100%">
+								<a href="{{permalink}}">
+									<amp-img
+				                        width="16"
+				                        height="9"
+										layout="responsive"
+				                        src="{{thumbnail}}"></amp-img>
+									<div class="card-content"><h3 class="title">{{post_title}}</h3></div>
+								</a>
+							</article>
+						  {{/values}}
+						</amp-carousel>
 					</template>
 				</amp-list>
-			</section>	
+			</section>
 		</div>
 HTML;
 	}
