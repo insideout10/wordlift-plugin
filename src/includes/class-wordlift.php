@@ -1477,9 +1477,9 @@ class Wordlift {
 
 		/**
 		 * @since 3.26.0
-		 * Initialize the Faq JSON LD converter here.
+		 * Initialize the Faq JSON LD converter here - disabled.
 		 */
-		new Faq_To_Jsonld_Converter();
+		// new Faq_To_Jsonld_Converter();
 		/*
 		 * Use the Templates Ajax Endpoint to load HTML templates for the legacy Angular app via admin-ajax.php
 		 * end-point.
@@ -1488,8 +1488,8 @@ class Wordlift {
 		 * @since 3.24.4
 		 */
 		new Templates_Ajax_Endpoint();
-		// Call this static method to register FAQ routes to rest api
-		Faq_Rest_Controller::register_routes();
+		// Call this static method to register FAQ routes to rest api - disabled
+		//Faq_Rest_Controller::register_routes();
 
 		/*
 		 * Create a singleton for the Analysis_Response_Ops_Factory.
