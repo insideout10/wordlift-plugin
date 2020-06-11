@@ -67,8 +67,8 @@ class Wordlift_Term_JsonLd_Adapter {
 	 *
 	 * @return array
 	 */
-	public function get_carousel_jsonld( $jsonld ) {
-		$posts = $this->get_posts();
+	public function get_carousel_jsonld( $jsonld, $id = null ) {
+		$posts = $this->get_posts( $id );
 
 		if ( ! is_array( $posts ) ) {
 			// Bail out if no posts are present.
@@ -76,10 +76,6 @@ class Wordlift_Term_JsonLd_Adapter {
 		}
 
 		$entities = array();
-
-		$posts = array_map( function ( $post ) {
-			return $post->ID;
-		}, $posts );
 
 		if ( count( $posts ) < 2 ) {
 			return $jsonld;
@@ -89,13 +85,16 @@ class Wordlift_Term_JsonLd_Adapter {
 		$jsonld['@type']           = 'ItemList';
 		$jsonld['itemListElement'] = array();
 		$position                  = 1;
+
 		foreach ( $posts as $post_id ) {
 			$post_jsonld = $this->jsonld_service->get_jsonld( false, $post_id );
+
 			array_push( $jsonld['itemListElement'], array(
 				'@type'    => 'ListItem',
 				'position' => $position,
 				'item'     => array_shift( $post_jsonld )
 			) );
+
 			$entities = array_merge( $entities, $post_jsonld );
 			$position += 1;
 		}
@@ -106,14 +105,22 @@ class Wordlift_Term_JsonLd_Adapter {
 		);
 	}
 
-	private function get_posts() {
+	private function get_posts( $id ) {
 		global $wp_query;
 
-		if ( null !== $wp_query->posts ) {
-			return $wp_query->posts;
+		if ( ! is_null( $wp_query->posts ) ) {
+			return array_map( function ( $post ) {
+				return $post->ID;
+			}, $wp_query->posts );
 		}
 
-		return null;
+		if ( is_null( $id ) ) {
+			return null;
+		}
+
+		$term = get_term( $id );
+
+		return get_objects_in_term( $id, $term->taxonomy );
 	}
 
 	/**
@@ -153,11 +160,11 @@ class Wordlift_Term_JsonLd_Adapter {
 		 *
 		 * @since 3.26.0
 		 */
-		$carousel_data = $this->get_carousel_jsonld( array() );
+		$carousel_data = $this->get_carousel_jsonld( array(), $id );
 
 		// If the carousel jsonld returns empty array, then fallback to previous jsonld generation.
 		if ( isset( $carousel_data['entities'] )
-		     && ! isset( $carousel_data['post_jsonld'] )
+		     && isset( $carousel_data['post_jsonld'] )
 		     && $carousel_data['post_jsonld'] !== array() ) {
 
 			$entities    = $carousel_data['entities'];
