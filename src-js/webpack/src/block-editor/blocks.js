@@ -18,6 +18,7 @@ import {
   RadioControl,
   SelectControl
 } from "@wordpress/components";
+import { __ } from "@wordpress/i18n";
 import { registerBlockType } from "@wordpress/blocks";
 
 /**
@@ -51,13 +52,13 @@ const BlockPreview = ({ title, attributes }) => (
 
 const blocks = {
   [`${PLUGIN_NAMESPACE}/faceted-search`]: {
-    title: "Wordlift Faceted Search",
-    description: "Configure Faceted Search block within your content.",
+    title: __("WordLift Faceted Search", "wordlift"),
+    description: __("Configure Faceted Search block within your content.", "wordlift"),
     category: "wordlift",
     icon: <WordLiftIcon />,
     attributes: {
       title: {
-        default: "Related articles"
+        default: __("Related articles", "wordlift")
       },
       limit: {
         default: 4
@@ -77,25 +78,38 @@ const blocks = {
       const { title, template_id, post_id, uniqid, limit } = attributes;
       return (
         <div>
-          <BlockPreview title="Wordlift Faceted Search" attributes={attributes} />
+          <BlockPreview title={__("WordLift Faceted Search", "wordlift")} attributes={attributes} />
           <InspectorControls>
-            <PanelBody title="Widget Settings" className="blocks-font-size">
-              <TextControl label="Title" value={title} onChange={title => setAttributes({ title })} />
-              <RangeControl label="Limit" value={limit} min={2} max={20} onChange={limit => setAttributes({ limit })} />
+            <PanelBody title={__("Widget Settings", "wordlift")} className="blocks-font-size">
+              <TextControl label={__("Title", "wordlift")} value={title} onChange={title => setAttributes({ title })} />
+              <RangeControl
+                label={__("Limit", "wordlift")}
+                value={limit}
+                min={2}
+                max={20}
+                onChange={limit => setAttributes({ limit })}
+              />
               <TextControl
-                label="Template ID"
-                help="ID of the script tag that has mustache template to be used for Faceted Search widget."
+                label={__("Template ID", "wordlift")}
+                help={__(
+                  "ID of the script tag that has mustache template to be used for Faceted Search widget.",
+                  "wordlift"
+                )}
                 value={template_id}
                 onChange={template_id => setAttributes({ template_id })}
               />
               <TextControl
-                label="Post ID"
-                help="Post ID of the post of which Faceted Search widget has to be shown."
+                label={__("Post ID", "wordlift")}
+                help={__("Post ID of the post of which Faceted Search widget has to be shown.", "wordlift")}
                 type="number"
                 value={post_id}
                 onChange={post_id => setAttributes({ post_id })}
               />
-              <TextControl label="Unique ID" value={uniqid} onChange={uniqid => setAttributes({ uniqid })} />
+              <TextControl
+                label={__("Unique ID", "wordlift")}
+                value={uniqid}
+                onChange={uniqid => setAttributes({ uniqid })}
+              />
             </PanelBody>
           </InspectorControls>
         </div>

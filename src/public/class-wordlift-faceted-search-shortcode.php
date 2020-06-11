@@ -74,9 +74,9 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 			return;
 		}
 
-		$post       = ! empty( $shortcode_atts['post_id'] ) ? get_post( intval( $shortcode_atts['post_id'] ) ) : get_post();
-		$limit      = $shortcode_atts['limit'];
-		$faceted_id = $shortcode_atts['uniqid'];
+		$post       = ! empty( $shortcode_atts['post_id'] ) ? get_post( intval( sanitize_text_field( $shortcode_atts['post_id'] ) ) ) : get_post();
+		$limit      = sanitize_text_field( $shortcode_atts['limit'] );
+		$faceted_id = sanitize_text_field( $shortcode_atts['uniqid'] );
 
 		$rest_url = $post ? rest_url( sprintf( "wordlift/v1/faceted-search?post_id=%s&limit=%s", $post->ID, $limit ) ) : false;
 
@@ -94,8 +94,8 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 			$faceted_id,
 			'wl-faceted',
 			$rest_url,
-			$shortcode_atts['title'],
-			$shortcode_atts['template_id']
+			sanitize_text_field( $shortcode_atts['title'] ),
+			sanitize_text_field( $shortcode_atts['template_id'] )
 		);
 	}
 
@@ -118,9 +118,9 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 			return;
 		}
 
-		$post       = ! empty( $shortcode_atts['post_id'] ) ? get_post( intval( $shortcode_atts['post_id'] ) ) : get_post();
-		$limit      = $shortcode_atts['limit'];
-		$faceted_id = $shortcode_atts['uniqid'];
+		$post       = ! empty( $shortcode_atts['post_id'] ) ? get_post( intval( sanitize_text_field( $shortcode_atts['post_id'] ) ) ) : get_post();
+		$limit      = sanitize_text_field( $shortcode_atts['limit'] );
+		$faceted_id = sanitize_text_field( $shortcode_atts['uniqid'] );
 
 		$rest_url = $post ? rest_url( sprintf( "wordlift/v1/faceted-search?amp&post_id=%s&limit=%s", $post->ID, $limit ) ) : false;
 
@@ -137,7 +137,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 		), '', $rest_url );
 
 		if ( ! empty( $shortcode_atts['template_id'] ) ) {
-			$template_id = $shortcode_atts['template_id'];
+			$template_id = sanitize_text_field( $shortcode_atts['template_id'] );
 		} else {
 			$template_id = "template-" . $faceted_id;
 			// Enqueue amp specific styles
