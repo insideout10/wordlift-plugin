@@ -102,7 +102,7 @@ class Wordlift {
 	 * @access protected
 	 * @var Faq_Tinymce_Adapter $faq_tinymce_adapter .
 	 */
-	protected $faq_tinymce_adapter;
+	//protected $faq_tinymce_adapter;
 
 	/**
 	 * The Thumbnail service.
@@ -1323,7 +1323,7 @@ class Wordlift {
 		$this->entity_type_adapter      = new Wordlift_Entity_Type_Adapter( $this->entity_type_service );
 		$this->publisher_ajax_adapter   = new Wordlift_Publisher_Ajax_Adapter( $this->publisher_service );
 		$this->tinymce_adapter          = new Wordlift_Tinymce_Adapter( $this );
-		$this->faq_tinymce_adapter      = new Faq_Tinymce_Adapter();
+		//$this->faq_tinymce_adapter      = new Faq_Tinymce_Adapter();
 		$this->relation_rebuild_adapter = new Wordlift_Relation_Rebuild_Adapter( $this->relation_rebuild_service );
 
 		/*
@@ -1474,9 +1474,9 @@ class Wordlift {
 
 		/**
 		 * @since 3.26.0
-		 * Initialize the Faq JSON LD converter here.
+		 * Initialize the Faq JSON LD converter here - disabled.
 		 */
-		new Faq_To_Jsonld_Converter();
+		// new Faq_To_Jsonld_Converter();
 		/*
 		 * Use the Templates Ajax Endpoint to load HTML templates for the legacy Angular app via admin-ajax.php
 		 * end-point.
@@ -1485,8 +1485,8 @@ class Wordlift {
 		 * @since 3.24.4
 		 */
 		new Templates_Ajax_Endpoint();
-		// Call this static method to register FAQ routes to rest api
-		Faq_Rest_Controller::register_routes();
+		// Call this static method to register FAQ routes to rest api - disabled
+		//Faq_Rest_Controller::register_routes();
 
 		/*
 		 * Create a singleton for the Analysis_Response_Ops_Factory.
@@ -1704,12 +1704,13 @@ class Wordlift {
 		/** Adapters. */
 		$this->loader->add_filter( 'mce_external_plugins', $this->tinymce_adapter, 'mce_external_plugins', 10, 1 );
 		/**
+		 * Disabling Faq temporarily.
 		 * Load the tinymce editor button on the tool bar.
 		 * @since 3.26.0
 		 */
-		$this->loader->add_filter( 'tiny_mce_before_init', $this->faq_tinymce_adapter, 'register_custom_tags' );
-		$this->loader->add_filter( 'mce_buttons', $this->faq_tinymce_adapter, 'register_faq_toolbar_button', 10, 1 );
-		$this->loader->add_filter( 'mce_external_plugins', $this->faq_tinymce_adapter, 'register_faq_tinymce_plugin', 10, 1 );
+		//$this->loader->add_filter( 'tiny_mce_before_init', $this->faq_tinymce_adapter, 'register_custom_tags' );
+		//$this->loader->add_filter( 'mce_buttons', $this->faq_tinymce_adapter, 'register_faq_toolbar_button', 10, 1 );
+		//$this->loader->add_filter( 'mce_external_plugins', $this->faq_tinymce_adapter, 'register_faq_tinymce_plugin', 10, 1 );
 
 
 		$this->loader->add_action( 'wp_ajax_wl_relation_rebuild_process_all', $this->relation_rebuild_adapter, 'process_all' );

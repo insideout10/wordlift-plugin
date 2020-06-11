@@ -193,8 +193,9 @@ class Wordlift_Admin_Post_Edit_Page {
 		);
 
 		wp_enqueue_style( 'wl-classic-editor', "$script_name.css", array(), $this->plugin->get_version() );
-		$this->load_faq_scripts_and_styles();
-		$this->load_faq_settings( self::TINY_MCE );
+		// Disable Faq Editor.
+		// $this->load_faq_scripts_and_styles();
+		// $this->load_faq_settings( self::TINY_MCE );
 	}
 
 	/**
@@ -264,9 +265,9 @@ class Wordlift_Admin_Post_Edit_Page {
 	 * @since 3.21.0
 	 */
 	public function enqueue_scripts_gutenberg() {
-		// Load FAQ settings.
-		$this->load_faq_scripts_and_styles();
-		$this->load_faq_settings( self::GUTENBERG );
+		// Load FAQ settings. - Disabled for now
+		// $this->load_faq_scripts_and_styles();
+		//$this->load_faq_settings( self::GUTENBERG );
 
 		wp_register_script(
 			'wl-block-editor',

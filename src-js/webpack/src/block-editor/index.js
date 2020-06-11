@@ -88,7 +88,7 @@ registerPlugin(PLUGIN_NAMESPACE, {
             <ArticleMetadataPanel />
             <SuggestedImagesPanel />
             <RelatedPostsPanel />
-            <FaqPanel />
+            {/*<FaqPanel />*/}
           </Fragment>
         </Provider>
       </PluginSidebar>
