@@ -38,7 +38,7 @@ import { EDITOR_STORE, PLUGIN_NAMESPACE } from "../common/constants";
 import registerFilters from "./filters/add-entity.filters";
 import ArticleMetadataPanel from "../common/components/article-metadata-panel";
 import SuggestedImagesPanel from "../common/components/suggested-images-panel";
-import FaqPanel from "../common/components/faq-panel"
+import FaqPanel from "../common/components/faq-panel";
 import SynonymsPanel from "../common/components/synonyms-panel";
 import RelatedPostsPanel from "../common/containers/related-posts";
 import "./blocks";
