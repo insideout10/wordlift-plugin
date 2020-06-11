@@ -143,7 +143,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 = 3.26.0 (2020-06-11) =
-* Enhancement [#1072](https://github.com/insideout10/wordlift-plugin/pull/1072): Add end-point to find JSON-LD by meta for both categories and posts.
+* Enhancement [#1072](https://github.com/insideout10/wordlift-plugin/issues/1072): Add end-point to find JSON-LD by meta for both categories and posts.
 * Enhancement [#1056](https://github.com/insideout10/wordlift-plugin/pull/1056): Adding filter to assign default entity type based on post type.
 * Enhancement [#1029](https://github.com/insideout10/wordlift-plugin/pull/1029): Adding jsonld support for collection pages.
 * Enhancement [#1016](https://github.com/insideout10/wordlift-plugin/issues/1016): Context Cards should display referenced entity data when Entity Redirect is active
