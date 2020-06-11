@@ -1273,7 +1273,19 @@ class Wordlift {
 		$jsonld_cache                            = new Ttl_Cache( 'jsonld', 86400 );
 		$this->cached_postid_to_jsonld_converter = new Wordlift_Cached_Post_Converter( $this->postid_to_jsonld_converter, $this->configuration_service, $jsonld_cache );
 		$this->jsonld_service                    = new Wordlift_Jsonld_Service( $this->entity_service, $this->cached_postid_to_jsonld_converter, $this->jsonld_website_converter );
-		new Jsonld_Endpoint( $this->jsonld_service, $this->entity_uri_service );
+
+		/*
+		 * Load the `Wordlift_Term_JsonLd_Adapter`.
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/892
+		 *
+		 * @since 3.20.0
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-term-jsonld-adapter.php';
+		$term_jsonld_adapter = new Wordlift_Term_JsonLd_Adapter( $this->entity_uri_service, $this->jsonld_service );
+		$jsonld_service      = new Jsonld_Service( $this->jsonld_service, $term_jsonld_adapter );
+		new Jsonld_Endpoint( $jsonld_service, $this->entity_uri_service );
+
 		// Prints the JSON-LD in the head.
 		new Jsonld_Adapter( $this->jsonld_service );
 
@@ -1431,23 +1443,6 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/search-keywords/class-wordlift-search-keyword-taxonomy.php';
 		new Wordlift_Search_Keyword_Taxonomy( $api_service );
-
-		/*
-		 * Load dependencies for the front-end.
-		 *
-		 * @since 3.20.0
-		 */
-		if ( ! is_admin() ) {
-			/*
-			 * Load the `Wordlift_Term_JsonLd_Adapter`.
-			 *
-			 * @see https://github.com/insideout10/wordlift-plugin/issues/892
-			 *
-			 * @since 3.20.0
-			 */
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-term-jsonld-adapter.php';
-			new Wordlift_Term_JsonLd_Adapter( $this->entity_uri_service, $this->jsonld_service );
-		}
 
 		/*
 		 * Initialize the Context Cards Service
