@@ -191,9 +191,11 @@ class Jsonld_Endpoint {
 
 		$results = $wpdb->get_results( $wpdb->prepare(
 			"
-			SELECT post_id AS id, %s AS type
-			 FROM {$wpdb->postmeta}
-			 WHERE meta_key = %s AND meta_value = %s
+			SELECT pm.post_id AS id, %s AS type
+			 FROM {$wpdb->postmeta} pm
+			 	INNER JOIN {$wpdb->posts} p
+			 		ON p.ID = pm.post_id AND p.post_status = 'publish'
+			 WHERE pm.meta_key = %s AND pm.meta_value = %s
 			 UNION
 			 SELECT term_id AS id, %s AS type
 			 FROM {$wpdb->termmeta}

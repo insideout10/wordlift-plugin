@@ -80,9 +80,11 @@ class Wordlift_Term_JsonLd_Adapter {
 		if ( count( $posts ) < 2 ) {
 			return $jsonld;
 		}
+
 		// More than 2 items are present, so construct the jsonld data
 		$jsonld['@context']        = 'https://schema.org';
 		$jsonld['@type']           = 'ItemList';
+		$jsonld['url']             = $this->get_term_url( $id );
 		$jsonld['itemListElement'] = array();
 		$position                  = 1;
 
@@ -92,7 +94,13 @@ class Wordlift_Term_JsonLd_Adapter {
 			array_push( $jsonld['itemListElement'], array(
 				'@type'    => 'ListItem',
 				'position' => $position,
-				'item'     => array_shift( $post_jsonld )
+				/**
+				 * We can't use `item` here unless we change the URL for the item to point to the current page.
+				 *
+				 * See https://developers.google.com/search/docs/data-types/carousel
+				 */
+				// 'item'     => array_shift( $post_jsonld )
+				'url'      => $post_jsonld[0]['url'],
 			) );
 
 			$entities = array_merge( $entities, $post_jsonld );
@@ -101,7 +109,7 @@ class Wordlift_Term_JsonLd_Adapter {
 
 		return array(
 			'post_jsonld' => $jsonld,
-			'entities'    => $entities
+			'entities'    => array()
 		);
 	}
 
@@ -193,6 +201,20 @@ class Wordlift_Term_JsonLd_Adapter {
 		}
 
 		return $jsonld;
+	}
+
+	private function get_term_url( $id ) {
+
+		if ( is_null( $id ) ) {
+			return $_SERVER['REQUEST_URI'];
+		}
+
+		$maybe_url = get_term_meta( $id, Wordlift_Url_Property_Service::META_KEY, true );
+		if ( ! empty( $maybe_url ) ) {
+			return $maybe_url;
+		}
+
+		return get_term_link( $id );
 	}
 
 }
