@@ -81,6 +81,16 @@ class Wordlift_Term_JsonLd_Adapter {
 			return $jsonld;
 		}
 
+		if ( ! is_null( $id ) ) {
+			$term                  = get_term( $id );
+			$jsonld['description'] = $term->description;
+
+			$thumbnail_id = get_term_meta( $id, 'thumbnail_id', true );
+			if ( ! empty( $thumbnail_id ) ) {
+				$jsonld['image'] = wp_get_attachment_url( $thumbnail_id );
+			}
+		}
+
 		// More than 2 items are present, so construct the jsonld data
 		$jsonld['@context']        = 'https://schema.org';
 		$jsonld['@type']           = 'ItemList';

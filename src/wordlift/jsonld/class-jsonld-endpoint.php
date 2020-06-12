@@ -161,7 +161,7 @@ class Jsonld_Endpoint {
 	public function jsonld_using_post_meta( $request ) {
 
 		$meta_key   = $request['meta_key'];
-		$meta_value = current( $request->get_query_params( 'meta_value' ) );
+		$meta_value = urldecode( current( $request->get_query_params( 'meta_value' ) ) );
 
 		global $wpdb;
 
