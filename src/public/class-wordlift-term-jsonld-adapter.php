@@ -100,8 +100,7 @@ class Wordlift_Term_JsonLd_Adapter {
 
 		foreach ( $posts as $post_id ) {
 			$post_jsonld = $this->jsonld_service->get_jsonld( false, $post_id );
-
-			array_push( $jsonld['itemListElement'], array(
+			$result      = array(
 				'@type'    => 'ListItem',
 				'position' => $position,
 				/**
@@ -110,8 +109,13 @@ class Wordlift_Term_JsonLd_Adapter {
 				 * See https://developers.google.com/search/docs/data-types/carousel
 				 */
 				// 'item'     => array_shift( $post_jsonld )
-				'url'      => $post_jsonld[0]['url'],
-			) );
+			);
+			if ( is_array( $post_jsonld ) &&
+			     count( $post_jsonld ) > 0 &&
+			     array_key_exists( 'url', $post_jsonld[0] ) ) {
+				$result['url'] = $post_jsonld[0]['url'];
+			}
+			array_push( $jsonld['itemListElement'], $result );
 
 			$entities = array_merge( $entities, $post_jsonld );
 			$position += 1;
