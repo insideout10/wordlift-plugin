@@ -130,22 +130,31 @@
   margin: 12px 0;
 }
 .wl-amp-faceted .chips amp-list div[role='list'] .chip {
-  font-size: 0.8rem;
+  font-size: 11px;
   font-weight: 600;
-  background: #dedede;
-  padding: 0 12px;
-  -webkit-border-radius: 16px;
-          border-radius: 16px;
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  padding: 0 8px;
+  -webkit-border-radius: 5px;
+          border-radius: 5px;
   display: inline-block;
-  margin: 5px;
+  margin: 2px;
   cursor: pointer;
 }
 .wl-amp-faceted .chips amp-list div[role='list'] .chip.active {
-  background: #000;
-  color: #fff;
+  background: #5f6369;
+  border-color: #e8e8e8;
+  color: white;
+}
+.wl-amp-faceted .chips amp-list div[role='list'] .chip.active:hover {
+  background: #5f6369;
+}
+.wl-amp-faceted .chips amp-list div[role='list'] .chip:hover {
+  background: #e8e8e8;
 }
 .wl-amp-faceted .cards amp-carousel {
   background: transparent;
+  margin: 0;
 }
 .wl-amp-faceted .cards amp-carousel .amp-carousel-button-prev {
   position: absolute;
@@ -160,8 +169,10 @@
   background: white;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  margin: 0.5rem .25em;
   vertical-align: top;
+  border: 1px solid #f5f5f5;
+  -webkit-border-radius: 5px;
+          border-radius: 5px;
 }
 .wl-amp-faceted .cards amp-list div[role='list'] .card a {
   color: black;
@@ -170,9 +181,16 @@
 .wl-amp-faceted .cards amp-list div[role='list'] .card a amp-img img {
   object-fit: cover;
 }
+.wl-amp-faceted .cards amp-list div[role='list'] .card .card-content {
+  margin: 10px;
+}
 .wl-amp-faceted .cards amp-list div[role='list'] .card .card-content .title {
-  font-size: 0.8rem;
+  font-size: 12px;
   margin: 0.3rem 0;
-  line-height: 1.5rem;
+  line-height: 1.2rem;
   white-space: normal;
+}
+.wl-amp-faceted .cards amp-list div[role='list'] .card .card-content .date {
+  font-size: 10px;
+  color: #a4a4a4;
 }

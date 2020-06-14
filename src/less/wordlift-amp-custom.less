@@ -155,18 +155,27 @@
 
     amp-list div[role='list'] {
       .chip {
-        font-size: 0.8rem;
+        font-size: 11px;
         font-weight: 600;
-        background: #dedede;
-        padding: 0 12px;
-        border-radius: 16px;
+        background: #fff;
+        border: 1px solid #e8e8e8;
+        padding: 0 8px;
+        border-radius: 5px;
         display: inline-block;
-        margin: 5px;
+        margin: 2px;
         cursor: pointer;
 
-        &.active {
-          background: #000;
-          color: #fff;
+        &.active{
+          background: #5f6369;
+          border-color: #e8e8e8;
+          color: white;
+          &:hover{
+            background: #5f6369;
+          }
+        }
+
+        &:hover{
+          background: #e8e8e8;
         }
       }
     }
@@ -175,6 +184,7 @@
   .cards {
     amp-carousel{
       background: transparent;
+      margin: 0;
 
       .amp-carousel-button-prev{
         position: absolute;
@@ -192,8 +202,9 @@
       .card {
         background: white;
         box-sizing: border-box;
-        margin: 0.5rem .25em;
         vertical-align: top;
+        border: 1px solid #f5f5f5;
+        border-radius: 5px;
 
         a {
           color: black;
@@ -205,11 +216,16 @@
         }
 
         .card-content {
+          margin: 10px;
           .title {
-            font-size: 0.8rem;
+            font-size: 12px;
             margin: 0.3rem 0;
-            line-height: 1.5rem;
+            line-height: 1.2rem;
             white-space: normal;
+          }
+          .date{
+            font-size: 10px;
+            color: #a4a4a4;
           }
         }
       }

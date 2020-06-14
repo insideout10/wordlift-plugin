@@ -160,7 +160,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 			<amp-state id="allPostsEntities" src="{$rest_url}"></amp-state>
 			<section class="chips">
 				<amp-list 
-					height="40"
+					height="32"
 					layout="fixed-height"
 					src="{$rest_url}"
 					[src]="allPostsEntities.entities.sort((a, b) => activeEntities.includes(a.id) ? -1 : 1)"
@@ -184,7 +184,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 					<template type="amp-mustache" id="template-{$faceted_id}">
 						<amp-carousel 
 						  media="(min-width: 380px)"
-						  height="180"
+						  height="200"
 					      layout="fixed-height"
 					      type="carousel">
 					      {{#values}}
@@ -202,7 +202,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 						</amp-carousel>
 						<amp-carousel 
 						  media="(max-width: 380px)"
-						  height="230"
+						  height="250"
 					      layout="fixed-height"
 					      type="slides">
 					      {{#values}}
