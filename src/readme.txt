@@ -144,11 +144,15 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 = 3.26.0 (2020-06-11) =
 * Enhancement [#1072](https://github.com/insideout10/wordlift-plugin/issues/1072): Add end-point to find JSON-LD by meta for both categories and posts.
+* Enhancement [#1059](https://github.com/insideout10/wordlift-plugin/issues/1059): Add NewsArticle term to posts output as Article.
 * Enhancement [#1056](https://github.com/insideout10/wordlift-plugin/issues/1056): Adding filter to assign default entity type based on post type.
+* Enhancement [#1048](https://github.com/insideout10/wordlift-plugin/issues/1048): Set default entity type to product for products
 * Enhancement [#1029](https://github.com/insideout10/wordlift-plugin/issues/1029): Adding jsonld support for collection pages.
 * Enhancement [#1027](https://github.com/insideout10/wordlift-plugin/issues/1027): Adding support for Wordpress 5.4.
-* Enhancement [#1016](https://github.com/insideout10/wordlift-plugin/issues/1016): Context Cards should display referenced entity data when Entity Redirect is active
-* Enhancement [#381](https://github.com/insideout10/wordlift-plugin/issues/381): Faceted widget UI refresh
+* Enhancement [#1016](https://github.com/insideout10/wordlift-plugin/issues/1016): Context Cards should display referenced entity data when Entity Redirect is active.
+* Enhancement [#980](https://github.com/insideout10/wordlift-plugin/issues/980): Improving schema.org:description for websites using BERT extractive summarization.
+* Enhancement [#938](https://github.com/insideout10/wordlift-plugin/issues/938): Add support for CollectionPage on taxonomy pages, tags and categories.
+* Enhancement [#381](https://github.com/insideout10/wordlift-plugin/issues/381): Faceted widget UI refresh.
 
 = 3.25.6 (2020-06-02) =
 * Fix: Mapping ui bug which doesnt show the terms when a taxonomy is chosen.
