@@ -15,6 +15,7 @@ use Wordlift\Mappings\Mappings_REST_Controller;
 use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
 use Wordlift\Mappings\Pages\Edit_Mappings_Page;
 use Wordlift\Mappings\Pages\Admin_Mappings_Page;
+use Wordlift\Mappings\Taxonomy_Option;
 
 /**
  * The admin-specific functionality of the plugin.
@@ -200,6 +201,12 @@ class Wordlift_Admin {
 		if ( defined( 'WL_ENABLE_MAPPINGS' ) && WL_ENABLE_MAPPINGS ) {
 			// Add Mappings and Edit Mappings page.
 			new Admin_Mappings_Page();
+			/**
+			 * @since 3.27.0
+			 * Hooks in to ui of edit mapping screen, add taxonomy as a option.
+			 */
+			$taxonomy_option = new Taxonomy_Option();
+			$taxonomy_option->add_taxonomy_option();
 			new Edit_Mappings_Page( new Mappings_Transform_Functions_Registry() );
 		}
 

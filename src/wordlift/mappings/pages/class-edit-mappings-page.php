@@ -207,13 +207,6 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 		$post_type_option_values = $post_type_array['post_type_option_values'];
 		// Merge the post type option and post types in the taxonomy options
 		array_push( $taxonomy_options, $post_type_option );
-
-		// Add taxonomy option to rule field one.
-		$taxonomy_options[] = array(
-			'label' => __('Taxonomy', 'wordlift'),
-			'value' => 'taxonomy'
-		);
-
 		$term_options = array_merge( $term_options, $post_type_option_values );
 		return array(
 			'taxonomy_options' => $taxonomy_options,
@@ -319,6 +312,22 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 		$rule_field_data                                    = self::get_post_taxonomies_and_terms();
 		$edit_mapping_settings['wl_rule_field_one_options'] = $rule_field_data['taxonomy_options'];
 		$edit_mapping_settings['wl_rule_field_two_options'] = $rule_field_data['term_options'];
+
+		/**
+		 * Allow 3rd parties to add ui options.
+		 *
+		 * @param array Array of Rule field one options where each item is in format
+		 *
+		 *  array ( 'label' => string, 'value' => string);
+		 *
+		 * @return array Array of Rule field one options
+		 *
+		 * @since 3.27.0
+		 */
+		$edit_mapping_settings['wl_rule_field_one_options'] = apply_filters(
+			'wl_mappings_rule_field_one_options',
+			$edit_mapping_settings['wl_rule_field_one_options']
+		);
 
 		return $edit_mapping_settings;
 	}
