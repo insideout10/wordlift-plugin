@@ -153,6 +153,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement [#980](https://github.com/insideout10/wordlift-plugin/issues/980): Improving schema.org:description for websites using BERT extractive summarization.
 * Enhancement [#938](https://github.com/insideout10/wordlift-plugin/issues/938): Add support for CollectionPage on taxonomy pages, tags and categories.
 * Enhancement [#381](https://github.com/insideout10/wordlift-plugin/issues/381): Faceted widget UI refresh.
+* Fix [#1078] (https://github.com/insideout10/wordlift-plugin/issues/1078): Fixing backslash removed on post save bug.
 
 = 3.25.6 (2020-06-02) =
 * Fix: Mapping ui bug which doesnt show the terms when a taxonomy is chosen.
