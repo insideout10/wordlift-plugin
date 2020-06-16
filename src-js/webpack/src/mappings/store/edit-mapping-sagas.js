@@ -41,7 +41,7 @@ function* getTermsForSelectedTaxonomy(action) {
     return {
       label: e.name,
       value: e.slug,
-      taxonomy: e.taxonomy
+      parentValue: e.taxonomy
     };
   });
   MAPPING_TERMS_CHANGED_ACTION.payload = {
