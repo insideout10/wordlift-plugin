@@ -39,20 +39,26 @@ class Taxonomy_Term_Rule_Validator implements Rule_Validator {
 		return __( 'TaxonomyTerm', 'wordlift' );
 	}
 
-	public function is_valid( $post_id, $operator, $operand_1, $operand_2 ) {
+	public function is_valid( $post_id, $operator, $operand_1, $taxonomy ) {
 		/*
 		 * post_id should not be used since we validate this for term pages.
 		 */
-		$current_term_id = get_query_var( 'term' );
+		$current_term = get_queried_object();
+		// If it is not a term page, then return false for two operators.
+		if ( ! $current_term instanceof \WP_Term ) {
+			return false;
+		}
+		$terms = get_terms( $taxonomy, array( 'get' => 'all' ) );
 
 		if ( $operator === Rule_Validator::IS_EQUAL_TO ) {
-
 			// if we dont have term id, then skip the flow.
-			if ( ! is_numeric( $current_term_id ) ) {
-				return false;
-			}
-			// If we have term id, check if the term belongs to taxonomy.
+			// If we are in term page, then we need to check if the current
+			// term belongs to the taxonomy
+			return in_array( $current_term, $terms );
+		}
 
+		if ( $operator === Rule_Validator::IS_NOT_EQUAL_TO ) {
+			return ! in_array( $current_term, $terms );
 		}
 
 	}
