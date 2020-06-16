@@ -22,7 +22,8 @@ import {
   TitleReducer
 } from "../reducers/edit-mapping-reducers";
 import editMappingSaga from "./edit-mapping-sagas";
-import { EDIT_MAPPING_REQUEST_TERMS } from "../actions/action-types";
+import {EDIT_MAPPING_REQUEST_TERMS} from "../actions/action-types";
+import EditMappingStoreFilters from "./edit-mapping-store-filters";
 
 const editMappingSettings = window["wl_edit_mappings_config"] || {};
 
@@ -36,8 +37,12 @@ const INITIAL_STATE = {
   },
   RuleGroupData: {
     // Adding filter to determine whether to fetch terms from api or not.
-    ruleFieldOneOptions: editMappingSettings.wl_rule_field_one_options,
-    ruleFieldTwoOptions: editMappingSettings.wl_rule_field_two_options,
+    ruleFieldOneOptions: EditMappingStoreFilters.filterRuleFieldOneData(
+        editMappingSettings.wl_rule_field_one_options
+    ),
+    ruleFieldTwoOptions: EditMappingStoreFilters.filterRuleFieldTwoData(
+        editMappingSettings.wl_rule_field_two_options
+    ),
     ruleLogicFieldOptions: editMappingSettings.wl_logic_field_options,
     ruleGroupList: []
   },

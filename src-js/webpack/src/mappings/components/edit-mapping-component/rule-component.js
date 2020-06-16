@@ -23,7 +23,7 @@ class RuleComponent extends React.Component {
   constructor(props) {
     super(props);
     this.handleSelectFieldChange = this.handleSelectFieldChange.bind(this);
-    this.fetchTermsForSelectedTaxonomyFromAPI = this.fetchTermsForSelectedTaxonomyFromAPI.bind(this);
+    this.getOptionsFromApiSource = this.getOptionsFromApiSource.bind(this);
   }
 
   /**
@@ -42,20 +42,20 @@ class RuleComponent extends React.Component {
     };
     if (fieldKey === "ruleFieldOneValue") {
       // We might need to get terms when this field changes.
-      this.fetchTermsForSelectedTaxonomyFromAPI(event.target.value);
+      this.getOptionsFromApiSource(event.target.value);
     }
     this.props.dispatch(action);
   }
 
   /**
-   * Fetches the terms for the selected taxonomy to the ui.
-   * @param selectedTaxonomy The taxonomy selected by the user.
+   * Fetches the options for the selected rule field one
+   * @param selectedOptionValue The rule field option value selected by the user.
    */
-  fetchTermsForSelectedTaxonomyFromAPI(selectedTaxonomy) {
-    // if the terms are not fetched from api, then send a network request.
+  getOptionsFromApiSource(selectedOptionValue) {
+    // The store determines whether to get the data from api.
     this.props.dispatch({
       type: EDIT_MAPPING_REQUEST_TERMS,
-      payload: { taxonomy: selectedTaxonomy }
+      payload: {value: selectedOptionValue}
     });
   }
 
@@ -85,7 +85,7 @@ class RuleComponent extends React.Component {
         <WlColumn>
           <SelectComponent
             options={this.props.ruleFieldTwoOptions.filter(
-              el => el.taxonomy === this.props.ruleProps.ruleFieldOneValue
+                el => el.parentValue === this.props.ruleProps.ruleFieldOneValue
             )}
             value={this.props.ruleProps.ruleFieldTwoValue}
             onChange={e => {
