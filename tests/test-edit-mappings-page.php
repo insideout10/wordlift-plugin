@@ -58,7 +58,7 @@ class Edit_Mapping_Page_Test extends Wordlift_Unit_Test_Case {
 		$term_options     = $this->ui_settings_array['wl_rule_field_two_options'];
 		// we are getting only items which are not post type.
 		$filtered_term_options = array_filter( $term_options, function ( $item ) {
-			return $item['taxonomy'] !== 'post_type';
+			return $item['parent_value'] !== 'post_type';
 		} );
 		$this->assertCount( 0, $filtered_term_options );
 	}

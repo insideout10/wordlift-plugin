@@ -30,8 +30,11 @@ class Taxonomy_Option {
 		add_filter( 'wl_mappings_rule_field_one_options', function ( $rule_field_one_options ) {
 
 			$rule_field_one_options[] = array(
-				'label' => __( 'Taxonomy', 'wordlift' ),
-				'value' => Taxonomy_Option::PARENT_VALUE
+				'label'      => __( 'Taxonomy', 'wordlift' ),
+				'value'      => Taxonomy_Option::PARENT_VALUE,
+				// Left empty since these values are provided locally, not needed to be fetched from
+				// api.
+				'api_source' => ''
 			);
 
 			return $rule_field_one_options;
