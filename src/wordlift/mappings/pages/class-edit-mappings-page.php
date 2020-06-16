@@ -329,6 +329,22 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 			$edit_mapping_settings['wl_rule_field_one_options']
 		);
 
+		/**
+		 * Allow 3rd parties to add rule field two options.
+		 *
+		 * @param array Array of Rule field two option where each item is in format
+		 *
+		 * array ( 'label' => string, 'value' => string, 'parent_value' => string );
+		 *
+		 * where parent_value is the value of the parent option in the rule_field_one_option.
+		 *
+		 * @since 3.27.0
+		 */
+		$edit_mapping_settings['wl_rule_field_two_options'] = apply_filters(
+			'wl_mappings_rule_field_two_options',
+			$edit_mapping_settings['wl_rule_field_two_options']
+		);
+
 		return $edit_mapping_settings;
 	}
 
