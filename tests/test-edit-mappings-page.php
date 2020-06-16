@@ -137,4 +137,23 @@ class Edit_Mapping_Page_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 2, $ui_settings_array['wl_field_name_options'] );
 
 	}
+
+	/**
+	 * Check if the taxonomy term options are loaded correctly
+	 */
+	public function test_on_edit_mappings_page_taxonomy_option_should_be_loaded() {
+		register_taxonomy('foo', 'post');
+		// Expect taxonomy options should have foo in the list.
+		$settings = $this->edit_mappings_page_instance->get_ui_settings_array();
+		$rule_field_one_options = $settings['wl_rule_field_one_options'];
+		// We should have taxonomy in the rule field one options.
+		$result = array_filter($rule_field_one_options, function( $item ) {
+			return $item['label'] === 'Taxonomy' && $item['value'] === 'taxonomy';
+		});
+		$this->assertCount(1, $result, 'Taxonomy option should be present in rule field one options');
+	}
+
+	public function test_on_edit_mappings_page_all_taxonomy_options_should_be_loaded_on_rule_field_two(){
+		
+	}
 }

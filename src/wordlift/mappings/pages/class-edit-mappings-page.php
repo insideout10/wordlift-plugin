@@ -207,6 +207,13 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 		$post_type_option_values = $post_type_array['post_type_option_values'];
 		// Merge the post type option and post types in the taxonomy options
 		array_push( $taxonomy_options, $post_type_option );
+
+		// Add taxonomy option to rule field one.
+		$taxonomy_options[] = array(
+			'label' => __('Taxonomy', 'wordlift'),
+			'value' => 'taxonomy'
+		);
+
 		$term_options = array_merge( $term_options, $post_type_option_values );
 		return array(
 			'taxonomy_options' => $taxonomy_options,
