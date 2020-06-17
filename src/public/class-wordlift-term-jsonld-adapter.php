@@ -161,18 +161,25 @@ class Wordlift_Term_JsonLd_Adapter {
 		$term_id = $query_object->term_id;
 		$jsonld  = $this->get( $term_id );
 
+		/**
+		 * Filter to edit the mapping json ld.
+		 *
+		 * @param array An associative array with jsonld and references.
+		 *
+		 * @return array An associative array with jsonld and references.
+		 * @since 3.27.0
+		 */
+		$result_array = apply_filters( 'wl_term_jsonld_array',
+			array( 'jsonld' => $jsonld, 'references' => array() ),
+			null
+		);
+		// Note: Reference values arent used yet.
+		$jsonld = $result_array['jsonld'];
+
 		// Bail out if the JSON-LD is empty.
 		if ( empty( $jsonld ) ) {
 			return;
 		}
-
-		$result_array = apply_filters( 'wl_term_jsonld_array',
-			array( 'jsonld' => $jsonld, 'references' => array() ),
-		    null
-		);
-
-		// Note: Reference values arent used yet.
-		$jsonld = $result_array['jsonld'];
 
 		$jsonld_string = wp_json_encode( $jsonld );
 
