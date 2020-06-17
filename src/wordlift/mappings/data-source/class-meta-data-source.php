@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * @since      3.27.0
+ * @package    Wordlift
+ * @subpackage Wordlift/Mappings/Data_Source
+ */
 namespace Wordlift\Mappings\Data_Source;
 
 /**
