@@ -24,8 +24,11 @@ abstract class Wordlift_Ajax_Unit_Test_Case extends WP_Ajax_UnitTestCase {
 	 */
 	protected $entity_factory;
 
+	protected $server;
+
 	function setUp() {
 		parent::setUp();
+		global $wp_rest_server;
 
 		delete_transient( '_wl_installing' );
 		delete_option( 'wl_db_version' );
@@ -47,6 +50,9 @@ abstract class Wordlift_Ajax_Unit_Test_Case extends WP_Ajax_UnitTestCase {
 		remove_action( 'admin_init', '_maybe_update_core' );
 		remove_action( 'admin_init', '_maybe_update_plugins' );
 		remove_action( 'admin_init', '_maybe_update_themes' );
+
+		$this->server = $wp_rest_server = new \WP_REST_Server;
+		do_action( 'rest_api_init' );
 
 	}
 
@@ -120,6 +126,23 @@ abstract class Wordlift_Ajax_Unit_Test_Case extends WP_Ajax_UnitTestCase {
 		if ( ! empty( $buffer ) ) {
 			$this->_last_response = $buffer;
 		}
+	}
+
+	/**
+	 * Mimic the ajax handling of REST endpoint
+	 * Capture the output and if there is any, store
+	 * it in $this->_last_message.
+	 *
+	 * @param string      $endpoint
+	 * @param string      $action
+	 */
+	protected function _handleRest( $endpoint, $action = 'GET' ) {
+
+		$request  = new WP_REST_Request( $action, $endpoint );
+		$response = $this->server->dispatch( $request );
+		$data = $response->get_data();
+		$this->_last_response = $data;
+
 	}
 
 }

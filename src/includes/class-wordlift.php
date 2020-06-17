@@ -25,6 +25,8 @@ use Wordlift\Faq\Faq_To_Jsonld_Converter;
 use Wordlift\Jsonld\Jsonld_Adapter;
 use Wordlift\Jsonld\Jsonld_By_Id_Endpoint;
 use Wordlift\Jsonld\Jsonld_Endpoint;
+use Wordlift\Jsonld\Jsonld_Service;
+use Wordlift\Jsonld\Term_Jsonld_Service;
 use Wordlift\Mappings\Jsonld_Converter;
 use Wordlift\Mappings\Mappings_DBO;
 use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
@@ -100,7 +102,7 @@ class Wordlift {
 	 * @access protected
 	 * @var Faq_Tinymce_Adapter $faq_tinymce_adapter .
 	 */
-	protected $faq_tinymce_adapter;
+	//protected $faq_tinymce_adapter;
 
 	/**
 	 * The Thumbnail service.
@@ -1271,7 +1273,19 @@ class Wordlift {
 		$jsonld_cache                            = new Ttl_Cache( 'jsonld', 86400 );
 		$this->cached_postid_to_jsonld_converter = new Wordlift_Cached_Post_Converter( $this->postid_to_jsonld_converter, $this->configuration_service, $jsonld_cache );
 		$this->jsonld_service                    = new Wordlift_Jsonld_Service( $this->entity_service, $this->cached_postid_to_jsonld_converter, $this->jsonld_website_converter );
-		new Jsonld_Endpoint( $this->jsonld_service, $this->entity_uri_service );
+
+		/*
+		 * Load the `Wordlift_Term_JsonLd_Adapter`.
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/892
+		 *
+		 * @since 3.20.0
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-term-jsonld-adapter.php';
+		$term_jsonld_adapter = new Wordlift_Term_JsonLd_Adapter( $this->entity_uri_service, $this->jsonld_service );
+		$jsonld_service      = new Jsonld_Service( $this->jsonld_service, $term_jsonld_adapter );
+		new Jsonld_Endpoint( $jsonld_service, $this->entity_uri_service );
+
 		// Prints the JSON-LD in the head.
 		new Jsonld_Adapter( $this->jsonld_service );
 
@@ -1309,7 +1323,7 @@ class Wordlift {
 		$this->entity_type_adapter      = new Wordlift_Entity_Type_Adapter( $this->entity_type_service );
 		$this->publisher_ajax_adapter   = new Wordlift_Publisher_Ajax_Adapter( $this->publisher_service );
 		$this->tinymce_adapter          = new Wordlift_Tinymce_Adapter( $this );
-		$this->faq_tinymce_adapter      = new Faq_Tinymce_Adapter();
+		//$this->faq_tinymce_adapter      = new Faq_Tinymce_Adapter();
 		$this->relation_rebuild_adapter = new Wordlift_Relation_Rebuild_Adapter( $this->relation_rebuild_service );
 
 		/*
@@ -1431,23 +1445,6 @@ class Wordlift {
 		new Wordlift_Search_Keyword_Taxonomy( $api_service );
 
 		/*
-		 * Load dependencies for the front-end.
-		 *
-		 * @since 3.20.0
-		 */
-		if ( ! is_admin() ) {
-			/*
-			 * Load the `Wordlift_Term_JsonLd_Adapter`.
-			 *
-			 * @see https://github.com/insideout10/wordlift-plugin/issues/892
-			 *
-			 * @since 3.20.0
-			 */
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-term-jsonld-adapter.php';
-			new Wordlift_Term_JsonLd_Adapter( $this->entity_uri_service, $this->jsonld_service );
-		}
-
-		/*
 		 * Initialize the Context Cards Service
 		 *
 		 * @link https://github.com/insideout10/wordlift-plugin/issues/934
@@ -1477,9 +1474,9 @@ class Wordlift {
 
 		/**
 		 * @since 3.26.0
-		 * Initialize the Faq JSON LD converter here.
+		 * Initialize the Faq JSON LD converter here - disabled.
 		 */
-		new Faq_To_Jsonld_Converter();
+		// new Faq_To_Jsonld_Converter();
 		/*
 		 * Use the Templates Ajax Endpoint to load HTML templates for the legacy Angular app via admin-ajax.php
 		 * end-point.
@@ -1488,8 +1485,8 @@ class Wordlift {
 		 * @since 3.24.4
 		 */
 		new Templates_Ajax_Endpoint();
-		// Call this static method to register FAQ routes to rest api
-		Faq_Rest_Controller::register_routes();
+		// Call this static method to register FAQ routes to rest api - disabled
+		//Faq_Rest_Controller::register_routes();
 
 		/*
 		 * Create a singleton for the Analysis_Response_Ops_Factory.
@@ -1707,12 +1704,13 @@ class Wordlift {
 		/** Adapters. */
 		$this->loader->add_filter( 'mce_external_plugins', $this->tinymce_adapter, 'mce_external_plugins', 10, 1 );
 		/**
+		 * Disabling Faq temporarily.
 		 * Load the tinymce editor button on the tool bar.
 		 * @since 3.26.0
 		 */
-		$this->loader->add_filter( 'tiny_mce_before_init', $this->faq_tinymce_adapter, 'register_custom_tags' );
-		$this->loader->add_filter( 'mce_buttons', $this->faq_tinymce_adapter, 'register_faq_toolbar_button', 10, 1 );
-		$this->loader->add_filter( 'mce_external_plugins', $this->faq_tinymce_adapter, 'register_faq_tinymce_plugin', 10, 1 );
+		//$this->loader->add_filter( 'tiny_mce_before_init', $this->faq_tinymce_adapter, 'register_custom_tags' );
+		//$this->loader->add_filter( 'mce_buttons', $this->faq_tinymce_adapter, 'register_faq_toolbar_button', 10, 1 );
+		//$this->loader->add_filter( 'mce_external_plugins', $this->faq_tinymce_adapter, 'register_faq_tinymce_plugin', 10, 1 );
 
 
 		$this->loader->add_action( 'wp_ajax_wl_relation_rebuild_process_all', $this->relation_rebuild_adapter, 'process_all' );

@@ -30811,7 +30811,11 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', []).p
             selection = editor.selection.getContent({
               format: 'text'
             });
-            return wp.wordlift.trigger('editorSelectionChanged', selection);
+            return wp.wordlift.trigger('editorSelectionChanged', {
+              selection: selection,
+              editor: editor,
+              source: "tinymce"
+            });
           };
           return editor.on('selectionchange', function() {
             return broadcastEditorSelection();

@@ -149,7 +149,8 @@ class Wordlift_Public {
 		 * @since 3.22.0
 		 *
 		 */
-		wp_register_script( 'wordlift-cloud', self::get_cloud_js_url(), array( 'wp-hooks' ), Wordlift::get_instance()->get_version(), true );
+		$deps = $this->wp_version_compare( '>=', '5.0' ) ? array( 'wp-hooks' ) : array();
+		wp_register_script( 'wordlift-cloud', self::get_cloud_js_url(), $deps, Wordlift::get_instance()->get_version(), true );
 
 	}
 
@@ -224,5 +225,21 @@ class Wordlift_Public {
 	public static function get_cloud_js_url() {
 
 		return plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/wordlift-cloud.js';
+	}
+
+	/**
+	 * Helper function to check WP version
+	 *
+	 * @since 3.26.0
+	 *
+	 * @param string $operator
+	 * @param string $version
+	 *
+	 * @return mixed
+	 */
+	private function wp_version_compare( $operator = '>', $version = '5.0' ) {
+		global $wp_version;
+
+		return version_compare( $wp_version, $version, $operator );
 	}
 }

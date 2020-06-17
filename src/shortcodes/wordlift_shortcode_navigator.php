@@ -453,7 +453,7 @@ add_action( 'init', function () {
 		'render_callback' => function ( $attributes ) {
 			$attr_code = '';
 			foreach ( $attributes as $key => $value ) {
-				$attr_code .= $key . '="' . $value . '" ';
+				$attr_code .= $key . '="' . htmlentities( $value ) . '" ';
 			}
 
 			return '[wl_navigator ' . $attr_code . ']';

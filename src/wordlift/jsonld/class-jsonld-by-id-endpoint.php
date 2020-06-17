@@ -61,7 +61,7 @@ class Jsonld_By_Id_Endpoint {
 	public function jsonld_by_id( $request ) {
 
 		// Get the ids.
-		$ids = (array)$request->get_param( 'id' );
+		$ids = (array) $request->get_param( 'id' );
 
 		// Preload the URIs to reduce the number of DB roundtrips.
 		$this->entity_uri_service->preload_uris( array_map( 'urldecode', $ids ) );
@@ -102,6 +102,9 @@ class Jsonld_By_Id_Endpoint {
 					'description'       => __( 'One ore more itemids (e.g. http://data.wordlift.io/wordlift).', 'wordlift' ),
 					// We expect an array of strings.
 					'type'              => 'array',
+					'items'             => array(
+						'type' => 'string'
+					),
 					'validate_callback' => function ( $values, $request, $param ) {
 
 						if ( ! is_array( $values ) ) {

@@ -18,6 +18,7 @@ import {
   RadioControl,
   SelectControl
 } from "@wordpress/components";
+import { __ } from "@wordpress/i18n";
 import { registerBlockType } from "@wordpress/blocks";
 
 /**
@@ -51,57 +52,63 @@ const BlockPreview = ({ title, attributes }) => (
 
 const blocks = {
   [`${PLUGIN_NAMESPACE}/faceted-search`]: {
-    title: "Wordlift Faceted Search",
-    description: "Configure Faceted Search block within your content.",
+    title: __("WordLift Faceted Search", "wordlift"),
+    description: __("Configure Faceted Search block within your content.", "wordlift"),
     category: "wordlift",
     icon: <WordLiftIcon />,
     attributes: {
       title: {
-        default: "Related articles"
-      },
-      show_facets: {
-        default: true
-      },
-      with_carousel: {
-        default: true
-      },
-      squared_thumbs: {
-        default: false
+        default: __("Related articles", "wordlift")
       },
       limit: {
-        default: 20
+        default: 4
+      },
+      template_id: {
+        default: ""
+      },
+      post_id: {
+        default: ""
+      },
+      uniqid: {
+        default: ""
       }
     },
     //display the edit interface + preview
     edit: ({ attributes, setAttributes }) => {
-      const { title, show_facets, with_carousel, squared_thumbs, limit } = attributes;
+      const { title, template_id, post_id, uniqid, limit } = attributes;
       return (
         <div>
-          <BlockPreview title="Wordlift Faceted Search" attributes={attributes} />
+          <BlockPreview title={__("WordLift Faceted Search", "wordlift")} attributes={attributes} />
           <InspectorControls>
-            <PanelBody title="Widget Settings" className="blocks-font-size">
-              <TextControl label="Title" value={title} onChange={title => setAttributes({ title })} />
+            <PanelBody title={__("Widget Settings", "wordlift")} className="blocks-font-size">
+              <TextControl label={__("Title", "wordlift")} value={title} onChange={title => setAttributes({ title })} />
               <RangeControl
-                label="Limit"
+                label={__("Limit", "wordlift")}
                 value={limit}
                 min={2}
-                max={100}
+                max={20}
                 onChange={limit => setAttributes({ limit })}
               />
-              <CheckboxControl
-                label="Show Facets"
-                checked={show_facets}
-                onChange={show_facets => setAttributes({ show_facets })}
+              <TextControl
+                label={__("Template ID", "wordlift")}
+                help={__(
+                  "ID of the script tag that has mustache template to be used for Faceted Search widget.",
+                  "wordlift"
+                )}
+                value={template_id}
+                onChange={template_id => setAttributes({ template_id })}
               />
-              <CheckboxControl
-                label="With Carousel"
-                checked={with_carousel}
-                onChange={with_carousel => setAttributes({ with_carousel })}
+              <TextControl
+                label={__("Post ID", "wordlift")}
+                help={__("Post ID of the post of which Faceted Search widget has to be shown.", "wordlift")}
+                type="number"
+                value={post_id}
+                onChange={post_id => setAttributes({ post_id })}
               />
-              <CheckboxControl
-                label="Squared Thumbnails"
-                checked={squared_thumbs}
-                onChange={squared_thumbs => setAttributes({ squared_thumbs })}
+              <TextControl
+                label={__("Unique ID", "wordlift")}
+                value={uniqid}
+                onChange={uniqid => setAttributes({ uniqid })}
               />
             </PanelBody>
           </InspectorControls>
@@ -330,10 +337,7 @@ const blocks = {
         { value: "rand", label: "Random order" },
         { value: "none", label: "None" }
       ];
-      const orderOptions = [
-        { value: "ASC", label: "Ascending" },
-        { value: "DESC", label: "Descending" }
-      ];
+      const orderOptions = [{ value: "ASC", label: "Ascending" }, { value: "DESC", label: "Descending" }];
       window["_wlEntityTypes"].forEach(item => {
         typeOptions.push({
           value: item.slug,
@@ -411,10 +415,7 @@ const blocks = {
                 label="Display images as"
                 selected={display_images_as}
                 onChange={display_images_as => setAttributes({ display_images_as })}
-                options={[
-                  { value: "media", label: "Media" },
-                  { value: "background", label: "Background" }
-                ]}
+                options={[{ value: "media", label: "Media" }, { value: "background", label: "Background" }]}
               />
               <RangeControl
                 label="Excerpt length"

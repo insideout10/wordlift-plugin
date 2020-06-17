@@ -49,9 +49,7 @@ class Rule_Groups_Validator {
 
 		// Validate each group. Return true as soon as one group is validated (all rules).
 		foreach ( (array) $rule_groups as $rule_group ) {
-
 			foreach ( $rule_group['rules'] as $rule ) {
-
 				$rule_field_one   = $rule['rule_field_one'];
 				$rule_logic_field = $rule['rule_logic_field'];
 				$rule_field_two   = $rule['rule_field_two'];
