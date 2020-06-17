@@ -165,6 +165,14 @@ class Wordlift_Term_JsonLd_Adapter {
 			return;
 		}
 
+		$result_array = apply_filters('wl_term_jsonld_array',
+			array( 'jsonld' => $jsonld, 'references' => array() ),
+		    null
+		);
+
+		// Note: Reference values arent used yet.
+		$jsonld = $result_array['jsonld'];
+
 		$jsonld_string = wp_json_encode( $jsonld );
 
 		echo "<script type=\"application/ld+json\">$jsonld_string</script>";

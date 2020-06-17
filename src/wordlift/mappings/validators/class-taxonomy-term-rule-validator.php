@@ -49,16 +49,21 @@ class Taxonomy_Term_Rule_Validator implements Rule_Validator {
 			return false;
 		}
 		$terms = get_terms( $taxonomy, array( 'get' => 'all' ) );
-
+		$terms = array_map( function($term) {
+			/**
+			 *@var $term \WP_Term
+			 */
+			return $term->term_id;
+		}, $terms);
 		if ( $operator === Rule_Validator::IS_EQUAL_TO ) {
 			// if we dont have term id, then skip the flow.
 			// If we are in term page, then we need to check if the current
 			// term belongs to the taxonomy
-			return in_array( $current_term, $terms );
+			return in_array( $current_term->term_id, $terms );
 		}
 
 		if ( $operator === Rule_Validator::IS_NOT_EQUAL_TO ) {
-			return ! in_array( $current_term, $terms );
+			return ! in_array( $current_term->term_id, $terms );
 		}
 
 	}

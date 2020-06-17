@@ -55,7 +55,7 @@ class Jsonld_Converter {
 		// Hook to refactor the JSON-LD.
 		add_filter( 'wl_post_jsonld_array', array( $this, 'wl_post_jsonld_array' ), 11, 2 );
 		add_filter( 'wl_entity_jsonld_array', array( $this, 'wl_post_jsonld_array' ), 11, 3 );
-
+		add_filter( 'wl_term_jsonld_array', array( $this, 'wl_post_jsonld_array' ), 11, 3 );
 	}
 
 	/**
@@ -212,9 +212,12 @@ class Jsonld_Converter {
 				return $this->get_data_for_acf_field( $property_data['field_name'], $post_id );
 
 			case self::FIELD_TYPE_CUSTOM_FIELD:
-
-				return array_map( 'wp_strip_all_tags', get_post_meta( $post_id, $value ) );
-
+				if ( get_queried_object() instanceof \WP_Term ) {
+					return array_map( 'wp_strip_all_tags', get_term_meta( get_queried_object_id(), $value ) );
+				}
+				else {
+					return array_map( 'wp_strip_all_tags', get_post_meta( $post_id, $value ) );
+				}
 			default:
 				return $value;
 		}
@@ -230,9 +233,16 @@ class Jsonld_Converter {
 	 * @return array|mixed
 	 */
 	public function get_data_for_acf_field( $field_name, $post_id ) {
-		$field_data = get_field_object( $field_name, $post_id );
-		$data       = get_field( $field_name, $post_id );
-
+		if ( get_queried_object() instanceof \WP_Term ) {
+			// Data fetching method for term is different.
+			$term = get_queried_object();
+			$field_data = get_field_object( $field_name, $term );
+			$data       = get_field( $field_name, $term );
+		}
+		else {
+			$field_data = get_field_object( $field_name, $post_id );
+			$data       = get_field( $field_name, $post_id );
+		}
 		// only process if it is a repeater field, else return the data.
 		if ( is_array( $field_data ) && array_key_exists( 'type', $field_data )
 		     && $field_data['type'] === 'repeater' ) {
