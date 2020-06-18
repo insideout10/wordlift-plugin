@@ -64,7 +64,7 @@
     "redux-logger": "^3.0.6",
     "redux-saga": "^1.0.5",
     "redux-thunk": "^2.3.0",
-    "styled-components": "^4.3.2",
+    "styled-components": "^4.4.1",
     "whatwg-fetch": "^2",
     "wordlift-cloud": "git+ssh://git@gitlab.com:wordlift/wordlift-navigator-js#006c42020ec91cc523206f2b5e26e4d347eb99d6"
   },

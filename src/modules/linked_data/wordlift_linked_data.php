@@ -48,6 +48,21 @@ function wl_linked_data_save_post( $post_id ) {
 		return;
 	}
 
+	/**
+	 * Only process valid post types
+	 *
+	 * @since 3.25.6
+	 *
+	 */
+	$supported_types = Wordlift_Entity_Service::valid_entity_post_types();
+
+	// Bail out if it's not a valid entity.
+	if ( ! in_array( $post_type, $supported_types ) ) {
+		$log->debug( "Skipping $post_id, because $post_type is not a valid entity." );
+
+		return;
+	}
+
 	// Unhook this function so it doesn't loop infinitely.
 	remove_action( 'save_post', 'wl_linked_data_save_post' );
 
