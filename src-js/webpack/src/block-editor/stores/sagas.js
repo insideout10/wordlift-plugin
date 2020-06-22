@@ -34,6 +34,7 @@ import { createEntityRequest } from "../../common/containers/create-entity-form/
 import createEntity from "../api/create-entity";
 import { relatedPostsRequest, relatedPostsSuccess } from "../../common/containers/related-posts/actions";
 import getRelatedPosts from "../../common/api/get-related-posts";
+import BlockEditorHighlightHandler from "../../faq/hooks/block-editor/block-editor-highlight-handler";
 
 function* handleRequestAnalysis() {
   const editorOps = new EditorOps(EDITOR_STORE);
@@ -196,9 +197,39 @@ function* toggleAnnotation({ annotation }) {
  */
 function* handleAddEntityRequest({ payload }) {
   // See https://developer.wordpress.org/block-editor/packages/packages-rich-text/#applyFormat
-  console.log("getBlockEditorFormat", yield select(getBlockEditorFormat));
-  const { onChange, value } = yield select(getBlockEditorFormat);
 
+  const blockEditorFormat = yield select(getBlockEditorFormat);
+  let blockId, contentAttributeName, value
+  let selectedBlock = wp.data.select("core/editor").getSelectedBlock();
+  let isClassicEditorBlock = false
+  if ( blockEditorFormat === undefined ) {
+    // classic editor block.
+    isClassicEditorBlock = true
+    const blockData = BlockEditorHighlightHandler.getBlockValueAndKeyName( selectedBlock )
+    if ( blockData.blockValue === null || blockData.attributeKeyName !== null) {
+      // not a valid block, we are not handling this case for now.
+      return false;
+    }
+    const blockValue = blockData
+
+    const wrapper = document.createElement("div")
+    wrapper.innerHTML = blockValue
+    const startIndex = wrapper.textContent.indexOf( payload.label )
+    if ( startIndex === -1 ) {
+      // we cant find the string, return early.
+      return false;
+    }
+    // we have constructed the value dependency.
+    value = {
+      start: startIndex,
+      end: startIndex + payload.label.length
+    }
+  }
+
+  else {
+    const {onChange} = blockEditorFormat
+    value = blockEditorFormat.value
+  }
   const annotationId = "urn:local-annotation-" + Math.floor(Math.random() * 999999);
 
   // Create the entity if the `id` isn't defined.
@@ -210,6 +241,9 @@ function* handleAddEntityRequest({ payload }) {
       description: payload.description,
       excerpt: ""
     }))["wl:entity_url"];
+
+
+  // we need find the string start and end position of string.
 
   const entityToAdd = {
     id,
@@ -225,8 +259,10 @@ function* handleAddEntityRequest({ payload }) {
     attributes: { id: annotationId, class: "disambiguated", itemid: entityToAdd.id }
   };
 
+  // update the block
   yield call(onChange, applyFormat(value, format));
 
+  // update the state.
   yield put({ type: ADD_ENTITY, payload: entityToAdd });
 
   // Send the selected entities to the WordLift Classification box.
