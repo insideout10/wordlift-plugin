@@ -3,12 +3,10 @@
  */
 import React from "react";
 import ReactDOM from "react-dom";
-
 /*
  * Internal dependencies.
  */
 import AutocompleteSelect from "../Edit/components/Autocomplete/AutocompleteSelect";
-
 /*
  * Styles
  */
@@ -34,9 +32,10 @@ const autocomplete = (query, callback) => {
     () =>
       wp.ajax
         .post("wl_autocomplete", {
-          query,
-          _wpnonce: settings["wl_autocomplete_nonce"],
-          exclude: settings["itemId"]
+            query,
+            showLocalEntities: settings["show_local_entities"] === "true",
+            _wpnonce: settings["wl_autocomplete_nonce"],
+            exclude: settings["itemId"]
         })
         .done(json => callback(null, { options: json }))
         .fail(() => {
@@ -57,21 +56,15 @@ window.addEventListener("load", () => {
   }
 
   ReactDOM.render(
-    <AutocompleteSelect
-      loadOptions={autocomplete}
-      name="wl_entity_id[]"
-      placeholder=""
-      filterOption={(option, filter) => true}
-      searchPromptText={
-        settings.l10n["Type at least 3 characters to search..."]
-      }
-      loadingPlaceholder={
-        settings.l10n[
-          "Please wait while we look for entities in the linked data cloud..."
-        ]
-      }
-      noResultsText={settings.l10n["No results found for your search."]}
-    />,
+      <AutocompleteSelect
+          loadOptions={autocomplete}
+          name="wl_entity_id[]"
+          placeholder=""
+          filterOption={(option, filter) => true}
+          searchPromptText={settings.l10n["Type at least 3 characters to search..."]}
+          loadingPlaceholder={settings.l10n["Please wait while we look for entities in the linked data cloud..."]}
+          noResultsText={settings.l10n["No results found for your search."]}
+      />,
     element
   );
 });
