@@ -33,7 +33,8 @@ const autocomplete = (query, callback) => {
       wp.ajax
         .post("wl_autocomplete", {
             query,
-            showLocalEntities: settings["show_local_entities"] === "true",
+            // check if truthy, either true or false must be passed in this param.
+            show_local_entities: settings["show_local_entities"] == true,
             _wpnonce: settings["wl_autocomplete_nonce"],
             exclude: settings["itemId"]
         })

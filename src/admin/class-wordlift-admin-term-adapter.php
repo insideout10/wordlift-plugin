@@ -44,7 +44,6 @@ class Wordlift_Admin_Term_Adapter {
 	public function add_settings() {
 		add_filter( 'wl_admin_settings', function ( $params ) {
 			$params['show_local_entities'] = true;
-
 			return $params;
 		} );
 	}
