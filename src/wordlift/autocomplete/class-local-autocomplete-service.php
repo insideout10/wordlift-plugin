@@ -49,6 +49,10 @@ class Local_Autocomplete_Service extends Abstract_Autocomplete_Service {
 			$uri            = $entity_service->get_uri( $item->ID );
 
 			return array(
+				// see #1074: The value property is needed for autocomplete in category page
+				// to function correctly, if value is not provided, then the entity
+				// wont be correctly saved.
+				'value'        => $uri,
 				'id'           => $uri,
 				'label'        => array( $item->post_title ),
 				'labels'       => $entity_service->get_alternative_labels( $item->ID ),
