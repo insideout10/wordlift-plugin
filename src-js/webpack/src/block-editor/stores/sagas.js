@@ -35,6 +35,7 @@ import createEntity from "../api/create-entity";
 import { relatedPostsRequest, relatedPostsSuccess } from "../../common/containers/related-posts/actions";
 import getRelatedPosts from "../../common/api/get-related-posts";
 import BlockEditorHighlightHandler from "../../faq/hooks/block-editor/block-editor-highlight-handler";
+import ClassicEditorBlock from "../api/classic-editor-block";
 
 function* handleRequestAnalysis() {
   const editorOps = new EditorOps(EDITOR_STORE);
@@ -196,25 +197,21 @@ function* toggleAnnotation({ annotation }) {
  * First we toggle the wordlift/annotation in Block Editor to create the annotation.
  */
 function* handleAddEntityRequest({ payload }) {
+  console.log("payload reached")
   // See https://developer.wordpress.org/block-editor/packages/packages-rich-text/#applyFormat
-
   const blockEditorFormat = yield select(getBlockEditorFormat);
-  let blockId, contentAttributeName, value
+  let blockId, contentAttributeName, value, onChange
   let selectedBlock = wp.data.select("core/editor").getSelectedBlock();
   let isClassicEditorBlock = false
   if ( blockEditorFormat === undefined ) {
+    console.log("format undefined")
     // classic editor block.
     isClassicEditorBlock = true
-    const blockData = BlockEditorHighlightHandler.getBlockValueAndKeyName( selectedBlock )
-    if ( blockData.blockValue === null || blockData.attributeKeyName !== null) {
-      // not a valid block, we are not handling this case for now.
-      return false;
-    }
-    const blockValue = blockData
-
+    const blockValue = selectedBlock.attributes.content
     const wrapper = document.createElement("div")
     wrapper.innerHTML = blockValue
     const startIndex = wrapper.textContent.indexOf( payload.label )
+    console.log("reached up to start index")
     if ( startIndex === -1 ) {
       // we cant find the string, return early.
       return false;
@@ -224,10 +221,11 @@ function* handleAddEntityRequest({ payload }) {
       start: startIndex,
       end: startIndex + payload.label.length
     }
+    console.log("reached up to value")
   }
 
   else {
-    const {onChange} = blockEditorFormat
+    onChange = blockEditorFormat.onChange
     value = blockEditorFormat.value
   }
   const annotationId = "urn:local-annotation-" + Math.floor(Math.random() * 999999);
@@ -253,15 +251,23 @@ function* handleAddEntityRequest({ payload }) {
   };
 
   console.debug("Adding Entity", entityToAdd);
-
+  const annotationAttributes = { id: annotationId, class: "disambiguated", itemid: entityToAdd.id }
   const format = {
     type: "wordlift/annotation",
-    attributes: { id: annotationId, class: "disambiguated", itemid: entityToAdd.id }
+    attributes:annotationAttributes
   };
 
-  // update the block
-  yield call(onChange, applyFormat(value, format));
-
+  if ( isClassicEditorBlock ) {
+    console.log("classic editor block updating...")
+    // classic editor block should be updated differently.
+    const instance = new ClassicEditorBlock(selectedBlock.clientId, selectedBlock.attributes.content)
+    instance.replaceWithAnnotation(payload.label, annotationAttributes)
+    instance.update()
+  }
+  else {
+    // update the block
+    yield call(onChange, applyFormat(value, format));
+  }
   // update the state.
   yield put({ type: ADD_ENTITY, payload: entityToAdd });
 
