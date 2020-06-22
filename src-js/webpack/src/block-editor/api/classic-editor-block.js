@@ -10,13 +10,15 @@ import {annotationSettings} from "../formats/register-format-type-wordlift-annot
 
 class ClassicEditorBlock {
   /**
+   * @param blockId
    * @param attributeName {string} Attribute name of the classic editor block, usually defaults
    * to content
    * @param content  {string} The HTML Content value of this block.
    */
-  constructor(content, attributeName = "content") {
+  constructor(blockId, content, attributeName = "content") {
     this._content = content;
     this._attributeName = attributeName;
+    this._blockId = blockId
   }
 
   /**
@@ -53,6 +55,17 @@ class ClassicEditorBlock {
     openTag += ">";
 
     return {openTag, closeTag};
+  }
+
+  /**
+   * Update the block editor after replacing the content.
+   */
+  update() {
+    // Up to WP 5.4 Classic editor store the html content in content attribute
+    const attrName = this._attributeName
+    const attrs = {}
+    attrs[attrName] = this._content
+    wp.data.dispatch("core/editor").updateBlockAttributes(this._blockId, attrs);
   }
 }
 
