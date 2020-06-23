@@ -25,8 +25,7 @@ class ClassicEditorBlock {
    * This method replaces the string with the annotation id,
    * it does not hard code the html, it generates the wrapper html
    * from the format registered for annotation.
-   * @param stringToBeFound
-   * @param annotationId
+   * @param stringToBeFound The string which needs to be wrapped with span tags.
    * @param attrs The extra attributes which needs to be present in html tag.
    */
   replaceWithAnnotation(stringToBeFound, attrs = {}) {
@@ -55,7 +54,6 @@ class ClassicEditorBlock {
       }
     }
     openTag += ">";
-    console.log(openTag);
     return { openTag, closeTag };
   }
 
