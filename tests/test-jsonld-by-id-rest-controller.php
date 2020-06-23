@@ -110,12 +110,13 @@ class Jsonld_By_Id_REST_Controller_Test extends WP_UnitTestCase {
 
 		$taxonomy_service = new Wordlift_Entity_Type_Taxonomy_Service();
 		$taxonomy_service->init();
+		$this->assertTrue( taxonomy_exists( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ) );
 
 		$install = new Wordlift_Install_1_0_0();
 		$install->install();
 
 		$terms = get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
-		$this->assertGreaterThan( 0, count( $terms ), 'WordLift`s taxonomy must be initialized.' );
+		$this->assertGreaterThan( 0, count( $terms ), 'WordLift`s taxonomy must be initialized: ' . var_export( $terms, true ) );
 
 		$post_id = $this->factory()->post->create( array(
 			'post_type'    => 'entity',
