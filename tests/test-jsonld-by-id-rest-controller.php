@@ -147,6 +147,8 @@ class Jsonld_By_Id_REST_Controller_Test extends WP_UnitTestCase {
 
 		$data = $data_array[0];
 
+		var_dump($data);
+
 		$this->assertArrayHasKey( '@context', $data, 'Response must contain the `@context`.' );
 		$this->assertArrayHasKey( '@id', $data, 'Response must contain the `@id`.' );
 
