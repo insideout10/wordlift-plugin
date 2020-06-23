@@ -72,7 +72,7 @@
     "test": "node scripts/test.js --env=jsdom",
     "test:e2e": "./node_modules/.bin/wdio wdio.conf.js",
     "test:js": "grunt travis:js",
-    "test:php": "./vendor/bin/phpunit",
+    "test:php": "./vendor/bin/phpunit --filter Jsonld_By_Id_REST_Controller_Test::test_one_item --stop-on-fail --stop-on-error",
     "test:php-test-coverage": "./vendor/bin/phpunit -c phpunit-test-coverage.xml",
     "test:multisite": "./vendor/bin/phpunit -c phpunit-multisite.xml",
     "test:jest": "nvm install 8 --reinstall-packages-from=node && nvm use 8 && cd ./src-js/webpack/ && yarn install && yarn test",
