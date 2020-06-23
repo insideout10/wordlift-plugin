@@ -115,6 +115,9 @@ class Jsonld_By_Id_REST_Controller_Test extends WP_UnitTestCase {
 		$install = new Wordlift_Install_1_0_0();
 		$install->install();
 
+		wp_insert_term( 'thing', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+		wp_insert_term( 'article', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+
 		$terms = get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		$this->assertGreaterThan( 0, count( $terms ), 'WordLift`s taxonomy must be initialized: ' . var_export( $terms, true ) );
 
