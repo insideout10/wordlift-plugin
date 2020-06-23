@@ -38,23 +38,26 @@ class ClassicEditorBlock {
   }
 
   generateOpenAndCloseTag(annotationSettings, attributes) {
-    let openTag = "<" + annotationSettings.tagName;
     let closeTag = `</${annotationSettings.tagName}>`;
     // We add the class name since it is already present in the registration.
     if (attributes.class !== undefined) {
       attributes.class = attributes.class + " " + annotationSettings.className;
     }
+    // create a placeholder dom element
+    const el = document.createElement(annotationSettings.tagName);
     // Process the settings and add attributes.
     // Loop through all annotation attributes and create value in the tag if they have it.
     let annotationAttrs = annotationSettings.attributes || {};
     for (let key in annotationAttrs) {
       const value = attributes[key] || "";
       if (value !== "") {
-        openTag += ` ${key}="${value}"`;
+        el.setAttribute(key, value);
       }
     }
-    openTag += ">";
-    return { openTag, closeTag };
+    // Remove the close tag, since we have no text content in the element, that
+    // should be open tag.
+    let openTag = el.outerHTML.replace(closeTag, "");
+    return {openTag, closeTag};
   }
 
   /**
