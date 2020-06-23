@@ -15,5 +15,5 @@
 		'wp-polyfill',
 		'wp-rich-text'
 	),
-	'version'      => '89cc801d55b992d275233aa7bfd43995'
+	'version'      => '8257e34f734c6a114e23e9e3c9f2344d'
 );
