@@ -130,15 +130,17 @@ class Jsonld_By_Id_REST_Controller_Test extends WP_UnitTestCase {
 
 		$this->assertArrayHasKey( '@context', $data, 'Response must contain the `@context`.' );
 		$this->assertArrayHasKey( '@id', $data, 'Response must contain the `@id`.' );
+
 		$this->assertArrayHasKey( '@type', $data, 'Response must contain the `@type`.' );
+		$this->assertEquals( 'Thing', $data['@type'] );
+
 		$this->assertArrayHasKey( 'description', $data, 'Response must contain the `description`.' );
 		$this->assertArrayHasKey( 'mainEntityOfPage', $data, 'Response must contain the `mainEntityOfPage`.' );
-		$this->assertArrayHasKey( 'name', $data, 'Response must contain the `name`.' );
+		$this->assertArrayHasKey( 'name', $data, 'Response must contain the `name`: ' . var_export( $data, true ) );
 		$this->assertArrayHasKey( 'url', $data, 'Response must contain the `url`.' );
 
 		$this->assertEquals( 'http://schema.org', $data['@context'] );
 		$this->assertEquals( 'http://data.example.org/entity/jsonld_by_id_rest_controller_test-_gt_test_one_item_title_1', $data['@id'] );
-		$this->assertEquals( 'Thing', $data['@type'] );
 		$this->assertEquals( 'Jsonld_By_Id_REST_Controller_Test->test_one_item content 1', $data['description'] );
 		$this->assertEquals( 'http://example.org/?entity=jsonld_by_id_rest_controller_test-test_one_item-title-1', $data['mainEntityOfPage'] );
 		$this->assertEquals( 'Jsonld_By_Id_REST_Controller_Test->test_one_item title 1', $data['name'] );
