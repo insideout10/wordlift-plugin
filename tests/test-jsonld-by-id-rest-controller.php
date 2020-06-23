@@ -49,6 +49,9 @@ class Jsonld_By_Id_REST_Controller_Test extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 
+		$install = new Wordlift_Install_1_0_0();
+		$install->install();
+
 		$this->entity_service = Wordlift_Entity_Service::get_instance();
 
 		$jsonld_service      = Wordlift_Jsonld_Service::get_instance();
