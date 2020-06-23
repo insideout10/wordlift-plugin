@@ -20,9 +20,10 @@ it("when given blockvalue and attribute key name, should replace content correct
     let instance = new ClassicEditorBlock(123, '<p>this is a string template</p>', 'content')
     instance.replaceWithAnnotation('string', {
         id: "urn:enhancement-121312",
-        itemid: "foo"
+        itemid: "foo",
+        class: "bar"
     })
-    expect(instance.getContent()).toEqual('<p>this is a <span id="urn:enhancement-121312" class="textannotation" itemid="foo">' +
+    expect(instance.getContent()).toEqual('<p>this is a <span id="urn:enhancement-121312" class="bar textannotation" itemid="foo">' +
         'string</span> template</p>')
 })
 
@@ -30,7 +31,8 @@ it("when classic editor block is updated, should call the correct method", () =>
     let instance = new ClassicEditorBlock(123, '<p>this is a string template</p>', 'content')
     instance.replaceWithAnnotation('string', {
         id: "urn:enhancement-121312",
-        itemid: "foo"
+        itemid: "foo",
+        class: "bar"
     })
     instance.update()
     // block update should be called once.
@@ -38,6 +40,6 @@ it("when classic editor block is updated, should call the correct method", () =>
     const call = updateBlockAttributeFn.mock.calls[0]
     // id should be 123
     expect(call[0]).toEqual(123)
-    expect(call[1].content).toEqual('<p>this is a <span id="urn:enhancement-121312" class="textannotation" itemid="foo">' +
+    expect(call[1].content).toEqual('<p>this is a <span id="urn:enhancement-121312" class="bar textannotation" itemid="foo">' +
         'string</span> template</p>')
 })

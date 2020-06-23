@@ -6,7 +6,7 @@
  * @since 3.26.1
  */
 
-import {annotationSettings} from "../formats/register-format-type-wordlift-annotation";
+import { annotationSettings } from "../formats/register-format-type-wordlift-annotation";
 
 class ClassicEditorBlock {
   /**
@@ -18,7 +18,7 @@ class ClassicEditorBlock {
   constructor(blockId, content, attributeName = "content") {
     this._content = content;
     this._attributeName = attributeName;
-    this._blockId = blockId
+    this._blockId = blockId;
   }
 
   /**
@@ -30,7 +30,7 @@ class ClassicEditorBlock {
    * @param attrs The extra attributes which needs to be present in html tag.
    */
   replaceWithAnnotation(stringToBeFound, attrs = {}) {
-    const {openTag, closeTag} = this.generateOpenAndCloseTag(annotationSettings, attrs);
+    const { openTag, closeTag } = this.generateOpenAndCloseTag(annotationSettings, attrs);
     this._content = this._content.replace(stringToBeFound, openTag + stringToBeFound + closeTag);
   }
 
@@ -42,7 +42,9 @@ class ClassicEditorBlock {
     let openTag = "<" + annotationSettings.tagName;
     let closeTag = `</${annotationSettings.tagName}>`;
     // We add the class name since it is already present in the registration.
-    attributes["class"] = annotationSettings.className
+    if (attributes.class !== undefined) {
+      attributes.class = attributes.class + " " + annotationSettings.className;
+    }
     // Process the settings and add attributes.
     // Loop through all annotation attributes and create value in the tag if they have it.
     let annotationAttrs = annotationSettings.attributes || {};
@@ -53,8 +55,8 @@ class ClassicEditorBlock {
       }
     }
     openTag += ">";
-
-    return {openTag, closeTag};
+    console.log(openTag);
+    return { openTag, closeTag };
   }
 
   /**
@@ -62,9 +64,9 @@ class ClassicEditorBlock {
    */
   update() {
     // Up to WP 5.4 Classic editor store the html content in content attribute
-    const attrName = this._attributeName
-    const attrs = {}
-    attrs[attrName] = this._content
+    const attrName = this._attributeName;
+    const attrs = {};
+    attrs[attrName] = this._content;
     wp.data.dispatch("core/editor").updateBlockAttributes(this._blockId, attrs);
   }
 }
