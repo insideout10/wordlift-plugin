@@ -108,6 +108,9 @@ class Jsonld_By_Id_REST_Controller_Test extends WP_UnitTestCase {
 
 	public function test_one_item() {
 
+		$taxonomy_service = new Wordlift_Entity_Type_Taxonomy_Service();
+		$taxonomy_service->init();
+
 		$install = new Wordlift_Install_1_0_0();
 		$install->install();
 
