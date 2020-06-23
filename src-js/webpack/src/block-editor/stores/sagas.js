@@ -197,21 +197,18 @@ function* toggleAnnotation({ annotation }) {
  * First we toggle the wordlift/annotation in Block Editor to create the annotation.
  */
 function* handleAddEntityRequest({ payload }) {
-  console.log("payload reached")
   // See https://developer.wordpress.org/block-editor/packages/packages-rich-text/#applyFormat
   const blockEditorFormat = yield select(getBlockEditorFormat);
   let blockId, contentAttributeName, value, onChange
   let selectedBlock = wp.data.select("core/editor").getSelectedBlock();
   let isClassicEditorBlock = false
   if ( blockEditorFormat === undefined ) {
-    console.log("format undefined")
     // classic editor block.
     isClassicEditorBlock = true
     const blockValue = selectedBlock.attributes.content
     const wrapper = document.createElement("div")
     wrapper.innerHTML = blockValue
     const startIndex = wrapper.textContent.indexOf( payload.label )
-    console.log("reached up to start index")
     if ( startIndex === -1 ) {
       // we cant find the string, return early.
       return false;
@@ -221,9 +218,7 @@ function* handleAddEntityRequest({ payload }) {
       start: startIndex,
       end: startIndex + payload.label.length
     }
-    console.log("reached up to value")
   }
-
   else {
     onChange = blockEditorFormat.onChange
     value = blockEditorFormat.value
@@ -258,7 +253,6 @@ function* handleAddEntityRequest({ payload }) {
   };
 
   if ( isClassicEditorBlock ) {
-    console.log("classic editor block updating...")
     // classic editor block should be updated differently.
     const instance = new ClassicEditorBlock(selectedBlock.clientId, selectedBlock.attributes.content)
     instance.replaceWithAnnotation(payload.label, annotationAttributes)
