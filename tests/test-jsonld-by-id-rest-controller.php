@@ -16,7 +16,7 @@ use Wordlift\Jsonld\Jsonld_By_Id_Endpoint;
  *
  * @since 3.26.0
  */
-class Jsonld_By_Id_REST_Controller_Test extends WP_UnitTestCase {
+class Jsonld_By_Id_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * The {@link Jsonld_By_Id_Endpoint} instance to test.
@@ -49,14 +49,11 @@ class Jsonld_By_Id_REST_Controller_Test extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$install = new Wordlift_Install_1_0_0();
-		$install->install();
-
 		$this->entity_service = Wordlift_Entity_Service::get_instance();
 
 		$jsonld_service      = Wordlift_Jsonld_Service::get_instance();
 		$entity_uri_service  = Wordlift_Cached_Entity_Uri_Service::get_instance();
-		$this->rest_instance = new Jsonld_By_Id_Endpoint( $jsonld_service, $entity_uri_service );
+//		$this->rest_instance = new Jsonld_By_Id_Endpoint( $jsonld_service, $entity_uri_service );
 
 		global $wp_rest_server, $wpdb;
 
@@ -64,7 +61,7 @@ class Jsonld_By_Id_REST_Controller_Test extends WP_UnitTestCase {
 
 		$this->server = $wp_rest_server;
 		$this->wpdb   = $wpdb;
-		do_action( 'rest_api_init' );
+//		do_action( 'rest_api_init' );
 
 		// Set the dataset URI to allow WLP to generate URIs.
 		Wordlift_Configuration_Service::get_instance()
@@ -110,6 +107,10 @@ class Jsonld_By_Id_REST_Controller_Test extends WP_UnitTestCase {
 	}
 
 	public function test_one_item() {
+
+//		$install = new Wordlift_Install_1_0_0();
+//		$install->install();
+//
 
 		$terms = get_terms( Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		$this->assertGreaterThan( 0, count( $terms ), 'WordLift`s taxonomy must be initialized.' );
