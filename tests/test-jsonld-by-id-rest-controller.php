@@ -129,6 +129,7 @@ class Jsonld_By_Id_REST_Controller_Test extends WP_UnitTestCase {
 
 		$post_id = $this->factory()->post->create( array(
 			'post_type'    => 'entity',
+			'post_status'  => 'publish',
 			'post_title'   => 'Jsonld_By_Id_REST_Controller_Test->test_one_item title 1',
 			'post_excerpt' => 'Jsonld_By_Id_REST_Controller_Test->test_one_item content 1'
 		) );
