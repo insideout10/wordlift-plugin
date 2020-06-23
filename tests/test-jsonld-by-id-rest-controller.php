@@ -133,7 +133,7 @@ class Jsonld_By_Id_REST_Controller_Test extends WP_UnitTestCase {
 			'post_title'   => 'Jsonld_By_Id_REST_Controller_Test-test_one_item title 1',
 			'post_excerpt' => 'Jsonld_By_Id_REST_Controller_Test-test_one_item content 1'
 		) );
-		//wp_set_object_terms( $post_id, 'thing', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+		wp_set_object_terms( $post_id, 'thing', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 		$post_uri = $this->entity_service->get_uri( $post_id );
 
