@@ -2,6 +2,7 @@
  * This file defines the styles used in Gutenberg.
  */
 @import "../common/mixins";
+@import "../faq/index";
 
 /**
  * WordLift's sidebar.
@@ -29,7 +30,7 @@
 .editor-block-list__block,
 .block-editor-block-list__block {
   @include textannotation;
-
+  @include wl-faq-highlight-mixin;
   &[data-type="wordlift/faceted-search"],
   &[data-type="wordlift/navigator"],
   &[data-type="wordlift/chord"],

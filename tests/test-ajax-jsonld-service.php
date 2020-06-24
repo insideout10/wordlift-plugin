@@ -107,6 +107,9 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 	 */
 	public function test_jsonld() {
 
+		$dataset_uri = $this->configuration_service->get_dataset_uri();
+		$this->assertNotEmpty( $dataset_uri, 'Dataset URI can`t be empty.' );
+
 		$local_business_term = get_term_by( 'slug', 'local-business', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		$this->assertTrue( is_object( $local_business_term ), 'The `LocalBusiness` term must exist.' );
 
@@ -173,6 +176,7 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$_GET['action'] = 'wl_jsonld';
 		$_GET['id']     = $local_business_id;
 
+		Wordlift_Jsonld_Service::get_instance()->get_jsonld( $local_business_id );
 		// Make the request
 		try {
 			$this->_handleAjax( 'wl_jsonld' );
@@ -196,7 +200,7 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$this->assertEquals( 'http://schema.org', $jsonld_1['@context'] );
 
 		$this->assertArrayHasKey( '@id', $jsonld_1 );
-		$this->assertEquals( $local_business_uri, $jsonld_1['@id'] );
+		$this->assertEquals( $local_business_uri, $jsonld_1['@id'], "Expect {$jsonld_1['@id']}, the response was: " . var_export( $response, true ) );
 
 		$this->assertArrayHasKey( '@type', $jsonld_1 );
 		$this->assertEquals( 'LocalBusiness', $jsonld_1['@type'] );

@@ -179,9 +179,14 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 		}
 
 		// Update the post content.
+		/**
+		 * Note: wp_update_post do stripslashes before saving the
+		 * content, so add the slashes to prevent back slash getting
+		 * removed.
+		 */
 		wp_update_post( array(
 			'ID'           => $post->ID,
-			'post_content' => $updated_post_content,
+			'post_content' => addslashes( $updated_post_content ),
 		) );
 	}
 

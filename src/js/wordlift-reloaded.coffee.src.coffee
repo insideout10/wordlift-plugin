@@ -2051,7 +2051,7 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
         # See https://github.com/insideout10/wordlift-plugin/issues/467
         broadcastEditorSelection = () ->
           selection = editor.selection.getContent({format: 'text'})
-          wp.wordlift.trigger 'editorSelectionChanged', selection
+          wp.wordlift.trigger 'editorSelectionChanged', { selection, editor, source: "tinymce" }
 
         editor.on('selectionchange', () -> broadcastEditorSelection() )
 

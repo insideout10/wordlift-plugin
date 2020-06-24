@@ -98,7 +98,7 @@ class Ttl_Cache {
 			$temp_dir .= DIRECTORY_SEPARATOR;
 		}
 
-		return $temp_dir . 'wl.cache';
+		return $temp_dir . 'wl.cache' . DIRECTORY_SEPARATOR . md5( home_url() );
 	}
 
 	/**

@@ -1,6 +1,6 @@
 {
   "name": "wordlift-plugin",
-  "version": "3.25.6",
+  "version": "3.26.0",
   "description": "WordLift Plugin application for the web site public front-end.",
   "main": "index.js",
   "repository": "https://github.com/insideout10/wordlift-plugin",
@@ -56,8 +56,10 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.2.1",
+    "@wordlift/design": "0.1.16",
     "@wordlift/wordlift-for-schemaorg": "^1.0",
     "immutable": "^3",
+    "jest-fetch-mock": "^3.0.1",
     "react-redux": "^5.0.0",
     "react-select": "^1",
     "redux-actions": "^2.6.5",
@@ -66,19 +68,23 @@
     "redux-thunk": "^2.3.0",
     "styled-components": "^4.4.1",
     "whatwg-fetch": "^2",
-    "wordlift-cloud": "git+ssh://git@gitlab.com:wordlift/wordlift-navigator-js#006c42020ec91cc523206f2b5e26e4d347eb99d6"
+    "wordlift-cloud": "git+https://wordlift-plugin:TCYswWXSoq1765zSg4iH@gitlab.com/wordlift/wordlift-navigator-js.git#1.2.0"
   },
   "prettier": {
     "tabWidth": 2,
     "printWidth": 120
   },
   "jest": {
+    "automock": false,
     "moduleNameMapper": {
       "\\.(css|less|sass|scss)$": "<rootDir>/__mocks__/styleMock.js",
       "\\.(gif|ttf|eot|svg)$": "<rootDir>/__mocks__/fileMock.js"
     },
-    "setupFilesAfterEnv": [
-      "./src/mappings/tests/setup.js"
+    "setupFiles": [
+      "<rootDir>/src/faq/tests/setup.js"
+    ],
+    "moduleDirectories": [
+      "node_modules"
     ]
   }
 }

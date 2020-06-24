@@ -8,12 +8,10 @@
 
 namespace Wordlift\Jsonld;
 
-use DateInterval;
-use DateTime;
-use DateTimeZone;
 use Wordlift_Jsonld_Service;
 use WP_REST_Request;
 use WP_REST_Response;
+use WP_REST_Server;
 
 /**
  * Class Jsonld_Endpoint
@@ -36,7 +34,7 @@ class Jsonld_Endpoint {
 	/**
 	 * Jsonld_Endpoint constructor.
 	 *
-	 * @param \Wordlift_Jsonld_Service $jsonld_service
+	 * @param Jsonld_Service $jsonld_service
 	 * @param \Wordlift_Entity_Uri_Service $entity_uri_service
 	 */
 	public function __construct( $jsonld_service, $entity_uri_service ) {
@@ -48,7 +46,7 @@ class Jsonld_Endpoint {
 		$that = $this;
 		add_action( 'rest_api_init', function () use ( $that ) {
 			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/(?P<id>\d+)', array(
-				'methods'  => 'GET',
+				'methods'  => WP_REST_Server::READABLE,
 				'callback' => array( $that, 'jsonld_using_post_id' ),
 				'args'     => array(
 					'id' => array(
@@ -68,6 +66,11 @@ class Jsonld_Endpoint {
 			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/post-meta/(?P<meta_key>[^/]+)', array(
 				'methods'  => 'GET',
 				'callback' => array( $that, 'jsonld_using_post_meta' ),
+			) );
+
+			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/meta/(?P<meta_key>[^/]+)', array(
+				'methods'  => 'GET',
+				'callback' => array( $that, 'jsonld_using_meta' ),
 			) );
 
 			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/(?P<post_type>.*)/(?P<post_name>.*)', array(
@@ -93,26 +96,13 @@ class Jsonld_Endpoint {
 	 */
 	public function jsonld_using_post_id( $request ) {
 
-		$post_id     = $request['id'];
-		$is_homepage = ( 0 === $post_id );
+		$post_id = $request['id'];
+		$type    = ( 0 === $post_id ) ? Jsonld_Service::TYPE_HOMEPAGE : Jsonld_Service::TYPE_POST;
 
 		// Send the generated JSON-LD.
-		$data     = $this->jsonld_service->get_jsonld( $is_homepage, $post_id );
-		$response = new WP_REST_Response( $data );
+		$data = $this->jsonld_service->get( $type, $post_id );
 
-		$cache_in_seconds = 86400;
-		$date_timezone    = new DateTimeZone( 'GMT' );
-		$date_now         = new DateTime( 'now', $date_timezone );
-		$date_interval    = new DateInterval( "PT{$cache_in_seconds}S" );
-		$expires          = $date_now->add( $date_interval )->format( 'D, j M Y H:i:s T' );
-
-		$response->set_headers( array(
-			'Content-Type'  => 'application/ld+json; charset=' . get_option( 'blog_charset' ),
-			'Cache-Control' => "max-age=$cache_in_seconds",
-			'Expires'       => $expires
-		) );
-
-		return $response;
+		return Jsonld_Response_Helper::to_response( $data );
 	}
 
 	/**
@@ -171,7 +161,7 @@ class Jsonld_Endpoint {
 	public function jsonld_using_post_meta( $request ) {
 
 		$meta_key   = $request['meta_key'];
-		$meta_value = current( $request->get_query_params( 'meta_value' ) );
+		$meta_value = urldecode( current( $request->get_query_params( 'meta_value' ) ) );
 
 		global $wpdb;
 
@@ -190,6 +180,44 @@ class Jsonld_Endpoint {
 		}
 
 		return $this->jsonld_using_post_id( array( 'id' => $post_id, ) );
+	}
+
+	public function jsonld_using_meta( $request ) {
+
+		global $wpdb;
+
+		$meta_key   = $request['meta_key'];
+		$meta_value = urldecode( current( $request->get_query_params( 'meta_value' ) ) );
+
+		$results = $wpdb->get_results( $wpdb->prepare(
+			"
+			SELECT pm.post_id AS id, %s AS type
+			 FROM {$wpdb->postmeta} pm
+			 	INNER JOIN {$wpdb->posts} p
+			 		ON p.ID = pm.post_id AND p.post_status = 'publish'
+			 WHERE pm.meta_key = %s AND pm.meta_value = %s
+			 UNION
+			 SELECT term_id AS id, %s AS type
+			 FROM {$wpdb->termmeta}
+			 WHERE meta_key = %s AND meta_value = %s
+			",
+			Jsonld_Service::TYPE_POST,
+			$meta_key,
+			$meta_value,
+			Jsonld_Service::TYPE_TERM,
+			$meta_key,
+			$meta_value
+		) );
+
+		$jsonld_service = $this->jsonld_service;
+
+		$data = array_reduce( $results, function ( $carry, $result ) use ( $jsonld_service ) {
+			$jsonld = $jsonld_service->get( $result->type, $result->id );
+
+			return array_merge( $carry, $jsonld );
+		}, array() );
+
+		return Jsonld_Response_Helper::to_response( $data );
 	}
 
 }

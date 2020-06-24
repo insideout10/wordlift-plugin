@@ -21,6 +21,17 @@ use Wordlift\Scripts\Scripts_Helper;
 class Wordlift_Admin_Post_Edit_Page {
 
 	/**
+	 * Constants to be used instead of text inside FAQ
+	 * helper methods.
+	 */
+	const GUTENBERG = 'gutenberg';
+	const TINY_MCE = 'tiny_mce';
+	const FAQ_LIST_BOX_ID = 'wl-faq-meta-list-box';
+
+	/** Constant to be used for translation domain */
+	const WORDLIFT_TEXT_DOMAIN = 'wordlift';
+
+	/**
 	 * The {@link Wordlift} plugin instance.
 	 *
 	 * @since 3.11.0
@@ -60,7 +71,7 @@ class Wordlift_Admin_Post_Edit_Page {
 		}
 
 		// Define the callbacks.
-		$callback                  = array( $this, 'enqueue_scripts', );
+		$callback = array( $this, 'enqueue_scripts', );
 
 		// Set a hook to enqueue scripts only when the edit page is displayed.
 		add_action( 'admin_print_scripts-post.php', $callback );
@@ -78,16 +89,16 @@ class Wordlift_Admin_Post_Edit_Page {
 	function is_gutenberg_page() {
 		if ( function_exists( 'is_gutenberg_page' ) && is_gutenberg_page() ) {
 			// The Gutenberg plugin is on.
-			return true;
+			return TRUE;
 		}
 
 		$current_screen = get_current_screen();
 		if ( method_exists( $current_screen, 'is_block_editor' ) && $current_screen->is_block_editor() ) {
 			// Gutenberg page on 5+.
-			return true;
+			return TRUE;
 		}
 
-		return false;
+		return FALSE;
 	}
 
 	/**
@@ -140,6 +151,7 @@ class Wordlift_Admin_Post_Edit_Page {
 		 * @since 3.20.0 edit.js has been migrated to the new webpack configuration.
 		 */
 		$script_name = plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/edit';
+
 		/**
 		 * Scripts_Helper introduced.
 		 *
@@ -181,34 +193,70 @@ class Wordlift_Admin_Post_Edit_Page {
 		);
 
 		wp_enqueue_style( 'wl-classic-editor', "$script_name.css", array(), $this->plugin->get_version() );
-
+		// Disable Faq Editor.
+		// $this->load_faq_scripts_and_styles();
+		// $this->load_faq_settings( self::TINY_MCE );
 	}
 
 	/**
-	 * This function loads the javascript file according to the WordPress version.
-	 *
-	 * For WordPress < 5.0 it'll load the javascript file using the `.full` suffix i.e. the file that embeds all the
-	 * dependencies.
-	 *
-	 * For WordPress >= 5.0 it'll load the stripped down js.
-	 *
-	 * @param string $handle The handle name.
-	 * @param string $script_name The full script URL without the `.js` extension.
-	 * @param array $dependencies An array of dependencies to be added only in WordPress > 5.0.
+	 * Enqueue the scripts and styles needed for FAQ
 	 */
-	private function enqueue_based_on_wordpress_version( $handle, $script_name, $dependencies ) {
-		global $wp_version;
+	private function load_faq_scripts_and_styles() {
+		wp_enqueue_style(
+			'wl-faq-metabox-style',
+			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/faq.css',
+			array()
+		);
+		Scripts_Helper::enqueue_based_on_wordpress_version(
+			'wl-faq-metabox-script',
+			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/faq',
+			array( 'wp-polyfill' ),
+			true
+		);
+	}
 
-		if ( version_compare( $wp_version, '5.0', '<' ) ) {
-			$actual_script_name  = "$script_name.full.js";
-			$actual_dependencies = array();
-		} else {
-			$actual_script_name  = "$script_name.js";
-			$actual_dependencies = $dependencies;
+	/**
+	 * Get FAQ settings array
+	 *
+	 * @return array
+	 */
+	public function get_faq_settings() {
+		return array(
+			'restUrl'                 => get_rest_url( NULL, WL_REST_ROUTE_DEFAULT_NAMESPACE . '/faq' ),
+			'listBoxId'               => self::FAQ_LIST_BOX_ID,
+			'nonce'                   => wp_create_nonce( 'wp_rest' ),
+			'postId'                  => get_the_ID(),
+			// Translation for warning, error message.
+			'invalidTagMessage'       => sprintf( __( 'Invalid tags %s is present in answer', self::WORDLIFT_TEXT_DOMAIN ), "{INVALID_TAGS}" ),
+			'invalidWordCountMessage' => sprintf( __( 'Answer word count must not exceed %s words', self::WORDLIFT_TEXT_DOMAIN ), "{ANSWER_WORD_COUNT_WARNING_LIMIT}" ),
+			'questionText'            => __( 'Question', self::WORDLIFT_TEXT_DOMAIN ),
+			'answerText'              => __( 'Answer', self::WORDLIFT_TEXT_DOMAIN ),
+			'addQuestionOrAnswerText' => __( 'Add Question / Answer', self::WORDLIFT_TEXT_DOMAIN ),
+			'addQuestionText'         => __( 'Add Question', self::WORDLIFT_TEXT_DOMAIN ),
+			'addAnswerText'           => __( 'Add Answer', self::WORDLIFT_TEXT_DOMAIN ),
+			'noFaqItemsText'          => __( 'Highlight a question in content, then click Add Question.', self::WORDLIFT_TEXT_DOMAIN ),
+			'updatingText'          => __( 'Updating...', self::WORDLIFT_TEXT_DOMAIN )
+		);
+	}
+
+	/**
+	 * Load FAQ settings to the add/edit post page
+	 *
+	 * @param $editor string specifying which text editor needed to be used.
+	 */
+	private function load_faq_settings( $editor ) {
+		// This script also provides translations to gutenberg.
+		wp_localize_script( 'wl-faq-metabox-script', '_wlFaqSettings', $this->get_faq_settings() );
+
+		// Enqueue the FAQ style
+		if ( $editor === self::GUTENBERG ) {
+			Scripts_Helper::enqueue_based_on_wordpress_version(
+				'wl-faq-gutenberg-plugin',
+				plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/block-editor-faq-plugin',
+				array( 'wp-polyfill' ),
+				TRUE
+			);
 		}
-
-		wp_enqueue_script( $handle, $actual_script_name, $actual_dependencies, $this->plugin->get_version(), false );
-
 	}
 
 	/**
@@ -217,8 +265,9 @@ class Wordlift_Admin_Post_Edit_Page {
 	 * @since 3.21.0
 	 */
 	public function enqueue_scripts_gutenberg() {
-
-//		wp_die( 'enqueue_scripts_gutenberg');
+		// Load FAQ settings. - Disabled for now
+		// $this->load_faq_scripts_and_styles();
+		//$this->load_faq_settings( self::GUTENBERG );
 
 		wp_register_script(
 			'wl-block-editor',
@@ -255,7 +304,7 @@ class Wordlift_Admin_Post_Edit_Page {
 			plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/autocomplete-select.js',
 			array(),
 			$this->plugin->get_version(),
-			true
+			TRUE
 		);
 
 		wp_enqueue_style(
@@ -264,6 +313,7 @@ class Wordlift_Admin_Post_Edit_Page {
 			array(),
 			$this->plugin->get_version()
 		);
+
 	}
 
 }

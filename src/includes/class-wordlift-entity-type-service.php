@@ -62,6 +62,24 @@ class Wordlift_Entity_Type_Service {
 
 		self::$instance = $this;
 
+		$this->prepare_post_types();
+
+	}
+
+	/**
+	 * Prepare post types for Gutenberg use
+	 *
+	 * @since 3.26.0
+	 */
+	private function prepare_post_types() {
+
+		add_action( 'init', function () {
+			// Add post type support for 'custom-fields' for all post types. Specifically needed in Gutenberg
+			$post_types = get_post_types();
+			foreach ( $post_types as $post_type ) {
+				add_post_type_support( $post_type, 'custom-fields' );
+			}
+		} );
 	}
 
 	/**

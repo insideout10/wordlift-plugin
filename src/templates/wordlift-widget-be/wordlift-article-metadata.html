@@ -56,51 +56,5 @@
 
     </div>
 
-      <!-- BOTTOM-TOPIC SECTION  -->
-    <div 
-      ng-if="configuration.currentPostType != 'entity'"
-      class="wl-widget-article-metadata-bottom">
-      
-      <h2 class="wl-widget-article-metadata-topic-lead">
-        Topic
-      </h2>
-
-      <!-- SINGLE TOPIC -->
-      <div 
-        class="wl-widget-article-metadata-topic-single" 
-        ng-click="onTopicSelected(topic)"
-        ng-repeat="topic in analysis.topics | orderBy:'-confidence'">
-
-        <!-- TOPIC RADIO BTN -->
-        <div 
-          class="wl-widget-article-metadata-topic-radio"
-          ng-class="{ 'wl-radio-enabled' : isTopic(topic) }"
-          ></div>
-
-        <!-- TOPIC DETAILS -->
-        <div class="wl-widget-article-metadata-topic-single-details">
-
-          <!-- TOPIC TITLE -->
-          <h3>
-            {{topic.label}}
-          </h3>
-
-          <div class="wl-widget-article-metadata-topic-single-details-bottom">
-
-            <!-- TOPIC PROGRESS BAR -->
-            <div class="wl-widget-article-metadata-topic-bar">
-              <div class="wl-widget-article-metadata-topic-bar-progress" style="width:{{topic.confidence*100}}%">
-                <!-- display the progress bar  -->
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-      </div>
-
-    </div>
-
   </div>
 </div>

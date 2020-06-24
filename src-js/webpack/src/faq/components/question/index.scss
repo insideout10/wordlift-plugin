@@ -1,0 +1,16 @@
+$primary-color: #177efb;
+
+.wl-faq-question-container {
+  overflow: hidden;
+  text-overflow: clip;
+}
+.wl-faq-question-title {
+  font-weight: bold;
+  color: black;
+  cursor: pointer;
+  height: 40px !important;
+  margin: 2px !important;
+  &:first-letter {
+    text-transform: uppercase;
+  }
+}

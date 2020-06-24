@@ -142,16 +142,6 @@ class Wordlift_Timeline_Service {
 
 		$this->log->trace( 'Getting events [ entity ids :: ' . join( ', ', $ids ) . ' ]' );
 
-//		$entity_type_service = $this->entity_type_service;
-
-//		var_dump($ids);
-
-//		return array_map( function ( $item ) {
-//			return get_post( $item );
-//		}, array_filter( $ids, function ( $item ) use ( $entity_type_service ) {
-//			return $entity_type_service->has_entity_type( $item, 'http://schema.org/Event' );
-//		} ) );
-
 		$args = array(
 			'post__in'       => $ids,
 			'post_type'      => Wordlift_Entity_Service::valid_entity_post_types(),

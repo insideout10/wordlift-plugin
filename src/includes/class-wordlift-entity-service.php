@@ -405,7 +405,7 @@ class Wordlift_Entity_Service {
 	public function get_uri( $post_id ) {
 
 		// If a null is given, nothing to do
-		if ( null == $post_id ) {
+		if ( is_null( $post_id ) ) {
 			return null;
 		}
 
