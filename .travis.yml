@@ -151,8 +151,8 @@ before_install:
 before_script:
   # Install an updated version of NodeJS. Note that this cannot be put in a sh file as nvm must retain its choice.
   - . $HOME/.nvm/nvm.sh
-  - nvm install 6 --reinstall-packages-from=node
-  - nvm use 6
+  - nvm install 8 --reinstall-packages-from=node
+  - nvm use 8
   - node --version
   # Legacy (required by test:js and test:php).
   # - npm install -g grunt-cli
