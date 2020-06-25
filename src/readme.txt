@@ -142,7 +142,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.26.0 (2020-06-11) =
+= 3.26.0 (2020-06-25) =
 * Enhancement [#1072](https://github.com/insideout10/wordlift-plugin/issues/1072): Add end-point to find JSON-LD by meta for both categories and posts.
 * Enhancement [#1059](https://github.com/insideout10/wordlift-plugin/issues/1059): Add NewsArticle term to posts output as Article.
 * Enhancement [#1056](https://github.com/insideout10/wordlift-plugin/issues/1056): Adding filter to assign default entity type based on post type.
@@ -153,6 +153,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement [#980](https://github.com/insideout10/wordlift-plugin/issues/980): Improving schema.org:description for websites using BERT extractive summarization.
 * Enhancement [#938](https://github.com/insideout10/wordlift-plugin/issues/938): Add support for CollectionPage on taxonomy pages, tags and categories.
 * Enhancement [#381](https://github.com/insideout10/wordlift-plugin/issues/381): Faceted widget UI refresh.
+
 * Fix [#1078](https://github.com/insideout10/wordlift-plugin/issues/1078): Fixing backslash removed on post save bug.
 
 = 3.25.6 (2020-06-02) =
