@@ -31,8 +31,7 @@ import EditComponent from "./edit-component";
 /**
  * @see https://developer.wordpress.org/block-editor/tutorials/format-api/1-register-format/
  */
-
-registerFormatType("wordlift/annotation", {
+export const annotationSettings = {
   /*
    * The `attributes` property is undocumented as basically the `WPFormat` class.
    *
@@ -40,9 +39,10 @@ registerFormatType("wordlift/annotation", {
    * as WPFormat:
    *  wp.data.select( 'core/rich-text' ).getFormatTypes();
    */
-  attributes: { id: "id", class: "class", itemid: "itemid" },
+  attributes: {id: "id", class: "class", itemid: "itemid"},
   tagName: "span",
   className: "textannotation",
   title: "Annotation",
   edit: EditComponent
-});
+}
+registerFormatType("wordlift/annotation", annotationSettings);

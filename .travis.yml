@@ -84,12 +84,8 @@ env:
     - WL_SSL_V1_FORCED=true
 
     # WordLift Test Key.
-    # - secure: "g18HCJuCU1qN5NnhIttwV0obz71mZNZzT1RPIOhaBcMOhMZ/QsDER15xVzflHSq+x/leJoer0YFCG0iuIt7mla++mON1R2rITQToqMGIklbiktT9uVx/4ns8frYQRVd+mPXcQExbj/yzNRGQgq19yFU53xgrZVWmvaRuclHQDlM="
-    # - secure: "gbrG8Snlt9cBhswGThi0Ja9aEsotyRCf+IcTbSJl3kt/YJWGaiae78Ex/+5DZcMWXr2r/g90FPhuEgkAzdWQ2Bn1oGsNqcISrgX9hFQUTSfHwQiaA5r/3oXxt8RiC7xbapqrLAIah/ZF3hn7c69Wwgvsxbmj1aQmQu2RS7dg8Cw="
-    # - secure: "AatsPtyITshNfSr8TINErDA0RIxpqSCb4RAVRBfi7tjyTPjtu3Ads3w6BK3qETlzvj1MlWroVdpTTrkWGiWwFINlusUeCbCvkjungvYTzlDgfjE/jdotjAFdHvhyYsIbx2XYoebFHCOs5xJ17/lvtfQbXtrFXBO/qUccGcFz9xM="
-    # - secure: "gEoNdtQa7J/2iBrDv8pwSg7mlJi2JXXjFHbkUySkKVE02hFkyB84bBqscVbtp4stQMxqL8r2PS/L8m14C4oEjGwt5ne6Ny6XLEm5U0nnt0UydFV2/O00ZwWY5epaczlkZLvohnrLLUlasR9YKXVNta6TM7x96Qo7ZJbn42NB8FI="
     # This key is dedicate only to tests.
-    - secure: "lvBLe0B+xWjNLvyDbh50maf7GA62SXj7bH4lfEcGdVD7dcoDS6a7yY8PJ7WNhlnVNNHVzPtbE5fJjtbtYoE2J1bjp72qWcPaGr//G4YURkhEWG8kg2L3Km7sMN82uRWZXsmlDYkEixsOx3ROLRBM1xo9k4lQSktisXQVeBcRXbA="
+    - secure: "S21RrillnOjH+kZW91cd0CKsINuQAflxAP8pdloZ6aJqpNCoM18kLL4nRE5y4SS3b0ev6IurpmpJ8flQMFZAGrIcZ1pLsn5wjlPkMQNaGHlTI5MuYpbgGqW+oN3UdyvTQDIUF6Zhfk8Ajq8acK/Gid+laGjoGt+qFHHPevGaj/A="
 
     # WordLift Test API URL.
     # - secure: "QVEH7GwZJR9nWnEKq99QZATwsppd+3eKHcGtZeAKcxaScW6tOnyJRzLR3pKi1M5PK2azdgu9ZuYxk6RRjO6gEGQhqVa9yrWhwXv4KmKeOUdszRW2gH0uQ1cQEU4Stjibppq+sHzRSC6di3yrLWxdfc+5HZHAj8uut5ISpFV3Ozc="
@@ -155,8 +151,8 @@ before_install:
 before_script:
   # Install an updated version of NodeJS. Note that this cannot be put in a sh file as nvm must retain its choice.
   - . $HOME/.nvm/nvm.sh
-  - nvm install 6 --reinstall-packages-from=node
-  - nvm use 6
+  - nvm install 8 --reinstall-packages-from=node
+  - nvm use 8
   - node --version
   # Legacy (required by test:js and test:php).
   # - npm install -g grunt-cli
