@@ -87,6 +87,7 @@ class LinkService {
 
     if (ed) {
       // Handle classic editor
+
       return occurrences.reduce((acc, id) => {
         const dom = ed.dom;
 
@@ -94,6 +95,7 @@ class LinkService {
       }, false);
     } else {
       // Handle block editor
+
       const divElem = document.createElement("div");
       divElem.innerHTML = wp.data
         .select("core/editor")
