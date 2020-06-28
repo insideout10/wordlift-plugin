@@ -324,7 +324,13 @@ class Wordlift_Admin {
 			 */
 			'search_keywords_admin_page' => admin_url( 'admin.php?page=wl_configuration_admin_menu&tab=search-keywords' ),
 
-			'analysis' => array( '_wpnonce' => wp_create_nonce( 'wl_analyze' ), )
+			'analysis' => array( '_wpnonce' => wp_create_nonce( 'wl_analyze' ) ),
+			/**
+			 * Faceted search default limit
+			 *
+			 * @since 3.26.1
+			 */
+			'faceted_search_default_limit' => apply_filters( 'wl_faceted_search_default_limit', 4 )
 		);
 
 		// Set post-related values if there's a current post.
