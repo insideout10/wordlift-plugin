@@ -67,7 +67,7 @@ class Local_Autocomplete_Service extends Abstract_Autocomplete_Service {
 			);
 		}, $posts );
 
-		$results = array_unique( $results );
+		$results = array_unique( $results, SORT_REGULAR);
 
 		return $this->filter( $results, $excludes );
 	}
