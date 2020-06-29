@@ -144,7 +144,8 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 = 3.26.1 (????-??-??) =
 * Fix [#1074](https://github.com/insideout10/wordlift-plugin/issues/1074): Fixing local entity save on category page.
-* Fix [#1039](https://github.com/insideout10/wordlift-plugin/issues/1039): Fix for manually annotating entity fails in classic editor block
+* Fix [#1045](https://github.com/insideout10/wordlift-plugin/issues/1045): Fix for link switch isn't on when linking to an entity is on by default.
+* Fix [#1039](https://github.com/insideout10/wordlift-plugin/issues/1039): Fix for manually annotating entity fails in classic editor block.
 
 = 3.26.0 (2020-06-25) =
 * Enhancement [#1072](https://github.com/insideout10/wordlift-plugin/issues/1072): Add end-point to find JSON-LD by meta for both categories and posts.
