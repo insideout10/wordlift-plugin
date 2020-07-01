@@ -28,6 +28,8 @@ import WordLiftIcon from "./wl-logo-big.svg";
 import { PLUGIN_NAMESPACE } from "../common/constants";
 import "./blocks.scss";
 
+const wlSettings = global["wlSettings"];
+
 const humanize = str => {
   return str
     .replace(/^[\s_]+|[\s_]+$/g, "")
@@ -61,7 +63,7 @@ const blocks = {
         default: __("Related articles", "wordlift")
       },
       limit: {
-        default: 4
+        default: wlSettings["faceted_search_default_limit"]
       },
       template_id: {
         default: ""

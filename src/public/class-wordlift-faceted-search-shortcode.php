@@ -46,7 +46,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 		// Extract attributes and set default values.
 		$shortcode_atts = shortcode_atts( array(
 			'title'       => __( 'Related articles', 'wordlift' ),
-			'limit'       => 4,
+			'limit'       => apply_filters( 'wl_faceted_search_default_limit', 4 ),
 			'post_id'     => '',
 			'template_id' => '',
 			'uniqid'      => uniqid( 'wl-faceted-widget-' ),

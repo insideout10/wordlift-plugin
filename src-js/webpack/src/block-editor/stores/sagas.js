@@ -34,6 +34,8 @@ import { createEntityRequest } from "../../common/containers/create-entity-form/
 import createEntity from "../api/create-entity";
 import { relatedPostsRequest, relatedPostsSuccess } from "../../common/containers/related-posts/actions";
 import getRelatedPosts from "../../common/api/get-related-posts";
+import ClassicEditorBlock from "../api/classic-editor-block";
+import ClassicEditorBlockValidator from "./classic-editor-block-validator";
 
 function* handleRequestAnalysis() {
   const editorOps = new EditorOps(EDITOR_STORE);
@@ -196,8 +198,25 @@ function* toggleAnnotation({ annotation }) {
  */
 function* handleAddEntityRequest({ payload }) {
   // See https://developer.wordpress.org/block-editor/packages/packages-rich-text/#applyFormat
-  console.log("getBlockEditorFormat", yield select(getBlockEditorFormat));
-  const { onChange, value } = yield select(getBlockEditorFormat);
+  const blockEditorFormat = yield select(getBlockEditorFormat);
+  let value, onChange;
+  let selectedBlock = wp.data.select("core/editor").getSelectedBlock();
+  let isClassicEditorBlock = false;
+
+  if (blockEditorFormat !== undefined) {
+    onChange = blockEditorFormat.onChange;
+    value = blockEditorFormat.value;
+  }
+
+  if (blockEditorFormat === undefined) {
+    value = ClassicEditorBlockValidator.getValue(payload.label)
+    if (value === false) {
+      // This is not a valid classic block,return early.
+      return false;
+    }
+    // mark it as classic editor block.
+    isClassicEditorBlock = true;
+  }
 
   const annotationId = "urn:local-annotation-" + Math.floor(Math.random() * 999999);
 
@@ -219,14 +238,22 @@ function* handleAddEntityRequest({ payload }) {
   };
 
   console.debug("Adding Entity", entityToAdd);
-
+  const annotationAttributes = {id: annotationId, class: "disambiguated", itemid: entityToAdd.id};
   const format = {
     type: "wordlift/annotation",
-    attributes: { id: annotationId, class: "disambiguated", itemid: entityToAdd.id }
+    attributes: annotationAttributes
   };
 
-  yield call(onChange, applyFormat(value, format));
-
+  if (isClassicEditorBlock) {
+    // classic editor block should be updated differently.
+    const instance = new ClassicEditorBlock(selectedBlock.clientId, selectedBlock.attributes.content);
+    instance.replaceWithAnnotation(payload.label, annotationAttributes);
+    instance.update();
+  } else {
+    // update the block
+    yield call(onChange, applyFormat(value, format));
+  }
+  // update the state.
   yield put({ type: ADD_ENTITY, payload: entityToAdd });
 
   // Send the selected entities to the WordLift Classification box.
