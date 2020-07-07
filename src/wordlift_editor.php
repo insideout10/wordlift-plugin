@@ -58,4 +58,4 @@ function wordlift_filter_tiny_mce_before_init( $options ) {
 	return $options;
 }
 
-add_filter( 'tiny_mce_before_init', 'wordlift_filter_tiny_mce_before_init' );
+add_filter( 'tiny_mce_before_init', 'wordlift_filter_tiny_mce_before_init', PHP_INT_MAX );
