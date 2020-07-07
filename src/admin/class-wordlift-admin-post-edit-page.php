@@ -73,6 +73,15 @@ class Wordlift_Admin_Post_Edit_Page {
 		// Define the callbacks.
 		$callback = array( $this, 'enqueue_scripts', );
 
+		/**
+		 * Add this setting to show local entities on the
+		 * post edit screen.
+		 */
+		add_filter( 'wl_admin_settings', function ( $params ) {
+			$params['show_local_entities'] = true;
+			return $params;
+		} );
+
 		// Set a hook to enqueue scripts only when the edit page is displayed.
 		add_action( 'admin_print_scripts-post.php', $callback );
 		add_action( 'admin_print_scripts-post-new.php', $callback );

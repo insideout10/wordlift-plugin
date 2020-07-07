@@ -6,6 +6,8 @@ export function autocomplete(query, language, ...excludes) {
     // eslint-disable-next-line
     return wp.ajax.post("wl_autocomplete", {
       query,
+      // show local entities on post edit screen
+      show_local_entities: settings["show_local_entities"] == true,
       // eslint-disable-next-line
       _wpnonce: settings["wl_autocomplete_nonce"],
       // eslint-disable-next-line
