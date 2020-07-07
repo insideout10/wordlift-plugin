@@ -142,6 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.26.2 (2020-07-07) =
+* Fix: Show local entities on post edit screen.
+
 = 3.26.1 (2020-06-29) =
 * Enhancement [#1089](https://github.com/insideout10/wordlift-plugin/issues/1089): Faceted search follow-up enhancements and fixes.
 
