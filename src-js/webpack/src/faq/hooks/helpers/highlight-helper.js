@@ -42,7 +42,7 @@ export default class HighlightHelper {
       /** Note: childNodes return a live nodelist, we convert it to array before removing it **/
       const childNodes = Array.prototype.slice.call(tag.childNodes);
       for (let node of childNodes) {
-        tag.parentElement?.insertBefore(node, tag);
+        tag.parentElement.insertBefore(node, tag);
       }
       tag.remove();
     }
