@@ -6,7 +6,7 @@ Tags: schema.org, rich snippets, semantic seo, JSON-LD, artificial intelligence,
 Requires at least: 4.4
 Tested up to: 5.4
 Requires PHP: 5.3
-Stable tag: 3.26.1
+Stable tag: 3.26.2
 License: GPLv2 or later
 
 WordLift brings the power of Artificial Intelligence to optimize SEO and organize content. Attract new readers and get their true attention.
@@ -141,6 +141,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 9. The WordLift Dashboard. Your [knowledge graph](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph) at a glance.
 
 == Changelog ==
+
+= 3.26.2 (2020-07-07) =
+* Fix: Show local entities on post edit screen.
+* Fix: Context Cards JS graceful handling.
 
 = 3.26.1 (2020-06-29) =
 * Enhancement [#1089](https://github.com/insideout10/wordlift-plugin/issues/1089): Faceted search follow-up enhancements and fixes.
