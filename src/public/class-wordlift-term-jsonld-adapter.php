@@ -214,7 +214,7 @@ class Wordlift_Term_JsonLd_Adapter {
 			return array();
 		}
 
-		$post   = $this->entity_uri_service->get_entity( $local_entity_ids[0] );
+		$post   = $this->entity_uri_service->get_entity( array_shift( $local_entity_ids ) );
 		$jsonld = $this->jsonld_service->get_jsonld( false, $post->ID );
 		// Reset the `url` to the term page.
 		$jsonld[0]['url'] = get_term_link( $id );
