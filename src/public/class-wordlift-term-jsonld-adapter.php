@@ -63,44 +63,34 @@ class Wordlift_Term_JsonLd_Adapter {
 	/**
 	 * Adds carousel json ld data to term page if the conditions match
 	 *
-	 * @param $jsonld array JsonLd Array.
-	 *
-	 * @return array
+	 * @return array|boolean
 	 */
-	public function get_carousel_jsonld( $jsonld, $id = null ) {
-		$posts = $this->get_posts( $id );
-
-		if ( ! is_array( $posts ) ) {
+	public function get_carousel_jsonld( $id = null ) {
+		$posts       = $this->get_posts( $id );
+		$post_jsonld = array();
+		if ( ! is_array( $posts ) || count( $posts ) < 2 ) {
 			// Bail out if no posts are present.
-			return $jsonld;
-		}
-
-		$entities = array();
-
-		if ( count( $posts ) < 2 ) {
-			return $jsonld;
+			return false;
 		}
 
 		if ( ! is_null( $id ) ) {
-			$term                  = get_term( $id );
-			$jsonld['description'] = $term->description;
-
-			$thumbnail_id = get_term_meta( $id, 'thumbnail_id', true );
+			$term                       = get_term( $id );
+			$post_jsonld['description'] = $term->description;
+			$thumbnail_id               = get_term_meta( $id, 'thumbnail_id', true );
 			if ( ! empty( $thumbnail_id ) ) {
-				$jsonld['image'] = wp_get_attachment_url( $thumbnail_id );
+				$post_jsonld['image'] = wp_get_attachment_url( $thumbnail_id );
 			}
 		}
 
-		// More than 2 items are present, so construct the jsonld data
-		$jsonld['@context']        = 'https://schema.org';
-		$jsonld['@type']           = 'ItemList';
-		$jsonld['url']             = $this->get_term_url( $id );
-		$jsonld['itemListElement'] = array();
-		$position                  = 1;
+		// More than 2 items are present, so construct the post_jsonld data
+		$post_jsonld['@context']        = 'https://schema.org';
+		$post_jsonld['@type']           = 'ItemList';
+		$post_jsonld['url']             = $this->get_term_url( $id );
+		$post_jsonld['itemListElement'] = array();
+		$position                       = 1;
 
 		foreach ( $posts as $post_id ) {
-			$post_jsonld = $this->jsonld_service->get_jsonld( false, $post_id );
-			$result      = array(
+			$result = array(
 				'@type'    => 'ListItem',
 				'position' => $position,
 				/**
@@ -108,18 +98,13 @@ class Wordlift_Term_JsonLd_Adapter {
 				 *
 				 * See https://developers.google.com/search/docs/data-types/carousel
 				 */
-				'url' => get_permalink($post_id)
+				'url'      => get_permalink( $post_id )
 			);
-			array_push( $jsonld['itemListElement'], $result );
-
-			$entities = array_merge( $entities, $post_jsonld );
+			array_push( $post_jsonld['itemListElement'], $result );
 			$position += 1;
 		}
 
-		return array(
-			'post_jsonld' => $jsonld,
-			'entities'    => array()
-		);
+		return $post_jsonld;
 	}
 
 	private function get_posts( $id ) {
@@ -177,39 +162,21 @@ class Wordlift_Term_JsonLd_Adapter {
 		 *
 		 * @since 3.26.0
 		 */
-		$carousel_data = $this->get_carousel_jsonld( array(), $id );
-
-		// If the carousel jsonld returns empty array, then fallback to previous jsonld generation.
-		if ( isset( $carousel_data['entities'] )
-		     && isset( $carousel_data['post_jsonld'] )
-		     && $carousel_data['post_jsonld'] !== array() ) {
-
-			$entities    = $carousel_data['entities'];
-			$post_jsonld = $carousel_data['post_jsonld'];
-
-			$jsonld = array( $post_jsonld );
-			$jsonld = array_merge( $jsonld, $entities );
-		} else {
-			// The `_wl_entity_id` are URIs.
-			$entity_ids         = get_term_meta( $id, '_wl_entity_id' );
-			$entity_uri_service = $this->entity_uri_service;
-
-			$local_entity_ids = array_filter( $entity_ids, function ( $uri ) use ( $entity_uri_service ) {
-				return $entity_uri_service->is_internal( $uri );
-			} );
-
-			// Bail out if there are no entities.
-			if ( empty( $local_entity_ids ) ) {
-				return array();
-			}
-
-			$post   = $this->entity_uri_service->get_entity( $local_entity_ids[0] );
-			$jsonld = $this->jsonld_service->get_jsonld( false, $post->ID );
-			// Reset the `url` to the term page.
-			$jsonld[0]['url'] = get_term_link( $id );
+		$carousel_data = $this->get_carousel_jsonld( $id );
+		$jsonld_array  = array();
+		if ( $carousel_data ) {
+			$jsonld_array[] = $carousel_data;
 		}
+		$entities_jsonld_array = $this->get_entity_jsonld( $id );
 
-		return $jsonld;
+		/**
+		 * @since 3.26.3
+		 * Filter: wl_term_jsonld_array
+		 * @var $id int Term id
+		 * @var $jsonld_array array An array containing jsonld for term and entities.
+		 */
+		return apply_filters( 'wl_term_jsonld_array', array_merge( $jsonld_array, $entities_jsonld_array ), $id );
+
 	}
 
 	private function get_term_url( $id ) {
@@ -224,6 +191,35 @@ class Wordlift_Term_JsonLd_Adapter {
 		}
 
 		return get_term_link( $id );
+	}
+
+	/**
+	 * Return jsonld for entities bound to terms.
+	 *
+	 * @param $id
+	 *
+	 * @return array
+	 */
+	private function get_entity_jsonld( $id ) {
+		// The `_wl_entity_id` are URIs.
+		$entity_ids         = get_term_meta( $id, '_wl_entity_id' );
+		$entity_uri_service = $this->entity_uri_service;
+
+		$local_entity_ids = array_filter( $entity_ids, function ( $uri ) use ( $entity_uri_service ) {
+			return $entity_uri_service->is_internal( $uri );
+		} );
+
+		// Bail out if there are no entities.
+		if ( empty( $local_entity_ids ) ) {
+			return array();
+		}
+
+		$post   = $this->entity_uri_service->get_entity( $local_entity_ids[0] );
+		$jsonld = $this->jsonld_service->get_jsonld( false, $post->ID );
+		// Reset the `url` to the term page.
+		$jsonld[0]['url'] = get_term_link( $id );
+
+		return $jsonld;
 	}
 
 }
