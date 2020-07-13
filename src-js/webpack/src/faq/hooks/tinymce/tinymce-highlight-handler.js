@@ -91,7 +91,7 @@ class TinymceHighlightHandler {
     const processedRange = rangeHelper.getProcessedRange();
     let nodes = Array.from(this.selection.getNode().childNodes);
     HighlightHelper.highlightNodesByRange(nodes, tagName, id.toString(), range, processedRange);
-    range.collapse()
+    range.collapse();
   }
 }
 

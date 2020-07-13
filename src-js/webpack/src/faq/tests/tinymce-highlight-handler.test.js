@@ -1,8 +1,8 @@
 import TinymceHighlightHandler from "../hooks/tinymce/tinymce-highlight-handler";
-import {off, trigger} from "backbone";
-import {FAQ_HIGHLIGHT_TEXT, FAQ_ITEM_DELETED} from "../constants/faq-hook-constants";
-import {FAQ_ANSWER_TAG_NAME} from "../hooks/custom-faq-elements";
-import {faqEditItemType} from "../components/faq-edit-item";
+import { off, trigger } from "backbone";
+import { FAQ_HIGHLIGHT_TEXT, FAQ_ITEM_DELETED } from "../constants/faq-hook-constants";
+import { FAQ_ANSWER_TAG_NAME } from "../hooks/custom-faq-elements";
+import { faqEditItemType } from "../components/faq-edit-item";
 
 const setContentMockFn = jest.fn();
 const editor = {
