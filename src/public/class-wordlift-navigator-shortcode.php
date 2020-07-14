@@ -88,17 +88,20 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 
 		wp_enqueue_script( 'wordlift-cloud' );
 		$json_navigator_id = wp_json_encode( $navigator_id );
-		echo "<script type='application/javascript'>window.wlNavigators = window.wlNavigators || []; wlNavigators.push( $json_navigator_id );</script>";
 
-		return sprintf(
-			'<div id="%s" class="%s" data-rest-url="%s" data-title="%s" data-template-id="%s" data-limit="%s"></div>',
-			$navigator_id,
-			'wl-navigator',
-			$rest_url,
-			$shortcode_atts['title'],
-			$shortcode_atts['template_id'],
-			$shortcode_atts['limit']
-		);
+		return <<<HTML
+			<!-- Navigator {$navigator_id} -->
+			<script type="application/javascript">
+				window.wlNavigators = window.wlNavigators || []; wlNavigators.push({$json_navigator_id});
+			</script>
+			<div id="{$navigator_id}" 
+				 class="wl-navigator" 
+				 data-rest-url="{$rest_url}" 
+				 data-title="{$shortcode_atts['title']}" 
+				 data-template-id="{$shortcode_atts['template_id']}" 
+				 data-limit="{$shortcode_atts['limit']}"></div>
+			<!-- /Navigator {$navigator_id} -->
+HTML;
 	}
 
 	/**
