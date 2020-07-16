@@ -498,7 +498,8 @@ class Wordlift_Configuration_Service {
 		 * @since 3.20.0
 		 *
 		 */
-		$site_url = apply_filters( 'wl_production_site_url', home_url() );
+		$home_url    = defined( 'WP_HOME' ) ? WP_HOME : get_option( 'home' );
+		$site_url = apply_filters( 'wl_production_site_url', $home_url );
 
 		// Build the URL.
 		$url = $this->get_accounts()
