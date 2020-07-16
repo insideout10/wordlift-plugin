@@ -18,22 +18,24 @@ abstract class Wordlift_Shortcode_REST {
 	/**
 	 * The cache_ttl, set by extending classes.
 	 */
-	const CACHE_TTL = 24 * 60 * 60; // 24 hours
+	const CACHE_TTL = 86400; // 24 hours
 
 	public function __construct() {
 
+		$scope = $this;
+
 		// Register rest route with callback
-		add_action( 'rest_api_init', function () {
-			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, static::ENDPOINT, array(
+		add_action( 'rest_api_init', function () use ( $scope ) {
+			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, $scope::ENDPOINT, array(
 				'methods'  => WP_REST_Server::READABLE,
-				'callback' => array( $this, 'rest_callback' )
+				'callback' => array( $scope, 'rest_callback' )
 			) );
 		} );
 
 		// Optimizations: disable unneeded plugins on this specific REST call. WPSeo is slowing down the responses quite a bit.
-		add_action( 'plugins_loaded', function () {
+		add_action( 'plugins_loaded', function () use ( $scope ) {
 
-			if ( ! defined( 'REST_REQUEST' ) || ! REST_REQUEST || ! $this->is_endpoint() ) {
+			if ( ! defined( 'REST_REQUEST' ) || ! REST_REQUEST || ! $scope->is_endpoint() ) {
 				return;
 			}
 
@@ -42,9 +44,9 @@ abstract class Wordlift_Shortcode_REST {
 			remove_action( 'plugins_loaded', 'wpseo_init', 14 );
 		}, 0 );
 
-		add_action( 'init', function () {
+		add_action( 'init', function () use ( $scope ) {
 
-			if ( ! defined( 'REST_REQUEST' ) || ! REST_REQUEST || ! $this->is_endpoint() ) {
+			if ( ! defined( 'REST_REQUEST' ) || ! REST_REQUEST || ! $scope->is_endpoint() ) {
 				return;
 			}
 

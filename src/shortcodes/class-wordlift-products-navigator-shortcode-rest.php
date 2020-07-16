@@ -4,7 +4,7 @@ class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST
 
 	const ENDPOINT = '/products-navigator';
 
-	const CACHE_TTL = 24 * 60 * 60; // 24 hours
+	const CACHE_TTL = 86400; // 24 hours
 
 	public function get_data( $request ) {
 

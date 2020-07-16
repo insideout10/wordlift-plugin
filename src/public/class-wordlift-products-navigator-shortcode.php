@@ -84,7 +84,8 @@ class Wordlift_Products_Navigator_Shortcode extends Wordlift_Shortcode {
 		$sort         = sanitize_sql_orderby( sanitize_text_field( $shortcode_atts['order_by'] ) );
 		$navigator_id = sanitize_text_field( $shortcode_atts['uniqid'] );
 
-		$delimiter = empty( get_option( 'permalink_structure' ) ) ? '&' : '?';
+		$permalink_structure = get_option( 'permalink_structure' );
+		$delimiter = empty( $permalink_structure ) ? '&' : '?';
 		$rest_url  = $post ? rest_url( WL_REST_ROUTE_DEFAULT_NAMESPACE . '/products-navigator' . $delimiter . build_query( array(
 				'uniqid'  => $navigator_id,
 				'post_id' => $post->ID,

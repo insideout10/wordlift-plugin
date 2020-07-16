@@ -80,7 +80,8 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 		$limit       = sanitize_text_field( $shortcode_atts['limit'] );
 		$faceted_id  = sanitize_text_field( $shortcode_atts['uniqid'] );
 
-		$delimiter = empty( get_option( 'permalink_structure' ) ) ? '&' : '?';
+		$permalink_structure = get_option( 'permalink_structure' );
+		$delimiter = empty( $permalink_structure ) ? '&' : '?';
 		$rest_url  = $post ? rest_url( WL_REST_ROUTE_DEFAULT_NAMESPACE . '/faceted-search' . $delimiter . build_query( array(
 				'post_id' => $post->ID,
 				'limit'   => $limit
@@ -134,7 +135,8 @@ HTML;
 		$limit       = sanitize_text_field( $shortcode_atts['limit'] );
 		$faceted_id  = sanitize_text_field( $shortcode_atts['uniqid'] );
 
-		$delimiter = empty( get_option( 'permalink_structure' ) ) ? '&' : '?';
+		$permalink_structure = get_option( 'permalink_structure' );
+		$delimiter = empty( $permalink_structure ) ? '&' : '?';
 		$rest_url  = $post ? rest_url( WL_REST_ROUTE_DEFAULT_NAMESPACE . '/faceted-search' . $delimiter . build_query( array(
 				'amp',
 				'post_id' => $post->ID,
