@@ -62,6 +62,64 @@
   color: #666;
   cursor: pointer;
 }
+.wordlift-navigator .title {
+  font-size: 16px;
+  margin: 0.5rem 0;
+}
+.wordlift-navigator .cards {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+}
+.wordlift-navigator .cards .card {
+  background: white;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 0 300px;
+      -ms-flex: 1 0 300px;
+          flex: 1 0 300px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin: 1rem .25em;
+}
+@media screen and (min-width: 40em) {
+  .wordlift-navigator .cards .card {
+    max-width: -webkit-calc(49%);
+    max-width: calc(49%);
+  }
+}
+@media screen and (min-width: 60em) {
+  .wordlift-navigator .cards .card {
+    max-width: -webkit-calc(24%);
+    max-width: calc(24%);
+  }
+}
+.wordlift-navigator .cards .card a {
+  color: black;
+  text-decoration: none;
+}
+.wordlift-navigator .cards .card a:hover {
+  -webkit-box-shadow: 3px 3px 8px #ccc;
+          box-shadow: 3px 3px 8px #ccc;
+}
+.wordlift-navigator .cards .card .thumbnail {
+  width: 100%;
+  padding-bottom: 56.25%;
+  background-size: cover;
+}
+.wordlift-navigator .cards .card .thumbnail img {
+  display: block;
+  border: 0;
+  width: 100%;
+  height: auto;
+}
+.wordlift-navigator .cards .card .card-content .title {
+  font-size: 14px;
+  margin: 0.3rem 0;
+}
 .wl-navigator-widget {
   width: 100%;
 }

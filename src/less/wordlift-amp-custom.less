@@ -77,6 +77,62 @@
 
 }
 
+.wordlift-navigator{
+  .title{
+    font-size:16px;
+    margin:0.5rem 0
+  }
+
+  .cards{
+    display:flex;
+    flex-wrap:wrap;
+
+    .card{
+      background:white;
+      flex:1 0 300px;
+      box-sizing:border-box;
+      margin:1rem .25em;
+
+      @media screen and (min-width: 40em){
+        max-width:calc(50% -  1em)
+      }
+
+      @media screen and (min-width: 60em){
+        max-width:calc(25% - 1em)
+      }
+
+      a{
+        color:black;
+        text-decoration:none;
+        &:hover{
+          box-shadow:3px 3px 8px #ccc
+        }
+      }
+
+      .thumbnail{
+        width:100%;
+        padding-bottom:56.25%;
+        background-size:cover;
+
+        img{
+          display:block;
+          border:0;
+          width:100%;
+          height:auto
+        }
+      }
+
+      .card-content {
+        .title{
+          font-size:14px;
+          margin:0.3rem 0
+        }
+      }
+    }
+  }
+}
+
+// Depricated: Used by old Angular Widget
 .wl-navigator-widget {
   width: 100%;
 
