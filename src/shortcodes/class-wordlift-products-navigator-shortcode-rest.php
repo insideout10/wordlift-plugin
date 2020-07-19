@@ -44,20 +44,22 @@ class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST
 		$results = array();
 		foreach ( $referencing_posts as $referencing_post ) {
 			$serialized_entity = wl_serialize_entity( $referencing_post->entity_id );
-			$product   = wc_get_product( $referencing_post->ID );
+			$product           = wc_get_product( $referencing_post->ID );
 
 			$result = array(
 				'product' => array(
-					'permalink'      => get_permalink( $referencing_post->ID ),
-					'title'          => $referencing_post->post_title,
-					'thumbnail'      => get_the_post_thumbnail_url( $referencing_post, 'medium' ),
-					'regular_price'  => $product->get_regular_price(),
-					'sale_price'     => $product->get_sale_price(),
-					'price'          => $product->get_price(),
-					'discount'       => $product->get_sale_price() ? round(1 - ($product->get_sale_price() / $product->get_regular_price()), 2) : 0,
-					'average_rating' => $product->get_average_rating(),
-					'rating_count'   => $product->get_rating_count(),
-					'rating_html'    => wc_get_rating_html( $product->get_average_rating(), $product->get_rating_count() )
+					'id'              => $referencing_post->ID,
+					'permalink'       => get_permalink( $referencing_post->ID ),
+					'title'           => $referencing_post->post_title,
+					'thumbnail'       => get_the_post_thumbnail_url( $referencing_post, 'medium' ),
+					'regular_price'   => $product->get_regular_price(),
+					'sale_price'      => $product->get_sale_price(),
+					'price'           => $product->get_price(),
+					'currency_symbol' => get_woocommerce_currency_symbol(),
+					'discount'        => $product->get_sale_price() ? round( 1 - ( $product->get_sale_price() / $product->get_regular_price() ), 2 ) : 0,
+					'average_rating'  => $product->get_average_rating(),
+					'rating_count'    => $product->get_rating_count(),
+					'rating_html'     => wc_get_rating_html( $product->get_average_rating(), $product->get_rating_count() )
 				),
 				'entity'  => array(
 					'label'     => $serialized_entity['label'],
