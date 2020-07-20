@@ -22,6 +22,11 @@ class Wordlift_Products_Navigator_Shortcode extends Wordlift_Shortcode {
 	 */
 	const SHORTCODE = 'wl_products_navigator';
 
+	public function __construct() {
+		parent::__construct();
+		$this->register_block_type();
+	}
+
 	/**
 	 * {@inheritdoc}
 	 */
@@ -29,6 +34,49 @@ class Wordlift_Products_Navigator_Shortcode extends Wordlift_Shortcode {
 
 		return Wordlift_AMP_Service::is_amp_endpoint() ? $this->amp_shortcode( $atts )
 			: $this->web_shortcode( $atts );
+	}
+
+	private function register_block_type() {
+		if ( ! function_exists( 'register_block_type' ) ) {
+			// Gutenberg is not active.
+			return;
+		}
+
+		register_block_type( 'wordlift/products-navigator', array(
+			'editor_script'   => 'wl-block-editor',
+			'render_callback' => function ( $attributes ) {
+				$attr_code = '';
+				foreach ( $attributes as $key => $value ) {
+					$attr_code .= $key . '="' . htmlentities( $value ) . '" ';
+				}
+
+				return '[' . static::SHORTCODE . ' ' . $attr_code . ']';
+			},
+			'attributes'      => array(
+				'title'       => array(
+					'type'    => 'string',
+					'default' => __( 'Related products', 'wordlift' ),
+				),
+				'limit'       => array(
+					'type'    => 'number',
+					'default' => 4,
+				),
+				'template_id' => array(
+					'type' => 'string',
+				),
+				'post_id'     => array(
+					'type' => 'number',
+				),
+				'offset'      => array(
+					'type'    => 'number',
+					'default' => 0,
+				),
+				'uniqid'      => array(
+					'type'    => 'string',
+					'default' => uniqid( 'wl-products-navigator-widget-' ),
+				),
+			),
+		) );
 	}
 
 	/**
