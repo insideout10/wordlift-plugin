@@ -254,7 +254,7 @@
 }
 .wl-amp-faceted .cards amp-list div[role='list'] .card .card-content,
 .wl-amp-products-navigator .cards amp-list div[role='list'] .card .card-content {
-  margin: 10px;
+  margin: 5px 10px;
 }
 .wl-amp-faceted .cards amp-list div[role='list'] .card .card-content .title,
 .wl-amp-products-navigator .cards amp-list div[role='list'] .card .card-content .title {
@@ -266,4 +266,83 @@
 .wl-amp-products-navigator .cards amp-list div[role='list'] .card .card-content .date {
   font-size: 10px;
   color: #a4a4a4;
+}
+.wl-amp-products-navigator .cards amp-list div[role='list'] .card .card-footer {
+  margin: 5px 10px;
+  border-top: 1px solid #e6e6e6;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  font-size: 0.9rem;
+  overflow: hidden;
+}
+.wl-amp-products-navigator .cards amp-list div[role='list'] .card .card-footer .col-left {
+  text-align: left;
+  -webkit-box-flex: 0.5;
+  -webkit-flex-grow: 0.5;
+      -ms-flex-positive: 0.5;
+          flex-grow: 0.5;
+}
+.wl-amp-products-navigator .cards amp-list div[role='list'] .card .card-footer .col-left .discount {
+  font-size: 0.7em;
+  color: #767676;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.wl-amp-products-navigator .cards amp-list div[role='list'] .card .card-footer .col-left .discount .regular {
+  text-decoration: line-through;
+}
+.wl-amp-products-navigator .cards amp-list div[role='list'] .card .card-footer .col-left .discount .percent {
+  color: #e02020;
+}
+.wl-amp-products-navigator .cards amp-list div[role='list'] .card .card-footer .col-right {
+  text-align: right;
+  -webkit-box-flex: 0.5;
+  -webkit-flex-grow: 0.5;
+      -ms-flex-positive: 0.5;
+          flex-grow: 0.5;
+}
+.wl-amp-products-navigator .cards amp-list div[role='list'] .card .card-footer .col-right .star-rating {
+  float: right;
+  font-size: 0.85rem;
+  overflow: hidden;
+  position: relative;
+  height: 1.618em;
+  line-height: 1.618;
+  width: 5.3em;
+  font-weight: 400;
+}
+.wl-amp-products-navigator .cards amp-list div[role='list'] .card .card-footer .col-right .star-rating:before {
+  content: '\2605\2605\2605\2605\2605';
+  opacity: 0.25;
+  float: left;
+  top: 0;
+  left: 0;
+  position: absolute;
+}
+.wl-amp-products-navigator .cards amp-list div[role='list'] .card .card-footer .col-right .star-rating span {
+  overflow: hidden;
+  float: left;
+  top: 0;
+  left: 0;
+  position: absolute;
+  padding-top: 1.5em;
+}
+.wl-amp-products-navigator .cards amp-list div[role='list'] .card .card-footer .col-right .star-rating span:before {
+  color: #ffc94a;
+  content: '\2605\2605\2605\2605\2605';
+  top: 0;
+  position: absolute;
+  left: 0;
+}
+.wl-amp-products-navigator .cards amp-list div[role='list'] .card .card-footer .col-right .reviews {
+  clear: both;
+  font-size: 0.7em;
+  color: #767676;
 }

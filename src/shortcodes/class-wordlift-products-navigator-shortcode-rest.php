@@ -47,7 +47,7 @@ class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST
 		$order_by         = $request['sort'];
 		$post_id          = $request['post_id'];
 		$navigator_id     = $request['uniqid'];
-		$amp              = isset($request['amp']);
+		$amp              = $request['amp'];
 
 		$post = get_post( $post_id );
 

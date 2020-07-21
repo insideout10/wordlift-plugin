@@ -273,7 +273,7 @@
         }
 
         .card-content {
-          margin: 10px;
+          margin: 5px 10px;
           .title {
             font-size: 0.9rem;
             margin: 0.3rem 0;
@@ -288,4 +288,86 @@
     }
   }
 
+}
+
+.wl-amp-products-navigator{
+
+  .cards {
+    amp-list div[role='list'] {
+      .card {
+        .card-footer {
+          margin: 5px 10px;
+          border-top: 1px solid #e6e6e6;
+          display: flex;
+          flex-direction: row;
+          font-size: 0.9rem;
+          overflow: hidden;
+          .col-left{
+            text-align: left;
+            flex-grow: 0.5;
+
+            .discount{
+              font-size: 0.7em;
+              color: #767676;
+              white-space: nowrap;
+              overflow: hidden;
+
+              .regular{
+                text-decoration: line-through;
+              }
+
+              .percent{
+                color: #e02020;
+              }
+            }
+          }
+          .col-right{
+            text-align: right;
+            flex-grow: 0.5;
+
+            .star-rating{
+              float: right;
+              font-size: 0.85rem;
+              overflow: hidden;
+              position: relative;
+              height: 1.618em;
+              line-height: 1.618;
+              width: 5.3em;
+              font-weight: 400;
+              &:before{
+                content: '\2605\2605\2605\2605\2605';
+                opacity: 0.25;
+                float: left;
+                top: 0;
+                left: 0;
+                position: absolute;
+              }
+              span{
+                overflow: hidden;
+                float: left;
+                top: 0;
+                left: 0;
+                position: absolute;
+                padding-top: 1.5em;
+                &:before{
+                  color: #ffc94a;
+                  content: '\2605\2605\2605\2605\2605';
+                  top: 0;
+                  position: absolute;
+                  left: 0;
+                }
+              }
+
+            }
+
+            .reviews{
+              clear: both;
+              font-size: 0.7em;
+              color: #767676;
+            }
+          }
+        }
+      }
+    }
+  }
 }

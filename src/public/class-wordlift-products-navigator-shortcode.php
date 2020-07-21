@@ -228,14 +228,14 @@ HTML;
 			<section class="cards">
 				<amp-list 
 					width="auto"
-					height="250"
+					height="290"
 					layout="fixed-height"
 					src="{$rest_url}"
 					template="{$template_id}">
 					<template type="amp-mustache" id="template-{$navigator_id}"> 
 						<amp-carousel 
 						  media="(min-width: 380px)"
-						  height="200"
+						  height="260"
 					      layout="fixed-height"
 					      type="carousel">
 					      {{#values}}
@@ -248,14 +248,32 @@ HTML;
 				                        src="{{product.thumbnail}}"></amp-img>
 									<div class="card-content">
 										<header class="title">{{product.title}}</header>
+										<div class="star-rating" style="display: none"></div>
 									</div>
+									<footer class="card-footer">
+										<div class="col-left">
+											<div class="price">{{{product.currency_symbol}}}{{product.price}}</div>
+											{{#product.discount}}
+				                            <div class="discount">
+				                                <span class="regular">{{{product.currency_symbol}}}{{product.regular_price}}</span> |
+				                                <span class="percent">{{product.discount}} OFF</span>
+				                            </div>
+				                            {{/product.discount}}
+				                            {{^product.discount}}
+				                            <div class="discount">&nbsp;</div>
+				                            {{/product.discount}}										
+										</div>
+										<div class="col-right">
+											{{{product.rating_html}}}
+										</div>
+									</footer>									
 								</a>
 							</article>
 						  {{/values}}
 						</amp-carousel>
 						<amp-carousel 
 						  media="(max-width: 380px)"
-						  height="250"
+						  height="290"
 					      layout="fixed-height"
 					      type="slides">
 					      {{#values}}
@@ -268,7 +286,25 @@ HTML;
 				                        src="{{product.thumbnail}}"></amp-img>
 									<div class="card-content">
 										<header class="title">{{product.title}}</header>
+										<div class="star-rating"></div>
 									</div>
+									<footer class="card-footer">
+										<div class="col-left">
+											<div class="price">{{{product.currency_symbol}}}{{product.price}}</div>
+											{{#product.discount}}
+				                            <div class="discount">
+				                                <span class="regular">{{{product.currency_symbol}}}{{product.regular_price}}</span> |
+				                                <span class="percent">{{product.discount}} OFF</span>
+				                            </div>
+				                            {{/product.discount}}
+				                            {{^product.discount}}
+				                            <div class="discount">&nbsp;</div>
+				                            {{/product.discount}}										
+										</div>
+										<div class="col-right">
+											{{{product.rating_html}}}
+										</div>
+									</footer>
 								</a>
 							</article>
 						  {{/values}}
