@@ -79,28 +79,6 @@ class ProductsNavigatorShortcodeTest extends WP_UnitTestCase {
 
 	}
 
-	public function test_products_navigator() {
-
-		$cache = new Ttl_Cache( $this->cache_namespace );
-		$cache->flush();
-
-		// Create 2 posts and 1 entity
-		$entity_1_id = wl_create_post( '', 'entity0', 'An Entity', 'publish', 'entity' );
-		$post_1_id   = wl_create_post( '', 'post1', 'A post', 'publish' );
-		$product_1_id   = wl_create_post( '', 'post2', 'A post', 'publish', 'product' );
-
-		// Insert relations
-		wl_core_add_relation_instance( $post_1_id, WL_WHAT_RELATION, $entity_1_id );
-		wl_core_add_relation_instance( $product_1_id, WL_WHAT_RELATION, $entity_1_id );
-
-		$request  = new WP_REST_Request( 'GET', $this->route );
-		$request->set_param( 'post_id', $post_1_id );
-		$request->set_param( 'uniqid', 'unique' );
-		$response = $this->server->dispatch( $request );
-		$data = $response->get_data();
-
-		$this->assertEquals( 200, $response->get_status(), 'We expect status 200' );
-		// Need to fix this test
-	}
+	// Need to add more tests here...
 
 }
