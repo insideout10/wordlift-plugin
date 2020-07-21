@@ -2,29 +2,54 @@
 
 class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST {
 
-	const ENDPOINT = '/products-navigator';
+	const CACHE_TTL = 0; // 24 hours
 
-	const CACHE_TTL = 86400; // 24 hours
+	public function __construct() {
+		parent::__construct(
+			'/products-navigator',
+			array(
+				'post_id' => array(
+					'description'       => __( 'Post ID for which Navigator has to be queried', 'wordlift' ),
+					'type' => 'integer',
+					'required' => true
+				),
+				'uniqid' => array(
+					'description'       => __( 'Navigator uniqueid', 'wordlift' ),
+					'type' => 'string',
+					'required' => true
+				),
+				'limit' => array(
+					'default' => 4,
+					'type' => 'integer',
+					'sanitize_callback' => 'absint'
+				),
+				'offset' => array(
+					'default' => 0,
+					'type' => 'integer',
+					'sanitize_callback' => 'absint'
+				),
+				'sort' => array(
+					'default' => 'ID DESC',
+					'sanitize_callback' => 'sanitize_sql_orderby'
+				)
+			)
+		);
+	}
 
 	public function get_data( $request ) {
 
-		// Post ID must be defined
-		if ( ! isset( $request['post_id'] ) ) {
-			wp_send_json_error( 'No post_id given' );
-		}
-
 		// Sanitize and set defaults
-		$navigator_length = isset( $request['limit'] ) ? intval( $request['limit'] ) : 4;
-		$navigator_offset = isset( $request['offset'] ) ? intval( $request['offset'] ) : 0;
-		$order_by         = isset( $request['sort'] ) ? sanitize_sql_orderby( $request['sort'] ) : 'ID DESC';
-		$post_id          = intval( $_GET['post_id'] );
+		$navigator_length = $request['limit'];
+		$navigator_offset = $request['offset'];
+		$order_by         = $request['sort'];
+		$post_id          = $request['post_id'];
 		$navigator_id     = $request['uniqid'];
 
 		$post = get_post( $post_id );
 
 		// Post ID has to match an existing item
 		if ( null === $post ) {
-			wp_send_json_error( 'No valid post_id given' );
+			return new WP_Error( 'rest_invalid_post_id', __('Invalid post_id', 'wordlift'), array( 'status' => 404 ) );
 		}
 
 		// Determine navigator type and call respective get_*_results

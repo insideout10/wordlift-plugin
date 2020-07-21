@@ -11,24 +11,22 @@ use Wordlift\Cache\Ttl_Cache;
 abstract class Wordlift_Shortcode_REST {
 
 	/**
-	 * The endpoint starting with `/` set by extending classes.
-	 */
-	const ENDPOINT = '';
-
-	/**
 	 * The cache_ttl, set by extending classes.
 	 */
 	const CACHE_TTL = 86400; // 24 hours
 
-	public function __construct() {
+	public function __construct( $endpoint, $args ) {
 
-		$scope = $this;
+		$scope          = $this;
+		$this->endpoint = $endpoint;
+		$this->args     = $args;
 
 		// Register rest route with callback
 		add_action( 'rest_api_init', function () use ( $scope ) {
-			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, $scope::ENDPOINT, array(
+			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, $scope->endpoint, array(
 				'methods'  => WP_REST_Server::READABLE,
-				'callback' => array( $scope, 'rest_callback' )
+				'callback' => array( $scope, 'rest_callback' ),
+				'args'     => $scope->args
 			) );
 		} );
 
@@ -65,6 +63,9 @@ abstract class Wordlift_Shortcode_REST {
 
 			$data     = $this->get_data( $request );
 			$response = rest_ensure_response( $data );
+			if ( is_wp_error( $data ) ) {
+				return $response;
+			}
 			$response->header( 'X-WordLift-Cache', 'MISS' );
 
 			return $response;
@@ -77,7 +78,7 @@ abstract class Wordlift_Shortcode_REST {
 		$cache_key = array( 'request_params' => $cache_key_params );
 
 		// Create the TTL cache and try to get the results.
-		$cache         = new Ttl_Cache( static::ENDPOINT, static::CACHE_TTL );
+		$cache         = new Ttl_Cache( $this->endpoint, static::CACHE_TTL );
 		$cache_results = $cache->get( $cache_key );
 
 		if ( isset( $cache_results ) ) {
@@ -90,6 +91,9 @@ abstract class Wordlift_Shortcode_REST {
 
 		$data     = $this->get_data( $request );
 		$response = rest_ensure_response( $data );
+		if ( is_wp_error( $data ) ) {
+			return $response;
+		}
 		$response->header( 'X-WordLift-Cache', 'MISS' );
 
 		// Put the result before sending the json to the client, since sending the json will terminate us.
@@ -100,7 +104,7 @@ abstract class Wordlift_Shortcode_REST {
 	}
 
 	private function is_endpoint() {
-		$compare_route = WL_REST_ROUTE_DEFAULT_NAMESPACE . static::ENDPOINT;
+		$compare_route = WL_REST_ROUTE_DEFAULT_NAMESPACE . $this->endpoint;
 
 		// Directly accessing $_SERVER['REQUEST_URI'] or $_GET['rest_route'] here as it's too early to use global $wp reliably
 
