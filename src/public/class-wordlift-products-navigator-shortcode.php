@@ -37,46 +37,49 @@ class Wordlift_Products_Navigator_Shortcode extends Wordlift_Shortcode {
 	}
 
 	private function register_block_type() {
-		if ( ! function_exists( 'register_block_type' ) ) {
-			// Gutenberg is not active.
-			return;
-		}
 
-		register_block_type( 'wordlift/products-navigator', array(
-			'editor_script'   => 'wl-block-editor',
-			'render_callback' => function ( $attributes ) {
-				$attr_code = '';
-				foreach ( $attributes as $key => $value ) {
-					$attr_code .= $key . '="' . htmlentities( $value ) . '" ';
-				}
+		add_action( 'init', function () {
+			if ( ! function_exists( 'register_block_type' ) ) {
+				// Gutenberg is not active.
+				return;
+			}
 
-				return '[' . static::SHORTCODE . ' ' . $attr_code . ']';
-			},
-			'attributes'      => array(
-				'title'       => array(
-					'type'    => 'string',
-					'default' => __( 'Related products', 'wordlift' ),
+			register_block_type( 'wordlift/products-navigator', array(
+				'editor_script'   => 'wl-block-editor',
+				'render_callback' => function ( $attributes ) {
+					$attr_code = '';
+					foreach ( $attributes as $key => $value ) {
+						$attr_code .= $key . '="' . htmlentities( $value ) . '" ';
+					}
+
+					return '[' . static::SHORTCODE . ' ' . $attr_code . ']';
+				},
+				'attributes'      => array(
+					'title'       => array(
+						'type'    => 'string',
+						'default' => __( 'Related products', 'wordlift' ),
+					),
+					'limit'       => array(
+						'type'    => 'number',
+						'default' => 4,
+					),
+					'template_id' => array(
+						'type' => 'string',
+					),
+					'post_id'     => array(
+						'type' => 'number',
+					),
+					'offset'      => array(
+						'type'    => 'number',
+						'default' => 0,
+					),
+					'uniqid'      => array(
+						'type'    => 'string',
+						'default' => uniqid( 'wl-products-navigator-widget-' ),
+					),
 				),
-				'limit'       => array(
-					'type'    => 'number',
-					'default' => 4,
-				),
-				'template_id' => array(
-					'type' => 'string',
-				),
-				'post_id'     => array(
-					'type' => 'number',
-				),
-				'offset'      => array(
-					'type'    => 'number',
-					'default' => 0,
-				),
-				'uniqid'      => array(
-					'type'    => 'string',
-					'default' => uniqid( 'wl-products-navigator-widget-' ),
-				),
-			),
-		) );
+			) );
+		});
 	}
 
 	/**
