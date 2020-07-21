@@ -172,7 +172,7 @@ HTML;
 			<h3 class="wl-headline">{$title}</h3>
 			<amp-list 
 				width="auto"
-				height="320"
+				height="220"
 				layout="fixed-height"
 				src="{$rest_url}"
 				template="{$template_id}">
@@ -186,10 +186,12 @@ HTML;
 						<a href="{{post.permalink}}">
 							<amp-img
 		                        width="800"
-		                        height="450"
+		                        height="440"
 								layout="responsive"
 		                        src="{{post.thumbnail}}"></amp-img>
-							<div class="card-content"><h3 class="title">{{post.title}}</h3></div>
+							<div class="card-content">
+								<header class="title">{{post.title}}</header>
+							</div>
 						</a>
 					</article>
 				{{/values}}

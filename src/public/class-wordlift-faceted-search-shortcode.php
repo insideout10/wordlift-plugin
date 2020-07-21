@@ -190,7 +190,7 @@ HTML;
 			</section>
 			<section class="cards">
 				<amp-list 
-					height="200"
+					height="250"
 					layout="fixed-height"
 					src="{$rest_url}"
 					[src]="{values: allPostsEntities.posts[0].values.sort((a, b) => referencedPosts.includes(a.ID) ? -1 : 1)}"
@@ -210,7 +210,9 @@ HTML;
 				                        height="9"
 										layout="responsive"
 				                        src="{{thumbnail}}"></amp-img>
-									<div class="card-content"><h3 class="title">{{post_title}}</h3></div>
+									<div class="card-content">
+										<header class="title">{{post_title}}</header>
+									</div>
 								</a>
 							</article>
 						  {{/values}}
@@ -228,7 +230,9 @@ HTML;
 				                        height="9"
 										layout="responsive"
 				                        src="{{thumbnail}}"></amp-img>
-									<div class="card-content"><h3 class="title">{{post_title}}</h3></div>
+									<div class="card-content">
+										<header class="title">{{post_title}}</header>
+									</div>
 								</a>
 							</article>
 						  {{/values}}

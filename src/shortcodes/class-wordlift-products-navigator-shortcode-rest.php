@@ -9,28 +9,31 @@ class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST
 			'/products-navigator',
 			array(
 				'post_id' => array(
-					'description'       => __( 'Post ID for which Navigator has to be queried', 'wordlift' ),
-					'type' => 'integer',
-					'required' => true
+					'description' => __( 'Post ID for which Navigator has to be queried', 'wordlift' ),
+					'type'        => 'integer',
+					'required'    => true
 				),
-				'uniqid' => array(
-					'description'       => __( 'Navigator uniqueid', 'wordlift' ),
-					'type' => 'string',
-					'required' => true
+				'uniqid'  => array(
+					'description' => __( 'Navigator uniqueid', 'wordlift' ),
+					'type'        => 'string',
+					'required'    => true
 				),
-				'limit' => array(
-					'default' => 4,
-					'type' => 'integer',
+				'limit'   => array(
+					'default'           => 4,
+					'type'              => 'integer',
 					'sanitize_callback' => 'absint'
 				),
-				'offset' => array(
-					'default' => 0,
-					'type' => 'integer',
+				'offset'  => array(
+					'default'           => 0,
+					'type'              => 'integer',
 					'sanitize_callback' => 'absint'
 				),
-				'sort' => array(
-					'default' => 'ID DESC',
+				'sort'    => array(
+					'default'           => 'ID DESC',
 					'sanitize_callback' => 'sanitize_sql_orderby'
+				),
+				'amp'     => array(
+					'sanitize_callback' => 'rest_sanitize_boolean'
 				)
 			)
 		);
@@ -44,12 +47,13 @@ class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST
 		$order_by         = $request['sort'];
 		$post_id          = $request['post_id'];
 		$navigator_id     = $request['uniqid'];
+		$amp              = isset($request['amp']);
 
 		$post = get_post( $post_id );
 
 		// Post ID has to match an existing item
 		if ( null === $post ) {
-			return new WP_Error( 'rest_invalid_post_id', __('Invalid post_id', 'wordlift'), array( 'status' => 404 ) );
+			return new WP_Error( 'rest_invalid_post_id', __( 'Invalid post_id', 'wordlift' ), array( 'status' => 404 ) );
 		}
 
 		// Determine navigator type and call respective get_*_results
@@ -104,7 +108,11 @@ class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST
 			$results = apply_filters( 'wl_products_navigator_data_placeholder', $results, $navigator_id, $navigator_offset, $navigator_length );
 		}
 
-		return $results;
+		return $amp ? array(
+			'items' => array(
+				array( 'values' => $results ),
+			),
+		) : $results;
 
 	}
 
