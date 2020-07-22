@@ -264,7 +264,12 @@ HTML;
 				                            {{/product.discount}}										
 										</div>
 										<div class="col-right">
+											{{#product.rating_count}}
 											{{{product.rating_html}}}
+											<div class="reviews">
+					                            {{product.rating_count}} reviews
+					                        </div>
+					                        {{/product.rating_count}}
 										</div>
 									</footer>									
 								</a>
@@ -302,7 +307,12 @@ HTML;
 				                            {{/product.discount}}										
 										</div>
 										<div class="col-right">
+											{{#product.rating_count}}
 											{{{product.rating_html}}}
+											<div class="reviews">
+					                            {{product.rating_count}} reviews
+					                        </div>
+					                        {{/product.rating_count}}
 										</div>
 									</footer>
 								</a>
