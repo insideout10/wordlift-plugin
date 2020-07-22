@@ -142,6 +142,13 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.27.0 (2020-__-__) =
+* Enhancement [#1076](https://github.com/insideout10/wordlift-plugin/issues/1076): Products' Navigator.
+* Enhancement [#1075](https://github.com/insideout10/wordlift-plugin/issues/1075): Taxonomy Terms Mappings support type.
+* Enhancement [#1046](https://github.com/insideout10/wordlift-plugin/issues/1046): Add Hooks to customize Context Cards template type.
+* Enhancement [#1043](https://github.com/insideout10/wordlift-plugin/issues/1043): Remove the Publisher logo from Context Cards unless we are using data from a different website.
+* Enhancement [#803](https://github.com/insideout10/wordlift-plugin/issues/803): Revise Recipes Structured Data according to Google's update.
+
 = 3.26.3 (2020-07-13) =
 * Fix: Categories not displaying the related entity data.
 * Fix: ItemListElement in jsonld does not have URL in WooCommerce products.
