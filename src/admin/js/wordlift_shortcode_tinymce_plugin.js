@@ -38,6 +38,15 @@
       );
     },
 
+    productsNavigatorClick: function() {
+      const products_navigator_shortcode_text = "[wl_products_navigator]";
+      top.tinymce.activeEditor.execCommand(
+        "mceInsertContent",
+        false,
+        products_navigator_shortcode_text
+      );
+    },
+
     facetedSearchClick: function() {
       const faceted_search_shortcode_text = "[wl_faceted_search]";
       top.tinymce.activeEditor.execCommand(
@@ -94,6 +103,10 @@
           {
             text: "Navigator",
             onclick: this.navigatorClick
+          },
+          {
+            text: "Products Navigator",
+            onclick: this.productsNavigatorClick
           },
           {
             text: "Faceted Search",
