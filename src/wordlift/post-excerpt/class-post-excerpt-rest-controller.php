@@ -55,7 +55,7 @@ class Post_Excerpt_Rest_Controller {
 		$post_body       = $data['post_body'];
 		$current_hash    = md5( $post_body );
 		$server_response = self::get_post_excerpt_conditionally( $post_id, $post_body, $current_hash );
-		if ( $server_response === null || ! array_key_exists( 'post_excerpt', $server_response ) ) {
+		if ( empty( $server_response ) || ! array_key_exists( 'post_excerpt', $server_response ) ) {
 			return array(
 				'status'  => 'error',
 				'message' => __( 'Unable to contact WordLift API', 'wordlift' )
@@ -149,7 +149,7 @@ class Post_Excerpt_Rest_Controller {
 	public static function save_response_to_meta_on_success( $post_id, $post_body, $response ) {
 		// If body exists then decode the body.
 		$body = json_decode( $response->get_body(), true );
-		if ( ! array_key_exists( self::WORDLIFT_POST_EXCERPT_RESPONSE_KEY, $body ) ) {
+		if ( empty( $body ) || ! array_key_exists( self::WORDLIFT_POST_EXCERPT_RESPONSE_KEY, $body ) ) {
 			// Bail out if we get an incorrect response
 			return false;
 		} else {

@@ -195,6 +195,80 @@ const blocks = {
       return null; //save has to exist. This all we need
     }
   },
+  [`${PLUGIN_NAMESPACE}/products-navigator`]: {
+    title: "Wordlift Products Navigator",
+    description: "Configure Products Navigator block within your content.",
+    category: "wordlift",
+    icon: <WordLiftIcon />,
+    attributes: {
+      title: {
+        default: "Related products"
+      },
+      limit: {
+        default: 4
+      },
+      template_id: {
+        default: ""
+      },
+      post_id: {
+        default: ""
+      },
+      offset: {
+        default: 0
+      },
+      uniqid: {
+        default: ""
+      },
+      order_by: {
+        default: "ID DESC"
+      }
+    },
+    //display the edit interface + preview
+    edit: ({ attributes, setAttributes }) => {
+      const { title, limit, template_id, post_id, offset, uniqid, order_by } = attributes;
+      return (
+        <div>
+          <BlockPreview title="Wordlift Products Navigator" attributes={attributes} />
+          <InspectorControls>
+            <PanelBody title="Widget Settings" className="blocks-font-size">
+              <TextControl label="Title" value={title} onChange={title => setAttributes({ title })} />
+              <RangeControl label="Limit" value={limit} min={2} max={20} onChange={limit => setAttributes({ limit })} />
+              <RangeControl
+                label="Offset"
+                value={offset}
+                min={0}
+                max={20}
+                onChange={offset => setAttributes({ offset })}
+              />
+              <TextControl
+                label="Template ID"
+                help="ID of the script tag that has mustache template to be used for navigator."
+                value={template_id}
+                onChange={template_id => setAttributes({ template_id })}
+              />
+              <TextControl
+                label="Post ID"
+                help="Post ID of the post of which navigator has to be shown."
+                type="number"
+                value={post_id}
+                onChange={post_id => setAttributes({ post_id })}
+              />
+              <TextControl label="Unique ID" value={uniqid} onChange={uniqid => setAttributes({ uniqid })} />
+              <TextControl
+                label="Order by"
+                help="Valid SQL ‘order by’ clause"
+                value={order_by}
+                onChange={order_by => setAttributes({ order_by })}
+              />
+            </PanelBody>
+          </InspectorControls>
+        </div>
+      );
+    },
+    save() {
+      return null; //save has to exist. This all we need
+    }
+  },
   [`${PLUGIN_NAMESPACE}/chord`]: {
     title: "Wordlift Chord",
     description: "Configure Chord block within your content.",

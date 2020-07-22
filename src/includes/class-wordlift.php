@@ -1113,6 +1113,11 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-navigator-shortcode.php';
 
 		/**
+		 * The Products Navigator shortcode.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-products-navigator-shortcode.php';
+
+		/**
 		 * The chord shortcode.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-chord-shortcode.php';
@@ -1302,6 +1307,7 @@ class Wordlift {
 
 		// Initialize the short-codes.
 		new Wordlift_Navigator_Shortcode();
+		new Wordlift_Products_Navigator_Shortcode();
 		new Wordlift_Chord_Shortcode();
 		new Wordlift_Geomap_Shortcode();
 		new Wordlift_Timeline_Shortcode();
