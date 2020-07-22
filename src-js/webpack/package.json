@@ -68,7 +68,7 @@
     "redux-thunk": "^2.3.0",
     "styled-components": "^4.4.1",
     "whatwg-fetch": "^2",
-    "wordlift-cloud": "git+https://wordlift-plugin:TCYswWXSoq1765zSg4iH@gitlab.com/wordlift/wordlift-navigator-js.git#1.2.2"
+    "wordlift-cloud": "git+https://wordlift-plugin:TCYswWXSoq1765zSg4iH@gitlab.com/wordlift/wordlift-navigator-js.git#b1a157ac78607539d3b2c40ea0b118a3b4b0ef43"
   },
   "prettier": {
     "tabWidth": 2,
