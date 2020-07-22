@@ -1,0 +1,235 @@
+#wordlift-faceted-entity-search-widget {
+  font-size: inherit;
+  padding: 0;
+  margin: 0.8em 0;
+  width: 100%;
+
+  amp-accordion {
+    section[expanded] {
+      .wl-headline {
+        &:after {
+          transform: rotate(180deg);
+        }
+      }
+    }
+  }
+
+  .wl-headline {
+    position: relative;
+    margin: 0.4em 0;
+    font-weight: bold;
+    background-color: inherit;
+    padding: 0;
+    border: 0;
+
+    &:focus {
+      outline: none;
+    }
+
+    &:after {
+      content: "\25BE";
+      position: absolute;
+      right: 0;
+    }
+  }
+
+  .wl-facets {
+    margin: 0;
+    border-top: #ccc 1px solid;
+    overflow: hidden;
+
+    .wl-facets-container {
+      width: 25%;
+      float: left;
+
+      @media screen and (max-width: 460px) {
+        width: 100%;
+      }
+
+      h5 {
+        text-transform: uppercase;
+        padding: 0.3em 0 0 0;
+        margin: 0;
+        font-weight: bold;
+        color: #767676;
+      }
+
+      ul {
+        padding: 0 0 0 0.2em;
+        margin: 0.6em 0.3em;
+        font-size: .8rem;
+        list-style: none;
+        border-left: #ccc 1px dashed;
+      }
+
+      li {
+        padding: 0;
+        margin: 0 0 0.2em 0;
+        line-height: 1.2em;
+        position: relative;
+        white-space: normal;
+        color: #666;
+        cursor: pointer;
+      }
+    }
+
+  }
+
+}
+
+.wl-navigator-widget {
+  width: 100%;
+
+  amp-carousel.wl-amp-carousel {
+    background: transparent;
+    margin: 0 -8px 0 0;
+
+    .amp-carousel-button {
+      z-index: 0;
+    }
+
+    .amp-scrollable-carousel-slide {
+      margin: 0;
+    }
+
+    .wl-card {
+      font-size: 0.8em;
+      width: 27%;
+      vertical-align: top;
+
+      @media screen and (max-width: 460px) {
+        width: 100%;
+      }
+
+      .wl-card-header {
+        text-align: left;
+        text-transform: uppercase;
+        padding: 0.6em;
+        margin: 0;
+        font-size: .9rem;
+        line-height: 1.2rem;
+        min-height: 40px;
+      }
+
+      .wl-card-title {
+        padding: 0.6em;
+        position: relative;
+        font-size: .9rem;
+        line-height: 1.2rem;
+      }
+
+      .fixed-container {
+        position: relative;
+        width: 100%;
+
+        amp-img.cover img {
+          object-fit: cover;
+        }
+      }
+
+      a {
+        white-space: normal;
+        color: #222;
+        text-decoration: none;
+        box-shadow: inset 0 -1px 0 rgba(15, 15, 15, 1);
+
+        &:hover {
+          color: #222;
+          box-shadow: inset 0 0 0 rgba(0, 0, 0, 0), 0 3px 0 rgba(0, 0, 0, 1);
+        }
+      }
+    }
+  }
+}
+
+.wl-amp-faceted {
+  width: 100%;
+
+  .wl-headline {
+    font-size: 1rem;
+    margin: 0.5rem 0
+  }
+
+  .chips {
+    margin: 12px 0;
+
+    amp-list div[role='list'] {
+      .chip {
+        font-size: 11px;
+        font-weight: 600;
+        background: #fff;
+        border: 1px solid #e8e8e8;
+        padding: 0 8px;
+        border-radius: 5px;
+        display: inline-block;
+        margin: 2px;
+        cursor: pointer;
+
+        &.active{
+          background: #5f6369;
+          border-color: #e8e8e8;
+          color: white;
+          &:hover{
+            background: #5f6369;
+          }
+        }
+
+        &:hover{
+          background: #e8e8e8;
+        }
+      }
+    }
+  }
+
+  .cards {
+    amp-carousel{
+      background: transparent;
+      margin: 0;
+
+      .amp-carousel-button-prev{
+        position: absolute;
+        top: 30%;
+      }
+
+      .amp-carousel-button-next{
+        position: absolute;
+        right: 0;
+        top: 30%;
+      }
+    }
+    amp-list div[role='list'] {
+
+      .card {
+        background: white;
+        box-sizing: border-box;
+        vertical-align: top;
+        border: 1px solid #f5f5f5;
+        border-radius: 5px;
+
+        a {
+          color: black;
+          text-decoration: none;
+
+          amp-img img {
+            object-fit: cover;
+          }
+        }
+
+        .card-content {
+          margin: 10px;
+          .title {
+            font-size: 12px;
+            margin: 0.3rem 0;
+            line-height: 1.2rem;
+            white-space: normal;
+          }
+          .date{
+            font-size: 10px;
+            color: #a4a4a4;
+          }
+        }
+      }
+    }
+  }
+
+}
