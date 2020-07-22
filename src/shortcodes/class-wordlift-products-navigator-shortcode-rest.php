@@ -2,7 +2,7 @@
 
 class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST {
 
-	const CACHE_TTL = 0; // 24 hours
+	const CACHE_TTL = 86400; // 24 hours
 
 	public function __construct() {
 		parent::__construct(
