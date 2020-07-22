@@ -69,6 +69,14 @@ class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST
 			), $order_by, $navigator_length, $navigator_offset );
 		}
 
+		// Fetch directly referencing posts excluding referencing posts via entities
+		$directly_referencing_posts = $this->get_directly_referencing_posts( $post_id, array_map( function ( $referencing_post ) {
+			return $referencing_post->ID;
+		}, $referencing_posts ) );
+
+		// Combine directly referencing posts and referencing posts via entities
+		$referencing_posts = array_merge( $directly_referencing_posts, $referencing_posts );
+
 		// loop over them and take the first one which is not already in the $related_posts
 		$results = array();
 		foreach ( $referencing_posts as $referencing_post ) {
@@ -114,6 +122,39 @@ class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST
 			),
 		) : $results;
 
+	}
+
+	private function get_directly_referencing_posts( $post_id, $referencing_post_ids ) {
+
+		$directly_referencing_post_ids = Wordlift_Entity_Service::get_instance()->get_related_entities( $post_id );
+
+		$directly_referencing_posts = get_posts( array(
+			'meta_query'          => array(
+				array(
+					'key' => '_thumbnail_id'
+				),
+				array(
+					'key'   => '_stock_status',
+					'value' => 'instock'
+				)
+			),
+			'post__in'            => $directly_referencing_post_ids,
+			'post_not_in'         => $referencing_post_ids,
+			'post_type'           => 'product',
+			'ignore_sticky_posts' => 1
+		) );
+
+		$results = array();
+
+		foreach ( $directly_referencing_posts as $post ) {
+			$result             = new stdClass();
+			$result->ID         = $post->ID;
+			$result->post_title = $post->post_title;
+			$result->entity_id  = $post->ID;
+			$results[]          = $result;
+		}
+
+		return $results;
 	}
 
 	private function get_entity_results(
