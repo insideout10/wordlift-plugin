@@ -253,15 +253,15 @@ HTML;
 									<footer class="card-footer">
 										<div class="col-left">
 											<div class="price">{{{product.currency_symbol}}}{{product.price}}</div>
-											{{#product.discount}}
+											{{#product.discount_pc}}
 				                            <div class="discount">
 				                                <span class="regular">{{{product.currency_symbol}}}{{product.regular_price}}</span> |
-				                                <span class="percent">{{product.discount}} OFF</span>
+				                                <span class="percent">{{product.discount_pc}}% OFF</span>
 				                            </div>
-				                            {{/product.discount}}
-				                            {{^product.discount}}
+				                            {{/product.discount_pc}}
+				                            {{^product.discount_pc}}
 				                            <div class="discount">&nbsp;</div>
-				                            {{/product.discount}}										
+				                            {{/product.discount_pc}}										
 										</div>
 										<div class="col-right">
 											{{#product.rating_count}}
@@ -296,15 +296,15 @@ HTML;
 									<footer class="card-footer">
 										<div class="col-left">
 											<div class="price">{{{product.currency_symbol}}}{{product.price}}</div>
-											{{#product.discount}}
+											{{#product.discount_pc}}
 				                            <div class="discount">
 				                                <span class="regular">{{{product.currency_symbol}}}{{product.regular_price}}</span> |
-				                                <span class="percent">{{product.discount}} OFF</span>
+				                                <span class="percent">{{product.discount_pc}}% OFF</span>
 				                            </div>
-				                            {{/product.discount}}
-				                            {{^product.discount}}
+				                            {{/product.discount_pc}}
+				                            {{^product.discount_pc}}
 				                            <div class="discount">&nbsp;</div>
-				                            {{/product.discount}}										
+				                            {{/product.discount_pc}}										
 										</div>
 										<div class="col-right">
 											{{#product.rating_count}}
