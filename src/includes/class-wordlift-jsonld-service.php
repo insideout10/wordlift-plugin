@@ -184,7 +184,7 @@ class Wordlift_Jsonld_Service {
 				// mentioning an event, located in a place: the place is referenced
 				// via the `@id` but no other properties are loaded.
 				return $entity_to_jsonld_converter->convert( $item, $references );
-			}, $references ) ) );
+			}, array_unique( $references ) ) ) );
 	}
 
 	/**
