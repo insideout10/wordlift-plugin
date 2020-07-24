@@ -26,26 +26,40 @@ import {
   EDIT_MAPPING_SAVE_MAPPING_ITEM
 } from "../actions/action-types";
 import EditComponentFilters from "../filters/edit-component-filters";
-import { getTermsForTaxonomy } from "./selectors";
+import {getOptionsFromApi, getRuleFieldOneOptionByValue} from "./selectors";
 import editMappingStore from "./edit-mapping-store";
 
 function* getTermsForSelectedTaxonomy(action) {
-  // Check if the terms are fetched for the taxonomy.
-  const existingTerms = getTermsForTaxonomy(editMappingStore.getState(), action.payload.taxonomy);
-  if (0 !== existingTerms.length || action.payload.taxonomy === "post_type") {
+  const ruleFieldOneSelectedValue = action.payload.value;
+  const parentOptions = getRuleFieldOneOptionByValue(editMappingStore.getState(), ruleFieldOneSelectedValue);
+  // If there is no rule field one option or more than one option, then return
+  if (parentOptions.length !== 1) {
+    return;
+  }
+  // Now we have a option, check the api source.
+  const parentOption = parentOptions[0];
+
+  // If there is no api source, then dont send the request.
+  if (parentOption.apiSource === undefined || parentOption.apiSource === "") {
+    return;
+  }
+
+  const existingOptions = getOptionsFromApi(editMappingStore.getState(), ruleFieldOneSelectedValue);
+
+  if (0 !== existingOptions.length) {
     // It means the terms are already present for the taxonomy, not needed to fetch it again from API.
     return;
   }
-  const response = yield call(EDIT_MAPPING_API.getTermsFromAPI, action.payload.taxonomy);
+  const response = yield call(EDIT_MAPPING_API.getTermsFromAPI, ruleFieldOneSelectedValue);
   const terms = response.map(e => {
     return {
       label: e.name,
       value: e.slug,
-      taxonomy: e.taxonomy
+      parentValue: e.taxonomy
     };
   });
   MAPPING_TERMS_CHANGED_ACTION.payload = {
-    taxonomy: action.payload.taxonomy,
+    taxonomy: ruleFieldOneSelectedValue,
     terms: terms
   };
   yield put(MAPPING_TERMS_CHANGED_ACTION);
@@ -73,7 +87,7 @@ function* loadTermOptions(ruleGroupList) {
     yield put({
       type: EDIT_MAPPING_REQUEST_TERMS,
       payload: {
-        taxonomy: taxonomy
+        value: taxonomy
       }
     });
   }

@@ -131,14 +131,30 @@ class Wordlift_Term_JsonLd_Adapter {
 	 * @since 3.20.0
 	 */
 	public function wp_head() {
-		// Bail out if it's not a category page.
-		if ( ! is_tax() && ! is_category() ) {
+		$query_object = get_queried_object();
+
+		// Check if it is a term page.
+		if ( ! $query_object instanceof WP_Term ) {
 			return;
 		}
 
-		$query_object = get_queried_object();
-		$term_id      = $query_object->term_id;
-		$jsonld       = $this->get( $term_id );
+		$term_id = $query_object->term_id;
+		$jsonld  = $this->get( $term_id );
+
+		/**
+		 * Filter to edit the mapping json ld.
+		 *
+		 * @param array An associative array with jsonld and references.
+		 *
+		 * @return array An associative array with jsonld and references.
+		 * @since 3.27.0
+		 */
+		$result_array = apply_filters( 'wl_term_jsonld_array',
+			array( 'jsonld' => $jsonld, 'references' => array() ),
+			null
+		);
+		// Note: Reference values arent used yet.
+		$jsonld = $result_array['jsonld'];
 
 		// Bail out if the JSON-LD is empty.
 		if ( empty( $jsonld ) ) {
