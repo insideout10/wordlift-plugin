@@ -93,7 +93,7 @@ class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST
 					'sale_price'      => $product->get_sale_price(),
 					'price'           => $product->get_price(),
 					'currency_symbol' => get_woocommerce_currency_symbol(),
-					'discount_pc'     => ($product->get_sale_price() && ($product->get_regular_price() > 0)) ? round( 1 - ( $product->get_sale_price() / $product->get_regular_price() ), 2 ) * 100 : 0,
+					'discount_pc'     => ( $product->get_sale_price() && ( $product->get_regular_price() > 0 ) ) ? round( 1 - ( $product->get_sale_price() / $product->get_regular_price() ), 2 ) * 100 : 0,
 					'average_rating'  => $product->get_average_rating(),
 					'rating_count'    => $product->get_rating_count(),
 					'rating_html'     => wc_get_rating_html( $product->get_average_rating(), $product->get_rating_count() )
@@ -128,6 +128,8 @@ class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST
 
 		$directly_referencing_post_ids = Wordlift_Entity_Service::get_instance()->get_related_entities( $post_id );
 
+		$post__in = array_diff( $directly_referencing_post_ids, $referencing_post_ids );
+
 		$directly_referencing_posts = get_posts( array(
 			'meta_query'          => array(
 				array(
@@ -138,8 +140,7 @@ class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST
 					'value' => 'instock'
 				)
 			),
-			'post__in'            => $directly_referencing_post_ids,
-			'post_not_in'         => $referencing_post_ids,
+			'post__in'            => $post__in,
 			'post_type'           => 'product',
 			'ignore_sticky_posts' => 1
 		) );
