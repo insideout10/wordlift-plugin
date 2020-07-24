@@ -2,7 +2,7 @@
 
 class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST {
 
-	const CACHE_TTL = 86400; // 24 hours
+	const CACHE_TTL = 3600; // 1 hour
 
 	public function __construct() {
 		parent::__construct(
@@ -93,7 +93,7 @@ class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST
 					'sale_price'      => $product->get_sale_price(),
 					'price'           => $product->get_price(),
 					'currency_symbol' => get_woocommerce_currency_symbol(),
-					'discount'        => $product->get_sale_price() ? round( 1 - ( $product->get_sale_price() / $product->get_regular_price() ), 2 ) : 0,
+					'discount_pc'     => ($product->get_sale_price() && ($product->get_regular_price() > 0)) ? round( 1 - ( $product->get_sale_price() / $product->get_regular_price() ), 2 ) * 100 : 0,
 					'average_rating'  => $product->get_average_rating(),
 					'rating_count'    => $product->get_rating_count(),
 					'rating_html'     => wc_get_rating_html( $product->get_average_rating(), $product->get_rating_count() )
