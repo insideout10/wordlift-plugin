@@ -750,7 +750,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.26.0-dev';
+		$this->version     = '3.27.0-dev';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -1114,6 +1114,11 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-navigator-shortcode.php';
 
 		/**
+		 * The Products Navigator shortcode.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-products-navigator-shortcode.php';
+
+		/**
 		 * The chord shortcode.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-chord-shortcode.php';
@@ -1303,12 +1308,16 @@ class Wordlift {
 
 		// Initialize the short-codes.
 		new Wordlift_Navigator_Shortcode();
+		new Wordlift_Products_Navigator_Shortcode();
 		new Wordlift_Chord_Shortcode();
 		new Wordlift_Geomap_Shortcode();
 		new Wordlift_Timeline_Shortcode();
 		new Wordlift_Related_Entities_Cloud_Shortcode( $this->relation_service );
 		new Wordlift_Vocabulary_Shortcode( $this->configuration_service );
 		new Wordlift_Faceted_Search_Shortcode();
+
+		// Initialize the Context Cards Service
+		$this->context_cards_service = new Wordlift_Context_Cards_Service();
 
 		// Initialize the SEO service.
 		new Wordlift_Seo_Service();
@@ -1444,15 +1453,6 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/search-keywords/class-wordlift-search-keyword-taxonomy.php';
 		new Wordlift_Search_Keyword_Taxonomy( $api_service );
-
-		/*
-		 * Initialize the Context Cards Service
-		 *
-		 * @link https://github.com/insideout10/wordlift-plugin/issues/934
-		 *
-		 * @since 3.22.0
-		 */
-		$this->context_cards_service = new Wordlift_Context_Cards_Service();
 
 		/*
 		 * Load the Mappings JSON-LD post processing.
@@ -1794,6 +1794,7 @@ class Wordlift {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $this->context_cards_service, 'enqueue_scripts' );
+
 		// Registering Faq_Content_Filter service used for removing faq question and answer tags from the html.
 		$this->loader->add_filter( 'the_content', $this->faq_content_filter_service, 'remove_all_faq_question_and_answer_tags' );
 		// Hook the content filter service to add entity links.

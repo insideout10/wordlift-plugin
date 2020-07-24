@@ -221,7 +221,8 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			'id'          => 'wl-key',
 			'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::KEY . ']',
 			'value'       => $this->configuration_service->get_key(),
-			'description' => __( 'Insert the <a href="https://www.wordlift.io/blogger">WordLift Key</a> you received via email.', 'wordlift' ),
+			'description' => __( 'Insert the <a href="https://www.wordlift.io/blogger">WordLift Key</a> you received via email.', 'wordlift' )
+			. ' [' . get_option( 'home' ) . ']',
 		);
 
 		// Before we were used to validate the key beforehand, but this means

@@ -15,7 +15,7 @@
  * Plugin Name:       WordLift
  * Plugin URI:        https://wordlift.io
  * Description:       WordLift brings the power of AI to organize content, attract new readers and get their attention. To activate the plugin <a href="https://wordlift.io/">visit our website</a>.
- * Version:           3.26.0-dev
+ * Version:           3.27.0-dev
  * Author:            WordLift, Insideout10
  * Author URI:        https://wordlift.io
  * License:           GPL-2.0+
@@ -426,11 +426,13 @@ require_once( 'modules/prefixes/wordlift_prefixes.php' );
 // Shortcodes
 
 require_once( 'modules/geo_widget/wordlift_geo_widget.php' );
+require_once( 'shortcodes/class-wordlift-shortcode-rest.php' );
 require_once( 'shortcodes/wordlift_shortcode_chord.php' );
 require_once( 'shortcodes/wordlift_shortcode_geomap.php' );
 require_once( 'shortcodes/wordlift_shortcode_field.php' );
 require_once( 'shortcodes/wordlift_shortcode_faceted_search.php' );
 require_once( 'shortcodes/wordlift_shortcode_navigator.php' );
+require_once( 'shortcodes/class-wordlift-products-navigator-shortcode-rest.php' );
 
 require_once( 'widgets/wordlift_widget_geo.php' );
 require_once( 'widgets/class-wordlift-chord-widget.php' );
@@ -563,6 +565,8 @@ function run_wordlift() {
 	$remove_all_images_task_page             = new Remove_All_Images_Page( new Task_Ajax_Adapters_Registry( $remove_all_images_task_adapter ), $plugin->get_version() );
 	$reload_data_task_page                   = new Reload_Data_Page( new Task_Ajax_Adapters_Registry( $reload_data_task_adapter ), $plugin->get_version() );
 	$add_license_caption_or_remove_task_page = new Add_License_Caption_Or_Remove_Page( new Task_Ajax_Adapters_Registry( $add_license_caption_or_remove_task_adapter ), $plugin->get_version() );
+
+	new Wordlift_Products_Navigator_Shortcode_REST();
 
 }
 

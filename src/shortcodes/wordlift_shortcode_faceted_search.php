@@ -75,7 +75,7 @@ function wl_shortcode_faceted_search_origin( $request ) {
 	$entity_service = Wordlift_Entity_Service::get_instance();
 	$entity_ids     = $entity_service->is_entity( $current_post->ID ) ?
 		array( $current_post->ID ) :
-		wl_core_get_related_entity_ids( $current_post->ID );
+		$entity_service->get_related_entities( $current_post->ID );
 
 	// If there are no entities we cannot render the widget.
 	if ( 0 === count( $entity_ids ) ) {

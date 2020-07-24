@@ -9,16 +9,16 @@
 /**
  * External dependencies.
  */
-import {on, trigger} from "backbone";
+import { on, trigger } from "backbone";
 /**
  * Internal dependencies.
  */
-import {FAQ_EVENT_HANDLER_SELECTION_CHANGED, FAQ_ITEMS_CHANGED} from "../../constants/faq-hook-constants";
-import {SELECTION_CHANGED} from "../../../common/constants";
+import { FAQ_EVENT_HANDLER_SELECTION_CHANGED, FAQ_ITEMS_CHANGED } from "../../constants/faq-hook-constants";
+import { SELECTION_CHANGED } from "../../../common/constants";
 import TinymceToolbarHandler from "../tinymce/tinymce-toolbar-handler";
-import {FAB_ID, FAB_WRAPPER_ID} from "./block-editor-fab-button-register";
+import { FAB_ID, FAB_WRAPPER_ID } from "./block-editor-fab-button-register";
 import FaqValidator from "../validators/faq-validator";
-import {getCurrentSelectionHTML, getCurrentSelectionText} from "./helpers";
+import { getCurrentSelectionHTML, getCurrentSelectionText } from "./helpers";
 
 class BlockEditorFabHandler {
   constructor() {
@@ -106,8 +106,8 @@ class BlockEditorFabHandler {
       /** Return early if the range is not defined yet **/
       return;
     }
-    const selectedBlock = wp.data.select('core/editor').getSelectedBlock();
-    if ( selectedBlock !== null && selectedBlock.name === 'core/freeform') {
+    const selectedBlock = wp.data.select("core/editor").getSelectedBlock();
+    if (selectedBlock !== null && selectedBlock.name === "core/freeform") {
       /** Dont show floating action button if the block is classic editor block **/
       return;
     }

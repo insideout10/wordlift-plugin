@@ -38,6 +38,15 @@
       );
     },
 
+    productsNavigatorClick: function() {
+      const products_navigator_shortcode_text = "[wl_products_navigator]";
+      top.tinymce.activeEditor.execCommand(
+        "mceInsertContent",
+        false,
+        products_navigator_shortcode_text
+      );
+    },
+
     facetedSearchClick: function() {
       const faceted_search_shortcode_text = "[wl_faceted_search]";
       top.tinymce.activeEditor.execCommand(
@@ -96,6 +105,10 @@
             onclick: this.navigatorClick
           },
           {
+            text: "Products Navigator",
+            onclick: this.productsNavigatorClick
+          },
+          {
             text: "Faceted Search",
             onclick: this.facetedSearchClick
           },
@@ -149,7 +162,7 @@
           title: "WordLift Widgets",
           image:
             tinymce.plugins.wl_shortcodes.pluginUrl +
-            "/../images/svg/wl-logo-icon.svg?ver=3.26.0-dev"
+            "/../images/svg/wl-logo-icon.svg?ver=3.27.0-dev"
           // If SplitButton, must define onclick to avoid error
           //onclick: function(){ /* OPEN YOURSELF ?? */  }
         });

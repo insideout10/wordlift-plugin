@@ -6,15 +6,15 @@
  * External dependencies.
  */
 import BlockEditorHighlightHandler from "../hooks/block-editor/block-editor-highlight-handler";
-import {off, trigger} from "backbone";
-import {FAQ_HIGHLIGHT_TEXT, FAQ_ITEM_DELETED} from "../constants/faq-hook-constants";
-import {FAQ_ANSWER_TAG_NAME, FAQ_QUESTION_TAG_NAME} from "../hooks/custom-faq-elements";
+import { off, trigger } from "backbone";
+import { FAQ_HIGHLIGHT_TEXT, FAQ_ITEM_DELETED } from "../constants/faq-hook-constants";
+import { FAQ_ANSWER_TAG_NAME, FAQ_QUESTION_TAG_NAME } from "../hooks/custom-faq-elements";
 import {
   blockEditorWithHighlightedBlocks,
   blockEditorWithSelectedBlocks,
   updateBlockAttributesMethod
 } from "./mock-dependencies/block-editor";
-import {faqEditItemType} from "../components/faq-edit-item";
+import { faqEditItemType } from "../components/faq-edit-item";
 
 beforeEach(() => {
   // Reset event handlers before every test.

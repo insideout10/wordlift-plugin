@@ -6,7 +6,7 @@
 /**
  * External dependencies
  */
-import {off, on, trigger} from "backbone";
+import { off, on, trigger } from "backbone";
 /**
  * Internal depdendencies.
  */
@@ -15,9 +15,9 @@ import BlockEditorFabButtonRegister, {
   FAB_ID,
   FAB_WRAPPER_ID
 } from "../hooks/block-editor/block-editor-fab-button-register";
-import {SELECTION_CHANGED} from "../../common/constants";
-import {blockEditorWithNoSelectedBlocks, blockEditorWithSelectedBlocks} from "./mock-dependencies/block-editor";
-import {FAQ_EVENT_HANDLER_SELECTION_CHANGED, FAQ_ITEMS_CHANGED} from "../constants/faq-hook-constants";
+import { SELECTION_CHANGED } from "../../common/constants";
+import { blockEditorWithNoSelectedBlocks, blockEditorWithSelectedBlocks } from "./mock-dependencies/block-editor";
+import { FAQ_EVENT_HANDLER_SELECTION_CHANGED, FAQ_ITEMS_CHANGED } from "../constants/faq-hook-constants";
 
 let selectedNode = null;
 

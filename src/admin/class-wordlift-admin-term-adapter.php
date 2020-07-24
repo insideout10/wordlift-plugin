@@ -32,21 +32,43 @@ class Wordlift_Admin_Term_Adapter {
 
 		add_action( 'registered_taxonomy', array( $this, 'add_action', ) );
 		add_action( 'edit_term', array( $this, 'edit_term', ), 10, 3 );
+		$this->add_settings();
 
+	}
+
+	/**
+	 * Hook in to WordLift admin settings and add the term page specific
+	 * settings.
+	 * @since 3.26.1
+	 */
+	public function add_settings() {
+		add_filter( 'wl_admin_settings', function ( $params ) {
+			$params['show_local_entities'] = true;
+			return $params;
+		} );
 	}
 
 	/**
 	 * Add the form fields to the entity edit screen.
 	 *
-	 * @since 3.20.0
-	 *
 	 * @param object $tag Current taxonomy term object.
 	 * @param string $taxonomy Current taxonomy slug.
+	 *
+	 * @since 3.20.0
+	 *
 	 */
 	public function edit_form_fields( $tag, $taxonomy ) {
 
+		global $wp_version;
+
 		// Enqueue the JavaScript app.
-		wp_enqueue_script( 'wl-term', plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/term.js', array( 'wp-util', ), Wordlift::get_instance()->get_version(), true );
+		if ( version_compare( $wp_version, '5.0', '>=' ) ) {
+			$term_asset = include plugin_dir_path( dirname( __FILE__ ) ) . 'js/dist/term.asset.php';
+			wp_enqueue_script( 'wl-term', plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/term.js', array_merge( array( 'wp-util' ), $term_asset['dependencies'] ), Wordlift::get_instance()->get_version(), true );
+		} else {
+			wp_enqueue_script( 'wl-term', plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/term.full.js', array( 'wp-util' ), Wordlift::get_instance()->get_version(), true );
+		}
+
 		wp_enqueue_style( 'wl-term', plugin_dir_url( dirname( __FILE__ ) ) . 'js/dist/term.css', array(), Wordlift::get_instance()->get_version() );
 
 		$values = get_term_meta( $tag->term_id, self::META_KEY );

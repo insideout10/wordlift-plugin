@@ -109,12 +109,12 @@ class Wordlift_Key_Validation_Service {
 		$url = $res_body['url'];
 
 		// If the URL isn't set or matches, then it's valid.
-		if ( is_null( $url ) || $url === home_url() ) {
+		if ( is_null( $url ) || $url === get_option( 'home' ) ) {
 			wp_send_json_success( array( 'valid' => true, 'message' => '' ) );
 		}
 
 		// If the URL doesn't match it means that this key has been configured elsewhere already.
-		if ( $url !== home_url() ) {
+		if ( $url !== get_option( 'home' ) ) {
 			Wordlift_Configuration_Service::get_instance()->set_key( '' );
 			wp_send_json_success( array(
 				'valid'   => false,
@@ -136,7 +136,7 @@ class Wordlift_Key_Validation_Service {
 	public function wl_load_plugin() {
 
 		$wl_blog_url = get_option( '_wl_blog_url' );
-		$home_url    = defined( 'WP_HOME' ) ? WP_HOME : home_url();
+		$home_url    = defined( 'WP_HOME' ) ? WP_HOME : get_option( 'home' );
 
 		if ( ! $wl_blog_url ) {
 			update_option( '_wl_blog_url', $home_url, true );

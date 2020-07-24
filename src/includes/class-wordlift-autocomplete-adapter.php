@@ -70,7 +70,23 @@ class Wordlift_Autocomplete_Adapter {
 		$scope = ! empty( $_REQUEST['scope'] )
 			? sanitize_text_field( wp_unslash( $_REQUEST['scope'] ) ) : WL_AUTOCOMPLETE_SCOPE;
 
-		// Make request.
+		/**
+		 * @since 3.26.1
+		 * Providing a way for term pages to show and save local entities.
+		 */
+		$show_local_entities = false;
+
+		if ( isset( $_REQUEST['show_local_entities'] )
+		     && ! empty( $_REQUEST['show_local_entities'] ) ) // Make request.
+		{
+			$show_local_entities = filter_var( $_REQUEST['show_local_entities'], FILTER_VALIDATE_BOOLEAN );
+		}
+
+		// Add the filter to check if we need to show local entities or not.
+		add_filter( 'wl_show_local_entities', function ( $state ) use ( $show_local_entities ) {
+			return $show_local_entities;
+		} );
+
 		$results = $this->autocomplete_service->query( $query, $scope, $exclude );
 
 		// Clear any buffer.

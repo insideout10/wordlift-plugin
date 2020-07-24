@@ -727,4 +727,43 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 
 	}
 
+	/**
+	 * Test for not allowing duplicate entries in the $references.
+	 */
+	public function test_should_not_allow_duplicate_references() {
+		$post_id  = $this->factory()->post->create(
+			array(
+				'post_status' => 'publish'
+			)
+		);
+		$entity_1 = $this->factory()->post->create(
+			array(
+				'post_type' => 'entity'
+			)
+		);
+
+		$entity_2 = $this->factory()->post->create(
+			array(
+				'post_type' => 'entity'
+			)
+		);
+		// add duplicates to references.
+		$references = array( $entity_1, $entity_2, $entity_1 );
+
+		add_filter( 'wl_post_jsonld_array', function ( $data, $post_id ) use ( $references ) {
+			$jsonld = $data['jsonld'];
+
+			return array(
+				'jsonld'     => $jsonld,
+				'references' => $references,
+			);
+		}, 10, 2 );
+
+		$post_jsonld = Wordlift_Jsonld_Service::get_instance()
+		                                      ->get_jsonld( false, $post_id );
+
+
+		$this->assertCount( 3, $post_jsonld );
+
+	}
 }
