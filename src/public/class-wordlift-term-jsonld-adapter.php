@@ -139,22 +139,8 @@ class Wordlift_Term_JsonLd_Adapter {
 		}
 
 		$term_id = $query_object->term_id;
-		$jsonld  = $this->get( $term_id );
 
-		/**
-		 * Filter to edit the mapping json ld.
-		 *
-		 * @param array An associative array with jsonld and references.
-		 *
-		 * @return array An associative array with jsonld and references.
-		 * @since 3.27.0
-		 */
-		$result_array = apply_filters( 'wl_term_jsonld_array',
-			array( 'jsonld' => $jsonld, 'references' => array() ),
-			null
-		);
-		// Note: Reference values arent used yet.
-		$jsonld = $result_array['jsonld'];
+		$jsonld  = $this->get( $term_id );
 
 		// Bail out if the JSON-LD is empty.
 		if ( empty( $jsonld ) ) {
@@ -185,13 +171,19 @@ class Wordlift_Term_JsonLd_Adapter {
 		}
 		$entities_jsonld_array = $this->get_entity_jsonld( $id );
 
+
+		$result = array(
+			'jsonld'     => array_merge( $jsonld_array, $entities_jsonld_array ),
+			'references' => array()
+		);
+
 		/**
 		 * @since 3.26.3
 		 * Filter: wl_term_jsonld_array
 		 * @var $id int Term id
 		 * @var $jsonld_array array An array containing jsonld for term and entities.
 		 */
-		return apply_filters( 'wl_term_jsonld_array', array_merge( $jsonld_array, $entities_jsonld_array ), $id );
+		return apply_filters( 'wl_term_jsonld_array', $result, $id );
 
 	}
 

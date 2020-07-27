@@ -20,7 +20,6 @@ use Wordlift\Mappings\Data_Source\Data_Source_Factory;
 class Jsonld_Converter {
 	/**
 	 * Enumerations for the field types.
-	 * Enumerations for the field types.
 	 */
 	const FIELD_TYPE_TEXT_FIELD = 'text';
 	const FIELD_TYPE_CUSTOM_FIELD = 'custom_field';
@@ -57,7 +56,7 @@ class Jsonld_Converter {
 		// Hook to refactor the JSON-LD.
 		add_filter( 'wl_post_jsonld_array', array( $this, 'wl_post_jsonld_array' ), 11, 2 );
 		add_filter( 'wl_entity_jsonld_array', array( $this, 'wl_post_jsonld_array' ), 11, 3 );
-		add_filter( 'wl_term_jsonld_array', array( $this, 'wl_post_jsonld_array' ), 11, 3 );
+		add_filter( 'wl_term_jsonld_array', array( $this, 'wl_post_jsonld_array' ), 11, 2 );
 	}
 
 	/**
