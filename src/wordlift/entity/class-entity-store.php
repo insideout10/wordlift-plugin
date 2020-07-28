@@ -98,9 +98,10 @@ class Entity_Store {
 		$label  = array_shift( $labels );
 
 		$post_id = wp_insert_post( array(
-			'post_type'    => 'entity',
+			'post_type'    => \Wordlift_Entity_Service::TYPE_NAME,
 			'post_status'  => $post_status,
 			'post_title'   => $label,
+			'post_name'    => sanitize_title( $label ),
 			'post_content' => $args['description'],
 		) );
 
