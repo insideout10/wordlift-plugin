@@ -1333,7 +1333,7 @@ class Wordlift {
 		$this->entity_type_adapter      = new Wordlift_Entity_Type_Adapter( $this->entity_type_service );
 		$this->publisher_ajax_adapter   = new Wordlift_Publisher_Ajax_Adapter( $this->publisher_service );
 		$this->tinymce_adapter          = new Wordlift_Tinymce_Adapter( $this );
-		//$this->faq_tinymce_adapter      = new Faq_Tinymce_Adapter();
+		$this->faq_tinymce_adapter      = new Faq_Tinymce_Adapter();
 		$this->relation_rebuild_adapter = new Wordlift_Relation_Rebuild_Adapter( $this->relation_rebuild_service );
 
 		/*
@@ -1489,7 +1489,7 @@ class Wordlift {
 		 */
 		new Templates_Ajax_Endpoint();
 		// Call this static method to register FAQ routes to rest api - disabled
-		//Faq_Rest_Controller::register_routes();
+		Faq_Rest_Controller::register_routes();
 
 		/*
 		 * Create a singleton for the Analysis_Response_Ops_Factory.
