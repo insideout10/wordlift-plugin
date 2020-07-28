@@ -63,12 +63,8 @@ class Wordlift_Install_Service {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-24-2.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-all-entity-types.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-package-type.php';
-		/**
-		 * Include installation script for 3.25.0
-		 *
-		 * @since 3.25.0
-		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-25-0.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-27-0.php';
 
 
 		// Get the install services.
@@ -90,6 +86,7 @@ class Wordlift_Install_Service {
 			new Wordlift_Install_3_23_4(),
 			new Wordlift_Install_3_24_2(),
 			new Wordlift_Install_3_25_0(),
+			new Wordlift_Install_3_27_0(),
 		);
 		self::$instance = $this;
 
