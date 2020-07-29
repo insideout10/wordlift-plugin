@@ -30,5 +30,4 @@
 
 #wl-faq-meta-list-box{max-height:380px;overflow-y:scroll;width:100%;overflow-x:hidden}
 
-.wl-fab{position:relative;display:inline-block}.wl-fab .wl-fab-body{width:160px;padding:2px;background-color:#fff;box-shadow:1px 1px 1px 1px #888;color:#fff;border:1px solid #177efb;text-align:center;border-radius:6px;position:absolute;z-index:1;top:-5px;left:110%}.wl-fab .wl-fab-body::after{content:"";position:absolute;top:50%;right:100%;margin-top:-5px;border-width:8px;border-style:solid;border-color:transparent #177efb transparent transparent}.wl-fab-button{border-radius:8px !important;width:150px;margin:3px;padding:10px;font-size:13px;text-align:center;text-transform:capitalize;cursor:pointer;background-color:#177efb !important;color:#fff !important;font-weight:bold}
 

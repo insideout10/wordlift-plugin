@@ -3,9 +3,7 @@
  */
 import BlockEditorFormatTypeHandler from "./block-editor-format-type-handler";
 import BlockEditorHighlightHandler from "./block-editor-highlight-handler";
-import BlockEditorFabHandler from "./block-editor-fab-handler";
 import FaqTextEditorHook from "../interface/faq-text-editor-hook";
-import BlockEditorFabButtonRegister from "./block-editor-fab-button-register";
 
 class BlockEditorFaqPlugin extends FaqTextEditorHook {
   constructor(wp) {
@@ -26,21 +24,10 @@ class BlockEditorFaqPlugin extends FaqTextEditorHook {
      */
     const highlightHandler = new BlockEditorHighlightHandler();
     highlightHandler.listenForHighlightEvent();
-    const toolbarRegister = new BlockEditorFabButtonRegister();
-    toolbarRegister.registerFabButton();
-  }
-
-  showFloatingActionButton() {
-    /**
-     * Initialize event handler to listen for text selection,
-     * enable/disable the toolbar button.
-     */
-    new BlockEditorFabHandler();
   }
 
   initialize() {
     this.performTextHighlighting();
-    this.showFloatingActionButton();
   }
 }
 
