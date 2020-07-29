@@ -40,8 +40,7 @@ class TinymceFaqPlugin extends FaqTextEditorHook {
   }
 
   showFloatingActionButton() {
-    const toolBarHandler = new TinymceToolbarHandler(this.editor, this.highlightHandler);
-    toolBarHandler.addButtonToToolBar();
+    // Should be replaced with new popover element here.
   }
 
   initialize() {
