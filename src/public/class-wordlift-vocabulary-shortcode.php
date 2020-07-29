@@ -289,13 +289,40 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	private function add_to_alphabet( &$alphabet, $post_id ) {
 
 		// Get the title without accents.
-		$title = remove_accents( get_the_title( $post_id ) );
+		$title = $this->get_the_title( $post_id );
 
 		// Get the initial letter.
 		$letter = $this->get_first_letter_in_alphabet_or_hash( $alphabet, $title );
 
 		// Add the post.
 		$alphabet[ $letter ][ $post_id ] = $title;
+
+	}
+
+	/**
+	 * Get the title without accents.
+	 * If the post is not of type `entity`, use first synonym if synonyms exists.
+     * @see https://github.com/insideout10/wordlift-plugin/issues/1096
+	 *
+	 * @since 3.27.0
+	 *
+	 * @param int $post_id The {@link WP_Post} id.
+	 *
+	 * @return string
+	 */
+	private function get_the_title( $post_id ) {
+
+		$title = get_the_title( $post_id );
+
+		if ( get_post_type( $post_id ) !== Wordlift_Entity_Service::TYPE_NAME ) {
+			$alternative_labels = Wordlift_Entity_Service::get_instance()->get_alternative_labels( $post_id );
+
+			if ( count( $alternative_labels ) > 0 ) {
+				$title = $alternative_labels[0];
+			}
+		}
+
+		return remove_accents( $title );
 
 	}
 
