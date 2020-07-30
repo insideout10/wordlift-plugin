@@ -7,3 +7,5 @@
 
 .wl-faq-edit-item--warning{font-size:12px;color:tomato}.wl-faq-edit-item--danger{font-size:12px;color:red}.wl-faq-edit-item--textarea{width:95%}.wl-faq-edit-item--title{font-weight:bold}
 
+#wl-faq-popover-element{position:fixed;top:50%;left:50%;-webkit-transform:translate(-50%, -50%);transform:translate(-50%, -50%);border:1px solid black}
+

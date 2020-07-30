@@ -33,5 +33,15 @@ class FaqTextEditorHook {
   _throwFunctionNotImplementedError(functionName) {
     throw new Error(functionName + " should be implemented by the parent class ");
   }
+
+  /**
+   * This method should be overridden by both block and text editor to provide
+   * selection to popover element, because in tinymce the selection occurs
+   * in the tinymce dom and in block editor it occurs on the window level.
+   * @return {Selection}
+   */
+  getSelection() {
+    this._throwFunctionNotImplementedError("getSelection()");
+  }
 }
 export default FaqTextEditorHook;

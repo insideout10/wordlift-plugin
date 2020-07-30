@@ -13,7 +13,7 @@
  */
 import TinymceHighlightHandler from "./tinymce-highlight-handler";
 import FaqTextEditorHook from "../interface/faq-text-editor-hook";
-import PopoverElement from "../popover/popover-element";
+import PopoverElement from "../popover/index";
 
 const FAQ_TINYMCE_PLUGIN_NAME = "wl_faq_tinymce";
 const tinymce = global["tinymce"];
@@ -25,6 +25,7 @@ const tinymce = global["tinymce"];
 class TinymceFaqPlugin extends FaqTextEditorHook {
   constructor() {
     super();
+
     this.editor = null;
     this.highlightHandler = null;
     const self = this;
@@ -41,12 +42,17 @@ class TinymceFaqPlugin extends FaqTextEditorHook {
 
   showFloatingActionButton() {
     // Should be replaced with new popover element here.
-    new PopoverElement();
+    new PopoverElement(this);
   }
 
   initialize() {
     this.performTextHighlighting();
     this.showFloatingActionButton();
+  }
+
+  getSelection() {
+    // Return the internal browser selection.
+    return this.editor.selection.getSel();
   }
 }
 

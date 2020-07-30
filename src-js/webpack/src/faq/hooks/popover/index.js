@@ -8,7 +8,8 @@ import ReactDOM from "react-dom";
  * Internal dependencies.
  */
 import { SELECTION_CHANGED } from "../../../common/constants";
-import { Button, Popover } from "@wordlift/design";
+import {Button, createPopover, Popover} from "@wordlift/design";
+import "./index.scss"
 
 /**
  * This class renders the popover element in the
@@ -18,38 +19,35 @@ import { Button, Popover } from "@wordlift/design";
 const POPOVER_ELEMENT_ID = "wl-faq-popover-element";
 
 export default class PopoverElement {
-  constructor() {
+  /**
+   *
+   * @param textEditorHook {FaqTextEditorHook}
+   */
+  constructor(textEditorHook) {
     // upon construction, add a element with id to the body.
     this.el = document.createElement("div");
     this.el.id = POPOVER_ELEMENT_ID;
-    this.el.style.position = 'fixed';
+
     document.body.appendChild(this.el);
+    this.hook = textEditorHook;
 
     on(SELECTION_CHANGED, ({ value, onChange }) => {
-      const selection = window.getSelection();
-      let range;
-      try {
-        // Get the range from window.
-        range = selection.getRangeAt(0);
-
-      }
-      catch (e) {
-        console.log("error caught")
-        console.log(e)
+      const selection = this.hook.getSelection();
+      if (selection.rangeCount === 0) {
         return false;
       }
-      const rectangle = range.getBoundingClientRect();
+      const rectangle = selection.getRangeAt(0).getBoundingClientRect();
 
       ReactDOM.render(
         <React.Fragment>
-          <Popover {...rectangle}>
+          <Popover {...rectangle} position={"right"}>
             <Button size={"mini"}>Add Question</Button>
           </Popover>
         </React.Fragment>,
         document.getElementById(POPOVER_ELEMENT_ID)
       );
-      console.log("html element")
-      console.log( document.getElementById(POPOVER_ELEMENT_ID))
+      console.log("html element");
+      console.log(document.getElementById(POPOVER_ELEMENT_ID));
     });
   }
 
