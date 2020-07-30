@@ -257,19 +257,13 @@ class Jsonld_Converter {
 			}
 		}
 
-		if ( $field_type === 'group' ) {
-			// we need to check if atleast one key is present.
-			$filtered_group_data = array_filter( $data, 'strlen' );
-			if ( ! $filtered_group_data ) {
-				return false;
-			}
-
-			// If atleast one key present return the data.
-			return $filtered_group_data;
-		}
-
-		// Return normal acf data if it is not a repeater field.
-		return $data;
+		/**
+		 * @return mixed Filtered data.
+		 * @var $data mixed
+		 * @since 3.27.1
+		 * Filter Name: wl_mapping_acf_format_value
+		 */
+		return apply_filters( 'wl_mapping_acf_format_value', $data, $field_type );
 	}
 
 	private function make_single( $value ) {
