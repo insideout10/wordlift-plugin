@@ -24,8 +24,15 @@ import { registerBlockType } from "@wordpress/blocks";
 /**
  * Internal dependencies
  */
-import WordLiftIcon from "./wl-logo-big.svg";
-import { PLUGIN_NAMESPACE } from "../common/constants";
+import ChordIcon from "./icons/chord.svg";
+import EntitiesCloudIcon from "./icons/entities-cloud.svg";
+import FacetedSearchIcon from "./icons/faceted-search.svg";
+import GeomapIcon from "./icons/geomap.svg";
+import NavigatorIcon from "./icons/navigator.svg";
+import ProductsNavigatorIcon from "./icons/products-navigator.svg";
+import TimelineIcon from "./icons/timeline.svg";
+import VocabularyIcon from "./icons/vocabulary.svg";
+import { PLUGIN_NAMESPACE } from "../../common/constants";
 import "./blocks.scss";
 
 const wlSettings = global["wlSettings"];
@@ -39,7 +46,7 @@ const humanize = str => {
     });
 };
 
-const BlockPreview = ({ title, attributes }) => (
+const BlockPreview = ({ title, attributes, icon }) => (
   <Fragment>
     <h4>{title}</h4>
     {attributes &&
@@ -54,10 +61,10 @@ const BlockPreview = ({ title, attributes }) => (
 
 const blocks = {
   [`${PLUGIN_NAMESPACE}/faceted-search`]: {
-    title: __("WordLift Faceted Search", "wordlift"),
-    description: __("Configure Faceted Search block within your content.", "wordlift"),
+    title: __("Faceted Search", "wordlift"),
+    description: __("Help users discover related content using other entities.", "wordlift"),
     category: "wordlift",
-    icon: <WordLiftIcon />,
+    icon: <FacetedSearchIcon />,
     attributes: {
       title: {
         default: __("Related articles", "wordlift")
@@ -122,10 +129,10 @@ const blocks = {
     }
   },
   [`${PLUGIN_NAMESPACE}/navigator`]: {
-    title: "Wordlift Navigator",
-    description: "Configure Navigator block within your content.",
+    title: __("Navigator", "wordlift"),
+    description: __("Provide links to other blog posts related to the article", "wordlift"),
     category: "wordlift",
-    icon: <WordLiftIcon />,
+    icon: <NavigatorIcon />,
     attributes: {
       title: {
         default: "Related articles"
@@ -154,7 +161,7 @@ const blocks = {
       const { title, limit, template_id, post_id, offset, uniqid, order_by } = attributes;
       return (
         <div>
-          <BlockPreview title="Wordlift Navigator" attributes={attributes} />
+          <BlockPreview title={__("WordLift Navigator", "wordlift")} attributes={attributes} />
           <InspectorControls>
             <PanelBody title="Widget Settings" className="blocks-font-size">
               <TextControl label="Title" value={title} onChange={title => setAttributes({ title })} />
@@ -196,10 +203,10 @@ const blocks = {
     }
   },
   [`${PLUGIN_NAMESPACE}/products-navigator`]: {
-    title: "Wordlift Products Navigator",
-    description: "Configure Products Navigator block within your content.",
+    title: __("Products Navigator", "wordlift"),
+    description: __("Provide links to other products related to the article", "wordlift"),
     category: "wordlift",
-    icon: <WordLiftIcon />,
+    icon: <ProductsNavigatorIcon />,
     attributes: {
       title: {
         default: "Related products"
@@ -228,7 +235,7 @@ const blocks = {
       const { title, limit, template_id, post_id, offset, uniqid, order_by } = attributes;
       return (
         <div>
-          <BlockPreview title="Wordlift Products Navigator" attributes={attributes} />
+          <BlockPreview title={__("WordLift Products Navigator", "wordlift")} attributes={attributes} />
           <InspectorControls>
             <PanelBody title="Widget Settings" className="blocks-font-size">
               <TextControl label="Title" value={title} onChange={title => setAttributes({ title })} />
@@ -270,10 +277,10 @@ const blocks = {
     }
   },
   [`${PLUGIN_NAMESPACE}/chord`]: {
-    title: "Wordlift Chord",
-    description: "Configure Chord block within your content.",
+    title: __("Chord", "wordlift"),
+    description: __("Provide a quick overview of the network of concepts related to the article", "wordlift"),
     category: "wordlift",
-    icon: <WordLiftIcon />,
+    icon: <ChordIcon />,
     attributes: {
       width: {
         default: "100%"
@@ -296,7 +303,7 @@ const blocks = {
       const { width, height, main_color, depth, global } = attributes;
       return (
         <div>
-          <BlockPreview title="Wordlift Chord" attributes={attributes} />
+          <BlockPreview title={__("WordLift Chord", "wordlift")} attributes={attributes} />
           <InspectorControls>
             <PanelBody title="Widget Settings" className="blocks-font-size">
               <TextControl label="Width" value={width} onChange={width => setAttributes({ width })} />
@@ -319,10 +326,10 @@ const blocks = {
     }
   },
   [`${PLUGIN_NAMESPACE}/geomap`]: {
-    title: "Wordlift Geomap",
-    description: "Configure Geomap block within your content.",
+    title: __("Geomap", "wordlift"),
+    description: __("Display entities of type 'Place' on a map.", "wordlift"),
     category: "wordlift",
-    icon: <WordLiftIcon />,
+    icon: <GeomapIcon />,
     attributes: {
       width: {
         default: "100%"
@@ -339,7 +346,7 @@ const blocks = {
       const { width, height, global } = attributes;
       return (
         <div>
-          <BlockPreview title="Wordlift Geomap" attributes={attributes} />
+          <BlockPreview title={__("WordLift Geomap", "wordlift")} attributes={attributes} />
           <InspectorControls>
             <PanelBody title="Widget Settings" className="blocks-font-size">
               <TextControl label="Width" value={width} onChange={width => setAttributes({ width })} />
@@ -355,15 +362,15 @@ const blocks = {
     }
   },
   [`${PLUGIN_NAMESPACE}/cloud`]: {
-    title: "Wordlift Entities Cloud",
-    description: "Entities Cloud block within your content.",
+    title: __("Entities Cloud", "wordlift"),
+    description: __("Present the list of entities mentioned in the article.", "wordlift"),
     category: "wordlift",
-    icon: <WordLiftIcon />,
+    icon: <EntitiesCloudIcon />,
     //display the edit interface + preview
     edit: ({ attributes, setAttributes }) => {
       return (
         <div>
-          <BlockPreview title="Wordlift Entities Cloud" />
+          <BlockPreview title={__("WordLift Entities Cloud", "wordlift")} />
           <InspectorControls />
         </div>
       );
@@ -373,10 +380,10 @@ const blocks = {
     }
   },
   [`${PLUGIN_NAMESPACE}/vocabulary`]: {
-    title: "Wordlift Vocabulary",
-    description: "Configure Vocabulary block within your content.",
+    title: __("Vocabulary", "wordlift"),
+    description: __("Present entities in alphabetical order.", "wordlift"),
     category: "wordlift",
-    icon: <WordLiftIcon />,
+    icon: <VocabularyIcon />,
     attributes: {
       type: {
         default: "all"
@@ -422,7 +429,7 @@ const blocks = {
       });
       return (
         <div>
-          <BlockPreview title="Wordlift Vocabulary" attributes={attributes} />
+          <BlockPreview title={__("WordLift Vocabulary", "wordlift")} attributes={attributes} />
           <InspectorControls>
             <PanelBody title="Widget Settings" className="blocks-font-size">
               <SelectControl
@@ -461,10 +468,10 @@ const blocks = {
     }
   },
   [`${PLUGIN_NAMESPACE}/timeline`]: {
-    title: "Wordlift Timeline",
-    description: "Configure Timeline block within your content.",
+    title: __("Timeline", "wordlift"),
+    description: __("Create beautiful and interactive timelines.", "wordlift"),
     category: "wordlift",
-    icon: <WordLiftIcon />,
+    icon: <TimelineIcon />,
     attributes: {
       display_images_as: {
         default: "media"
@@ -484,7 +491,7 @@ const blocks = {
       const { display_images_as, excerpt_length, global, timelinejs_options } = attributes;
       return (
         <div>
-          <BlockPreview title="Wordlift Timeline" attributes={attributes} />
+          <BlockPreview title={__("WordLift Timeline", "wordlift")} attributes={attributes} />
           <InspectorControls>
             <PanelBody title="Widget Settings" className="blocks-font-size">
               <RadioControl

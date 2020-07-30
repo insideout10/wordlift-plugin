@@ -130,12 +130,12 @@ class Wordlift_Products_Navigator_Shortcode extends Wordlift_Shortcode {
 		}
 
 		$post         = ! empty( $shortcode_atts['post_id'] ) ? get_post( intval( sanitize_text_field( $shortcode_atts['post_id'] ) ) ) : get_post();
-		$title        = sanitize_text_field( $shortcode_atts['title'] );
-		$template_id  = sanitize_text_field( $shortcode_atts['template_id'] );
-		$limit        = sanitize_text_field( $shortcode_atts['limit'] );
-		$offset       = sanitize_text_field( $shortcode_atts['offset'] );
-		$sort         = sanitize_sql_orderby( sanitize_text_field( $shortcode_atts['order_by'] ) );
-		$navigator_id = sanitize_text_field( $shortcode_atts['uniqid'] );
+		$title        = esc_attr( sanitize_text_field( $shortcode_atts['title'] ) );
+		$template_id  = esc_attr( sanitize_text_field( $shortcode_atts['template_id'] ) );
+		$limit        = esc_attr( sanitize_text_field( $shortcode_atts['limit'] ) );
+		$offset       = esc_attr( sanitize_text_field( $shortcode_atts['offset'] ) );
+		$sort         = esc_attr( sanitize_sql_orderby( sanitize_text_field( $shortcode_atts['order_by'] ) ) );
+		$navigator_id = esc_attr( sanitize_text_field( $shortcode_atts['uniqid'] ) );
 
 		$permalink_structure = get_option( 'permalink_structure' );
 		$delimiter = empty( $permalink_structure ) ? '&' : '?';
@@ -190,12 +190,12 @@ HTML;
 		}
 
 		$post         = ! empty( $shortcode_atts['post_id'] ) ? get_post( intval( sanitize_text_field( $shortcode_atts['post_id'] ) ) ) : get_post();
-		$title        = sanitize_text_field( $shortcode_atts['title'] );
-		$template_id  = sanitize_text_field( $shortcode_atts['template_id'] );
-		$limit        = sanitize_text_field( $shortcode_atts['limit'] );
-		$offset       = sanitize_text_field( $shortcode_atts['offset'] );
-		$sort         = sanitize_sql_orderby( sanitize_text_field( $shortcode_atts['order_by'] ) );
-		$navigator_id = sanitize_text_field( $shortcode_atts['uniqid'] );
+		$title        = esc_attr( sanitize_text_field( $shortcode_atts['title'] ) );
+		$template_id  = esc_attr( sanitize_text_field( $shortcode_atts['template_id'] ) );
+		$limit        = esc_attr( sanitize_text_field( $shortcode_atts['limit'] ) );
+		$offset       = esc_attr( sanitize_text_field( $shortcode_atts['offset'] ) );
+		$sort         = esc_attr( sanitize_sql_orderby( sanitize_text_field( $shortcode_atts['order_by'] ) ) );
+		$navigator_id = esc_attr( sanitize_text_field( $shortcode_atts['uniqid'] ) );
 
 		$permalink_structure = get_option( 'permalink_structure' );
 		$delimiter = empty( $permalink_structure ) ? '&' : '?';
