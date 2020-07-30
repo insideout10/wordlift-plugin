@@ -232,10 +232,10 @@ class Jsonld_Converter {
 	public function get_data_for_acf_field( $field_name, $post_id ) {
 		$field_data = get_field_object( $field_name, $post_id );
 		$data       = get_field( $field_name, $post_id );
-
+		$field_type = array_key_exists( 'type', $field_data ) ? $field_data['type'] : false;
 		// only process if it is a repeater field, else return the data.
-		if ( is_array( $field_data ) && array_key_exists( 'type', $field_data )
-		     && $field_data['type'] === 'repeater' ) {
+		if ( is_array( $field_data )
+		     && $field_type === 'repeater' ) {
 			/**
 			 * check if we have only one sub field, currently we only support one subfield,
 			 * so each repeater item should be checked if there is a single sub field.
@@ -255,6 +255,17 @@ class Jsonld_Converter {
 				// re-index all the values.
 				return array_values( $repeater_formatted_data );
 			}
+		}
+
+		if ( $field_type === 'group' ) {
+			// we need to check if atleast one key is present.
+			$filtered_group_data = array_filter( $data, 'strlen' );
+			if ( ! $filtered_group_data ) {
+				return false;
+			}
+
+			// If atleast one key present return the data.
+			return $filtered_group_data;
 		}
 
 		// Return normal acf data if it is not a repeater field.
