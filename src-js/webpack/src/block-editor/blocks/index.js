@@ -50,41 +50,42 @@ const BlockPreview = ({ title, attributes, icon }) => (
   <Fragment>
     <h4>{title}</h4>
     {attributes &&
-      Object.keys(attributes).map(key => (
-        <div style={{ fontSize: "0.8rem" }}>
-          <span style={{ width: "140px", display: "inline-block", fontWeight: "bold" }}>{humanize(key)}</span>{" "}
-          {typeof attributes[key] === "boolean" ? JSON.stringify(attributes[key]) : attributes[key]}
-        </div>
-      ))}
+      Object.keys(attributes).map(
+        key =>
+          !["preview", "preview_src"].includes(key) && (
+            <div style={{ fontSize: "0.8rem" }}>
+              <span style={{ width: "140px", display: "inline-block", fontWeight: "bold" }}>{humanize(key)}</span>{" "}
+              {typeof attributes[key] === "boolean" ? JSON.stringify(attributes[key]) : attributes[key]}
+            </div>
+          )
+      )}
   </Fragment>
 );
 
 const blocks = {
   [`${PLUGIN_NAMESPACE}/faceted-search`]: {
     title: __("Faceted Search", "wordlift"),
-    description: __("Help users discover related content using other entities.", "wordlift"),
+    description: __(
+      "Using the Faceted Search Widget readers, selecting concepts they are interested in, can find all related articles.",
+      "wordlift"
+    ),
     category: "wordlift",
     icon: <FacetedSearchIcon />,
-    attributes: {
-      title: {
-        default: __("Related articles", "wordlift")
-      },
-      limit: {
-        default: wlSettings["faceted_search_default_limit"]
-      },
-      template_id: {
-        default: ""
-      },
-      post_id: {
-        default: ""
-      },
-      uniqid: {
-        default: ""
+    example: {
+      attributes: {
+        preview: true
       }
     },
     //display the edit interface + preview
     edit: ({ attributes, setAttributes }) => {
-      const { title, template_id, post_id, uniqid, limit } = attributes;
+      const { title, template_id, post_id, uniqid, limit, preview, preview_src } = attributes;
+      if (preview) {
+        return (
+          <Fragment>
+            <img src={preview_src} />
+          </Fragment>
+        );
+      }
       return (
         <div>
           <BlockPreview title={__("WordLift Faceted Search", "wordlift")} attributes={attributes} />
@@ -130,35 +131,27 @@ const blocks = {
   },
   [`${PLUGIN_NAMESPACE}/navigator`]: {
     title: __("Navigator", "wordlift"),
-    description: __("Provide links to other blog posts related to the article", "wordlift"),
+    description: __(
+      "The Navigator Widget provides content recommendations by presenting relevant links to other blog posts on your website.",
+      "wordlift"
+    ),
     category: "wordlift",
     icon: <NavigatorIcon />,
-    attributes: {
-      title: {
-        default: "Related articles"
-      },
-      limit: {
-        default: 4
-      },
-      template_id: {
-        default: ""
-      },
-      post_id: {
-        default: ""
-      },
-      offset: {
-        default: 0
-      },
-      uniqid: {
-        default: ""
-      },
-      order_by: {
-        default: "ID DESC"
+    example: {
+      attributes: {
+        preview: true
       }
     },
     //display the edit interface + preview
     edit: ({ attributes, setAttributes }) => {
-      const { title, limit, template_id, post_id, offset, uniqid, order_by } = attributes;
+      const { title, limit, template_id, post_id, offset, uniqid, order_by, preview, preview_src } = attributes;
+      if (preview) {
+        return (
+          <Fragment>
+            <img src={preview_src} />
+          </Fragment>
+        );
+      }
       return (
         <div>
           <BlockPreview title={__("WordLift Navigator", "wordlift")} attributes={attributes} />
@@ -204,35 +197,27 @@ const blocks = {
   },
   [`${PLUGIN_NAMESPACE}/products-navigator`]: {
     title: __("Products Navigator", "wordlift"),
-    description: __("Provide links to other products related to the article", "wordlift"),
+    description: __(
+      "The Products' Navigator Widget provides product recommendations by presenting relevant links to other products on your website.",
+      "wordlift"
+    ),
     category: "wordlift",
     icon: <ProductsNavigatorIcon />,
-    attributes: {
-      title: {
-        default: "Related products"
-      },
-      limit: {
-        default: 4
-      },
-      template_id: {
-        default: ""
-      },
-      post_id: {
-        default: ""
-      },
-      offset: {
-        default: 0
-      },
-      uniqid: {
-        default: ""
-      },
-      order_by: {
-        default: "ID DESC"
+    example: {
+      attributes: {
+        preview: true
       }
     },
     //display the edit interface + preview
     edit: ({ attributes, setAttributes }) => {
-      const { title, limit, template_id, post_id, offset, uniqid, order_by } = attributes;
+      const { title, limit, template_id, post_id, offset, uniqid, order_by, preview, preview_src } = attributes;
+      if (preview) {
+        return (
+          <Fragment>
+            <img src={preview_src} />
+          </Fragment>
+        );
+      }
       return (
         <div>
           <BlockPreview title={__("WordLift Products Navigator", "wordlift")} attributes={attributes} />
@@ -278,29 +263,24 @@ const blocks = {
   },
   [`${PLUGIN_NAMESPACE}/chord`]: {
     title: __("Chord", "wordlift"),
-    description: __("Provide a quick overview of the network of concepts related to the article", "wordlift"),
+    description: __("The Chord Widget visualizes the relations between entities within a given article.", "wordlift"),
     category: "wordlift",
     icon: <ChordIcon />,
-    attributes: {
-      width: {
-        default: "100%"
-      },
-      height: {
-        default: "500px"
-      },
-      main_color: {
-        default: "#000"
-      },
-      depth: {
-        default: 2
-      },
-      global: {
-        default: false
+    example: {
+      attributes: {
+        preview: true
       }
     },
     //display the edit interface + preview
     edit: ({ attributes, setAttributes }) => {
-      const { width, height, main_color, depth, global } = attributes;
+      const { width, height, main_color, depth, global, preview, preview_src } = attributes;
+      if (preview) {
+        return (
+          <Fragment>
+            <img src={preview_src} />
+          </Fragment>
+        );
+      }
       return (
         <div>
           <BlockPreview title={__("WordLift Chord", "wordlift")} attributes={attributes} />
@@ -327,23 +307,24 @@ const blocks = {
   },
   [`${PLUGIN_NAMESPACE}/geomap`]: {
     title: __("Geomap", "wordlift"),
-    description: __("Display entities of type 'Place' on a map.", "wordlift"),
+    description: __("This Widget displays entities of type “Place” mentioned in the article on a Geomap.", "wordlift"),
     category: "wordlift",
     icon: <GeomapIcon />,
-    attributes: {
-      width: {
-        default: "100%"
-      },
-      height: {
-        default: "300px"
-      },
-      global: {
-        default: false
+    example: {
+      attributes: {
+        preview: true
       }
     },
     //display the edit interface + preview
     edit: ({ attributes, setAttributes }) => {
-      const { width, height, global } = attributes;
+      const { width, height, global, preview, preview_src } = attributes;
+      if (preview) {
+        return (
+          <Fragment>
+            <img src={preview_src} />
+          </Fragment>
+        );
+      }
       return (
         <div>
           <BlockPreview title={__("WordLift Geomap", "wordlift")} attributes={attributes} />
@@ -363,11 +344,27 @@ const blocks = {
   },
   [`${PLUGIN_NAMESPACE}/cloud`]: {
     title: __("Entities Cloud", "wordlift"),
-    description: __("Present the list of entities mentioned in the article.", "wordlift"),
+    description: __(
+      "The Entity Cloud Widget is a site-wide Widget and a shortcode that displays entities related to the current post/entity in a tag cloud.",
+      "wordlift"
+    ),
     category: "wordlift",
     icon: <EntitiesCloudIcon />,
+    example: {
+      attributes: {
+        preview: true
+      }
+    },
     //display the edit interface + preview
     edit: ({ attributes, setAttributes }) => {
+      const { preview, preview_src } = attributes;
+      if (preview) {
+        return (
+          <Fragment>
+            <img src={preview_src} />
+          </Fragment>
+        );
+      }
       return (
         <div>
           <BlockPreview title={__("WordLift Entities Cloud", "wordlift")} />
@@ -381,29 +378,20 @@ const blocks = {
   },
   [`${PLUGIN_NAMESPACE}/vocabulary`]: {
     title: __("Vocabulary", "wordlift"),
-    description: __("Present entities in alphabetical order.", "wordlift"),
+    description: __(
+      "The Vocabulary is a site-wide Widget that displays all the entities in alphabetical order.",
+      "wordlift"
+    ),
     category: "wordlift",
     icon: <VocabularyIcon />,
-    attributes: {
-      type: {
-        default: "all"
-      },
-      limit: {
-        default: 100
-      },
-      orderby: {
-        default: "post_date"
-      },
-      order: {
-        default: "DESC"
-      },
-      cat: {
-        default: ""
+    example: {
+      attributes: {
+        preview: true
       }
     },
     //display the edit interface + preview
     edit: ({ attributes, setAttributes }) => {
-      const { type, limit, orderby, order, cat } = attributes;
+      const { type, limit, orderby, order, cat, preview, preview_src } = attributes;
       const typeOptions = [{ value: "all", label: "All" }];
       const orderbyOptions = [
         { value: "post_date", label: "Date" },
@@ -427,6 +415,13 @@ const blocks = {
           label: item.label
         });
       });
+      if (preview) {
+        return (
+          <Fragment>
+            <img src={preview_src} />
+          </Fragment>
+        );
+      }
       return (
         <div>
           <BlockPreview title={__("WordLift Vocabulary", "wordlift")} attributes={attributes} />
@@ -469,26 +464,24 @@ const blocks = {
   },
   [`${PLUGIN_NAMESPACE}/timeline`]: {
     title: __("Timeline", "wordlift"),
-    description: __("Create beautiful and interactive timelines.", "wordlift"),
+    description: __("WordLift uses the powerful TimelineJS to create beautiful, interactive timelines.", "wordlift"),
     category: "wordlift",
     icon: <TimelineIcon />,
-    attributes: {
-      display_images_as: {
-        default: "media"
-      },
-      excerpt_length: {
-        default: 55
-      },
-      global: {
-        default: false
-      },
-      timelinejs_options: {
-        default: JSON.stringify(window["_wlMetaBoxSettings"].settings.timelinejsDefaultOptions, null, 2)
+    example: {
+      attributes: {
+        preview: true
       }
     },
     //display the edit interface + preview
     edit: ({ attributes, setAttributes }) => {
-      const { display_images_as, excerpt_length, global, timelinejs_options } = attributes;
+      const { display_images_as, excerpt_length, global, timelinejs_options, preview, preview_src } = attributes;
+      if (preview) {
+        return (
+          <Fragment>
+            <img src={preview_src} />
+          </Fragment>
+        );
+      }
       return (
         <div>
           <BlockPreview title={__("WordLift Timeline", "wordlift")} attributes={attributes} />

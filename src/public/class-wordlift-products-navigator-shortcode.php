@@ -67,9 +67,11 @@ class Wordlift_Products_Navigator_Shortcode extends Wordlift_Shortcode {
 					),
 					'template_id' => array(
 						'type' => 'string',
+						'default' => '',
 					),
 					'post_id'     => array(
 						'type' => 'number',
+						'default' => '',
 					),
 					'offset'      => array(
 						'type'    => 'number',
@@ -77,11 +79,23 @@ class Wordlift_Products_Navigator_Shortcode extends Wordlift_Shortcode {
 					),
 					'uniqid'      => array(
 						'type'    => 'string',
-						'default' => uniqid( 'wl-products-navigator-widget-' ),
+						'default' => '',
+					),
+					'order_by'    => array(
+						'type'    => 'string',
+						'default' => 'ID DESC',
+					),
+					'preview'     => array(
+						'type'    => 'boolean',
+						'default' => false,
+					),
+					'preview_src'     => array(
+						'type'    => 'string',
+						'default' => WP_CONTENT_URL . '/plugins/wordlift/images/block-previews/products-navigator.png',
 					),
 				),
 			) );
-		});
+		} );
 	}
 
 	/**
@@ -135,11 +149,11 @@ class Wordlift_Products_Navigator_Shortcode extends Wordlift_Shortcode {
 		$limit        = esc_attr( sanitize_text_field( $shortcode_atts['limit'] ) );
 		$offset       = esc_attr( sanitize_text_field( $shortcode_atts['offset'] ) );
 		$sort         = esc_attr( sanitize_sql_orderby( sanitize_text_field( $shortcode_atts['order_by'] ) ) );
-		$navigator_id = esc_attr( sanitize_text_field( $shortcode_atts['uniqid'] ) );
+		$navigator_id = ! empty( $shortcode_atts['uniqid'] ) ? esc_attr( sanitize_text_field( $shortcode_atts['uniqid'] ) ) : uniqid( 'wl-products-navigator-widget-' );
 
 		$permalink_structure = get_option( 'permalink_structure' );
-		$delimiter = empty( $permalink_structure ) ? '&' : '?';
-		$rest_url  = $post ? rest_url( WL_REST_ROUTE_DEFAULT_NAMESPACE . '/products-navigator' . $delimiter . build_query( array(
+		$delimiter           = empty( $permalink_structure ) ? '&' : '?';
+		$rest_url            = $post ? rest_url( WL_REST_ROUTE_DEFAULT_NAMESPACE . '/products-navigator' . $delimiter . build_query( array(
 				'uniqid'  => $navigator_id,
 				'post_id' => $post->ID,
 				'limit'   => $limit,
@@ -195,12 +209,12 @@ HTML;
 		$limit        = esc_attr( sanitize_text_field( $shortcode_atts['limit'] ) );
 		$offset       = esc_attr( sanitize_text_field( $shortcode_atts['offset'] ) );
 		$sort         = esc_attr( sanitize_sql_orderby( sanitize_text_field( $shortcode_atts['order_by'] ) ) );
-		$navigator_id = esc_attr( sanitize_text_field( $shortcode_atts['uniqid'] ) );
+		$navigator_id = ! empty( $shortcode_atts['uniqid'] ) ? esc_attr( sanitize_text_field( $shortcode_atts['uniqid'] ) ) : uniqid( 'wl-products-navigator-widget-' );
 
 		$permalink_structure = get_option( 'permalink_structure' );
-		$delimiter = empty( $permalink_structure ) ? '&' : '?';
-		$rest_url  = $post ? rest_url( WL_REST_ROUTE_DEFAULT_NAMESPACE . '/products-navigator' . $delimiter . build_query( array(
-				'amp' => true,
+		$delimiter           = empty( $permalink_structure ) ? '&' : '?';
+		$rest_url            = $post ? rest_url( WL_REST_ROUTE_DEFAULT_NAMESPACE . '/products-navigator' . $delimiter . build_query( array(
+				'amp'     => true,
 				'uniqid'  => $navigator_id,
 				'post_id' => $post->ID,
 				'limit'   => $limit,

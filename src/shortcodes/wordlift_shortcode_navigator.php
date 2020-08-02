@@ -440,52 +440,6 @@ add_action( 'rest_api_init', function () {
 } );
 
 /**
- * register_block_type for Gutenberg blocks
- */
-add_action( 'init', function () {
-	// Bail out if the `register_block_type` function isn't available.
-	if ( ! function_exists( 'register_block_type' ) ) {
-		return;
-	}
-
-	register_block_type( 'wordlift/navigator', array(
-		'editor_script'   => 'wl-block-editor',
-		'render_callback' => function ( $attributes ) {
-			$attr_code = '';
-			foreach ( $attributes as $key => $value ) {
-				$attr_code .= $key . '="' . htmlentities( $value ) . '" ';
-			}
-
-			return '[wl_navigator ' . $attr_code . ']';
-		},
-		'attributes'      => array(
-			'title'       => array(
-				'type'    => 'string',
-				'default' => __( 'Related articles', 'wordlift' ),
-			),
-			'limit'       => array(
-				'type'    => 'number',
-				'default' => 4,
-			),
-			'template_id' => array(
-				'type' => 'string',
-			),
-			'post_id'     => array(
-				'type' => 'number',
-			),
-			'offset'      => array(
-				'type'    => 'number',
-				'default' => 0,
-			),
-			'uniqid'      => array(
-				'type'    => 'string',
-				'default' => uniqid( 'wl-navigator-widget-' ),
-			),
-		),
-	) );
-} );
-
-/**
  * Optimizations: disable unneeded plugins on Navigator AJAX call. WPSeo is slowing down the responses quite a bit.
  *
  * @since 2.2.0

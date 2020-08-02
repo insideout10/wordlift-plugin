@@ -66,6 +66,8 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 
 		$this->configuration_service = $configuration_service;
 
+		$this->register_block_type();
+
 	}
 
 	/**
@@ -182,6 +184,60 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 
 		return $html;
 
+	}
+
+	private function register_block_type() {
+
+		$scope = $this;
+
+		add_action( 'init', function () use ( $scope ) {
+			if ( ! function_exists( 'register_block_type' ) ) {
+				// Gutenberg is not active.
+				return;
+			}
+
+			register_block_type( 'wordlift/vocabulary', array(
+				'editor_script'   => 'wl-block-editor',
+				'render_callback' => function ( $attributes ) use ( $scope ) {
+					$attr_code = '';
+					foreach ( $attributes as $key => $value ) {
+						$attr_code .= $key . '="' . htmlentities( $value ) . '" ';
+					}
+
+					return '[' . $scope::SHORTCODE . ' ' . $attr_code . ']';
+				},
+				'attributes' => array(
+					'type' => array(
+						'type'    => 'string',
+						'default' => 'all'
+					),
+					'limit' => array(
+						'type'    => 'number',
+						'default' => 100
+					),
+					'orderby' => array(
+						'type'    => 'string',
+						'default' => 'post_date'
+					),
+					'order' => array(
+						'type'    => 'string',
+						'default' => 'DESC'
+					),
+					'cat' => array(
+						'type'    => 'string',
+						'default' => ''
+					),
+					'preview'     => array(
+						'type'    => 'boolean',
+						'default' => false,
+					),
+					'preview_src' => array(
+						'type'    => 'string',
+						'default' => WP_CONTENT_URL . '/plugins/wordlift/images/block-previews/vocabulary.png',
+					),
+				)
+			) );
+		} );
 	}
 
 	/**
@@ -365,46 +421,3 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	}
 
 }
-
-/**
- * register_block_type for Gutenberg blocks
- */
-add_action( 'init', function() {
-	// Bail out if the `register_block_type` function isn't available.
-	if ( ! function_exists( 'register_block_type' ) ) {
-		return;
-	}
-
-	register_block_type('wordlift/vocabulary', array(
-		'editor_script' => 'wl-block-editor',
-		'render_callback' => function($attributes){
-			$attr_code = '';
-			foreach ($attributes as $key => $value) {
-				$attr_code .= $key.'="'.$value.'" ';
-			}
-			return '[wl_vocabulary '.$attr_code.']';
-		},
-		'attributes' => array(
-			'type' => array(
-				'type'    => 'string',
-				'default' => 'all'
-            ),
-			'limit' => array(
-				'type'    => 'number',
-				'default' => 100
-            ),
-			'orderby' => array(
-				'type'    => 'string',
-				'default' => 'post_date'
-            ),
-			'order' => array(
-				'type'    => 'string',
-				'default' => 'DESC'
-            ),
-			'cat' => array(
-				'type'    => 'string',
-				'default' => ''
-            ),
-        )
-	));
-} );

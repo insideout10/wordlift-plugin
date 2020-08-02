@@ -42,6 +42,8 @@ class Wordlift_Related_Entities_Cloud_Shortcode extends Wordlift_Shortcode {
 
 		$this->relation_service = $relation_service;
 
+		$this->register_block_type();
+
 	}
 
 	/**
@@ -64,6 +66,40 @@ class Wordlift_Related_Entities_Cloud_Shortcode extends Wordlift_Shortcode {
 		return '<div class="tagcloud wl-related-entities-cloud">' .
 		       wp_generate_tag_cloud( $tags ) .
 		       '</div>';
+	}
+
+	private function register_block_type() {
+
+		$scope = $this;
+
+		add_action( 'init', function () use ( $scope ) {
+			if ( ! function_exists( 'register_block_type' ) ) {
+				// Gutenberg is not active.
+				return;
+			}
+
+			register_block_type( 'wordlift/cloud', array(
+				'editor_script'   => 'wl-block-editor',
+				'render_callback' => function ( $attributes ) use ( $scope ) {
+					$attr_code = '';
+					foreach ( $attributes as $key => $value ) {
+						$attr_code .= $key . '="' . htmlentities( $value ) . '" ';
+					}
+
+					return '[' . $scope::SHORTCODE . ' ' . $attr_code . ']';
+				},
+				'attributes'      => array(
+					'preview'     => array(
+						'type'    => 'boolean',
+						'default' => false,
+					),
+					'preview_src' => array(
+						'type'    => 'string',
+						'default' => WP_CONTENT_URL . '/plugins/wordlift/images/block-previews/cloud.png',
+					),
+				),
+			) );
+		} );
 	}
 
 	/**
@@ -123,19 +159,3 @@ class Wordlift_Related_Entities_Cloud_Shortcode extends Wordlift_Shortcode {
 	}
 
 }
-/**
- * register_block_type for Gutenberg blocks
- */
-add_action( 'init', function() {
-	// Bail out if the `register_block_type` function isn't available.
-	if ( ! function_exists( 'register_block_type' ) ) {
-		return;
-	}
-
-	register_block_type('wordlift/cloud', array(
-		'editor_script' => 'wl-block-editor',
-		'render_callback' => function($attributes){
-			return '[wl_cloud]';
-		}
-	));
-} );

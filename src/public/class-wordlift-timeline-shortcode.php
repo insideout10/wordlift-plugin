@@ -95,6 +95,8 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 
 		$this->log_service = Wordlift_Log_Service::get_logger( 'Wordlift_Timeline_Shortcode' );
 
+		$this->register_block_type();
+
 	}
 
 	public function get_timelinejs_default_options() {
@@ -188,6 +190,61 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 		return sprintf( '<div class="wl-timeline-container" %s><div class="wl-timeline" id="%s" %s></div></div>', $style, $element_id, $data_post_id );
 	}
 
+	private function register_block_type() {
+
+		$scope = $this;
+
+		add_action( 'init', function () use ( $scope ) {
+			if ( ! function_exists( 'register_block_type' ) ) {
+				// Gutenberg is not active.
+				return;
+			}
+
+			register_block_type( 'wordlift/timeline', array(
+				'editor_script'   => 'wl-block-editor',
+				'render_callback' => function ( $attributes ) use ( $scope ) {
+					$attr_code          = '';
+					$timelinejs_options = json_decode( $attributes['timelinejs_options'], true );
+					unset( $attributes['timelinejs_options'] );
+					$attributes_all = array_merge( $attributes, $timelinejs_options );
+					foreach ( $attributes_all as $key => $value ) {
+						if ( $value && strpos( $value, '[' ) === false && strpos( $value, ']' ) === false ) {
+							$attr_code .= $key . '="' . $value . '" ';
+						}
+					}
+
+					return '[' . $scope::SHORTCODE . ' ' . $attr_code . ']';
+				},
+				'attributes'      => array(
+					'display_images_as'  => array(
+						'type'    => 'string',
+						'default' => 'media'
+					),
+					'excerpt_length'     => array(
+						'type'    => 'number',
+						'default' => 55
+					),
+					'global'             => array(
+						'type'    => 'bool',
+						'default' => false
+					),
+					'timelinejs_options' => array(
+						'type'    => 'string', // https://timeline.knightlab.com/docs/options.html
+						'default' => json_encode( $this->get_timelinejs_default_options(), JSON_PRETTY_PRINT )
+					),
+					'preview'     => array(
+						'type'    => 'boolean',
+						'default' => false,
+					),
+					'preview_src' => array(
+						'type'    => 'string',
+						'default' => WP_CONTENT_URL . '/plugins/wordlift/images/block-previews/timeline.png',
+					)
+				)
+			) );
+		} );
+	}
+
 	/**
 	 * Return the locale for the TimelineJS according to WP's configured locale and
 	 * support TimelineJS locales. If WP's locale is not supported, english is used.
@@ -205,49 +262,3 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 	}
 
 }
-
-/**
- * register_block_type for Gutenberg blocks
- */
-add_action( 'init', function () {
-	// Bail out if the `register_block_type` function isn't available.
-	if ( ! function_exists( 'register_block_type' ) ) {
-		return;
-	}
-
-	$wordlift_timeline_shortcode = new Wordlift_Timeline_Shortcode();
-	register_block_type( 'wordlift/timeline', array(
-		'editor_script'   => 'wl-block-editor',
-		'render_callback' => function ( $attributes ) {
-			$attr_code          = '';
-			$timelinejs_options = json_decode( $attributes['timelinejs_options'], true );
-			unset( $attributes['timelinejs_options'] );
-			$attributes_all = array_merge( $attributes, $timelinejs_options );
-			foreach ( $attributes_all as $key => $value ) {
-				if ( $value && strpos( $value, '[' ) === false && strpos( $value, ']' ) === false ) {
-					$attr_code .= $key . '="' . $value . '" ';
-				}
-			}
-
-			return '[wl_timeline ' . $attr_code . ']';
-		},
-		'attributes'      => array(
-			'display_images_as'  => array(
-				'type'    => 'string',
-				'default' => 'media'
-			),
-			'excerpt_length'     => array(
-				'type'    => 'number',
-				'default' => 55
-			),
-			'global'             => array(
-				'type'    => 'bool',
-				'default' => false
-			),
-			'timelinejs_options' => array(
-				'type'    => 'string', // https://timeline.knightlab.com/docs/options.html
-				'default' => json_encode( $wordlift_timeline_shortcode->get_timelinejs_default_options(), JSON_PRETTY_PRINT )
-			)
-		)
-	) );
-} );
