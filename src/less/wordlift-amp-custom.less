@@ -207,37 +207,6 @@
     margin: 0.5rem 0
   }
 
-  .chips {
-    margin: 12px 0;
-
-    amp-list div[role='list'] {
-      .chip {
-        font-size: 0.8rem;
-        font-weight: 600;
-        background: #fff;
-        border: 1px solid #e8e8e8;
-        padding: 0 8px;
-        border-radius: 5px;
-        display: inline-block;
-        margin: 2px;
-        cursor: pointer;
-
-        &.active{
-          background: #5f6369;
-          border-color: #e8e8e8;
-          color: white;
-          &:hover{
-            background: #5f6369;
-          }
-        }
-
-        &:hover{
-          background: #e8e8e8;
-        }
-      }
-    }
-  }
-
   .cards {
     amp-carousel{
       background: transparent;
@@ -288,6 +257,44 @@
     }
   }
 
+}
+
+.wl-amp-faceted{
+  .chips {
+    margin: 12px 0;
+
+    amp-list div[role='list'] {
+      overflow-x: scroll;
+      display: flex;
+
+      .chip {
+        font-size: 0.8rem;
+        font-weight: 600;
+        background: #fff;
+        border: 1px solid #e8e8e8;
+        padding: 0 8px;
+        border-radius: 5px;
+        display: inline-block;
+        margin: 2px;
+        cursor: pointer;
+        flex: 1 0 auto;
+        flex-grow: inherit;
+
+        &.active{
+          background: #5f6369;
+          border-color: #e8e8e8;
+          color: white;
+          &:hover{
+            background: #5f6369;
+          }
+        }
+
+        &:hover{
+          background: #e8e8e8;
+        }
+      }
+    }
+  }
 }
 
 .wl-amp-products-navigator{

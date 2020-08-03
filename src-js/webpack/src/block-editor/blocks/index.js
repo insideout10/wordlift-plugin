@@ -24,8 +24,15 @@ import { registerBlockType } from "@wordpress/blocks";
 /**
  * Internal dependencies
  */
-import WordLiftIcon from "./wl-logo-big.svg";
-import { PLUGIN_NAMESPACE } from "../common/constants";
+import ChordIcon from "./icons/chord.svg";
+import EntitiesCloudIcon from "./icons/entities-cloud.svg";
+import FacetedSearchIcon from "./icons/faceted-search.svg";
+import GeomapIcon from "./icons/geomap.svg";
+import NavigatorIcon from "./icons/navigator.svg";
+import ProductsNavigatorIcon from "./icons/products-navigator.svg";
+import TimelineIcon from "./icons/timeline.svg";
+import VocabularyIcon from "./icons/vocabulary.svg";
+import { PLUGIN_NAMESPACE } from "../../common/constants";
 import "./blocks.scss";
 
 const wlSettings = global["wlSettings"];
@@ -39,45 +46,46 @@ const humanize = str => {
     });
 };
 
-const BlockPreview = ({ title, attributes }) => (
+const BlockPreview = ({ title, attributes, icon }) => (
   <Fragment>
     <h4>{title}</h4>
     {attributes &&
-      Object.keys(attributes).map(key => (
-        <div style={{ fontSize: "0.8rem" }}>
-          <span style={{ width: "140px", display: "inline-block", fontWeight: "bold" }}>{humanize(key)}</span>{" "}
-          {typeof attributes[key] === "boolean" ? JSON.stringify(attributes[key]) : attributes[key]}
-        </div>
-      ))}
+      Object.keys(attributes).map(
+        key =>
+          !["preview", "preview_src"].includes(key) && (
+            <div style={{ fontSize: "0.8rem" }}>
+              <span style={{ width: "140px", display: "inline-block", fontWeight: "bold" }}>{humanize(key)}</span>{" "}
+              {typeof attributes[key] === "boolean" ? JSON.stringify(attributes[key]) : attributes[key]}
+            </div>
+          )
+      )}
   </Fragment>
 );
 
 const blocks = {
   [`${PLUGIN_NAMESPACE}/faceted-search`]: {
-    title: __("WordLift Faceted Search", "wordlift"),
-    description: __("Configure Faceted Search block within your content.", "wordlift"),
+    title: __("Faceted Search", "wordlift"),
+    description: __(
+      "Using the Faceted Search Widget readers, selecting concepts they are interested in, can find all related articles.",
+      "wordlift"
+    ),
     category: "wordlift",
-    icon: <WordLiftIcon />,
-    attributes: {
-      title: {
-        default: __("Related articles", "wordlift")
-      },
-      limit: {
-        default: wlSettings["faceted_search_default_limit"]
-      },
-      template_id: {
-        default: ""
-      },
-      post_id: {
-        default: ""
-      },
-      uniqid: {
-        default: ""
+    icon: <FacetedSearchIcon />,
+    example: {
+      attributes: {
+        preview: true
       }
     },
     //display the edit interface + preview
     edit: ({ attributes, setAttributes }) => {
-      const { title, template_id, post_id, uniqid, limit } = attributes;
+      const { title, template_id, post_id, uniqid, limit, preview, preview_src } = attributes;
+      if (preview) {
+        return (
+          <Fragment>
+            <img src={preview_src} />
+          </Fragment>
+        );
+      }
       return (
         <div>
           <BlockPreview title={__("WordLift Faceted Search", "wordlift")} attributes={attributes} />
@@ -122,39 +130,31 @@ const blocks = {
     }
   },
   [`${PLUGIN_NAMESPACE}/navigator`]: {
-    title: "Wordlift Navigator",
-    description: "Configure Navigator block within your content.",
+    title: __("Navigator", "wordlift"),
+    description: __(
+      "The Navigator Widget provides content recommendations by presenting relevant links to other blog posts on your website.",
+      "wordlift"
+    ),
     category: "wordlift",
-    icon: <WordLiftIcon />,
-    attributes: {
-      title: {
-        default: "Related articles"
-      },
-      limit: {
-        default: 4
-      },
-      template_id: {
-        default: ""
-      },
-      post_id: {
-        default: ""
-      },
-      offset: {
-        default: 0
-      },
-      uniqid: {
-        default: ""
-      },
-      order_by: {
-        default: "ID DESC"
+    icon: <NavigatorIcon />,
+    example: {
+      attributes: {
+        preview: true
       }
     },
     //display the edit interface + preview
     edit: ({ attributes, setAttributes }) => {
-      const { title, limit, template_id, post_id, offset, uniqid, order_by } = attributes;
+      const { title, limit, template_id, post_id, offset, uniqid, order_by, preview, preview_src } = attributes;
+      if (preview) {
+        return (
+          <Fragment>
+            <img src={preview_src} />
+          </Fragment>
+        );
+      }
       return (
         <div>
-          <BlockPreview title="Wordlift Navigator" attributes={attributes} />
+          <BlockPreview title={__("WordLift Navigator", "wordlift")} attributes={attributes} />
           <InspectorControls>
             <PanelBody title="Widget Settings" className="blocks-font-size">
               <TextControl label="Title" value={title} onChange={title => setAttributes({ title })} />
@@ -196,39 +196,31 @@ const blocks = {
     }
   },
   [`${PLUGIN_NAMESPACE}/products-navigator`]: {
-    title: "Wordlift Products Navigator",
-    description: "Configure Products Navigator block within your content.",
+    title: __("Products Navigator", "wordlift"),
+    description: __(
+      "The Products' Navigator Widget provides product recommendations by presenting relevant links to other products on your website.",
+      "wordlift"
+    ),
     category: "wordlift",
-    icon: <WordLiftIcon />,
-    attributes: {
-      title: {
-        default: "Related products"
-      },
-      limit: {
-        default: 4
-      },
-      template_id: {
-        default: ""
-      },
-      post_id: {
-        default: ""
-      },
-      offset: {
-        default: 0
-      },
-      uniqid: {
-        default: ""
-      },
-      order_by: {
-        default: "ID DESC"
+    icon: <ProductsNavigatorIcon />,
+    example: {
+      attributes: {
+        preview: true
       }
     },
     //display the edit interface + preview
     edit: ({ attributes, setAttributes }) => {
-      const { title, limit, template_id, post_id, offset, uniqid, order_by } = attributes;
+      const { title, limit, template_id, post_id, offset, uniqid, order_by, preview, preview_src } = attributes;
+      if (preview) {
+        return (
+          <Fragment>
+            <img src={preview_src} />
+          </Fragment>
+        );
+      }
       return (
         <div>
-          <BlockPreview title="Wordlift Products Navigator" attributes={attributes} />
+          <BlockPreview title={__("WordLift Products Navigator", "wordlift")} attributes={attributes} />
           <InspectorControls>
             <PanelBody title="Widget Settings" className="blocks-font-size">
               <TextControl label="Title" value={title} onChange={title => setAttributes({ title })} />
@@ -270,33 +262,28 @@ const blocks = {
     }
   },
   [`${PLUGIN_NAMESPACE}/chord`]: {
-    title: "Wordlift Chord",
-    description: "Configure Chord block within your content.",
+    title: __("Chord", "wordlift"),
+    description: __("The Chord Widget visualizes the relations between entities within a given article.", "wordlift"),
     category: "wordlift",
-    icon: <WordLiftIcon />,
-    attributes: {
-      width: {
-        default: "100%"
-      },
-      height: {
-        default: "500px"
-      },
-      main_color: {
-        default: "#000"
-      },
-      depth: {
-        default: 2
-      },
-      global: {
-        default: false
+    icon: <ChordIcon />,
+    example: {
+      attributes: {
+        preview: true
       }
     },
     //display the edit interface + preview
     edit: ({ attributes, setAttributes }) => {
-      const { width, height, main_color, depth, global } = attributes;
+      const { width, height, main_color, depth, global, preview, preview_src } = attributes;
+      if (preview) {
+        return (
+          <Fragment>
+            <img src={preview_src} />
+          </Fragment>
+        );
+      }
       return (
         <div>
-          <BlockPreview title="Wordlift Chord" attributes={attributes} />
+          <BlockPreview title={__("WordLift Chord", "wordlift")} attributes={attributes} />
           <InspectorControls>
             <PanelBody title="Widget Settings" className="blocks-font-size">
               <TextControl label="Width" value={width} onChange={width => setAttributes({ width })} />
@@ -319,27 +306,28 @@ const blocks = {
     }
   },
   [`${PLUGIN_NAMESPACE}/geomap`]: {
-    title: "Wordlift Geomap",
-    description: "Configure Geomap block within your content.",
+    title: __("Geomap", "wordlift"),
+    description: __("This Widget displays entities of type “Place” mentioned in the article on a Geomap.", "wordlift"),
     category: "wordlift",
-    icon: <WordLiftIcon />,
-    attributes: {
-      width: {
-        default: "100%"
-      },
-      height: {
-        default: "300px"
-      },
-      global: {
-        default: false
+    icon: <GeomapIcon />,
+    example: {
+      attributes: {
+        preview: true
       }
     },
     //display the edit interface + preview
     edit: ({ attributes, setAttributes }) => {
-      const { width, height, global } = attributes;
+      const { width, height, global, preview, preview_src } = attributes;
+      if (preview) {
+        return (
+          <Fragment>
+            <img src={preview_src} />
+          </Fragment>
+        );
+      }
       return (
         <div>
-          <BlockPreview title="Wordlift Geomap" attributes={attributes} />
+          <BlockPreview title={__("WordLift Geomap", "wordlift")} attributes={attributes} />
           <InspectorControls>
             <PanelBody title="Widget Settings" className="blocks-font-size">
               <TextControl label="Width" value={width} onChange={width => setAttributes({ width })} />
@@ -355,15 +343,31 @@ const blocks = {
     }
   },
   [`${PLUGIN_NAMESPACE}/cloud`]: {
-    title: "Wordlift Entities Cloud",
-    description: "Entities Cloud block within your content.",
+    title: __("Entities Cloud", "wordlift"),
+    description: __(
+      "The Entity Cloud Widget is a site-wide Widget and a shortcode that displays entities related to the current post/entity in a tag cloud.",
+      "wordlift"
+    ),
     category: "wordlift",
-    icon: <WordLiftIcon />,
+    icon: <EntitiesCloudIcon />,
+    example: {
+      attributes: {
+        preview: true
+      }
+    },
     //display the edit interface + preview
     edit: ({ attributes, setAttributes }) => {
+      const { preview, preview_src } = attributes;
+      if (preview) {
+        return (
+          <Fragment>
+            <img src={preview_src} />
+          </Fragment>
+        );
+      }
       return (
         <div>
-          <BlockPreview title="Wordlift Entities Cloud" />
+          <BlockPreview title={__("WordLift Entities Cloud", "wordlift")} />
           <InspectorControls />
         </div>
       );
@@ -373,30 +377,21 @@ const blocks = {
     }
   },
   [`${PLUGIN_NAMESPACE}/vocabulary`]: {
-    title: "Wordlift Vocabulary",
-    description: "Configure Vocabulary block within your content.",
+    title: __("Vocabulary", "wordlift"),
+    description: __(
+      "The Vocabulary is a site-wide Widget that displays all the entities in alphabetical order.",
+      "wordlift"
+    ),
     category: "wordlift",
-    icon: <WordLiftIcon />,
-    attributes: {
-      type: {
-        default: "all"
-      },
-      limit: {
-        default: 100
-      },
-      orderby: {
-        default: "post_date"
-      },
-      order: {
-        default: "DESC"
-      },
-      cat: {
-        default: ""
+    icon: <VocabularyIcon />,
+    example: {
+      attributes: {
+        preview: true
       }
     },
     //display the edit interface + preview
     edit: ({ attributes, setAttributes }) => {
-      const { type, limit, orderby, order, cat } = attributes;
+      const { type, limit, orderby, order, cat, preview, preview_src } = attributes;
       const typeOptions = [{ value: "all", label: "All" }];
       const orderbyOptions = [
         { value: "post_date", label: "Date" },
@@ -420,9 +415,16 @@ const blocks = {
           label: item.label
         });
       });
+      if (preview) {
+        return (
+          <Fragment>
+            <img src={preview_src} />
+          </Fragment>
+        );
+      }
       return (
         <div>
-          <BlockPreview title="Wordlift Vocabulary" attributes={attributes} />
+          <BlockPreview title={__("WordLift Vocabulary", "wordlift")} attributes={attributes} />
           <InspectorControls>
             <PanelBody title="Widget Settings" className="blocks-font-size">
               <SelectControl
@@ -461,30 +463,28 @@ const blocks = {
     }
   },
   [`${PLUGIN_NAMESPACE}/timeline`]: {
-    title: "Wordlift Timeline",
-    description: "Configure Timeline block within your content.",
+    title: __("Timeline", "wordlift"),
+    description: __("WordLift uses the powerful TimelineJS to create beautiful, interactive timelines.", "wordlift"),
     category: "wordlift",
-    icon: <WordLiftIcon />,
-    attributes: {
-      display_images_as: {
-        default: "media"
-      },
-      excerpt_length: {
-        default: 55
-      },
-      global: {
-        default: false
-      },
-      timelinejs_options: {
-        default: JSON.stringify(window["_wlMetaBoxSettings"].settings.timelinejsDefaultOptions, null, 2)
+    icon: <TimelineIcon />,
+    example: {
+      attributes: {
+        preview: true
       }
     },
     //display the edit interface + preview
     edit: ({ attributes, setAttributes }) => {
-      const { display_images_as, excerpt_length, global, timelinejs_options } = attributes;
+      const { display_images_as, excerpt_length, global, timelinejs_options, preview, preview_src } = attributes;
+      if (preview) {
+        return (
+          <Fragment>
+            <img src={preview_src} />
+          </Fragment>
+        );
+      }
       return (
         <div>
-          <BlockPreview title="Wordlift Timeline" attributes={attributes} />
+          <BlockPreview title={__("WordLift Timeline", "wordlift")} attributes={attributes} />
           <InspectorControls>
             <PanelBody title="Widget Settings" className="blocks-font-size">
               <RadioControl

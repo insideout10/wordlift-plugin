@@ -1,7 +1,7 @@
 === WordLift - AI powered SEO ===
 Author URL: https://wordlift.io
 Plugin URL: https://wordlift.io
-Contributors: wordlift, insideout10, ziodave
+Contributors: wordlift, insideout10, ziodave, akshay_raje
 Tags: schema.org, rich snippets, semantic seo, JSON-LD, artificial intelligence, ai, linked data, semantic web, content recommendation, related posts, timeline, knowledge graph, interactive map
 Requires at least: 4.4
 Tested up to: 5.4
@@ -142,11 +142,12 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.27.0 (2020-__-__) =
+= 3.27.0 (2020-08-03) =
 * Enhancement [#1103](https://github.com/insideout10/wordlift-plugin/issues/1103): Faceted Search chips UI fix.
 * Enhancement [#1096](https://github.com/insideout10/wordlift-plugin/issues/1096): Glossary Widget: If the post is not of type entity, use the first available synonym if it exists.
 * Enhancement [#1076](https://github.com/insideout10/wordlift-plugin/issues/1076): Products' Navigator.
 * Enhancement [#1075](https://github.com/insideout10/wordlift-plugin/issues/1075): Taxonomy Terms Mappings support type.
+* Enhancement [#1061](https://github.com/insideout10/wordlift-plugin/issues/1061): Improve how widgets are presented in Gutenberg.
 * Enhancement [#1046](https://github.com/insideout10/wordlift-plugin/issues/1046): Add Hooks to customize Context Cards template type.
 * Enhancement [#1043](https://github.com/insideout10/wordlift-plugin/issues/1043): Remove the Publisher logo from Context Cards unless we are using data from a different website.
 * Enhancement [#939](https://github.com/insideout10/wordlift-plugin/issues/939): Recipes properties' not displayed with Gutenberg.

@@ -186,37 +186,6 @@
   font-size: 1rem;
   margin: 0.5rem 0;
 }
-.wl-amp-faceted .chips,
-.wl-amp-products-navigator .chips {
-  margin: 12px 0;
-}
-.wl-amp-faceted .chips amp-list div[role='list'] .chip,
-.wl-amp-products-navigator .chips amp-list div[role='list'] .chip {
-  font-size: 0.8rem;
-  font-weight: 600;
-  background: #fff;
-  border: 1px solid #e8e8e8;
-  padding: 0 8px;
-  -webkit-border-radius: 5px;
-          border-radius: 5px;
-  display: inline-block;
-  margin: 2px;
-  cursor: pointer;
-}
-.wl-amp-faceted .chips amp-list div[role='list'] .chip.active,
-.wl-amp-products-navigator .chips amp-list div[role='list'] .chip.active {
-  background: #5f6369;
-  border-color: #e8e8e8;
-  color: white;
-}
-.wl-amp-faceted .chips amp-list div[role='list'] .chip.active:hover,
-.wl-amp-products-navigator .chips amp-list div[role='list'] .chip.active:hover {
-  background: #5f6369;
-}
-.wl-amp-faceted .chips amp-list div[role='list'] .chip:hover,
-.wl-amp-products-navigator .chips amp-list div[role='list'] .chip:hover {
-  background: #e8e8e8;
-}
 .wl-amp-faceted .cards amp-carousel,
 .wl-amp-products-navigator .cards amp-carousel {
   background: transparent;
@@ -266,6 +235,47 @@
 .wl-amp-products-navigator .cards amp-list div[role='list'] .card .card-content .date {
   font-size: 10px;
   color: #a4a4a4;
+}
+.wl-amp-faceted .chips {
+  margin: 12px 0;
+}
+.wl-amp-faceted .chips amp-list div[role='list'] {
+  overflow-x: scroll;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+.wl-amp-faceted .chips amp-list div[role='list'] .chip {
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  padding: 0 8px;
+  -webkit-border-radius: 5px;
+          border-radius: 5px;
+  display: inline-block;
+  margin: 2px;
+  cursor: pointer;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 0 auto;
+      -ms-flex: 1 0 auto;
+          flex: 1 0 auto;
+  -webkit-box-flex: inherit;
+  -webkit-flex-grow: inherit;
+      -ms-flex-positive: inherit;
+          flex-grow: inherit;
+}
+.wl-amp-faceted .chips amp-list div[role='list'] .chip.active {
+  background: #5f6369;
+  border-color: #e8e8e8;
+  color: white;
+}
+.wl-amp-faceted .chips amp-list div[role='list'] .chip.active:hover {
+  background: #5f6369;
+}
+.wl-amp-faceted .chips amp-list div[role='list'] .chip:hover {
+  background: #e8e8e8;
 }
 .wl-amp-products-navigator .cards amp-list div[role='list'] .card .card-footer {
   margin: 5px 10px;

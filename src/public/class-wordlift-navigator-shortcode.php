@@ -22,6 +22,11 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 	 */
 	const SHORTCODE = 'wl_navigator';
 
+	public function __construct() {
+		parent::__construct();
+		$this->register_block_type();
+	}
+
 	/**
 	 * {@inheritdoc}
 	 */
@@ -29,6 +34,68 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 
 		return Wordlift_AMP_Service::is_amp_endpoint() ? $this->amp_shortcode( $atts )
 			: $this->web_shortcode( $atts );
+	}
+
+	private function register_block_type() {
+
+		$scope = $this;
+
+		add_action( 'init', function () use ( $scope ) {
+			if ( ! function_exists( 'register_block_type' ) ) {
+				// Gutenberg is not active.
+				return;
+			}
+
+			register_block_type( 'wordlift/navigator', array(
+				'editor_script'   => 'wl-block-editor',
+				'render_callback' => function ( $attributes ) use ( $scope ) {
+					$attr_code = '';
+					foreach ( $attributes as $key => $value ) {
+						$attr_code .= $key . '="' . htmlentities( $value ) . '" ';
+					}
+
+					return '[' . $scope::SHORTCODE . ' ' . $attr_code . ']';
+				},
+				'attributes'      => array(
+					'title'       => array(
+						'type'    => 'string',
+						'default' => __( 'Related articles', 'wordlift' ),
+					),
+					'limit'       => array(
+						'type'    => 'number',
+						'default' => 4,
+					),
+					'template_id' => array(
+						'type' => 'string',
+						'default' => '',
+					),
+					'post_id'     => array(
+						'type' => 'number',
+						'default' => '',
+					),
+					'offset'      => array(
+						'type'    => 'number',
+						'default' => 0,
+					),
+					'uniqid'      => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'order_by'    => array(
+						'type'    => 'string',
+						'default' => 'ID DESC',
+					),
+					'preview'     => array(
+						'type'    => 'boolean',
+						'default' => false,
+					),
+					'preview_src' => array(
+						'type'    => 'string',
+						'default' => WP_CONTENT_URL . '/plugins/wordlift/images/block-previews/navigator.png',
+					),
+				),
+			) );
+		} );
 	}
 
 	/**
@@ -77,12 +144,12 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		}
 
 		$post         = ! empty( $shortcode_atts['post_id'] ) ? get_post( intval( $shortcode_atts['post_id'] ) ) : get_post();
-		$title        = sanitize_text_field( $shortcode_atts['title'] );
-		$template_id  = sanitize_text_field( $shortcode_atts['template_id'] );
-		$limit        = sanitize_text_field( $shortcode_atts['limit'] );
-		$offset       = sanitize_text_field( $shortcode_atts['offset'] );
-		$sort         = sanitize_sql_orderby( sanitize_text_field( $shortcode_atts['order_by'] ) );
-		$navigator_id = sanitize_text_field( $shortcode_atts['uniqid'] );
+		$title        = esc_attr( sanitize_text_field( $shortcode_atts['title'] ) );
+		$template_id  = esc_attr( sanitize_text_field( $shortcode_atts['template_id'] ) );
+		$limit        = esc_attr( sanitize_text_field( $shortcode_atts['limit'] ) );
+		$offset       = esc_attr( sanitize_text_field( $shortcode_atts['offset'] ) );
+		$sort         = esc_attr( sanitize_sql_orderby( sanitize_text_field( $shortcode_atts['order_by'] ) ) );
+		$navigator_id = ! empty( $shortcode_atts['uniqid'] ) ? esc_attr( sanitize_text_field( $shortcode_atts['uniqid'] ) ) : uniqid( 'wl-navigator-widget-' );
 
 		$rest_url = $post ? admin_url( 'admin-ajax.php?' . build_query( array(
 				'action'  => 'wl_navigator',
@@ -136,16 +203,16 @@ HTML;
 		}
 
 		$post         = ! empty( $shortcode_atts['post_id'] ) ? get_post( intval( $shortcode_atts['post_id'] ) ) : get_post();
-		$title        = sanitize_text_field( $shortcode_atts['title'] );
-		$template_id  = sanitize_text_field( $shortcode_atts['template_id'] );
-		$limit        = sanitize_text_field( $shortcode_atts['limit'] );
-		$offset       = sanitize_text_field( $shortcode_atts['offset'] );
-		$sort         = sanitize_sql_orderby( sanitize_text_field( $shortcode_atts['order_by'] ) );
-		$navigator_id = sanitize_text_field( $shortcode_atts['uniqid'] );
+		$title        = esc_attr( sanitize_text_field( $shortcode_atts['title'] ) );
+		$template_id  = esc_attr( sanitize_text_field( $shortcode_atts['template_id'] ) );
+		$limit        = esc_attr( sanitize_text_field( $shortcode_atts['limit'] ) );
+		$offset       = esc_attr( sanitize_text_field( $shortcode_atts['offset'] ) );
+		$sort         = esc_attr( sanitize_sql_orderby( sanitize_text_field( $shortcode_atts['order_by'] ) ) );
+		$navigator_id = ! empty( $shortcode_atts['uniqid'] ) ? esc_attr( sanitize_text_field( $shortcode_atts['uniqid'] ) ) : uniqid( 'wl-navigator-widget-' );
 
 		$permalink_structure = get_option( 'permalink_structure' );
-		$delimiter = empty( $permalink_structure ) ? '&' : '?';
-		$rest_url  = $post ? rest_url( WL_REST_ROUTE_DEFAULT_NAMESPACE . '/navigator' . $delimiter . build_query( array(
+		$delimiter           = empty( $permalink_structure ) ? '&' : '?';
+		$rest_url            = $post ? rest_url( WL_REST_ROUTE_DEFAULT_NAMESPACE . '/navigator' . $delimiter . build_query( array(
 				'uniqid'  => $navigator_id,
 				'post_id' => $post->ID,
 				'limit'   => $limit,

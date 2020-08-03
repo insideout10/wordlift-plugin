@@ -22,6 +22,11 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 	 */
 	const SHORTCODE = 'wl_faceted_search';
 
+	public function __construct() {
+		parent::__construct();
+		$this->register_block_type();
+	}
+
 	/**
 	 * {@inheritdoc}
 	 */
@@ -29,6 +34,60 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 
 		return Wordlift_AMP_Service::is_amp_endpoint() ? $this->amp_shortcode( $atts )
 			: $this->web_shortcode( $atts );
+	}
+
+	private function register_block_type() {
+
+		$scope = $this;
+
+		add_action( 'init', function () use ( $scope ) {
+			if ( ! function_exists( 'register_block_type' ) ) {
+				// Gutenberg is not active.
+				return;
+			}
+
+			register_block_type( 'wordlift/faceted-search', array(
+				'editor_script'   => 'wl-block-editor',
+				'render_callback' => function ( $attributes ) use ( $scope ) {
+					$attr_code = '';
+					foreach ( $attributes as $key => $value ) {
+						$attr_code .= $key . '="' . htmlentities( $value ) . '" ';
+					}
+
+					return '[' . $scope::SHORTCODE . ' ' . $attr_code . ']';
+				},
+				'attributes'      => array(
+					'title'       => array(
+						'type'    => 'string',
+						'default' => __( 'Related articles', 'wordlift' ),
+					),
+					'template_id' => array(
+						'type' => 'string',
+						'default' => '',
+					),
+					'post_id'     => array(
+						'type'    => 'number',
+						'default' => '',
+					),
+					'uniqid'      => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'limit'       => array(
+						'type'    => 'number',
+						'default' => apply_filters( 'wl_faceted_search_default_limit', 4 ),
+					),
+					'preview'     => array(
+						'type'    => 'boolean',
+						'default' => false,
+					),
+					'preview_src' => array(
+						'type'    => 'string',
+						'default' => WP_CONTENT_URL . '/plugins/wordlift/images/block-previews/faceted-search.png',
+					),
+				),
+			) );
+		} );
 	}
 
 	/**
@@ -75,14 +134,14 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 		}
 
 		$post        = ! empty( $shortcode_atts['post_id'] ) ? get_post( intval( sanitize_text_field( $shortcode_atts['post_id'] ) ) ) : get_post();
-		$title       = sanitize_text_field( $shortcode_atts['title'] );
-		$template_id = sanitize_text_field( $shortcode_atts['template_id'] );
-		$limit       = sanitize_text_field( $shortcode_atts['limit'] );
-		$faceted_id  = sanitize_text_field( $shortcode_atts['uniqid'] );
+		$title       = esc_attr( sanitize_text_field( $shortcode_atts['title'] ) );
+		$template_id = esc_attr( sanitize_text_field( $shortcode_atts['template_id'] ) );
+		$limit       = esc_attr( sanitize_text_field( $shortcode_atts['limit'] ) );
+		$faceted_id  = ! empty( $shortcode_atts['uniqid'] ) ? esc_attr( sanitize_text_field( $shortcode_atts['uniqid'] ) ) : uniqid( 'wl-faceted-widget-' );
 
 		$permalink_structure = get_option( 'permalink_structure' );
-		$delimiter = empty( $permalink_structure ) ? '&' : '?';
-		$rest_url  = $post ? rest_url( WL_REST_ROUTE_DEFAULT_NAMESPACE . '/faceted-search' . $delimiter . build_query( array(
+		$delimiter           = empty( $permalink_structure ) ? '&' : '?';
+		$rest_url            = $post ? rest_url( WL_REST_ROUTE_DEFAULT_NAMESPACE . '/faceted-search' . $delimiter . build_query( array(
 				'post_id' => $post->ID,
 				'limit'   => $limit
 			) ) ) : false;
@@ -130,14 +189,14 @@ HTML;
 		}
 
 		$post        = ! empty( $shortcode_atts['post_id'] ) ? get_post( intval( sanitize_text_field( $shortcode_atts['post_id'] ) ) ) : get_post();
-		$title       = sanitize_text_field( $shortcode_atts['title'] );
-		$template_id = sanitize_text_field( $shortcode_atts['template_id'] );
-		$limit       = sanitize_text_field( $shortcode_atts['limit'] );
-		$faceted_id  = sanitize_text_field( $shortcode_atts['uniqid'] );
+		$title       = esc_attr( sanitize_text_field( $shortcode_atts['title'] ) );
+		$template_id = esc_attr( sanitize_text_field( $shortcode_atts['template_id'] ) );
+		$limit       = esc_attr( sanitize_text_field( $shortcode_atts['limit'] ) );
+		$faceted_id  = ! empty( $shortcode_atts['uniqid'] ) ? esc_attr( sanitize_text_field( $shortcode_atts['uniqid'] ) ) : uniqid( 'wl-faceted-widget-' );
 
 		$permalink_structure = get_option( 'permalink_structure' );
-		$delimiter = empty( $permalink_structure ) ? '&' : '?';
-		$rest_url  = $post ? rest_url( WL_REST_ROUTE_DEFAULT_NAMESPACE . '/faceted-search' . $delimiter . build_query( array(
+		$delimiter           = empty( $permalink_structure ) ? '&' : '?';
+		$rest_url            = $post ? rest_url( WL_REST_ROUTE_DEFAULT_NAMESPACE . '/faceted-search' . $delimiter . build_query( array(
 				'amp',
 				'post_id' => $post->ID,
 				'limit'   => $limit
