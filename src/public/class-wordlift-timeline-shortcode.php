@@ -230,7 +230,7 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 					),
 					'timelinejs_options' => array(
 						'type'    => 'string', // https://timeline.knightlab.com/docs/options.html
-						'default' => json_encode( $this->get_timelinejs_default_options(), JSON_PRETTY_PRINT )
+						'default' => json_encode( $scope->get_timelinejs_default_options(), JSON_PRETTY_PRINT )
 					),
 					'preview'     => array(
 						'type'    => 'boolean',
