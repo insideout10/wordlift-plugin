@@ -1,7 +1,7 @@
 === WordLift - AI powered SEO ===
 Author URL: https://wordlift.io
 Plugin URL: https://wordlift.io
-Contributors: wordlift, insideout10, ziodave
+Contributors: wordlift, insideout10, ziodave, akshay_raje
 Tags: schema.org, rich snippets, semantic seo, JSON-LD, artificial intelligence, ai, linked data, semantic web, content recommendation, related posts, timeline, knowledge graph, interactive map
 Requires at least: 4.4
 Tested up to: 5.4
