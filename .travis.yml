@@ -29,13 +29,13 @@ matrix:
       env: SCRIPT=test:php WP_VERSION=5.4
     # WordPress 5.5 is imminent!
     - php: 7.2
-      env: SCRIPT=test:php WP_VERSION=5.5-beta-4
+      env: SCRIPT=test:php WP_VERSION=5.5-beta4
     #
     - php: 7.0
       env: SCRIPT=test:php WP_VERSION=5.4
     # WordPress 5.5 is imminent!
     - php: 7.0
-      env: SCRIPT=test:php WP_VERSION=5.5-beta-4
+      env: SCRIPT=test:php WP_VERSION=5.5-beta4
     # WordPress nightly.
     - php: 5.6
       env: SCRIPT=test:php WP_VERSION=nightly
@@ -50,7 +50,7 @@ matrix:
       env: SCRIPT=test:multisite WP_VERSION=5.4
     # WordPress 5.5 is imminent!
     - php: 5.6
-      env: SCRIPT=test:multisite WP_VERSION=5.5-beta-4
+      env: SCRIPT=test:multisite WP_VERSION=5.5-beta4
     # Additional PHP Unit tests specific to some users' environment, i.e. PHP 5.5 and WP 4.7.
     - php: 5.5
       env: SCRIPT=test:php WP_VERSION=4.7
