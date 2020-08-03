@@ -142,7 +142,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.27.0 (2020-__-__) =
+= 3.27.0 (2020-08-03) =
 * Enhancement [#1103](https://github.com/insideout10/wordlift-plugin/issues/1103): Faceted Search chips UI fix.
 * Enhancement [#1096](https://github.com/insideout10/wordlift-plugin/issues/1096): Glossary Widget: If the post is not of type entity, use the first available synonym if it exists.
 * Enhancement [#1076](https://github.com/insideout10/wordlift-plugin/issues/1076): Products' Navigator.
