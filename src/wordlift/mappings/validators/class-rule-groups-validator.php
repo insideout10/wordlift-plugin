@@ -55,7 +55,6 @@ class Rule_Groups_Validator {
 				$rule_field_two   = $rule['rule_field_two'];
 
 				$rule_validator = $this->rule_validators_registry->get_rule_validator( $rule_field_one );
-
 				// Skip to the next Rule Group if a rule isn't valid.
 				if ( ! $rule_validator->is_valid( $post_id, $rule_logic_field, $rule_field_one, $rule_field_two ) ) {
 					continue 2;

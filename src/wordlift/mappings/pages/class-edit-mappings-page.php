@@ -195,8 +195,9 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 			array_push(
 				$taxonomy_options,
 				array(
-					'label' => $taxonomy->label,
-					'value' => $taxonomy->name,
+					'label'      => $taxonomy->label,
+					'value'      => $taxonomy->name,
+					'api_source' => 'taxonomy'
 				)
 			);
 		}
@@ -221,8 +222,10 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 	 */
 	private static function get_post_type_key_and_value() {
 		$post_type_option_name   = array(
-			'label' => __( 'Post type', 'wordlift' ),
-			'value' => Wordlift\Mappings\Validators\Post_Type_Rule_Validator::POST_TYPE,
+			'label'      => __( 'Post type', 'wordlift' ),
+			'value'      => Wordlift\Mappings\Validators\Post_Type_Rule_Validator::POST_TYPE,
+			// Left empty since post types are provided locally.
+			'api_source' => '',
 		);
 		$post_type_option_values = array();
 		$post_types              = get_post_types(
@@ -233,9 +236,9 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 			array_push(
 				$post_type_option_values,
 				array(
-					'label'    => $post_type->label,
-					'value'    => $post_type->name,
-					'taxonomy' => 'post_type',
+					'label'        => $post_type->label,
+					'value'        => $post_type->name,
+					'parent_value' => 'post_type',
 				)
 			);
 		}
@@ -312,6 +315,41 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 		$rule_field_data                                    = self::get_post_taxonomies_and_terms();
 		$edit_mapping_settings['wl_rule_field_one_options'] = $rule_field_data['taxonomy_options'];
 		$edit_mapping_settings['wl_rule_field_two_options'] = $rule_field_data['term_options'];
+
+		/**
+		 * Allow 3rd parties to add ui options.
+		 *
+		 * @param array Array of Rule field one options where each item is in format
+		 *
+		 *  array ( 'label' => string, 'value' => string, 'api_source'=>string);
+		 *
+		 *  Leave api_source empty string to ensure didnt fetch rule field two options
+		 *  from api.
+		 *
+		 * @return array Array of Rule field one options
+		 *
+		 * @since 3.27.0
+		 */
+		$edit_mapping_settings['wl_rule_field_one_options'] = apply_filters(
+			'wl_mappings_rule_field_one_options',
+			$edit_mapping_settings['wl_rule_field_one_options']
+		);
+
+		/**
+		 * Allow 3rd parties to add rule field two options.
+		 *
+		 * @param array Array of Rule field two option where each item is in format
+		 *
+		 * array ( 'label' => string, 'value' => string, 'parent_value' => string );
+		 *
+		 * where parent_value is the value of the parent option in the rule_field_one_option.
+		 *
+		 * @since 3.27.0
+		 */
+		$edit_mapping_settings['wl_rule_field_two_options'] = apply_filters(
+			'wl_mappings_rule_field_two_options',
+			$edit_mapping_settings['wl_rule_field_two_options']
+		);
 
 		return $edit_mapping_settings;
 	}

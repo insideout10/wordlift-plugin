@@ -9,6 +9,8 @@
 
 namespace Wordlift\Mappings;
 
+use Wordlift\Mappings\Data_Source\Data_Source_Factory;
+
 /**
  * This class takes the output from json-ld service and alter depends on the
  * rule and properties defined in sync mappings.
@@ -17,7 +19,6 @@ namespace Wordlift\Mappings;
  */
 class Jsonld_Converter {
 	/**
-	 * Enumerations for the field types.
 	 * Enumerations for the field types.
 	 */
 	const FIELD_TYPE_TEXT_FIELD = 'text';
@@ -55,7 +56,7 @@ class Jsonld_Converter {
 		// Hook to refactor the JSON-LD.
 		add_filter( 'wl_post_jsonld_array', array( $this, 'wl_post_jsonld_array' ), 11, 2 );
 		add_filter( 'wl_entity_jsonld_array', array( $this, 'wl_post_jsonld_array' ), 11, 3 );
-
+		add_filter( 'wl_term_jsonld_array', array( $this, 'wl_post_jsonld_array' ), 11, 2 );
 	}
 
 	/**
@@ -133,7 +134,7 @@ class Jsonld_Converter {
 	 */
 	public function get_property_data( $property, $jsonld, $post_id, &$references ) {
 		$transform_instance = $this->transform_functions_registry->get_transform_function( $property['transform_function'] );
-		$data               = $this->get_data_from_data_source( $post_id, $property );
+		$data               = Data_Source_Factory::get_instance()->get_data( $post_id, $property );
 		if ( null !== $transform_instance ) {
 			$transform_data = $transform_instance->transform_data( $data, $jsonld, $references, $post_id );
 			if ( null !== $transform_data ) {
@@ -188,77 +189,6 @@ class Jsonld_Converter {
 		}
 
 		return $jsonld;
-	}
-
-
-	/**
-	 * Returns data from data source.
-	 *
-	 * @param int $post_id Id of the post.
-	 * @param array $property_data The property data for the post_id.
-	 *
-	 * @return array Returns key, value array, if the value is not found, then it returns null.
-	 */
-	final public function get_data_from_data_source( $post_id, $property_data ) {
-		$value = $property_data['field_name'];
-
-		// Do 1 to 1 mapping and return result.
-		switch ( $property_data['field_type'] ) {
-			case self::FIELD_TYPE_ACF:
-				if ( ! function_exists( 'get_field' ) || ! function_exists( 'get_field_object' ) ) {
-					return array();
-				}
-
-				return $this->get_data_for_acf_field( $property_data['field_name'], $post_id );
-
-			case self::FIELD_TYPE_CUSTOM_FIELD:
-
-				return array_map( 'wp_strip_all_tags', get_post_meta( $post_id, $value ) );
-
-			default:
-				return $value;
-		}
-
-	}
-
-	/**
-	 * Gets data from acf, format the data if it is a repeater field.
-	 *
-	 * @param $field_name
-	 * @param $post_id
-	 *
-	 * @return array|mixed
-	 */
-	public function get_data_for_acf_field( $field_name, $post_id ) {
-		$field_data = get_field_object( $field_name, $post_id );
-		$data       = get_field( $field_name, $post_id );
-
-		// only process if it is a repeater field, else return the data.
-		if ( is_array( $field_data ) && array_key_exists( 'type', $field_data )
-		     && $field_data['type'] === 'repeater' ) {
-			/**
-			 * check if we have only one sub field, currently we only support one subfield,
-			 * so each repeater item should be checked if there is a single sub field.
-			 */
-			if ( is_array( $data ) &&
-			     count( $data ) > 0 &&
-			     count( array_keys( $data[0] ) ) === 1 ) {
-				$repeater_formatted_data = array();
-				foreach ( $data as $item ) {
-					$repeater_formatted_data = array_merge( $repeater_formatted_data, array_values( $item ) );
-				}
-				// Remove non unique values.
-				$repeater_formatted_data = array_unique( $repeater_formatted_data );
-				// Remove empty values
-				$repeater_formatted_data = array_filter( $repeater_formatted_data, 'strlen' );
-
-				// re-index all the values.
-				return array_values( $repeater_formatted_data );
-			}
-		}
-
-		// Return normal acf data if it is not a repeater field.
-		return $data;
 	}
 
 	private function make_single( $value ) {

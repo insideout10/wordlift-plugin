@@ -1,3 +1,7 @@
+export function getRuleFieldOneOptionByValue(state, value) {
+  return state.RuleGroupData.ruleFieldOneOptions.filter(e => e.value === value);
+}
+
 /**
  * This file provides the selectors to get the state
  *
@@ -21,9 +25,10 @@ export const getSelectedMappingItems = state => state.mappingItems.filter(item =
 /**
  * Returns all the terms present in the store for the particular taxonomy
  * @param state Total state of edit mapping ui.
- * @param taxonomy Selected taxonomy
+ * @param parentValue Selected taxonomy
  * @return {Array} The array of terms
  */
-export function getTermsForTaxonomy(state, taxonomy) {
-  return state.RuleGroupData.ruleFieldTwoOptions.filter(e => e.taxonomy === taxonomy);
+export function getOptionsFromApi(state, parentValue) {
+  return state.RuleGroupData.ruleFieldTwoOptions.filter(e => e.parentValue === parentValue);
 }
+

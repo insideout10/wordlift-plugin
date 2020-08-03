@@ -75,7 +75,7 @@ function wl_shortcode_faceted_search_origin( $request ) {
 	$entity_service = Wordlift_Entity_Service::get_instance();
 	$entity_ids     = $entity_service->is_entity( $current_post->ID ) ?
 		array( $current_post->ID ) :
-		wl_core_get_related_entity_ids( $current_post->ID );
+		$entity_service->get_related_entities( $current_post->ID );
 
 	// If there are no entities we cannot render the widget.
 	if ( 0 === count( $entity_ids ) ) {
@@ -276,47 +276,5 @@ add_action( 'rest_api_init', function () {
 	register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/faceted-search', array(
 		'methods'  => 'GET',
 		'callback' => 'wl_shortcode_faceted_search',
-	) );
-} );
-
-/**
- * register_block_type for Gutenberg blocks
- */
-add_action( 'init', function () {
-	// Bail out if the `register_block_type` function isn't available.
-	if ( ! function_exists( 'register_block_type' ) ) {
-		return;
-	}
-
-	register_block_type( 'wordlift/faceted-search', array(
-		'editor_script'   => 'wl-block-editor',
-		'render_callback' => function ( $attributes ) {
-			$attr_code = '';
-			foreach ( $attributes as $key => $value ) {
-				$attr_code .= $key . '="' . $value . '" ';
-			}
-
-			return '[wl_faceted_search ' . $attr_code . ']';
-		},
-		'attributes'      => array(
-			'title'       => array(
-				'type'    => 'string',
-				'default' => __( 'Related articles', 'wordlift' ),
-			),
-			'template_id' => array(
-				'type' => 'string',
-			),
-			'post_id'     => array(
-				'type' => 'number',
-			),
-			'uniqid'      => array(
-				'type'    => 'string',
-				'default' => uniqid( 'wl-faceted-widget-' ),
-			),
-			'limit'       => array(
-				'type'    => 'number',
-				'default' => 4,
-			),
-		),
 	) );
 } );

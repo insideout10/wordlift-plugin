@@ -22,6 +22,11 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 	 */
 	const SHORTCODE = 'wl_navigator';
 
+	public function __construct() {
+		parent::__construct();
+		$this->register_block_type();
+	}
+
 	/**
 	 * {@inheritdoc}
 	 */
@@ -29,6 +34,68 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 
 		return Wordlift_AMP_Service::is_amp_endpoint() ? $this->amp_shortcode( $atts )
 			: $this->web_shortcode( $atts );
+	}
+
+	private function register_block_type() {
+
+		$scope = $this;
+
+		add_action( 'init', function () use ( $scope ) {
+			if ( ! function_exists( 'register_block_type' ) ) {
+				// Gutenberg is not active.
+				return;
+			}
+
+			register_block_type( 'wordlift/navigator', array(
+				'editor_script'   => 'wl-block-editor',
+				'render_callback' => function ( $attributes ) use ( $scope ) {
+					$attr_code = '';
+					foreach ( $attributes as $key => $value ) {
+						$attr_code .= $key . '="' . htmlentities( $value ) . '" ';
+					}
+
+					return '[' . $scope::SHORTCODE . ' ' . $attr_code . ']';
+				},
+				'attributes'      => array(
+					'title'       => array(
+						'type'    => 'string',
+						'default' => __( 'Related articles', 'wordlift' ),
+					),
+					'limit'       => array(
+						'type'    => 'number',
+						'default' => 4,
+					),
+					'template_id' => array(
+						'type' => 'string',
+						'default' => '',
+					),
+					'post_id'     => array(
+						'type' => 'number',
+						'default' => '',
+					),
+					'offset'      => array(
+						'type'    => 'number',
+						'default' => 0,
+					),
+					'uniqid'      => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'order_by'    => array(
+						'type'    => 'string',
+						'default' => 'ID DESC',
+					),
+					'preview'     => array(
+						'type'    => 'boolean',
+						'default' => false,
+					),
+					'preview_src' => array(
+						'type'    => 'string',
+						'default' => WP_CONTENT_URL . '/plugins/wordlift/images/block-previews/navigator.png',
+					),
+				),
+			) );
+		} );
 	}
 
 	/**
@@ -77,9 +144,21 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		}
 
 		$post         = ! empty( $shortcode_atts['post_id'] ) ? get_post( intval( $shortcode_atts['post_id'] ) ) : get_post();
-		$navigator_id = $shortcode_atts['uniqid'];
-		// Changed `order_by` to `sort` for Presslabs cache nodes compatibility.
-		$rest_url     = $post ? admin_url( sprintf( 'admin-ajax.php?action=wl_navigator&uniqid=%s&post_id=%s&limit=%s&offset=%s&sort=%s', $navigator_id, $post->ID, $shortcode_atts['limit'], $shortcode_atts['offset'], $shortcode_atts['order_by'] ) ) : false;
+		$title        = esc_attr( sanitize_text_field( $shortcode_atts['title'] ) );
+		$template_id  = esc_attr( sanitize_text_field( $shortcode_atts['template_id'] ) );
+		$limit        = esc_attr( sanitize_text_field( $shortcode_atts['limit'] ) );
+		$offset       = esc_attr( sanitize_text_field( $shortcode_atts['offset'] ) );
+		$sort         = esc_attr( sanitize_sql_orderby( sanitize_text_field( $shortcode_atts['order_by'] ) ) );
+		$navigator_id = ! empty( $shortcode_atts['uniqid'] ) ? esc_attr( sanitize_text_field( $shortcode_atts['uniqid'] ) ) : uniqid( 'wl-navigator-widget-' );
+
+		$rest_url = $post ? admin_url( 'admin-ajax.php?' . build_query( array(
+				'action'  => 'wl_navigator',
+				'uniqid'  => $navigator_id,
+				'post_id' => $post->ID,
+				'limit'   => $limit,
+				'offset'  => $offset,
+				'sort'    => $sort
+			) ) ) : false;
 
 		// avoid building the widget when no valid $rest_url
 		if ( ! $rest_url ) {
@@ -88,17 +167,20 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 
 		wp_enqueue_script( 'wordlift-cloud' );
 		$json_navigator_id = wp_json_encode( $navigator_id );
-		echo "<script type='application/javascript'>window.wlNavigators = window.wlNavigators || []; wlNavigators.push( $json_navigator_id );</script>";
 
-		return sprintf(
-			'<div id="%s" class="%s" data-rest-url="%s" data-title="%s" data-template-id="%s" data-limit="%s"></div>',
-			$navigator_id,
-			'wl-navigator',
-			$rest_url,
-			$shortcode_atts['title'],
-			$shortcode_atts['template_id'],
-			$shortcode_atts['limit']
-		);
+		return <<<HTML
+			<!-- Navigator {$navigator_id} -->
+			<script type="application/javascript">
+				window.wlNavigators = window.wlNavigators || []; wlNavigators.push({$json_navigator_id});
+			</script>
+			<div id="{$navigator_id}" 
+				 class="wl-navigator" 
+				 data-rest-url="{$rest_url}" 
+				 data-title="{$title}" 
+				 data-template-id="{$template_id}" 
+				 data-limit="{$limit}"></div>
+			<!-- /Navigator {$navigator_id} -->
+HTML;
 	}
 
 	/**
@@ -115,55 +197,51 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		// attributes extraction and boolean filtering
 		$shortcode_atts = $this->make_shortcode_atts( $atts );
 
-		// avoid building the widget when there is a list of posts.
-		if ( ! is_singular() ) {
-			return '';
+		// avoid building the widget when no post_id is specified and there is a list of posts.
+		if ( empty( $shortcode_atts['post_id'] ) && ! is_singular() ) {
+			return;
 		}
 
-		$current_post = get_post();
-
 		$post         = ! empty( $shortcode_atts['post_id'] ) ? get_post( intval( $shortcode_atts['post_id'] ) ) : get_post();
-		$navigator_id = $shortcode_atts['uniqid'];
+		$title        = esc_attr( sanitize_text_field( $shortcode_atts['title'] ) );
+		$template_id  = esc_attr( sanitize_text_field( $shortcode_atts['template_id'] ) );
+		$limit        = esc_attr( sanitize_text_field( $shortcode_atts['limit'] ) );
+		$offset       = esc_attr( sanitize_text_field( $shortcode_atts['offset'] ) );
+		$sort         = esc_attr( sanitize_sql_orderby( sanitize_text_field( $shortcode_atts['order_by'] ) ) );
+		$navigator_id = ! empty( $shortcode_atts['uniqid'] ) ? esc_attr( sanitize_text_field( $shortcode_atts['uniqid'] ) ) : uniqid( 'wl-navigator-widget-' );
 
-		$wp_json_base = get_rest_url() . WL_REST_ROUTE_DEFAULT_NAMESPACE;
+		$permalink_structure = get_option( 'permalink_structure' );
+		$delimiter           = empty( $permalink_structure ) ? '&' : '?';
+		$rest_url            = $post ? rest_url( WL_REST_ROUTE_DEFAULT_NAMESPACE . '/navigator' . $delimiter . build_query( array(
+				'uniqid'  => $navigator_id,
+				'post_id' => $post->ID,
+				'limit'   => $limit,
+				'offset'  => $offset,
+				'sort'    => $sort
+			) ) ) : false;
 
-		$navigator_query = array(
-			'uniqid'  => $navigator_id,
-			'post_id' => $post->ID,
-			'limit'   => $shortcode_atts['limit'],
-			'offset'  => $shortcode_atts['offset'],
-			// Changed to `sort` for Presslabs cache nodes compatibility.
-			'sort'    => $shortcode_atts['order_by']
-		);
-
-		if ( strpos( $wp_json_base, 'wp-json/' . WL_REST_ROUTE_DEFAULT_NAMESPACE ) ) {
-			$delimiter = '?';
-		} else {
-			$delimiter = '&';
+		// avoid building the widget when no valid $rest_url
+		if ( ! $rest_url ) {
+			return;
 		}
 
 		// Use a protocol-relative URL as amp-list spec says that URL's protocol must be HTTPS.
 		// This is a hackish way, but this works for http and https URLs
-		$wp_json_url_posts = str_replace( array(
-				'http:',
-				'https:',
-			), '', $wp_json_base ) . '/navigator' . $delimiter . http_build_query( $navigator_query );
+		$rest_url = str_replace( array( 'http:', 'https:' ), '', $rest_url );
 
-		if ( ! empty( $shortcode_atts['template_id'] ) ) {
-			$template_id = $shortcode_atts['template_id'];
-		} else {
+		if ( empty( $template_id ) ) {
 			$template_id = "template-" . $navigator_id;
-			add_action( 'amp_post_template_css', array( $this, 'amp_post_template_css' ) );
+			wp_enqueue_style( 'wordlift-amp-custom', plugin_dir_url( dirname( __FILE__ ) ) . '/css/wordlift-amp-custom.min.css' );
 		}
 
 		return <<<HTML
 		<div id="{$navigator_id}" class="wl-amp-navigator" style="width: 100%">
-			<h3 class="wl-headline">{$shortcode_atts['title']}</h3>
+			<h3 class="wl-headline">{$title}</h3>
 			<amp-list 
 				width="auto"
-				height="320"
+				height="220"
 				layout="fixed-height"
-				src="{$wp_json_url_posts}"
+				src="{$rest_url}"
 				template="{$template_id}">
 			</amp-list>
 		</div>
@@ -175,10 +253,12 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 						<a href="{{post.permalink}}">
 							<amp-img
 		                        width="800"
-		                        height="450"
+		                        height="440"
 								layout="responsive"
 		                        src="{{post.thumbnail}}"></amp-img>
-							<div class="card-content"><h3 class="title">{{post.title}}</h3></div>
+							<div class="card-content">
+								<header class="title">{{post.title}}</header>
+							</div>
 						</a>
 					</article>
 				{{/values}}
@@ -186,26 +266,6 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 			</div>
 		</template>
 HTML;
-	}
-
-	public function amp_post_template_css() {
-		// Default CSS for default template
-		echo <<<CSS
-	        .wordlift-navigator .title{font-size:16px;margin:0.5rem 0}
-	        .wordlift-navigator .cards{display:flex;flex-wrap:wrap}
-	        .wordlift-navigator .cards .card{background:white;flex:1 0 300px;box-sizing:border-box;margin:1rem .25em}
-	        @media screen and (min-width: 40em){
-	            .wordlift-navigator .cards .card{max-width:calc(50% -  1em)}
-	        }
-	        @media screen and (min-width: 60em){
-	            .wordlift-navigator .cards .card{max-width:calc(25% - 1em)}
-	        }
-	        .wordlift-navigator .cards .card a{color:black;text-decoration:none}
-	        .wordlift-navigator .cards .card a:hover{box-shadow:3px 3px 8px #ccc}
-	        .wordlift-navigator .cards .card .thumbnail{width:100%;padding-bottom:56.25%;background-size:cover}
-	        .wordlift-navigator .cards .card .thumbnail img{display:block;border:0;width:100%;height:auto}
-	        .wordlift-navigator .cards .card .card-content .title{font-size:14px;margin:0.3rem 0}
-CSS;
 	}
 
 }

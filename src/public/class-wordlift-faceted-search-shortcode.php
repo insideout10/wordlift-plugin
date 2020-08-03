@@ -22,6 +22,11 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 	 */
 	const SHORTCODE = 'wl_faceted_search';
 
+	public function __construct() {
+		parent::__construct();
+		$this->register_block_type();
+	}
+
 	/**
 	 * {@inheritdoc}
 	 */
@@ -29,6 +34,60 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 
 		return Wordlift_AMP_Service::is_amp_endpoint() ? $this->amp_shortcode( $atts )
 			: $this->web_shortcode( $atts );
+	}
+
+	private function register_block_type() {
+
+		$scope = $this;
+
+		add_action( 'init', function () use ( $scope ) {
+			if ( ! function_exists( 'register_block_type' ) ) {
+				// Gutenberg is not active.
+				return;
+			}
+
+			register_block_type( 'wordlift/faceted-search', array(
+				'editor_script'   => 'wl-block-editor',
+				'render_callback' => function ( $attributes ) use ( $scope ) {
+					$attr_code = '';
+					foreach ( $attributes as $key => $value ) {
+						$attr_code .= $key . '="' . htmlentities( $value ) . '" ';
+					}
+
+					return '[' . $scope::SHORTCODE . ' ' . $attr_code . ']';
+				},
+				'attributes'      => array(
+					'title'       => array(
+						'type'    => 'string',
+						'default' => __( 'Related articles', 'wordlift' ),
+					),
+					'template_id' => array(
+						'type' => 'string',
+						'default' => '',
+					),
+					'post_id'     => array(
+						'type'    => 'number',
+						'default' => '',
+					),
+					'uniqid'      => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'limit'       => array(
+						'type'    => 'number',
+						'default' => apply_filters( 'wl_faceted_search_default_limit', 4 ),
+					),
+					'preview'     => array(
+						'type'    => 'boolean',
+						'default' => false,
+					),
+					'preview_src' => array(
+						'type'    => 'string',
+						'default' => WP_CONTENT_URL . '/plugins/wordlift/images/block-previews/faceted-search.png',
+					),
+				),
+			) );
+		} );
 	}
 
 	/**
@@ -74,11 +133,18 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 			return;
 		}
 
-		$post       = ! empty( $shortcode_atts['post_id'] ) ? get_post( intval( sanitize_text_field( $shortcode_atts['post_id'] ) ) ) : get_post();
-		$limit      = sanitize_text_field( $shortcode_atts['limit'] );
-		$faceted_id = sanitize_text_field( $shortcode_atts['uniqid'] );
+		$post        = ! empty( $shortcode_atts['post_id'] ) ? get_post( intval( sanitize_text_field( $shortcode_atts['post_id'] ) ) ) : get_post();
+		$title       = esc_attr( sanitize_text_field( $shortcode_atts['title'] ) );
+		$template_id = esc_attr( sanitize_text_field( $shortcode_atts['template_id'] ) );
+		$limit       = esc_attr( sanitize_text_field( $shortcode_atts['limit'] ) );
+		$faceted_id  = ! empty( $shortcode_atts['uniqid'] ) ? esc_attr( sanitize_text_field( $shortcode_atts['uniqid'] ) ) : uniqid( 'wl-faceted-widget-' );
 
-		$rest_url = $post ? rest_url( sprintf( "wordlift/v1/faceted-search?post_id=%s&limit=%s", $post->ID, $limit ) ) : false;
+		$permalink_structure = get_option( 'permalink_structure' );
+		$delimiter           = empty( $permalink_structure ) ? '&' : '?';
+		$rest_url            = $post ? rest_url( WL_REST_ROUTE_DEFAULT_NAMESPACE . '/faceted-search' . $delimiter . build_query( array(
+				'post_id' => $post->ID,
+				'limit'   => $limit
+			) ) ) : false;
 
 		// avoid building the widget when no valid $rest_url
 		if ( ! $rest_url ) {
@@ -87,16 +153,20 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 
 		wp_enqueue_script( 'wordlift-cloud' );
 		$json_faceted_id = wp_json_encode( $faceted_id );
-		echo "<script type='application/javascript'>window.wlFaceteds = window.wlFaceteds || []; wlFaceteds.push( $json_faceted_id );</script>";
 
-		return sprintf(
-			'<div id="%s" class="%s" data-rest-url="%s" data-title="%s" data-template-id="%s"></div>',
-			$faceted_id,
-			'wl-faceted',
-			$rest_url,
-			sanitize_text_field( $shortcode_atts['title'] ),
-			sanitize_text_field( $shortcode_atts['template_id'] )
-		);
+
+		return <<<HTML
+			<!-- Faceted {$faceted_id} -->
+			<script type="application/javascript">
+				window.wlFaceteds = window.wlFaceteds || []; wlFaceteds.push({$json_faceted_id});
+			</script>
+			<div id="{$faceted_id}" 
+				 class="wl-faceted" 
+				 data-rest-url="{$rest_url}" 
+				 data-title="{$title}" 
+				 data-template-id="{$template_id}"></div>
+			<!-- /Faceted {$faceted_id} -->
+HTML;
 	}
 
 	/**
@@ -118,9 +188,19 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 			return;
 		}
 
-		$post       = ! empty( $shortcode_atts['post_id'] ) ? get_post( intval( sanitize_text_field( $shortcode_atts['post_id'] ) ) ) : get_post();
-		$limit      = sanitize_text_field( $shortcode_atts['limit'] );
-		$faceted_id = sanitize_text_field( $shortcode_atts['uniqid'] );
+		$post        = ! empty( $shortcode_atts['post_id'] ) ? get_post( intval( sanitize_text_field( $shortcode_atts['post_id'] ) ) ) : get_post();
+		$title       = esc_attr( sanitize_text_field( $shortcode_atts['title'] ) );
+		$template_id = esc_attr( sanitize_text_field( $shortcode_atts['template_id'] ) );
+		$limit       = esc_attr( sanitize_text_field( $shortcode_atts['limit'] ) );
+		$faceted_id  = ! empty( $shortcode_atts['uniqid'] ) ? esc_attr( sanitize_text_field( $shortcode_atts['uniqid'] ) ) : uniqid( 'wl-faceted-widget-' );
+
+		$permalink_structure = get_option( 'permalink_structure' );
+		$delimiter           = empty( $permalink_structure ) ? '&' : '?';
+		$rest_url            = $post ? rest_url( WL_REST_ROUTE_DEFAULT_NAMESPACE . '/faceted-search' . $delimiter . build_query( array(
+				'amp',
+				'post_id' => $post->ID,
+				'limit'   => $limit
+			) ) ) : false;
 
 		$rest_url = $post ? rest_url( sprintf( "wordlift/v1/faceted-search?amp&post_id=%s&limit=%s", $post->ID, $limit ) ) : false;
 
@@ -131,22 +211,16 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 
 		// Use a protocol-relative URL as amp-list spec says that URL's protocol must be HTTPS.
 		// This is a hackish way, but this works for http and https URLs
-		$rest_url = str_replace( array(
-			'http:',
-			'https:',
-		), '', $rest_url );
+		$rest_url = str_replace( array( 'http:', 'https:' ), '', $rest_url );
 
-		if ( ! empty( $shortcode_atts['template_id'] ) ) {
-			$template_id = sanitize_text_field( $shortcode_atts['template_id'] );
-		} else {
+		if ( empty( $template_id ) ) {
 			$template_id = "template-" . $faceted_id;
-			// Enqueue amp specific styles
 			wp_enqueue_style( 'wordlift-amp-custom', plugin_dir_url( dirname( __FILE__ ) ) . '/css/wordlift-amp-custom.min.css' );
 		}
 
 		return <<<HTML
 		<div id="{$faceted_id}" class="wl-amp-faceted">
-			<h2 class="wl-headline">{$shortcode_atts['title']}</h2>
+			<h2 class="wl-headline">{$title}</h2>
 			<amp-state id="referencedPosts">
 				<script type="application/json">
 					[]
@@ -175,7 +249,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 			</section>
 			<section class="cards">
 				<amp-list 
-					height="200"
+					height="250"
 					layout="fixed-height"
 					src="{$rest_url}"
 					[src]="{values: allPostsEntities.posts[0].values.sort((a, b) => referencedPosts.includes(a.ID) ? -1 : 1)}"
@@ -195,7 +269,9 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 				                        height="9"
 										layout="responsive"
 				                        src="{{thumbnail}}"></amp-img>
-									<div class="card-content"><h3 class="title">{{post_title}}</h3></div>
+									<div class="card-content">
+										<header class="title">{{post_title}}</header>
+									</div>
 								</a>
 							</article>
 						  {{/values}}
@@ -213,7 +289,9 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 				                        height="9"
 										layout="responsive"
 				                        src="{{thumbnail}}"></amp-img>
-									<div class="card-content"><h3 class="title">{{post_title}}</h3></div>
+									<div class="card-content">
+										<header class="title">{{post_title}}</header>
+									</div>
 								</a>
 							</article>
 						  {{/values}}

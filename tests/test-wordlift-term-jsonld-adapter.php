@@ -27,7 +27,7 @@ class Wordlift_Term_Jsonld_Adapter_Test extends Wordlift_Unit_Test_Case {
 		// lets create a category
 		$category_id = wp_insert_category( array( 'cat_name' => 'foo' ) );
 		$result      = $this->adapter->get( $category_id );
-		$this->assertEquals( array(), $result );
+		$this->assertEquals( array( 'jsonld' => array(), 'references' => array() ), $result );
 	}
 
 	public function test_if_more_than_2_posts_present_then_add_jsonld() {
@@ -62,7 +62,7 @@ class Wordlift_Term_Jsonld_Adapter_Test extends Wordlift_Unit_Test_Case {
 
 		// get json ld data
 		$result = $this->adapter->get( $category_id );
-		$result = $result[0];
+		$result = $result['jsonld'][0];
 		// the result should have key itemListElement.
 		$this->assertArrayHasKey( 'itemListElement', $result );
 		// the result should have 2 post jsonlds
@@ -122,6 +122,7 @@ class Wordlift_Term_Jsonld_Adapter_Test extends Wordlift_Unit_Test_Case {
 		global $wp_query;
 		$wp_query = new WP_Query( $args );
 		$jsonld   = $this->adapter->get( $term_id );
+		$jsonld   = $jsonld['jsonld'];
 		$this->assertCount( 2, $jsonld );
 		$result = $jsonld[0];
 		// the result should have key itemListElement.

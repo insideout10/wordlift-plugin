@@ -66,6 +66,8 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 
 		$this->configuration_service = $configuration_service;
 
+		$this->register_block_type();
+
 	}
 
 	/**
@@ -184,6 +186,60 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 
 	}
 
+	private function register_block_type() {
+
+		$scope = $this;
+
+		add_action( 'init', function () use ( $scope ) {
+			if ( ! function_exists( 'register_block_type' ) ) {
+				// Gutenberg is not active.
+				return;
+			}
+
+			register_block_type( 'wordlift/vocabulary', array(
+				'editor_script'   => 'wl-block-editor',
+				'render_callback' => function ( $attributes ) use ( $scope ) {
+					$attr_code = '';
+					foreach ( $attributes as $key => $value ) {
+						$attr_code .= $key . '="' . htmlentities( $value ) . '" ';
+					}
+
+					return '[' . $scope::SHORTCODE . ' ' . $attr_code . ']';
+				},
+				'attributes' => array(
+					'type' => array(
+						'type'    => 'string',
+						'default' => 'all'
+					),
+					'limit' => array(
+						'type'    => 'number',
+						'default' => 100
+					),
+					'orderby' => array(
+						'type'    => 'string',
+						'default' => 'post_date'
+					),
+					'order' => array(
+						'type'    => 'string',
+						'default' => 'DESC'
+					),
+					'cat' => array(
+						'type'    => 'string',
+						'default' => ''
+					),
+					'preview'     => array(
+						'type'    => 'boolean',
+						'default' => false,
+					),
+					'preview_src' => array(
+						'type'    => 'string',
+						'default' => WP_CONTENT_URL . '/plugins/wordlift/images/block-previews/vocabulary.png',
+					),
+				)
+			) );
+		} );
+	}
+
 	/**
 	 * Generate the html code for the section.
 	 *
@@ -289,13 +345,40 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	private function add_to_alphabet( &$alphabet, $post_id ) {
 
 		// Get the title without accents.
-		$title = remove_accents( get_the_title( $post_id ) );
+		$title = $this->get_the_title( $post_id );
 
 		// Get the initial letter.
 		$letter = $this->get_first_letter_in_alphabet_or_hash( $alphabet, $title );
 
 		// Add the post.
 		$alphabet[ $letter ][ $post_id ] = $title;
+
+	}
+
+	/**
+	 * Get the title without accents.
+	 * If the post is not of type `entity`, use first synonym if synonyms exists.
+     * @see https://github.com/insideout10/wordlift-plugin/issues/1096
+	 *
+	 * @since 3.27.0
+	 *
+	 * @param int $post_id The {@link WP_Post} id.
+	 *
+	 * @return string
+	 */
+	private function get_the_title( $post_id ) {
+
+		$title = get_the_title( $post_id );
+
+		if ( get_post_type( $post_id ) !== Wordlift_Entity_Service::TYPE_NAME ) {
+			$alternative_labels = Wordlift_Entity_Service::get_instance()->get_alternative_labels( $post_id );
+
+			if ( count( $alternative_labels ) > 0 ) {
+				$title = $alternative_labels[0];
+			}
+		}
+
+		return remove_accents( $title );
 
 	}
 
@@ -338,46 +421,3 @@ class Wordlift_Vocabulary_Shortcode extends Wordlift_Shortcode {
 	}
 
 }
-
-/**
- * register_block_type for Gutenberg blocks
- */
-add_action( 'init', function() {
-	// Bail out if the `register_block_type` function isn't available.
-	if ( ! function_exists( 'register_block_type' ) ) {
-		return;
-	}
-
-	register_block_type('wordlift/vocabulary', array(
-		'editor_script' => 'wl-block-editor',
-		'render_callback' => function($attributes){
-			$attr_code = '';
-			foreach ($attributes as $key => $value) {
-				$attr_code .= $key.'="'.$value.'" ';
-			}
-			return '[wl_vocabulary '.$attr_code.']';
-		},
-		'attributes' => array(
-			'type' => array(
-				'type'    => 'string',
-				'default' => 'all'
-            ),
-			'limit' => array(
-				'type'    => 'number',
-				'default' => 100
-            ),
-			'orderby' => array(
-				'type'    => 'string',
-				'default' => 'post_date'
-            ),
-			'order' => array(
-				'type'    => 'string',
-				'default' => 'DESC'
-            ),
-			'cat' => array(
-				'type'    => 'string',
-				'default' => ''
-            ),
-        )
-	));
-} );

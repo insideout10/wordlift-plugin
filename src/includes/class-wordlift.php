@@ -37,6 +37,7 @@ use Wordlift\Mappings\Validators\Post_Type_Rule_Validator;
 use Wordlift\Mappings\Validators\Rule_Groups_Validator;
 use Wordlift\Mappings\Validators\Rule_Validators_Registry;
 use Wordlift\Mappings\Validators\Taxonomy_Rule_Validator;
+use Wordlift\Mappings\Validators\Taxonomy_Term_Rule_Validator;
 use Wordlift\Post_Excerpt\Post_Excerpt_Meta_Box_Adapter;
 use Wordlift\Post_Excerpt\Post_Excerpt_Rest_Controller;
 use Wordlift\Templates\Templates_Ajax_Endpoint;
@@ -749,7 +750,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.26.3';
+		$this->version     = '3.27.0';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -1113,6 +1114,11 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-navigator-shortcode.php';
 
 		/**
+		 * The Products Navigator shortcode.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-products-navigator-shortcode.php';
+
+		/**
 		 * The chord shortcode.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-chord-shortcode.php';
@@ -1302,12 +1308,16 @@ class Wordlift {
 
 		// Initialize the short-codes.
 		new Wordlift_Navigator_Shortcode();
+		new Wordlift_Products_Navigator_Shortcode();
 		new Wordlift_Chord_Shortcode();
 		new Wordlift_Geomap_Shortcode();
 		new Wordlift_Timeline_Shortcode();
 		new Wordlift_Related_Entities_Cloud_Shortcode( $this->relation_service );
 		new Wordlift_Vocabulary_Shortcode( $this->configuration_service );
 		new Wordlift_Faceted_Search_Shortcode();
+
+		// Initialize the Context Cards Service
+		$this->context_cards_service = new Wordlift_Context_Cards_Service();
 
 		// Initialize the SEO service.
 		new Wordlift_Seo_Service();
@@ -1445,15 +1455,6 @@ class Wordlift {
 		new Wordlift_Search_Keyword_Taxonomy( $api_service );
 
 		/*
-		 * Initialize the Context Cards Service
-		 *
-		 * @link https://github.com/insideout10/wordlift-plugin/issues/934
-		 *
-		 * @since 3.22.0
-		 */
-		$this->context_cards_service = new Wordlift_Context_Cards_Service();
-
-		/*
 		 * Load the Mappings JSON-LD post processing.
 		 *
 		 * @since 3.25.0
@@ -1462,6 +1463,8 @@ class Wordlift {
 		$mappings_dbo           = new Mappings_DBO();
 		$default_rule_validator = new Taxonomy_Rule_Validator();
 		new Post_Type_Rule_Validator();
+		// Taxonomy term rule validator for validating rules for term pages.
+		new Taxonomy_Term_Rule_Validator();
 		$rule_validators_registry = new Rule_Validators_Registry( $default_rule_validator );
 		$rule_groups_validator    = new Rule_Groups_Validator( $rule_validators_registry );
 		$mappings_validator       = new Mappings_Validator( $mappings_dbo, $rule_groups_validator );
@@ -1791,6 +1794,7 @@ class Wordlift {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $this->context_cards_service, 'enqueue_scripts' );
+
 		// Registering Faq_Content_Filter service used for removing faq question and answer tags from the html.
 		$this->loader->add_filter( 'the_content', $this->faq_content_filter_service, 'remove_all_faq_question_and_answer_tags' );
 		// Hook the content filter service to add entity links.

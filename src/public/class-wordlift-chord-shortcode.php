@@ -35,6 +35,7 @@ class Wordlift_Chord_Shortcode extends Wordlift_Shortcode {
 			$this,
 			'amp_post_template_css',
 		) );
+		$this->register_block_type();
 
 	}
 
@@ -114,6 +115,60 @@ class Wordlift_Chord_Shortcode extends Wordlift_Shortcode {
         margin-bottom:10px">
 </div>
 EOF;
+	}
+
+	private function register_block_type() {
+
+		$scope = $this;
+
+		add_action( 'init', function () use ( $scope ) {
+			if ( ! function_exists( 'register_block_type' ) ) {
+				// Gutenberg is not active.
+				return;
+			}
+
+			register_block_type( 'wordlift/chord', array(
+				'editor_script'   => 'wl-block-editor',
+				'render_callback' => function ( $attributes ) use ( $scope ) {
+					$attr_code = '';
+					foreach ( $attributes as $key => $value ) {
+						$attr_code .= $key . '="' . htmlentities( $value ) . '" ';
+					}
+
+					return '[' . $scope::SHORTCODE . ' ' . $attr_code . ']';
+				},
+				'attributes'      => array(
+					'width'      => array(
+						'type'    => 'string',
+						'default' => '100%',
+					),
+					'height'     => array(
+						'type'    => 'string',
+						'default' => '500px',
+					),
+					'main_color' => array(
+						'type'    => 'string',
+						'default' => '000',
+					),
+					'depth'      => array(
+						'type'    => 'number',
+						'default' => 2,
+					),
+					'global'     => array(
+						'type'    => 'boolean',
+						'default' => false,
+					),
+					'preview'     => array(
+						'type'    => 'boolean',
+						'default' => false,
+					),
+					'preview_src'     => array(
+						'type'    => 'string',
+						'default' => WP_CONTENT_URL . '/plugins/wordlift/images/block-previews/chord.png',
+					),
+				),
+			) );
+		} );
 	}
 
 	/**
