@@ -27,6 +27,7 @@ use Wordlift\Jsonld\Jsonld_By_Id_Endpoint;
 use Wordlift\Jsonld\Jsonld_Endpoint;
 use Wordlift\Jsonld\Jsonld_Service;
 use Wordlift\Jsonld\Term_Jsonld_Service;
+use Wordlift\Mappings\Formatters\Acf_Group_Formatter;
 use Wordlift\Mappings\Jsonld_Converter;
 use Wordlift\Mappings\Mappings_DBO;
 use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
@@ -1473,6 +1474,11 @@ class Wordlift {
 		new Taxonomy_To_Terms_Transform_Function();
 		$mappings_transform_functions_registry = new Mappings_Transform_Functions_Registry();
 
+		/**
+		 * @since 3.27.1
+		 * Intiailize the acf group data formatter.
+		 */
+		new Acf_Group_Formatter();
 		new Jsonld_Converter( $mappings_validator, $mappings_transform_functions_registry );
 
 		/**
