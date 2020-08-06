@@ -16,6 +16,9 @@
 
 	<?php
 
+    // Print admin inline scripts.
+	do_action( 'admin_print_scripts' );
+
 	// Enqueue wp.media functions.
 	wp_enqueue_media();
 
