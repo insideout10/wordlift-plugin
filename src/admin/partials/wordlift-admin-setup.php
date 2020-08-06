@@ -16,10 +16,7 @@
 
 	<?php
 
-    // Print admin inline scripts.
-	do_action( 'admin_print_scripts' );
-
-	// Enqueue wp.media functions.
+    // Enqueue wp.media functions.
 	wp_enqueue_media();
 
 	// Enqueue styles and scripts.
@@ -45,10 +42,9 @@
 	) );
 
 	// Finally print styles and scripts.
+	do_action( 'admin_print_scripts' );
 	wp_print_styles();
 	wp_print_scripts();
-	//	do_action( 'admin_print_styles' );
-	//	do_action( 'admin_print_scripts' );
 
 	for ( $i = 1; $i <= 6; $i ++ ) {
 		include 'admin-setup/step-' . $i . '.php';
