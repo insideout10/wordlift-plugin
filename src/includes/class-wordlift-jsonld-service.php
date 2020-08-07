@@ -168,23 +168,51 @@ class Wordlift_Jsonld_Service {
 		// An array of references which is captured when converting an URI to a
 		// json which we gather to further expand our json-ld.
 		$references = array();
+		$references_infos = array();
 
 		// Set a reference to the entity_to_jsonld_converter to use in the closures.
 		$entity_to_jsonld_converter = $this->converter;
 
+//		add_filter( 'wl_entity_jsonld', function ( $jsonld, $post_id, $references ) use ($entity_to_jsonld_converter) {
+//            $expanded_location = array();
+//            if($jsonld['location']){
+//                if($jsonld['location']['@id']){
+//	                $expanded_location[] = $entity_to_jsonld_converter->convert( Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $jsonld['location']['@id'])->ID );
+//                } else {
+//	                foreach($jsonld['location'] as $location){
+//		                $expanded_location[] = $entity_to_jsonld_converter->convert( Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $location['@id'])->ID );
+//	                }
+//                }
+//	            $jsonld['location'] = $expanded_location;
+//            }
+//			return $jsonld;
+//		}, 10, 3 );
+
 		// Convert each URI to a JSON-LD array, while gathering referenced entities.
 		// in the references array.
-		return array_merge(
-			array( $entity_to_jsonld_converter->convert( $post_id, $references ) ),
+		$jsonld = array_merge(
+			array( $entity_to_jsonld_converter->convert( $post_id, $references, $references_infos ) ),
 			// Convert each URI in the references array to JSON-LD. We don't output
 			// entities already output above (hence the array_diff).
-			array_filter( array_map( function ( $item ) use ( $entity_to_jsonld_converter, $references ) {
+			array_filter( array_map( function ( $item ) use ( $entity_to_jsonld_converter, $references, $references_infos ) {
 
 				// "2nd level properties" may not output here, e.g. a post
 				// mentioning an event, located in a place: the place is referenced
 				// via the `@id` but no other properties are loaded.
-				return $entity_to_jsonld_converter->convert( $item, $references );
-			}, array_unique( $references ) ) ) );
+				return $entity_to_jsonld_converter->convert( $item, $references, $references_infos );
+			}, $references ) ) );
+
+		//var_dump($references_infos);
+
+//		$required_references = array_filter( $references_infos, function ( $item ) {
+//			return $item->get_required();
+//		} );
+//
+//		$jsonld = array_merge( $jsonld, array_filter( array_map( function ( $item ) use ( $entity_to_jsonld_converter ) {
+//			return $entity_to_jsonld_converter->convert( $item->getID(), $references );
+//		}, $required_references ) ) );
+
+		return $jsonld;
 	}
 
 	/**

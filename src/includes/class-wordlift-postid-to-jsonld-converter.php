@@ -59,7 +59,7 @@ class Wordlift_Postid_To_Jsonld_Converter implements Wordlift_Post_Converter {
 	 *
 	 * @return array|NULL A JSON-LD array representation of the post with the provided id, or NULL if not found.
 	 */
-	public function convert( $id, &$references = array() ) {
+	public function convert( $id, &$references = array(), $references_infos = array() ) {
 
 		$this->log->trace( "Converting post $id..." );
 

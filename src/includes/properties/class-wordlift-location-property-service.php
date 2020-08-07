@@ -42,9 +42,12 @@ class Wordlift_Location_Property_Service extends Wordlift_Entity_Property_Servic
 
 		return array_map( function ( $item ) {
 
-			return $item instanceof Wordlift_Property_Entity_Reference
-				? $item
-				: array( '@type' => 'Place', 'name' => $item );
+			if ( $item instanceof Wordlift_Property_Entity_Reference ) {
+				$item->set_required( true );
+				return $item;
+			}
+
+			return array( '@type' => 'Place', 'name' => $item );
 		}, parent::get( $post_id, $meta_key ) );
 	}
 

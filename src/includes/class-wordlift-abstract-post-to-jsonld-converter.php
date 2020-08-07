@@ -91,7 +91,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 * @since 3.10.0
 	 *
 	 */
-	public function convert( $post_id, &$references = array() ) {
+	public function convert( $post_id, &$references = array(), $references_infos = array() ) {
 
 		// Get the post instance.
 		$post = get_post( $post_id );

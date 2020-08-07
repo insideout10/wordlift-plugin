@@ -34,6 +34,8 @@ class Wordlift_Property_Entity_Reference {
 	 */
 	private $id;
 
+	private $required;
+
 	/**
 	 * Create a Wordlift_Property_Entity_Reference instance with the provided URL.
 	 *
@@ -42,10 +44,23 @@ class Wordlift_Property_Entity_Reference {
 	 * @param string $url The URL.
 	 * @param int    $id  The entity post id.
 	 */
-	public function __construct( $url, $id ) {
+	public function __construct( $url, $id, $required = false ) {
 
 		$this->url = $url;
 		$this->id  = $id;
+		$this->required = $required;
+
+	}
+
+	public function set_required($value) {
+
+		$this->required = $value;
+
+	}
+
+	public function get_required() {
+
+		return $this->required;
 
 	}
 
