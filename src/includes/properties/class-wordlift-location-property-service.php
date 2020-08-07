@@ -14,26 +14,6 @@
  * @since 3.8.0
  */
 class Wordlift_Location_Property_Service extends Wordlift_Entity_Property_Service {
-//	/**
-//	 * A {@link Wordlift_Entity_Service} instance.
-//	 * @since  3.8.0
-//	 * @access private
-//	 * @var \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
-//	 */
-//	private $entity_service;
-//
-//	/**
-//	 * Wordlift_Location_Property_Service constructor.
-//	 *
-//	 * @since 3.8.0
-//	 *
-//	 * @param \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
-//	 */
-//	public function __construct( $entity_service ) {
-//
-//		$this->entity_service = $entity_service;
-//
-//	}
 
 	/**
 	 * {@inheritdoc}
@@ -42,8 +22,10 @@ class Wordlift_Location_Property_Service extends Wordlift_Entity_Property_Servic
 
 		return array_map( function ( $item ) {
 
+			// If this is an entity reference, set that this entity is always required in SD output.
 			if ( $item instanceof Wordlift_Property_Entity_Reference ) {
 				$item->set_required( true );
+
 				return $item;
 			}
 

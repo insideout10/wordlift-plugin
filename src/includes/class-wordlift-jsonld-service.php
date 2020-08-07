@@ -167,7 +167,7 @@ class Wordlift_Jsonld_Service {
 
 		// An array of references which is captured when converting an URI to a
 		// json which we gather to further expand our json-ld.
-		$references = array();
+		$references       = array();
 		$references_infos = array();
 
 		// Set a reference to the entity_to_jsonld_converter to use in the closures.
@@ -194,23 +194,42 @@ class Wordlift_Jsonld_Service {
 			array( $entity_to_jsonld_converter->convert( $post_id, $references, $references_infos ) ),
 			// Convert each URI in the references array to JSON-LD. We don't output
 			// entities already output above (hence the array_diff).
-			array_filter( array_map( function ( $item ) use ( $entity_to_jsonld_converter, $references, $references_infos ) {
+			array_filter( array_map( function ( $item ) use ( $entity_to_jsonld_converter, &$references_infos ) {
 
 				// "2nd level properties" may not output here, e.g. a post
 				// mentioning an event, located in a place: the place is referenced
 				// via the `@id` but no other properties are loaded.
-				return $entity_to_jsonld_converter->convert( $item, $references, $references_infos );
+                $ignored = array();
+				return $entity_to_jsonld_converter->convert( $item, $ignored, $references_infos );
 			}, $references ) ) );
 
-		//var_dump($references_infos);
+		$required_references = array_filter( $references_infos, function ( $item ) use ( $references ) {
+			return isset( $item['reference'] ) &&
+			       // Check that the reference is required
+			       $item['reference']->get_required() &&
+			       // Check that the reference isn't being output already.
+			       ! in_array( $item['reference']->get_id(), $references );
+		} );
 
-//		$required_references = array_filter( $references_infos, function ( $item ) {
-//			return $item->get_required();
-//		} );
-//
-//		$jsonld = array_merge( $jsonld, array_filter( array_map( function ( $item ) use ( $entity_to_jsonld_converter ) {
-//			return $entity_to_jsonld_converter->convert( $item->getID(), $references );
-//		}, $required_references ) ) );
+		$jsonld = array_merge( $jsonld, array_filter( array_map( function ( $item ) use ( &$references, $entity_to_jsonld_converter ) {
+
+			if ( ! isset( $item['reference'] ) ) {
+				return null;
+			}
+
+			$post_id = $item['reference']->get_id();
+			if ( in_array( $post_id, $references ) ) {
+				return null;
+			}
+
+			$references[] = $post_id;
+
+			var_dump($references);
+
+			return $entity_to_jsonld_converter->convert( $post_id, $references );
+		}, $required_references ) ) );
+
+		var_dump($references);
 
 		return $jsonld;
 	}
@@ -223,7 +242,8 @@ class Wordlift_Jsonld_Service {
 	 *
 	 * @since 3.18.5
 	 */
-	public function wp_head() {
+	public
+	function wp_head() {
 
 		// Determine whether this is the home page or whether we're displaying a single post.
 		$is_homepage = is_home() || is_front_page();

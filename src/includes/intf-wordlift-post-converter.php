@@ -30,6 +30,6 @@ interface Wordlift_Post_Converter {
 	 *
 	 * @return mixed The conversion result.
 	 */
-	public function convert( $post_id, &$references = array(), $references_infos = array() );
+	public function convert( $post_id, &$references = array(), &$references_infos = array() );
 
 }

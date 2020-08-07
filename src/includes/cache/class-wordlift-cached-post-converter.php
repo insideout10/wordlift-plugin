@@ -127,9 +127,12 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 	}
 
 	/**
+	 * Note that the `&$cache` parameter here is used only to report whether the response comes from the cache. It
+	 * used by `test-issue-626.php` and nowhere else in code.
+	 *
 	 * @inheritdoc
 	 */
-	public function convert( $post_id, &$references = array(), $references_infos = array(), &$cache = false ) {
+	public function convert( $post_id, &$references = array(), &$references_infos = array(), &$cache = false ) {
 
 		// Ensure post ID is `int`. Otherwise we may have issues with caching, since caching is strict about
 		// key var types.
@@ -157,7 +160,7 @@ class Wordlift_Cached_Post_Converter implements Wordlift_Post_Converter {
 		$this->add_http_header( $post_id, false );
 
 		// Convert the the post.
-		$jsonld = $this->converter->convert( $post_id, $references );
+		$jsonld = $this->converter->convert( $post_id, $references, $references_infos );
 
 		// Cache the results.
 		$this->set_cache( $post_id, $references, $jsonld );
