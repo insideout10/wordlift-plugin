@@ -211,7 +211,7 @@ class Wordlift_Jsonld_Service {
 			       ! in_array( $item['reference']->get_id(), $references );
 		} );
 
-		$jsonld = array_merge( $jsonld, array_filter( array_map( function ( $item ) use ( &$references, $entity_to_jsonld_converter ) {
+		$jsonld = array_merge( $jsonld, array_filter( array_map( function ( $item ) use ( $references, $entity_to_jsonld_converter ) {
 
 			if ( ! isset( $item['reference'] ) ) {
 				return null;
@@ -224,12 +224,8 @@ class Wordlift_Jsonld_Service {
 
 			$references[] = $post_id;
 
-			var_dump($references);
-
 			return $entity_to_jsonld_converter->convert( $post_id, $references );
 		}, $required_references ) ) );
-
-		var_dump($references);
 
 		return $jsonld;
 	}

@@ -34,6 +34,7 @@ use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
 use Wordlift\Mappings\Mappings_Validator;
 use Wordlift\Mappings\Transforms\Taxonomy_To_Terms_Transform_Function;
 use Wordlift\Mappings\Transforms\Url_To_Entity_Transform_Function;
+use Wordlift\Mappings\Transforms\Post_Id_To_Entity_Transform_Function;
 use Wordlift\Mappings\Validators\Post_Type_Rule_Validator;
 use Wordlift\Mappings\Validators\Rule_Groups_Validator;
 use Wordlift\Mappings\Validators\Rule_Validators_Registry;
@@ -1277,7 +1278,7 @@ class Wordlift {
 		$this->postid_to_jsonld_converter      = new Wordlift_Postid_To_Jsonld_Converter( $this->entity_service, $this->entity_post_to_jsonld_converter, $this->post_to_jsonld_converter );
 		$this->jsonld_website_converter        = new Wordlift_Website_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $this->configuration_service );
 
-		$jsonld_cache                            = new Ttl_Cache( 'jsonld', 1 );
+		$jsonld_cache                            = new Ttl_Cache( 'jsonld', 86400 );
 		$this->cached_postid_to_jsonld_converter = new Wordlift_Cached_Post_Converter( $this->postid_to_jsonld_converter, $this->configuration_service, $jsonld_cache );
 		$this->jsonld_service                    = new Wordlift_Jsonld_Service( $this->entity_service, $this->cached_postid_to_jsonld_converter, $this->jsonld_website_converter );
 
@@ -1472,6 +1473,7 @@ class Wordlift {
 
 		new Url_To_Entity_Transform_Function( $this->entity_uri_service );
 		new Taxonomy_To_Terms_Transform_Function();
+		new Post_Id_To_Entity_Transform_Function();
 		$mappings_transform_functions_registry = new Mappings_Transform_Functions_Registry();
 
 		/**
