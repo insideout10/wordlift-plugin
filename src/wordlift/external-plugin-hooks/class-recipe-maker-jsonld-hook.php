@@ -21,7 +21,9 @@ class Recipe_Maker_Jsonld_Hook {
 		 */
 		add_filter( 'wprm_recipe_metadata', array( $this, 'swap_jsonld' ), 10, 2 );
 
-		add_filter( 'wl_entity_jsonld', array( $this, 'wl_post_jsonld' ), 10, 3 );
+		add_filter( 'wl_entity_jsonld_array', array( $this, 'wl_entity_jsonld_array' ), 10, 2 );
+
+		add_filter( 'wl_post_jsonld', array( $this, 'wl_post_jsonld' ), 10, 3 );
 
 	}
 
@@ -30,20 +32,22 @@ class Recipe_Maker_Jsonld_Hook {
 		return array();
 	}
 
+	public function wl_entity_jsonld_array( $arr, $post_id ) {
 
-	public function wl_post_jsonld( $jsonld, $post_id, $references ) {
+		$jsonld     = $arr['jsonld'];
+		$references = $arr['references'];
 
 		/**
 		 * Dont alter the jsonld if the classes are not present.
 		 */
 		if ( ! class_exists( '\WPRM_Recipe_Manager' ) || ! class_exists( 'WPRM_Metadata' ) ) {
-			return $jsonld;
+			return $arr;
 		}
 		if ( ! method_exists( '\WPRM_Recipe_Manager', 'get_recipe_ids_from_post' ) ||
 		     ! method_exists( '\WPRM_Recipe_Manager', 'get_recipe' ) ||
 		     ! method_exists( '\WPRM_Metadata', 'get_metadata_details' )
 		) {
-			return $jsonld;
+			return $arr;
 		}
 
 		// 1. Get the jsonld from recipe maker for the post id.
@@ -54,13 +58,20 @@ class Recipe_Maker_Jsonld_Hook {
 			return $jsonld;
 		}
 
-		// if there is only one recipe associated with post.
-		if ( count( $recipe_ids ) === 1 ) {
-			return $this->process_single_recipe_item( $recipe_ids[0] ) + $jsonld;
+		return array(
+			'jsonld'     => $jsonld,
+			'references' => array_merge( $recipe_ids, $references )
+		);
+
+	}
+
+	public function wl_post_jsonld( $jsonld, $post_id, $references ) {
+		$recipe_data = $this->process_single_recipe_item( $post_id );
+		if ( ! $recipe_data ) {
+			return $jsonld;
 		}
 
-		// Return jsonld if multiple elements are present.
-		return $jsonld;
+		return $recipe_data + $jsonld;
 	}
 
 	/**
