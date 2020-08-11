@@ -56,21 +56,19 @@ class Recipe_Maker_Jsonld_Hook {
 
 		// if there is only one recipe associated with post.
 		if ( count( $recipe_ids ) === 1 ) {
-			return $this->process_single_recipe_item( $recipe_ids[0], $jsonld ) + $jsonld;
+			return $this->process_single_recipe_item( $recipe_ids[0] ) + $jsonld;
 		}
 
-
+		// Return jsonld if multiple elements are present.
 		return $jsonld;
-
 	}
 
 	/**
-	 * @param $recipe_ids
-	 * @param $jsonld
+	 * @param $linked_recipe_id
 	 *
-	 * @return mixed
+	 * @return array
 	 */
-	private function process_single_recipe_item( $linked_recipe_id, $jsonld ) {
+	private function process_single_recipe_item( $linked_recipe_id ) {
 		$linked_recipe = \WPRM_Recipe_Manager::get_recipe( $linked_recipe_id );
 		if ( $linked_recipe ) {
 			return \WPRM_Metadata::get_metadata_details( $linked_recipe ) ?: array();
