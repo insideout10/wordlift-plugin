@@ -21,8 +21,10 @@ class Recipe_Maker_Jsonld_Hook {
 		 */
 		add_filter( 'wprm_recipe_metadata', array( $this, 'swap_jsonld' ), 10, 2 );
 
+		// First we push all the linked recipes to references.
 		add_filter( 'wl_entity_jsonld_array', array( $this, 'wl_entity_jsonld_array' ), 10, 2 );
 
+		// Then we merge the jsonld for every recipe.
 		add_filter( 'wl_post_jsonld', array( $this, 'wl_post_jsonld' ), 10, 3 );
 
 	}
