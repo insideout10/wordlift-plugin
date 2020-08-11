@@ -19,20 +19,63 @@ class Recipe_Maker_Jsonld_Hook {
 		 * see issue #1121: Integrate the jsonld of wp recipe maker in to
 		 * wordlift jsonld.
 		 */
-		add_filter( 'wprm_recipe_metadata', function ( $metadata, $recipe ) {
-			// The metadata contains the jsonld structure.
-			return array();
-		}, 10, 2 );
+		add_filter( 'wprm_recipe_metadata', array( $this, 'swap_jsonld' ), 10, 2 );
 
-		add_filter( 'wl_post_jsonld', array( $this, 'add_recipe_jsonld' ), 10, 3 );
+		add_filter( 'wl_entity_jsonld', array( $this, 'wl_post_jsonld' ), 10, 3 );
 
 	}
 
-	public function add_recipe_jsonld( $jsonld, $post_id, $references ) {
-		if ( ! class_exists( 'WPRM_Recipe_Manager' ) ) {
+	public function swap_jsonld( $metadata, $recipe ) {
+		// Return empty jsonld array.
+		return array();
+	}
+
+
+	public function wl_post_jsonld( $jsonld, $post_id, $references ) {
+
+		/**
+		 * Dont alter the jsonld if the classes are not present.
+		 */
+		if ( ! class_exists( '\WPRM_Recipe_Manager' ) || ! class_exists( 'WPRM_Metadata' ) ) {
 			return $jsonld;
 		}
-		var_dump( \WPRM_Recipe_Manager::get_recipe( $post_id ) );
-		wp_die();
+		if ( ! method_exists( '\WPRM_Recipe_Manager', 'get_recipe_ids_from_post' ) ||
+		     ! method_exists( '\WPRM_Recipe_Manager', 'get_recipe' ) ||
+		     ! method_exists( '\WPRM_Metadata', 'get_metadata_details' )
+		) {
+			return $jsonld;
+		}
+
+		// 1. Get the jsonld from recipe maker for the post id.
+		$recipe_ids = \WPRM_Recipe_Manager::get_recipe_ids_from_post( $post_id );
+
+		// If there are no associated recipes for a post id then return early
+		if ( ! $recipe_ids ) {
+			return $jsonld;
+		}
+
+		// if there is only one recipe associated with post.
+		if ( count( $recipe_ids ) === 1 ) {
+			return $this->process_single_recipe_item( $recipe_ids[0], $jsonld ) + $jsonld;
+		}
+
+
+		return $jsonld;
+
+	}
+
+	/**
+	 * @param $recipe_ids
+	 * @param $jsonld
+	 *
+	 * @return mixed
+	 */
+	private function process_single_recipe_item( $linked_recipe_id, $jsonld ) {
+		$linked_recipe = \WPRM_Recipe_Manager::get_recipe( $linked_recipe_id );
+		if ( $linked_recipe ) {
+			return \WPRM_Metadata::get_metadata_details( $linked_recipe ) ?: array();
+		}
+
+		return array();
 	}
 }

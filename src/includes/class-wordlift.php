@@ -1517,6 +1517,11 @@ class Wordlift {
 		) );
 		$this->autocomplete_adapter = new Wordlift_Autocomplete_Adapter( $autocomplete_service );
 
+		/**
+		 * @since 3.27.1
+		 * Integrate the recipe maker jsonld
+		 */
+		new Recipe_Maker_Jsonld_Hook();
 	}
 
 	/**
@@ -1775,12 +1780,6 @@ class Wordlift {
 
 			return array_merge( (array) $value, array( 'wordlift/classification' ) );
 		}, PHP_INT_MAX );
-
-		/**
-		 * @since 3.27.1
-		 * Integrate the recipe maker jsonld
-		 */
-		new Recipe_Maker_Jsonld_Hook();
 	}
 
 	/**
