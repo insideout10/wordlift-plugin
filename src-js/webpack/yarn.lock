@@ -15038,9 +15038,9 @@ word-wrap@~1.2.3:
   resolved "https://registry.yarnpkg.com/word-wrap/-/word-wrap-1.2.3.tgz#610636f6b1f703891bd34771ccb17fb93b47079c"
   integrity sha512-Hz/mrNwitNRh/HUAtM/VT/5VH+ygD6DV7mYKZAtHOrbs8U7lvPS6xf7EJKMF0uW1KJCl0H701g3ZGus+muE5vQ==
 
-"wordlift-cloud@git+https://wordlift-plugin:TCYswWXSoq1765zSg4iH@gitlab.com/wordlift/wordlift-navigator-js.git#1.3.0":
-  version "1.3.0"
-  resolved "git+https://wordlift-plugin:TCYswWXSoq1765zSg4iH@gitlab.com/wordlift/wordlift-navigator-js.git#f61cd0abfed57fb3daadbbb102668b361a797789"
+"wordlift-cloud@git+https://wordlift-plugin:TCYswWXSoq1765zSg4iH@gitlab.com/wordlift/wordlift-navigator-js.git#1.3.1":
+  version "1.3.1"
+  resolved "git+https://wordlift-plugin:TCYswWXSoq1765zSg4iH@gitlab.com/wordlift/wordlift-navigator-js.git#59d55db00dac5525472c3f8de78fe64906e886eb"
   dependencies:
     tippy.js "^6.1.0"
 
