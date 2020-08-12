@@ -142,6 +142,18 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.27.1 (2020-08-__) =
+
+* Enhancement [#1124](https://github.com/insideout10/wordlift-plugin/issues/1124): Context card UI enhancements.
+* Enhancement [#1118](https://github.com/insideout10/wordlift-plugin/issues/1118): Add a client-side hook to allow customization of the Cloud icon in Content Analysis box.
+* Enhancement [#1108](https://github.com/insideout10/wordlift-plugin/issues/1108): Add a Post Id to Entity transform function.
+
+* Fix [#1122](https://github.com/insideout10/wordlift-plugin/issues/1122): JavaScript error when clicking on Optimize in Media Library with EWWW.
+* Fix [#1117](https://github.com/insideout10/wordlift-plugin/issues/1117): Cancel button not working when trying to manually add an entity.
+* Fix [#1111](https://github.com/insideout10/wordlift-plugin/issues/1111): Relationships of Relationships not expanded in Mappings.
+* Fix [#1109](https://github.com/insideout10/wordlift-plugin/issues/1109): Acf group empty values should not be published.
+* Fix [#1085](https://github.com/insideout10/wordlift-plugin/issues/1085): Setup screen fails when WPML 3.9 is installed.
+
 = 3.27.0 (2020-08-03) =
 * Enhancement [#1103](https://github.com/insideout10/wordlift-plugin/issues/1103): Faceted Search chips UI fix.
 * Enhancement [#1096](https://github.com/insideout10/wordlift-plugin/issues/1096): Glossary Widget: If the post is not of type entity, use the first available synonym if it exists.
