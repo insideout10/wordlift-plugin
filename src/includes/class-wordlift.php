@@ -22,6 +22,7 @@ use Wordlift\Faq\Faq_Content_Filter;
 use Wordlift\Faq\Faq_Rest_Controller;
 use Wordlift\Faq\Faq_Tinymce_Adapter;
 use Wordlift\Faq\Faq_To_Jsonld_Converter;
+use Wordlift\Filters\Sd_Duplicate_Filter;
 use Wordlift\Jsonld\Jsonld_Adapter;
 use Wordlift\Jsonld\Jsonld_By_Id_Endpoint;
 use Wordlift\Jsonld\Jsonld_Endpoint;
@@ -1510,6 +1511,12 @@ class Wordlift {
 		) );
 		$this->autocomplete_adapter = new Wordlift_Autocomplete_Adapter( $autocomplete_service );
 
+
+		/**
+		 * @since 3.28.0
+		 * Initialize the sd duplicate filter.
+		 */
+		new Sd_Duplicate_Filter();
 	}
 
 	/**
