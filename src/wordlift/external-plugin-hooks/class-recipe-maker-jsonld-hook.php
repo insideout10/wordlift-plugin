@@ -29,9 +29,34 @@ class Recipe_Maker_Jsonld_Hook {
 
 	}
 
+	/**
+	 * Swap the valid jsonld with empty array so that recipe maker
+	 * wont output the jsonld.
+	 *
+	 * @param $metadata
+	 * @param $recipe
+	 * @return array
+	 */
 	public function swap_jsonld( $metadata, $recipe ) {
 		// Return empty jsonld array.
 		return array();
+	}
+
+	private function is_wp_recipe_maker_available() {
+		/**
+		 * Dont alter the jsonld if the classes are not present.
+		 */
+		if ( ! class_exists( '\WPRM_Recipe_Manager' ) || ! class_exists( 'WPRM_Metadata' ) ) {
+			return false;
+		}
+		if ( ! method_exists( '\WPRM_Recipe_Manager', 'get_recipe_ids_from_post' ) ||
+		     ! method_exists( '\WPRM_Recipe_Manager', 'get_recipe' ) ||
+		     ! method_exists( '\WPRM_Metadata', 'get_metadata_details' )
+		) {
+			return false;
+		}
+
+		return true;
 	}
 
 	public function wl_entity_jsonld_array( $arr, $post_id ) {
@@ -39,16 +64,8 @@ class Recipe_Maker_Jsonld_Hook {
 		$jsonld     = $arr['jsonld'];
 		$references = $arr['references'];
 
-		/**
-		 * Dont alter the jsonld if the classes are not present.
-		 */
-		if ( ! class_exists( '\WPRM_Recipe_Manager' ) || ! class_exists( 'WPRM_Metadata' ) ) {
-			return $arr;
-		}
-		if ( ! method_exists( '\WPRM_Recipe_Manager', 'get_recipe_ids_from_post' ) ||
-		     ! method_exists( '\WPRM_Recipe_Manager', 'get_recipe' ) ||
-		     ! method_exists( '\WPRM_Metadata', 'get_metadata_details' )
-		) {
+		// check if wp recipe maker installed, if not return early.
+		if ( ! $this->is_wp_recipe_maker_available() ) {
 			return $arr;
 		}
 
@@ -82,6 +99,10 @@ class Recipe_Maker_Jsonld_Hook {
 	 * @return array
 	 */
 	private function process_single_recipe_item( $linked_recipe_id ) {
+		// check if recipe maker present.
+		if ( ! $this->is_wp_recipe_maker_available() ) {
+			return array();
+		}
 		$linked_recipe = \WPRM_Recipe_Manager::get_recipe( $linked_recipe_id );
 		if ( $linked_recipe ) {
 			return \WPRM_Metadata::get_metadata_details( $linked_recipe ) ?: array();
