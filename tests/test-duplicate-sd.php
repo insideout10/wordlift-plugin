@@ -5,7 +5,7 @@
  * @group duplicate_sd
  * Class Duplicate_Markup_Test
  */
-class Duplicate_Sd_Test {
+class Duplicate_Sd_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_given_post_with_faq_markup_should_not_allow_other_faq_on_page() {
 
