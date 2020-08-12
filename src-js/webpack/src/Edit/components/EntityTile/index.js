@@ -27,6 +27,8 @@ import Category from "./Category";
 import EditLink from "./EditLink";
 import ArrowToggle from "../ArrowToggle";
 
+const applyFilters = window.wp && window.wp.hooks && window.wp.hooks.applyFilters;
+
 /**
  * @inheritDoc
  */
@@ -40,6 +42,9 @@ class EntityTile extends React.Component {
     // Create a reference to the DOM element, sine we want focus on the tiles
     // when they're active.
     this.ref = React.createRef();
+
+    this.cloudIconClass = applyFilters ? applyFilters("wl_cloud_icon_class", "fa fa-cloud") : "fa fa-cloud";
+    this.networkIconClass = applyFilters ? applyFilters("wl_network_icon_class", "fa fa-external-link") : "fa fa-cloud";
 
     // Bind our functions.
     this.onEditClick = this.onEditClick.bind(this);
@@ -157,7 +162,15 @@ class EntityTile extends React.Component {
             {this.props.entity.label}
             <MainType entity={this.props.entity}>{this.props.entity.mainType}</MainType>
           </Label>
-          {this.props.entity.local || <Cloud className="fa fa-cloud" />}
+          {this.props.entity.local || (
+            <Cloud
+              className={
+                this.props.entity.id.match(/https?:\/\/(?:\w+\\.)?dbpedia\.org/)
+                  ? this.cloudIconClass
+                  : this.networkIconClass
+              }
+            />
+          )}
         </Main>
         <Drawer open={this.state.open}>
           <Switch onClick={this.onSwitchClick} selected={this.props.entity.link}>
