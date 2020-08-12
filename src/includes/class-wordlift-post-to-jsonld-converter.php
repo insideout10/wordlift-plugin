@@ -60,12 +60,12 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 *
 	 * @param int $post_id The post id.
 	 * @param array $references An array of entity references.
+	 * @param array $references_infos
 	 *
 	 * @return array A JSON-LD array.
 	 * @since 3.10.0
-	 *
 	 */
-	public function convert( $post_id, &$references = array() ) {
+	public function convert( $post_id, &$references = array(), &$references_infos = array() ) {
 
 		// Get the post instance.
 		if ( null === $post = get_post( $post_id ) ) {
@@ -74,7 +74,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		}
 
 		// Get the base JSON-LD and the list of entities referenced by this entity.
-		$jsonld = parent::convert( $post_id, $references );
+		$jsonld = parent::convert( $post_id, $references, $references_infos );
 
 		// Set WebPage by default.
 		if ( empty( $jsonld['@type'] ) ) {

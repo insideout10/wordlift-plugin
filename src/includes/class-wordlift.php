@@ -34,6 +34,7 @@ use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
 use Wordlift\Mappings\Mappings_Validator;
 use Wordlift\Mappings\Transforms\Taxonomy_To_Terms_Transform_Function;
 use Wordlift\Mappings\Transforms\Url_To_Entity_Transform_Function;
+use Wordlift\Mappings\Transforms\Post_Id_To_Entity_Transform_Function;
 use Wordlift\Mappings\Validators\Post_Type_Rule_Validator;
 use Wordlift\Mappings\Validators\Rule_Groups_Validator;
 use Wordlift\Mappings\Validators\Rule_Validators_Registry;
@@ -1472,6 +1473,7 @@ class Wordlift {
 
 		new Url_To_Entity_Transform_Function( $this->entity_uri_service );
 		new Taxonomy_To_Terms_Transform_Function();
+		new Post_Id_To_Entity_Transform_Function();
 		$mappings_transform_functions_registry = new Mappings_Transform_Functions_Registry();
 
 		/**

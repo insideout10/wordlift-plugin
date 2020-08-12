@@ -99,7 +99,7 @@ class Wordlift_Property_Getter_Test extends Wordlift_Unit_Test_Case {
 			$this->assertTrue( is_array( $values ) );
 			$this->assertCount( 1, $values );
 			$this->assertTrue( $values[0] instanceof Wordlift_Property_Entity_Reference );
-			$this->assertEquals( self::ENTITY_URI, $values[0]->getURL() );
+			$this->assertEquals( self::ENTITY_URI, $values[0]->get_url() );
 
 		}
 

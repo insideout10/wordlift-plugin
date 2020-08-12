@@ -39,6 +39,8 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 	 */
 	private $post_to_jsonld_converter;
 
+	private $references_infos;
+
 	/**
 	 * Wordlift_Entity_To_Jsonld_Converter constructor.
 	 *
@@ -66,14 +68,13 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 	 * found while processing the post is set in the $references array.
 	 *
 	 * @param int $post_id The {@link WP_Post} id.
-	 *
 	 * @param array $references An array of entity references.
+	 * @param array $references_infos
 	 *
 	 * @return array A JSON-LD array.
 	 * @since 3.8.0
-	 *
 	 */
-	public function convert( $post_id, &$references = array() ) {
+	public function convert( $post_id, &$references = array(), &$references_infos = array() ) {
 
 		// Get the post instance.
 		$post = get_post( $post_id );
@@ -84,9 +85,9 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 
 		// Get the base JSON-LD and the list of entities referenced by this entity.
 		if ( has_term( 'article', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, $post_id ) ) {
-			$jsonld = $this->post_to_jsonld_converter->convert( $post_id, $references );
+			$jsonld = $this->post_to_jsonld_converter->convert( $post_id, $references, $references_infos );
 		} else {
-			$jsonld = parent::convert( $post_id, $references );
+			$jsonld = parent::convert( $post_id, $references, $references_infos );
 		}
 
 		// Get the entity name.
@@ -105,7 +106,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 		$custom_fields = $this->entity_type_service->get_custom_fields( $post_id );
 
 		if ( isset( $custom_fields ) ) {
-			$this->process_type_custom_fields( $jsonld, $custom_fields, $post, $references );
+			$this->process_type_custom_fields( $jsonld, $custom_fields, $post, $references, $references_infos );
 		}
 
 		/*
@@ -167,7 +168,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 	 *  the {@link Wordlift_Schema_Service} class.
 	 *
 	 */
-	private function process_type_custom_fields( &$jsonld, $fields, $post, &$references ) {
+	private function process_type_custom_fields( &$jsonld, $fields, $post, &$references, &$references_infos ) {
 
 		// Set a reference to use in closures.
 		$converter = $this;
@@ -189,14 +190,16 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 			// Map the value to the property name.
 			// If we got an array with just one value, we return that one value.
 			// If we got a Wordlift_Property_Entity_Reference we get the URL.
-			$jsonld[ $name ] = self::make_one( array_map( function ( $item ) use ( $converter, &$references ) {
+			$jsonld[ $name ] = self::make_one( array_map( function ( $item ) use ( $converter, &$references, &$references_infos ) {
 
 				if ( $item instanceof Wordlift_Property_Entity_Reference ) {
 
-					$url = $item->getURL();
+					$url = $item->get_url();
 
 					// The refactored converters require the entity id.
-					$references[] = $item->getID();
+					$references[] = $item->get_id();
+
+					$references_infos[] = array( 'reference' => $item );
 
 					return array(
 						'@id' => $url,
