@@ -18,15 +18,6 @@ class Recipe_Maker_Jsonld_Hook {
 		// Configure jsonld using filters.
 		$this->remove_recipe_maker_jsonld();
 		$this->merge_recipe_jsonld();
-		add_filter( 'wl_post_jsonld', function ( $a, $b, $c ) {
-			var_dump( 'intercepting' );
-			var_dump( $a );
-			var_dump( $b );
-			var_dump( $c );
-
-			return $a;
-		}, 10, 3 );
-
 	}
 
 	private function remove_recipe_maker_jsonld() {

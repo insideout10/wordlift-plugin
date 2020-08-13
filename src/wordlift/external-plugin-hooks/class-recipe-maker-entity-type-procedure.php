@@ -20,7 +20,7 @@ class Recipe_Maker_Entity_Type_Procedure {
 			// set entity type to Product.
 			\Wordlift_Entity_Type_Service::get_instance()
 			                             ->set( $post_id,
-				                             'http://schema.org/Recipe', true );
+				                             'http://schema.org/Recipe', false );
 		}
 	}
 

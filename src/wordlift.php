@@ -482,12 +482,6 @@ function activate_wordlift() {
 	// Ensure the post type is registered before flushing the rewrite rules.
 	Wordlift_Entity_Post_Type_Service::get_instance()->register();
 	flush_rewrite_rules();
-	/**
-	 * @since 3.27.2
-	 * Set recipe type to wp recipe maker post type.
-	 */
-	$recipe_maker_procedure = new Recipe_Maker_Entity_Type_Procedure();
-	$recipe_maker_procedure->run_procedure();
 }
 
 /**
