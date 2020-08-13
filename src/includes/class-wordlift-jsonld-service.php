@@ -187,7 +187,7 @@ class Wordlift_Jsonld_Service {
 				$ignored = array();
 
 				return $entity_to_jsonld_converter->convert( $item, $ignored, $references_infos );
-			}, $references ) ) );
+			}, array_unique( $references ) ) ) );
 
 		$required_references = array_filter( $references_infos, function ( $item ) use ( $references ) {
 			return isset( $item['reference'] ) &&
@@ -211,7 +211,7 @@ class Wordlift_Jsonld_Service {
 			$references[] = $post_id;
 
 			return $entity_to_jsonld_converter->convert( $post_id, $references );
-		}, array_unique( $required_references ) ) ) );
+		}, $required_references ) ) );
 
 		return $jsonld;
 	}
