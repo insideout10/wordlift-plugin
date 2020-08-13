@@ -18,7 +18,6 @@ class Wordlift_Install_3_27_1 extends Wordlift_Install {
 	protected static $version = '3.27.1';
 
 	public function install() {
-		//$this->create_recipe_term_if_not_exists();
 		$procedure = new Recipe_Maker_Entity_Type_Procedure();
 		$procedure->run_procedure();
 	}

@@ -98,6 +98,9 @@ class Recipe_Maker_Jsonld_Hook {
 		if ( ! $recipe_data ) {
 			return $jsonld;
 		}
+		if ( ! $jsonld ) {
+			return $recipe_data;
+		}
 
 		return $recipe_data + $jsonld;
 	}
