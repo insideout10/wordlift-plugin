@@ -148,6 +148,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement [#1118](https://github.com/insideout10/wordlift-plugin/issues/1118): Add a client-side hook to allow customization of the Cloud icon in Content Analysis box.
 * Enhancement [#1108](https://github.com/insideout10/wordlift-plugin/issues/1108): Add a Post Id to Entity transform function.
 
+* Fix [#1134](https://github.com/insideout10/wordlift-plugin/issues/1134): Use get_permalink (not get_post_permalink) to get the permalink.
 * Fix [#1122](https://github.com/insideout10/wordlift-plugin/issues/1122): JavaScript error when clicking on Optimize in Media Library with EWWW.
 * Fix [#1117](https://github.com/insideout10/wordlift-plugin/issues/1117): Cancel button not working when trying to manually add an entity.
 * Fix [#1111](https://github.com/insideout10/wordlift-plugin/issues/1111): Relationships of Relationships not expanded in Mappings.

@@ -77,8 +77,8 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 		$this->assertCount( 2, $response->posts );
 		$this->assertEquals( 'post', $response->posts[0]->post_type );
 		$this->assertEquals( 'post', $response->posts[1]->post_type );
-		$this->assertEquals( get_post_permalink( $response->posts[0]->ID ), $response->posts[0]->permalink );
-		$this->assertEquals( get_post_permalink( $response->posts[1]->ID ), $response->posts[1]->permalink );
+		$this->assertEquals( get_permalink( $response->posts[0]->ID ), $response->posts[0]->permalink );
+		$this->assertEquals( get_permalink( $response->posts[1]->ID ), $response->posts[1]->permalink );
 
 		$post_ids = array( $response->posts[0]->ID, $response->posts[1]->ID );
 		$this->assertContains( $post_1_id, $post_ids );
