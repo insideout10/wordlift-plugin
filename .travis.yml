@@ -61,6 +61,15 @@ matrix:
     # WordPress nightly.
     - php: 5.6
       env: SCRIPT=test:php WP_VERSION=nightly
+    # Latest WP version 5.5
+    - php: 7.2
+      env: SCRIPT=test:php WP_VERSION=5.5
+    # Latest WP version 5.5
+    - php: 7.0
+      env: SCRIPT=test:php WP_VERSION=5.5
+    # Latest WP version 5.5
+    - php: 5.6
+      env: SCRIPT=test:php WP_VERSION=5.5
 
 # Cache the node_modules folder.
 # See https://blog.travis-ci.com/2013-12-05-speed-up-your-builds-cache-your-dependencies
