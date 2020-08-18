@@ -155,9 +155,15 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 			$post_type = get_post_type( $object_id );
 			if ( Wordlift_Entity_Type_Service::is_valid_entity_post_type( $post_type ) ) {
 				// Set the term to article for posts and pages, or to thing for everything else.
-				$term = Wordlift_Entity_Service::TYPE_NAME === $post_type
-					? 'thing' : 'article';
-				wp_set_object_terms( $object_id, $term, $entity_type, true );
+				$uris  = Wordlift_Entity_Type_Adapter::get_entity_types( $post_type );
+				foreach ( $uris as $uri ) {
+					// set the uri based on post type.
+					if ( $uri === 'http://schema.org/Article' || $uri === 'http://schema.org/Thing' ) {
+						$uri = Wordlift_Entity_Service::TYPE_NAME === $post_type ?
+							'http://schema.org/Thing' : 'http://schema.org/Article';
+					}
+					Wordlift_Entity_Type_Service::get_instance()->set( $object_id, $uri );
+				}
 			}
 		}
 
