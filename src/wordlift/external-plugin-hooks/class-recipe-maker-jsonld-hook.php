@@ -31,6 +31,7 @@ class Recipe_Maker_Jsonld_Hook {
 	private function merge_recipe_jsonld() {
 		// First we push all the linked recipes to references.
 		add_filter( 'wl_entity_jsonld_array', array( $this, 'wl_entity_jsonld_array' ), 10, 2 );
+		add_filter( 'wl_post_jsonld_array', array( $this, 'wl_entity_jsonld_array' ), 10, 2 );
 
 		// Then we merge the jsonld for every recipe.
 		add_filter( 'wl_entity_jsonld', array( $this, 'wl_entity_jsonld' ), 10, 3 );
