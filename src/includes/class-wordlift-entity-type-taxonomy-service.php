@@ -157,10 +157,13 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 				// Set the term to article for posts and pages, or to thing for everything else.
 				$uris  = Wordlift_Entity_Type_Adapter::get_entity_types( $post_type );
 				foreach ( $uris as $uri ) {
+					// set the uri based on post type.
+					if ( $uri === 'http://schema.org/Article' || $uri === 'http://schema.org/Thing' ) {
+						$uri = Wordlift_Entity_Service::TYPE_NAME === $post_type ?
+							'http://schema.org/Thing' : 'http://schema.org/Article';
+					}
 					Wordlift_Entity_Type_Service::get_instance()->set( $object_id, $uri );
 				}
-
-				//wp_set_object_terms( $object_id, $terms, $entity_type, true );
 			}
 		}
 
