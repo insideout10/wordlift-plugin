@@ -145,6 +145,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 = 3.27.1 (2020-08-__) =
 
 * Enhancement [#1124](https://github.com/insideout10/wordlift-plugin/issues/1124): Context card UI enhancements.
+* Enhancement [#1121](https://github.com/insideout10/wordlift-plugin/issues/1121): Integrate with WP Recipe Maker JSON-LD.
 * Enhancement [#1118](https://github.com/insideout10/wordlift-plugin/issues/1118): Add a client-side hook to allow customization of the Cloud icon in Content Analysis box.
 * Enhancement [#1108](https://github.com/insideout10/wordlift-plugin/issues/1108): Add a Post Id to Entity transform function.
 
