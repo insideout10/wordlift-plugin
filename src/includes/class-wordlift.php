@@ -18,6 +18,8 @@ use Wordlift\Autocomplete\Linked_Data_Autocomplete_Service;
 use Wordlift\Autocomplete\Local_Autocomplete_Service;
 use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Entity\Entity_Helper;
+use Wordlift\External_Plugin_Hooks\Recipe_Maker_Jsonld_Hook;
+use Wordlift\External_Plugin_Hooks\Recipe_Maker_Post_Type_Hook;
 use Wordlift\Faq\Faq_Content_Filter;
 use Wordlift\Faq\Faq_Rest_Controller;
 use Wordlift\Faq\Faq_Tinymce_Adapter;
@@ -1518,6 +1520,13 @@ class Wordlift {
 		) );
 		$this->autocomplete_adapter = new Wordlift_Autocomplete_Adapter( $autocomplete_service );
 
+		/**
+		 * @since 3.27.2
+		 * Integrate the recipe maker jsonld & set recipe
+		 * as default entity type to the wprm_recipe CPT.
+		 */
+		new Recipe_Maker_Post_Type_Hook();
+		new Recipe_Maker_Jsonld_Hook();
 	}
 
 	/**
@@ -1776,7 +1785,6 @@ class Wordlift {
 
 			return array_merge( (array) $value, array( 'wordlift/classification' ) );
 		}, PHP_INT_MAX );
-
 	}
 
 	/**
