@@ -116,6 +116,30 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			$jsonld['wordCount'] = $post_adapter->word_count();
 		}
 
+		/*
+		 * Add keywords, articleSection, commentCount and inLanguage properties to `Article` JSON-LD
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/1140
+		 *
+		 * @since 3.27.2
+		 */
+		if ( ! empty( $jsonld['@type'] ) && 'Article' === $jsonld['@type'] ) {
+			$post_adapter    = new Wordlift_Post_Adapter( $post_id );
+			$keywords        = $post_adapter->keywords();
+			$article_section = $post_adapter->article_section();
+			$comment_count   = $post_adapter->comment_count();
+			$locale          = $post_adapter->locale();
+
+			if ( isset( $keywords ) ) {
+				$jsonld['keywords'] = $keywords;
+			}
+			if ( isset( $article_section ) ) {
+				$jsonld['articleSection'] = $article_section;
+			}
+			$jsonld['commentCount'] = $comment_count;
+			$jsonld['inLanguage']   = $locale;
+		}
+
 		// Set the publisher.
 		$this->set_publisher( $jsonld );
 
