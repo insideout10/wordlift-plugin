@@ -44,21 +44,40 @@ class Recipe_Maker_Page_Jsonld_Hook {
 			return $jsonld;
 		}
 
-		$post_jsonld    = $jsonld[0];
+		// We remove the current post jsonld.
+		$post_jsonld    = array_shift( $jsonld );
 		$post_jsonld_id = array_key_exists( '@id', $post_jsonld ) ? $post_jsonld['@id'] : false;
 
 		if ( ! $post_jsonld_id ) {
 			return $jsonld;
 		}
 
+		$types_to_be_removed = array(
+			'Article',
+			'WebPage',
+			'WebSite'
+		);
+
 		foreach ( $jsonld as $key => $value ) {
-			if ( array_key_exists( '@type', $value ) && $value['@type'] === 'Recipe' ) {
+			if ( ! array_key_exists( '@type', $value ) ) {
+				continue;
+			}
+			$type = $value['@type'];
+			if ( $type === 'Recipe' ) {
 				$value['isPartOf'] = array(
 					'@id' => $post_jsonld_id
 				);
 				$jsonld[ $key ]    = $value;
 			}
+			if ( in_array( $type, $types_to_be_removed, true ) ) {
+				// If Article/WebPage/WebSite markup is present in page, remove it.
+				// see issue #1141
+				unset( $jsonld[ $key ] );
+			}
 		}
+
+		// Add back the post jsonld to first of array.
+		array_unshift( $jsonld, $post_jsonld );
 
 		return $jsonld;
 	}
