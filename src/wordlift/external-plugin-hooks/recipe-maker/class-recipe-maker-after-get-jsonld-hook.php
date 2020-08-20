@@ -23,7 +23,7 @@ class Recipe_Maker_After_Get_Jsonld_Hook {
 	public function __construct( $recipe_maker_validation_service ) {
 		$this->recipe_maker_validation_service = $recipe_maker_validation_service;
 		// Add the filter to alter final jsonld.
-		add_filter( 'wl_page_jsonld', array( $this, 'wl_after_get_jsonld' ), 10, 2 );
+		add_filter( 'wl_after_get_jsonld', array( $this, 'wl_after_get_jsonld' ), 10, 2 );
 	}
 
 	/**
