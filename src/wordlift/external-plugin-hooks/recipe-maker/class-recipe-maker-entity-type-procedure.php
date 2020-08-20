@@ -1,6 +1,6 @@
 <?php
 
-namespace Wordlift\External_Plugin_Hooks;
+namespace Wordlift\External_Plugin_Hooks\Recipe_Maker;
 
 /**
  * This procedure set all wp recipe maker posts to Recipe entity type
