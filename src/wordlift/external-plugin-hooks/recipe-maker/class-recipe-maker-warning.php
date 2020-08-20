@@ -68,6 +68,9 @@ class Recipe_Maker_Warning {
 
 		$recipe_ids = \WPRM_Recipe_Manager::get_recipe_ids_from_post( $post_id );
 
+		// Dont show duplicate warnings.
+		$recipe_ids = array_unique( $recipe_ids );
+
 		$recipe_with_image_warnings = array();
 
 		foreach ( $recipe_ids as $recipe_id ) {
