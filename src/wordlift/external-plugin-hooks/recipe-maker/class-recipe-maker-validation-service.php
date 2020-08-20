@@ -2,7 +2,7 @@
 
 namespace Wordlift\External_Plugin_Hooks\Recipe_Maker;
 /**
- * @since ?.??.?
+ * @since 3.27.2
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 class Recipe_Maker_Validation_Service {
