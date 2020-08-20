@@ -233,8 +233,10 @@ class Wordlift_Jsonld_Service {
 		 * @return array
 		 * @since 3.27.2
 		 * @var $jsonld array The final jsonld before outputting to page.
+		 * @var $post_id int The post id for which the jsonld is generated.
+		 *
 		 */
-		$jsonld = apply_filters( 'wl_page_jsonld', $jsonld );
+		$jsonld = apply_filters( 'wl_page_jsonld', $jsonld, $post_id );
 
 		return $jsonld;
 	}

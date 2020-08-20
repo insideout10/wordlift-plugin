@@ -14,11 +14,25 @@ namespace Wordlift\External_Plugin_Hooks;
  */
 class Recipe_Maker_Jsonld_Hook {
 
-	public function __construct() {
+	/**
+	 * @var \Wordlift_Attachment_Service
+	 */
+	private $attachment_service;
+
+	/**
+	 * Recipe_Maker_Jsonld_Hook constructor.
+	 *
+	 * @param $attachment_service \Wordlift_Attachment_Service
+	 */
+	public function __construct( $attachment_service ) {
+
+		$this->attachment_service = $attachment_service;
 		// Configure jsonld using filters.
 		$this->remove_recipe_maker_jsonld();
 		$this->merge_recipe_jsonld();
-		add_filter( 'wl_page_jsonld', array( $this, 'wl_page_jsonld' ) );
+
+		// Add the filter to alter final jsonld.
+		add_filter( 'wl_page_jsonld', array( $this, 'wl_page_jsonld' ), 10, 2 );
 	}
 
 	private function remove_recipe_maker_jsonld() {
@@ -100,6 +114,14 @@ class Recipe_Maker_Jsonld_Hook {
 		if ( ! $recipe_data ) {
 			return $jsonld;
 		}
+
+		// Set image via wordlift.
+		\Wordlift_Abstract_Post_To_Jsonld_Converter::set_images(
+			$this->attachment_service,
+			get_post( $post_id ),
+			$recipe_data
+		);
+
 		if ( ! $jsonld ) {
 			return $recipe_data;
 		}
@@ -130,12 +152,19 @@ class Recipe_Maker_Jsonld_Hook {
 	 *
 	 * @param $jsonld array
 	 *
+	 * @param $post_id int
+	 *
 	 * @return array The altered jsonld array.
 	 */
-	public function wl_page_jsonld( $jsonld ) {
+	public function wl_page_jsonld( $jsonld, $post_id ) {
 		if ( ! is_array( $jsonld ) || count( $jsonld ) === 0 ) {
 			return $jsonld;
 		}
+		// If there are no recipes in the post then dont alter the jsonld.
+		if ( ! $this->is_atleast_once_recipe_present_in_the_post( $post_id ) ) {
+			return $jsonld;
+		}
+
 		$post_jsonld    = $jsonld[0];
 		$post_jsonld_id = array_key_exists( '@id', $post_jsonld ) ? $post_jsonld['@id'] : false;
 
@@ -153,5 +182,16 @@ class Recipe_Maker_Jsonld_Hook {
 		}
 
 		return $jsonld;
+	}
+
+
+	public function is_atleast_once_recipe_present_in_the_post( $post_id ) {
+
+		if ( ! $this->is_wp_recipe_maker_available() ) {
+			return false;
+		}
+		$recipe_ids = \WPRM_Recipe_Manager::get_recipe_ids_from_post( $post_id );
+
+		return is_array( $recipe_ids ) ? count( $recipe_ids ) > 0 : false;
 	}
 }

@@ -1526,7 +1526,7 @@ class Wordlift {
 		 * as default entity type to the wprm_recipe CPT.
 		 */
 		new Recipe_Maker_Post_Type_Hook();
-		new Recipe_Maker_Jsonld_Hook();
+		new Recipe_Maker_Jsonld_Hook( $attachment_service );
 	}
 
 	/**
