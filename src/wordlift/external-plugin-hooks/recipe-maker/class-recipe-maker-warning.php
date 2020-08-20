@@ -45,7 +45,14 @@ class Recipe_Maker_Warning {
 			// Show notification.
 			?>
             <div class="notice notice-warning is-dismissible">
-                <p><?php __( 'Added recipe should have image size 1200 x 1200 px', 'wordlift' ); ?></p>
+                <p><?php echo __( 'The following recipes didnt have minimum image size of 1200 x 1200 px', 'wordlift' ); ?></p>
+                <ol>
+					<?php
+					foreach ( $recipe_with_image_warnings as $post_id ) {
+						echo "<li>" . get_the_title( $post_id ) . "</li>";
+					}
+					?>
+                </ol>
             </div>
 			<?php
 		}
@@ -78,7 +85,7 @@ class Recipe_Maker_Warning {
 
 			if ( $image_height < 1200 || $image_width < 1200 ) {
 				// Image size not present in 1200 * 1200, show a warning.
-				$recipe_with_image_warnings[] = $recipe;
+				$recipe_with_image_warnings[] = $recipe_id;
 			}
 		}
 
