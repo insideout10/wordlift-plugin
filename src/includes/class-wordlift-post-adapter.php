@@ -240,4 +240,25 @@ class Wordlift_Post_Adapter {
 
 	}
 
+	/**
+	 * Add mentions to an article.
+	 * To add mentions we just push the referenced entities to mentions.
+	 *
+	 * @param $post_id int
+	 * @param $references int[]
+	 */
+	public function add_mentions( $post_id, &$references ) {
+		$tags = get_the_tags( $post_id );
+		// Loop through the tags and push it to references.
+		foreach ( $tags as $tag ) {
+			$entity_uris = get_term_meta( $tag, '_wl_entity_id' );
+			foreach ( $entity_uris as $uri ) {
+				$referenced_entity = Wordlift_Entity_Uri_Service::get_instance()->get_entity( $uri );
+				if ( $referenced_entity instanceof WP_Post ) {
+
+				}
+			}
+		}
+	}
+
 }

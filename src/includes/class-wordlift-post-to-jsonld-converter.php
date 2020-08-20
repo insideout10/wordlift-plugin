@@ -138,6 +138,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			}
 			$jsonld['commentCount'] = $comment_count;
 			$jsonld['inLanguage']   = $locale;
+			$post_adapter->add_mentions( &$references );
 		}
 
 		// Set the publisher.
