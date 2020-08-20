@@ -27,9 +27,15 @@ matrix:
     # Additional PHP Unit tests, PHP 7.2, PHP 7.0, WP 5.1 (WP 4.2 isn't compatible with PHP 7.x).
     - php: 7.2
       env: SCRIPT=test:php WP_VERSION=5.4
+    # Latest WP version 5.5
+    - php: 7.2
+      env: SCRIPT=test:php WP_VERSION=5.5
     #
     - php: 7.0
       env: SCRIPT=test:php WP_VERSION=5.4
+    # Latest WP version 5.5
+    - php: 7.0
+      env: SCRIPT=test:php WP_VERSION=5.5
     # WordPress nightly.
     - php: 5.6
       env: SCRIPT=test:php WP_VERSION=nightly
@@ -42,6 +48,9 @@ matrix:
     # Additional PHP Unit tests multisite environment, PHP 5.6, WP 5.1.
     - php: 5.6
       env: SCRIPT=test:multisite WP_VERSION=5.4
+    # Latest WP version 5.5
+    - php: 5.6
+      env: SCRIPT=test:php WP_VERSION=5.5
     # Additional PHP Unit tests specific to some users' environment, i.e. PHP 5.5 and WP 4.7.
     - php: 5.5
       env: SCRIPT=test:php WP_VERSION=4.7
@@ -52,6 +61,15 @@ matrix:
     # WordPress nightly.
     - php: 5.6
       env: SCRIPT=test:php WP_VERSION=nightly
+    # Latest WP version 5.5
+    - php: 7.2
+      env: SCRIPT=test:php WP_VERSION=5.5
+    # Latest WP version 5.5
+    - php: 7.0
+      env: SCRIPT=test:php WP_VERSION=5.5
+    # Latest WP version 5.5
+    - php: 5.6
+      env: SCRIPT=test:php WP_VERSION=5.5
 
 # Cache the node_modules folder.
 # See https://blog.travis-ci.com/2013-12-05-speed-up-your-builds-cache-your-dependencies
