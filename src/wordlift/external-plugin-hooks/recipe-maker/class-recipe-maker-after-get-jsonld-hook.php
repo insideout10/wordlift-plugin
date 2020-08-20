@@ -10,10 +10,10 @@ namespace Wordlift\External_Plugin_Hooks\Recipe_Maker;
  * Hook in to full jsonld structure and alter it when
  * there are recipes referred in the post.
  *
- * Class Recipe_Maker_Page_Jsonld_Hook
+ * Class Recipe_Maker_After_Get_Jsonld_Hook
  * @package Wordlift\External_Plugin_Hooks
  */
-class Recipe_Maker_Page_Jsonld_Hook {
+class Recipe_Maker_After_Get_Jsonld_Hook {
 
 	/**
 	 * @var Recipe_Maker_Validation_Service
@@ -23,7 +23,7 @@ class Recipe_Maker_Page_Jsonld_Hook {
 	public function __construct( $recipe_maker_validation_service ) {
 		$this->recipe_maker_validation_service = $recipe_maker_validation_service;
 		// Add the filter to alter final jsonld.
-		add_filter( 'wl_page_jsonld', array( $this, 'wl_page_jsonld' ), 10, 2 );
+		add_filter( 'wl_page_jsonld', array( $this, 'wl_after_get_jsonld' ), 10, 2 );
 	}
 
 	/**
@@ -35,7 +35,7 @@ class Recipe_Maker_Page_Jsonld_Hook {
 	 *
 	 * @return array The altered jsonld array.
 	 */
-	public function wl_page_jsonld( $jsonld, $post_id ) {
+	public function wl_after_get_jsonld( $jsonld, $post_id ) {
 		if ( ! is_array( $jsonld ) || count( $jsonld ) === 0 ) {
 			return $jsonld;
 		}

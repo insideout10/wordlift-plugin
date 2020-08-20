@@ -19,7 +19,7 @@ use Wordlift\Autocomplete\Local_Autocomplete_Service;
 use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Entity\Entity_Helper;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Jsonld_Hook;
-use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Page_Jsonld_Hook;
+use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_After_Get_Jsonld_Hook;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Post_Type_Hook;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Validation_Service;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Warning;
@@ -1529,7 +1529,7 @@ class Wordlift {
 		new Recipe_Maker_Post_Type_Hook();
 		$recipe_maker_validation_service = new Recipe_Maker_Validation_Service();
 		new Recipe_Maker_Jsonld_Hook( $attachment_service, $recipe_maker_validation_service );
-		new Recipe_Maker_Page_Jsonld_Hook( $recipe_maker_validation_service );
+		new Recipe_Maker_After_Get_Jsonld_Hook( $recipe_maker_validation_service );
 		new Recipe_Maker_Warning( $recipe_maker_validation_service );
 	}
 

@@ -229,14 +229,14 @@ class Wordlift_Jsonld_Service {
 		}, $required_references ) ) );
 
 		/**
-		 * Filter name: wl_page_jsonld
+		 * Filter name: wl_after_get_jsonld
 		 * @return array
 		 * @since 3.27.2
 		 * @var $jsonld array The final jsonld before outputting to page.
 		 * @var $post_id int The post id for which the jsonld is generated.
 		 *
 		 */
-		$jsonld = apply_filters( 'wl_page_jsonld', $jsonld, $post_id );
+		$jsonld = apply_filters( 'wl_after_get_jsonld', $jsonld, $post_id );
 
 		return $jsonld;
 	}
