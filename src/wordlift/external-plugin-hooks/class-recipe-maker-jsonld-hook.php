@@ -18,6 +18,7 @@ class Recipe_Maker_Jsonld_Hook {
 		// Configure jsonld using filters.
 		$this->remove_recipe_maker_jsonld();
 		$this->merge_recipe_jsonld();
+		add_filter( 'wl_page_jsonld', array( $this, 'wl_page_jsonld' ) );
 	}
 
 	private function remove_recipe_maker_jsonld() {
@@ -122,5 +123,35 @@ class Recipe_Maker_Jsonld_Hook {
 		}
 
 		return array();
+	}
+
+	/**
+	 * Add isPartOf to all the recipes.
+	 *
+	 * @param $jsonld array
+	 *
+	 * @return array The altered jsonld array.
+	 */
+	public function wl_page_jsonld( $jsonld ) {
+		if ( ! is_array( $jsonld ) || count( $jsonld ) === 0 ) {
+			return $jsonld;
+		}
+		$post_jsonld    = $jsonld[0];
+		$post_jsonld_id = array_key_exists( '@id', $post_jsonld ) ? $post_jsonld['@id'] : false;
+
+		if ( ! $post_jsonld_id ) {
+			return $jsonld;
+		}
+
+		foreach ( $jsonld as $key => $value ) {
+			if ( array_key_exists( '@type', $value ) && $value['@type'] === 'Recipe' ) {
+				$value['isPartOf'] = array(
+					'@id' => $post_jsonld_id
+				);
+				$jsonld[ $key ]    = $value;
+			}
+		}
+
+		return $jsonld;
 	}
 }

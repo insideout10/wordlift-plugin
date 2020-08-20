@@ -199,7 +199,8 @@ class Wordlift_Jsonld_Service {
 				// "2nd level properties" may not output here, e.g. a post
 				// mentioning an event, located in a place: the place is referenced
 				// via the `@id` but no other properties are loaded.
-                $ignored = array();
+				$ignored = array();
+
 				return $entity_to_jsonld_converter->convert( $item, $ignored, $references_infos );
 			}, $references ) ) );
 
@@ -226,6 +227,14 @@ class Wordlift_Jsonld_Service {
 
 			return $entity_to_jsonld_converter->convert( $post_id, $references );
 		}, $required_references ) ) );
+
+		/**
+		 * Filter name: wl_page_jsonld
+		 * @return array
+		 * @since 3.27.2
+		 * @var $jsonld array The final jsonld before outputting to page.
+		 */
+		$jsonld = apply_filters( 'wl_page_jsonld', $jsonld );
 
 		return $jsonld;
 	}
