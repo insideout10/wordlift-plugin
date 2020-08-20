@@ -52,12 +52,6 @@ class Recipe_Maker_After_Get_Jsonld_Hook {
 			return $jsonld;
 		}
 
-		$types_to_be_removed = array(
-			'Article',
-			'WebPage',
-			'WebSite'
-		);
-
 		foreach ( $jsonld as $key => $value ) {
 			if ( ! array_key_exists( '@type', $value ) ) {
 				continue;
@@ -68,11 +62,6 @@ class Recipe_Maker_After_Get_Jsonld_Hook {
 					'@id' => $post_jsonld_id
 				);
 				$jsonld[ $key ]    = $value;
-			}
-			if ( in_array( $type, $types_to_be_removed, true ) ) {
-				// If Article/WebPage/WebSite markup is present in page, remove it.
-				// see issue #1141
-				unset( $jsonld[ $key ] );
 			}
 		}
 

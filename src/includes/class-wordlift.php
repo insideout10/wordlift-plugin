@@ -23,6 +23,7 @@ use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_After_Get_Jsonld_Ho
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Post_Type_Hook;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Validation_Service;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Warning;
+use Wordlift\External_Plugin_Hooks\Yoast\Yoast_Jsonld;
 use Wordlift\Faq\Faq_Content_Filter;
 use Wordlift\Faq\Faq_Tinymce_Adapter;
 use Wordlift\Jsonld\Jsonld_Adapter;
@@ -1531,6 +1532,7 @@ class Wordlift {
 		new Recipe_Maker_Jsonld_Hook( $attachment_service, $recipe_maker_validation_service );
 		new Recipe_Maker_After_Get_Jsonld_Hook( $recipe_maker_validation_service );
 		new Recipe_Maker_Warning( $recipe_maker_validation_service );
+		new Yoast_Jsonld( $recipe_maker_validation_service );
 	}
 
 	/**
