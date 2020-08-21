@@ -131,7 +131,7 @@ function wl_shortcode_faceted_search_origin( $request ) {
 			$thumbnail           = get_the_post_thumbnail_url( $post_obj, 'medium' );
 			$post_obj->thumbnail = ( $thumbnail ) ?
 				$thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
-			$post_obj->permalink = get_post_permalink( $post_obj->ID );
+			$post_obj->permalink = get_permalink( $post_obj->ID );
 
 			$result         = $post_obj;
 			$post_results[] = $result;
@@ -262,7 +262,7 @@ function wl_shortcode_faceted_search_filler_posts( $filler_count, $current_post_
 		$thumbnail           = get_the_post_thumbnail_url( $post_obj, 'medium' );
 		$post_obj->thumbnail = ( $thumbnail ) ?
 			$thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
-		$post_obj->permalink = get_post_permalink( $post_obj->ID );
+		$post_obj->permalink = get_permalink( $post_obj->ID );
 	}
 
 	return $filler_posts;

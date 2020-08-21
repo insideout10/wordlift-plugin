@@ -68,8 +68,8 @@ class Mappings_Transform_Function_Registry_Test extends Wordlift_Unit_Test_Case 
 		$transformation_function = $registry->get_transform_function( 'foo' );
 		$this->assertNotNull( $transformation_function, 'Transformation function should be present' );
 		// We now have also the URL to Entity transform function.
-		$this->assertEquals( 3, $registry->get_transform_function_count()
-			, 'We only expect 3 transforms, instead got: ' . var_export( $registry->get_transforms(), true ) );
+		$this->assertEquals( 4, $registry->get_transform_function_count()
+			, 'We only expect 4 transforms, instead got: ' . var_export( $registry->get_transforms(), true ) );
 	}
 
 	/**
@@ -84,7 +84,7 @@ class Mappings_Transform_Function_Registry_Test extends Wordlift_Unit_Test_Case 
 		$transformation_function = $registry->get_transform_function( 'foo' );
 		$this->assertNotNull( $transformation_function, 'Transformation function should be present' );
 		// The mock function and our URL to Entity Function.
-		$this->assertEquals( 3, $registry->get_transform_function_count() );
+		$this->assertEquals( 4, $registry->get_transform_function_count() );
 	}
 
 }

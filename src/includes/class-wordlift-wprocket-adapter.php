@@ -88,6 +88,10 @@ class Wordlift_WpRocket_Adapter {
 	public function excluded_inline_js_content( $pattern = array() ) {
 
 		$pattern[] = 'wlSettings';
+		$pattern[] = 'wlNavigators';
+		$pattern[] = '_wlCloudSettings';
+		$pattern[] = 'wlProductsNavigators';
+		$pattern[] = 'wlFaceteds';
 
 		return $pattern;
 	}

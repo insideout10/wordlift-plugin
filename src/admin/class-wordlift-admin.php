@@ -337,7 +337,7 @@ class Wordlift_Admin {
 			 *
 			 * @since 3.26.1
 			 */
-			'faceted_search_default_limit' => apply_filters( 'wl_faceted_search_default_limit', 4 )
+			'faceted_search_default_limit' => apply_filters( 'wl_faceted_search_default_limit', 10 )
 		);
 
 		// Set post-related values if there's a current post.

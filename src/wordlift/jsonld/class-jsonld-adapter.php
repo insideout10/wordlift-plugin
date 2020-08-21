@@ -36,6 +36,7 @@ class Jsonld_Adapter {
 		$this->jsonld_service = $jsonld_service;
 
 		add_action( 'wp_head', array( $this, 'wp_head' ) );
+		add_action( 'amp_post_template_head', array( $this, 'wp_head' ) );
 
 	}
 

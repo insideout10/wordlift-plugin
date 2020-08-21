@@ -18,6 +18,8 @@ use Wordlift\Autocomplete\Linked_Data_Autocomplete_Service;
 use Wordlift\Autocomplete\Local_Autocomplete_Service;
 use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Entity\Entity_Helper;
+use Wordlift\External_Plugin_Hooks\Recipe_Maker_Jsonld_Hook;
+use Wordlift\External_Plugin_Hooks\Recipe_Maker_Post_Type_Hook;
 use Wordlift\Faq\Faq_Content_Filter;
 use Wordlift\Faq\Faq_Rest_Controller;
 use Wordlift\Faq\Faq_Tinymce_Adapter;
@@ -27,12 +29,14 @@ use Wordlift\Jsonld\Jsonld_By_Id_Endpoint;
 use Wordlift\Jsonld\Jsonld_Endpoint;
 use Wordlift\Jsonld\Jsonld_Service;
 use Wordlift\Jsonld\Term_Jsonld_Service;
+use Wordlift\Mappings\Formatters\Acf_Group_Formatter;
 use Wordlift\Mappings\Jsonld_Converter;
 use Wordlift\Mappings\Mappings_DBO;
 use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
 use Wordlift\Mappings\Mappings_Validator;
 use Wordlift\Mappings\Transforms\Taxonomy_To_Terms_Transform_Function;
 use Wordlift\Mappings\Transforms\Url_To_Entity_Transform_Function;
+use Wordlift\Mappings\Transforms\Post_Id_To_Entity_Transform_Function;
 use Wordlift\Mappings\Validators\Post_Type_Rule_Validator;
 use Wordlift\Mappings\Validators\Rule_Groups_Validator;
 use Wordlift\Mappings\Validators\Rule_Validators_Registry;
@@ -750,7 +754,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.27.0';
+		$this->version     = '3.27.1';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -1471,8 +1475,14 @@ class Wordlift {
 
 		new Url_To_Entity_Transform_Function( $this->entity_uri_service );
 		new Taxonomy_To_Terms_Transform_Function();
+		new Post_Id_To_Entity_Transform_Function();
 		$mappings_transform_functions_registry = new Mappings_Transform_Functions_Registry();
 
+		/**
+		 * @since 3.27.1
+		 * Intiailize the acf group data formatter.
+		 */
+		new Acf_Group_Formatter();
 		new Jsonld_Converter( $mappings_validator, $mappings_transform_functions_registry );
 
 		/**
@@ -1510,6 +1520,13 @@ class Wordlift {
 		) );
 		$this->autocomplete_adapter = new Wordlift_Autocomplete_Adapter( $autocomplete_service );
 
+		/**
+		 * @since 3.27.2
+		 * Integrate the recipe maker jsonld & set recipe
+		 * as default entity type to the wprm_recipe CPT.
+		 */
+		new Recipe_Maker_Post_Type_Hook();
+		new Recipe_Maker_Jsonld_Hook();
 	}
 
 	/**
@@ -1768,7 +1785,6 @@ class Wordlift {
 
 			return array_merge( (array) $value, array( 'wordlift/classification' ) );
 		}, PHP_INT_MAX );
-
 	}
 
 	/**
