@@ -127,27 +127,6 @@ function wordlift_admin_enqueue_scripts() {
 
 	wp_enqueue_script( 'jquery-ui-autocomplete' );
 
-	/*
-	 * Angular isn't loaded anymore separately, it is embedded in wordlift-reloaded.js.
-	 *
-	 * See https://github.com/insideout10/wordlift-plugin/issues/865.
-	 *
-	 * @since 3.19.6
-	 */
-//	$log = Wordlift_Log_Service::get_logger( 'wordlift_admin_enqueue_scripts' );
-//	$log->trace( 'Registering admin scripts...' );
-//
-//	// We now register angular scripts and have dependent scripts (currently
-//	// only the edit post page) depend on them, to avoid potential conflicts.
-//	//
-//	// See https://github.com/insideout10/wordlift-plugin/issues/691.
-//	$result = wp_register_script( 'wl-angular', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular.min.js' )
-//	          && wp_register_script( 'wl-angular-geolocation', plugin_dir_url( __FILE__ ) . 'bower_components/angularjs-geolocation/dist/angularjs-geolocation.min.js' )
-//	          && wp_register_script( 'wl-angular-touch', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular-touch.min.js' )
-//	          && wp_register_script( 'wl-angular-animate', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular-animate.min.js' );
-//
-//	$log->debug( 'Registering angular scripts was ' . ( $result ? 'successful.' : 'unsuccessful.' ) );
-
 	// Disable auto-save for custom entity posts only
 	if ( Wordlift_Entity_Service::TYPE_NAME === get_post_type() ) {
 		wp_dequeue_script( 'autosave' );
@@ -156,15 +135,6 @@ function wordlift_admin_enqueue_scripts() {
 }
 
 add_action( 'admin_enqueue_scripts', 'wordlift_admin_enqueue_scripts' );
-
-// We shouldn't load the wordlift-ui.min.css stylesheet when not needed.
-//
-// @see https://github.com/insideout10/wordlift-plugin/issues/699
-//function wl_enqueue_scripts() {
-//	wp_enqueue_style( 'wordlift-ui', plugin_dir_url( __FILE__ ) . 'css/wordlift-ui.min.css' );
-//}
-//
-//add_action( 'wp_enqueue_scripts', 'wl_enqueue_scripts' );
 
 /**
  * Hooked to *wp_kses_allowed_html* filter, adds microdata attributes.
