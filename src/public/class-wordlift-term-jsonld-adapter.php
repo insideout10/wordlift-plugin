@@ -75,7 +75,7 @@ class Wordlift_Term_JsonLd_Adapter {
 
 		if ( ! is_null( $id ) ) {
 			$term                       = get_term( $id );
-			$post_jsonld['description'] = $term->description;
+			$post_jsonld['description'] = strip_tags( strip_shortcodes( $term->description ) );
 			$thumbnail_id               = get_term_meta( $id, 'thumbnail_id', true );
 			if ( ! empty( $thumbnail_id ) ) {
 				$post_jsonld['image'] = wp_get_attachment_url( $thumbnail_id );
@@ -143,13 +143,13 @@ class Wordlift_Term_JsonLd_Adapter {
 		$jsonld  = $this->get( $term_id );
 
 		// Bail out if the JSON-LD is empty.
-		if ( empty( $jsonld ) ) {
+		if ( empty( $jsonld ) || empty( $jsonld['jsonld'] ) ) {
 			return;
 		}
 
-		$jsonld_string = wp_json_encode( $jsonld );
+		$jsonld_string = wp_json_encode( $jsonld['jsonld'] );
 
-		echo "<script type=\"application/ld+json\">$jsonld_string</script>";
+		echo "<script type=\"application/ld+json\" id=\"wl-jsonld-term\">$jsonld_string</script>";
 
 	}
 

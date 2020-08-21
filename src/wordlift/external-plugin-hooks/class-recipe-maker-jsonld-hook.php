@@ -67,7 +67,7 @@ class Recipe_Maker_Jsonld_Hook {
 
 		// If there are no associated recipes for a post id then return early
 		if ( ! $recipe_ids ) {
-			return $jsonld;
+			return $arr;
 		}
 
 		return array(
