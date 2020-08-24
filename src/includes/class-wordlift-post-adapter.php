@@ -248,11 +248,6 @@ class Wordlift_Post_Adapter {
 	 * @param $references int[]
 	 */
 	public function add_mentions( $post_id, &$references ) {
-		// Create empty array for references.
-		if ( ! is_array( $references ) ) {
-			$references = array();
-		}
-
 		$tags = get_the_tags( $post_id );
 		// Loop through the tags and push it to references.
 		foreach ( $tags as $tag ) {
