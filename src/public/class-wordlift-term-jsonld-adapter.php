@@ -90,7 +90,8 @@ class Wordlift_Term_JsonLd_Adapter {
 		$position                       = 1;
 
 		foreach ( $posts as $post_id ) {
-			$result = array(
+			$maybe_url = get_post_meta( $post_id, 'wl_schema_url', true );
+			$result    = array(
 				'@type'    => 'ListItem',
 				'position' => $position,
 				/**
@@ -98,7 +99,7 @@ class Wordlift_Term_JsonLd_Adapter {
 				 *
 				 * See https://developers.google.com/search/docs/data-types/carousel
 				 */
-				'url'      => get_permalink( $post_id )
+				'url'      => empty( $maybe_url ) ? get_permalink( $post_id ) : $maybe_url,
 			);
 			array_push( $post_jsonld['itemListElement'], $result );
 			$position += 1;
@@ -140,7 +141,7 @@ class Wordlift_Term_JsonLd_Adapter {
 
 		$term_id = $query_object->term_id;
 
-		$jsonld  = $this->get( $term_id );
+		$jsonld = $this->get( $term_id );
 
 		// Bail out if the JSON-LD is empty.
 		if ( empty( $jsonld ) || empty( $jsonld['jsonld'] ) ) {
