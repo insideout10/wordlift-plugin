@@ -171,7 +171,6 @@ class Wordlift_Term_JsonLd_Adapter {
 		}
 		$entities_jsonld_array = $this->get_entity_jsonld( $id );
 
-
 		$result = array(
 			'jsonld'     => array_merge( $jsonld_array, $entities_jsonld_array ),
 			'references' => array()
@@ -183,8 +182,9 @@ class Wordlift_Term_JsonLd_Adapter {
 		 * @var $id int Term id
 		 * @var $jsonld_array array An array containing jsonld for term and entities.
 		 */
-		return apply_filters( 'wl_term_jsonld_array', $result, $id );
+		$arr = apply_filters( 'wl_term_jsonld_array', $result, $id );
 
+		return $arr['jsonld'];
 	}
 
 	private function get_term_url( $id ) {
