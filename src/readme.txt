@@ -4,7 +4,7 @@ Plugin URL: https://wordlift.io
 Contributors: wordlift, insideout10, ziodave, akshay_raje
 Tags: schema.org, rich snippets, semantic seo, JSON-LD, artificial intelligence, ai, linked data, semantic web, content recommendation, related posts, timeline, knowledge graph, interactive map
 Requires at least: 4.4
-Tested up to: 5.4
+Tested up to: 5.5
 Requires PHP: 5.3
 Stable tag: {version}
 License: GPLv2 or later
@@ -141,6 +141,20 @@ You can open your datasets to the public, attaching to it a free or a commercial
 9. The WordLift Dashboard. Your [knowledge graph](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph) at a glance.
 
 == Changelog ==
+
+= 3.27.1 (2020-08-21) =
+
+* Enhancement [#1124](https://github.com/insideout10/wordlift-plugin/issues/1124): Context card UI enhancements.
+* Enhancement [#1121](https://github.com/insideout10/wordlift-plugin/issues/1121): Integrate with WP Recipe Maker JSON-LD.
+* Enhancement [#1118](https://github.com/insideout10/wordlift-plugin/issues/1118): Add a client-side hook to allow customization of the Cloud icon in Content Analysis box.
+* Enhancement [#1108](https://github.com/insideout10/wordlift-plugin/issues/1108): Add a Post Id to Entity transform function.
+
+* Fix [#1134](https://github.com/insideout10/wordlift-plugin/issues/1134): Use get_permalink (not get_post_permalink) to get the permalink.
+* Fix [#1122](https://github.com/insideout10/wordlift-plugin/issues/1122): JavaScript error when clicking on Optimize in Media Library with EWWW.
+* Fix [#1117](https://github.com/insideout10/wordlift-plugin/issues/1117): Cancel button not working when trying to manually add an entity.
+* Fix [#1111](https://github.com/insideout10/wordlift-plugin/issues/1111): Relationships of Relationships not expanded in Mappings.
+* Fix [#1109](https://github.com/insideout10/wordlift-plugin/issues/1109): Acf group empty values should not be published.
+* Fix [#1085](https://github.com/insideout10/wordlift-plugin/issues/1085): Setup screen fails when WPML 3.9 is installed.
 
 = 3.27.0 (2020-08-03) =
 * Enhancement [#1103](https://github.com/insideout10/wordlift-plugin/issues/1103): Faceted Search chips UI fix.

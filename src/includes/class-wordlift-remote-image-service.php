@@ -26,6 +26,7 @@ class Wordlift_Remote_Image_Service {
 		}
 
 		// Load `WP_Filesystem`.
+		add_filter( 'filesystem_method', 'Wordlift_Remote_Image_Service::_return_direct' );
 		WP_Filesystem();
 		global $wp_filesystem;
 
@@ -83,6 +84,7 @@ class Wordlift_Remote_Image_Service {
 
 		// Store the data locally.
 		$wp_filesystem->put_contents( $image_full_path, wp_remote_retrieve_body( $response ) );
+		remove_filter( 'filesystem_method', 'Wordlift_Remote_Image_Service::_return_direct' );
 
 		// Return the path.
 		return array(
@@ -90,6 +92,10 @@ class Wordlift_Remote_Image_Service {
 			'url'          => $image_full_url,
 			'content_type' => $content_type,
 		);
+	}
+
+	static function _return_direct() {
+		return 'direct';
 	}
 
 	/**

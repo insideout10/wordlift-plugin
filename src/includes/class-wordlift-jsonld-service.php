@@ -173,21 +173,6 @@ class Wordlift_Jsonld_Service {
 		// Set a reference to the entity_to_jsonld_converter to use in the closures.
 		$entity_to_jsonld_converter = $this->converter;
 
-//		add_filter( 'wl_entity_jsonld', function ( $jsonld, $post_id, $references ) use ($entity_to_jsonld_converter) {
-//            $expanded_location = array();
-//            if($jsonld['location']){
-//                if($jsonld['location']['@id']){
-//	                $expanded_location[] = $entity_to_jsonld_converter->convert( Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $jsonld['location']['@id'])->ID );
-//                } else {
-//	                foreach($jsonld['location'] as $location){
-//		                $expanded_location[] = $entity_to_jsonld_converter->convert( Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $location['@id'])->ID );
-//	                }
-//                }
-//	            $jsonld['location'] = $expanded_location;
-//            }
-//			return $jsonld;
-//		}, 10, 3 );
-
 		// Convert each URI to a JSON-LD array, while gathering referenced entities.
 		// in the references array.
 		$jsonld = array_merge(
@@ -202,7 +187,7 @@ class Wordlift_Jsonld_Service {
 				$ignored = array();
 
 				return $entity_to_jsonld_converter->convert( $item, $ignored, $references_infos );
-			}, $references ) ) );
+			}, array_unique( $references ) ) ) );
 
 		$required_references = array_filter( $references_infos, function ( $item ) use ( $references ) {
 			return isset( $item['reference'] ) &&
