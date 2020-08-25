@@ -4,7 +4,7 @@
  * @since 3.27.2
  */
 
-namespace Wordlift\External_Plugin_Hooks;
+namespace Wordlift\External_Plugin_Hooks\Recipe_Maker;
 /**
  * Class Recipe_Maker_Post_Type_Hook
  * @package Wordlift\External_Plugin_Hooks
