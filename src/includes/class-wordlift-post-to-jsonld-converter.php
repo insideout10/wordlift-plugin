@@ -385,11 +385,22 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		// Retrieve the relative filename, e.g. "2018/05/logo_publisher.png"
 		$path = $uploads_dir['basedir'] . DIRECTORY_SEPARATOR . $metadata['file'];
 
-		// Bail out if the file isn't found.
+		// Use image src, if local file does not exist. @see https://github.com/insideout10/wordlift-plugin/issues/1149
 		if ( ! file_exists( $path ) ) {
 			$this->log->warn( "Featured image file $path doesn't exist for post $post_id." );
 
+			$attachment_image_src = wp_get_attachment_image_src( $thumbnail_id, '' );
+			if ( $attachment_image_src ) {
+				return array(
+					'url'    => $attachment_image_src[0],
+					'width'  => $attachment_image_src[1],
+					'height' => $attachment_image_src[2],
+				);
+			}
+
+			// Bail out if we cant fetch wp_get_attachment_image_src
 			return false;
+
 		}
 
 		// Try to get the image editor and bail out if the editor cannot be instantiated.
