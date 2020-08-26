@@ -187,6 +187,7 @@ function wl_shortcode_faceted_search_origin( $request ) {
 			if ( ( null !== $entity ) && ( 'publish' === $entity->post_status ) ) {
 
 				$serialized_entity                    = wl_serialize_entity( $entity );
+				$serialized_entity['label']           = wl_shortcode_faceted_search_get_the_title( $obj->ID );
 				$serialized_entity['counter']         = $obj->counter;
 				$serialized_entity['createdAt']       = $entity->post_date;
 				$serialized_entity['referencedPosts'] = Wordlift_Relation_Service::get_instance()->get_article_subjects(
@@ -207,6 +208,22 @@ function wl_shortcode_faceted_search_origin( $request ) {
 		'posts'    => $amp ? array(array('values' => $post_results)) : $post_results,
 		'entities' => $entity_results
 	);
+
+}
+
+function wl_shortcode_faceted_search_get_the_title( $post_id ) {
+
+	$title = get_the_title( $post_id );
+
+	if ( get_post_type( $post_id ) !== Wordlift_Entity_Service::TYPE_NAME ) {
+		$alternative_labels = Wordlift_Entity_Service::get_instance()->get_alternative_labels( $post_id );
+
+		if ( count( $alternative_labels ) > 0 ) {
+			$title = $alternative_labels[0];
+		}
+	}
+
+	return remove_accents( $title );
 
 }
 
