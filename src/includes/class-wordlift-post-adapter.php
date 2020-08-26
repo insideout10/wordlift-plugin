@@ -249,20 +249,24 @@ class Wordlift_Post_Adapter {
 	 */
 	public function add_mentions( $post_id, &$references ) {
 		$tags = get_the_tags( $post_id );
-		// Loop through the tags and push it to references.
-		foreach ( $tags as $tag ) {
-			/**
-			 * @var $tag WP_Term
-			 */
-			$entity_uris = get_term_meta( $tag->term_id, '_wl_entity_id' );
-			foreach ( $entity_uris as $uri ) {
-				$referenced_entity = Wordlift_Entity_Uri_Service::get_instance()->get_entity( $uri );
-				if ( $referenced_entity instanceof WP_Post ) {
-					// push the referenced entities to references.
-					$references[] = $referenced_entity->ID;
+
+		if ( $tags && ! is_wp_error( $tags ) ) {
+			// Loop through the tags and push it to references.
+			foreach ( $tags as $tag ) {
+				/**
+				 * @var $tag WP_Term
+				 */
+				$entity_uris = get_term_meta( $tag->term_id, '_wl_entity_id' );
+				foreach ( $entity_uris as $uri ) {
+					$referenced_entity = Wordlift_Entity_Uri_Service::get_instance()->get_entity( $uri );
+					if ( $referenced_entity instanceof WP_Post ) {
+						// push the referenced entities to references.
+						$references[] = $referenced_entity->ID;
+					}
 				}
 			}
 		}
+
 	}
 
 }
