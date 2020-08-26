@@ -28,7 +28,6 @@ use Wordlift\Api\Default_Api_Service;
 use Wordlift\Api\User_Agent;
 use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Cache\Ttl_Cache_Cleaner;
-use Wordlift\External_Plugin_Hooks\Recipe_Maker_Entity_Type_Procedure;
 use Wordlift\Images_Licenses\Admin\Image_License_Page;
 use Wordlift\Images_Licenses\Cached_Image_License_Service;
 use Wordlift\Images_Licenses\Image_License_Cleanup_Service;
