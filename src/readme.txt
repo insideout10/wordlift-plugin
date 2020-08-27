@@ -142,9 +142,15 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.27.2 (????-??-??) =
+= 3.27.2 (2020-??-??) =
 
-* Fix [#1148](https://github.com/insideout10/wordlift-plugin/issues/1148): Use get_permalink (not get_post_permalink) to get the permalink.
+* Enhancement [1150](https://github.com/insideout10/wordlift-plugin/issues/1150): Faceted Search Widget Improvement: Display the first synonym when an entity has been created from an already existing page or post.
+* Enhancement [1149](https://github.com/insideout10/wordlift-plugin/issues/1149): Use WP's provided featured image for publisher when the local image isn't available.
+* Enhancement [1141](https://github.com/insideout10/wordlift-plugin/issues/1141): Further WP Recipe Maker integrations.
+* Enhancement [1140](https://github.com/insideout10/wordlift-plugin/issues/1140): Add properties to Article JSON-LD.
+
+* Fix [#1148](https://github.com/insideout10/wordlift-plugin/issues/1148): wp-json/wordlift/v1/jsonld/meta/wl_schema_url is returning jsonld.
+* Fix [#1146](https://github.com/insideout10/wordlift-plugin/issues/1146): Gallery block crashes when you click on caption.
 
 = 3.27.1 (2020-08-21) =
 
