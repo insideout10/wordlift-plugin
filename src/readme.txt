@@ -142,7 +142,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.27.2 (2020-??-??) =
+= 3.27.2 (2020-09-01) =
 
 * Enhancement [1150](https://github.com/insideout10/wordlift-plugin/issues/1150): Faceted Search Widget Improvement: Display the first synonym when an entity has been created from an already existing page or post.
 * Enhancement [1149](https://github.com/insideout10/wordlift-plugin/issues/1149): Use WP's provided featured image for publisher when the local image isn't available.
