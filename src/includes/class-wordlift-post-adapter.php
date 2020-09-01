@@ -166,4 +166,107 @@ class Wordlift_Post_Adapter {
 		return apply_filters( 'wl_production_permalink', $permalink, $post_id, $type, $term );
 	}
 
+	/**
+	 * Get comma separated tags to be used as keywords
+	 *
+	 * @return string|void Comma separated tags
+	 *
+	 * @since 3.27.2
+	 */
+	public function keywords() {
+		$tags = get_the_tags( $this->post_id );
+
+		if ( empty( $tags ) ) {
+			return;
+		}
+
+		return implode( ',', array_map( function ( $tag ) {
+			return $tag->name;
+		}, $tags ) );
+	}
+
+	/**
+	 * Get comma separated categories to be used as article section
+	 *
+	 * @return string|void Comma separated categories
+	 *
+	 * @since 3.27.2
+	 */
+	public function article_section() {
+		$categories = get_the_category( $this->post_id );
+
+		if ( empty( $categories ) ) {
+			return;
+		}
+
+		return implode( ',', array_map( function ( $tag ) {
+			return $tag->cat_name;
+		}, $categories ) );
+	}
+
+	/**
+	 * Get comment count
+	 *
+	 * @return string|void Comment count
+	 *
+	 * @since 3.27.2
+	 */
+	public function comment_count() {
+		return get_comments_number( $this->post_id );
+	}
+
+	/**
+	 * Get Language
+	 * Try WPML, Polylang for post specific languages, else fallback on get_locale()
+	 *
+	 * @return string|void Language code (locale)
+	 *
+	 * @since 3.27.2
+	 */
+	public function locale() {
+		// WPML handling
+		if ( function_exists( 'wpml_get_language_information' ) ) {
+			$post_language = wpml_get_language_information( $this->post_id );
+
+			return $post_language['locale'];
+		}
+
+		// Polylang handling
+		if ( function_exists( 'pll_get_post_language' ) ) {
+			return pll_get_post_language( $this->post_id, 'locale' );
+		}
+
+		return get_locale();
+
+	}
+
+	/**
+	 * Add mentions to an article.
+	 * To add mentions we just push the referenced entities to mentions.
+	 *
+	 * @param $post_id int
+	 * @param $references int[]
+	 */
+	public function add_mentions( $post_id, &$references ) {
+		$tags = get_the_tags( $post_id );
+
+		if ( $tags && ! is_wp_error( $tags ) ) {
+			// Loop through the tags and push it to references.
+			foreach ( $tags as $tag ) {
+				/**
+				 * @var $tag WP_Term
+				 */
+				$entity_uris = get_term_meta( $tag->term_id, '_wl_entity_id' );
+				foreach ( $entity_uris as $uri ) {
+					$referenced_entity = Wordlift_Entity_Uri_Service::get_instance()->get_entity( $uri );
+					if ( $referenced_entity instanceof WP_Post ) {
+						// push the referenced entities to references.
+						$references[] = $referenced_entity->ID;
+					}
+				}
+			}
+		}
+
+	}
+
 }

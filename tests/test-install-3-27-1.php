@@ -1,6 +1,6 @@
 <?php
 
-use Wordlift\External_Plugin_Hooks\Recipe_Maker_Post_Type_Hook;
+use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Post_Type_Hook;
 
 /**
  * @author Naveen Muthusamy <naveen@wordlift.io>

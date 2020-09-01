@@ -90,7 +90,7 @@ class Wordlift_Term_JsonLd_Adapter {
 		$position                       = 1;
 
 		foreach ( $posts as $post_id ) {
-			$result = array(
+			$result    = array(
 				'@type'    => 'ListItem',
 				'position' => $position,
 				/**
@@ -98,7 +98,7 @@ class Wordlift_Term_JsonLd_Adapter {
 				 *
 				 * See https://developers.google.com/search/docs/data-types/carousel
 				 */
-				'url'      => get_permalink( $post_id )
+				'url'      => apply_filters( 'wl_carousel_post_list_item_url', get_permalink( $post_id ), $post_id ),
 			);
 			array_push( $post_jsonld['itemListElement'], $result );
 			$position += 1;
@@ -140,7 +140,7 @@ class Wordlift_Term_JsonLd_Adapter {
 
 		$term_id = $query_object->term_id;
 
-		$jsonld  = $this->get( $term_id );
+		$jsonld = $this->get( $term_id );
 
 		// Bail out if the JSON-LD is empty.
 		if ( empty( $jsonld ) || empty( $jsonld['jsonld'] ) ) {
@@ -171,7 +171,6 @@ class Wordlift_Term_JsonLd_Adapter {
 		}
 		$entities_jsonld_array = $this->get_entity_jsonld( $id );
 
-
 		$result = array(
 			'jsonld'     => array_merge( $jsonld_array, $entities_jsonld_array ),
 			'references' => array()
@@ -183,8 +182,9 @@ class Wordlift_Term_JsonLd_Adapter {
 		 * @var $id int Term id
 		 * @var $jsonld_array array An array containing jsonld for term and entities.
 		 */
-		return apply_filters( 'wl_term_jsonld_array', $result, $id );
+		$arr = apply_filters( 'wl_term_jsonld_array', $result, $id );
 
+		return $arr['jsonld'];
 	}
 
 	private function get_term_url( $id ) {

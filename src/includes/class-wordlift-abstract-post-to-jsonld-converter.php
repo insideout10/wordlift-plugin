@@ -147,7 +147,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 			$jsonld['mainEntityOfPage'] = get_the_permalink( $post->ID );
 		};
 
-		$this->set_images( $post, $jsonld );
+		$this->set_images( $this->attachment_service, $post, $jsonld );
 
 		// Get the entities referenced by this post and set it to the `references`
 		// array so that the caller can do further processing, such as printing out
@@ -201,13 +201,13 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 *
 	 * Uses the cache service to store the results of this function for a day.
 	 *
+	 * @param $attachment_service Wordlift_Attachment_Service
 	 * @param WP_Post $post The target {@link WP_Post}.
 	 * @param array $jsonld The JSON-LD array.
 	 *
 	 * @since 3.10.0
-	 *
 	 */
-	protected function set_images( $post, &$jsonld ) {
+	public static function set_images( $attachment_service, $post, &$jsonld ) {
 
 		// Prepare the attachment ids array.
 		$ids = array();
@@ -228,7 +228,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		$embeds = array();
 
 		// Get the gallery, removing existing ids.
-		$gallery = array_diff( $this->attachment_service->get_gallery( $post ), $ids, $embeds );
+		$gallery = array_diff( $attachment_service->get_gallery( $post ), $ids, $embeds );
 
 		// Map the attachment ids to images' data structured for schema.org use.
 		$images_with_sizes = array_filter(

@@ -39,6 +39,7 @@ class Taxonomy_Term_Rule_Validator implements Rule_Validator {
 		return __( 'TaxonomyTerm', 'wordlift' );
 	}
 
+	// @todo Check usage of get_queried_object
 	public function is_valid( $post_id, $operator, $operand_1, $taxonomy ) {
 		/*
 		 * post_id should not be used since we validate this for term pages.

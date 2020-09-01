@@ -57,7 +57,9 @@ class Wordlift_Remote_Image_Service {
 			return new WP_Error( 'image_error', "save_image_from_url : failed creating upload dir $upload_dir \n" );
 		};
 
-		$response = wp_remote_get( $url );
+		$response = wp_remote_get( $url, array(
+			'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36'
+		) );
 
 		// Bail if the response is not set.
 		if ( self::is_response_error( $response ) ) {

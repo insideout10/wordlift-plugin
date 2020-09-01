@@ -35,6 +35,8 @@ import { WORDLIFT_STORE } from "../../common/constants";
 // is performing the selection.
 let delay;
 
+const ignoredBlockNames = ["core/gallery"];
+
 /**
  * The EditComponent.
  *
@@ -46,23 +48,29 @@ let delay;
  * @constructor
  */
 const EditComponent = ({ onChange, value, isActive, activeAttributes, onSelectionChange, setFormat }) => {
-  // Send the selection change event.
-  if (delay) clearTimeout(delay);
-  delay = setTimeout(() => {
-    const selection = value.text.substring(value.start, value.end);
-    onSelectionChange(selection);
-    setFormat({ onChange, value });
-    trigger(SELECTION_CHANGED, { selection, value, onChange });
-  }, 200);
+  // Process only if it is not an ignored block
+  const selectedBlockName = wp.data.select("core/editor").getSelectedBlock().name;
+  if (!ignoredBlockNames.includes(selectedBlockName)) {
+    // Send the selection change event.
+    if (delay) clearTimeout(delay);
+    delay = setTimeout(() => {
+      const selection = value.text.substring(value.start, value.end);
+      onSelectionChange(selection);
+      setFormat({ onChange, value });
+      trigger(SELECTION_CHANGED, { selection, value, onChange });
+    }, 200);
 
-  // Send the annotation change event.
-  const payload =
-    "undefined" !== typeof isActive &&
-    "undefined" !== typeof activeAttributes &&
-    "undefined" !== typeof activeAttributes.id
-      ? activeAttributes.id
-      : undefined;
-  trigger(ANNOTATION_CHANGED, payload);
+    // Send the annotation change event.
+    const payload =
+      "undefined" !== typeof isActive &&
+      "undefined" !== typeof activeAttributes &&
+      "undefined" !== typeof activeAttributes.id
+        ? activeAttributes.id
+        : undefined;
+    trigger(ANNOTATION_CHANGED, payload);
+  } else {
+    console.log(`EditComponent ignored ${selectedBlockName} block`);
+  }
 
   return <Fragment />;
 };

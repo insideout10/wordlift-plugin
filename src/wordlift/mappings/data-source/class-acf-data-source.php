@@ -25,6 +25,7 @@ class Acf_Data_Source implements Abstract_Data_Source {
 	 *
 	 * @return array|mixed
 	 */
+	// @todo Check usage of get_queried_object
 	private function get_data_for_acf_field( $field_name, $post_id ) {
 		if ( get_queried_object() instanceof \WP_Term ) {
 			// Data fetching method for term is different.

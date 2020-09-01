@@ -4,7 +4,7 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
-namespace Wordlift\External_Plugin_Hooks;
+namespace Wordlift\External_Plugin_Hooks\Recipe_Maker;
 
 /**
  * This class helps to remove the jsonld of wp recipe maker for the post and add the jsonld to
@@ -14,7 +14,25 @@ namespace Wordlift\External_Plugin_Hooks;
  */
 class Recipe_Maker_Jsonld_Hook {
 
-	public function __construct() {
+	/**
+	 * @var \Wordlift_Attachment_Service
+	 */
+	private $attachment_service;
+	/**
+	 * @var Recipe_Maker_Validation_Service
+	 */
+	private $recipe_maker_validation_service;
+
+	/**
+	 * Recipe_Maker_Jsonld_Hook constructor.
+	 *
+	 * @param $attachment_service \Wordlift_Attachment_Service
+	 * @param $recipe_maker_validation_service Recipe_Maker_Validation_Service
+	 */
+	public function __construct( $attachment_service, $recipe_maker_validation_service ) {
+
+		$this->attachment_service              = $attachment_service;
+		$this->recipe_maker_validation_service = $recipe_maker_validation_service;
 		// Configure jsonld using filters.
 		$this->remove_recipe_maker_jsonld();
 		$this->merge_recipe_jsonld();
@@ -58,7 +76,7 @@ class Recipe_Maker_Jsonld_Hook {
 		$references = $arr['references'];
 
 		// check if wp recipe maker installed, if not return early.
-		if ( ! $this->is_wp_recipe_maker_available() ) {
+		if ( ! $this->recipe_maker_validation_service->is_wp_recipe_maker_available() ) {
 			return $arr;
 		}
 
@@ -77,28 +95,20 @@ class Recipe_Maker_Jsonld_Hook {
 
 	}
 
-	private function is_wp_recipe_maker_available() {
-		/**
-		 * Dont alter the jsonld if the classes are not present.
-		 */
-		if ( ! class_exists( '\WPRM_Recipe_Manager' ) || ! class_exists( 'WPRM_Metadata' ) ) {
-			return false;
-		}
-		if ( ! method_exists( '\WPRM_Recipe_Manager', 'get_recipe_ids_from_post' ) ||
-		     ! method_exists( '\WPRM_Recipe_Manager', 'get_recipe' ) ||
-		     ! method_exists( '\WPRM_Metadata', 'get_metadata_details' )
-		) {
-			return false;
-		}
-
-		return true;
-	}
 
 	public function wl_entity_jsonld( $jsonld, $post_id, $references ) {
 		$recipe_data = $this->process_single_recipe_item( $post_id );
 		if ( ! $recipe_data ) {
 			return $jsonld;
 		}
+
+		// Set image via wordlift.
+		\Wordlift_Abstract_Post_To_Jsonld_Converter::set_images(
+			$this->attachment_service,
+			get_post( $post_id ),
+			$recipe_data
+		);
+
 		if ( ! $jsonld ) {
 			return $recipe_data;
 		}
@@ -113,7 +123,7 @@ class Recipe_Maker_Jsonld_Hook {
 	 */
 	private function process_single_recipe_item( $linked_recipe_id ) {
 		// check if recipe maker present.
-		if ( ! $this->is_wp_recipe_maker_available() ) {
+		if ( ! $this->recipe_maker_validation_service->is_wp_recipe_maker_available() ) {
 			return array();
 		}
 		$linked_recipe = \WPRM_Recipe_Manager::get_recipe( $linked_recipe_id );

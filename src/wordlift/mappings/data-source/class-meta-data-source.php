@@ -13,6 +13,7 @@ namespace Wordlift\Mappings\Data_Source;
  */
 class Meta_Data_Source implements Abstract_Data_Source {
 
+	// @todo Check usage of get_queried_object
 	public function get_data( $post_id, $property ) {
 
 		$value = $property['field_name'];

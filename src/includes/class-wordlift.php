@@ -18,12 +18,14 @@ use Wordlift\Autocomplete\Linked_Data_Autocomplete_Service;
 use Wordlift\Autocomplete\Local_Autocomplete_Service;
 use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Entity\Entity_Helper;
-use Wordlift\External_Plugin_Hooks\Recipe_Maker_Jsonld_Hook;
-use Wordlift\External_Plugin_Hooks\Recipe_Maker_Post_Type_Hook;
+use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Jsonld_Hook;
+use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_After_Get_Jsonld_Hook;
+use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Post_Type_Hook;
+use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Validation_Service;
+use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Warning;
+use Wordlift\External_Plugin_Hooks\Yoast\Yoast_Jsonld;
 use Wordlift\Faq\Faq_Content_Filter;
-use Wordlift\Faq\Faq_Rest_Controller;
 use Wordlift\Faq\Faq_Tinymce_Adapter;
-use Wordlift\Faq\Faq_To_Jsonld_Converter;
 use Wordlift\Jsonld\Jsonld_Adapter;
 use Wordlift\Jsonld\Jsonld_By_Id_Endpoint;
 use Wordlift\Jsonld\Jsonld_Endpoint;
@@ -34,9 +36,9 @@ use Wordlift\Mappings\Jsonld_Converter;
 use Wordlift\Mappings\Mappings_DBO;
 use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
 use Wordlift\Mappings\Mappings_Validator;
+use Wordlift\Mappings\Transforms\Post_Id_To_Entity_Transform_Function;
 use Wordlift\Mappings\Transforms\Taxonomy_To_Terms_Transform_Function;
 use Wordlift\Mappings\Transforms\Url_To_Entity_Transform_Function;
-use Wordlift\Mappings\Transforms\Post_Id_To_Entity_Transform_Function;
 use Wordlift\Mappings\Validators\Post_Type_Rule_Validator;
 use Wordlift\Mappings\Validators\Rule_Groups_Validator;
 use Wordlift\Mappings\Validators\Rule_Validators_Registry;
@@ -754,7 +756,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.27.1';
+		$this->version     = '3.27.2';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -1334,9 +1336,9 @@ class Wordlift {
 		new Wordlift_Image_Service();
 
 		/** Adapters. */
-		$this->entity_type_adapter      = new Wordlift_Entity_Type_Adapter( $this->entity_type_service );
-		$this->publisher_ajax_adapter   = new Wordlift_Publisher_Ajax_Adapter( $this->publisher_service );
-		$this->tinymce_adapter          = new Wordlift_Tinymce_Adapter( $this );
+		$this->entity_type_adapter    = new Wordlift_Entity_Type_Adapter( $this->entity_type_service );
+		$this->publisher_ajax_adapter = new Wordlift_Publisher_Ajax_Adapter( $this->publisher_service );
+		$this->tinymce_adapter        = new Wordlift_Tinymce_Adapter( $this );
 		//$this->faq_tinymce_adapter      = new Faq_Tinymce_Adapter();
 		$this->relation_rebuild_adapter = new Wordlift_Relation_Rebuild_Adapter( $this->relation_rebuild_service );
 
@@ -1526,7 +1528,11 @@ class Wordlift {
 		 * as default entity type to the wprm_recipe CPT.
 		 */
 		new Recipe_Maker_Post_Type_Hook();
-		new Recipe_Maker_Jsonld_Hook();
+		$recipe_maker_validation_service = new Recipe_Maker_Validation_Service();
+		new Recipe_Maker_Jsonld_Hook( $attachment_service, $recipe_maker_validation_service );
+		new Recipe_Maker_After_Get_Jsonld_Hook( $recipe_maker_validation_service );
+		new Recipe_Maker_Warning( $recipe_maker_validation_service );
+		new Yoast_Jsonld( $recipe_maker_validation_service );
 	}
 
 	/**

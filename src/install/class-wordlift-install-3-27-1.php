@@ -4,7 +4,7 @@
  * the entity type `Recipe`.
  */
 
-use Wordlift\External_Plugin_Hooks\Recipe_Maker_Entity_Type_Procedure;
+use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Entity_Type_Procedure;
 
 /**
  * @since 3.27.1
