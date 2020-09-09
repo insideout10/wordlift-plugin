@@ -214,17 +214,15 @@ class EntityTile extends React.Component {
  *
  * Example implementation of wl_icon_url
  *
-addFilter(
+wp.hooks.addFilter(
   "wl_icon_url",
-  "wl",
+  "wordlift",
   (content, entity) =>
     entity.local
       ? entity.sameAs.some(element => element.match(/https?:\/\/(?:\w+\\.)?yago-knowledge\.org/))
         ? "https://image.flaticon.com/icons/svg/1163/1163624.svg"
         : ""
-      : entity.id.match(/https?:\/\/(?:\w+\\.)?dbpedia\.org/)
-        ? defaultCloudIconURL
-        : defaultNetworkIconURL
+      : content
 );
 */
 
