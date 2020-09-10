@@ -1,10 +1,7 @@
 import { connect } from "react-redux";
 
 import EntitySelect from "./EntitySelect";
-import {
-  close,
-  setValue
-} from "./actions";
+import { close, setValue } from "./actions";
 
 const mapStateToProps = ({ open, value, items }) => ({ open, value, items });
 
@@ -13,4 +10,7 @@ const mapDispatchToProps = dispatch => ({
   onCancel: () => dispatch(close())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(EntitySelect);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EntitySelect);
