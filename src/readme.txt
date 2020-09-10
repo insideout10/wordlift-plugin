@@ -142,6 +142,12 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.27.3 (2020-09-__) =
+
+* Enhancement [#1153](https://github.com/insideout10/wordlift-plugin/issues/1153): Display the icon also for local entities that have a sameAs referring to the remote dataset.
+
+* Fix [#1154](https://github.com/insideout10/wordlift-plugin/issues/1154): Address as always required in relationships of relationships.
+
 = 3.27.2 (2020-09-01) =
 
 * Enhancement [1150](https://github.com/insideout10/wordlift-plugin/issues/1150): Faceted Search Widget Improvement: Display the first synonym when an entity has been created from an already existing page or post.
