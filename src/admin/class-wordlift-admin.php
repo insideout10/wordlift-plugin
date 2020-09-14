@@ -337,7 +337,13 @@ class Wordlift_Admin {
 			 *
 			 * @since 3.26.1
 			 */
-			'faceted_search_default_limit' => apply_filters( 'wl_faceted_search_default_limit', 10 )
+			'faceted_search_default_limit' => apply_filters( 'wl_faceted_search_default_limit', 10 ),
+			/**
+			 * WL Root path, to access in JS
+			 *
+			 * @since 3.27.3
+			 */
+			'wl_root' => plugin_dir_url( __DIR__ )
 		);
 
 		// Set post-related values if there's a current post.
@@ -383,29 +389,6 @@ class Wordlift_Admin {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-not-enriched-filter.php';
 
 	}
-
-	/**
-	 * Add Wordlift custom block category.
-	 *
-	 * @since 3.21.0
-	 * @since 3.24.2 this function isn't called anymore as it was causing the WordLift block category to multiply
-	 *   in Block Editor, https://github.com/insideout10/wordlift-plugin/issues/1004
-	 */
-
-//	private static function add_block_category() {
-//		add_filter( 'block_categories', function ( $categories, $post ) {
-//			return array_merge(
-//				$categories,
-//				array(
-//					array(
-//						'slug'  => 'wordlift',
-//						'title' => 'WordLift',
-//						'icon'  => null,
-//					),
-//				)
-//			);
-//		}, 10, 2 );
-//	}
 
 	public static function is_gutenberg() {
 		if ( function_exists( 'is_gutenberg_page' ) &&

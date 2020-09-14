@@ -252,8 +252,8 @@ HTML;
 					<article class="card">
 						<a href="{{post.permalink}}">
 							<amp-img
-		                        width="800"
-		                        height="440"
+		                        width="16"
+		                        height="9"
 								layout="responsive"
 		                        src="{{post.thumbnail}}"></amp-img>
 							<div class="card-content">
