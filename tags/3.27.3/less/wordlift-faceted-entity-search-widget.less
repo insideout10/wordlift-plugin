@@ -1,0 +1,158 @@
+@import 'font-awesome.less';
+@import 'colors.less';
+@import 'wordlift-functions.less';
+@import 'wordlift-carousel.less';
+@import 'wordlift-card.less';
+@import 'wordlift-label.less';
+
+#wordlift-faceted-entity-search-widget {
+
+  font-size: inherit;
+  padding: 0;
+  margin: 0.8em 0;
+
+  .wl-headline {
+    position: relative;
+    margin: 0.4em 0;
+    font-weight: bold;
+
+    i {
+      position: absolute;
+      right: 0;
+      top: 40%;
+      font-size: inherit !important;
+    }
+    .wl-toggle-on {
+      opacity: 0.7;
+      .fa-icon(@fa-var-caret-down);
+    }
+    .wl-toggle-off {
+      .fa-icon(@fa-var-caret-up);
+    }
+  }
+
+  ul {
+    margin: 0;
+    padding: 0.6em;
+    list-style-type: none;
+  }
+  .wl-facets {
+
+    margin: 0;
+    border-top: #ccc 1px solid;
+
+    overflow: hidden;
+
+    .wl-facets-container {
+
+      width: 25%;
+      float: left;
+
+      h5 {
+        text-transform: uppercase;
+        padding: 0.3em 0 0 0;
+        margin: 0;
+        font-weight: bold;
+
+      }
+
+      ul {
+        padding: 0 0 0 0.2em;
+        margin: 0.6em 0.3em;
+        font-size: 12px;
+        list-style: none;
+        border-left: #ccc 1px dashed;
+
+      }
+
+      li {
+
+        padding: 0;
+        margin: 0 0 0.2em 0;
+        line-height: 1.2em;
+        position: relative;
+
+        color: #666;
+
+        &:before {
+          content: '';
+          // See https://github.com/insideout10/wordlift-plugin/issues/571
+          display: none;
+        }
+
+        .wl-checkbox {
+
+          top: 0;
+          left: 0;
+          position: absolute;
+
+          font-size: 10px !important;
+          line-height: 12px !important;
+
+          .fa-icon(@fa-var-circle-o);
+
+          &.selected {
+            .fa-icon(@fa-var-check-circle-o);
+          }
+        }
+
+        .wl-label {
+          text-transform: capitalize;
+          cursor: pointer;
+          color: #000;
+          opacity: 0.3;
+
+          &.selected {
+            opacity: 1;
+
+          }
+        }
+
+        .wl-type {
+
+          &.wl-fs-creative-work {
+            .fa-icon(@fa-var-lightbulb-o)
+          }
+          &.wl-fs-event {
+            .fa-icon(@fa-var-calendar)
+          }
+          &.wl-fs-organization {
+            .fa-icon(@fa-var-building-o)
+          }
+          &.wl-fs-local-business {
+            .fa-icon(@fa-var-building-o)
+          }
+          &.wl-fs-person {
+            .fa-icon(@fa-var-user)
+          }
+          &.wl-fs-place {
+            .fa-icon(@fa-var-map-marker);
+          }
+          &.wl-fs-thing {
+            .fa-icon(@fa-var-file-o)
+          }
+
+          font-size: inherit !important;
+          padding: 0 1px !important;
+        }
+
+        .wl-counter {
+          cursor: pointer;
+        }
+
+      }
+    }
+
+  }
+
+  .wl-posts {
+    padding: 0;
+    margin: 0;
+  }
+}
+
+@media screen and (max-width: 460px) {
+  #wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container {
+    width: 100%;
+  }
+}
