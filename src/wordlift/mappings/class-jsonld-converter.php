@@ -120,7 +120,7 @@ class Jsonld_Converter {
 				$nested_properties[] = $property;
 				continue;
 			}
-			$property_transformed_data = $this->get_property_data( $property, $jsonld, $identifier, $references );
+			$property_transformed_data = $this->get_property_data( $property, $jsonld, $identifier, $references, $type );
 			if ( false !== $property_transformed_data ) {
 				$jsonld[ $property['property_name'] ] = $property_transformed_data;
 			}
@@ -139,9 +139,11 @@ class Jsonld_Converter {
 	 * @param $post_id
 	 * @param $references
 	 *
+	 * @param $type
+	 *
 	 * @return array|bool|null
 	 */
-	public function get_property_data( $property, $jsonld, $post_id, &$references ) {
+	public function get_property_data( $property, $jsonld, $post_id, &$references, $type ) {
 		$transform_instance = $this->transform_functions_registry->get_transform_function( $property['transform_function'] );
 		$data               = Data_Source_Factory::get_instance()->get_data( $post_id, $property );
 		if ( null !== $transform_instance ) {

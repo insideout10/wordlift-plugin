@@ -8,13 +8,13 @@ namespace Wordlift\Mappings\Data_Source;
 
 class Acf_Data_Source implements Abstract_Data_Source {
 
-	public function get_data( $post_id, $property_data ) {
+	public function get_data( $identifier, $property_data, $type ) {
 
 		if ( ! function_exists( 'get_field' ) || ! function_exists( 'get_field_object' ) ) {
 			return array();
 		}
 
-		return $this->get_data_for_acf_field( $property_data['field_name'], $post_id );
+		return $this->get_data_for_acf_field( $property_data['field_name'], $identifier );
 	}
 
 	/**

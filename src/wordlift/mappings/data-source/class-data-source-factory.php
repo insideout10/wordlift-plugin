@@ -22,12 +22,12 @@ class Data_Source_Factory {
 		);
 	}
 
-	public function get_data( $post_id, $property_data ) {
+	public function get_data( $post_id, $property_data, $type ) {
 		switch ( $property_data['field_type'] ) {
 			case Jsonld_Converter::FIELD_TYPE_ACF:
-				return $this->data_sources['acf']->get_data( $post_id, $property_data );
+				return $this->data_sources['acf']->get_data( $post_id, $property_data, $type );
 			case Jsonld_Converter::FIELD_TYPE_CUSTOM_FIELD:
-				return $this->data_sources['meta']->get_data( $post_id, $property_data );
+				return $this->data_sources['meta']->get_data( $post_id, $property_data, $type );
 			default:
 				return $property_data['field_name'];
 		}
