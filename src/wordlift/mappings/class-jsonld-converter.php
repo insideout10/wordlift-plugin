@@ -24,6 +24,13 @@ class Jsonld_Converter {
 	const FIELD_TYPE_TEXT_FIELD = 'text';
 	const FIELD_TYPE_CUSTOM_FIELD = 'custom_field';
 	const FIELD_TYPE_ACF = 'acf';
+
+	/**
+	 * Mappings can be applied to either post
+	 * or term, the below is used to specify whether it is a post or a term.
+	 */
+	const POST = 'post';
+	const TERM = 'term';
 	/**
 	 * The {@link Mappings_Validator} instance to test.
 	 *
@@ -84,7 +91,7 @@ class Jsonld_Converter {
 		$references = $value['references'];
 
 		return array(
-			'jsonld'     => $this->wl_post_jsonld( $jsonld, $post_id, $references ),
+			'jsonld'     => $this->build_jsonld( $jsonld, $post_id, $references, self::POST ),
 			'references' => $references,
 		);
 	}
@@ -93,18 +100,18 @@ class Jsonld_Converter {
 	 * Returns JSON-LD data after applying transformation functions.
 	 *
 	 * @param array $jsonld The JSON-LD structure.
-	 * @param int $post_id The {@link WP_Post} id.
+	 * @param int $identifier The {@link WP_Post} id or {@link \WP_Term} id.
 	 * @param array $references An array of post references.
 	 *
 	 * @return array the new refactored array structure.
 	 * @since 3.25.0
 	 */
-	private function wl_post_jsonld( $jsonld, $post_id, &$references ) {
+	private function build_jsonld( $jsonld, $identifier, &$references, $type ) {
 
 		// @@todo I think there's an issue here with the Validator, because you're changing the instance state and the
 		// instance may be reused afterwards.
 
-		$properties        = $this->validator->validate( $post_id );
+		$properties        = $this->validator->validate( $identifier );
 		$nested_properties = array();
 
 		foreach ( $properties as $property ) {
@@ -113,13 +120,13 @@ class Jsonld_Converter {
 				$nested_properties[] = $property;
 				continue;
 			}
-			$property_transformed_data = $this->get_property_data( $property, $jsonld, $post_id, $references );
+			$property_transformed_data = $this->get_property_data( $property, $jsonld, $identifier, $references );
 			if ( false !== $property_transformed_data ) {
 				$jsonld[ $property['property_name'] ] = $property_transformed_data;
 			}
 		}
 
-		$jsonld = $this->process_nested_properties( $nested_properties, $jsonld, $post_id, $references );
+		$jsonld = $this->process_nested_properties( $nested_properties, $jsonld, $identifier, $references );
 
 		return $jsonld;
 	}
