@@ -20,7 +20,7 @@ import Wrapper from "./Wrapper";
 import Main from "./Main";
 import Label from "./Label";
 import MainType from "./MainType";
-import Cloud from "./Cloud";
+import IconImg from "./IconImg";
 import Drawer from "./Drawer";
 import Switch from "../Switch";
 import Category from "./Category";
@@ -28,6 +28,10 @@ import EditLink from "./EditLink";
 import ArrowToggle from "../ArrowToggle";
 
 const applyFilters = window.wp && window.wp.hooks && window.wp.hooks.applyFilters;
+
+const defaultCloudIconURL = `${window.wlSettings.wl_root}images/svg/wl-cloud-icon.svg`;
+const defaultNetworkIconURL = `${window.wlSettings.wl_root}images/svg/wl-network-icon.svg`;
+const defaultLocalIconURL = "";
 
 /**
  * @inheritDoc
@@ -43,9 +47,6 @@ class EntityTile extends React.Component {
     // when they're active.
     this.ref = React.createRef();
 
-    this.cloudIconClass = applyFilters ? applyFilters("wl_cloud_icon_class", "fa fa-cloud") : "fa fa-cloud";
-    this.networkIconClass = applyFilters ? applyFilters("wl_network_icon_class", "fa fa-external-link") : "fa fa-cloud";
-
     // Bind our functions.
     this.onEditClick = this.onEditClick.bind(this);
     this.onSwitchClick = this.onSwitchClick.bind(this);
@@ -55,6 +56,9 @@ class EntityTile extends React.Component {
 
     // Set the initial state.
     this.state = { open: false };
+
+    // Hooking into the cloud icons, compute icon filters
+    this.computeIconFilters();
   }
 
   /**
@@ -149,6 +153,31 @@ class EntityTile extends React.Component {
   }
 
   /**
+   * Hooking into the Cloud icons
+   *
+   * @see https://github.com/insideout10/wordlift-plugin/issues/1118
+   * @see https://github.com/insideout10/wordlift-plugin/issues/1153
+   * @since 3.27.3
+   *
+   */
+  computeIconFilters() {
+    // Possibly applyFilters and addFilter may not be available (for example in WP 4.7)
+
+    this.cloudIconURL = applyFilters ? applyFilters("wl_cloud_icon_url", defaultCloudIconURL) : defaultCloudIconURL;
+    this.networkIconURL = applyFilters
+      ? applyFilters("wl_network_icon_url", defaultNetworkIconURL)
+      : defaultNetworkIconURL;
+
+    this.iconURL = this.props.entity.local
+      ? defaultLocalIconURL
+      : this.props.entity.id.match(/https?:\/\/(?:\w+\\.)?dbpedia\.org/)
+        ? this.cloudIconURL
+        : this.networkIconURL;
+
+    this.iconURL = applyFilters ? applyFilters("wl_icon_url", this.iconURL, this.props.entity) : this.iconURL;
+  }
+
+  /**
    * Render the component.
    *
    * @since 3.11.0
@@ -162,15 +191,7 @@ class EntityTile extends React.Component {
             {this.props.entity.label}
             <MainType entity={this.props.entity}>{this.props.entity.mainType}</MainType>
           </Label>
-          {this.props.entity.local || (
-            <Cloud
-              className={
-                this.props.entity.id.match(/https?:\/\/(?:\w+\\.)?dbpedia\.org/)
-                  ? this.cloudIconClass
-                  : this.networkIconClass
-              }
-            />
-          )}
+          <IconImg src={this.iconURL} />
         </Main>
         <Drawer open={this.state.open}>
           <Switch onClick={this.onSwitchClick} selected={this.props.entity.link}>
@@ -188,6 +209,22 @@ class EntityTile extends React.Component {
     );
   }
 }
+
+/*
+ *
+ * Example implementation of wl_icon_url
+ *
+wp.hooks.addFilter(
+  "wl_icon_url",
+  "wordlift",
+  (content, entity) =>
+    entity.local
+      ? entity.sameAs.some(element => element.match(/https?:\/\/(?:\w+\\.)?yago-knowledge\.org/))
+        ? "https://image.flaticon.com/icons/svg/1163/1163624.svg"
+        : ""
+      : content
+);
+*/
 
 // Finally export the class.
 export default EntityTile;

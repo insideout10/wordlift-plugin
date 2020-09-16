@@ -2,7 +2,7 @@
 Author URL: https://wordlift.io
 Plugin URL: https://wordlift.io
 Contributors: wordlift, insideout10, ziodave, akshay_raje
-Tags: schema.org, rich snippets, semantic seo, JSON-LD, artificial intelligence, ai, linked data, semantic web, content recommendation, related posts, timeline, knowledge graph, interactive map
+Tags: schema.org, rich snippets, semantic seo, JSON-LD, artificial intelligence, ai, linked data, semantic web, content recommendation, related posts, timeline, knowledge graph, interactive map, classicpress
 Requires at least: 4.4
 Tested up to: 5.5
 Requires PHP: 5.3
@@ -142,7 +142,13 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.27.2 (2020-??-??) =
+= 3.27.3 (2020-09-14) =
+
+* Enhancement [#1153](https://github.com/insideout10/wordlift-plugin/issues/1153): Display the icon also for local entities that have a sameAs referring to the remote dataset.
+
+* Fix [#1154](https://github.com/insideout10/wordlift-plugin/issues/1154): Address as always required in relationships of relationships.
+
+= 3.27.2 (2020-09-01) =
 
 * Enhancement [1150](https://github.com/insideout10/wordlift-plugin/issues/1150): Faceted Search Widget Improvement: Display the first synonym when an entity has been created from an already existing page or post.
 * Enhancement [1149](https://github.com/insideout10/wordlift-plugin/issues/1149): Use WP's provided featured image for publisher when the local image isn't available.
