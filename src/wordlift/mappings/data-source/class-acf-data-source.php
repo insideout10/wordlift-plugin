@@ -28,7 +28,6 @@ class Acf_Data_Source implements Abstract_Data_Source {
 	 *
 	 * @return array|mixed
 	 */
-	// @todo Check usage of get_queried_object
 	private function get_data_for_acf_field( $field_name, $identifier, $type ) {
 		if ( $type === Jsonld_Converter::TERM ) {
 			// Data fetching method for term is different.
