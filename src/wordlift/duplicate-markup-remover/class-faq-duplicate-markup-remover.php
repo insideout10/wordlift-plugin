@@ -17,6 +17,7 @@ class Faq_Duplicate_Markup_Remover {
 	/**
 	 * @param $jsonld array The final jsonld.
 	 * @param $post_id int The post id.
+	 * @return array Filtered jsonld.
 	 */
 	public function wl_after_get_jsonld( $jsonld, $post_id ) {
 
@@ -43,6 +44,15 @@ class Faq_Duplicate_Markup_Remover {
 				continue;
 			}
 			$type = $value['@type'];
+
+			/**
+			 * Two possibilities:
+			 * 1. The referenced entity has only FAQ Page markup, in that case remove the complete entity.
+			 * 2. The referenced entity has multiple types, in that case completely remove the faq markup, but
+			 * retain the other entity data.
+			 */
+
+
 			// If the referenced entity is purely a faq page, the remove it.
 			if ( is_string( $type ) && $type === 'FAQPage' ) {
 				// Remove the entity completely.
