@@ -31,7 +31,7 @@ class Faq_Duplicate_Markup_Remover {
 
 		$post_jsonld = array_shift( $jsonld );
 
-		// If the current page is a  faq page, then we need to loop through all the items and remove the faq markup.
+		// we need to loop through all the items and remove the faq markup.
 		foreach ( $jsonld as $key => &$value ) {
 			if ( ! array_key_exists( '@type', $value ) ) {
 				continue;
