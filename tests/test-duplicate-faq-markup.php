@@ -30,7 +30,7 @@ class Duplicate_Faq_Markup_Test extends Wordlift_Unit_Test_Case {
 
 		$post_jsonld = array(
 			"@context"   => "https://schema.org",
-			'@type'       => 'FAQPage',
+			'@type'      => 'FAQPage',
 			'mainEntity' => array(
 				$faq_element_structure,
 				$faq_element_structure
@@ -71,7 +71,7 @@ class Duplicate_Faq_Markup_Test extends Wordlift_Unit_Test_Case {
 
 		$post_jsonld = array(
 			"@context"   => "https://schema.org",
-			'@type'       => 'FAQPage',
+			'@type'      => 'FAQPage',
 			'mainEntity' => array(
 				$faq_element_structure,
 				$faq_element_structure
@@ -105,6 +105,54 @@ class Duplicate_Faq_Markup_Test extends Wordlift_Unit_Test_Case {
 			)
 		), $result );
 
+	}
+
+
+	public function test_if_referenced_entities_have_faq_page_markup_should_remove_it() {
+		$faq_element_structure = array(
+			'@type'          => 'Question',
+			'name'           => 'What is the return policy?',
+			'acceptedAnswer' => array(
+				'@type' => 'Answer',
+				'text'  => 'Most unopened items in new condition and returned within <strong>90 days</strong> will receive a refund or exchange. Some items have a modified return policy noted on the receipt or packing slip. Items that are opened or damaged or do not have a receipt may be denied a refund or exchange.'
+			)
+		);
+		$input                 = array(
+			array(
+				"@context" => "https://schema.org",
+				'@type'    => 'Article',
+			),
+			array(
+				'@type'      => 'FAQPage',
+				'mainEntity' => array(
+					$faq_element_structure,
+					$faq_element_structure
+				),
+				'foo1'       => 'bar1'
+			),
+			array(
+				'@type'      => array( 'FAQPage', 'Article' ),
+				'mainEntity' => array(
+					$faq_element_structure,
+					$faq_element_structure
+				),
+				'foo2'       => 'bar2'
+			)
+		);
+
+		$expected_output = array(
+			array(
+				"@context" => "https://schema.org",
+				'@type'    => 'Article',
+			),
+			array(
+				'@type' => array( 'Article' ),
+				'foo2'  => 'bar2'
+			)
+		);
+
+		$result = apply_filters( 'wl_after_get_jsonld', $input, null );
+		$this->assertEquals( $expected_output, $result );
 	}
 
 
