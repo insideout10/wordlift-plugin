@@ -4,7 +4,10 @@
  * @package    Wordlift
  * @subpackage Wordlift/Mappings/Data_Source
  */
+
 namespace Wordlift\Mappings\Data_Source;
+
+use Wordlift\Mappings\Jsonld_Converter;
 
 class Acf_Data_Source implements Abstract_Data_Source {
 
@@ -14,27 +17,26 @@ class Acf_Data_Source implements Abstract_Data_Source {
 			return array();
 		}
 
-		return $this->get_data_for_acf_field( $property_data['field_name'], $identifier );
+		return $this->get_data_for_acf_field( $property_data['field_name'], $identifier, $type );
 	}
 
 	/**
 	 * Gets data from acf, format the data if it is a repeater field.
 	 *
-	 * @param $field_name
-	 * @param $post_id
+	 * @param $field_name string
+	 * @param $identifier int Identifier ( post id or term id )
 	 *
 	 * @return array|mixed
 	 */
 	// @todo Check usage of get_queried_object
-	private function get_data_for_acf_field( $field_name, $post_id ) {
-		if ( get_queried_object() instanceof \WP_Term ) {
+	private function get_data_for_acf_field( $field_name, $identifier, $type ) {
+		if ( $type === Jsonld_Converter::TERM ) {
 			// Data fetching method for term is different.
-			$term       = get_queried_object();
-			$field_data = get_field_object( $field_name, $term );
-			$data       = get_field( $field_name, $term );
+			$field_data = get_field_object( $field_name, $identifier );
+			$data       = get_field( $field_name, $identifier );
 		} else {
-			$field_data = get_field_object( $field_name, $post_id );
-			$data       = get_field( $field_name, $post_id );
+			$field_data = get_field_object( $field_name, $identifier );
+			$data       = get_field( $field_name, $identifier );
 		}
 		// only process if it is a repeater field, else return the data.
 		if ( is_array( $field_data ) && array_key_exists( 'type', $field_data )
