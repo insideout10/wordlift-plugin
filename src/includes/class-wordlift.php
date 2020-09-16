@@ -17,6 +17,7 @@ use Wordlift\Autocomplete\All_Autocomplete_Service;
 use Wordlift\Autocomplete\Linked_Data_Autocomplete_Service;
 use Wordlift\Autocomplete\Local_Autocomplete_Service;
 use Wordlift\Cache\Ttl_Cache;
+use Wordlift\Duplicate_Markup_Remover\Faq_Duplicate_Markup_Remover;
 use Wordlift\Entity\Entity_Helper;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Jsonld_Hook;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_After_Get_Jsonld_Hook;
@@ -1533,6 +1534,12 @@ class Wordlift {
 		new Recipe_Maker_After_Get_Jsonld_Hook( $recipe_maker_validation_service );
 		new Recipe_Maker_Warning( $recipe_maker_validation_service );
 		new Yoast_Jsonld( $recipe_maker_validation_service );
+
+		/**
+		 * @since 3.27.4
+		 * Add the faq duplicate markup hook.
+		 */
+		new Faq_Duplicate_Markup_Remover();
 	}
 
 	/**

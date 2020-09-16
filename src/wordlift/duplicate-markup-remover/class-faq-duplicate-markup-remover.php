@@ -2,6 +2,12 @@
 
 namespace Wordlift\Duplicate_Markup_Remover;
 
+/**
+ * @author Naveen Muthusamy <naveen@wordlift.io>
+ * @since 3.27.4
+ * Class Faq_Duplicate_Markup_Remover
+ * @package Wordlift\Duplicate_Markup_Remover
+ */
 class Faq_Duplicate_Markup_Remover {
 
 	public function __construct() {
@@ -32,7 +38,7 @@ class Faq_Duplicate_Markup_Remover {
 		$post_jsonld = array_shift( $jsonld );
 
 		// If the current page is a  faq page, then we need to loop through all the items and remove the faq markup.
-		foreach ( $jsonld as $key => $value ) {
+		foreach ( $jsonld as $key => &$value ) {
 			if ( ! array_key_exists( '@type', $value ) ) {
 				continue;
 			}
@@ -42,6 +48,19 @@ class Faq_Duplicate_Markup_Remover {
 				// Remove the entity completely.
 				unset( $jsonld[ $key ] );
 			}
+
+			if ( is_array( $type ) && in_array( 'FAQPage', $type ) ) {
+				// Remove the faq page type.
+				$position = array_search( 'FAQPage', $type );
+				// Also update the type.
+				if ( $position !== false ) {
+					unset( $type[ $position ] );
+					$value['@type'] = array_values( $type );
+				}
+				// Remove keys of faq page.
+				unset( $value['mainEntity'] );
+			}
+
 		}
 
 		// Add the post jsonld to front of jsonld array.
