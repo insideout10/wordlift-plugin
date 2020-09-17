@@ -9,6 +9,8 @@
 
 namespace Wordlift\Mappings\Validators;
 
+use Wordlift\Mappings\Jsonld_Converter;
+
 /**
  * Class Taxonomy_Term_Rule_Validator helps to
  * validate on term pages which belongs to a specific taxonomy
@@ -39,23 +41,22 @@ class Taxonomy_Term_Rule_Validator implements Rule_Validator {
 		return __( 'TaxonomyTerm', 'wordlift' );
 	}
 
-	// @todo Check usage of get_queried_object
-	public function is_valid( $post_id, $operator, $operand_1, $taxonomy ) {
-		/*
-		 * post_id should not be used since we validate this for term pages.
-		 */
-		$current_term = get_queried_object();
+	public function is_valid( $identifier, $operator, $operand_1, $taxonomy, $type ) {
+		if ( $type !== Jsonld_Converter::TERM ) {
+			return false;
+		}
+		$current_term = get_term( $identifier );
 		// If it is not a term page, then return false for two operators.
 		if ( ! $current_term instanceof \WP_Term ) {
 			return false;
 		}
 		$terms = get_terms( $taxonomy, array( 'get' => 'all' ) );
-		$terms = array_map( function($term) {
+		$terms = array_map( function ( $term ) {
 			/**
-			 *@var $term \WP_Term
+			 * @var $term \WP_Term
 			 */
 			return $term->term_id;
-		}, $terms);
+		}, $terms );
 		if ( $operator === Rule_Validator::IS_EQUAL_TO ) {
 			// if we dont have term id, then skip the flow.
 			// If we are in term page, then we need to check if the current

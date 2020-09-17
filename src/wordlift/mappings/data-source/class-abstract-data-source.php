@@ -13,6 +13,6 @@ namespace Wordlift\Mappings\Data_Source;
  */
 interface Abstract_Data_Source {
 
-	public function get_data( $post_id, $property );
+	public function get_data( $identifier, $property, $type );
 
 }
