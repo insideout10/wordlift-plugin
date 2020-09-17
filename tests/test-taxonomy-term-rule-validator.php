@@ -6,6 +6,7 @@ use Wordlift\Mappings\Jsonld_Converter;
 
 /**
  * This test checks if the taxonomy term validator is correct.
+ * @group mappings
  */
 class Taxonomy_Term_Rule_Validator_Test extends Wordlift_Unit_Test_Case {
 
