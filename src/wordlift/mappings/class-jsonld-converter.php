@@ -64,7 +64,7 @@ class Jsonld_Converter {
 		add_filter( 'wl_post_jsonld_array', array( $this, 'wl_post_jsonld_array' ), 11, 2 );
 		add_filter( 'wl_entity_jsonld_array', array( $this, 'wl_post_jsonld_array' ), 11, 2 );
 
-		// This is wrong: `wl_term_jsonld_array` will provide a term ID not a post ID (that `wl_post_jsonld_array` expects).
+		// Hook at add term jsonld.
 		add_filter( 'wl_term_jsonld_array', array( $this, 'wl_term_jsonld_array' ), 11, 2 );
 	}
 
