@@ -30,9 +30,10 @@ class Acf_Data_Source implements Abstract_Data_Source {
 	 */
 	private function get_data_for_acf_field( $field_name, $identifier, $type ) {
 		if ( $type === Jsonld_Converter::TERM ) {
+			$term = get_term( $identifier );
 			// Data fetching method for term is different.
-			$field_data = get_field_object( $field_name, $identifier );
-			$data       = get_field( $field_name, $identifier );
+			$field_data = get_field_object( $field_name, $term );
+			$data       = get_field( $field_name, $term );
 		} else {
 			$field_data = get_field_object( $field_name, $identifier );
 			$data       = get_field( $field_name, $identifier );

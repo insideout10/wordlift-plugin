@@ -137,7 +137,6 @@ class Jsonld_Converter {
 	 * @since 3.25.0
 	 */
 	private function build_jsonld( $jsonld, $identifier, &$references, $type ) {
-
 		// @@todo I think there's an issue here with the Validator, because you're changing the instance state and the
 		// instance may be reused afterwards.
 

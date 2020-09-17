@@ -9,6 +9,8 @@
 
 namespace Wordlift\Mappings\Validators;
 
+use Wordlift\Mappings\Jsonld_Converter;
+
 /**
  * Class Taxonomy_Term_Rule_Validator helps to
  * validate on term pages which belongs to a specific taxonomy
@@ -40,6 +42,9 @@ class Taxonomy_Term_Rule_Validator implements Rule_Validator {
 	}
 
 	public function is_valid( $identifier, $operator, $operand_1, $taxonomy, $type ) {
+		if ( $type !== Jsonld_Converter::TERM ) {
+			return false;
+		}
 		$current_term = get_term( $identifier );
 		// If it is not a term page, then return false for two operators.
 		if ( ! $current_term instanceof \WP_Term ) {
