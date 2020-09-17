@@ -65,8 +65,36 @@ class Jsonld_Converter {
 		add_filter( 'wl_entity_jsonld_array', array( $this, 'wl_post_jsonld_array' ), 11, 2 );
 
 		// This is wrong: `wl_term_jsonld_array` will provide a term ID not a post ID (that `wl_post_jsonld_array` expects).
-		// DO NOT UNCOMMENT ME: add_filter( 'wl_term_jsonld_array', array( $this, 'wl_post_jsonld_array' ), 11, 2 );
+		add_filter( 'wl_term_jsonld_array', array( $this, 'wl_term_jsonld_array' ), 11, 2 );
 	}
+
+	/**
+	 * Hook to `wl_term_jsonld_array`.
+	 *
+	 * Receive the JSON-LD and the references in the array along with the term ID and transform them according to
+	 * the configuration.
+	 *
+	 * @param array $value {
+	 *      The array containing the JSON-LD and the references.
+	 *
+	 * @type array $jsonld The JSON-LD array.
+	 * @type int[] $references An array of post ID referenced by the JSON-LD (will be expanded by the converter).
+	 * }
+	 *
+	 * @param int $term_id The Term ID.
+	 *
+	 * @return array An array with the updated JSON-LD and references.
+	 */
+	public function wl_term_jsonld_array( $value, $term_id ) {
+		$jsonld     = $value['jsonld'];
+		$references = $value['references'];
+
+		return array(
+			'jsonld'     => $this->build_jsonld( $jsonld, $term_id, $references, self::TERM ),
+			'references' => $references,
+		);
+	}
+
 
 	/**
 	 * Hook to `wl_post_jsonld_array` and `wl_entity_jsonld_array`.
