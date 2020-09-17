@@ -7,6 +7,7 @@
  * @subpackage Wordlift/tests
  */
 
+use Wordlift\Mappings\Jsonld_Converter;
 use Wordlift\Mappings\Mappings_DBO;
 use Wordlift\Mappings\Mappings_Validator;
 use Wordlift\Mappings\Validators\Rule_Groups_Validator;
@@ -76,7 +77,7 @@ class Wordlift_Mapping_Validator_Test extends WP_UnitTestCase {
 			)
 		);
 		// Since this post didnt have that post type, it should return false.
-		$this->assertEmpty( $this->validator->validate( $post_id ) );
+		$this->assertEmpty( $this->validator->validate( $post_id, Jsonld_Converter::POST ) );
 	}
 
 	/** When the rules did match the post type it should return true */
@@ -102,7 +103,7 @@ class Wordlift_Mapping_Validator_Test extends WP_UnitTestCase {
 			)
 		);
 		// Since this post didnt have that post type, it should return false.
-		$this->assertEmpty( $this->validator->validate( $post_id ) );
+		$this->assertEmpty( $this->validator->validate( $post_id, Jsonld_Converter::POST ) );
 
 		// Add another rule group contradicting the first rule, it should
 		// return false now.
@@ -114,7 +115,7 @@ class Wordlift_Mapping_Validator_Test extends WP_UnitTestCase {
 				'rule_group_id'    => $rule_group_id,
 			)
 		);
-		$this->assertEmpty( $this->validator->validate( $post_id ) );
+		$this->assertEmpty( $this->validator->validate( $post_id, Jsonld_Converter::POST ) );
 	}
 
 	/** Test when given correct taxonomy, should return true */
@@ -150,7 +151,7 @@ class Wordlift_Mapping_Validator_Test extends WP_UnitTestCase {
 		);
 
 		// Since this post have correct taxonomy term, should return true.
-		$this->assertEmpty( $this->validator->validate( $post_id ) );
+		$this->assertEmpty( $this->validator->validate( $post_id, Jsonld_Converter::POST ) );
 
 		// Lets insert another rule which says not equal to the term id.
 		$this->dbo->insert_or_update_rule_item(
@@ -163,7 +164,7 @@ class Wordlift_Mapping_Validator_Test extends WP_UnitTestCase {
 		);
 
 		// The above rule should make validator return false.
-		$this->assertEmpty( $this->validator->validate( $post_id ) );
+		$this->assertEmpty( $this->validator->validate( $post_id, Jsonld_Converter::POST ) );
 	}
 
 	/** For a valid mapping item should return properties */
@@ -203,7 +204,7 @@ class Wordlift_Mapping_Validator_Test extends WP_UnitTestCase {
 			$property_data
 		);
 		// Should be true, since post type matches.
-		$properties = $this->validator->validate( $post_id );
+		$properties = $this->validator->validate( $post_id, Jsonld_Converter::POST );
 		$this->assertNotEmpty( $properties );
 		// Should return only active properties.
 		$this->assertEquals( 1, count( $properties ) );

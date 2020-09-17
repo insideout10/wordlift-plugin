@@ -128,7 +128,7 @@ class Jsonld_Converter {
 			}
 		}
 
-		$jsonld = $this->process_nested_properties( $nested_properties, $jsonld, $identifier, $references );
+		$jsonld = $this->process_nested_properties( $nested_properties, $jsonld, $identifier, $references, $type );
 
 		return $jsonld;
 	}
@@ -147,7 +147,7 @@ class Jsonld_Converter {
 	 */
 	public function get_property_data( $property, $jsonld, $post_id, &$references, $type ) {
 		$transform_instance = $this->transform_functions_registry->get_transform_function( $property['transform_function'] );
-		$data               = Data_Source_Factory::get_instance()->get_data( $post_id, $property );
+		$data               = Data_Source_Factory::get_instance()->get_data( $post_id, $property, $type );
 		if ( null !== $transform_instance ) {
 			$transform_data = $transform_instance->transform_data( $data, $jsonld, $references, $post_id );
 			if ( null !== $transform_data ) {
@@ -166,11 +166,15 @@ class Jsonld_Converter {
 	 * @param $nested_properties array
 	 * @param $jsonld array
 	 *
+	 * @param $post_id
+	 * @param $references
+	 * @param string $type Post or term.
+	 *
 	 * @return array
 	 */
-	public function process_nested_properties( $nested_properties, $jsonld, $post_id, &$references ) {
+	public function process_nested_properties( $nested_properties, $jsonld, $post_id, &$references, $type ) {
 		foreach ( $nested_properties as $property ) {
-			$property_data = $this->get_property_data( $property, $jsonld, $post_id, $references );
+			$property_data = $this->get_property_data( $property, $jsonld, $post_id, $references, $type );
 			if ( false === $property_data ) {
 				// No need to create nested levels.
 				continue;
