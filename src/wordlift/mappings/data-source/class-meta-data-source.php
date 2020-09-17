@@ -17,7 +17,7 @@ use Wordlift\Mappings\Jsonld_Converter;
 class Meta_Data_Source implements Abstract_Data_Source {
 
 	/**
-	 * @param $identifier
+	 * @param int $identifier Post id or term id
 	 * @param $property
 	 * @param $type
 	 *

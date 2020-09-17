@@ -101,7 +101,7 @@ final class Mappings_Validator {
 	 * Validates a post id with the list of active mapping items and check if
 	 * a mapping can be applied.
 	 *
-	 * @param int $identifier The post id.
+	 * @param int $identifier The post id or term id based on type.
 	 *
 	 * @param string $type Post or term.
 	 *
@@ -120,7 +120,7 @@ final class Mappings_Validator {
 		 * Apply this filter to get mappings from external plugins.
 		 *
 		 * @param $mappings array Array of mappings from database.
-		 * @param $identifier int The post id.
+		 * @param $identifier int The post id or term id based on type.
 		 */
 		$mappings = apply_filters( 'wl_mappings_post', $mappings, $identifier );
 

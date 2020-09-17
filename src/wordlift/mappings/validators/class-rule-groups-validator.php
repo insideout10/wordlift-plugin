@@ -40,7 +40,7 @@ class Rule_Groups_Validator {
 	/**
 	 * Check whether the specified post passes at least one group of rules.
 	 *
-	 * @param int $identifier The post id.
+	 * @param int $identifier The post id or term id.
 	 * @param array $rule_groups An array of rules' groups.
 	 * @param $type string Post or term
 	 *
