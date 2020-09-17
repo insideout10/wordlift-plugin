@@ -103,6 +103,8 @@ class Jsonld_Converter {
 	 * @param int $identifier The {@link WP_Post} id or {@link \WP_Term} id.
 	 * @param array $references An array of post references.
 	 *
+	 * @param string $type Post or term.
+	 *
 	 * @return array the new refactored array structure.
 	 * @since 3.25.0
 	 */
@@ -111,7 +113,7 @@ class Jsonld_Converter {
 		// @@todo I think there's an issue here with the Validator, because you're changing the instance state and the
 		// instance may be reused afterwards.
 
-		$properties        = $this->validator->validate( $identifier );
+		$properties        = $this->validator->validate( $identifier, $type );
 		$nested_properties = array();
 
 		foreach ( $properties as $property ) {

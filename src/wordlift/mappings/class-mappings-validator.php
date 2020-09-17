@@ -101,11 +101,13 @@ final class Mappings_Validator {
 	 * Validates a post id with the list of active mapping items and check if
 	 * a mapping can be applied.
 	 *
-	 * @param int $post_id The post id.
+	 * @param int $identifier The post id.
+	 *
+	 * @param string $type Post or term.
 	 *
 	 * @return array
 	 */
-	public function validate( $post_id ) {
+	public function validate( $identifier, $type ) {
 		// Reset the valid property items before making the validation.
 		$properties = array();
 
@@ -118,15 +120,15 @@ final class Mappings_Validator {
 		 * Apply this filter to get mappings from external plugins.
 		 *
 		 * @param $mappings array Array of mappings from database.
-		 * @param $post_id int The post id.
+		 * @param $identifier int The post id.
 		 */
-		$mappings = apply_filters( 'wl_mappings_post', $mappings, $post_id );
+		$mappings = apply_filters( 'wl_mappings_post', $mappings, $identifier );
 
 		// Get all active rule groups for the mapping items.
 		foreach ( $mappings as $mapping ) {
 			if ( array_key_exists( 'mapping_id', $mapping ) ) {
 				$rule_groups          = $this->dbo->get_rule_groups_by_mapping( (int) $mapping['mapping_id'] );
-				$should_apply_mapping = $this->rule_groups_validator->is_valid( $post_id, $rule_groups );
+				$should_apply_mapping = $this->rule_groups_validator->is_valid( $identifier, $rule_groups, $type );
 				if ( $should_apply_mapping ) {
 					$mapping_item_properties = $this->dbo->get_properties( $mapping['mapping_id'] );
 					$properties              = array_merge( $properties, $mapping_item_properties );

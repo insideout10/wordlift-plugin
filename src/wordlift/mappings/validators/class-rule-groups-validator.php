@@ -40,12 +40,13 @@ class Rule_Groups_Validator {
 	/**
 	 * Check whether the specified post passes at least one group of rules.
 	 *
-	 * @param int $post_id The post id.
+	 * @param int $identifier The post id.
 	 * @param array $rule_groups An array of rules' groups.
+	 * @param $type string Post or term
 	 *
 	 * @return bool Whether the post passes at least one rule group.
 	 */
-	public function is_valid( $post_id, $rule_groups ) {
+	public function is_valid( $identifier, $rule_groups, $type ) {
 
 		// Validate each group. Return true as soon as one group is validated (all rules).
 		foreach ( (array) $rule_groups as $rule_group ) {
@@ -56,7 +57,7 @@ class Rule_Groups_Validator {
 
 				$rule_validator = $this->rule_validators_registry->get_rule_validator( $rule_field_one );
 				// Skip to the next Rule Group if a rule isn't valid.
-				if ( ! $rule_validator->is_valid( $post_id, $rule_logic_field, $rule_field_one, $rule_field_two ) ) {
+				if ( ! $rule_validator->is_valid( $identifier, $rule_logic_field, $rule_field_one, $rule_field_two, $type ) ) {
 					continue 2;
 				}
 
