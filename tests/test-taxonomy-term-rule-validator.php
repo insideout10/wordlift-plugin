@@ -2,6 +2,7 @@
 
 use Wordlift\Mappings\Validators\Rule_Validator;
 use Wordlift\Mappings\Validators\Taxonomy_Term_Rule_Validator;
+use Wordlift\Mappings\Jsonld_Converter;
 
 /**
  * This test checks if the taxonomy term validator is correct.
@@ -21,7 +22,8 @@ class Taxonomy_Term_Rule_Validator_Test extends Wordlift_Unit_Test_Case {
 		$result = $this->instance->is_valid( null,
 			Rule_Validator::IS_EQUAL_TO,
 			'taxonomy',
-			'category'
+			'category',
+			Jsonld_Converter::TERM
 		);
 		$this->assertFalse( $result );
 	}
@@ -34,10 +36,11 @@ class Taxonomy_Term_Rule_Validator_Test extends Wordlift_Unit_Test_Case {
 		);
 		$term_id                  = $term['term_id'];
 		$wp_query->queried_object = get_term( $term_id );
-		$result                   = $this->instance->is_valid( null,
+		$result                   = $this->instance->is_valid( $term_id,
 			Rule_Validator::IS_EQUAL_TO,
 			'taxonomy',
-			'category'
+			'category',
+			Jsonld_Converter::TERM
 		);
 		$this->assertTrue( $result );
 	}
@@ -46,7 +49,8 @@ class Taxonomy_Term_Rule_Validator_Test extends Wordlift_Unit_Test_Case {
 		$result = $this->instance->is_valid( null,
 			Rule_Validator::IS_NOT_EQUAL_TO,
 			'taxonomy',
-			'category'
+			'category',
+			Jsonld_Converter::TERM
 		);
 		$this->assertFalse( $result );
 	}
@@ -61,10 +65,11 @@ class Taxonomy_Term_Rule_Validator_Test extends Wordlift_Unit_Test_Case {
 		$term_id                  = $term['term_id'];
 		$wp_query->queried_object = get_term( $term_id );
 		// The term bar dont belong to category
-		$result = $this->instance->is_valid( null,
+		$result = $this->instance->is_valid( $term_id,
 			Rule_Validator::IS_NOT_EQUAL_TO,
 			'taxonomy',
-			'category'
+			'category',
+			Jsonld_Converter::TERM
 		);
 		$this->assertTrue( $result );
 	}
