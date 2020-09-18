@@ -14,6 +14,21 @@ class Wordlift_Context_Cards_Service {
 		$show_context_cards     = apply_filters( 'wl_context_cards_show', true );
 		$context_cards_base_url = apply_filters( 'wl_context_cards_base_url', get_rest_url( null, WL_REST_ROUTE_DEFAULT_NAMESPACE . '/jsonld' ) );
 
+		/*
+		 * Do not load wordlift-cloud on a non-static home page
+		 *
+		 * @since 3.27.4
+		 */
+		if ( is_front_page() && is_home() ) {
+			// Default homepage - force hide
+			$show_context_cards = false;
+		} elseif ( is_front_page() ) {
+			// Static homepage - do nothing
+		} elseif ( is_home() ) {
+			// Blog page - force hide
+			$show_context_cards = false;
+		}
+
 		if ( $show_context_cards ) {
 			wp_enqueue_script( 'wordlift-cloud' );
 			wp_localize_script( 'wordlift-cloud', '_wlCloudSettings', array(
