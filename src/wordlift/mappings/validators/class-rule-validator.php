@@ -32,13 +32,14 @@ interface Rule_Validator {
 	/**
 	 * Test whether a post passes a validation.
 	 *
-	 * @param int $post_id The post id.
+	 * @param int $identifier The post id or term id.
 	 * @param string $operator The operator.
 	 * @param string $operand_1 The first operand.
 	 * @param string $operand_2 The second operand.
+	 * @param string $type The type is either post or term.
 	 *
 	 * @return bool Whether the post passes or not the validation.
 	 */
-	public function is_valid( $post_id, $operator, $operand_1, $operand_2 );
+	public function is_valid( $identifier, $operator, $operand_1, $operand_2, $type );
 
 }

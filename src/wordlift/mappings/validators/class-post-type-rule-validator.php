@@ -55,10 +55,10 @@ class Post_Type_Rule_Validator implements Rule_Validator {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function is_valid( $post_id, $operator, $operand_1, $operand_2 ) {
+	public function is_valid( $identifier, $operator, $operand_1, $operand_2, $type ) {
 
 		// Get the post type and then check whether it matches or not according to the operator.
-		$post_type = get_post_type( $post_id );
+		$post_type = get_post_type( $identifier );
 
 		switch ( $operator ) {
 			case Rule_Validator::IS_NOT_EQUAL_TO:

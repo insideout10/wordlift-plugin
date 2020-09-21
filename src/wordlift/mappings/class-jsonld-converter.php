@@ -24,6 +24,13 @@ class Jsonld_Converter {
 	const FIELD_TYPE_TEXT_FIELD = 'text';
 	const FIELD_TYPE_CUSTOM_FIELD = 'custom_field';
 	const FIELD_TYPE_ACF = 'acf';
+
+	/**
+	 * Mappings can be applied to either post
+	 * or term, the below is used to specify whether it is a post or a term.
+	 */
+	const POST = 'post';
+	const TERM = 'term';
 	/**
 	 * The {@link Mappings_Validator} instance to test.
 	 *
@@ -57,9 +64,37 @@ class Jsonld_Converter {
 		add_filter( 'wl_post_jsonld_array', array( $this, 'wl_post_jsonld_array' ), 11, 2 );
 		add_filter( 'wl_entity_jsonld_array', array( $this, 'wl_post_jsonld_array' ), 11, 2 );
 
-		// This is wrong: `wl_term_jsonld_array` will provide a term ID not a post ID (that `wl_post_jsonld_array` expects).
-		// DO NOT UNCOMMENT ME: add_filter( 'wl_term_jsonld_array', array( $this, 'wl_post_jsonld_array' ), 11, 2 );
+		// Hook at add term jsonld.
+		add_filter( 'wl_term_jsonld_array', array( $this, 'wl_term_jsonld_array' ), 11, 2 );
 	}
+
+	/**
+	 * Hook to `wl_term_jsonld_array`.
+	 *
+	 * Receive the JSON-LD and the references in the array along with the term ID and transform them according to
+	 * the configuration.
+	 *
+	 * @param array $value {
+	 *      The array containing the JSON-LD and the references.
+	 *
+	 * @type array $jsonld The JSON-LD array.
+	 * @type int[] $references An array of post ID referenced by the JSON-LD (will be expanded by the converter).
+	 * }
+	 *
+	 * @param int $term_id The Term ID.
+	 *
+	 * @return array An array with the updated JSON-LD and references.
+	 */
+	public function wl_term_jsonld_array( $value, $term_id ) {
+		$jsonld     = $value['jsonld'];
+		$references = $value['references'];
+
+		return array(
+			'jsonld'     => $this->build_jsonld( $jsonld, $term_id, $references, self::TERM ),
+			'references' => $references,
+		);
+	}
+
 
 	/**
 	 * Hook to `wl_post_jsonld_array` and `wl_entity_jsonld_array`.
@@ -84,7 +119,7 @@ class Jsonld_Converter {
 		$references = $value['references'];
 
 		return array(
-			'jsonld'     => $this->wl_post_jsonld( $jsonld, $post_id, $references ),
+			'jsonld'     => $this->build_jsonld( $jsonld, $post_id, $references, self::POST ),
 			'references' => $references,
 		);
 	}
@@ -93,18 +128,19 @@ class Jsonld_Converter {
 	 * Returns JSON-LD data after applying transformation functions.
 	 *
 	 * @param array $jsonld The JSON-LD structure.
-	 * @param int $post_id The {@link WP_Post} id.
+	 * @param int $identifier The {@link WP_Post} id or {@link \WP_Term} id.
 	 * @param array $references An array of post references.
+	 *
+	 * @param string $type Post or term.
 	 *
 	 * @return array the new refactored array structure.
 	 * @since 3.25.0
 	 */
-	private function wl_post_jsonld( $jsonld, $post_id, &$references ) {
-
+	private function build_jsonld( $jsonld, $identifier, &$references, $type ) {
 		// @@todo I think there's an issue here with the Validator, because you're changing the instance state and the
 		// instance may be reused afterwards.
 
-		$properties        = $this->validator->validate( $post_id );
+		$properties        = $this->validator->validate( $identifier, $type );
 		$nested_properties = array();
 
 		foreach ( $properties as $property ) {
@@ -113,13 +149,13 @@ class Jsonld_Converter {
 				$nested_properties[] = $property;
 				continue;
 			}
-			$property_transformed_data = $this->get_property_data( $property, $jsonld, $post_id, $references );
+			$property_transformed_data = $this->get_property_data( $property, $jsonld, $identifier, $references, $type );
 			if ( false !== $property_transformed_data ) {
 				$jsonld[ $property['property_name'] ] = $property_transformed_data;
 			}
 		}
 
-		$jsonld = $this->process_nested_properties( $nested_properties, $jsonld, $post_id, $references );
+		$jsonld = $this->process_nested_properties( $nested_properties, $jsonld, $identifier, $references, $type );
 
 		return $jsonld;
 	}
@@ -129,16 +165,18 @@ class Jsonld_Converter {
 	 *
 	 * @param $property
 	 * @param $jsonld
-	 * @param $post_id
+	 * @param $identifier
 	 * @param $references
+	 *
+	 * @param $type
 	 *
 	 * @return array|bool|null
 	 */
-	public function get_property_data( $property, $jsonld, $post_id, &$references ) {
+	public function get_property_data( $property, $jsonld, $identifier, &$references, $type ) {
 		$transform_instance = $this->transform_functions_registry->get_transform_function( $property['transform_function'] );
-		$data               = Data_Source_Factory::get_instance()->get_data( $post_id, $property );
+		$data               = Data_Source_Factory::get_instance()->get_data( $identifier, $property, $type );
 		if ( null !== $transform_instance ) {
-			$transform_data = $transform_instance->transform_data( $data, $jsonld, $references, $post_id );
+			$transform_data = $transform_instance->transform_data( $data, $jsonld, $references, $identifier );
 			if ( null !== $transform_data ) {
 				return $this->make_single( $transform_data );
 			}
@@ -155,11 +193,15 @@ class Jsonld_Converter {
 	 * @param $nested_properties array
 	 * @param $jsonld array
 	 *
+	 * @param $identifier
+	 * @param $references
+	 * @param string $type Post or term.
+	 *
 	 * @return array
 	 */
-	public function process_nested_properties( $nested_properties, $jsonld, $post_id, &$references ) {
+	public function process_nested_properties( $nested_properties, $jsonld, $identifier, &$references, $type ) {
 		foreach ( $nested_properties as $property ) {
-			$property_data = $this->get_property_data( $property, $jsonld, $post_id, $references );
+			$property_data = $this->get_property_data( $property, $jsonld, $identifier, $references, $type );
 			if ( false === $property_data ) {
 				// No need to create nested levels.
 				continue;

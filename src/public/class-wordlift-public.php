@@ -144,12 +144,25 @@ class Wordlift_Public {
 
 		/*
 		 * Register wordlift-cloud script which is shared by
-		 * Context Cards and Navigator
+		 * Navigator, Products Navigator, Faceted Search, Context Cards
 		 *
 		 * @since 3.22.0
 		 *
 		 */
 		$deps = $this->wp_version_compare( '>=', '5.0' ) ? array( 'wp-hooks' ) : array();
+
+		/*
+		 * Added defer to wordlift-cloud
+		 *
+		 * @since 3.27.4
+		 */
+		add_filter( 'script_loader_tag', function ( $tag, $handle ) {
+			if ( 'wordlift-cloud' !== $handle ) {
+				return $tag;
+			}
+
+			return str_replace( ' src', ' defer="defer" src', $tag );
+		}, 10, 2 );
 		wp_register_script( 'wordlift-cloud', self::get_cloud_js_url(), $deps, Wordlift::get_instance()->get_version(), true );
 
 	}

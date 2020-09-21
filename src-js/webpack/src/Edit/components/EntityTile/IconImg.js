@@ -13,6 +13,7 @@ import styled from "styled-components";
  * @inheritDoc
  */
 const IconImg = styled.img`
+  border: 0;
   position: absolute;
   right: 20px;
   top: calc(50% - 10px);

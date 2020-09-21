@@ -142,6 +142,12 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.27.4 (2020-09-21) =
+
+* Enhancement [#1162](https://github.com/insideout10/wordlift-plugin/issues/1162): Optimizations in loading wordlift-cloud.js and other JS files.
+* Enhancement [#1104](https://github.com/insideout10/wordlift-plugin/issues/1104): Cut off FAQ markup on the suggested entities.
+* Enhancement [#1075](https://github.com/insideout10/wordlift-plugin/issues/1075): Taxonomy filter improvement.
+
 = 3.27.3 (2020-09-14) =
 
 * Enhancement [#1153](https://github.com/insideout10/wordlift-plugin/issues/1153): Display the icon also for local entities that have a sameAs referring to the remote dataset.

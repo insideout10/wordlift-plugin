@@ -224,35 +224,35 @@ class Wordlift_Mappings_Test extends WP_UnitTestCase {
 		$this->assertFalse( array_key_exists( 'foo', $target_jsonld ) );
 	}
 
-//	public function test_given_a_term_page_should_get_correct_data_in_mappings_for_meta_field() {
-//		// Create a taxonomy + term.
-//		register_taxonomy( 'foo', null );
-//		$term_data  = wp_create_term( 'bar', 'foo' );
-//		$term_id    = $term_data['term_id'];
-//		$properties = array(
-//			array(
-//				'property_name'      => 'foo',
-//				'field_type'         => \Wordlift\Mappings\Jsonld_Converter::FIELD_TYPE_CUSTOM_FIELD,
-//				'field_name'         => 'foo',
-//				'transform_function' => 'none',
-//				'property_status'    => Mappings_Validator::ACTIVE_CATEGORY,
-//			),
-//		);
-//		update_term_meta( $term_id, 'foo', 'bar value' );
-//		// we have created the term, create a rule group, properties and mapping item.
-//		$this->create_new_mapping_item( 'taxonomy', 'foo', $properties );
-//		// now set the term as queried object.
-//		global $wp_query;
-//		$wp_query->queried_object    = get_term( $term_id );
-//		$wp_query->queried_object_id = $term_id;
-//		// get the json ld.
-//		$result = apply_filters( 'wl_term_jsonld_array',
-//			array( 'jsonld' => array(), 'references' => array() ),
-//			null
-//		);
-//		$jsonld = $result['jsonld'];
-//		$this->assertArrayHasKey( 'foo', $jsonld );
-//		$this->assertEquals( 'bar value', $jsonld['foo'] );
-//	}
+	public function test_given_a_term_page_should_get_correct_data_in_mappings_for_meta_field() {
+		// Create a taxonomy + term.
+		register_taxonomy( 'foo', null );
+		$term_data  = wp_create_term( 'bar', 'foo' );
+		$term_id    = $term_data['term_id'];
+		$properties = array(
+			array(
+				'property_name'      => 'foo',
+				'field_type'         => \Wordlift\Mappings\Jsonld_Converter::FIELD_TYPE_CUSTOM_FIELD,
+				'field_name'         => 'foo',
+				'transform_function' => 'none',
+				'property_status'    => Mappings_Validator::ACTIVE_CATEGORY,
+			),
+		);
+		update_term_meta( $term_id, 'foo', 'bar value' );
+		// we have created the term, create a rule group, properties and mapping item.
+		$this->create_new_mapping_item( 'taxonomy', 'foo', $properties );
+		// now set the term as queried object.
+		global $wp_query;
+		$wp_query->queried_object    = get_term( $term_id );
+		$wp_query->queried_object_id = $term_id;
+		// get the json ld.
+		$result = apply_filters( 'wl_term_jsonld_array',
+			array( 'jsonld' => array(), 'references' => array() ),
+			$term_id
+		);
+		$jsonld = $result['jsonld'];
+		$this->assertArrayHasKey( 'foo', $jsonld );
+		$this->assertEquals( 'bar value', $jsonld['foo'] );
+	}
 
 }

@@ -138,6 +138,11 @@ class Wordlift_Term_JsonLd_Adapter {
 			return;
 		}
 
+		// Bail out if `wl_jsonld_enabled` isn't enabled.
+		if ( ! apply_filters( 'wl_jsonld_enabled', true ) ) {
+			return;
+		}
+
 		$term_id = $query_object->term_id;
 
 		$jsonld = $this->get( $term_id );

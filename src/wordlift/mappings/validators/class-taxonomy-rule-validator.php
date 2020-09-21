@@ -19,12 +19,12 @@ class Taxonomy_Rule_Validator implements Rule_Validator {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function is_valid( $post_id, $operator, $operand_1, $operand_2 ) {
+	public function is_valid( $identifier, $operator, $operand_1, $operand_2, $type ) {
 
 		$taxonomy  = $operand_1;
 		$term_slug = $operand_2;
 
-		$is_object_in_term = is_object_in_term( $post_id, $taxonomy, $term_slug );
+		$is_object_in_term = is_object_in_term( $identifier, $taxonomy, $term_slug );
 
 		if ( is_wp_error( $is_object_in_term ) ) {
 			return false;
