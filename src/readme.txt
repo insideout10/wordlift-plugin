@@ -142,7 +142,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.27.4 (2020-09-__) =
+= 3.27.4 (2020-09-21) =
 
 * Enhancement [#1162](https://github.com/insideout10/wordlift-plugin/issues/1162): Optimizations in loading wordlift-cloud.js and other JS files.
 * Enhancement [#1104](https://github.com/insideout10/wordlift-plugin/issues/1104): Cut off FAQ markup on the suggested entities.
