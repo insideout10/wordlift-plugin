@@ -54,10 +54,7 @@ class Acf_Data_Source implements Abstract_Data_Source {
 				$repeater_formatted_data = array_unique( $repeater_formatted_data );
 				// Remove empty values
 				$repeater_formatted_data = array_filter( $repeater_formatted_data, function ( $item ) {
-					if ( is_array( $item ) ) {
-						return true;
-					}
-					return strlen( $item ) > 0;
+					return is_array( $item ) || strlen( $item );
 				} );
 
 				// re-index all the values.
