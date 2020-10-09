@@ -142,6 +142,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.27.5 (2020-10-09) =
+
+* Fix: Remove outdated SSL CA
+
 = 3.27.4 (2020-09-21) =
 
 * Enhancement [#1162](https://github.com/insideout10/wordlift-plugin/issues/1162): Optimizations in loading wordlift-cloud.js and other JS files.
