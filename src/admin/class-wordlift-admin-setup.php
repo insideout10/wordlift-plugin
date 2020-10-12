@@ -107,6 +107,7 @@ class Wordlift_Admin_Setup {
 		// Hook to `admin_menu` in order to add our own setup wizard page.
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 
+
 		/**
 		 * Filter: wl_feature__enable__setup_screen.
 		 * @since 3.27.6

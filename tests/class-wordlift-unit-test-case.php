@@ -246,17 +246,4 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 
 	}
 
-	/**
-	 * Check if callable exists.
-	 * @param $tag string
-	 * @param $function_to_remove callable
-	 * @param int $priority
-	 *
-	 * @return bool
-	 */
-	public function is_action_exists( $tag, $function_to_remove, $priority = 10 ) {
-		$function_key = _wp_filter_build_unique_id( $tag, $function_to_remove, $priority );
-		return isset( $this->callbacks[ $priority ][ $function_key ] );
-	}
-
 }
