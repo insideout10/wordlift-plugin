@@ -344,7 +344,7 @@ class Wordlift {
 	 * @access private
 	 * @var \Wordlift_Admin_Setup $admin_setup The Install wizard.
 	 */
-	private $admin_setup;
+	public $admin_setup;
 
 	/**
 	 * The Content Filter Service hooks up to the 'the_content' filter and provides
