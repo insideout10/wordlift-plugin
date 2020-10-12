@@ -14,9 +14,18 @@
 class Test_Wl_For_Wc_Hooks extends Wordlift_Unit_Test_Case {
 
 	public function test_when_wl_feature_disable_setup_screen_added_should_disable_setup_screen() {
-		add_filter( 'wl_feature__disable__setup_screen', '__return_false' );
+		add_filter( 'wl_feature__enable__setup_screen', '__return_false' );
 		global $wp_filter;
-		$this->assertFalse( remove_action( 'admin_init', array(
+		$this->assertFalse( $this->is_action_exists( 'admin_init', array(
+			Wordlift::get_instance()->admin_setup,
+			'show_page'
+		) ) );
+	}
+
+	public function test_when_wl_feature_disable_setup_screen_added_should_enable_setup_screen() {
+		add_filter( 'wl_feature__enable__setup_screen', '__return_true' );
+		global $wp_filter;
+		$this->assertTrue( $this->is_action_exists( 'admin_init', array(
 			Wordlift::get_instance()->admin_setup,
 			'show_page'
 		) ) );
