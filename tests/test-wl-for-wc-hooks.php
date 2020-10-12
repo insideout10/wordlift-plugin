@@ -88,4 +88,22 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 		$this->assertFalse( $registry->is_registered( 'wordlift/faceted-search' ) );
 	}
 
+	public function test_on_default_state_three_widgets_should_be_registered() {
+		global $wp_widget_factory;
+		$this->assertTrue( isset( $wp_widget_factory->widgets['WordLift_Chord_Widget'] ) );
+		$this->assertTrue( isset( $wp_widget_factory->widgets['WordLift_Geo_Widget'] ) );
+		$this->assertTrue( isset( $wp_widget_factory->widgets['WordLift_Timeline_Widget'] ) );
+	}
+
+	public function test_on_filter_activated_widgets_should_not_be_present() {
+		add_filter( 'wl_feature__enable__widgets', '__return_false' );
+		global $wp_widget_factory;
+		$wp_widget_factory->widgets = array();
+		run_wordlift();
+		// These 3 widgets shouldnt be present.
+		$this->assertFalse( isset( $wp_widget_factory->widgets['WordLift_Chord_Widget'] ) );
+		$this->assertFalse( isset( $wp_widget_factory->widgets['WordLift_Geo_Widget'] ) );
+		$this->assertFalse( isset( $wp_widget_factory->widgets['WordLift_Timeline_Widget'] ) );
+	}
+
 }
