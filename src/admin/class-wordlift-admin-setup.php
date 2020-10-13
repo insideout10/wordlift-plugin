@@ -110,9 +110,11 @@ class Wordlift_Admin_Setup {
 
 		/**
 		 * Filter: wl_feature__enable__setup_screen.
+		 *
+		 * @param bool whether the setup screen needs to be shown or not, default to true.
+		 *
+		 * @return bool
 		 * @since 3.27.6
-         * @param bool whether the setup screen needs to be shown or not, default to true.
-         * @return bool
 		 */
 		if ( apply_filters( 'wl_feature__enable__setup_screen', true ) ) {
 			// Triggered when the user accesses the admin area, we decide whether to show our own wizard.
@@ -207,10 +209,18 @@ class Wordlift_Admin_Setup {
 	 * @since    3.9.0
 	 */
 	public function admin_menu() {
-
-		// @todo: find another way to do this, since this is adding an empty space in WP's dashboard menu.
-		add_dashboard_page( '', '', 'manage_options', 'wl-setup', '' );
-
+		/**
+		 * Filter: wl_feature__enable__screens.
+		 *
+		 * @param bool whether the screens needed to be registered, defaults to true.
+		 *
+		 * @return bool
+		 * @since 3.27.6
+		 */
+		if ( apply_filters( 'wl_feature__enable__screens', true ) ) {
+			// @todo: find another way to do this, since this is adding an empty space in WP's dashboard menu.
+			add_dashboard_page( '', '', 'manage_options', 'wl-setup', '' );
+		}
 	}
 
 	/**

@@ -25,16 +25,26 @@ abstract class Wordlift_Admin_Page {
 	 */
 	public function __construct() {
 
-		add_action( 'admin_menu', array( $this, 'admin_menu' ), 10, 0 );
+		/**
+		 * Filter: wl_feature__enable__screens.
+		 *
+		 * @param bool whether the screens needed to be registered, defaults to true.
+		 *
+		 * @return bool
+		 * @since 3.27.6
+		 */
+		if ( apply_filters( 'wl_feature__enable__screens', true ) ) {
+			add_action( 'admin_menu', array( $this, 'admin_menu' ), 10, 0 );
+		}
 
 	}
 
 	/**
 	 * Get the parent slug.
 	 *
+	 * @return string The parent slug (default 'wl_admin_menu').
 	 * @since 3.11.0
 	 *
-	 * @return string The parent slug (default 'wl_admin_menu').
 	 */
 	protected function get_parent_slug() {
 
@@ -44,9 +54,9 @@ abstract class Wordlift_Admin_Page {
 	/**
 	 * Get the required capability.
 	 *
+	 * @return string The capability (default 'manage_options').
 	 * @since 3.11.0
 	 *
-	 * @return string The capability (default 'manage_options').
 	 */
 	protected function get_capability() {
 
@@ -56,36 +66,36 @@ abstract class Wordlift_Admin_Page {
 	/**
 	 * Get the page title. Will be translated.
 	 *
+	 * @return string The page title.
 	 * @since 3.11.0
 	 *
-	 * @return string The page title.
 	 */
 	abstract function get_page_title();
 
 	/**
 	 * Get the menu title. Will be translated.
 	 *
+	 * @return string The menu title.
 	 * @since 3.11.0
 	 *
-	 * @return string The menu title.
 	 */
 	abstract function get_menu_title();
 
 	/**
 	 * Get the menu slug.
 	 *
+	 * @return string The menu slug.
 	 * @since 3.11.0
 	 *
-	 * @return string The menu slug.
 	 */
 	abstract function get_menu_slug();
 
 	/**
 	 * Get the page url.
 	 *
+	 * @return string The escaped url of the admin page
 	 * @since 3.14.0
 	 *
-	 * @return string The escaped url of the admin page
 	 */
 	function get_url() {
 
@@ -98,9 +108,9 @@ abstract class Wordlift_Admin_Page {
 	/**
 	 * Get the partial file name, used in the {@link render} function.
 	 *
+	 * @return string The partial file name.
 	 * @since 3.11.0
 	 *
-	 * @return string The partial file name.
 	 */
 	abstract function get_partial_name();
 
@@ -108,9 +118,9 @@ abstract class Wordlift_Admin_Page {
 	 * The `admin_menu` callback. Will call {@link add_submenu_page} to add the
 	 * page to the admin menu.
 	 *
+	 * @return false|string The resulting page's hook_suffix, or false if the user does not have the capability required.
 	 * @since 3.11.0
 	 *
-	 * @return false|string The resulting page's hook_suffix, or false if the user does not have the capability required.
 	 */
 	public function admin_menu() {
 		// Add the sub-menu page.
