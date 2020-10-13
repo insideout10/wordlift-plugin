@@ -178,7 +178,7 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 	}
 
 	public function test_when_filter_enabled_show_in_menu_should_be_false() {
-		unregister_post_type('entity');
+		unregister_post_type( 'entity' );
 		add_filter( 'wl_feature__enable__vocabulary', '__return_false' );
 		Wordlift_Entity_Post_Type_Service::get_instance()->register();
 		$post_type = get_post_type_object(
@@ -186,6 +186,5 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 		);
 		$this->assertFalse( $post_type->show_in_menu );
 	}
-
 
 }
