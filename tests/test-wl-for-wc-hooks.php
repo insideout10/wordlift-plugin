@@ -45,7 +45,7 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 
 	public function test_blocks_enabled_correctly_without_filter() {
 		/**
-		 * Removing this action because it triggers doing_it_wrong which causes phpunit error.
+		 * Removing this action because register_block_type triggers doing_it_wrong which causes phpunit error.
 		 */
 		remove_all_actions( 'doing_it_wrong_run' );
 		$this->assertFalse( register_block_type( 'wordlift/chord' ) );
@@ -60,7 +60,7 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 
 	public function test_blocks_disabled_with_filter_should_still_allow_products_navigator() {
 		/**
-		 * Removing this action because it triggers doing_it_wrong which causes phpunit error.
+		 * Removing this action because register_block_type triggers doing_it_wrong which causes phpunit error.
 		 */
 		remove_all_actions( 'doing_it_wrong_run' );
 
@@ -104,6 +104,11 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 		$this->assertFalse( isset( $wp_widget_factory->widgets['WordLift_Chord_Widget'] ) );
 		$this->assertFalse( isset( $wp_widget_factory->widgets['WordLift_Geo_Widget'] ) );
 		$this->assertFalse( isset( $wp_widget_factory->widgets['WordLift_Timeline_Widget'] ) );
+	}
+
+
+	public function test_by_default_all_screens_should_be_registered() {
+
 	}
 
 }
