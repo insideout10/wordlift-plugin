@@ -122,6 +122,7 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 		do_action( 'admin_menu' );
 
 		global $submenu;
+
 		$this->assertCount( 3, $submenu );
 	}
 
@@ -139,6 +140,33 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 		do_action( 'admin_menu' );
 
 		$this->assertCount( 0, $submenu );
+	}
+
+
+	public function test_when_filter_not_active_should_show_two_notices() {
+		// set key to empty
+		update_option( 'wl_general_settings', array() );
+		global $wp_filter;
+		$wp_filter = array();
+		$wordlift  = new Wordlift();
+		$wordlift->run();
+		/**
+		 * @var $wp_hook WP_Hook
+		 */
+		$wp_hook = $wp_filter['admin_notices'];
+		$this->assertNotEquals( 0, count( $wp_hook->callbacks ) );
+	}
+
+	public function test_when_filter_active_should_not_show_notices() {
+		// set key to empty
+		update_option( 'wl_general_settings', array() );
+		global $wp_filter;
+		$wp_filter = array();
+		add_filter( 'wl_feature__enable__notices', '__return_false' );
+		$wordlift = new Wordlift();
+		$wordlift->run();
+
+		$this->assertFalse( array_key_exists( 'admin_notices', $wp_filter ) );
 	}
 
 }

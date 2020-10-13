@@ -120,9 +120,16 @@ class Wordlift_Admin_Setup {
 			// Triggered when the user accesses the admin area, we decide whether to show our own wizard.
 			add_action( 'admin_init', array( $this, 'show_page' ) );
 		}
-		// Hook to `admin_notices` to display our notices.
-		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
-
+		/**
+		 * Filter: wl_feature__enable__notices.
+		 * @param bool whether the notices needs to be enabled or not.
+		 * @return bool
+		 * @since 3.27.6
+		 */
+		if ( apply_filters( 'wl_feature__enable__notices', true ) ) {
+			// Hook to `admin_notices` to display our notices.
+			add_action( 'admin_notices', array( $this, 'admin_notices' ) );
+		}
 	}
 
 	/**
