@@ -108,7 +108,31 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 
 
 	public function test_by_default_all_screens_should_be_registered() {
+		$user = $this->factory->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $user );
 
+		global $wp_filter;
+		$wp_filter = array();
+		$wordlift  = new Wordlift();
+		$wordlift->run();
+		do_action( 'admin_menu' );
+
+		global $submenu;
+		$this->assertCount( 3, $submenu );
+	}
+
+	public function test_when_filter_turned_on_no_screen_should_be_registered() {
+		$user = $this->factory->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $user );
+		add_filter( 'wl_feature__enable__screens', '__return_false' );
+		global $wp_filter;
+		$wp_filter = array();
+		$wordlift  = new Wordlift();
+		$wordlift->run();
+		do_action( 'admin_menu' );
+
+		global $submenu;
+		$this->assertCount( 0, $submenu );
 	}
 
 }

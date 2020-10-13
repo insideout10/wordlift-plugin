@@ -113,7 +113,6 @@ abstract class Wordlift_Admin_Page {
 	 * @return false|string The resulting page's hook_suffix, or false if the user does not have the capability required.
 	 */
 	public function admin_menu() {
-
 		// Add the sub-menu page.
 		//
 		// See http://codex.wordpress.org/Function_Reference/add_submenu_page
