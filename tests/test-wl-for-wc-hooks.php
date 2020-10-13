@@ -169,4 +169,23 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 		$this->assertFalse( array_key_exists( 'admin_notices', $wp_filter ) );
 	}
 
+
+	public function test_when_filter_not_active_show_in_menu_should_be_true() {
+		$post_type = get_post_type_object(
+			'entity'
+		);
+		$this->assertTrue( $post_type->show_in_menu );
+	}
+
+	public function test_when_filter_enabled_show_in_menu_should_be_false() {
+		unregister_post_type('entity');
+		add_filter( 'wl_feature__enable__vocabulary', '__return_false' );
+		Wordlift_Entity_Post_Type_Service::get_instance()->register();
+		$post_type = get_post_type_object(
+			'entity'
+		);
+		$this->assertFalse( $post_type->show_in_menu );
+	}
+
+
 }

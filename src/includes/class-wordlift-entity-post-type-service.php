@@ -168,7 +168,16 @@ class Wordlift_Entity_Post_Type_Service {
 				'delete_posts' => 'delete_wordlift_entities',
 			),
 			'rest_base'       => 'entities',
-			'show_in_rest'    => true
+			'show_in_rest'    => true,
+			/**
+			 * Filter: wl_feature__enable__vocabulary.
+			 *
+			 * @param bool whether the vocabulary needs to be shown in menu.
+			 *
+			 * @return bool
+			 * @since 3.27.6
+			 */
+			'show_in_menu'    => apply_filters( 'wl_feature__enable__vocabulary', true )
 		);
 
 		register_post_type( $this->post_type, $args );
