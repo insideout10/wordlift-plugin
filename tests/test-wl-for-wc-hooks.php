@@ -187,4 +187,26 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 		$this->assertFalse( $post_type->show_in_menu );
 	}
 
+
+	public function test_when_post_excerpt_filter_is_inactive_then_should_use_it() {
+		global $wp_filter;
+		$wp_filter = array();
+		$wordlift  = new Wordlift();
+		$wordlift->run();
+		$this->assertArrayHasKey( 'do_meta_boxes', $wp_filter );
+		$hook = $wp_filter['do_meta_boxes'];
+		// Currently we only render post excerpt on this hook.
+		$this->assertEquals( 1, count( $hook->callbacks ) );
+	}
+
+	public function test_when_post_excerpt_filter_is_active_then_post_excerpt_should_not_be_generated() {
+		global $wp_filter;
+		$wp_filter = array();
+		add_filter( 'wl_feature__enable__post_excerpt', '__return_false' );
+		$wordlift  = new Wordlift();
+		$wordlift->run();
+		$this->assertFalse( array_key_exists( 'do_meta_boxes', $wp_filter ) );
+	}
+
+
 }
