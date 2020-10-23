@@ -203,9 +203,33 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 		global $wp_filter;
 		$wp_filter = array();
 		add_filter( 'wl_feature__enable__post_excerpt', '__return_false' );
-		$wordlift  = new Wordlift();
+		$wordlift = new Wordlift();
 		$wordlift->run();
 		$this->assertFalse( array_key_exists( 'do_meta_boxes', $wp_filter ) );
+	}
+
+
+	public function test_when_filter_not_enabled_should_do_analysis() {
+		global $wp_filter;
+		// since the filter is enabled, we should be able to do analysis.
+		$hook = $wp_filter['wp_ajax_wl_analyze'];
+		$this->assertCount( 1, $hook->callbacks );
+		$callback      = array_pop($hook->callbacks);
+		$callback_data = $callback['wl_ajax_analyze_action'];
+		$this->assertEquals( 'wl_ajax_analyze_action', $callback_data['function'] );
+	}
+
+	public function test_when_filter_enabled_should_analyze_and_return_empty_results() {
+		global $wp_filter;
+		$wp_filter = array();
+		add_filter( 'wl_feature__enable__analysis', '__return_false' );
+		run_wordlift();
+		// since the filter is enabled, we should be able to do analysis.
+		$hook = $wp_filter['wp_ajax_wl_analyze'];
+		$this->assertCount( 1, $hook->callbacks );
+		$callback      = array_pop($hook->callbacks);
+		$callback_data = $callback['wl_ajax_analyze_disabled_action'];
+		$this->assertEquals( 'wl_ajax_analyze_disabled_action', $callback_data['function'] );
 	}
 
 
