@@ -15,7 +15,7 @@
  * Plugin Name:       WordLift
  * Plugin URI:        https://wordlift.io
  * Description:       WordLift brings the power of AI to organize content, attract new readers and get their attention. To activate the plugin <a href="https://wordlift.io/">visit our website</a>.
- * Version:           3.27.4
+ * Version:           3.27.5
  * Author:            WordLift, Insideout10
  * Author URI:        https://wordlift.io
  * License:           GPL-2.0+
@@ -204,40 +204,6 @@ function wl_get_image_urls( $post_id ) {
 	                               ->post_images()
 	                               ->get( $post_id );
 
-//	// If there is a featured image it has the priority.
-//	$featured_image_id = get_post_thumbnail_id( $post_id );
-//	if ( is_numeric( $featured_image_id ) ) {
-//		$image_url = wp_get_attachment_url( $featured_image_id );
-//
-//		return array( $image_url );
-//	}
-//
-//	$images = get_children( array(
-//		'post_parent'    => $post_id,
-//		'post_type'      => 'attachment',
-//		'post_mime_type' => 'image',
-//	) );
-//
-//	// Return an empty array if no image is found.
-//	if ( empty( $images ) ) {
-//		return array();
-//	}
-//
-//	// Prepare the return array.
-//	$image_urls = array();
-//
-//	// Collect the URLs.
-//	foreach ( $images as $attachment_id => $attachment ) {
-//		$image_url = wp_get_attachment_url( $attachment_id );
-//		// Ensure the URL isn't collected already.
-//		if ( ! in_array( $image_url, $image_urls ) ) {
-//			array_push( $image_urls, $image_url );
-//		}
-//	}
-//
-//	// wl_write_log( "wl_get_image_urls [ post id :: $post_id ][ image urls count :: " . count( $image_urls ) . " ]" );
-//
-//	return $image_urls;
 }
 
 /**
@@ -298,35 +264,6 @@ function wl_sanitize_uri_path( $path, $char = '_' ) {
 
 	return Wordlift_Uri_Service::get_instance()->sanitize_path( $path, $char );
 }
-
-///**
-// * Schedule the execution of SPARQL Update queries before the WordPress look ends.
-// */
-//function wl_shutdown() {
-//
-//	// Get the filename to the temporary SPARQL file.
-//	$filename = WL_TEMP_DIR . WL_REQUEST_ID . '.sparql';
-//
-//	// If WordLift is buffering SPARQL queries, we're admins and a buffer exists, then schedule it.
-//	if ( WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING && is_admin() && file_exists( $filename ) ) {
-//
-//		// The request ID.
-//		$args = array( WL_REQUEST_ID );
-//
-//		// Schedule the execution of the SPARQL query with the request ID.
-//		wp_schedule_single_event( time(), 'wl_execute_saved_sparql_update_query', $args );
-//
-//		// Check that the request is scheduled.
-//		$timestamp = wp_next_scheduled( 'wl_execute_saved_sparql_update_query', $args );
-//
-//		// Spawn the cron.
-//		spawn_cron();
-//
-//		wl_write_log( "wl_shutdown [ request id :: " . WL_REQUEST_ID . " ][ timestamp :: $timestamp ]" );
-//	}
-//}
-//
-//add_action( 'shutdown', 'wl_shutdown' );
 
 /**
  * Replaces the *itemid* attributes URIs with the WordLift URIs.
