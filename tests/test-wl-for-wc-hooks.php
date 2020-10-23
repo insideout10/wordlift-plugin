@@ -231,20 +231,24 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 		$this->assertEquals( 'wl_ajax_analyze_disabled_action', $callback_data['function'] );
 	}
 
-	public function test_analysis_disabled_function() {
-		ob_start();
-		wl_ajax_analyze_disabled_action();
-		$response = ob_get_contents();
-		ob_end_clean();
-		$data = json_decode( $response, true );
-		$this->assertArrayHasKey( 'data', $data );
-		$this->assertArrayHasKey( 'entities', $data['data'] );
-		$this->assertArrayHasKey( 'annotations', $data['data'] );
-		$this->assertArrayHasKey( 'topics', $data['data'] );
-		$response_data = $data['data'];
-		$this->assertEquals( $response_data['entities'], array() );
-		$this->assertEquals( $response_data['annotations'], array() );
-		$this->assertEquals( $response_data['topics'], array() );
+	public function test_filter_not_enabled_should_return_dataset_uri() {
+		$post_id = $this->factory()->post->create();
+		$uri     = Wordlift_Entity_Service::get_instance()->get_uri( $post_id );
+		$this->assertNull( $uri );
+	}
+
+	public function test_when_filter_enabled_should_return_in_the_correct_format() {
+		/**
+		 * Provide local item IDs when Cloud Services aren’t activated (you don’t have a dataset URI)
+		 * so that item IDs could be the permalink + “#” + cpt type slug,
+		 * e.g. if I have a product at http://example.org/my-product the item ID would be http://example.org/my-product#product
+		 */
+		$post_id      = $this->factory()->post->create();
+		add_filter( 'wl_features__enable__dataset', '__return_false' );
+		$uri          = Wordlift_Entity_Service::get_instance()->get_uri( $post_id );
+		$cpt_slug     = get_post_type( $post_id );
+		$expected_uri = get_permalink( $post_id ) . "#${cpt_slug}";
+		$this->assertEquals( $uri, $expected_uri );
 	}
 
 

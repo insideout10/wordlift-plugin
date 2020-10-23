@@ -409,6 +409,10 @@ class Wordlift_Entity_Service {
 			return null;
 		}
 
+		if ( ! apply_filters( 'wl_features__enable__dataset', true ) ) {
+			return get_permalink( $post_id ) . "#" . get_post_type( $post_id );
+		}
+
 		$dataset_uri = wl_configuration_get_redlink_dataset_uri();
 
 		// If the dataset uri is not properly configured, null is returned
