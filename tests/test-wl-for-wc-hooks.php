@@ -21,7 +21,6 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 		}
 	}
 
-
 	public function test_when_wl_feature_enable_setup_screen_added_should_disable_setup_screen() {
 		global $wp_filter;
 		$wp_filter = array();
@@ -214,7 +213,7 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 		// since the filter is enabled, we should be able to do analysis.
 		$hook = $wp_filter['wp_ajax_wl_analyze'];
 		$this->assertCount( 1, $hook->callbacks );
-		$callback      = array_pop($hook->callbacks);
+		$callback      = array_pop( $hook->callbacks );
 		$callback_data = $callback['wl_ajax_analyze_action'];
 		$this->assertEquals( 'wl_ajax_analyze_action', $callback_data['function'] );
 	}
@@ -227,9 +226,25 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 		// since the filter is enabled, we should be able to do analysis.
 		$hook = $wp_filter['wp_ajax_wl_analyze'];
 		$this->assertCount( 1, $hook->callbacks );
-		$callback      = array_pop($hook->callbacks);
+		$callback      = array_pop( $hook->callbacks );
 		$callback_data = $callback['wl_ajax_analyze_disabled_action'];
 		$this->assertEquals( 'wl_ajax_analyze_disabled_action', $callback_data['function'] );
+	}
+
+	public function test_analysis_disabled_function() {
+		ob_start();
+		wl_ajax_analyze_disabled_action();
+		$response = ob_get_contents();
+		ob_end_clean();
+		$data = json_decode( $response, true );
+		$this->assertArrayHasKey( 'data', $data );
+		$this->assertArrayHasKey( 'entities', $data['data'] );
+		$this->assertArrayHasKey( 'annotations', $data['data'] );
+		$this->assertArrayHasKey( 'topics', $data['data'] );
+		$response_data = $data['data'];
+		$this->assertEquals( $response_data['entities'], array() );
+		$this->assertEquals( $response_data['annotations'], array() );
+		$this->assertEquals( $response_data['topics'], array() );
 	}
 
 

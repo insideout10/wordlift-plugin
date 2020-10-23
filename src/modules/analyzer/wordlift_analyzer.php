@@ -10,7 +10,15 @@ use Wordlift\Analysis\Response\Analysis_Response_Ops_Factory;
  * @since 3.27.6
  */
 function wl_ajax_analyze_disabled_action() {
-	return array();
+	// adding the below header for debugging purpose.
+	if ( ! headers_sent() ) {
+		header( 'X-WordLift-Analysis: OFF' );
+	}
+	wp_send_json_success( array(
+		'entities'    => array(),
+		'annotations' => array(),
+		'topics'      => array()
+	) );
 }
 
 /**
