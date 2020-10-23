@@ -545,7 +545,7 @@ function run_wordlift() {
 
 		new Wordlift_Products_Navigator_Shortcode_REST();
 
-		// Register the Dataset JSON Endpoint.
+		// Register the Dataset module, requires `$api_service`.
 		require_once plugin_dir_path( __FILE__ ) . 'wordlift/dataset/index.php';
 	} );
 
