@@ -59,7 +59,7 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 			$new_uri = wl_build_entity_uri( $new_entity_id );
 			wl_set_entity_uri( $new_entity_id, $new_uri );
 
-			Wordlift_Linked_Data_Service::get_instance()->push( $new_entity_id );
+			do_action( 'wl_legacy_linked_data__push', $new_entity_id );
 
 			// Update the value that will be saved as meta.
 			$value = $new_entity_id;
@@ -71,11 +71,11 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 	/**
 	 * Check whether an entity exists given a value.
 	 *
-	 * @since 3.15.0
-	 *
 	 * @param string $value An entity URI or a title string..
 	 *
 	 * @return bool True if the entity exists otherwise false.
+	 * @since 3.15.0
+	 *
 	 */
 	private function exists( $value ) {
 

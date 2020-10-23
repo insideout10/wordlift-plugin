@@ -19,8 +19,8 @@ use Wordlift\Autocomplete\Local_Autocomplete_Service;
 use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Duplicate_Markup_Remover\Faq_Duplicate_Markup_Remover;
 use Wordlift\Entity\Entity_Helper;
-use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Jsonld_Hook;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_After_Get_Jsonld_Hook;
+use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Jsonld_Hook;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Post_Type_Hook;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Validation_Service;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Warning;
@@ -653,15 +653,6 @@ class Wordlift {
 	protected $entity_type_adapter;
 
 	/**
-	 * The {@link Wordlift_Linked_Data_Service} instance.
-	 *
-	 * @since  3.15.0
-	 * @access protected
-	 * @var \Wordlift_Linked_Data_Service $linked_data_service The {@link Wordlift_Linked_Data_Service} instance.
-	 */
-	protected $linked_data_service;
-
-	/**
 	 * The {@link Wordlift_Storage_Factory} instance.
 	 *
 	 * @since  3.15.0
@@ -1239,7 +1230,10 @@ class Wordlift {
 		// Create a new instance of the Redirect service.
 		$this->redirect_service    = new Wordlift_Redirect_Service( $this->entity_uri_service );
 		$this->entity_type_service = new Wordlift_Entity_Type_Service( $this->schema_service );
-		$this->linked_data_service = new Wordlift_Linked_Data_Service( $this->entity_service, $this->entity_type_service, $this->schema_service, $this->sparql_service );
+
+		if ( ! apply_filters( 'wl_features__enable__legacy_linked_data', true ) ) {
+			new Wordlift_Linked_Data_Service( $this->entity_service, $this->entity_type_service, $this->schema_service, $this->sparql_service );
+		}
 
 		// Create a new instance of the Timeline service and Timeline shortcode.
 		$this->timeline_service = new Wordlift_Timeline_Service( $this->entity_service, $this->entity_type_service );
@@ -1311,7 +1305,7 @@ class Wordlift {
 		$this->relation_rebuild_service   = new Wordlift_Relation_Rebuild_Service( $this->content_filter_service, $this->entity_service );
 		$this->sample_data_service        = new Wordlift_Sample_Data_Service( $this->entity_type_service, $this->configuration_service, $this->user_service );
 		$this->sample_data_ajax_adapter   = new Wordlift_Sample_Data_Ajax_Adapter( $this->sample_data_service );
-		$this->reference_rebuild_service  = new Wordlift_Reference_Rebuild_Service( $this->linked_data_service, $this->entity_service, $this->relation_service );
+		$this->reference_rebuild_service  = new Wordlift_Reference_Rebuild_Service( $this->entity_service );
 
 		// Initialize the short-codes.
 		new Wordlift_Navigator_Shortcode();

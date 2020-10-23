@@ -20,7 +20,7 @@
  *
  * @param string $new_status The new post status
  * @param string $old_status The old post status
- * @param array  $post       An array with the post data
+ * @param array $post An array with the post data
  */
 function wl_transition_post_status( $new_status, $old_status, $post ) {
 
@@ -57,15 +57,15 @@ function rl_delete_post( $post ) {
 	$post_id = ( is_numeric( $post ) ? $post : $post->ID );
 
 	// Remove the post.
-	Wordlift_Linked_Data_Service::get_instance()->remove( $post_id );
+	do_action( 'wl_legacy_linked_data__remove', $post_id );
 
 }
 
 /**
  * Update the status of a post.
  *
- * @param int    $post_id The post ID
- * @param string $status  The new status
+ * @param int $post_id The post ID
+ * @param string $status The new status
  */
 function wl_update_post_status( $post_id, $status ) {
 

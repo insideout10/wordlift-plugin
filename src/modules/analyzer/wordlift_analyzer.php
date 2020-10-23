@@ -1,6 +1,5 @@
 <?php
 
-use Wordlift\Analysis\Response\Analysis_Response_Ops;
 use Wordlift\Analysis\Response\Analysis_Response_Ops_Factory;
 
 /**
@@ -87,5 +86,5 @@ function wl_analyze_content( $data, $content_type ) {
 
 function wl_use_analysis_on_api_wordlift_io( $value ) {
 
-	return preg_replace( '|https://api\.wordlift\.it/|', 'https://api.wordlift.io/', $value );
+	return preg_replace( '|https://api\.wordlift\.it/|', apply_filters( 'wl_api_base_url', 'https://api.wordlift.io' ) . '/', $value );
 }
