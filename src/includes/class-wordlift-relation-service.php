@@ -185,9 +185,9 @@ class Wordlift_Relation_Service {
 		$order_by_clauses = array( 'DESC', 'ASC' );
 
 		if ( in_array( $order_by, $order_by_clauses, true ) ) {
-			return " ORDER BY p.ID ${order_by} ";
+			return " ORDER BY p.post_modified ${order_by} ";
 		} else {
-			return ' ORDER BY p.ID DESC ';
+			return ' ORDER BY p.post_modified DESC ';
 		}
 	}
 

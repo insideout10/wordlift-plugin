@@ -86,6 +86,23 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 
 	}
 
+	public static function set_post_modified_to_one_year_after( $post_id ) {
+
+		global $wpdb;
+
+		//eg. time one year ago..
+		$time = time() + DAY_IN_SECONDS * 365;
+
+		$mysql_time_format = "Y-m-d H:i:s";
+
+		$post_modified = gmdate( $mysql_time_format, $time );
+
+		$post_modified_gmt = gmdate( $mysql_time_format, ( $time + get_option( 'gmt_offset' ) * HOUR_IN_SECONDS ) );
+
+		$wpdb->query( "UPDATE $wpdb->posts SET post_modified = '{$post_modified}', post_modified_gmt = '{$post_modified_gmt}'  WHERE ID = {$post_id}" );
+	}
+
+
 	public function testPostsSelectionWithoutFiltersOnPostDrafts() {
 		$cache = new Ttl_Cache( 'faceted-search' );
 		$cache->flush();
@@ -156,9 +173,10 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 		$request = array();
 
 		// Create 2 posts and 2 entities
-		$post_1_id   = wl_create_post( '', 'post1', 'A post', 'publish' );
-		$post_2_id   = wl_create_post( '', 'post2', 'A post', 'publish' );
-		$post_3_id   = wl_create_post( '', 'post3', 'A post', 'publish' );
+		$post_1_id = wl_create_post( '', 'post1', 'A post', 'publish' );
+		$post_2_id = wl_create_post( '', 'post2', 'A post', 'publish' );
+		$post_3_id = wl_create_post( '', 'post3', 'A post', 'publish' );
+		self::set_post_modified_to_one_year_after( $post_3_id );
 		$entity_1_id = wl_create_post( '', 'entity0', 'An Entity', 'publish', 'entity' );
 		// Insert relations
 		wl_core_add_relation_instance( $post_1_id, WL_WHAT_RELATION, $entity_1_id );
@@ -171,7 +189,7 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 		 * return the date in the descending order.
 		 */
 		$_GET['post_id'] = $post_1_id;
-		$data = wl_shortcode_faceted_search_origin( array() );
+		$data            = wl_shortcode_faceted_search_origin( array() );
 		$this->assertArrayHasKey( 'posts', $data );
 		$posts = $data['posts'];
 		// the first should be $post_3
@@ -185,9 +203,10 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 		$request = array();
 
 		// Create 2 posts and 2 entities
-		$post_1_id   = wl_create_post( '', 'post1', 'A post', 'publish' );
-		$post_2_id   = wl_create_post( '', 'post2', 'A post', 'publish' );
-		$post_3_id   = wl_create_post( '', 'post3', 'A post', 'publish' );
+		$post_1_id = wl_create_post( '', 'post1', 'A post', 'publish' );
+		$post_2_id = wl_create_post( '', 'post2', 'A post', 'publish' );
+		$post_3_id = wl_create_post( '', 'post3', 'A post', 'publish' );
+		self::set_post_modified_to_one_year_after( $post_3_id );
 		$entity_1_id = wl_create_post( '', 'entity0', 'An Entity', 'publish', 'entity' );
 		// Insert relations
 		wl_core_add_relation_instance( $post_1_id, WL_WHAT_RELATION, $entity_1_id );
@@ -200,8 +219,8 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 		 * return the date in the descending order.
 		 */
 		$_GET['post_id'] = $post_1_id;
-		$_GET['sort']  = 'ASC';
-		$data = wl_shortcode_faceted_search_origin( array() );
+		$_GET['sort']    = 'ASC';
+		$data            = wl_shortcode_faceted_search_origin( array() );
 		$this->assertArrayHasKey( 'posts', $data );
 		$posts = $data['posts'];
 		// the first should be $post_3
@@ -214,9 +233,11 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 		$request = array();
 
 		// Create 2 posts and 2 entities
-		$post_1_id   = wl_create_post( '', 'post1', 'A post', 'publish' );
-		$post_2_id   = wl_create_post( '', 'post2', 'A post', 'publish' );
-		$post_3_id   = wl_create_post( '', 'post3', 'A post', 'publish' );
+		$post_1_id = wl_create_post( '', 'post1', 'A post', 'publish' );
+		$post_2_id = wl_create_post( '', 'post2', 'A post', 'publish' );
+		$post_3_id = wl_create_post( '', 'post3', 'A post', 'publish' );
+		self::set_post_modified_to_one_year_after( $post_3_id );
+
 		$entity_1_id = wl_create_post( '', 'entity0', 'An Entity', 'publish', 'entity' );
 		// Insert relations
 		wl_core_add_relation_instance( $post_1_id, WL_WHAT_RELATION, $entity_1_id );
@@ -229,8 +250,8 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 		 * return the date in the descending order.
 		 */
 		$_GET['post_id'] = $post_1_id;
-		$_GET['sort']  = array('some-dangerous-data');
-		$data = wl_shortcode_faceted_search_origin( array() );
+		$_GET['sort']    = array( 'some-dangerous-data' );
+		$data            = wl_shortcode_faceted_search_origin( array() );
 		$this->assertArrayHasKey( 'posts', $data );
 		$posts = $data['posts'];
 		// the first should be $post_3
