@@ -90,7 +90,6 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 
 		global $wpdb;
 
-		//eg. time one year ago..
 		$time = time() + DAY_IN_SECONDS * 365;
 
 		$mysql_time_format = "Y-m-d H:i:s";
