@@ -171,11 +171,71 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 		 * return the date in the descending order.
 		 */
 		$_GET['post_id'] = $post_1_id;
-
 		$data = wl_shortcode_faceted_search_origin( array() );
 		$this->assertArrayHasKey( 'posts', $data );
 		$posts = $data['posts'];
-		var_dump($posts);
+		// the first should be $post_3
+		// the second should be $post_2
+		$this->assertEquals( $posts[0]->ID, $post_3_id );
+		$this->assertEquals( $posts[1]->ID, $post_2_id );
 	}
 
+
+	public function test_when_sort_param_is_provided_it_should_order_correctly() {
+		$request = array();
+
+		// Create 2 posts and 2 entities
+		$post_1_id   = wl_create_post( '', 'post1', 'A post', 'publish' );
+		$post_2_id   = wl_create_post( '', 'post2', 'A post', 'publish' );
+		$post_3_id   = wl_create_post( '', 'post3', 'A post', 'publish' );
+		$entity_1_id = wl_create_post( '', 'entity0', 'An Entity', 'publish', 'entity' );
+		// Insert relations
+		wl_core_add_relation_instance( $post_1_id, WL_WHAT_RELATION, $entity_1_id );
+		wl_core_add_relation_instance( $post_2_id, WL_WHAT_RELATION, $entity_1_id );
+		wl_core_add_relation_instance( $post_3_id, WL_WHAT_RELATION, $entity_1_id );
+
+		// we have post_1, post_2, $post_2 are related to entity_1
+		/**
+		 * Now when a faceted search queries the results then it should
+		 * return the date in the descending order.
+		 */
+		$_GET['post_id'] = $post_1_id;
+		$_GET['sort']  = 'ASC';
+		$data = wl_shortcode_faceted_search_origin( array() );
+		$this->assertArrayHasKey( 'posts', $data );
+		$posts = $data['posts'];
+		// the first should be $post_3
+		// the second should be $post_2
+		$this->assertEquals( $posts[0]->ID, $post_2_id );
+		$this->assertEquals( $posts[1]->ID, $post_3_id );
+	}
+
+	public function test_when_invalid_data_type_provided_for_sort_then_should_sort_by_desc() {
+		$request = array();
+
+		// Create 2 posts and 2 entities
+		$post_1_id   = wl_create_post( '', 'post1', 'A post', 'publish' );
+		$post_2_id   = wl_create_post( '', 'post2', 'A post', 'publish' );
+		$post_3_id   = wl_create_post( '', 'post3', 'A post', 'publish' );
+		$entity_1_id = wl_create_post( '', 'entity0', 'An Entity', 'publish', 'entity' );
+		// Insert relations
+		wl_core_add_relation_instance( $post_1_id, WL_WHAT_RELATION, $entity_1_id );
+		wl_core_add_relation_instance( $post_2_id, WL_WHAT_RELATION, $entity_1_id );
+		wl_core_add_relation_instance( $post_3_id, WL_WHAT_RELATION, $entity_1_id );
+
+		// we have post_1, post_2, $post_2 are related to entity_1
+		/**
+		 * Now when a faceted search queries the results then it should
+		 * return the date in the descending order.
+		 */
+		$_GET['post_id'] = $post_1_id;
+		$_GET['sort']  = array('some-dangerous-data');
+		$data = wl_shortcode_faceted_search_origin( array() );
+		$this->assertArrayHasKey( 'posts', $data );
+		$posts = $data['posts'];
+		// the first should be $post_3
+		// the second should be $post_2
+		$this->assertEquals( $posts[0]->ID, $post_3_id );
+		$this->assertEquals( $posts[1]->ID, $post_2_id );
+	}
 }
