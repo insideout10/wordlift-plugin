@@ -216,7 +216,7 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 		// we have post_1, post_2, $post_2 are related to entity_1
 		/**
 		 * Now when a faceted search queries the results then it should
-		 * return the date in the descending order.
+		 * return the date in the asc order.
 		 */
 		$_GET['post_id'] = $post_1_id;
 		$_GET['sort']    = 'ASC';
