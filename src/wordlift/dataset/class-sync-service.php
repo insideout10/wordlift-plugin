@@ -48,6 +48,11 @@ class Sync_Service {
 		// You need to initialize this early, otherwise the Background Process isn't registered in AJAX calls.
 		$this->sync_background_process = new Sync_Background_Process( $this );;
 
+		/**
+		 * Register hooks
+		 */
+		add_action( 'save_post', array( $this, 'sync_item' ) );
+
 		self::$instance = $this;
 	}
 
