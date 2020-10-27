@@ -64,6 +64,15 @@ function wl_build_entity_uri( $post_id ) {
 		return null;
 	}
 
+	// For installations not connected to the Cloud - i.e. dataset URI = home_url('/') - we build the dataset URI based
+	// on the permalink.
+	$dataset_uri = Wordlift_Configuration_Service::get_instance()->get_dataset_uri();
+	$permalink   = get_permalink( $post_id );
+
+	if ( 0 === strpos( $permalink, $dataset_uri ) ) {
+		return sprintf( '%s#%s', get_permalink( $post_id ), get_post_type( $post_id ) );
+	}
+
 	// Create an ID given the title.
 	$entity_slug = wl_sanitize_uri_path( $post->post_title );
 	// If the entity slug is empty, i.e. there's no title, use the post ID as path.
