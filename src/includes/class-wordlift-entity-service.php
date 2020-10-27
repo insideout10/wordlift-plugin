@@ -404,6 +404,8 @@ class Wordlift_Entity_Service {
 	 */
 	public function get_uri( $post_id ) {
 
+		$log = Wordlift_Log_Service::get_logger( get_class() );
+
 		// If a null is given, nothing to do
 		if ( is_null( $post_id ) ) {
 			return null;
@@ -413,6 +415,12 @@ class Wordlift_Entity_Service {
 
 		// If the dataset uri is not properly configured, null is returned
 		if ( empty( $dataset_uri ) ) {
+//			$temp_uri = get_permalink($post_id).'#'.get_post_type($post_id);
+//			$log->debug( 'Returning temp local URL as dataset uri is not properly configured: '.$temp_uri );
+//
+//			wl_set_entity_uri( $post_id, $temp_uri );
+//
+//			return $temp_uri;
 			return null;
 		}
 

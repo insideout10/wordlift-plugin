@@ -209,7 +209,7 @@ function* handleAddEntityRequest({ payload }) {
   }
 
   if (blockEditorFormat === undefined) {
-    value = ClassicEditorBlockValidator.getValue(payload.label)
+    value = ClassicEditorBlockValidator.getValue(payload.label);
     if (value === false) {
       // This is not a valid classic block,return early.
       return false;
@@ -221,14 +221,16 @@ function* handleAddEntityRequest({ payload }) {
   const annotationId = "urn:local-annotation-" + Math.floor(Math.random() * 999999);
 
   // Create the entity if the `id` isn't defined.
-  const id =
-    payload.id ||
-    (yield call(createEntity, {
+  let createdEntity;
+  if (!payload.id) {
+    createdEntity = yield call(createEntity, {
       title: payload.label,
       status: "draft",
       description: payload.description,
       excerpt: ""
-    }))["wl:entity_url"];
+    });
+  }
+  const id = payload.id || createdEntity["wl:entity_url"] || createdEntity["link"];
 
   const entityToAdd = {
     id,
@@ -238,7 +240,7 @@ function* handleAddEntityRequest({ payload }) {
   };
 
   console.debug("Adding Entity", entityToAdd);
-  const annotationAttributes = {id: annotationId, class: "disambiguated", itemid: entityToAdd.id};
+  const annotationAttributes = { id: annotationId, class: "disambiguated", itemid: entityToAdd.id };
   const format = {
     type: "wordlift/annotation",
     attributes: annotationAttributes
@@ -251,6 +253,7 @@ function* handleAddEntityRequest({ payload }) {
     instance.update();
   } else {
     // update the block
+    console.log("handleAddEntityRequest1", value, format);
     yield call(onChange, applyFormat(value, format));
   }
   // update the state.
