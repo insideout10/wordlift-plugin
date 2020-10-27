@@ -118,9 +118,13 @@ class Sync_Service {
 		$jsonld       = wp_json_encode( $jsonld_value );
 
 		// Make a request to the remote endpoint.
-		$response = $this->api_service->request(
+		$state_header_value = str_replace( wp_json_encode( $this->info() ), "\n", '' );
+		$response           = $this->api_service->request(
 			'POST', '/middleware/dataset?uri=' . rawurlencode( $uri ),
-			array( 'Content-Type' => 'application/ld+json' ),
+			array(
+				'Content-Type'                     => 'application/ld+json',
+				'X-Wordlift-Dataset-Sync-State-V1' => $state_header_value
+			),
 			$jsonld );
 
 		// Update the sync date in case of success, otherwise log an error.
