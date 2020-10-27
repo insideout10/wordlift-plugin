@@ -52,8 +52,13 @@ class Sync_Service {
 		 * Register hooks
 		 */
 		add_action( 'save_post', array( $this, 'sync_item' ) );
+		add_action( 'updated_post_meta', array( $this, 'sync_item_on_meta_change' ), 10, 4 );
 
 		self::$instance = $this;
+	}
+
+	public function sync_item_on_meta_change( $meta_id, $object_id, $meta_key, $_meta_value ) {
+		return $this->sync_item( $object_id );
 	}
 
 	public static function get_instance() {
