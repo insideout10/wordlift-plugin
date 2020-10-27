@@ -53,6 +53,7 @@ class Sync_Service {
 		 */
 		add_action( 'save_post', array( $this, 'sync_item' ) );
 		add_action( 'updated_post_meta', array( $this, 'sync_item_on_meta_change' ), 10, 4 );
+		add_action( 'delete_post', array( $this, 'delete_item' ) );
 
 		self::$instance = $this;
 	}
@@ -153,13 +154,21 @@ class Sync_Service {
 
 			return true;
 		} else {
-			// @@todo: should we put a limit retry here?
+			// @@todo: should we put a limit retry here?delete_item
 			$response_dump = var_export( $response, true );
 			$this->log->error(
 				sprintf( 'An error occurred while synchronizing the data for post ID %d: %s', $post_id, $response_dump ) );
 
 			return false;
 		}
+
+	}
+
+	/**
+	 * @todo implement this method to delete the post from dataset.
+	 * @param $post_id
+	 */
+	public function delete_item( $post_id ) {
 
 	}
 
