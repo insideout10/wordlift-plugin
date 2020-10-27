@@ -167,11 +167,20 @@ class Sync_Service {
 	}
 
 	/**
-	 * @todo implement this method to delete the post from dataset.
 	 * @param $post_id
+	 *
+	 * @todo Complete the delete item.
 	 */
 	public function delete_item( $post_id ) {
-
+		$uri = get_post_meta( $post_id, 'entity_url', true );
+		// Make a request to the remote endpoint.
+		$state_header_value = str_replace( wp_json_encode( $this->info() ), "\n", '' );
+		$response           = $this->api_service->request(
+			'DELETE', '/middleware/dataset?uri=' . rawurlencode( $uri ),
+			array(
+				'Content-Type'                     => 'application/ld+json',
+				'X-Wordlift-Dataset-Sync-State-V1' => $state_header_value
+			) );
 	}
 
 }
