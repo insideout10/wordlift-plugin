@@ -49,10 +49,12 @@ class Sync_Service {
 		$this->sync_background_process = new Sync_Background_Process( $this );;
 
 		/**
-		 * Register hooks
+		 * Register hooks for post and meta.
 		 */
 		add_action( 'save_post', array( $this, 'sync_item' ) );
+		add_action( 'added_post_meta', array( $this, 'sync_item_on_meta_change' ), 10, 4 );
 		add_action( 'updated_post_meta', array( $this, 'sync_item_on_meta_change' ), 10, 4 );
+		add_action( 'deleted_post_meta', array( $this, 'sync_item_on_meta_change' ), 10, 4 );
 		add_action( 'delete_post', array( $this, 'delete_item' ) );
 
 		self::$instance = $this;
