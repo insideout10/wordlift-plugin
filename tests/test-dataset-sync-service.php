@@ -25,7 +25,20 @@ class Dataset_Sync_Service_Test extends Wordlift_Unit_Test_Case {
 		// create a instance of sync service, now we should have updated_post_meta registered.
 		new Sync_Service( null, Jsonld_Service::get_instance() );
 		$this->assertArrayHasKey( 'updated_post_meta', $wp_filter );
-		$this->assertTrue( (bool) has_action( 'updated_post_meta', array( Sync_Service::get_instance(), 'sync_item_on_meta_change' ) ) );
+		$this->assertTrue( (bool) has_action( 'updated_post_meta', array(
+			Sync_Service::get_instance(),
+			'sync_item_on_meta_change'
+		) ) );
+	}
+
+
+	public function test_when_post_deleted_should_delete_item() {
+		global $wp_filter;
+		$wp_filter = array();
+		// create a instance of sync service, now we should have updated_post_meta registered.
+		new Sync_Service( null, Jsonld_Service::get_instance() );
+		$this->assertArrayHasKey( 'delete_post', $wp_filter );
+		$this->assertTrue( (bool) has_action( 'delete_post', array( Sync_Service::get_instance(), 'delete_item' ) ) );
 	}
 
 
