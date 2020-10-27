@@ -2,8 +2,6 @@
 
 namespace Wordlift\Dataset;
 
-use Tinify\Exception;
-
 class Sync_Background_Process extends \Wordlift_Plugin_WP_Background_Process {
 
 	protected $action = 'wl_dataset__sync';
@@ -103,7 +101,7 @@ class Sync_Background_Process extends \Wordlift_Plugin_WP_Background_Process {
 
 		try {
 			return get_option( '_wl_dataset_sync', Sync_State::unknown() );
-		} catch ( Exception $e ) {
+		} catch ( \Exception $e ) {
 			return Sync_State::unknown();
 		}
 
