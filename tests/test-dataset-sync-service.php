@@ -29,6 +29,16 @@ class Dataset_Sync_Service_Test extends Wordlift_Unit_Test_Case {
 			Sync_Service::get_instance(),
 			'sync_item_on_meta_change'
 		) ) );
+		$this->assertArrayHasKey( 'deleted_post_meta', $wp_filter );
+		$this->assertTrue( (bool) has_action( 'deleted_post_meta', array(
+			Sync_Service::get_instance(),
+			'sync_item_on_meta_change'
+		) ) );
+		$this->assertArrayHasKey( 'added_post_meta', $wp_filter );
+		$this->assertTrue( (bool) has_action( 'added_post_meta', array(
+			Sync_Service::get_instance(),
+			'sync_item_on_meta_change'
+		) ) );
 	}
 
 
