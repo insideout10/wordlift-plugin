@@ -28,6 +28,11 @@ class Sync_Service {
 	private $sync_background_process;
 
 	/**
+	 * @var Sync_Service
+	 */
+	private static $instance;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param $api_service Api_Service The {@link Api_Service} used to communicate with the remote APIs.
@@ -43,6 +48,11 @@ class Sync_Service {
 		// You need to initialize this early, otherwise the Background Process isn't registered in AJAX calls.
 		$this->sync_background_process = new Sync_Background_Process( $this );;
 
+		self::$instance = $this;
+	}
+
+	public static function get_instance() {
+		return self::$instance;
 	}
 
 	/**
