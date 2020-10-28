@@ -44,6 +44,7 @@ use Wordlift\Images_Licenses\Tasks\Remove_All_Images_Task;
 use Wordlift\Post\Post_Adapter;
 use Wordlift\Tasks\Task_Ajax_Adapter;
 use Wordlift\Tasks\Task_Ajax_Adapters_Registry;
+use Wordlift\Api_Data\Api_Data_Hooks;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -475,6 +476,9 @@ function run_wordlift() {
 
 	// Load the new Post Adapter.
 	new Post_Adapter();
+
+	// Load the API Data Hooks.
+	new Api_Data_Hooks();
 
 	add_action( 'plugins_loaded', function () use ( $plugin ) {
 		// Licenses Images.
