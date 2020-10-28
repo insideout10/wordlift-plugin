@@ -27,7 +27,7 @@ class Wordlift_Chord_Widget extends WP_Widget {
 	/**
 	 * Outputs the content of the widget
 	 *
-	 * @param array $args     widget args.
+	 * @param array $args widget args.
 	 * @param array $instance widget instance.
 	 */
 	// @codingStandardsIgnoreLine Generic.CodeAnalysis.UnusedFunctionParameter.Found
@@ -69,6 +69,3 @@ function wl_register_chord_widget() {
 
 	register_widget( 'WordLift_Chord_Widget' );
 }
-
-add_action( 'widgets_init', 'wl_register_chord_widget' );
-add_filter( 'widget_text', 'do_shortcode' );

@@ -3,6 +3,24 @@
 use Wordlift\Analysis\Response\Analysis_Response_Ops_Factory;
 
 /**
+ * This function returns empty array response from analysis,
+ * this is usually called when the analysis is disabled using
+ * `wl_feature__enable__analysis` hook.
+ * @since 3.27.6
+ */
+function wl_ajax_analyze_disabled_action() {
+	// adding the below header for debugging purpose.
+	if ( ! headers_sent() ) {
+		header( 'X-WordLift-Analysis: OFF' );
+	}
+	wp_send_json_success( array(
+		'entities'    => array(),
+		'annotations' => array(),
+		'topics'      => array()
+	) );
+}
+
+/**
  * Receive some content, run a remote analysis task and return the results. The content is read from the body
  * input (php://input).
  *
@@ -20,8 +38,6 @@ function wl_ajax_analyze_action() {
 	wp_send_json_success( wl_analyze_content( $data, 'application/json; charset=' . strtolower( get_bloginfo( 'charset' ) ) ) );
 
 }
-
-add_action( 'wp_ajax_wl_analyze', 'wl_ajax_analyze_action' );
 
 /**
  * Analyze the provided content. The analysis will make use of the method *wl_ajax_analyze_action*

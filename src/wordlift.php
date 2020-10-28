@@ -430,6 +430,35 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-wordlift.php';
  * @since    1.0.0
  */
 function run_wordlift() {
+	/**
+	 * Filter: wl_feature__enable__widgets.
+	 *
+	 * @param bool whether the widgets needed to be registered, defaults to true.
+	 *
+	 * @return bool
+	 * @since 3.27.6
+	 */
+	if ( apply_filters( 'wl_feature__enable__widgets', true ) ) {
+		add_action( 'widgets_init', 'wl_register_chord_widget' );
+		add_filter( 'widget_text', 'do_shortcode' );
+		add_action( 'widgets_init', 'wl_register_geo_widget' );
+		add_action( 'widgets_init', 'wl_register_timeline_widget' );
+		add_filter( 'widget_text', 'do_shortcode' );
+	}
+
+
+	/**
+	 * Filter: wl_feature__enable__analysis
+	 * @param bool Whether to send api request to analysis or not
+	 * @return bool
+	 * @since 3.27.6
+	 */
+	if ( apply_filters( 'wl_feature__enable__analysis', true ) ) {
+		add_action( 'wp_ajax_wl_analyze', 'wl_ajax_analyze_action' );
+	}
+	else {
+		add_action( 'wp_ajax_wl_analyze', 'wl_ajax_analyze_disabled_action' );
+	}
 
 	/*
 	 * We introduce the WordLift autoloader, since we start using classes in namespaces, i.e. Wordlift\Http.

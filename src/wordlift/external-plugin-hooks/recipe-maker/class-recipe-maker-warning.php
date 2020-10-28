@@ -17,7 +17,17 @@ class Recipe_Maker_Warning {
 
 	public function __construct( $recipe_maker_validation_service ) {
 		$this->recipe_maker_validation_service = $recipe_maker_validation_service;
-		add_action( 'admin_notices', array( $this, 'display_image_size_warning' ) );
+		/**
+		 * Filter: wl_feature__enable__notices.
+		 *
+		 * @param bool whether the notices needs to be enabled or not.
+		 *
+		 * @return bool
+		 * @since 3.27.6
+		 */
+		if ( apply_filters( 'wl_feature__enable__notices', true ) ) {
+			add_action( 'admin_notices', array( $this, 'display_image_size_warning' ) );
+		}
 	}
 
 	/**
