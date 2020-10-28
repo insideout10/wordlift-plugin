@@ -92,32 +92,20 @@ class Api_Data_Hooks
   private function api_call_delete_cache( $path )
   {
     $url = self::API_URL . $path;
-    $port = 443;
 
     /**
      * Make a non-blocking API call
      */
-    $fp = fsockopen( $url, $port, $errno, $errstr, $timeout = 30 );
-    if ( !$fp ) {
+    $api_response = wp_remote_request( $url,
+      array(
+        'method'  => 'DELETE'
+      )
+    );
+
+    if ( is_wp_error( $api_response )) {
       return false;
     } else {
-
-      /**
-       * send the server request
-       */
-      fputs( $fp, "DELETE $path HTTP/1.1\r\n" );
-      fputs( $fp, "Host: self::API_URL\r\n" );
-      fputs( $fp, "Content-type: application/x-www-form-urlencoded\r\n" );
-      fputs( $fp, "Connection: close\r\n\r\n" );
-
-      //loop through the response from the server
-      while ( !feof( $fp ) ) {
-        echo fgets( $fp, 4096 );
-      }
-      //close fp - we are done with it
-      fclose( $fp );
       return true;
     }
-
   }
 }
