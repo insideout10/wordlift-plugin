@@ -3,7 +3,7 @@
 /**
  *
  * API Data Hooks
- * @author Navdeep Singh <navdeep.er@gmail.com>
+ * @author Navdeep Singh <navdeep@wordlift.io>
  * @package Wordlift\Api_Data
  */
 
@@ -44,24 +44,26 @@ class Api_Data_Hooks
    * @return
    *
    */
-  private function get_values( $post_id )
-  {
+  private function get_values( $post_id ) {
+
     /**
      * Get Post Meta Values
      */
     $values = get_post_meta( $post_id, self::META_KEY, false );
-
+    
     /**
      * Iterate over $values array
      */
     if ( !empty( $values ) && count( $values ) > 1 ) {
-      foreach ( $values as $key => $link ) {
+      foreach ( $values as $link ) {
+        
         /**
          * Skip the <permalink>
          */
-        if ( $key === '<permalink>' ) {
+        if ( $link === '<permalink>' ) {
           $link = get_permalink();
         }
+        
         /**
          * Sanitize the link
          */
@@ -84,28 +86,38 @@ class Api_Data_Hooks
   }
 
   /**
-   * @desc Do a DELETE request with cURL
+   * @desc Do a DELETE request with WP request function
    * @param string  $path path that goes after the URL eg. "/user/login"
    *
-   * @return Obj  $result HTTP response from REST interface in JSON decoded
+   * @return bool  True if successful otherwise false
    */
-  private function api_call_delete_cache( $path )
-  {
-    $url = self::API_URL . $path;
+  private function api_call_delete_cache( $path ) {
 
-    /**
-     * Make a non-blocking API call
-     */
-    $api_response = wp_remote_request( $url,
-      array(
-        'method'  => 'DELETE'
-      )
+    $log = \Wordlift_Log_Service::get_logger('api_call_delete_cache');
+
+    $log->debug( "Request started:: $path" );
+
+    $url = self::API_URL . $path;
+    $args = array(
+      'method' => 'DELETE',
+      'port'   => 443
     );
 
-    if ( is_wp_error( $api_response )) {
+    // Execute the request
+    $api_response = wp_remote_request( $url, $args );
+
+    // If an error occured, return false
+    if ( is_wp_error( $api_response ) || 200 !== (int) $api_response['response']['code'] ) {
+
+      $log->warn( var_export($api_response, true) );
+
       return false;
-    } else {
-      return true;
-    }
+
+    } 
+
+    $log->debug( "Request executed successfully" );
+
+    return true;
+    
   }
 }
