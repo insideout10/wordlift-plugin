@@ -238,7 +238,7 @@ class Analysis_Response_Ops {
 	 *
 	 * @return Analysis_Response_Ops The {@link Analysis_Response_Ops} instance.
 	 *
-	 * @since 3.26.7
+	 * @since 3.27.6
 	 *
 	 * @link https://github.com/insideout10/wordlift-plugin/issues/1178
 	 */
