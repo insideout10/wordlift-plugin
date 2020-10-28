@@ -64,12 +64,9 @@ function wl_build_entity_uri( $post_id ) {
 		return null;
 	}
 
-	// For installations not connected to the Cloud - i.e. dataset URI = home_url('/') - we build the dataset URI based
-	// on the permalink.
-	$dataset_uri = Wordlift_Configuration_Service::get_instance()->get_dataset_uri();
-	$permalink   = get_permalink( $post_id );
-
-	if ( 0 === strpos( $permalink, $dataset_uri ) ) {
+	// For installations not connected to the Cloud - i.e. add_filter( 'wl_features__enable__dataset', '__return_false')
+	// - we build the dataset URI base on the permalink.
+	if ( ! apply_filters( 'wl_features__enable__dataset', true ) ) {
 		return sprintf( '%s#%s', get_permalink( $post_id ), get_post_type( $post_id ) );
 	}
 

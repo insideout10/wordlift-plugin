@@ -221,16 +221,14 @@ function* handleAddEntityRequest({ payload }) {
   const annotationId = "urn:local-annotation-" + Math.floor(Math.random() * 999999);
 
   // Create the entity if the `id` isn't defined.
-  let createdEntity;
-  if (!payload.id) {
-    createdEntity = yield call(createEntity, {
+  const id =
+    payload.id ||
+    (yield call(createEntity, {
       title: payload.label,
       status: "draft",
       description: payload.description,
       excerpt: ""
-    });
-  }
-  const id = payload.id || createdEntity["wl:entity_url"] || createdEntity["link"];
+    }))["wl:entity_url"];
 
   const entityToAdd = {
     id,
