@@ -27,12 +27,10 @@ use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Warning;
 use Wordlift\External_Plugin_Hooks\Yoast\Yoast_Jsonld;
 use Wordlift\Faq\Faq_Content_Filter;
 use Wordlift\Faq\Faq_Tinymce_Adapter;
-use Wordlift\Internal_Hooks\Entity_Dct_Relation;
 use Wordlift\Jsonld\Jsonld_Adapter;
 use Wordlift\Jsonld\Jsonld_By_Id_Endpoint;
 use Wordlift\Jsonld\Jsonld_Endpoint;
 use Wordlift\Jsonld\Jsonld_Service;
-use Wordlift\Jsonld\Term_Jsonld_Service;
 use Wordlift\Mappings\Formatters\Acf_Group_Formatter;
 use Wordlift\Mappings\Jsonld_Converter;
 use Wordlift\Mappings\Mappings_DBO;
@@ -1794,11 +1792,6 @@ class Wordlift {
 			return array_merge( (array) $value, array( 'wordlift/classification' ) );
 		}, PHP_INT_MAX );
 
-		/**
-		 * @since 3.28.0
-		 * @see https://github.com/insideout10/wordlift-plugin/issues/1186
-		 */
-		new Entity_Dct_Relation( $this->entity_service );
 	}
 
 	/**

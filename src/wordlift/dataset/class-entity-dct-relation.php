@@ -1,6 +1,6 @@
 <?php
 
-namespace Wordlift\Internal_Hooks;
+namespace Wordlift\Dataset;
 /**
  * @since 3.28.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
