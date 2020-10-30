@@ -23,8 +23,6 @@ class Dct_Relations_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	public function test_when_entity_jsonld_has_references_should_add_additional_context() {
-
-		$jsonld       = array();
 		$post_1       = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
 		$post_2       = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
 		$expected_uri = $this->entity_service->get_uri( $post_2 );
@@ -32,11 +30,21 @@ class Dct_Relations_Test extends Wordlift_Unit_Test_Case {
 			$post_2
 		) );
 		$jsonld = $this->jsonld_service->get_jsonld( false, $post_1 );
-		$item = $jsonld[0];
+		$item   = $jsonld[0];
 		// should have the entity urls in the relation property.
 		$this->assertArrayHasKey( 'http://purl.org/dc/terms/relation', $item );
 		$this->assertCount( 1, $item['http://purl.org/dc/terms/relation'] );
 		$this->assertEquals( $item['http://purl.org/dc/terms/relation'][0]['@id'], $expected_uri );
+	}
+
+
+	public function test_when_no_references_for_entity_present_should_not_add_relation_property() {
+		$post_1 = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+
+		$jsonld = $this->jsonld_service->get_jsonld( false, $post_1 );
+		$item   = $jsonld[0];
+		// should have the entity urls in the relation property.
+		$this->assertFalse( array_key_exists( 'http://purl.org/dc/terms/relation', $item ) );
 	}
 
 
