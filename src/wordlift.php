@@ -41,6 +41,7 @@ use Wordlift\Images_Licenses\Tasks\Reload_Data_Page;
 use Wordlift\Images_Licenses\Tasks\Reload_Data_Task;
 use Wordlift\Images_Licenses\Tasks\Remove_All_Images_Page;
 use Wordlift\Images_Licenses\Tasks\Remove_All_Images_Task;
+use Wordlift\Internal_Hooks\Entity_Dct_Relation;
 use Wordlift\Post\Post_Adapter;
 use Wordlift\Tasks\Task_Ajax_Adapter;
 use Wordlift\Tasks\Task_Ajax_Adapters_Registry;
