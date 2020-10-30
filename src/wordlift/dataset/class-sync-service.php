@@ -48,6 +48,8 @@ class Sync_Service {
 		// You need to initialize this early, otherwise the Background Process isn't registered in AJAX calls.
 		$this->sync_background_process = new Sync_Background_Process( $this );;
 
+		self::$instance = $this;
+
 		/**
 		 * Register hooks for post and meta.
 		 */
@@ -57,7 +59,6 @@ class Sync_Service {
 		add_action( 'deleted_post_meta', array( $this, 'sync_item_on_meta_change' ), 10, 4 );
 		add_action( 'delete_post', array( $this, 'delete_item' ) );
 
-		self::$instance = $this;
 	}
 
 	public function sync_item_on_meta_change( $meta_id, $object_id, $meta_key, $_meta_value ) {
