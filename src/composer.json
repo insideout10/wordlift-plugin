@@ -31,7 +31,8 @@
   "scripts": {
     "post-install-cmd": [
       "\"vendor/bin/mozart\" compose",
-      "composer dump-autoload"
+      "composer dump-autoload",
+      "composer install --no-dev"
     ],
     "post-update-cmd": [
       "\"vendor/bin/mozart\" compose",
