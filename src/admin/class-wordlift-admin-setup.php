@@ -76,13 +76,14 @@ class Wordlift_Admin_Setup {
 	/**
 	 * Initialize the class and set its properties.
 	 *
+	 * @param \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
+	 * @param \Wordlift_Key_Validation_Service $key_validation_service A {@link Wordlift_Key_Validation_Service} instance.
+	 * @param \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_Admin_Language_Select_Element $language_select_element A {@link Wordlift_Admin_Language_Select_Element} element renderer.
+	 * @param \Wordlift_Admin_Country_Select_Element $country_select_element A {@link Wordlift_Admin_Country_Select_Element} element renderer.
+	 *
 	 * @since    3.9.0
 	 *
-	 * @param \Wordlift_Configuration_Service  $configuration_service  A {@link Wordlift_Configuration_Service} instance.
-	 * @param \Wordlift_Key_Validation_Service $key_validation_service A {@link Wordlift_Key_Validation_Service} instance.
-	 * @param \Wordlift_Entity_Service $entity_service  A {@link Wordlift_Entity_Service} instance.
-	 * @param \Wordlift_Admin_Language_Select_Element $language_select_element A {@link Wordlift_Admin_Language_Select_Element} element renderer.
-	 * @param \Wordlift_Admin_Country_Select_Element  $country_select_element  A {@link Wordlift_Admin_Country_Select_Element} element renderer.
 	 */
 	public function __construct( $configuration_service, $key_validation_service, $entity_service, $language_select_element, $country_select_element ) {
 
@@ -106,12 +107,29 @@ class Wordlift_Admin_Setup {
 		// Hook to `admin_menu` in order to add our own setup wizard page.
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 
-		// Triggered when the user accesses the admin area, we decide whether to show our own wizard.
-		add_action( 'admin_init', array( $this, 'show_page' ) );
 
-		// Hook to `admin_notices` to display our notices.
-		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
-
+		/**
+		 * Filter: wl_feature__enable__setup_screen.
+		 *
+		 * @param bool whether the setup screen needs to be shown or not, default to true.
+		 *
+		 * @return bool
+		 * @since 3.27.6
+		 */
+		if ( apply_filters( 'wl_feature__enable__setup_screen', true ) ) {
+			// Triggered when the user accesses the admin area, we decide whether to show our own wizard.
+			add_action( 'admin_init', array( $this, 'show_page' ) );
+		}
+		/**
+		 * Filter: wl_feature__enable__notices.
+		 * @param bool whether the notices needs to be enabled or not.
+		 * @return bool
+		 * @since 3.27.6
+		 */
+		if ( apply_filters( 'wl_feature__enable__notices', true ) ) {
+			// Hook to `admin_notices` to display our notices.
+			add_action( 'admin_notices', array( $this, 'admin_notices' ) );
+		}
 	}
 
 	/**
@@ -152,15 +170,15 @@ class Wordlift_Admin_Setup {
 
 		// Use `wl_configuration_get_key` to check whether WL's key is set and that the user didn't disable the wizard.
 		if ( '' === $this->configuration_service->get_key() && ! $this->configuration_service->is_skip_wizard() ) { ?>
-			<div id="wl-message" class="updated">
-				<p><?php esc_html_e( 'Welcome to WordLift &#8211; You&lsquo;re almost ready to start', 'wordlift' ); ?></p>
-				<p class="submit">
-					<a href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup' ) ); ?>"
-						class="button-primary"><?php esc_html_e( 'Run the Setup Wizard', 'wordlift' ); ?></a>
-					<a class="button-secondary skip"
-					   href="<?php echo esc_url( wp_nonce_url( add_query_arg( 'wl-hide-notice', 'install' ), 'wordlift_hide_notices_nonce', '_wl_notice_nonce' ) ); ?>"><?php esc_html_e( 'Skip Setup', 'wordlift' ); ?></a>
-				</p>
-			</div>
+            <div id="wl-message" class="updated">
+                <p><?php esc_html_e( 'Welcome to WordLift &#8211; You&lsquo;re almost ready to start', 'wordlift' ); ?></p>
+                <p class="submit">
+                    <a href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup' ) ); ?>"
+                       class="button-primary"><?php esc_html_e( 'Run the Setup Wizard', 'wordlift' ); ?></a>
+                    <a class="button-secondary skip"
+                       href="<?php echo esc_url( wp_nonce_url( add_query_arg( 'wl-hide-notice', 'install' ), 'wordlift_hide_notices_nonce', '_wl_notice_nonce' ) ); ?>"><?php esc_html_e( 'Skip Setup', 'wordlift' ); ?></a>
+                </p>
+            </div>
 		<?php }
 
 	}
@@ -198,10 +216,18 @@ class Wordlift_Admin_Setup {
 	 * @since    3.9.0
 	 */
 	public function admin_menu() {
-
-		// @todo: find another way to do this, since this is adding an empty space in WP's dashboard menu.
-		add_dashboard_page( '', '', 'manage_options', 'wl-setup', '' );
-
+		/**
+		 * Filter: wl_feature__enable__screens.
+		 *
+		 * @param bool whether the screens needed to be registered, defaults to true.
+		 *
+		 * @return bool
+		 * @since 3.27.6
+		 */
+		if ( apply_filters( 'wl_feature__enable__screens', true ) ) {
+			// @todo: find another way to do this, since this is adding an empty space in WP's dashboard menu.
+			add_dashboard_page( '', '', 'manage_options', 'wl-setup', '' );
+		}
 	}
 
 	/**
@@ -237,7 +263,7 @@ class Wordlift_Admin_Setup {
 		}
 
 		$language_select = $this->language_select_element;
-		$country_select = $this->country_select_element;
+		$country_select  = $this->country_select_element;
 
 		include plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/wordlift-admin-setup.php';
 
@@ -247,9 +273,10 @@ class Wordlift_Admin_Setup {
 	/**
 	 * Save WordLift's configuration using the provided parameters.
 	 *
+	 * @param array $params An array of configuration parameters.
+	 *
 	 * @since 3.9.0
 	 *
-	 * @param array $params An array of configuration parameters.
 	 */
 	private function save_configuration( $params ) {
 
@@ -276,7 +303,7 @@ class Wordlift_Admin_Setup {
 
 		// Store the preferences in variable, because if the checkbox is not checked
 		// the `share-diagnostic` will not exists in `$params` array.
-		$share_diagnostic_preferences = empty( $params['share-diagnostic'] ) ? 'no' : 'yes' ;
+		$share_diagnostic_preferences = empty( $params['share-diagnostic'] ) ? 'no' : 'yes';
 
 		// Store the diagnostic preferences:
 		$this->configuration_service->set_diagnostic_preferences( $share_diagnostic_preferences );

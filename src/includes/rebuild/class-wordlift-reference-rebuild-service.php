@@ -3,13 +3,6 @@
 class Wordlift_Reference_Rebuild_Service extends Wordlift_Rebuild_Service {
 
 	/**
-	 * @since  3.18.0
-	 * @access private
-	 * @var \Wordlift_Linked_Data_Service $log A {@link Wordlift_Linked_Data_Service} instance.
-	 */
-	private $linked_data_service;
-
-	/**
 	 * The {@link Wordlift_Entity_Service} instance.
 	 *
 	 * @since  3.18.0
@@ -31,15 +24,13 @@ class Wordlift_Reference_Rebuild_Service extends Wordlift_Rebuild_Service {
 	/**
 	 * Wordlift_Reference_Rebuild_Service constructor.
 	 *
-	 * @param \Wordlift_Entity_Service       $entity_service       The {@link Wordlift_Entity_Service} instance.
-	 * @param \Wordlift_Linked_Data_Service  $linked_data_service  The {@link Wordlift_Linked_Data_Service} instance.
+	 * @param \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service} instance.
 	 */
-	public function __construct( $linked_data_service, $entity_service, $relation_service ) {
+	public function __construct( $entity_service ) {
 
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Reference_Rebuild_Service' );
 
-		$this->linked_data_service = $linked_data_service;
-		$this->entity_service      = $entity_service;
+		$this->entity_service = $entity_service;
 	}
 
 	public function rebuild() {
@@ -61,22 +52,22 @@ class Wordlift_Reference_Rebuild_Service extends Wordlift_Rebuild_Service {
 		// and will cycle through all the posts w/ a very small memory footprint
 		// in order to avoid memory errors.
 
-		$count               = 0;
-		$log                 = $this->log;
-		$entity_service      = $this->entity_service;
-		$linked_data_service = $this->linked_data_service;
+		$count          = 0;
+		$log            = $this->log;
+		$entity_service = $this->entity_service;
 
 		$this->process(
-			function ( $post_id ) use ( &$count, $log, $entity_service, $linked_data_service ) {
+			function ( $post_id ) use ( &$count, $log, $entity_service ) {
 				$count ++;
 
 				if ( $entity_service->is_entity( $post_id ) ) {
 					$log->trace( "Post $post_id is an entity, skipping..." );
+
 					return;
 				}
 
 				$log->trace( "Going to save post $count, ID $post_id..." );
-				$linked_data_service->push( $post_id );
+				do_action( 'wl_legacy_linked_data__push', $post_id );
 			},
 			array(),
 			$offset,

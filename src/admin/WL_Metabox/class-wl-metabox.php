@@ -337,7 +337,7 @@ class WL_Metabox {
 		 */
 		do_action( 'wl_save_form_pre_push_entity', $entity_id, $_POST );
 
-		Wordlift_Linked_Data_Service::get_instance()->push( $entity_id );
+		do_action( 'wl_legacy_linked_data__push', $entity_id );
 
 	}
 

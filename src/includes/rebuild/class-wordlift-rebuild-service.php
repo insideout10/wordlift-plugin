@@ -50,10 +50,11 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 	/**
 	 * Create an instance of Wordlift_Rebuild_Service.
 	 *
+	 * @param \Wordlift_Sparql_Service $sparql_service A {@link Wordlift_Sparql_Service} instance used to query the remote dataset.
+	 * @param \Wordlift_Uri_Service $uri_service
+	 *
 	 * @since 3.6.0
 	 *
-	 * @param \Wordlift_Sparql_Service             $sparql_service A {@link Wordlift_Sparql_Service} instance used to query the remote dataset.
-	 * @param \Wordlift_Uri_Service                $uri_service
 	 */
 	public function __construct( $sparql_service, $uri_service ) {
 
@@ -111,7 +112,9 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 		$this->process( function ( $post ) use ( &$count, $log ) {
 			$count ++;
 			$log->trace( "Going to save post $count, ID $post->ID..." );
-			wl_linked_data_save_post( $post->ID );
+			if ( function_exists( 'wl_linked_data_save_post' ) ) {
+				wl_linked_data_save_post( $post->ID );
+			}
 		}, array(
 			'post_status' => 'publish',
 		), $offset, $max );
@@ -126,15 +129,16 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 		Wordlift_File_Cache_Service::flush_all();
 
 		// Rebuild also the references.
-		$this->redirect( admin_url( 'admin-ajax.php?action=wl_rebuild_references') );
+		$this->redirect( admin_url( 'admin-ajax.php?action=wl_rebuild_references' ) );
 	}
 
 	/**
 	 * Redirect using a client-side meta to avoid browsers' redirect restrictions.
 	 *
+	 * @param string $url The URL to redirect to.
+	 *
 	 * @since 3.9.8
 	 *
-	 * @param string $url The URL to redirect to.
 	 */
 	public function redirect( $url ) {
 
@@ -142,15 +146,15 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 
 		@header( 'Content-Type: text/html; charset=' . get_option( 'blog_charset' ) );
 		?>
-		<html>
-		<head>
-			<meta http-equiv="refresh"
-			      content="0; <?php echo esc_attr( $url ); ?>">
-		</head>
-		<body>
-		Rebuilding, please wait...
-		</body>
-		</html>
+        <html>
+        <head>
+            <meta http-equiv="refresh"
+                  content="0; <?php echo esc_attr( $url ); ?>">
+        </head>
+        <body>
+        Rebuilding, please wait...
+        </body>
+        </html>
 		<?php
 
 		exit;
@@ -160,14 +164,14 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 	/**
 	 * List the items starting at the specified offset and up to the specified limit.
 	 *
-     * @since 3.19.5 remove Polylang hooks.
-	 * @since 3.6.0
-	 *
-	 * @param int   $offset The start offset.
-	 * @param int   $limit The maximum number of items to return.
+	 * @param int $offset The start offset.
+	 * @param int $limit The maximum number of items to return.
 	 * @param array $args Additional arguments.
 	 *
 	 * @return array A array of items (or an empty array if no items are found).
+	 * @since 3.19.5 remove Polylang hooks.
+	 * @since 3.6.0
+	 *
 	 */
 	function find( $offset = 0, $limit = 10, $args = array() ) {
 

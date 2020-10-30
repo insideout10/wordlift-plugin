@@ -16,27 +16,27 @@ if ( 0 < count( $not_found_uris ) ) {
 
 	$first_id = key( $not_found_uris );
 	// Re-push the entity to the Linked Data Cloud.
-	Wordlift_Linked_Data_Service::get_instance()->push( $first_id );
+	do_action( 'wl_legacy_linked_data__push', $first_id );
 
 }
 ?>
 
 <div class="wrap">
-	<h1><?php esc_html_e( 'Status Report', 'wordlift' ); ?></h1>
+    <h1><?php esc_html_e( 'Status Report', 'wordlift' ); ?></h1>
 
-	<p><?php echo esc_html( sprintf( __( '%d not found URIs; %d local entity URIs; %d remote URIs (including posts and authors).', 'wordlift' ), count( $not_found_uris ), count( $local_uris ), count( $remote_uris ) ) ); ?></p>
+    <p><?php echo esc_html( sprintf( __( '%d not found URIs; %d local entity URIs; %d remote URIs (including posts and authors).', 'wordlift' ), count( $not_found_uris ), count( $local_uris ), count( $remote_uris ) ) ); ?></p>
 
-	<table class="wp-list-table widefat fixed striped posts">
-		<thead>
-		<th scope="col"><?php esc_html_e( 'URL', 'wordlift' ); ?></th>
-		</thead>
-		<tbody>
+    <table class="wp-list-table widefat fixed striped posts">
+        <thead>
+        <th scope="col"><?php esc_html_e( 'URL', 'wordlift' ); ?></th>
+        </thead>
+        <tbody>
 		<?php foreach ( $not_found_uris as $id => $uri ) { ?>
-			<tr>
-				<td><?php echo esc_html( $uri ); ?></td>
-			</tr>
+            <tr>
+                <td><?php echo esc_html( $uri ); ?></td>
+            </tr>
 		<?php } ?>
-		</tbody>
-	</table>
+        </tbody>
+    </table>
 
 </div>

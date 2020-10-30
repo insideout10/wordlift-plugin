@@ -9,6 +9,8 @@
 
 namespace Wordlift\Mappings\Validators;
 
+use Wordlift\Mappings\Jsonld_Converter;
+
 /**
  * Define the Post_Type_Rule_Validator class.
  *
@@ -20,6 +22,7 @@ class Post_Type_Rule_Validator implements Rule_Validator {
 	 * Enum for the post type rule validator.
 	 */
 	const POST_TYPE = 'post_type';
+
 	/**
 	 * Post_Type_Rule_Validator constructor.
 	 *
@@ -40,7 +43,7 @@ class Post_Type_Rule_Validator implements Rule_Validator {
 	 */
 	public function wl_mappings_rule_validators( $value ) {
 
-		$value[self::POST_TYPE] = $this;
+		$value[ self::POST_TYPE ] = $this;
 
 		return $value;
 	}
@@ -56,7 +59,14 @@ class Post_Type_Rule_Validator implements Rule_Validator {
 	 * {@inheritdoc}
 	 */
 	public function is_valid( $identifier, $operator, $operand_1, $operand_2, $type ) {
-
+		/**
+		 * If this is not done then this will validate for term
+		 * which causes a bug, so this rule validator would return false
+		 * when the current thing is not a post.
+		 */
+		if ( $type !== Jsonld_Converter::POST ) {
+			return false;
+		}
 		// Get the post type and then check whether it matches or not according to the operator.
 		$post_type = get_post_type( $identifier );
 

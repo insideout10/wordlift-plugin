@@ -12,6 +12,10 @@ class Jsonld_Service {
 	const TYPE_HOMEPAGE = 'HOMEPAGE';
 	const TYPE_POST = 'POST';
 	const TYPE_TERM = 'TERM';
+	/**
+	 * @var Jsonld_Service
+	 */
+	private static $instance;
 
 	/**
 	 * @var Wordlift_Jsonld_Service
@@ -39,6 +43,11 @@ class Jsonld_Service {
 		$this->legacy_jsonld_service = $legacy_jsonld_service;
 		$this->term_jsonld_service   = $term_jsonld_adapter;
 
+		self::$instance = $this;
+	}
+
+	public static function get_instance() {
+		return self::$instance;
 	}
 
 	/**

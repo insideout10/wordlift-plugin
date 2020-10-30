@@ -19,8 +19,8 @@ use Wordlift\Autocomplete\Local_Autocomplete_Service;
 use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Duplicate_Markup_Remover\Faq_Duplicate_Markup_Remover;
 use Wordlift\Entity\Entity_Helper;
-use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Jsonld_Hook;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_After_Get_Jsonld_Hook;
+use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Jsonld_Hook;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Post_Type_Hook;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Validation_Service;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Warning;
@@ -344,7 +344,7 @@ class Wordlift {
 	 * @access private
 	 * @var \Wordlift_Admin_Setup $admin_setup The Install wizard.
 	 */
-	private $admin_setup;
+	public $admin_setup;
 
 	/**
 	 * The Content Filter Service hooks up to the 'the_content' filter and provides
@@ -651,15 +651,6 @@ class Wordlift {
 	 * @var \Wordlift_Entity_Type_Adapter $entity_type_adapter The {@link Wordlift_Entity_Type_Adapter} instance.
 	 */
 	protected $entity_type_adapter;
-
-	/**
-	 * The {@link Wordlift_Linked_Data_Service} instance.
-	 *
-	 * @since  3.15.0
-	 * @access protected
-	 * @var \Wordlift_Linked_Data_Service $linked_data_service The {@link Wordlift_Linked_Data_Service} instance.
-	 */
-	protected $linked_data_service;
 
 	/**
 	 * The {@link Wordlift_Storage_Factory} instance.
@@ -1239,7 +1230,10 @@ class Wordlift {
 		// Create a new instance of the Redirect service.
 		$this->redirect_service    = new Wordlift_Redirect_Service( $this->entity_uri_service );
 		$this->entity_type_service = new Wordlift_Entity_Type_Service( $this->schema_service );
-		$this->linked_data_service = new Wordlift_Linked_Data_Service( $this->entity_service, $this->entity_type_service, $this->schema_service, $this->sparql_service );
+
+		if ( ! apply_filters( 'wl_features__enable__legacy_linked_data', true ) ) {
+			new Wordlift_Linked_Data_Service( $this->entity_service, $this->entity_type_service, $this->schema_service, $this->sparql_service );
+		}
 
 		// Create a new instance of the Timeline service and Timeline shortcode.
 		$this->timeline_service = new Wordlift_Timeline_Service( $this->entity_service, $this->entity_type_service );
@@ -1312,17 +1306,25 @@ class Wordlift {
 		$this->sample_data_service        = new Wordlift_Sample_Data_Service( $this->entity_type_service, $this->configuration_service, $this->user_service );
 		$this->sample_data_ajax_adapter   = new Wordlift_Sample_Data_Ajax_Adapter( $this->sample_data_service );
 		$this->reference_rebuild_service  = new Wordlift_Reference_Rebuild_Service( $this->linked_data_service, $this->entity_service, $this->relation_service );
-
-		// Initialize the short-codes.
-		new Wordlift_Navigator_Shortcode();
+		/**
+		 * Filter: wl_feature__enable__blocks.
+		 *
+		 * @param bool whether the blocks needed to be registered, defaults to true.
+		 *
+		 * @return bool
+		 * @since 3.27.6
+		 */
+		if ( apply_filters( 'wl_feature__enable__blocks', true ) ) {
+			// Initialize the short-codes.
+			new Wordlift_Navigator_Shortcode();
+			new Wordlift_Chord_Shortcode();
+			new Wordlift_Geomap_Shortcode();
+			new Wordlift_Timeline_Shortcode();
+			new Wordlift_Related_Entities_Cloud_Shortcode( $this->relation_service );
+			new Wordlift_Vocabulary_Shortcode( $this->configuration_service );
+			new Wordlift_Faceted_Search_Shortcode();
+		}
 		new Wordlift_Products_Navigator_Shortcode();
-		new Wordlift_Chord_Shortcode();
-		new Wordlift_Geomap_Shortcode();
-		new Wordlift_Timeline_Shortcode();
-		new Wordlift_Related_Entities_Cloud_Shortcode( $this->relation_service );
-		new Wordlift_Vocabulary_Shortcode( $this->configuration_service );
-		new Wordlift_Faceted_Search_Shortcode();
-
 		// Initialize the Context Cards Service
 		$this->context_cards_service = new Wordlift_Context_Cards_Service();
 
@@ -1658,11 +1660,20 @@ class Wordlift {
 		$this->loader->add_action( 'wp_ajax_wl_rebuild', $this->rebuild_service, 'rebuild' );
 		$this->loader->add_action( 'wp_ajax_wl_rebuild_references', $this->reference_rebuild_service, 'rebuild' );
 
-		// Hook the menu to the Download Your Data page.
-		$this->loader->add_action( 'admin_menu', $this->download_your_data_page, 'admin_menu', 100, 0 );
-		$this->loader->add_action( 'admin_menu', $this->status_page, 'admin_menu', 100, 0 );
-		$this->loader->add_action( 'admin_menu', $this->entity_type_settings_admin_page, 'admin_menu', 100, 0 );
-
+		/**
+		 * Filter: wl_feature__enable__screens.
+		 *
+		 * @param bool whether the screens needed to be registered, defaults to true.
+		 *
+		 * @return bool
+		 * @since 3.27.6
+		 */
+		if ( apply_filters( 'wl_feature__enable__screens', true ) ) {
+			// Hook the menu to the Download Your Data page.
+			$this->loader->add_action( 'admin_menu', $this->download_your_data_page, 'admin_menu', 100, 0 );
+			$this->loader->add_action( 'admin_menu', $this->status_page, 'admin_menu', 100, 0 );
+			$this->loader->add_action( 'admin_menu', $this->entity_type_settings_admin_page, 'admin_menu', 100, 0 );
+		}
 		// Hook the admin-ajax.php?action=wl_download_your_data&out=xyz links.
 		$this->loader->add_action( 'wp_ajax_wl_download_your_data', $this->download_your_data_page, 'download_your_data', 10 );
 
@@ -1687,8 +1698,17 @@ class Wordlift {
 		$this->loader->add_filter( 'admin_post_thumbnail_html', $this->publisher_service, 'add_featured_image_instruction' );
 
 		// Hook the menu creation on the general wordlift menu creation.
-		$this->loader->add_action( 'wl_admin_menu', $this->settings_page, 'admin_menu', 10, 2 );
-
+		/**
+		 * Filter: wl_feature__enable__screens.
+		 *
+		 * @param bool whether the screens needed to be registered, defaults to true.
+		 *
+		 * @return bool
+		 * @since 3.27.6
+		 */
+		if ( apply_filters( 'wl_feature__enable__screens', true ) ) {
+			$this->loader->add_action( 'wl_admin_menu', $this->settings_page, 'admin_menu', 10, 2 );
+		}
 		/*
 		 * Display the `Wordlift_Admin_Search_Rankings_Page` page.
 		 *
@@ -1697,8 +1717,18 @@ class Wordlift {
 		 * @since 3.20.0
 		 */
 		if ( in_array( $this->configuration_service->get_package_type(), array( 'editorial', 'business' ) ) ) {
-			$admin_search_rankings_page = new Wordlift_Admin_Search_Rankings_Page();
-			$this->loader->add_action( 'wl_admin_menu', $admin_search_rankings_page, 'admin_menu' );
+			/**
+			 * Filter: wl_feature__enable__screens.
+			 *
+			 * @param bool whether the screens needed to be registered, defaults to true.
+			 *
+			 * @return bool
+			 * @since 3.27.6
+			 */
+			if ( apply_filters( 'wl_feature__enable__screens', true ) ) {
+				$admin_search_rankings_page = new Wordlift_Admin_Search_Rankings_Page();
+				$this->loader->add_action( 'wl_admin_menu', $admin_search_rankings_page, 'admin_menu' );
+			}
 		}
 
 		// Hook key update.
@@ -1754,7 +1784,8 @@ class Wordlift {
 		 * Post excerpt meta box would be only loaded when the language is set
 		 * to english
 		 */
-		if ( $this->configuration_service->get_language_code() === 'en' ) {
+		if ( $this->configuration_service->get_language_code() === 'en' &&
+		     apply_filters( 'wl_feature__enable__post_excerpt', true ) ) {
 			$excerpt_adapter = new Post_Excerpt_Meta_Box_Adapter();
 			$this->loader->add_action( 'do_meta_boxes', $excerpt_adapter, 'replace_post_excerpt_meta_box' );
 			// Adding Rest route for the post excerpt

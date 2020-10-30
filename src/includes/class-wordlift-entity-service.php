@@ -413,7 +413,6 @@ class Wordlift_Entity_Service {
 
 		$dataset_uri = wl_configuration_get_redlink_dataset_uri();
 
-
 		if ( empty( $dataset_uri ) ) {
 			// Continue even if the dataset uri is not properly configured. It is handled in function wl_build_entity_uri()
 			$log->debug('Continuing, dataset uri not configured...');

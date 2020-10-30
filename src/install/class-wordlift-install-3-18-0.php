@@ -44,9 +44,9 @@ class Wordlift_Install_3_18_0 extends Wordlift_Install {
 	/**
 	 * Creates references for articles *referencing* entities
 	 *
+	 * @return void
 	 * @since 3.18.0
 	 *
-	 * @return void
 	 */
 	public function push_references() {
 		// Get relations.
@@ -66,7 +66,7 @@ class Wordlift_Install_3_18_0 extends Wordlift_Install {
 			}
 
 			// Push the references.
-			Wordlift_Linked_Data_Service::get_instance()->push( $post->ID );
+			do_action( 'wl_legacy_linked_data__push', $post->ID );
 		}
 
 	}
@@ -74,9 +74,9 @@ class Wordlift_Install_3_18_0 extends Wordlift_Install {
 	/**
 	 * Adds the new `Offer` entity type.
 	 *
+	 * @return void
 	 * @since 3.18.0
 	 *
-	 * @return void
 	 */
 	public function add_offer_entity_type() {
 		// Check whether the `offer` term exists.
@@ -102,9 +102,9 @@ class Wordlift_Install_3_18_0 extends Wordlift_Install {
 	/**
 	 * Add additional `read_wordlift_entity` capability to editors.
 	 *
+	 * @return void
 	 * @since 3.18.0
 	 *
-	 * @return void
 	 */
 	public function add_editors_read_wordlift_entity_capability() {
 		// Get the editor roles.
