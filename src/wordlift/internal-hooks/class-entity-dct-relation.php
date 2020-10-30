@@ -30,12 +30,13 @@ class Entity_Dct_Relation {
 	/**
 	 * @param $data array The array containing jsonld and references.
 	 * @param $post_id int The entity id
+	 * @return array
 	 */
 	public function wl_entity_jsonld_array( $data, $post_id ) {
 		$single_entity_jsonld = $data['jsonld'];
-		$references           = $data['references'];
+		$references           = $this->entity_service->get_related_entities( $post_id );
 
-		if ( 0 === $references ) {
+		if ( 0 === count( $references ) ) {
 			return $data;
 		}
 
