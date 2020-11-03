@@ -441,11 +441,10 @@ function run_wordlift() {
 	 */
 	if ( apply_filters( 'wl_feature__enable__widgets', true ) ) {
 		add_action( 'widgets_init', 'wl_register_chord_widget' );
-		add_filter( 'widget_text', 'do_shortcode' );
 		add_action( 'widgets_init', 'wl_register_geo_widget' );
 		add_action( 'widgets_init', 'wl_register_timeline_widget' );
-		add_filter( 'widget_text', 'do_shortcode' );
 	}
+	add_filter( 'widget_text', 'do_shortcode' );
 
 
 	/**

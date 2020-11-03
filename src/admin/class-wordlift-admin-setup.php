@@ -107,19 +107,9 @@ class Wordlift_Admin_Setup {
 		// Hook to `admin_menu` in order to add our own setup wizard page.
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 
+		// Triggered when the user accesses the admin area, we decide whether to show our own wizard.
+		add_action( 'admin_init', array( $this, 'show_page' ) );
 
-		/**
-		 * Filter: wl_feature__enable__setup_screen.
-		 *
-		 * @param bool whether the setup screen needs to be shown or not, default to true.
-		 *
-		 * @return bool
-		 * @since 3.27.6
-		 */
-		if ( apply_filters( 'wl_feature__enable__setup_screen', true ) ) {
-			// Triggered when the user accesses the admin area, we decide whether to show our own wizard.
-			add_action( 'admin_init', array( $this, 'show_page' ) );
-		}
 		/**
 		 * Filter: wl_feature__enable__notices.
 		 * @param bool whether the notices needs to be enabled or not.
@@ -216,18 +206,8 @@ class Wordlift_Admin_Setup {
 	 * @since    3.9.0
 	 */
 	public function admin_menu() {
-		/**
-		 * Filter: wl_feature__enable__screens.
-		 *
-		 * @param bool whether the screens needed to be registered, defaults to true.
-		 *
-		 * @return bool
-		 * @since 3.27.6
-		 */
-		if ( apply_filters( 'wl_feature__enable__screens', true ) ) {
-			// @todo: find another way to do this, since this is adding an empty space in WP's dashboard menu.
-			add_dashboard_page( '', '', 'manage_options', 'wl-setup', '' );
-		}
+		// @todo: find another way to do this, since this is adding an empty space in WP's dashboard menu.
+		add_dashboard_page( '', '', 'manage_options', 'wl-setup', '' );
 	}
 
 	/**
