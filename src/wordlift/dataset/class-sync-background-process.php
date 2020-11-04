@@ -68,7 +68,7 @@ class Sync_Background_Process extends \Wordlift_Plugin_WP_Background_Process {
 			$this->log->debug( "Starting..." );
 
 			$sync_state = new Sync_State( time(), 0, $this->sync_service->count(), time(), 'started' );
-			update_option( '_wl_dataset_sync', $sync_state );
+			update_option( '_wl_dataset_sync', $sync_state, false );
 
 			$next = $this->sync_service->next();
 			$this->push_to_queue( $next );
@@ -141,7 +141,7 @@ class Sync_Background_Process extends \Wordlift_Plugin_WP_Background_Process {
 		// Set the state to cancelled.
 		$state = self::get_state();
 		$state->set_state( 'cancelled' );
-		update_option( '_wl_dataset_sync', $state );
+		update_option( '_wl_dataset_sync', $state, false );
 
 		// Finally delete the transient.
 		delete_transient( "{$this->action}__cancel" );
@@ -171,13 +171,18 @@ class Sync_Background_Process extends \Wordlift_Plugin_WP_Background_Process {
 			$state = self::get_state()
 			             ->increment_index()
 			             ->set_state( $next_state );
-			update_option( '_wl_dataset_sync', $state );
+			update_option( '_wl_dataset_sync', $state, false );
+
+			$this->log->debug( "State updated to " . var_export( $state, true ) );
 
 			// Return the next ID or false if there aren't.
 			return isset( $next ) ? (int) $next : false;
 		} else {
 			// Retry.
 			// @@todo: put a limit to the number of retries.
+
+			$this->log->error( "Sync failed for post $post_id." );
+
 			return $post_id;
 		}
 

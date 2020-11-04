@@ -24,7 +24,7 @@ class Entity_Dct_Relation {
 	 */
 	public function __construct( $entity_service ) {
 		$this->entity_service = $entity_service;
-		add_filter( 'wl_entity_jsonld_array', array( $this, 'wl_entity_jsonld_array' ), 10, 2 );
+//		add_filter( 'wl_entity_jsonld_array', array( $this, 'wl_entity_jsonld_array' ), 10, 2 );
 	}
 
 	/**

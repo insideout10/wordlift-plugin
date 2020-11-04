@@ -99,6 +99,8 @@ class Default_Api_Service implements Api_Service {
 				'body'       => $body,
 			);
 
+		error_log( var_export( array( $request_url, $request_args ), true ) );
+
 		$response = wp_remote_request( $request_url, $request_args );
 
 		if ( defined( 'WL_DEBUG' ) && WL_DEBUG ) {

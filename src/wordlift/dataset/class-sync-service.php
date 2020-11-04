@@ -62,7 +62,12 @@ class Sync_Service {
 	}
 
 	public function sync_item_on_meta_change( $meta_id, $object_id, $meta_key, $_meta_value ) {
-		return $this->sync_item( $object_id );
+
+		if ( '_wl_synced_gmt' === $meta_key ) {
+			return;
+		}
+
+		$this->sync_item( $object_id );
 	}
 
 	public static function get_instance() {
@@ -96,21 +101,22 @@ class Sync_Service {
 	public function next() {
 		global $wpdb;
 
+		$state = $this->info();
+
 		// Limit the query to the allowed post types.
 		$post_type_in = implode( "','", array_map( 'esc_sql', \Wordlift_Entity_Service::valid_entity_post_types() ) );
 
 		// Get the next post ID.
 		return $wpdb->get_var( "
 			SELECT p.ID
-				FROM $wpdb->posts p
-				LEFT JOIN $wpdb->postmeta pm
-					ON pm.post_id = p.ID
-						AND pm.meta_key = '_wl_synced_gmt'				
-				WHERE p.post_status = 'publish'
-					AND p.post_type IN ( '$post_type_in' )
-					AND ( pm.meta_value IS NULL OR pm.meta_value < p.post_modified_gmt )
-				ORDER BY p.post_modified_gmt DESC
-				LIMIT 1
+			FROM $wpdb->posts p
+			         LEFT JOIN $wpdb->postmeta pm
+			                   ON pm.post_id = p.ID
+			                       AND pm.meta_key = '_wl_synced_gmt'
+			WHERE p.post_status = 'publish'
+			  AND p.post_type IN ('$post_type_in')
+			ORDER BY p.ID
+			LIMIT {$state->index},1
 			" );
 	}
 
@@ -119,14 +125,13 @@ class Sync_Service {
 		$post_type_in = implode( "','", array_map( 'esc_sql', \Wordlift_Entity_Service::valid_entity_post_types() ) );
 
 		return $wpdb->get_var( "
-			SELECT COUNT( 1 )
-				FROM $wpdb->posts p
-				LEFT JOIN $wpdb->postmeta pm
-					ON pm.post_id = p.ID
-						AND pm.meta_key = '_wl_synced_gmt'				
-				WHERE p.post_status = 'publish'
-					AND p.post_type IN ( '$post_type_in' )
-					AND ( pm.meta_value IS NULL OR pm.meta_value < p.post_modified_gmt )
+			SELECT COUNT(1)
+			FROM $wpdb->posts p
+			         LEFT JOIN $wpdb->postmeta pm
+			                   ON pm.post_id = p.ID
+			                       AND pm.meta_key = '_wl_synced_gmt'
+			WHERE p.post_status = 'publish'
+			  AND p.post_type IN ('$post_type_in')
 			" );
 	}
 
@@ -136,13 +141,16 @@ class Sync_Service {
 
 	public function sync_item( $post_id ) {
 
+		$this->log->info( "Synchronizing post $post_id..." );
+
 		// Get the JSON-LD for the specified post and its entity URI.
 		$jsonld_value = $this->jsonld_service->get( Jsonld_Service::TYPE_POST, $post_id );
 		$uri          = get_post_meta( $post_id, 'entity_url', true );
 		$jsonld       = wp_json_encode( $jsonld_value );
 
 		// Make a request to the remote endpoint.
-		$state_header_value = str_replace( wp_json_encode( $this->info() ), "\n", '' );
+		$state              = $this->info();
+		$state_header_value = str_replace( "\n", '', wp_json_encode( $state ) );
 		$response           = $this->api_service->request(
 			'POST', '/middleware/dataset?uri=' . rawurlencode( $uri ),
 			array(
@@ -151,9 +159,14 @@ class Sync_Service {
 			),
 			$jsonld );
 
+		$this->log->debug( "Response for $post_id received: " . ( $response->is_success() ? 'yes' : 'no' ) );
+
 		// Update the sync date in case of success, otherwise log an error.
 		if ( $response->is_success() ) {
-			update_post_meta( $post_id, '_wl_synced_gmt', current_time( 'mysql', 1 ) );
+
+			update_post_meta( $post_id, '_wl_synced_gmt', current_time( 'mysql', true ) );
+
+			$this->log->debug( "Post $post_id synchronized." );
 
 			return true;
 		} else {

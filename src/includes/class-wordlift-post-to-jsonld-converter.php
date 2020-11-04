@@ -94,7 +94,10 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		 */
 		try {
 			$default_timezone = date_default_timezone_get();
-			date_default_timezone_set( get_option( 'timezone_string' ) );
+			$timezone         = get_option( 'timezone_string' );
+			if ( ! empty( $timezone ) ) {
+				date_default_timezone_set( $timezone );
+			}
 			$jsonld['datePublished'] = get_post_time( 'Y-m-d\TH:i:sP', false, $post );
 			$jsonld['dateModified']  = get_post_modified_time( 'Y-m-d\TH:i:sP', false, $post );
 			date_default_timezone_set( $default_timezone );
