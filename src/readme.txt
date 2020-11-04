@@ -148,6 +148,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement [#1174](https://github.com/insideout10/wordlift-plugin/issues/1174): Filters for WordLift for WooCommerce.
 * Enhancement [#1155](https://github.com/insideout10/wordlift-plugin/issues/1155): Hook to clear data cache.
 
+* Fix [#1183](https://github.com/insideout10/wordlift-plugin/issues/1183): Faceted Search widget empty on Safari.
 * Fix [#1182](https://github.com/insideout10/wordlift-plugin/issues/1182): Term filter not working correctly for mappings.
 * Fix [#1181](https://github.com/insideout10/wordlift-plugin/issues/1181): By default, sort results by date descending in Faceted Search widget.
 * Fix [#1070](https://github.com/insideout10/wordlift-plugin/issues/1070): "&nbsp;" appears in the summary ... with some articles.
