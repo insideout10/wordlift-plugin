@@ -49,6 +49,3 @@ function wl_register_timeline_widget() {
 
 	register_widget( 'WordLift_Timeline_Widget' );
 }
-
-add_action( 'widgets_init', 'wl_register_timeline_widget' );
-add_filter( 'widget_text', 'do_shortcode' );

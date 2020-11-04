@@ -15,7 +15,7 @@
  * Plugin Name:       WordLift
  * Plugin URI:        https://wordlift.io
  * Description:       WordLift brings the power of AI to organize content, attract new readers and get their attention. To activate the plugin <a href="https://wordlift.io/">visit our website</a>.
- * Version:           3.27.5
+ * Version:           3.27.6
  * Author:            WordLift, Insideout10
  * Author URI:        https://wordlift.io
  * License:           GPL-2.0+
@@ -44,6 +44,7 @@ use Wordlift\Images_Licenses\Tasks\Remove_All_Images_Task;
 use Wordlift\Post\Post_Adapter;
 use Wordlift\Tasks\Task_Ajax_Adapter;
 use Wordlift\Tasks\Task_Ajax_Adapters_Registry;
+use Wordlift\Api_Data\Api_Data_Hooks;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -430,6 +431,34 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-wordlift.php';
  * @since    1.0.0
  */
 function run_wordlift() {
+	/**
+	 * Filter: wl_feature__enable__widgets.
+	 *
+	 * @param bool whether the widgets needed to be registered, defaults to true.
+	 *
+	 * @return bool
+	 * @since 3.27.6
+	 */
+	if ( apply_filters( 'wl_feature__enable__widgets', true ) ) {
+		add_action( 'widgets_init', 'wl_register_chord_widget' );
+		add_action( 'widgets_init', 'wl_register_geo_widget' );
+		add_action( 'widgets_init', 'wl_register_timeline_widget' );
+	}
+	add_filter( 'widget_text', 'do_shortcode' );
+
+
+	/**
+	 * Filter: wl_feature__enable__analysis
+	 * @param bool Whether to send api request to analysis or not
+	 * @return bool
+	 * @since 3.27.6
+	 */
+	if ( apply_filters( 'wl_feature__enable__analysis', true ) ) {
+		add_action( 'wp_ajax_wl_analyze', 'wl_ajax_analyze_action' );
+	}
+	else {
+		add_action( 'wp_ajax_wl_analyze', 'wl_ajax_analyze_disabled_action' );
+	}
 
 	/*
 	 * We introduce the WordLift autoloader, since we start using classes in namespaces, i.e. Wordlift\Http.
@@ -446,6 +475,9 @@ function run_wordlift() {
 
 	// Load the new Post Adapter.
 	new Post_Adapter();
+
+	// Load the API Data Hooks.
+	new Api_Data_Hooks();
 
 	add_action( 'plugins_loaded', function () use ( $plugin ) {
 		// Licenses Images.

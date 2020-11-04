@@ -64,6 +64,12 @@ function wl_build_entity_uri( $post_id ) {
 		return null;
 	}
 
+	// For installations not connected to the Cloud - i.e. add_filter( 'wl_features__enable__dataset', '__return_false')
+	// - we build the dataset URI base on the permalink.
+	if ( ! apply_filters( 'wl_features__enable__dataset', true ) ) {
+		return sprintf( '%s#%s', get_permalink( $post_id ), get_post_type( $post_id ) );
+	}
+
 	// Create an ID given the title.
 	$entity_slug = wl_sanitize_uri_path( $post->post_title );
 	// If the entity slug is empty, i.e. there's no title, use the post ID as path.

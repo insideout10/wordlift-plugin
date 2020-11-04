@@ -49,8 +49,17 @@ class Wordlift_Key_Validation_Service {
 
 		$this->configuration_service = $configuration_service;
 		add_action( 'admin_init', array( $this, 'wl_load_plugin' ) );
-		add_action( 'admin_notices', array( $this, 'wl_key_update_notice' ) );
-
+		/**
+		 * Filter: wl_feature__enable__notices.
+		 *
+		 * @param bool whether the notices needs to be enabled or not.
+		 *
+		 * @return bool
+		 * @since 3.27.6
+		 */
+		if ( apply_filters( 'wl_feature__enable__notices', true ) ) {
+			add_action( 'admin_notices', array( $this, 'wl_key_update_notice' ) );
+		}
 	}
 
 	/**

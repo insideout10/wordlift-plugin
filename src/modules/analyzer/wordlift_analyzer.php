@@ -3,6 +3,24 @@
 use Wordlift\Analysis\Response\Analysis_Response_Ops_Factory;
 
 /**
+ * This function returns empty array response from analysis,
+ * this is usually called when the analysis is disabled using
+ * `wl_feature__enable__analysis` hook.
+ * @since 3.27.6
+ */
+function wl_ajax_analyze_disabled_action() {
+	// adding the below header for debugging purpose.
+	if ( ! headers_sent() ) {
+		header( 'X-WordLift-Analysis: OFF' );
+	}
+	wp_send_json_success( array(
+		'entities'    => array(),
+		'annotations' => array(),
+		'topics'      => array()
+	) );
+}
+
+/**
  * Receive some content, run a remote analysis task and return the results. The content is read from the body
  * input (php://input).
  *
@@ -20,8 +38,6 @@ function wl_ajax_analyze_action() {
 	wp_send_json_success( wl_analyze_content( $data, 'application/json; charset=' . strtolower( get_bloginfo( 'charset' ) ) ) );
 
 }
-
-add_action( 'wp_ajax_wl_analyze', 'wl_ajax_analyze_action' );
 
 /**
  * Analyze the provided content. The analysis will make use of the method *wl_ajax_analyze_action*
@@ -41,8 +57,19 @@ add_action( 'wp_ajax_wl_analyze', 'wl_ajax_analyze_action' );
  */
 function wl_analyze_content( $data, $content_type ) {
 
-//	// Set the content type to the request content type or to text/plain by default.
-//	$content_type = isset( $_SERVER['CONTENT_TYPE'] ) ? $_SERVER['CONTENT_TYPE'] : 'text/plain';
+	$default_response = json_decode( '{ "entities": {}, "annotations": {}, "topics": {} }' );
+	$request_json    = json_decode( $data );
+
+	// If dataset is not enabled, return a locally prepared response without analysis API.
+	if ( ! apply_filters( 'wl_features__enable__dataset', true ) ) {
+
+		return Analysis_Response_Ops_Factory::get_instance()
+		                                    ->create( $default_response )
+		                                    ->make_entities_local()
+		                                    ->add_occurrences( $request_json->content )
+											->add_local_entities()
+		                                    ->get_json();
+	}
 
 	add_filter( 'wl_api_service_api_url_path', 'wl_use_analysis_on_api_wordlift_io' );
 	$json = Wordlift_Api_Service::get_instance()
@@ -51,12 +78,11 @@ function wl_analyze_content( $data, $content_type ) {
 
 	// If it's an error log it.
 	if ( is_wp_error( $json ) ) {
-		$request_body = json_decode( $data, true );
 
 		return Analysis_Response_Ops_Factory::get_instance()
-		                                    ->create( json_decode( '{ "entities": {}, "annotations": {}, "topics": {} }' ) )
+		                                    ->create( $default_response )
 		                                    ->make_entities_local()
-		                                    ->add_occurrences( $request_body['content'] )
+		                                    ->add_occurrences( $request_json->content )
 		                                    ->get_json();
 	}
 
@@ -70,7 +96,6 @@ function wl_analyze_content( $data, $content_type ) {
 	// Get the actual content sent to the analysis, so that we can pass it to the Analysis_Response_Ops to populate
 	// the occurrences for the local entities.
 	if ( 0 === strpos( $content_type, 'application/json' ) ) {
-		$request_json    = json_decode( $data );
 		$request_content = $request_json->content;
 	} else {
 		$request_content = $data;
