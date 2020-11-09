@@ -51,7 +51,22 @@ final class Post_Excerpt_Meta_Box_Adapter {
 	public function replace_post_excerpt_meta_box() {
 		global $wp_meta_boxes;
 		$post_type             = get_post_type();
+
+		/**
+		 * @since 3.27.6
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/1188
+		 */
+		if ( ! isset( $wp_meta_boxes[ $post_type ] ) ) {
+			return;
+		}
+
 		$core_meta_boxes       = $wp_meta_boxes[ $post_type ]["normal"]["core"];
+		
+		if ( ! isset( $core_meta_boxes[ self::POST_EXCERPT_META_BOX_KEY ] ) ) {
+			return;
+		}
+
 		$post_excerpt_meta_box = $core_meta_boxes[ self::POST_EXCERPT_META_BOX_KEY ];
 		$callback              = $post_excerpt_meta_box['callback'];
 		/**

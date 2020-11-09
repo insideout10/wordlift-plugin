@@ -24,7 +24,7 @@ class Api_Data_Hooks
     /**
      * Check for Meta Key change on Post Save
      */
-    add_action( 'updated_post_meta', array( $this, 'post_meta_request_delete_cache', 10, 4 ));
+    add_action( 'updated_post_meta', array( $this, 'post_meta_request_delete_cache'), 10, 4 );
   }
 
   public function post_save_request_delete_cache( $post_id )

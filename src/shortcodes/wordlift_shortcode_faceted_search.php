@@ -79,9 +79,15 @@ function wl_shortcode_faceted_search_origin( $request ) {
 
 	// If there are no entities we cannot render the widget.
 	if ( 0 === count( $entity_ids ) ) {
-		wp_die( 'No entities available' );
+		/**
+		 * If this function is not called from ajax
+		 * then this should not throw an error.
+		 * Note: Used in scripbox longtail project on json endpoint.
+		 */
+		if ( wp_doing_ajax() ) {
+			wp_die( 'No entities available' );
+		}
 
-		return;
 	}
 
 	$limit = ( isset( $_GET['limit'] ) ) ? (int) $_GET['limit'] : 4;  // WPCS: input var ok; CSRF ok.
