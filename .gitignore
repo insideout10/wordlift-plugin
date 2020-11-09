@@ -10,6 +10,9 @@ composer.phar
 composer.lock
 vendor/
 
+!src/composer.lock
+!src/vendor/
+
 node_modules/
 
 # folders belonging to the svn branch

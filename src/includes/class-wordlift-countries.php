@@ -524,6 +524,15 @@ class Wordlift_Countries {
 	 */
 	public static function get_country_name( $country_code ) {
 
+		/**
+		 * @since 3.27.6
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/1188
+		 */
+		if ( ! isset( self::$country_codes[ $country_code ] ) ) {
+			return '';
+		}
+
 		return self::$country_codes[ $country_code ];
 	}
 
