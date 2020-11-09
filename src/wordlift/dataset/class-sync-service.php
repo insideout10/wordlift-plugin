@@ -28,6 +28,13 @@ class Sync_Service {
 	private $sync_background_process;
 
 	/**
+	 * The number of posts processed in one call.
+	 *
+	 * @var int The batch size.
+	 */
+	private $batch_size;
+
+	/**
 	 * @var Sync_Service
 	 */
 	private static $instance;
@@ -44,6 +51,7 @@ class Sync_Service {
 
 		$this->api_service    = $api_service;
 		$this->jsonld_service = $jsonld_service;
+		$this->batch_size     = 10;
 
 		// You need to initialize this early, otherwise the Background Process isn't registered in AJAX calls.
 		$this->sync_background_process = new Sync_Background_Process( $this );;
@@ -94,9 +102,9 @@ class Sync_Service {
 	}
 
 	/**
-	 * Get the next post ID to synchronize or NULL if there are no posts to synchronize.
+	 * Get the next post IDs to synchronize.
 	 *
-	 * @return string|null The post ID or NULL if there are no posts to synchronize.
+	 * @return array An array of post IDs.
 	 */
 	public function next() {
 		global $wpdb;
@@ -107,16 +115,13 @@ class Sync_Service {
 		$post_type_in = implode( "','", array_map( 'esc_sql', \Wordlift_Entity_Service::valid_entity_post_types() ) );
 
 		// Get the next post ID.
-		return $wpdb->get_var( "
+		return $wpdb->get_col( "
 			SELECT p.ID
 			FROM $wpdb->posts p
-			         LEFT JOIN $wpdb->postmeta pm
-			                   ON pm.post_id = p.ID
-			                       AND pm.meta_key = '_wl_synced_gmt'
 			WHERE p.post_status = 'publish'
 			  AND p.post_type IN ('$post_type_in')
 			ORDER BY p.ID
-			LIMIT {$state->index},1
+			LIMIT {$state->index},{$this->batch_size}
 			" );
 	}
 
@@ -127,9 +132,6 @@ class Sync_Service {
 		return $wpdb->get_var( "
 			SELECT COUNT(1)
 			FROM $wpdb->posts p
-			         LEFT JOIN $wpdb->postmeta pm
-			                   ON pm.post_id = p.ID
-			                       AND pm.meta_key = '_wl_synced_gmt'
 			WHERE p.post_status = 'publish'
 			  AND p.post_type IN ('$post_type_in')
 			" );
@@ -180,6 +182,56 @@ class Sync_Service {
 
 	}
 
+	public function sync_items( $post_ids ) {
+
+		$this->log->debug( sprintf( 'Synchronizing posts %s...', implode( ', ', $post_ids ) ) );
+
+		$that         = $this;
+		$request_body = array_map( function ( $post_id ) use ( $that ) {
+			$uri              = get_post_meta( $post_id, 'entity_url', true );
+			$jsonld           = $that->jsonld_service->get( Jsonld_Service::TYPE_POST, $post_id );
+			$jsonld_as_string = wp_json_encode( $jsonld );
+
+			return array(
+				'uri'   => $uri,
+				'model' => $jsonld_as_string,
+			);
+		}, $post_ids );
+
+		// Make a request to the remote endpoint.
+		$state              = $this->info();
+		$state_header_value = str_replace( "\n", '', wp_json_encode( $state ) );
+		$response           = $this->api_service->request(
+			'POST', '/middleware/dataset/batch',
+			array(
+				'Content-Type'                     => 'application/json',
+				'X-Wordlift-Dataset-Sync-State-V1' => $state_header_value
+			),
+			wp_json_encode( $request_body ) );
+
+		$this->log->debug( "Response received: " . ( $response->is_success() ? 'yes' : 'no' ) );
+
+		// Update the sync date in case of success, otherwise log an error.
+		if ( $response->is_success() ) {
+
+			foreach ( $post_ids as $post_id ) {
+				update_post_meta( $post_id, '_wl_synced_gmt', current_time( 'mysql', true ) );
+			}
+
+			$this->log->debug( sprintf( 'Posts %s synchronized.', implode( ', ', $post_ids ) ) );
+
+			return true;
+		} else {
+			// @@todo: should we put a limit retry here?delete_item
+			$response_dump = var_export( $response, true );
+			$this->log->error(
+				sprintf( 'An error occurred while synchronizing the data for post IDs %s: %s', implode( ', ', $post_ids ), $response_dump ) );
+
+			return false;
+		}
+
+	}
+
 	/**
 	 * @param $post_id
 	 *
@@ -195,6 +247,11 @@ class Sync_Service {
 				'Content-Type'                     => 'application/ld+json',
 				'X-Wordlift-Dataset-Sync-State-V1' => $state_header_value
 			) );
+	}
+
+	public function get_batch_size() {
+
+		return $this->batch_size;
 	}
 
 }

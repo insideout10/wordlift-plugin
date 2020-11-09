@@ -1304,7 +1304,8 @@ class Wordlift {
 		$this->relation_rebuild_service   = new Wordlift_Relation_Rebuild_Service( $this->content_filter_service, $this->entity_service );
 		$this->sample_data_service        = new Wordlift_Sample_Data_Service( $this->entity_type_service, $this->configuration_service, $this->user_service );
 		$this->sample_data_ajax_adapter   = new Wordlift_Sample_Data_Ajax_Adapter( $this->sample_data_service );
-		$this->reference_rebuild_service  = new Wordlift_Reference_Rebuild_Service( $this->linked_data_service, $this->entity_service, $this->relation_service );
+		$this->reference_rebuild_service  = new Wordlift_Reference_Rebuild_Service( $this->entity_service );
+		
 		/**
 		 * Filter: wl_feature__enable__blocks.
 		 *
@@ -1314,7 +1315,7 @@ class Wordlift {
 		 * @since 3.27.6
 		 */
 		wp_register_script( 'wl_enabled_blocks', false );
-		$enabled_blocks = array('wordlift/products-navigator');
+		$enabled_blocks = array( 'wordlift/products-navigator' );
 
 		if ( apply_filters( 'wl_feature__enable__blocks', true ) ) {
 			// Initialize the short-codes.
@@ -1328,14 +1329,14 @@ class Wordlift {
 
 			// To intimate JS
 			$enabled_blocks = $enabled_blocks + array(
-				'wordlift/navigator',
-				'wordlift/chord',
-				'wordlift/geomap',
-				'wordlift/timeline',
-				'wordlift/cloud',
-				'wordlift/vocabulary',
-				'wordlift/faceted-search'
-			);
+					'wordlift/navigator',
+					'wordlift/chord',
+					'wordlift/geomap',
+					'wordlift/timeline',
+					'wordlift/cloud',
+					'wordlift/vocabulary',
+					'wordlift/faceted-search'
+				);
 		}
 
 		new Wordlift_Products_Navigator_Shortcode();
