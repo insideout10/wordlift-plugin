@@ -84,7 +84,7 @@ function wl_shortcode_faceted_search_origin( $request ) {
 		 * then this should not throw an error.
 		 * Note: Used in scripbox longtail project on json endpoint.
 		 */
-		if ( wp_doing_ajax() ) {
+		if ( apply_filters( 'wp_doing_ajax', defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
 			wp_die( 'No entities available' );
 		}
 
