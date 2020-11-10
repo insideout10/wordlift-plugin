@@ -112,7 +112,9 @@ class Wordlift_Admin_Setup {
 
 		/**
 		 * Filter: wl_feature__enable__notices.
+		 *
 		 * @param bool whether the notices needs to be enabled or not.
+		 *
 		 * @return bool
 		 * @since 3.27.6
 		 */
@@ -206,8 +208,18 @@ class Wordlift_Admin_Setup {
 	 * @since    3.9.0
 	 */
 	public function admin_menu() {
-		// @todo: find another way to do this, since this is adding an empty space in WP's dashboard menu.
-		add_dashboard_page( '', '', 'manage_options', 'wl-setup', '' );
+		/**
+		 * Filter: wl_feature__enable__screens.
+		 *
+		 * @param bool whether the screens needed to be registered, defaults to true.
+		 *
+		 * @return bool
+		 * @since 3.27.6
+		 */
+		if ( apply_filters( 'wl_feature__enable__screens', true ) ) {
+			// @todo: find another way to do this, since this is adding an empty space in WP's dashboard menu.
+			add_dashboard_page( '', '', 'manage_options', 'wl-setup', '' );
+		}
 	}
 
 	/**

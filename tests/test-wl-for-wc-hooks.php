@@ -115,7 +115,6 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 		$wordlift = new Wordlift();
 		$wordlift->run();
 		do_action( 'admin_menu' );
-
 		$this->assertCount( 0, $submenu );
 	}
 
