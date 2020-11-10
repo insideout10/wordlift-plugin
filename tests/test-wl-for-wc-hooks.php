@@ -211,7 +211,7 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 	public function test_filter_not_enabled_should_return_dataset_uri() {
 		$post_id = $this->factory()->post->create();
 		$uri     = Wordlift_Entity_Service::get_instance()->get_uri( $post_id );
-		$this->assertNull( $uri );
+		$this->assertNotNull($uri);
 	}
 
 	public function test_when_filter_enabled_should_return_in_the_correct_format() {
