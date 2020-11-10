@@ -22,6 +22,9 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 	}
 
 	public function test_blocks_enabled_correctly_without_filter() {
+		if  ( !function_exists('register_block_type') ) {
+			$this->markTestSkipped("This test requires register_block_type function to be present");
+		}
 		/**
 		 * Removing this action because register_block_type triggers doing_it_wrong which causes phpunit error.
 		 */
