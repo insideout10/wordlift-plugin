@@ -45,6 +45,10 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 		 */
 		remove_all_actions( 'doing_it_wrong_run' );
 
+		if  ( !class_exists('WP_Block_Type_Registry') ) {
+			$this->markTestSkipped("This test requires WP_Block_Type_Registry class to be present");
+		}
+
 		// remove all registered blocks
 		$registered_blocks = WP_Block_Type_Registry::get_instance()->get_all_registered();
 		foreach ( $registered_blocks as $block ) {
@@ -154,6 +158,11 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 	}
 
 	public function test_when_filter_enabled_show_in_menu_should_be_false() {
+
+		if  ( !function_exists('unregister_post_type') ) {
+			$this->markTestSkipped("This test requires unregister_post_type function to be present");
+		}
+
 		unregister_post_type( 'entity' );
 		add_filter( 'wl_feature__enable__vocabulary', '__return_false' );
 		Wordlift_Entity_Post_Type_Service::get_instance()->register();
