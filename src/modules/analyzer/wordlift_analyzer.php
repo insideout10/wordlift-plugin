@@ -58,7 +58,7 @@ function wl_ajax_analyze_action() {
 function wl_analyze_content( $data, $content_type ) {
 
 	$default_response = json_decode( '{ "entities": {}, "annotations": {}, "topics": {} }' );
-	$request_json    = json_decode( $data );
+	$request_json    = json_decode( $data, true );
 
 	// If dataset is not enabled, return a locally prepared response without analysis API.
 	if ( ! apply_filters( 'wl_features__enable__dataset', true ) ) {
@@ -66,7 +66,7 @@ function wl_analyze_content( $data, $content_type ) {
 		return Analysis_Response_Ops_Factory::get_instance()
 		                                    ->create( $default_response )
 		                                    ->make_entities_local()
-		                                    ->add_occurrences( $request_json->content )
+		                                    ->add_occurrences( $request_json['content'] )
 											->add_local_entities()
 		                                    ->get_json();
 	}
@@ -82,7 +82,7 @@ function wl_analyze_content( $data, $content_type ) {
 		return Analysis_Response_Ops_Factory::get_instance()
 		                                    ->create( $default_response )
 		                                    ->make_entities_local()
-		                                    ->add_occurrences( $request_json->content )
+		                                    ->add_occurrences( $request_json['content'] )
 		                                    ->get_json();
 	}
 
