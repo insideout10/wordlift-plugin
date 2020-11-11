@@ -134,6 +134,11 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 		 * @var $wp_hook WP_Hook
 		 */
 		$wp_hook = $wp_filter['admin_notices'];
+
+		if  ( gettype($wp_hook) !== 'object' ) {
+			$this->markTestSkipped('$wp_hook is not an object so skipping test');
+		}
+
 		$this->assertNotEquals( 0, count( $wp_hook->callbacks ) );
 	}
 
@@ -180,6 +185,11 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 		$wordlift->run();
 		$this->assertArrayHasKey( 'do_meta_boxes', $wp_filter );
 		$hook = $wp_filter['do_meta_boxes'];
+
+		if  ( gettype($hook) !== 'object' ) {
+			$this->markTestSkipped('$hook is not an object so skipping test');
+		}
+
 		// Currently we only render post excerpt on this hook.
 		$this->assertEquals( 1, count( $hook->callbacks ) );
 	}
@@ -198,6 +208,11 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 		global $wp_filter;
 		// since the filter is enabled, we should be able to do analysis.
 		$hook = $wp_filter['wp_ajax_wl_analyze'];
+
+		if  ( gettype($hook) !== 'object' ) {
+			$this->markTestSkipped('$hook is not an object so skipping test');
+		}
+
 		$this->assertCount( 1, $hook->callbacks );
 		$callback      = array_pop( $hook->callbacks );
 		$callback_data = $callback['wl_ajax_analyze_action'];
@@ -211,6 +226,11 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 		run_wordlift();
 		// since the filter is enabled, we should be able to do analysis.
 		$hook = $wp_filter['wp_ajax_wl_analyze'];
+
+		if  ( gettype($hook) !== 'object' ) {
+			$this->markTestSkipped('$hook is not an object so skipping test');
+		}
+
 		$this->assertCount( 1, $hook->callbacks );
 		$callback      = array_pop( $hook->callbacks );
 		$callback_data = $callback['wl_ajax_analyze_disabled_action'];
