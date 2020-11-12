@@ -75,9 +75,18 @@ class Wordlift_Admin_Entity_Type_Settings {
 			if ( isset( $_POST['action'] ) && ( 'wl_edit_entity_type_term' === $_POST['action'] ) ) {
 				$this->handle_form_submission();
 			}
-
-			// Register admin notices handler.
-			add_action( 'admin_notices', array( $this, 'admin_notice' ) );
+			/**
+			 * Filter: wl_feature__enable__notices.
+			 *
+			 * @param bool whether the notices needs to be enabled or not.
+			 *
+			 * @return bool
+			 * @since 3.27.6
+			 */
+			if ( apply_filters( 'wl_feature__enable__notices', true ) ) {
+				// Register admin notices handler.
+				add_action( 'admin_notices', array( $this, 'admin_notice' ) );
+			}
 
 		}
 
@@ -105,9 +114,9 @@ class Wordlift_Admin_Entity_Type_Settings {
 	function admin_notice() {
 		if ( isset( $_GET['message'] ) && ( '1' === $_GET['message'] ) ) {
 			?>
-			<div class="notice notice-success is-dismissible">
-				<p><?php esc_html_e( 'Settings saved', 'wordlift' ) ?></p>
-			</div>
+            <div class="notice notice-success is-dismissible">
+                <p><?php esc_html_e( 'Settings saved', 'wordlift' ) ?></p>
+            </div>
 			<?php
 		}
 	}
@@ -188,11 +197,11 @@ class Wordlift_Admin_Entity_Type_Settings {
 	/**
 	 * Store the entity type term settings in the DB
 	 *
-	 * @since 3.11.0
+	 * @param integer $term_id The ID of the entity type term
+	 * @param string $title The override for the terms title.
+	 * @param string $description The override for the terms description.
 	 *
-	 * @param    integer $term_id     The ID of the entity type term
-	 * @param    string  $title       The override for the terms title.
-	 * @param    string  $description The override for the terms description.
+	 * @since 3.11.0
 	 *
 	 */
 	function set_setting( $term_id, $title, $description ) {
@@ -209,9 +218,7 @@ class Wordlift_Admin_Entity_Type_Settings {
 	/**
 	 * Retrieve the entity type term settings from the DB
 	 *
-	 * @since 3.11.0
-	 *
-	 * @param    integer $term_id The ID of the entity type term
+	 * @param integer $term_id The ID of the entity type term
 	 *
 	 * @return    null|array {
 	 *                null is returned when there are no settings otherwise
@@ -220,6 +227,8 @@ class Wordlift_Admin_Entity_Type_Settings {
 	 * @type    string    title    The overriding title for the term
 	 * @type    string    description    The overriding description for the term
 	 *            }
+	 * @since 3.11.0
+	 *
 	 */
 	function get_setting( $term_id ) {
 

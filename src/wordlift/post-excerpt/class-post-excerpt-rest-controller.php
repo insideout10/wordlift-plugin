@@ -124,7 +124,7 @@ class Post_Excerpt_Rest_Controller {
 		$endpoint     = add_query_arg( $configuration, self::WORDLIFT_POST_EXCERPT_ENDPOINT );
 		$wordlift_key = Wordlift_Configuration_Service::get_instance()->get_key();
 		$user_agent   = User_Agent::get_user_agent();
-		$api_service  = new Default_Api_Service( 'https://api.wordlift.io', 60, $user_agent, $wordlift_key );
+		$api_service  = new Default_Api_Service( apply_filters( 'wl_api_base_url', 'https://api.wordlift.io' ), 60, $user_agent, $wordlift_key );
 		$response     = $api_service->request(
 			'POST',
 			$endpoint, array( 'Content-Type' => 'text/plain' ),

@@ -523,5 +523,7 @@ const blocks = {
  * Register all blocks (widgets)
  */
 for (let block in blocks) {
-  registerBlockType(block, blocks[block]);
+  if (window.wlEnabledBlocks && window.wlEnabledBlocks.includes(block)) {
+    registerBlockType(block, blocks[block]);
+  }
 }

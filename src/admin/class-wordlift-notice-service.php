@@ -67,10 +67,18 @@ class Wordlift_Notice_Service {
 	 * @since 3.2.0
 	 */
 	public function __construct() {
-
-		// Hook to be called when to display notices.
-		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
-
+		/**
+		 * Filter: wl_feature__enable__notices.
+		 *
+		 * @param bool whether the notices needs to be enabled or not.
+		 *
+		 * @return bool
+		 * @since 3.27.6
+		 */
+		if ( apply_filters( 'wl_feature__enable__notices', true ) ) {
+			// Hook to be called when to display notices.
+			add_action( 'admin_notices', array( $this, 'admin_notices' ) );
+		}
 		self::$instance = $this;
 
 	}
@@ -78,8 +86,8 @@ class Wordlift_Notice_Service {
 	/**
 	 * Get the singleton instance of the Notice service.
 	 *
-	 * @since 3.2.0
 	 * @return \Wordlift_Notice_Service The singleton instance of the Notice service.
+	 * @since 3.2.0
 	 */
 	public static function get_instance() {
 
@@ -89,10 +97,11 @@ class Wordlift_Notice_Service {
 	/**
 	 * Add a notice.
 	 *
-	 * @since 3.2.0
-	 *
 	 * @param string $class The css class.
 	 * @param string $message The message.
+	 *
+	 * @since 3.2.0
+	 *
 	 */
 	public function add( $class, $message ) {
 
@@ -103,9 +112,10 @@ class Wordlift_Notice_Service {
 	/**
 	 * Add an update notice (message with a white background and a green left border).
 	 *
+	 * @param string $message The message to display.
+	 *
 	 * @since 3.2.0
 	 *
-	 * @param string $message The message to display.
 	 */
 	public function add_update( $message ) {
 
@@ -116,9 +126,10 @@ class Wordlift_Notice_Service {
 	/**
 	 * Add an update nag notice (message with a white background and a yellow left border).
 	 *
+	 * @param string $message The message to display.
+	 *
 	 * @since 3.2.0
 	 *
-	 * @param string $message The message to display.
 	 */
 	public function add_update_nag( $message ) {
 
@@ -129,9 +140,10 @@ class Wordlift_Notice_Service {
 	/**
 	 * Add an error notice (message with a white background and a red left border).
 	 *
+	 * @param string $message The message to display.
+	 *
 	 * @since 3.2.0
 	 *
-	 * @param string $message The message to display.
 	 */
 	public function add_error( $message ) {
 
@@ -142,9 +154,10 @@ class Wordlift_Notice_Service {
 	/**
 	 * Add a suggestion notice (message with a white background and a WordLift brand colored left border).
 	 *
+	 * @param string $message The message to display.
+	 *
 	 * @since 3.3.0
 	 *
-	 * @param string $message The message to display.
 	 */
 	public function add_suggestion( $message ) {
 
@@ -168,17 +181,18 @@ class Wordlift_Notice_Service {
 	/**
 	 * Transform message depending on message type. Return a string
 	 *
+	 * @param string $message The message.
+	 *
 	 * @since 3.3.0
 	 *
-	 * @param string $message The message.
 	 */
 	private function transform( $message ) {
 
-		switch (  gettype( $message ) ) {
+		switch ( gettype( $message ) ) {
 			case 'array':
 				return implode( $message, '<br />' );
 			default:
-       			return $message;
+				return $message;
 		}
 
 	}

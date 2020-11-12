@@ -79,13 +79,29 @@ function wl_shortcode_faceted_search_origin( $request ) {
 
 	// If there are no entities we cannot render the widget.
 	if ( 0 === count( $entity_ids ) ) {
-		wp_die( 'No entities available' );
+		/**
+		 * If this function is not called from ajax
+		 * then this should not throw an error.
+		 * Note: Used in scripbox longtail project on json endpoint.
+		 */
+		if ( apply_filters( 'wp_doing_ajax', defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
+			wp_die( 'No entities available' );
+		}
 
-		return;
 	}
 
 	$limit = ( isset( $_GET['limit'] ) ) ? (int) $_GET['limit'] : 4;  // WPCS: input var ok; CSRF ok.
-	$amp = ( isset( $_GET['amp'] ) ) ? true : false;
+	$amp   = ( isset( $_GET['amp'] ) ) ? true : false;
+
+
+	/**
+	 * see https://github.com/insideout10/wordlift-plugin/issues/1181
+	 * The ordering should be descending by date on default.
+	 */
+	$order_by = 'DESC';
+	if ( isset( $_GET['sort'] ) && is_string( $_GET['sort'] ) ) {
+		$order_by = (string) $_GET['sort'];
+	}
 
 	$referencing_posts = Wordlift_Relation_Service::get_instance()->get_article_subjects(
 		$entity_ids,
@@ -93,7 +109,9 @@ function wl_shortcode_faceted_search_origin( $request ) {
 		null,
 		'publish',
 		array( $current_post_id ),
-		$limit
+		$limit,
+		null,
+		$order_by
 	);
 
 	$referencing_post_ids = array_map( function ( $p ) {
@@ -205,7 +223,7 @@ function wl_shortcode_faceted_search_origin( $request ) {
 	}
 
 	return array(
-		'posts'    => $amp ? array(array('values' => $post_results)) : $post_results,
+		'posts'    => $amp ? array( array( 'values' => $post_results ) ) : $post_results,
 		'entities' => $entity_results
 	);
 

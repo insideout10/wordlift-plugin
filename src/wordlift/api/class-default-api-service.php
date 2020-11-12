@@ -7,6 +7,10 @@
 namespace Wordlift\Api;
 
 class Default_Api_Service implements Api_Service {
+	/**
+	 * @var Default_Api_Service
+	 */
+	private static $instance;
 
 	/**
 	 * @var string
@@ -32,6 +36,11 @@ class Default_Api_Service implements Api_Service {
 	private $base_url;
 
 	/**
+	 * @var \Wordlift_Log_Service
+	 */
+	private $log;
+
+	/**
 	 * Default_Api_Service constructor.
 	 *
 	 * @param string $base_url
@@ -40,6 +49,8 @@ class Default_Api_Service implements Api_Service {
 	 * @param string $wordlift_key
 	 */
 	public function __construct( $base_url, $timeout, $user_agent, $wordlift_key ) {
+
+		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
 
 		$this->base_url     = $base_url;
 		$this->timeout      = $timeout;
@@ -52,6 +63,11 @@ class Default_Api_Service implements Api_Service {
 			'Expect'        => '',
 		);
 
+		self::$instance = $this;
+	}
+
+	public static function get_instance() {
+		return self::$instance;
 	}
 
 	public function request( $method, $url, $headers = array(), $body = null, $timeout = null, $user_agent = null, $args = array() ) {
@@ -83,7 +99,17 @@ class Default_Api_Service implements Api_Service {
 				'body'       => $body,
 			);
 
-		return new Response( wp_remote_request( $request_url, $request_args ) );
+		$response = wp_remote_request( $request_url, $request_args );
+
+		if ( defined( 'WL_DEBUG' ) && WL_DEBUG ) {
+			$this->log->trace(
+				"=== REQUEST  ===========================\n"
+				. var_export( $request_args, true )
+				. "=== RESPONSE ===========================\n"
+				. var_export( $response, true ) );
+		}
+
+		return new Response( $response );
 	}
 
 	public function get( $url, $headers = array(), $body = null, $timeout = null, $user_agent = null, $args = array() ) {

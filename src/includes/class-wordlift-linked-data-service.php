@@ -77,12 +77,13 @@ class Wordlift_Linked_Data_Service {
 	/**
 	 * Create a {@link Wordlift_Linked_Data_Service} instance.
 	 *
+	 * @param \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_Entity_Type_Service $entity_type_service The {@link Wordlift_Entity_Type_Service} instance.
+	 * @param \Wordlift_Schema_Service $schema_service The {@link Wordlift_Schema_Service} instance.
+	 * @param \Wordlift_Sparql_Service $sparql_service The {@link Wordlift_Sparql_Service} instance.
+	 *
 	 * @since 3.15.0
 	 *
-	 * @param \Wordlift_Entity_Service      $entity_service      The {@link Wordlift_Entity_Service} instance.
-	 * @param \Wordlift_Entity_Type_Service $entity_type_service The {@link Wordlift_Entity_Type_Service} instance.
-	 * @param \Wordlift_Schema_Service      $schema_service      The {@link Wordlift_Schema_Service} instance.
-	 * @param \Wordlift_Sparql_Service      $sparql_service      The {@link Wordlift_Sparql_Service} instance.
 	 */
 	public function __construct( $entity_service, $entity_type_service, $schema_service, $sparql_service ) {
 
@@ -93,6 +94,14 @@ class Wordlift_Linked_Data_Service {
 		$this->schema_service      = $schema_service;
 		$this->sparql_service      = $sparql_service;
 
+		/*
+		 * Allow callers to call the `push` and `remove` methods using WordPress' hooks.
+		 *
+		 * @since 3.28.0
+		 */
+		add_action( 'wl_legacy_linked_data__push', array( $this, 'push' ) );
+		add_action( 'wl_legacy_linked_data__remove', array( $this, 'remove' ) );
+
 		self::$instance = $this;
 
 	}
@@ -100,9 +109,9 @@ class Wordlift_Linked_Data_Service {
 	/**
 	 * Get the singleton instance of {@link Wordlift_Linked_Data_Service}.
 	 *
+	 * @return Wordlift_Linked_Data_Service The singleton instance of <a href='psi_element://Wordlift_Linked_Data_Service'>Wordlift_Linked_Data_Service</a>.
 	 * @since 3.15.0
 	 *
-	 * @return Wordlift_Linked_Data_Service The singleton instance of <a href='psi_element://Wordlift_Linked_Data_Service'>Wordlift_Linked_Data_Service</a>.
 	 */
 	public static function get_instance() {
 
@@ -117,9 +126,10 @@ class Wordlift_Linked_Data_Service {
 	 * If the {@link WP_Post} is an entity and it's not of the `Article` type,
 	 * then it is pushed to the remote Linked Data store.
 	 *
+	 * @param int $post_id The {@link WP_Post}'s id.
+	 *
 	 * @since 3.15.0
 	 *
-	 * @param int $post_id The {@link WP_Post}'s id.
 	 */
 	public function push( $post_id ) {
 
@@ -146,9 +156,10 @@ class Wordlift_Linked_Data_Service {
 	/**
 	 * Push an entity to the Linked Data store.
 	 *
+	 * @param int $post_id The {@link WP_Post}'s id.
+	 *
 	 * @since 3.15.0
 	 *
-	 * @param int $post_id The {@link WP_Post}'s id.
 	 */
 	private function do_push( $post_id ) {
 		$this->log->debug( "Doing post $post_id push..." );
@@ -187,11 +198,11 @@ class Wordlift_Linked_Data_Service {
 	/**
 	 * Check if an entity's {@link WP_Post} has a valid URI.
 	 *
-	 * @since 3.15.0
-	 *
 	 * @param int $post_id The entity's {@link WP_Post}'s id.
 	 *
 	 * @return bool True if the URI is valid otherwise false.
+	 * @since 3.15.0
+	 *
 	 */
 	private function has_valid_uri( $post_id ) {
 
@@ -215,9 +226,10 @@ class Wordlift_Linked_Data_Service {
 	/**
 	 * Remove the specified {@link WP_Post} from the Linked Data.
 	 *
+	 * @param int $post_id The {@link WP_Post}'s id.
+	 *
 	 * @since 3.18.0
 	 *
-	 * @param int $post_id The {@link WP_Post}'s id.
 	 */
 	public function remove( $post_id ) {
 		$delete_query = '';
@@ -238,9 +250,10 @@ class Wordlift_Linked_Data_Service {
 	/**
 	 * Insert the specific {@link WP_Post} to Linked Data store.
 	 *
+	 * @param int $post_id The {@link WP_Post}'s id.
+	 *
 	 * @since 3.18.0
 	 *
-	 * @param int $post_id The {@link WP_Post}'s id.
 	 */
 	private function insert( $post_id ) {
 		// Get the insert statements.
@@ -260,11 +273,11 @@ class Wordlift_Linked_Data_Service {
 	/**
 	 * Get the delete statements.
 	 *
-	 * @since 3.18.0
-	 *
 	 * @param int $post_id The {@link WP_Post}'s id.
 	 *
 	 * @return array An array of delete statements.
+	 * @since 3.18.0
+	 *
 	 */
 	private function get_delete_triples( $post_id ) {
 		$delete_triples = array();
@@ -281,10 +294,11 @@ class Wordlift_Linked_Data_Service {
 		/**
 		 * Filter: 'wl_delete_triples' - Allow third parties to hook and add additional delete triples.
 		 *
+		 * @param array $delete_triples Delete triples.
+		 * @param int $post_id The current post ID.
+		 *
 		 * @since 3.18.0
 		 *
-		 * @param array $delete_triples Delete triples.
-		 * @param int   $post_id        The current post ID.
 		 */
 		return apply_filters( 'wl_delete_triples', array_unique( $delete_triples ), $post_id );
 	}
@@ -292,11 +306,11 @@ class Wordlift_Linked_Data_Service {
 	/**
 	 * Get the SPARQL insert triples ( ?s ?p ?o ) for the specified {@link WP_Post}.
 	 *
-	 * @since 3.15.0
-	 *
 	 * @param int $post_id The {@link WP_Post}'s id.
 	 *
 	 * @return array An array of insert triples.
+	 * @since 3.15.0
+	 *
 	 */
 	private function get_insert_triples( $post_id ) {
 
@@ -324,12 +338,13 @@ class Wordlift_Linked_Data_Service {
 		 * The `wl_insert_triples` filter allows 3rd parties to extend
 		 * the list of triples for SPARQL INSERT statements.
 		 *
-		 * @since 3.17.0
+		 * @param array $linked_data A {@link Wordlift_Sparql_Tuple_Rendition} instances.
+		 * @param \Wordlift_Entity_Type_Service $entity_type_service The {@link Wordlift_Entity_Type_Service} instance.
+		 * @param int $post_id The {@link WP_Post}'s id.
+		 *
 		 * @since 3.18.0 The hook has been renamed from `wl_insert_tuples_properties` to `wl_insert_triples`.
 		 *
-		 * @param array                         $linked_data         A {@link Wordlift_Sparql_Tuple_Rendition} instances.
-		 * @param \Wordlift_Entity_Type_Service $entity_type_service The {@link Wordlift_Entity_Type_Service} instance.
-		 * @param int                           $post_id             The {@link WP_Post}'s id.
+		 * @since 3.17.0
 		 */
 		return apply_filters( 'wl_insert_triples', $triples, $this->entity_service, $post_id );
 	}

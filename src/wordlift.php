@@ -15,7 +15,7 @@
  * Plugin Name:       WordLift
  * Plugin URI:        https://wordlift.io
  * Description:       WordLift brings the power of AI to organize content, attract new readers and get their attention. To activate the plugin <a href="https://wordlift.io/">visit our website</a>.
- * Version:           3.27.5
+ * Version:           3.27.6
  * Author:            WordLift, Insideout10
  * Author URI:        https://wordlift.io
  * License:           GPL-2.0+
@@ -44,11 +44,19 @@ use Wordlift\Images_Licenses\Tasks\Remove_All_Images_Task;
 use Wordlift\Post\Post_Adapter;
 use Wordlift\Tasks\Task_Ajax_Adapter;
 use Wordlift\Tasks\Task_Ajax_Adapters_Registry;
+use Wordlift\Api_Data\Api_Data_Hooks;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+
+/*
+ * Add Composer Autoload with Mozart support.
+ *
+ * @since 3.28.0
+ */
+require __DIR__ . '/vendor/autoload.php';
 
 // Include WordLift constants.
 require_once( 'wordlift_constants.php' );
@@ -423,6 +431,34 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-wordlift.php';
  * @since    1.0.0
  */
 function run_wordlift() {
+	/**
+	 * Filter: wl_feature__enable__widgets.
+	 *
+	 * @param bool whether the widgets needed to be registered, defaults to true.
+	 *
+	 * @return bool
+	 * @since 3.27.6
+	 */
+	if ( apply_filters( 'wl_feature__enable__widgets', true ) ) {
+		add_action( 'widgets_init', 'wl_register_chord_widget' );
+		add_action( 'widgets_init', 'wl_register_geo_widget' );
+		add_action( 'widgets_init', 'wl_register_timeline_widget' );
+	}
+	add_filter( 'widget_text', 'do_shortcode' );
+
+
+	/**
+	 * Filter: wl_feature__enable__analysis
+	 * @param bool Whether to send api request to analysis or not
+	 * @return bool
+	 * @since 3.27.6
+	 */
+	if ( apply_filters( 'wl_feature__enable__analysis', true ) ) {
+		add_action( 'wp_ajax_wl_analyze', 'wl_ajax_analyze_action' );
+	}
+	else {
+		add_action( 'wp_ajax_wl_analyze', 'wl_ajax_analyze_disabled_action' );
+	}
 
 	/*
 	 * We introduce the WordLift autoloader, since we start using classes in namespaces, i.e. Wordlift\Http.
@@ -440,39 +476,47 @@ function run_wordlift() {
 	// Load the new Post Adapter.
 	new Post_Adapter();
 
-	// Licenses Images.
-	$user_agent                   = User_Agent::get_user_agent();
-	$wordlift_key                 = Wordlift_Configuration_Service::get_instance()->get_key();
-	$api_service                  = new Default_Api_Service( 'https://api.wordlift.io', 60, $user_agent, $wordlift_key );
-	$image_license_factory        = new Image_License_Factory();
-	$image_license_service        = new Image_License_Service( $api_service, $image_license_factory );
-	$image_license_cache          = new Ttl_Cache( 'image-license', 86400 * 30 ); // 30 days.
-	$cached_image_license_service = new Cached_Image_License_Service( $image_license_service, $image_license_cache );
+	// Load the API Data Hooks.
+	new Api_Data_Hooks();
 
-	$image_license_scheduler       = new Image_License_Scheduler( $image_license_service, $image_license_cache );
-	$image_license_cleanup_service = new Image_License_Cleanup_Service();
+	add_action( 'plugins_loaded', function () use ( $plugin ) {
+		// Licenses Images.
+		$user_agent                   = User_Agent::get_user_agent();
+		$wordlift_key                 = Wordlift_Configuration_Service::get_instance()->get_key();
+		$api_service                  = new Default_Api_Service( apply_filters( 'wl_api_base_url', 'https://api.wordlift.io' ), 60, $user_agent, $wordlift_key );
+		$image_license_factory        = new Image_License_Factory();
+		$image_license_service        = new Image_License_Service( $api_service, $image_license_factory );
+		$image_license_cache          = new Ttl_Cache( 'image-license', 86400 * 30 ); // 30 days.
+		$cached_image_license_service = new Cached_Image_License_Service( $image_license_service, $image_license_cache );
 
-	// Get the cached data. If we have cached data, we load the notifier.
-	$image_license_data = $image_license_cache->get( Cached_Image_License_Service::GET_NON_PUBLIC_DOMAIN_IMAGES );
-	if ( null !== $image_license_data ) {
-		$image_license_page = new Image_License_Page( $image_license_data, Wordlift::get_instance()->get_version() );
-		new Image_License_Notifier( $image_license_data, $image_license_page );
-	}
+		$image_license_scheduler       = new Image_License_Scheduler( $image_license_service, $image_license_cache );
+		$image_license_cleanup_service = new Image_License_Cleanup_Service();
 
-	$remove_all_images_task         = new Remove_All_Images_Task( $cached_image_license_service );
-	$remove_all_images_task_adapter = new Task_Ajax_Adapter( $remove_all_images_task );
+		// Get the cached data. If we have cached data, we load the notifier.
+		$image_license_data = $image_license_cache->get( Cached_Image_License_Service::GET_NON_PUBLIC_DOMAIN_IMAGES );
+		if ( null !== $image_license_data ) {
+			$image_license_page = new Image_License_Page( $image_license_data, Wordlift::get_instance()->get_version() );
+			new Image_License_Notifier( $image_license_data, $image_license_page );
+		}
 
-	$reload_data_task         = new Reload_Data_Task();
-	$reload_data_task_adapter = new Task_Ajax_Adapter( $reload_data_task );
+		$remove_all_images_task         = new Remove_All_Images_Task( $cached_image_license_service );
+		$remove_all_images_task_adapter = new Task_Ajax_Adapter( $remove_all_images_task );
 
-	$add_license_caption_or_remove_task         = new Add_License_Caption_Or_Remove_Task( $cached_image_license_service );
-	$add_license_caption_or_remove_task_adapter = new Task_Ajax_Adapter( $add_license_caption_or_remove_task );
+		$reload_data_task         = new Reload_Data_Task();
+		$reload_data_task_adapter = new Task_Ajax_Adapter( $reload_data_task );
 
-	$remove_all_images_task_page             = new Remove_All_Images_Page( new Task_Ajax_Adapters_Registry( $remove_all_images_task_adapter ), $plugin->get_version() );
-	$reload_data_task_page                   = new Reload_Data_Page( new Task_Ajax_Adapters_Registry( $reload_data_task_adapter ), $plugin->get_version() );
-	$add_license_caption_or_remove_task_page = new Add_License_Caption_Or_Remove_Page( new Task_Ajax_Adapters_Registry( $add_license_caption_or_remove_task_adapter ), $plugin->get_version() );
+		$add_license_caption_or_remove_task         = new Add_License_Caption_Or_Remove_Task( $cached_image_license_service );
+		$add_license_caption_or_remove_task_adapter = new Task_Ajax_Adapter( $add_license_caption_or_remove_task );
 
-	new Wordlift_Products_Navigator_Shortcode_REST();
+		$remove_all_images_task_page             = new Remove_All_Images_Page( new Task_Ajax_Adapters_Registry( $remove_all_images_task_adapter ), $plugin->get_version() );
+		$reload_data_task_page                   = new Reload_Data_Page( new Task_Ajax_Adapters_Registry( $reload_data_task_adapter ), $plugin->get_version() );
+		$add_license_caption_or_remove_task_page = new Add_License_Caption_Or_Remove_Page( new Task_Ajax_Adapters_Registry( $add_license_caption_or_remove_task_adapter ), $plugin->get_version() );
+
+		new Wordlift_Products_Navigator_Shortcode_REST();
+
+		// Register the Dataset module, requires `$api_service`.
+		require_once plugin_dir_path( __FILE__ ) . 'wordlift/dataset/index.php';
+	} );
 
 }
 

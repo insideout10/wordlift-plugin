@@ -60,9 +60,10 @@ class Wordlift_Uri_Service {
 	/**
 	 * Create an instance of Wordlift_Uri_Service.
 	 *
+	 * @param \wpdb $wpdb The global WordPress database connection.
+	 *
 	 * @since 3.6.0
 	 *
-	 * @param \wpdb $wpdb The global WordPress database connection.
 	 */
 	public function __construct( $wpdb ) {
 
@@ -77,8 +78,8 @@ class Wordlift_Uri_Service {
 	/**
 	 * Get the {@link Wordlift_Uri_Service} singleton instance.
 	 *
-	 * @since 3.7.2
 	 * @return \Wordlift_Uri_Service The {@link Wordlift_Uri_Service} singleton instance.
+	 * @since 3.7.2
 	 */
 	public static function get_instance() {
 
@@ -109,15 +110,15 @@ class Wordlift_Uri_Service {
 	/**
 	 * Sanitizes an URI path by replacing the non allowed characters with an underscore.
 	 *
+	 * @param string $path The path to sanitize.
+	 * @param string $char The replacement character (by default an underscore).
+	 *
+	 * @return string The sanitized path.
 	 * @since 3.7.2
 	 * @uses  sanitize_title() to manage not ASCII chars
 	 *
 	 * @see   https://codex.wordpress.org/Function_Reference/sanitize_title
 	 *
-	 * @param string $path The path to sanitize.
-	 * @param string $char The replacement character (by default an underscore).
-	 *
-	 * @return string The sanitized path.
 	 */
 	public function sanitize_path( $path, $char = '_' ) {
 
@@ -134,14 +135,14 @@ class Wordlift_Uri_Service {
 	 * numeric suffix is added. If a schema type is given entities with same label
 	 * and same type are overridden.
 	 *
-	 * @since 3.5.0
-	 *
-	 * @param string  $title A post title.
-	 * @param string  $post_type A post type. Default value is 'entity'
-	 * @param string  $schema_type A schema org type.
+	 * @param string $title A post title.
+	 * @param string $post_type A post type. Default value is 'entity'
+	 * @param string $schema_type A schema org type.
 	 * @param integer $increment_digit A digit used to call recursively the same function.
 	 *
 	 * @return string Returns an uri.
+	 * @deprecated don't use anywhere else, since we're refactoring the way URIs are built in the global function wl_build_entity_uri.
+	 * @since 3.5.0
 	 */
 	public function build_uri( $title, $post_type, $schema_type = null, $increment_digit = 0 ) {
 

@@ -142,6 +142,19 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.27.6 (2020-11-12) =
+
+* Enhancement [#1178](https://github.com/insideout10/wordlift-plugin/issues/1178): Local entities to show in the WL plugin panel if no key provided or cannot reach API.
+* Enhancement [#1174](https://github.com/insideout10/wordlift-plugin/issues/1174): Filters for WordLift for WooCommerce.
+* Enhancement [#1155](https://github.com/insideout10/wordlift-plugin/issues/1155): Hook to clear data cache.
+
+* Fix [#1188](https://github.com/insideout10/wordlift-plugin/issues/1188): Error doing the wizard if it is stopped on asking license.
+* Fix [#1183](https://github.com/insideout10/wordlift-plugin/issues/1183): Faceted Search widget empty on Safari.
+* Fix [#1182](https://github.com/insideout10/wordlift-plugin/issues/1182): Term filter not working correctly for mappings.
+* Fix [#1181](https://github.com/insideout10/wordlift-plugin/issues/1181): By default, sort results by date descending in Faceted Search widget.
+* Fix [#1070](https://github.com/insideout10/wordlift-plugin/issues/1070): "&nbsp;" appears in the summary ... with some articles.
+* Fix [#1165](https://github.com/insideout10/wordlift-plugin/issues/1165): Fix error on logs.
+
 = 3.27.5 (2020-10-09) =
 
 * Fix: Remove outdated SSL CA

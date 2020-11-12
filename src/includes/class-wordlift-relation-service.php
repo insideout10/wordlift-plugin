@@ -66,10 +66,10 @@ class Wordlift_Relation_Service {
 	/**
 	 * Get the singleton instance.
 	 *
-	 * @since  3.15.0
-	 * @access public
 	 * @return \Wordlift_Relation_Service The {@link Wordlift_Relation_Service}
 	 *                                    singleton instance.
+	 * @since  3.15.0
+	 * @access public
 	 */
 	public static function get_instance() {
 
@@ -79,21 +79,23 @@ class Wordlift_Relation_Service {
 	/**
 	 * Get the articles referencing the specified entity {@link WP_Post}.
 	 *
-	 * @since 3.15.0
-	 *
-	 * @param int|array   $object_id The entity {@link WP_Post}'s id.
-	 * @param string      $fields    The fields to return, 'ids' to only return ids or
+	 * @param int|array $object_id The entity {@link WP_Post}'s id.
+	 * @param string $fields The fields to return, 'ids' to only return ids or
 	 *                               '*' to return all fields, by default '*'.
 	 * @param null|string $predicate The predicate (who|what|...), by default all.
-	 * @param null|string $status    The status, by default all.
-	 * @param array       $excludes  An array of ids to exclude from the results.
-	 * @param null|int    $limit     The maximum number of results, by default
+	 * @param null|string $status The status, by default all.
+	 * @param array $excludes An array of ids to exclude from the results.
+	 * @param null|int $limit The maximum number of results, by default
 	 *                               no limit.
-	 * @param null|array  $include   The {@link WP_Post}s' ids to include.
+	 * @param null|array $include The {@link WP_Post}s' ids to include.
+	 *
+	 * @param null | string $order_by
 	 *
 	 * @return array|object|null Database query results
+	 * @since 3.15.0
+	 *
 	 */
-	public function get_article_subjects( $object_id, $fields = '*', $predicate = null, $status = null, $excludes = array(), $limit = null, $include = null ) {
+	public function get_article_subjects( $object_id, $fields = '*', $predicate = null, $status = null, $excludes = array(), $limit = null, $include = null, $order_by = null ) {
 		global $wpdb;
 
 		// The output fields.
@@ -129,6 +131,7 @@ class Wordlift_Relation_Service {
 			. self::and_article_in( $include )
 			. self::and_post_type_in()
 			. self::and_predicate( $predicate )
+			. self::order_by( $order_by )
 			. self::limit( $limit );
 
 		return '*' === $actual_fields ? $wpdb->get_results( $sql ) : $wpdb->get_col( $sql );
@@ -137,28 +140,28 @@ class Wordlift_Relation_Service {
 	/**
 	 * The `post_type IN` clause.
 	 *
+	 * @return string The `post_type IN` clause.
 	 * @since 3.15.3
 	 *
-	 * @return string The `post_type IN` clause.
 	 */
 	private static function and_post_type_in() {
 
 		return " AND p.post_type IN ( '"
-			   . implode(
-				   "','",
-				   array_map( 'esc_sql', Wordlift_Entity_Service::valid_entity_post_types() )
-			   )
-			   . "' )";
+		       . implode(
+			       "','",
+			       array_map( 'esc_sql', Wordlift_Entity_Service::valid_entity_post_types() )
+		       )
+		       . "' )";
 	}
 
 	/**
 	 * Add the limit clause if specified.
 	 *
-	 * @since 3.15.0
-	 *
 	 * @param null|int $limit The maximum number of results.
 	 *
 	 * @return string The limit clause (empty if no limit has been specified).
+	 * @since 3.15.0
+	 *
 	 */
 	private static function limit( $limit = null ) {
 
@@ -170,14 +173,33 @@ class Wordlift_Relation_Service {
 	}
 
 	/**
+	 * @param $order_by string | null
+	 *
+	 * @return string
+	 */
+	private static function order_by( $order_by ) {
+		if ( ! $order_by ) {
+			return '';
+		}
+		$order_by         = (string) $order_by;
+		$order_by_clauses = array( 'DESC', 'ASC' );
+
+		if ( in_array( $order_by, $order_by_clauses, true ) ) {
+			return " ORDER BY p.post_modified ${order_by} ";
+		} else {
+			return ' ORDER BY p.post_modified DESC ';
+		}
+	}
+
+	/**
 	 * Map the provided ids into entities (i.e. return the id if it's an entity
 	 * or get the entities if it's a post).
-	 *
-	 * @since 3.15.0
 	 *
 	 * @param int|array $object_id An array of posts/entities' ids.
 	 *
 	 * @return array An array of entities' ids.
+	 * @since 3.15.0
+	 *
 	 */
 	private function article_id_to_entity_id( $object_id ) {
 
@@ -198,11 +220,11 @@ class Wordlift_Relation_Service {
 	/**
 	 * Add the WHERE clause.
 	 *
-	 * @since 3.15.0
-	 *
 	 * @param int|array $object_id An array of {@link WP_Post}s' ids.
 	 *
 	 * @return string The WHERE clause.
+	 * @since 3.15.0
+	 *
 	 */
 	private static function where_object_id( $object_id ) {
 
@@ -218,11 +240,11 @@ class Wordlift_Relation_Service {
 	/**
 	 * Add the exclude clause.
 	 *
-	 * @since 3.15.0
-	 *
 	 * @param int|array $exclude An array of {@link WP_Post}s' ids to exclude.
 	 *
 	 * @return string The exclude clause.
+	 * @since 3.15.0
+	 *
 	 */
 	private static function and_article_not_in( $exclude ) {
 
@@ -232,12 +254,12 @@ class Wordlift_Relation_Service {
 	/**
 	 * Add the include clause.
 	 *
-	 * @since 3.15.0
-	 *
 	 * @param null|int|array $include An array of {@link WP_Post}s' ids.
 	 *
 	 * @return string An empty string if $include is null otherwise the include
 	 *                clause.
+	 * @since 3.15.0
+	 *
 	 */
 	private static function and_article_in( $include = null ) {
 
@@ -251,14 +273,14 @@ class Wordlift_Relation_Service {
 	/**
 	 * Get the entities' {@link WP_Post}s' ids referencing the specified {@link WP_Post}.
 	 *
-	 * @since 3.15.0
-	 *
-	 * @param int         $object_id The object {@link WP_Post}'s id.
-	 * @param string      $fields    The fields to return, 'ids' to only return ids or
+	 * @param int $object_id The object {@link WP_Post}'s id.
+	 * @param string $fields The fields to return, 'ids' to only return ids or
 	 *                               '*' to return all fields, by default '*'.
-	 * @param null|string $status    The status, by default all.
+	 * @param null|string $status The status, by default all.
 	 *
 	 * @return array|object|null Database query results
+	 * @since 3.15.0
+	 *
 	 */
 	public function get_non_article_subjects( $object_id, $fields = '*', $status = null ) {
 		global $wpdb;
@@ -288,15 +310,15 @@ class Wordlift_Relation_Service {
 	/**
 	 * Get the entities referenced by the specified {@link WP_Post}.
 	 *
-	 * @since 3.15.0
-	 *
-	 * @param int         $subject_id The {@link WP_Post}'s id.
-	 * @param string      $fields     The fields to return, 'ids' to only return ids or
+	 * @param int $subject_id The {@link WP_Post}'s id.
+	 * @param string $fields The fields to return, 'ids' to only return ids or
 	 *                                '*' to return all fields, by default '*'.
-	 * @param null|string $predicate  The predicate (who|what|...), by default all.
-	 * @param null|string $status     The status, by default all.
+	 * @param null|string $predicate The predicate (who|what|...), by default all.
+	 * @param null|string $status The status, by default all.
 	 *
 	 * @return array|object|null Database query results
+	 * @since 3.15.0
+	 *
 	 */
 	public function get_objects( $subject_id, $fields = '*', $predicate = null, $status = null ) {
 		global $wpdb;
@@ -327,11 +349,11 @@ class Wordlift_Relation_Service {
 	/**
 	 * Add the `post_status` clause.
 	 *
-	 * @since 3.15.0
-	 *
 	 * @param null|string|array $status The status values.
 	 *
 	 * @return string An empty string if $status is null, otherwise the status clause.
+	 * @since 3.15.0
+	 *
 	 */
 	private static function and_status( $status = null ) {
 
@@ -345,12 +367,12 @@ class Wordlift_Relation_Service {
 	/**
 	 * Add the `predicate` clause.
 	 *
-	 * @since 3.15.0
-	 *
 	 * @param null|string|array $predicate An array of predicates.
 	 *
 	 * @return string An empty string if $predicate is null otherwise the predicate
 	 *                clause.
+	 * @since 3.15.0
+	 *
 	 */
 	private static function and_predicate( $predicate = null ) {
 
@@ -364,11 +386,11 @@ class Wordlift_Relation_Service {
 	/**
 	 * The select fields.
 	 *
-	 * @since 3.15.0
-	 *
 	 * @param string $fields Either 'ids' or '*', by default '*'.
 	 *
 	 * @return string The `id` field if `ids` otherwise `*`.
+	 * @since 3.15.0
+	 *
 	 */
 	private static function fields( $fields = '*' ) {
 
@@ -379,9 +401,9 @@ class Wordlift_Relation_Service {
 	/**
 	 * The inner join clause for articles.
 	 *
+	 * @return string The articles inner join clause.
 	 * @since 3.15.0
 	 *
-	 * @return string The articles inner join clause.
 	 */
 	private static function inner_join_is_article() {
 		global $wpdb;
@@ -405,9 +427,9 @@ class Wordlift_Relation_Service {
 	/**
 	 * The inner join clause for non-articles.
 	 *
+	 * @return string The non-articles inner join clause.
 	 * @since 3.15.0
 	 *
-	 * @return string The non-articles inner join clause.
 	 */
 	private static function inner_join_is_not_article() {
 		global $wpdb;
@@ -432,8 +454,8 @@ class Wordlift_Relation_Service {
 	 * Find all the subject IDs and their referenced/related object IDs. The
 	 * object IDs are returned as comma separated IDs in the `object_ids` key.
 	 *
-	 * @since 3.18.0
 	 * @return mixed Database query results
+	 * @since 3.18.0
 	 */
 	public function find_all_grouped_by_subject_id() {
 		global $wpdb;

@@ -404,6 +404,8 @@ class Wordlift_Entity_Service {
 	 */
 	public function get_uri( $post_id ) {
 
+		$log = Wordlift_Log_Service::get_logger( get_class() );
+
 		// If a null is given, nothing to do
 		if ( is_null( $post_id ) ) {
 			return null;
@@ -411,9 +413,9 @@ class Wordlift_Entity_Service {
 
 		$dataset_uri = wl_configuration_get_redlink_dataset_uri();
 
-		// If the dataset uri is not properly configured, null is returned
 		if ( empty( $dataset_uri ) ) {
-			return null;
+			// Continue even if the dataset uri is not properly configured. It is handled in function wl_build_entity_uri()
+			$log->debug('Continuing, dataset uri not configured...');
 		}
 
 		$uri = get_post_meta( $post_id, WL_ENTITY_URL_META_NAME, true );

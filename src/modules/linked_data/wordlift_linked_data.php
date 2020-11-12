@@ -7,6 +7,9 @@
  * @subpackage Wordlift/modules/linked_data
  */
 
+if ( ! apply_filters( 'wl_features__enable__legacy_linked_data', true ) ) {
+	return;
+}
 /**
  * Receive events from post saves, and split them according to the post type.
  *
@@ -241,7 +244,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	}
 
 	// Push the post to Redlink.
-	Wordlift_Linked_Data_Service::get_instance()->push( $post->ID );
+	do_action( 'wl_legacy_linked_data__push', $post->ID );
 
 	add_action( 'wl_linked_data_save_post', 'wl_linked_data_save_post_and_related_entities' );
 }
@@ -464,7 +467,7 @@ function wl_save_entity( $entity_data ) {
 
 	// The entity is pushed to Redlink on save by the function hooked to save_post.
 	// save the entity in the triple store.
-	Wordlift_Linked_Data_Service::get_instance()->push( $post_id );
+	do_action( 'wl_legacy_linked_data__push', $post_id );
 
 	// finally return the entity post.
 	return get_post( $post_id );
