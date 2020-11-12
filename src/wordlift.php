@@ -51,12 +51,14 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-/*
- * Add Composer Autoload with Mozart support.
- *
- * @since 3.28.0
- */
-require __DIR__ . '/vendor/autoload.php';
+if ( apply_filters( 'wl_features__enable__dataset', false ) ) {
+	/*
+	 * Add Composer Autoload with Mozart support.
+	 *
+	 * @since 3.27.6
+	 */
+	require __DIR__ . '/vendor/autoload.php';
+}
 
 // Include WordLift constants.
 require_once( 'wordlift_constants.php' );
