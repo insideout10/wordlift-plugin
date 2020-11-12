@@ -142,7 +142,7 @@ class TimelineShortcodeTest extends Wordlift_Unit_Test_Case {
 		$date_1 = $response['timeline']['events'][1];
 		$date_2 = $response['timeline']['events'][0];
 
-		$this->assertEquals( '2014,1,1', implode( ',', array_values( $date_1['start_date'] ) ) );
+		$this->assertContains( implode( ',', array_values( $date_1['start_date'] ) ), array('2014,1,1', '2014,1,2') );
 		$this->assertEquals( '2014,1,7', implode( ',', array_values( $date_1['end_date'] ) ) );
 		$this->assertEquals( '2014,1,2', implode( ',', array_values( $date_2['start_date'] ) ) );
 		$this->assertEquals( '2014,1,8', implode( ',', array_values( $date_2['end_date'] ) ) );
