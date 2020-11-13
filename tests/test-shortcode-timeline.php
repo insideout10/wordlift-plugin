@@ -145,7 +145,7 @@ class TimelineShortcodeTest extends Wordlift_Unit_Test_Case {
 		// To factor DST variance
 		$this->assertContains( implode( ',', array_values( $date_1['start_date'] ) ), array( '2014,1,1', '2014,1,2' ) );
 		$this->assertContains( implode( ',', array_values( $date_1['end_date'] ) ), array( '2014,1,7', '2014,1,8' ) );
-		$this->assertContains( implode( ',', array_values( $date_2['start_date'] ) ), array( '2014,1,2', '2014,1,3' ) );
+		$this->assertContains( implode( ',', array_values( $date_2['start_date'] ) ), array( '2014,1,1', '2014,1,2', '2014,1,3' ) );
 		$this->assertContains( implode( ',', array_values( $date_2['end_date'] ) ), array( '2014,1,8', '2014,1,9' ) );
 
 		$this->assertTrue( isset( $date_1['text']['text'] ) );
