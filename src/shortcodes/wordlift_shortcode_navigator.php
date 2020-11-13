@@ -425,6 +425,7 @@ function wl_shortcode_navigator_wp_json() {
 add_action( 'rest_api_init', function () {
 	register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/navigator', array(
 		'methods'  => 'GET',
+		'permission_callback' => '__return_true',
 		'callback' => 'wl_shortcode_navigator_wp_json',
 	) );
 } );
@@ -436,6 +437,7 @@ add_action( 'rest_api_init', function () {
 	register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/network-navigator', array(
 		'methods'  => 'GET',
 		'callback' => 'wl_network_navigator_wp_json',
+		'permission_callback' => '__return_true'
 	) );
 } );
 

@@ -46,36 +46,41 @@ class Jsonld_Endpoint {
 		$that = $this;
 		add_action( 'rest_api_init', function () use ( $that ) {
 			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/(?P<id>\d+)', array(
-				'methods'  => WP_REST_Server::READABLE,
-				'callback' => array( $that, 'jsonld_using_post_id' ),
-				'args'     => array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $that, 'jsonld_using_post_id' ),
+				'args'                => array(
 					'id' => array(
 						'validate_callback' => function ( $param, $request, $key ) {
 							return is_numeric( $param );
 						},
 						'sanitize_callback' => 'absint',
 					),
-				)
+				),
+				'permission_callback' => '__return_true'
 			) );
 
 			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/http/(?P<item_id>.*)', array(
 				'methods'  => 'GET',
 				'callback' => array( $that, 'jsonld_using_item_id' ),
+				'permission_callback' => '__return_true'
 			) );
 
 			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/post-meta/(?P<meta_key>[^/]+)', array(
 				'methods'  => 'GET',
 				'callback' => array( $that, 'jsonld_using_post_meta' ),
+				'permission_callback' => '__return_true'
 			) );
 
 			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/meta/(?P<meta_key>[^/]+)', array(
 				'methods'  => 'GET',
 				'callback' => array( $that, 'jsonld_using_meta' ),
+				'permission_callback' => '__return_true'
 			) );
 
 			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/(?P<post_type>.*)/(?P<post_name>.*)', array(
 				'methods'  => 'GET',
 				'callback' => array( $that, 'jsonld_using_get_page_by_path' ),
+				'permission_callback' => '__return_true'
 			) );
 
 		} );
