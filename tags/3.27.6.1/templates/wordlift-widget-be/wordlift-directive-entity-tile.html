@@ -1,0 +1,49 @@
+<!-- ENTITY TILE SELECTED -->
+<div
+  class="wl-widget-classification-box-entity-tile"
+  ng-class="{'wl-selected': entity.occurrences.length > 0 }">
+
+  <!-- ENTITY NAME -->
+  <div class="wl-widget-classification-box-entity-tile-name" ng-click="onSelect()">
+    <h3>
+      {{entity.label}}
+
+
+    </h3>
+  </div>
+
+    <!-- ENTITY OCCURENCES -->
+    <div class="wl-widget-classification-box-entity-tile-occurences"
+    ng-show="entity.occurrences.length > 0"
+    class="wl-widget-classification-box-entity-tile-occurrences">
+      <h4>
+        {{entity.occurrences.length}}
+      </h4>
+    </div>
+
+  <!-- ENTITY STORING: GLOBAL-LOCAL -->
+  <div class="wl-widget-classification-box-entity-tile-storage">
+    <img
+      title="Internal entity"
+      ng-show="isInternal()"
+      ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-local-storage-icon.svg" />
+    <img
+      title="External entity"
+      ng-hide="isInternal()"
+      ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-global-storage-icon.svg" />
+  </div>
+
+  <!-- ENTITY TYPE -->
+  <div class="wl-widget-classification-box-entity-tile-type">
+    <img
+      title="Entity of type {{entity.mainType}}"
+      ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-{{entity.mainType}}-icon.svg">
+  </div>
+
+  <!-- LINK TO VOC -->
+  <div class="wl-widget-classification-box-entity-tile-voc" ng-click="onMore()">
+    <div class="wl-widget-classification-box-entity-tile-voc-arrow">
+      <!-- DISPLAY ARROW -->
+    </div>
+  </div>
+</div>
