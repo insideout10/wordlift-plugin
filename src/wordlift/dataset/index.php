@@ -1,6 +1,6 @@
 <?php
 
-use Wordlift\Dataset\Entity_Dct_Relation;
+use Wordlift\Dataset\Sync_Hooks_Entity_Relation;
 use Wordlift\Dataset\Sync_Page;
 use Wordlift\Dataset\Sync_Service;
 use Wordlift\Dataset\Sync_Wpjson_Endpoint;
@@ -16,11 +16,10 @@ if ( apply_filters( 'wl_features__enable__dataset', false ) ) {
 	new Sync_Wpjson_Endpoint( $sync_service );
 	new Sync_Page();
 
-	// @@todo: move to the dataset module.
 	/**
 	 * @since 3.28.0
 	 * @see https://github.com/insideout10/wordlift-plugin/issues/1186
 	 */
-	new Entity_Dct_Relation( Wordlift_Entity_Service::get_instance() );
+	new Sync_Hooks_Entity_Relation( Wordlift_Entity_Service::get_instance() );
 
 }
