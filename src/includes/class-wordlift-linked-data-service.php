@@ -97,7 +97,7 @@ class Wordlift_Linked_Data_Service {
 		/*
 		 * Allow callers to call the `push` and `remove` methods using WordPress' hooks.
 		 *
-		 * @since 3.28.0
+		 * @since 3.27.6
 		 */
 		add_action( 'wl_legacy_linked_data__push', array( $this, 'push' ) );
 		add_action( 'wl_legacy_linked_data__remove', array( $this, 'remove' ) );
