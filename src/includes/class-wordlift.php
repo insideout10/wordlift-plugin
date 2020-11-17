@@ -748,7 +748,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.27.6';
+		$this->version     = '3.27.6.1';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -1328,7 +1328,7 @@ class Wordlift {
 			new Wordlift_Faceted_Search_Shortcode();
 
 			// To intimate JS
-			$enabled_blocks = $enabled_blocks + array(
+			$enabled_blocks = array_merge($enabled_blocks, array(
 				'wordlift/navigator',
 				'wordlift/chord',
 				'wordlift/geomap',
@@ -1336,7 +1336,7 @@ class Wordlift {
 				'wordlift/cloud',
 				'wordlift/vocabulary',
 				'wordlift/faceted-search'
-			);
+			));
 		}
 
 		new Wordlift_Products_Navigator_Shortcode();
