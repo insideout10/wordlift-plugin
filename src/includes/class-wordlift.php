@@ -1306,42 +1306,11 @@ class Wordlift {
 		$this->sample_data_service        = new Wordlift_Sample_Data_Service( $this->entity_type_service, $this->configuration_service, $this->user_service );
 		$this->sample_data_ajax_adapter   = new Wordlift_Sample_Data_Ajax_Adapter( $this->sample_data_service );
 		$this->reference_rebuild_service  = new Wordlift_Reference_Rebuild_Service( $this->entity_service );
-		/**
-		 * Filter: wl_feature__enable__blocks.
-		 *
-		 * @param bool whether the blocks needed to be registered, defaults to true.
-		 *
-		 * @return bool
-		 * @since 3.27.6
-		 */
-		wp_register_script( 'wl_enabled_blocks', false );
-		$enabled_blocks = array('wordlift/products-navigator');
 
-		if ( apply_filters( 'wl_feature__enable__blocks', true ) ) {
-			// Initialize the short-codes.
-			new Wordlift_Navigator_Shortcode();
-			new Wordlift_Chord_Shortcode();
-			new Wordlift_Geomap_Shortcode();
-			new Wordlift_Timeline_Shortcode();
-			new Wordlift_Related_Entities_Cloud_Shortcode( $this->relation_service );
-			new Wordlift_Vocabulary_Shortcode( $this->configuration_service );
-			new Wordlift_Faceted_Search_Shortcode();
-
-			// To intimate JS
-			$enabled_blocks = $enabled_blocks + array(
-				'wordlift/navigator',
-				'wordlift/chord',
-				'wordlift/geomap',
-				'wordlift/timeline',
-				'wordlift/cloud',
-				'wordlift/vocabulary',
-				'wordlift/faceted-search'
-			);
-		}
+		$this->loader->add_action( 'enqueue_block_editor_assets', $this, 'add_wl_enabled_blocks' );
 
 		new Wordlift_Products_Navigator_Shortcode();
-		wp_localize_script( 'wl_enabled_blocks', 'wlEnabledBlocks', $enabled_blocks );
-		wp_enqueue_script( 'wl_enabled_blocks' );
+
 
 		// Initialize the Context Cards Service
 		$this->context_cards_service = new Wordlift_Context_Cards_Service();
@@ -1979,6 +1948,42 @@ class Wordlift {
 	public function get_dashboard_service() {
 
 		return $this->dashboard_service;
+	}
+
+	public function add_wl_enabled_blocks() {
+		/**
+		 * Filter: wl_feature__enable__blocks.
+		 *
+		 * @param bool whether the blocks needed to be registered, defaults to true.
+		 *
+		 * @return bool
+		 * @since 3.27.6
+		 */
+		wp_register_script( 'wl_enabled_blocks', false );
+		$enabled_blocks = array( 'wordlift/products-navigator' );
+		if ( apply_filters( 'wl_feature__enable__blocks', true ) ) {
+			// Initialize the short-codes.
+			new Wordlift_Navigator_Shortcode();
+			new Wordlift_Chord_Shortcode();
+			new Wordlift_Geomap_Shortcode();
+			new Wordlift_Timeline_Shortcode();
+			new Wordlift_Related_Entities_Cloud_Shortcode( $this->relation_service );
+			new Wordlift_Vocabulary_Shortcode( $this->configuration_service );
+			new Wordlift_Faceted_Search_Shortcode();
+
+			// To intimate JS
+			$enabled_blocks = $enabled_blocks + array(
+					'wordlift/navigator',
+					'wordlift/chord',
+					'wordlift/geomap',
+					'wordlift/timeline',
+					'wordlift/cloud',
+					'wordlift/vocabulary',
+					'wordlift/faceted-search'
+				);
+		}
+		wp_localize_script( 'wl_enabled_blocks', 'wlEnabledBlocks', $enabled_blocks );
+		wp_enqueue_script( 'wl_enabled_blocks' );
 	}
 
 }
