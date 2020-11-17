@@ -1314,7 +1314,6 @@ class Wordlift {
 		 * @return bool
 		 * @since 3.27.6
 		 */
-		wp_register_script( 'wl_enabled_blocks', false );
 		$enabled_blocks = array( 'wordlift/products-navigator' );
 
 		if ( apply_filters( 'wl_feature__enable__blocks', true ) ) {
@@ -1340,8 +1339,11 @@ class Wordlift {
 		}
 
 		new Wordlift_Products_Navigator_Shortcode();
-		wp_localize_script( 'wl_enabled_blocks', 'wlEnabledBlocks', $enabled_blocks );
-		wp_enqueue_script( 'wl_enabled_blocks' );
+		add_action( 'wp_enqueue_scripts', function () use ( $enabled_blocks ) {
+			wp_register_script( 'wl_enabled_blocks', false );
+			wp_localize_script( 'wl_enabled_blocks', 'wlEnabledBlocks', $enabled_blocks );
+			wp_enqueue_script( 'wl_enabled_blocks' );
+		} );
 
 		// Initialize the Context Cards Service
 		$this->context_cards_service = new Wordlift_Context_Cards_Service();
