@@ -189,8 +189,11 @@ class Sync_Service {
 		$that         = $this;
 		$request_body = array_map( function ( $post_id ) use ( $that ) {
 			$uri              = get_post_meta( $post_id, 'entity_url', true );
-			$jsonld           = $that->jsonld_service->get( Jsonld_Service::TYPE_POST, $post_id );
+			$jsonld           = apply_filters( 'wl_dataset__sync_service__sync_item__jsonld',
+				$that->jsonld_service->get( Jsonld_Service::TYPE_POST, $post_id ), $post_id );
 			$jsonld_as_string = wp_json_encode( $jsonld );
+
+			$that->log->trace( "Posting JSON-LD:\n$jsonld_as_string" );
 
 			return array(
 				'uri'   => $uri,
