@@ -52,7 +52,7 @@ class Image_License_Scheduler {
 		// Update the cache.
 		$this->cache_service->put( Cached_Image_License_Service::GET_NON_PUBLIC_DOMAIN_IMAGES, $data );
 
-		if ( wp_doing_ajax() &&
+		if ( apply_filters( 'wp_doing_ajax', defined( 'DOING_AJAX' ) && DOING_AJAX ) &&
 		     ( self::ACTION_NAME === filter_input( INPUT_GET, 'action' )
 		       || self::ACTION_NAME === filter_input( INPUT_POST, 'action' ) ) ) {
 			wp_send_json_success( $data );

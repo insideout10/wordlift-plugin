@@ -226,6 +226,19 @@ class Wordlift_Entity_Uri_Service {
 
 		$posts = get_posts( $query_args );
 
+		// Attempt to find post by URI (only for local entity URLs)
+		if ( empty( $posts ) ) {
+
+			$this->log->debug( "Finding post by $uri..." );
+			$postid = url_to_postid( $uri );
+			if ( $postid !== 0 ) {
+				$this->log->trace( "Found post $postid by URL" );
+
+				return get_post( $postid );
+			}
+
+		}
+
 		// Return null if no post is found.
 		if ( empty( $posts ) ) {
 			$this->log->warn( "No post for URI $uri." );
