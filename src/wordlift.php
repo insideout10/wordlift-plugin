@@ -26,6 +26,7 @@
 
 use Wordlift\Api\Default_Api_Service;
 use Wordlift\Api\User_Agent;
+use Wordlift\Api_Data\Api_Data_Hooks;
 use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Cache\Ttl_Cache_Cleaner;
 use Wordlift\Images_Licenses\Admin\Image_License_Page;
@@ -44,19 +45,20 @@ use Wordlift\Images_Licenses\Tasks\Remove_All_Images_Task;
 use Wordlift\Post\Post_Adapter;
 use Wordlift\Tasks\Task_Ajax_Adapter;
 use Wordlift\Tasks\Task_Ajax_Adapters_Registry;
-use Wordlift\Api_Data\Api_Data_Hooks;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-/*
- * Add Composer Autoload with Mozart support.
- *
- * @since 3.28.0
- */
-require __DIR__ . '/vendor/autoload.php';
+if ( apply_filters( 'wl_features__enable__dataset', false ) ) {
+	/*
+	 * Add Composer Autoload with Mozart support.
+	 *
+	 * @since 3.27.6
+	 */
+	require __DIR__ . '/vendor/autoload.php';
+}
 
 // Include WordLift constants.
 require_once( 'wordlift_constants.php' );
@@ -449,14 +451,15 @@ function run_wordlift() {
 
 	/**
 	 * Filter: wl_feature__enable__analysis
+	 *
 	 * @param bool Whether to send api request to analysis or not
+	 *
 	 * @return bool
 	 * @since 3.27.6
 	 */
 	if ( apply_filters( 'wl_feature__enable__analysis', true ) ) {
 		add_action( 'wp_ajax_wl_analyze', 'wl_ajax_analyze_action' );
-	}
-	else {
+	} else {
 		add_action( 'wp_ajax_wl_analyze', 'wl_ajax_analyze_disabled_action' );
 	}
 
