@@ -28,9 +28,14 @@ class Meta_Data_Source implements Abstract_Data_Source {
 		$value = $property['field_name'];
 
 		if ( $type === Jsonld_Converter::TERM ) {
-			return array_map( 'wp_strip_all_tags', get_term_meta( $identifier, $value ) );
+			$meta = get_term_meta( $identifier, $value );
 		} else {
-			return array_map( 'wp_strip_all_tags', get_post_meta( $identifier, $value ) );
+			$meta = get_post_meta( $identifier, $value );
 		}
+		$values = ( 1 === count( $meta ) && is_array( $meta[0] ) )
+			? $meta[0] : $meta;
+
+		return array_map( 'wp_strip_all_tags', $values );
+
 	}
 }
