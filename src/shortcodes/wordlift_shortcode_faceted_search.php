@@ -309,7 +309,8 @@ function wl_shortcode_faceted_search_filler_posts( $filler_count, $current_post_
  */
 add_action( 'rest_api_init', function () {
 	register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/faceted-search', array(
-		'methods'  => 'GET',
-		'callback' => 'wl_shortcode_faceted_search',
+		'methods'             => 'GET',
+		'callback'            => 'wl_shortcode_faceted_search',
+		'permission_callback' => '__return_true',
 	) );
 } );
