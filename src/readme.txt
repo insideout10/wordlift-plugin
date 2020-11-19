@@ -142,6 +142,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.27.6.1 (2020-11-17) =
+
+* Fix: Navigator Block not registered in block editor.
+
 = 3.27.6 (2020-11-12) =
 
 * Enhancement [#1178](https://github.com/insideout10/wordlift-plugin/issues/1178): Local entities to show in the WL plugin panel if no key provided or cannot reach API.
