@@ -45,9 +45,20 @@ class Sync_Hooks_Entity_Relation {
 			return $jsonld;
 		}
 
-		$jsonld[0][ $property ] = array_values( array_map( function ( $item ) {
-			return array( '@id' => $this->entity_service->get_uri( $item ) );
+		if ( ! isset( $jsonld[0][ $property ] ) ) {
+			$jsonld[0][ $property ] = array();
+		}
+
+		if ( ! is_array( $jsonld[0][ $property ] ) ) {
+			$jsonld[0][ $property ] = array( $jsonld[0][ $property ] );
+		}
+
+		$that             = $this;
+		$references_array = array_values( array_map( function ( $item ) use ( $that ) {
+			return array( '@id' => $that->entity_service->get_uri( $item ) );
 		}, $references ) );
+
+		$jsonld[0][ $property ] = array_merge( $jsonld[0][ $property ], $references_array );
 
 		return $jsonld;
 	}

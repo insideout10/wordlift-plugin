@@ -146,9 +146,10 @@ class Sync_Service {
 		$this->log->info( "Synchronizing post $post_id..." );
 
 		// Get the JSON-LD for the specified post and its entity URI.
-		$jsonld_value = $this->jsonld_service->get( Jsonld_Service::TYPE_POST, $post_id );
-		$uri          = get_post_meta( $post_id, 'entity_url', true );
-		$jsonld       = wp_json_encode( $jsonld_value );
+		$uri              = get_post_meta( $post_id, 'entity_url', true );
+		$jsonld           = apply_filters( 'wl_dataset__sync_service__sync_item__jsonld',
+			$this->jsonld_service->get( Jsonld_Service::TYPE_POST, $post_id ), $post_id );
+		$jsonld_as_string = wp_json_encode( $jsonld );
 
 		// Make a request to the remote endpoint.
 		$state              = $this->info();
@@ -159,7 +160,7 @@ class Sync_Service {
 				'Content-Type'                     => 'application/ld+json',
 				'X-Wordlift-Dataset-Sync-State-V1' => $state_header_value
 			),
-			$jsonld );
+			$jsonld_as_string );
 
 		$this->log->debug( "Response for $post_id received: " . ( $response->is_success() ? 'yes' : 'no' ) );
 
