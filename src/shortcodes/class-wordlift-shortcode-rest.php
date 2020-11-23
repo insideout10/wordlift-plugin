@@ -25,6 +25,7 @@ abstract class Wordlift_Shortcode_REST {
 		add_action( 'rest_api_init', function () use ( $scope ) {
 			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, $scope->endpoint, array(
 				'methods'  => WP_REST_Server::READABLE,
+				'permission_callback' => '__return_true',
 				'callback' => array( $scope, 'rest_callback' ),
 				'args'     => $scope->args
 			) );
