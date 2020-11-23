@@ -209,17 +209,12 @@ class Wordlift_Admin_Setup {
 	 */
 	public function admin_menu() {
 		/**
-		 * Filter: wl_feature__enable__screens.
 		 *
-		 * @param bool whether the screens needed to be registered, defaults to true.
-		 *
-		 * @return bool
-		 * @since 3.27.6
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/1209
+		 * @since 3.27.7
 		 */
-		if ( apply_filters( 'wl_feature__enable__screens', true ) ) {
-			// @todo: find another way to do this, since this is adding an empty space in WP's dashboard menu.
-			add_dashboard_page( '', '', 'manage_options', 'wl-setup', '' );
-		}
+		// @todo: find another way to do this, since this is adding an empty space in WP's dashboard menu.
+		add_dashboard_page( '', '', 'manage_options', 'wl-setup', '' );
 	}
 
 	/**
