@@ -116,12 +116,13 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		//		// Get the entity @type. We consider `post` BlogPostings.
 		//		$type = $this->entity_type_service->get( $post_id );
 		$types = $this->entity_type_service->get_names( $post_id );
+		$type = self::make_one( $types );
 
 		// Prepare the response.
 		$jsonld = array(
 			'@context'    => self::CONTEXT,
 			'@id'         => $id,
-			'@type'       => self::make_one( $types ),
+			'@type'       => $type,
 			'description' => Wordlift_Post_Excerpt_Helper::get_text_excerpt( $post ),
 		);
 
@@ -145,6 +146,18 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 			//
 			// See https://github.com/insideout10/wordlift-plugin/issues/451.
 			$jsonld['mainEntityOfPage'] = get_the_permalink( $post->ID );
+
+			/**
+			 * @see https://github.com/insideout10/wordlift-plugin/issues/1207
+			 *
+			 * @since 3.27.7
+			 */
+			if ( in_array( $type, array( 'Occupation', 'OccupationAggregationByEmployer' ) ) ) {
+				$jsonld['mainEntityOfPage'] = array(
+					'@type'        => 'WebPage',
+					'lastReviewed' => get_post_time( 'Y-m-d\TH:i:sP', true, $post, false )
+				);
+			}
 		};
 
 		$this->set_images( $this->attachment_service, $post, $jsonld );
