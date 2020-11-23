@@ -190,7 +190,7 @@ class Wordlift_Notice_Service {
 
 		switch ( gettype( $message ) ) {
 			case 'array':
-				return implode( $message, '<br />' );
+				return implode('<br />', $message );
 			default:
 				return $message;
 		}
