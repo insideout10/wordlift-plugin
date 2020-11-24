@@ -1802,8 +1802,7 @@ class Wordlift {
 		 * Post excerpt meta box would be only loaded when the language is set
 		 * to english
 		 */
-		if ( $this->configuration_service->get_language_code() === 'en' &&
-		     apply_filters( 'wl_feature__enable__post_excerpt', true ) ) {
+		if ( apply_filters( 'wl_feature__enable__post_excerpt', true ) ) {
 			$excerpt_adapter = new Post_Excerpt_Meta_Box_Adapter();
 			$this->loader->add_action( 'do_meta_boxes', $excerpt_adapter, 'replace_post_excerpt_meta_box' );
 			// Adding Rest route for the post excerpt
