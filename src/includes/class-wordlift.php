@@ -1799,8 +1799,6 @@ class Wordlift {
 		$this->loader->add_action( 'wp_ajax_wl_sample_data_delete', $this->sample_data_ajax_adapter, 'delete' );
 		/**
 		 * @since 3.26.0
-		 * Post excerpt meta box would be only loaded when the language is set
-		 * to english
 		 */
 		if ( apply_filters( 'wl_feature__enable__post_excerpt', true ) ) {
 			$excerpt_adapter = new Post_Excerpt_Meta_Box_Adapter();
