@@ -99,7 +99,11 @@ class Default_Api_Service implements Api_Service {
 				'body'       => $body,
 			);
 
-		$response = wp_remote_request( $request_url, $request_args );
+		/**
+		 * Allow 3rd parties to process the response.
+		 */
+		$response = apply_filters( 'wl_api_service__response',
+			wp_remote_request( $request_url, $request_args ), $request_url, $request_args );
 
 		if ( defined( 'WL_DEBUG' ) && WL_DEBUG ) {
 			$this->log->trace(

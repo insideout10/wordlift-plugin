@@ -142,53 +142,28 @@ class Sync_Service {
 	}
 
 	public function sync_item( $post_id ) {
-
-		$this->log->info( "Synchronizing post $post_id..." );
-
-		// Get the JSON-LD for the specified post and its entity URI.
-		$uri              = get_post_meta( $post_id, 'entity_url', true );
-		$jsonld           = apply_filters( 'wl_dataset__sync_service__sync_item__jsonld',
-			$this->jsonld_service->get( Jsonld_Service::TYPE_POST, $post_id ), $post_id );
-		$jsonld_as_string = wp_json_encode( $jsonld );
-
-		// Make a request to the remote endpoint.
-		$state              = $this->info();
-		$state_header_value = str_replace( "\n", '', wp_json_encode( $state ) );
-		$response           = $this->api_service->request(
-			'POST', '/middleware/dataset?uri=' . rawurlencode( $uri ),
-			array(
-				'Content-Type'                     => 'application/ld+json',
-				'X-Wordlift-Dataset-Sync-State-V1' => $state_header_value
-			),
-			$jsonld_as_string );
-
-		$this->log->debug( "Response for $post_id received: " . ( $response->is_success() ? 'yes' : 'no' ) );
-
-		// Update the sync date in case of success, otherwise log an error.
-		if ( $response->is_success() ) {
-
-			update_post_meta( $post_id, '_wl_synced_gmt', current_time( 'mysql', true ) );
-
-			$this->log->debug( "Post $post_id synchronized." );
-
-			return true;
-		} else {
-			// @@todo: should we put a limit retry here?delete_item
-			$response_dump = var_export( $response, true );
-			$this->log->error(
-				sprintf( 'An error occurred while synchronizing the data for post ID %d: %s', $post_id, $response_dump ) );
-
-			return false;
-		}
-
+		$this->sync_items( array( $post_id ) );
 	}
 
 	public function sync_items( $post_ids ) {
 
 		$this->log->debug( sprintf( 'Synchronizing posts %s...', implode( ', ', $post_ids ) ) );
 
+		// If we're starting the sync, try to clear the dataset.
+		if ( 0 === $this->info()->index ) {
+			$this->api_service->request( 'DELETE', '/middleware/dataset/delete' );
+		}
+
 		$that         = $this;
-		$request_body = array_map( function ( $post_id ) use ( $that ) {
+		$request_body = array_filter( array_map( function ( $post_id ) use ( $that ) {
+			// Check if the post type is public.
+			$post_type     = get_post_type( $post_id );
+			$post_type_obj = get_post_type_object( $post_type );
+			if ( ! $post_type_obj->public ) {
+				return false;
+			}
+
+			$is_private       = ( 'publish' !== get_post_status( $post_id ) );
 			$uri              = get_post_meta( $post_id, 'entity_url', true );
 			$jsonld           = apply_filters( 'wl_dataset__sync_service__sync_item__jsonld',
 				$that->jsonld_service->get( Jsonld_Service::TYPE_POST, $post_id ), $post_id );
@@ -197,10 +172,16 @@ class Sync_Service {
 			$that->log->trace( "Posting JSON-LD:\n$jsonld_as_string" );
 
 			return array(
-				'uri'   => $uri,
-				'model' => $jsonld_as_string,
+				'uri'     => $uri,
+				'model'   => $jsonld_as_string,
+				'private' => $is_private
 			);
-		}, $post_ids );
+		}, $post_ids ) );
+
+		// There's no point in making a request if the request is empty.
+		if ( empty( $request_body ) ) {
+			return true;
+		}
 
 		// Make a request to the remote endpoint.
 		$state              = $this->info();
@@ -226,7 +207,7 @@ class Sync_Service {
 
 			return true;
 		} else {
-			// @@todo: should we put a limit retry here?delete_item
+			// @@todo: should we put a limit retry here?
 			$response_dump = var_export( $response, true );
 			$this->log->error(
 				sprintf( 'An error occurred while synchronizing the data for post IDs %s: %s', implode( ', ', $post_ids ), $response_dump ) );

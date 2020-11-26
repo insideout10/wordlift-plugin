@@ -41,4 +41,9 @@ class Response {
 		return $this->body;
 	}
 
+	public function get_response() {
+
+		return $this->response;
+	}
+
 }

@@ -1230,7 +1230,7 @@ class Wordlift {
 		$this->redirect_service    = new Wordlift_Redirect_Service( $this->entity_uri_service );
 		$this->entity_type_service = new Wordlift_Entity_Type_Service( $this->schema_service );
 
-		if ( ! apply_filters( 'wl_features__enable__legacy_linked_data', true ) ) {
+		if ( ! apply_filters( 'wl_features__enable__dataset-ng', false ) ) {
 			new Wordlift_Linked_Data_Service( $this->entity_service, $this->entity_type_service, $this->schema_service, $this->sparql_service );
 		}
 
@@ -1327,7 +1327,7 @@ class Wordlift {
 			new Wordlift_Faceted_Search_Shortcode();
 
 			// To intimate JS
-			$enabled_blocks = array_merge($enabled_blocks, array(
+			$enabled_blocks = array_merge( $enabled_blocks, array(
 				'wordlift/navigator',
 				'wordlift/chord',
 				'wordlift/geomap',
@@ -1335,7 +1335,7 @@ class Wordlift {
 				'wordlift/cloud',
 				'wordlift/vocabulary',
 				'wordlift/faceted-search'
-			));
+			) );
 		}
 
 		new Wordlift_Products_Navigator_Shortcode();

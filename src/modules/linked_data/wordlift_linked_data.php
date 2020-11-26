@@ -7,7 +7,7 @@
  * @subpackage Wordlift/modules/linked_data
  */
 
-if ( ! apply_filters( 'wl_features__enable__legacy_linked_data', true ) ) {
+if ( ! apply_filters( 'wl_features__enable__dataset-ng', false ) ) {
 	return;
 }
 /**

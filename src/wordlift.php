@@ -51,15 +51,6 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-if ( apply_filters( 'wl_features__enable__dataset', false ) ) {
-	/*
-	 * Add Composer Autoload with Mozart support.
-	 *
-	 * @since 3.27.6
-	 */
-	require __DIR__ . '/vendor/autoload.php';
-}
-
 // Include WordLift constants.
 require_once( 'wordlift_constants.php' );
 
@@ -483,6 +474,10 @@ function run_wordlift() {
 	new Api_Data_Hooks();
 
 	add_action( 'plugins_loaded', function () use ( $plugin ) {
+		// Load early. **PLEASE NOTE** that features are applied only to calls that happen **AFTER** the `plugins_loaded`
+		// action.
+		require_once plugin_dir_path( __FILE__ ) . 'wordlift/features/index.php';
+
 		// Licenses Images.
 		$user_agent                   = User_Agent::get_user_agent();
 		$wordlift_key                 = Wordlift_Configuration_Service::get_instance()->get_key();
@@ -519,6 +514,7 @@ function run_wordlift() {
 
 		// Register the Dataset module, requires `$api_service`.
 		require_once plugin_dir_path( __FILE__ ) . 'wordlift/dataset/index.php';
+
 	} );
 
 }

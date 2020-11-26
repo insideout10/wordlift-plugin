@@ -10,6 +10,8 @@
  * @since      3.6.0
  */
 
+use Wordlift\Api\Default_Api_Service;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -498,21 +500,17 @@ class Wordlift_Configuration_Service {
 		 * @since 3.20.0
 		 *
 		 */
-		$home_url    = defined( 'WP_HOME' ) ? WP_HOME : get_option( 'home' );
+		$home_url = defined( 'WP_HOME' ) ? WP_HOME : get_option( 'home' );
 		$site_url = apply_filters( 'wl_production_site_url', untrailingslashit( $home_url ) );
 
 		// Build the URL.
-		$url = $this->get_accounts()
+		$url = '/accounts'
 		       . '?key=' . rawurlencode( $key )
 		       . '&url=' . rawurlencode( $site_url )
 		       . '&country=' . $this->get_country_code()
 		       . '&language=' . $this->get_language_code();
 
-		$args = wp_parse_args( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
-			'method' => 'PUT',
-		) );
-
-		$response = wp_remote_request( $url, $args );
+		$response = Default_Api_Service::get_instance()->request( 'PUT', $url )->get_response();
 
 		// The response is an error.
 		if ( is_wp_error( $response ) ) {
@@ -596,20 +594,6 @@ class Wordlift_Configuration_Service {
 	public function get_accounts_by_key_dataset_uri( $key ) {
 
 		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "accounts/key=$key/dataset_uri";
-	}
-
-	/**
-	 * Get the API URI to retrieve the account info using the WordLift Key.
-	 *
-	 * @param string $key The WordLift key to use.
-	 *
-	 * @return string The API URI.
-	 * @since 3.26.0
-	 *
-	 */
-	public function get_accounts_info_by_key( $key ) {
-
-		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "accounts/info";
 	}
 
 	/**
