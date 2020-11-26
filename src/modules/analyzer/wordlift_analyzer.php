@@ -57,8 +57,10 @@ function wl_ajax_analyze_action() {
  */
 function wl_analyze_content( $data, $content_type ) {
 
-	$default_response = json_decode( '{ "entities": {}, "annotations": {}, "topics": {} }' );
-	$request_body = json_decode( $data, true );
+	$default_response                = json_decode( '{ "entities": {}, "annotations": {}, "topics": {} }' );
+	$request_body                    = json_decode( $data, true );
+	$request_body['contentLanguage'] = Wordlift_Configuration_Service::get_instance()->get_language_code();
+	$data                            = wp_json_encode( $request_body );
 
 	// If dataset is not enabled, return a locally prepared response without analysis API.
 	if ( ! apply_filters( 'wl_features__enable__dataset', true ) ) {

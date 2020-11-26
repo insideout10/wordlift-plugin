@@ -14,8 +14,6 @@ namespace Wordlift\Post_Excerpt;
 
 use Wordlift\Api\Default_Api_Service;
 use Wordlift\Api\Response;
-use Wordlift\Api\User_Agent;
-use Wordlift_Configuration_Service;
 use WP_REST_Request;
 
 class Post_Excerpt_Rest_Controller {
@@ -121,13 +119,12 @@ class Post_Excerpt_Rest_Controller {
 			'min_length' => 60
 		);
 		// Construct the url with the configuration
-		$endpoint     = add_query_arg( $configuration, self::WORDLIFT_POST_EXCERPT_ENDPOINT );
-		$wordlift_key = Wordlift_Configuration_Service::get_instance()->get_key();
-		$user_agent   = User_Agent::get_user_agent();
-		$api_service  = new Default_Api_Service( apply_filters( 'wl_api_base_url', 'https://api.wordlift.io' ), 60, $user_agent, $wordlift_key );
-		$response     = $api_service->request(
+		$endpoint    = add_query_arg( $configuration, self::WORDLIFT_POST_EXCERPT_ENDPOINT );
+		$api_service = Default_Api_Service::get_instance();
+		$response    = $api_service->request(
 			'POST',
-			$endpoint, array( 'Content-Type' => 'text/plain' ),
+			$endpoint,
+			array( 'Content-Type' => 'text/plain' ),
 			$post_body,
 			null,
 			null,
