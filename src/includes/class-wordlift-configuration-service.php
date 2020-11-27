@@ -510,7 +510,8 @@ class Wordlift_Configuration_Service {
 		       . '&country=' . $this->get_country_code()
 		       . '&language=' . $this->get_language_code();
 
-		$response = Default_Api_Service::get_instance()->request( 'PUT', $url )->get_response();
+		$api_service = Default_Api_Service::get_instance();
+		$response    = $api_service->request( 'PUT', $url )->get_response();
 
 		// The response is an error.
 		if ( is_wp_error( $response ) ) {
@@ -524,7 +525,8 @@ class Wordlift_Configuration_Service {
 
 		// The response is not OK.
 		if ( 200 !== (int) $response['response']['code'] ) {
-			$this->log->error( "Unexpected status code when opening URL $url: " . $response['response']['code'] );
+			$base_url = $api_service->get_base_url();
+			$this->log->error( "Unexpected status code when opening URL $base_url$url: " . $response['response']['code'] );
 
 			$this->set_dataset_uri( '' );
 			$this->set_package_type( null );
