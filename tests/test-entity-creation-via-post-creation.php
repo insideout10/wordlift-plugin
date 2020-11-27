@@ -51,7 +51,7 @@ EOF;
 
 		// Here the entity should be created instead.
 		$entity = $entity_service->get_entity_post_by_uri( $original_entity_uri );
-		$this->assertNotNull( $entity );
+		$this->assertNotNull( $entity, "Can't find an entity by URI $original_entity_uri [ post_id :: $post_id ]." );
 
 		// Here the original uri should be properly as same_as
 		$same_as = wl_schema_get_value( $entity->ID, 'sameAs' );
