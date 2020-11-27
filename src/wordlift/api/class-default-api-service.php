@@ -70,7 +70,7 @@ class Default_Api_Service implements Api_Service {
 		return self::$instance;
 	}
 
-	public function request( $method, $url, $headers = array(), $body = null, $timeout = null, $user_agent = null, $args = array() ) {
+	public function request( $method, $path, $headers = array(), $body = null, $timeout = null, $user_agent = null, $args = array() ) {
 
 		// Get the timeout for this request.
 		$request_timeout = isset( $timeout ) ? $timeout : $this->timeout;
@@ -81,7 +81,7 @@ class Default_Api_Service implements Api_Service {
 			@set_time_limit( $request_timeout );
 		}
 
-		$request_url = $this->base_url . $url;
+		$request_url = $this->base_url . $path;
 
 		// Create the request args in the following order:
 		//  1. use `$args` as base if provided.
@@ -116,9 +116,13 @@ class Default_Api_Service implements Api_Service {
 		return new Response( $response );
 	}
 
-	public function get( $url, $headers = array(), $body = null, $timeout = null, $user_agent = null, $args = array() ) {
+	public function get( $path, $headers = array(), $body = null, $timeout = null, $user_agent = null, $args = array() ) {
 
-		return $this->request( 'GET', $url, $headers, $body, $timeout, $user_agent, $args );
+		return $this->request( 'GET', $path, $headers, $body, $timeout, $user_agent, $args );
+	}
+
+	public function get_base_url() {
+		return $this->base_url;
 	}
 
 }
