@@ -25,7 +25,12 @@ class Response_Adapter {
 
 	function response( $response ) {
 
-		$headers              = wp_remote_retrieve_headers( $response );
+		$headers = wp_remote_retrieve_headers( $response );
+
+		// Bail out if the `wl1` header isn't defined.
+		if ( ! isset( $headers['wl1'] ) ) {
+			return $response;
+		}
 		$wl1_as_base64_string = $headers['wl1'];
 		$wl1                  = json_decode( base64_decode( $wl1_as_base64_string ), true );
 
