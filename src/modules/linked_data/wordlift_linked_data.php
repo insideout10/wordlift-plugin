@@ -7,9 +7,6 @@
  * @subpackage Wordlift/modules/linked_data
  */
 
-if ( apply_filters( 'wl_feature__enable__dataset-ng', false ) ) {
-	return;
-}
 /**
  * Receive events from post saves, and split them according to the post type.
  *
