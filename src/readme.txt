@@ -1221,9 +1221,19 @@ Our mission is an *utopian one*: **organize the world general knowledge** by pro
 
 = In open source we trust =
 
-**WordLift** is built on **open source software**. <br />
-**WordLift** uses **open source tools for natural language and semantic processing**. <br />
+**WordLift** is built on **open source software**.
+**WordLift** uses **open source tools for natural language and semantic processing**.
 
 = In data ownership we trust =
 
 We believe content creators should **own, retain and exploit** the **value of the metadata they create**.
+
+= Get involved with the Development =
+
+If you are a coder and wish to contribute to WordLift plugin you are welcome to get involved via Github.
+
+**WordLift Plugin Repo:**
+[https://github.com/insideout10/wordlift-plugin](https://github.com/insideout10/wordlift-plugin)
+
+**WordLift Plugin Issue Tracker:**
+[https://github.com/insideout10/wordlift-plugin/issues](https://github.com/insideout10/wordlift-plugin/issues)
