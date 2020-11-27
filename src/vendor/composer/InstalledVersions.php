@@ -19,7 +19,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '795b4ba4abfb8776e40f340700694718875f006f',
+    'reference' => '2b5035defcc45dcd4370a5865ba4fe5e91035435',
     'name' => '__root__',
   ),
   'versions' => 
@@ -31,7 +31,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '795b4ba4abfb8776e40f340700694718875f006f',
+      'reference' => '2b5035defcc45dcd4370a5865ba4fe5e91035435',
     ),
     'deliciousbrains/wp-background-processing' => 
     array (
