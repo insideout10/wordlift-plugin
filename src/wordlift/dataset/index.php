@@ -17,7 +17,7 @@ if ( apply_filters( 'wl_feature__enable__dataset-ng', false ) ) {
 	 *
 	 * @since 3.27.6
 	 */
-	require dirname( dirname( dirname( __FILE__ ) ) ) . '/vendor/autoload.php';
+//	require dirname( dirname( dirname( __FILE__ ) ) ) . '/vendor/autoload.php';
 
 	$sync_service = new Sync_Service( $api_service, Jsonld_Service::get_instance() );
 	new Sync_Wpjson_Endpoint( $sync_service );
