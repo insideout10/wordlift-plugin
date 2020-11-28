@@ -4,8 +4,9 @@ use Wordlift\Dataset\Sync_Service;
 use Wordlift\Jsonld\Jsonld_Service;
 
 /**
- * @since ?.??.??
+ * @since 3.27.7
  * @author Naveen Muthusamy <naveen@wordlift.io>
+ * @group dataset
  */
 class Dataset_Sync_Service_Test extends Wordlift_Unit_Test_Case {
 

@@ -2,6 +2,7 @@
 
 /**
  * Class EntityImagesTest
+ * @group entity
  */
 class EntityImagesTest extends Wordlift_Unit_Test_Case {
 

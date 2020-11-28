@@ -5,6 +5,7 @@ use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Post_Type_Hook;
 /**
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * @since 3.27.1
+ * @group install
  */
 
 class Install_3_27_1_Test extends Wordlift_Unit_Test_Case {

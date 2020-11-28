@@ -9,6 +9,10 @@
 
 use Wordlift\Entity\Entity_Store;
 
+/**
+ * Class Entity_Factory_Test
+ * @group entity
+ */
 class Entity_Factory_Test extends \Wordlift_Unit_Test_Case {
 
 	/**

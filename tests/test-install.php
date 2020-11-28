@@ -11,6 +11,7 @@
  *
  * @since   3.10.0
  * @package Wordlift
+ * @group install
  */
 class Wordlift_Install_Test extends Wordlift_Unit_Test_Case {
 

@@ -14,6 +14,7 @@
  * Define the Wordlift_Entity_Service_Test class.
  *
  * @since 3.2.0
+ * @group entity
  */
 class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 

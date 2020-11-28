@@ -13,6 +13,7 @@
  * @since      3.14.0
  * @package    Wordlift
  * @subpackage Wordlift/tests
+ * @group metabox
  */
 class WL_Metabox_Recipe_Test extends Wordlift_Unit_Test_Case {
 

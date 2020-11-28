@@ -11,6 +11,7 @@
  * Define the Wordlift_Api_Service_Test class.
  *
  * @since 3.20.0
+ * @group api
  */
 class Wordlift_Api_Service_Test extends Wordlift_Unit_Test_Case {
 

@@ -13,6 +13,7 @@
  * Define the Wordlift_Metabox_Entities_Test class.
  *
  * @since 3.19.4
+ * @group metabox
  */
 class Wordlift_Metabox_Entities_Test extends Wordlift_Unit_Test_Case {
 

@@ -2,10 +2,10 @@
 /**
  * Test the Content Analysis.
  *
- * @group analysis
- * @author David Riccitelli <david@wordliftio>
+ * @author David Riccitelli <david@wordlift.io>
  * @package Wordlift/Tests
  * @since 3.24.2
+ * @group ajax
  */
 
 class Content_Analysis_Test extends Wordlift_Ajax_Unit_Test_Case {

@@ -13,6 +13,7 @@
  * Define the Wordlift_Admin_Test class.
  *
  * @since 3.19.4
+ * @group admin
  */
 class Wordlift_Admin_Test extends Wordlift_Unit_Test_Case {
 

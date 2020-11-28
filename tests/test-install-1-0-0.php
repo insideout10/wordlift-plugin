@@ -13,6 +13,7 @@
  * Define the Wordlift_Install_1_0_0_Test class.
  *
  * @since 3.20.0
+ * @group install
  */
 class Wordlift_Install_1_0_0_Test extends Wordlift_Unit_Test_Case {
 

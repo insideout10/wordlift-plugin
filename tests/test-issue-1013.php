@@ -9,6 +9,7 @@ use Wordlift\Entity\Entity_Helper;
  * @author David Riccitelli <david@wordlift.io>
  * @since 3.25.1
  * @package Wordlift\Tests
+ * @group issue
  */
 class Wordlift_Issue_1013_Test extends Wordlift_Unit_Test_Case {
 

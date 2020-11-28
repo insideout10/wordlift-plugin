@@ -8,6 +8,7 @@ use Wordlift\Jsonld\Jsonld_Service;
  * @author David Riccitelli <david@wordlift.io>
  * @since 3.26.0
  * @package Wordlift\Tests
+ * @group issue
  */
 class Wordlift_Issue_1072_Test extends Wordlift_Unit_Test_Case {
 

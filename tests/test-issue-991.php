@@ -13,6 +13,7 @@
  * @since      3.23.4
  * @package    Wordlift
  * @subpackage Wordlift/tests
+ * @group issue
  */
 class Wordlift_Issue_991 extends Wordlift_Unit_Test_Case {
 

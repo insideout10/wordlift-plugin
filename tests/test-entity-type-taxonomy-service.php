@@ -13,6 +13,7 @@
  * Define the Wordlift_Entity_Type_Taxonomy_Service_Test class.
  *
  * @since 3.20.0
+ * @group entity
  */
 class Wordlift_Entity_Type_Taxonomy_Service_Test extends Wordlift_Unit_Test_Case {
 

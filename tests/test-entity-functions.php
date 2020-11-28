@@ -1,6 +1,8 @@
 <?php
 /**
  * Class EntityTest
+ *
+ * @group entity
  */
 class Wordlift_Entity_Functions_Test extends Wordlift_Unit_Test_Case {
 

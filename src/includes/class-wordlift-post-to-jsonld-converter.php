@@ -97,10 +97,13 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			$timezone         = get_option( 'timezone_string' );
 			if ( ! empty( $timezone ) ) {
 				date_default_timezone_set( $timezone );
+				$jsonld['datePublished'] = get_post_time( 'Y-m-d\TH:i:sP', false, $post );
+				$jsonld['dateModified']  = get_post_modified_time( 'Y-m-d\TH:i:sP', false, $post );
+				date_default_timezone_set( $default_timezone );
+			} else {
+				$jsonld['datePublished'] = get_post_time( 'Y-m-d\TH:i', true, $post, false );
+				$jsonld['dateModified']  = get_post_modified_time( 'Y-m-d\TH:i', true, $post, false );
 			}
-			$jsonld['datePublished'] = get_post_time( 'Y-m-d\TH:i:sP', false, $post );
-			$jsonld['dateModified']  = get_post_modified_time( 'Y-m-d\TH:i:sP', false, $post );
-			date_default_timezone_set( $default_timezone );
 		} catch ( Exception $e ) {
 			$jsonld['datePublished'] = get_post_time( 'Y-m-d\TH:i', true, $post, false );
 			$jsonld['dateModified']  = get_post_modified_time( 'Y-m-d\TH:i', true, $post, false );

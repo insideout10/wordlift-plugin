@@ -11,6 +11,7 @@
  * Define the Wordlift_Schemaorg_Class_Service_Test class.
  *
  * @since 3.20.0
+ * @group ajax
  */
 class Wordlift_Schemaorg_Class_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 
