@@ -22,8 +22,8 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 	}
 
 	public function test_blocks_enabled_correctly_without_filter() {
-		if  ( !function_exists('register_block_type') ) {
-			$this->markTestSkipped("This test requires register_block_type function to be present");
+		if ( ! function_exists( 'register_block_type' ) ) {
+			$this->markTestSkipped( "This test requires register_block_type function to be present" );
 		}
 		/**
 		 * Removing this action because register_block_type triggers doing_it_wrong which causes phpunit error.
@@ -45,8 +45,8 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 		 */
 		remove_all_actions( 'doing_it_wrong_run' );
 
-		if  ( !class_exists('WP_Block_Type_Registry') ) {
-			$this->markTestSkipped("This test requires WP_Block_Type_Registry class to be present");
+		if ( ! class_exists( 'WP_Block_Type_Registry' ) ) {
+			$this->markTestSkipped( "This test requires WP_Block_Type_Registry class to be present" );
 		}
 
 		// remove all registered blocks
@@ -119,7 +119,17 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 		$wordlift = new Wordlift();
 		$wordlift->run();
 		do_action( 'admin_menu' );
-		$this->assertCount( 0, $submenu );
+		$this->assertCount( 1, $submenu );
+		$this->assertEqualSets( array(
+			'index.php' => array(
+				array(
+					'',
+					'manage_options',
+					'wl-setup',
+					''
+				)
+			)
+		), $submenu );
 	}
 
 
@@ -135,8 +145,8 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 		 */
 		$wp_hook = $wp_filter['admin_notices'];
 
-		if  ( gettype($wp_hook) !== 'object' ) {
-			$this->markTestSkipped('$wp_hook is not an object so skipping test');
+		if ( gettype( $wp_hook ) !== 'object' ) {
+			$this->markTestSkipped( '$wp_hook is not an object so skipping test' );
 		}
 
 		$this->assertNotEquals( 0, count( $wp_hook->callbacks ) );
@@ -164,8 +174,8 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 
 	public function test_when_filter_enabled_show_in_menu_should_be_false() {
 
-		if  ( !function_exists('unregister_post_type') ) {
-			$this->markTestSkipped("This test requires unregister_post_type function to be present");
+		if ( ! function_exists( 'unregister_post_type' ) ) {
+			$this->markTestSkipped( "This test requires unregister_post_type function to be present" );
 		}
 
 		unregister_post_type( 'entity' );
@@ -186,8 +196,8 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 		$this->assertArrayHasKey( 'do_meta_boxes', $wp_filter );
 		$hook = $wp_filter['do_meta_boxes'];
 
-		if  ( gettype($hook) !== 'object' ) {
-			$this->markTestSkipped('$hook is not an object so skipping test');
+		if ( gettype( $hook ) !== 'object' ) {
+			$this->markTestSkipped( '$hook is not an object so skipping test' );
 		}
 
 		// Currently we only render post excerpt on this hook.
@@ -209,8 +219,8 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 		// since the filter is enabled, we should be able to do analysis.
 		$hook = $wp_filter['wp_ajax_wl_analyze'];
 
-		if  ( gettype($hook) !== 'object' ) {
-			$this->markTestSkipped('$hook is not an object so skipping test');
+		if ( gettype( $hook ) !== 'object' ) {
+			$this->markTestSkipped( '$hook is not an object so skipping test' );
 		}
 
 		$this->assertCount( 1, $hook->callbacks );
@@ -227,8 +237,8 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 		// since the filter is enabled, we should be able to do analysis.
 		$hook = $wp_filter['wp_ajax_wl_analyze'];
 
-		if  ( gettype($hook) !== 'object' ) {
-			$this->markTestSkipped('$hook is not an object so skipping test');
+		if ( gettype( $hook ) !== 'object' ) {
+			$this->markTestSkipped( '$hook is not an object so skipping test' );
 		}
 
 		$this->assertCount( 1, $hook->callbacks );
@@ -240,7 +250,7 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 	public function test_filter_not_enabled_should_return_dataset_uri() {
 		$post_id = $this->factory()->post->create();
 		$uri     = Wordlift_Entity_Service::get_instance()->get_uri( $post_id );
-		$this->assertNotNull($uri);
+		$this->assertNotNull( $uri );
 	}
 
 	public function test_when_filter_enabled_should_return_in_the_correct_format() {
@@ -249,7 +259,7 @@ class Test_Wl_For_Wc_Hooks extends WP_UnitTestCase {
 		 * so that item IDs could be the permalink + “#” + cpt type slug,
 		 * e.g. if I have a product at http://example.org/my-product the item ID would be http://example.org/my-product#product
 		 */
-		$post_id      = $this->factory()->post->create();
+		$post_id = $this->factory()->post->create();
 		add_filter( 'wl_features__enable__dataset', '__return_false' );
 		$uri          = Wordlift_Entity_Service::get_instance()->get_uri( $post_id );
 		$cpt_slug     = get_post_type( $post_id );
