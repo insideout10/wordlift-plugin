@@ -33,7 +33,9 @@ function wl_ajax_analyze_action() {
 
 	check_admin_referer( 'wl_analyze' );
 
-	$data = filter_input( INPUT_POST, 'data' );
+	// If you use `filter_input` here, `Ajax_Content_Analysis_Test` would fail because `filter_input` doesn't use
+	// `$_POST`.
+	$data = $_POST['data'];
 
 	wp_send_json_success( wl_analyze_content( $data, 'application/json; charset=' . strtolower( get_bloginfo( 'charset' ) ) ) );
 
@@ -80,6 +82,8 @@ function wl_analyze_content( $data, $content_type ) {
 
 	// If it's an error log it.
 	if ( is_wp_error( $json ) ) {
+
+		error_log( var_export( $json, true ) );
 
 		return Analysis_Response_Ops_Factory::get_instance()
 		                                    ->create( $default_response )

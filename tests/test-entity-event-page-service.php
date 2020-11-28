@@ -7,13 +7,13 @@
  */
 
 /**
- * Define the {@link Wordlift_Event_Entity_Page_Service_Test} class.
+ * Define the {@link Wordlift_Entity_Event_Page_Service_Test} class.
  *
  * @since   3.12.0
  * @package Wordlift
  * @group entity
  */
-class Wordlift_Event_Entity_Page_Service_Test extends Wordlift_Unit_Test_Case {
+class Wordlift_Entity_Event_Page_Service_Test extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * Test non main query is ignored.

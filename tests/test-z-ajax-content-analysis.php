@@ -8,7 +8,7 @@
  * @group ajax
  */
 
-class Content_Analysis_Test extends Wordlift_Ajax_Unit_Test_Case {
+class Ajax_Content_Analysis_Test extends Wordlift_Ajax_Unit_Test_Case {
 
 	public function test() {
 
@@ -22,9 +22,9 @@ class Content_Analysis_Test extends Wordlift_Ajax_Unit_Test_Case {
 		wp_add_object_terms( $post_id, 'thing', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 		$_POST = array(
-			'action' => 'wl_analyze',
+			'action'   => 'wl_analyze',
 			'_wpnonce' => wp_create_nonce( 'wl_analyze' ),
-			'data'   => file_get_contents( dirname( __FILE__ ) . 'assets/content-analysis-request-1.json' ),
+			'data'     => file_get_contents( dirname( __FILE__ ) . '/assets/content-analysis-request-1.json' ),
 		);
 
 		try {
