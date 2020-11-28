@@ -483,7 +483,7 @@ function run_wordlift() {
 		// Licenses Images.
 		$user_agent                   = User_Agent::get_user_agent();
 		$wordlift_key                 = Wordlift_Configuration_Service::get_instance()->get_key();
-		$api_service                  = new Default_Api_Service( apply_filters( 'wl_api_base_url', 'https://api.wordlift.io' ), 60, $user_agent, $wordlift_key );
+		$api_service                  = new Default_Api_Service( apply_filters( 'wl_api_base_url', WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE ), 60, $user_agent, $wordlift_key );
 		$image_license_factory        = new Image_License_Factory();
 		$image_license_service        = new Image_License_Service( $api_service, $image_license_factory );
 		$image_license_cache          = new Ttl_Cache( 'image-license', 86400 * 30 ); // 30 days.

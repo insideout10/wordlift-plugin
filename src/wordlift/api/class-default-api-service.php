@@ -52,7 +52,7 @@ class Default_Api_Service implements Api_Service {
 
 		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
 
-		$this->base_url     = $base_url;
+		$this->base_url     = untrailingslashit( $base_url );
 		$this->timeout      = $timeout;
 		$this->user_agent   = $user_agent;
 		$this->wordlift_key = $wordlift_key;

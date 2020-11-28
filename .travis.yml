@@ -107,7 +107,8 @@ env:
 
     # WordLift Test API URL.
     # - secure: "QVEH7GwZJR9nWnEKq99QZATwsppd+3eKHcGtZeAKcxaScW6tOnyJRzLR3pKi1M5PK2azdgu9ZuYxk6RRjO6gEGQhqVa9yrWhwXv4KmKeOUdszRW2gH0uQ1cQEU4Stjibppq+sHzRSC6di3yrLWxdfc+5HZHAj8uut5ISpFV3Ozc="
-    - secure: "QMCAuYJW/g5Nha19YzjLxbfJoiOUFYE28Bh5TrfM9bO/rFUHSjqQ/LdjxOHZnSMsYkVMU0uN29JGwDeVGw3llkcE/jAu6uQtopn9qKHpjat1Fk/h5W19K+nR+VHxTtuxCn2NWzqHO1AwlRAMU8kSi5l9sqm4GX2r3hjEMRj3tjI="
+    # - secure: "QMCAuYJW/g5Nha19YzjLxbfJoiOUFYE28Bh5TrfM9bO/rFUHSjqQ/LdjxOHZnSMsYkVMU0uN29JGwDeVGw3llkcE/jAu6uQtopn9qKHpjat1Fk/h5W19K+nR+VHxTtuxCn2NWzqHO1AwlRAMU8kSi5l9sqm4GX2r3hjEMRj3tjI="
+    - secure: "LZ0hwG2HyqXNGKsrZXAF20E5Y6zAE0C4Ixq6fFCMpNHAAJ+y+dAWD2R60Cpv4l8Jo/Fo407i/oAz7c2u+dLqBXJtYBUF9Cenj3Z7jQo5cFF599DZzw99Mt19X/qTjOIFDkB5k2J6IPSv4gX7LHqLB4lsuXgjY9E22d2HzQ2H4Tk="
 
     # CodeClimate Repository Token.
     - secure: "Fo6kJNe7LNHPfj6fBIyqOI7Zkm2DZwV7IH8jTGvZF5UkPvJiUyjN13z1TRXOohUYvigITZduF0f2I3MaxkAEpb/d5e2yf/Zu7x/nlRQzcSWM9zPMuW+oJG/b+s2m9F65uYkOIi1J5vI7w/G888zGS9LzSgwh4mXxeG1bm3b4EGw="
