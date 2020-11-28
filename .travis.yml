@@ -103,7 +103,7 @@ env:
 
     # WordLift Test Key.
     # This key is dedicate only to tests.
-    - secure: "S21RrillnOjH+kZW91cd0CKsINuQAflxAP8pdloZ6aJqpNCoM18kLL4nRE5y4SS3b0ev6IurpmpJ8flQMFZAGrIcZ1pLsn5wjlPkMQNaGHlTI5MuYpbgGqW+oN3UdyvTQDIUF6Zhfk8Ajq8acK/Gid+laGjoGt+qFHHPevGaj/A="
+    - secure: "ZUpe8DpYbAOr371Wr6PboiViWyTmv5UdkWZZvpPEzdp/bKL+Xr2a+3vULk7uJQp9keZ93zZd12Yr3S5PaeIHItYi/lP6A7lOh+/6/5n9fmB1azJAzJewPlzkR1JM1KkEhEZSouPu3HDXp+IV5LhJYi+vpnSIUf1FEuYpyFUyZuM="
 
     # WordLift Test API URL.
     # - secure: "QVEH7GwZJR9nWnEKq99QZATwsppd+3eKHcGtZeAKcxaScW6tOnyJRzLR3pKi1M5PK2azdgu9ZuYxk6RRjO6gEGQhqVa9yrWhwXv4KmKeOUdszRW2gH0uQ1cQEU4Stjibppq+sHzRSC6di3yrLWxdfc+5HZHAj8uut5ISpFV3Ozc="
