@@ -14,8 +14,8 @@ jobs:
           mysql user: 'wordpress'
           mysql password: 'password'
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+#      - name: Setup tmate session
+#        uses: mxschmitt/action-tmate@v3
 
       - name: Test
         uses: ziodave/wordpress-tests@php5.6-phpunit4.8-wordpress4.4-v0.0.1
