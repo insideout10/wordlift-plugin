@@ -6,7 +6,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-#
+
+      - uses: mirromutth/mysql-action@v1.1
+        with:
+          mysql version: '5.7'
+          mysql database: 'wordpress'
+          mysql user: 'wordpress'
+          mysql password: 'password'
+
 #      - name: Setup tmate session
 #        uses: mxschmitt/action-tmate@v3
 
