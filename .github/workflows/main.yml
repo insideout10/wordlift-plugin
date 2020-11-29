@@ -9,8 +9,8 @@ jobs:
 
       - name: MySQL
         run:
-          sudo systemctl enable mysql.service
-          sudo systemctl start mysql.service
+          - sudo systemctl enable mysql.service
+          - sudo systemctl start mysql.service
 
 #      - uses: mirromutth/mysql-action@v1.1
 #        with:
