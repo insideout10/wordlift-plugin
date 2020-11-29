@@ -1,0 +1,11 @@
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: phpunit tests
+        id: phpunit
+        uses: ziodave/wordpress-tests@php5.6-phpunit4.8-wordpress4.4-v0.0.1
+        with:
+          args: -c phpunit.xml
