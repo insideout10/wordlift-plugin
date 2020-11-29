@@ -6,6 +6,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: MySQL
         run:
           sudo systemctl enable mysql.service
           sudo systemctl start mysql.service
