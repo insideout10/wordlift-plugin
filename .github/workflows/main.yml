@@ -13,4 +13,6 @@ jobs:
       - name: Test
         uses: ziodave/wordpress-tests@php5.6-phpunit4.8-wordpress4.4-v0.0.1
         with:
-          args: -c /github/workspace/phpunit.xml
+          args:
+            - -c
+            - /github/workspace/phpunit.xml
