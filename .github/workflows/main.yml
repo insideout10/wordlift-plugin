@@ -6,13 +6,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        run:
+          sudo systemctl enable mysql.service
+          sudo systemctl start mysql.service
 
-      - uses: mirromutth/mysql-action@v1.1
-        with:
-          mysql version: '5.7'
-          mysql database: 'wordpress'
-          mysql user: 'wordpress'
-          mysql password: 'password'
+#      - uses: mirromutth/mysql-action@v1.1
+#        with:
+#          mysql version: '5.7'
+#          mysql database: 'wordpress'
+#          mysql user: 'wordpress'
+#          mysql password: 'password'
 
 #      - name: Setup tmate session
 #        uses: mxschmitt/action-tmate@v3
