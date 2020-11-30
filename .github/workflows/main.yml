@@ -25,9 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: >
-          GITHUB_NETWORK=$(docker network ls --format="{{ .Name }}" --filter "Name=^github_network_") && \
-          echo $DOCKER_GITHUB_NETWORK && \
           docker run --workdir /github/workspace --rm -v "/var/run/docker.sock":"/var/run/docker.sock" \
             -v $GITHUB_WORKSPACE:"/github/workspace" \
-            --network $DOCKER_GITHUB_NETWORK \
+            --network $(docker network ls --format="{{ .Name }}" --filter "Name=^github_network_") \
               ziodave/wordpress-tests:${{ matrix.image }} -c phpunit.xml
