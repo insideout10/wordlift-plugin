@@ -56,6 +56,8 @@ class Edit_Mapping_Page_Test extends Wordlift_Unit_Test_Case {
 	 * zero terms in their value.
 	 */
 	public function test_check_there_is_no_terms_in_taxonomy_array() {
+		$this->assertFalse( is_admin() );
+
 		$this->assertArrayHasKey( 'wl_rule_field_one_options', $this->ui_settings_array, 'Taxonomy options should be present' );
 		$this->assertArrayHasKey( 'wl_rule_field_two_options', $this->ui_settings_array, 'Taxonomy term options should be present' );
 		$taxonomy_options = $this->ui_settings_array['wl_rule_field_one_options'];
