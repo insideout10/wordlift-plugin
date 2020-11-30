@@ -64,7 +64,11 @@ class Edit_Mapping_Page_Test extends Wordlift_Unit_Test_Case {
 		$filtered_term_options = array_filter( $term_options, function ( $item ) {
 			return $item['parent_value'] !== 'post_type';
 		} );
-		$this->assertCount( 0, $filtered_term_options, 'This is what I got: ' . var_export( $filtered_term_options, true ) );
+
+		$this->assertCount( 0, $filtered_term_options, 'This is what I got: ' . var_export( array(
+				'ui_settings_array'     => $this->ui_settings_array,
+				'filtered_term_options' => $filtered_term_options
+			), true ) );
 	}
 
 	/**

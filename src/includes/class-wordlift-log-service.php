@@ -87,7 +87,7 @@ class Wordlift_Log_Service {
 	 */
 	public function log( $level, $message ) {
 
-		echo( sprintf( self::MESSAGE_TEMPLATE . "\n", self::$levels[ $level ], $this->class_name, is_array( $message ) ? implode( ', ', $message ) : $message ) );
+		// echo( sprintf( self::MESSAGE_TEMPLATE . "\n", self::$levels[ $level ], $this->class_name, is_array( $message ) ? implode( ', ', $message ) : $message ) );
 
 		// Bail out if `WL_DEBUG` isn't defined or it's false.
 		if ( ! defined( 'WL_DEBUG') || false === WL_DEBUG ) {
