@@ -40,4 +40,4 @@ jobs:
             -v $GITHUB_WORKSPACE:"/github/workspace" \
             --network $(docker network ls --format="{{ .Name }}" --filter "Name=^github_network_") \
               ziodave/wordpress-tests:${{ matrix.image }} -c phpunit.xml --debug --stop-on-error --stop-on-fail \
-                --group backend,dataset,default,entity,frontend,install,integrations,issue,jsonld,mappings,metabox,redlink,sparql,taxonomy,widget,ajax
+                --group backend,dataset,default,entity,frontend,install,issue,jsonld,mappings,metabox,redlink,sparql,taxonomy,widget,integrations,ajax
