@@ -1,7 +1,7 @@
 on: [ push ]
 
 jobs:
-  "php5.6-wordpress4.4":
+  php5-6_wordpress4-4:
     runs-on: ubuntu-latest
 
     #    container:
