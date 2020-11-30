@@ -24,7 +24,7 @@ jobs:
           - 3306:3306
     steps:
       - uses: actions/checkout@v2
-      - run: |-
+      - run: >
           docker run --workdir /github/workspace --rm -e ACF_PRO_KEY -e WORDLIFT_API_URL -e WORDLIFT_KEY
             -e INPUT_ARGS -e HOME -e GITHUB_JOB -e GITHUB_REF -e GITHUB_SHA -e GITHUB_REPOSITORY
             -e GITHUB_REPOSITORY_OWNER -e GITHUB_RUN_ID -e GITHUB_RUN_NUMBER -e GITHUB_RETENTION_DAYS -e GITHUB_ACTOR
