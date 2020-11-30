@@ -3,15 +3,37 @@ on: [ push ]
 jobs:
   test:
     runs-on: ubuntu-latest
+    container:
+      image: ziodave/wordpress-tests:php5.6-phpunit4.8-wordpress4.4
+      env:
+        ACF_PRO_KEY: ${{ secrets.ACF_PRO_KEY }}
+        WORDLIFT_API_URL: ${{  secrets.WORDLIFT_API_URL }}
+        WORDLIFT_KEY: ${{ secrets.WORDLIFT_KEY }}
+
+    services:
+      db:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_USER: wordpress
+          MYSQL_PASSWORD: password
+          MYSQL_DATABASE: wordpress
+        ports:
+          - 3306:3306
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: MySQL
-        run:
-          sudo systemctl enable mysql.service &&
-            sudo systemctl start mysql.service &&
-            mysql -u root -proot < .github/mysql-init/0_init.sql
+      - name: Test
+        run: -c phpunit.xml
+
+#
+#      - name: MySQL
+#        run:
+#          sudo systemctl enable mysql.service &&
+#            sudo systemctl start mysql.service &&
+#            mysql -u root -proot < .github/mysql-init/0_init.sql
 
 #      - uses: mirromutth/mysql-action@v1.1
 #        with:
@@ -23,8 +45,8 @@ jobs:
 #      - name: Setup tmate session
 #        uses: mxschmitt/action-tmate@v3
 
-      - name: Test
-        uses: ziodave/wordpress-tests@php5.6-phpunit4.8-wordpress4.4-v0.0.1
-        with:
-          arg0: -c
-          arg1: /github/workspace/phpunit.xml
+#      - name: Test
+#        uses: ziodave/wordpress-tests@php5.6-phpunit4.8-wordpress4.4-v0.0.1
+#        with:
+#          arg0: -c
+#          arg1: /github/workspace/phpunit.xml
