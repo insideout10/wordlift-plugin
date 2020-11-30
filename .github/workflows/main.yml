@@ -16,10 +16,11 @@ jobs:
           - 3306:3306
 
     steps:
-      - name: Checkout
+      - &checkout
+        name: Checkout
         uses: actions/checkout@v2
-
-      - name: Test
+      - &phpunit
+        name: Test
         uses: docker://ziodave/wordpress-tests:php5.6-phpunit4.8-wordpress4.4
         env:
           ACF_PRO_KEY: ${{ secrets.ACF_PRO_KEY }}
@@ -28,5 +29,9 @@ jobs:
         with:
           args: -c phpunit.xml
 
-  php7-1_wordpress5-5: *test
-      - uses: docker://ziodave/php7.1-phpunit4.8-wordpress5.5
+  php7-1_wordpress5-5:
+    <<: *test
+    steps:
+      - <<: *checkout
+      - <<: *phpunit
+        uses: docker://ziodave/php7.1-phpunit4.8-wordpress5.5
