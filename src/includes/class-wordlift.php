@@ -748,7 +748,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.27.6.2';
+		$this->version     = '3.27.6.3';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -1799,11 +1799,8 @@ class Wordlift {
 		$this->loader->add_action( 'wp_ajax_wl_sample_data_delete', $this->sample_data_ajax_adapter, 'delete' );
 		/**
 		 * @since 3.26.0
-		 * Post excerpt meta box would be only loaded when the language is set
-		 * to english
 		 */
-		if ( $this->configuration_service->get_language_code() === 'en' &&
-		     apply_filters( 'wl_feature__enable__post_excerpt', true ) ) {
+		if ( apply_filters( 'wl_feature__enable__post_excerpt', true ) ) {
 			$excerpt_adapter = new Post_Excerpt_Meta_Box_Adapter();
 			$this->loader->add_action( 'do_meta_boxes', $excerpt_adapter, 'replace_post_excerpt_meta_box' );
 			// Adding Rest route for the post excerpt
