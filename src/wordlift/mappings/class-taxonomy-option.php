@@ -29,6 +29,8 @@ class Taxonomy_Option {
 
 		add_filter( 'wl_mappings_rule_field_one_options', function ( $rule_field_one_options ) {
 
+			debug_print_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 10 );
+
 			$rule_field_one_options[] = array(
 				'label'      => __( 'Taxonomy', 'wordlift' ),
 				'value'      => Taxonomy_Option::PARENT_VALUE,
