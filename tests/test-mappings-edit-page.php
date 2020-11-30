@@ -64,7 +64,7 @@ class Edit_Mapping_Page_Test extends Wordlift_Unit_Test_Case {
 		$filtered_term_options = array_filter( $term_options, function ( $item ) {
 			return $item['parent_value'] !== 'post_type';
 		} );
-		$this->assertCount( 0, $filtered_term_options );
+		$this->assertCount( 0, $filtered_term_options, 'This is what I got: ' . var_export( $filtered_term_options, true ) );
 	}
 
 	/**
@@ -157,7 +157,7 @@ class Edit_Mapping_Page_Test extends Wordlift_Unit_Test_Case {
 		$result = array_filter( $rule_field_one_options, function ( $item ) {
 			return $item['label'] === 'Taxonomy' && $item['value'] === 'taxonomy';
 		} );
-		$this->assertCount( 1, $result, 'Taxonomy option should be present in rule field one options' );
+		$this->assertCount( 1, $result, 'Taxonomy option should be present in rule field one options, instead this is what I got: ' . var_export( $result, true ) );
 	}
 
 	public function test_on_edit_mappings_page_all_taxonomy_options_should_be_loaded_on_rule_field_two() {
@@ -168,9 +168,10 @@ class Edit_Mapping_Page_Test extends Wordlift_Unit_Test_Case {
 		$rule_field_two_options = $settings['wl_rule_field_two_options'];
 		// get all registered taxonomies
 		$expected_count = count( get_object_taxonomies( 'post' ) );
-		$current_count  = count( array_filter( $rule_field_two_options, function ( $item ) {
+		$current        = array_filter( $rule_field_two_options, function ( $item ) {
 			return array_key_exists( 'parent_value', $item ) && $item['parent_value'] === 'taxonomy';
-		} ) );
-		$this->assertEquals( $expected_count, $current_count );
+		} );
+		$current_count  = count( $current );
+		$this->assertEquals( $expected_count, $current_count, 'This is what I got: ' . var_export( $current, true ) );
 	}
 }
