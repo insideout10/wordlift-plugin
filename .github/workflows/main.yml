@@ -1,15 +1,15 @@
 on: [ push ]
 
 jobs:
-  test:
+  "php5.6-wordpress4.4":
     runs-on: ubuntu-latest
 
-#    container:
-#      image: ziodave/wordpress-tests:php5.6-phpunit4.8-wordpress4.4
-#      env:
-#        ACF_PRO_KEY: ${{ secrets.ACF_PRO_KEY }}
-#        WORDLIFT_API_URL: ${{  secrets.WORDLIFT_API_URL }}
-#        WORDLIFT_KEY: ${{ secrets.WORDLIFT_KEY }}
+    #    container:
+    #      image: ziodave/wordpress-tests:php5.6-phpunit4.8-wordpress4.4
+    #      env:
+    #        ACF_PRO_KEY: ${{ secrets.ACF_PRO_KEY }}
+    #        WORDLIFT_API_URL: ${{  secrets.WORDLIFT_API_URL }}
+    #        WORDLIFT_KEY: ${{ secrets.WORDLIFT_KEY }}
 
     services:
       db:
@@ -32,6 +32,8 @@ jobs:
           ACF_PRO_KEY: ${{ secrets.ACF_PRO_KEY }}
           WORDLIFT_API_URL: ${{  secrets.WORDLIFT_API_URL }}
           WORDLIFT_KEY: ${{ secrets.WORDLIFT_KEY }}
+        with:
+          args: -c phpunit.xml
 
 #
 #      - name: MySQL
