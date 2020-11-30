@@ -5,7 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        image: [ "docker://ziodave/wordpress-tests:php5.6-phpunit4.8-wordpress4.4", "docker://ziodave/wordpress-tests:php7.1-phpunit4.8-wordpress5.5" ]
+        image: [ "php5.6-phpunit4.8-wordpress4.4", "php7.1-phpunit4.8-wordpress5.5" ]
+        max-parallel: 1
     env:
       ACF_PRO_KEY: ${{ secrets.ACF_PRO_KEY }}
       WORDLIFT_API_URL: ${{  secrets.WORDLIFT_API_URL }}
@@ -22,4 +23,4 @@ jobs:
           - 3306:3306
     steps:
       - uses: actions/checkout@v2
-      - run: docker run ${{ matrix.image }} -c phpunit.xml
+      - run: docker run ziodave/wordpress-tests:${{ matrix.image }} -c phpunit.xml
