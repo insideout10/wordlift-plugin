@@ -1,15 +1,8 @@
 on: [ push ]
 
 jobs:
-  php5-6_wordpress4-4:
+  php5-6_wordpress4-4: &test
     runs-on: ubuntu-latest
-
-    #    container:
-    #      image: ziodave/wordpress-tests:php5.6-phpunit4.8-wordpress4.4
-    #      env:
-    #        ACF_PRO_KEY: ${{ secrets.ACF_PRO_KEY }}
-    #        WORDLIFT_API_URL: ${{  secrets.WORDLIFT_API_URL }}
-    #        WORDLIFT_KEY: ${{ secrets.WORDLIFT_KEY }}
 
     services:
       db:
@@ -35,25 +28,5 @@ jobs:
         with:
           args: -c phpunit.xml
 
-#
-#      - name: MySQL
-#        run:
-#          sudo systemctl enable mysql.service &&
-#            sudo systemctl start mysql.service &&
-#            mysql -u root -proot < .github/mysql-init/0_init.sql
-
-#      - uses: mirromutth/mysql-action@v1.1
-#        with:
-#          mysql version: '5.7'
-#          mysql database: 'wordpress'
-#          mysql user: 'wordpress'
-#          mysql password: 'password'
-
-#      - name: Setup tmate session
-#        uses: mxschmitt/action-tmate@v3
-
-#      - name: Test
-#        uses: ziodave/wordpress-tests@php5.6-phpunit4.8-wordpress4.4-v0.0.1
-#        with:
-#          arg0: -c
-#          arg1: /github/workspace/phpunit.xml
+  php7-1_wordpress5-5: *test
+      - uses: docker://ziodave/php7.1-phpunit4.8-wordpress5.5
