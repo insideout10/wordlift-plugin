@@ -40,4 +40,4 @@ jobs:
             -v $GITHUB_WORKSPACE:"/github/workspace" \
             --network $(docker network ls --format="{{ .Name }}" --filter "Name=^github_network_") \
               ziodave/wordpress-tests:${{ matrix.image }} -c phpunit.xml --stop-on-error --stop-on-fail \
-                --filter Edit_Mapping_Page_Test::test_check_there_is_no_terms_in_taxonomy_array
+                --filter Edit_Mapping_Page_Test::
