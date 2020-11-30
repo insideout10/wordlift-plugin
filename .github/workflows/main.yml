@@ -22,5 +22,4 @@ jobs:
           - 3306:3306
     steps:
       - uses: actions/checkout@v2
-      - uses: ${{ matrix.image }}
-        with.args: -c phpunit.xml
+      - run: docker run ${{ matrix.image }} -c phpunit.xml
