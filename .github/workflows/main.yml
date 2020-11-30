@@ -1,37 +1,32 @@
 on: [ push ]
 
+env:
+  ACF_PRO_KEY: ${{ secrets.ACF_PRO_KEY }}
+  WORDLIFT_API_URL: ${{  secrets.WORDLIFT_API_URL }}
+  WORDLIFT_KEY: ${{ secrets.WORDLIFT_KEY }}
+
+defaults:
+  runs-on: ubuntu-latest
+  services:
+    db:
+      image: mysql:5.7
+      env:
+        MYSQL_ROOT_PASSWORD: password
+        MYSQL_USER: wordpress
+        MYSQL_PASSWORD: password
+        MYSQL_DATABASE: wordpress
+      ports:
+        - 3306:3306
+
 jobs:
-  php5-6_wordpress4-4: &test
-    runs-on: ubuntu-latest
-
-    services:
-      db:
-        image: mysql:5.7
-        env:
-          MYSQL_ROOT_PASSWORD: password
-          MYSQL_USER: wordpress
-          MYSQL_PASSWORD: password
-          MYSQL_DATABASE: wordpress
-        ports:
-          - 3306:3306
-
+  php5-6_wordpress4-4:
     steps:
-      - &checkout
-        name: Checkout
-        uses: actions/checkout@v2
-      - &phpunit
-        name: Test
-        uses: docker://ziodave/wordpress-tests:php5.6-phpunit4.8-wordpress4.4
-        env:
-          ACF_PRO_KEY: ${{ secrets.ACF_PRO_KEY }}
-          WORDLIFT_API_URL: ${{  secrets.WORDLIFT_API_URL }}
-          WORDLIFT_KEY: ${{ secrets.WORDLIFT_KEY }}
-        with:
-          args: -c phpunit.xml
+      - uses: actions/checkout@v2
+      - uses: docker://ziodave/wordpress-tests:php5.6-phpunit4.8-wordpress4.4
+        with.args: -c phpunit.xml
 
   php7-1_wordpress5-5:
-    <<: *test
     steps:
-      - <<: *checkout
-      - <<: *phpunit
-        uses: docker://ziodave/php7.1-phpunit4.8-wordpress5.5
+      - uses: actions/checkout@v2
+      - uses: docker://ziodave/wordpress-tests:php7.1-phpunit4.8-wordpress5.5
+        with.args: -c phpunit.xml
