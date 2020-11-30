@@ -13,7 +13,7 @@
  * @since 3.6.0
  * @group backend
  */
-class Wordlift_Schema_Url_Property_Service_Test extends Wordlift_Unit_Test_Case {
+class Wordlift_Backend_Schema_Url_Property_Service_Test extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * @var Wordlift_Schema_Url_Property_Service $schema_url_property_service

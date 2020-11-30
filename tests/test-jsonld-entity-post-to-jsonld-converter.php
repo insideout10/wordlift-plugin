@@ -15,7 +15,7 @@
  * @package Wordlift
  * @group jsonld
  */
-class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
+class Wordlift_Jsonld_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * A {@link Wordlift_Entity_Service} instance.

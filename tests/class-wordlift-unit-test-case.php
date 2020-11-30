@@ -106,6 +106,9 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 //				'posts_per_page' => - 1,
 //				'post_status'    => 'any'
 //			) ) ) );
+
+		$this->assertFalse( is_admin(), 'Check that you`re resetting the current screen in other tests to an empty string.' );
+
 	}
 
 	/**

@@ -327,7 +327,7 @@ class Wordlift_Test extends Wordlift {
 	 */
 	public function get_linked_data_service() {
 
-		return $this->linked_data_service;
+		return Wordlift_Linked_Data_Service::get_instance();
 	}
 
 	/**

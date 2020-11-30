@@ -15,7 +15,7 @@
  * @subpackage Wordlift/tests
  * @group backend
  */
-class Test_Wordlift_Seo_Service extends Wordlift_Unit_Test_Case {
+class Test_Backend_Wordlift_Seo_Service extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * Test that when there is no SEO configuration, the terms
@@ -75,7 +75,7 @@ class Test_Wordlift_Seo_Service extends Wordlift_Unit_Test_Case {
 	 */
 	function test_in_admin_context() {
 
-		set_current_screen( 'edit.php' );
+		$this->set_current_screen( 'edit.php' );
 
 		$term = get_term_by( 'name', 'event', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		$test = array(
@@ -91,6 +91,8 @@ class Test_Wordlift_Seo_Service extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( $term->term_id, $term_2->term_id );
 		$this->assertEquals( 'Event', $term_2->name );
 		$this->assertEquals( 'An event.', $term_2->description );
+
+		$this->restore_current_screen();
 
 	}
 

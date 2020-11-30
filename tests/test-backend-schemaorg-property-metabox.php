@@ -15,7 +15,7 @@
  * @since 3.20.0
  * @group backend
  */
-class Wordlift_Admin_Schemaorg_Property_Metabox_Test extends Wordlift_Unit_Test_Case {
+class Wordlift_Backend_Schemaorg_Property_Metabox_Test extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * The {@link Wordlift_Admin_Schemaorg_Property_Metabox} instance to test.

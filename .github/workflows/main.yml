@@ -6,7 +6,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        image: [ "php5.6-phpunit4.8-wordpress4.4", "php7.1-phpunit4.8-wordpress5.5" ]
+        image:
+          - "php5.4-phpunit4.8-wordpress4.4"
+          - "php5.5-phpunit4.8-wordpress4.4"
+          - "php5.6-phpunit4.8-wordpress4.5"
+          - "php7.0-phpunit4.8-wordpress5.2"
+          - "php7.1-phpunit4.8-wordpress5.3"
+          - "php7.2-phpunit4.8-wordpress5.4"
+          - "php7.3-phpunit4.8-wordpress5.5"
       max-parallel: 1
     # If you want the following envs to be avail to docker, you need to add them to `docker run`.
     env:
