@@ -6,7 +6,7 @@ jobs:
     strategy:
       matrix:
         image: [ "php5.6-phpunit4.8-wordpress4.4", "php7.1-phpunit4.8-wordpress5.5" ]
-        max-parallel: 1
+      max-parallel: 1
     env:
       ACF_PRO_KEY: ${{ secrets.ACF_PRO_KEY }}
       WORDLIFT_API_URL: ${{  secrets.WORDLIFT_API_URL }}
