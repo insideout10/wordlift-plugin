@@ -32,7 +32,6 @@ jobs:
           ACF_PRO_KEY: ${{ secrets.ACF_PRO_KEY }}
           WORDLIFT_API_URL: ${{  secrets.WORDLIFT_API_URL }}
           WORDLIFT_KEY: ${{ secrets.WORDLIFT_KEY }}
-        run: -c phpunit.xml
 
 #
 #      - name: MySQL
