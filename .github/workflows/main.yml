@@ -3,12 +3,13 @@ on: [ push ]
 jobs:
   test:
     runs-on: ubuntu-latest
-    container:
-      image: ziodave/wordpress-tests:php5.6-phpunit4.8-wordpress4.4
-      env:
-        ACF_PRO_KEY: ${{ secrets.ACF_PRO_KEY }}
-        WORDLIFT_API_URL: ${{  secrets.WORDLIFT_API_URL }}
-        WORDLIFT_KEY: ${{ secrets.WORDLIFT_KEY }}
+
+#    container:
+#      image: ziodave/wordpress-tests:php5.6-phpunit4.8-wordpress4.4
+#      env:
+#        ACF_PRO_KEY: ${{ secrets.ACF_PRO_KEY }}
+#        WORDLIFT_API_URL: ${{  secrets.WORDLIFT_API_URL }}
+#        WORDLIFT_KEY: ${{ secrets.WORDLIFT_KEY }}
 
     services:
       db:
@@ -26,6 +27,11 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Test
+        uses: docker://ziodave/wordpress-tests:php5.6-phpunit4.8-wordpress4.4
+        env:
+          ACF_PRO_KEY: ${{ secrets.ACF_PRO_KEY }}
+          WORDLIFT_API_URL: ${{  secrets.WORDLIFT_API_URL }}
+          WORDLIFT_KEY: ${{ secrets.WORDLIFT_KEY }}
         run: -c phpunit.xml
 
 #
