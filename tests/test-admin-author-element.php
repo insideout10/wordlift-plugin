@@ -14,7 +14,6 @@
  * @package    Wordlift
  * @subpackage Wordlift/admin
  * @group admin
- * @group admin
  */
 class Wordlift_Admin_Person_Element_Test extends Wordlift_Unit_Test_Case {
 

@@ -1,7 +1,18 @@
 on: [ push ]
 
 jobs:
-  test:
+  php5-3_compat:
+    container:
+      image: composer:2.0
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: test
+        run:
+          - composer install --dev
+          - ./vendor/bin/phpcs src/ --extensions=php --ignore=class-wordlift-entity-types-taxonomy-walker-5-3.php,autoload_static.php --standard=PHPCompatibilityWP --runtime-set testVersion 5.3
+
+  wordpress_tests:
     name: ${{ matrix.image }}
     runs-on: ubuntu-latest
     strategy:
@@ -14,6 +25,7 @@ jobs:
           - "php7.1-phpunit4.8-wordpress5.3"
           - "php7.2-phpunit4.8-wordpress5.4"
           - "php7.3-phpunit4.8-wordpress5.5"
+#          - "php8.0-phpunit4.8-wordpress5.6"
       max-parallel: 1
     # If you want the following envs to be avail to docker, you need to add them to `docker run`.
     env:
@@ -40,3 +52,21 @@ jobs:
             -v $GITHUB_WORKSPACE:"/github/workspace" \
             --network $(docker network ls --format="{{ .Name }}" --filter "Name=^github_network_") \
               ziodave/wordpress-tests:${{ matrix.image }} -c phpunit.xml --stop-on-error --stop-on-fail
+
+#  e2e:
+#    - name: checkout
+#      uses: actions/checkout@v2
+#    - name: test
+#      run:
+#        - .ci/travis/install_ssh_key.sh
+#        - .ci/travis/sauce_connect_start.sh
+#        - mysql -e 'create database wordpress default charset utf8mb4 default collate utf8mb4_general_ci;'
+#        - .ci/travis/install_wp_cli.sh
+#        - .ci/travis/install_wordpress.sh
+#        - .ci/travis/install_apache.sh
+
+#  test:js
+
+#  test:jest
+
+#  test:multisite WP_VERSION=5.4
