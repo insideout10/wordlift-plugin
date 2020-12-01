@@ -62,9 +62,9 @@ class Edit_Mapping_Page_Test extends Wordlift_Unit_Test_Case {
 		$this->assertArrayHasKey( 'wl_rule_field_two_options', $this->ui_settings_array, 'Taxonomy term options should be present' );
 		$taxonomy_options = $this->ui_settings_array['wl_rule_field_one_options'];
 		$term_options     = $this->ui_settings_array['wl_rule_field_two_options'];
-		// we are getting only items which are not post type.
+		// we are getting only items which are not post type and taxonomy.
 		$filtered_term_options = array_filter( $term_options, function ( $item ) {
-			return $item['parent_value'] !== 'post_type';
+			return $item['parent_value'] !== 'post_type' || $item['parent_value'] === 'taxonomy';
 		} );
 
 		$this->assertCount( 0, $filtered_term_options, 'This is what I got: ' . var_export( array(

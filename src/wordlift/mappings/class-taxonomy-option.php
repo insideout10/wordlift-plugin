@@ -27,8 +27,6 @@ class Taxonomy_Option {
 
 	private function add_rule_field_one_options() {
 
-		debug_print_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 10 );
-
 		add_filter( 'wl_mappings_rule_field_one_options', function ( $rule_field_one_options ) {
 
 			$rule_field_one_options[] = array(
