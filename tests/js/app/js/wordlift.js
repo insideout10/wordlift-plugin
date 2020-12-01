@@ -751,9 +751,9 @@
         return dom.setAttrib(id, 'itemid', itemid);
       });
       $rootScope.$on(ANALYSIS_EVENT, function(event, analysis) {
-        logger.debug("EditorService : Analysis Event", {
-          analysis: analysis
-        });
+        // logger.debug("EditorService : Analysis Event", {
+        //   analysis: analysis
+        // });
         if ((analysis != null) && (analysis.textAnnotations != null)) {
           service.embedAnalysis(analysis);
         }

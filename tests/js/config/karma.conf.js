@@ -105,7 +105,7 @@ module.exports = function (config) {
       "app/lib/timelinejs/css/timeline.css",
       "app/lib/wordpress/iris.min.js",
       "app/lib/wordpress/color-picker.min.js",
-      SOURCE_DIR + "js/wordlift.min.js",
+      SOURCE_DIR + "js/wordlift-reloaded.min.js",
       SOURCE_DIR + "js/wordlift-ui.min.js",
 
       "test/lib/angular/angular-mocks.js",
