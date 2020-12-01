@@ -43,7 +43,6 @@ jobs:
         run: >
           docker run --workdir /github/workspace --rm -v "/var/run/docker.sock":"/var/run/docker.sock" \
             -v $GITHUB_WORKSPACE:"/github/workspace" \
-            --network $(docker network ls --format="{{ .Name }}" --filter "Name=^github_network_") \
               ziodave/node-chromium:node10-2 run test:js
 
 #  wordpress_tests:
