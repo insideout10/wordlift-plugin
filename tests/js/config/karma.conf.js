@@ -138,7 +138,7 @@ module.exports = function (config) {
       },
       firefox_sudo_1001: {
         base: "Firefox",
-        command: "sudo -u #1001 /usr/bin/firefox",
+        command: "HOME=/root sudo -u #1001 /usr/bin/firefox",
       },
     },
 
