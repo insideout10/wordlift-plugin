@@ -20,6 +20,12 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
+      - name: install node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '10'
+      - name: install packages
+        run: npm install
       - name: test
         uses: docker://ziodave/node-chromium:node10-1
         with:
