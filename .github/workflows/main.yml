@@ -87,12 +87,12 @@ jobs:
           - "php7.0-phpunit4.8-wordpress5.2"
           - "php7.1-phpunit4.8-wordpress5.3"
           - "php7.2-phpunit4.8-wordpress5.4"
-          - "php7.3-phpunit4.8-wordpress5.5"
+          - "php7.3-phpunit7.3-wordpress5.5"
         #          - "php8.0-phpunit4.8-wordpress5.6"
         phpunit-xml:
           - "phpunit.xml"
         include:
-          - image: "php7.3-phpunit4.8-wordpress5.5"
+          - image: "php7.3-phpunit7.3-wordpress5.5"
             phpunit-xml: phpunit-multisite.xml
     # If you want the following envs to be avail to docker, you need to add them to `docker run`.
     env:
