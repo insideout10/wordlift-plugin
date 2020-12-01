@@ -15,12 +15,21 @@
  */
 class Wordlift_Search_Keyword_Taxonomy_Test extends Wordlift_Unit_Test_Case {
 
+	function setUp() {
+		parent::setUp();
+
+		$this->markTestSkipped( 'Search Rankings are currently disabled.' );
+	}
+
+
 	/**
 	 * Test that the taxonomy is initialized.
 	 *
 	 * @since 3.20.0
 	 */
 	public function test_init() {
+
+		$this->markTestSkipped( 'Search Rankings are currently disabled.' );
 
 		$result = get_taxonomy( Wordlift_Search_Keyword_Taxonomy::TAXONOMY_NAME );
 		$this->assertNotFalse( $result, 'The taxonomy myst exist.' );
@@ -43,8 +52,8 @@ class Wordlift_Search_Keyword_Taxonomy_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	/**
-	 * @param bool   $preempt The previous `$preempt` value.
-	 * @param array  $r A request array.
+	 * @param bool $preempt The previous `$preempt` value.
+	 * @param array $r A request array.
 	 * @param string $url A request URL.
 	 *
 	 * @return bool The `$preempt` value.

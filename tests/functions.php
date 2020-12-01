@@ -403,14 +403,14 @@ function _wl_mock_http_request( $response, $request, $url ) {
 		);
 	}
 
-//	remove_filter( 'pre_http_request', '_wl_mock_http_request', PHP_INT_MAX );
-//	var_dump( wp_remote_request( $url, $request ) );
-//
-//	$md5 = md5( $request['body'] );
-//	echo( "Request (Body $md5): \n" . var_export( array( $request, $url ), true ) );
-//	echo( "Response: \n" . var_export( wp_remote_request( $url, $request ) ) );
-//	debug_print_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 20 );
-//	die();
+	remove_filter( 'pre_http_request', '_wl_mock_http_request', PHP_INT_MAX );
+	var_dump( wp_remote_request( $url, $request ) );
+
+	$md5 = md5( $request['body'] );
+	echo( "Request (Body $md5): \n" . var_export( array( $request, $url ), true ) );
+	echo( "Response: \n" . var_export( wp_remote_request( $url, $request ) ) );
+	debug_print_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 30 );
+	die();
 
 
 	return $response;
@@ -433,39 +433,6 @@ function wl_configure_wordpress_test() {
 	}
 
 	add_filter( 'pre_http_request', '_wl_mock_http_request', PHP_INT_MAX, 3 );
-
-//	add_filter( 'wl_api_service__request__pre', function ( $response, $method, $path, $headers, $body, $timeout, $user_agent, $args ) {
-//		if ( isset( $response ) ) {
-//			return $response;
-//		}
-//
-//		if ( 'PUT' === $method && '/accounts?key=key123&url=http%3A%2F%2Fexample.org&country=us&language=en' === $path ) {
-//			return new Response( array(
-//				'body'     => '{ "datasetURI": "https://data.localdomain.localhost/dataset", "packageType": "unknown" }',
-//				'response' => array( 'code' => 200, )
-//			) );
-//		}
-//
-//		echo( "Request Miss: $method $path\n" );
-//		debug_print_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 20 );
-//		die();
-//
-//		return $response;
-//	}, PHP_INT_MAX, 8 );
-
-//	update_option( 'wl_advanced_settings', array(
-//		'redlink_dataset_uri' => 'https://data.localdomain.localhost/dataset',
-//		'package_type'        => 'unknown',
-//	) );
-//
-//	update_option( 'wl_general_settings', array(
-//		'key'                 => 'key123',
-//		'wl_entity_base_path' => 'vocabulary',
-//		'site_language'       => 'en',
-//		'country_code'        => 'us',
-//		'send_diagnostic'     => 'no',
-//		'publisher_id'        => 5,
-//	) );
 
 	// When setting the WordLift Key, the Redlink dataset URI is provisioned by WordLift Server.
 	$configuration_service->set_key( '' );

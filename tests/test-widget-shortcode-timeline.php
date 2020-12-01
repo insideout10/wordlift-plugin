@@ -24,7 +24,58 @@ class TimelineShortcodeTest extends Wordlift_Unit_Test_Case {
 		add_theme_support( 'post-thumbnails' );
 
 		$this->timeline_service = Wordlift_Timeline_Service::get_instance();
+
+		add_filter( 'pre_http_request', array( $this, '_mock_api' ), 10, 3 );
 	}
+
+	function tearDown() {
+		add_filter( 'pre_http_request', array( $this, '_mock_api' ) );
+
+		parent::tearDown();
+	}
+
+	function _mock_api( $response, $request, $url ) {
+
+		if ( 'POST' === $request['method']
+		     && isset( $request['headers']['Content-type'] )
+		     && 'application/sparql-update; charset=utf-8' === $request['headers']['Content-type']
+		     && ( in_array( md5( $request['body'] ),
+					array(
+						'f934d227ea0458348a79b7175999620b',
+						'38d8232cd981b7f35b387ea21322ddfd',
+						'13e87a7955f921a009f088bb77953386',
+						'3be0897f0cdb6652e3826e0dc714b586',
+						'51021876ecebae68dc6e27423fe13595',
+						'203115f9a023de0d83af24ba9601b86f',
+						'126f67f5df76a494d21ad78c8e47e10f',
+						'e2e78e4e7259368d37fccaba20070aca',
+						'5013cd6b57c2a10baee01d032343a28c',
+						'5ec4e0b391f3161c20708691479406fb',
+						'52a7d2730fb8210e2abddf1f30e8094a',
+						'147e036336058153f0ccc1ee16e6e221'
+					) )
+		          || preg_match( "~^INSERT DATA { <https://data\.localdomain\.localhost/dataset/post/post_1> <http://schema\.org/headline> \"Post 1\"@en \. 
+<https://data\.localdomain\.localhost/dataset/post/post_1> <http://schema\.org/url> <http://example\.org/\?p=\d+> \. 
+<https://data\.localdomain\.localhost/dataset/post/post_1> <http://www\.w3\.org/1999/02/22-rdf-syntax-ns#type> <http://schema\.org/Article> \.  };$~", $request['body'] ) )
+		     && preg_match( '@/datasets/key=key123/queries$@', $url ) ) {
+
+			return array(
+				'response' => array( 'code' => 200 ),
+				'body'     => '',
+			);
+		}
+
+		if ( 'POST' === $request['method'] && preg_match( '@/datasets/key=key123/index$@', $url ) ) {
+
+			return array(
+				'response' => array( 'code' => 200 ),
+				'body'     => '',
+			);
+		}
+
+		return $response;
+	}
+
 
 	/**
 	 * Create 4 test events of which 2 are related.
@@ -164,7 +215,7 @@ class TimelineShortcodeTest extends Wordlift_Unit_Test_Case {
 		// $this->assertEquals( $entity_1->post_content, $date_1['text'] );
 		// $this->assertEquals( $entity_2->post_content, $date_2['text'] );
 
-		$this->assertEquals( $entity_1_headline, $date_1['text']['headline'] );
+		$this->assertEquals( $entity_1_headline, $date_1['text']['headline'], var_export( $response, true ) );
 		$this->assertEquals( $entity_2_headline, $date_2['text']['headline'] );
 
 		$thumbnail_1 = wp_get_attachment_image_src( $thumbnail_1_id );

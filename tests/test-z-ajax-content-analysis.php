@@ -10,6 +10,31 @@
 
 class Ajax_Content_Analysis_Test extends Wordlift_Ajax_Unit_Test_Case {
 
+	function setUp() {
+		parent::setUp();
+
+		add_filter( 'pre_http_request', array( $this, '_mock_api' ), 10, 3 );
+	}
+
+	function tearDown() {
+		remove_filter( 'pre_http_request', array( $this, '_mock_api' ) );
+
+		parent::tearDown();
+	}
+
+	function _mock_api( $response, $request, $url ) {
+
+		if ( 'POST' === $request['method'] && preg_match( '@/analysis/single$@', $url )
+		     && '5d169a6aa4c5e711d0353c0b5be4a0ef' === md5( $request['body'] ) ) {
+			return array(
+				'response' => array( 'code' => 200 ),
+				'body'     => file_get_contents( __DIR__ . '/assets/analysis-response-1.json' ),
+			);
+		}
+
+		return $response;
+	}
+
 	public function test() {
 
 		// Create an entity, by also setting its entity URL and type.

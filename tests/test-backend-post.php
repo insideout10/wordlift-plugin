@@ -41,12 +41,36 @@ class Wordlift_Post_Test extends Wordlift_Unit_Test_Case {
 	function setUp() {
 		parent::setUp();
 
+		add_filter( 'pre_http_request', array( $this, '_mock_api' ), 10, 3 );
+
 		// Get the count of triples.
 		$counts = rl_count_triples();
 		$this->assertNotNull( $counts );
 		$this->assertFalse( is_wp_error( $counts ) );
 
 		$this->turn_on_entity_push();
+	}
+
+	function tearDown() {
+
+		remove_filter( 'pre_http_request', array( $this, '_mock_api' ) );
+
+		parent::tearDown();
+	}
+
+
+	function _mock_api( $response, $request, $url ) {
+
+		if ( 'GET' === $request['method'] && 0 <= strpos( $url, '/datasets/key=key123/queries?q=PREFIX+geo%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2003%2F01%2Fgeo%2Fwgs84_pos%23%3E%0APREFIX+dct%3A+%3Chttp%3A%2F%2Fpurl.org%2Fdc%2Fterms%2F%3E%0APREFIX+rdfs%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E%0APREFIX+owl%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2002%2F07%2Fowl%23%3E%0APREFIX+schema%3A+%3Chttp%3A%2F%2Fschema.org%2F%3E%0APREFIX+xsd%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2001%2FXMLSchema%23%3E%0A%0ASELECT+%28COUNT%28DISTINCT+%3Fs%29+AS+%3Fsubjects%29+%28COUNT%28DISTINCT+%3Fp%29+AS+%3Fpredicates%29+%28COUNT%28DISTINCT+%3Fo%29+AS+%3Fobjects%29+WHERE+%7B+%3Fs+%3Fp+%3Fo+%7D' ) ) {
+			return array(
+				'response' => array( 'code' => 200 ),
+				'body'     => "subjects,predicates,objects
+                               31090,17,34093
+                               "
+			);
+		}
+
+		return $response;
 	}
 
 	/**
