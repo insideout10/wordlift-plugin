@@ -57,7 +57,7 @@ jobs:
       - name: test
         run: npm run test:jest
   wordpress:
-    name: ${{ matrix.image }}
+    name: ${{ matrix.image }}_${{ matrix.phpunit-xml }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -69,7 +69,12 @@ jobs:
           - "php7.1-phpunit4.8-wordpress5.3"
           - "php7.2-phpunit4.8-wordpress5.4"
           - "php7.3-phpunit4.8-wordpress5.5"
-      #          - "php8.0-phpunit4.8-wordpress5.6"
+        #          - "php8.0-phpunit4.8-wordpress5.6"
+        phpunit-xml:
+          - "phpunit.xml"
+        include:
+          - image: "php7.3-phpunit4.8-wordpress5.5"
+            phpunit-xml: phpunit-multisite.xml
       max-parallel: 1
     # If you want the following envs to be avail to docker, you need to add them to `docker run`.
     env:
@@ -95,38 +100,4 @@ jobs:
             -e ACF_PRO_KEY -e WORDLIFT_API_URL -e WORDLIFT_KEY \
             -v $GITHUB_WORKSPACE:"/github/workspace" \
             --network $(docker network ls --format="{{ .Name }}" --filter "Name=^github_network_") \
-              ziodave/wordpress-tests:${{ matrix.image }} -c phpunit.xml --stop-on-error --stop-on-fail
-
-  wordpress_multisite:
-    name: ${{ matrix.image }}
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        image:
-          - "php7.2-phpunit4.8-wordpress5.4"
-      max-parallel: 1
-    # If you want the following envs to be avail to docker, you need to add them to `docker run`.
-    env:
-      ACF_PRO_KEY: ${{ secrets.ACF_PRO_KEY }}
-      WORDLIFT_API_URL: ${{  secrets.WORDLIFT_API_URL }}
-      WORDLIFT_KEY: ${{ secrets.WORDLIFT_KEY }}
-    services:
-      db:
-        image: mysql:5.7
-        env:
-          MYSQL_ROOT_PASSWORD: password
-          MYSQL_USER: wordpress
-          MYSQL_PASSWORD: password
-          MYSQL_DATABASE: wordpress
-        ports:
-          - 3306:3306
-    steps:
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: phpunit
-        run: >
-          docker run --workdir /github/workspace --rm -v "/var/run/docker.sock":"/var/run/docker.sock" \
-            -e ACF_PRO_KEY -e WORDLIFT_API_URL -e WORDLIFT_KEY \
-            -v $GITHUB_WORKSPACE:"/github/workspace" \
-            --network $(docker network ls --format="{{ .Name }}" --filter "Name=^github_network_") \
-              ziodave/wordpress-tests:${{ matrix.image }} -c phpunit-multisite.xml --stop-on-error --stop-on-fail
+              ziodave/wordpress-tests:${{ matrix.image }} -c ${{ matrix.phpunit-xml }} --stop-on-error --stop-on-fail
