@@ -123,23 +123,13 @@ module.exports = function (config) {
 
     frameworks: ["jasmine"],
 
-    browsers: ["chrome_no_sandbox", "firefox_sudo_1001"],
+    browsers: ["chrome_no_sandbox", "Firefox"],
 
-    /**
-     * `firefox_sudo_1001` is required to run Firefox in GitHub CI, since the `HOME` folder is own by user 1001.
-     *
-     * @link https://github.com/karma-runner/karma-firefox-launcher
-     * @link https://docs.github.com/en/free-pro-team@latest/actions/reference/specifications-for-github-hosted-runners#file-systems
-     */
     customLaunchers: {
       chrome_no_sandbox: {
         base: "Chrome",
         flags: ["--no-sandbox"],
-      },
-      firefox_sudo_1001: {
-        base: "Firefox",
-        command: "sudo -u #1001 /usr/bin/firefox",
-      },
+      }
     },
 
     phantomjsLauncher: {
