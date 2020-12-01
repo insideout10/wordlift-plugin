@@ -21,7 +21,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
       - name: test
-        users: docker://ziodave/node-chromium:node10-1
+        uses: docker://ziodave/node-chromium:node10-1
         with:
           args: run test:js
 
