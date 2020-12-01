@@ -27,6 +27,14 @@ class Edit_Mapping_Page_Test extends Wordlift_Unit_Test_Case {
 
 	public function setUp() {
 		parent::setUp();
+		/**
+		 * Reset filters to prevent filter duplication
+		 */
+		global $wp_filter;
+		$wp_filter = array();
+		$wordlift  = new Wordlift();
+		$wordlift->run();
+
 		$this->edit_mappings_page_instance = new \Wordlift\Mappings\Pages\Edit_Mappings_Page(
 			new \Wordlift\Mappings\Mappings_Transform_Functions_Registry()
 		);
@@ -64,7 +72,7 @@ class Edit_Mapping_Page_Test extends Wordlift_Unit_Test_Case {
 		$term_options     = $this->ui_settings_array['wl_rule_field_two_options'];
 		// we are getting only items which are not post type and taxonomy.
 		$filtered_term_options = array_filter( $term_options, function ( $item ) {
-			return $item['parent_value'] !== 'post_type' || $item['parent_value'] === 'taxonomy';
+			return $item['parent_value'] !== 'post_type' && $item['parent_value'] !== 'taxonomy';
 		} );
 
 		$this->assertCount( 0, $filtered_term_options, 'This is what I got: ' . var_export( array(
@@ -154,8 +162,6 @@ class Edit_Mapping_Page_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_on_edit_mappings_page_taxonomy_option_should_be_loaded() {
 		register_taxonomy( 'foo', 'post' );
-		$instance = new \Wordlift\Mappings\Taxonomy_Option();
-		$instance->add_taxonomy_option();
 		// Expect taxonomy options should have foo in the list.
 		$settings               = $this->edit_mappings_page_instance->get_ui_settings_array();
 		$rule_field_one_options = $settings['wl_rule_field_one_options'];
@@ -167,9 +173,6 @@ class Edit_Mapping_Page_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	public function test_on_edit_mappings_page_all_taxonomy_options_should_be_loaded_on_rule_field_two() {
-		// Expect taxonomy options should have foo in the list.
-		$instance = new \Wordlift\Mappings\Taxonomy_Option();
-		$instance->add_taxonomy_option();
 		$settings               = $this->edit_mappings_page_instance->get_ui_settings_array();
 		$rule_field_two_options = $settings['wl_rule_field_two_options'];
 		// get all registered taxonomies
