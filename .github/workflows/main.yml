@@ -1,5 +1,8 @@
 on: [ push ]
 
+defaults:
+  runs-on: ubuntu-latest
+
 jobs:
   php5-3_compat:
     container:
@@ -14,7 +17,6 @@ jobs:
 
   wordpress_tests:
     name: ${{ matrix.image }}
-    runs-on: ubuntu-latest
     strategy:
       matrix:
         image:
