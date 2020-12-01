@@ -10,6 +10,13 @@ on:
       - develop
 
 jobs:
+  cancel_running_workflows:
+    runs-on: ubuntu-latest
+    steps:
+      - name: cancel running workflows
+        uses: styfle/cancel-workflow-action@0.6.0
+        with:
+          access_token: ${{ github.TOKEN }}
   php5-3_compat:
     runs-on: ubuntu-latest
     container:

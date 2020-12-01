@@ -1,6 +1,6 @@
 <a href="https://wordlift.io"><img src="WordLift__logo--5.png"/></a>
 
-<a href="https://travis-ci.org/insideout10/wordlift-plugin"><img align="right" src="https://travis-ci.org/insideout10/wordlift-plugin.png?branch=develop" /></a><a href="https://saucelabs.com/u/ziodave"><img align="right" src="https://saucelabs.com/buildstatus/ziodave" alt="Build Status"></a><a href="https://scrutinizer-ci.com/g/insideout10/wordlift-plugin/?branch=develop"><img align="right" src="https://scrutinizer-ci.com/g/insideout10/wordlift-plugin/badges/quality-score.png?b=develop" /></a>[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/wordlift/wordlift)<br/>
+<img align="right" src="https://github.com/insideout10/wordlift-plugin/workflows/.github/workflows/main.yml/badge.svg" /><a href="https://scrutinizer-ci.com/g/insideout10/wordlift-plugin/?branch=develop"><img align="right" src="https://scrutinizer-ci.com/g/insideout10/wordlift-plugin/badges/quality-score.png?b=develop" /></a><br/>
 
 WordLift - Ordering Knowledge
 =============================
