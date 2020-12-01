@@ -31,6 +31,10 @@ class Wordlift_Vocabulary_Shortcode_Test extends Wordlift_Unit_Test_Case {
 	function setUp() {
 		parent::setUp();
 
+		if ( ! extension_loaded( 'mbstring' ) ) {
+			$this->markTestSkipped( "Test skipped because mbstring is not loaded,vocabulary widget requires mbstring extension " );
+		}
+
 		$this->configuration_service = $this->get_wordlift_test()->get_configuration_service();
 	}
 
