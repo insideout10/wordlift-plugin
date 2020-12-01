@@ -403,14 +403,14 @@ function _wl_mock_http_request( $response, $request, $url ) {
 		);
 	}
 
-//	remove_filter( 'pre_http_request', '_wl_mock_http_request', PHP_INT_MAX );
-//	var_dump( wp_remote_request( $url, $request ) );
-//
-//	$md5 = md5( $request['body'] );
-//	echo( "Request (Body $md5): \n" . var_export( array( $request, $url ), true ) );
-//	echo( "Response: \n" . var_export( wp_remote_request( $url, $request ) ) );
-//	debug_print_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 30 );
-//	die();
+	remove_filter( 'pre_http_request', '_wl_mock_http_request', PHP_INT_MAX );
+	var_dump( wp_remote_request( $url, $request ) );
+
+	$md5 = md5( $request['body'] );
+	echo( "Request (Body $md5): \n" . var_export( array( $request, $url ), true ) );
+	echo( "Response: \n" . var_export( wp_remote_request( $url, $request ) ) );
+	debug_print_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 30 );
+	die(1);
 
 
 	return $response;
