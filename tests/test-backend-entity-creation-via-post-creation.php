@@ -23,6 +23,26 @@ class EntityCreationViaPostCreationTest extends Wordlift_Unit_Test_Case {
 
 		$this->entity_service = $this->get_wordlift_test()->get_entity_service();
 
+		add_filter( 'pre_http_request', array( $this, '_mock_api' ), 10, 3 );
+	}
+
+	function tearDown() {
+		remove_filter( 'pre_http_request', array( $this, '_mock_api' ) );
+
+		parent::tearDown();
+	}
+
+
+	function _mock_api( $value, $request, $url ) {
+		$method = $request['method'];
+		if ( 'GET' === $method && 'http://upload.wikimedia.org/wikipedia/commons/a/a2/Goya_Caprichos3.jpg' === $url ) {
+			return array(
+				'response' => array( 'code' => 200 ),
+				'body'     => '@@mock_image@@'
+			);
+		}
+
+		return $value;
 	}
 
 	// This test simulate the standard workflow from disambiguation widget:

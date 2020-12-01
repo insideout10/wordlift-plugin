@@ -17,6 +17,32 @@
  */
 class Wordlift_Image_Service_Test extends Wordlift_Unit_Test_Case {
 
+	function setUp() {
+		parent::setUp();
+
+		add_filter( 'pre_http_request', array( $this, '_mock_api' ), 10, 3 );
+	}
+
+	function tearDown() {
+		remove_filter( 'pre_http_request', array( $this, '_mock_api' ) );
+
+		parent::tearDown();
+	}
+
+	function _mock_api( $response, $request, $url ) {
+
+		if ( 'GET' === $request['method'] && (
+				'http://example.org/404' === $url ||
+				'http://upload.wikimedia.org/wikipedia/commons/a/a6/Flag_of_Rome.svg' === $url ||
+				'https://en.wikipedia.org/wiki/Main_Page' === $url )
+		) {
+
+			return new \WP_Error( 404, 'Not Found' );
+		}
+
+		return $response;
+	}
+
 	/**
 	 * Test failures.
 	 *

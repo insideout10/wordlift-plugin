@@ -35,6 +35,30 @@ class Post_Excerpt_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 		$this->server   = $wp_rest_server;
 		//$this->rest_instance->register_routes();
 		do_action( 'rest_api_init' );
+
+		add_filter( 'pre_http_request', array( $this, '_mock_api' ), 10, 3 );
+	}
+
+	function tearDown() {
+		remove_filter( 'pre_http_request', array( $this, '_mock_api' ) );
+
+		parent::tearDown();
+	}
+
+
+	function _mock_api( $response, $request, $url ) {
+
+		if ( 'POST' === $request['method']
+		     && 'e9bf0e3a21f0cc89297146a397da2109' === md5( $request['body'] )
+		     && preg_match( '@summarize\?ratio=0.0005&min_length=60$@', $url ) ) {
+
+			return array(
+				'response' => array( 'code' => 200 ),
+				'body'     => '{ "summary": "@@mock_response@@" }'
+			);
+		}
+
+		return $response;
 	}
 
 	/**
@@ -100,13 +124,13 @@ EOF;
 		$url     = $this->post_excerpt_rest_route . '/' . $post_id;
 		$request = new WP_REST_Request( 'POST', $url );
 		$request->set_header( 'content-type', 'application/json' );
-		$request->set_body( wp_json_encode( array('post_body' => $valid_content) ) );
+		$request->set_body( wp_json_encode( array( 'post_body' => $valid_content ) ) );
 		$response      = $this->server->dispatch( $request );
 		$response_data = $response->get_data();
-		if($response_data['status'] != 'success'){
-			$this->markTestSkipped('Possible issue reaching `https://api.wordlift.io/summarize`');
+		if ( $response_data['status'] != 'success' ) {
+			$this->markTestSkipped( 'Possible issue reaching `https://api.wordlift.io/summarize`' );
 		}
-		$this->assertEquals( $response_data['status'], 'success');
+		$this->assertEquals( $response_data['status'], 'success' );
 	}
 
 	/**
@@ -144,19 +168,19 @@ EOF;
 		$url     = $this->post_excerpt_rest_route . '/' . $post_id;
 		$request = new WP_REST_Request( 'POST', $url );
 		$request->set_header( 'content-type', 'application/json' );
-		$request->set_body( wp_json_encode( array('post_body' => $valid_content) ) );
+		$request->set_body( wp_json_encode( array( 'post_body' => $valid_content ) ) );
 		$response      = $this->server->dispatch( $request );
 		$response_data = $response->get_data();
-		if($response_data['status'] != 'success'){
-			$this->markTestSkipped('Possible issue reaching `https://api.wordlift.io/summarize`');
+		if ( $response_data['status'] != 'success' ) {
+			$this->markTestSkipped( 'Possible issue reaching `https://api.wordlift.io/summarize`' );
 		}
-		$this->assertEquals( $response_data['status'], 'success');
+		$this->assertEquals( $response_data['status'], 'success' );
 		// Now we should have an entry for this meta.
-		$cache_data = get_post_meta($post_id, Post_Excerpt_Rest_Controller::POST_EXCERPT_META_KEY, true);
-		$this->assertEquals( true, is_array($cache_data));
+		$cache_data = get_post_meta( $post_id, Post_Excerpt_Rest_Controller::POST_EXCERPT_META_KEY, true );
+		$this->assertEquals( true, is_array( $cache_data ) );
 		// Send another request and check whether if we have cached data getting returned.
 		$response      = $this->server->dispatch( $request );
 		$response_data = $response->get_data();
-		$this->assertEquals( $response_data['from_cache'], true);
+		$this->assertEquals( $response_data['from_cache'], true );
 	}
 }

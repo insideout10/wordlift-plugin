@@ -19,29 +19,67 @@ class Wordlift_Configuration_Test extends Wordlift_Unit_Test_Case {
 
 	private $http_request_count = 0;
 
+	function setUp() {
+		parent::setUp();
+
+		add_filter( 'pre_http_request', array( $this, '_mock_api', ), 10, 3 );
+
+	}
+
+	function tearDown() {
+		remove_filter( 'pre_http_request', array( $this, '_mock_api' ) );
+
+		parent::tearDown();
+	}
+
+
+	function _mock_api( $response, $request, $url ) {
+		$method = $request['method'];
+		if ( 'PUT' === $method && preg_match( '@/accounts\?key=test_wl_configuration_key&url=http%3A%2F%2Fexample.org&country=us&language=en$@', $url ) ) {
+			return array(
+				'body'     => '{ "datasetURI": "https://data.localdomain.localhost/dataset", "packageType": "unknown" }',
+				'response' => array( 'code' => 200, )
+			);
+		}
+
+		if ( 'PUT' === $method && preg_match( '@/accounts\?key=key123&url=http%3A%2F%2Fexample.org&country=us&language=kl$@', $url ) ) {
+			return array(
+				'body'     => '{ "datasetURI": "https://data.localdomain.localhost/dataset", "packageType": "unknown" }',
+				'response' => array( 'code' => 200, )
+			);
+		}
+
+		if ( 'PUT' === $method && preg_match( '@/accounts\?key=key123&url=http%3A%2F%2Fexample.org&country=test&language=en$@', $url ) ) {
+			return array(
+				'body'     => '{ "datasetURI": "https://data.localdomain.localhost/dataset", "packageType": "unknown" }',
+				'response' => array( 'code' => 200, )
+			);
+		}
+
+		return $response;
+	}
+
+	/**
+	 * Test setting a new key, that the key is saved in the configuration.
+	 */
 	function test_wl_configuration_key() {
 
-		$value = uniqid();
+		$value = 'test_wl_configuration_key';
 		$this->configuration_service->set_key( $value );
 
 		$this->assertEquals( $value, $this->configuration_service->get_key() );
+
 	}
 
+	/**
+	 * Test setting a new language, that the language is saved in the configuration.
+	 */
 	function test_wl_configuration_site_language() {
 
-		$value = uniqid();
+		$value = 'kl';
 		$this->configuration_service->set_language_code( $value );
 
 		$this->assertEquals( $value, $this->configuration_service->get_language_code() );
-	}
-
-	function test_wl_configuration_analyzer_url() {
-
-		// Set the WordLift Key.
-		$wordlift_key = uniqid();
-		$this->configuration_service->set_key( $wordlift_key );
-
-		$this->assertEquals( WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "analyses?key=$wordlift_key", wl_configuration_get_analyzer_url() );
 
 	}
 
@@ -142,7 +180,7 @@ class Wordlift_Configuration_Test extends Wordlift_Unit_Test_Case {
 		$old_dataset_uri = $this->configuration_service->get_dataset_uri();
 		$this->configuration_service->set_dataset_uri( '' );
 
-		$old_key = $new_key = uniqid( true );
+		$old_key = $new_key = 'test_wl_configuration_key';
 
 		$this->configuration_service->maybe_update_dataset_uri(
 			array( 'key' => $old_key ),
