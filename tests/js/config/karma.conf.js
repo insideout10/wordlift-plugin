@@ -103,12 +103,12 @@ module.exports = function ( config ) {
 
         frameworks: [ 'jasmine' ],
 
-        browsers: [ 'Firefox', 'Chrome' ],
+        browsers: [ 'Chrome_No_Sandbox', 'Firefox' ],
 
         // This is the new content for your travis-ci configuration test
         //  Custom launcher for Travis-CI
         customLaunchers: {
-            Chrome_travis_ci: {
+            Chrome_No_Sandbox: {
                 base: 'Chrome',
                 flags: ['--no-sandbox']
             }

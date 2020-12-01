@@ -1,18 +1,29 @@
 on: [ push ]
 
-jobs:
-  php5-3_compat:
+#jobs:
+#  php5-3_compat:
+#    runs-on: ubuntu-latest
+#    container:
+#      image: composer:2.0
+#    steps:
+#      - name: checkout
+#        uses: actions/checkout@v2
+#      - name: test
+#        run: |
+#          composer install
+#          ./vendor/bin/phpcs src/ --extensions=php --ignore=class-wordlift-entity-types-taxonomy-walker-5-3.php,autoload_static.php \
+#              --standard=PHPCompatibilityWP --runtime-set testVersion 5.3
+
+
+  javascript:
     runs-on: ubuntu-latest
-    container:
-      image: composer:2.0
     steps:
       - name: checkout
         uses: actions/checkout@v2
       - name: test
-        run: |
-          composer install && \
-            ./vendor/bin/phpcs src/ --extensions=php --ignore=class-wordlift-entity-types-taxonomy-walker-5-3.php,autoload_static.php \
-              --standard=PHPCompatibilityWP --runtime-set testVersion 5.3
+        run: docker://ziodave/node-chromium:node10-1
+        with:
+          args: run test:js
 
 #  wordpress_tests:
 #    name: ${{ matrix.image }}
@@ -54,18 +65,6 @@ jobs:
 #            -v $GITHUB_WORKSPACE:"/github/workspace" \
 #            --network $(docker network ls --format="{{ .Name }}" --filter "Name=^github_network_") \
 #              ziodave/wordpress-tests:${{ matrix.image }} -c phpunit.xml --stop-on-error --stop-on-fail
-
-#  e2e:
-#    - name: checkout
-#      uses: actions/checkout@v2
-#    - name: test
-#      run:
-#        - .ci/travis/install_ssh_key.sh
-#        - .ci/travis/sauce_connect_start.sh
-#        - mysql -e 'create database wordpress default charset utf8mb4 default collate utf8mb4_general_ci;'
-#        - .ci/travis/install_wp_cli.sh
-#        - .ci/travis/install_wordpress.sh
-#        - .ci/travis/install_apache.sh
 
 #  test:js
 
