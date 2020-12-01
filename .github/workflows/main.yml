@@ -1,10 +1,8 @@
 on: [ push ]
 
-defaults:
-  runs-on: ubuntu-latest
-
 jobs:
   php5-3_compat:
+    runs-on: ubuntu-latest
     container:
       image: composer:2.0
     steps:
@@ -17,6 +15,7 @@ jobs:
 
   wordpress_tests:
     name: ${{ matrix.image }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         image:
