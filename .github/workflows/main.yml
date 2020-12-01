@@ -1,36 +1,44 @@
-on: [ push ]
+on: [push]
 
 jobs:
-#  php5-3_compat:
-#    runs-on: ubuntu-latest
-#    container:
-#      image: composer:2.0
-#    steps:
-#      - name: checkout
-#        uses: actions/checkout@v2
-#      - name: test
-#        run: |
-#          composer install
-#          ./vendor/bin/phpcs src/ --extensions=php --ignore=class-wordlift-entity-types-taxonomy-walker-5-3.php,autoload_static.php \
-#              --standard=PHPCompatibilityWP --runtime-set testVersion 5.3
-
+  #  php5-3_compat:
+  #    runs-on: ubuntu-latest
+  #    container:
+  #      image: composer:2.0
+  #    steps:
+  #      - name: checkout
+  #        uses: actions/checkout@v2
+  #      - name: test
+  #        run: |
+  #          composer install
+  #          ./vendor/bin/phpcs src/ --extensions=php --ignore=class-wordlift-entity-types-taxonomy-walker-5-3.php,autoload_static.php \
+  #              --standard=PHPCompatibilityWP --runtime-set testVersion 5.3
 
   javascript:
     runs-on: ubuntu-latest
     steps:
+      - name: deploy key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          name: id_rsa-gitlab
+          key: ${{ secrets.GITLAB_DEPLOY_KEY }}
+          known_hosts: "gitlab.com,52.167.219.168 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFSMqzJeV9rUzU4kWitGjeR4PWSa29SPqJ1fVkhtj3Hw9xjLVXVYrU9QlYWrOLXBpQ6KWjbjTDTdDkoohFzgbEY="
+          config: |
+            Host gitlab.com
+              User git
+              IdentityFile ~/.ssh/id_rsa-gitlab
       - name: checkout
         uses: actions/checkout@v2
       - name: install node
         uses: actions/setup-node@v1
         with:
-          node-version: '10'
+          node-version: "10"
       - name: install packages
         run: npm install
       - name: test
         uses: docker://ziodave/node-chromium:node10-1
         with:
           args: run test:js
-
 #  wordpress_tests:
 #    name: ${{ matrix.image }}
 #    runs-on: ubuntu-latest
