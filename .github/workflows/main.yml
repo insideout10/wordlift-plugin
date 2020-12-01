@@ -1,6 +1,6 @@
 on: [ push ]
 
-#jobs:
+jobs:
 #  php5-3_compat:
 #    runs-on: ubuntu-latest
 #    container:
