@@ -36,9 +36,17 @@ jobs:
       - name: install packages
         run: npm install
       - name: test
-        uses: docker://ziodave/node-chromium:node10-1
+        uses: docker://ziodave/node-chromium:node10-2
         with:
           args: run test:js
+#      - name: test
+#        run: >
+#          docker run --workdir /github/workspace --rm -v "/var/run/docker.sock":"/var/run/docker.sock" \
+#            -e ACF_PRO_KEY -e WORDLIFT_API_URL -e WORDLIFT_KEY \
+#            -v $GITHUB_WORKSPACE:"/github/workspace" \
+#            --network $(docker network ls --format="{{ .Name }}" --filter "Name=^github_network_") \
+#              ziodave/wordpress-tests:${{ matrix.image }} -c phpunit.xml --stop-on-error --stop-on-fail
+
 #  wordpress_tests:
 #    name: ${{ matrix.image }}
 #    runs-on: ubuntu-latest
