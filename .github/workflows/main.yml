@@ -39,5 +39,4 @@ jobs:
             -e ACF_PRO_KEY -e WORDLIFT_API_URL -e WORDLIFT_KEY \
             -v $GITHUB_WORKSPACE:"/github/workspace" \
             --network $(docker network ls --format="{{ .Name }}" --filter "Name=^github_network_") \
-              ziodave/wordpress-tests:${{ matrix.image }} -c phpunit.xml --debug --stop-on-error --stop-on-fail \
-                --group backend,dataset,default,entity,frontend,install,issue,jsonld,mappings,metabox,redlink,sparql,taxonomy,widget,integrations,ajax
+              ziodave/wordpress-tests:${{ matrix.image }} -c phpunit.xml --stop-on-error --stop-on-fail
