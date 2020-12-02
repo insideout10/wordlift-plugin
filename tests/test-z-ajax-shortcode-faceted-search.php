@@ -20,7 +20,6 @@ use Wordlift\Cache\Ttl_Cache;
  */
 class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 
-
 	function setUp() {
 		parent::setUp();
 

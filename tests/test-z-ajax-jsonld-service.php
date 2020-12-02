@@ -13,8 +13,9 @@
  *
  * @since   3.8.0
  * @package Wordlift
+ * @group ajax
  */
-class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
+class Wordlift_Ajax_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 
 	/**
 	 * A {@link Wordlift_Entity_Type_Service} instance.
@@ -75,6 +76,56 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$this->jsonld_service                  = $wordlift->get_jsonld_service();
 		$this->configuration_service           = $wordlift->get_configuration_service();
 
+		add_filter( 'pre_http_request', array( $this, '_mock_api' ), 10, 3 );
+	}
+
+	function tearDown() {
+		remove_filter( 'pre_http_request', array( $this, '_mock_api' ) );
+
+		parent::tearDown();
+	}
+
+	function _mock_api( $response, $request, $url ) {
+
+		if ( 'POST' === $request['method'] && preg_match( '@/datasets/key=key123/queries$@', $url )
+		     && in_array( md5( $request['body'] ), array(
+				'296514b093946381d9a187418eaa5114',
+				'68d2d96e64bb1574a8e0bb945d4db956',
+				'24f6e49c507ff2c1976b9fba1da77820',
+				'21b9d8295d7672739af1da478d205d52',
+				'0a8b35d947c2b0419bbbbb3c8aea7da6',
+				'01c8c5c6205ba40f44f7cbf0eb9d5120',
+				'c630ea8cbd5534272a0fe7def494d9e0',
+				'feecdfb1995c54e21b3f9868326ead04',
+				'cebd54c0310311bb0a0102f312a8fef8',
+				'3c159302c89c70eaac8f88448d46cfba',
+				'f934d227ea0458348a79b7175999620b',
+				'4dce97983d0af505f87eaabb88dd708e',
+				'5013cd6b57c2a10baee01d032343a28c'
+			) )
+		     || preg_match( '~^INSERT DATA { <https://data\.localdomain\.localhost/dataset/entity/(.+?)> <http://www\.w3\.org/2000/01/rdf-schema#label> ".+?"@en \. 
+<https://data\.localdomain\.localhost/dataset/entity/\\1> <http://purl\.org/dc/terms/title> ".+?"@en \. 
+<https://data\.localdomain\.localhost/dataset/entity/\\1> <http://schema\.org/name> ".+?"@en \. 
+<https://data\.localdomain\.localhost/dataset/entity/\\1> <http://schema\.org/url> <http://example\.org/\?entity=.+?> \. 
+<https://data\.localdomain\.localhost/dataset/entity/\\1> <http://schema\.org/description> ".+?"@en \. 
+<https://data\.localdomain\.localhost/dataset/entity/\\1> <http://www\.w3\.org/1999/02/22-rdf-syntax-ns#type> <http://schema\.org/Thing> \.  };$~', $request['body'] )
+		     || preg_match( '~^INSERT DATA { <https://data\.localdomain\.localhost/dataset/(page|post)/(.+?)> <http://schema\.org/headline> ".+?"@en \. 
+<https://data\.localdomain\.localhost/dataset/\\1/\\2> <http://schema\.org/url> <http://example\.org/\?p(?:age_id)?=\d+> \. 
+<https://data\.localdomain\.localhost/dataset/\\1/\\2> <http://www\.w3\.org/1999/02/22-rdf-syntax-ns#type> <http://schema\.org/Article> \.  };$~', $request['body'] ) ) {
+			return array(
+				'response' => array( 'code' => 200 ),
+				'body'     => ''
+			);
+		}
+
+		if ( 'POST' === $request['method'] && preg_match( '@/datasets/key=key123/index$@', $url ) ) {
+			return array(
+				'response' => array( 'code' => 200 ),
+				'body'     => ''
+			);
+		}
+
+		return $response;
 	}
 
 	/**
@@ -116,8 +167,9 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		// Create a location entity post and bind it to the location property.
 		$name              = 'Test Ajax Json-Ld Service test_jsonld 1';
 		$local_business_id = $this->factory()->post->create( array(
-			'post_title' => $name,
-			'post_type'  => 'entity',
+			'post_title'   => $name,
+			'post_type'    => 'entity',
+			'post_content' => "Post $name",
 		) );
 		$this->entity_type_service->set( $local_business_id, 'http://schema.org/LocalBusiness' );
 		$local_business_type = $this->entity_type_service->get( $local_business_id );
@@ -130,32 +182,32 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		add_post_meta( $local_business_id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE, 12.34 );
 		add_post_meta( $local_business_id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, 1.23 );
 
-		$email = rand_str();
+		$email = 'john@localdomain.localhost';
 		add_post_meta( $local_business_id, Wordlift_Schema_Service::FIELD_EMAIL, $email );
 
-		$phone = rand_str();
+		$phone = '+1 (555) 555 5555';
 		add_post_meta( $local_business_id, Wordlift_Schema_Service::FIELD_TELEPHONE, $phone );
 
 		// Set a random sameAs.
 		$same_as = 'http://example.org/aRandomSameAs';
 		add_post_meta( $local_business_id, Wordlift_Schema_Service::FIELD_SAME_AS, $same_as );
 
-		$street_address = rand_str();
+		$street_address = 'Duck Rd. 1';
 		add_post_meta( $local_business_id, Wordlift_Schema_Service::FIELD_ADDRESS, $street_address );
 
-		$po_box = rand_str();
+		$po_box = 'PO BOX 123';
 		add_post_meta( $local_business_id, Wordlift_Schema_Service::FIELD_ADDRESS_PO_BOX, $po_box );
 
-		$postal_code = rand_str();
+		$postal_code = '12345';
 		add_post_meta( $local_business_id, Wordlift_Schema_Service::FIELD_ADDRESS_POSTAL_CODE, $postal_code );
 
-		$locality = rand_str();
+		$locality = 'Here';
 		add_post_meta( $local_business_id, Wordlift_Schema_Service::FIELD_ADDRESS_LOCALITY, $locality );
 
-		$region = rand_str();
+		$region = 'There';
 		add_post_meta( $local_business_id, Wordlift_Schema_Service::FIELD_ADDRESS_REGION, $region );
 
-		$country = rand_str();
+		$country = 'US';
 		add_post_meta( $local_business_id, Wordlift_Schema_Service::FIELD_ADDRESS_COUNTRY, $country );
 
 		$person_id = $this->factory()->post->create( array(
@@ -283,8 +335,8 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 	 * @since 3.14.0
 	 */
 	public function test_jsonld_website() {
-		$name        = 'Test Ajax Json-Ld Service test_jsonld_website ' . rand_str();
-		$description = rand_str();
+		$name        = 'Test Ajax Json-Ld Service test_jsonld_website 2';
+		$description = "Post $name";
 
 		// Set publisher.
 		$publisher = $this->entity_factory->create_and_get( array(
@@ -296,8 +348,9 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 
 		// Create homepage
 		$homepage_id = $this->factory()->post->create( array(
-			'post_title' => $name,
-			'post_type'  => 'page',
+			'post_title'   => $name,
+			'post_type'    => 'page',
+			'post_content' => "Post $name",
 		) );
 
 		// Set our page as homepage & update the site description
@@ -367,8 +420,8 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 	 * @since 3.14.0
 	 */
 	public function test_disable_jsonld_website() {
-		$name        = 'Test Ajax Json-Ld Service test_disable_jsonld_website ' . rand_str();
-		$description = rand_str();
+		$name        = 'Test Ajax Json-Ld Service test_disable_jsonld_website 3';
+		$description = "Post $name";
 
 		// Create homepage
 		$homepage_id = $this->factory()->post->create( array(
@@ -458,7 +511,7 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 	 * @since 3.14.0
 	 */
 	public function test_jsonld_website_without_homepage() {
-		$description = rand_str();
+		$description = 'A post';
 
 		// Set our page as homepage & update the site description
 		update_option( 'blogdescription', $description );
@@ -530,8 +583,8 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 	 * @since 3.14.0
 	 */
 	public function test_change_jsonld_website_search_target() {
-		$name        = 'Test Ajax Json-Ld Service test_change_jsonld_website_search_target ' . rand_str();
-		$description = rand_str();
+		$name        = 'Test Ajax Json-Ld Service test_change_jsonld_website_search_target 4';
+		$description = "Post $name";
 
 		// Create homepage
 		$homepage_id = $this->factory()->post->create( array(
@@ -693,13 +746,16 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 	public function test_post_mentioning_a_recipe() {
 
 		$post_id = $this->factory()->post->create( array(
-			'type'        => 'post',
-			'post_status' => 'publish',
+			'type'         => 'post',
+			'post_status'  => 'publish',
+			'post_title'   => 'Title 1',
+			'post_content' => 'Description 1'
 		) );
 
 		$recipe_post_id = $this->entity_factory->create( array(
-			'post_status' => 'publish',
-			'post_title'  => 'Test Ajax Json-Ld Service test_post_mentioning_a_recipe',
+			'post_status'  => 'publish',
+			'post_title'   => 'Test Ajax Json-Ld Service test_post_mentioning_a_recipe',
+			'post_content' => 'Post Test Ajax Json-Ld Service test_post_mentioning_a_recipe'
 		) );
 		$this->entity_type_service->set( $recipe_post_id, 'http://schema.org/Recipe' );
 
@@ -731,22 +787,22 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 	 * Test for not allowing duplicate entries in the $references.
 	 */
 	public function test_should_not_allow_duplicate_references() {
-		$post_id  = $this->factory()->post->create(
-			array(
-				'post_status' => 'publish'
-			)
-		);
-		$entity_1 = $this->factory()->post->create(
-			array(
-				'post_type' => 'entity'
-			)
-		);
+		$post_id  = $this->factory()->post->create( array(
+			'post_status'  => 'publish',
+			'post_title'   => 'Post 1',
+			'post_content' => 'Content 1',
+		) );
+		$entity_1 = $this->factory()->post->create( array(
+			'post_type'    => 'entity',
+			'post_title'   => 'Entity 2',
+			'post_content' => 'Content 2',
+		) );
 
-		$entity_2 = $this->factory()->post->create(
-			array(
-				'post_type' => 'entity'
-			)
-		);
+		$entity_2 = $this->factory()->post->create( array(
+			'post_type'    => 'entity',
+			'post_title'   => 'Entity 3',
+			'post_content' => 'Content 3',
+		) );
 		// add duplicates to references.
 		$references = array( $entity_1, $entity_2, $entity_1 );
 
