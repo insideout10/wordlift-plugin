@@ -40,6 +40,49 @@ class Wordlift_Download_Google_Content_Data_Test extends Wordlift_Ajax_Unit_Test
 		}
 
 		$this->export_service = new Wordlift_Google_Analytics_Export_Service();
+
+		add_filter( 'pre_http_request', array( $this, '_mock_api' ), 10, 3 );
+	}
+
+	function tearDown() {
+		remove_filter( 'pre_http_request', array( $this, '_mock_api' ) );
+
+		parent::tearDown();
+	}
+
+
+	function _mock_api( $response, $request, $url ) {
+
+		if ( 'POST' === $request['method'] && preg_match( '@/datasets/key=key123/queries$@', $url )
+		     && in_array( md5( $request['body'] ), array(
+				'45aa1b0696baa684e4d9f78fb84ea253',
+				'40a67488480c5993a0905d6774ddc459',
+				'f1368f426dcae5fc95567f069daff698',
+				'4aec754e407f9a55ee34fd555c73784d',
+				'8930a0271bd866734666bf5175a3aa17',
+				'54e3d6564def2ef6345a88f2c6021ccd',
+				'5e16ec9c6add6122e53e0ce4c0c5a2e2',
+				'27669186597e15554b6a9b940276fb19',
+				'77b824b9035dc122e7cf7884b47ca3ff',
+				'c02e0cad0d0d5979b0d1061b49ec1745',
+				'88d74184041489182765a54c2df580fa',
+				'0da01417f8ec4517d7c228bb25346f75',
+				'd928af2d4c1c73d02166d1c7628994ef'
+			) ) ) {
+			return array(
+				'response' => array( 'code' => 200 ),
+				'body'     => ''
+			);
+		}
+
+		if ( 'POST' === $request['method'] && preg_match( '@/datasets/key=key123/index$@', $url ) ) {
+			return array(
+				'response' => array( 'code' => 200 ),
+				'body'     => ''
+			);
+		}
+
+		return $response;
 	}
 
 	/**
@@ -66,9 +109,9 @@ class Wordlift_Download_Google_Content_Data_Test extends Wordlift_Ajax_Unit_Test
 	 * Test that "get_content_data" is working properly
 	 * and return the proper number of enities,
 	 *
+	 * @return void
 	 * @since 3.16.0
 	 *
-	 * @return void
 	 */
 	public function test_content_data() {
 		// Create posts.
@@ -118,13 +161,13 @@ class Wordlift_Download_Google_Content_Data_Test extends Wordlift_Ajax_Unit_Test
 	/**
 	 * Test that "create_csv" is working properly and return the expected result.
 	 *
+	 * @return void
 	 * @since 3.16.0
 	 *
-	 * @return void
 	 */
 	public function test_csv_creation() {
 		// Create posts.
-		$post_id = wl_create_post( '', 'csv-post1', 'A post with no entities', 'publish', 'post' );
+		$post_id   = wl_create_post( '', 'csv-post1', 'A post with no entities', 'publish', 'post' );
 		$post_id_2 = wl_create_post( '', 'csv-post2', 'A post with no entities', 'publish', 'post' );
 
 		// Create entity.

@@ -409,12 +409,13 @@ function _wl_mock_http_request( $response, $request, $url ) {
 	}
 
 	remove_filter( 'pre_http_request', '_wl_mock_http_request', PHP_INT_MAX );
-	var_dump( wp_remote_request( $url, $request ) );
 
+	echo "An unknown request to $url has been caught:\n";
 	$md5 = md5( $request['body'] );
-	echo( "Request (Body $md5): \n" . var_export( array( $url ), true ) );
-//	echo( "Request (Body $md5): \n" . var_export( array( $request, $url ), true ) );
-//	echo( "Response: \n" . var_export( wp_remote_request( $url, $request ) ) );
+	echo( "Request Details (Body MD5 $md5): \n" . var_export( $request , true ) );
+	echo( "Response Details: \n" . var_export( wp_remote_request( $url, $request ), true ) );
+
+	echo "Request Stack Trace: \n";
 	debug_print_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 30 );
 	die( 1 );
 
@@ -424,10 +425,10 @@ function _wl_mock_http_request( $response, $request, $url ) {
 
 add_filter( 'pre_http_request', '_wl_mock_http_request', PHP_INT_MAX, 3 );
 
-add_option( 'wl_advanced_settings', array(
-	"redlink_dataset_uri" => "https://data.localdomain.localhost/dataset",
-	"package_type"        => "unknown"
-) );
+//add_option( 'wl_advanced_settings', array(
+//	"redlink_dataset_uri" => "https://data.localdomain.localhost/dataset",
+//	"package_type"        => "unknown"
+//) );
 
 /**
  * Configure WordPress with the test settings (may vary according to the local PHP and WordPress versions).

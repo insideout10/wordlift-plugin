@@ -18,6 +18,48 @@
  */
 class AjaxRelatedPostsTest extends Wordlift_Ajax_Unit_Test_Case {
 
+	function setUp() {
+		parent::setUp();
+
+		add_filter( 'pre_http_request', array( $this, '_mock_api' ), 10, 3 );
+	}
+
+	function tearDown() {
+		remove_filter( 'pre_http_request', array( $this, '_mock_api' ) );
+
+		parent::tearDown();
+	}
+
+	function _mock_api( $response, $request, $url ) {
+
+		if ( 'POST' === $request['method'] && preg_match( '@/datasets/key=key123/queries$@', $url )
+		     && in_array( md5( $request['body'] ), array(
+				'8403eaa0ad0bb481eb8d7125e993c9d4',
+				'122f3797da5ada6da4d09c3ffbb2e8f8',
+				'52d70a03ffdfbb6466a48fa5d89694e2',
+				'744d963ecee764224e33b1b9e27f89cc',
+				'8930a0271bd866734666bf5175a3aa17',
+				'3e961742a1f0e78d04c57a275568f57f',
+				'93bb38115b061ee1fcc23793e2f0ac21',
+				'2a3c1cb03d80f714e06b207fc9624921',
+				'00bd899d076e253f0a642e77bd63a914',
+			) ) ) {
+			return array(
+				'response' => array( 'code' => 200 ),
+				'body'     => ''
+			);
+		}
+
+		if ( 'POST' === $request['method'] && preg_match( '@/datasets/key=key123/index$@', $url ) ) {
+			return array(
+				'response' => array( 'code' => 200 ),
+				'body'     => ''
+			);
+		}
+
+		return $response;
+	}
+
 	public function test_dataselectionwithoutaninvalidentityid() {
 
 		$_GET['post_id'] = 'foo';

@@ -20,6 +20,61 @@ use Wordlift\Cache\Ttl_Cache;
  */
 class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 
+
+	function setUp() {
+		parent::setUp();
+
+		add_filter( 'pre_http_request', array( $this, '_mock_api' ), 10, 3 );
+	}
+
+	function tearDown() {
+		remove_filter( 'pre_http_request', array( $this, '_mock_api' ) );
+
+		parent::tearDown();
+	}
+
+	function _mock_api( $response, $request, $url ) {
+
+		if ( 'POST' === $request['method'] && preg_match( '@/datasets/key=key123/queries$@', $url )
+		     && in_array( md5( $request['body'] ), array(
+				'8403eaa0ad0bb481eb8d7125e993c9d4',
+				'1a60c9c70e2e1412e0ad63c1133bb4fb',
+				'39532c50ab98078124e454ff35a4f26b',
+				'52d70a03ffdfbb6466a48fa5d89694e2',
+				'e06701d2651d8d43aaae08e2f9a374fd',
+				'2d86db0762849be4190354010364faa0',
+				'b67216fe8f49c180968a66c174e599b9',
+				'8930a0271bd866734666bf5175a3aa17',
+				'3e961742a1f0e78d04c57a275568f57f',
+				'793c73084b6bc3ed67b83ca5d6d56df0',
+				'be4b118e57e2755c550b8f619e0241da',
+				'7cc7b2c484912026d36941bf15905300',
+				'6659be6e2d973010651239c180889f7c',
+				'd6d95adcfc4bc578c988c43b49f49214',
+				'7e30de216d5e9f28f2a2bcff7f3253c0',
+				'f356ce0f7d694544642303dbe782fa2f',
+				'0fe0052d361335a573612a6e2b37827e',
+				'93d19e07e8ed018701b7bf3d54c3f647',
+				'8e6eec3723a38252aafec9544931ecfc',
+				'1a28a9ebcf1bc8f6e86f3e1260157293',
+				'490070779a1d73bf9eb8bb7203d8a2b1'
+			) ) ) {
+			return array(
+				'response' => array( 'code' => 200 ),
+				'body'     => ''
+			);
+		}
+
+		if ( 'POST' === $request['method'] && preg_match( '@/datasets/key=key123/index$@', $url ) ) {
+			return array(
+				'response' => array( 'code' => 200 ),
+				'body'     => ''
+			);
+		}
+
+		return $response;
+	}
+
 	public function testDataSelectionWithoutAnEntityId() {
 		$cache = new Ttl_Cache( 'faceted-search' );
 		$cache->flush();

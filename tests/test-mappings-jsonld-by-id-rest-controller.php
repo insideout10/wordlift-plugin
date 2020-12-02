@@ -16,7 +16,7 @@ use Wordlift\Jsonld\Jsonld_By_Id_Endpoint;
  *
  * @since 3.26.0
  */
-class Jsonld_By_Id_REST_Controller_Test extends WP_UnitTestCase {
+class Jsonld_By_Id_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * Our expected route for rest api.
@@ -154,7 +154,7 @@ class Jsonld_By_Id_REST_Controller_Test extends WP_UnitTestCase {
 		}
 
 		$this->assertEquals( 'http://schema.org', $data['@context'] );
-		$this->assertEquals( 'http://data.example.org/entity/jsonld_by_id_rest_controller_test-_gt_test_one_item_title_1', $data['@id'] );
+		$this->assertEquals( 'https://data.localdomain.localhost/dataset/entity/jsonld_by_id_rest_controller_test-_gt_test_one_item_title_1', $data['@id'] );
 		$this->assertEquals( 'Jsonld_By_Id_REST_Controller_Test->test_one_item content 1', $data['description'] );
 		$this->assertEquals( 'http://example.org/?entity=jsonld_by_id_rest_controller_test-test_one_item-title-1', $data['mainEntityOfPage'] );
 		$this->assertEquals( 'Jsonld_By_Id_REST_Controller_Test->test_one_item title 1', $data['name'] );

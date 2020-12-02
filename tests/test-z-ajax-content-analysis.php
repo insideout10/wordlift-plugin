@@ -32,6 +32,24 @@ class Ajax_Content_Analysis_Test extends Wordlift_Ajax_Unit_Test_Case {
 			);
 		}
 
+		if ( 'POST' === $request['method'] && preg_match( '@/datasets/key=key123/queries$@', $url )
+		     && in_array( md5( $request['body'] ), array(
+				'db44d756903e452e6488148869b6955d',
+				'ede80ec288a8c3a2ab759b6a0ce1b7d4'
+			) ) ) {
+			return array(
+				'response' => array( 'code' => 200 ),
+				'body'     => file_get_contents( __DIR__ . '/assets/analysis-response-1.json' ),
+			);
+		}
+
+		if ( 'POST' === $request['method'] && preg_match( '@/datasets/key=key123/index$@', $url ) ) {
+			return array(
+				'response' => array( 'code' => 200 ),
+				'body'     => file_get_contents( __DIR__ . '/assets/analysis-response-1.json' ),
+			);
+		}
+
 		return $response;
 	}
 
