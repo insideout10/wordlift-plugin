@@ -54,21 +54,26 @@ class Wordlift_Download_Google_Content_Data_Test extends Wordlift_Ajax_Unit_Test
 	function _mock_api( $response, $request, $url ) {
 
 		if ( 'POST' === $request['method'] && preg_match( '@/datasets/key=key123/queries$@', $url )
-		     && in_array( md5( $request['body'] ), array(
-				'45aa1b0696baa684e4d9f78fb84ea253',
-				'40a67488480c5993a0905d6774ddc459',
-				'f1368f426dcae5fc95567f069daff698',
-				'4aec754e407f9a55ee34fd555c73784d',
-				'8930a0271bd866734666bf5175a3aa17',
-				'54e3d6564def2ef6345a88f2c6021ccd',
-				'5e16ec9c6add6122e53e0ce4c0c5a2e2',
-				'27669186597e15554b6a9b940276fb19',
-				'77b824b9035dc122e7cf7884b47ca3ff',
-				'c02e0cad0d0d5979b0d1061b49ec1745',
-				'88d74184041489182765a54c2df580fa',
-				'0da01417f8ec4517d7c228bb25346f75',
-				'd928af2d4c1c73d02166d1c7628994ef'
-			) ) ) {
+		     && ( in_array( md5( $request['body'] ),
+					array(
+						'45aa1b0696baa684e4d9f78fb84ea253',
+						'40a67488480c5993a0905d6774ddc459',
+						'f1368f426dcae5fc95567f069daff698',
+						'4aec754e407f9a55ee34fd555c73784d',
+						'8930a0271bd866734666bf5175a3aa17',
+						'54e3d6564def2ef6345a88f2c6021ccd',
+						'5e16ec9c6add6122e53e0ce4c0c5a2e2',
+						'27669186597e15554b6a9b940276fb19',
+						'77b824b9035dc122e7cf7884b47ca3ff',
+						'c02e0cad0d0d5979b0d1061b49ec1745',
+						'88d74184041489182765a54c2df580fa',
+						'0da01417f8ec4517d7c228bb25346f75',
+						'd928af2d4c1c73d02166d1c7628994ef',
+						'40b82ef6c46e5619c3de074c6fcbda97'
+					) )
+		          || preg_match( '~^INSERT DATA { <https://data\.localdomain\.localhost/(.*?)> <http://schema\.org/headline> "A post with no entities"@en \. 
+<https://data\.localdomain\.localhost/\\1> <http://schema\.org/url> <http://example\.org/\?p=\d+> \. 
+<https://data\.localdomain\.localhost/\\1> <http://www\.w3\.org/1999/02/22-rdf-syntax-ns#type> <http://schema\.org/Article> \.  };$~', $request['body'] ) ) ) {
 			return array(
 				'response' => array( 'code' => 200 ),
 				'body'     => ''

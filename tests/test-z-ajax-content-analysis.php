@@ -35,7 +35,8 @@ class Ajax_Content_Analysis_Test extends Wordlift_Ajax_Unit_Test_Case {
 		if ( 'POST' === $request['method'] && preg_match( '@/datasets/key=key123/queries$@', $url )
 		     && in_array( md5( $request['body'] ), array(
 				'db44d756903e452e6488148869b6955d',
-				'ede80ec288a8c3a2ab759b6a0ce1b7d4'
+				'ede80ec288a8c3a2ab759b6a0ce1b7d4',
+				'9b695ede396a81cb75e60af2fff251ed'
 			) ) ) {
 			return array(
 				'response' => array( 'code' => 200 ),
@@ -57,9 +58,10 @@ class Ajax_Content_Analysis_Test extends Wordlift_Ajax_Unit_Test_Case {
 
 		// Create an entity, by also setting its entity URL and type.
 		$post_id = $this->factory()->post->create( array(
-			'post_type'   => 'entity',
-			'post_title'  => 'Content Analysis Test 1',
-			'post_status' => 'publish',
+			'post_type'    => 'entity',
+			'post_title'   => 'Content Analysis Test 1',
+			'post_status'  => 'publish',
+			'post_content' => 'Post Content Analysis Test 1'
 		) );
 		update_post_meta( $post_id, 'entity_url', 'http://example.org/content_analysis_test_1' );
 		wp_add_object_terms( $post_id, 'thing', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );

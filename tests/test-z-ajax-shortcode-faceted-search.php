@@ -58,7 +58,10 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 				'8e6eec3723a38252aafec9544931ecfc',
 				'1a28a9ebcf1bc8f6e86f3e1260157293',
 				'490070779a1d73bf9eb8bb7203d8a2b1'
-			) ) ) {
+			) )
+		     || preg_match( '~^INSERT DATA { <https://data\.localdomain\.localhost/(.*?)> <http://schema\.org/headline> "A post"@en \. 
+<https://data\.localdomain\.localhost/\\1> <http://schema\.org/url> <http://example\.org/\?p=\d+> \. 
+<https://data\.localdomain\.localhost/\\1> <http://www\.w3\.org/1999/02/22-rdf-syntax-ns#type> <http://schema\.org/Article> \.  };$~', $request['body'] ) ) {
 			return array(
 				'response' => array( 'code' => 200 ),
 				'body'     => ''
