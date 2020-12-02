@@ -114,7 +114,7 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$this->assertTrue( is_object( $local_business_term ), 'The `LocalBusiness` term must exist.' );
 
 		// Create a location entity post and bind it to the location property.
-		$name              = 'Test Ajax Json-Ld Service test_jsonld ' . rand_str();
+		$name              = 'Test Ajax Json-Ld Service test_jsonld 1';
 		$local_business_id = $this->factory()->post->create( array(
 			'post_title' => $name,
 			'post_type'  => 'entity',
