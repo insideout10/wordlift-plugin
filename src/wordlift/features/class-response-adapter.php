@@ -4,6 +4,7 @@ namespace Wordlift\Features;
 
 class Response_Adapter {
 	const WL_FEATURES = '_wl_features';
+	const WL_1 = 'wl1';
 
 	/**
 	 * @var \Wordlift_Log_Service
@@ -28,10 +29,10 @@ class Response_Adapter {
 		$headers = wp_remote_retrieve_headers( $response );
 
 		// Bail out if the `wl1` header isn't defined.
-		if ( ! isset( $headers['wl1'] ) ) {
+		if ( ! isset( $headers[ self::WL_1 ] ) ) {
 			return $response;
 		}
-		$wl1_as_base64_string = $headers['wl1'];
+		$wl1_as_base64_string = $headers[ self::WL_1 ];
 		$wl1                  = json_decode( base64_decode( $wl1_as_base64_string ), true );
 
 		$this->log->debug( "WL1 [ encoded :: $wl1_as_base64_string ] " . var_export( $wl1, true ) );

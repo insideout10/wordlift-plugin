@@ -12,16 +12,6 @@ define( 'WL_JSON_LD_CONTEXT', serialize( array(
 	WL_DUBLIN_CORE_NAMESPACE => 'http://purl.org/dc/terms/',
 ) ) );
 
-// Disable buffering.
-define( 'WL_BUFFER_SPARQL_UPDATE_QUERIES', false );
-
-if ( 'true' === getenv( 'WL_SSL_V1_FORCED' ) ) {
-	add_action( 'http_api_curl', 'force_curl_ssl_v1' );
-	function force_curl_ssl_v1( $handle ) {
-		curl_setopt( $handle, CURLOPT_SSLVERSION, 1 );
-	}
-}
-
 require_once( 'jsonld.php' );
 
 /**
@@ -397,10 +387,18 @@ function _wl_mock_http_request( $response, $request, $url ) {
 	$method = $request['method'];
 
 	if ( 'PUT' === $method && preg_match( '@/accounts\?key=key123&url=http%3A%2F%2Fexample.org&country=us&language=en$@', $url ) ) {
-		return array(
+
+		$response = array(
 			'body'     => '{ "datasetURI": "https://data.localdomain.localhost/dataset", "packageType": "unknown" }',
-			'response' => array( 'code' => 200, )
+			'response' => array( 'code' => 200, ),
 		);
+
+		// If dataset-ng is enable for tests, populate the features response header.
+		if ( 'yes' === getenv( 'WL_DATASET_NG' ) ) {
+			$response['headers'] = array( Wordlift\Features\Response_Adapter::WL_1 => base64_encode( '{ "features": { "dataset-ng": true, "analysis-ng": true } }' ) );
+		}
+
+		return $response;
 	}
 
 	/** ACF pass-through. */
@@ -412,7 +410,7 @@ function _wl_mock_http_request( $response, $request, $url ) {
 
 	echo "An unknown request to $url has been caught:\n";
 	$md5 = md5( $request['body'] );
-	echo( "Request Details (Body MD5 $md5): \n" . var_export( $request , true ) );
+	echo( "Request Details (Body MD5 $md5): \n" . var_export( $request, true ) );
 	echo( "Response Details: \n" . var_export( wp_remote_request( $url, $request ), true ) );
 
 	echo "Request Stack Trace: \n";

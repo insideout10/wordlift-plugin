@@ -91,14 +91,21 @@ jobs:
         #          - "php8.0-phpunit4.8-wordpress5.6"
         phpunit-xml:
           - "phpunit.xml"
+        dataset-ng:
+          - no
         include:
           - image: "php7.3-phpunit7.5-wordpress5.5"
             phpunit-xml: phpunit-multisite.xml
+            dataset-ng: no
+          - image: "php7.3-phpunit7.5-wordpress5.5"
+            phpunit-xml: phpunit.xml
+            dataset-ng: yes
     # If you want the following envs to be avail to docker, you need to add them to `docker run`.
     env:
       ACF_PRO_KEY: ${{ secrets.ACF_PRO_KEY }}
       WORDLIFT_API_URL: ${{  secrets.WORDLIFT_API_URL }}
       WORDLIFT_KEY: ${{ secrets.WORDLIFT_KEY }}
+      WL_DATASET_NG: ${{ matrix.dataset-ng }}
     services:
       db:
         image: mysql:5.7
@@ -115,7 +122,7 @@ jobs:
       - name: phpunit
         run: >
           docker run --workdir /github/workspace --rm -v "/var/run/docker.sock":"/var/run/docker.sock" \
-            -e ACF_PRO_KEY -e WORDLIFT_API_URL -e WORDLIFT_KEY \
+            -e ACF_PRO_KEY -e WORDLIFT_API_URL -e WORDLIFT_KEY -e WL_DATASET_NG \
             -v $GITHUB_WORKSPACE:"/github/workspace" \
             --network $(docker network ls --format="{{ .Name }}" --filter "Name=^github_network_") \
               ziodave/wordpress-tests:${{ matrix.image }} -c ${{ matrix.phpunit-xml }} --stop-on-error --stop-on-fail
