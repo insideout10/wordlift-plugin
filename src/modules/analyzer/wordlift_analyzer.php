@@ -83,8 +83,6 @@ function wl_analyze_content( $data, $content_type ) {
 	// If it's an error log it.
 	if ( is_wp_error( $json ) ) {
 
-		error_log( var_export( $json, true ) );
-
 		return Analysis_Response_Ops_Factory::get_instance()
 		                                    ->create( $default_response )
 		                                    ->make_entities_local()
