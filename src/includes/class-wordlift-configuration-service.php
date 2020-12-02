@@ -385,11 +385,16 @@ class Wordlift_Configuration_Service {
 	 *
 	 * @return string The dataset URI or an empty string if not set.
 	 * @since 3.10.0
+	 * @since 3.27.7 Always return null if `wl_features__enable__dataset` is disabled.
 	 *
 	 */
 	public function get_dataset_uri() {
 
-		return $this->get( 'wl_advanced_settings', self::DATASET_URI, null );
+		if ( apply_filters( 'wl_features__enable__dataset', true ) ) {
+			return $this->get( 'wl_advanced_settings', self::DATASET_URI, null );
+		} else {
+			return null;
+		}
 	}
 
 	/**

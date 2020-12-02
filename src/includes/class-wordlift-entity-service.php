@@ -415,7 +415,7 @@ class Wordlift_Entity_Service {
 
 		if ( empty( $dataset_uri ) ) {
 			// Continue even if the dataset uri is not properly configured. It is handled in function wl_build_entity_uri()
-			$log->debug('Continuing, dataset uri not configured...');
+			$log->debug( 'Continuing, dataset uri not configured...' );
 		}
 
 		$uri = get_post_meta( $post_id, WL_ENTITY_URL_META_NAME, true );
@@ -425,7 +425,7 @@ class Wordlift_Entity_Service {
 		 *
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/996
 		 */
-		if ( 0 !== strpos( $uri, $dataset_uri ) ) {
+		if ( null === $dataset_uri || 0 !== strpos( $uri, $dataset_uri ) ) {
 			$uri = null;
 		}
 

@@ -390,7 +390,7 @@ function wl_get_attachments( $post_id ) {
 }
 
 function _wl_mock_http_request( $response, $request, $url ) {
-	if ( $response ) {
+	if ( $response || preg_match( '@/wl-api$@', $url ) ) {
 		return $response;
 	}
 
@@ -403,18 +403,31 @@ function _wl_mock_http_request( $response, $request, $url ) {
 		);
 	}
 
+	/** ACF pass-through. */
+	if ( 'GET' === $method && preg_match( '@^https://connect.advancedcustomfields.com/@', $url ) ) {
+		return $response;
+	}
+
 	remove_filter( 'pre_http_request', '_wl_mock_http_request', PHP_INT_MAX );
 	var_dump( wp_remote_request( $url, $request ) );
 
 	$md5 = md5( $request['body'] );
-	echo( "Request (Body $md5): \n" . var_export( array( $request, $url ), true ) );
-	echo( "Response: \n" . var_export( wp_remote_request( $url, $request ) ) );
+	echo( "Request (Body $md5): \n" . var_export( array( $url ), true ) );
+//	echo( "Request (Body $md5): \n" . var_export( array( $request, $url ), true ) );
+//	echo( "Response: \n" . var_export( wp_remote_request( $url, $request ) ) );
 	debug_print_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 30 );
-	die(1);
+	die( 1 );
 
 
 	return $response;
 }
+
+add_filter( 'pre_http_request', '_wl_mock_http_request', PHP_INT_MAX, 3 );
+
+add_option( 'wl_advanced_settings', array(
+	"redlink_dataset_uri" => "https://data.localdomain.localhost/dataset",
+	"package_type"        => "unknown"
+) );
 
 /**
  * Configure WordPress with the test settings (may vary according to the local PHP and WordPress versions).
@@ -431,8 +444,6 @@ function wl_configure_wordpress_test() {
 		echo( "WordLift's key is required, set the `WORDLIFT_KEY` environment." );
 		die( 1 );
 	}
-
-	add_filter( 'pre_http_request', '_wl_mock_http_request', PHP_INT_MAX, 3 );
 
 	// When setting the WordLift Key, the Redlink dataset URI is provisioned by WordLift Server.
 	$configuration_service->set_key( '' );
