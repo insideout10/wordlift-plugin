@@ -409,6 +409,11 @@ function deactivate_wordlift() {
 	Wordlift_Deactivator::deactivate();
 	Wordlift_Http_Api::deactivate();
 	Ttl_Cache_Cleaner::deactivate();
+	/**
+	 * @since 3.27.7
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/1214
+	 */
+	Top_Entities::deactivate();
 	flush_rewrite_rules();
 
 }

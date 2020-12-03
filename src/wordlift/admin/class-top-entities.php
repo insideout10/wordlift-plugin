@@ -15,4 +15,9 @@ class Top_Entities {
 		}
 	}
 
+	public static function deactivate() {
+		$timestamp = wp_next_scheduled( self::CRON_ACTION );
+		wp_unschedule_event( $timestamp, self::CRON_ACTION );
+	}
+
 }
