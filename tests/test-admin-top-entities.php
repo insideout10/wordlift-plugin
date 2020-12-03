@@ -32,4 +32,12 @@ class Top_Entities_Test extends Wordlift_Unit_Test_Case {
 		$this->assertArrayHasKey( Top_Entities::CRON_ACTION, $wp_filter, "Atleast a single callback should be present on the cron hook" );
 	}
 
+	public function test_when_cron_executed_should_have_data_in_options() {
+		update_option( Top_Entities::OPTION_KEY, '' );
+		// Doing this action should save the data in db.
+		do_action( Top_Entities::CRON_ACTION );
+		$option_value = get_option( Top_Entities::OPTION_KEY, '' );
+		$this->assertNotEquals( '',  $option_value);
+	}
+
 }

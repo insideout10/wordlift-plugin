@@ -9,9 +9,13 @@ class Top_Entities {
 
 	const CRON_ACTION = 'wl_admin_dashboard_top_entities';
 
+	/**
+	 * Option key where the top entities data is stored.
+	 */
+	const OPTION_KEY = 'wl_admin_dashboard_top_entities_option';
+
 
 	public function __construct() {
-
 		add_action( self::CRON_ACTION, array( $this, 'save_top_entities' ) );
 	}
 
