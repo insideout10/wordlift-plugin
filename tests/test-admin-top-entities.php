@@ -17,6 +17,9 @@ class Top_Entities_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	public function test_cron_should_run_hourly() {
+		if ( ! function_exists( 'wp_get_scheduled_event' ) ) {
+			$this->markTestSkipped( 'This test requires wp_get_scheduled_event which was introduced in WP 5.1.0' );
+		}
 		$event = wp_get_scheduled_event( Top_Entities::CRON_ACTION );
 		$this->assertNotNull( $event, "Cron should be registered" );
 		$this->assertEquals( 'hourly', $event->schedule, "Cron should run hourly" );
