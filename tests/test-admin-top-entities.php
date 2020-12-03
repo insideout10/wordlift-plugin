@@ -37,7 +37,8 @@ class Top_Entities_Test extends Wordlift_Unit_Test_Case {
 		// Doing this action should save the data in db.
 		do_action( Top_Entities::CRON_ACTION );
 		$option_value = get_option( Top_Entities::OPTION_KEY, '' );
-		$this->assertNotEquals( '',  $option_value);
+		$this->assertNotEquals( '', $option_value );
+		$this->assertTrue( is_array( $option_value ), 'option value for top entities should be an array' );
 	}
 
 }
