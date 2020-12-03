@@ -12,6 +12,7 @@
  * @subpackage Wordlift/includes
  */
 
+use Wordlift\Admin\Top_Entities;
 use Wordlift\Analysis\Response\Analysis_Response_Ops_Factory;
 use Wordlift\Autocomplete\All_Autocomplete_Service;
 use Wordlift\Autocomplete\Linked_Data_Autocomplete_Service;
@@ -1836,6 +1837,11 @@ class Wordlift {
 			return array_merge( (array) $value, array( 'wordlift/classification' ) );
 		}, PHP_INT_MAX );
 
+		/**
+		 * @since 3.27.7
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/1214
+		 */
+		new Top_Entities();
 	}
 
 	/**
