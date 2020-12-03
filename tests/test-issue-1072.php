@@ -1,6 +1,7 @@
 <?php
 
 use Wordlift\Jsonld\Jsonld_Service;
+use Wordlift\Object_Type_Enum;
 
 /**
  * Test issue #1072.
@@ -48,7 +49,7 @@ class Wordlift_Issue_1072_Test extends Wordlift_Unit_Test_Case {
 
 		$post_id       = $this->factory()->post->create();
 		$post_jsonld_a = $this->legacy_jsonld_service->get_jsonld( false, $post_id );
-		$post_jsonld_b = $this->jsonld_service->get( Jsonld_Service::TYPE_POST, $post_id );
+		$post_jsonld_b = $this->jsonld_service->get( Object_Type_Enum::POST, $post_id );
 		$this->assertEqualSets( $post_jsonld_a, $post_jsonld_b );
 
 	}
@@ -56,7 +57,7 @@ class Wordlift_Issue_1072_Test extends Wordlift_Unit_Test_Case {
 	function test_homepage() {
 
 		$post_jsonld_a = $this->legacy_jsonld_service->get_jsonld( true );
-		$post_jsonld_b = $this->jsonld_service->get( Jsonld_Service::TYPE_HOMEPAGE );
+		$post_jsonld_b = $this->jsonld_service->get( Object_Type_Enum::HOMEPAGE );
 		$this->assertEqualSets( $post_jsonld_a, $post_jsonld_b );
 
 	}
@@ -71,7 +72,7 @@ class Wordlift_Issue_1072_Test extends Wordlift_Unit_Test_Case {
 		}
 
 		$term_jsonld_a = $this->term_jsonld_adapter->get( $term_id );
-		$term_jsonld_b = $this->jsonld_service->get( Jsonld_Service::TYPE_TERM, $term_id );
+		$term_jsonld_b = $this->jsonld_service->get( Object_Type_Enum::TERM, $term_id );
 		$this->assertEqualSets( $term_jsonld_a, $term_jsonld_b );
 
 		$this->assertArrayHasKey( 'itemListElement', $term_jsonld_b[0],

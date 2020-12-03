@@ -394,7 +394,7 @@ function _wl_mock_http_request( $response, $request, $url ) {
 		);
 
 		// If dataset-ng is enable for tests, populate the features response header.
-		if ( 'yes' === getenv( 'WL_DATASET_NG' ) ) {
+		if ( wp_validate_boolean( getenv( 'WL_FEATURES__DATASET_NG' ) ) ) {
 			$response['headers'] = array( Wordlift\Features\Response_Adapter::WL_1 => base64_encode( '{ "features": { "dataset-ng": true, "analysis-ng": true } }' ) );
 		}
 

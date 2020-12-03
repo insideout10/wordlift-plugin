@@ -152,7 +152,7 @@ class Wordlift_Entity_Service {
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/835
 		 */
 		foreach ( $terms as $term ) {
-			if ( 'article' !== $term->slug ) {
+			if ( 1 !== preg_match( '~(^|-)article$~', $term->slug ) ) {
 				return true;
 			}
 		}

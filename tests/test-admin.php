@@ -163,8 +163,8 @@ class Wordlift_Admin_Test extends Wordlift_Unit_Test_Case {
 		set_current_screen( 'edit.php' );
 
 		$post = $this->factory()->post->create_and_get( array(
-			'post_type' => 'entity',
-			'post_title' => 'Test Admin ' . wp_rand(0, 1000)
+			'post_type'  => 'entity',
+			'post_title' => 'Test Admin ' . wp_rand( 0, 1000 )
 		) );
 		setup_postdata( $GLOBALS['post'] = $post );
 

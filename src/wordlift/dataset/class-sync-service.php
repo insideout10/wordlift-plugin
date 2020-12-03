@@ -4,6 +4,7 @@ namespace Wordlift\Dataset;
 
 use Wordlift\Api\Api_Service;
 use Wordlift\Jsonld\Jsonld_Service;
+use Wordlift\Object_Type_Enum;
 
 class Sync_Service {
 
@@ -35,6 +36,11 @@ class Sync_Service {
 	private $batch_size;
 
 	/**
+	 * @var Sync_Object_Adapter_Factory
+	 */
+	private $sync_object_adapter_factory;
+
+	/**
 	 * @var Sync_Service
 	 */
 	private static $instance;
@@ -42,22 +48,26 @@ class Sync_Service {
 	/**
 	 * Constructor.
 	 *
-	 * @param $api_service Api_Service The {@link Api_Service} used to communicate with the remote APIs.
-	 * @param $jsonld_service Jsonld_Service The {@link Jsonld_Service} used to generate the JSON-LD to post to the remote API.
+	 * @param Api_Service $api_service The {@link Api_Service} used to communicate with the remote APIs.
+	 * @param Sync_Object_Adapter_Factory $sync_object_adapter_factory
 	 */
-	public function __construct( $api_service, $jsonld_service ) {
+	public function __construct( $api_service, $sync_object_adapter_factory ) {
 
 		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
 
-		$this->api_service    = $api_service;
-		$this->jsonld_service = $jsonld_service;
-		$this->batch_size     = 10;
+		$this->api_service                 = $api_service;
+		$this->sync_object_adapter_factory = $sync_object_adapter_factory;
+		$this->batch_size                  = 10;
 
 		// You need to initialize this early, otherwise the Background Process isn't registered in AJAX calls.
 		$this->sync_background_process = new Sync_Background_Process( $this );;
 
 		self::$instance = $this;
 
+		$this->register_hooks();
+	}
+
+	private function register_hooks() {
 		/**
 		 * Register hooks for post and meta.
 		 */
@@ -69,13 +79,30 @@ class Sync_Service {
 
 	}
 
+	public function unregister_hooks() {
+		/**
+		 * Unregister hooks.
+		 */
+		remove_action( 'save_post', array( $this, 'sync_item' ) );
+		remove_action( 'added_post_meta', array( $this, 'sync_item_on_meta_change' ) );
+		remove_action( 'updated_post_meta', array( $this, 'sync_item_on_meta_change' ) );
+		remove_action( 'deleted_post_meta', array( $this, 'sync_item_on_meta_change' ) );
+		remove_action( 'delete_post', array( $this, 'delete_item' ) );
+
+	}
+
 	public function sync_item_on_meta_change( $meta_id, $object_id, $meta_key, $_meta_value ) {
 
-		if ( '_wl_synced_gmt' === $meta_key ) {
+		// Bail out if these are our metas.
+		if ( in_array( $meta_key, array( Sync_Object_Adapter::HASH, '_wl_synced_gmt' ) ) ) {
 			return;
 		}
 
-		$this->sync_item( $object_id );
+		$object_adapter = $this->sync_object_adapter_factory->create( Object_Type_Enum::POST, $object_id );
+		if ( $object_adapter->is_changed() ) {
+			$this->sync_item( $object_id );
+		}
+
 	}
 
 	public static function get_instance() {
@@ -142,15 +169,17 @@ class Sync_Service {
 	}
 
 	public function sync_item( $post_id ) {
-		$this->sync_items( array( $post_id ) );
+		$this->sync_items( array( $post_id ), false );
 	}
 
-	public function sync_items( $post_ids ) {
+	public function sync_items( $post_ids, $clear = true ) {
 
-		$this->log->debug( sprintf( 'Synchronizing posts %s...', implode( ', ', $post_ids ) ) );
+		$this->log->debug( sprintf( 'Synchronizing post(s) %s...', implode( ', ', $post_ids ) ) );
+
+		debug_print_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 10 );
 
 		// If we're starting the sync, try to clear the dataset.
-		if ( 0 === $this->info()->index ) {
+		if ( $clear && 0 === $this->info()->index ) {
 			$this->api_service->request( 'DELETE', '/middleware/dataset/delete' );
 		}
 
@@ -165,8 +194,8 @@ class Sync_Service {
 
 			$is_private       = ( 'publish' !== get_post_status( $post_id ) );
 			$uri              = get_post_meta( $post_id, 'entity_url', true );
-			$jsonld           = apply_filters( 'wl_dataset__sync_service__sync_item__jsonld',
-				$that->jsonld_service->get( Jsonld_Service::TYPE_POST, $post_id ), $post_id );
+			$object_adapter   = $that->sync_object_adapter_factory->create( Object_Type_Enum::POST, $post_id );
+			$jsonld           = $object_adapter->get_jsonld_and_update_hash();
 			$jsonld_as_string = wp_json_encode( $jsonld );
 
 			$that->log->trace( "Posting JSON-LD:\n$jsonld_as_string" );

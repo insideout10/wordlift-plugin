@@ -4,14 +4,12 @@ namespace Wordlift\Jsonld;
 
 use Exception;
 use Wordlift\Assertions;
+use Wordlift\Object_Type_Enum;
 use Wordlift_Jsonld_Service;
 use Wordlift_Term_JsonLd_Adapter;
 
 class Jsonld_Service {
 
-	const TYPE_HOMEPAGE = 'HOMEPAGE';
-	const TYPE_POST = 'POST';
-	const TYPE_TERM = 'TERM';
 	/**
 	 * @var Jsonld_Service
 	 */
@@ -53,20 +51,20 @@ class Jsonld_Service {
 	/**
 	 * Get the JSON-LD structure for the specified type and id.
 	 *
-	 * @param string $type The requested type, one of 'HOMEPAGE', 'POST' or 'TERM'. Default 'POST'.
+	 * @param int $type The requested type, one of 'HOMEPAGE', 'POST' or 'TERM'. Default 'POST'.
 	 * @param int|null $id The id. Default `null`.
 	 *
 	 * @return array The JSON-LD structure.
 	 * @throws Exception Throws an exception if the type isn't recognized.
 	 */
-	public function get( $type = self::TYPE_POST, $id = null ) {
+	public function get( $type = Object_Type_Enum::POST, $id = null ) {
 
 		switch ( $type ) {
-			case self::TYPE_HOMEPAGE:
+			case Object_Type_Enum::HOMEPAGE:
 				return $this->legacy_jsonld_service->get_jsonld( true, $id );
-			case self::TYPE_POST:
+			case Object_Type_Enum::POST:
 				return $this->legacy_jsonld_service->get_jsonld( false, $id );
-			case self::TYPE_TERM:
+			case Object_Type_Enum::TERM:
 				return $this->term_jsonld_service->get( $id );
 			default:
 				throw new Exception( "Unknown type $type. Allowed types: 'HOMEPAGE', 'POST', 'TERM'." );

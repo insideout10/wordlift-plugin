@@ -1,6 +1,9 @@
 <?php
 
 namespace Wordlift\Dataset;
+
+use Wordlift\Object_Type_Enum;
+
 /**
  * @since 3.28.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
@@ -25,13 +28,15 @@ class Sync_Hooks_Entity_Relation {
 	public function __construct( $entity_service ) {
 		$this->entity_service = $entity_service;
 
-		add_filter( 'wl_dataset__sync_service__sync_item__jsonld', array(
-			$this,
-			'wl_dataset__sync_service__sync_item__jsonld'
-		), 10, 2 );
+		add_filter( 'wl_dataset__sync_service__sync_item__jsonld', array( $this, 'jsonld' ), 10, 3 );
 	}
 
-	public function wl_dataset__sync_service__sync_item__jsonld( $jsonld, $post_id ) {
+	public function jsonld( $jsonld, $type, $post_id ) {
+
+		// @@todo add support for terms.
+		if ( Object_Type_Enum::TERM === $type ) {
+			return $jsonld;
+		}
 
 		// Choose the dcterm property according to the post type.
 		$property = $this->entity_service->is_entity( $post_id )

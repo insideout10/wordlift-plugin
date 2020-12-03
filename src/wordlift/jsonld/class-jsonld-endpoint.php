@@ -8,6 +8,7 @@
 
 namespace Wordlift\Jsonld;
 
+use Wordlift\Object_Type_Enum;
 use Wordlift_Jsonld_Service;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -102,7 +103,7 @@ class Jsonld_Endpoint {
 	public function jsonld_using_post_id( $request ) {
 
 		$post_id = $request['id'];
-		$type    = ( 0 === $post_id ) ? Jsonld_Service::TYPE_HOMEPAGE : Jsonld_Service::TYPE_POST;
+		$type    = ( 0 === $post_id ? Object_Type_Enum::HOMEPAGE : Object_Type_Enum::POST );
 
 		// Send the generated JSON-LD.
 		$data = $this->jsonld_service->get( $type, $post_id );
@@ -206,10 +207,10 @@ class Jsonld_Endpoint {
 			 FROM {$wpdb->termmeta}
 			 WHERE meta_key = %s AND meta_value = %s
 			",
-			Jsonld_Service::TYPE_POST,
+			Object_Type_Enum::POST,
 			$meta_key,
 			$meta_value,
-			Jsonld_Service::TYPE_TERM,
+			Object_Type_Enum::TERM,
 			$meta_key,
 			$meta_value
 		) );

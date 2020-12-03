@@ -1367,8 +1367,10 @@ class Wordlift {
 		);
 
 		/** Async Tasks. */
-		new Wordlift_Sparql_Query_Async_Task();
-		new Wordlift_Push_References_Async_Task();
+		if ( ! apply_filters( 'wl_feature__enable__dataset-ng', false ) ) {
+			new Wordlift_Sparql_Query_Async_Task();
+			new Wordlift_Push_References_Async_Task();
+		}
 
 		/** WordPress Admin UI. */
 
@@ -1986,15 +1988,15 @@ class Wordlift {
 
 		if ( apply_filters( 'wl_feature__enable__blocks', true ) ) {
 			// To intimate JS
-			$enabled_blocks = array_merge($enabled_blocks, array(
-					'wordlift/navigator',
-					'wordlift/chord',
-					'wordlift/geomap',
-					'wordlift/timeline',
-					'wordlift/cloud',
-					'wordlift/vocabulary',
-					'wordlift/faceted-search'
-				));
+			$enabled_blocks = array_merge( $enabled_blocks, array(
+				'wordlift/navigator',
+				'wordlift/chord',
+				'wordlift/geomap',
+				'wordlift/timeline',
+				'wordlift/cloud',
+				'wordlift/vocabulary',
+				'wordlift/faceted-search'
+			) );
 		}
 
 		wp_localize_script( 'wl_enabled_blocks', 'wlEnabledBlocks', $enabled_blocks );

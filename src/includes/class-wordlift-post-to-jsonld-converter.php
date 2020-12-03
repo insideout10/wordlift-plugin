@@ -320,7 +320,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		// support the logo property.
 		//
 		// See http://schema.org/logo.
-		if ( 'http://schema.org/Organization' !== $type['uri'] ) {
+		if ( 1 !== preg_match( '~Organization$~', $type['uri'] ) ) {
 			return;
 		}
 
