@@ -5,6 +5,7 @@ use Wordlift\Dataset\Sync_Object_Adapter_Factory;
 use Wordlift\Dataset\Sync_Page;
 use Wordlift\Dataset\Sync_Post_Hooks;
 use Wordlift\Dataset\Sync_Service;
+use Wordlift\Dataset\Sync_User_Hooks;
 use Wordlift\Dataset\Sync_Wpjson_Endpoint;
 use Wordlift\Jsonld\Jsonld_Service;
 
