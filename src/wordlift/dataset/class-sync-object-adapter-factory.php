@@ -2,43 +2,28 @@
 
 namespace Wordlift\Dataset;
 
-use Wordlift\Jsonld\Jsonld_Service;
+use Wordlift\Object_Type_Enum;
 
 class Sync_Object_Adapter_Factory {
-	/**
-	 * @var Sync_Object_Adapter_Factory
-	 */
-	private static $instance;
-
-	/**
-	 * @var Jsonld_Service
-	 */
-	private $jsonld_service;
-
-	/**
-	 * Sync_Object_Adapter_Factory constructor.
-	 *
-	 * @param $jsonld_service
-	 */
-	function __construct( $jsonld_service ) {
-		$this->jsonld_service = $jsonld_service;
-
-		self::$instance = $this;
-	}
-
-	static function get_instance() {
-		return self::$instance;
-	}
 
 	/**
 	 * @param $type
 	 * @param $object_id
 	 *
-	 * @return Sync_Object_Adapter
+	 * @return Abstract_Sync_Object_Adapter
 	 * @throws \Exception
 	 */
 	function create( $type, $object_id ) {
-		return new Sync_Object_Adapter( $type, $object_id, $this->jsonld_service );
+
+		switch ( $type ) {
+			case Object_Type_Enum::POST:
+				return new Sync_Post_Adapter( $object_id );
+			case Object_Type_Enum::USER:
+				return new Sync_User_Adapter( $object_id );
+			default:
+				throw new \Exception( "Unsupported type $type." );
+		}
+
 	}
 
 }

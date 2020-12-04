@@ -7,6 +7,8 @@ use Wordlift\Jsonld\Jsonld_Service;
 use Wordlift\Object_Type_Enum;
 
 class Sync_Service {
+	const JSONLD_HASH = '_wl_jsonld_hash';
+	const SYNCED_GMT = '_wl_synced_gmt';
 
 	/**
 	 * @var \Wordlift_Log_Service
@@ -51,16 +53,25 @@ class Sync_Service {
 	 * @param Api_Service $api_service The {@link Api_Service} used to communicate with the remote APIs.
 	 * @param Sync_Object_Adapter_Factory $sync_object_adapter_factory
 	 */
-	public function __construct( $api_service, $sync_object_adapter_factory ) {
+	public function __construct( $api_service, $sync_object_adapter_factory, $jsonld_service ) {
 
 		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
 
 		$this->api_service                 = $api_service;
 		$this->sync_object_adapter_factory = $sync_object_adapter_factory;
+		$this->jsonld_service              = $jsonld_service;
 		$this->batch_size                  = 10;
 
 		// You need to initialize this early, otherwise the Background Process isn't registered in AJAX calls.
 		$this->sync_background_process = new Sync_Background_Process( $this );;
+
+		// Exclude the JSONLD_HASH meta key from those that require a resync.
+		add_filter( 'wl_dataset__sync_hooks__ignored_meta_keys', function ( $args ) {
+			$args[] = Sync_Service::JSONLD_HASH;
+			$args[] = Sync_Service::SYNCED_GMT;
+
+			return $args;
+		} );
 
 		self::$instance = $this;
 
@@ -69,6 +80,55 @@ class Sync_Service {
 	public static function get_instance() {
 		return self::$instance;
 	}
+
+	/**
+	 * @param int $type
+	 * @param int $object_id
+	 *
+	 * @return array|false
+	 * @throws \Exception
+	 */
+	public function sync_one( $type, $object_id ) {
+
+		$jsonld_as_string = wp_json_encode( apply_filters( 'wl_dataset__sync_service__sync_item__jsonld',
+			$this->jsonld_service->get( $type, $object_id ), $type, $object_id ) );
+		$new_hash         = sha1( $jsonld_as_string );
+
+		$object   = $this->sync_object_adapter_factory->create( $type, $object_id );
+		$old_hash = $object->get_meta( self::JSONLD_HASH, true );
+
+		// JSON-LD hasn't changed, bail out.
+		if ( $new_hash === $old_hash ) {
+			return false;
+		}
+
+		$uri = $object->get_meta( 'entity_url', true );
+
+		// Entity URL isn't set, bail out.
+		if ( empty( $uri ) ) {
+			return false;
+		}
+
+		$response = $this->api_service->request(
+			'POST', '/middleware/dataset',
+			array( 'Content-Type' => 'application/json', ),
+			wp_json_encode( array(
+				'uri'     => $uri,
+				'model'   => $jsonld_as_string,
+				'private' => ! $object->is_public(),
+			) ) );
+
+		// Update the sync date in case of success, otherwise log an error.
+		if ( ! $response->is_success() ) {
+			return false;
+		}
+
+		$object->update_meta( self::JSONLD_HASH, $new_hash );
+		$object->update_meta( self::SYNCED_GMT, current_time( 'mysql', true ) );
+
+		return true;
+	}
+
 
 	/**
 	 * Starts a new synchronization.
@@ -129,26 +189,11 @@ class Sync_Service {
 		return Sync_Background_Process::get_state();
 	}
 
-	/**
-	 * @param $type
-	 * @param $post_id
-	 *
-	 * @throws \Exception
-	 */
-	public function sync_one( $type, $post_id ) {
-
-		if ( Object_Type_Enum::POST !== $type ) {
-			throw new \Exception( "Type $type is unsupported." );
-		}
-
-		$this->sync_items( array( $post_id ), false );
-	}
-
-	public function sync_items( $post_ids, $clear = true ) {
+	public function sync_items(
+		$post_ids, $clear = true
+	) {
 
 		$this->log->debug( sprintf( 'Synchronizing post(s) %s...', implode( ', ', $post_ids ) ) );
-
-		debug_print_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 10 );
 
 		// If we're starting the sync, try to clear the dataset.
 		if ( $clear && 0 === $this->info()->index ) {
@@ -240,7 +285,7 @@ class Sync_Service {
 		return $this->batch_size;
 	}
 
-	public function delete_one($type, $object_id) {
+	public function delete_one( $type, $object_id ) {
 
 		// @@todo implement.
 

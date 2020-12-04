@@ -50,11 +50,14 @@ class Sync_Post_Hooks {
 
 	public function changed_post_meta( $meta_id, $post_id, $meta_key, $_meta_value ) {
 
-		if ( in_array( $meta_key, apply_filters( 'wl_dataset__sync_post_hooks__ignored_meta_keys', array(
-			'_pingme',
-			'_encloseme',
-			'entity_url',
-		) ) ) ) {
+		if ( in_array( $meta_key,
+			apply_filters( 'wl_dataset__sync_post_hooks__ignored_meta_keys',
+				apply_filters( 'wl_dataset__sync_hooks__ignored_meta_keys',
+					array(
+						'_pingme',
+						'_encloseme',
+						'entity_url',
+					) ) ) ) ) {
 			return;
 		}
 

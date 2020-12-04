@@ -51,17 +51,20 @@ class Sync_User_Hooks {
 
 	public function changed_user_meta( $meta_id, $user_id, $meta_key ) {
 
-		if ( in_array( $meta_key, apply_filters( 'wl_dataset__sync_user_hooks__ignored_meta_keys', array(
-			'rich_editing',
-			'comment_shortcuts',
-			'admin_color',
-			'use_ssl',
-			'show_admin_bar_front',
-			'wptests_capabilities',
-			'wptests_user_level',
-			'dismissed_wp_pointers',
-			'entity_url',
-		) ) ) ) {
+		if ( in_array( $meta_key,
+			apply_filters( 'wl_dataset__sync_user_hooks__ignored_meta_keys',
+				apply_filters( 'wl_dataset__sync_hooks__ignored_meta_keys',
+					array(
+						'rich_editing',
+						'comment_shortcuts',
+						'admin_color',
+						'use_ssl',
+						'show_admin_bar_front',
+						'wptests_capabilities',
+						'wptests_user_level',
+						'dismissed_wp_pointers',
+						'entity_url',
+					) ) ) ) ) {
 			return;
 		}
 
