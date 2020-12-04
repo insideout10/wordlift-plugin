@@ -95,39 +95,39 @@ jobs:
         dataset-ng:
           - true
           - false
-        include:
-          - acf-pro-enabled: true
-            image: "php5.6-phpunit4.8-wordpress4.7"
-            phpunit-xml: phpunit.xml
-            dataset-ng: true
-          - acf-pro-enabled: true
-            image: "php5.6-phpunit4.8-wordpress4.7"
-            phpunit-xml: phpunit-multisite.xml
-            dataset-ng: true
-          - acf-pro-enabled: true
-            image: "php5.6-phpunit4.8-wordpress4.7"
-            phpunit-xml: phpunit.xml
-            dataset-ng: false
-          - acf-pro-enabled: true
-            image: "php5.6-phpunit4.8-wordpress4.7"
-            phpunit-xml: phpunit-multisite.xml
-            dataset-ng: false
-          - acf-pro-enabled: true
-            image: "php7.3-phpunit7.5-wordpress5.5"
-            phpunit-xml: phpunit.xml
-            dataset-ng: true
-          - acf-pro-enabled: true
-            image: "php7.3-phpunit7.5-wordpress5.5"
-            phpunit-xml: phpunit-multisite.xml
-            dataset-ng: true
-          - acf-pro-enabled: true
-            image: "php7.3-phpunit7.5-wordpress5.5"
-            phpunit-xml: phpunit.xml
-            dataset-ng: false
-          - acf-pro-enabled: true
-            image: "php7.3-phpunit7.5-wordpress5.5"
-            phpunit-xml: phpunit-multisite.xml
-            dataset-ng: false
+#        include:
+#          - acf-pro-enabled: true
+#            image: "php5.6-phpunit4.8-wordpress4.7"
+#            phpunit-xml: phpunit.xml
+#            dataset-ng: true
+#          - acf-pro-enabled: true
+#            image: "php5.6-phpunit4.8-wordpress4.7"
+#            phpunit-xml: phpunit-multisite.xml
+#            dataset-ng: true
+#          - acf-pro-enabled: true
+#            image: "php5.6-phpunit4.8-wordpress4.7"
+#            phpunit-xml: phpunit.xml
+#            dataset-ng: false
+#          - acf-pro-enabled: true
+#            image: "php5.6-phpunit4.8-wordpress4.7"
+#            phpunit-xml: phpunit-multisite.xml
+#            dataset-ng: false
+#          - acf-pro-enabled: true
+#            image: "php7.3-phpunit7.5-wordpress5.5"
+#            phpunit-xml: phpunit.xml
+#            dataset-ng: true
+#          - acf-pro-enabled: true
+#            image: "php7.3-phpunit7.5-wordpress5.5"
+#            phpunit-xml: phpunit-multisite.xml
+#            dataset-ng: true
+#          - acf-pro-enabled: true
+#            image: "php7.3-phpunit7.5-wordpress5.5"
+#            phpunit-xml: phpunit.xml
+#            dataset-ng: false
+#          - acf-pro-enabled: true
+#            image: "php7.3-phpunit7.5-wordpress5.5"
+#            phpunit-xml: phpunit-multisite.xml
+#            dataset-ng: false
     # If you want the following envs to be avail to docker, you need to add them to `docker run`.
     env:
       ACF_PRO_KEY: ${{ secrets.ACF_PRO_KEY }}
