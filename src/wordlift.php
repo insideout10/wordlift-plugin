@@ -24,6 +24,7 @@
  * Domain Path:       /languages
  */
 
+use Wordlift\Admin\Top_Entities;
 use Wordlift\Api\Default_Api_Service;
 use Wordlift\Api\User_Agent;
 use Wordlift\Api_Data\Api_Data_Hooks;
@@ -391,6 +392,11 @@ function activate_wordlift() {
 	// Ensure the post type is registered before flushing the rewrite rules.
 	Wordlift_Entity_Post_Type_Service::get_instance()->register();
 	flush_rewrite_rules();
+	/**
+	 * @since 3.27.7
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/1214
+	 */
+	Top_Entities::activate();
 }
 
 /**
@@ -403,6 +409,11 @@ function deactivate_wordlift() {
 	Wordlift_Deactivator::deactivate();
 	Wordlift_Http_Api::deactivate();
 	Ttl_Cache_Cleaner::deactivate();
+	/**
+	 * @since 3.27.7
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/1214
+	 */
+	Top_Entities::deactivate();
 	flush_rewrite_rules();
 
 }
