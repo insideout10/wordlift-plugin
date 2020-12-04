@@ -119,7 +119,7 @@ class Wordlift_Log_Service {
 
 	}
 
-	public function error( $message, $exception ) {
+	public function error( $message, $exception = null ) {
 
 		$this->log( self::ERROR, $message );
 
