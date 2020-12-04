@@ -48,9 +48,11 @@ class Wordlift_Log_Service {
 
 	/**
 	 * Create an instance of the Log service.
-	 * @since 1.0.0
 	 *
 	 * @param string $class_name The class related to the logs.
+	 *
+	 * @since 1.0.0
+	 *
 	 */
 	public function __construct( $class_name ) {
 
@@ -61,9 +63,9 @@ class Wordlift_Log_Service {
 	/**
 	 * Get the ROOT logger.
 	 *
+	 * @return \Wordlift_Log_Service A singleton instance for legacy logging.
 	 * @since 3.10.0
 	 *
-	 * @return \Wordlift_Log_Service A singleton instance for legacy logging.
 	 */
 	public static function get_instance() {
 
@@ -80,23 +82,24 @@ class Wordlift_Log_Service {
 	/**
 	 * Log a message.
 	 *
+	 * @param string $level The log level.
+	 * @param string $message The message to log.
+	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $level   The log level.
-	 * @param string $message The message to log.
 	 */
 	public function log( $level, $message ) {
 
 		// echo( sprintf( self::MESSAGE_TEMPLATE . "\n", self::$levels[ $level ], $this->class_name, is_array( $message ) ? implode( ', ', $message ) : $message ) );
 
 		// Bail out if `WL_DEBUG` isn't defined or it's false.
-		if ( ! defined( 'WL_DEBUG') || false === WL_DEBUG ) {
+		if ( ! defined( 'WL_DEBUG' ) || false === WL_DEBUG ) {
 			return;
 		}
 
 		// Bail out if WordLift log level isn't defined, and WP debug is disabled.
 		if ( ! defined( 'WL_LOG_LEVEL' ) && $level < self::ERROR
-			 && ( ! defined( 'WP_DEBUG' ) || false === WP_DEBUG ) ) {
+		     && ( ! defined( 'WP_DEBUG' ) || false === WP_DEBUG ) ) {
 			return;
 		}
 
@@ -116,7 +119,7 @@ class Wordlift_Log_Service {
 
 	}
 
-	public function error( $message ) {
+	public function error( $message, $exception ) {
 
 		$this->log( self::ERROR, $message );
 

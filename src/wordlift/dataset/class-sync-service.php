@@ -64,45 +64,6 @@ class Sync_Service {
 
 		self::$instance = $this;
 
-		$this->register_hooks();
-	}
-
-	private function register_hooks() {
-		/**
-		 * Register hooks for post and meta.
-		 */
-		add_action( 'save_post', array( $this, 'sync_item' ) );
-		add_action( 'added_post_meta', array( $this, 'sync_item_on_meta_change' ), 10, 4 );
-		add_action( 'updated_post_meta', array( $this, 'sync_item_on_meta_change' ), 10, 4 );
-		add_action( 'deleted_post_meta', array( $this, 'sync_item_on_meta_change' ), 10, 4 );
-		add_action( 'delete_post', array( $this, 'delete_item' ) );
-
-	}
-
-	public function unregister_hooks() {
-		/**
-		 * Unregister hooks.
-		 */
-		remove_action( 'save_post', array( $this, 'sync_item' ) );
-		remove_action( 'added_post_meta', array( $this, 'sync_item_on_meta_change' ) );
-		remove_action( 'updated_post_meta', array( $this, 'sync_item_on_meta_change' ) );
-		remove_action( 'deleted_post_meta', array( $this, 'sync_item_on_meta_change' ) );
-		remove_action( 'delete_post', array( $this, 'delete_item' ) );
-
-	}
-
-	public function sync_item_on_meta_change( $meta_id, $object_id, $meta_key, $_meta_value ) {
-
-		// Bail out if these are our metas.
-		if ( in_array( $meta_key, array( Sync_Object_Adapter::HASH, '_wl_synced_gmt' ) ) ) {
-			return;
-		}
-
-		$object_adapter = $this->sync_object_adapter_factory->create( Object_Type_Enum::POST, $object_id );
-		if ( $object_adapter->is_changed() ) {
-			$this->sync_item( $object_id );
-		}
-
 	}
 
 	public static function get_instance() {
@@ -168,7 +129,18 @@ class Sync_Service {
 		return Sync_Background_Process::get_state();
 	}
 
-	public function sync_item( $post_id ) {
+	/**
+	 * @param $type
+	 * @param $post_id
+	 *
+	 * @throws \Exception
+	 */
+	public function sync_one( $type, $post_id ) {
+
+		if ( Object_Type_Enum::POST !== $type ) {
+			throw new \Exception( "Type $type is unsupported." );
+		}
+
 		$this->sync_items( array( $post_id ), false );
 	}
 
@@ -266,6 +238,12 @@ class Sync_Service {
 	public function get_batch_size() {
 
 		return $this->batch_size;
+	}
+
+	public function delete_one($type, $object_id) {
+
+		// @@todo implement.
+
 	}
 
 }

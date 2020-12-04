@@ -3,6 +3,7 @@
 use Wordlift\Dataset\Sync_Hooks_Entity_Relation;
 use Wordlift\Dataset\Sync_Object_Adapter_Factory;
 use Wordlift\Dataset\Sync_Page;
+use Wordlift\Dataset\Sync_Post_Hooks;
 use Wordlift\Dataset\Sync_Service;
 use Wordlift\Dataset\Sync_Wpjson_Endpoint;
 use Wordlift\Jsonld\Jsonld_Service;
@@ -21,6 +22,8 @@ if ( apply_filters( 'wl_feature__enable__dataset-ng', false ) ) {
 
 	$sync_object_adapter_factory = new Sync_Object_Adapter_Factory( Jsonld_Service::get_instance() );
 	$sync_service                = new Sync_Service( $api_service, $sync_object_adapter_factory );
+	new Sync_Post_Hooks( $sync_service );
+	new Sync_User_Hooks( $sync_service );
 	new Sync_Wpjson_Endpoint( $sync_service );
 	new Sync_Page();
 
