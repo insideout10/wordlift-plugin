@@ -46,20 +46,24 @@ class Sync_Service {
 	 * @var Sync_Service
 	 */
 	private static $instance;
+	private $entity_service;
 
 	/**
 	 * Constructor.
 	 *
 	 * @param Api_Service $api_service The {@link Api_Service} used to communicate with the remote APIs.
 	 * @param Sync_Object_Adapter_Factory $sync_object_adapter_factory
+	 * @param Jsonld_Service $jsonld_service
+	 * @param \Wordlift_Entity_Service $entity_service
 	 */
-	public function __construct( $api_service, $sync_object_adapter_factory, $jsonld_service ) {
+	public function __construct( $api_service, $sync_object_adapter_factory, $jsonld_service, $entity_service ) {
 
 		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
 
 		$this->api_service                 = $api_service;
 		$this->sync_object_adapter_factory = $sync_object_adapter_factory;
 		$this->jsonld_service              = $jsonld_service;
+		$this->entity_service              = $entity_service;
 		$this->batch_size                  = 10;
 
 		// You need to initialize this early, otherwise the Background Process isn't registered in AJAX calls.
@@ -74,7 +78,6 @@ class Sync_Service {
 		} );
 
 		self::$instance = $this;
-
 	}
 
 	public static function get_instance() {
@@ -102,7 +105,7 @@ class Sync_Service {
 			return false;
 		}
 
-		$uri = $object->get_meta( 'entity_url', true );
+		$uri = $this->entity_service->get_uri( $object_id, $type );
 
 		// Entity URL isn't set, bail out.
 		if ( empty( $uri ) ) {
@@ -110,12 +113,14 @@ class Sync_Service {
 		}
 
 		$response = $this->api_service->request(
-			'POST', '/middleware/dataset',
+			'POST', '/middleware/dataset/batch',
 			array( 'Content-Type' => 'application/json', ),
 			wp_json_encode( array(
-				'uri'     => $uri,
-				'model'   => $jsonld_as_string,
-				'private' => ! $object->is_public(),
+				array(
+					'uri'     => $uri,
+					'model'   => $jsonld_as_string,
+					'private' => ! $object->is_public(),
+				)
 			) ) );
 
 		// Update the sync date in case of success, otherwise log an error.
@@ -129,6 +134,25 @@ class Sync_Service {
 		return true;
 	}
 
+	public function delete_one( $type, $object_id ) {
+		$object = $this->sync_object_adapter_factory->create( $type, $object_id );
+		$uri    = $object->get_meta( 'entity_url', true );
+
+		// Entity URL isn't set, bail out.
+		if ( empty( $uri ) ) {
+			return false;
+		}
+
+		$response = $this->api_service->request(
+			'DELETE', sprintf( '/middleware/dataset?uri=%s', rawurlencode( $uri ) ) );
+
+		// Update the sync date in case of success, otherwise log an error.
+		if ( ! $response->is_success() ) {
+			return false;
+		}
+
+		return true;
+	}
 
 	/**
 	 * Starts a new synchronization.
@@ -283,12 +307,6 @@ class Sync_Service {
 	public function get_batch_size() {
 
 		return $this->batch_size;
-	}
-
-	public function delete_one( $type, $object_id ) {
-
-		// @@todo implement.
-
 	}
 
 }

@@ -21,12 +21,12 @@ if ( apply_filters( 'wl_feature__enable__dataset-ng', false ) ) {
 	 */
 //	require dirname( dirname( dirname( __FILE__ ) ) ) . '/vendor/autoload.php';
 
-	$sync_object_adapter_factory = new Sync_Object_Adapter_Factory( Jsonld_Service::get_instance() );
-	$sync_service                = new Sync_Service( $api_service, $sync_object_adapter_factory );
+	$sync_object_adapter_factory = new Sync_Object_Adapter_Factory();
+	$sync_service                = new Sync_Service( $api_service, $sync_object_adapter_factory, Jsonld_Service::get_instance(), Wordlift_Entity_Service::get_instance() );
 	new Sync_Post_Hooks( $sync_service );
 	new Sync_User_Hooks( $sync_service );
-	new Sync_Wpjson_Endpoint( $sync_service );
-	new Sync_Page();
+//	new Sync_Wpjson_Endpoint( $sync_service );
+//	new Sync_Page();
 
 	/**
 	 * @since 3.28.0

@@ -7,6 +7,8 @@
  * @subpackage Wordlift/includes
  */
 
+use Wordlift\Object_Type_Enum;
+
 /**
  * Provide entity-related services.
  *
@@ -402,7 +404,7 @@ class Wordlift_Entity_Service {
 	 * @since 3.6.0
 	 *
 	 */
-	public function get_uri( $post_id ) {
+	private function get_uri_for_post( $post_id ) {
 
 		$log = Wordlift_Log_Service::get_logger( get_class() );
 
@@ -439,6 +441,32 @@ class Wordlift_Entity_Service {
 		return $uri;
 	}
 
+	public function get_uri( $object_id, $type = Object_Type_Enum::POST ) {
+
+		if ( Object_Type_Enum::POST === $type ) {
+			return $this->get_uri_for_post( $object_id );
+		}
+
+		if ( Object_Type_Enum::USER === $type ) {
+			$uri = get_user_meta( $object_id, 'entity_url', true );
+			if ( ! empty( $uri ) ) {
+				return $uri;
+			}
+
+			$dataset_uri = wl_configuration_get_redlink_dataset_uri();
+			if ( empty( $dataset_uri ) ) {
+				return get_author_posts_url( $object_id ) . '#author';
+			} else {
+				$user = get_userdata( $object_id );
+				if ( empty( $user->user_nicename ) ) {
+					return null;
+				}
+
+				return sprintf( '%s/author/%s', $dataset_uri, $user->user_nicename );
+			}
+		}
+
+	}
 
 	/**
 	 * Get the alternative label input HTML code.
