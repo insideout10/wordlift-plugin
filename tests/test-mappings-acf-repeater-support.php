@@ -23,8 +23,9 @@ class Mapping_Acf_Repeater_Support_Test extends WP_UnitTestCase {
 		// Initialize dependencies for the test.
 		$this->dbo = new Mappings_DBO();
 		// Try to get the ACF PRO Key, if not set, skip this test.
-		$acf_pro_key = getenv( 'ACF_PRO_KEY' );
-		if ( empty( $acf_pro_key ) ) {
+		$acf_pro_enabled = wp_validate_boolean( getenv( 'ACF_PRO_ENABLED' ) );
+		$acf_pro_key     = getenv( 'ACF_PRO_KEY' );
+		if ( ! $acf_pro_enabled || empty( $acf_pro_key ) ) {
 			$this->markTestSkipped( '`ACF_PRO_KEY` not set, test skipped.' );
 		}
 
