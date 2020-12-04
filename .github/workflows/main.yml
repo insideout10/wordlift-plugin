@@ -95,9 +95,14 @@ jobs:
         dataset-ng:
           - true
           - false
+        include:
+          - acf-pro-key: ${{ secrets.ACF_PRO_KEY }}
+            image: [ "php5.6-phpunit4.8-wordpress4.7", "php7.3-phpunit7.5-wordpress5.5" ]
+            phpunit-xml: phpunit.xml
+            dataset-ng: [ true, false ]
     # If you want the following envs to be avail to docker, you need to add them to `docker run`.
     env:
-      ACF_PRO_KEY: ${{ secrets.ACF_PRO_KEY }}
+      ACF_PRO_KEY: ${{ matrix.acf-pro-key }}
       WORDLIFT_API_URL: ${{  secrets.WORDLIFT_API_URL }}
       WORDLIFT_KEY: ${{ secrets.WORDLIFT_KEY }}
       WL_DATASET_NG: ${{ matrix.dataset-ng }}
