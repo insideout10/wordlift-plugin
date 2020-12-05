@@ -93,35 +93,26 @@ class Sync_Service {
 	 */
 	public function sync_one( $type, $object_id ) {
 
-		$jsonld_as_string = wp_json_encode( apply_filters( 'wl_dataset__sync_service__sync_item__jsonld',
-			$this->jsonld_service->get( $type, $object_id ), $type, $object_id ) );
-		$new_hash         = sha1( $jsonld_as_string );
+		$object = $this->sync_object_adapter_factory->create( $type, $object_id );
 
-		$object   = $this->sync_object_adapter_factory->create( $type, $object_id );
-		$old_hash = $object->get_meta( self::JSONLD_HASH, true );
-
-		// JSON-LD hasn't changed, bail out.
-		if ( $new_hash === $old_hash ) {
+		// Bail out if no payload.
+		$payload_as_string = $this->get_payload_as_string( $object );
+		if ( empty( $payload_as_string ) ) {
 			return false;
 		}
 
-		$uri = $this->entity_service->get_uri( $object_id, $type );
-
-		// Entity URL isn't set, bail out.
-		if ( empty( $uri ) ) {
+		// JSON-LD hasn't changed, bail out.
+		$new_hash = sha1( $payload_as_string );
+		$old_hash = $object->get_meta( self::JSONLD_HASH, true );
+		if ( $new_hash === $old_hash ) {
 			return false;
 		}
 
 		$response = $this->api_service->request(
 			'POST', '/middleware/dataset/batch',
 			array( 'Content-Type' => 'application/json', ),
-			wp_json_encode( array(
-				array(
-					'uri'     => $uri,
-					'model'   => $jsonld_as_string,
-					'private' => ! $object->is_public(),
-				)
-			) ) );
+			// Put the payload in a JSON array w/o decoding/encoding again.
+			"[ $payload_as_string ]" );
 
 		// Update the sync date in case of success, otherwise log an error.
 		if ( ! $response->is_success() ) {
@@ -152,6 +143,77 @@ class Sync_Service {
 		}
 
 		return true;
+	}
+
+	public function sync_many( $objects ) {
+
+		$hashes   = array();
+		$payloads = array();
+		foreach ( $objects as $object ) {
+			// Bail out if no payload.
+			$payload_as_string = $this->get_payload_as_string( $object );
+			if ( empty( $payload_as_string ) ) {
+				continue;
+			}
+
+			$new_hash = sha1( $payload_as_string );
+			$old_hash = $object->get_meta( self::JSONLD_HASH, true );
+			// JSON-LD hasn't changed, bail out.
+			if ( $new_hash === $old_hash ) {
+				continue;
+			}
+
+			// Collect the hashes and the payloads.
+			$hashes[]   = array( $object, $new_hash );
+			$payloads[] = $payload_as_string;
+		}
+
+		$response = $this->api_service->request(
+			'POST', '/middleware/dataset/batch',
+			array( 'Content-Type' => 'application/json', ),
+			// Put the payload in a JSON array w/o decoding/encoding again.
+			'[ ' . implode( ', ', $payloads ) . ' ]' );
+
+		// Update the sync date in case of success, otherwise log an error.
+		if ( ! $response->is_success() ) {
+			return false;
+		}
+
+		// If successful update the hashes and sync'ed datetime.
+		foreach ( $hashes as $hash ) {
+			$object   = $hash[0];
+			$new_hash = $hash[1];
+			$object->update_meta( self::JSONLD_HASH, $new_hash );
+			$object->update_meta( self::SYNCED_GMT, current_time( 'mysql', true ) );
+		}
+
+		return true;
+	}
+
+	/**
+	 * @param Sync_Object_Adapter $object
+	 *
+	 * @return false|string
+	 * @throws \Exception
+	 */
+	private function get_payload_as_string( $object ) {
+		$type      = $object->get_type();
+		$object_id = $object->get_object_id();
+
+		$jsonld_as_string = wp_json_encode( apply_filters( 'wl_dataset__sync_service__sync_item__jsonld',
+			$this->jsonld_service->get( $type, $object_id ), $type, $object_id ) );
+		$uri              = $this->entity_service->get_uri( $object_id, $type );
+
+		// Entity URL isn't set, bail out.
+		if ( empty( $uri ) ) {
+			return false;
+		}
+
+		return wp_json_encode( array(
+			'uri'     => $uri,
+			'model'   => $jsonld_as_string,
+			'private' => ! $object->is_public(),
+		) );
 	}
 
 	/**

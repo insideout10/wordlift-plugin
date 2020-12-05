@@ -47,6 +47,14 @@ abstract class Abstract_Sync_Object_Adapter implements Sync_Object_Adapter {
 
 	}
 
+	function get_type() {
+		return $this->type;
+	}
+
+	function get_object_id() {
+		return $this->object_id;
+	}
+
 	function get_meta( $meta_key, $single ) {
 
 		return call_user_func( $this->get_meta, $this->object_id, $meta_key, $single );

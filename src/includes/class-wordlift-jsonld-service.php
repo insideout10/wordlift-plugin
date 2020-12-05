@@ -234,8 +234,7 @@ class Wordlift_Jsonld_Service {
 	 *
 	 * @since 3.18.5
 	 */
-	public
-	function wp_head() {
+	public function wp_head() {
 
 		// Determine whether this is the home page or whether we're displaying a single post.
 		$is_homepage = is_home() || is_front_page();

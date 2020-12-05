@@ -26,20 +26,29 @@ class Jsonld_Service {
 	private $term_jsonld_service;
 
 	/**
+	 * @var Jsonld_User_Service
+	 */
+	private $jsonld_user_service;
+
+	/**
 	 * Jsonld_Service constructor.
 	 *
 	 * @param Wordlift_Jsonld_Service $legacy_jsonld_service
 	 * @param Wordlift_Term_JsonLd_Adapter $term_jsonld_adapter
+	 * @param Jsonld_User_Service $jsonld_user_service
 	 *
 	 * @throws Exception
 	 */
-	public function __construct( $legacy_jsonld_service, $term_jsonld_adapter ) {
+	public function __construct( $legacy_jsonld_service, $term_jsonld_adapter, $jsonld_user_service ) {
 
 		Assertions::assert_of_type( $legacy_jsonld_service, 'Wordlift_Jsonld_Service' );
 		Assertions::assert_of_type( $term_jsonld_adapter, 'Wordlift_Term_JsonLd_Adapter' );
+		Assertions::assert_of_type( $jsonld_user_service, 'Wordlift\Jsonld\Jsonld_User_Service' );
 
 		$this->legacy_jsonld_service = $legacy_jsonld_service;
 		$this->term_jsonld_service   = $term_jsonld_adapter;
+		$this->jsonld_user_service   = $jsonld_user_service;
+		$this->jsonld_user_service->set_jsonld_service( $this );
 
 		self::$instance = $this;
 	}
@@ -66,8 +75,10 @@ class Jsonld_Service {
 				return $this->legacy_jsonld_service->get_jsonld( false, $id );
 			case Object_Type_Enum::TERM:
 				return $this->term_jsonld_service->get( $id );
+			case Object_Type_Enum::USER:
+				return $this->jsonld_user_service->get( $id );
 			default:
-				throw new Exception( "Unknown type $type. Allowed types: 'HOMEPAGE', 'POST', 'TERM'." );
+				throw new Exception( "Unknown type $type. Allowed types: 'HOMEPAGE', 'POST', 'TERM', 'USER'." );
 		}
 
 	}

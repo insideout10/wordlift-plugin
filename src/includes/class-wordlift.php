@@ -32,6 +32,7 @@ use Wordlift\Jsonld\Jsonld_Adapter;
 use Wordlift\Jsonld\Jsonld_By_Id_Endpoint;
 use Wordlift\Jsonld\Jsonld_Endpoint;
 use Wordlift\Jsonld\Jsonld_Service;
+use Wordlift\Jsonld\Jsonld_User_Service;
 use Wordlift\Mappings\Formatters\Acf_Group_Formatter;
 use Wordlift\Mappings\Jsonld_Converter;
 use Wordlift\Mappings\Mappings_DBO;
@@ -1290,7 +1291,10 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-term-jsonld-adapter.php';
 		$term_jsonld_adapter = new Wordlift_Term_JsonLd_Adapter( $this->entity_uri_service, $this->jsonld_service );
-		$jsonld_service      = new Jsonld_Service( $this->jsonld_service, $term_jsonld_adapter );
+		$jsonld_service      = new Jsonld_Service(
+			$this->jsonld_service,
+			$term_jsonld_adapter,
+			new Jsonld_User_Service( $this->user_service ) );
 		new Jsonld_Endpoint( $jsonld_service, $this->entity_uri_service );
 
 		// Prints the JSON-LD in the head.

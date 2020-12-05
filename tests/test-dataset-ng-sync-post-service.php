@@ -51,9 +51,12 @@ class Test_Dataset_Ng_Sync_Post_Service extends Wordlift_Unit_Test_Case {
 		$this->jsonld_service_mock = $this->getMockBuilder( 'Wordlift\Jsonld\Jsonld_Service' )
 		                                  ->disableOriginalConstructor()
 		                                  ->getMock();
+		$this->entity_service_mock = $this->getMockBuilder( 'Wordlift_Entity_Service' )
+		                                  ->disableOriginalConstructor()
+		                                  ->getMock();
 		$this->sync_object_factory = new Sync_Object_Adapter_Factory();
 
-		$this->sync_service = new Sync_Service( $this->api_service_mock, $this->sync_object_factory, $this->jsonld_service_mock, Wordlift_Entity_Service::get_instance()  );
+		$this->sync_service = new Sync_Service( $this->api_service_mock, $this->sync_object_factory, $this->jsonld_service_mock, $this->entity_service_mock );
 	}
 
 	function test_sync_one__hash_equals() {
@@ -61,7 +64,11 @@ class Test_Dataset_Ng_Sync_Post_Service extends Wordlift_Unit_Test_Case {
 			'post_title'   => 'Title 123',
 			'post_content' => 'Content 123',
 		) );
-		update_post_meta( $post_id, Sync_Service::JSONLD_HASH, sha1( wp_json_encode( array( 'key123' => 'value123' ) ) ) );
+		update_post_meta( $post_id, Sync_Service::JSONLD_HASH, sha1( wp_json_encode( array(
+			'uri'     => 'https://localdomain.localhost/dataset123/post/123',
+			'model'   => wp_json_encode( array( 'key123' => 'value123' ) ),
+			'private' => false,
+		) ) ) );
 
 		$this->jsonld_service_mock->method( 'get' )
 		                          ->with(
@@ -84,6 +91,18 @@ class Test_Dataset_Ng_Sync_Post_Service extends Wordlift_Unit_Test_Case {
 			'post_content' => 'Content 123',
 		) );
 
+		$this->entity_service_mock->method( 'get_uri' )
+		                          ->with(
+			                          $this->equalTo( $post_id ),
+			                          $this->equalTo( Object_Type_Enum::POST ) )
+		                          ->willReturn( 'https://localdomain.localhost/dataset123/post/123' );
+
+		$this->entity_service_mock->expects( $this->once() )
+		                          ->method( 'get_uri' )
+		                          ->with(
+			                          $this->equalTo( $post_id ),
+			                          $this->equalTo( Object_Type_Enum::POST ) );
+
 		$this->jsonld_service_mock->method( 'get' )
 		                          ->with(
 			                          $this->equalTo( Object_Type_Enum::POST ),
@@ -117,10 +136,7 @@ class Test_Dataset_Ng_Sync_Post_Service extends Wordlift_Unit_Test_Case {
 
 		$this->assertTrue( $this->sync_service->sync_one( Object_Type_Enum::POST, $post_id ) );
 		$this->assertNotEmpty( get_post_meta( $post_id, Sync_Service::SYNCED_GMT, true ) );
-		$this->assertEquals(
-			sha1( wp_json_encode( array( 'key123' => 'value123' ) ) ),
-			get_post_meta( $post_id, Sync_Service::JSONLD_HASH, true )
-		);
+		$this->assertEquals( 'b3430ed11b609e442970d7a76ddc9606eb112586', get_post_meta( $post_id, Sync_Service::JSONLD_HASH, true ) );
 	}
 
 	function test_sync_one__success__with_existing_hash() {
@@ -130,6 +146,18 @@ class Test_Dataset_Ng_Sync_Post_Service extends Wordlift_Unit_Test_Case {
 		) );
 		update_post_meta( $post_id, Sync_Service::JSONLD_HASH, 'hash123' );
 
+		$this->entity_service_mock->method( 'get_uri' )
+		                          ->with(
+			                          $this->equalTo( $post_id ),
+			                          $this->equalTo( Object_Type_Enum::POST ) )
+		                          ->willReturn( 'https://localdomain.localhost/dataset123/post/123' );
+
+		$this->entity_service_mock->expects( $this->once() )
+		                          ->method( 'get_uri' )
+		                          ->with(
+			                          $this->equalTo( $post_id ),
+			                          $this->equalTo( Object_Type_Enum::POST ) );
+
 		$this->jsonld_service_mock->method( 'get' )
 		                          ->with(
 			                          $this->equalTo( Object_Type_Enum::POST ),
@@ -163,10 +191,7 @@ class Test_Dataset_Ng_Sync_Post_Service extends Wordlift_Unit_Test_Case {
 
 		$this->assertTrue( $this->sync_service->sync_one( Object_Type_Enum::POST, $post_id ) );
 		$this->assertNotEmpty( get_post_meta( $post_id, Sync_Service::SYNCED_GMT, true ) );
-		$this->assertEquals(
-			sha1( wp_json_encode( array( 'key123' => 'value123' ) ) ),
-			get_post_meta( $post_id, Sync_Service::JSONLD_HASH, true )
-		);
+		$this->assertEquals( 'b3430ed11b609e442970d7a76ddc9606eb112586', get_post_meta( $post_id, Sync_Service::JSONLD_HASH, true ) );
 	}
 
 	function test_sync_one__failure() {
@@ -174,6 +199,18 @@ class Test_Dataset_Ng_Sync_Post_Service extends Wordlift_Unit_Test_Case {
 			'post_title'   => 'Title 123',
 			'post_content' => 'Content 123',
 		) );
+
+		$this->entity_service_mock->method( 'get_uri' )
+		                          ->with(
+			                          $this->equalTo( $post_id ),
+			                          $this->equalTo( Object_Type_Enum::POST ) )
+		                          ->willReturn( 'https://localdomain.localhost/dataset123/post/123' );
+
+		$this->entity_service_mock->expects( $this->once() )
+		                          ->method( 'get_uri' )
+		                          ->with(
+			                          $this->equalTo( $post_id ),
+			                          $this->equalTo( Object_Type_Enum::POST ) );
 
 		$this->jsonld_service_mock->method( 'get' )
 		                          ->with(
@@ -217,6 +254,18 @@ class Test_Dataset_Ng_Sync_Post_Service extends Wordlift_Unit_Test_Case {
 			'post_content' => 'Content 123',
 		) );
 		update_post_meta( $post_id, Sync_Service::JSONLD_HASH, 'hash123' );
+
+		$this->entity_service_mock->method( 'get_uri' )
+		                          ->with(
+			                          $this->equalTo( $post_id ),
+			                          $this->equalTo( Object_Type_Enum::POST ) )
+		                          ->willReturn( 'https://localdomain.localhost/dataset123/post/123' );
+
+		$this->entity_service_mock->expects( $this->once() )
+		                          ->method( 'get_uri' )
+		                          ->with(
+			                          $this->equalTo( $post_id ),
+			                          $this->equalTo( Object_Type_Enum::POST ) );
 
 		$this->jsonld_service_mock->method( 'get' )
 		                          ->with(

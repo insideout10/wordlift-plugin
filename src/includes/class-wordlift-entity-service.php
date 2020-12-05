@@ -448,24 +448,12 @@ class Wordlift_Entity_Service {
 		}
 
 		if ( Object_Type_Enum::USER === $type ) {
-			$uri = get_user_meta( $object_id, 'entity_url', true );
-			if ( ! empty( $uri ) ) {
-				return $uri;
-			}
+			$uri = Wordlift_User_Service::get_instance()->get_uri( $object_id );
 
-			$dataset_uri = wl_configuration_get_redlink_dataset_uri();
-			if ( empty( $dataset_uri ) ) {
-				return get_author_posts_url( $object_id ) . '#author';
-			} else {
-				$user = get_userdata( $object_id );
-				if ( empty( $user->user_nicename ) ) {
-					return null;
-				}
-
-				return sprintf( '%s/author/%s', $dataset_uri, $user->user_nicename );
-			}
+			return ( false === $uri ? null : $uri );
 		}
 
+		return null;
 	}
 
 	/**

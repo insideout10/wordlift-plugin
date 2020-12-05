@@ -51,9 +51,12 @@ class Test_Dataset_Ng_Sync_User_Service extends Wordlift_Unit_Test_Case {
 		$this->jsonld_service_mock = $this->getMockBuilder( 'Wordlift\Jsonld\Jsonld_Service' )
 		                                  ->disableOriginalConstructor()
 		                                  ->getMock();
+		$this->entity_service_mock = $this->getMockBuilder( 'Wordlift_Entity_Service' )
+		                                  ->disableOriginalConstructor()
+		                                  ->getMock();
 		$this->sync_object_factory = new Sync_Object_Adapter_Factory();
 
-		$this->sync_service = new Sync_Service( $this->api_service_mock, $this->sync_object_factory, $this->jsonld_service_mock, Wordlift_Entity_Service::get_instance() );
+		$this->sync_service = new Sync_Service( $this->api_service_mock, $this->sync_object_factory, $this->jsonld_service_mock, $this->entity_service_mock );
 	}
 
 	function test_sync_one__hash_equals() {
@@ -78,6 +81,18 @@ class Test_Dataset_Ng_Sync_User_Service extends Wordlift_Unit_Test_Case {
 	function test_sync_one__success() {
 		$user_id = $this->factory()->user->create();
 
+		$this->entity_service_mock->method( 'get_uri' )
+		                          ->with(
+			                          $this->equalTo( $user_id ),
+			                          $this->equalTo( Object_Type_Enum::USER ) )
+		                          ->willReturn( 'https://localdomain.localhost/dataset123/author/123' );
+
+		$this->entity_service_mock->expects( $this->once() )
+		                          ->method( 'get_uri' )
+		                          ->with(
+			                          $this->equalTo( $user_id ),
+			                          $this->equalTo( Object_Type_Enum::USER ) );
+
 		$this->jsonld_service_mock->method( 'get' )
 		                          ->with(
 			                          $this->equalTo( Object_Type_Enum::USER ),
@@ -111,9 +126,7 @@ class Test_Dataset_Ng_Sync_User_Service extends Wordlift_Unit_Test_Case {
 
 		$this->assertTrue( $this->sync_service->sync_one( Object_Type_Enum::USER, $user_id ) );
 		$this->assertNotEmpty( get_user_meta( $user_id, Sync_Service::SYNCED_GMT, true ) );
-		$this->assertEquals(
-			sha1( wp_json_encode( array( 'key123' => 'value123' ) ) ),
-			get_user_meta( $user_id, Sync_Service::JSONLD_HASH, true )
+		$this->assertEquals( '55b627effffd95ca2be2d6422f9aab0b5d41fe29', get_user_meta( $user_id, Sync_Service::JSONLD_HASH, true )
 		);
 	}
 
@@ -121,6 +134,18 @@ class Test_Dataset_Ng_Sync_User_Service extends Wordlift_Unit_Test_Case {
 		$user_id = $this->factory()->user->create();
 		update_user_meta( $user_id, Sync_Service::JSONLD_HASH, 'hash123' );
 
+		$this->entity_service_mock->method( 'get_uri' )
+		                          ->with(
+			                          $this->equalTo( $user_id ),
+			                          $this->equalTo( Object_Type_Enum::USER ) )
+		                          ->willReturn( 'https://localdomain.localhost/dataset123/author/123' );
+
+		$this->entity_service_mock->expects( $this->once() )
+		                          ->method( 'get_uri' )
+		                          ->with(
+			                          $this->equalTo( $user_id ),
+			                          $this->equalTo( Object_Type_Enum::USER ) );
+
 		$this->jsonld_service_mock->method( 'get' )
 		                          ->with(
 			                          $this->equalTo( Object_Type_Enum::USER ),
@@ -154,14 +179,23 @@ class Test_Dataset_Ng_Sync_User_Service extends Wordlift_Unit_Test_Case {
 
 		$this->assertTrue( $this->sync_service->sync_one( Object_Type_Enum::USER, $user_id ) );
 		$this->assertNotEmpty( get_user_meta( $user_id, Sync_Service::SYNCED_GMT, true ) );
-		$this->assertEquals(
-			sha1( wp_json_encode( array( 'key123' => 'value123' ) ) ),
-			get_user_meta( $user_id, Sync_Service::JSONLD_HASH, true )
-		);
+		$this->assertEquals( '55b627effffd95ca2be2d6422f9aab0b5d41fe29', get_user_meta( $user_id, Sync_Service::JSONLD_HASH, true ) );
 	}
 
 	function test_sync_one__failure() {
 		$user_id = $this->factory()->user->create();
+
+		$this->entity_service_mock->method( 'get_uri' )
+		                          ->with(
+			                          $this->equalTo( $user_id ),
+			                          $this->equalTo( Object_Type_Enum::USER ) )
+		                          ->willReturn( 'https://localdomain.localhost/dataset123/author/123' );
+
+		$this->entity_service_mock->expects( $this->once() )
+		                          ->method( 'get_uri' )
+		                          ->with(
+			                          $this->equalTo( $user_id ),
+			                          $this->equalTo( Object_Type_Enum::USER ) );
 
 		$this->jsonld_service_mock->method( 'get' )
 		                          ->with(
@@ -202,6 +236,18 @@ class Test_Dataset_Ng_Sync_User_Service extends Wordlift_Unit_Test_Case {
 	function test_sync_one__failure__with_existing_hash() {
 		$user_id = $this->factory()->user->create();
 		update_user_meta( $user_id, Sync_Service::JSONLD_HASH, 'hash123' );
+
+		$this->entity_service_mock->method( 'get_uri' )
+		                          ->with(
+			                          $this->equalTo( $user_id ),
+			                          $this->equalTo( Object_Type_Enum::USER ) )
+		                          ->willReturn( 'https://localdomain.localhost/dataset123/author/123' );
+
+		$this->entity_service_mock->expects( $this->once() )
+		                          ->method( 'get_uri' )
+		                          ->with(
+			                          $this->equalTo( $user_id ),
+			                          $this->equalTo( Object_Type_Enum::USER ) );
 
 		$this->jsonld_service_mock->method( 'get' )
 		                          ->with(
