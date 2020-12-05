@@ -1,6 +1,7 @@
 <?php
 
 use Wordlift\Jsonld\Jsonld_Service;
+use Wordlift\Jsonld\Jsonld_User_Service;
 use Wordlift\Object_Type_Enum;
 
 /**
@@ -40,7 +41,7 @@ class Wordlift_Issue_1072_Test extends Wordlift_Unit_Test_Case {
 		$this->term_jsonld_adapter = Wordlift_Term_JsonLd_Adapter::get_instance();
 		$this->assertNotNull( $this->term_jsonld_adapter, '`Wordlift_Term_JsonLd_Adapter` must exist.' );
 
-		$this->jsonld_service = new Jsonld_Service( $this->legacy_jsonld_service, $this->term_jsonld_adapter );
+		$this->jsonld_service = new Jsonld_Service( $this->legacy_jsonld_service, $this->term_jsonld_adapter, new Jsonld_User_Service( Wordlift_User_Service::get_instance() ) );
 		$this->assertNotNull( $this->jsonld_service, '`Jsonld_Service` must exist.' );
 
 	}
