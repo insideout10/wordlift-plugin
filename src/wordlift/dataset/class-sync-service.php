@@ -95,34 +95,7 @@ class Sync_Service {
 
 		$object = $this->sync_object_adapter_factory->create( $type, $object_id );
 
-		// Bail out if no payload.
-		$payload_as_string = $this->get_payload_as_string( $object );
-		if ( empty( $payload_as_string ) ) {
-			return false;
-		}
-
-		// JSON-LD hasn't changed, bail out.
-		$new_hash = sha1( $payload_as_string );
-		$old_hash = $object->get_meta( self::JSONLD_HASH, true );
-		if ( $new_hash === $old_hash ) {
-			return false;
-		}
-
-		$response = $this->api_service->request(
-			'POST', '/middleware/dataset/batch',
-			array( 'Content-Type' => 'application/json', ),
-			// Put the payload in a JSON array w/o decoding/encoding again.
-			"[ $payload_as_string ]" );
-
-		// Update the sync date in case of success, otherwise log an error.
-		if ( ! $response->is_success() ) {
-			return false;
-		}
-
-		$object->update_meta( self::JSONLD_HASH, $new_hash );
-		$object->update_meta( self::SYNCED_GMT, current_time( 'mysql', true ) );
-
-		return true;
+		return $this->sync_many( array( $object ) );
 	}
 
 	public function delete_one( $type, $object_id ) {
@@ -166,6 +139,11 @@ class Sync_Service {
 			// Collect the hashes and the payloads.
 			$hashes[]   = array( $object, $new_hash );
 			$payloads[] = $payload_as_string;
+		}
+
+		// Bail out if payloads are empty.
+		if ( empty( $payloads ) ) {
+			return false;
 		}
 
 		$response = $this->api_service->request(

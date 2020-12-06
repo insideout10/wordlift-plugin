@@ -16,18 +16,24 @@ class Sync_Post_Hooks {
 	private $sync_service;
 
 	/**
+	 * @var Sync_Object_Adapter_Factory
+	 */
+	private $sync_object_factory;
+
+	/**
 	 * Sync_Post_Hooks constructor.
 	 *
 	 * @param Sync_Service $sync_service
+	 * @param Sync_Object_Adapter_Factory $sync_object_factory
 	 */
-	function __construct( $sync_service ) {
+	function __construct( $sync_service, $sync_object_factory ) {
 
 		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
 
-		$this->sync_service = $sync_service;
+		$this->sync_service        = $sync_service;
+		$this->sync_object_factory = $sync_object_factory;
 
 		$this->register_hooks();
-
 	}
 
 	private function register_hooks() {
@@ -68,7 +74,11 @@ class Sync_Post_Hooks {
 	private function sync( $post_id ) {
 
 		try {
-			$this->sync_service->sync_one( Object_Type_Enum::POST, $post_id );
+			$post = get_post( $post_id );
+			$this->sync_service->sync_many( array(
+				$this->sync_object_factory->create( Object_Type_Enum::POST, $post_id ),
+				$this->sync_object_factory->create( Object_Type_Enum::USER, $post->post_author )
+			) );
 		} catch ( \Exception $e ) {
 			$this->log->error( "An error occurred while trying to sync post $post_id: " . $e->getMessage(), $e );
 		}

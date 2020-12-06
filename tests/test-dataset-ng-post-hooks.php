@@ -1,6 +1,9 @@
 <?php
 
+use Wordlift\Dataset\Sync_Object_Adapter_Factory;
+use Wordlift\Dataset\Sync_Post_Adapter;
 use Wordlift\Dataset\Sync_Post_Hooks;
+use Wordlift\Dataset\Sync_User_Adapter;
 use Wordlift\Object_Type_Enum;
 
 /**
@@ -26,22 +29,25 @@ class Test_Dataset_Ng_Post_Hooks extends Wordlift_Unit_Test_Case {
 		$this->sync_service_mock = $this->getMockBuilder( 'Wordlift\Dataset\Sync_Service' )
 		                                ->disableOriginalConstructor()
 		                                ->getMock();
+		$sync_object_factory     = new Sync_Object_Adapter_Factory();
 
-		new Sync_Post_Hooks( $this->sync_service_mock );
+		new Sync_Post_Hooks( $this->sync_service_mock, $sync_object_factory );
 
 	}
 
 	function test_save_post() {
 
-		$this->sync_service_mock->method( 'sync_one' )
+		$this->sync_service_mock->method( 'sync_many' )
 		                        ->willReturn( true );
 
 		$this->sync_service_mock->expects( $this->once() )
-		                        ->method( 'sync_one' )
-		                        ->with(
-			                        $this->equalTo( Object_Type_Enum::POST ),
-			                        $this->isType( 'int' )
-		                        );
+		                        ->method( 'sync_many' )
+		                        ->with( $this->callback( function ( $arg ) {
+			                        return is_array( $arg )
+			                               && 2 === count( $arg )
+			                               && $arg[0] instanceof Sync_Post_Adapter
+			                               && $arg[1] instanceof Sync_User_Adapter;
+		                        } ) );
 
 		$this->factory()->post->create( array( 'post_title' => 'Title 123', 'post_content' => 'Content 123' ) );
 
@@ -49,15 +55,17 @@ class Test_Dataset_Ng_Post_Hooks extends Wordlift_Unit_Test_Case {
 
 	function test_added_post_meta() {
 
-		$this->sync_service_mock->method( 'sync_one' )
+		$this->sync_service_mock->method( 'sync_many' )
 		                        ->willReturn( true );
 
 		$this->sync_service_mock->expects( $this->exactly( 2 ) )
-		                        ->method( 'sync_one' )
-		                        ->with(
-			                        $this->equalTo( Object_Type_Enum::POST ),
-			                        $this->isType( 'int' )
-		                        );
+		                        ->method( 'sync_many' )
+		                        ->with( $this->callback( function ( $arg ) {
+			                        return is_array( $arg )
+			                               && 2 === count( $arg )
+			                               && $arg[0] instanceof Sync_Post_Adapter
+			                               && $arg[1] instanceof Sync_User_Adapter;
+		                        } ) );
 
 		$post_id = $this->factory()->post->create( array(
 			'post_title'   => 'Title 123',
@@ -69,15 +77,17 @@ class Test_Dataset_Ng_Post_Hooks extends Wordlift_Unit_Test_Case {
 
 	function test_updated_post_meta() {
 
-		$this->sync_service_mock->method( 'sync_one' )
+		$this->sync_service_mock->method( 'sync_many' )
 		                        ->willReturn( true );
 
 		$this->sync_service_mock->expects( $this->exactly( 3 ) )
-		                        ->method( 'sync_one' )
-		                        ->with(
-			                        $this->equalTo( Object_Type_Enum::POST ),
-			                        $this->isType( 'int' )
-		                        );
+		                        ->method( 'sync_many' )
+		                        ->with( $this->callback( function ( $arg ) {
+			                        return is_array( $arg )
+			                               && 2 === count( $arg )
+			                               && $arg[0] instanceof Sync_Post_Adapter
+			                               && $arg[1] instanceof Sync_User_Adapter;
+		                        } ) );
 
 		$post_id = $this->factory()->post->create( array(
 			'post_title'   => 'Title 123',
@@ -90,15 +100,17 @@ class Test_Dataset_Ng_Post_Hooks extends Wordlift_Unit_Test_Case {
 
 	function test_deleted_post_meta() {
 
-		$this->sync_service_mock->method( 'sync_one' )
+		$this->sync_service_mock->method( 'sync_many' )
 		                        ->willReturn( true );
 
 		$this->sync_service_mock->expects( $this->exactly( 3 ) )
-		                        ->method( 'sync_one' )
-		                        ->with(
-			                        $this->equalTo( Object_Type_Enum::POST ),
-			                        $this->isType( 'int' )
-		                        );
+		                        ->method( 'sync_many' )
+		                        ->with( $this->callback( function ( $arg ) {
+			                        return is_array( $arg )
+			                               && 2 === count( $arg )
+			                               && $arg[0] instanceof Sync_Post_Adapter
+			                               && $arg[1] instanceof Sync_User_Adapter;
+		                        } ) );
 
 		$post_id = $this->factory()->post->create( array(
 			'post_title'   => 'Title 123',
@@ -111,15 +123,17 @@ class Test_Dataset_Ng_Post_Hooks extends Wordlift_Unit_Test_Case {
 
 	function test_ignored_meta() {
 
-		$this->sync_service_mock->method( 'sync_one' )
+		$this->sync_service_mock->method( 'sync_many' )
 		                        ->willReturn( true );
 
-		$this->sync_service_mock->expects( $this->exactly( 1 ) )
-		                        ->method( 'sync_one' )
-		                        ->with(
-			                        $this->equalTo( Object_Type_Enum::POST ),
-			                        $this->isType( 'int' )
-		                        );
+		$this->sync_service_mock->expects( $this->once() )
+		                        ->method( 'sync_many' )
+		                        ->with( $this->callback( function ( $arg ) {
+			                        return is_array( $arg )
+			                               && 2 === count( $arg )
+			                               && $arg[0] instanceof Sync_Post_Adapter
+			                               && $arg[1] instanceof Sync_User_Adapter;
+		                        } ) );
 
 		add_filter( 'wl_dataset__sync_post_hooks__ignored_meta_keys', function ( $args ) {
 			$args[] = '_my_custom_field';
@@ -140,18 +154,20 @@ class Test_Dataset_Ng_Post_Hooks extends Wordlift_Unit_Test_Case {
 
 	function test_delete_post() {
 
-		$this->sync_service_mock->method( 'sync_one' )
-		                        ->willReturn( true );
-
-		$this->sync_service_mock->method( 'delete_one' )
+		$this->sync_service_mock->method( 'sync_many' )
 		                        ->willReturn( true );
 
 		$this->sync_service_mock->expects( $this->once() )
-		                        ->method( 'sync_one' )
-		                        ->with(
-			                        $this->equalTo( Object_Type_Enum::POST ),
-			                        $this->isType( 'int' )
-		                        );
+		                        ->method( 'sync_many' )
+		                        ->with( $this->callback( function ( $arg ) {
+			                        return is_array( $arg )
+			                               && 2 === count( $arg )
+			                               && $arg[0] instanceof Sync_Post_Adapter
+			                               && $arg[1] instanceof Sync_User_Adapter;
+		                        } ) );
+
+		$this->sync_service_mock->method( 'delete_one' )
+		                        ->willReturn( true );
 
 		$this->sync_service_mock->expects( $this->once() )
 		                        ->method( 'delete_one' )

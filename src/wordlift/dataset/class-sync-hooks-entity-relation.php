@@ -33,8 +33,8 @@ class Sync_Hooks_Entity_Relation {
 
 	public function jsonld( $jsonld, $type, $post_id ) {
 
-		// @@todo add support for terms.
-		if ( Object_Type_Enum::TERM === $type ) {
+		// @@todo add support anything that isn't a POST.
+		if ( Object_Type_Enum::POST !== $type ) {
 			return $jsonld;
 		}
 
