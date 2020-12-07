@@ -12,20 +12,7 @@
  * @subpackage Wordlift/includes
  */
 
-use Wordlift\Admin\Top_Entities;
-use Wordlift\Analysis\Response\Analysis_Response_Ops_Factory;
-use Wordlift\Autocomplete\All_Autocomplete_Service;
-use Wordlift\Autocomplete\Linked_Data_Autocomplete_Service;
-use Wordlift\Autocomplete\Local_Autocomplete_Service;
 use Wordlift\Cache\Ttl_Cache;
-use Wordlift\Duplicate_Markup_Remover\Faq_Duplicate_Markup_Remover;
-use Wordlift\Entity\Entity_Helper;
-use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_After_Get_Jsonld_Hook;
-use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Jsonld_Hook;
-use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Post_Type_Hook;
-use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Validation_Service;
-use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Warning;
-use Wordlift\External_Plugin_Hooks\Yoast\Yoast_Jsonld;
 use Wordlift\Faq\Faq_Content_Filter;
 use Wordlift\Faq\Faq_Tinymce_Adapter;
 use Wordlift\Jsonld\Jsonld_Adapter;
@@ -33,22 +20,6 @@ use Wordlift\Jsonld\Jsonld_By_Id_Endpoint;
 use Wordlift\Jsonld\Jsonld_Endpoint;
 use Wordlift\Jsonld\Jsonld_Service;
 use Wordlift\Jsonld\Jsonld_User_Service;
-use Wordlift\Mappings\Formatters\Acf_Group_Formatter;
-use Wordlift\Mappings\Jsonld_Converter;
-use Wordlift\Mappings\Mappings_DBO;
-use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
-use Wordlift\Mappings\Mappings_Validator;
-use Wordlift\Mappings\Transforms\Post_Id_To_Entity_Transform_Function;
-use Wordlift\Mappings\Transforms\Taxonomy_To_Terms_Transform_Function;
-use Wordlift\Mappings\Transforms\Url_To_Entity_Transform_Function;
-use Wordlift\Mappings\Validators\Post_Type_Rule_Validator;
-use Wordlift\Mappings\Validators\Rule_Groups_Validator;
-use Wordlift\Mappings\Validators\Rule_Validators_Registry;
-use Wordlift\Mappings\Validators\Taxonomy_Rule_Validator;
-use Wordlift\Mappings\Validators\Taxonomy_Term_Rule_Validator;
-use Wordlift\Post_Excerpt\Post_Excerpt_Meta_Box_Adapter;
-use Wordlift\Post_Excerpt\Post_Excerpt_Rest_Controller;
-use Wordlift\Templates\Templates_Ajax_Endpoint;
 
 /**
  * The core plugin class.
@@ -749,7 +720,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.27.6.1';
+		$this->version     = '3.27.6.3';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -1232,7 +1203,7 @@ class Wordlift {
 		$this->redirect_service    = new Wordlift_Redirect_Service( $this->entity_uri_service );
 		$this->entity_type_service = new Wordlift_Entity_Type_Service( $this->schema_service );
 
-		if ( ! apply_filters( 'wl_feature__enable__dataset-ng', false ) ) {
+		if ( apply_filters( 'wl_feature__enable__dataset-ng', false ) ) {
 			new Wordlift_Linked_Data_Service( $this->entity_service, $this->entity_type_service, $this->schema_service, $this->sparql_service );
 		}
 
@@ -1321,6 +1292,12 @@ class Wordlift {
 		 * @return bool
 		 * @since 3.27.6
 		 */
+		<<<<
+		<<< HEAD
+=======
+		wp_register_script( 'wl_enabled_blocks', false );
+		$enabled_blocks = array( 'wordlift/products-navigator' );
+>>>>>>> master
 
 		if ( apply_filters( 'wl_feature__enable__blocks', true ) ) {
 			// Initialize the short-codes.
@@ -1331,6 +1308,20 @@ class Wordlift {
 			new Wordlift_Related_Entities_Cloud_Shortcode( $this->relation_service );
 			new Wordlift_Vocabulary_Shortcode( $this->configuration_service );
 			new Wordlift_Faceted_Search_Shortcode();
+<<<<<<< HEAD
+=======
+
+			// To intimate JS
+			$enabled_blocks = array_merge( $enabled_blocks, array(
+				'wordlift/navigator',
+				'wordlift/chord',
+				'wordlift/geomap',
+				'wordlift/timeline',
+				'wordlift/cloud',
+				'wordlift/vocabulary',
+				'wordlift/faceted-search'
+			) );
+>>>>>>> master
 		}
 
 		new Wordlift_Products_Navigator_Shortcode();
@@ -1794,11 +1785,8 @@ class Wordlift {
 		$this->loader->add_action( 'wp_ajax_wl_sample_data_delete', $this->sample_data_ajax_adapter, 'delete' );
 		/**
 		 * @since 3.26.0
-		 * Post excerpt meta box would be only loaded when the language is set
-		 * to english
 		 */
-		if ( $this->configuration_service->get_language_code() === 'en' &&
-		     apply_filters( 'wl_feature__enable__post_excerpt', true ) ) {
+		if ( apply_filters( 'wl_feature__enable__post_excerpt', true ) ) {
 			$excerpt_adapter = new Post_Excerpt_Meta_Box_Adapter();
 			$this->loader->add_action( 'do_meta_boxes', $excerpt_adapter, 'replace_post_excerpt_meta_box' );
 			// Adding Rest route for the post excerpt

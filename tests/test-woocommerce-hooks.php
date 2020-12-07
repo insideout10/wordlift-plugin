@@ -99,7 +99,7 @@ class Test_Wl_For_Wc_Hooks extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 3, $submenu );
 	}
 
-	public function test_when_filter_turned_on_no_screen_should_be_registered() {
+	public function test_when_filter_turned_on_1_screen_should_be_registered() {
 		global $wp_filter;
 		$wp_filter = array();
 		$user      = $this->factory->user->create( array( 'role' => 'administrator' ) );
@@ -112,6 +112,7 @@ class Test_Wl_For_Wc_Hooks extends Wordlift_Unit_Test_Case {
 		$wordlift->run();
 		do_action( 'admin_menu' );
 		$this->assertCount( 1, $submenu );
+
 		$this->assertEqualSets( array(
 			'index.php' => array(
 				array(
