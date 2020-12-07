@@ -195,7 +195,7 @@ class Wordlift_Api_Service_Test extends Wordlift_Unit_Test_Case {
 
 		$this->assertEquals( 1, preg_match( '/\/mock_path$/', $url ), "URL pattern must match, got $url." );
 		$this->assertArraySubset( array( 'method' => $method ), $r, "Expect method to be `$$method`." );
-		$this->assertEquals( 1, preg_match( '/^WordLift\/\d+\.\d+\.\d+(\.\d+)?(-\w+)? WordPress\/\d+\.\d+(\.\d+)? \(multisite:\w+, url:https?:\/\/.+?, locale:\w{2}_\w{2}\) PHP\/\d+\.\d+\.\d+$/', $r['user-agent'] ), "User-Agent must match, got {$r['user-agent']}." );
+		$this->assertEquals( 1, preg_match( '/^WordLift\/\d+\.\d+\.\d+(\.\d+)?(-\w+)? WordPress\/\d+\.\d+(\.\d+)?(-\S+)? \(multisite:\w+, url:https?:\/\/.+?, locale:\w{2}_\w{2}\) PHP\/\d+\.\d+\.\d+$/', $r['user-agent'] ), "User-Agent must match, got {$r['user-agent']}." );
 		$this->assertTrue( isset( $r['headers']['X-Authorization'] ), 'The `X-Authorization` header must be set.' );
 
 	}

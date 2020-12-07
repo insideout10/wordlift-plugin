@@ -189,7 +189,7 @@ class Analysis_Response_Ops {
 		foreach ( array_keys( $occurrences ) as $item_id ) {
 
 			// If the entity isn't there, add it.
-			if ( ! isset( $this->json->entities->{$item_id} ) ) {
+			if ( ! is_bool( $this->json ) && ! isset( $this->json->entities->{$item_id} ) ) {
 				$entity = $this->get_local_entity( $item_id );
 
 				// Entity not found in the local vocabulary, continue to the next one.
@@ -224,7 +224,7 @@ class Analysis_Response_Ops {
 		// from the analysis API.
 		foreach ( $annotations as $annotation_id => $annotation ) {
 
-			if ( ! isset( $this->json->annotations->{$annotation_id} ) ) {
+			if ( ! is_bool( $this->json ) && ! isset( $this->json->annotations->{$annotation_id} ) ) {
 				$this->json->annotations->{$annotation_id} = $annotation;
 			}
 
