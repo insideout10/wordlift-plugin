@@ -529,9 +529,15 @@ class Wordlift_Configuration_Service {
 		}
 
 		// The response is not OK.
-		if ( 200 !== (int) $response['response']['code'] ) {
+		if ( ! is_array( $response ) || 200 !== (int) $response['response']['code'] ) {
 			$base_url = $api_service->get_base_url();
-			$this->log->error( "Unexpected status code when opening URL $base_url$url: " . $response['response']['code'] . "\n" . var_export( $response, true ) );
+
+			if ( ! is_array( $response ) ) {
+				$this->log->error( "Unexpected response when opening URL $base_url$url: " . var_export( $response, true ) );
+			} else {
+				$this->log->error( "Unexpected status code when opening URL $base_url$url: " . $response['response']['code'] . "\n" . var_export( $response, true ) );
+			}
+
 
 			$this->set_dataset_uri( '' );
 			$this->set_package_type( null );
