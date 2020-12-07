@@ -211,7 +211,7 @@ class Wordlift_Admin_Setup {
 		/**
 		 *
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/1209
-		 * @since 3.27.7
+		 * @since 3.27.6.2
 		 */
 		// @todo: find another way to do this, since this is adding an empty space in WP's dashboard menu.
 		add_dashboard_page( '', '', 'manage_options', 'wl-setup', '' );
