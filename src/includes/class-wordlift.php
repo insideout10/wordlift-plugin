@@ -12,7 +12,19 @@
  * @subpackage Wordlift/includes
  */
 
+use Wordlift\Analysis\Response\Analysis_Response_Ops_Factory;
+use Wordlift\Autocomplete\All_Autocomplete_Service;
+use Wordlift\Autocomplete\Linked_Data_Autocomplete_Service;
+use Wordlift\Autocomplete\Local_Autocomplete_Service;
 use Wordlift\Cache\Ttl_Cache;
+use Wordlift\Duplicate_Markup_Remover\Faq_Duplicate_Markup_Remover;
+use Wordlift\Entity\Entity_Helper;
+use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_After_Get_Jsonld_Hook;
+use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Jsonld_Hook;
+use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Post_Type_Hook;
+use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Validation_Service;
+use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Warning;
+use Wordlift\External_Plugin_Hooks\Yoast\Yoast_Jsonld;
 use Wordlift\Faq\Faq_Content_Filter;
 use Wordlift\Faq\Faq_Tinymce_Adapter;
 use Wordlift\Jsonld\Jsonld_Adapter;
@@ -20,6 +32,23 @@ use Wordlift\Jsonld\Jsonld_By_Id_Endpoint;
 use Wordlift\Jsonld\Jsonld_Endpoint;
 use Wordlift\Jsonld\Jsonld_Service;
 use Wordlift\Jsonld\Jsonld_User_Service;
+use Wordlift\Mappings\Formatters\Acf_Group_Formatter;
+use Wordlift\Mappings\Jsonld_Converter;
+use Wordlift\Mappings\Mappings_DBO;
+use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
+use Wordlift\Mappings\Mappings_Validator;
+use Wordlift\Mappings\Transforms\Post_Id_To_Entity_Transform_Function;
+use Wordlift\Mappings\Transforms\Taxonomy_To_Terms_Transform_Function;
+use Wordlift\Mappings\Transforms\Url_To_Entity_Transform_Function;
+use Wordlift\Mappings\Validators\Post_Type_Rule_Validator;
+use Wordlift\Mappings\Validators\Rule_Groups_Validator;
+use Wordlift\Mappings\Validators\Rule_Validators_Registry;
+use Wordlift\Mappings\Validators\Taxonomy_Rule_Validator;
+use Wordlift\Mappings\Validators\Taxonomy_Term_Rule_Validator;
+use Wordlift\Post_Excerpt\Post_Excerpt_Meta_Box_Adapter;
+use Wordlift\Post_Excerpt\Post_Excerpt_Rest_Controller;
+use Wordlift\Templates\Templates_Ajax_Endpoint;
+use Wordlift\Admin\Top_Entities;
 
 /**
  * The core plugin class.
