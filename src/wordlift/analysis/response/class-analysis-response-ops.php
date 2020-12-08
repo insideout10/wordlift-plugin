@@ -210,13 +210,16 @@ class Analysis_Response_Ops {
 		// Before 3.23.0 this was done by the client-side code located in src/coffee/editpost-widget/app.services.AnalysisService.coffee
 		// function `preselect`, which was called by src/coffee/editpost-widget/app.services.EditorService.coffee in
 		// `embedAnalysis`.
-		foreach ( $this->json->entities as $id => $entity ) {
-			$this->json->entities->{$id}->occurrences = isset( $occurrences[ $id ] ) ? $occurrences[ $id ] : array();;
 
-			foreach ( $this->json->entities->{$id}->occurrences as $annotation_id ) {
-				$this->json->entities->{$id}->annotations[ $annotation_id ] = array(
-					'id' => $annotation_id,
-				);
+		if ( ! is_bool( $this->json ) ) {
+			foreach ( $this->json->entities as $id => $entity ) {
+				$this->json->entities->{$id}->occurrences = isset( $occurrences[ $id ] ) ? $occurrences[ $id ] : array();;
+
+				foreach ( $this->json->entities->{$id}->occurrences as $annotation_id ) {
+					$this->json->entities->{$id}->annotations[ $annotation_id ] = array(
+						'id' => $annotation_id,
+					);
+				}
 			}
 		}
 
