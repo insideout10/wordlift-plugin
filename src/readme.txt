@@ -142,6 +142,19 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.27.7 (2020-12-__) =
+
+* Enhancement [#1214](https://github.com/insideout10/wordlift-plugin/issues/1214): get_top_entities in class-wordlift-admin-dashboard-v2.php takes more than 10 secs.
+* Enhancement [#1212](https://github.com/insideout10/wordlift-plugin/issues/1212): 1st release of the features system
+* Enhancement [#1207](https://github.com/insideout10/wordlift-plugin/issues/1207): Occupation mainEntityOfPage cannot be a single URL
+* Enhancement [#1189](https://github.com/insideout10/wordlift-plugin/issues/1189): Add a link to the GitHub repo in plugin's readme file
+
+* Fix [#1215](https://github.com/insideout10/wordlift-plugin/issues/1215): entityrank API calls raise errors
+* Fix [#1210](https://github.com/insideout10/wordlift-plugin/issues/1210): PHP Deprecated: implode(): Passing glue string after array is deprecated.
+* Fix [#1201](https://github.com/insideout10/wordlift-plugin/issues/1201): Notice triggered by the wl_enabled_blocks handle
+* Fix [#1195](https://github.com/insideout10/wordlift-plugin/issues/1195): permission_callback needs to be supplied for every rest endpoint registration in 5.5.0
+* Fix [#1193](https://github.com/insideout10/wordlift-plugin/issues/1193): sameAs metabox in post edit screen should only accept URLs
+
 = 3.27.6.3 (2020-12-07) =
 
 * Fix: Entities not being saved online.
