@@ -88,7 +88,8 @@ jobs:
           - "php7.1-phpunit4.8-wordpress5.3"
           - "php7.2-phpunit4.8-wordpress5.4"
           - "php7.3-phpunit7.5-wordpress5.5"
-        #          - "php8.0-phpunit4.8-wordpress5.6"
+          - "php7.3-phpunit7.5-wordpress5.6-RC3"
+          - "php8.0-phpunit7.5woo-wordpress5.6-RC3"
         phpunit-xml:
           - phpunit.xml
           - phpunit-multisite.xml
