@@ -134,6 +134,10 @@ class Wordlift_Image_Service_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_attachment_1200x1200() {
 
+		if ( ! extension_loaded( 'imagick' ) || ! class_exists( "Imagick" ) ) {
+			$this->markTestSkipped( '`imagick` not found, test skipped.' );
+		}
+
 		$sources = $this->_test_attachment( '/assets/cat-1200x1200.jpg' );
 
 		$this->assertCount( 3, $sources, 'Expect 3 sources.' );
@@ -150,6 +154,10 @@ class Wordlift_Image_Service_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_attachment_1280x960() {
 
+		if ( ! extension_loaded( 'imagick' ) || ! class_exists( "Imagick" ) ) {
+			$this->markTestSkipped( '`imagick` not found, test skipped.' );
+		}
+
 		$sources = $this->_test_attachment( '/assets/cat-1280x960.jpg' );
 
 		$this->assertCount( 2, $sources, 'Expect 3 sources.' );
@@ -164,6 +172,10 @@ class Wordlift_Image_Service_Test extends Wordlift_Unit_Test_Case {
 	 * @since 3.19.4
 	 */
 	public function test_attachment_2392x2500() {
+
+		if ( ! extension_loaded( 'imagick' ) || ! class_exists( "Imagick" ) ) {
+			$this->markTestSkipped( '`imagick` not found, test skipped.' );
+		}
 
 		$sources = $this->_test_attachment( '/assets/cat-2392x2500.jpg' );
 

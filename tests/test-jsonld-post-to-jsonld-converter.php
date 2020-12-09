@@ -366,7 +366,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( self::word_count( $post->ID ), $jsonld['wordCount'] );
 
 		// Check the publisher.
-		$this->assertCount( 4, $jsonld['publisher'] );
+		$publisher_count = ( extension_loaded( 'imagick' ) && class_exists( "Imagick" ) ) ? 4 : 3;
+		$this->assertCount( $publisher_count, $jsonld['publisher'] );
 		$this->assertEquals( 'Organization', $jsonld['publisher']['@type'] );
 		$this->assertEquals( $publisher_uri, $jsonld['publisher']['@id'] );
 		$this->assertEquals( $publisher->post_title, $jsonld['publisher']['name'] );
@@ -375,11 +376,13 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$expected_attachment_url = substr( $attachment_url, 0, strrpos( $attachment_url, '.' ) )
 		                           . '--publisher-logo'
 		                           . substr( $attachment_url, strrpos( $attachment_url, '.' ) );
-		$this->assertCount( 4, $jsonld['publisher']['logo'] );
-		$this->assertEquals( 'ImageObject', $jsonld['publisher']['logo']['@type'] );
-		$this->assertEquals( $expected_attachment_url, $jsonld['publisher']['logo']['url'] );
-		$this->assertEquals( 86, $jsonld['publisher']['logo']['width'], "Width doesn't match for $attachment_url." );
-		$this->assertEquals( 60, $jsonld['publisher']['logo']['height'] );
+		if ( extension_loaded( 'imagick' ) && class_exists( "Imagick" ) ) {
+			$this->assertCount( 4, $jsonld['publisher']['logo'] );
+			$this->assertEquals( 'ImageObject', $jsonld['publisher']['logo']['@type'] );
+			$this->assertEquals( $expected_attachment_url, $jsonld['publisher']['logo']['url'] );
+			$this->assertEquals( 86, $jsonld['publisher']['logo']['width'], "Width doesn't match for $attachment_url." );
+			$this->assertEquals( 60, $jsonld['publisher']['logo']['height'] );
+		}
 
 	}
 
