@@ -29,4 +29,9 @@ class Test_Dataset_Ng_Integration_Tests extends Wordlift_Unit_Test_Case {
 
 	}
 
+	function test() {
+		// Dummy test just so that there should be no warning / error
+		$this->assertEquals( 1, 1 );
+	}
+
 }
