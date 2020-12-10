@@ -60,8 +60,15 @@ function wl_ajax_analyze_action() {
 function wl_analyze_content( $data, $content_type ) {
 
 	$default_response                = json_decode( '{ "entities": {}, "annotations": {}, "topics": {} }' );
-	// Using stripslashes since 3.27.7 as $_POST['data'] is escaped
-	$request_body                    = json_decode( stripslashes($data), true );
+	$request_body = json_decode( $data, true );
+	if ( $request_body === null ) {
+		/**
+		 * @since 3.27.7
+		 *
+		 * Conditionally try using stripslashes as $_POST['data'] could be escaped
+		 */
+		$request_body = json_decode( stripslashes( $data ), true );
+	}
 	$request_body['contentLanguage'] = Wordlift_Configuration_Service::get_instance()->get_language_code();
 	$data                            = wp_json_encode( $request_body );
 
