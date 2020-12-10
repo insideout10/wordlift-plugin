@@ -78,7 +78,9 @@ class Wordlift_Key_Validation_Service {
 
 		$this->log->debug( 'Validating key...' );
 
-		return Default_Api_Service::get_instance()->get( '/accounts/info' )->get_response();
+		return Default_Api_Service::get_instance()->get( '/accounts/info', array(
+			'Authorization' => "Key $key",
+        ) )->get_response();
 	}
 
 	/**
