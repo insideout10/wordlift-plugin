@@ -551,14 +551,17 @@ class Wordlift_Configuration_Service {
 		 * @since 3.20.0
 		 */
 		$json         = json_decode( $response['body'] );
-		$dataset_uri  = $json->datasetURI;
+		/**
+		 * @since 3.27.7
+		 * Remove the trailing slash returned from the new platform api.
+		 */
+		$dataset_uri  = untrailingslashit( $json->datasetURI );
 		$package_type = isset( $json->packageType ) ? $json->packageType : null;
 
 		$this->log->info( "Updating [ dataset uri :: $dataset_uri ][ package type :: $package_type ]..." );
 
 		$this->set_dataset_uri( $dataset_uri );
 		$this->set_package_type( $package_type );
-
 	}
 
 	/**
