@@ -35,10 +35,11 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 	/**
 	 * Create a {@link Wordlift_Cached_Entity_Uri_Service} instance.
 	 *
+	 * @param \Wordlift_Configuration_Service $configuration_service
+	 * @param \Wordlift_Cache_Service $cache_service
+	 *
 	 * @since 3.16.3
 	 *
-	 * @param \Wordlift_Configuration_Service $configuration_service
-	 * @param \Wordlift_Cache_Service         $cache_service
 	 */
 	public function __construct( $configuration_service, $cache_service ) {
 		parent::__construct( $configuration_service );
@@ -66,9 +67,10 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 	/**
 	 * Preload the URIs.
 	 *
+	 * @param array $uris Preload an array of URIs.
+	 *
 	 * @since 3.16.3
 	 *
-	 * @param array $uris Preload an array of URIs.
 	 */
 	public function preload_uris( $uris ) {
 
@@ -80,7 +82,7 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 
 		// Preload the URIs.
 		parent::preload_uris( $uris_to_cache );
-		
+
 		// Store them in cache.
 		if ( is_array( $this->uri_to_post ) && ! empty( $this->uri_to_post ) ) {
 			foreach ( $this->uri_to_post as $uri => $post ) {
@@ -93,11 +95,11 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 	/**
 	 * Get the entity post for the specified URI.
 	 *
-	 * @since 3.16.3
-	 *
 	 * @param string $uri The URI.
 	 *
 	 * @return null|WP_Post The {@link WP_Post} or null if not found.
+	 * @since 3.16.3
+	 *
 	 */
 	public function get_entity( $uri ) {
 
@@ -126,10 +128,11 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 	/**
 	 * Set the cached URI for the specified {@link WP_Post}.
 	 *
+	 * @param string $uri The URI.
+	 * @param WP_Post $post The post.
+	 *
 	 * @since 3.16.3
 	 *
-	 * @param string  $uri  The URI.
-	 * @param WP_Post $post The post.
 	 */
 	private function set_cache( $uri, $post ) {
 
@@ -141,9 +144,10 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 	/**
 	 * Delete the cache for the specified URIs.
 	 *
+	 * @param array $uris An array of URIs.
+	 *
 	 * @since 3.16.3
 	 *
-	 * @param array $uris An array of URIs.
 	 */
 	private function delete_cache( $uris ) {
 
@@ -162,12 +166,13 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 	 * either the `entity_url` or the `same_as` in which case we delete the cache
 	 * for all the associated URIs.
 	 *
+	 * @param int|array $meta_ids The {@link WP_Post} meta id(s).
+	 * @param int $post_id The {@link WP_Post} id.
+	 * @param string $meta_key The meta key.
+	 * @param mixed $meta_value The meta value(s).
+	 *
 	 * @since 3.16.3
 	 *
-	 * @param int|array $meta_ids   The {@link WP_Post} meta id(s).
-	 * @param int       $post_id    The {@link WP_Post} id.
-	 * @param string    $meta_key   The meta key.
-	 * @param mixed     $meta_value The meta value(s).
 	 */
 	public function on_before_post_meta_change( $meta_ids, $post_id, $meta_key, $meta_value ) {
 
@@ -179,7 +184,15 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 		$this->log->trace( "Updating/deleting $meta_key for post $post_id ($meta_key), invalidating cache..." );
 
 		// The list of existing URIs, plus the list of URIs being deleted/updated.
-		$uris = get_post_meta( $post_id, $meta_key ) + (array) $meta_value;
+		$old_value = get_post_meta( $post_id, $meta_key );
+
+		// We expect an array here from the `get_post_meta` signature. However `get_post_meta` is prone to side effects
+		// because of filters. So if it's not we return an empty array.
+		if ( ! is_array( $old_value ) ) {
+			$old_value = array();
+		}
+		$new_value = isset( $meta_value ) ? (array) $meta_value : array();
+		$uris      = array_merge( $old_value, $new_value );
 
 		// Delete the cache for those URIs.
 		$this->delete_cache( $uris );
@@ -190,11 +203,12 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 	 * Hook to meta add for a {@link WP_Post}, will cause the cache to
 	 * invalidate.
 	 *
+	 * @param int $post_id The {@link WP_Post} id.
+	 * @param string $meta_key The meta key.
+	 * @param mixed $meta_value The meta value(s).
+	 *
 	 * @since 3.16.3
 	 *
-	 * @param int    $post_id    The {@link WP_Post} id.
-	 * @param string $meta_key   The meta key.
-	 * @param mixed  $meta_value The meta value(s).
 	 */
 	public function on_before_post_meta_add( $post_id, $meta_key, $meta_value ) {
 
