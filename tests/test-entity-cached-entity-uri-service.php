@@ -62,12 +62,13 @@ class Test_Entity_Cached_Entity_Uri_Service extends Wordlift_Unit_Test_Case {
 
 		$this->cache_service_mock->expects( $this->exactly( 3 ) )
 		                         ->method( 'delete_cache' )
-		                         ->withConsecutive(
-		                         // This is called when the `update_post_meta` is called.
+		                         ->withConsecutive( array(
+			                         // This is called when the `update_post_meta` is called.
 			                         $this->equalTo( 'http://localdomain.localhost/0' ),
 			                         // These are called when we call `on_before_post_meta_change`.
 			                         $this->equalTo( 'http://localdomain.localhost/0' ),
-			                         $this->equalTo( 'http://localdomain.localhost/1' ) );
+			                         $this->equalTo( 'http://localdomain.localhost/1' )
+		                         ) );
 
 		$post_id = $this->factory()->post->create( array(
 			'post_title'   => 'Title 123',
@@ -106,11 +107,12 @@ class Test_Entity_Cached_Entity_Uri_Service extends Wordlift_Unit_Test_Case {
 
 		$this->cache_service_mock->expects( $this->exactly( 2 ) )
 		                         ->method( 'delete_cache' )
-		                         ->withConsecutive(
-		                         // This is called when the `update_post_meta` is called.
+		                         ->withConsecutive( array(
+			                         // This is called when the `update_post_meta` is called.
 			                         $this->equalTo( 'http://localdomain.localhost/0' ),
 			                         // These are called when we call `on_before_post_meta_change`.
-			                         $this->equalTo( 'http://localdomain.localhost/0' ) );
+			                         $this->equalTo( 'http://localdomain.localhost/0' )
+		                         ) );
 
 		$post_id = $this->factory()->post->create( array(
 			'post_title'   => 'Title 123',
