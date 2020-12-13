@@ -122,7 +122,7 @@ class Wordlift_User_Service {
 		// Try to get the URI stored in the user's meta and return it if available.
 		$dataset_uri = wl_configuration_get_redlink_dataset_uri();
 		$user_uri    = $this->_get_uri( $user_id );
-		if ( empty( $dataset_uri ) && ! empty( $user_uri ) && 0 === strpos( $user_uri, $dataset_uri ) ) {
+		if ( ! empty( $dataset_uri ) && ! empty( $user_uri ) && 0 === strpos( $user_uri, $dataset_uri ) ) {
 			return $user_uri;
 		}
 
