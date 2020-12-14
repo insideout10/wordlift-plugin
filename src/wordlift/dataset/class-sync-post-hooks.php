@@ -52,14 +52,18 @@ class Sync_Post_Hooks {
 		add_action( 'deleted_post_meta', array( $this, 'changed_post_meta' ), 10, 4 );
 		add_action( 'delete_post', array( $this, 'delete_post' ) );
 		/**
-		 * @todo: Might need to change this
+		 * @todo: Might need to change this, this will be called
+		 * for every request, sync will occur on editor.
 		 */
 		add_action( 'shutdown', array( $this, 'shutdown' ) );
 
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function shutdown() {
-
+		return $this->sync( $this->post_id );
 	}
 
 	public function save_post( $post_id ) {

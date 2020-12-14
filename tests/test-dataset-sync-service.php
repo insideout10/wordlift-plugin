@@ -84,4 +84,19 @@ class Test_Dataset_Sync_Service extends Wordlift_Unit_Test_Case {
 		$this->assertArrayHasKey( 'shutdown', $wp_filter );
 		$this->assertCount( 1, $wp_filter['shutdown']->callbacks );
 	}
+
+
+	public function test_on_shutdown_method_sync_should_be_called() {
+		$sync_service         = Sync_Service::get_instance();
+		$sync_adapter_factory = new \Wordlift\Dataset\Sync_Object_Adapter_Factory();
+		$sync_post_hooks = new Sync_Post_Hooks( $sync_service, $sync_adapter_factory );
+		// do a save_post
+		$post_id              = $this->factory()->post->create();
+		$post                 = get_post( $post_id );
+		$update               = false;
+		do_action( 'save_post', $post_id, $post, $update );
+		// now try to call the shutdown hook.
+		$this->assertTrue( $sync_post_hooks->shutdown() );
+
+	}
 }
