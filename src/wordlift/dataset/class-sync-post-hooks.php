@@ -51,6 +51,14 @@ class Sync_Post_Hooks {
 		add_action( 'updated_post_meta', array( $this, 'changed_post_meta' ), 10, 4 );
 		add_action( 'deleted_post_meta', array( $this, 'changed_post_meta' ), 10, 4 );
 		add_action( 'delete_post', array( $this, 'delete_post' ) );
+		/**
+		 * @todo: Might need to change this
+		 */
+		add_action( 'shutdown', array( $this, 'shutdown' ) );
+
+	}
+
+	public function shutdown() {
 
 	}
 
