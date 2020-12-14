@@ -5,6 +5,12 @@ namespace Wordlift\Dataset;
 use Wordlift\Object_Type_Enum;
 
 class Sync_Post_Hooks {
+
+	/**
+	 * @var int Post id
+	 */
+	public $post_id;
+
 	/**
 	 * @var \Wordlift_Log_Service
 	 */
@@ -50,25 +56,12 @@ class Sync_Post_Hooks {
 
 	public function save_post( $post_id ) {
 
-		$this->sync( $post_id );
+		$this->post_id = $post_id;
 
 	}
 
 	public function changed_post_meta( $meta_id, $post_id, $meta_key, $_meta_value ) {
-
-		if ( in_array( $meta_key,
-			apply_filters( 'wl_dataset__sync_post_hooks__ignored_meta_keys',
-				apply_filters( 'wl_dataset__sync_hooks__ignored_meta_keys',
-					array(
-						'_pingme',
-						'_encloseme',
-						'entity_url',
-					) ) ) ) ) {
-			return;
-		}
-
-		$this->sync( $post_id );
-
+		$this->post_id = $post_id;
 	}
 
 	private function sync( $post_id ) {
