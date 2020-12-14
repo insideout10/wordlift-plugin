@@ -61,6 +61,7 @@ function wl_shortcode_faceted_search_origin( $request ) {
 
 	$current_post_id = $_GET['post_id']; // WPCS: input var ok; CSRF ok.
 	$current_post    = get_post( $current_post_id );
+	$faceted_id      = $_GET['uniqid'];
 
 	// Post ID has to match an existing item.
 	if ( null === $current_post ) {
@@ -221,6 +222,9 @@ function wl_shortcode_faceted_search_origin( $request ) {
 			}
 		}
 	}
+
+	$post_results   = apply_filters( 'wl_faceted_data_posts', $post_results, $faceted_id );
+	$entity_results = apply_filters( 'wl_faceted_data_entities', $entity_results, $faceted_id );
 
 	return array(
 		'posts'    => $amp ? array( array( 'values' => $post_results ) ) : $post_results,

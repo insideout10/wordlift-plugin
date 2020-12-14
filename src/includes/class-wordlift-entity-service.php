@@ -433,7 +433,7 @@ class Wordlift_Entity_Service {
 
 		// Set the URI if it isn't set yet.
 		$post_status = get_post_status( $post_id );
-		if ( empty( $uri ) && 'auto-draft' !== $post_status && 'revision' !== get_post_type($post_id) ) {
+		if ( empty( $uri ) && 'auto-draft' !== $post_status && 'inherit' !== $post_status ) {
 			$uri = wl_build_entity_uri( $post_id );
 			wl_set_entity_uri( $post_id, $uri );
 		}

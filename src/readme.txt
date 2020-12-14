@@ -148,6 +148,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement [#1212](https://github.com/insideout10/wordlift-plugin/issues/1212): 1st release of the features system
 * Enhancement [#1207](https://github.com/insideout10/wordlift-plugin/issues/1207): Occupation mainEntityOfPage cannot be a single URL
 * Enhancement [#1189](https://github.com/insideout10/wordlift-plugin/issues/1189): Add a link to the GitHub repo in plugin's readme file
+* Enhancement [#1137](https://github.com/insideout10/wordlift-plugin/issues/1137): Faceted search hook
 
 * Fix [#1215](https://github.com/insideout10/wordlift-plugin/issues/1215): entityrank API calls raise errors
 * Fix [#1210](https://github.com/insideout10/wordlift-plugin/issues/1210): PHP Deprecated: implode(): Passing glue string after array is deprecated.
