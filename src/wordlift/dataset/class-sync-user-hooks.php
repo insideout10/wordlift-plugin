@@ -4,7 +4,7 @@ namespace Wordlift\Dataset;
 
 use Wordlift\Object_Type_Enum;
 
-class Sync_User_Hooks {
+class Sync_User_Hooks extends Abstract_Sync_Hooks {
 	/**
 	 * @var \Wordlift_Log_Service
 	 */
@@ -21,6 +21,7 @@ class Sync_User_Hooks {
 	 * @param Sync_Service $sync_service
 	 */
 	function __construct( Sync_Service $sync_service ) {
+		parent::__construct();
 
 		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
 
@@ -73,6 +74,10 @@ class Sync_User_Hooks {
 	}
 
 	private function sync( $user_id ) {
+		$this->enqueue( array( 'do_sync', $user_id ) );
+	}
+
+	public function do_sync( $user_id ) {
 
 		try {
 			$this->sync_service->sync_one( Object_Type_Enum::USER, (int) $user_id );
@@ -83,7 +88,10 @@ class Sync_User_Hooks {
 	}
 
 	public function delete_user( $user_id ) {
+		$this->enqueue( array( 'do_delete', $user_id ) );
+	}
 
+	public function do_delete( $user_id ) {
 		try {
 			$this->sync_service->delete_one( Object_Type_Enum::USER, $user_id );
 		} catch ( \Exception $e ) {

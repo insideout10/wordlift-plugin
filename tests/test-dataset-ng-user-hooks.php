@@ -23,6 +23,10 @@ class Test_Dataset_Ng_User_Hooks extends Wordlift_Unit_Test_Case {
 			$this->markTestSkipped( '`WL_FEATURES__DATASET_NG` not enabled.' );
 		}
 
+		// Remove the global filters, since we're going to call `shutdown`, we don't want that to have side effects.
+		global $wp_filter;
+		$wp_filter = array();
+
 		$this->sync_service_mock = $this->getMockBuilder( 'Wordlift\Dataset\Sync_Service' )
 		                                ->disableOriginalConstructor()
 		                                ->getMock();

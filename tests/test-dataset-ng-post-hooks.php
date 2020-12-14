@@ -26,6 +26,10 @@ class Test_Dataset_Ng_Post_Hooks extends Wordlift_Unit_Test_Case {
 			$this->markTestSkipped( '`WL_FEATURES__DATASET_NG` not enabled.' );
 		}
 
+		// Remove the global filters, since we're going to call `shutdown`, we don't want that to have side effects.
+		global $wp_filter;
+		$wp_filter = array();
+
 		$this->sync_service_mock = $this->getMockBuilder( 'Wordlift\Dataset\Sync_Service' )
 		                                ->disableOriginalConstructor()
 		                                ->getMock();
@@ -50,6 +54,7 @@ class Test_Dataset_Ng_Post_Hooks extends Wordlift_Unit_Test_Case {
 		                        } ) );
 
 		$this->factory()->post->create( array( 'post_title' => 'Title 123', 'post_content' => 'Content 123' ) );
+		do_action( 'shutdown' );
 
 	}
 
@@ -72,6 +77,7 @@ class Test_Dataset_Ng_Post_Hooks extends Wordlift_Unit_Test_Case {
 			'post_content' => 'Content 123'
 		) );
 		add_post_meta( $post_id, '_tmp_test_added_post_meta', 'tmp' );
+		do_action( 'shutdown' );
 
 	}
 
@@ -95,6 +101,7 @@ class Test_Dataset_Ng_Post_Hooks extends Wordlift_Unit_Test_Case {
 		) );
 		add_post_meta( $post_id, '_tmp_test_added_post_meta', 'tmp_1' );
 		update_post_meta( $post_id, '_tmp_test_added_post_meta', 'tmp_2' );
+		do_action( 'shutdown' );
 
 	}
 
@@ -118,6 +125,7 @@ class Test_Dataset_Ng_Post_Hooks extends Wordlift_Unit_Test_Case {
 		) );
 		add_post_meta( $post_id, '_tmp_test_added_post_meta', 'tmp_1' );
 		delete_post_meta( $post_id, '_tmp_test_added_post_meta' );
+		do_action( 'shutdown' );
 
 	}
 
@@ -149,22 +157,11 @@ class Test_Dataset_Ng_Post_Hooks extends Wordlift_Unit_Test_Case {
 		add_post_meta( $post_id, '_pingme', 'tmp' );
 		add_post_meta( $post_id, 'entity_url', 'tmp' );
 		add_post_meta( $post_id, '_my_custom_field', 'tmp' );
+		do_action( 'shutdown' );
 
 	}
 
 	function test_delete_post() {
-
-		$this->sync_service_mock->method( 'sync_many' )
-		                        ->willReturn( true );
-
-		$this->sync_service_mock->expects( $this->once() )
-		                        ->method( 'sync_many' )
-		                        ->with( $this->callback( function ( $arg ) {
-			                        return is_array( $arg )
-			                               && 2 === count( $arg )
-			                               && $arg[0] instanceof Sync_Post_Adapter
-			                               && $arg[1] instanceof Sync_User_Adapter;
-		                        } ) );
 
 		$this->sync_service_mock->method( 'delete_one' )
 		                        ->willReturn( true );
@@ -182,6 +179,7 @@ class Test_Dataset_Ng_Post_Hooks extends Wordlift_Unit_Test_Case {
 		) );
 
 		wp_delete_post( $post_id, true );
+		do_action( 'shutdown' );
 
 	}
 

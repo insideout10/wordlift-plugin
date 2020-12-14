@@ -4,7 +4,7 @@ namespace Wordlift\Dataset;
 
 use Wordlift\Object_Type_Enum;
 
-class Sync_Post_Hooks {
+class Sync_Post_Hooks extends Abstract_Sync_Hooks {
 	/**
 	 * @var \Wordlift_Log_Service
 	 */
@@ -27,6 +27,7 @@ class Sync_Post_Hooks {
 	 * @param Sync_Object_Adapter_Factory $sync_object_factory
 	 */
 	function __construct( $sync_service, $sync_object_factory ) {
+		parent::__construct();
 
 		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
 
@@ -50,6 +51,10 @@ class Sync_Post_Hooks {
 
 	public function save_post( $post_id ) {
 
+		if ( ! in_array( get_post_type( $post_id ), \Wordlift_Entity_Service::valid_entity_post_types() ) ) {
+			return;
+		}
+
 		$this->sync( $post_id );
 
 	}
@@ -57,13 +62,15 @@ class Sync_Post_Hooks {
 	public function changed_post_meta( $meta_id, $post_id, $meta_key, $_meta_value ) {
 
 		if ( in_array( $meta_key,
-			apply_filters( 'wl_dataset__sync_post_hooks__ignored_meta_keys',
-				apply_filters( 'wl_dataset__sync_hooks__ignored_meta_keys',
-					array(
-						'_pingme',
-						'_encloseme',
-						'entity_url',
-					) ) ) ) ) {
+				apply_filters( 'wl_dataset__sync_post_hooks__ignored_meta_keys',
+					apply_filters( 'wl_dataset__sync_hooks__ignored_meta_keys',
+						array(
+							'_pingme',
+							'_encloseme',
+							'entity_url',
+						) ) ) )
+		     || ! in_array( get_post_type( $post_id ), \Wordlift_Entity_Service::valid_entity_post_types() )
+		) {
 			return;
 		}
 
@@ -72,9 +79,15 @@ class Sync_Post_Hooks {
 	}
 
 	private function sync( $post_id ) {
+		$this->enqueue( array( 'do_sync', $post_id ) );
+	}
 
+	public function do_sync( $post_id ) {
 		try {
 			$post = get_post( $post_id );
+			if ( !isset( $post ) ) {
+				return;
+			}
 			$this->sync_service->sync_many( array(
 				$this->sync_object_factory->create( Object_Type_Enum::POST, $post_id ),
 				$this->sync_object_factory->create( Object_Type_Enum::USER, $post->post_author )
@@ -86,13 +99,15 @@ class Sync_Post_Hooks {
 	}
 
 	public function delete_post( $post_id ) {
+		$this->enqueue( array( 'do_delete', $post_id ) );
+	}
 
+	public function do_delete( $post_id ) {
 		try {
 			$this->sync_service->delete_one( Object_Type_Enum::POST, $post_id );
 		} catch ( \Exception $e ) {
 			$this->log->error( "An error occurred while trying to delete post $post_id: " . $e->getMessage(), $e );
 		}
-
 	}
 
 }
