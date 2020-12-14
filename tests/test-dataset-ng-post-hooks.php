@@ -202,5 +202,25 @@ class Test_Dataset_Ng_Post_Hooks extends Wordlift_Unit_Test_Case {
 		do_action( 'shutdown' );
 	}
 
+	public function test_multiple_updates_to_post_meta_should_invoke_only_one_time() {
+		$this->sync_service_mock->method( 'sync_many' )
+		                        ->willReturn( true );
+
+		$this->sync_service_mock->expects( $this->exactly( 1 ) )
+		                        ->method( 'sync_many' )
+		                        ->with( $this->callback( function ( $arg ) {
+			                        return is_array( $arg )
+			                               && 2 === count( $arg )
+			                               && $arg[0] instanceof Sync_Post_Adapter
+			                               && $arg[1] instanceof Sync_User_Adapter;
+		                        } ) );
+
+
+		$post_id = $this->factory()->post->create( array( 'post_title' => 'Title 3', 'post_content' => 'Content 3' ) );
+		update_post_meta( $post_id, 'foo1', 'bar1' );
+		delete_post_meta( $post_id, 'foo1' );
+		update_post_meta( $post_id, 'foo2', 'bar2' );
+		do_action( 'shutdown' );
+	}
 
 }

@@ -14,7 +14,7 @@ abstract class Abstract_Sync_Hooks {
 
 	protected function enqueue( $item ) {
 
-		if ( empty( $queue ) || $item !== $queue[ count( $queue ) - 1 ] ) {
+		if ( empty( $this->queue ) || $item !== $this->queue[ count( $this->queue ) - 1 ] ) {
 			$this->queue[] = $item;
 		}
 
