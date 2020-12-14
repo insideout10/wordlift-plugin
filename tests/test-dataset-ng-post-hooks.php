@@ -183,4 +183,24 @@ class Test_Dataset_Ng_Post_Hooks extends Wordlift_Unit_Test_Case {
 
 	}
 
+	public function test_create_three_posts_sync_should_be_called_three_times() {
+		$this->sync_service_mock->method( 'sync_many' )
+		                        ->willReturn( true );
+
+		$this->sync_service_mock->expects( $this->exactly( 3 ) )
+		                        ->method( 'sync_many' )
+		                        ->with( $this->callback( function ( $arg ) {
+			                        return is_array( $arg )
+			                               && 2 === count( $arg )
+			                               && $arg[0] instanceof Sync_Post_Adapter
+			                               && $arg[1] instanceof Sync_User_Adapter;
+		                        } ) );
+
+		$this->factory()->post->create( array( 'post_title' => 'Title 1', 'post_content' => 'Content 1' ) );
+		$this->factory()->post->create( array( 'post_title' => 'Title 2', 'post_content' => 'Content 2' ) );
+		$this->factory()->post->create( array( 'post_title' => 'Title 3', 'post_content' => 'Content 3' ) );
+		do_action( 'shutdown' );
+	}
+
+
 }
