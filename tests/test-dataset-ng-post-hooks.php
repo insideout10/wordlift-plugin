@@ -63,7 +63,7 @@ class Test_Dataset_Ng_Post_Hooks extends Wordlift_Unit_Test_Case {
 		$this->sync_service_mock->method( 'sync_many' )
 		                        ->willReturn( true );
 
-		$this->sync_service_mock->expects( $this->exactly( 2 ) )
+		$this->sync_service_mock->expects( $this->exactly( 1 ) )
 		                        ->method( 'sync_many' )
 		                        ->with( $this->callback( function ( $arg ) {
 			                        return is_array( $arg )
@@ -86,7 +86,7 @@ class Test_Dataset_Ng_Post_Hooks extends Wordlift_Unit_Test_Case {
 		$this->sync_service_mock->method( 'sync_many' )
 		                        ->willReturn( true );
 
-		$this->sync_service_mock->expects( $this->exactly( 3 ) )
+		$this->sync_service_mock->expects( $this->exactly( 1 ) )
 		                        ->method( 'sync_many' )
 		                        ->with( $this->callback( function ( $arg ) {
 			                        return is_array( $arg )
@@ -110,7 +110,7 @@ class Test_Dataset_Ng_Post_Hooks extends Wordlift_Unit_Test_Case {
 		$this->sync_service_mock->method( 'sync_many' )
 		                        ->willReturn( true );
 
-		$this->sync_service_mock->expects( $this->exactly( 3 ) )
+		$this->sync_service_mock->expects( $this->exactly( 1 ) )
 		                        ->method( 'sync_many' )
 		                        ->with( $this->callback( function ( $arg ) {
 			                        return is_array( $arg )
