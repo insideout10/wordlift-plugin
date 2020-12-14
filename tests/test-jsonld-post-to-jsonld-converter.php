@@ -366,7 +366,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( self::word_count( $post->ID ), $jsonld['wordCount'] );
 
 		// Check the publisher.
-		$publisher_count = ( extension_loaded( 'imagick' ) && class_exists( "Imagick" ) ) ? 4 : 3;
+		$publisher_count = ( extension_loaded( 'imagick' ) && class_exists( "Imagick" ) && version_compare( PHP_VERSION, '8.0.0', '<' ) ) ? 4 : 3;
 		$this->assertCount( $publisher_count, $jsonld['publisher'] );
 		$this->assertEquals( 'Organization', $jsonld['publisher']['@type'] );
 		$this->assertEquals( $publisher_uri, $jsonld['publisher']['@id'] );
@@ -376,7 +376,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$expected_attachment_url = substr( $attachment_url, 0, strrpos( $attachment_url, '.' ) )
 		                           . '--publisher-logo'
 		                           . substr( $attachment_url, strrpos( $attachment_url, '.' ) );
-		if ( extension_loaded( 'imagick' ) && class_exists( "Imagick" ) ) {
+		if ( extension_loaded( 'imagick' ) && class_exists( "Imagick" ) && version_compare( PHP_VERSION, '8.0.0', '<' ) ) {
 			$this->assertCount( 4, $jsonld['publisher']['logo'] );
 			$this->assertEquals( 'ImageObject', $jsonld['publisher']['logo']['@type'] );
 			$this->assertEquals( $expected_attachment_url, $jsonld['publisher']['logo']['url'] );

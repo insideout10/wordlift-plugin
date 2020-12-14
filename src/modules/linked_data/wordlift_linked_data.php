@@ -388,17 +388,12 @@ function wl_save_entity( $entity_data ) {
 	wl_set_entity_rdf_types( $post_id, $entity_types );
 
 	// Get a dataset URI for the entity.
-	$wl_uri = wl_build_entity_uri( $post_id );
-
-	// Save the entity URI.
-	wl_set_entity_uri( $post_id, $wl_uri );
+	$wl_uri = Wordlift_Entity_Service::get_instance()->get_uri( $post_id );
 
 	// Add the uri to the sameAs data if it's not a local URI.
 	if ( $wl_uri !== $uri ) {
 		array_push( $same_as, $uri );
 	}
-
-	$new_uri = wl_get_entity_uri( $post_id );
 
 	// Save the sameAs data for the entity.
 	wl_schema_set_value( $post_id, 'sameAs', $same_as );

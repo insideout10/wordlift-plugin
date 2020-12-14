@@ -108,6 +108,7 @@ class Default_Api_Service implements Api_Service {
 		if ( defined( 'WL_DEBUG' ) && WL_DEBUG ) {
 			$this->log->trace(
 				"=== REQUEST  ===========================\n"
+				. "=== URL: $request_url ===========================\n"
 				. var_export( $request_args, true )
 				. "=== RESPONSE ===========================\n"
 				. var_export( $response, true ) );

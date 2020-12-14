@@ -138,6 +138,10 @@ class Wordlift_Image_Service_Test extends Wordlift_Unit_Test_Case {
 			$this->markTestSkipped( '`imagick` not found, test skipped.' );
 		}
 
+		if ( version_compare( PHP_VERSION, '8.0.0', '>=' ) ) {
+			$this->markTestSkipped( '`imagick` partly supported in PHP8, test skipped.' );
+		}
+
 		$sources = $this->_test_attachment( '/assets/cat-1200x1200.jpg' );
 
 		$this->assertCount( 3, $sources, 'Expect 3 sources.' );
@@ -158,6 +162,10 @@ class Wordlift_Image_Service_Test extends Wordlift_Unit_Test_Case {
 			$this->markTestSkipped( '`imagick` not found, test skipped.' );
 		}
 
+		if ( version_compare( PHP_VERSION, '8.0.0', '>=' ) ) {
+			$this->markTestSkipped( '`imagick` partly supported in PHP8, test skipped.' );
+		}
+
 		$sources = $this->_test_attachment( '/assets/cat-1280x960.jpg' );
 
 		$this->assertCount( 2, $sources, 'Expect 3 sources.' );
@@ -175,6 +183,10 @@ class Wordlift_Image_Service_Test extends Wordlift_Unit_Test_Case {
 
 		if ( ! extension_loaded( 'imagick' ) || ! class_exists( "Imagick" ) ) {
 			$this->markTestSkipped( '`imagick` not found, test skipped.' );
+		}
+
+		if ( version_compare( PHP_VERSION, '8.0.0', '>=' ) ) {
+			$this->markTestSkipped( '`imagick` partly supported in PHP8, test skipped.' );
 		}
 
 		$sources = $this->_test_attachment( '/assets/cat-2392x2500.jpg' );
