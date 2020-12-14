@@ -90,6 +90,7 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 		$cache->flush();
 
 		$_GET['post_id'] = 1000000;
+		$_GET['uniqid']  = 'uniqid-123';
 		$this->setExpectedException( 'WPAjaxDieStopException', 'No valid post_id given' );
 		$this->_handleRest( '/wordlift/v1/faceted-search' );
 	}
@@ -100,6 +101,7 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 
 		$post_1_id       = wl_create_post( '', 'post1', 'A post', 'publish', 'post' );
 		$_GET['post_id'] = $post_1_id;
+		$_GET['uniqid']  = 'uniqid-123';
 		$this->setExpectedException( 'WPAjaxDieStopException', 'No entities available' );
 		$this->_handleRest( '/wordlift/v1/faceted-search' );
 	}
@@ -121,6 +123,7 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 
 		// Set $_GET variable: this means we will perform data selection for $entity_1_id
 		$_GET['post_id'] = $entity_1_id;
+		$_GET['uniqid']  = 'uniqid-123';
 
 		try {
 			$this->_handleRest( '/wordlift/v1/faceted-search' );
@@ -176,6 +179,7 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 
 		// Set $_GET variable: this means we will perform data selection for $entity_1_id
 		$_GET['post_id'] = $entity_1_id;
+		$_GET['uniqid']  = 'uniqid-123';
 
 		$cache = new Ttl_Cache( 'faceted-search' );
 		$cache->flush();
@@ -208,6 +212,7 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 		// Set $_GET variable: this means we will perform data selection for $entity_1_id
 		$_GET['post_id'] = $post_1_id;
 		$_GET['limit']   = 1;
+		$_GET['uniqid']  = 'uniqid-123';
 
 		try {
 			$this->_handleRest( '/wordlift/v1/faceted-search' );
@@ -245,6 +250,7 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 		 * return the date in the descending order.
 		 */
 		$_GET['post_id'] = $post_1_id;
+		$_GET['uniqid']  = 'uniqid-123';
 		$data            = wl_shortcode_faceted_search_origin( array() );
 		$this->assertArrayHasKey( 'posts', $data );
 		$posts = $data['posts'];
@@ -276,6 +282,7 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 		 */
 		$_GET['post_id'] = $post_1_id;
 		$_GET['sort']    = 'ASC';
+		$_GET['uniqid']  = 'uniqid-123';
 		$data            = wl_shortcode_faceted_search_origin( array() );
 		$this->assertArrayHasKey( 'posts', $data );
 		$posts = $data['posts'];
@@ -307,6 +314,7 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 		 */
 		$_GET['post_id'] = $post_1_id;
 		$_GET['sort']    = array( 'some-dangerous-data' );
+		$_GET['uniqid']  = 'uniqid-123';
 		$data            = wl_shortcode_faceted_search_origin( array() );
 		$this->assertArrayHasKey( 'posts', $data );
 		$posts = $data['posts'];
