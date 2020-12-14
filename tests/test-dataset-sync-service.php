@@ -82,7 +82,6 @@ class Test_Dataset_Sync_Service extends Wordlift_Unit_Test_Case {
 		$sync_post_hooks = new Sync_Post_Hooks( $sync_service, $sync_adapter_factory );
 		// we should have a function on shutdown hook
 		$this->assertArrayHasKey( 'shutdown', $wp_filter );
-		$this->assertCount( 1, $wp_filter['shutdown']->callbacks );
 	}
 
 /**
