@@ -142,7 +142,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.27.7 (2020-12-__) =
+= 3.27.7 (2020-12-15) =
 
 * Enhancement [#1214](https://github.com/insideout10/wordlift-plugin/issues/1214): get_top_entities in class-wordlift-admin-dashboard-v2.php takes more than 10 secs.
 * Enhancement [#1212](https://github.com/insideout10/wordlift-plugin/issues/1212): 1st release of the features system
