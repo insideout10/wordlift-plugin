@@ -1,0 +1,133 @@
+.wl-widget-posts{
+  width: 250px;
+  margin: auto;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0 20px 0;
+
+  .wl-widget-post-wrap {
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    height: 80px;
+    margin-bottom: 10px;
+
+    .wl-widget-post-img {
+      position: relative;
+      min-width: 80px;
+      max-width: 80px;
+      min-height: 80px;
+      max-height: 80px;
+      display: block;
+      overflow: hidden;
+      margin-right: 8px;
+
+      img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        min-height: 100%;
+        min-width: 100%;
+        max-width: 140px;
+        max-height: 140px;
+      }
+    }
+
+    .wl-widget-post-details {
+      display: -webkit-flex;
+      display: -moz-flex;
+      display: -ms-flex;
+      display: -o-flex;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 100%;
+
+      // Removed in v 3.5
+      // h3.wl-widget-post-author {
+      //   margin: 0 !important;
+      //   padding: 0 !important;
+      //   color: @wl-black-color;
+      //   opacity: 50%;
+      //   font-size: 10px;
+      //   line-height: 1;
+      // }
+
+      h1.wl-widget-post-title {
+        margin: 0;
+        padding: 0;
+        font-weight: 600;
+        font-size: 13px;
+        color: @wl-black-color;
+        line-height: 1.2;
+        margin-bottom: 5px;
+        height: 65px;
+        overflow: hidden;
+      }
+
+      span.wl-widget-post-link {
+        display: -webkit-flex;
+        display: -moz-flex;
+        display: -ms-flex;
+        display: -o-flex;
+        display: flex;
+        justify-content: center;
+        cursor: pointer;
+        width: 100%;
+        height: 20px;
+        box-sizing: border-box;
+        margin: 0;
+        background-color: @wl-brand-color;
+        white-space: nowrap;
+        color: @wl-white-color;
+        text-transform: uppercase;
+        font-weight: 600;
+        font-size: 10px;
+        transition: @wl-anime-global-time;
+
+        span.wl-widget-post-link-text-copied {
+          display: none;
+        }
+
+        &:focus {
+          outline: none;
+        }
+
+        &:hover {
+          box-shadow: 0 2px 2px @wl-shadow-color;
+          transform: scale(1.01);
+        }
+
+        &:active {
+          background-color: darken(@wl-brand-color, 2%);
+          box-shadow: 0 1px 1px @wl-shadow-color;
+          transform: scale(1);
+        }
+
+        &.wl-widget-post-link-copied {
+          background-color: @wl-editorial-color;
+          color: @wl-brand-color;
+
+          span.wl-widget-post-link-text-copy{
+            display: none;
+          }
+
+          span.wl-widget-post-link-text-copied {
+            display: -webkit-inline-flex;
+            display: -moz-inline-flex;
+            display: -ms-inline-flex;
+            display: -o-inline-flex;
+            display: inline-flex;
+          }
+        }
+      }
+    }
+  }
+}
