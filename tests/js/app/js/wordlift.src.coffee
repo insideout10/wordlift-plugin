@@ -909,7 +909,7 @@ angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tiny
       # (The button is set to running when [an analysis is called](#analyze).
       $rootScope.$on ANALYSIS_EVENT, (event, analysis) ->
 
-        logger.debug "EditorService : Analysis Event", analysis: analysis
+#        logger.debug "EditorService : Analysis Event", analysis: analysis
 
         service.embedAnalysis analysis if analysis? and analysis.textAnnotations?
 

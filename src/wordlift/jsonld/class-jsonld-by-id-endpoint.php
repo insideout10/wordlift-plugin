@@ -95,9 +95,10 @@ class Jsonld_By_Id_Endpoint {
 	public function register_routes() {
 
 		register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld', array(
-			'methods'  => WP_REST_Server::READABLE,
-			'callback' => array( $this, 'jsonld_by_id' ),
-			'args'     => array(
+			'methods'             => WP_REST_Server::READABLE,
+			'callback'            => array( $this, 'jsonld_by_id' ),
+			'permission_callback' => '__return_true',
+			'args'                => array(
 				'id'      => array(
 					'description'       => __( 'One ore more itemids (e.g. http://data.wordlift.io/wordlift).', 'wordlift' ),
 					// We expect an array of strings.

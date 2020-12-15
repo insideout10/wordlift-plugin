@@ -53,10 +53,11 @@ class Wordlift_Dashboard_Service {
 	/**
 	 * Create a Wordlift_Entity_List_Service.
 	 *
-	 * @since 3.4.0
-	 *
 	 * @param \Wordlift_Rating_Service $rating_service A {@link Wordlift_Rating_Service} instance.
 	 * @param \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service} instance.
+	 *
+	 * @since 3.4.0
+	 *
 	 */
 	public function __construct( $rating_service, $entity_service ) {
 
@@ -68,9 +69,9 @@ class Wordlift_Dashboard_Service {
 	/**
 	 * Return stats layout
 	 *
+	 * @return string Dashboard widget html markup
 	 * @since 3.4.0
 	 *
-	 * @return string Dashboard widget html markup
 	 */
 	public function dashboard_widget_callback( $post ) {
 
@@ -137,9 +138,9 @@ EOF;
 	/**
 	 * Return stats
 	 *
+	 * @return string markup
 	 * @since 3.4.0
 	 *
-	 * @return string markup
 	 */
 	public function add_dashboard_widgets() {
 		wp_add_dashboard_widget( 'wordlift-dashboard-widget', 'WordLift Dashboard', array(
@@ -196,9 +197,9 @@ EOF;
 
 	/**
 	 * Calculate total number of annotated published posts
+	 * @return int Total number of annotated published posts.
 	 * @since 3.4.0
 	 *
-	 * @return int Total number of annotated published posts.
 	 */
 	public function count_annotated_posts() {
 
@@ -219,10 +220,10 @@ EOF;
 	/**
 	 * Calculate the average entities rating.
 	 *
-	 * @since 3.20.0 this method is public.
+	 * @return int Average entities rating.
 	 * @since 3.4.0
 	 *
-	 * @return int Average entities rating.
+	 * @since 3.20.0 this method is public.
 	 */
 	public function average_entities_rating() {
 
@@ -239,9 +240,9 @@ EOF;
 
 	/**
 	 * Calculate total number of published rdf triples
+	 * @return int Total number of triples.
 	 * @since 3.4.0
 	 *
-	 * @return int Total number of triples.
 	 */
 	public function count_triples() {
 
@@ -268,6 +269,10 @@ EOF;
 	}
 
 	private function rl_sparql_select( $query ) {
+
+		if ( apply_filters( 'wl_feature__enable__dataset-ng', false ) ) {
+			return new \WP_Error( 'linked_data_disabled', __( 'Legacy Linked Data is not enabled for this account. Check for WordLift Plugin updates.', 'wordlift' ) );
+		}
 
 		// Prepare the SPARQL statement by prepending the default namespaces.
 		$sparql = rl_sparql_prefixes() . "\n" . $query;

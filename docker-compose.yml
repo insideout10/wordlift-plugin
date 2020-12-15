@@ -4,7 +4,7 @@ services:
   db:
     image: mysql:5.7
     volumes:
-      - db-data-${WORDPRESS_VERSION:-5.0.0}:/var/lib/mysql
+      - db-data-${WORDPRESS_VERSION:-5.5.0}:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: wordpress
@@ -12,11 +12,11 @@ services:
       MYSQL_PASSWORD: password
 
   wordpress:
-    image: wordpress:${WORDPRESS_VERSION:-5.0.0}
+    image: wordpress:${WORDPRESS_VERSION:-5.5.0}
     depends_on:
       - db
     volumes:
-      - wordpress-data-${WORDPRESS_VERSION:-5.0.0}:/var/www/html
+      - wordpress-data-${WORDPRESS_VERSION:-5.5.0}:/var/www/html
       - ./src:/var/www/html/wp-content/plugins/wordlift
       - ../advanced-custom-fields-for-schema-org:/var/www/html/wp-content/plugins/advanced-custom-fields-for-schema-org
       - ../woocommerce:/var/www/html/wp-content/plugins/woocommerce
@@ -76,7 +76,7 @@ services:
       - db
     user: xfs
     volumes:
-      - wordpress-data-${WORDPRESS_VERSION:-5.0.0}:/var/www/html
+      - wordpress-data-${WORDPRESS_VERSION:-5.5.0}:/var/www/html
       - ./src:/var/www/html/wp-content/plugins/wordlift
 #      - ../wordlift-batch-analysis:/var/www/html/wp-content/plugins/wordlift-batch-analysis
 #      - ../advanced-custom-fields-for-schema-org:/var/www/html/wp-content/plugins/advanced-custom-fields-for-schema-org
@@ -94,3 +94,5 @@ volumes:
   wordpress-data-5.3.0:
   db-data-5.4.0:
   wordpress-data-5.4.0:
+  db-data-5.5.0:
+  wordpress-data-5.5.0:

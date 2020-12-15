@@ -133,6 +133,12 @@ class Wordlift_Linked_Data_Service {
 	 */
 	public function push( $post_id ) {
 
+		if ( null === Wordlift_Configuration_Service::get_instance()->get_dataset_uri() ) {
+			$this->log->debug( "Post $post_id won't be published because the dataset URI isn't set." );
+
+			return;
+		}
+
 		$this->log->debug( "Pushing post $post_id..." );
 
 		// @since 3.18.0 we don't check anymore if the post is an entity, i.e.
@@ -144,24 +150,7 @@ class Wordlift_Linked_Data_Service {
 		//		}
 
 		// Get the post and push it to the Linked Data store.
-		$this->do_push( $post_id );
 
-		// Reindex the triple store if buffering is turned off.
-		if ( false === WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING ) {
-			wordlift_reindex_triple_store();
-		}
-
-	}
-
-	/**
-	 * Push an entity to the Linked Data store.
-	 *
-	 * @param int $post_id The {@link WP_Post}'s id.
-	 *
-	 * @since 3.15.0
-	 *
-	 */
-	private function do_push( $post_id ) {
 		$this->log->debug( "Doing post $post_id push..." );
 
 		// Get the post.
@@ -193,6 +182,12 @@ class Wordlift_Linked_Data_Service {
 
 		// Then execute the insert query.
 		$this->insert( $post_id );
+
+		// Reindex the triple store if buffering is turned off.
+		if ( false === WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING ) {
+			wordlift_reindex_triple_store();
+		}
+
 	}
 
 	/**

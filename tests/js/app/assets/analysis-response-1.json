@@ -1,0 +1,269 @@
+{
+  "entities": {
+    "http://dbpedia.org/resource/Deleted_scene": {
+      "entityId": "http://dbpedia.org/resource/Deleted_scene",
+      "confidence": 1.26,
+      "mainType": "thing",
+      "types": [
+        "thing"
+      ],
+      "label": "Deleted scene",
+      "description": "A deleted scene refers to footage that has been removed, censored, or replaced in the final version of a film or television show. It is occasionally, but rarely, referred to as a \"cut scene\", but due to the usage of \"cut scene\" in reference to video games, the preference is to call it \"deleted\". A related term is \"extended scene\", which refers to scenes (such as fight scenes or montages) which were shortened for the final version of the film.",
+      "images": null,
+      "sameAs": [
+        "http://rdf.freebase.com/ns/m.09_gdc",
+        "http://yago-knowledge.org/resource/Deleted_scene"
+      ],
+      "properties": {},
+      "synonyms": []
+    },
+    "http://dbpedia.org/resource/Starting_lineup": {
+      "entityId": "http://dbpedia.org/resource/Starting_lineup",
+      "confidence": 1.3,
+      "mainType": "thing",
+      "types": [
+        "thing"
+      ],
+      "label": "Starting lineup",
+      "description": "A starting lineup in sports is an official list of the set of players who will actively participate in the event when the game begins. The players in the starting lineup are commonly referred to as starters, whereas the others are substitutes or bench players. The starters are commonly the best players on the team at their respective positions. Consequently, there is often a bit of prestige that is associated with being a starter.",
+      "images": null,
+      "sameAs": [
+        "http://rdf.freebase.com/ns/m.06lk9g"
+      ],
+      "properties": {},
+      "synonyms": []
+    },
+    "http://dbpedia.org/resource/Writing": {
+      "entityId": "http://dbpedia.org/resource/Writing",
+      "confidence": 1.1400000000000001,
+      "mainType": "thing",
+      "types": [
+        "thing"
+      ],
+      "label": "Writing",
+      "description": "Writing is the representation of language in a textual medium through the use of a set of signs or symbols (known as a writing system). It is distinguished from illustration, such as cave drawing and painting, and non-symbolic preservation of language via non-textual media, such as magnetic tape audio.",
+      "images": null,
+      "sameAs": [
+        "http://rdf.freebase.com/ns/m.081rb"
+      ],
+      "properties": {},
+      "synonyms": []
+    },
+    "http://dbpedia.org/resource/Content_(Freudian_dream_analysis)": {
+      "entityId": "http://dbpedia.org/resource/Content_(Freudian_dream_analysis)",
+      "confidence": 1.6600000000000001,
+      "mainType": "thing",
+      "types": [
+        "thing"
+      ],
+      "label": "Content (Freudian dream analysis)",
+      "description": "Dreams embody the involuntary occurrences within the mind throughout various the stages of sleep. Throughout the early part of the twentieth century, psychologist Sigmund Freud made incredible advances in the study and analysis of dreams. Freud’s (1900) The Interpretation of Dreams used an evolutionary biological perspective to in",
+      "images": null,
+      "sameAs": [
+        "http://rdf.freebase.com/ns/m.0g57mgh"
+      ],
+      "properties": {},
+      "synonyms": []
+    },
+    "http://dbpedia.org/resource/Homeric_scholarship": {
+      "entityId": "http://dbpedia.org/resource/Homeric_scholarship",
+      "confidence": 1.38,
+      "mainType": "thing",
+      "types": [
+        "thing"
+      ],
+      "label": "Homeric scholarship",
+      "description": "Homeric scholarship is the study of Homeric epic, especially the two large surviving epics, the Iliad and Odyssey. It is currently part of the academic discipline of classical studies, but the subject is one of the very oldest topics in all scholarship or science, and goes back to antiquity. Purely in terms of quantity it is one of the largest of all literary sub-disciplines: the annual publication output rivals that on Shakespeare.",
+      "images": null,
+      "sameAs": [
+        "http://rdf.freebase.com/ns/m.0bgw4s",
+        "http://yago-knowledge.org/resource/Homeric_scholarship"
+      ],
+      "properties": {},
+      "synonyms": []
+    },
+    "http://dbpedia.org/resource/EdIT_(musician)": {
+      "entityId": "http://dbpedia.org/resource/EdIT_(musician)",
+      "confidence": 1.3,
+      "mainType": "person",
+      "types": [
+        "person"
+      ],
+      "label": "EdIT (musician)",
+      "description": "edIT (born Edward Ma) is an electronic music producer and DJ based in Los Angeles, California. He is a member of The Glitch Mob.",
+      "images": null,
+      "sameAs": [
+        "http://rdf.freebase.com/ns/m.01w_779"
+      ],
+      "properties": {},
+      "synonyms": []
+    },
+    "http://dbpedia.org/resource/Welcome_(Erick_Sermon_song)": {
+      "entityId": "http://dbpedia.org/resource/Welcome_(Erick_Sermon_song)",
+      "confidence": 1.54,
+      "mainType": "creative-work",
+      "types": [
+        "creative-work"
+      ],
+      "label": "Welcome (Erick Sermon song)",
+      "description": "\"Welcome\" is a song by American hip hop artist Erick Sermon recorded for his second album Double or Nothing (1995). The song, which features Sermon's fellow Def Squad member Keith Murray, was released as the second and final single for the album on January 23, 1996.",
+      "images": null,
+      "sameAs": [
+        "http://rdf.freebase.com/ns/m.0g58s3h",
+        "http://yago-knowledge.org/resource/Welcome_(Erick_Sermon_song)"
+      ],
+      "properties": {},
+      "synonyms": []
+    },
+    "http://dbpedia.org/resource/WordPress": {
+      "entityId": "http://dbpedia.org/resource/WordPress",
+      "confidence": 1.18,
+      "mainType": "creative-work",
+      "types": [
+        "creative-work"
+      ],
+      "label": "WordPress",
+      "description": "WordPress is a free and open source blogging tool and a content management system (CMS) based on PHP and MySQL. It has many features including a plug-in architecture and a template system. WordPress is used by over 14.7% of Alexa Internet's \"top 1 million\" websites and as of August 2011 manages 22% of all new websites. WordPress is currently the most popular blogging system in use on the Web, powering over 60 million websites worldwide.",
+      "images": null,
+      "sameAs": [
+        "http://rdf.freebase.com/ns/m.02vtpl",
+        "http://yago-knowledge.org/resource/WordPress"
+      ],
+      "properties": {},
+      "synonyms": []
+    }
+  },
+  "annotations": {
+    "urn:enhancement-28a5b470": {
+      "annotationId": "urn:enhancement-28a5b470",
+      "start": 247,
+      "end": 254,
+      "text": "writing",
+      "entityMatches": [
+        {
+          "confidence": 1.0,
+          "entityId": "http://dbpedia.org/resource/Writing"
+        }
+      ]
+    },
+    "urn:enhancement-2255c0f0": {
+      "annotationId": "urn:enhancement-2255c0f0",
+      "start": 145,
+      "end": 153,
+      "text": "Analysis",
+      "entityMatches": [
+        {
+          "confidence": 1.0,
+          "entityId": "http://dbpedia.org/resource/Homeric_scholarship"
+        }
+      ]
+    },
+    "urn:enhancement-a1a3cc80": {
+      "annotationId": "urn:enhancement-a1a3cc80",
+      "start": 181,
+      "end": 190,
+      "text": "WordPress",
+      "entityMatches": [
+        {
+          "confidence": 1.0,
+          "entityId": "http://dbpedia.org/resource/WordPress"
+        }
+      ]
+    },
+    "urn:enhancement-ccd0949f": {
+      "annotationId": "urn:enhancement-ccd0949f",
+      "start": 241,
+      "end": 246,
+      "text": "start",
+      "entityMatches": [
+        {
+          "confidence": 1.0,
+          "entityId": "http://dbpedia.org/resource/Starting_lineup"
+        }
+      ]
+    },
+    "urn:enhancement-282fcddd": {
+      "annotationId": "urn:enhancement-282fcddd",
+      "start": 225,
+      "end": 231,
+      "text": "delete",
+      "entityMatches": [
+        {
+          "confidence": 1.0,
+          "entityId": "http://dbpedia.org/resource/Deleted_scene"
+        }
+      ]
+    },
+    "urn:enhancement-85b8baba": {
+      "annotationId": "urn:enhancement-85b8baba",
+      "start": 217,
+      "end": 221,
+      "text": "Edit",
+      "entityMatches": [
+        {
+          "confidence": 1.0,
+          "entityId": "http://dbpedia.org/resource/EdIT_(musician)"
+        }
+      ]
+    },
+    "urn:enhancement-8a81da6f": {
+      "annotationId": "urn:enhancement-8a81da6f",
+      "start": 137,
+      "end": 144,
+      "text": "Content",
+      "entityMatches": [
+        {
+          "confidence": 1.0,
+          "entityId": "http://dbpedia.org/resource/Content_(Freudian_dream_analysis)"
+        }
+      ]
+    },
+    "urn:enhancement-76bcdd2c": {
+      "annotationId": "urn:enhancement-76bcdd2c",
+      "start": 170,
+      "end": 177,
+      "text": "Welcome",
+      "entityMatches": [
+        {
+          "confidence": 1.0,
+          "entityId": "http://dbpedia.org/resource/Welcome_(Erick_Sermon_song)"
+        }
+      ]
+    }
+  },
+  "images": null,
+  "languages": null,
+  "topics": [
+    {
+      "label": "Computer",
+      "description": "A computer is a general purpose device that can be programmed to carry out a finite set of arithmetic or logical operations. Since a sequence of operations can be readily changed, the computer can solve more than one kind of problem. Conventionally, a computer consists of at least one processing element, typically a central processing unit (CPU) and some form of memory.",
+      "uri": "http://dbpedia.org/resource/Computer",
+      "confidence": 0.5159494280815125,
+      "images": null,
+      "sameAs": [
+        "http://rdf.freebase.com/ns/m.074j35"
+      ]
+    },
+    {
+      "label": "Entertainment",
+      "description": "Entertainment is something that holds the attention and interest of an audience, or gives pleasure and delight. It can be an idea or a task, but is more likely to be one of the activities or events that have developed over thousands of years specifically for the purpose of keeping an audience's attention. Although people's attention is held by different things, because individuals have different preferences in entertainment, most forms are recognisable and familiar.",
+      "uri": "http://dbpedia.org/resource/Entertainment",
+      "confidence": 0.3302293121814728,
+      "images": null,
+      "sameAs": [
+        "http://rdf.freebase.com/ns/m.02jjt"
+      ]
+    },
+    {
+      "label": "Literature",
+      "description": "Literature is the art of written work and can, in some circumstances, refer exclusively to published sources. The word literature literally means \"things made from letters\" and the pars pro toto term \"letters\" is sometimes used to signify \"literature,\" as in the figures of speech \"arts and letters\" and \"man of letters. \" Literature is commonly classified as having two major forms—fiction and non-fiction—and two major techniques—poetry and prose.",
+      "uri": "http://dbpedia.org/resource/Literature",
+      "confidence": 0.15382124483585358,
+      "images": null,
+      "sameAs": [
+        "http://rdf.freebase.com/ns/m.04g51"
+      ]
+    }
+  ],
+  "content": null
+}

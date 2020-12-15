@@ -94,10 +94,16 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		 */
 		try {
 			$default_timezone = date_default_timezone_get();
-			date_default_timezone_set( get_option( 'timezone_string' ) );
-			$jsonld['datePublished'] = get_post_time( 'Y-m-d\TH:i:sP', false, $post );
-			$jsonld['dateModified']  = get_post_modified_time( 'Y-m-d\TH:i:sP', false, $post );
-			date_default_timezone_set( $default_timezone );
+			$timezone         = get_option( 'timezone_string' );
+			if ( ! empty( $timezone ) ) {
+				date_default_timezone_set( $timezone );
+				$jsonld['datePublished'] = get_post_time( 'Y-m-d\TH:i:sP', false, $post );
+				$jsonld['dateModified']  = get_post_modified_time( 'Y-m-d\TH:i:sP', false, $post );
+				date_default_timezone_set( $default_timezone );
+			} else {
+				$jsonld['datePublished'] = get_post_time( 'Y-m-d\TH:i', true, $post, false );
+				$jsonld['dateModified']  = get_post_modified_time( 'Y-m-d\TH:i', true, $post, false );
+			}
 		} catch ( Exception $e ) {
 			$jsonld['datePublished'] = get_post_time( 'Y-m-d\TH:i', true, $post, false );
 			$jsonld['dateModified']  = get_post_modified_time( 'Y-m-d\TH:i', true, $post, false );
@@ -314,7 +320,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		// support the logo property.
 		//
 		// See http://schema.org/logo.
-		if ( 'http://schema.org/Organization' !== $type['uri'] ) {
+		if ( 1 !== preg_match( '~Organization$~', $type['uri'] ) ) {
 			return;
 		}
 

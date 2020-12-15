@@ -15,6 +15,7 @@
  * @since      3.18.0
  * @package    Wordlift
  * @subpackage Wordlift/tests
+ * @group admin
  */
 class Wordlift_Admin_Country_Select_Element_Ajax_Test extends Wordlift_Ajax_Unit_Test_Case {
 

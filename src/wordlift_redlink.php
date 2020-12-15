@@ -10,19 +10,25 @@
 /**
  * Execute a SPARQL query.
  *
+ * @param string $query The query to execute.
+ * @param bool $queue Whether to queue the update.
+ *
+ * @return bool True if successful otherwise false.
+ * @throws Exception
  * @since 3.0.0
  *
  * @uses  wl_queue_sparql_update_query() to queue a query if query buffering is on.
  *
- * @param string $query The query to execute.
- * @param bool   $queue Whether to queue the update.
- *
- * @return bool True if successful otherwise false.
- * @throws Exception
  */
 function rl_execute_sparql_update_query( $query, $queue = WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING ) {
 
 	$log = Wordlift_Log_Service::get_logger( 'rl_execute_sparql_update_query' );
+
+	if ( apply_filters( 'wl_feature__enable__dataset-ng', false ) ) {
+		$log->info( 'SPARQL Update Queries are disabled because `wl_feature__enable__dataset-ng` is true.' );
+
+		return false;
+	}
 
 	/**
 	 * Disable entity push.
@@ -32,7 +38,7 @@ function rl_execute_sparql_update_query( $query, $queue = WL_ENABLE_SPARQL_UPDAT
 	 * @since 3.20.0
 	 */
 	if ( apply_filters( 'wl_disable_entity_push', get_transient( 'DISABLE_ENTITY_PUSH' ) ) ) {
-		$log->info('Entity push is disabled.');
+		$log->info( 'Entity push is disabled.' );
 
 		return true;
 	}

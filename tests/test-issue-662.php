@@ -31,6 +31,7 @@ if ( ! function_exists( 'get_current_screen' ) ) {
  * @since      3.15.3
  * @package    Wordlift
  * @subpackage Wordlift/tests
+ * @group issue
  */
 class Wordlift_Issue_662 extends Wordlift_Unit_Test_Case {
 

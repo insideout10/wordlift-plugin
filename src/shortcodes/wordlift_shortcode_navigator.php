@@ -22,7 +22,7 @@ function wl_shortcode_navigator_data() {
 	$cache_key = array( 'request_params' => $cache_key_params );
 
 	// Create the TTL cache and try to get the results.
-	$cache         = new Ttl_Cache( "navigator", 24 * 60 * 60 ); // 24 hours.
+	$cache         = new Ttl_Cache( "navigator", 8 * 60 * 60 ); // 8 hours.
 	$cache_results = $cache->get( $cache_key );
 
 	if ( isset( $cache_results ) ) {
@@ -424,8 +424,9 @@ function wl_shortcode_navigator_wp_json() {
  */
 add_action( 'rest_api_init', function () {
 	register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/navigator', array(
-		'methods'  => 'GET',
-		'callback' => 'wl_shortcode_navigator_wp_json',
+		'methods'             => 'GET',
+		'permission_callback' => '__return_true',
+		'callback'            => 'wl_shortcode_navigator_wp_json'
 	) );
 } );
 
@@ -434,8 +435,9 @@ add_action( 'rest_api_init', function () {
  */
 add_action( 'rest_api_init', function () {
 	register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/network-navigator', array(
-		'methods'  => 'GET',
-		'callback' => 'wl_network_navigator_wp_json',
+		'methods'             => 'GET',
+		'callback'            => 'wl_network_navigator_wp_json',
+		'permission_callback' => '__return_true',
 	) );
 } );
 

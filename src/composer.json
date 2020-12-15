@@ -25,14 +25,15 @@
       "classmap_prefix": "Wordlift_Plugin_",
       "packages": [
         "deliciousbrains/wp-background-processing"
-      ]
+      ],
+      "delete_vendor_directories": true
     }
   },
   "scripts": {
     "post-install-cmd": [
       "\"vendor/bin/mozart\" compose",
-      "composer dump-autoload",
-      "composer install --no-dev"
+      "composer install --no-dev --no-scripts",
+      "composer dump-autoload"
     ],
     "post-update-cmd": [
       "\"vendor/bin/mozart\" compose",

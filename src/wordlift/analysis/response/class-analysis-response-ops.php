@@ -189,7 +189,7 @@ class Analysis_Response_Ops {
 		foreach ( array_keys( $occurrences ) as $item_id ) {
 
 			// If the entity isn't there, add it.
-			if ( ! isset( $this->json->entities->{$item_id} ) ) {
+			if ( ! is_bool( $this->json ) && ! isset( $this->json->entities->{$item_id} ) ) {
 				$entity = $this->get_local_entity( $item_id );
 
 				// Entity not found in the local vocabulary, continue to the next one.
@@ -210,13 +210,16 @@ class Analysis_Response_Ops {
 		// Before 3.23.0 this was done by the client-side code located in src/coffee/editpost-widget/app.services.AnalysisService.coffee
 		// function `preselect`, which was called by src/coffee/editpost-widget/app.services.EditorService.coffee in
 		// `embedAnalysis`.
-		foreach ( $this->json->entities as $id => $entity ) {
-			$this->json->entities->{$id}->occurrences = isset( $occurrences[ $id ] ) ? $occurrences[ $id ] : array();;
 
-			foreach ( $this->json->entities->{$id}->occurrences as $annotation_id ) {
-				$this->json->entities->{$id}->annotations[ $annotation_id ] = array(
-					'id' => $annotation_id,
-				);
+		if ( ! is_bool( $this->json ) ) {
+			foreach ( $this->json->entities as $id => $entity ) {
+				$this->json->entities->{$id}->occurrences = isset( $occurrences[ $id ] ) ? $occurrences[ $id ] : array();;
+
+				foreach ( $this->json->entities->{$id}->occurrences as $annotation_id ) {
+					$this->json->entities->{$id}->annotations[ $annotation_id ] = array(
+						'id' => $annotation_id,
+					);
+				}
 			}
 		}
 
@@ -224,7 +227,7 @@ class Analysis_Response_Ops {
 		// from the analysis API.
 		foreach ( $annotations as $annotation_id => $annotation ) {
 
-			if ( ! isset( $this->json->annotations->{$annotation_id} ) ) {
+			if ( ! is_bool( $this->json ) && ! isset( $this->json->annotations->{$annotation_id} ) ) {
 				$this->json->annotations->{$annotation_id} = $annotation;
 			}
 

@@ -7,6 +7,8 @@
  * @subpackage Wordlift/includes
  */
 
+use Wordlift\Object_Type_Enum;
+
 /**
  * Provide entity-related services.
  *
@@ -152,7 +154,7 @@ class Wordlift_Entity_Service {
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/835
 		 */
 		foreach ( $terms as $term ) {
-			if ( 'article' !== $term->slug ) {
+			if ( 1 !== preg_match( '~(^|-)article$~', $term->slug ) ) {
 				return true;
 			}
 		}
@@ -402,7 +404,7 @@ class Wordlift_Entity_Service {
 	 * @since 3.6.0
 	 *
 	 */
-	public function get_uri( $post_id ) {
+	private function get_uri_for_post( $post_id ) {
 
 		$log = Wordlift_Log_Service::get_logger( get_class() );
 
@@ -415,7 +417,7 @@ class Wordlift_Entity_Service {
 
 		if ( empty( $dataset_uri ) ) {
 			// Continue even if the dataset uri is not properly configured. It is handled in function wl_build_entity_uri()
-			$log->debug('Continuing, dataset uri not configured...');
+			$log->debug( 'Continuing, dataset uri not configured...' );
 		}
 
 		$uri = get_post_meta( $post_id, WL_ENTITY_URL_META_NAME, true );
@@ -425,13 +427,13 @@ class Wordlift_Entity_Service {
 		 *
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/996
 		 */
-		if ( 0 !== strpos( $uri, $dataset_uri ) ) {
+		if ( null === $dataset_uri || 0 !== strpos( $uri, $dataset_uri ) ) {
 			$uri = null;
 		}
 
 		// Set the URI if it isn't set yet.
 		$post_status = get_post_status( $post_id );
-		if ( empty( $uri ) && 'auto-draft' !== $post_status && 'revision' !== $post_status ) {
+		if ( empty( $uri ) && 'auto-draft' !== $post_status && 'inherit' !== $post_status ) {
 			$uri = wl_build_entity_uri( $post_id );
 			wl_set_entity_uri( $post_id, $uri );
 		}
@@ -439,6 +441,20 @@ class Wordlift_Entity_Service {
 		return $uri;
 	}
 
+	public function get_uri( $object_id, $type = Object_Type_Enum::POST ) {
+
+		if ( Object_Type_Enum::POST === $type ) {
+			return $this->get_uri_for_post( $object_id );
+		}
+
+		if ( Object_Type_Enum::USER === $type ) {
+			$uri = Wordlift_User_Service::get_instance()->get_uri( $object_id );
+
+			return ( false === $uri ? null : $uri );
+		}
+
+		return null;
+	}
 
 	/**
 	 * Get the alternative label input HTML code.

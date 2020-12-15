@@ -15,7 +15,7 @@
  * Plugin Name:       WordLift
  * Plugin URI:        https://wordlift.io
  * Description:       WordLift brings the power of AI to organize content, attract new readers and get their attention. To activate the plugin <a href="https://wordlift.io/">visit our website</a>.
- * Version:           3.27.6.3
+ * Version:           3.27.7
  * Author:            WordLift, Insideout10
  * Author URI:        https://wordlift.io
  * License:           GPL-2.0+
@@ -24,8 +24,10 @@
  * Domain Path:       /languages
  */
 
+use Wordlift\Admin\Top_Entities;
 use Wordlift\Api\Default_Api_Service;
 use Wordlift\Api\User_Agent;
+use Wordlift\Api_Data\Api_Data_Hooks;
 use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Cache\Ttl_Cache_Cleaner;
 use Wordlift\Images_Licenses\Admin\Image_License_Page;
@@ -44,21 +46,13 @@ use Wordlift\Images_Licenses\Tasks\Remove_All_Images_Task;
 use Wordlift\Post\Post_Adapter;
 use Wordlift\Tasks\Task_Ajax_Adapter;
 use Wordlift\Tasks\Task_Ajax_Adapters_Registry;
-use Wordlift\Api_Data\Api_Data_Hooks;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-if ( apply_filters( 'wl_features__enable__dataset', false ) ) {
-	/*
-	 * Add Composer Autoload with Mozart support.
-	 *
-	 * @since 3.27.6
-	 */
-	require __DIR__ . '/vendor/autoload.php';
-}
+require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
 
 // Include WordLift constants.
 require_once( 'wordlift_constants.php' );
@@ -398,6 +392,11 @@ function activate_wordlift() {
 	// Ensure the post type is registered before flushing the rewrite rules.
 	Wordlift_Entity_Post_Type_Service::get_instance()->register();
 	flush_rewrite_rules();
+	/**
+	 * @since 3.27.7
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/1214
+	 */
+	Top_Entities::activate();
 }
 
 /**
@@ -410,6 +409,11 @@ function deactivate_wordlift() {
 	Wordlift_Deactivator::deactivate();
 	Wordlift_Http_Api::deactivate();
 	Ttl_Cache_Cleaner::deactivate();
+	/**
+	 * @since 3.27.7
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/1214
+	 */
+	Top_Entities::deactivate();
 	flush_rewrite_rules();
 
 }
@@ -451,14 +455,15 @@ function run_wordlift() {
 
 	/**
 	 * Filter: wl_feature__enable__analysis
+	 *
 	 * @param bool Whether to send api request to analysis or not
+	 *
 	 * @return bool
 	 * @since 3.27.6
 	 */
 	if ( apply_filters( 'wl_feature__enable__analysis', true ) ) {
 		add_action( 'wp_ajax_wl_analyze', 'wl_ajax_analyze_action' );
-	}
-	else {
+	} else {
 		add_action( 'wp_ajax_wl_analyze', 'wl_ajax_analyze_disabled_action' );
 	}
 
@@ -482,10 +487,14 @@ function run_wordlift() {
 	new Api_Data_Hooks();
 
 	add_action( 'plugins_loaded', function () use ( $plugin ) {
+		// Load early. **PLEASE NOTE** that features are applied only to calls that happen **AFTER** the `plugins_loaded`
+		// action.
+		require_once plugin_dir_path( __FILE__ ) . 'wordlift/features/index.php';
+
 		// Licenses Images.
 		$user_agent                   = User_Agent::get_user_agent();
 		$wordlift_key                 = Wordlift_Configuration_Service::get_instance()->get_key();
-		$api_service                  = new Default_Api_Service( apply_filters( 'wl_api_base_url', 'https://api.wordlift.io' ), 60, $user_agent, $wordlift_key );
+		$api_service                  = new Default_Api_Service( apply_filters( 'wl_api_base_url', WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE ), 60, $user_agent, $wordlift_key );
 		$image_license_factory        = new Image_License_Factory();
 		$image_license_service        = new Image_License_Service( $api_service, $image_license_factory );
 		$image_license_cache          = new Ttl_Cache( 'image-license', 86400 * 30 ); // 30 days.
@@ -518,6 +527,7 @@ function run_wordlift() {
 
 		// Register the Dataset module, requires `$api_service`.
 		require_once plugin_dir_path( __FILE__ ) . 'wordlift/dataset/index.php';
+
 	} );
 
 }

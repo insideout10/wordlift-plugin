@@ -6,6 +6,7 @@
 
 /**
  * Class EntityTest
+ * @group entity
  */
 class Wordlift_Entity_Api_Test extends Wordlift_Unit_Test_Case {
 

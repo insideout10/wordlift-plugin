@@ -2,8 +2,6 @@
 
 namespace Wordlift\Dataset;
 
-use Tinify\Exception;
-
 class Sync_Background_Process extends \Wordlift_Plugin_WP_Background_Process {
 
 	protected $action = 'wl_dataset__sync';
@@ -39,11 +37,11 @@ class Sync_Background_Process extends \Wordlift_Plugin_WP_Background_Process {
 	 *
 	 * This function returns the parameter for the next call or NULL if there are no more posts to process.
 	 *
-	 * @param int $post_id The post ID.
+	 * @param int[] $post_ids An array of post IDs.
 	 *
-	 * @return int|false The next post ID or false if there are no more.
+	 * @return int[]|false The next post IDs or false if there are no more.
 	 */
-	protected function task( $post_id ) {
+	protected function task( $post_ids ) {
 
 		// Check if we must cancel.
 		if ( $this->must_cancel() ) {
@@ -52,10 +50,10 @@ class Sync_Background_Process extends \Wordlift_Plugin_WP_Background_Process {
 			return false;
 		}
 
-		$this->log->debug( "Synchronizing post $post_id..." );
+		$this->log->debug( sprintf( "Synchronizing posts %s...", implode( ', ', $post_ids ) ) );
 
 		// Sync the item.
-		return $this->sync_item( $post_id );
+		return $this->sync_items( $post_ids );
 	}
 
 	/**
@@ -70,13 +68,13 @@ class Sync_Background_Process extends \Wordlift_Plugin_WP_Background_Process {
 			$this->log->debug( "Starting..." );
 
 			$sync_state = new Sync_State( time(), 0, $this->sync_service->count(), time(), 'started' );
-			update_option( '_wl_dataset_sync', $sync_state );
+			update_option( '_wl_dataset_sync', $sync_state, false );
 
 			$next = $this->sync_service->next();
 			$this->push_to_queue( $next );
 			$this->save()->dispatch();
 
-			$this->log->debug( "Started with post ID $next." );
+			$this->log->debug( sprintf( 'Started with post IDs %s.', implode( ', ', $next ) ) );
 
 			return true;
 		}
@@ -103,7 +101,7 @@ class Sync_Background_Process extends \Wordlift_Plugin_WP_Background_Process {
 
 		try {
 			return get_option( '_wl_dataset_sync', Sync_State::unknown() );
-		} catch ( Exception $e ) {
+		} catch ( \Exception $e ) {
 			return Sync_State::unknown();
 		}
 
@@ -143,7 +141,7 @@ class Sync_Background_Process extends \Wordlift_Plugin_WP_Background_Process {
 		// Set the state to cancelled.
 		$state = self::get_state();
 		$state->set_state( 'cancelled' );
-		update_option( '_wl_dataset_sync', $state );
+		update_option( '_wl_dataset_sync', $state, false );
 
 		// Finally delete the transient.
 		delete_transient( "{$this->action}__cancel" );
@@ -153,14 +151,19 @@ class Sync_Background_Process extends \Wordlift_Plugin_WP_Background_Process {
 	/**
 	 * Push the post with the provided ID to the remote platform.
 	 *
-	 * @param int $post_id The post ID.
+	 * @param int[] $post_ids The post IDs.
 	 *
-	 * @return int|false The next post ID to process or false if processing is complete.
+	 * @return int[]|false The next post ID to process or false if processing is complete.
 	 */
-	private function sync_item( $post_id ) {
+	private function sync_items( $post_ids ) {
+
+		if ( ! is_array( $post_ids ) ) {
+			$this->log->error( '$post_ids must be an array, received: ' . var_export( $post_ids, true ) );
+			return false;
+		}
 
 		// Sync this item.
-		if ( $this->sync_service->sync_item( $post_id ) ) {
+		if ( $this->sync_service->sync_items( $post_ids ) ) {
 
 			$next       = $this->sync_service->next();
 			$next_state = isset( $next ) ? 'started' : 'ended';
@@ -171,16 +174,21 @@ class Sync_Background_Process extends \Wordlift_Plugin_WP_Background_Process {
 			 * @var Sync_State $sync The {@link Sync_State}.
 			 */
 			$state = self::get_state()
-			             ->increment_index()
+			             ->increment_index( $this->sync_service->get_batch_size() )
 			             ->set_state( $next_state );
-			update_option( '_wl_dataset_sync', $state );
+			update_option( '_wl_dataset_sync', $state, false );
 
-			// Return the next ID or false if there aren't.
-			return isset( $next ) ? (int) $next : false;
+			$this->log->debug( "State updated to " . var_export( $state, true ) );
+
+			// Return the next IDs or false if there aren't.
+			return isset( $next ) ? $next : false;
 		} else {
 			// Retry.
 			// @@todo: put a limit to the number of retries.
-			return $post_id;
+
+			$this->log->error( sprintf( "Sync failed for posts %s.", implode( ', ', $post_ids ) ) );
+
+			return $post_ids;
 		}
 
 	}

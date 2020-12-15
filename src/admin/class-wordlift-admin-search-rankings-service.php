@@ -28,9 +28,10 @@ class Wordlift_Admin_Search_Rankings_Service {
 	/**
 	 * Wordlift_Admin_Search_Rankings_Service constructor.
 	 *
+	 * @param $api_service
+	 *
 	 * @since 3.20.0
 	 *
-	 * @param $api_service
 	 */
 	public function __construct( $api_service ) {
 
@@ -41,13 +42,17 @@ class Wordlift_Admin_Search_Rankings_Service {
 	/**
 	 * Get the entity rankings.
 	 *
-	 * @since 3.20.0
 	 * @return string|object|WP_Error The response structure if successful, a plain text if the response isn't recognized
 	 * or a {@see WP_Error} instance.
+	 * @since 3.20.0
 	 */
 	public function get() {
 
-		return $this->api_service->get( 'entityrank' );
+		if ( apply_filters( 'wl_feature__enable__entity_rank', false ) ) {
+			return $this->api_service->get( 'entityrank' );
+		} else {
+			return new \WP_Error( 'entity_rank_disabled', __( 'Entity Rank is disabled', 'wordlift' ) );
+		}
 	}
 
 	/**
@@ -55,9 +60,9 @@ class Wordlift_Admin_Search_Rankings_Service {
 	 *
 	 * It's highly suggested for consumers to cache the response.
 	 *
+	 * @return false|float|int
 	 * @since 3.20.0
 	 *
-	 * @return false|float|int
 	 */
 	public function get_average_position() {
 

@@ -4,7 +4,7 @@ Plugin URL: https://wordlift.io
 Contributors: wordlift, insideout10, ziodave, akshay_raje
 Tags: schema.org, rich snippets, semantic seo, JSON-LD, artificial intelligence, ai, linked data, semantic web, content recommendation, related posts, timeline, knowledge graph, interactive map, classicpress
 Requires at least: 4.4
-Tested up to: 5.5
+Tested up to: 5.6
 Requires PHP: 5.3
 Stable tag: {version}
 License: GPLv2 or later
@@ -141,6 +141,20 @@ You can open your datasets to the public, attaching to it a free or a commercial
 9. The WordLift Dashboard. Your [knowledge graph](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph) at a glance.
 
 == Changelog ==
+
+= 3.27.7 (2020-12-15) =
+
+* Enhancement [#1214](https://github.com/insideout10/wordlift-plugin/issues/1214): get_top_entities in class-wordlift-admin-dashboard-v2.php takes more than 10 secs.
+* Enhancement [#1212](https://github.com/insideout10/wordlift-plugin/issues/1212): 1st release of the features system
+* Enhancement [#1207](https://github.com/insideout10/wordlift-plugin/issues/1207): Occupation mainEntityOfPage cannot be a single URL
+* Enhancement [#1189](https://github.com/insideout10/wordlift-plugin/issues/1189): Add a link to the GitHub repo in plugin's readme file
+* Enhancement [#1137](https://github.com/insideout10/wordlift-plugin/issues/1137): Faceted search hook
+
+* Fix [#1215](https://github.com/insideout10/wordlift-plugin/issues/1215): entityrank API calls raise errors
+* Fix [#1210](https://github.com/insideout10/wordlift-plugin/issues/1210): PHP Deprecated: implode(): Passing glue string after array is deprecated.
+* Fix [#1201](https://github.com/insideout10/wordlift-plugin/issues/1201): Notice triggered by the wl_enabled_blocks handle
+* Fix [#1195](https://github.com/insideout10/wordlift-plugin/issues/1195): permission_callback needs to be supplied for every rest endpoint registration in 5.5.0
+* Fix [#1193](https://github.com/insideout10/wordlift-plugin/issues/1193): sameAs metabox in post edit screen should only accept URLs
 
 = 3.27.6.3 (2020-12-07) =
 
@@ -1230,9 +1244,19 @@ Our mission is an *utopian one*: **organize the world general knowledge** by pro
 
 = In open source we trust =
 
-**WordLift** is built on **open source software**. <br />
-**WordLift** uses **open source tools for natural language and semantic processing**. <br />
+**WordLift** is built on **open source software**.
+**WordLift** uses **open source tools for natural language and semantic processing**.
 
 = In data ownership we trust =
 
 We believe content creators should **own, retain and exploit** the **value of the metadata they create**.
+
+= Get involved with the Development =
+
+If you are a coder and wish to contribute to WordLift plugin you are welcome to get involved via Github.
+
+**WordLift Plugin Repo:**
+[https://github.com/insideout10/wordlift-plugin](https://github.com/insideout10/wordlift-plugin)
+
+**WordLift Plugin Issue Tracker:**
+[https://github.com/insideout10/wordlift-plugin/issues](https://github.com/insideout10/wordlift-plugin/issues)

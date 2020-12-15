@@ -1,6 +1,6 @@
 <?php
 /**
- *
+ * @group entity
  */
 class Wordlift_Entity_Link_Service_Test extends Wordlift_Unit_Test_Case {
 
@@ -25,8 +25,8 @@ class Wordlift_Entity_Link_Service_Test extends Wordlift_Unit_Test_Case {
 			'post_type'    => 'post',
 		) ) );
 
-		// Check that the post title has the -2 suffix
-		$this->assertEquals( $post_title . '-2', $post->post_name );
+		// Check that the post title
+		$this->assertEquals( $post_title, $post->post_name );
 	}
 
 	public function test_entity_with_archive_slug() {
@@ -42,8 +42,8 @@ class Wordlift_Entity_Link_Service_Test extends Wordlift_Unit_Test_Case {
 			'post_type'    => 'entity',
 		) ) );
 
-		// Check that the entity title has the -2 suffix
-		$this->assertEquals( $post_title . '-2', $entity->post_name );
+		// Check that the entity title
+		$this->assertEquals( $post_title, $entity->post_name );
 	}
 
 	public function test_page_with_archive_slug() {
@@ -59,8 +59,8 @@ class Wordlift_Entity_Link_Service_Test extends Wordlift_Unit_Test_Case {
 			'post_type'    => 'page',
 		) ) );
 
-		// Check that the page title has the -2 suffix
-		$this->assertEquals( $post_title . '-2', $page->post_name );
+		// Check that the page title
+		$this->assertEquals( $post_title, $page->post_name );
 	}
 
 	/**
@@ -87,8 +87,8 @@ class Wordlift_Entity_Link_Service_Test extends Wordlift_Unit_Test_Case {
 			'post_type'    => 'entity',
 		) ) );
 
-		// Check that the entity title has the -2 suffix
-		$this->assertEquals( $post->post_name . '-2', $entity->post_name );
+		// Check that the entity title
+		$this->assertEquals( $post->post_name, $entity->post_name );
 
 	}
 
@@ -116,8 +116,8 @@ class Wordlift_Entity_Link_Service_Test extends Wordlift_Unit_Test_Case {
 			'post_type'    => 'post',
 		) ) );
 
-		// Check that the entity title has the -2 suffix
-		$this->assertEquals( $entity->post_name . '-2', $post->post_name );
+		// Check that the entity title
+		$this->assertEquals( $entity->post_name, $post->post_name );
 
 	}
 

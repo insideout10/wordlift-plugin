@@ -10,6 +10,8 @@
  * @since   3.9.0
  */
 
+use Wordlift\Api\Default_Api_Service;
+
 /**
  * Define the {@link Wordlift_Key_Validation_Service} class.
  *
@@ -41,13 +43,13 @@ class Wordlift_Key_Validation_Service {
 	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
 	 *
 	 * @since 3.14.0
-	 *
 	 */
 	public function __construct( $configuration_service ) {
 
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Key_Validation_Service' );
 
 		$this->configuration_service = $configuration_service;
+
 		add_action( 'admin_init', array( $this, 'wl_load_plugin' ) );
 		/**
 		 * Filter: wl_feature__enable__notices.
@@ -60,6 +62,7 @@ class Wordlift_Key_Validation_Service {
 		if ( apply_filters( 'wl_feature__enable__notices', true ) ) {
 			add_action( 'admin_notices', array( $this, 'wl_key_update_notice' ) );
 		}
+
 	}
 
 	/**
@@ -75,19 +78,9 @@ class Wordlift_Key_Validation_Service {
 
 		$this->log->debug( 'Validating key...' );
 
-		// Request the account info as a way to validate the key
-
-		$args = array_merge_recursive(
-			unserialize( WL_REDLINK_API_HTTP_OPTIONS ),
-			array(
-				'headers' => array(
-					'Content-Type'    => 'application/json; charset=utf-8',
-					'X-Authorization' => $key,
-				)
-			)
-		);
-
-		return wp_remote_get( $this->configuration_service->get_accounts_info_by_key( $key ), $args );
+		return Default_Api_Service::get_instance()->get( '/accounts/info', array(
+			'Authorization' => "Key $key",
+        ) )->get_response();
 	}
 
 	/**

@@ -13,6 +13,7 @@
  * @since      3.13.2
  * @package    Wordlift
  * @subpackage Wordlift/tests
+ * @group sparql
  */
 class Wordlift_Sparql_Service_Test extends Wordlift_Unit_Test_Case {
 
@@ -118,9 +119,10 @@ class Wordlift_Sparql_Service_Test extends Wordlift_Unit_Test_Case {
 	/**
 	 * Hook to the `wl_run_sparql_query` action.
 	 *
+	 * @param string $request_id The unique request id.
+	 *
 	 * @since 3.13.2
 	 *
-	 * @param string $request_id The unique request id.
 	 */
 	public function catch_wl_run_sparql_query( $request_id ) {
 

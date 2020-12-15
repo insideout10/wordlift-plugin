@@ -10,6 +10,8 @@
  * @since      3.6.0
  */
 
+use Wordlift\Api\Default_Api_Service;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -383,11 +385,16 @@ class Wordlift_Configuration_Service {
 	 *
 	 * @return string The dataset URI or an empty string if not set.
 	 * @since 3.10.0
+	 * @since 3.27.7 Always return null if `wl_features__enable__dataset` is disabled.
 	 *
 	 */
 	public function get_dataset_uri() {
 
-		return $this->get( 'wl_advanced_settings', self::DATASET_URI, null );
+		if ( apply_filters( 'wl_features__enable__dataset', true ) ) {
+			return $this->get( 'wl_advanced_settings', self::DATASET_URI, null );
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -498,21 +505,18 @@ class Wordlift_Configuration_Service {
 		 * @since 3.20.0
 		 *
 		 */
-		$home_url    = defined( 'WP_HOME' ) ? WP_HOME : get_option( 'home' );
+		$home_url = defined( 'WP_HOME' ) ? WP_HOME : get_option( 'home' );
 		$site_url = apply_filters( 'wl_production_site_url', untrailingslashit( $home_url ) );
 
 		// Build the URL.
-		$url = $this->get_accounts()
+		$url = '/accounts'
 		       . '?key=' . rawurlencode( $key )
 		       . '&url=' . rawurlencode( $site_url )
 		       . '&country=' . $this->get_country_code()
 		       . '&language=' . $this->get_language_code();
 
-		$args = wp_parse_args( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
-			'method' => 'PUT',
-		) );
-
-		$response = wp_remote_request( $url, $args );
+		$api_service = Default_Api_Service::get_instance();
+		$response    = $api_service->request( 'PUT', $url )->get_response();
 
 		// The response is an error.
 		if ( is_wp_error( $response ) ) {
@@ -525,8 +529,15 @@ class Wordlift_Configuration_Service {
 		}
 
 		// The response is not OK.
-		if ( 200 !== (int) $response['response']['code'] ) {
-			$this->log->error( "Unexpected status code when opening URL $url: " . $response['response']['code'] );
+		if ( ! is_array( $response ) || 200 !== (int) $response['response']['code'] ) {
+			$base_url = $api_service->get_base_url();
+
+			if ( ! is_array( $response ) ) {
+				$this->log->error( "Unexpected response when opening URL $base_url$url: " . var_export( $response, true ) );
+			} else {
+				$this->log->error( "Unexpected status code when opening URL $base_url$url: " . $response['response']['code'] . "\n" . var_export( $response, true ) );
+			}
+
 
 			$this->set_dataset_uri( '' );
 			$this->set_package_type( null );
@@ -540,14 +551,17 @@ class Wordlift_Configuration_Service {
 		 * @since 3.20.0
 		 */
 		$json         = json_decode( $response['body'] );
-		$dataset_uri  = $json->datasetURI;
+		/**
+		 * @since 3.27.7
+		 * Remove the trailing slash returned from the new platform api.
+		 */
+		$dataset_uri  = untrailingslashit( $json->datasetURI );
 		$package_type = isset( $json->packageType ) ? $json->packageType : null;
 
 		$this->log->info( "Updating [ dataset uri :: $dataset_uri ][ package type :: $package_type ]..." );
 
 		$this->set_dataset_uri( $dataset_uri );
 		$this->set_package_type( $package_type );
-
 	}
 
 	/**
@@ -596,20 +610,6 @@ class Wordlift_Configuration_Service {
 	public function get_accounts_by_key_dataset_uri( $key ) {
 
 		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "accounts/key=$key/dataset_uri";
-	}
-
-	/**
-	 * Get the API URI to retrieve the account info using the WordLift Key.
-	 *
-	 * @param string $key The WordLift key to use.
-	 *
-	 * @return string The API URI.
-	 * @since 3.26.0
-	 *
-	 */
-	public function get_accounts_info_by_key( $key ) {
-
-		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "accounts/info";
 	}
 
 	/**

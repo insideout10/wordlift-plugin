@@ -11,7 +11,7 @@
  * Define the Test_Wordlift_Install_Package_Type class.
  *
  * @since 3.20.0
- *
+ * @group install
  */
 class Wordlift_Install_Package_Type_Test extends Wordlift_Unit_Test_Case {
 

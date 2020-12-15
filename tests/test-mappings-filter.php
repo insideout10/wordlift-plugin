@@ -44,6 +44,7 @@ if ( ! class_exists( 'Test_Transform_function' ) ) {
  * @since 3.26.0
  * @package Wordlift
  * @subpackage Wordlift/tests
+ * @group mappings
  */
 class Mappings_Filter_Test extends Wordlift_Unit_Test_Case {
 	/**
@@ -85,7 +86,7 @@ class Mappings_Filter_Test extends Wordlift_Unit_Test_Case {
 		);
 		add_filter( 'wl_mappings_post', function ( $mappings, $post_id ) use ( $manual_properties ) {
 			array_push( $mappings, array(
-				'properties'  => $manual_properties
+				'properties' => $manual_properties
 			) );
 
 			return $mappings;
@@ -113,7 +114,7 @@ class Mappings_Filter_Test extends Wordlift_Unit_Test_Case {
 		);
 		add_filter( 'wl_mappings_post', function ( $mappings, $post_id ) use ( $manual_properties ) {
 			array_push( $mappings, array(
-				'properties'  => $manual_properties
+				'properties' => $manual_properties
 			) );
 
 			return $mappings;
@@ -149,7 +150,7 @@ class Mappings_Filter_Test extends Wordlift_Unit_Test_Case {
 		);
 		add_filter( 'wl_mappings_post', function ( $mappings, $post_id ) use ( $manual_properties ) {
 			array_push( $mappings, array(
-				'properties'  => $manual_properties
+				'properties' => $manual_properties
 			) );
 
 			return $mappings;

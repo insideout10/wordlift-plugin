@@ -13,6 +13,7 @@
  * @since      3.14.0
  * @package    Wordlift
  * @subpackage Wordlift/tests
+ * @group metabox
  */
 class Wordlift_Metabox_Field_Duration_Test extends Wordlift_Unit_Test_Case {
 

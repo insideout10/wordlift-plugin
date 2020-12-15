@@ -15,6 +15,7 @@
  * @since      3.19.0
  * @package    Wordlift
  * @subpackage Wordlift/tests
+ * @group ajax
  */
 class Wordlift_Deactivator_Feedback_Ajax_Test extends Wordlift_Ajax_Unit_Test_Case {
 

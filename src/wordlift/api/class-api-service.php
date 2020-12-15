@@ -6,7 +6,7 @@ interface Api_Service {
 
 	/**
 	 * @param $method
-	 * @param $url
+	 * @param $path
 	 * @param array $headers
 	 * @param null $body
 	 * @param null $timeout
@@ -15,10 +15,10 @@ interface Api_Service {
 	 *
 	 * @return Response
 	 */
-	public function request( $method, $url, $headers = array(), $body = null, $timeout = null, $user_agent = null, $args = array() );
+	public function request( $method, $path, $headers = array(), $body = null, $timeout = null, $user_agent = null, $args = array() );
 
 	/**
-	 * @param $url
+	 * @param $path
 	 * @param array $headers
 	 * @param null $body
 	 * @param null $timeout
@@ -27,6 +27,6 @@ interface Api_Service {
 	 *
 	 * @return Response
 	 */
-	public function get( $url, $headers = array(), $body = null, $timeout = null, $user_agent = null, $args = array() );
+	public function get( $path, $headers = array(), $body = null, $timeout = null, $user_agent = null, $args = array() );
 
 }

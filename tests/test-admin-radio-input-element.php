@@ -7,7 +7,7 @@
  * @since      3.19.0
  * @package    Wordlift
  * @subpackage Wordlift/tests
- */
+ apply_filters( 'wl_feature__enable__dataset-ng', false )
 
 /**
  * Define the {@link Wordlift_Admin_Radio_Input_Element_Test} test class.
@@ -15,6 +15,7 @@
  * @since      3.19.0
  * @package    Wordlift
  * @subpackage Wordlift/tests
+ * @group admin
  */
 class Wordlift_Admin_Radio_Input_Element_Test extends Wordlift_Unit_Test_Case {
 

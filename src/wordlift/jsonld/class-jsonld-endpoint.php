@@ -8,6 +8,7 @@
 
 namespace Wordlift\Jsonld;
 
+use Wordlift\Object_Type_Enum;
 use Wordlift_Jsonld_Service;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -46,9 +47,10 @@ class Jsonld_Endpoint {
 		$that = $this;
 		add_action( 'rest_api_init', function () use ( $that ) {
 			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/(?P<id>\d+)', array(
-				'methods'  => WP_REST_Server::READABLE,
-				'callback' => array( $that, 'jsonld_using_post_id' ),
-				'args'     => array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $that, 'jsonld_using_post_id' ),
+				'permission_callback' => '__return_true',
+				'args'                => array(
 					'id' => array(
 						'validate_callback' => function ( $param, $request, $key ) {
 							return is_numeric( $param );
@@ -59,23 +61,27 @@ class Jsonld_Endpoint {
 			) );
 
 			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/http/(?P<item_id>.*)', array(
-				'methods'  => 'GET',
-				'callback' => array( $that, 'jsonld_using_item_id' ),
+				'methods'             => 'GET',
+				'callback'            => array( $that, 'jsonld_using_item_id' ),
+				'permission_callback' => '__return_true',
 			) );
 
 			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/post-meta/(?P<meta_key>[^/]+)', array(
-				'methods'  => 'GET',
-				'callback' => array( $that, 'jsonld_using_post_meta' ),
+				'methods'             => 'GET',
+				'callback'            => array( $that, 'jsonld_using_post_meta' ),
+				'permission_callback' => '__return_true',
 			) );
 
 			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/meta/(?P<meta_key>[^/]+)', array(
-				'methods'  => 'GET',
-				'callback' => array( $that, 'jsonld_using_meta' ),
+				'methods'             => 'GET',
+				'callback'            => array( $that, 'jsonld_using_meta' ),
+				'permission_callback' => '__return_true',
 			) );
 
 			register_rest_route( WL_REST_ROUTE_DEFAULT_NAMESPACE, '/jsonld/(?P<post_type>.*)/(?P<post_name>.*)', array(
-				'methods'  => 'GET',
-				'callback' => array( $that, 'jsonld_using_get_page_by_path' ),
+				'methods'             => 'GET',
+				'callback'            => array( $that, 'jsonld_using_get_page_by_path' ),
+				'permission_callback' => '__return_true',
 			) );
 
 		} );
@@ -97,7 +103,7 @@ class Jsonld_Endpoint {
 	public function jsonld_using_post_id( $request ) {
 
 		$post_id = $request['id'];
-		$type    = ( 0 === $post_id ) ? Jsonld_Service::TYPE_HOMEPAGE : Jsonld_Service::TYPE_POST;
+		$type    = ( 0 === $post_id ? Object_Type_Enum::HOMEPAGE : Object_Type_Enum::POST );
 
 		// Send the generated JSON-LD.
 		$data = $this->jsonld_service->get( $type, $post_id );
@@ -201,10 +207,10 @@ class Jsonld_Endpoint {
 			 FROM {$wpdb->termmeta}
 			 WHERE meta_key = %s AND meta_value = %s
 			",
-			Jsonld_Service::TYPE_POST,
+			Object_Type_Enum::POST,
 			$meta_key,
 			$meta_value,
-			Jsonld_Service::TYPE_TERM,
+			Object_Type_Enum::TERM,
 			$meta_key,
 			$meta_value
 		) );

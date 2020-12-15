@@ -33,7 +33,9 @@ function wl_ajax_analyze_action() {
 
 	check_admin_referer( 'wl_analyze' );
 
-	$data = filter_input( INPUT_POST, 'data' );
+	// If you use `filter_input` here, `Ajax_Content_Analysis_Test` would fail because `filter_input` doesn't use
+	// `$_POST`.
+	$data = $_POST['data'];
 
 	wp_send_json_success( wl_analyze_content( $data, 'application/json; charset=' . strtolower( get_bloginfo( 'charset' ) ) ) );
 
@@ -57,8 +59,18 @@ function wl_ajax_analyze_action() {
  */
 function wl_analyze_content( $data, $content_type ) {
 
-	$default_response = json_decode( '{ "entities": {}, "annotations": {}, "topics": {} }' );
+	$default_response                = json_decode( '{ "entities": {}, "annotations": {}, "topics": {} }' );
 	$request_body = json_decode( $data, true );
+	if ( $request_body === null ) {
+		/**
+		 * @since 3.27.7
+		 *
+		 * Conditionally try using stripslashes as $_POST['data'] could be escaped
+		 */
+		$request_body = json_decode( stripslashes( $data ), true );
+	}
+	$request_body['contentLanguage'] = Wordlift_Configuration_Service::get_instance()->get_language_code();
+	$data                            = wp_json_encode( $request_body );
 
 	// If dataset is not enabled, return a locally prepared response without analysis API.
 	if ( ! apply_filters( 'wl_features__enable__dataset', true ) ) {

@@ -13,8 +13,8 @@
 use Wordlift\Mappings\Acf_Mappings;
 use Wordlift\Mappings\Mappings_REST_Controller;
 use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
-use Wordlift\Mappings\Pages\Edit_Mappings_Page;
 use Wordlift\Mappings\Pages\Admin_Mappings_Page;
+use Wordlift\Mappings\Pages\Edit_Mappings_Page;
 use Wordlift\Mappings\Taxonomy_Option;
 
 /**
@@ -331,7 +331,7 @@ class Wordlift_Admin {
 			 */
 			'search_keywords_admin_page' => admin_url( 'admin.php?page=wl_configuration_admin_menu&tab=search-keywords' ),
 
-			'analysis' => array( '_wpnonce' => wp_create_nonce( 'wl_analyze' ) ),
+			'analysis'                     => array( '_wpnonce' => wp_create_nonce( 'wl_analyze' ) ),
 			/**
 			 * Faceted search default limit
 			 *
@@ -343,7 +343,7 @@ class Wordlift_Admin {
 			 *
 			 * @since 3.27.3
 			 */
-			'wl_root' => plugin_dir_url( __DIR__ )
+			'wl_root'                      => plugin_dir_url( __DIR__ )
 		);
 
 		// Set post-related values if there's a current post.

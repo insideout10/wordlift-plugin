@@ -2,8 +2,9 @@
 
 /**
  * Class EntityImagesTest
+ * @group entity
  */
-class EntityImagesTest extends Wordlift_Unit_Test_Case {
+class Wordlift_Entity_Images_Test extends Wordlift_Unit_Test_Case {
 
 	function testSaveOneImage() {
 
@@ -204,9 +205,10 @@ class EntityImagesTest extends Wordlift_Unit_Test_Case {
 
 		// Remove any featured image
 		delete_post_thumbnail( $entity_post->ID );
+
 		// Ensure no images are on RL
 		$redlink_images = $this->getImageRLMetadata( $entity_post->ID );
-		$this->assertCount( 0, $redlink_images );
+		$this->assertCount( 0, $redlink_images, 'This is what I got:' . var_export( $redlink_images, true ) );
 
 		//
 		self::turn_off_entity_push();

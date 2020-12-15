@@ -31,7 +31,7 @@ use Wordlift\Jsonld\Jsonld_Adapter;
 use Wordlift\Jsonld\Jsonld_By_Id_Endpoint;
 use Wordlift\Jsonld\Jsonld_Endpoint;
 use Wordlift\Jsonld\Jsonld_Service;
-use Wordlift\Jsonld\Term_Jsonld_Service;
+use Wordlift\Jsonld\Jsonld_User_Service;
 use Wordlift\Mappings\Formatters\Acf_Group_Formatter;
 use Wordlift\Mappings\Jsonld_Converter;
 use Wordlift\Mappings\Mappings_DBO;
@@ -48,6 +48,7 @@ use Wordlift\Mappings\Validators\Taxonomy_Term_Rule_Validator;
 use Wordlift\Post_Excerpt\Post_Excerpt_Meta_Box_Adapter;
 use Wordlift\Post_Excerpt\Post_Excerpt_Rest_Controller;
 use Wordlift\Templates\Templates_Ajax_Endpoint;
+use Wordlift\Admin\Top_Entities;
 
 /**
  * The core plugin class.
@@ -748,7 +749,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.27.6.3';
+		$this->version     = '3.27.7';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -1231,7 +1232,7 @@ class Wordlift {
 		$this->redirect_service    = new Wordlift_Redirect_Service( $this->entity_uri_service );
 		$this->entity_type_service = new Wordlift_Entity_Type_Service( $this->schema_service );
 
-		if ( apply_filters( 'wl_features__enable__legacy_linked_data', true ) ) {
+		if ( apply_filters( 'wl_feature__enable__dataset-ng', false ) ) {
 			new Wordlift_Linked_Data_Service( $this->entity_service, $this->entity_type_service, $this->schema_service, $this->sparql_service );
 		}
 
@@ -1290,7 +1291,10 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-term-jsonld-adapter.php';
 		$term_jsonld_adapter = new Wordlift_Term_JsonLd_Adapter( $this->entity_uri_service, $this->jsonld_service );
-		$jsonld_service      = new Jsonld_Service( $this->jsonld_service, $term_jsonld_adapter );
+		$jsonld_service      = new Jsonld_Service(
+			$this->jsonld_service,
+			$term_jsonld_adapter,
+			new Jsonld_User_Service( $this->user_service ) );
 		new Jsonld_Endpoint( $jsonld_service, $this->entity_uri_service );
 
 		// Prints the JSON-LD in the head.
@@ -1306,6 +1310,9 @@ class Wordlift {
 		$this->sample_data_service        = new Wordlift_Sample_Data_Service( $this->entity_type_service, $this->configuration_service, $this->user_service );
 		$this->sample_data_ajax_adapter   = new Wordlift_Sample_Data_Ajax_Adapter( $this->sample_data_service );
 		$this->reference_rebuild_service  = new Wordlift_Reference_Rebuild_Service( $this->entity_service );
+
+		$this->loader->add_action( 'enqueue_block_editor_assets', $this, 'add_wl_enabled_blocks' );
+
 		/**
 		 * Filter: wl_feature__enable__blocks.
 		 *
@@ -1314,9 +1321,6 @@ class Wordlift {
 		 * @return bool
 		 * @since 3.27.6
 		 */
-		wp_register_script( 'wl_enabled_blocks', false );
-		$enabled_blocks = array( 'wordlift/products-navigator' );
-
 		if ( apply_filters( 'wl_feature__enable__blocks', true ) ) {
 			// Initialize the short-codes.
 			new Wordlift_Navigator_Shortcode();
@@ -1326,22 +1330,10 @@ class Wordlift {
 			new Wordlift_Related_Entities_Cloud_Shortcode( $this->relation_service );
 			new Wordlift_Vocabulary_Shortcode( $this->configuration_service );
 			new Wordlift_Faceted_Search_Shortcode();
-
-			// To intimate JS
-			$enabled_blocks = array_merge( $enabled_blocks, array(
-				'wordlift/navigator',
-				'wordlift/chord',
-				'wordlift/geomap',
-				'wordlift/timeline',
-				'wordlift/cloud',
-				'wordlift/vocabulary',
-				'wordlift/faceted-search'
-			) );
 		}
 
 		new Wordlift_Products_Navigator_Shortcode();
-		wp_localize_script( 'wl_enabled_blocks', 'wlEnabledBlocks', $enabled_blocks );
-		wp_enqueue_script( 'wl_enabled_blocks' );
+
 
 		// Initialize the Context Cards Service
 		$this->context_cards_service = new Wordlift_Context_Cards_Service();
@@ -1379,8 +1371,10 @@ class Wordlift {
 		);
 
 		/** Async Tasks. */
-		new Wordlift_Sparql_Query_Async_Task();
-		new Wordlift_Push_References_Async_Task();
+		if ( ! apply_filters( 'wl_feature__enable__dataset-ng', false ) ) {
+			new Wordlift_Sparql_Query_Async_Task();
+			new Wordlift_Push_References_Async_Task();
+		}
 
 		/** WordPress Admin UI. */
 
@@ -1844,6 +1838,12 @@ class Wordlift {
 
 			return array_merge( (array) $value, array( 'wordlift/classification' ) );
 		}, PHP_INT_MAX );
+
+		/**
+		 * @since 3.27.7
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/1214
+		 */
+		new Top_Entities();
 	}
 
 	/**
@@ -1863,8 +1863,8 @@ class Wordlift {
 		// Bind the link generation and handling hooks to the entity link service.
 		$this->loader->add_filter( 'post_type_link', $this->entity_link_service, 'post_type_link', 10, 4 );
 		$this->loader->add_action( 'pre_get_posts', $this->entity_link_service, 'pre_get_posts', PHP_INT_MAX, 1 );
-		$this->loader->add_filter( 'wp_unique_post_slug_is_bad_flat_slug', $this->entity_link_service, 'wp_unique_post_slug_is_bad_flat_slug', 10, 3 );
-		$this->loader->add_filter( 'wp_unique_post_slug_is_bad_hierarchical_slug', $this->entity_link_service, 'wp_unique_post_slug_is_bad_hierarchical_slug', 10, 4 );
+		// $this->loader->add_filter( 'wp_unique_post_slug_is_bad_flat_slug', $this->entity_link_service, 'wp_unique_post_slug_is_bad_flat_slug', 10, 3 );
+		// $this->loader->add_filter( 'wp_unique_post_slug_is_bad_hierarchical_slug', $this->entity_link_service, 'wp_unique_post_slug_is_bad_hierarchical_slug', 10, 4 );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
@@ -1976,6 +1976,37 @@ class Wordlift {
 	public function get_dashboard_service() {
 
 		return $this->dashboard_service;
+	}
+
+	public function add_wl_enabled_blocks() {
+		/**
+		 * Filter: wl_feature__enable__blocks.
+		 *
+		 * @param bool whether the blocks needed to be registered, defaults to true.
+		 *
+		 * @return bool
+		 * @since 3.27.6
+		 */
+
+		wp_register_script( 'wl_enabled_blocks', false );
+
+		$enabled_blocks = array( 'wordlift/products-navigator' );
+
+		if ( apply_filters( 'wl_feature__enable__blocks', true ) ) {
+			// To intimate JS
+			$enabled_blocks = array_merge( $enabled_blocks, array(
+				'wordlift/navigator',
+				'wordlift/chord',
+				'wordlift/geomap',
+				'wordlift/timeline',
+				'wordlift/cloud',
+				'wordlift/vocabulary',
+				'wordlift/faceted-search'
+			) );
+		}
+
+		wp_localize_script( 'wl_enabled_blocks', 'wlEnabledBlocks', $enabled_blocks );
+		wp_enqueue_script( 'wl_enabled_blocks' );
 	}
 
 }

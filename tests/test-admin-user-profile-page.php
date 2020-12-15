@@ -13,6 +13,7 @@
  * @since      3.14.0
  * @package    Wordlift
  * @subpackage Wordlift/tests
+ * @group admin
  */
 class Wordlift_Admin_User_Profile_Page_Test extends Wordlift_Unit_Test_Case {
 

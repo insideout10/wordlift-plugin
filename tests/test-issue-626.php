@@ -34,6 +34,7 @@
  * @since      3.16.0
  * @package    Wordlift
  * @subpackage Wordlift/tests
+ * @group issue
  */
 class Wordlift_Issue_626 extends Wordlift_Unit_Test_Case {
 

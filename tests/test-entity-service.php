@@ -14,6 +14,7 @@
  * Define the Wordlift_Entity_Service_Test class.
  *
  * @since 3.2.0
+ * @group entity
  */
 class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 
@@ -465,13 +466,13 @@ class Wordlift_Entity_Service_Test extends Wordlift_Unit_Test_Case {
 
 		$uri_1 = $this->entity_service->get_uri( $post_id );
 
-		$this->assertEquals( 1, preg_match( '|^http://.*/test_996$|', $uri_1 ), "$uri_1 doesn't match expected value." );
+		$this->assertEquals( 1, preg_match( '|^https?://.*/test_996$|', $uri_1 ), "$uri_1 doesn't match expected value." );
 
 		update_post_meta( $post_id, WL_ENTITY_URL_META_NAME, '/test-post' );
 
 		$uri_2 = $this->entity_service->get_uri( $post_id );
 
-		$this->assertEquals( 1, preg_match( '|^http://.*/test_996$|', $uri_2 ), "$uri_2 doesn't match expected value." );
+		$this->assertEquals( 1, preg_match( '|^https?://.*/test_996$|', $uri_2 ), "$uri_2 doesn't match expected value." );
 
 	}
 

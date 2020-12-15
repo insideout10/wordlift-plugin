@@ -15,6 +15,7 @@
  * @since      3.11.0
  * @package    Wordlift
  * @subpackage Wordlift/tests
+ * @group admin
  */
 class Wordlift_Admin_Tabs_Element_Test extends Wordlift_Unit_Test_Case {
 

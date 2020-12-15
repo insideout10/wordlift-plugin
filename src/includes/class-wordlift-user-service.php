@@ -79,10 +79,11 @@ class Wordlift_User_Service {
 	/**
 	 * Create an instance of the User service.
 	 *
-	 * @since 3.1.7
-	 *
 	 * @param \Wordlift_Sparql_Service $sparql_service The {@link Wordlift_Sparql_Service} instance.
 	 * @param \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service} instance.
+	 *
+	 * @since 3.1.7
+	 *
 	 */
 	public function __construct( $sparql_service, $entity_service ) {
 
@@ -99,8 +100,8 @@ class Wordlift_User_Service {
 	/**
 	 * Get the singleton instance of the User service.
 	 *
-	 * @since 3.1.7
 	 * @return \Wordlift_User_Service The singleton instance of the User service.
+	 * @since 3.1.7
 	 */
 	public static function get_instance() {
 
@@ -110,16 +111,18 @@ class Wordlift_User_Service {
 	/**
 	 * Get the URI for a user.
 	 *
-	 * @since 3.1.7
-	 *
 	 * @param int $user_id The user id
 	 *
 	 * @return false|string The user's URI or false in case of failure.
+	 * @since 3.1.7
+	 *
 	 */
 	public function get_uri( $user_id ) {
 
 		// Try to get the URI stored in the user's meta and return it if available.
-		if ( false !== ( $user_uri = $this->_get_uri( $user_id ) ) ) {
+		$dataset_uri = wl_configuration_get_redlink_dataset_uri();
+		$user_uri    = $this->_get_uri( $user_id );
+		if ( ! empty( $dataset_uri ) && ! empty( $user_uri ) && 0 === strpos( $user_uri, $dataset_uri ) ) {
 			return $user_uri;
 		}
 
@@ -139,12 +142,12 @@ class Wordlift_User_Service {
 	 *
 	 * If the `id` is set to 0 (or less) then the meta is deleted.
 	 *
-	 * @since 3.14.0
-	 *
 	 * @param int $user_id The {@link WP_User}.
 	 * @param int $value The entity {@link WP_Post} `id`.
 	 *
 	 * @return bool|int  Meta ID if the key didn't exist, true on successful update, false on failure.
+	 * @since 3.14.0
+	 *
 	 */
 	public function set_entity( $user_id, $value ) {
 
@@ -156,11 +159,11 @@ class Wordlift_User_Service {
 	/**
 	 * Get the {@link WP_Post} `id` of the entity representing a {@link WP_User}.
 	 *
-	 * @since 3.14.0
-	 *
 	 * @param int $user_id The {@link WP_User}'s `id`.
 	 *
 	 * @return string|false The entity {@link WP_Post} `id` or an empty string if not set or false if the object id is invalid
+	 * @since 3.14.0
+	 *
 	 */
 	public function get_entity( $user_id ) {
 
@@ -170,11 +173,11 @@ class Wordlift_User_Service {
 	/**
 	 * Get the user's URI stored in the user's meta.
 	 *
-	 * @since 3.1.7
-	 *
 	 * @param int $user_id The user id.
 	 *
 	 * @return false|string The user's URI or false if not found.
+	 * @since 3.1.7
+	 *
 	 */
 	private function _get_uri( $user_id ) {
 
@@ -190,11 +193,11 @@ class Wordlift_User_Service {
 	/**
 	 * Build an URI for a user.
 	 *
-	 * @since 3.1.7
-	 *
 	 * @param int $user_id The user's id.
 	 *
 	 * @return false|string The user's URI or false in case of failure.
+	 * @since 3.1.7
+	 *
 	 */
 	private function _build_uri( $user_id ) {
 
@@ -208,18 +211,22 @@ class Wordlift_User_Service {
 			return false;
 		}
 
-		return wl_configuration_get_redlink_dataset_uri() . "/user/$user->user_nicename";
+		/**
+		 * @since 3.27.7 changed `user` to `author` to avoid potential clashes with CPTs ( `author` is reserved
+		 *  https://developer.wordpress.org/reference/functions/register_post_type/#reserved-post-types )
+		 */
+		return wl_configuration_get_redlink_dataset_uri() . "/author/$user->user_nicename";
 	}
 
 	/**
 	 * Store the URI in user's meta.
 	 *
-	 * @since 3.1.7
-	 *
-	 * @param int    $user_id The user's id.
+	 * @param int $user_id The user's id.
 	 * @param string $user_uri The user's uri.
 	 *
 	 * @return int|bool Meta ID if the key didn't exist, true on successful update, false on failure.
+	 * @since 3.1.7
+	 *
 	 */
 	private function _set_uri( $user_id, $user_uri ) {
 
@@ -230,9 +237,10 @@ class Wordlift_User_Service {
 	 * Mark an editor user as denied from editing entities.
 	 * Does nothing if the user is not an editor
 	 *
+	 * @param integer $user_id The ID of the user
+	 *
 	 * @since 3.14.0
 	 *
-	 * @param integer $user_id The ID of the user
 	 */
 	public function deny_editor_entity_create( $user_id ) {
 
@@ -250,9 +258,10 @@ class Wordlift_User_Service {
 	 * Remove the "deny entity editing" mark from an editor user.
 	 * Does nothing if the user is not an editor
 	 *
+	 * @param integer $user_id The ID of the user
+	 *
 	 * @since 3.14.0
 	 *
-	 * @param integer $user_id The ID of the user
 	 */
 	public function allow_editor_entity_create( $user_id ) {
 
@@ -269,11 +278,11 @@ class Wordlift_User_Service {
 	/**
 	 * Get whether the 'deny editor entity editing' flag is set.
 	 *
-	 * @since 3.14.0
-	 *
 	 * @param int $user_id The {@link WP_User} `id`.
 	 *
 	 * @return int bool True if editing is denied otherwise false.
+	 * @since 3.14.0
+	 *
 	 */
 	public function is_deny_editor_entity_create( $user_id ) {
 
@@ -284,11 +293,11 @@ class Wordlift_User_Service {
 	 * Check whether the {@link WP_User} with the specified `id` is an editor,
 	 * i.e. has the `editor` role.
 	 *
-	 * @since 3.14.0
-	 *
 	 * @param int $user_id The {@link WP_User} `id`.
 	 *
 	 * @return bool True if the {@link WP_User} is an editor otherwise false.
+	 * @since 3.14.0
+	 *
 	 */
 	public function is_editor( $user_id ) {
 
@@ -302,11 +311,11 @@ class Wordlift_User_Service {
 	/**
 	 * Check if an editor can create entities.
 	 *
-	 * @since 3.14.0
-	 *
 	 * @param int $user_id The user id of the user being checked.
 	 *
 	 * @return bool    false if it is an editor that is denied from edit entities, true otherwise.
+	 * @since 3.14.0
+	 *
 	 */
 	public function editor_can_create_entities( $user_id ) {
 
@@ -324,8 +333,6 @@ class Wordlift_User_Service {
 	 *
 	 * Deny the capability of managing and editing entities for some users.
 	 *
-	 * @since 3.14.0
-	 *
 	 * @param array $allcaps All the capabilities of the user
 	 * @param array $cap [0] Required capability
 	 * @param array $args [0] Requested capability
@@ -333,6 +340,8 @@ class Wordlift_User_Service {
 	 *                       [2] Associated object ID
 	 *
 	 * @return array The capabilities array.
+	 * @since 3.14.0
+	 *
 	 */
 	public function has_cap( $allcaps, $cap, $args ) {
 		/*
@@ -375,16 +384,16 @@ class Wordlift_User_Service {
 	 * Hook on update user meta to check if the user author has changed.
 	 * If so we need to execute sparql query that will update all user posts author triple.
 	 *
-	 * @since   3.18.0
-	 *
-	 * @param   null   $null
-	 * @param   int    $object_id The user ID.
-	 * @param   string $meta_key The meta key name.
-	 * @param   mixed  $meta_value Meta value.
-	 * @param   mixed  $prev_value The previous metadata value.
+	 * @param null $null
+	 * @param int $object_id The user ID.
+	 * @param string $meta_key The meta key name.
+	 * @param mixed $meta_value Meta value.
+	 * @param mixed $prev_value The previous metadata value.
 	 *
 	 * @return  null Null if the `meta_key` is not `Wordlift_User_Service::ENTITY_META_KEY`
 	 *                or if the author has not changed.
+	 * @since   3.18.0
+	 *
 	 */
 	public function update_user_metadata( $null, $object_id, $meta_key, $meta_value, $prev_value ) {
 		// Bail if the meta key is not the author meta.
@@ -422,17 +431,17 @@ class Wordlift_User_Service {
 	 * Hook on delete user meta to execute sparql query
 	 * that will update all user posts author triple.
 	 *
-	 * @since   3.18.0
-	 *
-	 * @param   null   $null
-	 * @param   int    $object_id The user ID.
-	 * @param   string $meta_key The meta key name.
-	 * @param   mixed  $meta_value Meta value.
-	 * @param   bool   $delete_all Whether to delete the matching metadata entries
+	 * @param null $null
+	 * @param int $object_id The user ID.
+	 * @param string $meta_key The meta key name.
+	 * @param mixed $meta_value Meta value.
+	 * @param bool $delete_all Whether to delete the matching metadata entries
 	 *                              for all objects.
 	 *
 	 * @return  null Null if the `meta_key` is not `Wordlift_User_Service::ENTITY_META_KEY`
 	 *               or if the author has not changed.
+	 * @since   3.18.0
+	 *
 	 */
 	public function delete_user_metadata( $null, $object_id, $meta_key, $meta_value, $delete_all ) {
 		// Bail if the meta key is not the author meta.
@@ -462,10 +471,11 @@ class Wordlift_User_Service {
 	/**
 	 * Update the schema:author when the user author is changed.
 	 *
+	 * @param string $old_uri The old uri to remove.
+	 * @param string $new_uri The new uri to add.
+	 *
 	 * @since   3.18.0
 	 *
-	 * @param   string $old_uri The old uri to remove.
-	 * @param   string $new_uri The new uri to add.
 	 */
 	private function update_author( $old_uri, $new_uri ) {
 		// Bail in case one of the uris is empty.

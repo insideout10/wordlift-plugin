@@ -167,6 +167,9 @@ class Wordlift_Timeline_Service {
 					'terms'    => 'event',
 				),
 			),
+			'orderby'        => 'meta_value',
+			'order'          => 'DESC',
+			'meta_key'       => Wordlift_Schema_Service::FIELD_DATE_START,
 		);
 
 		return get_posts( $args );

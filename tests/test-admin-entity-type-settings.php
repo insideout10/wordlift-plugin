@@ -13,6 +13,7 @@
  * @since      3.11.0
  * @package    Wordlift
  * @subpackage Wordlift/tests
+ * @group admin
  */
 class Test_Wordlift_Admin_Entity_Type_Settings_Service extends Wordlift_Unit_Test_Case {
 
