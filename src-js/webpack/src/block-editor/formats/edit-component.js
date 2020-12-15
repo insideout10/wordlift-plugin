@@ -28,8 +28,7 @@ import { Fragment } from "@wordpress/element";
 /**
  * Internal dependencies
  */
-import { ANNOTATION_CHANGED, SELECTION_CHANGED } from "../../common/constants";
-import { WORDLIFT_STORE } from "../../common/constants";
+import { ANNOTATION_CHANGED, SELECTION_CHANGED, WORDLIFT_STORE } from "../../common/constants";
 
 // Keeps the window timeout reference to delay sending events while the user
 // is performing the selection.
@@ -60,19 +59,21 @@ const EditComponent = ({ onChange, value, isActive, activeAttributes, onSelectio
       trigger(SELECTION_CHANGED, { selection, value, onChange });
     }, 200);
 
-    // Send the annotation change event.
-    const payload =
-      "undefined" !== typeof isActive &&
-      "undefined" !== typeof activeAttributes &&
-      "undefined" !== typeof activeAttributes.id
-        ? activeAttributes.id
-        : undefined;
-    trigger(ANNOTATION_CHANGED, payload);
+    setTimeout(() => {
+      // Send the annotation change event.
+      const payload =
+        "undefined" !== typeof isActive &&
+        "undefined" !== typeof activeAttributes &&
+        "undefined" !== typeof activeAttributes.id
+          ? activeAttributes.id
+          : undefined;
+      trigger(ANNOTATION_CHANGED, payload);
+    }, 10);
   } else {
     console.log(`EditComponent ignored ${selectedBlockName} block`);
   }
 
-  return <Fragment />;
+  return <Fragment/>;
 };
 
 /**
