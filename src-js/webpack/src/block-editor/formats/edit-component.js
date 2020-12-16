@@ -35,6 +35,8 @@ import { ANNOTATION_CHANGED, SELECTION_CHANGED, WORDLIFT_STORE } from "../../com
 let delay;
 
 const ignoredBlockNames = ["core/gallery"];
+let lastSelection = "";
+let lastPayload = undefined;
 
 /**
  * The EditComponent.
@@ -54,6 +56,9 @@ const EditComponent = ({ onChange, value, isActive, activeAttributes, onSelectio
     if (delay) clearTimeout(delay);
     delay = setTimeout(() => {
       const selection = value.text.substring(value.start, value.end);
+      // Check to break recursion
+      if (lastSelection === selection) return;
+      lastSelection = selection;
       onSelectionChange(selection);
       setFormat({ onChange, value });
       trigger(SELECTION_CHANGED, { selection, value, onChange });
@@ -67,13 +72,16 @@ const EditComponent = ({ onChange, value, isActive, activeAttributes, onSelectio
         "undefined" !== typeof activeAttributes.id
           ? activeAttributes.id
           : undefined;
+      // Check to break recursion
+      if (lastPayload === payload) return;
+      lastPayload = payload;
       trigger(ANNOTATION_CHANGED, payload);
     }, 10);
   } else {
     console.log(`EditComponent ignored ${selectedBlockName} block`);
   }
 
-  return <Fragment/>;
+  return <Fragment />;
 };
 
 /**
