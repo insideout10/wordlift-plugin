@@ -23,6 +23,10 @@ class Test_Dataset_Ng_User_Hooks extends Wordlift_Unit_Test_Case {
 			$this->markTestSkipped( '`WL_FEATURES__DATASET_NG` not enabled.' );
 		}
 
+		// Remove the global filters, since we're going to call `shutdown`, we don't want that to have side effects.
+		global $wp_filter;
+		$wp_filter = array();
+
 		$this->sync_service_mock = $this->getMockBuilder( 'Wordlift\Dataset\Sync_Service' )
 		                                ->disableOriginalConstructor()
 		                                ->getMock();
@@ -37,7 +41,7 @@ class Test_Dataset_Ng_User_Hooks extends Wordlift_Unit_Test_Case {
 		                        ->willReturn( true );
 
 		// 5 times = 1 user & 4 meta created.
-		$this->sync_service_mock->expects( $this->exactly( 5 ) )
+		$this->sync_service_mock->expects( $this->exactly( 1 ) )
 		                        ->method( 'sync_one' )
 		                        ->with(
 			                        $this->equalTo( Object_Type_Enum::USER ),
@@ -45,6 +49,8 @@ class Test_Dataset_Ng_User_Hooks extends Wordlift_Unit_Test_Case {
 		                        );
 
 		$this->factory()->user->create();
+
+		do_action('shutdown');
 
 	}
 
@@ -54,7 +60,7 @@ class Test_Dataset_Ng_User_Hooks extends Wordlift_Unit_Test_Case {
 		                        ->willReturn( true );
 
 		// 6 times = 1 user & 4 meta created + 1 user meta created + 1 user meta deleted.
-		$this->sync_service_mock->expects( $this->exactly( 6 ) )
+		$this->sync_service_mock->expects( $this->exactly( 1 ) )
 		                        ->method( 'sync_one' )
 		                        ->with(
 			                        $this->equalTo( Object_Type_Enum::USER ),
@@ -63,7 +69,7 @@ class Test_Dataset_Ng_User_Hooks extends Wordlift_Unit_Test_Case {
 
 		$user_id = $this->factory()->user->create();
 		add_user_meta( $user_id, '_tmp_test_added_user_meta', 'tmp' );
-
+		do_action('shutdown');
 	}
 
 	function test_updated_user_meta() {
@@ -72,7 +78,7 @@ class Test_Dataset_Ng_User_Hooks extends Wordlift_Unit_Test_Case {
 		                        ->willReturn( true );
 
 		// 7 times = 1 user & 4 meta created + 1 user meta created + 1 user meta updated.
-		$this->sync_service_mock->expects( $this->exactly( 7 ) )
+		$this->sync_service_mock->expects( $this->exactly( 1 ) )
 		                        ->method( 'sync_one' )
 		                        ->with(
 			                        $this->equalTo( Object_Type_Enum::USER ),
@@ -82,7 +88,7 @@ class Test_Dataset_Ng_User_Hooks extends Wordlift_Unit_Test_Case {
 		$user_id = $this->factory()->user->create();
 		add_user_meta( $user_id, '_tmp_test_added_user_meta', 'tmp_1' );
 		update_user_meta( $user_id, '_tmp_test_added_user_meta', 'tmp_2' );
-
+		do_action('shutdown');
 	}
 
 	function test_deleted_user_meta() {
@@ -91,7 +97,7 @@ class Test_Dataset_Ng_User_Hooks extends Wordlift_Unit_Test_Case {
 		                        ->willReturn( true );
 
 		// 7 times = 1 user & 4 meta created + 1 user meta created + 1 user meta deleted.
-		$this->sync_service_mock->expects( $this->exactly( 7 ) )
+		$this->sync_service_mock->expects( $this->exactly( 1 ) )
 		                        ->method( 'sync_one' )
 		                        ->with(
 			                        $this->equalTo( Object_Type_Enum::USER ),
@@ -101,7 +107,7 @@ class Test_Dataset_Ng_User_Hooks extends Wordlift_Unit_Test_Case {
 		$user_id = $this->factory()->user->create();
 		add_user_meta( $user_id, '_tmp_test_added_user_meta', 'tmp_1' );
 		delete_user_meta( $user_id, '_tmp_test_added_user_meta' );
-
+		do_action('shutdown');
 	}
 
 	function test_ignored_meta() {
@@ -110,7 +116,7 @@ class Test_Dataset_Ng_User_Hooks extends Wordlift_Unit_Test_Case {
 		                        ->willReturn( true );
 
 		// 5 times = 1 user & 4 meta created.
-		$this->sync_service_mock->expects( $this->exactly( 5 ) )
+		$this->sync_service_mock->expects( $this->exactly( 1 ) )
 		                        ->method( 'sync_one' )
 		                        ->with(
 			                        $this->equalTo( Object_Type_Enum::USER ),
@@ -126,7 +132,7 @@ class Test_Dataset_Ng_User_Hooks extends Wordlift_Unit_Test_Case {
 		$user_id = $this->factory()->user->create();
 		add_user_meta( $user_id, 'entity_url', 'tmp' );
 		add_user_meta( $user_id, '_my_custom_field', 'tmp' );
-
+		do_action('shutdown');
 	}
 
 	function test_create_and_delete_user() {
@@ -138,7 +144,7 @@ class Test_Dataset_Ng_User_Hooks extends Wordlift_Unit_Test_Case {
 		                        ->willReturn( true );
 
 		// 9 times = 1 user created & 4 meta created + 4 times meta deleted.
-		$this->sync_service_mock->expects( $this->exactly( 9 ) )
+		$this->sync_service_mock->expects( $this->exactly( 2 ) )
 		                        ->method( 'sync_one' )
 		                        ->with(
 			                        $this->equalTo( Object_Type_Enum::USER ),
@@ -155,7 +161,7 @@ class Test_Dataset_Ng_User_Hooks extends Wordlift_Unit_Test_Case {
 		$user_id = $this->factory()->user->create();
 
 		wp_delete_user( $user_id );
-
+		do_action('shutdown');
 	}
 
 }

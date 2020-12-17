@@ -516,7 +516,14 @@ class Wordlift_Configuration_Service {
 		       . '&language=' . $this->get_language_code();
 
 		$api_service = Default_Api_Service::get_instance();
-		$response    = $api_service->request( 'PUT', $url )->get_response();
+		/**
+		 * @since 3.27.7.1
+		 * The Key should be passed to headers, otherwise api would return null.
+		 */
+		$headers     = array(
+			'Authorization' => "Key $key",
+		);
+		$response    = $api_service->request( 'PUT', $url, $headers )->get_response();
 
 		// The response is an error.
 		if ( is_wp_error( $response ) ) {
@@ -550,7 +557,7 @@ class Wordlift_Configuration_Service {
 		 *
 		 * @since 3.20.0
 		 */
-		$json         = json_decode( $response['body'] );
+		$json = json_decode( $response['body'] );
 		/**
 		 * @since 3.27.7
 		 * Remove the trailing slash returned from the new platform api.
