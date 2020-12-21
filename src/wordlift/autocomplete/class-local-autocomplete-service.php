@@ -32,6 +32,7 @@ class Local_Autocomplete_Service extends Abstract_Autocomplete_Service {
 			. " LEFT OUTER JOIN {$wpdb->postmeta} pm"
 			. "  ON pm.meta_key = %s AND pm.post_id = p.ID"
 			. " WHERE p.post_type IN ( '" . implode( "', '", array_map( 'esc_sql', Wordlift_Entity_Service::valid_entity_post_types() ) ) . "' )"
+			. "  AND p.post_status IN ( 'publish', 'draft', 'private', 'future' ) "
 			. "  AND ( p.post_title LIKE %s OR pm.meta_value LIKE %s )"
 			. " LIMIT %d",
 			Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,

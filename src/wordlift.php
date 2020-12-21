@@ -301,7 +301,7 @@ function wl_replace_item_id_with_uri( $content ) {
 			// wl_write_log( "wl_replace_item_id_with_uri [ item id :: $item_id ][ uri :: $uri ]" );
 
 			// If the item ID and the URI differ, replace the item ID with the URI saved in WordPress.
-			if ( $item_id !== $uri ) {
+			if ( ! empty( $uri ) && $item_id !== $uri ) {
 				$uri_e   = esc_html( $uri );
 				$content = str_replace( " itemid=\"$item_id\"", " itemid=\"$uri_e\"", $content );
 			}
