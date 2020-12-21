@@ -54,8 +54,9 @@ class Jsonld_User_Service {
 
 		// Finally return the user's JSON-LD.
 		$data = array(
-			'@id'   => $uri,
-			'@type' => 'Person',
+			'@context' => 'http://schema.org',
+			'@id'      => $uri,
+			'@type'    => 'Person',
 		);
 
 		if ( ! empty( $userdata->display_name ) ) {
