@@ -1,8 +1,8 @@
 {
   "ae": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2784,
       "loc_id_parent": null,
@@ -27,8 +27,8 @@
   },
   "ai": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2660,
       "loc_id_parent": null,
@@ -53,8 +53,8 @@
   },
   "am": {
     "supportedLang": [
-        "hy"
-      ],
+      "hy"
+    ],
     "defaultLoc": {
       "loc_id": 2051,
       "loc_id_parent": null,
@@ -79,8 +79,8 @@
   },
   "ar": {
     "supportedLang": [
-        "es"
-      ],
+      "es"
+    ],
     "defaultLoc": {
       "loc_id": 2032,
       "loc_id_parent": null,
@@ -105,8 +105,8 @@
   },
   "as": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2016,
       "loc_id_parent": null,
@@ -131,8 +131,8 @@
   },
   "at": {
     "supportedLang": [
-        "de"
-      ],
+      "de"
+    ],
     "defaultLoc": {
       "loc_id": 2040,
       "loc_id_parent": null,
@@ -157,8 +157,8 @@
   },
   "au": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2036,
       "loc_id_parent": null,
@@ -183,8 +183,8 @@
   },
   "az": {
     "supportedLang": [
-        "az"
-      ],
+      "az"
+    ],
     "defaultLoc": {
       "loc_id": 2031,
       "loc_id_parent": null,
@@ -209,8 +209,8 @@
   },
   "ba": {
     "supportedLang": [
-        "bs"
-      ],
+      "bs"
+    ],
     "defaultLoc": {
       "loc_id": 2070,
       "loc_id_parent": null,
@@ -235,8 +235,8 @@
   },
   "bd": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2050,
       "loc_id_parent": null,
@@ -261,8 +261,8 @@
   },
   "be": {
     "supportedLang": [
-        "nl",
-        "fr",
+      "nl",
+      "fr",
       "en"
     ],
     "defaultLoc": {
@@ -305,8 +305,8 @@
   },
   "bg": {
     "supportedLang": [
-        "bg"
-      ],
+      "bg"
+    ],
     "defaultLoc": {
       "loc_id": 2100,
       "loc_id_parent": null,
@@ -331,8 +331,8 @@
   },
   "bh": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2048,
       "loc_id_parent": null,
@@ -357,8 +357,8 @@
   },
   "bn": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2096,
       "loc_id_parent": null,
@@ -383,8 +383,8 @@
   },
   "bo": {
     "supportedLang": [
-        "es"
-      ],
+      "es"
+    ],
     "defaultLoc": {
       "loc_id": 2068,
       "loc_id_parent": null,
@@ -409,8 +409,8 @@
   },
   "br": {
     "supportedLang": [
-        "pt"
-      ],
+      "pt"
+    ],
     "defaultLoc": {
       "loc_id": 2076,
       "loc_id_parent": null,
@@ -435,8 +435,8 @@
   },
   "ca": {
     "supportedLang": [
-        "en",
-        "fr"
+      "en",
+      "fr"
     ],
     "defaultLoc": {
       "loc_id": 2124,
@@ -470,8 +470,8 @@
   },
   "cd": {
     "supportedLang": [
-        "fr"
-      ],
+      "fr"
+    ],
     "defaultLoc": {
       "loc_id": 2180,
       "loc_id_parent": null,
@@ -549,8 +549,8 @@
   },
   "ci": {
     "supportedLang": [
-        "fr"
-      ],
+      "fr"
+    ],
     "defaultLoc": {
       "loc_id": 2384,
       "loc_id_parent": null,
@@ -575,8 +575,8 @@
   },
   "cl": {
     "supportedLang": [
-        "es"
-      ],
+      "es"
+    ],
     "defaultLoc": {
       "loc_id": 2152,
       "loc_id_parent": null,
@@ -601,8 +601,8 @@
   },
   "cn": {
     "supportedLang": [
-        "zh-CN"
-      ],
+      "zh-CN"
+    ],
     "defaultLoc": {
       "loc_id": 2156,
       "loc_id_parent": null,
@@ -627,8 +627,8 @@
   },
   "co": {
     "supportedLang": [
-        "es"
-      ],
+      "es"
+    ],
     "defaultLoc": {
       "loc_id": 2170,
       "loc_id_parent": null,
@@ -653,8 +653,8 @@
   },
   "cr": {
     "supportedLang": [
-        "es"
-      ],
+      "es"
+    ],
     "defaultLoc": {
       "loc_id": 2188,
       "loc_id_parent": null,
@@ -723,8 +723,8 @@
   },
   "cz": {
     "supportedLang": [
-        "cs"
-      ],
+      "cs"
+    ],
     "defaultLoc": {
       "loc_id": 2203,
       "loc_id_parent": null,
@@ -749,8 +749,8 @@
   },
   "de": {
     "supportedLang": [
-        "de"
-      ],
+      "de"
+    ],
     "defaultLoc": {
       "loc_id": 2276,
       "loc_id_parent": null,
@@ -775,8 +775,8 @@
   },
   "dj": {
     "supportedLang": [
-        "fr"
-      ],
+      "fr"
+    ],
     "defaultLoc": {
       "loc_id": 2262,
       "loc_id_parent": null,
@@ -801,8 +801,8 @@
   },
   "dk": {
     "supportedLang": [
-        "da"
-      ],
+      "da"
+    ],
     "defaultLoc": {
       "loc_id": 2208,
       "loc_id_parent": null,
@@ -827,8 +827,8 @@
   },
   "do": {
     "supportedLang": [
-        "es"
-      ],
+      "es"
+    ],
     "defaultLoc": {
       "loc_id": 2214,
       "loc_id_parent": null,
@@ -853,8 +853,8 @@
   },
   "ec": {
     "supportedLang": [
-        "es"
-      ],
+      "es"
+    ],
     "defaultLoc": {
       "loc_id": 2218,
       "loc_id_parent": null,
@@ -879,8 +879,8 @@
   },
   "ee": {
     "supportedLang": [
-        "et",
-        "ru"
+      "et",
+      "ru"
     ],
     "defaultLoc": {
       "loc_id": 2233,
@@ -914,8 +914,8 @@
   },
   "eg": {
     "supportedLang": [
-        "ar",
-        "en"
+      "ar",
+      "en"
     ],
     "defaultLoc": {
       "loc_id": 2818,
@@ -949,8 +949,8 @@
   },
   "es": {
     "supportedLang": [
-        "es"
-      ],
+      "es"
+    ],
     "defaultLoc": {
       "loc_id": 2724,
       "loc_id_parent": null,
@@ -1037,8 +1037,8 @@
   },
   "fi": {
     "supportedLang": [
-        "fi"
-      ],
+      "fi"
+    ],
     "defaultLoc": {
       "loc_id": 2246,
       "loc_id_parent": null,
@@ -1063,8 +1063,8 @@
   },
   "fr": {
     "supportedLang": [
-        "fr"
-      ],
+      "fr"
+    ],
     "defaultLoc": {
       "loc_id": 2250,
       "loc_id_parent": null,
@@ -1089,8 +1089,8 @@
   },
   "ge": {
     "supportedLang": [
-        "ka",
-        "en"
+      "ka",
+      "en"
     ],
     "defaultLoc": {
       "loc_id": 2268,
@@ -1124,8 +1124,8 @@
   },
   "gh": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2288,
       "loc_id_parent": null,
@@ -1150,8 +1150,8 @@
   },
   "gi": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2292,
       "loc_id_parent": null,
@@ -1176,8 +1176,8 @@
   },
   "gm": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2270,
       "loc_id_parent": null,
@@ -1202,8 +1202,8 @@
   },
   "gp": {
     "supportedLang": [
-        "fr"
-      ],
+      "fr"
+    ],
     "defaultLoc": {
       "loc_id": 2312,
       "loc_id_parent": null,
@@ -1228,8 +1228,8 @@
   },
   "gr": {
     "supportedLang": [
-        "el"
-      ],
+      "el"
+    ],
     "defaultLoc": {
       "loc_id": 2300,
       "loc_id_parent": null,
@@ -1254,8 +1254,8 @@
   },
   "gt": {
     "supportedLang": [
-        "es"
-      ],
+      "es"
+    ],
     "defaultLoc": {
       "loc_id": 2320,
       "loc_id_parent": null,
@@ -1333,8 +1333,8 @@
   },
   "hn": {
     "supportedLang": [
-        "es"
-      ],
+      "es"
+    ],
     "defaultLoc": {
       "loc_id": 2340,
       "loc_id_parent": null,
@@ -1359,8 +1359,8 @@
   },
   "hr": {
     "supportedLang": [
-        "hr"
-      ],
+      "hr"
+    ],
     "defaultLoc": {
       "loc_id": 2191,
       "loc_id_parent": null,
@@ -1385,8 +1385,8 @@
   },
   "ht": {
     "supportedLang": [
-        "fr"
-      ],
+      "fr"
+    ],
     "defaultLoc": {
       "loc_id": 2332,
       "loc_id_parent": null,
@@ -1411,8 +1411,8 @@
   },
   "hu": {
     "supportedLang": [
-        "hu"
-      ],
+      "hu"
+    ],
     "defaultLoc": {
       "loc_id": 2348,
       "loc_id_parent": null,
@@ -1437,8 +1437,8 @@
   },
   "id": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2360,
       "loc_id_parent": null,
@@ -1463,8 +1463,8 @@
   },
   "ie": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2372,
       "loc_id_parent": null,
@@ -1489,8 +1489,9 @@
   },
   "il": {
     "supportedLang": [
-        "iw"
-      ],
+      "iw",
+      "hw"
+    ],
     "defaultLoc": {
       "loc_id": 2376,
       "loc_id_parent": null,
@@ -1568,8 +1569,8 @@
   },
   "is": {
     "supportedLang": [
-        "is",
-        "en"
+      "is",
+      "en"
     ],
     "defaultLoc": {
       "loc_id": 2352,
@@ -1603,8 +1604,8 @@
   },
   "it": {
     "supportedLang": [
-        "it"
-      ],
+      "it"
+    ],
     "defaultLoc": {
       "loc_id": 2380,
       "loc_id_parent": null,
@@ -1629,8 +1630,8 @@
   },
   "je": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2832,
       "loc_id_parent": null,
@@ -1655,8 +1656,8 @@
   },
   "jm": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2388,
       "loc_id_parent": null,
@@ -1681,8 +1682,8 @@
   },
   "jo": {
     "supportedLang": [
-        "en",
-        "ar"
+      "en",
+      "ar"
     ],
     "defaultLoc": {
       "loc_id": 2400,
@@ -1716,8 +1717,8 @@
   },
   "jp": {
     "supportedLang": [
-        "ja",
-        "en"
+      "ja",
+      "en"
     ],
     "defaultLoc": {
       "loc_id": 2392,
@@ -1751,8 +1752,8 @@
   },
   "ke": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2404,
       "loc_id_parent": null,
@@ -1777,8 +1778,8 @@
   },
   "kh": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2116,
       "loc_id_parent": null,
@@ -1803,8 +1804,8 @@
   },
   "kr": {
     "supportedLang": [
-        "ko",
-        "en"
+      "ko",
+      "en"
     ],
     "defaultLoc": {
       "loc_id": 2410,
@@ -1838,8 +1839,8 @@
   },
   "kz": {
     "supportedLang": [
-        "kk",
-        "ru"
+      "kk",
+      "ru"
     ],
     "defaultLoc": {
       "loc_id": 2398,
@@ -1873,8 +1874,8 @@
   },
   "li": {
     "supportedLang": [
-        "de"
-      ],
+      "de"
+    ],
     "defaultLoc": {
       "loc_id": 2438,
       "loc_id_parent": null,
@@ -1899,8 +1900,8 @@
   },
   "lk": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2144,
       "loc_id_parent": null,
@@ -1925,8 +1926,8 @@
   },
   "lt": {
     "supportedLang": [
-        "lt"
-      ],
+      "lt"
+    ],
     "defaultLoc": {
       "loc_id": 2440,
       "loc_id_parent": null,
@@ -1951,8 +1952,8 @@
   },
   "lu": {
     "supportedLang": [
-        "de",
-        "fr"
+      "de",
+      "fr"
     ],
     "defaultLoc": {
       "loc_id": 2442,
@@ -1986,8 +1987,8 @@
   },
   "lv": {
     "supportedLang": [
-        "lv"
-      ],
+      "lv"
+    ],
     "defaultLoc": {
       "loc_id": 2428,
       "loc_id_parent": null,
@@ -2012,8 +2013,8 @@
   },
   "ly": {
     "supportedLang": [
-        "ar"
-      ],
+      "ar"
+    ],
     "defaultLoc": {
       "loc_id": 2434,
       "loc_id_parent": null,
@@ -2038,8 +2039,8 @@
   },
   "ma": {
     "supportedLang": [
-        "fr",
-        "ar"
+      "fr",
+      "ar"
     ],
     "defaultLoc": {
       "loc_id": 2504,
@@ -2073,8 +2074,8 @@
   },
   "md": {
     "supportedLang": [
-        "mo"
-      ],
+      "mo"
+    ],
     "defaultLoc": {
       "loc_id": 2498,
       "loc_id_parent": null,
@@ -2099,8 +2100,8 @@
   },
   "mn": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2496,
       "loc_id_parent": null,
@@ -2125,8 +2126,8 @@
   },
   "mt": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2470,
       "loc_id_parent": null,
@@ -2151,8 +2152,8 @@
   },
   "mu": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2480,
       "loc_id_parent": null,
@@ -2177,8 +2178,8 @@
   },
   "mx": {
     "supportedLang": [
-        "es"
-      ],
+      "es"
+    ],
     "defaultLoc": {
       "loc_id": 2484,
       "loc_id_parent": null,
@@ -2203,8 +2204,8 @@
   },
   "my": {
     "supportedLang": [
-        "en",
-        "ms"
+      "en",
+      "ms"
     ],
     "defaultLoc": {
       "loc_id": 2458,
@@ -2238,8 +2239,8 @@
   },
   "na": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2516,
       "loc_id_parent": null,
@@ -2264,8 +2265,8 @@
   },
   "nc": {
     "supportedLang": [
-        "fr"
-      ],
+      "fr"
+    ],
     "defaultLoc": {
       "loc_id": 2540,
       "loc_id_parent": null,
@@ -2290,8 +2291,8 @@
   },
   "ng": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2566,
       "loc_id_parent": null,
@@ -2316,8 +2317,8 @@
   },
   "ni": {
     "supportedLang": [
-        "es"
-      ],
+      "es"
+    ],
     "defaultLoc": {
       "loc_id": 2558,
       "loc_id_parent": null,
@@ -2342,8 +2343,8 @@
   },
   "nl": {
     "supportedLang": [
-        "nl"
-      ],
+      "nl"
+    ],
     "defaultLoc": {
       "loc_id": 2528,
       "loc_id_parent": null,
@@ -2368,8 +2369,8 @@
   },
   "no": {
     "supportedLang": [
-        "no"
-      ],
+      "no"
+    ],
     "defaultLoc": {
       "loc_id": 2578,
       "loc_id_parent": null,
@@ -2394,8 +2395,8 @@
   },
   "nu": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2570,
       "loc_id_parent": null,
@@ -2420,8 +2421,8 @@
   },
   "nz": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2554,
       "loc_id_parent": null,
@@ -2446,8 +2447,8 @@
   },
   "om": {
     "supportedLang": [
-        "ar",
-        "en"
+      "ar",
+      "en"
     ],
     "defaultLoc": {
       "loc_id": 2512,
@@ -2481,8 +2482,8 @@
   },
   "pa": {
     "supportedLang": [
-        "es"
-      ],
+      "es"
+    ],
     "defaultLoc": {
       "loc_id": 2591,
       "loc_id_parent": null,
@@ -2507,8 +2508,8 @@
   },
   "pe": {
     "supportedLang": [
-        "es",
-        "qu"
+      "es",
+      "qu"
     ],
     "defaultLoc": {
       "loc_id": 2604,
@@ -2542,8 +2543,8 @@
   },
   "ph": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2608,
       "loc_id_parent": null,
@@ -2568,8 +2569,8 @@
   },
   "pl": {
     "supportedLang": [
-        "pl"
-      ],
+      "pl"
+    ],
     "defaultLoc": {
       "loc_id": 2616,
       "loc_id_parent": null,
@@ -2594,8 +2595,8 @@
   },
   "pr": {
     "supportedLang": [
-        "es",
-        "en"
+      "es",
+      "en"
     ],
     "defaultLoc": {
       "loc_id": 2630,
@@ -2629,8 +2630,8 @@
   },
   "pt": {
     "supportedLang": [
-        "pt"
-      ],
+      "pt"
+    ],
     "defaultLoc": {
       "loc_id": 2620,
       "loc_id_parent": null,
@@ -2655,8 +2656,8 @@
   },
   "py": {
     "supportedLang": [
-        "es"
-      ],
+      "es"
+    ],
     "defaultLoc": {
       "loc_id": 2600,
       "loc_id_parent": null,
@@ -2681,8 +2682,8 @@
   },
   "qa": {
     "supportedLang": [
-        "ar",
-        "en"
+      "ar",
+      "en"
     ],
     "defaultLoc": {
       "loc_id": 2634,
@@ -2716,8 +2717,8 @@
   },
   "ro": {
     "supportedLang": [
-        "ro",
-        "hu"
+      "ro",
+      "hu"
     ],
     "defaultLoc": {
       "loc_id": 2642,
@@ -2751,8 +2752,8 @@
   },
   "rs": {
     "supportedLang": [
-        "sr"
-      ],
+      "sr"
+    ],
     "defaultLoc": {
       "loc_id": 2688,
       "loc_id_parent": null,
@@ -2777,8 +2778,8 @@
   },
   "ru": {
     "supportedLang": [
-        "ru"
-      ],
+      "ru"
+    ],
     "defaultLoc": {
       "loc_id": 2643,
       "loc_id_parent": null,
@@ -2803,8 +2804,8 @@
   },
   "rw": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2646,
       "loc_id_parent": null,
@@ -2829,8 +2830,8 @@
   },
   "sa": {
     "supportedLang": [
-        "ar",
-        "en"
+      "ar",
+      "en"
     ],
     "defaultLoc": {
       "loc_id": 2682,
@@ -2864,8 +2865,8 @@
   },
   "se": {
     "supportedLang": [
-        "sv"
-      ],
+      "sv"
+    ],
     "defaultLoc": {
       "loc_id": 2752,
       "loc_id_parent": null,
@@ -2890,8 +2891,8 @@
   },
   "sg": {
     "supportedLang": [
-        "en",
-        "ms",
+      "en",
+      "ms",
       "zh-CN"
     ],
     "defaultLoc": {
@@ -2934,8 +2935,8 @@
   },
   "si": {
     "supportedLang": [
-        "sl",
-        "en"
+      "sl",
+      "en"
     ],
     "defaultLoc": {
       "loc_id": 2705,
@@ -2969,8 +2970,8 @@
   },
   "sk": {
     "supportedLang": [
-        "sk"
-      ],
+      "sk"
+    ],
     "defaultLoc": {
       "loc_id": 2703,
       "loc_id_parent": null,
@@ -2995,8 +2996,8 @@
   },
   "sm": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2674,
       "loc_id_parent": null,
@@ -3021,8 +3022,8 @@
   },
   "sn": {
     "supportedLang": [
-        "fr"
-      ],
+      "fr"
+    ],
     "defaultLoc": {
       "loc_id": 2686,
       "loc_id_parent": null,
@@ -3047,8 +3048,8 @@
   },
   "sv": {
     "supportedLang": [
-        "es"
-      ],
+      "es"
+    ],
     "defaultLoc": {
       "loc_id": 2222,
       "loc_id_parent": null,
@@ -3073,8 +3074,8 @@
   },
   "th": {
     "supportedLang": [
-        "en",
-        "th"
+      "en",
+      "th"
     ],
     "defaultLoc": {
       "loc_id": 2764,
@@ -3108,8 +3109,8 @@
   },
   "to": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2776,
       "loc_id_parent": null,
@@ -3134,8 +3135,8 @@
   },
   "tr": {
     "supportedLang": [
-        "tr",
-        "en"
+      "tr",
+      "en"
     ],
     "defaultLoc": {
       "loc_id": 2792,
@@ -3169,8 +3170,8 @@
   },
   "tt": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2780,
       "loc_id_parent": null,
@@ -3195,8 +3196,8 @@
   },
   "tw": {
     "supportedLang": [
-        "zh-TW",
-        "en"
+      "zh-TW",
+      "en"
     ],
     "defaultLoc": {
       "loc_id": 2158,
@@ -3230,8 +3231,8 @@
   },
   "ua": {
     "supportedLang": [
-        "uk",
-        "ru"
+      "uk",
+      "ru"
     ],
     "defaultLoc": {
       "loc_id": 2804,
@@ -3265,8 +3266,8 @@
   },
   "ug": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2800,
       "loc_id_parent": null,
@@ -3291,8 +3292,8 @@
   },
   "uk": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2826,
       "loc_id_parent": null,
@@ -3379,8 +3380,8 @@
   },
   "uy": {
     "supportedLang": [
-        "es"
-      ],
+      "es"
+    ],
     "defaultLoc": {
       "loc_id": 2858,
       "loc_id_parent": null,
@@ -3405,8 +3406,8 @@
   },
   "uz": {
     "supportedLang": [
-        "uz",
-        "ru"
+      "uz",
+      "ru"
     ],
     "defaultLoc": {
       "loc_id": 2860,
@@ -3440,8 +3441,8 @@
   },
   "vc": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2670,
       "loc_id_parent": null,
@@ -3466,8 +3467,8 @@
   },
   "ve": {
     "supportedLang": [
-        "es"
-      ],
+      "es"
+    ],
     "defaultLoc": {
       "loc_id": 2862,
       "loc_id_parent": null,
@@ -3492,8 +3493,8 @@
   },
   "vn": {
     "supportedLang": [
-        "vi",
-        "en"
+      "vi",
+      "en"
     ],
     "defaultLoc": {
       "loc_id": 2704,
@@ -3527,8 +3528,8 @@
   },
   "za": {
     "supportedLang": [
-        "en",
-        "af"
+      "en",
+      "af"
     ],
     "defaultLoc": {
       "loc_id": 2710,
@@ -3562,8 +3563,8 @@
   },
   "zm": {
     "supportedLang": [
-        "en"
-      ],
+      "en"
+    ],
     "defaultLoc": {
       "loc_id": 2894,
       "loc_id_parent": null,

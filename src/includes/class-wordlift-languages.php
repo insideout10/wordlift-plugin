@@ -51,6 +51,7 @@ class Wordlift_Languages {
 		'et',
 		'fi',
 		'fr',
+		'he',
 		'hr',
 		'hu',
 		'id',
