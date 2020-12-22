@@ -4,6 +4,8 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
+use Wordlift\Widgets\Faceted_Search\Faceted_Search_Template_Endpoint;
+
 /**
  * Class Faceted_Search_Widget_Test
  * @group widget
@@ -14,7 +16,11 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 
 	public function setUp() {
 		parent::setUp();
-		global $wp_rest_server;
+		global $wp_rest_server, $wp_filter;
+		// Resetting global filters, since we want our test
+		// to run independently without global state.
+		$wp_filter = array();
+		$instance = new Faceted_Search_Template_Endpoint();
 		$wp_rest_server = new WP_REST_Server();
 		$this->server   = $wp_rest_server;
 		do_action( 'rest_api_init' );
