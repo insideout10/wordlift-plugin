@@ -96,4 +96,14 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 		return $request;
 	}
 
+
+	public function test_on_do_shortcode_should_have_template_url() {
+		new Wordlift_Faceted_Search_Shortcode();
+		$post_id = $this->factory()->post->create();
+		$post = get_post( $post_id );
+		$result = do_shortcode("[wl_faceted_search template_id='foo' post_id=$post_id]");
+		$template_url = "data-template-url=\"http://example.org/index.php?rest_route=/wordlift/v1/faceted-search/template\"";
+		$this->assertTrue( strpos( $result, $template_url) !== false, "Template url should be present in the faceted search " );
+	}
+
 }
