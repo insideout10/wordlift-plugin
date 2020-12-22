@@ -19,8 +19,8 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 		global $wp_rest_server, $wp_filter;
 		// Resetting global filters, since we want our test
 		// to run independently without global state.
-		$wp_filter = array();
-		$instance = new Faceted_Search_Template_Endpoint();
+		$wp_filter      = array();
+		$instance       = new Faceted_Search_Template_Endpoint();
 		$wp_rest_server = new WP_REST_Server();
 		$this->server   = $wp_rest_server;
 		do_action( 'rest_api_init' );
@@ -32,8 +32,37 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 		$request->set_header( 'content-type', 'application/json' );
 		$json_data = json_encode( array( 'template_id' => 'foo' ) );
 		$request->set_body( $json_data );
-		$response  = $this->server->dispatch( $request );
+		$response = $this->server->dispatch( $request );
+		$this->assertEquals( 200, $response->get_status(), 'Faceted search template endpoint not registered' );
+	}
+
+	public function test_when_registered_template_via_filter_should_get_the_filter_on_the_endpoint() {
+
+		$template_id = 'foo';
+
+		$template = 'my-template';
+
+		add_filter( 'wordlift_faceted_search_template', function ( $templates ) use ( $template, $template_id ) {
+			$templates[ $template_id ] = $template;
+
+			return $templates;
+		} );
+
+		$request = new WP_REST_Request( 'POST', $this->template_route );
+		$request->set_header( 'content-type', 'application/json' );
+		$json_data = json_encode( array( 'template_id' => $template_id ) );
+		$request->set_body( $json_data );
+		/**
+		 * @var $response WP_REST_Response
+		 */
+		$response = $this->server->dispatch( $request );
 		$this->assertEquals( 200, $response->get_status() );
+		/**
+		 * Now that we posted the template id we should have the template
+		 * in the response.
+		 */
+		$this->assertEquals( $template, $response->get_data(), 'Faceted search template not received' );
+
 	}
 
 }
