@@ -9,6 +9,7 @@
 
 namespace Wordlift\Autocomplete;
 
+use Wordlift\Api\Default_Api_Service;
 use Wordlift\Entity\Entity_Helper;
 use Wordlift_Log_Service;
 use Wordlift_Post_Excerpt_Helper;
@@ -112,9 +113,7 @@ class Linked_Data_Autocomplete_Service implements Autocomplete_Service {
 		$url = $this->build_request_url( $query, $exclude, $scope );
 
 		// Return the response.
-		$response = wp_remote_get( $url, array(
-			'timeout' => 30
-		) );
+		$response = Default_Api_Service::get_instance()->get( $url )->get_response();
 
 		// If the response is valid, then send the suggestions.
 		if ( ! is_wp_error( $response ) && 200 === (int) $response['response']['code'] ) {
@@ -159,7 +158,7 @@ class Linked_Data_Autocomplete_Service implements Autocomplete_Service {
 		// Add args to URL.
 		$request_url = add_query_arg(
 			urlencode_deep( $args ),
-			$this->configuration_service->get_autocomplete_url()
+			'/autocomplete'
 		);
 
 		// Add the exclude parameter.
