@@ -63,6 +63,26 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	/**
+	 * when we post a non registered template id, then we expect it to return
+	 * a empty string.
+	 */
+	public function test_when_non_registered_template_should_receive_empty_string() {
+
+		$template_id = 'foo';
+
+		$request = $this->create_template_request( $template_id );
+		/**
+		 * @var $response WP_REST_Response
+		 */
+		$response = $this->server->dispatch( $request );
+
+		$this->assertEquals( 200, $response->get_status() );
+
+		$this->assertEquals( '', $response->get_data(), 'Faceted search template should be empty' );
+
+	}
+
+	/**
 	 * @param $template_id
 	 *
 	 * @return WP_REST_Request
