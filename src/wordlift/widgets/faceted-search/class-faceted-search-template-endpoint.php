@@ -33,7 +33,19 @@ class Faceted_Search_Template_Endpoint {
 		) );
 	}
 
+	/**
+	 * Faceted search widget makes call to this endpoint to get the template.
+	 * Takes the request, checks if template id is registered via filter,
+	 * if not it returns empty.
+	 *
+	 * @param $request \WP_REST_Request
+	 *
+	 * @return string Returns the template string.
+	 */
 	public function get_template( $request ) {
-		return '';
+		$data        = $request->get_params();
+		$template_id = (string) $data['template_id'];
+		$templates   = apply_filters( 'wordlift_faceted_search_template', array() );
+		return array_key_exists( $template_id, $templates ) ? $templates[$template_id] : '';
 	}
 }

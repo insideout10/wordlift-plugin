@@ -48,10 +48,7 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 			return $templates;
 		} );
 
-		$request = new WP_REST_Request( 'POST', $this->template_route );
-		$request->set_header( 'content-type', 'application/json' );
-		$json_data = json_encode( array( 'template_id' => $template_id ) );
-		$request->set_body( $json_data );
+		$request = $this->create_template_request( $template_id );
 		/**
 		 * @var $response WP_REST_Response
 		 */
@@ -63,6 +60,20 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 		 */
 		$this->assertEquals( $template, $response->get_data(), 'Faceted search template not received' );
 
+	}
+
+	/**
+	 * @param $template_id
+	 *
+	 * @return WP_REST_Request
+	 */
+	private function create_template_request( $template_id ) {
+		$request = new WP_REST_Request( 'POST', $this->template_route );
+		$request->set_header( 'content-type', 'application/json' );
+		$json_data = json_encode( array( 'template_id' => $template_id ) );
+		$request->set_body( $json_data );
+
+		return $request;
 	}
 
 }
