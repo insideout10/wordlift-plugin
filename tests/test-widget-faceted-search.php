@@ -42,7 +42,7 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 
 		$template = 'my-template';
 
-		add_filter( 'wordlift_faceted_search_template', function ( $templates ) use ( $template, $template_id ) {
+		add_filter( 'wordlift_faceted_search_templates', function ( $templates ) use ( $template, $template_id ) {
 			$templates[ $template_id ] = $template;
 
 			return $templates;
