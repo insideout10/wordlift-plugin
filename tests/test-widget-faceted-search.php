@@ -54,11 +54,13 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 		 */
 		$response = $this->server->dispatch( $request );
 		$this->assertEquals( 200, $response->get_status() );
+		$data = $response->get_data();
+		$this->assertArrayHasKey( 'template', $data );
 		/**
 		 * Now that we posted the template id we should have the template
 		 * in the response.
 		 */
-		$this->assertEquals( $template, $response->get_data(), 'Faceted search template not received' );
+		$this->assertEquals( $template, $data['template'], 'Faceted search template not received' );
 
 	}
 
@@ -77,8 +79,9 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 		$response = $this->server->dispatch( $request );
 
 		$this->assertEquals( 200, $response->get_status() );
-
-		$this->assertEquals( '', $response->get_data(), 'Faceted search template should be empty' );
+		$data = $response->get_data();
+		$this->assertArrayHasKey( 'template', $data );
+		$this->assertEquals( '', $data['template'], 'Faceted search template should be empty' );
 
 	}
 

@@ -46,6 +46,7 @@ class Faceted_Search_Template_Endpoint {
 		$data        = $request->get_params();
 		$template_id = (string) $data['template_id'];
 		$templates   = apply_filters( 'wordlift_faceted_search_template', array() );
-		return array_key_exists( $template_id, $templates ) ? $templates[$template_id] : '';
+		$template =  array_key_exists( $template_id, $templates ) ? $templates[$template_id] : '';
+		return array( 'template' => $template );
 	}
 }
