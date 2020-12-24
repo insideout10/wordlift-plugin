@@ -32,14 +32,7 @@ class Wordlift_Navigator_Test extends Wordlift_Ajax_Unit_Test_Case {
 
 	function _mock_api( $response, $request, $url ) {
 
-		if ( 'POST' === $request['method'] && preg_match( '@/datasets/key=key123/queries$@', $url )
-		     && ( in_array( md5( $request['body'] ), array(
-					'8921e932e1782124348287e6d406b468',
-					'0cd3a2b9c74b5429abab7997f83d7e75',
-					'52d70a03ffdfbb6466a48fa5d89694e2',
-					'fde94012dbdd9fe9abe5b9741147cfc7',
-					'e4cb256f8a62489a17ced225f2008777'
-				) ) ) ) {
+		if ( 'POST' === $request['method'] && preg_match( '@/datasets/key=key123/queries$@', $url ) ) {
 			return array(
 				'response' => array( 'code' => 200 ),
 				'body'     => ''
