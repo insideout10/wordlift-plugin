@@ -145,7 +145,8 @@ You can open your datasets to the public, attaching to it a free or a commercial
 = 3.27.7.2 (2020-12-24) =
 
 * Fix [#1231](https://github.com/insideout10/wordlift-plugin/issues/1231): Navigator not returning any post
-* Fix: Checks to stop creation of duplicate entities
+* Fix: Entities being created as 'inherit'
+* Fix: Add hebrew among the supported languages
 * Fix: Remote entities not being pushed for legacy platform
 
 = 3.27.7.1 (2020-12-15) =
