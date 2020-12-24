@@ -427,7 +427,7 @@ class Wordlift_Entity_Service {
 		 *
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/996
 		 */
-		if ( null === $dataset_uri || 0 !== strpos( $uri, $dataset_uri ) ) {
+		if ( empty( $dataset_uri ) || 0 !== strpos( $uri, $dataset_uri ) ) {
 			$uri = null;
 		}
 
