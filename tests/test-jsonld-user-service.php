@@ -125,6 +125,7 @@ class Test_Jsonld_User_Service extends Wordlift_Unit_Test_Case {
 				"name"       => "Display Name 123",
 				"givenName"  => "First Name 123",
 				"familyName" => "Last Name 123",
+				'@context'   => 'http://schema.org'
 			)
 		), $retval );
 

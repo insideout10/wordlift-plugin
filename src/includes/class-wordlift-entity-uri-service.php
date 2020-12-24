@@ -115,7 +115,7 @@ class Wordlift_Entity_Uri_Service {
 			'ignore_sticky_posts' => 1,
 			'cache_results'       => false,
 			'numberposts'         => - 1,
-			'post_status'         => 'any',
+			'post_status'         => array( 'publish', 'draft', 'private', 'future' ),
 			'post_type'           => Wordlift_Entity_Service::valid_entity_post_types(),
 			'meta_query'          => array(
 				array(

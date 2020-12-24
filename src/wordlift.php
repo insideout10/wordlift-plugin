@@ -15,7 +15,7 @@
  * Plugin Name:       WordLift
  * Plugin URI:        https://wordlift.io
  * Description:       WordLift brings the power of AI to organize content, attract new readers and get their attention. To activate the plugin <a href="https://wordlift.io/">visit our website</a>.
- * Version:           3.27.7.1
+ * Version:           3.27.7.2
  * Author:            WordLift, Insideout10
  * Author URI:        https://wordlift.io
  * License:           GPL-2.0+
@@ -301,7 +301,7 @@ function wl_replace_item_id_with_uri( $content ) {
 			// wl_write_log( "wl_replace_item_id_with_uri [ item id :: $item_id ][ uri :: $uri ]" );
 
 			// If the item ID and the URI differ, replace the item ID with the URI saved in WordPress.
-			if ( $item_id !== $uri ) {
+			if ( ! empty( $uri ) && $item_id !== $uri ) {
 				$uri_e   = esc_html( $uri );
 				$content = str_replace( " itemid=\"$item_id\"", " itemid=\"$uri_e\"", $content );
 			}

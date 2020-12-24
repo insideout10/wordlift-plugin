@@ -159,9 +159,11 @@ function wl_shortcode_faceted_search_origin( $request ) {
 
 	// Add filler posts if needed
 
-	$filler_count         = $limit - count( $post_results );
-	$filler_posts         = wl_shortcode_faceted_search_filler_posts( $filler_count, $current_post_id, $referencing_post_ids );
-	$post_results         = array_merge( $post_results, $filler_posts );
+	$filler_count = $limit - count( $post_results );
+	if ( $filler_count > 0 ) {
+		$filler_posts = wl_shortcode_faceted_search_filler_posts( $filler_count, $current_post_id, $referencing_post_ids );
+		$post_results = array_merge( $post_results, $filler_posts );
+	}
 	$referencing_post_ids = array_map( function ( $post ) {
 		return $post->ID;
 	}, $post_results );
