@@ -24,6 +24,10 @@ class Test_Entity_Cached_Entity_Uri_Service extends Wordlift_Unit_Test_Case {
 	function setUp() {
 		parent::setUp();
 
+		// Remove global filters.
+		global $wp_filter;
+		$wp_filter = array();
+
 		$this->configuration_service_mock = $this->getMockBuilder( 'Wordlift_Configuration_Service' )
 		                                         ->disableOriginalConstructor()
 		                                         ->getMock();
@@ -31,6 +35,7 @@ class Test_Entity_Cached_Entity_Uri_Service extends Wordlift_Unit_Test_Case {
 		                                         ->disableOriginalConstructor()
 		                                         ->getMock();
 		$this->cached_entity_uri_service  = new Wordlift_Cached_Entity_Uri_Service( $this->configuration_service_mock, $this->cache_service_mock );
+
 	}
 
 	function test_skipped_meta_key() {
