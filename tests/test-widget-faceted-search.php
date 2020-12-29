@@ -20,7 +20,7 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 		// Resetting global filters, since we want our test
 		// to run independently without global state.
 		$wp_filter      = array();
-		$instance       = new Faceted_Search_Template_Endpoint();
+		$instance       = new \Wordlift\Widgets\Async_Template_Decorator( new Wordlift_Faceted_Search_Shortcode() );
 		$wp_rest_server = new WP_REST_Server();
 		$this->server   = $wp_rest_server;
 		do_action( 'rest_api_init' );
