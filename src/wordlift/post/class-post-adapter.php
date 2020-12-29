@@ -107,6 +107,12 @@ class Post_Adapter {
 	 */
 	public function wp_insert_post_data( $data, $postarr ) {
 
+		//
+		$post_status = $data['post_status'];
+		if ( 'auto-draft' === $post_status || 'inherit' === $post_status ) {
+			return $data;
+		}
+
 		$this->log->trace( "The following data has been received by `wp_insert_post_data`:\n"
 		                   . var_export( $data, true ) );
 
