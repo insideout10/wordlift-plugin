@@ -125,7 +125,7 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 	}
 
 	/**
-	 * Function in charge of diplaying the [wl-navigator] in web mode.
+	 * Function in charge of displaying the [wl-navigator] in web mode.
 	 *
 	 * @param array $atts Shortcode attributes.
 	 *
@@ -167,7 +167,7 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 
 		wp_enqueue_script( 'wordlift-cloud' );
 		$json_navigator_id = wp_json_encode( $navigator_id );
-
+		$template_url = get_rest_url( null, '/wordlift/v1/navigator/template' );
 		return <<<HTML
 			<!-- Navigator {$navigator_id} -->
 			<script type="application/javascript">
@@ -177,7 +177,8 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 				 class="wl-navigator" 
 				 data-rest-url="{$rest_url}" 
 				 data-title="{$title}" 
-				 data-template-id="{$template_id}" 
+				 data-template-id="{$template_id}"
+				 data-template-url="{$template_url}"
 				 data-limit="{$limit}"></div>
 			<!-- /Navigator {$navigator_id} -->
 HTML;

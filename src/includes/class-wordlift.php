@@ -1324,7 +1324,7 @@ class Wordlift {
 		 */
 		if ( apply_filters( 'wl_feature__enable__blocks', true ) ) {
 			// Initialize the short-codes.
-			new Wordlift_Navigator_Shortcode();
+			new Async_Template_Decorator( new Wordlift_Navigator_Shortcode() );
 			new Wordlift_Chord_Shortcode();
 			new Wordlift_Geomap_Shortcode();
 			new Wordlift_Timeline_Shortcode();
