@@ -750,7 +750,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.27.7.1';
+		$this->version     = '3.27.7.2';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -1233,7 +1233,7 @@ class Wordlift {
 		$this->redirect_service    = new Wordlift_Redirect_Service( $this->entity_uri_service );
 		$this->entity_type_service = new Wordlift_Entity_Type_Service( $this->schema_service );
 
-		if ( apply_filters( 'wl_feature__enable__dataset-ng', false ) ) {
+		if ( ! apply_filters( 'wl_feature__enable__dataset-ng', false ) ) {
 			new Wordlift_Linked_Data_Service( $this->entity_service, $this->entity_type_service, $this->schema_service, $this->sparql_service );
 		}
 
