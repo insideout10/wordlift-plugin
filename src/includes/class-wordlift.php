@@ -49,7 +49,7 @@ use Wordlift\Post_Excerpt\Post_Excerpt_Meta_Box_Adapter;
 use Wordlift\Post_Excerpt\Post_Excerpt_Rest_Controller;
 use Wordlift\Templates\Templates_Ajax_Endpoint;
 use Wordlift\Admin\Top_Entities;
-use Wordlift\Widgets\Faceted_Search\Faceted_Search_Template_Endpoint;
+use Wordlift\Widgets\Async_Template_Decorator;
 
 /**
  * The core plugin class.
@@ -1330,12 +1330,7 @@ class Wordlift {
 			new Wordlift_Timeline_Shortcode();
 			new Wordlift_Related_Entities_Cloud_Shortcode( $this->relation_service );
 			new Wordlift_Vocabulary_Shortcode( $this->configuration_service );
-			new Wordlift_Faceted_Search_Shortcode();
-			/**
-			 * @since ?.??.?
-			 * Register a route to load faceted search template async.
-			 */
-			new Faceted_Search_Template_Endpoint();
+			new Async_Template_Decorator( new Wordlift_Faceted_Search_Shortcode() );
 		}
 
 		new Wordlift_Products_Navigator_Shortcode();
