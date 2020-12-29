@@ -48,7 +48,7 @@ class Async_Template_Decorator {
 	}
 
 	/**
-	 * Faceted search widget makes call to this endpoint to get the template.
+	 * Shortcode widget makes call to this endpoint to get the template.
 	 * Takes the request, checks if template id is registered via filter,
 	 * if not it returns empty.
 	 *
