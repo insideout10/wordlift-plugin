@@ -16,8 +16,11 @@ import he from 'he'
  * @since 3.27.8
  */
 export function filterPostContent( content ) {
-  // To prevent &nbsp; and other special characters from appearing, we render it on placeholder
-  // element in dom and return the inner text
+  /**
+   * Note: we cant rely on innerText or textContent property as
+   * that would remove new lines, so we remove the tags manually,
+   * and use a html entity decoder to remove the html entities
+   */
  return he.decode( content.replace(/<[^>]+>/gi, "") );
 }
 
