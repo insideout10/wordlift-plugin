@@ -10,6 +10,7 @@ import createSagaMiddleware from "redux-saga";
 import { applyMiddleware, createStore } from "redux";
 import rootSaga from "../../post-excerpt/sagas/index";
 import { reducer } from "../actions";
+import {filterPostContent} from "../components/wl-post-excerpt/helpers";
 
 configure({ adapter: new Adapter() });
 
@@ -145,3 +146,10 @@ it("when the request to external api fails, should show an failure notification 
   // check if the failure notification is shown.
   expect(wrapper.find(".notice-error").exists()).toBeTruthy();
 });
+
+
+it("when the post content is sent, should convert the html entities to symbols", () => {
+  expect(filterPostContent("<p>one</p>")).toEqual("one")
+  const res = filterPostContent("My&nbsp;Text")
+  expect( res ).toEqual('My Text')
+})
