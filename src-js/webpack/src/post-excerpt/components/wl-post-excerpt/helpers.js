@@ -21,7 +21,7 @@ export function filterPostContent( content ) {
    * that would remove new lines, so we remove the tags manually,
    * and use a html entity decoder to remove the html entities
    */
- return he.decode( content.replace(/<[^>]+>/gi, "") );
+ return he.decode( content.replace(/<\/li>/gi, '\n').replace(/<[^>]+>/gi, "") );
 }
 
 /**

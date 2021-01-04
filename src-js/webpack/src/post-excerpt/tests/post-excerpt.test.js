@@ -152,4 +152,9 @@ it("when the post content is sent, should convert the html entities to symbols",
   expect(filterPostContent("<p>one</p>")).toEqual("one")
   const res = filterPostContent("My&nbsp;Text")
   expect( res ).toEqual('My Text')
+  console.log(filterPostContent("<li>one</li><li>two</li><li>three</li>"))
+  expect(filterPostContent("<li>one</li><li>two</li><li>three</li>")).toEqual("one\n" +
+      "two\n" +
+      "three\n")
 })
+
