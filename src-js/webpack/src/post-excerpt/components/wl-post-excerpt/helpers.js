@@ -5,6 +5,25 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
+
+/**
+ * External dependencies
+ */
+import he from 'he'
+
+/**
+ * Filter the html entities and retain spaces
+ * @since 3.27.8
+ */
+export function filterPostContent( content ) {
+  /**
+   * Note: we cant rely on innerText or textContent property as
+   * that would remove new lines, so we remove the tags manually,
+   * and use a html entity decoder to remove the html entities
+   */
+ return he.decode( content.replace(/<\/li>/gi, '\n').replace(/<[^>]+>/gi, "") );
+}
+
 /**
  * Return post content depending on the text editor.
  * @return {string} Text content of the post
@@ -15,15 +34,10 @@ function getPostContent() {
   const bodyEls = document.getElementsByTagName("body");
   if (0 < bodyEls.length && bodyEls[0].classList.contains("block-editor-page")) {
     // Block editor is active, return the post content.
-    const postContentData =  wp.data
+    return filterPostContent( wp.data
       .select("core/editor")
-      .getEditedPostAttribute("content")
-      .replace(/<[^>]+>/gi, "");
-    // To prevent &nbsp; and other special characters from appearing, we render it on placeholder
-    // element in dom and return the inner text
-    const el = document.createElement("div")
-    el.innerHTML = postContentData;
-    return el.innerText
+      .getEditedPostAttribute("content") );
+
   } else if (tinymce !== undefined && tinymce.editors["content"] !== undefined) {
     return tinymce.editors["content"].getContent({ format: "text" });
   }

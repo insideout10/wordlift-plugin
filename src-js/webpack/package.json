@@ -58,6 +58,7 @@
     "@reduxjs/toolkit": "^1.2.1",
     "@wordlift/design": "0.1.16",
     "@wordlift/wordlift-for-schemaorg": "^1.0",
+    "he": "^1.2.0",
     "immutable": "^3",
     "jest-fetch-mock": "^3.0.1",
     "react-redux": "^5.0.0",
