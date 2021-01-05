@@ -142,6 +142,11 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.27.7.3 (2021-01-05) =
+
+* Fix [#1247](https://github.com/insideout10/wordlift-plugin/issues/1247): Wordlift_Key_Validation_Service->validate_key() is not taking into consideration URL filters
+* Fix: Valid Key call doesn't use filtered home_url
+
 = 3.27.7.2 (2020-12-24) =
 
 * Fix [#1231](https://github.com/insideout10/wordlift-plugin/issues/1231): Navigator not returning any post
