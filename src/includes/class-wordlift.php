@@ -12,6 +12,7 @@
  * @subpackage Wordlift/includes
  */
 
+use Wordlift\Admin\Top_Entities;
 use Wordlift\Analysis\Response\Analysis_Response_Ops_Factory;
 use Wordlift\Autocomplete\All_Autocomplete_Service;
 use Wordlift\Autocomplete\Linked_Data_Autocomplete_Service;
@@ -48,7 +49,6 @@ use Wordlift\Mappings\Validators\Taxonomy_Term_Rule_Validator;
 use Wordlift\Post_Excerpt\Post_Excerpt_Meta_Box_Adapter;
 use Wordlift\Post_Excerpt\Post_Excerpt_Rest_Controller;
 use Wordlift\Templates\Templates_Ajax_Endpoint;
-use Wordlift\Admin\Top_Entities;
 use Wordlift\Widgets\Async_Template_Decorator;
 
 /**
@@ -1233,10 +1233,6 @@ class Wordlift {
 		$this->redirect_service    = new Wordlift_Redirect_Service( $this->entity_uri_service );
 		$this->entity_type_service = new Wordlift_Entity_Type_Service( $this->schema_service );
 
-		if ( ! apply_filters( 'wl_feature__enable__dataset-ng', false ) ) {
-			new Wordlift_Linked_Data_Service( $this->entity_service, $this->entity_type_service, $this->schema_service, $this->sparql_service );
-		}
-
 		// Create a new instance of the Timeline service and Timeline shortcode.
 		$this->timeline_service = new Wordlift_Timeline_Service( $this->entity_service, $this->entity_type_service );
 
@@ -1371,11 +1367,14 @@ class Wordlift {
 			$uri_service
 		);
 
-		/** Async Tasks. */
-		if ( ! apply_filters( 'wl_feature__enable__dataset-ng', false ) ) {
-			new Wordlift_Sparql_Query_Async_Task();
-			new Wordlift_Push_References_Async_Task();
-		}
+		$that = $this;
+		add_action( 'plugins_loaded', function () use ( $that ) {
+			if ( ! apply_filters( 'wl_feature__enable__dataset-ng', false ) ) {
+				new Wordlift_Linked_Data_Service( $that->entity_service, $that->entity_type_service, $that->schema_service, $that->sparql_service );
+				new Wordlift_Sparql_Query_Async_Task();
+				new Wordlift_Push_References_Async_Task();
+			}
+		} );
 
 		/** WordPress Admin UI. */
 
