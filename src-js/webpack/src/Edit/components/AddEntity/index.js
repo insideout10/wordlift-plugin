@@ -27,7 +27,7 @@ import { SELECTION_CHANGED } from "../../../common/constants";
 
 // Create the saga middleware.
 const sagaMiddleware = createSagaMiddleware();
-const store = createStore(reducer, applyMiddleware(sagaMiddleware, logger));
+const store = createStore(reducer, applyMiddleware(sagaMiddleware));
 
 // Run the saga.
 sagaMiddleware.run(saga);

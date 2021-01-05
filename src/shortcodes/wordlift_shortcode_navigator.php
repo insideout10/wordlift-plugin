@@ -22,7 +22,7 @@ function wl_shortcode_navigator_data() {
 	$cache_key = array( 'request_params' => $cache_key_params );
 
 	// Create the TTL cache and try to get the results.
-	$cache         = new Ttl_Cache( "navigator", 8 * 60 * 60 ); // 8 hours.
+	$cache         = new Ttl_Cache( "navigator", 1 ); // 8 hours. 8 * 60 * 60
 	$cache_results = $cache->get( $cache_key );
 
 	if ( isset( $cache_results ) ) {

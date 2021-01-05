@@ -64,7 +64,7 @@ const reducers = combineReducers({
   NotificationData: NotificationReducer
 });
 const sagaMiddleware = createSagaMiddleware();
-const editMappingStore = createStore(reducers, INITIAL_STATE, applyMiddleware(sagaMiddleware, logger));
+const editMappingStore = createStore(reducers, INITIAL_STATE, applyMiddleware(sagaMiddleware));
 sagaMiddleware.run(editMappingSaga);
 
 export default editMappingStore;

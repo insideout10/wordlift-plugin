@@ -25,7 +25,7 @@ import sagas from "./sagas";
 
 // Create the store.
 const sagaMiddleware = createSagaMiddleware();
-const store = createStore(reducer, applyMiddleware(sagaMiddleware, thunk, logger));
+const store = createStore(reducer, applyMiddleware(sagaMiddleware, thunk));
 sagaMiddleware.run(sagas);
 
 // Finally export the store.
