@@ -51,6 +51,10 @@ class Key_Validation_Notice {
 		if ( apply_filters( 'wl_feature__enable__notices', true ) ) {
 			$this->display_key_validation_notice();
 		}
+
+		add_action( 'plugins_loaded', function () {
+			$this->notification_close_handler();
+		} );
 	}
 
 
@@ -108,7 +112,7 @@ class Key_Validation_Notice {
 		} );
 	}
 
-	public function close_notification() {
+	public function notification_close_handler() {
 		if ( ! isset( $_GET['wl_key_validation_notice'] )
 		     || ! isset( $_GET['_wl_key_validation_notice_nonce'] ) ) {
 			return false;

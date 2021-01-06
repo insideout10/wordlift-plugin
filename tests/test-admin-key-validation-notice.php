@@ -92,10 +92,26 @@ class Admin_Key_Notice_Test extends Wordlift_Unit_Test_Case {
 		$_GET['wl_key_validation_notice']        = 'wl_key_validation_notice';
 		$_GET['_wl_key_validation_notice_nonce'] = wp_create_nonce( Key_Validation_Notice::KEY_VALIDATION_NONCE_ACTION );
 		// Run the notification close handler.
-		$instance->close_notification();
-		$html     = $this->do_admin_notices();
+		$instance->notification_close_handler();
+		$html = $this->do_admin_notices();
 		$this->assertNotNull( $html );
 		$this->assertTrue( strlen( $html ) === 0, 'Should not show notice when it is already closed' );
+	}
+
+
+	public function test_when_the_cache_is_cleared_should_remove_the_notification_flag() {
+		// we set the notification flag.
+		update_option( Key_Validation_Notice::NOTIFICATION_OPTION_KEY, true );
+		// Since there would be no cache, remove the flag.
+		$key_validation_service_mock = $this->getMockBuilder( 'Wordlift_Key_Validation_Service' )
+		                                    ->disableOriginalConstructor()
+		                                    ->getMock();
+		$key_validation_service_mock->method( 'is_key_valid' )->willReturn( false );
+		$instance = new Key_Validation_Notice( $key_validation_service_mock, Wordlift_Configuration_Service::get_instance() );
+		$this->do_admin_notices();
+		// the cache should be now cleared.
+		$this->assertFalse( get_option( Key_Validation_Notice::NOTIFICATION_OPTION_KEY, false ) );
+
 	}
 
 
