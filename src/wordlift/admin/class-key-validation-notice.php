@@ -59,10 +59,14 @@ class Key_Validation_Notice {
 
 
 	public function show_notification() {
+	    $settings_url =   admin_url( 'admin.php?page=wl_configuration_admin_menu' );
 		?>
         <div class="error">
-            <p><?php esc_html_e( 'WordLift key is not valid', 'wordlift' ); ?></p>
+            <p>
+                <?php echo __( "Your WordLift key is not valid, please update the key in <a href='$settings_url'>WordLift Settings</a> or contact our support at hello@wordlift.io.", 'wordlift' ); ?>
+            </p>
             <p class="submit">
+
                 <a class="button-secondary skip"
                    href="<?php echo esc_url( wp_nonce_url( add_query_arg( self::KEY_VALIDATION_NOTICE_PARAM, self::KEY_VALIDATION_NOTICE_PARAM )
 					   , self::KEY_VALIDATION_NONCE_ACTION, self::KEY_VALIDATION_NONCE_PARAM ) ); ?>">
