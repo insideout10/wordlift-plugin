@@ -40,23 +40,9 @@ class Key_Validation_Notice {
 
 		$this->ttl_cache_service = new Ttl_Cache( 'key-validation-notification', 60 * 60 * 8 );
 
-		add_action( 'admin_notices', function () {
-
-			$key = $this->configuration_service->get_key();
-
-			if ( ! $key ) {
-				// Dont show warning or make API call, return early.
-				return;
-			}
-
-			if ( $this->is_key_valid() ) {
-				return;
-			}
-
-			echo $this->get_notification_template();
-
-		} );
-
+		if ( apply_filters( 'wl_feature__enable__notices', true ) ) {
+			$this->display_key_validation_notice();
+		}
 	}
 
 
@@ -81,6 +67,25 @@ EOF;
 		$this->ttl_cache_service->put( self::CACHE_KEY, $is_valid );
 
 		return $is_valid;
+	}
+
+	private function display_key_validation_notice() {
+		add_action( 'admin_notices', function () {
+
+			$key = $this->configuration_service->get_key();
+
+			if ( ! $key ) {
+				// Dont show warning or make API call, return early.
+				return;
+			}
+
+			if ( $this->is_key_valid() ) {
+				return;
+			}
+
+			echo $this->get_notification_template();
+
+		} );
 	}
 
 }

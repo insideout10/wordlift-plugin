@@ -39,6 +39,20 @@ class Admin_Key_Notice_Test extends Wordlift_Unit_Test_Case {
 	}
 
 
+	public function test_when_key_validation_is_errored_but_filter_is_turned_on_should_not_show_error() {
+		add_filter('wl_feature__enable__notices', '__return_false');
+		// Create a mock key validation service.
+		$stub = $this->getMockBuilder( 'Wordlift_Key_Validation_Service' )
+		             ->disableOriginalConstructor()
+		             ->getMock();
+		$stub->method( 'is_key_valid' )->willReturn( false );
+		$instance = new Key_Validation_Notice( $stub, Wordlift_Configuration_Service::get_instance() );
+		$html = $this->do_admin_notices();
+		$this->assertNotNull( $html );
+		$this->assertTrue( strlen( $html ) === 0, 'Error should not be shown since the filter is turned on');
+	}
+
+
 	public function test_key_validation_results_should_be_cached() {
 		// Create a mock key validation service.
 		$key_validation_service_mock = $this->getMockBuilder( 'Wordlift_Key_Validation_Service' )
