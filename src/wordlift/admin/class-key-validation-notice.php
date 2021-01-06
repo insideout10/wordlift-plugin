@@ -46,17 +46,26 @@ class Key_Validation_Notice {
 
 			if ( ! $key ) {
 				// Dont show warning or make API call, return early.
-				return false;
+				return;
 			}
 
-			if ( ! $this->is_key_valid() ) {
-				echo "Key not valid";
+			if ( $this->is_key_valid() ) {
+				return;
 			}
+
+			echo $this->get_notification_template();
 
 		} );
 
 	}
 
+
+	public function get_notification_template() {
+		return <<<EOF
+<p></p>
+EOF;
+
+	}
 
 	private function is_key_valid() {
 
