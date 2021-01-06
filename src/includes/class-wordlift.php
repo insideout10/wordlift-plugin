@@ -12,6 +12,7 @@
  * @subpackage Wordlift/includes
  */
 
+use Wordlift\Admin\Key_Validation_Notice;
 use Wordlift\Analysis\Response\Analysis_Response_Ops_Factory;
 use Wordlift\Autocomplete\All_Autocomplete_Service;
 use Wordlift\Autocomplete\Linked_Data_Autocomplete_Service;
@@ -1555,6 +1556,7 @@ class Wordlift {
 		 * Add the faq duplicate markup hook.
 		 */
 		new Faq_Duplicate_Markup_Remover();
+		new Key_Validation_Notice( $this->key_validation_service, $this->configuration_service );
 	}
 
 	/**

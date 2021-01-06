@@ -46,11 +46,17 @@ class Key_Validation_Notice {
 	}
 
 
-	public function get_notification_template() {
-		return <<<EOF
-<p></p>
-EOF;
-
+	public function show_notification() {
+?>
+            <div class="updated">
+                <p><?php esc_html_e( 'Wordlift key is not valid', 'wordlift' ); ?></p>
+                <p class="submit">
+                    <a class="button-secondary skip"
+                       href="<?php echo esc_url( wp_nonce_url( add_query_arg( 'wl-hide-notice', 'install' ), 'wordlift_hide_notices_nonce', '_wl_notice_nonce' ) ); ?>">
+	                    <?php esc_html_e( 'Close', 'wordlift' ); ?></a>
+                </p>
+            </div>
+<?php
 	}
 
 	private function is_key_valid() {
@@ -83,7 +89,7 @@ EOF;
 				return;
 			}
 
-			echo $this->get_notification_template();
+			$this->show_notification();
 
 		} );
 	}
