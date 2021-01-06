@@ -52,6 +52,18 @@ class Admin_Key_Notice_Test extends Wordlift_Unit_Test_Case {
 		$this->do_admin_notices();
 	}
 
+
+	public function test_when_key_is_valid_should_not_show_notification() {
+		// Create a mock key validation service.
+		$key_validation_service_mock = $this->getMockBuilder( 'Wordlift_Key_Validation_Service' )
+		                                    ->disableOriginalConstructor()
+		                                    ->getMock();
+		$key_validation_service_mock->method( 'is_key_valid' )->willReturn( true );
+		$instance = new Key_Validation_Notice( $key_validation_service_mock, Wordlift_Configuration_Service::get_instance() );
+		$html = $this->do_admin_notices();
+		$this->assertEquals( $html, '' );
+	}
+
 	private function do_admin_notices() {
 		ob_start();
 		do_action( 'admin_notices' );
