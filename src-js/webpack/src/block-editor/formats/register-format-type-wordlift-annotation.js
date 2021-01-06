@@ -39,10 +39,10 @@ export const annotationSettings = {
    * as WPFormat:
    *  wp.data.select( 'core/rich-text' ).getFormatTypes();
    */
-  attributes: {id: "id", class: "class", itemid: "itemid"},
+  attributes: { id: "id", class: "class", itemid: "itemid" },
   tagName: "span",
   className: "textannotation",
   title: "Annotation",
   edit: EditComponent
-}
+};
 registerFormatType("wordlift/annotation", annotationSettings);

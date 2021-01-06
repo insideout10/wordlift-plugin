@@ -110,13 +110,17 @@ class Wordlift_Key_Validation_Service {
 		// The URL stored in WLS. If this is the initial install the URL may be null.
 		$url = $res_body['url'];
 
+		// Considering that production URL may be filtered.
+		$home_url = defined( 'WP_HOME' ) ? WP_HOME : get_option( 'home' );
+		$site_url = apply_filters( 'wl_production_site_url', untrailingslashit( $home_url ) );
+
 		// If the URL isn't set or matches, then it's valid.
-		if ( is_null( $url ) || $url === get_option( 'home' ) ) {
+		if ( is_null( $url ) || $url === $site_url ) {
 			wp_send_json_success( array( 'valid' => true, 'message' => '' ) );
 		}
 
 		// If the URL doesn't match it means that this key has been configured elsewhere already.
-		if ( $url !== get_option( 'home' ) ) {
+		if ( $url !== $site_url ) {
 			Wordlift_Configuration_Service::get_instance()->set_key( '' );
 			wp_send_json_success( array(
 				'valid'   => false,
