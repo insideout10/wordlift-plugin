@@ -18,6 +18,8 @@ class Key_Validation_Notice {
 
 	const KEY_VALIDATION_NOTICE_PARAM = 'wl_key_validation_notice';
 
+	const NOTIFICATION_OPTION_KEY = 'wordlift_key_validation_notification_shown';
+
 	/**
 	 * @var \Wordlift_Key_Validation_Service
 	 */
@@ -84,6 +86,11 @@ class Key_Validation_Notice {
 
 	private function display_key_validation_notice() {
 		add_action( 'admin_notices', function () {
+			$is_notification_shown = get_option( self::NOTIFICATION_OPTION_KEY, false );
+
+			if ( $is_notification_shown ) {
+				return;
+			}
 
 			$key = $this->configuration_service->get_key();
 
@@ -102,6 +109,18 @@ class Key_Validation_Notice {
 	}
 
 	public function close_notification() {
+		if ( ! isset( $_GET['wl_key_validation_notice'] )
+		     || ! isset( $_GET['_wl_key_validation_notice_nonce'] ) ) {
+			return false;
+		}
+		$type  = (string) $_GET['wl_key_validation_notice'];
+		$nonce = (string) $_GET['_wl_key_validation_notice_nonce'];
+
+		if ( wp_verify_nonce( $nonce, self::KEY_VALIDATION_NONCE_ACTION )
+		     && current_user_can( 'manage_options' ) ) {
+			// close the notification.
+			update_option( self::NOTIFICATION_OPTION_KEY, true );
+		}
 	}
 
 }

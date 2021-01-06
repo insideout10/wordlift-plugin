@@ -90,7 +90,7 @@ class Admin_Key_Notice_Test extends Wordlift_Unit_Test_Case {
 		$key_validation_service_mock->method( 'is_key_valid' )->willReturn( false );
 		$instance                                = new Key_Validation_Notice( $key_validation_service_mock, Wordlift_Configuration_Service::get_instance() );
 		$_GET['wl_key_validation_notice']        = 'wl_key_validation_notice';
-		$_GET['_wl_key_validation_notice_nonce'] = '_wl_key_validation_notice_nonce';
+		$_GET['_wl_key_validation_notice_nonce'] = wp_create_nonce( Key_Validation_Notice::KEY_VALIDATION_NONCE_ACTION );
 		// Run the notification close handler.
 		$instance->close_notification();
 		$html     = $this->do_admin_notices();
