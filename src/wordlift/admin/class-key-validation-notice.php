@@ -83,6 +83,10 @@ class Key_Validation_Notice {
 		}
 
 		$is_valid = $this->key_validation_service->is_key_valid( $key );
+
+		// when the cache is set, clear the notification flag.
+		delete_option( self::NOTIFICATION_OPTION_KEY );
+
 		$this->ttl_cache_service->put( self::CACHE_KEY, $is_valid );
 
 		return $is_valid;
@@ -90,11 +94,8 @@ class Key_Validation_Notice {
 
 	private function display_key_validation_notice() {
 		add_action( 'admin_notices', function () {
-			$is_notification_shown = get_option( self::NOTIFICATION_OPTION_KEY, false );
 
-			if ( $is_notification_shown ) {
-				return;
-			}
+			$is_notification_shown = get_option( self::NOTIFICATION_OPTION_KEY, false );
 
 			$key = $this->configuration_service->get_key();
 
@@ -104,6 +105,10 @@ class Key_Validation_Notice {
 			}
 
 			if ( $this->is_key_valid() ) {
+				return;
+			}
+
+			if ( $is_notification_shown ) {
 				return;
 			}
 
