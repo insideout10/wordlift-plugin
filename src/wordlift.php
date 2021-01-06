@@ -486,11 +486,13 @@ function run_wordlift() {
 	// Load the API Data Hooks.
 	new Api_Data_Hooks();
 
-	add_action( 'plugins_loaded', function () use ( $plugin ) {
+	add_action( 'plugins_loaded', function () {
 		// Load early. **PLEASE NOTE** that features are applied only to calls that happen **AFTER** the `plugins_loaded`
 		// action.
 		require_once plugin_dir_path( __FILE__ ) . 'wordlift/features/index.php';
+	}, 1 );
 
+	add_action( 'plugins_loaded', function () use ( $plugin ) {
 		// Licenses Images.
 		$user_agent                   = User_Agent::get_user_agent();
 		$wordlift_key                 = Wordlift_Configuration_Service::get_instance()->get_key();
