@@ -101,5 +101,8 @@ class Key_Validation_Notice {
 		} );
 	}
 
+	public function close_notification() {
+	}
+
 }
 
