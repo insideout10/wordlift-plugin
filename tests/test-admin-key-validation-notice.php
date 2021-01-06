@@ -18,18 +18,18 @@ class Admin_Key_Notice_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	public function test_instance_not_null() {
-		$instance = new Key_Validation_Notice( null );
+		$instance = new Key_Validation_Notice( null, null );
 		$this->assertNotNull( $instance );
 	}
 
 	public function test_when_key_validation_is_errored_should_show_error() {
+
 		// Create a mock key validation service.
-		$stub = $this->getMockBuilder( Wordlift_Key_Validation_Service::class );
-
-		$stub->method('is_key_valid')
-		     ->willReturn('false');
-
-		$instance = new Key_Validation_Notice( null );
+		$stub = $this->getMockBuilder( 'Wordlift_Key_Validation_Service' )
+		             ->disableOriginalConstructor()
+		             ->getMock();
+		$stub->method( 'is_key_valid' )->willReturn( false );
+		$instance = new Key_Validation_Notice( $stub, Wordlift_Configuration_Service::get_instance() );
 		ob_start();
 		do_action( 'admin_notices' );
 		$html = ob_get_contents();

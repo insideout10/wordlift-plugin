@@ -34,7 +34,14 @@ class Key_Validation_Notice {
 
 		add_action( 'admin_notices', function () {
 
-			if (! $this->key_validation_service->is_key_valid( ) ) {
+			$key = $this->configuration_service->get_key();
+
+			if ( ! $key ) {
+				// Dont show warning or make API call, return early.
+				return false;
+			}
+
+			if (! $this->key_validation_service->is_key_valid($key) ) {
 				// Show the notice.
 				echo "Key not valid";
 			}
