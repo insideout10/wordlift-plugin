@@ -47,7 +47,8 @@ class Admin_Key_Notice_Test extends Wordlift_Unit_Test_Case {
 		                            ->method( 'is_key_valid' );
 		$instance = new Key_Validation_Notice( $key_validation_service_mock, Wordlift_Configuration_Service::get_instance() );
 		$this->do_admin_notices();
-
+		// We need the result to be cached.
+		$this->do_admin_notices();
 	}
 
 	private function do_admin_notices() {
