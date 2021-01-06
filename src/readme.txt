@@ -146,6 +146,8 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 * Fix [#1247](https://github.com/insideout10/wordlift-plugin/issues/1247): Wordlift_Key_Validation_Service->validate_key() is not taking into consideration URL filters
 * Fix: Valid Key call doesn't use filtered home_url
+* Fix: Handling getSelectedBlock() null in block editor
+* Fix: Filter unknown empty entities from jsonld type
 
 = 3.27.7.2 (2020-12-24) =
 
