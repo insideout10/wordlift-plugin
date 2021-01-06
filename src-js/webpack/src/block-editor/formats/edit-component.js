@@ -50,8 +50,8 @@ let lastPayload = undefined;
  */
 const EditComponent = ({ onChange, value, isActive, activeAttributes, onSelectionChange, setFormat }) => {
   // Process only if it is not an ignored block
-  const selectedBlockName = wp.data.select("core/editor").getSelectedBlock().name;
-  if (!ignoredBlockNames.includes(selectedBlockName)) {
+  const selectedBlock = wp.data.select("core/editor").getSelectedBlock();
+  if (selectedBlock && !ignoredBlockNames.includes(selectedBlock.name)) {
     // Send the selection change event.
     if (delay) clearTimeout(delay);
     delay = setTimeout(() => {
@@ -78,7 +78,7 @@ const EditComponent = ({ onChange, value, isActive, activeAttributes, onSelectio
       trigger(ANNOTATION_CHANGED, payload);
     }, 10);
   } else {
-    console.log(`EditComponent ignored ${selectedBlockName} block`);
+    selectedBlock && console.log(`EditComponent ignored ${selectedBlock.name} block`);
   }
 
   return <Fragment />;
