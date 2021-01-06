@@ -1,6 +1,7 @@
 <?php
 
 use Wordlift\Admin\Key_Validation_Notice;
+use Wordlift\Cache\Ttl_Cache;
 
 /**
  * @since 3.27.8
@@ -14,7 +15,8 @@ class Admin_Key_Notice_Test extends Wordlift_Unit_Test_Case {
 		parent::setUp();
 		global $wp_filter;
 		$wp_filter = array();
-		\Wordlift\Cache\Ttl_Cache::flush_all();
+		// Flush all caches, because tests assert caching.
+		Ttl_Cache::flush_all();
 
 	}
 
