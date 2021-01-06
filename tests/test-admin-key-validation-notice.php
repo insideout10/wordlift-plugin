@@ -14,6 +14,7 @@ class Admin_Key_Notice_Test extends Wordlift_Unit_Test_Case {
 		parent::setUp();
 		global $wp_filter;
 		$wp_filter = array();
+		\Wordlift\Cache\Ttl_Cache::flush_all();
 
 	}
 
@@ -47,7 +48,7 @@ class Admin_Key_Notice_Test extends Wordlift_Unit_Test_Case {
 		                            ->method( 'is_key_valid' );
 		$instance = new Key_Validation_Notice( $key_validation_service_mock, Wordlift_Configuration_Service::get_instance() );
 		$this->do_admin_notices();
-		// We need the result to be cached.
+		// is_key_valid would be called only once.
 		$this->do_admin_notices();
 	}
 

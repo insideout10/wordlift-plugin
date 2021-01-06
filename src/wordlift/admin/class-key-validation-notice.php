@@ -10,6 +10,8 @@ use Wordlift\Cache\Ttl_Cache;
  */
 class Key_Validation_Notice {
 
+	const CACHE_KEY = 'is_key_valid';
+
 	/**
 	 * @var \Wordlift_Key_Validation_Service
 	 */
@@ -19,18 +21,24 @@ class Key_Validation_Notice {
 	 * @var \Wordlift_Configuration_Service
 	 */
 	private $configuration_service;
+	/**
+	 * @var Ttl_Cache
+	 */
+	private $ttl_cache_service;
 
 	/**
 	 * Key_Validation_Notice constructor.
 	 *
 	 * @param \Wordlift_Key_Validation_Service $key_validation_service
-	 * @param  \Wordlift_Configuration_Service $configuration_service
+	 * @param \Wordlift_Configuration_Service $configuration_service
 	 */
 	public function __construct( $key_validation_service, $configuration_service ) {
 
 		$this->key_validation_service = $key_validation_service;
 
 		$this->configuration_service = $configuration_service;
+
+		$this->ttl_cache_service = new Ttl_Cache( 'key-validation-notification', 60 * 60 * 8 );
 
 		add_action( 'admin_notices', function () {
 
@@ -41,11 +49,29 @@ class Key_Validation_Notice {
 				return false;
 			}
 
-			if (! $this->key_validation_service->is_key_valid($key) ) {
-				// Show the notice.
+			if ( ! $this->is_key_valid() ) {
 				echo "Key not valid";
 			}
+
 		} );
+
+	}
+
+
+	private function is_key_valid() {
+
+		$key = $this->configuration_service->get_key();
+
+		// Check cache if the result is present, if not get the results
+		// save it and return the data.
+		if ( $this->ttl_cache_service->get( self::CACHE_KEY ) !== null ) {
+			return $this->ttl_cache_service->get( self::CACHE_KEY );
+		}
+
+		$is_valid = $this->key_validation_service->is_key_valid( $key );
+		$this->ttl_cache_service->put( self::CACHE_KEY, $is_valid );
+
+		return $is_valid;
 	}
 
 }
