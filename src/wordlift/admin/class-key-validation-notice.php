@@ -97,18 +97,19 @@ class Key_Validation_Notice {
 	}
 
 	private function display_key_validation_notice() {
-		add_action( 'admin_notices', function () {
+	    $that = $this;
+		add_action( 'admin_notices', function () use ($that) {
 
 			$is_notification_shown = get_option( self::NOTIFICATION_OPTION_KEY, false );
 
-			$key = $this->configuration_service->get_key();
+			$key = $that->configuration_service->get_key();
 
 			if ( ! $key ) {
 				// Dont show warning or make API call, return early.
 				return;
 			}
 
-			if ( $this->is_key_valid() ) {
+			if ( $that->is_key_valid() ) {
 				return;
 			}
 
@@ -116,7 +117,7 @@ class Key_Validation_Notice {
 				return;
 			}
 
-			$this->show_notification();
+			$that->show_notification();
 
 		} );
 	}
