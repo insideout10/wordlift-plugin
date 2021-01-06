@@ -52,18 +52,19 @@ class Key_Validation_Notice {
 			$this->display_key_validation_notice();
 		}
 
-		add_action( 'plugins_loaded', function () {
-			$this->notification_close_handler();
+		$that = $this;
+		add_action( 'plugins_loaded', function () use ( $that ) {
+			$that->notification_close_handler();
 		} );
 	}
 
 
 	public function show_notification() {
-	    $settings_url =   admin_url( 'admin.php?page=wl_configuration_admin_menu' );
+		$settings_url = admin_url( 'admin.php?page=wl_configuration_admin_menu' );
 		?>
         <div class="error">
             <p>
-                <?php echo __( "Your WordLift key is not valid, please update the key in <a href='$settings_url'>WordLift Settings</a> or contact our support at hello@wordlift.io.", 'wordlift' ); ?>
+				<?php echo __( "Your WordLift key is not valid, please update the key in <a href='$settings_url'>WordLift Settings</a> or contact our support at hello@wordlift.io.", 'wordlift' ); ?>
             </p>
             <p class="submit">
 
@@ -97,10 +98,10 @@ class Key_Validation_Notice {
 	}
 
 	private function display_key_validation_notice() {
-	    $that = $this;
-		add_action( 'admin_notices', function () use ($that) {
+		$that = $this;
+		add_action( 'admin_notices', function () use ( $that ) {
 
-			$is_notification_shown = get_option( self::NOTIFICATION_OPTION_KEY, false );
+			$is_notification_shown = get_option( Key_Validation_Notice::NOTIFICATION_OPTION_KEY, false );
 
 			$key = $that->configuration_service->get_key();
 
