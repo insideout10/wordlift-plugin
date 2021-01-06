@@ -12,6 +12,12 @@ class Key_Validation_Notice {
 
 	const CACHE_KEY = 'is_key_valid';
 
+	const KEY_VALIDATION_NONCE_ACTION = 'wl_key_validation_notice_nonce';
+
+	const KEY_VALIDATION_NONCE_PARAM = '_wl_key_validation_notice_nonce';
+
+	const KEY_VALIDATION_NOTICE_PARAM = 'wl_key_validation_notice';
+
 	/**
 	 * @var \Wordlift_Key_Validation_Service
 	 */
@@ -47,16 +53,17 @@ class Key_Validation_Notice {
 
 
 	public function show_notification() {
-?>
-            <div class="updated">
-                <p><?php esc_html_e( 'Wordlift key is not valid', 'wordlift' ); ?></p>
-                <p class="submit">
-                    <a class="button-secondary skip"
-                       href="<?php echo esc_url( wp_nonce_url( add_query_arg( 'wl-hide-notice', 'install' ), 'wordlift_hide_notices_nonce', '_wl_notice_nonce' ) ); ?>">
-	                    <?php esc_html_e( 'Close', 'wordlift' ); ?></a>
-                </p>
-            </div>
-<?php
+		?>
+        <div class="error">
+            <p><?php esc_html_e( 'WordLift key is not valid', 'wordlift' ); ?></p>
+            <p class="submit">
+                <a class="button-secondary skip"
+                   href="<?php echo esc_url( wp_nonce_url( add_query_arg( self::KEY_VALIDATION_NOTICE_PARAM, self::KEY_VALIDATION_NOTICE_PARAM )
+					   , self::KEY_VALIDATION_NONCE_ACTION, self::KEY_VALIDATION_NONCE_PARAM ) ); ?>">
+					<?php esc_html_e( 'Close', 'wordlift' ); ?></a>
+            </p>
+        </div>
+		<?php
 	}
 
 	private function is_key_valid() {
