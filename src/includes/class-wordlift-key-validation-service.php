@@ -84,6 +84,29 @@ class Wordlift_Key_Validation_Service {
 	}
 
 	/**
+     * Check if key is valid
+	 * @param $key string
+	 *
+	 * @return bool
+	 */
+	public function is_key_valid( $key ) {
+
+		$response = $this->get_account_info( $key );
+
+		if ( is_wp_error( $response ) || 2 !== (int) $response['response']['code'] / 100 ) {
+			return false;
+		}
+		$res_body = json_decode( wp_remote_retrieve_body( $response ), true );
+
+		$url = $res_body['url'];
+
+		if ( is_null( $url ) || $url === get_option( 'home' ) ) {
+			return true;
+		}
+        return false;
+	}
+
+	/**
 	 * This function is hooked to the `wl_validate_key` AJAX call.
 	 *
 	 * @since 3.9.0
