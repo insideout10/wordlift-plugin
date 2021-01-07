@@ -96,10 +96,13 @@ function _wl_navigator_get_data() {
 	}
 
 	// Limit the results (defaults to 4)
-	$navigator_length = isset( $_GET['limit'] ) ? intval( $_GET['limit'] ) : 4;
-	$navigator_offset = isset( $_GET['offset'] ) ? intval( $_GET['offset'] ) : 0;
-	$order_by         = isset( $_GET['sort'] ) ? sanitize_sql_orderby( $_GET['sort'] ) : 'ID DESC';
-
+	$navigator_length    = isset( $_GET['limit'] ) ? intval( $_GET['limit'] ) : 4;
+	$navigator_offset    = isset( $_GET['offset'] ) ? intval( $_GET['offset'] ) : 0;
+	$order_by            = isset( $_GET['sort'] ) ? sanitize_sql_orderby( $_GET['sort'] ) : 'ID DESC';
+	$post_types          = isset( $_GET['post_types'] ) ? (string) $_GET['post_types'] : '';
+	$post_types          = explode( ',', $post_types );
+	$existing_post_types = get_post_types();
+	$post_types          = array_values( array_intersect( $existing_post_types, $post_types ) );
 	$current_post_id = $_GET['post_id'];
 	$current_post    = get_post( $current_post_id );
 
@@ -122,7 +125,7 @@ function _wl_navigator_get_data() {
 		$referencing_posts = _wl_navigator_get_results( $current_post_id, array(
 			'ID',
 			'post_title',
-		), $order_by, $navigator_length, $navigator_offset );
+		), $order_by, $navigator_length, $navigator_offset, $post_types );
 	}
 
 	// loop over them and take the first one which is not already in the $related_posts
@@ -249,7 +252,7 @@ function _wl_navigator_get_results(
 	$post_id, $fields = array(
 	'ID',
 	'post_title',
-), $order_by = 'ID DESC', $limit = 10, $offset = 0
+), $order_by = 'ID DESC', $limit = 10, $offset = 0, $post_types = array()
 ) {
 	global $wpdb;
 
@@ -273,9 +276,11 @@ SELECT %4\$s, p2.ID as entity_id
     INNER JOIN {$wpdb->posts} p2
         ON p2.ID = r2.object_id
             AND p2.post_status = 'publish'
+            AND p2.post_type IN ('post')
     INNER JOIN {$wpdb->posts} p
         ON p.ID = r2.subject_id
             AND p.post_status = 'publish'
+            AND p.post_type IN ('post')
     INNER JOIN {$wpdb->term_relationships} tr
      	ON tr.object_id = p.ID
     INNER JOIN {$wpdb->term_taxonomy} tt

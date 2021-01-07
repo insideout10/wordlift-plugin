@@ -122,7 +122,7 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 
 
 	public function create_navigator_post( $linked_entity, $post_type = 'post' ) {
-		$post_id = $this->factory()->post->create( array( 'post_type' => 'post' ) );
+		$post_id = $this->factory()->post->create( array( 'post_type' => $post_type ) );
 		wl_core_add_relation_instance( $post_id, WL_WHO_RELATION, $linked_entity );
 		if ( ! category_exists( 'navigator_test_category' ) ) {
 			wp_create_category( 'navigator_test_category' );
