@@ -103,8 +103,8 @@ function _wl_navigator_get_data() {
 	$post_types          = explode( ',', $post_types );
 	$existing_post_types = get_post_types();
 	$post_types          = array_values( array_intersect( $existing_post_types, $post_types ) );
-	$current_post_id = $_GET['post_id'];
-	$current_post    = get_post( $current_post_id );
+	$current_post_id     = $_GET['post_id'];
+	$current_post        = get_post( $current_post_id );
 
 	$navigator_id = $_GET['uniqid'];
 
@@ -254,6 +254,11 @@ function _wl_navigator_get_results(
 	'post_title',
 ), $order_by = 'ID DESC', $limit = 10, $offset = 0, $post_types = array()
 ) {
+
+	if ( $post_types === array() ) {
+		$post_types = get_post_types();
+	}
+
 	global $wpdb;
 
 	$select = implode( ', ', array_map( function ( $item ) {
@@ -263,6 +268,11 @@ function _wl_navigator_get_results(
 	$order_by = implode( ', ', array_map( function ( $item ) {
 		return "p.$item";
 	}, (array) $order_by ) );
+
+	$post_types = array_map( function ( $post_type ) {
+		return "'" . esc_sql( $post_type ) . "'";
+	}, $post_types );
+	$post_types = implode( ',', $post_types );
 
 	/** @noinspection SqlNoDataSourceInspection */
 	return $wpdb->get_results(
@@ -276,11 +286,11 @@ SELECT %4\$s, p2.ID as entity_id
     INNER JOIN {$wpdb->posts} p2
         ON p2.ID = r2.object_id
             AND p2.post_status = 'publish'
-            AND p2.post_type IN ('post')
+            AND p2.post_type IN ($post_types)
     INNER JOIN {$wpdb->posts} p
         ON p.ID = r2.subject_id
             AND p.post_status = 'publish'
-            AND p.post_type IN ('post')
+            AND p.post_type IN ($post_types)
     INNER JOIN {$wpdb->term_relationships} tr
      	ON tr.object_id = p.ID
     INNER JOIN {$wpdb->term_taxonomy} tt
