@@ -80,11 +80,12 @@ class Wordlift_Key_Validation_Service {
 
 		return Default_Api_Service::get_instance()->get( '/accounts/info', array(
 			'Authorization' => "Key $key",
-        ) )->get_response();
+		) )->get_response();
 	}
 
 	/**
-     * Check if key is valid
+	 * Check if key is valid
+	 *
 	 * @param $key string
 	 *
 	 * @return bool
@@ -100,10 +101,14 @@ class Wordlift_Key_Validation_Service {
 
 		$url = $res_body['url'];
 
-		if ( is_null( $url ) || $url === get_option( 'home' ) ) {
+		// Considering that production URL may be filtered.
+		$home_url = defined( 'WP_HOME' ) ? WP_HOME : get_option( 'home' );
+		$site_url = apply_filters( 'wl_production_site_url', untrailingslashit( $home_url ) );
+		if ( is_null( $url ) || $url === $site_url ) {
 			return true;
 		}
-        return false;
+
+		return false;
 	}
 
 	/**
