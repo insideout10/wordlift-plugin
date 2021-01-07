@@ -24,6 +24,8 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$wp_rest_server = new WP_REST_Server();
 		$this->server   = $wp_rest_server;
 		do_action( 'rest_api_init' );
+		// navigator query triggers a warning due to placeholder.
+		add_filter( 'doing_it_wrong_trigger_error', '__return_false' );
 	}
 
 
@@ -118,27 +120,51 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$this->assertArrayHasKey( 'default', $attribute_data );
 	}
 
+
+	public function create_navigator_post( $linked_entity, $post_type = 'post' ) {
+		$post_id = $this->factory()->post->create( array( 'post_type' => 'post' ) );
+		wl_core_add_relation_instance( $post_id, WL_WHO_RELATION, $linked_entity );
+		if ( ! category_exists( 'navigator_test_category' ) ) {
+			wp_create_category( 'navigator_test_category' );
+		}
+		/**
+		 * @var $category WP_Term
+		 */
+		$category = get_category_by_slug( 'navigator_test_category' );
+
+		wp_set_post_categories( $post_id, array( $category->term_id ) );
+
+
+		// set the entity type as article.
+		$entity_type_service = Wordlift_Entity_Type_Service::get_instance();
+
+		$entity_type_service->set( $post_id, 'http://schema.org/Article' );
+
+		update_post_meta( $post_id, '_thumbnail_id', 'https://some-url-from-test.com' );
+
+		return $post_id;
+	}
+
+
 	public function test_when_post_type_not_supplied_in_navigator_shortcode_should_return_correctly() {
-		// Lets create 2 posts and 2 pages.
-		$post_1 = $this->factory()->post->create( array() );
-		$post_2 = $this->factory()->post->create( array() );
-		$post_3 = $this->factory()->post->create( array() );
-		$page_1 = $this->factory()->post->create( array( 'post_type' => 'page' ) );
-		$page_2 = $this->factory()->post->create( array( 'post_type' => 'page' ) );
-		$page_3 = $this->factory()->post->create( array( 'post_type' => 'page' ) );
 		// Create an entity and link all the posts to post_1.
 		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
-		wl_core_add_relation_instances( $post_1, 'who', $entity );
-		wl_core_add_relation_instances( $post_2, 'who', $entity );
-		wl_core_add_relation_instances( $post_3, 'who', $entity );
-		wl_core_add_relation_instances( $page_1, 'who', $entity );
-		wl_core_add_relation_instances( $page_2, 'who', $entity );
-		wl_core_add_relation_instances( $page_3, 'who', $entity );
+
+
+		// Lets create 2 posts and 2 pages.
+		$post_1 = $this->create_navigator_post( $entity );
+		$post_2 = $this->create_navigator_post( $entity );
+		$post_3 = $this->create_navigator_post( $entity );
+		$page_1 = $this->create_navigator_post( $entity );
+		$page_2 = $this->create_navigator_post( $entity );
+		$page_3 = $this->create_navigator_post( $entity );
+
+
 		// Get navigator data.
 		$_GET['post_id'] = $post_1;
 		$_GET['uniqid']  = "random_id";
 		$data            = _wl_navigator_get_data();
-		$this->assertEquals( 5, count( $data ) );
+		$this->assertEquals( 4, count( $data ) );
 
 	}
 
