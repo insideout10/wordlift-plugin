@@ -118,4 +118,28 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$this->assertArrayHasKey( 'default', $attribute_data );
 	}
 
+	public function test_when_post_type_not_supplied_in_navigator_shortcode_should_return_correctly() {
+		// Lets create 2 posts and 2 pages.
+		$post_1 = $this->factory()->post->create( array() );
+		$post_2 = $this->factory()->post->create( array() );
+		$post_3 = $this->factory()->post->create( array() );
+		$page_1 = $this->factory()->post->create( array( 'post_type' => 'page' ) );
+		$page_2 = $this->factory()->post->create( array( 'post_type' => 'page' ) );
+		$page_3 = $this->factory()->post->create( array( 'post_type' => 'page' ) );
+		// Create an entity and link all the posts to post_1.
+		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		wl_core_add_relation_instances( $post_1, 'who', $entity );
+		wl_core_add_relation_instances( $post_2, 'who', $entity );
+		wl_core_add_relation_instances( $post_3, 'who', $entity );
+		wl_core_add_relation_instances( $page_1, 'who', $entity );
+		wl_core_add_relation_instances( $page_2, 'who', $entity );
+		wl_core_add_relation_instances( $page_3, 'who', $entity );
+		// Get navigator data.
+		$_GET['post_id'] = $post_1;
+		$_GET['uniqid']  = "random_id";
+		$data            = _wl_navigator_get_data();
+		$this->assertEquals( 5, count( $data ) );
+
+	}
+
 }
