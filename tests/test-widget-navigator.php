@@ -108,4 +108,10 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$this->assertTrue( strpos( $result, $template_url) !== false, "Template url should be present in the navigator, but got $result " );
 	}
 
+	public function test_block_type_should_have_post_types_attribute() {
+		$shortcode = new Wordlift_Navigator_Shortcode();
+		$block_atts = $shortcode->get_navigator_block_attributes();
+		$this->assertArrayHasKey('post_types', $block_atts );
+	}
+
 }
