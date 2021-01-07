@@ -19,7 +19,7 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		global $wp_rest_server, $wp_filter;
 		// Resetting global filters, since we want our test
 		// to run independently without global state.
-		$wp_filter      = array();
+		$wp_filter = array();
 		new Async_Template_Decorator( new Wordlift_Navigator_Shortcode() );
 		$wp_rest_server = new WP_REST_Server();
 		$this->server   = $wp_rest_server;
@@ -101,17 +101,21 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 
 
 	public function test_on_do_shortcode_should_have_template_url() {
-		$post_id = $this->factory()->post->create();
-		$post = get_post( $post_id );
-		$result = do_shortcode("[wl_navigator template_id='foo' post_id=$post_id]");
+		$post_id      = $this->factory()->post->create();
+		$post         = get_post( $post_id );
+		$result       = do_shortcode( "[wl_navigator template_id='foo' post_id=$post_id]" );
 		$template_url = "?rest_route=/wordlift/v1/navigator/template";
-		$this->assertTrue( strpos( $result, $template_url) !== false, "Template url should be present in the navigator, but got $result " );
+		$this->assertTrue( strpos( $result, $template_url ) !== false, "Template url should be present in the navigator, but got $result " );
 	}
 
 	public function test_block_type_should_have_post_types_attribute() {
-		$shortcode = new Wordlift_Navigator_Shortcode();
+		$shortcode  = new Wordlift_Navigator_Shortcode();
 		$block_atts = $shortcode->get_navigator_block_attributes();
-		$this->assertArrayHasKey('post_types', $block_atts );
+		$this->assertArrayHasKey( 'post_types', $block_atts );
+		$this->assertTrue( is_array( $block_atts['post_types'] ) );
+		$attribute_data = $block_atts['post_types'];
+		$this->assertArrayHasKey( 'type', $attribute_data );
+		$this->assertArrayHasKey( 'default', $attribute_data );
 	}
 
 }
