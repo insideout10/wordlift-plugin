@@ -138,5 +138,9 @@ class Key_Validation_Notice {
 		}
 	}
 
+	public static function remove_notification_flag() {
+		delete_option( self::NOTIFICATION_OPTION_KEY );
+	}
+
 }
 

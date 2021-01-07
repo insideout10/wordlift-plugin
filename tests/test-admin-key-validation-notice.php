@@ -124,4 +124,13 @@ class Admin_Key_Notice_Test extends Wordlift_Unit_Test_Case {
 		return $html;
 	}
 
+
+	public function test_when_the_plugin_is_deactivated_should_clean_up_the_notification_flag() {
+		// we set the notification flag.
+		update_option( Key_Validation_Notice::NOTIFICATION_OPTION_KEY, true );
+		deactivate_wordlift();
+		// we expect it to be gone.
+		$this->assertFalse( get_option( Key_Validation_Notice::NOTIFICATION_OPTION_KEY, false ) );
+	}
+
 }
