@@ -274,7 +274,10 @@ HTML;
 				'type'    => 'string',
 				'default' => WP_CONTENT_URL . '/plugins/wordlift/images/block-previews/navigator.png',
 			),
-			'post_types' => array()
+			'post_types' => array(
+				'type'    => 'string',
+				'default' => '',
+			)
 		);
 	}
 
