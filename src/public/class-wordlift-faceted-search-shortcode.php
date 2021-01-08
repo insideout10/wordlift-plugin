@@ -145,6 +145,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 				'post_id' => $post->ID,
 				'limit'   => $limit
 			) ) ) : false;
+		$rest_url = esc_attr( $rest_url );
 
 		// avoid building the widget when no valid $rest_url
 		if ( ! $rest_url ) {
