@@ -122,7 +122,7 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 
 
 	public function create_navigator_post( $linked_entity, $post_type = 'post' ) {
-		$post_id = $this->factory()->post->create( array( 'post_type' => $post_type) );
+		$post_id = $this->factory()->post->create( array( 'post_type' => $post_type ) );
 
 		wl_core_add_relation_instance( $post_id, WL_WHO_RELATION, $linked_entity );
 		if ( ! category_exists( 'navigator_test_category' ) ) {
@@ -131,9 +131,7 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		/**
 		 * @var $category WP_Term
 		 */
-		$category = get_category_by_slug( 'navigator_test_category' );
-
-		wp_set_post_categories( $post_id, array( $category->term_id ) );
+		$this->set_navigator_test_category( $post_id );
 
 
 		// set the entity type as article.
@@ -215,13 +213,50 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$page_2 = $this->create_navigator_post( $entity, 'page' );
 		$page_3 = $this->create_navigator_post( $entity, 'page' );
 		// Get navigator data.
-		$_GET['post_id'] = $entity;
-		$_GET['uniqid']  = "random_id";
+		$_GET['post_id']    = $entity;
+		$_GET['uniqid']     = "random_id";
 		$_GET['post_types'] = 'post,some-random-post-type';
-		$data            = _wl_navigator_get_data();
+		$data               = _wl_navigator_get_data();
 		// we expect to get only 2 posts with post type post.
 		$this->assertEquals( 2, count( $data ) );
 	}
 
+
+	public function test_when_post_id_given_filler_posts_should_return_posts_from_same_category() {
+		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		$post_1 = $this->create_navigator_post( $entity );
+
+		/**
+		 * Create posts on the same category
+		 */
+		$post_2 = $this->create_filler_post_in_same_category();
+		$post_3 = $this->create_filler_post_in_same_category();
+		$post_4 = $this->create_filler_post_in_same_category();
+		$post_5 = $this->create_filler_post_in_same_category();
+		/**
+		 * we expect the posts to be fetched by the function.
+		 */
+		$_GET['post_id'] = $post_1;
+		$_GET['uniqid']  = "random_id";
+		$data            = _wl_navigator_get_data();
+		$this->assertCount( 4, $data, '4 posts which are not linked to entity but present in same category as target post should be returned' );
+	}
+
+
+	private function create_filler_post_in_same_category() {
+		$post_id = $this->factory()->post->create();
+		$this->set_navigator_test_category( $post_id );
+		update_post_meta( $post_id, '_thumbnail_id', 'https://some-url-from-test.com' );
+		return $post_id;
+	}
+
+	/**
+	 * @param $post_id
+	 */
+	private function set_navigator_test_category( $post_id ) {
+		$category = get_category_by_slug( 'navigator_test_category' );
+
+		wp_set_post_categories( $post_id, array( $category->term_id ) );
+	}
 
 }

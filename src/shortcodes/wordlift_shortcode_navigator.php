@@ -163,6 +163,7 @@ function _wl_navigator_get_data() {
 		$results[] = $result;
 	}
 
+
 	if ( count( $results ) < $navigator_length ) {
 		$results = apply_filters( 'wl_navigator_data_placeholder', $results, $navigator_id, $navigator_offset, $navigator_length );
 	}
