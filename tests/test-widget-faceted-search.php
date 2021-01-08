@@ -142,7 +142,7 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 		wp_set_post_categories( $post_id, array( $category->term_id ) );
 	}
 
-	public function test_faceted_search_should_return_posts_correctly() {
+	public function test_faceted_search_should_return_posts_correctly_for_post() {
 
 		$entity          = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
 		$post_1          = $this->create_faceted_search_post( $entity );
@@ -156,5 +156,23 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 4, $result['posts'] );
 		$this->assertCount( 1, $result['entities'] );
 	}
+
+	public function test_faceted_search_should_return_results_correctly_for_entity() {
+		$entity_1 = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		$entity_2 = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		$post_1   = $this->create_faceted_search_post( $entity_1 );
+		$post_2   = $this->create_faceted_search_post( $entity_2 );
+		$post_3   = $this->create_faceted_search_post( $entity_1 );
+		$post_4   = $this->create_faceted_search_post( $entity_1 );
+		$post_5   = $this->create_faceted_search_post( $entity_1 );
+		$_GET['post_id'] = $entity_1;
+		$_GET['uniqid']  = 'random_id';
+		$result          = wl_shortcode_faceted_search_origin( null );
+		$this->assertCount( 4, $result['posts'] );
+		$this->assertCount( 1, $result['entities'] );
+	}
+
+
+
 
 }
