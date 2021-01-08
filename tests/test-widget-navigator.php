@@ -122,7 +122,8 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 
 
 	public function create_navigator_post( $linked_entity, $post_type = 'post' ) {
-		$post_id = $this->factory()->post->create( array( 'post_type' => $post_type ) );
+		$post_id = $this->factory()->post->create( array( 'post_type' => $post_type) );
+
 		wl_core_add_relation_instance( $post_id, WL_WHO_RELATION, $linked_entity );
 		if ( ! category_exists( 'navigator_test_category' ) ) {
 			wp_create_category( 'navigator_test_category' );
@@ -191,23 +192,35 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 	public function test_when_post_type_not_supplied_in_navigator_shortcode_should_return_correctly_for_entities() {
 		// Create an entity and link all the posts to post_1.
 		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
-
-
 		// Lets create 2 posts and 2 pages.
-		$post_1 = $this->create_navigator_post( $entity, 'entity' );
-		$post_2 = $this->create_navigator_post( $entity, 'entity' );
-		$post_3 = $this->create_navigator_post( $entity, 'entity' );
-		$page_1 = $this->create_navigator_post( $entity, 'entity' );
-		$page_2 = $this->create_navigator_post( $entity, 'entity' );
-		$page_3 = $this->create_navigator_post( $entity, 'entity' );
-
-
+		$post_3 = $this->create_navigator_post( $entity );
+		$page_1 = $this->create_navigator_post( $entity );
+		$page_2 = $this->create_navigator_post( $entity );
+		$page_3 = $this->create_navigator_post( $entity );
 		// Get navigator data.
 		$_GET['post_id'] = $entity;
 		$_GET['uniqid']  = "random_id";
 		$data            = _wl_navigator_get_data();
 		$this->assertEquals( 4, count( $data ) );
 
+	}
+
+	public function test_when_post_type_is_supplied_in_navigator_should_filter_correctly() {
+		// Create an entity and link all the posts to post_1.
+		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		// Lets create 2 posts and 3 pages.
+		$post_1 = $this->create_navigator_post( $entity );
+		$post_2 = $this->create_navigator_post( $entity );
+		$page_1 = $this->create_navigator_post( $entity );
+		$page_2 = $this->create_navigator_post( $entity );
+		$page_3 = $this->create_navigator_post( $entity );
+		// Get navigator data.
+		$_GET['post_id'] = $entity;
+		$_GET['uniqid']  = "random_id";
+		$_GET['post_types'] = 'post,some-random-post-type';
+		$data            = _wl_navigator_get_data();
+		// we expect to get only 2 posts with post type post.
+		$this->assertEquals( 2, count( $data ) );
 	}
 
 
