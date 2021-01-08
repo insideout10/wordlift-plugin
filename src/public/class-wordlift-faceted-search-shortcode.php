@@ -62,7 +62,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 						'default' => __( 'Related articles', 'wordlift' ),
 					),
 					'template_id' => array(
-						'type' => 'string',
+						'type'    => 'string',
 						'default' => '',
 					),
 					'post_id'     => array(
@@ -94,11 +94,11 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 	 * Shared function used by web_shortcode and amp_shortcode
 	 * Bootstrap logic for attributes extraction and boolean filtering
 	 *
-	 * @since      3.20.0
-	 *
 	 * @param array $atts Shortcode attributes.
 	 *
 	 * @return array $shortcode_atts
+	 * @since      3.20.0
+	 *
 	 */
 	private function make_shortcode_atts( $atts ) {
 
@@ -117,11 +117,11 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 	/**
 	 * Function in charge of diplaying the [wl-faceted-search] in web mode.
 	 *
-	 * @since 3.20.0
-	 *
 	 * @param array $atts Shortcode attributes.
 	 *
 	 * @return string Shortcode HTML for web
+	 * @since 3.20.0
+	 *
 	 */
 	private function web_shortcode( $atts ) {
 
@@ -145,7 +145,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 				'post_id' => $post->ID,
 				'limit'   => $limit
 			) ) ) : false;
-		$rest_url = esc_attr( $rest_url );
+		$rest_url            = esc_attr( $rest_url );
 
 		// avoid building the widget when no valid $rest_url
 		if ( ! $rest_url ) {
@@ -154,7 +154,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 
 		wp_enqueue_script( 'wordlift-cloud' );
 		$json_faceted_id = wp_json_encode( $faceted_id );
-		$template_url = get_rest_url( null, '/wordlift/v1/faceted-search/template' );
+		$template_url    = get_rest_url( null, '/wordlift/v1/faceted-search/template' );
 
 		return <<<HTML
 			<!-- Faceted {$faceted_id} -->
@@ -174,11 +174,11 @@ HTML;
 	/**
 	 * Function in charge of diplaying the [wl-faceted-search] in amp mode.
 	 *
-	 * @since 3.20.0
-	 *
 	 * @param array $atts Shortcode attributes.
 	 *
 	 * @return string Shortcode HTML for amp
+	 * @since 3.20.0
+	 *
 	 */
 	private function amp_shortcode( $atts ) {
 
