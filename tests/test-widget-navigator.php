@@ -270,8 +270,8 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		 */
 		$post_2 = $this->create_filler_post_in_same_category();
 		$post_3 = $this->create_filler_post_in_same_category();
-		$post_4 = $this->create_filler_post_in_same_category('page');
-		$post_5 = $this->create_filler_post_in_same_category('page');
+		$post_4 = $this->create_filler_post_in_same_category( 'page' );
+		$post_5 = $this->create_filler_post_in_same_category( 'page' );
 		/**
 		 * we expect the posts to be fetched by the function.
 		 */
@@ -283,6 +283,25 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		should not be returned' );
 	}
 
+	public function test_when_the_posts_are_not_available_in_same_category_should_fetch_from_any_category_and_filter_by_post_type() {
+		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		$post_1 = $this->create_navigator_post( $entity );
+
+		$post_2 = $this->create_post_with_thumbnail();
+		$post_3 = $this->create_post_with_thumbnail();
+		$post_4 = $this->create_post_with_thumbnail('page');
+		$post_5 = $this->create_post_with_thumbnail('page');
+		$post_5 = $this->create_post_with_thumbnail('page');
+		/**
+		 * we expect the posts to be fetched by the function.
+		 */
+		$_GET['post_id']    = $post_1;
+		$_GET['uniqid']     = "random_id";
+		$_GET['post_types'] = 'page,some-random-post-type';
+		$data               = _wl_navigator_get_data();
+		$this->assertCount( 3, $data, '3 posts should be returned, because we filter by post type `page`, the posts with other post types
+		should not be returned' );
+	}
 
 	private function create_filler_post_in_same_category( $post_type = 'post' ) {
 		$post_id = $this->create_post_with_thumbnail();
@@ -304,8 +323,8 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 	/**
 	 * @return mixed
 	 */
-	private function create_post_with_thumbnail() {
-		$post_id = $this->factory()->post->create();
+	private function create_post_with_thumbnail( $post_type = 'post' ) {
+		$post_id = $this->factory()->post->create( array( 'post_type' => $post_type ) );
 		update_post_meta( $post_id, '_thumbnail_id', 'https://some-url-from-test.com' );
 
 		return $post_id;

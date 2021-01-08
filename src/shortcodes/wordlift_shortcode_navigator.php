@@ -334,6 +334,7 @@ function wl_shortcode_navigator_filler_posts( $filler_count, $current_post_id, $
 	}
 
 	$filler_count    = $filler_count - count( $filler_posts );
+
 	$filler_post_ids = array_map( function ( $post ) {
 		return $post->ID;
 	}, $filler_posts );
@@ -351,8 +352,11 @@ function wl_shortcode_navigator_filler_posts( $filler_count, $current_post_id, $
 			'post__not_in'        => array_merge( array( $current_post_id ), $filler_post_ids, $referencing_post_ids ),
 			'ignore_sticky_posts' => 1
 		);
-
+		if ( $post_types ) {
+			$args['post_type'] = $post_types;
+		}
 		$filler_posts = array_merge( $filler_posts, get_posts( $args ) );
+
 
 	}
 
