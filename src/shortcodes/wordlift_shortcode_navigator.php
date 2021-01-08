@@ -174,7 +174,7 @@ function _wl_navigator_get_data() {
 		$referencing_post_ids = array_map( function ( $p ) {
 			return $p->ID;
 		}, $referencing_posts );
-		$filler_posts         = wl_shortcode_navigator_filler_posts( $filler_count, $current_post_id, $referencing_post_ids );
+		$filler_posts         = wl_shortcode_navigator_filler_posts( $filler_count, $current_post_id, $referencing_post_ids, $post_types );
 		$results              = array_merge( $results, $filler_posts );
 	}
 
@@ -306,7 +306,7 @@ EOF
 
 }
 
-function wl_shortcode_navigator_filler_posts( $filler_count, $current_post_id, $referencing_post_ids ) {
+function wl_shortcode_navigator_filler_posts( $filler_count, $current_post_id, $referencing_post_ids, $post_types = array() ) {
 
 	$filler_posts = array();
 
@@ -327,6 +327,9 @@ function wl_shortcode_navigator_filler_posts( $filler_count, $current_post_id, $
 			'ignore_sticky_posts' => 1
 		);
 
+		if ( $post_types ) {
+			$args['post_type'] = $post_types;
+		}
 		$filler_posts = get_posts( $args );
 	}
 
