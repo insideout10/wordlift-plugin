@@ -144,10 +144,17 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_faceted_search_should_return_posts_correctly() {
 
-
-		$result = wl_shortcode_faceted_search_origin( null );
-
-
+		$entity          = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		$post_1          = $this->create_faceted_search_post( $entity );
+		$post_2          = $this->create_faceted_search_post( $entity );
+		$post_3          = $this->create_faceted_search_post( $entity );
+		$post_4          = $this->create_faceted_search_post( $entity );
+		$post_5          = $this->create_faceted_search_post( $entity );
+		$_GET['post_id'] = $post_1;
+		$_GET['uniqid']  = 'random_id';
+		$result          = wl_shortcode_faceted_search_origin( null );
+		$this->assertCount( 4, $result['posts'] );
+		$this->assertCount( 1, $result['entities'] );
 	}
 
 }
