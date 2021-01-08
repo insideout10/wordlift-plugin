@@ -63,6 +63,12 @@ function wl_shortcode_faceted_search_origin( $request ) {
 	$current_post    = get_post( $current_post_id );
 	$faceted_id      = $_GET['uniqid'];
 
+	$post_types          = isset( $_GET['post_types'] ) ? (string) $_GET['post_types'] : '';
+	$post_types          = explode( ',', $post_types );
+	$existing_post_types = get_post_types();
+	$post_types          = array_values( array_intersect( $existing_post_types, $post_types ) );
+
+
 	// Post ID has to match an existing item.
 	if ( null === $current_post ) {
 		wp_die( 'No valid post_id given' );
@@ -112,7 +118,8 @@ function wl_shortcode_faceted_search_origin( $request ) {
 		array( $current_post_id ),
 		$limit,
 		null,
-		$order_by
+		$order_by,
+		$post_types
 	);
 
 	$referencing_post_ids = array_map( function ( $p ) {
