@@ -109,4 +109,10 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 		$this->assertTrue( strpos( $result, $template_url) !== false, "Template url should be present in the faceted search, but got $result " );
 	}
 
+	public function test_faceted_search_should_return_posts_correctly() {
+
+		$result = wl_shortcode_faceted_search_origin(null);
+
+	}
+
 }
