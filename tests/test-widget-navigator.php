@@ -211,9 +211,9 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		// Lets create 2 posts and 3 pages.
 		$post_1 = $this->create_navigator_post( $entity );
 		$post_2 = $this->create_navigator_post( $entity );
-		$page_1 = $this->create_navigator_post( $entity );
-		$page_2 = $this->create_navigator_post( $entity );
-		$page_3 = $this->create_navigator_post( $entity );
+		$page_1 = $this->create_navigator_post( $entity, 'page' );
+		$page_2 = $this->create_navigator_post( $entity, 'page' );
+		$page_3 = $this->create_navigator_post( $entity, 'page' );
 		// Get navigator data.
 		$_GET['post_id'] = $entity;
 		$_GET['uniqid']  = "random_id";
