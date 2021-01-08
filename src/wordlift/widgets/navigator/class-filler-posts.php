@@ -2,7 +2,7 @@
 
 namespace Wordlift\Widgets\Navigator;
 /**
- * @since 3.28.0
+ * @since 3.27.8
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 class Filler_Posts {
