@@ -243,10 +243,28 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 	}
 
 
+	public function test_when_the_posts_are_not_available_in_same_category_should_fetch_from_any_category() {
+		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		$post_1 = $this->create_navigator_post( $entity );
+
+		$post_2 = $this->create_post_with_thumbnail();
+		$post_3 = $this->create_post_with_thumbnail();
+		$post_4 = $this->create_post_with_thumbnail();
+		$post_5 = $this->create_post_with_thumbnail();
+		/**
+		 * we expect the posts to be fetched by the function.
+		 */
+		$_GET['post_id'] = $post_1;
+		$_GET['uniqid']  = "random_id";
+		$data            = _wl_navigator_get_data();
+		$this->assertCount( 4, $data, '4 posts which are not linked to entity, also not present in same category as target post should be returned' );
+	}
+
+
 	private function create_filler_post_in_same_category() {
-		$post_id = $this->factory()->post->create();
+		$post_id = $this->create_post_with_thumbnail();
 		$this->set_navigator_test_category( $post_id );
-		update_post_meta( $post_id, '_thumbnail_id', 'https://some-url-from-test.com' );
+
 		return $post_id;
 	}
 
@@ -257,6 +275,16 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$category = get_category_by_slug( 'navigator_test_category' );
 
 		wp_set_post_categories( $post_id, array( $category->term_id ) );
+	}
+
+	/**
+	 * @return mixed
+	 */
+	private function create_post_with_thumbnail() {
+		$post_id = $this->factory()->post->create();
+		update_post_meta( $post_id, '_thumbnail_id', 'https://some-url-from-test.com' );
+
+		return $post_id;
 	}
 
 }
