@@ -7,6 +7,17 @@ namespace Wordlift\Widgets\Navigator;
  */
 class Navigator_Data {
 
+	public static function get_post_types_as_string( $post_types ) {
+		if ( $post_types === array() ) {
+			$post_types = get_post_types();
+		}
+		$post_types = array_map( function ( $post_type ) {
+			return "'" . esc_sql( $post_type ) . "'";
+		}, $post_types );
+
+		return implode( ',', $post_types );
+	}
+
 	public static function post_navigator_get_results(
 		$post_id, $fields = array(
 		'ID',
@@ -14,10 +25,7 @@ class Navigator_Data {
 	), $order_by = 'ID DESC', $limit = 10, $offset = 0, $post_types = array()
 	) {
 
-		if ( $post_types === array() ) {
-			$post_types = get_post_types();
-		}
-
+		$post_types = self::get_post_types_as_string( $post_types );
 		global $wpdb;
 
 		$select = implode( ', ', array_map( function ( $item ) {
@@ -28,10 +36,6 @@ class Navigator_Data {
 			return "p.$item";
 		}, (array) $order_by ) );
 
-		$post_types = array_map( function ( $post_type ) {
-			return "'" . esc_sql( $post_type ) . "'";
-		}, $post_types );
-		$post_types = implode( ',', $post_types );
 
 		/** @noinspection SqlNoDataSourceInspection */
 		return $wpdb->get_results(
@@ -91,13 +95,7 @@ EOF
 			return "p.$item";
 		}, (array) $order_by ) );
 
-		if ( $post_types === array() ) {
-			$post_types = get_post_types();
-		}
-		$post_types = array_map( function ( $post_type ) {
-			return "'" . esc_sql( $post_type ) . "'";
-		}, $post_types );
-		$post_types = implode( ',', $post_types );
+		$post_types = self::get_post_types_as_string( $post_types );
 
 		/** @noinspection SqlNoDataSourceInspection */
 		return $wpdb->get_results(
