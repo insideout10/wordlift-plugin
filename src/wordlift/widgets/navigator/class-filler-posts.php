@@ -14,24 +14,7 @@ class Filler_Posts {
 		// First add latest posts from same categories as the current post
 		if ( $filler_count > 0 ) {
 
-			$current_post_categories = wp_get_post_categories( $current_post_id );
-
-			$args = array(
-				'meta_query'          => array(
-					array(
-						'key' => '_thumbnail_id'
-					)
-				),
-				'category__in'        => $current_post_categories,
-				'numberposts'         => $filler_count,
-				'post__not_in'        => array_merge( array( $current_post_id ), $referencing_post_ids ),
-				'ignore_sticky_posts' => 1
-			);
-
-			if ( $post_types ) {
-				$args['post_type'] = $post_types;
-			}
-			$filler_posts = get_posts( $args );
+			$filler_posts = self::get_filler_posts_by_same_category( $current_post_id, $filler_count, $referencing_post_ids, $post_types );
 		}
 
 		$filler_count = $filler_count - count( $filler_posts );
@@ -43,21 +26,7 @@ class Filler_Posts {
 		// If that does not fill, add latest posts irrespective of category
 		if ( $filler_count > 0 ) {
 
-			$args = array(
-				'meta_query'          => array(
-					array(
-						'key' => '_thumbnail_id'
-					)
-				),
-				'numberposts'         => $filler_count,
-				'post__not_in'        => array_merge( array( $current_post_id ), $filler_post_ids, $referencing_post_ids ),
-				'ignore_sticky_posts' => 1
-			);
-			if ( $post_types ) {
-				$args['post_type'] = $post_types;
-			}
-			$filler_posts = array_merge( $filler_posts, get_posts( $args ) );
-
+			$filler_posts = self::get_filler_posts_from_different_categories( $filler_count, $current_post_id, $filler_post_ids, $referencing_post_ids, $post_types, $filler_posts );
 
 		}
 
@@ -80,6 +49,65 @@ class Filler_Posts {
 
 		return $filler_response;
 
+	}
+
+	/**
+	 * @param $current_post_id
+	 * @param $filler_count
+	 * @param $referencing_post_ids
+	 * @param array $post_types
+	 *
+	 * @return int[]|\WP_Post[]
+	 */
+	private static function get_filler_posts_by_same_category( $current_post_id, $filler_count, $referencing_post_ids, array $post_types ) {
+		$current_post_categories = wp_get_post_categories( $current_post_id );
+
+		$args = array(
+			'meta_query'          => array(
+				array(
+					'key' => '_thumbnail_id'
+				)
+			),
+			'category__in'        => $current_post_categories,
+			'numberposts'         => $filler_count,
+			'post__not_in'        => array_merge( array( $current_post_id ), $referencing_post_ids ),
+			'ignore_sticky_posts' => 1
+		);
+
+		if ( $post_types ) {
+			$args['post_type'] = $post_types;
+		}
+
+		return get_posts( $args );
+	}
+
+	/**
+	 * @param $filler_count
+	 * @param $current_post_id
+	 * @param $filler_post_ids
+	 * @param $referencing_post_ids
+	 * @param array $post_types
+	 * @param $filler_posts
+	 *
+	 * @return array
+	 */
+	private static function get_filler_posts_from_different_categories( $filler_count, $current_post_id, $filler_post_ids, $referencing_post_ids, array $post_types, $filler_posts ) {
+		$args = array(
+			'meta_query'          => array(
+				array(
+					'key' => '_thumbnail_id'
+				)
+			),
+			'numberposts'         => $filler_count,
+			'post__not_in'        => array_merge( array( $current_post_id ), $filler_post_ids, $referencing_post_ids ),
+			'ignore_sticky_posts' => 1
+		);
+		if ( $post_types ) {
+			$args['post_type'] = $post_types;
+		}
+		$filler_posts = array_merge( $filler_posts, get_posts( $args ) );
+
+		return $filler_posts;
 	}
 
 
