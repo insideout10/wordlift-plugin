@@ -149,7 +149,7 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 		// set the entity type as article.
 		$entity_type_service = Wordlift_Entity_Type_Service::get_instance();
 
-		$entity_type_service->set( $post_id, 'http://schema.org/Article' );
+		$entity_type_service->set( $post_id, 'http://schema.org/Thing' );
 
 		update_post_meta( $post_id, '_thumbnail_id', 'https://some-url-from-test.com' );
 
