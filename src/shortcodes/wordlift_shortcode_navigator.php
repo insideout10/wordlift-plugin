@@ -175,6 +175,7 @@ function _wl_navigator_get_data() {
 		$referencing_post_ids = array_map( function ( $p ) {
 			return $p->ID;
 		}, $referencing_posts );
+		$filler_posts_instance = new Filler_Posts( $referencing_post_ids, $post_types, );
 		$filler_posts         = Filler_Posts::get_filler_posts( $filler_count, $current_post_id, $referencing_post_ids, $post_types );
 		$results              = array_merge( $results, $filler_posts );
 	}
