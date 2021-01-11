@@ -80,6 +80,7 @@ function wl_shortcode_faceted_search_origin( $request ) {
 	// the current post is used as main entity.
 	// Otherwise, current post related entities are used.
 	$entity_service = Wordlift_Entity_Service::get_instance();
+
 	$entity_ids     = $entity_service->is_entity( $current_post->ID ) ?
 		array( $current_post->ID ) :
 		$entity_service->get_related_entities( $current_post->ID );
