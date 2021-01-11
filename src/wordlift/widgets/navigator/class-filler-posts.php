@@ -34,7 +34,7 @@ class Filler_Posts {
 	 * @param $post_types array<string>
 	 */
 	public function __construct( $current_post_id, $filler_count, $referencing_post_ids, $post_types ) {
-		
+
 		$this->current_post_id = $current_post_id;
 
 		$this->filler_count = $filler_count;
@@ -43,13 +43,11 @@ class Filler_Posts {
 
 		$this->post_types = $post_types;
 
-
 	}
 
 
-	static function get_filler_posts( $filler_count, $current_post_id, $referencing_post_ids, $post_types = array() ) {
 
-		$filler_posts = array();
+	static function get_filler_posts( $filler_count, $current_post_id, $referencing_post_ids, $post_types = array() ) {
 
 
 		// First check if there are any filler posts for current post type.
@@ -153,7 +151,6 @@ class Filler_Posts {
 
 		return $filler_posts;
 	}
-
 
 
 }
