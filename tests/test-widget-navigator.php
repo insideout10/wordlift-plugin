@@ -261,7 +261,7 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 	}
 
 
-	public function test_when_post_id_given_filler_posts_should_return_posts_from_same_category_and_also_filter_based_on_post_type() {
+	public function test_when_post_id_given_filler_posts_should_return_posts_from_same_post_type_first_and_return_from_same_category() {
 		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
 		$post_1 = $this->create_navigator_post( $entity );
 
@@ -279,8 +279,8 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$_GET['uniqid']     = "random_id";
 		$_GET['post_types'] = 'post,some-random-post-type';
 		$data               = _wl_navigator_get_data();
-		$this->assertCount( 2, $data, '2 posts should be returned, because we filter by post type `post`, the posts with other post types
-		should not be returned' );
+		$this->assertCount( 4, $data, '4 posts should be returned, because we filter by post type `post`, the posts with the page post type needs
+		to be returned first' );
 	}
 
 	public function test_when_the_posts_are_not_available_in_same_category_should_fetch_from_any_category_and_filter_by_post_type() {

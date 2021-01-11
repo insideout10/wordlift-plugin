@@ -216,6 +216,4 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 1, $result['posts'] );
 		$this->assertCount( 1, $result['entities'] );
 	}
-
-
 }
