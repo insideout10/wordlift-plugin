@@ -10,12 +10,12 @@ abstract class Filler_Posts {
 	/**
 	 * @var int
 	 */
-	protected $filler_count;
+	public $filler_count;
 
 	/**
 	 * @var array<int>
 	 */
-	protected $post_ids_to_be_excluded;
+	public $post_ids_to_be_excluded;
 
 	/**
 	 * @var $post_id int
@@ -26,16 +26,10 @@ abstract class Filler_Posts {
 	 * Filler_Posts constructor.
 	 *
 	 * @param $post_id
-	 * @param $filler_count int
-	 * @param $post_ids_to_be_excluded array
 	 */
-	public function __construct( $post_id, $filler_count, $post_ids_to_be_excluded ) {
+	public function __construct( $post_id ) {
 
 		$this->post_id = $post_id;
-
-		$this->filler_count = $filler_count;
-
-		$this->post_ids_to_be_excluded = $post_ids_to_be_excluded;
 
 	}
 

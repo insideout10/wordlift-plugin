@@ -12,8 +12,8 @@ class Post_Type_Filler_Posts extends Filler_Posts {
 	 */
 	private $post_types;
 
-	public function __construct( $post_id, $filler_count, $post_ids_to_be_excluded, $post_types ) {
-		parent::__construct( $post_id, $filler_count, $post_ids_to_be_excluded );
+	public function __construct( $post_id, $post_types ) {
+		parent::__construct( $post_id );
 		$this->post_types = $post_types;
 	}
 
