@@ -209,11 +209,11 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 		$_GET['uniqid']  = 'random_id';
 		$_GET['post_types'] = 'page,some-random-post-type';
 		/**
-		 * we restricted by page post type, now we should return only 2 posts and 1 entity.
+		 * we restricted by page post type, now we should return only 2 product posts and 1 entity.
 		 */
 		$result          = wl_shortcode_faceted_search_origin( null );
 
-		$this->assertCount( 2, $result['posts'] );
+		$this->assertCount( 1, $result['posts'] );
 		$this->assertCount( 1, $result['entities'] );
 	}
 
