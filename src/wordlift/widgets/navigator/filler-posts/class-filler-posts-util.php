@@ -40,6 +40,7 @@ class Filler_Posts_Util {
 		$filler_posts = array();
 
 		foreach ( $this->sources as $source ) {
+
 			if ( $filler_count <= 0 ) {
 				break;
 			}
@@ -54,8 +55,9 @@ class Filler_Posts_Util {
 
 			// Update the post ids, filler posts and filler count
 			$post_ids_to_be_excluded = array_merge( $post_ids_to_be_excluded, $post_ids );
+			$filler_count            = $filler_count - count( $posts );
 			$filler_posts            = array_merge( $filler_posts, $posts );
-			$filler_count            = $filler_count - count( $filler_posts );
+
 
 		}
 
