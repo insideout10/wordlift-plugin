@@ -54,6 +54,9 @@ abstract class Filler_Posts {
 
 	}
 
+	/**
+	 * @return array<\WP_Post>
+	 */
 	abstract function get_posts();
 
 
