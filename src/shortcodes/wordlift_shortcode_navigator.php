@@ -9,6 +9,7 @@
 
 use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Widgets\Navigator\Filler_Posts;
+use Wordlift\Widgets\Navigator\Filler_Posts\Filler_Posts_Util;
 use Wordlift\Widgets\Navigator\Navigator_Data;
 
 /**
@@ -175,9 +176,14 @@ function _wl_navigator_get_data() {
 		$referencing_post_ids = array_map( function ( $p ) {
 			return $p->ID;
 		}, $referencing_posts );
-		$filler_posts_instance = new Filler_Posts( $referencing_post_ids, $post_types, );
-		$filler_posts         = Filler_Posts::get_filler_posts( $filler_count, $current_post_id, $referencing_post_ids, $post_types );
-		$results              = array_merge( $results, $filler_posts );
+		/**
+		 * @since 3.27.8
+		 * Filler posts are fetched using this util.
+		 */
+		$filler_posts_util    = new Filler_Posts_Util( $current_post_id, $post_types );
+		$post_ids_to_be_excluded = array_merge( array( $current_post_id ), $referencing_post_ids );
+		$filler_posts            = $filler_posts_util->get_filler_response( $filler_count, $post_ids_to_be_excluded );
+		$results                 = array_merge( $results, $filler_posts );
 	}
 
 	// Apply filters after fillers are added

@@ -33,7 +33,7 @@ abstract class Filler_Posts {
 
 	}
 
-	protected function get_posts_config() {
+	protected function get_posts_config($filler_count, $post_ids_to_be_excluded) {
 
 		return array(
 			'meta_query'          => array(
@@ -41,17 +41,20 @@ abstract class Filler_Posts {
 					'key' => '_thumbnail_id'
 				)
 			),
-			'numberposts'         => $this->filler_count,
-			'post__not_in'        => $this->post_ids_to_be_excluded,
+			'numberposts'         => $filler_count,
+			'post__not_in'        => $post_ids_to_be_excluded,
 			'ignore_sticky_posts' => 1
 		);
 
 	}
 
 	/**
+	 * @param $filler_count
+	 * @param $post_ids_to_be_excluded
+	 *
 	 * @return array<\WP_Post>
 	 */
-	abstract function get_posts();
+	abstract function get_posts( $filler_count, $post_ids_to_be_excluded );
 
 
 }
