@@ -78,7 +78,7 @@ const blocks = {
     },
     //display the edit interface + preview
     edit: ({ attributes, setAttributes }) => {
-      const { title, template_id, post_id, uniqid, limit, preview, preview_src } = attributes;
+      const { title, template_id, post_id, uniqid, limit, preview, preview_src, post_types } = attributes;
       if (preview) {
         return (
           <Fragment>
@@ -119,6 +119,12 @@ const blocks = {
                 label={__("Unique ID", "wordlift")}
                 value={uniqid}
                 onChange={uniqid => setAttributes({ uniqid })}
+              />
+              <TextControl
+                  label={__("Post types", "wordlift")}
+                  help={__("The Post types which should be shown on faceted search results, For example  post,page", "wordlift")}
+                  value={post_types}
+                  onChange={post_types => setAttributes({ post_types })}
               />
             </PanelBody>
           </InspectorControls>
