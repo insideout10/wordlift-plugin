@@ -19,7 +19,7 @@ use Wordlift\Widgets\Navigator\Filler_Posts\Filler_Posts_Util;
 class Widget_Filler_Posts_Test extends Wordlift_Unit_Test_Case {
 
 
-	private function test_create_post_with_category( $category, $post_type = 'post' ) {
+	private function create_post_with_category( $category, $post_type = 'post' ) {
 
 		$post_id = $this->create_post_with_thumbnail( $post_type );
 
@@ -43,13 +43,13 @@ class Widget_Filler_Posts_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	public function test_when_post_type_is_post_should_get_latest_posts_with_same_category() {
-		$subject_post = $this->test_create_post_with_category( 'test_category' );
+		$subject_post = $this->create_post_with_category( 'test_category' );
 
 		// Lets create 4 posts in the same category, it should be returned.
-		$post_1 = $this->test_create_post_with_category( 'test_category' );
-		$post_2 = $this->test_create_post_with_category( 'test_category' );
-		$post_3 = $this->test_create_post_with_category( 'test_category' );
-		$post_4 = $this->test_create_post_with_category( 'test_category' );
+		$post_1 = $this->create_post_with_category( 'test_category' );
+		$post_2 = $this->create_post_with_category( 'test_category' );
+		$post_3 = $this->create_post_with_category( 'test_category' );
+		$post_4 = $this->create_post_with_category( 'test_category' );
 
 		$post_ids = array( $post_1, $post_2, $post_3, $post_4 );
 		sort( $post_ids );
@@ -61,7 +61,7 @@ class Widget_Filler_Posts_Test extends Wordlift_Unit_Test_Case {
 
 
 	public function test_post_type_is_post_but_same_category_posts_are_not_present_should_retrieve_latest_posts_of_same_post_type() {
-		$subject_post = $this->test_create_post_with_category( 'test_category' );
+		$subject_post = $this->create_post_with_category( 'test_category' );
 		/**
 		 * Lets create posts with post type 'post', but not on same category.
 		 */
@@ -80,7 +80,7 @@ class Widget_Filler_Posts_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_when_post_type_is_not_post_should_return_latest_posts_from_same_post_type() {
 		// Here the post type is set to page
-		$subject_post = $this->test_create_post_with_category( 'test_category', 'page' );
+		$subject_post = $this->create_post_with_category( 'test_category', 'page' );
 
 
 
@@ -91,8 +91,8 @@ class Widget_Filler_Posts_Test extends Wordlift_Unit_Test_Case {
 		$post_4 = $this->create_post_with_thumbnail('page');
 
 		// And 2 posts on `post` post type ( these posts should not be in the result )
-		$post_5 = $this->test_create_post_with_category('test_category');
-		$post_6 = $this->test_create_post_with_category('test_category');
+		$post_5 = $this->create_post_with_category('test_category');
+		$post_6 = $this->create_post_with_category('test_category');
 
 		$post_ids = array( $post_1, $post_2, $post_3, $post_4 );
 		sort( $post_ids );
