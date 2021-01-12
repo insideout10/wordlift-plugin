@@ -56,36 +56,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 
 					return '[' . $scope::SHORTCODE . ' ' . $attr_code . ']';
 				},
-				'attributes'      => array(
-					'title'       => array(
-						'type'    => 'string',
-						'default' => __( 'Related articles', 'wordlift' ),
-					),
-					'template_id' => array(
-						'type' => 'string',
-						'default' => '',
-					),
-					'post_id'     => array(
-						'type'    => 'number',
-						'default' => '',
-					),
-					'uniqid'      => array(
-						'type'    => 'string',
-						'default' => '',
-					),
-					'limit'       => array(
-						'type'    => 'number',
-						'default' => apply_filters( 'wl_faceted_search_default_limit', 10 ),
-					),
-					'preview'     => array(
-						'type'    => 'boolean',
-						'default' => false,
-					),
-					'preview_src' => array(
-						'type'    => 'string',
-						'default' => WP_CONTENT_URL . '/plugins/wordlift/images/block-previews/faceted-search.png',
-					),
-				),
+				'attributes'      => $this->get_block_attributes(),
 			) );
 		} );
 	}
@@ -302,6 +273,43 @@ HTML;
 			</section>
 		</div>
 HTML;
+	}
+
+	public function get_block_attributes() {
+		return array(
+			'title'       => array(
+				'type'    => 'string',
+				'default' => __( 'Related articles', 'wordlift' ),
+			),
+			'template_id' => array(
+				'type' => 'string',
+				'default' => '',
+			),
+			'post_id'     => array(
+				'type'    => 'number',
+				'default' => '',
+			),
+			'uniqid'      => array(
+				'type'    => 'string',
+				'default' => '',
+			),
+			'limit'       => array(
+				'type'    => 'number',
+				'default' => apply_filters( 'wl_faceted_search_default_limit', 10 ),
+			),
+			'preview'     => array(
+				'type'    => 'boolean',
+				'default' => false,
+			),
+			'preview_src' => array(
+				'type'    => 'string',
+				'default' => WP_CONTENT_URL . '/plugins/wordlift/images/block-previews/faceted-search.png',
+			),
+			'post_types' => array(
+				'type'    => 'string',
+				'default' => '',
+			)
+		);
 	}
 
 }

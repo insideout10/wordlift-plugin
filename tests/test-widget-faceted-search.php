@@ -198,7 +198,7 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_faceted_search_block_type_should_have_post_types_attribute() {
 		$shortcode  = new Wordlift_Faceted_Search_Shortcode();
-		$block_atts = $shortcode->get_navigator_block_attributes();
+		$block_atts = $shortcode->get_block_attributes();
 		$this->assertArrayHasKey( 'post_types', $block_atts );
 		$this->assertTrue( is_array( $block_atts['post_types'] ) );
 		$attribute_data = $block_atts['post_types'];
