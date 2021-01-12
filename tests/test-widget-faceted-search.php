@@ -209,11 +209,14 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_faceted_search_rest_url_should_have_post_types_attribute() {
 		$post_id = $this->factory()->post->create();
-		$faceted_search_shortcode = new Wordlift_Faceted_Search_Shortcode();
-		$post_types = 'post,page';
-		$rest_url = $faceted_search_shortcode->get_rest_url( get_post($post_id), '?', 10, $post_types);
-		$this->assertTrue( strpos($rest_url, 'post_types=post,page') !== false);
+		$html = do_shortcode("[wl_faceted_search post_types='post,page' post_id=$post_id]");
+		$this->assertTrue( strpos($html, 'post_types=post,page') !== false);
 	}
 
+	public function test_faceted_search_rest_url_should_NOT_have_post_types_attribute_if_not_supplied() {
+		$post_id = $this->factory()->post->create();
+		$html = do_shortcode("[wl_faceted_search post_id=$post_id]");
+		$this->assertFalse( strpos($html, 'post_types=post,page') !== false);
+	}
 
 }
