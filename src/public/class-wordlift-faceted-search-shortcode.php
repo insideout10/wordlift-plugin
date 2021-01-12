@@ -112,10 +112,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 
 		$permalink_structure = get_option( 'permalink_structure' );
 		$delimiter           = empty( $permalink_structure ) ? '&' : '?';
-		$rest_url            = $post ? rest_url( WL_REST_ROUTE_DEFAULT_NAMESPACE . '/faceted-search' . $delimiter . build_query( array(
-				'post_id' => $post->ID,
-				'limit'   => $limit
-			) ) ) : false;
+		$rest_url            = $this->get_rest_url( $post, $delimiter, $limit, $shortcode_atts['post_types'] );
 
 		// avoid building the widget when no valid $rest_url
 		if ( ! $rest_url ) {
@@ -310,6 +307,25 @@ HTML;
 				'default' => '',
 			)
 		);
+	}
+
+	/**
+	 * @param $post
+	 * @param $delimiter
+	 * @param $limit
+	 *
+	 * @param $post_types
+	 *
+	 * @return bool|string
+	 */
+	public function get_rest_url( $post, $delimiter, $limit, $post_types ) {
+		$rest_url = $post ? rest_url( WL_REST_ROUTE_DEFAULT_NAMESPACE . '/faceted-search' . $delimiter . build_query( array(
+				'post_id' => $post->ID,
+				'limit'   => $limit,
+				'post_types' => $post_types
+			) ) ) : false;
+
+		return $rest_url;
 	}
 
 }
