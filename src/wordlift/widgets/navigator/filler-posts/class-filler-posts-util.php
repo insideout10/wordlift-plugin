@@ -14,9 +14,9 @@ class Filler_Posts_Util {
 
 	public function __construct( $post_id ) {
 		$this->sources = array(
-			new Post_Type_Filler_Posts( $post_id, array() ),
 			new Same_Category_Filler_Posts( $post_id ),
-			new Default_Filler_Posts( $post_id )
+			new Same_Post_Type_Filler_Posts( $post_id ),
+			new Any_Post_Type_Filler_Posts( $post_id )
 		);
 	}
 

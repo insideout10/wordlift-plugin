@@ -60,7 +60,7 @@ class Widget_Filler_Posts_Test extends Wordlift_Unit_Test_Case {
 	}
 
 
-	public function test_when_post_type_is_post_but_same_category_posts_are_not_present_should_retrieve_latest_posts_of_same_post_type() {
+	public function test_post_type_is_post_but_same_category_posts_are_not_present_should_retrieve_latest_posts_of_same_post_type() {
 		$subject_post = $this->test_create_post_with_category( 'test_category' );
 		/**
 		 * Lets create posts with post type 'post', but not on same category.
@@ -77,6 +77,25 @@ class Widget_Filler_Posts_Test extends Wordlift_Unit_Test_Case {
 		$returned_post_ids = $this->extract_post_ids_and_sort( $filler_posts );
 		$this->assertEquals( $post_ids, $returned_post_ids );
 	}
+
+	public function test_post_type_post_but_latest_posts_of_same_post_type_not_present_should_retrieve_latest_posts_of_any_post_type() {
+		$subject_post = $this->test_create_post_with_category( 'test_category' );
+		/**
+		 * Lets create posts with post type 'post', but not on same category.
+		 */
+		$post_1 = $this->create_post_with_thumbnail('page');
+		$post_2 = $this->create_post_with_thumbnail('page');
+		$post_3 = $this->create_post_with_thumbnail('page');
+		$post_4 = $this->create_post_with_thumbnail('page');
+
+		$post_ids = array( $post_1, $post_2, $post_3, $post_4 );
+		sort( $post_ids );
+		$filler_posts_util = new Filler_Posts_Util( $subject_post );
+		$filler_posts      = $filler_posts_util->get_filler_posts( 4, array( $subject_post ) );
+		$returned_post_ids = $this->extract_post_ids_and_sort( $filler_posts );
+		$this->assertEquals( $post_ids, $returned_post_ids );
+	}
+
 
 	/**
 	 * @param $post_type
