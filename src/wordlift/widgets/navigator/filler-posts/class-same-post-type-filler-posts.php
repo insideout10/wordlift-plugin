@@ -12,7 +12,12 @@ class Same_Post_Type_Filler_Posts extends Filler_Posts {
 	}
 
 	function get_posts( $filler_count, $post_ids_to_be_excluded ) {
-		return get_posts( array( 'post_type' => get_post_type( $this->post_id ) )
+		$post_type = get_post_type( $this->post_id );
+		if ( $post_type === 'entity' ) {
+			$post_type = 'post';
+		}
+
+		return get_posts( array( 'post_type' => $post_type )
 		                  + $this->get_posts_config( $filler_count, $post_ids_to_be_excluded ) );
 	}
 }

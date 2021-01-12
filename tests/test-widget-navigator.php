@@ -267,15 +267,15 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 	}
 
 
-	public function test_when_post_id_given_filler_posts_should_return_posts_from_same_category_and_also_filter_based_on_post_type() {
+	public function test_when_post_id_given_filler_posts_should_return_posts_from_same_category_and_also_filter_based_on_same_post_type() {
 		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
 		$post_1 = $this->create_navigator_post( $entity, 'page' );
 
 		/**
 		 * Create posts on the same category
 		 */
-		$post_2 = $this->create_filler_post_in_same_category();
-		$post_3 = $this->create_filler_post_in_same_category();
+		$post_2 = $this->create_filler_post_in_same_category('page');
+		$post_3 = $this->create_filler_post_in_same_category('page');
 		$post_4 = $this->create_filler_post_in_same_category( 'page' );
 		$post_5 = $this->create_filler_post_in_same_category( 'page' );
 		/**
@@ -304,8 +304,7 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$_GET['uniqid']     = "random_id";
 		$_GET['post_types'] = 'page,some-random-post-type';
 		$data               = _wl_navigator_get_data();
-		$this->assertCount( 4, $data, '4 posts should be returned, even though we filter by post type, the filler functions should
-		work without filter.' );
+		$this->assertCount( 2, $data, '2 posts should be returned, filler posts should not pick the post type page' );
 	}
 
 	private function create_filler_post_in_same_category( $post_type = 'post' ) {
