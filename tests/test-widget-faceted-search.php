@@ -102,11 +102,121 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_on_do_shortcode_should_have_template_url() {
 		new Wordlift_Faceted_Search_Shortcode();
-		$post_id = $this->factory()->post->create();
-		$post = get_post( $post_id );
-		$result = do_shortcode("[wl_faceted_search template_id='foo' post_id=$post_id]");
+		$post_id      = $this->factory()->post->create();
+		$post         = get_post( $post_id );
+		$result       = do_shortcode( "[wl_faceted_search template_id='foo' post_id=$post_id]" );
 		$template_url = "?rest_route=/wordlift/v1/faceted-search/template";
-		$this->assertTrue( strpos( $result, $template_url) !== false, "Template url should be present in the faceted search, but got $result " );
+		$this->assertTrue( strpos( $result, $template_url ) !== false, "Template url should be present in the faceted search, but got $result " );
+	}
+
+
+	public function create_faceted_search_post( $linked_entity, $post_type = 'post' ) {
+		$post_id = $this->factory()->post->create( array( 'post_type' => $post_type ) );
+
+		wl_core_add_relation_instance( $post_id, WL_WHO_RELATION, $linked_entity );
+		if ( ! category_exists( 'faceted_search_category' ) ) {
+			wp_create_category( 'faceted_search_category' );
+		}
+		/**
+		 * @var $category WP_Term
+		 */
+		$this->set_faceted_search_category( $post_id );
+
+
+		// set the entity type as article.
+		$entity_type_service = Wordlift_Entity_Type_Service::get_instance();
+
+		$entity_type_service->set( $post_id, 'http://schema.org/Article' );
+
+		update_post_meta( $post_id, '_thumbnail_id', 'https://some-url-from-test.com' );
+
+		return $post_id;
+	}
+
+
+	public function create_faceted_search_entity() {
+		$post_id = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+
+		if ( ! category_exists( 'faceted_search_category' ) ) {
+			wp_create_category( 'faceted_search_category' );
+		}
+		/**
+		 * @var $category WP_Term
+		 */
+		$this->set_faceted_search_category( $post_id );
+
+
+		// set the entity type as article.
+		$entity_type_service = Wordlift_Entity_Type_Service::get_instance();
+
+		$entity_type_service->set( $post_id, 'http://schema.org/Thing' );
+
+		update_post_meta( $post_id, '_thumbnail_id', 'https://some-url-from-test.com' );
+
+		return $post_id;
+	}
+
+
+	/**
+	 * @param $post_id
+	 */
+	private function set_faceted_search_category( $post_id ) {
+		$category = get_category_by_slug( 'faceted_search_category' );
+
+		wp_set_post_categories( $post_id, array( $category->term_id ) );
+	}
+
+	public function test_faceted_search_should_return_results_correctly_for_entity() {
+		$entity_1        = $this->create_faceted_search_entity();
+		$entity_2        = $this->create_faceted_search_entity();
+		$post_1          = $this->create_faceted_search_post( $entity_1 );
+		$post_2          = $this->create_faceted_search_post( $entity_2 );
+		$post_3          = $this->create_faceted_search_post( $entity_1 );
+		$post_4          = $this->create_faceted_search_post( $entity_1 );
+		$post_5          = $this->create_faceted_search_post( $entity_1 );
+		$_GET['post_id'] = $entity_1;
+		$_GET['uniqid']  = 'random_id';
+		$result          = wl_shortcode_faceted_search_origin( null );
+		$this->assertCount( 4, $result['posts'] );
+	}
+
+
+	public function test_faceted_search_should_return_posts_correctly_for_post() {
+		// Link multiple posts to this post.
+		$entity_1        = $this->create_faceted_search_entity();
+		$page_1          = $this->create_faceted_search_post( $entity_1, 'page' );
+		$page_2          = $this->create_faceted_search_post( $entity_1, 'page' );
+		$product_1       = $this->create_faceted_search_post( $entity_1, 'product' );
+		$product_2       = $this->create_faceted_search_post( $entity_1, 'product' );
+		$_GET['post_id'] = $page_1;
+		$_GET['uniqid']  = 'random_id';
+		$result          = wl_shortcode_faceted_search_origin( null );
+		$this->assertCount( 3, $result['posts'] );
+		$this->assertCount( 1, $result['entities'] );
+	}
+
+
+	public function test_faceted_search_block_type_should_have_post_types_attribute() {
+		$shortcode  = new Wordlift_Faceted_Search_Shortcode();
+		$block_atts = $shortcode->get_block_attributes();
+		$this->assertArrayHasKey( 'post_types', $block_atts );
+		$this->assertTrue( is_array( $block_atts['post_types'] ) );
+		$attribute_data = $block_atts['post_types'];
+		$this->assertArrayHasKey( 'type', $attribute_data );
+		$this->assertArrayHasKey( 'default', $attribute_data );
+	}
+
+
+	public function test_faceted_search_rest_url_should_have_post_types_attribute() {
+		$post_id = $this->factory()->post->create();
+		$html = do_shortcode("[wl_faceted_search post_types='post,page' post_id=$post_id]");
+		$this->assertTrue( strpos($html, 'post_types=post,page') !== false);
+	}
+
+	public function test_faceted_search_rest_url_should_NOT_have_post_types_attribute_if_not_supplied() {
+		$post_id = $this->factory()->post->create();
+		$html = do_shortcode("[wl_faceted_search post_id=$post_id]");
+		$this->assertFalse( strpos($html, 'post_types=post,page') !== false);
 	}
 
 

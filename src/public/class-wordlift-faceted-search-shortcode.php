@@ -56,36 +56,8 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 
 					return '[' . $scope::SHORTCODE . ' ' . $attr_code . ']';
 				},
-				'attributes'      => array(
-					'title'       => array(
-						'type'    => 'string',
-						'default' => __( 'Related articles', 'wordlift' ),
-					),
-					'template_id' => array(
-						'type'    => 'string',
-						'default' => '',
-					),
-					'post_id'     => array(
-						'type'    => 'number',
-						'default' => '',
-					),
-					'uniqid'      => array(
-						'type'    => 'string',
-						'default' => '',
-					),
-					'limit'       => array(
-						'type'    => 'number',
-						'default' => apply_filters( 'wl_faceted_search_default_limit', 10 ),
-					),
-					'preview'     => array(
-						'type'    => 'boolean',
-						'default' => false,
-					),
-					'preview_src' => array(
-						'type'    => 'string',
-						'default' => WP_CONTENT_URL . '/plugins/wordlift/images/block-previews/faceted-search.png',
-					),
-				),
+
+				'attributes'      => $this->get_block_attributes(),
 			) );
 		} );
 	}
@@ -109,6 +81,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 			'post_id'     => '',
 			'template_id' => '',
 			'uniqid'      => uniqid( 'wl-faceted-widget-' ),
+			'post_types'  => '',
 		), $atts );
 
 		return $shortcode_atts;
@@ -141,11 +114,9 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 
 		$permalink_structure = get_option( 'permalink_structure' );
 		$delimiter           = empty( $permalink_structure ) ? '&' : '?';
-		$rest_url            = $post ? rest_url( WL_REST_ROUTE_DEFAULT_NAMESPACE . '/faceted-search' . $delimiter . build_query( array(
-				'post_id' => $post->ID,
-				'limit'   => $limit
-			) ) ) : false;
+		$rest_url            = $this->get_rest_url( $post, $delimiter, $limit, $shortcode_atts['post_types'] );
 		$rest_url            = esc_attr( $rest_url );
+
 
 		// avoid building the widget when no valid $rest_url
 		if ( ! $rest_url ) {
@@ -303,6 +274,62 @@ HTML;
 			</section>
 		</div>
 HTML;
+	}
+
+	public function get_block_attributes() {
+		return array(
+			'title'       => array(
+				'type'    => 'string',
+				'default' => __( 'Related articles', 'wordlift' ),
+			),
+			'template_id' => array(
+				'type'    => 'string',
+				'default' => '',
+			),
+			'post_id'     => array(
+				'type'    => 'number',
+				'default' => '',
+			),
+			'uniqid'      => array(
+				'type'    => 'string',
+				'default' => '',
+			),
+			'limit'       => array(
+				'type'    => 'number',
+				'default' => apply_filters( 'wl_faceted_search_default_limit', 10 ),
+			),
+			'preview'     => array(
+				'type'    => 'boolean',
+				'default' => false,
+			),
+			'preview_src' => array(
+				'type'    => 'string',
+				'default' => WP_CONTENT_URL . '/plugins/wordlift/images/block-previews/faceted-search.png',
+			),
+			'post_types'  => array(
+				'type'    => 'string',
+				'default' => '',
+			)
+		);
+	}
+
+	/**
+	 * @param $post
+	 * @param $delimiter
+	 * @param $limit
+	 *
+	 * @param $post_types
+	 *
+	 * @return bool|string
+	 */
+	public function get_rest_url( $post, $delimiter, $limit, $post_types ) {
+		$rest_url = $post ? rest_url( WL_REST_ROUTE_DEFAULT_NAMESPACE . '/faceted-search' . $delimiter . build_query( array(
+				'post_id'    => $post->ID,
+				'limit'      => $limit,
+				'post_types' => $post_types
+			) ) ) : false;
+
+		return $rest_url;
 	}
 
 }

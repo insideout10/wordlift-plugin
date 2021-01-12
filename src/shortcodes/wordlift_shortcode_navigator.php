@@ -8,6 +8,9 @@
  */
 
 use Wordlift\Cache\Ttl_Cache;
+use Wordlift\Widgets\Navigator\Filler_Posts;
+use Wordlift\Widgets\Navigator\Filler_Posts\Filler_Posts_Util;
+use Wordlift\Widgets\Navigator\Navigator_Data;
 
 /**
  * The Navigator data function.
@@ -96,12 +99,15 @@ function _wl_navigator_get_data() {
 	}
 
 	// Limit the results (defaults to 4)
-	$navigator_length = isset( $_GET['limit'] ) ? intval( $_GET['limit'] ) : 4;
-	$navigator_offset = isset( $_GET['offset'] ) ? intval( $_GET['offset'] ) : 0;
-	$order_by         = isset( $_GET['sort'] ) ? sanitize_sql_orderby( $_GET['sort'] ) : 'ID DESC';
-
-	$current_post_id = $_GET['post_id'];
-	$current_post    = get_post( $current_post_id );
+	$navigator_length    = isset( $_GET['limit'] ) ? intval( $_GET['limit'] ) : 4;
+	$navigator_offset    = isset( $_GET['offset'] ) ? intval( $_GET['offset'] ) : 0;
+	$order_by            = isset( $_GET['sort'] ) ? sanitize_sql_orderby( $_GET['sort'] ) : 'ID DESC';
+	$post_types          = isset( $_GET['post_types'] ) ? (string) $_GET['post_types'] : '';
+	$post_types          = explode( ',', $post_types );
+	$existing_post_types = get_post_types();
+	$post_types          = array_values( array_intersect( $existing_post_types, $post_types ) );
+	$current_post_id     = $_GET['post_id'];
+	$current_post        = get_post( $current_post_id );
 
 	$navigator_id = $_GET['uniqid'];
 
@@ -114,15 +120,16 @@ function _wl_navigator_get_data() {
 
 	// Determine navigator type and call respective _get_results
 	if ( get_post_type( $current_post_id ) === Wordlift_Entity_Service::TYPE_NAME ) {
-		$referencing_posts = _wl_entity_navigator_get_results( $current_post_id, array(
+
+		$referencing_posts = Navigator_Data::entity_navigator_get_results( $current_post_id, array(
 			'ID',
 			'post_title',
-		), $order_by, $navigator_length, $navigator_offset );
+		), $order_by, $navigator_length, $navigator_offset, $post_types );
 	} else {
-		$referencing_posts = _wl_navigator_get_results( $current_post_id, array(
+		$referencing_posts = Navigator_Data::post_navigator_get_results( $current_post_id, array(
 			'ID',
 			'post_title',
-		), $order_by, $navigator_length, $navigator_offset );
+		), $order_by, $navigator_length, $navigator_offset, $post_types );
 	}
 
 	// loop over them and take the first one which is not already in the $related_posts
@@ -158,6 +165,7 @@ function _wl_navigator_get_data() {
 		$results[] = $result;
 	}
 
+
 	if ( count( $results ) < $navigator_length ) {
 		$results = apply_filters( 'wl_navigator_data_placeholder', $results, $navigator_id, $navigator_offset, $navigator_length );
 	}
@@ -168,8 +176,14 @@ function _wl_navigator_get_data() {
 		$referencing_post_ids = array_map( function ( $p ) {
 			return $p->ID;
 		}, $referencing_posts );
-		$filler_posts         = wl_shortcode_navigator_filler_posts( $filler_count, $current_post_id, $referencing_post_ids );
-		$results              = array_merge( $results, $filler_posts );
+		/**
+		 * @since 3.27.8
+		 * Filler posts are fetched using this util.
+		 */
+		$filler_posts_util    = new Filler_Posts_Util( $current_post_id );
+		$post_ids_to_be_excluded = array_merge( array( $current_post_id ), $referencing_post_ids );
+		$filler_posts            = $filler_posts_util->get_filler_response( $filler_count, $post_ids_to_be_excluded );
+		$results                 = array_merge( $filler_posts, $results );
 	}
 
 	// Apply filters after fillers are added
@@ -244,113 +258,6 @@ function _wl_network_navigator_get_data( $request ) {
 
 }
 
-
-function _wl_navigator_get_results(
-	$post_id, $fields = array(
-	'ID',
-	'post_title',
-), $order_by = 'ID DESC', $limit = 10, $offset = 0
-) {
-	global $wpdb;
-
-	$select = implode( ', ', array_map( function ( $item ) {
-		return "p.$item AS $item";
-	}, (array) $fields ) );
-
-	$order_by = implode( ', ', array_map( function ( $item ) {
-		return "p.$item";
-	}, (array) $order_by ) );
-
-	/** @noinspection SqlNoDataSourceInspection */
-	return $wpdb->get_results(
-		$wpdb->prepare( <<<EOF
-SELECT %4\$s, p2.ID as entity_id
- FROM {$wpdb->prefix}wl_relation_instances r1
-    INNER JOIN {$wpdb->prefix}wl_relation_instances r2
-        ON r2.object_id = r1.object_id
-            AND r2.subject_id != %1\$d
-	-- get the ID of the post entity in common between the object and the subject 2. 
-    INNER JOIN {$wpdb->posts} p2
-        ON p2.ID = r2.object_id
-            AND p2.post_status = 'publish'
-    INNER JOIN {$wpdb->posts} p
-        ON p.ID = r2.subject_id
-            AND p.post_status = 'publish'
-    INNER JOIN {$wpdb->term_relationships} tr
-     	ON tr.object_id = p.ID
-    INNER JOIN {$wpdb->term_taxonomy} tt
-     	ON tt.term_taxonomy_id = tr.term_taxonomy_id
-      	    AND tt.taxonomy = 'wl_entity_type'
-    INNER JOIN {$wpdb->terms} t
-        ON t.term_id = tt.term_id
-            AND t.slug = 'article'
-    -- select only posts with featured images.
-    INNER JOIN {$wpdb->postmeta} m
-        ON m.post_id = p.ID
-            AND m.meta_key = '_thumbnail_id'
- WHERE r1.subject_id = %1\$d
- -- avoid duplicates.
- GROUP BY p.ID
- ORDER BY %5\$s
- LIMIT %2\$d
- OFFSET %3\$d
-EOF
-			, $post_id, $limit, $offset, $select, $order_by )
-	);
-
-}
-
-function _wl_entity_navigator_get_results(
-	$post_id, $fields = array(
-	'ID',
-	'post_title',
-), $order_by = 'ID DESC', $limit = 10, $offset = 0
-) {
-	global $wpdb;
-
-	$select = implode( ', ', array_map( function ( $item ) {
-		return "p.$item AS $item";
-	}, (array) $fields ) );
-
-	$order_by = implode( ', ', array_map( function ( $item ) {
-		return "p.$item";
-	}, (array) $order_by ) );
-
-	/** @noinspection SqlNoDataSourceInspection */
-	return $wpdb->get_results(
-		$wpdb->prepare( <<<EOF
-SELECT %4\$s, p2.ID as entity_id
- FROM {$wpdb->prefix}wl_relation_instances r1
-	-- get the ID of the post entity in common between the object and the subject 2. 
-    INNER JOIN {$wpdb->posts} p2
-        ON p2.ID = r1.object_id
-            AND p2.post_status = 'publish'
-    INNER JOIN {$wpdb->posts} p
-        ON p.ID = r1.subject_id
-            AND p.post_status = 'publish'
-    INNER JOIN {$wpdb->term_relationships} tr
-     	ON tr.object_id = p.ID
-    INNER JOIN {$wpdb->term_taxonomy} tt
-     	ON tt.term_taxonomy_id = tr.term_taxonomy_id
-      	    AND tt.taxonomy = 'wl_entity_type'
-    INNER JOIN {$wpdb->terms} t
-        ON t.term_id = tt.term_id
-            AND t.slug = 'article'
-    -- select only posts with featured images.
-    INNER JOIN {$wpdb->postmeta} m
-        ON m.post_id = p.ID
-            AND m.meta_key = '_thumbnail_id'
- WHERE r1.object_id = %1\$d
- -- avoid duplicates.
- GROUP BY p.ID
- ORDER BY %5\$s
- LIMIT %2\$d
- OFFSET %3\$d
-EOF
-			, $post_id, $limit, $offset, $select, $order_by )
-	);
-}
-
 function _wl_network_navigator_get_results(
 	$entities, $fields = array(
 	'ID',
@@ -407,73 +314,6 @@ EOF
 
 }
 
-function wl_shortcode_navigator_filler_posts( $filler_count, $current_post_id, $referencing_post_ids ) {
-
-	$filler_posts = array();
-
-	// First add latest posts from same categories as the current post
-	if ( $filler_count > 0 ) {
-
-		$current_post_categories = wp_get_post_categories( $current_post_id );
-
-		$args = array(
-			'meta_query'          => array(
-				array(
-					'key' => '_thumbnail_id'
-				)
-			),
-			'category__in'        => $current_post_categories,
-			'numberposts'         => $filler_count,
-			'post__not_in'        => array_merge( array( $current_post_id ), $referencing_post_ids ),
-			'ignore_sticky_posts' => 1
-		);
-
-		$filler_posts = get_posts( $args );
-	}
-
-	$filler_count    = $filler_count - count( $filler_posts );
-	$filler_post_ids = array_map( function ( $post ) {
-		return $post->ID;
-	}, $filler_posts );
-
-	// If that does not fill, add latest posts irrespective of category
-	if ( $filler_count > 0 ) {
-
-		$args = array(
-			'meta_query'          => array(
-				array(
-					'key' => '_thumbnail_id'
-				)
-			),
-			'numberposts'         => $filler_count,
-			'post__not_in'        => array_merge( array( $current_post_id ), $filler_post_ids, $referencing_post_ids ),
-			'ignore_sticky_posts' => 1
-		);
-
-		$filler_posts = array_merge( $filler_posts, get_posts( $args ) );
-
-	}
-
-	// Add thumbnail and permalink to filler posts
-	$filler_response = array();
-	foreach ( $filler_posts as $post_obj ) {
-		$thumbnail         = get_the_post_thumbnail_url( $post_obj, 'medium' );
-		$filler_response[] = array(
-			'post'   => array(
-				'id'        => $post_obj->ID,
-				'permalink' => get_permalink( $post_obj->ID ),
-				'thumbnail' => ( $thumbnail ) ? $thumbnail : WL_DEFAULT_THUMBNAIL_PATH,
-				'title'     => get_the_title( $post_obj->ID )
-			),
-			'entity' => array(
-				'id' => 0
-			)
-		);
-	}
-
-	return $filler_response;
-
-}
 
 /**
  * The Navigator Ajax function.
