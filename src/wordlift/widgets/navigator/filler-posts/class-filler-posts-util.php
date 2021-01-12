@@ -12,9 +12,9 @@ class Filler_Posts_Util {
 	 */
 	private $sources = array();
 
-	public function __construct( $post_id, $post_types ) {
+	public function __construct( $post_id ) {
 		$this->sources = array(
-			new Post_Type_Filler_Posts( $post_id, $post_types ),
+			new Post_Type_Filler_Posts( $post_id, array() ),
 			new Same_Category_Filler_Posts( $post_id ),
 			new Default_Filler_Posts( $post_id )
 		);
