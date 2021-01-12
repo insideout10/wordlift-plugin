@@ -112,6 +112,7 @@ function wl_shortcode_faceted_search_origin( $request ) {
 		$order_by = (string) $_GET['sort'];
 	}
 
+
 	$referencing_posts = Wordlift_Relation_Service::get_instance()->get_article_subjects(
 		$entity_ids,
 		'*',
@@ -123,6 +124,7 @@ function wl_shortcode_faceted_search_origin( $request ) {
 		$order_by,
 		$post_types
 	);
+
 
 	$referencing_post_ids = array_map( function ( $p ) {
 		return $p->ID;
