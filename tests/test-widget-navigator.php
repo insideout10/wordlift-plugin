@@ -181,8 +181,14 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$_GET['post_id']    = $post_1;
 		$_GET['uniqid']     = "random_id";
 		$_GET['post_types'] = 'post,some-random-post-type';
-		$data               = _wl_navigator_get_data();
-		$this->assertEquals( 2, count( $data ) );
+		$posts               = _wl_navigator_get_data();
+
+		// the first 2 returned posts should have post type post
+		$this->assertEquals( 'post', get_post_type($posts[0]['post']['id']));
+		$this->assertEquals( 'post', get_post_type($posts[1]['post']['id']));
+
+		// we expect 4 posts since filler posts would be added.
+		$this->assertEquals( 4, count( $posts ) );
 
 	}
 
