@@ -73,6 +73,13 @@ class Filler_Posts_Util {
 
 	}
 
+	/**
+	 * Called by wordlift navigator, converts all the posts to response format.
+	 * @param $filler_count
+	 * @param $post_ids_to_be_excluded
+	 *
+	 * @return array
+	 */
 	public function get_filler_response( $filler_count, $post_ids_to_be_excluded ) {
 		$filler_posts = $this->get_filler_posts( $filler_count, $post_ids_to_be_excluded );
 		// Add thumbnail and permalink to filler posts
