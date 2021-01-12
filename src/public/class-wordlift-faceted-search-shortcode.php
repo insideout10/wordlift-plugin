@@ -57,7 +57,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 					return '[' . $scope::SHORTCODE . ' ' . $attr_code . ']';
 				},
 
-				'attributes'      => $this->get_block_attributes(),
+				'attributes'      => $scope->get_block_attributes(),
 			) );
 		} );
 	}

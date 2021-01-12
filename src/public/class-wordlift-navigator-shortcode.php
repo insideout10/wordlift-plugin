@@ -56,7 +56,7 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 
 					return '[' . $scope::SHORTCODE . ' ' . $attr_code . ']';
 				},
-				'attributes'      => $this->get_navigator_block_attributes(),
+				'attributes'      => $scope->get_navigator_block_attributes(),
 			) );
 		} );
 	}
