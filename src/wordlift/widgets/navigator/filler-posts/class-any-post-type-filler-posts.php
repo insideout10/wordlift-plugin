@@ -14,7 +14,13 @@ namespace Wordlift\Widgets\Navigator\Filler_Posts;
 class Any_Post_Type_Filler_Posts extends Filler_Posts {
 
 	function get_posts( $filler_count, $post_ids_to_be_excluded ) {
-		return get_posts( array( 'post_type' => get_post_types() )
+		$post_types = get_post_types();
+		$key        = array_search( 'entity', $post_types );
+		if ( $key !== false ) {
+			unset( $post_types[ $key ] );
+		}
+
+		return get_posts( array( 'post_type' => $post_types )
 		                  + $this->get_posts_config( $filler_count, $post_ids_to_be_excluded ) );
 	}
 }
