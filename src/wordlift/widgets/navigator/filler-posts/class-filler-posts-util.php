@@ -35,7 +35,7 @@ class Filler_Posts_Util {
 		}, $posts );
 	}
 
-	private function get_filler_posts( $filler_count, $post_ids_to_be_excluded ) {
+	public function get_filler_posts( $filler_count, $post_ids_to_be_excluded ) {
 
 		$filler_posts = array();
 

@@ -196,24 +196,4 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 1, $result['entities'] );
 	}
 
-
-	public function test_faceted_search_should_return_posts_correctly_for_post_when_post_type_filter_is_turned_on() {
-
-		// Link multiple posts to this post.
-		$entity_1        = $this->create_faceted_search_entity();
-		$page_1          = $this->create_faceted_search_post( $entity_1, 'page' );
-		$page_2          = $this->create_faceted_search_post( $entity_1, 'page' );
-		$product_1       = $this->create_faceted_search_post( $entity_1, 'product' );
-		$product_2       = $this->create_faceted_search_post( $entity_1, 'product' );
-		$_GET['post_id'] = $page_1;
-		$_GET['uniqid']  = 'random_id';
-		$_GET['post_types'] = 'page,some-random-post-type';
-		/**
-		 * we restricted by page post type, now we should return only 2 product posts and 1 entity.
-		 */
-		$result          = wl_shortcode_faceted_search_origin( null );
-
-		$this->assertCount( 1, $result['posts'] );
-		$this->assertCount( 1, $result['entities'] );
-	}
 }
