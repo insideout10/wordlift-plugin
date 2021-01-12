@@ -56,6 +56,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 
 					return '[' . $scope::SHORTCODE . ' ' . $attr_code . ']';
 				},
+
 				'attributes'      => $this->get_block_attributes(),
 			) );
 		} );
@@ -114,6 +115,8 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 		$permalink_structure = get_option( 'permalink_structure' );
 		$delimiter           = empty( $permalink_structure ) ? '&' : '?';
 		$rest_url            = $this->get_rest_url( $post, $delimiter, $limit, $shortcode_atts['post_types'] );
+		$rest_url            = esc_attr( $rest_url );
+
 
 		// avoid building the widget when no valid $rest_url
 		if ( ! $rest_url ) {

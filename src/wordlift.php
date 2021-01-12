@@ -24,6 +24,7 @@
  * Domain Path:       /languages
  */
 
+use Wordlift\Admin\Key_Validation_Notice;
 use Wordlift\Admin\Top_Entities;
 use Wordlift\Api\Default_Api_Service;
 use Wordlift\Api\User_Agent;
@@ -414,6 +415,11 @@ function deactivate_wordlift() {
 	 * @see https://github.com/insideout10/wordlift-plugin/issues/1214
 	 */
 	Top_Entities::deactivate();
+	/**
+	 * @since 3.27.8
+	 * Remove notification flag on deactivation.
+	 */
+	Key_Validation_Notice::remove_notification_flag();
 	flush_rewrite_rules();
 
 }

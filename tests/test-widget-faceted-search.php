@@ -219,4 +219,12 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 		$this->assertFalse( strpos($html, 'post_types=post,page') !== false);
 	}
 
+
+	public function  test_given_post_id_html_attributes_should_be_escaped_for_faceted_search_url() {
+		$post_id = $this->factory()->post->create();
+		$html = do_shortcode("[wl_faceted_search limit=10 post_id=$post_id]");
+		$expected_url_output = "wordlift/v1/faceted-search&amp;post_id=$post_id&amp;limit=10";
+		$this->assertTrue( strpos($html, $expected_url_output) !== false);
+	}
+
 }
