@@ -334,4 +334,18 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		return $post_id;
 	}
 
+	public function test_navigator_rest_url_should_have_post_types_attribute() {
+		$post_id = $this->factory()->post->create();
+		$html = do_shortcode("[wl_navigator post_types='post,page' post_id=$post_id]");
+		$this->assertTrue( strpos($html, 'post_types=post,page') !== false);
+	}
+
+	public function test_navigator_rest_url_should_NOT_have_post_types_attribute_if_not_supplied() {
+		$post_id = $this->factory()->post->create();
+		$html = do_shortcode("[wl_navigator post_id=$post_id]");
+		$this->assertFalse( strpos($html, 'post_types=post,page') !== false);
+	}
+
+
+
 }

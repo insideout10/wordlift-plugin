@@ -81,7 +81,8 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 			'template_id' => '',
 			'post_id'     => '',
 			'uniqid'      => uniqid( 'wl-navigator-widget-' ),
-			'order_by'    => 'ID DESC'
+			'order_by'    => 'ID DESC',
+			'post_types'  => '',
 		), $atts );
 
 		return $shortcode_atts;
@@ -120,7 +121,8 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 				'post_id' => $post->ID,
 				'limit'   => $limit,
 				'offset'  => $offset,
-				'sort'    => $sort
+				'sort'    => $sort,
+				'post_types' => $shortcode_atts['post_types']
 			) ) ) : false;
 
 		// avoid building the widget when no valid $rest_url
@@ -274,7 +276,7 @@ HTML;
 				'type'    => 'string',
 				'default' => WP_CONTENT_URL . '/plugins/wordlift/images/block-previews/navigator.png',
 			),
-			'post_types' => array(
+			'post_types'  => array(
 				'type'    => 'string',
 				'default' => '',
 			)
