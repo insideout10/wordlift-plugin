@@ -13,11 +13,21 @@ class Filler_Posts_Util {
 	private $sources = array();
 
 	public function __construct( $post_id ) {
-		$this->sources = array(
-			new Same_Category_Filler_Posts( $post_id ),
-			new Same_Post_Type_Filler_Posts( $post_id ),
-			new Any_Post_Type_Filler_Posts( $post_id )
-		);
+
+		$post_type = get_post_type( $post_id );
+
+		if ( $post_type === 'post' ) {
+			$this->sources = array(
+				new Same_Category_Filler_Posts( $post_id ),
+				new Same_Post_Type_Filler_Posts( $post_id ),
+				new Any_Post_Type_Filler_Posts( $post_id )
+			);
+		} else {
+			$this->sources = array(
+				new Same_Post_Type_Filler_Posts( $post_id ),
+				new Any_Post_Type_Filler_Posts( $post_id )
+			);
+		}
 	}
 
 

@@ -97,6 +97,32 @@ class Widget_Filler_Posts_Test extends Wordlift_Unit_Test_Case {
 	}
 
 
+	public function test_when_post_type_is_not_post_should_return_latest_posts_from_same_post_type() {
+		// Here the post type is set to page
+		$subject_post = $this->test_create_post_with_category( 'test_category', 'page' );
+
+
+
+		// Now we will create 4 posts on the page post type.
+		$post_1 = $this->create_post_with_thumbnail('page');
+		$post_2 = $this->create_post_with_thumbnail('page');
+		$post_3 = $this->create_post_with_thumbnail('page');
+		$post_4 = $this->create_post_with_thumbnail('page');
+
+		// And 2 posts on `post` post type ( these posts should not be in the result )
+		$post_5 = $this->test_create_post_with_category('test_category');
+		$post_6 = $this->test_create_post_with_category('test_category');
+
+		$post_ids = array( $post_1, $post_2, $post_3, $post_4 );
+		sort( $post_ids );
+		$filler_posts_util = new Filler_Posts_Util( $subject_post );
+		$filler_posts      = $filler_posts_util->get_filler_posts( 4, array( $subject_post ) );
+		$returned_post_ids = $this->extract_post_ids_and_sort( $filler_posts );
+		$this->assertEquals( $post_ids, $returned_post_ids );
+
+
+	}
+
 	/**
 	 * @param $post_type
 	 *
