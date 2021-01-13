@@ -37,7 +37,9 @@ class Navigator_Data {
 		}, (array) $order_by ) );
 
 
-		$sql = 			$wpdb->prepare( <<<EOF
+		/** @noinspection SqlNoDataSourceInspection */
+		return $wpdb->get_results(
+			$wpdb->prepare( <<<EOF
 SELECT %4\$s, p2.ID as entity_id
  FROM {$wpdb->prefix}wl_relation_instances r1
     INNER JOIN {$wpdb->prefix}wl_relation_instances r2
@@ -71,11 +73,7 @@ SELECT %4\$s, p2.ID as entity_id
  LIMIT %2\$d
  OFFSET %3\$d
 EOF
-			, $post_id, $limit, $offset, $select, $order_by );
-		var_dump($sql);
-		/** @noinspection SqlNoDataSourceInspection */
-		return $wpdb->get_results(
-			$sql
+				, $post_id, $limit, $offset, $select, $order_by )
 		);
 
 	}
