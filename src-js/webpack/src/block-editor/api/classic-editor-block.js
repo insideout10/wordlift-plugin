@@ -57,7 +57,7 @@ class ClassicEditorBlock {
     // Remove the close tag, since we have no text content in the element, that
     // should be open tag.
     let openTag = el.outerHTML.replace(closeTag, "");
-    return {openTag, closeTag};
+    return { openTag, closeTag };
   }
 
   /**
