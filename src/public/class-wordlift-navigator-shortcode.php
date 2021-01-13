@@ -131,14 +131,10 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		}
 
 		wp_enqueue_script( 'wordlift-cloud' );
-		$json_navigator_id = wp_json_encode( $navigator_id );
 		$template_url      = get_rest_url( null, '/wordlift/v1/navigator/template' );
 
 		return <<<HTML
 			<!-- Navigator {$navigator_id} -->
-			<script type="application/javascript">
-				window.wlNavigators = window.wlNavigators || []; wlNavigators.push({$json_navigator_id});
-			</script>
 			<div id="{$navigator_id}" 
 				 class="wl-navigator" 
 				 data-rest-url="{$rest_url}" 

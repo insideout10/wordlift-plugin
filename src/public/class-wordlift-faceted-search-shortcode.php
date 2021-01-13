@@ -124,14 +124,10 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 		}
 
 		wp_enqueue_script( 'wordlift-cloud' );
-		$json_faceted_id = wp_json_encode( $faceted_id );
 		$template_url    = get_rest_url( null, '/wordlift/v1/faceted-search/template' );
 
 		return <<<HTML
 			<!-- Faceted {$faceted_id} -->
-			<script type="application/javascript">
-				window.wlFaceteds = window.wlFaceteds || []; wlFaceteds.push({$json_faceted_id});
-			</script>
 			<div id="{$faceted_id}" 
 				 class="wl-faceted" 
 				 data-rest-url="{$rest_url}" 
