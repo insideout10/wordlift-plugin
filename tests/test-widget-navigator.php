@@ -29,7 +29,7 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 
 		// The `article` term doesn't exists, so create it.
 		if ( empty( $article ) ) {
-			wp_insert_term(
+			$data    = wp_insert_term(
 				'Article',
 				Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 				array(
@@ -37,6 +37,8 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 					'description' => 'An Article.',
 				)
 			);
+			$term_id = $data['term_id'];
+			update_term_meta( $term_id, '_wl_uri', 'http://schema.org/Article' );
 		}
 
 		do_action( 'rest_api_init' );
@@ -57,11 +59,16 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$_GET['post_id']    = $post_1;
 		$_GET['uniqid']     = "random_id";
 		$_GET['post_types'] = 'post,some-random-post-type';
-		$posts               = _wl_navigator_get_data();
+		$posts              = _wl_navigator_get_data();
 
 		$expected_post_ids = array( $post_2, $post_3, $page_1, $page_2 );
 
-		$returned_post_ids = array($posts[0]['post']['id'], $posts[1]['post']['id'], $posts[2]['post']['id'], $posts[3]['post']['id']);
+		$returned_post_ids = array(
+			$posts[0]['post']['id'],
+			$posts[1]['post']['id'],
+			$posts[2]['post']['id'],
+			$posts[3]['post']['id']
+		);
 
 		// the first 2 returned posts should have post type post
 		$this->assertEquals( $expected_post_ids, $returned_post_ids );
@@ -211,7 +218,6 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 	}
 
 
-
 	public function test_when_post_type_not_supplied_in_navigator_shortcode_should_return_correctly_for_entities() {
 		// Create an entity and link all the posts to post_1.
 		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
@@ -293,8 +299,8 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		/**
 		 * Create posts on the same category
 		 */
-		$post_2 = $this->create_filler_post_in_same_category('page');
-		$post_3 = $this->create_filler_post_in_same_category('page');
+		$post_2 = $this->create_filler_post_in_same_category( 'page' );
+		$post_3 = $this->create_filler_post_in_same_category( 'page' );
 		$post_4 = $this->create_filler_post_in_same_category( 'page' );
 		$post_5 = $this->create_filler_post_in_same_category( 'page' );
 		/**
@@ -313,9 +319,9 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 
 		$post_2 = $this->create_post_with_thumbnail();
 		$post_3 = $this->create_post_with_thumbnail();
-		$post_4 = $this->create_post_with_thumbnail('page');
-		$post_5 = $this->create_post_with_thumbnail('page');
-		$post_5 = $this->create_post_with_thumbnail('page');
+		$post_4 = $this->create_post_with_thumbnail( 'page' );
+		$post_5 = $this->create_post_with_thumbnail( 'page' );
+		$post_5 = $this->create_post_with_thumbnail( 'page' );
 		/**
 		 * we expect the posts to be fetched by the function.
 		 */
@@ -355,16 +361,15 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_navigator_rest_url_should_have_post_types_attribute() {
 		$post_id = $this->factory()->post->create();
-		$html = do_shortcode("[wl_navigator post_types='post,page' post_id=$post_id]");
-		$this->assertTrue( strpos($html, 'post_types=post,page') !== false);
+		$html    = do_shortcode( "[wl_navigator post_types='post,page' post_id=$post_id]" );
+		$this->assertTrue( strpos( $html, 'post_types=post,page' ) !== false );
 	}
 
 	public function test_navigator_rest_url_should_NOT_have_post_types_attribute_if_not_supplied() {
 		$post_id = $this->factory()->post->create();
-		$html = do_shortcode("[wl_navigator post_id=$post_id]");
-		$this->assertFalse( strpos($html, 'post_types=post,page') !== false);
+		$html    = do_shortcode( "[wl_navigator post_id=$post_id]" );
+		$this->assertFalse( strpos( $html, 'post_types=post,page' ) !== false );
 	}
-
 
 
 }
