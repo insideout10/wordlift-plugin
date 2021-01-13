@@ -71,7 +71,7 @@ SELECT %4\$s, p2.ID as entity_id
  OFFSET %3\$d
 EOF
 			, $post_id, $limit, $offset, $select, $order_by );
-
+		var_dump($sql);
 		/** @noinspection SqlNoDataSourceInspection */
 		return $wpdb->get_results(
 			$sql
