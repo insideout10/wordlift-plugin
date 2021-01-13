@@ -61,6 +61,14 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$_GET['post_types'] = 'post,some-random-post-type';
 		$posts              = _wl_navigator_get_data();
 
+
+		var_dump("Checking if taxonomy exists");
+		var_dump(taxonomy_exists(Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME));
+
+		var_dump("Checking if term exists");
+		$term = get_term_by( 'slug', 'article', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+		var_dump($term);
+
 		$expected_post_ids = array( $post_2, $post_3, $page_1, $page_2 );
 
 		$returned_post_ids = array(
