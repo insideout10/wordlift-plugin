@@ -130,6 +130,7 @@ function _wl_navigator_get_data() {
 			'ID',
 			'post_title',
 		), $order_by, $navigator_length, $navigator_offset, $post_types );
+		var_dump($referencing_posts);
 	}
 
 	// loop over them and take the first one which is not already in the $related_posts

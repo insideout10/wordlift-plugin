@@ -41,8 +41,8 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$_GET['post_id']    = $post_1;
 		$_GET['uniqid']     = "random_id";
 		$_GET['post_types'] = 'post,some-random-post-type';
-		$posts               = _wl_navigator_get_data();
-
+		var_dump("Before calling method");
+		$posts               = _wl_navigator_get_data();;
 		$expected_post_ids = array( $post_2, $post_3, $page_1, $page_2 );
 
 		global $wpdb;
