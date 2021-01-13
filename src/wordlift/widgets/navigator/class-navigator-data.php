@@ -36,10 +36,7 @@ class Navigator_Data {
 			return "p.$item";
 		}, (array) $order_by ) );
 
-
-		/** @noinspection SqlNoDataSourceInspection */
-		return $wpdb->get_results(
-			$wpdb->prepare( <<<EOF
+		$sql = $wpdb->prepare( <<<EOF
 SELECT %4\$s, p2.ID as entity_id
  FROM {$wpdb->prefix}wl_relation_instances r1
     INNER JOIN {$wpdb->prefix}wl_relation_instances r2
@@ -73,7 +70,11 @@ SELECT %4\$s, p2.ID as entity_id
  LIMIT %2\$d
  OFFSET %3\$d
 EOF
-				, $post_id, $limit, $offset, $select, $order_by )
+			, $post_id, $limit, $offset, $select, $order_by );
+
+		/** @noinspection SqlNoDataSourceInspection */
+		return $wpdb->get_results(
+			$sql
 		);
 
 	}
