@@ -23,6 +23,22 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		new Async_Template_Decorator( new Wordlift_Navigator_Shortcode() );
 		$wp_rest_server = new WP_REST_Server();
 		$this->server   = $wp_rest_server;
+
+		// Check whether the `article` term exists.
+		$article = get_term_by( 'slug', 'article', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+
+		// The `article` term doesn't exists, so create it.
+		if ( empty( $article ) ) {
+			wp_insert_term(
+				'Article',
+				Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
+				array(
+					'slug'        => 'article',
+					'description' => 'An Article.',
+				)
+			);
+		}
+
 		do_action( 'rest_api_init' );
 		// navigator query triggers a warning due to placeholder.
 		add_filter( 'doing_it_wrong_trigger_error', '__return_false' );
