@@ -47,9 +47,6 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 
 		$returned_post_ids = array($posts[0]['post']['id'], $posts[1]['post']['id'], $posts[2]['post']['id'], $posts[3]['post']['id']);
 
-		global  $wpdb;
-		$table_name = $wpdb->posts;
-		var_dump($wpdb->get_results("SELECT * FROM ${table_name}"));
 		// the first 2 returned posts should have post type post
 		$this->assertEquals( $expected_post_ids, $returned_post_ids );
 
