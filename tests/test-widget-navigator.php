@@ -65,6 +65,8 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 			$posts[1]['post']['id'],
 		);
 
+		sort($expected_post_ids);
+		sort($returned_post_ids);
 		// the first 2 returned posts should have post type post
 		$this->assertEquals( $expected_post_ids, $returned_post_ids );
 
