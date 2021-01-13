@@ -170,7 +170,7 @@ class EntityTile extends React.Component {
 
     this.iconURL = this.props.entity.local
       ? defaultLocalIconURL
-      : this.props.entity.id.match(/https?:\/\/(?:\w+\\.)?dbpedia\.org/)
+      : this.props.entity.id.match(/https?:\/\/(?:\w+\\.)?(dbpedia|wikidata)\.org/)
         ? this.cloudIconURL
         : this.networkIconURL;
 
