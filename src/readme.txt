@@ -142,6 +142,18 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.27.8 (2021-01-__) =
+
+* Enhancement [1248](https://github.com/insideout10/wordlift-plugin/issues/1248): Add a error message in Dashboard when key isn't valid
+* Enhancement [1236](https://github.com/insideout10/wordlift-plugin/issues/1236): Navigator and Faceted search with async loaded template
+* Enhancement [1211](https://github.com/insideout10/wordlift-plugin/issues/1211): [Navigator enhancement] Navigator template being crawled
+* Enhancement [1197](https://github.com/insideout10/wordlift-plugin/issues/1197): Enhance filters in Navigator and Faceted Search
+* Enhancement [1060](https://github.com/insideout10/wordlift-plugin/issues/1060): Allow the Navigator and Faceted Search to lazyload
+
+* Fix [#1254](https://github.com/insideout10/wordlift-plugin/issues/1254): In Classification Box use Cloud icon also for Wikidata entities
+* Fix [#1245](https://github.com/insideout10/wordlift-plugin/issues/1245): Summarizer removes spaces.
+* Fix [#1216](https://github.com/insideout10/wordlift-plugin/issues/1216): Faceted Widget div html attributes not escaped
+
 = 3.27.7.3 (2021-01-05) =
 
 * Fix [#1247](https://github.com/insideout10/wordlift-plugin/issues/1247): Wordlift_Key_Validation_Service->validate_key() is not taking into consideration URL filters
