@@ -28,7 +28,7 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$article = get_term_by( 'slug', 'article', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
 		// The `article` term doesn't exists, so create it.
-		if ( empty( $article ) ) {
+		if ( ! $article ) {
 			$data    = wp_insert_term(
 				'Article',
 				Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
