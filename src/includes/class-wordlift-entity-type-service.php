@@ -215,9 +215,10 @@ class Wordlift_Entity_Type_Service {
 
 		$ids = $this->get_ids( $post_id );
 
-		return array_map( function ( $id ) {
+		// Filter out invalid terms (ones without _wl_name term meta)
+		return array_values( array_filter( array_map( function ( $id ) {
 			return get_term_meta( $id, '_wl_name', true );
-		}, $ids );
+		}, $ids ) ) );
 	}
 
 	/**
