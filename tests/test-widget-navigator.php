@@ -186,7 +186,7 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 
 		$returned_post_ids = array($posts[0]['post']['id'], $posts[1]['post']['id'], $posts[2]['post']['id'], $posts[3]['post']['id']);
 		// the first 2 returned posts should have post type post
-		$this->assertEquals( $expected_post_ids, $returned_post_ids, $posts );
+		$this->assertEquals( $expected_post_ids, $returned_post_ids );
 
 		// we expect 4 posts since filler posts would be added.
 		$this->assertEquals( 4, count( $posts ) );
