@@ -182,7 +182,7 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$_GET['post_types'] = 'post,some-random-post-type';
 		$posts               = _wl_navigator_get_data();
 
-		$expected_post_ids = array( $post_3, $page_1, $page_2, $post_2 );
+		$expected_post_ids = array( $post_2, $post_3, $page_1, $page_2 );
 
 		$returned_post_ids = array($posts[0]['post']['id'], $posts[1]['post']['id'], $posts[2]['post']['id'], $posts[3]['post']['id']);
 		// the first 2 returned posts should have post type post
