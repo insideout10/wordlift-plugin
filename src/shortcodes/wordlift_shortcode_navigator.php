@@ -180,7 +180,7 @@ function _wl_navigator_get_data() {
 		 * @since 3.27.8
 		 * Filler posts are fetched using this util.
 		 */
-		$filler_posts_util    = new Filler_Posts_Util( $current_post_id );
+		$filler_posts_util       = new Filler_Posts_Util( $current_post_id );
 		$post_ids_to_be_excluded = array_merge( array( $current_post_id ), $referencing_post_ids );
 		$filler_posts            = $filler_posts_util->get_filler_response( $filler_count, $post_ids_to_be_excluded );
 		$results                 = array_merge( $results, $filler_posts );
@@ -281,9 +281,7 @@ function _wl_network_navigator_get_results(
 		}
 	}, $entities ) );
 
-	/** @noinspection SqlNoDataSourceInspection */
-	return $wpdb->get_results(
-		$wpdb->prepare( <<<EOF
+	$sql = $wpdb->prepare( <<<EOF
 SELECT %3\$s, p2.ID as entity_id
  FROM {$wpdb->prefix}wl_relation_instances r1
 	-- get the ID of the post entity in common between the object and the subject 2. 
@@ -309,7 +307,12 @@ SELECT %3\$s, p2.ID as entity_id
  LIMIT %1\$d
  OFFSET %2\$d
 EOF
-			, $limit, $offset, $select, $order_by )
+		, $limit, $offset, $select, $order_by );
+	var_dump( $sql );
+
+	/** @noinspection SqlNoDataSourceInspection */
+	return $wpdb->get_results(
+		$sql
 	);
 
 }
