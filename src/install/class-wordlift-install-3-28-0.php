@@ -19,7 +19,8 @@ class Wordlift_Install_3_28_0 extends Wordlift_Install {
 		$dataset_uri = $dataset_uri . '%';
 		$meta_key = Wordlift_Schema_Service::FIELD_SAME_AS;
 		$sql  = "DELETE FROM $post_meta_table_name WHERE meta_key='$meta_key' 
-AND ( meta_value NOT LIKE 'https://%' OR meta_value LIKE '$dataset_uri' )";
+AND (    ( meta_value NOT LIKE 'https://%' AND meta_value NOT LIKE 'http://%' )
+OR meta_value LIKE '$dataset_uri' )";
 		$wpdb->query($sql);
 
 	}

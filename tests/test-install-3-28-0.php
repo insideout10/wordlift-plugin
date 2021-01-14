@@ -68,6 +68,18 @@ class Install_3_28_0_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 2, get_post_meta( $post_1, Wordlift_Schema_Service::FIELD_SAME_AS ) );
 	}
 
+	public function test_when_installed_should_not_delete_valid_http_urls() {
+		$post_1             = $this->factory()->post->create();
+		$valid_dataset_uris = array(
+			'http://google.com',
+			'http://test.com',
+		);
+		$this->add_dataset_uris( $valid_dataset_uris, $post_1 );
+		$this->install_instance->install();
+		$this->assertCount( 2, get_post_meta( $post_1, Wordlift_Schema_Service::FIELD_SAME_AS ) );
+	}
+
+
 
 	/**
 	 * @return bool
