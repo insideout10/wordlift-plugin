@@ -3,16 +3,16 @@
 use Wordlift\Sameas_Metabox\Task_Validator;
 
 /**
- * @since 3.29.0
+ * @since 3.28.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * @group metabox
  */
 class Metabox_Sameas_Test extends Wordlift_Unit_Test_Case {
 
 	/**
-	 * @var WL_Metabox_Field_sameas
+	 * @var Wordlift_Install_3_28_0
 	 */
-	private $sameas_metabox_instance;
+	private $install_instance;
 
 	/**
 	 * @var Task_Validator
@@ -21,24 +21,7 @@ class Metabox_Sameas_Test extends Wordlift_Unit_Test_Case {
 
 	public function setUp() {
 		parent::setUp();
-		$config                        = array(
-			'sameas' =>
-				array(
-					'entity_same_as' =>
-						array(
-							'predicate'   => 'http://schema.org/sameAs',
-							'type'        => 'uri',
-							'export_type' => 'http://schema.org/Thing',
-							'constraints' =>
-								array(
-									'cardinality' => INF,
-								),
-							'input_field' => 'sameas',
-						),
-				),
-		);
-		$this->sameas_metabox_instance = new WL_Metabox_Field_sameas( $config );
-		$this->instance                = new Task_Validator( $this->configuration_service );
+		$this->install_instance = new Wordlift_Install_3_28_0();
 	}
 
 
@@ -65,7 +48,7 @@ class Metabox_Sameas_Test extends Wordlift_Unit_Test_Case {
 			$dataset_uri . "/bbb",
 		);
 
-		$sample_post_ids = array_slice( $post_ids, 0, 5 );
+		$sample_post_ids = array_slice( $post_ids, 10, 5 );
 
 		foreach ( $sample_post_ids as $post_id ) {
 
@@ -75,7 +58,31 @@ class Metabox_Sameas_Test extends Wordlift_Unit_Test_Case {
 		}
 
 		// Check if we need to add a cleanup task
-		$this->assertTrue( $this->instance->is_cleanup_task_should_be_shown() );
+		$this->assertFalse( $this->is_invalid_dataset_uris_present() );
+	}
+
+
+
+	/**
+	 * @return bool
+	 */
+	public function is_invalid_dataset_uris_present() {
+
+		$local_dataset_uri = $this->configuration_service->get_dataset_uri();
+
+		$posts = get_posts( array(
+			'post_type'   => \Wordlift_Entity_Service::valid_entity_post_types(),
+			'meta_query'  => array(
+				array(
+					'key'     => \Wordlift_Schema_Service::FIELD_SAME_AS,
+					'value'   => $local_dataset_uri,
+					'compare' => 'LIKE'
+				)
+			),
+			'numberposts' => 1
+		) );
+
+		return count( $posts ) > 0;
 	}
 
 
