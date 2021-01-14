@@ -1,6 +1,5 @@
 <?php
 
-use Wordlift\Sameas_Metabox\Task_Validator;
 
 /**
  * @since 3.28.0
@@ -14,10 +13,6 @@ class Install_3_28_0_Test extends Wordlift_Unit_Test_Case {
 	 */
 	private $install_instance;
 
-	/**
-	 * @var Task_Validator
-	 */
-	private $instance;
 
 	public function setUp() {
 		parent::setUp();
@@ -79,6 +74,13 @@ class Install_3_28_0_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 2, get_post_meta( $post_1, Wordlift_Schema_Service::FIELD_SAME_AS ) );
 	}
 
+
+	public function test_when_meta_key_other_than_same_as_url_present_should_not_be_deleted() {
+		$post_id = $this->factory()->post->create();
+		$this->install_instance->install();
+		update_post_meta( $post_id, 'some_random_key', 'some_random_value' );
+		$this->assertTrue( get_post_meta( $post_id, 'some_random_key', true ) === 'some_random_value' );
+	}
 
 
 	/**
