@@ -48,15 +48,24 @@ class Install_3_28_0_Test extends Wordlift_Unit_Test_Case {
 
 		foreach ( $sample_post_ids as $post_id ) {
 
-			foreach ( $invalid_dataset_uris as $uri ) {
-				add_post_meta( $post_id, Wordlift_Schema_Service::FIELD_SAME_AS, $uri );
-			}
+			$this->add_dataset_uris( $invalid_dataset_uris, $post_id );
 		}
 
 		$this->install_instance->install();
 
 		// after running install the uris should not be present.
 		$this->assertFalse( $this->is_invalid_dataset_uris_present() );
+	}
+
+	public function test_when_installed_should_not_delete_valid_urls() {
+		$post_1             = $this->factory()->post->create();
+		$valid_dataset_uris = array(
+			'https://google.com',
+			'https://test.com',
+		);
+		$this->add_dataset_uris( $valid_dataset_uris, $post_1 );
+		$this->install_instance->install();
+		$this->assertCount( 2, get_post_meta( $post_1, Wordlift_Schema_Service::FIELD_SAME_AS ) );
 	}
 
 
@@ -91,6 +100,16 @@ class Install_3_28_0_Test extends Wordlift_Unit_Test_Case {
 		) );
 
 		return count( $posts ) > 0;
+	}
+
+	/**
+	 * @param array $dataset_uris
+	 * @param $post_id
+	 */
+	private function add_dataset_uris( $dataset_uris, $post_id ) {
+		foreach ( $dataset_uris as $uri ) {
+			add_post_meta( $post_id, Wordlift_Schema_Service::FIELD_SAME_AS, $uri );
+		}
 	}
 
 
