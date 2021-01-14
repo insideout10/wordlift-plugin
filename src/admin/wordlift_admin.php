@@ -54,8 +54,9 @@ function wl_remove_text_annotations( $data ) {
 
 	// Remove blank elements that can interfere with annotations removing
 	// See https://github.com/insideout10/wordlift-plugin/issues/234
-	// Just blank attributes without any attributes are cleaned up.
-	$pattern = '/<(\w+)><\/\1>/im';
+	// Just blank span tags without any attributes are cleaned up.
+	// Restrict removal to empty spans only as we may impact valid empty elements like: <th>
+	$pattern = '/<span><\/span>/im';
 	// Remove the pattern while it is found (match nested annotations).
 	while ( 1 === preg_match( $pattern, $data['post_content'] ) ) {
 		$data['post_content'] = preg_replace( $pattern, '$2', $data['post_content'], -1, $count );
