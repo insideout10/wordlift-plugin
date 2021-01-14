@@ -7,7 +7,7 @@ use Wordlift\Sameas_Metabox\Task_Validator;
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * @group metabox
  */
-class Metabox_Sameas_Test extends Wordlift_Unit_Test_Case {
+class Install_3_28_0_Test extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * @var Wordlift_Install_3_28_0
@@ -25,16 +25,10 @@ class Metabox_Sameas_Test extends Wordlift_Unit_Test_Case {
 	}
 
 
-//	public function test_on_plugin_upgrade_should_show_clean_up_task_in_dashboard_if_invalid_sameas_present() {
-//		do_action( 'upgrader_process_complete' );
-//
-//	}
-
-
-	public function test_many_posts_with_same_dataset_uris_should_find_only_one_post() {
+	public function test_when_installed_should_remove_the_meta_values() {
 
 		$post_ids = $this->factory()->post->create_many( 100, array(
-			'post_type' => 'entity',
+			'post_type'   => 'entity',
 			'post_status' => 'publish'
 		), array(
 			'post_title' => new WP_UnitTest_Generator_Sequence( 'Sameas task test %s' ),
@@ -46,6 +40,8 @@ class Metabox_Sameas_Test extends Wordlift_Unit_Test_Case {
 		$invalid_dataset_uris = array(
 			$dataset_uri . "/aaa",
 			$dataset_uri . "/bbb",
+			"foo",
+			"htt://bar"
 		);
 
 		$sample_post_ids = array_slice( $post_ids, 10, 5 );
@@ -57,10 +53,11 @@ class Metabox_Sameas_Test extends Wordlift_Unit_Test_Case {
 			}
 		}
 
-		// Check if we need to add a cleanup task
+		$this->install_instance->install();
+
+		// after running install the uris should not be present.
 		$this->assertFalse( $this->is_invalid_dataset_uris_present() );
 	}
-
 
 
 	/**
@@ -73,10 +70,21 @@ class Metabox_Sameas_Test extends Wordlift_Unit_Test_Case {
 		$posts = get_posts( array(
 			'post_type'   => \Wordlift_Entity_Service::valid_entity_post_types(),
 			'meta_query'  => array(
+				'relation' => 'OR',
 				array(
 					'key'     => \Wordlift_Schema_Service::FIELD_SAME_AS,
 					'value'   => $local_dataset_uri,
 					'compare' => 'LIKE'
+				),
+				array(
+					'key'     => \Wordlift_Schema_Service::FIELD_SAME_AS,
+					'value'   => 'http://',
+					'compare' => 'NOT LIKE'
+				),
+				array(
+					'key'     => \Wordlift_Schema_Service::FIELD_SAME_AS,
+					'value'   => 'https://',
+					'compare' => 'NOT LIKE'
 				)
 			),
 			'numberposts' => 1
