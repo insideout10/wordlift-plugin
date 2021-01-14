@@ -16,7 +16,7 @@ class Wordlift_Install_3_28_0 extends Wordlift_Install {
 
 		$post_meta_table_name = $wpdb->postmeta;
 		$meta_key = Wordlift_Schema_Service::FIELD_SAME_AS;
-		$wpdb->query("DELETE * FROM $post_meta_table_name WHERE meta_key='$meta_key'");
+		$wpdb->query("DELETE  FROM $post_meta_table_name WHERE meta_key='$meta_key'");
 
 	}
 
