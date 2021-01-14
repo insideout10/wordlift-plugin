@@ -1,5 +1,7 @@
 <?php
 
+use Wordlift\Sameas_Metabox\Task_Validator;
+
 /**
  * @since 3.29.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
@@ -12,6 +14,9 @@ class Metabox_Sameas_Test extends Wordlift_Unit_Test_Case {
 	 */
 	private $sameas_metabox_instance;
 
+	/**
+	 * @var Task_Validator
+	 */
 	private $instance;
 
 	public function setUp() {
@@ -33,7 +38,7 @@ class Metabox_Sameas_Test extends Wordlift_Unit_Test_Case {
 				),
 		);
 		$this->sameas_metabox_instance = new WL_Metabox_Field_sameas( $config );
-		$this->instance = new Sameas_Metabox_Task_Validator();
+		$this->instance = new Task_Validator( $this->configuration_service );
 	}
 
 
@@ -63,6 +68,7 @@ class Metabox_Sameas_Test extends Wordlift_Unit_Test_Case {
 
 		foreach ( $sample_post_ids as $post_id ) {
 			$_POST['post_ID'] = $post_id;
+			var_dump($invalid_dataset_uris);
 			$this->sameas_metabox_instance->save_data( $invalid_dataset_uris );
 		}
 
