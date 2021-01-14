@@ -38,7 +38,7 @@ class Metabox_Sameas_Test extends Wordlift_Unit_Test_Case {
 				),
 		);
 		$this->sameas_metabox_instance = new WL_Metabox_Field_sameas( $config );
-		$this->instance = new Task_Validator( $this->configuration_service );
+		$this->instance                = new Task_Validator( $this->configuration_service );
 	}
 
 
@@ -52,6 +52,7 @@ class Metabox_Sameas_Test extends Wordlift_Unit_Test_Case {
 
 		$post_ids = $this->factory()->post->create_many( 100, array(
 			'post_type' => 'entity',
+			'post_status' => 'publish'
 		), array(
 			'post_title' => new WP_UnitTest_Generator_Sequence( 'Sameas task test %s' ),
 		) );
@@ -67,9 +68,10 @@ class Metabox_Sameas_Test extends Wordlift_Unit_Test_Case {
 		$sample_post_ids = array_slice( $post_ids, 0, 5 );
 
 		foreach ( $sample_post_ids as $post_id ) {
-			$_POST['post_ID'] = $post_id;
-			var_dump($invalid_dataset_uris);
-			$this->sameas_metabox_instance->save_data( $invalid_dataset_uris );
+
+			foreach ( $invalid_dataset_uris as $uri ) {
+				add_post_meta( $post_id, Wordlift_Schema_Service::FIELD_SAME_AS, $uri );
+			}
 		}
 
 		// Check if we need to add a cleanup task
