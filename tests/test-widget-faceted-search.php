@@ -227,4 +227,25 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 		$this->assertTrue( strpos($html, $expected_url_output) !== false);
 	}
 
+	public function test_shortcode_should_have_src_set_attribute_in_amp_version() {
+		$post_id     = $this->factory()->post->create();
+		$_GET['amp'] = true;
+		$result      = do_shortcode( "[wl_faceted_search post_id='$post_id']" );
+		$this->assertTrue( strpos( $result, 'srcset' ) !== false );
+	}
+
+
+	public function test_post_with_three_images_sizes_should_have_the_urls_in_srcset() {
+		$post_id       = $this->factory()->post->create();
+		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/cat-1200x1200.jpg', $post_id );
+		set_post_thumbnail( $post_id, $attachment_id );
+		$small       = get_the_post_thumbnail_url( $post_id, 'small' );
+		$medium      = get_the_post_thumbnail_url( $post_id, 'medium' );
+		$_GET['amp'] = true;
+		$result      = do_shortcode( "[wl_faceted_search post_id='$post_id']" );
+		$this->assertTrue( strpos( $result, $small ) !== false );
+		$this->assertTrue( strpos( $result, $medium ) !== false );
+	}
+
+
 }
