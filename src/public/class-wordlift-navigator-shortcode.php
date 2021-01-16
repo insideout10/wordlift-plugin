@@ -7,6 +7,8 @@
  * @subpackage Wordlift/public
  */
 
+use Wordlift\Widgets\Srcset_Util;
+
 /**
  * Define the {@link Wordlift_Navigator_Shortcode} class which provides the
  * `wl_navigator` implementation.
@@ -115,12 +117,12 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		$navigator_id = ! empty( $shortcode_atts['uniqid'] ) ? esc_attr( sanitize_text_field( $shortcode_atts['uniqid'] ) ) : uniqid( 'wl-navigator-widget-' );
 
 		$rest_url = $post ? admin_url( 'admin-ajax.php?' . build_query( array(
-				'action'  => 'wl_navigator',
-				'uniqid'  => $navigator_id,
-				'post_id' => $post->ID,
-				'limit'   => $limit,
-				'offset'  => $offset,
-				'sort'    => $sort,
+				'action'     => 'wl_navigator',
+				'uniqid'     => $navigator_id,
+				'post_id'    => $post->ID,
+				'limit'      => $limit,
+				'offset'     => $offset,
+				'sort'       => $sort,
 				'post_types' => $shortcode_atts['post_types']
 			) ) ) : false;
 
@@ -130,7 +132,7 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		}
 
 		wp_enqueue_script( 'wordlift-cloud' );
-		$template_url      = get_rest_url( null, '/wordlift/v1/navigator/template' );
+		$template_url = get_rest_url( null, '/wordlift/v1/navigator/template' );
 
 		return <<<HTML
 			<!-- Navigator {$navigator_id} -->
@@ -194,6 +196,7 @@ HTML;
 			$template_id = "template-" . $navigator_id;
 			wp_enqueue_style( 'wordlift-amp-custom', plugin_dir_url( dirname( __FILE__ ) ) . '/css/wordlift-amp-custom.min.css' );
 		}
+		$srcset = Srcset_Util::get_srcset( $post->ID, Srcset_Util::NAVIGATOR_WIDGET );
 
 		return <<<HTML
 		<div id="{$navigator_id}" class="wl-amp-navigator" style="width: 100%">
@@ -217,7 +220,7 @@ HTML;
 		                        height="9"
 								layout="responsive"
 		                        src="{{post.thumbnail}}"
-		                        srcset=""></amp-img>
+		                        srcset="${srcset}"></amp-img>
 							<div class="card-content">
 								<header class="title">{{post.title}}</header>
 							</div>
