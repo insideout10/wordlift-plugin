@@ -7,6 +7,8 @@
  * @subpackage Wordlift/public
  */
 
+use Wordlift\Widgets\Srcset_Util;
+
 /**
  * Define the {@link Wordlift_Faceted_Search_Shortcode} class which provides the
  * `wl_faceted_search` implementation.
@@ -57,7 +59,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 					return '[' . $scope::SHORTCODE . ' ' . $attr_code . ']';
 				},
 
-				'attributes'      => $scope->get_block_attributes(),
+				'attributes' => $scope->get_block_attributes(),
 			) );
 		} );
 	}
@@ -124,7 +126,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 		}
 
 		wp_enqueue_script( 'wordlift-cloud' );
-		$template_url    = get_rest_url( null, '/wordlift/v1/faceted-search/template' );
+		$template_url = get_rest_url( null, '/wordlift/v1/faceted-search/template' );
 
 		return <<<HTML
 			<!-- Faceted {$faceted_id} -->
@@ -187,6 +189,8 @@ HTML;
 			wp_enqueue_style( 'wordlift-amp-custom', plugin_dir_url( dirname( __FILE__ ) ) . '/css/wordlift-amp-custom.min.css' );
 		}
 
+		$srcset = Srcset_Util::get_srcset( $post->ID, Srcset_Util::FACETED_SEARCH_WIDGET );
+
 		return <<<HTML
 		<div id="{$faceted_id}" class="wl-amp-faceted">
 			<h2 class="wl-headline">{$title}</h2>
@@ -237,7 +241,8 @@ HTML;
 				                        width="16"
 				                        height="9"
 										layout="responsive"
-				                        src="{{thumbnail}}"></amp-img>
+				                        src="{{thumbnail}}"
+				                        srcset="${srcset}"></amp-img>
 									<div class="card-content">
 										<header class="title">{{post_title}}</header>
 									</div>
