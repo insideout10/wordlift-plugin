@@ -382,12 +382,10 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		set_post_thumbnail( $post_id, $attachment_id );
 		$small       = get_the_post_thumbnail_url( $post_id, 'small' );
 		$medium      = get_the_post_thumbnail_url( $post_id, 'medium' );
-		$large       = get_the_post_thumbnail_url( $post_id, 'large' );
 		$_GET['amp'] = true;
 		$result      = do_shortcode( "[wl_navigator post_id='$post_id']" );
 		$this->assertTrue( strpos( $result, $small ) !== false );
 		$this->assertTrue( strpos( $result, $medium ) !== false );
-		$this->assertTrue( strpos( $result, $large ) !== false );
 	}
 
 
