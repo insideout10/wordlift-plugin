@@ -58,15 +58,15 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$_GET['uniqid']     = "random_id";
 		$_GET['post_types'] = 'post,some-random-post-type';
 		$posts              = _wl_navigator_get_data();
-		$expected_post_ids = array( $post_2, $post_3 );
+		$expected_post_ids  = array( $post_2, $post_3 );
 
 		$returned_post_ids = array(
 			$posts[0]['post']['id'],
 			$posts[1]['post']['id'],
 		);
 
-		sort($expected_post_ids);
-		sort($returned_post_ids);
+		sort( $expected_post_ids );
+		sort( $returned_post_ids );
 		// the first 2 returned posts should have post type post
 		$this->assertEquals( $expected_post_ids, $returned_post_ids );
 
@@ -366,6 +366,14 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$post_id = $this->factory()->post->create();
 		$html    = do_shortcode( "[wl_navigator post_id=$post_id]" );
 		$this->assertFalse( strpos( $html, 'post_types=post,page' ) !== false );
+	}
+
+	public function test_shortcode_should_have_src_set_attribute_in_amp_version() {
+		$post_id     = $this->factory()->post->create();
+		$html        = do_shortcode( "[wl_navigator post_id=$post_id]" );
+		$_GET['amp'] = true;
+		$result = do_shortcode( "[wl_navigator post_id='$post_id']" );
+		$this->assertTrue( strpos( $result, 'srcset') !== false);
 	}
 
 

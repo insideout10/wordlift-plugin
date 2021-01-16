@@ -31,7 +31,6 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 	 * {@inheritdoc}
 	 */
 	public function render( $atts ) {
-
 		return Wordlift_AMP_Service::is_amp_endpoint() ? $this->amp_shortcode( $atts )
 			: $this->web_shortcode( $atts );
 	}
@@ -156,7 +155,6 @@ HTML;
 	 *
 	 */
 	private function amp_shortcode( $atts ) {
-
 		// attributes extraction and boolean filtering
 		$shortcode_atts = $this->make_shortcode_atts( $atts );
 
