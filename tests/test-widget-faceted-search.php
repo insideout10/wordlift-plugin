@@ -209,22 +209,22 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_faceted_search_rest_url_should_have_post_types_attribute() {
 		$post_id = $this->factory()->post->create();
-		$html = do_shortcode("[wl_faceted_search post_types='post,page' post_id=$post_id]");
-		$this->assertTrue( strpos($html, 'post_types=post,page') !== false);
+		$html    = do_shortcode( "[wl_faceted_search post_types='post,page' post_id=$post_id]" );
+		$this->assertTrue( strpos( $html, 'post_types=post,page' ) !== false );
 	}
 
 	public function test_faceted_search_rest_url_should_NOT_have_post_types_attribute_if_not_supplied() {
 		$post_id = $this->factory()->post->create();
-		$html = do_shortcode("[wl_faceted_search post_id=$post_id]");
-		$this->assertFalse( strpos($html, 'post_types=post,page') !== false);
+		$html    = do_shortcode( "[wl_faceted_search post_id=$post_id]" );
+		$this->assertFalse( strpos( $html, 'post_types=post,page' ) !== false );
 	}
 
 
-	public function  test_given_post_id_html_attributes_should_be_escaped_for_faceted_search_url() {
-		$post_id = $this->factory()->post->create();
-		$html = do_shortcode("[wl_faceted_search limit=10 post_id=$post_id]");
+	public function test_given_post_id_html_attributes_should_be_escaped_for_faceted_search_url() {
+		$post_id             = $this->factory()->post->create();
+		$html                = do_shortcode( "[wl_faceted_search limit=10 post_id=$post_id]" );
 		$expected_url_output = "wordlift/v1/faceted-search&amp;post_id=$post_id&amp;limit=10";
-		$this->assertTrue( strpos($html, $expected_url_output) !== false);
+		$this->assertTrue( strpos( $html, $expected_url_output ) !== false );
 	}
 
 	public function test_shortcode_should_have_src_set_attribute_in_amp_version() {
@@ -235,16 +235,29 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 	}
 
 
-	public function test_post_with_three_images_sizes_should_have_the_urls_in_srcset() {
-		$post_id       = $this->factory()->post->create();
-		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/cat-1200x1200.jpg', $post_id );
-		set_post_thumbnail( $post_id, $attachment_id );
-		$small       = get_the_post_thumbnail_url( $post_id, 'small' );
-		$medium      = get_the_post_thumbnail_url( $post_id, 'medium' );
-		$_GET['amp'] = true;
-		$result      = do_shortcode( "[wl_faceted_search post_id='$post_id']" );
-		$this->assertTrue( strpos( $result, $small ) !== false );
-		$this->assertTrue( strpos( $result, $medium ) !== false );
+	public function test_post_with_three_images_sizes_should_have_the_urls_in_srcset_for_referencing_posts_in_amp_version() {
+
+		// Link multiple posts to this post.
+		$entity_1 = $this->create_faceted_search_entity();
+		$post_1   = $this->create_faceted_search_post( $entity_1 );
+		$post_2   = $this->create_faceted_search_post( $entity_1 );
+
+		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/cat-1200x1200.jpg', $post_2 );
+		set_post_thumbnail( $post_2, $attachment_id );
+		$small           = get_the_post_thumbnail_url( $post_2, 'small' );
+		$medium          = get_the_post_thumbnail_url( $post_2, 'medium' );
+
+		$_GET['post_id'] = $post_1;
+		$_GET['uniqid']  = 'uniqid';
+		$_GET['amp']     = true;
+		$faceted_data    = wl_shortcode_faceted_search_origin( null );
+		$result          = $faceted_data['posts'][0]['values'];
+		$target_post     = $result[0];
+		//var_dump($target_post);
+		$srcset = $target_post->srcset;
+
+		$this->assertTrue( strpos( $srcset, $small ) !== false );
+		$this->assertTrue( strpos( $srcset, $medium ) !== false );
 	}
 
 
