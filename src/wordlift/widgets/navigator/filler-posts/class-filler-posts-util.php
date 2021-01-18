@@ -1,6 +1,8 @@
 <?php
 
 namespace Wordlift\Widgets\Navigator\Filler_Posts;
+use Wordlift\Widgets\Srcset_Util;
+
 /**
  * @since 3.27.8
  * @author Naveen Muthusamy <naveen@wordlift.io>
@@ -91,7 +93,8 @@ class Filler_Posts_Util {
 					'id'        => $post_obj->ID,
 					'permalink' => get_permalink( $post_obj->ID ),
 					'thumbnail' => ( $thumbnail ) ? $thumbnail : WL_DEFAULT_THUMBNAIL_PATH,
-					'title'     => get_the_title( $post_obj->ID )
+					'title'     => get_the_title( $post_obj->ID ),
+					'srcset'    => Srcset_Util::get_srcset( $post_obj->ID, Srcset_Util::NAVIGATOR_WIDGET )
 				),
 				'entity' => array(
 					'id' => 0
