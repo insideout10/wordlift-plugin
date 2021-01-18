@@ -30,6 +30,14 @@ class Srcset_Util {
 
 		$srcset_string = join( ",", $srcset );
 
+		/**
+		 * Filter name: wordlift_${widget_name}_thumbnail_srcset
+		 * Filters the srcset string supplied to widgets for each post.
+		 *
+		 * @param $srcset_string string The srcset string
+		 *
+		 * @since 3.28.0
+		 */
 		$srcset_string = apply_filters( "wordlift_${widget_name}_thumbnail_srcset", $srcset_string );
 
 		return $srcset_string;
