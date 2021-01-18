@@ -13,19 +13,25 @@ class Srcset_Util {
 
 	public static function get_srcset( $post_id, $widget_name ) {
 
-		$srcset = "";
+		$srcset = array();
 		$small  = get_the_post_thumbnail_url( $post_id, 'small' );
 		$medium = get_the_post_thumbnail_url( $post_id, 'medium' );
+		$large  = get_the_post_thumbnail_url( $post_id, 'large' );
 		if ( $small ) {
-			$srcset .= $small;
+			$srcset[] = $small;
 		}
 		if ( $medium ) {
-			$srcset .= " $medium";
+			$srcset[] = $medium;
 		}
 
-		$srcset = apply_filters( "wordlift_${widget_name}_thumbnail_srcset", $srcset );
+		if ( $large ) {
+			$srcset[] = $large;
+		}
 
-		return $srcset;
+		$srcset_string = join( ",", $srcset );
+		$srcset_string = apply_filters( "wordlift_${widget_name}_thumbnail_srcset", $srcset_string );
+
+		return $srcset_string;
 
 	}
 
