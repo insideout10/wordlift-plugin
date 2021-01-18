@@ -142,7 +142,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.27.8 (2021-01-__) =
+= 3.27.8 (2021-01-18) =
 
 * Enhancement [1248](https://github.com/insideout10/wordlift-plugin/issues/1248): Add a error message in Dashboard when key isn't valid
 * Enhancement [1236](https://github.com/insideout10/wordlift-plugin/issues/1236): Navigator and Faceted search with async loaded template
