@@ -65,16 +65,30 @@ class Filler_Posts_Util {
 			$post_ids_to_be_excluded = array_merge( $post_ids_to_be_excluded, $post_ids );
 			$filler_count            = $filler_count - count( $posts );
 			$filler_posts            = array_merge( $filler_posts, $posts );
-
-
 		}
+		$filler_posts = $this->add_additional_properties_to_filler_posts( $filler_posts );
 
 		return $filler_posts;
 
 	}
 
 	/**
+	 * @param $posts array<\WP_Post>
+	 *
+	 * @return array $posts array<\WP_Post>
+	 */
+	private function add_additional_properties_to_filler_posts( $posts ) {
+		return array_map( function ( $post ) {
+			$post->thumbnail = get_the_post_thumbnail_url( $post->ID, 'medium' );
+			$post->permalink = get_permalink( $post->ID );
+
+			return $post;
+		}, $posts );
+	}
+
+	/**
 	 * Called by wordlift navigator, converts all the posts to response format.
+	 *
 	 * @param $filler_count
 	 * @param $post_ids_to_be_excluded
 	 *
