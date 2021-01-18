@@ -56,44 +56,7 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 
 					return '[' . $scope::SHORTCODE . ' ' . $attr_code . ']';
 				},
-				'attributes'      => array(
-					'title'       => array(
-						'type'    => 'string',
-						'default' => __( 'Related articles', 'wordlift' ),
-					),
-					'limit'       => array(
-						'type'    => 'number',
-						'default' => 4,
-					),
-					'template_id' => array(
-						'type' => 'string',
-						'default' => '',
-					),
-					'post_id'     => array(
-						'type' => 'number',
-						'default' => '',
-					),
-					'offset'      => array(
-						'type'    => 'number',
-						'default' => 0,
-					),
-					'uniqid'      => array(
-						'type'    => 'string',
-						'default' => '',
-					),
-					'order_by'    => array(
-						'type'    => 'string',
-						'default' => 'ID DESC',
-					),
-					'preview'     => array(
-						'type'    => 'boolean',
-						'default' => false,
-					),
-					'preview_src' => array(
-						'type'    => 'string',
-						'default' => WP_CONTENT_URL . '/plugins/wordlift/images/block-previews/navigator.png',
-					),
-				),
+				'attributes'      => $scope->get_navigator_block_attributes(),
 			) );
 		} );
 	}
@@ -118,14 +81,15 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 			'template_id' => '',
 			'post_id'     => '',
 			'uniqid'      => uniqid( 'wl-navigator-widget-' ),
-			'order_by'    => 'ID DESC'
+			'order_by'    => 'ID DESC',
+			'post_types'  => '',
 		), $atts );
 
 		return $shortcode_atts;
 	}
 
 	/**
-	 * Function in charge of diplaying the [wl-navigator] in web mode.
+	 * Function in charge of displaying the [wl-navigator] in web mode.
 	 *
 	 * @param array $atts Shortcode attributes.
 	 *
@@ -157,7 +121,8 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 				'post_id' => $post->ID,
 				'limit'   => $limit,
 				'offset'  => $offset,
-				'sort'    => $sort
+				'sort'    => $sort,
+				'post_types' => $shortcode_atts['post_types']
 			) ) ) : false;
 
 		// avoid building the widget when no valid $rest_url
@@ -166,18 +131,16 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		}
 
 		wp_enqueue_script( 'wordlift-cloud' );
-		$json_navigator_id = wp_json_encode( $navigator_id );
+		$template_url      = get_rest_url( null, '/wordlift/v1/navigator/template' );
 
 		return <<<HTML
 			<!-- Navigator {$navigator_id} -->
-			<script type="application/javascript">
-				window.wlNavigators = window.wlNavigators || []; wlNavigators.push({$json_navigator_id});
-			</script>
 			<div id="{$navigator_id}" 
 				 class="wl-navigator" 
 				 data-rest-url="{$rest_url}" 
 				 data-title="{$title}" 
-				 data-template-id="{$template_id}" 
+				 data-template-id="{$template_id}"
+				 data-template-url="{$template_url}"
 				 data-limit="{$limit}"></div>
 			<!-- /Navigator {$navigator_id} -->
 HTML;
@@ -266,6 +229,54 @@ HTML;
 			</div>
 		</template>
 HTML;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function get_navigator_block_attributes() {
+		return array(
+			'title'       => array(
+				'type'    => 'string',
+				'default' => __( 'Related articles', 'wordlift' ),
+			),
+			'limit'       => array(
+				'type'    => 'number',
+				'default' => 4,
+			),
+			'template_id' => array(
+				'type'    => 'string',
+				'default' => '',
+			),
+			'post_id'     => array(
+				'type'    => 'number',
+				'default' => '',
+			),
+			'offset'      => array(
+				'type'    => 'number',
+				'default' => 0,
+			),
+			'uniqid'      => array(
+				'type'    => 'string',
+				'default' => '',
+			),
+			'order_by'    => array(
+				'type'    => 'string',
+				'default' => 'ID DESC',
+			),
+			'preview'     => array(
+				'type'    => 'boolean',
+				'default' => false,
+			),
+			'preview_src' => array(
+				'type'    => 'string',
+				'default' => WP_CONTENT_URL . '/plugins/wordlift/images/block-previews/navigator.png',
+			),
+			'post_types'  => array(
+				'type'    => 'string',
+				'default' => '',
+			)
+		);
 	}
 
 }

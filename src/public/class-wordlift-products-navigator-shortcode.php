@@ -167,13 +167,9 @@ class Wordlift_Products_Navigator_Shortcode extends Wordlift_Shortcode {
 		}
 
 		wp_enqueue_script( 'wordlift-cloud' );
-		$json_navigator_id = wp_json_encode( $navigator_id );
 
 		return <<<HTML
 			<!-- Products Navigator {$navigator_id} -->
-			<script type="application/javascript">
-				window.wlProductsNavigators = window.wlProductsNavigators || []; wlProductsNavigators.push({$json_navigator_id});
-			</script>
 			<div id="{$navigator_id}" 
 				 class="wl-products-navigator" 
 				 data-rest-url="{$rest_url}" 

@@ -12,6 +12,8 @@
  * @subpackage Wordlift/includes
  */
 
+use Wordlift\Admin\Key_Validation_Notice;
+use Wordlift\Admin\Top_Entities;
 use Wordlift\Analysis\Response\Analysis_Response_Ops_Factory;
 use Wordlift\Autocomplete\All_Autocomplete_Service;
 use Wordlift\Autocomplete\Linked_Data_Autocomplete_Service;
@@ -48,7 +50,7 @@ use Wordlift\Mappings\Validators\Taxonomy_Term_Rule_Validator;
 use Wordlift\Post_Excerpt\Post_Excerpt_Meta_Box_Adapter;
 use Wordlift\Post_Excerpt\Post_Excerpt_Rest_Controller;
 use Wordlift\Templates\Templates_Ajax_Endpoint;
-use Wordlift\Admin\Top_Entities;
+use Wordlift\Widgets\Async_Template_Decorator;
 
 /**
  * The core plugin class.
@@ -749,7 +751,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.27.7.3';
+		$this->version     = '3.27.8';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -1319,13 +1321,13 @@ class Wordlift {
 		 */
 		if ( apply_filters( 'wl_feature__enable__blocks', true ) ) {
 			// Initialize the short-codes.
-			new Wordlift_Navigator_Shortcode();
+			new Async_Template_Decorator( new Wordlift_Navigator_Shortcode() );
 			new Wordlift_Chord_Shortcode();
 			new Wordlift_Geomap_Shortcode();
 			new Wordlift_Timeline_Shortcode();
 			new Wordlift_Related_Entities_Cloud_Shortcode( $this->relation_service );
 			new Wordlift_Vocabulary_Shortcode( $this->configuration_service );
-			new Wordlift_Faceted_Search_Shortcode();
+			new Async_Template_Decorator( new Wordlift_Faceted_Search_Shortcode() );
 		}
 
 		new Wordlift_Products_Navigator_Shortcode();
@@ -1553,6 +1555,11 @@ class Wordlift {
 		 * Add the faq duplicate markup hook.
 		 */
 		new Faq_Duplicate_Markup_Remover();
+		/**
+		 * @since 3.27.8
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/1248
+		 */
+		new Key_Validation_Notice( $this->key_validation_service, $this->configuration_service );
 	}
 
 	/**

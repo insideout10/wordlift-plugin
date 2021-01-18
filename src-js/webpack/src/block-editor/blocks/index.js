@@ -78,7 +78,7 @@ const blocks = {
     },
     //display the edit interface + preview
     edit: ({ attributes, setAttributes }) => {
-      const { title, template_id, post_id, uniqid, limit, preview, preview_src } = attributes;
+      const { title, template_id, post_id, uniqid, limit, preview, preview_src, post_types } = attributes;
       if (preview) {
         return (
           <Fragment>
@@ -120,6 +120,12 @@ const blocks = {
                 value={uniqid}
                 onChange={uniqid => setAttributes({ uniqid })}
               />
+              <TextControl
+                  label={__("Post types", "wordlift")}
+                  help={__("The Post types which should be shown on faceted search results separated by comma, For example: post,page", "wordlift")}
+                  value={post_types}
+                  onChange={post_types => setAttributes({ post_types })}
+              />
             </PanelBody>
           </InspectorControls>
         </div>
@@ -144,7 +150,7 @@ const blocks = {
     },
     //display the edit interface + preview
     edit: ({ attributes, setAttributes }) => {
-      const { title, limit, template_id, post_id, offset, uniqid, order_by, preview, preview_src } = attributes;
+      const { title, limit, template_id, post_id, offset, uniqid, order_by, preview, preview_src, post_types } = attributes;
       if (preview) {
         return (
           <Fragment>
@@ -185,6 +191,12 @@ const blocks = {
                 help="Valid SQL ‘order by’ clause"
                 value={order_by}
                 onChange={order_by => setAttributes({ order_by })}
+              />
+              <TextControl
+                  label={__("Post types", "wordlift")}
+                  help={__("The Post types which should be shown on navigator results separated by comma, For example: post,page", "wordlift")}
+                  value={post_types}
+                  onChange={post_types => setAttributes({ post_types })}
               />
             </PanelBody>
           </InspectorControls>

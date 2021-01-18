@@ -9,6 +9,7 @@
  */
 
 use Wordlift\Cache\Ttl_Cache;
+use Wordlift\Widgets\Navigator\Filler_Posts\Filler_Posts_Util;
 
 /**
  * Ajax call for the faceted search widget.
@@ -63,6 +64,12 @@ function wl_shortcode_faceted_search_origin( $request ) {
 	$current_post    = get_post( $current_post_id );
 	$faceted_id      = $_GET['uniqid'];
 
+	$post_types          = isset( $_GET['post_types'] ) ? (string) $_GET['post_types'] : '';
+	$post_types          = explode( ',', $post_types );
+	$existing_post_types = get_post_types();
+	$post_types          = array_values( array_intersect( $existing_post_types, $post_types ) );
+
+
 	// Post ID has to match an existing item.
 	if ( null === $current_post ) {
 		wp_die( 'No valid post_id given' );
@@ -74,7 +81,8 @@ function wl_shortcode_faceted_search_origin( $request ) {
 	// the current post is used as main entity.
 	// Otherwise, current post related entities are used.
 	$entity_service = Wordlift_Entity_Service::get_instance();
-	$entity_ids     = $entity_service->is_entity( $current_post->ID ) ?
+
+	$entity_ids = $entity_service->is_entity( $current_post->ID ) ?
 		array( $current_post->ID ) :
 		$entity_service->get_related_entities( $current_post->ID );
 
@@ -104,6 +112,7 @@ function wl_shortcode_faceted_search_origin( $request ) {
 		$order_by = (string) $_GET['sort'];
 	}
 
+
 	$referencing_posts = Wordlift_Relation_Service::get_instance()->get_article_subjects(
 		$entity_ids,
 		'*',
@@ -112,8 +121,10 @@ function wl_shortcode_faceted_search_origin( $request ) {
 		array( $current_post_id ),
 		$limit,
 		null,
-		$order_by
+		$order_by,
+		$post_types
 	);
+
 
 	$referencing_post_ids = array_map( function ( $p ) {
 		return $p->ID;
@@ -161,8 +172,11 @@ function wl_shortcode_faceted_search_origin( $request ) {
 
 	$filler_count = $limit - count( $post_results );
 	if ( $filler_count > 0 ) {
-		$filler_posts = wl_shortcode_faceted_search_filler_posts( $filler_count, $current_post_id, $referencing_post_ids );
-		$post_results = array_merge( $post_results, $filler_posts );
+		$filler_posts_util       = new Filler_Posts_Util( $current_post_id );
+		$post_ids_to_be_excluded = array_merge( array( $current_post_id ), $referencing_post_ids );
+		$filler_posts            = $filler_posts_util->get_filler_posts( $filler_count, $post_ids_to_be_excluded );
+
+		$post_results            = array_merge( $post_results, $filler_posts );
 	}
 	$referencing_post_ids = array_map( function ( $post ) {
 		return $post->ID;
@@ -248,65 +262,6 @@ function wl_shortcode_faceted_search_get_the_title( $post_id ) {
 	}
 
 	return remove_accents( $title );
-
-}
-
-function wl_shortcode_faceted_search_filler_posts( $filler_count, $current_post_id, $referencing_post_ids ) {
-
-	$filler_posts = array();
-
-	// First add latest posts from same categories as the current post
-	if ( $filler_count > 0 ) {
-
-		$current_post_categories = wp_get_post_categories( $current_post_id );
-
-		$args = array(
-			'meta_query'          => array(
-				array(
-					'key' => '_thumbnail_id'
-				)
-			),
-			'category__in'        => $current_post_categories,
-			'numberposts'         => $filler_count,
-			'post__not_in'        => array_merge( array( $current_post_id ), $referencing_post_ids ),
-			'ignore_sticky_posts' => 1
-		);
-
-		$filler_posts = get_posts( $args );
-	}
-
-	$filler_count    = $filler_count - count( $filler_posts );
-	$filler_post_ids = array_map( function ( $post ) {
-		return $post->ID;
-	}, $filler_posts );
-
-	// If that does not fill, add latest posts irrespective of category
-	if ( $filler_count > 0 ) {
-
-		$args = array(
-			'meta_query'          => array(
-				array(
-					'key' => '_thumbnail_id'
-				)
-			),
-			'numberposts'         => $filler_count,
-			'post__not_in'        => array_merge( array( $current_post_id ), $referencing_post_ids, $filler_post_ids ),
-			'ignore_sticky_posts' => 1
-		);
-
-		$filler_posts = array_merge( $filler_posts, get_posts( $args ) );
-
-	}
-
-	// Add thumbnail and permalink to filler posts
-	foreach ( $filler_posts as $post_obj ) {
-		$thumbnail           = get_the_post_thumbnail_url( $post_obj, 'medium' );
-		$post_obj->thumbnail = ( $thumbnail ) ?
-			$thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
-		$post_obj->permalink = get_permalink( $post_obj->ID );
-	}
-
-	return $filler_posts;
 
 }
 

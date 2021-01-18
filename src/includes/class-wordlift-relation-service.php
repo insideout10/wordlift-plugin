@@ -91,11 +91,12 @@ class Wordlift_Relation_Service {
 	 *
 	 * @param null | string $order_by
 	 *
+	 * @param array $post_types
+	 *
 	 * @return array|object|null Database query results
 	 * @since 3.15.0
-	 *
 	 */
-	public function get_article_subjects( $object_id, $fields = '*', $predicate = null, $status = null, $excludes = array(), $limit = null, $include = null, $order_by = null ) {
+	public function get_article_subjects( $object_id, $fields = '*', $predicate = null, $status = null, $excludes = array(), $limit = null, $include = null, $order_by = null, $post_types = array() ) {
 		global $wpdb;
 
 		// The output fields.
@@ -129,7 +130,7 @@ class Wordlift_Relation_Service {
 			// the results.
 			. self::and_article_not_in( array_merge( $excludes, (array) $object_id ) )
 			. self::and_article_in( $include )
-			. self::and_post_type_in()
+			. self::and_post_type_in( $post_types )
 			. self::and_predicate( $predicate )
 			. self::order_by( $order_by )
 			. self::limit( $limit );
@@ -140,16 +141,22 @@ class Wordlift_Relation_Service {
 	/**
 	 * The `post_type IN` clause.
 	 *
+	 * @param array $post_types If the post type is not provided then the valid
+	 * entity post types are used.
+	 *
 	 * @return string The `post_type IN` clause.
 	 * @since 3.15.3
-	 *
 	 */
-	private static function and_post_type_in() {
+	private static function and_post_type_in( $post_types = array() ) {
+
+		if ( $post_types === array() ) {
+			$post_types = Wordlift_Entity_Service::valid_entity_post_types();
+		}
 
 		return " AND p.post_type IN ( '"
 		       . implode(
 			       "','",
-			       array_map( 'esc_sql', Wordlift_Entity_Service::valid_entity_post_types() )
+			       array_map( 'esc_sql', $post_types )
 		       )
 		       . "' )";
 	}

@@ -80,7 +80,35 @@ class Wordlift_Key_Validation_Service {
 
 		return Default_Api_Service::get_instance()->get( '/accounts/info', array(
 			'Authorization' => "Key $key",
-        ) )->get_response();
+		) )->get_response();
+	}
+
+	/**
+	 * Check if key is valid
+	 *
+	 * @param $key string
+	 *
+	 * @return bool
+	 */
+	public function is_key_valid( $key ) {
+
+		$response = $this->get_account_info( $key );
+
+		if ( is_wp_error( $response ) || 2 !== (int) $response['response']['code'] / 100 ) {
+			return false;
+		}
+		$res_body = json_decode( wp_remote_retrieve_body( $response ), true );
+
+		$url = $res_body['url'];
+
+		// Considering that production URL may be filtered.
+		$home_url = defined( 'WP_HOME' ) ? WP_HOME : get_option( 'home' );
+		$site_url = apply_filters( 'wl_production_site_url', untrailingslashit( $home_url ) );
+		if ( is_null( $url ) || $url === $site_url ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
