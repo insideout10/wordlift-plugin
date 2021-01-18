@@ -383,6 +383,7 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		set_post_thumbnail( $post_2, $attachment_id );
 		$small           = get_the_post_thumbnail_url( $post_2, 'small' );
 		$medium          = get_the_post_thumbnail_url( $post_2, 'medium' );
+		$large          = get_the_post_thumbnail_url( $post_2, 'large' );
 		$_GET['amp']     = true;
 		$_GET['post_id'] = $post_id;
 		$_GET['uniqid']  = 'uniqid';
@@ -392,6 +393,7 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$srcset = $result['srcset'];
 		$this->assertTrue( strpos( $srcset, $small ) !== false );
 		$this->assertTrue( strpos( $srcset, $medium ) !== false );
+		$this->assertTrue( strpos( $srcset, $large ) !== false );
 	}
 
 
@@ -403,6 +405,7 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		set_post_thumbnail( $post_2, $attachment_id );
 		$small           = get_the_post_thumbnail_url( $post_2, 'small' );
 		$medium          = get_the_post_thumbnail_url( $post_2, 'medium' );
+		$large          = get_the_post_thumbnail_url( $post_2, 'large' );
 		$_GET['amp']     = true;
 		$_GET['post_id'] = $post_1;
 		$_GET['uniqid']  = 'uniqid';
@@ -412,6 +415,7 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$srcset = $result['srcset'];
 		$this->assertTrue( strpos( $srcset, $small ) !== false );
 		$this->assertTrue( strpos( $srcset, $medium ) !== false );
+		$this->assertTrue( strpos( $srcset, $large ) !== false );
 	}
 
 
