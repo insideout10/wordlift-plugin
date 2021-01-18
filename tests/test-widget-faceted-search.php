@@ -241,23 +241,41 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 		$entity_1 = $this->create_faceted_search_entity();
 		$post_1   = $this->create_faceted_search_post( $entity_1 );
 		$post_2   = $this->create_faceted_search_post( $entity_1 );
+		$post_3 = $this->factory()->post->create();
 
 		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/cat-1200x1200.jpg', $post_2 );
 		set_post_thumbnail( $post_2, $attachment_id );
-		$small           = get_the_post_thumbnail_url( $post_2, 'small' );
-		$medium          = get_the_post_thumbnail_url( $post_2, 'medium' );
-		$large          = get_the_post_thumbnail_url( $post_2, 'large' );
+		$small_1           = get_the_post_thumbnail_url( $post_2, 'small' );
+		$medium_1          = get_the_post_thumbnail_url( $post_2, 'medium' );
+		$large_1          = get_the_post_thumbnail_url( $post_2, 'large' );
+
+		// Add thumbnails to other posts
+		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/cat-1200x1200.jpg', $post_3 );
+		set_post_thumbnail( $post_3, $attachment_id );
+		$small_2           = get_the_post_thumbnail_url( $post_3, 'small' );
+		$medium_2          = get_the_post_thumbnail_url( $post_3, 'medium' );
+		$large_2         = get_the_post_thumbnail_url( $post_3, 'large' );
+
+
 		$_GET['post_id'] = $post_1;
 		$_GET['uniqid']  = 'uniqid';
 		$_GET['amp']     = true;
 		$faceted_data    = wl_shortcode_faceted_search_origin( null );
 		$result          = $faceted_data['posts'][0]['values'];
-		$target_post     = $result[0];
-		//var_dump($target_post);
-		$srcset = $target_post->srcset;
-		$this->assertTrue( strpos( $srcset, $small ) !== false );
-		$this->assertTrue( strpos( $srcset, $medium ) !== false );
-		$this->assertTrue( strpos( $srcset, $large ) !== false );
+
+		// Check if we have srcset in referenced posts.
+		$target_post_1     = $result[0];
+		$srcset_1 = $target_post_1->srcset;
+		$this->assertTrue( strpos( $srcset_1, $small_1 ) !== false );
+		$this->assertTrue( strpos( $srcset_1, $medium_1 ) !== false );
+		$this->assertTrue( strpos( $srcset_1, $large_1 ) !== false );
+
+		// check if we have srcset in filler posts.
+		$target_post_2     = $result[2];
+		$srcset_2 = $target_post_2->srcset;
+		$this->assertTrue( strpos( $srcset_2, $small_2 ) !== false );
+		$this->assertTrue( strpos( $srcset_2, $medium_2 ) !== false );
+		$this->assertTrue( strpos( $srcset_2, $large_2 ) !== false );
 	}
 
 
