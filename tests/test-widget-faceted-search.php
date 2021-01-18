@@ -231,7 +231,7 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 		$post_id     = $this->factory()->post->create();
 		$_GET['amp'] = true;
 		$result      = do_shortcode( "[wl_faceted_search post_id='$post_id']" );
-		$this->assertTrue( strpos( $result, 'srcset' ) !== false );
+		$this->assertTrue( strpos( $result, '{{srcset}}' ) !== false );
 	}
 
 
