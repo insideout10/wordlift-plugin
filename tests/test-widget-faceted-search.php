@@ -292,14 +292,14 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 
 		// we should have intrinsic width of the image in src set
 		$small_1_srcset = $small_1 . ' ' . $this->get_image_width( $post_id, 'small' ) . 'w';
-		$this->assertStringContainsString( $small_1_srcset, $srcset );
+		$this->assertTrue( strpos( $srcset, $small_1_srcset ) !== false );
 
 
-		$medium_1_srcset = $medium_1 . ' ' .  $this->get_image_width( $post_id, 'medium' ) . 'w';
-		$this->assertStringContainsString( $medium_1_srcset, $srcset );
+		$medium_1_srcset = $medium_1 . ' ' . $this->get_image_width( $post_id, 'medium' ) . 'w';
+		$this->assertTrue( strpos( $srcset, $medium_1_srcset ) !== false );
 
-		$large_1_srcset = $large_1 . ' ' .  $this->get_image_width( $post_id, 'large' ) . 'w';
-		$this->assertStringContainsString( $large_1_srcset, $srcset );
+		$large_1_srcset = $large_1 . ' ' . $this->get_image_width( $post_id, 'large' ) . 'w';
+		$this->assertTrue( strpos( $srcset, $large_1_srcset ) !== false );
 
 
 	}
