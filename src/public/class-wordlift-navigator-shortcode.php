@@ -196,7 +196,6 @@ HTML;
 			$template_id = "template-" . $navigator_id;
 			wp_enqueue_style( 'wordlift-amp-custom', plugin_dir_url( dirname( __FILE__ ) ) . '/css/wordlift-amp-custom.min.css' );
 		}
-		$srcset = Srcset_Util::get_srcset( $post->ID, Srcset_Util::NAVIGATOR_WIDGET );
 
 		return <<<HTML
 		<div id="{$navigator_id}" class="wl-amp-navigator" style="width: 100%">
@@ -220,7 +219,7 @@ HTML;
 		                        height="9"
 								layout="responsive"
 		                        src="{{post.thumbnail}}"
-		                        srcset="${srcset}"></amp-img>
+		                        srcset="{{srcset}}}"></amp-img>
 							<div class="card-content">
 								<header class="title">{{post.title}}</header>
 							</div>
