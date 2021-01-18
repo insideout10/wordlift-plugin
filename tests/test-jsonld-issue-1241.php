@@ -139,7 +139,7 @@ class Wordlift_Jsonld_Issue_1241 extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( $mocked_data['dateModified'], $jsonld[0]['dateModified'] );
 
 		$this->assertArrayHasKey( 'publisher', $jsonld[0] );
-		$this->assertArrayHasKey( '@type', $jsonld[0] )['publisher'];
+		$this->assertArrayHasKey( '@type', $jsonld[0]['publisher'] );
 		$this->assertEquals( $mocked_data['publisher']['@type'], $jsonld[0]['publisher']['@type'] );
 		$this->assertArrayHasKey( 'name', $jsonld[0]['publisher'] );
 		$this->assertEquals( $mocked_data['publisher']['name'], $jsonld[0]['publisher']['name'] );
