@@ -17,22 +17,38 @@ class Srcset_Util {
 		$small  = get_the_post_thumbnail_url( $post_id, 'small' );
 		$medium = get_the_post_thumbnail_url( $post_id, 'medium' );
 		$large  = get_the_post_thumbnail_url( $post_id, 'large' );
-		if ( $small ) {
-			$srcset[] = $small;
+		if ( $small && $width = self::get_image_width( $post_id, 'small' ) ) {
+			$srcset[] = $small . ' ' . $width . 'w';
 		}
-		if ( $medium ) {
-			$srcset[] = $medium;
+		if ( $medium && $width = self::get_image_width( $post_id, 'medium' ) ) {
+			$srcset[] = $medium . ' ' . $width . 'w';
 		}
 
-		if ( $large ) {
-			$srcset[] = $large;
+		if ( $large && $width = self::get_image_width( $post_id, 'large' ) ) {
+			$srcset[] = $large . ' ' . $width . 'w';
 		}
 
 		$srcset_string = join( ",", $srcset );
+
 		$srcset_string = apply_filters( "wordlift_${widget_name}_thumbnail_srcset", $srcset_string );
 
 		return $srcset_string;
 
 	}
+
+
+	private static function get_image_width( $post_id, $size ) {
+		$thumbnail_id = get_post_thumbnail_id( $post_id );
+		if ( ! $thumbnail_id ) {
+			return false;
+		}
+		$data = wp_get_attachment_image_src( $thumbnail_id, $size );
+		if ( ! $data ) {
+			return false;
+		}
+
+		return array_key_exists( 2, $data ) ? $data[2] : false;
+	}
+
 
 }
