@@ -150,6 +150,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement [1197](https://github.com/insideout10/wordlift-plugin/issues/1197): Enhance filters in Navigator and Faceted Search
 * Enhancement [1060](https://github.com/insideout10/wordlift-plugin/issues/1060): Allow the Navigator and Faceted Search to lazyload
 
+* Fix [#1257](https://github.com/insideout10/wordlift-plugin/issues/1257): Undefined index: action in wordlift_shortcode_navigator.php on line 393
 * Fix [#1254](https://github.com/insideout10/wordlift-plugin/issues/1254): In Classification Box use Cloud icon also for Wikidata entities
 * Fix [#1245](https://github.com/insideout10/wordlift-plugin/issues/1245): Summarizer removes spaces.
 * Fix [#1216](https://github.com/insideout10/wordlift-plugin/issues/1216): Faceted Widget div html attributes not escaped
