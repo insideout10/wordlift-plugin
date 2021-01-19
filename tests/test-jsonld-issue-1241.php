@@ -29,52 +29,8 @@ class Wordlift_Jsonld_Issue_1241 extends Wordlift_Unit_Test_Case {
 
 		$wordlift = new Wordlift_Test();
 
+		$this->post_to_jsonld_converter = $wordlift->get_post_to_jsonld_converter();
 		$this->jsonld_service = $wordlift->get_jsonld_service();
-	}
-
-	public function mock_data( $post_id ) {
-		$date_published = date( 'Y-m-d', 1576800000 );
-
-		if ( ! add_post_meta( $post_id, 'wl_cal_date_published', $date_published ) ) {
-			add_post_meta( $post_id, 'wl_cal_date_published', $date_published );
-		}
-
-		$date_modified = date( 'Y-m-d', 1576900000 );
-		if ( add_post_meta( $post_id, 'wl_cal_date_modified', $date_modified ) ) {
-			add_post_meta( $post_id, 'wl_cal_date_modified', $date_modified );
-		}
-
-		$image = array(
-			"@type"  => "ImageObject",
-			"url"    => "https://wordlift.io/blog/en/wp-content/uploads/sites/3/2017/02/wordlift-serp.png",
-			"width"  => "640",
-			"height" => "480"
-		);
-
-		$author = array(
-			"@type"      => "Person",
-			"name"       => "John Smith",
-			"givenName"  => "John",
-			"familyName" => "Smith"
-		);
-
-		$publisher = array(
-			"@type" => "Organization",
-			"name"  => "WordLift",
-			"logo"  => array(
-				"@type" => "ImageObject",
-				"url"   => "https://wordlift.io/logo.png"
-			)
-		);
-
-
-		return array(
-			'datePublished' => $date_published,
-			'dateModified'  => $date_modified,
-			'image'         => $image,
-			'author'        => $author,
-			'publisher'     => $publisher
-		);
 	}
 
 	public function test() {
@@ -84,8 +40,8 @@ class Wordlift_Jsonld_Issue_1241 extends Wordlift_Unit_Test_Case {
 			'post_type'  => 'entity',
 		) );
 
-		$mocked_data = $this->mock_data( $entity_id );
-
+		$mocked_data = $this->post_to_jsonld_converter->convert($entity_id);
+		
 		$this->entity_type_service->set( $entity_id, 'http://schema.org/Thing' );
 
 		add_filter( 'wl_after_get_jsonld', array( $this, 'wl_after_get_jsonld' ), 10, 2 );
@@ -166,7 +122,7 @@ class Wordlift_Jsonld_Issue_1241 extends Wordlift_Unit_Test_Case {
 			return $jsonld;
 		}
 
-		$mocked_data = $this->mock_data( $post_id );
+		$mocked_data     = $this->post_to_jsonld_converter->convert($post_id);
 
 		foreach ( $post_jsonld as $key => $value ) {
 			if ( $key === '@id' ) {
@@ -178,26 +134,17 @@ class Wordlift_Jsonld_Issue_1241 extends Wordlift_Unit_Test_Case {
 				$post_jsonld['headline']      = $post_jsonld['name'];
 				$post_jsonld['datePublished'] = $mocked_data['datePublished'];
 				$post_jsonld['dateModified']  = $mocked_data['dateModified'];
-				$post_jsonld['image']         = array(
-					"@type"  => "ImageObject",
-					"url"    => "https://wordlift.io/blog/en/wp-content/uploads/sites/3/2017/02/wordlift-serp.png",
-					"width"  => "640",
-					"height" => "480"
-				);
-				$post_jsonld['author']        = array(
-					"@type"      => "Person",
-					"name"       => "John Smith",
-					"givenName"  => "John",
-					"familyName" => "Smith"
-				);
-				$post_jsonld['publisher']     = array(
-					"@type" => "Organization",
-					"name"  => "WordLift",
-					"logo"  => array(
-						"@type" => "ImageObject",
-						"url"   => "https://wordlift.io/logo.png"
-					)
-				);
+
+				if (isset($mocked_data['image'])) {					
+					$post_jsonld['image']         = $mocked_data['image'];
+				}
+				if (isset($mocked_data['author'])) {
+					$post_jsonld['author']         = $mocked_data['author'];
+				}
+				if (isset($mocked_data['publisher'])) {
+					$post_jsonld['publisher']         = $mocked_data['publisher'];
+				}
+								
 				$post_jsonld['about']         = array( '@id' => $post_jsonld_id );
 				unset( $post_jsonld['name'] );
 			}
