@@ -15,9 +15,11 @@ class Jsonld_Homepage {
 	}
 
 	public function add_mentions_if_singular( $jsonld ) {
-		if (  is_singular() ) {
+
+		if ( is_singular() && get_post_type( get_the_ID() ) !== 'entity' ) {
 			$jsonld['mentions'] = array();
 		}
+
 		return $jsonld;
 	}
 
