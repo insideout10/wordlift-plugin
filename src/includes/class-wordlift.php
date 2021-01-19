@@ -1565,7 +1565,7 @@ class Wordlift {
 		 * @since 3.27.9
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/1033
 		 */
-		new Jsonld_Homepage( $this->relation_service );
+		new Jsonld_Homepage( $this->relation_service, $this->entity_service );
 	}
 
 	/**
