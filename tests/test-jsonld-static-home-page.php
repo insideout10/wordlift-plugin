@@ -64,6 +64,7 @@ class Jsonld_Static_Home_Page_Test extends Wordlift_Unit_Test_Case {
 		$wp_query = new WP_Query( $args );
 		$jsonld   = $this->jsonld_service->get( Object_Type_Enum::HOMEPAGE, $home_page );
 		$this->assertTrue( array_key_exists( 'mentions', $jsonld ), 'Should have mentions property in the  jsonld' );
+		$this->assertCount( 2, $jsonld['mentions'], 'Should have two referenced entities in the result' );
 	}
 
 
