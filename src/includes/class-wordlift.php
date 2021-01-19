@@ -32,6 +32,7 @@ use Wordlift\Faq\Faq_Tinymce_Adapter;
 use Wordlift\Jsonld\Jsonld_Adapter;
 use Wordlift\Jsonld\Jsonld_By_Id_Endpoint;
 use Wordlift\Jsonld\Jsonld_Endpoint;
+use Wordlift\Jsonld\Jsonld_Homepage;
 use Wordlift\Jsonld\Jsonld_Service;
 use Wordlift\Jsonld\Jsonld_User_Service;
 use Wordlift\Mappings\Formatters\Acf_Group_Formatter;
@@ -1560,6 +1561,11 @@ class Wordlift {
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/1248
 		 */
 		new Key_Validation_Notice( $this->key_validation_service, $this->configuration_service );
+		/**
+		 * @since 3.27.9
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/1033
+		 */
+		new Jsonld_Homepage();
 	}
 
 	/**
