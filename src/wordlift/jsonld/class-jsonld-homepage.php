@@ -15,41 +15,71 @@ class Jsonld_Homepage {
 	 * @var \Wordlift_Entity_Service
 	 */
 	private $entity_service;
+	/**
+	 * @var \Wordlift_Entity_Post_To_Jsonld_Converter
+	 */
+	private $entity_post_to_jsonld_service;
 
 	/**
 	 * Jsonld_Homepage constructor.
 	 *
 	 * @param $relation_service \Wordlift_Relation_Service
 	 * @param $entity_service \Wordlift_Entity_Service
+	 * @param $entity_post_to_jsonld_service \Wordlift_Entity_Post_To_Jsonld_Converter
 	 */
-	public function __construct( $relation_service, $entity_service ) {
+	public function __construct( $relation_service, $entity_service, $entity_post_to_jsonld_service ) {
 
 		$this->relation_service = $relation_service;
 
 		$this->entity_service = $entity_service;
+
+		$this->entity_post_to_jsonld_service = $entity_post_to_jsonld_service;
 
 		add_filter( 'wl_website_jsonld', array( $this, 'add_mentions_if_singular' ), 10, 2 );
 
 	}
 
 
-	private function entity_ids_to_jsonld( $entity_ids ) {
+	private function entity_ids_to_jsonld_references( $entity_ids ) {
 		return array_map( function ( $entity_id ) {
 			return array( '@id' => $this->entity_service->get_uri( $entity_id ) );
+		}, $entity_ids );
+	}
+
+	private function entity_ids_to_jsonld( $entity_ids ) {
+		return array_map( function ( $entity_id ) {
+			return $this->entity_post_to_jsonld_service->convert( $entity_id );
 		}, $entity_ids );
 	}
 
 
 	public function add_mentions_if_singular( $jsonld, $post_id ) {
 
-		$mentions = array();
-		if ( is_singular() && get_post_type( $post_id ) !== 'entity' ) {
-			$entity_ids = $this->relation_service->get_objects( $post_id, 'ids', null, 'publish' );
-			$mentions   = $this->entity_ids_to_jsonld( $entity_ids );
+		$mentions                 = array();
+		$referenced_entities_data = array();
+
+
+		if ( get_post_type( $post_id ) === 'entity' ) {
+			$jsonld['mainEntityOfPage'] = get_permalink( $post_id );
+
+			return $jsonld;
+		}
+
+
+		if ( is_singular() ) {
+			$entity_ids               = $this->relation_service->get_objects( $post_id, 'ids', null, 'publish' );
+			$mentions                 = $this->entity_ids_to_jsonld_references( $entity_ids );
+			$referenced_entities_data = $this->entity_ids_to_jsonld( $entity_ids );
 		}
 
 		if ( $mentions ) {
 			$jsonld['mentions'] = $mentions;
+		}
+
+		if ( $referenced_entities_data ) {
+			$jsonld = array( $jsonld );
+			// Merge the homepage jsonld with annotated entities data.
+			$jsonld = array_merge( $jsonld, $referenced_entities_data );
 		}
 
 		return $jsonld;

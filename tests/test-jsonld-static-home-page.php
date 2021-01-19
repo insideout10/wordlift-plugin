@@ -21,6 +21,9 @@ class Jsonld_Static_Home_Page_Test extends Wordlift_Unit_Test_Case {
 
 	public function setUp() {
 		parent::setUp();
+		global $wp_filter;
+		$wp_filter = array();
+		run_wordlift();
 		$this->jsonld_service = Jsonld_Service::get_instance();
 	}
 
@@ -69,6 +72,7 @@ class Jsonld_Static_Home_Page_Test extends Wordlift_Unit_Test_Case {
 		$this->assertTrue( array_key_exists( 'mentions', $jsonld ), 'Should have mentions property in the  jsonld' );
 		$this->assertCount( 2, $jsonld['mentions'], 'Should have two referenced entities in the result' );
 		$mentions = $jsonld['mentions'];
+
 		$this->assertEquals( array( '@id' => Wordlift_Entity_Service::get_instance()->get_uri( $entity_1 ) ), $mentions[0],
 			'Mentions not in correct format' );
 	}
@@ -91,6 +95,27 @@ class Jsonld_Static_Home_Page_Test extends Wordlift_Unit_Test_Case {
 		$wp_query = new WP_Query( $args );
 		$jsonld   = $this->jsonld_service->get( Object_Type_Enum::HOMEPAGE, $home_page );
 		$this->assertFalse( array_key_exists( 'mentions', $jsonld ), 'Should have mentions property in the  jsonld' );
+	}
+
+
+	public function test_when_the_homepage_is_static_and_singular_should_have_mainEntityOfPage_property_if_post_is_entity() {
+		$home_page       = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		$entity_1        = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		$entity_2        = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		$GLOBALS['post'] = get_post( $home_page );
+		// Link the home page with entities.
+		wl_core_add_relation_instance( $home_page, WL_WHAT_RELATION, $entity_1 );
+		wl_core_add_relation_instance( $home_page, WL_WHAT_RELATION, $entity_2 );
+
+		// Emulate the collections page query.
+		global $wp_query;
+		$args     = array(
+			'p' => $home_page
+		);
+		$wp_query = new WP_Query( $args );
+		$jsonld   = $this->jsonld_service->get( Object_Type_Enum::HOMEPAGE, $home_page );
+		$this->assertTrue( array_key_exists( 'mainEntityOfPage', $jsonld ), 'Should have mainEntityOfPage property in the  jsonld' );
+		$this->assertEquals( get_permalink( $home_page ), $jsonld['mainEntityOfPage'] );
 	}
 
 
