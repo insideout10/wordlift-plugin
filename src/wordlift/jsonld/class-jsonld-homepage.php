@@ -41,14 +41,18 @@ class Jsonld_Homepage {
 
 
 	private function entity_ids_to_jsonld_references( $entity_ids ) {
-		return array_map( function ( $entity_id ) {
-			return array( '@id' => $this->entity_service->get_uri( $entity_id ) );
+		$that = $this;
+
+		return array_map( function ( $entity_id ) use ( $that ) {
+			return array( '@id' => $that->entity_service->get_uri( $entity_id ) );
 		}, $entity_ids );
 	}
 
 	private function entity_ids_to_jsonld( $entity_ids ) {
-		return array_map( function ( $entity_id ) {
-			return $this->entity_post_to_jsonld_service->convert( $entity_id );
+		$that = $this;
+
+		return array_map( function ( $entity_id ) use ( $that ) {
+			return $that->entity_post_to_jsonld_service->convert( $entity_id );
 		}, $entity_ids );
 	}
 
