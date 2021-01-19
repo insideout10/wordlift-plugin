@@ -63,11 +63,14 @@ class Jsonld_Static_Home_Page_Test extends Wordlift_Unit_Test_Case {
 		);
 		$wp_query = new WP_Query( $args );
 		$jsonld   = $this->jsonld_service->get( Object_Type_Enum::HOMEPAGE, $home_page );
+		$this->assertCount( 3, $jsonld, 'Referenced entities should be expanded in the result' );
+
+		$jsonld = $jsonld[0];
 		$this->assertTrue( array_key_exists( 'mentions', $jsonld ), 'Should have mentions property in the  jsonld' );
 		$this->assertCount( 2, $jsonld['mentions'], 'Should have two referenced entities in the result' );
 		$mentions = $jsonld['mentions'];
 		$this->assertEquals( array( '@id' => Wordlift_Entity_Service::get_instance()->get_uri( $entity_1 ) ), $mentions[0],
-			'Mentions not in correct format');
+			'Mentions not in correct format' );
 	}
 
 
