@@ -18,11 +18,13 @@ class Wordlift_Website_Jsonld_Converter extends Wordlift_Post_To_Jsonld_Converte
 	/**
 	 * Convert the home/blog page to a JSON-LD array.
 	 *
-	 * @since 3.14.0
+	 * @param $post_id
 	 *
 	 * @return array A JSON-LD array.
+	 * @since 3.14.0
+	 *
 	 */
-	public function create_schema() {
+	public function create_schema( $post_id ) {
 
 		// Create new jsonld.
 		$home_url = home_url( '/' );
@@ -50,8 +52,10 @@ class Wordlift_Website_Jsonld_Converter extends Wordlift_Post_To_Jsonld_Converte
 		 * @since 3.14.0
 		 *
 		 * @param array $jsonld The JSON-LD structure.
+		 *
+		 * Added $post_id parameter since 3.27.8
 		 */
-		return apply_filters( 'wl_website_jsonld', $jsonld );
+		return apply_filters( 'wl_website_jsonld', $jsonld, $post_id );
 	}
 
 	/**

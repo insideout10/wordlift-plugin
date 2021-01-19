@@ -21,14 +21,14 @@ class Jsonld_Homepage {
 
 		$this->relation_service = $relation_service;
 
-		add_filter( 'wl_website_jsonld', array( $this, 'add_mentions_if_singular' ) );
+		add_filter( 'wl_website_jsonld', array( $this, 'add_mentions_if_singular' ), 10, 2 );
 
 	}
 
-	public function add_mentions_if_singular( $jsonld ) {
+	public function add_mentions_if_singular( $jsonld, $post_id ) {
 
-		if ( is_singular() && get_post_type( get_the_ID() ) !== 'entity' ) {
-			$jsonld['mentions'] = $this->relation_service->get_objects( get_the_ID(), 'ids', null, 'publish' );
+		if ( is_singular() && get_post_type( $post_id ) !== 'entity' ) {
+			$jsonld['mentions'] = $this->relation_service->get_objects( $post_id, 'ids', null, 'publish' );
 		}
 
 		return $jsonld;

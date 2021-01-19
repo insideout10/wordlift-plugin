@@ -157,7 +157,7 @@ class Wordlift_Jsonld_Service {
 			$website_converter = $this->website_converter;
 
 			// Send JSON-LD.
-			return $website_converter->create_schema();
+			return $website_converter->create_schema( $post_id );
 		}
 
 		// If no id has been provided return an empty array.
