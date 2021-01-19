@@ -48,9 +48,9 @@ class Jsonld_Static_Home_Page_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	public function test_when_the_homepage_is_static_and_singular_should_have_mentions_property() {
-		$home_page = $this->factory()->post->create();
-		$entity_1  = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
-		$entity_2  = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		$home_page       = $this->factory()->post->create();
+		$entity_1        = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		$entity_2        = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
 		$GLOBALS['post'] = get_post( $home_page );
 		// Link the home page with entities.
 		wl_core_add_relation_instance( $home_page, WL_WHAT_RELATION, $entity_1 );
@@ -65,13 +65,16 @@ class Jsonld_Static_Home_Page_Test extends Wordlift_Unit_Test_Case {
 		$jsonld   = $this->jsonld_service->get( Object_Type_Enum::HOMEPAGE, $home_page );
 		$this->assertTrue( array_key_exists( 'mentions', $jsonld ), 'Should have mentions property in the  jsonld' );
 		$this->assertCount( 2, $jsonld['mentions'], 'Should have two referenced entities in the result' );
+		$mentions = $jsonld['mentions'];
+		$this->assertEquals( array( '@id' => Wordlift_Entity_Service::get_instance()->get_uri( $entity_1 ) ), $mentions[0],
+			'Mentions not in correct format');
 	}
 
 
 	public function test_when_the_homepage_is_static_and_singular_should_not_have_mentions_property_if_post_is_entity() {
-		$home_page = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
-		$entity_1  = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
-		$entity_2  = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		$home_page       = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		$entity_1        = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		$entity_2        = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
 		$GLOBALS['post'] = get_post( $home_page );
 		// Link the home page with entities.
 		wl_core_add_relation_instance( $home_page, WL_WHAT_RELATION, $entity_1 );
