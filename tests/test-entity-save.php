@@ -4,6 +4,8 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
+use Wordlift\Entity\Entity_No_Index_Flag;
+
 /**
  * Class Entity_Save_Test
  * @group entity
@@ -20,7 +22,7 @@ class Entity_Save_Test extends Wordlift_Unit_Test_Case {
 
 		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
 
-		$result = get_post_meta( $entity, '_yoast_wpseo_meta-robots-noindex', false );
+		$result = get_post_meta( $entity, '_yoast_wpseo_meta-robots-noindex', true );
 
 		$this->assertEquals( 1, $result, 'Value should be 1 to denote the flag set by yoast' );
 
