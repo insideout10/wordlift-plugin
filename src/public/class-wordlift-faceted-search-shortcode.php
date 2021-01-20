@@ -166,12 +166,10 @@ HTML;
 		$permalink_structure = get_option( 'permalink_structure' );
 		$delimiter           = empty( $permalink_structure ) ? '&' : '?';
 		$rest_url            = $post ? rest_url( WL_REST_ROUTE_DEFAULT_NAMESPACE . '/faceted-search' . $delimiter . build_query( array(
-				'amp',
+				'amp'     => 1,
 				'post_id' => $post->ID,
 				'limit'   => $limit
 			) ) ) : false;
-
-		$rest_url = $post ? rest_url( sprintf( "wordlift/v1/faceted-search?amp&post_id=%s&limit=%s", $post->ID, $limit ) ) : false;
 
 		// avoid building the widget when no valid $rest_url
 		if ( ! $rest_url ) {
