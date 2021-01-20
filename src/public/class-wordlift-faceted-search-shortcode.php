@@ -262,7 +262,8 @@ HTML;
 				                        width="16"
 				                        height="9"
 										layout="responsive"
-				                        src="{{thumbnail}}"></amp-img>
+				                        src="{{thumbnail}}"
+				                        srcset="{{srcset}}"></amp-img>
 									<div class="card-content">
 										<header class="title">{{post_title}}</header>
 									</div>
