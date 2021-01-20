@@ -246,14 +246,14 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 
 		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/cat-1200x1200.jpg', $post_2 );
 		set_post_thumbnail( $post_2, $attachment_id );
-		$small_1  = get_the_post_thumbnail_url( $post_2, 'small' );
+
 		$medium_1 = get_the_post_thumbnail_url( $post_2, 'medium' );
 		$large_1  = get_the_post_thumbnail_url( $post_2, 'large' );
 
 		// Add thumbnails to other posts
 		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/cat-1200x1200.jpg', $post_3 );
 		set_post_thumbnail( $post_3, $attachment_id );
-		$small_2  = get_the_post_thumbnail_url( $post_3, 'small' );
+
 		$medium_2 = get_the_post_thumbnail_url( $post_3, 'medium' );
 		$large_2  = get_the_post_thumbnail_url( $post_3, 'large' );
 
@@ -267,14 +267,13 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 		// Check if we have srcset in referenced posts.
 		$target_post_1 = $result[0];
 		$srcset_1      = $target_post_1->srcset;
-		$this->assertTrue( strpos( $srcset_1, $small_1 ) !== false );
+
 		$this->assertTrue( strpos( $srcset_1, $medium_1 ) !== false );
 		$this->assertTrue( strpos( $srcset_1, $large_1 ) !== false );
 
 		// check if we have srcset in filler posts.
 		$target_post_2 = $result[2];
 		$srcset_2      = $target_post_2->srcset;
-		$this->assertTrue( strpos( $srcset_2, $small_2 ) !== false );
 		$this->assertTrue( strpos( $srcset_2, $medium_2 ) !== false );
 		$this->assertTrue( strpos( $srcset_2, $large_2 ) !== false );
 	}
@@ -285,14 +284,10 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 
 		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/cat-1200x1200.jpg', $post_id );
 		set_post_thumbnail( $post_id, $attachment_id );
-		$small_1  = get_the_post_thumbnail_url( $post_id, 'small' );
+
 		$medium_1 = get_the_post_thumbnail_url( $post_id, 'medium' );
 		$large_1  = get_the_post_thumbnail_url( $post_id, 'large' );
 		$srcset   = Srcset_Util::get_srcset( $post_id, Srcset_Util::FACETED_SEARCH_WIDGET );
-
-		// we should have intrinsic width of the image in src set
-		$small_1_srcset = $small_1 . ' ' . $this->get_image_width( $post_id, 'small' ) . 'w';
-		$this->assertTrue( strpos( $srcset, $small_1_srcset ) !== false );
 
 
 		$medium_1_srcset = $medium_1 . ' ' . $this->get_image_width( $post_id, 'medium' ) . 'w';

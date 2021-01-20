@@ -14,12 +14,9 @@ class Srcset_Util {
 	public static function get_srcset( $post_id, $widget_name ) {
 
 		$srcset = array();
-		$small  = get_the_post_thumbnail_url( $post_id, 'small' );
 		$medium = get_the_post_thumbnail_url( $post_id, 'medium' );
 		$large  = get_the_post_thumbnail_url( $post_id, 'large' );
-		if ( $small && $width = self::get_image_width( $post_id, 'small' ) ) {
-			$srcset[] = $small . ' ' . $width . 'w';
-		}
+
 		if ( $medium && $width = self::get_image_width( $post_id, 'medium' ) ) {
 			$srcset[] = $medium . ' ' . $width . 'w';
 		}

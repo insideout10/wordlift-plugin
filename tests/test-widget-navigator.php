@@ -381,7 +381,6 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$post_2        = $this->create_post_with_thumbnail();
 		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/cat-1200x1200.jpg', $post_2 );
 		set_post_thumbnail( $post_2, $attachment_id );
-		$small           = get_the_post_thumbnail_url( $post_2, 'small' );
 		$medium          = get_the_post_thumbnail_url( $post_2, 'medium' );
 		$large          = get_the_post_thumbnail_url( $post_2, 'large' );
 		$_GET['amp']     = true;
@@ -391,7 +390,6 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$result          = $data[0]['post'];
 		$this->assertArrayHasKey( 'srcset', $result );
 		$srcset = $result['srcset'];
-		$this->assertTrue( strpos( $srcset, $small ) !== false );
 		$this->assertTrue( strpos( $srcset, $medium ) !== false );
 		$this->assertTrue( strpos( $srcset, $large ) !== false );
 	}
@@ -403,7 +401,6 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$post_2        = $this->create_navigator_post( $entity );
 		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/cat-1200x1200.jpg', $post_2 );
 		set_post_thumbnail( $post_2, $attachment_id );
-		$small           = get_the_post_thumbnail_url( $post_2, 'small' );
 		$medium          = get_the_post_thumbnail_url( $post_2, 'medium' );
 		$large          = get_the_post_thumbnail_url( $post_2, 'large' );
 		$_GET['amp']     = true;
@@ -413,7 +410,6 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$result          = $data[0]['post'];
 		$this->assertArrayHasKey( 'srcset', $result );
 		$srcset = $result['srcset'];
-		$this->assertTrue( strpos( $srcset, $small ) !== false );
 		$this->assertTrue( strpos( $srcset, $medium ) !== false );
 		$this->assertTrue( strpos( $srcset, $large ) !== false );
 	}
