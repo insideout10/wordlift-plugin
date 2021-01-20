@@ -71,6 +71,7 @@ class Jsonld_Homepage {
 
 
 		if ( is_singular() ) {
+			$jsonld['@type']          = 'WebPage';
 			$entity_ids               = $this->relation_service->get_objects( $post_id, 'ids', null, 'publish' );
 			$mentions                 = $this->entity_ids_to_jsonld_references( $entity_ids );
 			$referenced_entities_data = $this->entity_ids_to_jsonld( $entity_ids );
