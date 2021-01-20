@@ -156,7 +156,7 @@ class Wordlift_Jsonld_Issue_1241 extends Wordlift_Unit_Test_Case {
 			}
 		}
 
-		// Add back the post jsonld to first of array.
+		// Add back the post jsonld to first position of array.
 		array_unshift( $jsonld, $post_jsonld );
 
 		return $jsonld;
