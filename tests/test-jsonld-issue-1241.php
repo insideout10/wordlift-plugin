@@ -35,21 +35,26 @@ class Wordlift_Jsonld_Issue_1241 extends Wordlift_Unit_Test_Case {
 
 	public function test() {
 
-		// @@todo: create a user, with first_name and last_name
+		$user_id = wp_insert_user(array(
+			'user_login' => 'lorem_ipsum',
+			'user_pass'  => 'tmppass',
+			'first_name' => 'Lorem',
+			'last_name'  => 'Ipsum',
+		));
 
 		$name      = 'Test Entity Name';
 		$entity_id = $this->factory->post->create( array(
 			'post_title' => $name,
 			'post_type'  => 'entity',
+			'post_author' => $user_id // Link the user with post
 		) );
-
-		// @@todo: set the user for the post
 
 		// Attach the thumbnail image to the post
 		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/cat-1200x1200.jpg', $entity_id );
 		set_post_thumbnail( $entity_id, $attachment_id );
 
 		$mocked_data = $this->post_to_jsonld_converter->convert( $entity_id );
+		//var_dump($mocked_data);
 
 		$this->entity_type_service->set( $entity_id, 'http://schema.org/Thing' );
 
@@ -57,7 +62,7 @@ class Wordlift_Jsonld_Issue_1241 extends Wordlift_Unit_Test_Case {
 
 		$jsonld = $this->jsonld_service->get_jsonld( false, $entity_id );
 
-		//var_dump( $jsonld );
+		print_r($jsonld);
 
 		$this->assertTrue( is_array( $jsonld ) );
 		$this->assertCount( 2, $jsonld );

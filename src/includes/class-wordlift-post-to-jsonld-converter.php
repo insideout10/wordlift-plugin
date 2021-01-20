@@ -252,13 +252,17 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		// If there's no entity bound return a simple author structure.
 		if ( empty( $entity_id ) || 'publish' !== get_post_status( $entity_id ) ) {
 
-			$author     = get_the_author_meta( 'display_name', $author_id );
+			$author             = get_the_author_meta( 'display_name', $author_id );
+            $author_first_name  = get_the_author_meta( 'first_name', $author_id );
+            $author_last_name   = get_the_author_meta( 'last_name', $author_id );
 			$author_uri = $this->user_service->get_uri( $author_id );
 
 			return array(
-				'@type' => 'Person',
-				'@id'   => $author_uri,
-				'name'  => $author,
+				'@type'      => 'Person',
+				'@id'        => $author_uri,
+				'name'       => $author,
+                'givenName'  => $author_first_name,
+                'familyName' => $author_last_name
 			);
 		}
 
