@@ -66,7 +66,7 @@ class Wordlift_Install_Service {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-25-0.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-27-0.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-27-1.php';
-
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'install/class-wordlift-install-3-28-0.php';
 
 		// Get the install services.
 		$this->installs = array(
@@ -88,7 +88,8 @@ class Wordlift_Install_Service {
 			new Wordlift_Install_3_24_2(),
 			new Wordlift_Install_3_25_0(),
 			new Wordlift_Install_3_27_0(),
-			new Wordlift_Install_3_27_1()
+			new Wordlift_Install_3_27_1(),
+			new Wordlift_Install_3_28_0(),
 		);
 		self::$instance = $this;
 
@@ -175,5 +176,8 @@ class Wordlift_Install_Service {
 	private function get_current_version() {
 		return get_option( 'wl_db_version', '0.0.0' );
 	}
+
+
+
 
 }
