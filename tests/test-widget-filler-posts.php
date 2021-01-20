@@ -78,6 +78,20 @@ class Widget_Filler_Posts_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( $post_ids, $returned_post_ids );
 	}
 
+
+	public function test_filler_posts_should_have_permalink_and_thumbnail_properties() {
+		$subject_post = $this->create_post_with_category( 'test_category' );
+		/**
+		 * Lets create posts with post type 'post', but not on same category.
+		 */
+		$post_1 = $this->create_post_with_thumbnail();
+		$filler_posts_util = new Filler_Posts_Util( $subject_post );
+		$filler_posts      = $filler_posts_util->get_filler_posts( 4, array( $subject_post ) );
+		$filler_post = array_pop($filler_posts);
+		$this->assertEquals( get_the_post_thumbnail_url($post_1, 'medium'), $filler_post->thumbnail);
+		$this->assertEquals( get_permalink($post_1), $filler_post->permalink);
+	}
+
 	public function test_when_post_type_is_not_post_should_return_latest_posts_from_same_post_type() {
 		// Here the post type is set to page
 		$subject_post = $this->create_post_with_category( 'test_category', 'page' );
