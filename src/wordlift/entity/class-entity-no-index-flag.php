@@ -16,6 +16,9 @@ class Entity_No_Index_Flag {
 			// We need to set this flag only on entity creation.
 			if ( ! $update ) {
 				update_post_meta( $post_id, self::YOAST_POST_NO_INDEX_FLAG, 1 );
+			} else {
+				// if the post is updated, remove this flag
+				delete_post_meta( $post_id, self::YOAST_POST_NO_INDEX_FLAG );
 			}
 
 		}, 10, 3 );

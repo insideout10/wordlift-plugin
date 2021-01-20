@@ -29,7 +29,6 @@ class Entity_Save_Test extends Wordlift_Unit_Test_Case {
 	}
 
 
-
 	public function test_when_entity_is_updated_should_remove_yoast_no_index_flag() {
 
 		new Entity_No_Index_Flag();
@@ -37,11 +36,11 @@ class Entity_Save_Test extends Wordlift_Unit_Test_Case {
 		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
 
 		// update the entity
-		wp_update_post(array('ID' => $entity, 'post_content' => 'test'));
+		wp_update_post( array( 'ID' => $entity, 'post_content' => 'test' ) );
 
 		$result = get_post_meta( $entity, '_yoast_wpseo_meta-robots-noindex', true );
 
-		$this->assertNull($result, 'The no index flag should not be present');
+		$this->assertEquals( '', $result, 'The no index flag should not be present' );
 
 	}
 
