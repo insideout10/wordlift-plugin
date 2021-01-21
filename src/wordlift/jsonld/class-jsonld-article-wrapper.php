@@ -2,17 +2,42 @@
 
 namespace Wordlift\Jsonld;
 
+use Wordlift_Jsonld_Service;
+use Wordlift_Post_To_Jsonld_Converter;
+
 class Jsonld_Article_Wrapper {
 
-    /**
-     * @var Wordlift_Post_To_Jsonld_Converter
-     */
+	private static $article_types = array(
+		'Article',
+		'AdvertiserContentArticle',
+		'NewsArticle',
+		'AnalysisNewsArticle',
+		'AskPublicNewsArticle',
+		'BackgroundNewsArticle',
+		'OpinionNewsArticle',
+		'ReportageNewsArticle',
+		'ReviewNewsArticle',
+		'Report',
+		'SatiricalArticle',
+		'ScholarlyArticle',
+		'MedicalScholarlyArticle',
+		'SocialMediaPosting',
+		'BlogPosting',
+		'LiveBlogPosting',
+		'DiscussionForumPosting',
+		'TechArticle',
+		'APIReference'
+	);
+
+	/**
+	 * @var Wordlift_Post_To_Jsonld_Converter
+	 */
 	private $post_to_jsonld_converter;
 
-    /**
-     * @var Wordlift_Jsonld_Service
-     */
-    private $jsonld_service;
+	/**
+	 * @var Wordlift_Jsonld_Service
+	 */
+	private $jsonld_service;
 
 	public function __construct( $post_to_jsonld_converter, $jsonld_service ) {
 
@@ -25,51 +50,33 @@ class Jsonld_Article_Wrapper {
 
 	public function after_get_jsonld( $jsonld, $post_id ) {
 
-        if ( ! is_array( $jsonld ) || count( $jsonld ) === 0 ) {
-            return $jsonld;
-        }
+		if ( ! is_array( $jsonld ) || empty( $jsonld ) ) {
+			return $jsonld;
+		}
 
-        // Copy the 1st array element
-        $post_jsonld    = $jsonld[0];
-        $post_jsonld_id = array_key_exists( '@id', $post_jsonld ) ? $post_jsonld['@id'] : false;
+		// Copy the 1st array element
+		$post_jsonld = $jsonld[0];
 
-        if ( ! $post_jsonld_id ) {
-            return $jsonld;
-        }
+		// Don't wrap in article if the json-ld is already about an Article (or its descendants). `@type` must be
+		// in the schema.org context, i.e. `Article`, not `http://schema.org/Article`.
+		if ( ! isset( $post_jsonld['@id'] ) || ! isset( $post_jsonld['@type'] ) || $this->is_article( $post_jsonld['@type'] ) ) {
+			return $jsonld;
+		}
 
-        $mocked_data = $this->post_to_jsonld_converter->convert( $post_id );
+		// Convert the post as Article.
+		$article_jsonld          = $this->post_to_jsonld_converter->convert( $post_id );
+		$article_jsonld['@id']   = $post_jsonld['@id'] . '/wrapper';
+		$article_jsonld['about'] = array( '@id' => $post_jsonld['@id'] );
+		array_unshift( $jsonld, $article_jsonld );
 
-        foreach ( $post_jsonld as $key => $value ) {
-            if ( $key === '@id' ) {
-                $post_jsonld[ $key ] = $post_jsonld_id . '#article';
-            }
+		return $jsonld;
+	}
 
-            if ( $key === '@type' ) {
-                $post_jsonld[ $key ]          = 'Article';
-                $post_jsonld['headline']      = $post_jsonld['name'];
-                $post_jsonld['datePublished'] = $mocked_data['datePublished'];
-                $post_jsonld['dateModified']  = $mocked_data['dateModified'];
+	public function is_article( $schema_types ) {
 
-                if ( isset( $mocked_data['image'] ) ) {
-                    $post_jsonld['image'] = $mocked_data['image'];
-                }
-                if ( isset( $mocked_data['author'] ) ) {
-                    $post_jsonld['author'] = $mocked_data['author'];
-                }
-                if ( isset( $mocked_data['publisher'] ) ) {
-                    $post_jsonld['publisher'] = $mocked_data['publisher'];
-                }
+		$array_intersect = array_intersect( self::$article_types, ( array ) $schema_types );
 
-                $post_jsonld['about'] = array( '@id' => $post_jsonld_id );
-                unset( $post_jsonld['name'] );
-            }
-        }
-
-        // Add back the post jsonld to first position of array.
-        array_unshift( $jsonld, $post_jsonld );
-
-        return $jsonld;
-
+		return ! empty( $array_intersect );
 	}
 
 }

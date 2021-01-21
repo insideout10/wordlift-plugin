@@ -9,6 +9,8 @@
  * @package Wordlift
  */
 
+use Wordlift\Jsonld\Jsonld_Article_Wrapper;
+
 /**
  * Test the {@link Wordlift_Entity_Post_To_Jsonld_Converter} class.
  *
@@ -17,6 +19,10 @@
  * @group jsonld
  */
 class Wordlift_Jsonld_Issue_1241 extends Wordlift_Unit_Test_Case {
+	/**
+	 * @var Jsonld_Article_Wrapper
+	 */
+	private $jsonld_article_wrapper;
 
 	/**
 	 * {@inheritdoc}
@@ -31,21 +37,38 @@ class Wordlift_Jsonld_Issue_1241 extends Wordlift_Unit_Test_Case {
 
 		$this->post_to_jsonld_converter = $wordlift->get_post_to_jsonld_converter();
 		$this->jsonld_service           = $wordlift->get_jsonld_service();
+
+//		$this->jsonld_article_wrapper = new Jsonld_Article_Wrapper(
+//			$this->post_to_jsonld_converter,
+//			$this->jsonld_service
+//		);
 	}
+
+//	public function test_is_article() {
+//
+//		$this->assertTrue( $this->jsonld_article_wrapper->is_article( 'AnalysisNewsArticle' ) );
+//		$this->assertTrue( $this->jsonld_article_wrapper->is_article( array(
+//			'BackgroundNewsArticle',
+//			'OpinionNewsArticle'
+//		) ) );
+//
+//		$this->assertFalse( $this->jsonld_article_wrapper->is_article( 'Thing' ) );
+//
+//	}
 
 	public function test() {
 
-		$user_id = wp_insert_user(array(
+		$user_id = wp_insert_user( array(
 			'user_login' => 'lorem_ipsum',
 			'user_pass'  => 'tmppass',
 			'first_name' => 'Lorem',
 			'last_name'  => 'Ipsum',
-		));
+		) );
 
 		$name      = 'Test Entity Name';
 		$entity_id = $this->factory->post->create( array(
-			'post_title' => $name,
-			'post_type'  => 'entity',
+			'post_title'  => $name,
+			'post_type'   => 'entity',
 			'post_author' => $user_id // Link the user with post
 		) );
 
@@ -58,11 +81,9 @@ class Wordlift_Jsonld_Issue_1241 extends Wordlift_Unit_Test_Case {
 
 		$this->entity_type_service->set( $entity_id, 'http://schema.org/Thing' );
 
-		add_filter( 'wl_after_get_jsonld', array( $this, 'wl_after_get_jsonld' ), 10, 2 );
-
 		$jsonld = $this->jsonld_service->get_jsonld( false, $entity_id );
 
-		print_r($jsonld);
+		print_r( $jsonld );
 
 		$this->assertTrue( is_array( $jsonld ) );
 		$this->assertCount( 2, $jsonld );
@@ -114,53 +135,5 @@ class Wordlift_Jsonld_Issue_1241 extends Wordlift_Unit_Test_Case {
 		$this->assertArrayHasKey( '@type', $jsonld[1] );
 		$this->assertEquals( 'Thing', $jsonld[1]['@type'] );
 	}
-
-	public function wl_after_get_jsonld( $jsonld, $post_id ) {
-		if ( ! is_array( $jsonld ) || count( $jsonld ) === 0 ) {
-			return $jsonld;
-		}
-
-		// Copy the 1st array element
-		$post_jsonld    = $jsonld[0];
-		$post_jsonld_id = array_key_exists( '@id', $post_jsonld ) ? $post_jsonld['@id'] : false;
-
-		if ( ! $post_jsonld_id ) {
-			return $jsonld;
-		}
-
-		$mocked_data = $this->post_to_jsonld_converter->convert( $post_id );
-
-		foreach ( $post_jsonld as $key => $value ) {
-			if ( $key === '@id' ) {
-				$post_jsonld[ $key ] = $post_jsonld_id . '#article';
-			}
-
-			if ( $key === '@type' ) {
-				$post_jsonld[ $key ]          = 'Article';
-				$post_jsonld['headline']      = $post_jsonld['name'];
-				$post_jsonld['datePublished'] = $mocked_data['datePublished'];
-				$post_jsonld['dateModified']  = $mocked_data['dateModified'];
-
-				if ( isset( $mocked_data['image'] ) ) {
-					$post_jsonld['image'] = $mocked_data['image'];
-				}
-				if ( isset( $mocked_data['author'] ) ) {
-					$post_jsonld['author'] = $mocked_data['author'];
-				}
-				if ( isset( $mocked_data['publisher'] ) ) {
-					$post_jsonld['publisher'] = $mocked_data['publisher'];
-				}
-
-				$post_jsonld['about'] = array( '@id' => $post_jsonld_id );
-				unset( $post_jsonld['name'] );
-			}
-		}
-
-		// Add back the post jsonld to first position of array.
-		array_unshift( $jsonld, $post_jsonld );
-
-		return $jsonld;
-	}
-
 
 }
