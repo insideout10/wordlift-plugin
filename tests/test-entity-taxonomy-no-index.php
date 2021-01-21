@@ -25,4 +25,13 @@ class Entity_Taxonomy_No_Index_Test extends Wordlift_Unit_Test_Case {
 	}
 
 
+	public function test_should_exclude_no_index_entity_posts_from_sitemap() {
+			// create and update an entity.
+
+			apply_filters('wp_sitemaps_posts_query_args', function () {
+
+			});
+	}
+
+
 }
