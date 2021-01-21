@@ -142,7 +142,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		 *
 		 * @since 3.27.2
 		 */
-		if ( ! empty( $jsonld['@type'] ) && 'Article' === $jsonld['@type'] ) {
+		if ( ! empty( $jsonld['@type'] ) && 'WebPage' !== $jsonld['@type'] ) {
 			$post_adapter    = new Wordlift_Post_Adapter( $post_id );
 			$keywords        = $post_adapter->keywords();
 			$article_section = $post_adapter->article_section();

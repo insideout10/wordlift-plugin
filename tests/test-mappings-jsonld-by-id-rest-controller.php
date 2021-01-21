@@ -135,7 +135,7 @@ class Jsonld_By_Id_REST_Controller_Test extends Wordlift_Unit_Test_Case {
 
 		$data_array = $response->get_data();
 
-		$this->assertCount( 1, $data_array, 'Expect at least one item in the response.' );
+		$this->assertCount( 1, $data_array, 'Expect one item in the response, instead I got: ' . json_encode( $data_array, 128 ) );
 
 		$data = $data_array[0];
 

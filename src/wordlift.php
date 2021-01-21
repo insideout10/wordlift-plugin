@@ -534,7 +534,9 @@ function run_wordlift() {
 
 		new Wordlift_Products_Navigator_Shortcode_REST();
 
-		new Jsonld_Article_Wrapper( Wordlift_Post_To_Jsonld_Converter::get_instance(), Wordlift_Jsonld_Service::get_instance() );
+		if ( apply_filters( 'wl_feature__enable__article-wrapper', false ) ) {
+			new Jsonld_Article_Wrapper( Wordlift_Post_To_Jsonld_Converter::get_instance() );
+		}
 
 		// Register the Dataset module, requires `$api_service`.
 		require_once plugin_dir_path( __FILE__ ) . 'wordlift/dataset/index.php';

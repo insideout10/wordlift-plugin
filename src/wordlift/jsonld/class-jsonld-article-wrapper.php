@@ -2,7 +2,6 @@
 
 namespace Wordlift\Jsonld;
 
-use Wordlift_Jsonld_Service;
 use Wordlift_Post_To_Jsonld_Converter;
 
 class Jsonld_Article_Wrapper {
@@ -34,23 +33,18 @@ class Jsonld_Article_Wrapper {
 	 */
 	private $post_to_jsonld_converter;
 
-	/**
-	 * @var Wordlift_Jsonld_Service
-	 */
-	private $jsonld_service;
-
-	public function __construct( $post_to_jsonld_converter, $jsonld_service ) {
+	public function __construct( $post_to_jsonld_converter ) {
 
 		$this->post_to_jsonld_converter = $post_to_jsonld_converter;
-		$this->jsonld_service           = $jsonld_service;
 
-		add_filter( 'wl_after_get_jsonld', array( $this, 'after_get_jsonld' ), 10, 2 );
+		add_filter( 'wl_after_get_jsonld', array( $this, 'after_get_jsonld' ), 10, 3 );
 
 	}
 
-	public function after_get_jsonld( $jsonld, $post_id ) {
+	public function after_get_jsonld( $jsonld, $post_id, $context ) {
 
-		if ( ! is_array( $jsonld ) || empty( $jsonld ) ) {
+		if ( Jsonld_Context_Enum::PAGE !== $context || ! is_array( $jsonld ) || ! isset( $jsonld[0] )
+		     || ! is_array( $jsonld[0] ) ) {
 			return $jsonld;
 		}
 
@@ -64,15 +58,23 @@ class Jsonld_Article_Wrapper {
 		}
 
 		// Convert the post as Article.
-		$article_jsonld          = $this->post_to_jsonld_converter->convert( $post_id );
-		$article_jsonld['@id']   = $post_jsonld['@id'] . '/wrapper';
+		$article_jsonld        = $this->post_to_jsonld_converter->convert( $post_id );
+		$article_jsonld['@id'] = $post_jsonld['@id'] . '/wrapper';
+		// Reset the type, since by default the type assigned via the Entity Type taxonomy is used.
+		$article_jsonld['@type'] = 'Article';
 		$article_jsonld['about'] = array( '@id' => $post_jsonld['@id'] );
+
+		// Copy over the URLs.
+		if ( isset( $post_jsonld['url'] ) ) {
+			$article_jsonld['url'] = $post_jsonld['url'];
+		}
+
 		array_unshift( $jsonld, $article_jsonld );
 
 		return $jsonld;
 	}
 
-	public function is_article( $schema_types ) {
+	private function is_article( $schema_types ) {
 
 		$array_intersect = array_intersect( self::$article_types, ( array ) $schema_types );
 
