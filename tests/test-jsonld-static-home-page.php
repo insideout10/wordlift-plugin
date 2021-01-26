@@ -118,8 +118,10 @@ class Jsonld_Static_Home_Page_Test extends Wordlift_Unit_Test_Case {
 	public function test_when_the_homepage_is_static_and_singular_should_have_mainEntityOfPage_property_if_post_is_entity() {
 		$this->create_home_page_entity( $home_page, $wp_query );
 		$jsonld   = $this->jsonld_service->get( Object_Type_Enum::HOMEPAGE, $home_page );
-		$this->assertTrue( array_key_exists( 'mainEntityOfPage', $jsonld ), 'Should have mainEntityOfPage property in the  jsonld' );
-		$this->assertEquals( get_permalink( $home_page ), $jsonld['mainEntityOfPage'] );
+		$this->assertTrue( array_key_exists( 'mainEntity', $jsonld ), 'Should have mainEntity property in the  jsonld' );
+		$this->assertTrue(is_array($jsonld['mainEntity']));
+		$this->assertArrayHasKey('@id', $jsonld['mainEntity'], '@id should be present for entity');
+		$this->assertEquals( Wordlift_Entity_Service::get_instance()->get_uri($home_page), $jsonld['mainEntity']['@id'] );
 	}
 
 	/**
