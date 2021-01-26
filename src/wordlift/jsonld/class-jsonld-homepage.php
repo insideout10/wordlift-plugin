@@ -64,7 +64,9 @@ class Jsonld_Homepage {
 
 
 		if ( get_post_type( $post_id ) === 'entity' ) {
-			$jsonld['mainEntityOfPage'] = get_permalink( $post_id );
+			$jsonld['mainEntity'] = array(
+				'@id' => \Wordlift_Entity_Service::get_instance()->get_uri( $post_id )
+		);
 
 			return $jsonld;
 		}
