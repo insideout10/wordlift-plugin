@@ -22,16 +22,20 @@ class Entity_No_Index_Flag {
 			}
 
 			// We need to set this flag only on entity creation.
-			if (  $update ) {
-				// if the post is updated, remove this flag
-				delete_post_meta( $post_id, self::YOAST_POST_NO_INDEX_FLAG );
-
-			} else {
-				// If it is created first time, add the flag.
+			if ( ! $update ) {
 				update_post_meta( $post_id, self::YOAST_POST_NO_INDEX_FLAG, 1 );
 			}
 
 		}, PHP_INT_MAX, 3 );
+
+
+		add_action( 'post_updated', function ( $post_id ) {
+			if ( get_post_type( $post_id ) !== \Wordlift_Entity_Service::TYPE_NAME ) {
+				return;
+			}
+			// if the post is updated, remove this flag
+			delete_post_meta( $post_id, self::YOAST_POST_NO_INDEX_FLAG );
+		}, PHP_INT_MAX );
 
 	}
 

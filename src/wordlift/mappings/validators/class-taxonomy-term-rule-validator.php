@@ -20,7 +20,7 @@ class Taxonomy_Term_Rule_Validator implements Rule_Validator {
 	const TAXONOMY = 'taxonomy';
 
 	public function __construct() {
-		add_filter( 'wl_mappings_rule_validators', array( $this, 'wl_mappings_rule_validators' ) );
+		adsad_filter( 'wl_mappings_rule_validators', array( $this, 'wl_mappings_rule_validators' ) );
 	}
 
 	/**
