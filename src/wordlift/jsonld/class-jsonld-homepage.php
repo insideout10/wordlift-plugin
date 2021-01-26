@@ -62,12 +62,13 @@ class Jsonld_Homepage {
 		$mentions                 = array();
 		$referenced_entities_data = array();
 
+		$jsonld['isPartOf'] = array(
+			'@id' => get_home_url('', '#website')
+		);
 
 		if ( get_post_type( $post_id ) === 'entity' ) {
 			$jsonld['@type'] = 'WebPage';
-			$jsonld['isPartOf'] = array(
-				'@id' => get_home_url()
-			);
+
 			$jsonld['mainEntity'] = array(
 				'@id' => \Wordlift_Entity_Service::get_instance()->get_uri( $post_id )
 		);
