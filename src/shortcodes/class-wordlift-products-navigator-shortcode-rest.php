@@ -1,5 +1,7 @@
 <?php
 
+use Wordlift\Widgets\Navigator\Filler_Posts\Filler_Posts_Util;
+
 class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST {
 
 	const CACHE_TTL = 3600; // 1 hour
@@ -115,6 +117,24 @@ class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST
 		if ( count( $results ) < $navigator_length ) {
 			$results = apply_filters( 'wl_products_navigator_data_placeholder', $results, $navigator_id, $navigator_offset, $navigator_length );
 		}
+
+
+		// Add filler posts if needed
+		$filler_count = $navigator_length - count( $results );
+		if ( $filler_count > 0 ) {
+			$referencing_post_ids = array_map( function ( $p ) {
+				return $p->ID;
+			}, $referencing_posts );
+			/**
+			 * @since 3.27.8
+			 * Filler posts are fetched using this util.
+			 */
+			$filler_posts_util    = new Filler_Posts_Util( $post_id );
+			$post_ids_to_be_excluded = array_merge( array( $post_id ), $referencing_post_ids );
+			$filler_posts            = $filler_posts_util->get_product_navigator_response( $filler_count, $post_ids_to_be_excluded );
+			$results                 = array_merge( $results, $filler_posts );
+		}
+
 
 		return $amp ? array(
 			'items' => array(
