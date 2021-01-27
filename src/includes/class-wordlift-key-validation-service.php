@@ -170,7 +170,7 @@ class Wordlift_Key_Validation_Service {
 	public function wl_load_plugin() {
 
 		$wl_blog_url = get_option( '_wl_blog_url' );
-		$home_url    = defined( 'WP_HOME' ) ? WP_HOME : get_option( 'home' );
+		$home_url    = get_option( 'home' );
 
 		if ( ! $wl_blog_url ) {
 			update_option( '_wl_blog_url', $home_url, true );
