@@ -126,7 +126,7 @@ class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST
 				return $p->ID;
 			}, $referencing_posts );
 			/**
-			 * @since 3.27.8
+			 * @since 3.28.0
 			 * Filler posts are fetched using this util.
 			 */
 			$filler_posts_util    = new Filler_Posts_Util( $post_id );
