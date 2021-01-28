@@ -142,8 +142,18 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= ?.??.? (????-??-??) =
+= 3.28.0 (2021-__-__) =
+* Enhancement [#1267](https://github.com/insideout10/wordlift-plugin/issues/1267): Add a JS filter in WLP to hide/show create post
+* Enhancement [#1250](https://github.com/insideout10/wordlift-plugin/issues/1250): Support srcset / higher quality images in navigator and faceted search
+* Enhancement [#1241](https://github.com/insideout10/wordlift-plugin/issues/1241): Wrap entities in Article markup
+* Enhancement [#1138](https://github.com/insideout10/wordlift-plugin/issues/1138): Image sizes for Faceted, Navigator - dont scale images at the moment
+* Enhancement [#1017](https://github.com/insideout10/wordlift-plugin/issues/1017): sameAs validation and bulk fix task on plugin install / upgrade
+
+* Fix [#1276](https://github.com/insideout10/wordlift-plugin/issues/1276): Create button missing when manually creating entity in classic editor
 * Fix [#1274](https://github.com/insideout10/wordlift-plugin/issues/1274): Entity URI and sameAs query slow on large properties
+* Fix [#1269](https://github.com/insideout10/wordlift-plugin/issues/1269): Key marked as invalid on multisite subsites
+* Fix [#1266](https://github.com/insideout10/wordlift-plugin/issues/1266): Product navigator displays only one product when one is marked up on the page
+* Fix [#1220](https://github.com/insideout10/wordlift-plugin/issues/1220): When matching entities manually success message is always “Entity created”
 
 = 3.27.8 (2021-01-18) =
 
