@@ -68,9 +68,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: webfactory/ssh-agent@v0.4.1
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        uses: actions/checkout@v2
       - name: install node
         uses: actions/setup-node@v1
         with:
