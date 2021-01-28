@@ -29,6 +29,9 @@ function wl_shortcode_navigator_data() {
 	$cache         = new Ttl_Cache( "navigator", 8 * 60 * 60 ); // 8 hours.
 	$cache_results = $cache->get( $cache_key );
 
+	// So that the endpoint can be used remotely
+	header( 'Access-Control-Allow-Origin: *' );
+
 	if ( isset( $cache_results ) ) {
 		header( 'X-WordLift-Cache: HIT' );
 
@@ -195,6 +198,8 @@ function _wl_navigator_get_data() {
 		$results[ $result_index ]['entity'] = apply_filters( 'wl_navigator_data_entity', $result['entity'], intval( $result['entity']['id'] ), $navigator_id );
 	}
 
+	$results = apply_filters( 'wl_navigator_results', $results, $navigator_id );
+
 	return $results;
 }
 
@@ -256,6 +261,8 @@ function _wl_network_navigator_get_data( $request ) {
 	if ( count( $results ) < $navigator_length ) {
 		$results = apply_filters( 'wl_network_navigator_data_placeholder', $results, $navigator_id, $navigator_offset, $navigator_length );
 	}
+
+	$results = apply_filters( 'wl_network_navigator_results', $results, $navigator_id );
 
 	return $results;
 

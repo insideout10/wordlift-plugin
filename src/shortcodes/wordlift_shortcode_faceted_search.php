@@ -29,6 +29,9 @@ function wl_shortcode_faceted_search( $request ) {
 	$cache         = new Ttl_Cache( "faceted-search", 8 * 60 * 60 ); // 8 hours.
 	$cache_results = $cache->get( $cache_key );
 
+	// So that the endpoint can be used remotely
+	header( 'Access-Control-Allow-Origin: *' );
+
 	if ( isset( $cache_results ) ) {
 		header( 'X-WordLift-Cache: HIT' );
 		wl_core_send_json( $cache_results );
