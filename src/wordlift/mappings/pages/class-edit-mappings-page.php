@@ -206,9 +206,16 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 		$post_type_option = $post_type_array['post_type_option_name'];
 		// Get also the list of post types from the post_type_array.
 		$post_type_option_values = $post_type_array['post_type_option_values'];
+
+        $post_array =  self::get_post_taxonomy_key_and_value();
+        $post_option = $post_array['post_taxonomy_option_name'];
+        // Get also the list of post types from the post_type_array.
+        $post_option_values = $post_array['post_taxonomy_option_values'];
+
+
 		// Merge the post type option and post types in the taxonomy options
-		array_push( $taxonomy_options, $post_type_option );
-		$term_options = array_merge( $term_options, $post_type_option_values );
+		array_push( $taxonomy_options, $post_type_option, $post_option );
+		$term_options = array_merge( $term_options, $post_type_option_values, $post_option_values );
 		return array(
 			'taxonomy_options' => $taxonomy_options,
 			'term_options' => $term_options
@@ -232,6 +239,7 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 			array(),
 			'objects'
 		);
+
 		foreach ( $post_types as $post_type ) {
 			array_push(
 				$post_type_option_values,
@@ -242,11 +250,77 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 				)
 			);
 		}
+
 		return array(
 			'post_type_option_name' =>  $post_type_option_name,
 			'post_type_option_values' => $post_type_option_values
 		);
 	}
+
+    /**
+     * Return post type option and post type option values.
+     *
+     * @return array Array of post_type_option and post_type_option_values.
+     */
+    private static function get_post_taxonomy_key_and_value() {
+        $post_taxonomy_option_name   = array(
+            'label'      => __( 'Post Taxonomy', 'wordlift' ),
+            'value'      => Wordlift\Mappings\Validators\Post_Taxonomy_Term_Rule_Validator::POST_TAXONOMY,
+            // Left empty since post types are provided locally.
+            'api_source' => '',
+        );
+        $post_taxonomy_option_values = array();
+
+        $post_taxonomies = get_taxonomies( array(), 'objects' );
+
+        foreach ( $post_taxonomies as $post_taxonomy ) {
+
+            array_push(
+                $post_taxonomy_option_values,
+                array(
+                    'label'        => $post_taxonomy->label,
+                    'value'        => $post_taxonomy->name,
+                    'parent_value' => 'post_taxonomy',
+                )
+            );
+
+            $post_taxonomy_terms = get_terms( array(
+                'taxonomy' => $post_taxonomy->name,
+                'hide_empty' => true
+            ) );
+
+            foreach ( $post_taxonomy_terms as $post_taxonomy_term ) {
+                array_push(
+                    $post_taxonomy_option_values,
+                    array(
+                        'label'        => ' - ' . $post_taxonomy_term->name,
+                        'value'        => $post_taxonomy_term->slug,
+                        'parent_value' => 'post_taxonomy',
+                    )
+                );
+
+                $post_term_children = get_term_children($post_taxonomy_term->term_id, $post_taxonomy->name);
+
+                foreach ( $post_term_children as $post_term_child ) {
+                    $child_term =  get_term_by('id', $post_term_child, $post_taxonomy->name);
+
+                    array_push(
+                        $post_taxonomy_option_values,
+                        array(
+                            'label'        => ' -- ' . $child_term->name,
+                            'value'        => $child_term->slug,
+                            'parent_value' => 'post_taxonomy',
+                        )
+                    );
+                }
+            }
+        }
+
+        return array(
+            'post_taxonomy_option_name' =>  $post_taxonomy_option_name,
+            'post_taxonomy_option_values' => $post_taxonomy_option_values
+        );
+    }
 
 	/**
 	 * This function loads the equal to, not equal to operator to the edit mapping settings.
