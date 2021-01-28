@@ -505,7 +505,7 @@ class Wordlift_Configuration_Service {
 		 * @since 3.20.0
 		 *
 		 */
-		$home_url = defined( 'WP_HOME' ) ? WP_HOME : get_option( 'home' );
+		$home_url = get_option( 'home' );
 		$site_url = apply_filters( 'wl_production_site_url', untrailingslashit( $home_url ) );
 
 		// Build the URL.
