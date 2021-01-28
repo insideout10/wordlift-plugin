@@ -105,51 +105,28 @@ class Wordlift_Entity_Uri_Service {
 
 		$this->log->trace( 'Preloading ' . count( $uris ) . ' URI(s)...' );
 
-		$that          = $this;
-		$external_uris = array_filter( $uris, function ( $item ) use ( $that ) {
-			return ! $that->is_internal( $item );
-		} );
-
-		$query_args = array(
-			// See https://github.com/insideout10/wordlift-plugin/issues/654.
-			'ignore_sticky_posts' => 1,
-			'cache_results'       => false,
-			'numberposts'         => - 1,
-			'post_status'         => array( 'publish', 'draft', 'private', 'future' ),
-			'post_type'           => Wordlift_Entity_Service::valid_entity_post_types(),
-			'meta_query'          => array(
-				array(
-					'key'     => WL_ENTITY_URL_META_NAME,
-					'value'   => $uris,
-					'compare' => 'IN',
-				),
-			),
-		);
-
-		// Only if the current uri is not an internal uri, entity search is
-		// performed also looking at sameAs values.
-		//
-		// This solve issues like https://github.com/insideout10/wordlift-plugin/issues/237
-		if ( 0 < count( $external_uris ) ) {
-
-			$query_args['meta_query']['relation'] = 'OR';
-			$query_args['meta_query'][]           = array(
-				'key'     => Wordlift_Schema_Service::FIELD_SAME_AS,
-				'value'   => $external_uris,
-				'compare' => 'IN',
-			);
-
-		}
+		global $wpdb;
+		$in_post_types  = implode( "','", array_map( 'esc_sql', Wordlift_Entity_Service::valid_entity_post_types() ) );
+		$in_entity_uris = implode( "','", array_map( 'esc_sql', $uris ) );
+		$sql            = "
+			SELECT ID FROM $wpdb->posts p
+			INNER JOIN $wpdb->postmeta pm
+			 ON pm.post_id = p.ID
+			  AND pm.meta_key IN ( 'entity_url', 'entity_same_as' )
+			  AND pm.meta_value IN ( '$in_entity_uris' )
+			WHERE p.post_type IN ( '$in_post_types' ) 
+			  AND p.post_status IN ( 'publish', 'draft', 'private', 'future' )
+  		";
 
 		// Get the posts.
-		$posts = get_posts( $query_args );
+		$posts = $wpdb->get_col( $sql );
 
 		// Populate the array. We reinitialize the array on purpose because
 		// we don't want these data to long live.
-		$this->uri_to_post = array_reduce( $posts, function ( $carry, $item ) use ( $that ) {
+		$this->uri_to_post = array_reduce( $posts, function ( $carry, $item ) {
 			$uris = array_merge(
-				get_post_meta( $item->ID, WL_ENTITY_URL_META_NAME ),
-				get_post_meta( $item->ID, Wordlift_Schema_Service::FIELD_SAME_AS )
+				get_post_meta( $item, WL_ENTITY_URL_META_NAME ),
+				get_post_meta( $item, Wordlift_Schema_Service::FIELD_SAME_AS )
 			);
 
 			return $carry
