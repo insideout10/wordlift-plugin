@@ -142,6 +142,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= ?.??.? (????-??-??) =
+* Fix [#1274](https://github.com/insideout10/wordlift-plugin/issues/1274): Entity URI and sameAs query slow on large properties
+
 = 3.27.8 (2021-01-18) =
 
 * Enhancement [1248](https://github.com/insideout10/wordlift-plugin/issues/1248): Add a error message in Dashboard when key isn't valid
