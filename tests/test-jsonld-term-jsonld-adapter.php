@@ -122,7 +122,7 @@ class Wordlift_Term_Jsonld_Adapter_Test extends Wordlift_Unit_Test_Case {
 		global $wp_query;
 		$wp_query = new WP_Query( $args );
 		$jsonld   = $this->adapter->get( $term_id );
-		$this->assertCount( 2, $jsonld );
+		$this->assertCount( 2, $jsonld, '2 items expected, instead I got this: ' . json_encode( $jsonld, 128 ) );
 		$result = $jsonld[0];
 		// the result should have key itemListElement.
 		$this->assertArrayHasKey( 'itemListElement', $result );

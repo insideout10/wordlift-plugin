@@ -106,7 +106,7 @@ class Jsonld_Endpoint {
 		$type    = ( 0 === $post_id ? Object_Type_Enum::HOMEPAGE : Object_Type_Enum::POST );
 
 		// Send the generated JSON-LD.
-		$data = $this->jsonld_service->get( $type, $post_id );
+		$data = $this->jsonld_service->get( $type, $post_id, Jsonld_Context_Enum::REST );
 
 		return Jsonld_Response_Helper::to_response( $data );
 	}
@@ -218,7 +218,7 @@ class Jsonld_Endpoint {
 		$jsonld_service = $this->jsonld_service;
 
 		$data = array_reduce( $results, function ( $carry, $result ) use ( $jsonld_service ) {
-			$jsonld = $jsonld_service->get( $result->type, $result->id );
+			$jsonld = $jsonld_service->get( $result->type, $result->id, Jsonld_Context_Enum::REST );
 
 			return array_merge( $carry, $jsonld );
 		}, array() );

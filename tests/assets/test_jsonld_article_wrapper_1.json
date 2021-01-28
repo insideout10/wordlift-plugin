@@ -1,0 +1,28 @@
+{
+  "@context": "http:\/\/schema.org",
+  "@id": "http:\/\/data.wordlift.io\/wl0216\/entity\/search_engine_results_page_serp",
+  "@type": "Thing",
+  "description": "A search engine results Page (SERP) is a\u00a0page which turns out when users search something online using a search engine such as Google or Bing. Results are divided into organic and paid: organic results are relevant pages which are supposed to give a good answer to the user's search, paid results are text-based ads, typically...",
+  "image": [
+    {
+      "@type": "ImageObject",
+      "url": "https:\/\/wordlift.io\/blog\/en\/wp-content\/uploads\/sites\/3\/2017\/02\/wordlift-serp.png",
+      "width": 640,
+      "height": 480
+    }
+  ],
+  "name": "Search engine results page (SERP)",
+  "alternateName": [
+    "SERP",
+    "search engine results page",
+    "Search engine results page",
+    "SERPs",
+    "search-engine results pages",
+    "serp"
+  ],
+  "sameAs": [
+    "http:\/\/yago-knowledge.org\/resource\/Search_engine_results_page",
+    "http:\/\/dbpedia.org\/resource\/Search_engine_results_page"
+  ],
+  "url": "https:\/\/wordlift.io\/blog\/en\/entity\/search-engine-results-page\/"
+}
