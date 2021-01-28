@@ -63,7 +63,7 @@ class Post_Taxonomy_Term_Rule_Validator_Test extends Wordlift_Unit_Test_Case {
 		$this->assertTrue( $result );
 	}
 
-	public function test_when_not_equal_to_operator_on_non_term_page_should_return_false() {
+    public function test_when_not_equal_to_operator_on_non_term_page_should_return_false() {
 		$result = $this->instance->is_valid( null,
 			Rule_Validator::IS_NOT_EQUAL_TO,
 			'taxonomy',
