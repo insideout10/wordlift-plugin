@@ -5,6 +5,7 @@
  */
 
 use Wordlift\Widgets\Faceted_Search\Faceted_Search_Template_Endpoint;
+use Wordlift\Widgets\Srcset_Util;
 
 /**
  * Class Faceted_Search_Widget_Test
@@ -20,6 +21,7 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 		// Resetting global filters, since we want our test
 		// to run independently without global state.
 		$wp_filter      = array();
+		run_wordlift();
 		$instance       = new \Wordlift\Widgets\Async_Template_Decorator( new Wordlift_Faceted_Search_Shortcode() );
 		$wp_rest_server = new WP_REST_Server();
 		$this->server   = $wp_rest_server;
@@ -209,22 +211,108 @@ class Faceted_Search_Widget_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_faceted_search_rest_url_should_have_post_types_attribute() {
 		$post_id = $this->factory()->post->create();
-		$html = do_shortcode("[wl_faceted_search post_types='post,page' post_id=$post_id]");
-		$this->assertTrue( strpos($html, 'post_types=post,page') !== false);
+		$html    = do_shortcode( "[wl_faceted_search post_types='post,page' post_id=$post_id]" );
+		$this->assertTrue( strpos( $html, 'post_types=post,page' ) !== false );
 	}
 
 	public function test_faceted_search_rest_url_should_NOT_have_post_types_attribute_if_not_supplied() {
 		$post_id = $this->factory()->post->create();
-		$html = do_shortcode("[wl_faceted_search post_id=$post_id]");
-		$this->assertFalse( strpos($html, 'post_types=post,page') !== false);
+		$html    = do_shortcode( "[wl_faceted_search post_id=$post_id]" );
+		$this->assertFalse( strpos( $html, 'post_types=post,page' ) !== false );
 	}
 
 
-	public function  test_given_post_id_html_attributes_should_be_escaped_for_faceted_search_url() {
-		$post_id = $this->factory()->post->create();
-		$html = do_shortcode("[wl_faceted_search limit=10 post_id=$post_id]");
+	public function test_given_post_id_html_attributes_should_be_escaped_for_faceted_search_url() {
+		$post_id             = $this->factory()->post->create();
+		$html                = do_shortcode( "[wl_faceted_search limit=10 post_id=$post_id]" );
 		$expected_url_output = "wordlift/v1/faceted-search&amp;post_id=$post_id&amp;limit=10";
-		$this->assertTrue( strpos($html, $expected_url_output) !== false);
+		$this->assertTrue( strpos( $html, $expected_url_output ) !== false );
 	}
+
+	public function test_shortcode_should_have_src_set_attribute_in_amp_version() {
+		$post_id     = $this->factory()->post->create();
+		$_GET['amp'] = true;
+		$result      = do_shortcode( "[wl_faceted_search post_id='$post_id']" );
+		$this->assertTrue( strpos( $result, '{{srcset}}' ) !== false );
+	}
+
+
+	public function test_post_with_three_images_sizes_should_have_the_urls_in_srcset_for_referencing_posts_in_amp_version() {
+
+		// Link multiple posts to this post.
+		$entity_1 = $this->create_faceted_search_entity();
+		$post_1   = $this->create_faceted_search_post( $entity_1 );
+		$post_2   = $this->create_faceted_search_post( $entity_1 );
+		$post_3   = $this->factory()->post->create();
+
+		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/cat-1200x1200.jpg', $post_2 );
+		set_post_thumbnail( $post_2, $attachment_id );
+
+		$medium_1 = get_the_post_thumbnail_url( $post_2, 'medium' );
+		$large_1  = get_the_post_thumbnail_url( $post_2, 'large' );
+
+		// Add thumbnails to other posts
+		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/cat-1200x1200.jpg', $post_3 );
+		set_post_thumbnail( $post_3, $attachment_id );
+
+		$medium_2 = get_the_post_thumbnail_url( $post_3, 'medium' );
+		$large_2  = get_the_post_thumbnail_url( $post_3, 'large' );
+
+
+		$_GET['post_id'] = $post_1;
+		$_GET['uniqid']  = 'uniqid';
+		$_GET['amp']     = true;
+		$faceted_data    = wl_shortcode_faceted_search_origin( null );
+		$result          = $faceted_data['posts'][0]['values'];
+
+		// Check if we have srcset in referenced posts.
+		$target_post_1 = $result[0];
+		$srcset_1      = $target_post_1->srcset;
+
+		$this->assertTrue( strpos( $srcset_1, $medium_1 ) !== false );
+		$this->assertTrue( strpos( $srcset_1, $large_1 ) !== false );
+
+		// check if we have srcset in filler posts.
+		$target_post_2 = $result[2];
+		$srcset_2      = $target_post_2->srcset;
+		$this->assertTrue( strpos( $srcset_2, $medium_2 ) !== false );
+		$this->assertTrue( strpos( $srcset_2, $large_2 ) !== false );
+	}
+
+
+	public function test_srcset_should_have_intrinsic_width_specified() {
+		$post_id = $this->factory()->post->create();
+
+		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/cat-1200x1200.jpg', $post_id );
+		set_post_thumbnail( $post_id, $attachment_id );
+
+		$medium_1 = get_the_post_thumbnail_url( $post_id, 'medium' );
+		$large_1  = get_the_post_thumbnail_url( $post_id, 'large' );
+		$srcset   = Srcset_Util::get_srcset( $post_id, Srcset_Util::FACETED_SEARCH_WIDGET );
+
+
+		$medium_1_srcset = $medium_1 . ' ' . $this->get_image_width( $post_id, 'medium' ) . 'w';
+		$this->assertTrue( strpos( $srcset, $medium_1_srcset ) !== false );
+
+		$large_1_srcset = $large_1 . ' ' . $this->get_image_width( $post_id, 'large' ) . 'w';
+		$this->assertTrue( strpos( $srcset, $large_1_srcset ) !== false );
+
+
+	}
+
+
+	private function get_image_width( $post_id, $size ) {
+		$thumbnail_id = get_post_thumbnail_id( $post_id );
+		if ( ! $thumbnail_id ) {
+			return false;
+		}
+		$data = wp_get_attachment_image_src( $thumbnail_id, $size );
+		if ( ! $data ) {
+			return false;
+		}
+
+		return array_key_exists( 2, $data ) ? $data[2] : false;
+	}
+
 
 }
