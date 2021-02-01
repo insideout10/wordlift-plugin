@@ -215,6 +215,26 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 	}
 
 
+	public function test_when_post_has_html_entity_on_title_should_be_decoded() {
+		// Create an entity and link all the posts to post_1.
+		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		$post_1 = $this->create_navigator_post( $entity );
+		// Get navigator data.
+		$_GET['post_id'] = $post_1;
+		$_GET['uniqid']  = "random_id";
+		$post_2          = $this->create_navigator_post( $entity );
+		$title           = "You Can&#8217;t Contribute Beyond Yourself Until You&#8217;re Willing to Let Go";
+		wp_update_post( array(
+			'ID'         => $post_2,
+			'post_title' => $title
+		) );
+		$posts     = _wl_navigator_get_data();
+		$post      = array_pop( $posts );
+		$post_data = $post['post'];
+		$this->assertEquals( $post_data['title'], html_entity_decode( $title ) );
+	}
+
+
 	public function test_when_post_type_not_supplied_in_navigator_shortcode_should_return_correctly_for_entities() {
 		// Create an entity and link all the posts to post_1.
 		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
