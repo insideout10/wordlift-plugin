@@ -85,11 +85,35 @@ class Widget_Filler_Posts_Test extends Wordlift_Unit_Test_Case {
 		 * Lets create posts with post type 'post', but not on same category.
 		 */
 		$post_1            = $this->create_post_with_thumbnail();
+
 		$filler_posts_util = new Filler_Posts_Util( $subject_post );
 		$filler_posts      = $filler_posts_util->get_filler_posts( 4, array( $subject_post ) );
 		$filler_post       = array_pop( $filler_posts );
 		$this->assertEquals( get_the_post_thumbnail_url( $post_1, 'medium' ), $filler_post->thumbnail );
 		$this->assertEquals( get_permalink( $post_1 ), $filler_post->permalink );
+	}
+
+
+	public function test_when_post_type_is_product_should_return_only_filler_posts_of_type_product_and_same_category_first() {
+		$subject_post = $this->create_post_with_category( 'test_category', 'product' );
+		// Now we will create 4 posts on the page post type.
+		$post_5 = $this->create_post_with_thumbnail( 'product' );
+		$post_6 = $this->create_post_with_thumbnail( 'product' );
+
+		$post_1 = $this->create_post_with_category( 'test_category', 'product' );
+		$post_2 = $this->create_post_with_category( 'test_category', 'product' );
+		$post_3 = $this->create_post_with_category( 'test_category', 'product' );
+		$post_4 = $this->create_post_with_category( 'test_category', 'product' );
+
+
+		$filler_posts_util = new Filler_Posts_Util( $subject_post );
+		$filler_posts      = $filler_posts_util->get_filler_posts( 4, array( $subject_post ) );
+
+		$returned_post_ids = $this->extract_post_ids_and_sort( $filler_posts );
+		sort( $returned_post_ids );
+
+		$this->assertEquals( array( $post_1, $post_2, $post_3, $post_4 ), $returned_post_ids );
+
 	}
 
 	public function test_when_post_type_is_not_post_should_return_latest_posts_from_same_post_type() {

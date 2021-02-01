@@ -388,5 +388,51 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$this->assertFalse( strpos( $html, 'post_types=post,page' ) !== false );
 	}
 
+	public function test_shortcode_should_have_src_set_attribute_in_amp_version() {
+		$post_id     = $this->factory()->post->create();
+		$_GET['amp'] = true;
+		$result      = do_shortcode( "[wl_navigator post_id='$post_id']" );
+		$this->assertTrue( strpos( $result, '{{post.srcset}}' ) !== false );
+	}
+
+
+	public function test_post_with_three_images_sizes_should_have_the_urls_in_filler_posts_srcset() {
+		$post_id       = $this->factory()->post->create();
+		$post_2        = $this->create_post_with_thumbnail();
+		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/cat-1200x1200.jpg', $post_2 );
+		set_post_thumbnail( $post_2, $attachment_id );
+		$medium          = get_the_post_thumbnail_url( $post_2, 'medium' );
+		$large          = get_the_post_thumbnail_url( $post_2, 'large' );
+		$_GET['amp']     = true;
+		$_GET['post_id'] = $post_id;
+		$_GET['uniqid']  = 'uniqid';
+		$data            = _wl_navigator_get_data();
+		$result          = $data[0]['post'];
+		$this->assertArrayHasKey( 'srcset', $result );
+		$srcset = $result['srcset'];
+		$this->assertTrue( strpos( $srcset, $medium ) !== false );
+		$this->assertTrue( strpos( $srcset, $large ) !== false );
+	}
+
+
+	public function test_post_with_three_images_sizes_should_have_the_urls_in_referencing_posts_srcset() {
+		$entity        = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		$post_1        = $this->create_navigator_post( $entity );
+		$post_2        = $this->create_navigator_post( $entity );
+		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/cat-1200x1200.jpg', $post_2 );
+		set_post_thumbnail( $post_2, $attachment_id );
+		$medium          = get_the_post_thumbnail_url( $post_2, 'medium' );
+		$large          = get_the_post_thumbnail_url( $post_2, 'large' );
+		$_GET['amp']     = true;
+		$_GET['post_id'] = $post_1;
+		$_GET['uniqid']  = 'uniqid';
+		$data            = _wl_navigator_get_data();
+		$result          = $data[0]['post'];
+		$this->assertArrayHasKey( 'srcset', $result );
+		$srcset = $result['srcset'];
+		$this->assertTrue( strpos( $srcset, $medium ) !== false );
+		$this->assertTrue( strpos( $srcset, $large ) !== false );
+	}
+
 
 }

@@ -67,6 +67,7 @@ abstract class Wordlift_Shortcode_REST {
 			if ( is_wp_error( $data ) ) {
 				return $response;
 			}
+			$response->header( 'Access-Control-Allow-Origin', '*' );
 			$response->header( 'X-WordLift-Cache', 'MISS' );
 
 			return $response;
@@ -85,6 +86,7 @@ abstract class Wordlift_Shortcode_REST {
 		if ( isset( $cache_results ) ) {
 
 			$response = rest_ensure_response( $cache_results );
+			$response->header( 'Access-Control-Allow-Origin', '*' );
 			$response->header( 'X-WordLift-Cache', 'HIT' );
 
 			return $response;
@@ -95,6 +97,7 @@ abstract class Wordlift_Shortcode_REST {
 		if ( is_wp_error( $data ) ) {
 			return $response;
 		}
+		$response->header( 'Access-Control-Allow-Origin', '*' );
 		$response->header( 'X-WordLift-Cache', 'MISS' );
 
 		// Put the result before sending the json to the client, since sending the json will terminate us.

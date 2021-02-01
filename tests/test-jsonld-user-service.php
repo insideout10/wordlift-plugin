@@ -16,6 +16,7 @@ class Test_Jsonld_User_Service extends Wordlift_Unit_Test_Case {
 	/**
 	 * @var PHPUnit_Framework_MockObject_MockObject|WP_UnitTest_Factory|Wordlift_User_Service|null
 	 */
+
 	private $user_service_mock;
 	/**
 	 * @var PHPUnit_Framework_MockObject_MockObject|WP_UnitTest_Factory|Wordlift\Jsonld\Jsonld_Service|null
