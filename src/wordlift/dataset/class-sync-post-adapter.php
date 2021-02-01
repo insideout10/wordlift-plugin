@@ -11,7 +11,7 @@ class Sync_Post_Adapter extends Abstract_Sync_Object_Adapter {
 	private $post_id;
 
 	/**
-	 * Sync_User_Adapter constructor.
+	 * Sync_Term_Adapter constructor.
 	 *
 	 * @param int $post_id
 	 *

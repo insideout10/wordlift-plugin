@@ -3,6 +3,7 @@
 use Wordlift\Dataset\Background\Sync_Background_Process;
 use Wordlift\Dataset\Background\Sync_Background_Process_Wpjson_Endpoint;
 use Wordlift\Dataset\Sync_Hooks_Entity_Relation;
+use Wordlift\Dataset\Sync_Hooks_Wordpress_Ontology;
 use Wordlift\Dataset\Sync_Object_Adapter_Factory;
 use Wordlift\Dataset\Sync_Page;
 use Wordlift\Dataset\Sync_Post_Hooks;
@@ -31,5 +32,6 @@ if ( apply_filters( 'wl_feature__enable__dataset-ng', false ) ) {
 	 * @see https://github.com/insideout10/wordlift-plugin/issues/1186
 	 */
 	new Sync_Hooks_Entity_Relation( Wordlift_Entity_Service::get_instance() );
+	new Sync_Hooks_Wordpress_Ontology();
 
 }

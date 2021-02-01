@@ -123,7 +123,7 @@ class Sync_Service {
 	 * @return bool
 	 * @throws \Exception
 	 */
-	public function sync_many( $objects ) {
+	public function sync_many( $objects, $force = false ) {
 
 		$hashes   = array();
 		$payloads = array();
@@ -137,7 +137,7 @@ class Sync_Service {
 			$new_hash = sha1( $payload_as_string );
 			$old_hash = $object->get_meta( self::JSONLD_HASH, true );
 			// JSON-LD hasn't changed, bail out.
-			if ( $new_hash === $old_hash ) {
+			if ( ! $force && $new_hash === $old_hash ) {
 				continue;
 			}
 

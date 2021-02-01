@@ -84,7 +84,7 @@ class Sync_Background_Process_Started_State implements Sync_Background_Process_S
 
 		try {
 			$object_adapters = $this->stages[ $stage ]->get_sync_object_adapters( $offset, $batch_size );
-			$this->sync_service->sync_many( $object_adapters );
+			$this->sync_service->sync_many( $object_adapters, true );
 		} catch ( \Exception $e ) {
 			// ignored.
 		}
