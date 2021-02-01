@@ -33,7 +33,7 @@ class Sync_Page {
 		wp_enqueue_script(
 			'wl-dataset-sync-page',
 			plugin_dir_url( __FILE__ ) . 'assets/sync-page.js',
-			array('wp-api'),
+			array( 'wp-api' ),
 			\Wordlift::get_instance()->get_version() );
 
 		?>

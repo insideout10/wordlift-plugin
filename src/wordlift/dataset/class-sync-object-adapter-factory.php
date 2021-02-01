@@ -7,10 +7,10 @@ use Wordlift\Object_Type_Enum;
 class Sync_Object_Adapter_Factory {
 
 	/**
-	 * @param $type
-	 * @param $object_id
+	 * @param int $type One of Object_Type_Enum::POST, Object_Type_Enum::USER, ...
+	 * @param int $object_id The object id.
 	 *
-	 * @return Abstract_Sync_Object_Adapter
+	 * @return Sync_Object_Adapter
 	 * @throws \Exception
 	 */
 	function create( $type, $object_id ) {
@@ -24,6 +24,14 @@ class Sync_Object_Adapter_Factory {
 				throw new \Exception( "Unsupported type $type." );
 		}
 
+	}
+
+	function create_many( $type, $object_ids ) {
+		$that = $this;
+
+		return array_map( function ( $item ) use ( $type, $that ) {
+			return $that->create( $type, $item );
+		}, (array) $object_ids );
 	}
 
 }
