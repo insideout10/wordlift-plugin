@@ -79,8 +79,9 @@ class Filler_Posts_Util {
 	 */
 	private function add_additional_properties_to_filler_posts( $posts ) {
 		return array_map( function ( $post ) {
-			$post->thumbnail = get_the_post_thumbnail_url( $post->ID, 'medium' );
-			$post->permalink = get_permalink( $post->ID );
+			$post->thumbnail  = get_the_post_thumbnail_url( $post->ID, 'medium' );
+			$post->permalink  = get_permalink( $post->ID );
+			$post->post_title = html_entity_decode( $post->post_title );
 
 			return $post;
 		}, $posts );
