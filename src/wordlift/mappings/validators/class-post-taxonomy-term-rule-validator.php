@@ -32,7 +32,6 @@ class Post_Taxonomy_Term_Rule_Validator implements Rule_Validator {
 
 		add_filter( 'wl_mappings_rule_validators', array( $this, 'wl_mappings_rule_validators' ) );
 
-
 	}
 
 	/**
@@ -44,7 +43,7 @@ class Post_Taxonomy_Term_Rule_Validator implements Rule_Validator {
 	 */
 	public function wl_mappings_rule_validators( $value ) {
 
-		$value[ self::POST ] = $this;
+		$value[ self::POST_TAXONOMY ] = $this;
 
 		return $value;
 	}
@@ -63,6 +62,9 @@ class Post_Taxonomy_Term_Rule_Validator implements Rule_Validator {
         $taxonomy  = $operand_1;
         $term_slug = $operand_2;
 
+        $current_term = get_term( $identifier );
+        $terms = get_terms( $taxonomy, array( 'get' => 'all' ) );
+
         $is_object_in_term = is_object_in_term( $identifier, $taxonomy, $term_slug );
 
         $taxonomy = get_taxonomy( $term_slug );
@@ -73,6 +75,16 @@ class Post_Taxonomy_Term_Rule_Validator implements Rule_Validator {
 
         if ( is_wp_error( $is_object_in_term ) ) {
             return false;
+        }
+
+        if ( $operator === Rule_Validator::IS_EQUAL_TO ) {
+            // If we are in term page, then we need to check if the current
+            // term belongs to the taxonomy
+            return in_array( $current_term->term_id, $terms );
+        }
+
+        if ( $operator === Rule_Validator::IS_NOT_EQUAL_TO ) {
+            return ! in_array( $current_term->term_id, $terms );
         }
 
         return true;
