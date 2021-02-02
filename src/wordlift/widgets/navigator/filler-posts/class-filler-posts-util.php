@@ -1,6 +1,7 @@
 <?php
 
 namespace Wordlift\Widgets\Navigator\Filler_Posts;
+
 use Wordlift\Widgets\Srcset_Util;
 
 /**
@@ -14,19 +15,19 @@ class Filler_Posts_Util {
 	 */
 	private $sources = array();
 
-	public function __construct( $post_id ) {
+	public function __construct( $post_id, $alternate_post_type = null ) {
 
-		$post_type = get_post_type( $post_id );
+		$post_type = $alternate_post_type ?: get_post_type( $post_id );
 
-		if ( $post_type === 'post' ) {
+		if ( $post_type === 'post' || ( is_array( $post_type ) && in_array( 'post', $post_type ) ) ) {
 			$this->sources = array(
 				new Same_Category_Filler_Posts( $post_id ),
 				new Same_Post_Type_Filler_Posts( $post_id ),
 			);
-		} else if ( $post_type === 'product' ) {
+		} else if ( $post_type === 'product' || ( is_array( $post_type ) && in_array( 'product', $post_type ) ) ) {
 			$this->sources = array(
-				new Same_Post_Type_Same_Category_Posts( $post_id ),
-				new Same_Post_Type_Filler_Posts( $post_id ),
+				new Same_Post_Type_Same_Category_Posts( $post_id, 'product' ),
+				new Same_Post_Type_Filler_Posts( $post_id, 'product' ),
 			);
 		} else {
 			$this->sources = array(
