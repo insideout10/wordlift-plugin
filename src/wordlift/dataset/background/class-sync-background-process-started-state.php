@@ -72,12 +72,6 @@ class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Pro
 
 	function leave() {
 		$this->context->set_state( null );
-
-//		delete_option( '_wl_sync_background_process_updated' );
-//		delete_option( '_wl_sync_background_process_started' );
-//		delete_option( '_wl_sync_background_process_offset' );
-//		delete_option( '_wl_sync_background_process_stage' );
-//		delete_option( '_wl_sync_background_process_count' );
 	}
 
 	function task( $args ) {
@@ -87,12 +81,14 @@ class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Pro
 		$counts     = get_option( '_wl_sync_background_process_count' );
 		$batch_size = min( $counts[ $stage ] - $offset, $this->batch_size );
 
+		add_filter( 'wl_api_service__request', array( $this, 'api_service__request' ) );
 		try {
 			$object_adapters = $this->stages[ $stage ]->get_sync_object_adapters( $offset, $batch_size );
 			$this->sync_service->sync_many( $object_adapters, true );
 		} catch ( \Exception $e ) {
 			// ignored.
 		}
+		remove_filter( 'wl_api_service__request', array( $this, 'api_service__request' ) );
 
 		update_option( '_wl_sync_background_process_updated', time(), true );
 
@@ -115,6 +111,22 @@ class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Pro
 		$this->context->stop();
 
 		return false;
+	}
+
+	/**
+	 * Hook to provide a request to update the status on the server.
+	 *
+	 * @param array $args
+	 *
+	 * @return mixed
+	 */
+	public function api_service__request( $args ) {
+
+		$state_header_value = str_replace( "\n", '', wp_json_encode( $this->context->get_info() ) );
+
+		$args['headers']['X-Wordlift-Dataset-Sync-State-V1'] = $state_header_value;
+
+		return $args;
 	}
 
 }

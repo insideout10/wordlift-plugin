@@ -340,13 +340,9 @@ class Sync_Service {
 	public function delete_item( $post_id ) {
 		$uri = get_post_meta( $post_id, 'entity_url', true );
 		// Make a request to the remote endpoint.
-		$state_header_value = str_replace( wp_json_encode( $this->info() ), "\n", '' );
-		$response           = $this->api_service->request(
+		$response = $this->api_service->request(
 			'DELETE', '/middleware/dataset?uri=' . rawurlencode( $uri ),
-			array(
-				'Content-Type'                     => 'application/ld+json',
-				'X-Wordlift-Dataset-Sync-State-V1' => $state_header_value
-			) );
+			array( 'Content-Type' => 'application/ld+json', ) );
 	}
 
 	public function get_batch_size() {

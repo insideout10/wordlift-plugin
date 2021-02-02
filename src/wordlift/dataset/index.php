@@ -22,16 +22,21 @@ if ( apply_filters( 'wl_feature__enable__dataset-ng', false ) ) {
 	new Sync_Post_Hooks( $sync_service, $sync_object_adapter_factory );
 	new Sync_User_Hooks( $sync_service );
 
-	// Set up the sync background process.
-	$sync_background_process = new Sync_Background_Process( $sync_service, $sync_object_adapter_factory );
-	new Sync_Background_Process_Wpjson_Endpoint( $sync_background_process );
-	new Sync_Page();
-
 	/**
 	 * @since 3.28.0
 	 * @see https://github.com/insideout10/wordlift-plugin/issues/1186
 	 */
 	new Sync_Hooks_Entity_Relation( Wordlift_Entity_Service::get_instance() );
-	new Sync_Hooks_Wordpress_Ontology();
+
+	if ( apply_filters( 'wl_feature__enable__wordpress-ontology', false ) ) {
+		new Sync_Hooks_Wordpress_Ontology();
+	}
+
+	if ( apply_filters( 'wl_feature__enable__sync-background', false ) ) {
+		// Set up the sync background process.
+		$sync_background_process = new Sync_Background_Process( $sync_service, $sync_object_adapter_factory );
+		new Sync_Background_Process_Wpjson_Endpoint( $sync_background_process );
+		new Sync_Page();
+	}
 
 }
