@@ -1,8 +1,8 @@
 <?php
 
-namespace Wordlift\Dataset;
+namespace Wordlift\Dataset\Background;
 
-class Sync_State {
+class Sync_Background_Process_Info {
 
 	public $started;
 	public $index;
@@ -19,7 +19,7 @@ class Sync_State {
 	 * @param $last_update
 	 * @param $state
 	 */
-	public function __construct( $started, $index, $count, $last_update, $state ) {
+	public function __construct( $state, $started = null, $index = null, $count = null, $last_update = null ) {
 		$this->started     = $started;
 		$this->index       = $index;
 		$this->count       = (int) $count;

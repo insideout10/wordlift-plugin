@@ -22,4 +22,6 @@ interface Sync_Background_Process_State {
 	 */
 	function task( $item );
 
+	function get_info();
+
 }

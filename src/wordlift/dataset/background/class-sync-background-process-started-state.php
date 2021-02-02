@@ -9,7 +9,7 @@ use Wordlift\Dataset\Background\Stages\Sync_Background_Process_Users_Stage;
 use Wordlift\Dataset\Sync_Object_Adapter_Factory;
 use Wordlift\Dataset\Sync_Service;
 
-class Sync_Background_Process_Started_State implements Sync_Background_Process_State {
+class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Process_State {
 
 	/**
 	 * @var Sync_Background_Process
@@ -36,6 +36,7 @@ class Sync_Background_Process_Started_State implements Sync_Background_Process_S
 	 * @param Sync_Object_Adapter_Factory $sync_object_adapter_factory
 	 */
 	function __construct( $context, $sync_service, $sync_object_adapter_factory ) {
+		parent::__construct( Sync_Background_Process::STATE_STARTED );
 
 		$this->context      = $context;
 		$this->sync_service = $sync_service;
@@ -60,6 +61,8 @@ class Sync_Background_Process_Started_State implements Sync_Background_Process_S
 		update_option( '_wl_sync_background_process_count', $counts, true );
 		update_option( '_wl_sync_background_process_stage', 0, true );
 		update_option( '_wl_sync_background_process_offset', 0, true );
+		update_option( '_wl_sync_background_process_started', time(), true );
+		update_option( '_wl_sync_background_process_updated', time(), true );
 
 		$this->context->set_state( Sync_Background_Process::STATE_STARTED );
 
@@ -70,9 +73,11 @@ class Sync_Background_Process_Started_State implements Sync_Background_Process_S
 	function leave() {
 		$this->context->set_state( null );
 
-		delete_option( '_wl_sync_background_process_offset' );
-		delete_option( '_wl_sync_background_process_stage' );
-		delete_option( '_wl_sync_background_process_count' );
+//		delete_option( '_wl_sync_background_process_updated' );
+//		delete_option( '_wl_sync_background_process_started' );
+//		delete_option( '_wl_sync_background_process_offset' );
+//		delete_option( '_wl_sync_background_process_stage' );
+//		delete_option( '_wl_sync_background_process_count' );
 	}
 
 	function task( $args ) {
@@ -88,6 +93,8 @@ class Sync_Background_Process_Started_State implements Sync_Background_Process_S
 		} catch ( \Exception $e ) {
 			// ignored.
 		}
+
+		update_option( '_wl_sync_background_process_updated', time(), true );
 
 		// Increase the offset.
 		if ( ( $offset + $batch_size ) < $counts[ $stage ] ) {
