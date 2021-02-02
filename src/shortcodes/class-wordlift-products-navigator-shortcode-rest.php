@@ -1,5 +1,7 @@
 <?php
 
+use Wordlift\Widgets\Navigator\Filler_Posts\Filler_Posts_Util;
+
 class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST {
 
 	const CACHE_TTL = 3600; // 1 hour
@@ -99,14 +101,12 @@ class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST
 					'rating_html'     => wc_get_rating_html( $product->get_average_rating(), $product->get_rating_count() )
 				),
 				'entity'  => array(
+					'id'        => $referencing_post->entity_id,
 					'label'     => $serialized_entity['label'],
 					'mainType'  => $serialized_entity['mainType'],
 					'permalink' => get_permalink( $referencing_post->entity_id ),
 				),
 			);
-
-			$result['product'] = apply_filters( 'wl_products_navigator_data_post', $result['product'], intval( $referencing_post->ID ), $navigator_id );
-			$result['entity']  = apply_filters( 'wl_products_navigator_data_entity', $result['entity'], intval( $referencing_post->entity_id ), $navigator_id );
 
 			$results[] = $result;
 
@@ -115,6 +115,31 @@ class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST
 		if ( count( $results ) < $navigator_length ) {
 			$results = apply_filters( 'wl_products_navigator_data_placeholder', $results, $navigator_id, $navigator_offset, $navigator_length );
 		}
+
+
+		// Add filler posts if needed
+		$filler_count = $navigator_length - count( $results );
+		if ( $filler_count > 0 ) {
+			$referencing_post_ids = array_map( function ( $p ) {
+				return $p->ID;
+			}, $referencing_posts );
+			/**
+			 * @since 3.28.0
+			 * Filler posts are fetched using this util.
+			 */
+			$filler_posts_util    = new Filler_Posts_Util( $post_id, 'product' );
+			$post_ids_to_be_excluded = array_merge( array( $post_id ), $referencing_post_ids );
+			$filler_posts            = $filler_posts_util->get_product_navigator_response( $filler_count, $post_ids_to_be_excluded );
+			$results                 = array_merge( $results, $filler_posts );
+		}
+
+		// Apply filters after fillers are added
+		foreach ( $results as $result_index => $result ) {
+			$results[ $result_index ]['product'] = apply_filters( 'wl_products_navigator_data_post', $result['product'], intval( $result['product']['id'] ), $navigator_id );
+			$results[ $result_index ]['entity'] = apply_filters( 'wl_products_navigator_data_entity', $result['entity'], intval( $result['entity']['id'] ), $navigator_id );
+		}
+
+		$results = apply_filters( 'wl_products_navigator_results', $results, $navigator_id );
 
 		return $amp ? array(
 			'items' => array(

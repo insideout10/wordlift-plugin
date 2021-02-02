@@ -128,7 +128,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
       else # New entity
         $log.debug 'Unset a new entity'
         $scope.addNewEntityToAnalysis()
-        $scope.addMsg 'The entity was created!', 'positive'
+        $scope.addMsg 'Annotation is created', 'positive'
 
     $scope.unsetCurrentEntity()
 

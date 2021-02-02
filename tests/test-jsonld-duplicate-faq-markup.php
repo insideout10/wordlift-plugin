@@ -1,5 +1,7 @@
 <?php
 
+use Wordlift\Jsonld\Jsonld_Context_Enum;
+
 /**
  * Class Duplicate_Faq_Markup_Test
  * @group jsonld
@@ -56,7 +58,7 @@ class Duplicate_Faq_Markup_Test extends Wordlift_Unit_Test_Case {
 		);
 
 		// Apply the filter, and we now should have only one item in the jsonld array.
-		$result = apply_filters( 'wl_after_get_jsonld', $jsonld_array, null );
+		$result = apply_filters( 'wl_after_get_jsonld', $jsonld_array, null, Jsonld_Context_Enum::FAQ );
 
 		$this->assertCount( 1, $result );
 		$this->assertEquals( array( $post_jsonld ), $result );
@@ -98,7 +100,7 @@ class Duplicate_Faq_Markup_Test extends Wordlift_Unit_Test_Case {
 		);
 
 		// Apply the filter, and we now should have only one item in the jsonld array.
-		$result = apply_filters( 'wl_after_get_jsonld', $jsonld_array, null );
+		$result = apply_filters( 'wl_after_get_jsonld', $jsonld_array, null, Jsonld_Context_Enum::FAQ );
 
 		$this->assertCount( 2, $result );
 		$this->assertEquals( array(
@@ -155,7 +157,7 @@ class Duplicate_Faq_Markup_Test extends Wordlift_Unit_Test_Case {
 			)
 		);
 
-		$result = apply_filters( 'wl_after_get_jsonld', $input, null );
+		$result = apply_filters( 'wl_after_get_jsonld', $input, null, Jsonld_Context_Enum::FAQ );
 		$this->assertEquals( $expected_output, $result );
 	}
 

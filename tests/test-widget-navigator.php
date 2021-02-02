@@ -58,15 +58,15 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$_GET['uniqid']     = "random_id";
 		$_GET['post_types'] = 'post,some-random-post-type';
 		$posts              = _wl_navigator_get_data();
-		$expected_post_ids = array( $post_2, $post_3 );
+		$expected_post_ids  = array( $post_2, $post_3 );
 
 		$returned_post_ids = array(
 			$posts[0]['post']['id'],
 			$posts[1]['post']['id'],
 		);
 
-		sort($expected_post_ids);
-		sort($returned_post_ids);
+		sort( $expected_post_ids );
+		sort( $returned_post_ids );
 		// the first 2 returned posts should have post type post
 		$this->assertEquals( $expected_post_ids, $returned_post_ids );
 
@@ -215,6 +215,26 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 	}
 
 
+	public function test_when_post_has_html_entity_on_title_should_be_decoded() {
+		// Create an entity and link all the posts to post_1.
+		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		$post_1 = $this->create_navigator_post( $entity );
+		// Get navigator data.
+		$_GET['post_id'] = $post_1;
+		$_GET['uniqid']  = "random_id";
+		$post_2          = $this->create_navigator_post( $entity );
+		$title           = "You Can&#8217;t Contribute Beyond Yourself Until You&#8217;re Willing to Let Go";
+		wp_update_post( array(
+			'ID'         => $post_2,
+			'post_title' => $title
+		) );
+		$posts     = _wl_navigator_get_data();
+		$post      = array_pop( $posts );
+		$post_data = $post['post'];
+		$this->assertEquals( $post_data['title'], html_entity_decode( $title ) );
+	}
+
+
 	public function test_when_post_type_not_supplied_in_navigator_shortcode_should_return_correctly_for_entities() {
 		// Create an entity and link all the posts to post_1.
 		$entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
@@ -245,8 +265,8 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$_GET['uniqid']     = "random_id";
 		$_GET['post_types'] = 'post,some-random-post-type';
 		$data               = _wl_navigator_get_data();
-		// we expect to get only 2 posts with post type post.
-		$this->assertEquals( 2, count( $data ) );
+		// we expect to get only 4 posts along with 2 filler posts.
+		$this->assertEquals( 4, count( $data ) );
 	}
 
 
@@ -366,6 +386,52 @@ class Navigator_Widget_Test extends Wordlift_Unit_Test_Case {
 		$post_id = $this->factory()->post->create();
 		$html    = do_shortcode( "[wl_navigator post_id=$post_id]" );
 		$this->assertFalse( strpos( $html, 'post_types=post,page' ) !== false );
+	}
+
+	public function test_shortcode_should_have_src_set_attribute_in_amp_version() {
+		$post_id     = $this->factory()->post->create();
+		$_GET['amp'] = true;
+		$result      = do_shortcode( "[wl_navigator post_id='$post_id']" );
+		$this->assertTrue( strpos( $result, '{{post.srcset}}' ) !== false );
+	}
+
+
+	public function test_post_with_three_images_sizes_should_have_the_urls_in_filler_posts_srcset() {
+		$post_id       = $this->factory()->post->create();
+		$post_2        = $this->create_post_with_thumbnail();
+		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/cat-1200x1200.jpg', $post_2 );
+		set_post_thumbnail( $post_2, $attachment_id );
+		$medium          = get_the_post_thumbnail_url( $post_2, 'medium' );
+		$large          = get_the_post_thumbnail_url( $post_2, 'large' );
+		$_GET['amp']     = true;
+		$_GET['post_id'] = $post_id;
+		$_GET['uniqid']  = 'uniqid';
+		$data            = _wl_navigator_get_data();
+		$result          = $data[0]['post'];
+		$this->assertArrayHasKey( 'srcset', $result );
+		$srcset = $result['srcset'];
+		$this->assertTrue( strpos( $srcset, $medium ) !== false );
+		$this->assertTrue( strpos( $srcset, $large ) !== false );
+	}
+
+
+	public function test_post_with_three_images_sizes_should_have_the_urls_in_referencing_posts_srcset() {
+		$entity        = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		$post_1        = $this->create_navigator_post( $entity );
+		$post_2        = $this->create_navigator_post( $entity );
+		$attachment_id = $this->factory()->attachment->create_upload_object( __DIR__ . '/assets/cat-1200x1200.jpg', $post_2 );
+		set_post_thumbnail( $post_2, $attachment_id );
+		$medium          = get_the_post_thumbnail_url( $post_2, 'medium' );
+		$large          = get_the_post_thumbnail_url( $post_2, 'large' );
+		$_GET['amp']     = true;
+		$_GET['post_id'] = $post_1;
+		$_GET['uniqid']  = 'uniqid';
+		$data            = _wl_navigator_get_data();
+		$result          = $data[0]['post'];
+		$this->assertArrayHasKey( 'srcset', $result );
+		$srcset = $result['srcset'];
+		$this->assertTrue( strpos( $srcset, $medium ) !== false );
+		$this->assertTrue( strpos( $srcset, $large ) !== false );
 	}
 
 

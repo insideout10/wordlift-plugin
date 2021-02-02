@@ -62,17 +62,18 @@ class Jsonld_Service {
 	 *
 	 * @param int $type The requested type, one of 'HOMEPAGE', 'POST' or 'TERM'. Default 'POST'.
 	 * @param int|null $id The id. Default `null`.
+	 * @param int $context A context for the JSON-LD generation, valid values in Jsonld_Context_Enum.
 	 *
 	 * @return array The JSON-LD structure.
 	 * @throws Exception Throws an exception if the type isn't recognized.
 	 */
-	public function get( $type = Object_Type_Enum::POST, $id = null ) {
+	public function get( $type = Object_Type_Enum::POST, $id = null, $context = Jsonld_Context_Enum::UNKNOWN ) {
 
 		switch ( $type ) {
 			case Object_Type_Enum::HOMEPAGE:
-				return $this->legacy_jsonld_service->get_jsonld( true, $id );
+				return $this->legacy_jsonld_service->get_jsonld( true, $id, $context );
 			case Object_Type_Enum::POST:
-				return $this->legacy_jsonld_service->get_jsonld( false, $id );
+				return $this->legacy_jsonld_service->get_jsonld( false, $id, $context );
 			case Object_Type_Enum::TERM:
 				return $this->term_jsonld_service->get( $id );
 			case Object_Type_Enum::USER:

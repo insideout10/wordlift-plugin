@@ -7,6 +7,8 @@
  * @subpackage Wordlift/public
  */
 
+use Wordlift\Widgets\Srcset_Util;
+
 /**
  * Define the {@link Wordlift_Faceted_Search_Shortcode} class which provides the
  * `wl_faceted_search` implementation.
@@ -57,7 +59,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 					return '[' . $scope::SHORTCODE . ' ' . $attr_code . ']';
 				},
 
-				'attributes'      => $scope->get_block_attributes(),
+				'attributes' => $scope->get_block_attributes(),
 			) );
 		} );
 	}
@@ -124,7 +126,7 @@ class Wordlift_Faceted_Search_Shortcode extends Wordlift_Shortcode {
 		}
 
 		wp_enqueue_script( 'wordlift-cloud' );
-		$template_url    = get_rest_url( null, '/wordlift/v1/faceted-search/template' );
+		$template_url = get_rest_url( null, '/wordlift/v1/faceted-search/template' );
 
 		return <<<HTML
 			<!-- Faceted {$faceted_id} -->
@@ -166,12 +168,10 @@ HTML;
 		$permalink_structure = get_option( 'permalink_structure' );
 		$delimiter           = empty( $permalink_structure ) ? '&' : '?';
 		$rest_url            = $post ? rest_url( WL_REST_ROUTE_DEFAULT_NAMESPACE . '/faceted-search' . $delimiter . build_query( array(
-				'amp',
+				'amp'     => 1,
 				'post_id' => $post->ID,
 				'limit'   => $limit
 			) ) ) : false;
-
-		$rest_url = $post ? rest_url( sprintf( "wordlift/v1/faceted-search?amp&post_id=%s&limit=%s", $post->ID, $limit ) ) : false;
 
 		// avoid building the widget when no valid $rest_url
 		if ( ! $rest_url ) {
@@ -186,6 +186,8 @@ HTML;
 			$template_id = "template-" . $faceted_id;
 			wp_enqueue_style( 'wordlift-amp-custom', plugin_dir_url( dirname( __FILE__ ) ) . '/css/wordlift-amp-custom.min.css' );
 		}
+
+		$srcset = Srcset_Util::get_srcset( $post->ID, Srcset_Util::FACETED_SEARCH_WIDGET );
 
 		return <<<HTML
 		<div id="{$faceted_id}" class="wl-amp-faceted">
@@ -237,7 +239,8 @@ HTML;
 				                        width="16"
 				                        height="9"
 										layout="responsive"
-				                        src="{{thumbnail}}"></amp-img>
+				                        src="{{thumbnail}}"
+				                        srcset="{{srcset}}"></amp-img>
 									<div class="card-content">
 										<header class="title">{{post_title}}</header>
 									</div>
@@ -257,7 +260,8 @@ HTML;
 				                        width="16"
 				                        height="9"
 										layout="responsive"
-				                        src="{{thumbnail}}"></amp-img>
+				                        src="{{thumbnail}}"
+				                        srcset="{{srcset}}"></amp-img>
 									<div class="card-content">
 										<header class="title">{{post_title}}</header>
 									</div>
