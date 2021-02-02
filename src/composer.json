@@ -41,6 +41,7 @@
     ]
   },
   "require": {
+    "php": "^5.3 || ^7.0",
     "deliciousbrains/wp-background-processing": "^1.0"
   }
 }
