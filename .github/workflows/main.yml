@@ -28,7 +28,7 @@ jobs:
         uses: actions/checkout@v2
       - name: test
         run: |
-          composer install --ignore-platform-reqs && \
+          composer install
           ./vendor/bin/phpcs src/ --extensions=php --ignore=class-wordlift-entity-types-taxonomy-walker-5-3.php,autoload_static.php \
               --standard=PHPCompatibilityWP --runtime-set testVersion 5.3
 
