@@ -55,12 +55,14 @@ class Sync_Background_Process_Posts_Stage {
 			FROM $wpdb->posts
 			WHERE post_type IN ('$in_post_type')
 				AND post_status IN ( 'publish',  'future', 'draft', 'pending', 'private' )
+			ORDER BY ID ASC
 			LIMIT %d, %d
 			";
 
 		$ids = $wpdb->get_col( $wpdb->prepare( $sql, $offset, $limit ) );
 
-		return $this->sync_object_adapter_factory->create_many( Object_Type_Enum::POST, $ids );
+		return $this->sync_object_adapter_factory
+			->create_many( Object_Type_Enum::POST, array_map( 'intval', $ids ) );
 	}
 
 }

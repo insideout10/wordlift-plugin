@@ -58,6 +58,7 @@ class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Pro
 		$counts = array_map( function ( $item ) {
 			return $item->count();
 		}, $this->stages );
+		
 		update_option( '_wl_sync_background_process_count', $counts, true );
 		update_option( '_wl_sync_background_process_stage', 0, true );
 		update_option( '_wl_sync_background_process_offset', 0, true );

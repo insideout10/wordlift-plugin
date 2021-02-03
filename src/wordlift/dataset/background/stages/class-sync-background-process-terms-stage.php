@@ -23,11 +23,11 @@ class Sync_Background_Process_Terms_Stage {
 
 	function count() {
 
-		$taxonomies = get_taxonomies( array( 'public' => true ) );
+		$taxonomies    = get_taxonomies( array( 'public' => true ) );
+		$in_taxonomies = implode( "','", array_map( 'esc_sql', $taxonomies ) );
 
 		global $wpdb;
-		$in_taxonomies = implode( "','", array_map( 'esc_sql', $taxonomies ) );
-		$sql           = "
+		$sql = "
 			SELECT COUNT( 1 )
 			FROM $wpdb->term_taxonomy
 			WHERE taxonomy IN ('$in_taxonomies')
@@ -38,10 +38,15 @@ class Sync_Background_Process_Terms_Stage {
 
 	function get_sync_object_adapters( $offset, $limit ) {
 
+		$taxonomies    = get_taxonomies( array( 'public' => true ) );
+		$in_taxonomies = implode( "','", array_map( 'esc_sql', $taxonomies ) );
+
 		global $wpdb;
 		$sql = "
 			SELECT term_id
 			FROM $wpdb->term_taxonomy
+		    WHERE taxonomy IN ('$in_taxonomies')
+		    ORDER BY term_id ASC
 			LIMIT %d, %d
 			";
 

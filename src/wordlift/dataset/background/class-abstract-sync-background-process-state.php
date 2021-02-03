@@ -14,7 +14,7 @@ abstract class Abstract_Sync_Background_Process_State implements Sync_Background
 		$started     = get_option( '_wl_sync_background_process_started' );
 		$offset      = get_option( '_wl_sync_background_process_offset' );
 		$stage       = get_option( '_wl_sync_background_process_stage' );
-		$counts      = get_option( '_wl_sync_background_process_count' );
+		$counts      = get_option( '_wl_sync_background_process_count', array( 0 ) );
 		$last_update = get_option( '_wl_sync_background_process_updated' );
 
 		// Calculate the overall index by adding the count of completed stages.

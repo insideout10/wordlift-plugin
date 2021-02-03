@@ -82,7 +82,7 @@ abstract class Wordlift_Plugin_WP_Async_Request {
 		$url  = add_query_arg( $this->get_query_args(), $this->get_query_url() );
 		$args = $this->get_post_args();
 
-		return wp_remote_post( esc_url_raw( $url . '&XDEBUG_SESSION=XDEBUG_ECLIPSE'), $args );
+		return wp_remote_post( esc_url_raw( $url ), $args );
 	}
 
 	/**
