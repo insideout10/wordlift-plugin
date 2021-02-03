@@ -169,38 +169,43 @@ class Mappings_REST_Controller {
         $post_taxonomies = get_taxonomies( array(), 'objects' );
 
         foreach ( $post_taxonomies as $post_taxonomy ) {
-
-            $group_taxonomy = array( 'parentValue' => 'post_taxonomy', 'group_name' => $post_taxonomy->label, 'group_options' => array() );
-
-            $post_taxonomy_terms = get_terms( array(
+            $taxonomy_config = array(
                 'taxonomy' => $post_taxonomy->name,
-                'hide_empty' => true
-            ) );
+                'hide_empty' => false
+            );
 
-            foreach ( $post_taxonomy_terms as $post_taxonomy_term ) {
-                array_push($group_taxonomy['group_options'],
-                    array(
-                        'label'        => ' - ' . $post_taxonomy_term->name,
-                        'value'        => $post_taxonomy_term->slug,
-                        'taxonomy'    => 'post_taxonomy',
-                    )
-                );
+            $total_terms = wp_count_terms($taxonomy_config);
 
-                $post_term_children = get_term_children($post_taxonomy_term->term_id, $post_taxonomy->name);
+            $post_taxonomy_terms = get_terms( $taxonomy_config );
 
-                foreach ( $post_term_children as $post_term_child ) {
-                    $child_term =  get_term_by('id', $post_term_child, $post_taxonomy->name);
+            if ($total_terms) {
+                $group_taxonomy = array('parentValue' => 'post_taxonomy', 'group_name' => $post_taxonomy->label, 'group_options' => array());
 
+                foreach ($post_taxonomy_terms as $post_taxonomy_term) {
                     array_push($group_taxonomy['group_options'],
                         array(
-                            'label'        => ' -- ' . $child_term->name,
-                            'value'        => $child_term->slug,
-                            'taxonomy'    => 'post_taxonomy',
+                            'label' => ' - ' . $post_taxonomy_term->name,
+                            'value' => $post_taxonomy_term->slug,
+                            'taxonomy' => 'post_taxonomy',
                         )
                     );
+
+                    $post_term_children = get_term_children($post_taxonomy_term->term_id, $post_taxonomy->name);
+
+                    foreach ($post_term_children as $post_term_child) {
+                        $child_term = get_term_by('id', $post_term_child, $post_taxonomy->name);
+
+                        array_push($group_taxonomy['group_options'],
+                            array(
+                                'label' => ' -- ' . $child_term->name,
+                                'value' => $child_term->slug,
+                                'taxonomy' => 'post_taxonomy',
+                            )
+                        );
+                    }
                 }
+                array_push($taxonomy_terms, $group_taxonomy);
             }
-            array_push($taxonomy_terms, $group_taxonomy);
         }
 
         return $taxonomy_terms;

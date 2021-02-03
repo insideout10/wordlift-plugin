@@ -264,8 +264,7 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
         $post_taxonomy_option_name   = array(
             'label'      => __( 'Post Taxonomy', 'wordlift' ),
             'value'      => Wordlift\Mappings\Validators\Post_Taxonomy_Term_Rule_Validator::POST_TAXONOMY,
-            // Left empty since post types are provided locally.
-            'api_source' => 'taxonomy'
+            'api_source' => 'post_taxonomy'
         );
         $post_taxonomy_option_values = array();
 

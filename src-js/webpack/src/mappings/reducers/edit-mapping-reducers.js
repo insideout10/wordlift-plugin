@@ -99,7 +99,7 @@ export const RuleGroupReducer = createReducer(null, {
     const terms = action.payload.terms;
 
     // Check if there is no term items for the taxonomy, to prevent duplication.
-    if (0 === state.ruleFieldTwoOptions.filter(e => e.taxonomy === taxonomy).length || taxonomy === 'post_taxonomy') {
+    if (0 === state.ruleFieldTwoOptions.filter(e => e.taxonomy === taxonomy).length) {
       state.ruleFieldTwoOptions = state.ruleFieldTwoOptions.concat(terms);
     }
 
