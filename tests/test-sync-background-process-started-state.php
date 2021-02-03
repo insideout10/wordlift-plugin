@@ -48,7 +48,7 @@ class Sync_Background_Process_Started_State_Test extends Wordlift_Unit_Test_Case
 		$this->mock_sync_service =
 			$this->getMockBuilder( 'Wordlift\Dataset\Sync_Service' )
 			     ->disableOriginalConstructor()
-			     ->setMethods( array( 'sync_many' ) )
+			     ->setMethods( array( 'delete_all', 'sync_many' ) )
 			     ->getMock();
 
 		$this->mock_sync_object_adapter_factory =
