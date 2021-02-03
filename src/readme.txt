@@ -142,7 +142,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.28.0 (2021-__-__) =
+= 3.28.0 (2021-02-02) =
 * Enhancement [#1267](https://github.com/insideout10/wordlift-plugin/issues/1267): Add a JS filter in WLP to hide/show create post
 * Enhancement [#1250](https://github.com/insideout10/wordlift-plugin/issues/1250): Support srcset / higher quality images in navigator and faceted search
 * Enhancement [#1241](https://github.com/insideout10/wordlift-plugin/issues/1241): Wrap entities in Article markup

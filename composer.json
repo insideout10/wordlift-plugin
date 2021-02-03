@@ -3,7 +3,6 @@
     "phpunit/phpunit": "5.4.*",
     "phpunit/php-code-coverage": "4.0.*",
     "phpdocumentor/phpdocumentor": "2.*",
-    "codeclimate/php-test-reporter": "^0.4.4",
     "dealerdirect/phpcodesniffer-composer-installer": "*",
     "wp-coding-standards/wpcs": "*",
     "phpcompatibility/phpcompatibility-wp": "*"

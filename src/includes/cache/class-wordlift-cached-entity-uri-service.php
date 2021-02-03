@@ -118,7 +118,7 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 		// Get the actual result.
 		$post = parent::get_entity( $uri );
 
-		// Cache the result, if a post is not found we cache -1.
+		// Cache the result.
 		if ( null !== $post ) {
 			$this->set_cache( $uri, $post->ID );
 		}
@@ -139,7 +139,7 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 	 */
 	private function set_cache( $uri, $post_id ) {
 
-		// Cache the result, if a post is not found we cache -1.
+		// Cache the result.
 		$this->cache_service->set_cache( $uri, $post_id );
 
 	}

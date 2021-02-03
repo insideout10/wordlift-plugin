@@ -156,7 +156,7 @@ function _wl_navigator_get_data() {
 			'post'   => array(
 				'id'        => $referencing_post->ID,
 				'permalink' => get_permalink( $referencing_post->ID ),
-				'title'     => $referencing_post->post_title,
+				'title'     => html_entity_decode( $referencing_post->post_title ),
 				'thumbnail' => $thumbnail,
 				'srcset'    => Srcset_Util::get_srcset( $referencing_post->ID, Srcset_Util::NAVIGATOR_WIDGET )
 			),
@@ -186,7 +186,7 @@ function _wl_navigator_get_data() {
 		 * @since 3.27.8
 		 * Filler posts are fetched using this util.
 		 */
-		$filler_posts_util       = new Filler_Posts_Util( $current_post_id );
+		$filler_posts_util       = new Filler_Posts_Util( $current_post_id, $post_types );
 		$post_ids_to_be_excluded = array_merge( array( $current_post_id ), $referencing_post_ids );
 		$filler_posts            = $filler_posts_util->get_filler_response( $filler_count, $post_ids_to_be_excluded );
 		$results                 = array_merge( $results, $filler_posts );
