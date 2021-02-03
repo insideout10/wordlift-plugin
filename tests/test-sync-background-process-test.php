@@ -25,10 +25,11 @@ class Sync_Background_Process_Test extends Wordlift_Unit_Test_Case {
 	function setUp() {
 		parent::setUp();
 
-		$this->mock_sync_service = $this->getMockBuilder( 'Wordlift\Dataset\Sync_Service' )
-		                                ->disableOriginalConstructor()
-		                                ->setMethods( array() )
-		                                ->getMock();
+		$this->mock_sync_service =
+			$this->getMockBuilder( 'Wordlift\Dataset\Sync_Service' )
+			     ->disableOriginalConstructor()
+			     ->setMethods( array( 'delete_all' ) )
+			     ->getMock();
 
 		$this->mock_sync_object_adapter_factory =
 			$this->getMockBuilder( 'Wordlift\Dataset\Sync_Object_Adapter_Factory' )
@@ -50,6 +51,10 @@ class Sync_Background_Process_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	public function test_start() {
+
+		$this->mock_sync_service
+			->expects( $this->once() )
+			->method( 'delete_all' );
 
 		$this->sync_background_process->start();
 
