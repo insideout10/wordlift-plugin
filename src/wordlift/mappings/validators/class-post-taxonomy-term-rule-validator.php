@@ -59,9 +59,9 @@ class Post_Taxonomy_Term_Rule_Validator implements Rule_Validator {
 	 * {@inheritdoc}
 	 */
 	public function is_valid ( $identifier, $operator, $operand_1, $operand_2, $type ) {
-	    echo $type;
         $taxonomy  = $operand_1;
         $term_slug = $operand_2;
+
         if (get_post_type($identifier) !== 'post') {
             return false;
         }
