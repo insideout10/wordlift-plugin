@@ -44,3 +44,11 @@ require_once( 'class-wordlift-test.php' );
 if ( ! defined( 'WL_ENABLE_MAPPINGS' ) ) {
 	define( 'WL_ENABLE_MAPPINGS', true );
 }
+
+
+// Add a amp function to support tests
+if ( ! function_exists( 'is_amp_endpoint' ) ) {
+	function is_amp_endpoint() {
+		return isset( $_GET['amp'] );
+	}
+}

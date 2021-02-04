@@ -7,6 +7,8 @@
  * @subpackage Wordlift/public
  */
 
+use Wordlift\Widgets\Srcset_Util;
+
 /**
  * Define the {@link Wordlift_Navigator_Shortcode} class which provides the
  * `wl_navigator` implementation.
@@ -31,7 +33,6 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 	 * {@inheritdoc}
 	 */
 	public function render( $atts ) {
-
 		return Wordlift_AMP_Service::is_amp_endpoint() ? $this->amp_shortcode( $atts )
 			: $this->web_shortcode( $atts );
 	}
@@ -116,12 +117,12 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		$navigator_id = ! empty( $shortcode_atts['uniqid'] ) ? esc_attr( sanitize_text_field( $shortcode_atts['uniqid'] ) ) : uniqid( 'wl-navigator-widget-' );
 
 		$rest_url = $post ? admin_url( 'admin-ajax.php?' . build_query( array(
-				'action'  => 'wl_navigator',
-				'uniqid'  => $navigator_id,
-				'post_id' => $post->ID,
-				'limit'   => $limit,
-				'offset'  => $offset,
-				'sort'    => $sort,
+				'action'     => 'wl_navigator',
+				'uniqid'     => $navigator_id,
+				'post_id'    => $post->ID,
+				'limit'      => $limit,
+				'offset'     => $offset,
+				'sort'       => $sort,
 				'post_types' => $shortcode_atts['post_types']
 			) ) ) : false;
 
@@ -131,7 +132,7 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		}
 
 		wp_enqueue_script( 'wordlift-cloud' );
-		$template_url      = get_rest_url( null, '/wordlift/v1/navigator/template' );
+		$template_url = get_rest_url( null, '/wordlift/v1/navigator/template' );
 
 		return <<<HTML
 			<!-- Navigator {$navigator_id} -->
@@ -156,7 +157,6 @@ HTML;
 	 *
 	 */
 	private function amp_shortcode( $atts ) {
-
 		// attributes extraction and boolean filtering
 		$shortcode_atts = $this->make_shortcode_atts( $atts );
 
@@ -218,7 +218,8 @@ HTML;
 		                        width="16"
 		                        height="9"
 								layout="responsive"
-		                        src="{{post.thumbnail}}"></amp-img>
+		                        src="{{post.thumbnail}}"
+		                        srcset="{{post.srcset}}"></amp-img>
 							<div class="card-content">
 								<header class="title">{{post.title}}</header>
 							</div>

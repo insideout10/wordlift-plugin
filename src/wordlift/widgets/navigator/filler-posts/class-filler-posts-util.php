@@ -1,6 +1,8 @@
 <?php
 
 namespace Wordlift\Widgets\Navigator\Filler_Posts;
+use Wordlift\Widgets\Srcset_Util;
+
 /**
  * @since 3.27.8
  * @author Naveen Muthusamy <naveen@wordlift.io>
@@ -19,6 +21,11 @@ class Filler_Posts_Util {
 		if ( $post_type === 'post' ) {
 			$this->sources = array(
 				new Same_Category_Filler_Posts( $post_id ),
+				new Same_Post_Type_Filler_Posts( $post_id ),
+			);
+		} else if ( $post_type === 'product' ) {
+			$this->sources = array(
+				new Same_Post_Type_Same_Category_Posts( $post_id ),
 				new Same_Post_Type_Filler_Posts( $post_id ),
 			);
 		} else {
@@ -105,7 +112,8 @@ class Filler_Posts_Util {
 					'id'        => $post_obj->ID,
 					'permalink' => get_permalink( $post_obj->ID ),
 					'thumbnail' => ( $thumbnail ) ? $thumbnail : WL_DEFAULT_THUMBNAIL_PATH,
-					'title'     => get_the_title( $post_obj->ID )
+					'title'     => get_the_title( $post_obj->ID ),
+					'srcset'    => Srcset_Util::get_srcset( $post_obj->ID, Srcset_Util::NAVIGATOR_WIDGET )
 				),
 				'entity' => array(
 					'id' => 0
@@ -116,5 +124,41 @@ class Filler_Posts_Util {
 		return $filler_response;
 	}
 
+
+	/**
+	 * Called by wordlift navigator, converts all the posts to response format.
+	 *
+	 * @param $filler_count
+	 * @param $post_ids_to_be_excluded
+	 *
+	 * @return array
+	 */
+	public function get_product_navigator_response( $filler_count, $post_ids_to_be_excluded ) {
+		$filler_posts = $this->get_filler_posts( $filler_count, $post_ids_to_be_excluded );
+		// Add thumbnail and permalink to filler posts
+		$filler_response = array();
+		foreach ( $filler_posts as $post_obj ) {
+			$product           = wc_get_product( $post_obj->ID );
+			$filler_response[] = array(
+				'product' => array(
+					'id'              => $post_obj->ID,
+					'permalink'       => get_permalink( $post_obj->ID ),
+					'title'           => $post_obj->post_title,
+					'thumbnail'       => get_the_post_thumbnail_url( $post_obj->ID, 'medium' ),
+					'regular_price'   => $product->get_regular_price(),
+					'sale_price'      => $product->get_sale_price(),
+					'price'           => $product->get_price(),
+					'currency_symbol' => get_woocommerce_currency_symbol(),
+					'discount_pc'     => ( $product->get_sale_price() && ( $product->get_regular_price() > 0 ) ) ? round( 1 - ( $product->get_sale_price() / $product->get_regular_price() ), 2 ) * 100 : 0,
+					'average_rating'  => $product->get_average_rating(),
+					'rating_count'    => $product->get_rating_count(),
+					'rating_html'     => wc_get_rating_html( $product->get_average_rating(), $product->get_rating_count() )
+				),
+				'entity'  => array(),
+			);
+		}
+
+		return $filler_response;
+	}
 
 }

@@ -10,6 +10,7 @@
 
 use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Widgets\Navigator\Filler_Posts\Filler_Posts_Util;
+use Wordlift\Widgets\Srcset_Util;
 
 /**
  * Ajax call for the faceted search widget.
@@ -27,6 +28,9 @@ function wl_shortcode_faceted_search( $request ) {
 	// Create the TTL cache and try to get the results.
 	$cache         = new Ttl_Cache( "faceted-search", 8 * 60 * 60 ); // 8 hours.
 	$cache_results = $cache->get( $cache_key );
+
+	// So that the endpoint can be used remotely
+	header( 'Access-Control-Allow-Origin: *' );
 
 	if ( isset( $cache_results ) ) {
 		header( 'X-WordLift-Cache: HIT' );
@@ -162,6 +166,7 @@ function wl_shortcode_faceted_search_origin( $request ) {
 			$post_obj->thumbnail = ( $thumbnail ) ?
 				$thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
 			$post_obj->permalink = get_permalink( $post_obj->ID );
+			$post_obj->srcset    = Srcset_Util::get_srcset( $post_obj->ID, Srcset_Util::FACETED_SEARCH_WIDGET );
 
 			$result         = $post_obj;
 			$post_results[] = $result;
@@ -176,7 +181,7 @@ function wl_shortcode_faceted_search_origin( $request ) {
 		$post_ids_to_be_excluded = array_merge( array( $current_post_id ), $referencing_post_ids );
 		$filler_posts            = $filler_posts_util->get_filler_posts( $filler_count, $post_ids_to_be_excluded );
 
-		$post_results            = array_merge( $post_results, $filler_posts );
+		$post_results = array_merge( $post_results, $filler_posts );
 	}
 	$referencing_post_ids = array_map( function ( $post ) {
 		return $post->ID;
@@ -239,7 +244,14 @@ function wl_shortcode_faceted_search_origin( $request ) {
 		}
 	}
 
-	$post_results   = apply_filters( 'wl_faceted_data_posts', $post_results, $faceted_id );
+	$post_results = apply_filters( 'wl_faceted_data_posts', $post_results, $faceted_id );
+
+	// Add srcset attribute.
+	$post_results = array_map( function ( $post ) {
+		$post->srcset = Srcset_Util::get_srcset( $post->ID, Srcset_Util::FACETED_SEARCH_WIDGET );
+		return $post;
+	}, $post_results );
+
 	$entity_results = apply_filters( 'wl_faceted_data_entities', $entity_results, $faceted_id );
 
 	return array(

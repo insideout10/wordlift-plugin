@@ -44,6 +44,7 @@ use Wordlift\Images_Licenses\Tasks\Reload_Data_Page;
 use Wordlift\Images_Licenses\Tasks\Reload_Data_Task;
 use Wordlift\Images_Licenses\Tasks\Remove_All_Images_Page;
 use Wordlift\Images_Licenses\Tasks\Remove_All_Images_Task;
+use Wordlift\Jsonld\Jsonld_Article_Wrapper;
 use Wordlift\Post\Post_Adapter;
 use Wordlift\Tasks\Task_Ajax_Adapter;
 use Wordlift\Tasks\Task_Ajax_Adapters_Registry;
@@ -532,6 +533,10 @@ function run_wordlift() {
 		$add_license_caption_or_remove_task_page = new Add_License_Caption_Or_Remove_Page( new Task_Ajax_Adapters_Registry( $add_license_caption_or_remove_task_adapter ), $plugin->get_version() );
 
 		new Wordlift_Products_Navigator_Shortcode_REST();
+
+		if ( apply_filters( 'wl_feature__enable__article-wrapper', false ) ) {
+			new Jsonld_Article_Wrapper( Wordlift_Post_To_Jsonld_Converter::get_instance() );
+		}
 
 		// Register the Dataset module, requires `$api_service`.
 		require_once plugin_dir_path( __FILE__ ) . 'wordlift/dataset/index.php';
