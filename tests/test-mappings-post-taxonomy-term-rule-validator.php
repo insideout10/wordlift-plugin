@@ -39,7 +39,7 @@ class Post_Taxonomy_Term_Rule_Validator_Test extends Wordlift_Unit_Test_Case {
      */
     public function test_rest_route_for_fetching_post_taxonomy_terms() {
         $routes = $this->server->get_routes();
-        $this->assertArrayHasKey( $this->route, $routes );
+        $this->assertArrayHasKey( $this->mapping_route, $routes );
     }
 
     public function test_when_not_equal_to_operator_on_non_term_page_should_return_false() {
