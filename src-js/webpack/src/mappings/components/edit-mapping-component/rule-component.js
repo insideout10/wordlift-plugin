@@ -92,6 +92,7 @@ class RuleComponent extends React.Component {
               this.handleSelectFieldChange(e, "ruleFieldTwoValue");
             }}
             className="wl-field-two-select wl-form-select"
+            inputDataIsOptionGroup={this.props.ruleProps.ruleFieldOneValue === 'post_taxonomy' ? true : false}
           />
         </WlColumn>
         <AddRuleButton {...this.props} />

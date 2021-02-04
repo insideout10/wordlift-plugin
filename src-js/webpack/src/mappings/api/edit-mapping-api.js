@@ -48,4 +48,19 @@ function getTermsFromAPI(taxonomy) {
   }).then(response => response.json().then(data => data));
 }
 
-export default { getMappingItemByMappingId, saveMappingItem, getTermsFromAPI };
+
+function getTaxonomyTermsFromAPI(taxonomy) {
+  const postObject = {
+    taxonomy: taxonomy
+  };
+  return fetch(rest_url + "/get_taxonomy_terms", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "X-WP-Nonce": wl_edit_mapping_rest_nonce
+    },
+    body: JSON.stringify(postObject)
+  }).then(response => response.json().then(data => data));
+}
+
+  export default { getMappingItemByMappingId, saveMappingItem, getTermsFromAPI, getTaxonomyTermsFromAPI };

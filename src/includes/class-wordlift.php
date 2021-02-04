@@ -47,6 +47,7 @@ use Wordlift\Mappings\Validators\Rule_Groups_Validator;
 use Wordlift\Mappings\Validators\Rule_Validators_Registry;
 use Wordlift\Mappings\Validators\Taxonomy_Rule_Validator;
 use Wordlift\Mappings\Validators\Taxonomy_Term_Rule_Validator;
+use Wordlift\Mappings\Validators\Post_Taxonomy_Term_Rule_Validator;
 use Wordlift\Post_Excerpt\Post_Excerpt_Meta_Box_Adapter;
 use Wordlift\Post_Excerpt\Post_Excerpt_Rest_Controller;
 use Wordlift\Templates\Templates_Ajax_Endpoint;
@@ -1487,6 +1488,7 @@ class Wordlift {
 		new Post_Type_Rule_Validator();
 		// Taxonomy term rule validator for validating rules for term pages.
 		new Taxonomy_Term_Rule_Validator();
+        new Post_Taxonomy_Term_Rule_Validator();
 		$rule_validators_registry = new Rule_Validators_Registry( $default_rule_validator );
 		$rule_groups_validator    = new Rule_Groups_Validator( $rule_validators_registry );
 		$mappings_validator       = new Mappings_Validator( $mappings_dbo, $rule_groups_validator );
