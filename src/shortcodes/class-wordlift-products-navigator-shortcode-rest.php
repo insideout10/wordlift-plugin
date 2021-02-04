@@ -127,7 +127,7 @@ class Wordlift_Products_Navigator_Shortcode_REST extends Wordlift_Shortcode_REST
 			 * @since 3.28.0
 			 * Filler posts are fetched using this util.
 			 */
-			$filler_posts_util    = new Filler_Posts_Util( $post_id );
+			$filler_posts_util    = new Filler_Posts_Util( $post_id, 'product' );
 			$post_ids_to_be_excluded = array_merge( array( $post_id ), $referencing_post_ids );
 			$filler_posts            = $filler_posts_util->get_product_navigator_response( $filler_count, $post_ids_to_be_excluded );
 			$results                 = array_merge( $results, $filler_posts );

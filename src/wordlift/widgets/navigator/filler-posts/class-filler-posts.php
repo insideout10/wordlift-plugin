@@ -27,9 +27,10 @@ abstract class Filler_Posts {
 	 *
 	 * @param $post_id
 	 */
-	public function __construct( $post_id ) {
+	public function __construct( $post_id, $alternate_post_type = null ) {
 
 		$this->post_id = $post_id;
+		$this->alternate_post_type = $alternate_post_type;
 
 	}
 

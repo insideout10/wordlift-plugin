@@ -86,7 +86,7 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 		// Store them in cache.
 		if ( is_array( $this->uri_to_post ) && ! empty( $this->uri_to_post ) ) {
 			foreach ( $this->uri_to_post as $uri => $post ) {
-				$this->set_cache( $uri, $post );
+				$this->set_cache( $uri, get_post( $post ) );
 			}
 		}
 
@@ -135,7 +135,6 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 	 *
 	 */
 	private function set_cache( $uri, $post ) {
-
 		// Cache the result, if a post is not found we cache -1.
 		$this->cache_service->set_cache( $uri, ( null === $post ? - 1 : $post->ID ) );
 
