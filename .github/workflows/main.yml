@@ -65,17 +65,17 @@ jobs:
   #            -v $GITHUB_WORKSPACE:"/github/workspace" \
   #              ziodave/node-chromium:node10-2 run test:js
 
-  js_jest:
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: install node
-        uses: actions/setup-node@v1
-        with:
-          node-version: "10"
-      - name: test
-        run: npm run test:jest
+#  js_jest:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: checkout
+#        uses: actions/checkout@v2
+#      - name: install node
+#        uses: actions/setup-node@v1
+#        with:
+#          node-version: "10"
+#      - name: test
+#        run: npm run test:jest
   wordpress:
     name: ${{ matrix.image }}_${{ matrix.phpunit-xml }}
     runs-on: ubuntu-latest
