@@ -192,6 +192,10 @@ class Wordlift_Term_JsonLd_Adapter {
 		 */
 		$arr = apply_filters( 'wl_term_jsonld_array', $result, $id );
 
+		if ( get_term_meta( $id, '_wl_is_external', false ) && count( $result['jsonld'] ) > 0 ) {
+			$result['jsonld'][0] = $result['jsonld'][0] + $this->get_single_term_data( $id );
+		}
+
 		return $arr['jsonld'];
 	}
 
@@ -238,5 +242,18 @@ class Wordlift_Term_JsonLd_Adapter {
 
 		return $jsonld;
 	}
+
+
+	private function get_single_term_data( $term_id ) {
+		$term = get_term( $term_id );
+
+		return array(
+			'name'          => $term->name,
+			'description'   => $term->description,
+			'sameAs'        => get_term_meta( $term_id, 'entity_same_as' ),
+			'alternateName' => get_term_meta( $term_id, '_wl_alt_label' )
+		);
+	}
+
 
 }
