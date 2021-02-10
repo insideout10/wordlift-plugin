@@ -150,11 +150,11 @@ class Wordlift_Term_JsonLd_Adapter {
 		$jsonld = $this->get( $term_id );
 
 		// Bail out if the JSON-LD is empty.
-		if ( empty( $jsonld ) || empty( $jsonld['jsonld'] ) ) {
+		if ( empty( $jsonld ) ) {
 			return;
 		}
 
-		$jsonld_string = wp_json_encode( $jsonld['jsonld'] );
+		$jsonld_string = wp_json_encode( $jsonld );
 
 		echo "<script type=\"application/ld+json\" id=\"wl-jsonld-term\">$jsonld_string</script>";
 
