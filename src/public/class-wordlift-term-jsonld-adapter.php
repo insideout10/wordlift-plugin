@@ -184,6 +184,10 @@ class Wordlift_Term_JsonLd_Adapter {
 			'references' => array()
 		);
 
+		if ( get_term_meta( $id, '_wl_is_external', true ) == 1 ) {
+			$result['jsonld'][0] = count( $result['jsonld'] ) > 0 ? $result['jsonld'][0] + $this->get_single_term_data( $id ) : $this->get_single_term_data( $id );
+		}
+
 		/**
 		 * @since 3.26.3
 		 * Filter: wl_term_jsonld_array
@@ -191,10 +195,6 @@ class Wordlift_Term_JsonLd_Adapter {
 		 * @var $jsonld_array array An array containing jsonld for term and entities.
 		 */
 		$arr = apply_filters( 'wl_term_jsonld_array', $result, $id );
-
-		if ( get_term_meta( $id, '_wl_is_external', true ) === 1 && count( $result['jsonld'] ) > 0 ) {
-			$result['jsonld'][0] = $result['jsonld'][0] + $this->get_single_term_data( $id );
-		}
 
 		return $arr['jsonld'];
 	}
@@ -248,8 +248,10 @@ class Wordlift_Term_JsonLd_Adapter {
 		$term = get_term( $term_id );
 
 		return array(
+			'@id'           => get_term_link( $term_id ),
+			'@type'         => 'https://schema.org/' . get_term_meta( $term_id, 'entity_type', true ),
 			'name'          => $term->name,
-			'description'   => $term->description,
+			'description'   => !empty($term->description) ?: get_term_meta( $term_id, 'entity_description', true ),
 			'sameAs'        => get_term_meta( $term_id, 'entity_same_as' ),
 			'alternateName' => get_term_meta( $term_id, '_wl_alt_label' )
 		);
