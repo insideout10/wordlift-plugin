@@ -54,12 +54,24 @@ class WL_Metabox {
 
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
-		// Add hooks to print metaboxes and save submitted data.
-		add_action( 'add_meta_boxes', array( $this, 'add_main_metabox' ) );
-		add_action( 'wl_linked_data_save_post', array( $this, 'save_form_data', ) );
+		/**
+		 * Filter: wl_feature__enable__metabox.
+		 *
+		 * @param bool whether the metabox should be shown, defaults to true.
+		 *
+		 * @return bool
+		 * @since 3.28.1
+		 */
+		if ( apply_filters( 'wl_feature__enable__metabox', true ) ) {
 
-		// Enqueue js and css.
-		$this->enqueue_scripts_and_styles();
+			// Add hooks to print metaboxes and save submitted data.
+			add_action( 'add_meta_boxes', array( $this, 'add_main_metabox' ) );
+			add_action( 'wl_linked_data_save_post', array( $this, 'save_form_data', ) );
+
+			// Enqueue js and css.
+			$this->enqueue_scripts_and_styles();
+
+		}
 
 	}
 

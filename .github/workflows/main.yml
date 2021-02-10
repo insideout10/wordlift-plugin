@@ -20,9 +20,10 @@ jobs:
         with:
           access_token: ${{ github.TOKEN }}
   php5-3_compat:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     container:
-      image: composer:2.0
+      # Do not upgrade to 2.0.9+ unless you want to use PHP 8,
+      image: composer:2.0.8
     steps:
       - name: checkout
         uses: actions/checkout@v2

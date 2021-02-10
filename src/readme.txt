@@ -142,6 +142,12 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.28.1 (2021-02-10) =
+* Enhancement [#1226](https://github.com/insideout10/wordlift-plugin/issues/1226): Improve Navigator and Faceted Search tracking mechanism
+* Enhancement [#1273](https://github.com/insideout10/wordlift-plugin/issues/1273): SameAs should be disabled if there is no active subscription
+
+* Fix: Context card text is out of the preview-box, line breaking
+
 = 3.28.0 (2021-02-02) =
 * Enhancement [#1267](https://github.com/insideout10/wordlift-plugin/issues/1267): Add a JS filter in WLP to hide/show create post
 * Enhancement [#1250](https://github.com/insideout10/wordlift-plugin/issues/1250): Support srcset / higher quality images in navigator and faceted search
