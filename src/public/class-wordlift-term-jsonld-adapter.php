@@ -192,7 +192,7 @@ class Wordlift_Term_JsonLd_Adapter {
 		 */
 		$arr = apply_filters( 'wl_term_jsonld_array', $result, $id );
 
-		if ( get_term_meta( $id, '_wl_is_external', false ) && count( $result['jsonld'] ) > 0 ) {
+		if ( get_term_meta( $id, '_wl_is_external', true ) === 1 && count( $result['jsonld'] ) > 0 ) {
 			$result['jsonld'][0] = $result['jsonld'][0] + $this->get_single_term_data( $id );
 		}
 
