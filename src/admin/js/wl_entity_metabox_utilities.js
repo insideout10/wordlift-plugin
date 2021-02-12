@@ -7,7 +7,7 @@
 jQuery( document ).ready( function ( $ ) {
 
 	// Show Add button when already some links
-	$( '#wl-input-container' ).children( '.wl-input-wrapper' ).size() > 0 ? $( '.sameas-add-button' ).removeClass('hide') : null;
+	$( '#wl-input-container' ).children( '.wl-input-wrapper' ).size() > 0 ? $( '.wl-add-input--sameas-add-button' ).removeClass('hide') : null;
 
 	// Remove button
 	$( '.wl-remove-input' ).click( removeButton );
@@ -22,7 +22,7 @@ jQuery( document ).ready( function ( $ ) {
 			inputWrapper.remove();
 		} else {
 			inputWrapper.remove();
-			$( '.sameas-add-button' ).addClass('hide');
+			$( '.wl-add-input--sameas-add-button' ).addClass('hide');
 		}
 	}
 
@@ -47,7 +47,7 @@ jQuery( document ).ready( function ( $ ) {
 		                  );
 		if ( canAddInput ) {
 
-			$( '.sameas-add-button' ).removeClass( 'hide' )
+			$( '.wl-add-input--sameas-add-button' ).removeClass( 'hide' )
 
 			var isAutocomplete = (
 			latestInput.find( '.wl-autocomplete' ).size() > 0

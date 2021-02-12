@@ -135,7 +135,7 @@
     width: 100%;
     margin-right: 20px;
 }
-button.link-button {
+.wl-add-input--link-button {
     background: none;
     border: none;
     color: #0071a1;
@@ -143,10 +143,10 @@ button.link-button {
     padding: 0;
     margin-bottom: 0.5em;
 }
-button.sameas-add-button{
+.wl-add-input--sameas-add-button{
     float: right;
 }
-button.sameas-add-button.hide{
+.wl-add-input--sameas-add-button.hide{
     display: none;
 }
 
