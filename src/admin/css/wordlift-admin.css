@@ -122,3 +122,50 @@
 #wl-schemaorg-property.postbox, #wl_entity_typediv.postbox {
     border-left: 2px solid #007AFF;
 }
+
+/**
+* Styles related to SameAs Entity types
+ */
+
+.wl-input-wrapper {
+    display: flex;
+}
+
+.wl-input-wrapper input{
+    width: 100%;
+    margin-right: 20px;
+}
+.wl-add-input--link-button {
+    background: none;
+    border: none;
+    color: #0071a1;
+    font-weight: 700;
+    padding: 0;
+    margin-bottom: 0.5em;
+}
+.wl-add-input--sameas-add-button{
+    float: right;
+}
+.wl-add-input--sameas-add-button.hide{
+    display: none;
+}
+
+.wl-field {
+    border-bottom: 1px solid #f4f4f4;
+    padding-bottom: 10px;
+}
+.wl-field:last-child {
+    border-bottom: none;
+}
+.wl-field::after {
+    content: "";
+    clear: both;
+    display: table;
+    border: 0;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #fafafa;
+}
+
+#wl-input-container .wl-input-wrapper {
+    margin-bottom: 0.5em;
+}
