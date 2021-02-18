@@ -1421,7 +1421,7 @@ class Wordlift {
 		$this->related_entities_cloud_widget = new Wordlift_Related_Entities_Cloud_Widget();
 
 		/* WordPress Admin. */
-		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page( $this->configuration_service );
+		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page( $this->configuration_service, $api_service );
 		$this->status_page             = new Wordlift_Admin_Status_Page( $this->entity_service, $this->sparql_service );
 
 		// Create an instance of the install wizard.
@@ -1488,7 +1488,7 @@ class Wordlift {
 		new Post_Type_Rule_Validator();
 		// Taxonomy term rule validator for validating rules for term pages.
 		new Taxonomy_Term_Rule_Validator();
-        new Post_Taxonomy_Term_Rule_Validator();
+		new Post_Taxonomy_Term_Rule_Validator();
 		$rule_validators_registry = new Rule_Validators_Registry( $default_rule_validator );
 		$rule_groups_validator    = new Rule_Groups_Validator( $rule_validators_registry );
 		$mappings_validator       = new Mappings_Validator( $mappings_dbo, $rule_groups_validator );

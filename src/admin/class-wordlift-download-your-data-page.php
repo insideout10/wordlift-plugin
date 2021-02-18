@@ -29,17 +29,24 @@ class Wordlift_Admin_Download_Your_Data_Page {
 		'ttl',
 		'n3',
 	);
+	/**
+	 * @var Wordlift_Api_Service
+	 */
+	private $api_service;
 
 	/**
 	 * A {@link Wordlift_Configuration_Service} instance.
 	 *
+	 * @param \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
+	 * @param $api_service \Wordlift_Api_Service
+	 *
 	 * @since 3.9.8
 	 *
-	 * @param \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
 	 */
-	function __construct( $configuration_service ) {
+	function __construct( $configuration_service, $api_service ) {
 
 		$this->configuration_service = $configuration_service;
+		$this->api_service = $api_service;
 
 	}
 
@@ -105,8 +112,10 @@ class Wordlift_Admin_Download_Your_Data_Page {
 			wp_die( esc_html__( 'The format is not supported.', 'wordlift' ) );
 		}
 
+
 		// Make the request.
-		$response = wp_safe_remote_get( WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "datasets/key=$key/$filename" );
+		// @todo: add the format in header.
+		$response = $this->api_service->get('/dataset/export');
 
 		if (
 			is_wp_error( $response ) ||
