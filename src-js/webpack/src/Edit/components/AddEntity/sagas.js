@@ -55,6 +55,7 @@ function* watchForEditorSelectionChanges() {
 
   while (true) {
     const { selection } = yield take(channel);
+
     yield put(setValue(selection));
 
     if ("" === selection) yield put(close());

@@ -28,7 +28,7 @@ const webpackConfig = {
     bundle: "./src/Public/index.js",
     edit: "./src/Edit/index.js",
     term: "./src/Term/index.js",
-    "block-editor": "./src/block-editor/index.js",
+     "block-editor": "./src/block-editor/index.js",
     "tiny-mce": "./src/tiny-mce/index.js",
     "wordlift-cloud": "./src/cloud/index.js",
     mappings: "./src/mappings/index.js",
