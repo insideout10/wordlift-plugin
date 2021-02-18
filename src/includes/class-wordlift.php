@@ -15,7 +15,6 @@
 use Wordlift\Admin\Key_Validation_Notice;
 use Wordlift\Admin\Top_Entities;
 use Wordlift\Analysis\Response\Analysis_Response_Ops_Factory;
-use Wordlift\Api\Default_Api_Service;
 use Wordlift\Autocomplete\All_Autocomplete_Service;
 use Wordlift\Autocomplete\Linked_Data_Autocomplete_Service;
 use Wordlift\Autocomplete\Local_Autocomplete_Service;
