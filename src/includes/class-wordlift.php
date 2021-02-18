@@ -15,6 +15,7 @@
 use Wordlift\Admin\Key_Validation_Notice;
 use Wordlift\Admin\Top_Entities;
 use Wordlift\Analysis\Response\Analysis_Response_Ops_Factory;
+use Wordlift\Api\Default_Api_Service;
 use Wordlift\Autocomplete\All_Autocomplete_Service;
 use Wordlift\Autocomplete\Linked_Data_Autocomplete_Service;
 use Wordlift\Autocomplete\Local_Autocomplete_Service;
@@ -1421,7 +1422,7 @@ class Wordlift {
 		$this->related_entities_cloud_widget = new Wordlift_Related_Entities_Cloud_Widget();
 
 		/* WordPress Admin. */
-		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page( $this->configuration_service, $api_service );
+		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page( $this->configuration_service );
 		$this->status_page             = new Wordlift_Admin_Status_Page( $this->entity_service, $this->sparql_service );
 
 		// Create an instance of the install wizard.

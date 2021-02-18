@@ -10,6 +10,8 @@
  * @subpackage Wordlift/admin
  */
 
+use Wordlift\Api\Default_Api_Service;
+
 /**
  * The Wordlift_Admin_Download_Your_Data_Page class.
  *
@@ -29,25 +31,31 @@ class Wordlift_Admin_Download_Your_Data_Page {
 		'ttl',
 		'n3',
 	);
+
+
 	/**
-	 * @var Wordlift_Api_Service
+	 * The list of headers allowed by the endpoint.
+	 * @since 3.28.2
+	 * @var string[]
 	 */
-	private $api_service;
+	private $allowed_headers = array(
+		'json' => 'application/ld+json',
+		'rdf'  => 'application/rdf+xml',
+		'n3'   => 'text/n3',
+		'ttl'  => 'text/turtle'
+	);
 
 	/**
 	 * A {@link Wordlift_Configuration_Service} instance.
 	 *
 	 * @param \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
-	 * @param $api_service \Wordlift_Api_Service
 	 *
 	 * @since 3.9.8
 	 *
 	 */
-	function __construct( $configuration_service, $api_service ) {
+	function __construct( $configuration_service ) {
 
 		$this->configuration_service = $configuration_service;
-		$this->api_service = $api_service;
-
 	}
 
 	/**
@@ -88,6 +96,8 @@ class Wordlift_Admin_Download_Your_Data_Page {
 	 */
 	public function download_your_data() {
 
+		$default_api_service = Default_Api_Service::get_instance();
+
 		// Avoid PHP notices when buffer is empty.
 		if ( ob_get_contents() ) {
 			ob_end_clean();
@@ -113,9 +123,15 @@ class Wordlift_Admin_Download_Your_Data_Page {
 		}
 
 
-		// Make the request.
-		// @todo: add the format in header.
-		$response = $this->api_service->get('/dataset/export');
+		$accept_header_format = $this->allowed_headers[ $suffix ];
+
+		$headers = array(
+			'Accept' => $accept_header_format
+		);
+
+		$response = $default_api_service->get( '/dataset/export', $headers );
+
+		$response = $response->get_response();
 
 		if (
 			is_wp_error( $response ) ||
@@ -124,6 +140,7 @@ class Wordlift_Admin_Download_Your_Data_Page {
 			// Something is not working properly, so display error message.
 			wp_die( esc_html__( 'There was an error trying to connect to the server. Please try again later.', 'wordlift' ) );
 		}
+
 
 		// Get response body.
 		$body     = wp_remote_retrieve_body( $response );
