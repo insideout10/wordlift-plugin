@@ -156,7 +156,7 @@ function _wl_navigator_get_data() {
 			'post'   => array(
 				'id'        => $referencing_post->ID,
 				'permalink' => get_permalink( $referencing_post->ID ),
-				'title'     => html_entity_decode( $referencing_post->post_title ),
+				'title'     => html_entity_decode( $referencing_post->post_title, ENT_NOQUOTES, 'UTF-8' ),
 				'thumbnail' => $thumbnail,
 				'srcset'    => Srcset_Util::get_srcset( $referencing_post->ID, Srcset_Util::NAVIGATOR_WIDGET )
 			),

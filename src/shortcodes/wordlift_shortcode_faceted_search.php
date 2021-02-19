@@ -249,6 +249,8 @@ function wl_shortcode_faceted_search_origin( $request ) {
 	// Add srcset attribute.
 	$post_results = array_map( function ( $post ) {
 		$post->srcset = Srcset_Util::get_srcset( $post->ID, Srcset_Util::FACETED_SEARCH_WIDGET );
+		// Decode post_title with UTF-8
+		$post->post_title = html_entity_decode( $post->post_title, ENT_NOQUOTES, 'UTF-8' );
 		return $post;
 	}, $post_results );
 
