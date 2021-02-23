@@ -6,19 +6,23 @@
 
 jQuery( document ).ready( function ( $ ) {
 
+	// Show Add button when already some links
+	$( '#wl-input-container' ).children( '.wl-input-wrapper' ).size() > 0 ? $( '.wl-add-input--sameas-add-button' ).removeClass('hide') : null;
+
 	// Remove button
 	$( '.wl-remove-input' ).click( removeButton );
 
 	function removeButton( event ) {
-		var button = $( event.target );
-		var inputWrapper = button.parent( '.wl-input-wrapper' );
+		var a = $( event.target );
+		var inputWrapper = a.parent( '.wl-input-wrapper' );
 
 		// Leave at least one <input>
-		if ( inputWrapper.parent( '.wl-field' ).children( '.wl-input-wrapper' ).size() > 1 ) {
+		if ( inputWrapper.parent( '#wl-input-container' ).children( '.wl-input-wrapper' ).size() > 1 ) {
 			// Delete the <div> containing the <input> tags and the "Remove" button
 			inputWrapper.remove();
 		} else {
-			inputWrapper.find( 'input' ).val( '' );
+			inputWrapper.remove();
+			$( '.wl-add-input--sameas-add-button' ).addClass('hide');
 		}
 	}
 
@@ -32,6 +36,7 @@ jQuery( document ).ready( function ( $ ) {
 
 		// Take previous, delete values and copy it at the end
 		var alreadyPresentInputs = field.find( '.wl-input-wrapper' ).size();
+		console.log(alreadyPresentInputs);
 		var latestInput = field.find( '.wl-input-wrapper:not(.wl-input-wrapper-readonly)' ).last();
 
 		// Don't trasgress cardinality
@@ -42,6 +47,8 @@ jQuery( document ).ready( function ( $ ) {
 		                  );
 		if ( canAddInput ) {
 
+			$( '.wl-add-input--sameas-add-button' ).removeClass( 'hide' )
+
 			var isAutocomplete = (
 			latestInput.find( '.wl-autocomplete' ).size() > 0
 			);
@@ -51,7 +58,7 @@ jQuery( document ).ready( function ( $ ) {
 			// .clone(true) clones also the event callbacks, but messes up with the autocomplete. See below**
 
 			// Insert cloned element in page
-			$( this ).before( newInputDiv );
+			$( '#wl-input-container' ).append( newInputDiv );
 
 			// Impose default new values
 			newInputDiv.find( 'input' ).val( '' );

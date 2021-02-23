@@ -142,7 +142,74 @@ class Mappings_REST_Controller {
 				},
 			)
 		);
+
+        // Register rest endpoint to get the terms.
+        register_rest_route(
+            WL_REST_ROUTE_DEFAULT_NAMESPACE,
+            'mappings/get_taxonomy_terms',
+            array(
+                'methods'             => WP_REST_Server::CREATABLE,
+                'callback'            => 'Wordlift\Mappings\Mappings_REST_Controller::get_taxonomy_terms_for_the_posted_taxonomy',
+                'permission_callback' => function () {
+                    return current_user_can( 'manage_options' );
+                },
+            )
+        );
 	}
+
+    /**
+     * Get the taxonomy & terms
+     *
+     * @param WP_REST_Request $request {@link WP_REST_Request instance}.
+     *
+     * @return array The array of the taxonomies & terms.
+     */
+    public static function get_taxonomy_terms_for_the_posted_taxonomy( $request ) {
+        $taxonomy_terms = array();
+        $post_taxonomies = get_taxonomies( array(), 'objects' );
+
+        foreach ( $post_taxonomies as $post_taxonomy ) {
+            $taxonomy_config = array(
+                'taxonomy' => $post_taxonomy->name,
+                'hide_empty' => false
+            );
+
+            $total_terms = wp_count_terms($taxonomy_config);
+
+            $post_taxonomy_terms = get_terms( $taxonomy_config );
+
+            if ($total_terms) {
+                $group_taxonomy = array('parentValue' => 'post_taxonomy', 'group_name' => $post_taxonomy->label, 'group_options' => array());
+
+                foreach ($post_taxonomy_terms as $post_taxonomy_term) {
+                    array_push($group_taxonomy['group_options'],
+                        array(
+                            'label' => ' - ' . $post_taxonomy_term->name,
+                            'value' => $post_taxonomy_term->slug,
+                            'taxonomy' => 'post_taxonomy',
+                        )
+                    );
+
+                    $post_term_children = get_term_children($post_taxonomy_term->term_id, $post_taxonomy->name);
+
+                    foreach ($post_term_children as $post_term_child) {
+                        $child_term = get_term_by('id', $post_term_child, $post_taxonomy->name);
+
+                        array_push($group_taxonomy['group_options'],
+                            array(
+                                'label' => ' -- ' . $child_term->name,
+                                'value' => $child_term->slug,
+                                'taxonomy' => 'post_taxonomy',
+                            )
+                        );
+                    }
+                }
+                array_push($taxonomy_terms, $group_taxonomy);
+            }
+        }
+
+        return $taxonomy_terms;
+    }
 
 	/**
 	 * Get the terms for the posted taxonomy name.
