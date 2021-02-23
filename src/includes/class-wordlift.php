@@ -752,7 +752,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.27.8';
+		$this->version     = '3.28.1';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -1488,7 +1488,7 @@ class Wordlift {
 		new Post_Type_Rule_Validator();
 		// Taxonomy term rule validator for validating rules for term pages.
 		new Taxonomy_Term_Rule_Validator();
-        new Post_Taxonomy_Term_Rule_Validator();
+		new Post_Taxonomy_Term_Rule_Validator();
 		$rule_validators_registry = new Rule_Validators_Registry( $default_rule_validator );
 		$rule_groups_validator    = new Rule_Groups_Validator( $rule_validators_registry );
 		$mappings_validator       = new Mappings_Validator( $mappings_dbo, $rule_groups_validator );

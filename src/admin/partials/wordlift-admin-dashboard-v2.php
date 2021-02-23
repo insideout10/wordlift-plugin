@@ -347,7 +347,7 @@ $not_enriched_url = admin_url( 'edit.php?post_type=post&wl_enriched=no' ); ?>
     </div>
 </div>
 
-<div>
+<div style="display: none;">
     <header>
         <span class="dashicons dashicons-editor-help"></span>
         <h3><?php echo __( 'Graph data', 'wordlift' ); ?></h3>

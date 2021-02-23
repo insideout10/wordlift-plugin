@@ -33,7 +33,7 @@ class Sync_Page {
 		wp_enqueue_script(
 			'wl-dataset-sync-page',
 			plugin_dir_url( __FILE__ ) . 'assets/sync-page.js',
-			array('wp-api'),
+			array( 'wp-api' ),
 			\Wordlift::get_instance()->get_version() );
 
 		?>
@@ -47,6 +47,8 @@ class Sync_Page {
 
             <button id="wl-start-btn" type="button" class="button button-large button-primary"><?php
 				esc_html_e( 'Start', 'wordlift-framework' ); ?></button>
+            <button id="wl-stop-btn" type="button" class="button button-large button-primary hidden"><?php
+				esc_html_e( 'Stop', 'wordlift-framework' ); ?></button>
 
         </div>
 		<?php
