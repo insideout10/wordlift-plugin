@@ -95,7 +95,7 @@ class WL_Metabox_Field_sameas extends WL_Metabox_Field {
   		'<button class="wl-add-input wl-add-input--link">'.esc_html__( 'Click here to manually add URLs', 'wordlift' ).'</button>'
         .'<div style="display: none;"><div class="wl-input-wrapper">'
         ."<input type='text' id='$this->meta_name' name='wl_metaboxes[$this->meta_name][]' placeholder='$placeholder' />"
-        .'<button class="wl-remove-input--sameas"></button>'
+        .'<button class="wl-remove-input wl-remove-input--sameas"></button>'
         .'</div></div>'
         . '<fieldset id="wl-input-container">'.$this->get_stored_values_html( $count ).'</fieldset>'
         .parent::get_add_custom_button_html( $count, 'Add Another URL', 'hide' );
@@ -150,7 +150,7 @@ class WL_Metabox_Field_sameas extends WL_Metabox_Field {
                     value="<?php echo $value ?>"
             />
 
-            <button class="wl-remove-input--sameas"></button>
+            <button class="wl-remove-input wl-remove-input--sameas"></button>
         </div>
 		<?php
 
