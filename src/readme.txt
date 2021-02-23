@@ -148,6 +148,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement [#1187](https://github.com/insideout10/wordlift-plugin/issues/1187): Improve the speed of Sync_Service->next()
 * Enhancement: Added / updated schema types from schema.org
 
+* Fix [#1288](https://github.com/insideout10/wordlift-plugin/issues/1288): Cloud icons do not show in Firefox
 * Fix [#1278](https://github.com/insideout10/wordlift-plugin/issues/1278): Download Dataset links not working anymore
 * Fix [#1277](https://github.com/insideout10/wordlift-plugin/issues/1277): Triples count is zero
 * Fix [#1264](https://github.com/insideout10/wordlift-plugin/issues/1264): Add Entity, Selection is Lost when changing the label
