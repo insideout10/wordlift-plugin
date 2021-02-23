@@ -149,12 +149,13 @@ class Wordlift_Term_JsonLd_Adapter {
 
 		$jsonld = $this->get( $term_id );
 
+
 		// Bail out if the JSON-LD is empty.
-		if ( empty( $jsonld ) || empty( $jsonld['jsonld'] ) ) {
+		if ( empty( $jsonld )  ) {
 			return;
 		}
 
-		$jsonld_string = wp_json_encode( $jsonld['jsonld'] );
+		$jsonld_string = wp_json_encode( $jsonld );
 
 		echo "<script type=\"application/ld+json\" id=\"wl-jsonld-term\">$jsonld_string</script>";
 
@@ -183,7 +184,6 @@ class Wordlift_Term_JsonLd_Adapter {
 			'jsonld'     => array_merge( $jsonld_array, $entities_jsonld_array ),
 			'references' => array()
 		);
-
 		/**
 		 * @since 3.26.3
 		 * Filter: wl_term_jsonld_array
@@ -191,7 +191,6 @@ class Wordlift_Term_JsonLd_Adapter {
 		 * @var $jsonld_array array An array containing jsonld for term and entities.
 		 */
 		$arr = apply_filters( 'wl_term_jsonld_array', $result, $id );
-
 		return $arr['jsonld'];
 	}
 
