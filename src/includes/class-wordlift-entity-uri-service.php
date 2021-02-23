@@ -287,6 +287,11 @@ class Wordlift_Entity_Uri_Service {
 		}
 
 		$parsed_url = parse_url( $url );
+
+		if ( ! isset( $parsed_url['query'] ) ) {
+			return false;
+		}
+
 		parse_str( $parsed_url['query'], $parsed_query );
 
 		// Try to parse WooCommerce non-pretty product URL
