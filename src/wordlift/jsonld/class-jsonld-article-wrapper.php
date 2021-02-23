@@ -59,7 +59,7 @@ class Jsonld_Article_Wrapper {
 
 		// Convert the post as Article.
 		$article_jsonld        = $this->post_to_jsonld_converter->convert( $post_id );
-		$article_jsonld['@id'] = $post_jsonld['@id'] . '/wrapper';
+		$article_jsonld['@id'] = $post_jsonld['@id'] . '#article';
 		// Reset the type, since by default the type assigned via the Entity Type taxonomy is used.
 		$article_jsonld['@type'] = 'Article';
 		$article_jsonld['about'] = array( '@id' => $post_jsonld['@id'] );

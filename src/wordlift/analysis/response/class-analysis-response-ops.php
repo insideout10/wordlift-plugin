@@ -252,7 +252,7 @@ class Analysis_Response_Ops {
 		foreach ( $this->json->annotations as $annotation ) {
 			foreach ( $annotation->entityMatches as $entity_matches ) {
 
-				$entity_id         = url_to_postid( htmlspecialchars_decode( $entity_matches->entityId ) );
+				$entity_id         = $this->entity_uri_service->get_post_id_from_url( $entity_matches->entityId );
 				$serialized_entity = wl_serialize_entity( $entity_id );
 
 				if ( $serialized_entity ) {
