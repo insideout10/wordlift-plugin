@@ -13,8 +13,8 @@ jQuery( document ).ready( function ( $ ) {
 	$( '.wl-remove-input' ).click( removeButton );
 
 	function removeButton( event ) {
-		var a = $( event.target );
-		var inputWrapper = a.parent( '.wl-input-wrapper' );
+		const a = $( event.target );
+		const inputWrapper = a.parent( '.wl-input-wrapper' );
 
 		// Leave at least one <input>
 		if ( inputWrapper.parent( '#wl-input-container' ).children( '.wl-input-wrapper' ).size() > 1 ) {
