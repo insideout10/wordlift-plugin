@@ -7,14 +7,14 @@
 jQuery( document ).ready( function ( $ ) {
 
 	// Show Add button when already some links
-	$( '#wl-input-container' ).children( '.wl-input-wrapper' ).size() > 0 ? $( '.wl-add-input--sameas-add-button' ).removeClass('hide') : null;
+	$( '#wl-input-container' ).children( '.wl-input-wrapper' ).size() > 0 ? $( '.wl-add-input--sameas' ).removeClass('hide') : null;
 
 	// Remove button
-	$( '.wl-remove-input' ).click( removeButton );
+	$( '.wl-remove-input--sameas' ).click( removeButton );
 
 	function removeButton( event ) {
-		const a = $( event.target );
-		const inputWrapper = a.parent( '.wl-input-wrapper' );
+		const button = $( event.target );
+		const inputWrapper = button.parent( '.wl-input-wrapper' );
 
 		// Leave at least one <input>
 		if ( inputWrapper.parent( '#wl-input-container' ).children( '.wl-input-wrapper' ).size() > 1 ) {
@@ -22,12 +22,12 @@ jQuery( document ).ready( function ( $ ) {
 			inputWrapper.remove();
 		} else {
 			inputWrapper.remove();
-			$( '.wl-add-input--sameas-add-button' ).addClass('hide');
+			$( '.wl-add-input--sameas' ).addClass('hide');
 		}
 	}
 
 	// Add button
-	$( '.wl-add-input' ).click( addButton );
+	$( '.wl-add-input--link, .wl-add-input--sameas' ).click( addButton );
 
 	function addButton( event ) {
 		var button = $( event.target );
@@ -47,7 +47,7 @@ jQuery( document ).ready( function ( $ ) {
 		                  );
 		if ( canAddInput ) {
 
-			$( '.wl-add-input--sameas-add-button' ).removeClass( 'hide' )
+			$( '.wl-add-input--sameas' ).removeClass( 'hide' )
 
 			var isAutocomplete = (
 			latestInput.find( '.wl-autocomplete' ).size() > 0

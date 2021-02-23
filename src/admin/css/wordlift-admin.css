@@ -140,7 +140,7 @@
     align-self: center;
     flex-shrink: 0;
 }
-.wl-add-input--link-button {
+.wl-add-input--link {
     background: none;
     border: none;
     color: #0071a1;
@@ -148,10 +148,10 @@
     padding: 0;
     margin-bottom: 0.5em;
 }
-.wl-add-input--sameas-add-button{
+.wl-add-input--sameas{
     float: right;
 }
-.wl-add-input--sameas-add-button.hide{
+.wl-add-input--sameas.hide{
     display: none;
 }
 
@@ -175,7 +175,7 @@
     margin-bottom: 0.5em;
 }
 
-.wl-remove-input {
+.wl-remove-input--sameas {
     display: flex;
     width: 28px;
     height: 28px;
@@ -186,8 +186,9 @@
     text-decoration: none;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
-.wl-remove-input::before {
+.wl-remove-input--sameas::before {
     content: "";
     text-transform: none;
     line-height: 1em;
@@ -197,10 +198,10 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-.wl-remove-input:hover {
+.wl-remove-input--sameas:hover {
     background-color: tomato;
     border-color: tomato;
 }
-.wl-remove-input:hover::before {
+.wl-remove-input--sameas:hover::before {
     background: #ffffff;
 }
