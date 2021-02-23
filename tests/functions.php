@@ -406,6 +406,10 @@ function _wl_mock_http_request( $response, $request, $url ) {
 		return $response;
 	}
 
+	if ( preg_match( '@^http://example.org/wp-admin/admin-ajax.php\?action=wp_wl_dataset__sync@', $url ) ) {
+		return $response;
+	}
+
 	remove_filter( 'pre_http_request', '_wl_mock_http_request', PHP_INT_MAX );
 
 	echo "An unknown request to $url has been caught:\n";
