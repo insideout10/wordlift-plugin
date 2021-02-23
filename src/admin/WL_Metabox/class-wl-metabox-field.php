@@ -439,7 +439,7 @@ class WL_Metabox_Field {
 
 		// If cardinality allows it, print button to add new values.
 		if ( $count < $this->cardinality ) {
-			return '<button class="button wl-add-input wl-button wl-add-input--sameas-add-button '.$class.'" type="button">' . esc_html__( $label ) . '</button>';
+			return '<button class="button wl-add-input wl-button wl-add-input--sameas '.$class.'" type="button">' . esc_html__( $label ) . '</button>';
 		}
 
 		// Return an empty string.

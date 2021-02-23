@@ -135,7 +135,12 @@
     width: 100%;
     margin-right: 20px;
 }
-.wl-add-input--link-button {
+.wl-input-wrapper a{
+    width: 28px;
+    align-self: center;
+    flex-shrink: 0;
+}
+.wl-add-input--link {
     background: none;
     border: none;
     color: #0071a1;
@@ -143,10 +148,10 @@
     padding: 0;
     margin-bottom: 0.5em;
 }
-.wl-add-input--sameas-add-button{
+.wl-add-input--sameas{
     float: right;
 }
-.wl-add-input--sameas-add-button.hide{
+.wl-add-input--sameas.hide{
     display: none;
 }
 
@@ -168,4 +173,35 @@
 
 #wl-input-container .wl-input-wrapper {
     margin-bottom: 0.5em;
+}
+
+.wl-remove-input--sameas {
+    display: flex;
+    width: 28px;
+    height: 28px;
+    border: 1px solid #b5bcc2;
+    border-radius: 50%;
+    background-color: #fff;
+    position: relative;
+    text-decoration: none;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.wl-remove-input--sameas::before {
+    content: "";
+    text-transform: none;
+    line-height: 1em;
+    width: 0.7em;
+    height: 2px;
+    background: #555d66;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.wl-remove-input--sameas:hover {
+    background-color: tomato;
+    border-color: tomato;
+}
+.wl-remove-input--sameas:hover::before {
+    background: #ffffff;
 }
