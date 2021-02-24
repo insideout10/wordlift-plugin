@@ -106,7 +106,7 @@ class Jsonld_Homepage {
 
 			'@id'             => get_home_url( '', '#webpage' ),
 			'name'            => get_the_title( $page_id ),
-			'description'     => get_post_field( 'post_content', $page_id ),
+			'description'     => get_the_excerpt( $page_id ),
 			'isPartOf'        => array(
 				'@id' => $website_schema['@id']
 			),
