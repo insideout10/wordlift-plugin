@@ -11,6 +11,7 @@ use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Widgets\Navigator\Filler_Posts;
 use Wordlift\Widgets\Navigator\Filler_Posts\Filler_Posts_Util;
 use Wordlift\Widgets\Navigator\Navigator_Data;
+use Wordlift\Widgets\Srcset_Util;
 
 /**
  * The Navigator data function.
@@ -27,6 +28,9 @@ function wl_shortcode_navigator_data() {
 	// Create the TTL cache and try to get the results.
 	$cache         = new Ttl_Cache( "navigator", 8 * 60 * 60 ); // 8 hours.
 	$cache_results = $cache->get( $cache_key );
+
+	// So that the endpoint can be used remotely
+	header( 'Access-Control-Allow-Origin: *' );
 
 	if ( isset( $cache_results ) ) {
 		header( 'X-WordLift-Cache: HIT' );
@@ -152,8 +156,9 @@ function _wl_navigator_get_data() {
 			'post'   => array(
 				'id'        => $referencing_post->ID,
 				'permalink' => get_permalink( $referencing_post->ID ),
-				'title'     => $referencing_post->post_title,
+				'title'     => html_entity_decode( $referencing_post->post_title ),
 				'thumbnail' => $thumbnail,
+				'srcset'    => Srcset_Util::get_srcset( $referencing_post->ID, Srcset_Util::NAVIGATOR_WIDGET )
 			),
 			'entity' => array(
 				'id'        => $referencing_post->entity_id,
@@ -181,7 +186,7 @@ function _wl_navigator_get_data() {
 		 * @since 3.27.8
 		 * Filler posts are fetched using this util.
 		 */
-		$filler_posts_util    = new Filler_Posts_Util( $current_post_id );
+		$filler_posts_util       = new Filler_Posts_Util( $current_post_id, $post_types );
 		$post_ids_to_be_excluded = array_merge( array( $current_post_id ), $referencing_post_ids );
 		$filler_posts            = $filler_posts_util->get_filler_response( $filler_count, $post_ids_to_be_excluded );
 		$results                 = array_merge( $results, $filler_posts );
@@ -192,6 +197,8 @@ function _wl_navigator_get_data() {
 		$results[ $result_index ]['post']   = apply_filters( 'wl_navigator_data_post', $result['post'], intval( $result['post']['id'] ), $navigator_id );
 		$results[ $result_index ]['entity'] = apply_filters( 'wl_navigator_data_entity', $result['entity'], intval( $result['entity']['id'] ), $navigator_id );
 	}
+
+	$results = apply_filters( 'wl_navigator_results', $results, $navigator_id );
 
 	return $results;
 }
@@ -254,6 +261,8 @@ function _wl_network_navigator_get_data( $request ) {
 	if ( count( $results ) < $navigator_length ) {
 		$results = apply_filters( 'wl_network_navigator_data_placeholder', $results, $navigator_id, $navigator_offset, $navigator_length );
 	}
+
+	$results = apply_filters( 'wl_network_navigator_results', $results, $navigator_id );
 
 	return $results;
 

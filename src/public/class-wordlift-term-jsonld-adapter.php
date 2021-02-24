@@ -9,6 +9,8 @@
  * @subpackage Wordlift/public
  */
 
+use Wordlift\Jsonld\Jsonld_Context_Enum;
+
 /**
  * Define the {@link Wordlift_Term_JsonLd_Adapter} class.
  *
@@ -90,7 +92,7 @@ class Wordlift_Term_JsonLd_Adapter {
 		$position                       = 1;
 
 		foreach ( $posts as $post_id ) {
-			$result    = array(
+			$result = array(
 				'@type'    => 'ListItem',
 				'position' => $position,
 				/**
@@ -147,12 +149,13 @@ class Wordlift_Term_JsonLd_Adapter {
 
 		$jsonld = $this->get( $term_id );
 
+
 		// Bail out if the JSON-LD is empty.
-		if ( empty( $jsonld ) || empty( $jsonld['jsonld'] ) ) {
+		if ( empty( $jsonld )  ) {
 			return;
 		}
 
-		$jsonld_string = wp_json_encode( $jsonld['jsonld'] );
+		$jsonld_string = wp_json_encode( $jsonld );
 
 		echo "<script type=\"application/ld+json\" id=\"wl-jsonld-term\">$jsonld_string</script>";
 
@@ -174,13 +177,13 @@ class Wordlift_Term_JsonLd_Adapter {
 		if ( $carousel_data ) {
 			$jsonld_array[] = $carousel_data;
 		}
-		$entities_jsonld_array = $this->get_entity_jsonld( $id );
+		$context               = empty( $carousel_data ) ? Jsonld_Context_Enum::PAGE : Jsonld_Context_Enum::CAROUSEL;
+		$entities_jsonld_array = $this->get_entity_jsonld( $id, $context );
 
 		$result = array(
 			'jsonld'     => array_merge( $jsonld_array, $entities_jsonld_array ),
 			'references' => array()
 		);
-
 		/**
 		 * @since 3.26.3
 		 * Filter: wl_term_jsonld_array
@@ -188,7 +191,6 @@ class Wordlift_Term_JsonLd_Adapter {
 		 * @var $jsonld_array array An array containing jsonld for term and entities.
 		 */
 		$arr = apply_filters( 'wl_term_jsonld_array', $result, $id );
-
 		return $arr['jsonld'];
 	}
 
@@ -209,13 +211,14 @@ class Wordlift_Term_JsonLd_Adapter {
 	/**
 	 * Return jsonld for entities bound to terms.
 	 *
-	 * @param $id
+	 * @param int $term_id Term ID.
+	 * @param int $context A context for the JSON-LD generation, valid values in Jsonld_Context_Enum.
 	 *
 	 * @return array
 	 */
-	private function get_entity_jsonld( $id ) {
+	private function get_entity_jsonld( $term_id, $context ) {
 		// The `_wl_entity_id` are URIs.
-		$entity_ids         = get_term_meta( $id, '_wl_entity_id' );
+		$entity_ids         = get_term_meta( $term_id, '_wl_entity_id' );
 		$entity_uri_service = $this->entity_uri_service;
 
 		$local_entity_ids = array_filter( $entity_ids, function ( $uri ) use ( $entity_uri_service ) {
@@ -228,9 +231,9 @@ class Wordlift_Term_JsonLd_Adapter {
 		}
 
 		$post   = $this->entity_uri_service->get_entity( array_shift( $local_entity_ids ) );
-		$jsonld = $this->jsonld_service->get_jsonld( false, $post->ID );
+		$jsonld = $this->jsonld_service->get_jsonld( false, $post->ID, $context );
 		// Reset the `url` to the term page.
-		$jsonld[0]['url'] = get_term_link( $id );
+		$jsonld[0]['url'] = get_term_link( $term_id );
 
 		return $jsonld;
 	}

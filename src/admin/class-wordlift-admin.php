@@ -276,8 +276,52 @@ class Wordlift_Admin {
 		), $this->version, false );
 
 
-		$can_edit_wordlift_entities = current_user_can( 'edit_wordlift_entities' );
+		$params = $this->get_params();
 
+		// Finally output the params as `wlSettings` for JavaScript code.
+		wp_localize_script( $this->plugin_name, 'wlSettings', apply_filters( 'wl_admin_settings', $params ) );
+
+	}
+
+	/**
+	 * Require files needed for the Admin UI.
+	 *
+	 * @since 3.20.0
+	 */
+	private static function require_files() {
+
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard-latest-news.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-search-rankings-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-search-rankings-ajax-adapter.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard-v2.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-not-enriched-filter.php';
+
+	}
+
+	public static function is_gutenberg() {
+		if ( function_exists( 'is_gutenberg_page' ) &&
+		     is_gutenberg_page()
+		) {
+			// The Gutenberg plugin is on.
+			return true;
+		}
+		$current_screen = get_current_screen();
+		if ( method_exists( $current_screen, 'is_block_editor' ) &&
+		     $current_screen->is_block_editor()
+		) {
+			// Gutenberg page on 5+.
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Return the settings array by applying filters.
+	 * @return array
+	 */
+	public function get_params() {
+		$can_edit_wordlift_entities = current_user_can( 'edit_wordlift_entities' );
 		/*
 		 * People that can create entities will see the scope set in the wp-config.php file (by default `cloud`). People
 		 * that cannot edit create entities will always see the local entities.
@@ -298,7 +342,8 @@ class Wordlift_Admin {
 			// Whether the current user is allowed to create new entities.
 			//
 			// @see https://github.com/insideout10/wordlift-plugin/issues/561
-			'can_create_entities'        => $can_edit_wordlift_entities ? 'yes' : 'no',
+			// @see https://github.com/insideout10/wordlift-plugin/issues/1267
+			'can_create_entities'        => apply_filters( 'wl_features__enable__dataset', true ) ? ( $can_edit_wordlift_entities ? 'yes' : 'no' ) : 'no',
 			'l10n'                       => array(
 				'You already published an entity with the same name'                 => __( 'You already published an entity with the same name: ', 'wordlift' ),
 				'logo_selection_title'                                               => __( 'WordLift Choose Logo', 'wordlift' ),
@@ -370,42 +415,7 @@ class Wordlift_Admin {
 
 		}
 
-		// Finally output the params as `wlSettings` for JavaScript code.
-		wp_localize_script( $this->plugin_name, 'wlSettings', apply_filters( 'wl_admin_settings', $params ) );
-
-	}
-
-	/**
-	 * Require files needed for the Admin UI.
-	 *
-	 * @since 3.20.0
-	 */
-	private static function require_files() {
-
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard-latest-news.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-search-rankings-service.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-search-rankings-ajax-adapter.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard-v2.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-not-enriched-filter.php';
-
-	}
-
-	public static function is_gutenberg() {
-		if ( function_exists( 'is_gutenberg_page' ) &&
-		     is_gutenberg_page()
-		) {
-			// The Gutenberg plugin is on.
-			return true;
-		}
-		$current_screen = get_current_screen();
-		if ( method_exists( $current_screen, 'is_block_editor' ) &&
-		     $current_screen->is_block_editor()
-		) {
-			// Gutenberg page on 5+.
-			return true;
-		}
-
-		return false;
+		return $params;
 	}
 
 }

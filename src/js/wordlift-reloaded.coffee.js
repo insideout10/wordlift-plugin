@@ -488,7 +488,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         default:
           $log.debug('Unset a new entity');
           $scope.addNewEntityToAnalysis();
-          $scope.addMsg('The entity was created!', 'positive');
+          $scope.addMsg('Annotation is created', 'positive');
       }
       $scope.unsetCurrentEntity();
       return wp.wordlift.trigger('analysis.result', $scope.analysis);

@@ -166,7 +166,12 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 			'post_type'  => 'entity',
 			'post_title' => 'Edgar Allan Poe',
 		) );
-		$this->entity_type_service->set( $this->publisher_id, 'http://schema.org/Person' );
+		$this->entity_type_service->set( $this->publisher_id, 'http://schema.org/Organization' );
+
+		// Attach the thumbnail image to the post
+		$attachment_id = $this->factory->attachment->create_upload_object( __DIR__ . '/assets/cat-1200x1200.jpg', $this->publisher_id );
+		set_post_thumbnail( $this->publisher_id, $attachment_id );
+
 		$this->configuration_service->set_publisher_id( $this->publisher_id );
 
 	}

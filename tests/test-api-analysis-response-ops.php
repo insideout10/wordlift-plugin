@@ -125,7 +125,8 @@ class Analysis_Response_Ops_Test extends \Wordlift_Unit_Test_Case {
 		// Make local and get the JSON.
 		$json = json_decode( $ops->make_entities_local()->to_string(), true );
 
-		$this->assertArrayHasKey( $local_uri, $json['entities'], 'The entities array must contain the local URI.' );
+		$this->assertArrayHasKey( $local_uri, $json['entities'],
+			'The entities array must contain the local URI: ' . wp_json_encode( $json, 128 ) );
 		$this->assertContains( $remote_uri, $json['entities'][ $local_uri ]['sameAs'], 'The sameAs array must contain the remote URI.' );
 		$this->assertEquals( $local_uri, $json['annotations']['urn:enhancement-12345678']['entityMatches'][0]['entityId'], 'The entityId must match the local URI.' );
 

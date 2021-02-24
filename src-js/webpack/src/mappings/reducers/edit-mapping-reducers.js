@@ -97,10 +97,12 @@ export const RuleGroupReducer = createReducer(null, {
   [MAPPING_TERMS_CHANGED]: (state, action) => {
     const taxonomy = action.payload.taxonomy;
     const terms = action.payload.terms;
+
     // Check if there is no term items for the taxonomy, to prevent duplication.
-    if (0 === state.ruleFieldTwoOptions.filter(e => e.taxonomy === taxonomy).length) {
+    if (0 === state.ruleFieldTwoOptions.filter(e => e.taxonomy === taxonomy).length || 'post_taxonomy' === taxonomy) {
       state.ruleFieldTwoOptions = state.ruleFieldTwoOptions.concat(terms);
     }
+
   },
   [EDIT_MAPPING_TERMS_FETCHED_FOR_TAXONOMY]: (state, action) => {
     const taxonomy = action.payload.taxonomy;

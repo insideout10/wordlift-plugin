@@ -142,6 +142,37 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.29.0 (2021-02-__) =
+
+* Enhancement [#1208](https://github.com/insideout10/wordlift-plugin/issues/1208): SameAs UI upgrade
+* Enhancement [#1187](https://github.com/insideout10/wordlift-plugin/issues/1187): Improve the speed of Sync_Service->next()
+* Enhancement: Added / updated schema types from schema.org
+
+* Fix [#1288](https://github.com/insideout10/wordlift-plugin/issues/1288): Cloud icons do not show in Firefox
+* Fix [#1278](https://github.com/insideout10/wordlift-plugin/issues/1278): Download Dataset links not working anymore
+* Fix [#1277](https://github.com/insideout10/wordlift-plugin/issues/1277): Triples count is zero
+* Fix [#1264](https://github.com/insideout10/wordlift-plugin/issues/1264): Add Entity, Selection is Lost when changing the label
+* Fix: No JSON-ld on term pages
+
+= 3.28.1 (2021-02-10) =
+* Enhancement [#1226](https://github.com/insideout10/wordlift-plugin/issues/1226): Improve Navigator and Faceted Search tracking mechanism
+* Enhancement [#1273](https://github.com/insideout10/wordlift-plugin/issues/1273): SameAs should be disabled if there is no active subscription
+
+* Fix: Context card text is out of the preview-box, line breaking
+
+= 3.28.0 (2021-02-02) =
+* Enhancement [#1267](https://github.com/insideout10/wordlift-plugin/issues/1267): Add a JS filter in WLP to hide/show create post
+* Enhancement [#1250](https://github.com/insideout10/wordlift-plugin/issues/1250): Support srcset / higher quality images in navigator and faceted search
+* Enhancement [#1241](https://github.com/insideout10/wordlift-plugin/issues/1241): Wrap entities in Article markup
+* Enhancement [#1138](https://github.com/insideout10/wordlift-plugin/issues/1138): Image sizes for Faceted, Navigator - dont scale images at the moment
+* Enhancement [#1017](https://github.com/insideout10/wordlift-plugin/issues/1017): sameAs validation and bulk fix task on plugin install / upgrade
+
+* Fix [#1276](https://github.com/insideout10/wordlift-plugin/issues/1276): Create button missing when manually creating entity in classic editor
+* Fix [#1274](https://github.com/insideout10/wordlift-plugin/issues/1274): Entity URI and sameAs query slow on large properties
+* Fix [#1269](https://github.com/insideout10/wordlift-plugin/issues/1269): Key marked as invalid on multisite subsites
+* Fix [#1266](https://github.com/insideout10/wordlift-plugin/issues/1266): Product navigator displays only one product when one is marked up on the page
+* Fix [#1220](https://github.com/insideout10/wordlift-plugin/issues/1220): When matching entities manually success message is always “Entity created”
+
 = 3.27.8 (2021-01-18) =
 
 * Enhancement [1248](https://github.com/insideout10/wordlift-plugin/issues/1248): Add a error message in Dashboard when key isn't valid

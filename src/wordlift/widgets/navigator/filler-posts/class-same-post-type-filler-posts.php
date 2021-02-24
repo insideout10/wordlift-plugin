@@ -7,12 +7,10 @@ namespace Wordlift\Widgets\Navigator\Filler_Posts;
  */
 class Same_Post_Type_Filler_Posts extends Filler_Posts {
 
-	public function __construct( $post_id ) {
-		parent::__construct( $post_id );
-	}
-
 	function get_posts( $filler_count, $post_ids_to_be_excluded ) {
-		$post_type = get_post_type( $this->post_id );
+
+		$post_type = $this->alternate_post_type ?: get_post_type( $this->post_id );
+
 		if ( $post_type === 'entity' ) {
 			$post_type = 'post';
 		}

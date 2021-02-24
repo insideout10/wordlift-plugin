@@ -16,6 +16,11 @@
 class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld_Converter {
 
 	/**
+	 * @var Wordlift_Post_To_Jsonld_Converter
+	 */
+	private static $instance;
+
+	/**
 	 * A {@link Wordlift_Configuration_Service} instance.
 	 *
 	 * @since  3.10.0
@@ -52,6 +57,14 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 
 		// Set a reference to the logger.
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Post_To_Jsonld_Converter' );
+
+		self::$instance = $this;
+
+	}
+
+	public static function get_instance() {
+
+		return self::$instance;
 	}
 
 	/**
@@ -129,7 +142,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		 *
 		 * @since 3.27.2
 		 */
-		if ( ! empty( $jsonld['@type'] ) && 'Article' === $jsonld['@type'] ) {
+		if ( ! empty( $jsonld['@type'] ) && 'WebPage' !== $jsonld['@type'] ) {
 			$post_adapter    = new Wordlift_Post_Adapter( $post_id );
 			$keywords        = $post_adapter->keywords();
 			$article_section = $post_adapter->article_section();
@@ -252,13 +265,17 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		// If there's no entity bound return a simple author structure.
 		if ( empty( $entity_id ) || 'publish' !== get_post_status( $entity_id ) ) {
 
-			$author     = get_the_author_meta( 'display_name', $author_id );
-			$author_uri = $this->user_service->get_uri( $author_id );
+			$author            = get_the_author_meta( 'display_name', $author_id );
+			$author_first_name = get_the_author_meta( 'first_name', $author_id );
+			$author_last_name  = get_the_author_meta( 'last_name', $author_id );
+			$author_uri        = $this->user_service->get_uri( $author_id );
 
 			return array(
-				'@type' => 'Person',
-				'@id'   => $author_uri,
-				'name'  => $author,
+				'@type'      => 'Person',
+				'@id'        => $author_uri,
+				'name'       => $author,
+				'givenName'  => $author_first_name,
+				'familyName' => $author_last_name
 			);
 		}
 
