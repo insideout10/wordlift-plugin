@@ -1,6 +1,6 @@
 <?php
 /**
- * @since 3.27.9
+ * @since 3.30.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
@@ -123,7 +123,7 @@ class Jsonld_Static_Home_Page_Test extends Wordlift_Unit_Test_Case {
 		$this->assertArrayHasKey( 'isPartOf', $jsonld );
 		$this->assertTrue( is_array( $jsonld['isPartOf'] ) );
 		$this->assertArrayHasKey( '@id', $jsonld['isPartOf'], '@id should be present for entity' );
-		$this->assertEquals( get_home_url() . '#website', $jsonld['isPartOf']['@id'] );
+		$this->assertEquals( get_home_url() . '/#website', $jsonld['isPartOf']['@id'] );
 		$this->assertTrue( array_key_exists( 'mainEntity', $jsonld ), 'Should have mainEntity property in the  jsonld' );
 		$this->assertTrue( is_array( $jsonld['mainEntity'] ) );
 
