@@ -47,23 +47,35 @@ class Wordlift_Website_Jsonld_Converter extends Wordlift_Post_To_Jsonld_Converte
 		/**
 		 * Call the `wl_website_jsonld` filter.
 		 *
-		 * @api
-		 *
-		 * @since 3.14.0
-		 *
 		 * @param array $jsonld The JSON-LD structure.
 		 *
 		 * Added $post_id parameter since 3.27.8
+		 *
+		 * @since 3.14.0
+		 *
+		 * @api
+		 *
 		 */
-		return apply_filters( 'wl_website_jsonld', $jsonld, $post_id );
+		$website_jsonld = apply_filters( 'wl_website_jsonld', $jsonld, $post_id );
+
+		/**
+		 * Filter : `wl_website_jsonld_array`
+		 *
+		 * @since 3.30.0
+		 *
+		 * @param array $website_jsonld An Jsonld array.
+		 */
+		return apply_filters( 'wl_website_jsonld_array', array( $website_jsonld ), $post_id );
+
 	}
 
 	/**
 	 * Add SearchAction part to the schema
 	 *
+	 * @param array $params The parameters array.
+	 *
 	 * @since 3.14.0
 	 *
-	 * @param array $params The parameters array.
 	 */
 	private function set_search_action( &$params ) {
 		/**
