@@ -66,9 +66,9 @@ class Jsonld_Static_Home_Page_Test extends Wordlift_Unit_Test_Case {
 		);
 		$wp_query = new WP_Query( $args );
 		$jsonld   = $this->jsonld_service->get( Object_Type_Enum::HOMEPAGE, $home_page );
-		$this->assertCount( 3, $jsonld, 'Referenced entities should be expanded in the result' );
+		$this->assertCount( 4, $jsonld, 'Referenced entities and webpage markup should be expanded in the result' );
 
-		$jsonld = $jsonld[0];
+		$jsonld = $jsonld[1];
 		$this->assertTrue( array_key_exists( 'mentions', $jsonld ), 'Should have mentions property in the  jsonld' );
 		$this->assertCount( 2, $jsonld['mentions'], 'Should have two referenced entities in the result' );
 		$mentions = $jsonld['mentions'];
@@ -94,9 +94,9 @@ class Jsonld_Static_Home_Page_Test extends Wordlift_Unit_Test_Case {
 		);
 		$wp_query = new WP_Query( $args );
 		$jsonld   = $this->jsonld_service->get( Object_Type_Enum::HOMEPAGE, $home_page );
-		$this->assertCount( 3, $jsonld, 'Referenced entities should be expanded in the result' );
+		$this->assertCount( 4, $jsonld, 'Referenced entities and webpage markup should be expanded in the result' );
 
-		$jsonld = $jsonld[0];
+		$jsonld = $jsonld[1];
 		$this->assertEquals( $jsonld['@type'], 'WebPage' );
 		$this->assertTrue( array_key_exists( 'mentions', $jsonld ), 'Should have mentions property in the  jsonld' );
 		$this->assertCount( 2, $jsonld['mentions'], 'Should have two referenced entities in the result' );
@@ -111,25 +111,6 @@ class Jsonld_Static_Home_Page_Test extends Wordlift_Unit_Test_Case {
 		$this->create_home_page_entity( $home_page, $wp_query );
 		$jsonld = $this->jsonld_service->get( Object_Type_Enum::HOMEPAGE, $home_page );
 		$this->assertFalse( array_key_exists( 'mentions', $jsonld ), 'Should have mentions property in the  jsonld' );
-	}
-
-
-	public function test_when_the_homepage_is_static_and_singular_should_have_mainEntityOfPage_property_if_post_is_entity() {
-		$this->create_home_page_entity( $home_page, $wp_query );
-		$jsonld = $this->jsonld_service->get( Object_Type_Enum::HOMEPAGE, $home_page );
-
-		$this->assertEquals( 'WebPage', $jsonld['@type'], 'WebPage should be the homepage type' );
-
-		$this->assertArrayHasKey( 'isPartOf', $jsonld );
-		$this->assertTrue( is_array( $jsonld['isPartOf'] ) );
-		$this->assertArrayHasKey( '@id', $jsonld['isPartOf'], '@id should be present for entity' );
-		$this->assertEquals( get_home_url() . '/#website', $jsonld['isPartOf']['@id'] );
-		$this->assertTrue( array_key_exists( 'mainEntity', $jsonld ), 'Should have mainEntity property in the  jsonld' );
-		$this->assertTrue( is_array( $jsonld['mainEntity'] ) );
-
-
-		$this->assertArrayHasKey( '@id', $jsonld['mainEntity'], '@id should be present for entity' );
-		$this->assertEquals( Wordlift_Entity_Service::get_instance()->get_uri( $home_page ), $jsonld['mainEntity']['@id'] );
 	}
 
 	/**
