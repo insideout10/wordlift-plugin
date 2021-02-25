@@ -106,33 +106,46 @@ class Jsonld_Static_Home_Page_Test extends Wordlift_Unit_Test_Case {
 			'Mentions not in correct format' );
 	}
 
-
-	public function test_when_the_homepage_is_static_and_singular_should_not_have_mentions_property_if_post_is_entity() {
-		$this->create_home_page_entity( $home_page, $wp_query );
-		$jsonld = $this->jsonld_service->get( Object_Type_Enum::HOMEPAGE, $home_page );
-		$this->assertFalse( array_key_exists( 'mentions', $jsonld ), 'Should have mentions property in the  jsonld' );
-	}
-
-	/**
-	 * @param $home_page
-	 * @param $wp_query
-	 */
-	private function create_home_page_entity( &$home_page, &$wp_query ) {
-		$home_page       = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
-		$entity_1        = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
-		$entity_2        = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
-		$GLOBALS['post'] = get_post( $home_page );
-		// Link the home page with entities.
-		wl_core_add_relation_instance( $home_page, WL_WHAT_RELATION, $entity_1 );
-		wl_core_add_relation_instance( $home_page, WL_WHAT_RELATION, $entity_2 );
-
+	public function test_when_mentions_not_present_dont_alter_jsonld() {
+		$home_page       = $this->factory()->post->create();
 		// Emulate the collections page query.
 		global $wp_query;
 		$args     = array(
 			'p' => $home_page
 		);
 		$wp_query = new WP_Query( $args );
+		$jsonld   = $this->jsonld_service->get( Object_Type_Enum::HOMEPAGE, $home_page );
+		$this->assertCount( 1, $jsonld, 'Referenced entities and webpage markup should not be expanded in the result
+		 since mentions not present' );
+
 	}
 
+//	public function test_when_the_homepage_is_static_and_singular_should_not_have_mentions_property_if_post_is_entity() {
+//		$this->create_home_page_entity( $home_page, $wp_query );
+//		$jsonld = $this->jsonld_service->get( Object_Type_Enum::HOMEPAGE, $home_page );
+//		$this->assertFalse( array_key_exists( 'mentions', $jsonld ), 'Should have mentions property in the  jsonld' );
+//	}
+//
+//	/**
+//	 * @param $home_page
+//	 * @param $wp_query
+//	 */
+//	private function create_home_page_entity( &$home_page, &$wp_query ) {
+//		$home_page       = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+//		$entity_1        = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+//		$entity_2        = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+//		$GLOBALS['post'] = get_post( $home_page );
+//		// Link the home page with entities.
+//		wl_core_add_relation_instance( $home_page, WL_WHAT_RELATION, $entity_1 );
+//		wl_core_add_relation_instance( $home_page, WL_WHAT_RELATION, $entity_2 );
+//
+//		// Emulate the collections page query.
+//		global $wp_query;
+//		$args     = array(
+//			'p' => $home_page
+//		);
+//		$wp_query = new WP_Query( $args );
+//	}
+//
 
 }

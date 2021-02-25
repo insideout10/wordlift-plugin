@@ -58,34 +58,20 @@ class Jsonld_Homepage {
 
 
 	public function add_webpage_and_mentions( $jsonld_array, $post_id ) {
-
-		$website_jsonld           = $jsonld_array[0];
-		$mentions                 = array();
-		$referenced_entities_data = array();
-
-//		if ( get_post_type( $post_id ) === 'entity' ) {
-//			$jsonld['@type'] = 'WebPage';
-//
-//			$jsonld['mainEntity'] = array(
-//				'@id' => \Wordlift_Entity_Service::get_instance()->get_uri( $post_id )
-//		);
-//
-//			return $jsonld;
-//		}
-
-
-		if ( is_singular() ) {
-			$entity_ids               = $this->relation_service->get_objects( $post_id, 'ids', null, 'publish' );
-			$mentions                 = $this->entity_ids_to_jsonld_references( $entity_ids );
-			$referenced_entities_data = $this->entity_ids_to_jsonld( $entity_ids );
+		$website_jsonld = $jsonld_array[0];
+		if ( ! is_singular() ) {
+			return $jsonld_array;
 		}
-
-
-		$webpage_schema = $this->get_webpage_schema( $website_jsonld, $post_id, $mentions );
+		$entity_ids               = $this->relation_service->get_objects( $post_id, 'ids', null, 'publish' );
+		$mentions                 = $this->entity_ids_to_jsonld_references( $entity_ids );
+		$referenced_entities_data = $this->entity_ids_to_jsonld( $entity_ids );
+		if ( is_array( $mentions ) && $mentions ) {
+			$jsonld_array[] = $this->get_webpage_schema( $website_jsonld, $post_id, $mentions );
+		}
 
 		if ( $referenced_entities_data ) {
 			// Merge the homepage jsonld with annotated entities data.
-			$jsonld_array = array_merge( $jsonld_array, array_merge( array( $webpage_schema ), $referenced_entities_data ) );
+			$jsonld_array = array_merge( $jsonld_array, $referenced_entities_data );
 		}
 
 		return $jsonld_array;
