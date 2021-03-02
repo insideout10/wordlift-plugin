@@ -1745,10 +1745,10 @@ class Wordlift {
 			 * @return bool
 			 * @since 3.27.6
 			 */
-			if ( apply_filters( 'wl_feature__enable__screens', true ) ) {
-				$admin_search_rankings_page = new Wordlift_Admin_Search_Rankings_Page();
-				$this->loader->add_action( 'wl_admin_menu', $admin_search_rankings_page, 'admin_menu' );
-			}
+//			if ( apply_filters( 'wl_feature__enable__screens', true ) ) {
+//				$admin_search_rankings_page = new Wordlift_Admin_Search_Rankings_Page();
+//				$this->loader->add_action( 'wl_admin_menu', $admin_search_rankings_page, 'admin_menu' );
+//			}
 		}
 
 		// Hook key update.
