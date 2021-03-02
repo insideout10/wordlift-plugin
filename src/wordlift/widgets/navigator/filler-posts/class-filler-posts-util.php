@@ -89,7 +89,7 @@ class Filler_Posts_Util {
 		return array_map( function ( $post ) {
 			$post->thumbnail  = get_the_post_thumbnail_url( $post->ID, 'medium' );
 			$post->permalink  = get_permalink( $post->ID );
-			$post->post_title = html_entity_decode( $post->post_title );
+			$post->post_title = html_entity_decode( $post->post_title, ENT_QUOTES, 'UTF-8' );
 
 			return $post;
 		}, $posts );
@@ -114,7 +114,7 @@ class Filler_Posts_Util {
 					'id'        => $post_obj->ID,
 					'permalink' => get_permalink( $post_obj->ID ),
 					'thumbnail' => ( $thumbnail ) ? $thumbnail : WL_DEFAULT_THUMBNAIL_PATH,
-					'title'     => get_the_title( $post_obj->ID ),
+					'title'     => $post_obj->post_title,
 					'srcset'    => Srcset_Util::get_srcset( $post_obj->ID, Srcset_Util::NAVIGATOR_WIDGET )
 				),
 				'entity' => array(
