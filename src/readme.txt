@@ -142,6 +142,19 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.29.0 (2021-02-__) =
+
+* Enhancement [#1208](https://github.com/insideout10/wordlift-plugin/issues/1208): SameAs UI upgrade
+* Enhancement [#1187](https://github.com/insideout10/wordlift-plugin/issues/1187): Improve the speed of Sync_Service->next()
+* Enhancement: Added / updated schema types from schema.org
+
+* Fix [#1299](https://github.com/insideout10/wordlift-plugin/issues/1299): JSON-LD cache not cleared
+* Fix [#1288](https://github.com/insideout10/wordlift-plugin/issues/1288): Cloud icons do not show in Firefox
+* Fix [#1278](https://github.com/insideout10/wordlift-plugin/issues/1278): Download Dataset links not working anymore
+* Fix [#1277](https://github.com/insideout10/wordlift-plugin/issues/1277): Triples count is zero
+* Fix [#1264](https://github.com/insideout10/wordlift-plugin/issues/1264): Add Entity, Selection is Lost when changing the label
+* Fix: No JSON-ld on term pages
+
 = 3.28.1 (2021-02-10) =
 * Enhancement [#1226](https://github.com/insideout10/wordlift-plugin/issues/1226): Improve Navigator and Faceted Search tracking mechanism
 * Enhancement [#1273](https://github.com/insideout10/wordlift-plugin/issues/1273): SameAs should be disabled if there is no active subscription

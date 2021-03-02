@@ -168,7 +168,9 @@ class EntityTile extends React.Component {
       ? applyFilters("wl_network_icon_url", defaultNetworkIconURL)
       : defaultNetworkIconURL;
 
-    this.iconURL = this.props.entity.local
+    let isLocalEntity = this.props.entity.local || this.props.entity.id.startsWith(window.location.origin);
+
+    this.iconURL = isLocalEntity
       ? defaultLocalIconURL
       : this.props.entity.id.match(/https?:\/\/(?:\w+\.)?(dbpedia|wikidata)\.org/)
         ? this.cloudIconURL
@@ -191,7 +193,7 @@ class EntityTile extends React.Component {
             {this.props.entity.label}
             <MainType entity={this.props.entity}>{this.props.entity.mainType}</MainType>
           </Label>
-          <IconImg src={this.iconURL} />
+          {this.iconURL && <IconImg src={this.iconURL} />}
         </Main>
         <Drawer open={this.state.open}>
           <Switch onClick={this.onSwitchClick} selected={this.props.entity.link}>
