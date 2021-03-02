@@ -13,6 +13,7 @@ jQuery( document ).ready( function ( $ ) {
 	$( '.wl-remove-input' ).click( removeButton );
 
 	function removeButton( event ) {
+		event.preventDefault();
 		var button = $( event.target );
 		var inputWrapper = button.parent( '.wl-input-wrapper' );
 
@@ -34,6 +35,7 @@ jQuery( document ).ready( function ( $ ) {
 	$( '.wl-add-input' ).click( addButton );
 
 	function addButton( event ) {
+		event.preventDefault();
 		var button = $( event.target );
 		var field = button.parent( '.wl-field' );
 		var cardinality = field.data( 'cardinality' );
