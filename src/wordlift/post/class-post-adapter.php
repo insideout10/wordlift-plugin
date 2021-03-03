@@ -55,8 +55,8 @@ class Post_Adapter {
 
 		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
 
-		$this->entity_service = \Wordlift_Entity_Service::get_instance();
-		$this->entity_store   = Entity_Store::get_instance();
+		$this->entity_service     = \Wordlift_Entity_Service::get_instance();
+		$this->entity_store       = Entity_Store::get_instance();
 		$this->entity_uri_service = \Wordlift_Entity_Uri_Service::get_instance();
 		add_action( 'init', array( $this, 'init' ) );
 		add_filter( 'wp_insert_post_data', array( $this, 'wp_insert_post_data' ), 10, 2 );
@@ -111,7 +111,6 @@ class Post_Adapter {
 	 */
 	public function wp_insert_post_data( $data, $postarr ) {
 
-		//
 		$post_status = $data['post_status'];
 		if ( 'auto-draft' === $post_status || 'inherit' === $post_status ) {
 			return $data;
@@ -120,16 +119,32 @@ class Post_Adapter {
 		$this->log->trace( "The following data has been received by `wp_insert_post_data`:\n"
 		                   . var_export( $data, true ) );
 
+		$not_existing_local_entities = array();
+
 		try {
 			$entities = $this->parse_content( wp_unslash( $data['post_content'] ) );
-			foreach ( $entities as $entity ) {
-				$this->create_or_update_entity( $entity, $data['post_status'] );
-			}
 
+			foreach ( $entities as $entity ) {
+
+				$entity_uris = $this->get_entity_uris( $entity );
+
+				// check if this entity id doesnt exist locally if thats the case check also if the uri is local
+				// if both are true then add it to the variable.
+
+				if ( $this->get_first_matching_entity_by_uri( $entity_uris ) === null
+				     && Post_Entities_Validator::is_any_of_the_ids_belong_to_local_dataset( $this->entity_uri_service, $entity_uris ) ) {
+					$not_existing_local_entities[] = $entity;
+					// Skip the entity
+					continue;
+				}
+				$this->create_or_update_entity( $entity, $data['post_status'] );
+
+			}
 
 		} catch ( \Exception $e ) {
 			$this->log->error( $e->getMessage() );
 		}
+
 
 		return $data;
 	}
@@ -264,14 +279,7 @@ class Post_Adapter {
 	private function create_or_update_entity( $entity, $post_status = 'draft' ) {
 
 		// Get only valid IDs.
-		$ids = array_filter( (array) $entity['id'], function ( $id ) {
-			return preg_match( '|^https?://|', $id );
-		} );
-
-		$uris = array_merge(
-			(array) $ids,
-			(array) $entity['sameAs']
-		);
+		$uris = $this->get_entity_uris( $entity );
 
 		$post = $this->get_first_matching_entity_by_uri( $uris );
 
@@ -418,5 +426,32 @@ class Post_Adapter {
 ////
 ////		$this->on_insert_post( $data['post_content'] );
 //	}
+//
+	/**
+	 * @param $entity
+	 *
+	 * @return array
+	 */
+	private function filter_valid_entity_ids( $entity ) {
+		$id = $entity['id'];
+
+		return array_filter( (array) $id, function ( $id ) {
+			return preg_match( '|^https?://|', $id );
+		} );
+	}
+
+	/**
+	 * @param array $entity
+	 *
+	 * @return array
+	 */
+	private function get_entity_uris( $entity ) {
+		$ids = $this->filter_valid_entity_ids( $entity );
+
+		return array_merge(
+			(array) $ids,
+			(array) $entity['sameAs']
+		);
+	}
 
 }
