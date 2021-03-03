@@ -142,12 +142,14 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.29.0 (2021-02-__) =
+= 3.29.0 (2021-03-__) =
 
 * Enhancement [#1208](https://github.com/insideout10/wordlift-plugin/issues/1208): SameAs UI upgrade
 * Enhancement [#1187](https://github.com/insideout10/wordlift-plugin/issues/1187): Improve the speed of Sync_Service->next()
 * Enhancement: Added / updated schema types from schema.org
 
+* Fix [#1305](https://github.com/insideout10/wordlift-plugin/issues/1305): Sub-entities from analysis creating duplicate entities
+* Fix [#1304](https://github.com/insideout10/wordlift-plugin/issues/1304): Manual entity creation issues in block editor
 * Fix [#1299](https://github.com/insideout10/wordlift-plugin/issues/1299): JSON-LD cache not cleared
 * Fix [#1288](https://github.com/insideout10/wordlift-plugin/issues/1288): Cloud icons do not show in Firefox
 * Fix [#1278](https://github.com/insideout10/wordlift-plugin/issues/1278): Download Dataset links not working anymore
