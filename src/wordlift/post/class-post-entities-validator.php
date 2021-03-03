@@ -15,17 +15,13 @@ namespace Wordlift\Post;
 
 class Post_Entities_Validator {
 
-	public static function remove_local_entity_annotation_from_post_content( $post_id ) {
-
-	}
-
 	/**
 	 * @param $entity_uri_service \Wordlift_Entity_Uri_Service
 	 * @param $ids array<string> An array of entity ids
 	 *
 	 * @return bool
 	 */
-	public static function is_any_of_the_ids_belong_to_local_dataset( $entity_uri_service, $ids ) {
+	public static function is_local_entity_uri_exist( $entity_uri_service, $ids ) {
 		foreach ( $ids as $id ) {
 			if ( $entity_uri_service->is_internal( $id ) ) {
 				return true;

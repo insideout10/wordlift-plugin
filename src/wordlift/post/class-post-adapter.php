@@ -119,7 +119,6 @@ class Post_Adapter {
 		$this->log->trace( "The following data has been received by `wp_insert_post_data`:\n"
 		                   . var_export( $data, true ) );
 
-		$not_existing_local_entities = array();
 
 		try {
 			$entities = $this->parse_content( wp_unslash( $data['post_content'] ) );
@@ -128,12 +127,8 @@ class Post_Adapter {
 
 				$entity_uris = $this->get_entity_uris( $entity );
 
-				// check if this entity id doesnt exist locally if thats the case check also if the uri is local
-				// if both are true then add it to the variable.
-
-				if ( $this->get_first_matching_entity_by_uri( $entity_uris ) === null
-				     && Post_Entities_Validator::is_any_of_the_ids_belong_to_local_dataset( $this->entity_uri_service, $entity_uris ) ) {
-					$not_existing_local_entities[] = $entity;
+				if ( $this->get_first_matching_entity_by_uri( $entity_uris ) === null &&
+				     Post_Entities_Validator::is_local_entity_uri_exist( $this->entity_uri_service, $entity_uris ) ) {
 					// Skip the entity
 					continue;
 				}

@@ -38,11 +38,35 @@ EOF;
 			'post_content' => $post_content
 		) );
 
-
 		$this->assertCount( 0, get_posts( array( 'post_type' => 'entity' ) ), '0 Entities should be present even after save' );
-		$post_content = get_post_field( 'post_content' );
-		$post_content = wp_strip_all_tags( $post_content );
-		$this->assertEquals( 'foo bar bar', $post_content );
+
+	}
+
+
+	public function test_when_non_local_entity_uri_is_on_post_content_should_create_a_new_entity() {
+		$local_dataset_uri = Wordlift_Configuration_Service::get_instance()->get_dataset_uri();
+
+		$this->assertCount( 0, get_posts( array( 'post_type' => 'entity' ) ), '0 Entities should be present' );
+
+		// lets create a post
+		$post_id = $this->factory()->post->create();
+
+		$post_content = <<<EOF
+<!-- wp:wordlift/classification {"entities":[{"annotations":{"urn:enhancement-1":{"start":4,"end":7,"text":"bar"},"urn:enhancement-2":{"start":12,"end":15,"text":"bar"},"urn:enhancement-3":{"start":20,"end":23,"text":"bar"}},"id":"https://google.com/bar","description":"foo bar", "label":"bar","mainType":"thing","occurrences":["urn:enhancement-1","urn:enhancement-2","urn:enhancement-3"],"sameAs":[],"types":["thing"]}]} /-->
+
+<!-- wp:paragraph -->
+<p>foo <span id="urn:enhancement-1" class="textannotation disambiguated wl-thing" itemid="https://google.com/bar">bar</span> <span id="urn:enhancement-1" class="textannotation disambiguated wl-thing" itemid="$local_dataset_uri/bar">bar</span></p>
+<!-- /wp:paragraph -->
+EOF;
+
+		// lets update the post content.
+		wp_update_post( array(
+			'ID'           => $post_id,
+			'post_content' => $post_content
+		) );
+
+		$this->assertCount( 1, get_posts( array( 'post_type' => 'entity' ) ), '0 Entities should be present even after save' );
+
 	}
 
 }
