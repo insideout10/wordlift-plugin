@@ -118,7 +118,6 @@ class Post_Adapter {
 
 		try {
 			$entities = $this->parse_content( wp_unslash( $data['post_content'] ) );
-
 			foreach ( $entities as $entity ) {
 				$this->create_or_update_entity( $entity, $data['post_status'] );
 			}
@@ -311,6 +310,15 @@ class Post_Adapter {
 			if ( isset( $entity['mainType'] ) ) {
 				wp_add_object_terms( $post_id, $entity['mainType'], \Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 			}
+
+			// Set the post status, we need to set that in order to support entities
+			// created using rest endpoint on block editor, so that they get published
+			// when the post is published.
+			wp_update_post( array(
+				'ID'          => $post->ID,
+				'post_status' => $post_status
+			) );
+
 		}
 
 		return $post_id;
