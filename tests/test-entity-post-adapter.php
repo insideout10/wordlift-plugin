@@ -65,7 +65,7 @@ EOF;
 			'post_content' => $post_content
 		) );
 
-		$this->assertCount( 1, get_posts( array( 'post_type' => 'entity' ) ), '0 Entities should be present even after save' );
+		$this->assertCount( 1, get_posts( array( 'post_type' => 'entity' ) ), '1 Entity should be present even after save' );
 
 	}
 
