@@ -23,6 +23,8 @@ class Wordlift_Entity_Post_Save_Test extends Wordlift_Unit_Test_Case {
 			add_action( 'wl_linked_data_save_post', 'wl_linked_data_save_post_and_related_entities' );
 		}
 
+		// Reset post variables
+		$_POST = array();
 
 	}
 
@@ -96,7 +98,6 @@ EOF;
 			'post_content' => $post_content,
 		) );
 
-
 		$this->assertCount( 0, get_posts( array( 'post_type' => 'entity' ) ), '0 Entities should be present even after save' );
 
 	}
@@ -108,7 +109,7 @@ EOF;
 		$this->assertCount( 0, get_posts( array( 'post_type' => 'entity' ) ), '0 Entities should be present' );
 
 		// lets create a post
-		$post_id = $this->factory()->post->create( array( 'post_status' => 'draft', ) );
+		$post_id = $this->factory()->post->create();
 
 		$post_content = <<<EOF
 <!-- wp:wordlift/classification {"entities":[{"annotations":{"urn:enhancement-1":{"start":4,"end":7,"text":"bar"},"urn:enhancement-2":{"start":12,"end":15,"text":"bar"},"urn:enhancement-3":{"start":20,"end":23,"text":"bar"}},"id":"https://google.com/bar","description":"foo bar", "label":"bar","mainType":"thing","occurrences":["urn:enhancement-1","urn:enhancement-2","urn:enhancement-3"],"sameAs":[],"types":["thing"]}]} /-->

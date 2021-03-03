@@ -134,6 +134,11 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			// 2. when $entity_uri is an external uri used as sameAs of an internal entity
 			$ie = $entity_service->get_entity_post_by_uri( $entity_uri );
 
+			// Dont save the entities which are not found, but also local.
+			if ( $ie === null &&  Wordlift_Entity_Uri_Service::get_instance()->is_internal( $entity_uri ) ) {
+				continue;
+			}
+
 			// Detect the uri depending if is an existing or a new entity
 			$uri = ( null === $ie ) ?
 				Wordlift_Uri_Service::get_instance()->build_uri(
