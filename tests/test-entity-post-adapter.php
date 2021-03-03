@@ -28,7 +28,7 @@ class Wordlift_Entity_Post_Save_Test extends Wordlift_Unit_Test_Case {
 <!-- wp:wordlift/classification {"entities":[{"annotations":{"urn:enhancement-1":{"start":4,"end":7,"text":"bar"},"urn:enhancement-2":{"start":12,"end":15,"text":"bar"},"urn:enhancement-3":{"start":20,"end":23,"text":"bar"}},"id":"$local_dataset_uri/bar","description":"foo bar", "label":"bar","mainType":"thing","occurrences":["urn:enhancement-1","urn:enhancement-2","urn:enhancement-3"],"sameAs":[],"types":["thing"]}]} /-->
 
 <!-- wp:paragraph -->
-<p>foo <span id="urn:enhancement-1" class="textannotation disambiguated wl-thing" itemid="$local_dataset_uri/bar">bar</span> foo <span id="urn:enhancement-2" class="textannotation disambiguated wl-thing" itemid="http://data.wordlift.io/wl040/entity/bar">bar</span> foo <span id="urn:enhancement-3" class="textannotation disambiguated wl-thing" itemid="http://data.wordlift.io/wl040/entity/bar">bar</span></p>
+<p>foo <span id="urn:enhancement-1" class="textannotation disambiguated wl-thing" itemid="$local_dataset_uri/bar">bar</span> <span id="urn:enhancement-1" class="textannotation disambiguated wl-thing" itemid="$local_dataset_uri/bar">bar</span></p>
 <!-- /wp:paragraph -->
 EOF;
 
@@ -40,7 +40,9 @@ EOF;
 
 
 		$this->assertCount( 0, get_posts( array( 'post_type' => 'entity' ) ), '0 Entities should be present even after save' );
-
+		$post_content = get_post_field( 'post_content' );
+		$post_content = wp_strip_all_tags( $post_content );
+		$this->assertEquals( 'foo bar bar', $post_content );
 	}
 
 }
