@@ -13,6 +13,17 @@ class Wordlift_Entity_Post_Save_Test extends Wordlift_Unit_Test_Case {
 		global $wp_filter;
 		$wp_filter = array();
 		run_wordlift();
+
+		// the functions classic editor use are in php files, we cant reload the filters with run_wordlift, but we can condtionally
+		// add the filters.
+
+		if ( ! function_exists( 'parse_blocks' ) ) {
+			// we are in a environment with no block editor, add the classic editor hooks.
+			add_action( 'save_post', 'wl_linked_data_save_post' );
+			add_action( 'wl_linked_data_save_post', 'wl_linked_data_save_post_and_related_entities' );
+		}
+
+
 	}
 
 
@@ -23,6 +34,53 @@ class Wordlift_Entity_Post_Save_Test extends Wordlift_Unit_Test_Case {
 
 		// lets create a post
 		$post_id = $this->factory()->post->create();
+
+
+		$entity_json_data = <<<EOF
+{
+  "entities": [
+    {
+      "annotations": {
+        "urn:enhancement-1": {
+          "start": 4,
+          "end": 7,
+          "text": "bar"
+        },
+        "urn:enhancement-2": {
+          "start": 12,
+          "end": 15,
+          "text": "bar"
+        },
+        "urn:enhancement-3": {
+          "start": 20,
+          "end": 23,
+          "text": "bar"
+        }
+      },
+      "id": "$local_dataset_uri/bar",
+      "description": "foo bar",
+      "label": "bar",
+      "mainType": "thing",
+      "occurrences": [
+        "urn:enhancement-1",
+        "urn:enhancement-2",
+        "urn:enhancement-3"
+      ],
+      "sameAs": [
+        
+      ],
+      "types": [
+        "thing"
+      ]
+    }
+  ]
+}
+EOF;
+
+		$entities          = json_decode( $entity_json_data, true );
+		$_POST['wl_boxes'] = array( 'test' );
+		// create an entity map for classic editor test
+		$_POST['wl_entities'] = $this->build_entity_map( $entities['entities'] );
 
 		$post_content = <<<EOF
 <!-- wp:wordlift/classification {"entities":[{"annotations":{"urn:enhancement-1":{"start":4,"end":7,"text":"bar"},"urn:enhancement-2":{"start":12,"end":15,"text":"bar"},"urn:enhancement-3":{"start":20,"end":23,"text":"bar"}},"id":"$local_dataset_uri/bar","description":"foo bar", "label":"bar","mainType":"thing","occurrences":["urn:enhancement-1","urn:enhancement-2","urn:enhancement-3"],"sameAs":[],"types":["thing"]}]} /-->
@@ -35,8 +93,9 @@ EOF;
 		// lets update the post content.
 		wp_update_post( array(
 			'ID'           => $post_id,
-			'post_content' => $post_content
+			'post_content' => $post_content,
 		) );
+
 
 		$this->assertCount( 0, get_posts( array( 'post_type' => 'entity' ) ), '0 Entities should be present even after save' );
 
@@ -49,7 +108,7 @@ EOF;
 		$this->assertCount( 0, get_posts( array( 'post_type' => 'entity' ) ), '0 Entities should be present' );
 
 		// lets create a post
-		$post_id = $this->factory()->post->create();
+		$post_id = $this->factory()->post->create( array( 'post_status' => 'draft', ) );
 
 		$post_content = <<<EOF
 <!-- wp:wordlift/classification {"entities":[{"annotations":{"urn:enhancement-1":{"start":4,"end":7,"text":"bar"},"urn:enhancement-2":{"start":12,"end":15,"text":"bar"},"urn:enhancement-3":{"start":20,"end":23,"text":"bar"}},"id":"https://google.com/bar","description":"foo bar", "label":"bar","mainType":"thing","occurrences":["urn:enhancement-1","urn:enhancement-2","urn:enhancement-3"],"sameAs":[],"types":["thing"]}]} /-->
@@ -59,14 +118,76 @@ EOF;
 <!-- /wp:paragraph -->
 EOF;
 
+
+		$entity_json_data = <<<EOF
+{
+  "entities": [
+    {
+      "annotations": {
+        "urn:enhancement-1": {
+          "start": 4,
+          "end": 7,
+          "text": "bar"
+        },
+        "urn:enhancement-2": {
+          "start": 12,
+          "end": 15,
+          "text": "bar"
+        },
+        "urn:enhancement-3": {
+          "start": 20,
+          "end": 23,
+          "text": "bar"
+        }
+      },
+      "id": "https://google.com/bar",
+      "description": "foo bar",
+      "label": "bar",
+      "mainType": "thing",
+      "occurrences": [
+        "urn:enhancement-1",
+        "urn:enhancement-2",
+        "urn:enhancement-3"
+      ],
+      "sameAs": [
+        
+      ],
+      "types": [
+        "thing"
+      ]
+    }
+  ]
+}
+EOF;
+
+		$entities = json_decode( $entity_json_data, true );
+
+		$_POST['wl_boxes'] = array( 'test' );
+		// create an entity map for classic editor test
+		$_POST['wl_entities'] = $this->build_entity_map( $entities['entities'] );
+
+
 		// lets update the post content.
 		wp_update_post( array(
 			'ID'           => $post_id,
-			'post_content' => $post_content
+			'post_content' => $post_content,
 		) );
+
 
 		$this->assertCount( 1, get_posts( array( 'post_type' => 'entity' ) ), '1 Entity should be present even after save' );
 
+	}
+
+	private function build_entity_map( $entities ) {
+		$result = array();
+		foreach ( $entities as $entity ) {
+
+			$entity['uri'] = $entity['id'];
+			$entity['main_type'] = $entity['mainType'];
+			$result[ $entity['id'] ] = $entity;
+		}
+
+		return $result;
 	}
 
 }
