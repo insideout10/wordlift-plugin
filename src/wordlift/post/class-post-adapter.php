@@ -41,6 +41,10 @@ class Post_Adapter {
 	 * @var Entity_Store $entity_store A {@link Entity_Store} instance.
 	 */
 	private $entity_store;
+	/**
+	 * @var \Wordlift_Entity_Uri_Service
+	 */
+	private $entity_uri_service;
 
 	public function __construct() {
 
@@ -53,7 +57,7 @@ class Post_Adapter {
 
 		$this->entity_service = \Wordlift_Entity_Service::get_instance();
 		$this->entity_store   = Entity_Store::get_instance();
-
+		$this->entity_uri_service = \Wordlift_Entity_Uri_Service::get_instance();
 		add_action( 'init', array( $this, 'init' ) );
 		add_filter( 'wp_insert_post_data', array( $this, 'wp_insert_post_data' ), 10, 2 );
 
