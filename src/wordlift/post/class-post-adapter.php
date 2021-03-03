@@ -315,11 +315,13 @@ class Post_Adapter {
 			// Set the post status, we need to set that in order to support entities
 			// created using rest endpoint on block editor, so that they get published
 			// when the post is published.
-			wp_update_post( array(
-				'ID'          => $post->ID,
-				'post_status' => $post_status
-			) );
-
+			// Once the entity is published dont update the post status.
+			if ( $post->post_status !== 'publish' ) {
+				wp_update_post( array(
+					'ID'          => $post->ID,
+					'post_status' => $post_status
+				) );
+			}
 		}
 
 		return $post_id;
