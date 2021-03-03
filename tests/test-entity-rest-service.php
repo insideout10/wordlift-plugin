@@ -6,7 +6,7 @@
  * @since 3.29.0
  * @group entity
  */
-class Wordlift_Entity_Rest_Service extends Wordlift_Unit_Test_Case {
+class Wordlift_Entity_Rest_Service_Test extends Wordlift_Unit_Test_Case {
 
 
 	public function setUp() {
