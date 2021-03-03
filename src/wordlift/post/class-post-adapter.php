@@ -122,6 +122,7 @@ class Post_Adapter {
 				$this->create_or_update_entity( $entity, $data['post_status'] );
 			}
 
+
 		} catch ( \Exception $e ) {
 			$this->log->error( $e->getMessage() );
 		}
