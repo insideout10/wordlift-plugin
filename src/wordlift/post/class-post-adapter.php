@@ -311,6 +311,7 @@ class Post_Adapter {
 				wp_add_object_terms( $post_id, $entity['mainType'], \Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 			}
 
+			// see https://github.com/insideout10/wordlift-plugin/issues/1304
 			// Set the post status, we need to set that in order to support entities
 			// created using rest endpoint on block editor, so that they get published
 			// when the post is published.
