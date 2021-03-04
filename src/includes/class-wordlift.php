@@ -21,6 +21,7 @@ use Wordlift\Autocomplete\Local_Autocomplete_Service;
 use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Duplicate_Markup_Remover\Faq_Duplicate_Markup_Remover;
 use Wordlift\Entity\Entity_Helper;
+use Wordlift\Entity\Entity_Rest_Service;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_After_Get_Jsonld_Hook;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Jsonld_Hook;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Post_Type_Hook;
@@ -47,6 +48,7 @@ use Wordlift\Mappings\Validators\Rule_Groups_Validator;
 use Wordlift\Mappings\Validators\Rule_Validators_Registry;
 use Wordlift\Mappings\Validators\Taxonomy_Rule_Validator;
 use Wordlift\Mappings\Validators\Taxonomy_Term_Rule_Validator;
+use Wordlift\Mappings\Validators\Post_Taxonomy_Term_Rule_Validator;
 use Wordlift\Post_Excerpt\Post_Excerpt_Meta_Box_Adapter;
 use Wordlift\Post_Excerpt\Post_Excerpt_Rest_Controller;
 use Wordlift\Templates\Templates_Ajax_Endpoint;
@@ -751,7 +753,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.28.1';
+		$this->version     = '3.29.0';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -1487,6 +1489,7 @@ class Wordlift {
 		new Post_Type_Rule_Validator();
 		// Taxonomy term rule validator for validating rules for term pages.
 		new Taxonomy_Term_Rule_Validator();
+		new Post_Taxonomy_Term_Rule_Validator();
 		$rule_validators_registry = new Rule_Validators_Registry( $default_rule_validator );
 		$rule_groups_validator    = new Rule_Groups_Validator( $rule_validators_registry );
 		$mappings_validator       = new Mappings_Validator( $mappings_dbo, $rule_groups_validator );
@@ -1560,6 +1563,11 @@ class Wordlift {
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/1248
 		 */
 		new Key_Validation_Notice( $this->key_validation_service, $this->configuration_service );
+		/**
+		 * @since 3.29.0
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/1304
+		 */
+		new Entity_Rest_Service( $this->entity_type_service );
 	}
 
 	/**
@@ -1743,10 +1751,10 @@ class Wordlift {
 			 * @return bool
 			 * @since 3.27.6
 			 */
-			if ( apply_filters( 'wl_feature__enable__screens', true ) ) {
-				$admin_search_rankings_page = new Wordlift_Admin_Search_Rankings_Page();
-				$this->loader->add_action( 'wl_admin_menu', $admin_search_rankings_page, 'admin_menu' );
-			}
+//			if ( apply_filters( 'wl_feature__enable__screens', true ) ) {
+//				$admin_search_rankings_page = new Wordlift_Admin_Search_Rankings_Page();
+//				$this->loader->add_action( 'wl_admin_menu', $admin_search_rankings_page, 'admin_menu' );
+//			}
 		}
 
 		// Hook key update.

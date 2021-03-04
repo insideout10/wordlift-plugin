@@ -206,8 +206,12 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 		$post_type_option = $post_type_array['post_type_option_name'];
 		// Get also the list of post types from the post_type_array.
 		$post_type_option_values = $post_type_array['post_type_option_values'];
+
+        $post_taxonomy_array =  self::get_post_taxonomy_key_and_value();
+        $post_taxonomy_option = $post_taxonomy_array['post_taxonomy_option_name'];
+
 		// Merge the post type option and post types in the taxonomy options
-		array_push( $taxonomy_options, $post_type_option );
+		array_push( $taxonomy_options, $post_type_option, $post_taxonomy_option);
 		$term_options = array_merge( $term_options, $post_type_option_values );
 		return array(
 			'taxonomy_options' => $taxonomy_options,
@@ -232,6 +236,7 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 			array(),
 			'objects'
 		);
+
 		foreach ( $post_types as $post_type ) {
 			array_push(
 				$post_type_option_values,
@@ -242,11 +247,32 @@ class Edit_Mappings_Page extends Wordlift_Admin_Page {
 				)
 			);
 		}
+
 		return array(
 			'post_type_option_name' =>  $post_type_option_name,
 			'post_type_option_values' => $post_type_option_values
 		);
 	}
+
+    /**
+     * Return post type option and post type option values.
+     *
+     * @return array Array of post_type_option and post_type_option_values.
+     */
+    private static function get_post_taxonomy_key_and_value() {
+
+        $post_taxonomy_option_name   = array(
+            'label'      => __( 'Post Taxonomy', 'wordlift' ),
+            'value'      => Wordlift\Mappings\Validators\Post_Taxonomy_Term_Rule_Validator::POST_TAXONOMY,
+            'api_source' => 'post_taxonomy'
+        );
+        $post_taxonomy_option_values = array();
+
+        return array(
+            'post_taxonomy_option_name' =>  $post_taxonomy_option_name,
+            'post_taxonomy_option_values' => $post_taxonomy_option_values
+        );
+    }
 
 	/**
 	 * This function loads the equal to, not equal to operator to the edit mapping settings.

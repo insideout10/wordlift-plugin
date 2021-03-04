@@ -424,6 +424,29 @@ class WL_Metabox_Field {
 	}
 
 	/**
+	 * Get the add custom button html.
+	 *
+	 * This function is protected, allowing extending class to further customize
+	 * the add button html code.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @param int $count The current number of values.
+	 *
+	 * @return string The add button html code.
+	 */
+	protected function get_add_custom_button_html( $count, $label, $class = '' ) {
+
+		// If cardinality allows it, print button to add new values.
+		if ( $count < $this->cardinality ) {
+			return '<button class="button wl-add-input wl-button wl-add-input--sameas '.$class.'" type="button">' . esc_html__( $label ) . '</button>';
+		}
+
+		// Return an empty string.
+		return '';
+	}
+
+	/**
 	 * Return a single <input> tag for the Field.
 	 *
 	 * @param mixed $value Input value.
@@ -457,7 +480,7 @@ class WL_Metabox_Field {
 	 */
 	public function html_wrapper_close() {
 
-		return '</div><hr>';
+		return '</div>';
 	}
 
 }

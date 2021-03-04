@@ -6,19 +6,28 @@
 
 jQuery( document ).ready( function ( $ ) {
 
+	// Show Add button when already some links
+	$( '#wl-input-container' ).children( '.wl-input-wrapper' ).size() > 0 ? $( '.wl-add-input--sameas' ).removeClass('hide') : null;
+
 	// Remove button
 	$( '.wl-remove-input' ).click( removeButton );
 
 	function removeButton( event ) {
+		event.preventDefault();
 		var button = $( event.target );
 		var inputWrapper = button.parent( '.wl-input-wrapper' );
 
 		// Leave at least one <input>
-		if ( inputWrapper.parent( '.wl-field' ).children( '.wl-input-wrapper' ).size() > 1 ) {
+		if ( inputWrapper.parent().children( '.wl-input-wrapper' ).size() > 1 ) {
 			// Delete the <div> containing the <input> tags and the "Remove" button
 			inputWrapper.remove();
 		} else {
-			inputWrapper.find( 'input' ).val( '' );
+			if ( $(this).is('.wl-remove-input--sameas') ) {
+				inputWrapper.remove();
+				$( '.wl-add-input--sameas' ).addClass('hide');
+			} else {
+				inputWrapper.find( 'input' ).val( '' );
+			}
 		}
 	}
 
@@ -26,6 +35,7 @@ jQuery( document ).ready( function ( $ ) {
 	$( '.wl-add-input' ).click( addButton );
 
 	function addButton( event ) {
+		event.preventDefault();
 		var button = $( event.target );
 		var field = button.parent( '.wl-field' );
 		var cardinality = field.data( 'cardinality' );
@@ -36,14 +46,14 @@ jQuery( document ).ready( function ( $ ) {
 
 		// Don't trasgress cardinality
 		var canAddInput = (
-		                  cardinality === 'INF'
-		                  ) || (
-		                  alreadyPresentInputs < cardinality
-		                  );
+			cardinality === 'INF'
+		) || (
+			alreadyPresentInputs < cardinality
+		);
 		if ( canAddInput ) {
 
 			var isAutocomplete = (
-			latestInput.find( '.wl-autocomplete' ).size() > 0
+				latestInput.find( '.wl-autocomplete' ).size() > 0
 			);
 
 			// Build HTML of the new <input>
@@ -51,7 +61,12 @@ jQuery( document ).ready( function ( $ ) {
 			// .clone(true) clones also the event callbacks, but messes up with the autocomplete. See below**
 
 			// Insert cloned element in page
-			$( this ).before( newInputDiv );
+			if ( $( this ).is( '.wl-add-input--sameas, .wl-add-input--link' ) ) {
+				$( '#wl-input-container' ).append( newInputDiv );
+				$( '.wl-add-input--sameas' ).removeClass( 'hide' )
+			} else {
+				$( this ).before( newInputDiv );
+			}
 
 			// Impose default new values
 			newInputDiv.find( 'input' ).val( '' );
@@ -143,7 +158,7 @@ jQuery( document ).ready( function ( $ ) {
 							// Verify accepted schema.org type
 							if ( ! expectedTypes || (
 								entityType && expectedTypes.indexOf( entityType ) !== - 1
-								) ) {
+							) ) {
 
 								// Keep hash table up to date
 								latestResults[entityName] = searchResults.results[i];

@@ -207,8 +207,8 @@ class Wordlift_Entity_Uri_Service {
 		if ( empty( $posts ) ) {
 
 			$this->log->debug( "Finding post by $uri..." );
-			$postid = url_to_postid( $uri );
-			if ( $postid !== 0 ) {
+			$postid = $this->get_post_id_from_url( $uri );
+			if ( $postid ) {
 				$this->log->trace( "Found post $postid by URL" );
 
 				return get_post( $postid );
@@ -268,6 +268,44 @@ class Wordlift_Entity_Uri_Service {
 		$data['wl:entity_url'] = Wordlift_Entity_Service::get_instance()->get_uri( $data['id'] );
 
 		return $result;
+	}
+
+	/**
+	 * Helper function to fetch post_id from a WordPress URL
+	 * Primarily used when dataset is not enabled
+	 *
+	 * @param $url
+	 *
+	 * @return int Post ID | bool false
+	 */
+	public function get_post_id_from_url( $url ) {
+
+		// Try url_to_postid
+		$post_id = url_to_postid( htmlspecialchars_decode( $url ) );
+		if ( $post_id !== 0 ) {
+			return $post_id;
+		}
+
+		$parsed_url = parse_url( $url );
+
+		if ( ! isset( $parsed_url['query'] ) ) {
+			return false;
+		}
+
+		parse_str( $parsed_url['query'], $parsed_query );
+
+		// Try to parse WooCommerce non-pretty product URL
+		if ( $parsed_query['product'] ) {
+			$posts = get_posts( array(
+				'name'      => $parsed_query['product'],
+				'post_type' => 'product'
+			) );
+			if ( count( $posts ) > 0 ) {
+				return $posts[0]->ID;
+			}
+		}
+
+		return false;
 	}
 
 }

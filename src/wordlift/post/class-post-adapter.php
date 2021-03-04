@@ -41,6 +41,10 @@ class Post_Adapter {
 	 * @var Entity_Store $entity_store A {@link Entity_Store} instance.
 	 */
 	private $entity_store;
+	/**
+	 * @var \Wordlift_Entity_Uri_Service
+	 */
+	private $entity_uri_service;
 
 	public function __construct() {
 
@@ -51,9 +55,9 @@ class Post_Adapter {
 
 		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
 
-		$this->entity_service = \Wordlift_Entity_Service::get_instance();
-		$this->entity_store   = Entity_Store::get_instance();
-
+		$this->entity_service     = \Wordlift_Entity_Service::get_instance();
+		$this->entity_store       = Entity_Store::get_instance();
+		$this->entity_uri_service = \Wordlift_Entity_Uri_Service::get_instance();
 		add_action( 'init', array( $this, 'init' ) );
 		add_filter( 'wp_insert_post_data', array( $this, 'wp_insert_post_data' ), 10, 2 );
 
@@ -107,7 +111,6 @@ class Post_Adapter {
 	 */
 	public function wp_insert_post_data( $data, $postarr ) {
 
-		//
 		$post_status = $data['post_status'];
 		if ( 'auto-draft' === $post_status || 'inherit' === $post_status ) {
 			return $data;
@@ -116,16 +119,27 @@ class Post_Adapter {
 		$this->log->trace( "The following data has been received by `wp_insert_post_data`:\n"
 		                   . var_export( $data, true ) );
 
+
 		try {
 			$entities = $this->parse_content( wp_unslash( $data['post_content'] ) );
 
 			foreach ( $entities as $entity ) {
+
+				$entity_uris = $this->get_entity_uris( $entity );
+
+				if ( $this->get_first_matching_entity_by_uri( $entity_uris ) === null &&
+				     Post_Entities_Validator::is_local_entity_uri_exist( $this->entity_uri_service, $entity_uris ) ) {
+					// Skip the entity
+					continue;
+				}
 				$this->create_or_update_entity( $entity, $data['post_status'] );
+
 			}
 
 		} catch ( \Exception $e ) {
 			$this->log->error( $e->getMessage() );
 		}
+
 
 		return $data;
 	}
@@ -260,14 +274,7 @@ class Post_Adapter {
 	private function create_or_update_entity( $entity, $post_status = 'draft' ) {
 
 		// Get only valid IDs.
-		$ids = array_filter( (array) $entity['id'], function ( $id ) {
-			return preg_match( '|^https?://|', $id );
-		} );
-
-		$uris = array_merge(
-			(array) $ids,
-			(array) $entity['sameAs']
-		);
+		$uris = $this->get_entity_uris( $entity );
 
 		$post = $this->get_first_matching_entity_by_uri( $uris );
 
@@ -311,6 +318,18 @@ class Post_Adapter {
 			if ( isset( $entity['mainType'] ) ) {
 				wp_add_object_terms( $post_id, $entity['mainType'], \Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 			}
+
+			// see https://github.com/insideout10/wordlift-plugin/issues/1304
+			// Set the post status, we need to set that in order to support entities
+			// created using rest endpoint on block editor, so that they get published
+			// when the post is published.
+			// Once the entity is published dont update the post status.
+			if ( $post->post_status !== 'publish' ) {
+				wp_update_post( array(
+					'ID'          => $post->ID,
+					'post_status' => $post_status
+				) );
+			}
 		}
 
 		return $post_id;
@@ -337,70 +356,31 @@ class Post_Adapter {
 		return null;
 	}
 
-	//	/**
-//	 * @param int      $post_ID Post ID.
-//	 * @param \WP_Post $post Post object.
-//	 * @param bool     $update Whether this is an existing post being updated or not.
-//	 *
-//	 * @throws \Exception
-//	 */
-//	public function wp_insert_post( $post_ID, $post, $update ) {
-//
-//		preg_match_all(
-//			'/<span id="[^"]+" class="textannotation disambiguated(?:\s.*)?" itemid="([^"]+)">/i', $post->post_content, $matches
-//		);
-//
-//		$uris = array_unique( $matches[1] );
-//		// $this->log->trace( "`wp_insert_post` received the following post content:\n" . $post->post_content );
-//		$this->log->trace( count( $uris ) . " URI(s) found in post_content:\n"
-//		                   . var_export( $uris, true ) );
-//
-//		$query_args = array(
-//			// See https://github.com/insideout10/wordlift-plugin/issues/654.
-//			'ignore_sticky_posts' => 1,
-//			'posts_per_page'      => - 1,
-//			'numberposts'         => - 1,
-//			'post_status'         => 'any',
-//			'post_type'           => \Wordlift_Entity_Service::valid_entity_post_types(),
-//			'meta_query'          => array(
-//				'relation' => 'OR',
-//				array(
-//					'key'     => WL_ENTITY_URL_META_NAME,
-//					'value'   => $uris,
-//					'compare' => 'IN',
-//				),
-//				array(
-//					'key'     => \Wordlift_Schema_Service::FIELD_SAME_AS,
-//					'value'   => $uris,
-//					'compare' => 'IN',
-//				),
-//			),
-//		);
-//
-//		$posts = get_posts( $query_args );
-//
-//		$this->log->trace( count( $posts ) . " post(s) found in post_content:\n"
-//		                   . var_export( $posts, true ) );
-//
-////		wp_die();
-//
-////
-////		$data = (array) $post;
-////
-////		$this->log->trace( "The following data has been received with `wp_insert_post`:\n"
-////		                   . var_export( $data, true ) . "\n"
-////		                   . "Called from:\n"
-////		                   . var_export( debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 10 ), true ) );
-////
-////		// Bail out if there's no post_content or no `wordlift/classification` block.
-////		if ( empty( $data['post_content'] )
-////		     || ! function_exists( 'has_block' )
-////		     || ! function_exists( 'parse_blocks' )
-////		     || ! has_block( 'wordlift/classification', $data['post_content'] ) ) {
-////			return;
-////		}
-////
-////		$this->on_insert_post( $data['post_content'] );
-//	}
+	/**
+	 * @param $entity
+	 *
+	 * @return array
+	 */
+	private function filter_valid_entity_ids( $entity ) {
+		$id = $entity['id'];
+
+		return array_filter( (array) $id, function ( $id ) {
+			return preg_match( '|^https?://|', $id );
+		} );
+	}
+
+	/**
+	 * @param array $entity
+	 *
+	 * @return array
+	 */
+	private function get_entity_uris( $entity ) {
+		$ids = $this->filter_valid_entity_ids( $entity );
+
+		return array_merge(
+			(array) $ids,
+			(array) $entity['sameAs']
+		);
+	}
 
 }

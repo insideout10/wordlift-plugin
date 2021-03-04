@@ -53,7 +53,8 @@ if ( ! defined( 'WORDLIFT_API_URL' ) && false !== getenv( 'WORDLIFT_API_URL' ) )
 // chunked analysis.
 define( 'WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE', defined( 'WORDLIFT_API_URL' ) ? WORDLIFT_API_URL . '/' : 'https://api.wordlift.io/' );
 
-define( 'WL_CONFIG_TEST_GOOGLE_RICH_SNIPPETS_URL', 'https://developers.google.com/structured-data/testing-tool/?url=' );
+// @since 3.29.0 we do not use https://developers.google.com/structured-data/testing-tool/?url=
+define( 'WL_CONFIG_TEST_GOOGLE_RICH_SNIPPETS_URL', 'https://search.google.com/test/rich-results?url=' );
 
 // If is set to true, there will be additional button in 'Download Your Data' page
 // that will allow users to download their data in JSON-LD format.

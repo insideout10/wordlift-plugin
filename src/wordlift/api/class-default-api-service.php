@@ -91,13 +91,13 @@ class Default_Api_Service implements Api_Service {
 		//  5. add the body.
 		//
 		// In this way the user can fully control the request if wanted (using `$args`) and we can add our defaults.
-		$request_args = $args + array(
+		$request_args = apply_filters( 'wl_api_service__request', $args + array(
 				'method'     => $method,
 				'timeout'    => $request_timeout,
 				'user-agent' => isset( $user_agent ) ? $user_agent : $this->user_agent,
 				'headers'    => $headers + $this->headers,
 				'body'       => $body,
-			);
+			) );
 
 		/**
 		 * Allow 3rd parties to process the response.
