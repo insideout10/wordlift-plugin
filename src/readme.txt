@@ -142,7 +142,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.29.0 (2021-03-__) =
+= 3.29.0 (2021-03-04) =
 
 * Enhancement [#1208](https://github.com/insideout10/wordlift-plugin/issues/1208): SameAs UI upgrade
 * Enhancement [#1187](https://github.com/insideout10/wordlift-plugin/issues/1187): Improve the speed of Sync_Service->next()
