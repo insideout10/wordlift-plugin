@@ -3,14 +3,12 @@ import TextBlock from "./text-block";
 
 export default class BlockFactory {
 
-    static getBlock(block, dispatch, start = 0, end = -1) {
+    static getBlock(block, dispatch, start = 0, blockSeparatorLength = -1) {
         if ( "core/paragraph" === block.name || "core/freeform" === block.name ) {
-            return new TextBlock(block, dispatch, start, end)
+            return new TextBlock(block, dispatch, start, blockSeparatorLength)
         }
         else if ( "core/list" ) {
-            console.log("building list block for ")
-            console.log(block)
-            return new ListBlock(block, dispatch, start, end)
+            return new ListBlock(block, dispatch, start, blockSeparatorLength)
         }
     }
 

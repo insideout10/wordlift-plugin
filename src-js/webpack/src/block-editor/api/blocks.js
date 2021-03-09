@@ -41,10 +41,13 @@ export class Blocks {
     let cursor = 0;
     this._html = blocks
       .map(block => {
+
         const start = cursor;
-        const blockObj = BlockFactory.getBlock(block, dispatch, start, cursor);
+        const blockObj = BlockFactory.getBlock(block, dispatch, start, this._blockSeparatorLength);
         const content = blockObj.content;
-        cursor += content.length + this._blockSeparatorLength;
+        cursor += content.length;
+
+
         this._blocks.push(blockObj);
         return content;
       })
