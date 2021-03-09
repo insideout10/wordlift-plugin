@@ -41,12 +41,11 @@ export class Blocks {
     let cursor = 0;
     this._html = blocks
       .map(block => {
-        const content = block.attributes.content;
         const start = cursor;
+        const blockObj = BlockFactory.getBlock(block, dispatch, start, cursor);
+        const content = blockObj.content;
         cursor += content.length + this._blockSeparatorLength;
-
-        this._blocks.push(BlockFactory.getBlock(block, dispatch, start, cursor));
-
+        this._blocks.push(blockObj);
         return content;
       })
       .join(this._blockSeparator);
@@ -99,7 +98,7 @@ export class Blocks {
 
   static create(blocks, dispatch) {
     return new this(
-      collectBlocks(blocks, block => "core/paragraph" === block.name || "core/freeform" === block.name),
+      collectBlocks(blocks, block => "core/paragraph" === block.name || "core/freeform" === block.name || "core/list" === block.name),
       dispatch
     );
   }

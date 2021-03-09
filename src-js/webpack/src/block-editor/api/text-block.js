@@ -1,8 +1,13 @@
-export default class Block {
-    constructor(block, dispatch, start, end) {
+import Block from "./block";
+
+export default class TextBlock extends Block{
+    constructor(block, dispatch, start = 0, end = -1) {
+        super(block, dispatch, start, end);
         this._block = block;
         this._dispatch = dispatch;
         this._start = start;
+        this._content = block.attributes.content;
+        this._end = 0 <= end ? end : block.attributes.content.length;
         this._dirty = false;
     }
 
@@ -56,6 +61,10 @@ export default class Block {
                 dispatch: this._dispatch,
                 updateBlockAttributes: this._dispatch.updateBlockAttributes
             });
+            // WP 5.0 returns undefined to this call.
+            this._dispatch.updateBlockAttributes(this.clientId, {content: this.content});
+            this._dirty = false;
+
         }
     }
 }

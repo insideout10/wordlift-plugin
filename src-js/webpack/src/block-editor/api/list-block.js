@@ -6,9 +6,8 @@ export default class ListBlock extends Block{
         super(block, dispatch, start = 0, end = -1);
         // In the list block we need to get the content from values attribute.
         this._content = block.attributes.values;
-        this._end = 0 <= end ? end : block.attributes.content.values;
+        this._end = 0 <= end ? end : block.attributes.values;
     }
-
 
     apply() {
         super.apply();
