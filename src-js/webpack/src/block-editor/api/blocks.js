@@ -101,6 +101,11 @@ export class Blocks {
 
   static create(blocks, dispatch) {
     return new this(
+        /**
+         * A list of supported blocks by WLP
+         * if you add a new block, please create a relevant block object on
+         * block-factory.js
+         */
       collectBlocks(blocks, block => "core/paragraph" === block.name || "core/freeform" === block.name || "core/list" === block.name),
       dispatch
     );
