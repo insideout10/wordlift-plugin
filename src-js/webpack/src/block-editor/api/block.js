@@ -1,5 +1,5 @@
 export default class Block {
-    constructor(block, dispatch, start, end) {
+    constructor(block, dispatch, start) {
         this._block = block;
         this._dispatch = dispatch;
         this._start = start;
@@ -23,9 +23,6 @@ export default class Block {
         return this._start;
     }
 
-    get end() {
-        return this._end;
-    }
 
     insertHtml(at, fragment) {
         // Insert the HTML.

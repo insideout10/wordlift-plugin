@@ -2,9 +2,9 @@ import Block from "./block";
 
 export default class TextBlock extends Block{
     constructor(block, dispatch, start = 0, blockSeparatorLength) {
-        super(block, dispatch, start, blockSeparatorLength);
+        super(block, dispatch, start);
         this._content = block.attributes.content;
-        this._end = block.attributes.content.length + blockSeparatorLength;
+        this._end = this.start +  block.attributes.content.length + blockSeparatorLength;
     }
 
     apply() {

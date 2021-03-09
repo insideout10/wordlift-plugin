@@ -3,10 +3,10 @@ import Block from "./block";
 export default class ListBlock extends Block{
 
     constructor(block, dispatch, start = 0, blockSeparatorLength) {
-        super(block, dispatch, start = 0, -1);
+        super(block, dispatch, start );
         // In the list block we need to get the content from values attribute.
         this._content = block.attributes.values;
-        this._end = block.attributes.values.length + blockSeparatorLength;
+        this._end = this.start +  this._content.length + blockSeparatorLength;
     }
 
     apply() {

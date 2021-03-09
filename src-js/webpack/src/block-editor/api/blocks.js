@@ -42,6 +42,12 @@ export class Blocks {
     this._html = blocks
       .map(block => {
 
+        // const content = block.attributes.content;
+        // const start = cursor;
+        // cursor += content.length + this._blockSeparatorLength;
+        // this._blocks.push(new Block(block, dispatch, start, cursor));
+
+
         const start = cursor;
         const blockObj = BlockFactory.getBlock(block, dispatch, start, this._blockSeparatorLength);
         const content = blockObj.content;
