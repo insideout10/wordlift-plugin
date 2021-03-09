@@ -1,4 +1,5 @@
 import Block from "./block";
+import BlockFactory from "./block-factory";
 
 /**
  *
@@ -44,7 +45,7 @@ export class Blocks {
         const start = cursor;
         cursor += content.length + this._blockSeparatorLength;
 
-        this._blocks.push(new Block(block, dispatch, start, cursor));
+        this._blocks.push(BlockFactory.getBlock(block, dispatch, start, cursor));
 
         return content;
       })

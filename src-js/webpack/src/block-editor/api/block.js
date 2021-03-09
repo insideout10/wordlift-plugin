@@ -2,9 +2,18 @@ export default class Block {
   constructor(block, dispatch, start = 0, end = -1) {
     this._block = block;
     this._dispatch = dispatch;
-    this._content = block.attributes.content;
     this._start = start;
-    this._end = 0 <= end ? end : block.attributes.content.length;
+    /**
+     * @since 3.29.1
+     * @see 1311
+     * Set the attribute only if its available since we are going to support
+     * other core blocks list & table.
+     */
+    if ( block.attributes.content ) {
+      this._content = block.attributes.content;
+      this._end = 0 <= end ? end : block.attributes.content.length;
+    }
+
     this._dirty = false;
   }
 
@@ -58,9 +67,13 @@ export default class Block {
         dispatch: this._dispatch,
         updateBlockAttributes: this._dispatch.updateBlockAttributes
       });
-      // WP 5.0 returns undefined to this call.
-      this._dispatch.updateBlockAttributes(this.clientId, { content: this.content });
-      this._dirty = false;
+
+      if ( "core/paragraph" === this._block.name || "core/freeform" === this._block.name ) {
+        // WP 5.0 returns undefined to this call.
+        this._dispatch.updateBlockAttributes(this.clientId, {content: this.content});
+        this._dirty = false;
+      }
+
     }
   }
 }
