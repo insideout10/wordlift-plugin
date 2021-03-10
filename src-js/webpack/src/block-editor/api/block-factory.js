@@ -2,8 +2,8 @@
  * Factory to create different types of the blocks.
  */
 
-import TextBlock from "./text-block";
-import ListBlock from "./list-block";
+import TextBlock from "./block-types/text-block";
+import ListBlock from "./block-types/list-block";
 
 export default  class BlockFactory {
 

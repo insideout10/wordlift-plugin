@@ -1,5 +1,5 @@
 import Block from "./block";
-import TextBlock from "./text-block";
+import TextBlock from "./block-types/text-block";
 import BlockFactory from "./block-factory";
 
 /**
