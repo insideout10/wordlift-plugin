@@ -100,7 +100,7 @@ export class Blocks {
 
   static create(blocks, dispatch) {
     return new this(
-      collectBlocks(blocks, block => "core/paragraph" === block.name || "core/freeform" === block.name),
+      collectBlocks(blocks, block => "core/paragraph" === block.name || "core/freeform" === block.name || "core/list" === block.name),
       dispatch
     );
   }

@@ -3,6 +3,14 @@
  */
 export class AbstractBlock {
 
+    constructor(block, dispatch, start) {
+        this._block = block;
+        this._dispatch = dispatch;
+        this._start = start;
+        this._end = -1
+        this._dirty = false;
+    }
+
     get block() {
         return this._block
     }
@@ -11,16 +19,20 @@ export class AbstractBlock {
         this._block = block
     }
 
-    /**
-     *  @abstract
-     */
     get content() {
+        return this._content;
+    }
+    set content(value) {
+        this._content = value;
+        this._dirty = true;
     }
 
-    /**
-     *  @abstract
-     */
-    set content(value) {
+    get end() {
+        return this._end;
+    }
+
+    set end(end) {
+        this._end = end
     }
 
     get clientId() {
