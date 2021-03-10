@@ -29,6 +29,6 @@ test("when a table section given, should create html content separated by delimi
         }
     ]
     const tableSection = new TableSection(mockTableSectionData);
-    expect(tableSection.rows).toEqual(2)
+    expect(tableSection.rows.length).toEqual(2)
 
 })
