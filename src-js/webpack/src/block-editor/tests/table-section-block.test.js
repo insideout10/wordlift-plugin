@@ -4,11 +4,11 @@ const mockTableSectionData = [
     {
         "cells": [
             {
-                "content": "foo",
+                "content": "foo1",
                 "tag": "td"
             },
             {
-                "content": "",
+                "content": "bar1",
                 "tag": "td"
             }
         ]
@@ -16,11 +16,11 @@ const mockTableSectionData = [
     {
         "cells": [
             {
-                "content": "bar",
+                "content": "foo2",
                 "tag": "td"
             },
             {
-                "content": "",
+                "content": "bar2",
                 "tag": "td"
             }
         ]
@@ -55,5 +55,7 @@ test("when a table section given undefined should should create zero rows", () =
 test("when a table section given, should create correct analysis html", () => {
     const tableSection = new TableSection(mockTableSectionData);
     const html = tableSection.getAnalysisHtml();
-    expect(html).toEqual("foo<wl-table-column-delimiter/>bar<wl-table-column-delimiter/><wl-table-row-delimiter/><wl-table-section-delimiter/>")
+    expect(html).toEqual("foo1<wl-table-column-delimiter/>bar1<wl-table-column-delimiter/><wl-table-row-delimiter/>" +
+        "foo2<wl-table-column-delimiter/>bar2<wl-table-column-delimiter/><wl-table-row-delimiter/>" +
+        "<wl-table-section-delimiter/>")
 })
