@@ -1,10 +1,9 @@
 import {AbstractBlock} from "./abstract-block";
 
 /**
- * Text block represents the core/list
+ * List block represents the core/list
  * in the gutenberg editor.
  */
-
 export default class ListBlock extends AbstractBlock {
 
     constructor(block, dispatch, start) {
