@@ -18,7 +18,11 @@ export default class TableColumn {
     }
 
     getAnalysisHtml() {
-        return this.data.content + TABLE_COLUMN_DELIMITER;
+        let content = "";
+        if (this.data && this.data.content ) {
+            content = this.data.content;
+        }
+        return content + TABLE_COLUMN_DELIMITER;
     }
 
 }
