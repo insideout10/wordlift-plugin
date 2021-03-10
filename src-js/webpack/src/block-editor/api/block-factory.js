@@ -4,6 +4,7 @@
 
 import TextBlock from "./block-types/text-block";
 import ListBlock from "./block-types/list-block";
+import TableBlock from "./block-types/table-block/table-block";
 
 export default  class BlockFactory {
 
@@ -13,6 +14,9 @@ export default  class BlockFactory {
         }
         else if ( "core/list" === block.name ) {
             return new ListBlock(block, dispatch, start);
+        }
+        else if ( "core/table" === block.name ) {
+            return new TableBlock(block, dispatch, start);
         }
     }
 

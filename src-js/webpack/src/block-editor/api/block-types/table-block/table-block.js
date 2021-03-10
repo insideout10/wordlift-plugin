@@ -1,5 +1,5 @@
 import {AbstractBlock} from "../abstract-block";
-import TableSection from "./table-section";
+import TableSection, {TABLE_SECTION_DELIMITER} from "./table-section";
 import {TABLE_ROW_DELIMITER} from "./table-row";
 
 /**
@@ -15,14 +15,19 @@ export default class TableBlock extends AbstractBlock {
             new TableSection(block.attributes.body),
             new TableSection(block.attributes.foot)
         ]
-        this._content = this.head.getAnalysisHtml() + this.body.getAnalysisHtml() + this.foot.getAnalysisHtml();
+        this._content = this.sections[0].getAnalysisHtml() + this.sections[1].getAnalysisHtml() + this.sections[2].getAnalysisHtml();
+        console.log("table html generated")
+        console.log(this._content)
     }
 
     apply() {
         if (this._dirty) {
-
+            console.log("applying changes")
+            console.log(this._content)
+            console.log(this.content)
+            console.log(this.content.split(TABLE_SECTION_DELIMITER))
             // delimit and update the blocks.
-            this.content.split(TABLE_ROW_DELIMITER)
+            this.content.split(TABLE_SECTION_DELIMITER)
                 .map((section, index) => {
                     if (this.sections[index]) {
                         this.sections[index].updateFromAnalysisHtml(section)

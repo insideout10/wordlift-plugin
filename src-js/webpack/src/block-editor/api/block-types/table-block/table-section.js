@@ -7,7 +7,7 @@
 
 import TableRow, {TABLE_ROW_DELIMITER} from "./table-row";
 
-const TABLE_SECTION_DELIMITER = '<wl-table-section-delimiter/>'
+export const TABLE_SECTION_DELIMITER = '<wl-table-section-delimiter/>'
 
 export default class TableSection {
 
