@@ -5,6 +5,8 @@
  */
 import TableColumn from "./table-column";
 
+const TABLE_ROW_DELIMITER = '<wl-table-row-delimiter/>'
+
 export default class TableRow {
 
     /**
@@ -18,6 +20,13 @@ export default class TableRow {
                 return new TableColumn(column);
             })
         }
+    }
+
+    getAnalysisHtml() {
+        const columns = this.columns.map((column)=> {
+            return column.getAnalysisHtml();
+        })
+        return columns.join("") + TABLE_ROW_DELIMITER
     }
 
 }

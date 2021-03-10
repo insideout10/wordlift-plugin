@@ -7,6 +7,8 @@
 
 import TableRow from "./table-row";
 
+const TABLE_SECTION_DELIMITER = '<wl-table-section-delimiter/>'
+
 export default class TableSection {
 
     /**
@@ -26,4 +28,10 @@ export default class TableSection {
     }
 
 
+    getAnalysisHtml() {
+        const rows = this.rows.map((row) => {
+            return row.getAnalysisHtml()
+        })
+        return rows.join("")  + TABLE_SECTION_DELIMITER
+    }
 }

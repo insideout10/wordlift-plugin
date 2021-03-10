@@ -4,7 +4,7 @@ const mockTableSectionData = [
     {
         "cells": [
             {
-                "content": "<span id=\"urn:local-annotation-520881\" class=\"textannotation disambiguated\" itemid=\"http://data.wordlift.io/wl040/entity/my_entity\">My entity</span>",
+                "content": "foo",
                 "tag": "td"
             },
             {
@@ -16,7 +16,7 @@ const mockTableSectionData = [
     {
         "cells": [
             {
-                "content": "<span id=\"urn:local-annotation-253356\" class=\"textannotation disambiguated\" itemid=\"http://data.wordlift.io/wl040/entity/foo_bar\">foo bar</span><br>test",
+                "content": "bar",
                 "tag": "td"
             },
             {
@@ -50,4 +50,10 @@ test("when a table section given a invalid string should should create zero rows
 test("when a table section given undefined should should create zero rows", () => {
     const tableSection = new TableSection(undefined);
     expect(tableSection.rows.length).toEqual(0)
+})
+
+test("when a table section given, should create correct analysis html", () => {
+    const tableSection = new TableSection(mockTableSectionData);
+    const html = tableSection.getAnalysisHtml();
+    expect(html).toEqual("foo<wl-table-column-delimiter/>bar<wl-table-column-delimiter/><wl-table-row-delimiter/><wl-table-section-delimiter/>")
 })
