@@ -1,4 +1,6 @@
 import Block from "./block";
+import TextBlock from "./text-block";
+import BlockFactory from "./block-factory";
 
 /**
  *
@@ -43,8 +45,8 @@ export class Blocks {
         const content = block.attributes.content;
         const start = cursor;
         cursor += content.length + this._blockSeparatorLength;
-
-        this._blocks.push(new Block(block, dispatch, start, cursor));
+        console.log("using block factory")
+        this._blocks.push(BlockFactory.getBlock(block, dispatch, content, start, cursor));
 
         return content;
       })
