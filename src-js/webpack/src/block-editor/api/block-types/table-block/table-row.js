@@ -33,7 +33,7 @@ export default class TableRow {
     getAttributeData() {
         const columns = [];
         this.columns.map((column) => {
-            return column.getAttributeData()
+            columns.push( column.getAttributeData() )
         })
         return { "cells": columns };
     }
@@ -44,15 +44,15 @@ export default class TableRow {
      *
      * @param html {String}
      */
-    static createFromAnalysisHtml(html) {
-        const tableRow = new TableRow(null);
-        // Set the rows after parsing.
-        tableRow.columns = html.split(TABLE_COLUMN_DELIMITER)
-            .map((rowHtml) => {
-                return TableColumn.createFromAnalysisHtml(rowHtml);
-            });
+     updateFromAnalysisHtml(html) {
 
-        return tableRow;
+        // Set the columns after parsing.
+        html.split(TABLE_COLUMN_DELIMITER)
+            .map((rowHtml, index) => {
+                if ( this.columns[index]) {
+                    this.columns[index].updateFromAnalysisHtml(rowHtml)
+                }
+            });
     }
 
 }

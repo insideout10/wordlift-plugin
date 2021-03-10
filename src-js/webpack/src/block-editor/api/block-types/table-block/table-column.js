@@ -4,6 +4,7 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 export const TABLE_COLUMN_DELIMITER = '<wl-table-column-delimiter/>'
+
 export default class TableColumn {
 
     /**
@@ -26,18 +27,15 @@ export default class TableColumn {
     }
 
     getAttributeData() {
-        return {
-            content: this.data.content
-        }
+        return this.data
     }
 
     /**
      *
      * @param html {String}
      */
-    static createFromAnalysisHtml(html) {
-
-        return new TableColumn({content: html} );
+    updateFromAnalysisHtml(html) {
+        this.data.content = html
     }
 
 }

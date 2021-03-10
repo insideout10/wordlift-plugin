@@ -42,17 +42,14 @@ export default class TableSection {
      *
      * @param html {String}
      */
-    static createFromAnalysisHtml(html) {
-
-        const tableSection = new TableSection(null);
+    updateFromAnalysisHtml(html) {
         // Set the rows after parsing.
-        tableSection.rows = html.split(TABLE_ROW_DELIMITER)
-            .map((rowHtml) => {
-                return TableRow.createFromAnalysisHtml(rowHtml);
+         html.split(TABLE_ROW_DELIMITER)
+            .map((rowHtml, index) => {
+                if ( this.rows[index] ) {
+                    this.rows[index].updateFromAnalysisHtml(rowHtml)
+                }
             });
-
-        return tableSection;
-
     }
 
     getAttributeData() {

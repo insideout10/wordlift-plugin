@@ -62,9 +62,37 @@ test("when a table section given, should create correct analysis html", () => {
 
 
 test("when a table section html given should create the original object", () => {
-    // Note we wont have the section delimiter here since its is removed on tabe
-    const tableSection = TableSection.createFromAnalysisHtml("foo1<wl-table-column-delimiter/>bar1<wl-table-column-delimiter/><wl-table-row-delimiter/>" +
-        "foo2<wl-table-column-delimiter/>bar2<wl-table-column-delimiter/><wl-table-row-delimiter/>")
+    const tableSection = new TableSection(mockTableSectionData);
 
-    expect(tableSection.getAttributeData()).toEqual(mockTableSectionData);
+    const expectedData = [
+        {
+            "cells": [
+                {
+                    "content": "foo3",
+                    "tag": "td"
+                },
+                {
+                    "content": "bar3",
+                    "tag": "td"
+                }
+            ]
+        },
+        {
+            "cells": [
+                {
+                    "content": "foo4",
+                    "tag": "td"
+                },
+                {
+                    "content": "bar4",
+                    "tag": "td"
+                }
+            ]
+        }
+    ]
+
+    tableSection.updateFromAnalysisHtml("foo3<wl-table-column-delimiter/>bar3<wl-table-column-delimiter/><wl-table-row-delimiter/>" +
+        "foo4<wl-table-column-delimiter/>bar4<wl-table-column-delimiter/><wl-table-row-delimiter/>")
+
+    expect(tableSection.getAttributeData()).toEqual(expectedData);
 })
