@@ -3,9 +3,9 @@
  * @since 3.29.1
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
-import TableColumn from "./table-column";
+import TableColumn, {TABLE_COLUMN_DELIMITER} from "./table-column";
 
-const TABLE_ROW_DELIMITER = '<wl-table-row-delimiter/>'
+export const TABLE_ROW_DELIMITER = '<wl-table-row-delimiter/>'
 
 export default class TableRow {
 
@@ -27,6 +27,32 @@ export default class TableRow {
             return column.getAnalysisHtml();
         })
         return columns.join("") + TABLE_ROW_DELIMITER
+    }
+
+
+    getAttributeData() {
+        const columns = [];
+        this.columns.map((column) => {
+            return column.getAttributeData()
+        })
+        return { "cells": columns };
+    }
+
+
+
+    /**
+     *
+     * @param html {String}
+     */
+    static createFromAnalysisHtml(html) {
+        const tableRow = new TableRow(null);
+        // Set the rows after parsing.
+        tableRow.columns = html.split(TABLE_COLUMN_DELIMITER)
+            .map((rowHtml) => {
+                return TableColumn.createFromAnalysisHtml(rowHtml);
+            });
+
+        return tableRow;
     }
 
 }

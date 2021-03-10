@@ -25,4 +25,19 @@ export default class TableColumn {
         return content + TABLE_COLUMN_DELIMITER;
     }
 
+    getAttributeData() {
+        return {
+            content: this.data.content
+        }
+    }
+
+    /**
+     *
+     * @param html {String}
+     */
+    static createFromAnalysisHtml(html) {
+
+        return new TableColumn({content: html} );
+    }
+
 }

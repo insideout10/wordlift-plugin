@@ -5,7 +5,7 @@
  */
 
 
-import TableRow from "./table-row";
+import TableRow, {TABLE_ROW_DELIMITER} from "./table-row";
 
 const TABLE_SECTION_DELIMITER = '<wl-table-section-delimiter/>'
 
@@ -27,11 +27,41 @@ export default class TableSection {
         return this._rows
     }
 
-
+    set rows(rows) {
+        this._rows = rows
+    }
     getAnalysisHtml() {
         const rows = this.rows.map((row) => {
             return row.getAnalysisHtml()
         })
         return rows.join("")  + TABLE_SECTION_DELIMITER
     }
+
+
+    /**
+     *
+     * @param html {String}
+     */
+    static createFromAnalysisHtml(html) {
+
+        const tableSection = new TableSection(null);
+        // Set the rows after parsing.
+        tableSection.rows = html.split(TABLE_ROW_DELIMITER)
+            .map((rowHtml) => {
+                return TableRow.createFromAnalysisHtml(rowHtml);
+            });
+
+        return tableSection;
+
+    }
+
+    getAttributeData() {
+        const sectionRows = [];
+        this.rows.map((row)=> {
+            sectionRows.push(row.getAttributeData())
+        })
+        return sectionRows;
+    }
+
+
 }
