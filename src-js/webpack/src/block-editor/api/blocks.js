@@ -42,12 +42,12 @@ export class Blocks {
     let cursor = 0;
     this._html = blocks
       .map(block => {
-        const content = block.attributes.content;
         const start = cursor;
+        const blockObj = BlockFactory.getBlock(block, dispatch, start);
+        const content = blockObj.content;
         cursor += content.length + this._blockSeparatorLength;
-        console.log("using block factory")
-        this._blocks.push(BlockFactory.getBlock(block, dispatch, content, start, cursor));
-
+        blockObj.end = cursor;
+        this._blocks.push(blockObj);
         return content;
       })
       .join(this._blockSeparator);

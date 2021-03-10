@@ -6,9 +6,9 @@ import TextBlock from "./text-block";
 
 export default  class BlockFactory {
 
-    static getBlock( block, dispatch, content, start, end) {
+    static getBlock( block, dispatch, start) {
         if ( "core/paragraph" === block.name || "core/freeform" === block.name ) {
-            return new TextBlock(block, dispatch, content, start, end);
+            return new TextBlock(block, dispatch, start);
         }
     }
 
