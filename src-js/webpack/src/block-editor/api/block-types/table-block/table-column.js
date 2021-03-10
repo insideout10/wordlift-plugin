@@ -3,7 +3,7 @@
  * @since 3.29.1
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
-const TABLE_COLUMN_DELIMITER = '<wl-table-column-delimiter/>'
+export const TABLE_COLUMN_DELIMITER = '<wl-table-column-delimiter/>'
 export default class TableColumn {
 
     /**
