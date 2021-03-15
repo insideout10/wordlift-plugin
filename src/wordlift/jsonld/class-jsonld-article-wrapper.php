@@ -87,7 +87,13 @@ class Jsonld_Article_Wrapper {
 
 		$author_jsonld = $this->get_author_linked_entity( $article_jsonld );
 
-		if ( $author_jsonld ) {
+
+		/**
+		 * The author entities can be present in graph for some entity types
+		 * for Person and Organization, so check before we add it to graph.
+		 * reference : https://schema.org/author
+		 */
+		if ( $author_jsonld && ! $this->is_author_entity_present_in_graph( $jsonld, $article_jsonld['author']['@id'] )) {
 			$jsonld[] = $author_jsonld;
 		}
 
@@ -122,6 +128,16 @@ class Jsonld_Article_Wrapper {
 
 		return $this->cached_postid_to_jsonld_converter->convert( $author_entity_post->ID );
 
+	}
+
+	private function is_author_entity_present_in_graph( $jsonld, $author_entity_id ) {
+
+		foreach ( $jsonld as $item ) {
+			if ( $item && array_key_exists('@id', $item ) && $item['@id'] === $author_entity_id ) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
