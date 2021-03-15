@@ -41,13 +41,9 @@ class Wordlift_Jsonld_Article_Wrapper extends Wordlift_Unit_Test_Case {
 		$this->post_to_jsonld_converter = $this->getMockBuilder( 'Wordlift_Post_To_Jsonld_Converter' )
 		                                       ->disableOriginalConstructor()
 		                                       ->getMock();
-		$this->jsonld_service           = $this->getMockBuilder( 'Wordlift_Jsonld_Service' )
-		                                       ->disableOriginalConstructor()
-		                                       ->getMock();
 
 		$this->jsonld_article_wrapper = new Jsonld_Article_Wrapper(
-			$this->post_to_jsonld_converter,
-			$this->jsonld_service
+			$this->post_to_jsonld_converter
 		);
 	}
 
