@@ -14,6 +14,7 @@ require_once( 'class-wordlift-location-property-service.php' );
 require_once( 'class-wordlift-url-property-service.php' );
 require_once( 'class-wordlift-double-property-service.php' );
 require_once( 'class-wordlift-duration-property-service.php' );
+require_once( 'class-wordlift-required-property-service.php' );
 
 /**
  * A Wordlift_Property_Getter_Factory, which instantiate a configured
@@ -61,6 +62,8 @@ class Wordlift_Property_Getter_Factory {
 			Wordlift_Schema_Service::FIELD_COOK_TIME,
 			Wordlift_Schema_Service::FIELD_TOTAL_TIME,
 		) );
+
+		$property_getter->register( new Wordlift_Required_Property_Service( $entity_service ), apply_filters( 'wl_required_property', array() ) );
 
 		return $property_getter;
 	}
