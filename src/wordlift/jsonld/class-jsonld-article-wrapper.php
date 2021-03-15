@@ -87,7 +87,6 @@ class Jsonld_Article_Wrapper {
 
 		$author_jsonld = $this->get_author_linked_entity( $article_jsonld );
 
-
 		/**
 		 * The author entities can be present in graph for some entity types
 		 * for Person and Organization, so check before we add it to graph.
