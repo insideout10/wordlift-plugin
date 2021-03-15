@@ -43,7 +43,8 @@ class Wordlift_Jsonld_Article_Wrapper extends Wordlift_Unit_Test_Case {
 		                                       ->getMock();
 
 		$this->jsonld_article_wrapper = new Jsonld_Article_Wrapper(
-			$this->post_to_jsonld_converter
+			$this->post_to_jsonld_converter,
+			null
 		);
 	}
 
@@ -201,8 +202,8 @@ class Wordlift_Jsonld_Article_Wrapper extends Wordlift_Unit_Test_Case {
 	}
 
 	public function test_when_author_reference_added_in_article_jsonld_should_be_expanded() {
-
-		$jsonld_wrapper = new Jsonld_Article_Wrapper(Wordlift_Post_To_Jsonld_Converter::get_instance());
+		$wordlift_test  = $this->get_wordlift_test();
+		$jsonld_wrapper = new Jsonld_Article_Wrapper( Wordlift_Post_To_Jsonld_Converter::get_instance(), $wordlift_test->get_cached_postid_to_jsonld_converter() );
 
 		// create a user, link it to an entity
 		$current_user_id = $this->factory()->user->create( array(
@@ -210,20 +211,21 @@ class Wordlift_Jsonld_Article_Wrapper extends Wordlift_Unit_Test_Case {
 		) );
 		wp_set_current_user( $current_user_id );
 
-		$author_entity = $this->factory()->post->create(array('post_type' => 'entity'));
+		$author_entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
 
 		// Link the author to entity.
 		$user_service = Wordlift_User_Service::get_instance();
 		$user_service->set_entity( $current_user_id, $author_entity );
 
-		$post_id = $this->factory()->post->create(array('post_type' => 'entity'));
+		$post_id = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
 
 
-		$mock_jsonld = array( array(
-			'@id' => 'https://foo.com/#bar',
-			'@type' => 'Thing'
-		) );
-
+		$mock_jsonld = array(
+			array(
+				'@id'   => 'https://foo.com/#bar',
+				'@type' => 'Thing'
+			)
+		);
 
 
 		$jsonld = $jsonld_wrapper->after_get_jsonld( $mock_jsonld, $post_id, Jsonld_Context_Enum::PAGE );
