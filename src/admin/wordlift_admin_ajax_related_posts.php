@@ -36,12 +36,11 @@ function wordlift_ajax_related_posts( $http_raw_data = null ) {
 	$filtering_entity_ids = wl_get_entity_post_ids_by_uris( $filtering_entity_uris );
 	$related_posts        = array();
 
+	// If the current post is an entity, related posts to the current entity are
+	// returned.
+	$entity_service = Wordlift_Entity_Service::get_instance();
 
-	/**
-	 * @see https://github.com/insideout10/wordlift-plugin/issues/1312
-	 * The entity check should be done on post type, not on the entity type taxonomy
-	 */
-	if ( get_post_type( $post_id ) === Wordlift_Entity_Service::TYPE_NAME ) {
+	if ( $entity_service->is_entity( $post->ID ) ) {
 		$filtering_entity_ids = array( $post_id );
 	}
 
