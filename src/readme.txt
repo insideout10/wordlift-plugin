@@ -142,6 +142,16 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.29.1 (2021-03-__) =
+
+* Enhancement [#1320](https://github.com/insideout10/wordlift-plugin/issues/1320): Add filter to add required properties for expanding
+* Enhancement [#1311](https://github.com/insideout10/wordlift-plugin/issues/1311): Entities support for other core blocks
+
+* Fix [#1319](https://github.com/insideout10/wordlift-plugin/issues/1319): Delete (Trash) button not working on mappings screen
+* Fix [#1318](https://github.com/insideout10/wordlift-plugin/issues/1318): Author references needed to be expanded for article wrapper
+* Fix [#1307](https://github.com/insideout10/wordlift-plugin/issues/1307): inLanguage property must follow bcp47 conventions
+* Fix [#1300](https://github.com/insideout10/wordlift-plugin/issues/1300): Invalid Key error message persists even after saving a valid key
+
 = 3.29.0 (2021-03-04) =
 
 * Enhancement [#1208](https://github.com/insideout10/wordlift-plugin/issues/1208): SameAs UI upgrade
