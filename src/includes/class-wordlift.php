@@ -1313,6 +1313,7 @@ class Wordlift {
 		$this->reference_rebuild_service  = new Wordlift_Reference_Rebuild_Service( $this->entity_service );
 
 		$this->loader->add_action( 'enqueue_block_editor_assets', $this, 'add_wl_enabled_blocks' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $this, 'add_wl_enabled_blocks' );
 
 		/**
 		 * Filter: wl_feature__enable__blocks.
