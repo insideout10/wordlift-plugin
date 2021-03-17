@@ -4,7 +4,7 @@
  * @author Akshay Raje <akshay@wordlift.io>
  */
 
-namespace Cafemedia_Knowledge_Graph\Jsonld;
+namespace Wordlift\Vocabulary\Jsonld;
 
 use Cafemedia_Knowledge_Graph\Api\Entity_Rest_Endpoint;
 

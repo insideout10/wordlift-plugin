@@ -1,6 +1,6 @@
 <?php
 
-namespace Cafemedia_Knowledge_Graph;
+namespace Wordlift\Vocabulary;
 
 class Sync_State {
 

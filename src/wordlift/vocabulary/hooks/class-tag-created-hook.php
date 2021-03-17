@@ -1,6 +1,6 @@
 <?php
 
-namespace Cafemedia_Knowledge_Graph\Hooks;
+namespace Wordlift\Vocabulary\Hooks;
 
 use Cafemedia_Knowledge_Graph\Analysis_Background_Service;
 

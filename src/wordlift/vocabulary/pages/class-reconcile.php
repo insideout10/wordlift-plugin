@@ -1,6 +1,6 @@
 <?php
 
-namespace Cafemedia_Knowledge_Graph\Pages;
+namespace Wordlift\Vocabulary\Pages;
 
 use Cafemedia_Knowledge_Graph\Api\Api_Config;
 

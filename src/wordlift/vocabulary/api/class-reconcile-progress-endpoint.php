@@ -4,7 +4,7 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
-namespace Cafemedia_Knowledge_Graph\Api;
+namespace Wordlift\Vocabulary\Api;
 
 
 /**

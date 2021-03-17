@@ -4,7 +4,7 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
-namespace Cafemedia_Knowledge_Graph\Api;
+namespace Wordlift\Vocabulary\Api;
 
 use Cafemedia_Knowledge_Graph\Analysis_Background_Process;
 use Cafemedia_Knowledge_Graph\Analysis_Background_Service;

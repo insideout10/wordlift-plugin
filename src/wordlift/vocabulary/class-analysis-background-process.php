@@ -1,6 +1,6 @@
 <?php
 
-namespace Cafemedia_Knowledge_Graph;
+namespace Wordlift\Vocabulary;
 
 class Analysis_Background_Process extends \Wordlift_Plugin_WP_Background_Process {
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Cafemedia_Knowledge_Graph\Api;
+namespace Wordlift\Vocabulary\Api;
 
 /**
  * @since 1.0.0
