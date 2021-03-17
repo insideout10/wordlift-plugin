@@ -1,4 +1,14 @@
 (function() {
+  window.wlEnabledBlocks = window.wlEnabledBlocks || [
+    "wordlift/products-navigator",
+    "wordlift/navigator",
+    "wordlift/chord",
+    "wordlift/geomap",
+    "wordlift/timeline",
+    "wordlift/cloud",
+    "wordlift/vocabulary",
+    "wordlift/faceted-search"
+  ];
   tinymce.create("tinymce.plugins.wl_shortcodes", {
     // Custom function for the Chord
     chordClick: function() {
@@ -88,7 +98,7 @@
       // built here, otherwise in the createControl() function.
       if (tinymce.majorVersion == 4) {
         const menu4 = [];
-        window.wlEnabledBlocks.forEach(function(item) {
+        window.wlEnabledBlocks.forEach(item => {
           switch (item) {
             case "wordlift/products-navigator":
               menu4.push({
@@ -188,7 +198,7 @@
         });
 
         c.onRenderMenu.add(function(c, m) {
-          window.wlEnabledBlocks.forEach(function(item) {
+          window.wlEnabledBlocks.forEach(item => {
             switch (item) {
               case "wordlift/products-navigator":
                 m.add({
