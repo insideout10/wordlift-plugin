@@ -6,7 +6,7 @@
 
 namespace Wordlift\Vocabulary\Jsonld;
 
-use Cafemedia_Knowledge_Graph\Api\Entity_Rest_Endpoint;
+use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
 
 class Post_Jsonld {
 

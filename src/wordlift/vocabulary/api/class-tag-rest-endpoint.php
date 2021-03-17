@@ -2,9 +2,9 @@
 
 namespace Wordlift\Vocabulary\Api;
 
-use Cafemedia_Knowledge_Graph\Analysis_Background_Process;
-use Cafemedia_Knowledge_Graph\Analysis_Background_Service;
-use Cafemedia_Knowledge_Graph\Analysis_Service;
+
+use Wordlift\Vocabulary\Analysis_Background_Service;
+use Wordlift\Vocabulary\Analysis_Service;
 use WP_REST_Server;
 
 /**

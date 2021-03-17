@@ -2,7 +2,7 @@
 
 namespace Wordlift\Vocabulary\Hooks;
 
-use Cafemedia_Knowledge_Graph\Analysis_Background_Service;
+use Wordlift\Vocabulary\Analysis_Background_Service;
 
 class Tag_Created_Hook {
 

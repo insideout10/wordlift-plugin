@@ -6,10 +6,9 @@
 
 namespace Wordlift\Vocabulary\Api;
 
-use Cafemedia_Knowledge_Graph\Analysis_Background_Process;
-use Cafemedia_Knowledge_Graph\Analysis_Background_Service;
-use Cafemedia_Knowledge_Graph\Options_Cache;
-use Cafemedia_Knowledge_Graph\Sync_State;
+use Wordlift\Vocabulary\Analysis_Background_Service;
+use Wordlift\Vocabulary\Options_Cache;
+use Wordlift\Vocabulary\Sync_State;
 use WP_REST_Server;
 
 class Background_Analysis_Endpoint {

@@ -2,7 +2,7 @@
 
 namespace Wordlift\Vocabulary\Pages;
 
-use Cafemedia_Knowledge_Graph\Api\Api_Config;
+use Wordlift\Vocabulary\Api\Api_Config;
 
 /**
  * @since 1.0.0
