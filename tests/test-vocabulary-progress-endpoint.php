@@ -1,11 +1,18 @@
 <?php
 
-use Cafemedia_Knowledge_Graph\Api\Api_Config;
-use Cafemedia_Knowledge_Graph\Api\Entity_Rest_Endpoint;
 
+use Wordlift\Vocabulary\Api\Api_Config;
+use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
+use Wordlift\Vocabulary\Vocabulary_Loader;
+
+/**
+ * @since 3.30.0
+ * @group vocabulary
+ * @author Naveen Muthusamy <naveen@wordlift.io>
+ */
 class Reconcile_Progress extends \WP_UnitTestCase {
 
-	private $reconcile_progress_route = Api_Config::REST_NAMESPACE . '/reconcile_progress/progress';
+	private $reconcile_progress_route;
 
 	/**
 	 * @var WP_REST_Server
@@ -18,10 +25,12 @@ class Reconcile_Progress extends \WP_UnitTestCase {
 		// Resetting global filters, since we want our test
 		// to run independently without global state.
 		$wp_filter = array();
-		cafemedia_knowledge_graph_init();
+		$loader = new Vocabulary_Loader();
+		$loader->init_vocabulary();
 		$wp_rest_server = new WP_REST_Server();
 		$this->server   = $wp_rest_server;
 		do_action( 'rest_api_init' );
+		$this->reconcile_progress_route = Api_Config::REST_NAMESPACE . '/reconcile_progress/progress';
 	}
 
 	public function test_should_return_items_completed_correctly() {

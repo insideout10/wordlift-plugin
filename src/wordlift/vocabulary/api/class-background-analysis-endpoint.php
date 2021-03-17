@@ -6,6 +6,7 @@
 
 namespace Wordlift\Vocabulary\Api;
 
+use Wordlift\Vocabulary\Analysis_Background_Process;
 use Wordlift\Vocabulary\Analysis_Background_Service;
 use Wordlift\Vocabulary\Options_Cache;
 use Wordlift\Vocabulary\Sync_State;

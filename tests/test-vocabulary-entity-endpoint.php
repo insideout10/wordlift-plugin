@@ -2,19 +2,21 @@
 
 use Wordlift\Vocabulary\Api\Api_Config;
 use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
+use Wordlift\Vocabulary\Vocabulary_Loader;
 
 
 /**
- * @since 1.0.0
+ * @since 3.30.0
+ * @group vocabulary
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 class Accept_Reject_Entity_Endpoint_Test extends \WP_UnitTestCase {
 
-	private $accept_route = Api_Config::REST_NAMESPACE . '/entity/accept';
+	private $accept_route;
 
-	private $reject_route = Api_Config::REST_NAMESPACE . '/entity/undo';
+	private $reject_route;
 
-	private $no_match_route = Api_Config::REST_NAMESPACE . '/entity/no_match';
+	private $no_match_route;
 
 	public function setUp() {
 		parent::setUp();
@@ -22,10 +24,18 @@ class Accept_Reject_Entity_Endpoint_Test extends \WP_UnitTestCase {
 		// Resetting global filters, since we want our test
 		// to run independently without global state.
 		$wp_filter = array();
-		cafemedia_knowledge_graph_init();
+		$loader = new Vocabulary_Loader();
+		$loader->init_vocabulary();
 		$wp_rest_server = new WP_REST_Server();
 		$this->server   = $wp_rest_server;
 		do_action( 'rest_api_init' );
+
+		$this->accept_route = Api_Config::REST_NAMESPACE . '/entity/accept';
+
+		$this->reject_route = Api_Config::REST_NAMESPACE . '/entity/undo';
+
+		$this->no_match_route = Api_Config::REST_NAMESPACE . '/entity/no_match';
+
 	}
 
 
@@ -51,7 +61,7 @@ class Accept_Reject_Entity_Endpoint_Test extends \WP_UnitTestCase {
 		$this->assertCount( 1, get_term_meta( $term_id, Entity_Rest_Endpoint::DESCRIPTION_META_KEY ) );
 		$this->assertCount( 1, get_term_meta( $term_id, Entity_Rest_Endpoint::TYPE_META_KEY ) );
 		$this->assertCount( 1, get_term_meta( $term_id, Entity_Rest_Endpoint::EXTERNAL_ENTITY_META_KEY ) );
-		$this->assertEquals( 1, get_term_meta($term_id, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING, true) );
+		$this->assertEquals( 1, get_term_meta( $term_id, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING, true ) );
 	}
 
 
@@ -75,7 +85,7 @@ class Accept_Reject_Entity_Endpoint_Test extends \WP_UnitTestCase {
 
 
 		// Insert a term meta for no match entity uri.
-		add_term_meta( $term_id, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING, 'https://google.com');
+		add_term_meta( $term_id, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING, 'https://google.com' );
 
 
 		$request = new WP_REST_Request( 'POST', $this->reject_route );
@@ -91,7 +101,7 @@ class Accept_Reject_Entity_Endpoint_Test extends \WP_UnitTestCase {
 		$this->assertCount( 0, get_term_meta( $term_id, Entity_Rest_Endpoint::TYPE_META_KEY ) );
 		$this->assertCount( 0, get_term_meta( $term_id, Entity_Rest_Endpoint::EXTERNAL_ENTITY_META_KEY ) );
 		$this->assertCount( 0, get_term_meta( $term_id, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING ), 'No match should be cleared on undo' );
-		$this->assertEquals( '', get_term_meta($term_id, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING, true) );
+		$this->assertEquals( '', get_term_meta( $term_id, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING, true ) );
 	}
 
 
@@ -103,15 +113,16 @@ class Accept_Reject_Entity_Endpoint_Test extends \WP_UnitTestCase {
 		$term_id   = $term_data['term_id'];
 		$request   = new WP_REST_Request( 'POST', $this->no_match_route );
 		$request->set_header( 'content-type', 'application/json' );
-		$json_data = json_encode( array( 'term_id'    => $term_id,
-		                                 'entity_uri' => 'https://knowledge.cafemedia.com/food/entity/pie'
+		$json_data = json_encode( array(
+			'term_id'    => $term_id,
+			'entity_uri' => 'https://knowledge.cafemedia.com/food/entity/pie'
 		) );
 		$request->set_body( $json_data );
 		$response = $this->server->dispatch( $request );
 
-		$request   = new WP_REST_Request( 'POST', $this->no_match_route );
+		$request = new WP_REST_Request( 'POST', $this->no_match_route );
 		$request->set_header( 'content-type', 'application/json' );
-		$json_data = json_encode( array( 'term_id'    => $term_id) );
+		$json_data = json_encode( array( 'term_id' => $term_id ) );
 		$request->set_body( $json_data );
 		$response = $this->server->dispatch( $request );
 		$this->assertEquals( 200, $response->get_status(), 'No match endpoint should be registered' );

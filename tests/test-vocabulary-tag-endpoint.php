@@ -1,18 +1,19 @@
 <?php
 
-use Cafemedia_Knowledge_Graph\Analysis_Background_Process;
-use Cafemedia_Knowledge_Graph\Analysis_Background_Service;
-use Cafemedia_Knowledge_Graph\Analysis_Service;
-use Cafemedia_Knowledge_Graph\Api\Entity_Rest_Endpoint;
-use Cafemedia_Knowledge_Graph\Api\Tag_Rest_Endpoint;
-
-use Cafemedia_Knowledge_Graph\Options_Cache;
-use Cafemedia_Knowledge_Graph\Sync_State;
 use Wordlift\Api\Response;
 use Wordlift\Cache\Ttl_Cache;
+use Wordlift\Vocabulary\Analysis_Background_Process;
+use Wordlift\Vocabulary\Analysis_Background_Service;
+use Wordlift\Vocabulary\Analysis_Service;
+use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
+use Wordlift\Vocabulary\Api\Tag_Rest_Endpoint;
+use Wordlift\Vocabulary\Options_Cache;
+use Wordlift\Vocabulary\Sync_State;
+use Wordlift\Vocabulary\Vocabulary_Loader;
 
 /**
- * @since 1.0.0
+ * @since 3.30.0
+ * @group vocabulary
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 class Tag_Endpoint_Test extends \WP_UnitTestCase {
@@ -30,7 +31,8 @@ class Tag_Endpoint_Test extends \WP_UnitTestCase {
 		// Resetting global filters, since we want our test
 		// to run independently without global state.
 		$wp_filter = array();
-		cafemedia_knowledge_graph_init();
+		$loader = new Vocabulary_Loader();
+		$loader->init_vocabulary();
 		$wp_rest_server = new WP_REST_Server();
 		$this->server   = $wp_rest_server;
 		do_action( 'rest_api_init' );
@@ -407,10 +409,12 @@ class Tag_Endpoint_Test extends \WP_UnitTestCase {
 		$post_3 = $this->factory()->post->create();
 
 
-		$tag_2 = wp_insert_term( 'test_1', 'post_tag' )['term_id'];
-		$tag_1 = wp_insert_term( 'test_2', 'post_tag' )['term_id'];
-		$tag_3 = wp_insert_term( 'test_3', 'post_tag' )['term_id'];
-
+		$tag_2 = wp_insert_term( 'test_1', 'post_tag' );
+		$tag_2 = $tag_2['term_id'];
+		$tag_1 = wp_insert_term( 'test_2', 'post_tag' );
+		$tag_1 = $tag_1['term_id'];
+		$tag_3 = wp_insert_term( 'test_3', 'post_tag' );
+		$tag_3 = $tag_3['term_id'];
 
 		wp_add_post_tags( $post_1, array( $tag_1 ) );
 		wp_add_post_tags( $post_2, array( $tag_1, $tag_2, $tag_3 ) );

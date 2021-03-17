@@ -1,17 +1,26 @@
 <?php
 
 
+use Wordlift\Vocabulary\Analysis_Background_Process;
+use Wordlift\Vocabulary\Analysis_Background_Service;
 use Wordlift\Vocabulary\Api\Api_Config;
+use Wordlift\Vocabulary\Options_Cache;
+use Wordlift\Vocabulary\Sync_State;
+use Wordlift\Vocabulary\Vocabulary_Loader;
 
+/**
+ * @group vocabulary
+ * Class Analysis_Progress_Endpoint_Test
+ */
 class Analysis_Progress_Endpoint_Test extends \WP_UnitTestCase {
 
-	private $start_analysis_route = Api_Config::REST_NAMESPACE . '/background_analysis/start';
+	private $start_analysis_route;
 
-	private $stop_analysis_route = Api_Config::REST_NAMESPACE . '/background_analysis/stop';
+	private $stop_analysis_route;
 
-	private $stats_analysis_route = Api_Config::REST_NAMESPACE . '/background_analysis/stats';
+	private $stats_analysis_route;
 
-	private $restart_analysis_route = Api_Config::REST_NAMESPACE . '/background_analysis/restart';
+	private $restart_analysis_route;
 	/**
 	 * @var WP_REST_Server
 	 */
@@ -24,10 +33,21 @@ class Analysis_Progress_Endpoint_Test extends \WP_UnitTestCase {
 		// Resetting global filters, since we want our test
 		// to run independently without global state.
 		$wp_filter = array();
-		cafemedia_knowledge_graph_init();
+		$loader = new Vocabulary_Loader();
+		$loader->init_vocabulary();
 		$wp_rest_server = new WP_REST_Server();
 		$this->server   = $wp_rest_server;
 		do_action( 'rest_api_init' );
+
+		$this->start_analysis_route = Api_Config::REST_NAMESPACE . '/background_analysis/start';
+
+		$this->stop_analysis_route = Api_Config::REST_NAMESPACE . '/background_analysis/stop';
+
+		$this->stats_analysis_route = Api_Config::REST_NAMESPACE . '/background_analysis/stats';
+
+		$this->restart_analysis_route = Api_Config::REST_NAMESPACE . '/background_analysis/restart';
+
+
 	}
 
 	public function test_when_analysis_start_request_done_analysis_should_start() {
@@ -93,10 +113,11 @@ class Analysis_Progress_Endpoint_Test extends \WP_UnitTestCase {
 		$state = get_option( Analysis_Background_Process::WL_CMKG_ANALYSIS_BACKGROUND_PROCESS, Sync_State::unknown() );
 		$this->assertEquals( $state->state, 'started' );
 		// check if the flags are removed.
-		array_map( function ( $tag_id ) use ( $cache_service ) {
-			$this->assertFalse( $cache_service->get( $tag_id ) );
-			$this->assertEquals( '', get_term_meta( $tag_id, Analysis_Background_Service::ANALYSIS_DONE_FLAG, true ), 'Analysis done flag should be removed' );
-			$this->assertEquals( '', get_term_meta( $tag_id, Analysis_Background_Service::ENTITIES_PRESENT_FOR_TERM, true ), 'Entities present flag should be removed' );
+		$that = $this;
+		array_map( function ( $tag_id ) use ( $cache_service, $that ) {
+			$that->assertFalse( $cache_service->get( $tag_id ) );
+			$that->assertEquals( '', get_term_meta( $tag_id, Analysis_Background_Service::ANALYSIS_DONE_FLAG, true ), 'Analysis done flag should be removed' );
+			$that->assertEquals( '', get_term_meta( $tag_id, Analysis_Background_Service::ENTITIES_PRESENT_FOR_TERM, true ), 'Entities present flag should be removed' );
 		}, $tag_ids );
 
 		// this meta should be present even after removing the flag.
@@ -111,9 +132,8 @@ class Analysis_Progress_Endpoint_Test extends \WP_UnitTestCase {
 		$user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
 		wp_set_current_user( $user_id );
 		$request  = new WP_REST_Request( 'POST', $this->restart_analysis_route );
-		$response = $this->server->dispatch( $request );
 
-		return $response;
+		return $this->server->dispatch( $request );
 	}
 
 
