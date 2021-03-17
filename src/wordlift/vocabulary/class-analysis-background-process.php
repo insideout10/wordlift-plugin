@@ -54,8 +54,9 @@ class Analysis_Background_Process extends \Wordlift_Plugin_WP_Background_Process
 			return false;
 		}
 
-		$this->log->debug( sprintf( "Synchronizing terms %s...", implode( ', ', $term_ids ) ) );
-
+		if ( $term_ids && is_array($term_ids) ) {
+			$this->log->debug( sprintf( "Synchronizing terms %s...", implode( ', ', $term_ids ) ) );
+		}
 		// Sync the item.
 		return $this->sync_items( $term_ids );
 	}
@@ -79,8 +80,9 @@ class Analysis_Background_Process extends \Wordlift_Plugin_WP_Background_Process
 			$this->push_to_queue( $next );
 			$this->save()->dispatch();
 
-			$this->log->debug( sprintf( 'Started with term IDs %s.', implode( ', ', $next ) ) );
-
+			if ( $next && is_array($next) ) {
+				$this->log->debug( sprintf( 'Started with term IDs %s.', implode( ', ', $next ) ) );
+			}
 			return true;
 		}
 

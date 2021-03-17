@@ -10,7 +10,7 @@ use Wordlift\Vocabulary\Vocabulary_Loader;
  * @group vocabulary
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
-class Reconcile_Progress extends \WP_UnitTestCase {
+class Reconcile_Progress extends \Wordlift_Vocabulary_Unit_Test_Case {
 
 	private $reconcile_progress_route;
 

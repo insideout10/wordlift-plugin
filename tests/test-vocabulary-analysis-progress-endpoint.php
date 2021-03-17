@@ -12,7 +12,7 @@ use Wordlift\Vocabulary\Vocabulary_Loader;
  * @group vocabulary
  * Class Analysis_Progress_Endpoint_Test
  */
-class Analysis_Progress_Endpoint_Test extends \WP_UnitTestCase {
+class Analysis_Progress_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 
 	private $start_analysis_route;
 

@@ -10,7 +10,7 @@ use Wordlift\Vocabulary\Vocabulary_Loader;
  * @group vocabulary
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
-class Accept_Reject_Entity_Endpoint_Test extends \WP_UnitTestCase {
+class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 
 	private $accept_route;
 

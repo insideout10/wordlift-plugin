@@ -16,7 +16,7 @@ use Wordlift\Vocabulary\Vocabulary_Loader;
  * @group vocabulary
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
-class Tag_Endpoint_Test extends \WP_UnitTestCase {
+class Tag_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 
 	private $template_route = '/cafemediakg/v1/tags';
 	/**
@@ -429,6 +429,7 @@ class Tag_Endpoint_Test extends \WP_UnitTestCase {
 		// we need get $tag_1 as first item since it is linked to more posts.
 		$endpoint = new Tag_Rest_Endpoint( null );
 		$tags     = $endpoint->get_tags_from_db( 10, 0 );
+
 		$this->assertCount( 3, $tags, 'Should return all the tags' );
 		/**
 		 * @var $first_tag WP_Term
