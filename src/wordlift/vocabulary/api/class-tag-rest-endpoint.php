@@ -69,9 +69,7 @@ class Tag_Rest_Endpoint {
 		$data   = $request->get_params();
 		$offset = (int) $data['offset'];
 		$limit  = (int) $data['limit'];
-
 		$tags = $this->get_tags_from_db( $limit, $offset );
-
 		$tag_data = array();
 
 		foreach ( $tags as $tag ) {
@@ -117,7 +115,7 @@ class Tag_Rest_Endpoint {
 	public function get_tags_from_db( $limit, $offset ) {
 
 
-		return get_terms( array(
+		$args = array(
 			'taxonomy'   => 'post_tag',
 			'hide_empty' => false,
 			'number'     => $limit,
@@ -128,9 +126,19 @@ class Tag_Rest_Endpoint {
 					'compare' => 'EXISTS'
 				)
 			),
-			'orderby'          => 'count',
-			'order'            => 'DESC',
-		) );
+			'orderby'    => 'count',
+			'order'      => 'DESC',
+		);
+
+		global $wp_version;
+
+		if ( version_compare( $wp_version, '4.5', '<' ) ) {
+			return get_terms( 'post_tag', $args );
+		} else {
+			return get_terms( $args );
+		}
+
+
 	}
 
 
