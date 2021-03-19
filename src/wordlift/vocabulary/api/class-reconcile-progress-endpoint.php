@@ -20,28 +20,40 @@ class Reconcile_Progress_Endpoint {
 	}
 
 
+	public function get_terms_compat( $taxonomy, $args_with_taxonomy_key ) {
+		global $wp_version;
+
+		if ( version_compare( $wp_version, '4.5', '<' ) ) {
+			return get_terms( $taxonomy, $args_with_taxonomy_key );
+		} else {
+			return get_terms( $args_with_taxonomy_key );
+		}
+	}
+
+
 	public function progress() {
 
-		$total_tags = count( get_terms( array(
+		$total_tags = count( $this->get_terms_compat( 'post_tag', array(
 			'taxonomy'   => 'post_tag',
 			'hide_empty' => false,
 			'fields'     => 'ids'
 		) ) );
 
-		$completed = count( get_terms(
-				array(
-					'taxonomy'   => 'post_tag',
-					'hide_empty' => false,
-					'fields'     => 'ids',
-					'meta_query' => array(
-						array(
-							'key'     => Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING,
-							'compare' => '=',
-							'value'  => '1'
-						)
-					),
-				)
+		$completed = count( $this->get_terms_compat(
+			'post_tag',
+			array(
+				'taxonomy'   => 'post_tag',
+				'hide_empty' => false,
+				'fields'     => 'ids',
+				'meta_query' => array(
+					array(
+						'key'     => Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING,
+						'compare' => '=',
+						'value'   => '1'
+					)
+				),
 			)
+		)
 		);
 
 
