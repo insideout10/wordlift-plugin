@@ -2,6 +2,7 @@
 
 namespace Wordlift\Vocabulary\Pages;
 
+use Wordlift\Scripts\Scripts_Helper;
 use Wordlift\Vocabulary\Api\Api_Config;
 
 /**
@@ -35,7 +36,7 @@ class Reconcile {
 			null,
 			Api_Config::REST_NAMESPACE . '/tags'
 		);
-		$settings['baseUrl'] = get_rest_url(null, Api_Config::REST_NAMESPACE);
+		$settings['baseUrl'] = get_rest_url( null, Api_Config::REST_NAMESPACE );
 		$settings['nonce']   = wp_create_nonce( 'wp_rest' );
 
 		return $settings;
@@ -44,11 +45,17 @@ class Reconcile {
 
 	public function submenu_page_callback() {
 
-		wp_enqueue_script( 'wl-cmkg-reconcile-script',
-			plugin_dir_url( dirname( __DIR__ ) ) . "js/dist/bundle.full.js" );
-		wp_enqueue_style( 'wl-cmkg-reconcile-script',
-			plugin_dir_url( dirname( __DIR__ ) ) . "js/dist/bundle.full.css" );
-		wp_localize_script( 'wl-cmkg-reconcile-script', '_wlCmKgConfig', $this->get_settings() );
+		Scripts_Helper::enqueue_based_on_wordpress_version(
+			'wl-vocabulary-reconcile-script',
+			plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . 'js/dist/vocabulary',
+			array( 'react', 'react-dom', 'wp-polyfill' ),
+			true
+		);
+
+
+		wp_enqueue_style( 'wl-vocabulary-reconcile-script',
+			plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . "js/dist/bundle.full.css" );
+		wp_localize_script( 'wl-vocabulary-reconcile-script', '_wlCmKgConfig', $this->get_settings() );
 		echo "<div id='wl_cmkg_reconcile_progress' class='wrap'></div>";
 		echo "<div id='wl_cmkg_table' class='wrap'></div>";
 	}
