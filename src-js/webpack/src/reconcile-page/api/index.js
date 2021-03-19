@@ -1,6 +1,8 @@
+import {MATCH_TERMS_SETTINGS_KEY} from "../index";
+
 export  function getTagsFromApi(offset, limit) {
 
-    const {restUrl, nonce} = global["_wlCmKgConfig"];
+    const {restUrl, nonce} = global[MATCH_TERMS_SETTINGS_KEY];
 
     return fetch(restUrl, {
         method: "POST",
@@ -20,7 +22,7 @@ export  function getTagsFromApi(offset, limit) {
 
 export function acceptEntity(termId, entityMeta) {
 
-    const {baseUrl, nonce} = global["_wlCmKgConfig"];
+    const {baseUrl, nonce} = global[MATCH_TERMS_SETTINGS_KEY];
 
     return fetch(baseUrl + "/entity/accept", {
         method: "POST",
@@ -39,7 +41,7 @@ export function acceptEntity(termId, entityMeta) {
 
 export function markTagAsNoMatch(termId) {
 
-    const {baseUrl, nonce} = global["_wlCmKgConfig"];
+    const {baseUrl, nonce} = global[MATCH_TERMS_SETTINGS_KEY];
 
     return fetch(baseUrl + "/entity/no_match", {
         method: "POST",
@@ -58,7 +60,7 @@ export function markTagAsNoMatch(termId) {
 
 export function undoApiCall(termId) {
 
-    const {baseUrl, nonce} = global["_wlCmKgConfig"];
+    const {baseUrl, nonce} = global[MATCH_TERMS_SETTINGS_KEY];
 
     return fetch(baseUrl + "/entity/undo", {
         method: "POST",

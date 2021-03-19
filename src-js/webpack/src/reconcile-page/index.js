@@ -14,6 +14,10 @@ import Container from "./components/container";
 import {getTagsAction} from "./actions";
 import ReconcileProgressBar from "./components/reconcile-progress-bar";
 
+
+export const MATCH_TERMS_SETTINGS_KEY = "_wlVocabularyMatchTermsConfig";
+
+
 window.addEventListener("load", () => {
 
     const el = document.getElementById("wl_cmkg_table");
