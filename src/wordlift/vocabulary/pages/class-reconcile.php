@@ -54,7 +54,7 @@ class Reconcile {
 
 
 		wp_enqueue_style( 'wl-vocabulary-reconcile-script',
-			plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . "js/dist/bundle.full.css" );
+			plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . "js/dist/vocabulary.full.css" );
 		wp_localize_script( 'wl-vocabulary-reconcile-script', '_wlCmKgConfig', $this->get_settings() );
 		echo "<div id='wl_cmkg_reconcile_progress' class='wrap'></div>";
 		echo "<div id='wl_cmkg_table' class='wrap'></div>";

@@ -53,8 +53,8 @@ class Entity extends React.Component {
 
     showSameAsUris(entity) {
         const regex = /https?:\/\/(dbpedia|www\.wikidata)\.org/gm;
-        entity.sameAs = entity.sameAs.filter(e => e.match(regex))
-        const sameAsUris = [entity.entityId].concat(entity.sameAs)
+        const sameAs = entity.sameAs.filter(e => e.match(regex))
+        const sameAsUris = [entity.entityId].concat(sameAs)
         return <p>{sameAsUris.join(", ")}</p>;
     }
 }
