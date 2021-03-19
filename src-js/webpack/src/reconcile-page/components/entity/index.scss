@@ -1,0 +1,24 @@
+
+.card-input {
+  margin-bottom: 15px;
+  width: 100%;
+  box-shadow: 0 0 2px 2px #ccd0d4;
+
+  &__selected {
+    box-shadow: 0 0 2px 2px #46b450;
+    background: #fff;
+  }
+}
+
+.card-input-description {
+  display: -webkit-box;
+  max-width: 600px;
+  max-height: 14px;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-input:hover {
+  cursor: pointer;
+}

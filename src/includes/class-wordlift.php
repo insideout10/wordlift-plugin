@@ -53,6 +53,7 @@ use Wordlift\Mappings\Validators\Post_Taxonomy_Term_Rule_Validator;
 use Wordlift\Post_Excerpt\Post_Excerpt_Meta_Box_Adapter;
 use Wordlift\Post_Excerpt\Post_Excerpt_Rest_Controller;
 use Wordlift\Templates\Templates_Ajax_Endpoint;
+use Wordlift\Vocabulary\Vocabulary_Loader;
 use Wordlift\Widgets\Async_Template_Decorator;
 
 /**
@@ -1585,6 +1586,9 @@ class Wordlift {
 
 		});
 
+
+		$vocabulary_loader = new Vocabulary_Loader();
+		$vocabulary_loader->init_vocabulary();
 	}
 
 	/**
