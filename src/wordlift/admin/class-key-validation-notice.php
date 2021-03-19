@@ -62,17 +62,11 @@ class Key_Validation_Notice {
 	public function show_notification() {
 		$settings_url = admin_url( 'admin.php?page=wl_configuration_admin_menu' );
 		?>
-        <div class="error">
+        <div class="wl-notice notice is-dismissible error">
             <p>
 				<?php echo __( "Your WordLift key is not valid, please update the key in <a href='$settings_url'>WordLift Settings</a> or contact our support at hello@wordlift.io.", 'wordlift' ); ?>
             </p>
-            <p class="submit">
-
-                <a class="button-secondary skip"
-                   href="<?php echo esc_url( wp_nonce_url( add_query_arg( self::KEY_VALIDATION_NOTICE_PARAM, self::KEY_VALIDATION_NOTICE_PARAM )
-					   , self::KEY_VALIDATION_NONCE_ACTION, self::KEY_VALIDATION_NONCE_PARAM ) ); ?>">
-					<?php esc_html_e( 'Close', 'wordlift' ); ?></a>
-            </p>
+            <button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button>
         </div>
 		<?php
 	}

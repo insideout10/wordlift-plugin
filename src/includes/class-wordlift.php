@@ -31,6 +31,7 @@ use Wordlift\External_Plugin_Hooks\Yoast\Yoast_Jsonld;
 use Wordlift\Faq\Faq_Content_Filter;
 use Wordlift\Faq\Faq_Tinymce_Adapter;
 use Wordlift\Jsonld\Jsonld_Adapter;
+use Wordlift\Jsonld\Jsonld_Article_Wrapper;
 use Wordlift\Jsonld\Jsonld_By_Id_Endpoint;
 use Wordlift\Jsonld\Jsonld_Endpoint;
 use Wordlift\Jsonld\Jsonld_Service;
@@ -753,7 +754,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.29.0';
+		$this->version     = '3.29.1';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -1312,6 +1313,7 @@ class Wordlift {
 		$this->reference_rebuild_service  = new Wordlift_Reference_Rebuild_Service( $this->entity_service );
 
 		$this->loader->add_action( 'enqueue_block_editor_assets', $this, 'add_wl_enabled_blocks' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $this, 'add_wl_enabled_blocks' );
 
 		/**
 		 * Filter: wl_feature__enable__blocks.
@@ -1568,6 +1570,21 @@ class Wordlift {
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/1304
 		 */
 		new Entity_Rest_Service( $this->entity_type_service );
+
+		/**
+		 * Expand author in to references.
+		 * @since 3.30.0
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/1318
+		 */
+		add_action('plugins_loaded', function () use ( $that ) {
+
+			if ( apply_filters( 'wl_feature__enable__article-wrapper', false ) ) {
+				new Jsonld_Article_Wrapper( Wordlift_Post_To_Jsonld_Converter::get_instance(), $that->cached_postid_to_jsonld_converter );
+			}
+
+
+		});
+
 	}
 
 	/**

@@ -41,13 +41,10 @@ class Wordlift_Jsonld_Article_Wrapper extends Wordlift_Unit_Test_Case {
 		$this->post_to_jsonld_converter = $this->getMockBuilder( 'Wordlift_Post_To_Jsonld_Converter' )
 		                                       ->disableOriginalConstructor()
 		                                       ->getMock();
-		$this->jsonld_service           = $this->getMockBuilder( 'Wordlift_Jsonld_Service' )
-		                                       ->disableOriginalConstructor()
-		                                       ->getMock();
 
 		$this->jsonld_article_wrapper = new Jsonld_Article_Wrapper(
 			$this->post_to_jsonld_converter,
-			$this->jsonld_service
+			null
 		);
 	}
 
@@ -202,6 +199,78 @@ class Wordlift_Jsonld_Article_Wrapper extends Wordlift_Unit_Test_Case {
 
 		$this->assertEquals( array( $article_jsonld ), $this->jsonld_article_wrapper->after_get_jsonld( array( $article_jsonld ), 123, Jsonld_Context_Enum::PAGE ) );
 
+	}
+
+	public function test_when_author_reference_added_in_article_jsonld_should_be_expanded() {
+
+		$jsonld = $this->setup_env_for_linked_entity_test();
+
+		// we need to get Article, Thing, and author entity.
+		$this->assertCount( 3, $jsonld );
+
+		$article_jsonld = $jsonld[0];
+		$this->assertArrayHasKey( 'author', $article_jsonld );
+
+		$author_id     = $article_jsonld['author']['@id'];
+		$author_jsonld = $jsonld[2];
+
+		$this->assertEquals( $author_id, $author_jsonld['@id'] );
+
+	}
+
+	public function test_when_author_reference_added_in_article_jsonld_with_entity_type_set_to_person_should_not_duplicate() {
+
+		$jsonld = $this->setup_env_for_linked_entity_test('http://schema.org/Person');
+
+		// we need to get Article, Thing, and author entity.
+		$this->assertCount( 3, $jsonld );
+
+		$article_jsonld = $jsonld[0];
+		$this->assertArrayHasKey( 'author', $article_jsonld );
+
+		$author_id     = $article_jsonld['author']['@id'];
+		$author_jsonld = $jsonld[2];
+
+		$this->assertEquals( $author_id, $author_jsonld['@id'] );
+
+	}
+
+
+	/**
+	 * @return array
+	 */
+	private function setup_env_for_linked_entity_test( $linked_entity_type = 'http://schema.org/Thing') {
+
+		$wordlift_test  = $this->get_wordlift_test();
+		$jsonld_wrapper = new Jsonld_Article_Wrapper( Wordlift_Post_To_Jsonld_Converter::get_instance(), $wordlift_test->get_cached_postid_to_jsonld_converter() );
+
+		// create a user, link it to an entity
+		$current_user_id = $this->factory()->user->create( array(
+			'role' => 'editor',
+		) );
+		wp_set_current_user( $current_user_id );
+
+		$author_entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+		Wordlift_Entity_Type_Service::get_instance()->set($author_entity, $linked_entity_type, true);
+
+		// Link the author to entity.
+		$user_service = Wordlift_User_Service::get_instance();
+		$user_service->set_entity( $current_user_id, $author_entity );
+
+		$post_id = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
+
+
+		$mock_jsonld = array(
+			array(
+				'@id'   => 'https://foo.com/#bar',
+				'@type' => 'Thing'
+			)
+		);
+
+
+		$jsonld = $jsonld_wrapper->after_get_jsonld( $mock_jsonld, $post_id, Jsonld_Context_Enum::PAGE );
+
+		return $jsonld;
 	}
 
 }

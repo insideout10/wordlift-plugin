@@ -1,4 +1,14 @@
 (function() {
+  window.wlEnabledBlocks = window.wlEnabledBlocks || [
+    "wordlift/products-navigator",
+    "wordlift/navigator",
+    "wordlift/chord",
+    "wordlift/geomap",
+    "wordlift/timeline",
+    "wordlift/cloud",
+    "wordlift/vocabulary",
+    "wordlift/faceted-search"
+  ];
   tinymce.create("tinymce.plugins.wl_shortcodes", {
     // Custom function for the Chord
     chordClick: function() {
@@ -87,40 +97,60 @@
       // Check tinyMCE version. If the version is 4 the menu will be
       // built here, otherwise in the createControl() function.
       if (tinymce.majorVersion == 4) {
-        const menu4 = [
-          {
-            text: "Chord",
-            onclick: this.chordClick
-          },
-          {
-            text: "Timeline",
-            onclick: this.timelineClick
-          },
-          {
-            text: "GeoMap",
-            onclick: this.geomapClick
-          },
-          {
-            text: "Navigator",
-            onclick: this.navigatorClick
-          },
-          {
-            text: "Products Navigator",
-            onclick: this.productsNavigatorClick
-          },
-          {
-            text: "Faceted Search",
-            onclick: this.facetedSearchClick
-          },
-          {
-            text: "Entity Cloud",
-            onclick: this.cloudClick
-          },
-          {
-            text: "Vocabulary Widget",
-            onclick: this.glossaryClick
+        const menu4 = [];
+        window.wlEnabledBlocks.forEach(item => {
+          switch (item) {
+            case "wordlift/products-navigator":
+              menu4.push({
+                text: "Products Navigator",
+                onclick: this.productsNavigatorClick
+              });
+              break;
+            case "wordlift/navigator":
+              menu4.push({
+                text: "Navigator",
+                onclick: this.navigatorClick
+              });
+              break;
+            case "wordlift/chord":
+              menu4.push({
+                text: "Chord",
+                onclick: this.chordClick
+              });
+              break;
+            case "wordlift/geomap":
+              menu4.push({
+                text: "GeoMap",
+                onclick: this.geomapClick
+              });
+              break;
+            case "wordlift/timeline":
+              menu4.push({
+                text: "Timeline",
+                onclick: this.timelineClick
+              });
+              break;
+            case "wordlift/cloud":
+              menu4.push({
+                text: "Entity Cloud",
+                onclick: this.cloudClick
+              });
+              break;
+            case "wordlift/vocabulary":
+              menu4.push({
+                text: "Vocabulary Widget",
+                onclick: this.glossaryClick
+              });
+              break;
+            case "wordlift/faceted-search":
+              menu4.push({
+                text: "Faceted Search",
+                onclick: this.facetedSearchClick
+              });
+              break;
+            default:
           }
-        ];
+        });
 
         const btn = ed.addButton("wl_shortcodes_menu", {
           type: "menubutton",
@@ -162,45 +192,64 @@
           title: "WordLift Widgets",
           image:
             tinymce.plugins.wl_shortcodes.pluginUrl +
-            "/../images/svg/wl-logo-icon.svg?ver=3.29.0"
+            "/../images/svg/wl-logo-icon.svg?ver=3.29.1"
           // If SplitButton, must define onclick to avoid error
           //onclick: function(){ /* OPEN YOURSELF ?? */  }
         });
 
         c.onRenderMenu.add(function(c, m) {
-          m.add({
-            title: "Chord",
-            onclick: pluginRef.chordClick
-          });
-
-          m.add({
-            title: "Timeline",
-            onclick: pluginRef.timelineClick
-          });
-
-          m.add({
-            title: "GeoMap",
-            onclick: pluginRef.geomapClick
-          });
-
-          m.add({
-            title: "Navigator",
-            onclick: pluginRef.navigatorClick
-          });
-
-          m.add({
-            title: "Faceted Search",
-            onclick: pluginRef.facetedSearchClick
-          });
-
-          m.add({
-            title: "Entities Cloud",
-            onclick: pluginRef.cloudClick
-          });
-
-          m.add({
-            title: "Entities Glossary",
-            onclick: pluginRef.glossaryClick
+          window.wlEnabledBlocks.forEach(item => {
+            switch (item) {
+              case "wordlift/products-navigator":
+                m.add({
+                  title: "Products Navigator",
+                  onclick: pluginRef.productsNavigatorClick
+                });
+                break;
+              case "wordlift/navigator":
+                m.add({
+                  title: "Navigator",
+                  onclick: pluginRef.navigatorClick
+                });
+                break;
+              case "wordlift/chord":
+                m.add({
+                  title: "Chord",
+                  onclick: pluginRef.chordClick
+                });
+                break;
+              case "wordlift/geomap":
+                m.add({
+                  title: "GeoMap",
+                  onclick: pluginRef.geomapClick
+                });
+                break;
+              case "wordlift/timeline":
+                m.add({
+                  title: "Timeline",
+                  onclick: pluginRef.timelineClick
+                });
+                break;
+              case "wordlift/cloud":
+                m.add({
+                  title: "Entities Cloud",
+                  onclick: pluginRef.cloudClick
+                });
+                break;
+              case "wordlift/vocabulary":
+                m.add({
+                  title: "Entities Glossary",
+                  onclick: pluginRef.glossaryClick
+                });
+                break;
+              case "wordlift/faceted-search":
+                m.add({
+                  title: "Faceted Search",
+                  onclick: pluginRef.facetedSearchClick
+                });
+                break;
+              default:
+            }
           });
         });
 

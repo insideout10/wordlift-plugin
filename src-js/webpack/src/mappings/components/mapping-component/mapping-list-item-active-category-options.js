@@ -78,9 +78,7 @@ class _MappingListItemActiveCategoryOptions extends React.Component {
         <span className="trash wl-mappings-link">
           <a
             onClick={() => {
-              const mappingData = this.props.mappingData;
-              mappingData.mappingStatus = TRASH_CATEGORY;
-              this.updateMappingItem(this.props.mappingData);
+              this.updateMappingItem({...this.props.mappingData, mappingStatus: TRASH_CATEGORY});
             }}
           >
             Trash

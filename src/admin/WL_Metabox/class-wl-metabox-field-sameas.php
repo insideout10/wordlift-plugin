@@ -92,10 +92,10 @@ class WL_Metabox_Field_sameas extends WL_Metabox_Field {
 		$placeholder = esc_attr_x( 'Type here the URL of an equivalent entity from another dataset.', 'sameAs metabox input', 'wordlift' );
 
 		return
-  		'<button class="wl-add-input wl-add-input--link">'.esc_html__( 'Click here to manually add URLs', 'wordlift' ).'</button>'
+  		'<button type="button" class="wl-add-input wl-add-input--link">'.esc_html__( 'Click here to manually add URLs', 'wordlift' ).'</button>'
         .'<div style="display: none;"><div class="wl-input-wrapper">'
         ."<input type='text' id='$this->meta_name' name='wl_metaboxes[$this->meta_name][]' placeholder='$placeholder' />"
-        .'<button class="wl-remove-input wl-remove-input--sameas"></button>'
+        .'<button type="button" class="wl-remove-input wl-remove-input--sameas"></button>'
         .'</div></div>'
         . '<fieldset id="wl-input-container">'.$this->get_stored_values_html( $count ).'</fieldset>'
         .parent::get_add_custom_button_html( $count, 'Add Another URL', 'hide' );
@@ -114,25 +114,36 @@ class WL_Metabox_Field_sameas extends WL_Metabox_Field {
 	 */
 	public function html() {
 
-		// Open main <div> for the Field.
-		$html = $this->html_wrapper_open();
+		/**
+		 * Filter: wl_feature__enable__metabox__sameas.
+		 *
+		 * @param bool whether the sameAs metabox should be shown, defaults to true.
+		 *
+		 * @return bool
+		 * @since 3.29.1
+		 */
+		if ( apply_filters( 'wl_feature__enable__metabox__sameas', true ) ) {
 
-		// Label.
-		$html .= $this->get_heading_html();
+			// Open main <div> for the Field.
+			$html = $this->html_wrapper_open();
 
-		// print nonce.
-		$html .= $this->html_nonce();
+			// Label.
+			$html .= $this->get_heading_html();
 
-		// print data loaded from DB.
-		$count = 0;
+			// print nonce.
+			$html .= $this->html_nonce();
 
-		// If cardinality allows it, print button to add new values.
-		$html .= $this->get_add_button_html( $count );
+			// print data loaded from DB.
+			$count = 0;
 
-		// Close the HTML wrapper.
-		$html .= $this->html_wrapper_close();
+			// If cardinality allows it, print button to add new values.
+			$html .= $this->get_add_button_html( $count );
 
-		return $html;
+			// Close the HTML wrapper.
+			$html .= $this->html_wrapper_close();
+
+			return $html;
+		}
 	}
 
 	/**

@@ -11,6 +11,7 @@
  */
 
 use Wordlift\Api\Default_Api_Service;
+use Wordlift\Cache\Ttl_Cache;
 
 /**
  * Define the {@link Wordlift_Key_Validation_Service} class.
@@ -38,6 +39,11 @@ class Wordlift_Key_Validation_Service {
 	private $configuration_service;
 
 	/**
+	 * @var Ttl_Cache
+	 */
+	private $ttl_cache_service;
+
+	/**
 	 * Create a {@link Wordlift_Key_Validation_Service} instance.
 	 *
 	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
@@ -62,6 +68,8 @@ class Wordlift_Key_Validation_Service {
 		if ( apply_filters( 'wl_feature__enable__notices', true ) ) {
 			add_action( 'admin_notices', array( $this, 'wl_key_update_notice' ) );
 		}
+
+		$this->ttl_cache_service = new Ttl_Cache( 'key-validation-notification');
 
 	}
 
@@ -144,6 +152,8 @@ class Wordlift_Key_Validation_Service {
 
 		// If the URL isn't set or matches, then it's valid.
 		if ( is_null( $url ) || $url === $site_url ) {
+		    // Invalidate the cache key
+			$this->ttl_cache_service->delete('is_key_valid' );
 			wp_send_json_success( array( 'valid' => true, 'message' => '' ) );
 		}
 
