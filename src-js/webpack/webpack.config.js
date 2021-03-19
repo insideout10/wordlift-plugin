@@ -40,6 +40,7 @@ const webpackConfig = {
     "block-editor-faq-plugin": "./src/faq/hooks/block-editor/block-editor-faq-plugin.js",
     "post-excerpt": "./src/post-excerpt/index.js",
     "vocabulary": "./src/reconcile-page/index.js",
+    "vocabulary-term-page": "./src/reconcile-page/term-page.js",
   },
   output: {
     filename: "[name].js",
