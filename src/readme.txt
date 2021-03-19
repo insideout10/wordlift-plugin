@@ -142,7 +142,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.29.1 (2021-03-__) =
+= 3.29.1 (2021-03-19) =
 
 * Enhancement [#1320](https://github.com/insideout10/wordlift-plugin/issues/1320): Add filter to add required properties for expanding
 * Enhancement [#1311](https://github.com/insideout10/wordlift-plugin/issues/1311): Entities support for other core blocks
