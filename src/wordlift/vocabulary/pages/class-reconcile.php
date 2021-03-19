@@ -20,10 +20,10 @@ class Reconcile {
 	public function admin_menu() {
 		add_submenu_page(
 			'wl_admin_menu',
-			__( 'Reconcile Tags', 'wordlift-cmkg' ),
-			__( 'Reconcile Tags', 'wordlift-cmkg' ),
+			__( 'Match Terms', 'wordlift' ),
+			__( 'Match Terms', 'wordlift' ),
 			'manage_options',
-			'wl-cmkg-reconcile-tags-new',
+			'wl-vocabulary-match-terms',
 			array( $this, 'submenu_page_callback' )
 		);
 	}
