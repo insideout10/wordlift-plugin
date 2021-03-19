@@ -23,11 +23,12 @@ class Entity_Rest_Endpoint {
 
 
 	public function register_routes() {
+		$that = $this;
 		add_action( 'rest_api_init',
-			function () {
-				$this->register_accept_route();
-				$this->register_undo_route();
-				$this->register_nomatch_route();
+			function () use ( $that ) {
+				$that->register_accept_route();
+				$that->register_undo_route();
+				$that->register_nomatch_route();
 			} );
 	}
 

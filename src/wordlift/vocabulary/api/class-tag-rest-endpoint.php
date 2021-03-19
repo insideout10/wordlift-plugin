@@ -30,14 +30,15 @@ class Tag_Rest_Endpoint {
 
 
 	public function register_routes() {
+		$that = $this;
 		add_action( 'rest_api_init',
-			function () {
+			function () use ( $that ) {
 				register_rest_route(
 					Api_Config::REST_NAMESPACE,
 					'/tags',
 					array(
 						'methods'             => WP_REST_Server::CREATABLE,
-						'callback'            => array( $this, 'get_tags' ),
+						'callback'            => array( $that, 'get_tags' ),
 						//@todo : review the permission level
 						'permission_callback' => function () {
 							return current_user_can( 'manage_options' );

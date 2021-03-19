@@ -13,9 +13,10 @@ namespace Wordlift\Vocabulary\Api;
 class Reconcile_Progress_Endpoint {
 
 	public function register_routes() {
+		$that = $this;
 		add_action( 'rest_api_init',
-			function () {
-				$this->register_progress_route();
+			function () use ($that) {
+				$that->register_progress_route();
 			} );
 	}
 

@@ -30,12 +30,13 @@ class Background_Analysis_Endpoint {
 	}
 
 	public function register_routes() {
+		$that = $this;
 		add_action( 'rest_api_init',
-			function () {
-				$this->register_start_route();
-				$this->register_stop_route();
-				$this->register_stats_route();
-				$this->register_restart_route();
+			function () use ( $that ) {
+				$that->register_start_route();
+				$that->register_stop_route();
+				$that->register_stats_route();
+				$that->register_restart_route();
 			} );
 	}
 
