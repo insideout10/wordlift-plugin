@@ -31,7 +31,7 @@ class Term_Page_Hook {
 
 		wp_enqueue_style( self::HANDLE, plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . 'js/dist/vocabulary-term-page.full.css' );
 
-		wp_localize_script( self::HANDLE, self::LOCALIZED_KEY, array('FOO' => 'BAR') );
+		wp_localize_script( self::HANDLE, self::LOCALIZED_KEY, array('termData' => array()) );
 	}
 
 }
