@@ -28,7 +28,7 @@ class Term_Page_Hook {
 
 	public function connect_hook() {
 
-		add_action( 'edit_post_tag_form_fields', array( $this, 'load_scripts' ) );
+		add_action( 'post_tag_edit_form_fields', array( $this, 'load_scripts' ) );
 
 	}
 

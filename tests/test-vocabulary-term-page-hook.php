@@ -13,14 +13,14 @@ class Vocabulary_Term_page extends \Wordlift_Vocabulary_Unit_Test_Case {
 
 	public function test_should_load_entity_match_on_term_page_screen() {
 		global $wp_filter;
-		$this->assertArrayHaskey( 'edit_post_tag_form_fields', $wp_filter );
+		$this->assertArrayHaskey( 'post_tag_edit_form_fields', $wp_filter );
 	}
 
 	public function test_should_load_correct_script_and_css() {
 		global $wp_scripts, $wp_styles;
 		$term    = wp_create_tag( "test" );
 		$term_id = $term['term_id'];
-		do_action( 'edit_post_tag_form_fields', get_term($term_id));
+		do_action( 'post_tag_edit_form_fields', get_term($term_id));
 		$this->assertArrayHaskey( Term_Page_Hook::HANDLE, $wp_scripts->registered );
 		$this->assertArrayHaskey( Term_Page_Hook::HANDLE, $wp_styles->registered );
 	}
@@ -30,7 +30,7 @@ class Vocabulary_Term_page extends \Wordlift_Vocabulary_Unit_Test_Case {
 		global $wp_scripts, $wp_styles;
 		$term    = wp_create_tag( "test" );
 		$term_id = $term['term_id'];
-		do_action( 'edit_post_tag_form_fields', get_term($term_id));
+		do_action( 'post_tag_edit_form_fields', get_term($term_id));
 		$script_source = $wp_scripts->registered[ Term_Page_Hook::HANDLE ]->src;
 		$this->assertTrue( strpos( $script_source, "wp-content/plugins/app/src/js/dist/vocabulary-term-page", 0 ) !== false );
 		$style_source = $wp_styles->registered[ Term_Page_Hook::HANDLE ]->src;
@@ -42,7 +42,7 @@ class Vocabulary_Term_page extends \Wordlift_Vocabulary_Unit_Test_Case {
 		global $wp_scripts;
 		$term    = wp_create_tag( "test" );
 		$term_id = $term['term_id'];
-		do_action( 'edit_post_tag_form_fields', get_term( $term_id ) );
+		do_action( 'post_tag_edit_form_fields', get_term( $term_id ) );
 		$extra_data = $wp_scripts->registered[ Term_Page_Hook::HANDLE ]->extra;
 		$this->assertNotNull( $extra_data );
 		$this->assertArrayHaskey( "data", $extra_data );
