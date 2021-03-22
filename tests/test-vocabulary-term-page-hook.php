@@ -1,5 +1,6 @@
 <?php
 
+use Wordlift\Vocabulary\Data\Term_Data\Term_Data_Factory;
 use Wordlift\Vocabulary\Hooks\Term_Page_Hook;
 
 /**
@@ -35,7 +36,9 @@ class Vocabulary_Term_page extends \Wordlift_Vocabulary_Unit_Test_Case {
 
 	public function test_should_pass_the_matched_entities_in_localized_script() {
 		global $wp_scripts;
-		do_action( 'edit_post_tag_form_fields' );
+		$term    = wp_create_tag( "test" );
+		$term_id = $term['term_id'];
+		do_action( 'edit_post_tag_form_fields', get_term( $term_id ) );
 		$extra_data = $wp_scripts->registered[ Term_Page_Hook::HANDLE ]->extra;
 		$this->assertNotNull( $extra_data );
 		$this->assertArrayHaskey( "data", $extra_data );
@@ -44,6 +47,14 @@ class Vocabulary_Term_page extends \Wordlift_Vocabulary_Unit_Test_Case {
 		$json      = str_replace( "};", "}", $json );
 		$json_data = json_decode( $json, true );
 		$this->assertArrayHasKey( 'termData', $json_data );
+		$this->assertTrue( is_array( $json_data['termData'] ) );
+		$term_data = $json_data['termData'];
+		$this->assertArrayHasKey( 'tagId', $term_data );
+		$this->assertArrayHasKey( 'tagName', $term_data );
+		$this->assertArrayHasKey( 'tagDescription', $term_data );
+		$this->assertArrayHasKey( 'tagLink', $term_data );
+		$this->assertArrayHasKey( 'entities', $term_data );
+
 	}
 
 

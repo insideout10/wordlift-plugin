@@ -55,7 +55,7 @@ class Vocabulary_Loader {
 		$reconcile_progress_endpoint->register_routes();
 
 
-		$term_page_hook = new Term_Page_Hook();
+		$term_page_hook = new Term_Page_Hook( $term_data_factory );
 		$term_page_hook->connect_hook();
 
 
