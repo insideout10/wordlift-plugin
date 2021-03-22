@@ -32,7 +32,12 @@ class Term_Page_Hook {
 
 	}
 
-	public function load_scripts() {
+	/**
+	 * @param $term \WP_Term
+	 */
+	public function load_scripts( $term ) {
+
+		$term_data = $this->term_data_factory->get_term_data( $term );
 
 		Scripts_Helper::enqueue_based_on_wordpress_version(
 			self::HANDLE,
@@ -43,8 +48,7 @@ class Term_Page_Hook {
 
 		wp_enqueue_style( self::HANDLE, plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . 'js/dist/vocabulary-term-page.full.css' );
 
-
-		wp_localize_script( self::HANDLE, self::LOCALIZED_KEY, array('termData' => array()) );
+		wp_localize_script( self::HANDLE, self::LOCALIZED_KEY, array( 'termData' => $term_data->get_data() ) );
 	}
 
 }
