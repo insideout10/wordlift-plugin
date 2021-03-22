@@ -1,8 +1,8 @@
+.widefat td p{margin:0 !important}.widefat td{margin:0 !important;padding:5px}.card-input tr{margin:0 !important;padding:0 !important}
+
 .card-input{margin-bottom:15px;width:100%;box-shadow:0 0 2px 2px #ccd0d4}.card-input__selected{box-shadow:0 0 2px 2px #46b450;background:#fff}.card-input-description{display:-webkit-box;max-width:600px;max-height:14px;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}.card-input:hover{cursor:pointer}
 
 .space-right-1{padding-right:10px}
-
-.widefat td p{margin:0 !important}.widefat td{margin:0 !important;padding:5px}.card-input tr{margin:0 !important;padding:0 !important}
 
 @keyframes wl-spinner-animate{0%{transform:scale(1)}50%{transform:scale(1.3)}100%{transform:scale(1)}}.wl-spinner{margin:20px;height:20px;font-size:0;text-align:center}.wl-spinner--running .wl-spinner__shape{animation-name:wl-spinner-animate}.wl-spinner__shape{display:inline-block;height:20px;width:20px;animation-iteration-count:infinite;animation-timing-function:ease-in-out;animation-duration:1.2s}.wl-spinner__shape--circle{fill:#007aff}.wl-spinner__shape--rect{fill:#fcc207;animation-delay:0.4s}.wl-spinner__shape--hexagon{fill:#ff2222;animation-delay:0.8s}
 

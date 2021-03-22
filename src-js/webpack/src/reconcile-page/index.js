@@ -48,7 +48,6 @@ window.addEventListener("load", () => {
 
 
 window.addEventListener("scroll", function (event) {
-
     const totalPageHeight = document.body.scrollHeight;
     const scrollPoint = window.scrollY + window.innerHeight;
 

@@ -1,7 +1,6 @@
 import ReactDOM from "react-dom";
 import {Provider} from "react-redux";
 import React from "react";
-import Tag from "./components/tag";
 import store from "./store/index";
 import {updateTags} from "./actions";
 import {convertApiResponseToUiObject} from "./api/filters";
@@ -14,7 +13,7 @@ window.addEventListener("load", () => {
 
     const el = document.getElementById("wl_vocabulary_terms_widget");
 
-    const action = updateTags({tags: [window[TERMS_PAGE_SETTINGS_CONFIG]["termData"]], limit: 20});
+    const action = updateTags({tags: [window[TERMS_PAGE_SETTINGS_CONFIG]["termData"]], limit: 0});
 
     console.log(action)
 
