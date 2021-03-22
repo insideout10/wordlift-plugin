@@ -9,6 +9,7 @@ use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
 use Wordlift\Vocabulary\Api\Reconcile_Progress_Endpoint;
 use Wordlift\Vocabulary\Api\Tag_Rest_Endpoint;
 use Wordlift\Vocabulary\Hooks\Tag_Created_Hook;
+use Wordlift\Vocabulary\Hooks\Term_Page_Hook;
 use Wordlift\Vocabulary\Jsonld\Post_Jsonld;
 use Wordlift\Vocabulary\Pages\Reconcile;
 
@@ -46,6 +47,11 @@ class Vocabulary_Loader {
 
 		$reconcile_progress_endpoint = new Reconcile_Progress_Endpoint();
 		$reconcile_progress_endpoint->register_routes();
+
+
+		$term_page_hook = new Term_Page_Hook();
+		$term_page_hook->connect_hook();
+
 
 	}
 
