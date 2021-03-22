@@ -21,12 +21,7 @@ class Reconcile_Progress extends \Wordlift_Vocabulary_Unit_Test_Case {
 
 	public function setUp() {
 		parent::setUp();
-		global $wp_rest_server, $wp_filter;
-		// Resetting global filters, since we want our test
-		// to run independently without global state.
-		$wp_filter = array();
-		$loader = new Vocabulary_Loader();
-		$loader->init_vocabulary();
+		global $wp_rest_server;
 		$wp_rest_server = new WP_REST_Server();
 		$this->server   = $wp_rest_server;
 		do_action( 'rest_api_init' );

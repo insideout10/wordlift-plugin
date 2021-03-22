@@ -38,8 +38,12 @@ class Vocabulary_Term_page extends \Wordlift_Vocabulary_Unit_Test_Case {
 		global $wp_scripts, $wp_styles;
 		do_action( 'edit_post_tag_form_fields' );
 		$extra_data = $wp_scripts->registered[ Term_Page_Hook::HANDLE ]->extra;
+		var_dump($extra_data);
 		$this->assertNotNull( $extra_data );
 		$this->assertArrayHaskey( "data", $extra_data);
 	}
+
+
+
 
 }
