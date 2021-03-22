@@ -7,6 +7,7 @@ use Wordlift\Vocabulary\Analysis_Background_Service;
 use Wordlift\Vocabulary\Analysis_Service;
 use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
 use Wordlift\Vocabulary\Api\Tag_Rest_Endpoint;
+use Wordlift\Vocabulary\Data\Term_Data\Term_Data_Factory;
 use Wordlift\Vocabulary\Options_Cache;
 use Wordlift\Vocabulary\Sync_State;
 use Wordlift\Vocabulary\Vocabulary_Loader;
@@ -49,7 +50,8 @@ class Tag_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 		$api_service_mock = $this->build_mock_api_service( false );
 		$cache_service    = new Options_Cache( "wordlift-cmkg" );
 		$analysis_service = new Analysis_Service( $api_service_mock, $cache_service );
-		$endpoint         = new Tag_Rest_Endpoint( $analysis_service );
+		$term_data_factory = new Term_Data_Factory($analysis_service);
+		$endpoint         = new Tag_Rest_Endpoint( $term_data_factory );
 		$endpoint->register_routes();
 		$this->reset_rest_server();
 
@@ -114,7 +116,8 @@ class Tag_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 		$api_service_mock = $this->build_mock_api_service( false );
 		$cache_service    = new Ttl_Cache( "wordlift-cmkg", 8 * 60 * 60 );
 		$analysis_service = new Analysis_Service( $api_service_mock, $cache_service );
-		$endpoint         = new Tag_Rest_Endpoint( $analysis_service );
+		$term_data_factory = new Term_Data_Factory($analysis_service);
+		$endpoint         = new Tag_Rest_Endpoint( $term_data_factory );
 		$endpoint->register_routes();
 		$this->reset_rest_server();
 		// set the tag as ignored from ui.

@@ -5,6 +5,7 @@ namespace Wordlift\Vocabulary\Api;
 
 use Wordlift\Vocabulary\Analysis_Background_Service;
 use Wordlift\Vocabulary\Analysis_Service;
+use Wordlift\Vocabulary\Data\Term_Data\Term_Data_Factory;
 use WP_REST_Server;
 
 /**
@@ -12,19 +13,20 @@ use WP_REST_Server;
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 class Tag_Rest_Endpoint {
+
 	/**
-	 * @var Analysis_Service
+	 * @var Term_Data_Factory
 	 */
-	private $analysis_service;
+	private $term_data_factory;
 
 	/**
 	 * Tag_Rest_Endpoint constructor.
 	 *
-	 * @param Analysis_Service $analysis_service
+	 * @param Term_Data_Factory $term_data_factory
 	 */
-	public function __construct( $analysis_service ) {
+	public function __construct( $term_data_factory ) {
 
-		$this->analysis_service = $analysis_service;
+		$this->term_data_factory = $term_data_factory;
 
 	}
 
@@ -71,7 +73,7 @@ class Tag_Rest_Endpoint {
 		$offset = (int) $data['offset'];
 		$limit  = (int) $data['limit'];
 		$tags = $this->get_tags_from_db( $limit, $offset );
-		$tag_data = array();
+		$term_data_list = array();
 
 		foreach ( $tags as $tag ) {
 
@@ -82,20 +84,15 @@ class Tag_Rest_Endpoint {
 			/**
 			 * @param $tag \WP_Term
 			 */
-			$entities = $this->analysis_service->get_entities( $tag );
-			if ( $entities ) {
-				$tag_data[] = array(
-					'tagId'          => $tag->term_id,
-					'tagName'        => $tag->name,
-					'tagDescription' => $tag->description,
-					'tagLink'        => get_edit_tag_link( $tag->term_id, 'post_tag' ),
-					'entities'       => $entities,
-				);
+			$term_data_instance = $this->term_data_factory->get_term_data($tag);
+			$term_data = $term_data_instance->get_data();
+			if ( $term_data['entities'] ) {
+				$term_data_list[] = $term_data;
 			}
 		}
 
 
-		return $tag_data;
+		return $term_data_list;
 	}
 
 	/**

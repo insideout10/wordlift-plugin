@@ -8,6 +8,7 @@ use Wordlift\Vocabulary\Api\Background_Analysis_Endpoint;
 use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
 use Wordlift\Vocabulary\Api\Reconcile_Progress_Endpoint;
 use Wordlift\Vocabulary\Api\Tag_Rest_Endpoint;
+use Wordlift\Vocabulary\Data\Term_Data\Term_Data_Factory;
 use Wordlift\Vocabulary\Hooks\Tag_Created_Hook;
 use Wordlift\Vocabulary\Hooks\Term_Page_Hook;
 use Wordlift\Vocabulary\Jsonld\Post_Jsonld;
@@ -28,7 +29,10 @@ class Vocabulary_Loader {
 
 		$cache_service     = new Options_Cache( "wordlift-cmkg" );
 		$analysis_service  = new Analysis_Service( $api_service, $cache_service );
-		$tag_rest_endpoint = new Tag_Rest_Endpoint( $analysis_service );
+
+		$term_data_factory = new Term_Data_Factory( $analysis_service );
+
+		$tag_rest_endpoint = new Tag_Rest_Endpoint( $term_data_factory );
 		$tag_rest_endpoint->register_routes();
 
 		$entity_rest_endpoint = new Entity_Rest_Endpoint();
@@ -40,6 +44,8 @@ class Vocabulary_Loader {
 		new Reconcile();
 
 		$analysis_background_service = new Analysis_Background_Service( $analysis_service );
+
+
 
 		new Tag_Created_Hook( $analysis_background_service );
 
