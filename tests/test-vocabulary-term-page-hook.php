@@ -36,8 +36,10 @@ class Vocabulary_Term_page extends \Wordlift_Vocabulary_Unit_Test_Case {
 
 	public function test_should_pass_the_matched_entities_in_localized_script() {
 		global $wp_scripts, $wp_styles;
-		$localized_data = $wp_scripts->get_data( Term_Page_Hook::HANDLE, Term_Page_Hook::LOCALIZED_KEY );
-		$this->assertNotFalse( $localized_data );
+		do_action( 'edit_post_tag_form_fields' );
+		$extra_data = $wp_scripts->registered[ Term_Page_Hook::HANDLE ]->extra;
+		$this->assertNotNull( $extra_data );
+		$this->assertArrayHaskey( "data", $extra_data);
 	}
 
 }
