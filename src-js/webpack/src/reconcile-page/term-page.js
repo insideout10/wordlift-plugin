@@ -17,18 +17,18 @@ export const TERMS_PAGE_SETTINGS_CONFIG = "_wlVocabularyMatchTermsConfig";
 
 window.addEventListener("load", () => {
 
-    export const INITIAL_STATE = {
-        tags: [],
+    const INITIAL_STATE = {
+        tags: [ window[TERMS_PAGE_SETTINGS_CONFIG]["termData"] ],
         isRequestInProgress: false,
         offset: 0
     };
 
 
     const sagaMiddleware = createSagaMiddleware();
-    export const store = createStore(reducer, INITIAL_STATE, applyMiddleware(sagaMiddleware, thunk, logger));
+    const store = createStore(reducer, INITIAL_STATE, applyMiddleware(sagaMiddleware, thunk, logger));
     sagaMiddleware.run(rootSaga);
 
-    const el = document.getElementById("wl_vocabulary_terms");
+    const el = document.getElementById("wl_vocabulary_terms_widget");
 
     if (el) {
         ReactDOM.render(
