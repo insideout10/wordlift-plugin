@@ -1,5 +1,9 @@
 <?php
+
 namespace Wordlift\Vocabulary\Hooks;
+
+use Wordlift\Scripts\Scripts_Helper;
+
 /**
  * This class is used to show the entity match component on the
  * term page.
@@ -10,14 +14,20 @@ class Term_Page_Hook {
 
 	public function connect_hook() {
 
-		add_action('edit_post_tag_form_fields', array( $this, 'load_scripts'));
+		add_action( 'edit_post_tag_form_fields', array( $this, 'load_scripts' ) );
 
 	}
 
 	public function load_scripts() {
 
-		wp_enqueue_script(self::HANDLE, "test");
-		wp_enqueue_style(self::HANDLE, "test");
+		Scripts_Helper::enqueue_based_on_wordpress_version(
+			self::HANDLE,
+			plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . 'js/dist/vocabulary-term-page',
+			array( 'react', 'react-dom', 'wp-polyfill' ),
+			true
+		);
+
+		wp_enqueue_style( self::HANDLE, plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . 'js/dist/vocabulary-term-page.full.css' );
 	}
 
 }

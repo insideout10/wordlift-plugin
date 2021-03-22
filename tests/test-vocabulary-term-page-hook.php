@@ -19,10 +19,18 @@ class Vocabulary_Term_page extends \Wordlift_Vocabulary_Unit_Test_Case {
 		global $wp_scripts, $wp_styles;
 
 		do_action( 'edit_post_tag_form_fields' );
-		var_dump($wp_scripts->registered);
 		$this->assertArrayHaskey( Term_Page_Hook::HANDLE, $wp_scripts->registered );
 		$this->assertArrayHaskey( Term_Page_Hook::HANDLE, $wp_styles->registered );
 	}
 
+
+	public function test_should_verify_location_of_loaded_scripts_and_styles() {
+		global $wp_scripts, $wp_styles;
+		do_action( 'edit_post_tag_form_fields' );
+		$script_source =  $wp_scripts->registered[ Term_Page_Hook::HANDLE ]->src;
+		$this->assertTrue( strpos( $script_source, "wp-content/plugins/app/src/js/dist/vocabulary-term-page", 0 ) !== false );
+		$style_source = $wp_styles->registered[ Term_Page_Hook::HANDLE ]->src;
+		$this->assertTrue( strpos( $style_source, "wp-content/plugins/app/src/js/dist/vocabulary-term-page.full.css", 0 ) !== false );
+	}
 
 }
