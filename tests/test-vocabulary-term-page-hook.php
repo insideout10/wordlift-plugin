@@ -17,7 +17,6 @@ class Vocabulary_Term_page extends \Wordlift_Vocabulary_Unit_Test_Case {
 
 	public function test_should_load_correct_script_and_css() {
 		global $wp_scripts, $wp_styles;
-
 		do_action( 'edit_post_tag_form_fields' );
 		$this->assertArrayHaskey( Term_Page_Hook::HANDLE, $wp_scripts->registered );
 		$this->assertArrayHaskey( Term_Page_Hook::HANDLE, $wp_styles->registered );
@@ -35,15 +34,17 @@ class Vocabulary_Term_page extends \Wordlift_Vocabulary_Unit_Test_Case {
 
 
 	public function test_should_pass_the_matched_entities_in_localized_script() {
-		global $wp_scripts, $wp_styles;
+		global $wp_scripts;
 		do_action( 'edit_post_tag_form_fields' );
 		$extra_data = $wp_scripts->registered[ Term_Page_Hook::HANDLE ]->extra;
-		var_dump($extra_data);
 		$this->assertNotNull( $extra_data );
-		$this->assertArrayHaskey( "data", $extra_data);
+		$this->assertArrayHaskey( "data", $extra_data );
+		$json      = $extra_data["data"];
+		$json      = str_replace( "var _wlVocabularyTermPageSettings =", "", $json );
+		$json      = str_replace( "};", "}", $json );
+		$json_data = json_decode( $json, true );
+		$this->assertArrayHasKey( 'termData', $json_data );
 	}
-
-
 
 
 }
