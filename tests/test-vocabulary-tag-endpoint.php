@@ -44,14 +44,14 @@ class Tag_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 	public function test_tag_endpoint_should_return_correct_tags() {
 
 		global $wp_filter;
-		$wp_filter        = array();
-		$term_data        = wp_insert_term( 'test', 'post_tag' );
-		$tag              = get_term( $term_data['term_id'] );
-		$api_service_mock = $this->build_mock_api_service( false );
-		$cache_service    = new Options_Cache( "wordlift-cmkg" );
-		$analysis_service = new Analysis_Service( $api_service_mock, $cache_service );
-		$term_data_factory = new Term_Data_Factory($analysis_service);
-		$endpoint         = new Tag_Rest_Endpoint( $term_data_factory );
+		$wp_filter         = array();
+		$term_data         = wp_insert_term( 'test', 'post_tag' );
+		$tag               = get_term( $term_data['term_id'] );
+		$api_service_mock  = $this->build_mock_api_service( false );
+		$cache_service     = new Options_Cache( "wordlift-cmkg" );
+		$analysis_service  = new Analysis_Service( $api_service_mock, $cache_service );
+		$term_data_factory = new Term_Data_Factory( $analysis_service );
+		$endpoint          = new Tag_Rest_Endpoint( $term_data_factory );
 		$endpoint->register_routes();
 		$this->reset_rest_server();
 
@@ -72,6 +72,7 @@ class Tag_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 				'tagDescription' => '',
 				'tagLink'        => get_edit_tag_link( $tag->term_id, 'post_tag' ),
 				'entities'       => $received_mock_entities,
+				'tagPostCount'   => 0
 			),
 
 		);
@@ -110,14 +111,14 @@ class Tag_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 
 	public function test_when_tag_is_accepted_should_not_be_added_to_list() {
 		global $wp_filter;
-		$wp_filter        = array();
-		$term_data        = wp_insert_term( 'test', 'post_tag' );
-		$tag              = get_term( $term_data['term_id'] );
-		$api_service_mock = $this->build_mock_api_service( false );
-		$cache_service    = new Ttl_Cache( "wordlift-cmkg", 8 * 60 * 60 );
-		$analysis_service = new Analysis_Service( $api_service_mock, $cache_service );
-		$term_data_factory = new Term_Data_Factory($analysis_service);
-		$endpoint         = new Tag_Rest_Endpoint( $term_data_factory );
+		$wp_filter         = array();
+		$term_data         = wp_insert_term( 'test', 'post_tag' );
+		$tag               = get_term( $term_data['term_id'] );
+		$api_service_mock  = $this->build_mock_api_service( false );
+		$cache_service     = new Ttl_Cache( "wordlift-cmkg", 8 * 60 * 60 );
+		$analysis_service  = new Analysis_Service( $api_service_mock, $cache_service );
+		$term_data_factory = new Term_Data_Factory( $analysis_service );
+		$endpoint          = new Tag_Rest_Endpoint( $term_data_factory );
 		$endpoint->register_routes();
 		$this->reset_rest_server();
 		// set the tag as ignored from ui.

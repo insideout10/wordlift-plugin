@@ -21,8 +21,6 @@ window.addEventListener("load", () => {
 
     const action = updateTags({tags: [window[TERMS_PAGE_SETTINGS_CONFIG]["termData"]], limit: 0});
 
-    console.log(action)
-
     store.dispatch(action)
 
     if (el) {

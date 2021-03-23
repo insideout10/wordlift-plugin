@@ -58,6 +58,10 @@ class Vocabulary_Term_page extends \Wordlift_Vocabulary_Unit_Test_Case {
 		$this->assertArrayHasKey( 'tagDescription', $term_data );
 		$this->assertArrayHasKey( 'tagLink', $term_data );
 		$this->assertArrayHasKey( 'entities', $term_data );
+		$this->assertArrayHasKey( 'apiConfig', $json_data );
+		$api_config = $json_data['apiConfig'];
+		$this->assertArrayHasKey( 'baseUrl', $api_config );
+		$this->assertArrayHasKey( 'nonce', $api_config );
 
 	}
 
