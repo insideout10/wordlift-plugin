@@ -13,6 +13,7 @@ import store from "./store/index";
 import Container from "./components/container";
 import {getTagsAction} from "./actions";
 import ReconcileProgressBar from "./components/reconcile-progress-bar";
+import AnalysisProgressBar from "./components/analysis-progress-bar";
 
 
 export const MATCH_TERMS_SETTINGS_KEY = "_wlVocabularyMatchTermsConfig";
@@ -40,6 +41,17 @@ window.addEventListener("load", () => {
         ReactDOM.render(
             <ReconcileProgressBar />,
             progressBar
+        );
+    }
+
+
+    const backgroundProgressBar = document.getElementById("wl_cmkg_background_process");
+
+    if (backgroundProgressBar) {
+
+        ReactDOM.render(
+            <AnalysisProgressBar />,
+            backgroundProgressBar
         );
     }
 

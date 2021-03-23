@@ -58,6 +58,7 @@ class Match_Terms {
 		wp_enqueue_style( 'wl-vocabulary-reconcile-script',
 			plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . "js/dist/vocabulary.full.css" );
 		wp_localize_script( 'wl-vocabulary-reconcile-script', '_wlVocabularyMatchTermsConfig', Api_Config::get_api_config() );
+		echo "<div id='wl_cmkg_background_process' class='wrap'></div>";
 		echo "<div id='wl_cmkg_reconcile_progress' class='wrap'></div>";
 		echo "<div id='wl_cmkg_table' class='wrap'></div>";
 	}

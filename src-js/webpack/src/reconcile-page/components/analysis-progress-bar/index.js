@@ -71,7 +71,10 @@ export default class AnalysisProgressBar extends React.Component {
 
     render() {
         const stats = this.state.stats
-        const progress = this.calcProgress(stats);
+        let progress = this.calcProgress(stats);
+        if ( progress > 100 ) {
+            progress = 100
+        }
         return (
             <div className={"wl_cmkg_analysis_progress_bar_container"}>
                 <div style={{width: "90%"}}>
