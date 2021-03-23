@@ -2,13 +2,15 @@
  * External dependencies
  */
 import React from "react";
+import { __ } from "@wordpress/i18n";
+import {connect} from "react-redux";
+
 /**
  * Internal dependencies
  */
 import "./index.scss"
 import {Sort} from "../sort";
 import {sortByPostCount, sortByTermName} from "../../actions";
-import {connect} from "react-redux";
 import {ASC, DESC} from "../../store";
 
 
@@ -33,11 +35,11 @@ class Table extends React.Component {
             <thead>
             <tr>
                 <th>
-                    <a href={"#"} onClick={this.termNameSort}>Sort by Name<Sort
+                    <a href={"#"} onClick={this.termNameSort}>{__('Sort by name', 'wordlift')}<Sort
                         isAscending={this.props.sortByTermName === ASC}/></a>
                 </th>
                 <th>
-                    <a href={"#"} onClick={this.postCountSort}>Sort by post count<Sort
+                    <a href={"#"} onClick={this.postCountSort}>{__('Sort by post count', 'wordlift')}<Sort
                         isAscending={this.props.sortByPostCount === ASC}/></a>
                 </th>
             </tr>
