@@ -83,10 +83,10 @@ export const reducer = createReducer(null, {
         const {sort} = action.payload
 
         if ( sort === ASC ) {
-            state.tags.sort((a,b)=> (a.tagPostCount < b.tagPostCount ? 1 : -1))
+            state.tags.sort((l,r)=> (l.tagPostCount > r.tagPostCount ? 1 : -1))
         }
-        else {
-            state.tags.sort((a,b)=> (a.tagPostCount > b.tagPostCount ? 1 : -1))
+        else if ( sort === DESC ){
+            state.tags.sort((l,r)=> (l.tagPostCount < r.tagPostCount ? 1 : -1))
         }
 
         state.sortByPostCount = sort
