@@ -42,18 +42,7 @@ class Match_Terms {
 	}
 
 
-	public function get_settings() {
-		// Create ui settings array to be used by js client.
-		$settings            = array();
-		$settings['restUrl'] = get_rest_url(
-			null,
-			Api_Config::REST_NAMESPACE . '/tags'
-		);
-		$settings['baseUrl'] = get_rest_url( null, Api_Config::REST_NAMESPACE );
-		$settings['nonce']   = wp_create_nonce( 'wp_rest' );
 
-		return $settings;
-	}
 
 
 	public function submenu_page_callback() {
@@ -68,7 +57,7 @@ class Match_Terms {
 
 		wp_enqueue_style( 'wl-vocabulary-reconcile-script',
 			plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . "js/dist/vocabulary.full.css" );
-		wp_localize_script( 'wl-vocabulary-reconcile-script', '_wlVocabularyMatchTermsConfig', $this->get_settings() );
+		wp_localize_script( 'wl-vocabulary-reconcile-script', '_wlVocabularyMatchTermsConfig', Api_Config::get_api_config() );
 		echo "<div id='wl_cmkg_reconcile_progress' class='wrap'></div>";
 		echo "<div id='wl_cmkg_table' class='wrap'></div>";
 	}

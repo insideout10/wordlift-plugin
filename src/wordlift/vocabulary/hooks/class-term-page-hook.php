@@ -3,7 +3,9 @@
 namespace Wordlift\Vocabulary\Hooks;
 
 use Wordlift\Scripts\Scripts_Helper;
+use Wordlift\Vocabulary\Api\Api_Config;
 use Wordlift\Vocabulary\Data\Term_Data\Term_Data_Factory;
+use Wordlift\Vocabulary\Pages\Match_Terms;
 
 /**
  * This class is used to show the entity match component on the
@@ -48,7 +50,10 @@ class Term_Page_Hook {
 
 		wp_enqueue_style( self::HANDLE, plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . 'js/dist/vocabulary-term-page.full.css' );
 
-		wp_localize_script( self::HANDLE, self::LOCALIZED_KEY, array( 'termData' => $term_data->get_data() ) );
+		wp_localize_script( self::HANDLE, self::LOCALIZED_KEY, array(
+			'termData'  => $term_data->get_data(),
+			'apiConfig' => Api_Config::get_api_config()
+		) );
 
 		echo "<tr class=\"form-field\">
 				<th>Match term</th>
