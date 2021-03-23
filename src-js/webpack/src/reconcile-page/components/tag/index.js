@@ -4,6 +4,7 @@
 import React from "react";
 import Entity from "../entity";
 import {connect} from "react-redux";
+import { __ } from "@wordpress/i18n";
 
 /**
  * Internal dependencies
@@ -70,6 +71,7 @@ class Tag extends React.Component {
                     className="dashicons dashicons-external"></span></a>
             </p>
             <p>{this.props.tagDescription}</p>
+            <small>{__("Posts with this tag : ", 'wordlift-plugin')}{this.props.tagPostCount}</small>
         </td>;
     }
 
