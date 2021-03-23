@@ -11,10 +11,16 @@ import thunk from "redux-thunk";
 import rootSaga from "../sagas";
 import {reducer} from "../reducers";
 
+
+export const ASC = 'sort_asc'
+
+export const DESC = 'sort_desc'
+
 export const INITIAL_STATE = {
     tags: [],
     isRequestInProgress: false,
-    offset: 0
+    offset: 0,
+    sortByPostCount: ASC
 };
 
 

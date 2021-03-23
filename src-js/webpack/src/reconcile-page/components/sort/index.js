@@ -1,20 +1,22 @@
 import React from "react";
 
-function AscendingSort(onClickListener) {
-    return <span className={"dashicons dashicons-arrow-up"} onClick={onClickListener}> </span>;
+function AscendingSort() {
+
+    return <span className={"dashicons dashicons-arrow-up"} > </span>;
 }
 
-function DescendingSort(onClickListener) {
-    return <span className={"dashicons dashicons-arrow-down"} onClick={onClickListener}> </span>;
+function DescendingSort() {
+    return <span className={"dashicons dashicons-arrow-down"}> </span>;
 }
 
 /**
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * @since 3.30.0
  */
-export const Sort = (isAscending, onClick) => {
+export const Sort = ({isAscending}) => {
+
     if (isAscending) {
-        return AscendingSort(onClick);
+        return AscendingSort();
     }
-    return DescendingSort(onClick);
+    return DescendingSort();
 }

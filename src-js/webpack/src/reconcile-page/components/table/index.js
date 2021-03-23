@@ -9,17 +9,18 @@ import "./index.scss"
 import {Sort} from "../sort";
 import {sortByPostCount} from "../../actions";
 import {connect} from "react-redux";
+import {ASC, DESC} from "../../store";
 
 
 class Table extends React.Component {
 
     constructor(props) {
         super(props);
-        this.postCountSort = this.postCountSort.apply(this)
+        this.postCountSort = this.postCountSort.bind(this)
     }
 
     postCountSort() {
-        this.props.dispatch(sortByPostCount())
+        this.props.dispatch(sortByPostCount({sort: this.props.sortByPostCount === ASC ? DESC : ASC}))
     }
 
     render() {
@@ -28,9 +29,11 @@ class Table extends React.Component {
             <tr>
                 <th scope="col" id="name" className="manage-column column-name column-primary desc"
                     style={{"width": "50%"}}>
-                    <a href={"#"}><span>Tag Content</span> <Sort onClick={this.postCountSort}/></a>
+                    <a href={"#"} onClick={this.postCountSort}><span>Tag Content</span> <Sort
+                        isAscending={this.props.sortByPostCount === ASC}/></a>
                 </th>
-                <th scope="col" id="description" className="manage-column column-description desc" style={{"width": "50%"}}>
+                <th scope="col" id="description" className="manage-column column-description desc"
+                    style={{"width": "50%"}}>
                     <span>Entity Matches</span>
                 </th>
             </tr>
@@ -43,5 +46,6 @@ class Table extends React.Component {
 }
 
 
-
-export default connect()(Table);
+export default connect(state => ({
+    sortByPostCount: state.sortByPostCount
+}))(Table);

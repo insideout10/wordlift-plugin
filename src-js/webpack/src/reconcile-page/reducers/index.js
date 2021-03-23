@@ -76,6 +76,11 @@ export const reducer = createReducer(null, {
         const {tagIndex} = action.payload
         hideAlreadyExistingUndoCards(state);
         state.tags[tagIndex].isUndo = true
+    },
+
+    "SORT_BY_POST_COUNT": (state, action) => {
+        const {sort} = action.payload
+        state.sortByPostCount = sort
     }
 
 });
