@@ -82,6 +82,12 @@ class Vocabulary_Badge_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 			'role' => 'administrator',
 		) );
 		wp_set_current_user( $current_user_id );
+		$tag_1 = $this->create_tag("foo");
+		$tag_2 = $this->create_tag("bar");
+		update_term_meta( $tag_1, Analysis_Background_Service::ENTITIES_PRESENT_FOR_TERM, 1);
+		update_term_meta( $tag_2, Analysis_Background_Service::ENTITIES_PRESENT_FOR_TERM, 1);
+
+
 		global $wp_filter;
 		$wp_filter = array();
 		$vocabulary_loader = new Vocabulary_Loader();
@@ -89,10 +95,7 @@ class Vocabulary_Badge_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 		do_action('admin_menu');
 		global $submenu;
 		$page_settings = $submenu["wl_admin_menu"];
-		$tag_1 = $this->create_tag("foo");
-		$tag_2 = $this->create_tag("bar");
-		update_term_meta( $tag_1, Analysis_Background_Service::ENTITIES_PRESENT_FOR_TERM, 1);
-		update_term_meta( $tag_2, Analysis_Background_Service::ENTITIES_PRESENT_FOR_TERM, 1);
+
 		$this->assertEquals( "Match Terms <span class=\"wl-admin-menu-badge\">2</span>", $page_settings[0][0]);
 
 
