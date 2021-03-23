@@ -93,10 +93,10 @@ export const reducer = createReducer(null, {
     "SORT_BY_TERM_NAME" : (state, action) => {
         const {sort} = action.payload
         if ( sort === ASC ) {
-            state.tags.sort((l,r)=> (l.tagPostCount > r.tagPostCount ? 1 : -1))
+            state.tags.sort((l,r)=> l.tagName.localeCompare(r.tagName))
         }
         else if ( sort === DESC ){
-            state.tags.sort((l,r)=> (l.tagPostCount < r.tagPostCount ? 1 : -1))
+            state.tags.sort((l,r)=> l.tagName.localeCompare(r.tagName) ).reverse()
         }
         state.sortByTermName = sort
     }
