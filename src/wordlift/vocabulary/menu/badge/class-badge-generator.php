@@ -28,8 +28,7 @@ class Badge_Generator {
 
 	public static function generate_html( $number ) {
 		$round = self::round_to_nearest_hundred( $number );
-
-		return "<span class=\"count-300\"><span class=\"pending-term-count\">$round+</span></span>";
+		return "<span class=\"count-$round\"><span class=\"pending-term-count\">$round+</span></span>";
 	}
 
 
