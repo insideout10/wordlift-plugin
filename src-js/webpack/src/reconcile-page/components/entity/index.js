@@ -32,7 +32,7 @@ class Entity extends React.Component {
                     <tbody>
                     <tr>
                         <td style={{"width": "90%"}}><p style={{"fontSize": "18px"}}><b>{entity.label}</b> ({entity.mainType})</p></td>
-                        <td style={{"width": "10%"}}>{entity.confidence * 100}%</td>
+                        <td style={{"width": "10%"}}>{parseFloat(entity.confidence * 100).toFixed(2) }%</td>
                     </tr>
                     {entity.meta.description &&
                     <tr>
