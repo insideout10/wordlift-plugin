@@ -216,9 +216,18 @@
 }
 
 .wl-admin-menu-badge {
+    display: inline-block;
+    vertical-align: top;
+    box-sizing: border-box;
+    margin: 1px 0 -1px 2px;
+    padding: 0 5px;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;
     background-color: #d63638;
-    color: white;
-    border-radius: 10px;
-    padding: 5px;
+    color: #fff;
+    font-size: 11px;
+    line-height: 1.6;
+    text-align: center;
 
 }
