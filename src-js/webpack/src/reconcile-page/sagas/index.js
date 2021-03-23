@@ -14,7 +14,7 @@ function* getTags(action) {
     if ( ! store.getState().isRequestInProgress) {
         const {limit} = action.payload
         yield put(requestInProgress())
-        const tags = yield call(getTagsFromApi, store.getState().offset, limit);
+        const tags = yield call(getTagsFromApi, store.getState().offset, limit, store.getState().apiConfig);
         yield put(updateTags({tags: convertApiResponseToUiObject(tags), limit}))
         yield put(requestCompleted())
     }
@@ -46,7 +46,7 @@ function getTermIdAndMeta(state, tagIndex) {
 function* acceptEntitySaga(action) {
     const {tagIndex} = action.payload
     const {termId, meta, entityIndex} = getTermIdAndMeta(store.getState(), tagIndex)
-    yield fork(acceptEntity, termId, meta);
+    yield fork(acceptEntity, termId, meta, store.getState().apiConfig);
     // Hide tag on ui.
     yield put(hideTag({
         tagIndex: tagIndex,
@@ -59,7 +59,7 @@ function* noMatchTagSaga(action) {
     const {tagIndex} = action.payload
     const state = store.getState()
     const {termId, meta, entityIndex} = getTermIdAndMeta(state, tagIndex)
-    yield fork(markTagAsNoMatch, termId);
+    yield fork(markTagAsNoMatch, termId, store.getState().apiConfig);
     // Hide tag on ui.
     yield put(hideTag({
         tagIndex: tagIndex,
@@ -76,7 +76,7 @@ function* undoSaga(action) {
     const {tagIndex} = action.payload
     const termId = store.getState().tags[tagIndex].tagId;
     // remove all the meta
-    yield fork(undoApiCall, termId);
+    yield fork(undoApiCall, termId, store.getState().apiConfig);
     // show tag on ui.
     yield put(showTag(action.payload))
 

@@ -11,7 +11,6 @@ import thunk from "redux-thunk";
 import rootSaga from "../sagas";
 import {reducer} from "../reducers";
 
-
 export const ASC = 'sort_asc'
 
 export const DESC = 'sort_desc'
@@ -21,7 +20,8 @@ export const INITIAL_STATE = {
     isRequestInProgress: false,
     offset: 0,
     sortByPostCount: DESC,
-    sortByTermName: ASC
+    sortByTermName: ASC,
+    apiConfig: global["_wlVocabularyMatchTermsConfig"]
 };
 
 

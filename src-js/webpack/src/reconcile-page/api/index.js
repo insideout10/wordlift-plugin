@@ -1,8 +1,8 @@
 import {MATCH_TERMS_SETTINGS_KEY} from "../index";
 
-export  function getTagsFromApi(offset, limit) {
+export  function getTagsFromApi(offset, limit, apiConfig) {
 
-    const {restUrl, nonce} = global[MATCH_TERMS_SETTINGS_KEY];
+    const {restUrl, nonce} = apiConfig;
 
     return fetch(restUrl, {
         method: "POST",
@@ -20,9 +20,9 @@ export  function getTagsFromApi(offset, limit) {
 }
 
 
-export function acceptEntity(termId, entityMeta) {
+export function acceptEntity(termId, entityMeta,apiConfig) {
 
-    const {baseUrl, nonce} = global[MATCH_TERMS_SETTINGS_KEY];
+    const {baseUrl, nonce} = apiConfig;
 
     return fetch(baseUrl + "/entity/accept", {
         method: "POST",
@@ -39,9 +39,9 @@ export function acceptEntity(termId, entityMeta) {
         .then(json => json);
 }
 
-export function markTagAsNoMatch(termId) {
+export function markTagAsNoMatch(termId, apiConfig) {
 
-    const {baseUrl, nonce} = global[MATCH_TERMS_SETTINGS_KEY];
+    const {baseUrl, nonce} = apiConfig;
 
     return fetch(baseUrl + "/entity/no_match", {
         method: "POST",
@@ -58,9 +58,9 @@ export function markTagAsNoMatch(termId) {
 }
 
 
-export function undoApiCall(termId) {
+export function undoApiCall(termId, apiConfig) {
 
-    const {baseUrl, nonce} = global[MATCH_TERMS_SETTINGS_KEY];
+    const {baseUrl, nonce} = apiConfig;
 
     return fetch(baseUrl + "/entity/undo", {
         method: "POST",
