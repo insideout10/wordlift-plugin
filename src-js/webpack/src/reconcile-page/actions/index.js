@@ -30,3 +30,5 @@ export const requestCompleted = createAction("REQUEST_ENDED")
 export const sortByPostCount = createAction("SORT_BY_POST_COUNT")
 
 export const sortByTermName = createAction("SORT_BY_TERM_NAME")
+
+export const updateApiConfig = createAction("UPDATE_API_CONFIG")

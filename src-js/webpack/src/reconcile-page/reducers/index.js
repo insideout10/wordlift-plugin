@@ -99,6 +99,10 @@ export const reducer = createReducer(null, {
             state.tags.sort((l,r)=> l.tagName.localeCompare(r.tagName) ).reverse()
         }
         state.sortByTermName = sort
+    },
+
+    "UPDATE_API_CONFIG" : (state, action) => {
+        state.apiConfig = action.payload.config
     }
 
 });

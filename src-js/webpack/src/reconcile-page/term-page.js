@@ -9,19 +9,22 @@ import React from "react";
  * Internal dependencies.
  */
 import store from "./store/index";
-import {updateTags} from "./actions";
+import {updateApiConfig, updateTags} from "./actions";
 import Tag from "./components/tag";
 
 export const TERMS_PAGE_SETTINGS_CONFIG = "_wlVocabularyTermPageSettings";
 
 
 window.addEventListener("load", () => {
+    const pageSettings = window[TERMS_PAGE_SETTINGS_CONFIG];
 
     const el = document.getElementById("wl_vocabulary_terms_widget");
 
-    const action = updateTags({tags: [window[TERMS_PAGE_SETTINGS_CONFIG]["termData"]], limit: 0});
+    const action = updateTags({tags: [pageSettings["termData"]], limit: 0});
 
     store.dispatch(action)
+
+    store.dispatch(updateApiConfig({config: pageSettings["apiConfig"]}))
 
     if (el) {
         ReactDOM.render(
