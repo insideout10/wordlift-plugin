@@ -21,14 +21,14 @@ class Tag extends React.Component {
 
     showActionButtons() {
         return (<div>
-            <input type="submit" className="button button-primary" value="Accept"
+            <input type="button" className="button button-primary" value="Accept"
                    onClick={() => {
                        this.props.dispatch(acceptEntity({
                            tagIndex: this.props.tagIndex
                        }))
                    }}/>
             <span className="space-right-1"></span>
-            <input type="submit" className="button button-secondary" value="Reject"
+            <input type="button" className="button button-secondary" value="Reject"
                    onClick={() => {
                        this.props.dispatch(markTagAsNoMatch({
                            tagIndex: this.props.tagIndex

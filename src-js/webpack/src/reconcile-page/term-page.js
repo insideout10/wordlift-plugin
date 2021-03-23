@@ -1,10 +1,16 @@
+/**
+ * External dependencies.
+ */
 import ReactDOM from "react-dom";
 import {Provider} from "react-redux";
 import React from "react";
+
+/**
+ * Internal dependencies.
+ */
 import store from "./store/index";
 import {updateTags} from "./actions";
-import {convertApiResponseToUiObject} from "./api/filters";
-import TagList from "./components/tag-list";
+import Tag from "./components/tag";
 
 export const TERMS_PAGE_SETTINGS_CONFIG = "_wlVocabularyTermPageSettings";
 
@@ -23,7 +29,7 @@ window.addEventListener("load", () => {
         ReactDOM.render(
             <Provider store={store}>
                 <table className="wp-list-table widefat fixed striped table-view-list">
-                    <TagList/>
+                    <Tag tagIndex={0}/>
                 </table>
             </Provider>,
             el

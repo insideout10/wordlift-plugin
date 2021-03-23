@@ -21,7 +21,7 @@ export const INITIAL_STATE = {
     offset: 0,
     sortByPostCount: DESC,
     sortByTermName: ASC,
-    apiConfig: global["_wlVocabularyMatchTermsConfig"]
+    apiConfig: global["_wlVocabularyMatchTermsConfig"] ? global["_wlVocabularyMatchTermsConfig"] : {}
 };
 
 
