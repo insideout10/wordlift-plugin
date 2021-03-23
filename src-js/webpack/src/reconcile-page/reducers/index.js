@@ -2,6 +2,7 @@
  * External dependencies
  */
 import {createReducer} from "@reduxjs/toolkit";
+import {ASC, DESC} from "../store";
 
 function hideAlreadyExistingUndoCards(state) {
     // First check if there are any tags with undo state, if it is
@@ -80,6 +81,14 @@ export const reducer = createReducer(null, {
 
     "SORT_BY_POST_COUNT": (state, action) => {
         const {sort} = action.payload
+
+        if ( sort === ASC ) {
+            state.tags.sort((a,b)=> (a.tagPostCount < b.tagPostCount ? 1 : -1))
+        }
+        else {
+            state.tags.sort((a,b)=> (a.tagPostCount > b.tagPostCount ? 1 : -1))
+        }
+
         state.sortByPostCount = sort
     }
 

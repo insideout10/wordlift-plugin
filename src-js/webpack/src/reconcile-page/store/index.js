@@ -20,7 +20,7 @@ export const INITIAL_STATE = {
     tags: [],
     isRequestInProgress: false,
     offset: 0,
-    sortByPostCount: ASC
+    sortByPostCount: DESC
 };
 
 
