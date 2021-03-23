@@ -51,7 +51,7 @@ class Tag extends React.Component {
             <React.Fragment>
                 <tr>
                     {this.getTagNameColumn()}
-                    <td className="name column-name has-row-actions column-primary">
+                    <td style={{width: "70%"}}>
                         {this.props.entities && this.props.entities.map((entity, index) => (
                             <Entity {...entity} tagIndex={this.props.tagIndex} entityIndex={index}/>
                         ))}
@@ -65,7 +65,7 @@ class Tag extends React.Component {
 
 
     getTagNameColumn() {
-        return <td className="name column-name has-row-actions column-primary">
+        return <td style={{width: "30%"}}>
             <p className="tag-title" style={{"fontSize": "18px"}}><b>{this.props.tagName}</b>
                 <a href={this.props.tagLink} target="_blank"><span
                     className="dashicons dashicons-external"></span></a>
