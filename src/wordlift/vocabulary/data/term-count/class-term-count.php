@@ -1,0 +1,18 @@
+<?php
+/**
+ * This is the interface for getting term count.
+ * @since 3.30.0
+ * @author Naveen Muthusamy <naveen@wordlift.io>
+ */
+namespace Wordlift\Vocabulary\Data\Term_Count;
+
+interface Term_Count {
+
+	/**
+	 * Return the term count which needs to be processed by the editor.
+	 * @return int
+	 */
+	public function get_term_count();
+
+}
+

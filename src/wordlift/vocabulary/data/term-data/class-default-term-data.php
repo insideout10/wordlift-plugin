@@ -7,8 +7,6 @@
 
 namespace Wordlift\Vocabulary\Data\Term_Data;
 
-use Wordlift\Vocabulary\Analysis_Service;
-
 class Default_Term_Data implements Term_Data {
 
 	/**
