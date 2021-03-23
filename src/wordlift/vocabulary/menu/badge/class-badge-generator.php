@@ -12,6 +12,7 @@ class Badge_Generator {
 
 	/**
 	 * @param $number
+	 *
 	 * @return int
 	 */
 	public static function round_to_nearest_hundred( $number ) {
@@ -20,12 +21,7 @@ class Badge_Generator {
 			return $number;
 		}
 
-		if ( $number % 100 === 0) {
-			return $number;
-		}
-
-
-
+		return floor( $number / 100 ) * 100;
 	}
 
 
