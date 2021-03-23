@@ -4,6 +4,7 @@ namespace Wordlift\Vocabulary\Pages;
 
 use Wordlift\Scripts\Scripts_Helper;
 use Wordlift\Vocabulary\Api\Api_Config;
+use Wordlift\Vocabulary\Menu\Badge\Badge_Generator;
 
 /**
  * @since 1.0.0
@@ -18,10 +19,11 @@ class Reconcile {
 	}
 
 	public function admin_menu() {
+		$number = count(get_terms());
 		add_submenu_page(
 			'wl_admin_menu',
 			__( 'Match Terms', 'wordlift' ),
-			__( 'Match Terms', 'wordlift' ),
+			__( 'Match Terms', 'wordlift' ) . " " . Badge_Generator::generate_html($number),
 			'manage_options',
 			'wl-vocabulary-match-terms',
 			array( $this, 'submenu_page_callback' )
