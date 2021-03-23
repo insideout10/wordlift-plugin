@@ -30,6 +30,7 @@ class Default_Term_Data implements Term_Data {
 			'tagName'        => $this->term->name,
 			'tagDescription' => $this->term->description,
 			'tagLink'        => get_edit_tag_link( $this->term->term_id, 'post_tag' ),
+			'tagPostCount'   => $this->term->count,
 			'entities'       => $this->entities,
 		);
 	}
