@@ -1,6 +1,7 @@
 <?php
 
 use Wordlift\Vocabulary\Data\Term_Count\Cached_Term_Count;
+use Wordlift\Vocabulary\Data\Term_Count\Term_Count_Factory;
 use Wordlift\Vocabulary\Menu\Badge\Badge_Generator;
 
 /**
@@ -43,7 +44,7 @@ class Vocabulary_Badge_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 		wp_insert_term( "bar", "post_tag" );
 		$this->assertFalse( get_transient( Cached_Term_Count::TRANSIENT_KEY ) );
 		// make a call to term count service, we should have transient now.
-		$term_count_provider = Term_Count_Factory::get_instance( 'cached_term_count' );
+		$term_count_provider = Term_Count_Factory::get_instance( Term_Count_Factory::CACHED_TERM_COUNT );
 		$term_count_provider->get_term_count();
 		$this->assertEquals( 2, get_transient( Cached_Term_Count::TRANSIENT_KEY ) );
 		// on next call should get the transient, to verify we update transient with different value and expect it

@@ -1,10 +1,11 @@
 <?php
+namespace Wordlift\Vocabulary\Data\Term_Count;
 /**
  * This is the interface for getting term count.
  * @since 3.30.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
-namespace Wordlift\Vocabulary\Data\Term_Count;
+
 
 interface Term_Count {
 
