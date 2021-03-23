@@ -26,3 +26,5 @@ export const hideTag = createAction("HIDE_TAG")
 export const requestInProgress = createAction("REQUEST_IN_PROGRESS")
 
 export const requestCompleted = createAction("REQUEST_ENDED")
+
+export const sortByPostCount = createAction("SORT_BY_POST_COUNT")

@@ -8,7 +8,7 @@ import {Provider} from "react-redux";
 /**
  * Internal dependencies.
  */
-import {Table} from "./components/table";
+import Table from "./components/table";
 import store from "./store/index";
 import Container from "./components/container";
 import {getTagsAction} from "./actions";
