@@ -53,7 +53,6 @@ class Vocabulary_Badge_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 		update_term_meta($tag_3, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING, 1);
 		// tag_2 should not be returned since they dont have entities exists meta key.
 
-
 		// make tag_4, tag_5 returned by procedure.
 		update_term_meta( $tag_4, Analysis_Background_Service::ENTITIES_PRESENT_FOR_TERM, 1);
 		update_term_meta( $tag_5, Analysis_Background_Service::ENTITIES_PRESENT_FOR_TERM, 1);
