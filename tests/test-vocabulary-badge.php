@@ -1,5 +1,7 @@
 <?php
 
+use Wordlift\Vocabulary\Analysis_Background_Service;
+use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
 use Wordlift\Vocabulary\Data\Term_Count\Cached_Term_Count;
 use Wordlift\Vocabulary\Data\Term_Count\Term_Count_Factory;
 use Wordlift\Vocabulary\Menu\Badge\Badge_Generator;
@@ -40,8 +42,22 @@ class Vocabulary_Badge_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 
 
 	public function test_term_count_should_be_cached() {
-		wp_insert_term( "foo", "post_tag" );
-		wp_insert_term( "bar", "post_tag" );
+		$tag_1 = $this->create_tag("foo1");
+		$tag_2 = $this->create_tag("bar1");
+		$tag_3 = $this->create_tag("foo2");
+		$tag_4 = $this->create_tag("bar2");
+		$tag_5 = $this->create_tag("foo3");
+
+		// make $tag_1, $tag_2, $tag_3 tags not supported.
+		update_term_meta($tag_1, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING, 1);
+		update_term_meta($tag_3, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING, 1);
+		// tag_2 should not be returned since they dont have entities exists meta key.
+
+
+		// make tag_4, tag_5 returned by procedure.
+		update_term_meta( $tag_4, Analysis_Background_Service::ENTITIES_PRESENT_FOR_TERM, 1);
+		update_term_meta( $tag_5, Analysis_Background_Service::ENTITIES_PRESENT_FOR_TERM, 1);
+
 		$this->assertFalse( get_transient( Cached_Term_Count::TRANSIENT_KEY ) );
 		// make a call to term count service, we should have transient now.
 		$term_count_provider = Term_Count_Factory::get_instance( Term_Count_Factory::CACHED_TERM_COUNT );
@@ -52,7 +68,11 @@ class Vocabulary_Badge_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 		set_transient( Cached_Term_Count::TRANSIENT_KEY, 100 );
 		$count = $term_count_provider->get_term_count();
 		$this->assertEquals( 100, $count, 'Should return count from transient cache');
+	}
 
+	private function create_tag($name) {
+		$data = wp_insert_term( $name, "post_tag" );
+		return $data["term_id"];
 	}
 
 
