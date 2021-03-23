@@ -218,6 +218,7 @@
 .wl-admin-menu-badge {
     background-color: #d63638;
     color: white;
-    border-radius: 55%;
-    padding: 5px;
+    border-radius: 10px;
+    padding: 10px;
+
 }
