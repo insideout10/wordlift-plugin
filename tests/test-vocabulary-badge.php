@@ -5,6 +5,7 @@ use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
 use Wordlift\Vocabulary\Data\Term_Count\Cached_Term_Count;
 use Wordlift\Vocabulary\Data\Term_Count\Term_Count_Factory;
 use Wordlift\Vocabulary\Menu\Badge\Badge_Generator;
+use Wordlift\Vocabulary\Vocabulary_Loader;
 
 /**
  * @since 3.30.0
@@ -72,6 +73,29 @@ class Vocabulary_Badge_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 	private function create_tag($name) {
 		$data = wp_insert_term( $name, "post_tag" );
 		return $data["term_id"];
+	}
+
+
+	public function test_should_generate_correct_html_in_menu() {
+		// set the current user to admin, call the filters again.
+		$current_user_id = $this->factory()->user->create( array(
+			'role' => 'administrator',
+		) );
+		wp_set_current_user( $current_user_id );
+		global $wp_filter;
+		$wp_filter = array();
+		$vocabulary_loader = new Vocabulary_Loader();
+		$vocabulary_loader->init_vocabulary();
+		do_action('admin_menu');
+		global $submenu;
+		$page_settings = $submenu["wl_admin_menu"];
+		$tag_1 = $this->create_tag("foo");
+		$tag_2 = $this->create_tag("bar");
+		update_term_meta( $tag_1, Analysis_Background_Service::ENTITIES_PRESENT_FOR_TERM, 1);
+		update_term_meta( $tag_2, Analysis_Background_Service::ENTITIES_PRESENT_FOR_TERM, 1);
+		$this->assertEquals( "Match Terms <span class=\"wl-admin-menu-badge\">2</span>", $page_settings[0][0]);
+
+
 	}
 
 

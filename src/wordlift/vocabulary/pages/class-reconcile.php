@@ -19,7 +19,7 @@ class Reconcile {
 	}
 
 	public function admin_menu() {
-		$number = count(get_terms());
+		$number = 0;
 		add_submenu_page(
 			'wl_admin_menu',
 			__( 'Match Terms', 'wordlift' ),
