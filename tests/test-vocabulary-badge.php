@@ -27,7 +27,13 @@ class Vocabulary_Badge_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 
 	public function test_badge_generated_html() {
 		$result = Badge_Generator::generate_html( 340 );
-		$expected_html = "<span class=\"count-300\"><span class=\"pending-term-count\">300+</span></span>";
+		$expected_html = "<span class=\"wl-admin-menu-badge\">300+</span>";
+		$this->assertEquals( $result, $expected_html );
+	}
+
+	public function test_badge_generated_html_for_numbers_less_than_100_should_return_without_plus_sign() {
+		$result = Badge_Generator::generate_html( 70 );
+		$expected_html = "<span class=\"wl-admin-menu-badge\">70</span>";
 		$this->assertEquals( $result, $expected_html );
 	}
 
