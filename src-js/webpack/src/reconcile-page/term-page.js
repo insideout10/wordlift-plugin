@@ -22,7 +22,9 @@ window.addEventListener("load", () => {
     if (el) {
         ReactDOM.render(
             <Provider store={store}>
-                <TagList />
+                <table className="wp-list-table widefat fixed striped table-view-list">
+                    <TagList/>
+                </table>
             </Provider>,
             el
         );

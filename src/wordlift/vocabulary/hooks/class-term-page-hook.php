@@ -28,7 +28,7 @@ class Term_Page_Hook {
 
 	public function connect_hook() {
 
-		add_action( 'post_tag_edit_form_fields', array( $this, 'load_scripts' ) );
+		add_action( 'post_tag_edit_form_fields', array( $this, 'load_scripts' ), PHP_INT_MAX );
 
 	}
 
@@ -50,7 +50,10 @@ class Term_Page_Hook {
 
 		wp_localize_script( self::HANDLE, self::LOCALIZED_KEY, array( 'termData' => $term_data->get_data() ) );
 
-		echo "<div id='wl_vocabulary_terms_widget'></div>";
+		echo "<tr class=\"form-field\">
+				<th>Match term</th>
+				<td style='width: 100%;'><div id='wl_vocabulary_terms_widget'></div></td>
+			</tr>";
 	}
 
 }
