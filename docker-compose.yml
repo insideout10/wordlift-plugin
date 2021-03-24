@@ -56,6 +56,9 @@ services:
         # Enable WordLift debug.
         define( 'WL_DEBUG', WP_DEBUG );
         define( 'WL_LOG_LEVEL', 0 );
+
+        # Enable Dev API
+        define( 'WORDLIFT_API_URL', 'https://api-dev.wordlift.io' );
     entrypoint: /var/www/html/wp-content/plugins/wordlift/.docker-custom-entrypoint.sh
 
   nginx:
