@@ -39,4 +39,12 @@ class Legacy_Entity extends Entity {
 	public function save_jsonld_data( $request ) {
 		return false;
 	}
+
+	public function clear_data() {
+		delete_term_meta( $this->term_id, Entity_Rest_Endpoint::SAME_AS_META_KEY );
+		delete_term_meta( $this->term_id, Entity_Rest_Endpoint::ALTERNATIVE_LABEL_META_KEY );
+		delete_term_meta( $this->term_id, Entity_Rest_Endpoint::DESCRIPTION_META_KEY );
+		delete_term_meta( $this->term_id, Entity_Rest_Endpoint::TYPE_META_KEY );
+		delete_term_meta( $this->term_id, Entity_Rest_Endpoint::EXTERNAL_ENTITY_META_KEY );
+	}
 }

@@ -31,14 +31,20 @@ class Default_Entity extends Entity {
 
 	public function get_jsonld_data() {
 		$default_data = get_term_meta( $this->term_id, self::META_KEY, true );
-		if (  is_array($default_data) ) {
+		if ( is_array( $default_data ) ) {
 			return $default_data;
 		}
+
 		// Use legacy entity if the data doesnt exist on that key.
 		return $this->legacy_entity->get_jsonld_data();
 	}
 
 	public function save_jsonld_data( $request ) {
 		// TODO: Implement save_jsonld_data() method.
+	}
+
+	public function clear_data() {
+		delete_term_meta( $this->term_id, self::META_KEY );
+
 	}
 }

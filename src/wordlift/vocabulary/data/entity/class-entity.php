@@ -33,4 +33,10 @@ abstract class Entity {
 	 */
 	abstract  public function save_jsonld_data( $request );
 
+	/**
+	 * Clear the data on the meta.
+	 * @return bool
+	 */
+	abstract public function clear_data();
+
 }
