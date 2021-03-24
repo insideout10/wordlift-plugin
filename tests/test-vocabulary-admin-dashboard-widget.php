@@ -19,7 +19,7 @@ class Vocabulary_Admin_Dashboard_Widget_Test extends \Wordlift_Vocabulary_Unit_T
                 <h3>Match terms</h3>
             </header>
                 <p>
-                	<strong><a href=''>2 term(s)</a>  waiting to be matched with entities.</strong>	
+                	<strong><a href=''>2 term(s)</a></strong>  waiting to be matched with entities.	
                 </p>
         </div>
 EOF;

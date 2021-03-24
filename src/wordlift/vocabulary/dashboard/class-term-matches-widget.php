@@ -33,7 +33,7 @@ class Term_Matches_Widget {
 			return;
 		}
 
-		$match_terms_url = menu_page_url('wl-vocabulary-match-terms');
+		$match_terms_url = menu_page_url('wl-vocabulary-match-terms', false);
 		$term_count_link = "<a href='$match_terms_url'>" . $term_count . " term(s)</a>";
 		$match_terms = __('Match terms', 'wordlift');
 		$additional_text = __(' waiting to be matched with entities.', 'wordlift');
@@ -43,7 +43,7 @@ class Term_Matches_Widget {
                 <h3>$match_terms</h3>
             </header>
                 <p>
-                	<strong>$term_count_link $additional_text</strong>	
+                	<strong>$term_count_link</strong> $additional_text	
                 </p>
         </div>
 EOF;
