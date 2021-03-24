@@ -27,11 +27,11 @@ abstract class Entity {
 	abstract  public function get_jsonld_data();
 
 	/**
-	 * @param $request \WP_REST_Request
+	 * @param $entity_data array
 	 *
 	 * @return bool
 	 */
-	abstract  public function save_jsonld_data( $request );
+	abstract  public function save_jsonld_data( $entity_data );
 
 	/**
 	 * Clear the data on the meta.

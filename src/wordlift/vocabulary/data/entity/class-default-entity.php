@@ -39,8 +39,21 @@ class Default_Entity extends Entity {
 		return $this->legacy_entity->get_jsonld_data();
 	}
 
-	public function save_jsonld_data( $request ) {
-		// TODO: Implement save_jsonld_data() method.
+	public function save_jsonld_data( $entity_data ) {
+
+		$same_as_list = array_merge( $entity_data['sameAs'], array( $entity_data['@id'] ) );
+
+		$alt_labels = array( (string) $entity_data['name'] );
+
+		$data = array(
+			'@type'         => $entity_data['@type'],
+			'description'   => $entity_data['description'],
+			'sameAs'        => $same_as_list,
+			'alternateName' => $alt_labels
+		);
+
+		update_term_meta( $this->term_id, self::META_KEY, $data );
+
 	}
 
 	public function clear_data() {

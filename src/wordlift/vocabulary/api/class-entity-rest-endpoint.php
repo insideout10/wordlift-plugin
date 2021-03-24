@@ -6,6 +6,7 @@
 
 namespace Wordlift\Vocabulary\Api;
 
+use Wordlift\Vocabulary\Data\Entity\Entity_Factory;
 use WP_REST_Server;
 
 /**
@@ -37,33 +38,8 @@ class Entity_Rest_Endpoint {
 		$data        = $request->get_params();
 		$term_id     = (int) $data['term_id'];
 		$entity_data = (array) $data['entity'];
-
-
-		$same_as_list = array_merge( $entity_data['sameAs'], array( $entity_data['@id'] ) );
-
-		// Insert Same As
-		delete_term_meta( $term_id, self::SAME_AS_META_KEY );
-		foreach ( $same_as_list as $same_as ) {
-			add_term_meta( $term_id, self::SAME_AS_META_KEY, $same_as );
-		}
-
-		// Insert Alt labels
-		$alt_labels = array( (string) $entity_data['name'] );
-		delete_term_meta( $term_id, self::ALTERNATIVE_LABEL_META_KEY );
-		foreach ( $alt_labels as $alt_label ) {
-			add_term_meta( $term_id, self::ALTERNATIVE_LABEL_META_KEY, $alt_label );
-		}
-
-		// Insert description and type
-		add_term_meta( $term_id, self::DESCRIPTION_META_KEY, $entity_data['description'], true );
-		add_term_meta( $term_id, self::TYPE_META_KEY, $entity_data['@type'], true );
-
-		// Mark as external
-		add_term_meta( $term_id, $this::EXTERNAL_ENTITY_META_KEY, 1, true );
-
-		// Mark as ignored from ui
-		update_term_meta( $term_id, self::IGNORE_TAG_FROM_LISTING, 1 );
-
+		$entity = Entity_Factory::get_instance( $term_id );
+		$entity->save_jsonld_data( $entity_data );
 		return $term_id;
 	}
 
