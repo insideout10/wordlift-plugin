@@ -30,7 +30,7 @@ window.addEventListener("load", () => {
         ReactDOM.render(
             <Provider store={store}>
                 <table className="wp-list-table widefat fixed striped table-view-list">
-                    <Tag tagIndex={0}/>
+                    <Tag tagIndex={0} />
                 </table>
             </Provider>,
             el

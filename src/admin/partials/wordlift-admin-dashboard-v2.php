@@ -346,7 +346,16 @@ $not_enriched_url = admin_url( 'edit.php?post_type=post&wl_enriched=no' ); ?>
         <a href="<?php echo $boost_url; ?>"><?php echo esc_html( _x( 'Boost', 'Dashboard', 'wordlift' ) ); ?></a>
     </div>
 </div>
+<?php
+/**
+ * Action to render additional widgets on admin dashboard.
+ * @since 3.30.0
+ * @author Naveen Muthusamy <naveen@wordlift.io>
+ * Action name : wl_admin_dashboard_widgets
+ */
+do_action('wl_admin_dashboard_widgets')
 
+?>
 <div style="display: none;">
     <header>
         <span class="dashicons dashicons-editor-help"></span>
