@@ -59,8 +59,8 @@ class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_
 		// Check if we have all values in term meta.
 		$this->assertCount( 14, $current_entity['sameAs'] );
 		$this->assertCount( 1, $current_entity['alternateName'] );
-		$this->assertNotNull($current_entity['description'] );
-		$this->assertNotNull( $current_entity['@type']);
+		$this->assertNotNull( $current_entity['description'] );
+		$this->assertNotNull( $current_entity['@type'] );
 		//$this->assertNotNull( 1, get_term_meta( $term_id, Entity_Rest_Endpoint::EXTERNAL_ENTITY_META_KEY ) );
 		$this->assertEquals( 1, get_term_meta( $term_id, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING, true ) );
 	}
@@ -84,20 +84,19 @@ class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_
 		$response = $this->server->dispatch( $request );
 		$this->assertEquals( 200, $response->get_status(), 'Accept endpoint should be registered' );
 
-		$entity         = Entity_Factory::get_instance( $term_id );
-		$entities       = $entity->get_jsonld_data();
+		$entity   = Entity_Factory::get_instance( $term_id );
+		$entities = $entity->get_jsonld_data();
 		$this->assertCount( 2, $entities );
 		$current_entity = $entities[0];
 
 		// Check if we have all values in term meta.
 		$this->assertCount( 14, $current_entity['sameAs'] );
 		$this->assertCount( 1, $current_entity['alternateName'] );
-		$this->assertNotNull($current_entity['description'] );
-		$this->assertNotNull( $current_entity['@type']);
+		$this->assertNotNull( $current_entity['description'] );
+		$this->assertNotNull( $current_entity['@type'] );
 		//$this->assertNotNull( 1, get_term_meta( $term_id, Entity_Rest_Endpoint::EXTERNAL_ENTITY_META_KEY ) );
 		$this->assertEquals( 1, get_term_meta( $term_id, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING, true ) );
 	}
-
 
 
 	public function test_reject_endpoint_should_return_200_and_remove_all_the_data() {
