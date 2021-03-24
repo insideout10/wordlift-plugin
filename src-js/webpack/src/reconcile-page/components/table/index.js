@@ -35,10 +35,9 @@ class Table extends React.Component {
             <thead>
             <tr>
                 <th>
-                    Sort By &nbsp;
+                    {__('Sort By:', 'wordlift')} &nbsp;
                    {__('Name', 'wordlift')}<a href={"#"} onClick={this.termNameSort}><Sort isAscending={this.props.sortByTermName === ASC}/></a>&nbsp;
-
-                    {__('Post count', 'wordlift')}<a href={"#"} onClick={this.postCountSort}> <Sort isAscending={this.props.sortByPostCount === ASC}/></a>
+                    {__('Post Count', 'wordlift')}<a href={"#"} onClick={this.postCountSort}> <Sort isAscending={this.props.sortByPostCount === ASC}/></a>
                 </th>
                 <th>
 

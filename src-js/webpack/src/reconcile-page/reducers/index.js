@@ -24,7 +24,7 @@ function hideAlreadyExistingUndoCards(state) {
 export const reducer = createReducer(null, {
     "UPDATE_TAGS": (state, action) => {
         const {tags, limit} = action.payload
-        if ( tags.length !== 0 ) {
+        if (tags.length !== 0) {
             state.tags = state.tags.concat(tags)
             state.offset += limit
         }
@@ -32,7 +32,7 @@ export const reducer = createReducer(null, {
     "SET_ENTITY_ACTIVE": (state, action) => {
         const {entityIndex, tagIndex} = action.payload
         // set the active state.
-        state.tags[tagIndex].entities[entityIndex].isActive = ! state.tags[tagIndex].entities[entityIndex].isActive
+        state.tags[tagIndex].entities[entityIndex].isActive = !state.tags[tagIndex].entities[entityIndex].isActive
     },
 
 
@@ -54,18 +54,18 @@ export const reducer = createReducer(null, {
     "SHOW_TAG": (state, action) => {
         const {tagIndex} = action.payload
         // show all the entities and set first entity to active.
-        state.tags[tagIndex].entities.map((entity, index)=> {
+        state.tags[tagIndex].entities.map((entity, index) => {
             entity.isActive = index === 0;
             entity.isHidden = false
         })
         state.tags[tagIndex].isUndo = false
     },
 
-    "REQUEST_IN_PROGRESS" : (state, action)=> {
+    "REQUEST_IN_PROGRESS": (state, action) => {
         state.isRequestInProgress = true
     },
 
-    "REQUEST_ENDED": (state, action)=> {
+    "REQUEST_ENDED": (state, action) => {
         state.isRequestInProgress = false
     },
 
@@ -77,27 +77,34 @@ export const reducer = createReducer(null, {
 
     "SORT_BY_POST_COUNT": (state, action) => {
         const {sort} = action.payload
-        if ( sort === ASC ) {
-            state.tags.sort((l,r)=> (l.tagPostCount > r.tagPostCount ? 1 : -1))
-        }
-        else if ( sort === DESC ){
-            state.tags.sort((l,r)=> (l.tagPostCount < r.tagPostCount ? 1 : -1))
+        if (sort === ASC) {
+            state.tags.sort((l, r) => (l.tagPostCount > r.tagPostCount ? 1 : -1))
+        } else if (sort === DESC) {
+            state.tags.sort((l, r) => (l.tagPostCount < r.tagPostCount ? 1 : -1))
         }
         state.sortByPostCount = sort
     },
 
-    "SORT_BY_TERM_NAME" : (state, action) => {
+    "SORT_BY_TERM_NAME": (state, action) => {
         const {sort} = action.payload
-        if ( sort === ASC ) {
-            state.tags.sort((l,r)=> l.tagName.localeCompare(r.tagName))
+        const cmp = (a, b) => {
+            if (a.tagName < b.tagName) {
+                return -1;
+            }
+            if (a.tagName > b.tagName) {
+                return 1;
+            }
+            return 0;
         }
-        else if ( sort === DESC ){
-            state.tags.sort((l,r)=> l.tagName.localeCompare(r.tagName) ).reverse()
+        if (sort === ASC) {
+            state.tags = state.tags.sort(cmp)
+        } else if (sort === DESC) {
+            state.tags = state.tags.sort(cmp).reverse()
         }
         state.sortByTermName = sort
     },
 
-    "UPDATE_API_CONFIG" : (state, action) => {
+    "UPDATE_API_CONFIG": (state, action) => {
         state.apiConfig = action.payload.config
     }
 
