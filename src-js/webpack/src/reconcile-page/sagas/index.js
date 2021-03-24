@@ -20,23 +20,21 @@ function* getTags(action) {
     }
 }
 
-function getTermIdAndEntity(state, tagIndex) {
+function getTermIdAndEntities(state, tagIndex) {
     // Get the meta of entity which is currently active.
-    let entityData = null;
+    let entities = [];
     let entityIndex = 0
     for (let [index, entity] of state.tags[tagIndex].entities.entries()) {
         if (entity.isActive) {
-            entityData = entity
+            entities.push(entity)
             entityIndex = index
-            // return early after first match.
-            break;
         }
     }
 
 
     return {
         termId: state.tags[tagIndex].tagId,
-        entity: entityData,
+        entities: entities,
         entityIndex: entityIndex
     }
 
@@ -44,9 +42,13 @@ function getTermIdAndEntity(state, tagIndex) {
 
 function* acceptEntitySaga(action) {
     const {tagIndex} = action.payload
-    const {termId, entity, entityIndex} = getTermIdAndEntity(store.getState(), tagIndex)
+    const {termId, entities, entityIndex} = getTermIdAndEntities(store.getState(), tagIndex)
+    console.log(entities)
+    for (let i =0; i < entities.length; i++) {
+        const entity = entities[i]
+        yield fork(acceptEntity, termId, {...entity, ...entity.meta}, store.getState().apiConfig);
+    }
 
-    yield fork(acceptEntity, termId, {...entity, ...entity.meta}, store.getState().apiConfig);
     // Hide tag on ui.
     yield put(hideTag({
         tagIndex: tagIndex,
@@ -58,7 +60,7 @@ function* acceptEntitySaga(action) {
 function* noMatchTagSaga(action) {
     const {tagIndex} = action.payload
     const state = store.getState()
-    const {termId} = getTermIdAndEntity(state, tagIndex)
+    const {termId} = getTermIdAndEntities(state, tagIndex)
     yield fork(markTagAsNoMatch, termId, store.getState().apiConfig);
     // Hide tag on ui.
     yield put(hideTag({

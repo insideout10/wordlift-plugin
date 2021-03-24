@@ -31,12 +31,8 @@ export const reducer = createReducer(null, {
     },
     "SET_ENTITY_ACTIVE": (state, action) => {
         const {entityIndex, tagIndex} = action.payload
-        // Remove all active states in the row
-        state.tags[tagIndex].entities.map((entity) => {
-            entity.isActive = false
-        })
         // set the active state.
-        state.tags[tagIndex].entities[entityIndex].isActive = true
+        state.tags[tagIndex].entities[entityIndex].isActive = ! state.tags[tagIndex].entities[entityIndex].isActive
     },
 
 
