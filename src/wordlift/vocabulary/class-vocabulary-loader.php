@@ -8,6 +8,7 @@ use Wordlift\Vocabulary\Api\Background_Analysis_Endpoint;
 use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
 use Wordlift\Vocabulary\Api\Reconcile_Progress_Endpoint;
 use Wordlift\Vocabulary\Api\Tag_Rest_Endpoint;
+use Wordlift\Vocabulary\Dashboard\Term_Matches_Widget;
 use Wordlift\Vocabulary\Data\Term_Count\Term_Count_Factory;
 use Wordlift\Vocabulary\Data\Term_Data\Term_Data_Factory;
 use Wordlift\Vocabulary\Hooks\Tag_Created_Hook;
@@ -59,6 +60,9 @@ class Vocabulary_Loader {
 
 		$term_page_hook = new Term_Page_Hook( $term_data_factory );
 		$term_page_hook->connect_hook();
+
+		$dashboard_widget = new Term_Matches_Widget($term_count);
+		$dashboard_widget->connect_hook();
 
 
 	}
