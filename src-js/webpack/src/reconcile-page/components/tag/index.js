@@ -47,10 +47,11 @@ class Tag extends React.Component {
             return this.renderUndoMode();
         }
 
+        const showTagNameColumn = !this.props.hideTagNameColumn;
         return (
             <React.Fragment>
                 <tr>
-                    {this.getTagNameColumn()}
+                    {showTagNameColumn && this.getTagNameColumn()}
                     <td style={{width: "70%"}}>
                         {this.props.entities && this.props.entities.map((entity, index) => (
                             <Entity {...entity} tagIndex={this.props.tagIndex} entityIndex={index} key={entity.entityId}/>
