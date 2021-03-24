@@ -7,6 +7,8 @@
 namespace Wordlift\Vocabulary\Api;
 
 
+use Wordlift\Vocabulary\Analysis_Background_Service;
+
 /**
  * This endpoint is used to obtain the reconcile progress, number of tags accepted / total number of tags.
  */
@@ -15,7 +17,7 @@ class Reconcile_Progress_Endpoint {
 	public function register_routes() {
 		$that = $this;
 		add_action( 'rest_api_init',
-			function () use ($that) {
+			function () use ( $that ) {
 				$that->register_progress_route();
 			} );
 	}
@@ -37,7 +39,14 @@ class Reconcile_Progress_Endpoint {
 		$total_tags = count( $this->get_terms_compat( 'post_tag', array(
 			'taxonomy'   => 'post_tag',
 			'hide_empty' => false,
-			'fields'     => 'ids'
+			'fields'     => 'ids',
+			'meta_query' => array(
+				array(
+					'key'     => Analysis_Background_Service::ENTITIES_PRESENT_FOR_TERM,
+					'compare' => '=',
+					'value'   => '1'
+				)
+			),
 		) ) );
 
 		$completed = count( $this->get_terms_compat(
