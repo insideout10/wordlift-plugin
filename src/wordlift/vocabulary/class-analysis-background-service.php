@@ -86,7 +86,7 @@ class Analysis_Background_Service {
 			),
 		) ) );
 
-		$this->log->debug("Count returned as $count");
+		$this->log->debug( "Count returned as $count" );
 
 
 		return $count;
@@ -119,12 +119,18 @@ class Analysis_Background_Service {
 			if ( $result !== false ) {
 				// then set the analysis complete flag.
 				update_term_meta( $term_id, self::ANALYSIS_DONE_FLAG, 1 );
-				if ( count($result) > 0 ) {
-					update_term_meta($term_id, self::ENTITIES_PRESENT_FOR_TERM, 1);
+				if ( count( $result ) > 0 ) {
+					update_term_meta( $term_id, self::ENTITIES_PRESENT_FOR_TERM, 1 );
 				}
 			}
 
 		}
+
+		/**
+		 * This action fires when the analysis is complete for the current batch
+		 * @since 3.30.0
+		 */
+		do_action( 'wordlift_vocabulary_analysis_complete_for_terms_batch' );
 
 		return true;
 

@@ -43,20 +43,20 @@ class Vocabulary_Badge_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 
 
 	public function test_term_count_should_be_cached() {
-		$tag_1 = $this->create_tag("foo1");
-		$tag_2 = $this->create_tag("bar1");
-		$tag_3 = $this->create_tag("foo2");
-		$tag_4 = $this->create_tag("bar2");
-		$tag_5 = $this->create_tag("foo3");
+		$tag_1 = $this->create_tag( "foo1" );
+		$tag_2 = $this->create_tag( "bar1" );
+		$tag_3 = $this->create_tag( "foo2" );
+		$tag_4 = $this->create_tag( "bar2" );
+		$tag_5 = $this->create_tag( "foo3" );
 
 		// make $tag_1, $tag_2, $tag_3 tags not supported.
-		update_term_meta($tag_1, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING, 1);
-		update_term_meta($tag_3, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING, 1);
+		update_term_meta( $tag_1, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING, 1 );
+		update_term_meta( $tag_3, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING, 1 );
 		// tag_2 should not be returned since they dont have entities exists meta key.
 
 		// make tag_4, tag_5 returned by procedure.
-		update_term_meta( $tag_4, Analysis_Background_Service::ENTITIES_PRESENT_FOR_TERM, 1);
-		update_term_meta( $tag_5, Analysis_Background_Service::ENTITIES_PRESENT_FOR_TERM, 1);
+		update_term_meta( $tag_4, Analysis_Background_Service::ENTITIES_PRESENT_FOR_TERM, 1 );
+		update_term_meta( $tag_5, Analysis_Background_Service::ENTITIES_PRESENT_FOR_TERM, 1 );
 
 		$this->assertFalse( get_transient( Cached_Term_Count::TRANSIENT_KEY ) );
 		// make a call to term count service, we should have transient now.
@@ -67,9 +67,8 @@ class Vocabulary_Badge_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 		// to return the updated value.
 		set_transient( Cached_Term_Count::TRANSIENT_KEY, 100 );
 		$count = $term_count_provider->get_term_count();
-		$this->assertEquals( 100, $count, 'Should return count from transient cache');
+		$this->assertEquals( 100, $count, 'Should return count from transient cache' );
 	}
-
 
 
 	public function test_should_generate_correct_html_in_menu() {
@@ -77,18 +76,25 @@ class Vocabulary_Badge_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 			'role' => 'administrator',
 		) );
 		wp_set_current_user( $current_user_id );
-		$this->create_unmatched_tags(2);
+		$this->create_unmatched_tags( 2 );
 		global $wp_filter;
-		$wp_filter = array();
+		$wp_filter         = array();
 		$vocabulary_loader = new Vocabulary_Loader();
 		$vocabulary_loader->init_vocabulary();
-		do_action('admin_menu');
+		do_action( 'admin_menu' );
 		global $submenu;
 		$page_settings = $submenu["wl_admin_menu"];
 
-		$this->assertEquals( "Match Terms <span class=\"wl-admin-menu-badge\">2</span>", $page_settings[0][0]);
+		$this->assertEquals( "Match Terms <span class=\"wl-admin-menu-badge\">2</span>", $page_settings[0][0] );
 
 
+	}
+
+
+	public function test_should_remove_transient_on_wordlift_vocabulary_analysis_complete_for_terms_batch_action() {
+		set_transient( Cached_Term_Count::TRANSIENT_KEY, 100 );
+		do_action( 'wordlift_vocabulary_analysis_complete_for_terms_batch' );
+		$this->assertFalse( get_transient( Cached_Term_Count::TRANSIENT_KEY ) );
 	}
 
 
