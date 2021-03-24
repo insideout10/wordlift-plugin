@@ -11,9 +11,10 @@ abstract class Wordlift_Vocabulary_Unit_Test_Case  extends Wordlift_Unit_Test_Ca
 			register_taxonomy('post_tag', 'post');
 		}
 		// Reset all global filters.
-		global $wp_filter, $wp_scripts;
+		global $wp_filter, $wp_scripts, $wp_styles;
 		$wp_filter = array();
 		$wp_scripts = null;
+		$wp_styles = null;
 
 		$loader = new Vocabulary_Loader();
 		$loader->init_vocabulary();

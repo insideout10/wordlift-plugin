@@ -3,7 +3,9 @@
 namespace Wordlift\Vocabulary\Hooks;
 
 use Wordlift\Scripts\Scripts_Helper;
+use Wordlift\Vocabulary\Analysis_Background_Service;
 use Wordlift\Vocabulary\Api\Api_Config;
+use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
 use Wordlift\Vocabulary\Data\Term_Data\Term_Data_Factory;
 use Wordlift\Vocabulary\Pages\Match_Terms;
 
@@ -38,6 +40,14 @@ class Term_Page_Hook {
 	 * @param $term \WP_Term
 	 */
 	public function load_scripts( $term ) {
+
+		$is_entity_matched = intval( get_term_meta( $term->term_id, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING, true ) ) === 1;
+
+		$is_entities_present = intval( get_term_meta( $term->term_id, Analysis_Background_Service::ENTITIES_PRESENT_FOR_TERM, true ) ) === 1;
+
+		if ( $is_entity_matched || ! $is_entities_present ) {
+			return;
+		}
 
 		$term_data = $this->term_data_factory->get_term_data( $term );
 
