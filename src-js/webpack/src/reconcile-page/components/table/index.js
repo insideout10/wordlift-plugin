@@ -36,11 +36,11 @@ class Table extends React.Component {
             <tr>
                 <th>
                     <a href={"#"} onClick={this.termNameSort}>{__('Sort by name', 'wordlift')}<Sort
-                        isAscending={this.props.sortByTermName === ASC}/></a>
+                        isAscending={this.props.sortByTermName === ASC}/></a> <a href={"#"} onClick={this.postCountSort}>{__('Sort by post count', 'wordlift')}<Sort
+                    isAscending={this.props.sortByPostCount === ASC}/></a>
                 </th>
                 <th>
-                    <a href={"#"} onClick={this.postCountSort}>{__('Sort by post count', 'wordlift')}<Sort
-                        isAscending={this.props.sortByPostCount === ASC}/></a>
+
                 </th>
             </tr>
             <tr>
