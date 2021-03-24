@@ -24,8 +24,15 @@ abstract class Wordlift_Vocabulary_Unit_Test_Case  extends Wordlift_Unit_Test_Ca
 		return $data["term_id"];
 	}
 
+	public function create_unmatched_tag($name) {
+		$data = wp_insert_term( $name, "post_tag" );
+		$term_id =  $data["term_id"];
+		update_term_meta( $term_id, Analysis_Background_Service::ENTITIES_PRESENT_FOR_TERM, 1);
+		return $term_id;
+	}
 
-	public function create_tags( $n ) {
+
+	public function create_unmatched_tags( $n ) {
 
 		$tag_ids = array();
 		for ( $i = 0; $i < $n; $i++) {

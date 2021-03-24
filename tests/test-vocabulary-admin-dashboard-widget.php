@@ -11,7 +11,7 @@ class Vocabulary_Admin_Dashboard_Widget_Test extends \Wordlift_Vocabulary_Unit_T
 
 	public function test_should_render_the_widget_on_admin_dashboard_action() {
 
-		$this->create_tags( 2 );
+		$this->create_unmatched_tags( 2 );
 
 		$expected_html = <<<EOF
         <div id="wl-match-terms" class="wl-dashboard__block wl-dashboard__block--match-terms">

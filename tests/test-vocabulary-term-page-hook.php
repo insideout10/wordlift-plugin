@@ -28,8 +28,8 @@ class Vocabulary_Term_page extends \Wordlift_Vocabulary_Unit_Test_Case {
 
 	public function test_should_verify_location_of_loaded_scripts_and_styles() {
 		global $wp_scripts, $wp_styles;
-		$term    = wp_create_tag( "test" );
-		$term_id = $term['term_id'];
+		$term_id    = $this->create_unmatched_tag("foo");
+
 		do_action( 'post_tag_edit_form_fields', get_term($term_id));
 		$script_source = $wp_scripts->registered[ Term_Page_Hook::HANDLE ]->src;
 		$this->assertTrue( strpos( $script_source, "wp-content/plugins/app/src/js/dist/vocabulary-term-page", 0 ) !== false );
@@ -40,8 +40,7 @@ class Vocabulary_Term_page extends \Wordlift_Vocabulary_Unit_Test_Case {
 
 	public function test_should_pass_the_matched_entities_in_localized_script() {
 		global $wp_scripts;
-		$term    = wp_create_tag( "test" );
-		$term_id = $term['term_id'];
+		$term_id    = $this->create_unmatched_tag("foo");
 		do_action( 'post_tag_edit_form_fields', get_term( $term_id ) );
 		$extra_data = $wp_scripts->registered[ Term_Page_Hook::HANDLE ]->extra;
 		$this->assertNotNull( $extra_data );
@@ -62,7 +61,6 @@ class Vocabulary_Term_page extends \Wordlift_Vocabulary_Unit_Test_Case {
 		$api_config = $json_data['apiConfig'];
 		$this->assertArrayHasKey( 'baseUrl', $api_config );
 		$this->assertArrayHasKey( 'nonce', $api_config );
-
 	}
 
 

@@ -77,7 +77,7 @@ class Vocabulary_Badge_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 			'role' => 'administrator',
 		) );
 		wp_set_current_user( $current_user_id );
-		$this->create_tags(2);
+		$this->create_unmatched_tags(2);
 		global $wp_filter;
 		$wp_filter = array();
 		$vocabulary_loader = new Vocabulary_Loader();
