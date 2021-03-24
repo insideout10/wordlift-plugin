@@ -45,15 +45,15 @@ window.addEventListener("load", () => {
     }
 
 
-    const backgroundProgressBar = document.getElementById("wl_cmkg_background_process");
-
-    if (backgroundProgressBar) {
-
-        ReactDOM.render(
-            <AnalysisProgressBar />,
-            backgroundProgressBar
-        );
-    }
+    // const backgroundProgressBar = document.getElementById("wl_cmkg_background_process");
+    //
+    // if (backgroundProgressBar) {
+    //
+    //     ReactDOM.render(
+    //         <AnalysisProgressBar />,
+    //         backgroundProgressBar
+    //     );
+    // }
 
 
 })
