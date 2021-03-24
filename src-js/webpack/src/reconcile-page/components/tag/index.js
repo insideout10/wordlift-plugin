@@ -53,7 +53,7 @@ class Tag extends React.Component {
                     {this.getTagNameColumn()}
                     <td style={{width: "70%"}}>
                         {this.props.entities && this.props.entities.map((entity, index) => (
-                            <Entity {...entity} tagIndex={this.props.tagIndex} entityIndex={index}/>
+                            <Entity {...entity} tagIndex={this.props.tagIndex} entityIndex={index} key={entity.entityId}/>
                         ))}
                         {this.showActionButtons()}
                     </td>

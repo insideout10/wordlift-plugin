@@ -20,7 +20,7 @@ class TagList extends React.Component {
         return (
             <React.Fragment>
                     {this.props.tags && this.props.tags.map((tag, index) => (
-                        <Tag tagIndex={index} tagId={tag.tagId}/>
+                        <Tag tagIndex={index} tagId={tag.tagId} key={tag.tagId}/>
                     ))}
             </React.Fragment>
         )
