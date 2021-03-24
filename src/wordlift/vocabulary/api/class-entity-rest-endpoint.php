@@ -38,9 +38,10 @@ class Entity_Rest_Endpoint {
 		$data        = $request->get_params();
 		$term_id     = (int) $data['term_id'];
 		$entity_data = (array) $data['entity'];
-		$entity = Entity_Factory::get_instance( $term_id );
+		$entity      = Entity_Factory::get_instance( $term_id );
 		$entity->save_jsonld_data( $entity_data );
-		update_term_meta( $term_id, self::IGNORE_TAG_FROM_LISTING, 1);
+		update_term_meta( $term_id, self::IGNORE_TAG_FROM_LISTING, 1 );
+
 		return $term_id;
 	}
 
