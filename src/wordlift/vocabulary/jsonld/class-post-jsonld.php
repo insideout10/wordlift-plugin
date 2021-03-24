@@ -7,6 +7,7 @@
 namespace Wordlift\Vocabulary\Jsonld;
 
 use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
+use Wordlift\Vocabulary\Data\Entity\Entity_Factory;
 
 class Post_Jsonld {
 
@@ -34,24 +35,46 @@ class Post_Jsonld {
 		$tags = get_the_tags( $post_id );
 
 		if ( $tags && ! is_wp_error( $tags ) ) {
+
+			if ( ! array_key_exists('mentions', $jsonld) ) {
+				$jsonld['mentions'] = array();
+			}
+
 			// Loop through the tags and push it to references.
 			foreach ( $tags as $tag ) {
 
 				$is_matched = intval( get_term_meta( $tag->term_id, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING, true ) ) === 1;
 
 				if ( $is_matched ) {
-					$jsonld['mentions'][] = array(
-						'@id'           => get_term_link( $tag->term_id ) . '#id',
-						'@type'         => get_term_meta( $tag->term_id, Entity_Rest_Endpoint::TYPE_META_KEY, true ),
-						'name'          => $tag->name,
-						'description'   => ! empty( $tag->description ) ? $tag->description : get_term_meta( $tag->term_id, Entity_Rest_Endpoint::DESCRIPTION_META_KEY, true ),
-						'sameAs'        => get_term_meta( $tag->term_id, Entity_Rest_Endpoint::SAME_AS_META_KEY ),
-						'alternateName' => get_term_meta( $tag->term_id, Entity_Rest_Endpoint::ALTERNATIVE_LABEL_META_KEY )
-					);
+
+					$entity = Entity_Factory::get_instance( $tag->term_id );
+
+					$jsonld['mentions'] = array_merge( $jsonld['mentions'], self::add_additional_attrs( $tag, $entity->get_jsonld_data() ) );
 				}
 
 			}
 		}
+
+	}
+
+	/**
+	 * @param $term \WP_Term
+	 * @param $entities
+	 *
+	 * @return array
+	 */
+	public static function add_additional_attrs( $term, $entities ) {
+
+		return array_map( function ( $entity ) use ( $term ) {
+			var_dump($entity);
+			$entity['@id'] = get_term_link( $term->term_id ) . '#id';
+			if ( ! empty( $term->description ) ) {
+				$entity['description'] = $term->description;
+			}
+
+			return $entity;
+
+		}, $entities );
 
 	}
 
