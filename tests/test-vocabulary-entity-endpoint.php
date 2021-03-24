@@ -61,6 +61,9 @@ class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_
 	}
 
 
+
+
+
 	public function test_reject_endpoint_should_return_200_and_remove_all_the_data() {
 
 		// create a term
@@ -98,6 +101,10 @@ class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_
 		$this->assertCount( 0, get_term_meta( $term_id, Entity_Rest_Endpoint::EXTERNAL_ENTITY_META_KEY ) );
 		$this->assertCount( 0, get_term_meta( $term_id, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING ), 'No match should be cleared on undo' );
 		$this->assertEquals( '', get_term_meta( $term_id, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING, true ) );
+	}
+
+	public function test_should_store_multiple_entity_data_in_meta() {
+
 	}
 
 
