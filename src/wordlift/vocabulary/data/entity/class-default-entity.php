@@ -40,19 +40,27 @@ class Default_Entity extends Entity {
 	}
 
 	public function save_jsonld_data( $entity_data ) {
-
 		$same_as_list = array_merge( $entity_data['sameAs'], array( $entity_data['@id'] ) );
 
 		$alt_labels = array( (string) $entity_data['name'] );
 
-		$data = array(
+		$entity_list = get_term_meta( $this->term_id, self::META_KEY, true );
+
+		$entity = array(
 			'@type'         => $entity_data['@type'],
 			'description'   => $entity_data['description'],
 			'sameAs'        => $same_as_list,
 			'alternateName' => $alt_labels
 		);
 
-		update_term_meta( $this->term_id, self::META_KEY, $data );
+		if ( ! is_array( $entity_list ) ) {
+			// Then the data is not present, so wrap the data in array
+			$entity_list = array( $entity );
+		} else {
+			array_push( $entity_list, $entity );
+		}
+
+		update_term_meta( $this->term_id, self::META_KEY, $entity_list );
 
 	}
 
