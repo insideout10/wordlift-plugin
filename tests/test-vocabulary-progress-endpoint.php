@@ -34,6 +34,7 @@ class Reconcile_Progress extends \Wordlift_Vocabulary_Unit_Test_Case {
 		for ( $i = 0; $i < 5; $i++ ) {
 			$term_data = wp_insert_term("tag ${i}", 'post_tag');
 			$term_id = $term_data['term_id'];
+			update_term_meta($term_id, \Wordlift\Vocabulary\Analysis_Background_Service::ENTITIES_PRESENT_FOR_TERM, 1);
 			// mark as completed for 2 items
 			if ( $i < 2 ) {
 				update_term_meta( $term_id, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING, 1);
