@@ -11,6 +11,7 @@ import React from "react";
 import store from "./store/index";
 import {updateApiConfig, updateTags} from "./actions";
 import Tag from "./components/tag";
+import {convertApiResponseToUiObject} from "./api/filters";
 
 export const TERMS_PAGE_SETTINGS_CONFIG = "_wlVocabularyTermPageSettings";
 
@@ -20,7 +21,7 @@ window.addEventListener("load", () => {
 
     const el = document.getElementById("wl_vocabulary_terms_widget");
 
-    const action = updateTags({tags: [pageSettings["termData"]], limit: 0});
+    const action = updateTags({tags: convertApiResponseToUiObject([pageSettings["termData"]]), limit: 0});
 
     store.dispatch(action)
 

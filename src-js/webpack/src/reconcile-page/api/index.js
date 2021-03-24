@@ -20,7 +20,7 @@ export  function getTagsFromApi(offset, limit, apiConfig) {
 }
 
 
-export function acceptEntity(termId, entityMeta,apiConfig) {
+export function acceptEntity(termId, entityData,apiConfig) {
 
     const {baseUrl, nonce} = apiConfig;
 
@@ -32,7 +32,7 @@ export function acceptEntity(termId, entityMeta,apiConfig) {
         },
         body: JSON.stringify({
             term_id: termId,
-            entity: entityMeta
+            entity: entityData
         })
     })
         .then(response => response.json())
