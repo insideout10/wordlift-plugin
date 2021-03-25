@@ -16,6 +16,7 @@ use Wordlift\Vocabulary\Hooks\Tag_Created_Hook;
 use Wordlift\Vocabulary\Hooks\Term_Page_Hook;
 use Wordlift\Vocabulary\Jsonld\Post_Jsonld;
 use Wordlift\Vocabulary\Pages\Match_Terms;
+use Wordlift\Vocabulary\Tabs\Settings_Tab;
 
 class Vocabulary_Loader {
 
@@ -67,6 +68,8 @@ class Vocabulary_Loader {
 		$cached_term_count_manager = new Cached_Term_count_Manager();
 		$cached_term_count_manager->connect_hook();
 
+		$settings_tab = new Settings_Tab();
+		$settings_tab->connect_hook();
 
 	}
 
