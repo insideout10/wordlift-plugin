@@ -27,8 +27,12 @@ export const requestInProgress = createAction("REQUEST_IN_PROGRESS")
 
 export const requestCompleted = createAction("REQUEST_ENDED")
 
-export const sortByPostCount = createAction("SORT_BY_POST_COUNT")
+export const sortByPostCountAsc = createAction("SORT_BY_POST_COUNT_ASC")
 
-export const sortByTermName = createAction("SORT_BY_TERM_NAME")
+export const sortByPostCountDesc = createAction("SORT_BY_POST_COUNT_DESC")
+
+export const sortByTermNameAsc = createAction("SORT_BY_TERM_NAME_ASC")
+
+export const sortByTermNameDesc = createAction("SORT_BY_TERM_NAME_DESC")
 
 export const updateApiConfig = createAction("UPDATE_API_CONFIG")

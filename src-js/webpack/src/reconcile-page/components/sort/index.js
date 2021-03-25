@@ -2,7 +2,7 @@ import React from "react";
 
 function AscendingSort() {
 
-    return <span className={"dashicons dashicons-arrow-up"} > </span>;
+    return <span className={"dashicons dashicons-arrow-up"}> </span>;
 }
 
 function DescendingSort() {
@@ -13,10 +13,11 @@ function DescendingSort() {
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * @since 3.30.0
  */
-export const Sort = ({isAscending}) => {
+export const Sort = ({sortAscHandler, sortDescHandler}) => {
 
-    if (isAscending) {
-        return AscendingSort();
-    }
-    return DescendingSort();
+
+    return (
+        <span><a href={"#"}><span className={"dashicons dashicons-arrow-up"} onClick={sortAscHandler}> </span></a>  <a
+            href={"#"}><span className={"dashicons dashicons-arrow-down"} onClick={sortDescHandler}></span></a></span>);
+
 }

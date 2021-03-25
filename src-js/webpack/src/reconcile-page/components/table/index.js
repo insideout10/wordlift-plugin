@@ -10,8 +10,9 @@ import {connect} from "react-redux";
  */
 import "./index.scss"
 import {Sort} from "../sort";
-import {sortByPostCount, sortByTermName} from "../../actions";
+
 import {ASC, DESC} from "../../store";
+import {sortByPostCountAsc, sortByPostCountDesc, sortByTermNameAsc, sortByTermNameDesc} from "../../actions";
 
 
 class Table extends React.Component {
@@ -36,8 +37,12 @@ class Table extends React.Component {
             <tr>
                 <th>
                     {__('Sort By:', 'wordlift')} &nbsp;
-                   {__('Name', 'wordlift')}<a href={"#"} onClick={this.termNameSort}><Sort isAscending={this.props.sortByTermName === ASC}/></a>&nbsp;
-                    {__('Post Count', 'wordlift')}<a href={"#"} onClick={this.postCountSort}> <Sort isAscending={this.props.sortByPostCount === ASC}/></a>
+                    {__('Name', 'wordlift')}
+                    <Sort sortAscHandler={() => this.props.dispatch(sortByTermNameAsc())}
+                          sortDescHandler={() => this.props.dispatch(sortByTermNameDesc())}/>&nbsp;
+                    {__('Post Count', 'wordlift')}
+                    <Sort sortAscHandler={() => this.props.dispatch(sortByPostCountAsc())}
+                          sortDescHandler={() => this.props.dispatch(sortByPostCountDesc())}/>
                 </th>
                 <th>
 

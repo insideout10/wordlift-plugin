@@ -75,33 +75,21 @@ export const reducer = createReducer(null, {
         state.tags[tagIndex].isUndo = true
     },
 
-    "SORT_BY_POST_COUNT": (state, action) => {
-        const {sort} = action.payload
-        if (sort === ASC) {
-            state.tags.sort((l, r) => (l.tagPostCount > r.tagPostCount ? 1 : -1))
-        } else if (sort === DESC) {
-            state.tags.sort((l, r) => (l.tagPostCount < r.tagPostCount ? 1 : -1))
-        }
-        state.sortByPostCount = sort
+    "SORT_BY_POST_COUNT_ASC": (state) => {
+        state.tags.sort((l, r) => (l.tagPostCount >= r.tagPostCount ? 1 : -1))
     },
 
-    "SORT_BY_TERM_NAME": (state, action) => {
-        const {sort} = action.payload
-        const cmp = (a, b) => {
-            if (a.tagName < b.tagName) {
-                return -1;
-            }
-            if (a.tagName > b.tagName) {
-                return 1;
-            }
-            return 0;
-        }
-        if (sort === ASC) {
-            state.tags = state.tags.sort(cmp)
-        } else if (sort === DESC) {
-            state.tags = state.tags.sort(cmp).reverse()
-        }
-        state.sortByTermName = sort
+    "SORT_BY_POST_COUNT_DESC": (state) => {
+        state.tags.sort((l, r) => (l.tagPostCount >= r.tagPostCount ? -1 : 1))
+    },
+
+
+    "SORT_BY_TERM_NAME_ASC": (state) => {
+        state.tags =  state.tags.sort((a, b) => a.tagName.localeCompare(b.tagName))
+    },
+
+    "SORT_BY_TERM_NAME_DESC": (state) => {
+        state.tags =  state.tags.sort((a, b) => a.tagName.localeCompare(b.tagName)).reverse()
     },
 
     "UPDATE_API_CONFIG": (state, action) => {

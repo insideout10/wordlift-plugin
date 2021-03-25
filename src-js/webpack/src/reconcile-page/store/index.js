@@ -19,8 +19,6 @@ export const INITIAL_STATE = {
     tags: [],
     isRequestInProgress: false,
     offset: 0,
-    sortByPostCount: DESC,
-    sortByTermName: ASC,
     apiConfig: global["_wlVocabularyMatchTermsConfig"] ? global["_wlVocabularyMatchTermsConfig"] : {}
 };
 
