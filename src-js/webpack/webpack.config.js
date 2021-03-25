@@ -41,6 +41,7 @@ const webpackConfig = {
     "post-excerpt": "./src/post-excerpt/index.js",
     "vocabulary": "./src/vocabulary/index.js",
     "vocabulary-term-page": "./src/vocabulary/term-page.js",
+    "vocabulary-settings-page": "./src/vocabulary/settings/index.js"
   },
   output: {
     filename: "[name].js",
