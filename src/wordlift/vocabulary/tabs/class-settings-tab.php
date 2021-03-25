@@ -13,7 +13,10 @@ class Settings_Tab {
 
 	public function connect_hook() {
 		add_filter( 'wl_admin_page_tabs', function ( $tabs ) {
-			$tabs[] = __( 'Match Terms', 'wordlift' );
+			$tabs[] = array(
+				'slug'  => 'match-terms',
+				'title' => __( 'Match Terms', 'wordlift' )
+			);
 			return $tabs;
 		} );
 	}
