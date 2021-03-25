@@ -41,14 +41,6 @@ class Term_Page_Hook {
 	 */
 	public function load_scripts( $term ) {
 
-		$is_entity_matched = intval( get_term_meta( $term->term_id, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING, true ) ) === 1;
-
-		$is_entities_present = intval( get_term_meta( $term->term_id, Analysis_Background_Service::ENTITIES_PRESENT_FOR_TERM, true ) ) === 1;
-
-		if ( $is_entity_matched || ! $is_entities_present ) {
-			return;
-		}
-
 		$term_data = $this->term_data_factory->get_term_data( $term );
 
 		Scripts_Helper::enqueue_based_on_wordpress_version(

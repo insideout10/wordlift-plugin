@@ -63,14 +63,6 @@ class Vocabulary_Term_page extends \Wordlift_Vocabulary_Unit_Test_Case {
 		$this->assertArrayHasKey( 'nonce', $api_config );
 	}
 
-	public function test_should_not_render_widget_if_tag_does_not_have_analysis_data() {
-		global $wp_scripts, $wp_styles;
-		$term    = wp_insert_term( "foo", "post_tag" );
-		$term_id = $term["term_id"];
-		do_action( 'post_tag_edit_form_fields', get_term( $term_id ) );
-		$this->assertNull( $wp_scripts );
-		$this->assertNull( $wp_styles );
-	}
 
 	public function test_should_not_render_widget_if_tag_is_already_matched() {
 		global $wp_scripts, $wp_styles;
