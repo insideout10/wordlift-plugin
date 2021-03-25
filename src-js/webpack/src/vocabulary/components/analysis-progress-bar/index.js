@@ -35,7 +35,7 @@ export default class AnalysisProgressBar extends React.Component {
 
     getStats() {
         this.setState({isRequestInProgress: true})
-        getAnalysisStats()
+        getAnalysisStats(this.props.apiConfig)
             .then((data) => {
                 this.setState({
                     stats: data,
@@ -47,12 +47,12 @@ export default class AnalysisProgressBar extends React.Component {
     buttonClickListener() {
         this.setState({isRequestInProgress: true})
         if (this.isAnalysisRunning(this.state.stats)) {
-            stopBackgroundAnalysis()
+            stopBackgroundAnalysis(this.props.apiConfig)
                 .then(() => {
                     this.updateAnalysisState('stopped');
                 })
         } else {
-            startBackgroundAnalysis()
+            startBackgroundAnalysis(this.props.apiConfig)
                 .then(() => {
                     this.updateAnalysisState('started');
                 })
@@ -122,7 +122,7 @@ export default class AnalysisProgressBar extends React.Component {
         const result = confirm("Restarting analysis will remove the previous results, are you sure you want to proceed ? ")
         if (result === true) {
             // send the restart request.
-            restartAnalysis().then(() => {
+            restartAnalysis(this.props.apiConfig).then(() => {
                 // update stats after restart
                 this.getStats()
             });

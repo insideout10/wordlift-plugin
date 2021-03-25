@@ -12,4 +12,4 @@ Scripts_Helper::enqueue_based_on_wordpress_version(
 wp_enqueue_style( 'wl-vocabulary-match-terms-settings',
 	plugin_dir_url( dirname( __DIR__ )  ) . 'js/dist/vocabulary-settings-page.full.css'
 );
-echo "<div id='wl_vocabulary_analysis_progress_bar'></div>";
+echo "<br/><div id='wl_vocabulary_analysis_progress_bar'></div>";

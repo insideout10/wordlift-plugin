@@ -2,6 +2,8 @@
 
 namespace Wordlift\Vocabulary\Tabs;
 
+use Wordlift\Vocabulary\Api\Api_Config;
+
 /**
  * This class adds a tab to the wordlift settings screen.
  * @since 3.30.0
@@ -19,6 +21,12 @@ class Settings_Tab {
 			);
 			return $tabs;
 		} );
+
+
+		add_filter('wl_admin_settings', function ( $settings ) {
+			$settings['matchTerms'] = Api_Config::get_api_config();
+			return $settings;
+		});
 	}
 
 }

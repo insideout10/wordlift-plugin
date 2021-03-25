@@ -19,7 +19,7 @@ window.addEventListener("load", () => {
 
     if (el) {
         ReactDOM.render(
-            <AnalysisProgressBar />,
+            <AnalysisProgressBar apiConfig={window["wlSettings"]["matchTerms"]}/>,
             el
         );
     }

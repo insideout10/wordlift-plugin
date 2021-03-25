@@ -2,10 +2,8 @@
  * Api functions for start, stop, get stats about analysis.
  * @since 1.1.0
  */
-import {MATCH_TERMS_SETTINGS_KEY} from "../../index";
-
-export function startBackgroundAnalysis() {
-    const {baseUrl, nonce} = global[MATCH_TERMS_SETTINGS_KEY];
+export function startBackgroundAnalysis(apiConfig) {
+    const {baseUrl, nonce} = apiConfig;
     return fetch(baseUrl + "/background_analysis/start", {
         method: "POST",
         headers: {
@@ -17,8 +15,8 @@ export function startBackgroundAnalysis() {
 }
 
 
-export function stopBackgroundAnalysis() {
-    const {baseUrl, nonce} = global[MATCH_TERMS_SETTINGS_KEY];
+export function stopBackgroundAnalysis(apiConfig) {
+    const {baseUrl, nonce} = apiConfig;
     return fetch(baseUrl + "/background_analysis/stop", {
         method: "POST",
         headers: {
@@ -33,8 +31,8 @@ export function stopBackgroundAnalysis() {
  * Removes previously cached analysis results.
  * @returns {*}
  */
-export function restartAnalysis() {
-    const {baseUrl, nonce} = global[MATCH_TERMS_SETTINGS_KEY];
+export function restartAnalysis(apiConfig) {
+    const {baseUrl, nonce} = apiConfig;
     return fetch(baseUrl + "/background_analysis/restart", {
         method: "POST",
         headers: {
@@ -46,8 +44,8 @@ export function restartAnalysis() {
 }
 
 
-export function getAnalysisStats() {
-    const {baseUrl, nonce} = global[MATCH_TERMS_SETTINGS_KEY];
+export function getAnalysisStats(apiConfig) {
+    const {baseUrl, nonce} = apiConfig;
     return fetch(baseUrl + "/background_analysis/stats", {
         method: "POST",
         headers: {
