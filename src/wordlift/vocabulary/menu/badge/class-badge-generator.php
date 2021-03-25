@@ -11,11 +11,12 @@ namespace Wordlift\Vocabulary\Menu\Badge;
 class Badge_Generator {
 
 	/**
+	 * Returns the term count which needs to be shown on ui.
 	 * @param $number
 	 *
 	 * @return int
 	 */
-	public static function round_to_nearest_hundred( $number ) {
+	public static function get_ui_count( $number ) {
 
 		$number = (int) $number;
 
@@ -27,7 +28,7 @@ class Badge_Generator {
 	}
 
 	public static function generate_html( $number ) {
-		$round = self::round_to_nearest_hundred( $number );
+		$round = self::get_ui_count( $number );
 		$count_string = $round < 100 ? "$round" : "$round+";
 		return "<span class=\"wl-admin-menu-badge\">$count_string</span>";
 	}
