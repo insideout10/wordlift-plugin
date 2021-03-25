@@ -32,7 +32,7 @@ class Vocabulary_Loader {
 			$configuration_service->get_key()
 		);
 
-		$cache_service    = Cache_Service_Factory::get_instance();
+		$cache_service    = Cache_Service_Factory::get_cache_service();
 
 
 		$analysis_service = new Analysis_Service( $api_service, $cache_service );
