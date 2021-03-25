@@ -18,4 +18,13 @@ class Vocabulary_Settings_Tab_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 	}
 
 
+	public function test_should_add_match_terms_key_to_admin_settings() {
+		$settings = apply_filters('wl_admin_settings', array());
+		$this->assertArrayHasKey('matchTerms', $settings);
+		$match_terms_settings = $settings['matchTerms'];
+		$this->assertArrayHasKey('baseUrl', $match_terms_settings);
+		$this->assertArrayHasKey('nonce', $match_terms_settings);
+	}
+
+
 }
