@@ -8,7 +8,7 @@ import thunk from "redux-thunk";
 /**
  * Internal dependencies
  */
-import rootSaga from "../sagas";
+import {rootSaga} from "../sagas";
 import {reducer} from "../reducers";
 
 export const ASC = 'sort_asc'

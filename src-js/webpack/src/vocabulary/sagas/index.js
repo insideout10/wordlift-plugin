@@ -84,11 +84,14 @@ function* undoSaga(action) {
 
 }
 
-function* rootSaga() {
+export function* rootSaga() {
     yield takeLatest("GET_TAGS_FROM_NETWORK_CALL", getTags);
     yield takeLatest("ACCEPT_ENTITY", acceptEntitySaga)
     yield takeLatest("MARK_TAG_AS_NO_MATCH", noMatchTagSaga)
     yield takeLatest("UNDO", undoSaga)
 }
 
-export default rootSaga;
+export function* entitySaga() {
+    yield takeLatest("ACCEPT_ENTITY", acceptEntitySaga)
+}
+
