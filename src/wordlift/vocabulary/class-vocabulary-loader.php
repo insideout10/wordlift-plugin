@@ -8,6 +8,7 @@ use Wordlift\Vocabulary\Api\Background_Analysis_Endpoint;
 use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
 use Wordlift\Vocabulary\Api\Reconcile_Progress_Endpoint;
 use Wordlift\Vocabulary\Api\Tag_Rest_Endpoint;
+use Wordlift\Vocabulary\Cache\Cache_Service_Factory;
 use Wordlift\Vocabulary\Dashboard\Term_Matches_Widget;
 use Wordlift\Vocabulary\Data\Term_Count\Cached_Term_count_Manager;
 use Wordlift\Vocabulary\Data\Term_Count\Term_Count_Factory;
@@ -31,7 +32,9 @@ class Vocabulary_Loader {
 			$configuration_service->get_key()
 		);
 
-		$cache_service    = new Options_Cache( "wordlift-cmkg" );
+		$cache_service    = Cache_Service_Factory::get_instance();
+
+
 		$analysis_service = new Analysis_Service( $api_service, $cache_service );
 
 		$term_data_factory = new Term_Data_Factory( $analysis_service );

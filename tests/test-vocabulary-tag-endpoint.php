@@ -8,7 +8,6 @@ use Wordlift\Vocabulary\Analysis_Service;
 use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
 use Wordlift\Vocabulary\Api\Tag_Rest_Endpoint;
 use Wordlift\Vocabulary\Data\Term_Data\Term_Data_Factory;
-use Wordlift\Vocabulary\Options_Cache;
 use Wordlift\Vocabulary\Sync_State;
 use Wordlift\Vocabulary\Vocabulary_Loader;
 
@@ -48,7 +47,7 @@ class Tag_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 		$term_data         = wp_insert_term( 'test', 'post_tag' );
 		$tag               = get_term( $term_data['term_id'] );
 		$api_service_mock  = $this->build_mock_api_service( false );
-		$cache_service     = new Options_Cache( "wordlift-cmkg" );
+		$cache_service     = \Wordlift\Vocabulary\Cache\Cache_Service_Factory::get_instance();
 		$analysis_service  = new Analysis_Service( $api_service_mock, $cache_service );
 		$term_data_factory = new Term_Data_Factory( $analysis_service );
 		$endpoint          = new Tag_Rest_Endpoint( $term_data_factory );
@@ -56,7 +55,7 @@ class Tag_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 		$this->reset_rest_server();
 
 
-		$received_mock_entities = $this->get_expected_entities();
+		$received_mock_entities = $this->get_mock_entities();
 		$cache_key              = $tag->term_id;
 		// the data should be present on options cache before we send the request.
 		$cache_service->put( $cache_key, $received_mock_entities );
@@ -135,7 +134,7 @@ class Tag_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 	/**
 	 * @return array[]
 	 */
-	private function get_expected_entities() {
+	public static function get_mock_entities() {
 		return array(
 			0 =>
 				array(

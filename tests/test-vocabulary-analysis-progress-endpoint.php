@@ -4,7 +4,7 @@
 use Wordlift\Vocabulary\Analysis_Background_Process;
 use Wordlift\Vocabulary\Analysis_Background_Service;
 use Wordlift\Vocabulary\Api\Api_Config;
-use Wordlift\Vocabulary\Options_Cache;
+use Wordlift\Vocabulary\Cache\Cache_Service_Factory;
 use Wordlift\Vocabulary\Sync_State;
 use Wordlift\Vocabulary\Vocabulary_Loader;
 
@@ -82,7 +82,7 @@ class Analysis_Progress_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_Cas
 
 
 	public function test_given_a_list_of_tags_should_remove_the_analysis_done_flag_on_restart() {
-		$cache_service = new Options_Cache( "wordlift-cmkg" );
+		$cache_service = Cache_Service_Factory::get_instance();
 		$tag_ids       = $this->factory()->term->create_many( 50, array( 'taxonomy' => 'post_tag' ) );
 		// set analysis done flag on all the tags.
 		array_map( function ( $tag_id ) use ( $cache_service ) {

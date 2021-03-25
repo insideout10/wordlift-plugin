@@ -1,8 +1,8 @@
 <?php
 
-namespace Wordlift\Vocabulary;
+namespace Wordlift\Vocabulary\Cache;
 
-class Options_Cache {
+class Options_Cache implements Cache {
 
 	private $namespace;
 

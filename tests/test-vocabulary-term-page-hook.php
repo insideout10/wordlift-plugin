@@ -42,13 +42,7 @@ class Vocabulary_Term_page extends \Wordlift_Vocabulary_Unit_Test_Case {
 		global $wp_scripts;
 		$term_id = $this->create_unmatched_tag( "foo" );
 		do_action( 'post_tag_edit_form_fields', get_term( $term_id ) );
-		$extra_data = $wp_scripts->registered[ Term_Page_Hook::HANDLE ]->extra;
-		$this->assertNotNull( $extra_data );
-		$this->assertArrayHaskey( "data", $extra_data );
-		$json      = $extra_data["data"];
-		$json      = str_replace( "var _wlVocabularyTermPageSettings =", "", $json );
-		$json      = str_replace( "};", "}", $json );
-		$json_data = json_decode( $json, true );
+		$json_data = $this->get_data_from_js_variable( $wp_scripts );
 		$this->assertArrayHasKey( 'termData', $json_data );
 		$this->assertTrue( is_array( $json_data['termData'] ) );
 		$term_data = $json_data['termData'];
@@ -63,15 +57,34 @@ class Vocabulary_Term_page extends \Wordlift_Vocabulary_Unit_Test_Case {
 		$this->assertArrayHasKey( 'nonce', $api_config );
 	}
 
-
-	public function test_should_not_render_widget_if_tag_is_already_matched() {
-		global $wp_scripts, $wp_styles;
-		$term    = wp_insert_term( "foo", "post_tag" );
-		$term_id = $term["term_id"];
-		update_term_meta( $term_id, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING, 1 );
+	public function test_set_is_active_correctly_for_legacy_data() {
+		global $wp_scripts;
+		$term_id = $this->create_unmatched_tag( "foo" );
 		do_action( 'post_tag_edit_form_fields', get_term( $term_id ) );
-		$this->assertNull( $wp_scripts );
-		$this->assertNull( $wp_styles );
+		$json_data = $this->get_data_from_js_variable( $wp_scripts );
+		$term_data = $json_data['termData'];
+		$entities = $term_data['entities'];
+		// we should have isActive set for 1 entity since only one can be selected in legacy
+		// code.
+
+
+	}
+
+	/**
+	 * @param WP_Scripts $wp_scripts
+	 *
+	 * @return mixed
+	 */
+	private function get_data_from_js_variable( WP_Scripts $wp_scripts ) {
+		$extra_data = $wp_scripts->registered[ Term_Page_Hook::HANDLE ]->extra;
+		$this->assertNotNull( $extra_data );
+		$this->assertArrayHaskey( "data", $extra_data );
+		$json      = $extra_data["data"];
+		$json      = str_replace( "var _wlVocabularyTermPageSettings =", "", $json );
+		$json      = str_replace( "};", "}", $json );
+		$json_data = json_decode( $json, true );
+
+		return $json_data;
 	}
 
 }
