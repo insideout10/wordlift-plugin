@@ -39,8 +39,8 @@ const webpackConfig = {
     "tinymce-faq-plugin": "./src/faq/hooks/tinymce/tinymce-faq-plugin.js",
     "block-editor-faq-plugin": "./src/faq/hooks/block-editor/block-editor-faq-plugin.js",
     "post-excerpt": "./src/post-excerpt/index.js",
-    "vocabulary": "./src/reconcile-page/index.js",
-    "vocabulary-term-page": "./src/reconcile-page/term-page.js",
+    "vocabulary": "./src/vocabulary/index.js",
+    "vocabulary-term-page": "./src/vocabulary/term-page.js",
   },
   output: {
     filename: "[name].js",
