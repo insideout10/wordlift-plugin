@@ -23,7 +23,7 @@ class Badge_Generator {
 			return $number;
 		}
 
-		return floor( $number / 100 ) * 100;
+		return 100;
 	}
 
 	public static function generate_html( $number ) {

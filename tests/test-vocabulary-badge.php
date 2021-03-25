@@ -31,7 +31,8 @@ class Vocabulary_Badge_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 
 	public function test_badge_generated_html() {
 		$result        = Badge_Generator::generate_html( 340 );
-		$expected_html = "<span class=\"wl-admin-menu-badge\">300+</span>";
+		// we should get 100+ if number is greater than 100.
+		$expected_html = "<span class=\"wl-admin-menu-badge\">100+</span>";
 		$this->assertEquals( $result, $expected_html );
 	}
 
