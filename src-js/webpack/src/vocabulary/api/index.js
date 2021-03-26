@@ -1,5 +1,3 @@
-import {MATCH_TERMS_SETTINGS_KEY} from "../index";
-
 export  function getTagsFromApi(offset, limit, apiConfig) {
 
     const {restUrl, nonce} = apiConfig;

@@ -16,6 +16,7 @@ class Entity extends React.Component {
     }
 
     render() {
+        console.log("entity component rendered")
         const entity = this.props
         const selectedCssClass = entity.isActive ? 'card-input__selected' : '';
         if (entity.isHidden) {

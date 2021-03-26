@@ -8,20 +8,19 @@ import createSagaMiddleware from "redux-saga";
 import {applyMiddleware, createStore} from "redux";
 import thunk from "redux-thunk";
 import logger from "redux-logger";
-import {entitySaga} from "../../sagas";
+
 import {createReducer} from "@reduxjs/toolkit";
 
 /**
  * Internal dependencies.
  */
+import {entitySaga} from "../../sagas";
 import Entity from "../../components/entity";
 
 
 /**
  * Internal dependencies.
  */
-
-
 export const TERMS_PAGE_SETTINGS_CONFIG = "_wlVocabularyTermPageSettings";
 
 
