@@ -11,7 +11,7 @@ use Wordlift\Vocabulary\Hooks\Term_Page_Hook;
  * @group vocabulary
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
-class Vocabulary_Term_page extends \Wordlift_Vocabulary_Unit_Test_Case {
+class Vocabulary_Term_page_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 
 
 	public function test_should_load_entity_match_on_term_page_screen() {

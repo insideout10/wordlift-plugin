@@ -6,6 +6,7 @@ use Wordlift\Scripts\Scripts_Helper;
 use Wordlift\Vocabulary\Analysis_Background_Service;
 use Wordlift\Vocabulary\Api\Api_Config;
 use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
+use Wordlift\Vocabulary\Data\Entity\Entity_Utils;
 use Wordlift\Vocabulary\Data\Term_Data\Term_Data_Factory;
 use Wordlift\Vocabulary\Pages\Match_Terms;
 
@@ -52,8 +53,14 @@ class Term_Page_Hook {
 
 		wp_enqueue_style( self::HANDLE, plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . 'js/dist/vocabulary-term-page.full.css' );
 
+
+		$term_data_arr = $term_data->get_data();
+
+		var_dump($term_data_arr['entities']);
+		$term_data_arr['entities'] = Entity_Utils::mark_is_active_for_entities( $term->term_id, $term_data_arr['entities'] );
+
 		wp_localize_script( self::HANDLE, self::LOCALIZED_KEY, array(
-			'termData'  => $term_data->get_data(),
+			'termData'  => $term_data_arr,
 			'apiConfig' => Api_Config::get_api_config()
 		) );
 
