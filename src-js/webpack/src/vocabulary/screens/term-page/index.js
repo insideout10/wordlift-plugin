@@ -25,10 +25,10 @@ import Entity from "../../components/entity";
 export const TERMS_PAGE_SETTINGS_CONFIG = "_wlVocabularyTermPageSettings";
 
 
-const INITIAL_STATE = {};
+
 const sagaMiddleware = createSagaMiddleware();
 const reducer = createReducer(null, {});
-const store = createStore(reducer, INITIAL_STATE, applyMiddleware(sagaMiddleware, thunk, logger));
+const store = createStore(reducer, {}, applyMiddleware(sagaMiddleware, thunk, logger));
 sagaMiddleware.run(entitySaga);
 
 
@@ -40,9 +40,13 @@ window.addEventListener("load", () => {
         ReactDOM.render(
             <Provider store={store}>
                 <React.Fragment>
-                    {entities.map((entity) => {
-                        return (<Entity {...entity} />)
-                    })}
+                    <tr>
+                        <td style={{width: "70%"}}>
+                            {entities.map((entity) => {
+                                return (<Entity {...entity} />)
+                            })}
+                        </td>
+                    </tr>
                 </React.Fragment>
             </Provider>,
             el
