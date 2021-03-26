@@ -61,7 +61,6 @@ class Vocabulary_Term_page_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 	public function test_set_is_active_correctly_for_legacy_data() {
 		global $wp_scripts;
 		$term_id = $this->create_unmatched_tag( "foo" );
-
 		$cache_service = Cache_Service_Factory::get_cache_service();
 		$mock_entities = Tag_Endpoint_Test::get_mock_entities();
 		$cache_service->put( $term_id, $mock_entities );
@@ -70,16 +69,20 @@ class Vocabulary_Term_page_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 		// when we get the js data, the first entity needs to be set active since
 		// it is matched.
 		$this->do_form_fields_action( $term_id );
-		$json_data = $this->get_data_from_js_variable( $wp_scripts );
-		$term_data = $json_data['termData'];
-		$entities  = $term_data['entities'];
-		// we should have isActive set for 1 entity since only one can be selected in legacy
-		// code.
-		$first_entity = $entities[0];
-		$this->assertArrayHasKey( 'isActive', $first_entity );
-		$this->assertTrue( $first_entity['isActive'] );
+		$this->perform_js_variable_assertions( $wp_scripts );
+	}
 
 
+	public function test_set_is_active_correctly_for_new_data() {
+		global $wp_scripts;
+		$term_id = $this->create_unmatched_tag( "foo" );
+		$cache_service = Cache_Service_Factory::get_cache_service();
+		$mock_entities = Tag_Endpoint_Test::get_mock_entities();
+		$cache_service->put( $term_id, $mock_entities );
+		$entity = Entity_Factory::get_instance( $term_id );
+		$entity->save_jsonld_data( $mock_entities[0]['meta']);
+		$this->do_form_fields_action( $term_id );
+		$this->perform_js_variable_assertions( $wp_scripts );
 	}
 
 
@@ -124,6 +127,20 @@ class Vocabulary_Term_page_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 		ob_start();
 		do_action( 'post_tag_edit_form_fields', get_term( $term_id ) );
 		ob_end_clean();
+	}
+
+	/**
+	 * @param WP_Scripts $wp_scripts
+	 */
+	private function perform_js_variable_assertions( WP_Scripts $wp_scripts ) {
+		$json_data = $this->get_data_from_js_variable( $wp_scripts );
+		$term_data = $json_data['termData'];
+		$entities  = $term_data['entities'];
+		// we should have isActive set for 1 entity since only one can be selected in legacy
+		// code.
+		$first_entity = $entities[0];
+		$this->assertArrayHasKey( 'isActive', $first_entity );
+		$this->assertTrue( $first_entity['isActive'] );
 	}
 
 }
