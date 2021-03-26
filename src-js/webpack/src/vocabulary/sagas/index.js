@@ -92,6 +92,6 @@ export function* rootSaga() {
 }
 
 export function* entitySaga() {
-    yield takeLatest("ACCEPT_ENTITY", acceptEntitySaga)
+    //yield takeLatest("ACCEPT_ENTITY", acceptEntitySaga)
 }
 
