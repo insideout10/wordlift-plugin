@@ -16,7 +16,6 @@ class Entity extends React.Component {
     }
 
     render() {
-        console.log("entity component rendered")
         const entity = this.props
         const selectedCssClass = entity.isActive ? 'card-input__selected' : '';
         if (entity.isHidden) {
@@ -25,15 +24,13 @@ class Entity extends React.Component {
         return (
             <React.Fragment>
                 <table className={"card-input " + selectedCssClass} onClick={() => {
-                    this.props.dispatch(setEntityActive({
-                        entityIndex: this.props.entityIndex,
-                        tagIndex: this.props.tagIndex
-                    }))
+                    this.props.onEntitySelectedListener(this.props)
                 }}>
                     <tbody>
                     <tr>
-                        <td style={{"width": "90%"}}><p style={{"fontSize": "18px"}}><b>{entity.label}</b> ({entity.mainType})</p></td>
-                        <td style={{"width": "10%"}}>{parseFloat(entity.confidence * 100).toFixed(2) }%</td>
+                        <td style={{"width": "90%"}}><p style={{"fontSize": "18px"}}>
+                            <b>{entity.label}</b> ({entity.mainType})</p></td>
+                        <td style={{"width": "10%"}}>{parseFloat(entity.confidence * 100).toFixed(2)}%</td>
                     </tr>
                     {entity.meta.description &&
                     <tr>

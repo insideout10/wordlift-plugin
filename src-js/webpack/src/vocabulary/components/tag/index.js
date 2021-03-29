@@ -4,13 +4,13 @@
 import React from "react";
 import Entity from "../entity";
 import {connect} from "react-redux";
-import { __ } from "@wordpress/i18n";
+import {__} from "@wordpress/i18n";
 
 /**
  * Internal dependencies
  */
 import "./index.scss"
-import {acceptEntity, markTagAsNoMatch, undo} from "../../actions";
+import {acceptEntity, markTagAsNoMatch, setEntityActive, undo} from "../../actions";
 
 class Tag extends React.Component {
 
@@ -54,7 +54,13 @@ class Tag extends React.Component {
                     {showTagNameColumn && this.getTagNameColumn()}
                     <td style={{width: "70%"}}>
                         {this.props.entities && this.props.entities.map((entity, index) => (
-                            <Entity {...entity} tagIndex={this.props.tagIndex} entityIndex={index} key={entity.entityId}/>
+                            <Entity {...entity} tagIndex={this.props.tagIndex} entityIndex={index} key={entity.entityId}
+                                    onEntitySelectedListener={(props) => {
+                                        props.dispatch(setEntityActive({
+                                            entityIndex: props.entityIndex,
+                                            tagIndex: props.tagIndex
+                                        }))
+                                    }}/>
                         ))}
                         {this.showActionButtons()}
                     </td>
@@ -93,7 +99,6 @@ class Tag extends React.Component {
         )
     }
 }
-
 
 
 const mapStateToItemProps = (_, initialProps) => (state) => {

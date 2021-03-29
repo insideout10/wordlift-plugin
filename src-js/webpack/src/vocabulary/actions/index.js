@@ -35,4 +35,14 @@ export const sortByTermNameAsc = createAction("SORT_BY_TERM_NAME_ASC")
 
 export const sortByTermNameDesc = createAction("SORT_BY_TERM_NAME_DESC")
 
-export const updateApiConfig = createAction("UPDATE_API_CONFIG")
+/**
+ * This action is fired on the term screen when the user selects an entity.
+ * @type {function(): {type: *}}
+ */
+export const entityAccepted = createAction("ENTITY_ACCEPTED")
+/**
+ * This action is fired on the term screen when the user want to remove the previously
+ * selected entity.
+ * @type {function(): {type: *}}
+ */
+export const entityRejected = createAction("ENTITY_REJECTED");

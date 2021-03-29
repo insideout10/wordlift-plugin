@@ -16,6 +16,7 @@ import {createReducer} from "@reduxjs/toolkit";
  */
 import {entitySaga} from "../../sagas";
 import Entity from "../../components/entity";
+import {entityAccepted, entityRejected} from "../../actions";
 
 
 /**
@@ -35,6 +36,22 @@ window.addEventListener("load", () => {
     const pageSettings = window[TERMS_PAGE_SETTINGS_CONFIG];
     const el = document.getElementById("wl_vocabulary_terms_widget");
     const entities = pageSettings["termData"]["entities"];
+
+    const entitySelectedListener = (props) => {
+        // Fire inverse actions since the isActive state is set by backend.
+        // when the entity is already active we fire the entity rejected action.
+        if ( props.isActive ) {
+            props.dispatch(entityRejected({
+                entityData: props
+            }))
+        }
+        else {
+            props.dispatch(entityAccepted({
+                entityData: props
+            }))
+        }
+    }
+
     if (el) {
         ReactDOM.render(
             <Provider store={store}>
@@ -42,7 +59,7 @@ window.addEventListener("load", () => {
                     <tr>
                         <td style={{width: "70%"}}>
                             {entities.map((entity) => {
-                                return (<Entity {...entity} />)
+                                return (<Entity {...entity}   onEntitySelectedListener={entitySelectedListener} />)
                             })}
                         </td>
                     </tr>
