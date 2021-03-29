@@ -65,7 +65,7 @@ class Term_Page_Hook {
 
 		echo "<tr class=\"form-field\">
 				<th>Match</th>
-				<td style='width: 100%;'><div id='wl_vocabulary_terms_widget'></div></td>
+				<td style='width: 100%;' id='wl_vocabulary_terms_widget'></td>
 			</tr>";
 	}
 
