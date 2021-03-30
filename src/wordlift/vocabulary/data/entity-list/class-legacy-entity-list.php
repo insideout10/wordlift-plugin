@@ -47,4 +47,8 @@ class Legacy_Entity_List extends Entity_List {
 		delete_term_meta( $this->term_id, Entity_Rest_Endpoint::TYPE_META_KEY );
 		delete_term_meta( $this->term_id, Entity_Rest_Endpoint::EXTERNAL_ENTITY_META_KEY );
 	}
+
+	public function remove_entity_by_id( $entity_id ) {
+		$this->clear_data();
+	}
 }

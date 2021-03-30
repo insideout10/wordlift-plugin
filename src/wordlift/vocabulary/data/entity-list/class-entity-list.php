@@ -39,4 +39,5 @@ abstract class Entity_List {
 	 */
 	abstract public function clear_data();
 
+	abstract public function remove_entity_by_id( $entity_id );
 }

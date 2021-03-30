@@ -64,9 +64,20 @@ class Default_Entity_List extends Entity_List {
 
 	public function clear_data() {
 		delete_term_meta( $this->term_id, self::META_KEY );
-
 	}
 
-	public function remove_entity_by_id( $entityId ) {
+
+	public function remove_entity_by_id( $entity_id ) {
+		$entity_list = get_term_meta( $this->term_id, self::META_KEY, true );
+		foreach ( $entity_list as $key => $entity ) {
+			$same_as = $entity['sameAs'];
+			if ( in_array( $entity_id, $same_as ) ) {
+				// since entity ids are unique, we break after finding the first instance.
+				unset( $entity_list[ $key ] );
+				break;
+			}
+		}
+		update_term_meta( $this->term_id, self::META_KEY, $entity_list );
+
 	}
 }

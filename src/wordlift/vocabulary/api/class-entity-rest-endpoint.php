@@ -106,7 +106,7 @@ class Entity_Rest_Endpoint {
 		$term_id     = (int) $data['term_id'];
 		$entity_data = (array) $data['entity'];
 		$entity      = Entity_List_Factory::get_instance( $term_id );
-		$entity->remove_entity_by_id( $entity_data['entityId'] );
+		$entity->remove_entity_by_id( $entity_data['@id'] );
 	}
 
 	private function register_nomatch_route() {
