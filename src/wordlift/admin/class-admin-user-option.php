@@ -9,6 +9,10 @@ class Admin_User_Option {
 
 	const WORDLIFT_ADMIN = 'wl_is_wordlift_admin';
 
+	public static function is_wordlift_admin() {
+		return intval( get_user_meta( get_current_user_id(), self::WORDLIFT_ADMIN, true ) ) === 1;
+	}
+
 	public function connect_hook() {
 		add_action( 'wordlift_user_settings_page', array( $this, 'render_checkbox' ) );
 	}

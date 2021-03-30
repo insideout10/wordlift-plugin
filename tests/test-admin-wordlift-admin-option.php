@@ -4,6 +4,8 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
+use Wordlift\Admin\Admin_User_Option;
+
 /**
  * Class Wordlift_Admin_Option_Test
  */
@@ -31,6 +33,14 @@ class Wordlift_Admin_Option_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEmpty( $checkbox_contents, "Should  not have checkbox contents" );
 	}
 
+	public function test_should_save_the_option_when_the_user_is_admin() {
+		$user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $user_id );
+		$_POST[ Admin_User_Option::WORDLIFT_ADMIN] = true;
+		do_action('edit_user_profile_update');
+		$this->assertTrue( Admin_User_Option::is_wordlift_admin() );
+	}
+
 	/**
 	 * @return false|string
 	 */
@@ -39,7 +49,6 @@ class Wordlift_Admin_Option_Test extends Wordlift_Unit_Test_Case {
 		do_action( 'wordlift_user_settings_page' );
 		$checkbox_contents = ob_get_contents();
 		ob_end_clean();
-
 		return $checkbox_contents;
 	}
 
