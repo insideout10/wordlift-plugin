@@ -14,6 +14,9 @@ class Admin_User_Option {
 	}
 
 	public function render_checkbox() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
 		$is_checked = intval( get_user_meta( get_current_user_id(), self::WORDLIFT_ADMIN, true ) ) === 1;
 		echo $this->get_checkbox( $is_checked );
 	}
@@ -21,7 +24,7 @@ class Admin_User_Option {
 	public static function get_checkbox( $is_checked ) {
 		$checked = $is_checked ? 'checked' : '';
 
-		return "<input type='checkbox' name='wl_is_wordlift_admin' checked='$checked'>";
+		return "<input type='checkbox' name='wl_is_wordlift_admin' checked='$checked'> Admin";
 	}
 
 }
