@@ -72,10 +72,8 @@ class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_
 		// create a term
 		$term_data = wp_insert_term( 'foo', 'post_tag' );
 		$term_id   = $term_data['term_id'];
-
-		$entity = $this->getMockEntityData();
-
-		$user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
+		$entity    = $this->getMockEntityData();
+		$user_id   = $this->factory()->user->create( array( 'role' => 'administrator' ) );
 		wp_set_current_user( $user_id );
 
 		$response = $this->send_accept_entity_request( $entity, $term_id );
@@ -161,7 +159,15 @@ class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_
 
 	public function test_when_the_entity_is_rejected_should_remove_only_the_entity_from_jsonld() {
 		// accept 2 entities.
+		$term_data = wp_insert_term( 'foo', 'post_tag' );
+		$term_id   = $term_data['term_id'];
+		$entity    = $this->getMockEntityData();
+		$user_id   = $this->factory()->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $user_id );
 
+		// Dispatch the request twice, we should have 2 entities in meta by now.
+		$this->send_accept_entity_request( $entity, $term_id );
+		$this->send_accept_entity_request( $entity, $term_id );
 
 		// reject 1 entity
 	}
@@ -172,14 +178,38 @@ class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_
 	 *
 	 * @return mixed
 	 */
-	private function send_accept_entity_request( array $entity, $term_id ) {
+	private function send_accept_entity_request(  $entity, $term_id ) {
 		$request = new WP_REST_Request( 'POST', $this->accept_route );
 		$request->set_header( 'content-type', 'application/json' );
+		return $this->dispatch_entity_request( $entity, $term_id, $request );
+	}
+
+	/**
+	 * @param array $entity
+	 * @param $term_id
+	 *
+	 * @return mixed
+	 */
+	private function send_reject_entity_request(  $entity, $term_id ) {
+		$request = new WP_REST_Request( 'POST', $this->reject_route );
+		$request->set_header( 'content-type', 'application/json' );
+		return $this->dispatch_entity_request( $entity, $term_id, $request );
+	}
+
+	/**
+	 * @param array $entity
+	 * @param $term_id
+	 * @param WP_REST_Request $request
+	 *
+	 * @return mixed
+	 */
+	private function dispatch_entity_request( array $entity, $term_id, WP_REST_Request $request ) {
 		$json_data = json_encode( array( 'entity' => $entity, 'term_id' => $term_id ) );
 		$request->set_body( $json_data );
 		$response = $this->server->dispatch( $request );
 
 		return $response;
 	}
+
 
 }
