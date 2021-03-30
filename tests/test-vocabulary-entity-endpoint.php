@@ -33,6 +33,8 @@ class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_
 
 		$this->no_match_route = Api_Config::REST_NAMESPACE . '/entity/no_match';
 
+		$this->reject_route = Api_Config::REST_NAMESPACE . '/entity/reject';
+
 	}
 
 
@@ -202,5 +204,9 @@ class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_
 		);
 	}
 
+
+	public function test_when_the_entity_is_rejected_should_remove_only_the_entity_from_jsonld() {
+
+	}
 
 }

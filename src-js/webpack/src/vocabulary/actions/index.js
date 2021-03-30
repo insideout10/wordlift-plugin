@@ -34,15 +34,3 @@ export const sortByPostCountDesc = createAction("SORT_BY_POST_COUNT_DESC")
 export const sortByTermNameAsc = createAction("SORT_BY_TERM_NAME_ASC")
 
 export const sortByTermNameDesc = createAction("SORT_BY_TERM_NAME_DESC")
-
-/**
- * This action is fired on the term screen when the user selects an entity.
- * @type {function(): {type: *}}
- */
-export const entityAccepted = createAction("ENTITY_ACCEPTED")
-/**
- * This action is fired on the term screen when the user want to remove the previously
- * selected entity.
- * @type {function(): {type: *}}
- */
-export const entityRejected = createAction("ENTITY_REJECTED");

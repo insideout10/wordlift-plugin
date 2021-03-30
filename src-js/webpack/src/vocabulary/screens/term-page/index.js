@@ -14,9 +14,9 @@ import { createReducer } from "@reduxjs/toolkit";
 /**
  * Internal dependencies.
  */
-import { entitySaga } from "../../sagas";
-import Entity from "../../components/entity";
-import { entityAccepted, entityRejected } from "../../actions";
+import { entitySaga } from "./saga";
+import {reducer} from "./reducer"
+import EntityList from "./entity-list";
 
 /**
  * Internal dependencies.
@@ -24,41 +24,31 @@ import { entityAccepted, entityRejected } from "../../actions";
 export const TERMS_PAGE_SETTINGS_CONFIG = "_wlVocabularyTermPageSettings";
 
 const sagaMiddleware = createSagaMiddleware();
-const reducer = createReducer(null, {});
-const store = createStore(reducer, {}, applyMiddleware(sagaMiddleware, thunk, logger));
-sagaMiddleware.run(entitySaga);
+
+
 
 window.addEventListener("load", () => {
+
+
   const pageSettings = window[TERMS_PAGE_SETTINGS_CONFIG];
   const el = document.getElementById("wl_vocabulary_terms_widget");
   const entities = pageSettings["termData"]["entities"];
 
-  const entitySelectedListener = props => {
-    // Fire inverse actions since the isActive state is set by backend.
-    // when the entity is already active we fire the entity rejected action.
-    if (props.isActive) {
-      props.dispatch(
-        entityRejected({
-          entityData: props
-        })
-      );
-    } else {
-      props.dispatch(
-        entityAccepted({
-          entityData: props
-        })
-      );
-    }
-  };
+  const store = createStore(reducer, {
+    entities: entities,
+    termId: pageSettings["termData"]["tagId"],
+    apiConfig: pageSettings["apiConfig"]
+
+  }, applyMiddleware(sagaMiddleware, thunk, logger));
+  sagaMiddleware.run(entitySaga);
+
+  console.log(store.getState())
 
   if (el) {
     ReactDOM.render(
       <Provider store={store}>
         <React.Fragment>
-          {entities &&
-            entities.map(entity => {
-              return <Entity {...entity} onEntitySelectedListener={entitySelectedListener} />;
-            })}
+          <EntityList />
         </React.Fragment>
       </Provider>,
       el

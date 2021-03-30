@@ -91,7 +91,3 @@ export function* rootSaga() {
     yield takeLatest("UNDO", undoSaga)
 }
 
-export function* entitySaga() {
-    //yield takeLatest("ACCEPT_ENTITY", acceptEntitySaga)
-}
-
