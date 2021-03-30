@@ -6,7 +6,7 @@ use Wordlift\Scripts\Scripts_Helper;
 use Wordlift\Vocabulary\Analysis_Background_Service;
 use Wordlift\Vocabulary\Api\Api_Config;
 use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
-use Wordlift\Vocabulary\Data\Entity_List\Entity_Utils;
+use Wordlift\Vocabulary\Data\Entity_List\Entity_List_Utils;
 use Wordlift\Vocabulary\Data\Term_Data\Term_Data_Factory;
 use Wordlift\Vocabulary\Pages\Match_Terms;
 
@@ -56,7 +56,7 @@ class Term_Page_Hook {
 
 		$term_data_arr = $term_data->get_data();
 
-		$term_data_arr['entities'] = Entity_Utils::mark_is_active_for_entities( $term->term_id, $term_data_arr['entities'] );
+		$term_data_arr['entities'] = Entity_List_Utils::mark_is_active_for_entities( $term->term_id, $term_data_arr['entities'] );
 
 		wp_localize_script( self::HANDLE, self::LOCALIZED_KEY, array(
 			'termData'  => $term_data_arr,
