@@ -2,6 +2,7 @@
 
 use Wordlift\Vocabulary\Api\Api_Config;
 use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
+use Wordlift\Vocabulary\Data\Entity_List\Default_Entity_List;
 use Wordlift\Vocabulary\Data\Entity_List\Entity_List_Factory;
 use Wordlift\Vocabulary\Vocabulary_Loader;
 
@@ -18,6 +19,10 @@ class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_
 	private $reject_route;
 
 	private $no_match_route;
+	/**
+	 * @var string
+	 */
+	private $undo_route;
 
 	public function setUp() {
 		parent::setUp();
@@ -29,7 +34,7 @@ class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_
 
 		$this->accept_route = Api_Config::REST_NAMESPACE . '/entity/accept';
 
-		$this->reject_route = Api_Config::REST_NAMESPACE . '/entity/undo';
+		$this->undo_route = Api_Config::REST_NAMESPACE . '/entity/undo';
 
 		$this->no_match_route = Api_Config::REST_NAMESPACE . '/entity/no_match';
 
@@ -118,29 +123,31 @@ class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_
 		$response = $this->server->dispatch( $request );
 
 		$this->assertEquals( 200, $response->get_status(), 'No match endpoint should be registered' );
-		$results = get_term_meta( $term_id, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING );
-		$this->assertCount( 2, $results );
+		$results = get_term_meta( $term_id, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING, true );
 		$this->assertEquals( 1, $results[0] );
 
 	}
 
 
+	public function test_when_tag_is_marked_as_undo_should_clear_the_data() {
+		$entity  = $this->getMockEntityData();
+		$term_id = $this->accept_two_entities( $entity );
+		// send undo request.
+		$this->send_undo_request( $term_id );
+		$this->assertEquals( '', get_term_meta( $term_id, Default_Entity_List::META_KEY, true ) );
+		// Should also reset the ui flag.
+		$this->assertEquals( '', get_term_meta( $term_id, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING, true ) );
+	}
 
 
 	public function test_when_the_entity_is_rejected_should_remove_only_the_entity_from_jsonld() {
 		// accept 2 entities.
-		$term_data = wp_insert_term( 'foo', 'post_tag' );
-		$term_id   = $term_data['term_id'];
-		$entity    = $this->getMockEntityData();
-		$user_id   = $this->factory()->user->create( array( 'role' => 'administrator' ) );
-		wp_set_current_user( $user_id );
+		$entity = $this->getMockEntityData();
 
-		// Dispatch the request twice, we should have 2 entities in meta by now.
-		$this->send_accept_entity_request( $entity, $term_id );
-		$this->send_accept_entity_request( $entity, $term_id );
+		$term_id = $this->accept_two_entities( $entity );
 
 		// reject 1 entity
-		$this->send_reject_entity_request($entity, $term_id);
+		$this->send_reject_entity_request( $entity, $term_id );
 
 		// check the meta, now we should have 1 entity.
 		$entity   = Entity_List_Factory::get_instance( $term_id );
@@ -154,10 +161,25 @@ class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_
 	 *
 	 * @return mixed
 	 */
-	private function send_accept_entity_request(  $entity, $term_id ) {
+	private function send_accept_entity_request( $entity, $term_id ) {
 		$request = new WP_REST_Request( 'POST', $this->accept_route );
 		$request->set_header( 'content-type', 'application/json' );
+
 		return $this->dispatch_entity_request( $entity, $term_id, $request );
+	}
+
+	/**
+	 * @param $term_id
+	 *
+	 * @return mixed
+	 */
+	private function send_undo_request( $term_id ) {
+		$request = new WP_REST_Request( 'POST', $this->undo_route );
+		$request->set_header( 'content-type', 'application/json' );
+		$json_data = json_encode( array( 'term_id' => $term_id ) );
+		$request->set_body( $json_data );
+
+		return $this->server->dispatch( $request );
 	}
 
 	/**
@@ -166,9 +188,10 @@ class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_
 	 *
 	 * @return mixed
 	 */
-	private function send_reject_entity_request(  $entity, $term_id ) {
+	private function send_reject_entity_request( $entity, $term_id ) {
 		$request = new WP_REST_Request( 'POST', $this->reject_route );
 		$request->set_header( 'content-type', 'application/json' );
+
 		return $this->dispatch_entity_request( $entity, $term_id, $request );
 	}
 
@@ -182,9 +205,25 @@ class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_
 	private function dispatch_entity_request( array $entity, $term_id, WP_REST_Request $request ) {
 		$json_data = json_encode( array( 'entity' => $entity, 'term_id' => $term_id ) );
 		$request->set_body( $json_data );
-		$response = $this->server->dispatch( $request );
 
-		return $response;
+		return $this->server->dispatch( $request );
+	}
+
+	/**
+	 * @param array $entity
+	 *
+	 * @return int|mixed
+	 */
+	private function accept_two_entities( array $entity ) {
+		$term_data = wp_insert_term( 'foo', 'post_tag' );
+		$term_id   = $term_data['term_id'];
+		$user_id   = $this->factory()->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $user_id );
+		// Dispatch the request twice, we should have 2 entities in meta by now.
+		$this->send_accept_entity_request( $entity, $term_id );
+		$this->send_accept_entity_request( $entity, $term_id );
+
+		return $term_id;
 	}
 
 

@@ -49,12 +49,8 @@ class Entity_Rest_Endpoint {
 	public function undo( $request ) {
 		$data    = $request->get_params();
 		$term_id = (int) $data['term_id'];
-		// Insert Same As
-		delete_term_meta( $term_id, self::SAME_AS_META_KEY );
-		delete_term_meta( $term_id, self::ALTERNATIVE_LABEL_META_KEY );
-		delete_term_meta( $term_id, self::DESCRIPTION_META_KEY );
-		delete_term_meta( $term_id, self::TYPE_META_KEY );
-		delete_term_meta( $term_id, self::EXTERNAL_ENTITY_META_KEY );
+		$entity      = Entity_List_Factory::get_instance( $term_id );
+		$entity->clear_data();
 		delete_term_meta( $term_id, self::IGNORE_TAG_FROM_LISTING );
 
 		return $term_id;
