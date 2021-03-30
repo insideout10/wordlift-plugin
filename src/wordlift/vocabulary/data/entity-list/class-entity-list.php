@@ -5,7 +5,7 @@ namespace Wordlift\Vocabulary\Data\Entity_List;
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
-abstract class Entity {
+abstract class Entity_List {
 	/**
 	 * @var int
 	 */
