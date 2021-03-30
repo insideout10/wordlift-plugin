@@ -66,7 +66,6 @@ class Post_Jsonld {
 	public static function add_additional_attrs( $term, $entities ) {
 
 		return array_map( function ( $entity ) use ( $term ) {
-			var_dump($entity);
 			$entity['@id'] = get_term_link( $term->term_id ) . '#id';
 			if ( ! empty( $term->description ) ) {
 				$entity['description'] = $term->description;
