@@ -7,7 +7,7 @@
 namespace Wordlift\Vocabulary\Jsonld;
 
 use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
-use Wordlift\Vocabulary\Data\Entity_List\Entity_Factory;
+use Wordlift\Vocabulary\Data\Entity_List\Entity_List_Factory;
 
 class Post_Jsonld {
 
@@ -47,7 +47,7 @@ class Post_Jsonld {
 
 				if ( $is_matched ) {
 
-					$entity = Entity_Factory::get_instance( $tag->term_id );
+					$entity = Entity_List_Factory::get_instance( $tag->term_id );
 
 					$jsonld['mentions'] = array_merge( $jsonld['mentions'], self::add_additional_attrs( $tag, $entity->get_jsonld_data() ) );
 				}

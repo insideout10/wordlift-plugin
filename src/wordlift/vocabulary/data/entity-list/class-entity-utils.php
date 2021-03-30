@@ -43,7 +43,7 @@ class Entity_Utils {
 	public static function get_active_entities( $term_id ) {
 
 		// retrieve jsonld data.
-		$entity = Entity_Factory::get_instance( $term_id );
+		$entity = Entity_List_Factory::get_instance( $term_id );
 
 		$entity_data_list = $entity->get_jsonld_data();
 

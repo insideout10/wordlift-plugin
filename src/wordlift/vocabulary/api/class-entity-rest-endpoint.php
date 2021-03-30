@@ -6,7 +6,7 @@
 
 namespace Wordlift\Vocabulary\Api;
 
-use Wordlift\Vocabulary\Data\Entity_List\Entity_Factory;
+use Wordlift\Vocabulary\Data\Entity_List\Entity_List_Factory;
 use WP_REST_Server;
 
 /**
@@ -39,7 +39,7 @@ class Entity_Rest_Endpoint {
 		$data        = $request->get_params();
 		$term_id     = (int) $data['term_id'];
 		$entity_data = (array) $data['entity'];
-		$entity      = Entity_Factory::get_instance( $term_id );
+		$entity      = Entity_List_Factory::get_instance( $term_id );
 		$entity->save_jsonld_data( $entity_data );
 		update_term_meta( $term_id, self::IGNORE_TAG_FROM_LISTING, 1 );
 
@@ -105,7 +105,7 @@ class Entity_Rest_Endpoint {
 		$data        = $request->get_params();
 		$term_id     = (int) $data['term_id'];
 		$entity_data = (array) $data['entity'];
-		$entity      = Entity_Factory::get_instance( $term_id );
+		$entity      = Entity_List_Factory::get_instance( $term_id );
 		$entity->remove_entity_by_id( $entity_data['entityId'] );
 	}
 

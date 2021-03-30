@@ -2,7 +2,7 @@
 
 use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
 use Wordlift\Vocabulary\Cache\Cache_Service_Factory;
-use Wordlift\Vocabulary\Data\Entity\Entity_Factory;
+use Wordlift\Vocabulary\Data\Entity_List\Entity_List_Factory;
 use Wordlift\Vocabulary\Data\Term_Data\Term_Data_Factory;
 use Wordlift\Vocabulary\Hooks\Term_Page_Hook;
 
@@ -79,7 +79,7 @@ class Vocabulary_Term_page_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 		$cache_service = Cache_Service_Factory::get_cache_service();
 		$mock_entities = Tag_Endpoint_Test::get_mock_entities();
 		$cache_service->put( $term_id, $mock_entities );
-		$entity = Entity_Factory::get_instance( $term_id );
+		$entity = Entity_List_Factory::get_instance( $term_id );
 		$entity->save_jsonld_data( $mock_entities[0]['meta']);
 		$this->do_form_fields_action( $term_id );
 		$this->perform_js_variable_assertions( $wp_scripts );

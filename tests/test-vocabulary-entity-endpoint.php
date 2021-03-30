@@ -2,7 +2,7 @@
 
 use Wordlift\Vocabulary\Api\Api_Config;
 use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
-use Wordlift\Vocabulary\Data\Entity_List\Entity_Factory;
+use Wordlift\Vocabulary\Data\Entity_List\Entity_List_Factory;
 use Wordlift\Vocabulary\Vocabulary_Loader;
 
 
@@ -54,7 +54,7 @@ class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_
 
 		$this->assertEquals( 200, $response->get_status(), 'Accept endpoint should be registered' );
 
-		$entity         = Entity_Factory::get_instance( $term_id );
+		$entity         = Entity_List_Factory::get_instance( $term_id );
 		$entities       = $entity->get_jsonld_data();
 		$current_entity = $entities[0];
 
@@ -82,7 +82,7 @@ class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_
 
 		$this->assertEquals( 200, $response->get_status(), 'Accept endpoint should be registered' );
 
-		$entity   = Entity_Factory::get_instance( $term_id );
+		$entity   = Entity_List_Factory::get_instance( $term_id );
 		$entities = $entity->get_jsonld_data();
 		$this->assertCount( 2, $entities );
 		$current_entity = $entities[0];
@@ -173,7 +173,7 @@ class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_
 		$this->send_reject_entity_request($entity, $term_id);
 
 		// check the meta, now we should have 1 entity.
-		$entity   = Entity_Factory::get_instance( $term_id );
+		$entity   = Entity_List_Factory::get_instance( $term_id );
 		$entities = $entity->get_jsonld_data();
 		$this->assertCount( 1, $entities, "Single entity should be present since one got deleted" );
 	}
