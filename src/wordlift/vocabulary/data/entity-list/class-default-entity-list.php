@@ -38,7 +38,11 @@ class Default_Entity_List extends Entity_List {
 	}
 
 	public function save_jsonld_data( $entity_data ) {
-		$same_as_list = array_merge( $entity_data['sameAs'], array( $entity_data['@id'] ) );
+		$entity_id    = $entity_data['@id'];
+		$same_as_list = $entity_data['sameAs'];
+		if ( $entity_id ) {
+			$same_as_list = array_merge( $entity_data['sameAs'], array( $entity_id ) );
+		}
 
 		$alt_labels = array( (string) $entity_data['name'] );
 
