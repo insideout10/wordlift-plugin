@@ -16,6 +16,7 @@ class Admin_User_Option {
 	public function connect_hook() {
 		add_action( 'wordlift_user_settings_page', array( $this, 'render_checkbox' ) );
 		add_action( 'edit_user_profile_update', array( $this, 'save_checkbox' ) );
+		add_action( 'personal_options_update', array( $this, 'save_checkbox' ) );
 	}
 
 	public function save_checkbox() {
