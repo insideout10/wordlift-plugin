@@ -10,7 +10,7 @@ class Admin_User_Option {
 	const WORDLIFT_ADMIN = 'wl_is_wordlift_admin';
 
 	public function connect_hook() {
-		add_action( 'edit_user_profile', array( $this, 'render_checkbox' ) );
+		add_action( 'wordlift_user_settings_page', array( $this, 'render_checkbox' ) );
 	}
 
 	public function render_checkbox() {
@@ -22,9 +22,10 @@ class Admin_User_Option {
 	}
 
 	public static function get_checkbox( $is_checked ) {
-		$checked = $is_checked ? 'checked' : '';
+		$checked    = $is_checked ? "checked='checked'" : '';
+		$admin_text = __( 'Wordlift Admin', 'wordlift' );
 
-		return "<input type='checkbox' name='wl_is_wordlift_admin' checked='$checked'> Admin";
+		return "<tr><th>$admin_text</th><td><input type='checkbox' name='wl_is_wordlift_admin' $checked></td></tr>";
 	}
 
 }

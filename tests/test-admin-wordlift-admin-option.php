@@ -36,7 +36,7 @@ class Wordlift_Admin_Option_Test extends Wordlift_Unit_Test_Case {
 	 */
 	private function get_contents_for_checkbox_action() {
 		ob_start();
-		do_action( 'edit_user_profile' );
+		do_action( 'wordlift_user_settings_page' );
 		$checkbox_contents = ob_get_contents();
 		ob_end_clean();
 
