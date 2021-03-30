@@ -1686,6 +1686,8 @@ class Wordlift {
 		// Add custom columns.
 		$this->loader->add_filter( 'manage_entity_posts_columns', $this->entity_list_service, 'register_custom_columns' );
 		// no explicit entity as it prevents handling of other post types.
+		$this->loader->add_filter( 'manage_posts_columns', $this->entity_list_service, 'register_columns' );
+		$this->loader->add_filter( 'manage_pages_columns', $this->entity_list_service, 'register_columns' );
 		$this->loader->add_filter( 'manage_posts_custom_column', $this->entity_list_service, 'render_custom_columns', 10, 2 );
 		// Add 4W selection.
 		$this->loader->add_action( 'restrict_manage_posts', $this->entity_list_service, 'restrict_manage_posts_classification_scope' );

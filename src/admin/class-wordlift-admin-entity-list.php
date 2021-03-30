@@ -84,6 +84,14 @@ class Wordlift_Entity_List_Service {
 		return true;
 	}
 
+	public function register_columns( $columns ){
+		if ( ! apply_filters( 'wl_feature__enable__vocabulary__custom_columns', true ) && array_key_exists( 'taxonomy-wl_entity_type', $columns ) ) {
+			unset( $columns['taxonomy-wl_entity_type'] );
+		}
+
+		return $columns;
+	}
+
 	/**
 	 * Register custom columns for entity listing in backend.
 	 *
@@ -96,6 +104,11 @@ class Wordlift_Entity_List_Service {
 	 * @return array Enhanced columns array.
 	 */
 	public function register_custom_columns( $columns ) {
+
+		if ( ! apply_filters( 'wl_feature__enable__vocabulary__custom_columns', true ) && array_key_exists( 'taxonomy-wl_entity_type', $columns ) ) {
+			unset( $columns['taxonomy-wl_entity_type'] );
+			return $columns;
+		}
 
 		// Take away first column and keep a reference,
 		// so we can later insert the thumbnail between the first and the rest of columns.

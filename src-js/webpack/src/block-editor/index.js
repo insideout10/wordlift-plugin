@@ -43,6 +43,9 @@ import SynonymsPanel from "../common/components/synonyms-panel";
 import RelatedPostsPanel from "../common/containers/related-posts";
 import "./blocks";
 
+const wlSettings = global["wlSettings"];
+const canAddSynonyms = wlSettings && wlSettings["can_add_synonyms"] ? wlSettings["can_add_synonyms"] == 1 : false;
+
 // Register our filters to display additional elements in the CreateEntityForm. Pass our store to connect them to
 // our state.
 registerFilters(store);
@@ -84,7 +87,7 @@ registerPlugin(PLUGIN_NAMESPACE, {
         <Provider store={store}>
           <Fragment>
             <SidebarWithDidMountCallback />
-            <SynonymsPanel />
+            {canAddSynonyms && <SynonymsPanel />}
             <ArticleMetadataPanel />
             <SuggestedImagesPanel />
             <RelatedPostsPanel />
