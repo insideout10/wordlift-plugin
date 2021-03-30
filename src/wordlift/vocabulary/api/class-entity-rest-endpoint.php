@@ -75,7 +75,6 @@ class Entity_Rest_Endpoint {
 			array(
 				'methods'             => WP_REST_Server::CREATABLE,
 				'callback'            => array( $this, 'undo' ),
-				//@todo : review the permission level
 				'permission_callback' => function () {
 					return current_user_can( 'manage_options' );
 				},
@@ -98,7 +97,6 @@ class Entity_Rest_Endpoint {
 			array(
 				'methods'             => WP_REST_Server::CREATABLE,
 				'callback'            => array( $this, 'accept_entity' ),
-				//@todo : review the permission level
 				'permission_callback' => function () {
 					return current_user_can( 'manage_options' );
 				},
@@ -127,7 +125,6 @@ class Entity_Rest_Endpoint {
 			array(
 				'methods'             => WP_REST_Server::CREATABLE,
 				'callback'            => array( $this, 'mark_as_no_match' ),
-				//@todo : review the permission level
 				'permission_callback' => function () {
 					return current_user_can( 'manage_options' );
 				},
