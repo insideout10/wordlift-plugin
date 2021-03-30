@@ -1,6 +1,6 @@
 <?php
 
-namespace Wordlift\Vocabulary\Data\Entity;
+namespace Wordlift\Vocabulary\Data\Entity_List;
 /**
  * This class helps to return the entities which are selected in the ui
  * by the user, this is used to provide the data for widget rendered

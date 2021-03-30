@@ -30,6 +30,7 @@ class Entity_Rest_Endpoint {
 				$that->register_accept_route();
 				$that->register_undo_route();
 				$that->register_nomatch_route();
+				$that->register_reject_route();
 			} );
 	}
 
@@ -91,31 +92,21 @@ class Entity_Rest_Endpoint {
 	}
 
 	private function register_accept_route() {
-		register_rest_route(
-			Api_Config::REST_NAMESPACE,
-			'/entity/accept',
-			array(
-				'methods'             => WP_REST_Server::CREATABLE,
-				'callback'            => array( $this, 'accept_entity' ),
-				'permission_callback' => function () {
-					return current_user_can( 'manage_options' );
-				},
-				'args'                => array(
-					'term_id' => array(
-						'validate_callback' => function ( $param, $request, $key ) {
-							return is_numeric( $param ) && $param;
-						},
-						'required'          => true,
-					),
-					'entity'  => array(
-						'validate_callback' => function ( $param, $request, $key ) {
-							return is_array( $param );
-						},
-						'required'          => true,
-					),
-				),
-			)
-		);
+		$route = '/entity/accept';
+		$this->register_entity_accept_or_reject_route( $route, array( $this, 'accept_entity' ) );
+	}
+
+	private function register_reject_route() {
+		$route = '/entity/reject';
+		$this->register_entity_accept_or_reject_route( $route, array( $this, 'reject_entity' ) );
+	}
+
+	public function reject_entity( $request ) {
+		$data        = $request->get_params();
+		$term_id     = (int) $data['term_id'];
+		$entity_data = (array) $data['entity'];
+		$entity      = Entity_Factory::get_instance( $term_id );
+		$entity->remove_entity_by_id( $entity['entityId'] );
 	}
 
 	private function register_nomatch_route() {
@@ -138,6 +129,40 @@ class Entity_Rest_Endpoint {
 				),
 			)
 		);
+	}
+
+
+	/**
+	 * @param $accept_route
+	 */
+	private function register_entity_accept_or_reject_route( $accept_route, $callback ) {
+
+		register_rest_route(
+			Api_Config::REST_NAMESPACE,
+			$accept_route,
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => $callback,
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+				'args'                => array(
+					'term_id' => array(
+						'validate_callback' => function ( $param, $request, $key ) {
+							return is_numeric( $param ) && $param;
+						},
+						'required'          => true,
+					),
+					'entity'  => array(
+						'validate_callback' => function ( $param, $request, $key ) {
+							return is_array( $param );
+						},
+						'required'          => true,
+					),
+				),
+			)
+		);
+
 	}
 
 }

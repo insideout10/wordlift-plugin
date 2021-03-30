@@ -1,6 +1,6 @@
 <?php
 
-namespace Wordlift\Vocabulary\Data\Entity;
+namespace Wordlift\Vocabulary\Data\Entity_List;
 
 use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
 

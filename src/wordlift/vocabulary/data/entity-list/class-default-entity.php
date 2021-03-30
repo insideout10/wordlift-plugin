@@ -1,8 +1,6 @@
 <?php
 
-namespace Wordlift\Vocabulary\Data\Entity;
-
-use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
+namespace Wordlift\Vocabulary\Data\Entity_List;
 
 /**
  * This class is created to support new multiple entity matches in db.
@@ -67,5 +65,8 @@ class Default_Entity extends Entity {
 	public function clear_data() {
 		delete_term_meta( $this->term_id, self::META_KEY );
 
+	}
+
+	public function remove_entity_by_id( $entityId ) {
 	}
 }
