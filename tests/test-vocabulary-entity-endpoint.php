@@ -170,6 +170,12 @@ class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_
 		$this->send_accept_entity_request( $entity, $term_id );
 
 		// reject 1 entity
+		$this->send_reject_entity_request($entity, $term_id);
+
+		// check the meta, now we should have 1 entity.
+		$entity   = Entity_Factory::get_instance( $term_id );
+		$entities = $entity->get_jsonld_data();
+		$this->assertCount( 1, $entities, "Single entity should be present since one got deleted" );
 	}
 
 	/**
