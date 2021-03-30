@@ -12,6 +12,7 @@
  * @subpackage Wordlift/includes
  */
 
+use Wordlift\Admin\Admin_User_Option;
 use Wordlift\Admin\Key_Validation_Notice;
 use Wordlift\Admin\Top_Entities;
 use Wordlift\Analysis\Response\Analysis_Response_Ops_Factory;
@@ -1591,6 +1592,13 @@ class Wordlift {
 			$vocabulary_loader = new Vocabulary_Loader();
 			$vocabulary_loader->init_vocabulary();
 		}
+		/**
+		 * @since 3.30.0
+		 * Add a checkbox to user option screen for wordlift admin.
+		 */
+		$wordlift_admin_checkbox = new Admin_User_Option();
+		$wordlift_admin_checkbox->connect_hook();
+
 	}
 
 	/**

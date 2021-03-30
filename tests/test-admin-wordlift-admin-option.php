@@ -17,6 +17,7 @@ class Wordlift_Admin_Option_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	public function test_should_render_admin_checkbox_when_user_is_admin() {
+		global $wp_filter;
 		$user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
 		wp_set_current_user( $user_id );
 		ob_start();
@@ -24,7 +25,6 @@ class Wordlift_Admin_Option_Test extends Wordlift_Unit_Test_Case {
 		$checkbox_contents = ob_get_contents();
 		ob_end_clean();
 		$this->assertNotEmpty( $checkbox_contents, "Should have checkbox contents" );
-
 	}
 
 
