@@ -15,6 +15,14 @@ class Admin_User_Option {
 
 	public function connect_hook() {
 		add_action( 'wordlift_user_settings_page', array( $this, 'render_checkbox' ) );
+		add_action( 'edit_user_profile_update', array( $this, 'save_checkbox' ) );
+	}
+
+	public function save_checkbox() {
+		if ( ! isset( $_POST[ self::WORDLIFT_ADMIN ] ) || ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+		update_user_meta( get_current_user_id(), self::WORDLIFT_ADMIN, 1 );
 	}
 
 	public function render_checkbox() {
