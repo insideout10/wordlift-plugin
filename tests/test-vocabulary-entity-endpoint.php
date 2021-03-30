@@ -124,37 +124,7 @@ class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_
 
 	}
 
-	/**
-	 * @return array
-	 */
-	private function getMockEntityData() {
-		return array(
-			'@context'         => 'http://schema.org',
-			'@id'              => 'https://knowledge.cafemedia.com/food/entity/pie',
-			'@type'            => 'Thing',
-			'description'      => 'A pie is a baked dish which is usually made of a pastry dough casing that covers or completely contains a filling of various sweet or savoury ingredients. Pies are defined by their crusts. A filled pie (also single-crust or bottom-crust), has pastry lining the baking dish, and the filling is placed on top of...',
-			'mainEntityOfPage' => 'https://app.wordlift.io/knowledge-cafemedia-com-food/entity/pie/',
-			'name'             => 'pie',
-			'sameAs'           =>
-				array(
-					0  => 'https://en.wikipedia.org/wiki/Pie',
-					1  => 'http://purl.obolibrary.org/obo/FOODON_03401296',
-					2  => 'http://www.wikidata.org/entity/Q13360264',
-					3  => 'http://dbpedia.org/resource/Pie',
-					4  => 'http://pl.dbpedia.org/resource/Pieróg',
-					5  => 'http://rdf.freebase.com/ns/m.0mjqn',
-					6  => 'http://ko.dbpedia.org/resource/파이',
-					7  => 'http://wikidata.dbpedia.org/resource/Q13360264',
-					8  => 'http://dbpedia.org/resource/Pie',
-					9  => 'http://id.dbpedia.org/resource/Pastei',
-					10 => 'http://www.wikidata.org/entity/Q13360264',
-					11 => 'http://ja.dbpedia.org/resource/パイ',
-					12 => 'http://fr.dbpedia.org/resource/Tourte_(plat)',
-				),
-			'url'              => 'https://app.wordlift.io/knowledge-cafemedia-com-food/entity/pie/',
 
-		);
-	}
 
 
 	public function test_when_the_entity_is_rejected_should_remove_only_the_entity_from_jsonld() {
