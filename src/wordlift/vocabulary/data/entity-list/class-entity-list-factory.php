@@ -7,7 +7,7 @@ namespace Wordlift\Vocabulary\Data\Entity_List;
 class Entity_List_Factory {
 
 	public static function get_instance( $term_id ) {
-		return new Default_Entity( $term_id, new Legacy_Entity( $term_id ) );
+		return new Default_Entity_List( $term_id, new Legacy_Entity_List( $term_id ) );
 	}
 
 }

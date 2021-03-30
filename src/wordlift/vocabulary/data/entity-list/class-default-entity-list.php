@@ -7,12 +7,12 @@ namespace Wordlift\Vocabulary\Data\Entity_List;
  * @since 3.30.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
-class Default_Entity extends Entity {
+class Default_Entity_List extends Entity {
 
 	const META_KEY = '_wl_vocabulary_entity_match_for_term';
 
 	/**
-	 * @var Legacy_Entity
+	 * @var Legacy_Entity_List
 	 */
 	private $legacy_entity;
 
@@ -20,7 +20,7 @@ class Default_Entity extends Entity {
 	 * Default_Entity constructor.
 	 *
 	 * @param $term_id int
-	 * @param $legacy_entity Legacy_Entity
+	 * @param $legacy_entity Legacy_Entity_List
 	 */
 	public function __construct( $term_id, $legacy_entity ) {
 		parent::__construct( $term_id );

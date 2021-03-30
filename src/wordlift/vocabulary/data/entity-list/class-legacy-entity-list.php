@@ -10,7 +10,7 @@ use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
  * @since 3.30.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
-class Legacy_Entity extends Entity {
+class Legacy_Entity_List extends Entity {
 
 	/**
 	 * This function is called when default entity doesnt find any data.
