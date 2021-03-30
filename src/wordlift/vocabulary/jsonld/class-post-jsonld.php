@@ -7,7 +7,7 @@
 namespace Wordlift\Vocabulary\Jsonld;
 
 use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
-use Wordlift\Vocabulary\Data\Entity\Entity_Factory;
+use Wordlift\Vocabulary\Data\Entity_List\Entity_Factory;
 
 class Post_Jsonld {
 

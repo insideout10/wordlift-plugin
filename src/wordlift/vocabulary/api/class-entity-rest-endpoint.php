@@ -6,7 +6,7 @@
 
 namespace Wordlift\Vocabulary\Api;
 
-use Wordlift\Vocabulary\Data\Entity\Entity_Factory;
+use Wordlift\Vocabulary\Data\Entity_List\Entity_Factory;
 use WP_REST_Server;
 
 /**
@@ -106,7 +106,7 @@ class Entity_Rest_Endpoint {
 		$term_id     = (int) $data['term_id'];
 		$entity_data = (array) $data['entity'];
 		$entity      = Entity_Factory::get_instance( $term_id );
-		$entity->remove_entity_by_id( $entity['entityId'] );
+		$entity->remove_entity_by_id( $entity_data['entityId'] );
 	}
 
 	private function register_nomatch_route() {

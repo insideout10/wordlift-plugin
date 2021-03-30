@@ -6,7 +6,7 @@ use Wordlift\Scripts\Scripts_Helper;
 use Wordlift\Vocabulary\Analysis_Background_Service;
 use Wordlift\Vocabulary\Api\Api_Config;
 use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
-use Wordlift\Vocabulary\Data\Entity\Entity_Utils;
+use Wordlift\Vocabulary\Data\Entity_List\Entity_Utils;
 use Wordlift\Vocabulary\Data\Term_Data\Term_Data_Factory;
 use Wordlift\Vocabulary\Pages\Match_Terms;
 

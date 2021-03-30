@@ -2,7 +2,7 @@
 
 use Wordlift\Vocabulary\Api\Api_Config;
 use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
-use Wordlift\Vocabulary\Data\Entity\Entity_Factory;
+use Wordlift\Vocabulary\Data\Entity_List\Entity_Factory;
 use Wordlift\Vocabulary\Vocabulary_Loader;
 
 
