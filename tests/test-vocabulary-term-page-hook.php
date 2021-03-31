@@ -33,9 +33,11 @@ class Vocabulary_Term_page_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 		$term_id = $this->create_unmatched_tag( "foo" );
 		$this->do_form_fields_action( $term_id );
 		$script_source = $wp_scripts->registered[ Term_Page_Hook::HANDLE ]->src;
-		$this->assertTrue( strpos( $script_source, "wp-content/plugins/app/src/js/dist/vocabulary-term-page", 0 ) !== false );
+		$this->assertTrue( strpos( $script_source, "wp-content/plugins/app/src/js/dist/vocabulary-term-page", 0 ) !== false,
+			"Script source ${script_source} not set correctly" );
 		$style_source = $wp_styles->registered[ Term_Page_Hook::HANDLE ]->src;
-		$this->assertTrue( strpos( $style_source, "wp-content/plugins/app/src/js/dist/vocabulary-term-page.full.css", 0 ) !== false );
+		$this->assertTrue( strpos( $style_source, "wp-content/plugins/app/src/js/dist/vocabulary-term-page.full.css", 0 ) !== false,
+			"Style source ${style_source} not set correctly" );
 	}
 
 
@@ -60,7 +62,7 @@ class Vocabulary_Term_page_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 
 	public function test_set_is_active_correctly_for_legacy_data() {
 		global $wp_scripts;
-		$term_id = $this->create_unmatched_tag( "foo" );
+		$term_id       = $this->create_unmatched_tag( "foo" );
 		$cache_service = Cache_Service_Factory::get_cache_service();
 		$mock_entities = Tag_Endpoint_Test::get_mock_entities();
 		$cache_service->put( $term_id, $mock_entities );
@@ -75,12 +77,12 @@ class Vocabulary_Term_page_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 
 	public function test_set_is_active_correctly_for_new_data() {
 		global $wp_scripts;
-		$term_id = $this->create_unmatched_tag( "foo" );
+		$term_id       = $this->create_unmatched_tag( "foo" );
 		$cache_service = Cache_Service_Factory::get_cache_service();
 		$mock_entities = Tag_Endpoint_Test::get_mock_entities();
 		$cache_service->put( $term_id, $mock_entities );
 		$entity = Entity_List_Factory::get_instance( $term_id );
-		$entity->save_jsonld_data( $mock_entities[0]['meta']);
+		$entity->save_jsonld_data( $mock_entities[0]['meta'] );
 		$this->do_form_fields_action( $term_id );
 		$this->perform_js_variable_assertions( $wp_scripts );
 	}
