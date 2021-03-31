@@ -497,6 +497,7 @@ function run_wordlift() {
 		// Load early. **PLEASE NOTE** that features are applied only to calls that happen **AFTER** the `plugins_loaded`
 		// action.
 		require_once plugin_dir_path( __FILE__ ) . 'wordlift/features/index.php';
+
 		// All features from registry should be initialized here.
 		$features_registry = Features_Registry::get_instance();
 		$features_registry->initialize_all_features();

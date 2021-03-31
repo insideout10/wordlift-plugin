@@ -9,8 +9,6 @@
  * @subpackage Wordlift/admin
  */
 
-use Wordlift\Features\Features_Registry;
-
 /**
  * Define the {@link Wordlift_Admin_Page} class.
  *
@@ -27,9 +25,6 @@ abstract class Wordlift_Admin_Page {
 	 */
 	public function __construct() {
 
-		$features_registry = Features_Registry::get_instance();
-		$that = $this;
-
 		/**
 		 * Filter: wl_feature__enable__screens.
 		 *
@@ -37,13 +32,10 @@ abstract class Wordlift_Admin_Page {
 		 *
 		 * @return bool
 		 * @since 3.27.6
-		 *
-		 * From 3.30.0 this is registered using registry.
 		 */
-
-		$features_registry->register_feature_from_slug( 'screens', true, function () use ( $that ) {
-			add_action( 'admin_menu', array( $that, 'admin_menu' ), 10, 0 );
-		} );
+		if ( apply_filters( 'wl_feature__enable__screens', true ) ) {
+			add_action( 'admin_menu', array( $this, 'admin_menu' ), 10, 0 );
+		}
 
 	}
 

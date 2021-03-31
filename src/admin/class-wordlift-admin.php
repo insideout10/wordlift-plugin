@@ -154,7 +154,11 @@ class Wordlift_Admin {
 				 * The `Mappings` admin page.
 				 */
 				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-mappings-page.php';
-				new Wordlift_Admin_Mappings_Page();
+
+				$features_registry->register_feature_from_slug( 'screens', true, array(
+					$this,
+					'load_schema_org_types_page'
+				) );
 
 				/*
 				 * Allow sync'ing the schema.org taxonomy with the schema.org json file.
@@ -434,6 +438,10 @@ class Wordlift_Admin {
 		$taxonomy_option = new Taxonomy_Option();
 		$taxonomy_option->add_taxonomy_option();
 		new Edit_Mappings_Page( new Mappings_Transform_Functions_Registry() );
+	}
+
+	public function load_schema_org_types_page() {
+		new Wordlift_Admin_Mappings_Page();
 	}
 
 }
