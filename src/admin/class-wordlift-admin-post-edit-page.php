@@ -140,7 +140,7 @@ class Wordlift_Admin_Post_Edit_Page {
 		}
 
 		// Bail out if classification sidebar is not enabled via hook
-		if ( ! apply_filters( 'wl_feature__enable__vocabulary__classification_sidebar', true ) ) {
+		if ( ! apply_filters( 'wl_feature__enable__classification-sidebar', true ) ) {
 			return;
 		}
 

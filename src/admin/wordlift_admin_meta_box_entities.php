@@ -40,7 +40,7 @@ function wl_admin_add_entities_meta_box( $post_type ) {
 		return;
 	}
 
-	if ( ! apply_filters( 'wl_feature__enable__vocabulary__classification_sidebar', true ) ) {
+	if ( ! apply_filters( 'wl_feature__enable__classification-sidebar', true ) ) {
 		return;
 	}
 
