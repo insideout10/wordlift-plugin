@@ -10,6 +10,7 @@
  * @subpackage Wordlift/admin
  */
 
+use Wordlift\Features\Features_Registry;
 use Wordlift\Mappings\Acf_Mappings;
 use Wordlift\Mappings\Mappings_REST_Controller;
 use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
@@ -103,9 +104,9 @@ class Wordlift_Admin {
 		$this->configuration_service = $configuration_service;
 		$this->user_service          = $user_service;
 
-		$dataset_uri = $configuration_service->get_dataset_uri();
-		$key         = $configuration_service->get_key();
-
+		$dataset_uri       = $configuration_service->get_dataset_uri();
+		$key               = $configuration_service->get_key();
+		$features_registry = Features_Registry::get_instance();
 		if ( empty( $dataset_uri ) ) {
 			$settings_page = Wordlift_Admin_Settings_Page::get_instance();
 			if ( empty( $key ) ) {
@@ -198,21 +199,12 @@ class Wordlift_Admin {
 		new Mappings_REST_Controller();
 
 
-		add_action( 'plugins_loaded', function () {
-			// Only enable the Mappings UI if the constant is defined.
-			// or the feature
-			if ( apply_filters( 'wl_feature__enable__mappings', defined( 'WL_ENABLE_MAPPINGS' ) && WL_ENABLE_MAPPINGS ) ) {
-				// Add Mappings and Edit Mappings page.
-				new Admin_Mappings_Page();
-				/**
-				 * @since 3.27.0
-				 * Hooks in to ui of edit mapping screen, add taxonomy as a option.
-				 */
-				$taxonomy_option = new Taxonomy_Option();
-				$taxonomy_option->add_taxonomy_option();
-				new Edit_Mappings_Page( new Mappings_Transform_Functions_Registry() );
-			}
-		} );
+		$features_registry->register_feature_from_slug(
+			'mappings',
+			( defined( 'WL_ENABLE_MAPPINGS' ) && WL_ENABLE_MAPPINGS ),
+			array( $this, 'init_mappings' ) );
+
+
 		// Set the singleton instance.
 		self::$instance = $this;
 
@@ -427,6 +419,21 @@ class Wordlift_Admin {
 		}
 
 		return $params;
+	}
+
+	/**
+	 * Initialize the mappings.
+	 * @return void
+	 */
+	public function init_mappings() {
+		new Admin_Mappings_Page();
+		/**
+		 * @since 3.27.0
+		 * Hooks in to ui of edit mapping screen, add taxonomy as a option.
+		 */
+		$taxonomy_option = new Taxonomy_Option();
+		$taxonomy_option->add_taxonomy_option();
+		new Edit_Mappings_Page( new Mappings_Transform_Functions_Registry() );
 	}
 
 }

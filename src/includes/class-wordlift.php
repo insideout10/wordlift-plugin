@@ -31,6 +31,7 @@ use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Warning;
 use Wordlift\External_Plugin_Hooks\Yoast\Yoast_Jsonld;
 use Wordlift\Faq\Faq_Content_Filter;
 use Wordlift\Faq\Faq_Tinymce_Adapter;
+use Wordlift\Features\Features_Registry;
 use Wordlift\Jsonld\Jsonld_Adapter;
 use Wordlift\Jsonld\Jsonld_Article_Wrapper;
 use Wordlift\Jsonld\Jsonld_By_Id_Endpoint;
@@ -740,6 +741,13 @@ class Wordlift {
 	 */
 	private static $instance;
 
+	/**
+	 * A singleton instance of features registry.
+	 * @since 3.30.0
+	 * @var Features_Registry
+	 */
+	private $features_registry;
+
 	//</editor-fold>
 
 	/**
@@ -1187,6 +1195,10 @@ class Wordlift {
 		}
 
 		$this->loader = new Wordlift_Loader();
+		/**
+		 * @since 3.30.0
+		 */
+		$this->features_registry = Features_Registry::get_instance();
 
 		// Instantiate a global logger.
 		global $wl_logger;
@@ -1724,14 +1736,9 @@ class Wordlift {
 		 * @return bool
 		 * @since 3.27.6
 		 */
-		if ( apply_filters( 'wl_feature__enable__screens', true ) ) {
-			// Hook the menu to the Download Your Data page.
-			if ( apply_filters( 'wl_feature__enable__settings-download', true ) ) {
-				$this->loader->add_action( 'admin_menu', $this->download_your_data_page, 'admin_menu', 100, 0 );
-			}
-			$this->loader->add_action( 'admin_menu', $this->status_page, 'admin_menu', 100, 0 );
-			$this->loader->add_action( 'admin_menu', $this->entity_type_settings_admin_page, 'admin_menu', 100, 0 );
-		}
+		$this->features_registry->register_feature_from_slug( 'screens', true, array( $this, 'register_screens' ) );
+
+
 		// Hook the admin-ajax.php?action=wl_download_your_data&out=xyz links.
 		$this->loader->add_action( 'wp_ajax_wl_download_your_data', $this->download_your_data_page, 'download_your_data', 10 );
 
@@ -2062,6 +2069,19 @@ class Wordlift {
 
 		wp_localize_script( 'wl_enabled_blocks', 'wlEnabledBlocks', $enabled_blocks );
 		wp_enqueue_script( 'wl_enabled_blocks' );
+	}
+
+	/**
+	 * Register screens based on the filter.
+	 */
+	public function register_screens() {
+		// Hook the menu to the Download Your Data page.
+		if ( apply_filters( 'wl_feature__enable__settings-download', true ) ) {
+			$this->loader->add_action( 'admin_menu', $this->download_your_data_page, 'admin_menu', 100, 0 );
+		}
+		$this->loader->add_action( 'admin_menu', $this->status_page, 'admin_menu', 100, 0 );
+		$this->loader->add_action( 'admin_menu', $this->entity_type_settings_admin_page, 'admin_menu', 100, 0 );
+
 	}
 
 }
