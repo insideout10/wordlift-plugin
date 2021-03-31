@@ -21,6 +21,7 @@ class Entity extends React.Component {
         if (entity.isHidden) {
             return (<React.Fragment/>)
         }
+        const descriptionClass = this.props.notCropDescription ?  "card-input-description__nocrop" : "card-input-description";
         return (
             <React.Fragment>
                 <table className={"card-input " + selectedCssClass} onClick={() => {
@@ -34,7 +35,7 @@ class Entity extends React.Component {
                     </tr>
                     {entity.meta.description &&
                     <tr>
-                        <td className={"card-input-description"}>{entity.meta.description}</td>
+                        <td className={descriptionClass}>{entity.meta.description}</td>
                     </tr>
                     }
                     <tr>

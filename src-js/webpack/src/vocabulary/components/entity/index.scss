@@ -19,6 +19,13 @@
   overflow: hidden;
 }
 
+
+.card-input-description__nocrop {
+  display: -webkit-box;
+  max-width: 600px;
+  -webkit-box-orient: vertical;
+}
+
 .card-input:hover {
   cursor: pointer;
 }
