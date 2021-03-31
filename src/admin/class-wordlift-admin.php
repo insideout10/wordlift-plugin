@@ -392,10 +392,12 @@ class Wordlift_Admin {
 			'wl_root'                      => plugin_dir_url( __DIR__ ),
 			/**
 			 * Enable synonyms, to access in JS
+			 * Show classification sidebar, to access in JS
 			 *
 			 * @since 3.30.0
 			 */
-			'can_add_synonyms'             => apply_filters( 'wl_feature__enable__vocabulary__add_synonyms', true )
+			'can_add_synonyms'             => apply_filters( 'wl_feature__enable__vocabulary__add_synonyms', true ),
+			'show_classification_sidebar'  => apply_filters( 'wl_feature__enable__vocabulary__classification_sidebar', true )
 		);
 
 		// Set post-related values if there's a current post.
