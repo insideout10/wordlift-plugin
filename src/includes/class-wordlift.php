@@ -1766,7 +1766,7 @@ class Wordlift {
 		 * @since 3.27.6
 		 */
 		if ( apply_filters( 'wl_feature__enable__screens', true )
-		     && ( apply_filters( 'wl_feature__enable__settings_screen', true ) || Admin_User_Option::is_wordlift_admin() ) ) {
+		     && ( apply_filters( 'wl_feature__enable__settings-screen', true ) || Admin_User_Option::is_wordlift_admin() ) ) {
 			$this->loader->add_action( 'wl_admin_menu', $this->settings_page, 'admin_menu', 10, 2 );
 		}
 		/*
