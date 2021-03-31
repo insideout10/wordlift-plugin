@@ -55,14 +55,14 @@ class WL_Metabox {
 		$this->log = Wordlift_Log_Service::get_logger( get_class() );
 
 		/**
-		 * Filter: wl_feature__enable__metabox.
+		 * Filter: wl_feature__enable__vocabulary__metabox.
 		 *
 		 * @param bool whether the metabox should be shown, defaults to true.
 		 *
 		 * @return bool
 		 * @since 3.28.1
 		 */
-		if ( apply_filters( 'wl_feature__enable__metabox', true ) ) {
+		if ( apply_filters( 'wl_feature__enable__vocabulary__metabox', true ) ) {
 
 			// Add hooks to print metaboxes and save submitted data.
 			add_action( 'add_meta_boxes', array( $this, 'add_main_metabox' ) );

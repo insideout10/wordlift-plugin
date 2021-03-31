@@ -92,6 +92,7 @@ class Wordlift_Admin_User_Profile_Page {
         <h2><?php esc_html_e( 'WordLift', 'wordlift' ); ?></h2>
 
         <table class="form-table">
+		    <?php if ( apply_filters( 'wl_feature__enable__vocabulary__user_author', false ) ) { ?>
             <tr class="user-description-wrap">
                 <th><label
                             for="wl_person"><?php _e( 'Author from the vocabulary', 'wordlift' ); ?></label>
@@ -107,6 +108,7 @@ class Wordlift_Admin_User_Profile_Page {
                     <p class="description"><?php _e( 'The entity, person or organization, from the vocabulary to associate with this author.', 'wordlift' ); ?></p>
                 </td>
             </tr>
+		    <?php } ?>
 			<?php if ( $this->user_service->is_editor( $user->ID ) ) { ?>
             <tr>
                 <th>

@@ -59,6 +59,11 @@ class Wordlift_Admin_Term_Adapter {
 	 */
 	public function edit_form_fields( $tag, $taxonomy ) {
 
+	    // If disabled via filter, return;
+		if ( ! apply_filters( 'wl_feature__enable__vocabulary__term_entity', true ) ) {
+		    return;
+        }
+
 		global $wp_version;
 
 		// Enqueue the JavaScript app.
