@@ -28,9 +28,19 @@ class Badge_Generator {
 	}
 
 	public static function generate_html( $number ) {
-		$round = self::get_ui_count( $number );
-		$count_string = $round < 100 ? "$round" : "$round+";
+		$count_string = self::get_formatted_count_string( $number );
 		return "<span class=\"wl-admin-menu-badge\">$count_string</span>";
+	}
+
+	/**
+	 * @param $number
+	 *
+	 * @return string
+	 */
+	public static function get_formatted_count_string( $number ) {
+		$round        = self::get_ui_count( $number );
+
+		return $round < 100 ? "$round" : "$round+";
 	}
 
 

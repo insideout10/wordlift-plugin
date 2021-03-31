@@ -2,6 +2,7 @@
 
 namespace Wordlift\Vocabulary\Dashboard;
 use Wordlift\Vocabulary\Data\Term_Count\Term_Count;
+use Wordlift\Vocabulary\Menu\Badge\Badge_Generator;
 
 /**
  * This class adds the term matches widget to the admin dashboard
@@ -34,7 +35,7 @@ class Term_Matches_Widget {
 		}
 
 		$match_terms_url = menu_page_url('wl-vocabulary-match-terms', false);
-		$term_count_link = "<a href='$match_terms_url'>" . $term_count . " term(s)</a>";
+		$term_count_link = "<a href='$match_terms_url'>" . Badge_Generator::get_formatted_count_string( $term_count ) . " term(s)</a>";
 		$match_terms = __('Match terms', 'wordlift');
 		$additional_text = __(' waiting to be matched with entities.', 'wordlift');
 		echo <<<EOF
