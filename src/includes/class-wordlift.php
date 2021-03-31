@@ -1727,7 +1727,7 @@ class Wordlift {
 		 */
 		if ( apply_filters( 'wl_feature__enable__screens', true ) ) {
 			// Hook the menu to the Download Your Data page.
-			if ( apply_filters( 'wl_feature__enable__vocabulary__settings_download', true ) ) {
+			if ( apply_filters( 'wl_feature__enable__settings-download', true ) ) {
 				$this->loader->add_action( 'admin_menu', $this->download_your_data_page, 'admin_menu', 100, 0 );
 			}
 			$this->loader->add_action( 'admin_menu', $this->status_page, 'admin_menu', 100, 0 );

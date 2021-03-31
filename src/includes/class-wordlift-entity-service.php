@@ -381,7 +381,7 @@ class Wordlift_Entity_Service {
 		}
 
 		// If disabled by filter, return.
-		if ( ! apply_filters( 'wl_feature__enable__vocabulary__add_synonyms', true ) ) {
+		if ( ! apply_filters( 'wl_feature__enable__add-synonyms', true ) ) {
 			return;
 		}
 

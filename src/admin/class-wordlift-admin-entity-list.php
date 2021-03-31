@@ -98,7 +98,7 @@ class Wordlift_Entity_List_Service {
 	public function register_custom_columns( $columns ) {
 
 		// Bail out if custom columns disabled via hook
-		if ( ! apply_filters( 'wl_feature__enable__vocabulary__custom_columns', true ) && array_key_exists( 'taxonomy-wl_entity_type', $columns ) ) {
+		if ( ! apply_filters( 'wl_feature__enable__custom-columns', true ) && array_key_exists( 'taxonomy-wl_entity_type', $columns ) ) {
 			return $columns;
 		}
 
