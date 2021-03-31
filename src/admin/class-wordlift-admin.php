@@ -198,7 +198,8 @@ class Wordlift_Admin {
 		new Mappings_REST_Controller();
 
 		// Only enable the Mappings UI if the constant is defined.
-		if ( defined( 'WL_ENABLE_MAPPINGS' ) && WL_ENABLE_MAPPINGS ) {
+		// or the feature
+		if ( apply_filters( 'wl_feature__enable__mappings', defined( 'WL_ENABLE_MAPPINGS' ) && WL_ENABLE_MAPPINGS ) ) {
 			// Add Mappings and Edit Mappings page.
 			new Admin_Mappings_Page();
 			/**
