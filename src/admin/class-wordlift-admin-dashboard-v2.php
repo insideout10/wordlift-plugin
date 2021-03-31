@@ -64,11 +64,11 @@ class Wordlift_Admin_Dashboard_V2 {
 	 */
 	public function dashboard_setup() {
 		/**
-		 * Filter name: wl_feature__enable__wordlift_dashboard
+		 * Filter name: wl_feature__enable__wordlift-dashboard
 		 * Feature flag to enable / disable dashboard
 		 * @since 3.30.0
 		 */
-		if ( apply_filters( 'wl_feature__enable__wordlift_dashboard', true ) ) {
+		if ( apply_filters( 'wl_feature__enable__wordlift-dashboard', true ) ) {
 			wp_add_dashboard_widget(
 				'wl-dashboard-v2',
 				__( 'WordLift Dashboard', 'wordlift' ),

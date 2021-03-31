@@ -157,11 +157,11 @@ class Wordlift_Dashboard_Latest_News {
 	public function add_dashboard_latest_news_widget() {
 
 		/**
-		 * Filter name: wl_feature__enable__wordlift_news
+		 * Filter name: wl_feature__enable__wordlift-news
 		 * Feature flag to enable / disable news widget.
 		 * @since 3.30.0
 		 */
-		if ( apply_filters( 'wl_feature__enable__wordlift_news', true ) ) {
+		if ( apply_filters( 'wl_feature__enable__wordlift-news', true ) ) {
 
 			wp_add_dashboard_widget( 'wordlift-dashboard-latest-news-widget', 'Latest WordLift News', array(
 				$this,

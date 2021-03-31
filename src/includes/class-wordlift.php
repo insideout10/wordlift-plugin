@@ -2044,7 +2044,7 @@ class Wordlift {
 		 * Filter name: wl_feature_enable__product_navigator
 		 * @since 3.30.0
 		 */
-		if ( apply_filters( 'wl_feature_enable__product_navigator', true ) ) {
+		if ( apply_filters( 'wl_feature_enable__product-navigator', true ) ) {
 			$enabled_blocks[] = 'wordlift/products-navigator';
 		}
 
