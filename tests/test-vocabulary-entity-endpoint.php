@@ -1,5 +1,6 @@
 <?php
 
+use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Vocabulary\Api\Api_Config;
 use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
 use Wordlift\Vocabulary\Data\Entity_List\Default_Entity_List;
@@ -153,6 +154,35 @@ class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_
 		$entity   = Entity_List_Factory::get_instance( $term_id );
 		$entities = $entity->get_jsonld_data();
 		$this->assertCount( 1, $entities, "Single entity should be present since one got deleted" );
+	}
+
+	public function test_when_entity_is_accepted_clear_all_jsonld_cache() {
+		$jsonld_cache = new Ttl_Cache( 'jsonld', 86400 );
+		$jsonld_cache->put( "foo", "bar" );
+		// accept 2 entities.
+		$entity  = $this->getMockEntityData();
+		$term_id = $this->accept_two_entities( $entity );
+		$this->assertNull( $jsonld_cache->get( "foo" ) );
+	}
+
+	public function test_when_entity_is_removed_clear_all_jsonld_cache() {
+		$jsonld_cache = new Ttl_Cache( 'jsonld', 86400 );
+		$jsonld_cache->put( "foo", "bar" );
+		$term_data = wp_insert_term( 'foo', 'post_tag' );
+		$term_id   = $term_data['term_id'];
+		$entity    = $this->getMockEntityData();
+		// reject 1 entity
+		$this->send_reject_entity_request( $entity, $term_id );
+		$this->assertNull( $jsonld_cache->get( "foo" ) );
+	}
+
+	public function test_when_entity_undo_clear_all_jsonld_cache() {
+		$jsonld_cache = new Ttl_Cache( 'jsonld', 86400 );
+		$jsonld_cache->put( "foo", "bar" );
+		$term_data = wp_insert_term( 'foo', 'post_tag' );
+		$term_id   = $term_data['term_id'];
+		$this->send_undo_request( $term_id );
+		$this->assertNull( $jsonld_cache->get( "foo" ) );
 	}
 
 	/**
