@@ -84,14 +84,6 @@ class Wordlift_Entity_List_Service {
 		return true;
 	}
 
-	public function register_columns( $columns ){
-		if ( ! apply_filters( 'wl_feature__enable__vocabulary__custom_columns', true ) && array_key_exists( 'taxonomy-wl_entity_type', $columns ) ) {
-			unset( $columns['taxonomy-wl_entity_type'] );
-		}
-
-		return $columns;
-	}
-
 	/**
 	 * Register custom columns for entity listing in backend.
 	 *
@@ -105,8 +97,8 @@ class Wordlift_Entity_List_Service {
 	 */
 	public function register_custom_columns( $columns ) {
 
+		// Bail out if custom columns disabled via hook
 		if ( ! apply_filters( 'wl_feature__enable__vocabulary__custom_columns', true ) && array_key_exists( 'taxonomy-wl_entity_type', $columns ) ) {
-			unset( $columns['taxonomy-wl_entity_type'] );
 			return $columns;
 		}
 
