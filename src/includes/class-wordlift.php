@@ -1584,14 +1584,13 @@ class Wordlift {
 				new Jsonld_Article_Wrapper( Wordlift_Post_To_Jsonld_Converter::get_instance(), $that->cached_postid_to_jsonld_converter );
 			}
 
+			if ( apply_filters( 'wl_feature__enable__match-terms', false ) ) {
+				$vocabulary_loader = new Vocabulary_Loader();
+				$vocabulary_loader->init_vocabulary();
+			}
 
 		} );
 
-
-		if ( apply_filters( 'wl_feature__enable__match-terms', false ) ) {
-			$vocabulary_loader = new Vocabulary_Loader();
-			$vocabulary_loader->init_vocabulary();
-		}
 		/**
 		 * @since 3.30.0
 		 * Add a checkbox to user option screen for wordlift admin.

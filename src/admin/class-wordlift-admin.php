@@ -197,20 +197,22 @@ class Wordlift_Admin {
 		// Add the Mappings' REST Controller.
 		new Mappings_REST_Controller();
 
-		// Only enable the Mappings UI if the constant is defined.
-		// or the feature
-		if ( apply_filters( 'wl_feature__enable__mappings', defined( 'WL_ENABLE_MAPPINGS' ) && WL_ENABLE_MAPPINGS ) ) {
-			// Add Mappings and Edit Mappings page.
-			new Admin_Mappings_Page();
-			/**
-			 * @since 3.27.0
-			 * Hooks in to ui of edit mapping screen, add taxonomy as a option.
-			 */
-			$taxonomy_option = new Taxonomy_Option();
-			$taxonomy_option->add_taxonomy_option();
-			new Edit_Mappings_Page( new Mappings_Transform_Functions_Registry() );
-		}
 
+		add_action( 'plugins_loaded', function () {
+			// Only enable the Mappings UI if the constant is defined.
+			// or the feature
+			if ( apply_filters( 'wl_feature__enable__mappings', defined( 'WL_ENABLE_MAPPINGS' ) && WL_ENABLE_MAPPINGS ) ) {
+				// Add Mappings and Edit Mappings page.
+				new Admin_Mappings_Page();
+				/**
+				 * @since 3.27.0
+				 * Hooks in to ui of edit mapping screen, add taxonomy as a option.
+				 */
+				$taxonomy_option = new Taxonomy_Option();
+				$taxonomy_option->add_taxonomy_option();
+				new Edit_Mappings_Page( new Mappings_Transform_Functions_Registry() );
+			}
+		} );
 		// Set the singleton instance.
 		self::$instance = $this;
 
