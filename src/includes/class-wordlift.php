@@ -1588,7 +1588,7 @@ class Wordlift {
 		} );
 
 
-		if ( apply_filters( 'wl_feature__enable__match-terms', true ) ) {
+		if ( apply_filters( 'wl_feature__enable__match-terms', false ) ) {
 			$vocabulary_loader = new Vocabulary_Loader();
 			$vocabulary_loader->init_vocabulary();
 		}
