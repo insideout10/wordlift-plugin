@@ -33,10 +33,10 @@ class Vocabulary_Term_page_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 		$term_id = $this->create_unmatched_tag( "foo" );
 		$this->do_form_fields_action( $term_id );
 		$script_source = $wp_scripts->registered[ Term_Page_Hook::HANDLE ]->src;
-		$this->assertTrue( strpos( $script_source, "wp-content/plugins/app/src/js/dist/vocabulary-term-page", 0 ) !== false,
+		$this->assertTrue( strpos( $script_source, "src/js/dist/vocabulary-term-page", 0 ) !== false,
 			"Script source ${script_source} not set correctly" );
 		$style_source = $wp_styles->registered[ Term_Page_Hook::HANDLE ]->src;
-		$this->assertTrue( strpos( $style_source, "wp-content/plugins/app/src/js/dist/vocabulary-term-page.full.css", 0 ) !== false,
+		$this->assertTrue( strpos( $style_source, "src/js/dist/vocabulary-term-page.full.css", 0 ) !== false,
 			"Style source ${style_source} not set correctly" );
 	}
 
