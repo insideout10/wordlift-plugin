@@ -40,7 +40,7 @@ class EntityList extends React.Component {
         return (
             <React.Fragment>
                 {this.props.entities && this.props.entities.map((entity, index) => (
-                    <Entity {...entity} entityIndex={index} onEntitySelectedListener={entitySelectedListener}/>
+                    <Entity {...entity} entityIndex={index} onEntitySelectedListener={entitySelectedListener} key={entity.entityId}/>
                 ))}
             </React.Fragment>
         )
