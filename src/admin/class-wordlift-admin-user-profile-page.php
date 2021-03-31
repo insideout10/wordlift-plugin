@@ -92,7 +92,7 @@ class Wordlift_Admin_User_Profile_Page {
         <h2><?php esc_html_e( 'WordLift', 'wordlift' ); ?></h2>
 
         <table class="form-table">
-		    <?php if ( apply_filters( 'wl_feature__enable__vocabulary__user_author', false ) ) { ?>
+		    <?php if ( apply_filters( 'wl_feature__enable__vocabulary__user_author', true ) ) { ?>
             <tr class="user-description-wrap">
                 <th><label
                             for="wl_person"><?php _e( 'Author from the vocabulary', 'wordlift' ); ?></label>
