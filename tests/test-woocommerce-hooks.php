@@ -105,12 +105,14 @@ class Test_Wl_For_Wc_Hooks extends Wordlift_Unit_Test_Case {
 		$user      = $this->factory->user->create( array( 'role' => 'administrator' ) );
 		wp_set_current_user( $user );
 		add_filter( 'wl_feature__enable__screens', '__return_false' );
+		add_filter( 'wl_feature__enable__match-terms', '__return_false' );
 		global $submenu;
 		$submenu = array();
 
 		$wordlift = new Wordlift();
 		$wordlift->run();
 		do_action( 'admin_menu' );
+
 		$this->assertCount( 1, $submenu );
 
 		$this->assertEqualSets( array(
