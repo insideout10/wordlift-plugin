@@ -28,8 +28,8 @@ class Default_Entity_List extends Entity_List {
 	}
 
 	public function get_jsonld_data() {
-		$default_data = get_term_meta( $this->term_id, self::META_KEY, true );
-		if ( is_array( $default_data ) ) {
+		$default_data = get_term_meta( $this->term_id, self::META_KEY );
+		if ( is_array( $default_data ) && $default_data ) {
 			return $default_data;
 		}
 
@@ -46,7 +46,7 @@ class Default_Entity_List extends Entity_List {
 
 		$alt_labels = array( (string) $entity_data['name'] );
 
-		$entity_list = get_term_meta( $this->term_id, self::META_KEY, true );
+		$entity_list = get_term_meta( $this->term_id, self::META_KEY );
 
 		$entity = array(
 			'@type'         => $entity_data['@type'],
@@ -55,14 +55,9 @@ class Default_Entity_List extends Entity_List {
 			'alternateName' => $alt_labels
 		);
 
-		if ( ! is_array( $entity_list ) ) {
-			// Then the data is not present, so wrap the data in array
-			$entity_list = array( $entity );
-		} else {
-			array_push( $entity_list, $entity );
-		}
+		$entity_list[] = $entity;
 
-		update_term_meta( $this->term_id, self::META_KEY, $entity_list );
+		$this->clear_and_save_list( $entity_list );
 
 	}
 
@@ -72,7 +67,7 @@ class Default_Entity_List extends Entity_List {
 
 
 	public function remove_entity_by_id( $entity_id ) {
-		$entity_list = get_term_meta( $this->term_id, self::META_KEY, true );
+		$entity_list = get_term_meta( $this->term_id, self::META_KEY );
 		foreach ( $entity_list as $key => $entity ) {
 			$same_as = $entity['sameAs'];
 			if ( in_array( $entity_id, $same_as ) ) {
@@ -81,7 +76,25 @@ class Default_Entity_List extends Entity_List {
 				break;
 			}
 		}
-		update_term_meta( $this->term_id, self::META_KEY, $entity_list );
+		$this->clear_and_save_list( $entity_list );
 
+	}
+
+	/**
+	 * @param $entity_list
+	 */
+	private function save_entity_list( $entity_list ) {
+		foreach ( $entity_list as $single_entity ) {
+			add_term_meta( $this->term_id, self::META_KEY, $single_entity );
+		}
+	}
+
+	/**
+	 * @param $entity_list
+	 */
+	private function clear_and_save_list( $entity_list ) {
+		// Clear all data and add the new one.
+		$this->clear_data();
+		$this->save_entity_list( $entity_list );
 	}
 }
