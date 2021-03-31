@@ -7,7 +7,7 @@ class Features_Registry {
 	/**
 	 * @var array<Feature>
 	 */
-	private $features_list = array();
+	private $features = array();
 
 	private static $instance = null;
 
@@ -23,7 +23,7 @@ class Features_Registry {
 	 * @param $feature Feature
 	 */
 	public function register_feature( $feature ) {
-		$this->features_list[] = $feature;
+		$this->features[] = $feature;
 	}
 
 	/**
@@ -32,11 +32,24 @@ class Features_Registry {
 	 * @param $callback callable
 	 */
 	public function register_feature_from_slug( $feature_slug, $default_value, $callback ) {
-		$this->features_list[] = new Feature(
+		$this->features[] = new Feature(
 			$feature_slug,
 			$default_value,
 			$callback
 		);
+	}
+
+	public function initialize_all_features() {
+
+		foreach ( $this->features as $feature ) {
+			/**
+			 * @var $feature Feature
+			 */
+			$feature_slug = $feature->feature_slug;
+			if ( apply_filters( "wl_feature__enable__${feature_slug}", $feature->default_value ) ) {
+				call_user_func( $feature->callback );
+			}
+		}
 	}
 
 }
