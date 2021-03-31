@@ -1638,7 +1638,7 @@ class Wordlift {
 	 * @access   private
 	 */
 	private function define_admin_hooks() {
-
+		$that         = $this;
 		$plugin_admin = new Wordlift_Admin(
 			$this->get_plugin_name(),
 			$this->get_version(),
@@ -1770,11 +1770,15 @@ class Wordlift {
 		 *
 		 * @return bool
 		 * @since 3.27.6
+		 *
+		 * Since 3.30.0 this feature is registered using registry.
 		 */
-		if ( apply_filters( 'wl_feature__enable__screens', true )
-		     && ( apply_filters( 'wl_feature__enable__settings-screen', true ) || Admin_User_Option::is_wordlift_admin() ) ) {
-			$this->loader->add_action( 'wl_admin_menu', $this->settings_page, 'admin_menu', 10, 2 );
-		}
+		$this->features_registry->register_feature_from_slug( 'screens', true, function () use ( $that ) {
+			if ( apply_filters( 'wl_feature__enable__settings-screen', true ) || Admin_User_Option::is_wordlift_admin() ) {
+				$that->loader->add_action( 'wl_admin_menu', $that->settings_page, 'admin_menu', 10, 2 );
+			}
+		} );
+
 		/*
 		 * Display the `Wordlift_Admin_Search_Rankings_Page` page.
 		 *
