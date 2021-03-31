@@ -20,7 +20,14 @@ class Admin_User_Option {
 	}
 
 	public function save_checkbox() {
-		if ( ! isset( $_POST[ self::WORDLIFT_ADMIN ] ) || ! current_user_can( 'manage_options' ) ) {
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		if ( ! isset( $_POST[ self::WORDLIFT_ADMIN ] ) ) {
+			delete_user_meta( get_current_user_id(), self::WORDLIFT_ADMIN );
+
 			return;
 		}
 		update_user_meta( get_current_user_id(), self::WORDLIFT_ADMIN, 1 );

@@ -57,6 +57,16 @@ class Wordlift_Admin_Option_Test extends Wordlift_Unit_Test_Case {
 		$this->assertTrue( Admin_User_Option::is_wordlift_admin() );
 	}
 
+	public function test_should_remove_the_option_when_the_user_is_admin_personal_options_update() {
+		$user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $user_id );
+		update_user_meta( get_current_user_id(), Admin_User_Option::WORDLIFT_ADMIN, 1);
+		unset($_POST[ Admin_User_Option::WORDLIFT_ADMIN]);
+		do_action('personal_options_update');
+		$this->assertFalse( Admin_User_Option::is_wordlift_admin() );
+	}
+
+
 	public function test_should_not_save_the_option_when_the_user_is_not_admin_personal_options_update() {
 		$user_id = $this->factory()->user->create( array( 'role' => 'editor' ) );
 		wp_set_current_user( $user_id );
