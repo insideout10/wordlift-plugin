@@ -1,9 +1,9 @@
 /**
  * External dependencies
  */
-import {call, delay, put, select, takeLatest, fork} from "redux-saga/effects";
-import {getTagsFromApi, acceptEntity, markTagAsNoMatch, undoApiCall} from "../api";
-import {updateTags, hideEntity, showTag, hideTag, requestInProgress, requestCompleted, getTagsAction} from "../actions";
+import {call, fork, put, takeLatest} from "redux-saga/effects";
+import {acceptEntity, getTagsFromApi, markTagAsNoMatch, undoApiCall} from "../api";
+import {getTagsAction, hideTag, requestCompleted, requestInProgress, showTag, updateTags} from "../actions";
 import {convertApiResponseToUiObject} from "../api/filters";
 import store from "../store/index";
 

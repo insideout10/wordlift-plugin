@@ -4,7 +4,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import {Provider} from "react-redux";
-
 /**
  * Internal dependencies.
  */
@@ -13,7 +12,6 @@ import store from "./store/index";
 import Container from "./components/container";
 import {getTagsAction} from "./actions";
 import ReconcileProgressBar from "./components/reconcile-progress-bar";
-import AnalysisProgressBar from "./components/analysis-progress-bar";
 
 
 export const MATCH_TERMS_SETTINGS_KEY = "_wlVocabularyMatchTermsConfig";

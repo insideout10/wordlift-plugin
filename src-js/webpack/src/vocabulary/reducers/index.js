@@ -2,7 +2,6 @@
  * External dependencies
  */
 import {createReducer} from "@reduxjs/toolkit";
-import {ASC, DESC} from "../store";
 
 function hideAlreadyExistingUndoCards(state) {
     // First check if there are any tags with undo state, if it is
