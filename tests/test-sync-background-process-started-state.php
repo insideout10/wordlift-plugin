@@ -76,7 +76,8 @@ class Sync_Background_Process_Started_State_Test extends Wordlift_Unit_Test_Case
 	}
 
 	public function test_task() {
-
+		global $wp_filter;
+		$wp_filter = array();
 		$this->factory->term->create_many( 20 );
 
 		update_option( '_wl_sync_background_process_offset', 6 );
