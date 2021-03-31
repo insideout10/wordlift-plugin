@@ -1578,17 +1578,17 @@ class Wordlift {
 		 * @since 3.30.0
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/1318
 		 */
-		add_action('plugins_loaded', function () use ( $that ) {
+		add_action( 'plugins_loaded', function () use ( $that ) {
 
 			if ( apply_filters( 'wl_feature__enable__article-wrapper', false ) ) {
 				new Jsonld_Article_Wrapper( Wordlift_Post_To_Jsonld_Converter::get_instance(), $that->cached_postid_to_jsonld_converter );
 			}
 
 
-		});
+		} );
 
 
-		if ( apply_filters( 'wl_feature__enable__match-terms', true) ) {
+		if ( apply_filters( 'wl_feature__enable__match-terms', true ) ) {
 			$vocabulary_loader = new Vocabulary_Loader();
 			$vocabulary_loader->init_vocabulary();
 		}
@@ -1768,7 +1768,7 @@ class Wordlift {
 		 * @since 3.27.6
 		 */
 		if ( apply_filters( 'wl_feature__enable__screens', true )
-		&& ( apply_filters( 'wl_feature__enable__settings_screen', true )  || Admin_User_Option::is_wordlift_admin() )  ) {
+		     && ( apply_filters( 'wl_feature__enable__settings_screen', true ) || Admin_User_Option::is_wordlift_admin() ) ) {
 			$this->loader->add_action( 'wl_admin_menu', $this->settings_page, 'admin_menu', 10, 2 );
 		}
 		/*
@@ -2040,7 +2040,15 @@ class Wordlift {
 
 		wp_register_script( 'wl_enabled_blocks', false );
 
-		$enabled_blocks = array( 'wordlift/products-navigator' );
+		$enabled_blocks = array();
+
+		/**
+		 * Filter name: wl_feature_enable__product_navigator
+		 * @since 3.30.0
+		 */
+		if ( apply_filters( 'wl_feature_enable__product_navigator', true ) ) {
+			$enabled_blocks[] = 'wordlift/products-navigator';
+		}
 
 		if ( apply_filters( 'wl_feature__enable__blocks', true ) ) {
 			// To intimate JS
