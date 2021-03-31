@@ -78,7 +78,7 @@ class Vocabulary_Jsonld_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 		$tags    = array( $term->slug );
 		wp_add_post_tags( $post_id, $tags );
 
-		$request = new WP_REST_Request( 'POST', Api_Config::REST_NAMESPACE . '/entity/accept' );
+		$request = new WP_REST_Request( 'POST', '/' . Api_Config::REST_NAMESPACE . '/entity/accept' );
 		$request->set_header( 'content-type', 'application/json' );
 		$json_data = json_encode( array( 'entity' => $entity, 'term_id' => $term_id ) );
 		$request->set_body( $json_data );

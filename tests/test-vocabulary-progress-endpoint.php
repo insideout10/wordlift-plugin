@@ -25,7 +25,7 @@ class Reconcile_Progress extends \Wordlift_Vocabulary_Unit_Test_Case {
 		$wp_rest_server = new WP_REST_Server();
 		$this->server   = $wp_rest_server;
 		do_action( 'rest_api_init' );
-		$this->reconcile_progress_route = Api_Config::REST_NAMESPACE . '/reconcile_progress/progress';
+		$this->reconcile_progress_route = '/' . Api_Config::REST_NAMESPACE . '/reconcile_progress/progress';
 	}
 
 	public function test_should_return_items_completed_correctly() {

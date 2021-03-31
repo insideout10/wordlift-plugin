@@ -60,8 +60,7 @@ class Entity_Rest_Endpoint {
 	public function mark_as_no_match( $request ) {
 		$data    = $request->get_params();
 		$term_id = (int) $data['term_id'];
-
-		return add_term_meta( $term_id, self::IGNORE_TAG_FROM_LISTING, 1 );
+		return update_term_meta( $term_id, self::IGNORE_TAG_FROM_LISTING, 1 );
 	}
 
 

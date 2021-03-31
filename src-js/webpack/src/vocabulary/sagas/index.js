@@ -43,7 +43,6 @@ function getTermIdAndEntities(state, tagIndex) {
 function* acceptEntitySaga(action) {
     const {tagIndex} = action.payload
     const {termId, entities, entityIndex} = getTermIdAndEntities(store.getState(), tagIndex)
-    console.log(entities)
     for (let i =0; i < entities.length; i++) {
         const entity = entities[i]
         yield fork(acceptEntity, termId, {...entity, ...entity.meta}, store.getState().apiConfig);

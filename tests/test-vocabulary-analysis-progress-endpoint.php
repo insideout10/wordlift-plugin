@@ -34,13 +34,13 @@ class Analysis_Progress_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_Cas
 		$this->server   = $wp_rest_server;
 		do_action( 'rest_api_init' );
 
-		$this->start_analysis_route = Api_Config::REST_NAMESPACE . '/background_analysis/start';
+		$this->start_analysis_route = '/' . Api_Config::REST_NAMESPACE . '/background_analysis/start';
 
-		$this->stop_analysis_route = Api_Config::REST_NAMESPACE . '/background_analysis/stop';
+		$this->stop_analysis_route = '/' . Api_Config::REST_NAMESPACE . '/background_analysis/stop';
 
-		$this->stats_analysis_route = Api_Config::REST_NAMESPACE . '/background_analysis/stats';
+		$this->stats_analysis_route = '/' . Api_Config::REST_NAMESPACE . '/background_analysis/stats';
 
-		$this->restart_analysis_route = Api_Config::REST_NAMESPACE . '/background_analysis/restart';
+		$this->restart_analysis_route = '/' . Api_Config::REST_NAMESPACE . '/background_analysis/restart';
 
 
 	}

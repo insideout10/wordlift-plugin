@@ -8,7 +8,7 @@ namespace Wordlift\Vocabulary\Api;
  */
 class Api_Config {
 
-	const REST_NAMESPACE = '/cafemediakg/v1';
+	const REST_NAMESPACE = 'cafemediakg/v1';
 
 	public static function get_api_config() {
 		// Create ui settings array to be used by js client.

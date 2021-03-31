@@ -32,13 +32,13 @@ class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_
 		$this->server   = $wp_rest_server;
 		do_action( 'rest_api_init' );
 
-		$this->accept_route = Api_Config::REST_NAMESPACE . '/entity/accept';
+		$this->accept_route = '/' . Api_Config::REST_NAMESPACE . '/entity/accept';
 
-		$this->undo_route = Api_Config::REST_NAMESPACE . '/entity/undo';
+		$this->undo_route = '/' . Api_Config::REST_NAMESPACE . '/entity/undo';
 
-		$this->no_match_route = Api_Config::REST_NAMESPACE . '/entity/no_match';
+		$this->no_match_route = '/' . Api_Config::REST_NAMESPACE . '/entity/no_match';
 
-		$this->reject_route = Api_Config::REST_NAMESPACE . '/entity/reject';
+		$this->reject_route = '/' . Api_Config::REST_NAMESPACE . '/entity/reject';
 
 	}
 
