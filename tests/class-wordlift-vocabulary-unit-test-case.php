@@ -15,7 +15,6 @@ abstract class Wordlift_Vocabulary_Unit_Test_Case  extends Wordlift_Unit_Test_Ca
 		$wp_filter = array();
 		$wp_scripts = null;
 		$wp_styles = null;
-
 		$loader = new Vocabulary_Loader();
 		$loader->init_vocabulary();
 	}

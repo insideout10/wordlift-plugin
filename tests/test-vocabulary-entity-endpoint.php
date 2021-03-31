@@ -166,6 +166,8 @@ class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_
 	}
 
 	public function test_when_entity_is_removed_clear_all_jsonld_cache() {
+		$user_id   = $this->factory()->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $user_id );
 		$jsonld_cache = new Ttl_Cache( 'jsonld', 86400 );
 		$jsonld_cache->put( "foo", "bar" );
 		$term_data = wp_insert_term( 'foo', 'post_tag' );
@@ -177,6 +179,8 @@ class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_
 	}
 
 	public function test_when_entity_undo_clear_all_jsonld_cache() {
+		$user_id   = $this->factory()->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $user_id );
 		$jsonld_cache = new Ttl_Cache( 'jsonld', 86400 );
 		$jsonld_cache->put( "foo", "bar" );
 		$term_data = wp_insert_term( 'foo', 'post_tag' );
