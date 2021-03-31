@@ -5,6 +5,7 @@ import React from "react";
 import Entity from "../entity";
 import {connect} from "react-redux";
 import {__} from "@wordpress/i18n";
+
 /**
  * Internal dependencies
  */

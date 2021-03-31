@@ -10,6 +10,7 @@ import Entity from "../../components/entity";
 import {entityAccepted, entityRejected} from "./actions";
 
 
+
 const entitySelectedListener = props => {
     // Fire inverse actions since the isActive state is set by backend.
     // when the entity is already active we fire the entity rejected action.

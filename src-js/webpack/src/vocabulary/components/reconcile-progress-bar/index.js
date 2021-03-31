@@ -11,8 +11,8 @@ import React from "react";
  * Internal dependencies
  */
 import "./index.scss";
-import {getReconcileProgress} from "./api";
-import {ProgressBar} from "../progress-bar";
+import { getReconcileProgress } from "./api";
+import { ProgressBar } from "../progress-bar";
 
 export default class ReconcileProgressBar extends React.Component {
   constructor(props) {

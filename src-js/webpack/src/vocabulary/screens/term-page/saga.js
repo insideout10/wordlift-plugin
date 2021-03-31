@@ -1,7 +1,8 @@
 /**
  * External dependencies
  */
-import {fork, put, select, takeLatest} from "redux-saga/effects";
+import {put, select, takeLatest, fork} from "redux-saga/effects";
+
 /**
  * Internal dependencies.
  */

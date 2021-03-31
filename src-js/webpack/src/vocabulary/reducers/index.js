@@ -2,6 +2,7 @@
  * External dependencies
  */
 import {createReducer} from "@reduxjs/toolkit";
+import {ASC, DESC} from "../store";
 
 function hideAlreadyExistingUndoCards(state) {
     // First check if there are any tags with undo state, if it is
@@ -84,11 +85,11 @@ export const reducer = createReducer(null, {
 
 
     "SORT_BY_TERM_NAME_ASC": (state) => {
-        state.tags =  state.tags.sort((a, b) => a.tagName.localeCompare(b.tagName))
+        state.tags.sort((a, b) => a.tagName.toLowerCase().localeCompare(b.tagName.toLowerCase()))
     },
 
     "SORT_BY_TERM_NAME_DESC": (state) => {
-        state.tags =  state.tags.sort((a, b) => a.tagName.localeCompare(b.tagName)).reverse()
+        state.tags.sort((a, b) => a.tagName.toLowerCase().localeCompare(b.tagName.toLowerCase())).reverse()
     },
 
     "UPDATE_API_CONFIG": (state, action) => {

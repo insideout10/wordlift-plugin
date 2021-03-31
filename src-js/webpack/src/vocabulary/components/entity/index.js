@@ -7,6 +7,7 @@ import {connect} from "react-redux";
  * Internal dependencies
  */
 import "./index.scss"
+import {setEntityActive} from "../../actions";
 
 class Entity extends React.Component {
 

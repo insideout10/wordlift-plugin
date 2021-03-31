@@ -3,15 +3,18 @@
  */
 import ReactDOM from "react-dom";
 import React from "react";
-import {Provider} from "react-redux";
+import { Provider } from "react-redux";
 import createSagaMiddleware from "redux-saga";
-import {applyMiddleware, createStore} from "redux";
+import { applyMiddleware, createStore } from "redux";
 import thunk from "redux-thunk";
 import logger from "redux-logger";
+
+import { createReducer } from "@reduxjs/toolkit";
+
 /**
  * Internal dependencies.
  */
-import {entitySaga} from "./saga";
+import { entitySaga } from "./saga";
 import {reducer} from "./reducer"
 import EntityList from "./entity-list";
 
