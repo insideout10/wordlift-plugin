@@ -100,6 +100,10 @@ class Sync_Background_Process extends \Wordlift_Plugin_WP_Background_Process {
 		$this->state->enter();
 	}
 
+	public function resume() {
+		$this->state->resume();
+	}
+
 	/**
 	 * Get the current state.
 	 *

@@ -27,6 +27,10 @@ class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Pro
 	private $stages;
 
 	private $batch_size = 5;
+	/**
+	 * @var bool
+	 */
+	private $reset;
 
 	/**
 	 * Sync_Background_Process_Started_State constructor.
@@ -34,8 +38,9 @@ class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Pro
 	 * @param Sync_Background_Process $context
 	 * @param Sync_Service $sync_service
 	 * @param Sync_Object_Adapter_Factory $sync_object_adapter_factory
+	 * @param bool $reset Whether to reset the counters
 	 */
-	function __construct( $context, $sync_service, $sync_object_adapter_factory ) {
+	function __construct( $context, $sync_service, $sync_object_adapter_factory, $reset = true ) {
 		parent::__construct( Sync_Background_Process::STATE_STARTED );
 
 		$this->context      = $context;
@@ -58,7 +63,7 @@ class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Pro
 		$counts = array_map( function ( $item ) {
 			return $item->count();
 		}, $this->stages );
-		
+
 		update_option( '_wl_sync_background_process_count', $counts, true );
 		update_option( '_wl_sync_background_process_stage', 0, true );
 		update_option( '_wl_sync_background_process_offset', 0, true );
@@ -67,6 +72,10 @@ class Sync_Background_Process_Started_State extends Abstract_Sync_Background_Pro
 
 		$this->context->set_state( Sync_Background_Process::STATE_STARTED );
 
+		$this->resume();
+	}
+
+	function resume() {
 		$this->context->push_to_queue( true );
 		$this->context->save()->dispatch();
 	}
