@@ -1773,9 +1773,11 @@ class Wordlift {
 		 *
 		 * Since 3.30.0 this feature is registered using registry.
 		 */
-		if ( apply_filters( 'wl_feature__enable__settings-screen', true ) || Admin_User_Option::is_wordlift_admin() ) {
-			add_action( 'wl_admin_menu', array( $that->settings_page, 'admin_menu' ), 10, 2 );
-		}
+		add_action( 'plugins_loaded', function () use ( $that ) {
+			if ( apply_filters( 'wl_feature__enable__settings-screen', true ) || Admin_User_Option::is_wordlift_admin() ) {
+				add_action( 'wl_admin_menu', array( $that->settings_page, 'admin_menu' ), 10, 2 );
+			}
+		} );
 
 		/*
 		 * Display the `Wordlift_Admin_Search_Rankings_Page` page.
