@@ -18,10 +18,13 @@ class Legacy_Entity_List extends Entity_List {
 	 */
 	public function get_jsonld_data() {
 		$tag = get_term( $this->term_id );
-
+		$type = get_term_meta( $tag->term_id, Entity_Rest_Endpoint::TYPE_META_KEY, true );
+		if ( $type === '') {
+			return array();
+		}
 		return array( array(
 			'@id'           => get_term_link( $tag->term_id ) . '#id',
-			'@type'         => get_term_meta( $tag->term_id, Entity_Rest_Endpoint::TYPE_META_KEY, true ),
+			'@type'         => $type,
 			'name'          => $tag->name,
 			'description'   => ! empty( $tag->description ) ?: get_term_meta( $tag->term_id, Entity_Rest_Endpoint::DESCRIPTION_META_KEY, true ),
 			'sameAs'        => get_term_meta( $tag->term_id, Entity_Rest_Endpoint::SAME_AS_META_KEY ),
