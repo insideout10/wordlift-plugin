@@ -34,25 +34,31 @@ class Post_Jsonld {
 
 		$tags = get_the_tags( $post_id );
 
-		if ( $tags && ! is_wp_error( $tags ) ) {
+		if ( ! $tags || is_wp_error( $tags ) ) {
+			return;
+		}
 
-			if ( ! array_key_exists('mentions', $jsonld) ) {
-				$jsonld['mentions'] = array();
+		if ( ! array_key_exists( 'mentions', $jsonld ) ) {
+			$jsonld['mentions'] = array();
+		}
+
+		foreach ( $tags as $tag ) {
+
+			$is_matched = intval( get_term_meta( $tag->term_id, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING, true ) ) === 1;
+
+			if ( ! $is_matched ) {
+				continue;
 			}
 
-			// Loop through the tags and push it to references.
-			foreach ( $tags as $tag ) {
+			$entity = Entity_List_Factory::get_instance( $tag->term_id );
 
-				$is_matched = intval( get_term_meta( $tag->term_id, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING, true ) ) === 1;
+			$entities = $entity->get_jsonld_data();
 
-				if ( $is_matched ) {
-
-					$entity = Entity_List_Factory::get_instance( $tag->term_id );
-
-					$jsonld['mentions'] = array_merge( $jsonld['mentions'], self::add_additional_attrs( $tag, $entity->get_jsonld_data() ) );
-				}
-
+			if ( count( $entities ) === 0 ) {
+				continue;
 			}
+
+			$jsonld['mentions'] = array_merge( $jsonld['mentions'], self::add_additional_attrs( $tag, $entities ) );
 		}
 
 	}
