@@ -13,6 +13,8 @@ class Api_Data_Hooks {
 
 	const META_KEY = 'wl_schema_url';
 
+	protected $cache_requests = array();
+
 	private $configuration_service;
 
 	public function __construct( $configuration_service ) {
@@ -26,6 +28,11 @@ class Api_Data_Hooks {
 		 * Check for Meta Key change on Post Save
 		 */
 		add_action( 'updated_post_meta', array( $this, 'post_meta_request_delete_cache' ), 10, 4 );
+
+		/**
+		 * Initiate the purge cache requests
+		 */
+		add_action( 'shutdown', array( $this, 'init_purge_cache_requests' ) );
 	}
 
 	public function post_save_request_delete_cache( $post_id ) {
@@ -33,7 +40,19 @@ class Api_Data_Hooks {
 	}
 
 	public function post_meta_request_delete_cache( $meta_id, $post_id, $meta_key, $_meta_value ) {
-		if ( self::META_KEY === $meta_key ) {
+		$this->cache_requests[] = $post_id;
+	}
+
+	public function init_purge_cache_requests() {
+		// Bail early.
+		if( empty( $this->cache_requests) ) {
+			return;
+		}
+
+		// Avoid duplicate cache requests.
+		$unique_requests = array_unique( $this->cache_requests );
+
+		foreach ( $unique_requests as $key => $post_id ) {
 			$this->delete_cache_for_meta_values( $post_id );
 		}
 	}
