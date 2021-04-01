@@ -36,11 +36,11 @@ class Table extends React.Component {
             <thead>
             <tr>
                 <th>
-                    {__('Sort By:', 'wordlift')} &nbsp;
-                    {__('Name', 'wordlift')}
+                    {__('Sort By:', 'wordlift')}
+                    <span style={{marginLeft: "10px"}}>{__('Name', 'wordlift')}</span>
                     <Sort sortAscHandler={() => this.props.dispatch(sortByTermNameAsc())}
-                          sortDescHandler={() => this.props.dispatch(sortByTermNameDesc())}/>&nbsp;
-                    {__('Post Count', 'wordlift')}
+                          sortDescHandler={() => this.props.dispatch(sortByTermNameDesc())}/>
+                    <span style={{marginLeft: "10px"}}>{__('Post Count', 'wordlift')}</span>
                     <Sort sortAscHandler={() => this.props.dispatch(sortByPostCountAsc())}
                           sortDescHandler={() => this.props.dispatch(sortByPostCountDesc())}/>
                 </th>

@@ -78,7 +78,7 @@ class Tag extends React.Component {
                     className="dashicons dashicons-external"></span></a>
             </p>
             <p>{this.props.tagDescription}</p>
-            <small>{__("Posts : ", 'wordlift-plugin')}{this.props.tagPostCount}</small>
+            <small>{__("Posts: ", 'wordlift-plugin')}{this.props.tagPostCount}</small>
         </td>;
     }
 
