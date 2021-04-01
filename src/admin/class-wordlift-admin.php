@@ -155,7 +155,7 @@ class Wordlift_Admin {
 				 */
 				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-mappings-page.php';
 
-				$features_registry->register_feature_from_slug( 'screens', true, array(
+				$features_registry->register_feature_from_slug( 'all-entity-types', true, array(
 					$this,
 					'load_schema_org_types_page'
 				) );
