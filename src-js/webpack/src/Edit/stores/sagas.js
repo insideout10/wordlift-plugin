@@ -17,7 +17,7 @@ import {
   EDITOR_SELECTION_CHANGED,
   SET_CURRENT_ENTITY,
   TOGGLE_ENTITY,
-  TOGGLE_LINK,
+  TOGGLE_LINK
 } from "../constants/ActionTypes";
 import EditPostWidgetController from "../angular/EditPostWidgetController";
 import { getEntity } from "./selectors";
@@ -27,9 +27,8 @@ import {
   addEntityRequest,
   addEntitySuccess,
   createEntityRequest,
-  createEntitySuccess,
+  createEntitySuccess
 } from "../components/AddEntity/actions";
-import { Button, createPopover } from "@wordlift/design";
 import React from "react";
 
 /**
@@ -50,7 +49,7 @@ function* toggleLink({ entity }) {
   yield put(
     toggleLinkSuccess({
       id: entity.id,
-      link: LinkService.getLink(entity.occurrences),
+      link: LinkService.getLink(entity.occurrences)
     })
   );
 }
@@ -88,7 +87,7 @@ function* createEntity({ payload }) {
   yield put(createEntitySuccess());
 }
 
-const getMainType = (types) => {
+const getMainType = types => {
   for (let i = 0; i < window._wlEntityTypes.length; i++) {
     const type = window._wlEntityTypes[i];
 
@@ -131,34 +130,8 @@ function* handleEditorSelectionChanged({ payload }) {
     top: iframeRect.top + editorRect.top + window.scrollY,
     right: iframeRect.left + editorRect.right + window.scrollX,
     bottom: iframeRect.top + editorRect.bottom + window.scrollY,
-    left: iframeRect.left + editorRect.left + window.scrollX,
+    left: iframeRect.left + editorRect.left + window.scrollX
   };
-
-  // const container = document.createElement("span");
-  // container.style.position = "absolute";
-  // container.style.top = "0";
-  // container.style.left = "0";
-  //
-  // const span = document.createElement("span");
-  // span.style.width = rect.right - rect.left + "px";
-  // span.style.height = rect.bottom - rect.top + "px";
-  // span.style.top = rect.top + "px";
-  // span.style.left = rect.left + "px";
-  // span.style.background = "transparent";
-  // span.style.border = "1px solid red";
-  // span.style.position = "absolute";
-  //
-  // container.appendChild(span);
-  // document.body.appendChild(container);
-
-  // Finally create the popover.
-  // popover = yield call(
-  //   createPopover,
-  //   <div>
-  //     <Button>Hello WordPress!</Button>
-  //   </div>,
-  //   { ...rect, positions: ["right", "left", "bottom", "top"] }
-  // );
 }
 
 /**

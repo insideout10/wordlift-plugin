@@ -1,8 +1,8 @@
 export default class Block {
-  constructor(block, dispatch, start = 0, end = -1) {
+  constructor(block, dispatch, content, start = 0, end = -1) {
     this._block = block;
     this._dispatch = dispatch;
-    this._content = block.attributes.content;
+    this._content = content;
     this._start = start;
     this._end = 0 <= end ? end : block.attributes.content.length;
     this._dirty = false;

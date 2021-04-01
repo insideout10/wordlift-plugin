@@ -10,6 +10,8 @@
  * @subpackage Wordlift/admin
  */
 
+use Wordlift\Api\Default_Api_Service;
+
 /**
  * The Wordlift_Admin_Download_Your_Data_Page class.
  *
@@ -30,17 +32,30 @@ class Wordlift_Admin_Download_Your_Data_Page {
 		'n3',
 	);
 
+
+	/**
+	 * The list of headers allowed by the endpoint.
+	 * @since 3.28.2
+	 * @var string[]
+	 */
+	private $allowed_headers = array(
+		'json' => 'application/ld+json',
+		'rdf'  => 'application/rdf+xml',
+		'n3'   => 'text/n3',
+		'ttl'  => 'text/turtle'
+	);
+
 	/**
 	 * A {@link Wordlift_Configuration_Service} instance.
 	 *
+	 * @param \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
+	 *
 	 * @since 3.9.8
 	 *
-	 * @param \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
 	 */
 	function __construct( $configuration_service ) {
 
 		$this->configuration_service = $configuration_service;
-
 	}
 
 	/**
@@ -81,6 +96,8 @@ class Wordlift_Admin_Download_Your_Data_Page {
 	 */
 	public function download_your_data() {
 
+		$default_api_service = Default_Api_Service::get_instance();
+
 		// Avoid PHP notices when buffer is empty.
 		if ( ob_get_contents() ) {
 			ob_end_clean();
@@ -105,8 +122,16 @@ class Wordlift_Admin_Download_Your_Data_Page {
 			wp_die( esc_html__( 'The format is not supported.', 'wordlift' ) );
 		}
 
-		// Make the request.
-		$response = wp_safe_remote_get( WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "datasets/key=$key/$filename" );
+
+		$accept_header_format = $this->allowed_headers[ $suffix ];
+
+		$headers = array(
+			'Accept' => $accept_header_format
+		);
+
+		$response = $default_api_service->get( '/dataset/export', $headers );
+
+		$response = $response->get_response();
 
 		if (
 			is_wp_error( $response ) ||
@@ -115,6 +140,7 @@ class Wordlift_Admin_Download_Your_Data_Page {
 			// Something is not working properly, so display error message.
 			wp_die( esc_html__( 'There was an error trying to connect to the server. Please try again later.', 'wordlift' ) );
 		}
+
 
 		// Get response body.
 		$body     = wp_remote_retrieve_body( $response );

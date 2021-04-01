@@ -130,7 +130,9 @@ class Ttl_Cache {
 		$filename = $this->get_filename( $key );
 
 		// Cache.
-		@unlink( $filename );
+		if ( file_exists( $filename ) ) {
+			@unlink( $filename );
+		}
 		@file_put_contents( $filename, wp_json_encode( $data ) );
 
 	}

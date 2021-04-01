@@ -50,14 +50,25 @@ function* getTermsForSelectedTaxonomy(action) {
     // It means the terms are already present for the taxonomy, not needed to fetch it again from API.
     return;
   }
-  const response = yield call(EDIT_MAPPING_API.getTermsFromAPI, ruleFieldOneSelectedValue);
-  const terms = response.map(e => {
-    return {
-      label: e.name,
-      value: e.slug,
-      parentValue: e.taxonomy
-    };
+
+  const callAPILink = ruleFieldOneSelectedValue === 'post_taxonomy' ?  EDIT_MAPPING_API.getTaxonomyTermsFromAPI : EDIT_MAPPING_API.getTermsFromAPI;
+  const response = yield call(callAPILink, ruleFieldOneSelectedValue);
+  const terms =  response.map(e => {
+    if (e.hasOwnProperty('group_name')) {
+      return {
+        group_name: e.group_name,
+        group_options: e.group_options,
+        parentValue: e.parentValue
+      }
+    } else {
+      return {
+        label: e.name,
+        value: e.slug,
+        parentValue: e.taxonomy
+      };
+    }
   });
+
   MAPPING_TERMS_CHANGED_ACTION.payload = {
     taxonomy: ruleFieldOneSelectedValue,
     terms: terms

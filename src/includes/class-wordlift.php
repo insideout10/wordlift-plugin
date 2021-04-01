@@ -23,6 +23,7 @@ use Wordlift\Duplicate_Markup_Remover\Faq_Duplicate_Markup_Remover;
 use Wordlift\Entity\Entity_Helper;
 use Wordlift\Entity\Entity_No_Index_Flag;
 use Wordlift\Entity\Entity_Taxonomy_No_Index;
+use Wordlift\Entity\Entity_Rest_Service;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_After_Get_Jsonld_Hook;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Jsonld_Hook;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Post_Type_Hook;
@@ -32,6 +33,7 @@ use Wordlift\External_Plugin_Hooks\Yoast\Yoast_Jsonld;
 use Wordlift\Faq\Faq_Content_Filter;
 use Wordlift\Faq\Faq_Tinymce_Adapter;
 use Wordlift\Jsonld\Jsonld_Adapter;
+use Wordlift\Jsonld\Jsonld_Article_Wrapper;
 use Wordlift\Jsonld\Jsonld_By_Id_Endpoint;
 use Wordlift\Jsonld\Jsonld_Endpoint;
 use Wordlift\Jsonld\Jsonld_Service;
@@ -49,6 +51,7 @@ use Wordlift\Mappings\Validators\Rule_Groups_Validator;
 use Wordlift\Mappings\Validators\Rule_Validators_Registry;
 use Wordlift\Mappings\Validators\Taxonomy_Rule_Validator;
 use Wordlift\Mappings\Validators\Taxonomy_Term_Rule_Validator;
+use Wordlift\Mappings\Validators\Post_Taxonomy_Term_Rule_Validator;
 use Wordlift\Post_Excerpt\Post_Excerpt_Meta_Box_Adapter;
 use Wordlift\Post_Excerpt\Post_Excerpt_Rest_Controller;
 use Wordlift\Templates\Templates_Ajax_Endpoint;
@@ -753,7 +756,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.27.8';
+		$this->version     = '3.29.1';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -1312,6 +1315,7 @@ class Wordlift {
 		$this->reference_rebuild_service  = new Wordlift_Reference_Rebuild_Service( $this->entity_service );
 
 		$this->loader->add_action( 'enqueue_block_editor_assets', $this, 'add_wl_enabled_blocks' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $this, 'add_wl_enabled_blocks' );
 
 		/**
 		 * Filter: wl_feature__enable__blocks.
@@ -1489,6 +1493,7 @@ class Wordlift {
 		new Post_Type_Rule_Validator();
 		// Taxonomy term rule validator for validating rules for term pages.
 		new Taxonomy_Term_Rule_Validator();
+		new Post_Taxonomy_Term_Rule_Validator();
 		$rule_validators_registry = new Rule_Validators_Registry( $default_rule_validator );
 		$rule_groups_validator    = new Rule_Groups_Validator( $rule_validators_registry );
 		$mappings_validator       = new Mappings_Validator( $mappings_dbo, $rule_groups_validator );
@@ -1563,11 +1568,31 @@ class Wordlift {
 		 */
 		new Key_Validation_Notice( $this->key_validation_service, $this->configuration_service );
 		/**
+
 		 * @since 3.28.0
 		 * @see https://github.com/insideout10/wordlift-plugin/issues?q=assignee%3Anaveen17797+is%3Aopen
 		 */
 		new Entity_No_Index_Flag();
 		new Entity_Taxonomy_No_Index();
+
+		/**
+		 * @since 3.29.0
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/1304
+		 */
+		new Entity_Rest_Service( $this->entity_type_service );
+
+		/**
+		 * Expand author in to references.
+		 * @since 3.30.0
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/1318
+		 */
+		add_action('plugins_loaded', function () use ( $that ) {
+			if ( apply_filters( 'wl_feature__enable__article-wrapper', false ) ) {
+				new Jsonld_Article_Wrapper( Wordlift_Post_To_Jsonld_Converter::get_instance(), $that->cached_postid_to_jsonld_converter );
+			}
+		});
+
+
 	}
 
 	/**
@@ -1751,10 +1776,10 @@ class Wordlift {
 			 * @return bool
 			 * @since 3.27.6
 			 */
-			if ( apply_filters( 'wl_feature__enable__screens', true ) ) {
-				$admin_search_rankings_page = new Wordlift_Admin_Search_Rankings_Page();
-				$this->loader->add_action( 'wl_admin_menu', $admin_search_rankings_page, 'admin_menu' );
-			}
+//			if ( apply_filters( 'wl_feature__enable__screens', true ) ) {
+//				$admin_search_rankings_page = new Wordlift_Admin_Search_Rankings_Page();
+//				$this->loader->add_action( 'wl_admin_menu', $admin_search_rankings_page, 'admin_menu' );
+//			}
 		}
 
 		// Hook key update.

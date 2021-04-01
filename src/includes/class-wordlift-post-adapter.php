@@ -224,20 +224,20 @@ class Wordlift_Post_Adapter {
 	 * @since 3.27.2
 	 */
 	public function locale() {
-		// WPML handling
+		$language = 'en-US';
+
 		if ( function_exists( 'wpml_get_language_information' ) ) {
+			// WPML handling
 			$post_language = wpml_get_language_information( $this->post_id );
-
-			return $post_language['locale'];
+			$language = $post_language['locale'];
+		} else if ( function_exists( 'pll_get_post_language' ) ) {
+			// Polylang handling
+			$language = pll_get_post_language( $this->post_id, 'locale' );
+		} else {
+			$language = get_locale();
 		}
 
-		// Polylang handling
-		if ( function_exists( 'pll_get_post_language' ) ) {
-			return pll_get_post_language( $this->post_id, 'locale' );
-		}
-
-		return get_locale();
-
+		return str_replace('_','-',$language );
 	}
 
 	/**

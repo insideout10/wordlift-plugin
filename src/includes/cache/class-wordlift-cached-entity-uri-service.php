@@ -85,8 +85,8 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 
 		// Store them in cache.
 		if ( is_array( $this->uri_to_post ) && ! empty( $this->uri_to_post ) ) {
-			foreach ( $this->uri_to_post as $uri => $post ) {
-				$this->set_cache( $uri, $post );
+			foreach ( $this->uri_to_post as $uri => $post_id ) {
+				$this->set_cache( $uri, $post_id );
 			}
 		}
 
@@ -118,8 +118,10 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 		// Get the actual result.
 		$post = parent::get_entity( $uri );
 
-		// Cache the result, if a post is not found we cache -1.
-		$this->set_cache( $uri, $post );
+		// Cache the result.
+		if ( null !== $post ) {
+			$this->set_cache( $uri, $post->ID );
+		}
 
 		// Return the result.
 		return $post;
@@ -129,15 +131,16 @@ class Wordlift_Cached_Entity_Uri_Service extends Wordlift_Entity_Uri_Service {
 	 * Set the cached URI for the specified {@link WP_Post}.
 	 *
 	 * @param string $uri The URI.
-	 * @param WP_Post $post The post.
+	 * @param int $post_id The post ID.
 	 *
 	 * @since 3.16.3
+	 * @since 3.29.0 takes a post ID as input.
 	 *
 	 */
-	private function set_cache( $uri, $post ) {
+	private function set_cache( $uri, $post_id ) {
 
-		// Cache the result, if a post is not found we cache -1.
-		$this->cache_service->set_cache( $uri, ( null === $post ? - 1 : $post->ID ) );
+		// Cache the result.
+		$this->cache_service->set_cache( $uri, $post_id );
 
 	}
 

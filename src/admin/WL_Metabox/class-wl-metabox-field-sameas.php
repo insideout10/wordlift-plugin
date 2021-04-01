@@ -92,14 +92,13 @@ class WL_Metabox_Field_sameas extends WL_Metabox_Field {
 		$placeholder = esc_attr_x( 'Type here the URL of an equivalent entity from another dataset.', 'sameAs metabox input', 'wordlift' );
 
 		return
-			"<label for='$this->meta_name'>"
-			. esc_html__( 'If you already know the URL of the entity that you would like to link, add it in the field below.', 'wordlift' )
-			. '</label>'
-			. '<div class="wl-input-wrapper">'
-			. "<input type='text' id='$this->meta_name' name='wl_metaboxes[$this->meta_name][]' placeholder='$placeholder' style='width:88%' />"
-			. '<button class="button wl-remove-input wl-button" type="button">Remove</button>'
-			. '</div>'
-			. parent::get_add_button_html( $count );
+  		'<button type="button" class="wl-add-input wl-add-input--link">'.esc_html__( 'Click here to manually add URLs', 'wordlift' ).'</button>'
+        .'<div style="display: none;"><div class="wl-input-wrapper">'
+        ."<input type='text' id='$this->meta_name' name='wl_metaboxes[$this->meta_name][]' placeholder='$placeholder' />"
+        .'<button type="button" class="wl-remove-input wl-remove-input--sameas"></button>'
+        .'</div></div>'
+        . '<fieldset id="wl-input-container">'.$this->get_stored_values_html( $count ).'</fieldset>'
+        .parent::get_add_custom_button_html( $count, 'Add Another URL', 'hide' );
 	}
 
 	/**
@@ -107,9 +106,7 @@ class WL_Metabox_Field_sameas extends WL_Metabox_Field {
 	 */
 	protected function get_stored_values_html( &$count ) {
 
-		return '<p>'
-		       . parent::get_stored_values_html( $count )
-		       . '</p>';
+		return  parent::get_stored_values_html( $count );
 	}
 
 	/**
@@ -132,8 +129,6 @@ class WL_Metabox_Field_sameas extends WL_Metabox_Field {
 		// If cardinality allows it, print button to add new values.
 		$html .= $this->get_add_button_html( $count );
 
-		$html .= $this->get_stored_values_html( $count );
-
 		// Close the HTML wrapper.
 		$html .= $this->html_wrapper_close();
 
@@ -153,12 +148,9 @@ class WL_Metabox_Field_sameas extends WL_Metabox_Field {
                     id="<?php echo $this->meta_name ?>"
                     name="wl_metaboxes[<?php echo $this->meta_name ?>][]"
                     value="<?php echo $value ?>"
-                    style="width:88%"
             />
 
-            <button class="button wl-remove-input wl-button" type="button">
-				<?php esc_html_e( 'Remove', 'wordlift' ); ?>
-            </button>
+            <button class="wl-remove-input wl-remove-input--sameas"></button>
         </div>
 		<?php
 

@@ -225,9 +225,13 @@ function* handleAddEntityRequest({ payload }) {
     payload.id ||
     (yield call(createEntity, {
       title: payload.label,
-      status: "draft",
-      description: payload.description,
-      excerpt: ""
+      // Set entity type to the created entity.
+      wlEntityMainType: [payload.category],
+      // Inherit the status from the edited post.
+      status: wp.data.select('core/editor').getEditedPostAttribute('status'),
+      // wp rest api uses content as the alias for description
+      content: payload.description,
+      excerpt: "",
     }))["wl:entity_url"];
 
   const entityToAdd = {

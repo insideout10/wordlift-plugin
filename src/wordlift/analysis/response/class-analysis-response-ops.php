@@ -245,32 +245,32 @@ class Analysis_Response_Ops {
 	 *
 	 * @link https://github.com/insideout10/wordlift-plugin/issues/1178
 	 */
-	public function add_local_entities(){
+	public function add_local_entities() {
 
 		// Populating the local entities object
 		$entities = array();
 		foreach ( $this->json->annotations as $annotation ) {
-			foreach ($annotation->entityMatches as $entity_matches){
+			foreach ( $annotation->entityMatches as $entity_matches ) {
 
-				$entity_id = url_to_postid( htmlspecialchars_decode($entity_matches->entityId) );
+				$entity_id         = $this->entity_uri_service->get_post_id_from_url( $entity_matches->entityId );
 				$serialized_entity = wl_serialize_entity( $entity_id );
 
-				if($serialized_entity){
+				if ( $serialized_entity ) {
 					$serialized_entity['entityId'] = $serialized_entity['id'];
-					unset($serialized_entity['id']);
+					unset( $serialized_entity['id'] );
 
-					$entities[$entity_matches->entityId] = $serialized_entity;
+					$entities[ $entity_matches->entityId ] = $serialized_entity;
 				}
 
 			}
 		}
 
 		// Adding occurrences and annotations data structures required by the client-side code.
-		foreach ($entities as $entity_id => $entity ){
+		foreach ( $entities as $entity_id => $entity ) {
 			foreach ( $this->json->annotations as $annotation ) {
-				if($annotation->entityMatches[0]->entityId === $entity_id){
-					$entities[$entity_id]['occurrences'][] = $annotation->annotationId;
-					$entities[$entity_id]['annotations'][$annotation->annotationId]['id'] = $annotation->annotationId;
+				if ( $annotation->entityMatches[0]->entityId === $entity_id ) {
+					$entities[ $entity_id ]['occurrences'][]                                  = $annotation->annotationId;
+					$entities[ $entity_id ]['annotations'][ $annotation->annotationId ]['id'] = $annotation->annotationId;
 				}
 			}
 		}

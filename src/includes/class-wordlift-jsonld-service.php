@@ -6,6 +6,8 @@
  * @package Wordlift
  */
 
+use Wordlift\Jsonld\Jsonld_Context_Enum;
+
 /**
  * This class exports an entity using JSON-LD.
  *
@@ -128,12 +130,13 @@ class Wordlift_Jsonld_Service {
 	 *
 	 * @param bool $is_homepage Whether the JSON-LD for the homepage is being requested.
 	 * @param int|null $post_id The JSON-LD for the specified {@link WP_Post} id.
+	 * @param int $context A context for the JSON-LD generation, valid values in Jsonld_Context_Enum.
 	 *
 	 * @return array A JSON-LD structure.
 	 * @since 3.15.1
 	 *
 	 */
-	public function get_jsonld( $is_homepage = false, $post_id = null ) {
+	public function get_jsonld( $is_homepage = false, $post_id = null, $context = Jsonld_Context_Enum::UNKNOWN ) {
 
 		// Tell NewRelic to ignore us, otherwise NewRelic customers might receive
 		// e-mails with a low apdex score.
@@ -221,7 +224,7 @@ class Wordlift_Jsonld_Service {
 		 * @var $post_id int The post id for which the jsonld is generated.
 		 *
 		 */
-		$jsonld = apply_filters( 'wl_after_get_jsonld', $jsonld, $post_id );
+		$jsonld = apply_filters( 'wl_after_get_jsonld', $jsonld, $post_id, $context );
 
 		return $jsonld;
 	}
@@ -240,7 +243,7 @@ class Wordlift_Jsonld_Service {
 		$is_homepage = is_home() || is_front_page();
 		$post_id     = is_singular() ? get_the_ID() : null;
 
-		$jsonld = json_encode( $this->get_jsonld( $is_homepage, $post_id ) );
+		$jsonld = json_encode( $this->get_jsonld( $is_homepage, $post_id, Jsonld_Context_Enum::PAGE ) );
 		?>
         <script type="application/ld+json"><?php echo $jsonld; ?></script><?php
 	}

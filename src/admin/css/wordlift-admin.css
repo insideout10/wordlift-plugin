@@ -122,3 +122,86 @@
 #wl-schemaorg-property.postbox, #wl_entity_typediv.postbox {
     border-left: 2px solid #007AFF;
 }
+
+/**
+* Styles related to SameAs Entity types
+ */
+
+.wl-input-wrapper {
+    display: flex;
+}
+
+.wl-input-wrapper input{
+    width: 100%;
+    margin-right: 20px;
+}
+.wl-input-wrapper a{
+    width: 28px;
+    align-self: center;
+    flex-shrink: 0;
+}
+.wl-add-input--link {
+    background: none;
+    border: none;
+    color: #0071a1;
+    font-weight: 700;
+    padding: 0;
+    margin-bottom: 0.5em;
+}
+.wl-add-input--sameas{
+    float: right;
+}
+.wl-add-input--sameas.hide{
+    display: none;
+}
+
+.wl-field {
+    border-bottom: 1px solid #f4f4f4;
+    padding-bottom: 10px;
+}
+.wl-field:last-child {
+    border-bottom: none;
+}
+.wl-field::after {
+    content: "";
+    clear: both;
+    display: table;
+    border: 0;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #fafafa;
+}
+
+#wl-input-container .wl-input-wrapper {
+    margin-bottom: 0.5em;
+}
+
+.wl-remove-input--sameas {
+    display: flex;
+    width: 28px;
+    height: 28px;
+    border: 1px solid #b5bcc2;
+    border-radius: 50%;
+    background-color: #fff;
+    position: relative;
+    text-decoration: none;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.wl-remove-input--sameas::before {
+    content: "";
+    text-transform: none;
+    line-height: 1em;
+    width: 0.7em;
+    height: 2px;
+    background: #555d66;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.wl-remove-input--sameas:hover {
+    background-color: tomato;
+    border-color: tomato;
+}
+.wl-remove-input--sameas:hover::before {
+    background: #ffffff;
+}

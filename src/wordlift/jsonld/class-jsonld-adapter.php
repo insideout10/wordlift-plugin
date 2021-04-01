@@ -52,7 +52,7 @@ class Jsonld_Adapter {
 		$post_id     = is_singular() ? get_the_ID() : null;
 
 		// Get the JSON-LD.
-		$jsonld = json_encode( $this->jsonld_service->get_jsonld( $is_homepage, $post_id ) );
+		$jsonld = json_encode( $this->jsonld_service->get_jsonld( $is_homepage, $post_id, Jsonld_Context_Enum::PAGE ) );
 		// Finally print the JSON-LD out.
 		?>
         <script type="application/ld+json" id="wl-jsonld"><?php echo $jsonld; ?></script>
