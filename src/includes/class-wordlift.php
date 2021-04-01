@@ -1729,14 +1729,14 @@ class Wordlift {
 		$this->loader->add_action( 'wp_ajax_wl_rebuild_references', $this->reference_rebuild_service, 'rebuild' );
 
 		/**
-		 * Filter: wl_feature__enable__screens.
+		 * Filter: wl_feature__enable__settings-download.
 		 *
 		 * @param bool whether the screens needed to be registered, defaults to true.
 		 *
 		 * @return bool
 		 * @since 3.27.6
 		 */
-		$this->features_registry->register_feature_from_slug( 'screens', true, array( $this, 'register_screens' ) );
+		$this->features_registry->register_feature_from_slug( 'settings-download', true, array( $this, 'register_screens' ) );
 
 
 		// Hook the admin-ajax.php?action=wl_download_your_data&out=xyz links.
