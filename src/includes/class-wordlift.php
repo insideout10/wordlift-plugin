@@ -1779,28 +1779,6 @@ class Wordlift {
 			}
 		} );
 
-		/*
-		 * Display the `Wordlift_Admin_Search_Rankings_Page` page.
-		 *
-		 * @link https://github.com/insideout10/wordlift-plugin/issues/761
-		 *
-		 * @since 3.20.0
-		 */
-		if ( in_array( $this->configuration_service->get_package_type(), array( 'editorial', 'business' ) ) ) {
-			/**
-			 * Filter: wl_feature__enable__screens.
-			 *
-			 * @param bool whether the screens needed to be registered, defaults to true.
-			 *
-			 * @return bool
-			 * @since 3.27.6
-			 */
-//			if ( apply_filters( 'wl_feature__enable__screens', true ) ) {
-//				$admin_search_rankings_page = new Wordlift_Admin_Search_Rankings_Page();
-//				$this->loader->add_action( 'wl_admin_menu', $admin_search_rankings_page, 'admin_menu' );
-//			}
-		}
-
 		// Hook key update.
 		$this->loader->add_action( 'pre_update_option_wl_general_settings', $this->configuration_service, 'maybe_update_dataset_uri', 10, 2 );
 		$this->loader->add_action( 'update_option_wl_general_settings', $this->configuration_service, 'update_key', 10, 2 );

@@ -24,15 +24,6 @@ abstract class Wordlift_Admin_Page {
 	 * @since 3.20.0
 	 */
 	public function __construct() {
-
-		/**
-		 * Filter: wl_feature__enable__screens.
-		 *
-		 * @param bool whether the screens needed to be registered, defaults to true.
-		 *
-		 * @return bool
-		 * @since 3.27.6
-		 */
 		add_action( 'admin_menu', array( $this, 'admin_menu' ), 10, 0 );
 	}
 
