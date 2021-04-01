@@ -2081,10 +2081,10 @@ class Wordlift {
 	public function register_screens() {
 		// Hook the menu to the Download Your Data page.
 		if ( apply_filters( 'wl_feature__enable__settings-download', true ) ) {
-			$this->loader->add_action( 'admin_menu', $this->download_your_data_page, 'admin_menu', 100, 0 );
+			add_action( 'admin_menu', array( $this->download_your_data_page, 'admin_menu' ), 100, 0 );
 		}
-		$this->loader->add_action( 'admin_menu', $this->status_page, 'admin_menu', 100, 0 );
-		$this->loader->add_action( 'admin_menu', $this->entity_type_settings_admin_page, 'admin_menu', 100, 0 );
+		add_action( 'admin_menu', array( $this->status_page, 'admin_menu' ), 100, 0 );
+		add_action( 'admin_menu', array( $this->entity_type_settings_admin_page, 'admin_menu' ), 100, 0 );
 
 	}
 
