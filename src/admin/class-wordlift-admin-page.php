@@ -33,10 +33,7 @@ abstract class Wordlift_Admin_Page {
 		 * @return bool
 		 * @since 3.27.6
 		 */
-		if ( apply_filters( 'wl_feature__enable__screens', true ) ) {
-			add_action( 'admin_menu', array( $this, 'admin_menu' ), 10, 0 );
-		}
-
+		add_action( 'admin_menu', array( $this, 'admin_menu' ), 10, 0 );
 	}
 
 	/**
