@@ -52,4 +52,8 @@ class Features_Registry {
 		}
 	}
 
+
+	public function clear_all() {
+		$this->features = array();
+	}
 }

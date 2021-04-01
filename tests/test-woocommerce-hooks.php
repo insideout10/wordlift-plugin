@@ -96,7 +96,7 @@ class Test_Wl_For_Wc_Hooks extends Wordlift_Unit_Test_Case {
 
 		global $submenu;
 
-		$this->assertCount( 3, $submenu );
+		$this->assertCount( 2, $submenu );
 	}
 
 	public function test_when_filter_turned_on_1_screen_should_be_registered() {
