@@ -17,19 +17,22 @@ class Legacy_Entity_List extends Entity_List {
 	 * @return array
 	 */
 	public function get_jsonld_data() {
-		$tag = get_term( $this->term_id );
+		$tag  = get_term( $this->term_id );
 		$type = get_term_meta( $tag->term_id, Entity_Rest_Endpoint::TYPE_META_KEY, true );
-		if ( $type === '') {
+		if ( $type === '' ) {
 			return array();
 		}
-		return array( array(
-			'@id'           => get_term_link( $tag->term_id ) . '#id',
-			'@type'         => $type,
-			'name'          => $tag->name,
-			'description'   => ! empty( $tag->description ) ?: get_term_meta( $tag->term_id, Entity_Rest_Endpoint::DESCRIPTION_META_KEY, true ),
-			'sameAs'        => get_term_meta( $tag->term_id, Entity_Rest_Endpoint::SAME_AS_META_KEY ),
-			'alternateName' => get_term_meta( $tag->term_id, Entity_Rest_Endpoint::ALTERNATIVE_LABEL_META_KEY )
-		) );
+
+		return array(
+			array(
+				'@id'           => get_term_link( $tag->term_id ) . '#id',
+				'@type'         => $type,
+				'name'          => $tag->name,
+				'description'   => ! empty( $tag->description ) ?: get_term_meta( $tag->term_id, Entity_Rest_Endpoint::DESCRIPTION_META_KEY, true ),
+				'sameAs'        => get_term_meta( $tag->term_id, Entity_Rest_Endpoint::SAME_AS_META_KEY ),
+				'alternateName' => get_term_meta( $tag->term_id, Entity_Rest_Endpoint::ALTERNATIVE_LABEL_META_KEY )
+			)
+		);
 	}
 
 	/**
