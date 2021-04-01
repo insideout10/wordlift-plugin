@@ -73,7 +73,7 @@ class Api_Data_Hooks {
 		/**
 		 * Iterate over $values array
 		 */
-		if ( ! empty( $values ) && count( $values ) > 1 ) {
+		if ( ! empty( $values ) ) {
 			foreach ( $values as $link ) {
 
 				/**
