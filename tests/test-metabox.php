@@ -224,7 +224,8 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 	 * @group metabox
 	 */
 	function testWL_Metabox_Field_uri_data() {
-
+		global $wp_filter;
+		$wp_filter = array();
 		// Create an entity of type Person
 		$person_id = wl_create_post( '', 'p', 'A person', 'publish', Wordlift_Entity_Service::TYPE_NAME );
 		wl_set_entity_main_type( $person_id, 'http://schema.org/Person' );
