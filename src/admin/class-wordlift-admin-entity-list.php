@@ -97,6 +97,11 @@ class Wordlift_Entity_List_Service {
 	 */
 	public function register_custom_columns( $columns ) {
 
+		// Bail out if custom columns disabled via hook
+		if ( ! apply_filters( 'wl_feature__enable__custom-columns', true ) ) {
+			return $columns;
+		}
+
 		// Take away first column and keep a reference,
 		// so we can later insert the thumbnail between the first and the rest of columns.
 		$columns_cb = $columns['cb'];

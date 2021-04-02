@@ -40,6 +40,10 @@ function wl_admin_add_entities_meta_box( $post_type ) {
 		return;
 	}
 
+	if ( ! apply_filters( 'wl_feature__enable__classification-sidebar', true ) ) {
+		return;
+	}
+
 	// Bail out if the post type doesn't support a TinyMCE editor.
 	if ( ! wl_post_type_supports_editor( $post_type ) ) {
 		return;

@@ -122,11 +122,6 @@ class Wordlift_Admin_Post_Edit_Page {
 	 */
 	public function enqueue_scripts() {
 
-		// Bail out if this is G'berg.
-		if ( $this->is_gutenberg_page() ) {
-			return;
-		}
-
 		// Dequeue potentially conflicting ontrapages angular scripts which any *are not* used on the edit screen.
 		//
 		// @see https://github.com/insideout10/wordlift-plugin/issues/832
@@ -134,8 +129,18 @@ class Wordlift_Admin_Post_Edit_Page {
 		wp_dequeue_script( 'ontrapagesApp' );
 		wp_dequeue_script( 'ontrapagesController' );
 
+		// Bail out if this is G'berg.
+		if ( $this->is_gutenberg_page() ) {
+			return;
+		}
+
 		// If Gutenberg is enabled for the post, do not load the legacy edit.js.
 		if ( function_exists( 'use_block_editor_for_post' ) && use_block_editor_for_post( get_post() ) ) {
+			return;
+		}
+
+		// Bail out if classification sidebar is not enabled via hook
+		if ( ! apply_filters( 'wl_feature__enable__classification-sidebar', true ) ) {
 			return;
 		}
 
