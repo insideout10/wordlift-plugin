@@ -63,6 +63,7 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 			'show_admin_column'  => apply_filters( 'wl_feature__enable__entity-types-taxonomy', true ),
 			'show_in_rest'       => apply_filters( 'wl_feature__enable__entity-types-taxonomy', true ),
 			'show_in_quick_edit' => false,
+			'publicly_queryable' => false
 		);
 
 		/*
