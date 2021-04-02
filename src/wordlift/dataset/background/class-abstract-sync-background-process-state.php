@@ -29,4 +29,8 @@ abstract class Abstract_Sync_Background_Process_State implements Sync_Background
 		return new Sync_Background_Process_Info( $this->state, $started, $index, $total_count, $last_update );
 	}
 
+	function resume() {
+		// do nothing.
+	}
+
 }

@@ -21,7 +21,7 @@ class Sync_Hooks_Wordpress_Ontology {
 			case Object_Type_Enum::TERM:
 				$term = get_term( $object_id );
 
-				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'contentType' ] = 'term';
+				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'type' ]        = 'term';
 				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'name' ]        = $term->name;
 				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'description' ] = $term->description;
 				break;
@@ -29,17 +29,18 @@ class Sync_Hooks_Wordpress_Ontology {
 			case Object_Type_Enum::USER:
 				$user = get_userdata( $object_id );
 
-				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'contentType' ] = 'user';
+				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'type' ]        = 'user';
 				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'displayName' ] = $user->display_name;
 				break;
 
 			case Object_Type_Enum::POST:
 				$post = get_post( $object_id );
 
-				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'contentType' ] = 'post';
-				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'postType' ]    = $post->post_type;
-				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'postTitle' ]   = $post->post_title;
-				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'postStatus' ]  = $post->post_status;
+				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'type' ]       = 'post';
+				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'customType' ] = $post->post_type;
+				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'title' ]      = $post->post_title;
+				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'status' ]     = $post->post_status;
+				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'content' ]    = do_shortcode( $post->post_content );
 				break;
 
 			default:
