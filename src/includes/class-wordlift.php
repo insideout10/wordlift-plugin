@@ -22,7 +22,6 @@ use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Duplicate_Markup_Remover\Faq_Duplicate_Markup_Remover;
 use Wordlift\Entity\Entity_Helper;
 use Wordlift\Entity\Entity_No_Index_Flag;
-use Wordlift\Entity\Entity_Taxonomy_No_Index;
 use Wordlift\Entity\Entity_Rest_Service;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_After_Get_Jsonld_Hook;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Jsonld_Hook;
@@ -1573,7 +1572,6 @@ class Wordlift {
 		 * @see https://github.com/insideout10/wordlift-plugin/issues?q=assignee%3Anaveen17797+is%3Aopen
 		 */
 		new Entity_No_Index_Flag();
-		new Entity_Taxonomy_No_Index();
 
 		/**
 		 * @since 3.29.0
