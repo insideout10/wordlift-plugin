@@ -10,6 +10,7 @@
  * @subpackage Wordlift/admin
  */
 
+use Wordlift\Features\Features_Registry;
 use Wordlift\Mappings\Acf_Mappings;
 use Wordlift\Mappings\Mappings_REST_Controller;
 use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
@@ -103,9 +104,9 @@ class Wordlift_Admin {
 		$this->configuration_service = $configuration_service;
 		$this->user_service          = $user_service;
 
-		$dataset_uri = $configuration_service->get_dataset_uri();
-		$key         = $configuration_service->get_key();
-
+		$dataset_uri       = $configuration_service->get_dataset_uri();
+		$key               = $configuration_service->get_key();
+		$features_registry = Features_Registry::get_instance();
 		if ( empty( $dataset_uri ) ) {
 			$settings_page = Wordlift_Admin_Settings_Page::get_instance();
 			if ( empty( $key ) ) {
@@ -153,7 +154,11 @@ class Wordlift_Admin {
 				 * The `Mappings` admin page.
 				 */
 				require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-mappings-page.php';
-				new Wordlift_Admin_Mappings_Page();
+
+				$features_registry->register_feature_from_slug( 'all-entity-types', true, array(
+					$this,
+					'load_schema_org_types_page'
+				) );
 
 				/*
 				 * Allow sync'ing the schema.org taxonomy with the schema.org json file.
@@ -197,18 +202,12 @@ class Wordlift_Admin {
 		// Add the Mappings' REST Controller.
 		new Mappings_REST_Controller();
 
-		// Only enable the Mappings UI if the constant is defined.
-		if ( defined( 'WL_ENABLE_MAPPINGS' ) && WL_ENABLE_MAPPINGS ) {
-			// Add Mappings and Edit Mappings page.
-			new Admin_Mappings_Page();
-			/**
-			 * @since 3.27.0
-			 * Hooks in to ui of edit mapping screen, add taxonomy as a option.
-			 */
-			$taxonomy_option = new Taxonomy_Option();
-			$taxonomy_option->add_taxonomy_option();
-			new Edit_Mappings_Page( new Mappings_Transform_Functions_Registry() );
-		}
+
+		$features_registry->register_feature_from_slug(
+			'mappings',
+			( defined( 'WL_ENABLE_MAPPINGS' ) && WL_ENABLE_MAPPINGS ),
+			array( $this, 'init_mappings' ) );
+
 
 		// Set the singleton instance.
 		self::$instance = $this;
@@ -388,7 +387,15 @@ class Wordlift_Admin {
 			 *
 			 * @since 3.27.3
 			 */
-			'wl_root'                      => plugin_dir_url( __DIR__ )
+			'wl_root'                      => plugin_dir_url( __DIR__ ),
+			/**
+			 * Enable synonyms, to access in JS
+			 * Show classification sidebar, to access in JS
+			 *
+			 * @since 3.30.0
+			 */
+			'can_add_synonyms'             => apply_filters( 'wl_feature__enable__add-synonyms', true ),
+			'show_classification_sidebar'  => apply_filters( 'wl_feature__enable__classification-sidebar', true )
 		);
 
 		// Set post-related values if there's a current post.
@@ -416,6 +423,25 @@ class Wordlift_Admin {
 		}
 
 		return $params;
+	}
+
+	/**
+	 * Initialize the mappings.
+	 * @return void
+	 */
+	public function init_mappings() {
+		new Admin_Mappings_Page();
+		/**
+		 * @since 3.27.0
+		 * Hooks in to ui of edit mapping screen, add taxonomy as a option.
+		 */
+		$taxonomy_option = new Taxonomy_Option();
+		$taxonomy_option->add_taxonomy_option();
+		new Edit_Mappings_Page( new Mappings_Transform_Functions_Registry() );
+	}
+
+	public function load_schema_org_types_page() {
+		new Wordlift_Admin_Mappings_Page();
 	}
 
 }

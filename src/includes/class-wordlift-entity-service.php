@@ -380,6 +380,11 @@ class Wordlift_Entity_Service {
 			return;
 		}
 
+		// If disabled by filter, return.
+		if ( ! apply_filters( 'wl_feature__enable__add-synonyms', true ) ) {
+			return;
+		}
+
 		// Print the input template.
 		$this->ui_service->print_template( 'wl-tmpl-alternative-label-input', $this->get_alternative_label_input() );
 

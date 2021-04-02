@@ -34,17 +34,17 @@ function wl_admin_permalink_html( $html, $post_id, $new_title, $new_slug ) {
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/931
 		 * @since 3.21.1
 		 */
-		$html          .= "<span id='view-post-btn'><a href='$lod_view_href.html' class='button button-small wl-button' target='_blank'>" .
+		$html          .= apply_filters( 'wl_feature__enable__view-linked-data', true ) ? "<span id='view-post-btn'><a href='$lod_view_href.html' class='button button-small wl-button' target='_blank'>" .
 		                  esc_html__( 'View Linked Data', 'wordlift' ) .
-		                  "</a></span>\n";
+		                  "</a></span>\n" : '';
 
 	}
 
-	$html .= "<span id='view-post-btn'><a href='" . WL_CONFIG_TEST_GOOGLE_RICH_SNIPPETS_URL .
+	$html .= apply_filters( 'wl_feature__enable__test-sd', true ) ? "<span id='view-post-btn'><a href='" . WL_CONFIG_TEST_GOOGLE_RICH_SNIPPETS_URL .
 	         urlencode( get_permalink( $post_id ) ) .
 	         "' class='button button-small wl-button' target='_blank'>" .
 	         esc_html__( 'Test Google Rich Snippets', 'wordlift' ) .
-	         "</a></span>\n";
+	         "</a></span>\n" : '';
 
 	return $html;
 }

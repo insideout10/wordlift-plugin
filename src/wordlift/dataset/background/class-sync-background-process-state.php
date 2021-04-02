@@ -24,4 +24,9 @@ interface Sync_Background_Process_State {
 
 	function get_info();
 
+	/**
+	 * Try to resume an interrupted task.
+	 */
+	function resume();
+
 }

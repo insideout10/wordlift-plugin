@@ -43,6 +43,13 @@ import SynonymsPanel from "../common/components/synonyms-panel";
 import RelatedPostsPanel from "../common/containers/related-posts";
 import "./blocks";
 
+const wlSettings = global["wlSettings"];
+const canAddSynonyms = wlSettings && "can_add_synonyms" in wlSettings ? wlSettings["can_add_synonyms"] == 1 : true;
+const showClassificationSidebar =
+  wlSettings && "show_classification_sidebar" in wlSettings ? wlSettings["show_classification_sidebar"] == 1 : true;
+
+console.log(canAddSynonyms, showClassificationSidebar);
+
 // Register our filters to display additional elements in the CreateEntityForm. Pass our store to connect them to
 // our state.
 registerFilters(store);
@@ -74,25 +81,26 @@ const SidebarWithDidMountCallback = withDidMountCallback(Sidebar, () => {
  *
  * @see https://developer.wordpress.org/block-editor/tutorials/plugin-sidebar-0/plugin-sidebar-1-up-and-running/
  */
-registerPlugin(PLUGIN_NAMESPACE, {
-  render: () => (
-    <Fragment>
-      <PluginSidebarMoreMenuItem target="wordlift-sidebar" icon={<WordLiftIcon />}>
-        WordLift
-      </PluginSidebarMoreMenuItem>
-      <PluginSidebar name="wordlift-sidebar" title="WordLift" className="wl-sidebar">
-        <Provider store={store}>
-          <Fragment>
-            <SidebarWithDidMountCallback />
-            <SynonymsPanel />
-            <ArticleMetadataPanel />
-            <SuggestedImagesPanel />
-            <RelatedPostsPanel />
-            {/*<FaqPanel />*/}
-          </Fragment>
-        </Provider>
-      </PluginSidebar>
-    </Fragment>
-  ),
-  icon: <WordLiftIcon />
-});
+showClassificationSidebar &&
+  registerPlugin(PLUGIN_NAMESPACE, {
+    render: () => (
+      <Fragment>
+        <PluginSidebarMoreMenuItem target="wordlift-sidebar" icon={<WordLiftIcon />}>
+          WordLift
+        </PluginSidebarMoreMenuItem>
+        <PluginSidebar name="wordlift-sidebar" title="WordLift" className="wl-sidebar">
+          <Provider store={store}>
+            <Fragment>
+              <SidebarWithDidMountCallback />
+              {canAddSynonyms && <SynonymsPanel />}
+              <ArticleMetadataPanel />
+              <SuggestedImagesPanel />
+              <RelatedPostsPanel />
+              {/*<FaqPanel />*/}
+            </Fragment>
+          </Provider>
+        </PluginSidebar>
+      </Fragment>
+    ),
+    icon: <WordLiftIcon />
+  });

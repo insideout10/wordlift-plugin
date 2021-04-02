@@ -1,5 +1,7 @@
 <?php
 
+use Wordlift\Features\Features_Registry;
+
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
 if ( ! $_tests_dir ) {
 	$_tests_dir = '/tmp/wordpress-tests-lib';
@@ -37,6 +39,11 @@ require $_tests_dir . '/includes/bootstrap.php';
 require_once( 'functions.php' );
 require_once( 'class-wordlift-unittest-factory-for-entity.php' );
 require_once( 'class-wordlift-unit-test-case.php' );
+/**
+ * @since 3.30.0
+ * We add a new test case for wordlift vocabulary
+ */
+require_once( 'class-wordlift-vocabulary-unit-test-case.php' );
 require_once( 'class-wordlift-ajax-unit-test-case.php' );
 require_once( 'class-wordlift-test.php' );
 
@@ -52,3 +59,4 @@ if ( ! function_exists( 'is_amp_endpoint' ) ) {
 		return isset( $_GET['amp'] );
 	}
 }
+
