@@ -63,7 +63,6 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 			'show_admin_column'  => true,
 			'show_in_rest'       => true,
 			'show_in_quick_edit' => false,
-			'publicly_queryable' => false,
 		);
 
 		/*
