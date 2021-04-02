@@ -22,6 +22,7 @@ use Wordlift\Autocomplete\Local_Autocomplete_Service;
 use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Duplicate_Markup_Remover\Faq_Duplicate_Markup_Remover;
 use Wordlift\Entity\Entity_Helper;
+use Wordlift\Entity\Entity_No_Index_Flag;
 use Wordlift\Entity\Entity_Rest_Service;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_After_Get_Jsonld_Hook;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Jsonld_Hook;
@@ -1580,6 +1581,13 @@ class Wordlift {
 		 */
 		new Key_Validation_Notice( $this->key_validation_service, $this->configuration_service );
 		/**
+
+		 * @since 3.28.0
+		 * @see https://github.com/insideout10/wordlift-plugin/issues?q=assignee%3Anaveen17797+is%3Aopen
+		 */
+		new Entity_No_Index_Flag();
+
+		/**
 		 * @since 3.29.0
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/1304
 		 */
@@ -1590,6 +1598,7 @@ class Wordlift {
 		 * @since 3.30.0
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/1318
 		 */
+
 		add_action( 'plugins_loaded', function () use ( $that ) {
 
 			if ( apply_filters( 'wl_feature__enable__article-wrapper', false ) ) {
