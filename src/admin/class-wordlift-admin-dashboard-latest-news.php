@@ -155,10 +155,19 @@ class Wordlift_Dashboard_Latest_News {
 	 * Add latest news widget to the administration dashboard.
 	 */
 	public function add_dashboard_latest_news_widget() {
-		wp_add_dashboard_widget( 'wordlift-dashboard-latest-news-widget', 'Latest WordLift News', array(
-			$this,
-			'render',
-		) );
+
+		/**
+		 * Filter name: wl_feature__enable__wordlift-news
+		 * Feature flag to enable / disable news widget.
+		 * @since 3.30.0
+		 */
+		if ( apply_filters( 'wl_feature__enable__wordlift-news', true ) ) {
+
+			wp_add_dashboard_widget( 'wordlift-dashboard-latest-news-widget', 'Latest WordLift News', array(
+				$this,
+				'render',
+			) );
+		}
 	}
 
 }
