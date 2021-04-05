@@ -142,6 +142,18 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.30.0 (2021-04-__) =
+
+* Enhancement [#1334](https://github.com/insideout10/wordlift-plugin/issues/1334): Add html source to KG
+* Enhancement [#1329](https://github.com/insideout10/wordlift-plugin/issues/1329): Enhance hook to clear data cache
+* Enhancement [#1164](https://github.com/insideout10/wordlift-plugin/issues/1164): Remove wl_entity_type taxonomy URLs
+* Enhancement [#1131](https://github.com/insideout10/wordlift-plugin/issues/1131): Entity URLs in sitemaps
+* Enhancement [#940](https://github.com/insideout10/wordlift-plugin/issues/940): No vocabulary - Terms
+
+* Fix [#1326](https://github.com/insideout10/wordlift-plugin/issues/1326): Issues when annotating an entity from the add entity search lookup results
+* Fix [#1309](https://github.com/insideout10/wordlift-plugin/issues/1309): Compatibility with Grammarly
+* Fix: Data not pushed to KG during import
+
 = 3.29.1 (2021-03-19) =
 
 * Enhancement [#1320](https://github.com/insideout10/wordlift-plugin/issues/1320): Add filter to add required properties for expanding
