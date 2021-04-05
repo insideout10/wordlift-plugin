@@ -168,11 +168,10 @@ class EntityTile extends React.Component {
       ? applyFilters("wl_network_icon_url", defaultNetworkIconURL)
       : defaultNetworkIconURL;
 
-    let isLocalEntity = this.props.entity.local || this.props.entity.id.startsWith(window.location.origin);
-
+    let isLocalEntity = this.props.entity.local ||  ( this.props.entity.id && this.props.entity.id.startsWith(window.location.origin) );
     this.iconURL = isLocalEntity
       ? defaultLocalIconURL
-      : this.props.entity.id.match(/https?:\/\/(?:\w+\.)?(dbpedia|wikidata)\.org/)
+      : this.props.entity.id && this.props.entity.id.match(/https?:\/\/(?:\w+\.)?(dbpedia|wikidata)\.org/)
         ? this.cloudIconURL
         : this.networkIconURL;
 
