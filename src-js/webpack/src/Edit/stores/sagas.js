@@ -87,7 +87,7 @@ function* createEntity({ payload }) {
   yield put(createEntitySuccess());
 }
 
-const getMainType = types => {
+export const getMainType = types => {
   for (let i = 0; i < window._wlEntityTypes.length; i++) {
     const type = window._wlEntityTypes[i];
 
