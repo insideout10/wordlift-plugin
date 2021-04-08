@@ -95,7 +95,6 @@ class Jsonld  {
 				'uploadDate'   => $video->upload_date,
 				'thumbnailUrl' => $video->thumbnail_urls,
 				'duration'     => $video->duration
-
 			);
 		}
 

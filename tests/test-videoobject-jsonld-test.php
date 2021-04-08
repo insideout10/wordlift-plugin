@@ -11,14 +11,16 @@ class Vo_Jsonld_Test extends \Wordlift_Unit_Test_Case {
 		parent::setUp();
 		// Reset all global filters.
 		global $wp_filter, $wp_scripts, $wp_styles;
-		$wp_filter = array();
+		$wp_filter  = array();
 		$wp_scripts = null;
-		$wp_styles = null;
+		$wp_styles  = null;
 		Features_Registry::get_instance()->clear_all();
 		/**
 		 * Enable videoobject for tests
 		 */
-		add_filter( 'wl_feature__enable__videoobject', function () { return true; } );
+		add_filter( 'wl_feature__enable__videoobject', function () {
+			return true;
+		} );
 		run_wordlift();
 		Features_Registry::get_instance()->initialize_all_features();
 
@@ -32,6 +34,15 @@ class Vo_Jsonld_Test extends \Wordlift_Unit_Test_Case {
 		$jsonld = apply_filters( 'wl_post_jsonld', array(), $post_id, array() );
 		$this->assertArrayHasKey( 'video', $jsonld );
 		$this->assertCount( 1, $jsonld['video'] );
+		$single_video = $jsonld['video'][0];
+		$this->assertArrayHasKey( '@type', $single_video );
+		$this->assertArrayHasKey( 'name', $single_video );
+		$this->assertArrayHasKey( 'description', $single_video );
+		$this->assertArrayHasKey( 'contentUrl', $single_video );
+		$this->assertArrayHasKey( 'embedUrl', $single_video );
+		$this->assertArrayHasKey( 'uploadDate', $single_video );
+		$this->assertArrayHasKey( 'thumbnailUrl', $single_video );
+		$this->assertArrayHasKey( 'duration', $single_video );
 	}
 
 
