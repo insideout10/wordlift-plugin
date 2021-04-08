@@ -4,7 +4,7 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
-namespace Wordlift_Videoobject\Videoobject\Jsonld;
+namespace Wordlift\Videoobject\Jsonld;
 
 
 use Wordlift\Videoobject\Data\Video\Video;
@@ -49,6 +49,7 @@ class Jsonld  {
 	}
 
 	public function wl_post_jsonld( $jsonld, $post_id, $references ) {
+
 		$video_jsonld = $this->get_jsonld( $post_id );
 		if ( count( $video_jsonld ) === 0 ) {
 			return $jsonld;

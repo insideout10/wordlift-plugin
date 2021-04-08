@@ -1,10 +1,28 @@
 <?php
 
 
+use Wordlift\Features\Features_Registry;
 use Wordlift\Videoobject\Data\Video\Video;
 use Wordlift\Videoobject\Data\Video_Storage\Video_Storage_Factory;
 
-class Vo_Jsonld_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
+class Vo_Jsonld_Test extends \Wordlift_Unit_Test_Case {
+
+	public function setUp() {
+		parent::setUp();
+		// Reset all global filters.
+		global $wp_filter, $wp_scripts, $wp_styles;
+		$wp_filter = array();
+		$wp_scripts = null;
+		$wp_styles = null;
+		Features_Registry::get_instance()->clear_all();
+		/**
+		 * Enable videoobject for tests
+		 */
+		add_filter( 'wl_feature__enable__videoobject', function () { return true; } );
+		run_wordlift();
+		Features_Registry::get_instance()->initialize_all_features();
+
+	}
 
 	public function test_given_post_id_should_generate_correct_jsonld() {
 		$post_id       = $this->factory()->post->create();

@@ -60,8 +60,3 @@ if ( ! function_exists( 'is_amp_endpoint' ) ) {
 	}
 }
 
-/**
- * @since 3.31.0
- * Enable videoobject for tests
- */
-add_filter( 'wl_feature__enable_videoobject', '__return_true' );

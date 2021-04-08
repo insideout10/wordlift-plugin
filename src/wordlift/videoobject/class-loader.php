@@ -4,7 +4,8 @@ namespace Wordlift\Videoobject;
 
 use Wordlift\Common\Loader\Default_Loader;
 use Wordlift\Videoobject\Data\Video_Storage\Video_Storage_Factory;
-use Wordlift_Videoobject\Videoobject\Jsonld\Jsonld;
+use Wordlift\Videoobject\Jsonld\Jsonld;
+
 
 /**
  * @since 3.31.0
