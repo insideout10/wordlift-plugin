@@ -40,7 +40,8 @@ class Sync_Hooks_Wordpress_Ontology {
 				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'customType' ] = $post->post_type;
 				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'title' ]      = $post->post_title;
 				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'status' ]     = $post->post_status;
-				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'content' ]    = do_shortcode( $post->post_content );
+				$content   = has_blocks( $post ) ? do_blocks( $post->post_content ) : do_shortcode( $post->post_content );
+				$jsonld[0][ self::HTTP_PURL_ORG_WORDPRESS_1_0 . 'content' ]    = $content;
 				break;
 
 			default:
