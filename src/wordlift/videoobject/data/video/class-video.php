@@ -3,7 +3,8 @@
  * @since 3.31.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
-namespace Wordlift_Videoobject\Videoobject\Video\Jsonld;
+
+namespace Wordlift\Videoobject\Data\Video;
 
 class Video {
 	/**
@@ -17,9 +18,9 @@ class Video {
 	public $description;
 
 	/**
-	 * @var array Thumbnail url.
+	 * @var array Thumbnail urls.
 	 */
-	public $thumbnail_url;
+	public $thumbnail_urls;
 
 	/**
 	 * @var string Published date.
@@ -40,4 +41,21 @@ class Video {
 	 * @var string
 	 */
 	public $embed_url;
+
+
+	public function get_data() {
+
+		return array(
+			'@type'        => 'VideoObject',
+			'name'         => $this->name,
+			'description'  => $this->description,
+			'contentUrl'   => $this->content_url,
+			'embedUrl'     => $this->embed_url,
+			'uploadDate'   => $this->upload_date,
+			'thumbnailUrl' => $this->thumbnail_urls,
+			'duration'     => $this->duration
+		);
+
+	}
+
 }

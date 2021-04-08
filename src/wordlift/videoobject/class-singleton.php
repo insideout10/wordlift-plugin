@@ -1,6 +1,6 @@
 <?php
 
-namespace Wordlift_Videoobject\Yt_Markup;
+namespace Wordlift\Videoobject;
 
 abstract class Singleton {
 
