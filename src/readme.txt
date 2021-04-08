@@ -9,10 +9,10 @@ Requires PHP: 5.3
 Stable tag: {version}
 License: GPLv2 or later
 
-Search engines are looking for meaning, not keywords. WordLift tells Google how your content relates to your brand, products, and stakeholders. 
+Search engines are looking for meaning, not keywords. WordLift tells Google how your content relates to your brand, products, and stakeholders.
 
 == Description ==
-#### WordLift - AI-Powered SEO - Schema 
+#### WordLift - AI-Powered SEO - Schema
 [youtube https://www.youtube.com/watch?v=dPp13Y4T00U] <br />
 > **WordLift** connects to your existing website, reads your content, finds entities in it (like places and people), and creates a representation of your content search engines will love. <br />
 > **WordLift**, without requiring any technical skills, creates code (called Structured Data or Schema markup) that reiterates your page's content in a manner that search engines best understand.  <br />
@@ -142,7 +142,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.30.0 (2021-04-__) =
+= 3.30.0 (2021-04-08) =
 
 * Enhancement [#1334](https://github.com/insideout10/wordlift-plugin/issues/1334): Add html source to KG
 * Enhancement [#1329](https://github.com/insideout10/wordlift-plugin/issues/1329): Enhance hook to clear data cache
@@ -158,7 +158,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 * Enhancement [#1320](https://github.com/insideout10/wordlift-plugin/issues/1320): Add filter to add required properties for expanding
 * Enhancement [#1311](https://github.com/insideout10/wordlift-plugin/issues/1311): Entities support for other core blocks
-* Enhancement: Add filter wl_feature__enable__metabox__sameas for SameAs meta boxes
+* Enhancement: Add filter wl_feature__enable__metabox-sameas for SameAs meta boxes
 
 * Fix [#1319](https://github.com/insideout10/wordlift-plugin/issues/1319): Delete (Trash) button not working on mappings screen
 * Fix [#1318](https://github.com/insideout10/wordlift-plugin/issues/1318): Author references needed to be expanded for article wrapper
