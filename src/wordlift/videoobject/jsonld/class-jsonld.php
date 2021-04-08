@@ -7,28 +7,30 @@
 namespace Wordlift_Videoobject\Videoobject\Jsonld;
 
 
-class Yt_Jsonld_Service extends Singleton {
-	/**
-	 * @var Yt_Acf_Data_Service
-	 */
-	private $yt_acf_data_service;
+use Wordlift\Videoobject\Data\Video\Video;
+use Wordlift\Videoobject\Data\Video_Storage\Storage;
 
-	protected function __construct() {
-		parent::__construct();
+class Jsonld  {
+	/**
+	 * @var Storage
+	 */
+	private $video_storage;
+
+	/**
+	 * Jsonld constructor.
+	 *
+	 * @param $video_storage Storage
+	 */
+	public function __construct( $video_storage ) {
 		add_action( 'wl_post_jsonld', array( $this, 'wl_post_jsonld' ), 10, 3 );
-		$this->yt_acf_data_service = Yt_Acf_Data_Service::get_instance();
-	}
-
-	/**
-	 * @return Yt_Jsonld_Service
-	 */
-	public static function get_instance() {
-		return parent::get_instance();
+		$this->video_storage = $video_storage;
 	}
 
 	/**
 	 * @param $existing_video_data string | array associative or sequential array.
 	 * @param $new_video_data array Sequential array.
+	 *
+	 * @return array
 	 */
 	private function merge_video_data( $existing_video_data, $new_video_data ) {
 		if ( ! is_array( $existing_video_data ) ) {
@@ -67,15 +69,21 @@ class Yt_Jsonld_Service extends Singleton {
 		return $jsonld;
 	}
 
+
 	/**
 	 * @param $post_id int Post id.
+	 *
+	 * @return array
 	 */
 	public function get_jsonld( $post_id ) {
-		$videos = $this->yt_acf_data_service->get_videos( $post_id );
+
+		$videos = $this->video_storage->get_all_videos( $post_id );
+
 		$jsonld = array();
+
 		foreach ( $videos as $video ) {
 			/**
-			 * @var $video Yt_Video_Data
+			 * @var $video Video
 			 */
 			$jsonld[] = array(
 				'@type'        => 'VideoObject',
@@ -84,7 +92,7 @@ class Yt_Jsonld_Service extends Singleton {
 				'contentUrl'   => $video->content_url,
 				'embedUrl'     => $video->embed_url,
 				'uploadDate'   => $video->upload_date,
-				'thumbnailUrl' => $this->extract_urls( $video->thumbnail_url ),
+				'thumbnailUrl' => $video->thumbnail_urls,
 				'duration'     => $video->duration
 
 			);
@@ -93,16 +101,7 @@ class Yt_Jsonld_Service extends Singleton {
 		return $jsonld;
 	}
 
-	/**
-	 * @param $thumbnail_url array
-	 *
-	 * @return array|\string[][]
-	 */
-	private function extract_urls( $thumbnail_url ) {
-		return array_map( function ( $item ) {
-			return $item['url'];
-		}, $thumbnail_url );
-	}
+
 
 	private function is_associative_array( $arr ) {
 		if ( array() === $arr ) {
