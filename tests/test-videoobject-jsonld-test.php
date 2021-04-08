@@ -5,7 +5,7 @@ use Wordlift\Features\Features_Registry;
 use Wordlift\Videoobject\Data\Video\Video;
 use Wordlift\Videoobject\Data\Video_Storage\Video_Storage_Factory;
 
-class Vo_Jsonld_Test extends \Wordlift_Unit_Test_Case {
+class Videoobject_Jsonld_Test extends \Wordlift_Unit_Test_Case {
 
 	public function setUp() {
 		parent::setUp();
