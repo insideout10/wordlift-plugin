@@ -2,14 +2,6 @@
 /**
  * Tests: Admin Input Element Test.
  *
- * Test the {@link Wordlift_Admin_Radio_Input_Element} class.
- *
- * @since      3.19.0
- * @package    Wordlift
- * @subpackage Wordlift/tests
- apply_filters( 'wl_feature__enable__dataset-ng', false )
-
-/**
  * Define the {@link Wordlift_Admin_Radio_Input_Element_Test} test class.
  *
  * @since      3.19.0

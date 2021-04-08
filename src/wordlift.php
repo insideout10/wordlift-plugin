@@ -540,6 +540,7 @@ function run_wordlift() {
 
 		// Register the Dataset module, requires `$api_service`.
 		require_once plugin_dir_path( __FILE__ ) . 'wordlift/dataset/index.php';
+		require_once plugin_dir_path( __FILE__ ) . 'wordlift/shipping-data/index.php';
 
 	} );
 
