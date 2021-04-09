@@ -142,7 +142,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.30.0 (2021-04-08) =
+= 3.30.0 (2021-04-09) =
 
 * Enhancement [#1334](https://github.com/insideout10/wordlift-plugin/issues/1334): Add html source to KG
 * Enhancement [#1329](https://github.com/insideout10/wordlift-plugin/issues/1329): Enhance hook to clear data cache
