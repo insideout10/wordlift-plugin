@@ -9,10 +9,10 @@ use Wordlift\Videoobject\Data\Embedded_Video\Embedded_Video;
 interface Parser {
 
 	/**
-	 * @param string $content Post content
+	 * @param int $post_id Post id
 	 *
 	 * @return array<Embedded_Video>
 	 */
-	public function get_videos( $content );
+	public function get_videos( $post_id );
 
 }

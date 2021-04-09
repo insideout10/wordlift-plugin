@@ -1,5 +1,7 @@
 <?php
 
+use Wordlift\Videoobject\Parser\Parser_Factory;
+
 class Videoobject_Block_Parser_Test extends \Wordlift_Unit_Test_Case {
 
 
@@ -17,10 +19,10 @@ EOF;
 			'post_content' => $post_content
 		) );
 
-		$parser     = Content_Parser::get_instance();
-		$video_urls = $parser->get_video_urls();
+		$parser     = Parser_Factory::get_parser( Parser_Factory::BLOCK_EDITOR );
+		$video_urls = $parser->get_videos( $post_id );
 		$this->assertCount( 1, $video_urls );
-		$this->assertEquals( 'https://www.youtube.com/watch?v=fJAPDAK4GiI', $video_urls[0] );
+		$this->assertEquals( 'https://www.youtube.com/watch?v=fJAPDAK4GiI', $video_urls[0]->get_url() );
 	}
 
 

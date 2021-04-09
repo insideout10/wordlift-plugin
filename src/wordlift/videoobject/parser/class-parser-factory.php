@@ -11,6 +11,11 @@ class Parser_Factory {
 
 	const CLASSIC_EDITOR = 'classic-editor';
 
+	/**
+	 * @param $parser_config
+	 *
+	 * @return Parser
+	 */
 	public static function get_parser( $parser_config ) {
 		if ( self::BLOCK_EDITOR === $parser_config) {
 			return new Block_Editor_Parser();
