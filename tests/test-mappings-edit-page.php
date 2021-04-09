@@ -8,6 +8,10 @@
  * @package Wordlift
  */
 
+use Wordlift\Features\Features_Registry;
+use Wordlift\Mappings\Mappings_Transform_Functions_Registry;
+use Wordlift\Mappings\Pages\Edit_Mappings_Page;
+
 /**
  * Class Edit_Mapping_Page_Test
  * @group mappings
@@ -15,7 +19,7 @@
 class Edit_Mapping_Page_Test extends Wordlift_Unit_Test_Case {
 
 	/**
-	 * @var \Wordlift\Mappings\Pages\Edit_Mappings_Page $edit_mappings_page_instance
+	 * @var Edit_Mappings_Page $edit_mappings_page_instance
 	 * The instance of {@link \Wordlift\Mappings\Pages\Edit_Mappings_Page }
 	 */
 	private $edit_mappings_page_instance;
@@ -31,12 +35,16 @@ class Edit_Mapping_Page_Test extends Wordlift_Unit_Test_Case {
 		 * Reset filters to prevent filter duplication
 		 */
 		global $wp_filter;
+		$features_registry = Features_Registry::get_instance();
+		$features_registry->clear_all();
+
 		$wp_filter = array();
 		$wordlift  = new Wordlift();
 		$wordlift->run();
+		$features_registry->initialize_all_features();
 
-		$this->edit_mappings_page_instance = new \Wordlift\Mappings\Pages\Edit_Mappings_Page(
-			new \Wordlift\Mappings\Mappings_Transform_Functions_Registry()
+		$this->edit_mappings_page_instance = new Edit_Mappings_Page(
+			new Mappings_Transform_Functions_Registry()
 		);
 		$this->ui_settings_array           = $this->edit_mappings_page_instance->get_ui_settings_array();
 	}

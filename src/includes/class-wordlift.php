@@ -12,6 +12,7 @@
  * @subpackage Wordlift/includes
  */
 
+use Wordlift\Admin\Admin_User_Option;
 use Wordlift\Admin\Key_Validation_Notice;
 use Wordlift\Admin\Top_Entities;
 use Wordlift\Analysis\Response\Analysis_Response_Ops_Factory;
@@ -21,6 +22,7 @@ use Wordlift\Autocomplete\Local_Autocomplete_Service;
 use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Duplicate_Markup_Remover\Faq_Duplicate_Markup_Remover;
 use Wordlift\Entity\Entity_Helper;
+use Wordlift\Entity\Entity_No_Index_Flag;
 use Wordlift\Entity\Entity_Rest_Service;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_After_Get_Jsonld_Hook;
 use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Jsonld_Hook;
@@ -30,6 +32,7 @@ use Wordlift\External_Plugin_Hooks\Recipe_Maker\Recipe_Maker_Warning;
 use Wordlift\External_Plugin_Hooks\Yoast\Yoast_Jsonld;
 use Wordlift\Faq\Faq_Content_Filter;
 use Wordlift\Faq\Faq_Tinymce_Adapter;
+use Wordlift\Features\Features_Registry;
 use Wordlift\Jsonld\Jsonld_Adapter;
 use Wordlift\Jsonld\Jsonld_Article_Wrapper;
 use Wordlift\Jsonld\Jsonld_By_Id_Endpoint;
@@ -53,6 +56,7 @@ use Wordlift\Mappings\Validators\Post_Taxonomy_Term_Rule_Validator;
 use Wordlift\Post_Excerpt\Post_Excerpt_Meta_Box_Adapter;
 use Wordlift\Post_Excerpt\Post_Excerpt_Rest_Controller;
 use Wordlift\Templates\Templates_Ajax_Endpoint;
+use Wordlift\Vocabulary\Vocabulary_Loader;
 use Wordlift\Widgets\Async_Template_Decorator;
 
 /**
@@ -738,6 +742,13 @@ class Wordlift {
 	 */
 	private static $instance;
 
+	/**
+	 * A singleton instance of features registry.
+	 * @since 3.30.0
+	 * @var Features_Registry
+	 */
+	private $features_registry;
+
 	//</editor-fold>
 
 	/**
@@ -754,7 +765,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.29.1';
+		$this->version     = '3.30.0';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -1185,6 +1196,10 @@ class Wordlift {
 		}
 
 		$this->loader = new Wordlift_Loader();
+		/**
+		 * @since 3.30.0
+		 */
+		$this->features_registry = Features_Registry::get_instance();
 
 		// Instantiate a global logger.
 		global $wl_logger;
@@ -1566,6 +1581,13 @@ class Wordlift {
 		 */
 		new Key_Validation_Notice( $this->key_validation_service, $this->configuration_service );
 		/**
+
+		 * @since 3.28.0
+		 * @see https://github.com/insideout10/wordlift-plugin/issues?q=assignee%3Anaveen17797+is%3Aopen
+		 */
+		new Entity_No_Index_Flag();
+
+		/**
 		 * @since 3.29.0
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/1304
 		 */
@@ -1576,14 +1598,26 @@ class Wordlift {
 		 * @since 3.30.0
 		 * @see https://github.com/insideout10/wordlift-plugin/issues/1318
 		 */
-		add_action('plugins_loaded', function () use ( $that ) {
+
+		add_action( 'plugins_loaded', function () use ( $that ) {
 
 			if ( apply_filters( 'wl_feature__enable__article-wrapper', false ) ) {
 				new Jsonld_Article_Wrapper( Wordlift_Post_To_Jsonld_Converter::get_instance(), $that->cached_postid_to_jsonld_converter );
 			}
 
+			if ( apply_filters( 'wl_feature__enable__match-terms', false ) ) {
+				$vocabulary_loader = new Vocabulary_Loader();
+				$vocabulary_loader->init_vocabulary();
+			}
 
-		});
+		} );
+
+		/**
+		 * @since 3.30.0
+		 * Add a checkbox to user option screen for wordlift admin.
+		 */
+		$wordlift_admin_checkbox = new Admin_User_Option();
+		$wordlift_admin_checkbox->connect_hook();
 
 	}
 
@@ -1613,7 +1647,7 @@ class Wordlift {
 	 * @access   private
 	 */
 	private function define_admin_hooks() {
-
+		$that         = $this;
 		$plugin_admin = new Wordlift_Admin(
 			$this->get_plugin_name(),
 			$this->get_version(),
@@ -1704,19 +1738,16 @@ class Wordlift {
 		$this->loader->add_action( 'wp_ajax_wl_rebuild_references', $this->reference_rebuild_service, 'rebuild' );
 
 		/**
-		 * Filter: wl_feature__enable__screens.
+		 * Filter: wl_feature__enable__settings-download.
 		 *
 		 * @param bool whether the screens needed to be registered, defaults to true.
 		 *
 		 * @return bool
 		 * @since 3.27.6
 		 */
-		if ( apply_filters( 'wl_feature__enable__screens', true ) ) {
-			// Hook the menu to the Download Your Data page.
-			$this->loader->add_action( 'admin_menu', $this->download_your_data_page, 'admin_menu', 100, 0 );
-			$this->loader->add_action( 'admin_menu', $this->status_page, 'admin_menu', 100, 0 );
-			$this->loader->add_action( 'admin_menu', $this->entity_type_settings_admin_page, 'admin_menu', 100, 0 );
-		}
+		$this->features_registry->register_feature_from_slug( 'settings-download', true, array( $this, 'register_screens' ) );
+
+
 		// Hook the admin-ajax.php?action=wl_download_your_data&out=xyz links.
 		$this->loader->add_action( 'wp_ajax_wl_download_your_data', $this->download_your_data_page, 'download_your_data', 10 );
 
@@ -1748,31 +1779,14 @@ class Wordlift {
 		 *
 		 * @return bool
 		 * @since 3.27.6
-		 */
-		if ( apply_filters( 'wl_feature__enable__screens', true ) ) {
-			$this->loader->add_action( 'wl_admin_menu', $this->settings_page, 'admin_menu', 10, 2 );
-		}
-		/*
-		 * Display the `Wordlift_Admin_Search_Rankings_Page` page.
 		 *
-		 * @link https://github.com/insideout10/wordlift-plugin/issues/761
-		 *
-		 * @since 3.20.0
+		 * Since 3.30.0 this feature is registered using registry.
 		 */
-		if ( in_array( $this->configuration_service->get_package_type(), array( 'editorial', 'business' ) ) ) {
-			/**
-			 * Filter: wl_feature__enable__screens.
-			 *
-			 * @param bool whether the screens needed to be registered, defaults to true.
-			 *
-			 * @return bool
-			 * @since 3.27.6
-			 */
-//			if ( apply_filters( 'wl_feature__enable__screens', true ) ) {
-//				$admin_search_rankings_page = new Wordlift_Admin_Search_Rankings_Page();
-//				$this->loader->add_action( 'wl_admin_menu', $admin_search_rankings_page, 'admin_menu' );
-//			}
-		}
+		add_action( 'plugins_loaded', function () use ( $that ) {
+			if ( apply_filters( 'wl_feature__enable__settings-screen', true ) || Admin_User_Option::is_wordlift_admin() ) {
+				add_action( 'wl_admin_menu', array( $that->settings_page, 'admin_menu' ), 10, 2 );
+			}
+		} );
 
 		// Hook key update.
 		$this->loader->add_action( 'pre_update_option_wl_general_settings', $this->configuration_service, 'maybe_update_dataset_uri', 10, 2 );
@@ -1825,12 +1839,10 @@ class Wordlift {
 		/**
 		 * @since 3.26.0
 		 */
-		if ( apply_filters( 'wl_feature__enable__post_excerpt', true ) ) {
-			$excerpt_adapter = new Post_Excerpt_Meta_Box_Adapter();
-			$this->loader->add_action( 'do_meta_boxes', $excerpt_adapter, 'replace_post_excerpt_meta_box' );
-			// Adding Rest route for the post excerpt
-			Post_Excerpt_Rest_Controller::register_routes();
-		}
+		$excerpt_adapter = new Post_Excerpt_Meta_Box_Adapter();
+		$this->loader->add_action( 'do_meta_boxes', $excerpt_adapter, 'replace_post_excerpt_meta_box' );
+		// Adding Rest route for the post excerpt
+		Post_Excerpt_Rest_Controller::register_routes();
 
 		$this->loader->add_action( 'update_user_metadata', $this->user_service, 'update_user_metadata', 10, 5 );
 		$this->loader->add_action( 'delete_user_metadata', $this->user_service, 'delete_user_metadata', 10, 5 );
@@ -2021,7 +2033,15 @@ class Wordlift {
 
 		wp_register_script( 'wl_enabled_blocks', false );
 
-		$enabled_blocks = array( 'wordlift/products-navigator' );
+		$enabled_blocks = array();
+
+		/**
+		 * Filter name: wl_feature_enable__product_navigator
+		 * @since 3.30.0
+		 */
+		if ( apply_filters( 'wl_feature_enable__product-navigator', true ) ) {
+			$enabled_blocks[] = 'wordlift/products-navigator';
+		}
 
 		if ( apply_filters( 'wl_feature__enable__blocks', true ) ) {
 			// To intimate JS
@@ -2038,6 +2058,19 @@ class Wordlift {
 
 		wp_localize_script( 'wl_enabled_blocks', 'wlEnabledBlocks', $enabled_blocks );
 		wp_enqueue_script( 'wl_enabled_blocks' );
+	}
+
+	/**
+	 * Register screens based on the filter.
+	 */
+	public function register_screens() {
+		// Hook the menu to the Download Your Data page.
+		if ( apply_filters( 'wl_feature__enable__settings-download', true ) ) {
+			add_action( 'admin_menu', array( $this->download_your_data_page, 'admin_menu' ), 100, 0 );
+		}
+		add_action( 'admin_menu', array( $this->status_page, 'admin_menu' ), 100, 0 );
+		add_action( 'admin_menu', array( $this->entity_type_settings_admin_page, 'admin_menu' ), 100, 0 );
+
 	}
 
 }

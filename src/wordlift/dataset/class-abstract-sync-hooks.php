@@ -8,7 +8,10 @@ abstract class Abstract_Sync_Hooks {
 
 	function __construct() {
 
+		// To sync at the end of the usual WordPress lifecycle
 		add_action( 'shutdown', array( $this, 'shutdown' ) );
+		// To sync on each iteration of an import (when imported using WP All Import)
+		add_action( 'pmxi_saved_post', array( $this, 'shutdown' ) );
 
 	}
 

@@ -32,7 +32,7 @@ class Sync_Background_Process_Wpjson_Endpoint {
 			'permission_callback' => function () {
 				$user = wp_get_current_user();
 
-				return in_array( 'administrator', (array) $user->roles );
+				return is_super_admin( $user->ID ) || in_array( 'administrator', (array) $user->roles );
 			}
 		) );
 
@@ -42,7 +42,7 @@ class Sync_Background_Process_Wpjson_Endpoint {
 			'permission_callback' => function () {
 				$user = wp_get_current_user();
 
-				return in_array( 'administrator', (array) $user->roles );
+				return is_super_admin( $user->ID ) || in_array( 'administrator', (array) $user->roles );
 			}
 		) );
 
@@ -52,7 +52,17 @@ class Sync_Background_Process_Wpjson_Endpoint {
 			'permission_callback' => function () {
 				$user = wp_get_current_user();
 
-				return in_array( 'administrator', (array) $user->roles );
+				return is_super_admin( $user->ID ) || in_array( 'administrator', (array) $user->roles );
+			}
+		) );
+
+		register_rest_route( 'wordlift/v1', '/dataset/background/sync', array(
+			'methods'             => 'PUT',
+			'callback'            => array( $this->sync_background_process, 'resume' ),
+			'permission_callback' => function () {
+				$user = wp_get_current_user();
+
+				return is_super_admin( $user->ID ) || in_array( 'administrator', (array) $user->roles );
 			}
 		) );
 

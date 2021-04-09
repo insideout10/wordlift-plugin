@@ -60,9 +60,10 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 			'labels'             => $labels,
 			'capabilities'       => $capabilities,
 			'hierarchical'       => true,
-			'show_admin_column'  => true,
-			'show_in_rest'       => true,
+			'show_admin_column'  => apply_filters( 'wl_feature__enable__entity-types-taxonomy', true ),
+			'show_in_rest'       => apply_filters( 'wl_feature__enable__entity-types-taxonomy', true ),
 			'show_in_quick_edit' => false,
+			'publicly_queryable' => false
 		);
 
 		/*
@@ -72,7 +73,7 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 		 * @since 3.20.0
 		 */
 		if ( WL_ALL_ENTITY_TYPES ) {
-			$args['meta_box_cb'] = array( 'Wordlift_Admin_Schemaorg_Taxonomy_Metabox', 'render' );
+			$args['meta_box_cb'] = apply_filters( 'wl_feature__enable__entity-types-taxonomy', true ) ? array( 'Wordlift_Admin_Schemaorg_Taxonomy_Metabox', 'render' ) : false;
 		}
 
 		register_taxonomy(

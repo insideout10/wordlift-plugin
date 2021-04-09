@@ -121,10 +121,13 @@ const blocks = {
                 onChange={uniqid => setAttributes({ uniqid })}
               />
               <TextControl
-                  label={__("Post types", "wordlift")}
-                  help={__("The Post types which should be shown on faceted search results separated by comma, For example: post,page", "wordlift")}
-                  value={post_types}
-                  onChange={post_types => setAttributes({ post_types })}
+                label={__("Post types", "wordlift")}
+                help={__(
+                  "The Post types which should be shown on faceted search results separated by comma, For example: post,page",
+                  "wordlift"
+                )}
+                value={post_types}
+                onChange={post_types => setAttributes({ post_types })}
               />
             </PanelBody>
           </InspectorControls>
@@ -150,7 +153,18 @@ const blocks = {
     },
     //display the edit interface + preview
     edit: ({ attributes, setAttributes }) => {
-      const { title, limit, template_id, post_id, offset, uniqid, order_by, preview, preview_src, post_types } = attributes;
+      const {
+        title,
+        limit,
+        template_id,
+        post_id,
+        offset,
+        uniqid,
+        order_by,
+        preview,
+        preview_src,
+        post_types
+      } = attributes;
       if (preview) {
         return (
           <Fragment>
@@ -193,10 +207,13 @@ const blocks = {
                 onChange={order_by => setAttributes({ order_by })}
               />
               <TextControl
-                  label={__("Post types", "wordlift")}
-                  help={__("The Post types which should be shown on navigator results separated by comma, For example: post,page", "wordlift")}
-                  value={post_types}
-                  onChange={post_types => setAttributes({ post_types })}
+                label={__("Post types", "wordlift")}
+                help={__(
+                  "The Post types which should be shown on navigator results separated by comma, For example: post,page",
+                  "wordlift"
+                )}
+                value={post_types}
+                onChange={post_types => setAttributes({ post_types })}
               />
             </PanelBody>
           </InspectorControls>
@@ -389,9 +406,9 @@ const blocks = {
     }
   },
   [`${PLUGIN_NAMESPACE}/vocabulary`]: {
-    title: __("Vocabulary", "wordlift"),
+    title: __("Glossary", "wordlift"),
     description: __(
-      "The Vocabulary is a site-wide Widget that displays all the entities in alphabetical order.",
+      "The Glossary is a site-wide Widget that displays all the entities in alphabetical order.",
       "wordlift"
     ),
     category: "wordlift",

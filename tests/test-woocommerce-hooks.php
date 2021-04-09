@@ -96,7 +96,7 @@ class Test_Wl_For_Wc_Hooks extends Wordlift_Unit_Test_Case {
 
 		global $submenu;
 
-		$this->assertCount( 3, $submenu );
+		$this->assertCount( 2, $submenu );
 	}
 
 	public function test_when_filter_turned_on_1_screen_should_be_registered() {
@@ -105,12 +105,14 @@ class Test_Wl_For_Wc_Hooks extends Wordlift_Unit_Test_Case {
 		$user      = $this->factory->user->create( array( 'role' => 'administrator' ) );
 		wp_set_current_user( $user );
 		add_filter( 'wl_feature__enable__screens', '__return_false' );
+		add_filter( 'wl_feature__enable__match-terms', '__return_false' );
 		global $submenu;
 		$submenu = array();
 
 		$wordlift = new Wordlift();
 		$wordlift->run();
 		do_action( 'admin_menu' );
+
 		$this->assertCount( 1, $submenu );
 
 		$this->assertEqualSets( array(
@@ -197,14 +199,14 @@ class Test_Wl_For_Wc_Hooks extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 1, count( $hook->callbacks ) );
 	}
 
-	public function test_when_post_excerpt_filter_is_active_then_post_excerpt_should_not_be_generated() {
-		global $wp_filter;
-		$wp_filter = array();
-		add_filter( 'wl_feature__enable__post_excerpt', '__return_false' );
-		$wordlift = new Wordlift();
-		$wordlift->run();
-		$this->assertFalse( array_key_exists( 'do_meta_boxes', $wp_filter ) );
-	}
+//	public function test_when_post_excerpt_filter_is_active_then_post_excerpt_should_not_be_generated() {
+//		global $wp_filter;
+//		$wp_filter = array();
+//		add_filter( 'wl_feature__enable__post-excerpt', '__return_false' );
+//		$wordlift = new Wordlift();
+//		$wordlift->run();
+//		$this->assertFalse( array_key_exists( 'do_meta_boxes', $wp_filter ) );
+//	}
 
 
 	public function test_when_filter_not_enabled_should_do_analysis() {

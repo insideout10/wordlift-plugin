@@ -1,24 +1,25 @@
-=== WordLift - AI powered SEO ===
+=== WordLift - AI powered SEO - Schema ===
 Author URL: https://wordlift.io
 Plugin URL: https://wordlift.io
 Contributors: wordlift, insideout10, ziodave, akshay_raje
-Tags: schema.org, rich snippets, semantic seo, JSON-LD, artificial intelligence, ai, linked data, semantic web, content recommendation, related posts, timeline, knowledge graph, interactive map, classicpress
+Tags: SEO, SERP, FAQ Markup, Schema Markup, structured data, schema.org, schema org, semantic seo, JSON-LD, artificial intelligence, ai, linked data, semantic web, content recommendation, related posts, timeline, knowledge graph, interactive map, classicpress
 Requires at least: 4.4
 Tested up to: 5.7
 Requires PHP: 5.3
 Stable tag: {version}
 License: GPLv2 or later
 
-WordLift brings the power of Artificial Intelligence to optimize SEO and organize content. Attract new readers and get their true attention.
+Search engines are looking for meaning, not keywords. WordLift tells Google how your content relates to your brand, products, and stakeholders.
 
 == Description ==
-#### WordLift - AI-Powered SEO
+#### WordLift - AI-Powered SEO - Schema
 [youtube https://www.youtube.com/watch?v=dPp13Y4T00U] <br />
-> **WordLift** is a lightweight plugin that brings **state-of-the-art semantic technologies** to the hands of any bloggers and publishers. <br />
-> **WordLift**, without requiring any technical skills, helps you produce richer content and organize it around your audience. <br />
-> **WordLift** is **available to all for a monthly fee**. Find out more and [get your activation key](https://wordlift.io) directly on our website. <br />
+> **WordLift** connects to your existing website, reads your content, finds entities in it (like places and people), and creates a representation of your content search engines will love. <br />
+> **WordLift**, without requiring any technical skills, creates code (called Structured Data or Schema markup) that reiterates your page's content in a manner that search engines best understand.  <br />
+> **WordLift** is **available to try free for 14 days**. Find out more and [get your activation key](https://wordlift.io) directly on our website. <br />
 
-**WordLift** helps you organize posts and pages adding facts, links and media to build **beautifully structured websites**, for both humans and search engines. <br />
+All our clients enjoy an increase in organic traffic. A lot of them start seeing rich snippets in their Google results pages. Some also experience an increase in website authority. All of them can delegate complex SEO tasks to junior staff. <br />
+This lift is made possible by our Artificial Intelligence engine working behind the scenes understanding, highlighting, and connecting your content.<br />
 **WordLift** lets you create, own and publish your own [knowledge graph](https://wordlift.io/blog/en/knowledge-graph-seo/).<br />
 **WordLift** publishes your content as [Linked Open Data](https://wordlift.io/blog/en/entity/linked-data/) following Tim Berners-Lee‘s Linked Data Principles.<br />
 
@@ -31,7 +32,6 @@ WordLift brings the power of Artificial Intelligence to optimize SEO and organiz
 * Keep readers engaged with relevant **content recommendations** <br />
 * Produce content compatible with **schema.org markup**, allowing search engines to **best index and display your website**.  <br />
 * Engage readers with **relevant content recommendations** <br />
-* Create your own **personal Wikipedia** <br />
 * Publish metadata to **share, sell and distribute content** <br />
 
 = WordLift brings to your publishing workflow =
@@ -142,11 +142,23 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.30.0 (2021-04-09) =
+
+* Enhancement [#1334](https://github.com/insideout10/wordlift-plugin/issues/1334): Add html source to KG
+* Enhancement [#1329](https://github.com/insideout10/wordlift-plugin/issues/1329): Enhance hook to clear data cache
+* Enhancement [#1164](https://github.com/insideout10/wordlift-plugin/issues/1164): Remove wl_entity_type taxonomy URLs
+* Enhancement [#1131](https://github.com/insideout10/wordlift-plugin/issues/1131): Entity URLs in sitemaps
+* Enhancement [#940](https://github.com/insideout10/wordlift-plugin/issues/940): No vocabulary - Terms
+
+* Fix [#1326](https://github.com/insideout10/wordlift-plugin/issues/1326): Issues when annotating an entity from the add entity search lookup results
+* Fix [#1309](https://github.com/insideout10/wordlift-plugin/issues/1309): Compatibility with Grammarly
+* Fix: Data not pushed to KG during import
+
 = 3.29.1 (2021-03-19) =
 
 * Enhancement [#1320](https://github.com/insideout10/wordlift-plugin/issues/1320): Add filter to add required properties for expanding
 * Enhancement [#1311](https://github.com/insideout10/wordlift-plugin/issues/1311): Entities support for other core blocks
-* Enhancement: Add filter wl_feature__enable__metabox__sameas for SameAs meta boxes
+* Enhancement: Add filter wl_feature__enable__metabox-sameas for SameAs meta boxes
 
 * Fix [#1319](https://github.com/insideout10/wordlift-plugin/issues/1319): Delete (Trash) button not working on mappings screen
 * Fix [#1318](https://github.com/insideout10/wordlift-plugin/issues/1318): Author references needed to be expanded for article wrapper
