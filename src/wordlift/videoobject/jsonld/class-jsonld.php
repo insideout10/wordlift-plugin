@@ -1,6 +1,6 @@
 <?php
 /**
- * @since 1.0.0
+ * @since 3.31.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
