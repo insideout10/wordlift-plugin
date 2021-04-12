@@ -20,5 +20,16 @@ EOF;
 		$this->assertEquals( 'https://www.youtube.com/watch?v=fJAPDAK4GiI', $videos[0]->get_url() );
 	}
 
+	public function test_should_not_get_video_object_from_classic_editor_if_video_url_is_inside_linl() {
+
+		$post_content = <<<EOF
+<a href='https://www.youtube.com/watch?v=fJAPDAK4GiI'>my video</a>
+EOF;
+		$post_id      = $this->create_post_with_content( $post_content );
+		$parser       = Parser_Factory::get_parser( Parser_Factory::CLASSIC_EDITOR );
+		$videos       = $parser->get_videos( $post_id );
+		$this->assertCount( 0, $videos );
+	}
+
 
 }

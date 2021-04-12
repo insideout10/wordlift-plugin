@@ -16,6 +16,10 @@ class Classic_Editor_Parser implements Parser {
 		$line_matches      = array();
 		$paragraph_matches = array();
 
+		/**
+		 * This replicates the wp autoembed function, instead of replacing we capture
+		 * all the urls.
+		 */
 		if ( preg_match( '#(^|\s|>)https?://#i', $content ) ) {
 			// Find URLs on their own line.
 			preg_match_all( '|^(\s*)(https?://[^\s<>"]+)(\s*)$|im', $content, $line_matches );
