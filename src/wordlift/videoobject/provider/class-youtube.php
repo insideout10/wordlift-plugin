@@ -15,13 +15,6 @@ class Youtube implements Provider {
 	const YT_API_FIELD_NAME = '__wl_video_object_youtube_api_key';
 
 
-	private $api_key;
-
-	public function __construct( $api_key ) {
-		$this->api_key = $api_key;
-	}
-
-
 	public function get_videos_data( $videos ) {
 
 

@@ -6,6 +6,7 @@ use Wordlift\Videoobject\Data\Embedded_Video\Embedded_Video;
 use Wordlift\Videoobject\Data\Video\Video;
 use Wordlift\Videoobject\Data\Video_Storage\Video_Storage_Factory;
 use Wordlift\Videoobject\Parser\Parser_Factory;
+use Wordlift\Videoobject\Provider\Provider_Factory;
 
 /**
  * @since 3.30.0
@@ -37,7 +38,8 @@ class Post_Filter {
 
 		$storage = Video_Storage_Factory::get_storage();
 
-		$videos = array_filter( array_map( array( $this, 'get_video' ), $embedded_videos ) );
+		$videos = $this->get_data_for_videos( $embedded_videos );
+
 
 		foreach ( $videos as $video ) {
 			$storage->add_video( $post_id, $video );
@@ -46,12 +48,11 @@ class Post_Filter {
 
 	}
 
-	/**
-	 * @param $embedded_video Embedded_Video
-	 *
-	 * @return Video
-	 */
-	public function get_video( $embedded_video ) {
+
+	private function get_data_for_videos( $embedded_videos ) {
+		$youtube_provider = Provider_Factory::get_provider( Provider_Factory::YOUTUBE );
+
+		return $youtube_provider->get_videos_data( $embedded_videos );
 
 	}
 

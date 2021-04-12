@@ -12,10 +12,10 @@ class Provider_Factory {
 	const VIMEO = 'vimeo';
 
 
-	public function get_provider( $provider_name ) {
+	public static function get_provider( $provider_name ) {
 
 		if ( $provider_name === self::YOUTUBE ) {
-
+			return new Youtube();
 		}
 
 	}

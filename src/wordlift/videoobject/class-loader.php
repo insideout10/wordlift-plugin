@@ -18,7 +18,8 @@ class Loader extends Default_Loader {
 		$video_storage = Video_Storage_Factory::get_storage();
 		new Jsonld( $video_storage );
 		// Hook in to save_post to save the videos
-		new Post_Filter();
+		$post_filter = new Post_Filter();
+		$post_filter->init();
 	}
 
 	public function get_feature_slug() {
