@@ -59,8 +59,4 @@ EOF;
 
 	}
 
-	// test video block
-	// test videopress block
-
-
 }
