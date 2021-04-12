@@ -126,10 +126,47 @@ class Youtube implements Provider {
 		$videos_json_data = $result['items'];
 		$videos           = array();
 		foreach ( $videos_json_data as $single_video_json_data ) {
-			$videos[] = new Video();
+			$videos[] = self::create_video_from_youtube_data( $single_video_json_data );
 		}
 
 		return $videos;
+	}
+
+	public static function create_video_from_youtube_data( $video_data ) {
+
+		$video = new Video();
+		if ( array_key_exists( 'contentDetails', $video_data ) ) {
+			$video->duration = $video_data['contentDetails']['duration'];
+		}
+
+		if ( array_key_exists( 'id', $video_data ) ) {
+			$video_id          = $video_data['id'];
+			$video->embed_url   = "https://www.youtube.com/embed/${video_id}";
+			$video->content_url = "https://www.youtube.com/watch?v=${video_id}";
+		}
+		if ( ! array_key_exists( 'snippet', $video_data ) ) {
+			return false;
+		}
+
+		$video->name        = $video_data['snippet']['title'];
+		$video->description = $video_data['snippet']['description'];
+
+		/**
+		 * @since 1.0.1
+		 * Use title as fallback if description is not present.
+		 */
+		if ( ! $video->description ) {
+			$video->description = $video->name;
+		}
+
+		$video->upload_date = $video_data['snippet']['publishedAt'];
+
+		if ( array_key_exists( 'thumbnails', $video_data['snippet'] ) ) {
+			$video->thumbnail_urls = array_values( $video_data['snippet']['thumbnails'] );
+		}
+
+		return $video;
+
 	}
 
 

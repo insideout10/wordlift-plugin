@@ -1,5 +1,6 @@
 <?php
 
+use Wordlift\Videoobject\Data\Video\Video;
 use Wordlift\Videoobject\Data\Video_Storage\Video_Storage_Factory;
 use Wordlift\Videoobject\Provider\Youtube;
 
@@ -26,8 +27,21 @@ https://www.youtube.com/watch?v=fJAPDAK4GiI
 <!-- /wp:embed -->
 EOF;
 		$post_id      = $this->create_post_with_content( $post_content );
+		$videos = Video_Storage_Factory::get_storage()->get_all_videos( $post_id );
 		// we should have 1 video on the storage.
-		$this->assertCount( 1, Video_Storage_Factory::get_storage()->get_all_videos( $post_id ) );
+		$this->assertCount( 1,  $videos );
+		/**
+		 * @var $video Video
+		 */
+		$video = $videos[0];
+		// check all of the properties are not null.
+		$this->assertNotNull($video->name);
+		$this->assertNotNull($video->description);
+		$this->assertNotNull($video->thumbnail_urls);
+		$this->assertNotNull($video->upload_date);
+		$this->assertNotNull($video->duration);
+		$this->assertNotNull($video->content_url);
+		$this->assertNotNull($video->embed_url);
 	}
 
 }
