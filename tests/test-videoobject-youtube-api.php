@@ -7,7 +7,7 @@ use Wordlift\Videoobject\Provider\Youtube;
  * Class Videoobject_Youtube_Api_Test
  * @group videoobject
  */
-class Videoobject_Youtube_Api_Test extends Wordlift_Unit_Test_Case {
+class Videoobject_Youtube_Api_Test extends Wordlift_Videoobject_Unit_Test_Case {
 
 	public function setUp() {
 		parent::setUp();

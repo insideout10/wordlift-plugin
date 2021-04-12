@@ -2,8 +2,6 @@
 
 namespace Wordlift\Videoobject\Filters;
 
-use Wordlift\Videoobject\Data\Embedded_Video\Embedded_Video;
-use Wordlift\Videoobject\Data\Video\Video;
 use Wordlift\Videoobject\Data\Video_Storage\Video_Storage_Factory;
 use Wordlift\Videoobject\Parser\Parser_Factory;
 use Wordlift\Videoobject\Provider\Provider_Factory;
@@ -36,6 +34,11 @@ class Post_Filter {
 		$embedded_videos = $parser->get_videos( $post_id );
 
 
+
+		if (  ! $embedded_videos ) {
+			return;
+		}
+
 		$storage = Video_Storage_Factory::get_storage();
 
 		$videos = $this->get_data_for_videos( $embedded_videos );
@@ -51,7 +54,6 @@ class Post_Filter {
 
 	private function get_data_for_videos( $embedded_videos ) {
 		$youtube_provider = Provider_Factory::get_provider( Provider_Factory::YOUTUBE );
-
 		return $youtube_provider->get_videos_data( $embedded_videos );
 
 	}
