@@ -5,6 +5,10 @@ use Wordlift\Features\Features_Registry;
 use Wordlift\Videoobject\Data\Video\Video;
 use Wordlift\Videoobject\Data\Video_Storage\Video_Storage_Factory;
 
+/**
+ * Class Videoobject_Jsonld_Test
+ * @group videoobject
+ */
 class Videoobject_Jsonld_Test extends \Wordlift_Unit_Test_Case {
 
 	public function setUp() {

@@ -2,6 +2,10 @@
 
 use Wordlift\Videoobject\Parser\Parser_Factory;
 
+/**
+ * Class Videoobject_Block_Parser_Test
+ * @group videoobject
+ */
 class Videoobject_Block_Parser_Test extends \Wordlift_Unit_Test_Case {
 
 
