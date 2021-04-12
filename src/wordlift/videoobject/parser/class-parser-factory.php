@@ -21,7 +21,7 @@ class Parser_Factory {
 			return new Block_Editor_Parser();
 		}
 		else if ( self::CLASSIC_EDITOR === $parser_config ) {
-
+			return new Classic_Editor_Parser();
 		}
 
 	}
