@@ -17,13 +17,20 @@ class Parser_Factory {
 	 * @return Parser
 	 */
 	public static function get_parser( $parser_config ) {
-		if ( self::BLOCK_EDITOR === $parser_config) {
+		if ( self::BLOCK_EDITOR === $parser_config ) {
 			return new Block_Editor_Parser();
-		}
-		else if ( self::CLASSIC_EDITOR === $parser_config ) {
+		} else if ( self::CLASSIC_EDITOR === $parser_config ) {
 			return new Classic_Editor_Parser();
 		}
 
+	}
+
+	public static function get_parser_from_content( $post_content ) {
+		if ( has_blocks( $post_content ) ) {
+			return self::get_parser( self::BLOCK_EDITOR );
+		} else {
+			return self::get_parser( self::CLASSIC_EDITOR );
+		}
 	}
 
 }
