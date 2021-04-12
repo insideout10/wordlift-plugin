@@ -17,6 +17,9 @@ class Provider_Factory {
 		if ( $provider_name === self::YOUTUBE ) {
 			return new Youtube();
 		}
+		else if ( $provider_name === self::VIMEO ) {
+			return new Vimeo();
+		}
 
 	}
 

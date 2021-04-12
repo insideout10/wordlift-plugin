@@ -34,8 +34,7 @@ class Post_Filter {
 		$embedded_videos = $parser->get_videos( $post_id );
 
 
-
-		if (  ! $embedded_videos ) {
+		if ( ! $embedded_videos ) {
 			return;
 		}
 
@@ -43,6 +42,9 @@ class Post_Filter {
 
 		$videos = $this->get_data_for_videos( $embedded_videos );
 
+		if ( ! $videos ) {
+			return;
+		}
 
 		foreach ( $videos as $video ) {
 			$storage->add_video( $post_id, $video );
@@ -54,7 +56,11 @@ class Post_Filter {
 
 	private function get_data_for_videos( $embedded_videos ) {
 		$youtube_provider = Provider_Factory::get_provider( Provider_Factory::YOUTUBE );
-		return $youtube_provider->get_videos_data( $embedded_videos );
+		$youtube_videos   = $youtube_provider->get_videos_data( $embedded_videos );
+		$vimeo_provider   = Provider_Factory::get_provider( Provider_Factory::VIMEO );
+		$vimeo_videos     = $vimeo_provider->get_videos_data( $embedded_videos );
+
+		return array_merge( $youtube_videos, $vimeo_videos );
 
 	}
 
