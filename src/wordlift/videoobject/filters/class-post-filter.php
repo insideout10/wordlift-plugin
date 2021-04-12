@@ -34,7 +34,14 @@ class Post_Filter {
 
 		$embedded_videos = $parser->get_videos( $post_id );
 
-		$videos = array_map( array( $this, 'get_video' ), $embedded_videos );
+
+		$storage = Video_Storage_Factory::get_storage();
+
+		$videos = array_filter( array_map( array( $this, 'get_video' ), $embedded_videos ) );
+
+		foreach ( $videos as $video ) {
+			$storage->add_video( $post_id, $video );
+		}
 
 
 	}
