@@ -14,6 +14,9 @@ class Provider_Factory {
 
 	public function get_provider( $provider_name ) {
 
+		if ( $provider_name === self::YOUTUBE ) {
+
+		}
 
 	}
 
