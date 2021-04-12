@@ -18,7 +18,7 @@ https://www.youtube.com/watch?v=fJAPDAK4GiI
 EOF;
 		$post_id      = $this->create_post_with_content( $post_content );
 		// we should have 1 video on the storage.
-		$this->assertCount( 1, Video_Storage_Factory::get_storage()->get_all_videos( $post_id ) )
+		$this->assertCount( 1, Video_Storage_Factory::get_storage()->get_all_videos( $post_id ) );
 	}
 
 }
