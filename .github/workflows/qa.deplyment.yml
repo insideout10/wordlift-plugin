@@ -1,0 +1,91 @@
+name: CI
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        WP-ver: [wlp-wp-4.4, wlp-wp-4.7, wlp-wp-5.0, wlp-wp-5.4, wlp-wp-5.5, wlp-wp-5.6, wlp-wp-5.7]
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Build and push wp-4.4
+        id: docker_build
+        uses: docker/build-push-action@v1
+        with:
+          registry: ghcr.io
+          context: .
+          file: ./Dockerfile
+          push: true
+          target: ${{ matrix.WP-ver }}
+          username: ${{ secrets.username }}
+          password: ${{ secrets.PAT }}
+          repository: wordlift/${{ matrix.WP-ver }}
+          tags: latest
+
+  deploy:
+    needs: [build]
+    runs-on: ubuntu-latest
+      # Set the target AKS cluster.
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      - 
+        name: connect to wordlift dev k8s
+        id: dev_k8s
+        uses: Azure/aks-set-context@v1
+        with:
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+          cluster-name: dev-aks-cluster
+          resource-group: wordlift-dev-east-us-2
+        
+#      - uses: Azure/k8s-create-secret@v1
+#        with:
+#          namespace: 'qa-wordpress'
+#          container-registry-url: docker.pkg.github.com
+#          container-registry-username: elmeligy
+#          container-registry-password: ${{ secrets.GITHUB_TOKEN }}
+#          secret-name: elmeligy-ghcr-secret
+#      - task: KubernetesManifest@0
+#        displayName: Delete
+#        inputs:
+#          action: delete
+#          arguments: deployment.apps/qa-wordpress-44 deployment.apps/wordpress-4.4-mysql
+#          kubernetesServiceConnection: dev_k8s
+#          namespace: qa-wordpress
+
+      - name: delete old deployment
+        continue-on-error: true
+        uses: steebchen/kubectl@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        with:
+          args: delete -f manifests/wordpress-deployment.yml -f manifests/wordpress-mysql-deployment.yml
+
+      - name: deploy new package
+        uses: Azure/k8s-deploy@v1.4
+        with:
+          Namespace: qa-wordpress
+          manifests: |
+            manifests/wordpress-deployment.yml
+            manifests/wordpress-mysql-deployment.yml
+            manifests/wordpress-ingress.yml
