@@ -113,7 +113,11 @@ class Shipping_Zone {
 
 	}
 
-	public function add_offer_shipping_details( &$jsonld ) {
+	/**
+	 * @param array $jsonld
+	 * @param Product $product
+	 */
+	public function add_offer_shipping_details( &$jsonld, $product ) {
 
 		$this->load_methods();
 
@@ -137,6 +141,11 @@ class Shipping_Zone {
 		foreach ( $this->methods as $method ) {
 			$method->add_shipping_rate( $offer_shipping_details );
 		}
+
+		/*
+		 * Use Case UC004
+		 */
+		$product->add_handling_time( $offer_shipping_details );
 
 		$jsonld['shippingDetails'][] = $offer_shipping_details;
 
