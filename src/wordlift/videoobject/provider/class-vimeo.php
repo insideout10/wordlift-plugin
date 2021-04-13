@@ -14,37 +14,7 @@ use Wordlift\Videoobject\Data\Video\Video;
  */
 class Vimeo extends Api_Provider {
 
-	const API_URL = 'https://api.vimeo.com';
-	const VIMEO_URL_REGEX = '/https?:\/\/(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)(?:$|\/|\?)/';
 	const API_FIELD_NAME = '_wl_videoobject_vimeo_api_key';
-
-
-	/**
-	 * @param $vimeo_urls
-	 * @param $post_id
-	 *
-	 * @return string[]
-	 */
-	public function get_video_ids_for_api( $vimeo_urls ) {
-
-		return array_filter( array_map( array( $this, 'vimeo_url_to_id' ), $vimeo_urls ) );
-	}
-
-	/**
-	 * @param $url string Vimeo url
-	 */
-	public function vimeo_url_to_id( $url ) {
-		if ( ! $url ) {
-			return false;
-		}
-		preg_match( self::VIMEO_URL_REGEX, $url, $matches );
-
-		if ( ! array_key_exists( 3, $matches ) ) {
-			return false;
-		}
-
-		return '/videos/' . $matches[3];
-	}
 
 	private function get_api_key() {
 		return get_option( self::API_FIELD_NAME, false );
