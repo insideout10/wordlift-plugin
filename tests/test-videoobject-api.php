@@ -12,7 +12,7 @@ class Videoobject_Api_Test extends Wordlift_Videoobject_Unit_Test_Case {
 
 	public function setUp() {
 		parent::setUp();
-		if ( ! getenv( 'YOUTUBE_DATA_API_KEY' ) ) {
+		if ( ! getenv( 'YOUTUBE_DATA_API_KEY' ) || ! getenv('VIMEO_API_KEY') ) {
 			$this->markTestSkipped( 'Test skipped because it requires youtube data api key to perform assertions' );
 		}
 		update_option( Youtube::YT_API_FIELD_NAME, getenv( 'YOUTUBE_DATA_API_KEY' ) );
