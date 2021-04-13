@@ -113,6 +113,7 @@ class Vimeo implements Provider {
 		}
 		$video->upload_date    = $vimeo_video_data['release_time'];
 		$video->thumbnail_urls = $this->set_thumbnail_urls( $vimeo_video_data );
+
 		return $video;
 	}
 
