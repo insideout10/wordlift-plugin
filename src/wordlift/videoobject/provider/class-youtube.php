@@ -8,7 +8,7 @@ namespace Wordlift\Videoobject\Provider;
 
 use Wordlift\Videoobject\Data\Video\Video;
 
-class Youtube implements Provider {
+class Youtube extends Api_Provider {
 
 	const API_URL = 'https://www.googleapis.com/youtube/v3/videos';
 
@@ -140,7 +140,7 @@ class Youtube implements Provider {
 		}
 
 		if ( array_key_exists( 'id', $video_data ) ) {
-			$video_id          = $video_data['id'];
+			$video_id           = $video_data['id'];
 			$video->embed_url   = "https://www.youtube.com/embed/${video_id}";
 			$video->content_url = "https://www.youtube.com/watch?v=${video_id}";
 		}

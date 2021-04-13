@@ -12,7 +12,7 @@ use Wordlift\Videoobject\Data\Video\Video;
  * Class Vimeo
  * @package Wordlift\Videoobject\Provider
  */
-class Vimeo implements Provider {
+class Vimeo extends Api_Provider {
 
 	const API_URL = 'https://api.vimeo.com';
 	const VIMEO_URL_REGEX = '/https?:\/\/(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)(?:$|\/|\?)/';

@@ -11,8 +11,24 @@ interface Client {
 	 *
 	 * @param $video_urls array<string> Array of urls.
 	 *
-	 * @return array
+	 * Response body or false if the request cant be made or failed.
+	 * @return string | false
 	 */
 	public function get_data( $video_urls );
 
+	/**
+	 * @return string
+	 */
+	public function get_api_key();
+	/**
+	 * Returns the option where the api key is stored.
+	 * @return string
+	 */
+	public function get_api_key_option_name();
+
+	/**
+	 * The api base url.
+	 * @return string
+	 */
+	public function get_api_url();
 }
