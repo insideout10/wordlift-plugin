@@ -85,14 +85,14 @@ class Vimeo implements Provider {
 			return array();
 		}
 
-		return array_map( array( $this, 'get_video_from_video_data' ), $video_list );
+		return array_filter( array_map( array( $this, 'get_video_from_video_data' ), $video_list ) );
 
 	}
 
 	public function get_video_from_video_data( $vimeo_video_data ) {
 		if ( ! $vimeo_video_data ) {
 			// If valid data not supplied dont init the object.
-			return;
+			return false;
 		}
 		$video              = new Video();
 		$video->name        = $vimeo_video_data['name'];
