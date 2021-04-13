@@ -27,7 +27,7 @@ class Vimeo implements Provider {
 	 */
 	public function get_video_ids_for_api( $vimeo_urls ) {
 
-		return array_map( array( $this, 'vimeo_url_to_id' ), $vimeo_urls );
+		return array_filter( array_map( array( $this, 'vimeo_url_to_id' ), $vimeo_urls ) );
 	}
 
 	/**
@@ -38,6 +38,10 @@ class Vimeo implements Provider {
 			return false;
 		}
 		preg_match( self::VIMEO_URL_REGEX, $url, $matches );
+
+		if ( ! array_key_exists( 3, $matches ) ) {
+			return false;
+		}
 
 		return '/videos/' . $matches[3];
 	}
@@ -58,20 +62,28 @@ class Vimeo implements Provider {
 			return $video->get_url();
 		}, $videos );
 
-		$ids = $this->get_video_ids_for_api( $urls );
+		$ids = join(",", $this->get_video_ids_for_api( $urls ) );
+
+		if ( ! $ids ) {
+			return array();
+		}
 
 		$api_url = add_query_arg( array(
 			'uris'   => $ids,
 			'fields' => 'name,description,link,uri,duration,release_time,pictures'
-		), self::API_URL );
+		), self::API_URL . "/videos/" );
+
+
+
 
 		$response = wp_remote_get( $api_url, array(
 			'headers' => array(
-				'bearer ' . $key
+				'Authorization' => 'bearer ' . $key
 			)
 		) );
 
-		$response_body = wp_remote_retrieve_body( $response );
+
+
 		// we need to parse the body.
 		if ( ! array_key_exists( 'body', $response ) ||
 		     ! array_key_exists( 'data', $response['body'] ) ) {
@@ -80,10 +92,14 @@ class Vimeo implements Provider {
 
 		$video_list = $response['body']['data'];
 
+		var_dump($video_list);
+
 		if ( ! is_array( $video_list ) ) {
 			// Return if we cant parse the response.
 			return array();
 		}
+
+		var_dump($video_list);
 
 		return array_filter( array_map( array( $this, 'get_video_from_video_data' ), $video_list ) );
 

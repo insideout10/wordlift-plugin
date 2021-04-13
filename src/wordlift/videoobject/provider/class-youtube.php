@@ -38,13 +38,13 @@ class Youtube implements Provider {
 	public function get_data( $video_urls ) {
 		// extract ids from the url list.
 		if ( ! is_array( $video_urls ) ) {
-			return false;
+			return array();
 		}
 		$video_ids = $this->get_video_ids_as_string( $video_urls );
 
 		// If the video ids are empty Or api key not set, then dont send the request.
 		if ( ! $video_ids || ! $this->get_api_key() ) {
-			return false;
+			return array();
 		}
 
 		$url = add_query_arg( array(
