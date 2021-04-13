@@ -12,11 +12,5 @@ abstract class Api_Provider implements Provider {
 		return get_option( $this->get_option_api_key_name() );
 	}
 
-
-	public function get_videos_data( $videos ) {
-		// TODO: Implement get_videos_data() method.
-	}
-
-
 	abstract function get_option_api_key_name();
 }
