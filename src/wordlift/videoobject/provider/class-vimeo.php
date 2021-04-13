@@ -14,6 +14,7 @@ class Vimeo implements Provider {
 
 	const API_URL = 'https://api.vimeo.com';
 	const VIMEO_URL_REGEX = '/https?:\/\/(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)(?:$|\/|\?)/';
+	const API_FIELD_NAME = '_wl_videoobject_vimeo_api_key';
 
 
 	/**

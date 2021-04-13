@@ -16,6 +16,7 @@ class Videoobject_Api_Test extends Wordlift_Videoobject_Unit_Test_Case {
 			$this->markTestSkipped( 'Test skipped because it requires youtube data api key to perform assertions' );
 		}
 		update_option( Youtube::YT_API_FIELD_NAME, getenv( 'YOUTUBE_DATA_API_KEY' ) );
+		update_option(\Wordlift\Videoobject\Provider\Vimeo::API_FIELD_NAME, getenv('VIMEO_API_KEY') );
 	}
 
 	public function test_on_save_post_with_youtube_video_should_store_it() {
