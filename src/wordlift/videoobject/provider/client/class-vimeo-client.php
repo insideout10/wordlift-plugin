@@ -7,6 +7,23 @@ namespace Wordlift\Videoobject\Provider\Client;
  * This class acts as api client for vimeo.
  */
 class Vimeo_Client implements Client {
+	const VIMEO_URL_REGEX = '/https?:\/\/(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)(?:$|\/|\?)/';
+
+	/**
+	 * @param $url string Vimeo url
+	 */
+	public function vimeo_url_to_id( $url ) {
+		if ( ! $url ) {
+			return false;
+		}
+		preg_match( self::VIMEO_URL_REGEX, $url, $matches );
+
+		if ( ! array_key_exists( 3, $matches ) ) {
+			return false;
+		}
+
+		return '/videos/' . $matches[3];
+	}
 	/**
 	 * @param $vimeo_urls
 	 * @param $post_id

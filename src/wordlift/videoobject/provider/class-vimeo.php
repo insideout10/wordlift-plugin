@@ -62,26 +62,12 @@ class Vimeo extends Api_Provider {
 			return $video->get_url();
 		}, $videos );
 
-		$ids = join( ",", $this->get_video_ids_for_api( $urls ) );
 
-		if ( ! $ids ) {
+		$response_body = $this->api_client->get_data( $urls );
+		if ( ! is_string( $response_body ) ) {
 			return array();
 		}
-
-		$api_url = self::API_URL . "/videos/";
-		$api_url = add_query_arg( array(
-			'uris'   => $ids,
-			'fields' => 'name,description,link,uri,duration,release_time,pictures'
-		), $api_url );
-
-
-		$response = wp_remote_get( $api_url, array(
-			'headers' => array(
-				'Authorization' => 'bearer ' . $key
-			)
-		) );
-
-		$response = json_decode( wp_remote_retrieve_body( $response ), true );
+		$response = json_decode( $response_body, true );
 
 		$video_list = $response['data'];
 
