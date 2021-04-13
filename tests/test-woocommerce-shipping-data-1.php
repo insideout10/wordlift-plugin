@@ -24,7 +24,7 @@ class Woocommerce_Shipping_Data_Test_1 extends WP_UnitTestCase {
 			)
 		), - 1, array() );
 
-		$this->assertFalse( isset( $jsonld['offers'][0]['availableDeliveryMethod'] ), 'Property not found in ' . var_export( $jsonld, true ) );
+		$this->assertFalse( isset( $jsonld['offers'][0]['availableDeliveryMethod'] ), 'Property found in ' . var_export( $jsonld, true ) );
 
 	}
 

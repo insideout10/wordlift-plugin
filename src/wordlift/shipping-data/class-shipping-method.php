@@ -49,4 +49,8 @@ class Shipping_Method {
 
 	}
 
+	public function add_shipping_rate( &$offer_shipping_details ) {
+
+	}
+
 }

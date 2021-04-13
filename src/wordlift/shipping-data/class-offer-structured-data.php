@@ -35,6 +35,7 @@ class Offer_Structured_Data {
 
 		foreach ( $jsonld['offers'] as &$offer ) {
 			$this->shipping_zones->add_available_delivery_method( $offer );
+			$this->shipping_zones->add_offer_shipping_details( $offer );
 		}
 
 		return $jsonld;
