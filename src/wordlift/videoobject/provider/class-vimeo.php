@@ -62,18 +62,17 @@ class Vimeo implements Provider {
 			return $video->get_url();
 		}, $videos );
 
-		$ids = join(",", $this->get_video_ids_for_api( $urls ) );
+		$ids = join( ",", $this->get_video_ids_for_api( $urls ) );
 
 		if ( ! $ids ) {
 			return array();
 		}
 
+		$api_url = self::API_URL . "/videos/";
 		$api_url = add_query_arg( array(
 			'uris'   => $ids,
 			'fields' => 'name,description,link,uri,duration,release_time,pictures'
-		), self::API_URL . "/videos/" );
-
-
+		), $api_url );
 
 
 		$response = wp_remote_get( $api_url, array(
@@ -82,30 +81,23 @@ class Vimeo implements Provider {
 			)
 		) );
 
+		$response = json_decode( wp_remote_retrieve_body( $response ), true );
 
+		$video_list = $response['data'];
 
-		// we need to parse the body.
-		if ( ! array_key_exists( 'body', $response ) ||
-		     ! array_key_exists( 'data', $response['body'] ) ) {
-			return array();
-		}
-
-		$video_list = $response['body']['data'];
-
-		var_dump($video_list);
 
 		if ( ! is_array( $video_list ) ) {
 			// Return if we cant parse the response.
 			return array();
 		}
 
-		var_dump($video_list);
 
 		return array_filter( array_map( array( $this, 'get_video_from_video_data' ), $video_list ) );
 
 	}
 
 	public function get_video_from_video_data( $vimeo_video_data ) {
+
 		if ( ! $vimeo_video_data ) {
 			// If valid data not supplied dont init the object.
 			return false;
@@ -121,6 +113,7 @@ class Vimeo implements Provider {
 		}
 		$video->upload_date    = $vimeo_video_data['release_time'];
 		$video->thumbnail_urls = $this->set_thumbnail_urls( $vimeo_video_data );
+		return $video;
 	}
 
 	private function get_id( $api_response_data ) {
