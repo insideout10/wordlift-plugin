@@ -11,6 +11,7 @@ use Wordlift\Common\Singleton;
  */
 class Youtube_Client extends Singleton implements Client {
 
+	static $requests_sent = 0;
 
 	public function get_api_key_option_name() {
 		return "__wl_video_object_youtube_api_key";
@@ -34,6 +35,8 @@ class Youtube_Client extends Singleton implements Client {
 		), $this->get_api_url() );
 
 		$response = wp_remote_get( $url );
+
+		self::$requests_sent += 1;
 
 		return wp_remote_retrieve_body( $response );
 	}

@@ -9,6 +9,9 @@ use Wordlift\Common\Singleton;
  * This class acts as api client for vimeo.
  */
 class Vimeo_Client extends Singleton implements Client {
+
+	static $requests_sent = 0;
+
 	const VIMEO_URL_REGEX = '/https?:\/\/(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)(?:$|\/|\?)/';
 
 	/**
@@ -57,6 +60,8 @@ class Vimeo_Client extends Singleton implements Client {
 				'Authorization' => 'bearer ' . $this->get_api_key()
 			)
 		) );
+
+		self::$requests_sent += 1;
 
 		return wp_remote_retrieve_body( $response );
 	}
