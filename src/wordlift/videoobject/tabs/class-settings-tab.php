@@ -11,7 +11,7 @@ class Settings_Tab {
 
 		add_filter( 'wl_admin_page_tabs', function ( $tabs ) {
 			$tabs[] = array(
-				'slug'  => 'video-object-settings',
+				'slug'  => 'videoobject-settings',
 				'title' => __( 'Video Settings', 'wordlift' )
 			);
 			return $tabs;

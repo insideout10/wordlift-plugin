@@ -1619,10 +1619,6 @@ class Wordlift {
 		$wordlift_admin_checkbox = new Admin_User_Option();
 		$wordlift_admin_checkbox->connect_hook();
 		/**
-		 * @todo: this filter should be removed.
-		 */
-		add_filter( 'wl_feature__enable__videoobject', '__return_true' );
-		/**
 		 * @since 3.31.0
 		 * Init loader class for videoobject.
 		 */
