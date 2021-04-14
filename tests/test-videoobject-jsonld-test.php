@@ -46,7 +46,18 @@ class Videoobject_Jsonld_Test extends \Wordlift_Videoobject_Unit_Test_Case {
 	public function test_when_youtube_video_is_saved_should_generate_correct_jsonld() {
 		$post_id       = $this->create_post_with_content( Videoobject_Api_Test::multiple_youtube_video_post_content() );
 		$video_storage = Video_Storage_Factory::get_storage();
-		$jsonld = apply_filters( 'wl_post_jsonld', array(), $post_id, array() );
+		$jsonld        = apply_filters( 'wl_post_jsonld', array(), $post_id, array() );
+		$this->assertArrayHasKey( 'video', $jsonld );
+		$this->assertCount( 2, $jsonld['video'] );
+		$first_video = $jsonld['video'][0];
+		$this->assertNotNull( $first_video['interactionStatistic']['userInteractionCount'] );
+		$this->assertTrue( is_numeric( $first_video['interactionStatistic']['userInteractionCount'] ), 'Views should be correctly added for youtube videos' );
+	}
+
+	public function test_when_vimeo_video_is_saved_should_generate_correct_jsonld() {
+		$post_id       = $this->create_post_with_content( Videoobject_Api_Test::get_multiple_vimeo_videos_post_content() );
+		$video_storage = Video_Storage_Factory::get_storage();
+		$jsonld        = apply_filters( 'wl_post_jsonld', array(), $post_id, array() );
 		$this->assertArrayHasKey( 'video', $jsonld );
 		$this->assertCount( 2, $jsonld['video'] );
 		$first_video = $jsonld['video'][0];
