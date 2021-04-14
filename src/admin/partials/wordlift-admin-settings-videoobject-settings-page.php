@@ -1,9 +1,10 @@
 <?php
-?>
-<h1><?php use Wordlift\Videoobject\Provider\Client\Vimeo_Client;
-	use Wordlift\Videoobject\Provider\Client\Youtube_Client;
 
-	_e( 'API Settings', 'wordlift' ); ?></h1>
+use Wordlift\Videoobject\Provider\Client\Vimeo_Client;
+use Wordlift\Videoobject\Provider\Client\Youtube_Client;
+
+?>
+<h1><?php _e( 'API Settings', 'wordlift' ); ?></h1>
 <p><?php _e( 'To let WordLift access metadata from Youtube or Vimeo you will need to add here your API Key.' ); ?></p>
 <table>
     <tr>
@@ -47,3 +48,9 @@
     </tr>
 
 </table>
+<h1><?php _e( 'Video Sitemap', 'wordlift' ); ?></h1>
+<p>
+	<?php _e( 'The Video Sitemap works like any other XML Sitemap. Search engines will use it to display rich snippets in result pages.' ); ?>
+</p>
+<p> <?php _e( 'Enable Video Sitemap' ); ?> <input type="checkbox"></p>
+<p> <?php _e( 'Here is link to your Video Sitemap. Add it now, to Google Search Console.', 'wordlift' ); ?></p>
