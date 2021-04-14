@@ -16,6 +16,7 @@ class Youtube extends Api_Provider {
 	private static function get_thumbnails( $api_thumbnail_data ) {
 		return array_map( function ( $item ) {
 			return $item['url'];
+
 		}, $api_thumbnail_data );
 	}
 
