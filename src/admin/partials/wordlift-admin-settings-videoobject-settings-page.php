@@ -6,6 +6,9 @@ use Wordlift\Videoobject\Provider\Client\Youtube_Client;
 if ( isset( $_POST['wordlift_videoobject_youtube_api_key'] )
      || isset( $_POST['wordlift_videoobject_vimeo_api_key'] ) ) {
 
+	/**
+	 * @todo: does this fields need to be encrypted before saving ?
+	 */
 	$youtube_api_key = (string) $_POST['wordlift_videoobject_youtube_api_key'];
 	$vimeo_api_key   = (string) $_POST['wordlift_videoobject_vimeo_api_key'];
 
