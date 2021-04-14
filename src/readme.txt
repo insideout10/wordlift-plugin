@@ -142,6 +142,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.31.0 (2021-04-__) =
+
+* Enhancement [#1342](https://github.com/insideout10/wordlift-plugin/issues/1342): Add support for Offer Shipping Details in SD
+
 = 3.30.0 (2021-04-__) =
 
 * Enhancement [#1334](https://github.com/insideout10/wordlift-plugin/issues/1334): Add html source to KG
