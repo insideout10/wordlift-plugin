@@ -107,6 +107,12 @@ class Youtube extends Api_Provider {
 			$video->thumbnail_urls = self::get_thumbnails( $api_thumbnail_data );
 		}
 
+		if ( array_key_exists( 'statistics', $video_data )
+		     && array_key_exists( 'viewCount', $video_data['statistics'] ) ) {
+			$video->views = $video_data['statistics']['viewCount'];
+		}
+
+
 		$video->id = $video->content_url;
 
 		return $video;
