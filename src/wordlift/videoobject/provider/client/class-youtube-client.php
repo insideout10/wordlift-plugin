@@ -13,12 +13,12 @@ class Youtube_Client extends Singleton implements Client {
 
 	static $requests_sent = 0;
 
-	public function get_api_key_option_name() {
+	public static function get_api_key_option_name() {
 		return "__wl_video_object_youtube_api_key";
 	}
 
-	public function get_api_key() {
-		return get_option( $this->get_api_key_option_name(), false );
+	public static function get_api_key() {
+		return get_option( self::get_api_key_option_name(), false );
 	}
 
 	public function get_api_url() {

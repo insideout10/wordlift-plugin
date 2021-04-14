@@ -1,6 +1,7 @@
 <?php
 
 namespace Wordlift\Videoobject\Provider\Client;
+
 use Wordlift\Common\Singleton;
 
 /**
@@ -29,6 +30,7 @@ class Vimeo_Client extends Singleton implements Client {
 
 		return '/videos/' . $matches[3];
 	}
+
 	/**
 	 * @param $vimeo_urls
 	 * @param $post_id
@@ -66,11 +68,11 @@ class Vimeo_Client extends Singleton implements Client {
 		return wp_remote_retrieve_body( $response );
 	}
 
-	public function get_api_key() {
-		return get_option( $this->get_api_key_option_name(), false );
+	public static function get_api_key() {
+		return get_option( self::get_api_key_option_name(), false );
 	}
 
-	public function get_api_key_option_name() {
+	public static function get_api_key_option_name() {
 		return '_wl_videoobject_vimeo_api_key';
 	}
 

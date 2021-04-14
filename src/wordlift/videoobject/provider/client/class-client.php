@@ -19,12 +19,12 @@ interface Client {
 	/**
 	 * @return string
 	 */
-	public function get_api_key();
+	public static function get_api_key();
 	/**
 	 * Returns the option where the api key is stored.
 	 * @return string
 	 */
-	public function get_api_key_option_name();
+	public static function get_api_key_option_name();
 
 	/**
 	 * The api base url.

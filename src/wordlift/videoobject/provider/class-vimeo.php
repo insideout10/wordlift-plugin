@@ -16,7 +16,7 @@ class Vimeo extends Api_Provider {
 
 	const API_FIELD_NAME = '_wl_videoobject_vimeo_api_key';
 
-	private function get_api_key() {
+	public static function get_api_key() {
 		return get_option( self::API_FIELD_NAME, false );
 	}
 
