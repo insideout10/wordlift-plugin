@@ -10,7 +10,7 @@ namespace Wordlift\Videoobject\Jsonld;
 use Wordlift\Videoobject\Data\Video\Video;
 use Wordlift\Videoobject\Data\Video_Storage\Storage;
 
-class Jsonld  {
+class Jsonld {
 	/**
 	 * @var Storage
 	 */
@@ -87,20 +87,26 @@ class Jsonld  {
 			 * @var $video Video
 			 */
 			$jsonld[] = array(
-				'@type'        => 'VideoObject',
-				'name'         => $video->name,
-				'description'  => $video->description,
-				'contentUrl'   => $video->content_url,
-				'embedUrl'     => $video->embed_url,
-				'uploadDate'   => $video->upload_date,
-				'thumbnailUrl' => $video->thumbnail_urls,
-				'duration'     => $video->duration
+				'@type'                => 'VideoObject',
+				'name'                 => $video->name,
+				'description'          => $video->description,
+				'contentUrl'           => $video->content_url,
+				'embedUrl'             => $video->embed_url,
+				'uploadDate'           => $video->upload_date,
+				'thumbnailUrl'         => $video->thumbnail_urls,
+				'duration'             => $video->duration,
+				'interactionStatistic' => array(
+					'@type'                => 'InteractionCounter',
+					'interactionType'      => array(
+						'@type' => 'http://schema.org/WatchAction'
+					),
+					'userInteractionCount' => $video->views
+				)
 			);
 		}
 
 		return $jsonld;
 	}
-
 
 
 	private function is_associative_array( $arr ) {
