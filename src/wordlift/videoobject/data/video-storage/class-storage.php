@@ -27,4 +27,24 @@ interface Storage {
 	 */
 	public function get_all_videos( $post_id );
 
+	/**
+	 * Remove the Video Object.
+	 *
+	 * @param $videos_to_be_removed array<Video>
+	 *
+	 * @param $post_id int
+	 *
+	 * @return bool return true if removed or false
+	 */
+	public function remove_videos( $videos_to_be_removed, $post_id );
+
+	/**
+	 * Remove all videos present for post id
+	 *
+	 * @param $post_id
+	 *
+	 * @return true if removed else false.
+	 */
+	public function remove_all_videos( $post_id );
+
 }

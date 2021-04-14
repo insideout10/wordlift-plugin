@@ -42,6 +42,10 @@ class Video {
 	 */
 	public $embed_url;
 
+	/**
+	 * @var string An unique identifier, usually the video url.
+	 */
+	public $id;
 
 	public function get_data() {
 

@@ -2,6 +2,9 @@
 
 namespace Wordlift\Videoobject\Filters;
 
+use Wordlift\Videoobject\Data\Embedded_Video\Embedded_Video;
+use Wordlift\Videoobject\Data\Video\Video;
+use Wordlift\Videoobject\Data\Video_Storage\Storage;
 use Wordlift\Videoobject\Data\Video_Storage\Video_Storage_Factory;
 use Wordlift\Videoobject\Parser\Parser_Factory;
 use Wordlift\Videoobject\Provider\Provider_Factory;
@@ -33,12 +36,17 @@ class Post_Filter {
 
 		$embedded_videos = $parser->get_videos( $post_id );
 
-
 		if ( ! $embedded_videos ) {
 			return;
 		}
 
 		$storage = Video_Storage_Factory::get_storage();
+
+		// Before sending api requests we need to check if there are any videos in
+		// store which is not present on post content, remove them if there are
+		// any
+		$this->remove_videos_from_store_if_not_present_in_content( $storage, $post_id, $embedded_videos );
+
 
 		$videos = $this->get_data_for_videos( $embedded_videos );
 
@@ -62,6 +70,45 @@ class Post_Filter {
 
 		return array_merge( $youtube_videos, $vimeo_videos );
 
+	}
+
+	/**
+	 * @param $storage Storage
+	 * @param $post_id int
+	 * @param $embedded_videos array<Embedded_Video>
+	 */
+	private function remove_videos_from_store_if_not_present_in_content( $storage, $post_id, $embedded_videos ) {
+
+		$videos_to_be_deleted = $this->get_videos_to_be_deleted( $storage, $post_id, $embedded_videos );
+
+		$storage->remove_videos( $videos_to_be_deleted, $post_id );
+
+	}
+
+	/**
+	 * @param Storage $storage
+	 * @param $post_id
+	 * @param array $embedded_videos
+	 *
+	 * @return array
+	 */
+	private function get_videos_to_be_deleted( Storage $storage, $post_id, array $embedded_videos ) {
+		$videos_in_store = $storage->get_all_videos( $post_id );
+
+
+		$embedded_video_urls = array_map( function ( $embedded_video ) {
+			/**
+			 * @var $embedded_video Embedded_Video
+			 */
+			return $embedded_video->get_url();
+		}, $embedded_videos );
+
+		return array_filter( $videos_in_store, function ( $video ) use ( $embedded_video_urls ) {
+			/**
+			 * @var $video Video
+			 */
+			return ! in_array( $video->id, $embedded_video_urls );
+		} );
 	}
 
 }

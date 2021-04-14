@@ -23,5 +23,30 @@ class Meta_Storage implements Storage {
 
 	}
 
+	public function remove_videos( $videos_to_be_removed, $post_id ) {
 
+		$videos_to_be_removed_ids = array_map( function ( $video ) {
+			return $video->id;
+		}, $videos_to_be_removed );
+
+		$present_videos = $this->get_all_videos( $post_id );
+
+		$filtered_videos = array_filter( $present_videos, function ( $video ) use ( $videos_to_be_removed_ids ) {
+			return ! in_array( $video->id, $videos_to_be_removed_ids );
+		} );
+
+		// Remove all existing videos.
+		$this->remove_all_videos( $post_id );
+
+		// Save the videos.
+		foreach ( $filtered_videos as $video ) {
+			$this->add_video( $post_id, $video );
+		}
+
+
+	}
+
+	public function remove_all_videos( $post_id ) {
+		delete_post_meta( $post_id, self::META_KEY );
+	}
 }
