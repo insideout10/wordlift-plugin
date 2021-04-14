@@ -10,7 +10,7 @@ class Videoobject_Tab_Test extends \Wordlift_Videoobject_Unit_Test_Case {
 		$tabs = apply_filters( 'wl_admin_page_tabs', array() );
 		$this->assertCount( 1, $tabs );
 		$video_tab = $tabs[0];
-		$this->assertSame( 'video-object-settings', $video_tab['slug'] );
+		$this->assertSame( 'videoobject-settings', $video_tab['slug'] );
 	}
 
 }

@@ -61,6 +61,7 @@ EOF;
 		$this->assertNotNull( $video->thumbnail_urls );
 		$this->assertNotNull( $video->upload_date );
 		$this->assertNotNull( $video->duration );
+		$this->assertSame( 'https://i.ytimg.com/vi/fJAPDAK4GiI/default.jpg', $video->thumbnail_urls[0] );
 		$this->assertNotNull( $video->content_url );
 		$this->assertNotNull( $video->embed_url );
 	}
@@ -96,8 +97,8 @@ EOF;
 	public function test_on_save_post_with_multiple_youtube_videos_should_store_it() {
 		$post_content = self::multiple_youtube_video_post_content();
 
-		$post_id      = $this->create_post_with_content( $post_content );
-		$videos       = Video_Storage_Factory::get_storage()->get_all_videos( $post_id );
+		$post_id = $this->create_post_with_content( $post_content );
+		$videos  = Video_Storage_Factory::get_storage()->get_all_videos( $post_id );
 		// we should have 2 video on the storage.
 		$this->assertCount( 2, $videos );
 	}
