@@ -21,8 +21,8 @@
 			?>
         </td>
         <td>
-			<?php _e( 'here', 'wordlift' );
-			_e( ' is how to get it', 'wordlift' ); ?>
+            <a href="https://developers.google.com/youtube/registering_an_application"><?php _e( 'here', 'wordlift' ); ?></a>
+			<?php _e( ' is how to get it', 'wordlift' ); ?>
         </td>
     </tr>
 
@@ -41,8 +41,8 @@
 			?>
         </td>
         <td>
-			<?php _e( 'here', 'wordlift' );
-			_e( ' is how to get it', 'wordlift' ); ?>
+            <a href="https://developer.vimeo.com/api/guides/start"><?php _e( 'here', 'wordlift' ); ?></a>
+			<?php _e( ' is how to get it', 'wordlift' ); ?>
         </td>
     </tr>
 
