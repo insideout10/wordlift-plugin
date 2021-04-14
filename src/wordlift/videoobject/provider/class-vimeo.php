@@ -73,6 +73,11 @@ class Vimeo extends Api_Provider {
 		$video->thumbnail_urls = $this->set_thumbnail_urls( $vimeo_video_data );
 		$video->id             = $video->content_url;
 
+		if ( array_key_exists( 'stats', $vimeo_video_data )
+		     && array_key_exists( 'plays', $vimeo_video_data['stats'] ) ) {
+			$video->views = (int) $vimeo_video_data['stats']['plays'];
+		}
+
 		return $video;
 	}
 

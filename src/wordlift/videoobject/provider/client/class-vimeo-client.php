@@ -53,7 +53,7 @@ class Vimeo_Client extends Singleton implements Client {
 		$api_url = $this->get_api_url() . "/videos/";
 		$api_url = add_query_arg( array(
 			'uris'   => $ids,
-			'fields' => 'name,description,link,uri,duration,release_time,pictures'
+			'fields' => 'name,description,link,uri,duration,release_time,pictures,stats'
 		), $api_url );
 
 
