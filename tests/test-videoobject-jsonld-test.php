@@ -40,6 +40,7 @@ class Videoobject_Jsonld_Test extends \Wordlift_Unit_Test_Case {
 		$this->assertArrayHasKey( 'uploadDate', $single_video );
 		$this->assertArrayHasKey( 'thumbnailUrl', $single_video );
 		$this->assertArrayHasKey( 'duration', $single_video );
+		$this->assertArrayHasKey('interactionStatistic', $single_video );
 	}
 
 

@@ -47,6 +47,11 @@ class Video {
 	 */
 	public $id;
 
+	/**
+	 * @var int The number of views for the video.
+	 */
+	public $views;
+
 	public function get_data() {
 
 		return array(
