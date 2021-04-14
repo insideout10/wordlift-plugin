@@ -33,13 +33,13 @@ class Woocommerce_Shipping_Data_Test_4_3 extends WP_UnitTestCase {
 			'@type'    => 'QuantitativeValue',
 			'minValue' => 1,
 			'maxValue' => 3,
-		), $jsonld['offers'][0]['shippingDetails'][0]['handlingTime'] );
+		), $jsonld['offers'][0]['shippingDetails'][0]['shippingDeliveryTime']['handlingTime'] );
 
 		$this->assertEqualSets( array(
 			'@type'    => 'QuantitativeValue',
 			'minValue' => 1,
 			'maxValue' => 3,
-		), $jsonld['offers'][0]['shippingDetails'][1]['handlingTime'] );
+		), $jsonld['offers'][0]['shippingDetails'][1]['shippingDeliveryTime']['handlingTime'] );
 
 	}
 

@@ -53,4 +53,34 @@ class Shipping_Method {
 
 	}
 
+	public function add_transit_time( &$shipping_delivery_time ) {
+
+		$prefix   = "wcsdt_transit_m{$this->wc_shipping_method->get_instance_id()}";
+		$property = 'transitTime';
+
+		$option = get_option( 'wpsso_options' );
+
+		if ( empty( $option["{$prefix}_unit_code"] )
+		     || empty( $option["{$prefix}_minimum"] )
+		     || empty( $option["{$prefix}_maximum"] ) ) {
+			return;
+		}
+
+		$unit_code = $option["{$prefix}_unit_code"];
+		$minimum   = $option["{$prefix}_minimum"];
+		$maximum   = $option["{$prefix}_maximum"];
+
+		if ( 'HUR' === $unit_code ) {
+			$minimum = floor( $minimum / 24.0 );
+			$maximum = ceil( $maximum / 24.0 );
+		}
+
+		$shipping_delivery_time[ $property ] = array(
+			'@type'    => 'QuantitativeValue',
+			'minValue' => intval( $minimum ),
+			'maxValue' => intval( $maximum ),
+		);
+
+	}
+
 }

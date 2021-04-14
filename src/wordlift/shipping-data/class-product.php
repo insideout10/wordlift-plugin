@@ -20,7 +20,7 @@ class Product {
 
 	}
 
-	public function add_handling_time( &$offer_shipping_details ) {
+	public function add_handling_time( &$shipping_delivery_time ) {
 
 		// Bail out if there's no product.
 		if ( empty( $this->wc_product ) ) {
@@ -46,7 +46,7 @@ class Product {
 			$maximum = ceil( $maximum / 24.0 );
 		}
 
-		$offer_shipping_details['handlingTime'] = array(
+		$shipping_delivery_time['handlingTime'] = array(
 			'@type'    => 'QuantitativeValue',
 			'minValue' => $minimum,
 			'maxValue' => $maximum,

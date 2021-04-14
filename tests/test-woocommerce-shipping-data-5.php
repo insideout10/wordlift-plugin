@@ -3,11 +3,11 @@
 /**
  * Class Woocommerce_Shipping_Data_Test
  *
- * Use Case #4
+ * Use Case #5
  * @link https://docs.google.com/spreadsheets/d/1cFpGjB6oJeGV2h0L3VLMs_IgCCHf7wxIY6t0a2jqZ1Y/edit#gid=0
  * @group woocommerce
  */
-class Woocommerce_Shipping_Data_Test_4_2 extends WP_UnitTestCase {
+class Woocommerce_Shipping_Data_Test_5 extends WP_UnitTestCase {
 
 	/**
 	 * To install required plugins:
@@ -31,15 +31,9 @@ class Woocommerce_Shipping_Data_Test_4_2 extends WP_UnitTestCase {
 
 		$this->assertEqualSets( array(
 			'@type'    => 'QuantitativeValue',
-			'minValue' => 1,
-			'maxValue' => 3,
-		), $jsonld['offers'][0]['shippingDetails'][0]['shippingDeliveryTime']['handlingTime'] );
-
-		$this->assertEqualSets( array(
-			'@type'    => 'QuantitativeValue',
-			'minValue' => 1,
-			'maxValue' => 3,
-		), $jsonld['offers'][0]['shippingDetails'][1]['shippingDeliveryTime']['handlingTime'] );
+			'minValue' => 0,
+			'maxValue' => 2,
+		), $jsonld['offers'][0]['shippingDetails'][1]['shippingDeliveryTime']['transitTime'] );
 
 	}
 
@@ -55,7 +49,7 @@ class Woocommerce_Shipping_Data_Test_4_2 extends WP_UnitTestCase {
 
 		$shipping_method_id        = $zone->add_shipping_method( 'flat_rate' );
 		$flat_rate_shipping_method = WC_Shipping_Zones::get_shipping_method( $shipping_method_id );
-		$flat_rate_shipping_method->add_rate( array( 'label' => 'Free Shipping', 'cost' => 10, ) );
+		$flat_rate_shipping_method->add_rate( array( 'label' => 'Flat Rate', 'cost' => 10, ) );
 
 		update_option( "woocommerce_flat_rate_{$shipping_method_id}_settings", array(
 			'title'         => 'Flat rate',
@@ -67,6 +61,18 @@ class Woocommerce_Shipping_Data_Test_4_2 extends WP_UnitTestCase {
 		), true );
 
 		$zone->save();
+
+		/*
+		 * Add the transit time.
+		 */
+		$wpsso_options = get_option( 'wpsso_options' );
+		$prefix        = "wcsdt_transit_m{$shipping_method_id}";
+
+		$wpsso_options["{$prefix}_minimum"]   = 8;
+		$wpsso_options["{$prefix}_maximum"]   = 36;
+		$wpsso_options["{$prefix}_unit_code"] = 'HUR';
+
+		update_option( 'wpsso_options', $wpsso_options );
 
 	}
 
@@ -96,8 +102,8 @@ class Woocommerce_Shipping_Data_Test_4_2 extends WP_UnitTestCase {
 
 		$option = get_option( 'wpsso_options' );
 
-		$option['wcsdt_handling_c0_minimum']   = 1;
-		$option['wcsdt_handling_c0_maximum']   = 3;
+		$option['wcsdt_handling_c0_minimum']   = 0;
+		$option['wcsdt_handling_c0_maximum']   = 0;
 		$option['wcsdt_handling_c0_unit_code'] = 'DAY';
 
 		update_option( 'wpsso_options', $option );
@@ -106,14 +112,29 @@ class Woocommerce_Shipping_Data_Test_4_2 extends WP_UnitTestCase {
 
 	private function add_product() {
 
+		$term = wp_create_term( 'custom-shipping-class', 'product_shipping_class' );
+		$this->set_shipping_class_handling_time( $term['term_id'] );
+
 		$product_id = $this->factory()->post->create( array(
 			'post_type' => 'product'
 		) );
 
 		$wc_product = wc_get_product( $product_id );
-		$wc_product->set_shipping_class_id( 1 );
+		$wc_product->set_shipping_class_id( $term['term_id'] );
+		$wc_product->save();
 
 		return $product_id;
 	}
 
+	private function set_shipping_class_handling_time( $term_id ) {
+
+		$option = get_option( 'wpsso_options' );
+
+		$option["wcsdt_handling_c{$term_id}_minimum"]   = 1;
+		$option["wcsdt_handling_c{$term_id}_maximum"]   = 3;
+		$option["wcsdt_handling_c{$term_id}_unit_code"] = 'DAY';
+
+		update_option( 'wpsso_options', $option );
+
+	}
 }

@@ -138,6 +138,10 @@ class Shipping_Zone {
 
 	}
 
+	/**
+	 * @param array $jsonld
+	 * @param Product $product
+	 */
 	private function add_shipping_details_when_no_shipping_methods( &$jsonld, $product ) {
 
 		$offer_shipping_details = array( '@type' => 'OfferShippingDetails', );
@@ -147,12 +151,22 @@ class Shipping_Zone {
 		/*
 		 * Use Case UC004
 		 */
-		$product->add_handling_time( $offer_shipping_details );
+		$shipping_delivery_time = array( '@type' => 'ShippingDeliveryTime', );
+		$product->add_handling_time( $offer_shipping_details['deliveryTime'] );
+
+		if ( 1 < count( $shipping_delivery_time ) ) {
+			$offer_shipping_details['shippingDeliveryTime'] = $shipping_delivery_time;
+		}
 
 		$jsonld['shippingDetails'][] = $offer_shipping_details;
 
 	}
 
+	/**
+	 * @param array $jsonld
+	 * @param Product $product
+	 * @param Shipping_Method $method
+	 */
 	private function add_shipping_details_with_shipping_method( &$jsonld, $product, $method ) {
 
 		$offer_shipping_details = array( '@type' => 'OfferShippingDetails', );
@@ -165,10 +179,17 @@ class Shipping_Zone {
 		 */
 		$method->add_shipping_rate( $offer_shipping_details );
 
+		$shipping_delivery_time = array( '@type' => 'ShippingDeliveryTime', );
+		$method->add_transit_time( $shipping_delivery_time );
+
 		/*
 		 * Use Case UC004
 		 */
-		$product->add_handling_time( $offer_shipping_details );
+		$product->add_handling_time( $shipping_delivery_time );
+
+		if ( 1 < count( $shipping_delivery_time ) ) {
+			$offer_shipping_details['shippingDeliveryTime'] = $shipping_delivery_time;
+		}
 
 		$jsonld['shippingDetails'][] = $offer_shipping_details;
 
