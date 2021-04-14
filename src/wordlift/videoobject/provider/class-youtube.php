@@ -93,7 +93,7 @@ class Youtube extends Api_Provider {
 		$video->description = $video_data['snippet']['description'];
 
 		/**
-		 * @since 1.0.1
+		 * @since 3.30.0
 		 * Use title as fallback if description is not present.
 		 */
 		if ( ! $video->description ) {
