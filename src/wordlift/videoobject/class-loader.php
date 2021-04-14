@@ -6,6 +6,7 @@ use Wordlift\Common\Loader\Default_Loader;
 use Wordlift\Videoobject\Data\Video_Storage\Video_Storage_Factory;
 use Wordlift\Videoobject\Filters\Post_Filter;
 use Wordlift\Videoobject\Jsonld\Jsonld;
+use Wordlift\Videoobject\Tabs\Settings_Tab;
 
 
 /**
@@ -20,6 +21,9 @@ class Loader extends Default_Loader {
 		// Hook in to save_post to save the videos
 		$post_filter = new Post_Filter();
 		$post_filter->init();
+		// Add entry to wordlift admin tabs
+		$settings_tab = new Settings_Tab();
+		$settings_tab->init();
 	}
 
 	public function get_feature_slug() {
