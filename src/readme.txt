@@ -144,7 +144,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 = 3.31.0 (2021-04-__) =
 
-* Enhancement [#1342](https://github.com/insideout10/wordlift-plugin/issues/1342): Add support for Offer Shipping Details in SD
+* Enhancement [#1342](https://github.com/insideout10/wordlift-plugin/issues/1342): Add support for Offer Shipping Details in SD; add compatibility with WPSSO Core, WPSSO Schema JSON-LD Markup and WPSSO Shipping Delivery Time for WooCommerce
 
 = 3.30.0 (2021-04-__) =
 
