@@ -13,6 +13,12 @@ class Youtube extends Api_Provider {
 
 	const YT_API_FIELD_NAME = '__wl_video_object_youtube_api_key';
 
+	private static function get_thumbnails( $api_thumbnail_data ) {
+		return array_map( function ( $item ) {
+			return $item['url'];
+		}, $api_thumbnail_data );
+	}
+
 
 	public function get_videos_data( $videos ) {
 		$urls = array_map( function ( $video ) {
@@ -38,6 +44,7 @@ class Youtube extends Api_Provider {
 			return array();
 		}
 		$response_body = $this->api_client->get_data( $video_urls );
+
 		return $this->parse_youtube_video_data_from_response( $response_body );
 	}
 
@@ -95,7 +102,8 @@ class Youtube extends Api_Provider {
 		$video->upload_date = $video_data['snippet']['publishedAt'];
 
 		if ( array_key_exists( 'thumbnails', $video_data['snippet'] ) ) {
-			$video->thumbnail_urls = array_values( $video_data['snippet']['thumbnails'] );
+			$api_thumbnail_data    = array_values( $video_data['snippet']['thumbnails'] );
+			$video->thumbnail_urls = self::get_thumbnails( $api_thumbnail_data );
 		}
 
 		$video->id = $video->content_url;
