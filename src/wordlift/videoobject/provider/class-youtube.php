@@ -98,6 +98,8 @@ class Youtube extends Api_Provider {
 			$video->thumbnail_urls = array_values( $video_data['snippet']['thumbnails'] );
 		}
 
+		$video->id = $video->content_url;
+
 		return $video;
 
 	}

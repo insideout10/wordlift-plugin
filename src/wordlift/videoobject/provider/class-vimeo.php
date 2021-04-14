@@ -71,6 +71,7 @@ class Vimeo extends Api_Provider {
 		}
 		$video->upload_date    = $vimeo_video_data['release_time'];
 		$video->thumbnail_urls = $this->set_thumbnail_urls( $vimeo_video_data );
+		$video->id             = $video->content_url;
 
 		return $video;
 	}

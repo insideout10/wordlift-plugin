@@ -15,7 +15,7 @@ class Videoobject_Api_Test extends Wordlift_Videoobject_Unit_Test_Case {
 	 * @return string
 	 */
 	public static function multiple_youtube_video_post_content() {
-		$post_content = <<<EOF
+		return <<<EOF
 <!-- wp:embed {"url":"https://www.youtube.com/watch?v=fJAPDAK4GiI","type":"video","providerNameSlug":"youtube","responsive":true,"className":"wp-embed-aspect-16-9 wp-has-aspect-ratio"} -->
 <figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
 https://www.youtube.com/watch?v=fJAPDAK4GiI
@@ -27,8 +27,6 @@ https://www.youtube.com/watch?v=y-n93I5q-0g
 </div></figure>
 <!-- /wp:embed -->
 EOF;
-
-		return $post_content;
 	}
 
 	public function setUp() {
@@ -57,6 +55,7 @@ EOF;
 		 */
 		$video = $videos[0];
 		// check all of the properties are not null.
+		$this->assertNotNull( $video->id );
 		$this->assertNotNull( $video->name );
 		$this->assertNotNull( $video->description );
 		$this->assertNotNull( $video->thumbnail_urls );
@@ -83,6 +82,7 @@ EOF;
 		 */
 		$video = $videos[0];
 		// check all of the properties are not null.
+		$this->assertNotNull( $video->id );
 		$this->assertNotNull( $video->name );
 		$this->assertNotNull( $video->description );
 		$this->assertNotNull( $video->thumbnail_urls );
