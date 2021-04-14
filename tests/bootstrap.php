@@ -29,27 +29,32 @@ require_once $_tests_dir . '/includes/functions.php';
 function _manually_load_plugin() {
 	require dirname( __FILE__ ) . '/../src/wordlift.php';
 
-	if ( ! file_exists( ABSPATH . 'wp-content/plugins/woocommerce/' ) ) {
-		download( 'https://downloads.wordpress.org/plugin/woocommerce.5.1.0.zip', '/tmp/woocommerce.5.1.0.zip' );
-		unzip( '/tmp/woocommerce.5.1.0.zip', ABSPATH . 'wp-content/plugins/' );
-	}
 
-	if ( file_exists( ABSPATH . 'wp-content/plugins/wpsso/' ) ) {
-		download( 'https://downloads.wordpress.org/plugin/wpsso.8.26.1.zip', '/tmp/wpsso.8.26.1.zip' );
-		unzip( '/tmp/wpsso.8.26.1.zip', ABSPATH . 'wp-content/plugins/' );
-	}
+	if ( version_compare( get_bloginfo( 'version' ), '5.5', '>=' ) ) {
 
-	if ( file_exists( ABSPATH . 'wp-content/plugins/wpsso-wc-shipping-delivery-time/' ) ) {
-		download( 'https://downloads.wordpress.org/plugin/wpsso-wc-shipping-delivery-time.2.2.1.zip', '/tmp/wpsso-wc-shipping-delivery-time.2.2.1.zip' );
-		unzip( '/tmp/wpsso-wc-shipping-delivery-time.2.2.1.zip', ABSPATH . 'wp-content/plugins/' );
-	}
+		if ( ! file_exists( ABSPATH . 'wp-content/plugins/woocommerce/' ) ) {
+			download( 'https://downloads.wordpress.org/plugin/woocommerce.5.1.0.zip', '/tmp/woocommerce.5.1.0.zip' );
+			unzip( '/tmp/woocommerce.5.1.0.zip', ABSPATH . 'wp-content/plugins/' );
+		}
 
-	update_option( 'active_plugins',
-		array(
-			'woocommerce/woocommerce.php',
-			'wpsso/wpsso.php',
-			'wpsso-wc-shipping-delivery-time/wpsso-wc-shipping-delivery-time.php',
-		) );
+		if ( file_exists( ABSPATH . 'wp-content/plugins/wpsso/' ) ) {
+			download( 'https://downloads.wordpress.org/plugin/wpsso.8.26.1.zip', '/tmp/wpsso.8.26.1.zip' );
+			unzip( '/tmp/wpsso.8.26.1.zip', ABSPATH . 'wp-content/plugins/' );
+		}
+
+		if ( file_exists( ABSPATH . 'wp-content/plugins/wpsso-wc-shipping-delivery-time/' ) ) {
+			download( 'https://downloads.wordpress.org/plugin/wpsso-wc-shipping-delivery-time.2.2.1.zip', '/tmp/wpsso-wc-shipping-delivery-time.2.2.1.zip' );
+			unzip( '/tmp/wpsso-wc-shipping-delivery-time.2.2.1.zip', ABSPATH . 'wp-content/plugins/' );
+		}
+
+		update_option( 'active_plugins',
+			array(
+				'woocommerce/woocommerce.php',
+				'wpsso/wpsso.php',
+				'wpsso-wc-shipping-delivery-time/wpsso-wc-shipping-delivery-time.php',
+			) );
+
+	}
 }
 
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );

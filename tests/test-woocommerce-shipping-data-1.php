@@ -17,6 +17,8 @@ class Woocommerce_Shipping_Data_Test_1 extends WP_UnitTestCase {
 
 	function test() {
 
+		$this->skip_if_plugins_not_active();
+
 		$jsonld = apply_filters( 'wl_entity_jsonld', array(
 			'@type'  => 'Product',
 			'offers' => array(
@@ -25,6 +27,23 @@ class Woocommerce_Shipping_Data_Test_1 extends WP_UnitTestCase {
 		), - 1, array() );
 
 		$this->assertFalse( isset( $jsonld['offers'][0]['availableDeliveryMethod'] ), 'Property found in ' . var_export( $jsonld, true ) );
+
+	}
+
+	private function skip_if_plugins_not_active() {
+
+		foreach (
+			array(
+				'woocommerce/woocommerce.php',
+				'wpsso/wpsso.php',
+				'wpsso-wc-shipping-delivery-time/wpsso-wc-shipping-delivery-time.php',
+			) as $plugin_name
+		) {
+			if ( ! is_plugin_active( $plugin_name ) ) {
+				$this->markTestSkipped( "{$plugin_name} is not active" );
+			}
+
+		}
 
 	}
 
