@@ -73,4 +73,45 @@ EOF;
 
 	}
 
+	public function test_on_save_post_with_multiple_youtube_videos_should_store_it() {
+		$post_content = <<<EOF
+<!-- wp:embed {"url":"https://www.youtube.com/watch?v=fJAPDAK4GiI","type":"video","providerNameSlug":"youtube","responsive":true,"className":"wp-embed-aspect-16-9 wp-has-aspect-ratio"} -->
+<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+https://www.youtube.com/watch?v=fJAPDAK4GiI
+</div></figure>
+<!-- /wp:embed -->
+<!-- wp:embed {"url":"https://www.youtube.com/watch?v=y-n93I5q-0g","type":"video","providerNameSlug":"youtube","responsive":true,"className":"wp-embed-aspect-16-9 wp-has-aspect-ratio"} -->
+<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+https://www.youtube.com/watch?v=y-n93I5q-0g
+</div></figure>
+<!-- /wp:embed -->
+EOF;
+
+		$post_id      = $this->create_post_with_content( $post_content );
+		$videos       = Video_Storage_Factory::get_storage()->get_all_videos( $post_id );
+		// we should have 2 video on the storage.
+		$this->assertCount( 2, $videos );
+	}
+
+
+	public function test_on_save_post_with_multiple_vimeo_videos_should_store_it() {
+		$post_content = <<<EOF
+<!-- wp:embed {"url":"https://vimeo.com/162427937","type":"video","providerNameSlug":"vimeo","responsive":true,"className":"wp-embed-aspect-16-9 wp-has-aspect-ratio"} -->
+<figure class="wp-block-embed is-type-video is-provider-vimeo wp-block-embed-vimeo wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+https://vimeo.com/162427937
+</div></figure>
+<!-- /wp:embed -->
+<!-- wp:embed {"url":"https://vimeo.com/49219317","type":"video","providerNameSlug":"vimeo","responsive":true,"className":"wp-embed-aspect-16-9 wp-has-aspect-ratio"} -->
+<figure class="wp-block-embed is-type-video is-provider-vimeo wp-block-embed-vimeo wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+https://vimeo.com/49219317
+</div></figure>
+<!-- /wp:embed -->
+EOF;
+		$post_id      = $this->create_post_with_content( $post_content );
+		$videos       = Video_Storage_Factory::get_storage()->get_all_videos( $post_id );
+		// we should have 2 video on the storage.
+		$this->assertCount( 2, $videos );
+
+	}
+
 }

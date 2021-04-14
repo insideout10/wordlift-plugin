@@ -34,9 +34,11 @@ class Vimeo extends Api_Provider {
 
 
 		$response_body = $this->api_client->get_data( $urls );
-		if ( ! is_string( $response_body ) ) {
+
+		if ( ! is_string( $response_body ) || ! $response_body ) {
 			return array();
 		}
+
 		$response = json_decode( $response_body, true );
 
 		$video_list = $response['data'];
@@ -91,8 +93,7 @@ class Vimeo extends Api_Provider {
 
 		return array_map( function ( $picture_data ) {
 			return $picture_data['link'];
-		},
-			$pictures );
+		}, $pictures );
 
 	}
 

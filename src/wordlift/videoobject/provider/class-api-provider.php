@@ -5,7 +5,7 @@ namespace Wordlift\Videoobject\Provider;
 use Wordlift\Videoobject\Provider\Client\Client;
 
 /**
- * @since 3.30.0
+ * @since 3.31.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * This acts as abstract class for Providers we get data from using API.
  */
