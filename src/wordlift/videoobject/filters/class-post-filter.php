@@ -32,32 +32,7 @@ class Post_Filter {
 			return;
 		}
 
-		$parser = Parser_Factory::get_parser_from_content( $post->post_content );
-
-		$embedded_videos = $parser->get_videos( $post_id );
-
-		$storage = Video_Storage_Factory::get_storage();
-
-		// Before sending api requests we need to check if there are any videos in
-		// store which is not present on post content, remove them if there are
-		// any
-		$this->remove_videos_from_store_if_not_present_in_content( $storage, $post_id, $embedded_videos );
-
-
-		// Return early after removing all the videos.
-		if ( ! $embedded_videos ) {
-			return;
-		}
-
-		$videos = $this->get_data_for_videos( $embedded_videos );
-
-		if ( ! $videos ) {
-			return;
-		}
-
-		foreach ( $videos as $video ) {
-			$storage->add_video( $post_id, $video );
-		}
+		$this->process_video_urls( $post, $post_id );
 
 	}
 
@@ -93,9 +68,7 @@ class Post_Filter {
 	 * @return array
 	 */
 	private function get_videos_to_be_deleted( Storage $storage, $post_id, array $embedded_videos ) {
-		$videos_in_store = $storage->get_all_videos( $post_id );
-
-
+		$videos_in_store     = $storage->get_all_videos( $post_id );
 		$embedded_video_urls = array_map( function ( $embedded_video ) {
 			/**
 			 * @var $embedded_video Embedded_Video
@@ -109,6 +82,40 @@ class Post_Filter {
 			 */
 			return ! in_array( $video->id, $embedded_video_urls );
 		} );
+	}
+
+	/**
+	 * @param \WP_Post $post
+	 * @param $post_id
+	 */
+	private function process_video_urls( \WP_Post $post, $post_id ) {
+
+		$parser = Parser_Factory::get_parser_from_content( $post->post_content );
+
+		$embedded_videos = $parser->get_videos( $post_id );
+
+		$storage = Video_Storage_Factory::get_storage();
+
+		// Before sending api requests we need to check if there are any videos in
+		// store which is not present on post content, remove them if there are
+		// any
+		$this->remove_videos_from_store_if_not_present_in_content( $storage, $post_id, $embedded_videos );
+
+
+		// Return early after removing all the videos.
+		if ( ! $embedded_videos ) {
+			return;
+		}
+
+		$videos = $this->get_data_for_videos( $embedded_videos );
+
+		if ( ! $videos ) {
+			return;
+		}
+
+		foreach ( $videos as $video ) {
+			$storage->add_video( $post_id, $video );
+		}
 	}
 
 }
