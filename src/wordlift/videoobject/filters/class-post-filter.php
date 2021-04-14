@@ -36,9 +36,7 @@ class Post_Filter {
 
 		$embedded_videos = $parser->get_videos( $post_id );
 
-		if ( ! $embedded_videos ) {
-			return;
-		}
+
 
 		$storage = Video_Storage_Factory::get_storage();
 
@@ -47,6 +45,9 @@ class Post_Filter {
 		// any
 		$this->remove_videos_from_store_if_not_present_in_content( $storage, $post_id, $embedded_videos );
 
+		if ( ! $embedded_videos ) {
+			return;
+		}
 
 		$videos = $this->get_data_for_videos( $embedded_videos );
 
@@ -80,7 +81,6 @@ class Post_Filter {
 	private function remove_videos_from_store_if_not_present_in_content( $storage, $post_id, $embedded_videos ) {
 
 		$videos_to_be_deleted = $this->get_videos_to_be_deleted( $storage, $post_id, $embedded_videos );
-
 		$storage->remove_videos( $videos_to_be_deleted, $post_id );
 
 	}
