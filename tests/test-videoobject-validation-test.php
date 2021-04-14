@@ -1,6 +1,7 @@
 <?php
 
 use Wordlift\Videoobject\Data\Video_Storage\Video_Storage_Factory;
+use Wordlift\Videoobject\Provider\Client\Youtube_Client;
 use Wordlift\Videoobject\Provider\Vimeo;
 use Wordlift\Videoobject\Provider\Youtube;
 
@@ -23,15 +24,16 @@ class Videoobject_Validation_Test extends \Wordlift_Videoobject_Unit_Test_Case {
 //	}
 
 
-
 	public function test_should_not_send_requests_for_the_videos_which_are_already_stored() {
 		$post_content = Videoobject_Api_Test::multiple_youtube_video_post_content();
 		$post_id      = $this->create_post_with_content( $post_content );
-		$this->assertCount( 2, Video_Storage_Factory::get_storage()->get_all_videos( $post_id ), '2 videos should be present in video storage' );
+		$this->assertCount( 2, Youtube_Client::$requests_sent, '2 requests should be sent' );
 		wp_update_post( array(
 			'ID'           => $post_id,
 			'post_content' => $post_content . "<br/>"
 		) );
+		// upon updating, the requests count should be same.
+		$this->assertSame( 2, Youtube_Client::$requests_sent, 'Additional requests should not be sent since we already have data for 2 videos' );
 	}
 
 	public function test_should_remove_all_the_videos_which_are_removed_from_post_content() {
