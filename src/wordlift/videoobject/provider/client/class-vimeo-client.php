@@ -1,12 +1,14 @@
 <?php
 
 namespace Wordlift\Videoobject\Provider\Client;
+use Wordlift\Common\Singleton;
+
 /**
  * @since 3.31.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * This class acts as api client for vimeo.
  */
-class Vimeo_Client implements Client {
+class Vimeo_Client extends Singleton implements Client {
 	const VIMEO_URL_REGEX = '/https?:\/\/(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)(?:$|\/|\?)/';
 
 	/**

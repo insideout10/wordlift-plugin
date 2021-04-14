@@ -1,12 +1,15 @@
 <?php
 
 namespace Wordlift\Videoobject\Provider\Client;
+
+use Wordlift\Common\Singleton;
+
 /**
  * @since 3.31.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * This class acts an api client for youtube.
  */
-class Youtube_Client implements Client {
+class Youtube_Client extends Singleton implements Client {
 
 
 	public function get_api_key_option_name() {

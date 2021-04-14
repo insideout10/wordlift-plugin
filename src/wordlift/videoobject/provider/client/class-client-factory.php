@@ -14,9 +14,9 @@ class Client_Factory {
 
 	public static function get_client( $config ) {
 		if ( self::YOUTUBE === $config ) {
-			return new Youtube_Client();
+			return Youtube_Client::get_instance();
 		} else if ( self::VIMEO === $config ) {
-			return new Vimeo_Client();
+			return Vimeo_Client::get_instance();
 		}
 	}
 }
