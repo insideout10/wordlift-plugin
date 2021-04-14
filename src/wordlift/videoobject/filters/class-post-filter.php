@@ -4,6 +4,7 @@ namespace Wordlift\Videoobject\Filters;
 
 use Wordlift\Videoobject\Data\Embedded_Video\Embedded_Video;
 use Wordlift\Videoobject\Data\Video\Video;
+use Wordlift\Videoobject\Data\Video_Storage\Meta_Storage;
 use Wordlift\Videoobject\Data\Video_Storage\Storage;
 use Wordlift\Videoobject\Data\Video_Storage\Video_Storage_Factory;
 use Wordlift\Videoobject\Parser\Parser_Factory;
@@ -101,6 +102,7 @@ class Post_Filter {
 		// any
 		$this->remove_videos_from_store_if_not_present_in_content( $storage, $post_id, $embedded_videos );
 
+		$embedded_videos = $this->get_videos_without_existing_data( $storage, $post_id, $embedded_videos );
 
 		// Return early after removing all the videos.
 		if ( ! $embedded_videos ) {
@@ -116,6 +118,23 @@ class Post_Filter {
 		foreach ( $videos as $video ) {
 			$storage->add_video( $post_id, $video );
 		}
+	}
+
+	/**
+	 * @param $storage Storage
+	 * @param $post_id int
+	 * @param $embedded_videos array<Embedded_Video>
+	 * @return array<Embedded_Video> Return array of embedded videos which are not in store.
+	 */
+	private function get_videos_without_existing_data( $storage, $post_id, $embedded_videos ) {
+		$videos_in_store    = $storage->get_all_videos( $post_id );
+		$video_ids_in_store = array_map( function ( $video ) {
+			return $video->id;
+		}, $videos_in_store );
+
+		return array_filter( $embedded_videos, function ( $embedded_video ) use ( $video_ids_in_store ) {
+			return ! in_array( $embedded_video->get_url(), $video_ids_in_store );
+		} );
 	}
 
 }

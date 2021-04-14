@@ -25,15 +25,17 @@ class Videoobject_Validation_Test extends \Wordlift_Videoobject_Unit_Test_Case {
 
 
 	public function test_should_not_send_requests_for_the_videos_which_are_already_stored() {
+		// set youtube client requests sent value to 0
+		Youtube_Client::$requests_sent  = 0;
 		$post_content = Videoobject_Api_Test::multiple_youtube_video_post_content();
 		$post_id      = $this->create_post_with_content( $post_content );
-		$this->assertCount( 2, Youtube_Client::$requests_sent, '2 requests should be sent' );
+		$this->assertSame( 1, Youtube_Client::$requests_sent, '1 request should be sent' );
 		wp_update_post( array(
 			'ID'           => $post_id,
 			'post_content' => $post_content . "<br/>"
 		) );
 		// upon updating, the requests count should be same.
-		$this->assertSame( 2, Youtube_Client::$requests_sent, 'Additional requests should not be sent since we already have data for 2 videos' );
+		$this->assertSame( 1, Youtube_Client::$requests_sent, 'Additional requests should not be sent since we already have data for 2 videos' );
 	}
 
 	public function test_should_remove_all_the_videos_which_are_removed_from_post_content() {
