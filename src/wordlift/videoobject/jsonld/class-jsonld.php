@@ -86,23 +86,28 @@ class Jsonld {
 			/**
 			 * @var $video Video
 			 */
-			$jsonld[] = array(
-				'@type'                => 'VideoObject',
-				'name'                 => $video->name,
-				'description'          => $video->description,
-				'contentUrl'           => $video->content_url,
-				'embedUrl'             => $video->embed_url,
-				'uploadDate'           => $video->upload_date,
-				'thumbnailUrl'         => $video->thumbnail_urls,
-				'duration'             => $video->duration,
-				'interactionStatistic' => array(
+			$single_jsonld = array(
+				'@type'        => 'VideoObject',
+				'name'         => $video->name,
+				'description'  => $video->description,
+				'contentUrl'   => $video->content_url,
+				'embedUrl'     => $video->embed_url,
+				'uploadDate'   => $video->upload_date,
+				'thumbnailUrl' => $video->thumbnail_urls,
+				'duration'     => $video->duration,
+			);
+
+			if ( $video->views ) {
+				$single_jsonld['interactionStatistic'] = array(
 					'@type'                => 'InteractionCounter',
 					'interactionType'      => array(
 						'@type' => 'http://schema.org/WatchAction'
 					),
 					'userInteractionCount' => $video->views
-				)
-			);
+				);
+			}
+
+			$jsonld[] = $single_jsonld;
 		}
 
 		return $jsonld;

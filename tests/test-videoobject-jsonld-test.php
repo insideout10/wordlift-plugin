@@ -39,7 +39,7 @@ class Videoobject_Jsonld_Test extends \Wordlift_Videoobject_Unit_Test_Case {
 		$this->assertArrayHasKey( 'uploadDate', $single_video );
 		$this->assertArrayHasKey( 'thumbnailUrl', $single_video );
 		$this->assertArrayHasKey( 'duration', $single_video );
-		$this->assertArrayHasKey( 'interactionStatistic', $single_video );
+		$this->assertFalse( array_key_exists( 'interactionStatistic', $single_video ) );
 	}
 
 
@@ -60,7 +60,7 @@ class Videoobject_Jsonld_Test extends \Wordlift_Videoobject_Unit_Test_Case {
 		$jsonld        = apply_filters( 'wl_post_jsonld', array(), $post_id, array() );
 		$this->assertArrayHasKey( 'video', $jsonld );
 		$this->assertCount( 2, $jsonld['video'] );
-		$first_video = $jsonld['video'][0];
+		$first_video = $jsonld['video'][1];
 		$this->assertNotNull( $first_video['interactionStatistic']['userInteractionCount'] );
 		$this->assertTrue( is_numeric( $first_video['interactionStatistic']['userInteractionCount'] ), 'Views should be correctly added for youtube videos' );
 	}
