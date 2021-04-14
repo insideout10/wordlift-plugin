@@ -36,8 +36,6 @@ class Post_Filter {
 
 		$embedded_videos = $parser->get_videos( $post_id );
 
-
-
 		$storage = Video_Storage_Factory::get_storage();
 
 		// Before sending api requests we need to check if there are any videos in
@@ -45,6 +43,8 @@ class Post_Filter {
 		// any
 		$this->remove_videos_from_store_if_not_present_in_content( $storage, $post_id, $embedded_videos );
 
+
+		// Return early after removing all the videos.
 		if ( ! $embedded_videos ) {
 			return;
 		}
@@ -59,11 +59,11 @@ class Post_Filter {
 			$storage->add_video( $post_id, $video );
 		}
 
-
 	}
 
 
 	private function get_data_for_videos( $embedded_videos ) {
+
 		$youtube_provider = Provider_Factory::get_provider( Provider_Factory::YOUTUBE );
 		$youtube_videos   = $youtube_provider->get_videos_data( $embedded_videos );
 		$vimeo_provider   = Provider_Factory::get_provider( Provider_Factory::VIMEO );
