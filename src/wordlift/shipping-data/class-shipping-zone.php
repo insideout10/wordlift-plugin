@@ -128,6 +128,33 @@ class Shipping_Zone {
 
 		$this->make_sure_shipping_details_exists_and_it_is_an_array( $jsonld );
 
+		if ( empty( $this->methods ) ) {
+			$this->add_shipping_details_when_no_shipping_methods( $jsonld, $product );
+		} else {
+			foreach ( $this->methods as $method ) {
+				$this->add_shipping_details_with_shipping_method( $jsonld, $product, $method );
+			}
+		}
+
+	}
+
+	private function add_shipping_details_when_no_shipping_methods( &$jsonld, $product ) {
+
+		$offer_shipping_details = array( '@type' => 'OfferShippingDetails', );
+
+		$this->add_shipping_destination( $offer_shipping_details );
+
+		/*
+		 * Use Case UC004
+		 */
+		$product->add_handling_time( $offer_shipping_details );
+
+		$jsonld['shippingDetails'][] = $offer_shipping_details;
+
+	}
+
+	private function add_shipping_details_with_shipping_method( &$jsonld, $product, $method ) {
+
 		$offer_shipping_details = array( '@type' => 'OfferShippingDetails', );
 
 		$this->add_shipping_destination( $offer_shipping_details );
@@ -135,12 +162,8 @@ class Shipping_Zone {
 		/*
 		 * Use Case UC003
 		 * 1.4.3
-		 *
-		 * https://editorial.thenextweb.com/wp-admin/admin-ajax.php?action=wl_ttl_cache_cleaner__flush
 		 */
-		foreach ( $this->methods as $method ) {
-			$method->add_shipping_rate( $offer_shipping_details );
-		}
+		$method->add_shipping_rate( $offer_shipping_details );
 
 		/*
 		 * Use Case UC004

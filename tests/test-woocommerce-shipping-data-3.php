@@ -42,6 +42,17 @@ class Woocommerce_Shipping_Data_Test_3 extends WP_UnitTestCase {
 					'value'       => '0',
 					'currency'    => 'GBP'
 				),
+			),
+		), $jsonld['offers'][0]['shippingDetails'][0] );
+
+		$this->assertEqualSets( array(
+			'@type'               => 'OfferShippingDetails',
+			'shippingDestination' => array(
+				'@type'          => 'DefinedRegion',
+				'addressCountry' => 'IT',
+				'addressRegion'  => array( 'RM', 'MI', )
+			),
+			'shippingRate'        => array(
 				array(
 					'@type'       => 'MonetaryAmount',
 					'name'        => 'Flat rate',
@@ -50,7 +61,7 @@ class Woocommerce_Shipping_Data_Test_3 extends WP_UnitTestCase {
 					'currency'    => 'GBP'
 				)
 			),
-		), $jsonld['offers'][0]['shippingDetails'][0] );
+		), $jsonld['offers'][0]['shippingDetails'][1] );
 
 		$this->assertEqualSets( array(
 			'@type'               => 'OfferShippingDetails',
@@ -67,7 +78,7 @@ class Woocommerce_Shipping_Data_Test_3 extends WP_UnitTestCase {
 					'currency'    => 'GBP'
 				)
 			)
-		), $jsonld['offers'][0]['shippingDetails'][1] );
+		), $jsonld['offers'][0]['shippingDetails'][2] );
 
 	}
 
