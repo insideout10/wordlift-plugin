@@ -1,4 +1,7 @@
 <?php
+
+use Wordlift\Videoobject\Data\Video_Storage\Video_Storage_Factory;
+
 /**
  * Class Videoobject_Block_Parser_Test
  * @group videoobject
@@ -27,5 +30,26 @@ class Videoobject_Rest_Controller_Test extends \Wordlift_Videoobject_Unit_Test_C
 	public function test_rest_route_for_getting_all_videos() {
 		$routes = $this->server->get_routes();
 		$this->assertArrayHasKey( $this->get_all_videos_route, $routes );
+	}
+
+	public function test_when_given_post_id_should_return_all_videos() {
+		$post_id = $this->factory()->post->create();
+		$video   = new Wordlift\Videoobject\Data\Video\Video();
+		Video_Storage_Factory::get_storage()->add_video( $post_id, $video );
+		// send the post request.
+		$user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
+		$user    = wp_set_current_user( $user_id );
+
+		$request   = new WP_REST_Request( 'POST', $this->get_all_videos_route );
+		$json_data = wp_json_encode(
+			array(
+				'post_id' => $post_id
+			)
+		);
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( $json_data );
+		$response = $this->server->dispatch( $request );
+		$this->assertSame( 200, $response->get_status() );
+		$this->assertCount( 1, $response->get_data() );
 	}
 }
