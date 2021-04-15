@@ -3,6 +3,7 @@
 namespace Wordlift\Videoobject;
 
 use Wordlift\Common\Loader\Default_Loader;
+use Wordlift\Videoobject\Api\Rest_Controller;
 use Wordlift\Videoobject\Data\Video_Storage\Video_Storage_Factory;
 use Wordlift\Videoobject\Filters\Post_Filter;
 use Wordlift\Videoobject\Jsonld\Jsonld;
@@ -27,6 +28,8 @@ class Loader extends Default_Loader {
 		$settings_tab->init();
 		$video_sitemap = new Video_Sitemap();
 		$video_sitemap->init();
+		$rest_controller = new Rest_Controller();
+		$rest_controller->register_all_routes();
 	}
 
 	public function get_feature_slug() {
