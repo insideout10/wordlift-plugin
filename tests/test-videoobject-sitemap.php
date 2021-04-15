@@ -56,4 +56,11 @@ EOF;
 
 	}
 
+	public function test_should_remove_cron_on_wordlift_generate_video_sitemap_off_action() {
+		do_action('wordlift_generate_video_sitemap_on');
+		$this->assertTrue( is_numeric( wp_next_scheduled( Video_Sitemap::CRON_ACTION_HOOK ) ), 'Cron should be present for video sitemap' );
+		do_action('wordlift_generate_video_sitemap_off');
+		$this->assertFalse( wp_next_scheduled( Video_Sitemap::CRON_ACTION_HOOK ), 'Cron should be present for video sitemap' );
+	}
+
 }

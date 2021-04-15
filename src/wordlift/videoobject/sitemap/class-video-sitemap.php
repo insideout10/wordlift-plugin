@@ -16,10 +16,14 @@ class Video_Sitemap {
 
 		add_action( self::CRON_ACTION_HOOK, array( $this, 'generate_video_sitemap' ) );
 
+		add_action( 'wordlift_generate_video_sitemap_off', array( $this, 'remove_scheduled_generation' ) );
+
 	}
 
 	public function schedule_generation() {
-		wp_schedule_event( time(), 'daily', self::CRON_ACTION_HOOK );
+		if ( ! wp_next_scheduled( self::CRON_ACTION_HOOK ) ) {
+			wp_schedule_event( time(), 'daily', self::CRON_ACTION_HOOK );
+		}
 	}
 
 	public function generate_video_sitemap() {
@@ -42,5 +46,10 @@ EOF;
 
 	}
 
+	public function remove_scheduled_generation() {
+		if ( wp_next_scheduled( self::CRON_ACTION_HOOK ) ) {
+			wp_clear_scheduled_hook( self::CRON_ACTION_HOOK );
+		}
+	}
 
 }
