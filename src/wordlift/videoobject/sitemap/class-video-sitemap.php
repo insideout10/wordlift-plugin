@@ -6,6 +6,8 @@
 
 namespace Wordlift\Videoobject\Sitemap;
 
+use Wordlift\Videoobject\Data\Video\Video;
+
 class Video_Sitemap {
 
 	const CRON_ACTION_HOOK = 'wl_video_sitemap_generation';
@@ -14,10 +16,19 @@ class Video_Sitemap {
 
 		add_action( 'wordlift_generate_video_sitemap_on', array( $this, 'schedule_generation' ) );
 
+		add_action( self::CRON_ACTION_HOOK, array( $this, 'generate_video_sitemap' ) );
+
 	}
 
 	public function schedule_generation() {
 		wp_schedule_event( time(), 'daily', self::CRON_ACTION_HOOK );
 	}
+
+	public function generate_video_sitemap() {
+
+
+	}
+
+
 
 }
