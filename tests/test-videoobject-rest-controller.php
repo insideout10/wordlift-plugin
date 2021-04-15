@@ -12,7 +12,9 @@ class Videoobject_Rest_Controller_Test extends \Wordlift_Videoobject_Unit_Test_C
 	 * @var WP_REST_Server
 	 */
 	private $server;
+
 	private $get_all_videos_route = '/wordlift/v1/videos';
+	private $save_all_videos_route = '/wordlift/v1/videos/save';
 
 	public function setUp() {
 		parent::setUp();
@@ -51,5 +53,22 @@ class Videoobject_Rest_Controller_Test extends \Wordlift_Videoobject_Unit_Test_C
 		$response = $this->server->dispatch( $request );
 		$this->assertSame( 200, $response->get_status() );
 		$this->assertCount( 1, $response->get_data() );
+	}
+
+	public function test_should_save_videos_posted_to_endpoint() {
+		$post_id = $this->factory()->post->create();
+		$video   = new Wordlift\Videoobject\Data\Video\Video();
+		$user_id = $this->factory()->user->create( array( 'role' => 'administrator' ) );
+		$user    = wp_set_current_user( $user_id );
+
+		$request   = new WP_REST_Request( 'POST', $this->save_all_videos_route );
+		$json_data = wp_json_encode(
+			array(
+				'post_id' => $post_id,
+				'videos' => array( $video )
+			)
+		);
+		$response = $this->server->dispatch( $request );
+		$this->assertSame( 200, $response->get_status() );
 	}
 }
