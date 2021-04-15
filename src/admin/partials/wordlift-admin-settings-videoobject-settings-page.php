@@ -21,14 +21,15 @@ if ( isset( $_POST['wordlift_videoobject_youtube_api_key'] )
 	}
 }
 
-if ( isset( $_POST['wl_enable_video_sitemap'] ) ) {
-	update_option( "_wl_video_sitemap_generation", 1 );
-	do_action( 'wordlift_generate_video_sitemap_on' );
-} else {
-	update_option( "_wl_video_sitemap_generation", 0 );
-	do_action( 'wordlift_generate_video_sitemap_off' );
+if ( isset( $_POST ) ) {
+	if ( isset( $_POST['wl_enable_video_sitemap'] ) ) {
+		update_option( "_wl_video_sitemap_generation", 1 );
+		do_action( 'wordlift_generate_video_sitemap_on' );
+	} else {
+		update_option( "_wl_video_sitemap_generation", 0 );
+		do_action( 'wordlift_generate_video_sitemap_off' );
+	}
 }
-
 
 ?>
 <h1><?php _e( 'API Settings', 'wordlift' ); ?></h1>
