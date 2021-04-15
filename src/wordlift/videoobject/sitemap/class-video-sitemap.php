@@ -36,18 +36,12 @@ EOF;
 
 		$xml = $sitemap_start_tag . $sitemap_body . $sitemap_end_tag;
 
-		if ( ! defined( ABSPATH ) ) {
+		if ( ! defined( 'ABSPATH' ) ) {
 			return;
 		}
 
-		$fp = fopen( ABSPATH . 'wl-video-sitemap.xml', 'w' );
+		file_put_contents( ABSPATH . 'wl-video-sitemap.xml', $xml );
 
-		if ( ! $fp ) {
-			return;
-		}
-
-		fwrite( $fp, $xml );
-		fclose( $fp );
 	}
 
 
