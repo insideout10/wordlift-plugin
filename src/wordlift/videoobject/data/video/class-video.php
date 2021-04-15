@@ -71,6 +71,14 @@ class Video {
 	 */
 	public $live_video_end_date;
 
+	public function from( $data ) {
+		$keys = array_keys( get_class_vars( get_class( $this ) ) );
+		// Loop through the keys and set the value from array
+		foreach ( $keys as $key ) {
+			$this->$key = array_key_exists( $key, $data ) ? $data[ $key ] : null;
+		}
+	}
+
 	public function get_data() {
 
 		return array(

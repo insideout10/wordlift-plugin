@@ -7,7 +7,7 @@
 namespace Wordlift\Videoobject\Api;
 
 use Wordlift\Videoobject\Data\Video_Storage\Video_Storage_Factory;
-use Wordlift\Vocabulary\Api\Api_Config;
+use Wordlift\Videoobject\Data\Video\Video;
 use WP_REST_Server;
 
 class Rest_Controller {
@@ -32,6 +32,19 @@ class Rest_Controller {
 		$data    = $request->get_params();
 		$post_id = (int) $data['post_id'];
 		$videos  = (array) $data['videos'];
+		if ( ! $videos ) {
+			return;
+		}
+		$storage = Video_Storage_Factory::get_storage();
+		$storage->remove_all_videos( $post_id );
+
+		foreach ( $videos as $video ) {
+			$video_obj = new Video();
+			$video_obj->from( (array) $video );
+			$storage->add_video( $post_id, $video_obj );
+		}
+
+
 	}
 
 	private function register_get_all_videos_route() {

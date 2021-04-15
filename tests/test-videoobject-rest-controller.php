@@ -1,5 +1,6 @@
 <?php
 
+use Wordlift\Videoobject\Data\Video\Video;
 use Wordlift\Videoobject\Data\Video_Storage\Video_Storage_Factory;
 
 /**
@@ -72,5 +73,8 @@ class Videoobject_Rest_Controller_Test extends \Wordlift_Videoobject_Unit_Test_C
 		$request->set_body( $json_data );
 		$response = $this->server->dispatch( $request );
 		$this->assertSame( 200, $response->get_status() );
+		$saved_videos = Video_Storage_Factory::get_storage()->get_all_videos( $post_id );
+		$this->assertCount( 1, $saved_videos );
+		$this->assertTrue( $saved_videos[0] instanceof Video, 'Video should be saved in the Video class itself');
 	}
 }
