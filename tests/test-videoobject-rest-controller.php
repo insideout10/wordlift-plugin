@@ -68,6 +68,8 @@ class Videoobject_Rest_Controller_Test extends \Wordlift_Videoobject_Unit_Test_C
 				'videos' => array( $video )
 			)
 		);
+		$request->set_header( 'content-type', 'application/json' );
+		$request->set_body( $json_data );
 		$response = $this->server->dispatch( $request );
 		$this->assertSame( 200, $response->get_status() );
 	}
