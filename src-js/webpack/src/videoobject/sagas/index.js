@@ -1,13 +1,13 @@
 import store from "../../vocabulary/store";
 import {fork, put, call, takeLatest} from "redux-saga/effects";
 import {getVideosFromApi} from "../api";
-import {setVideos} from "../actions";
+import {updateVideos} from "../actions";
 
 
 function* getVideos(action) {
     const videos = yield call(getVideosFromApi, store.getState().apiConfig);
     // set videos on store.
-    yield put(setVideos({videos: videos}))
+    yield put(updateVideos({videos: videos}))
 
 }
 

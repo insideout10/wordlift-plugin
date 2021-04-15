@@ -1,0 +1,5 @@
+window.addEventListener("load", () => {
+
+
+
+})
