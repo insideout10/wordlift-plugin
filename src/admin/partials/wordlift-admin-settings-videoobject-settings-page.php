@@ -21,6 +21,14 @@ if ( isset( $_POST['wordlift_videoobject_youtube_api_key'] )
 	}
 }
 
+if ( isset( $_POST['wl_enable_video_sitemap'] ) ) {
+	update_option( "_wl_video_sitemap_generation", 1 );
+	do_action( 'wordlift_generate_video_sitemap_on' );
+} else {
+	update_option( "_wl_video_sitemap_generation", 0 );
+	do_action( 'wordlift_generate_video_sitemap_off' );
+}
+
 
 ?>
 <h1><?php _e( 'API Settings', 'wordlift' ); ?></h1>
@@ -72,8 +80,12 @@ if ( isset( $_POST['wordlift_videoobject_youtube_api_key'] )
     <p>
 		<?php _e( 'The Video Sitemap works like any other XML Sitemap. Search engines will use it to display rich snippets in result pages.' ); ?>
     </p>
-    <p> <?php _e( 'Enable Video Sitemap' ); ?> <input type="checkbox"></p>
+	<?php $is_checked = get_option( '_wl_video_sitemap_generation', false ) ? 'checked' : '' ?>
+    <p> <?php _e( 'Enable Video Sitemap' ); ?>
+        <input type="checkbox" name="wl_enable_video_sitemap" value="1" <?php echo $is_checked; ?> ></p>
     <p> <?php _e( 'Here is link to your Video Sitemap. Add it now, to Google Search Console.', 'wordlift' ); ?></p>
-    <p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="Save Changes">
+
+    <p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary"
+                             value="Save Changes">
     </p>
 </form>
