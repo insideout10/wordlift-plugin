@@ -4,6 +4,11 @@
 import React from "react";
 import {connect} from "react-redux";
 
+/**
+ * Internal dependencies.
+ */
+import Video from "../video";
+
 class VideoList extends React.Component {
 
     constructor(props) {
