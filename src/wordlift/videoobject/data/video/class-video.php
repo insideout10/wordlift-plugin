@@ -52,6 +52,25 @@ class Video {
 	 */
 	public $views;
 
+
+	/**
+	 * All the live video properties.
+	 */
+	/**
+	 * @var bool
+	 */
+	public $is_live_video;
+
+	/**
+	 * @var string Live video start date
+	 */
+	public $live_video_start_date;
+
+	/**
+	 * @var string Live video end date
+	 */
+	public $live_video_end_date;
+
 	public function get_data() {
 
 		return array(

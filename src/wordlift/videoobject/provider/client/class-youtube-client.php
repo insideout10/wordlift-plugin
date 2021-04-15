@@ -29,7 +29,7 @@ class Youtube_Client extends Singleton implements Client {
 	public function get_data( $video_urls ) {
 		$video_ids = $this->get_video_ids_as_string( $video_urls );
 		$url       = add_query_arg( array(
-			'part' => 'snippet,contentDetails,statistics',
+			'part' => 'snippet,contentDetails,statistics,liveStreamingDetails',
 			'id'   => $video_ids,
 			'key'  => $this->get_api_key()
 		), $this->get_api_url() );

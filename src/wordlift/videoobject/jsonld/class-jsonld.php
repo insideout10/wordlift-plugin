@@ -107,6 +107,15 @@ class Jsonld {
 				);
 			}
 
+			if ( $video->is_live_video ) {
+				$single_jsonld['publication'] = array(
+					'@type'           => 'BroadcastEvent',
+					'isLiveBroadcast' => true,
+					'startDate'       => $video->live_video_start_date,
+					'endDate'         => $video->live_video_end_date
+				);
+			}
+
 			$jsonld[] = $single_jsonld;
 		}
 

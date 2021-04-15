@@ -6,6 +6,7 @@
 
 namespace Wordlift\Videoobject\Provider;
 
+use DateInterval;
 use Wordlift\Videoobject\Data\Video\Video;
 
 class Youtube extends Api_Provider {
@@ -112,6 +113,23 @@ class Youtube extends Api_Provider {
 			$video->views = $video_data['statistics']['viewCount'];
 		}
 
+		if ( array_key_exists( 'liveStreamingDetails', $video_data ) &&
+		     array_key_exists( 'scheduledStartTime', $video_data['liveStreamingDetails'] ) ) {
+			$video->is_live_video         = true;
+			$video->live_video_start_date = $video_data['liveStreamingDetails']['scheduledStartTime'];
+			try {
+				$end_date = new \DateTime( $video->live_video_start_date );
+				/**
+				 * the google doc says :
+				 * It is required to provide the endDate once the video has finished and is no longer live.
+				 * If the expected endDate is unknown prior to the livestream starting, we recommend providing an approximate endDate.
+				 */
+				// we add 1 day to start date
+				$end_date->add( new DateInterval( 'P1D' ) );
+				$video->live_video_end_date = $end_date->format( 'c' );
+			} catch ( \Exception $e ) {
+			}
+		}
 
 		$video->id = $video->content_url;
 
