@@ -19,11 +19,12 @@ class Xml_Generator {
 			return 0;
 		}
 
+		$days_to_seconds = $interval->d * 60 * 60 * 24;
 		$hours_to_seconds   = $interval->h * 60 * 60;
 		$minutes_to_seconds = $interval->i * 60;
 		$seconds            = $interval->s;
 
-		return $hours_to_seconds + $minutes_to_seconds + $seconds;
+		return $days_to_seconds + $hours_to_seconds + $minutes_to_seconds + $seconds;
 
 	}
 
@@ -102,7 +103,7 @@ class Xml_Generator {
        <video:description>${description}</video:description>
        <video:content_loc>${content_url}</video:content_loc>
        <video:player_loc>${embed_url}</video:player_loc>
-       <video:duration>${$duration_in_seconds}</video:duration>
+       <video:duration>${duration_in_seconds}</video:duration>
        <video:view_count>${view_count}</video:view_count>
        <video:live>${is_live_video}</video:live>
      </video:video>

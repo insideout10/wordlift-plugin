@@ -6,8 +6,6 @@
 
 namespace Wordlift\Videoobject\Sitemap;
 
-use Wordlift\Videoobject\Data\Video\Video;
-
 class Video_Sitemap {
 
 	const CRON_ACTION_HOOK = 'wl_video_sitemap_generation';
