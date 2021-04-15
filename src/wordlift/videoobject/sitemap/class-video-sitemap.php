@@ -26,9 +26,29 @@ class Video_Sitemap {
 
 	public function generate_video_sitemap() {
 
+		$sitemap_start_tag = <<<EOF
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+EOF;
+		$sitemap_body      = Xml_Generator::get_xml_for_all_posts_with_videos();
 
+		$sitemap_end_tag = "</urlset>";
+
+		$xml = $sitemap_start_tag . $sitemap_body . $sitemap_end_tag;
+
+		if ( ! defined( ABSPATH ) ) {
+			return;
+		}
+
+		$fp = fopen( ABSPATH . 'wl-video-sitemap.xml', 'w' );
+
+		if ( ! $fp ) {
+			return;
+		}
+
+		fwrite( $fp, $xml );
+		fclose( $fp );
 	}
-
 
 
 }
