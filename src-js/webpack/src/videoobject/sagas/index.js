@@ -1,4 +1,4 @@
-import store from "../../vocabulary/store";
+import store from "../store";
 import {fork, put, call, takeLatest} from "redux-saga/effects";
 import {getVideosFromApi} from "../api";
 import {updateVideos} from "../actions";

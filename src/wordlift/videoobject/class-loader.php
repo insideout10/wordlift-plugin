@@ -9,6 +9,7 @@ use Wordlift\Videoobject\Filters\Post_Filter;
 use Wordlift\Videoobject\Jsonld\Jsonld;
 use Wordlift\Videoobject\Sitemap\Video_Sitemap;
 use Wordlift\Videoobject\Tabs\Settings_Tab;
+use Wordlift\Videoobject\Ui\Post_Edit_Screen;
 
 
 /**
@@ -30,6 +31,9 @@ class Loader extends Default_Loader {
 		$video_sitemap->init();
 		$rest_controller = new Rest_Controller();
 		$rest_controller->register_all_routes();
+
+		$post_edit_screen = new Post_Edit_Screen();
+		$post_edit_screen->init();
 	}
 
 	public function get_feature_slug() {

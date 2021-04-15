@@ -8,11 +8,13 @@ import {connect} from "react-redux";
  * Internal dependencies.
  */
 import Video from "../video";
+import {getAllVideos} from "../../actions";
 
 class VideoList extends React.Component {
 
     constructor(props) {
         super(props);
+        this.props.dispatch(getAllVideos())
     }
 
     render() {
@@ -27,10 +29,10 @@ class VideoList extends React.Component {
 
 }
 
-const mapStateToItemProps = (_, initialProps) => (state) => {
+const mapStateToProps = (state) => {
     return {videos: state.videos}
 }
 
-export default connect({
-    mapStateToItemProps
-})(VideoList);
+export default connect(
+    mapStateToProps
+)(VideoList);

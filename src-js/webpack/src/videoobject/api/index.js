@@ -1,5 +1,4 @@
 export function getVideosFromApi(apiConfig) {
-
     const {restUrl, nonce, postId} = apiConfig;
 
     return fetch(restUrl, {

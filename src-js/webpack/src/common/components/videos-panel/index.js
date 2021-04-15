@@ -7,6 +7,7 @@ import React from "react";
  * WordPress dependencies
  */
 import {Panel, PanelBody, PanelRow} from "@wordpress/components";
+import { doAction } from "@wordpress/hooks";
 
 /**
  * Internal dependencies
@@ -23,7 +24,9 @@ export default class VideosPanel extends React.Component {
     render() {
         return (
             <Panel>
-                <PanelBody title="Videos" initialOpen={false}>
+                <PanelBody title="Videos" opened={true} onToggle={() => {
+                    doAction("wordlift.renderVideoList")
+                }}>
                     <div id={"wl-video-list"}></div>
                 </PanelBody>
             </Panel>
