@@ -6,6 +6,7 @@
 
 namespace Wordlift\Videoobject\Api;
 
+use Wordlift\Videoobject\Data\Video_Storage\Video_Storage_Factory;
 use Wordlift\Vocabulary\Api\Api_Config;
 use WP_REST_Server;
 
@@ -38,6 +39,14 @@ class Rest_Controller {
 				),
 			)
 		);
+	}
+
+	public function get_all_videos( $request ) {
+		$data    = $request->get_params();
+		$post_id = (int) $data['post_id'];
+		$storage = Video_Storage_Factory::get_storage();
+
+		return $storage->get_all_videos( $post_id );
 	}
 
 }
