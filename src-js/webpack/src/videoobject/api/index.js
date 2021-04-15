@@ -1,4 +1,4 @@
-export  function getVideosFromApi(offset, limit, apiConfig) {
+export function getVideosFromApi(apiConfig) {
 
     const {restUrl, nonce, postId} = apiConfig;
 
