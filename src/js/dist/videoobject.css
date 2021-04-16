@@ -8,5 +8,5 @@
 
 .wl-modal{display:none;z-index:99999 !important;height:65%;width:55%;background-color:#fff;position:fixed;left:50%;top:50%;transform:translate(-50%, -50%);border-radius:10px !important;padding:10px}.wl-modal.wl-modal--open{display:block}.wl-modal.wl-modal--closed{display:none}
 
-.wl-video-modal--full-width{width:100%;height:95%}.wl-video-modal__menu_button{cursor:pointer}.wl-video-modal__menu_button:disabled{opacity:0.5}
+.wl-video-modal--full-width{width:100%;height:95%}.wl-video-modal__menu_button{cursor:pointer}.wl-video-modal__menu_button--disabled{cursor:not-allowed;opacity:0.5}
 

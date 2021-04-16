@@ -26,6 +26,13 @@ import {nextVideo, previousVideo, closeModal} from "../../actions";
 
 class VideoModal extends React.Component {
 
+    addDisabledClass(isDisabled) {
+        if (isDisabled) {
+            return " wl-video-modal__menu_button--disabled"
+        }
+        return "";
+    }
+
     renderIfVideoExists() {
         if (!this.props.video) {
             return (<React.Fragment/>)
@@ -47,14 +54,18 @@ class VideoModal extends React.Component {
                     <WlColumn className={"wl-col--width-10"}>
                         <WlContainer>
                             <WlColumn>
-                                <span className="dashicons dashicons-arrow-left-alt2 wl-video-modal__menu_button"
-                                      onClick={() => this.props.dispatch(previousVideo())}
-                                      disabled={!this.props.isPreviousEnabled}/>
+                                <span
+                                    className={"dashicons dashicons-arrow-left-alt2 wl-video-modal__menu_button"
+                                    + this.addDisabledClass(!this.props.isPreviousEnabled)}
+                                    onClick={() => this.props.dispatch(previousVideo())}
+                                    disabled={!this.props.isPreviousEnabled}/>
                             </WlColumn>
                             <WlColumn>
-                                <span className="dashicons dashicons-arrow-right-alt2 wl-video-modal__menu_button"
-                                      onClick={() => this.props.dispatch(nextVideo())}
-                                      disabled={!this.props.isNextEnabled}/>
+                                <span
+                                    className={"dashicons dashicons-arrow-right-alt2 wl-video-modal__menu_button "
+                                    + this.addDisabledClass(!this.props.isNextEnabled)}
+                                    onClick={() => this.props.dispatch(nextVideo())}
+                                    disabled={!this.props.isNextEnabled}/>
                             </WlColumn>
                             <WlColumn>
                                 <span className="dashicons dashicons-no-alt wl-video-modal__menu_button"

@@ -7,7 +7,8 @@
 
   &__menu_button {
     cursor: pointer;
-    &:disabled {
+    &--disabled {
+      cursor: not-allowed;
       opacity: 0.5;
     }
   }
