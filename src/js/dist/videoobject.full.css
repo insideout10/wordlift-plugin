@@ -8,3 +8,9 @@
 
 .wl-modal{display:none;z-index:99999 !important;height:65%;width:55%;background-color:#fff;position:fixed;left:50%;top:50%;transform:translate(-50%, -50%);border-radius:10px !important;padding:10px}.wl-modal.wl-modal--open{display:block}.wl-modal.wl-modal--closed{display:none}
 
+.wl-modal-header{background-color:white;color:black;height:20%;border-bottom:3px solid #eee}.wl-modal-header-icon{cursor:pointer;font-size:20px}
+
+.wl-modal-body{overflow-y:scroll;height:80%}
+
+.wl-video-modal--full-width{width:100%;height:95%}
+
