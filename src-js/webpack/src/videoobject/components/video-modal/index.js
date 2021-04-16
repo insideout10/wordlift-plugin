@@ -22,6 +22,7 @@ import {
     SelectControl
 } from "@wordpress/components";
 import {nextVideo, previousVideo, closeModal} from "../../actions";
+import {WlBgModal} from "../../../common/components/wl-bg-modal";
 
 
 class VideoModal extends React.Component {
@@ -40,7 +41,7 @@ class VideoModal extends React.Component {
         const video = this.props.video
         return (
             <React.Fragment>
-                <WlContainer>
+                <WlContainer className={"wl-video-modal__header"}>
                     <WlColumn className={"wl-col--width-90"}>
                         <WlContainer>
                             <WlColumn>
@@ -74,11 +75,9 @@ class VideoModal extends React.Component {
                         </WlContainer>
                     </WlColumn>
                 </WlContainer>
-
-
                 <WlContainer>
                     <WlColumn className={"wl-col--width-70 wl-col--align-center"}>
-                        <img src={video.thumbnail_urls[ video.thumbnail_urls.length - 1]} height={700} width={1000}/>
+                        <img src={video.thumbnail_urls[video.thumbnail_urls.length - 1]} height={700} width={1000}/>
                     </WlColumn>
                     <WlColumn className={"wl-col--width-30 "}>
                         <TextControl label={"NAME"} help={"The title of the video"} value={video.name}/>
@@ -107,9 +106,11 @@ class VideoModal extends React.Component {
 
     render() {
         return (
-            <WlModal shouldOpenModal={this.props.isModalOpened} className={"wl-video-modal--full-width"}>
-                {this.renderIfVideoExists()}
-            </WlModal>
+            <WlBgModal shouldOpenModal={this.props.isModalOpened}>
+                <WlModal shouldOpenModal={this.props.isModalOpened} className={"wl-video-modal--full-width"}>
+                    {this.renderIfVideoExists()}
+                </WlModal>
+            </WlBgModal>
         )
     }
 

@@ -1,8 +1,18 @@
 .wl-video-modal {
 
-  &--full-width {
+
+  &__header {
+    background: #FFFFFF;
+    box-shadow: 0px 10px 27px rgba(0, 0, 0, 0.08);
+    border-radius: 8px 8px 0px 0px;
     width: 100%;
+  }
+
+  &--full-width {
+    width: 90%;
     height: 95%;
+    padding: 0;
+
   }
 
   &__menu_button {
