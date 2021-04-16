@@ -15,6 +15,7 @@ import {addAction} from "@wordpress/hooks";
  * Internal dependencies.
  */
 import VideoList from "./components/video-list";
+import VideoModal from "./components/video-modal";
 
 const renderVideoList = () => {
     const videoList = document.getElementById("wl-video-list")
@@ -23,7 +24,10 @@ const renderVideoList = () => {
     if (videoList) {
         ReactDOM.render(
             <Provider store={store}>
-                <VideoList/>
+                <React.Fragment>
+                    <VideoList/>
+                    <VideoModal />
+                </React.Fragment>
             </Provider>,
             videoList
         );

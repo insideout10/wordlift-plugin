@@ -6,3 +6,5 @@
 
 .wl-action-button{border-radius:8px !important;width:100%;margin:3px;padding:10px;font-size:13px;text-align:center;text-transform:capitalize;cursor:pointer;border:1px solid #eee}.wl-action-button.wl-action-button--primary{background-color:#177efb !important;color:#fff !important;font-weight:bold}.wl-action-button.wl-action-button--normal{background-color:#c2e5ff !important;color:#177efb !important;font-weight:bold}
 
+.wl-modal{display:none;z-index:99999 !important;height:65%;width:55%;background-color:#fff;position:fixed;left:50%;top:50%;transform:translate(-50%, -50%);border-radius:10px !important;padding:10px}.wl-modal.wl-modal--open{display:block}.wl-modal.wl-modal--closed{display:none}
+
