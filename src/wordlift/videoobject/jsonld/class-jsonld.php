@@ -23,7 +23,34 @@ class Jsonld {
 	 */
 	public function __construct( $video_storage ) {
 		add_action( 'wl_post_jsonld', array( $this, 'wl_post_jsonld' ), 10, 3 );
+		add_action( 'wl_after_get_jsonld', array( $this, 'wl_after_get_jsonld' ), 10, 3 );
 		$this->video_storage = $video_storage;
+	}
+
+
+	public function wl_after_get_jsonld( $jsonld, $post_id, $context ) {
+		if ( 0 === count( $jsonld ) ) {
+			return $jsonld;
+		}
+		$current_item = $jsonld[0];
+
+		if ( ! array_key_exists( '@type', $current_item ) ) {
+			// Cant determine type return early.
+			return $jsonld;
+		}
+
+		$type = $current_item['@type'];
+		if ( ( is_string( $type ) && $type === 'Article' ) ||
+		     ( is_array( $type ) && in_array( 'Article', $type ) ) ) {
+			return $jsonld;
+		}
+
+		$videos_jsonld = $this->get_videos_jsonld( $post_id );
+		if ( 0 === count( $videos_jsonld ) ) {
+			return $jsonld;
+		}
+
+		return array_merge( $jsonld, $videos_jsonld );
 	}
 
 	/**
@@ -50,7 +77,7 @@ class Jsonld {
 
 	public function wl_post_jsonld( $jsonld, $post_id, $references ) {
 
-		$video_jsonld = $this->get_jsonld( $post_id );
+		$video_jsonld = $this->get_videos_jsonld( $post_id );
 		if ( count( $video_jsonld ) === 0 ) {
 			return $jsonld;
 		}
@@ -76,7 +103,7 @@ class Jsonld {
 	 *
 	 * @return array
 	 */
-	public function get_jsonld( $post_id ) {
+	public function get_videos_jsonld( $post_id ) {
 
 		$videos = $this->video_storage->get_all_videos( $post_id );
 
