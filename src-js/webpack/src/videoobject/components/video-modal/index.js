@@ -85,6 +85,9 @@ class VideoModal extends React.Component {
                         <TextControl label={"DESCRIPTION"}
                                      help={"The description of the video, HTML Tags are ignored"}
                                      value={video.description}/>
+                        {video.thumbnail_urls.length > 0 && video.thumbnail_urls.map((thumbnail_url) => {
+                            return (<TextControl value={thumbnail_url} label={"THUMBNAIL URL"}/>)
+                        })}
                         <TextControl label={"UPLOAD DATE"}
                                      help={"The date the video was published in IS8601 format"}
                                      value={video.upload_date}/>
