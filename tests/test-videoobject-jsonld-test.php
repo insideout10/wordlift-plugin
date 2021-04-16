@@ -69,7 +69,7 @@ class Videoobject_Jsonld_Test extends \Wordlift_Videoobject_Unit_Test_Case {
 	public function test_when_jsonld_is_created_for_article_should_not_add_video_object() {
 		$post_id = $this->create_post_with_content( Videoobject_Api_Test::multiple_youtube_video_post_content() );
 		$jsonld  = apply_filters( 'wl_after_get_jsonld', array(
-			'@type' => 'Article'
+			array('@type' => 'Article')
 		), $post_id, array() );
 		$this->assertCount( 1, $jsonld, 'Video object should not be added for article' );
 	}
@@ -77,17 +77,17 @@ class Videoobject_Jsonld_Test extends \Wordlift_Videoobject_Unit_Test_Case {
 	public function test_when_jsonld_is_created_for_entity_should_add_video_object() {
 		$post_id = $this->create_post_with_content( Videoobject_Api_Test::multiple_youtube_video_post_content() );
 		$jsonld  = apply_filters( 'wl_after_get_jsonld', array(
-			'@type' => 'Thing'
+			array('@type' => 'Thing')
 		), $post_id, array() );
-		$this->assertCount( 2, $jsonld, 'Video object should  be added for Entity' );
+		$this->assertCount( 3, $jsonld, 'Video object should  be added for Entity' );
 	}
 
 	public function test_when_jsonld_is_created_for_entity_type_array_should_add_video_object() {
 		$post_id = $this->create_post_with_content( Videoobject_Api_Test::multiple_youtube_video_post_content() );
 		$jsonld  = apply_filters( 'wl_after_get_jsonld', array(
-			'@type' => array( 'Thing' )
+			array( '@type' => array( 'Thing' ) )
 		), $post_id, array() );
-		$this->assertCount( 2, $jsonld, 'Video object should  be added for Entity' );
+		$this->assertCount( 3, $jsonld, 'Video object should  be added for Entity' );
 	}
 
 }
