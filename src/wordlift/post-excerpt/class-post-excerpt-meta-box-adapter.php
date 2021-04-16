@@ -52,6 +52,11 @@ final class Post_Excerpt_Meta_Box_Adapter {
 		global $wp_meta_boxes;
 		$post_type             = get_post_type();
 
+		// Bail out if feature is turned off
+		if ( ! apply_filters( 'wl_feature__enable__post-excerpt', true ) ) {
+			return;
+		}
+
 		/**
 		 * @since 3.27.6
 		 *
@@ -62,7 +67,7 @@ final class Post_Excerpt_Meta_Box_Adapter {
 		}
 
 		$core_meta_boxes       = $wp_meta_boxes[ $post_type ]["normal"]["core"];
-		
+
 		if ( ! isset( $core_meta_boxes[ self::POST_EXCERPT_META_BOX_KEY ] ) ) {
 			return;
 		}

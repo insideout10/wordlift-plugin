@@ -115,14 +115,14 @@ class WL_Metabox_Field_sameas extends WL_Metabox_Field {
 	public function html() {
 
 		/**
-		 * Filter: wl_feature__enable__metabox__sameas.
+		 * Filter: wl_feature__enable__metabox-sameas.
 		 *
 		 * @param bool whether the sameAs metabox should be shown, defaults to true.
 		 *
 		 * @return bool
 		 * @since 3.29.1
 		 */
-		if ( apply_filters( 'wl_feature__enable__metabox__sameas', true ) ) {
+		if ( apply_filters( 'wl_feature__enable__metabox-sameas', true ) ) {
 
 			// Open main <div> for the Field.
 			$html = $this->html_wrapper_open();
