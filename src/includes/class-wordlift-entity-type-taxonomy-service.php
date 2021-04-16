@@ -73,7 +73,10 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 		 * @since 3.20.0
 		 */
 		if ( WL_ALL_ENTITY_TYPES ) {
-			$args['meta_box_cb'] = apply_filters( 'wl_feature__enable__entity-types-taxonomy', true ) ? array( 'Wordlift_Admin_Schemaorg_Taxonomy_Metabox', 'render' ) : false;
+			$args['meta_box_cb'] = apply_filters( 'wl_feature__enable__entity-types-taxonomy', true ) ? array(
+				'Wordlift_Admin_Schemaorg_Taxonomy_Metabox',
+				'render'
+			) : false;
 		}
 
 		register_taxonomy(
@@ -114,6 +117,12 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 		// @see https://github.com/insideout10/wordlift-plugin/issues/995
 		// @since 3.23.6
 		add_filter( 'get_object_terms', array( $this, 'get_object_terms' ), 10, 4 );
+
+		/**
+		 * Exclude sitemap creation for wl_entity_type taxonomy in Yoast
+		 * @since 3.30.1
+		 */
+		add_filter( 'wpseo_sitemap_exclude_taxonomy', array( $this, 'wpseo_sitemap_exclude_taxonomy' ), 10, 2 );
 
 	}
 
@@ -156,7 +165,7 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 			$post_type = get_post_type( $object_id );
 			if ( Wordlift_Entity_Type_Service::is_valid_entity_post_type( $post_type ) ) {
 				// Set the term to article for posts and pages, or to thing for everything else.
-				$uris  = Wordlift_Entity_Type_Adapter::get_entity_types( $post_type );
+				$uris = Wordlift_Entity_Type_Adapter::get_entity_types( $post_type );
 				foreach ( $uris as $uri ) {
 					// set the uri based on post type.
 					if ( $uri === 'http://schema.org/Article' || $uri === 'http://schema.org/Thing' ) {
@@ -175,6 +184,14 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 		add_filter( 'get_object_terms', array( $this, 'get_object_terms' ), 10, 4 );
 
 		return $terms;
+	}
+
+	public function wpseo_sitemap_exclude_taxonomy( $exclude, $tax ) {
+		if ( $tax === self::TAXONOMY_NAME ) {
+			return true;
+		}
+
+		return $exclude;
 	}
 
 }

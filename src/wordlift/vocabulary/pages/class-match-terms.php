@@ -39,6 +39,7 @@ class Match_Terms {
 			'wl-vocabulary-match-terms',
 			array( $this, 'submenu_page_callback' )
 		);
+		remove_submenu_page( 'wl_admin_menu', 'wl_admin_menu' );
 	}
 
 
