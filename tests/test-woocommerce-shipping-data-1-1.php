@@ -17,6 +17,8 @@ class Woocommerce_Shipping_Data_Test_1_1 extends WP_UnitTestCase {
 
 	function test() {
 
+		$this->skip_if_plugins_not_active();
+
 		$this->add_local_pickup_shipping_method_to_default_zone();
 
 		$jsonld = apply_filters( 'wl_entity_jsonld', array(
@@ -36,6 +38,24 @@ class Woocommerce_Shipping_Data_Test_1_1 extends WP_UnitTestCase {
 		$default_zone = WC_Shipping_Zones::get_zone( 0 );
 		$default_zone->add_shipping_method( 'local_pickup' );
 		$default_zone->save();
+
+	}
+
+
+	private function skip_if_plugins_not_active() {
+
+		foreach (
+			array(
+				'woocommerce/woocommerce.php',
+				'wpsso/wpsso.php',
+				'wpsso-wc-shipping-delivery-time/wpsso-wc-shipping-delivery-time.php',
+			) as $plugin_name
+		) {
+			if ( ! is_plugin_active( $plugin_name ) ) {
+				$this->markTestSkipped( "{$plugin_name} is not active" );
+			}
+
+		}
 
 	}
 

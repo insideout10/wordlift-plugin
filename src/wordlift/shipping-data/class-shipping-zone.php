@@ -4,6 +4,8 @@
 namespace Wordlift\Shipping_Data;
 
 
+use DateTime;
+use DateTimeZone;
 use WC_Shipping_Zone;
 
 class Shipping_Zone {
@@ -113,7 +115,11 @@ class Shipping_Zone {
 
 	}
 
-	public function add_offer_shipping_details( &$jsonld ) {
+	/**
+	 * @param array $jsonld
+	 * @param Product $product
+	 */
+	public function add_offer_shipping_details( &$jsonld, $product ) {
 
 		$this->load_methods();
 
@@ -124,18 +130,73 @@ class Shipping_Zone {
 
 		$this->make_sure_shipping_details_exists_and_it_is_an_array( $jsonld );
 
+		if ( empty( $this->methods ) ) {
+			$this->add_shipping_details_with_shipping_method( $jsonld, $product );
+		} else {
+			foreach ( $this->methods as $method ) {
+				$this->add_shipping_details_with_shipping_method( $jsonld, $product, $method );
+			}
+		}
+
+	}
+
+	/**
+	 * @param array $jsonld
+	 * @param Product $product
+	 */
+//	private function add_shipping_details_when_no_shipping_methods( &$jsonld, $product ) {
+//
+//		$offer_shipping_details = array( '@type' => 'OfferShippingDetails', );
+//
+//		$this->add_shipping_destination( $offer_shipping_details );
+//
+//		/*
+//		 * Use Case UC004
+//		 */
+//		$shipping_delivery_time = array( '@type' => 'ShippingDeliveryTime', );
+//		$product->add_handling_time( $offer_shipping_details['deliveryTime'] );
+//
+//		$this->add_cutoff_time( $shipping_delivery_time );
+//
+//		if ( 1 < count( $shipping_delivery_time ) ) {
+//			$offer_shipping_details['shippingDeliveryTime'] = $shipping_delivery_time;
+//		}
+//
+//		$jsonld['shippingDetails'][] = $offer_shipping_details;
+//
+//	}
+
+	/**
+	 * @param array $jsonld
+	 * @param Product $product
+	 * @param Shipping_Method $method
+	 */
+	private function add_shipping_details_with_shipping_method( &$jsonld, $product, $method = null ) {
+
 		$offer_shipping_details = array( '@type' => 'OfferShippingDetails', );
+		$shipping_delivery_time = array( '@type' => 'ShippingDeliveryTime', );
 
 		$this->add_shipping_destination( $offer_shipping_details );
 
 		/*
 		 * Use Case UC003
 		 * 1.4.3
-		 *
-		 * https://editorial.thenextweb.com/wp-admin/admin-ajax.php?action=wl_ttl_cache_cleaner__flush
 		 */
-		foreach ( $this->methods as $method ) {
+		if ( isset( $method ) ) {
 			$method->add_shipping_rate( $offer_shipping_details );
+			$method->add_transit_time( $shipping_delivery_time );
+		}
+
+		/*
+		 * Use Case UC004
+		 */
+		$product->add_handling_time( $shipping_delivery_time );
+
+		$this->add_cutoff_time( $shipping_delivery_time );
+		$this->add_business_days( $shipping_delivery_time );
+
+		if ( 1 < count( $shipping_delivery_time ) ) {
+			$offer_shipping_details['shippingDeliveryTime'] = $shipping_delivery_time;
 		}
 
 		$jsonld['shippingDetails'][] = $offer_shipping_details;
@@ -229,6 +290,53 @@ class Shipping_Zone {
 	public static function from_wc_shipping_zone( $wc_shipping_zone, $country_code = null ) {
 
 		return new self( $wc_shipping_zone, $country_code );
+	}
+
+	private function add_cutoff_time( &$shipping_delivery_time ) {
+
+		$wpsso_options = get_option( 'wpsso_options' );
+
+		if ( empty( $wpsso_options['wcsdt_shipdept_cutoff'] )
+		     || empty( $wpsso_options['wcsdt_shipdept_timezone'] ) ) {
+			return;
+		}
+
+		$cutoff_time = $wpsso_options['wcsdt_shipdept_cutoff'];
+		$timezone    = $wpsso_options['wcsdt_shipdept_timezone'];
+
+		$time   = new DateTime( 'now', new DateTimeZone( $timezone ) );
+		$offset = $time->format( 'P' );
+
+		$shipping_delivery_time['cutOffTime'] = "{$cutoff_time}{$offset}";
+
+	}
+
+	private function add_business_days( &$shipping_delivery_time ) {
+
+		$wpsso_options = get_option( 'wpsso_options' );
+
+		$day_of_week = array();
+		$prefix      = 'wcsdt_shipdept_day_';
+		foreach ( array( 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday' ) as $day ) {
+			$key = $prefix . strtolower( $day );
+
+			if (
+				( empty( $wpsso_options["{$key}_open"] ) && empty( $wpsso_options["{$key}_close"] ) )
+				|| ( 'none' === $wpsso_options["{$key}_open"] && 'none' === $wpsso_options["{$key}_close"] )
+			) {
+				continue;
+			}
+
+			$day_of_week[] = "https://schema.org/$day";
+		}
+
+		if ( ! empty( $day_of_week ) ) {
+			$shipping_delivery_time['businessDays'] = array(
+				'@type'     => 'OpeningHoursSpecification',
+				'dayOfWeek' => $day_of_week,
+			);
+		}
+
 	}
 
 }

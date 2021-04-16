@@ -52,12 +52,16 @@ class Shipping_Zones {
 
 	}
 
-	public function add_offer_shipping_details( &$jsonld ) {
+	/**
+	 * @param array $jsonld
+	 * @param Product $product
+	 */
+	public function add_offer_shipping_details( &$jsonld, $product ) {
 
 		$this->load_zones();
 
 		foreach ( $this->zones as $zone ) {
-			$zone->add_offer_shipping_details( $jsonld );
+			$zone->add_offer_shipping_details( $jsonld, $product );
 		}
 
 	}

@@ -7,7 +7,12 @@ use Wordlift\Shipping_Data\Shipping_Zones;
 if ( ! class_exists( '\WC_Shipping_Zones' )
      || ! class_exists( '\WC_Shipping_Zone' )
      || ! class_exists( '\WC_Shipping_Method' )
-     || ! function_exists( 'get_woocommerce_currency' ) ) {
+     || ! function_exists( 'get_woocommerce_currency' )
+     || ! function_exists( 'wc_get_product' ) ) {
+	return;
+}
+
+if ( ! apply_filters( 'wl_feature__enable__shipping-sd', false ) ) {
 	return;
 }
 

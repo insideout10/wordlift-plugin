@@ -3,11 +3,11 @@
 /**
  * Class Woocommerce_Shipping_Data_Test
  *
- * Use Case #3
+ * Use Case #4
  * @link https://docs.google.com/spreadsheets/d/1cFpGjB6oJeGV2h0L3VLMs_IgCCHf7wxIY6t0a2jqZ1Y/edit#gid=0
  * @group woocommerce
  */
-class Woocommerce_Shipping_Data_Test_3 extends WP_UnitTestCase {
+class Woocommerce_Shipping_Data_Test_4_1 extends WP_UnitTestCase {
 
 	/**
 	 * To install required plugins:
@@ -20,66 +20,33 @@ class Woocommerce_Shipping_Data_Test_3 extends WP_UnitTestCase {
 
 		$this->add_zone_italy();
 		$this->add_zone_canada_and_united_states();
+		$this->set_no_shipping_class_handling_time();
+		$product_id = $this->add_product();
 
 		$jsonld = apply_filters( 'wl_entity_jsonld', array(
 			'@type'  => 'Product',
 			'offers' => array(
 				'@type' => 'Offer',
 			)
-		), - 1, array() );
+		), $product_id, array() );
 
 		$this->assertEqualSets( array(
-			'@type'               => 'OfferShippingDetails',
-			'shippingDestination' => array(
-				'@type'          => 'DefinedRegion',
-				'addressCountry' => 'IT',
-				'addressRegion'  => array( 'RM', 'MI', )
-			),
-			'shippingRate'        => array(
-				array(
-					'@type'       => 'MonetaryAmount',
-					'name'        => 'Free shipping',
-					'description' => 'Free shipping is a special method which can be triggered with coupons and minimum spends.',
-					'value'       => '0',
-					'currency'    => 'GBP'
-				),
-			),
-		), $jsonld['offers'][0]['shippingDetails'][0] );
-
-		$this->assertEqualSets( array(
-			'@type'               => 'OfferShippingDetails',
-			'shippingDestination' => array(
-				'@type'          => 'DefinedRegion',
-				'addressCountry' => 'IT',
-				'addressRegion'  => array( 'RM', 'MI', )
-			),
-			'shippingRate'        => array(
-				array(
-					'@type'       => 'MonetaryAmount',
-					'name'        => 'Flat rate',
-					'description' => 'Lets you charge a fixed rate for shipping.',
-					'value'       => '10',
-					'currency'    => 'GBP'
-				)
-			),
-		), $jsonld['offers'][0]['shippingDetails'][1] );
-
-		$this->assertEqualSets( array(
-			'@type'               => 'OfferShippingDetails',
-			'shippingDestination' => array(
-				'@type'          => 'DefinedRegion',
-				'addressCountry' => 'CA'
-			),
-			'shippingRate'        => array(
-				array(
-					'@type'       => 'MonetaryAmount',
-					'name'        => 'Local pickup',
-					'description' => 'Allow customers to pick up orders themselves. By default, when using local pickup store base taxes will apply regardless of customer address.',
-					'value'       => '10',
-					'currency'    => 'GBP'
-				)
+			'@type'        => 'ShippingDeliveryTime',
+			'handlingTime' => array(
+				'@type'    => 'QuantitativeValue',
+				'minValue' => 0,
+				'maxValue' => 2,
 			)
-		), $jsonld['offers'][0]['shippingDetails'][2] );
+		), $jsonld['offers'][0]['shippingDetails'][0]['shippingDeliveryTime'] );
+
+		$this->assertEqualSets( array(
+			'@type'        => 'ShippingDeliveryTime',
+			'handlingTime' => array(
+				'@type'    => 'QuantitativeValue',
+				'minValue' => 0,
+				'maxValue' => 2,
+			)
+		), $jsonld['offers'][0]['shippingDetails'][1]['shippingDeliveryTime'] );
 
 	}
 
@@ -129,6 +96,26 @@ class Woocommerce_Shipping_Data_Test_3 extends WP_UnitTestCase {
 		), true );
 
 		$zone->save();
+
+	}
+
+	private function set_no_shipping_class_handling_time() {
+
+		$option = get_option( 'wpsso_options' );
+
+		$option['wcsdt_handling_c0_minimum']   = 8;
+		$option['wcsdt_handling_c0_maximum']   = 36;
+		$option['wcsdt_handling_c0_unit_code'] = 'HUR';
+
+		update_option( 'wpsso_options', $option );
+
+	}
+
+	private function add_product() {
+
+		return $this->factory()->post->create( array(
+			'post_type' => 'product'
+		) );
 
 	}
 

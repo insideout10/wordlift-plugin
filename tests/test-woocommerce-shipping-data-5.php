@@ -3,11 +3,11 @@
 /**
  * Class Woocommerce_Shipping_Data_Test
  *
- * Use Case #3
+ * Use Case #5
  * @link https://docs.google.com/spreadsheets/d/1cFpGjB6oJeGV2h0L3VLMs_IgCCHf7wxIY6t0a2jqZ1Y/edit#gid=0
  * @group woocommerce
  */
-class Woocommerce_Shipping_Data_Test_3 extends WP_UnitTestCase {
+class Woocommerce_Shipping_Data_Test_5 extends WP_UnitTestCase {
 
 	/**
 	 * To install required plugins:
@@ -20,66 +20,21 @@ class Woocommerce_Shipping_Data_Test_3 extends WP_UnitTestCase {
 
 		$this->add_zone_italy();
 		$this->add_zone_canada_and_united_states();
+		$this->set_no_shipping_class_handling_time();
+		$product_id = $this->add_product();
 
 		$jsonld = apply_filters( 'wl_entity_jsonld', array(
 			'@type'  => 'Product',
 			'offers' => array(
 				'@type' => 'Offer',
 			)
-		), - 1, array() );
+		), $product_id, array() );
 
 		$this->assertEqualSets( array(
-			'@type'               => 'OfferShippingDetails',
-			'shippingDestination' => array(
-				'@type'          => 'DefinedRegion',
-				'addressCountry' => 'IT',
-				'addressRegion'  => array( 'RM', 'MI', )
-			),
-			'shippingRate'        => array(
-				array(
-					'@type'       => 'MonetaryAmount',
-					'name'        => 'Free shipping',
-					'description' => 'Free shipping is a special method which can be triggered with coupons and minimum spends.',
-					'value'       => '0',
-					'currency'    => 'GBP'
-				),
-			),
-		), $jsonld['offers'][0]['shippingDetails'][0] );
-
-		$this->assertEqualSets( array(
-			'@type'               => 'OfferShippingDetails',
-			'shippingDestination' => array(
-				'@type'          => 'DefinedRegion',
-				'addressCountry' => 'IT',
-				'addressRegion'  => array( 'RM', 'MI', )
-			),
-			'shippingRate'        => array(
-				array(
-					'@type'       => 'MonetaryAmount',
-					'name'        => 'Flat rate',
-					'description' => 'Lets you charge a fixed rate for shipping.',
-					'value'       => '10',
-					'currency'    => 'GBP'
-				)
-			),
-		), $jsonld['offers'][0]['shippingDetails'][1] );
-
-		$this->assertEqualSets( array(
-			'@type'               => 'OfferShippingDetails',
-			'shippingDestination' => array(
-				'@type'          => 'DefinedRegion',
-				'addressCountry' => 'CA'
-			),
-			'shippingRate'        => array(
-				array(
-					'@type'       => 'MonetaryAmount',
-					'name'        => 'Local pickup',
-					'description' => 'Allow customers to pick up orders themselves. By default, when using local pickup store base taxes will apply regardless of customer address.',
-					'value'       => '10',
-					'currency'    => 'GBP'
-				)
-			)
-		), $jsonld['offers'][0]['shippingDetails'][2] );
+			'@type'    => 'QuantitativeValue',
+			'minValue' => 0,
+			'maxValue' => 2,
+		), $jsonld['offers'][0]['shippingDetails'][1]['shippingDeliveryTime']['transitTime'] );
 
 	}
 
@@ -95,7 +50,7 @@ class Woocommerce_Shipping_Data_Test_3 extends WP_UnitTestCase {
 
 		$shipping_method_id        = $zone->add_shipping_method( 'flat_rate' );
 		$flat_rate_shipping_method = WC_Shipping_Zones::get_shipping_method( $shipping_method_id );
-		$flat_rate_shipping_method->add_rate( array( 'label' => 'Free Shipping', 'cost' => 10, ) );
+		$flat_rate_shipping_method->add_rate( array( 'label' => 'Flat Rate', 'cost' => 10, ) );
 
 		update_option( "woocommerce_flat_rate_{$shipping_method_id}_settings", array(
 			'title'         => 'Flat rate',
@@ -107,6 +62,18 @@ class Woocommerce_Shipping_Data_Test_3 extends WP_UnitTestCase {
 		), true );
 
 		$zone->save();
+
+		/*
+		 * Add the transit time.
+		 */
+		$wpsso_options = get_option( 'wpsso_options' );
+		$prefix        = "wcsdt_transit_m{$shipping_method_id}";
+
+		$wpsso_options["{$prefix}_minimum"]   = 8;
+		$wpsso_options["{$prefix}_maximum"]   = 36;
+		$wpsso_options["{$prefix}_unit_code"] = 'HUR';
+
+		update_option( 'wpsso_options', $wpsso_options );
 
 	}
 
@@ -129,6 +96,46 @@ class Woocommerce_Shipping_Data_Test_3 extends WP_UnitTestCase {
 		), true );
 
 		$zone->save();
+
+	}
+
+	private function set_no_shipping_class_handling_time() {
+
+		$option = get_option( 'wpsso_options' );
+
+		$option['wcsdt_handling_c0_minimum']   = 0;
+		$option['wcsdt_handling_c0_maximum']   = 0;
+		$option['wcsdt_handling_c0_unit_code'] = 'DAY';
+
+		update_option( 'wpsso_options', $option );
+
+	}
+
+	private function add_product() {
+
+		$term = wp_create_term( 'custom-shipping-class', 'product_shipping_class' );
+		$this->set_shipping_class_handling_time( $term['term_id'] );
+
+		$product_id = $this->factory()->post->create( array(
+			'post_type' => 'product'
+		) );
+
+		$wc_product = wc_get_product( $product_id );
+		$wc_product->set_shipping_class_id( $term['term_id'] );
+		$wc_product->save();
+
+		return $product_id;
+	}
+
+	private function set_shipping_class_handling_time( $term_id ) {
+
+		$option = get_option( 'wpsso_options' );
+
+		$option["wcsdt_handling_c{$term_id}_minimum"]   = 1;
+		$option["wcsdt_handling_c{$term_id}_maximum"]   = 3;
+		$option["wcsdt_handling_c{$term_id}_unit_code"] = 'DAY';
+
+		update_option( 'wpsso_options', $option );
 
 	}
 

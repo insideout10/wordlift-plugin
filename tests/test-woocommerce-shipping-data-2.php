@@ -16,6 +16,7 @@ class Woocommerce_Shipping_Data_Test_2 extends WP_UnitTestCase {
 	 */
 
 	function test() {
+		$this->skip_if_plugins_not_active();
 
 		$this->add_zone();
 
@@ -71,6 +72,24 @@ class Woocommerce_Shipping_Data_Test_2 extends WP_UnitTestCase {
 		$zone->add_location( '20000...30000', 'postcode' );
 		$zone->add_location( '400*', 'postcode' );
 		$zone->save();
+
+	}
+
+
+	private function skip_if_plugins_not_active() {
+
+		foreach (
+			array(
+				'woocommerce/woocommerce.php',
+				'wpsso/wpsso.php',
+				'wpsso-wc-shipping-delivery-time/wpsso-wc-shipping-delivery-time.php',
+			) as $plugin_name
+		) {
+			if ( ! is_plugin_active( $plugin_name ) ) {
+				$this->markTestSkipped( "{$plugin_name} is not active" );
+			}
+
+		}
 
 	}
 
