@@ -1,0 +1,9 @@
+.wl-single-video {
+  border-bottom: 2px solid #eee;
+
+  &__name {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+}

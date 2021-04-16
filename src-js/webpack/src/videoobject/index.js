@@ -16,22 +16,23 @@ import {addAction} from "@wordpress/hooks";
  */
 import VideoList from "./components/video-list";
 
+const renderVideoList = () => {
+    const videoList = document.getElementById("wl-video-list")
+    console.log("render video list called")
+    console.log(videoList)
+    if (videoList) {
+        ReactDOM.render(
+            <Provider store={store}>
+                <VideoList/>
+            </Provider>,
+            videoList
+        );
+    }
+}
+
+
 window.addEventListener("load", () => {
-
     addAction('wordlift.renderVideoList', "wordlift", () => {
-
-            const videoList = document.getElementById("wl-video-list")
-            console.log("render video list called")
-            console.log(videoList)
-            if (videoList) {
-                ReactDOM.render(
-                    <Provider store={store}>
-                        <VideoList/>
-                    </Provider>,
-                    videoList
-                );
-            }
-
-        }
-    )
+        renderVideoList()
+    })
 })

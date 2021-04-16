@@ -24,8 +24,10 @@ export default class VideosPanel extends React.Component {
     render() {
         return (
             <Panel>
-                <PanelBody title="Videos" opened={true} onToggle={() => {
-                    doAction("wordlift.renderVideoList")
+                <PanelBody title="Videos" initialOpen={false} onToggle={() => {
+                    setTimeout(() => {
+                        doAction("wordlift.renderVideoList")
+                    }, 500)
                 }}>
                     <div id={"wl-video-list"}></div>
                 </PanelBody>

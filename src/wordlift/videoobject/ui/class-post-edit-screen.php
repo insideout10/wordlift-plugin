@@ -19,13 +19,15 @@ class Post_Edit_Screen {
 
 	public function enqueue_scripts() {
 		Scripts_Helper::enqueue_based_on_wordpress_version( 'wl-videoobject',
-			plugin_dir_url(  dirname( dirname( __DIR__ ) ) ) . '/js/dist/videoobject',
+			plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . '/js/dist/videoobject',
 			array(
 				'react',
 				'react-dom',
 				'wp-polyfill'
 			)
 		);
+		wp_enqueue_style( 'wl-videoobject',
+			plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . '/js/dist/videoobject.css' );
 		wp_localize_script( 'wl-videoobject', '_wlVideoobjectConfig', array(
 			'restUrl' => get_rest_url( null, '/wordlift/v1/videos' ),
 			'nonce'   => wp_create_nonce( 'wp_rest' ),

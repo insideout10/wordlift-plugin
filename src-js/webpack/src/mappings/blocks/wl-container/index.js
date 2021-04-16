@@ -14,11 +14,11 @@ import React from "react";
  * Internal dependencies.
  */
 import "./index.scss";
-import { classExtractor } from "../helper";
+import {classExtractor} from "../helper";
 
-export const WlContainer = ({ children, className = "", fullWidth = false }) => {
-  const classes = classExtractor({
-    "wl-container--full-width": fullWidth
-  });
-  return <div className={"wl-container " + classes}>{children}</div>;
+export const WlContainer = ({children, className = "", fullWidth = false}) => {
+    const classes = classExtractor({
+        "wl-container--full-width": fullWidth
+    });
+    return <div className={"wl-container " + classes + " " + className}>{children}</div>;
 };
