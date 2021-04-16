@@ -11,6 +11,7 @@ import "./index.scss"
 import {WlColumn} from "../../../mappings/blocks/wl-column";
 import {WlContainer} from "../../../mappings/blocks/wl-container";
 import WlActionButton from "../../../faq/components/wl-action-button";
+import {openModal} from "../../actions";
 
 
 const vimeoIcon = ({height, width}) => {
@@ -72,7 +73,9 @@ class Video extends React.Component {
                         {video.name}
                     </WlColumn>
                     <WlColumn className={"wl-col--width-30"}>
-                        <WlActionButton text={"Edit"} className={"wl-action-button--primary"}/>
+                        <WlActionButton text={"Edit"} className={"wl-action-button--primary"} onClickHandler={() => {
+                            this.props.dispatch(openModal({videoIndex: this.props.videoIndex}))
+                        }}/>
                     </WlColumn>
                 </WlContainer>
 

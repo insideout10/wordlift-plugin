@@ -16,7 +16,10 @@ import {rootSaga} from "../sagas";
 
 export const INITIAL_STATE = {
     videos: [],
-    apiConfig: global["_wlVideoobjectConfig"] ? global["_wlVideoobjectConfig"] : {}
+    apiConfig: global["_wlVideoobjectConfig"] ? global["_wlVideoobjectConfig"] : {},
+    isModalOpened: false,
+    // The index of the video which is shown on the modal
+    videoIndex: 0
 };
 
 
