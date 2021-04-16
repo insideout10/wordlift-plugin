@@ -66,4 +66,14 @@ class Videoobject_Jsonld_Test extends \Wordlift_Videoobject_Unit_Test_Case {
 	}
 
 
+	public function test_link_tag_present_in_description_should_be_removed() {
+		$post_id = $this->factory()->post->create();
+		$video = new Video();
+		$video->description = "<p><a>link</a>a</p>";
+		Video_Storage_Factory::get_storage()->add_video($post_id, $video);
+		// After save we should not find links in description
+		$video = Video_Storage_Factory::get_storage()->get_all_videos($post_id);
+		$this->assertSame('<p>a</p>', $video[0]->description);
+	}
+
 }
