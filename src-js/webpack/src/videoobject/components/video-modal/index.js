@@ -77,8 +77,8 @@ class VideoModal extends React.Component {
 
 
                 <WlContainer>
-                    <WlColumn className={"wl-col--width-70 wl-col--align-center"} ce>
-                        <embed src={video.embed_url} height={700} width={1000}/>
+                    <WlColumn className={"wl-col--width-70 wl-col--align-center"}>
+                        <img src={video.thumbnail_urls[ video.thumbnail_urls.length - 1]} height={700} width={1000}/>
                     </WlColumn>
                     <WlColumn className={"wl-col--width-30 "}>
                         <TextControl label={"NAME"} help={"The title of the video"} value={video.name}/>
