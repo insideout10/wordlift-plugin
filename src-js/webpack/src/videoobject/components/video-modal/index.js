@@ -21,6 +21,7 @@ import {
     RadioControl,
     SelectControl
 } from "@wordpress/components";
+import {nextVideo, previousVideo} from "../../actions";
 
 
 class VideoModal extends React.Component {
@@ -46,10 +47,12 @@ class VideoModal extends React.Component {
                     <WlColumn className={"wl-col--width-10"}>
                         <WlContainer>
                             <WlColumn>
-                                <span className="dashicons dashicons-arrow-left-alt2"></span>
+                                <span className="dashicons dashicons-arrow-left-alt2"
+                                      onClick={() => this.props.dispatch(previousVideo())}/>
                             </WlColumn>
                             <WlColumn>
-                                <span className="dashicons dashicons-arrow-right-alt2"></span>
+                                <span className="dashicons dashicons-arrow-right-alt2"
+                                      onClick={() => this.props.dispatch(nextVideo())}/>
                             </WlColumn>
                             <WlColumn>
                                 <span className="dashicons dashicons-no-alt"></span>
@@ -61,7 +64,7 @@ class VideoModal extends React.Component {
 
                 <WlContainer>
                     <WlColumn className={"wl-col--width-70 wl-col--align-center"} ce>
-                        <embed src={this.props.video.embed_url} height={700} width={1000}/>
+                        <embed src={video.embed_url} height={700} width={1000}/>
                     </WlColumn>
                     <WlColumn className={"wl-col--width-30 "}>
                         <TextControl label={"NAME"} help={"The title of the video"} value={video.name}/>
@@ -96,7 +99,7 @@ class VideoModal extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    return {isModalOpened: state.isModalOpened, video: state.videos[state.videoIndex],}
+    return {isModalOpened: state.isModalOpened, videoIndex: state.videoIndex, video: state.videos[state.videoIndex],}
 }
 
 export default connect(
