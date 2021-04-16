@@ -21,7 +21,7 @@ class VideoList extends React.Component {
         return (
             <React.Fragment>
                 {this.props.videos && this.props.videos.map((video, index) => (
-                    <Video video={video} videoIndex={index}/>
+                    <Video video={video} videoIndex={index} key={video.id}/>
                 ))}
             </React.Fragment>)
     }

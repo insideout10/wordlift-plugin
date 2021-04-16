@@ -21,7 +21,7 @@ import {
     RadioControl,
     SelectControl
 } from "@wordpress/components";
-import {nextVideo, previousVideo} from "../../actions";
+import {nextVideo, previousVideo, closeModal} from "../../actions";
 
 
 class VideoModal extends React.Component {
@@ -47,15 +47,18 @@ class VideoModal extends React.Component {
                     <WlColumn className={"wl-col--width-10"}>
                         <WlContainer>
                             <WlColumn>
-                                <span className="dashicons dashicons-arrow-left-alt2"
-                                      onClick={() => this.props.dispatch(previousVideo())}/>
+                                <span className="dashicons dashicons-arrow-left-alt2 wl-video-modal__menu_button"
+                                      onClick={() => this.props.dispatch(previousVideo())}
+                                      disabled={!this.props.isPreviousEnabled}/>
                             </WlColumn>
                             <WlColumn>
-                                <span className="dashicons dashicons-arrow-right-alt2"
-                                      onClick={() => this.props.dispatch(nextVideo())}/>
+                                <span className="dashicons dashicons-arrow-right-alt2 wl-video-modal__menu_button"
+                                      onClick={() => this.props.dispatch(nextVideo())}
+                                      disabled={!this.props.isNextEnabled}/>
                             </WlColumn>
                             <WlColumn>
-                                <span className="dashicons dashicons-no-alt"></span>
+                                <span className="dashicons dashicons-no-alt wl-video-modal__menu_button"
+                                      onClick={() => this.props.dispatch(closeModal())}/>
                             </WlColumn>
                         </WlContainer>
                     </WlColumn>
@@ -99,7 +102,14 @@ class VideoModal extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    return {isModalOpened: state.isModalOpened, videoIndex: state.videoIndex, video: state.videos[state.videoIndex],}
+    return {
+        isModalOpened: state.isModalOpened,
+        videoIndex: state.videoIndex,
+        video: state.videos[state.videoIndex],
+        isNextEnabled: state.videoIndex + 1 < state.videos.length,
+        isPreviousEnabled: state.videoIndex - 1 >= 0
+
+    }
 }
 
 export default connect(

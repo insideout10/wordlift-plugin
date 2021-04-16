@@ -4,4 +4,11 @@
     width: 100%;
     height: 95%;
   }
+
+  &__menu_button {
+    cursor: pointer;
+    &:disabled {
+      opacity: 0.5;
+    }
+  }
 }

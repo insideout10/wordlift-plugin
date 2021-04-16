@@ -18,8 +18,12 @@ export const reducer = createReducer(null, {
     },
 
     "PREVIOUS_VIDEO": (state, action) => {
-        if (state.videoIndex + 1 >= 0) {
+        if (state.videoIndex - 1 >= 0) {
             state.videoIndex -= 1;
         }
+    },
+
+    "CLOSE_MODAL" : (state, action) => {
+        state.isModalOpened = false
     }
 });
