@@ -18,6 +18,9 @@ import VideoList from "./components/video-list";
 import VideoModal from "./components/video-modal";
 
 const renderVideoList = () => {
+    /*
+    * @todo: render component only if its not rendered.
+     */
     const videoList = document.getElementById("wl-video-list")
     console.log("render video list called")
     console.log(videoList)

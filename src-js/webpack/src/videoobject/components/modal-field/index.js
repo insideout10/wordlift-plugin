@@ -1,5 +1,5 @@
 /**
- * @since 3.30.0
+ * @since 3.31.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 
@@ -14,6 +14,7 @@ import React from "react";
  */
 import "./index.scss"
 import {classExtractor} from "../../../mappings/blocks/helper";
+import {ModalInput} from "../modal-input";
 
 /**
  *
@@ -26,9 +27,7 @@ export const ModalField = (props) => {
 
     const {
         title,
-        description="",
-        placeholder,
-        defaultValue = "",
+        description = "",
         isRequired = true,
         type = "text",
     } = props
@@ -41,8 +40,7 @@ export const ModalField = (props) => {
         <div className={"wl-modal-field"}>
             <p className={"wl-modal-field__title " + titleClasses}>{title}</p>
             {description !== "" && <p className={"wl-modal-field__description "}>{description}</p>}
-            <input type={type} placeholder={placeholder} className={"wl-modal-field__input"}
-                   defaultValue={defaultValue}/>
+            <ModalInput {...props} type={type}/>
         </div>
 
     )
