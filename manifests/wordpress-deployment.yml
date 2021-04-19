@@ -1,0 +1,374 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: qa-wordpress-44
+  namespace: qa-wordpress
+  labels:
+    app: wordpress-4.4
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+  selector:
+    app: wordpress-4.4
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qa-wordpress-44
+  namespace: qa-wordpress
+  labels:
+    app: wordpress-4.4
+spec:
+  selector:
+    matchLabels:
+      app: wordpress-4.4
+  template:
+    metadata:
+      labels:
+        app: wordpress-4.4
+    spec:
+      containers:
+      - image: ghcr.io/wordlift/wlp-wp-4.4:latest
+        name: wordpress-44
+        workingDir: /var/www/html/4.4/
+        resources:
+          requests:
+            cpu: "450m"
+            memory: "450Mi"
+          limits:
+            cpu: "650m"
+            memory: "650Mi"
+        env:
+        - name: WORDPRESS_DB_HOST
+          value: wordpress-44-mysql
+        - name: WORDPRESS_DB_PASSWORD
+          value: password
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: dockerconfigjson-tifa-io
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qa-wordpress-47
+  namespace: qa-wordpress
+  labels:
+    app: wordpress-4.7
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+  selector:
+    app: wordpress-4.7
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qa-wordpress-47
+  namespace: qa-wordpress
+  labels:
+    app: wordpress-4.7
+spec:
+  selector:
+    matchLabels:
+      app: wordpress-4.7
+  template:
+    metadata:
+      labels:
+        app: wordpress-4.7
+    spec:
+      containers:
+      - image: ghcr.io/wordlift/wlp-wp-4.7:latest
+        name: wordpress-47
+        workingDir: /var/www/html/4.7/
+        resources:
+          requests:
+            cpu: "450m"
+            memory: "450Mi"
+          limits:
+            cpu: "650m"
+            memory: "650Mi"
+        env:
+        - name: WORDPRESS_DB_HOST
+          value: wordpress-47-mysql
+        - name: WORDPRESS_DB_PASSWORD
+          value: password
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: dockerconfigjson-tifa-io
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qa-wordpress-50
+  namespace: qa-wordpress
+  labels:
+    app: wordpress-5.0
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+  selector:
+    app: wordpress-5.0
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qa-wordpress-50
+  namespace: qa-wordpress
+  labels:
+    app: wordpress-5.0
+spec:
+  selector:
+    matchLabels:
+      app: wordpress-5.0
+  template:
+    metadata:
+      labels:
+        app: wordpress-5.0
+    spec:
+      containers:
+      - image: ghcr.io/wordlift/wlp-wp-5.0:latest
+        name: wordpress-50
+        workingDir: /var/www/html/5.0/
+        resources:
+          requests:
+            cpu: "450m"
+            memory: "450Mi"
+          limits:
+            cpu: "650m"
+            memory: "650Mi"
+        env:
+        - name: WORDPRESS_DB_HOST
+          value: wordpress-50-mysql
+        - name: WORDPRESS_DB_PASSWORD
+          value: password
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: dockerconfigjson-tifa-io
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qa-wordpress-54
+  namespace: qa-wordpress
+  labels:
+    app: wordpress-5.4
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+  selector:
+    app: wordpress-5.4
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qa-wordpress-54
+  namespace: qa-wordpress
+  labels:
+    app: wordpress-5.4
+spec:
+  selector:
+    matchLabels:
+      app: wordpress-5.4
+  template:
+    metadata:
+      labels:
+        app: wordpress-5.4
+    spec:
+      containers:
+      - image: ghcr.io/wordlift/wlp-wp-5.4:latest
+        name: wordpress-54
+        workingDir: /var/www/html/5.4/
+        resources:
+          requests:
+            cpu: "450m"
+            memory: "450Mi"
+          limits:
+            cpu: "650m"
+            memory: "650Mi"
+        env:
+        - name: WORDPRESS_DB_HOST
+          value: wordpress-54-mysql
+        - name: WORDPRESS_DB_PASSWORD
+          value: password
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: dockerconfigjson-tifa-io
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qa-wordpress-55
+  namespace: qa-wordpress
+  labels:
+    app: wordpress-5.5
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+  selector:
+    app: wordpress-5.5
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qa-wordpress-55
+  namespace: qa-wordpress
+  labels:
+    app: wordpress-5.5
+spec:
+  selector:
+    matchLabels:
+      app: wordpress-5.5
+  template:
+    metadata:
+      labels:
+        app: wordpress-5.5
+    spec:
+      containers:
+      - image: ghcr.io/wordlift/wlp-wp-5.5:latest
+        name: wordpress-55
+        workingDir: /var/www/html/5.5/
+        resources:
+          requests:
+            cpu: "450m"
+            memory: "450Mi"
+          limits:
+            cpu: "650m"
+            memory: "650Mi"
+        env:
+        - name: WORDPRESS_DB_HOST
+          value: wordpress-55-mysql
+        - name: WORDPRESS_DB_PASSWORD
+          value: password
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: dockerconfigjson-tifa-io
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qa-wordpress-56
+  namespace: qa-wordpress
+  labels:
+    app: wordpress-5.6
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+  selector:
+    app: wordpress-5.6
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qa-wordpress-56
+  namespace: qa-wordpress
+  labels:
+    app: wordpress-5.6
+spec:
+  selector:
+    matchLabels:
+      app: wordpress-5.6
+  template:
+    metadata:
+      labels:
+        app: wordpress-5.6
+    spec:
+      containers:
+      - image: ghcr.io/wordlift/wlp-wp-5.6:latest
+        name: wordpress-56
+        workingDir: /var/www/html/5.6/
+        resources:
+          requests:
+            cpu: "450m"
+            memory: "450Mi"
+          limits:
+            cpu: "650m"
+            memory: "650Mi"
+        env:
+        - name: WORDPRESS_DB_HOST
+          value: wordpress-56-mysql
+        - name: WORDPRESS_DB_PASSWORD
+          value: password
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: dockerconfigjson-tifa-io
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qa-wordpress-57
+  namespace: qa-wordpress
+  labels:
+    app: wordpress-5.7
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+  selector:
+    app: wordpress-5.7
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qa-wordpress-57
+  namespace: qa-wordpress
+  labels:
+    app: wordpress-5.7
+spec:
+  selector:
+    matchLabels:
+      app: wordpress-5.7
+  template:
+    metadata:
+      labels:
+        app: wordpress-5.7
+    spec:
+      containers:
+      - image: ghcr.io/wordlift/wlp-wp-5.7:latest
+        name: wordpress-57
+        workingDir: /var/www/html/5.7/
+        resources:
+          requests:
+            cpu: "450m"
+            memory: "450Mi"
+          limits:
+            cpu: "650m"
+            memory: "650Mi"
+        env:
+        - name: WORDPRESS_DB_HOST
+          value: wordpress-57-mysql
+        - name: WORDPRESS_DB_PASSWORD
+          value: password
+        - name: WORDPRESS_DB_NAME
+          value: wordpress
+        - name: WORDPRESS_DB_USER
+          value: root
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: dockerconfigjson-tifa-io

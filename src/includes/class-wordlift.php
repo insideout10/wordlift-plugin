@@ -766,7 +766,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.30.0';
+		$this->version     = '3.30.1';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -1847,12 +1847,10 @@ class Wordlift {
 		/**
 		 * @since 3.26.0
 		 */
-		if ( apply_filters( 'wl_feature__enable__post_excerpt', true ) ) {
-			$excerpt_adapter = new Post_Excerpt_Meta_Box_Adapter();
-			$this->loader->add_action( 'do_meta_boxes', $excerpt_adapter, 'replace_post_excerpt_meta_box' );
-			// Adding Rest route for the post excerpt
-			Post_Excerpt_Rest_Controller::register_routes();
-		}
+		$excerpt_adapter = new Post_Excerpt_Meta_Box_Adapter();
+		$this->loader->add_action( 'do_meta_boxes', $excerpt_adapter, 'replace_post_excerpt_meta_box' );
+		// Adding Rest route for the post excerpt
+		Post_Excerpt_Rest_Controller::register_routes();
 
 		$this->loader->add_action( 'update_user_metadata', $this->user_service, 'update_user_metadata', 10, 5 );
 		$this->loader->add_action( 'delete_user_metadata', $this->user_service, 'delete_user_metadata', 10, 5 );
