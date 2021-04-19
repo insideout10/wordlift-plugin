@@ -25,5 +25,15 @@ export const reducer = createReducer(null, {
 
     "CLOSE_MODAL" : (state, action) => {
         state.isModalOpened = false
+    },
+
+    "ADD_NEW_THUMBNAIL": (state, action) =>  {
+        const {videoIndex} = action.payload
+        state.videos[videoIndex].thumbnail_urls.push("")
+    },
+
+    "REMOVE_THUMBNAIL": (state, action) => {
+        const {videoIndex, thumbnailIndex} = action.payload
+        state.videos[videoIndex].thumbnail_urls.splice(thumbnailIndex, 1);
     }
 });

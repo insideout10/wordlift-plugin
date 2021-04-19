@@ -39,7 +39,7 @@ class VideoModal extends React.Component {
                                     description={"The description of the video, HTML Tags are ignored"}
                                     defaultValue={video.description}/>
 
-                        <ThumbnailField thumbnails={video.thumbnail_urls}/>
+                        <ThumbnailField thumbnails={video.thumbnail_urls} videoIndex={this.props.videoIndex}/>
                         <ModalField title={"UPLOAD DATE"}
                                     description={"The date the video was published in IS8601 format"}
                                     defaultValue={video.upload_date}/>
