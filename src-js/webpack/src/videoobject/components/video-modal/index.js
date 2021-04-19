@@ -22,10 +22,12 @@ class VideoModal extends React.Component {
         if (!this.props.video) {
             return (<React.Fragment/>)
         }
-        const video = this.props.video
+
+        this.state = {...this.props.video}
+        const video = this.state
         return (
             <React.Fragment>
-                <ModalHeader {...this.props} />
+                <ModalHeader {...this.state} />
                 <WlContainer>
                     <WlColumn className={"wl-col--width-70 wl-col--align-center"}>
                         <embed src={video.embed_url}  style={{
@@ -35,21 +37,21 @@ class VideoModal extends React.Component {
                     </WlColumn>
                     <WlColumn className={"wl-col--width-30 wl-col--height-90"}>
                         <ModalField title={"NAME"} description={"The title of the video"} placeholder={"Name of file"}
-                                    defaultValue={video.name}/>
+                                    value={video.name}/>
                         <ModalField title={"DESCRIPTION"}
                                     description={"The description of the video, HTML Tags are ignored"}
-                                    defaultValue={video.description}/>
+                                    value={video.description}/>
 
                         <ThumbnailField thumbnails={video.thumbnail_urls} videoIndex={this.props.videoIndex}/>
                         <ModalField title={"UPLOAD DATE"}
                                     description={"The date the video was published in IS8601 format"}
-                                    defaultValue={video.upload_date}/>
+                                    value={video.upload_date}/>
                         <ModalField title={"CONTENT URL"}
-                                    defaultValue={video.content_url}/>
+                                    value={video.content_url}/>
                         <ModalField title={"DURATION"}
-                                    defaultValue={video.duration}/>
+                                    value={video.duration}/>
                         <ModalField title={"EMBED URL"}
-                                    defaultValue={video.embed_url}/>
+                                    value={video.embed_url}/>
                     </WlColumn>
                 </WlContainer>
 
