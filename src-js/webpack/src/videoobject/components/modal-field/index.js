@@ -47,7 +47,7 @@ export const ModalField = (props) => {
     } = props
 
     return (<ModalFieldWrapper {...props}>
-        <ModalInput type={type} defaultValue={defaultValue}/>
+        <ModalInput type={type} value={defaultValue}/>
     </ModalFieldWrapper>)
 
 }

@@ -20,11 +20,7 @@ class Post_Edit_Screen {
 	public function enqueue_scripts() {
 		Scripts_Helper::enqueue_based_on_wordpress_version( 'wl-videoobject',
 			plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . '/js/dist/videoobject',
-			array(
-				'react',
-				'react-dom',
-				'wp-polyfill'
-			)
+			array( 'react', 'react-dom', 'wp-hooks', 'wp-i18n', 'wp-polyfill' )
 		);
 		wp_enqueue_style( 'wl-videoobject',
 			plugin_dir_url( dirname( dirname( __DIR__ ) ) ) . '/js/dist/videoobject.css' );
