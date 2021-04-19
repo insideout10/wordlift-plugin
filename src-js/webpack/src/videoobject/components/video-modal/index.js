@@ -28,8 +28,9 @@ class VideoModal extends React.Component {
                 <ModalHeader {...this.props} />
                 <WlContainer>
                     <WlColumn className={"wl-col--width-70 wl-col--align-center"}>
-                        <img src={video.thumbnail_urls[video.thumbnail_urls.length - 1]}  style={{
-                            "aspectRatio" : "16/9"
+                        <embed src={video.embed_url}  style={{
+                            "width" : "100%",
+                            "height": "100%"
                         }}/>
                     </WlColumn>
                     <WlColumn className={"wl-col--width-30 wl-col--height-90"}>
