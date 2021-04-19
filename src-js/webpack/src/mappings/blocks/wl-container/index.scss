@@ -1,6 +1,9 @@
 .wl-container {
   display: flex;
   justify-content: flex-start;
+  &--row-layout {
+    flex-direction: column;
+  }
 }
 
 .wl-container--full-width {

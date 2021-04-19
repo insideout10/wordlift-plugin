@@ -3,7 +3,7 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 import React from "react";
-import { __ } from "@wordpress/i18n";
+import {__} from "@wordpress/i18n";
 
 /**
  * Internal dependencies
@@ -13,6 +13,7 @@ import "./index.scss"
 import {WlColumn} from "../../../mappings/blocks/wl-column";
 import {ModalInput} from "../modal-input";
 import {connect} from "react-redux";
+import WlActionButton from "../../../faq/components/wl-action-button";
 
 
 const ModalRepeaterTextFieldRemoveIcon = ({onRemoveListener}) => {
@@ -22,17 +23,16 @@ const ModalRepeaterTextFieldRemoveIcon = ({onRemoveListener}) => {
 }
 
 
-
 const ModalRepeaterTextField = (props) => {
 
     const {onRemoveListener, onFieldChangeListener, index} = props
     return (
-        <WlContainer>
+        <WlContainer fullWidth={true}>
             <WlColumn>
                 <ModalInput defaultValue={""}/>
             </WlColumn>
             <WlColumn>
-                <ModalRepeaterTextFieldRemoveIcon onRemoveListener={onRemoveListener} />
+                <ModalRepeaterTextFieldRemoveIcon onRemoveListener={onRemoveListener}/>
             </WlColumn>
         </WlContainer>
     )
@@ -51,15 +51,19 @@ class ThumbnailField extends React.Component {
     render() {
         const {thumbnails} = this.props
         return (
-            <WlContainer>
+            <WlContainer rowLayout={true}>
                 <p>{__("THUMBNAIL URL", "wordlift")}</p>
+                {thumbnails.length > 0 && thumbnails.map((thumbnail) => {
+                    return (<ModalRepeaterTextField defaultValue={thumbnail}/>)
+                })}
+                <WlActionButton className={"wl-action-button--primary"}
+                                text={__("Add new", "wordlift")}/>
             </WlContainer>
         )
     }
 
 
 }
-
 
 
 export default connect()(ThumbnailField);

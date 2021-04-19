@@ -16,9 +16,10 @@ import React from "react";
 import "./index.scss";
 import {classExtractor} from "../helper";
 
-export const WlContainer = ({children, className = "", fullWidth = false}) => {
+export const WlContainer = ({children, className = "", fullWidth = false, rowLayout = false}) => {
     const classes = classExtractor({
-        "wl-container--full-width": fullWidth
+        "wl-container--full-width": fullWidth,
+        "wl-container--row-layout": rowLayout,
     });
     return <div className={"wl-container " + classes + " " + className}>{children}</div>;
 };
