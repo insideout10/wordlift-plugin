@@ -28,10 +28,10 @@ const ModalRepeaterTextField = (props) => {
     const {defaultValue, onRemoveListener, onFieldChangeListener, index} = props
     return (
         <WlContainer fullWidth={true} className={"wl-modal__thumbnail_field"}>
-            <WlColumn>
+            <WlColumn className={"wl-col--width-90"}>
                 <ModalInput defaultValue={defaultValue}/>
             </WlColumn>
-            <WlColumn>
+            <WlColumn className={"wl-col--width-10"}>
                 <ModalRepeaterTextFieldRemoveIcon onRemoveListener={onRemoveListener}/>
             </WlColumn>
         </WlContainer>
@@ -51,7 +51,7 @@ class ThumbnailField extends React.Component {
     render() {
         const {thumbnails, videoIndex} = this.props
         return (
-            <WlContainer rowLayout={true}>
+            <WlContainer rowLayout={true} fullWidth={true}>
                 <p>{__("THUMBNAIL URL", "wordlift")}</p>
                 {thumbnails.length > 0 && thumbnails.map((thumbnail, thumbnailIndex) => {
                     return (<ModalRepeaterTextField defaultValue={thumbnail} onRemoveListener={() => {
