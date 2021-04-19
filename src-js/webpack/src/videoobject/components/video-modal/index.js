@@ -15,13 +15,7 @@ import {ModalField} from "../modal-field";
 import ThumbnailField from "../thumbnail-field";
 import {ModalHeader} from "../modal-header";
 
-
-
-
 class VideoModal extends React.Component {
-
-
-
     renderIfVideoExists() {
         if (!this.props.video) {
             return (<React.Fragment/>)
@@ -51,7 +45,6 @@ class VideoModal extends React.Component {
                                     defaultValue={video.duration}/>
                         <ModalField title={"EMBED URL"}
                                     defaultValue={video.embed_url}/>
-
                     </WlColumn>
                 </WlContainer>
 

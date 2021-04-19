@@ -17,19 +17,18 @@ import WlActionButton from "../../../faq/components/wl-action-button";
 
 
 const ModalRepeaterTextFieldRemoveIcon = ({onRemoveListener}) => {
-    return (<button onClick={onRemoveListener}>
-        -
-    </button>)
+    return (<div onClick={onRemoveListener} className={"wl-modal__thumbnail_field__remove_button"}>
+    </div>)
 }
 
 
 const ModalRepeaterTextField = (props) => {
 
-    const {onRemoveListener, onFieldChangeListener, index} = props
+    const {defaultValue, onRemoveListener, onFieldChangeListener, index} = props
     return (
-        <WlContainer fullWidth={true}>
+        <WlContainer fullWidth={true} className={"wl-modal__thumbnail_field"}>
             <WlColumn>
-                <ModalInput defaultValue={""}/>
+                <ModalInput defaultValue={defaultValue}/>
             </WlColumn>
             <WlColumn>
                 <ModalRepeaterTextFieldRemoveIcon onRemoveListener={onRemoveListener}/>
