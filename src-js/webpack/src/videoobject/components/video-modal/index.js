@@ -23,6 +23,7 @@ import {
 } from "@wordpress/components";
 import {nextVideo, previousVideo, closeModal} from "../../actions";
 import {WlBgModal} from "../../../common/components/wl-bg-modal";
+import {ModalField} from "../modal-field";
 
 
 class VideoModal extends React.Component {
@@ -80,22 +81,23 @@ class VideoModal extends React.Component {
                         <img src={video.thumbnail_urls[video.thumbnail_urls.length - 1]} height={700} width={1000}/>
                     </WlColumn>
                     <WlColumn className={"wl-col--width-30 "}>
-                        <TextControl label={"NAME"} help={"The title of the video"} value={video.name}/>
-                        <TextControl label={"DESCRIPTION"}
-                                     help={"The description of the video, HTML Tags are ignored"}
-                                     value={video.description}/>
+                        <ModalField title={"NAME"} description={"The title of the video"} placeholder={"Name of file"} defaultValue={video.name}/>
+                        <ModalField title={"DESCRIPTION"}
+                                    description={"The description of the video, HTML Tags are ignored"}
+                                    defaultValue={video.description}/>
+
                         {video.thumbnail_urls.length > 0 && video.thumbnail_urls.map((thumbnail_url) => {
                             return (<TextControl value={thumbnail_url} label={"THUMBNAIL URL"}/>)
                         })}
-                        <TextControl label={"UPLOAD DATE"}
-                                     help={"The date the video was published in IS8601 format"}
-                                     value={video.upload_date}/>
-                        <TextControl label={"CONTENT URL"}
-                                     value={video.content_url}/>
-                        <TextControl label={"DURATION"}
-                                     value={video.duration}/>
-                        <TextControl label={"EMBED URL"}
-                                     value={video.embed_url}/>
+                        <ModalField title={"UPLOAD DATE"}
+                                    description={"The date the video was published in IS8601 format"}
+                                    defaultValue={video.upload_date}/>
+                        <ModalField title={"CONTENT URL"}
+                                    defaultValue={video.content_url}/>
+                        <ModalField title={"DURATION"}
+                                    defaultValue={video.duration}/>
+                        <ModalField title={"EMBED URL"}
+                                    defaultValue={video.embed_url}/>
 
                     </WlColumn>
                 </WlContainer>
