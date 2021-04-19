@@ -14,6 +14,8 @@ import {WlBgModal} from "../../../common/components/wl-bg-modal";
 import {ModalField} from "../modal-field";
 import ThumbnailField from "../thumbnail-field";
 import {ModalHeader} from "../modal-header";
+import WlActionButton from "../../../faq/components/wl-action-button";
+import {__} from "@wordpress/i18n";
 
 class VideoModal extends React.Component {
     renderIfVideoExists() {
@@ -26,9 +28,11 @@ class VideoModal extends React.Component {
                 <ModalHeader {...this.props} />
                 <WlContainer>
                     <WlColumn className={"wl-col--width-70 wl-col--align-center"}>
-                        <img src={video.thumbnail_urls[video.thumbnail_urls.length - 1]} height={700} width={1000}/>
+                        <img src={video.thumbnail_urls[video.thumbnail_urls.length - 1]}  style={{
+                            "aspectRatio" : "16/9"
+                        }}/>
                     </WlColumn>
-                    <WlColumn className={"wl-col--width-30 "}>
+                    <WlColumn className={"wl-col--width-30 wl-col--height-90"}>
                         <ModalField title={"NAME"} description={"The title of the video"} placeholder={"Name of file"}
                                     defaultValue={video.name}/>
                         <ModalField title={"DESCRIPTION"}
@@ -48,6 +52,7 @@ class VideoModal extends React.Component {
                     </WlColumn>
                 </WlContainer>
 
+
             </React.Fragment>)
     }
 
@@ -57,7 +62,16 @@ class VideoModal extends React.Component {
             <WlBgModal shouldOpenModal={this.props.isModalOpened}>
                 <WlModal shouldOpenModal={this.props.isModalOpened} className={"wl-video-modal--full-width"}>
                     {this.renderIfVideoExists()}
+                    <WlContainer fullWidth={true}>
+                        <WlColumn className={"wl-col--width-90"}>
+                        </WlColumn>
+                        <WlColumn className={"wl-col--width-10"}>
+                            <WlActionButton className={"wl-action-button--primary"}
+                                            text={__("Save", "wordlift")}/>
+                        </WlColumn>
+                    </WlContainer>
                 </WlModal>
+
             </WlBgModal>
         )
     }

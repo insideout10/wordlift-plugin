@@ -17,6 +17,11 @@
   width: 100%;
 }
 
+.wl-col--height-90 {
+  height: 600px;
+  overflow-y: scroll;
+}
+
 @for $i from 1 through 20 {
   .wl-col--width-#{$i * 5} {
     width: $i * 5%;
