@@ -15,6 +15,7 @@ import {ModalInput} from "../modal-input";
 import {connect} from "react-redux";
 import WlActionButton from "../../../faq/components/wl-action-button";
 import {addNewThumbnail, removeThumbnail} from "../../actions";
+import {ModalFieldWrapper} from "../modal-field";
 
 
 const ModalRepeaterTextFieldRemoveIcon = ({onRemoveListener}) => {
@@ -52,9 +53,10 @@ class ThumbnailField extends React.Component {
         const {thumbnails, videoIndex} = this.props
         return (
             <WlContainer rowLayout={true} fullWidth={true}>
-                <p>{__("THUMBNAIL URL", "wordlift")}</p>
+                <ModalFieldWrapper title={"THUMBNAIL URL"}
+                                   description={__("A video pointing to the video thumbnail image file")}/>
                 {thumbnails.length > 0 && thumbnails.map((thumbnail, thumbnailIndex) => {
-                    return (<ModalRepeaterTextField defaultValue={thumbnail} onRemoveListener={() => {
+                    return (<ModalRepeaterTextField key={thumbnail} defaultValue={thumbnail} onRemoveListener={() => {
                         this.props.dispatch(
                             removeThumbnail({
                                 videoIndex,
