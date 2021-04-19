@@ -24,6 +24,7 @@ import {
 import {nextVideo, previousVideo, closeModal} from "../../actions";
 import {WlBgModal} from "../../../common/components/wl-bg-modal";
 import {ModalField} from "../modal-field";
+import ThumbnailField from "../thumbnail-field";
 
 
 class VideoModal extends React.Component {
@@ -81,54 +82,53 @@ class VideoModal extends React.Component {
                         <img src={video.thumbnail_urls[video.thumbnail_urls.length - 1]} height={700} width={1000}/>
                     </WlColumn>
                     <WlColumn className={"wl-col--width-30 "}>
-                        <ModalField title={"NAME"} description={"The title of the video"} placeholder={"Name of file"} defaultValue={video.name}/>
+                        <ModalField title={"NAME"} description={"The title of the video"} placeholder={"Name of file"}
+                                    defaultValue={video.name}/>
                         <ModalField title={"DESCRIPTION"}
                                     description={"The description of the video, HTML Tags are ignored"}
                                     defaultValue={video.description}/>
 
-                        {video.thumbnail_urls.length > 0 && video.thumbnail_urls.map((thumbnail_url) => {
-                            return (<TextControl value={thumbnail_url} label={"THUMBNAIL URL"}/>)
-                        })}
-                        <ModalField title={"UPLOAD DATE"}
-                                    description={"The date the video was published in IS8601 format"}
-                                    defaultValue={video.upload_date}/>
-                        <ModalField title={"CONTENT URL"}
-                                    defaultValue={video.content_url}/>
-                        <ModalField title={"DURATION"}
-                                    defaultValue={video.duration}/>
-                        <ModalField title={"EMBED URL"}
-                                    defaultValue={video.embed_url}/>
+                        <ThumbnailField thumbnails={video.thumbnail_urls} />
+                            <ModalField title={"UPLOAD DATE"}
+                                        description={"The date the video was published in IS8601 format"}
+                                        defaultValue={video.upload_date}/>
+                            <ModalField title={"CONTENT URL"}
+                                        defaultValue={video.content_url}/>
+                            <ModalField title={"DURATION"}
+                                        defaultValue={video.duration}/>
+                            <ModalField title={"EMBED URL"}
+                                        defaultValue={video.embed_url}/>
 
-                    </WlColumn>
-                </WlContainer>
+                        </WlColumn>
+                            </WlContainer>
 
-            </React.Fragment>)
-    }
+                            </React.Fragment>)
+                            }
 
 
-    render() {
-        return (
-            <WlBgModal shouldOpenModal={this.props.isModalOpened}>
-                <WlModal shouldOpenModal={this.props.isModalOpened} className={"wl-video-modal--full-width"}>
-                    {this.renderIfVideoExists()}
-                </WlModal>
-            </WlBgModal>
-        )
-    }
+                            render() {
+                            return (
+                            <WlBgModal shouldOpenModal={this.props.isModalOpened}>
+                            <WlModal shouldOpenModal={this.props.isModalOpened} className={"wl-video-modal--full-width"}>
+                            {this.renderIfVideoExists()}
+                            </WlModal>
+                            </WlBgModal>
+                            )
+                            }
 
-}
+                            }
 
-const mapStateToProps = (state) => {
-    return {
-        isModalOpened: state.isModalOpened,
-        videoIndex: state.videoIndex,
-        video: state.videos[state.videoIndex],
-        isNextEnabled: state.videoIndex + 1 < state.videos.length,
-        isPreviousEnabled: state.videoIndex - 1 >= 0
+                            const mapStateToProps = (state) => {
+                            return {
+                            isModalOpened: state.isModalOpened,
+                            videoIndex: state.videoIndex,
+                            video: state.videos[state.videoIndex],
+                            isNextEnabled: state.videoIndex + 1 < state.videos.length,
+                            isPreviousEnabled: state.videoIndex - 1 >= 0
 
-    }
-}
+                            }
+                            }
 
-export default connect(
-    mapStateToProps
-)(VideoModal);
+                            export default connect(
+                            mapStateToProps
+                            )(VideoModal);
