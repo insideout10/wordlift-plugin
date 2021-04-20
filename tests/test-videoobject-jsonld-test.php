@@ -80,6 +80,7 @@ class Videoobject_Jsonld_Test extends \Wordlift_Videoobject_Unit_Test_Case {
 			array('@type' => 'Thing')
 		), $post_id, array() );
 		$this->assertCount( 3, $jsonld, 'Video object should  be added for Entity' );
+		$this->assertArrayHasKey('@context', $jsonld[2]);
 	}
 
 	public function test_when_jsonld_is_created_for_entity_type_array_should_add_video_object() {

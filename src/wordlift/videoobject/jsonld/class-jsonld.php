@@ -114,6 +114,7 @@ class Jsonld {
 			 * @var $video Video
 			 */
 			$single_jsonld = array(
+				'@context'     => 'http://schema.org',
 				'@type'        => 'VideoObject',
 				'name'         => $video->name,
 				'description'  => $video->description,
