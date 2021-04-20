@@ -8,6 +8,12 @@ use Wordlift\Videoobject\Parser\Parser_Factory;
  */
 class Videoobject_Block_Parser_Test extends \Wordlift_Unit_Test_Case {
 
+	public function setUp() {
+		parent::setUp();
+		if ( ! function_exists('parse_blocks') ) {
+			$this->markTestSkipped( 'Skipped because WP < 5.0 doesnt have parse_blocks method' );
+		}
+	}
 
 	public function test_should_get_video_url_from_youtube_block() {
 		$post_content = <<<EOF
