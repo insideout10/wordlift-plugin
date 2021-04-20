@@ -25,12 +25,12 @@ class Video extends React.Component {
     setIcon(video) {
 
         if (video.content_url === undefined) {
-            return youtubeIcon({height: 48, width: 48})
+            return youtubeIcon({height: 24, width: 24})
         }
         if (video.content_url.includes("youtube.com")) {
-            return youtubeIcon({height: 48, width: 48})
+            return youtubeIcon({height: 24, width: 24})
         } else if (video.content_url.includes("vimeo.com")) {
-            return vimeoIcon({height: 48, width: 48})
+            return vimeoIcon({height: 24, width: 24})
         }
 
     }
