@@ -81,8 +81,8 @@ class ThumbnailField extends React.Component {
                 })}
 
                 <WlContainer fullWidth={true}>
-                    <WlColumn className={"wl-col--width-80"}></WlColumn>
-                    <WlColumn className={"wl-col--width-20"}>
+                    <WlColumn className={"wl-col--width-75"}></WlColumn>
+                    <WlColumn className={"wl-col--width-25"}>
                         <WlActionButton className={"wl-action-button--primary"}
                                         text={__("Add new", "wordlift")}
                                         onClickHandler={() => this.props.dispatch(addNewThumbnail({videoIndex}))}/>

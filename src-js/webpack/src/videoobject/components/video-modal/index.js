@@ -19,12 +19,12 @@ import {__} from "@wordpress/i18n";
 import {closeModal, modalFieldChanged, saveVideoDataRequest} from "../../actions";
 
 class VideoModal extends React.Component {
+
     renderIfVideoExists() {
+
         if (!this.props.video) {
             return (<React.Fragment/>)
         }
-
-
         const video = this.props.video
 
         const onChangeListener = (key, value) => {
@@ -46,35 +46,35 @@ class VideoModal extends React.Component {
                         }}/>
                     </WlColumn>
                     <WlColumn className={"wl-col--width-30 wl-col--height-90"}>
-                        <ModalField title={"NAME"}
-                                    description={"The title of the video"}
-                                    placeholder={"Name of file"}
+                        <ModalField title={__("NAME", "wordlift")}
+                                    description={__("The title of the video", "wordlift")}
+                                    placeholder={__("Name of file", "wordlift")}
                                     onChange={onChangeListener}
                                     value={video.name}
                                     identifier={"name"}
                         />
-                        <ModalField title={"DESCRIPTION"}
-                                    description={"The description of the video, HTML Tags are ignored"}
+                        <ModalField title={__("DESCRIPTION", "wordlift")}
+                                    description={__("The description of the video, HTML Tags are ignored", "wordlift")}
                                     value={video.description}
                                     onChange={onChangeListener}
                                     identifier={"description"}/>
 
                         <ThumbnailField thumbnails={video.thumbnail_urls} videoIndex={this.props.videoIndex}/>
-                        <ModalField title={"UPLOAD DATE"}
-                                    description={"The date the video was published in IS8601 format"}
+                        <ModalField title={__("UPLOAD DATE", "wordlift")}
+                                    description={__("The date the video was published in IS8601 format", "wordlift")}
                                     value={video.upload_date}
                                     onChange={onChangeListener}
                                     identifier={"upload_date"}/>
-                        <ModalField title={"CONTENT URL"}
+                        <ModalField title={__("CONTENT URL", "wordlift")}
                                     value={video.content_url}
                                     onChange={onChangeListener}
                                     identifier={"content_url"}
                         />
-                        <ModalField title={"DURATION"}
+                        <ModalField title={__("DURATION", "wordlift")}
                                     value={video.duration}
                                     onChange={onChangeListener}
                                     identifier={"duration"}/>
-                        <ModalField title={"EMBED URL"}
+                        <ModalField title={__("EMBED URL", "wordlift")}
                                     value={video.embed_url}
                                     onChange={onChangeListener}
                                     identifier={"embed_url"}/>
@@ -88,7 +88,7 @@ class VideoModal extends React.Component {
 
     render() {
         return (
-            <WlBgModal shouldOpenModal={this.props.isModalOpened}>
+            <WlBgModal shouldOpenModal={this.props.isModalOpened} key={this.props.videoIndex}>
                 <WlModal shouldOpenModal={this.props.isModalOpened} className={"wl-video-modal--full-width"}>
                     {this.renderIfVideoExists()}
                     <WlContainer fullWidth={true}>
@@ -97,9 +97,9 @@ class VideoModal extends React.Component {
                         <WlColumn className={"wl-col--width-10"}>
                             <WlActionButton className={"wl-action-button--primary"}
                                             text={__("Save", "wordlift")}
-                            onClickHandler={ () => {
-                                this.props.dispatch(saveVideoDataRequest())
-                            }}/>
+                                            onClickHandler={() => {
+                                                this.props.dispatch(saveVideoDataRequest())
+                                            }}/>
                         </WlColumn>
                     </WlContainer>
                 </WlModal>

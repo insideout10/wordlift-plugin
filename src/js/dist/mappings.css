@@ -1,4 +1,4 @@
-.wl-container{display:flex;justify-content:flex-start}.wl-container--row-layout{flex-direction:column}.wl-container--center{align-content:center}.wl-container--full-width{width:100%}.wl-container__input--full-width{width:100%}.wl-container__input--height-medium{height:40px}
+.wl-container{display:flex;justify-content:flex-start}.wl-container--row-layout{flex-direction:column}.wl-container--center{align-items:center}.wl-container--full-width{width:100%}.wl-container__input--full-width{width:100%}.wl-container__input--height-medium{height:40px}
 
 .wl-table--bottom-aligned{margin-bottom:30px}.wl-table--no-border{border:none !important}.wl-table--small{width:70%}.wl-table--padding-left{margin-left:30%}.wl-table--transparent-bg{background:transparent !important}.wl-table__checkbox{vertical-align:inherit !important;margin-left:inherit !important}.wl-table__select-field,.wl-table__input-field{width:100% !important}
 

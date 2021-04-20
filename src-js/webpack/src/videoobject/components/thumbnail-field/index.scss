@@ -7,21 +7,24 @@
     align-items: center;
     height: 20px;
     width: 20px;
-    border: 1px solid #b5bcc2;
     border-radius: 50%;
+    background: #888;
 
     &:hover {
       background-color: #ff7f83;
-      color: #fff;
+
+      &:before {
+        background: #fff;
+      }
     }
 
     &:before {
       content: "";
       text-transform: none;
-      line-height: 1em;
-      width: 0.7em;
+      line-height: 0.8em;
+      width: 1em;
       height: 2px;
-      background: #555d66;
+      background: #fff;
       -webkit-font-smoothing: antialiased;
     }
   }
