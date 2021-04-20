@@ -36,10 +36,11 @@ class Videoobject_Sitemap_Test extends \Wordlift_Videoobject_Unit_Test_Case {
 		do_action( Video_Sitemap::CRON_ACTION_HOOK );
 		$this->assertTrue( file_exists( ABSPATH . 'wl-video-sitemap.xml' ), 'The sitemap should be generated' );
 		$sitemap_xml     = file_get_contents( ABSPATH . 'wl-video-sitemap.xml' );
+
 		$expected_result = <<<EOF
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">   <url>
-     <loc>http://example.org/?p=8</loc>
+     <loc>http://example.org/?p=${post_id}</loc>
      <video:video>
        <video:thumbnail_loc>https://test-url.com</video:thumbnail_loc>
        <video:title>test_title</video:title>
