@@ -40,10 +40,17 @@ class Post_Filter {
 
 	private function get_data_for_videos( $embedded_videos ) {
 
+
+		$youtube_videos = $this->get_youtube_videos( $embedded_videos );
+
+
 		$youtube_provider = Provider_Factory::get_provider( Provider_Factory::YOUTUBE );
-		$youtube_videos   = $youtube_provider->get_videos_data( $embedded_videos );
-		$vimeo_provider   = Provider_Factory::get_provider( Provider_Factory::VIMEO );
-		$vimeo_videos     = $vimeo_provider->get_videos_data( $embedded_videos );
+		$youtube_videos   = $youtube_provider->get_videos_data( $youtube_videos );
+
+		$vimeo_videos = $this->get_vimeo_videos( $embedded_videos );
+
+		$vimeo_provider = Provider_Factory::get_provider( Provider_Factory::VIMEO );
+		$vimeo_videos   = $vimeo_provider->get_videos_data( $vimeo_videos );
 
 		return array_merge( $youtube_videos, $vimeo_videos );
 
@@ -124,6 +131,7 @@ class Post_Filter {
 	 * @param $storage Storage
 	 * @param $post_id int
 	 * @param $embedded_videos array<Embedded_Video>
+	 *
 	 * @return array<Embedded_Video> Return array of embedded videos which are not in store.
 	 */
 	private function get_videos_without_existing_data( $storage, $post_id, $embedded_videos ) {
@@ -134,6 +142,43 @@ class Post_Filter {
 
 		return array_filter( $embedded_videos, function ( $embedded_video ) use ( $video_ids_in_store ) {
 			return ! in_array( $embedded_video->get_url(), $video_ids_in_store );
+		} );
+	}
+
+	/**
+	 * @param $embedded_videos
+	 *
+	 * @return array
+	 */
+	private function get_youtube_videos( $embedded_videos ) {
+		return array_filter( $embedded_videos, function ( $embedded_video ) {
+			/**
+			 * it should have youtube.com or youtu.be in the url
+			 *
+			 * @param $embedded_video Embedded_Video
+			 */
+			$video_url = $embedded_video->get_url();
+
+			return strpos( $video_url, "youtube.com" ) !== false ||
+			       strpos( $video_url, "youtu.be" ) !== false;
+		} );
+	}
+
+	/**
+	 * @param $embedded_videos
+	 *
+	 * @return array
+	 */
+	private function get_vimeo_videos( $embedded_videos ) {
+		return array_filter( $embedded_videos, function ( $embedded_video ) {
+			/**
+			 * it should have vimeo.com in the url
+			 *
+			 * @param $embedded_video Embedded_Video
+			 */
+			$video_url = $embedded_video->get_url();
+
+			return strpos( $video_url, "vimeo.com" ) !== false;
 		} );
 	}
 
