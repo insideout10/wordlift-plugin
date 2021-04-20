@@ -54,6 +54,7 @@ class VideoModal extends React.Component {
                                     identifier={"name"}
                         />
                         <ModalField title={__("DESCRIPTION", "wordlift")}
+                                    type={"textarea"}
                                     description={__("The description of the video, HTML Tags are ignored", "wordlift")}
                                     value={video.description}
                                     onChange={onChangeListener}

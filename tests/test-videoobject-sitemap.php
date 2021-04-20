@@ -11,6 +11,9 @@ use Wordlift\Videoobject\Sitemap\Video_Sitemap;
 class Videoobject_Sitemap_Test extends \Wordlift_Videoobject_Unit_Test_Case {
 
 	public function test_should_add_cron_if_wordlift_generate_video_sitemap_on_action() {
+		if ( ! function_exists( 'wp_get_scheduled_event' ) ) {
+			$this->markTestSkipped( 'This test requires wp_get_scheduled_event which was introduced in WP 5.1.0' );
+		}
 		global $wp_filter;
 		$this->assertArrayHasKey( 'wordlift_generate_video_sitemap_on', $wp_filter );
 		do_action( 'wordlift_generate_video_sitemap_on' );
