@@ -37,7 +37,7 @@ class VideoModal extends React.Component {
 
         return (
             <React.Fragment>
-                <ModalHeader {...this.state} />
+                <ModalHeader {...this.props} />
                 <WlContainer>
                     <WlColumn className={"wl-col--width-70 wl-col--align-center"}>
                         <embed src={video.embed_url} style={{

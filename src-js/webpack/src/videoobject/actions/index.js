@@ -21,3 +21,5 @@ export const saveVideoDataRequest = createAction("SAVE_VIDEO_DATA_REQUEST")
 export const modalFieldChanged = createAction("MODAL_FIELD_CHANGED")
 
 export const thumbnailFieldChanged = createAction("THUMBNAIL_FIELD_CHANGED")
+
+export const closeModalAndRefresh = createAction("CLOSE_MODAL_AND_REFRESH")

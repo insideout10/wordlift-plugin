@@ -12,12 +12,18 @@ function* getVideos(action) {
 }
 
 function* saveVideos() {
-   yield fork(saveVideosInApi, store.getState().apiConfig, store.getState().videos);
-   yield put(closeModal())
+    yield fork(saveVideosInApi, store.getState().apiConfig, store.getState().videos);
+    yield put(closeModal())
+}
+
+function* refresh() {
+    yield put(closeModal())
+    yield getVideos()
 }
 
 export function* rootSaga() {
     yield takeLatest("GET_ALL_VIDEOS_FROM_NETWORK", getVideos);
     yield takeLatest("SAVE_VIDEO_DATA_REQUEST", saveVideos)
+    yield takeLatest("CLOSE_MODAL_AND_REFRESH", refresh)
 }
 

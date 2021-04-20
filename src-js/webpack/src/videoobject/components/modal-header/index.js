@@ -9,7 +9,7 @@ import React from "react";
 import {WlContainer} from "../../../mappings/blocks/wl-container";
 import {WlColumn} from "../../../mappings/blocks/wl-column";
 import WordLiftIcon from "../../../block-editor/wl-logo-big.svg";
-import {closeModal, nextVideo, previousVideo} from "../../actions";
+import {closeModal, closeModalAndRefresh, nextVideo, previousVideo} from "../../actions";
 
 
 export const addDisabledClass = (isDisabled) => {
@@ -49,7 +49,7 @@ export const ModalHeader = ({isPreviousEnabled, isNextEnabled, dispatch}) => {
                 </WlColumn>
                 <WlColumn>
                                 <span className="dashicons dashicons-no-alt wl-video-modal__menu_button"
-                                      onClick={() => dispatch(closeModal())}/>
+                                      onClick={() => dispatch(closeModalAndRefresh())}/>
                 </WlColumn>
             </WlContainer>
         </WlColumn>
