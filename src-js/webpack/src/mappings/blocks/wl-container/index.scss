@@ -4,6 +4,9 @@
   &--row-layout {
     flex-direction: column;
   }
+  &--center {
+    align-content: center;
+  }
 }
 
 .wl-container--full-width {

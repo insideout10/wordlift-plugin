@@ -1,7 +1,7 @@
 .wl-modal-field {
   margin-top: 10px;
   margin-bottom: 10px;
-  padding: 5px;
+
 
   &__title {
     font-weight: 500;
@@ -21,6 +21,7 @@
 
   &__description {
     margin-top: 5px !important;
+    margin-bottom: 10px !important;
     font-size: 12px;
     line-height: 11px;
     letter-spacing: -0.022em;

@@ -28,11 +28,11 @@ const ModalRepeaterTextField = (props) => {
 
     const {value, onRemoveListener, onChange} = props
     return (
-        <WlContainer fullWidth={true} className={"wl-modal__thumbnail_field"}>
-            <WlColumn className={"wl-col--width-90"}>
+        <WlContainer fullWidth={true} className={"wl-modal__thumbnail_field wl-container--center"}>
+            <WlColumn className={"wl-col--width-90 wl-col--less-padding"}>
                 <ModalInput value={value} onChange={onChange}/>
             </WlColumn>
-            <WlColumn className={"wl-col--width-10"}>
+            <WlColumn className={"wl-col--width-10 wl-col--less-padding"}>
                 <ModalRepeaterTextFieldRemoveIcon onRemoveListener={onRemoveListener}/>
             </WlColumn>
         </WlContainer>
@@ -59,30 +59,30 @@ class ThumbnailField extends React.Component {
                                  description={__("A video pointing to the video thumbnail image file")}/>
                 {thumbnails.length > 0 && thumbnails.map((thumbnail, thumbnailIndex) => {
                     return (<ModalRepeaterTextField
-                                                    value={thumbnail}
-                                                    identifier={"thumbnail_url"}
-                                                    onRemoveListener={() => {
-                                                        this.props.dispatch(
-                                                            removeThumbnail({
-                                                                videoIndex,
-                                                                thumbnailIndex
-                                                            }))
-                                                    }}
-                                                    onChange={
-                                                        (key, value) => {
-                                                            this.props.dispatch(
-                                                                thumbnailFieldChanged({
-                                                                    value, thumbnailIndex
-                                                                })
-                                                            )
-                                                        }
+                        value={thumbnail}
+                        identifier={"thumbnail_url"}
+                        onRemoveListener={() => {
+                            this.props.dispatch(
+                                removeThumbnail({
+                                    videoIndex,
+                                    thumbnailIndex
+                                }))
+                        }}
+                        onChange={
+                            (key, value) => {
+                                this.props.dispatch(
+                                    thumbnailFieldChanged({
+                                        value, thumbnailIndex
+                                    })
+                                )
+                            }
 
-                                                    }/>)
+                        }/>)
                 })}
 
                 <WlContainer fullWidth={true}>
                     <WlColumn className={"wl-col--width-80"}></WlColumn>
-                    <WlColumn className={"wl-col-width-20"}>
+                    <WlColumn className={"wl-col--width-20"}>
                         <WlActionButton className={"wl-action-button--primary"}
                                         text={__("Add new", "wordlift")}
                                         onClickHandler={() => this.props.dispatch(addNewThumbnail({videoIndex}))}/>
