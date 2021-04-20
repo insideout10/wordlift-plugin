@@ -66,15 +66,18 @@ class VideoModal extends React.Component {
                                     onChange={onChangeListener}
                                     identifier={"upload_date"}/>
                         <ModalField title={__("CONTENT URL", "wordlift")}
+                                    description={__("A URL pointing to the actual video media file", "wordlift")}
                                     value={video.content_url}
                                     onChange={onChangeListener}
                                     identifier={"content_url"}
                         />
                         <ModalField title={__("DURATION", "wordlift")}
+                                    description={__("The duration of the video in ISO 8601 format.", "wordlift")}
                                     value={video.duration}
                                     onChange={onChangeListener}
                                     identifier={"duration"}/>
                         <ModalField title={__("EMBED URL", "wordlift")}
+                                    description={__("A URL pointing to a player for the specific video.", "wordlift")}
                                     value={video.embed_url}
                                     onChange={onChangeListener}
                                     identifier={"embed_url"}/>
