@@ -49,13 +49,11 @@ class ThumbnailField extends React.Component {
 
     render() {
         const {thumbnails, videoIndex} = this.props
-        const onChange = (key, value) => this.props.dispatch(thumbnailFieldChanged({
-            value,
-        }))
+
         return (
             <WlContainer rowLayout={true} fullWidth={true}>
                 <ModalFieldLabel title={"THUMBNAIL URL"}
-                                 description={__("A video pointing to the video thumbnail image file")}/>
+                                 description={__("A URL pointing to the video thumbnail image file.", "wordlift")}/>
                 {thumbnails.length > 0 && thumbnails.map((thumbnail, thumbnailIndex) => {
                     return (<ModalRepeaterTextField
                         value={thumbnail}
