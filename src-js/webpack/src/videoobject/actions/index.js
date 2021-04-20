@@ -17,3 +17,5 @@ export const addNewThumbnail = createAction("ADD_NEW_THUMBNAIL")
 export const removeThumbnail = createAction("REMOVE_THUMBNAIL")
 
 export const saveVideoDataRequest = createAction("SAVE_VIDEO_DATA_REQUEST")
+
+export const modalFieldChanged = createAction("MODAL_FIELD_CHANGED")

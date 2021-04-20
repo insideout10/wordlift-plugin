@@ -35,5 +35,10 @@ export const reducer = createReducer(null, {
     "REMOVE_THUMBNAIL": (state, action) => {
         const {videoIndex, thumbnailIndex} = action.payload
         state.videos[videoIndex].thumbnail_urls.splice(thumbnailIndex, 1);
+    },
+
+    "MODAL_FIELD_CHANGED" : (state, action) => {
+        const {key, value} = action.payload
+        state.videos[state.videoIndex][key] = value
     }
 });

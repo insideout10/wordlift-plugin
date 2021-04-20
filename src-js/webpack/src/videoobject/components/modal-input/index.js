@@ -15,5 +15,8 @@ import "./index.scss"
 
 export const ModalInput = (props) => {
     return (<input className={"wl-modal-field-input"}
-        {...props}/>)
+        {...props} onChange={ (event) => {
+            props.onChange(props.identifier, event.target.value)
+        }
+    } />)
 }

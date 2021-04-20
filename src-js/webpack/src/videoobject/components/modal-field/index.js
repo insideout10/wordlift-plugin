@@ -17,7 +17,7 @@ import {classExtractor} from "../../../mappings/blocks/helper";
 import {ModalInput} from "../modal-input";
 
 
-export const ModalFieldWrapper = ({title, description, isRequired=true, children}) => {
+export const ModalFieldLabel = ({title, description, isRequired = true, children}) => {
     const titleClasses = classExtractor({
         'wl-modal-field__title--required': isRequired
     })
@@ -43,11 +43,22 @@ export const ModalFieldWrapper = ({title, description, isRequired=true, children
 export const ModalField = (props) => {
     const {
         type = "text",
-        value
+
+        /* Below properties are used for label */
+        title,
+        description,
+        value,
+
+        onChange,
+
+        // The identifier of the video object js object, for example thumbnail_urls
+        identifier,
+
+
     } = props
 
-    return (<ModalFieldWrapper {...props}>
-        <ModalInput type={type} value={value}/>
-    </ModalFieldWrapper>)
+    return (<ModalFieldLabel title={title} description={description}>
+        <ModalInput type={type} value={value} onChange={onChange} identifier={identifier}/>
+    </ModalFieldLabel>)
 
 }

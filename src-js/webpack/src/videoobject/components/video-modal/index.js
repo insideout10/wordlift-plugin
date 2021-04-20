@@ -16,6 +16,7 @@ import ThumbnailField from "../thumbnail-field";
 import {ModalHeader} from "../modal-header";
 import WlActionButton from "../../../faq/components/wl-action-button";
 import {__} from "@wordpress/i18n";
+import {modalFieldChanged} from "../../actions";
 
 class VideoModal extends React.Component {
     renderIfVideoExists() {
@@ -23,35 +24,60 @@ class VideoModal extends React.Component {
             return (<React.Fragment/>)
         }
 
-        this.state = {...this.props.video}
-        const video = this.state
+
+        const video = this.props.video
+
+        const onChangeListener = (key, value) => {
+
+            this.props.dispatch(modalFieldChanged({
+                key, value
+            }))
+        }
+
+
         return (
             <React.Fragment>
                 <ModalHeader {...this.state} />
                 <WlContainer>
                     <WlColumn className={"wl-col--width-70 wl-col--align-center"}>
-                        <embed src={video.embed_url}  style={{
-                            "width" : "100%",
+                        <embed src={video.embed_url} style={{
+                            "width": "100%",
                             "height": "100%"
                         }}/>
                     </WlColumn>
                     <WlColumn className={"wl-col--width-30 wl-col--height-90"}>
-                        <ModalField title={"NAME"} description={"The title of the video"} placeholder={"Name of file"}
-                                    value={video.name}/>
+                        <ModalField title={"NAME"}
+                                    description={"The title of the video"}
+                                    placeholder={"Name of file"}
+                                    onChange={onChangeListener}
+                                    value={video.name}
+                                    identifier={"name"}
+                        />
                         <ModalField title={"DESCRIPTION"}
                                     description={"The description of the video, HTML Tags are ignored"}
-                                    value={video.description}/>
+                                    value={video.description}
+                                    onChange={onChangeListener}
+                                    identifier={"description"}/>
 
                         <ThumbnailField thumbnails={video.thumbnail_urls} videoIndex={this.props.videoIndex}/>
                         <ModalField title={"UPLOAD DATE"}
                                     description={"The date the video was published in IS8601 format"}
-                                    value={video.upload_date}/>
+                                    value={video.upload_date}
+                                    onChange={onChangeListener}
+                                    identifier={"upload_date"}/>
                         <ModalField title={"CONTENT URL"}
-                                    value={video.content_url}/>
+                                    value={video.content_url}
+                                    onChange={onChangeListener}
+                                    identifier={"content_url"}
+                        />
                         <ModalField title={"DURATION"}
-                                    value={video.duration}/>
+                                    value={video.duration}
+                                    onChange={onChangeListener}
+                                    identifier={"duration"}/>
                         <ModalField title={"EMBED URL"}
-                                    value={video.embed_url}/>
+                                    value={video.embed_url}
+                                    onChange={onChangeListener}
+                                    identifier={"embed_url"}/>
                     </WlColumn>
                 </WlContainer>
 
