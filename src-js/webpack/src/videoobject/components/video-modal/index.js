@@ -16,7 +16,7 @@ import ThumbnailField from "../thumbnail-field";
 import {ModalHeader} from "../modal-header";
 import WlActionButton from "../../../faq/components/wl-action-button";
 import {__} from "@wordpress/i18n";
-import {modalFieldChanged} from "../../actions";
+import {closeModal, modalFieldChanged, saveVideoDataRequest} from "../../actions";
 
 class VideoModal extends React.Component {
     renderIfVideoExists() {
@@ -96,7 +96,10 @@ class VideoModal extends React.Component {
                         </WlColumn>
                         <WlColumn className={"wl-col--width-10"}>
                             <WlActionButton className={"wl-action-button--primary"}
-                                            text={__("Save", "wordlift")}/>
+                                            text={__("Save", "wordlift")}
+                            onClickHandler={ () => {
+                                this.props.dispatch(saveVideoDataRequest())
+                            }}/>
                         </WlColumn>
                     </WlContainer>
                 </WlModal>

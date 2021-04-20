@@ -16,11 +16,11 @@ export function getVideosFromApi(apiConfig) {
 }
 
 
-export function saveVideos(apiConfig,videos) {
+export function saveVideosInApi(apiConfig, videos) {
 
     const {restUrl, nonce, postId} = apiConfig;
 
-    return fetch(restUrl + "/videos/save", {
+    return fetch(restUrl + "/save", {
         method: "POST",
         headers: {
             "content-type": "application/json",

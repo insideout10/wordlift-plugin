@@ -23,11 +23,11 @@ export const reducer = createReducer(null, {
         }
     },
 
-    "CLOSE_MODAL" : (state, action) => {
+    "CLOSE_MODAL": (state, action) => {
         state.isModalOpened = false
     },
 
-    "ADD_NEW_THUMBNAIL": (state, action) =>  {
+    "ADD_NEW_THUMBNAIL": (state, action) => {
         const {videoIndex} = action.payload
         state.videos[videoIndex].thumbnail_urls.push("")
     },
@@ -37,8 +37,13 @@ export const reducer = createReducer(null, {
         state.videos[videoIndex].thumbnail_urls.splice(thumbnailIndex, 1);
     },
 
-    "MODAL_FIELD_CHANGED" : (state, action) => {
+    "MODAL_FIELD_CHANGED": (state, action) => {
         const {key, value} = action.payload
         state.videos[state.videoIndex][key] = value
+    },
+
+    "THUMBNAIL_FIELD_CHANGED": (state, action) => {
+        const {thumbnailIndex, value} = action.payload
+        state.videos[state.videoIndex]["thumbnail_urls"][thumbnailIndex] = value
     }
 });

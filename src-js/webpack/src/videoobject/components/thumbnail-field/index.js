@@ -14,7 +14,7 @@ import {WlColumn} from "../../../mappings/blocks/wl-column";
 import {ModalInput} from "../modal-input";
 import {connect} from "react-redux";
 import WlActionButton from "../../../faq/components/wl-action-button";
-import {addNewThumbnail, removeThumbnail} from "../../actions";
+import {addNewThumbnail, removeThumbnail, thumbnailFieldChanged} from "../../actions";
 import {ModalFieldLabel} from "../modal-field";
 
 
@@ -26,11 +26,11 @@ const ModalRepeaterTextFieldRemoveIcon = ({onRemoveListener}) => {
 
 const ModalRepeaterTextField = (props) => {
 
-    const {defaultValue, onRemoveListener, onFieldChangeListener, index} = props
+    const {value, onRemoveListener, onChange} = props
     return (
         <WlContainer fullWidth={true} className={"wl-modal__thumbnail_field"}>
             <WlColumn className={"wl-col--width-90"}>
-                <ModalInput defaultValue={defaultValue}/>
+                <ModalInput value={value} onChange={onChange}/>
             </WlColumn>
             <WlColumn className={"wl-col--width-10"}>
                 <ModalRepeaterTextFieldRemoveIcon onRemoveListener={onRemoveListener}/>
@@ -48,21 +48,36 @@ const ModalRepeaterTextField = (props) => {
 
 class ThumbnailField extends React.Component {
 
-
     render() {
         const {thumbnails, videoIndex} = this.props
+        const onChange = (key, value) => this.props.dispatch(thumbnailFieldChanged({
+            value,
+        }))
         return (
             <WlContainer rowLayout={true} fullWidth={true}>
                 <ModalFieldLabel title={"THUMBNAIL URL"}
                                  description={__("A video pointing to the video thumbnail image file")}/>
                 {thumbnails.length > 0 && thumbnails.map((thumbnail, thumbnailIndex) => {
-                    return (<ModalRepeaterTextField key={thumbnail} defaultValue={thumbnail} onRemoveListener={() => {
-                        this.props.dispatch(
-                            removeThumbnail({
-                                videoIndex,
-                                thumbnailIndex
-                            }))
-                    }}/>)
+                    return (<ModalRepeaterTextField
+                                                    value={thumbnail}
+                                                    identifier={"thumbnail_url"}
+                                                    onRemoveListener={() => {
+                                                        this.props.dispatch(
+                                                            removeThumbnail({
+                                                                videoIndex,
+                                                                thumbnailIndex
+                                                            }))
+                                                    }}
+                                                    onChange={
+                                                        (key, value) => {
+                                                            this.props.dispatch(
+                                                                thumbnailFieldChanged({
+                                                                    value, thumbnailIndex
+                                                                })
+                                                            )
+                                                        }
+
+                                                    }/>)
                 })}
 
                 <WlContainer fullWidth={true}>
