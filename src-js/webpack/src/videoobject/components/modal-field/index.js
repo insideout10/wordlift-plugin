@@ -43,11 +43,11 @@ export const ModalFieldWrapper = ({title, description, isRequired=true, children
 export const ModalField = (props) => {
     const {
         type = "text",
-        defaultValue
+        value
     } = props
 
     return (<ModalFieldWrapper {...props}>
-        <ModalInput type={type} value={defaultValue}/>
+        <ModalInput type={type} value={value}/>
     </ModalFieldWrapper>)
 
 }
