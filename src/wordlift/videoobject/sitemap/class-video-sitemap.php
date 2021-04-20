@@ -46,6 +46,14 @@ EOF;
 
 	}
 
+	public static function is_sitemap_already_generated() {
+		if ( ! defined( 'ABSPATH' ) ) {
+			return false;
+		}
+		return ABSPATH . 'wl-video-sitemap.xml';
+	}
+
+
 	public function remove_scheduled_generation() {
 		if ( wp_next_scheduled( self::CRON_ACTION_HOOK ) ) {
 			wp_clear_scheduled_hook( self::CRON_ACTION_HOOK );

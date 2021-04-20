@@ -96,9 +96,9 @@ class VideoModal extends React.Component {
                 <WlModal shouldOpenModal={this.props.isModalOpened} className={"wl-video-modal--full-width"}>
                     {this.renderIfVideoExists()}
                     <WlContainer fullWidth={true}>
-                        <WlColumn className={"wl-col--width-90"}>
+                        <WlColumn className={"wl-col--width-85"}>
                         </WlColumn>
-                        <WlColumn className={"wl-col--width-10"}>
+                        <WlColumn className={"wl-col--width-15"}>
                             <WlActionButton className={"wl-action-button--primary"}
                                             text={__("Save", "wordlift")}
                                             onClickHandler={() => {

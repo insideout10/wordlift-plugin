@@ -2,6 +2,7 @@
 
 use Wordlift\Videoobject\Provider\Client\Vimeo_Client;
 use Wordlift\Videoobject\Provider\Client\Youtube_Client;
+use Wordlift\Videoobject\Sitemap\Video_Sitemap;
 
 if ( isset( $_POST['wordlift_videoobject_youtube_api_key'] )
      || isset( $_POST['wordlift_videoobject_vimeo_api_key'] ) ) {
@@ -84,7 +85,12 @@ if ( isset( $_POST['submit'] ) ) {
 	<?php $is_checked = get_option( '_wl_video_sitemap_generation', false ) ? 'checked' : '' ?>
     <p> <?php _e( 'Enable Video Sitemap' ); ?>
         <input type="checkbox" name="wl_enable_video_sitemap" value="1" <?php echo $is_checked; ?> ></p>
-    <p> <?php _e( 'Here is link to your Video Sitemap. Add it now, to Google Search Console.', 'wordlift' ); ?></p>
+    <p> <?php
+		if ( Video_Sitemap::is_sitemap_already_generated() ) {
+			$sitemap_link = get_home_url( null, 'wl-video-sitemap.xml' );
+			printf( __( 'Here is <a href="%s">link</a> to your Video Sitemap. Add it now, to Google Search Console.', 'wordlift' ), $sitemap_link );
+		}
+		?></p>
 
     <p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary"
                              value="Save Changes">

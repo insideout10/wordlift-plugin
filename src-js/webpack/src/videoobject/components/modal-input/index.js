@@ -13,9 +13,16 @@ import React from "react";
 import "./index.scss"
 
 export const ModalInput = (props) => {
-    return (<input className={"wl-modal-field-input"}
-        {...props} onChange={ (event) => {
-            props.onChange(props.identifier, event.target.value)
-        }
-    } />)
+
+    if (props.type === "textarea") {
+        return (
+            <textarea className={"wl-modal-field-input"}
+                      {...props} onChange={(event) => {
+                props.onChange(props.identifier, event.target.value)
+            }} rows={8}/>)
+    }
+
+    return (<input className={"wl-modal-field-input"} {...props} onChange={(event) => {
+        props.onChange(props.identifier, event.target.value)
+    }}/>)
 }
