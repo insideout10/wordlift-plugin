@@ -26,7 +26,7 @@ export const ModalHeader = ({isPreviousEnabled, isNextEnabled, dispatch}) => {
                     <WordLiftIcon/>
                 </WlColumn>
                 <WlColumn>
-                    Edit video
+                    <h4>Edit video</h4>
                 </WlColumn>
             </WlContainer>
         </WlColumn>
