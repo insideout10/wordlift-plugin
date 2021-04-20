@@ -17,9 +17,7 @@ use Wordlift\Videoobject\Provider\Provider_Factory;
 class Post_Filter {
 
 	public function init() {
-
 		add_action( 'save_post', array( $this, 'save_post' ), 10, 3 );
-
 	}
 
 	/**
@@ -40,9 +38,7 @@ class Post_Filter {
 
 	private function get_data_for_videos( $embedded_videos ) {
 
-
 		$youtube_videos = $this->get_youtube_videos( $embedded_videos );
-
 
 		$youtube_provider = Provider_Factory::get_provider( Provider_Factory::YOUTUBE );
 		$youtube_videos   = $youtube_provider->get_videos_data( $youtube_videos );
