@@ -2,14 +2,13 @@
  * External dependencies.
  */
 import React from "react";
-
 /**
  * Internal dependencies.
  */
 import {WlContainer} from "../../../mappings/blocks/wl-container";
 import {WlColumn} from "../../../mappings/blocks/wl-column";
 import WordLiftIcon from "../../../block-editor/wl-logo-big.svg";
-import {closeModal, closeModalAndRefresh, nextVideo, previousVideo} from "../../actions";
+import {closeModalAndRefresh, nextVideo, previousVideo} from "../../actions";
 
 
 export const addDisabledClass = (isDisabled) => {

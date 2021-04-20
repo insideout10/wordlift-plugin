@@ -5,8 +5,6 @@ import createSagaMiddleware from "redux-saga";
 import thunk from "redux-thunk";
 import logger from "redux-logger";
 import {applyMiddleware, createStore} from "redux";
-
-
 /**
  * Internal dependencies
  */

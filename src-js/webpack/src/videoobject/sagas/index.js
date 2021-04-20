@@ -1,5 +1,5 @@
 import store from "../store";
-import {fork, put, call, takeLatest} from "redux-saga/effects";
+import {call, fork, put, takeLatest} from "redux-saga/effects";
 import {getVideosFromApi, saveVideosInApi} from "../api";
 import {closeModal, updateVideos} from "../actions";
 

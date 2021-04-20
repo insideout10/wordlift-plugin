@@ -16,7 +16,7 @@ import ThumbnailField from "../thumbnail-field";
 import {ModalHeader} from "../modal-header";
 import WlActionButton from "../../../faq/components/wl-action-button";
 import {__} from "@wordpress/i18n";
-import {closeModal, modalFieldChanged, saveVideoDataRequest} from "../../actions";
+import {modalFieldChanged, saveVideoDataRequest} from "../../actions";
 
 class VideoModal extends React.Component {
 
