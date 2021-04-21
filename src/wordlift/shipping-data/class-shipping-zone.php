@@ -196,7 +196,7 @@ class Shipping_Zone {
 		$this->add_business_days( $shipping_delivery_time );
 
 		if ( 1 < count( $shipping_delivery_time ) ) {
-			$offer_shipping_details['shippingDeliveryTime'] = $shipping_delivery_time;
+			$offer_shipping_details['deliveryTime'] = $shipping_delivery_time;
 		}
 
 		$jsonld['shippingDetails'][] = $offer_shipping_details;
