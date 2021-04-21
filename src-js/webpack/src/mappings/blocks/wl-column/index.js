@@ -13,7 +13,12 @@ import React from "react";
  * Internal dependencies.
  */
 import "./index.scss";
+import {classExtractor} from "../helper";
 
-export const WlColumn = ({ children, className = "" }) => {
-  return <div className={"wl-col " + className}>{children}</div>;
+export const WlColumn = ({ children, className = "", lessPadding = false }) => {
+
+  const extractedClasses = classExtractor({
+    "wl-col--less-padding": lessPadding
+  })
+  return <div className={"wl-col " + className + " " + extractedClasses}>{children}</div>;
 };

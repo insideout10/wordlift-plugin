@@ -20,33 +20,33 @@ export const addDisabledClass = (isDisabled) => {
 
 export const ModalHeader = ({isPreviousEnabled, isNextEnabled, dispatch}) => {
     return <WlContainer className={"wl-video-modal__header"}>
-        <WlColumn className={"wl-col--width-80"}>
+        <WlColumn className={"wl-col--width-80"} lessPadding={true}>
             <WlContainer className={"wl-video-modal__header__container"}>
-                <WlColumn>
+                <WlColumn lessPadding={true}>
                     <WordLiftIcon/>
                 </WlColumn>
-                <WlColumn>
+                <WlColumn lessPadding={true}>
                     <h4>Edit video</h4>
                 </WlColumn>
             </WlContainer>
         </WlColumn>
-        <WlColumn className={"wl-col--width-20"}>
+        <WlColumn className={"wl-col--width-20"} lessPadding={true}>
             <WlContainer className={"wl-video-modal__menu_button_container"}>
-                <WlColumn>
+                <WlColumn lessPadding={true}>
                                 <span
                                     className={"dashicons dashicons-arrow-left-alt2 wl-video-modal__menu_button"
                                     + addDisabledClass(!isPreviousEnabled)}
                                     onClick={() => dispatch(previousVideo())}
                                     disabled={!isPreviousEnabled}/>
                 </WlColumn>
-                <WlColumn>
+                <WlColumn lessPadding={true}>
                                 <span
                                     className={"dashicons dashicons-arrow-right-alt2 wl-video-modal__menu_button "
                                     + addDisabledClass(!isNextEnabled)}
                                     onClick={() => dispatch(nextVideo())}
                                     disabled={!isNextEnabled}/>
                 </WlColumn>
-                <WlColumn>
+                <WlColumn lessPadding={true}>
                                 <span className="dashicons dashicons-no-alt wl-video-modal__menu_button"
                                       onClick={() => dispatch(closeModalAndRefresh())}/>
                 </WlColumn>
