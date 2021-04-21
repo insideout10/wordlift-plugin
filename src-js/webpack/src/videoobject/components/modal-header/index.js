@@ -20,7 +20,7 @@ export const addDisabledClass = (isDisabled) => {
 
 export const ModalHeader = ({isPreviousEnabled, isNextEnabled, dispatch}) => {
     return <WlContainer className={"wl-video-modal__header"}>
-        <WlColumn className={"wl-col--width-90"}>
+        <WlColumn className={"wl-col--width-80"}>
             <WlContainer>
                 <WlColumn>
                     <WordLiftIcon/>
@@ -30,8 +30,8 @@ export const ModalHeader = ({isPreviousEnabled, isNextEnabled, dispatch}) => {
                 </WlColumn>
             </WlContainer>
         </WlColumn>
-        <WlColumn className={"wl-col--width-10"}>
-            <WlContainer>
+        <WlColumn className={"wl-col--width-20"}>
+            <WlContainer className={"wl-video-modal__menu_button_container"}>
                 <WlColumn>
                                 <span
                                     className={"dashicons dashicons-arrow-left-alt2 wl-video-modal__menu_button"
