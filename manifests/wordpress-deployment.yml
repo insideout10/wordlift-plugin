@@ -36,11 +36,11 @@ spec:
         workingDir: /var/www/html/4.4/
         resources:
           requests:
-            cpu: "450m"
-            memory: "450Mi"
-          limits:
-            cpu: "650m"
+            cpu: "850m"
             memory: "650Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1024Mi"
         env:
         - name: WORDPRESS_DB_HOST
           value: wordpress-44-mysql
@@ -89,11 +89,11 @@ spec:
         workingDir: /var/www/html/4.7/
         resources:
           requests:
-            cpu: "450m"
-            memory: "450Mi"
-          limits:
-            cpu: "650m"
+            cpu: "850m"
             memory: "650Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1024Mi"
         env:
         - name: WORDPRESS_DB_HOST
           value: wordpress-47-mysql
@@ -142,11 +142,11 @@ spec:
         workingDir: /var/www/html/5.0/
         resources:
           requests:
-            cpu: "450m"
-            memory: "450Mi"
-          limits:
-            cpu: "650m"
+            cpu: "850m"
             memory: "650Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1024Mi"
         env:
         - name: WORDPRESS_DB_HOST
           value: wordpress-50-mysql
@@ -195,11 +195,11 @@ spec:
         workingDir: /var/www/html/5.4/
         resources:
           requests:
-            cpu: "450m"
-            memory: "450Mi"
-          limits:
-            cpu: "650m"
+            cpu: "850m"
             memory: "650Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1024Mi"
         env:
         - name: WORDPRESS_DB_HOST
           value: wordpress-54-mysql
@@ -248,11 +248,11 @@ spec:
         workingDir: /var/www/html/5.5/
         resources:
           requests:
-            cpu: "450m"
-            memory: "450Mi"
-          limits:
-            cpu: "650m"
+            cpu: "850m"
             memory: "650Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1024Mi"
         env:
         - name: WORDPRESS_DB_HOST
           value: wordpress-55-mysql
@@ -301,11 +301,11 @@ spec:
         workingDir: /var/www/html/5.6/
         resources:
           requests:
-            cpu: "450m"
-            memory: "450Mi"
-          limits:
-            cpu: "650m"
+            cpu: "850m"
             memory: "650Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1024Mi"
         env:
         - name: WORDPRESS_DB_HOST
           value: wordpress-56-mysql
@@ -354,11 +354,11 @@ spec:
         workingDir: /var/www/html/5.7/
         resources:
           requests:
-            cpu: "450m"
-            memory: "450Mi"
-          limits:
-            cpu: "650m"
+            cpu: "850m"
             memory: "650Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1024Mi"
         env:
         - name: WORDPRESS_DB_HOST
           value: wordpress-57-mysql
