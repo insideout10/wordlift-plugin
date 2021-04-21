@@ -38,12 +38,13 @@ class VideoModal extends React.Component {
         return (
             <React.Fragment>
                 <ModalHeader {...this.props} />
-                <WlContainer>
-                    <WlColumn className={"wl-col--width-70 wl-col--align-center"}>
-                        <embed src={video.embed_url} style={{
-                            "width": "100%",
-                            "height": "100%"
-                        }}/>
+
+                <WlContainer className={"wl-video-modal__modal_body"}>
+                    <WlColumn className={"wl-col--width-70 wl-col--align-center wl-col--full-height"} isSticky={true}>
+                            <embed src={video.embed_url} style={{
+                                "width": "100%",
+                                "height": "100%",
+                            }}/>
                     </WlColumn>
                     <WlColumn className={"wl-col--width-30"}>
                         <ModalField title={__("NAME", "wordlift")}
@@ -84,8 +85,6 @@ class VideoModal extends React.Component {
                                     identifier={"embed_url"}/>
                     </WlColumn>
                 </WlContainer>
-
-
             </React.Fragment>)
     }
 
@@ -95,17 +94,19 @@ class VideoModal extends React.Component {
             <WlBgModal shouldOpenModal={this.props.isModalOpened} key={this.props.videoIndex}>
                 <WlModal shouldOpenModal={this.props.isModalOpened} className={"wl-video-modal--full-width"}>
                     {this.renderIfVideoExists()}
-                    <WlContainer fullWidth={true}>
-                        <WlColumn className={"wl-col--width-85"}>
-                        </WlColumn>
-                        <WlColumn className={"wl-col--width-15"}>
-                            <WlActionButton className={"wl-action-button--primary"}
-                                            text={__("Save", "wordlift")}
-                                            onClickHandler={() => {
-                                                this.props.dispatch(saveVideoDataRequest())
-                                            }}/>
-                        </WlColumn>
-                    </WlContainer>
+                    <div style={{"height": "10%"}}>
+                        <WlContainer fullWidth={true}>
+                            <WlColumn className={"wl-col--width-85"}>
+                            </WlColumn>
+                            <WlColumn className={"wl-col--width-15"}>
+                                <WlActionButton className={"wl-action-button--primary"}
+                                                text={__("Save", "wordlift")}
+                                                onClickHandler={() => {
+                                                    this.props.dispatch(saveVideoDataRequest())
+                                                }}/>
+                            </WlColumn>
+                        </WlContainer>
+                    </div>
                 </WlModal>
 
             </WlBgModal>

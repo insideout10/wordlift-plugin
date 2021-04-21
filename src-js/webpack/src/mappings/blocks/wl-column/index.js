@@ -15,10 +15,11 @@ import React from "react";
 import "./index.scss";
 import {classExtractor} from "../helper";
 
-export const WlColumn = ({ children, className = "", lessPadding = false }) => {
+export const WlColumn = ({ children, className = "", lessPadding = false, isSticky=false }) => {
 
   const extractedClasses = classExtractor({
-    "wl-col--less-padding": lessPadding
+    "wl-col--less-padding": lessPadding,
+    "wl-col--sticky": isSticky
   })
   return <div className={"wl-col " + className + " " + extractedClasses}>{children}</div>;
 };
