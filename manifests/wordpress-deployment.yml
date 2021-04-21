@@ -36,10 +36,10 @@ spec:
         workingDir: /var/www/html/4.4/
         resources:
           requests:
-            cpu: "850m"
+            cpu: "650m"
             memory: "650Mi"
           limits:
-            cpu: "1000m"
+            cpu: "850m"
             memory: "850Mi"
         env:
         - name: WORDPRESS_DB_HOST
@@ -89,10 +89,10 @@ spec:
         workingDir: /var/www/html/4.7/
         resources:
           requests:
-            cpu: "850m"
+            cpu: "650m"
             memory: "650Mi"
           limits:
-            cpu: "1000m"
+            cpu: "850m"
             memory: "850Mi"
         env:
         - name: WORDPRESS_DB_HOST
@@ -142,10 +142,10 @@ spec:
         workingDir: /var/www/html/5.0/
         resources:
           requests:
-            cpu: "850m"
+            cpu: "650m"
             memory: "650Mi"
           limits:
-            cpu: "1000m"
+            cpu: "850m"
             memory: "850Mi"
         env:
         - name: WORDPRESS_DB_HOST
@@ -195,10 +195,10 @@ spec:
         workingDir: /var/www/html/5.4/
         resources:
           requests:
-            cpu: "850m"
+            cpu: "650m"
             memory: "650Mi"
           limits:
-            cpu: "1000m"
+            cpu: "850m"
             memory: "850Mi"
         env:
         - name: WORDPRESS_DB_HOST
@@ -248,10 +248,10 @@ spec:
         workingDir: /var/www/html/5.5/
         resources:
           requests:
-            cpu: "850m"
+            cpu: "650m"
             memory: "650Mi"
           limits:
-            cpu: "1000m"
+            cpu: "850m"
             memory: "850Mi"
         env:
         - name: WORDPRESS_DB_HOST
@@ -301,10 +301,10 @@ spec:
         workingDir: /var/www/html/5.6/
         resources:
           requests:
-            cpu: "850m"
+            cpu: "650m"
             memory: "650Mi"
           limits:
-            cpu: "1000m"
+            cpu: "850m"
             memory: "850Mi"
         env:
         - name: WORDPRESS_DB_HOST
@@ -354,10 +354,10 @@ spec:
         workingDir: /var/www/html/5.7/
         resources:
           requests:
-            cpu: "850m"
+            cpu: "650m"
             memory: "650Mi"
           limits:
-            cpu: "1000m"
+            cpu: "850m"
             memory: "850Mi"
         env:
         - name: WORDPRESS_DB_HOST
