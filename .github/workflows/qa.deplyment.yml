@@ -1,4 +1,4 @@
-name: CI
+name: docker_build_and_k8s_deployment
 
 # Controls when the action will run. 
 on:
