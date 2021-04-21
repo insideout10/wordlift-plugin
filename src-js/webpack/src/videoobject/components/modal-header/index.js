@@ -21,7 +21,7 @@ export const addDisabledClass = (isDisabled) => {
 export const ModalHeader = ({isPreviousEnabled, isNextEnabled, dispatch}) => {
     return <WlContainer className={"wl-video-modal__header"}>
         <WlColumn className={"wl-col--width-80"}>
-            <WlContainer>
+            <WlContainer className={"wl-video-modal__header__container"}>
                 <WlColumn>
                     <WordLiftIcon/>
                 </WlColumn>

@@ -8,6 +8,10 @@
     border-radius: 8px 8px 0px 0px;
     width: 100%;
     flex-wrap: wrap;
+    align-items: center;
+    &__container {
+      align-items: center;
+    }
   }
 
   &--full-width {
