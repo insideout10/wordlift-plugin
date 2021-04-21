@@ -45,7 +45,7 @@ class VideoModal extends React.Component {
                             "height": "100%"
                         }}/>
                     </WlColumn>
-                    <WlColumn className={"wl-col--width-30 wl-col--height-90"}>
+                    <WlColumn className={"wl-col--width-30"}>
                         <ModalField title={__("NAME", "wordlift")}
                                     description={__("The title of the video", "wordlift")}
                                     placeholder={__("Name of file", "wordlift")}
