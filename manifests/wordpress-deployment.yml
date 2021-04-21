@@ -40,7 +40,7 @@ spec:
             memory: "650Mi"
           limits:
             cpu: "1000m"
-            memory: "1024Mi"
+            memory: "850Mi"
         env:
         - name: WORDPRESS_DB_HOST
           value: wordpress-44-mysql
@@ -93,7 +93,7 @@ spec:
             memory: "650Mi"
           limits:
             cpu: "1000m"
-            memory: "1024Mi"
+            memory: "850Mi"
         env:
         - name: WORDPRESS_DB_HOST
           value: wordpress-47-mysql
@@ -146,7 +146,7 @@ spec:
             memory: "650Mi"
           limits:
             cpu: "1000m"
-            memory: "1024Mi"
+            memory: "850Mi"
         env:
         - name: WORDPRESS_DB_HOST
           value: wordpress-50-mysql
@@ -199,7 +199,7 @@ spec:
             memory: "650Mi"
           limits:
             cpu: "1000m"
-            memory: "1024Mi"
+            memory: "850Mi"
         env:
         - name: WORDPRESS_DB_HOST
           value: wordpress-54-mysql
@@ -252,7 +252,7 @@ spec:
             memory: "650Mi"
           limits:
             cpu: "1000m"
-            memory: "1024Mi"
+            memory: "850Mi"
         env:
         - name: WORDPRESS_DB_HOST
           value: wordpress-55-mysql
@@ -305,7 +305,7 @@ spec:
             memory: "650Mi"
           limits:
             cpu: "1000m"
-            memory: "1024Mi"
+            memory: "850Mi"
         env:
         - name: WORDPRESS_DB_HOST
           value: wordpress-56-mysql
@@ -358,7 +358,7 @@ spec:
             memory: "650Mi"
           limits:
             cpu: "1000m"
-            memory: "1024Mi"
+            memory: "850Mi"
         env:
         - name: WORDPRESS_DB_HOST
           value: wordpress-57-mysql
