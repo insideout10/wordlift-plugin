@@ -94,7 +94,7 @@ class VideoModal extends React.Component {
             <WlBgModal shouldOpenModal={this.props.isModalOpened} key={this.props.videoIndex}>
                 <WlModal shouldOpenModal={this.props.isModalOpened} className={"wl-video-modal--full-width"}>
                     {this.renderIfVideoExists()}
-                    <div style={{"height": "10%"}}>
+
                         <WlContainer fullWidth={true}>
                             <WlColumn className={"wl-col--width-85"}>
                             </WlColumn>
@@ -106,7 +106,6 @@ class VideoModal extends React.Component {
                                                 }}/>
                             </WlColumn>
                         </WlContainer>
-                    </div>
                 </WlModal>
 
             </WlBgModal>
