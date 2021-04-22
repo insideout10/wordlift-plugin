@@ -19,8 +19,8 @@ export const addDisabledClass = (isDisabled) => {
 }
 
 export const ModalHeader = ({isPreviousEnabled, isNextEnabled, dispatch}) => {
-    return <WlContainer className={"wl-video-modal__header"}>
-        <WlColumn className={"wl-col--width-80"} lessPadding={true}>
+    return <WlContainer className={"wl-video-modal__header"} fullWidth={true}>
+        <WlColumn className={"wl-col--width-70"} lessPadding={true}>
             <WlContainer className={"wl-video-modal__header__container"}>
                 <WlColumn lessPadding={true}>
                     <WordLiftIcon/>
@@ -30,7 +30,7 @@ export const ModalHeader = ({isPreviousEnabled, isNextEnabled, dispatch}) => {
                 </WlColumn>
             </WlContainer>
         </WlColumn>
-        <WlColumn className={"wl-col--width-20"} lessPadding={true}>
+        <WlColumn className={"wl-col--width-30"} lessPadding={true}>
             <WlContainer className={"wl-video-modal__menu_button_container"}>
                 <WlColumn lessPadding={true}>
                                 <span
