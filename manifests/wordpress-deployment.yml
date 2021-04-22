@@ -46,6 +46,8 @@ spec:
           value: wordpress-44-mysql
         - name: WORDPRESS_DB_PASSWORD
           value: password
+        command: ["/bin/sh"]
+        args: ["-c", 'wp --allow-root core install --url=https://qa-dev.wordlift.io/4.4/ --title="4.4" --admin_name=wordlift --admin_password=8xSnT65T4KM2jWgX --admin_email=you@example.com && wp --allow-root config set WORDLIFT_API_URL https://api-dev.wordlift.io --path=/var/www/html/4.4/ --anchor="/**"']
         ports:
         - containerPort: 80
       imagePullSecrets:
@@ -99,6 +101,7 @@ spec:
           value: wordpress-47-mysql
         - name: WORDPRESS_DB_PASSWORD
           value: password
+        args: ["-c", 'wp --allow-root core install --url=https://qa-dev.wordlift.io/4.7/ --title="4.7" --admin_name=wordlift --admin_password=8xSnT65T4KM2jWgX --admin_email=you@example.com && wp --allow-root config set WORDLIFT_API_URL https://api-dev.wordlift.io --path=/var/www/html/4.7/ --anchor="/**"']
         ports:
         - containerPort: 80
       imagePullSecrets:
@@ -152,6 +155,7 @@ spec:
           value: wordpress-50-mysql
         - name: WORDPRESS_DB_PASSWORD
           value: password
+        args: ["-c", 'wp --allow-root core install --url=https://qa-dev.wordlift.io/5.0/ --title="5.0" --admin_name=wordlift --admin_password=8xSnT65T4KM2jWgX --admin_email=you@example.com && wp --allow-root config set WORDLIFT_API_URL https://api-dev.wordlift.io --path=/var/www/html/5.0/ --anchor="/**"']
         ports:
         - containerPort: 80
       imagePullSecrets:
@@ -205,6 +209,7 @@ spec:
           value: wordpress-54-mysql
         - name: WORDPRESS_DB_PASSWORD
           value: password
+        args: ["-c", 'wp --allow-root core install --url=https://qa-dev.wordlift.io/5.4/ --title="5.4" --admin_name=wordlift --admin_password=8xSnT65T4KM2jWgX --admin_email=you@example.com && wp --allow-root config set WORDLIFT_API_URL https://api-dev.wordlift.io --path=/var/www/html/5.4/ --anchor="/**"']
         ports:
         - containerPort: 80
       imagePullSecrets:
@@ -258,6 +263,7 @@ spec:
           value: wordpress-55-mysql
         - name: WORDPRESS_DB_PASSWORD
           value: password
+        args: ["-c", 'wp --allow-root core install --url=https://qa-dev.wordlift.io/5.5/ --title="5.5" --admin_name=wordlift --admin_password=8xSnT65T4KM2jWgX --admin_email=you@example.com && wp --allow-root config set WORDLIFT_API_URL https://api-dev.wordlift.io --path=/var/www/html/5.5/ --anchor="/**"']
         ports:
         - containerPort: 80
       imagePullSecrets:
@@ -311,6 +317,7 @@ spec:
           value: wordpress-56-mysql
         - name: WORDPRESS_DB_PASSWORD
           value: password
+        args: ["-c", 'wp --allow-root core install --url=https://qa-dev.wordlift.io/5.6/ --title="5.6" --admin_name=wordlift --admin_password=8xSnT65T4KM2jWgX --admin_email=you@example.com && wp --allow-root config set WORDLIFT_API_URL https://api-dev.wordlift.io --path=/var/www/html/5.6/ --anchor="/**"']
         ports:
         - containerPort: 80
       imagePullSecrets:
@@ -368,6 +375,7 @@ spec:
           value: wordpress
         - name: WORDPRESS_DB_USER
           value: root
+        args: ["-c", 'wp --allow-root core install --url=https://qa-dev.wordlift.io/5.7/ --title="5.7" --admin_name=wordlift --admin_password=8xSnT65T4KM2jWgX --admin_email=you@example.com && wp --allow-root config set WORDLIFT_API_URL https://api-dev.wordlift.io --path=/var/www/html/5.7/ --anchor="/**"']
         ports:
         - containerPort: 80
       imagePullSecrets:
