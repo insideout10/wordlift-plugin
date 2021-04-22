@@ -60,7 +60,7 @@ class Analysis_Service {
 				"contentType"     => "text/plain",
 				"version"         => "1.0.0",
 				"contentLanguage" => "en",
-				"scope"           => "network",
+				"scope"           => "all",
 			) )
 		);
 
