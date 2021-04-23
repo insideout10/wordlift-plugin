@@ -27,12 +27,10 @@ if ( isset( $_POST['submit'] ) ) {
 		update_option( "_wl_video_sitemap_generation", 1 );
 		// flush the rewrite rules
 		flush_rewrite_rules();
-		do_action( 'wordlift_generate_video_sitemap_on' );
 	} else {
 		update_option( "_wl_video_sitemap_generation", 0 );
 		// flush the rewrite rules
 		flush_rewrite_rules();
-		do_action( 'wordlift_generate_video_sitemap_off' );
 	}
 }
 
