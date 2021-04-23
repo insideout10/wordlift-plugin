@@ -34,12 +34,12 @@ if ( isset( $_POST['submit'] ) ) {
 
 ?>
 <h1><?php _e( 'API Settings', 'wordlift' ); ?></h1>
-<p><?php _e( 'To let WordLift access metadata from Youtube or Vimeo you will need to add here your API Key.' ); ?></p>
+<p><?php _e( 'To let WordLift access metadata from YouTube or Vimeo you will need to add here your API Key.', 'wordlift' ); ?></p>
 <form method="post">
     <table>
         <tr>
             <td>
-                Youtube API Key
+	            <?php _e( 'YouTube API Key', 'wordlift' ); ?>
             </td>
             <td>
 				<?php
@@ -52,14 +52,14 @@ if ( isset( $_POST['submit'] ) ) {
 				?>
             </td>
             <td>
-                <a href="https://developers.google.com/youtube/registering_an_application"><?php _e( 'here', 'wordlift' ); ?></a>
-				<?php _e( ' is how to get it', 'wordlift' ); ?>
+                <a href="https://developers.google.com/youtube/registering_an_application"><?php _e( 'Click here', 'wordlift' ); ?></a>
+				<?php _e( ' for instructions on getting your YouTube API Key', 'wordlift' ); ?>
             </td>
         </tr>
 
         <tr>
             <td>
-                Vimeo API Key
+	            <?php _e( 'Vimeo API Key', 'wordlift' ); ?>
             </td>
             <td>
 				<?php
@@ -72,8 +72,8 @@ if ( isset( $_POST['submit'] ) ) {
 				?>
             </td>
             <td>
-                <a href="https://developer.vimeo.com/api/guides/start"><?php _e( 'here', 'wordlift' ); ?></a>
-				<?php _e( ' is how to get it', 'wordlift' ); ?>
+                <a href="https://developer.vimeo.com/api/guides/start"><?php _e( 'Click here', 'wordlift' ); ?></a>
+				<?php _e( ' for instructions on getting your Vimeo API Key', 'wordlift' ); ?>
             </td>
         </tr>
 
