@@ -29443,6 +29443,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     };
     $scope.selectedEntities = {};
     $scope.currentSection = void 0;
+    $scope.isVideoObjectEnabled = parseInt(wlSettings.show_videoobject) === 1;
     $scope.toggleCurrentSection = function(section) {
       if (section === 'videoobject') {
         wp.hooks.doAction('wordlift.renderVideoList');

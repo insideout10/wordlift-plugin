@@ -140,6 +140,11 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   # A reference to the current section in the widget
   $scope.currentSection = undefined
 
+
+  # conditionally show videoobject menu.
+  $scope.isVideoObjectEnabled = parseInt(wlSettings.show_videoobject) == 1
+
+
   # Toggle the current section
   $scope.toggleCurrentSection = (section)->
     # when its a video object section, fire event to render it.
