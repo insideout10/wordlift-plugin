@@ -2,6 +2,7 @@
 
 namespace Wordlift\Videoobject;
 
+use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Common\Loader\Default_Loader;
 use Wordlift\Videoobject\Api\Rest_Controller;
 use Wordlift\Videoobject\Data\Video_Storage\Video_Storage_Factory;
@@ -27,7 +28,10 @@ class Loader extends Default_Loader {
 		// Add entry to wordlift admin tabs
 		$settings_tab = new Settings_Tab();
 		$settings_tab->init();
-		$video_sitemap = new Video_Sitemap();
+
+
+		$sitemap_cache = new Ttl_Cache( "wl_video_sitemap", 86400 );
+		$video_sitemap = new Video_Sitemap( $sitemap_cache );
 		$video_sitemap->init();
 		$rest_controller = new Rest_Controller();
 		$rest_controller->register_all_routes();

@@ -6,7 +6,18 @@
 
 namespace Wordlift\Videoobject\Sitemap;
 
+use Wordlift\Cache\Ttl_Cache;
+
 class Video_Sitemap {
+
+	/**
+	 * @var Ttl_Cache
+	 */
+	private $sitemap_cache;
+
+	public function __construct( $sitemap_cache ) {
+		$this->sitemap_cache = $sitemap_cache;
+	}
 
 	public function init() {
 		if ( self::is_video_sitemap_enabled() ) {
@@ -15,16 +26,28 @@ class Video_Sitemap {
 	}
 
 	/**
-	 * Hijack requests for potential sitemaps and XSL files.
+	 * Print video sitemap.
 	 */
 	public function print_video_sitemap() {
 		global $wp;
+
 		$url = home_url( $wp->request );
-		if ( strpos( $url, 'wl-video-sitemap.xml' ) !== false ) {
-			header( "Content-type: text/xml" );
-			echo $this->get_sitemap_xml();
-			die();
+
+		if ( strpos( $url, 'wl-video-sitemap.xml' ) === false ) {
+			return;
 		}
+
+		header( "Content-type: text/xml" );
+
+		$xml = $this->sitemap_cache->get( "video_sitemap" );
+
+		if ( ! $xml ) {
+			$xml = $this->get_sitemap_xml();
+			$this->sitemap_cache->put( "video_sitemap", $xml );
+		}
+
+		echo $xml;
+		die();
 	}
 
 	public static function is_video_sitemap_enabled() {

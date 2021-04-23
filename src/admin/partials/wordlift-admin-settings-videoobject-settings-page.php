@@ -2,7 +2,7 @@
 
 use Wordlift\Videoobject\Provider\Client\Vimeo_Client;
 use Wordlift\Videoobject\Provider\Client\Youtube_Client;
-use Wordlift\Videoobject\Sitemap\Video_Sitemap;
+
 
 if ( isset( $_POST['wordlift_videoobject_youtube_api_key'] )
      || isset( $_POST['wordlift_videoobject_vimeo_api_key'] ) ) {
@@ -26,7 +26,7 @@ if ( isset( $_POST['submit'] ) ) {
 	if ( isset( $_POST['wl_enable_video_sitemap'] ) ) {
 		update_option( "_wl_video_sitemap_generation", 1 );
 		// flush the rewrite rules
-        flush_rewrite_rules();
+		flush_rewrite_rules();
 		do_action( 'wordlift_generate_video_sitemap_on' );
 	} else {
 		update_option( "_wl_video_sitemap_generation", 0 );
@@ -43,7 +43,7 @@ if ( isset( $_POST['submit'] ) ) {
     <table>
         <tr>
             <td>
-	            <?php _e( 'YouTube API Key', 'wordlift' ); ?>
+				<?php _e( 'YouTube API Key', 'wordlift' ); ?>
             </td>
             <td>
 				<?php
@@ -63,7 +63,7 @@ if ( isset( $_POST['submit'] ) ) {
 
         <tr>
             <td>
-	            <?php _e( 'Vimeo API Key', 'wordlift' ); ?>
+				<?php _e( 'Vimeo API Key', 'wordlift' ); ?>
             </td>
             <td>
 				<?php
@@ -90,7 +90,7 @@ if ( isset( $_POST['submit'] ) ) {
     <p> <?php _e( 'Enable Video Sitemap' ); ?>
         <input type="checkbox" name="wl_enable_video_sitemap" value="1" <?php echo $is_sitemap_enabled; ?> ></p>
     <p> <?php
-		if ( $is_sitemap_enabled && Video_Sitemap::is_sitemap_already_generated() ) {
+		if ( $is_sitemap_enabled ) {
 			$sitemap_link = get_home_url( null, 'wl-video-sitemap.xml' );
 			printf( __( 'Here is <a href="%s">link</a> to your Video Sitemap. Add it now, to Google Search Console.', 'wordlift' ), $sitemap_link );
 		}
