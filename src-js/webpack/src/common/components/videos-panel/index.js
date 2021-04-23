@@ -9,12 +9,6 @@ import React from "react";
 import {Panel, PanelBody, PanelRow} from "@wordpress/components";
 import { doAction } from "@wordpress/hooks";
 
-/**
- * Internal dependencies
- */
-
-import Spinner from "../spinner";
-
 export default class VideosPanel extends React.Component {
 
     componentDidMount() {
@@ -22,6 +16,9 @@ export default class VideosPanel extends React.Component {
     }
 
     render() {
+        if ( wlSettings && wlSettings.show_videoobject && parseInt(wlSettings.show_videoobject) === 0 ) {
+            return (<React.Fragment />)
+        }
         return (
             <Panel>
                 <PanelBody title="Videos" initialOpen={false} onToggle={() => {
