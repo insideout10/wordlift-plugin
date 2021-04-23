@@ -25,6 +25,11 @@ class Video_Sitemap {
 		if ( self::is_video_sitemap_enabled() ) {
 			add_action( 'template_include', array( $this, 'print_video_sitemap' ), 1 );
 		}
+		add_action( 'wordlift_videoobject_video_storage_updated', array( $this, 'flush_cache' ) );
+	}
+
+	public function flush_cache() {
+		$this->sitemap_cache->flush();
 	}
 
 	/**

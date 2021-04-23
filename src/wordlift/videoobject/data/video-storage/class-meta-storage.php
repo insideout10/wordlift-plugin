@@ -14,7 +14,11 @@ class Meta_Storage implements Storage {
 	const META_KEY = '_wl_video_object_videos';
 
 	public function add_video( $post_id, $video ) {
-
+		/**
+		 * @since 3.31.0
+		 * Fires when the video storage gets updated
+		 */
+		do_action( 'wordlift_videoobject_video_storage_updated' );
 		add_post_meta( $post_id, self::META_KEY, $video );
 	}
 
@@ -26,7 +30,11 @@ class Meta_Storage implements Storage {
 	}
 
 	public function remove_videos( $videos_to_be_removed, $post_id ) {
-
+		/**
+		 * @since 3.31.0
+		 * Fires when the video storage gets updated
+		 */
+		do_action( 'wordlift_videoobject_video_storage_updated' );
 		$videos_to_be_removed_ids = array_map( function ( $video ) {
 			return $video->id;
 		}, $videos_to_be_removed );
