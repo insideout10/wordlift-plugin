@@ -19,11 +19,6 @@ class Videoobject_Validation_Test extends \Wordlift_Videoobject_Unit_Test_Case {
 		update_option( Vimeo::API_FIELD_NAME, getenv( 'VIMEO_API_KEY' ) );
 	}
 
-//	public function test_should_group_videos_by_provider() {
-//
-//	}
-
-
 	public function test_should_not_send_requests_for_the_videos_which_are_already_stored() {
 		// set youtube client requests sent value to 0
 		Youtube_Client::$requests_sent  = 0;
