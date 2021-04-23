@@ -15,6 +15,8 @@ class Video_Sitemap {
 	 */
 	private $sitemap_cache;
 
+	const XML_CACHE_KEY = 'video_sitemap';
+
 	public function __construct( $sitemap_cache ) {
 		$this->sitemap_cache = $sitemap_cache;
 	}
@@ -39,11 +41,11 @@ class Video_Sitemap {
 
 		header( "Content-type: text/xml" );
 
-		$xml = $this->sitemap_cache->get( "video_sitemap" );
+		$xml = $this->sitemap_cache->get( self::XML_CACHE_KEY );
 
 		if ( ! $xml ) {
 			$xml = $this->get_sitemap_xml();
-			$this->sitemap_cache->put( "video_sitemap", $xml );
+			$this->sitemap_cache->put( self::XML_CACHE_KEY, $xml );
 		}
 
 		echo $xml;
