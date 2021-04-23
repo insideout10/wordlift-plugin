@@ -85,8 +85,8 @@ class Xml_Generator {
 	public static function get_xml_for_single_video( $video, $post_id ) {
 
 		$permalink           = get_permalink( $post_id );
-		$title               = esc_xml( $video->name );
-		$description         = esc_xml( $video->description );
+		$title               = esc_html( $video->name );
+		$description         = esc_html( $video->description );
 		$thumbnail_url       = $video->thumbnail_urls[0];
 		$content_url         = $video->content_url;
 		$embed_url           = $video->embed_url;
