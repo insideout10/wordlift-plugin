@@ -14,6 +14,10 @@ import {addAction} from "@wordpress/hooks";
  */
 import VideoList from "./components/video-list";
 import VideoModal from "./components/video-modal";
+import {getAllVideos} from "./actions";
+
+let isListenerAdded = false
+
 
 const renderVideoList = () => {
     const videoList = document.getElementById("wl-video-list")
@@ -22,12 +26,29 @@ const renderVideoList = () => {
             <Provider store={store}>
                 <React.Fragment>
                     <VideoList/>
-                    <VideoModal />
+                    <VideoModal/>
                 </React.Fragment>
             </Provider>,
             videoList
         );
     }
+
+    if (!isListenerAdded) {
+        /**
+         * Refresh the videos upon saving post.
+         */
+        wp.data.subscribe(function () {
+            let isSavingPost = wp.data.select('core/editor').isSavingPost();
+            let isAutosavingPost = wp.data.select('core/editor').isAutosavingPost();
+            if (isSavingPost && !isAutosavingPost) {
+                store.dispatch(getAllVideos())
+            }
+        })
+    }
+
+    isListenerAdded = true
+
+
 }
 
 
