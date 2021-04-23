@@ -25,6 +25,8 @@ if ( isset( $_POST['wordlift_videoobject_youtube_api_key'] )
 if ( isset( $_POST['submit'] ) ) {
 	if ( isset( $_POST['wl_enable_video_sitemap'] ) ) {
 		update_option( "_wl_video_sitemap_generation", 1 );
+		// flush the rewrite rules
+        flush_rewrite_rules();
 		do_action( 'wordlift_generate_video_sitemap_on' );
 	} else {
 		update_option( "_wl_video_sitemap_generation", 0 );
