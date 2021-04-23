@@ -38,7 +38,7 @@ class Meta_Storage implements Storage {
 		// Remove all existing videos.
 		$this->remove_all_videos( $post_id );
 
-		// Save the videos.
+		// Save the remaining videos.
 		foreach ( $filtered_videos as $video ) {
 			$this->add_video( $post_id, $video );
 		}

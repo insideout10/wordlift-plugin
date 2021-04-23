@@ -27,7 +27,6 @@ if ( isset( $_POST['submit'] ) ) {
 		update_option( "_wl_video_sitemap_generation", 1 );
 		// flush the rewrite rules
         flush_rewrite_rules();
-        do_action(Video_Sitemap::CRON_ACTION_HOOK);
 		do_action( 'wordlift_generate_video_sitemap_on' );
 	} else {
 		update_option( "_wl_video_sitemap_generation", 0 );
