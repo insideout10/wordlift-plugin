@@ -22,6 +22,9 @@ class Loader extends Default_Loader {
 	public function init_all_dependencies() {
 		$video_storage = Video_Storage_Factory::get_storage();
 		new Jsonld( $video_storage );
+
+		$sitemap_cache = new Ttl_Cache( "wl_video_sitemap", 86400 );
+
 		// Hook in to save_post to save the videos
 		$post_filter = new Post_Filter();
 		$post_filter->init();
@@ -30,7 +33,6 @@ class Loader extends Default_Loader {
 		$settings_tab->init();
 
 
-		$sitemap_cache = new Ttl_Cache( "wl_video_sitemap", 86400 );
 		$video_sitemap = new Video_Sitemap( $sitemap_cache );
 		$video_sitemap->init();
 		$rest_controller = new Rest_Controller();

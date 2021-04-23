@@ -7,6 +7,8 @@
 namespace Wordlift\Videoobject\Data\Video_Storage;
 
 
+use Wordlift\Cache\Ttl_Cache;
+
 class Meta_Storage implements Storage {
 
 	const META_KEY = '_wl_video_object_videos';
