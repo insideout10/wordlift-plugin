@@ -56,12 +56,14 @@ class Post_Filter {
 	 * @param $storage Storage
 	 * @param $post_id int
 	 * @param $embedded_videos array<Embedded_Video>
+	 *
+	 * @return int Return the count of the videos which got deleted.
 	 */
 	private function remove_videos_from_store_if_not_present_in_content( $storage, $post_id, $embedded_videos ) {
 
 		$videos_to_be_deleted = $this->get_videos_to_be_deleted( $storage, $post_id, $embedded_videos );
 		$storage->remove_videos( $videos_to_be_deleted, $post_id );
-
+		return count($videos_to_be_deleted);
 	}
 
 	/**
@@ -103,7 +105,15 @@ class Post_Filter {
 		// Before sending api requests we need to check if there are any videos in
 		// store which is not present on post content, remove them if there are
 		// any
-		$this->remove_videos_from_store_if_not_present_in_content( $storage, $post_id, $embedded_videos );
+		$deleted_videos_count = $this->remove_videos_from_store_if_not_present_in_content( $storage, $post_id, $embedded_videos );
+
+		if ( $deleted_videos_count ) {
+			/**
+			 * @since 3.31.0
+			 * Fires when the videos are deleted from the post.
+			 */
+			do_action('wordlift_videoobject_videos_deleted', $post_id);
+		}
 
 		$embedded_videos = $this->get_videos_without_existing_data( $storage, $post_id, $embedded_videos );
 
@@ -121,6 +131,12 @@ class Post_Filter {
 		foreach ( $videos as $video ) {
 			$storage->add_video( $post_id, $video );
 		}
+
+		/**
+		 * @since 3.31.0
+		 * Fires when the videos are added to the post.
+		 */
+		do_action('wordlift_videoobject_videos_added', $post_id);
 	}
 
 	/**
