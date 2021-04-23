@@ -37,13 +37,15 @@ const renderVideoList = () => {
         /**
          * Refresh the videos upon saving post.
          */
-        wp.data.subscribe(function () {
-            let isSavingPost = wp.data.select('core/editor').isSavingPost();
-            let isAutosavingPost = wp.data.select('core/editor').isAutosavingPost();
-            if (isSavingPost && !isAutosavingPost) {
-                store.dispatch(getAllVideos())
-            }
-        })
+        if (wp && wp.data && wp.data.subscribe) {
+            wp.data.subscribe(function () {
+                let isSavingPost = wp.data.select('core/editor').isSavingPost();
+                let isAutosavingPost = wp.data.select('core/editor').isAutosavingPost();
+                if (isSavingPost && !isAutosavingPost) {
+                    store.dispatch(getAllVideos())
+                }
+            })
+        }
     }
 
     isListenerAdded = true
