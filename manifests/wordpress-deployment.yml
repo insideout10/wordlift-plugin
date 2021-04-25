@@ -46,7 +46,7 @@ spec:
           value: wordpress-44-mysql
         - name: WORDPRESS_DB_PASSWORD
           value: password
-        command: ["/entrypoint.sh"]
+        command: ["/entrypoint.sh [apache2-foreground]"]
         ports:
         - containerPort: 80
       imagePullSecrets:
