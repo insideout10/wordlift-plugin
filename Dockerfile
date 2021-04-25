@@ -3,6 +3,7 @@ COPY --chown=www-data src/ /var/www/html/4.4/wp-content/plugins/wordlift/
 COPY manifests/wp-cli.phar /usr/local/bin/wp
 COPY manifests/entrypoint.sh /entrypoint.sh
 RUN chmod +x /usr/local/bin/wp
+RUN chmod +x /entrypoint.sh
 RUN chown www-data:www-data /var/www/html -R
 WORKDIR /var/www/html/4.4/
 
