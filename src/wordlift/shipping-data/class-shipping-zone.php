@@ -302,12 +302,15 @@ class Shipping_Zone {
 		}
 
 		$cutoff_time = $wpsso_options['wcsdt_shipdept_cutoff'];
-		$timezone    = $wpsso_options['wcsdt_shipdept_timezone'];
 
-		$time   = new DateTime( 'now', new DateTimeZone( $timezone ) );
-		$offset = $time->format( 'P' );
+		if ( 'none' !== $cutoff_time ) {
+			$timezone = $wpsso_options['wcsdt_shipdept_timezone'];
 
-		$shipping_delivery_time['cutOffTime'] = "{$cutoff_time}{$offset}";
+			$time   = new DateTime( 'now', new DateTimeZone( $timezone ) );
+			$offset = $time->format( 'P' );
+
+			$shipping_delivery_time['cutOffTime'] = "{$cutoff_time}{$offset}";
+		}
 
 	}
 
