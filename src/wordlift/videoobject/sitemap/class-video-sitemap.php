@@ -23,7 +23,7 @@ class Video_Sitemap {
 
 	public function init() {
 		if ( self::is_video_sitemap_enabled() ) {
-			add_action( 'template_include', array( $this, 'print_video_sitemap' ), 1 );
+			add_action( 'template_redirect', array( $this, 'print_video_sitemap' ), 1 );
 		}
 		add_action( 'wordlift_videoobject_video_storage_updated', array( $this, 'flush_cache' ) );
 	}
