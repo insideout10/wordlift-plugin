@@ -40,7 +40,9 @@ class Video_Sitemap {
 
 		$url = home_url( $wp->request );
 
-		if ( strpos( $url, 'wl-video-sitemap.xml' ) === false ) {
+		$pattern = '/wl-video-sitemap\.xml$/m';
+
+		if ( preg_match( $pattern, $url ) !== 1 ) {
 			return;
 		}
 
