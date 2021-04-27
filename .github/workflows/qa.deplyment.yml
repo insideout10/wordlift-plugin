@@ -35,8 +35,8 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-#          target: ${{ matrix.WP-ver }}
-          target: wlp-wp-5.7
+          target: ${{ matrix.WP-ver }}
+#          target: wlp-wp-5.7
           username: ${{ secrets.username }}
           password: ${{ secrets.PAT }}
           repository: wordlift/${{ matrix.WP-ver }}
