@@ -11,8 +11,8 @@ FROM wordpress:4.7-apache as wlp-wp-4.7
 COPY --chown=www-data src/ /var/www/html/4.7/wp-content/plugins/wordlift/
 COPY manifests/wp-cli.phar /usr/local/bin/wp
 RUN chmod +x /usr/local/bin/wp
-COPY manifests/entrypoint_4.7.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
+COPY manifests/entrypoint_4.7.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 RUN chown www-data:www-data /var/www/html -R
 WORKDIR /var/www/html/4.7/
 
