@@ -8,6 +8,7 @@ namespace Wordlift\Vocabulary\Jsonld;
 
 use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
 use Wordlift\Vocabulary\Data\Entity_List\Entity_List_Factory;
+use Wordlift\Vocabulary\Terms_Compat;
 
 class Post_Jsonld {
 
@@ -32,9 +33,14 @@ class Post_Jsonld {
 
 	public function add_mentions( $post_id, &$jsonld, &$references ) {
 
-		$tags = get_the_tags( $post_id );
+		$taxonomies = Terms_Compat::get_public_taxonomies();
+		$terms      = array();
 
-		if ( ! $tags || is_wp_error( $tags ) ) {
+		foreach ( $taxonomies as $taxonomy ) {
+			$terms = array_merge( get_the_terms( $post_id, $taxonomy ), $terms );
+		}
+
+		if ( ! $terms  ) {
 			return;
 		}
 
@@ -42,15 +48,15 @@ class Post_Jsonld {
 			$jsonld['mentions'] = array();
 		}
 
-		foreach ( $tags as $tag ) {
+		foreach ( $terms as $term ) {
 
-			$is_matched = intval( get_term_meta( $tag->term_id, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING, true ) ) === 1;
+			$is_matched = intval( get_term_meta( $term->term_id, Entity_Rest_Endpoint::IGNORE_TAG_FROM_LISTING, true ) ) === 1;
 
 			if ( ! $is_matched ) {
 				continue;
 			}
 
-			$entity = Entity_List_Factory::get_instance( $tag->term_id );
+			$entity = Entity_List_Factory::get_instance( $term->term_id );
 
 			$entities = $entity->get_jsonld_data();
 
@@ -58,7 +64,7 @@ class Post_Jsonld {
 				continue;
 			}
 
-			$jsonld['mentions'] = array_merge( $jsonld['mentions'], self::add_additional_attrs( $tag, $entities ) );
+			$jsonld['mentions'] = array_merge( $jsonld['mentions'], self::add_additional_attrs( $term, $entities ) );
 		}
 
 	}

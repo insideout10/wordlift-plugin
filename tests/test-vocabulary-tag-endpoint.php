@@ -426,7 +426,7 @@ class Tag_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 
 		// we need get $tag_1 as first item since it is linked to more posts.
 		$endpoint = new Tag_Rest_Endpoint( null );
-		$tags     = $endpoint->get_tags_from_db( 10, 0 );
+		$tags     = $endpoint->get_terms_from_db( 10, 0 );
 
 		$this->assertCount( 3, $tags, 'Should return all the tags' );
 		/**
