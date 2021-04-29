@@ -19,7 +19,7 @@ class Default_Term_Count implements Term_Count {
 	 * @return int
 	 */
 	public function get_term_count() {
-		return count( Terms_Compat::get_terms( get_taxonomies( array( 'public' => true ) ), array(
+		return count( Terms_Compat::get_terms( Terms_Compat::get_public_taxonomies(), array(
 			'hide_empty' => false,
 			'fields'     => 'ids',
 			'meta_query' => array(

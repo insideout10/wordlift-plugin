@@ -55,9 +55,8 @@ class Analysis_Background_Service {
 
 		$state = $this->info();
 
-		return get_terms( array(
+		return Terms_Compat::get_terms( Terms_Compat::get_public_taxonomies(), array(
 			'fields'     => 'ids',
-			'taxonomy'   => get_taxonomies( array( 'public' => true ) ),
 			'hide_empty' => false,
 			'number'     => $this->get_batch_size(),
 			'offset'     => $state->index,
@@ -72,9 +71,10 @@ class Analysis_Background_Service {
 
 	public function count() {
 
-		$count = count( get_terms( array(
+		$count = count( Terms_Compat::get_terms(
+
+			array(
 			'fields'     => 'ids',
-			'taxonomy'   => 'post_tag',
 			'hide_empty' => false,
 			// return all terms, we cant pass -1 here.
 			'number'     => 0,

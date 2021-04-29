@@ -13,5 +13,9 @@ class Terms_Compat {
 		}
 	}
 
+	public static function get_public_taxonomies() {
+		return get_taxonomies( array( 'public' => true ) );
+	}
+
 
 }

@@ -6,6 +6,7 @@ namespace Wordlift\Vocabulary\Api;
 use Wordlift\Vocabulary\Analysis_Background_Service;
 use Wordlift\Vocabulary\Analysis_Service;
 use Wordlift\Vocabulary\Data\Term_Data\Term_Data_Factory;
+use Wordlift\Vocabulary\Terms_Compat;
 use WP_REST_Server;
 
 /**
@@ -113,7 +114,7 @@ class Tag_Rest_Endpoint {
 	public function get_tags_from_db( $limit, $offset ) {
 
 
-		$args = array(
+		return Terms_Compat::get_terms(Terms_Compat::get_public_taxonomies(), array(
 			'taxonomy'   => 'post_tag',
 			'hide_empty' => false,
 			'number'     => $limit,
@@ -126,15 +127,7 @@ class Tag_Rest_Endpoint {
 			),
 			'orderby'    => 'count',
 			'order'      => 'DESC',
-		);
-
-		global $wp_version;
-
-		if ( version_compare( $wp_version, '4.5', '<' ) ) {
-			return get_terms( 'post_tag', $args );
-		} else {
-			return get_terms( $args );
-		}
+		));
 
 
 	}

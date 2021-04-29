@@ -24,10 +24,9 @@ class Reconcile_Progress_Endpoint {
 	}
 
 
-
 	public function progress() {
 
-		$total_tags = count( Terms_Compat::get_terms( get_taxonomies( array( 'public' => true ) ), array(
+		$total_tags = count( Terms_Compat::get_terms( Terms_Compat::get_public_taxonomies(), array(
 			'hide_empty' => false,
 			'fields'     => 'ids',
 			'meta_query' => array(
@@ -40,7 +39,7 @@ class Reconcile_Progress_Endpoint {
 		) ) );
 
 		$completed = count( Terms_Compat::get_terms(
-			get_taxonomies( array( 'public' => true ) ),
+			Terms_Compat::get_public_taxonomies(),
 			array(
 				'hide_empty' => false,
 				'fields'     => 'ids',
