@@ -72,7 +72,7 @@ class Analysis_Background_Service {
 	public function count() {
 
 		$count = count( Terms_Compat::get_terms(
-
+			Terms_Compat::get_public_taxonomies(),
 			array(
 			'fields'     => 'ids',
 			'hide_empty' => false,
