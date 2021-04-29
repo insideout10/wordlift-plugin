@@ -9,6 +9,7 @@ class Terms_Compat {
 		if ( version_compare( $wp_version, '4.5', '<' ) ) {
 			return get_terms( $taxonomy, $args_with_taxonomy_key );
 		} else {
+			$args_with_taxonomy_key['taxonomy'] = $taxonomy;
 			return get_terms( $args_with_taxonomy_key );
 		}
 	}

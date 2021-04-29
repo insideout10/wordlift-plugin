@@ -115,7 +115,6 @@ class Tag_Rest_Endpoint {
 
 
 		return Terms_Compat::get_terms(Terms_Compat::get_public_taxonomies(), array(
-			'taxonomy'   => 'post_tag',
 			'hide_empty' => false,
 			'number'     => $limit,
 			'offset'     => $offset,
