@@ -78,6 +78,7 @@ class Tag extends React.Component {
                     className="dashicons dashicons-external"></span></a>
             </p>
             <p>{this.props.tagDescription}</p>
+            <p>{__('Taxonomy:', 'wordlift')} {this.props.tagTaxonomy}</p>
             <small>{__("Posts: ", 'wordlift-plugin')}{this.props.tagPostCount}</small>
         </td>;
     }
