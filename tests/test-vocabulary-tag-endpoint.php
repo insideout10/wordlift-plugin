@@ -69,7 +69,7 @@ class Tag_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 				'tagId'          => $tag->term_id,
 				'tagName'        => 'test',
 				'tagDescription' => '',
-				'tagLink'        => get_edit_tag_link( $tag->term_id, 'post_tag' ),
+				'tagLink'        => get_edit_term_link( $tag->term_id ),
 				'entities'       => $received_mock_entities,
 				'tagPostCount'   => 0
 			),

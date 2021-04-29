@@ -57,7 +57,7 @@ class Analysis_Background_Service {
 
 		return get_terms( array(
 			'fields'     => 'ids',
-			'taxonomy'   => 'post_tag',
+			'taxonomy'   => get_taxonomies( array( 'public' => true ) ),
 			'hide_empty' => false,
 			'number'     => $this->get_batch_size(),
 			'offset'     => $state->index,

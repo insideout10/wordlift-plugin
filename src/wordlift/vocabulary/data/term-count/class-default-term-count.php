@@ -4,6 +4,7 @@ namespace Wordlift\Vocabulary\Data\Term_Count;
 
 use Wordlift\Vocabulary\Analysis_Background_Service;
 use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
+use Wordlift\Vocabulary\Terms_Compat;
 
 /**
  * This class is used for getting default term count without cache.
@@ -18,12 +19,7 @@ class Default_Term_Count implements Term_Count {
 	 * @return int
 	 */
 	public function get_term_count() {
-		/**
-		 * @todo: add support for all terms, currently we add only
-		 * post_tag.
-		 */
-		return count( $this->get_terms_compat( 'post_tag', array(
-			'taxonomy'   => 'post_tag',
+		return count( Terms_Compat::get_terms( get_taxonomies( array( 'public' => true ) ), array(
 			'hide_empty' => false,
 			'fields'     => 'ids',
 			'meta_query' => array(
@@ -40,14 +36,6 @@ class Default_Term_Count implements Term_Count {
 
 	}
 
-	private function get_terms_compat( $taxonomy, $args_with_taxonomy_key ) {
-		global $wp_version;
 
-		if ( version_compare( $wp_version, '4.5', '<' ) ) {
-			return get_terms( $taxonomy, $args_with_taxonomy_key );
-		} else {
-			return get_terms( $args_with_taxonomy_key );
-		}
-	}
 
 }
