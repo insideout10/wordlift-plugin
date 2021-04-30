@@ -27,6 +27,17 @@ class Default_Entity_List extends Entity_List {
 		$this->legacy_entity = $legacy_entity;
 	}
 
+	/**
+	 * Check if the key exists and value is array.
+	 *
+	 * @param $entity_data
+	 *
+	 * @return bool
+	 */
+	private static function is_value_array( $key, $entity_data ) {
+		return array_key_exists( $key, $entity_data ) && is_array( $entity_data[ $key ] );
+	}
+
 	public function get_jsonld_data() {
 		$default_data = get_term_meta( $this->term_id, self::META_KEY );
 		if ( is_array( $default_data ) && $default_data ) {
@@ -39,7 +50,7 @@ class Default_Entity_List extends Entity_List {
 
 	public function save_jsonld_data( $entity_data ) {
 
-		$entity_id    = $entity_data['@id'];
+		$entity_id = $entity_data['@id'];
 
 		if ( $entity_id ) {
 			$entity_data['sameAs'] = array_merge( $entity_data['sameAs'], array( $entity_id ) );
@@ -47,7 +58,7 @@ class Default_Entity_List extends Entity_List {
 
 		$entity_list = get_term_meta( $this->term_id, self::META_KEY );
 
-		$entity_list[] = $this->filter_entity_data($entity_data);
+		$entity_list[] = $this->compact_jsonld( $this->filter_entity_data( $entity_data ) );
 
 		$this->clear_and_save_list( $entity_list );
 
@@ -93,18 +104,62 @@ class Default_Entity_List extends Entity_List {
 
 	/**
 	 * For now support only these properties.
+	 *
 	 * @param $entity_data
 	 *
 	 * @return array
 	 */
 	private function filter_entity_data( $entity_data ) {
-		$allowed_keys = array('@id', 'description', 'sameAs', '@type', 'name');
-		$data = array();
+		$allowed_keys = array( '@id', 'description', 'sameAs', '@type', 'name' );
+		$data         = array();
 		foreach ( $entity_data as $key => $value ) {
-			if ( in_array($key, $allowed_keys ) ) {
-				$data[$key] = $value;
+			if ( in_array( $key, $allowed_keys ) ) {
+				$data[ $key ] = $value;
 			}
 		}
+
 		return $data;
+	}
+
+
+	public static function compact_jsonld( $entity_data ) {
+
+		if ( self::is_value_array( '@type', $entity_data ) ) {
+			$entity_data['@type'] = array_map( function ( $type ) {
+				return str_replace( "http://schema.org/", "", $type );
+			}, $entity_data['@type'] );
+		}
+
+		if ( self::is_value_array( 'description', $entity_data ) ) {
+			$entity_data['description'] = array_map( function ( $description ) {
+				if ( ! array_key_exists( '@value', $description ) ) {
+					return $description;
+				}
+				return $description['@value'];
+			}, $entity_data['description'] );
+		}
+
+
+		if ( self::is_value_array( 'name', $entity_data ) ) {
+			$entity_data['name'] = array_map( function ( $description ) {
+				if ( ! array_key_exists( '@value', $description ) ) {
+					return $description;
+				}
+				return $description['@value'];
+			}, $entity_data['name'] );
+		}
+
+
+		if ( self::is_value_array( 'sameAs', $entity_data ) ) {
+			$entity_data['sameAs'] = array_map( function ( $description ) {
+				if ( ! array_key_exists( '@id', $description ) ) {
+					return $description;
+				}
+				return $description['@id'];
+			}, $entity_data['sameAs'] );
+		}
+
+
+		return $entity_data;
 	}
 }
