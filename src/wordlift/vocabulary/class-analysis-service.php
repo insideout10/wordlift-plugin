@@ -15,7 +15,7 @@ class Analysis_Service {
 	/**
 	 * @var Default_Api_Service
 	 */
-	private $analysis_service;
+	private $api_service;
 	/**
 	 * @var Cache
 	 */
@@ -30,7 +30,7 @@ class Analysis_Service {
 	 */
 	public function __construct( $api_service, $cache_service ) {
 
-		$this->analysis_service = $api_service;
+		$this->api_service = $api_service;
 
 		$this->cache_service = $cache_service;
 
@@ -52,7 +52,7 @@ class Analysis_Service {
 		}
 
 		// send the request.
-		$response = $this->analysis_service->request(
+		$response = $this->api_service->request(
 			'POST',
 			"/analysis/single",
 			array( 'Content-Type' => 'application/json' ),
@@ -86,6 +86,27 @@ class Analysis_Service {
 	}
 
 
+	/**
+	 * @param $entity_url string
+	 * Formats the entity url from https://foo.com/some/path to
+	 * https/foo.com/some/path
+	 *
+	 * @return bool|string
+	 */
+	public static function format_entity_url( $entity_url ) {
+		$result = parse_url( $entity_url );
+		if ( ! $result ) {
+			return false;
+		}
+		if ( ! array_key_exists( 'scheme', $result )
+		     || ! array_key_exists( 'host', $result )
+		     || ! array_key_exists( 'path', $result ) ) {
+			return false;
+		}
+
+		return $result['scheme'] . "/" . $result['host'] . "/" . $result['path'];
+	}
+
 	private function get_meta( $entity_url ) {
 
 
@@ -95,18 +116,15 @@ class Analysis_Service {
 			return $cache_results;
 		}
 
+		$response = wp_remote_get( 'https://api-dev.wordlift.io/id/' . self::format_entity_url($entity_url) );
 
-		$this->a
-
-
-		$response = wp_remote_get( "https://app.wordlift.io/knowledge-cafemedia-com-food/wp-json/wordlift/v1/jsonld/meta/entity_url?meta_value=" . urlencode($entity_url) );
 
 		if ( ! is_wp_error( $response ) ) {
 			$meta = json_decode( wp_remote_retrieve_body( $response ), true );
 			$this->cache_service->put( $entity_url, $meta );
+
 			return $meta;
 		}
-
 
 
 		return array();
