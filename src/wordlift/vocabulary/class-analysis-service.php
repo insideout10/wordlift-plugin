@@ -3,6 +3,7 @@
 namespace Wordlift\Vocabulary;
 
 use Wordlift\Api\Default_Api_Service;
+use Wordlift\Vocabulary\Cache\Cache;
 
 
 /**
@@ -25,7 +26,7 @@ class Analysis_Service {
 	 * Tag_Rest_Endpoint constructor.
 	 *
 	 * @param Default_Api_Service $analysis_service
-	 * @param Options_Cache $cache_service
+	 * @param Cache $cache_service
 	 */
 	public function __construct( $analysis_service, $cache_service ) {
 
