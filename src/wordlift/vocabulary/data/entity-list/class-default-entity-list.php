@@ -28,6 +28,21 @@ class Default_Entity_List extends Entity_List {
 	}
 
 	/**
+	 * @param $value
+	 *
+	 * @return array
+	 */
+	private static function extract_jsonld_values( $value ) {
+		return array_map( function ( $description ) {
+			if ( ! array_key_exists( '@value', $description ) ) {
+				return $description;
+			}
+
+			return $description['@value'];
+		}, $value );
+	}
+
+	/**
 	 * Check if the key exists and value is array.
 	 *
 	 * @param $entity_data
@@ -131,22 +146,12 @@ class Default_Entity_List extends Entity_List {
 		}
 
 		if ( self::is_value_array( 'description', $entity_data ) ) {
-			$entity_data['description'] = array_map( function ( $description ) {
-				if ( ! array_key_exists( '@value', $description ) ) {
-					return $description;
-				}
-				return $description['@value'];
-			}, $entity_data['description'] );
+			$entity_data['description'] = self::extract_jsonld_values( $entity_data['description'] );
 		}
 
 
 		if ( self::is_value_array( 'name', $entity_data ) ) {
-			$entity_data['name'] = array_map( function ( $description ) {
-				if ( ! array_key_exists( '@value', $description ) ) {
-					return $description;
-				}
-				return $description['@value'];
-			}, $entity_data['name'] );
+			$entity_data['name'] = self::extract_jsonld_values( $entity_data['name'] );
 		}
 
 
