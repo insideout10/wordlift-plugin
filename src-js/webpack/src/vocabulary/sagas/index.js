@@ -45,7 +45,7 @@ function* acceptEntitySaga(action) {
     const {termId, entities, entityIndex} = getTermIdAndEntities(store.getState(), tagIndex)
     for (let i =0; i < entities.length; i++) {
         const entity = entities[i]
-        yield fork(acceptEntity, termId, {...entity.meta}, store.getState().apiConfig);
+        yield fork(acceptEntity, termId, {...entity.meta, "@id":entity.entityId}, store.getState().apiConfig);
     }
 
     // Hide tag on ui.

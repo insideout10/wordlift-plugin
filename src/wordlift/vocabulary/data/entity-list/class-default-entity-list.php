@@ -38,42 +38,16 @@ class Default_Entity_List extends Entity_List {
 	}
 
 	public function save_jsonld_data( $entity_data ) {
+
 		$entity_id    = $entity_data['@id'];
-		$same_as_list = $entity_data['sameAs'];
 
 		if ( $entity_id ) {
-			$same_as_list = array_merge( $entity_data['sameAs'], array( $entity_id ) );
+			$entity_data['sameAs'] = array_merge( $entity_data['sameAs'], array( $entity_id ) );
 		}
-		else {
-			$same_as_list = array_merge( $entity_data['sameAs'], array( $entity_data['entityId'] ) );
-		}
-
-		$alt_labels = array( (string) $entity_data['name'] );
 
 		$entity_list = get_term_meta( $this->term_id, self::META_KEY );
 
-
-		$type = null;
-		/**
-		 * For entities from wiki we wont have @type
-		 * in the meta.
-		 */
-		if ( array_key_exists( '@type', $entity_data ) ) {
-			$type = $entity_data['@type'];
-		} else if ( array_key_exists( 'mainType', $entity_data ) ) {
-			$type = array_reduce( explode( "-", $entity_data['mainType'] ), function ($carry, $item) {
-				return $carry . ucfirst($item);
-			} );
-		}
-
-		$entity = array(
-			'@type'         => $type,
-			'description'   => $entity_data['description'],
-			'sameAs'        => $same_as_list,
-			'alternateName' => $alt_labels
-		);
-
-		$entity_list[] = $entity;
+		$entity_list[] = $entity_data;
 
 		$this->clear_and_save_list( $entity_list );
 
