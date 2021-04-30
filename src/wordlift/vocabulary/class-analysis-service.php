@@ -134,9 +134,11 @@ class Analysis_Service {
 
 		$this->log->debug( "Requesting entity data for url :" . $meta_url );
 		$this->log->debug( "Got entity meta data as : " );
-		$this->log->debug( $response );
+		$this->log->debug( var_export( $response, true ) );
 		if ( ! is_wp_error( $response ) ) {
 			$meta = json_decode( wp_remote_retrieve_body( $response ), true );
+			$this->log->debug( "Saved entity data to meta :" );
+			$this->log->debug( var_export( $meta, true ) );
 			$this->cache_service->put( $entity_url, $meta );
 
 			return $meta;
@@ -152,12 +154,14 @@ class Analysis_Service {
 		$filtered_entities = array();
 		foreach ( $entities as $entity ) {
 			$entity['meta'] = array();
-			$meta           = $this->get_meta( $entity['entityId'] );
-			if ( $meta && count( $meta ) > 0 ) {
-				$entity['meta'] = $meta[0];
+			$meta = $this->get_meta( $entity['entityId'] );
+			if ( $meta ) {
+				$entity['meta'] = $meta;
 			}
 			$filtered_entities[] = $entity;
 		}
+		$this->log->debug("Returning filtered entities as");
+		$this->log->debug(var_export($filtered_entities, true));
 
 		return $filtered_entities;
 
