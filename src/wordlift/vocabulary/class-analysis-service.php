@@ -116,7 +116,13 @@ class Analysis_Service {
 			return $cache_results;
 		}
 
-		$response = wp_remote_get( 'https://api-dev.wordlift.io/id/' . self::format_entity_url( $entity_url ) );
+		$formatted_url = self::format_entity_url( $entity_url );
+
+		if ( ! $formatted_url ) {
+			return array();
+		}
+
+		$response = wp_remote_get( 'https://api-dev.wordlift.io/id/' .  $formatted_url);
 
 
 		if ( ! is_wp_error( $response ) ) {
