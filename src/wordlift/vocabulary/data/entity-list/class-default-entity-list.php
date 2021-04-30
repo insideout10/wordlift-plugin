@@ -91,6 +91,12 @@ class Default_Entity_List extends Entity_List {
 	}
 
 
+	/**
+	 * For now support only these properties.
+	 * @param $entity_data
+	 *
+	 * @return array
+	 */
 	private function filter_entity_data( $entity_data ) {
 		$allowed_keys = array('@id', 'description', 'sameAs', '@type', 'name');
 		$data = array();
