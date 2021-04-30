@@ -73,7 +73,7 @@ class Default_Entity_List extends Entity_List {
 			'alternateName' => $alt_labels
 		);
 
-		$entity_list[] = $entity_data;
+		$entity_list[] = $entity;
 
 		$this->clear_and_save_list( $entity_list );
 
