@@ -104,7 +104,7 @@ class Analysis_Service {
 			return false;
 		}
 
-		return $result['scheme'] . "/" . $result['host'] . "/" . $result['path'];
+		return $result['scheme'] . "/" . $result['host'] . $result['path'];
 	}
 
 	private function get_meta( $entity_url ) {
@@ -116,7 +116,7 @@ class Analysis_Service {
 			return $cache_results;
 		}
 
-		$response = wp_remote_get( 'https://api-dev.wordlift.io/id/' . self::format_entity_url($entity_url) );
+		$response = wp_remote_get( 'https://api-dev.wordlift.io/id/' . self::format_entity_url( $entity_url ) );
 
 
 		if ( ! is_wp_error( $response ) ) {
