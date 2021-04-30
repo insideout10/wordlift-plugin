@@ -47,7 +47,7 @@ class Default_Entity_List extends Entity_List {
 
 		$entity_list = get_term_meta( $this->term_id, self::META_KEY );
 
-		$entity_list[] = $entity_data;
+		$entity_list[] = $this->filter_entity_data($entity_data);
 
 		$this->clear_and_save_list( $entity_list );
 
@@ -88,5 +88,17 @@ class Default_Entity_List extends Entity_List {
 		// Clear all data and add the new one.
 		$this->clear_data();
 		$this->save_entity_list( $entity_list );
+	}
+
+
+	private function filter_entity_data( $entity_data ) {
+		$allowed_keys = array('@id', 'description', 'sameAs', '@type', 'name');
+		$data = array();
+		foreach ( $entity_data as $key => $value ) {
+			if ( in_array($key, $allowed_keys ) ) {
+				$data[$key] = $value;
+			}
+		}
+		return $data;
 	}
 }
