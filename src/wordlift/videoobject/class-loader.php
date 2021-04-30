@@ -8,6 +8,7 @@ use Wordlift\Videoobject\Api\Rest_Controller;
 use Wordlift\Videoobject\Data\Video_Storage\Video_Storage_Factory;
 use Wordlift\Videoobject\Filters\Post_Filter;
 use Wordlift\Videoobject\Jsonld\Jsonld;
+use Wordlift\Videoobject\Pages\Import_Videos_Page;
 use Wordlift\Videoobject\Sitemap\Video_Sitemap;
 use Wordlift\Videoobject\Tabs\Settings_Tab;
 use Wordlift\Videoobject\Ui\Post_Edit_Screen;
@@ -40,6 +41,8 @@ class Loader extends Default_Loader {
 
 		$post_edit_screen = new Post_Edit_Screen();
 		$post_edit_screen->init();
+
+		new Import_Videos_Page();
 	}
 
 	public function get_feature_slug() {
