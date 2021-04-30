@@ -20,6 +20,10 @@ class Analysis_Service {
 	 * @var Cache
 	 */
 	private $cache_service;
+	/**
+	 * @var \Wordlift_Log_Service
+	 */
+	private $log;
 
 
 	/**
@@ -33,6 +37,8 @@ class Analysis_Service {
 		$this->api_service = $api_service;
 
 		$this->cache_service = $cache_service;
+
+		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
 
 	}
 
@@ -122,9 +128,13 @@ class Analysis_Service {
 			return array();
 		}
 
-		$response = wp_remote_get( 'https://api-dev.wordlift.io/id/' .  $formatted_url);
+		$meta_url = 'https://api-dev.wordlift.io/id/' . $formatted_url;
 
+		$response = wp_remote_get( $meta_url );
 
+		$this->log->debug( "Requesting entity data for url :" . $meta_url );
+		$this->log->debug( "Got entity meta data as : " );
+		$this->log->debug( $response );
 		if ( ! is_wp_error( $response ) ) {
 			$meta = json_decode( wp_remote_retrieve_body( $response ), true );
 			$this->cache_service->put( $entity_url, $meta );
