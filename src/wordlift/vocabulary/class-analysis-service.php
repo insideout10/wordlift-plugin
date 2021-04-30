@@ -17,7 +17,7 @@ class Analysis_Service {
 	 */
 	private $analysis_service;
 	/**
-	 * @var Options_Cache
+	 * @var Cache
 	 */
 	private $cache_service;
 
@@ -25,12 +25,12 @@ class Analysis_Service {
 	/**
 	 * Tag_Rest_Endpoint constructor.
 	 *
-	 * @param Default_Api_Service $analysis_service
+	 * @param Default_Api_Service $api_service
 	 * @param Cache $cache_service
 	 */
-	public function __construct( $analysis_service, $cache_service ) {
+	public function __construct( $api_service, $cache_service ) {
 
-		$this->analysis_service = $analysis_service;
+		$this->analysis_service = $api_service;
 
 		$this->cache_service = $cache_service;
 
@@ -95,6 +95,10 @@ class Analysis_Service {
 			return $cache_results;
 		}
 
+
+		$this->a
+
+
 		$response = wp_remote_get( "https://app.wordlift.io/knowledge-cafemedia-com-food/wp-json/wordlift/v1/jsonld/meta/entity_url?meta_value=" . urlencode($entity_url) );
 
 		if ( ! is_wp_error( $response ) ) {
@@ -102,6 +106,8 @@ class Analysis_Service {
 			$this->cache_service->put( $entity_url, $meta );
 			return $meta;
 		}
+
+
 
 		return array();
 
