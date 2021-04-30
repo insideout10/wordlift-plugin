@@ -37,7 +37,11 @@ class Post_Jsonld {
 		$terms      = array();
 
 		foreach ( $taxonomies as $taxonomy ) {
-			$terms = array_merge( get_the_terms( $post_id, $taxonomy ), $terms );
+			$taxonomy_terms = get_the_terms( $post_id, $taxonomy );
+			if ( ! $taxonomy_terms ) {
+				continue;
+			}
+			$terms = array_merge( $taxonomy_terms, $terms );
 		}
 
 		if ( ! $terms  ) {
