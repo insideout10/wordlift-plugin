@@ -39,6 +39,7 @@ class Videoobject_Background_Process extends Background_Process {
 		foreach ( $items as $item ) {
 			$this->video_processor->process_video_urls( get_post( $item ), $item );
 		}
+		return true;
 	}
 
 }
