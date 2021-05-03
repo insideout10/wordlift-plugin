@@ -176,7 +176,7 @@ function wl_shortcode_faceted_search_origin( $request ) {
 	// Add filler posts if needed
 
 	$filler_count = $limit - count( $post_results );
-	if ( $filler_count > 0 ) {
+	if ( 0 < apply_filters( 'wl_faceted_search__filler_count', $filler_count, $current_post_id, $referencing_post_ids ) ) {
 		$filler_posts_util       = new Filler_Posts_Util( $current_post_id );
 		$post_ids_to_be_excluded = array_merge( array( $current_post_id ), $referencing_post_ids );
 		$filler_posts            = $filler_posts_util->get_filler_posts( $filler_count, $post_ids_to_be_excluded );
