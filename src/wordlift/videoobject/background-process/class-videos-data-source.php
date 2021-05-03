@@ -11,7 +11,8 @@ class Videos_Data_Source extends Data_Source {
 	public function next() {
 		return get_posts( array(
 			'fields'      => 'ids',
-			'numberposts' => - 1,
+			'number'     => $this->get_batch_size(),
+			'offset'     => $this->get_state()->index,
 			'meta_query'  => array(
 				array(
 					'key'     => self::IMPORT_DONE_FLAG,

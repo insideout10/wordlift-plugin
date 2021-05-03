@@ -34,4 +34,13 @@ abstract class Data_Source {
 	abstract public function get_batch_size();
 
 
+	public function get_state() {
+		try {
+			return get_option( $this->state_storage_key, Sync_State::unknown() );
+		} catch ( \Exception $e ) {
+			return Sync_State::unknown();
+		}
+
+	}
+
 }

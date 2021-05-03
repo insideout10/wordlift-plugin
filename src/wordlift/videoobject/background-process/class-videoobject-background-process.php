@@ -37,7 +37,8 @@ class Videoobject_Background_Process extends Background_Process {
 	 */
 	protected function process_items( $items ) {
 		foreach ( $items as $item ) {
-			$this->video_processor->process_video_urls( get_post( $item ), $item );
+			//$this->video_processor->process_video_urls( get_post( $item ), $item );
+			update_post_meta($item, Videos_Data_Source::IMPORT_DONE_FLAG, 1);
 		}
 		return true;
 	}

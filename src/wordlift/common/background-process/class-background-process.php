@@ -10,7 +10,7 @@ abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process
 	/**
 	 * @var Data_Source
 	 */
-	private $data_source;
+	protected $data_source;
 
 	/**
 	 * Background_Process constructor.
@@ -194,6 +194,7 @@ abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process
 		$state = self::get_state()
 		             ->increment_index( $this->data_source->get_batch_size() )
 		             ->set_state( $next_state );
+
 		update_option( $this->get_state_storage_key(), $state, false );
 
 	}
