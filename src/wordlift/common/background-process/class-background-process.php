@@ -3,17 +3,26 @@
 namespace Wordlift\Common\Background_Process;
 
 abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process {
-
-
 	/**
 	 * @var \Wordlift_Log_Service
 	 */
 	private $log;
+	/**
+	 * @var Data_Source
+	 */
+	private $data_source;
 
-
-	public function __construct( $analysis_background_service ) {
+	/**
+	 * Background_Process constructor.
+	 *
+	 * @param $data_source Data_Source
+	 */
+	public function __construct( $data_source ) {
 		parent::__construct();
+		$this->data_source = $data_source;
 		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
+		// Set value for action key.
+		$this->action = $this->get_action_key();
 	}
 
 	/**
@@ -84,37 +93,40 @@ abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process
 	 *
 	 * This function returns the parameter for the next call or NULL if there are no more items to process.
 	 *
-	 * @param int[] $items An array of term IDs.
+	 * @param int[] $items An array of item IDs.
 	 *
 	 * @return int[]|false The next IDs or false if there are no more.
 	 */
-	protected function task( $term_ids ) {
+	protected function task( $items ) {
 
 		// Check if we must cancel.
 		if ( $this->must_cancel() ) {
 			$this->cancel();
-
 			return false;
 		}
 
-		if ( $term_ids && is_array( $term_ids ) ) {
-			$this->log->debug( sprintf( "Synchronizing terms %s...", implode( ', ', $term_ids ) ) );
+		if ( $items && is_array( $items ) ) {
+			$this->log->debug( sprintf( "Synchronizing items %s...", implode( ', ', $items ) ) );
 		}
 		// Sync the item.
-		$this->process_items( $term_ids );
-
-		// Update the process state, set the index in state in order
-		// to reflect the new items.
-		$this->update_batch_index();
-
-		// Get the next batch for processing.
-		return $this->get_next_batch();
+		if ( $this->process_items( $items ) ) {
+			// Update the process state, set the index in state in order
+			// to reflect the new items.
+			$this->update_batch_index();
+			// Get the next batch for processing.
+			return $this->get_next_batch();
+		}
+		else {
+			// Return the failed term ids again.
+			return $items;
+		}
 	}
 
 	/**
+	 * Process all the items in the current batch.
 	 * @param $items
 	 *
-	 * @return void
+	 * @return bool If all items are successfully processed.
 	 */
 	abstract protected function process_items( $items );
 
@@ -122,9 +134,26 @@ abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process
 	 * Return next batch of items after processing.
 	 * @return int[] or false
 	 */
-	abstract protected function get_next_batch();
+	 protected function get_next_batch() {
+	 	return $this->data_source->next();
+	 }
+
+
 
 	private function update_batch_index() {
+		$next       = $this->data_source->next();
+		$next_state = isset( $next ) ? 'started' : 'ended';
+
+		/**
+		 * Update the synchronization meta data, by increasing the current index.
+		 *
+		 * @var Sync_State $sync The {@link Sync_State}.
+		 */
+		$state = self::get_state()
+		             ->increment_index( $this->data_source->get_batch_size() )
+		             ->set_state( $next_state );
+		update_option( $this->get_state_storage_key(), $state, false );
+
 	}
 
 

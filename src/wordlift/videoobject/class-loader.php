@@ -5,6 +5,8 @@ namespace Wordlift\Videoobject;
 use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Common\Loader\Default_Loader;
 use Wordlift\Videoobject\Api\Rest_Controller;
+use Wordlift\Videoobject\Background_Process\Videoobject_Background_Process;
+use Wordlift\Videoobject\Background_Process\Videos_Data_Source;
 use Wordlift\Videoobject\Data\Video_Storage\Video_Storage_Factory;
 use Wordlift\Videoobject\Filters\Post_Filter;
 use Wordlift\Videoobject\Jsonld\Jsonld;
@@ -26,8 +28,9 @@ class Loader extends Default_Loader {
 
 		$sitemap_cache = new Ttl_Cache( "wl_video_sitemap", 86400 );
 
+		$video_processor = new Video_Processor();
 		// Hook in to save_post to save the videos
-		$post_filter = new Post_Filter();
+		$post_filter = new Post_Filter( $video_processor );
 		$post_filter->init();
 		// Add entry to wordlift admin tabs
 		$settings_tab = new Settings_Tab();
@@ -43,6 +46,9 @@ class Loader extends Default_Loader {
 		$post_edit_screen->init();
 
 		new Import_Videos_Page();
+
+		$background_process_data_source = new Videos_Data_Source( '__wl_videoobject_import_state' );
+		$import_process                 = new Videoobject_Background_Process( $video_processor, $background_process_data_source );
 	}
 
 	public function get_feature_slug() {
