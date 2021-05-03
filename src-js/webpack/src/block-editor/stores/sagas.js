@@ -210,7 +210,7 @@ function* handleAddEntityRequest({payload}) {
     }
 
     if (blockEditorFormat === undefined) {
-        value = ClassicEditorBlockValidator.getValue(payload.label);
+        value = ClassicEditorBlockValidator.getValue(window.getSelection().toString());
         if (value === false) {
             // This is not a valid classic block,return early.
             return false;
