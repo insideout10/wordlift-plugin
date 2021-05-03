@@ -143,6 +143,7 @@ abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process
 
 		// Check if we must cancel.
 		if ( $this->must_cancel() || ! $items ) {
+			$this->log->debug("Cancelling background process " . $this->action . " due to no items inside task() method");
 			$this->cancel();
 			return false;
 		}
