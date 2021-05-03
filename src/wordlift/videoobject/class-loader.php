@@ -41,7 +41,7 @@ class Loader extends Default_Loader {
 		$video_sitemap->init();
 
 		$background_process_data_source = new Videos_Data_Source( '__wl_videoobject_import_state' );
-		$background_process                 = new Videoobject_Background_Process( $video_processor, $background_process_data_source );
+		$background_process             = new Videoobject_Background_Process( $video_processor, $background_process_data_source );
 
 		$rest_controller = new Rest_Controller( $background_process );
 		$rest_controller->register_all_routes();
@@ -50,7 +50,6 @@ class Loader extends Default_Loader {
 		$post_edit_screen->init();
 
 		new Import_Videos_Page();
-
 
 	}
 

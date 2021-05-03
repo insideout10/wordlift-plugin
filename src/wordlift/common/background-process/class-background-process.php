@@ -20,7 +20,7 @@ abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process
 	public function __construct( $data_source ) {
 		parent::__construct();
 		$this->data_source = $data_source;
-		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
+		$this->log         = \Wordlift_Log_Service::get_logger( get_class() );
 		// Set value for action key.
 		$this->action = $this->get_action_key();
 	}
@@ -66,7 +66,7 @@ abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process
 	 * @return bool True if the process has been started, otherwise false.
 	 */
 	public function start() {
-		$action  = $this->get_action_key();
+		$action = $this->get_action_key();
 		$this->log->debug( "Trying to start  ${action}..." );
 		// Create a new Sync_Model state of `started`.
 		if ( ! $this->is_started( self::get_state() ) ) {
@@ -80,9 +80,10 @@ abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process
 			$this->push_to_queue( $next );
 			$this->save()->dispatch();
 
-			if ( $next && is_array($next) ) {
+			if ( $next && is_array( $next ) ) {
 				$this->log->debug( sprintf( 'Started with term IDs %s.', implode( ', ', $next ) ) );
 			}
+
 			return true;
 		}
 
@@ -143,8 +144,9 @@ abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process
 
 		// Check if we must cancel.
 		if ( $this->must_cancel() || ! $items ) {
-			$this->log->debug("Cancelling background process " . $this->action . " due to no items inside task() method");
+			$this->log->debug( "Cancelling background process " . $this->action . " due to no items inside task() method" );
 			$this->cancel();
+
 			return false;
 		}
 
@@ -156,10 +158,10 @@ abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process
 			// Update the process state, set the index in state in order
 			// to reflect the new items.
 			$this->update_batch_index();
+
 			// Get the next batch for processing.
 			return $this->get_next_batch();
-		}
-		else {
+		} else {
 			// Return the failed term ids again.
 			return $items;
 		}
@@ -167,6 +169,7 @@ abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process
 
 	/**
 	 * Process all the items in the current batch.
+	 *
 	 * @param $items
 	 *
 	 * @return bool If all items are successfully processed.
@@ -177,14 +180,17 @@ abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process
 	 * Return next batch of items after processing.
 	 * @return int[] or false
 	 */
-	 protected function get_next_batch() {
-	 	return $this->data_source->next();
-	 }
+	protected function get_next_batch() {
+		$next = $this->data_source->next();
+		$this->log->debug( "Returned the following items to be processed for next batch " . var_export( $next, true ) );
 
+		return $next;
+	}
 
 
 	private function update_batch_index() {
-		$next       = $this->data_source->next();
+		$next = $this->data_source->next();
+
 		$next_state = isset( $next ) ? 'started' : 'ended';
 
 		/**
@@ -195,6 +201,7 @@ abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process
 		$state = self::get_state()
 		             ->increment_index( $this->data_source->get_batch_size() )
 		             ->set_state( $next_state );
+		$this->log->debug( 'Items index for ' . $this->get_action_key() . " updated to " . var_export( $state->get_array(), true ) );
 
 		update_option( $this->get_state_storage_key(), $state, false );
 
