@@ -220,7 +220,7 @@ HTML;
 			</section>
 			<section class="cards">
 				<amp-list 
-					height="250"
+					height="300"
 					layout="fixed-height"
 					src="{$rest_url}"
 					[src]="{values: allPostsEntities.posts[0].values.sort((a, b) => referencedPosts.includes(a.ID) ? -1 : 1)}"
