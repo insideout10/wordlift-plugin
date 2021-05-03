@@ -142,7 +142,7 @@ abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process
 	protected function task( $items ) {
 
 		// Check if we must cancel.
-		if ( $this->must_cancel() || $items ) {
+		if ( $this->must_cancel() || ! $items ) {
 			$this->cancel();
 			return false;
 		}
