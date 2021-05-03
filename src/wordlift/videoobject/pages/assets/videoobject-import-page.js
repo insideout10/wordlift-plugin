@@ -3,7 +3,7 @@ window.addEventListener("load", function () {
   const stopBtn = document.getElementById("wl-stop-btn");
 
   const updateProgressBar = function () {
-    wp.apiRequest({ path: "wordlift/v1/videoobject/background/sync" }).success(
+    wp.apiRequest({ path: "wordlift/v1/videos/background/get_state", method: "POST" }).success(
       (data) => {
         document.querySelector(".wl-task__progress__bar").style.width =
           (data.index * 100.0) / data.count + "%";
@@ -30,14 +30,14 @@ window.addEventListener("load", function () {
   startBtn.addEventListener("click", function () {
     wp.apiRequest({
       method: "POST",
-      path: "wordlift/v1/videoobject/background/sync",
+      path: "wordlift/v1/videos/background/start",
     });
   });
 
   stopBtn.addEventListener("click", function () {
     wp.apiRequest({
-      method: "DELETE",
-      path: "wordlift/v1/videoobject/background/sync",
+      method: "POST",
+      path: "wordlift/v1/videos/background/stop",
     });
   });
 });

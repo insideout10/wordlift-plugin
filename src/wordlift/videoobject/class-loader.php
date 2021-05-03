@@ -39,7 +39,11 @@ class Loader extends Default_Loader {
 
 		$video_sitemap = new Video_Sitemap( $sitemap_cache );
 		$video_sitemap->init();
-		$rest_controller = new Rest_Controller();
+
+		$background_process_data_source = new Videos_Data_Source( '__wl_videoobject_import_state' );
+		$background_process                 = new Videoobject_Background_Process( $video_processor, $background_process_data_source );
+
+		$rest_controller = new Rest_Controller( $background_process );
 		$rest_controller->register_all_routes();
 
 		$post_edit_screen = new Post_Edit_Screen();
@@ -47,8 +51,7 @@ class Loader extends Default_Loader {
 
 		new Import_Videos_Page();
 
-		$background_process_data_source = new Videos_Data_Source( '__wl_videoobject_import_state' );
-		$import_process                 = new Videoobject_Background_Process( $video_processor, $background_process_data_source );
+
 	}
 
 	public function get_feature_slug() {

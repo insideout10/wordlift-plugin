@@ -49,6 +49,48 @@ abstract class Background_Process extends \Wordlift_Plugin_WP_Background_Process
 	}
 
 	/**
+	 * Check whether the provided state is `started` or not.
+	 *
+	 * @param Sync_State $state The {@link Sync_State}.
+	 *
+	 * @return bool True if the state is started.
+	 */
+	private function is_started( $state ) {
+		return $state instanceof Sync_State && 'started' === $state->state && 30 > ( time() - $state->last_update );
+	}
+
+
+	/**
+	 * Start the background processing.
+	 *
+	 * @return bool True if the process has been started, otherwise false.
+	 */
+	public function start() {
+		$action  = $this->get_action_key();
+		$this->log->debug( "Trying to start  ${action}..." );
+		// Create a new Sync_Model state of `started`.
+		if ( ! $this->is_started( self::get_state() ) ) {
+			$this->log->debug( "Starting..." );
+
+			$sync_state = new Sync_State( time(), 0, $this->data_source->count(), time(), 'started' );
+			update_option( $this->get_state_storage_key(), $sync_state, false );
+
+			$next = $this->data_source->next();
+
+			$this->push_to_queue( $next );
+			$this->save()->dispatch();
+
+			if ( $next && is_array($next) ) {
+				$this->log->debug( sprintf( 'Started with term IDs %s.', implode( ', ', $next ) ) );
+			}
+			return true;
+		}
+
+		return false;
+	}
+
+
+	/**
 	 * Cancels the current process.
 	 */
 	public function cancel() {

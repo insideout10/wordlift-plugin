@@ -6,17 +6,34 @@
 
 namespace Wordlift\Videoobject\Api;
 
+use Wordlift\Videoobject\Background_Process\Videoobject_Background_Process;
 use Wordlift\Videoobject\Data\Video_Storage\Video_Storage_Factory;
 use Wordlift\Videoobject\Data\Video\Video;
 use WP_REST_Server;
 
 class Rest_Controller {
+	/**
+	 * @var Videoobject_Background_Process
+	 */
+	private $background_process;
+
+	/**
+	 * Rest_Controller constructor.
+	 *
+	 * @param $background_process Videoobject_Background_Process
+	 */
+	public function __construct( $background_process ) {
+		$this->background_process = $background_process;
+	}
 
 	public function register_all_routes() {
 		$that = $this;
 		add_action( 'rest_api_init', function () use ( $that ) {
 			$that->register_get_all_videos_route();
 			$that->register_save_all_videos_route();
+			$that->register_get_sync_state_endpoint();
+			$that->register_background_process_start_endpoint();
+			$that->register_background_process_stop_endpoint();
 		} );
 	}
 
@@ -95,6 +112,62 @@ class Rest_Controller {
 				),
 			)
 		);
+	}
+
+
+	public function register_get_sync_state_endpoint() {
+		$that = $this;
+		register_rest_route(
+			WL_REST_ROUTE_DEFAULT_NAMESPACE,
+			'/videos/background/get_state',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => function () use ( $that ) {
+					return $that->background_process->get_state()->get_array();
+				},
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+
+	}
+
+	public function register_background_process_start_endpoint() {
+		$that = $this;
+		register_rest_route(
+			WL_REST_ROUTE_DEFAULT_NAMESPACE,
+			'/videos/background/start',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => function () use ( $that ) {
+					$that->background_process->start();
+				},
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+
+
+	}
+
+	public function register_background_process_stop_endpoint() {
+		$that = $this;
+		register_rest_route(
+			WL_REST_ROUTE_DEFAULT_NAMESPACE,
+			'/videos/background/stop',
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => function () use ( $that ) {
+					$that->background_process->cancel();
+				},
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+
 	}
 
 
