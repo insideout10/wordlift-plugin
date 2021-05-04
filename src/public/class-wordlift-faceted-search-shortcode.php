@@ -235,7 +235,7 @@ HTML;
  							 visible-count="(min-width: 1000px) 4, (min-width: 600px) 2, 1"
   							 advance-count="(min-width: 1000px) 4, (min-width: 600px) 2, 1">
 					      {{#values}}
-							<article class="card" style="margin: 1rem .25em">
+							<article class="card">
 								<a href="{{permalink}}">
 									<amp-img
 				                        width="16"
