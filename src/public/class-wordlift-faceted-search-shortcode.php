@@ -229,13 +229,13 @@ HTML;
 					<template type="amp-mustache" id="template-{$faceted_id}">
 						<amp-base-carousel
   							 layout="responsive"
-  							 controls
- 							 width="3"
- 							 height="2 "
+  							 controls="always"
+  							 width="3"
+ 							 height="2"
  							 visible-count="(min-width: 1000px) 4, (min-width: 600px) 2, 1"
   							 advance-count="(min-width: 1000px) 4, (min-width: 600px) 2, 1">
 					      {{#values}}
-							<article class="card">
+							<article class="card" style="margin: 1rem .25em">
 								<a href="{{permalink}}">
 									<amp-img
 				                        width="16"
