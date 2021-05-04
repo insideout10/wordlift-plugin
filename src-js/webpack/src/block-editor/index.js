@@ -8,33 +8,33 @@
  * External dependencies
  */
 import React from "react";
-import {Provider} from "react-redux";
-import {on} from "backbone";
+import { Provider } from "react-redux";
+import { on } from "backbone";
 
 /**
  * WordPress dependencies
  */
-import {PluginSidebar, PluginSidebarMoreMenuItem} from "@wordpress/edit-post";
-import {Fragment} from "@wordpress/element";
-import {registerPlugin} from "@wordpress/plugins";
-import {dispatch} from "@wordpress/data";
-import {createBlock} from "@wordpress/blocks";
+import { PluginSidebar, PluginSidebarMoreMenuItem } from "@wordpress/edit-post";
+import { Fragment } from "@wordpress/element";
+import { registerPlugin } from "@wordpress/plugins";
+import { dispatch } from "@wordpress/data";
+import { createBlock } from "@wordpress/blocks";
 
 /**
  * Internal dependencies
  */
 import Sidebar from "./containers/sidebar";
 import withDidMountCallback from "../common/components/with-did-mount-callback";
-import {requestAnalysis} from "./stores/actions";
+import { requestAnalysis } from "./stores/actions";
 import store from "./stores";
 import WordLiftIcon from "./wl-logo-big.svg";
 import "./index.scss";
 import "./formats/register-format-type-wordlift-annotation";
 import "./blocks/register-block-type-wordlift-classification";
-import {ANNOTATION_CHANGED} from "../common/constants";
-import {setCurrentAnnotation} from "../Edit/actions";
-import {getClassificationBlock} from "./stores/selectors";
-import {EDITOR_STORE, PLUGIN_NAMESPACE} from "../common/constants";
+import { ANNOTATION_CHANGED } from "../common/constants";
+import { setCurrentAnnotation } from "../Edit/actions";
+import { getClassificationBlock } from "./stores/selectors";
+import { EDITOR_STORE, PLUGIN_NAMESPACE } from "../common/constants";
 import registerFilters from "./filters/add-entity.filters";
 import ArticleMetadataPanel from "../common/components/article-metadata-panel";
 import SuggestedImagesPanel from "../common/components/suggested-images-panel";
@@ -47,9 +47,8 @@ import VideosPanel from "../common/components/videos-panel";
 const wlSettings = global["wlSettings"];
 const canAddSynonyms = wlSettings && "can_add_synonyms" in wlSettings ? wlSettings["can_add_synonyms"] == 1 : true;
 const showClassificationSidebar =
-    wlSettings && "show_classification_sidebar" in wlSettings ? wlSettings["show_classification_sidebar"] == 1 : true;
-
-console.log(canAddSynonyms, showClassificationSidebar);
+  wlSettings && "show_classification_sidebar" in wlSettings ? wlSettings["show_classification_sidebar"] == 1 : true;
+const showVideoobject = wlSettings && "show_videoobject" in wlSettings ? wlSettings["show_videoobject"] == 1 : true;
 
 // Register our filters to display additional elements in the CreateEntityForm. Pass our store to connect them to
 // our state.
@@ -66,12 +65,12 @@ on(ANNOTATION_CHANGED, payload => store.dispatch(setCurrentAnnotation(payload)))
  * mounted.
  */
 const SidebarWithDidMountCallback = withDidMountCallback(Sidebar, () => {
-    // Request the analysis.
-    store.dispatch(requestAnalysis());
+  // Request the analysis.
+  store.dispatch(requestAnalysis());
 
-    // Add the WordLift Classification block is not yet available.
-    if ("undefined" === typeof getClassificationBlock())
-        dispatch(EDITOR_STORE).insertBlock(createBlock("wordlift/classification", {}));
+  // Add the WordLift Classification block is not yet available.
+  if ("undefined" === typeof getClassificationBlock())
+    dispatch(EDITOR_STORE).insertBlock(createBlock("wordlift/classification", {}));
 });
 
 /**
@@ -83,26 +82,26 @@ const SidebarWithDidMountCallback = withDidMountCallback(Sidebar, () => {
  * @see https://developer.wordpress.org/block-editor/tutorials/plugin-sidebar-0/plugin-sidebar-1-up-and-running/
  */
 showClassificationSidebar &&
-registerPlugin(PLUGIN_NAMESPACE, {
+  registerPlugin(PLUGIN_NAMESPACE, {
     render: () => (
-        <Fragment>
-            <PluginSidebarMoreMenuItem target="wordlift-sidebar" icon={<WordLiftIcon/>}>
-                WordLift
-            </PluginSidebarMoreMenuItem>
-            <PluginSidebar name="wordlift-sidebar" title="WordLift" className="wl-sidebar">
-                <Provider store={store}>
-                    <Fragment>
-                        <SidebarWithDidMountCallback/>
-                        {canAddSynonyms && <SynonymsPanel/>}
-                        <ArticleMetadataPanel/>
-                        <SuggestedImagesPanel/>
-                        <RelatedPostsPanel/>
-                        {/*<FaqPanel />*/}
-                        <VideosPanel/>
-                    </Fragment>
-                </Provider>
-            </PluginSidebar>
-        </Fragment>
+      <Fragment>
+        <PluginSidebarMoreMenuItem target="wordlift-sidebar" icon={<WordLiftIcon />}>
+          WordLift
+        </PluginSidebarMoreMenuItem>
+        <PluginSidebar name="wordlift-sidebar" title="WordLift" className="wl-sidebar">
+          <Provider store={store}>
+            <Fragment>
+              <SidebarWithDidMountCallback />
+              {canAddSynonyms && <SynonymsPanel />}
+              <ArticleMetadataPanel />
+              <SuggestedImagesPanel />
+              <RelatedPostsPanel />
+              {/*<FaqPanel />*/}
+              {showVideoobject && <VideosPanel />}
+            </Fragment>
+          </Provider>
+        </PluginSidebar>
+      </Fragment>
     ),
-    icon: <WordLiftIcon/>
-});
+    icon: <WordLiftIcon />
+  });
