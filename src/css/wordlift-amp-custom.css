@@ -179,6 +179,9 @@
   font-size: 10px;
   color: #a4a4a4;
 }
+amp-base-carousel .card {
+  margin: 10px;
+}
 .wl-amp-faceted .chips {
   margin: 12px 0;
 }
