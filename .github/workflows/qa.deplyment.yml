@@ -38,6 +38,7 @@ jobs:
           file: ./Dockerfile
           push: true
           target: ${{ matrix.WP-ver }}
+#          target: wlp-wp-5.7
           username: ${{ secrets.username }}
           password: ${{ secrets.PAT }}
           repository: wordlift/${{ matrix.WP-ver }}
@@ -93,3 +94,11 @@ jobs:
             manifests/wordpress-deployment.yml
             manifests/wordpress-mysql-deployment.yml
             manifests/wordpress-ingress.yml
+
+      - name: install WP and add dev line
+        continue-on-error: true
+        uses: steebchen/kubectl@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        with:
+          args: exec 
