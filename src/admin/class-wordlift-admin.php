@@ -395,7 +395,9 @@ class Wordlift_Admin {
 			 * @since 3.30.0
 			 */
 			'can_add_synonyms'             => apply_filters( 'wl_feature__enable__add-synonyms', true ),
-			'show_classification_sidebar'  => apply_filters( 'wl_feature__enable__classification-sidebar', true )
+			'show_classification_sidebar'  => apply_filters( 'wl_feature__enable__classification-sidebar', true ),
+			// By default the videoobject should not show.
+			'show_videoobject'             => apply_filters( 'wl_feature__enable__videoobject', false )
 		);
 
 		// Set post-related values if there's a current post.

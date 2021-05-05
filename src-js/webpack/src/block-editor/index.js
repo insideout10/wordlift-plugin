@@ -42,13 +42,13 @@ import FaqPanel from "../common/components/faq-panel";
 import SynonymsPanel from "../common/components/synonyms-panel";
 import RelatedPostsPanel from "../common/containers/related-posts";
 import "./blocks";
+import VideosPanel from "../common/components/videos-panel";
 
 const wlSettings = global["wlSettings"];
 const canAddSynonyms = wlSettings && "can_add_synonyms" in wlSettings ? wlSettings["can_add_synonyms"] == 1 : true;
 const showClassificationSidebar =
   wlSettings && "show_classification_sidebar" in wlSettings ? wlSettings["show_classification_sidebar"] == 1 : true;
-
-console.log(canAddSynonyms, showClassificationSidebar);
+const showVideoobject = wlSettings && "show_videoobject" in wlSettings ? wlSettings["show_videoobject"] == 1 : true;
 
 // Register our filters to display additional elements in the CreateEntityForm. Pass our store to connect them to
 // our state.
@@ -97,6 +97,7 @@ showClassificationSidebar &&
               <SuggestedImagesPanel />
               <RelatedPostsPanel />
               {/*<FaqPanel />*/}
+              {showVideoobject && <VideosPanel />}
             </Fragment>
           </Provider>
         </PluginSidebar>
