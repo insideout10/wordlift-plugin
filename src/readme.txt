@@ -142,9 +142,14 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.31.0 (2021-04-__) =
+= 3.31.0 (2021-05-__) =
 
+* Enhancement [#1354](https://github.com/insideout10/wordlift-plugin/issues/1354): Add filter for filler posts in faceted search
+* Enhancement [#1344](https://github.com/insideout10/wordlift-plugin/issues/1344): Add support for video object
 * Enhancement [#1342](https://github.com/insideout10/wordlift-plugin/issues/1342): Add support for Offer Shipping Details in SD; add compatibility with WPSSO Core, WPSSO Schema JSON-LD Markup and WPSSO Shipping Delivery Time for WooCommerce
+* Enhancement [#1341](https://github.com/insideout10/wordlift-plugin/issues/1341): Align Faceted Search appearance on AMP
+
+* Fix [#1353](https://github.com/insideout10/wordlift-plugin/issues/1353): Manual annotation in classic editor block inside block editor not working
 
 = 3.30.1 (2021-04-14) =
 
