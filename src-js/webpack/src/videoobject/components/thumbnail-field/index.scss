@@ -1,0 +1,31 @@
+.wl-modal__thumbnail_field {
+
+
+  &__remove_button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #888;
+
+    &:hover {
+      background-color: #ff7f83;
+
+      &:before {
+        background: #fff;
+      }
+    }
+
+    &:before {
+      content: "";
+      text-transform: none;
+      line-height: 0.8em;
+      width: 1em;
+      height: 2px;
+      background: #fff;
+      -webkit-font-smoothing: antialiased;
+    }
+  }
+}

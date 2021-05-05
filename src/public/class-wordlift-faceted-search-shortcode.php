@@ -220,20 +220,22 @@ HTML;
 			</section>
 			<section class="cards">
 				<amp-list 
-					height="250"
+					height="300"
 					layout="fixed-height"
 					src="{$rest_url}"
 					[src]="{values: allPostsEntities.posts[0].values.sort((a, b) => referencedPosts.includes(a.ID) ? -1 : 1)}"
 					template="{$template_id}"
 					items="posts">
 					<template type="amp-mustache" id="template-{$faceted_id}">
-						<amp-carousel 
-						  media="(min-width: 380px)"
-						  height="200"
-					      layout="fixed-height"
-					      type="carousel">
+						<amp-base-carousel
+  							 layout="responsive"
+  							 controls="always"
+  							 width="3"
+ 							 height="2"
+ 							 visible-count="(min-width: 1000px) 4, (min-width: 600px) 2, 1"
+  							 advance-count="(min-width: 1000px) 4, (min-width: 600px) 2, 1">
 					      {{#values}}
-							<article class="card" style="width: 25%">
+							<article class="card">
 								<a href="{{permalink}}">
 									<amp-img
 				                        width="16"
@@ -247,28 +249,7 @@ HTML;
 								</a>
 							</article>
 						  {{/values}}
-						</amp-carousel>
-						<amp-carousel 
-						  media="(max-width: 380px)"
-						  height="250"
-					      layout="fixed-height"
-					      type="slides">
-					      {{#values}}
-							<article class="card" style="width: 100%">
-								<a href="{{permalink}}">
-									<amp-img
-				                        width="16"
-				                        height="9"
-										layout="responsive"
-				                        src="{{thumbnail}}"
-				                        srcset="{{srcset}}"></amp-img>
-									<div class="card-content">
-										<header class="title">{{post_title}}</header>
-									</div>
-								</a>
-							</article>
-						  {{/values}}
-						</amp-carousel>
+						</amp-base-carousel>
 					</template>
 				</amp-list>
 			</section>

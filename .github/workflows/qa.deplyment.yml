@@ -1,4 +1,4 @@
-name: CI
+name: docker_build_and_k8s_deployment
 
 # Controls when the action will run.
 on:
@@ -47,6 +47,8 @@ jobs:
     needs: [build]
     runs-on: ubuntu-latest
       # Set the target AKS cluster.
+    environment:
+      name: QA-environment
     steps:
       -
         name: Checkout
