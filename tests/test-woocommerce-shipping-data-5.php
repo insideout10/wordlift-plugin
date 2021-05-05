@@ -34,7 +34,7 @@ class Woocommerce_Shipping_Data_Test_5 extends WP_UnitTestCase {
 			'@type'    => 'QuantitativeValue',
 			'minValue' => 0,
 			'maxValue' => 2,
-		), $jsonld['offers'][0]['shippingDetails'][1]['shippingDeliveryTime']['transitTime'] );
+		), $jsonld['offers'][0]['shippingDetails'][1]['deliveryTime']['transitTime'] );
 
 	}
 

@@ -31,7 +31,7 @@ class Woocommerce_Shipping_Data_Test_6_1 extends WP_UnitTestCase {
 			)
 		), $product_id, array() );
 
-		$this->assertEquals( '01:00+02:00', $jsonld['offers'][0]['shippingDetails'][1]['shippingDeliveryTime']['cutOffTime'] );
+		$this->assertEquals( '01:00+02:00', $jsonld['offers'][0]['shippingDetails'][1]['deliveryTime']['cutOffTime'] );
 
 	}
 

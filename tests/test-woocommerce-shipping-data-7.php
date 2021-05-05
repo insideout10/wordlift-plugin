@@ -37,7 +37,7 @@ class Woocommerce_Shipping_Data_Test_7 extends WP_UnitTestCase {
 				"https://schema.org/Monday",
 				"https://schema.org/Sunday",
 			)
-		), $jsonld['offers'][0]['shippingDetails'][1]['shippingDeliveryTime']['businessDays'] );
+		), $jsonld['offers'][0]['shippingDetails'][1]['deliveryTime']['businessDays'] );
 
 	}
 
