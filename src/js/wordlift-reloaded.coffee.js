@@ -498,7 +498,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     $scope.isVideoObjectEnabled = parseInt(wlSettings.show_videoobject) === 1;
     $scope.toggleCurrentSection = function(section) {
       if (section === 'videoobject') {
-        wp.hooks.doAction('wordlift.renderVideoList');
+        window.dispatchEvent(new Event("wordlift.renderVideoList"));
       }
       if ($scope.currentSection === section) {
         return $scope.currentSection = void 0;

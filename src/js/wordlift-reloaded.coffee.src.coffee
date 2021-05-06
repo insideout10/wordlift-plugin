@@ -521,7 +521,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.toggleCurrentSection = (section)->
     # when its a video object section, fire event to render it.
     if section is 'videoobject'
-      wp.hooks.doAction('wordlift.renderVideoList')
+      window.dispatchEvent(new Event("wordlift.renderVideoList"))
     if $scope.currentSection is section
       $scope.currentSection = undefined
     else
