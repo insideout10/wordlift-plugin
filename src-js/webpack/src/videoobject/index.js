@@ -59,3 +59,8 @@ window.addEventListener("load", () => {
         renderVideoList()
     })
 })
+
+
+window.addEventListener("wordlift.renderVideoList", () => {
+    renderVideoList()
+})
