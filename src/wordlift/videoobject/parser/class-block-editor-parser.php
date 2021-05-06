@@ -28,7 +28,8 @@ class Block_Editor_Parser implements Parser {
 
 	public function filter_blocks( $block ) {
 		return array_key_exists( 'blockName', $block )
-		       && $block['blockName'] === 'core/embed'
+		       && ( $block['blockName'] === 'core/embed' || $block['blockName'] === 'core-embed/youtube'
+		            || $block['blockName'] === 'core-embed/vimeo')
 		       // Check if attributes present
 		       && array_key_exists( 'attrs', $block )
 		       && is_array( $block['attrs'] )
