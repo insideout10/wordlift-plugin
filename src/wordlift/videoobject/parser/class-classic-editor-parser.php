@@ -22,12 +22,13 @@ class Classic_Editor_Parser implements Parser {
 		 */
 		if ( preg_match( '#(^|\s|>)https?://#i', $content ) ) {
 			// Find URLs on their own line.
-			preg_match_all( '|^(\s*)(https?://[^\s<>"]+)(\s*)$|im', $content, $line_matches );
+			preg_match_all( '|^(\s*)(https?://[^\s<>"]+)(\s*)$|im', $content, $line_matches, PREG_SET_ORDER );
 			// Find URLs in their own paragraph.
-			preg_match_all( '|(<p(?: [^>]*)?>\s*)(https?://[^\s<>"]+)(\s*<\/p>)|i', $content, $paragraph_matches );
+			preg_match_all( '|(<p(?: [^>]*)?>\s*)(https?://[^\s<>"]+)(\s*<\/p>)|i', $content, $paragraph_matches, PREG_SET_ORDER );
 		}
 
-		$matches = array_map( array( $this, 'get_url_from_match' ), array_merge( $line_matches, $paragraph_matches ) );
+		$regex_matches = array_merge( $line_matches, $paragraph_matches );
+		$matches = array_map( array( $this, 'get_url_from_match' ),  $regex_matches);
 
 		$matches = array_values( array_unique( array_filter( $matches ) ) );
 
@@ -45,7 +46,7 @@ class Classic_Editor_Parser implements Parser {
 	}
 
 	public static function get_url_from_match( $match ) {
-		return array_key_exists( 0, $match ) ? $match[0] : false;
+		return  array_key_exists( 0, $match ) ? $match[0] : false;
 	}
 
 }

@@ -43,5 +43,17 @@ EOF;
 	}
 
 
+	public function test_should_get_multiple_videos_from_classic_editor() {
+		$post_content = <<<EOF
+https://vimeo.com/162427937
+https://www.youtube.com/watch?v=fJAPDAK4GiI
+EOF;
+		$post_id      = $this->create_post_with_content( $post_content );
+		$parser       = Parser_Factory::get_parser( Parser_Factory::CLASSIC_EDITOR );
+		$videos       = $parser->get_videos( $post_id );
+		$this->assertCount( 2, $videos );
+	}
+
+
 
 }
