@@ -42,7 +42,7 @@ class Classic_Editor_Parser implements Parser {
 	 * @return Embedded_Video
 	 */
 	private static function url_to_embedded_video_object( $url ) {
-		return Embedded_Video_Factory::get_embedded_video( $url );
+		return Embedded_Video_Factory::get_embedded_video( trim($url) );
 	}
 
 	public static function get_url_from_match( $match ) {
