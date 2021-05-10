@@ -255,4 +255,14 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 
 	}
 
+	/**
+	 * @param $post_content
+	 *
+	 * @return int
+	 */
+	public function create_post_with_content( $post_content ) {
+		return $this->factory()->post->create( array( 'post_content' => $post_content ) );
+	}
+
+
 }

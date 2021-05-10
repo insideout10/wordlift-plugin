@@ -14,11 +14,11 @@ import React from "react";
 import { classExtractor } from "../../../mappings/blocks/helper";
 import "./index.scss";
 
-export const WlModal = ({ shouldOpenModal, children }) => {
+export const WlModal = ({ shouldOpenModal, children, className="" }) => {
   const classes = classExtractor({
     "wl-modal": true,
     "wl-modal--open": shouldOpenModal,
     "wl-modal--closed": !shouldOpenModal
   });
-  return <div className={classes}>{children}</div>;
+  return <div className={classes + " " + className}>{children}</div>;
 };

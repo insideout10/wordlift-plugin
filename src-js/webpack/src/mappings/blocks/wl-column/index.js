@@ -13,7 +13,14 @@ import React from "react";
  * Internal dependencies.
  */
 import "./index.scss";
+import {classExtractor} from "../helper";
 
-export const WlColumn = ({ children, className = "" }) => {
-  return <div className={"wl-col " + className}>{children}</div>;
+export const WlColumn = ({children, className = "", lessPadding = false, isSticky = false, centerText = false}) => {
+
+    const extractedClasses = classExtractor({
+        "wl-col--less-padding": lessPadding,
+        "wl-col--sticky": isSticky,
+        "wl-col--center-text": centerText
+    })
+    return <div className={"wl-col " + className + " " + extractedClasses}>{children}</div>;
 };

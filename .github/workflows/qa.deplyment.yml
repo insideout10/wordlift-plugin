@@ -1,10 +1,12 @@
-name: CI
+name: docker_build_and_k8s_deployment
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ master ]
+    branches:
+      - master
+      - 'release/**'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -36,6 +38,7 @@ jobs:
           file: ./Dockerfile
           push: true
           target: ${{ matrix.WP-ver }}
+#          target: wlp-wp-5.7
           username: ${{ secrets.username }}
           password: ${{ secrets.PAT }}
           repository: wordlift/${{ matrix.WP-ver }}
@@ -45,11 +48,13 @@ jobs:
     needs: [build]
     runs-on: ubuntu-latest
       # Set the target AKS cluster.
+    environment:
+      name: QA-environment
     steps:
       -
         name: Checkout
         uses: actions/checkout@v2
-      - 
+      -
         name: connect to wordlift dev k8s
         id: dev_k8s
         uses: Azure/aks-set-context@v1
@@ -57,7 +62,7 @@ jobs:
           creds: '${{ secrets.AZURE_CREDENTIALS }}'
           cluster-name: dev-aks-cluster
           resource-group: wordlift-dev-east-us-2
-        
+
 #      - uses: Azure/k8s-create-secret@v1
 #        with:
 #          namespace: 'qa-wordpress'
@@ -89,3 +94,11 @@ jobs:
             manifests/wordpress-deployment.yml
             manifests/wordpress-mysql-deployment.yml
             manifests/wordpress-ingress.yml
+
+      - name: install WP and add dev line
+        continue-on-error: true
+        uses: steebchen/kubectl@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        with:
+          args: exec 

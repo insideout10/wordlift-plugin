@@ -1,6 +1,15 @@
 .wl-container {
   display: flex;
   justify-content: flex-start;
+  &--row-layout {
+    flex-direction: column;
+  }
+  &--center {
+    align-items: center;
+  }
+  &--wrap {
+    flex-wrap: wrap;
+  }
 }
 
 .wl-container--full-width {

@@ -196,7 +196,7 @@ class Shipping_Zone {
 		$this->add_business_days( $shipping_delivery_time );
 
 		if ( 1 < count( $shipping_delivery_time ) ) {
-			$offer_shipping_details['shippingDeliveryTime'] = $shipping_delivery_time;
+			$offer_shipping_details['deliveryTime'] = $shipping_delivery_time;
 		}
 
 		$jsonld['shippingDetails'][] = $offer_shipping_details;
@@ -302,12 +302,15 @@ class Shipping_Zone {
 		}
 
 		$cutoff_time = $wpsso_options['wcsdt_shipdept_cutoff'];
-		$timezone    = $wpsso_options['wcsdt_shipdept_timezone'];
 
-		$time   = new DateTime( 'now', new DateTimeZone( $timezone ) );
-		$offset = $time->format( 'P' );
+		if ( 'none' !== $cutoff_time ) {
+			$timezone = $wpsso_options['wcsdt_shipdept_timezone'];
 
-		$shipping_delivery_time['cutOffTime'] = "{$cutoff_time}{$offset}";
+			$time   = new DateTime( 'now', new DateTimeZone( $timezone ) );
+			$offset = $time->format( 'P' );
+
+			$shipping_delivery_time['cutOffTime'] = "{$cutoff_time}{$offset}";
+		}
 
 	}
 

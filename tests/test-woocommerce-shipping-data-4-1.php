@@ -37,7 +37,7 @@ class Woocommerce_Shipping_Data_Test_4_1 extends WP_UnitTestCase {
 				'minValue' => 0,
 				'maxValue' => 2,
 			)
-		), $jsonld['offers'][0]['shippingDetails'][0]['shippingDeliveryTime'] );
+		), $jsonld['offers'][0]['shippingDetails'][0]['deliveryTime'] );
 
 		$this->assertEqualSets( array(
 			'@type'        => 'ShippingDeliveryTime',
@@ -46,7 +46,7 @@ class Woocommerce_Shipping_Data_Test_4_1 extends WP_UnitTestCase {
 				'minValue' => 0,
 				'maxValue' => 2,
 			)
-		), $jsonld['offers'][0]['shippingDetails'][1]['shippingDeliveryTime'] );
+		), $jsonld['offers'][0]['shippingDetails'][1]['deliveryTime'] );
 
 	}
 
