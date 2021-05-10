@@ -142,7 +142,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.31.0 (2021-05-__) =
+= 3.31.0 (2021-05-10) =
 
 * Enhancement [#1354](https://github.com/insideout10/wordlift-plugin/issues/1354): Add filter for filler posts in faceted search
 * Enhancement [#1344](https://github.com/insideout10/wordlift-plugin/issues/1344): Add support for video object
