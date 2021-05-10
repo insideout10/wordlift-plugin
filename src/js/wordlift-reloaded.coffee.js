@@ -495,7 +495,11 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     };
     $scope.selectedEntities = {};
     $scope.currentSection = void 0;
+    $scope.isVideoObjectEnabled = parseInt(wlSettings.show_videoobject) === 1;
     $scope.toggleCurrentSection = function(section) {
+      if (section === 'videoobject') {
+        window.dispatchEvent(new Event("wordlift.renderVideoList"));
+      }
       if ($scope.currentSection === section) {
         return $scope.currentSection = void 0;
       } else {

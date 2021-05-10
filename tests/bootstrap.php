@@ -1,7 +1,5 @@
 <?php
 
-use Wordlift\Features\Features_Registry;
-
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
 if ( ! $_tests_dir ) {
 	$_tests_dir = '/tmp/wordpress-tests-lib';
@@ -30,9 +28,39 @@ require_once $_tests_dir . '/includes/functions.php';
 
 function _manually_load_plugin() {
 	require dirname( __FILE__ ) . '/../src/wordlift.php';
+
+
+	if ( version_compare( get_bloginfo( 'version' ), '5.5', '>=' ) ) {
+
+		if ( ! file_exists( ABSPATH . 'wp-content/plugins/woocommerce/' ) ) {
+			download( 'https://downloads.wordpress.org/plugin/woocommerce.5.1.0.zip', '/tmp/woocommerce.5.1.0.zip' );
+			unzip( '/tmp/woocommerce.5.1.0.zip', ABSPATH . 'wp-content/plugins/' );
+		}
+
+		if ( file_exists( ABSPATH . 'wp-content/plugins/wpsso/' ) ) {
+			download( 'https://downloads.wordpress.org/plugin/wpsso.8.26.1.zip', '/tmp/wpsso.8.26.1.zip' );
+			unzip( '/tmp/wpsso.8.26.1.zip', ABSPATH . 'wp-content/plugins/' );
+		}
+
+		if ( file_exists( ABSPATH . 'wp-content/plugins/wpsso-wc-shipping-delivery-time/' ) ) {
+			download( 'https://downloads.wordpress.org/plugin/wpsso-wc-shipping-delivery-time.2.2.1.zip', '/tmp/wpsso-wc-shipping-delivery-time.2.2.1.zip' );
+			unzip( '/tmp/wpsso-wc-shipping-delivery-time.2.2.1.zip', ABSPATH . 'wp-content/plugins/' );
+		}
+
+		update_option( 'active_plugins',
+			array(
+				'woocommerce/woocommerce.php',
+				'wpsso/wpsso.php',
+				'wpsso-wc-shipping-delivery-time/wpsso-wc-shipping-delivery-time.php',
+			) );
+
+	}
 }
 
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
+
+// Required for woocommerce-shipping-data tests to work.
+tests_add_filter( 'wl_feature__enable__shipping-sd', '__return_true' );
 
 require $_tests_dir . '/includes/bootstrap.php';
 
@@ -44,6 +72,7 @@ require_once( 'class-wordlift-unit-test-case.php' );
  * We add a new test case for wordlift vocabulary
  */
 require_once( 'class-wordlift-vocabulary-unit-test-case.php' );
+require_once( 'class-wordlift-videoobject-unit-test-case.php' );
 require_once( 'class-wordlift-ajax-unit-test-case.php' );
 require_once( 'class-wordlift-test.php' );
 
@@ -60,3 +89,25 @@ if ( ! function_exists( 'is_amp_endpoint' ) ) {
 	}
 }
 
+function download( $url, $to ) {
+
+	set_time_limit( 0 );
+	$fp = fopen( $to, 'w+' );
+	$ch = curl_init( $url );
+	curl_setopt( $ch, CURLOPT_TIMEOUT, 300 );
+	curl_setopt( $ch, CURLOPT_FILE, $fp );
+	curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, true );
+	curl_exec( $ch );
+	curl_close( $ch );
+	fclose( $fp );
+
+}
+
+function unzip( $what, $to ) {
+
+	$zip = new ZipArchive();
+	$zip->open( $what );
+	$zip->extractTo( $to );
+	$zip->close();
+
+}

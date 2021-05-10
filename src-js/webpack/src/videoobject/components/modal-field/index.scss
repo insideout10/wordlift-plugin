@@ -1,0 +1,33 @@
+.wl-modal-field {
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+
+  &__title {
+    font-weight: 500;
+    font-size: 16px;
+    text-transform: uppercase;
+    color: #000000;
+    margin: 0;
+
+    &--required {
+      &:after {
+        color: #FF2222;
+        content: '*';
+        margin-left: 4px;
+      }
+    }
+  }
+
+  &__description {
+    margin-top: 5px !important;
+    margin-bottom: 10px !important;
+    font-size: 12px;
+    line-height: 11px;
+    letter-spacing: -0.022em;
+    color: #000000;
+  }
+
+
+
+}

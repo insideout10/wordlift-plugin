@@ -1,10 +1,12 @@
 name: docker_build_and_k8s_deployment
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ master ]
+    branches:
+      - master
+      - 'release/**'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -52,7 +54,7 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v2
-      - 
+      -
         name: connect to wordlift dev k8s
         id: dev_k8s
         uses: Azure/aks-set-context@v1
@@ -60,7 +62,7 @@ jobs:
           creds: '${{ secrets.AZURE_CREDENTIALS }}'
           cluster-name: dev-aks-cluster
           resource-group: wordlift-dev-east-us-2
-        
+
 #      - uses: Azure/k8s-create-secret@v1
 #        with:
 #          namespace: 'qa-wordpress'

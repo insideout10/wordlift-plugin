@@ -139,7 +139,8 @@ jobs:
       WL_DATASET_NG: ${{ matrix.dataset-ng }}
     services:
       db:
-        image: mysql:5.7
+        # WP set up uses SET storage_engine=InnoDB; which is removed after MySQL 5.6
+        image: mysql:5.6
         env:
           MYSQL_ROOT_PASSWORD: password
           MYSQL_USER: wordpress

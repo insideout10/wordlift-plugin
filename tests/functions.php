@@ -384,6 +384,10 @@ function _wl_mock_http_request( $response, $request, $url ) {
 		return $response;
 	}
 
+	if ( $response || preg_match( '@^https://woocommerce.com/@', $url ) ) {
+		return $response;
+	}
+
 	$method = $request['method'];
 
 	if ( 'PUT' === $method && preg_match( '@/accounts\?key=key123&url=http%3A%2F%2Fexample.org&country=us&language=en$@', $url ) ) {
@@ -407,6 +411,10 @@ function _wl_mock_http_request( $response, $request, $url ) {
 	}
 
 	if ( preg_match( '@^http://example.org/wp-admin/admin-ajax.php\?action=wp_wl_dataset__sync@', $url ) ) {
+		return $response;
+	}
+
+	if ( preg_match( '@^https://downloads\.wordpress\.org/@', $url ) ) {
 		return $response;
 	}
 

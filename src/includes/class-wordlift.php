@@ -56,6 +56,7 @@ use Wordlift\Mappings\Validators\Post_Taxonomy_Term_Rule_Validator;
 use Wordlift\Post_Excerpt\Post_Excerpt_Meta_Box_Adapter;
 use Wordlift\Post_Excerpt\Post_Excerpt_Rest_Controller;
 use Wordlift\Templates\Templates_Ajax_Endpoint;
+use Wordlift\Videoobject\Loader;
 use Wordlift\Vocabulary\Vocabulary_Loader;
 use Wordlift\Widgets\Async_Template_Decorator;
 
@@ -765,7 +766,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.30.1';
+		$this->version     = '3.31.0';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -1581,7 +1582,6 @@ class Wordlift {
 		 */
 		new Key_Validation_Notice( $this->key_validation_service, $this->configuration_service );
 		/**
-
 		 * @since 3.28.0
 		 * @see https://github.com/insideout10/wordlift-plugin/issues?q=assignee%3Anaveen17797+is%3Aopen
 		 */
@@ -1618,7 +1618,12 @@ class Wordlift {
 		 */
 		$wordlift_admin_checkbox = new Admin_User_Option();
 		$wordlift_admin_checkbox->connect_hook();
-
+		/**
+		 * @since 3.31.0
+		 * Init loader class for videoobject.
+		 */
+		$videoobject_loader = new Loader();
+		$videoobject_loader->init_feature();
 	}
 
 	/**
@@ -1745,7 +1750,10 @@ class Wordlift {
 		 * @return bool
 		 * @since 3.27.6
 		 */
-		$this->features_registry->register_feature_from_slug( 'settings-download', true, array( $this, 'register_screens' ) );
+		$this->features_registry->register_feature_from_slug( 'settings-download', true, array(
+			$this,
+			'register_screens'
+		) );
 
 
 		// Hook the admin-ajax.php?action=wl_download_your_data&out=xyz links.

@@ -67,6 +67,7 @@ install_wp() {
 	fi
 
 	download https://raw.github.com/markoheijnen/wp-mysqli/master/db.php $WP_CORE_DIR/wp-content/db.php
+
 }
 
 install_test_suite() {
@@ -124,6 +125,18 @@ install_db() {
 	mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
 }
 
+install_plugins() {
+  download https://downloads.wordpress.org/plugin/woocommerce.5.1.0.zip /tmp/woocommerce.5.1.0.zip
+  unzip -q /tmp/woocommerce.5.1.0.zip -d $WP_CORE_DIR/wp-content/plugins/
+
+  download https://downloads.wordpress.org/plugin/wpsso.8.26.1.zip /tmp/wpsso.8.26.1.zip
+  unzip -q /tmp/wpsso.8.26.1.zip -d $WP_CORE_DIR/wp-content/plugins/
+
+  download https://downloads.wordpress.org/plugin/wpsso-wc-shipping-delivery-time.2.2.1.zip /tmp/wpsso-wc-shipping-delivery-time.2.2.1.zip
+  unzip -q /tmp/wpsso-wc-shipping-delivery-time.2.2.1.zip -d $WP_CORE_DIR/wp-content/plugins/
+}
+
 install_wp
+install_plugins
 install_test_suite
 install_db
