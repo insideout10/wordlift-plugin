@@ -28,18 +28,18 @@ class Default_Entity_List extends Entity_List {
 	}
 
 	/**
-	 * @param $value
+	 * @param $values
 	 *
 	 * @return array
 	 */
-	private static function extract_jsonld_values( $value ) {
-		return array_map( function ( $description ) {
-			if ( ! array_key_exists( '@value', $description ) ) {
-				return $description;
+	private static function extract_jsonld_values( $values ) {
+		return array_map( function ( $value ) {
+			if ( ! is_array($value) || ! array_key_exists( '@value', $value ) ) {
+				return $value;
 			}
 
-			return $description['@value'];
-		}, $value );
+			return $value['@value'];
+		}, $values );
 	}
 
 	/**
@@ -156,11 +156,11 @@ class Default_Entity_List extends Entity_List {
 
 
 		if ( self::is_value_array( 'sameAs', $entity_data ) ) {
-			$entity_data['sameAs'] = array_map( function ( $description ) {
-				if ( ! array_key_exists( '@id', $description ) ) {
-					return $description;
+			$entity_data['sameAs'] = array_map( function ( $sameas ) {
+				if ( ! is_array($sameas) || ! array_key_exists( '@id', $sameas ) ) {
+					return $sameas;
 				}
-				return $description['@id'];
+				return $sameas['@id'];
 			}, $entity_data['sameAs'] );
 		}
 
