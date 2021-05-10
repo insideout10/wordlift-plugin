@@ -128,7 +128,7 @@ class Analysis_Service {
 			return array();
 		}
 
-		$meta_url = 'https://api-dev.wordlift.io/id/' . $formatted_url;
+		$meta_url = 'https://api.wordlift.io/id/' . $formatted_url;
 
 		$response = wp_remote_get( $meta_url );
 
