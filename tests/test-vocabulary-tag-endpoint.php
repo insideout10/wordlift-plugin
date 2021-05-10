@@ -69,9 +69,10 @@ class Tag_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 				'tagId'          => $tag->term_id,
 				'tagName'        => 'test',
 				'tagDescription' => '',
-				'tagLink'        => get_edit_tag_link( $tag->term_id, 'post_tag' ),
+				'tagLink'        => get_edit_term_link( $tag->term_id ),
 				'entities'       => $received_mock_entities,
-				'tagPostCount'   => 0
+				'tagPostCount'   => 0,
+				'tagTaxonomy' => 'Tags'
 			),
 
 		);
@@ -426,7 +427,7 @@ class Tag_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_Case {
 
 		// we need get $tag_1 as first item since it is linked to more posts.
 		$endpoint = new Tag_Rest_Endpoint( null );
-		$tags     = $endpoint->get_tags_from_db( 10, 0 );
+		$tags     = $endpoint->get_terms_from_db( 10, 0 );
 
 		$this->assertCount( 3, $tags, 'Should return all the tags' );
 		/**

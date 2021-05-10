@@ -106,7 +106,9 @@ class Entity_Rest_Endpoint {
 		$term_id     = (int) $data['term_id'];
 		$entity_data = (array) $data['entity'];
 		$entity      = Entity_List_Factory::get_instance( $term_id );
-		$entity->remove_entity_by_id( $entity_data['@id'] );
+
+		$entity_id = array_key_exists('@id', $entity_data )  ? $entity_data['@id'] : $entity_data['entityId'];
+		$entity->remove_entity_by_id( $entity_id );
 		Ttl_Cache::flush_all();
 		return $term_id;
 	}

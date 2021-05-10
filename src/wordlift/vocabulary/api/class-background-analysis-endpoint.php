@@ -8,7 +8,7 @@ namespace Wordlift\Vocabulary\Api;
 
 use Wordlift\Vocabulary\Analysis_Background_Process;
 use Wordlift\Vocabulary\Analysis_Background_Service;
-use Wordlift\Vocabulary\Options_Cache;
+use Wordlift\Vocabulary\Cache\Cache;
 use Wordlift\Vocabulary\Sync_State;
 use WP_REST_Server;
 
@@ -19,7 +19,7 @@ class Background_Analysis_Endpoint {
 	 */
 	private $background_service;
 	/**
-	 * @var Options_Cache
+	 * @var Cache
 	 */
 	private $cache_service;
 
