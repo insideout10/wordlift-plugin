@@ -4,6 +4,7 @@ namespace Wordlift\Vocabulary;
 
 use Wordlift\Api\Default_Api_Service;
 use Wordlift\Vocabulary\Cache\Cache;
+use Wordlift\Vocabulary\Data\Entity_List\Default_Entity_List;
 
 
 /**
@@ -155,6 +156,7 @@ class Analysis_Service {
 		foreach ( $entities as $entity ) {
 			$entity['meta'] = array();
 			$meta = $this->get_meta( $entity['entityId'] );
+			$meta = Default_Entity_List::compact_jsonld($meta);
 			if ( $meta ) {
 				$entity['meta'] = $meta;
 			}
