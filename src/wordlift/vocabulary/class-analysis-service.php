@@ -3,6 +3,8 @@
 namespace Wordlift\Vocabulary;
 
 use Wordlift\Api\Default_Api_Service;
+use Wordlift\Vocabulary\Cache\Cache;
+use Wordlift\Vocabulary\Data\Entity_List\Default_Entity_List;
 
 
 /**
@@ -14,24 +16,30 @@ class Analysis_Service {
 	/**
 	 * @var Default_Api_Service
 	 */
-	private $analysis_service;
+	private $api_service;
 	/**
-	 * @var Options_Cache
+	 * @var Cache
 	 */
 	private $cache_service;
+	/**
+	 * @var \Wordlift_Log_Service
+	 */
+	private $log;
 
 
 	/**
 	 * Tag_Rest_Endpoint constructor.
 	 *
-	 * @param Default_Api_Service $analysis_service
-	 * @param Options_Cache $cache_service
+	 * @param Default_Api_Service $api_service
+	 * @param Cache $cache_service
 	 */
-	public function __construct( $analysis_service, $cache_service ) {
+	public function __construct( $api_service, $cache_service ) {
 
-		$this->analysis_service = $analysis_service;
+		$this->api_service = $api_service;
 
 		$this->cache_service = $cache_service;
+
+		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
 
 	}
 
@@ -51,7 +59,7 @@ class Analysis_Service {
 		}
 
 		// send the request.
-		$response = $this->analysis_service->request(
+		$response = $this->api_service->request(
 			'POST',
 			"/analysis/single",
 			array( 'Content-Type' => 'application/json' ),
@@ -60,7 +68,7 @@ class Analysis_Service {
 				"contentType"     => "text/plain",
 				"version"         => "1.0.0",
 				"contentLanguage" => "en",
-				"scope"           => "network",
+				"scope"           => "all",
 			) )
 		);
 
@@ -85,6 +93,27 @@ class Analysis_Service {
 	}
 
 
+	/**
+	 * @param $entity_url string
+	 * Formats the entity url from https://foo.com/some/path to
+	 * https/foo.com/some/path
+	 *
+	 * @return bool|string
+	 */
+	public static function format_entity_url( $entity_url ) {
+		$result = parse_url( $entity_url );
+		if ( ! $result ) {
+			return false;
+		}
+		if ( ! array_key_exists( 'scheme', $result )
+		     || ! array_key_exists( 'host', $result )
+		     || ! array_key_exists( 'path', $result ) ) {
+			return false;
+		}
+
+		return $result['scheme'] . "/" . $result['host'] . $result['path'];
+	}
+
 	private function get_meta( $entity_url ) {
 
 
@@ -94,13 +123,28 @@ class Analysis_Service {
 			return $cache_results;
 		}
 
-		$response = wp_remote_get( "https://app.wordlift.io/knowledge-cafemedia-com-food/wp-json/wordlift/v1/jsonld/meta/entity_url?meta_value=" . urlencode($entity_url) );
+		$formatted_url = self::format_entity_url( $entity_url );
 
+		if ( ! $formatted_url ) {
+			return array();
+		}
+
+		$meta_url = 'https://api.wordlift.io/id/' . $formatted_url;
+
+		$response = wp_remote_get( $meta_url );
+
+		$this->log->debug( "Requesting entity data for url :" . $meta_url );
+		$this->log->debug( "Got entity meta data as : " );
+		$this->log->debug( var_export( $response, true ) );
 		if ( ! is_wp_error( $response ) ) {
 			$meta = json_decode( wp_remote_retrieve_body( $response ), true );
+			$this->log->debug( "Saved entity data to meta :" );
+			$this->log->debug( var_export( $meta, true ) );
 			$this->cache_service->put( $entity_url, $meta );
+
 			return $meta;
 		}
+
 
 		return array();
 
@@ -111,12 +155,15 @@ class Analysis_Service {
 		$filtered_entities = array();
 		foreach ( $entities as $entity ) {
 			$entity['meta'] = array();
-			$meta           = $this->get_meta( $entity['entityId'] );
-			if ( $meta && count( $meta ) > 0 ) {
-				$entity['meta'] = $meta[0];
+			$meta = $this->get_meta( $entity['entityId'] );
+			$meta = Default_Entity_List::compact_jsonld($meta);
+			if ( $meta ) {
+				$entity['meta'] = $meta;
 			}
 			$filtered_entities[] = $entity;
 		}
+		$this->log->debug("Returning filtered entities as");
+		$this->log->debug(var_export($filtered_entities, true));
 
 		return $filtered_entities;
 

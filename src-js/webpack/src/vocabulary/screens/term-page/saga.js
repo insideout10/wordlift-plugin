@@ -13,7 +13,7 @@ import {setEntityActive, setEntityInActive} from "./actions";
 
 function* acceptAndSaveEntity(action) {
     const {entityIndex, entityData} = action.payload
-    yield fork(acceptEntity, yield select(getTermId), {...entityData, ...entityData.meta}, yield select(getApiConfig));
+    yield fork(acceptEntity, yield select(getTermId), {...entityData.meta, "@id":entityData.entityId}, yield select(getApiConfig));
     yield put(setEntityActive({entityIndex}))
 }
 

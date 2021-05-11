@@ -38,7 +38,7 @@ window.addEventListener("load", () => {
     if (progressBar) {
 
         ReactDOM.render(
-            <ReconcileProgressBar />,
+            <ReconcileProgressBar/>,
             progressBar
         );
     }
@@ -46,14 +46,26 @@ window.addEventListener("load", () => {
 })
 
 
+const debounce = (func, delay) => {
+    let inDebounce
+    return function () {
+        const context = this
+        const args = arguments
+        clearTimeout(inDebounce)
+        inDebounce = setTimeout(() => func.apply(context, args), delay)
+    }
+}
+
 window.addEventListener("scroll", function (event) {
     const totalPageHeight = document.body.scrollHeight;
     const scrollPoint = window.scrollY + window.innerHeight;
-
     if (scrollPoint >= totalPageHeight) {
-        if (!store.getState().isRequestInProgress) {
-            store.dispatch(getTagsAction({limit: 20}))
-        }
+        debounce(function () {
+            if (!store.getState().isRequestInProgress) {
+                store.dispatch(getTagsAction({limit: 20}))
+            }
+        }, 5000)();
     }
+
 
 });

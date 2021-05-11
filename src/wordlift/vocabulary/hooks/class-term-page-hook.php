@@ -9,6 +9,7 @@ use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
 use Wordlift\Vocabulary\Data\Entity_List\Entity_List_Utils;
 use Wordlift\Vocabulary\Data\Term_Data\Term_Data_Factory;
 use Wordlift\Vocabulary\Pages\Match_Terms;
+use Wordlift\Vocabulary\Terms_Compat;
 
 /**
  * This class is used to show the entity match component on the
@@ -32,9 +33,10 @@ class Term_Page_Hook {
 	}
 
 	public function connect_hook() {
-
-		add_action( 'post_tag_edit_form_fields', array( $this, 'load_scripts' ), PHP_INT_MAX );
-
+		$taxonomies = Terms_Compat::get_public_taxonomies();
+		foreach ( $taxonomies as $taxonomy ) {
+			add_action( "${taxonomy}_edit_form_fields", array( $this, 'load_scripts' ), PHP_INT_MAX );
+		}
 	}
 
 	/**

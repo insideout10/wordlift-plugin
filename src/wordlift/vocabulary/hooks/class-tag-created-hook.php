@@ -3,6 +3,7 @@
 namespace Wordlift\Vocabulary\Hooks;
 
 use Wordlift\Vocabulary\Analysis_Background_Service;
+use Wordlift\Vocabulary\Terms_Compat;
 
 class Tag_Created_Hook {
 
@@ -18,10 +19,13 @@ class Tag_Created_Hook {
 	 */
 	public function __construct( $analysis_background_service ) {
 		$this->analysis_background_service = $analysis_background_service;
-		add_action( 'created_post_tag', array( $this, 'created_post_tag' ) );
+		$taxonomies = Terms_Compat::get_public_taxonomies();
+		foreach ( $taxonomies as $taxonomy ) {
+			add_action( "created_${taxonomy}", array( $this, 'created_term' ) );
+		}
 	}
 
-	public function created_post_tag() {
+	public function created_term() {
 		$this->analysis_background_service->start();
 	}
 
