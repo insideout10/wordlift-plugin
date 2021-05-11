@@ -20,6 +20,7 @@ import {
     TOGGLE_ENTITY,
     TOGGLE_LINK
 } from "../../Edit/constants/ActionTypes";
+import {getSelection} from "../../Edit/components/AddEntity";
 import {requestAnalysis} from "./actions";
 import parseAnalysisResponse from "./compat";
 import {EDITOR_STORE} from "../../common/constants";
@@ -210,7 +211,7 @@ function* handleAddEntityRequest({payload}) {
     }
 
     if (blockEditorFormat === undefined) {
-        value = ClassicEditorBlockValidator.getValue(window.getSelection().toString());
+        value = ClassicEditorBlockValidator.getValue(getSelection());
         if (value === false) {
             // This is not a valid classic block,return early.
             return false;
@@ -256,7 +257,7 @@ function* handleAddEntityRequest({payload}) {
     if (isClassicEditorBlock) {
         // classic editor block should be updated differently.
         const instance = new ClassicEditorBlock(selectedBlock.clientId, selectedBlock.attributes.content);
-        instance.replaceWithAnnotation(payload.label, annotationAttributes);
+        instance.replaceWithAnnotation(getSelection(), annotationAttributes);
         instance.update();
     } else {
         // update the block

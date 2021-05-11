@@ -29,6 +29,11 @@ import { SELECTION_CHANGED } from "../../../common/constants";
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(reducer, applyMiddleware(sagaMiddleware, logger));
 
+// Selector to retrieve the previous selection.
+export function getSelection() {
+  return store.getState().value
+}
+
 // Run the saga.
 sagaMiddleware.run(saga);
 
