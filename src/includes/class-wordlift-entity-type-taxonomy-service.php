@@ -107,6 +107,19 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 			}
 		) );
 
+		// see #1364: add custom fields support for CPTs that are valid entity post types in order to be able to
+		// query for synonyms in Block Editor.
+		add_filter( 'register_post_type_args', function ( $args, $post_type ) {
+			if ( in_array( $post_type, Wordlift_Entity_Service::valid_entity_post_types() ) ) {
+				if ( ! isset( $args['supports'] ) ) {
+					$args['supports'] = array();
+				}
+				$args['supports'][] = 'custom-fields';
+			}
+
+			return $args;
+		}, 10, 2 );
+
 		// Add filter to change the metabox CSS class.
 		add_filter( 'postbox_classes_entity_wl_entity_typediv', 'wl_admin_metaboxes_add_css_class' );
 
