@@ -142,6 +142,8 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+* Fix [#1365](https://github.com/insideout10/wordlift-plugin/issues/1365): wl_post_jsonld_array and wl_post_jsonld filters are called by Article wrapper receiving properties meant for the original entity.
+
 = 3.31.0 (2021-04-__) =
 
 * Enhancement [#1342](https://github.com/insideout10/wordlift-plugin/issues/1342): Add support for Offer Shipping Details in SD; add compatibility with WPSSO Core, WPSSO Schema JSON-LD Markup and WPSSO Shipping Delivery Time for WooCommerce
