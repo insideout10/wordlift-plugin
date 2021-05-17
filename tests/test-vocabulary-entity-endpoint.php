@@ -260,5 +260,17 @@ class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_
 		return $term_id;
 	}
 
+	public function test_when_entities_are_accepted_should_show_in_term_page() {
+		$entity_data = $this->getMockEntityData();
+		$term_id  = $this->accept_two_entities($entity_data);
+		// lets call the jsonld filter.
+		$term_jsonld_adapter = Wordlift_Term_JsonLd_Adapter::get_instance();
+		$term_jsonld = $term_jsonld_adapter->get($term_id);
+		// we should have 1 item in the jsonld, we are using only the first item.
+		$this->assertCount(1, $term_jsonld );
+		$this->assertSame(get_term_link($term_id) . "/#id", $term_jsonld[0]['@id']);
+		$this->assertSame(get_term_link($term_id) , $term_jsonld[0]['url']);
+		$this->assertSame(get_term_link($term_id) , $term_jsonld[0]['mainEntityOfPage']);
+	}
 
 }
