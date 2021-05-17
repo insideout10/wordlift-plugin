@@ -272,4 +272,5 @@ class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_
 		$this->assertSame(get_term_link($term_id) , $term_jsonld[0]['url']);
 		$this->assertSame(get_term_link($term_id) , $term_jsonld[0]['mainEntityOfPage']);
 	}
+
 }
