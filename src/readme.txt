@@ -144,6 +144,8 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 = 3.31.2 (2021-04-17) =
 
+* Enhancement [#1368](https://github.com/insideout10/wordlift-plugin/issues/1368): Add the matched entity markup to the term page
+
 * Fix [#1365](https://github.com/insideout10/wordlift-plugin/issues/1365): wl_post_jsonld_array and wl_post_jsonld filters are called by Article wrapper receiving properties meant for the original entity.
 * Fix [#1364](https://github.com/insideout10/wordlift-plugin/issues/1364): Synonyms do not show for CPTs that do not support custom-fields
 
