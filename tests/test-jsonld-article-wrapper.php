@@ -40,12 +40,11 @@ class Wordlift_Jsonld_Article_Wrapper extends Wordlift_Unit_Test_Case {
 
 		$this->post_to_jsonld_converter = $this->getMockBuilder( 'Wordlift_Post_To_Jsonld_Converter' )
 		                                       ->disableOriginalConstructor()
-		                                       ->setMethods( array( 'new_instance_with_filters_disabled' ) )
+		                                       ->setMethods( array( 'convert', 'new_instance_with_filters_disabled' ) )
 		                                       ->getMock();
 
 		$this->post_to_jsonld_converter->method( 'new_instance_with_filters_disabled' )
 		                               ->willReturn( $this->post_to_jsonld_converter );
-
 
 		$this->jsonld_article_wrapper = new Jsonld_Article_Wrapper(
 			$this->post_to_jsonld_converter,
@@ -149,7 +148,7 @@ class Wordlift_Jsonld_Article_Wrapper extends Wordlift_Unit_Test_Case {
 		$this->assertTrue( is_array( $jsonld ) );
 		$this->assertCount( 2, $jsonld );
 
-		$this->assertArrayHasKey( '@context', $jsonld[0] );
+		$this->assertArrayHasKey( '@context', $jsonld[0], var_export( $jsonld[0], true ) );
 		$this->assertEquals( 'http://schema.org', $jsonld[0]['@context'] );
 
 		$this->assertArrayHasKey( '@type', $jsonld[0] );
