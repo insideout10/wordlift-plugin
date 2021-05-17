@@ -24,12 +24,11 @@ interface Wordlift_Post_Converter {
 	 * @param int $post_id The post id.
 	 * @param array $references An array of posts referenced by the specified post.
 	 * @param array $references_infos
-	 * @param bool $no_filters Whether to skip running filters that allow 3rd parties to alter the JSON-LD.
 	 *
 	 * @return mixed The conversion result.
 	 * @since 3.16.0 $references argument added.
 	 * @since 3.10.0
 	 */
-	public function convert( $post_id, &$references = array(), &$references_infos = array(), $no_filters = false );
+	public function convert( $post_id, &$references = array(), &$references_infos = array() );
 
 }

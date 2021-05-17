@@ -41,9 +41,15 @@ class Jsonld_Article_Wrapper {
 	 */
 	private $entity_uri_service;
 
+	/**
+	 * Jsonld_Article_Wrapper constructor.
+	 *
+	 * @param Wordlift_Post_To_Jsonld_Converter $post_to_jsonld_converter
+	 * @param $cached_postid_to_jsonld_converter
+	 */
 	public function __construct( $post_to_jsonld_converter, $cached_postid_to_jsonld_converter ) {
 
-		$this->post_to_jsonld_converter = $post_to_jsonld_converter;
+		$this->post_to_jsonld_converter = $post_to_jsonld_converter->new_instance_with_filters_disabled();
 
 		add_filter( 'wl_after_get_jsonld', array( $this, 'after_get_jsonld' ), PHP_INT_MAX - 100, 3 );
 
@@ -69,9 +75,7 @@ class Jsonld_Article_Wrapper {
 		}
 
 		// Convert the post as Article.
-		$references = array();
-		$references_infos = array();
-		$article_jsonld = $this->post_to_jsonld_converter->convert( $post_id, $references, $references_infos, true );
+		$article_jsonld = $this->post_to_jsonld_converter->convert( $post_id );
 
 		$article_jsonld['@id'] = $post_jsonld['@id'] . '#article';
 		// Reset the type, since by default the type assigned via the Entity Type taxonomy is used.
@@ -93,7 +97,7 @@ class Jsonld_Article_Wrapper {
 		 * for Person and Organization, so check before we add it to graph.
 		 * reference : https://schema.org/author
 		 */
-		if ( $author_jsonld && ! $this->is_author_entity_present_in_graph( $jsonld, $article_jsonld['author']['@id'] )) {
+		if ( $author_jsonld && ! $this->is_author_entity_present_in_graph( $jsonld, $article_jsonld['author']['@id'] ) ) {
 			$jsonld[] = $author_jsonld;
 		}
 
@@ -133,10 +137,11 @@ class Jsonld_Article_Wrapper {
 	private function is_author_entity_present_in_graph( $jsonld, $author_entity_id ) {
 
 		foreach ( $jsonld as $item ) {
-			if ( $item && array_key_exists('@id', $item ) && $item['@id'] === $author_entity_id ) {
+			if ( $item && array_key_exists( '@id', $item ) && $item['@id'] === $author_entity_id ) {
 				return true;
 			}
 		}
+
 		return false;
 	}
 
