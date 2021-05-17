@@ -12,6 +12,8 @@ use Wordlift\Vocabulary\Terms_Compat;
 
 class Post_Jsonld {
 
+
+
 	public function enhance_post_jsonld() {
 		add_filter( 'wl_post_jsonld_array', array( $this, 'wl_post_jsonld_array' ), 11, 2 );
 		add_filter( 'wl_after_get_jsonld', array( $this, 'wl_after_get_jsonld' ), 11, 2 );
@@ -44,7 +46,7 @@ class Post_Jsonld {
 			$terms = array_merge( $taxonomy_terms, $terms );
 		}
 
-		if ( ! $terms  ) {
+		if ( ! $terms ) {
 			return;
 		}
 
@@ -60,9 +62,7 @@ class Post_Jsonld {
 				continue;
 			}
 
-			$entity = Entity_List_Factory::get_instance( $term->term_id );
-
-			$entities = $entity->get_jsonld_data();
+			$entities = Jsonld_Utils::get_matched_entities_for_term( $term->term_id );
 
 			if ( count( $entities ) === 0 ) {
 				continue;
