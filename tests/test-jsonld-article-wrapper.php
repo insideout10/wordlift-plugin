@@ -40,7 +40,12 @@ class Wordlift_Jsonld_Article_Wrapper extends Wordlift_Unit_Test_Case {
 
 		$this->post_to_jsonld_converter = $this->getMockBuilder( 'Wordlift_Post_To_Jsonld_Converter' )
 		                                       ->disableOriginalConstructor()
+		                                       ->setMethods( array( 'new_instance_with_filters_disabled' ) )
 		                                       ->getMock();
+
+		$this->post_to_jsonld_converter->method( 'new_instance_with_filters_disabled' )
+		                               ->willReturn( $this->post_to_jsonld_converter );
+
 
 		$this->jsonld_article_wrapper = new Jsonld_Article_Wrapper(
 			$this->post_to_jsonld_converter,
@@ -220,7 +225,7 @@ class Wordlift_Jsonld_Article_Wrapper extends Wordlift_Unit_Test_Case {
 
 	public function test_when_author_reference_added_in_article_jsonld_with_entity_type_set_to_person_should_not_duplicate() {
 
-		$jsonld = $this->setup_env_for_linked_entity_test('http://schema.org/Person');
+		$jsonld = $this->setup_env_for_linked_entity_test( 'http://schema.org/Person' );
 
 		// we need to get Article, Thing, and author entity.
 		$this->assertCount( 3, $jsonld );
@@ -239,7 +244,7 @@ class Wordlift_Jsonld_Article_Wrapper extends Wordlift_Unit_Test_Case {
 	/**
 	 * @return array
 	 */
-	private function setup_env_for_linked_entity_test( $linked_entity_type = 'http://schema.org/Thing') {
+	private function setup_env_for_linked_entity_test( $linked_entity_type = 'http://schema.org/Thing' ) {
 
 		$wordlift_test  = $this->get_wordlift_test();
 		$jsonld_wrapper = new Jsonld_Article_Wrapper( Wordlift_Post_To_Jsonld_Converter::get_instance(), $wordlift_test->get_cached_postid_to_jsonld_converter() );
@@ -251,7 +256,7 @@ class Wordlift_Jsonld_Article_Wrapper extends Wordlift_Unit_Test_Case {
 		wp_set_current_user( $current_user_id );
 
 		$author_entity = $this->factory()->post->create( array( 'post_type' => 'entity' ) );
-		Wordlift_Entity_Type_Service::get_instance()->set($author_entity, $linked_entity_type, true);
+		Wordlift_Entity_Type_Service::get_instance()->set( $author_entity, $linked_entity_type, true );
 
 		// Link the author to entity.
 		$user_service = Wordlift_User_Service::get_instance();
