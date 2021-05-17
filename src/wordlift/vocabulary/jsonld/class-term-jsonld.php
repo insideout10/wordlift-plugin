@@ -18,8 +18,11 @@ class Term_Jsonld {
 
 		if ( count( $entities ) > 0 ) {
 
-			$entities_with_context  = array_map( function ( $entity ) {
+			$entities_with_context = array_map( function ( $entity ) use ( $term_id ) {
 				$entity['@context'] = 'http://schema.org';
+				$entity['@id']      = get_term_link( $term_id ) . "/#id";
+				$entity['url']      = get_term_link( $term_id );
+				$entity['mainEntityOfPage']      = get_term_link( $term_id );
 				return $entity;
 			}, $entities );
 
