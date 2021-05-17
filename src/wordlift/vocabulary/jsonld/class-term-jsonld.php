@@ -17,16 +17,12 @@ class Term_Jsonld {
 		$entities = Jsonld_Utils::get_matched_entities_for_term( $term_id );
 
 		if ( count( $entities ) > 0 ) {
-
-			$entities_with_context = array_map( function ( $entity ) use ( $term_id ) {
-				$entity['@context'] = 'http://schema.org';
-				$entity['@id']      = get_term_link( $term_id ) . "/#id";
-				$entity['url']      = get_term_link( $term_id );
-				$entity['mainEntityOfPage']      = get_term_link( $term_id );
-				return $entity;
-			}, $entities );
-
-			$jsonld_array['jsonld'] = array_merge( $jsonld_array['jsonld'], $entities_with_context );
+			$entity                     = array_shift( $entities );
+			$entity['@context']         = 'http://schema.org';
+			$entity['@id']              = get_term_link( $term_id ) . "/#id";
+			$entity['url']              = get_term_link( $term_id );
+			$entity['mainEntityOfPage'] = get_term_link( $term_id );
+			$jsonld_array['jsonld'][] = $entity;
 		}
 
 		return $jsonld_array;
