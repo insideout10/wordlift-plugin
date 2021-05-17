@@ -17,7 +17,13 @@ class Term_Jsonld {
 		$entities = Jsonld_Utils::get_matched_entities_for_term( $term_id );
 
 		if ( count( $entities ) > 0 ) {
-			$jsonld_array['jsonld'] = array_merge( $jsonld_array['jsonld'], $entities );
+
+			$entities_with_context  = array_map( function ( $entity ) {
+				$entity['@context'] = 'http://schema.org';
+				return $entity;
+			}, $entities );
+
+			$jsonld_array['jsonld'] = array_merge( $jsonld_array['jsonld'], $entities_with_context );
 		}
 
 		return $jsonld_array;
