@@ -142,6 +142,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.31.1 (2021-05-11) =
+
+* Fix [#1353](https://github.com/insideout10/wordlift-plugin/issues/1353): Manual annotation in classic editor block inside block editor not working
+
 = 3.31.0 (2021-05-10) =
 
 * Enhancement [#1354](https://github.com/insideout10/wordlift-plugin/issues/1354): Add filter for filler posts in faceted search
