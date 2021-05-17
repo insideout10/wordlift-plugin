@@ -45,7 +45,7 @@ class Jsonld_Article_Wrapper {
 
 		$this->post_to_jsonld_converter = $post_to_jsonld_converter;
 
-		add_filter( 'wl_after_get_jsonld', array( $this, 'after_get_jsonld' ), 10, 3 );
+		add_filter( 'wl_after_get_jsonld', array( $this, 'after_get_jsonld' ), PHP_INT_MAX - 100, 3 );
 
 		$this->cached_postid_to_jsonld_converter = $cached_postid_to_jsonld_converter;
 
@@ -53,7 +53,6 @@ class Jsonld_Article_Wrapper {
 	}
 
 	public function after_get_jsonld( $jsonld, $post_id, $context ) {
-
 
 		if ( Jsonld_Context_Enum::PAGE !== $context || ! is_array( $jsonld ) || ! isset( $jsonld[0] )
 		     || ! is_array( $jsonld[0] ) ) {
@@ -70,7 +69,9 @@ class Jsonld_Article_Wrapper {
 		}
 
 		// Convert the post as Article.
-		$article_jsonld = $this->post_to_jsonld_converter->convert( $post_id );
+		$references = array();
+		$references_infos = array();
+		$article_jsonld = $this->post_to_jsonld_converter->convert( $post_id, $references, $references_infos, true );
 
 		$article_jsonld['@id'] = $post_jsonld['@id'] . '#article';
 		// Reset the type, since by default the type assigned via the Entity Type taxonomy is used.

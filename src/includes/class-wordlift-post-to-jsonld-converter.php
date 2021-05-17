@@ -78,7 +78,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 * @return array A JSON-LD array.
 	 * @since 3.10.0
 	 */
-	public function convert( $post_id, &$references = array(), &$references_infos = array() ) {
+	public function convert( $post_id, &$references = array(), &$references_infos = array(), $no_filters = false ) {
 
 		// Get the post instance.
 		if ( null === $post = get_post( $post_id ) ) {
@@ -209,6 +209,11 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		// Finally set the author.
 		$jsonld['author'] = $this->get_author( $post->post_author, $references );
 
+		// Return the JSON-LD if filters are disabled by the client.
+		if ( $no_filters ) {
+			return $jsonld;
+		}
+
 		/**
 		 * Call the `wl_post_jsonld_array` filter. This filter allows 3rd parties to also modify the references.
 		 *
@@ -223,10 +228,11 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		 *
 		 * @api
 		 */
-		$ret_val    = apply_filters( 'wl_post_jsonld_array', array(
+		$ret_val = apply_filters( 'wl_post_jsonld_array', array(
 			'jsonld'     => $jsonld,
 			'references' => $references,
 		), $post_id );
+
 		$jsonld     = $ret_val['jsonld'];
 		$references = $ret_val['references'];
 
