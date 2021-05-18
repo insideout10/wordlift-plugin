@@ -39,6 +39,11 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	private $log;
 
 	/**
+	 * @var false
+	 */
+	private $disable_convert_filters;
+
+	/**
 	 * Wordlift_Post_To_Jsonld_Converter constructor.
 	 *
 	 * @param \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
@@ -50,10 +55,11 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 * @since 3.10.0
 	 *
 	 */
-	public function __construct( $entity_type_service, $entity_service, $user_service, $attachment_service, $configuration_service ) {
+	public function __construct( $entity_type_service, $entity_service, $user_service, $attachment_service, $configuration_service, $disable_convert_filters = false ) {
 		parent::__construct( $entity_type_service, $entity_service, $user_service, $attachment_service );
 
-		$this->configuration_service = $configuration_service;
+		$this->configuration_service   = $configuration_service;
+		$this->disable_convert_filters = $disable_convert_filters;
 
 		// Set a reference to the logger.
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Post_To_Jsonld_Converter' );
@@ -65,6 +71,10 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	public static function get_instance() {
 
 		return self::$instance;
+	}
+
+	public function new_instance_with_filters_disabled() {
+		return new static( $this->entity_type_service, $this->entity_service, $this->user_service, $this->attachment_service, $this->configuration_service, true );
 	}
 
 	/**
@@ -209,6 +219,11 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		// Finally set the author.
 		$jsonld['author'] = $this->get_author( $post->post_author, $references );
 
+		// Return the JSON-LD if filters are disabled by the client.
+		if ( $this->disable_convert_filters ) {
+			return $jsonld;
+		}
+
 		/**
 		 * Call the `wl_post_jsonld_array` filter. This filter allows 3rd parties to also modify the references.
 		 *
@@ -223,10 +238,11 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		 *
 		 * @api
 		 */
-		$ret_val    = apply_filters( 'wl_post_jsonld_array', array(
+		$ret_val = apply_filters( 'wl_post_jsonld_array', array(
 			'jsonld'     => $jsonld,
 			'references' => $references,
 		), $post_id );
+
 		$jsonld     = $ret_val['jsonld'];
 		$references = $ret_val['references'];
 

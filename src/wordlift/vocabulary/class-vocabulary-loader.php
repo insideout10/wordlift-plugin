@@ -16,6 +16,7 @@ use Wordlift\Vocabulary\Data\Term_Data\Term_Data_Factory;
 use Wordlift\Vocabulary\Hooks\Tag_Created_Hook;
 use Wordlift\Vocabulary\Hooks\Term_Page_Hook;
 use Wordlift\Vocabulary\Jsonld\Post_Jsonld;
+use Wordlift\Vocabulary\Jsonld\Term_Jsonld;
 use Wordlift\Vocabulary\Pages\Match_Terms;
 use Wordlift\Vocabulary\Tabs\Settings_Tab;
 
@@ -47,6 +48,9 @@ class Vocabulary_Loader {
 
 		$post_jsonld = new Post_Jsonld();
 		$post_jsonld->enhance_post_jsonld();
+
+		$term_jsonld = new Term_Jsonld();
+		$term_jsonld->init();
 
 		$term_count = Term_Count_Factory::get_instance( Term_Count_Factory::CACHED_TERM_COUNT );
 		new Match_Terms( $term_count );

@@ -21,14 +21,13 @@ interface Wordlift_Post_Converter {
 	/**
 	 * Convert the specified post id.
 	 *
-	 * @since 3.16.0 $references argument added.
-	 * @since 3.10.0
-	 *
-	 * @param int   $post_id    The post id.
+	 * @param int $post_id The post id.
 	 * @param array $references An array of posts referenced by the specified post.
 	 * @param array $references_infos
 	 *
 	 * @return mixed The conversion result.
+	 * @since 3.16.0 $references argument added.
+	 * @since 3.10.0
 	 */
 	public function convert( $post_id, &$references = array(), &$references_infos = array() );
 
