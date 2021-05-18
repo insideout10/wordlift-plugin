@@ -101,7 +101,7 @@ class Xml_Generator {
 		$optional_data = "";
 		foreach ( $optional_fields as $xml_key => $xml_value ) {
 			if ( $xml_value ) {
-				$optional_data = "<video:${xml_key}>${xml_value}</video:${xml_key}>";
+				$optional_data .= "<video:${xml_key}>${xml_value}</video:${xml_key}>";
 			}
 		}
 
