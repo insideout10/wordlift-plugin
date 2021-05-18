@@ -5,8 +5,12 @@ window.addEventListener("load", function () {
   const updateProgressBar = function () {
     wp.apiRequest({ path: "wordlift/v1/videos/background/get_state", method: "POST" }).success(
       (data) => {
+        let percentage = (data.index * 100.0) / data.count;
+        if ( percentage > 100 ) {
+          percentage = 100
+        }
         document.querySelector(".wl-task__progress__bar").style.width =
-          (data.index * 100.0) / data.count + "%";
+           percentage + "%";
 
         if ("started" === data.state) {
           if (!startBtn.classList.contains("hidden"))
