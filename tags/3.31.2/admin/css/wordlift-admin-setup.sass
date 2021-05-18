@@ -1,0 +1,507 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800')
+
+$background-color: #f5f5f5
+$secondary-color: #2E92FF
+$font-color: #fff
+
+// Define the general properties for the body. These are the only properties we define here as they affect directly
+// the body. Everything else is applied in the `wl-container` which contains our own html.
+body
+  background-color: $background-color
+  padding: 0
+  margin: 0
+  // Define fixed height as the viewport.
+  height: 100vh
+
+  font-size: initial
+  line-height: initial
+
+  .wl-container, .wl-container *
+    box-sizing: border-box
+
+// The `.wl-container` classifies our 1st level container.
+.wl-container
+
+  h1, h2, h3, h4, h5, h6
+    color: $font-color
+
+  a, a:hover, a:active
+    color: $font-color
+
+  .radio-wrapper label
+    cursor: pointer
+    white-space: nowrap
+
+  // Hide the "clear all" cross. See http://stackoverflow.com/questions/14007655/remove-ie10s-clear-field-x-button-on-certain-inputs
+  input::-ms-clear
+    display: none
+
+  // Define global text color.
+  color: $font-color
+
+  // Define global font-family and provide fallbacks.
+  font-family: 'Open Sans', 'Helvetica', 'Arial', sans-serif
+
+  // Positioning the element in the page.
+  position: relative
+  top: 25vh
+  margin: auto
+  // Sizing the element.
+  width: 750px
+  max-width: 100%
+  height: 400px
+  // Positioning content.
+  text-align: center
+  padding: 24px 34px
+  // Defining the border
+  border: 16px solid $background-color
+  background-color: $secondary-color
+  // Sizing the element in smaller screens.
+  @media screen and (max-width: 550px)
+    top: 0
+    height: 100%
+
+  header
+    // Positioning internal elements.
+    //display: table
+    text-align: left
+    // Sizing.
+    width: 100%
+    height: 24px
+
+    h1
+      // Positioning.
+      display: inline-block
+      // Text job.
+      font-size: 24px
+      line-height: 24px
+      // Reset default styles.
+      margin: 0
+      // Creates double weight effect.
+      font-weight: 300
+      strong
+        font-weight: 900
+
+    img.shapes
+      // Positioning.
+      float: right
+      margin-top: 4px
+      // Size.
+      width: 60px
+      height: 16px
+
+    img.wizard-logo
+      // Size.
+      width: 125px
+      height: 47px
+      margin-top: -10px
+
+  ul.wl-pane-indicator
+    // Positioning.
+    position: relative
+    top: -20px
+    // Slide down in smaller screens.
+    @media screen and (max-width: 550px)
+      top: 0
+    // Reset default.
+    padding: 0
+    margin: 0
+    // Size.
+    height: 24px
+    // Positioning childs.
+    list-style: none
+
+    li
+      // Positioning.
+      position: relative
+      display: inline-block
+      margin: 8px 3px
+      // Size.
+      width: 8px
+      height: 8px
+      // Styling.
+      border-radius: 50%
+      border: 1px solid $font-color
+      // Define transition
+      transition: all 200ms ease-out
+
+      // Style the active tab.
+      &.active
+        background-color: $font-color
+
+  .btn-wrapper
+    // Positioning.
+    position: absolute
+    bottom: 8px
+    // Inner elements.
+    width: 100%
+    text-align: center
+
+    > *
+      margin: 0 16px
+
+  .privacy-policy-details
+    padding-top: 35px
+
+    a
+      color: #fff
+
+      &:hover
+        text-decoration: none
+
+
+  button, input[type="button"], a.button, input[type="submit"]
+    // Reset default.
+    border: 0
+    cursor: pointer
+    // Positioning.
+    display: inline-block
+    //margin-right: 32px
+    // Size
+    min-width: 112px
+    height: 32px
+    // Define border
+    border-radius: 5px
+    // Internal positioning.
+    padding: 0 8px
+    // Text job.
+    font-size: 14px
+    line-height: 32px
+    font-weight: 600
+    // Colours.
+    background: rgba(255, 255, 255, .4)
+    color: $font-color
+    // Anime.
+    transition: all 200ms ease-out
+    text-decoration: none
+
+    &.wl-default-action
+      background: $font-color
+      color: #2e92ff
+      // Reset margin-right
+      //margin-right: 0
+
+    &:hover
+      transform: scale(1.01) translateY(-2px)
+      box-shadow: 0 5px 10px -5px rgba(0, 0, 0, .25), 0 15px 20px -15px rgba(0, 0, 0, .25)
+    &:active
+      transform: scale(0.99) translateY(0px)
+
+  // Displayed content.
+  .viewport
+    // Positioning.
+    position: absolute
+    bottom: 24px
+    left: 50%
+    transform: translateX(-50%)
+    margin: auto
+    // Default spacing.
+    margin-top: 8px
+    // Sizing.
+    width: 480px
+    height: 288px
+    // Sizing for smaller screens.
+    @media screen and (max-width: 550px)
+      width: calc(100% - 32px)
+      height: calc(100vh - 136px)
+    // Hiding external content.
+    overflow: hidden
+
+    ul
+      // Reset default.
+      list-style: none
+      margin: 0
+      padding: 0
+      // Positioning childs.
+      display: block
+      // Defining transition.
+      transition: all 300ms ease-out
+      // Ensure the `ul` fills the height, avoiding issues in IE 1x.
+      height: 100%
+      white-space: nowrap
+
+      li
+        // Reset default.
+        display: inline-block
+        vertical-align: top
+        margin: 0
+        padding: 0
+        // Positioning.
+        position: relative
+        // Size
+        width: calc(100vw - 64px)
+        max-width: 480px
+        height: 100%
+
+  .page-title
+    // Reset default.
+    width: 100%
+    text-align: center
+    // Text job.
+    font-size: 32px
+    line-height: 32px
+    // Default spacing.
+    margin: 0 0 8px
+
+  .page-txt
+    // Reset default wrap.
+    white-space: normal
+    // Positionoing.
+    position: relative
+    margin: auto auto 16px
+    // Size.
+    // Commented in order to fix a space problem when adding a logo.
+    // max-width: 400px
+    // Text job.
+    font-weight: 200
+    font-size: 16px
+    line-height: 24px
+
+  ul.page-list
+    // Reset default.
+    white-space: normal
+    text-align: left
+    // Size.
+    height: 80px
+    max-width: 480px
+
+    li
+      // Reset default.
+      height: 40px
+      width: 150px
+      // Text job.
+      font-size: 14px
+      line-height: 40px
+      white-space: nowrap
+
+      span
+        font-size: 20px
+        margin-right: 4px
+
+  input[type="text"], select
+    // Reset default.
+    border: none
+    outline: none
+    display: block
+    // Positioning.
+    margin: auto
+    position: relative
+    // Size.
+    width: calc(100vw - 64px)
+    max-width: 400px
+    height: 32px
+    // Iternal spacing.
+    padding: 0 12px
+    // Text job.
+    font-size: 14px
+    font-weight: 300
+    line-height: 32px
+    // Color.
+    background: $font-color
+    box-shadow: inset 0 0 0 2px $font-color, inset 0 0 0 4px #2E92FF
+    border-radius: 4px
+
+  select
+    // Arrow.
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAATNJREFUWAljYBgFoyEwGgKjITAaAgMcAowg+82X/Of7/o5hHRMjw6kLuYxV+NxkMPl/27//DGacQgxBJ2MYP+FTS4wck+e2/+xAy3cCFTsDDa4EWtCNSyNIDqQGpBakB6QXl1pixZlePWbgACqWgWkAWlCCzRFQy0tg6kB6oHqRhEhnMp1NZ/zIys7gANT6BKYd3RFYLH8C0gPSC9NDLg1OAyDNxjP/K//+xbCf4T+DLMwwYJroAbFBDoKJMTAyPGZlY3AEWn4XLkYBA+4AkBnYHIFiNpUtB5nNhGwByFfszMDoAFqELA5mA8VActTyOcx8lBCACZpO+6/08y/DAXh0QC0/ncV4D6aGWjRWB4AMhzsCyAb5nBaWE/SE3vT/YiBMUOGogtEQGA2B0RAYDYGhHAIAbVluGopK7kIAAAAASUVORK5CYII=')
+    background-position: 100% 0
+    background-repeat: no-repeat
+    background-size: 32px 32px
+    // Overriding defaults.
+    -webkit-appearance: none
+    -moz-appearance: none
+    text-overflow: ellipsis
+
+    // By default IE 1x will show a white text on a blue background.
+    // See http://stackoverflow.com/questions/17553300/change-ie-background-color-on-unopened-focused-select-box
+    &:focus::-ms-value
+      // No, you can't choose another background, or you'll cover the border.
+      background: none
+      // No, you can't choose another color, IE 1x will display white.
+      color: #000
+
+  input[type="text"]#key,
+  input[type="text"]#vocabulary,
+  input[type="text"]#name
+    // Those classes are added to
+    padding-right: 34px
+
+    &.invalid, &.valid
+      // Positioning the background-image for both cases.
+      background-repeat: no-repeat
+      background-position: calc(100% - 8px) 7px
+
+    &.invalid
+      background-image: url("../../images/invalid.png")
+
+    &.valid
+      background-image: url("../../images/valid.png")
+
+    &.untouched
+      background-image: initial
+
+  p.page-det
+    // Positioning
+    display: block
+    margin: 8px auto
+    // Text job.
+    font-weight: 300
+    font-size: 12px
+    line-height: 16px
+    // Reset the UL nowrap
+    white-space: normal
+    // Size.
+    width: calc(100vw - 64px)
+    max-width: 400px
+
+  .radio-wrapper
+    margin-bottom: 16px
+
+    input
+      // Replace the default radio with a custom one
+      display: none
+
+    label
+      width: 80px
+      display: inline-block
+      text-align: left
+      margin: 0 22px
+
+    .radio
+      // Size and positioning.
+      width: 12px
+      height: 12px
+      display: inline-block
+      position: relative
+      margin-right: 8px
+      // Style.
+      border-radius: 50%
+      border: 1px solid $font-color
+
+      .check
+        // Size.
+        width: 8px
+        height: 8px
+        // Positioning
+        display: inline-block
+        position: absolute
+        top: 1px
+        left: 1px
+        // Colouring.
+        background-color: $font-color
+        border-radius: 50%
+        // Animation.
+        transition: all 200ms ease-out
+
+    input[type="radio"]:checked ~ .radio .check
+      transform: scale(1)
+
+    input[type="radio"]:not(:checked) ~ .radio .check
+      transform: scale(0)
+
+  a.add-logo
+    // Reset default.
+    color: $font-color
+    font-weight: 600
+    // Positioning.
+    display: inline-block
+    margin: 16px auto auto
+    // Text job.
+    font-size: 16px
+    line-height: 16px
+    // Custom underline.
+    text-decoration: none
+    border-bottom: 2px solid $font-color
+    text-shadow: .03em 0 $secondary-color, -.03em 0 $secondary-color, 0 .03em $secondary-color, 0 -.03em $secondary-color, .06em 0 $secondary-color, -.06em 0 $secondary-color, .09em 0 $secondary-color, -.09em 0 $secondary-color, .12em 0 $secondary-color, -.12em 0 $secondary-color, .15em 0 $secondary-color, -.15em 0 $secondary-color
+
+  .wl-logo-preview
+    // Position.
+    display: none
+    position: relative
+    margin: auto
+    // Spacing.
+    margin-top: 16px
+    margin-bottom: -8px
+    // Size.
+    height: 48px
+    width: 48px
+    // Fixing image loaded.
+    background-size: cover
+    background-position: center center
+    // Color.
+    background-color: $background-color
+    // Border.
+    box-shadow: inset 0 0 0 2px $font-color, inset 0 0 0 4px $secondary-color
+    border-radius: 4px
+
+    a
+      // Position.
+      display: block
+      position: absolute
+      right: -8px
+      top: -8px
+      // Size.
+      width: 16px
+      height: 16px
+      // Styling.
+      border-radius: 50%
+      // Color.
+      background-color: $font-color
+      color: $secondary-color
+      // Preventing underline.
+      text-decoration: none
+      &::before
+        // Centering the icon.
+        line-height: 16px
+        // Fixing icon size.
+        font-size: 12px
+
+  .wl-close
+    // Position.
+    display: block
+    position: absolute
+    right: -16px
+    top: -16px
+    // Size.
+    width: 32px
+    height: 32px
+    // Styling.
+    border-radius: 50%
+    // Color.
+    color: $secondary-color
+    background-color: $font-color
+    // Preventing underline.
+    text-decoration: none
+    // Shadowing.
+    box-shadow: 0 4px 8px -2px rgba(0, 0, 0, .25), 0 2px 4px 0px rgba(0, 0, 0, .35)
+    // Anime.
+    transition: all 250ms ease-out
+    &::before
+      // Position.
+      position: relative
+      top: -1px
+      // Centering the icon.
+      line-height: 32px
+      // Fixing icon size.
+      font-size: 24px
+
+    &:hover
+      transform: scale(1.005) translateY(-1px)
+      box-shadow: 0 5px 10px -5px rgba(0, 0, 0, .25), 0 15px 20px -15px rgba(0, 0, 0, .25)
+    &:active
+      transform: scale(0.995) translateY(0px)
+
+.wl-select-notices
+    color: #870c25
+    font-size: 0.9em
+    font-weight: 700
+    margin-top: 10px
+    display: none
+    &.visible
+      display: block
+
+.wl-val-key-error    
+    white-space: normal
+    font-weight: 200
+    font-size: 16px
+    line-height: 24px
