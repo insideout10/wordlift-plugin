@@ -88,11 +88,22 @@ class Xml_Generator {
 		$title               = esc_html( $video->name );
 		$description         = esc_html( $video->description );
 		$thumbnail_url       = $video->thumbnail_urls[0];
-		$content_url         = $video->content_url;
-		$embed_url           = $video->embed_url;
-		$duration_in_seconds = self::iso8601_to_seconds( $video->duration );
-		$is_live_video       = $video->is_live_video ? 'yes' : 'no';
-		$view_count          = $video->views;
+
+
+		$optional_fields = array(
+			'content_loc'	=> $video->content_url,
+			'player_loc' => $video->embed_url,
+			'duration' => self::iso8601_to_seconds( $video->duration ),
+			'view_count' => $video->views,
+			'live' => $video->is_live_video ? 'yes' : 'no'
+		);
+
+		$optional_data = "";
+		foreach ( $optional_fields as $xml_key => $xml_value ) {
+			if ( $xml_value ) {
+				$optional_data .= "<video:${xml_key}>${xml_value}</video:${xml_key}>";
+			}
+		}
 
 		return <<<EOF
    <url>
@@ -101,11 +112,7 @@ class Xml_Generator {
        <video:thumbnail_loc>${thumbnail_url}</video:thumbnail_loc>
        <video:title>${title}</video:title>
        <video:description>${description}</video:description>
-       <video:content_loc>${content_url}</video:content_loc>
-       <video:player_loc>${embed_url}</video:player_loc>
-       <video:duration>${duration_in_seconds}</video:duration>
-       <video:view_count>${view_count}</video:view_count>
-       <video:live>${is_live_video}</video:live>
+	   $optional_data
      </video:video>
    </url>
 EOF;

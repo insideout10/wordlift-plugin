@@ -47,6 +47,8 @@ class Video_Sitemap {
 		}
 
 		header( "Content-type: text/xml" );
+		// set 200 status code.
+		status_header(200);
 
 		$xml = $this->sitemap_cache->get( self::XML_CACHE_KEY );
 

@@ -17,4 +17,13 @@ abstract class Wordlift_Videoobject_Unit_Test_Case  extends Wordlift_Unit_Test_C
 		$loader     = new Loader();
 		$loader->init_all_dependencies();
 	}
+
+
+	public static function remove_all_whitespaces( $string ) {
+		$string = str_replace(" ", "", $string);
+		$string = str_replace("\n", "", $string);
+		$string = str_replace("\t", "", $string);
+		$string = str_replace("\r", "", $string);
+		return $string;
+	}
 }
