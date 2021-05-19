@@ -142,6 +142,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.31.3 (2021-04-19) =
+
+* Fix: wl-video-sitemap.xml has a 404 http code
+
 = 3.31.2 (2021-04-18) =
 
 * Enhancement [#1368](https://github.com/insideout10/wordlift-plugin/issues/1368): Add the matched entity markup to the term page
