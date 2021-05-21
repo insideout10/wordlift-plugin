@@ -63,7 +63,9 @@ class Wordlift_Property_Getter_Factory {
 			Wordlift_Schema_Service::FIELD_TOTAL_TIME,
 		) );
 
-		$property_getter->register( new Wordlift_Required_Property_Service( $entity_service ), apply_filters( 'wl_required_property', array() ) );
+		add_action( 'after_setup_theme', function () use ( $property_getter, $entity_service ) {
+			$property_getter->register( new Wordlift_Required_Property_Service( $entity_service ), apply_filters( 'wl_required_property', array() ) );
+		} );
 
 		return $property_getter;
 	}
