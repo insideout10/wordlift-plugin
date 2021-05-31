@@ -26,8 +26,7 @@ window.addEventListener("load", function () {
                     }
 
                     setTimeout(updateProgressBar, 1000);
-                }
-            );
+                });
     };
 
     setTimeout(updateProgressBar, 1000);
