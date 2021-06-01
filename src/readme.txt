@@ -144,6 +144,8 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 = 3.31.4 (2021-06-01) =
 
+* Enhancement: Added `wl_videoobject_procedure_post_types` and `wl_videoobject_embedded_videos` filters
+
 * Fix [#1384](https://github.com/insideout10/wordlift-plugin/issues/1384): HTML entities encoded in faceted search title
 * Fix [#1382](https://github.com/insideout10/wordlift-plugin/issues/1382): Bulk import of videoobject issue in 4.7.0
 * Fix: a11y error : no space between attributes
