@@ -74,7 +74,7 @@ class Video_Processor {
 		$embedded_videos = $parser->get_videos( $post_id );
 
 		/**
-		 * Filters the embeeded videos on post contet, custom plugins can add their video urls
+		 * Filters the embedded videos on post contet, custom plugins can add their video urls
 		 * by constructing \Default_Embedded_Video or implement Embedded_Video class
 		 * @since 3.31.4
 		 * Filter name : wl_videoobject_embedded_videos
