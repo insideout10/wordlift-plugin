@@ -17,13 +17,20 @@ class Videos_Data_Source extends Data_Source {
 	}
 
 	public function next() {
-		$this->log->debug("Received video data source index as " . $this->get_state()->index);
-		$this->log->debug("Count set to " . $this->get_batch_size() );
+		$this->log->debug( "Received video data source index as " . $this->get_state()->index );
+		$this->log->debug( "Count set to " . $this->get_batch_size() );
+
 		return get_posts( array(
 			'fields'      => 'ids',
 			'post_status' => 'any',
 			'numberposts' => $this->get_batch_size(),
 			'offset'      => $this->get_state()->index,
+			/**
+			 * @since 3.31.4
+			 * Filter name : wl_videoobject_procedure_post_types
+			 * @return array<string> An array of supported post types for the video import procedure.
+			 */
+			'post_type'   => apply_filters( 'wl_videoobject_procedure_post_types', array( 'post' ) )
 		) );
 	}
 
@@ -32,6 +39,12 @@ class Videos_Data_Source extends Data_Source {
 			'fields'      => 'ids',
 			'numberposts' => - 1,
 			'post_status' => 'any',
+			/**
+			 * @since 3.31.4
+			 * Filter name : wl_videoobject_procedure_post_types
+			 * @return array<string> An array of supported post types for the video import procedure.
+			 */
+			'post_type'   => apply_filters( 'wl_videoobject_procedure_post_types', array( 'post' ) )
 		) ) );
 
 	}
