@@ -242,7 +242,7 @@ class Wordlift_Content_Filter_Service {
 		$attributes         = apply_filters( 'wl_anchor_data_attributes', $default_attributes, $post->ID );
 		$attributes_html    = '';
 		foreach ( $attributes as $key => $value ) {
-			$attributes_html .= 'data-' . esc_html( $key ) . '="' . esc_attr( $value ) . '"';
+			$attributes_html .= ' data-' . esc_html( $key ) . '="' . esc_attr( $value ) . '" ';
 		}
 
 		// Return the link.
