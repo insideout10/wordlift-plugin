@@ -227,7 +227,7 @@ function wl_shortcode_faceted_search_origin( $request ) {
 			if ( ( null !== $entity ) && ( 'publish' === $entity->post_status ) ) {
 
 				$serialized_entity                    = wl_serialize_entity( $entity );
-				$serialized_entity['label']           = wl_shortcode_faceted_search_get_the_title( $obj->ID );
+				$serialized_entity['label']           = html_entity_decode( wl_shortcode_faceted_search_get_the_title( $obj->ID ), ENT_QUOTES, 'UTF-8' );
 				$serialized_entity['counter']         = $obj->counter;
 				$serialized_entity['createdAt']       = $entity->post_date;
 				$serialized_entity['referencedPosts'] = Wordlift_Relation_Service::get_instance()->get_article_subjects(
@@ -249,6 +249,7 @@ function wl_shortcode_faceted_search_origin( $request ) {
 	// Add srcset attribute.
 	$post_results = array_map( function ( $post ) {
 		$post->srcset = Srcset_Util::get_srcset( $post->ID, Srcset_Util::FACETED_SEARCH_WIDGET );
+
 		return $post;
 	}, $post_results );
 

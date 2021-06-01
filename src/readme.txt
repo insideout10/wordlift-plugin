@@ -142,11 +142,21 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.31.3 (2021-04-19) =
+= 3.31.4 (2021-06-01) =
+
+* Enhancement: Added `wl_videoobject_procedure_post_types` and `wl_videoobject_embedded_videos` filters
+
+* Fix [#1384](https://github.com/insideout10/wordlift-plugin/issues/1384): HTML entities encoded in faceted search title
+* Fix [#1382](https://github.com/insideout10/wordlift-plugin/issues/1382): Bulk import of videoobject issue in 4.7.0
+* Fix: a11y error : no space between attributes
+* Fix: Vocabulary endpoint to use `WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE` constant
+* Fix: Trigger `wl_required_property` filter in `after_setup_theme` action
+
+= 3.31.3 (2021-05-19) =
 
 * Fix: wl-video-sitemap.xml has a 404 http code
 
-= 3.31.2 (2021-04-18) =
+= 3.31.2 (2021-05-18) =
 
 * Enhancement [#1368](https://github.com/insideout10/wordlift-plugin/issues/1368): Add the matched entity markup to the term page
 

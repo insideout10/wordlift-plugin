@@ -16,28 +16,26 @@ class Import_Videos_Page {
 	public function admin_menu() {
 
 		add_submenu_page( 'wl_admin_menu',
-            __( 'Import all videos', 'wordlift' ),
-            __( 'Import all videos', 'wordlift' ),
-            'manage_options', 'wl_videos_import', array(
-			$this,
-			'render'
-		) );
+			__( 'Import all videos', 'wordlift' ),
+			__( 'Import all videos', 'wordlift' ),
+			'manage_options', 'wl_videos_import', array(
+				$this,
+				'render'
+			) );
 
 	}
 
 	public function render() {
 
-		wp_enqueue_style(
-			'wl-tasks-page',
-			plugin_dir_url( dirname( __FILE__ ) ) . 'tasks/admin/assets/tasks-page.css',
-			array(),
-			\Wordlift::get_instance()->get_version(),
-			'all' );
 		wp_enqueue_script(
-			'wl-dataset-sync-page',
+			'wl-videos-sync-page',
 			plugin_dir_url( __FILE__ ) . 'assets/videoobject-import-page.js',
 			array( 'wp-api' ),
 			\Wordlift::get_instance()->get_version() );
+		wp_localize_script( 'wl-videos-sync-page', '_wlVideoObjectImportSettings', array(
+			'restUrl' => get_rest_url(),
+			'nonce'   => wp_create_nonce( 'wp_rest' )
+		) )
 
 		?>
         <div class="wrap">
