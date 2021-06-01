@@ -77,11 +77,11 @@ class Video_Processor {
 		 * Filters the embeeded videos on post contet, custom plugins can add their video urls
 		 * by constructing \Default_Embedded_Video or implement Embedded_Video class
 		 * @since 3.31.4
-		 * Filter name : wordlift_videoobject_embedded_videos
+		 * Filter name : wl_videoobject_embedded_videos
 		 * @param $embedded_videos array<Embedded_Video>
 		 * @return array<Embedded_Video>
 		 */
-		$embedded_videos = apply_filters('wordlift_videoobject_embedded_videos', $embedded_videos);
+		$embedded_videos = apply_filters('wl_videoobject_embedded_videos', $embedded_videos);
 
 		$storage = Video_Storage_Factory::get_storage();
 

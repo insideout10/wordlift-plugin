@@ -27,10 +27,10 @@ class Videos_Data_Source extends Data_Source {
 			'offset'      => $this->get_state()->index,
 			/**
 			 * @since 3.31.4
-			 * Filter name : wordlift_videoobject_procedure_post_types
+			 * Filter name : wl_videoobject_procedure_post_types
 			 * @return array<string> An array of supported post types for the video import procedure.
 			 */
-			'post_type'   => apply_filters( 'wordlift_videoobject_procedure_post_types', array( 'post' ) )
+			'post_type'   => apply_filters( 'wl_videoobject_procedure_post_types', array( 'post' ) )
 		) );
 	}
 
@@ -41,10 +41,10 @@ class Videos_Data_Source extends Data_Source {
 			'post_status' => 'any',
 			/**
 			 * @since 3.31.4
-			 * Filter name : wordlift_videoobject_procedure_post_types
+			 * Filter name : wl_videoobject_procedure_post_types
 			 * @return array<string> An array of supported post types for the video import procedure.
 			 */
-			'post_type'   => apply_filters( 'wordlift_videoobject_procedure_post_types', array( 'post' ) )
+			'post_type'   => apply_filters( 'wl_videoobject_procedure_post_types', array( 'post' ) )
 		) ) );
 
 	}
