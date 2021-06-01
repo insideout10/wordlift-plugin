@@ -54,6 +54,9 @@ class Jsonld {
 		$id = array_key_exists( '@id', $current_item ) ? $current_item['@id'] : '';
 
 		foreach ( $videos_jsonld as &$video_jsonld ) {
+			if ( ! $id) {
+				continue;
+			}
 			if ( ! array_key_exists( 'mentions', $video_jsonld ) ) {
 				$video_jsonld['mentions'] = array( '@id' => $id );
 			} else {
