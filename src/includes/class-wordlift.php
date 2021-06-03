@@ -1345,7 +1345,7 @@ class Wordlift {
 			new Wordlift_Chord_Shortcode();
 			new Wordlift_Geomap_Shortcode();
 			new Wordlift_Timeline_Shortcode();
-			new Wordlift_Related_Entities_Cloud_Shortcode( $this->relation_service );
+			new Wordlift_Related_Entities_Cloud_Shortcode( $this->relation_service, $this->entity_service);
 			new Wordlift_Vocabulary_Shortcode( $this->configuration_service );
 			new Async_Template_Decorator( new Wordlift_Faceted_Search_Shortcode() );
 		}

@@ -29,18 +29,26 @@ class Wordlift_Related_Entities_Cloud_Shortcode extends Wordlift_Shortcode {
 	 * @var \Wordlift_Relation_Service $relation_service The {@link Wordlift_Relation_Service} instance.
 	 */
 	private $relation_service;
+	/**
+	 * @var Wordlift_Entity_Service
+	 */
+	private $entity_service;
 
 	/**
 	 * Create a {@link Wordlift_Related_Entities_Cloud_Shortcode} instance.
 	 *
+	 * @param \Wordlift_Relation_Service $relation_service The {@link Wordlift_Relation_Service} instance.
+	 * @param \Wordlift_Entity_Service $entity_service
+	 *
 	 * @since 3.15.0
 	 *
-	 * @param \Wordlift_Relation_Service $relation_service The {@link Wordlift_Relation_Service} instance.
 	 */
-	public function __construct( $relation_service ) {
+	public function __construct( $relation_service, $entity_service ) {
 		parent::__construct();
 
 		$this->relation_service = $relation_service;
+
+		$this->entity_service = $entity_service;
 
 		$this->register_block_type();
 
@@ -106,10 +114,10 @@ class Wordlift_Related_Entities_Cloud_Shortcode extends Wordlift_Shortcode {
 	 * Find the related entities to the currently displayed post and
 	 * calculate the "tags" for them as wp_generate_tag_cloud expects to get.
 	 *
-	 * @since 3.11.0
-	 *
 	 * @return array    Array of tags. Empty array in case we re not in a context
 	 *                  of a post, or it has no related entities.
+	 * @since 3.11.0
+	 *
 	 */
 	public function get_related_entities_tags() {
 
@@ -139,11 +147,17 @@ class Wordlift_Related_Entities_Cloud_Shortcode extends Wordlift_Shortcode {
 
 			$connected_entities = count( wl_core_get_related_entity_ids( $entity_id, array( 'status' => 'publish' ) ) );
 			$connected_posts    = count( $this->relation_service->get_article_subjects( $entity_id, '*', null, 'publish' ) );
+			/**
+			 * @since 3.31.5
+			 * if synonym exists, use it instead of entity name.
+			 */
+			$synonyms    = $this->get_synonyms( $entity_id );
+			$entity_name = count( $synonyms ) > 0 ? $synonyms[0] : get_the_title( $entity_id );
 
 			$tags[] = (object) array(
 				'id'    => $entity_id,
 				// Used to give a unique class on the tag.
-				'name'  => get_the_title( $entity_id ),
+				'name'  => $entity_name,
 				// The text of the tag.
 				'slug'  => get_the_title( $entity_id ),
 				// Required but not seem to be relevant
@@ -156,6 +170,10 @@ class Wordlift_Related_Entities_Cloud_Shortcode extends Wordlift_Shortcode {
 		}
 
 		return $tags;
+	}
+
+	private function get_synonyms( $entity_id ) {
+		return $this->entity_service->get_alternative_labels( $entity_id );
 	}
 
 }
