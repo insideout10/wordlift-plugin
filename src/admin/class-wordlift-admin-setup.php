@@ -265,7 +265,7 @@ class Wordlift_Admin_Setup {
 	 * @since 3.9.0
 	 *
 	 */
-	private function save_configuration( $params ) {
+	public function save_configuration( $params ) {
 
 		// We have the following parameters:
 		// `key`, holding WL's key,
