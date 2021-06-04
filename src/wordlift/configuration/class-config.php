@@ -2,20 +2,27 @@
 
 namespace Wordlift\Configuration;
 
+
 class Config {
 	/**
 	 * @var \Wordlift_Admin_Setup
 	 */
 	private $admin_setup;
+	/**
+	 * @var \Wordlift_Key_Validation_Service
+	 */
+	private $key_validation_service;
 
 	/**
 	 * Config constructor.
 	 *
 	 * @param $admin_setup \Wordlift_Admin_Setup
+	 * @param $key_validation_service \Wordlift_Key_Validation_Service
 	 */
-	public function __construct( $admin_setup ) {
+	public function __construct( $admin_setup, $key_validation_service ) {
 
-		$this->admin_setup = $admin_setup;
+		$this->admin_setup            = $admin_setup;
+		$this->key_validation_service = $key_validation_service;
 		add_action( 'wp_ajax_nopriv_wl_config_plugin', array( $this, 'config' ) );
 
 	}
@@ -48,11 +55,30 @@ class Config {
 
 	public function config() {
 
+		$account_info = $this->key_validation_service->get_account_info( (string) $_POST['license'] );
+
 		/**
-		 * todo:
-		 * 1. check auth
-		 * 2. check image mime type error
+		 * we need to check if the key is not associated with any account
+		 * before setting it, we should check if the url is null.
 		 */
+		if ( is_wp_error( $account_info )
+		     || wp_remote_retrieve_response_code( $account_info ) !== 200 ) {
+			return;
+		}
+
+		$account_info_json = $account_info['body'];
+
+		$account_info_data = json_decode( $account_info_json, true );
+
+		if ( ! $account_info_data ) {
+			// Invalid json returned by api.
+			return;
+		}
+
+		if ( $account_info_data['url'] !== null ) {
+			// key already associated with another account.
+			return;
+		}
 
 		$image_string = (string) $_POST['image'];
 
