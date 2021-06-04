@@ -80,7 +80,7 @@ class Config {
 		// validate all the fields before processing
 		foreach ( $required_fields as $field ) {
 			if ( ! array_key_exists( $field, $_POST ) ) {
-				wp_send_json_error( sprintf( __( 'Field %s is required', 'wordlift' ), $field ) );
+				wp_send_json_error( sprintf( __( 'Field %s is required', 'wordlift' ), $field ), 422 );
 
 				return;
 			}
@@ -89,7 +89,7 @@ class Config {
 		$key = (string) $_POST['license'];
 
 		if ( ! $this->is_key_valid_and_not_bound_to_any_domain( $key ) ) {
-			wp_send_json_error( __( 'Key is not valid or associated with other domain', 'wordlift' ) );
+			wp_send_json_error( __( 'Key is not valid or associated with other domain', 'wordlift' ), 403 );
 
 			// exit if not valid.
 			return;
@@ -98,7 +98,7 @@ class Config {
 		$this->admin_setup->save_configuration( $this->get_params() );
 
 
-		wp_send_json_success(__('Configuration Saved', 'wordlift'));
+		wp_send_json_success( __( 'Configuration Saved', 'wordlift' ) );
 	}
 
 	/**
