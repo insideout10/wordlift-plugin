@@ -55,12 +55,20 @@ class Config {
 			return false;
 		}
 
-		if ( $account_info_data['url'] !== null ) {
+		$site_url = apply_filters( 'wl_production_site_url', untrailingslashit( get_option( 'home' ) ) );
+
+
+		if ( $account_info_data['url'] === null) {
+			return true;
+		}
+
+		// Check if the key belongs to same site.
+		if ( $site_url !== untrailingslashit( $account_info_data['url'] ) ) {
 			// key already associated with another account.
 			return false;
 		}
 
-		return true;
+		return false;
 	}
 
 
