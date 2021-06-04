@@ -151,7 +151,14 @@ class Config {
 
 		file_put_contents( $file_path, $image_decoded_string );
 
-		return wp_insert_attachment( array(), $file_path );
+		$attachment_id =  wp_insert_attachment( array(), $file_path );
+
+		// Generate the metadata for the attachment, and update the database record.
+		$attachment_data = wp_generate_attachment_metadata( $attachment_id, $file_path );
+		// Update the attachment metadata.
+		wp_update_attachment_metadata( $attachment_id, $attachment_data );
+
+		return $attachment_id;
 	}
 
 }
