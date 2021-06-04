@@ -151,7 +151,10 @@ class Config {
 
 		file_put_contents( $file_path, $image_decoded_string );
 
-		$attachment_id =  wp_insert_attachment( array(), $file_path );
+		$attachment_id = wp_insert_attachment( array(
+			'post_status'    => 'inherit',
+			'post_mime_type' => "image/$image_ext"
+		), $file_path );
 
 		// Generate the metadata for the attachment, and update the database record.
 		$attachment_data = wp_generate_attachment_metadata( $attachment_id, $file_path );
