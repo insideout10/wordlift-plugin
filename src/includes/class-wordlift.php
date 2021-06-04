@@ -1629,7 +1629,7 @@ class Wordlift {
 		 * @since 3.31.5
 		 * Create configuration endpoint for webapp to configure.
 		 */
-		new Config( $this->admin_setup, $this->key_validation_service );
+		new Config( $this->admin_setup, $this->key_validation_service, $this->configuration_service );
 	}
 
 	/**
