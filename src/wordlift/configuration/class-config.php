@@ -81,6 +81,7 @@ class Config {
 		foreach ( $required_fields as $field ) {
 			if ( ! array_key_exists( $field, $_POST ) ) {
 				wp_send_json_error( sprintf( __( 'Field %s is required', 'wordlift' ), $field ) );
+
 				return;
 			}
 		}
@@ -94,29 +95,26 @@ class Config {
 			return;
 		}
 
-		$params = $this->get_params( $key );
-
-		$this->admin_setup->save_configuration( $params );
+		$this->admin_setup->save_configuration( $this->get_params() );
 
 
 	}
 
 	/**
-	 * @param $key
 	 *
 	 * @return array
 	 */
-	private function get_params( $key ) {
+	private function get_params() {
 
 		$attachment_id = $this->may_be_get_attachment_id();
 
 		$params = array(
-			'key'              => $key,
-			'vocabulary'       => $_POST['vocabulary'],
-			'wl-site-language' => $_POST['language'],
-			'wl-country-code'  => $_POST['country'],
-			'name'             => $_POST['publisherName'],
-			'user_type'        => $_POST['publisher'],
+			'key'              => (string) $_POST['license'],
+			'vocabulary'       => (string) $_POST['vocabulary'],
+			'wl-site-language' => (string) $_POST['language'],
+			'wl-country-code'  => (string) $_POST['country'],
+			'name'             => (string) $_POST['publisherName'],
+			'user_type'        => (string) $_POST['publisher'],
 			'logo'             => $attachment_id
 		);
 
