@@ -70,13 +70,14 @@ class Config {
 		$attachment_id = wp_insert_attachment( array(), $file_path );
 
 		$params = array(
-			'send_diagnostic' => $_POST['diagnostic'],
-			'key'             => $_POST['license'],
-			'vocabulary'      => $_POST['vocabulary'],
-			'language'        => $_POST['language'],
-			'name'            => $_POST['publisherName'],
-			'user_type'       => $_POST['publisher'],
-			'logo'            => $attachment_id
+			'share-diagnostic' => $_POST['diagnostic'],
+			'key'              => $_POST['license'],
+			'vocabulary'       => $_POST['vocabulary'],
+			'wl-site-language' => $_POST['language'],
+			'wl-country-code'  => $_POST['country'],
+			'name'             => $_POST['publisherName'],
+			'user_type'        => $_POST['publisher'],
+			'logo'             => $attachment_id
 		);
 
 		$this->admin_setup->save_configuration( $params );
