@@ -98,6 +98,7 @@ class Config {
 		$this->admin_setup->save_configuration( $this->get_params() );
 
 
+		wp_send_json_success(__('Configuration Saved', 'wordlift'));
 	}
 
 	/**
@@ -119,7 +120,7 @@ class Config {
 		);
 
 		if ( (bool) $_POST['diagnostic'] ) {
-			$params['share-diagnostic'] = 'yes';
+			$params['share-diagnostic'] = 'on';
 		}
 
 		return $params;
