@@ -270,8 +270,9 @@ class Wordlift_Admin_Setup {
 		// We have the following parameters:
 		// `key`, holding WL's key,
 		// `vocabulary`, holding the vocabulary path,
-		// `language`, with the language code (e.g. `en`),
-		// `send_diagnostic`, the user preferences about sharing data with us.
+		// `wl-site-language`, with the language code (e.g. `en`),
+        // `wl-country-code` with the country code (e.g. `us`),
+		// `share-diagnostic`, the user preferences about sharing data with us.
 		// `user_type`, the user type either `personal` or `company`,
 		// `name`, with the `personal` or `company`'s name,
 		// `logo`, the attachment id for the `personal` or `company` entity.

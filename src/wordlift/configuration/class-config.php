@@ -27,31 +27,6 @@ class Config {
 
 	}
 
-	/**
-	 * Raw byte array from image
-	 *
-	 * @param $image_string
-	 *
-	 * Returns png or jpeg based on header, or else returns false.
-	 *
-	 * @return bool|int|string
-	 */
-	public function get_mime_type_from_string( $image_string ) {
-		$mime_types = array(
-			'jpeg' => "\xFF\xD8\xFF",
-			'png'  => "\x89\x50\x4e\x47\x0d\x0a\x1a\x0a"
-		);
-
-		foreach ( $mime_types as $mime_type => $byte_value ) {
-			if ( ! $byte_value === substr( $image_string, 0, strlen( $byte_value ) ) ) {
-				continue;
-			}
-
-			return $mime_type;
-		}
-
-		return false;
-	}
 
 	public function config() {
 
@@ -86,13 +61,9 @@ class Config {
 
 		$upload_dir = wp_upload_dir();
 
-		$mime_type = $this->get_mime_type_from_string( $image_decoded_string );
+		$image_ext = (string) $_POST['imageExtension'];
 
-		if ( ! $mime_type ) {
-			wp_send_json_error( "Image type not valid" );
-		}
-
-		$file_path = $upload_dir['path'] . DIRECTORY_SEPARATOR . md5( $image_string ) . "." . $mime_type;
+		$file_path = $upload_dir['path'] . DIRECTORY_SEPARATOR . md5( $image_string ) . "." . $image_ext;
 
 		file_put_contents( $file_path, $image_decoded_string );
 
