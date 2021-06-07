@@ -250,6 +250,7 @@ function* handleAddEntityRequest({payload}) {
     }
     else if (entityToAdd.category) {
         // When the user manually adds entity in the editor
+        // set the category
         entityToAdd.mainType = entityToAdd.category
             .replace("http://schema.org/", "")
             .replace("https://schema.org/", "")
