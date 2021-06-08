@@ -79,9 +79,10 @@ class Video_Processor {
 		 * @since 3.31.4
 		 * Filter name : wl_videoobject_embedded_videos
 		 * @param $embedded_videos array<Embedded_Video>
+		 * @param $post_id int The post id for the videoobject is processed.
 		 * @return array<Embedded_Video>
 		 */
-		$embedded_videos = apply_filters('wl_videoobject_embedded_videos', $embedded_videos);
+		$embedded_videos = apply_filters('wl_videoobject_embedded_videos', $embedded_videos, $post_id );
 
 		$storage = Video_Storage_Factory::get_storage();
 

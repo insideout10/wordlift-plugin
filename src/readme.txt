@@ -142,6 +142,14 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.31.5 (2021-06-08) =
+
+* Fix [#1395](https://github.com/insideout10/wordlift-plugin/issues/1395): Add entity not working on classic editor block in the block editor
+* Fix [#1390](https://github.com/insideout10/wordlift-plugin/issues/1390): Use the first available synonym for Entity Cloud shortcode
+* Fix [#1381](https://github.com/insideout10/wordlift-plugin/issues/1381): Add mentions property to connect the VideoObject to the main entity of the page
+* Fix: Add post_id param to `wl_videoobject_embedded_videos` filter
+* Fix: Stop calls to /keywords api
+
 = 3.31.4 (2021-06-01) =
 
 * Enhancement: Added `wl_videoobject_procedure_post_types` and `wl_videoobject_embedded_videos` filters

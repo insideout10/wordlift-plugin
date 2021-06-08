@@ -766,7 +766,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.31.4';
+		$this->version     = '3.31.5';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -1345,7 +1345,7 @@ class Wordlift {
 			new Wordlift_Chord_Shortcode();
 			new Wordlift_Geomap_Shortcode();
 			new Wordlift_Timeline_Shortcode();
-			new Wordlift_Related_Entities_Cloud_Shortcode( $this->relation_service );
+			new Wordlift_Related_Entities_Cloud_Shortcode( $this->relation_service, $this->entity_service );
 			new Wordlift_Vocabulary_Shortcode( $this->configuration_service );
 			new Async_Template_Decorator( new Wordlift_Faceted_Search_Shortcode() );
 		}
