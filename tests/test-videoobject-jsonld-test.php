@@ -77,9 +77,12 @@ class Videoobject_Jsonld_Test extends \Wordlift_Videoobject_Unit_Test_Case {
 	public function test_when_jsonld_is_created_for_entity_should_add_video_object() {
 		$post_id = $this->create_post_with_content( Videoobject_Api_Test::multiple_youtube_video_post_content() );
 		$jsonld  = apply_filters( 'wl_after_get_jsonld', array(
-			array('@type' => 'Thing')
+			array('@type' => 'Thing', '@id' => 'https://test-entity-id.com/test-entity/')
 		), $post_id, array() );
 		$this->assertCount( 3, $jsonld, 'Video object should  be added for Entity' );
+		$this->assertArrayHasKey('mentions', $jsonld[2] );
+		$this->assertArrayHasKey('@id', $jsonld[2]['mentions']);
+		$this->assertSame($jsonld[2]['mentions']['@id'], 'https://test-entity-id.com/test-entity/');
 		$this->assertArrayHasKey('@context', $jsonld[2]);
 	}
 
