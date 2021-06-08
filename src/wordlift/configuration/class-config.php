@@ -91,6 +91,8 @@ class Config {
 			'license'
 		);
 
+		header('Access-Control-Allow-Origin: *');
+
 		// validate all the fields before processing
 		foreach ( $required_fields as $field ) {
 			if ( ! array_key_exists( $field, $_POST ) ) {
