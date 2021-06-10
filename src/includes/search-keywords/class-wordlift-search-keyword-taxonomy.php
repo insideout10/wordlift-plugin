@@ -48,6 +48,9 @@ class Wordlift_Search_Keyword_Taxonomy {
 	 */
 	public function __construct( $api_service ) {
 
+		// Disable this module.
+		return;
+
 		$this->api_service = $api_service;
 
 		// Register the taxonomy.
