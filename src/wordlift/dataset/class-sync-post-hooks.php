@@ -48,7 +48,7 @@ class Sync_Post_Hooks extends Abstract_Sync_Hooks {
 		add_action( 'delete_post', array( $this, 'delete_post' ) );
 		// Remove post when its trashed.
 		add_action( 'trashed_post', array( $this, 'delete_post' ) );
-		// Save the entity when its untrashed.
+		// Save the post when its untrashed.
 		add_action( 'untrashed_post', array( $this, 'save_post' ) );
 
 	}
