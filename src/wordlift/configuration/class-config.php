@@ -74,7 +74,8 @@ class Config {
 			return false;
 		}
 
-		return false;
+		// Return true if the key domain and site domain are the same.
+		return true;
 	}
 
 
