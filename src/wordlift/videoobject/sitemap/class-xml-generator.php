@@ -95,6 +95,10 @@ class Xml_Generator {
 		$description   = esc_html( $video->description );
 		$thumbnail_url = $video->thumbnail_urls[0];
 
+		// If description is empty use title.
+		if ( ! $description ) {
+			$description = $title;
+		}
 
 		$optional_fields = array(
 			'content_loc' => $video->content_url,
