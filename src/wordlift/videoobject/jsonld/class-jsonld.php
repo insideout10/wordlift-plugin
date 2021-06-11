@@ -54,7 +54,7 @@ class Jsonld {
 		$id = array_key_exists( '@id', $current_item ) ? $current_item['@id'] : '';
 
 		foreach ( $videos_jsonld as &$video_jsonld ) {
-			if ( ! $id) {
+			if ( ! $id ) {
 				continue;
 			}
 			if ( ! array_key_exists( 'mentions', $video_jsonld ) ) {
@@ -127,11 +127,16 @@ class Jsonld {
 			/**
 			 * @var $video Video
 			 */
+			$description = $video->description;
+			if ( ! $video->description ) {
+				// If description is empty then use the video title as description
+				$description = $video->name;
+			}
 			$single_jsonld = array(
 				'@context'     => 'http://schema.org',
 				'@type'        => 'VideoObject',
 				'name'         => $video->name,
-				'description'  => $video->description,
+				'description'  => $description,
 				'contentUrl'   => $video->content_url,
 				'embedUrl'     => $video->embed_url,
 				'uploadDate'   => $video->upload_date,
