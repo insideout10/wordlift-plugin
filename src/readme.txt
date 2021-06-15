@@ -142,6 +142,14 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.31.6 (2021-06-15) =
+
+* Enhancement [#1399](https://github.com/insideout10/wordlift-plugin/issues/1399): Videoobject sitemap - Enable on all custom post types
+* Enhancement [#1393](https://github.com/insideout10/wordlift-plugin/issues/1393): Add endpoint to configure WLP
+
+* Fix [#1402](https://github.com/insideout10/wordlift-plugin/issues/1402): Trash entity - should remove entity from KG
+
+
 = 3.31.5 (2021-06-08) =
 
 * Fix [#1395](https://github.com/insideout10/wordlift-plugin/issues/1395): Add entity not working on classic editor block in the block editor
