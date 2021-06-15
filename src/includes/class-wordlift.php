@@ -20,6 +20,7 @@ use Wordlift\Autocomplete\All_Autocomplete_Service;
 use Wordlift\Autocomplete\Linked_Data_Autocomplete_Service;
 use Wordlift\Autocomplete\Local_Autocomplete_Service;
 use Wordlift\Cache\Ttl_Cache;
+use Wordlift\Configuration\Config;
 use Wordlift\Duplicate_Markup_Remover\Faq_Duplicate_Markup_Remover;
 use Wordlift\Entity\Entity_Helper;
 use Wordlift\Entity\Entity_No_Index_Flag;
@@ -766,7 +767,7 @@ class Wordlift {
 		self::$instance = $this;
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.31.5';
+		$this->version     = '3.31.6';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -1624,6 +1625,11 @@ class Wordlift {
 		 */
 		$videoobject_loader = new Loader();
 		$videoobject_loader->init_feature();
+		/**
+		 * @since 3.31.5
+		 * Create configuration endpoint for webapp to configure.
+		 */
+		new Config( $this->admin_setup, $this->key_validation_service, $this->configuration_service );
 	}
 
 	/**
