@@ -19,7 +19,7 @@ class Xml_Generator {
 			return 0;
 		}
 
-		$days_to_seconds = $interval->d * 60 * 60 * 24;
+		$days_to_seconds    = $interval->d * 60 * 60 * 24;
 		$hours_to_seconds   = $interval->h * 60 * 60;
 		$minutes_to_seconds = $interval->i * 60;
 		$seconds            = $interval->s;
@@ -29,10 +29,14 @@ class Xml_Generator {
 	}
 
 	public static function get_xml_for_all_posts_with_videos() {
-
-		$posts = get_posts( array(
+		/**
+		 * @since 3.31.6
+		 * Filter the query args, add support for all custom public post types.
+		 */
+		$video_sitemap_query_args = apply_filters( 'wl_videoobject_sitemap_query_args', array(
 			'fields'      => 'ids',
 			'numberposts' => - 1,
+			'post_type'   => get_post_types( array( 'public' => true ) ),
 			'meta_query'  => array(
 				array(
 					'key'     => Meta_Storage::META_KEY,
@@ -40,6 +44,8 @@ class Xml_Generator {
 				)
 			)
 		) );
+
+		$posts = get_posts( $video_sitemap_query_args );
 
 		$all_posts_xml = "";
 
@@ -84,18 +90,22 @@ class Xml_Generator {
 	 */
 	public static function get_xml_for_single_video( $video, $post_id ) {
 
-		$permalink           = get_permalink( $post_id );
-		$title               = esc_html( $video->name );
-		$description         = esc_html( $video->description );
-		$thumbnail_url       = $video->thumbnail_urls[0];
+		$permalink     = get_permalink( $post_id );
+		$title         = esc_html( $video->name );
+		$description   = esc_html( $video->description );
+		$thumbnail_url = $video->thumbnail_urls[0];
 
+		// If description is empty use title.
+		if ( ! $description ) {
+			$description = $title;
+		}
 
 		$optional_fields = array(
-			'content_loc'	=> $video->content_url,
-			'player_loc' => $video->embed_url,
-			'duration' => self::iso8601_to_seconds( $video->duration ),
-			'view_count' => $video->views,
-			'live' => $video->is_live_video ? 'yes' : 'no'
+			'content_loc' => $video->content_url,
+			'player_loc'  => $video->embed_url,
+			'duration'    => self::iso8601_to_seconds( $video->duration ),
+			'view_count'  => $video->views,
+			'live'        => $video->is_live_video ? 'yes' : 'no'
 		);
 
 		$optional_data = "";

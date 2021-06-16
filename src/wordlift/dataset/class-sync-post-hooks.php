@@ -45,9 +45,16 @@ class Sync_Post_Hooks extends Abstract_Sync_Hooks {
 		add_action( 'added_post_meta', array( $this, 'changed_post_meta' ), 10, 4 );
 		add_action( 'updated_post_meta', array( $this, 'changed_post_meta' ), 10, 4 );
 		add_action( 'deleted_post_meta', array( $this, 'changed_post_meta' ), 10, 4 );
+
 		// running this on delete_post wouldnt work because at that time
 		// entity_url would be deleted, so we cant delete this item from KG.
 		add_action( 'before_delete_post', array( $this, 'delete_post' ) );
+
+		// Remove post when its trashed.
+		add_action( 'trashed_post', array( $this, 'delete_post' ) );
+		// Save the post when its untrashed.
+		add_action( 'untrashed_post', array( $this, 'save_post' ) );
+
 
 	}
 
