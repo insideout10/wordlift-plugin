@@ -16,9 +16,13 @@ class Entity_Type {
 	}
 
 	public function render_ui() {
-		echo "<h2>Entity types</h2>";
+
+		echo sprintf( "<h2>%s</h2>", esc_html( __( 'Entity Types', 'wordlift' ) ) );
+		echo "<div style='height: 300px; overflow-y: scroll;'>";
 		echo wp_terms_checklist( 0, array(
-			'taxonomy' => \Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME) );
+			'taxonomy'     => \Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME
+		) );
+		echo "</div>";
 	}
 
 }
