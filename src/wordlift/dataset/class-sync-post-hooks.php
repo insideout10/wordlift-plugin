@@ -85,7 +85,7 @@ class Sync_Post_Hooks extends Abstract_Sync_Hooks {
 	public function do_sync( $post_id ) {
 		try {
 			$post = get_post( $post_id );
-			if ( !isset( $post ) ) {
+			if ( ! isset( $post ) ) {
 				return;
 			}
 			$this->sync_service->sync_many( array(
@@ -104,7 +104,7 @@ class Sync_Post_Hooks extends Abstract_Sync_Hooks {
 
 	public function do_delete( $post_id ) {
 		try {
-			$this->sync_service->delete_one( Object_Type_Enum::POST, $post_id );
+			$this->sync_service->delete_one( Object_Type_Enum::POST, $post_id, get_post_meta( $post_id, 'entity_url', true ) );
 		} catch ( \Exception $e ) {
 			$this->log->error( "An error occurred while trying to delete post $post_id: " . $e->getMessage(), $e );
 		}
