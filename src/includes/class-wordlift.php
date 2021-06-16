@@ -57,6 +57,7 @@ use Wordlift\Mappings\Validators\Post_Taxonomy_Term_Rule_Validator;
 use Wordlift\Post_Excerpt\Post_Excerpt_Meta_Box_Adapter;
 use Wordlift\Post_Excerpt\Post_Excerpt_Rest_Controller;
 use Wordlift\Templates\Templates_Ajax_Endpoint;
+use Wordlift\Term_Entity\Entity_Type;
 use Wordlift\Videoobject\Loader;
 use Wordlift\Vocabulary\Vocabulary_Loader;
 use Wordlift\Widgets\Async_Template_Decorator;
@@ -1630,6 +1631,7 @@ class Wordlift {
 		 * Create configuration endpoint for webapp to configure.
 		 */
 		new Config( $this->admin_setup, $this->key_validation_service, $this->configuration_service );
+		new Entity_Type();
 	}
 
 	/**
