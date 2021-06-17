@@ -2,6 +2,7 @@
 
 namespace Wordlift\Vocabulary_Terms;
 
+use Wordlift\Common\Term_Checklist\Term_Checklist;
 use Wordlift\Vocabulary\Terms_Compat;
 use Wordlift_Entity_Type_Taxonomy_Service;
 
@@ -18,19 +19,24 @@ class Entity_Type {
 
 	}
 
+
+
 	/**
 	 * @param $term  \WP_Term
 	 */
 	public function render_ui( $term ) {
 
 		$selected_entity_types = get_term_meta( $term->term_id, 'wl_entity_types' );
-		echo sprintf( "<h4>%s</h4>", esc_html( __( 'Entity Types', 'wordlift' ) ) );
-		echo "<div style='height: 300px; overflow-y: scroll;'>";
-		echo wp_terms_checklist( 0, array(
-			'taxonomy'      => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
-			'selected_cats' => array_values( $selected_entity_types ),
-		) );
-		echo "</div>";
+		$entity_type_taxonomy  = Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME;
+		$types = Terms_Compat::get_terms(
+			Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
+			array(
+				'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
+				'parent'        => 0,
+				'hide_empty'    => false
+			)
+		);
+		echo Term_Checklist::render( 'tax_input[wl_entity_type]', $types, $selected_entity_types );
 	}
 
 	public function save_field( $term_id ) {
