@@ -271,24 +271,13 @@ class WL_Metabox_Field {
 		// Bail out, if the post id isn't set in the request or isn't numeric.
 		//
 		// See https://github.com/insideout10/wordlift-plugin/issues/665.
-		if ( ! isset( $_POST['post_ID'] ) || ! is_numeric( $_POST['post_ID'] ) ) {
-			return;
+		if ( isset( $_POST['post_ID'] ) && is_numeric( $_POST['post_ID'] ) ) {
+			$this->save_data_for_post();
+		} else if ( isset( $_POST['tag_ID'] ) && is_numeric( $_POST['tag_ID'] ) ) {
+            $this->save_data_for_term();
 		}
 
-		$entity_id = intval( $_POST['post_ID'] );
 
-		// Take away old values.
-		delete_post_meta( $entity_id, $this->meta_name );
-
-		// insert new values, respecting cardinality.
-		$single = ( 1 === $this->cardinality );
-		foreach ( $this->data as $value ) {
-			$this->log->trace( "Saving $value to $this->meta_name for entity $entity_id..." );
-			// To avoid duplicate values
-			delete_post_meta( $entity_id, $this->meta_name, $value );
-			$meta_id = add_post_meta( $entity_id, $this->meta_name, $value, $single );
-			$this->log->debug( "$value to $this->meta_name for entity $entity_id saved with id $meta_id." );
-		}
 	}
 
 	/**
@@ -353,8 +342,8 @@ class WL_Metabox_Field {
 	/**
 	 * Print the heading with the label for the metabox.
 	 *
-	 * @since 3.15.0
 	 * @return string The heading html fragment.
+	 * @since 3.15.0
 	 */
 	protected function get_heading_html() {
 
@@ -364,11 +353,11 @@ class WL_Metabox_Field {
 	/**
 	 * Print the stored values.
 	 *
-	 * @since 3.15.0
-	 *
 	 * @param int $count An output value: the number of printed values.
 	 *
 	 * @return string The html fragment.
+	 * @since 3.15.0
+	 *
 	 */
 	protected function get_stored_values_html( &$count ) {
 
@@ -406,11 +395,11 @@ class WL_Metabox_Field {
 	 * This function is protected, allowing extending class to further customize
 	 * the add button html code.
 	 *
-	 * @since 3.15.0
-	 *
 	 * @param int $count The current number of values.
 	 *
 	 * @return string The add button html code.
+	 * @since 3.15.0
+	 *
 	 */
 	protected function get_add_button_html( $count ) {
 
@@ -429,17 +418,17 @@ class WL_Metabox_Field {
 	 * This function is protected, allowing extending class to further customize
 	 * the add button html code.
 	 *
-	 * @since 3.15.0
-	 *
 	 * @param int $count The current number of values.
 	 *
 	 * @return string The add button html code.
+	 * @since 3.15.0
+	 *
 	 */
 	protected function get_add_custom_button_html( $count, $label, $class = '' ) {
 
 		// If cardinality allows it, print button to add new values.
 		if ( $count < $this->cardinality ) {
-			return '<button class="button wl-add-input wl-button wl-add-input--sameas '.$class.'" type="button">' . esc_html__( $label ) . '</button>';
+			return '<button class="button wl-add-input wl-button wl-add-input--sameas ' . $class . '" type="button">' . esc_html__( $label ) . '</button>';
 		}
 
 		// Return an empty string.
@@ -481,6 +470,40 @@ class WL_Metabox_Field {
 	public function html_wrapper_close() {
 
 		return '</div>';
+	}
+
+	private function save_data_for_post() {
+		$entity_id = intval( $_POST['post_ID'] );
+
+		// Take away old values.
+		delete_post_meta( $entity_id, $this->meta_name );
+
+		// insert new values, respecting cardinality.
+		$single = ( 1 === $this->cardinality );
+		foreach ( $this->data as $value ) {
+			$this->log->trace( "Saving $value to $this->meta_name for entity $entity_id..." );
+			// To avoid duplicate values
+			delete_post_meta( $entity_id, $this->meta_name, $value );
+			$meta_id = add_post_meta( $entity_id, $this->meta_name, $value, $single );
+			$this->log->debug( "$value to $this->meta_name for entity $entity_id saved with id $meta_id." );
+		}
+	}
+
+	private function save_data_for_term() {
+		$term_id = intval( $_POST['tag_ID'] );
+
+		// Take away old values.
+		delete_term_meta( $term_id, $this->meta_name );
+
+		// insert new values, respecting cardinality.
+		$single = ( 1 === $this->cardinality );
+		foreach ( $this->data as $value ) {
+			$this->log->trace( "Saving $value to $this->meta_name for term $term_id..." );
+			// To avoid duplicate values
+			delete_term_meta( $term_id, $this->meta_name, $value );
+			$meta_id = add_term_meta( $term_id, $this->meta_name, $value, $single );
+			$this->log->debug( "$value to $this->meta_name for term $term_id saved with id $meta_id." );
+		}
 	}
 
 }

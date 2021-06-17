@@ -11,7 +11,6 @@ class Term_Meta_Box extends \WL_Abstract_Meta_Box {
 		$taxonomies = Terms_Compat::get_public_taxonomies();
 		foreach ( $taxonomies as $taxonomy ) {
 			add_action( "${taxonomy}_edit_form", array( $this, 'render_ui' ), 1 );
-			add_action( "created_${taxonomy}", array( $this, 'save_field' ) );
 			add_action( "edited_${taxonomy}", array( $this, 'save_field' ) );
 		}
 	}
@@ -23,6 +22,10 @@ class Term_Meta_Box extends \WL_Abstract_Meta_Box {
 		$this->instantiate_fields( $term->term_id );
 		$this->html();
 		$this->enqueue_scripts_and_styles();
+	}
+
+	public function save_field() {
+		$this->save_form_data();
 	}
 
 }

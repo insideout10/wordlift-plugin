@@ -13,7 +13,6 @@ class Entity_Type {
 		$taxonomies = Terms_Compat::get_public_taxonomies();
 		foreach ( $taxonomies as $taxonomy ) {
 			add_action( "${taxonomy}_edit_form_fields", array( $this, 'render_ui' ), 1 );
-			add_action( "created_${taxonomy}", array( $this, 'save_field' ) );
 			add_action( "edited_${taxonomy}", array( $this, 'save_field' ) );
 		}
 

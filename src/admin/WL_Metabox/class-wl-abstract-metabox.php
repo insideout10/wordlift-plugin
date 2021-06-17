@@ -19,6 +19,10 @@ require_once( 'class-wordlift-metabox-field-select.php' );
 
 class WL_Abstract_Meta_Box {
 
+	const POST = 1;
+
+	const TERM = 2;
+
 	/**
 	 * The metabox custom fields for the current {@link WP_Post}.
 	 *
@@ -54,7 +58,7 @@ class WL_Abstract_Meta_Box {
 	public function add_main_metabox() {
 
 		// Build the fields we need to print.
-		$this->instantiate_fields( get_the_ID() );
+		$this->instantiate_fields( get_the_ID(), self::POST );
 
 		// Bailout if there are no actual fields, we do not need a metabox in that case.
 		if ( empty( $this->fields ) ) {
@@ -111,10 +115,11 @@ class WL_Abstract_Meta_Box {
 	 *
 	 * @param int $post_id | $term_id The post id or term id.
 	 *
-	 * @since 3.1.0
+	 * @param $type int Post or Term
 	 *
+	 * @since 3.1.0
 	 */
-	public function instantiate_fields( $post_id ) {
+	public function instantiate_fields( $post_id, $type ) {
 
 		$this->log->trace( "Instantiating fields for entity post $post_id..." );
 
