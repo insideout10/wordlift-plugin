@@ -84,14 +84,12 @@ class WL_Abstract_Meta_Box {
 	}
 
 	/**
-	 * Called from WP to print the metabox content in page.
-	 *
-	 * @param WP_Post $post The post.
+	 * Render the metabox html.
 	 *
 	 * @since 3.1.0
 	 *
 	 */
-	public function html( $post ) {
+	public function html( ) {
 
 		// Loop over the fields.
 		foreach ( $this->fields as $field ) {
@@ -111,7 +109,7 @@ class WL_Abstract_Meta_Box {
 	 * Note: the first function that calls this method will instantiate the fields.
 	 * Why it isn't called from the constructor? Because we need to hook this process as late as possible.
 	 *
-	 * @param int $post_id The post id.
+	 * @param int $post_id | $term_id The post id or term id.
 	 *
 	 * @since 3.1.0
 	 *

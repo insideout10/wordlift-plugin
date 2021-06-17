@@ -16,9 +16,12 @@ class Term_Meta_Box extends \WL_Abstract_Meta_Box {
 		}
 	}
 
-	public function render_ui() {
-		$this->instantiate_fields( 1 );
-		$this->html(null);
+	/**
+	 * @param $term \WP_Term
+	 */
+	public function render_ui( $term ) {
+		$this->instantiate_fields( $term->term_id );
+		$this->html();
 		$this->enqueue_scripts_and_styles();
 	}
 
