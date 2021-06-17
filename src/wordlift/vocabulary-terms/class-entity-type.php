@@ -12,7 +12,7 @@ class Entity_Type {
 
 		$taxonomies = Terms_Compat::get_public_taxonomies();
 		foreach ( $taxonomies as $taxonomy ) {
-			add_action( "${taxonomy}_edit_form", array( $this, 'render_ui' ), 1 );
+			add_action( "${taxonomy}_edit_form_fields", array( $this, 'render_ui' ), 1 );
 			add_action( "created_${taxonomy}", array( $this, 'save_field' ) );
 			add_action( "edited_${taxonomy}", array( $this, 'save_field' ) );
 		}
@@ -20,23 +20,39 @@ class Entity_Type {
 	}
 
 
-
 	/**
 	 * @param $term  \WP_Term
 	 */
 	public function render_ui( $term ) {
 
+
+		$entity_types_text =  __( 'Entity Types', 'wordlift' );
 		$selected_entity_types = get_term_meta( $term->term_id, 'wl_entity_types' );
 		$entity_type_taxonomy  = Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME;
-		$types = Terms_Compat::get_terms(
-			Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
+		$types                 = Terms_Compat::get_terms(
+			$entity_type_taxonomy,
 			array(
-				'taxonomy' => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
-				'parent'        => 0,
-				'hide_empty'    => false
+				'taxonomy'   => $entity_type_taxonomy,
+				'parent'     => 0,
+				'hide_empty' => false
 			)
 		);
-		echo Term_Checklist::render( 'tax_input[wl_entity_type]', $types, $selected_entity_types );
+
+		$terms_html            = Term_Checklist::render( 'tax_input[wl_entity_type]', $types, $selected_entity_types );
+
+
+
+		$template = <<<EOF
+        <tr class="form-field term-name-wrap">
+            <th scope="row"><label for="wl-entity-type__checklist">%s</label></th>
+            <td>
+                <div id="wl-entity-type__checklist">%s</div>
+            </td>
+        </tr>
+EOF;
+
+
+		echo sprintf( $template, $entity_types_text, $terms_html );
 	}
 
 	public function save_field( $term_id ) {
