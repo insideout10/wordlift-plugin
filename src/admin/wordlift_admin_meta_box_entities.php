@@ -6,6 +6,11 @@
  */
 
 /**
+ * @todo: load the abstract class only when required.
+ */
+require_once( 'WL_Metabox/class-wl-abstract-metabox.php' );
+
+/**
  * Build WL_Metabox and the contained WL_Metabox_Field(s)
  */
 function wl_register_metaboxes() {
