@@ -24,14 +24,11 @@ class Entity_Type {
 	public function render_ui( $term ) {
 
 		$selected_entity_types = get_term_meta( $term->term_id, 'wl_entity_types' );
-
-		echo sprintf( "<h2>%s</h2>", esc_html( __( 'Entity Types', 'wordlift' ) ) );
+		echo sprintf( "<h4>%s</h4>", esc_html( __( 'Entity Types', 'wordlift' ) ) );
 		echo "<div style='height: 300px; overflow-y: scroll;'>";
 		echo wp_terms_checklist( 0, array(
 			'taxonomy'      => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
 			'selected_cats' => array_values( $selected_entity_types ),
-			'checked_ontop' => false,
-			'popular_cats' => false
 		) );
 		echo "</div>";
 	}
@@ -40,9 +37,9 @@ class Entity_Type {
 		$entity_types = $_REQUEST['tax_input'][ Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ];
 		if ( isset( $entity_types ) && is_array( $entity_types ) ) {
 			// Save the taxonomies.
-			delete_term_meta( $term_id, 'wl_entity_types' );
+			delete_term_meta( $term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 			foreach ( $entity_types as $entity_type ) {
-				add_term_meta( $term_id, 'wl_entity_types', (int) $entity_type );
+				add_term_meta( $term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, (int) $entity_type );
 			}
 		}
 	}
