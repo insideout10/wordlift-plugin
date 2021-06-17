@@ -236,6 +236,15 @@ function wl_entity_taxonomy_get_custom_fields( $entity_id = null ) {
 	$types = Wordlift_Entity_Type_Service::get_instance()->get_ids( $entity_id );
 
 	/** @var WP_Term[] $terms */
+	return wl_get_custom_fields_by_entity_type( $types );
+}
+
+/**
+ * @param $types
+ *
+ * @return array
+ */
+function wl_get_custom_fields_by_entity_type( $types ) {
 	$terms = array_filter( array_map( function ( $item ) {
 		return get_term( $item );
 	}, $types ), function ( $item ) {

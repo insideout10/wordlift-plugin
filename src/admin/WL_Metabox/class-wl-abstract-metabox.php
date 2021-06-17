@@ -93,7 +93,7 @@ class WL_Abstract_Meta_Box {
 	 * @since 3.1.0
 	 *
 	 */
-	public function html( ) {
+	public function html() {
 
 		// Loop over the fields.
 		foreach ( $this->fields as $field ) {
@@ -113,23 +113,27 @@ class WL_Abstract_Meta_Box {
 	 * Note: the first function that calls this method will instantiate the fields.
 	 * Why it isn't called from the constructor? Because we need to hook this process as late as possible.
 	 *
-	 * @param int $post_id | $term_id The post id or term id.
+	 * @param int $id | $term_id The post id or term id.
 	 *
 	 * @param $type int Post or Term
 	 *
 	 * @since 3.1.0
 	 */
-	public function instantiate_fields( $post_id, $type ) {
+	public function instantiate_fields( $id, $type ) {
 
-		$this->log->trace( "Instantiating fields for entity post $post_id..." );
+		$this->log->trace( "Instantiating fields for entity post $id..." );
 
 		// This function must be called only once. Not called from the constructor because WP hooks have a rococo ordering.
 		if ( isset( $this->fields ) ) {
 			return;
 		}
-
-		$entity_type = wl_entity_taxonomy_get_custom_fields( $post_id );
-
+		if ( $type === self::POST ) {
+			$entity_type = wl_entity_taxonomy_get_custom_fields( $id );
+		} else if ( $type === self::TERM ) {
+			$term_entity_types = get_term_meta( $id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+			$term_entity_types = array_map( 'get_term', $term_entity_types );
+			$entity_type       = wl_get_custom_fields_by_entity_type( $term_entity_types );
+		}
 		if ( isset( $entity_type ) ) {
 
 			/*
@@ -270,17 +274,18 @@ class WL_Abstract_Meta_Box {
 	/**
 	 * Save the form data for the specified entity {@link WP_Post}'s id.
 	 *
-	 * @param int $entity_id The entity's {@link WP_Post}'s id.
+	 * @param int $id The entity's {@link WP_Post}'s id.
+	 *
+	 * @param $type int Post or term
 	 *
 	 * @since 3.5.4
-	 *
 	 */
-	public function save_form_data( $entity_id ) {
+	public function save_form_data( $id, $type ) {
 
-		$this->log->trace( "Saving form data for entity post $entity_id..." );
+		$this->log->trace( "Saving form data for entity post $id..." );
 
 		// Build Field objects.
-		$this->instantiate_fields( $entity_id );
+		$this->instantiate_fields( $id, $type );
 
 		// Check if WL metabox form was posted.
 		if ( ! isset( $_POST['wl_metaboxes'] ) ) {
@@ -316,15 +321,15 @@ class WL_Abstract_Meta_Box {
 		 * Filter: 'wl_save_form_pre_push_entity' - Allow to hook right
 		 * before the triples are pushed to the linked dataset.
 		 *
-		 * @param int $entity_id The entity id.
+		 * @param int $id The entity id.
 		 * @param int $id The post data.
 		 *
 		 * @since  3.18.2
 		 *
 		 */
-		do_action( 'wl_save_form_pre_push_entity', $entity_id, $_POST );
+		do_action( 'wl_save_form_pre_push_entity', $id, $_POST );
 
-		do_action( 'wl_legacy_linked_data__push', $entity_id );
+		do_action( 'wl_legacy_linked_data__push', $id );
 
 	}
 

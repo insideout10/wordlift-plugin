@@ -9,6 +9,7 @@
 
 
 require_once( 'class-wl-abstract-metabox.php' );
+
 /**
  * Define the {@link WL_Metabox} class.
  *
@@ -37,7 +38,10 @@ class WL_Metabox extends Wl_Abstract_Meta_Box {
 
 			// Add hooks to print metaboxes and save submitted data.
 			add_action( 'add_meta_boxes', array( $this, 'add_main_metabox' ) );
-			add_action( 'wl_linked_data_save_post', array( $this, 'save_form_data', ) );
+			$that = $this;
+			add_action( 'wl_linked_data_save_post', function ( $post_id ) use ( $that ) {
+				$that->save_form_data( $post_id, $that::POST );
+			} );
 
 			// Enqueue js and css.
 			$this->enqueue_scripts_and_styles();
