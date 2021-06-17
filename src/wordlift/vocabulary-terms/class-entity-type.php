@@ -1,6 +1,6 @@
 <?php
 
-namespace Wordlift\Term_Entity;
+namespace Wordlift\Vocabulary_Terms;
 
 use Wordlift\Vocabulary\Terms_Compat;
 use Wordlift_Entity_Type_Taxonomy_Service;
@@ -29,7 +29,9 @@ class Entity_Type {
 		echo "<div style='height: 300px; overflow-y: scroll;'>";
 		echo wp_terms_checklist( 0, array(
 			'taxonomy'      => Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME,
-			'selected_cats' => $selected_entity_types
+			'selected_cats' => array_values( $selected_entity_types ),
+			'checked_ontop' => false,
+			'popular_cats' => false
 		) );
 		echo "</div>";
 	}
