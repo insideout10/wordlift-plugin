@@ -26,8 +26,8 @@ class Entity_Type {
 	public function render_ui( $term ) {
 
 
-		$entity_types_text =  __( 'Entity Types', 'wordlift' );
-		$selected_entity_types = get_term_meta( $term->term_id, 'wl_entity_types' );
+		$entity_types_text     = __( 'Entity Types', 'wordlift' );
+		$selected_entity_types = array_map( 'intval', get_term_meta( $term->term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ) );
 		$entity_type_taxonomy  = Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME;
 		$types                 = Terms_Compat::get_terms(
 			$entity_type_taxonomy,
@@ -38,8 +38,7 @@ class Entity_Type {
 			)
 		);
 
-		$terms_html            = Term_Checklist::render( 'tax_input[wl_entity_type]', $types, $selected_entity_types );
-
+		$terms_html = Term_Checklist::render( 'tax_input[wl_entity_type]', $types, $selected_entity_types );
 
 
 		$template = <<<EOF
