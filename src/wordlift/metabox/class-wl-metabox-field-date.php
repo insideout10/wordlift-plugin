@@ -11,13 +11,13 @@ namespace Wordlift\Metabox;
  */
 
 /**
- * The WL_Metabox_Field_date class extends {@link WL_Metabox_Field} and provides
+ * The WL_Metabox_Field_date class extends {@link Wl_Metabox_Field} and provides
  * support for date fields.
  *
  * @since   3.2.0
  * @package Wordlift
  */
-class Wl_Metabox_Field_Date extends WL_Metabox_Field {
+class Wl_Metabox_Field_Date extends Wl_Metabox_Field {
 
 	/**
 	 * Attribute to distinguish between date formats, inferred from the schema property export type

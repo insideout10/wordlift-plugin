@@ -11,7 +11,7 @@ namespace Wordlift\Metabox;
  */
 
 /**
- * The Wordlift_Metabox_Field_Duration class extends {@link WL_Metabox_Field} and provides
+ * The Wordlift_Metabox_Field_Duration class extends {@link Wl_Metabox_Field} and provides
  * support for time duration fields.
  *
  * @since   3.14.0

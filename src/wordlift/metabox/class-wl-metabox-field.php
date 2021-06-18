@@ -18,7 +18,7 @@ namespace Wordlift\Metabox;
  * @package    Wordlift
  * @subpackage Wordlift/admin/WL_Metabox
  */
-class WL_Metabox_Field {
+class Wl_Metabox_Field {
 
 	/**
 	 * A {@link Wordlift_Log_Service} instance.
@@ -95,7 +95,7 @@ class WL_Metabox_Field {
 	private $post_id;
 
 	/**
-	 * Create a {@link WL_Metabox_Field} instance.
+	 * Create a {@link Wl_Metabox_Field} instance.
 	 *
 	 * @param array $args An array of parameters.
 	 */

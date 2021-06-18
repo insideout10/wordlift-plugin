@@ -9,13 +9,13 @@ namespace Wordlift\Metabox;
  */
 
 /**
- * Define the {@link WL_Metabox_Field_sameas} class.
+ * Define the {@link Wl_Metabox_Field_sameas} class.
  *
  * @since      3.0.0
  * @package    Wordlift
  * @subpackage Wordlift/admin/WL_Metabox
  */
-class WL_Metabox_Field_sameas extends WL_Metabox_Field {
+class Wl_Metabox_Field_sameas extends Wl_Metabox_Field {
 
 	/**
 	 * @inheritdoc

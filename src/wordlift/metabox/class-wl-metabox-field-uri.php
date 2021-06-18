@@ -9,13 +9,13 @@ namespace Wordlift\Metabox;
  */
 
 /**
- * Define the {@link WL_Metabox_Field_uri} class.
+ * Define the {@link Wl_Metabox_Field_uri} class.
  *
  * @since      3.0.0
  * @package    Wordlift
  * @subpackage Wordlift/admin/WL_Metabox
  */
-class WL_Metabox_Field_uri extends WL_Metabox_Field {
+class Wl_Metabox_Field_uri extends Wl_Metabox_Field {
 
 	/**
 	 * Only accept URIs or local entity IDs.

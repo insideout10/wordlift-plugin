@@ -54,14 +54,14 @@ class WL_Metabox_Recipe_Test extends Wordlift_Unit_Test_Case {
 	/**
 	 * Get a field given its meta name.
 	 *
-	 * @since 3.14.0
-	 *
-	 * @param array  $fields An array of {@link WL_Metabox_Field}s.
+	 * @param array  $fields An array of {@link Wl_Metabox_Field}s.
 	 * @param string $name   The meta name.
 	 *
-	 * @return WL_Metabox_Field|null The {@link WL_Metabox_Field} or null if not found.
+	 * @return WL_Metabox_Field|null The {@link Wl_Metabox_Field} or null if not found.
 	 *
 	 * @group metabox
+	 *@since 3.14.0
+	 *
 	 */
 	private function get_by_meta_name( $fields, $name ) {
 
