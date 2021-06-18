@@ -31,7 +31,7 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 		) ) );
 		$this->assertEquals( 10, has_action( 'wl_linked_data_save_post', array(
 			$metabox,
-			'save_form_data',
+			'save_form',
 		) ) );
 	}
 

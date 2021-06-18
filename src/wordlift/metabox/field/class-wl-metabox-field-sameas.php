@@ -1,5 +1,8 @@
 <?php
 namespace Wordlift\Metabox\Field;
+use Wordlift_Configuration_Service;
+use Wordlift_Sanitizer;
+
 /**
  * Metaboxes: sameAs Field Metabox.
  *

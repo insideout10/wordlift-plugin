@@ -1,4 +1,5 @@
 <?php
+
 namespace Wordlift\Metabox;
 /**
  * Metaboxes.
@@ -7,6 +8,7 @@ namespace Wordlift\Metabox;
  * @package    Wordlift
  * @subpackage Wordlift/admin/WL_Metabox
  */
+
 /**
  * Define the {@link Wl_Metabox} class.
  *
@@ -36,15 +38,17 @@ class Wl_Metabox extends Wl_Abstract_Metabox {
 			// Add hooks to print metaboxes and save submitted data.
 			add_action( 'add_meta_boxes', array( $this, 'add_main_metabox' ) );
 			$that = $this;
-			add_action( 'wl_linked_data_save_post', function ( $post_id ) use ( $that ) {
-				$that->save_form_data( $post_id, $that::POST );
-			} );
+			add_action( 'wl_linked_data_save_post', array( $this, 'save_form' ) );
 
 			// Enqueue js and css.
 			$this->enqueue_scripts_and_styles();
 
 		}
 
+	}
+
+	public function save_form( $post_id ) {
+		$this->save_form_data( $post_id, self::POST );
 	}
 
 
