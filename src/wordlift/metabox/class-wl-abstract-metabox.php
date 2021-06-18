@@ -1,5 +1,9 @@
 <?php
+
 namespace Wordlift\Metabox;
+
+use Wordlift\Metabox\Field\Post_Field_Decorator;
+use Wordlift\Metabox\Field\Term_Field_Decorator;
 use Wordlift_Entity_Service;
 use Wordlift_Entity_Type_Taxonomy_Service;
 use Wordlift_Log_Service;
@@ -12,7 +16,6 @@ use Wordlift_Schema_Service;
  * @package    Wordlift
  * @subpackage Wordlift/admin/WL_Metabox
  */
-
 class Wl_Abstract_Metabox {
 
 	const POST = 1;
@@ -157,7 +160,7 @@ class Wl_Abstract_Metabox {
 				$info[ $key ] = $property;
 
 				// Build the requested field as WL_Metabox_Field_ object.
-				$this->add_field( $info );
+				$this->add_field( $info, false, $type, $id );
 
 			}
 
@@ -169,7 +172,7 @@ class Wl_Abstract_Metabox {
 				$info[ $key ] = $property;
 
 				// Build the requested field group as WL_Metabox_Field_ object.
-				$this->add_field( $info, true );
+				$this->add_field( $info, true, $type, $id );
 
 			}
 		}
@@ -219,8 +222,10 @@ class Wl_Abstract_Metabox {
 	 *
 	 * @param array $args The field's information.
 	 * @param bool $grouped Flag to distinguish between simple and grouped fields.
+	 * @param int $type Post or Term, based on the correct decorator would be selected.
+	 * @param int $id Identifier for the type.
 	 */
-	public function add_field( $args, $grouped = false ) {
+	public function add_field( $args, $grouped, $type, $id ) {
 
 		if ( $grouped ) {
 
@@ -268,8 +273,18 @@ class Wl_Abstract_Metabox {
 		$field_class = 'Wordlift\Metabox\Field\\' . $field_class;
 		// End if().
 
+
+		// Get decorator and use it as wrapper for save_data and get_data methods.
+		$instance = new $field_class( $args );
+		if ( Wl_Abstract_Metabox::POST === $type ) {
+			$instance = new Post_Field_Decorator( $id, $instance );
+		}
+		else if ( Wl_Abstract_Metabox::TERM === $type ) {
+			$instance = new Term_Field_Decorator( $id, $instance );
+		}
+
 		// Call apropriate constructor (e.g. Wl_Metabox_Field... ).
-		$this->fields[] = new $field_class( $args );
+		$this->fields[] = $instance;
 	}
 
 	/**

@@ -7,33 +7,20 @@
 
 namespace Wordlift\Metabox\Field;
 
-class Post_Field_Decorator implements Field {
+class Post_Field_Decorator extends Field_Decorator {
 
-	private $post_id;
-
-	private $field;
-
-	/**
-	 * Post_Field_Decorator constructor.
-	 *
-	 * @param $post_id
-	 * @param $field Wl_Metabox_Field
-	 */
-	public function __construct( $post_id, $field ) {
-		$this->post_id = $post_id;
-		$this->field   = $field;
-	}
 
 	public function get_data() {
 		$meta_key = $this->field->meta_name;
-		return get_post_meta( $this->post_id, $meta_key );
+
+		return get_post_meta( $this->id, $meta_key );
 	}
 
 	public function save_data( $values ) {
 
 		$values    = $this->field->sanitize_data( $values );
-		$entity_id = intval( $_POST['post_ID'] );
-		$meta_key = $this->field->meta_name;
+		$entity_id = $this->id;
+		$meta_key  = $this->field->meta_name;
 		// Take away old values.
 		delete_post_meta( $entity_id, $meta_key );
 
@@ -47,4 +34,6 @@ class Post_Field_Decorator implements Field {
 			$this->field->log->debug( "$value to $meta_key for entity $entity_id saved with id $meta_id." );
 		}
 	}
+
+
 }
