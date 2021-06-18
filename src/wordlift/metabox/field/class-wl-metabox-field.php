@@ -30,7 +30,7 @@ class Wl_Metabox_Field implements Field  {
 	 * @access protected
 	 * @var \Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
 	 */
-	protected $log;
+	public $log;
 
 	/**
 	 * The meta name for this field's value.
