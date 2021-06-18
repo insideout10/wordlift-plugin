@@ -1,5 +1,6 @@
 <?php
 namespace Wordlift\Metabox\Field;
+use Wordlift\Metabox\Wl_Metabox;
 use Wordlift_Log_Service;
 use Wordlift_Schema_Service;
 
@@ -21,7 +22,7 @@ use Wordlift_Schema_Service;
  * @package    Wordlift
  * @subpackage Wordlift/admin/WL_Metabox
  */
-class Wl_Metabox_Field implements Field  {
+class Wl_Default_Metabox_Field extends Wl_Metabox_Field {
 
 	/**
 	 * A {@link Wordlift_Log_Service} instance.
@@ -214,7 +215,6 @@ class Wl_Metabox_Field implements Field  {
 	 *
 	 * @param array $values Array of values to be sanitized and then stored into
 	 *                      $this->data.
-     * @return array | string Return sanitized data.
 	 */
 	public function sanitize_data( $values ) {
 
@@ -232,7 +232,6 @@ class Wl_Metabox_Field implements Field  {
 		}
 
 		$this->data = $sanitized_data;
-		return $sanitized_data;
 	}
 
 	/**
@@ -272,7 +271,7 @@ class Wl_Metabox_Field implements Field  {
 	public function save_data( $values ) {
 
 		// Will sanitize data and store them in $field->data.
-		$data = $this->sanitize_data( $values );
+		$this->sanitize_data( $values );
 
 		// Bail out, if the post id isn't set in the request or isn't numeric.
 		//

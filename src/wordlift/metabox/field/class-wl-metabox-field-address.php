@@ -32,7 +32,7 @@ class Wl_Metabox_Field_Address extends Wl_Metabox_Field {
 		$this->subfields = array();
 		// Loop over subfields. Using 'reset' to take the data contained in the first element of $args
 		foreach ( reset( $args ) as $key => $subfield ) {
-			$this->subfields[] = new Wl_Metabox_Field( array( $key => $subfield ) );
+			$this->subfields[] = new Wl_Default_Metabox_Field( array( $key => $subfield ) );
 		}
 		
 		// $_POST array key in which we will pass the values

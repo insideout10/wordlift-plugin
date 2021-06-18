@@ -88,7 +88,7 @@ EOF;
 
 	public function save_data( $coords ) {
 
-		$this->sanitize_data( $coords );
+		$data = $this->sanitize_data( $coords );
 
 		$entity_id = get_the_ID();
 
@@ -96,8 +96,8 @@ EOF;
 		delete_post_meta( $entity_id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE );
 		delete_post_meta( $entity_id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE );
 
-		$latitude  = $this->data[0];
-		$longitude = $this->data[1];
+		$latitude  = $data[0];
+		$longitude = $data[1];
 
 		// insert new coordinate values
 		if ( ! empty( $latitude ) && ! empty( $longitude ) ) {
