@@ -26,7 +26,7 @@ class Entity_Type {
 
 
 		$entity_types_text     = __( 'Entity Types', 'wordlift' );
-		$selected_entity_types = array_map( 'intval', get_term_meta( $term->term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ) );
+		$selected_entity_types = get_term_meta( $term->term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 		$entity_type_taxonomy  = Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME;
 		$types                 = Terms_Compat::get_terms(
 			$entity_type_taxonomy,
@@ -59,7 +59,7 @@ EOF;
 			// Save the taxonomies.
 			delete_term_meta( $term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 			foreach ( $entity_types as $entity_type ) {
-				add_term_meta( $term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, (int) $entity_type );
+				add_term_meta( $term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME, (string) $entity_type );
 			}
 		}
 	}

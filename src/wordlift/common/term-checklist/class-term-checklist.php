@@ -12,7 +12,7 @@ class Term_Checklist {
 	/**
 	 * @param $input_name string The name of the input field assigned to checkbox.
 	 * @param $terms array<\WP_Term>
-	 * @param $selected_term_ids array<int> The list of selected term ids.
+	 * @param $selected_term_ids array<string> The list of selected term slugs.
 	 *
 	 * @return string Html string to be rendered.
 	 */
@@ -33,7 +33,7 @@ class Term_Checklist {
 			$terms_html .= <<<EOF
 <li id="wl_entity_type-{$term->term_id}">
 	<label class="selectit">
-	<input value="{$term->term_id}" type="checkbox" name="{$input_name}[]" id="in-wl_entity_type-{$term->term_id}" $checked>
+	<input value="{$term->slug}" type="checkbox" name="{$input_name}[]" id="in-wl_entity_type-{$term->term_id}" $checked>
 		${term_name}
 	</label>
 </li>
