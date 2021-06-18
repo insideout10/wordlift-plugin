@@ -207,9 +207,9 @@ class Wl_Metabox_Field implements Field {
 	 */
 	function get_data() {
 		if ( Wl_Abstract_Metabox::POST === $this->type ) {
-			return Post_Metabox_Field::get_data( $this->id, $this->meta_name );
+			$this->data =  Post_Metabox_Field::get_data( $this->id, $this->meta_name );
 		} else if ( Wl_Abstract_Metabox::TERM === $this->type ) {
-			return Term_Metabox_Field::get_data( $this->id, $this->meta_name );
+			$this->data =  Term_Metabox_Field::get_data( $this->id, $this->meta_name );
 		}
 	}
 
