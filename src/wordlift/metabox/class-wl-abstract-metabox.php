@@ -275,7 +275,7 @@ class Wl_Abstract_Metabox {
 
 
 		// Get decorator and use it as wrapper for save_data and get_data methods.
-		$instance = new $field_class( $args );
+		$instance = new $field_class( $args, $id, $type );
 
 		// Call apropriate constructor (e.g. Wl_Metabox_Field... ).
 		$this->fields[] = $instance;

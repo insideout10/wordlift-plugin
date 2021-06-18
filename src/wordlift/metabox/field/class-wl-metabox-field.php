@@ -88,16 +88,29 @@ class Wl_Metabox_Field implements Field {
 	 */
 	public $data;
 
+	/**
+	 * @var int The type of the itemm either POST or TERM
+	 */
+	private $type;
+
+	/**
+	 * @var int The id of the item.
+	 */
+	private $id;
+
 
 	/**
 	 * Create a {@link Wl_Metabox_Field} instance.
 	 *
 	 * @param array $args An array of parameters.
+	 * @param $id int The id of the item
+	 * @param $type int The type of the item, POST or TERM.
 	 */
-	public function __construct( $args ) {
+	public function __construct( $args, $id, $type ) {
 
 		$this->log = Wordlift_Log_Service::get_logger( 'Wl_Metabox_Field' );
-
+        $this->id = $id;
+        $this->type = $type;
 		if ( empty( $args ) ) {
 			return;
 		}
