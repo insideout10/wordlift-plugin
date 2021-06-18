@@ -21,7 +21,7 @@ use Wordlift_Schema_Service;
  * @package    Wordlift
  * @subpackage Wordlift/admin/WL_Metabox
  */
-class Wl_Metabox_Field implements Field, test {
+class Wl_Metabox_Field implements Field {
 
 	/**
 	 * A {@link Wordlift_Log_Service} instance.
