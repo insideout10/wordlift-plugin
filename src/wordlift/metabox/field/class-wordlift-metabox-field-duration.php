@@ -1,5 +1,5 @@
 <?php
-namespace Wordlift\Metabox;
+namespace Wordlift\Metabox\Field;
 /**
  * Metaxboxes: Duration Field.
  *

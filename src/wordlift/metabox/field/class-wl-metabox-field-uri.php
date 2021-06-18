@@ -1,5 +1,7 @@
 <?php
-namespace Wordlift\Metabox;
+namespace Wordlift\Metabox\Field;
+use Wordlift_Entity_Service;
+
 /**
  * Metaboxes: URI Field Metabox.
  *

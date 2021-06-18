@@ -1,5 +1,5 @@
 <?php
-namespace Wordlift\Metabox;
+namespace Wordlift\Metabox\Field;
 /**
  * Field to manage the address. The pattern followed is to simply build an array of subfields using the base WL_Metabox_field class,
  * and act as a proxy between WL_Metabox and them.

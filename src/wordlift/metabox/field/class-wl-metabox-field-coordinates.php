@@ -1,5 +1,5 @@
 <?php
-namespace Wordlift\Metabox;
+namespace Wordlift\Metabox\Field;
 
 use Wordlift_Schema_Service;
 
