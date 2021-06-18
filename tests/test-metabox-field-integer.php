@@ -7,6 +7,8 @@
  * @subpackage Wordlift/tests
  */
 
+use Wordlift\Metabox\Field\Wordlift_Metabox_Field_Integer;
+
 /**
  * Test the {@link Wordlift_Metabox_Field_Integer} class.
  *

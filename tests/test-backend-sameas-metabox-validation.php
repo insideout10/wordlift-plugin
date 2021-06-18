@@ -1,5 +1,7 @@
 <?php
 
+use Wordlift\Metabox\Field\Wl_Metabox_Field_sameas;
+
 /**
  * @since 3.27.7
  * @author Naveen Muthusamy <naveen@wordlift.io>
@@ -8,7 +10,7 @@
 class Sameas_Metabox_Validation_Test extends Wordlift_Unit_Test_Case {
 
 	/**
-	 * @var WL_Metabox_Field_sameas
+	 * @var Wl_Metabox_Field_sameas
 	 */
 	private $instance;
 
@@ -31,7 +33,7 @@ class Sameas_Metabox_Validation_Test extends Wordlift_Unit_Test_Case {
 						),
 				),
 		);
-		$this->instance = new WL_Metabox_Field_sameas( $config );
+		$this->instance = new Wl_Metabox_Field_sameas( $config );
 
 	}
 

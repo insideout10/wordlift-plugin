@@ -31,7 +31,7 @@ class Wl_Default_Metabox_Field extends Wl_Metabox_Field {
 	 * @access protected
 	 * @var \Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
 	 */
-	protected $log;
+	public $log;
 
 	/**
 	 * The meta name for this field's value.

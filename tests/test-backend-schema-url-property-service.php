@@ -7,6 +7,8 @@
  * @subpackage Wordlift/tests
  */
 
+use Wordlift\Metabox\Wl_Metabox;
+
 /**
  * Test the {@link Wordlift_Schema_Url_Property_Service} class.
  *
@@ -37,7 +39,7 @@ class Wordlift_Backend_Schema_Url_Property_Service_Test extends Wordlift_Unit_Te
 	public function test_metabox() {
 
 		// Create a new metabox and add this property.
-		$metabox = new WL_Metabox();
+		$metabox = new Wl_Metabox();
 		$metabox->add_field( array( Wordlift_Schema_Url_Property_Service::META_KEY => $this->schema_url_property_service->get_compat_definition() ) );
 
 		// Check that we have one metabox field with the class and label set by this property.
