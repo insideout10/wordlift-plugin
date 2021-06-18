@@ -88,14 +88,6 @@ class Wl_Metabox_Field implements Field {
 	 */
 	public $data;
 
-	/**
-	 * The current {@link WP_Post} id.
-	 *
-	 * @since 3.15.3
-	 *
-	 * @var int The current {@link WP_Post} id.
-	 */
-	private $post_id;
 
 	/**
 	 * Create a {@link Wl_Metabox_Field} instance.
@@ -158,7 +150,7 @@ class Wl_Metabox_Field implements Field {
 		// Save early the post id to avoid other plugins messing up with it.
 		//
 		// See https://github.com/insideout10/wordlift-plugin/issues/665.
-		$this->post_id = get_the_ID();
+
 
 	}
 

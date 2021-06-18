@@ -276,12 +276,6 @@ class Wl_Abstract_Metabox {
 
 		// Get decorator and use it as wrapper for save_data and get_data methods.
 		$instance = new $field_class( $args );
-		if ( Wl_Abstract_Metabox::POST === $type ) {
-			$instance = new Post_Field_Decorator( $id, $instance );
-		}
-		else if ( Wl_Abstract_Metabox::TERM === $type ) {
-			$instance = new Term_Field_Decorator( $id, $instance );
-		}
 
 		// Call apropriate constructor (e.g. Wl_Metabox_Field... ).
 		$this->fields[] = $instance;
@@ -310,15 +304,16 @@ class Wl_Abstract_Metabox {
 			return;
 		}
 
+		$posted_data = $_POST['wl_metaboxes'];
+
 		foreach ( $this->fields as $field ) {
 
 			// Verify nonce.
 			$valid_nonce = $field->verify_nonce();
+
 			if ( $valid_nonce ) {
-
-				$posted_data = $_POST['wl_metaboxes'];
 				$field_name  = $field->meta_name;
-
+				var_dump($field_name);
 				// Each Filed only deals with its values.
 				if ( isset( $posted_data[ $field_name ] ) ) {
 
@@ -326,7 +321,6 @@ class Wl_Abstract_Metabox {
 					if ( ! is_array( $values ) ) {
 						$values = array( $values );
 					}
-
 					// Save data permanently
 					$field->save_data( $values );
 				}
