@@ -7,9 +7,6 @@ namespace Wordlift\Metabox;
  * @package    Wordlift
  * @subpackage Wordlift/admin/WL_Metabox
  */
-require_once( 'WL_Metabox_Field_date.php' );
-require_once( 'WL_Metabox_Field_coordinates.php' );
-require_once( 'WL_Metabox_Field_address.php' );
 
 class WL_Abstract_Meta_Box {
 
