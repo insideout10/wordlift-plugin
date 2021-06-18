@@ -6,10 +6,6 @@
  * @package    Wordlift
  * @subpackage Wordlift/admin/WL_Metabox
  */
-
-
-require_once( 'class-wl-abstract-metabox.php' );
-
 /**
  * Define the {@link WL_Metabox} class.
  *

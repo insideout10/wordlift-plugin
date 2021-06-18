@@ -1,4 +1,5 @@
 <?php
+namespace Wordlift\Metabox;
 /**
  * This class provides abstract metbox which can be extended for term pages.
  *
@@ -6,16 +7,9 @@
  * @package    Wordlift
  * @subpackage Wordlift/admin/WL_Metabox
  */
-require_once( 'class-wl-metabox-field.php' );
-require_once( 'class-wl-metabox-field-uri.php' );
-require_once( 'class-wl-metabox-field-sameas.php' );
 require_once( 'WL_Metabox_Field_date.php' );
 require_once( 'WL_Metabox_Field_coordinates.php' );
 require_once( 'WL_Metabox_Field_address.php' );
-require_once( 'class-wordlift-metabox-field-duration.php' );
-require_once( 'class-wordlift-metabox-field-multiline.php' );
-require_once( 'class-wordlift-metabox-field-integer.php' );
-require_once( 'class-wordlift-metabox-field-select.php' );
 
 class WL_Abstract_Meta_Box {
 
