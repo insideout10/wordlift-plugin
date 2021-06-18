@@ -130,7 +130,13 @@ class Wl_Abstract_Metabox {
 			$entity_type = wl_entity_taxonomy_get_custom_fields( $id );
 		} else if ( $type === self::TERM ) {
 			$term_entity_types = get_term_meta( $id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
-			$term_entity_types = array_map( 'get_term', $term_entity_types );
+			$term_entity_types = array_map( function ( $term ) {
+				return get_term_by(
+					'slug',
+					$term,
+					Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME
+				);
+			}, $term_entity_types );
 			$entity_type       = wl_get_custom_fields_by_entity_type( $term_entity_types );
 		}
 		if ( isset( $entity_type ) ) {
