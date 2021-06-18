@@ -7,7 +7,7 @@
 
 namespace Wordlift\Metabox\Field\Store;
 
-class Term_Metabox_Field implements Store {
+class Term_Store implements Store {
 
 	public static function get_data( $term_id, $meta_key ) {
 		return get_term_meta( $term_id, $meta_key );
@@ -28,4 +28,12 @@ class Term_Metabox_Field implements Store {
 
 	}
 
+	public static function delete_meta( $id, $meta_key ) {
+		delete_term_meta( $id, $meta_key );
+	}
+
+
+	public static function add_meta( $id, $meta_key, $meta_value, $is_unique ) {
+		add_term_meta( $id, $meta_key, $meta_key, $is_unique );
+	}
 }

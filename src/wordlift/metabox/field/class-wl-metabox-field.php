@@ -95,12 +95,12 @@ class Wl_Metabox_Field implements Field {
 	/**
 	 * @var int The type of the itemm either POST or TERM
 	 */
-	private $type;
+	protected $type;
 
 	/**
 	 * @var int The id of the item.
 	 */
-	private $id;
+	protected $id;
 
 
 	/**

@@ -1,14 +1,17 @@
 <?php
+
 namespace Wordlift\Metabox\Field;
 
+use Wordlift\Metabox\Field\Store\Store_Factory;
 use Wordlift_Schema_Service;
 
 class Wl_Metabox_Field_Coordinates extends Wl_Metabox_Field {
 
-	public function __construct( $args, $id, $type) {
+	public function __construct( $args, $id, $type ) {
 
 		// Just set up the necessary info without calling the parent constructor.
 		// TODO: write a parent class for grouped properties
+		parent::__construct( $args, $id, $type );
 
 		// we use 'coordinates' to namespace the Field in $_POST data.
 		// In  the DB the correct meta names will be used.
@@ -32,7 +35,7 @@ class Wl_Metabox_Field_Coordinates extends Wl_Metabox_Field {
 		$html .= $this->html_nonce();
 
 		// Get coordinates
-		$data        = $this->data;
+		$data = $this->data;
 		// TODO: We temporary use here 0,0 as default coordinates for the marker, but if no coordinates are given we
 		// want to use the current user location for the marker.
 		$coordinates = ( ! empty( $data['latitude'] ) && ! empty( $data['longitude'] ) ? sprintf( '[%f,%f]', $data['latitude'], $data['longitude'] ) : '[0,0]' );
@@ -49,7 +52,7 @@ class Wl_Metabox_Field_Coordinates extends Wl_Metabox_Field {
 
 		// Show Leaflet map to pick coordinates
 		$element_id = uniqid( 'wl-geo-map-' );
-		$html .= <<<EOF
+		$html       .= <<<EOF
 
 <div id="$element_id"></div>
 
@@ -90,19 +93,19 @@ EOF;
 
 		$data = $this->sanitize_data( $coords );
 
-		$entity_id = get_the_ID();
 
+		$instance = Store_Factory::get_instance( $this->type );
 		// Take away old values
-		delete_post_meta( $entity_id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE );
-		delete_post_meta( $entity_id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE );
+		$instance::delete_meta( $this->id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE );
+		$instance::delete_meta( $this->id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE );
 
 		$latitude  = $data[0];
 		$longitude = $data[1];
 
 		// insert new coordinate values
 		if ( ! empty( $latitude ) && ! empty( $longitude ) ) {
-			add_post_meta( $entity_id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE, $latitude, true );
-			add_post_meta( $entity_id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, $longitude, true );
+			$instance::add_meta( $this->id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE, $latitude, true );
+			$instance::add_meta( $this->id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, $longitude, true );
 		}
 
 	}

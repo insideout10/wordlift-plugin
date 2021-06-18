@@ -7,7 +7,7 @@
 
 namespace Wordlift\Metabox\Field\Store;
 
-class Post_Metabox_Field implements Store {
+class Post_Store implements Store {
 
 	public static function get_data( $post_id, $meta_key ) {
 		return get_post_meta( $post_id, $meta_key );
@@ -27,4 +27,12 @@ class Post_Metabox_Field implements Store {
 	}
 
 
+	public static function delete_meta( $id, $meta_key ) {
+		delete_post_meta( $id, $meta_key );
+	}
+
+
+	public static function add_meta( $id, $meta_key, $meta_value, $is_unique ) {
+		add_post_meta( $id, $meta_key, $meta_key, $is_unique );
+	}
 }

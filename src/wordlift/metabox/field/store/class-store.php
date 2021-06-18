@@ -7,4 +7,8 @@ interface Store {
 
 	public static function save_data( $post_id, $meta_key, $cardinality, $values );
 
+	public static function delete_meta( $id, $meta_key );
+
+	public static function add_meta( $id, $meta_key, $meta_value, $is_unique );
+
 }

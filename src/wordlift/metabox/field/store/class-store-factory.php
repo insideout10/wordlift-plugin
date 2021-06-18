@@ -14,10 +14,10 @@ class Store_Factory {
 	public static function get_instance(  $type ) {
 
 		if ( Wl_Abstract_Metabox::POST === $type ) {
-			return new Post_Metabox_Field();
+			return new Post_Store();
 		}
 		else if ( Wl_Abstract_Metabox::TERM === $type) {
-			return new Term_Metabox_Field();
+			return new Term_Store();
 		}
 		return null;
 	}
