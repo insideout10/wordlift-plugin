@@ -197,13 +197,9 @@ class Wl_Metabox_Field implements Field  {
 	 *
 	 * Overwrite this method in a child class to obtain custom behaviour.
 	 */
-	public function get_data() {
-
-		// Get the post id and load the data.
-		$post_id    = $this->post_id;
-		$this->data = get_post_meta( $post_id, $this->meta_name );
-
-	}
+	function get_data() {
+	    // do nothing, decorators should override and retrieve data.
+    }
 
 	/**
 	 * Sanitizes data before saving to DB. Default sanitization trashes empty
@@ -269,22 +265,9 @@ class Wl_Metabox_Field implements Field  {
 	 *
 	 * @param array $values Array of values to be sanitized and then stored into $this->data.
 	 */
-	public function save_data( $values ) {
-
-		// Will sanitize data and store them in $field->data.
-		$data = $this->sanitize_data( $values );
-
-		// Bail out, if the post id isn't set in the request or isn't numeric.
-		//
-		// See https://github.com/insideout10/wordlift-plugin/issues/665.
-		if ( isset( $_POST['post_ID'] ) && is_numeric( $_POST['post_ID'] ) ) {
-			$this->save_data_for_post();
-		} else if ( isset( $_POST['tag_ID'] ) && is_numeric( $_POST['tag_ID'] ) ) {
-            $this->save_data_for_term();
-		}
-
-
-	}
+	 function save_data( $values ) {
+	     // do nothing, decorators should take care of saving data.
+     }
 
 	/**
 	 * Returns the HTML tag that will contain the Field. By default the we
@@ -477,39 +460,4 @@ class Wl_Metabox_Field implements Field  {
 
 		return '</div>';
 	}
-
-	private function save_data_for_post() {
-		$entity_id = intval( $_POST['post_ID'] );
-
-		// Take away old values.
-		delete_post_meta( $entity_id, $this->meta_name );
-
-		// insert new values, respecting cardinality.
-		$single = ( 1 === $this->cardinality );
-		foreach ( $this->data as $value ) {
-			$this->log->trace( "Saving $value to $this->meta_name for entity $entity_id..." );
-			// To avoid duplicate values
-			delete_post_meta( $entity_id, $this->meta_name, $value );
-			$meta_id = add_post_meta( $entity_id, $this->meta_name, $value, $single );
-			$this->log->debug( "$value to $this->meta_name for entity $entity_id saved with id $meta_id." );
-		}
-	}
-
-	private function save_data_for_term() {
-		$term_id = intval( $_POST['tag_ID'] );
-
-		// Take away old values.
-		delete_term_meta( $term_id, $this->meta_name );
-
-		// insert new values, respecting cardinality.
-		$single = ( 1 === $this->cardinality );
-		foreach ( $this->data as $value ) {
-			$this->log->trace( "Saving $value to $this->meta_name for term $term_id..." );
-			// To avoid duplicate values
-			delete_term_meta( $term_id, $this->meta_name, $value );
-			$meta_id = add_term_meta( $term_id, $this->meta_name, $value, $single );
-			$this->log->debug( "$value to $this->meta_name for term $term_id saved with id $meta_id." );
-		}
-	}
-
 }
