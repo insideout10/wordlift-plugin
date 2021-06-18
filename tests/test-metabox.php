@@ -1,5 +1,12 @@
 <?php
-require_once( dirname( __FILE__ ) . '/../src/admin/WL_Metabox/class-wl-metabox.php' );
+
+use Wordlift\Metabox\Wl_Abstract_Metabox;
+use Wordlift\Metabox\Wl_Metabox;
+use Wordlift\Metabox\Wl_Metabox_Field_Address;
+use Wordlift\Metabox\Wl_Metabox_Field_Coordinates;
+use Wordlift\Metabox\Wl_Metabox_Field_sameas;
+use Wordlift\Metabox\Wl_Metabox_Field_uri;
+
 
 /**
  * Class MetaboxTest
@@ -8,13 +15,13 @@ require_once( dirname( __FILE__ ) . '/../src/admin/WL_Metabox/class-wl-metabox.p
 class MetaboxTest extends Wordlift_Unit_Test_Case {
 
 	/**
-	 * Test the WL_Metabox obj is built properly
+	 * Test the wl_Metabox obj is built properly
 	 *
 	 * @group metabox
 	 */
-	function testWL_Metabox_constructor() {
+	function testwl_Metabox_constructor() {
 
-		$metabox = new WL_Metabox();
+		$metabox = new Wl_Metabox();
 
 		// Verify the object has hooked correctly (default priority for hooks is 10)
 		$this->assertEquals( 10, has_action( 'add_meta_boxes', array(
@@ -28,30 +35,30 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 	}
 
 	/**
-	 * Test the WL_Metabox fields are built properly
+	 * Test the Wl_Metabox fields are built properly
 	 *
 	 * @group metabox
 	 */
-	function testWL_Metabox_fields_instantiation() {
+	function testWl_Metabox_fields_instantiation() {
 
 		// Create an entity of type Place
 		$place_id = wl_create_post( '', 'p', 'A place', 'publish', Wordlift_Entity_Service::TYPE_NAME );
 		wl_set_entity_main_type( $place_id, 'http://schema.org/Place' );
 
 		// Create Metabox and its Fields
-		$metabox = new WL_Metabox();
-		$metabox->instantiate_fields( $place_id );
+		$metabox = new Wl_Metabox();
+		$metabox->instantiate_fields( $place_id, Wl_Abstract_Metabox::POST );
 
 		$fields                = wl_entity_taxonomy_get_custom_fields( $place_id );
 		$sameAs_field          = array( 'sameas' => array( Wordlift_Schema_Service::FIELD_SAME_AS => $fields[ Wordlift_Schema_Service::FIELD_SAME_AS ] ) );
-		$sameAs_field_obj      = new WL_Metabox_Field_sameas( $sameAs_field );
+		$sameAs_field_obj      = new Wl_Metabox_Field_sameas( $sameAs_field );
 		$coordinates_field     = array(
 			'coordinates' => array(
 				Wordlift_Schema_Service::FIELD_GEO_LATITUDE  => $fields[ Wordlift_Schema_Service::FIELD_GEO_LATITUDE ],
 				Wordlift_Schema_Service::FIELD_GEO_LONGITUDE => $fields[ Wordlift_Schema_Service::FIELD_GEO_LONGITUDE ],
 			),
 		);
-		$coordinates_field_obj = new WL_Metabox_Field_coordinates( $coordinates_field );
+		$coordinates_field_obj = new Wl_Metabox_Field_coordinates( $coordinates_field );
 		$address_field         = array(
 			'address' => array(
 				Wordlift_Schema_Service::FIELD_ADDRESS             => $fields[ Wordlift_Schema_Service::FIELD_ADDRESS ],
@@ -62,7 +69,7 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 				Wordlift_Schema_Service::FIELD_ADDRESS_COUNTRY     => $fields[ Wordlift_Schema_Service::FIELD_ADDRESS_COUNTRY ],
 			),
 		);
-		$address_field_obj     = new WL_Metabox_Field_address( $address_field );
+		$address_field_obj     = new Wl_Metabox_Field_address( $address_field );
 
 		// Verify the correct fields have been built.
 		//
@@ -75,18 +82,18 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 	}
 
 	/**
-	 * Test the WL_Metabox field grouping mechanism
+	 * Test the Wl_Metabox field grouping mechanism
 	 *
 	 * @group metabox
 	 */
-	function testWL_Metabox_group_properties_by_input_field() {
+	function testWl_Metabox_group_properties_by_input_field() {
 
 		// Create an entity of type Place
 		$business_id = wl_create_post( '', 'p', 'A place', 'publish', Wordlift_Entity_Service::TYPE_NAME );
 		wl_set_entity_main_type( $business_id, 'http://schema.org/LocalBusiness' );
 
 		// Create Metabox and its Fields
-		$metabox                   = new WL_Metabox();
+		$metabox                   = new Wl_Metabox();
 		$entity_type               = wl_entity_taxonomy_get_custom_fields( $business_id );
 		$simple_and_grouped_fields = $metabox->group_properties_by_input_field( $entity_type );
 
@@ -98,18 +105,18 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 	}
 
 	/**
-	 * Test the WL_Metabox $_POST saving mechanism
+	 * Test the Wl_Metabox $_POST saving mechanism
 	 *
 	 * @group metabox
 	 */
-	function testWL_Metabox_save_form_data() {
+	function testWl_Metabox_save_form_data() {
 
 		// Create an entity of type Place
 		$place_id = wl_create_post( '', 'p', 'A place', 'publish', Wordlift_Entity_Service::TYPE_NAME );
 		wl_set_entity_main_type( $place_id, 'http://schema.org/Place' );
 
 		// Create Metabox and its Fields
-		$metabox = new WL_Metabox();
+		$metabox = new Wl_Metabox();
 		$metabox->instantiate_fields( $place_id );
 
 		// Create fake context
@@ -134,7 +141,7 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 			'wordlift_' . Wordlift_Schema_Service::FIELD_SAME_AS . '_entity_box_nonce' => wp_create_nonce( 'wordlift_' . Wordlift_Schema_Service::FIELD_SAME_AS . '_entity_box' ),
 		);
 
-		// Metabox save (we call it manually here, but it's hooked to wl_linked_data_save_post - see *testWL_Metabox_constructor*)
+		// Metabox save (we call it manually here, but it's hooked to wl_linked_data_save_post - see *testWl_Metabox_constructor*)
 		$metabox->save_form_data( $place_id );
 
 		// Verify data was correctly passed to the fields and saved into DB
@@ -152,22 +159,22 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 
 
 	/*************************************************************************
-	 * Test Fields. The following are about the WL_Metabox_Filed_xxx classes. *
+	 * Test Fields. The following are about the Wl_Metabox_Filed_xxx classes. *
 	 *************************************************************************/
 
-	// TODO: Test base class WL_Metabox_Field :(
+	// TODO: Test base class Wl_Metabox_Field :(
 
 
 	/**
-	 * Test the WL_Metabox_Field_uri obj is built properly
+	 * Test the Wl_Metabox_Field_uri obj is built properly
 	 *
 	 * @group metabox
 	 */
-	function testWL_Metabox_Field_uri_constructor() {
+	function testWl_Metabox_Field_uri_constructor() {
 
 		// Build a single Field
 		$author_custom_field = $this->getSampleCustomField( Wordlift_Schema_Service::DATA_TYPE_URI );
-		$field               = new WL_Metabox_Field_uri( $author_custom_field );
+		$field               = new Wl_Metabox_Field_uri( $author_custom_field );
 
 		// Verify Field has been built correctly
 		$this->assertEquals( Wordlift_Schema_Service::FIELD_AUTHOR, $field->meta_name );
@@ -182,7 +189,7 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 
 		// TODO: review this test, do not convert an object to an array.
 		// Stress the constructor with invalid data
-//		$field      = new WL_Metabox_Field_uri( null );
+//		$field      = new Wl_Metabox_Field_uri( null );
 //		$emptyField = array(
 //			'meta_name'         => null,
 //			'raw_custom_field'  => null,
@@ -197,15 +204,15 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 	}
 
 	/**
-	 * Test the WL_Metabox_Field_uri obj print correctly html
+	 * Test the Wl_Metabox_Field_uri obj print correctly html
 	 *
 	 * @group metabox
 	 */
-	function testWL_Metabox_Field_uri_html() {
+	function testWl_Metabox_Field_uri_html() {
 
 		$args = $this->getSampleCustomField( Wordlift_Schema_Service::DATA_TYPE_URI );
 
-		$field = new WL_Metabox_Field_uri( $args );
+		$field = new Wl_Metabox_Field_uri( $args );
 
 		// verify html methods
 		$html = $field->html();
@@ -219,11 +226,11 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 	}
 
 	/**
-	 * Test the WL_Metabox_Field loads and saves data correcly
+	 * Test the Wl_Metabox_Field loads and saves data correcly
 	 *
 	 * @group metabox
 	 */
-	function testWL_Metabox_Field_uri_data() {
+	function testWl_Metabox_Field_uri_data() {
 		global $wp_filter;
 		$wp_filter = array();
 		// Create an entity of type Person
@@ -242,7 +249,7 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 
 		// Build a single Field
 		$author_custom_field = $this->getSampleCustomField( Wordlift_Schema_Service::DATA_TYPE_URI );
-		$field               = new WL_Metabox_Field_uri( $author_custom_field );
+		$field               = new Wl_Metabox_Field_uri( $author_custom_field );
 
 		// Verify data is loaded correctly from DB
 		$field->get_data();
