@@ -1,6 +1,8 @@
 <?php
 namespace Wordlift\Metabox;
 
+use Wordlift_Schema_Service;
+
 class Wl_Metabox_Field_Coordinates extends Wl_Metabox_Field {
 
 	public function __construct( $args ) {

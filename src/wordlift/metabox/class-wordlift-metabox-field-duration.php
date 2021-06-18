@@ -17,7 +17,7 @@ namespace Wordlift\Metabox;
  * @since   3.14.0
  * @package Wordlift
  */
-class Wordlift_Metabox_Field_Duration extends WL_Metabox_Field_date {
+class Wordlift_Metabox_Field_Duration extends Wl_Metabox_Field_date {
 
 	/**
 	 * {@inheritdoc}

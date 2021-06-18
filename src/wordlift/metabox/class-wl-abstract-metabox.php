@@ -1,5 +1,10 @@
 <?php
 namespace Wordlift\Metabox;
+use Wordlift_Entity_Service;
+use Wordlift_Entity_Type_Taxonomy_Service;
+use Wordlift_Log_Service;
+use Wordlift_Schema_Service;
+
 /**
  * This class provides abstract metbox which can be extended for term pages.
  *
@@ -222,7 +227,7 @@ class Wl_Abstract_Metabox {
 			// Special fields (sameas, coordinates, etc.).
 			//
 			// Build Field with a custom class (e.g. WL_Metabox_Field_date).
-			$field_class = 'WL_Metabox_Field_' . key( $args );
+			$field_class = 'Wl_Metabox_Field_' . key( $args );
 
 		} else {
 
@@ -242,23 +247,23 @@ class Wl_Abstract_Metabox {
 				// TODO: all fields should explicitly declare the required WL_Metabox.
 				// When they will remove this.
 				//
-				// Use default WL_Metabox_Field (manages strings).
-				$field_class = 'WL_Metabox_Field';
+				// Use default Wl_Metabox_Field (manages strings).
+				$field_class = 'Wl_Metabox_Field';
 
 			} else {
 
 				// TODO: all fields should explicitly declare the required WL_Metabox.
 				// When they will remove this.
 				//
-				// Build Field with a custom class (e.g. WL_Metabox_Field_date).
-				$field_class = 'WL_Metabox_Field_' . $this_meta['type'];
+				// Build Field with a custom class (e.g. Wl_Metabox_Field_date).
+				$field_class = 'Wl_Metabox_Field_' . $this_meta['type'];
 
 			}
 
 		}
 		// End if().
 
-		// Call apropriate constructor (e.g. WL_Metabox_Field_... ).
+		// Call apropriate constructor (e.g. Wl_Metabox_Field... ).
 		$this->fields[] = new $field_class( $args );
 	}
 

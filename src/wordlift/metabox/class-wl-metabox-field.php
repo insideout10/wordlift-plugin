@@ -1,5 +1,8 @@
 <?php
 namespace Wordlift\Metabox;
+use Wordlift_Log_Service;
+use Wordlift_Schema_Service;
+
 /**
  * Metaboxes: Field Metabox.
  *
@@ -101,7 +104,7 @@ class Wl_Metabox_Field {
 	 */
 	public function __construct( $args ) {
 
-		$this->log = Wordlift_Log_Service::get_logger( 'WL_Metabox_Field' );
+		$this->log = Wordlift_Log_Service::get_logger( 'Wl_Metabox_Field' );
 
 		if ( empty( $args ) ) {
 			return;
