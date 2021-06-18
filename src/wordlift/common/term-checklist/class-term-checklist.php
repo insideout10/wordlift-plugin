@@ -29,7 +29,7 @@ class Term_Checklist {
 			 * @var $term \WP_Term
 			 */
 			$term_name  = esc_html( $term->name );
-			$checked    = in_array( $term->term_id, $selected_term_ids ) ? 'checked' : '';
+			$checked    = in_array( $term->slug, $selected_term_ids ) ? 'checked' : '';
 			$terms_html .= <<<EOF
 <li id="wl_entity_type-{$term->term_id}">
 	<label class="selectit">
