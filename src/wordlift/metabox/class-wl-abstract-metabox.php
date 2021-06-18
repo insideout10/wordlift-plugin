@@ -265,7 +265,7 @@ class Wl_Abstract_Metabox {
 		 * @since 3.31.6
 		 * Add namespace to initialize class.
 		 */
-		$field_class = 'Wordlift\Metabox\\' . $field_class;
+		$field_class = 'Wordlift\Metabox\Field\\' . $field_class;
 		// End if().
 
 		// Call apropriate constructor (e.g. Wl_Metabox_Field... ).
