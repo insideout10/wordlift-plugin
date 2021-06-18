@@ -19,8 +19,13 @@ class Wl_Metabox_Field_Coordinates extends Wl_Metabox_Field {
 	}
 
 	public function get_data() {
-		$entity_id  = get_the_ID();
-		$this->data = wl_get_coordinates( $entity_id );
+		$instance = Store_Factory::get_instance( $this->type );
+		$latitude = $instance::get_data( $this->id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE );
+		$longitude = $instance::get_data( $this->id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE );
+		$this->data = array(
+			'latitude'  => isset( $latitude[0] ) && is_numeric( $latitude[0] ) ? $latitude[0] : '',
+			'longitude' => isset( $longitude[0] ) && is_numeric( $longitude[0] ) ? $longitude[0] : '',
+		);
 	}
 
 	public function html() {
@@ -58,28 +63,30 @@ class Wl_Metabox_Field_Coordinates extends Wl_Metabox_Field {
 
 <script type="text/javascript">
 
-	(function ($) {
+	window.addEventListener( 'load', function () {
 
-		$('#$element_id').width('100%').height('200px');
-
-		var wlMap = L.map('$element_id').$map_init;
-
-		L.tileLayer( 'https://{s}.tile.osm.org/{z}/{x}/{y}.png',
-		    { attribution: '&copy; <a href=https://osm.org/copyright>OpenStreetMap</a> contributors'}
-		).addTo( wlMap );
-
-		var marker = L.marker($coordinates).addTo( wlMap );
-
-		function refreshCoords(e) {
-		    $('#wl_place_lat').val( e.latlng.lat );
-		    $('#wl_place_lon').val( e.latlng.lng );
-		    marker.setLatLng( e.latlng )
-		}
-
-		wlMap.on('click', refreshCoords);
-
-	})(jQuery);
-
+		(function ($) {
+	
+			$('#$element_id').width('100%').height('200px');
+	
+			var wlMap = L.map('$element_id').$map_init;
+	
+			L.tileLayer( 'https://{s}.tile.osm.org/{z}/{x}/{y}.png',
+			    { attribution: '&copy; <a href=https://osm.org/copyright>OpenStreetMap</a> contributors'}
+			).addTo( wlMap );
+	
+			var marker = L.marker($coordinates).addTo( wlMap );
+	
+			function refreshCoords(e) {
+			    $('#wl_place_lat').val( e.latlng.lat );
+			    $('#wl_place_lon').val( e.latlng.lng );
+			    marker.setLatLng( e.latlng )
+			}
+	
+			wlMap.on('click', refreshCoords);
+	
+		})(jQuery);
+	})
 </script>
 EOF;
 
@@ -93,7 +100,6 @@ EOF;
 
 		$data = $this->sanitize_data( $coords );
 
-
 		$instance = Store_Factory::get_instance( $this->type );
 		// Take away old values
 		$instance::delete_meta( $this->id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE );
@@ -101,7 +107,6 @@ EOF;
 
 		$latitude  = $data[0];
 		$longitude = $data[1];
-
 		// insert new coordinate values
 		if ( ! empty( $latitude ) && ! empty( $longitude ) ) {
 			$instance::add_meta( $this->id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE, $latitude, true );

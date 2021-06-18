@@ -34,6 +34,6 @@ class Term_Store implements Store {
 
 
 	public static function add_meta( $id, $meta_key, $meta_value, $is_unique ) {
-		add_term_meta( $id, $meta_key, $meta_key, $is_unique );
+		add_term_meta( $id, $meta_key, $meta_value, $is_unique );
 	}
 }
