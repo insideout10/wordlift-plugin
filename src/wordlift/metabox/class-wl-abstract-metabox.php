@@ -8,7 +8,7 @@ namespace Wordlift\Metabox;
  * @subpackage Wordlift/admin/WL_Metabox
  */
 
-class Wl_Abstract_Meta_Box {
+class Wl_Abstract_Metabox {
 
 	const POST = 1;
 

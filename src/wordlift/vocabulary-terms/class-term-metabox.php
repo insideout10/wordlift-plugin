@@ -2,9 +2,10 @@
 
 namespace Wordlift\Vocabulary_Terms;
 
+use Wordlift\Metabox\Wl_Abstract_Metabox;
 use Wordlift\Vocabulary\Terms_Compat;
 
-class Term_Meta_Box extends \WL_Abstract_Meta_Box {
+class Term_Metabox extends Wl_Abstract_Metabox {
 
 	public function __construct() {
 		parent::__construct();
@@ -19,13 +20,13 @@ class Term_Meta_Box extends \WL_Abstract_Meta_Box {
 	 * @param $term \WP_Term
 	 */
 	public function render_ui( $term ) {
-		$this->instantiate_fields( $term->term_id, \WL_Abstract_Meta_Box::TERM );
+		$this->instantiate_fields( $term->term_id, Wl_Abstract_Metabox::TERM );
 		$this->html();
 		$this->enqueue_scripts_and_styles();
 	}
 
 	public function save_field( $term_id ) {
-		$this->save_form_data( $term_id, \WL_Abstract_Meta_Box::TERM );
+		$this->save_form_data( $term_id, Wl_Abstract_Metabox::TERM );
 	}
 
 }

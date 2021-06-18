@@ -14,7 +14,7 @@ namespace Wordlift\Metabox;
  * @package    Wordlift
  * @subpackage Wordlift/admin/WL_Metabox
  */
-class Wl_Metabox extends Wl_Abstract_Meta_Box {
+class Wl_Metabox extends Wl_Abstract_Metabox {
 
 	/**
 	 * WL_Metabox constructor.
