@@ -12,11 +12,11 @@ class Term_Checklist {
 	/**
 	 * @param $input_name string The name of the input field assigned to checkbox.
 	 * @param $terms array<\WP_Term>
-	 * @param $selected_term_ids array<string> The list of selected term slugs.
+	 * @param $selected_term_slugs array<string> The list of selected term slugs.
 	 *
 	 * @return string Html string to be rendered.
 	 */
-	public static function render( $input_name, $terms, $selected_term_ids ) {
+	public static function render( $input_name, $terms, $selected_term_slugs ) {
 
 
 		$terms_html = "";
@@ -29,7 +29,7 @@ class Term_Checklist {
 			 * @var $term \WP_Term
 			 */
 			$term_name  = esc_html( $term->name );
-			$checked    = in_array( $term->slug, $selected_term_ids ) ? 'checked' : '';
+			$checked    = in_array( $term->slug, $selected_term_slugs ) ? 'checked' : '';
 			$terms_html .= <<<EOF
 <li id="wl_entity_type-{$term->term_id}">
 	<label class="selectit">
