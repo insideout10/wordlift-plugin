@@ -312,7 +312,7 @@ class Wl_Abstract_Metabox {
 			$valid_nonce = $field->verify_nonce();
 
 			if ( $valid_nonce ) {
-				$field_name  = $field->meta_name;
+				$field_name = $field->meta_name;
 				// Each Filed only deals with its values.
 				if ( isset( $posted_data[ $field_name ] ) ) {
 
@@ -353,15 +353,15 @@ class Wl_Abstract_Metabox {
 		$min = ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ? '.min' : '';
 
 		// Load the jquery-ui-timepicker-addon library.
-		wp_enqueue_style( 'wl-flatpickr', dirname( plugin_dir_url( __FILE__ ) ) . "/js/flatpickr/flatpickr$min.css", array(), '3.0.6' );
-		wp_enqueue_script( 'wl-flatpickr', dirname( plugin_dir_url( __FILE__ ) ) . "/js/flatpickr/flatpickr$min.js", array( 'jquery' ), '3.0.6', true );
+		wp_enqueue_style( 'wl-flatpickr', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . "/admin/js/flatpickr/flatpickr$min.css", array(), '3.0.6' );
+		wp_enqueue_script( 'wl-flatpickr', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . "/admin/js/flatpickr/flatpickr$min.js", array( 'jquery' ), '3.0.6', true );
 
 		// Leaflet.
 		wp_enqueue_style( 'wl-leaflet', 'https://unpkg.com/leaflet@1.6.0/dist/leaflet.css', array(), '1.6.0' );
 		wp_enqueue_script( 'wl-leaflet', 'https://unpkg.com/leaflet@1.6.0/dist/leaflet.js', array(), '1.6.0' );
 
 		// Add AJAX autocomplete to facilitate metabox editing.
-		wp_enqueue_script( 'wl-entity-metabox-utility', dirname( plugin_dir_url( __FILE__ ) ) . '/js/wl_entity_metabox_utilities.js' );
+		wp_enqueue_script( 'wl-entity-metabox-utility', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/admin/js/wl_entity_metabox_utilities.js' );
 		wp_localize_script( 'wl-entity-metabox-utility', 'wlEntityMetaboxParams', array(
 				'ajax_url' => admin_url( 'admin-ajax.php' ),
 				'action'   => 'entity_by_title',

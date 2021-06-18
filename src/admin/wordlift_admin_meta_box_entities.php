@@ -5,12 +5,14 @@
  * @package Wordlift
  */
 
+use Wordlift\Metabox\Wl_Metabox;
+
 /**
  * Build WL_Metabox and the contained WL_Metabox_Field(s)
  */
 function wl_register_metaboxes() {
 
-	new \Wordlift\Metabox\Wl_Metabox();     // Everything is done inside here with the correct timing.
+	new Wl_Metabox();     // Everything is done inside here with the correct timing.
 
 }
 
