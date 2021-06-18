@@ -9,7 +9,7 @@ namespace Wordlift\Metabox\Field;
 
 class Post_Metabox_Field {
 
-	public function get_data( $post_id, $meta_key ) {
+	public static function get_data( $post_id, $meta_key ) {
 		return get_post_meta( $post_id, $meta_key );
 	}
 

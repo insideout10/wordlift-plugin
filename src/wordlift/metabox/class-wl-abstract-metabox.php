@@ -313,7 +313,6 @@ class Wl_Abstract_Metabox {
 
 			if ( $valid_nonce ) {
 				$field_name  = $field->meta_name;
-				var_dump($field_name);
 				// Each Filed only deals with its values.
 				if ( isset( $posted_data[ $field_name ] ) ) {
 

@@ -23,8 +23,8 @@ class Wl_Metabox_Field_sameas extends Wl_Metabox_Field {
 	/**
 	 * @inheritdoc
 	 */
-	public function __construct( $args ) {
-		parent::__construct( $args['sameas'] );
+	public function __construct( $args, $id, $type ) {
+		parent::__construct( $args['sameas'], $id, $type );
 	}
 
 	/**

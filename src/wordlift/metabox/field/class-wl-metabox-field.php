@@ -1,5 +1,8 @@
 <?php
+
 namespace Wordlift\Metabox\Field;
+
+use Wordlift\Metabox\Wl_Abstract_Metabox;
 use Wordlift_Log_Service;
 use Wordlift_Schema_Service;
 
@@ -108,9 +111,9 @@ class Wl_Metabox_Field implements Field {
 	 */
 	public function __construct( $args, $id, $type ) {
 
-		$this->log = Wordlift_Log_Service::get_logger( 'Wl_Metabox_Field' );
-        $this->id = $id;
-        $this->type = $type;
+		$this->log  = Wordlift_Log_Service::get_logger( 'Wl_Metabox_Field' );
+		$this->id   = $id;
+		$this->type = $type;
 		if ( empty( $args ) ) {
 			return;
 		}
@@ -203,8 +206,12 @@ class Wl_Metabox_Field implements Field {
 	 * Overwrite this method in a child class to obtain custom behaviour.
 	 */
 	function get_data() {
-	    // do nothing, decorators should override and retrieve data.
-    }
+		if ( Wl_Abstract_Metabox::POST === $this->type ) {
+			return Post_Metabox_Field::get_data( $this->id, $this->meta_name );
+		} else if ( Wl_Abstract_Metabox::TERM === $this->type ) {
+			return Term_Metabox_Field::get_data( $this->id, $this->meta_name );
+		}
+	}
 
 	/**
 	 * Sanitizes data before saving to DB. Default sanitization trashes empty
@@ -215,7 +222,8 @@ class Wl_Metabox_Field implements Field {
 	 *
 	 * @param array $values Array of values to be sanitized and then stored into
 	 *                      $this->data.
-     * @return array | string Return sanitized data.
+	 *
+	 * @return array | string Return sanitized data.
 	 */
 	public function sanitize_data( $values ) {
 
@@ -233,6 +241,7 @@ class Wl_Metabox_Field implements Field {
 		}
 
 		$this->data = $sanitized_data;
+
 		return $sanitized_data;
 	}
 
@@ -270,9 +279,14 @@ class Wl_Metabox_Field implements Field {
 	 *
 	 * @param array $values Array of values to be sanitized and then stored into $this->data.
 	 */
-	 function save_data( $values ) {
-	     // do nothing, decorators should take care of saving data.
-     }
+	function save_data( $values ) {
+		$santizied_data = $this->sanitize_data( $values );
+		if ( Wl_Abstract_Metabox::POST === $this->type ) {
+			Post_Metabox_Field::save_data( $this->id, $this->meta_name, $this->cardinality, $santizied_data );
+		} else if ( Wl_Abstract_Metabox::TERM === $this->type ) {
+			Term_Metabox_Field::save_data( $this->id, $this->meta_name, $this->cardinality, $santizied_data );
+		}
+	}
 
 	/**
 	 * Returns the HTML tag that will contain the Field. By default the we

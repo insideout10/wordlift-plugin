@@ -49,8 +49,8 @@ class Wl_Metabox_Field_Date extends Wl_Metabox_Field {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function __construct( $args ) {
-		parent::__construct( $args );
+	public function __construct( $args, $id, $type ) {
+		parent::__construct( $args, $id, $type );
 
 		$this->no_calendar = false;
 

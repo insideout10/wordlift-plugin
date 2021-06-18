@@ -5,7 +5,7 @@ use Wordlift_Schema_Service;
 
 class Wl_Metabox_Field_Coordinates extends Wl_Metabox_Field {
 
-	public function __construct( $args ) {
+	public function __construct( $args, $id, $type) {
 
 		// Just set up the necessary info without calling the parent constructor.
 		// TODO: write a parent class for grouped properties

@@ -22,8 +22,8 @@ class Wordlift_Metabox_Field_Duration extends Wl_Metabox_Field_date {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function __construct( $args ) {
-		parent::__construct( $args );
+	public function __construct( $args, $id, $type ) {
+		parent::__construct( $args, $id, $type );
 
 		$this->date_format = 'H:i';
 		$this->timepicker  = true;
