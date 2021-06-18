@@ -2,6 +2,7 @@
 
 namespace Wordlift\Metabox\Field;
 
+use Wordlift\Metabox\Field\Store\Store_Factory;
 use Wordlift\Metabox\Wl_Abstract_Metabox;
 use Wordlift_Log_Service;
 use Wordlift_Schema_Service;
@@ -206,11 +207,8 @@ class Wl_Metabox_Field implements Field {
 	 * Overwrite this method in a child class to obtain custom behaviour.
 	 */
 	function get_data() {
-		if ( Wl_Abstract_Metabox::POST === $this->type ) {
-			$this->data =  Post_Metabox_Field::get_data( $this->id, $this->meta_name );
-		} else if ( Wl_Abstract_Metabox::TERM === $this->type ) {
-			$this->data =  Term_Metabox_Field::get_data( $this->id, $this->meta_name );
-		}
+	    $instance = Store_Factory::get_instance( $this->type );
+	    $this->data =  $instance::get_data( $this->id, $this->meta_name );
 	}
 
 	/**
@@ -281,11 +279,8 @@ class Wl_Metabox_Field implements Field {
 	 */
 	function save_data( $values ) {
 		$santizied_data = $this->sanitize_data( $values );
-		if ( Wl_Abstract_Metabox::POST === $this->type ) {
-			Post_Metabox_Field::save_data( $this->id, $this->meta_name, $this->cardinality, $santizied_data );
-		} else if ( Wl_Abstract_Metabox::TERM === $this->type ) {
-			Term_Metabox_Field::save_data( $this->id, $this->meta_name, $this->cardinality, $santizied_data );
-		}
+		$instance = Store_Factory::get_instance( $this->type );
+		$instance::save_data( $this->id, $this->meta_name, $this->cardinality, $santizied_data );
 	}
 
 	/**

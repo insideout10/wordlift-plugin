@@ -4,9 +4,10 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * This class handles save / get data for all the term fields.
  */
-namespace Wordlift\Metabox\Field;
 
-class Term_Metabox_Field  {
+namespace Wordlift\Metabox\Field\Store;
+
+class Term_Metabox_Field implements Store {
 
 	public static function get_data( $term_id, $meta_key ) {
 		return get_term_meta( $term_id, $meta_key );

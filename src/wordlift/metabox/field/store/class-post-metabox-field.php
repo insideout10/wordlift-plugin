@@ -5,9 +5,9 @@
  * This class handles save / get data for all the post fields.
  */
 
-namespace Wordlift\Metabox\Field;
+namespace Wordlift\Metabox\Field\Store;
 
-class Post_Metabox_Field {
+class Post_Metabox_Field implements Store {
 
 	public static function get_data( $post_id, $meta_key ) {
 		return get_post_meta( $post_id, $meta_key );
