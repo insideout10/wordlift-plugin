@@ -41,10 +41,21 @@ class Jsonld_Generator {
 
 		$custom_fields = $this->entity_type_service->get_custom_fields_for_term( $term_id );
 
-		return array(
+		$jsonld =  array(
 			'@context' => 'http://schema.org',
 			'@type'    => $this->get_all_selected_entity_type_labels( $term_id )
 		);
+
+		if (  ! $custom_fields || ! is_array($custom_fields) ) {
+			return $jsonld;
+		}
+
+		foreach ( $custom_fields as $custom_field ) {
+
+		}
+
+
+		return $jsonld;
 
 	}
 

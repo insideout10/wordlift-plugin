@@ -1632,7 +1632,7 @@ class Wordlift {
 		 */
 		new Config( $this->admin_setup, $this->key_validation_service, $this->configuration_service );
 		/**
-		 * @since 3.31.6
+		 * @since 3.31.7
 		 * Create loader for vocabulary terms.
 		 */
 		$vocabulary_terms_loader = new Vocabulary_Terms_Loader( $this->entity_type_service );

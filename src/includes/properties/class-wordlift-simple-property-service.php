@@ -21,17 +21,25 @@ class Wordlift_Simple_Property_Service {
 	/**
 	 * Get the property value for the specified post id and meta with the specified key.
 	 *
-	 * @since 3.8.0
-	 *
-	 * @param int $post_id The post id.
+	 * @param int $id The post id.
 	 * @param string $meta_key The meta key.
 	 *
+	 * @param $type int Post or Term
+	 *
 	 * @return mixed|null The property value.
+	 * @since 3.8.0
+	 *
 	 */
-	public function get( $post_id, $meta_key ) {
+	public function get( $id, $meta_key, $type ) {
 
-		// Get the value stored in WP.
-		return get_post_meta( $post_id, $meta_key );
+		if ( Wordlift_Property_Getter::POST === $type ) {
+			// Get the value stored in WP.
+			return get_post_meta( $id, $meta_key );
+		}
+		else if ( Wordlift_Property_Getter::TERM === $type ) {
+			return get_term_meta( $id, $meta_key );
+		}
+		return null;
 	}
 
 }
