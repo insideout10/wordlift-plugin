@@ -444,7 +444,6 @@ class Wordlift_Entity_Type_Service {
 		return $this->get_custom_fields_by_term_slugs( $term_slugs );
 	}
 
-
 	/**
 	 * Get the custom fields for a specific term.
 	 *

@@ -1635,7 +1635,7 @@ class Wordlift {
 		 * @since 3.31.6
 		 * Create loader for vocabulary terms.
 		 */
-		$vocabulary_terms_loader = new Vocabulary_Terms_Loader();
+		$vocabulary_terms_loader = new Vocabulary_Terms_Loader( $this->entity_type_service );
 		$vocabulary_terms_loader->init_feature();
 	}
 

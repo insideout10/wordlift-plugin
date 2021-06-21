@@ -10,6 +10,15 @@ use Wordlift_Entity_Type_Taxonomy_Service;
 
 class Jsonld_Generator {
 
+	/**
+	 * @var \Wordlift_Entity_Type_Service
+	 */
+	private $entity_type_service;
+
+	public function __construct( $entity_type_service ) {
+		$this->entity_type_service = $entity_type_service;
+	}
+
 	public function init() {
 		add_filter( 'wl_term_jsonld_array', array( $this, 'wl_term_jsonld_array' ), 10, 2 );
 	}
@@ -29,6 +38,8 @@ class Jsonld_Generator {
 	}
 
 	private function get_jsonld_for_term( $term_id ) {
+
+		$custom_fields = $this->entity_type_service->get_custom_fields_for_term( $term_id );
 
 		return array(
 			'@context' => 'http://schema.org',
