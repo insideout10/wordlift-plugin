@@ -29,7 +29,7 @@ class Wordlift_Metabox_Field_Integer_Test extends Wordlift_Unit_Test_Case {
 	function test_html_input() {
 
 		// Initialize the field.
-		$field = new Wordlift_Metabox_Field_Integer( array( 'wl_integer' => array() ) );
+		$field = new Wordlift_Metabox_Field_Integer( array( 'wl_integer' => array() ), null, Wordlift_Property_Getter::POST );
 
 		// Get the HTML output.
 		$output = $field->html_input( 'integer' );

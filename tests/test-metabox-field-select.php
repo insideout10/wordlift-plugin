@@ -38,7 +38,7 @@ class Wordlift_Metabox_Field_Select_Test extends Wordlift_Unit_Test_Case {
 		);
 
 		// Initialize the field.
-		$field = new Wordlift_Metabox_Field_Select( $args );
+		$field = new Wordlift_Metabox_Field_Select( $args, null, Wordlift_Property_Getter::POST );
 
 		// Get the HTML output.
 		$output = $field->html_input( 'select' );
