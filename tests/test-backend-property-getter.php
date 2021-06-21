@@ -57,8 +57,8 @@ class Wordlift_Property_Getter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_default_getter_meta_key_not_set() {
 
-		$this->assertTrue( is_array( $this->property_getter->get( $this->post_id, 'a_non_existent_meta_key' ) ) );
-		$this->assertCount( 0, $this->property_getter->get( $this->post_id, 'a_non_existent_meta_key' ) );
+		$this->assertTrue( is_array( $this->property_getter->get( $this->post_id, 'a_non_existent_meta_key', Wordlift_Property_Getter::POST ) ) );
+		$this->assertCount( 0, $this->property_getter->get( $this->post_id, 'a_non_existent_meta_key', Wordlift_Property_Getter::POST ) );
 
 	}
 
@@ -71,7 +71,7 @@ class Wordlift_Property_Getter_Test extends Wordlift_Unit_Test_Case {
 
 		$value = rand_str();
 		add_post_meta( $this->post_id, 'a_meta_key', $value );
-		$this->assertEquals( array( $value ), $this->property_getter->get( $this->post_id, 'a_meta_key' ) );
+		$this->assertEquals( array( $value ), $this->property_getter->get( $this->post_id, 'a_meta_key', Wordlift_Property_Getter::POST ) );
 
 	}
 
@@ -96,7 +96,7 @@ class Wordlift_Property_Getter_Test extends Wordlift_Unit_Test_Case {
 			add_post_meta( $this->post_id, $field_name, $this->post_id );
 
 			/** @var Wordlift_Property_Entity_Reference[] $values */
-			$values = $this->property_getter->get( $this->post_id, $field_name );
+			$values = $this->property_getter->get( $this->post_id, $field_name, Wordlift_Property_Getter::POST );
 			$this->assertTrue( is_array( $values ) );
 			$this->assertCount( 1, $values );
 			$this->assertTrue( $values[0] instanceof Wordlift_Property_Entity_Reference );
@@ -117,7 +117,7 @@ class Wordlift_Property_Getter_Test extends Wordlift_Unit_Test_Case {
 		add_post_meta( $this->post_id, Wordlift_Url_Property_Service::META_KEY, $expected );
 
 		/** @var Wordlift_Property_Entity_Reference[] $values */
-		$values = $this->property_getter->get( $this->post_id, Wordlift_Url_Property_Service::META_KEY );
+		$values = $this->property_getter->get( $this->post_id, Wordlift_Url_Property_Service::META_KEY, Wordlift_Property_Getter::POST );
 		$this->assertTrue( is_array( $values ) );
 		$this->assertCount( 1, $values );
 		$this->assertContains( $expected, $values[0] );
@@ -133,7 +133,7 @@ class Wordlift_Property_Getter_Test extends Wordlift_Unit_Test_Case {
 		add_post_meta( $this->post_id, Wordlift_Url_Property_Service::META_KEY, '<permalink>' );
 
 		/** @var Wordlift_Property_Entity_Reference[] $values */
-		$values = $this->property_getter->get( $this->post_id, Wordlift_Url_Property_Service::META_KEY );
+		$values = $this->property_getter->get( $this->post_id, Wordlift_Url_Property_Service::META_KEY, Wordlift_Property_Getter::POST );
 		$this->assertTrue( is_array( $values ) );
 		$this->assertCount( 1, $values );
 		$this->assertEquals( get_permalink( $this->post_id ), $values[0] );
@@ -159,7 +159,7 @@ class Wordlift_Property_Getter_Test extends Wordlift_Unit_Test_Case {
 			add_post_meta( $this->post_id, $field_name, $expected );
 
 			/** @var Wordlift_Property_Entity_Reference[] $values */
-			$values = $this->property_getter->get( $this->post_id, $field_name );
+			$values = $this->property_getter->get( $this->post_id, $field_name, Wordlift_Property_Getter::POST );
 			$this->assertTrue( is_array( $values ) );
 			$this->assertCount( 1, $values );
 			$this->assertEquals( $expected, $values[0] );

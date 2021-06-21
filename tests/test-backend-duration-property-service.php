@@ -23,13 +23,13 @@ class Wordlift_Duration_Property_Service_Test extends Wordlift_Unit_Test_Case {
 
 		// Set a "fake" meta with a number of minutes
 		update_post_meta( $id, 'duration', '10' );
-		$v = $converter->get( $id, 'duration' );
+		$v = $converter->get( $id, 'duration', Wordlift_Property_Getter::POST );
 		// Get return an array with one value.
 		$this->assertEquals( 'PT10M', $v[0] );
 
 		// Set a "fake" meta with a hh:mm format
 		update_post_meta( $id, 'duration', '3:13' );
-		$v = $converter->get( $id, 'duration' );
+		$v = $converter->get( $id, 'duration', Wordlift_Property_Getter::POST );
 		// Get return an array with one value.
 		$this->assertEquals( 'PT3H13M', $v[0] );
 	}
