@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * @since 3.31.7
+ * @author Naveen Muthusamy <naveen@wordlift.io>
+ */
 namespace Wordlift\Vocabulary_Terms;
 
 use Wordlift\Metabox\Wl_Abstract_Metabox;
