@@ -63,6 +63,7 @@ class Jsonld_Generator {
 			}
 		}
 
+		$jsonld = apply_filters( 'wl_no_vocabulary_term_jsonld', $jsonld, $term_id );
 
 		return $jsonld;
 
