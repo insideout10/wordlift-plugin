@@ -181,7 +181,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 
 			// Get the value, the property service will get the right extractor
 			// for that property.
-			$value = $this->property_getter->get( $post->ID, $key );
+			$value = $this->property_getter->get( $post->ID, $key, Wordlift_Property_Getter::POST );
 
 			if ( empty( $value ) ) {
 				continue;

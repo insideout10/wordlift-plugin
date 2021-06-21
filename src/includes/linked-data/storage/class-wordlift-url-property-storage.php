@@ -51,7 +51,7 @@ class Wordlift_Url_Property_Storage extends Wordlift_Storage {
 	 */
 	public function get( $post_id ) {
 
-		return $this->property_getter->get( $post_id, Wordlift_Schema_Url_Property_Service::META_KEY );
+		return $this->property_getter->get( $post_id, Wordlift_Schema_Url_Property_Service::META_KEY, Wordlift_Property_Getter::POST );
 	}
 
 }

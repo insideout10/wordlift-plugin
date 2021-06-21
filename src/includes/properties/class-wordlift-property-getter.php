@@ -75,7 +75,7 @@ class Wordlift_Property_Getter {
 	 * @return mixed|null The property value or null.
 	 * @since 3.8.0
 	 */
-	public function get( $post_id, $meta_key, $type = self::POST ) {
+	public function get( $post_id, $meta_key, $type ) {
 
 		return isset( $this->services[ $meta_key ] )
 			// Use a specific property service.
