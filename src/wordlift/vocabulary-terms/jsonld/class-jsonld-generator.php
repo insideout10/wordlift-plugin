@@ -14,9 +14,14 @@ class Jsonld_Generator {
 	 * @var \Wordlift_Entity_Type_Service
 	 */
 	private $entity_type_service;
+	/**
+	 * @var \Wordlift_Property_Getter
+	 */
+	private $property_getter;
 
-	public function __construct( $entity_type_service ) {
+	public function __construct( $entity_type_service, $property_getter ) {
 		$this->entity_type_service = $entity_type_service;
+		$this->property_getter     = $property_getter;
 	}
 
 	public function init() {
@@ -29,7 +34,7 @@ class Jsonld_Generator {
 
 		$term_jsonld = $this->get_jsonld_for_term( $term_id );
 
-		array_unshift( $jsonld, $term_jsonld  );
+		array_unshift( $jsonld, $term_jsonld );
 
 		return array(
 			'jsonld'     => $jsonld,
@@ -41,17 +46,21 @@ class Jsonld_Generator {
 
 		$custom_fields = $this->entity_type_service->get_custom_fields_for_term( $term_id );
 
-		$jsonld =  array(
+		$jsonld = array(
 			'@context' => 'http://schema.org',
 			'@type'    => $this->get_all_selected_entity_type_labels( $term_id )
 		);
 
-		if (  ! $custom_fields || ! is_array($custom_fields) ) {
+		if ( ! $custom_fields || ! is_array( $custom_fields ) ) {
 			return $jsonld;
 		}
 
-		foreach ( $custom_fields as $custom_field ) {
-
+		foreach ( $custom_fields  as $key => $value ) {
+			$name  = $this->relative_to_schema_context( $value['predicate'] );
+			$value = $this->property_getter->get( $term_id, $key, \Wordlift_Property_Getter::TERM );
+			if ( $value ) {
+				$jsonld[ $name ] = $value;
+			}
 		}
 
 
@@ -70,6 +79,10 @@ class Jsonld_Generator {
 
 			return $term->name;
 		}, $selected_entity_type_slugs ) );
+	}
+
+	private function relative_to_schema_context( $predicate ) {
+		return str_replace( 'http://schema.org', '', $predicate );
 	}
 
 }
