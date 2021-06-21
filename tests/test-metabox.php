@@ -254,6 +254,7 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 
 		// Verify data is loaded correctly from DB
 		$field->get_data();
+
 		$this->assertEquals( array( $person_id ), $field->data );
 
 		// Save new DB values (third value is invalid and fourth is a new entity)
