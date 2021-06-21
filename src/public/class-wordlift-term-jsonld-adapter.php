@@ -135,6 +135,7 @@ class Wordlift_Term_JsonLd_Adapter {
 	public function wp_head() {
 		$query_object = get_queried_object();
 
+
 		// Check if it is a term page.
 		if ( ! $query_object instanceof WP_Term ) {
 			return;
@@ -148,7 +149,6 @@ class Wordlift_Term_JsonLd_Adapter {
 		$term_id = $query_object->term_id;
 
 		$jsonld = $this->get( $term_id );
-
 
 		// Bail out if the JSON-LD is empty.
 		if ( empty( $jsonld )  ) {
@@ -191,6 +191,7 @@ class Wordlift_Term_JsonLd_Adapter {
 		 * @var $jsonld_array array An array containing jsonld for term and entities.
 		 */
 		$arr = apply_filters( 'wl_term_jsonld_array', $result, $id );
+
 		return $arr['jsonld'];
 	}
 
