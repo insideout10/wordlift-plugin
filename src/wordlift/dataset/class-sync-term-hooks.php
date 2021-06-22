@@ -45,11 +45,7 @@ class Sync_Term_Hooks extends Abstract_Sync_Hooks {
 		add_action( 'added_term_meta', array( $this, 'changed_term_meta' ), 10, 4 );
 		add_action( 'updated_term_meta', array( $this, 'changed_term_meta' ), 10, 4 );
 		add_action( 'deleted_term_meta', array( $this, 'changed_term_meta' ), 10, 4 );
-		add_action( 'delete_post', array( $this, 'delete_post' ) );
-		// Remove post when its trashed.
-		add_action( 'trashed_post', array( $this, 'delete_post' ) );
-		// Save the post when its untrashed.
-		add_action( 'untrashed_post', array( $this, 'save_post' ) );
+		add_action( 'pre_delete_term', array( $this, 'delete_term' ) );
 
 	}
 
@@ -98,8 +94,11 @@ class Sync_Term_Hooks extends Abstract_Sync_Hooks {
 
 	}
 
-	public function delete_post( $post_id ) {
-		$this->enqueue( array( 'do_delete', $post_id ) );
+	/**
+	 * @param $term \WP_Term
+	 */
+	public function delete_term( $term ) {
+		$this->enqueue( array( 'do_delete', $term->term_id ) );
 	}
 
 	public function do_delete( $term_id ) {
