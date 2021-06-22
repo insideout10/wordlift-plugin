@@ -202,4 +202,66 @@ class Wordlift_Uri_Service {
 		return $this->build_uri( $title, $post_type, $schema_type, ++ $increment_digit );
 	}
 
+
+
+
+	/**
+	 *
+	 * @param string $title A post title.
+	 * @param string $taxonomy A post type. Default value is 'entity'
+	 * @param integer $increment_digit A digit used to call recursively the same function.
+	 *
+	 * @return string Returns an uri.
+	 * @since 3.31.7
+	 */
+	public function build_term_uri( $title, $taxonomy, $increment_digit = 0 ) {
+
+		// Get the entity slug suffix digit
+		$suffix_digit = $increment_digit + 1;
+
+		// Get a sanitized uri for a given title.
+		/*
+		 * The call takes into consideration URL encoding.
+		 *
+		 * @see https://github.com/insideout10/wordlift-plugin/issues/885
+		 *
+		 * @since 3.20.0
+		 */
+		$entity_slug = urldecode(  $title  )
+		               . ( 0 === $increment_digit ? '' : '_' . $suffix_digit );
+
+		// Compose a candidate uri.
+		$new_entity_uri = sprintf( '%s/%s/%s',
+			Wordlift_Configuration_Service::get_instance()->get_dataset_uri(),
+			$taxonomy,
+			$entity_slug
+		);
+
+		$this->log->trace( "Going to check if uri is used [ new_entity_uri :: $new_entity_uri ] [ increment_digit :: $increment_digit ]" );
+
+		global $wpdb;
+
+		// Check if the candidated uri already is used
+		$stmt = $wpdb->prepare(
+			"SELECT term_id FROM $wpdb->termmeta WHERE meta_key = %s AND meta_value = %s LIMIT 1",
+			WL_ENTITY_URL_META_NAME,
+			$new_entity_uri
+		);
+
+		// Perform the query
+		$term_id = $wpdb->get_var( $stmt );
+
+		// If the post does not exist, then the new uri is returned
+		if ( ! is_numeric( $term_id ) ) {
+			$this->log->trace( "Going to return uri [ new_term_entity_uri :: $new_entity_uri ]" );
+
+			return $new_entity_uri;
+		}
+
+
+		// Otherwise the same function is called recursively
+		return $this->build_term_uri( $title, $taxonomy, ++ $increment_digit );
+	}
+
+
 }

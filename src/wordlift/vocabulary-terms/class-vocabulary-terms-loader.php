@@ -3,6 +3,7 @@
 namespace Wordlift\Vocabulary_Terms;
 
 use Wordlift\Common\Loader\Default_Loader;
+use Wordlift\Vocabulary_Terms\Hooks\Term_Save;
 use Wordlift\Vocabulary_Terms\Jsonld\Jsonld_Generator;
 
 
@@ -35,6 +36,8 @@ class Vocabulary_Terms_Loader extends Default_Loader {
 		new Term_Metabox();
 		$jsonld = new Jsonld_Generator( $this->entity_type_service, $this->property_getter );
 		$jsonld->init();
+		$term_save_hook = new Term_Save();
+		$term_save_hook->init();
 	}
 
 	protected function get_feature_slug() {
