@@ -32,7 +32,11 @@ class Jsonld_Generator {
 		$jsonld     = $data['jsonld'];
 		$references = $data['references'];
 
-		$term_jsonld = $this->get_jsonld_for_term( $term_id );
+		$term_jsonld_data = $this->get_jsonld_data_for_term( $term_id );
+
+		$term_jsonld = $term_jsonld_data['jsonld'];
+
+		$references = array_merge( $references, $term_jsonld_data['references'] );
 
 		array_unshift( $jsonld, $term_jsonld );
 
@@ -42,7 +46,7 @@ class Jsonld_Generator {
 		);
 	}
 
-	private function get_jsonld_for_term( $term_id ) {
+	private function get_jsonld_data_for_term( $term_id ) {
 
 		$custom_fields = $this->entity_type_service->get_custom_fields_for_term( $term_id );
 
@@ -64,9 +68,11 @@ class Jsonld_Generator {
 			}
 		}
 
-		$jsonld = apply_filters( 'wl_no_vocabulary_term_jsonld', $jsonld, $term_id );
+		return apply_filters( 'wl_no_vocabulary_term_jsonld_array', array(
+			'jsonld'     => $jsonld,
+			'references' => array()
+		), $term_id );
 
-		return $jsonld;
 
 	}
 

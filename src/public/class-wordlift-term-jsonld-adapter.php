@@ -184,6 +184,7 @@ class Wordlift_Term_JsonLd_Adapter {
 			'jsonld'     => array_merge( $jsonld_array, $entities_jsonld_array ),
 			'references' => array()
 		);
+
 		/**
 		 * @since 3.26.3
 		 * Filter: wl_term_jsonld_array
@@ -197,6 +198,8 @@ class Wordlift_Term_JsonLd_Adapter {
 		 * Expand the references returned by this filter.
 		 */
 		$references   = $this->expand_references( $arr['references'] );
+
+
 		$jsonld_array = array_merge( $arr['jsonld'], $references );
 
 		return $jsonld_array;
