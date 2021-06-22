@@ -72,7 +72,7 @@ class Jsonld_Generator {
 	private function get_all_selected_entity_type_labels( $term_id ) {
 		$selected_entity_type_slugs = get_term_meta( $term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
-		return array_filter( array_map( function ( $type_slug ) {
+		$types =  array_filter( array_map( function ( $type_slug ) {
 			$term = get_term_by( 'slug', $type_slug, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 			if ( ! $term ) {
 				return false;
@@ -80,6 +80,11 @@ class Jsonld_Generator {
 
 			return $term->name;
 		}, $selected_entity_type_slugs ) );
+
+		if ( count( $types ) === 0) {
+			return array('Thing');
+		}
+		return $types;
 	}
 
 	private function relative_to_schema_context( $predicate ) {
