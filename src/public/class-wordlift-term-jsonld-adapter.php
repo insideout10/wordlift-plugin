@@ -151,7 +151,7 @@ class Wordlift_Term_JsonLd_Adapter {
 		$jsonld = $this->get( $term_id );
 
 		// Bail out if the JSON-LD is empty.
-		if ( empty( $jsonld )  ) {
+		if ( empty( $jsonld ) ) {
 			return;
 		}
 
@@ -192,7 +192,14 @@ class Wordlift_Term_JsonLd_Adapter {
 		 */
 		$arr = apply_filters( 'wl_term_jsonld_array', $result, $id );
 
-		return $arr['jsonld'];
+		/**
+		 * @since 3.31.7
+		 * Expand the references returned by this filter.
+		 */
+		$references   = $this->expand_references( $arr['references'] );
+		$jsonld_array = array_merge( $arr['jsonld'], $references );
+
+		return $jsonld_array;
 	}
 
 	private function get_term_url( $id ) {
@@ -237,6 +244,29 @@ class Wordlift_Term_JsonLd_Adapter {
 		$jsonld[0]['url'] = get_term_link( $term_id );
 
 		return $jsonld;
+	}
+
+
+	/**
+	 * @param $references
+	 *
+	 * @return array
+	 */
+	private function expand_references( $references ) {
+		// @TODO: we are assuming all the references are posts
+		// in this method, since now terms are getting converted to
+		// entities, this might not be true in all cases.
+		if ( ! is_array( $references ) ) {
+			return array();
+		}
+		$references_jsonld = array();
+		// Expand the references.
+		foreach ( $references as $reference ) {
+			$references_jsonld[] = $this->jsonld_service->get_jsonld( false, $reference );
+		}
+
+		return $references_jsonld;
+
 	}
 
 }
