@@ -41,7 +41,8 @@ class Sync_Term_Hooks extends Abstract_Sync_Hooks {
 		/**
 		 * Register hooks for post and meta.
 		 */
-		add_action( 'saved_term', array( $this, 'saved_term' ) );
+		add_action( 'create_term', array( $this, 'do_sync' ) );
+		add_action( 'edit_term', array( $this, 'do_sync' ) );
 		add_action( 'added_term_meta', array( $this, 'changed_term_meta' ), 10, 4 );
 		add_action( 'updated_term_meta', array( $this, 'changed_term_meta' ), 10, 4 );
 		add_action( 'deleted_term_meta', array( $this, 'changed_term_meta' ), 10, 4 );
@@ -52,7 +53,6 @@ class Sync_Term_Hooks extends Abstract_Sync_Hooks {
 	public function saved_term( $term_id ) {
 
 		// Sync all the terms without filtering.
-
 		$this->sync( $term_id );
 
 	}
@@ -76,10 +76,12 @@ class Sync_Term_Hooks extends Abstract_Sync_Hooks {
 	}
 
 	private function sync( $term_id ) {
+
 		$this->enqueue( array( 'do_sync', $term_id ) );
 	}
 
 	public function do_sync( $term_id ) {
+
 		try {
 			$term = get_term( $term_id );
 			if ( ! isset( $term ) ) {
@@ -91,7 +93,6 @@ class Sync_Term_Hooks extends Abstract_Sync_Hooks {
 		} catch ( \Exception $e ) {
 			$this->log->error( "An error occurred while trying to sync post $term_id: " . $e->getMessage(), $e );
 		}
-
 	}
 
 	/**
