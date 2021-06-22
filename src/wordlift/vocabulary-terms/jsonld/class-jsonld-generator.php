@@ -90,7 +90,7 @@ class Jsonld_Generator {
 	}
 
 	private function relative_to_schema_context( $predicate ) {
-		return str_replace( 'http://schema.org', '', $predicate );
+		return str_replace( 'http://schema.org/', '', $predicate );
 	}
 
 }

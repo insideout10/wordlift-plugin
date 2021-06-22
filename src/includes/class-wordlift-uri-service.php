@@ -231,7 +231,7 @@ class Wordlift_Uri_Service {
 		               . ( 0 === $increment_digit ? '' : '_' . $suffix_digit );
 
 		// Compose a candidate uri.
-		$new_entity_uri = sprintf( '%s/%s/%s',
+		$new_entity_uri = sprintf( '%s/term/%s/%s',
 			Wordlift_Configuration_Service::get_instance()->get_dataset_uri(),
 			$taxonomy,
 			$entity_slug
