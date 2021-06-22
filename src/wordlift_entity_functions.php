@@ -165,16 +165,26 @@ function wl_set_entity_uri( $post_id, $uri ) {
 
 
 /**
- * Save the entity URI for the provided post ID.
+ * Save the entity URI for the provided term ID.
  *
- * @param int $term_id The post ID.
- * @param string $uri The post URI.
+ * @param int $term_id The term ID.
+ * @param string $uri The term URI.
  *
  * @return bool True if successful, otherwise false.
  */
 function wl_set_term_entity_uri( $term_id, $uri ) {
 
 	return update_term_meta( $term_id, WL_ENTITY_URL_META_NAME, $uri );
+}
+
+/**
+ * Get entity uri for the term id.
+ * @param int $term_id The term ID.
+ * @return string entity uri.
+ */
+function wl_get_term_entity_uri( $term_id ) {
+
+	return get_term_meta( $term_id, WL_ENTITY_URL_META_NAME, true );
 }
 
 

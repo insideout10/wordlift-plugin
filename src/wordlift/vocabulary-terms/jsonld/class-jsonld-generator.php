@@ -48,14 +48,15 @@ class Jsonld_Generator {
 
 		$jsonld = array(
 			'@context' => 'http://schema.org',
-			'@type'    => $this->get_all_selected_entity_type_labels( $term_id )
+			'@type'    => $this->get_all_selected_entity_type_labels( $term_id ),
+			'@id'      => wl_get_term_entity_uri( $term_id )
 		);
 
 		if ( ! $custom_fields || ! is_array( $custom_fields ) ) {
 			return $jsonld;
 		}
 
-		foreach ( $custom_fields  as $key => $value ) {
+		foreach ( $custom_fields as $key => $value ) {
 			$name  = $this->relative_to_schema_context( $value['predicate'] );
 			$value = $this->property_getter->get( $term_id, $key, \Wordlift_Property_Getter::TERM );
 			if ( $value ) {
@@ -72,7 +73,7 @@ class Jsonld_Generator {
 	private function get_all_selected_entity_type_labels( $term_id ) {
 		$selected_entity_type_slugs = get_term_meta( $term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 
-		$types =  array_filter( array_map( function ( $type_slug ) {
+		$types = array_filter( array_map( function ( $type_slug ) {
 			$term = get_term_by( 'slug', $type_slug, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
 			if ( ! $term ) {
 				return false;
@@ -81,9 +82,10 @@ class Jsonld_Generator {
 			return $term->name;
 		}, $selected_entity_type_slugs ) );
 
-		if ( count( $types ) === 0) {
-			return array('Thing');
+		if ( count( $types ) === 0 ) {
+			return array( 'Thing' );
 		}
+
 		return $types;
 	}
 
