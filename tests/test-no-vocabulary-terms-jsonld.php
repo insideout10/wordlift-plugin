@@ -5,7 +5,7 @@
  * @group no_vocabulary_terms
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
-class Vocabulary_Terms_Jsonld extends \Wordlift_Vocabulary_Terms_Unit_Test_Case {
+class No_Vocabulary_Terms_Jsonld extends \Wordlift_Vocabulary_Terms_Unit_Test_Case {
 
 
 	public function test_when_term_saved_should_generate_entity_uri() {

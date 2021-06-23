@@ -7,6 +7,10 @@ use Wordlift\Vocabulary_Terms\Vocabulary_Terms_Loader;
 
 abstract class Wordlift_Vocabulary_Terms_Unit_Test_Case extends Wordlift_Unit_Test_Case {
 
+
+	const NO_VOCABULARY_TERM_TAXONOMY = 'no_vocabulary_terms';
+
+
 	public function setUp() {
 		parent::setUp();
 

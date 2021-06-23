@@ -20,8 +20,15 @@ class Term_Save {
 	}
 
 	public function saved_term( $term_id ) {
-		// we need to build an entity uri for the term.
-		wl_set_term_entity_uri( $term_id, wl_build_term_uri($term_id) );
+
+		// check if entity url already exists.
+
+		$entity_url = get_term_meta( $term_id, WL_ENTITY_URL_META_NAME, true);
+
+		if (  ! $entity_url ) {
+			// we need to build an entity uri for the term.
+			wl_set_term_entity_uri( $term_id, wl_build_term_uri( $term_id ) );
+		}
 	}
 
 

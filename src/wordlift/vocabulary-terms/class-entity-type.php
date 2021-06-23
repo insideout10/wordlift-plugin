@@ -54,6 +54,9 @@ EOF;
 	}
 
 	public function save_field( $term_id ) {
+		if ( ! isset( $_REQUEST['tax_input'] )  ) {
+			return;
+		}
 		$entity_types = $_REQUEST['tax_input'][ Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ];
 		if ( isset( $entity_types ) && is_array( $entity_types ) ) {
 			// Save the taxonomies.
