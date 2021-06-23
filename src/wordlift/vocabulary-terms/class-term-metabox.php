@@ -23,7 +23,6 @@ class Term_Metabox extends Wl_Abstract_Metabox {
 	 * @param $term \WP_Term
 	 */
 	public function render_ui( $term ) {
-		var_dump("render ui called");
 		$this->instantiate_fields( $term->term_id, Wl_Abstract_Metabox::TERM );
 		$this->html();
 		$this->enqueue_scripts_and_styles();

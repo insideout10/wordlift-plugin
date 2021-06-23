@@ -161,7 +161,7 @@ class Wordlift_Term_JsonLd_Adapter {
 
 	}
 
-	public function get( $id ) {
+	public function get( $id, $context ) {
 
 		/**
 		 * Support for carousel rich snippet, get jsonld data present
@@ -172,12 +172,16 @@ class Wordlift_Term_JsonLd_Adapter {
 		 *
 		 * @since 3.26.0
 		 */
-		$carousel_data = $this->get_carousel_jsonld( $id );
 		$jsonld_array  = array();
-		if ( $carousel_data ) {
-			$jsonld_array[] = $carousel_data;
+
+		if ( Jsonld_Context_Enum::PAGE === $context ) {
+			$carousel_data = $this->get_carousel_jsonld( $id );
+			if ( $carousel_data ) {
+				$jsonld_array[] = $carousel_data;
+			}
 		}
-		$context               = empty( $carousel_data ) ? Jsonld_Context_Enum::PAGE : Jsonld_Context_Enum::CAROUSEL;
+
+//		$context               = empty( $carousel_data ) ? Jsonld_Context_Enum::PAGE : Jsonld_Context_Enum::CAROUSEL;
 		$entities_jsonld_array = $this->get_entity_jsonld( $id, $context );
 
 		$result = array(
@@ -197,7 +201,7 @@ class Wordlift_Term_JsonLd_Adapter {
 		 * @since 3.31.7
 		 * Expand the references returned by this filter.
 		 */
-		$references   = $this->expand_references( $arr['references'] );
+		$references = $this->expand_references( $arr['references'] );
 
 
 		$jsonld_array = array_merge( $arr['jsonld'], $references );
