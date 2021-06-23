@@ -1,5 +1,6 @@
 <?php
 
+use Wordlift\Jsonld\Jsonld_Context_Enum;
 use Wordlift\Jsonld\Jsonld_Service;
 use Wordlift\Jsonld\Jsonld_User_Service;
 use Wordlift\Object_Type_Enum;
@@ -72,7 +73,7 @@ class Wordlift_Issue_1072_Test extends Wordlift_Unit_Test_Case {
 			wp_add_object_terms( $post_id, $term_id, 'category' );
 		}
 
-		$term_jsonld_a = $this->term_jsonld_adapter->get( $term_id );
+		$term_jsonld_a = $this->term_jsonld_adapter->get( $term_id, Jsonld_Context_Enum::PAGE );
 		$term_jsonld_b = $this->jsonld_service->get( Object_Type_Enum::TERM, $term_id );
 		$this->assertEqualSets( $term_jsonld_a, $term_jsonld_b );
 

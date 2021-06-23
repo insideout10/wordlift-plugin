@@ -8,6 +8,8 @@
  * @subpackage Wordlift/tests
  */
 
+use Wordlift\Jsonld\Jsonld_Context_Enum;
+
 /**
  * Class Wordlift_Term_Jsonld_Adapter_Test
  * @group jsonld
@@ -26,7 +28,7 @@ class Wordlift_Term_Jsonld_Adapter_Test extends Wordlift_Unit_Test_Case {
 	public function test_if_less_than_2_posts_are_present_then_dont_alter_the_jsonld() {
 		// lets create a category
 		$category_id = wp_insert_category( array( 'cat_name' => 'foo' ) );
-		$result      = $this->adapter->get( $category_id );
+		$result      = $this->adapter->get( $category_id, Jsonld_Context_Enum::PAGE );
 		$this->assertEquals( array(), $result );
 	}
 
@@ -61,7 +63,7 @@ class Wordlift_Term_Jsonld_Adapter_Test extends Wordlift_Unit_Test_Case {
 		$wp_query = new WP_Query( $args );
 
 		// get json ld data
-		$result = $this->adapter->get( $category_id );
+		$result = $this->adapter->get( $category_id, Jsonld_Context_Enum::PAGE );
 		$result = $result[0];
 		// the result should have key itemListElement.
 		$this->assertArrayHasKey( 'itemListElement', $result );
@@ -121,7 +123,7 @@ class Wordlift_Term_Jsonld_Adapter_Test extends Wordlift_Unit_Test_Case {
 		 */
 		global $wp_query;
 		$wp_query = new WP_Query( $args );
-		$jsonld   = $this->adapter->get( $term_id );
+		$jsonld   = $this->adapter->get( $term_id, Jsonld_Context_Enum::PAGE );
 		$this->assertCount( 2, $jsonld, '2 items expected, instead I got this: ' . json_encode( $jsonld, 128 ) );
 		$result = $jsonld[0];
 		// the result should have key itemListElement.

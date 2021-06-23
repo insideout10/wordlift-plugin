@@ -1,6 +1,7 @@
 <?php
 
 use Wordlift\Cache\Ttl_Cache;
+use Wordlift\Jsonld\Jsonld_Context_Enum;
 use Wordlift\Vocabulary\Api\Api_Config;
 use Wordlift\Vocabulary\Api\Entity_Rest_Endpoint;
 use Wordlift\Vocabulary\Data\Entity_List\Default_Entity_List;
@@ -265,7 +266,7 @@ class Accept_Reject_Entity_Endpoint_Test extends \Wordlift_Vocabulary_Unit_Test_
 		$term_id  = $this->accept_two_entities($entity_data);
 		// lets call the jsonld filter.
 		$term_jsonld_adapter = Wordlift_Term_JsonLd_Adapter::get_instance();
-		$term_jsonld = $term_jsonld_adapter->get($term_id);
+		$term_jsonld = $term_jsonld_adapter->get($term_id, Jsonld_Context_Enum::PAGE);
 		// we should have 1 item in the jsonld, we are using only the first item.
 		$this->assertCount(1, $term_jsonld );
 		$this->assertSame(get_term_link($term_id) . "/#id", $term_jsonld[0]['@id']);

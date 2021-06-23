@@ -1,5 +1,7 @@
 <?php
 
+use Wordlift\Jsonld\Jsonld_Context_Enum;
+
 /**
  * @since 3.31.7
  * @group no_vocabulary_terms
@@ -20,7 +22,8 @@ class No_Vocabulary_Terms_Jsonld extends \Wordlift_Vocabulary_Terms_Unit_Test_Ca
 
 		$term_id    = wp_insert_term( 'vocabulary_term_test_2', 'no_vocabulary_terms' );
 		$term_id    = $term_id['term_id'];
-		$jsonld = Wordlift_Term_JsonLd_Adapter::get_instance()->get( $term_id );
+		// UNKNOWN is the context used when pushing to KG.
+		$jsonld = Wordlift_Term_JsonLd_Adapter::get_instance()->get( $term_id, Jsonld_Context_Enum::UNKNOWN );
 		// Since there are no types set, we should default it to Thing,
 		$this->assertSame( $jsonld[0]['@type'], array( 'Thing' ) );
 		$this->assertArrayHasKey( '@id', $jsonld[0] );
