@@ -148,7 +148,7 @@ class Wordlift_Term_JsonLd_Adapter {
 
 		$term_id = $query_object->term_id;
 
-		$jsonld = $this->get( $term_id );
+		$jsonld = $this->get( $term_id, Jsonld_Context_Enum::PAGE );
 
 		// Bail out if the JSON-LD is empty.
 		if ( empty( $jsonld ) ) {
