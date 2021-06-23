@@ -28,6 +28,8 @@ class Term_Metabox extends Wl_Abstract_Metabox {
 		$this->html();
 		$this->enqueue_scripts_and_styles();
 		$plugin = \Wordlift::get_instance();
+
+		// Enqueue this scripts for sameas fields.
 		wp_enqueue_script(
 			'wl-autocomplete-select',
 			plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'js/dist/autocomplete-select.js',
