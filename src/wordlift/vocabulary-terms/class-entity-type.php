@@ -33,6 +33,16 @@ class Entity_Type {
 
 		$entity_types_text     = __( 'Entity Types', 'wordlift' );
 		$selected_entity_types = get_term_meta( $term->term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+
+		/**
+		 * Thing should be the default selected entity type
+		 * when this feature is activated.
+		 */
+		if ( count($selected_entity_types) === 0 ) {
+			$selected_entity_types[] = 'thing';
+		}
+
+
 		$entity_type_taxonomy  = Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME;
 		$types                 = Terms_Compat::get_terms(
 			$entity_type_taxonomy,
