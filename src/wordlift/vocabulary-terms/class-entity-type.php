@@ -1,4 +1,10 @@
 <?php
+/**
+ * @since 3.31.7
+ * @author Naveen Muthusamy <naveen@wordlift.io>
+ * This class handles renders and saves the Entity_Type field.
+ */
+
 
 namespace Wordlift\Vocabulary_Terms;
 

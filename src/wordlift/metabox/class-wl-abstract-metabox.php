@@ -12,7 +12,7 @@ use Wordlift_Schema_Service;
 /**
  * This class provides abstract metbox which can be extended for term pages.
  *
- * @since      3.31.6
+ * @since      3.31.7
  * @package    Wordlift
  * @subpackage Wordlift/admin/WL_Metabox
  */

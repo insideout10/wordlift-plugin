@@ -1,4 +1,10 @@
 <?php
+/**
+ * @since 3.31.7
+ * @author Naveen Muthusamy <naveen@wordlift.io>
+ * This class returns instance of store depending on type.
+ */
+
 namespace Wordlift\Metabox\Field\Store;
 
 use Wordlift\Metabox\Wl_Abstract_Metabox;

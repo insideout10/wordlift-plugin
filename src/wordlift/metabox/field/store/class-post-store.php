@@ -1,6 +1,6 @@
 <?php
 /**
- * @since 3.31.6
+ * @since 3.31.7
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * This class handles save / get data for all the post fields.
  */

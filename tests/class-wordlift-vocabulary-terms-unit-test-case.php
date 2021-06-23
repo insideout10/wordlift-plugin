@@ -1,9 +1,9 @@
 <?php
-
+/**
+ * @since 3.31.7
+ * @author Naveen Muthusamy <naveen@wordlift.io>
+ */
 use Wordlift\Features\Features_Registry;
-use Wordlift\Vocabulary\Analysis_Background_Service;
-use Wordlift\Vocabulary\Vocabulary_Loader;
-use Wordlift\Vocabulary_Terms\Vocabulary_Terms_Loader;
 
 abstract class Wordlift_Vocabulary_Terms_Unit_Test_Case extends Wordlift_Unit_Test_Case {
 
