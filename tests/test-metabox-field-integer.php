@@ -8,6 +8,7 @@
  */
 
 use Wordlift\Metabox\Field\Wordlift_Metabox_Field_Integer;
+use Wordlift\Object_Type_Enum;
 
 /**
  * Test the {@link Wordlift_Metabox_Field_Integer} class.
@@ -29,7 +30,7 @@ class Wordlift_Metabox_Field_Integer_Test extends Wordlift_Unit_Test_Case {
 	function test_html_input() {
 
 		// Initialize the field.
-		$field = new Wordlift_Metabox_Field_Integer( array( 'wl_integer' => array() ), null, Wordlift_Property_Getter::POST );
+		$field = new Wordlift_Metabox_Field_Integer( array( 'wl_integer' => array() ), null, Object_Type_Enum::POST );
 
 		// Get the HTML output.
 		$output = $field->html_input( 'integer' );

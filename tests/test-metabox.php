@@ -6,7 +6,7 @@ use Wordlift\Metabox\Field\Wl_Metabox_Field_sameas;
 use Wordlift\Metabox\Field\Wl_Metabox_Field_uri;
 use Wordlift\Metabox\Wl_Abstract_Metabox;
 use Wordlift\Metabox\Wl_Metabox;
-
+use Wordlift\Object_Type_Enum;
 
 
 /**
@@ -52,14 +52,14 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 
 		$fields                = wl_entity_taxonomy_get_custom_fields( $place_id );
 		$sameAs_field          = array( 'sameas' => array( Wordlift_Schema_Service::FIELD_SAME_AS => $fields[ Wordlift_Schema_Service::FIELD_SAME_AS ] ) );
-		$sameAs_field_obj      = new Wl_Metabox_Field_sameas( $sameAs_field, $place_id, Wordlift_Property_Getter::POST );
+		$sameAs_field_obj      = new Wl_Metabox_Field_sameas( $sameAs_field, $place_id, Object_Type_Enum::POST );
 		$coordinates_field     = array(
 			'coordinates' => array(
 				Wordlift_Schema_Service::FIELD_GEO_LATITUDE  => $fields[ Wordlift_Schema_Service::FIELD_GEO_LATITUDE ],
 				Wordlift_Schema_Service::FIELD_GEO_LONGITUDE => $fields[ Wordlift_Schema_Service::FIELD_GEO_LONGITUDE ],
 			),
 		);
-		$coordinates_field_obj = new Wl_Metabox_Field_coordinates( $coordinates_field , $place_id, Wordlift_Property_Getter::POST);
+		$coordinates_field_obj = new Wl_Metabox_Field_coordinates( $coordinates_field , $place_id, Object_Type_Enum::POST);
 		$address_field         = array(
 			'address' => array(
 				Wordlift_Schema_Service::FIELD_ADDRESS             => $fields[ Wordlift_Schema_Service::FIELD_ADDRESS ],
@@ -70,7 +70,7 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 				Wordlift_Schema_Service::FIELD_ADDRESS_COUNTRY     => $fields[ Wordlift_Schema_Service::FIELD_ADDRESS_COUNTRY ],
 			),
 		);
-		$address_field_obj     = new Wl_Metabox_Field_address( $address_field , $place_id, Wordlift_Property_Getter::POST);
+		$address_field_obj     = new Wl_Metabox_Field_address( $address_field , $place_id, Object_Type_Enum::POST);
 
 		// Verify the correct fields have been built.
 		//
@@ -175,7 +175,7 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 
 		// Build a single Field
 		$author_custom_field = $this->getSampleCustomField( Wordlift_Schema_Service::DATA_TYPE_URI );
-		$field               = new Wl_Metabox_Field_uri( $author_custom_field , null, Wordlift_Property_Getter::POST );
+		$field               = new Wl_Metabox_Field_uri( $author_custom_field , null, Object_Type_Enum::POST );
 
 		// Verify Field has been built correctly
 		$this->assertEquals( Wordlift_Schema_Service::FIELD_AUTHOR, $field->meta_name );
@@ -213,7 +213,7 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 
 		$args = $this->getSampleCustomField( Wordlift_Schema_Service::DATA_TYPE_URI );
 
-		$field = new Wl_Metabox_Field_uri( $args, null, Wordlift_Property_Getter::POST  );
+		$field = new Wl_Metabox_Field_uri( $args, null, Object_Type_Enum::POST  );
 
 		// verify html methods
 		$html = $field->html();
@@ -250,7 +250,7 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 
 		// Build a single Field
 		$author_custom_field = $this->getSampleCustomField( Wordlift_Schema_Service::DATA_TYPE_URI );
-		$field               = new Wl_Metabox_Field_uri( $author_custom_field, $person_id, Wordlift_Property_Getter::POST  );
+		$field               = new Wl_Metabox_Field_uri( $author_custom_field, $person_id, Object_Type_Enum::POST  );
 
 		// Verify data is loaded correctly from DB
 		$field->get_data();

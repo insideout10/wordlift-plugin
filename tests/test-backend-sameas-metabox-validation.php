@@ -1,6 +1,7 @@
 <?php
 
 use Wordlift\Metabox\Field\Wl_Metabox_Field_sameas;
+use Wordlift\Object_Type_Enum;
 
 /**
  * @since 3.27.7
@@ -40,7 +41,7 @@ class Sameas_Metabox_Validation_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_given_text_should_not_save() {
 		$post_id          = $this->factory()->post->create();
-		$instance         = new Wl_Metabox_Field_sameas( $this->config, $post_id, Wordlift_Property_Getter::POST );
+		$instance         = new Wl_Metabox_Field_sameas( $this->config, $post_id, Object_Type_Enum::POST );
 		$_POST['post_ID'] = $post_id;
 		$test_data        = array(
 			0 => 'aaaa',
@@ -58,7 +59,7 @@ class Sameas_Metabox_Validation_Test extends Wordlift_Unit_Test_Case {
 
 	public function test_given_local_dataset_url_should_not_save() {
 		$post_id          = $this->factory()->post->create();
-		$instance         = new Wl_Metabox_Field_sameas( $this->config, $post_id, Wordlift_Property_Getter::POST );
+		$instance         = new Wl_Metabox_Field_sameas( $this->config, $post_id, Object_Type_Enum::POST );
 		$_POST['post_ID'] = $post_id;
 		$dataset_uri      = $this->configuration_service->get_dataset_uri();
 		$test_data        = array(

@@ -9,10 +9,6 @@
  */
 class Wordlift_Property_Getter {
 
-	const POST = 1;
-
-	const TERM = 2;
-
 	/**
 	 * An array of {@link Wordlift_Simple_Property_Service}s which can access a
 	 * property.

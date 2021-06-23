@@ -1,6 +1,8 @@
 <?php
 
 // Require the Wordlift_Property_Not_Found class.
+use Wordlift\Object_Type_Enum;
+
 require_once( "class-wordlift-property-not-found.php" );
 require_once( "class-wordlift-property-entity-reference.php" );
 
@@ -32,11 +34,11 @@ class Wordlift_Simple_Property_Service {
 	 */
 	public function get( $id, $meta_key, $type ) {
 
-		if ( Wordlift_Property_Getter::POST === $type ) {
+		if ( Object_Type_Enum::POST === $type ) {
 			// Get the value stored in WP.
 			return get_post_meta( $id, $meta_key );
 		}
-		else if ( Wordlift_Property_Getter::TERM === $type ) {
+		else if ( Object_Type_Enum::TERM === $type ) {
 			return get_term_meta( $id, $meta_key );
 		}
 		return null;

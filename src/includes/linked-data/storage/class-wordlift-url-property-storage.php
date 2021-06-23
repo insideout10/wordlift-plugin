@@ -7,6 +7,8 @@
  * @subpackage Wordlift/includes/linked-data/storage
  */
 
+use Wordlift\Object_Type_Enum;
+
 /**
  * Define the {@link Wordlift_Property_Storage} class.
  *
@@ -51,7 +53,7 @@ class Wordlift_Url_Property_Storage extends Wordlift_Storage {
 	 */
 	public function get( $post_id ) {
 
-		return $this->property_getter->get( $post_id, Wordlift_Schema_Url_Property_Service::META_KEY, Wordlift_Property_Getter::POST );
+		return $this->property_getter->get( $post_id, Wordlift_Schema_Url_Property_Service::META_KEY, Object_Type_Enum::POST );
 	}
 
 }

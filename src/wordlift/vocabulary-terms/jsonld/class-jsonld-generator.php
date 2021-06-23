@@ -6,6 +6,7 @@
 
 namespace Wordlift\Vocabulary_Terms\Jsonld;
 
+use Wordlift\Object_Type_Enum;
 use Wordlift_Entity_Type_Taxonomy_Service;
 
 class Jsonld_Generator {
@@ -64,7 +65,7 @@ class Jsonld_Generator {
 
 		foreach ( $custom_fields as $key => $value ) {
 			$name  = $this->relative_to_schema_context( $value['predicate'] );
-			$value = $this->property_getter->get( $term_id, $key, \Wordlift_Property_Getter::TERM );
+			$value = $this->property_getter->get( $term_id, $key, Object_Type_Enum::TERM );
 			if ( $value ) {
 				$jsonld[ $name ] = $value;
 			}
