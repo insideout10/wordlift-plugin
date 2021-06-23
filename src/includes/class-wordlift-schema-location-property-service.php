@@ -58,7 +58,7 @@ class Wordlift_Schema_Location_Property_Service extends Wordlift_Property_Servic
 	 */
 	public function get_metabox_class() {
 
-		return 'Wordlift\Metabox\Field\Wl_Metabox_Field';
+		return 'Wl_Metabox_Field';
 	}
 
 	/**
