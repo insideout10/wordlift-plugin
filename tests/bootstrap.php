@@ -61,8 +61,6 @@ tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 
 // Required for woocommerce-shipping-data tests to work.
 tests_add_filter( 'wl_feature__enable__shipping-sd', '__return_true' );
-// Required for no-vocabulary-terms feature.
-tests_add_filter( 'wl_feature__enable__no-vocabulary-terms', '__return_true' );
 
 require $_tests_dir . '/includes/bootstrap.php';
 
@@ -75,6 +73,7 @@ require_once( 'class-wordlift-unit-test-case.php' );
  */
 require_once( 'class-wordlift-vocabulary-unit-test-case.php' );
 require_once( 'class-wordlift-videoobject-unit-test-case.php' );
+require_once( 'class-wordlift-vocabulary-terms-unit-test-case.php' );
 require_once( 'class-wordlift-ajax-unit-test-case.php' );
 require_once( 'class-wordlift-test.php' );
 
