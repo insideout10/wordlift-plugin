@@ -219,14 +219,6 @@ class Wordlift_Uri_Service {
 		// Get the entity slug suffix digit
 		$suffix_digit = $increment_digit + 1;
 
-		// Get a sanitized uri for a given title.
-		/*
-		 * The call takes into consideration URL encoding.
-		 *
-		 * @see https://github.com/insideout10/wordlift-plugin/issues/885
-		 *
-		 * @since 3.20.0
-		 */
 		$entity_slug = urldecode(  $title  )
 		               . ( 0 === $increment_digit ? '' : '_' . $suffix_digit );
 
