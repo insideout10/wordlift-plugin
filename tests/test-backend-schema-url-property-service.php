@@ -46,7 +46,7 @@ class Wordlift_Backend_Schema_Url_Property_Service_Test extends Wordlift_Unit_Te
 
 		// Check that we have one metabox field with the class and label set by this property.
 		$this->assertCount( 1, $metabox->fields );
-		$this->assertEquals( $this->schema_url_property_service->get_metabox_class(), get_class( $metabox->fields[0] ) );
+		$this->assertEquals( 'Wordlift\Metabox\Field\\' . $this->schema_url_property_service->get_metabox_class(), get_class( $metabox->fields[0] ) );
 		$this->assertEquals( $this->schema_url_property_service->get_metabox_label(), $metabox->fields[0]->label );
 
 	}
