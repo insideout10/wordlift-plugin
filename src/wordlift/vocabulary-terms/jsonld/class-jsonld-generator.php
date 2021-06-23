@@ -47,13 +47,15 @@ class Jsonld_Generator {
 	}
 
 	private function get_jsonld_data_for_term( $term_id ) {
-
+		$permalink     = get_term_link( $term_id );
 		$custom_fields = $this->entity_type_service->get_custom_fields_for_term( $term_id );
-
-		$jsonld = array(
-			'@context' => 'http://schema.org',
-			'@type'    => $this->get_all_selected_entity_type_labels( $term_id ),
-			'@id'      => wl_get_term_entity_uri( $term_id )
+		$term          = get_term( $term_id );
+		$jsonld        = array(
+			'@context'    => 'http://schema.org',
+			'name'        => $term->name,
+			'@type'       => $this->get_all_selected_entity_type_labels( $term_id ),
+			'@id'         => wl_get_term_entity_uri( $term_id ),
+			'description' => $term->description,
 		);
 
 		if ( ! $custom_fields || ! is_array( $custom_fields ) ) {
@@ -66,6 +68,11 @@ class Jsonld_Generator {
 			if ( $value ) {
 				$jsonld[ $name ] = $value;
 			}
+		}
+
+		if ( $permalink ) {
+			$jsonld['url']              = $permalink;
+			$jsonld['mainEntityOfPage'] = $permalink;
 		}
 
 		return apply_filters( 'wl_no_vocabulary_term_jsonld_array', array(
