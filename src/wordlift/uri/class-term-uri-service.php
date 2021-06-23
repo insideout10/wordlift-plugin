@@ -9,7 +9,7 @@ namespace Wordlift\Uri;
 
 use Wordlift\Vocabulary\Terms_Compat;
 
-class Term_Uri {
+class Term_Uri_Service {
 
 	/**
 	 * @param $uri string
