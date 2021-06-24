@@ -7,6 +7,8 @@
  * @subpackage Wordlift/modules/core
  */
 
+use Wordlift\Object_Type_Enum;
+
 /**
  * Checks if a relation is supported
  *
@@ -57,7 +59,7 @@ function wl_core_get_relation_instances_table_name() {
  * @return integer|boolean Return then relation instance ID or false.
  * @uses   $wpdb->replace() to perform the query
  */
-function wl_core_add_relation_instance( $subject_id, $predicate, $object_id ) {
+function wl_core_add_relation_instance( $subject_id, $predicate, $object_id, $object_type = Object_Type_Enum::POST ) {
 
 	// Checks on subject and object
 	if ( ! is_numeric( $subject_id ) || ! is_numeric( $object_id ) ) {
@@ -86,8 +88,9 @@ function wl_core_add_relation_instance( $subject_id, $predicate, $object_id ) {
 			'subject_id' => $subject_id,
 			'predicate'  => $predicate,
 			'object_id'  => $object_id,
+			'object_type' => $object_type
 		),
-		array( '%d', '%s', '%d' )
+		array( '%d', '%s', '%d', '%d' )
 	);
 
 	/**

@@ -29,7 +29,7 @@ class Wordlift_Install_3_32_0 extends Wordlift_Install {
 ALTER TABLE %s
 ADD %s TINYINT DEFAULT 0; 
 EOF;
-		$query = sprintf( $query_template, $wpdb->prefix . WL_DB_RELATION_INSTANCES_TABLE_NAME  );
+		$query = sprintf( $query_template, $wpdb->prefix . WL_DB_RELATION_INSTANCES_TABLE_NAME, 'object_type' );
 
 		$wpdb->query( $query );
 
