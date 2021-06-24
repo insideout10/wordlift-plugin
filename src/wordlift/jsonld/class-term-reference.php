@@ -5,7 +5,7 @@ use Wordlift\Object_Type_Enum;
 /**
  * This class represents an Term reference
  *
- * @since 3.31.7
+ * @since 3.32.0
  * @package Wordlift\Jsonld
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */

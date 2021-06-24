@@ -450,7 +450,7 @@ class Wordlift_Entity_Type_Service {
 	 * @param int $term_id The term ID.
 	 *
 	 * @return array An array of custom fields (see `custom_fields` in Wordlift_Schema_Service).
-	 * @since 3.31.7
+	 * @since 3.32.0
 	 *
 	 */
 	public function get_custom_fields_for_term( $term_id ) {

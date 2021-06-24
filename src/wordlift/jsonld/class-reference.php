@@ -3,7 +3,7 @@ namespace Wordlift\Jsonld;
 /**
  * This interface represents a reference
  *
- * @since 3.31.7
+ * @since 3.32.0
  * @package Wordlift\Jsonld
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */

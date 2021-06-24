@@ -212,7 +212,7 @@ class Wordlift_Uri_Service {
 	 * @param integer $increment_digit A digit used to call recursively the same function.
 	 *
 	 * @return string Returns an uri.
-	 * @since 3.31.7
+	 * @since 3.32.0
 	 */
 	public function build_term_uri( $title, $taxonomy, $increment_digit = 0 ) {
 

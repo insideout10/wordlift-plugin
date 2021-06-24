@@ -1,6 +1,6 @@
 <?php
 /**
- * @since 3.31.7
+ * @since 3.32.0
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * This class handles save / get data for all the term fields.
  */

@@ -198,7 +198,7 @@ class Wordlift_Term_JsonLd_Adapter {
 		$arr = apply_filters( 'wl_term_jsonld_array', $result, $id );
 
 		/**
-		 * @since 3.31.7
+		 * @since 3.32.0
 		 * Expand the references returned by this filter.
 		 */
 		$references = $this->expand_references( $arr['references'] );
