@@ -19,4 +19,5 @@ class Post_Relation extends Relation  {
 	function get_type() {
 		return Object_Type_Enum::POST;
 	}
+
 }

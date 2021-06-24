@@ -210,8 +210,11 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 		wl_core_add_relation_instance(
 			$post_id,
-			$entity_service->get_classification_scope_for( $referenced_entity_id ),
-			$referenced_entity_id
+			// what, where, when, who
+			$relation->get_relation_type(),
+			$relation->get_id(),
+			// Represents Object_Type_Enum
+			$relation->get_type()
 		);
 
 	}

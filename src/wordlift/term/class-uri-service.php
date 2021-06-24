@@ -25,25 +25,20 @@ class Uri_Service extends Singleton {
 	 */
 	public function get_term( $uri ) {
 
-		$selected_terms = Terms_Compat::get_terms( '', array(
-			'fields'     => 'all',
-			'get'        => 'all',
-			'number'     => 1,
-			'meta_query' => array(
-				array(
-					'key'   => 'entity_url',
-					'value' => $uri,
-				),
-			),
-			'orderby'    => 'term_id',
-			'order'      => 'ASC',
-		) );
+		global $wpdb;
+		$query_template = <<<EOF
+SELECT t.term_id FROM $wpdb->terms AS t INNER JOIN $wpdb->termmeta AS tm ON t.term_id = tm.term_id
+WHERE tm.meta_key='entity_url' AND tm.meta_value = %s
+EOF;
+		$query          = $wpdb->prepare( $query_template, $uri );
 
-		if ( count( $selected_terms ) === 0 ) {
+		$term_ids = $wpdb->get_col( $query );
+
+		if ( count( $term_ids ) === 0 ) {
 			return false;
 		}
 
-		return $selected_terms[0];
+		return get_term( $term_ids[0] );
 	}
 
 }

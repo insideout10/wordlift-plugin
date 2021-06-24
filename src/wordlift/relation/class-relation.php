@@ -18,8 +18,19 @@ abstract class Relation {
 	 */
 	private $id;
 
-	public function __construct( $id ) {
+	private $relation_type;
+
+	public function __construct( $id, $relation_type ) {
 		$this->id = $id;
+		$this->relation_type = $relation_type;
+	}
+
+	/**
+	 * Return Object id.
+	 * @return int
+	 */
+	public function get_id() {
+		return $this->id;
 	}
 
 	/**
@@ -28,13 +39,12 @@ abstract class Relation {
 	abstract function get_type();
 
 
-	function get_relation_type() {
-		return WL_WHAT_RELATION;
-	}
-
 	/**
-	 * @return array<string>
+	 * Returns relation type.
+	 * @return string Relation type {@link WL_WHAT_RELATION} etc.
 	 */
-	abstract function get_selected_entity_types();
+	function get_relation_type() {
+		return $this->relation_type;
+	}
 
 }

@@ -10,10 +10,6 @@ class Wordlift_Install_3_32_0 extends Wordlift_Install {
 	 */
 	protected static $version = '3.32.0';
 
-	public function must_install() {
-		// This db column alter should happen.
-		return true;
-	}
 
 	public function install() {
 		global $wpdb;

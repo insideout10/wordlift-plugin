@@ -35,6 +35,14 @@ class Object_Relation_Service extends Singleton implements Relation_Service_Inte
 	 * @var Uri_Service
 	 */
 	private $term_uri_service;
+	/**
+	 * @var \Wordlift_Entity_Service
+	 */
+	private $entity_service;
+	/**
+	 * @var \Wordlift_Log_Service
+	 */
+	private $log;
 
 	public function __construct() {
 		parent::__construct();
@@ -42,6 +50,8 @@ class Object_Relation_Service extends Singleton implements Relation_Service_Inte
 		$this->term_relation_service = Term_Relation_Service::get_instance();
 		$this->entity_uri_service    = \Wordlift_Entity_Uri_Service::get_instance();
 		$this->term_uri_service      = Uri_Service::get_instance();
+		$this->entity_service        = \Wordlift_Entity_Service::get_instance();
+		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
 	}
 
 	/**
@@ -70,7 +80,7 @@ class Object_Relation_Service extends Singleton implements Relation_Service_Inte
 	public function get_relations( $post_content ) {
 
 		$entity_uris = array_unique( self::get_entity_uris( $post_content ) );
-
+		$this->log->debug("Found " . var_export( $entity_uris, true) . " by object relation service");
 		/**
 		 * We should never have cases where the term entity URI conflicts
 		 * with the post entity URI, check if it matches entity then
@@ -81,11 +91,12 @@ class Object_Relation_Service extends Singleton implements Relation_Service_Inte
 			$entity = $this->entity_uri_service->get_entity( $uri );
 
 			if ( $entity ) {
-				return new Post_Relation( $entity->ID );
+				return new Post_Relation( $entity->ID, $this->entity_service->get_classification_scope_for( $entity->ID ) );
 			}
+
 			$term = $this->term_uri_service->get_term( $uri );
 			if ( $term ) {
-				return new Term_Relation( $term->term_id );
+				return new Term_Relation( $term->term_id, WL_WHAT_RELATION );
 			}
 
 			return false;
