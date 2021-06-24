@@ -5,18 +5,25 @@
  * This class returns the term by URI.
  */
 
-namespace Wordlift\Uri;
+namespace Wordlift\Term;
 
+use Wordlift\Common\Singleton;
 use Wordlift\Vocabulary\Terms_Compat;
 
-class Term_Uri_Service {
+class Uri_Service extends Singleton {
+	/**
+	 * @return Uri_Service
+	 */
+	public static function get_instance() {
+		return parent::get_instance();
+	}
 
 	/**
 	 * @param $uri string
 	 *
 	 * @return \WP_Term | bool
 	 */
-	public static function get_term( $uri ) {
+	public function get_term( $uri ) {
 
 		$selected_terms = Terms_Compat::get_terms( '', array(
 			'fields'     => 'all',

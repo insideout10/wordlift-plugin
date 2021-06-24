@@ -33,4 +33,7 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 	}
 
 
+	public function get_relations( $post_content ) {
+		// TODO: Implement get_relations() method.
+	}
 }

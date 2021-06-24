@@ -27,4 +27,14 @@ abstract class Relation {
 	 */
 	abstract function get_type();
 
+
+	function get_relation_type() {
+		return WL_WHAT_RELATION;
+	}
+
+	/**
+	 * @return array<string>
+	 */
+	abstract function get_selected_entity_types();
+
 }

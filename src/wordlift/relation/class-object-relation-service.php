@@ -15,6 +15,7 @@ namespace Wordlift\Relation;
 use Wordlift\Common\Singleton;
 use Wordlift\Jsonld\Post_Reference;
 use Wordlift\Jsonld\Reference;
+use Wordlift\Term\Uri_Service;
 
 class Object_Relation_Service extends Singleton implements Relation_Service_Interface {
 
@@ -26,11 +27,21 @@ class Object_Relation_Service extends Singleton implements Relation_Service_Inte
 	 * @var Term_Relation_Service
 	 */
 	private $term_relation_service;
+	/**
+	 * @var \Wordlift_Entity_Uri_Service
+	 */
+	private $entity_uri_service;
+	/**
+	 * @var Uri_Service
+	 */
+	private $term_uri_service;
 
 	public function __construct() {
 		parent::__construct();
 		$this->post_relation_service = \Wordlift_Relation_Service::get_instance();
 		$this->term_relation_service = Term_Relation_Service::get_instance();
+		$this->entity_uri_service    = \Wordlift_Entity_Uri_Service::get_instance();
+		$this->term_uri_service      = Uri_Service::get_instance();
 	}
 
 	/**
@@ -51,8 +62,59 @@ class Object_Relation_Service extends Singleton implements Relation_Service_Inte
 			return new Post_Reference( $post_id );
 		}, $post_ids );
 		$term_references = $this->term_relation_service->get_references( $subject_id );
+
 		return array_merge( $post_references, $term_references );
 	}
 
 
+	public function get_relations( $post_content ) {
+
+		$entity_uris = array_unique( self::get_entity_uris( $post_content ) );
+
+		/**
+		 * We should never have cases where the term entity URI conflicts
+		 * with the post entity URI, check if it matches entity then
+		 * check if it matches term
+		 */
+		$relations = array_map( function ( $uri ) {
+
+			$entity = $this->entity_uri_service->get_entity( $uri );
+
+			if ( $entity ) {
+				return new Post_Relation( $entity->ID );
+			}
+			$term = $this->term_uri_service->get_term( $uri );
+			if ( $term ) {
+				return new Term_Relation( $term->term_id );
+			}
+
+			return false;
+		}, $entity_uris );
+
+		return array_filter( $relations );
+
+	}
+
+
+	public static function get_entity_uris( $content ) {
+		// Remove quote escapes.
+		$content = str_replace( '\\"', '"', $content );
+
+		// Match all itemid attributes.
+		$pattern = '/<\w+[^>]*\sitemid="([^"]+)"[^>]*>/im';
+
+		//	wl_write_log( "Getting entities embedded into content [ pattern :: $pattern ]" );
+
+		// Remove the pattern while it is found (match nested annotations).
+		$matches = array();
+
+		// In case of errors, return an empty array.
+		if ( false === preg_match_all( $pattern, $content, $matches ) ) {
+			wl_write_log( "Found no entities embedded in content" );
+
+			return array();
+		}
+
+		return $matches[1];
+	}
 }

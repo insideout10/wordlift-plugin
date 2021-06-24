@@ -22,11 +22,11 @@ interface  Relation_Service_Interface {
 	public function get_references( $subject_id );
 
 
-//	/**
-//	 * @param $post_content string
-//	 * @return array<int>
-//	 * Note: The Returned ids might not be unique, for example entities and term
-//	 */
-//	public function get_ids( $post_content );
+	/**
+	 * @param $post_content string
+	 * @return array<Relation>
+	 * Note: The Returned ids might not be unique, for example entities and term
+	 */
+	public function get_relations( $post_content );
 
 }

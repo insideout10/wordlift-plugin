@@ -200,15 +200,13 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			'post_content' => addslashes( $updated_post_content ),
 		) );
 	}
-
-	// Extract related/referenced entities from text.
-	$disambiguated_entities = wl_linked_data_content_get_embedded_entities( $updated_post_content );
-
 	// Reset previously saved instances.
 	wl_core_delete_relation_instances( $post_id );
 
+
+	$relations = Object_Relation_Service::get_instance()->get_relations( $updated_post_content );
 	// Save relation instances
-	foreach ( array_unique( $disambiguated_entities ) as $referenced_entity_id ) {
+	foreach ( $relations as $relation ) {
 
 		wl_core_add_relation_instance(
 			$post_id,
@@ -217,7 +215,6 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 		);
 
 	}
-
 
 	if ( isset( $_POST['wl_entities'] ) ) {
 		// Save post metadata if available
@@ -477,13 +474,17 @@ function wl_save_entity( $entity_data ) {
 	return get_post( $post_id );
 }
 
-
 /**
- * Returns all the entities URL from post_content
- * @since 3.32.0
- * @return array<string>
+ * Get an array of entities from the *itemid* attributes embedded in the provided content.
+ *
+ * @param string $content The content with itemid attributes.
+ *
+ * @return array An array of entity posts.
+ * @since 3.0.0
+ *
  */
-function wl_linked_data_get_embedded_entity_urls ( $content ) {
+function wl_linked_data_content_get_embedded_entities( $content ) {
+
 	// Remove quote escapes.
 	$content = str_replace( '\\"', '"', $content );
 
@@ -501,23 +502,10 @@ function wl_linked_data_get_embedded_entity_urls ( $content ) {
 
 		return array();
 	}
-	return $matches[1];
-}
 
-
-/**
- * Get an array of entities from the *itemid* attributes embedded in the provided content.
- *
- * @param string $content The content with itemid attributes.
- *
- * @return array An array of entity posts.
- * @since 3.0.0
- * @deprecated  use \Object_Relation_Service::get_instance()->get_ids();
- *
- */
-function wl_linked_data_content_get_embedded_entities( $content ) {
 //    wl_write_log("wl_update_related_entities [ content :: $content ][ data :: " . var_export($data, true). " ][ matches :: " . var_export($matches, true) . " ]");
-	$uris  = wl_linked_data_get_embedded_entity_urls( $content );
+
+	$uris  = $matches[1];
 	// Collect the entities.
 	$entities = array();
 	foreach ( $uris as $uri ) {
@@ -537,3 +525,10 @@ function wl_linked_data_content_get_embedded_entities( $content ) {
 }
 
 
+/**
+ * Returns all the entities URL from post_content
+ * @since 3.32.0
+ */
+function wl_linked_data_get_embedded_entity_urls ( $content ) {
+
+}
