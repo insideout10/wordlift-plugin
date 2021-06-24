@@ -7,6 +7,7 @@
  * @subpackage Wordlift/modules/linked_data
  */
 
+use Wordlift\Relation\Object_Relation_Service;
 use Wordlift\Uri\Term_Uri_Service;
 
 /**
@@ -216,6 +217,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 		);
 
 	}
+
 
 	if ( isset( $_POST['wl_entities'] ) ) {
 		// Save post metadata if available
@@ -510,6 +512,7 @@ function wl_linked_data_get_embedded_entity_urls ( $content ) {
  *
  * @return array An array of entity posts.
  * @since 3.0.0
+ * @deprecated  use \Object_Relation_Service::get_instance()->get_ids();
  *
  */
 function wl_linked_data_content_get_embedded_entities( $content ) {
