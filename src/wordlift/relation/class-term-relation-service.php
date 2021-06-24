@@ -33,10 +33,19 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 	}
 
 
-	public function get_relations( $post_content ) {
+	public function get_relations_from_content( $post_content ) {
 		/**
 		 * This method is not implemented, this is implemented
-		 * efficiently by the {@link Object_Relation_Service::get_relations()} method
+		 * efficiently by the {@link Object_Relation_Service::get_relations_from_content()} method
 		 */
+	}
+
+	public function get_relations( $post_id ) {
+		global $wpdb;
+		$table_name = $wpdb->prefix . WL_
+		$query_template = <<<EOF
+SELECT object_type, object_id FROM 
+EOF;
+
 	}
 }

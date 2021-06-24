@@ -190,6 +190,8 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		// Merge the references with the referenced locations if any.
 		$references = array_unique( array_merge( $references_without_locations, $locations ) );
 
+		$post_references
+
 		return $jsonld;
 	}
 

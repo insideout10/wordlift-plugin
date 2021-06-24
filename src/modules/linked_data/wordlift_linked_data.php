@@ -204,7 +204,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	wl_core_delete_relation_instances( $post_id );
 
 
-	$relations = Object_Relation_Service::get_instance()->get_relations( $updated_post_content );
+	$relations = Object_Relation_Service::get_instance()->get_relations_from_content( $updated_post_content );
 	// Save relation instances
 	foreach ( $relations as $relation ) {
 

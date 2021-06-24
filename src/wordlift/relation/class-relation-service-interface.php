@@ -25,8 +25,16 @@ interface  Relation_Service_Interface {
 	/**
 	 * @param $post_content string
 	 * @return array<Relation>
-	 * Note: The Returned ids might not be unique, for example entities and term
+	 * Extracts the relations from the post content.
 	 */
-	public function get_relations( $post_content );
+	public function get_relations_from_content( $post_content );
+
+
+	/**
+	 * @param $post_content string
+	 * @return array<Relation>
+	 * Extracts the relations for all object types.
+	 */
+	public function get_relations( $post_id );
 
 }

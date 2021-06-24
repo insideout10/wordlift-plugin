@@ -51,7 +51,7 @@ class Object_Relation_Service extends Singleton implements Relation_Service_Inte
 		$this->entity_uri_service    = \Wordlift_Entity_Uri_Service::get_instance();
 		$this->term_uri_service      = Uri_Service::get_instance();
 		$this->entity_service        = \Wordlift_Entity_Service::get_instance();
-		$this->log = \Wordlift_Log_Service::get_logger( get_class() );
+		$this->log                   = \Wordlift_Log_Service::get_logger( get_class() );
 	}
 
 	/**
@@ -77,10 +77,10 @@ class Object_Relation_Service extends Singleton implements Relation_Service_Inte
 	}
 
 
-	public function get_relations( $post_content ) {
+	public function get_relations_from_content( $post_content ) {
 
 		$entity_uris = array_unique( self::get_entity_uris( $post_content ) );
-		$this->log->debug("Found " . var_export( $entity_uris, true) . " by object relation service");
+		$this->log->debug( "Found " . var_export( $entity_uris, true ) . " by object relation service" );
 		/**
 		 * We should never have cases where the term entity URI conflicts
 		 * with the post entity URI, check if it matches entity then
@@ -114,18 +114,19 @@ class Object_Relation_Service extends Singleton implements Relation_Service_Inte
 		// Match all itemid attributes.
 		$pattern = '/<\w+[^>]*\sitemid="([^"]+)"[^>]*>/im';
 
-		//	wl_write_log( "Getting entities embedded into content [ pattern :: $pattern ]" );
-
 		// Remove the pattern while it is found (match nested annotations).
 		$matches = array();
 
 		// In case of errors, return an empty array.
 		if ( false === preg_match_all( $pattern, $content, $matches ) ) {
-			wl_write_log( "Found no entities embedded in content" );
 
 			return array();
 		}
 
 		return $matches[1];
+	}
+
+	public function get_relations( $post_id ) {
+
 	}
 }
