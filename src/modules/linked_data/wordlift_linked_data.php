@@ -475,17 +475,13 @@ function wl_save_entity( $entity_data ) {
 	return get_post( $post_id );
 }
 
-/**
- * Get an array of entities from the *itemid* attributes embedded in the provided content.
- *
- * @param string $content The content with itemid attributes.
- *
- * @return array An array of entity posts.
- * @since 3.0.0
- *
- */
-function wl_linked_data_content_get_embedded_entities( $content ) {
 
+/**
+ * Returns all the entities URL from post_content
+ * @since 3.32.0
+ * @return array<string>
+ */
+function wl_linked_data_get_embedded_entity_urls ( $content ) {
 	// Remove quote escapes.
 	$content = str_replace( '\\"', '"', $content );
 
@@ -503,12 +499,25 @@ function wl_linked_data_content_get_embedded_entities( $content ) {
 
 		return array();
 	}
+	return $matches[1];
+}
 
+
+/**
+ * Get an array of entities from the *itemid* attributes embedded in the provided content.
+ *
+ * @param string $content The content with itemid attributes.
+ *
+ * @return array An array of entity posts.
+ * @since 3.0.0
+ *
+ */
+function wl_linked_data_content_get_embedded_entities( $content ) {
 //    wl_write_log("wl_update_related_entities [ content :: $content ][ data :: " . var_export($data, true). " ][ matches :: " . var_export($matches, true) . " ]");
-
+	$uris  = wl_linked_data_get_embedded_entity_urls( $content );
 	// Collect the entities.
 	$entities = array();
-	foreach ( $matches[1] as $uri ) {
+	foreach ( $uris as $uri ) {
 		$uri_d = html_entity_decode( $uri );
 
 		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri_d );
@@ -523,3 +532,5 @@ function wl_linked_data_content_get_embedded_entities( $content ) {
 
 	return $entities;
 }
+
+
