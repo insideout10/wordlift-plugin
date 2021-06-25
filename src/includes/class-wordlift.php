@@ -1630,6 +1630,9 @@ class Wordlift {
 		 * Create configuration endpoint for webapp to configure.
 		 */
 		new Config( $this->admin_setup, $this->key_validation_service, $this->configuration_service );
+
+		$synonym_loader = new \Wordlift\Synonym\Loader();
+		$synonym_loader->init_feature();
 	}
 
 	/**
