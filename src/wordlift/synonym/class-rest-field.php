@@ -12,6 +12,11 @@ class Rest_Field {
 
 	public function register_rest_field() {
 
+		if ( ! function_exists( 'register_rest_field' ) ) {
+			return;
+		}
+
+
 		$post_types = Wordlift_Entity_Service::valid_entity_post_types();
 
 		foreach ( $post_types as $post_type ) {
