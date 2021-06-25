@@ -7,8 +7,6 @@ use Wordlift_Entity_Service;
 class Rest_Field {
 
 	public function __construct() {
-
-
 		add_action( 'rest_api_init', array( $this, 'register_rest_field' ) );
 	}
 
@@ -32,6 +30,11 @@ class Rest_Field {
 
 	}
 
+	/**
+	 * @param $meta_values array
+	 * @param $post \WP_Post
+	 * @param $meta_key string
+	 */
 	public function update_value( $meta_values, $post, $meta_key ) {
 
 		if ( ! is_array( $meta_values ) ) {
@@ -47,8 +50,13 @@ class Rest_Field {
 		}
 	}
 
+	/**
+	 * @param $post array Post array.
+	 *
+	 * @return array|mixed
+	 */
 	public function get_value( $post ) {
-		$data = get_post_meta( $post["id"], \Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY );
+		$data = get_post_meta( (int) $post["id"], \Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY );
 		if ( ! is_array( $data ) ) {
 			return array();
 		}
