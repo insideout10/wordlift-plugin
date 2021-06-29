@@ -18,6 +18,14 @@ use Wordlift\Object_Type_Enum;
 
 class Term_Relation_Service extends Singleton implements Relation_Service_Interface {
 
+	/**
+	 * @return Term_Relation_Service
+	 */
+	public static function get_instance() {
+		return parent::get_instance();
+	}
+
+
 	public function get_references( $subject_id ) {
 		global $wpdb;
 		$table_name      = $wpdb->prefix . WL_DB_RELATION_INSTANCES_TABLE_NAME;
@@ -42,10 +50,11 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 
 	public function get_relations( $post_id ) {
 		global $wpdb;
-		$table_name = $wpdb->prefix . WL_
+		$table_name = $wpdb->prefix . WL_DB_RELATION_INSTANCES_TABLE_NAME;
 		$query_template = <<<EOF
-SELECT object_type, object_id FROM 
+SELECT object_id FROM $table_name WHERE object_type = %d
 EOF;
-
+		$query = $wpdb->prepare( $query_template, Object_Type_Enum::TERM );
+		return $wpdb->get_col($query);
 	}
 }

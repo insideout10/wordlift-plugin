@@ -9,6 +9,10 @@
  * @subpackage Wordlift/includes
  */
 
+use Wordlift\Jsonld\Post_Reference;
+use Wordlift\Jsonld\Term_Reference;
+use Wordlift\Relation\Term_Relation_Service;
+
 /**
  * Define the {@link Wordlift_Abstract_Post_To_Jsonld_Converter} class.
  *
@@ -190,7 +194,16 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		// Merge the references with the referenced locations if any.
 		$references = array_unique( array_merge( $references_without_locations, $locations ) );
 
-		$post_references
+		$post_references = array_map( function ( $post_reference) {
+			return new Post_Reference( $post_reference );
+		}, $references );
+
+		$linked_term_ids = Term_Relation_Service::get_instance()->get_relations($post_id);
+		$term_references = array( function ( $term_id ) {
+			return new Term_Reference( $term_id );
+		}, $linked_term_ids);
+
+		$references = array_merge( $post_references, $term_references );
 
 		return $jsonld;
 	}
