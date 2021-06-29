@@ -97,15 +97,15 @@ class Wordlift_Entity_Type_Taxonomy_Service {
 		/**
 		 * Register meta _wl_alt_label for use in Gutenberg
 		 */
-		register_meta( 'post', Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY, array(
-			'object_subtype' => '',
-			'show_in_rest'   => true,
-			'single'         => false,
-			'type'           => 'string',
-			'auth_callback'  => function () {
-				return current_user_can( 'edit_posts' );
-			}
-		) );
+//		register_meta( 'post', Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY, array(
+//			'object_subtype' => '',
+//			'show_in_rest'   => true,
+//			'single'         => false,
+//			'type'           => 'string',
+//			'auth_callback'  => function () {
+//				return current_user_can( 'edit_posts' );
+//			}
+//		) );
 
 		// see #1364: add custom fields support for CPTs that are valid entity post types in order to be able to
 		// query for synonyms in Block Editor.
