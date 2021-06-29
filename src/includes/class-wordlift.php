@@ -22,6 +22,7 @@ use Wordlift\Autocomplete\Local_Autocomplete_Service;
 use Wordlift\Cache\Ttl_Cache;
 use Wordlift\Configuration\Config;
 use Wordlift\Duplicate_Markup_Remover\Faq_Duplicate_Markup_Remover;
+use Wordlift\Duplicate_Markup_Remover\Videoobject_Duplicate_Remover;
 use Wordlift\Entity\Entity_Helper;
 use Wordlift\Entity\Entity_No_Index_Flag;
 use Wordlift\Entity\Entity_Rest_Service;
@@ -1630,7 +1631,11 @@ class Wordlift {
 		 * Create configuration endpoint for webapp to configure.
 		 */
 		new Config( $this->admin_setup, $this->key_validation_service, $this->configuration_service );
-
+		/**
+		 * @since 3.31.7
+		 * Remove duplicate videoobject.
+		 */
+		new Videoobject_Duplicate_Remover();
 		$synonym_loader = new \Wordlift\Synonym\Loader();
 		$synonym_loader->init_feature();
 	}
