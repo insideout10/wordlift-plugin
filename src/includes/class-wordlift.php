@@ -1636,6 +1636,8 @@ class Wordlift {
 		 * Remove duplicate videoobject.
 		 */
 		new Videoobject_Duplicate_Remover();
+		$synonym_loader = new \Wordlift\Synonym\Loader();
+		$synonym_loader->init_feature();
 	}
 
 	/**
