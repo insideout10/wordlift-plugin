@@ -68,9 +68,9 @@ class Wordlift_Jsonld_Service {
 	 * @param \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
 	 * @param \Wordlift_Post_Converter $converter A {@link Wordlift_Uri_To_Jsonld_Converter} instance.
 	 * @param \Wordlift_Website_Jsonld_Converter $website_converter A {@link Wordlift_Website_Jsonld_Converter} instance.
+	 * @param \Wordlift_Term_JsonLd_Adapter $term_jsonld_adapter
 	 *
 	 * @since 3.8.0
-	 *
 	 */
 	public function __construct( $entity_service, $converter, $website_converter, $term_jsonld_adapter ) {
 
@@ -195,8 +195,7 @@ class Wordlift_Jsonld_Service {
 			$ignored = array();
 
 			if ( $item instanceof Term_Reference ) {
-			    var_dump($this->term_jsonld_adapter->get( $item->get_id(), $context ));
-				return $this->term_jsonld_adapter->get( $item->get_id(), $context );
+			    return $this->term_jsonld_adapter->get( $item->get_id(), $context );
 			}
 
 			return $entity_to_jsonld_converter->convert( $item, $ignored, $references_infos );

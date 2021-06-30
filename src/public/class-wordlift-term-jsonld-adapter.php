@@ -189,6 +189,7 @@ class Wordlift_Term_JsonLd_Adapter {
 			'references' => array()
 		);
 
+
 		/**
 		 * @since 3.26.3
 		 * Filter: wl_term_jsonld_array
@@ -210,7 +211,6 @@ class Wordlift_Term_JsonLd_Adapter {
 	}
 
 	private function get_term_url( $id ) {
-
 		if ( is_null( $id ) ) {
 			return $_SERVER['REQUEST_URI'];
 		}

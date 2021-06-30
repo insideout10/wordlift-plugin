@@ -48,7 +48,8 @@ class Jsonld_Generator {
 	}
 
 	private function get_jsonld_data_for_term( $term_id ) {
-		$permalink     = get_term_link( $term_id );
+		$term          = get_term( $term_id );
+		$permalink     = get_term_link( $term );
 		$custom_fields = $this->entity_type_service->get_custom_fields_for_term( $term_id );
 		$term          = get_term( $term_id );
 		$jsonld        = array(
