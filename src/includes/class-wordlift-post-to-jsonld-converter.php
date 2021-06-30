@@ -204,8 +204,6 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 				$item = array(
 					'@id' => $this->entity_service->get_uri( $reference->get_id(), $reference->get_type() ),
 				);
-				var_dump($item);
-				wp_die();
 
 				$escaped_labels = array_map( function ( $value ) {
 					return preg_quote( $value, '/' );

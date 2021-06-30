@@ -13,6 +13,6 @@ use Wordlift\Object_Type_Enum;
 class Term_Reference extends Abstract_Reference {
 
 	function get_type() {
-		return Object_Type_Enum::POST;
+		return Object_Type_Enum::TERM;
 	}
 }
