@@ -1299,8 +1299,6 @@ class Wordlift {
 
 		$jsonld_cache                            = new Ttl_Cache( 'jsonld', 86400 );
 		$this->cached_postid_to_jsonld_converter = new Wordlift_Cached_Post_Converter( $this->postid_to_jsonld_converter, $this->configuration_service, $jsonld_cache );
-		$this->jsonld_service                    = new Wordlift_Jsonld_Service( $this->entity_service, $this->cached_postid_to_jsonld_converter, $this->jsonld_website_converter );
-
 		/*
 		 * Load the `Wordlift_Term_JsonLd_Adapter`.
 		 *
@@ -1310,6 +1308,9 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-term-jsonld-adapter.php';
 		$term_jsonld_adapter = new Wordlift_Term_JsonLd_Adapter( $this->entity_uri_service, $this->jsonld_service );
+		$this->jsonld_service                    = new Wordlift_Jsonld_Service( $this->entity_service, $this->cached_postid_to_jsonld_converter, $this->jsonld_website_converter, $term_jsonld_adapter );
+
+
 		$jsonld_service      = new Jsonld_Service(
 			$this->jsonld_service,
 			$term_jsonld_adapter,
