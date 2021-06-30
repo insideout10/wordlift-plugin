@@ -78,7 +78,6 @@ class Object_Relation_Service extends Singleton implements Relation_Service_Inte
 
 
 	public function get_relations_from_content( $post_content ) {
-
 		$entity_uris = array_unique( self::get_entity_uris( $post_content ) );
 		$this->log->debug( "Found " . var_export( $entity_uris, true ) . " by object relation service" );
 		/**

@@ -19,6 +19,14 @@ class Uri_Service extends Singleton {
 	}
 
 	/**
+	 * @param $term_id
+	 * @return string
+	 */
+	public function get_uri_by_term( $term_id ) {
+		return get_term_meta( $term_id, WL_ENTITY_URL_META_NAME, true );
+	}
+
+	/**
 	 * @param $uri string
 	 *
 	 * @return \WP_Term | bool

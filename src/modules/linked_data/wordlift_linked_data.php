@@ -526,12 +526,3 @@ function wl_linked_data_content_get_embedded_entities( $content ) {
 
 	return $entities;
 }
-
-
-/**
- * Returns all the entities URL from post_content
- * @since 3.32.0
- */
-function wl_linked_data_get_embedded_entity_urls ( $content ) {
-
-}
