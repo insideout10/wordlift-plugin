@@ -38,4 +38,7 @@ EOF;
 		$this->assertTrue( $relations[0] instanceof Term_Relation, 'We should have term relation' );
 	}
 
+
+
+
 }

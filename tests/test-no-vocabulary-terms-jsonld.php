@@ -31,6 +31,11 @@ class No_Vocabulary_Terms_Jsonld extends \Wordlift_Vocabulary_Terms_Unit_Test_Ca
 	}
 
 
+	public function test_when_save_post_with_term_references_should_generate_jsonld_correctly() {
+
+	}
+
+
 
 
 
