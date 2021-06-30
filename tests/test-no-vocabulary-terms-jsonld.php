@@ -42,12 +42,11 @@ class No_Vocabulary_Terms_Jsonld extends \Wordlift_Vocabulary_Terms_Unit_Test_Ca
 			Object_Type_Enum::POST,
 			$post_id
 		);
-		var_dump($jsonld);
 		$this->assertCount( 2, $jsonld );
 		// get the term references for this post.
 		$references = Object_Relation_Service::get_instance()->get_references( $post_id );
 		$term_uri   = Uri_Service::get_instance()->get_uri_by_term( $references[0]->get_id() );
-		$this->assertSame( $term_uri, $jsonld[0]['@id'], 'The term @id should be present in jsonld' );
+		$this->assertSame( $term_uri, $jsonld[1]['@id'], 'The term @id should be present in jsonld' );
 	}
 
 
