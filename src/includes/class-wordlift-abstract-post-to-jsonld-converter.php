@@ -198,11 +198,11 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 			return new Post_Reference( $post_id );
 		}, $references );
 
-		$linked_term_ids = Term_Relation_Service::get_instance()->get_relations( $post_id );
+		$term_relations = Term_Relation_Service::get_instance()->get_relations( $post_id );
 
-		$term_references = array_map( function ( $term_id ) {
-			return new Term_Reference( $term_id );
-		}, $linked_term_ids );
+		$term_references = array_map( function ( $term_relation ) {
+			return new Term_Reference( $term_relation->get_id() );
+		}, $term_relations );
 
 		$references = array_merge( $post_references, $term_references );
 

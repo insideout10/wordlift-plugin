@@ -55,6 +55,13 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 SELECT object_id FROM $table_name WHERE object_type = %d AND subject_id = %d
 EOF;
 		$query = $wpdb->prepare( $query_template, Object_Type_Enum::TERM, $post_id );
-		return array_unique( $wpdb->get_col($query) );
+		$term_relations =  array_unique( $wpdb->get_col($query) );
+		if ( ! $term_relations ) {
+			$term_relations = array();
+		}
+		return array_map( function ( $term_id) {
+			// @todo: this needs to be fixed, we need to determine the relation
+			return new Term_Relation( $term_id,  WL_WHAT_RELATION );
+		}, $term_relations );
 	}
 }

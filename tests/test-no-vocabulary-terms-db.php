@@ -2,6 +2,7 @@
 
 use Wordlift\Relation\Object_Relation_Service;
 use Wordlift\Relation\Term_Relation;
+use Wordlift\Relation\Term_Relation_Service;
 use Wordlift\Term\Uri_Service;
 
 /**
@@ -22,10 +23,15 @@ class No_Vocbulary_Terms_Db_Test extends \Wordlift_Vocabulary_Terms_Unit_Test_Ca
 		$post_content     = <<<EOF
 		<span itemid="$term_uri">test</span>
 EOF;
+
 		$post_id          = wp_insert_post(array(
 			'post_content' => $post_content
 		));
-		$relations = Object_Relation_Service::get_instance();
+
+		wl_linked_data_save_post_and_related_entities($post_id);
+
+		$relations = Term_Relation_Service::get_instance();
+
 		$relations = $relations->get_relations( $post_id );
 		// We should have term relations.
 		$this->assertCount( 1, $relations, 'Term relation should be saved' );
