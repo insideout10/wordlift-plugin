@@ -14,30 +14,13 @@ class No_Vocbulary_Terms_Db_Test extends \Wordlift_Vocabulary_Terms_Unit_Test_Ca
 
 
 	public function test_post_save_should_term_references() {
-
-
-		$term_data        = wp_insert_term( 'post_save_term_1', self::NO_VOCABULARY_TERM_TAXONOMY );
-		$term             = get_term( $term_data['term_id'] );
-		$term_uri_service = Uri_Service::get_instance();
-		$term_uri         = $term_uri_service->get_uri_by_term( $term->term_id );
-		$post_content     = <<<EOF
-		<span itemid="$term_uri">test</span>
-EOF;
-
-		$post_id          = wp_insert_post(array(
-			'post_content' => $post_content
-		));
-
-		wl_linked_data_save_post_and_related_entities($post_id);
-
+		$post_id = $this->create_post_with_term_reference('post_save_term_1');
 		$relations = Term_Relation_Service::get_instance();
-
 		$relations = $relations->get_relations( $post_id );
 		// We should have term relations.
 		$this->assertCount( 1, $relations, 'Term relation should be saved' );
 		$this->assertTrue( $relations[0] instanceof Term_Relation, 'We should have term relation' );
 	}
-
 
 
 

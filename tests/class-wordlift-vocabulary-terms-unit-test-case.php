@@ -4,11 +4,34 @@
  * @author Naveen Muthusamy <naveen@wordlift.io>
  */
 use Wordlift\Features\Features_Registry;
+use Wordlift\Term\Uri_Service;
 
 abstract class Wordlift_Vocabulary_Terms_Unit_Test_Case extends Wordlift_Unit_Test_Case {
 
 
 	const NO_VOCABULARY_TERM_TAXONOMY = 'no_vocabulary_terms';
+
+	/**
+	 * @return int|WP_Error
+	 */
+	protected function create_post_with_term_reference( $term_name) {
+
+		$term_data        = wp_insert_term($term_name,  self::NO_VOCABULARY_TERM_TAXONOMY );
+		$term             = get_term( $term_data['term_id'] );
+		$term_uri_service = Uri_Service::get_instance();
+		$term_uri         = $term_uri_service->get_uri_by_term( $term->term_id );
+		$post_content     = <<<EOF
+		<span itemid="$term_uri">test</span>
+EOF;
+
+		$post_id = wp_insert_post( array(
+			'post_content' => $post_content
+		) );
+
+		wl_linked_data_save_post_and_related_entities( $post_id );
+
+		return $post_id;
+	}
 
 
 	public function setUp() {
