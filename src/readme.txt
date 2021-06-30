@@ -142,6 +142,12 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.31.7 (2021-06-30) =
+
+* Fix [#1410](https://github.com/insideout10/wordlift-plugin/issues/1410): Prevent videoobject duplication in article
+* Fix [#1409](https://github.com/insideout10/wordlift-plugin/pull/1409): Synonym fix
+* Fix [#1405](https://github.com/insideout10/wordlift-plugin/pull/1405): Fix delete hook
+
 = 3.31.6 (2021-06-15) =
 
 * Enhancement [#1399](https://github.com/insideout10/wordlift-plugin/issues/1399): Videoobject sitemap - Enable on all custom post types
