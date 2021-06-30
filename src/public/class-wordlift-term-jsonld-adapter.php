@@ -162,7 +162,6 @@ class Wordlift_Term_JsonLd_Adapter {
 	}
 
 	public function get( $id, $context ) {
-
 		/**
 		 * Support for carousel rich snippet, get jsonld data present
 		 * for all the posts shown in the term page, and add the jsonld data
@@ -181,7 +180,6 @@ class Wordlift_Term_JsonLd_Adapter {
 			}
 		}
 
-//		$context               = empty( $carousel_data ) ? Jsonld_Context_Enum::PAGE : Jsonld_Context_Enum::CAROUSEL;
 		$entities_jsonld_array = $this->get_entity_jsonld( $id, $context );
 
 		$result = array(
@@ -197,13 +195,11 @@ class Wordlift_Term_JsonLd_Adapter {
 		 * @var $jsonld_array array An array containing jsonld for term and entities.
 		 */
 		$arr = apply_filters( 'wl_term_jsonld_array', $result, $id );
-
 		/**
 		 * @since 3.32.0
 		 * Expand the references returned by this filter.
 		 */
 		$references = $this->expand_references( $arr['references'] );
-
 
 		$jsonld_array = array_merge( $arr['jsonld'], $references );
 

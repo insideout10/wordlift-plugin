@@ -188,18 +188,19 @@ class Wordlift_Jsonld_Service {
 
 		$jsonld = array( $entity_to_jsonld_converter->convert( $post_id, $references, $references_infos ) );
 
+
 		$expanded_references_jsonld = array_map( function ( $item ) use ( $context, $entity_to_jsonld_converter, &$references_infos ) {
 			// "2nd level properties" may not output here, e.g. a post
 			// mentioning an event, located in a place: the place is referenced
 			// via the `@id` but no other properties are loaded.
 			$ignored = array();
-
 			if ( $item instanceof Term_Reference ) {
 			    return $this->term_jsonld_adapter->get( $item->get_id(), $context );
 			}
 
 			return $entity_to_jsonld_converter->convert( $item, $ignored, $references_infos );
 		}, array_unique( $references ) );
+
 
 		// Convert each URI to a JSON-LD array, while gathering referenced entities.
 		// in the references array.
@@ -216,6 +217,7 @@ class Wordlift_Jsonld_Service {
 			       // Check that the reference isn't being output already.
 			       ! in_array( $item['reference']->get_id(), $references );
 		} );
+
 
 		$jsonld = array_merge( $jsonld, array_filter( array_map( function ( $item ) use ( $references, $entity_to_jsonld_converter ) {
 
