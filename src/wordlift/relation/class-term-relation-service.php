@@ -52,9 +52,9 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 		global $wpdb;
 		$table_name = $wpdb->prefix . WL_DB_RELATION_INSTANCES_TABLE_NAME;
 		$query_template = <<<EOF
-SELECT object_id FROM $table_name WHERE object_type = %d
+SELECT object_id FROM $table_name WHERE object_type = %d AND subject_id = %d
 EOF;
-		$query = $wpdb->prepare( $query_template, Object_Type_Enum::TERM );
-		return $wpdb->get_col($query);
+		$query = $wpdb->prepare( $query_template, Object_Type_Enum::TERM, $post_id );
+		return array_unique( $wpdb->get_col($query) );
 	}
 }
