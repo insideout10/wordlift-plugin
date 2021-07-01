@@ -7,6 +7,7 @@
 namespace Wordlift\Vocabulary_Terms\Jsonld;
 
 use Wordlift\Object_Type_Enum;
+use Wordlift\Term\Type_Service;
 use Wordlift_Entity_Type_Taxonomy_Service;
 
 class Jsonld_Generator {
@@ -19,10 +20,15 @@ class Jsonld_Generator {
 	 * @var \Wordlift_Property_Getter
 	 */
 	private $property_getter;
+	/**
+	 * @var Type_Service
+	 */
+	private $term_entity_type_service;
 
 	public function __construct( $entity_type_service, $property_getter ) {
-		$this->entity_type_service = $entity_type_service;
-		$this->property_getter     = $property_getter;
+		$this->entity_type_service      = $entity_type_service;
+		$this->property_getter          = $property_getter;
+		$this->term_entity_type_service = Type_Service::get_instance();
 	}
 
 	public function init() {
@@ -86,16 +92,11 @@ class Jsonld_Generator {
 	}
 
 	private function get_all_selected_entity_type_labels( $term_id ) {
-		$selected_entity_type_slugs = get_term_meta( $term_id, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
+		$types = $this->term_entity_type_service->get_entity_types( $term_id );
 
-		$types = array_filter( array_map( function ( $type_slug ) {
-			$term = get_term_by( 'slug', $type_slug, Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME );
-			if ( ! $term ) {
-				return false;
-			}
-
-			return $term->name;
-		}, $selected_entity_type_slugs ) );
+		$types = array_map( function ( $type ) {
+			return $type->name;
+		}, $types );
 
 		if ( count( $types ) === 0 ) {
 			return array( 'Thing' );
