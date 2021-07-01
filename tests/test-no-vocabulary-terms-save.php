@@ -29,7 +29,7 @@ class No_Vocabulary_Terms_Save extends \Wordlift_Vocabulary_Terms_Unit_Test_Case
 		$entity_types = Type_Service::get_instance()->get_entity_types( $term_id );
 		$this->assertCount( 1, $entity_types, 'Default entity type should be set to thing');
 		$this->assertTrue( $entity_types[0] instanceof WP_Term );
-		$this->assertSame('Thing', $entity_types[0]->term_id );
+		$this->assertSame('Thing', $entity_types[0]->name );
 	}
 
 

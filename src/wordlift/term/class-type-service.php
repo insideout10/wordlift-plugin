@@ -26,6 +26,7 @@ class Type_Service extends Singleton {
 
 	/**
 	 * Returns the entity types selected for the term.
+	 *
 	 * @param $term_id int
 	 *
 	 * @return \WP_Term[]
@@ -43,8 +44,13 @@ class Type_Service extends Singleton {
 			return $term;
 		}, $entity_type_slugs ) );
 
-		$types =  array_filter( $types );
+		$types = array_filter( $types );
 
+		if ( 0 !== count( $types ) ) {
+			return $types;
+		}
+
+		return array( get_term_by( 'slug', 'thing', Wordlift_Entity_Type_Taxonomy_Service::TAXONOMY_NAME ) );
 	}
 
 

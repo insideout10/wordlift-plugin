@@ -94,15 +94,9 @@ class Jsonld_Generator {
 	private function get_all_selected_entity_type_labels( $term_id ) {
 		$types = $this->term_entity_type_service->get_entity_types( $term_id );
 
-		$types = array_map( function ( $type ) {
+		return array_map( function ( $type ) {
 			return $type->name;
 		}, $types );
-
-		if ( count( $types ) === 0 ) {
-			return array( 'Thing' );
-		}
-
-		return $types;
 	}
 
 	private function relative_to_schema_context( $predicate ) {
