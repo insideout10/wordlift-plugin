@@ -15,9 +15,21 @@ namespace Wordlift\Relation;
 use Wordlift\Common\Singleton;
 use Wordlift\Jsonld\Term_Reference;
 use Wordlift\Object_Type_Enum;
+use Wordlift\Relation\Types\Relation;
 use Wordlift\Relation\Types\Term_Relation;
+use Wordlift\Term\Uri_Service;
 
 class Term_Relation_Service extends Singleton implements Relation_Service_Interface {
+
+	/**
+	 * @var Uri_Service
+	 */
+	private $term_uri_service;
+
+	public function __construct() {
+		parent::__construct();
+		$this->term_uri_service = Uri_Service::get_instance();
+	}
 
 	/**
 	 * @return Term_Relation_Service
@@ -27,12 +39,13 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 	}
 
 
-	public function get_references( $subject_id ) {
+	public function get_references( $subject_id, $subject_type ) {
 		global $wpdb;
 		$table_name      = $wpdb->prefix . WL_DB_RELATION_INSTANCES_TABLE_NAME;
-		$query           = $wpdb->prepare( "SELECT object_id FROM $table_name WHERE subject_id = %d AND object_type = %d",
+		$query           = $wpdb->prepare( "SELECT object_id FROM $table_name WHERE subject_id = %d AND object_type = %d AND subject_type = %d",
 			$subject_id,
-			Object_Type_Enum::TERM
+			Object_Type_Enum::TERM,
+			$subject_type
 		);
 		$term_ids        = $wpdb->get_col( $query );
 
@@ -42,27 +55,14 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 	}
 
 
-	public function get_relations_from_content( $post_content ) {
-		/**
-		 * This method is not implemented, this is implemented
-		 * efficiently by the {@link Object_Relation_Service::get_relations_from_content()} method
-		 */
-	}
-
-	public function get_relations( $post_id ) {
-		global $wpdb;
-		$table_name = $wpdb->prefix . WL_DB_RELATION_INSTANCES_TABLE_NAME;
-		$query_template = <<<EOF
-SELECT object_id FROM $table_name WHERE object_type = %d AND subject_id = %d
-EOF;
-		$query = $wpdb->prepare( $query_template, Object_Type_Enum::TERM, $post_id );
-		$term_relations =  array_unique( $wpdb->get_col($query) );
-		if ( ! $term_relations ) {
-			$term_relations = array();
-		}
-		return array_map( function ( $term_id) {
-			// @todo: this needs to be fixed, we need to determine the relation
-			return new Term_Relation( $term_id,  WL_WHAT_RELATION );
-		}, $term_relations );
+	public function get_relations_from_content( $content, $subject_type ) {
+		$entity_uris =  Object_Relation_Service::get_entity_uris( $content );
+		return array_map( function ( $entity_uri ) {
+			$term =  $this->term_uri_service->get_term( $entity_uri );
+			if ( ! $term ) {
+				return false;
+			}
+			return new Term_Relation( $term->term_id, WL_WHAT_RELATION );
+		}, $entity_uris );
 	}
 }

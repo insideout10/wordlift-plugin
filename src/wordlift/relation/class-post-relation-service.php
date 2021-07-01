@@ -11,9 +11,8 @@
 
 namespace Wordlift\Relation;
 use Wordlift\Common\Singleton;
-use Wordlift\Jsonld\Abstract_Reference;
 use Wordlift\Jsonld\Post_Reference;
-
+use Wordlift\Relation\Types\Post_Relation;
 
 class Post_Relation_Service extends Singleton implements Relation_Service_Interface {
 	/**
@@ -45,18 +44,21 @@ class Post_Relation_Service extends Singleton implements Relation_Service_Interf
 	}
 
 
-	public function get_references( $subject_id ) {
+	public function get_references( $subject_id, $subject_type ) {
 		$post_ids        = $this->legacy_post_relation_service->get_objects( $subject_id, 'ids' );
 		return array_map( function ( $post_id ) {
 			return new Post_Reference( $post_id );
 		}, $post_ids );
 	}
 
-	public function get_relations_from_content( $post_content ) {
-		// TODO: Implement get_relations_from_content() method.
-	}
-
-	public function get_relations( $post_id ) {
-		// TODO: Implement get_relations() method.
+	public function get_relations_from_content( $content, $subject_type ) {
+		$entity_uris =  Object_Relation_Service::get_entity_uris( $content );
+		return array_map( function ( $entity_uri ) {
+			$entity =  $this->entity_uri_service->get_entity( $entity_uri );
+			if (  ! $entity ) {
+				return false;
+			}
+			return new Post_Relation( $entity->ID, $this->entity_service->get_classification_scope_for( $entity->ID ) );
+		}, $entity_uris );
 	}
 }

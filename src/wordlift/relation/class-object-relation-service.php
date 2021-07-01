@@ -13,11 +13,7 @@
 namespace Wordlift\Relation;
 
 use Wordlift\Common\Singleton;
-use Wordlift\Jsonld\Post_Reference;
 use Wordlift\Jsonld\Reference;
-use Wordlift\Relation\Types\Post_Relation;
-use Wordlift\Relation\Types\Term_Relation;
-use Wordlift\Term\Uri_Service;
 
 class Object_Relation_Service extends Singleton implements Relation_Service_Interface {
 
@@ -54,43 +50,20 @@ class Object_Relation_Service extends Singleton implements Relation_Service_Inte
 	 *
 	 * @return array<Reference>
 	 */
-	public function get_references( $subject_id ) {
-		$post_references = $this->post_relation_service->get_references( $subject_id );
-		$term_references = $this->term_relation_service->get_references( $subject_id );
+	public function get_references( $subject_id, $subject_type ) {
+		$post_references = $this->post_relation_service->get_references( $subject_id, $subject_type );
+		$term_references = $this->term_relation_service->get_references( $subject_id, $subject_type );
 
 		return array_merge( $post_references, $term_references );
 	}
 
 
-	public function get_relations_from_content( $post_content ) {
-		$entity_uris = array_unique( self::get_entity_uris( $post_content ) );
+	public function get_relations_from_content( $content, $subject_type ) {
+		$entity_uris = array_unique( self::get_entity_uris( $content ) );
 		$this->log->debug( "Found " . var_export( $entity_uris, true ) . " by object relation service" );
-		/**
-		 * We should never have cases where the term entity URI conflicts
-		 * with the post entity URI, check if it matches entity then
-		 * check if it matches term
-		 */
-		$post_relations = $this->post_relation_service->get_relations_from_content( $post_content );
-		$term_relations = $this->term_relation_service->get_relations_from_content( $post_content );
-
-		$relations = array_map( function ( $uri ) {
-
-			$entity = $this->entity_uri_service->get_entity( $uri );
-
-			if ( $entity ) {
-				return new Post_Relation( $entity->ID, $this->entity_service->get_classification_scope_for( $entity->ID ) );
-			}
-
-			$term = $this->term_uri_service->get_term( $uri );
-			if ( $term ) {
-				return new Term_Relation( $term->term_id, WL_WHAT_RELATION );
-			}
-
-			return false;
-		}, $entity_uris );
-
-		return array_filter( $relations );
-
+		$post_relations = $this->post_relation_service->get_relations_from_content( $content, $subject_type );
+		$term_relations = $this->term_relation_service->get_relations_from_content( $content, $subject_type );
+		return array_filter( array_merge( $post_relations, $term_relations) );
 	}
 
 
@@ -111,9 +84,5 @@ class Object_Relation_Service extends Singleton implements Relation_Service_Inte
 		}
 
 		return $matches[1];
-	}
-
-	public function get_relations( $post_id ) {
-
 	}
 }

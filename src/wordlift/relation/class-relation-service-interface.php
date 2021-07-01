@@ -34,12 +34,4 @@ interface  Relation_Service_Interface {
 	public function get_relations_from_content( $content, $subject_type );
 
 
-	/**
-	 * @param int $subject_id Subject id.
-	 * @param int $subject_type {@link Object_Type_Enum}
-	 * @return array<Relation>
-	 * Extracts the relations for all object types.
-	 */
-	public function get_relations( $subject_id, $subject_type );
-
 }
