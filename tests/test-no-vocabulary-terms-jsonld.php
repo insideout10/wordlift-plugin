@@ -42,6 +42,7 @@ class No_Vocabulary_Terms_Jsonld extends \Wordlift_Vocabulary_Terms_Unit_Test_Ca
 			Object_Type_Enum::POST,
 			$post_id
 		);
+		var_dump($jsonld);
 		$this->assertCount( 2, $jsonld );
 		// get the term references for this post.
 		$references = Object_Relation_Service::get_instance()->get_references( $post_id );

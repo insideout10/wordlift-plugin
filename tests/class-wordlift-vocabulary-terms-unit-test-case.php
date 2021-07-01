@@ -18,13 +18,15 @@ abstract class Wordlift_Vocabulary_Terms_Unit_Test_Case extends Wordlift_Unit_Te
 
 		// Reset all global filters.
 		global $wp_filter, $wp_scripts, $wp_styles;
+		$features_registry = Features_Registry::get_instance();
 		$wp_filter  = array();
 		$wp_scripts = null;
 		$wp_styles  = null;
+		$features_registry->clear_all();
 		add_filter( 'wl_feature__enable__no-vocabulary-terms', '__return_true' );
 		// vocabulary terms feature should now be enabled.
 		run_wordlift();
-		$features_registry = Features_Registry::get_instance();
+
 		$features_registry->initialize_all_features();
 
 	}

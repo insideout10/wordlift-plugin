@@ -39,7 +39,6 @@ abstract class Default_Loader implements Loader {
 	 * Register feature to registry.
 	 */
 	public function init_feature() {
-
 		$this->features_registry->register_feature_from_slug(
 			$this->get_feature_slug(),
 			$this->get_feature_default_value(),
