@@ -8,7 +8,6 @@
 namespace Wordlift\Term;
 
 use Wordlift\Common\Singleton;
-use Wordlift\Vocabulary\Terms_Compat;
 
 class Uri_Service extends Singleton {
 	/**

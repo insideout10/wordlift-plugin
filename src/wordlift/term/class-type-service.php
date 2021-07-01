@@ -10,6 +10,11 @@ namespace Wordlift\Term;
 use Wordlift\Common\Singleton;
 use Wordlift_Entity_Type_Taxonomy_Service;
 
+/**
+ * This class is used to provide entity types for the terms.
+ * Class Type_Service
+ * @package Wordlift\Term
+ */
 class Type_Service extends Singleton {
 
 	/**
