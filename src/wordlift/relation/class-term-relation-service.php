@@ -48,7 +48,6 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 			$subject_type
 		);
 		$term_ids        = $wpdb->get_col( $query );
-
 		return array_map( function ( $term_id ) {
 			return new Term_Reference( $term_id );
 		}, $term_ids );
@@ -57,12 +56,12 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 
 	public function get_relations_from_content( $content, $subject_type ) {
 		$entity_uris =  Object_Relation_Service::get_entity_uris( $content );
-		return array_map( function ( $entity_uri ) {
+		return array_map( function ( $entity_uri ) use ( $subject_type ) {
 			$term =  $this->term_uri_service->get_term( $entity_uri );
 			if ( ! $term ) {
 				return false;
 			}
-			return new Term_Relation( $term->term_id, WL_WHAT_RELATION );
+			return new Term_Relation( $term->term_id, WL_WHAT_RELATION, $subject_type );
 		}, $entity_uris );
 	}
 }

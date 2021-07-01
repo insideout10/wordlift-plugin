@@ -16,7 +16,7 @@ use Wordlift\Object_Type_Enum;
 
 class Post_Relation extends Relation  {
 
-	function get_type() {
+	function get_object_type() {
 		return Object_Type_Enum::POST;
 	}
 

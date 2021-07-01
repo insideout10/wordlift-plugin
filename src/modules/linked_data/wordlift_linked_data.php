@@ -214,8 +214,10 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			// what, where, when, who
 			$relation->get_relation_type(),
 			$relation->get_id(),
-			// Represents Object_Type_Enum
-			$relation->get_type()
+			// Subject type.
+			$relation->get_subject_type(),
+			// Object type.
+			$relation->get_object_type()
 		);
 
 	}
