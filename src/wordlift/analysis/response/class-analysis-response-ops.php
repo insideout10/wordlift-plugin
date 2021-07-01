@@ -12,8 +12,16 @@ namespace Wordlift\Analysis\Response;
 use stdClass;
 use Wordlift\Entity\Entity_Helper;
 
-class Analysis_Response_Ops extends Object_Analysis {
+class Analysis_Response_Ops  {
 
+	/**
+	 * The analysis response json.
+	 *
+	 * @since 3.21.5
+	 * @access private
+	 * @var mixed $json Holds the analysis response json.
+	 */
+	private $json;
 
 	/**
 	 * Holds the {@link Wordlift_Entity_Uri_Service}.
@@ -53,7 +61,8 @@ class Analysis_Response_Ops extends Object_Analysis {
 	 * @since 3.21.5
 	 */
 	public function __construct( $entity_uri_service, $entity_service, $entity_type_service, $post_image_storage, $entity_helper, $json ) {
-		parent::__construct( $json );
+
+		$this->json                = $json;
 		$this->entity_uri_service  = $entity_uri_service;
 		$this->entity_service      = $entity_service;
 		$this->entity_type_service = $entity_type_service;
@@ -272,7 +281,64 @@ class Analysis_Response_Ops extends Object_Analysis {
 
 	}
 
+	private function get_local_entity( $uri ) {
 
+		$entity = $this->entity_uri_service->get_entity( $uri );
 
+		if ( null === $entity ) {
+			return false;
+		}
+
+		$type   = $this->entity_type_service->get( $entity->ID );
+		$images = $this->post_image_storage->get( $entity->ID );
+
+		return (object) array(
+			'id'          => $uri,
+			'label'       => $entity->post_title,
+			/*
+			 * As of 2020.06.29 we're comment out the `post_content` because Gutenberg posts will return here
+			 * the whole Gutenberg source including potentially our own wordlift/classification block, which means
+			 * that data may grow quickly to more than a 100 KBytes and could break web servers.
+			 *
+			 * We don't really need the description for local entities (because the description is indeed taken from
+			 * the local WordPress database) and we're not using it anywhere in the UI.
+			 *
+			 * So take extra care in enabling this line: eventually consider using the post_excerpt.
+			 *
+			 * PS: We didn't test using the WordLift Post Excerpt Helper.
+			 */
+			// 'description' => $entity->post_content,
+			'description' => '',
+			'sameAs'      => wl_schema_get_value( $entity->ID, 'sameAs' ),
+			'mainType'    => str_replace( 'wl-', '', $type['css_class'] ),
+			'types'       => wl_get_entity_rdf_types( $entity->ID ),
+			'images'      => $images,
+		);
+	}
+
+	/**
+	 * Return the JSON response.
+	 *
+	 * @return mixed The JSON response.
+	 * @since 3.24.2
+	 */
+	public function get_json() {
+
+		return $this->json;
+	}
+
+	/**
+	 * Get the string representation of the JSON.
+	 *
+	 * @return false|string The string representation or false in case of error.
+	 */
+	public function to_string() {
+
+		// Add the `JSON_UNESCAPED_UNICODE` only for PHP 5.4+.
+		$options = ( version_compare( PHP_VERSION, '5.4', '>=' )
+			? 256 : 0 );
+
+		return wp_json_encode( $this->json, $options );
+	}
 
 }
