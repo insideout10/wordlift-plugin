@@ -1,5 +1,6 @@
 <?php
 
+use Wordlift\Analysis\Response\Analysis_Response_Ops_Factory;
 use Wordlift\Jsonld\Jsonld_Context_Enum;
 use Wordlift\Jsonld\Jsonld_Service;
 use Wordlift\Object_Type_Enum;
@@ -50,5 +51,28 @@ class No_Vocabulary_Terms_Jsonld extends \Wordlift_Vocabulary_Terms_Unit_Test_Ca
 		$this->assertSame( array('Thing'), $jsonld[1]['@type'], 'The term @type should be present in jsonld' );
 	}
 
+
+	public function test_should_get_annotation_also_for_terms() {
+
+		$term_data        = wp_insert_term( 'term_analysis_test_1',  'category' );
+		$term             = get_term( $term_data['term_id'] );
+		$term_uri_service = Uri_Service::get_instance();
+		$term_uri_service->set_entity_uri( $term->term_id, "http://example.org/content_analysis_test_2");
+
+		$request_body = file_get_contents( dirname( __FILE__ ) . '/assets/content-term-analysis-request.json' );
+		$request_json = json_decode( $request_body, true );
+
+		$response_json = Analysis_Response_Ops_Factory
+			::get_instance()
+			->create( json_decode( '{ "entities": {}, "annotations": {}, "topics": {} }' ) )
+			->make_entities_local()
+			->add_occurrences( $request_json['content'] )
+			->to_string();
+
+		$response_json = json_decode( $response_json, true );
+
+		$this->assertCount( 1, array_values( $response_json['entities'] ), 'The term entity should be present in response' );
+		$this->assertCount( 1, array_values( $response_json['annotations'] ), 'The term annotation should be present in response' );
+	}
 
 }

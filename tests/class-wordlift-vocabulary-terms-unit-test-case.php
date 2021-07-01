@@ -26,7 +26,7 @@ abstract class Wordlift_Vocabulary_Terms_Unit_Test_Case extends Wordlift_Unit_Te
 		add_filter( 'wl_feature__enable__no-vocabulary-terms', '__return_true' );
 		// vocabulary terms feature should now be enabled.
 		run_wordlift();
-
+		do_action('plugins_loaded');
 		$features_registry->initialize_all_features();
 
 	}

@@ -15,7 +15,7 @@ class Entity_Provider_Registry {
 	/**
 	 * @var array<Entity_Provider>
 	 */
-	private $entity_providers;
+	private $entity_providers = array();
 
 	public function __construct() {
 		add_action( 'plugins_loaded', array( $this, 'initialize_registry' ) );
