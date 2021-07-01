@@ -16,6 +16,8 @@ use Wordlift\Admin\Admin_User_Option;
 use Wordlift\Admin\Key_Validation_Notice;
 use Wordlift\Admin\Top_Entities;
 use Wordlift\Analysis\Entity_Provider\Entity_Provider_Registry;
+use Wordlift\Analysis\Entity_Provider\Post_Entity_Provider;
+use Wordlift\Analysis\Entity_Provider\Term_Entity_Provider;
 use Wordlift\Analysis\Response\Analysis_Response_Ops_Factory;
 use Wordlift\Autocomplete\All_Autocomplete_Service;
 use Wordlift\Autocomplete\Linked_Data_Autocomplete_Service;
@@ -1554,6 +1556,21 @@ class Wordlift {
 		 * between the different types of objects in wordpress.
 		 */
 		$entity_provider_registry = new Entity_Provider_Registry();
+
+		/**
+		 * @since 3.32.0
+		 * The post entity provider has the legacy code which provides the entity
+		 * if the object is post {@link \Wordlift\Object_Type_Enum::POST}
+		 */
+		new Post_Entity_Provider($this->entity_uri_service,
+			$this->entity_type_service, $this->storage_factory->post_images() );
+		/**
+		 * @since 3.32.0
+		 * The term entity provider provides the entity
+		 * if the object is term {@link \Wordlift\Object_Type_Enum::POST}
+		 */
+		new Term_Entity_Provider();
+
 		new Analysis_Response_Ops_Factory(
 			$this->entity_uri_service,
 			$entity_helper,

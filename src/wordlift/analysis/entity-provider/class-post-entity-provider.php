@@ -1,7 +1,7 @@
 <?php
 /**
- * This file provides a interface for entity provider.
- * The entity can be from different sources such as post, comment, term, user etc.
+ * This file provides a class for post entity provider.
+ * This is used to retrieve the entity for post.
  *
  * @author Naveen Muthusamy <naveen@wordlift.io>
  * @since 3.32.0
