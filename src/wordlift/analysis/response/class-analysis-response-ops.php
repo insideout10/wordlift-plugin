@@ -12,7 +12,7 @@ namespace Wordlift\Analysis\Response;
 use stdClass;
 use Wordlift\Entity\Entity_Helper;
 
-class Analysis_Response_Ops {
+class Analysis_Response_Ops extends Object_Analysis {
 
 	/**
 	 * The analysis response json.
