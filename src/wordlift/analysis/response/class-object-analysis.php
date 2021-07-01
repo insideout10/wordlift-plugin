@@ -13,6 +13,10 @@ abstract class Object_Analysis {
 	 */
 	protected $json;
 
+	public function __construct( $json ) {
+		$this->json = $json;
+	}
+
 
 	/**
 	 * Switches remote entities, i.e. entities with id outside the local dataset, to local entities.
@@ -77,5 +81,14 @@ abstract class Object_Analysis {
 
 		return wp_json_encode( $this->json, $options );
 	}
+
+
+	/**
+	 * Should return the local entity array.
+	 * @param $uri
+	 *
+	 * @return array | bool Associative array or false
+	 */
+	abstract public function get_local_entity( $uri);
 
 }
