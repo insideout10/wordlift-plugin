@@ -190,10 +190,12 @@ class Analysis_Response_Ops_Test extends \Wordlift_Unit_Test_Case {
 			->create( json_decode( '{ "entities": {}, "annotations": {}, "topics": {} }' ) )
 			->make_entities_local()
 			->add_occurrences( $request_json['content'] )
-			->get_json();
+			->to_string();
 
-		$this->assertCount( 1, $response_json->entities, 'The term entity should be present in response' );
-		$this->assertCount( 1, $response_json->annotations, 'The term annotation should be present in response' );
+		$response_json = json_decode( $response_json, true );
+
+		$this->assertCount( 1, array_values( $response_json['entities'] ), 'The term entity should be present in response' );
+		$this->assertCount( 1, array_values( $response_json['annotations'] ), 'The term annotation should be present in response' );
 	}
 
 }
