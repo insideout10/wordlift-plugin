@@ -7,6 +7,7 @@
  */
 
 use Wordlift\Jsonld\Jsonld_Context_Enum;
+use Wordlift\Jsonld\Post_Reference;
 use Wordlift\Jsonld\Term_Reference;
 
 /**
@@ -195,7 +196,9 @@ class Wordlift_Jsonld_Service {
 			// via the `@id` but no other properties are loaded.
 			$ignored = array();
 			if ( $item instanceof Term_Reference ) {
-			    return $this->term_jsonld_adapter->get( $item->get_id(), $context );
+			    $term_jsonld =  $this->term_jsonld_adapter->get( $item->get_id(), $context );
+			    // For term references, we publish a jsonld array on the page, use only the first item.
+			    return count( $term_jsonld ) > 0 ? $term_jsonld[0] : false;
 			}
 
 			return $entity_to_jsonld_converter->convert( $item, $ignored, $references_infos );
