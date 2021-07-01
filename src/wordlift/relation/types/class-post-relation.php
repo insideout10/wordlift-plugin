@@ -10,7 +10,7 @@
  * @subpackage Wordlift\Relation
  */
 
-namespace Wordlift\Relation;
+namespace Wordlift\Relation\Types;
 
 use Wordlift\Object_Type_Enum;
 

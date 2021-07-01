@@ -12,6 +12,7 @@
 namespace Wordlift\Relation;
 
 use Wordlift\Jsonld\Reference;
+use Wordlift\Relation\Types\Relation;
 
 interface  Relation_Service_Interface {
 

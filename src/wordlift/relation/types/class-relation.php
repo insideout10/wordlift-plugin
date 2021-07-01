@@ -9,7 +9,7 @@
  * @subpackage Wordlift\Relation
  */
 
-namespace Wordlift\Relation;
+namespace Wordlift\Relation\Types;
 
 abstract class Relation {
 

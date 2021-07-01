@@ -15,6 +15,8 @@ namespace Wordlift\Relation;
 use Wordlift\Common\Singleton;
 use Wordlift\Jsonld\Post_Reference;
 use Wordlift\Jsonld\Reference;
+use Wordlift\Relation\Types\Post_Relation;
+use Wordlift\Relation\Types\Term_Relation;
 use Wordlift\Term\Uri_Service;
 
 class Object_Relation_Service extends Singleton implements Relation_Service_Interface {

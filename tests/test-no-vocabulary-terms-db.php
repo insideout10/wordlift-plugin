@@ -1,9 +1,8 @@
 <?php
 
-use Wordlift\Relation\Object_Relation_Service;
-use Wordlift\Relation\Term_Relation;
 use Wordlift\Relation\Term_Relation_Service;
-use Wordlift\Term\Uri_Service;
+use Wordlift\Relation\Types\Term_Relation;
+
 
 /**
  * @since 3.31.7
