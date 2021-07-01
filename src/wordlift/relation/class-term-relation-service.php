@@ -86,12 +86,13 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 		$entity_types         = $this->term_entity_type_service->get_entity_types( $term_id );
 		$classification_boxes = unserialize( WL_CORE_POST_CLASSIFICATION_BOXES );
 		$schema               = $this->get_schema( $entity_types );
-		$entity_type     = str_replace( 'wl-', '', $schema['css_class'] );
+		$entity_type          = str_replace( 'wl-', '', $schema['css_class'] );
 		foreach ( $classification_boxes as $cb ) {
 			if ( in_array( $entity_type, $cb['registeredTypes'] ) ) {
 				return $cb['id'];
 			}
 		}
+
 		return WL_WHAT_RELATION;
 	}
 
@@ -105,6 +106,7 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 				break;
 			}
 		}
+
 		return $this->schema_service->get_schema( 'thing' );
 	}
 }
