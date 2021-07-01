@@ -14,14 +14,6 @@ use Wordlift\Entity\Entity_Helper;
 
 class Analysis_Response_Ops extends Object_Analysis {
 
-	/**
-	 * The analysis response json.
-	 *
-	 * @since 3.21.5
-	 * @access private
-	 * @var mixed $json Holds the analysis response json.
-	 */
-	private $json;
 
 	/**
 	 * Holds the {@link Wordlift_Entity_Uri_Service}.
@@ -316,29 +308,6 @@ class Analysis_Response_Ops extends Object_Analysis {
 		);
 	}
 
-	/**
-	 * Return the JSON response.
-	 *
-	 * @return mixed The JSON response.
-	 * @since 3.24.2
-	 */
-	public function get_json() {
 
-		return $this->json;
-	}
-
-	/**
-	 * Get the string representation of the JSON.
-	 *
-	 * @return false|string The string representation or false in case of error.
-	 */
-	public function to_string() {
-
-		// Add the `JSON_UNESCAPED_UNICODE` only for PHP 5.4+.
-		$options = ( version_compare( PHP_VERSION, '5.4', '>=' )
-			? 256 : 0 );
-
-		return wp_json_encode( $this->json, $options );
-	}
 
 }

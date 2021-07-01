@@ -15,11 +15,4 @@ class Post_Analysis extends Object_Analysis {
 		// TODO: Implement add_local_entities() method.
 	}
 
-	public function get_json() {
-		// TODO: Implement get_json() method.
-	}
-
-	public function to_string() {
-		// TODO: Implement to_string() method.
-	}
 }
