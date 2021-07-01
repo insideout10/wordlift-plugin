@@ -205,15 +205,19 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	wl_core_delete_relation_instances( $post_id );
 
 
-	$relations = Object_Relation_Service::get_instance()->get_relations_from_content( $updated_post_content, Object_Type_Enum::POST );
+	$relations = Object_Relation_Service::get_instance()
+	                                    ->get_relations_from_content( $updated_post_content, Object_Type_Enum::POST );
+
 	// Save relation instances
 	foreach ( $relations as $relation ) {
 
 		wl_core_add_relation_instance(
+			// subject id.
 			$post_id,
 			// what, where, when, who
 			$relation->get_relation_type(),
-			$relation->get_id(),
+			// object id.
+			$relation->get_object_id(),
 			// Subject type.
 			$relation->get_subject_type(),
 			// Object type.

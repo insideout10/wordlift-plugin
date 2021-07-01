@@ -38,7 +38,7 @@ abstract class Relation {
 	 * Return Object id.
 	 * @return int
 	 */
-	public function get_id() {
+	public function get_object_id() {
 		return $this->id;
 	}
 
