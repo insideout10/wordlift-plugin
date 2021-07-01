@@ -43,7 +43,8 @@ class Type_Service extends Singleton {
 			return $term;
 		}, $entity_type_slugs ) );
 
-		return array_filter( $types );
+		$types =  array_filter( $types );
+
 	}
 
 

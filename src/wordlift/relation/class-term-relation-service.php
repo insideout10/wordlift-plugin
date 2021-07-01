@@ -16,6 +16,7 @@ use Wordlift\Common\Singleton;
 use Wordlift\Jsonld\Term_Reference;
 use Wordlift\Object_Type_Enum;
 use Wordlift\Relation\Types\Term_Relation;
+use Wordlift\Term\Type_Service;
 use Wordlift\Term\Uri_Service;
 
 class Term_Relation_Service extends Singleton implements Relation_Service_Interface {
@@ -24,10 +25,15 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 	 * @var Uri_Service
 	 */
 	private $term_uri_service;
+	/**
+	 * @var Type_Service
+	 */
+	private $term_entity_type_service;
 
 	public function __construct() {
 		parent::__construct();
 		$this->term_uri_service = Uri_Service::get_instance();
+		$this->term_entity_type_service = Type_Service::get_instance();
 	}
 
 	/**
@@ -69,6 +75,8 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 	 * @param $term_id int Term id.
 	 */
 	private function get_relation_type( $term_id ) {
+		return WL_WHAT_RELATION;
+		$entity_types = $this->term_entity_type_service->get_entity_types( $term_id );
 
 	}
 }
