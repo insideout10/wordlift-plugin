@@ -60,7 +60,7 @@ class Jsonld_Generator {
 		$jsonld        = array(
 			'@context'    => 'http://schema.org',
 			'name'        => $term->name,
-			'@type'       => $this->get_all_selected_entity_type_labels( $term_id ),
+			'@type'       => $this->term_entity_type_service->get_entity_types_labels( $term_id ),
 			'@id'         => wl_get_term_entity_uri( $term_id ),
 			'description' => $term->description,
 		);
@@ -90,13 +90,6 @@ class Jsonld_Generator {
 
 	}
 
-	private function get_all_selected_entity_type_labels( $term_id ) {
-		$types = $this->term_entity_type_service->get_entity_types( $term_id );
-
-		return array_map( function ( $type ) {
-			return $type->name;
-		}, $types );
-	}
 
 	private function relative_to_schema_context( $predicate ) {
 		return str_replace( 'http://schema.org/', '', $predicate );

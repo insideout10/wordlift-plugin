@@ -29,16 +29,12 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 	 * @var Type_Service
 	 */
 	private $term_entity_type_service;
-	/**
-	 * @var \Wordlift_Schema_Service
-	 */
-	private $schema_service;
+
 
 	public function __construct() {
 		parent::__construct();
 		$this->term_uri_service         = Uri_Service::get_instance();
 		$this->term_entity_type_service = Type_Service::get_instance();
-		$this->schema_service           = \Wordlift_Schema_Service::get_instance();
 	}
 
 	/**
@@ -83,10 +79,12 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 	 * @param $term_id int Term id.
 	 */
 	public function get_relation_type( $term_id ) {
-		$entity_types         = $this->term_entity_type_service->get_entity_types( $term_id );
+		$schema               = $this->term_entity_type_service->get_schema(
+			$term_id
+		);
 		$classification_boxes = unserialize( WL_CORE_POST_CLASSIFICATION_BOXES );
-		$schema               = $this->get_schema( $entity_types );
-		$entity_type          = str_replace( 'wl-', '', $schema['css_class'] );
+
+		$entity_type = str_replace( 'wl-', '', $schema['css_class'] );
 		foreach ( $classification_boxes as $cb ) {
 			if ( in_array( $entity_type, $cb['registeredTypes'] ) ) {
 				return $cb['id'];
@@ -96,17 +94,5 @@ class Term_Relation_Service extends Singleton implements Relation_Service_Interf
 		return WL_WHAT_RELATION;
 	}
 
-	/**
-	 * @param array $entity_types
-	 */
-	protected function get_schema( array $entity_types ) {
-		foreach ( $entity_types as $entity_type ) {
-			$schema = $this->schema_service->get_schema( $entity_type->slug );
-			if ( ! $schema ) {
-				break;
-			}
-		}
 
-		return $this->schema_service->get_schema( 'thing' );
-	}
 }
